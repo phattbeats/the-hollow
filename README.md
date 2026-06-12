@@ -1,5 +1,7 @@
 # World of Claudecraft — a WoW-Classic-style MMO
 
+[Join the community Discord](https://discord.gg/GjhnUsBtw)
+
 ![World of Claudecraft title screen](docs/screenshots/title-screen.jpg)
 
 A vanilla-WoW-flavored micro-MMO you can host and play:
