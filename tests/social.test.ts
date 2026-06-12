@@ -363,6 +363,51 @@ describe('trading', () => {
     expect(sim.tradeFor(a)).toBe(null);
   });
 
+  it('duplicate offer slots cannot duplicate items', () => {
+    const sim = makeWorld();
+    const a = sim.addPlayer('warrior', 'Aleph');
+    const b = sim.addPlayer('mage', 'Bet');
+    teleport(sim, a, 0, -40);
+    teleport(sim, b, 3, -40);
+    sim.addItem('wolf_fang', 5, a);
+    sim.meta(a)!.copper = 100;
+    sim.meta(b)!.copper = 50;
+    sim.tradeRequest(b, a);
+    sim.tradeAccept(b);
+    // exploit attempt: 6 duplicate slots, each individually covered by the bags
+    const dup = Array.from({ length: 6 }, () => ({ itemId: 'wolf_fang', count: 5 }));
+    sim.tradeSetOffer(dup, 0, a);
+    // the merged total (30) exceeds the bags (5), so the offer must be rejected
+    expect(sim.tradeFor(a)!.offerA.items.length).toBe(0);
+    sim.tradeConfirm(a);
+    sim.tradeConfirm(b);
+    expect(sim.tradeFor(a)).toBe(null);
+    expect(sim.countItem('wolf_fang', a)).toBe(5);
+    expect(sim.countItem('wolf_fang', b)).toBe(0);
+    expect(sim.countItem('wolf_fang', a) + sim.countItem('wolf_fang', b)).toBe(5);
+    expect(sim.meta(a)!.copper).toBe(100);
+    expect(sim.meta(b)!.copper).toBe(50);
+  });
+
+  it('duplicate slots within the bags merge and trade normally', () => {
+    const sim = makeWorld();
+    const a = sim.addPlayer('warrior', 'Aleph');
+    const b = sim.addPlayer('mage', 'Bet');
+    teleport(sim, a, 0, -40);
+    teleport(sim, b, 3, -40);
+    sim.addItem('wolf_fang', 5, a);
+    sim.tradeRequest(b, a);
+    sim.tradeAccept(b);
+    // two slots of 2 totals 4, within the 5 held — merged into one slot of 4
+    sim.tradeSetOffer([{ itemId: 'wolf_fang', count: 2 }, { itemId: 'wolf_fang', count: 2 }], 0, a);
+    expect(sim.tradeFor(a)!.offerA.items).toEqual([{ itemId: 'wolf_fang', count: 4 }]);
+    sim.tradeConfirm(a);
+    sim.tradeConfirm(b);
+    expect(sim.tradeFor(a)).toBe(null);
+    expect(sim.countItem('wolf_fang', a)).toBe(1);
+    expect(sim.countItem('wolf_fang', b)).toBe(4);
+  });
+
   it('quest items cannot be traded', () => {
     const sim = makeWorld();
     const a = sim.addPlayer('warrior', 'Aleph');
