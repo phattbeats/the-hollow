@@ -260,6 +260,15 @@ export class GameServer {
     } catch {
       return;
     }
+    // a malformed payload must never take down the server for everyone
+    try {
+      this.dispatchMessage(session, msg);
+    } catch (err) {
+      console.error(`bad message from ${session.name} (cmd: ${String(msg?.cmd ?? msg?.t)}):`, err);
+    }
+  }
+
+  private dispatchMessage(session: ClientSession, msg: any): void {
     const sim = this.sim;
     const pid = session.pid;
     if (msg.t === 'input') {

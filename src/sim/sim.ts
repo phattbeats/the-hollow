@@ -2705,14 +2705,21 @@ export class Sim {
     if (!r) return;
     const session = this.trades.get(r.meta.entityId);
     if (!session) return;
-    // validate the offer against the player's bags
-    const cleaned: InvSlot[] = [];
+    // validate the offer against the player's bags; merge duplicate slots so
+    // the offered total per item is checked, not each slot in isolation
+    const merged = new Map<string, number>();
     for (const slot of items.slice(0, 6)) {
+      // slots come straight off the wire — reject anything malformed
+      if (!slot || typeof slot.itemId !== 'string' || !Number.isFinite(slot.count)) continue;
       const count = Math.max(1, Math.floor(slot.count));
       const def = ITEMS[slot.itemId];
       if (!def || def.kind === 'quest') continue; // quest items are soulbound-ish
-      if (this.countItem(slot.itemId, r.meta.entityId) < count) continue;
-      cleaned.push({ itemId: slot.itemId, count });
+      merged.set(slot.itemId, (merged.get(slot.itemId) ?? 0) + count);
+    }
+    const cleaned: InvSlot[] = [];
+    for (const [itemId, count] of merged) {
+      if (this.countItem(itemId, r.meta.entityId) < count) continue;
+      cleaned.push({ itemId, count });
     }
     const offer = { items: cleaned, copper: Math.max(0, Math.min(Math.floor(copper), r.meta.copper)) };
     if (session.a === r.meta.entityId) session.offerA = offer;
@@ -2737,8 +2744,8 @@ export class Sim {
     const valid =
       session.offerA.copper <= metaA.copper &&
       session.offerB.copper <= metaB.copper &&
-      session.offerA.items.every((s) => this.countItem(s.itemId, session.a) >= s.count) &&
-      session.offerB.items.every((s) => this.countItem(s.itemId, session.b) >= s.count);
+      this.offerCovered(session.offerA.items, session.a) &&
+      this.offerCovered(session.offerB.items, session.b);
     if (!valid) {
       for (const tPid of [session.a, session.b]) this.error(tPid, 'Trade failed: items or money no longer available.');
       this.closeTrade(session);
@@ -2770,6 +2777,17 @@ export class Sim {
       this.emit({ type: 'log', text: 'Trade cancelled.', color: '#8df', pid: tPid });
     }
     this.closeTrade(session);
+  }
+
+  // true when the player's bags cover the offered totals per item, summing
+  // duplicate slots — a per-slot check would let duplicates each pass alone
+  private offerCovered(items: InvSlot[], pid: number): boolean {
+    const totals = new Map<string, number>();
+    for (const s of items) totals.set(s.itemId, (totals.get(s.itemId) ?? 0) + s.count);
+    for (const [itemId, count] of totals) {
+      if (this.countItem(itemId, pid) < count) return false;
+    }
+    return true;
   }
 
   private closeTrade(session: TradeSession): void {
