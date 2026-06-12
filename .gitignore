@@ -17,6 +17,7 @@ __pycache__/
 # environment / secrets
 .env
 .env.*
+!.env.example
 
 # editor & OS noise
 .DS_Store
