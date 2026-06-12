@@ -1,5 +1,7 @@
 # World of Claudecraft — a WoW-Classic-style MMO
 
+![World of Claudecraft title screen](docs/screenshots/title-screen.jpg)
+
 A vanilla-WoW-flavored micro-MMO you can host and play:
 
 1. **Play it online** — a real client/server game with accounts, persistent
@@ -9,6 +11,16 @@ A vanilla-WoW-flavored micro-MMO you can host and play:
 Both run the **same deterministic simulation core** (`src/sim/`), so the
 offline world behaves identically to what the authoritative multiplayer server
 runs for everyone online.
+
+## Screenshots
+
+![A party gathers outside the apothecary in Eastbrook](docs/screenshots/party-questing.jpg)
+
+| | |
+|:---:|:---:|
+| ![Dusk at the Eastbrook campfire](docs/screenshots/eastbrook-dusk.jpg)<br>*Dusk at the Eastbrook campfire* | ![Elite pulls in the Hollow Crypt](docs/screenshots/hollow-crypt.jpg)<br>*Torch-lit elite pulls in the Hollow Crypt* |
+| ![The restless dead at the ruined chapel](docs/screenshots/restless-dead.jpg)<br>*The restless dead at the ruined chapel* | ![A brawl with Vale Bandits](docs/screenshots/vale-bandits.jpg)<br>*Outnumbered at the bandit camp* |
+| ![Old Greyjaw hunted down on the north road](docs/screenshots/old-greyjaw.jpg)<br>*Old Greyjaw, the rare spawn, run down on the north road* | ![Vendor and bags UI](docs/screenshots/vendor-and-bags.jpg)<br>*Gearing up at Smith Haldren's — tooltips, bags, coin* |
 
 ---
 
