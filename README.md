@@ -91,7 +91,7 @@ Brother Aldric's storyline continues past *The Restless Dead*: **Whispers
 Below** (find the Gravecaller's sigil at the ruined chapel) → **The Binding
 Rite** (gather Blessed Tallow from the kobold dig and Ghostly Essence from
 the restless dead) → **Into the Hollow** (*suggested players: 5*) — kill
-Morthen the Gravecaaller at the bottom of the crypt beneath the chapel.
+Morthen the Gravecaller at the bottom of the crypt beneath the chapel.
 
 - The crypt door at the Fallen Chapel teleports your **party into its own
   private instance copy** (6 slots; instances reset after 5 minutes empty).
