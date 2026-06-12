@@ -7,6 +7,7 @@ import {
 import { resolvePosition } from './colliders';
 import { createGroundObject, createMob, createNpc, createPlayer, recalcPlayerStats, PlayerEquipment } from './entity';
 import { Rng } from './rng';
+import { SpatialGrid } from './spatial';
 import { groundHeight, WATER_LEVEL } from './world';
 import {
   AbilityDef, AbilityEffect, Aura, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION,
@@ -156,6 +157,11 @@ export class Sim {
   tickCount = 0;
   entities = new Map<number, Entity>();
   players = new Map<number, PlayerMeta>(); // keyed by entity id
+  // spatial indexes for radius queries; re-bucketed at the end of each tick
+  // and kept roster-exact on spawn/despawn/teleport
+  readonly grid = new SpatialGrid();
+  readonly playerGrid = new SpatialGrid();
+  private engagedPids = new Set<number>();
   primaryId = -1; // the local/RL player in single-player contexts
   nextId = 1;
   events: SimEvent[] = [];
@@ -185,7 +191,7 @@ export class Sim {
     for (const npcDef of Object.values(NPCS)) {
       const safe = this.findSafePos(npcDef.pos.x, npcDef.pos.z, WATER_LEVEL + 0.6);
       const npc = createNpc(this.nextId++, npcDef, this.groundPos(safe.x, safe.z));
-      this.entities.set(npc.id, npc);
+      this.addEntity(npc);
     }
 
     // Mobs from camps
@@ -203,7 +209,7 @@ export class Sim {
         mob.facing = this.rng.range(-Math.PI, Math.PI);
         mob.prevFacing = mob.facing;
         mob.wanderTimer = this.rng.range(2, 10);
-        this.entities.set(mob.id, mob);
+        this.addEntity(mob);
       }
     }
 
@@ -211,7 +217,7 @@ export class Sim {
     for (const objDef of GROUND_OBJECTS) {
       for (const p of objDef.positions) {
         const obj = createGroundObject(this.nextId++, objDef.itemId, objDef.name, this.groundPos(p.x, p.z));
-        this.entities.set(obj.id, obj);
+        this.addEntity(obj);
       }
     }
 
@@ -222,7 +228,7 @@ export class Sim {
       door.dungeonId = dungeon.id;
       door.objectItemId = null;
       door.lootable = true; // interactable
-      this.entities.set(door.id, door);
+      this.addEntity(door);
       for (let i = 0; i < INSTANCE_SLOT_COUNT; i++) {
         this.instances.push({ dungeonId: dungeon.id, slot: i, partyKey: null, mobIds: [], exitId: null, emptyFor: 0 });
       }
@@ -231,6 +237,30 @@ export class Sim {
     if (!cfg.noPlayer) {
       this.addPlayer(this.cfg.playerClass, this.cfg.playerName, { autoEquip: this.cfg.autoEquip });
     }
+  }
+
+  // -------------------------------------------------------------------------
+  // Entity roster: every add/remove/teleport goes through these so the
+  // spatial indexes always match the entities map
+  // -------------------------------------------------------------------------
+
+  private addEntity(e: Entity): void {
+    this.entities.set(e.id, e);
+    this.grid.insert(e);
+    if (e.kind === 'player') this.playerGrid.insert(e);
+  }
+
+  private dropEntity(id: number): void {
+    const e = this.entities.get(id);
+    if (!e) return;
+    this.grid.remove(e);
+    if (e.kind === 'player') this.playerGrid.remove(e);
+    this.entities.delete(id);
+  }
+
+  private rebucket(e: Entity): void {
+    this.grid.update(e);
+    if (e.kind === 'player') this.playerGrid.update(e);
   }
 
   // -------------------------------------------------------------------------
@@ -249,7 +279,7 @@ export class Sim {
       ? this.groundPos(savedPos.x, savedPos.z)
       : this.groundPos(PLAYER_START.x, PLAYER_START.z);
     const player = createPlayer(this.nextId++, cls, startPos, name);
-    this.entities.set(player.id, player);
+    this.addEntity(player);
     const classDef = CLASSES[cls];
     const meta: PlayerMeta = {
       entityId: player.id,
@@ -324,7 +354,7 @@ export class Sim {
       const e = this.entities.get(other.entityId);
       if (e && e.targetId === pid) e.targetId = null;
     }
-    this.entities.delete(pid);
+    this.dropEntity(pid);
     this.players.delete(pid);
     if (this.primaryId === pid) this.primaryId = this.players.size > 0 ? [...this.players.keys()][0] : -1;
   }
@@ -530,18 +560,38 @@ export class Sim {
       }
     }
 
+    // one pass over the entities collects every player a mob is engaged
+    // with, instead of one full scan per player
+    this.engagedPids.clear();
+    for (const e of this.entities.values()) {
+      if (e.kind === 'mob' && !e.dead && (e.aiState === 'chase' || e.aiState === 'attack') && e.aggroTargetId !== null) {
+        this.engagedPids.add(e.aggroTargetId);
+      }
+    }
     for (const meta of this.players.values()) {
       const p = this.entities.get(meta.entityId);
-      if (p) this.updateCombatFlag(p);
+      if (p) p.inCombat = this.engagedPids.has(p.id) || p.combatTimer < 5;
     }
 
     this.updateDuels();
     this.updateTradesAndInvites();
     this.updateInstances();
 
+    // movement re-bucketing: queries during the next tick and the server's
+    // snapshot broadcast right after this one see fresh cells
+    this.grid.refresh(this.entities.values());
+    this.playerGrid.refresh(this.playerEntities());
+
     const out = this.events;
     this.events = [];
     return out;
+  }
+
+  private *playerEntities(): Iterable<Entity> {
+    for (const meta of this.players.values()) {
+      const e = this.entities.get(meta.entityId);
+      if (e) yield e;
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -776,17 +826,6 @@ export class Sim {
       const meta = this.players.get(e.id);
       if (meta) recalcPlayerStats(e, meta.cls, meta.equipment);
     }
-  }
-
-  private updateCombatFlag(p: Entity): void {
-    let engaged = false;
-    for (const e of this.entities.values()) {
-      if (e.kind === 'mob' && !e.dead && (e.aiState === 'chase' || e.aiState === 'attack') && e.aggroTargetId === p.id) {
-        engaged = true;
-        break;
-      }
-    }
-    p.inCombat = engaged || p.combatTimer < 5;
   }
 
   // -------------------------------------------------------------------------
@@ -1341,9 +1380,9 @@ export class Sim {
 
   private mobsInRadius(pos: Vec3, radius: number): Entity[] {
     const out: Entity[] = [];
-    for (const e of this.entities.values()) {
-      if (e.kind === 'mob' && !e.dead && e.hostile && dist2d(pos, e.pos) <= radius) out.push(e);
-    }
+    this.grid.forEachInRadius(pos.x, pos.z, radius, (e) => {
+      if (e.kind === 'mob' && !e.dead && e.hostile) out.push(e);
+    });
     return out;
   }
 
@@ -1714,27 +1753,24 @@ export class Sim {
     mob.inCombat = true;
     if (social) {
       const pullRadius = MOBS[mob.templateId]?.family === 'murloc' ? 18 : 12;
-      for (const m of this.entities.values()) {
+      this.grid.forEachInRadius(mob.pos.x, mob.pos.z, pullRadius, (m, d2) => {
         if (m.kind === 'mob' && m.id !== mob.id && !m.dead && m.aiState === 'idle'
-          && m.templateId === mob.templateId && dist2d(m.pos, mob.pos) < pullRadius) {
+          && m.templateId === mob.templateId && d2 < pullRadius * pullRadius) {
           m.aiState = 'chase';
           m.aggroTargetId = target.id;
           m.inCombat = true;
         }
-      }
+      });
     }
   }
 
   private nearestLivingPlayer(pos: Vec3, maxDist: number): { e: Entity; d: number } | null {
     let best: Entity | null = null;
-    let bestD = maxDist;
-    for (const meta of this.players.values()) {
-      const e = this.entities.get(meta.entityId);
-      if (!e || e.dead) continue;
-      const d = dist2d(pos, e.pos);
-      if (d < bestD) { bestD = d; best = e; }
-    }
-    return best ? { e: best, d: bestD } : null;
+    let bestD2 = maxDist * maxDist;
+    this.playerGrid.forEachInRadius(pos.x, pos.z, maxDist, (e, d2) => {
+      if (!e.dead && d2 < bestD2) { bestD2 = d2; best = e; }
+    });
+    return best ? { e: best, d: Math.sqrt(bestD2) } : null;
   }
 
   private updateMob(mob: Entity): void {
@@ -1926,6 +1962,7 @@ export class Sim {
     mob.pos = { ...mob.spawnPos };
     mob.pos.y = groundHeight(mob.pos.x, mob.pos.z, this.cfg.seed);
     mob.prevPos = { ...mob.pos };
+    this.rebucket(mob);
     mob.hp = mob.maxHp;
     mob.auras = [];
     mob.aiState = 'idle';
@@ -1953,7 +1990,7 @@ export class Sim {
         if (e?.targetId === id) e.targetId = null;
         if (e?.comboTargetId === id) { e.comboTargetId = null; e.comboPoints = 0; }
       }
-      this.entities.delete(id);
+      this.dropEntity(id);
     }
     boss.summonedIds = [];
   }
@@ -1999,7 +2036,7 @@ export class Sim {
       const add = createMob(this.nextId++, template, level, pos);
       add.spawnPos = { ...boss.spawnPos }; // leashes with the boss; stays dead in instances
       add.tappedById = boss.tappedById;
-      this.entities.set(add.id, add);
+      this.addEntity(add);
       boss.summonedIds.push(add.id);
       inst?.mobIds.push(add.id);
       if (victim && !victim.dead && victim.kind === 'player') this.aggroMob(add, victim, false);
@@ -2026,12 +2063,10 @@ export class Sim {
     if (!r) return;
     const p = r.e;
     const candidates: { e: Entity; d: number }[] = [];
-    for (const e of this.entities.values()) {
-      if (e.kind !== 'mob' || e.dead || !e.hostile) continue;
-      const d = dist2d(p.pos, e.pos);
-      if (d > 40) continue;
-      candidates.push({ e, d });
-    }
+    this.grid.forEachInRadius(p.pos.x, p.pos.z, 40, (e, d2) => {
+      if (e.kind !== 'mob' || e.dead || !e.hostile) return;
+      candidates.push({ e, d: Math.sqrt(d2) });
+    });
     if (candidates.length === 0) return;
     candidates.sort((a, b) => a.d - b.d);
     const curIdx = candidates.findIndex((c) => c.e.id === p.targetId);
@@ -2044,13 +2079,12 @@ export class Sim {
     if (!r) return;
     const p = r.e;
     let best: Entity | null = null;
-    let bestD = 40;
-    for (const e of this.entities.values()) {
-      if (e.kind !== 'mob' || e.dead || !e.hostile) continue;
-      const d = dist2d(p.pos, e.pos);
-      if (d < bestD) { bestD = d; best = e; }
-    }
-    if (best) p.targetId = best.id;
+    let bestD2 = 40 * 40;
+    this.grid.forEachInRadius(p.pos.x, p.pos.z, 40, (e, d2) => {
+      if (e.kind !== 'mob' || e.dead || !e.hostile) return;
+      if (d2 < bestD2) { bestD2 = d2; best = e; }
+    });
+    if (best) p.targetId = (best as Entity).id;
   }
 
   // -------------------------------------------------------------------------
@@ -2251,25 +2285,28 @@ export class Sim {
     if (!r) return;
     const p = r.e;
     let bestCorpse: Entity | null = null;
-    let bestCorpseD = INTERACT_RANGE;
+    let bestCorpseD2 = INTERACT_RANGE * INTERACT_RANGE;
     let bestObj: Entity | null = null;
-    let bestObjD = INTERACT_RANGE;
+    let bestObjD2 = INTERACT_RANGE * INTERACT_RANGE;
     let bestNpc: Entity | null = null;
-    let bestNpcD = INTERACT_RANGE;
-    for (const e of this.entities.values()) {
-      const d = dist2d(p.pos, e.pos);
-      if (e.kind === 'mob' && e.lootable && d < bestCorpseD) { bestCorpse = e; bestCorpseD = d; }
-      if (e.kind === 'object' && e.lootable && d < bestObjD) { bestObj = e; bestObjD = d; }
-      if (e.kind === 'npc' && d < bestNpcD) { bestNpc = e; bestNpcD = d; }
-    }
-    if (bestCorpse) { this.lootCorpse(bestCorpse.id, p.id); return; }
-    if (bestObj) {
-      if (bestObj.templateId === 'dungeon_door' && bestObj.dungeonId) { this.enterDungeon(bestObj.dungeonId, p.id); return; }
-      if (bestObj.templateId === 'dungeon_exit') { this.leaveDungeon(p.id); return; }
-      this.pickUpObject(bestObj.id, p.id);
+    let bestNpcD2 = INTERACT_RANGE * INTERACT_RANGE;
+    this.grid.forEachInRadius(p.pos.x, p.pos.z, INTERACT_RANGE, (e, d2) => {
+      if (e.kind === 'mob' && e.lootable && d2 < bestCorpseD2) { bestCorpse = e; bestCorpseD2 = d2; }
+      if (e.kind === 'object' && e.lootable && d2 < bestObjD2) { bestObj = e; bestObjD2 = d2; }
+      if (e.kind === 'npc' && d2 < bestNpcD2) { bestNpc = e; bestNpcD2 = d2; }
+    });
+    // re-read through wider types: TS cannot see the closure assignments above
+    const corpse = bestCorpse as Entity | null;
+    const obj = bestObj as Entity | null;
+    const npc = bestNpc as Entity | null;
+    if (corpse) { this.lootCorpse(corpse.id, p.id); return; }
+    if (obj) {
+      if (obj.templateId === 'dungeon_door' && obj.dungeonId) { this.enterDungeon(obj.dungeonId, p.id); return; }
+      if (obj.templateId === 'dungeon_exit') { this.leaveDungeon(p.id); return; }
+      this.pickUpObject(obj.id, p.id);
       return;
     }
-    if (bestNpc) this.talkToNpc(bestNpc.id, p.id);
+    if (npc) this.talkToNpc(npc.id, p.id);
   }
 
   talkToNpc(npcId: number, pid?: number): void {
@@ -2415,6 +2452,7 @@ export class Sim {
     const graveyard = zoneAt(dungeon ? dungeon.doorPos.z : p.pos.z).graveyard;
     p.pos = this.groundPos(graveyard.x, graveyard.z);
     p.prevPos = { ...p.pos };
+    this.rebucket(p);
     p.facing = 0;
     p.auras = [];
     recalcPlayerStats(p, meta.cls, meta.equipment);
@@ -2884,6 +2922,7 @@ export class Sim {
     const p = r.e;
     p.pos = this.groundPos(origin.x + dungeon.entry.x, origin.z + dungeon.entry.z);
     p.prevPos = { ...p.pos };
+    this.rebucket(p);
     p.facing = 0;
     p.targetId = null;
     p.autoAttack = false;
@@ -2901,6 +2940,7 @@ export class Sim {
     if (!dungeon) return;
     p.pos = this.groundPos(dungeon.doorPos.x, dungeon.doorPos.z - 4);
     p.prevPos = { ...p.pos };
+    this.rebucket(p);
     p.targetId = null;
     p.autoAttack = false;
     this.emit({ type: 'log', text: dungeon.leaveText, color: '#b9f', pid: r.meta.entityId });
@@ -2926,7 +2966,7 @@ export class Sim {
       const mob = createMob(this.nextId++, template, level, this.groundPos(origin.x + spawn.x, origin.z + spawn.z));
       mob.facing = Math.PI; // face the entrance
       mob.prevFacing = mob.facing;
-      this.entities.set(mob.id, mob);
+      this.addEntity(mob);
       inst.mobIds.push(mob.id);
     }
     const exit = createGroundObject(this.nextId++, '', `${dungeon.name} Exit`, this.groundPos(origin.x + dungeon.exitOffset.x, origin.z + dungeon.exitOffset.z));
@@ -2934,7 +2974,7 @@ export class Sim {
     exit.dungeonId = dungeon.id;
     exit.objectItemId = null;
     exit.lootable = true;
-    this.entities.set(exit.id, exit);
+    this.addEntity(exit);
     inst.exitId = exit.id;
   }
 
@@ -2947,9 +2987,9 @@ export class Sim {
         if (e?.targetId === id) e.targetId = null;
         if (e?.comboTargetId === id) { e.comboTargetId = null; e.comboPoints = 0; }
       }
-      this.entities.delete(id);
+      this.dropEntity(id);
     }
-    if (inst.exitId !== null) this.entities.delete(inst.exitId);
+    if (inst.exitId !== null) this.dropEntity(inst.exitId);
     inst.partyKey = null;
     inst.mobIds = [];
     inst.exitId = null;
