@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { buildWebSocketAuthMessage, buildWebSocketUrl } from '../src/net/online';
 import { Sim } from '../src/sim/sim';
 import { validCharName } from '../server/auth';
-import { requestIp } from '../server/ratelimit';
+import { rateLimited, requestIp } from '../server/ratelimit';
 
 function fakeReq(headers: Record<string, string>, remoteAddress: string) {
   const req: any = new EventEmitter();
@@ -40,6 +40,55 @@ describe('rate-limit client IP selection', () => {
     const req = fakeReq({ 'x-forwarded-for': '203.0.113.55, 127.0.0.1' }, '127.0.0.1');
 
     expect(requestIp(req)).toBe('203.0.113.55');
+  });
+
+  // Production regression: host nginx proxies into the game CONTAINER, so the
+  // connection arrives from the docker bridge gateway. Players must NOT all
+  // collapse into one rate-limit bucket keyed on that gateway address.
+  it('trusts x-forwarded-for from the docker bridge gateway (host nginx -> container)', () => {
+    const alice = fakeReq({ 'x-forwarded-for': '203.0.113.55' }, '172.18.0.1');
+    const bob = fakeReq({ 'x-forwarded-for': '198.51.100.77' }, '172.18.0.1');
+
+    expect(requestIp(alice)).toBe('203.0.113.55');
+    expect(requestIp(bob)).toBe('198.51.100.77');
+  });
+
+  it('also handles the ipv6-mapped form of the bridge gateway', () => {
+    const req = fakeReq({ 'x-forwarded-for': '203.0.113.55' }, '::ffff:172.18.0.1');
+
+    expect(requestIp(req)).toBe('203.0.113.55');
+  });
+
+  it('resolves the rightmost untrusted hop so clients cannot spoof extra entries', () => {
+    // attacker sends their own X-Forwarded-For; nginx appends their real IP.
+    // Counting the leftmost entry would let them rotate fake IPs at will.
+    const req = fakeReq({ 'x-forwarded-for': '1.2.3.4, 203.0.113.55' }, '172.18.0.1');
+
+    expect(requestIp(req)).toBe('203.0.113.55');
+  });
+
+  it('TRUSTED_PROXY_IPS pins the proxy list when set', () => {
+    process.env.TRUSTED_PROXY_IPS = '10.9.9.9';
+    try {
+      // a private address NOT on the pinned list is no longer trusted
+      const direct = fakeReq({ 'x-forwarded-for': '203.0.113.55' }, '172.18.0.1');
+      expect(requestIp(direct)).toBe('172.18.0.1');
+      const proxied = fakeReq({ 'x-forwarded-for': '203.0.113.55' }, '10.9.9.9');
+      expect(requestIp(proxied)).toBe('203.0.113.55');
+    } finally {
+      delete process.env.TRUSTED_PROXY_IPS;
+    }
+  });
+
+  it('rate-limits forwarded clients independently', () => {
+    // 21 attempts from one forwarded client trip the limiter...
+    let aliceLimited = false;
+    for (let i = 0; i < 21; i++) {
+      aliceLimited = rateLimited(fakeReq({ 'x-forwarded-for': '203.0.113.200' }, '172.18.0.1'));
+    }
+    expect(aliceLimited).toBe(true);
+    // ...while another player behind the same proxy is unaffected
+    expect(rateLimited(fakeReq({ 'x-forwarded-for': '198.51.100.201' }, '172.18.0.1'))).toBe(false);
   });
 });
 
