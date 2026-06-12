@@ -2709,6 +2709,8 @@ export class Sim {
     // the offered total per item is checked, not each slot in isolation
     const merged = new Map<string, number>();
     for (const slot of items.slice(0, 6)) {
+      // slots come straight off the wire — reject anything malformed
+      if (!slot || typeof slot.itemId !== 'string' || !Number.isFinite(slot.count)) continue;
       const count = Math.max(1, Math.floor(slot.count));
       const def = ITEMS[slot.itemId];
       if (!def || def.kind === 'quest') continue; // quest items are soulbound-ish

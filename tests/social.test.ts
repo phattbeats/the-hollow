@@ -389,6 +389,35 @@ describe('trading', () => {
     expect(sim.meta(b)!.copper).toBe(50);
   });
 
+  it('malformed offer slots are rejected, not crashed or duplicated', () => {
+    const sim = makeWorld();
+    const a = sim.addPlayer('warrior', 'Aleph');
+    const b = sim.addPlayer('mage', 'Bet');
+    teleport(sim, a, 0, -40);
+    teleport(sim, b, 3, -40);
+    sim.addItem('wolf_fang', 5, a);
+    sim.tradeRequest(b, a);
+    sim.tradeAccept(b);
+    // garbage straight off the wire: null slot, non-numeric and non-finite counts
+    const junk = [
+      null,
+      { itemId: 'wolf_fang', count: 'lots' },
+      { itemId: 'wolf_fang', count: NaN },
+      { itemId: 'wolf_fang', count: Infinity },
+      { count: 3 },
+      { itemId: 'wolf_fang', count: 2 },
+    ] as any;
+    // must not throw, and only the one valid slot survives
+    expect(() => sim.tradeSetOffer(junk, 0, a)).not.toThrow();
+    expect(sim.tradeFor(a)!.offerA.items).toEqual([{ itemId: 'wolf_fang', count: 2 }]);
+    sim.tradeConfirm(a);
+    sim.tradeConfirm(b);
+    expect(sim.tradeFor(a)).toBe(null);
+    // no NaN corruption: totals are conserved
+    expect(sim.countItem('wolf_fang', a)).toBe(3);
+    expect(sim.countItem('wolf_fang', b)).toBe(2);
+  });
+
   it('duplicate slots within the bags merge and trade normally', () => {
     const sim = makeWorld();
     const a = sim.addPlayer('warrior', 'Aleph');
