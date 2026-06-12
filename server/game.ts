@@ -350,6 +350,8 @@ export class GameServer {
             const p = sim.groundPos(msg.x, msg.z);
             e.pos = p;
             e.prevPos = { ...p };
+            sim.grid.update(e);
+            sim.playerGrid.update(e);
           }
         }
         break;
@@ -396,16 +398,15 @@ export class GameServer {
       const meta = this.sim.meta(session.pid);
       if (!p || !meta) continue;
       const ents: string[] = [];
-      for (const e of this.sim.entities.values()) {
-        if (e.id === session.pid) continue;
-        if (dist2d(p.pos, e.pos) > INTEREST_RADIUS) continue;
+      this.sim.grid.forEachInRadius(p.pos.x, p.pos.z, INTEREST_RADIUS, (e) => {
+        if (e.id === session.pid) return;
         let json = entJson.get(e.id);
         if (json === undefined) {
           json = JSON.stringify(wireEntity(e));
           entJson.set(e.id, json);
         }
         ents.push(json);
-      }
+      });
       this.sendRaw(session, `${head},"self":${this.selfWireJson(session, p, meta)},"ents":[${ents.join(',')}]}`);
     }
   }
