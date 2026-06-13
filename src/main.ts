@@ -15,6 +15,7 @@ import { DT, INTERACT_RANGE, PlayerClass, dist2d } from './sim/types';
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
+import { getLanguage, setLanguage } from './ui/i18n';
 
 
 const WORLD_SEED = 20061; // fixed: World of Claudecraft is a persistent place
@@ -365,7 +366,87 @@ const hoverTimeouts: Record<string, number | null> = {
   'online-class-details': null
 };
 
+function switchMainView(targetId: string): void {
+  const views = ['#hero-view', '#highscores-view', '#wiki-view', '#news-view', '#download-view'];
+  const currentViewId = views.find(id => {
+    const el = $(id);
+    return el && !el.hasAttribute('hidden');
+  });
+
+  if (currentViewId === targetId) return;
+
+  const navMap: Record<string, string> = {
+    '#hero-view': 'nav-btn-play',
+    '#highscores-view': 'nav-btn-highscores',
+    '#wiki-view': 'nav-btn-wiki',
+    '#news-view': 'nav-btn-news',
+    '#download-view': 'nav-btn-download'
+  };
+
+  const activeNavId = navMap[targetId];
+  document.querySelectorAll('.nav-link').forEach((link) => {
+    const isActive = link.id === activeNavId;
+    link.classList.toggle('active', isActive);
+    link.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    link.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+
+  const fromView = currentViewId ? $(currentViewId) : null;
+  const toView = $(targetId);
+
+  if (!toView) return;
+
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const performSwitch = () => {
+    views.forEach(id => {
+      const el = $(id);
+      if (el) {
+        const isTarget = id === targetId;
+        el.toggleAttribute('hidden', !isTarget);
+        el.setAttribute('aria-hidden', isTarget ? 'false' : 'true');
+      }
+    });
+
+    if (targetId === '#hero-view') {
+      const activePlayPanel = ['#charselect-panel', '#offline-select'].find(id => {
+        const el = $(id);
+        return el && !el.hasAttribute('hidden');
+      });
+      if (activePlayPanel) {
+        updatePreviewContainer(activePlayPanel);
+      }
+    }
+  };
+
+  if (isReducedMotion || !fromView) {
+    performSwitch();
+    return;
+  }
+
+  // Visual cross-fade and slide
+  fromView.style.opacity = '0';
+  fromView.style.transform = 'translateY(-8px)';
+
+  const handleTransitionEnd = () => {
+    performSwitch();
+    
+    toView.style.opacity = '0';
+    toView.style.transform = 'translateY(8px)';
+    
+    void toView.offsetHeight; // force reflow
+    
+    toView.style.opacity = '1';
+    toView.style.transform = 'translateY(0)';
+  };
+
+  window.setTimeout(handleTransitionEnd, 150);
+}
+
 function show(el: string): void {
+  // Ensure the main view is switched to hero-view so play sub-panels are visible
+  switchMainView('#hero-view');
+
   if (document.activeElement instanceof HTMLInputElement || document.activeElement instanceof HTMLTextAreaElement) {
     document.activeElement.blur();
   }
@@ -391,16 +472,6 @@ function show(el: string): void {
   }
 
   const panels = ['#mode-select', '#login-panel', '#realm-panel', '#charselect-panel', '#offline-select'];
-  const startScreen = $('#start-screen');
-
-  // Automatically close controls drawer if navigating away from mode-select
-  if (el !== '#mode-select') {
-    const closeBtn = $('#btn-close-controls') as HTMLButtonElement | null;
-    const controlsDrawer = $('#controls-drawer');
-    if (controlsDrawer && !controlsDrawer.hasAttribute('hidden') && closeBtn) {
-      closeBtn.click();
-    }
-  }
 
   // Find currently visible panel
   const currentActiveId = panels.find(id => !$(id).hasAttribute('hidden'));
@@ -410,7 +481,6 @@ function show(el: string): void {
     for (const id of panels) {
       $(id).toggleAttribute('hidden', id !== el);
     }
-    $('#social-links')?.toggleAttribute('hidden', el !== '#mode-select');
     if (el === '#charselect-panel' || el === '#offline-select') {
       updatePreviewContainer(el);
     }
@@ -434,28 +504,18 @@ function show(el: string): void {
   if (isReducedMotion) {
     fromPanel.toggleAttribute('hidden', true);
     toPanel.toggleAttribute('hidden', false);
-    $('#social-links')?.toggleAttribute('hidden', el !== '#mode-select');
     if (el === '#charselect-panel' || el === '#offline-select') {
       updatePreviewContainer(el);
     }
     return;
   }
 
-  const socialLinks = $('#social-links');
-
   // Fade out using CSS classes
   fromPanel.classList.add('panel-transition', 'panel-fade-out');
-
-  if (el !== '#mode-select' && socialLinks && !socialLinks.hasAttribute('hidden')) {
-    socialLinks.classList.add('social-links-fade-out');
-  }
 
   const cleanupFrom = () => {
     fromPanel.toggleAttribute('hidden', true);
     fromPanel.classList.remove('panel-transition', 'panel-fade-out');
-    if (socialLinks) {
-      socialLinks.classList.remove('social-links-fade-out');
-    }
   };
 
   activeTransitionCleanup = cleanupFrom;
@@ -464,15 +524,6 @@ function show(el: string): void {
     cleanupFrom();
     activeTransitionCleanup = null;
     activeTransitionTimeout = null;
-
-    if (socialLinks) {
-      socialLinks.toggleAttribute('hidden', el !== '#mode-select');
-      if (el === '#mode-select') {
-        socialLinks.classList.add('social-links-fade-out');
-        void socialLinks.offsetHeight;
-        socialLinks.classList.remove('social-links-fade-out');
-      }
-    }
 
     // Set initial state for fade-in
     toPanel.classList.add('panel-transition', 'panel-fade-in-start');
@@ -1447,37 +1498,60 @@ function wireStartScreens(): void {
   });
   $('#btn-charselect-back').addEventListener('click', () => show('#login-panel'));
 
-  // Collapsible Controls Drawer toggle
-  const controlsDrawer = $('#controls-drawer');
-  const toggleControlsBtn = $('#btn-toggle-controls');
-  const closeControlsBtn = $('#btn-close-controls');
+  // Main Navigation View Switching
+  const navBtnPlay = $('#nav-btn-play');
+  const navBtnHighscores = $('#nav-btn-highscores');
+  const navBtnWiki = $('#nav-btn-wiki');
+  const navBtnNews = $('#nav-btn-news');
+  const navBtnDownload = $('#nav-btn-download');
+  const navBtnLogin = $('#nav-btn-login');
 
-  const toggleControls = (show: boolean) => {
-    controlsDrawer.toggleAttribute('hidden', !show);
-    toggleControlsBtn.setAttribute('aria-expanded', show ? 'true' : 'false');
-    if (show) {
-      closeControlsBtn.focus();
-    } else {
-      toggleControlsBtn.focus();
-    }
+  const setupNavBtn = (btn: HTMLElement | null, targetViewId: string, customAction?: () => void) => {
+    if (!btn) return;
+    const action = () => {
+      if (customAction) {
+        customAction();
+      } else {
+        switchMainView(targetViewId);
+      }
+    };
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      action();
+    });
+    btn.addEventListener('keydown', (e) => {
+      handleKeyboardActivation(e as KeyboardEvent, action);
+    });
   };
 
-  toggleControlsBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const isVisible = !controlsDrawer.hasAttribute('hidden');
-    toggleControls(!isVisible);
-  });
-
-  closeControlsBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    toggleControls(false);
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !controlsDrawer.hasAttribute('hidden')) {
-      toggleControls(false);
+  setupNavBtn(navBtnPlay, '#hero-view', () => {
+    switchMainView('#hero-view');
+    // Default to mode-select if no play panel is active
+    const playPanels = ['#mode-select', '#login-panel', '#realm-panel', '#charselect-panel', '#offline-select'];
+    const activePanel = playPanels.find(id => !$(id).hasAttribute('hidden'));
+    if (!activePanel) {
+      show('#mode-select');
     }
   });
+
+  setupNavBtn(navBtnHighscores, '#highscores-view');
+  setupNavBtn(navBtnWiki, '#wiki-view');
+  setupNavBtn(navBtnNews, '#news-view');
+  setupNavBtn(navBtnDownload, '#download-view');
+  setupNavBtn(navBtnLogin, '#hero-view', () => {
+    show('#login-panel');
+  });
+
+  // Language selection dropdown setup
+  const langSelect = $('#lang-select') as HTMLSelectElement | null;
+  if (langSelect) {
+    langSelect.value = getLanguage();
+    langSelect.addEventListener('change', () => {
+      const selected = langSelect.value as 'en' | 'es';
+      setLanguage(selected);
+      window.location.reload();
+    });
+  }
 
   // Dynamically initialize background embers
   const initBackgroundEmbers = () => {
