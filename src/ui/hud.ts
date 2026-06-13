@@ -539,6 +539,8 @@ export class Hud {
 
     // action bar
     const tgtDist = target && !target.dead ? dist2d(p.pos, target.pos) : null;
+    const actionbar = $('#actionbar');
+    actionbar.classList.toggle('many-spells', this.slotMap.filter((id) => id !== null).length > 10);
     for (let i = 0; i < this.abilityButtons.length; i++) {
       const ab = this.abilityButtons[i];
       if (i === 0) {
