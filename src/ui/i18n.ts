@@ -18,6 +18,11 @@ export const en = {
     play: "Play",
     stats: "Statistics",
     about: "About",
+    highscores: "High Scores",
+    wiki: "Wiki",
+    news: "News",
+    download: "Download",
+    loginRegister: "Login/Register",
   },
   stats: {
     title: "Realm Status",
@@ -32,8 +37,25 @@ export const en = {
     terms: "Terms of Service",
     privacy: "Privacy Policy",
   },
+  highscores: {
+    title: "High Scores Leaderboard",
+    desc: "Track the realm's greatest champions and compare your progress.",
+  },
+  wiki: {
+    title: "Game Wiki & Guide",
+    desc: "Discover the secrets of the realm, class guides, and strategies.",
+  },
+  news: {
+    title: "News & Updates",
+    desc: "Read the latest patch notes, events, and community updates.",
+  },
+  download: {
+    title: "Download Desktop Launcher",
+    desc: "Get the standalone launcher for optimized performance and full-screen play.",
+  },
   comingSoon: {
     placeholder: "Coming Soon...",
+    featureComingSoon: "This feature is coming soon to the realm.",
   },
 };
 
@@ -43,6 +65,11 @@ export const es: typeof en = {
     play: "Jugar",
     stats: "Estadísticas",
     about: "Acerca de",
+    highscores: "Clasificaciones",
+    wiki: "Wiki",
+    news: "Noticias",
+    download: "Descargar",
+    loginRegister: "Iniciar Sesión/Registrarse",
   },
   stats: {
     title: "Estado del Reino",
@@ -57,8 +84,25 @@ export const es: typeof en = {
     terms: "Términos de Servicio",
     privacy: "Política de Privacidad",
   },
+  highscores: {
+    title: "Clasificaciones de Puntuación",
+    desc: "Sigue a los campeones más grandes del reino y compara tu progreso.",
+  },
+  wiki: {
+    title: "Wiki y Guía del Juego",
+    desc: "Descubre los secretos del reino, guías de clase y estrategias.",
+  },
+  news: {
+    title: "Noticias y Actualizaciones",
+    desc: "Lee las últimas notas del parche, eventos y noticias de la comunidad.",
+  },
+  download: {
+    title: "Descargar Lanzador de Escritorio",
+    desc: "Consigue el lanzador independiente para un rendimiento optimizado y juego a pantalla completa.",
+  },
   comingSoon: {
     placeholder: "Próximamente...",
+    featureComingSoon: "Esta característica llegará pronto al reino.",
   },
 };
 

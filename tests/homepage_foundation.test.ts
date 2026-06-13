@@ -14,6 +14,15 @@ describe("i18n Translation Foundation", () => {
     expect(t("stats.playersOnline")).toBe("Players Online");
     expect(t("footer.copyright")).toBe("2026 World of Claudecraft");
     expect(t("footer.githubLabel")).toBe("Open Source Project");
+    expect(t("nav.highscores")).toBe("High Scores");
+    expect(t("nav.wiki")).toBe("Wiki");
+    expect(t("nav.news")).toBe("News");
+    expect(t("nav.download")).toBe("Download");
+    expect(t("nav.loginRegister")).toBe("Login/Register");
+    expect(t("highscores.title")).toBe("High Scores Leaderboard");
+    expect(t("wiki.title")).toBe("Game Wiki & Guide");
+    expect(t("news.title")).toBe("News & Updates");
+    expect(t("download.title")).toBe("Download Desktop Launcher");
   });
 
   it("updates language and retrieves Spanish translations", () => {
@@ -23,6 +32,15 @@ describe("i18n Translation Foundation", () => {
     expect(t("stats.playersOnline")).toBe("Jugadores en Línea");
     expect(t("footer.copyright")).toBe("2026 World of Claudecraft");
     expect(t("footer.githubLabel")).toBe("Proyecto de Código Abierto");
+    expect(t("nav.highscores")).toBe("Clasificaciones");
+    expect(t("nav.wiki")).toBe("Wiki");
+    expect(t("nav.news")).toBe("Noticias");
+    expect(t("nav.download")).toBe("Descargar");
+    expect(t("nav.loginRegister")).toBe("Iniciar Sesión/Registrarse");
+    expect(t("highscores.title")).toBe("Clasificaciones de Puntuación");
+    expect(t("wiki.title")).toBe("Wiki y Guía del Juego");
+    expect(t("news.title")).toBe("Noticias y Actualizaciones");
+    expect(t("download.title")).toBe("Descargar Lanzador de Escritorio");
   });
 
   it("persists language selection in localStorage when available", () => {
