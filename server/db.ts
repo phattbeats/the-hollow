@@ -2,6 +2,8 @@ import { Pool } from 'pg';
 import type { CharacterState } from '../src/sim/sim';
 import type { PlayerClass } from '../src/sim/types';
 import type { ChatLogRow } from './chat_log';
+import { SOCIAL_SCHEMA } from './social_db';
+import { REALM } from './realm';
 
 try {
   process.loadEnvFile?.();
@@ -68,7 +70,24 @@ CREATE INDEX IF NOT EXISTS chat_logs_character ON chat_logs(character_id, create
 `;
 
 export async function ensureSchema(): Promise<void> {
-  await pool.query(SCHEMA);
+  // In the process-per-realm model several server processes boot against the
+  // same database at once. Their idempotent CREATE/ALTER statements would
+  // otherwise deadlock when run concurrently, so serialize schema setup behind
+  // a transaction-scoped advisory lock (auto-released on COMMIT). The lock key
+  // is an arbitrary constant shared by every process.
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query('SELECT pg_advisory_xact_lock($1)', [0x57_4f_43_01]); // "WOC\x01"
+    await client.query(SCHEMA);
+    await client.query(SOCIAL_SCHEMA);
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {});
+    throw err;
+  } finally {
+    client.release();
+  }
 }
 
 export interface AccountRow {
@@ -119,26 +138,29 @@ export interface CharacterRow {
   is_gm: boolean;
 }
 
+// Character reads/writes are scoped to this process's realm: an account may
+// hold characters on several realms (each served by its own process), but a
+// process only ever lists, loads, or creates characters on its own realm.
 export async function listCharacters(accountId: number): Promise<CharacterRow[]> {
   const res = await pool.query(
-    'SELECT id, account_id, name, class, level, state, is_gm FROM characters WHERE account_id = $1 ORDER BY id',
-    [accountId],
+    'SELECT id, account_id, name, class, level, state, is_gm FROM characters WHERE account_id = $1 AND realm = $2 ORDER BY id',
+    [accountId, REALM],
   );
   return res.rows;
 }
 
 export async function getCharacter(accountId: number, characterId: number): Promise<CharacterRow | null> {
   const res = await pool.query(
-    'SELECT id, account_id, name, class, level, state, is_gm FROM characters WHERE id = $1 AND account_id = $2',
-    [characterId, accountId],
+    'SELECT id, account_id, name, class, level, state, is_gm FROM characters WHERE id = $1 AND account_id = $2 AND realm = $3',
+    [characterId, accountId, REALM],
   );
   return res.rows[0] ?? null;
 }
 
 export async function createCharacter(accountId: number, name: string, cls: PlayerClass): Promise<CharacterRow> {
   const res = await pool.query(
-    'INSERT INTO characters (account_id, name, class) VALUES ($1, $2, $3) RETURNING id, account_id, name, class, level, state, is_gm',
-    [accountId, name, cls],
+    'INSERT INTO characters (account_id, name, class, realm) VALUES ($1, $2, $3, $4) RETURNING id, account_id, name, class, level, state, is_gm',
+    [accountId, name, cls, REALM],
   );
   return res.rows[0];
 }
@@ -146,6 +168,39 @@ export async function createCharacter(accountId: number, name: string, cls: Play
 export async function deleteCharacter(accountId: number, characterId: number): Promise<boolean> {
   const res = await pool.query('DELETE FROM characters WHERE id = $1 AND account_id = $2', [characterId, accountId]);
   return (res.rowCount ?? 0) > 0;
+}
+
+// How many characters this account has on each realm — deliberately NOT
+// realm-scoped, so the realm-list screen can show "N characters" per realm
+// like WoW. Keyed by realm name.
+export async function characterCountsByRealm(accountId: number): Promise<Record<string, number>> {
+  const res = await pool.query(
+    'SELECT realm, count(*)::int AS n FROM characters WHERE account_id = $1 GROUP BY realm',
+    [accountId],
+  );
+  const out: Record<string, number> = {};
+  for (const r of res.rows) out[r.realm] = r.n;
+  return out;
+}
+
+export interface CharacterSearchRow {
+  name: string;
+  cls: PlayerClass;
+  level: number;
+}
+
+// Realm-scoped username typeahead: case-insensitive prefix match, capped.
+// Wildcards in the input are escaped so they can't widen the match.
+export async function searchCharacters(prefix: string, limit = 8): Promise<CharacterSearchRow[]> {
+  const term = prefix.trim();
+  if (!term) return [];
+  const escaped = term.replace(/[\\%_]/g, (m) => `\\${m}`);
+  const res = await pool.query(
+    `SELECT name, class AS cls, level FROM characters
+     WHERE realm = $1 AND name ILIKE $2 ESCAPE '\\' ORDER BY name LIMIT $3`,
+    [REALM, `${escaped}%`, Math.min(20, Math.max(1, limit))],
+  );
+  return res.rows;
 }
 
 export async function saveCharacterState(characterId: number, level: number, state: CharacterState): Promise<void> {

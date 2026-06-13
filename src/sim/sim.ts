@@ -3222,6 +3222,27 @@ export class Sim {
     }
   }
 
+  // Persistent social systems (friends / ignore / guilds) require an account
+  // and database, so they only exist in online play. The offline Sim satisfies
+  // the IWorld surface with inert stubs.
+  realm = '';
+  socialInfo: null = null;
+  friendAdd(_name: string): void {}
+  friendRemove(_name: string): void {}
+  blockAdd(_name: string): void {}
+  blockRemove(_name: string): void {}
+  guildCreate(_name: string): void {}
+  guildInvite(_name: string): void {}
+  guildAccept(): void {}
+  guildDecline(): void {}
+  guildLeave(): void {}
+  guildKick(_name: string): void {}
+  guildPromote(_name: string): void {}
+  guildDemote(_name: string): void {}
+  guildTransfer(_name: string): void {}
+  guildDisband(): void {}
+  searchCharacters(_query: string): Promise<import('../world_api').CharacterSearchResult[]> { return Promise.resolve([]); }
+
   private updateDuels(): void {
     const seen = new Set<DuelState>();
     for (const duel of this.duels.values()) {

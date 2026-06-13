@@ -5,13 +5,14 @@ import { WebSocketServer, WebSocket } from 'ws';
 import {
   ensureSchema, pool, createAccount, findAccount, touchLogin, saveToken, accountForToken,
   listCharacters, getCharacter, createCharacter, deleteCharacter, closeOrphanSessions,
-  pruneChatLogs,
+  pruneChatLogs, searchCharacters, characterCountsByRealm,
 } from './db';
 import { hashPassword, verifyPassword, newToken, validUsername, validPassword, validCharName } from './auth';
 import { json, readBody } from './http_util';
 import { rateLimited } from './ratelimit';
 import { handleAdminApi } from './admin';
 import { GameServer } from './game';
+import { REALM, REALM_DIRECTORY, REALM_ORIGINS } from './realm';
 import { cacheControlFor, etagFor, isNotModified } from './static_cache';
 
 const PORT = Number(process.env.PORT ?? 8787);
@@ -102,6 +103,21 @@ function serveStatic(req: http.IncomingMessage, res: http.ServerResponse): void 
 // REST API
 // ---------------------------------------------------------------------------
 
+// Cross-realm CORS: a client served by one realm may call another realm's API
+// after switching realms in the picker. Only the configured realm origins are
+// allowed; auth is via bearer token (no cookies), so reflecting these specific
+// origins is safe.
+function maybeCors(req: http.IncomingMessage, res: http.ServerResponse): void {
+  const origin = req.headers.origin;
+  if (typeof origin === 'string' && REALM_ORIGINS.has(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+    res.setHeader('Access-Control-Max-Age', '600');
+  }
+}
+
 async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
   const url = (req.url ?? '').split('?')[0];
   try {
@@ -136,6 +152,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (req.method === 'GET') {
         const chars = await listCharacters(accountId);
         return json(res, 200, {
+          realm: REALM,
           characters: chars.map((c) => ({
             id: c.id, name: c.name, class: c.class, level: c.level,
             online: [...game.clients.values()].some((s) => s.characterId === c.id),
@@ -167,9 +184,24 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       const ok = await deleteCharacter(accountId, Number(delMatch[1]));
       return json(res, ok ? 200 : 404, ok ? { ok: true } : { error: 'not found' });
     }
+    if (req.method === 'GET' && url === '/api/realms') {
+      // optionally authenticated: with a token we also return how many
+      // characters the account has on each realm (for the realm-list screen)
+      const accountId = await bearerAccount(req);
+      const characters = accountId !== null ? await characterCountsByRealm(accountId) : {};
+      return json(res, 200, { current: REALM, realms: REALM_DIRECTORY, characters });
+    }
+    if (req.method === 'GET' && url === '/api/search') {
+      const accountId = await bearerAccount(req);
+      if (accountId === null) return json(res, 401, { error: 'not authenticated' });
+      const q = new URL(req.url ?? '/', 'http://localhost').searchParams.get('q') ?? '';
+      const results = q.trim().length >= 1 ? await searchCharacters(q, 8) : [];
+      return json(res, 200, { results });
+    }
     if (req.method === 'GET' && url === '/api/status') {
       return json(res, 200, {
         ok: true,
+        realm: REALM,
         players_online: game.clients.size,
         names: [...game.clients.values()].map((s) => s.name),
       });
@@ -209,6 +241,9 @@ async function main(): Promise<void> {
 
   const server = http.createServer((req, res) => {
     const url = req.url ?? '';
+    const isApi = url.startsWith('/api/') || url.startsWith('/admin/api/');
+    if (isApi) maybeCors(req, res);
+    if (req.method === 'OPTIONS' && isApi) { res.writeHead(204); res.end(); return; }
     if (url.startsWith('/admin/api/')) void handleAdminApi(req, res, game);
     else if (url.startsWith('/api/')) void handleApi(req, res);
     else serveStatic(req, res);

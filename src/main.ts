@@ -143,6 +143,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
         case 'map': hud.toggleMap(); break;
         case 'nameplates': renderer.showNameplates = !renderer.showNameplates; break;
         case 'meters': hud.toggleMeters(); break;
+        case 'social': hud.toggleSocial(); break;
         case 'chat': openChat(); break;
         case 'escape':
           // close the topmost panel; if nothing was open, open the game menu
@@ -383,7 +384,7 @@ function show(el: string): void {
     hoverTimeouts['online-class-details'] = null;
   }
 
-  const panels = ['#mode-select', '#login-panel', '#charselect-panel', '#offline-select'];
+  const panels = ['#mode-select', '#login-panel', '#realm-panel', '#charselect-panel', '#offline-select'];
   const startScreen = $('#start-screen');
 
   // Automatically close controls drawer if navigating away from mode-select
@@ -501,11 +502,87 @@ function loginError(text: string): void {
   el.textContent = text;
 }
 
+const LAST_REALM_KEY = 'woc_last_realm';
+
+// WoW population bands, derived from the realm's current online count (WoW's
+// own labels are relative to peak; current count is a fair local stand-in).
+function realmPopulation(online: boolean, players: number): { label: string; cls: string } {
+  if (!online) return { label: 'Offline', cls: 'offline' };
+  if (players >= 80) return { label: 'Full', cls: 'full' };
+  if (players >= 40) return { label: 'High', cls: 'high' };
+  if (players >= 15) return { label: 'Medium', cls: 'med' };
+  return { label: 'Low', cls: 'low' };
+}
+
+// After login WoW drops you onto a Realm List screen (then character select for
+// the chosen realm). We remember the last realm and jump straight to its
+// characters, with a "Change Realm" button back to this list.
+async function enterRealmFlow(): Promise<void> {
+  const dir = await api.realms();
+  $('#realm-list-user').textContent = api.username ? `${api.username}` : '';
+  const remembered = localStorage.getItem(LAST_REALM_KEY);
+  const auto = dir.realms.find((r) => r.name === remembered);
+  if (auto) { selectRealm(auto); return; }
+  showRealmList(dir);
+}
+
+function showRealmList(dir?: import('./net/online').RealmDirectory): void {
+  show('#realm-panel');
+  const listEl = $('#realm-list');
+  const render = (d: import('./net/online').RealmDirectory) => {
+    if (d.realms.length === 0) { listEl.innerHTML = '<div class="realm-loading">No realms available.</div>'; return; }
+    // recommend the lowest-population online realm (WoW nudges new players there)
+    listEl.innerHTML = d.realms.map((r) => {
+      const chars = d.characters[r.name] ?? 0;
+      const charTag = chars > 0 ? `<span class="rn-chars">${chars} character${chars === 1 ? '' : 's'}</span>` : '';
+      return `<div class="realm-row" data-name="${r.name}" data-url="${r.url}">
+        <div><div class="realm-name">${r.name}${charTag}<span class="rn-rec" data-rec hidden>Recommended</span></div>
+          <div class="realm-sub" data-sub>Checking status…</div></div>
+        <div class="realm-type">${r.type}</div>
+        <div class="realm-pop offline" data-pop>—</div>
+      </div>`;
+    }).join('');
+    listEl.querySelectorAll('.realm-row').forEach((row) => row.addEventListener('click', () => {
+      const name = (row as HTMLElement).dataset.name!;
+      const entry = d.realms.find((r) => r.name === name);
+      if (entry) selectRealm(entry);
+    }));
+    // live status per realm
+    let bestPlayers = Infinity, bestName = '';
+    void Promise.all(d.realms.map(async (r) => {
+      const st = await api.realmStatus(r.url || '');
+      const row = listEl.querySelector(`.realm-row[data-name="${CSS.escape(r.name)}"]`) as HTMLElement | null;
+      if (!row) return;
+      const pop = realmPopulation(st.online, st.players);
+      const popEl = row.querySelector('[data-pop]') as HTMLElement;
+      popEl.textContent = pop.label;
+      popEl.className = `realm-pop ${pop.cls}`;
+      (row.querySelector('[data-sub]') as HTMLElement).textContent = st.online ? `${st.players} online now` : 'Realm is down';
+      row.classList.toggle('offline', !st.online);
+      if (st.online && st.players < bestPlayers) { bestPlayers = st.players; bestName = r.name; }
+    })).then(() => {
+      const recRow = bestName ? listEl.querySelector(`.realm-row[data-name="${CSS.escape(bestName)}"]`) : null;
+      recRow?.querySelector('[data-rec]')?.removeAttribute('hidden');
+    });
+  };
+  if (dir) render(dir);
+  else { listEl.innerHTML = '<div class="realm-loading">Loading realms…</div>'; void api.realms().then(render); }
+}
+
+function selectRealm(entry: import('./net/online').RealmEntry): void {
+  api.setRealm(entry.url);
+  api.realm = entry.name;
+  localStorage.setItem(LAST_REALM_KEY, entry.name);
+  show('#charselect-panel');
+  void refreshCharacters();
+}
+
 async function refreshCharacters(): Promise<void> {
   const listEl = $('#char-list');
   listEl.innerHTML = '<li class="char-list-message">Loading…</li>';
   try {
     const chars = await api.characters();
+    if (api.realm) $('#charselect-realm').textContent = `Realm: ${api.realm}`;
     listEl.innerHTML = '';
     if (chars.length === 0) {
       listEl.innerHTML = '<li class="char-list-message">No characters yet (create one below).</li>';
@@ -585,7 +662,7 @@ function enterWorld(c: CharacterSummary): void {
   audio.init();
   music.init();
   showLoadingScreen('Connecting to realm…');
-  const world = new ClientWorld(api.token!, c.id, c.class);
+  const world = new ClientWorld(api.token!, c.id, c.class, api.base);
   // wait for hello + first snapshot so the world starts populated
   const waitStart = Date.now();
   const poll = setInterval(() => {
@@ -1085,8 +1162,7 @@ function wireStartScreens(): void {
       if (mode === 'login') await api.login(username, password);
       else await api.register(username, password);
       $('#charselect-user').textContent = api.username ?? '';
-      show('#charselect-panel');
-      await refreshCharacters();
+      await enterRealmFlow();
     } catch (err: any) {
       loginError(err.message);
     }
@@ -1164,6 +1240,8 @@ function wireStartScreens(): void {
     loginError('');
     show('#mode-select');
   });
+  $('#btn-realm-back').addEventListener('click', () => show('#mode-select'));
+  $('#btn-change-realm').addEventListener('click', () => showRealmList());
 
   // character creation
   document.querySelectorAll('#charselect-panel .mini-class').forEach((el) => {

@@ -6,7 +6,7 @@ import {
   Entity, EquipSlot, InvSlot, MoveInput, PlayerClass, QuestProgress, QuestState, SimEvent,
   emptyMoveInput,
 } from '../sim/types';
-import type { DuelInfo, IWorld, PartyInfo, TradeInfo } from '../world_api';
+import type { CharacterSearchResult, DuelInfo, IWorld, PartyInfo, SocialInfo, TradeInfo } from '../world_api';
 
 // ---------------------------------------------------------------------------
 // REST
@@ -29,12 +29,59 @@ export function buildWebSocketAuthMessage(token: string, characterId: number): {
   return { t: 'auth', token, character: characterId };
 }
 
+export type RealmType = 'Normal' | 'PvP' | 'RP' | 'RP-PvP';
+
+export interface RealmEntry {
+  name: string;
+  url: string;
+  type: RealmType;
+}
+
+export interface RealmDirectory {
+  current: string;
+  realms: RealmEntry[];
+  characters: Record<string, number>; // realm name -> how many characters you have
+}
+
 export class Api {
   token: string | null = null;
   username: string | null = null;
+  realm: string | null = null;
+  // base origin for realm-scoped calls (characters, search, ws). '' = the page
+  // origin; set to another realm's origin when the player picks a realm
+  base = '';
+
+  setRealm(url: string): void {
+    this.base = url || '';
+  }
+
+  // The realm directory is always read from the page's own server. Sending the
+  // token (when logged in) also returns per-realm character counts.
+  async realms(): Promise<RealmDirectory> {
+    try {
+      const res = await fetch('/api/realms', { headers: this.token ? { Authorization: `Bearer ${this.token}` } : {} });
+      if (!res.ok) return { current: '', realms: [], characters: {} };
+      const d = await res.json();
+      return { current: d.current ?? '', realms: d.realms ?? [], characters: d.characters ?? {} };
+    } catch {
+      return { current: '', realms: [], characters: {} };
+    }
+  }
+
+  // Live status for a realm (population + reachability), for the realm picker.
+  async realmStatus(url: string): Promise<{ online: boolean; players: number }> {
+    try {
+      const res = await fetch(`${url}/api/status`, { signal: AbortSignal.timeout(3000) });
+      if (!res.ok) return { online: false, players: 0 };
+      const d = await res.json();
+      return { online: true, players: d.players_online ?? 0 };
+    } catch {
+      return { online: false, players: 0 };
+    }
+  }
 
   private async post(path: string, body: unknown): Promise<any> {
-    const res = await fetch(path, {
+    const res = await fetch(this.base + path, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,7 +95,7 @@ export class Api {
   }
 
   private async get(path: string): Promise<any> {
-    const res = await fetch(path, {
+    const res = await fetch(this.base + path, {
       headers: this.token ? { Authorization: `Bearer ${this.token}` } : {},
     });
     const data = await res.json().catch(() => ({}));
@@ -69,7 +116,9 @@ export class Api {
   }
 
   async characters(): Promise<CharacterSummary[]> {
-    return (await this.get('/api/characters')).characters;
+    const data = await this.get('/api/characters');
+    if (typeof data.realm === 'string') this.realm = data.realm;
+    return data.characters;
   }
 
   async createCharacter(name: string, cls: PlayerClass): Promise<void> {
@@ -128,6 +177,10 @@ export class ClientWorld implements IWorld {
   partyInfo: PartyInfo | null = null;
   tradeInfo: TradeInfo | null = null;
   duelInfo: DuelInfo | null = null;
+  socialInfo: SocialInfo | null = null;
+  realm = '';
+  // bumped whenever a fresh social snapshot lands, so an open panel re-renders
+  private socialDirty = false;
   // snapshot interpolation
   lastSnapAt = 0;
   snapInterval = 50; // ms, adapts to measured cadence
@@ -137,6 +190,8 @@ export class ClientWorld implements IWorld {
   onDisconnect: ((reason: string) => void) | null = null;
 
   private ws: WebSocket;
+  private readonly token: string;
+  private readonly base: string;
   private eventQueue: SimEvent[] = [];
   // inventory deltas arrive in snapshots, separate from the event frames the
   // HUD redraws on — the frame loop polls this so open panels re-render
@@ -144,9 +199,16 @@ export class ClientWorld implements IWorld {
   private mouselookFacing: number | null = null;
   private sendTimer: number | undefined;
 
-  constructor(token: string, characterId: number, cls: PlayerClass) {
+  constructor(token: string, characterId: number, cls: PlayerClass, base = '') {
+    this.token = token;
+    this.base = base;
     this.cfg = { seed: 20061, playerClass: cls };
-    this.ws = new WebSocket(buildWebSocketUrl(location.protocol, location.host));
+    // when a realm was picked, connect to that realm's origin; otherwise the
+    // page's own host
+    const wsUrl = base
+      ? base.replace(/^http/, 'ws') + '/ws'
+      : buildWebSocketUrl(location.protocol, location.host);
+    this.ws = new WebSocket(wsUrl);
     this.ws.onopen = () => {
       this.ws.send(JSON.stringify(buildWebSocketAuthMessage(token, characterId)));
     };
@@ -215,6 +277,7 @@ export class ClientWorld implements IWorld {
     if (msg.t === 'hello') {
       this.playerId = msg.pid;
       this.cfg.seed = msg.seed;
+      if (typeof msg.realm === 'string') this.realm = msg.realm;
       this.connected = true;
       return;
     }
@@ -227,9 +290,20 @@ export class ClientWorld implements IWorld {
       for (const ev of msg.list) this.eventQueue.push(ev as SimEvent);
       return;
     }
+    if (msg.t === 'social') {
+      this.socialInfo = { friends: msg.friends ?? [], blocks: msg.blocks ?? [], guild: msg.guild ?? null };
+      this.socialDirty = true;
+      return;
+    }
     if (msg.t === 'snap') {
       this.applySnapshot(msg);
     }
+  }
+
+  consumeSocialChanged(): boolean {
+    const v = this.socialDirty;
+    this.socialDirty = false;
+    return v;
   }
 
   private applySnapshot(snap: any): void {
@@ -523,6 +597,32 @@ export class ClientWorld implements IWorld {
   }
   duelDecline(): void {
     this.cmd({ cmd: 'duel_decline' });
+  }
+  // persistent social (resolved server-side by character name)
+  friendAdd(name: string): void { this.cmd({ cmd: 'friend_add', name }); }
+  friendRemove(name: string): void { this.cmd({ cmd: 'friend_remove', name }); }
+  blockAdd(name: string): void { this.cmd({ cmd: 'block_add', name }); }
+  blockRemove(name: string): void { this.cmd({ cmd: 'block_remove', name }); }
+  guildCreate(name: string): void { this.cmd({ cmd: 'guild_create', name }); }
+  guildInvite(name: string): void { this.cmd({ cmd: 'guild_invite', name }); }
+  guildAccept(): void { this.cmd({ cmd: 'guild_accept' }); }
+  guildDecline(): void { this.cmd({ cmd: 'guild_decline' }); }
+  guildLeave(): void { this.cmd({ cmd: 'guild_leave' }); }
+  guildKick(name: string): void { this.cmd({ cmd: 'guild_kick', name }); }
+  guildPromote(name: string): void { this.cmd({ cmd: 'guild_promote', name }); }
+  guildDemote(name: string): void { this.cmd({ cmd: 'guild_demote', name }); }
+  guildTransfer(name: string): void { this.cmd({ cmd: 'guild_transfer', name }); }
+  guildDisband(): void { this.cmd({ cmd: 'guild_disband' }); }
+  async searchCharacters(query: string): Promise<CharacterSearchResult[]> {
+    const q = query.trim();
+    if (!q) return [];
+    try {
+      const res = await fetch(`${this.base}/api/search?q=${encodeURIComponent(q)}`, { headers: { Authorization: `Bearer ${this.token}` } });
+      if (!res.ok) return [];
+      return (await res.json()).results ?? [];
+    } catch {
+      return [];
+    }
   }
   enterDungeon(dungeonId: string): void {
     this.cmd({ cmd: 'enter_dungeon', dungeon: dungeonId });
