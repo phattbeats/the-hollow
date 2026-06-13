@@ -25,6 +25,7 @@ const shot = (name) => page.screenshot({ path: `tmp/exp_${name}.png` });
 await page.goto(URL, { waitUntil: 'networkidle0', timeout: 30000 });
 await page.click('#btn-offline');
 await sleep(200);
+await page.type('#char-name', 'ShamanName');
 await page.click('.class-card[data-class="shaman"]'); // the user plays with lightning bolt
 await page.waitForFunction(() => window.__game?.sim?.player, { timeout: 60000 });
 await sleep(2500);
