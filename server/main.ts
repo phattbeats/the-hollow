@@ -6,8 +6,10 @@ import {
   ensureSchema, pool, createAccount, findAccount, touchLogin, saveToken, accountForToken,
   listCharacters, getCharacter, createCharacter, deleteCharacter, closeOrphanSessions,
   pruneChatLogs, searchCharacters, characterCountsByRealm, moderationStatusForAccount, renameCharacter,
+  findCharacterReportTargetByName,
 } from './db';
 import { cleanReportReason, createPlayerReport } from './moderation_db';
+import { resolveReportTarget } from './report_target';
 import { hashPassword, verifyPassword, newToken, validUsername, validPassword, validCharName } from './auth';
 import { json, readBody } from './http_util';
 import { rateLimited } from './ratelimit';
@@ -240,20 +242,22 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       const reason = cleanReportReason(body.reason);
       if (!reason) return json(res, 400, { error: 'choose a report reason' });
       const reporterCharacterId = Number(body.reporterCharacterId);
-      const targetPid = Number(body.targetPid);
-      if (!Number.isFinite(reporterCharacterId) || !Number.isFinite(targetPid)) {
+      if (!Number.isFinite(reporterCharacterId)) {
         return json(res, 400, { error: 'invalid report target' });
       }
       const reporter = await getCharacter(accountId, reporterCharacterId);
       if (!reporter) return json(res, 404, { error: 'reporting character not found' });
-      const target = game.reportTargetForPid(targetPid);
-      if (!target) return json(res, 404, { error: 'that player is no longer online' });
+      const resolved = await resolveReportTarget(body, {
+        reportTargetForPid: (pid) => game.reportTargetForPid(pid),
+        findCharacterReportTargetByName,
+      });
+      if (!resolved.ok) return json(res, resolved.status, { error: resolved.error });
       try {
         const report = await createPlayerReport({
           reporterAccountId: accountId,
           reporterCharacterId: reporter.id,
           reporterCharacterName: reporter.name,
-          target,
+          target: resolved.target,
           reason,
           details: body.details,
         });

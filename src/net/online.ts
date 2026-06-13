@@ -133,6 +133,10 @@ export class Api {
   async reportPlayer(reporterCharacterId: number, targetPid: number, reason: string, details: string): Promise<void> {
     await this.post('/api/reports', { reporterCharacterId, targetPid, reason, details });
   }
+
+  async reportPlayerByName(reporterCharacterId: number, targetCharacterName: string, reason: string, details: string): Promise<void> {
+    await this.post('/api/reports', { reporterCharacterId, targetCharacterName, reason, details });
+  }
 }
 
 // ---------------------------------------------------------------------------

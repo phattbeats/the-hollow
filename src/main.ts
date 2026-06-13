@@ -181,6 +181,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   if (online) {
     hud.attachReporting({
       submit: (targetPid, reason, details) => api.reportPlayer(online.characterId, targetPid, reason, details),
+      submitByName: (targetName, reason, details) => api.reportPlayerByName(online.characterId, targetName, reason, details),
     });
   }
 

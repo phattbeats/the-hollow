@@ -230,6 +230,20 @@ export async function getCharacter(accountId: number, characterId: number): Prom
   return res.rows[0] ?? null;
 }
 
+export async function findCharacterReportTargetByName(name: string): Promise<{ accountId: number; characterId: number; characterName: string } | null> {
+  const term = name.trim();
+  if (!term) return null;
+  const res = await pool.query(
+    `SELECT account_id, id, name
+     FROM characters
+     WHERE realm = $1 AND lower(name) = lower($2)
+     LIMIT 1`,
+    [REALM, term],
+  );
+  const row = res.rows[0];
+  return row ? { accountId: Number(row.account_id), characterId: Number(row.id), characterName: row.name } : null;
+}
+
 export async function createCharacter(accountId: number, name: string, cls: PlayerClass): Promise<CharacterRow> {
   const res = await pool.query(
     'INSERT INTO characters (account_id, name, class, realm) VALUES ($1, $2, $3, $4) RETURNING id, account_id, name, class, level, state, is_gm, force_rename',
