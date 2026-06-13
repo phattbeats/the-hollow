@@ -264,6 +264,7 @@ export function censorChatText(text: string): string {
 export class GameServer {
   sim: Sim;
   clients = new Map<number, ClientSession>(); // by pid
+  private readonly sessionsByCharacterId = new Map<number, ClientSession>();
   readonly chatLog = new ChatLogger(insertChatLogs);
   private readonly socialDb = new PgSocialDb(pool);
   readonly social: SocialService;
@@ -291,8 +292,7 @@ export class GameServer {
   }
 
   private sessionByCharacterId(id: number): ClientSession | null {
-    for (const s of this.clients.values()) if (s.characterId === id) return s;
-    return null;
+    return this.sessionsByCharacterId.get(id) ?? null;
   }
 
   private sessionByName(name: string): ClientSession | null {
@@ -381,9 +381,7 @@ export class GameServer {
   // -------------------------------------------------------------------------
 
   join(ws: WebSocket, accountId: number, characterId: number, name: string, cls: import('../src/sim/types').PlayerClass, state: import('../src/sim/sim').CharacterState | null, isGm = false): ClientSession | { error: string } {
-    for (const c of this.clients.values()) {
-      if (c.characterId === characterId) return { error: 'character already in world' };
-    }
+    if (this.sessionsByCharacterId.has(characterId)) return { error: 'character already in world' };
     const pid = this.sim.addPlayer(cls, name, { state: state ?? undefined });
     if (isGm) {
       // GM characters: invulnerable, and always at the level cap (the row is
@@ -403,6 +401,7 @@ export class GameServer {
       sentEnts: new Map(),
     };
     this.clients.set(pid, session);
+    this.sessionsByCharacterId.set(characterId, session);
     this.peakOnline = Math.max(this.peakOnline, this.clients.size);
     openPlaySession(accountId, characterId, name)
       .then((id) => { session.dbSessionId = id; })
@@ -437,6 +436,7 @@ export class GameServer {
   async leave(session: ClientSession, reason: string): Promise<void> {
     if (!this.clients.has(session.pid)) return;
     this.clients.delete(session.pid);
+    this.sessionsByCharacterId.delete(session.characterId);
     this.social.forget(session.characterId);
     // delete from clients first so friends see them as offline in the notice
     void this.social.announcePresence({ characterId: session.characterId, name: session.name }, false)
