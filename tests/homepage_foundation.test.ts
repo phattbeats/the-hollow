@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi, afterEach } from "vitest";
 import { pool, getAccountsCount } from "../server/db";
 import { t, setLanguage, getLanguage } from "../src/ui/i18n";
+import { Api } from "../src/net/online";
 
 describe("i18n Translation Foundation", () => {
   beforeEach(() => {
@@ -105,5 +106,47 @@ describe("Database helper getAccountsCount", () => {
 
     const count = await getAccountsCount();
     expect(count).toBe(0);
+  });
+});
+
+describe("Api.projectStats", () => {
+  let fetchSpy: any;
+
+  beforeEach(() => {
+    fetchSpy = vi.spyOn(global, "fetch");
+  });
+
+  afterEach(() => {
+    fetchSpy.mockRestore();
+  });
+
+  it("fetches and returns project stats", async () => {
+    const mockStats = {
+      accounts_created: 100,
+      players_online: 10,
+      realm: "Test Realm",
+    };
+
+    fetchSpy.mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockStats,
+    } as Response);
+
+    const api = new Api();
+    const stats = await api.projectStats();
+
+    expect(fetchSpy).toHaveBeenCalledWith("/api/project-stats", expect.any(Object));
+    expect(stats).toEqual(mockStats);
+  });
+
+  it("throws error when request fails", async () => {
+    fetchSpy.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      json: async () => ({ error: "Internal Server Error" }),
+    } as Response);
+
+    const api = new Api();
+    await expect(api.projectStats()).rejects.toThrow("Internal Server Error");
   });
 });
