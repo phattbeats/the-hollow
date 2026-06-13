@@ -169,6 +169,11 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     settings,
     onSettingChange: (key, value) => applySetting(key, value),
   });
+  if (online) {
+    hud.attachReporting({
+      submit: (targetPid, reason, details) => api.reportPlayer(online.characterId, targetPid, reason, details),
+    });
+  }
 
   function interactKey(): void {
     const p = world.player;
@@ -337,11 +342,26 @@ async function refreshCharacters(): Promise<void> {
     }
     for (const c of chars) {
       const row = document.createElement('div');
-      row.className = 'char-row' + (c.online ? ' online' : '');
+      row.className = 'char-row' + (c.online ? ' online' : '') + (c.forceRename ? ' rename-required' : '');
       row.innerHTML = `<span class="char-name">${c.name}</span>
-        <span class="char-sub">Level ${c.level} ${c.class[0].toUpperCase()}${c.class.slice(1)}${c.online ? ' — in world' : ''}</span>
-        <button class="btn" ${c.online ? 'disabled' : ''}>Enter World</button>`;
-      row.querySelector('button')!.addEventListener('click', () => enterWorld(c));
+        <span class="char-sub">Level ${c.level} ${c.class[0].toUpperCase()}${c.class.slice(1)}${c.online ? ' — in world' : c.forceRename ? ' — rename required' : ''}</span>
+        ${c.forceRename
+          ? '<input class="rename-input" placeholder="New character name" maxlength="16" /><button class="btn rename-btn">Rename</button>'
+          : `<button class="btn" ${c.online ? 'disabled' : ''}>Enter World</button>`}`;
+      if (c.forceRename) {
+        const input = row.querySelector('.rename-input') as HTMLInputElement;
+        row.querySelector('.rename-btn')!.addEventListener('click', async () => {
+          $('#charselect-error').textContent = '';
+          try {
+            await api.renameCharacter(c.id, input.value.trim());
+            await refreshCharacters();
+          } catch (err: any) {
+            $('#charselect-error').textContent = err.message;
+          }
+        });
+      } else {
+        row.querySelector('button')!.addEventListener('click', () => enterWorld(c));
+      }
       listEl.appendChild(row);
     }
   } catch (err: any) {

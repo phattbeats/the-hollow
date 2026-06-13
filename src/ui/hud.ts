@@ -25,7 +25,17 @@ export interface OptionsHooks {
   onSettingChange(key: keyof GameSettings, value: number): void;
 }
 
+export interface ReportHooks {
+  submit(targetPid: number, reason: string, details: string): Promise<void>;
+}
+
 const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.querySelector(sel) as T;
+const esc = (value: unknown): string => String(value ?? '')
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;');
 
 const FAMILY_GLYPH: Record<string, string> = {
   beast: '🐾', humanoid: '🗡️', murloc: '🐟', spider: '🕷️', kobold: '⛏️', undead: '💀',
@@ -46,6 +56,7 @@ export class Hud {
   private slotMap: (string | null)[] = []; // index = barSlot-1, value = ability id
   private dragFromSlot: number | null = null;
   private optionsHooks: OptionsHooks | null = null;
+  private reportHooks: ReportHooks | null = null;
   private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' = 'main';
   private capturingKey: { action: string; index: number } | null = null; // binding awaiting a key
   private keybindNote = '';
@@ -1493,11 +1504,12 @@ export class Hud {
     const isLeader = party?.leader === this.sim.playerId;
     const isMember = !!party?.members.some((m) => m.pid === pid);
     const ignored = this.isChatIgnored(name);
-    let html = `<div class="ctx-title">${name}</div>`;
+    let html = `<div class="ctx-title">${esc(name)}</div>`;
     if (!isMember) html += `<div class="ctx-item" data-act="invite">Invite to Party</div>`;
     html += `<div class="ctx-item" data-act="trade">Trade</div>`;
     html += `<div class="ctx-item" data-act="duel">Challenge to a Duel</div>`;
     html += `<div class="ctx-item" data-act="ignore">${ignored ? 'Unignore' : 'Ignore'} Chat</div>`;
+    if (this.reportHooks && pid !== this.sim.playerId) html += `<div class="ctx-item" data-act="report">Report Player</div>`;
     if (isLeader && isMember && pid !== this.sim.playerId) html += `<div class="ctx-item" data-act="kick">Remove from Party</div>`;
     html += `<div class="ctx-item" data-act="close">Cancel</div>`;
     el.innerHTML = html;
@@ -1512,8 +1524,50 @@ export class Hud {
         else if (act === 'trade') this.sim.tradeRequest(pid);
         else if (act === 'duel') this.sim.duelRequest(pid);
         else if (act === 'ignore') this.toggleChatIgnore(name);
+        else if (act === 'report') this.openReportWindow(pid, name);
         else if (act === 'kick') this.sim.partyKick(pid);
       });
+    });
+  }
+
+  private openReportWindow(pid: number, name: string): void {
+    if (!this.reportHooks) return;
+    const el = $('#report-window');
+    el.innerHTML = `
+      <div class="panel-title">Report ${esc(name)}<button data-close>×</button></div>
+      <label class="report-label">Reason</label>
+      <select id="report-reason">
+        <option value="harassment">Harassment / abuse</option>
+        <option value="spam">Spam</option>
+        <option value="cheating">Cheating / exploit</option>
+        <option value="offensive_name_or_chat">Offensive name or chat</option>
+        <option value="other">Other</option>
+      </select>
+      <label class="report-label">Details</label>
+      <textarea id="report-details" maxlength="1000" placeholder="What happened?"></textarea>
+      <div class="report-error" id="report-error"></div>
+      <div class="report-actions">
+        <button class="btn" id="report-submit">Submit Report</button>
+        <button class="btn" data-close>Cancel</button>
+      </div>`;
+    el.style.left = `${Math.max(12, Math.min(window.innerWidth - 340, window.innerWidth / 2 - 160))}px`;
+    el.style.top = `${Math.max(20, Math.min(window.innerHeight - 300, window.innerHeight / 2 - 150))}px`;
+    el.style.display = 'block';
+    el.querySelectorAll('[data-close]').forEach((btn) => btn.addEventListener('click', () => { el.style.display = 'none'; }));
+    const submit = $('#report-submit') as HTMLButtonElement;
+    submit.addEventListener('click', () => {
+      const reason = ($('#report-reason') as HTMLSelectElement).value;
+      const details = ($('#report-details') as HTMLTextAreaElement).value;
+      submit.disabled = true;
+      this.reportHooks!.submit(pid, reason, details)
+        .then(() => {
+          el.style.display = 'none';
+          this.log(`Report submitted for ${name}.`, '#ffd100');
+        })
+        .catch((err: unknown) => {
+          submit.disabled = false;
+          $('#report-error').textContent = err instanceof Error ? err.message : 'Could not submit report.';
+        });
     });
   }
 
@@ -1679,6 +1733,10 @@ export class Hud {
 
   attachOptions(hooks: OptionsHooks): void {
     this.optionsHooks = hooks;
+  }
+
+  attachReporting(hooks: ReportHooks): void {
+    this.reportHooks = hooks;
   }
 
   get optionsOpen(): boolean {
@@ -1917,7 +1975,7 @@ export class Hud {
       this.sim.tradeCancel();
       closed = true;
     }
-    for (const id of ['#quest-dialog', '#loot-window', '#vendor-window', '#bags', '#char-window', '#spellbook', '#quest-log-window', '#map-window']) {
+    for (const id of ['#quest-dialog', '#loot-window', '#vendor-window', '#bags', '#char-window', '#spellbook', '#quest-log-window', '#map-window', '#report-window']) {
       const el = $(id);
       if (el.style.display === 'block') {
         el.style.display = 'none';

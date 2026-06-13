@@ -18,6 +18,7 @@ export interface CharacterSummary {
   class: PlayerClass;
   level: number;
   online: boolean;
+  forceRename: boolean;
 }
 
 export function buildWebSocketUrl(protocol: string, host: string): string {
@@ -74,6 +75,14 @@ export class Api {
 
   async createCharacter(name: string, cls: PlayerClass): Promise<void> {
     await this.post('/api/characters', { name, class: cls });
+  }
+
+  async renameCharacter(characterId: number, name: string): Promise<void> {
+    await this.post(`/api/characters/${characterId}/rename`, { name });
+  }
+
+  async reportPlayer(reporterCharacterId: number, targetPid: number, reason: string, details: string): Promise<void> {
+    await this.post('/api/reports', { reporterCharacterId, targetPid, reason, details });
   }
 }
 
@@ -134,6 +143,7 @@ export class ClientWorld implements IWorld {
   pendingFacingDelta = 0;
   connected = false;
   onDisconnect: ((reason: string) => void) | null = null;
+  readonly characterId: number;
 
   private ws: WebSocket;
   private eventQueue: SimEvent[] = [];
@@ -144,6 +154,7 @@ export class ClientWorld implements IWorld {
   private sendTimer: number | undefined;
 
   constructor(token: string, characterId: number, cls: PlayerClass) {
+    this.characterId = characterId;
     this.cfg = { seed: 20061, playerClass: cls };
     this.ws = new WebSocket(buildWebSocketUrl(location.protocol, location.host));
     this.ws.onopen = () => {
