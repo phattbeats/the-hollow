@@ -88,3 +88,15 @@ export function validPassword(p: unknown): p is string {
 export function validCharName(n: unknown): n is string {
   return typeof n === 'string' && /^[A-Za-z][A-Za-z' -]{1,15}$/.test(n);
 }
+
+// Server-side canonical form for a character name: trim the ends and collapse
+// any interior whitespace run to a single space. The browser already trims
+// before sending, but the server is the authority — a direct API client must
+// not be able to store a padded name (e.g. "Bob "), which would then fail to
+// match the typed, unpadded form in findCharacterByName. Returns the cleaned
+// name, or null if it is not a valid character name once normalized.
+export function normalizeCharName(n: unknown): string | null {
+  if (typeof n !== 'string') return null;
+  const cleaned = n.trim().replace(/\s+/g, ' ');
+  return validCharName(cleaned) ? cleaned : null;
+}

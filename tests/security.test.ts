@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { buildWebSocketAuthMessage, buildWebSocketUrl } from '../src/net/online';
 import { Sim } from '../src/sim/sim';
-import { offensiveUsername, validCharName, validUsername } from '../server/auth';
+import { normalizeCharName, offensiveUsername, validCharName, validUsername } from '../server/auth';
 import { rateLimited, requestIp } from '../server/ratelimit';
 
 function fakeReq(headers: Record<string, string>, remoteAddress: string) {
@@ -143,6 +143,36 @@ describe('malformed websocket frames cannot crash the server', () => {
 
   it('still accepts a well-formed object frame', () => {
     expect(parseFrame(JSON.stringify({ t: 'input', mi: { f: 1 } }))).toEqual({ t: 'input', mi: { f: 1 } });
+  });
+});
+
+describe('character name normalization', () => {
+  // The server is the authority: it must not trust the browser to strip
+  // whitespace. A direct API client could otherwise store padded names that
+  // then become un-befriendable (findCharacterByName won't match the typed,
+  // unpadded form).
+  it('trims surrounding whitespace and collapses interior runs', () => {
+    expect(normalizeCharName('  Bob  Smith ')).toBe('Bob Smith');
+    expect(normalizeCharName('Thrall')).toBe('Thrall');
+    expect(normalizeCharName('Bob \t Smith')).toBe('Bob Smith');
+  });
+
+  it('returns null for names that are invalid even after normalizing', () => {
+    expect(normalizeCharName('  ')).toBeNull();
+    expect(normalizeCharName('A')).toBeNull(); // too short
+    expect(normalizeCharName('123Adventurer')).toBeNull();
+    expect(normalizeCharName(42)).toBeNull();
+  });
+
+  it('preserves valid punctuation while normalizing whitespace', () => {
+    expect(normalizeCharName("  Kael'thas ")).toBe("Kael'thas");
+    expect(normalizeCharName('Rexxar-Misha')).toBe('Rexxar-Misha');
+  });
+
+  it('a normalized name always passes validCharName', () => {
+    const n = normalizeCharName('  Bob  Smith ');
+    expect(n).not.toBeNull();
+    expect(validCharName(n)).toBe(true);
   });
 });
 
