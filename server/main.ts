@@ -10,7 +10,7 @@ import {
 } from './db';
 import { cleanReportReason, createPlayerReport } from './moderation_db';
 import { resolveReportTarget } from './report_target';
-import { hashPassword, verifyPassword, newToken, validUsername, validPassword, validCharName } from './auth';
+import { hashPassword, verifyPassword, newToken, validUsername, validPassword, normalizeCharName } from './auth';
 import { json, readBody } from './http_util';
 import { rateLimited } from './ratelimit';
 import { handleAdminApi } from './admin';
@@ -181,13 +181,14 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       }
       if (req.method === 'POST') {
         const body = await readBody(req);
-        if (!validCharName(body.name)) return json(res, 400, { error: 'invalid character name (2-16 letters)' });
+        const name = normalizeCharName(body.name);
+        if (name === null) return json(res, 400, { error: 'invalid character name (2-16 letters)' });
         const validClasses = ['warrior', 'paladin', 'hunter', 'rogue', 'priest', 'shaman', 'mage', 'warlock', 'druid'];
         if (!validClasses.includes(body.class)) return json(res, 400, { error: 'invalid class' });
         const chars = await listCharacters(accountId);
         if (chars.length >= 10) return json(res, 400, { error: 'character limit reached' });
         try {
-          const c = await createCharacter(accountId, body.name, body.class);
+          const c = await createCharacter(accountId, name, body.class);
           return json(res, 200, { id: c.id, name: c.name, class: c.class, level: c.level, forceRename: c.force_rename });
         } catch (err: any) {
           if (String(err?.message).includes('unique') || err?.code === '23505') {
@@ -203,9 +204,10 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       const accountId = await bearerActiveAccount(req, res);
       if (accountId === null) return;
       const body = await readBody(req);
-      if (!validCharName(body.name)) return json(res, 400, { error: 'invalid character name (2-16 letters)' });
+      const name = normalizeCharName(body.name);
+      if (name === null) return json(res, 400, { error: 'invalid character name (2-16 letters)' });
       try {
-        const c = await renameCharacter(accountId, Number(renameMatch[1]), body.name);
+        const c = await renameCharacter(accountId, Number(renameMatch[1]), name);
         if (!c) return json(res, 404, { error: 'character not found' });
         return json(res, 200, { id: c.id, name: c.name, class: c.class, level: c.level, forceRename: c.force_rename });
       } catch (err: any) {
