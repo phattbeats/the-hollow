@@ -15,7 +15,7 @@ import {
 } from './threat';
 import { groundHeight, WATER_LEVEL } from './world';
 import {
-  AbilityDef, AbilityEffect, Aura, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION,
+  AbilityDef, AbilityEffect, Aura, AuraKind, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION,
   CONSUME_TICKS, DT, Entity, EquipSlot, GCD,
   INTERACT_RANGE, InvSlot, MELEE_RANGE, MAX_LEVEL,
   MoveInput, PlayerClass, QuestProgress, QuestState, RUN_SPEED, SimConfig, SimEvent, TURN_SPEED, Vec3,
@@ -58,6 +58,13 @@ const PET_FOLLOW_DISTANCE = 3.5;
 const PET_TELEPORT_DISTANCE = 60; // owner this far away: pet warps to heel
 const PET_ASSIST_RANGE = 50; // how far the pet scans for enemies engaging the pair
 const PET_GROWL_INTERVAL = 8; // controlled pets can tank by forcing attention
+const FRIENDLY_NPC_REJECTED_AURA_KINDS: ReadonlySet<AuraKind> = new Set([
+  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'attackspeed', 'sunder',
+]);
+
+function isRejectedFriendlyNpcAura(aura: Aura): boolean {
+  return FRIENDLY_NPC_REJECTED_AURA_KINDS.has(aura.kind);
+}
 
 export interface Party {
   id: number;
@@ -165,6 +172,12 @@ export function computeQuestState(
   if (quest.requiresQuest && !questsDone.has(quest.requiresQuest)) return 'unavailable';
   if (quest.minLevel && playerLevel < quest.minLevel) return 'unavailable';
   return 'available';
+}
+
+function copyPos(dst: { x: number; y: number; z: number }, src: { x: number; y: number; z: number }): void {
+  dst.x = src.x;
+  dst.y = src.y;
+  dst.z = src.z;
 }
 
 function freshCounters(): RewardCounters {
@@ -577,7 +590,7 @@ export class Sim {
     this.tickCount++;
 
     for (const e of this.entities.values()) {
-      e.prevPos = { ...e.pos };
+      copyPos(e.prevPos, e.pos);
       e.prevFacing = e.facing;
     }
 
@@ -599,6 +612,8 @@ export class Sim {
       if (e.kind === 'mob') {
         this.updateMob(e);
         this.updateAuras(e);
+      } else if (e.kind === 'npc') {
+        this.cleanseFriendlyNpcAuras(e);
       } else if (e.kind === 'object') {
         if (!e.lootable) {
           e.respawnTimer -= DT;
@@ -894,6 +909,15 @@ export class Sim {
       const nv = v - DT;
       if (nv <= 0) p.cooldowns.delete(k);
       else p.cooldowns.set(k, nv);
+    }
+  }
+
+  private cleanseFriendlyNpcAuras(e: Entity): void {
+    for (let i = e.auras.length - 1; i >= 0; i--) {
+      const aura = e.auras[i];
+      if (!isRejectedFriendlyNpcAura(aura)) continue;
+      e.auras.splice(i, 1);
+      this.emit({ type: 'aura', targetId: e.id, name: aura.name, gained: false });
     }
   }
 
@@ -1614,6 +1638,7 @@ export class Sim {
   }
 
   private applyAura(target: Entity, aura: Aura): void {
+    if (target.kind === 'npc' && isRejectedFriendlyNpcAura(aura)) return;
     const existing = target.auras.findIndex((a) => a.id === aura.id && a.sourceId === aura.sourceId);
     if (existing >= 0) target.auras.splice(existing, 1);
     target.auras.push(aura);
@@ -2295,7 +2320,6 @@ export class Sim {
           mob.aiState = 'evade';
           mob.aggroTargetId = null;
           clearThreat(mob);
-          this.emit({ type: 'log', text: mob.name + ' returns home.', color: '#999', entityId: mob.id });
           break;
         }
         const d = dist2d(mob.pos, target.pos);

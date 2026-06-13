@@ -1,3 +1,6 @@
+import { mkdtempSync, rmSync, writeFileSync } from 'fs';
+import { tmpdir } from 'os';
+import { join } from 'path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock the db layer so no Postgres is needed; snapshot logic is under test.
@@ -67,16 +70,25 @@ function bareClient(pid: number): ClientWorld {
   return c;
 }
 
-function withChatCensorList(list: string | undefined, test: () => void): void {
+function withChatCensorConfig(list: string | undefined, file: string | undefined, test: () => void): void {
   const prev = process.env.CHAT_CENSOR_LIST;
+  const prevFile = process.env.CHAT_CENSOR_FILE;
   if (list === undefined) delete process.env.CHAT_CENSOR_LIST;
   else process.env.CHAT_CENSOR_LIST = list;
+  if (file === undefined) delete process.env.CHAT_CENSOR_FILE;
+  else process.env.CHAT_CENSOR_FILE = file;
   try {
     test();
   } finally {
     if (prev === undefined) delete process.env.CHAT_CENSOR_LIST;
     else process.env.CHAT_CENSOR_LIST = prev;
+    if (prevFile === undefined) delete process.env.CHAT_CENSOR_FILE;
+    else process.env.CHAT_CENSOR_FILE = prevFile;
   }
+}
+
+function withChatCensorList(list: string | undefined, test: () => void): void {
+  withChatCensorConfig(list, undefined, test);
 }
 
 describe('delta snapshots', () => {
@@ -217,6 +229,49 @@ describe('chat moderation', () => {
         text: 'hello ***********',
       }));
     });
+  });
+
+  it('caches file-backed censor terms until censor env changes', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'claudecraft-censor-'));
+    const firstFile = join(dir, 'first.txt');
+    const secondFile = join(dir, 'second.txt');
+    writeFileSync(firstFile, 'fileterm\n');
+    writeFileSync(secondFile, 'otherterm\n');
+
+    try {
+      withChatCensorConfig(undefined, firstFile, () => {
+        expect(censorChatText('fileterm again')).toBe('******** again');
+        writeFileSync(firstFile, 'changedterm\n');
+        expect(censorChatText('fileterm changedterm')).toBe('******** changedterm');
+
+        process.env.CHAT_CENSOR_FILE = secondFile;
+        expect(censorChatText('fileterm otherterm')).toBe('fileterm *********');
+
+        delete process.env.CHAT_CENSOR_FILE;
+        expect(censorChatText('otherterm')).toBe('otherterm');
+      });
+    } finally {
+      rmSync(dir, { force: true, recursive: true });
+    }
+  });
+
+  it('retries file-backed censor terms after a failed read', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'claudecraft-censor-missing-'));
+    const missingFile = join(dir, 'missing.txt');
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    try {
+      withChatCensorConfig(undefined, missingFile, () => {
+        expect(censorChatText('laterterm')).toBe('laterterm');
+        expect(warn).toHaveBeenCalledOnce();
+
+        writeFileSync(missingFile, 'laterterm\n');
+        expect(censorChatText('laterterm')).toBe('*********');
+      });
+    } finally {
+      warn.mockRestore();
+      rmSync(dir, { force: true, recursive: true });
+    }
   });
 });
 

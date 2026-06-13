@@ -104,6 +104,20 @@ export class Api {
     return data;
   }
 
+  private async delete(path: string, body: unknown): Promise<any> {
+    const res = await fetch(this.base + path, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
+      },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error ?? `request failed (${res.status})`);
+    return data;
+  }
+
   async register(username: string, password: string): Promise<void> {
     const data = await this.post('/api/register', { username, password });
     this.token = data.token;
@@ -130,6 +144,10 @@ export class Api {
     await this.post(`/api/characters/${characterId}/rename`, { name });
   }
 
+  async deleteCharacter(characterId: number, name: string): Promise<void> {
+    await this.delete(`/api/characters/${characterId}`, { name });
+  }
+
   async reportPlayer(reporterCharacterId: number, targetPid: number, reason: string, details: string): Promise<void> {
     await this.post('/api/reports', { reporterCharacterId, targetPid, reason, details });
   }
@@ -147,6 +165,12 @@ function wrapAngle(d: number): number {
   while (d > Math.PI) d -= 2 * Math.PI;
   while (d < -Math.PI) d += 2 * Math.PI;
   return d;
+}
+
+function copyPos(dst: { x: number; y: number; z: number }, src: { x: number; y: number; z: number }): void {
+  dst.x = src.x;
+  dst.y = src.y;
+  dst.z = src.z;
 }
 
 function blankEntity(id: number): Entity {
@@ -349,7 +373,7 @@ export class ClientWorld implements IWorld {
         if (!hasIdentity) return null;
         e = blankEntity(w.id);
         e.pos = { x: w.x, y: w.y, z: w.z };
-        e.prevPos = { x: w.x, y: w.y, z: w.z };
+        copyPos(e.prevPos, e.pos);
         e.facing = w.f;
         e.prevFacing = w.f;
         this.entities.set(w.id, e);
@@ -393,11 +417,9 @@ export class ClientWorld implements IWorld {
         }
       }
       e.netUpdatedAt = now;
-      e.prevPos = {
-        x: e.prevPos.x + (e.pos.x - e.prevPos.x) * entAlpha,
-        y: e.prevPos.y + (e.pos.y - e.prevPos.y) * entAlpha,
-        z: e.prevPos.z + (e.pos.z - e.prevPos.z) * entAlpha,
-      };
+      e.prevPos.x = e.prevPos.x + (e.pos.x - e.prevPos.x) * entAlpha;
+      e.prevPos.y = e.prevPos.y + (e.pos.y - e.prevPos.y) * entAlpha;
+      e.prevPos.z = e.prevPos.z + (e.pos.z - e.prevPos.z) * entAlpha;
       e.prevFacing = e.prevFacing + wrapAngle(e.facing - e.prevFacing) * entFacingAlpha;
       e.pos.x = w.x; e.pos.y = w.y; e.pos.z = w.z;
       e.facing = w.f;

@@ -253,7 +253,7 @@ export async function createCharacter(accountId: number, name: string, cls: Play
 }
 
 export async function deleteCharacter(accountId: number, characterId: number): Promise<boolean> {
-  const res = await pool.query('DELETE FROM characters WHERE id = $1 AND account_id = $2', [characterId, accountId]);
+  const res = await pool.query('DELETE FROM characters WHERE id = $1 AND account_id = $2 AND realm = $3', [characterId, accountId, REALM]);
   return (res.rowCount ?? 0) > 0;
 }
 
@@ -284,7 +284,7 @@ export async function searchCharacters(prefix: string, limit = 8): Promise<Chara
   const escaped = term.replace(/[\\%_]/g, (m) => `\\${m}`);
   const res = await pool.query(
     `SELECT name, class AS cls, level FROM characters
-     WHERE realm = $1 AND name ILIKE $2 ESCAPE '\\' ORDER BY name LIMIT $3`,
+     WHERE realm = $1 AND lower(name) LIKE lower($2) ESCAPE '\\' ORDER BY name LIMIT $3`,
     [REALM, `${escaped}%`, Math.min(20, Math.max(1, limit))],
   );
   return res.rows;
