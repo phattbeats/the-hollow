@@ -15,6 +15,7 @@ import { music } from '../game/music';
 import { iconDataUrl, QUALITY_COLOR } from './icons';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
 import { Settings, GameSettings, SETTING_RANGES } from '../game/settings';
+import { chatPlayerContextActions } from './player_context_menu';
 
 // hooks main wires after Input exists (the options menu drives input, audio,
 // graphics, and logout, all of which live outside the HUD)
@@ -27,6 +28,7 @@ export interface OptionsHooks {
 
 export interface ReportHooks {
   submit(targetPid: number, reason: string, details: string): Promise<void>;
+  submitByName?(targetName: string, reason: string, details: string): Promise<void>;
 }
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.querySelector(sel) as T;
@@ -976,16 +978,16 @@ export class Hud {
         case 'chat': {
           if (this.isChatIgnored(ev.from)) break;
           switch (ev.channel) {
-            case 'party': this.log(`[Party] ${ev.from}: ${ev.text}`, '#7fd4ff'); break;
-            case 'yell': this.log(`${ev.from} yells: ${ev.text}`, '#ff5040'); break;
+            case 'party': this.chatLogFrom(ev.from, ev.text, '#7fd4ff', '[Party] ', ': '); break;
+            case 'yell': this.chatLogFrom(ev.from, ev.text, '#ff5040', '', ' yells: '); break;
             case 'whisper':
-              if (ev.to) this.log(`To ${ev.to}: ${ev.text}`, '#ff80ff');
-              else { this.log(`${ev.from} whispers: ${ev.text}`, '#ff80ff'); audio.whisper(); }
+              if (ev.to) this.chatLogFrom(ev.to, ev.text, '#ff80ff', 'To ', ': ');
+              else { this.chatLogFrom(ev.from, ev.text, '#ff80ff', '', ' whispers: '); audio.whisper(); }
               break;
-            case 'general': this.log(`[General] ${ev.from}: ${ev.text}`, '#ffc864'); break;
-            case 'guild': this.log(`[Guild] ${ev.from}: ${ev.text}`, '#40d264'); break;
-            case 'officer': this.log(`[Officer] ${ev.from}: ${ev.text}`, '#4ce0c0'); break;
-            default: this.log(`${ev.from} says: ${ev.text}`, '#f0ead8'); break;
+            case 'general': this.chatLogFrom(ev.from, ev.text, '#ffc864', '[General] ', ': '); break;
+            case 'guild': this.chatLogFrom(ev.from, ev.text, '#40d264', '[Guild] ', ': '); break;
+            case 'officer': this.chatLogFrom(ev.from, ev.text, '#4ce0c0', '[Officer] ', ': '); break;
+            default: this.chatLogFrom(ev.from, ev.text, '#f0ead8', '', ' says: '); break;
           }
           if ((ev.channel === 'say' || ev.channel === 'yell') && ev.entityId !== undefined) {
             this.renderer.showChatBubble(ev.entityId, ev.text, ev.channel === 'yell');
@@ -1069,6 +1071,25 @@ export class Hud {
 
   log(text: string, color = '#ccc'): void {
     this.appendLog(this.chatLogEl, text, color);
+  }
+
+  private chatLogFrom(name: string, text: string, color: string, prefix: string, separator: string): void {
+    const wasNearBottom = this.chatLogEl.scrollHeight - this.chatLogEl.scrollTop - this.chatLogEl.clientHeight < 24;
+    const div = document.createElement('div');
+    div.style.color = color;
+    if (prefix) div.append(document.createTextNode(prefix));
+    const sender = document.createElement('span');
+    sender.className = 'chat-player-name';
+    sender.textContent = name;
+    sender.title = `Right-click ${name}`;
+    sender.addEventListener('contextmenu', (ev) => {
+      ev.preventDefault();
+      this.openChatPlayerContextMenu(name, ev.clientX, ev.clientY);
+    });
+    div.append(sender, document.createTextNode(`${separator}${text}`));
+    this.chatLogEl.appendChild(div);
+    while (this.chatLogEl.children.length > 200) this.chatLogEl.removeChild(this.chatLogEl.firstChild!);
+    if (wasNearBottom) this.chatLogEl.scrollTop = this.chatLogEl.scrollHeight;
   }
 
   private combatLog(text: string, color = '#ccc'): void {
@@ -1599,14 +1620,68 @@ export class Hud {
         else if (act === 'ignore') {
           if (online) { ignored ? this.sim.blockRemove(name) : this.sim.blockAdd(name); }
           else this.toggleChatIgnore(name);
-        } else if (act === 'report') this.openReportWindow(pid, name);
+        } else if (act === 'report') this.openReportWindow({ pid, name });
         else if (act === 'kick') this.sim.partyKick(pid);
       });
     });
   }
 
-  private openReportWindow(pid: number, name: string): void {
+  private openChatPlayerContextMenu(name: string, x: number, y: number): void {
+    const el = $('#ctx-menu');
+    const online = this.sim.socialInfo !== null;
+    const social = this.sim.socialInfo;
+    const isFriend = !!social?.friends.some((f) => f.name === name);
+    const canGuildInvite = !!social?.guild && social.guild.rank !== 'member';
+    const alreadyGuilded = !!social?.guild?.members.some((m) => m.name === name);
+    const ignored = online
+      ? !!social?.blocks.some((b) => b.name === name)
+      : this.isChatIgnored(name);
+    const actions = chatPlayerContextActions({
+      playerName: name,
+      selfName: this.sim.player.name,
+      online,
+      isFriend,
+      ignored,
+      canGuildInvite,
+      alreadyGuilded,
+      canReport: !!this.reportHooks?.submitByName,
+    });
+    el.innerHTML = `<div class="ctx-title">${esc(name)}</div>`
+      + actions.map((a) => `<div class="ctx-item" data-act="${a.id}">${esc(a.label)}</div>`).join('');
+    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
+    el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
+    el.style.display = 'block';
+    el.querySelectorAll('.ctx-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        const act = (item as HTMLElement).dataset.act;
+        el.style.display = 'none';
+        const livePid = this.playerPidByName(name);
+        if (act === 'whisper') this.startWhisper(name);
+        else if (act === 'invite') {
+          if (livePid !== null) this.sim.partyInvite(livePid);
+          else this.showError('That player is not nearby.');
+        } else if (act === 'friend') this.sim.friendAdd(name);
+        else if (act === 'unfriend') this.sim.friendRemove(name);
+        else if (act === 'ginvite') this.sim.guildInvite(name);
+        else if (act === 'ignore') {
+          if (online) { ignored ? this.sim.blockRemove(name) : this.sim.blockAdd(name); }
+          else this.toggleChatIgnore(name);
+        } else if (act === 'report') this.openReportWindow({ name });
+      });
+    });
+  }
+
+  private playerPidByName(name: string): number | null {
+    const wanted = name.toLowerCase();
+    for (const e of this.sim.entities.values()) {
+      if (e.kind === 'player' && e.name.toLowerCase() === wanted) return e.id;
+    }
+    return null;
+  }
+
+  private openReportWindow(target: { pid?: number; name: string }): void {
     if (!this.reportHooks) return;
+    const { pid, name } = target;
     const el = $('#report-window');
     el.innerHTML = `
       <div class="panel-title">Report ${esc(name)}<button data-close>×</button></div>
@@ -1634,7 +1709,14 @@ export class Hud {
       const reason = ($('#report-reason') as HTMLSelectElement).value;
       const details = ($('#report-details') as HTMLTextAreaElement).value;
       submit.disabled = true;
-      this.reportHooks!.submit(pid, reason, details)
+      const request = pid !== undefined
+        ? this.reportHooks!.submit(pid, reason, details)
+        : this.reportHooks!.submitByName?.(name, reason, details);
+      if (!request) {
+        $('#report-error').textContent = 'Could not submit report.';
+        return;
+      }
+      request
         .then(() => {
           el.style.display = 'none';
           this.log(`Report submitted for ${name}.`, '#ffd100');
