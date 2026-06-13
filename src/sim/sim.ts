@@ -1772,6 +1772,7 @@ export class Sim {
         const eff = queued.effects.find((e) => e.type === 'weaponDamage');
         if (p.resource >= queued.cost && eff && eff.type === 'weaponDamage') {
           this.spendResource(p, queued.cost);
+          if (queued.def.cooldown > 0) p.cooldowns.set(queued.def.id, queued.def.cooldown);
           bonus = eff.bonus;
           abilityName = queued.def.name;
           threatFlat = queued.threatFlat;
