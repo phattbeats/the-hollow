@@ -28,6 +28,7 @@ await page.screenshot({ path: 'tmp/01_start.png' });
 
 // pick warrior
 await page.click('.class-card[data-class="warrior"]');
+await page.click('#btn-start-offline');
 await new Promise((r) => setTimeout(r, 2500));
 await page.screenshot({ path: 'tmp/02_spawn.png' });
 

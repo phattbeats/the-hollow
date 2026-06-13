@@ -21,6 +21,7 @@ await page.click('#btn-offline');
 await new Promise((r) => setTimeout(r, 200));
 await page.type('#char-name', 'MageName');
 await page.click('.class-card[data-class="mage"]');
+await page.click('#btn-start-offline');
 await new Promise((r) => setTimeout(r, 1500));
 
 // level up to 8 (learns frostbolt, fire blast, polymorph, arcane missiles)

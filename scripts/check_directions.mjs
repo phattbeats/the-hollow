@@ -16,6 +16,7 @@ await page.click('#btn-offline');
 await new Promise((r) => setTimeout(r, 200));
 await page.type('#char-name', 'Adventurer');
 await page.click('.class-card[data-class="warrior"]');
+await page.click('#btn-start-offline');
 await new Promise((r) => setTimeout(r, 1500));
 
 // move somewhere flat & quiet
