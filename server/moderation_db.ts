@@ -102,7 +102,7 @@ export async function moderationQueue(onlineAccountIds: Set<number>): Promise<Mo
     return {
       accountId: r.account_id,
       username: r.username,
-      status: r.banned_at ? 'banned' : activeSuspension ? 'suspended' : 'active',
+      status: (r.banned_at ? 'banned' : activeSuspension ? 'suspended' : 'active') as 'active' | 'suspended' | 'banned',
       suspendedUntil,
       openReports: r.open_reports,
       latestReportAt: new Date(r.latest_report_at).toISOString(),
