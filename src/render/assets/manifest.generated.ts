@@ -179,7 +179,6 @@ export const MEDIA_ASSETS: Record<string, string> =
   "models/weapons/sword_1handed.glb": "/media/models/weapons/sword_1handed.4f93aec4e2b0.glb",
   "models/weapons/sword_2handed.glb": "/media/models/weapons/sword_2handed.e4e421bc008c.glb",
   "models/weapons/wand.glb": "/media/models/weapons/wand.5b5293af81d8.glb",
-  "textures/.DS_Store": "/media/textures/.DS_Store.455938a7f609",
   "textures/terrain/Grass001_AmbientOcclusion.jpg": "/media/textures/terrain/Grass001_AmbientOcclusion.a5e6e6a1c432.jpg",
   "textures/terrain/Grass001_Color.jpg": "/media/textures/terrain/Grass001_Color.b9b6d61bc3b6.jpg",
   "textures/terrain/Grass001_NormalGL.jpg": "/media/textures/terrain/Grass001_NormalGL.eef0b56db5f0.jpg",
