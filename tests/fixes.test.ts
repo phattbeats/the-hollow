@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { Sim } from '../src/sim/sim';
 import { Entity, dist2d } from '../src/sim/types';
-import { CRYPT_DOOR_POS, DUNGEON_X_THRESHOLD, LAKE, MOBS, NPCS, QUESTS } from '../src/sim/data';
+import { CRYPT_DOOR_POS, DUNGEON_X_THRESHOLD, LAKE, MOBS, NPCS, QUESTS, zoneAt, zoneWelcomeText } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
 import { groundHeight, WATER_LEVEL } from '../src/sim/world';
 import { isBlocked, resolvePosition } from '../src/sim/colliders';
@@ -21,6 +21,28 @@ function teleportTo(sim: Sim, x: number, z: number, pid?: number) {
 }
 
 describe('quest lifecycle', () => {
+  it('stops showing the Redbrook starter hint after the first quest is accepted', () => {
+    const sim = makeSim();
+    const starterZone = zoneAt(sim.player.pos.z);
+
+    expect(zoneWelcomeText(starterZone, (questId) => sim.questState(questId)))
+      .toBe('Find Marshal Redbrook in town — he has work for you.');
+
+    sim.acceptQuest('q_wolves');
+    expect(zoneWelcomeText(starterZone, (questId) => sim.questState(questId))).toBeNull();
+
+    const qp = sim.questLog.get('q_wolves')!;
+    qp.counts[0] = 8;
+    qp.state = 'ready';
+
+    const redbrook = [...sim.entities.values()].find((e) => e.templateId === 'marshal_redbrook')!;
+    teleportTo(sim, redbrook.pos.x + 2, redbrook.pos.z + 2);
+    sim.turnInQuest('q_wolves');
+
+    expect(sim.questState('q_wolves')).toBe('done');
+    expect(zoneWelcomeText(starterZone, (questId) => sim.questState(questId))).toBeNull();
+  });
+
   it('a turned-in quest cannot be accepted again', () => {
     const sim = makeSim();
     sim.acceptQuest('q_wolves');
