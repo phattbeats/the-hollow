@@ -96,13 +96,14 @@ export async function moderationQueue(onlineAccountIds: Set<number>): Promise<Mo
      GROUP BY a.id
      ORDER BY count(r.id) DESC, max(r.created_at) DESC`,
   );
-  return res.rows.map((r) => {
+  return res.rows.map((r): ModerationQueueRow => {
     const suspendedUntil = r.suspended_until ? new Date(r.suspended_until).toISOString() : null;
     const activeSuspension = suspendedUntil !== null && new Date(suspendedUntil).getTime() > Date.now();
+    const status: ModerationQueueRow['status'] = r.banned_at ? 'banned' : activeSuspension ? 'suspended' : 'active';
     return {
       accountId: r.account_id,
       username: r.username,
-      status: r.banned_at ? 'banned' : activeSuspension ? 'suspended' : 'active',
+      status,
       suspendedUntil,
       openReports: r.open_reports,
       latestReportAt: new Date(r.latest_report_at).toISOString(),
