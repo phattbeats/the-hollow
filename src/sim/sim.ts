@@ -2295,7 +2295,6 @@ export class Sim {
           mob.aiState = 'evade';
           mob.aggroTargetId = null;
           clearThreat(mob);
-          this.emit({ type: 'log', text: mob.name + ' returns home.', color: '#999', entityId: mob.id });
           break;
         }
         const d = dist2d(mob.pos, target.pos);
