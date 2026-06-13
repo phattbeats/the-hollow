@@ -79,6 +79,12 @@
     padding: 0; 
     user-select: none; 
   }
+  ul, ol, li {
+    list-style: none;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
 
   /* Only apply standard scrollbar properties in browsers that do not support WebKit scrollbar styling (like Firefox) */
   @supports not selector(::-webkit-scrollbar) {
@@ -457,38 +463,6 @@
     justify-self: center;
   }
   
-  #name-row {
-    margin-bottom: 54px;
-    display: flex;
-    justify-content: center;
-    position: relative;
-  }
-  #offline-error {
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 200;
-    margin: 0;
-    width: max-content;
-    max-width: min(500px, 92vw);
-    color: var(--color-text-error) !important;
-    font-size: 11px;
-    line-height: 1.3;
-    font-family: var(--font-sans);
-    font-weight: bold;
-    text-align: center;
-    background: none !important;
-    border: none !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-    text-shadow: 1px 1px 3px #000;
-  }
-  #offline-error::before {
-    font-size: 12px !important;
-    margin-right: 4px !important;
-    vertical-align: middle !important;
-  }
   #char-name {
     background: var(--color-bg-input);
     color: var(--color-primary);
@@ -497,7 +471,6 @@
     border-radius: var(--radius-sm);
     padding: 10px 14px;
     font-size: 15px;
-    width: 240px;
     text-align: center;
     font-family: var(--font-heading);
     user-select: text;
@@ -508,71 +481,6 @@
     box-shadow: 0 0 10px var(--color-primary-glow);
     outline: none;
   }
-  .class-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-    width: min(640px, 92vw);
-    margin: 0 auto var(--spacing-lg) auto;
-    list-style: none;
-    padding: 0;
-  }
-  .class-card {
-    padding: 16px 12px 14px;
-    text-align: center;
-    cursor: pointer;
-    background: rgba(21, 21, 31, 0.94);
-    border: 2px solid var(--color-border-default);
-    border-radius: var(--radius-md);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-    transition: box-shadow var(--transition-speed) var(--transition-ease),
-                border-color var(--transition-speed) var(--transition-ease);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
-  .class-card[data-class="warrior"] { --class-color: #c79c6e; }
-  .class-card[data-class="paladin"] { --class-color: #f58cba; }
-  .class-card[data-class="hunter"] { --class-color: #abd473; }
-  .class-card[data-class="rogue"] { --class-color: #fff569; }
-  .class-card[data-class="priest"] { --class-color: #ffffff; }
-  .class-card[data-class="shaman"] { --class-color: #0070de; }
-  .class-card[data-class="mage"] { --class-color: #69ccf0; }
-  .class-card[data-class="warlock"] { --class-color: #9482c9; }
-  .class-card[data-class="druid"] { --class-color: #ff7d0a; }
-
-  .class-card:hover,
-  .class-card:focus-visible {
-    border-color: var(--class-color);
-    box-shadow: 0 0 16px var(--class-color), 0 4px 12px rgba(0, 0, 0, 0.6);
-    outline: none;
-  }
-  .class-card h2 {
-    font-size: 18px;
-    margin: 4px 0 6px;
-    font-family: var(--font-heading);
-    letter-spacing: 0.5px;
-    color: var(--class-color);
-  }
-  .class-card .crest {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 32px;
-    margin-bottom: 8px;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-  }
-  .class-card-icon-img {
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 209, 0, 0.3);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    display: block;
-  }
-  .class-card p { font-size: 11px; color: #a0aabf; margin: 0; line-height: 1.5; }
   #performance-tip {
     margin-top: 14px;
     max-width: min(640px, 88vw);
@@ -717,6 +625,15 @@
   }
   .char-row:hover {
     background: rgba(255,255,255,0.02);
+  }
+  .char-row:focus-visible {
+    outline: 2px solid var(--color-primary);
+    background: rgba(255,255,255,0.04);
+  }
+  .char-row.sel {
+    background: rgba(255, 209, 0, 0.08);
+    border-bottom-color: rgba(255, 209, 0, 0.4);
+    box-shadow: inset 0 0 8px rgba(255, 209, 0, 0.1);
   }
   .char-row .char-name {
     font-family: var(--font-heading);
@@ -1659,39 +1576,7 @@
     color: #c79c6e;
   }
 
-  /* Layout container for Offline Select */
-  .offline-selector-layout {
-    width: 100%;
-    margin-bottom: 28px;
-  }
 
-  @media (min-width: 900px) {
-    .offline-selector-layout {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 32px;
-      width: min(1040px, 96vw);
-      height: 550px; /* Force parent container height to fit cards exactly */
-      margin: 0 auto 36px;
-      align-items: stretch;
-    }
-    .offline-selector-layout .class-row {
-      width: 100% !important;
-      display: grid !important;
-      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-      grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
-      margin: 0 !important;
-      gap: 14px !important;
-      height: 100% !important; /* Force to fill parent */
-      box-sizing: border-box;
-    }
-    .offline-selector-layout .class-details-panel {
-      margin-bottom: 0;
-      height: 100% !important; /* Force to fill parent */
-      padding: var(--spacing-lg);
-      box-sizing: border-box;
-    }
-  }
 
   /* Signature Abilities Section */
   .details-spells-section {
@@ -1751,6 +1636,165 @@
   }
   .class-card.sel h2 {
     text-shadow: 0 0 8px var(--class-color);
+  }
+
+  /* ---------- Unified Character Select Layout ---------- */
+  .charselect-layout {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .charselect-col-left {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .charselect-col-right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--spacing-sm);
+    min-height: 0;
+  }
+
+  .char-preview-container {
+    width: 100%;
+    height: 240px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+
+  .char-preview-container canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .char-input-group {
+    position: relative;
+    width: 100%;
+    max-width: 240px;
+    margin: 0 auto var(--spacing-md) auto;
+  }
+
+  #new-char-name,
+  #char-name {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Style name validation errors as absolute-positioned tooltips directly below the input */
+  #charselect-panel .auth-error,
+  #offline-select .auth-error {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+    line-height: 1.3;
+    box-shadow: none;
+    background: none;
+    border: none;
+    border-radius: 0;
+    color: #ffc2c2;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    text-align: center;
+  }
+  #charselect-panel .auth-error::before,
+  #offline-select .auth-error::before {
+    content: none;
+  }
+
+  #charselect-panel #char-list {
+    margin-bottom: var(--spacing-sm);
+    max-height: 180px;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 209, 0, 0.15);
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: var(--radius-sm);
+    padding: 6px var(--spacing-sm);
+  }
+
+  @media (min-width: 900px) {
+    #charselect-panel,
+    #offline-select {
+      width: min(1160px, 96vw) !important;
+      max-width: none !important;
+      height: 640px; /* Enforce stable container height */
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #charselect-panel .auth-title,
+    #offline-select .auth-title {
+      margin-bottom: var(--spacing-md);
+      flex-shrink: 0;
+    }
+
+    .charselect-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
+      flex-grow: 1;
+      height: calc(100% - 60px); /* Fill the rest of the stable panel height minus title */
+      align-items: stretch;
+    }
+
+    .charselect-col-left {
+      height: 100%;
+      justify-content: space-between;
+    }
+
+    #charselect-panel #char-list {
+      max-height: 180px;
+      flex-grow: 0;
+    }
+
+    #charselect-panel .char-create,
+    #offline-select .char-create {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-top: 0;
+    }
+
+    #charselect-panel .char-create {
+      border-top: 1px solid rgba(78, 61, 29, 0.3);
+      padding-top: 12px;
+    }
+
+    .class-details-panel {
+      height: auto !important; /* Force to fill parent height */
+      flex-grow: 1;
+      min-height: 0;
+      margin-bottom: 0 !important;
+    }
+
+    /* Restore two-column stats/gear columns inside class details on desktop */
+    .class-details-grid {
+      grid-template-columns: 1fr 1.25fr;
+      gap: var(--spacing-md);
+    }
+
+    /* Keep the logo size completely stable on desktop */
+    #title-logo {
+      width: 320px !important;
+    }
   }
 </style>
 </head>
@@ -1886,7 +1930,7 @@
         </div>
         <div class="mode-card panel" id="btn-offline" role="button" tabindex="0" aria-label="Play Offline: start an instant local single-player session">
           <h2>Play Offline</h2>
-          <p>Instant single-player world in your browser. Nothing is saved — perfect for a quick brawl or testing.</p>
+          <p>Instant single-player world in your browser. Nothing is saved: perfect for a quick brawl or testing.</p>
         </div>
       </div>
       <div id="performance-tip"><b>TIP:</b> For the smoothest experience, turn off ad blocker extensions on this site. Community reports found some blockers can cause lag.</div>
@@ -1944,54 +1988,77 @@
     </form>
 
     <div id="charselect-panel" class="panel auth-panel auth-panel-premium" hidden>
-      <h2 class="auth-title">Characters — <span id="charselect-user" class="gold"></span></h2>
-      <ul id="char-list" role="list"></ul>
-      <div class="char-create">
-        <label for="new-char-name" class="auth-label">Create a Character</label>
-        <input id="new-char-name" maxlength="16" placeholder="Character Name" aria-describedby="charselect-error" />
-        <ul class="mini-class-row" role="list">
-          <li class="mini-class" data-class="warrior" role="button" tabindex="0" aria-label="Warrior class" aria-pressed="false">Warrior</li>
-          <li class="mini-class" data-class="paladin" role="button" tabindex="0" aria-label="Paladin class" aria-pressed="false">Paladin</li>
-          <li class="mini-class" data-class="hunter" role="button" tabindex="0" aria-label="Hunter class" aria-pressed="false">Hunter</li>
-          <li class="mini-class" data-class="rogue" role="button" tabindex="0" aria-label="Rogue class" aria-pressed="false">Rogue</li>
-          <li class="mini-class" data-class="priest" role="button" tabindex="0" aria-label="Priest class" aria-pressed="false">Priest</li>
-          <li class="mini-class" data-class="shaman" role="button" tabindex="0" aria-label="Shaman class" aria-pressed="false">Shaman</li>
-          <li class="mini-class" data-class="mage" role="button" tabindex="0" aria-label="Mage class" aria-pressed="false">Mage</li>
-          <li class="mini-class" data-class="warlock" role="button" tabindex="0" aria-label="Warlock class" aria-pressed="false">Warlock</li>
-          <li class="mini-class" data-class="druid" role="button" tabindex="0" aria-label="Druid class" aria-pressed="false">Druid</li>
-        </ul>
-        <div id="online-class-details" class="class-details-panel" aria-live="polite"></div>
-        <div id="charselect-error" class="auth-error" aria-live="polite"></div>
-        <div class="auth-actions">
-          <button class="btn btn-primary" id="btn-create-char">Create</button>
-          <button class="btn btn-secondary" id="btn-charselect-back">Back</button>
+      <h2 class="auth-title">Characters: <span id="charselect-user" class="gold"></span></h2>
+      <div class="charselect-layout">
+        <!-- Left Column: Character List & Creation Controls -->
+        <div class="charselect-col-left">
+          <ul id="char-list" role="list"></ul>
+          <div class="char-create">
+            <label for="new-char-name" class="auth-label">Create a Character</label>
+            <div class="char-input-group">
+              <input id="new-char-name" maxlength="16" placeholder="Character Name" aria-describedby="charselect-error" autocomplete="off" />
+              <div id="charselect-error" class="auth-error" aria-live="polite"></div>
+            </div>
+            <ul class="mini-class-row" role="list">
+              <li class="mini-class" data-class="warrior" role="button" tabindex="0" aria-label="Warrior class" aria-pressed="false">Warrior</li>
+              <li class="mini-class" data-class="paladin" role="button" tabindex="0" aria-label="Paladin class" aria-pressed="false">Paladin</li>
+              <li class="mini-class" data-class="hunter" role="button" tabindex="0" aria-label="Hunter class" aria-pressed="false">Hunter</li>
+              <li class="mini-class" data-class="rogue" role="button" tabindex="0" aria-label="Rogue class" aria-pressed="false">Rogue</li>
+              <li class="mini-class" data-class="priest" role="button" tabindex="0" aria-label="Priest class" aria-pressed="false">Priest</li>
+              <li class="mini-class" data-class="shaman" role="button" tabindex="0" aria-label="Shaman class" aria-pressed="false">Shaman</li>
+              <li class="mini-class" data-class="mage" role="button" tabindex="0" aria-label="Mage class" aria-pressed="false">Mage</li>
+              <li class="mini-class" data-class="warlock" role="button" tabindex="0" aria-label="Warlock class" aria-pressed="false">Warlock</li>
+              <li class="mini-class" data-class="druid" role="button" tabindex="0" aria-label="Druid class" aria-pressed="false">Druid</li>
+            </ul>
+            <div class="auth-actions">
+              <button class="btn btn-primary" id="btn-create-char">Create</button>
+              <button class="btn btn-secondary" id="btn-charselect-back">Back</button>
+            </div>
+          </div>
+        </div>
+        <!-- Right Column: Detailed Class Info & Preview -->
+        <div class="charselect-col-right">
+          <div class="char-preview-container" id="online-preview-container">
+            <canvas id="char-preview-canvas"></canvas>
+          </div>
+          <div id="online-class-details" class="class-details-panel" aria-live="polite"></div>
         </div>
       </div>
     </div>
 
-    <div id="offline-select" hidden>
-      <div id="name-row">
-        <div id="offline-error" class="auth-error" aria-live="polite"></div>
-        <label for="char-name" class="visually-hidden">Offline Character Name</label>
-        <input id="char-name" maxlength="16" placeholder="Character name" value="" aria-describedby="offline-error" />
-      </div>
-      <div class="offline-selector-layout">
-        <ul class="class-row" role="list">
-          <li class="class-card panel" data-class="warrior" role="button" tabindex="0" aria-label="Warrior: Fierce melee champion who channels Rage to crush foes and shield allies." aria-pressed="true"><div class="crest"></div><h2>Warrior</h2><p>Fierce melee champion who channels Rage to crush foes and shield allies.</p></li>
-          <li class="class-card panel" data-class="paladin" role="button" tabindex="0" aria-label="Paladin: Holy crusader wielding heavy armor to heal wounds and protect the weak." aria-pressed="false"><div class="crest"></div><h2>Paladin</h2><p>Holy crusader wielding heavy armor to heal wounds and protect the weak.</p></li>
-          <li class="class-card panel" data-class="hunter" role="button" tabindex="0" aria-label="Hunter: Ranged master of the wilds who tracks prey with traps and deadly shots." aria-pressed="false"><div class="crest"></div><h2>Hunter</h2><p>Ranged master of the wilds who tracks prey with traps and deadly shots.</p></li>
-          <li class="class-card panel" data-class="rogue" role="button" tabindex="0" aria-label="Rogue: Shadow assassin who uses Energy and stealth for lethal surprise strikes." aria-pressed="false"><div class="crest"></div><h2>Rogue</h2><p>Shadow assassin who uses Energy and stealth for lethal surprise strikes.</p></li>
-          <li class="class-card panel" data-class="priest" role="button" tabindex="0" aria-label="Priest: Devoted healer using Holy Light to shield allies and Shadow magic to harm." aria-pressed="false"><div class="crest"></div><h2>Priest</h2><p>Devoted healer using Holy Light to shield allies and Shadow magic to harm.</p></li>
-          <li class="class-card panel" data-class="shaman" role="button" tabindex="0" aria-label="Shaman: Elemental guide who commands lightning, healing tides, and weapon imbues." aria-pressed="false"><div class="crest"></div><h2>Shaman</h2><p>Elemental guide who commands lightning, healing tides, and weapon imbues.</p></li>
-          <li class="class-card panel" data-class="mage" role="button" tabindex="0" aria-label="Mage: Arcane weaver who unleashes Fire blasts, Frostbolts, and icy controls." aria-pressed="false"><div class="crest"></div><h2>Mage</h2><p>Arcane weaver who unleashes Fire blasts, Frostbolts, and icy controls.</p></li>
-          <li class="class-card panel" data-class="warlock" role="button" tabindex="0" aria-label="Warlock: Shadow summoner who drains life force and commands demonic minions." aria-pressed="false"><div class="crest"></div><h2>Warlock</h2><p>Shadow summoner who drains life force and commands demonic minions.</p></li>
-          <li class="class-card panel" data-class="druid" role="button" tabindex="0" aria-label="Druid: Nature guardian who shapeshifts to heal, cast spells, or tank as a bear." aria-pressed="false"><div class="crest"></div><h2>Druid</h2><p>Nature guardian who shapeshifts to heal, cast spells, or tank as a bear.</p></li>
-        </ul>
-        <div id="offline-class-details" class="class-details-panel" aria-live="polite"></div>
-      </div>
-      <div class="auth-actions auth-actions-split">
-        <button type="button" class="btn btn-primary" id="btn-start-offline">Enter World</button>
-        <button type="button" class="btn btn-secondary" id="btn-offline-back">Back</button>
+    <div id="offline-select" class="panel auth-panel auth-panel-premium" hidden>
+      <h2 class="auth-title">Offline Character</h2>
+      <div class="charselect-layout">
+        <!-- Left Column: Character Name & Class Chips & Actions -->
+        <div class="charselect-col-left">
+          <div class="char-create">
+            <label for="char-name" class="auth-label">Character Name</label>
+            <div class="char-input-group">
+              <input id="char-name" maxlength="16" placeholder="Character name" value="" aria-describedby="offline-error" autocomplete="off" />
+              <div id="offline-error" class="auth-error" aria-live="polite"></div>
+            </div>
+            <ul class="mini-class-row" role="list">
+              <li class="mini-class" data-class="warrior" role="button" tabindex="0" aria-label="Warrior class" aria-pressed="false">Warrior</li>
+              <li class="mini-class" data-class="paladin" role="button" tabindex="0" aria-label="Paladin class" aria-pressed="false">Paladin</li>
+              <li class="mini-class" data-class="hunter" role="button" tabindex="0" aria-label="Hunter class" aria-pressed="false">Hunter</li>
+              <li class="mini-class" data-class="rogue" role="button" tabindex="0" aria-label="Rogue class" aria-pressed="false">Rogue</li>
+              <li class="mini-class" data-class="priest" role="button" tabindex="0" aria-label="Priest class" aria-pressed="false">Priest</li>
+              <li class="mini-class" data-class="shaman" role="button" tabindex="0" aria-label="Shaman class" aria-pressed="false">Shaman</li>
+              <li class="mini-class" data-class="mage" role="button" tabindex="0" aria-label="Mage class" aria-pressed="false">Mage</li>
+              <li class="mini-class" data-class="warlock" role="button" tabindex="0" aria-label="Warlock class" aria-pressed="false">Warlock</li>
+              <li class="mini-class" data-class="druid" role="button" tabindex="0" aria-label="Druid class" aria-pressed="false">Druid</li>
+            </ul>
+            <div class="auth-actions">
+              <button type="button" class="btn btn-primary" id="btn-start-offline">Enter World</button>
+              <button type="button" class="btn btn-secondary" id="btn-offline-back">Back</button>
+            </div>
+          </div>
+        </div>
+        <!-- Right Column: Detailed Class Info & Preview -->
+        <div class="charselect-col-right">
+          <div class="char-preview-container" id="offline-preview-container"></div>
+          <div id="offline-class-details" class="class-details-panel" aria-live="polite"></div>
+        </div>
       </div>
     </div>
 
