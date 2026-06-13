@@ -284,7 +284,7 @@ export async function searchCharacters(prefix: string, limit = 8): Promise<Chara
   const escaped = term.replace(/[\\%_]/g, (m) => `\\${m}`);
   const res = await pool.query(
     `SELECT name, class AS cls, level FROM characters
-     WHERE realm = $1 AND name ILIKE $2 ESCAPE '\\' ORDER BY name LIMIT $3`,
+     WHERE realm = $1 AND lower(name) LIKE lower($2) ESCAPE '\\' ORDER BY name LIMIT $3`,
     [REALM, `${escaped}%`, Math.min(20, Math.max(1, limit))],
   );
   return res.rows;
