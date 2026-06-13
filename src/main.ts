@@ -15,7 +15,7 @@ import { DT, INTERACT_RANGE, PlayerClass, dist2d } from './sim/types';
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
-import { getLanguage, setLanguage } from './ui/i18n';
+import { getLanguage, setLanguage, t } from './ui/i18n';
 
 
 const WORLD_SEED = 20061; // fixed: World of Claudecraft is a persistent place
@@ -1053,7 +1053,82 @@ function renderClassDetails(panelId: string, className: PlayerClass): void {
   }
 }
 
+const STATS_CACHE_KEY = 'woc_cached_stats';
+const STATS_CACHE_TTL_MS = 30000; // 30 seconds
+
+function translatePage(): void {
+  const lang = getLanguage();
+  document.documentElement.lang = lang;
+
+  document.querySelectorAll('[data-i18n]').forEach((el) => {
+    const key = el.getAttribute('data-i18n');
+    if (key) {
+      el.textContent = t(key as any);
+    }
+  });
+}
+
+async function loadProjectStats(): Promise<void> {
+  const realmEl = $('#stat-realm-name');
+  const accountsEl = $('#stat-accounts-count');
+  const playersEl = $('#stat-players-online');
+
+  if (!realmEl || !accountsEl || !playersEl) return;
+
+  // 1. Try to read from localStorage first
+  let cached: { realm: string; accounts_created: number; players_online: number; timestamp: number } | null = null;
+  if (typeof localStorage !== 'undefined') {
+    const raw = localStorage.getItem(STATS_CACHE_KEY);
+    if (raw) {
+      try {
+        cached = JSON.parse(raw);
+      } catch {}
+    }
+  }
+
+  // If cache exists and is fresh (within TTL), use it and skip API request
+  if (cached && (Date.now() - cached.timestamp < STATS_CACHE_TTL_MS)) {
+    realmEl.textContent = cached.realm;
+    accountsEl.textContent = String(cached.accounts_created);
+    playersEl.textContent = String(cached.players_online);
+    return;
+  }
+
+  // 2. Fetch fresh stats
+  try {
+    const data = await api.projectStats();
+
+    realmEl.textContent = data.realm;
+    accountsEl.textContent = String(data.accounts_created);
+    playersEl.textContent = String(data.players_online);
+
+    // Save to cache with timestamp
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(STATS_CACHE_KEY, JSON.stringify({
+        ...data,
+        timestamp: Date.now(),
+      }));
+    }
+  } catch (err) {
+    console.error('Failed to fetch project stats:', err);
+    // If API fails, fall back to cached data (even if expired)
+    if (cached) {
+      realmEl.textContent = `${cached.realm} (Offline)`;
+      accountsEl.textContent = String(cached.accounts_created);
+      playersEl.textContent = String(cached.players_online);
+    } else {
+      realmEl.textContent = 'Offline';
+      accountsEl.textContent = '—';
+      playersEl.textContent = '—';
+    }
+  }
+}
+
 function wireStartScreens(): void {
+  // Initial page translation and stats load
+  translatePage();
+  void loadProjectStats();
+
   // mode select
   const onlineBtn = $('#btn-online');
   const offlineBtn = $('#btn-offline');
@@ -1534,12 +1609,7 @@ function wireStartScreens(): void {
 
   setupNavBtn(navBtnPlay, '#hero-view', () => {
     switchMainView('#hero-view');
-    // Default to mode-select if no play panel is active
-    const playPanels = ['#mode-select', '#login-panel', '#realm-panel', '#charselect-panel', '#offline-select'];
-    const activePanel = playPanels.find(id => !$(id).hasAttribute('hidden'));
-    if (!activePanel) {
-      show('#mode-select');
-    }
+    show('#mode-select');
   });
 
   setupNavBtn(navBtnHighscores, '#highscores-view');
@@ -1564,7 +1634,7 @@ function wireStartScreens(): void {
     langSelect.addEventListener('change', () => {
       const selected = langSelect.value as 'en' | 'es';
       setLanguage(selected);
-      window.location.reload();
+      translatePage();
     });
   }
 
