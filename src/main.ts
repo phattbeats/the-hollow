@@ -15,7 +15,7 @@ import { DT, INTERACT_RANGE, PlayerClass, dist2d } from './sim/types';
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
-import { getLanguage, setLanguage, t } from './ui/i18n';
+import { getLanguage, setLanguage, t, SupportedLanguage } from './ui/i18n';
 
 
 const WORLD_SEED = 20061; // fixed: World of Claudecraft is a persistent place
@@ -1658,7 +1658,7 @@ function wireStartScreens(): void {
   if (langSelect) {
     langSelect.value = getLanguage();
     langSelect.addEventListener('change', () => {
-      const selected = langSelect.value as 'en' | 'es';
+      const selected = langSelect.value as SupportedLanguage;
       setLanguage(selected);
       
       // Dynamically update the browser URL query parameter without page reload
