@@ -10,6 +10,8 @@ import type { IWorld } from './world_api';
 import { assetsReady } from './render/assets/preload';
 import { DT, INTERACT_RANGE, PlayerClass, dist2d } from './sim/types';
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
+import { CLASSES, ABILITIES } from './sim/content/classes';
+import { iconDataUrl } from './ui/icons';
 
 
 const WORLD_SEED = 20061; // fixed: World of Claudecraft is a persistent place
@@ -287,13 +289,148 @@ function startOffline(playerClass: PlayerClass, name: string): void {
 
 const api = new Api();
 
+let activeTransitionTimeout: number | null = null;
+let activeTransitionCleanup: (() => void) | null = null;
+const currentlyRenderedClass: Record<string, PlayerClass | null> = {
+  'offline-class-details': null,
+  'online-class-details': null
+};
+const revertTimeouts: Record<string, number | null> = {
+  'offline-class-details': null,
+  'online-class-details': null
+};
+const hoverTimeouts: Record<string, number | null> = {
+  'offline-class-details': null,
+  'online-class-details': null
+};
+
 function show(el: string): void {
   if (document.activeElement instanceof HTMLInputElement || document.activeElement instanceof HTMLTextAreaElement) {
     document.activeElement.blur();
   }
-  for (const id of ['#mode-select', '#login-panel', '#charselect-panel']) {
-    $(id).toggleAttribute('hidden', id !== el);
+
+  // Reset currently rendered classes to force re-render/animation when opening a panel
+  currentlyRenderedClass['offline-class-details'] = null;
+  currentlyRenderedClass['online-class-details'] = null;
+  if (revertTimeouts['offline-class-details'] !== null) {
+    window.clearTimeout(revertTimeouts['offline-class-details']);
+    revertTimeouts['offline-class-details'] = null;
   }
+  if (revertTimeouts['online-class-details'] !== null) {
+    window.clearTimeout(revertTimeouts['online-class-details']);
+    revertTimeouts['online-class-details'] = null;
+  }
+  if (hoverTimeouts['offline-class-details'] !== null) {
+    window.clearTimeout(hoverTimeouts['offline-class-details']);
+    hoverTimeouts['offline-class-details'] = null;
+  }
+  if (hoverTimeouts['online-class-details'] !== null) {
+    window.clearTimeout(hoverTimeouts['online-class-details']);
+    hoverTimeouts['online-class-details'] = null;
+  }
+
+  const panels = ['#mode-select', '#login-panel', '#charselect-panel', '#offline-select'];
+  const startScreen = $('#start-screen');
+
+  // Automatically close controls drawer if navigating away from mode-select
+  if (el !== '#mode-select') {
+    const closeBtn = $('#btn-close-controls') as HTMLButtonElement | null;
+    const controlsDrawer = $('#controls-drawer');
+    if (controlsDrawer && !controlsDrawer.hasAttribute('hidden') && closeBtn) {
+      closeBtn.click();
+    }
+  }
+
+  // Find currently visible panel
+  const currentActiveId = panels.find(id => !$(id).hasAttribute('hidden'));
+
+  if (!currentActiveId || currentActiveId === el) {
+    // Show instantly on initial load or same panel
+    for (const id of panels) {
+      $(id).toggleAttribute('hidden', id !== el);
+    }
+    $('#social-links')?.toggleAttribute('hidden', el !== '#mode-select');
+    return;
+  }
+
+  // Clear active transition
+  if (activeTransitionTimeout !== null) {
+    window.clearTimeout(activeTransitionTimeout);
+    activeTransitionTimeout = null;
+  }
+  if (activeTransitionCleanup) {
+    activeTransitionCleanup();
+    activeTransitionCleanup = null;
+  }
+
+  const fromPanel = $(currentActiveId);
+  const toPanel = $(el);
+
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (isReducedMotion) {
+    fromPanel.toggleAttribute('hidden', true);
+    toPanel.toggleAttribute('hidden', false);
+    $('#social-links')?.toggleAttribute('hidden', el !== '#mode-select');
+    return;
+  }
+
+  const socialLinks = $('#social-links');
+
+  // Fade out using CSS classes
+  fromPanel.classList.add('panel-transition', 'panel-fade-out');
+
+  if (el !== '#mode-select' && socialLinks && !socialLinks.hasAttribute('hidden')) {
+    socialLinks.classList.add('social-links-fade-out');
+  }
+
+  const cleanupFrom = () => {
+    fromPanel.toggleAttribute('hidden', true);
+    fromPanel.classList.remove('panel-transition', 'panel-fade-out');
+    if (socialLinks) {
+      socialLinks.classList.remove('social-links-fade-out');
+    }
+  };
+
+  activeTransitionCleanup = cleanupFrom;
+
+  activeTransitionTimeout = window.setTimeout(() => {
+    cleanupFrom();
+    activeTransitionCleanup = null;
+    activeTransitionTimeout = null;
+
+    if (socialLinks) {
+      socialLinks.toggleAttribute('hidden', el !== '#mode-select');
+      if (el === '#mode-select') {
+        socialLinks.classList.add('social-links-fade-out');
+        void socialLinks.offsetHeight;
+        socialLinks.classList.remove('social-links-fade-out');
+      }
+    }
+
+    // Set initial state for fade-in
+    toPanel.classList.add('panel-transition', 'panel-fade-in-start');
+    toPanel.toggleAttribute('hidden', false);
+
+    // Force layout reflow
+    void toPanel.offsetHeight;
+
+    // Trigger fade-in
+    toPanel.classList.remove('panel-fade-in-start');
+    toPanel.classList.add('panel-fade-in');
+
+    const cleanupTo = () => {
+      toPanel.classList.remove('panel-transition', 'panel-fade-in');
+    };
+
+    activeTransitionCleanup = cleanupTo;
+
+    activeTransitionTimeout = window.setTimeout(() => {
+      cleanupTo();
+      activeTransitionCleanup = null;
+      activeTransitionTimeout = null;
+    }, 150);
+
+  }, 150);
 }
 
 function loginError(text: string): void {
@@ -365,61 +502,446 @@ function enterWorld(c: CharacterSummary): void {
   };
 }
 
+interface ClassDetails {
+  role: string;
+  roleType: 'tank' | 'dps' | 'ranged' | 'healer' | 'hybrid';
+  armor: string;
+  weapons: string;
+  lore: string;
+}
+
+const CLASS_DETAILS: Record<PlayerClass, ClassDetails> = {
+  warrior: {
+    role: 'Tank / Melee DPS',
+    roleType: 'hybrid',
+    armor: 'Chainmail, Leather, Cloth',
+    weapons: 'Swords, Maces, Axes',
+    lore: 'Warriors are battle-hardened melee fighters who generate Rage as they deal or take damage. They excel at absorbing hits as tanks or crushing foes with heavy weapons.'
+  },
+  paladin: {
+    role: 'Healer / Tank / Melee DPS',
+    roleType: 'hybrid',
+    armor: 'Chainmail, Leather, Cloth',
+    weapons: 'Swords, Maces',
+    lore: 'Paladins are holy crusaders who support allies with blessings, heal wounds with Holy Light, and protect the weak, wearing heavy armor to withstand physical attacks.'
+  },
+  hunter: {
+    role: 'Ranged DPS',
+    roleType: 'ranged',
+    armor: 'Leather, Cloth',
+    weapons: 'Axes, Swords',
+    lore: 'Masters of the wilderness, Hunters track and defeat enemies from afar using bows or guns. They use traps to control the battlefield.'
+  },
+  rogue: {
+    role: 'Melee DPS',
+    roleType: 'dps',
+    armor: 'Leather, Cloth',
+    weapons: 'Daggers, Swords',
+    lore: 'Rogues are stealthy assassins who rely on Energy and Combo Points to execute devastating backstabs and finishing moves. They strike from the shadows.'
+  },
+  priest: {
+    role: 'Healer / Ranged DPS',
+    roleType: 'healer',
+    armor: 'Cloth',
+    weapons: 'Staves',
+    lore: 'Devoted healers who call upon the Holy Light to mend their allies and shield them from harm, while also using Shadow magic to drain the life of enemies.'
+  },
+  shaman: {
+    role: 'Healer / Melee or Ranged DPS',
+    roleType: 'hybrid',
+    armor: 'Chainmail, Leather, Cloth',
+    weapons: 'Maces, Axes',
+    lore: 'Spiritual guides who command the elements, Shaman imbue their weapons with elemental power, shock enemies with lightning, and heal allies.'
+  },
+  mage: {
+    role: 'Ranged DPS',
+    roleType: 'ranged',
+    armor: 'Cloth',
+    weapons: 'Staves',
+    lore: 'Arcane spellcasters who manipulate Fire, Frost, and Arcane energy to destroy their enemies. They can conjure water to restore mana and freeze foes.'
+  },
+  warlock: {
+    role: 'Ranged DPS',
+    roleType: 'ranged',
+    armor: 'Cloth',
+    weapons: 'Staves',
+    lore: 'Dark spellcasters who summon demons, inflict curses and damage-over-time spells, and drain the life force from their enemies to sustain themselves.'
+  },
+  druid: {
+    role: 'Tank / Healer / Melee or Ranged DPS',
+    roleType: 'hybrid',
+    armor: 'Leather, Cloth',
+    weapons: 'Staves',
+    lore: 'Shapeshifters who harness the power of nature. Druids can heal wounds, entangle foes, and transform into a mighty Bear to tank or other forms.'
+  }
+};
+
+const SIGNATURE_ABILITIES: Record<PlayerClass, string[]> = {
+  warrior: ['charge', 'heroic_strike', 'rend'],
+  paladin: ['holy_light', 'judgement', 'seal_of_righteousness'],
+  hunter: ['serpent_sting', 'aimed_shot', 'aspect_of_the_hawk'],
+  rogue: ['sinister_strike', 'eviscerate', 'evasion'],
+  priest: ['smite', 'power_word_shield', 'shadow_word_pain'],
+  shaman: ['lightning_bolt', 'rockbiter_weapon', 'ghost_wolf'],
+  mage: ['fireball', 'frostbolt', 'polymorph'],
+  warlock: ['shadow_bolt', 'corruption', 'life_tap'],
+  druid: ['wrath', 'bear_form', 'rejuvenation']
+};
+
+const activeClassDetailsTimeouts: Record<string, number | null> = {};
+
+function renderClassDetails(panelId: string, className: PlayerClass): void {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  // Redundant render check
+  if (currentlyRenderedClass[panelId] === className) return;
+  currentlyRenderedClass[panelId] = className;
+
+  // Clear any active transitions for this panel to prevent stacked out-of-order renders
+  if (activeClassDetailsTimeouts[panelId] !== undefined && activeClassDetailsTimeouts[panelId] !== null) {
+    window.clearTimeout(activeClassDetailsTimeouts[panelId]);
+    activeClassDetailsTimeouts[panelId] = null;
+  }
+
+  const classDef = CLASSES[className];
+  const details = CLASS_DETAILS[className];
+  if (!classDef || !details) return;
+
+  const existingContent = panel.querySelector('.class-details-content');
+  const existingName = panel.querySelector('.class-details-name')?.textContent;
+
+  if (existingContent && existingName === classDef.name) {
+    if (activeClassDetailsTimeouts[panelId] !== undefined && activeClassDetailsTimeouts[panelId] !== null) {
+      window.clearTimeout(activeClassDetailsTimeouts[panelId]);
+      activeClassDetailsTimeouts[panelId] = null;
+    }
+    const contentWrapper = existingContent as HTMLElement;
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isReducedMotion) {
+      contentWrapper.classList.remove('fade-out');
+      const fills = contentWrapper.querySelectorAll('.details-stat-bar-fill') as NodeListOf<HTMLElement>;
+      fills.forEach(fill => {
+        fill.style.width = fill.getAttribute('data-target-width') || '0%';
+      });
+    } else {
+      void contentWrapper.offsetHeight;
+      contentWrapper.classList.remove('fade-out');
+      const fills = contentWrapper.querySelectorAll('.details-stat-bar-fill') as NodeListOf<HTMLElement>;
+      fills.forEach(fill => {
+        fill.style.width = fill.getAttribute('data-target-width') || '0%';
+      });
+    }
+    return;
+  }
+
+  const classColorHex = '#' + classDef.color.toString(16).padStart(6, '0');
+  
+  // Bind class color as a custom property for clean styling
+  panel.style.setProperty('--class-color', classColorHex);
+
+  const statsList = [
+    { name: 'Strength', key: 'str' },
+    { name: 'Agility', key: 'agi' },
+    { name: 'Stamina', key: 'sta' },
+    { name: 'Intellect', key: 'int' },
+    { name: 'Spirit', key: 'spi' }
+  ];
+
+  const statBarsHtml = statsList.map(s => {
+    const val = classDef.baseStats[s.key as keyof typeof classDef.baseStats];
+    const pct = Math.min(100, Math.round((val / 25) * 100));
+    return `
+      <div class="details-stat-bar-row">
+        <span class="details-stat-label">${s.name}</span>
+        <div class="details-stat-bar-track" aria-label="${s.name}: ${val} out of 25">
+          <div class="details-stat-bar-fill" style="width: 0%;" data-target-width="${pct}%"></div>
+        </div>
+        <span class="details-stat-val">${val}</span>
+      </div>
+    `;
+  }).join('');
+
+  const spells = SIGNATURE_ABILITIES[className];
+  const spellsHtml = spells.map(spellId => {
+    const a = ABILITIES[spellId];
+    if (!a) return '';
+    const iconUrl = iconDataUrl('ability', spellId, 32);
+    
+    // Format ability description dynamically by resolving rank 1 placeholders
+    let dmgText = '';
+    const primaryEffect = a.effects.find(eff => 
+      eff.type === 'directDamage' || 
+      eff.type === 'heal' || 
+      eff.type === 'weaponDamage' || 
+      eff.type === 'weaponStrike' || 
+      eff.type === 'aoeDamage' || 
+      eff.type === 'aoeRoot' ||
+      eff.type === 'finisherDamage' ||
+      eff.type === 'drainTick'
+    );
+    if (primaryEffect) {
+      if (primaryEffect.type === 'directDamage' || primaryEffect.type === 'heal' || primaryEffect.type === 'aoeDamage' || primaryEffect.type === 'aoeRoot' || primaryEffect.type === 'drainTick') {
+        dmgText = primaryEffect.min === primaryEffect.max ? `${primaryEffect.min}` : `${primaryEffect.min} to ${primaryEffect.max}`;
+      } else if (primaryEffect.type === 'weaponDamage' || primaryEffect.type === 'weaponStrike') {
+        dmgText = `${primaryEffect.bonus}`;
+      } else if (primaryEffect.type === 'finisherDamage') {
+        dmgText = `${primaryEffect.base} plus ${primaryEffect.perCombo} per combo point`;
+      }
+    } else {
+      const secondaryEffect = a.effects.find(eff => 
+        eff.type === 'dot' || 
+        eff.type === 'hot' || 
+        eff.type === 'absorb' || 
+        eff.type === 'imbue'
+      );
+      if (secondaryEffect) {
+        if (secondaryEffect.type === 'dot' || secondaryEffect.type === 'hot') {
+          dmgText = `${secondaryEffect.total}`;
+        } else if (secondaryEffect.type === 'absorb') {
+          dmgText = `${secondaryEffect.amount}`;
+        } else if (secondaryEffect.type === 'imbue') {
+          dmgText = `${secondaryEffect.bonus}`;
+        }
+      }
+    }
+    const resolvedDesc = a.description.replace('$d', dmgText);
+
+    return `
+      <li class="details-spell-item">
+        <img class="details-spell-icon-img" src="${iconUrl}" alt="${a.name}" width="32" height="32" />
+        <div class="details-spell-text">
+          <strong>${a.name}</strong>
+          ${resolvedDesc}
+        </div>
+      </li>
+    `;
+  }).join('');
+
+  // Ensure the panel itself is visible
+  panel.classList.add('visible');
+
+  const performUpdate = () => {
+    panel.innerHTML = `
+      <div class="class-details-content fade-out">
+        <div class="class-details-header">
+          <div class="class-details-header-text">
+            <h3 class="class-details-name">${classDef.name}</h3>
+            <span class="class-details-role role-${details.roleType}">${details.role}</span>
+          </div>
+        </div>
+        <p class="class-details-lore">${details.lore}</p>
+        <div class="class-details-grid">
+          <div class="class-details-stats-col">
+            <h4 class="details-section-title">Starting Stats</h4>
+            ${statBarsHtml}
+          </div>
+          <div class="class-details-gear-col">
+            <h4 class="details-section-title">Equipment</h4>
+            <div class="details-gear-row"><strong>Resource:</strong> <span class="badge badge-resource resource-${classDef.resourceType}">${classDef.resourceType}</span></div>
+            <div class="details-gear-row"><strong>Armor:</strong> <span class="badge">${details.armor}</span></div>
+            <div class="details-gear-row"><strong>Weapons:</strong> <span class="badge">${details.weapons}</span></div>
+          </div>
+          <div class="details-spells-section">
+            <h4 class="details-section-title">Signature Abilities</h4>
+            <ul class="details-spells-list">
+              ${spellsHtml}
+            </ul>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    // Announce update to screen readers
+    panel.setAttribute('aria-label', `${classDef.name} Class Details: Role is ${details.role}. starting stats are Strength ${classDef.baseStats.str}, Agility ${classDef.baseStats.agi}, Stamina ${classDef.baseStats.sta}, Intellect ${classDef.baseStats.int}, Spirit ${classDef.baseStats.spi}.`);
+
+    const contentWrapper = panel.querySelector('.class-details-content') as HTMLElement | null;
+    if (contentWrapper) {
+      const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (isReducedMotion) {
+        contentWrapper.classList.remove('fade-out');
+        const fills = contentWrapper.querySelectorAll('.details-stat-bar-fill') as NodeListOf<HTMLElement>;
+        fills.forEach(fill => {
+          fill.style.width = fill.getAttribute('data-target-width') || '0%';
+        });
+      } else {
+        // Force layout reflow
+        void contentWrapper.offsetHeight;
+
+        contentWrapper.classList.remove('fade-out');
+
+        // Animate stat bars by forcing a reflow and then setting target width
+        const fills = contentWrapper.querySelectorAll('.details-stat-bar-fill') as NodeListOf<HTMLElement>;
+        fills.forEach(fill => {
+          // Force reflow for each fill to register the initial 0% width
+          void fill.offsetHeight;
+          fill.style.width = fill.getAttribute('data-target-width') || '0%';
+        });
+      }
+    }
+  };
+
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (isReducedMotion) {
+    performUpdate();
+  } else if (existingContent) {
+    existingContent.classList.add('fade-out');
+    activeClassDetailsTimeouts[panelId] = window.setTimeout(() => {
+      performUpdate();
+      activeClassDetailsTimeouts[panelId] = null;
+    }, 150);
+  } else {
+    performUpdate();
+  }
+}
+
 function wireStartScreens(): void {
   // mode select
   const onlineBtn = $('#btn-online');
   const offlineBtn = $('#btn-offline');
+  const btnStartOffline = $('#btn-start-offline') as HTMLButtonElement;
+  const offlineNameInput = $('#char-name') as HTMLInputElement;
+  const offlineError = $('#offline-error');
   
   const handleOnlineSelect = () => show('#login-panel');
-  const handleOfflineSelect = () => {
-    $('#mode-select').toggleAttribute('hidden', true);
-    $('#offline-select').toggleAttribute('hidden', false);
+
+  const handleOfflineStart = (cls: PlayerClass) => {
+    const rawName = offlineNameInput.value.trim();
+    if (!rawName) {
+      offlineError.textContent = 'Please enter a character name.';
+      offlineNameInput.classList.add('user-invalid-fallback');
+      offlineNameInput.setAttribute('aria-invalid', 'true');
+      offlineNameInput.focus();
+      return;
+    }
+    if (!validateCharacterName(rawName)) {
+      offlineError.textContent = 'Name must be 2-16 characters, start with a letter, and contain only letters, spaces, hyphens, or apostrophes.';
+      offlineNameInput.classList.add('user-invalid-fallback');
+      offlineNameInput.setAttribute('aria-invalid', 'true');
+      offlineNameInput.focus();
+      return;
+    }
+
+    offlineError.textContent = '';
+    offlineNameInput.classList.remove('user-invalid-fallback');
+    offlineNameInput.removeAttribute('aria-invalid');
+
+    audio.init();
+    music.init();
+    const name = sanitizeOfflineName(rawName);
+    startOffline(cls, name);
   };
-  
+
+  const handleOfflineSelect = () => {
+    show('#offline-select');
+    
+    // Select warrior by default and render details
+    const warriorCard = document.querySelector('.class-card[data-class="warrior"]') as HTMLElement | null;
+    if (warriorCard) {
+      document.querySelectorAll('.class-card').forEach((c) => {
+        c.classList.remove('sel');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      warriorCard.classList.add('sel');
+      warriorCard.setAttribute('aria-pressed', 'true');
+      renderClassDetails('offline-class-details', 'warrior');
+      btnStartOffline.removeAttribute('disabled');
+    }
+  };
+
   onlineBtn.addEventListener('click', handleOnlineSelect);
   onlineBtn.addEventListener('keydown', (e) => handleKeyboardActivation(e as KeyboardEvent, handleOnlineSelect));
   
   offlineBtn.addEventListener('click', handleOfflineSelect);
   offlineBtn.addEventListener('keydown', (e) => handleKeyboardActivation(e as KeyboardEvent, handleOfflineSelect));
 
+  btnStartOffline.addEventListener('click', () => {
+    const selCard = document.querySelector('.class-card.sel') as HTMLElement | null;
+    if (selCard) {
+      handleOfflineStart(selCard.dataset.class as PlayerClass);
+    } else {
+      offlineError.textContent = 'Please select a class.';
+    }
+  });
+
   // offline class cards
-  const offlineNameInput = $('#char-name') as HTMLInputElement;
-  const offlineError = $('#offline-error');
   document.querySelectorAll('.class-card').forEach((card) => {
     const handleClassSelect = () => {
-      const rawName = offlineNameInput.value.trim();
-      if (!rawName) {
-        offlineError.textContent = 'Please enter a character name.';
-        offlineNameInput.classList.add('user-invalid-fallback');
-        offlineNameInput.setAttribute('aria-invalid', 'true');
-        offlineNameInput.focus();
-        return;
+      if (hoverTimeouts['offline-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['offline-class-details']);
+        hoverTimeouts['offline-class-details'] = null;
       }
-      if (!validateCharacterName(rawName)) {
-        offlineError.textContent = 'Name must be 2-16 characters, start with a letter, and contain only letters, spaces, hyphens, or apostrophes.';
-        offlineNameInput.classList.add('user-invalid-fallback');
-        offlineNameInput.setAttribute('aria-invalid', 'true');
-        offlineNameInput.focus();
-        return;
+      if (revertTimeouts['offline-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['offline-class-details']);
+        revertTimeouts['offline-class-details'] = null;
       }
-
-      offlineError.textContent = '';
-      offlineNameInput.classList.remove('user-invalid-fallback');
-      offlineNameInput.removeAttribute('aria-invalid');
-
-      audio.init();
-      music.init();
-      const name = sanitizeOfflineName(rawName);
-      startOffline((card as HTMLElement).dataset.class as PlayerClass, name);
+      document.querySelectorAll('.class-card').forEach((c) => {
+        c.classList.remove('sel');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      card.classList.add('sel');
+      card.setAttribute('aria-pressed', 'true');
+      
+      const cls = (card as HTMLElement).dataset.class as PlayerClass;
+      renderClassDetails('offline-class-details', cls);
+      btnStartOffline.removeAttribute('disabled');
     };
     card.addEventListener('click', handleClassSelect);
     card.addEventListener('keydown', (e) => handleKeyboardActivation(e as KeyboardEvent, handleClassSelect));
+    
+    // A11y focus updates details
+    card.addEventListener('focus', () => {
+      if (revertTimeouts['offline-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['offline-class-details']);
+        revertTimeouts['offline-class-details'] = null;
+      }
+      if (hoverTimeouts['offline-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['offline-class-details']);
+        hoverTimeouts['offline-class-details'] = null;
+      }
+      const cls = (card as HTMLElement).dataset.class as PlayerClass;
+      renderClassDetails('offline-class-details', cls);
+    });
+
+    // Hover updates details with 50ms debounce
+    card.addEventListener('mouseenter', () => {
+      if (revertTimeouts['offline-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['offline-class-details']);
+        revertTimeouts['offline-class-details'] = null;
+      }
+      if (hoverTimeouts['offline-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['offline-class-details']);
+      }
+      const cls = (card as HTMLElement).dataset.class as PlayerClass;
+      hoverTimeouts['offline-class-details'] = window.setTimeout(() => {
+        renderClassDetails('offline-class-details', cls);
+        hoverTimeouts['offline-class-details'] = null;
+      }, 50);
+    });
+
+    // Mouseleave reverts to currently selected class details with a 100ms debounce
+    card.addEventListener('mouseleave', () => {
+      if (hoverTimeouts['offline-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['offline-class-details']);
+        hoverTimeouts['offline-class-details'] = null;
+      }
+      if (revertTimeouts['offline-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['offline-class-details']);
+      }
+      revertTimeouts['offline-class-details'] = window.setTimeout(() => {
+        const selCard = document.querySelector('.class-card.sel') as HTMLElement | null;
+        if (selCard) {
+          const cls = selCard.dataset.class as PlayerClass;
+          renderClassDetails('offline-class-details', cls);
+        }
+        revertTimeouts['offline-class-details'] = null;
+      }, 100);
+    });
   });
 
   const offlineBackBtn = $('#btn-offline-back');
   const handleOfflineBack = () => {
-    $('#offline-select').toggleAttribute('hidden', true);
-    $('#mode-select').toggleAttribute('hidden', false);
+    show('#mode-select');
     offlineError.textContent = '';
     offlineNameInput.value = '';
     offlineNameInput.classList.remove('user-invalid-fallback');
@@ -519,16 +1041,84 @@ function wireStartScreens(): void {
   // character creation
   document.querySelectorAll('#charselect-panel .mini-class').forEach((el) => {
     const handleMiniClassSelect = () => {
+      if (hoverTimeouts['online-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['online-class-details']);
+        hoverTimeouts['online-class-details'] = null;
+      }
+      if (revertTimeouts['online-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['online-class-details']);
+        revertTimeouts['online-class-details'] = null;
+      }
       document.querySelectorAll('#charselect-panel .mini-class').forEach((x) => {
         x.classList.remove('sel');
         x.setAttribute('aria-pressed', 'false');
       });
       el.classList.add('sel');
       el.setAttribute('aria-pressed', 'true');
+      
+      const cls = (el as HTMLElement).dataset.class as PlayerClass;
+      renderClassDetails('online-class-details', cls);
     };
     el.addEventListener('click', handleMiniClassSelect);
     el.addEventListener('keydown', (e) => handleKeyboardActivation(e as KeyboardEvent, handleMiniClassSelect));
+    
+    // A11y focus updates details
+    el.addEventListener('focus', () => {
+      if (revertTimeouts['online-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['online-class-details']);
+        revertTimeouts['online-class-details'] = null;
+      }
+      if (hoverTimeouts['online-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['online-class-details']);
+        hoverTimeouts['online-class-details'] = null;
+      }
+      const cls = (el as HTMLElement).dataset.class as PlayerClass;
+      renderClassDetails('online-class-details', cls);
+    });
+
+    // Hover updates details with 50ms debounce
+    el.addEventListener('mouseenter', () => {
+      if (revertTimeouts['online-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['online-class-details']);
+        revertTimeouts['online-class-details'] = null;
+      }
+      if (hoverTimeouts['online-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['online-class-details']);
+      }
+      const cls = (el as HTMLElement).dataset.class as PlayerClass;
+      hoverTimeouts['online-class-details'] = window.setTimeout(() => {
+        renderClassDetails('online-class-details', cls);
+        hoverTimeouts['online-class-details'] = null;
+      }, 50);
+    });
+
+    // Mouseleave reverts to currently selected class details with a 100ms debounce
+    el.addEventListener('mouseleave', () => {
+      if (hoverTimeouts['online-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['online-class-details']);
+        hoverTimeouts['online-class-details'] = null;
+      }
+      if (revertTimeouts['online-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['online-class-details']);
+      }
+      revertTimeouts['online-class-details'] = window.setTimeout(() => {
+        const selEl = document.querySelector('#charselect-panel .mini-class.sel') as HTMLElement | null;
+        if (selEl) {
+          const cls = selEl.dataset.class as PlayerClass;
+          renderClassDetails('online-class-details', cls);
+        }
+        revertTimeouts['online-class-details'] = null;
+      }, 100);
+    });
   });
+
+  // Default select warrior in online character creator
+  const defaultOnlineClass = document.querySelector('#charselect-panel .mini-class[data-class="warrior"]') as HTMLElement | null;
+  if (defaultOnlineClass) {
+    defaultOnlineClass.classList.add('sel');
+    defaultOnlineClass.setAttribute('aria-pressed', 'true');
+    renderClassDetails('online-class-details', 'warrior');
+  }
   const newCharNameInput = $('#new-char-name') as HTMLInputElement;
   const charselectError = $('#charselect-error');
 
@@ -654,6 +1244,19 @@ function wireStartScreens(): void {
   };
 
   initBackgroundEmbers();
+
+  // Dynamically populate offline class card crests with actual ability icons
+  document.querySelectorAll('#offline-select .class-card').forEach((card) => {
+    const cls = (card as HTMLElement).dataset.class as PlayerClass;
+    const crestDiv = card.querySelector('.crest');
+    if (crestDiv) {
+      const firstAbilityId = SIGNATURE_ABILITIES[cls]?.[0];
+      if (firstAbilityId) {
+        const iconUrl = iconDataUrl('ability', firstAbilityId, 32);
+        crestDiv.innerHTML = `<img src="${iconUrl}" alt="${cls}" class="class-card-icon-img" width="32" height="32" />`;
+      }
+    }
+  });
 }
 
 wireStartScreens();
