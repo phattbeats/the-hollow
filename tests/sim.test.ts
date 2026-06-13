@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { Sim } from '../src/sim/sim';
 import { applyAction, encodeObs, obsSize, ACTIONS } from '../src/sim/obs';
 import {
-  dist2d, MAX_LEVEL, xpForLevel, mobXpValue, rageConversion, rageFromDealing,
+  type SimEvent, dist2d, MAX_LEVEL, xpForLevel, mobXpValue, rageConversion, rageFromDealing,
   spellHitChance, meleeMissChance,
 } from '../src/sim/types';
 import { QUESTS, abilitiesKnownAt } from '../src/sim/data';
@@ -222,11 +222,13 @@ describe('combat', () => {
     teleportTo(sim, wolf.spawnPos.x + 100, wolf.spawnPos.z + 100);
     sim.stopAutoAttack();
     let evaded = false;
+    const leashEvents: SimEvent[] = [];
     for (let i = 0; i < 20 * 30 && !evaded; i++) {
-      sim.tick();
+      leashEvents.push(...sim.tick());
       if (wolf.aiState === 'evade' || wolf.aiState === 'idle') evaded = true;
     }
     expect(evaded).toBe(true);
+    expect(leashEvents.some((e) => e.type === 'log' && e.text.endsWith(' returns home.'))).toBe(false);
     for (let i = 0; i < 20 * 30 && wolf.aiState !== 'idle'; i++) sim.tick();
     expect(wolf.hp).toBe(wolf.maxHp);
   });
