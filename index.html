@@ -552,8 +552,8 @@
     width: 100%;
     background: rgba(11, 11, 18, 0.95);
     border-bottom: 2px solid var(--color-border-default);
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     padding: var(--spacing-sm) var(--spacing-lg);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
@@ -561,9 +561,40 @@
     flex-shrink: 0;
   }
 
+  .header-menu-container {
+    display: contents;
+  }
+
   .header-logo-container {
     display: flex;
     align-items: center;
+    justify-self: start;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+  }
+
+  .header-logo-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    border-radius: var(--radius-sm);
+    transition: filter var(--transition-speed);
+  }
+
+  .header-logo-btn:hover {
+    filter: brightness(1.2);
+  }
+
+  .header-logo-btn:focus-visible {
+    outline: 3px solid var(--color-border-focus) !important;
+    outline-offset: 2px !important;
   }
 
   .header-logo {
@@ -575,10 +606,54 @@
     filter: drop-shadow(0 0 10px rgba(199, 148, 26, 0.3)) drop-shadow(1px 1px 2px #000);
   }
 
+  #title-logo {
+    width: min(280px, 80vw);
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(199, 148, 26, 0.25)) drop-shadow(2px 2px 4px #000);
+    animation: logo-pulse 2.5s ease-in-out infinite alternate;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 20;
+  }
+  .hamburger-bar {
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-primary-dim);
+    border-radius: 1px;
+    transition: transform var(--transition-speed), opacity var(--transition-speed), background-color var(--transition-speed);
+  }
+  .mobile-menu-toggle:hover .hamburger-bar,
+  .mobile-menu-toggle:focus-visible .hamburger-bar {
+    background-color: var(--color-primary);
+  }
+  
+  /* Animate to X when open */
+  .homepage-header.menu-open .mobile-menu-toggle .hamburger-bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .homepage-header.menu-open .mobile-menu-toggle .hamburger-bar:nth-child(2) {
+    opacity: 0;
+  }
+  .homepage-header.menu-open .mobile-menu-toggle .hamburger-bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
   /* Navigation Bar */
   .homepage-nav {
     display: flex;
     align-items: center;
+    justify-self: center;
   }
 
   .nav-list {
@@ -621,25 +696,32 @@
   /* Language Selector */
   .language-selector {
     position: relative;
+    display: inline-block;
   }
 
   .lang-select-dropdown {
-    background: var(--color-bg-input);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: var(--color-bg-input) url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c8a838' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center / 12px;
     color: var(--color-primary-dim);
     border: 2px solid var(--color-border-default);
     border-radius: var(--radius-sm);
-    padding: 6px var(--spacing-md);
+    padding: 6px 36px 6px 16px; /* Custom chevron layout with padding */
     font-family: var(--font-heading);
     font-size: 13px;
     cursor: pointer;
     outline: none;
     transition: border-color var(--transition-speed), color var(--transition-speed), box-shadow var(--transition-speed);
+    user-select: auto;
+    -webkit-user-select: auto;
   }
 
   .lang-select-dropdown:hover,
   .lang-select-dropdown:focus-visible {
     border-color: var(--color-border-focus);
     color: var(--color-primary);
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffd100' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     box-shadow: 0 0 8px var(--color-primary-glow);
   }
 
@@ -695,7 +777,8 @@
 
   /* Project Stats Panel */
   .stats-panel-premium {
-    width: min(580px, 92vw);
+    width: 100%;
+    max-width: 580px;
     padding: var(--spacing-md) var(--spacing-lg);
     margin-bottom: var(--spacing-sm);
     background: linear-gradient(180deg, rgba(21, 21, 31, 0.94) 0%, rgba(11, 11, 18, 0.96) 100%);
@@ -763,8 +846,8 @@
     border-radius: var(--radius-md);
     padding: var(--spacing-lg);
     position: relative;
+    width: 100%;
     max-width: 600px;
-    width: 92vw;
     text-align: center;
     margin: auto;
   }
@@ -985,7 +1068,8 @@
   /* ---------- online auth / character select ---------- */
   .mode-row { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
   .mode-card {
-    width: min(280px, 92vw);
+    width: 100%;
+    max-width: 280px;
     padding: 26px 22px;
     text-align: center;
     cursor: pointer;
@@ -1010,7 +1094,30 @@
     text-shadow: 0 0 8px rgba(255,209,0,0.2), 1px 1px 2px #000;
   }
   .mode-card p { font-size: 12px; color: #a0aabf; line-height: 1.55; }
-  .auth-panel { width: 360px; padding: 16px; }
+  #performance-tip {
+    margin-top: var(--spacing-lg);
+    font-size: 11px;
+    color: var(--color-text-muted);
+    font-family: var(--font-sans);
+    text-align: center;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(11, 11, 18, 0.6);
+    border-radius: var(--radius-md);
+    border: 1px dashed rgba(199, 148, 26, 0.2);
+    text-shadow: 1px 1px 2px #000;
+  }
+  #performance-tip b {
+    color: var(--color-primary);
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+    letter-spacing: 0.8px;
+    margin-right: var(--spacing-xs);
+  }
+  .auth-panel { width: 100%; max-width: 360px; padding: 16px; }
   .auth-panel input {
     display: block;
     width: 100%;
@@ -1138,7 +1245,8 @@
 
   /* ---------- Premium Accessible Login Form styling ---------- */
   .auth-panel-premium {
-    width: min(400px, 92vw);
+    width: 100%;
+    max-width: 400px;
     padding: var(--spacing-lg);
     background: linear-gradient(180deg, rgba(21, 21, 31, 0.96) 0%, rgba(11, 11, 18, 0.98) 100%);
     border: 2px solid var(--color-border-default);
@@ -1550,7 +1658,7 @@
 
   .cs-realm { font-size: 11px; color: #7fd4ff; font-family: var(--title-font); letter-spacing: 0.3px; }
   .btn.btn-small { padding: 4px 10px; font-size: 11px; margin: 0 0 10px; }
-  #realm-panel { width: min(440px, 92vw); }
+  #realm-panel { width: 100%; max-width: 440px; }
   #realm-list { margin: 8px 0 12px; max-height: 50vh; overflow-y: auto; border: 1px solid #463a1c; border-radius: 5px; }
   .realm-loading { padding: 16px; text-align: center; color: #887c5c; font-size: 13px; }
   .realm-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 10px;
@@ -2247,6 +2355,80 @@
     .community-link { height: 32px; }
     .community-link svg { width: 17px; height: 17px; }
     #quest-tracker { top: 260px; right: 12px; width: 190px; }
+
+    /* Mobile First Homepage Header and Hamburger Menu */
+    .mobile-menu-toggle {
+      display: flex;
+    }
+    .homepage-header {
+      display: flex;
+      position: relative;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-sm) var(--spacing-md);
+    }
+    .header-menu-container {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(11, 11, 18, 0.98);
+      border-bottom: 2px solid var(--color-border-default);
+      flex-direction: column;
+      align-items: center;
+      padding: var(--spacing-md);
+      gap: var(--spacing-md);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+      z-index: 99;
+    }
+    .homepage-header.menu-open .header-menu-container {
+      display: flex;
+    }
+    .homepage-nav {
+      width: 100%;
+      justify-content: center;
+    }
+    .nav-list {
+      flex-direction: column;
+      width: 100%;
+      gap: 4px;
+    }
+    .nav-link {
+      width: 100%;
+      text-align: center;
+      padding: var(--spacing-sm);
+      font-size: 14px;
+    }
+    .header-actions {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 0;
+    }
+    .language-selector {
+      width: 100%;
+      max-width: 160px;
+    }
+    .lang-select-dropdown {
+      width: 100%;
+      font-size: 16px; /* Prevents mobile Safari auto-zoom */
+      padding: 10px 36px 10px 16px; /* Increases height for a better touch target */
+    }
+
+    /* Mobile First Responsive Footer */
+    .footer-social-row {
+      flex-direction: column;
+      width: 100%;
+      align-items: center;
+      gap: 6px;
+    }
+    .social-link {
+      width: 100%;
+      max-width: 220px;
+      justify-content: center;
+    }
   }
 </style>
 </head>
@@ -2391,39 +2573,49 @@
 
     <header class="homepage-header">
       <div class="header-logo-container">
-        <img class="header-logo" src="/icon-192.png" alt="World of Claudecraft" />
+        <button type="button" class="header-logo-btn" id="header-logo-btn" aria-label="Go to Homepage" title="Go to Homepage">
+          <img class="header-logo" src="/icon-192.png" alt="World of Claudecraft" />
+        </button>
       </div>
       
-      <nav aria-label="Main Navigation" class="homepage-nav">
-        <ul class="nav-list" role="list">
-          <li class="nav-item">
-            <button type="button" class="nav-link active" id="nav-btn-play" aria-selected="true" aria-pressed="true" data-i18n="nav.play">Play</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" id="nav-btn-highscores" aria-selected="false" aria-pressed="false" data-i18n="nav.highscores">High Scores</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" id="nav-btn-wiki" aria-selected="false" aria-pressed="false" data-i18n="nav.wiki">Wiki</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" id="nav-btn-news" aria-selected="false" aria-pressed="false" data-i18n="nav.news">News</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" id="nav-btn-download" aria-selected="false" aria-pressed="false" data-i18n="nav.download">Download</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" id="nav-btn-login" aria-selected="false" aria-pressed="false" data-i18n="nav.loginRegister">Login/Register</button>
-          </li>
-        </ul>
-      </nav>
+      <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+      
+      <div class="header-menu-container" id="header-menu-container">
+        <nav aria-label="Main Navigation" class="homepage-nav">
+          <ul class="nav-list" role="list">
+            <li class="nav-item">
+              <button type="button" class="nav-link active" id="nav-btn-play" aria-selected="true" aria-pressed="true" data-i18n="nav.play">Play</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" id="nav-btn-highscores" aria-selected="false" aria-pressed="false" data-i18n="nav.highscores">High Scores</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" id="nav-btn-wiki" aria-selected="false" aria-pressed="false" data-i18n="nav.wiki">Wiki</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" id="nav-btn-news" aria-selected="false" aria-pressed="false" data-i18n="nav.news">News</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" id="nav-btn-download" aria-selected="false" aria-pressed="false" data-i18n="nav.download">Download</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" id="nav-btn-login" aria-selected="false" aria-pressed="false" data-i18n="nav.loginRegister">Login/Register</button>
+            </li>
+          </ul>
+        </nav>
 
-      <div class="header-actions">
-        <div class="language-selector">
-          <label for="lang-select" class="visually-hidden">Language Selection</label>
-          <select id="lang-select" class="lang-select-dropdown">
-            <option value="en">English</option>
-            <option value="es">Español</option>
-          </select>
+        <div class="header-actions">
+          <div class="language-selector">
+            <label for="lang-select" class="visually-hidden">Language Selection</label>
+            <select id="lang-select" class="lang-select-dropdown">
+              <option value="en">English</option>
+              <option value="es">Español</option>
+            </select>
+          </div>
         </div>
       </div>
     </header>
@@ -2432,6 +2624,9 @@
       <section id="hero-view" class="view-section" aria-hidden="false">
         <h1 class="visually-hidden">World of Claudecraft</h1>
         
+        <!-- Main Logo -->
+        <img class="main-logo" id="title-logo" src="/worldofclaudecraft-logo.png" alt="World of Claudecraft" />
+
         <!-- Project Stats Panel (Realm Status, accounts, players, realm name) -->
         <div id="project-stats-panel" class="panel stats-panel-premium">
           <h2 class="stats-panel-title" data-i18n="stats.title">Realm Status</h2>
@@ -2705,11 +2900,9 @@
         </a>
       </div>
       <div class="footer-text-row">
-        <span data-i18n="footer.copyright">2026 World of Claudecraft</span> &bull; 
-        <a href="https://github.com/levy-street/world-of-claudecraft/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer-link" data-i18n="footer.terms">Terms of Service</a> &bull; 
-        <a href="https://github.com/levy-street/world-of-claudecraft/blob/main/README.md" target="_blank" rel="noopener noreferrer" class="footer-link" data-i18n="footer.privacy">Privacy Policy</a>
+        <span data-i18n="footer.copyright">2026 World of Claudecraft</span>
       </div>
-      <div id="game-version">v0.1.0</div>
+      <div id="game-version">v0.3.0</div>
     </footer>
   </main>
 

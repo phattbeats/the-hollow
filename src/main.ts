@@ -1509,6 +1509,14 @@ function wireStartScreens(): void {
   const setupNavBtn = (btn: HTMLElement | null, targetViewId: string, customAction?: () => void) => {
     if (!btn) return;
     const action = () => {
+      // Close mobile menu if open
+      const header = $('.homepage-header');
+      const toggleBtn = $('#mobile-menu-toggle');
+      if (header && toggleBtn) {
+        header.classList.remove('menu-open');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }
+
       if (customAction) {
         customAction();
       } else {
@@ -1542,6 +1550,13 @@ function wireStartScreens(): void {
     show('#login-panel');
   });
 
+  // Header Logo click listener to return to homepage
+  const headerLogoBtn = $('#header-logo-btn');
+  setupNavBtn(headerLogoBtn, '#hero-view', () => {
+    switchMainView('#hero-view');
+    show('#mode-select');
+  });
+
   // Language selection dropdown setup
   const langSelect = $('#lang-select') as HTMLSelectElement | null;
   if (langSelect) {
@@ -1550,6 +1565,16 @@ function wireStartScreens(): void {
       const selected = langSelect.value as 'en' | 'es';
       setLanguage(selected);
       window.location.reload();
+    });
+  }
+
+  // Mobile menu toggle setup
+  const mobileMenuToggle = $('#mobile-menu-toggle');
+  const homepageHeader = $('.homepage-header');
+  if (mobileMenuToggle && homepageHeader) {
+    mobileMenuToggle.addEventListener('click', () => {
+      const isOpen = homepageHeader.classList.toggle('menu-open');
+      mobileMenuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
   }
 
