@@ -9,6 +9,10 @@ import { findPath } from './pathfind';
 import { createGroundObject, createMob, createNpc, createPlayer, recalcPlayerStats, PlayerEquipment } from './entity';
 import { Rng } from './rng';
 import { SpatialGrid } from './spatial';
+import {
+  HEAL_THREAT_FACTOR, MELEE_SWITCH_MULT, RANGED_SWITCH_MULT,
+  TAUNT_FORCE_SECONDS, addThreat, clearThreat, stealthDetectionRadius, threatModifier, topThreatValue,
+} from './threat';
 import { groundHeight, WATER_LEVEL } from './world';
 import {
   AbilityDef, AbilityEffect, Aura, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION,
@@ -49,6 +53,11 @@ const BODY_RADIUS = 0.5;
 const CHARGE_SPEED_MULT = 3; // warrior charge runs at 3x normal speed
 const CHARGE_MAX_DURATION = 3; // seconds before a blocked charge gives up
 const CHARGE_ARRIVE_RANGE = MELEE_RANGE - 1; // stop inside melee range
+const PET_LEASH = 40; // yards from the owner before a pet gives up its target
+const PET_FOLLOW_DISTANCE = 3.5;
+const PET_TELEPORT_DISTANCE = 60; // owner this far away: pet warps to heel
+const PET_ASSIST_RANGE = 50; // how far the pet scans for enemies engaging the pair
+const PET_GROWL_INTERVAL = 8; // controlled pets can tank by forcing attention
 
 export interface Party {
   id: number;
@@ -87,6 +96,8 @@ export interface ResolvedAbility {
   cost: number;
   castTime: number;
   effects: AbilityEffect[];
+  threatFlat: number; // classic bonus threat on a successful use
+  threatMult: number; // classic multiplier on this ability's damage-threat
 }
 
 export interface RewardCounters {
@@ -161,6 +172,18 @@ function freshCounters(): RewardCounters {
     damageDealt: 0, damageTaken: 0, kills: 0, deaths: 0, xpGained: 0,
     questsCompleted: 0, questProgress: 0, lootCopper: 0, levelUps: 0,
   };
+}
+
+// Shapeshifts stay castable while shapeshifted (that's how you shift out).
+function isFormToggle(ability: AbilityDef): boolean {
+  return ability.effects.some((e) => e.type === 'selfBuff' && (e.kind === 'form_bear' || e.kind === 'form_cat'));
+}
+
+// Forms, stances and stealth are toggles: re-casting cancels the aura, and
+// cancelling is never gated by cost or cooldown (the cooldown gates re-entry).
+function isToggleBuff(ability: AbilityDef): boolean {
+  return ability.effects.some((e) => e.type === 'selfBuff'
+    && (e.kind === 'form_bear' || e.kind === 'form_cat' || e.kind === 'defensive_stance' || e.kind === 'stealth'));
 }
 
 export class Sim {
@@ -357,13 +380,21 @@ export class Sim {
     this.partyInvites.delete(pid);
     this.tradeInvites.delete(pid);
     this.duelInvites.delete(pid);
-    // mobs chasing this player give up
+    // a leaving player's pet goes wild, and mobs forget the player entirely
+    const pet = this.petOf(pid);
+    if (pet) this.releasePetToWild(pet);
     for (const m of this.entities.values()) {
-      if (m.kind === 'mob' && m.aggroTargetId === pid) {
-        m.aggroTargetId = null;
-        if (!m.dead && m.aiState !== 'dead') m.aiState = 'evade';
+      if (m.kind !== 'mob') continue;
+      m.threat.delete(pid);
+      if (m.forcedTargetId === pid) {
+        m.forcedTargetId = null;
+        m.forcedTargetTimer = 0;
       }
-      if (m.kind === 'mob' && m.tappedById === pid && !m.dead) m.tappedById = null;
+      if (m.aggroTargetId === pid) {
+        m.aggroTargetId = null;
+        if (!m.dead && m.aiState !== 'dead' && m.ownerId === null) this.retargetMob(m);
+      }
+      if (m.tappedById === pid && !m.dead) m.tappedById = null;
     }
     for (const other of this.players.values()) {
       const e = this.entities.get(other.entityId);
@@ -623,10 +654,19 @@ export class Sim {
   private moveSpeedMult(e: Entity): number {
     let slow = 1, speed = 1;
     for (const a of e.auras) {
-      if (a.kind === 'slow') slow = Math.min(slow, a.value);
+      if (a.kind === 'slow' || a.kind === 'stealth') slow = Math.min(slow, a.value);
       if (a.kind === 'buff_speed') speed = Math.max(speed, a.value);
     }
     return slow * speed;
+  }
+
+  // Sunder Armor stacks shave flat armor off the defender for physical hits.
+  private effectiveArmor(e: Entity): number {
+    let armor = e.stats.armor;
+    for (const a of e.auras) {
+      if (a.kind === 'sunder') armor -= a.value * (a.stacks ?? 1);
+    }
+    return Math.max(0, armor);
   }
   // swing interval multiplier: >1 = slower (thunder clap), haste divides
   private swingIntervalMult(e: Entity): number {
@@ -876,6 +916,8 @@ export class Sim {
             if (healed > 0) {
               e.hp += healed;
               this.emit({ type: 'heal2', sourceId: a.sourceId, targetId: e.id, amount: healed, crit: false, ability: a.name });
+              const src = this.entities.get(a.sourceId);
+              if (src) this.healingThreat(src, e, healed);
             }
           } else if (a.kind === 'polymorph') {
             const heal = Math.round(e.maxHp * 0.10);
@@ -886,7 +928,7 @@ export class Sim {
       if (a.remaining <= 0) {
         e.auras.splice(i, 1);
         this.emit({ type: 'aura', targetId: e.id, name: a.name, gained: false });
-        if (a.kind.startsWith('buff')) statsDirty = true;
+        if (a.kind.startsWith('buff') || a.kind.startsWith('form')) statsDirty = true;
       }
     }
     if (statsDirty && e.kind === 'player') {
@@ -961,8 +1003,11 @@ export class Sim {
     if (this.isStunned(p)) { this.error(p.id, 'You are stunned!'); return; }
     if (p.castingAbility) { this.error(p.id, 'You are busy.'); return; }
     if (!ability.offGcd && p.gcdRemaining > 0) return; // silent, classic spams this
-    if (p.cooldowns.has(ability.id)) { this.error(p.id, 'That ability is not ready yet.'); return; }
-    if (p.resource < res.cost) {
+    const togglingOff = isToggleBuff(ability) && p.auras.some((a) => a.id === ability.id);
+    if (p.cooldowns.has(ability.id) && !togglingOff) { this.error(p.id, 'That ability is not ready yet.'); return; }
+    // shifting out of a form is free; shifting across forms bills the parked
+    // mana (the live bar is rage/energy in a form) — see spendAbilityCost
+    if (p.resource < res.cost && !togglingOff && !this.formShiftKind(p, ability)) {
       this.error(p.id, p.resourceType === 'rage' ? 'Not enough rage!' : p.resourceType === 'energy' ? 'Not enough energy!' : 'Not enough mana!');
       return;
     }
@@ -972,6 +1017,27 @@ export class Sim {
     }
     if (ability.spendsCombo && (p.comboPoints <= 0 || p.comboTargetId !== p.targetId)) {
       this.error(p.id, 'That ability requires combo points.');
+      return;
+    }
+    // druid forms gate their kit both ways: form abilities need the form, and
+    // everything else (the caster kit) is locked while shapeshifted
+    const form = p.auras.find((a) => a.kind === 'form_bear' || a.kind === 'form_cat');
+    if (ability.requiresForm) {
+      const need = ability.requiresForm === 'bear' ? 'form_bear' : 'form_cat';
+      if (!form || form.kind !== need) {
+        this.error(p.id, `You must be in ${ability.requiresForm === 'bear' ? 'Bear' : 'Cat'} Form.`);
+        return;
+      }
+    } else if (form && !isFormToggle(ability)) {
+      this.error(p.id, "You can't do that while shapeshifted.");
+      return;
+    }
+    if (ability.requiresStealth && !p.auras.some((a) => a.kind === 'stealth')) {
+      this.error(p.id, 'You must be stealthed.');
+      return;
+    }
+    if (ability.requiresOutOfCombat && p.inCombat) {
+      this.error(p.id, "You can't do that while in combat.");
       return;
     }
 
@@ -1011,6 +1077,14 @@ export class Sim {
         if (eff.type === 'judgement' && !p.auras.some((a) => a.kind === 'imbue' && a.value2 !== undefined)) {
           this.error(p.id, 'You have no active Seal.');
           return;
+        }
+        if (eff.type === 'taunt' && target.kind !== 'mob') {
+          this.error(p.id, 'You cannot taunt that.');
+          return;
+        }
+        if (eff.type === 'tamePet') {
+          const err = this.tameError(p, target);
+          if (err) { this.error(p.id, err); return; }
         }
       }
     }
@@ -1057,6 +1131,25 @@ export class Sim {
     if (p.resourceType === 'mana' && cost > 0) p.fiveSecondRule = 0;
   }
 
+  /** Is this cast a form toggle while already shapeshifted? 'off' = leaving
+   *  the form (free, classic), 'cross' = bear<->cat (costs the parked mana). */
+  private formShiftKind(p: Entity, ability: AbilityDef): 'off' | 'cross' | null {
+    if (!isFormToggle(ability)) return null;
+    if (p.auras.some((a) => a.id === ability.id)) return 'off';
+    if (p.auras.some((a) => a.kind === 'form_bear' || a.kind === 'form_cat')) return 'cross';
+    return null;
+  }
+
+  private spendAbilityCost(p: Entity, res: ResolvedAbility): void {
+    const shift = this.formShiftKind(p, res.def);
+    if (shift === 'off') return;
+    if (shift === 'cross') {
+      p.savedMana = Math.max(0, p.savedMana - res.cost);
+      return;
+    }
+    this.spendResource(p, res.cost);
+  }
+
   private applyChannelTick(p: Entity, res: ResolvedAbility): void {
     const target = p.targetId !== null ? this.entities.get(p.targetId) : null;
     if (!target || target.dead) { this.cancelCast(p); return; }
@@ -1075,6 +1168,7 @@ export class Sim {
           if (healed > 0) {
             p.hp += healed;
             this.emit({ type: 'heal2', sourceId: p.id, targetId: p.id, amount: healed, crit: false, ability: res.def.name });
+            this.healingThreat(p, p, healed);
           }
         }
       }
@@ -1092,6 +1186,34 @@ export class Sim {
     healed = Math.min(healed, target.maxHp - target.hp);
     target.hp += healed;
     this.emit({ type: 'heal2', sourceId: source.id, targetId: target.id, amount: healed, crit, ability });
+    this.healingThreat(source, target, healed);
+  }
+
+  // Classic healing threat: 0.5 per point of EFFECTIVE healing (overheal is
+  // free), split evenly among every mob already fighting the healed target.
+  // Party membership does not change threat; it only affects social systems.
+  private healingThreat(source: Entity, target: Entity, healed: number): void {
+    if (source.kind !== 'player' || healed <= 0) return;
+    const total = healed * HEAL_THREAT_FACTOR * threatModifier(source, 'physical');
+    const aware: Entity[] = [];
+    for (const m of this.entities.values()) {
+      if (m.kind !== 'mob' || m.dead || !m.hostile || !m.inCombat || m.threat.size === 0) continue;
+      if (this.threatEntryMatchesEntity(m, target)) aware.push(m);
+    }
+    if (aware.length === 0) return;
+    const per = total / aware.length;
+    for (const m of aware) addThreat(m, source.id, per);
+  }
+
+  /** True when a hate-table entry belongs to the healed entity or its pet. */
+  private threatEntryMatchesEntity(mob: Entity, e: Entity): boolean {
+    if (mob.threat.has(e.id)) return true;
+    if (e.kind !== 'player') return false;
+    for (const id of mob.threat.keys()) {
+      const entry = this.entities.get(id);
+      if (entry?.ownerId === e.id) return true;
+    }
+    return false;
   }
 
   private applyAbility(p: Entity, meta: PlayerMeta, res: ResolvedAbility): void {
@@ -1116,7 +1238,7 @@ export class Sim {
       const maxRange = ability.range > 0 ? ability.range : MELEE_RANGE;
       if (d > maxRange + 2) { this.error(p.id, 'Out of range.'); return; }
     }
-    if (p.resource < res.cost) { this.error(p.id, 'Not enough ' + (p.resourceType ?? 'resource') + '!'); return; }
+    if (p.resource < res.cost && !this.formShiftKind(p, ability)) { this.error(p.id, 'Not enough ' + (p.resourceType ?? 'resource') + '!'); return; }
 
     // helpful spells never miss
     if (ability.targetType === 'friendly') {
@@ -1139,7 +1261,7 @@ export class Sim {
       return;
     }
 
-    this.spendResource(p, res.cost);
+    this.spendAbilityCost(p, res);
     if (ability.cooldown > 0) p.cooldowns.set(ability.id, ability.cooldown);
     this.runEffects(p, meta, target, res);
   }
@@ -1149,6 +1271,9 @@ export class Sim {
     const isSpell = ability.school !== 'physical';
     const spentCombo = ability.spendsCombo ? p.comboPoints : 0;
     let comboAwarded = false;
+    // acting breaks stealth (the ambush itself still lands first inside the swing)
+    if (ability.id !== 'stealth') this.breakStealth(p);
+    const threatOpts = { flat: res.threatFlat, mult: res.threatMult };
 
     for (const eff of res.effects) {
       switch (eff.type) {
@@ -1157,6 +1282,8 @@ export class Sim {
           const hit = this.meleeSwing(p, target, eff.bonus, ability.name, {
             cannotBeDodged: eff.cannotBeDodged,
             weaponMult: eff.weaponMult ?? 1,
+            threatFlat: res.threatFlat,
+            threatMult: res.threatMult,
           });
           if (hit && ability.awardsCombo) { this.awardCombo(p, target, ability.awardsCombo); comboAwarded = true; }
           if (ability.requiresDodgeProc) p.overpowerUntil = -1;
@@ -1168,8 +1295,8 @@ export class Sim {
           let dmg = this.rng.range(eff.min, eff.max);
           const crit = this.rng.chance(critChance);
           if (crit) dmg *= isSpell ? 1.5 : 2;
-          if (!isSpell) dmg *= 1 - armorReduction(target.stats.armor, p.level);
-          this.dealDamage(p, target, Math.round(dmg), crit, ability.school, ability.name, 'hit');
+          if (!isSpell) dmg *= 1 - armorReduction(this.effectiveArmor(target), p.level);
+          this.dealDamage(p, target, Math.round(dmg), crit, ability.school, ability.name, 'hit', false, threatOpts);
           if (!target.dead && ability.awardsCombo && !comboAwarded) {
             this.awardCombo(p, target, ability.awardsCombo);
             comboAwarded = true;
@@ -1181,8 +1308,8 @@ export class Sim {
           let dmg = eff.base + eff.perCombo * spentCombo + this.rng.range(0, eff.variance) + (p.attackPower / 14);
           const crit = this.rng.chance(p.critChance);
           if (crit) dmg *= 2;
-          dmg *= 1 - armorReduction(target.stats.armor, p.level);
-          this.dealDamage(p, target, Math.round(dmg), crit, 'physical', ability.name, 'hit');
+          dmg *= 1 - armorReduction(this.effectiveArmor(target), p.level);
+          this.dealDamage(p, target, Math.round(dmg), crit, 'physical', ability.name, 'hit', false, threatOpts);
           break;
         }
         case 'finisherHaste': {
@@ -1342,8 +1469,8 @@ export class Sim {
           this.emit({ type: 'spellfx', sourceId: p.id, targetId: p.id, school: ability.school, fx: 'nova' });
           for (const m of this.mobsInRadius(p.pos, eff.radius)) {
             let dmg = this.rng.range(eff.min, eff.max);
-            dmg *= 1 - armorReduction(m.stats.armor, p.level);
-            this.dealDamage(p, m, Math.round(dmg), false, ability.school, ability.name, 'hit');
+            dmg *= 1 - armorReduction(this.effectiveArmor(m), p.level);
+            this.dealDamage(p, m, Math.round(dmg), false, ability.school, ability.name, 'hit', false, threatOpts);
           }
           break;
         }
@@ -1374,14 +1501,26 @@ export class Sim {
           break;
         }
         case 'selfBuff': {
-          // forms are toggles: casting again shifts back
-          if (eff.kind === 'form_bear') {
+          // forms, stances and stealth are toggles: casting again cancels
+          const isToggle = eff.kind === 'form_bear' || eff.kind === 'form_cat'
+            || eff.kind === 'defensive_stance' || eff.kind === 'stealth';
+          if (isToggle) {
             const existing = p.auras.findIndex((a) => a.id === ability.id);
             if (existing >= 0) {
               p.auras.splice(existing, 1);
               this.emit({ type: 'aura', targetId: p.id, name: ability.name, gained: false });
               recalcPlayerStats(p, meta.cls, meta.equipment);
               break;
+            }
+          }
+          // shapeshifting out of one form into the other
+          if (eff.kind === 'form_bear' || eff.kind === 'form_cat') {
+            for (let i = p.auras.length - 1; i >= 0; i--) {
+              const a = p.auras[i];
+              if ((a.kind === 'form_bear' || a.kind === 'form_cat') && a.kind !== eff.kind) {
+                p.auras.splice(i, 1);
+                this.emit({ type: 'aura', targetId: p.id, name: a.name, gained: false });
+              }
             }
           }
           this.applyAura(p, {
@@ -1411,6 +1550,48 @@ export class Sim {
           p.chargePath = this.findChargePath(p, target);
           if (p.resourceType === 'rage') p.resource = Math.min(p.maxResource, p.resource + 9);
           this.enterCombat(p, target);
+          break;
+        }
+        case 'sunder': {
+          if (!target || target.dead) break;
+          // a sunder can miss like any melee attack — a miss causes no threat
+          if (this.rng.chance(meleeMissChance(p.level, target.level))) {
+            this.emit({ type: 'damage', sourceId: p.id, targetId: target.id, amount: 0, crit: false, school: 'physical', ability: ability.name, kind: 'miss' });
+            this.enterCombat(p, target);
+            break;
+          }
+          const existing = target.auras.find((a) => a.kind === 'sunder');
+          if (existing) {
+            existing.stacks = Math.min(eff.maxStacks, (existing.stacks ?? 1) + 1);
+            existing.value = eff.armor;
+            existing.remaining = existing.duration;
+            this.emit({ type: 'aura', targetId: target.id, name: ability.name, gained: true });
+          } else {
+            this.applyAura(target, {
+              id: ability.id, name: ability.name, kind: 'sunder',
+              remaining: 30, duration: 30, value: eff.armor, stacks: 1,
+              sourceId: p.id, school: 'physical',
+            });
+          }
+          // sunder deals no damage: its threat is the flat value, stance-scaled
+          addThreat(target, p.id, res.threatFlat * threatModifier(p, 'physical'));
+          this.enterCombat(p, target);
+          break;
+        }
+        case 'taunt': {
+          if (!target || target.kind !== 'mob' || target.dead) break;
+          this.applyTaunt(p, target);
+          break;
+        }
+        case 'tamePet': {
+          if (target) this.completeTame(p, target);
+          break;
+        }
+        case 'dismissPet': {
+          const pet = this.petOf(p.id);
+          if (!pet) { this.error(p.id, 'You have no pet.'); break; }
+          this.emit({ type: 'log', text: `You dismiss ${pet.name}.`, color: '#999', pid: p.id });
+          this.releasePetToWild(pet);
           break;
         }
       }
@@ -1449,6 +1630,96 @@ export class Sim {
       if (e.kind === 'mob' && !e.dead && e.hostile) out.push(e);
     });
     return out;
+  }
+
+  private breakStealth(e: Entity): void {
+    const idx = e.auras.findIndex((a) => a.kind === 'stealth');
+    if (idx < 0) return;
+    const name = e.auras[idx].name;
+    e.auras.splice(idx, 1);
+    this.emit({ type: 'aura', targetId: e.id, name, gained: false });
+  }
+
+  // Taunt/Growl, classic semantics: never misses, lifts the caster's threat to
+  // the top of the table, and forces the mob onto the caster for 3 seconds.
+  private applyTaunt(p: Entity, mob: Entity): void {
+    const top = topThreatValue(mob);
+    const mine = mob.threat.get(p.id) ?? 0;
+    mob.threat.set(p.id, Math.max(mine, top, 1));
+    mob.forcedTargetId = p.id;
+    mob.forcedTargetTimer = TAUNT_FORCE_SECONDS;
+    if (mob.aiState === 'idle') this.aggroMob(mob, p, false);
+    else if (mob.aiState === 'chase' || mob.aiState === 'attack') mob.aggroTargetId = p.id;
+    this.enterCombat(p, mob);
+  }
+
+  // -------------------------------------------------------------------------
+  // Hunter pets
+  // -------------------------------------------------------------------------
+
+  petOf(ownerPid: number): Entity | null {
+    for (const e of this.entities.values()) {
+      if (e.kind === 'mob' && e.ownerId === ownerPid && !e.dead) return e;
+    }
+    return null;
+  }
+
+  private tameError(p: Entity, target: Entity): string | null {
+    if (target.kind !== 'mob' || !target.hostile) return 'You cannot tame that.';
+    const template = MOBS[target.templateId];
+    if (!template || (template.family !== 'beast' && template.family !== 'spider')) return 'Only beasts can be tamed.';
+    if (template.elite || template.boss || template.rare) return 'That beast is too strong to tame.';
+    if (target.level > p.level) return 'That beast is too high level for you to tame.';
+    if (target.spawnPos.x > DUNGEON_X_THRESHOLD) return 'You cannot tame dungeon creatures.';
+    if (this.petOf(p.id)) return 'You already have a pet.';
+    return null;
+  }
+
+  private completeTame(p: Entity, target: Entity): void {
+    const err = this.tameError(p, target);
+    if (err) { this.error(p.id, err); return; }
+    target.ownerId = p.id;
+    target.petTauntTimer = 0;
+    target.hostile = false;
+    target.aiState = 'idle';
+    target.aggroTargetId = null;
+    target.inCombat = false;
+    target.tappedById = null;
+    target.auras = [];
+    target.hp = target.maxHp;
+    target.loot = null;
+    target.lootable = false;
+    target.wanderTarget = null;
+    clearThreat(target);
+    // it's friendly now: nobody keeps swinging at it, other mobs forget it
+    for (const other of this.players.values()) {
+      const e = this.entities.get(other.entityId);
+      if (e && e.targetId === target.id) e.autoAttack = false;
+    }
+    for (const m of this.entities.values()) {
+      if (m.kind !== 'mob' || m.id === target.id) continue;
+      m.threat.delete(target.id);
+      if (m.aggroTargetId === target.id && !m.dead && m.aiState !== 'dead') this.retargetMob(m);
+    }
+    this.emit({ type: 'log', text: `${target.name} is now your loyal companion.`, color: '#8f8', pid: p.id });
+    this.emit({ type: 'aura', targetId: target.id, name: 'Tamed', gained: true });
+  }
+
+  /** Dismissal, owner logout, or pet respawn: the beast goes back to the wild
+   *  and walks home. Mobs that were fighting it forget it. */
+  private releasePetToWild(pet: Entity): void {
+    pet.ownerId = null;
+    pet.petTauntTimer = 0;
+    pet.hostile = true;
+    pet.aggroTargetId = null;
+    pet.inCombat = false;
+    pet.aiState = pet.dead ? 'dead' : 'evade';
+    clearThreat(pet);
+    for (const m of this.entities.values()) {
+      if (m.kind !== 'mob' || m.id === pet.id) continue;
+      m.threat.delete(pet.id);
+      if (m.aggroTargetId === pet.id && !m.dead && m.aiState !== 'dead') this.retargetMob(m);
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -1493,6 +1764,8 @@ export class Sim {
 
     let bonus = 0;
     let abilityName: string | null = null;
+    let threatFlat = 0;
+    let threatMult = 1;
     if (p.queuedOnSwing) {
       const queued = this.resolvedAbility(p.queuedOnSwing, p.id);
       if (queued) {
@@ -1501,11 +1774,13 @@ export class Sim {
           this.spendResource(p, queued.cost);
           bonus = eff.bonus;
           abilityName = queued.def.name;
+          threatFlat = queued.threatFlat;
+          threatMult = queued.threatMult;
         }
       }
       p.queuedOnSwing = null;
     }
-    this.meleeSwing(p, t, bonus, abilityName, {});
+    this.meleeSwing(p, t, bonus, abilityName, { threatFlat, threatMult });
     p.swingTimer = p.weapon.speed * this.swingIntervalMult(p);
   }
 
@@ -1520,14 +1795,14 @@ export class Sim {
     let dmg = this.rng.range(ranged.min, ranged.max) + (attacker.rangedPower / 14) * ranged.speed;
     const crit = this.rng.chance(attacker.critChance);
     if (crit) dmg *= 2;
-    dmg *= 1 - armorReduction(target.stats.armor, attacker.level);
+    dmg *= 1 - armorReduction(this.effectiveArmor(target), attacker.level);
     this.dealDamage(attacker, target, Math.max(1, Math.round(dmg)), crit, 'physical', 'Auto Shot', 'hit');
   }
 
   // Returns true if the swing connected.
   private meleeSwing(
     attacker: Entity, target: Entity, bonus: number, abilityName: string | null,
-    opts: { cannotBeDodged?: boolean; weaponMult?: number },
+    opts: { cannotBeDodged?: boolean; weaponMult?: number; threatFlat?: number; threatMult?: number },
   ): boolean {
     const missChance = meleeMissChance(attacker.level, target.level);
     const dodgeChance = opts.cannotBeDodged ? 0
@@ -1552,8 +1827,9 @@ export class Sim {
     const critChance = Math.max(0.005, attacker.critChance - Math.max(0, target.level - attacker.level) * 0.002);
     const crit = this.rng.chance(critChance);
     if (crit) dmg *= 2;
-    dmg *= 1 - armorReduction(target.stats.armor, attacker.level);
-    this.dealDamage(attacker, target, Math.max(1, Math.round(dmg)), crit, 'physical', abilityName, 'hit');
+    dmg *= 1 - armorReduction(this.effectiveArmor(target), attacker.level);
+    this.dealDamage(attacker, target, Math.max(1, Math.round(dmg)), crit, 'physical', abilityName, 'hit', false,
+      { flat: opts.threatFlat ?? 0, mult: opts.threatMult ?? 1 });
     // thorns / lightning shield: melee attackers take damage back
     if (!attacker.dead) {
       for (const a of target.auras) {
@@ -1569,10 +1845,18 @@ export class Sim {
   // Damage / death
   // -------------------------------------------------------------------------
 
-  private dealDamage(source: Entity | null, target: Entity, amount: number, crit: boolean, school: string, ability: string | null, kind: 'hit' | 'miss' | 'dodge', noRage = false): void {
+  private dealDamage(source: Entity | null, target: Entity, amount: number, crit: boolean, school: string, ability: string | null, kind: 'hit' | 'miss' | 'dodge', noRage = false, threatOpts?: { flat?: number; mult?: number }): void {
     if (target.dead) return;
     if (target.gm) return; // GM characters are invulnerable — every damage path funnels here
     amount = Math.max(0, amount);
+
+    // Defensive Stance, classic: deal 10% less, take 10% less (and +30% threat below)
+    if (source && source.id !== target.id && source.auras.some((a) => a.kind === 'defensive_stance')) {
+      amount = Math.round(amount * 0.9);
+    }
+    if (source && source.id !== target.id && target.auras.some((a) => a.kind === 'defensive_stance')) {
+      amount = Math.round(amount * 0.9);
+    }
 
     // absorb shields soak damage first
     if (amount > 0) {
@@ -1613,11 +1897,26 @@ export class Sim {
       }
     }
 
+    // taking or dealing real damage breaks stealth
+    if (amount > 0) {
+      this.breakStealth(target);
+      if (source && source.id !== target.id) this.breakStealth(source);
+    }
+
     if (source && source.id !== target.id) this.enterCombat(source, target);
 
-    // tap rights: first player to damage a mob owns it
-    if (source && source.kind === 'player' && target.kind === 'mob' && target.tappedById === null && amount >= 0) {
-      target.tappedById = source.id;
+    // classic threat: damage (and the ability's flat bonus) lands on the mob's
+    // hate table, scaled by the attacker's stance/form modifiers
+    if (source && source.id !== target.id && target.kind === 'mob' && target.hostile
+      && (source.kind === 'player' || source.ownerId !== null)) {
+      const threat = (amount * (threatOpts?.mult ?? 1) + (threatOpts?.flat ?? 0)) * threatModifier(source, school);
+      addThreat(target, source.id, threat);
+    }
+
+    // tap rights: the first player (or their pet) to damage a mob owns it
+    if (source && target.kind === 'mob' && target.hostile && target.tappedById === null && amount >= 0) {
+      if (source.kind === 'player') target.tappedById = source.id;
+      else if (source.ownerId !== null) target.tappedById = source.ownerId;
     }
 
     if (source && source.kind === 'player' && source.id !== target.id) {
@@ -1652,11 +1951,13 @@ export class Sim {
     b.combatTimer = 0;
     a.inCombat = true;
     b.inCombat = true;
-    if (b.kind === 'mob' && !b.dead && a.kind === 'player' && b.aiState !== 'evade') {
+    // players and their pets pull wild mobs; pets never run wild-mob AI
+    const aAttacker = a.kind === 'player' || (a.kind === 'mob' && a.ownerId !== null);
+    if (b.kind === 'mob' && b.ownerId === null && !b.dead && aAttacker && b.aiState !== 'evade') {
       if (b.aiState === 'idle') this.aggroMob(b, a, true);
       else if (b.aggroTargetId === null) b.aggroTargetId = a.id;
     }
-    if (a.kind === 'mob' && !a.dead && b.kind === 'player' && a.aiState === 'idle') {
+    if (a.kind === 'mob' && a.ownerId === null && !a.dead && b.kind === 'player' && a.aiState === 'idle') {
       this.aggroMob(a, b, false);
     }
   }
@@ -1667,6 +1968,16 @@ export class Sim {
     e.auras = [];
     e.castingAbility = null;
     this.emit({ type: 'death', entityId: e.id, killerId: killer?.id ?? -1 });
+
+    // the dead drop off every hate table (and any taunt lock on them)
+    for (const m of this.entities.values()) {
+      if (m.kind !== 'mob' || m.id === e.id) continue;
+      m.threat.delete(e.id);
+      if (m.forcedTargetId === e.id) {
+        m.forcedTargetId = null;
+        m.forcedTargetTimer = 0;
+      }
+    }
 
     if (e.kind === 'player') {
       const meta = this.players.get(e.id);
@@ -1694,6 +2005,11 @@ export class Sim {
       e.corpseTimer = CORPSE_DURATION;
       e.respawnTimer = this.cfg.respawnSeconds * (MOBS[e.templateId]?.rare ? 4 : 1);
       e.aggroTargetId = null;
+      clearThreat(e);
+      if (e.ownerId !== null) {
+        this.emit({ type: 'log', text: `${e.name} dies.`, color: '#f66', pid: e.ownerId });
+        return; // pets drop no loot and grant no credit; they respawn wild
+      }
 
       // credit goes to the tapping player (fall back to the killer)
       const creditId = e.tappedById ?? (killer?.kind === 'player' ? killer.id : null);
@@ -1799,12 +2115,21 @@ export class Sim {
   // Mob AI
   // -------------------------------------------------------------------------
 
-  // When a mob's target dies/leaves, swing to the nearest living player
-  // nearby instead of resetting the fight (poor man's threat table).
+  // When a mob's target dies/leaves it swings to its next-highest-threat
+  // attacker; with an empty hate table it falls back to the nearest living
+  // player, and failing that it goes home.
   private retargetMob(mob: Entity): void {
-    const next = this.nearestLivingPlayer(mob.pos, 35);
+    const next = this.highestThreatTarget(mob);
     if (next) {
-      mob.aggroTargetId = next.e.id;
+      mob.aggroTargetId = next.id;
+      mob.aiState = 'chase';
+      mob.inCombat = true;
+      return;
+    }
+    const near = this.nearestLivingPlayer(mob.pos, 35);
+    if (near) {
+      addThreat(mob, near.e.id, 1);
+      mob.aggroTargetId = near.e.id;
       mob.aiState = 'chase';
       mob.inCombat = true;
     } else {
@@ -1813,19 +2138,66 @@ export class Sim {
     }
   }
 
+  /** Highest-threat living attacker on the table; prunes stale entries. */
+  private highestThreatTarget(mob: Entity): Entity | null {
+    let best: Entity | null = null;
+    let bestT = -1;
+    for (const [id, t] of mob.threat) {
+      const e = this.entities.get(id);
+      if (!e || e.dead) { mob.threat.delete(id); continue; }
+      if (t > bestT) { bestT = t; best = e; }
+    }
+    return best;
+  }
+
+  // Classic pull-over rules, applied every AI tick while fighting: an attacker
+  // takes aggro past 110% of the current target's threat in melee range of
+  // the mob, or past 130% at range. A taunt forces the target outright.
+  private updateMobTarget(mob: Entity): void {
+    if (mob.forcedTargetTimer > 0) {
+      mob.forcedTargetTimer -= DT;
+      const forced = mob.forcedTargetId !== null ? this.entities.get(mob.forcedTargetId) : null;
+      if (forced && !forced.dead) {
+        mob.aggroTargetId = forced.id;
+        return;
+      }
+    }
+    if (mob.forcedTargetTimer <= 0) mob.forcedTargetId = null;
+    const cur = mob.aggroTargetId !== null ? this.entities.get(mob.aggroTargetId) : null;
+    if (!cur || cur.dead) {
+      const next = this.highestThreatTarget(mob);
+      if (next) mob.aggroTargetId = next.id;
+      return;
+    }
+    const curThreat = mob.threat.get(cur.id) ?? 0;
+    let best = cur;
+    let bestT = curThreat;
+    for (const [id, t] of mob.threat) {
+      if (id === cur.id || t <= bestT) continue;
+      const e = this.entities.get(id);
+      if (!e || e.dead) { mob.threat.delete(id); continue; }
+      const inMelee = dist2d(mob.pos, e.pos) <= MELEE_RANGE * 1.2;
+      const needed = curThreat * (inMelee ? MELEE_SWITCH_MULT : RANGED_SWITCH_MULT);
+      if (t > needed) { best = e; bestT = t; }
+    }
+    if (best !== cur) mob.aggroTargetId = best.id;
+  }
+
   private aggroMob(mob: Entity, target: Entity, social: boolean): void {
     if (mob.dead || mob.aiState === 'evade' || mob.aiState === 'chase' || mob.aiState === 'attack') return;
     mob.aiState = 'chase';
     mob.aggroTargetId = target.id;
     mob.inCombat = true;
+    addThreat(mob, target.id, 1); // seed the hate table so taunts/heals have a baseline
     if (social) {
       const pullRadius = MOBS[mob.templateId]?.family === 'murloc' ? 18 : 12;
       this.grid.forEachInRadius(mob.pos.x, mob.pos.z, pullRadius, (m, d2) => {
-        if (m.kind === 'mob' && m.id !== mob.id && !m.dead && m.aiState === 'idle'
+        if (m.kind === 'mob' && m.id !== mob.id && !m.dead && m.aiState === 'idle' && m.ownerId === null
           && m.templateId === mob.templateId && d2 < pullRadius * pullRadius) {
           m.aiState = 'chase';
           m.aggroTargetId = target.id;
           m.inCombat = true;
+          addThreat(m, target.id, 1);
         }
       });
     }
@@ -1854,6 +2226,11 @@ export class Sim {
 
     mob.combatTimer += DT;
 
+    if (mob.ownerId !== null) {
+      this.updatePet(mob);
+      return;
+    }
+
     if (mob.inCombat) this.updateBossMechanics(mob);
 
     if (this.isStunned(mob)) {
@@ -1876,7 +2253,9 @@ export class Sim {
         const template = MOBS[mob.templateId];
         const nearest = this.nearestLivingPlayer(mob.pos, 25);
         if (nearest) {
-          const radius = Math.max(4, Math.min(20, template.aggroRadius + (mob.level - nearest.e.level) * 1.5));
+          let radius = Math.max(4, Math.min(20, template.aggroRadius + (mob.level - nearest.e.level) * 1.5));
+          // stealthed rogues are harder to detect, relative to observer level
+          if (nearest.e.auras.some((a) => a.kind === 'stealth')) radius = stealthDetectionRadius(mob, nearest.e, radius);
           if (nearest.d < radius) {
             this.aggroMob(mob, nearest.e, true);
             break;
@@ -1904,6 +2283,7 @@ export class Sim {
         break;
       }
       case 'chase': {
+        this.updateMobTarget(mob);
         const target = mob.aggroTargetId !== null ? this.entities.get(mob.aggroTargetId) : null;
         if (!target || target.dead) {
           this.retargetMob(mob);
@@ -1913,6 +2293,7 @@ export class Sim {
         if (dist2d(mob.pos, mob.spawnPos) > leash) {
           mob.aiState = 'evade';
           mob.aggroTargetId = null;
+          clearThreat(mob);
           this.emit({ type: 'log', text: mob.name + ' returns home.', color: '#999', entityId: mob.id });
           break;
         }
@@ -1927,6 +2308,7 @@ export class Sim {
         break;
       }
       case 'attack': {
+        this.updateMobTarget(mob);
         const target = mob.aggroTargetId !== null ? this.entities.get(mob.aggroTargetId) : null;
         if (!target || target.dead) { this.retargetMob(mob); break; }
         const d = dist2d(mob.pos, target.pos);
@@ -1963,6 +2345,7 @@ export class Sim {
           mob.auras = [];
           mob.inCombat = false;
           mob.tappedById = null;
+          clearThreat(mob);
           this.despawnSummonedAdds(mob);
           mob.firedSummons = 0;
           mob.enraged = false;
@@ -1990,7 +2373,7 @@ export class Sim {
     if (crit) dmg *= 2;
     const enrage = MOBS[mob.templateId]?.enrage;
     if (mob.enraged && enrage) dmg *= enrage.dmgMult;
-    dmg *= 1 - armorReduction(target.stats.armor, mob.level);
+    dmg *= 1 - armorReduction(this.effectiveArmor(target), mob.level);
     this.dealDamage(mob, target, Math.max(1, Math.round(dmg)), crit, 'physical', null, 'hit');
     // thorns / lightning shield on the defender
     if (!mob.dead) {
@@ -2000,6 +2383,70 @@ export class Sim {
         }
       }
     }
+  }
+
+  // Pet brain: assist the owner (attack whatever they fight or whatever
+  // attacks either of you), otherwise heel. Pets swing like mobs and build
+  // their own entries on enemy hate tables.
+  private updatePet(pet: Entity): void {
+    const owner = pet.ownerId !== null ? this.entities.get(pet.ownerId) : null;
+    if (!owner || owner.kind !== 'player' || !this.players.has(owner.id)) {
+      this.releasePetToWild(pet);
+      return;
+    }
+    if (this.isStunned(pet)) return;
+    pet.petTauntTimer = Math.max(0, pet.petTauntTimer - DT);
+
+    let target = pet.aggroTargetId !== null ? this.entities.get(pet.aggroTargetId) ?? null : null;
+    if (target && (target.dead || target.kind !== 'mob' || !target.hostile)) target = null;
+    if (target && dist2d(owner.pos, pet.pos) > PET_LEASH) target = null;
+    if (!target && !owner.dead) target = this.petPickTarget(pet, owner);
+    pet.aggroTargetId = target?.id ?? null;
+    pet.inCombat = target !== null;
+
+    if (target) {
+      const d = dist2d(pet.pos, target.pos);
+      if (d > MELEE_RANGE * 0.8) {
+        if (!this.isRooted(pet)) this.moveToward(pet, target.pos, pet.moveSpeed * this.moveSpeedMult(pet));
+        pet.swingTimer = Math.max(0, pet.swingTimer - DT);
+      } else {
+        pet.facing = angleTo(pet.pos, target.pos);
+        if (pet.petTauntTimer <= 0) {
+          this.applyTaunt(pet, target);
+          pet.petTauntTimer = PET_GROWL_INTERVAL;
+        }
+        pet.swingTimer -= DT;
+        if (pet.swingTimer <= 0) {
+          this.mobSwing(pet, target);
+          pet.swingTimer = pet.weapon.speed * this.swingIntervalMult(pet);
+        }
+      }
+      return;
+    }
+
+    // heel
+    pet.swingTimer = Math.max(0, pet.swingTimer - DT);
+    const d = dist2d(pet.pos, owner.pos);
+    if (d > PET_TELEPORT_DISTANCE) {
+      pet.pos = { ...owner.pos };
+      pet.prevPos = { ...pet.pos };
+    } else if (d > PET_FOLLOW_DISTANCE && !this.isRooted(pet)) {
+      this.moveToward(pet, owner.pos, Math.max(pet.moveSpeed, RUN_SPEED * 1.1) * this.moveSpeedMult(pet));
+    }
+  }
+
+  private petPickTarget(pet: Entity, owner: Entity): Entity | null {
+    let best: Entity | null = null;
+    let bestD = PET_ASSIST_RANGE;
+    for (const m of this.entities.values()) {
+      if (m.kind !== 'mob' || m.dead || !m.hostile || m.ownerId !== null) continue;
+      const engagingUs = m.aggroTargetId === owner.id || m.aggroTargetId === pet.id;
+      const ownerOffense = owner.targetId === m.id && (owner.autoAttack || m.threat.has(owner.id));
+      if (!engagingUs && !ownerOffense) continue;
+      const d = dist2d(pet.pos, m.pos);
+      if (d < bestD) { best = m; bestD = d; }
+    }
+    return best;
   }
 
   private moveToward(e: Entity, dest: Vec3, speed: number): boolean {
@@ -2026,6 +2473,7 @@ export class Sim {
     mob.lootable = false;
     mob.loot = null;
     mob.tappedById = null;
+    mob.ownerId = null; // a dead pet returns to the wild at its old camp
     mob.pos = { ...mob.spawnPos };
     mob.pos.y = groundHeight(mob.pos.x, mob.pos.z, this.cfg.seed);
     mob.prevPos = { ...mob.pos };
@@ -2035,6 +2483,7 @@ export class Sim {
     mob.aiState = 'idle';
     mob.aggroTargetId = null;
     mob.inCombat = false;
+    clearThreat(mob);
     this.despawnSummonedAdds(mob);
     mob.firedSummons = 0;
     mob.enraged = false;
@@ -2645,6 +3094,22 @@ export class Sim {
     return partyId !== undefined ? this.parties.get(partyId) ?? null : null;
   }
 
+  private hasActiveInvite(map: Map<number, { fromPid: number; expires: number }>, targetPid: number): boolean {
+    const invite = map.get(targetPid);
+    if (!invite) return false;
+    if (invite.expires < this.time) {
+      map.delete(targetPid);
+      return false;
+    }
+    return true;
+  }
+
+  private hasPendingSocialInvite(targetPid: number): boolean {
+    return this.hasActiveInvite(this.partyInvites, targetPid)
+      || this.hasActiveInvite(this.tradeInvites, targetPid)
+      || this.hasActiveInvite(this.duelInvites, targetPid);
+  }
+
   partyInvite(targetPid: number, pid?: number): void {
     const r = this.resolve(pid);
     const target = this.players.get(targetPid);
@@ -2654,6 +3119,7 @@ export class Sim {
     if (myParty && myParty.leader !== r.meta.entityId) { this.error(r.meta.entityId, 'Only the party leader may invite.'); return; }
     if (myParty && myParty.members.length >= PARTY_MAX) { this.error(r.meta.entityId, 'Your party is full.'); return; }
     if (this.partyOf(targetPid)) { this.error(r.meta.entityId, `${target.name} is already in a party.`); return; }
+    if (this.hasPendingSocialInvite(targetPid)) { this.error(r.meta.entityId, `${target.name} already has a pending invitation.`); return; }
     this.partyInvites.set(targetPid, { fromPid: r.meta.entityId, expires: this.time + 30 });
     this.emit({ type: 'partyInvite', fromPid: r.meta.entityId, fromName: r.meta.name, pid: targetPid });
     this.emit({ type: 'log', text: `You have invited ${target.name} to your party.`, color: '#aaf', pid: r.meta.entityId });
@@ -2742,6 +3208,7 @@ export class Sim {
     if (targetPid === r.meta.entityId) return;
     if (this.duels.has(r.meta.entityId) || this.duels.has(targetPid)) { this.error(r.meta.entityId, 'A duel is already in progress.'); return; }
     if (dist2d(r.e.pos, targetE.pos) > 30) { this.error(r.meta.entityId, 'Target is too far away.'); return; }
+    if (this.hasPendingSocialInvite(targetPid)) { this.error(r.meta.entityId, `${target.name} already has a pending invitation.`); return; }
     this.duelInvites.set(targetPid, { fromPid: r.meta.entityId, expires: this.time + 30 });
     this.emit({ type: 'duelRequest', fromPid: r.meta.entityId, fromName: r.meta.name, pid: targetPid });
     this.emit({ type: 'log', text: `You have challenged ${target.name} to a duel.`, color: '#fa6', pid: r.meta.entityId });
@@ -2772,6 +3239,27 @@ export class Sim {
       this.emit({ type: 'log', text: `${r.meta.name} declines your challenge.`, color: '#fa6', pid: invite.fromPid });
     }
   }
+
+  // Persistent social systems (friends / ignore / guilds) require an account
+  // and database, so they only exist in online play. The offline Sim satisfies
+  // the IWorld surface with inert stubs.
+  realm = '';
+  socialInfo: null = null;
+  friendAdd(_name: string): void {}
+  friendRemove(_name: string): void {}
+  blockAdd(_name: string): void {}
+  blockRemove(_name: string): void {}
+  guildCreate(_name: string): void {}
+  guildInvite(_name: string): void {}
+  guildAccept(): void {}
+  guildDecline(): void {}
+  guildLeave(): void {}
+  guildKick(_name: string): void {}
+  guildPromote(_name: string): void {}
+  guildDemote(_name: string): void {}
+  guildTransfer(_name: string): void {}
+  guildDisband(): void {}
+  searchCharacters(_query: string): Promise<import('../world_api').CharacterSearchResult[]> { return Promise.resolve([]); }
 
   private updateDuels(): void {
     const seen = new Set<DuelState>();
@@ -2849,6 +3337,7 @@ export class Sim {
     if (targetPid === r.meta.entityId) return;
     if (this.trades.has(r.meta.entityId) || this.trades.has(targetPid)) { this.error(r.meta.entityId, 'A trade is already in progress.'); return; }
     if (dist2d(r.e.pos, targetE.pos) > TRADE_RANGE) { this.error(r.meta.entityId, 'Target is too far away to trade.'); return; }
+    if (this.hasPendingSocialInvite(targetPid)) { this.error(r.meta.entityId, `${target.name} already has a pending invitation.`); return; }
     this.tradeInvites.set(targetPid, { fromPid: r.meta.entityId, expires: this.time + 30 });
     this.emit({ type: 'tradeRequest', fromPid: r.meta.entityId, fromName: r.meta.name, pid: targetPid });
     this.emit({ type: 'log', text: `You have requested to trade with ${target.name}.`, color: '#8df', pid: r.meta.entityId });
