@@ -4,6 +4,7 @@ import { Renderer } from '../render/renderer';
 import {
   ABILITIES, CLASSES, DUNGEON_LIST, DUNGEON_X_THRESHOLD, ITEMS, MOBS, NPCS, QUESTS,
   WORLD_MAX_X, WORLD_MAX_Z, WORLD_MIN_X, WORLD_MIN_Z, ZONES, dungeonAt, zoneAt,
+  zoneWelcomeText,
 } from '../sim/data';
 import type { ZoneDef } from '../sim/data';
 import type { InvSlot } from '../sim/types';
@@ -140,7 +141,7 @@ export class Hud {
     this.lastZoneId = startZone.id;
     this.showBanner(startZone.name);
     this.log(`Welcome to ${startZone.name}!`, '#ffd100');
-    this.log(startZone.welcome, '#ffd100');
+    this.logZoneWelcome(startZone);
   }
 
   private bindLogTabs(): void {
@@ -583,7 +584,7 @@ export class Hud {
         if (this.lastZoneId !== '') {
           this.showBanner(currentZone.name);
           this.log(`Entering ${currentZone.name}.`, '#ffd100');
-          this.log(currentZone.welcome, '#ffd100');
+          this.logZoneWelcome(currentZone);
         }
         this.lastZoneId = currentZone.id;
       }
@@ -1071,6 +1072,11 @@ export class Hud {
 
   log(text: string, color = '#ccc'): void {
     this.appendLog(this.chatLogEl, text, color);
+  }
+
+  private logZoneWelcome(zone: ZoneDef): void {
+    const text = zoneWelcomeText(zone, (questId) => this.sim.questState(questId));
+    if (text) this.log(text, '#ffd100');
   }
 
   private chatLogFrom(name: string, text: string, color: string, prefix: string, separator: string): void {

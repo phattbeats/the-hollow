@@ -274,6 +274,7 @@ export interface ZoneDef {
   lakes: { x: number; z: number; radius: number }[];
   pois: { x: number; z: number; label: string }[];
   welcome: string; // chat-log hint shown on first entry
+  welcomeQuestId?: string; // only show the hint while this quest is available
 }
 
 export interface BuildingDef {

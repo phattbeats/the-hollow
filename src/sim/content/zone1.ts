@@ -31,6 +31,7 @@ export const ZONE1_ZONE: ZoneDef = {
     { x: 80, z: 80, label: 'Fallen Chapel' },
   ],
   welcome: 'Find Marshal Redbrook in town — he has work for you.',
+  welcomeQuestId: 'q_wolves',
 };
 
 // ---------------------------------------------------------------------------

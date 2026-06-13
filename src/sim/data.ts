@@ -6,7 +6,7 @@
 
 import type {
   CampDef, DungeonDef, GroundObjectDef, ItemDef, MobTemplate, NpcDef,
-  PlayerClass, QuestDef, ZoneDef, ZonePropsDef,
+  PlayerClass, QuestDef, QuestState, ZoneDef, ZonePropsDef,
 } from './types';
 import { BASE_ITEMS } from './content/items';
 import {
@@ -112,6 +112,11 @@ export function zoneAt(z: number): ZoneDef {
     if (z < zone.zMax) return zone;
   }
   return ZONES[ZONES.length - 1];
+}
+
+export function zoneWelcomeText(zone: ZoneDef, questState: (questId: string) => QuestState): string | null {
+  if (zone.welcomeQuestId && questState(zone.welcomeQuestId) !== 'available') return null;
+  return zone.welcome;
 }
 
 // Legacy single-zone exports (zone 1) — still referenced by tests and the
