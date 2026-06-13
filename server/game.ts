@@ -240,16 +240,29 @@ function parseCensorList(raw: string | undefined): string[] {
     .filter((term) => term.length > 0);
 }
 
+let censorCacheKey: string | null = null;
+let censorCacheTerms: string[] = [];
+
 function configuredChatCensorTerms(): string[] {
-  const terms = parseCensorList(process.env.CHAT_CENSOR_LIST);
-  const file = process.env.CHAT_CENSOR_FILE;
-  if (!file) return terms;
+  const rawList = process.env.CHAT_CENSOR_LIST ?? '';
+  const file = process.env.CHAT_CENSOR_FILE ?? '';
+  const cacheKey = `${rawList}\0${file}`;
+  if (cacheKey === censorCacheKey) return censorCacheTerms;
+
+  const terms = parseCensorList(rawList);
+  if (!file) {
+    censorCacheTerms = terms;
+    censorCacheKey = cacheKey;
+    return censorCacheTerms;
+  }
   try {
-    return terms.concat(parseCensorList(readFileSync(file, 'utf8')));
+    censorCacheTerms = terms.concat(parseCensorList(readFileSync(file, 'utf8')));
   } catch (err) {
     console.warn(`could not read CHAT_CENSOR_FILE (${file}):`, err);
     return terms;
   }
+  censorCacheKey = cacheKey;
+  return censorCacheTerms;
 }
 
 export function censorChatText(text: string): string {
