@@ -272,6 +272,21 @@ describe('quest npc roles', () => {
     for (let i = 0; i < 10 && sim.questState('q_fenbridge_muster') !== 'active'; i++) sim.talkToNpc(aldric.id);
     expect(sim.questState('q_fenbridge_muster')).toBe('active');
   });
+
+  it('cleanses hostile control auras from quest NPCs', () => {
+    const sim = makeSim('mage');
+    const redbrook = [...sim.entities.values()].find((e) => e.templateId === 'marshal_redbrook')!;
+    redbrook.auras.push({
+      id: 'polymorph', name: 'Polymorph', kind: 'polymorph',
+      remaining: 15, duration: 15, value: 0, tickInterval: 1, tickTimer: 1,
+      sourceId: sim.playerId, school: 'arcane', breaksOnDamage: true,
+    });
+
+    const events = sim.tick();
+
+    expect(redbrook.auras.some((a) => a.kind === 'polymorph')).toBe(false);
+    expect(events).toContainEqual({ type: 'aura', targetId: redbrook.id, name: 'Polymorph', gained: false });
+  });
 });
 
 describe('warrior charge', () => {
