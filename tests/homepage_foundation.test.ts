@@ -13,7 +13,7 @@ describe("i18n Translation Foundation", () => {
     expect(getLanguage()).toBe("en");
     expect(t("nav.home")).toBe("Home");
     expect(t("stats.playersOnline")).toBe("Players Online");
-    expect(t("footer.copyright")).toBe("2026 World of Claudecraft");
+    expect(t("footer.copyright")).toBe("2026 World of ClaudeCraft");
     expect(t("footer.githubLabel")).toBe("Open Source Project");
     expect(t("nav.highscores")).toBe("High Scores");
     expect(t("nav.wiki")).toBe("Wiki");
@@ -31,7 +31,7 @@ describe("i18n Translation Foundation", () => {
     expect(getLanguage()).toBe("es");
     expect(t("nav.home")).toBe("Inicio");
     expect(t("stats.playersOnline")).toBe("Jugadores en Línea");
-    expect(t("footer.copyright")).toBe("2026 World of Claudecraft");
+    expect(t("footer.copyright")).toBe("2026 World of ClaudeCraft");
     expect(t("footer.githubLabel")).toBe("Proyecto de Código Abierto");
     expect(t("nav.highscores")).toBe("Clasificaciones");
     expect(t("nav.wiki")).toBe("Wiki");
