@@ -31,7 +31,7 @@ export const en = {
     realmName: "Realm Name",
   },
   footer: {
-    copyright: "2026 World of Claudecraft",
+    copyright: "2026 World of ClaudeCraft",
     githubLink: "https://github.com/levy-street/world-of-claudecraft",
     githubLabel: "Open Source Project",
     terms: "Terms of Service",
@@ -161,7 +161,7 @@ export const es: typeof en = {
     realmName: "Nombre del Reino",
   },
   footer: {
-    copyright: "2026 World of Claudecraft",
+    copyright: "2026 World of ClaudeCraft",
     githubLink: "https://github.com/levy-street/world-of-claudecraft",
     githubLabel: "Proyecto de Código Abierto",
     terms: "Términos de Servicio",
@@ -276,8 +276,19 @@ const translations = { en, es };
 
 let currentLanguage: "en" | "es" = "en";
 
-// Initialize language from localStorage if available (browser environments)
-if (typeof localStorage !== "undefined") {
+// Initialize language from URL query or localStorage if available (browser environments)
+if (typeof window !== "undefined" && window.location) {
+  const params = new URLSearchParams(window.location.search);
+  const langParam = params.get("lang");
+  if (langParam === "en" || langParam === "es") {
+    currentLanguage = langParam;
+  } else {
+    const saved = localStorage.getItem("locale");
+    if (saved === "en" || saved === "es") {
+      currentLanguage = saved;
+    }
+  }
+} else if (typeof localStorage !== "undefined") {
   const saved = localStorage.getItem("locale");
   if (saved === "en" || saved === "es") {
     currentLanguage = saved;

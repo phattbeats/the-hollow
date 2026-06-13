@@ -608,7 +608,7 @@ function showRealmList(dir?: import('./net/online').RealmDirectory): void {
         <div><div class="realm-name">${r.name}${charTag}<span class="rn-rec" data-rec hidden>Recommended</span></div>
           <div class="realm-sub" data-sub>Checking status…</div></div>
         <div class="realm-type">${r.type}</div>
-        <div class="realm-pop offline" data-pop>—</div>
+        <div class="realm-pop offline" data-pop>-</div>
       </div>`;
     }).join('');
     listEl.querySelectorAll('.realm-row').forEach((row) => row.addEventListener('click', () => {
@@ -1144,8 +1144,8 @@ async function loadProjectStats(): Promise<void> {
       playersEl.textContent = String(cached.players_online);
     } else {
       realmEl.textContent = 'Offline';
-      accountsEl.textContent = '—';
-      playersEl.textContent = '—';
+      accountsEl.textContent = '-';
+      playersEl.textContent = '-';
     }
   }
 }
@@ -1660,6 +1660,14 @@ function wireStartScreens(): void {
     langSelect.addEventListener('change', () => {
       const selected = langSelect.value as 'en' | 'es';
       setLanguage(selected);
+      
+      // Dynamically update the browser URL query parameter without page reload
+      if (typeof window !== 'undefined' && window.history) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', selected);
+        window.history.pushState({}, '', url.toString());
+      }
+      
       translatePage();
     });
   }
