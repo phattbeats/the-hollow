@@ -382,7 +382,10 @@ export class GameServer {
 
   join(ws: WebSocket, accountId: number, characterId: number, name: string, cls: import('../src/sim/types').PlayerClass, state: import('../src/sim/sim').CharacterState | null, isGm = false): ClientSession | { error: string } {
     for (const c of this.clients.values()) {
-      if (c.characterId === characterId) return { error: 'character already in world' };
+      if (c.characterId === characterId) {
+        c.ws.close(4000, 'reconnected');
+        void this.leave(c, 'reconnected');
+      }
     }
     const pid = this.sim.addPlayer(cls, name, { state: state ?? undefined });
     if (isGm) {

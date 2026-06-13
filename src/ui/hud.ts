@@ -191,16 +191,39 @@ export class Hud {
   }
 
   attachTooltip(el: HTMLElement, html: () => string): void {
+    let touchTimer: number | undefined;
+    const mobile = () => document.body.classList.contains('mobile-touch');
+    const clearTouchTimer = () => {
+      if (touchTimer !== undefined) window.clearTimeout(touchTimer);
+      touchTimer = undefined;
+    };
+    const showAt = (x: number, y: number) => {
+      this.tooltipEl.innerHTML = html();
+      this.tooltipEl.style.display = 'block';
+      const tw = this.tooltipEl.offsetWidth, th = this.tooltipEl.offsetHeight;
+      this.tooltipEl.style.left = `${Math.min(window.innerWidth - tw - 8, x + 14)}px`;
+      this.tooltipEl.style.top = `${Math.max(8, y - th - 10)}px`;
+    };
     el.addEventListener('mouseenter', () => {
+      if (mobile()) return;
       this.tooltipEl.innerHTML = html();
       this.tooltipEl.style.display = 'block';
     });
     el.addEventListener('mousemove', (e) => {
+      if (mobile()) return;
       const tw = this.tooltipEl.offsetWidth, th = this.tooltipEl.offsetHeight;
       this.tooltipEl.style.left = `${Math.min(window.innerWidth - tw - 8, e.clientX + 14)}px`;
       this.tooltipEl.style.top = `${Math.max(8, e.clientY - th - 10)}px`;
     });
-    el.addEventListener('mouseleave', () => { this.tooltipEl.style.display = 'none'; });
+    el.addEventListener('mouseleave', () => { clearTouchTimer(); this.tooltipEl.style.display = 'none'; });
+    el.addEventListener('pointerdown', (e) => {
+      if (!mobile() || e.pointerType === 'mouse') return;
+      clearTouchTimer();
+      const x = e.clientX, y = e.clientY;
+      touchTimer = window.setTimeout(() => showAt(x, y), 950);
+    });
+    el.addEventListener('pointerup', clearTouchTimer);
+    el.addEventListener('pointercancel', clearTouchTimer);
   }
 
   hideTooltip(): void {

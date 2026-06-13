@@ -3,6 +3,7 @@ import { Renderer } from './render/renderer';
 import { Input } from './game/input';
 import { Keybinds } from './game/keybinds';
 import { Settings, GameSettings } from './game/settings';
+import { MobileControls, PHONE_TOUCH_QUERY, isPhoneTouchDevice } from './game/mobile_controls';
 import { Hud } from './ui/hud';
 import { audio } from './game/audio';
 import { music } from './game/music';
@@ -20,6 +21,144 @@ import { iconDataUrl } from './ui/icons';
 const WORLD_SEED = 20061; // fixed: World of Claudecraft is a persistent place
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.querySelector(sel) as T;
+
+function syncAppViewport(): void {
+  const width = Math.max(1, Math.round(window.visualViewport?.width ?? window.innerWidth));
+  const height = Math.max(1, Math.round(window.visualViewport?.height ?? window.innerHeight));
+  document.documentElement.style.setProperty('--app-vw', `${width}px`);
+  document.documentElement.style.setProperty('--app-vh', `${height}px`);
+}
+
+function preventMobileZoom(): void {
+  let lastTouchEnd = 0;
+  const prevent = (e: Event) => e.preventDefault();
+  document.addEventListener('gesturestart', prevent, { passive: false });
+  document.addEventListener('gesturechange', prevent, { passive: false });
+  document.addEventListener('gestureend', prevent, { passive: false });
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 1) e.preventDefault();
+  }, { passive: false });
+  document.addEventListener('touchend', (e) => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 320) e.preventDefault();
+    lastTouchEnd = now;
+  }, { passive: false });
+}
+
+function syncPhoneTouchClass(): void {
+  document.body.classList.toggle('mobile-touch', isPhoneTouchDevice());
+}
+
+syncAppViewport();
+preventMobileZoom();
+syncPhoneTouchClass();
+window.matchMedia(PHONE_TOUCH_QUERY).addEventListener?.('change', syncPhoneTouchClass);
+window.addEventListener('resize', syncAppViewport);
+window.addEventListener('orientationchange', () => {
+  syncAppViewport();
+  window.setTimeout(syncAppViewport, 250);
+  window.setTimeout(syncAppViewport, 800);
+});
+window.visualViewport?.addEventListener('resize', syncAppViewport);
+window.visualViewport?.addEventListener('scroll', syncAppViewport);
+document.addEventListener('fullscreenchange', syncAppViewport);
+
+function requestMobileFullscreenLandscape(): void {
+  if (!isPhoneTouchDevice()) return;
+  const root = document.documentElement as HTMLElement & { webkitRequestFullscreen?: () => Promise<void> | void };
+  try {
+    const request = root.requestFullscreen?.bind(root) ?? root.webkitRequestFullscreen?.bind(root);
+    const result = request?.();
+    if (result && typeof (result as Promise<void>).catch === 'function') void (result as Promise<void>).catch(() => {});
+  } catch { /* browser declined fullscreen */ }
+  try {
+    const orientation = screen.orientation as ScreenOrientation & { lock?: (orientation: string) => Promise<void> };
+    void orientation.lock?.('landscape').catch(() => {});
+  } catch { /* browser declined orientation lock */ }
+}
+
+function mobilePlatform(): 'ios' | 'android' | 'other' {
+  const ua = navigator.userAgent;
+  const platform = navigator.platform;
+  if (/iPad|iPhone|iPod/.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1)) return 'ios';
+  if (/Android/.test(ua)) return 'android';
+  return 'other';
+}
+
+function isStandaloneDisplay(): boolean {
+  return window.matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true;
+}
+
+function mobilePreflightCopy(): { detail: string; steps: string[] } {
+  const standalone = isStandaloneDisplay();
+  const base = [
+    'Rotate your device to landscape before entering the world.',
+    'Mobile performance may be degraded. Close extra tabs and lower Render Quality if the game feels slow.',
+  ];
+  if (mobilePlatform() === 'ios') {
+    return {
+      detail: standalone
+        ? 'You are in home-screen fullscreen mode. Keep the device in landscape.'
+        : 'For true fullscreen on iPhone or iPad, install this page to your Home Screen first.',
+      steps: standalone
+        ? base
+        : [
+          'In Safari, tap Share, then Add to Home Screen.',
+          'Open World of Claudecraft from the new Home Screen icon.',
+          ...base,
+        ],
+    };
+  }
+  if (mobilePlatform() === 'android') {
+    return {
+      detail: standalone
+        ? 'You are in fullscreen app mode. Keep the device in landscape.'
+        : 'For fullscreen on Android, install this page or add it to your Home screen first.',
+      steps: standalone
+        ? base
+        : [
+          'In Chrome, tap the menu, then Install app or Add to Home screen.',
+          'Open World of Claudecraft from the new icon.',
+          ...base,
+        ],
+    };
+  }
+  return {
+    detail: standalone
+      ? 'Keep your device in landscape fullscreen.'
+      : 'Install or add this page to your Home screen for the best fullscreen mobile experience.',
+    steps: base,
+  };
+}
+
+function showMobilePreflightPrompt(): void {
+  if (!isPhoneTouchDevice()) return;
+  const prompt = document.getElementById('mobile-preflight') as HTMLElement | null;
+  const detail = document.getElementById('mobile-preflight-detail') as HTMLElement | null;
+  const steps = document.getElementById('mobile-preflight-steps') as HTMLOListElement | null;
+  const continueBtn = document.getElementById('mobile-preflight-continue') as HTMLButtonElement | null;
+  if (!prompt || !detail || !steps || !continueBtn) return;
+
+  const copy = mobilePreflightCopy();
+  detail.textContent = copy.detail;
+  steps.replaceChildren(...copy.steps.map((text) => {
+    const item = document.createElement('li');
+    item.textContent = text;
+    return item;
+  }));
+
+  document.body.classList.add('mobile-preflight-open', 'mobile-touch');
+  prompt.style.display = 'flex';
+  prompt.classList.add('visible');
+  continueBtn.onclick = () => hideMobilePreflightPrompt();
+}
+
+function hideMobilePreflightPrompt(): void {
+  const prompt = document.getElementById('mobile-preflight') as HTMLElement | null;
+  prompt?.classList.remove('visible');
+  if (prompt) prompt.style.display = '';
+  document.body.classList.remove('mobile-preflight-open');
+}
 
 // ---------------------------------------------------------------------------
 // Loading screen (shown from "enter world" until the first frame renders)
@@ -70,6 +209,21 @@ function beginWorldEntry(): boolean {
   return true;
 }
 
+function enterLoadingState(statusText: string): void {
+  hideMobilePreflightPrompt();
+  showLoadingScreen(statusText);
+  $('#start-screen').style.display = 'none';
+}
+
+async function prepareWorldEntry(): Promise<boolean> {
+  if (hasBegunWorldEntry) return false;
+  requestMobileFullscreenLandscape();
+  syncAppViewport();
+  window.setTimeout(syncAppViewport, 250);
+  window.setTimeout(syncAppViewport, 800);
+  return beginWorldEntry();
+}
+
 // ---------------------------------------------------------------------------
 // Shared game wiring (used by both offline sim and online world)
 // ---------------------------------------------------------------------------
@@ -78,11 +232,11 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   // Model/texture/HDRI fetches were kicked off at module import; the renderer
   // builds its scene synchronously, so everything must be resolved first.
   // The loading screen covers the gap — not a silent black screen.
-  showLoadingScreen('Loading world…');
+  enterLoadingState('Loading world…');
+  document.body.classList.add('game-active');
   if (document.activeElement instanceof HTMLElement) {
     document.activeElement.blur();
   }
-  $('#start-screen').style.display = 'none';
   try {
     await assetsReady((done, total) => setLoadingProgress(done, total));
   } catch (err) {
@@ -155,6 +309,17 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   }, keybinds);
   input.camYaw = world.player.facing;
 
+  const mobileControls = new MobileControls(input, {
+    onAttackNearest: () => attackNearest(),
+    onTarget: () => world.tabTarget(),
+    onInteract: () => interactKey(),
+    onChat: () => openChat(),
+    onMenu: () => {
+      if (!hud.closeAll()) hud.toggleOptionsMenu();
+    },
+  });
+  mobileControls.start();
+
   // apply a setting to its live subsystem (also used to apply all on startup)
   function applySetting(key: keyof GameSettings, value: number): void {
     const v = settings.set(key, value);
@@ -208,6 +373,20 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     hud.showError('Nothing to interact with.');
   }
 
+  function attackNearest(): void {
+    const p = world.player;
+    let best: number | null = null;
+    let bestD = 40;
+    for (const e of world.entities.values()) {
+      if (e.kind !== 'mob' || e.dead || !e.hostile) continue;
+      const d = dist2d(p.pos, e.pos);
+      if (d < bestD) { best = e.id; bestD = d; }
+    }
+    if (best === null) { hud.showError('No enemy nearby.'); return; }
+    world.targetEntity(best);
+    world.startAutoAttack();
+  }
+
   function handlePick(x: number, y: number, button: number): void {
     const id = renderer.pick(x, y);
     if (id === null) {
@@ -235,7 +414,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   }
 
   function updateCamera(frameDt: number, interpFacing: number): void {
-    if (!input.rightDown) {
+    if (!input.isMouselookActive()) {
       // follow turns 1:1 (keeps any manual orbit offset constant)
       if (lastInterpFacing !== null) input.camYaw += wrapAngle(interpFacing - lastInterpFacing);
       // settle behind the character while moving, unless the player is
@@ -257,8 +436,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     // freeze movement while the game menu is up so WASD doesn't walk the
     // character behind it (other windows stay non-modal, as before)
     input.suspendMovement = hud.isModalOpen();
+    input.updateTouchLook(frameDt);
 
-    const mouselook = input.rightDown && !world.player.dead;
+    const mouselook = input.isMouselookActive() && !world.player.dead;
 
     if (offlineSim) {
       acc += frameDt;
@@ -318,8 +498,9 @@ function sanitizeOfflineName(raw: string): string {
   return /^[A-Za-z][A-Za-z' -]{1,15}$/.test(stripped) ? stripped : 'Adventurer';
 }
 
-function startOffline(playerClass: PlayerClass, name: string): void {
-  if (!beginWorldEntry()) return;
+async function startOffline(playerClass: PlayerClass, name: string): Promise<void> {
+  if (!(await prepareWorldEntry())) return;
+  enterLoadingState('Loading world…');
   const sim = new Sim({ seed: WORLD_SEED, playerClass, playerName: name });
   void startGame(sim, sim, null);
 }
@@ -621,7 +802,7 @@ async function refreshCharacters(): Promise<void> {
       } else {
         row.querySelector('button')!.addEventListener('click', (e) => {
           e.stopPropagation();
-          enterWorld(c);
+          void enterWorld(c, e.currentTarget as HTMLButtonElement);
         });
       }
 
@@ -679,11 +860,22 @@ function fatalOverlay(message: string): void {
   document.body.appendChild(el);
 }
 
-function enterWorld(c: CharacterSummary): void {
-  if (!beginWorldEntry()) return;
-  audio.init();
-  music.init();
-  showLoadingScreen('Connecting to realm…');
+async function enterWorld(c: CharacterSummary, button?: HTMLButtonElement): Promise<void> {
+  try {
+    if (button) {
+      button.disabled = true;
+      button.textContent = 'Entering...';
+    }
+    if (!(await prepareWorldEntry())) return;
+    audio.init();
+    music.init();
+    enterLoadingState('Connecting to realm…');
+  } finally {
+    if (!hasBegunWorldEntry && button) {
+      button.disabled = false;
+      button.textContent = 'Enter World';
+    }
+  }
   const world = new ClientWorld(api.token!, c.id, c.class, api.base);
   // wait for hello + first snapshot so the world starts populated
   const waitStart = Date.now();
@@ -1036,7 +1228,7 @@ function wireStartScreens(): void {
     audio.init();
     music.init();
     const name = sanitizeOfflineName(rawName);
-    startOffline(cls, name);
+    void startOffline(cls, name);
   };
 
   const handleOfflineSelect = () => {
