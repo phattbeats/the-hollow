@@ -236,6 +236,43 @@ async function main() {
       throw new Error(`Expected English Wiki Title to be "Game Wiki & Guide", got "${engWikiTitle}"`);
     }
 
+    // 4. Verify all new target languages from i18n via URL query parameters
+    console.log('Verifying additional target languages via URL query parameters...');
+    const langChecks = [
+      { code: 'es_ES', expectedPlay: 'Jugar' },
+      { code: 'fr_FR', expectedPlay: 'Jouer' },
+      { code: 'fr_CA', expectedPlay: 'Jouer' },
+      { code: 'en_CA', expectedPlay: 'Play' },
+      { code: 'it_IT', expectedPlay: 'Gioca' },
+      { code: 'de_DE', expectedPlay: 'Spielen' },
+      { code: 'zh_CN', expectedPlay: '开始游戏' },
+      { code: 'zh_TW', expectedPlay: '開始遊戲' },
+      { code: 'ko_KR', expectedPlay: '플레이' },
+      { code: 'ja_JP', expectedPlay: 'プレイ' },
+      { code: 'pt_BR', expectedPlay: 'Jogar' },
+      { code: 'ru_RU', expectedPlay: 'Играть' }
+    ];
+
+    for (const langCheck of langChecks) {
+      console.log(`Checking language "${langCheck.code}"...`);
+      const langUrl = `${URL}/?lang=${langCheck.code}`;
+      await page.goto(langUrl, { waitUntil: 'networkidle0', timeout: 15000 });
+      
+      const currentHtmlLang = await page.evaluate(() => document.documentElement.lang);
+      if (currentHtmlLang !== langCheck.code) {
+        throw new Error(`Expected html lang to be "${langCheck.code}", got "${currentHtmlLang}"`);
+      }
+
+      const playText = await page.evaluate(() => {
+        const el = document.querySelector('#nav-btn-play');
+        return el ? el.textContent.trim() : '';
+      });
+      console.log(`  [${langCheck.code}] Play nav link text: "${playText}"`);
+      if (playText !== langCheck.expectedPlay) {
+        throw new Error(`Expected play nav link text for "${langCheck.code}" to be "${langCheck.expectedPlay}", got "${playText}"`);
+      }
+    }
+
     if (pageErrors.length > 0) {
       throw new Error(`Page encountered errors during test execution: ${pageErrors[0].message}`);
     }

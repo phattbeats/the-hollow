@@ -44,6 +44,29 @@ describe("i18n Translation Foundation", () => {
     expect(t("download.title")).toBe("Descargar Lanzador de Escritorio");
   });
 
+  it("supports and retrieves translations for all newly added locales", () => {
+    const additionalLanguages = [
+      { code: "es_ES", play: "Jugar" },
+      { code: "fr_FR", play: "Jouer" },
+      { code: "fr_CA", play: "Jouer" },
+      { code: "en_CA", play: "Play" },
+      { code: "it_IT", play: "Gioca" },
+      { code: "de_DE", play: "Spielen" },
+      { code: "zh_CN", play: "开始游戏" },
+      { code: "zh_TW", play: "開始遊戲" },
+      { code: "ko_KR", play: "플레이" },
+      { code: "ja_JP", play: "プレイ" },
+      { code: "pt_BR", play: "Jogar" },
+      { code: "ru_RU", play: "Играть" },
+    ] as const;
+
+    for (const lang of additionalLanguages) {
+      setLanguage(lang.code as any);
+      expect(getLanguage()).toBe(lang.code);
+      expect(t("nav.play")).toBe(lang.play);
+    }
+  });
+
   it("persists language selection in localStorage when available", () => {
     const mockStorage: Record<string, string> = {};
     const originalLocalStorage = global.localStorage;
