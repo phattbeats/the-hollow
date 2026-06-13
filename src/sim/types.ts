@@ -31,7 +31,8 @@ export type AiState = 'idle' | 'chase' | 'attack' | 'evade' | 'dead';
 export type AuraKind =
   | 'dot' | 'slow' | 'stun' | 'root' | 'incapacitate' | 'polymorph'
   | 'attackspeed' | 'buff_ap' | 'buff_armor' | 'buff_int' | 'buff_dodge' | 'buff_speed' | 'buff_haste'
-  | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_allstats' | 'thorns' | 'form_bear';
+  | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_allstats' | 'thorns' | 'form_bear'
+  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder';
 
 export interface Aura {
   id: string; // ability id that applied it
@@ -47,6 +48,7 @@ export interface Aura {
   sourceId: number;
   school: 'physical' | 'fire' | 'frost' | 'arcane' | 'shadow' | 'holy' | 'nature';
   breaksOnDamage?: boolean;
+  stacks?: number; // sunder armor: applications stack up to the effect's cap
 }
 
 export interface Stats {
@@ -159,7 +161,11 @@ export type AbilityEffect =
   | { type: 'finisherStun'; base: number; perCombo: number } // kidney shot: stun seconds scale with combo
   | { type: 'gainResource'; amount: number } // bloodrage immediate
   | { type: 'selfDamagePctMax'; pct: number } // bloodrage cost
-  | { type: 'charge' };
+  | { type: 'charge' }
+  | { type: 'sunder'; armor: number; maxStacks: number } // sunder armor: stacking armor debuff + flat threat
+  | { type: 'taunt' } // taunt/growl: match top threat and force-attack the caster
+  | { type: 'tamePet' } // hunter tame beast: the targeted mob becomes the caster's pet
+  | { type: 'dismissPet' }; // release the caster's pet back to the wild
 
 export interface AbilityRank {
   rank: number;
@@ -167,6 +173,7 @@ export interface AbilityRank {
   cost: number;
   effects: AbilityEffect[];
   castTime?: number; // overrides base
+  threatFlat?: number; // overrides the base threat.flat for this rank
 }
 
 export interface AbilityDef {
@@ -188,6 +195,12 @@ export interface AbilityDef {
   spendsCombo?: boolean; // rogue finishers
   requiresDodgeProc?: boolean; // overpower
   requiresTargetHpBelow?: number; // execute-style (fraction)
+  // Classic threat riders: flat bonus threat on a successful use and/or a
+  // multiplier on the damage-threat (both scale with stance/form modifiers).
+  threat?: { flat?: number; mult?: number };
+  requiresForm?: 'bear' | 'cat'; // druid form kit (maul/growl/swipe/claw/bite)
+  requiresStealth?: boolean; // ambush
+  requiresOutOfCombat?: boolean; // stealth
   learnLevel: number;
   effects: AbilityEffect[];
   ranks?: AbilityRank[]; // later ranks (sorted by level)
@@ -400,12 +413,21 @@ export interface Entity {
   chargeTargetId: number | null;
   chargeTimeLeft: number; // seconds; failsafe so a blocked charge can't run forever
   chargePath: Vec3[]; // waypoints consumed front-to-back; last leg homes on the live target
+  savedMana: number; // druid forms: mana put aside while running on rage/energy
   sitting: boolean;
   eating: Consuming | null;
   drinking: Consuming | null;
   // mob AI
   aiState: AiState;
   tappedById: number | null; // first player to damage this mob owns loot/xp/quest credit
+  /** Classic-style hate table: attacker entity id (player or pet) -> threat.
+   *  Wiped on evade/respawn/death; drives target selection with the 110%
+   *  melee / 130% ranged pull-over rules. */
+  threat: Map<number, number>;
+  forcedTargetId: number | null; // taunt/growl: attack this target while the timer runs
+  forcedTargetTimer: number; // seconds left on the forced-attack window
+  ownerId: number | null; // controlled pets: owning player's entity id (null = wild)
+  petTauntTimer: number; // controlled pet Growl cooldown
   pulseTimer: number; // boss aoe pulse countdown
   firedSummons: number; // summonAdds thresholds already triggered
   summonedIds: number[]; // live adds this boss summoned; despawned on reset

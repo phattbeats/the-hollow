@@ -15,10 +15,11 @@ function baseEntity(id: number, pos: Vec3): Entity {
     auras: [], castingAbility: null, castRemaining: 0, castTotal: 0,
     channeling: false, channelTickTimer: 0, channelTickEvery: 0,
     gcdRemaining: 0, cooldowns: new Map(), queuedOnSwing: null, fiveSecondRule: 99,
-    comboPoints: 0, comboTargetId: null, overpowerUntil: -1,
+    comboPoints: 0, comboTargetId: null, overpowerUntil: -1, savedMana: 0,
     chargeTargetId: null, chargeTimeLeft: 0, chargePath: [],
     sitting: false, eating: null, drinking: null,
     aiState: 'idle', tappedById: null, pulseTimer: 0, firedSummons: 0, summonedIds: [], enraged: false,
+    threat: new Map(), forcedTargetId: null, forcedTargetTimer: 0, ownerId: null, petTauntTimer: 0,
     spawnPos: { ...pos }, wanderTarget: null, wanderTimer: 0,
     aggroTargetId: null, respawnTimer: 0, corpseTimer: 0, lootable: false, loot: null,
     xpValue: 0, questIds: [], vendorItems: [], objectItemId: null, dungeonId: null,
@@ -77,6 +78,7 @@ export function recalcPlayerStats(e: Entity, cls: PlayerClass, equipment: Player
   let bonusAp = 0;
   let bonusDodge = 0;
   let bearForm = false;
+  let catForm = false;
   for (const a of e.auras) {
     if (a.kind === 'buff_ap') bonusAp += a.value;
     else if (a.kind === 'buff_armor') s.armor += a.value;
@@ -86,11 +88,15 @@ export function recalcPlayerStats(e: Entity, cls: PlayerClass, equipment: Player
       s.str += a.value; s.agi += a.value; s.sta += a.value; s.int += a.value; s.spi += a.value;
     } else if (a.kind === 'buff_dodge') bonusDodge += a.value;
     else if (a.kind === 'form_bear') bearForm = true;
+    else if (a.kind === 'form_cat') catForm = true;
   }
   s.armor += s.agi * 2;
   if (bearForm) {
     s.armor = Math.round(s.armor * 1.65);
     bonusAp += 15;
+  }
+  if (catForm) {
+    bonusAp += 10 + lvl * 2;
   }
 
   e.stats = s;
@@ -114,11 +120,25 @@ export function recalcPlayerStats(e: Entity, cls: PlayerClass, equipment: Player
   e.hp = Math.max(1, Math.round(e.maxHp * hpFrac));
   if (e.dead) e.hp = 0;
 
-  if (def.resourceType === 'mana') {
+  // Druid forms swap the resource bar, classic-style: bear runs on rage
+  // (starts empty, fills from combat), cat on energy (starts full — friendlier
+  // than vanilla's 0). Mana is parked in savedMana and restored on shift-out.
+  const formResource: 'rage' | 'energy' | null = bearForm ? 'rage' : catForm ? 'energy' : null;
+  if (formResource) {
+    if (e.resourceType === 'mana') e.savedMana = e.resource;
+    if (e.resourceType !== formResource) e.resource = formResource === 'energy' ? 100 : 0;
+    e.resourceType = formResource;
+    e.maxResource = 100;
+  } else if (def.resourceType === 'mana') {
+    const cameFromForm = e.resourceType !== 'mana';
     const manaFrac = e.maxResource > 0 ? e.resource / e.maxResource : 1;
+    e.resourceType = 'mana';
     e.maxResource = def.baseMana + def.manaPerLevel * (lvl - 1) + manaFromIntellect(s.int);
-    e.resource = Math.round(e.maxResource * manaFrac);
+    e.resource = cameFromForm
+      ? Math.min(e.savedMana, e.maxResource)
+      : Math.round(e.maxResource * manaFrac);
   } else {
+    e.resourceType = def.resourceType;
     e.maxResource = 100; // rage and energy both cap at 100
     e.resource = Math.min(e.resource, 100);
   }

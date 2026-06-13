@@ -101,10 +101,11 @@ function blankEntity(id: number): Entity {
     auras: [], castingAbility: null, castRemaining: 0, castTotal: 0,
     channeling: false, channelTickTimer: 0, channelTickEvery: 0,
     gcdRemaining: 0, cooldowns: new Map(), queuedOnSwing: null, fiveSecondRule: 99,
-    comboPoints: 0, comboTargetId: null, overpowerUntil: -1,
+    comboPoints: 0, comboTargetId: null, overpowerUntil: -1, savedMana: 0,
     chargeTargetId: null, chargeTimeLeft: 0, chargePath: [],
     sitting: false, eating: null, drinking: null,
     aiState: 'idle', tappedById: null, pulseTimer: 0, firedSummons: 0, summonedIds: [], enraged: false,
+    threat: new Map(), forcedTargetId: null, forcedTargetTimer: 0, ownerId: null, petTauntTimer: 0,
     spawnPos: { x: 0, y: 0, z: 0 }, wanderTarget: null, wanderTimer: 0,
     aggroTargetId: null, respawnTimer: 0, corpseTimer: 0, lootable: false, loot: null,
     xpValue: 0, questIds: [], vendorItems: [], objectItemId: null, dungeonId: null,
@@ -323,6 +324,8 @@ export class ClientWorld implements IWorld {
       e.sitting = !!w.sit;
       e.aggroTargetId = w.aggro ?? null;
       e.tappedById = w.tap ?? null;
+      e.ownerId = w.own ?? null;
+      e.threat = new Map(w.thr ?? []);
       e.auras = (w.auras ?? []).map((a: any) => ({
         id: a.id, name: a.name, kind: a.kind, remaining: a.rem, duration: a.dur,
         value: 0, sourceId: 0, school: 'physical' as const,

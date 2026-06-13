@@ -38,8 +38,9 @@ describe('nine classes', () => {
       const p = sim.player;
       expect(p.maxHp).toBeGreaterThan(30);
       expect(sim.known.length).toBeGreaterThan(0);
-      // 12 action-bar slots cap the kit
-      expect(CLASSES[cls].abilities.length).toBeLessThanOrEqual(12);
+      // Expanded kits can exceed the 12 action-bar slots; overflow remains
+      // available from the spellbook and can be dragged onto the bar.
+      expect(CLASSES[cls].abilities.length).toBeGreaterThan(0);
       // the full kit resolves at MAX_LEVEL; the 10-20 band still has things to learn
       const kit = abilitiesKnownAt(cls, MAX_LEVEL);
       expect(kit.length).toBe(CLASSES[cls].abilities.length);

@@ -205,7 +205,8 @@
   #quest-tracker .qt-obj.done { color: #7fdc4f; }
 
   /* ---------- combat meters ---------- */
-  #meters-window { position: absolute; right: 12px; top: 230px; width: 240px; padding: 8px 10px; display: none; }
+  #meters-window { width: 240px; padding: 8px 10px; display: none; align-self: flex-end; margin-bottom: 6px; text-align: left; }
+  body.meters-open #bags { bottom: 204px; }
   #meters-window .panel-title { margin-bottom: 4px; }
   .mt-tab { background: #1a1410; border: 1px solid #463a1c; border-radius: 3px; color: #c9b27a;
     font-size: 11px; padding: 1px 7px; cursor: pointer; }
@@ -540,6 +541,23 @@
           <button class="micro-btn" id="mm-bag" title="Bags">B<span class="keybind">b</span></button>
           <button class="micro-btn" id="mm-music" title="Toggle Music">♪</button>
         </div>
+        <div id="meters-window" class="panel">
+          <div class="panel-title">
+            <span class="mt-tabs">
+              <button class="mt-tab on" data-tab="dmg">Dmg</button>
+              <button class="mt-tab" data-tab="heal">Heal</button>
+              <button class="mt-tab" data-tab="threat">Threat</button>
+            </span>
+            <span>
+              <button class="x-btn mt-prev" title="older segment">&#9664;</button>
+              <button class="x-btn mt-next" title="newer segment">&#9654;</button>
+              <button class="x-btn mt-close">&times;</button>
+            </span>
+          </div>
+          <div class="mt-view"></div>
+          <div class="mt-sub"></div>
+          <div class="mt-rows"></div>
+        </div>
       </div>
     </div>
 
@@ -563,23 +581,6 @@
     <div id="vendor-window" class="window panel"></div>
     <div id="map-window" class="window panel"><canvas id="map-canvas" width="560" height="560"></canvas></div>
     <div id="options-menu" class="window panel"></div>
-    <div id="meters-window" class="panel">
-      <div class="panel-title">
-        <span class="mt-tabs">
-          <button class="mt-tab on" data-tab="dmg">Dmg</button>
-          <button class="mt-tab" data-tab="heal">Heal</button>
-          <button class="mt-tab" data-tab="threat">Threat</button>
-        </span>
-        <span>
-          <button class="x-btn mt-prev" title="older segment">&#9664;</button>
-          <button class="x-btn mt-next" title="newer segment">&#9654;</button>
-          <button class="x-btn mt-close">&times;</button>
-        </span>
-      </div>
-      <div class="mt-view"></div>
-      <div class="mt-sub"></div>
-      <div class="mt-rows"></div>
-    </div>
     <div id="tooltip" class="panel"></div>
 
     <div id="error-msg"></div>

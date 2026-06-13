@@ -37,7 +37,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
     resourceType: 'rage',
     startWeapon: 'worn_sword',
     startChest: 'recruit_tunic',
-    abilities: ['heroic_strike', 'battle_shout', 'charge', 'rend', 'thunder_clap', 'hamstring', 'bloodrage', 'overpower', 'execute', 'slam', 'cleave'],
+    abilities: ['heroic_strike', 'battle_shout', 'charge', 'rend', 'thunder_clap', 'hamstring', 'bloodrage', 'overpower', 'execute', 'slam', 'cleave', 'defensive_stance', 'sunder_armor', 'taunt'],
     color: 0xc79c6e,
     crest: '⚔',
   },
@@ -69,7 +69,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
     resourceType: 'energy',
     startWeapon: 'rusty_dagger',
     startChest: 'footpad_jerkin',
-    abilities: ['sinister_strike', 'eviscerate', 'backstab', 'gouge', 'evasion', 'slice_and_dice', 'sprint', 'kidney_shot', 'ambush', 'adrenaline_rush'],
+    abilities: ['sinister_strike', 'eviscerate', 'backstab', 'gouge', 'evasion', 'slice_and_dice', 'sprint', 'kidney_shot', 'ambush', 'adrenaline_rush', 'stealth'],
     color: 0xfff569,
     crest: '⚷',
   },
@@ -85,7 +85,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
     resourceType: 'mana',
     startWeapon: 'training_mace',
     startChest: 'recruit_tunic',
-    abilities: ['seal_of_righteousness', 'holy_light', 'devotion_aura', 'judgement', 'blessing_of_might', 'divine_protection', 'hammer_of_justice', 'lay_on_hands', 'flash_of_light', 'exorcism', 'consecration'],
+    abilities: ['seal_of_righteousness', 'holy_light', 'devotion_aura', 'judgement', 'blessing_of_might', 'divine_protection', 'hammer_of_justice', 'lay_on_hands', 'flash_of_light', 'exorcism', 'consecration', 'righteous_fury'],
     color: 0xf58cba,
     crest: '🔨',
   },
@@ -102,7 +102,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
     startWeapon: 'rusty_hatchet',
     startChest: 'footpad_jerkin',
     ranged: { min: 5, max: 9, speed: 2.3, maxRange: 35, minRange: 8 },
-    abilities: ['raptor_strike', 'aspect_of_the_hawk', 'serpent_sting', 'arcane_shot', 'concussive_shot', 'mongoose_bite', 'wing_clip', 'aspect_of_the_cheetah', 'aimed_shot', 'rapid_fire'],
+    abilities: ['raptor_strike', 'aspect_of_the_hawk', 'serpent_sting', 'arcane_shot', 'concussive_shot', 'mongoose_bite', 'wing_clip', 'aspect_of_the_cheetah', 'aimed_shot', 'rapid_fire', 'tame_beast', 'dismiss_pet'],
     color: 0xabd473,
     crest: '🏹',
   },
@@ -166,7 +166,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
     resourceType: 'mana',
     startWeapon: 'gnarled_staff',
     startChest: 'footpad_jerkin',
-    abilities: ['wrath', 'healing_touch', 'mark_of_the_wild', 'moonfire', 'rejuvenation', 'thorns', 'entangling_roots', 'bear_form', 'regrowth', 'barkskin', 'starfire'],
+    abilities: ['wrath', 'healing_touch', 'mark_of_the_wild', 'moonfire', 'rejuvenation', 'thorns', 'entangling_roots', 'bear_form', 'regrowth', 'barkskin', 'starfire', 'maul', 'growl', 'cat_form', 'claw', 'ferocious_bite', 'swipe'],
     color: 0xff7d0a,
     crest: '🐻',
   },
@@ -182,11 +182,12 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'heroic_strike', name: 'Heroic Strike', class: 'warrior', learnLevel: 1,
     cost: 15, castTime: 0, cooldown: 0, range: 0, school: 'physical',
     requiresTarget: true, onNextSwing: true, offGcd: true,
+    threat: { flat: 20 }, // classic per-rank values: 20/39/59/78
     effects: [{ type: 'weaponDamage', bonus: 11 }],
     ranks: [
-      { rank: 2, level: 8, cost: 15, effects: [{ type: 'weaponDamage', bonus: 21 }] },
-      { rank: 3, level: 14, cost: 15, effects: [{ type: 'weaponDamage', bonus: 32 }] },
-      { rank: 4, level: 20, cost: 15, effects: [{ type: 'weaponDamage', bonus: 44 }] },
+      { rank: 2, level: 8, cost: 15, threatFlat: 39, effects: [{ type: 'weaponDamage', bonus: 21 }] },
+      { rank: 3, level: 14, cost: 15, threatFlat: 59, effects: [{ type: 'weaponDamage', bonus: 32 }] },
+      { rank: 4, level: 20, cost: 15, threatFlat: 78, effects: [{ type: 'weaponDamage', bonus: 44 }] },
     ],
     icon: 'HS', iconColor: '#c0392b',
     description: 'A strong attack that increases melee damage by $d. Activates on your next swing.',
@@ -227,6 +228,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'thunder_clap', name: 'Thunder Clap', class: 'warrior', learnLevel: 6,
     cost: 20, castTime: 0, cooldown: 4, range: 0, school: 'physical',
     requiresTarget: false,
+    threat: { mult: 2.5 }, // classic: thunder clap damage causes 2.5x threat
     effects: [
       { type: 'aoeDamage', min: 12, max: 14, radius: 8 },
       { type: 'aoeAttackSpeed', mult: 1.1, duration: 10, radius: 8 },
@@ -299,9 +301,38 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'cleave', name: 'Cleave', class: 'warrior', learnLevel: 18,
     cost: 20, castTime: 0, cooldown: 0, range: 0, school: 'physical',
     requiresTarget: false,
+    threat: { flat: 30 }, // classic 100 at rank 5/level 58, scaled to the 1-20 band
     effects: [{ type: 'aoeDamage', min: 20, max: 26, radius: 5 }],
     icon: 'CL', iconColor: '#cb4335',
     description: 'A sweeping strike that hits all enemies in front of you for $d damage.',
+  },
+  defensive_stance: {
+    id: 'defensive_stance', name: 'Defensive Stance', class: 'warrior', learnLevel: 10,
+    cost: 0, castTime: 0, cooldown: 1, range: 0, school: 'physical',
+    requiresTarget: false, offGcd: true,
+    effects: [{ type: 'selfBuff', kind: 'defensive_stance', value: 0.9, duration: 3600 }],
+    icon: 'DS', iconColor: '#8d99ae',
+    description: 'A defensive combat stance: you generate 30% more threat but deal and take 10% less damage. Cast again to leave the stance.',
+  },
+  sunder_armor: {
+    id: 'sunder_armor', name: 'Sunder Armor', class: 'warrior', learnLevel: 10,
+    cost: 15, castTime: 0, cooldown: 0, range: 0, school: 'physical',
+    requiresTarget: true,
+    threat: { flat: 100 }, // classic rank-1 value (260 by rank 5 at 58)
+    effects: [{ type: 'sunder', armor: 25, maxStacks: 5 }],
+    ranks: [
+      { rank: 2, level: 16, cost: 15, threatFlat: 130, effects: [{ type: 'sunder', armor: 40, maxStacks: 5 }] },
+    ],
+    icon: 'SA', iconColor: '#b0843c',
+    description: 'Sunders the target\'s armor, reducing it by $d per application. Stacks up to 5 times. Generates a high amount of threat.',
+  },
+  taunt: {
+    id: 'taunt', name: 'Taunt', class: 'warrior', learnLevel: 10,
+    cost: 0, castTime: 0, cooldown: 10, range: 8, school: 'physical',
+    requiresTarget: true, offGcd: true,
+    effects: [{ type: 'taunt' }],
+    icon: 'TA', iconColor: '#c0392b',
+    description: 'Taunts the target: your threat rises to match its most hated enemy and it is compelled to attack you for 3 sec.',
   },
 
   // ====================== MAGE ======================
@@ -526,10 +557,18 @@ export const ABILITIES: Record<string, AbilityDef> = {
   ambush: {
     id: 'ambush', name: 'Ambush', class: 'rogue', learnLevel: 16,
     cost: 60, castTime: 0, cooldown: 0, range: 0, school: 'physical',
-    requiresTarget: true, awardsCombo: 1,
+    requiresTarget: true, awardsCombo: 1, requiresStealth: true,
     effects: [{ type: 'weaponStrike', bonus: 28, requiresBehind: true, weaponMult: 2.5 }],
     icon: 'AB', iconColor: '#935116',
-    description: 'Ambush the target for 250% weapon damage plus $d. Must be behind the target. Requires a dagger. Awards 1 combo point.',
+    description: 'Ambush the target for 250% weapon damage plus $d. Must be stealthed and behind the target. Requires a dagger. Awards 1 combo point.',
+  },
+  stealth: {
+    id: 'stealth', name: 'Stealth', class: 'rogue', learnLevel: 2,
+    cost: 0, castTime: 0, cooldown: 10, range: 0, school: 'physical',
+    requiresTarget: false, offGcd: true, requiresOutOfCombat: true,
+    effects: [{ type: 'selfBuff', kind: 'stealth', value: 0.7, duration: 3600 }],
+    icon: 'ST', iconColor: '#5d6d7e',
+    description: 'Conceals you in the shadows: enemies barely notice you, but you move 30% slower. Attacking or taking damage breaks Stealth. Cast again to step out.',
   },
   adrenaline_rush: {
     id: 'adrenaline_rush', name: 'Adrenaline Rush', class: 'rogue', learnLevel: 20,
@@ -649,8 +688,32 @@ export const ABILITIES: Record<string, AbilityDef> = {
     icon: 'CN', iconColor: '#f9e79f',
     description: 'Consecrates the ground beneath you, searing nearby enemies for $d Holy damage.',
   },
+  righteous_fury: {
+    id: 'righteous_fury', name: 'Righteous Fury', class: 'paladin', learnLevel: 16,
+    cost: 30, castTime: 0, cooldown: 0, range: 0, school: 'holy',
+    requiresTarget: false,
+    effects: [{ type: 'selfBuff', kind: 'righteous_fury', value: 1.6, duration: 1800 }],
+    icon: 'RF', iconColor: '#f1c40f',
+    description: 'Increases the threat generated by your Holy damage by 60% for 30 min. The tanking paladin\'s cornerstone.',
+  },
 
   // ====================== HUNTER ======================
+  tame_beast: {
+    id: 'tame_beast', name: 'Tame Beast', class: 'hunter', learnLevel: 10,
+    cost: 0, castTime: 6, cooldown: 0, range: 20, school: 'nature',
+    requiresTarget: true,
+    effects: [{ type: 'tamePet' }],
+    icon: 'TB', iconColor: '#52be80',
+    description: 'Begins taming a beast to be your companion. It must be your level or lower and not an elite. Your pet follows you, attacks your enemies, and holds threat of its own. You may have one pet at a time.',
+  },
+  dismiss_pet: {
+    id: 'dismiss_pet', name: 'Dismiss Pet', class: 'hunter', learnLevel: 10,
+    cost: 0, castTime: 0, cooldown: 0, range: 0, school: 'nature',
+    requiresTarget: false,
+    effects: [{ type: 'dismissPet' }],
+    icon: 'DP', iconColor: '#7f8c8d',
+    description: 'Releases your pet back to the wild.',
+  },
   raptor_strike: {
     id: 'raptor_strike', name: 'Raptor Strike', class: 'hunter', learnLevel: 1,
     cost: 15, castTime: 0, cooldown: 6, range: 0, school: 'physical',
@@ -1173,7 +1236,63 @@ export const ABILITIES: Record<string, AbilityDef> = {
     requiresTarget: false,
     effects: [{ type: 'selfBuff', kind: 'form_bear', value: 0.65, duration: 3600 }],
     icon: 'BF', iconColor: '#b9770e',
-    description: 'Shapeshift into a bear, increasing armor by 65% and attack power by 15. Cast again to return to caster form.',
+    description: 'Shapeshift into a bear: armor +65%, attack power +15, your attacks build rage and generate 30% more threat. Cast again to return to caster form.',
+  },
+  maul: {
+    id: 'maul', name: 'Maul', class: 'druid', learnLevel: 10,
+    cost: 15, castTime: 0, cooldown: 0, range: 0, school: 'physical',
+    requiresTarget: true, onNextSwing: true, offGcd: true, requiresForm: 'bear',
+    threat: { flat: 35 }, // classic 180 at rank 7/level 58, scaled to the 1-20 band
+    effects: [{ type: 'weaponDamage', bonus: 18 }],
+    ranks: [
+      { rank: 2, level: 16, cost: 15, threatFlat: 50, effects: [{ type: 'weaponDamage', bonus: 27 }] },
+    ],
+    icon: 'MA', iconColor: '#a04000',
+    description: 'A mauling attack that increases melee damage by $d and causes a high amount of threat. Activates on your next swing. Bear Form only.',
+  },
+  growl: {
+    id: 'growl', name: 'Growl', class: 'druid', learnLevel: 10,
+    cost: 0, castTime: 0, cooldown: 10, range: 8, school: 'physical',
+    requiresTarget: true, offGcd: true, requiresForm: 'bear',
+    effects: [{ type: 'taunt' }],
+    icon: 'GR', iconColor: '#873600',
+    description: 'Growls at the target: your threat rises to match its most hated enemy and it is compelled to attack you for 3 sec. Bear Form only.',
+  },
+  cat_form: {
+    id: 'cat_form', name: 'Cat Form', class: 'druid', learnLevel: 12,
+    cost: 30, castTime: 0, cooldown: 0, range: 0, school: 'physical',
+    requiresTarget: false,
+    effects: [{ type: 'selfBuff', kind: 'form_cat', value: 0.71, duration: 3600 }],
+    icon: 'CF', iconColor: '#e67e22',
+    description: 'Shapeshift into a cat: attack power rises with your level, your attacks use energy and combo points, and you generate 29% less threat. Cast again to return to caster form.',
+  },
+  claw: {
+    id: 'claw', name: 'Claw', class: 'druid', learnLevel: 12,
+    cost: 45, castTime: 0, cooldown: 0, range: 0, school: 'physical',
+    requiresTarget: true, awardsCombo: 1, requiresForm: 'cat',
+    effects: [{ type: 'weaponStrike', bonus: 12 }],
+    ranks: [
+      { rank: 2, level: 18, cost: 45, effects: [{ type: 'weaponStrike', bonus: 20 }] },
+    ],
+    icon: 'CW', iconColor: '#d35400',
+    description: 'Claw the enemy for weapon damage plus $d. Awards 1 combo point. Cat Form only.',
+  },
+  ferocious_bite: {
+    id: 'ferocious_bite', name: 'Ferocious Bite', class: 'druid', learnLevel: 14,
+    cost: 35, castTime: 0, cooldown: 0, range: 0, school: 'physical',
+    requiresTarget: true, spendsCombo: true, requiresForm: 'cat',
+    effects: [{ type: 'finisherDamage', base: 10, perCombo: 14, variance: 6 }],
+    icon: 'FB', iconColor: '#ba4a00',
+    description: 'Finishing move that causes damage per combo point. Cat Form only.',
+  },
+  swipe: {
+    id: 'swipe', name: 'Swipe', class: 'druid', learnLevel: 16,
+    cost: 20, castTime: 0, cooldown: 0, range: 0, school: 'physical',
+    requiresTarget: false, requiresForm: 'bear',
+    threat: { mult: 1.75 }, // classic: swipe damage causes 1.75x threat
+    effects: [{ type: 'aoeDamage', min: 12, max: 15, radius: 5 }],
+    icon: 'SW', iconColor: '#935116',
+    description: 'Swipe nearby enemies for $d damage. Causes extra threat. Bear Form only.',
   },
   regrowth: {
     id: 'regrowth', name: 'Regrowth', class: 'druid', learnLevel: 14,
@@ -1202,21 +1321,24 @@ export const ABILITIES: Record<string, AbilityDef> = {
 };
 
 // Abilities a class knows at a given level, with active rank values resolved.
-export function abilitiesKnownAt(cls: PlayerClass, level: number): { def: AbilityDef; rank: number; cost: number; castTime: number; effects: AbilityDef['effects'] }[] {
+export function abilitiesKnownAt(cls: PlayerClass, level: number): { def: AbilityDef; rank: number; cost: number; castTime: number; effects: AbilityDef['effects']; threatFlat: number; threatMult: number }[] {
   const out = [];
   for (const id of CLASSES[cls].abilities) {
     const def = ABILITIES[id];
     if (def.learnLevel > level) continue;
     let rank = 1, cost = def.cost, castTime = def.castTime, effects = def.effects;
+    let threatFlat = def.threat?.flat ?? 0;
+    const threatMult = def.threat?.mult ?? 1;
     for (const r of def.ranks ?? []) {
       if (r.level <= level) {
         rank = r.rank;
         cost = r.cost;
         effects = r.effects;
         if (r.castTime !== undefined) castTime = r.castTime;
+        if (r.threatFlat !== undefined) threatFlat = r.threatFlat;
       }
     }
-    out.push({ def, rank, cost, castTime, effects });
+    out.push({ def, rank, cost, castTime, effects, threatFlat, threatMult });
   }
   return out;
 }

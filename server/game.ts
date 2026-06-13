@@ -3,6 +3,7 @@ import type { WebSocket } from 'ws';
 import { Sim } from '../src/sim/sim';
 import type { PlayerMeta } from '../src/sim/sim';
 import { DT, Entity, SimEvent, dist2d } from '../src/sim/types';
+import { stealthDetectionRadius, threatEntries } from '../src/sim/threat';
 import { zoneAt, DUNGEONS } from '../src/sim/data';
 import { saveCharacterState, openPlaySession, closePlaySession, insertChatLogs } from './db';
 import { ChatLogger } from './chat_log';
@@ -138,6 +139,9 @@ function dynamicFields(e: Entity): Record<string, unknown> {
   if (e.sitting || e.eating || e.drinking) out.sit = 1;
   if (e.aggroTargetId !== null) out.aggro = e.aggroTargetId;
   if (e.tappedById !== null) out.tap = e.tappedById;
+  if (e.ownerId !== null) out.own = e.ownerId;
+  // top hate-table entries so the party threat meter shows real numbers
+  if (e.kind === 'mob' && !e.dead && e.threat.size > 0) out.thr = threatEntries(e, 8);
   if (e.auras.length > 0) {
     out.auras = e.auras.map((a): WireAura => ({ id: a.id, name: a.name, kind: a.kind, rem: round2(a.remaining), dur: a.duration }));
   }
@@ -159,6 +163,10 @@ function interestLimitSq(e: Entity, known: boolean): number {
     return known ? NPC_DROP_RADIUS * NPC_DROP_RADIUS : NPC_INTEREST_RADIUS * NPC_INTEREST_RADIUS;
   }
   return known ? INTEREST_DROP_RADIUS * INTEREST_DROP_RADIUS : INTEREST_RADIUS * INTEREST_RADIUS;
+}
+
+function isStealthed(e: Entity): boolean {
+  return e.auras.some((a) => a.kind === 'stealth');
 }
 
 // full rate close up and for anything the viewer is fighting; mid range
@@ -565,6 +573,7 @@ export class GameServer {
       const present = new Set<number>();
       this.sim.grid.forEachInRadius(p.pos.x, p.pos.z, INTEREST_QUERY_RADIUS, (e, d2) => {
         if (e.id === session.pid) return;
+        if (!this.canObserveEntity(p, e, d2)) return;
         const known = session.sentEnts.get(e.id);
         // the viewer's current target stays in interest to the widest drop
         // radius so its unit frame doesn't vanish mid-chase
@@ -613,6 +622,17 @@ export class GameServer {
       this.lastWireSweepTick = tick;
       this.sweepWireCache();
     }
+  }
+
+  private canObserveEntity(viewer: Entity, e: Entity, d2: number): boolean {
+    if (e.kind !== 'player' || !isStealthed(e)) return true;
+    const party = this.sim.partyOf(viewer.id);
+    const sameParty = party?.members.includes(e.id) ?? false;
+    const duel = this.sim.duelFor(viewer.id);
+    const duelingEachOther = duel !== null && (duel.a === e.id || duel.b === e.id);
+    if (sameParty && !duelingEachOther) return true;
+    const radius = stealthDetectionRadius(viewer, e, INTEREST_RADIUS);
+    return d2 <= radius * radius;
   }
 
   // each entity is serialized at most once per tick, shared by every
