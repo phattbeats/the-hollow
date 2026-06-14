@@ -350,9 +350,10 @@ export class Renderer {
 
   private measureViewport(): { width: number; height: number } {
     const rect = this.webgl.domElement.getBoundingClientRect();
-    const vv = window.visualViewport;
-    const width = Math.round(vv?.width ?? (rect.width || window.innerWidth));
-    const height = Math.round(vv?.height ?? (rect.height || window.innerHeight));
+    const stableMobileGameViewport = document.body.classList.contains('game-active') && document.body.classList.contains('mobile-touch');
+    const vv = stableMobileGameViewport ? null : window.visualViewport;
+    const width = Math.round(stableMobileGameViewport ? (rect.width || window.innerWidth) : (vv?.width ?? (rect.width || window.innerWidth)));
+    const height = Math.round(stableMobileGameViewport ? (rect.height || window.innerHeight) : (vv?.height ?? (rect.height || window.innerHeight)));
     return { width: Math.max(1, width), height: Math.max(1, height) };
   }
 

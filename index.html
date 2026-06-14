@@ -2676,6 +2676,22 @@
     margin-inline: auto;
     padding: 18px 16px;
   }
+  body.mobile-touch[data-start-panel="realm-panel"] #homepage-views-container,
+  body.mobile-touch[data-start-panel="charselect-panel"] #homepage-views-container,
+  body.mobile-touch[data-start-panel="login-panel"] #homepage-views-container {
+    align-items: center;
+  }
+  body.mobile-touch[data-start-panel="realm-panel"] #hero-view,
+  body.mobile-touch[data-start-panel="charselect-panel"] #hero-view,
+  body.mobile-touch[data-start-panel="login-panel"] #hero-view {
+    justify-content: center;
+    min-height: calc(var(--app-vh) - 178px);
+  }
+  body.mobile-touch[data-start-panel="realm-panel"] #realm-panel,
+  body.mobile-touch[data-start-panel="login-panel"] #login-panel {
+    margin-top: 0;
+    width: min(360px, calc(100vw - 48px));
+  }
   body.mobile-touch .class-row { grid-template-columns: repeat(2, minmax(138px, 1fr)); gap: 8px; width: min(340px, 92vw); }
   body.mobile-touch .class-card { padding: 9px 8px 8px; }
   body.mobile-touch #title-logo { width: min(360px, 82vw); margin-bottom: 18px; }

@@ -25,8 +25,9 @@ const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.quer
 let pendingDeleteCharacter: CharacterSummary | null = null;
 
 function syncAppViewport(): void {
-  const width = Math.max(1, Math.round(window.visualViewport?.width ?? window.innerWidth));
-  const height = Math.max(1, Math.round(window.visualViewport?.height ?? window.innerHeight));
+  const useStableGameViewport = document.body.classList.contains('game-active') && isPhoneTouchDevice();
+  const width = Math.max(1, Math.round(useStableGameViewport ? window.innerWidth : (window.visualViewport?.width ?? window.innerWidth)));
+  const height = Math.max(1, Math.round(useStableGameViewport ? window.innerHeight : (window.visualViewport?.height ?? window.innerHeight)));
   document.documentElement.style.setProperty('--app-vw', `${width}px`);
   document.documentElement.style.setProperty('--app-vh', `${height}px`);
 }
@@ -320,6 +321,19 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   }
 
   const chatInput = $('#chat-input') as unknown as HTMLInputElement;
+  const recoverFromMobileKeyboard = (): void => {
+    document.body.classList.remove('mobile-chat-open');
+    syncAppViewport();
+    window.scrollTo(0, 0);
+    window.setTimeout(() => { syncAppViewport(); window.scrollTo(0, 0); }, 120);
+    window.setTimeout(() => { syncAppViewport(); window.scrollTo(0, 0); }, 450);
+  };
+  const closeChat = (): void => {
+    chatInput.value = '';
+    chatInput.style.display = 'none';
+    chatInput.blur();
+    recoverFromMobileKeyboard();
+  };
   function openChat(): void {
     chatInput.style.display = 'block';
     chatInput.focus();
@@ -329,14 +343,13 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     if (e.key === 'Enter') {
       const text = chatInput.value.trim();
       if (text) world.chat(text);
-      chatInput.value = '';
-      chatInput.style.display = 'none';
-      chatInput.blur();
+      closeChat();
     } else if (e.key === 'Escape') {
-      chatInput.value = '';
-      chatInput.style.display = 'none';
-      chatInput.blur();
+      closeChat();
     }
+  });
+  chatInput.addEventListener('blur', () => {
+    if (chatInput.style.display === 'none') recoverFromMobileKeyboard();
   });
 
   const input = new Input(canvas, {
@@ -728,6 +741,7 @@ function show(el: string): void {
   }
 
   const panels = ['#mode-select', '#login-panel', '#realm-panel', '#charselect-panel', '#offline-select'];
+  document.body.dataset.startPanel = el.slice(1);
 
   // Find currently visible panel
   const currentActiveId = panels.find(id => !$(id).hasAttribute('hidden'));
