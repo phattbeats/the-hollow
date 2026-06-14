@@ -28,6 +28,11 @@ const LEASH_DISTANCE = 45;
 const DUNGEON_LEASH_DISTANCE = 70;
 const CORPSE_DURATION = 60;
 const EVADE_SPEED_MULT = 1.6;
+// An evading mob walks a straight line home (no pathfinding) and stalls if deep
+// water or a collider sits between it and its spawn. Since evading mobs are
+// immune while resetting, a permanent stall = a permanently unkillable mob. If it
+// can't get closer to home for this long, it starts phasing through the blocker.
+const EVADE_STALL_TIMEOUT = 3;
 const BACKPEDAL_MULT = 0.65;
 const GRAVITY = 16;
 const JUMP_VELOCITY = 6;
@@ -2683,23 +2688,44 @@ export class Sim {
         break;
       }
       case 'evade': {
-        const arrived = this.moveToward(mob, mob.spawnPos, mob.moveSpeed * EVADE_SPEED_MULT);
+        // moveToward has no pathfinding: a straight line home that crosses a prop
+        // (the camp tent/crate/campfire) or deep water makes no progress, so the
+        // mob stays evading — and therefore immune — forever. Walk home normally,
+        // but once stalled, phase straight through the blocker just until a normal
+        // step works again. Phasing always makes progress, so arrival is the
+        // backstop: worst case it phases the rest of the way home.
+        const phasing = mob.evadeStall >= EVADE_STALL_TIMEOUT;
+        const distBefore = dist2d(mob.pos, mob.spawnPos);
+        const arrived = this.moveToward(mob, mob.spawnPos, mob.moveSpeed * EVADE_SPEED_MULT, phasing);
         if (arrived) {
-          mob.aiState = 'idle';
-          mob.hp = mob.maxHp;
-          mob.auras = [];
-          mob.inCombat = false;
-          mob.tappedById = null;
-          mob.leashAnchor = null;
-          clearThreat(mob);
-          this.despawnSummonedAdds(mob);
-          mob.firedSummons = 0;
-          mob.enraged = false;
-          mob.wanderTimer = this.rng.range(2, 8);
+          this.resetEvadingMob(mob);
+        } else if (phasing) {
+          if (!this.blockedTowardSpawn(mob, mob.spawnPos)) mob.evadeStall = 0; // cleared the obstacle
+        } else if (dist2d(mob.pos, mob.spawnPos) < distBefore - 1e-3) {
+          mob.evadeStall = 0; // walking home fine
+        } else {
+          mob.evadeStall += DT; // pinned on something
         }
         break;
       }
     }
+  }
+
+  // An evading mob has reached its spawn (walking or phasing): drop the pull
+  // entirely and return to idle at full health, ready to be pulled again.
+  private resetEvadingMob(mob: Entity): void {
+    mob.aiState = 'idle';
+    mob.hp = mob.maxHp;
+    mob.auras = [];
+    mob.inCombat = false;
+    mob.tappedById = null;
+    mob.leashAnchor = null;
+    mob.evadeStall = 0;
+    clearThreat(mob);
+    this.despawnSummonedAdds(mob);
+    mob.firedSummons = 0;
+    mob.enraged = false;
+    mob.wanderTimer = this.rng.range(2, 8);
   }
 
   private mobSwing(mob: Entity, target: Entity): void {
@@ -2795,15 +2821,25 @@ export class Sim {
     return best;
   }
 
-  private moveToward(e: Entity, dest: Vec3, speed: number): boolean {
+  // Step `e` one tick toward `dest`. With `ignoreObstacles`, the mover phases
+  // straight through props and water — used to free a stuck evader, never for
+  // normal locomotion. Returns true on arrival.
+  private moveToward(e: Entity, dest: Vec3, speed: number, ignoreObstacles = false): boolean {
     const d = dist2d(e.pos, dest);
     if (d < 0.3) return true;
     e.facing = angleTo(e.pos, dest);
     const step = Math.min(speed * DT, d);
     const nx = e.pos.x + Math.sin(e.facing) * step;
     const nz = e.pos.z + Math.cos(e.facing) * step;
-    const ground = groundHeight(nx, nz, this.cfg.seed);
     const canSwim = this.mobCanSwim(MOBS[e.templateId]);
+    if (ignoreObstacles) {
+      e.pos.x = nx;
+      e.pos.z = nz;
+      const g = groundHeight(nx, nz, this.cfg.seed);
+      e.pos.y = Math.max(g, SWIM_SURFACE_Y); // ride the surface while phasing, don't sink under terrain/water
+      return d - step < 0.3;
+    }
+    const ground = groundHeight(nx, nz, this.cfg.seed);
     // landlocked creatures stop at the waterline instead of walking under it
     if (!canSwim && ground < WATER_LEVEL - SWIM_DEPTH) return false;
     const resolved = resolvePosition(this.cfg.seed, nx, nz, BODY_RADIUS);
@@ -2812,6 +2848,22 @@ export class Sim {
     const g = groundHeight(e.pos.x, e.pos.z, this.cfg.seed);
     e.pos.y = canSwim && g < WATER_LEVEL - SWIM_DEPTH ? SWIM_SURFACE_Y : g;
     return d - step < 0.3;
+  }
+
+  // Would a normal (collision- and water-aware) step toward `dest` be blocked —
+  // i.e. is a prop or deep water right in front of this mob? Used to decide when
+  // a phasing evader has cleared the obstacle and can walk normally again.
+  private blockedTowardSpawn(e: Entity, dest: Vec3): boolean {
+    const d = dist2d(e.pos, dest);
+    if (d < 0.3) return false;
+    const facing = angleTo(e.pos, dest);
+    const step = Math.min(e.moveSpeed * EVADE_SPEED_MULT * DT, d);
+    const nx = e.pos.x + Math.sin(facing) * step;
+    const nz = e.pos.z + Math.cos(facing) * step;
+    if (!this.mobCanSwim(MOBS[e.templateId]) && groundHeight(nx, nz, this.cfg.seed) < WATER_LEVEL - SWIM_DEPTH) return true;
+    const resolved = resolvePosition(this.cfg.seed, nx, nz, BODY_RADIUS);
+    // a collider ate most of the intended movement -> still blocked
+    return Math.hypot(nx - resolved.x, nz - resolved.z) > step * 0.5;
   }
 
   private respawnMob(mob: Entity): void {
@@ -2832,6 +2884,7 @@ export class Sim {
     mob.aggroTargetId = null;
     mob.inCombat = false;
     mob.leashAnchor = null;
+    mob.evadeStall = 0;
     clearThreat(mob);
     this.despawnSummonedAdds(mob);
     mob.firedSummons = 0;
