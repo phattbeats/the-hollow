@@ -383,7 +383,9 @@
   #quest-tracker .qt-header { font-family: var(--title-font); font-size: 14px; border-bottom: 1px solid #ffd10044; margin-bottom: 4px; padding-bottom: 2px; }
   #quest-tracker .qt-title { font-weight: bold; margin-top: 8px; font-family: var(--title-font); }
   #quest-tracker .qt-obj { color: #e8e0c8; font-size: 11px; margin-left: 8px; }
-  #quest-tracker .qt-obj.done { color: #7fdc4f; }
+  #quest-tracker .qt-obj.done,
+  .qd-obj.done,
+  .quest-complete { color: var(--color-text-success); }
 
   /* ---------- combat meters ---------- */
   #meters-window { width: 240px; padding: 8px 10px; display: none; align-self: flex-end; margin-bottom: 6px; text-align: left; }
@@ -438,9 +440,16 @@
   .qd-text { font-size: 12.5px; line-height: 1.55; color: #e8e0c8; margin-bottom: 10px; font-family: Georgia, serif; }
   .qd-sub { font-family: var(--title-font); color: var(--gold); font-size: 13px; margin: 8px 0 4px; }
   .qd-obj { font-size: 12px; color: #cfc6a8; margin: 2px 0; }
+  .quest-muted { color: var(--color-text-muted); font-size: 11px; }
+  .quest-suggested { color: var(--color-text-error); font-size: 11px; }
+  .quest-return { margin-top: var(--spacing-sm); color: var(--color-text-muted); }
   .qd-reward-row { display: flex; gap: 6px; align-items: center; margin-top: 4px; }
-  .qd-list-item { padding: 5px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; color: var(--gold); font-family: var(--title-font); }
+  .qd-reward-label { color: var(--color-text-muted); font-size: 11px; }
+  .qd-reward-name { font-size: 12px; }
+  .qd-list-item { display: block; width: 100%; padding: 5px 8px; cursor: pointer; border: 0; border-radius: 4px; background: transparent; text-align: left; font-size: 13px; color: var(--gold); font-family: var(--title-font); }
   .qd-list-item:hover { background: #ffffff14; }
+  .qd-list-item:focus-visible,
+  .ql-item:focus-visible { outline: 3px solid var(--color-border-focus); outline-offset: 2px; }
   .btn { background: linear-gradient(#8a3326, #5a1d12 55%, #471409); color: #ffd9a0; border: 1px solid #a86;
     outline: 1px solid #000; border-radius: 4px; padding: 6px 16px; font-size: 12.5px; cursor: pointer;
     margin-top: 10px; margin-right: 8px; font-family: var(--title-font); letter-spacing: 0.4px;
@@ -502,9 +511,12 @@
   #quest-log-window { left: 50%; top: 14%; transform: translateX(-50%); width: 520px; max-height: 66%; display: none; }
   #quest-log-window .ql-cols { display: flex; gap: 12px; }
   .ql-list { width: 180px; border-right: 1px solid #463a1c; padding-right: 8px; }
-  .ql-item { padding: 4px 6px; font-size: 12px; color: #d8c89a; cursor: pointer; border-radius: 3px; font-family: var(--title-font); }
+  .ql-item { display: block; width: 100%; padding: 4px 6px; border: 0; background: transparent; text-align: left; font-size: 12px; color: #d8c89a; cursor: pointer; border-radius: 3px; font-family: var(--title-font); }
   .ql-item:hover, .ql-item.sel { background: #ffffff14; color: var(--gold); }
   .ql-detail { flex: 1; font-size: 12px; max-height: 380px; overflow-y: auto; }
+  .ql-empty { color: var(--color-text-muted); font-size: 12px; padding: var(--spacing-xs); }
+  .ql-detail-title { font-size: 15px; }
+  .ql-detail-text { margin-top: var(--spacing-sm); }
 
   /* vendor */
   #vendor-window { left: 50%; top: 16%; transform: translateX(-50%); width: 400px; max-height: 68%; overflow-y: auto; }
@@ -2710,6 +2722,29 @@
     box-sizing: border-box;
     font-size: 16px;
   }
+  body.mobile-touch #quest-dialog .qd-list-item,
+  body.mobile-touch #quest-log-window .ql-item,
+  body.mobile-touch #quest-dialog .btn,
+  body.mobile-touch #quest-log-window .btn,
+  body.mobile-touch #quest-dialog [data-close],
+  body.mobile-touch #quest-log-window [data-close] {
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 16px;
+  }
+  body.mobile-touch #quest-dialog .qd-text,
+  body.mobile-touch #quest-log-window .qd-text,
+  body.mobile-touch #quest-dialog .qd-obj,
+  body.mobile-touch #quest-log-window .qd-obj,
+  body.mobile-touch #quest-log-window .ql-empty {
+    font-size: 16px;
+  }
+  body.mobile-touch #quest-log-window .ql-cols {
+    gap: var(--spacing-sm);
+  }
+  body.mobile-touch #quest-log-window .ql-list {
+    width: min(42%, 220px);
+  }
   body.mobile-touch #options-menu .btn {
     min-height: 40px;
     padding-top: 9px;
@@ -3361,7 +3396,7 @@
         <div id="side-buttons">
           <button class="micro-btn" id="mm-char" title="Character Info">C<span class="keybind">c</span></button>
           <button class="micro-btn" id="mm-spell" data-i18n-title="abilityUi.spellbook.title" title="Spellbook">S<span class="keybind">p</span></button>
-          <button class="micro-btn" id="mm-quest" title="Quest Log">Q<span class="keybind">l</span></button>
+          <button class="micro-btn" id="mm-quest" data-i18n-title="questUi.log.title" title="Quest Log">Q<span class="keybind">l</span></button>
           <button class="micro-btn" id="mm-map" title="World Map">M<span class="keybind">m</span></button>
           <button class="micro-btn" id="mm-bag" title="Bags">B<span class="keybind">b</span></button>
           <button class="micro-btn" id="mm-arena" title="Ashen Coliseum (1v1 Arena)">⚔<span class="keybind">g</span></button>

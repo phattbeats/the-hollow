@@ -144,6 +144,7 @@ export class Hud {
   private openLootMobId: number | null = null;
   private openVendorNpcId: number | null = null;
   private openGossipNpcId: number | null = null;
+  private openQuestDetailId: string | null = null;
   private selectedQuestLogId: string | null = null;
   private lastPortraitTarget = -999;
   // trading: locally staged offer, pushed to the server on change
@@ -187,6 +188,7 @@ export class Hud {
     this.buildActionBar();
     this.refreshKeybindLabels();
     this.buildXpTicks();
+    document.addEventListener('woc:languagechange', () => this.refreshLocalizedQuestUi());
     $('#pf-name').textContent = sim.player.name;
     this.drawPortrait($('#pf-portrait') as unknown as HTMLCanvasElement, CLASS_GLYPH[sim.cfg.playerClass], CLASSES[sim.cfg.playerClass].color);
     const mm = $('#minimap') as unknown as HTMLCanvasElement;
@@ -341,6 +343,50 @@ export class Hud {
     if (item.requiredClass) html += `<div class="tt-sub">Classes: ${item.requiredClass.map((c) => CLASSES[c].name).join(', ')}</div>`;
     if (item.sellValue > 0) html += `<div class="tt-sub">Sell price: ${formatMoney(item.sellValue)}</div>`;
     return html;
+  }
+
+  private questNumber(value: number): string {
+    return formatNumber(value, { maximumFractionDigits: 0 });
+  }
+
+  private questProgressText(label: string, current: number, total: number): string {
+    return t('questUi.detail.objectiveProgress', {
+      label,
+      current: this.questNumber(current),
+      total: this.questNumber(total),
+    });
+  }
+
+  private questSuggestedPlayersHtml(count?: number): string {
+    if (!count) return '';
+    return ` <span class="quest-suggested">${esc(t('questUi.log.suggestedPlayers', { count: this.questNumber(count) }))}</span>`;
+  }
+
+  private focusFirstInteractive(root: HTMLElement, preferredSelector?: string): void {
+    window.setTimeout(() => {
+      const target = (preferredSelector ? root.querySelector<HTMLElement>(preferredSelector) : null)
+        ?? root.querySelector<HTMLElement>('button:not([disabled]):not([data-close]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')
+        ?? root.querySelector<HTMLElement>('button:not([disabled])');
+      (target ?? root).focus();
+    }, 0);
+  }
+
+  private refreshLocalizedQuestUi(): void {
+    this.updateQuestTracker();
+    const log = $('#quest-log-window');
+    if (log.style.display === 'block') this.renderQuestLog();
+    const dialog = $('#quest-dialog');
+    if (dialog.style.display !== 'block' || this.openGossipNpcId === null) return;
+    const npc = this.sim.entities.get(this.openGossipNpcId);
+    if (!npc) {
+      this.closeQuestDialog();
+      return;
+    }
+    if (this.openQuestDetailId && QUESTS[this.openQuestDetailId]) {
+      this.renderQuestDetail(npc, this.openQuestDetailId);
+    } else {
+      this.renderGossip(npc);
+    }
   }
 
   private abilityTooltip(res: ResolvedAbility): string {
@@ -756,13 +802,13 @@ export class Hud {
 
   private updateQuestTracker(): void {
     const el = $('#quest-tracker');
-    let html = this.sim.questLog.size > 0 ? '<div class="qt-header">Quests</div>' : '';
+    let html = this.sim.questLog.size > 0 ? `<div class="qt-header">${esc(t('questUi.tracker.title'))}</div>` : '';
     for (const qp of this.sim.questLog.values()) {
       const quest = QUESTS[qp.questId];
-      html += `<div class="qt-title">${quest.name}${qp.state === 'ready' ? ' <span style="color:#7fdc4f">(Complete)</span>' : ''}</div>`;
+      html += `<div class="qt-title">${esc(quest.name)}${qp.state === 'ready' ? ` <span class="quest-complete">(${esc(t('questUi.tracker.complete'))})</span>` : ''}</div>`;
       quest.objectives.forEach((obj, i) => {
         const done = qp.counts[i] >= obj.count;
-        html += `<div class="qt-obj${done ? ' done' : ''}">- ${obj.label}: ${qp.counts[i]}/${obj.count}</div>`;
+        html += `<div class="qt-obj${done ? ' done' : ''}">- ${esc(this.questProgressText(obj.label, qp.counts[i], obj.count))}</div>`;
       });
     }
     if (el.innerHTML !== html) el.innerHTML = html;
@@ -1223,10 +1269,10 @@ export class Hud {
           audio.questAccept();
           this.refreshGossip();
           break;
-        case 'questProgress': this.log(ev.text, '#dcd29f'); break;
+        case 'questProgress': this.log(this.localizeQuestProgressText(ev.questId, ev.text), '#dcd29f'); break;
         case 'questReady': {
           const q = QUESTS[ev.questId];
-          this.showBanner(`${q.name} (Complete)`);
+          this.showBanner(t('questUi.logs.ready', { name: q.name, status: t('questUi.log.readyStatus') }));
           audio.questDone();
           break;
         }
@@ -1475,6 +1521,12 @@ export class Hud {
       'Target is too far away to trade.': 'hud.errors.tradeTooFar',
       'The trade request has expired.': 'hud.errors.tradeExpired',
       'Trade failed: items or money no longer available.': 'hud.errors.tradeFailed',
+      'That quest is not available.': 'questUi.errors.unavailable',
+      'That quest is not in your log.': 'questUi.errors.notInLog',
+      'That quest is not complete.': 'questUi.errors.incomplete',
+      'That quest giver is not nearby.': 'questUi.errors.giverMissing',
+      'That quest turn-in is not nearby.': 'questUi.errors.turnInMissing',
+      'Too far away.': 'questUi.errors.tooFar',
     };
     const key = exact[text];
     if (key) return t(key);
@@ -1538,7 +1590,27 @@ export class Hud {
     if (match) return t('hud.logs.friendOnline', { name: match[1] });
     match = /^(.+) has gone offline\.$/.exec(text);
     if (match) return t('hud.logs.friendOffline', { name: match[1] });
+    match = /^Quest accepted: (.+)$/.exec(text);
+    if (match) return t('questUi.logs.accepted', { name: match[1] });
+    match = /^Quest abandoned: (.+)$/.exec(text);
+    if (match) return t('questUi.logs.abandoned', { name: match[1] });
+    match = /^Quest completed: (.+)$/.exec(text);
+    if (match) return t('questUi.logs.completed', { name: match[1] });
+    match = /^(.+) \(Complete\)$/.exec(text);
+    if (match) return t('questUi.logs.ready', { name: match[1], status: t('questUi.log.readyStatus') });
     return text;
+  }
+
+  private localizeQuestProgressText(questId: string, text: string): string {
+    const quest = QUESTS[questId];
+    const match = /^(.+): (\d+)\/(\d+)$/.exec(text);
+    if (!quest || !match) return text;
+    const label = quest.objectives.find((objective) => objective.label === match[1])?.label ?? match[1];
+    return t('questUi.logs.progress', {
+      label,
+      current: this.questNumber(Number(match[2])),
+      total: this.questNumber(Number(match[3])),
+    });
   }
 
   private localizeLootText(text: string): string {
@@ -1607,6 +1679,7 @@ export class Hud {
 
   private renderGossip(npc: Entity): void {
     this.openGossipNpcId = npc.id;
+    this.openQuestDetailId = null;
     const el = $('#quest-dialog');
     const def = NPCS[npc.templateId];
     // accepted-but-unfinished quests are tracked in the quest log; the NPC
@@ -1616,20 +1689,27 @@ export class Hud {
       return (st === 'available' && QUESTS[q].giverNpcId === npc.templateId)
         || (st === 'ready' && QUESTS[q].turnInNpcId === npc.templateId);
     });
-    let html = `<div class="panel-title"><span>${npc.name}<span style="color:#998d6a;font-size:11px"> &lt;${def?.title ?? ''}&gt;</span></span><span class="x-btn" data-close>✕</span></div>`;
-    html += `<div class="qd-text">"${(def?.greeting ?? 'Greetings.').replace('$C', CLASSES[this.sim.cfg.playerClass].name.toLowerCase())}"</div>`;
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'false');
+    el.setAttribute('aria-labelledby', 'quest-dialog-title');
+    el.setAttribute('tabindex', '-1');
+    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(npc.name)}<span class="quest-muted"> &lt;${esc(def?.title ?? '')}&gt;</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">✕</button></div>`;
+    html += `<div class="qd-text">"${esc((def?.greeting ?? t('questUi.dialog.greetingFallback')).replace('$C', CLASSES[this.sim.cfg.playerClass].name.toLowerCase()))}"</div>`;
     if (interesting.length > 0) {
       for (const qid of interesting) {
         const st = this.sim.questState(qid);
         const icon = st === 'ready' ? '<span class="gold">?</span> ' : '<span class="gold">!</span> ';
-        html += `<div class="qd-list-item" data-quest="${qid}">${icon}${QUESTS[qid].name}</div>`;
+        const aria = st === 'ready'
+          ? t('questUi.dialog.readyQuestAria', { name: QUESTS[qid].name })
+          : t('questUi.dialog.availableQuestAria', { name: QUESTS[qid].name });
+        html += `<button type="button" class="qd-list-item" data-quest="${esc(qid)}" aria-label="${esc(aria)}">${icon}${esc(QUESTS[qid].name)}</button>`;
       }
     }
     if (npc.vendorItems.length > 0) {
-      html += `<div class="qd-list-item" data-vendor="1"><span style="color:#9fdc7f">$</span> Let me browse your goods.</div>`;
+      html += `<button type="button" class="qd-list-item" data-vendor="1" aria-label="${esc(t('questUi.dialog.browseGoodsAria', { name: npc.name }))}"><span class="quest-complete">$</span> ${esc(t('questUi.dialog.browseGoods'))}</button>`;
     }
     if (def?.market) {
-      html += `<div class="qd-list-item" data-market="1"><span style="color:#ffd24a">⚖</span> Show me the World Market.</div>`;
+      html += `<button type="button" class="qd-list-item" data-market="1" aria-label="${esc(t('questUi.dialog.worldMarketAria'))}"><span class="gold">$</span> ${esc(t('questUi.dialog.worldMarket'))}</button>`;
     }
     el.innerHTML = html;
     el.querySelectorAll('[data-quest]').forEach((item) => {
@@ -1645,26 +1725,32 @@ export class Hud {
     });
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
     el.style.display = 'block';
+    this.focusFirstInteractive(el);
   }
 
   private renderQuestDetail(npc: Entity, questId: string): void {
     const el = $('#quest-dialog');
     const quest = QUESTS[questId];
+    this.openQuestDetailId = questId;
     const state = this.sim.questState(questId);
     const text = (state === 'ready' ? quest.completionText : quest.text).replace(/\$N/g, this.sim.player.name);
-    let html = `<div class="panel-title"><span>${quest.name}${quest.suggestedPlayers ? ` <span style="color:#f96;font-size:11px">(Suggested players: ${quest.suggestedPlayers})</span>` : ''}</span><span class="x-btn" data-close>✕</span></div>`;
-    html += `<div class="qd-text">${text}</div>`;
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'false');
+    el.setAttribute('aria-labelledby', 'quest-dialog-title');
+    el.setAttribute('tabindex', '-1');
+    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(quest.name)}${this.questSuggestedPlayersHtml(quest.suggestedPlayers)}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">✕</button></div>`;
+    html += `<div class="qd-text">${esc(text)}</div>`;
     if (state !== 'ready') {
       const qp = this.sim.questLog.get(questId);
-      html += `<div class="qd-sub">Objectives</div>`;
-      html += quest.objectives.map((o, i) => `<div class="qd-obj">&bull; ${o.label}: ${qp ? Math.min(qp.counts[i], o.count) : 0}/${o.count}</div>`).join('');
+      html += `<div class="qd-sub">${esc(t('questUi.detail.objectives'))}</div>`;
+      html += quest.objectives.map((o, i) => `<div class="qd-obj">${esc(this.questProgressText(o.label, qp ? Math.min(qp.counts[i], o.count) : 0, o.count))}</div>`).join('');
     }
-    html += `<div class="qd-sub">Rewards</div>`;
-    html += `<div class="qd-obj">${quest.xpReward} experience &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
+    html += `<div class="qd-sub">${esc(t('questUi.detail.rewards'))}</div>`;
+    html += `<div class="qd-obj">${esc(t('questUi.detail.xpReward', { xp: this.questNumber(quest.xpReward) }))} &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
     const rewardItem = quest.itemRewards[this.sim.cfg.playerClass];
     if (rewardItem) {
       const item = ITEMS[rewardItem];
-      html += `<div class="qd-reward-row" data-reward>${this.itemIcon(item)}<span style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'};font-size:12px">${item.name}</span></div>`;
+      html += `<div class="qd-reward-row" data-reward><span class="qd-reward-label">${esc(t('questUi.detail.itemReward'))}</span>${this.itemIcon(item)}<span class="qd-reward-name" style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'}">${esc(item.name)}</span></div>`;
     }
     el.innerHTML = html;
     const rewardRow = el.querySelector('[data-reward]') as HTMLElement | null;
@@ -1673,28 +1759,33 @@ export class Hud {
     if (state === 'available') {
       const btn = document.createElement('button');
       btn.className = 'btn';
-      btn.textContent = 'Accept';
+      btn.type = 'button';
+      btn.textContent = t('questUi.dialog.accept');
       btn.addEventListener('click', () => { this.sim.acceptQuest(questId); this.renderGossip(npc); });
       el.appendChild(btn);
     } else if (state === 'ready') {
       const btn = document.createElement('button');
       btn.className = 'btn';
-      btn.textContent = 'Complete Quest';
+      btn.type = 'button';
+      btn.textContent = t('questUi.dialog.completeQuest');
       btn.addEventListener('click', () => { this.sim.turnInQuest(questId); this.renderGossip(npc); });
       el.appendChild(btn);
     }
     const back = document.createElement('button');
     back.className = 'btn';
-    back.textContent = 'Back';
+    back.type = 'button';
+    back.textContent = t('questUi.dialog.back');
     back.addEventListener('click', () => this.renderGossip(npc));
     el.appendChild(back);
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
     el.style.display = 'block';
+    this.focusFirstInteractive(el, '.ql-item.sel');
   }
 
   closeQuestDialog(): void {
     $('#quest-dialog').style.display = 'none';
     this.openGossipNpcId = null;
+    this.openQuestDetailId = null;
     this.hideTooltip();
   }
 
@@ -2188,7 +2279,14 @@ export class Hud {
   renderQuestLog(): void {
     const el = $('#quest-log-window');
     const sim = this.sim;
-    el.innerHTML = `<div class="panel-title"><span>Quest Log <span style="color:#998d6a;font-size:11px">${sim.questLog.size} active &middot; ${sim.questsDone.size} completed</span></span><span class="x-btn" data-close>✕</span></div>`;
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'false');
+    el.setAttribute('aria-labelledby', 'quest-log-title');
+    el.setAttribute('tabindex', '-1');
+    el.innerHTML = `<div class="panel-title"><span id="quest-log-title">${esc(t('questUi.log.title'))} <span class="quest-muted">${esc(t('questUi.log.summary', {
+      active: this.questNumber(sim.questLog.size),
+      completed: this.questNumber(sim.questsDone.size),
+    }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.log.close'))}">✕</button></div>`;
     const cols = document.createElement('div');
     cols.className = 'ql-cols';
     const list = document.createElement('div');
@@ -2200,37 +2298,50 @@ export class Hud {
 
     const quests = [...sim.questLog.values()];
     if (quests.length === 0) {
-      list.innerHTML = '<div style="color:#887c5c;font-size:12px;padding:4px">No active quests.</div>';
-      detail.innerHTML = '<div class="qd-text">Seek out townsfolk marked with <span class="gold">!</span> to find work.</div>';
+      list.innerHTML = `<div class="ql-empty">${esc(t('questUi.log.emptyTitle'))}</div>`;
+      detail.innerHTML = `<div class="qd-text">${esc(t('questUi.log.emptyHint'))}</div>`;
     }
     if (!this.selectedQuestLogId || !sim.questLog.has(this.selectedQuestLogId)) {
       this.selectedQuestLogId = quests[0]?.questId ?? null;
     }
     for (const qp of quests) {
       const quest = QUESTS[qp.questId];
-      const item = document.createElement('div');
+      const item = document.createElement('button');
+      const status = qp.state === 'ready' ? t('questUi.log.readyStatus') : t('questUi.log.activeStatus');
+      item.type = 'button';
       item.className = 'ql-item' + (qp.questId === this.selectedQuestLogId ? ' sel' : '');
-      item.textContent = `${quest.name}${qp.state === 'ready' ? ' ✓' : ''}`;
+      item.setAttribute('aria-pressed', qp.questId === this.selectedQuestLogId ? 'true' : 'false');
+      item.setAttribute('aria-label', t('questUi.log.selectedQuestAria', { name: quest.name, status }));
+      item.innerHTML = `${esc(quest.name)}${qp.state === 'ready' ? ` <span class="quest-complete">(${esc(t('questUi.log.readyStatus'))})</span>` : ''}`;
       item.addEventListener('click', () => { this.selectedQuestLogId = qp.questId; this.renderQuestLog(); });
       list.appendChild(item);
     }
     if (this.selectedQuestLogId) {
       const qp = sim.questLog.get(this.selectedQuestLogId)!;
       const quest = QUESTS[this.selectedQuestLogId];
-      let html = `<div class="qd-sub" style="font-size:15px">${quest.name}${quest.suggestedPlayers ? ` <span style="color:#f96;font-size:11px">(Suggested players: ${quest.suggestedPlayers})</span>` : ''}</div>`;
-      html += quest.objectives.map((o, i) => `<div class="qd-obj" style="color:${qp.counts[i] >= o.count ? '#7fdc4f' : '#cfc6a8'}">&bull; ${o.label}: ${qp.counts[i]}/${o.count}</div>`).join('');
-      html += `<div class="qd-text" style="margin-top:8px">${quest.text.replace(/\$N/g, sim.player.name)}</div>`;
-      html += `<div class="qd-sub">Rewards</div><div class="qd-obj">${quest.xpReward} experience &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
+      let html = `<div class="qd-sub ql-detail-title">${esc(quest.name)}${this.questSuggestedPlayersHtml(quest.suggestedPlayers)}</div>`;
+      html += quest.objectives.map((o, i) => `<div class="qd-obj${qp.counts[i] >= o.count ? ' done' : ''}">${esc(this.questProgressText(o.label, qp.counts[i], o.count))}</div>`).join('');
+      html += `<div class="qd-text ql-detail-text">${esc(quest.text.replace(/\$N/g, sim.player.name))}</div>`;
+      html += `<div class="qd-sub">${esc(t('questUi.detail.rewards'))}</div><div class="qd-obj">${esc(t('questUi.detail.xpReward', { xp: this.questNumber(quest.xpReward) }))} &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
+      const rewardItem = quest.itemRewards[sim.cfg.playerClass];
+      if (rewardItem) {
+        const item = ITEMS[rewardItem];
+        html += `<div class="qd-reward-row" data-reward><span class="qd-reward-label">${esc(t('questUi.detail.itemReward'))}</span>${this.itemIcon(item)}<span class="qd-reward-name" style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'}">${esc(item.name)}</span></div>`;
+      }
       const giver = NPCS[quest.turnInNpcId];
-      html += `<div class="qd-obj" style="margin-top:6px;color:#998d6a">Return to ${giver?.name ?? '?'}</div>`;
+      html += `<div class="qd-obj quest-return">${esc(t('questUi.log.returnTo', { name: giver?.name ?? '?' }))}</div>`;
       detail.innerHTML = html;
+      const rewardRow = detail.querySelector('[data-reward]') as HTMLElement | null;
+      if (rewardRow && rewardItem) this.attachTooltip(rewardRow, () => this.itemTooltip(ITEMS[rewardItem]));
       const abandon = document.createElement('button');
       abandon.className = 'btn';
-      abandon.textContent = 'Abandon Quest';
+      abandon.type = 'button';
+      abandon.textContent = t('questUi.log.abandon');
       abandon.addEventListener('click', () => { sim.abandonQuest(this.selectedQuestLogId!); this.renderQuestLog(); });
       detail.appendChild(abandon);
     }
-    el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; });
+    el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; this.hideTooltip(); });
+    this.focusFirstInteractive(el);
   }
 
   // -------------------------------------------------------------------------

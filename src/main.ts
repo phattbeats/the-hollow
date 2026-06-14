@@ -2233,6 +2233,7 @@ function wireStartScreens(): void {
       
       translatePage();
       refreshLocalizedDynamicShell();
+      document.dispatchEvent(new CustomEvent('woc:languagechange', { detail: { language: selected } }));
     });
   }
 
