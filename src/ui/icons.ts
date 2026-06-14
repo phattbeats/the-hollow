@@ -1022,6 +1022,15 @@ const ITEM_RECIPES: Record<string, IconRecipe> = {
   greyjaw_pelt_cloak: r('leather', 'earthBrown', ['trousers', { p: 'paw', ...BR }]),
   baked_bread: r('food', 'gold', ['bread']),
   spring_water: r('drink', 'sky', [{ p: 'potion', pal: 'sky' }]),
+  simple_fishing_pole: r('wood', 'earthBrown', [
+    { p: 'staff', pal: 'earthBrown', rot: 0.7 },
+    { p: 'droplet', pal: 'sky', x: 14, y: 18, s: 0.45 },
+  ]),
+  raw_mirror_trout: r('drink', 'sky', [
+    { p: 'droplet', pal: 'sky', x: -4, y: 0, s: 1.1, rot: 1.55 },
+    { p: 'fang', pal: 'silverWhite', x: 18, y: -1, s: 0.45, rot: 1.55 },
+  ]),
+  tangled_weed: r('junk', 'venom', [{ p: 'tendrils', pal: 'venom' }]),
   roasted_boar: r('food', 'ember', ['meat']),
   conjured_water: r('arcane', 'sky', [{ p: 'potion', pal: 'sky' }], ['sparkle']),
   gravecaller_blade: r('shadow', 'steel', ['sword', { p: 'skull', ...BR }], ['glow']),
@@ -1196,6 +1205,10 @@ function itemFallback(id: string): IconRecipe | null {
     return isFlask
       ? r('drink', 'sky', [{ p: 'potion', pal: 'sky' }])
       : r('drink', 'sky', ['waterskin']);
+  }
+  if (it.kind === 'tool') {
+    const prim: PrimitiveName = has(name, ['pole', 'rod', 'staff']) ? 'staff' : 'mace';
+    return r('wood', 'earthBrown', [prim], fx);
   }
   const t = trinketPrimitive(name);
   return r(it.kind === 'quest' ? 'parchment' : 'junk', t.pal, [{ p: t.p, pal: t.pal }], fx);

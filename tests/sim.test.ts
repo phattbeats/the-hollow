@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { Sim } from '../src/sim/sim';
 import { applyAction, encodeObs, obsSize, ACTIONS } from '../src/sim/obs';
 import {
-  type SimEvent, dist2d, MAX_LEVEL, xpForLevel, mobXpValue, rageConversion, rageFromDealing,
-  spellHitChance, meleeMissChance,
+  type SimEvent, dist2d, FISHING_CAST_ID, FISHING_CAST_TIME, MAX_LEVEL, xpForLevel, mobXpValue,
+  rageConversion, rageFromDealing, spellHitChance, meleeMissChance,
 } from '../src/sim/types';
-import { QUESTS, abilitiesKnownAt } from '../src/sim/data';
-import { terrainHeight } from '../src/sim/world';
+import { LAKE, QUESTS, abilitiesKnownAt } from '../src/sim/data';
+import { terrainHeight, WATER_LEVEL } from '../src/sim/world';
 
 function makeSim(cls: 'warrior' | 'mage' | 'rogue' = 'warrior', seed = 42) {
   return new Sim({ seed, playerClass: cls, autoEquip: true });
@@ -33,6 +33,30 @@ function teleportTo(sim: Sim, x: number, z: number) {
 
 function facePlayerAt(sim: Sim, target: any) {
   sim.player.facing = Math.atan2(target.pos.x - sim.player.pos.x, target.pos.z - sim.player.pos.z);
+}
+
+const TEST_SWIM_DEPTH = 0.8;
+const FISHING_TEST_DISTANCES = [4, 8, 12, 16, 20, 24];
+
+function hasFishableWaterAhead(x: number, z: number, facing: number, seed: number): boolean {
+  const sin = Math.sin(facing);
+  const cos = Math.cos(facing);
+  return FISHING_TEST_DISTANCES.some((d) =>
+    terrainHeight(x + sin * d, z + cos * d, seed) < WATER_LEVEL - TEST_SWIM_DEPTH);
+}
+
+function mirrorLakeFishingSpot(seed: number) {
+  for (let r = LAKE.radius * 0.7; r <= LAKE.radius * 1.8; r += 1) {
+    for (let i = 0; i < 72; i++) {
+      const a = (i / 72) * Math.PI * 2;
+      const x = LAKE.x + Math.cos(a) * r;
+      const z = LAKE.z + Math.sin(a) * r;
+      if (terrainHeight(x, z, seed) < WATER_LEVEL) continue;
+      const facing = Math.atan2(LAKE.x - x, LAKE.z - z);
+      if (hasFishableWaterAhead(x, z, facing, seed)) return { x, z, facing };
+    }
+  }
+  throw new Error('No dry Mirror Lake fishing spot found');
 }
 
 describe('classic formulas', () => {
@@ -466,6 +490,156 @@ describe('food, drink, vendor', () => {
     sim.sellItem('wolf_fang');
     expect(sim.copper).toBe(79);
     expect(sim.countItem('wolf_fang')).toBe(1);
+  });
+
+  it('Fisherman Brandt sells a simple fishing pole', () => {
+    const sim = makeSim('warrior');
+    const brandt = [...sim.entities.values()].find((e) => e.templateId === 'fisherman_brandt')!;
+    teleportTo(sim, brandt.pos.x + 2, brandt.pos.z);
+    sim.copper = 100;
+    sim.buyItem(brandt.id, 'simple_fishing_pole');
+    expect(sim.countItem('simple_fishing_pole')).toBe(1);
+    expect(sim.copper).toBe(80);
+  });
+
+  it('rejects fishing away from fishable water', () => {
+    const sim = makeSim('warrior');
+    sim.addItem('simple_fishing_pole', 1);
+    sim.events = [];
+    sim.useItem('simple_fishing_pole');
+    expect(sim.player.castingAbility).toBe(null);
+    expect(sim.countItem('simple_fishing_pole')).toBe(1);
+    expect(sim.events).toContainEqual(expect.objectContaining({
+      type: 'error',
+      text: 'You need to face fishable water.',
+    }));
+  });
+
+  it('starts a five-second fishing cast near and facing Mirror Lake', () => {
+    const sim = makeSim('warrior');
+    const spot = mirrorLakeFishingSpot(sim.cfg.seed);
+    teleportTo(sim, spot.x, spot.z);
+    sim.player.facing = spot.facing;
+    sim.addItem('simple_fishing_pole', 1);
+    sim.events = [];
+    sim.useItem('simple_fishing_pole');
+    expect(sim.player.castingAbility).toBe(FISHING_CAST_ID);
+    expect(sim.player.castTotal).toBe(FISHING_CAST_TIME);
+    expect(sim.player.castRemaining).toBe(FISHING_CAST_TIME);
+    expect(sim.player.channeling).toBe(false);
+    expect(sim.events).toContainEqual(expect.objectContaining({
+      type: 'castStart',
+      ability: FISHING_CAST_ID,
+      time: FISHING_CAST_TIME,
+    }));
+  });
+
+  it('rolls the fishing catch table only when the cast completes', () => {
+    const sim = makeSim('warrior');
+    const spot = mirrorLakeFishingSpot(sim.cfg.seed);
+    teleportTo(sim, spot.x, spot.z);
+    sim.player.facing = spot.facing;
+    sim.addItem('simple_fishing_pole', 1);
+    sim.events = [];
+    sim.useItem('simple_fishing_pole');
+    expect(sim.countItem('raw_mirror_trout') + sim.countItem('tangled_weed')).toBe(0);
+
+    const events: SimEvent[] = [];
+    for (let i = 0; i < 20 * 6 && sim.player.castingAbility; i++) events.push(...sim.tick());
+
+    const catchCount = sim.countItem('raw_mirror_trout') + sim.countItem('tangled_weed');
+    expect(sim.player.castingAbility).toBe(null);
+    expect(catchCount === 1 || catchCount === 0).toBe(true);
+    if (catchCount === 0) {
+      expect(events).toContainEqual(expect.objectContaining({
+        type: 'log',
+        text: 'No fish are biting.',
+      }));
+    }
+    expect(sim.countItem('simple_fishing_pole')).toBe(1);
+  });
+
+  it('movement cancels fishing before any catch is granted', () => {
+    const sim = makeSim('warrior');
+    const spot = mirrorLakeFishingSpot(sim.cfg.seed);
+    teleportTo(sim, spot.x, spot.z);
+    sim.player.facing = spot.facing;
+    sim.addItem('simple_fishing_pole', 1);
+    sim.events = [];
+    sim.useItem('simple_fishing_pole');
+    sim.moveInput.forward = true;
+    const events = sim.tick();
+    expect(sim.player.castingAbility).toBe(null);
+    expect(sim.countItem('raw_mirror_trout') + sim.countItem('tangled_weed')).toBe(0);
+    expect(events).toContainEqual(expect.objectContaining({
+      type: 'castStop',
+      success: false,
+    }));
+  });
+
+  it('does not consume items while fishing is casting', () => {
+    const sim = makeSim('warrior');
+    const spot = mirrorLakeFishingSpot(sim.cfg.seed);
+    teleportTo(sim, spot.x, spot.z);
+    sim.player.facing = spot.facing;
+    sim.addItem('simple_fishing_pole', 1);
+    sim.addItem('baked_bread', 1);
+    sim.events = [];
+    sim.useItem('simple_fishing_pole');
+    sim.events = [];
+    sim.useItem('baked_bread');
+    expect(sim.player.castingAbility).toBe(FISHING_CAST_ID);
+    expect(sim.countItem('baked_bread')).toBe(1);
+    expect(sim.player.eating).toBe(null);
+    expect(sim.events).toContainEqual(expect.objectContaining({
+      type: 'error',
+      text: 'You are busy.',
+    }));
+  });
+
+  it('rejects fishing while in combat', () => {
+    const sim = makeSim('warrior');
+    const spot = mirrorLakeFishingSpot(sim.cfg.seed);
+    teleportTo(sim, spot.x, spot.z);
+    sim.player.facing = spot.facing;
+    sim.player.inCombat = true;
+    sim.addItem('simple_fishing_pole', 1);
+    sim.events = [];
+    sim.useItem('simple_fishing_pole');
+    expect(sim.player.castingAbility).toBe(null);
+    expect(sim.events).toContainEqual(expect.objectContaining({
+      type: 'error',
+      text: "You can't do that while in combat.",
+    }));
+  });
+
+  it('rejects fishing while swimming', () => {
+    const sim = makeSim('warrior');
+    teleportTo(sim, LAKE.x, LAKE.z);
+    sim.player.facing = 0;
+    sim.addItem('simple_fishing_pole', 1);
+    sim.events = [];
+    sim.useItem('simple_fishing_pole');
+    expect(sim.player.castingAbility).toBe(null);
+    expect(sim.events).toContainEqual(expect.objectContaining({
+      type: 'error',
+      text: "You can't do that while swimming.",
+    }));
+  });
+
+  it('damage cancels fishing instead of applying spell pushback', () => {
+    const sim = makeSim('warrior');
+    const spot = mirrorLakeFishingSpot(sim.cfg.seed);
+    const wolf = nearestMob(sim, 'forest_wolf');
+    teleportTo(sim, spot.x, spot.z);
+    sim.player.facing = spot.facing;
+    sim.addItem('simple_fishing_pole', 1);
+    sim.events = [];
+    sim.useItem('simple_fishing_pole');
+    (sim as any).dealDamage(wolf, sim.player, 1, false, 'physical', null, 'hit');
+    expect(sim.player.castingAbility).toBe(null);
+    expect(sim.player.castRemaining).toBe(0);
+    expect(sim.countItem('raw_mirror_trout') + sim.countItem('tangled_weed')).toBe(0);
   });
 
   it('vendor buy rejects stale or invalid merchants with feedback', () => {

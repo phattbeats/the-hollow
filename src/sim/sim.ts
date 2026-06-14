@@ -17,7 +17,7 @@ import {
 import { groundHeight, WATER_LEVEL } from './world';
 import {
   AbilityDef, AbilityEffect, Aura, AuraKind, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION,
-  CONSUME_TICKS, DT, Entity, EquipSlot, GCD,
+  CONSUME_TICKS, DT, Entity, EquipSlot, FISHING_CAST_ID, FISHING_CAST_TIME, GCD,
   INTERACT_RANGE, InvSlot, MELEE_RANGE, MAX_LEVEL,
   MoveInput, PlayerClass, QuestProgress, QuestState, RUN_SPEED, SimConfig, SimEvent, TURN_SPEED, Vec3,
   angleTo, armorReduction, dist2d, emptyMoveInput, isConsuming, meleeMissChance, mobXpValue, normAngle,
@@ -64,6 +64,7 @@ const MAX_CLIMB_SLOPE = 1.5; // rise/run above which a ground move is blocked (c
 const SWIM_SURFACE_Y = WATER_LEVEL - 0.75; // body bobs just below the water line
 const SWIM_DEPTH = 0.8; // ground this far under the water line = deep water
 const SWIM_SPEED_MULT = 0.65;
+const FISHING_SAMPLE_DISTANCES = [4, 8, 12, 16, 20, 24];
 const DOOR_TRIGGER_RADIUS = 2.0; // walking this close to a dungeon door teleports you
 const BODY_RADIUS = 0.5;
 const CHARGE_SPEED_MULT = 3; // warrior charge runs at 3x normal speed
@@ -1096,10 +1097,15 @@ export class Sim {
     }
 
     if (p.castRemaining <= 0) {
-      const res = this.resolvedAbility(p.castingAbility, p.id);
+      const castId = p.castingAbility;
       p.castingAbility = null;
       p.castRemaining = 0;
       this.emit({ type: 'castStop', entityId: p.id, success: true });
+      if (castId === FISHING_CAST_ID) {
+        this.completeFishing(p, meta);
+        return;
+      }
+      const res = this.resolvedAbility(castId, p.id);
       if (res) this.applyAbility(p, meta, res);
     }
   }
@@ -2085,7 +2091,8 @@ export class Sim {
       // vanilla spell pushback: a landed hit delays the cast rather than
       // cancelling it (misses and fully absorbed hits don't push back)
       if (target.castingAbility && source && source.id !== target.id && amount > 0 && kind === 'hit') {
-        this.pushbackCast(target);
+        if (target.castingAbility === FISHING_CAST_ID) this.cancelCast(target);
+        else this.pushbackCast(target);
       }
     }
 
@@ -2813,12 +2820,51 @@ export class Sim {
     this.emit({ type: 'log', text: `Equipped ${def.name}.`, color: '#8f8', pid: meta.entityId });
   }
 
+  private hasFishableWaterAhead(p: Entity): boolean {
+    const sin = Math.sin(p.facing);
+    const cos = Math.cos(p.facing);
+    return FISHING_SAMPLE_DISTANCES.some((d) =>
+      groundHeight(p.pos.x + sin * d, p.pos.z + cos * d, this.cfg.seed) < WATER_LEVEL - SWIM_DEPTH);
+  }
+
+  private startFishing(p: Entity, meta: PlayerMeta): void {
+    if (p.dead) { this.error(meta.entityId, "You can't do that while dead."); return; }
+    if (p.inCombat) { this.error(meta.entityId, "You can't do that while in combat."); return; }
+    if (this.isSwimming(p)) { this.error(meta.entityId, "You can't do that while swimming."); return; }
+    if (p.castingAbility || isConsuming(p)) { this.error(meta.entityId, 'You are busy.'); return; }
+    if (!this.hasFishableWaterAhead(p)) { this.error(meta.entityId, 'You need to face fishable water.'); return; }
+    if (p.sitting) this.standUp(p);
+    p.castingAbility = FISHING_CAST_ID;
+    p.castTotal = FISHING_CAST_TIME;
+    p.castRemaining = FISHING_CAST_TIME;
+    p.channeling = false;
+    this.emit({ type: 'castStart', entityId: p.id, ability: FISHING_CAST_ID, time: FISHING_CAST_TIME });
+  }
+
+  private completeFishing(p: Entity, meta: PlayerMeta): void {
+    const roll = this.rng.next();
+    if (roll < 0.7) {
+      this.addItem('raw_mirror_trout', 1, meta.entityId);
+    } else if (roll < 0.9) {
+      this.addItem('tangled_weed', 1, meta.entityId);
+    } else {
+      this.emit({ type: 'log', text: 'No fish are biting.', color: '#999', pid: p.id });
+    }
+  }
+
   useItem(itemId: string, pid?: number): void {
     const r = this.resolve(pid);
     if (!r) return;
     const { meta, e: p } = r;
     const def = ITEMS[itemId];
-    if (!def || this.countItem(itemId, meta.entityId) <= 0 || p.dead) return;
+    if (!def) return;
+    if (this.countItem(itemId, meta.entityId) <= 0) { this.error(meta.entityId, "You don't have that item."); return; }
+    if (def.use?.type === 'fishing') {
+      this.startFishing(p, meta);
+      return;
+    }
+    if (p.castingAbility === FISHING_CAST_ID) { this.error(meta.entityId, 'You are busy.'); return; }
+    if (p.dead) return;
     if (def.kind === 'food' || def.kind === 'drink') {
       if (p.inCombat) { this.error(meta.entityId, "You can't do that while in combat."); return; }
       if (this.isSwimming(p)) { this.error(meta.entityId, "You can't do that while swimming."); return; }

@@ -200,6 +200,7 @@ export const ZONE1_NPCS: Record<string, NpcDef> = {
     // walking up to a quest giver
     pos: { x: -16, z: 6 }, facing: -0.75, color: 0x2471a3,
     questIds: ['q_murlocs'],
+    vendorItems: ['simple_fishing_pole'],
     greeting: 'Grlmurlgrl— sorry, been listening to those fish-men too long.',
   },
   foreman_odell: {

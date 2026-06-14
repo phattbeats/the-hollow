@@ -9,6 +9,9 @@ export const INTERACT_RANGE = 5;
 export const GCD = 1.5; // seconds
 export const CAST_PUSHBACK_SEC = 0.5; // vanilla: each hit delays a cast by 0.5s
 export const CHANNEL_PUSHBACK_FRACTION = 0.25; // vanilla: each hit shaves 25% off a channel
+export const FISHING_CAST_ID = 'fishing';
+export const FISHING_CAST_NAME = 'Fishing';
+export const FISHING_CAST_TIME = 5;
 
 export type PlayerClass =
   | 'warrior' | 'paladin' | 'hunter' | 'rogue' | 'priest'
@@ -69,13 +72,17 @@ export interface WeaponInfo {
 
 export type EquipSlot = 'mainhand' | 'chest' | 'legs' | 'feet';
 
+export type ItemUse =
+  | { type: 'fishing' };
+
 export interface ItemDef {
   id: string;
   name: string;
-  kind: 'weapon' | 'armor' | 'quest' | 'junk' | 'food' | 'drink';
+  kind: 'weapon' | 'armor' | 'quest' | 'junk' | 'food' | 'drink' | 'tool';
   slot?: EquipSlot;
   weapon?: WeaponInfo;
   stats?: Partial<Stats>;
+  use?: ItemUse;
   sellValue: number; // copper (vendor buys at this)
   buyValue?: number; // copper (vendor sells at this)
   questId?: string;

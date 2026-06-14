@@ -8,7 +8,10 @@ import {
 } from '../sim/data';
 import type { ZoneDef } from '../sim/data';
 import type { InvSlot } from '../sim/types';
-import { AbilityEffect, CONSUME_DURATION, Entity, GCD, ItemDef, SimEvent, dist2d, xpForLevel, MAX_LEVEL, MELEE_RANGE } from '../sim/types';
+import {
+  AbilityEffect, CONSUME_DURATION, Entity, FISHING_CAST_ID, FISHING_CAST_NAME, GCD, ItemDef, SimEvent,
+  dist2d, xpForLevel, MAX_LEVEL, MELEE_RANGE,
+} from '../sim/types';
 import { terrainHeight, WATER_LEVEL, roadDistance } from '../sim/world';
 import { Meters } from './meters';
 import { audio } from '../game/audio';
@@ -39,6 +42,7 @@ const esc = (value: unknown): string => String(value ?? '')
   .replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;')
   .replace(/'/g, '&#39;');
+const castDisplayName = (id: string): string => id === FISHING_CAST_ID ? FISHING_CAST_NAME : ABILITIES[id]?.name ?? id;
 
 const FAMILY_GLYPH: Record<string, string> = {
   beast: '🐾', humanoid: '🗡️', murloc: '🐟', spider: '🕷️', kobold: '⛏️', undead: '💀',
@@ -273,6 +277,7 @@ export class Hud {
     }
     if (item.foodHp) html += `<div class="tt-desc">Use: Restores ${item.foodHp} health over 18 sec. Must remain seated while eating.</div>`;
     if (item.drinkMana) html += `<div class="tt-desc">Use: Restores ${item.drinkMana} mana over 18 sec. Must remain seated while drinking.</div>`;
+    if (item.use?.type === 'fishing') html += `<div class="tt-desc">Use: Fish in nearby waters.</div>`;
     if (item.kind === 'quest') html += `<div class="tt-desc">Quest Item</div>`;
     if (item.requiredClass) html += `<div class="tt-sub">Classes: ${item.requiredClass.map((c) => CLASSES[c].name).join(', ')}</div>`;
     if (item.sellValue > 0) html += `<div class="tt-sub">Sell price: ${formatMoney(item.sellValue)}</div>`;
@@ -545,7 +550,7 @@ export class Hud {
         ? p.castRemaining / Math.max(0.01, p.castTotal)
         : 1 - p.castRemaining / Math.max(0.01, p.castTotal);
       (cb.querySelector('.fill') as HTMLElement).style.width = `${(frac * 100).toFixed(1)}%`;
-      (cb.querySelector('.label') as HTMLElement).textContent = ABILITIES[p.castingAbility].name;
+      (cb.querySelector('.label') as HTMLElement).textContent = castDisplayName(p.castingAbility);
     } else if (p.eating || p.drinking) {
       cb.style.display = 'block';
       cb.classList.add('channel');
@@ -1558,6 +1563,8 @@ export class Hud {
       row.innerHTML = `${this.itemIcon(item)}<span class="vi-name">${item.name}</span><span class="vi-price">${this.moneyHtml(item.buyValue)}</span>`;
       row.addEventListener('click', () => {
         this.sim.buyItem(npc.id, itemId);
+        if ($('#bags').style.display === 'block') this.renderBags();
+        this.renderVendor();
       });
       this.attachTooltip(row, () => this.itemTooltip(item) + '<div class="tt-sub">Click to buy</div>');
       el.appendChild(row);
@@ -1829,6 +1836,7 @@ export class Hud {
           this.renderMarket();
         } else if (this.vendorOpen) {
           this.sim.sellItem(s.itemId);
+          this.renderBags();
         } else {
           this.sim.useItem(s.itemId);
           this.renderBags();
@@ -1841,6 +1849,7 @@ export class Hud {
         else if (this.vendorOpen) extra = '<div class="tt-sub">Click to sell</div>';
         else if (item.kind === 'weapon' || item.kind === 'armor') extra = '<div class="tt-sub">Click to equip</div>';
         else if (item.kind === 'food' || item.kind === 'drink') extra = '<div class="tt-sub">Click to consume</div>';
+        else if (item.use) extra = '<div class="tt-sub">Click to use</div>';
         return this.itemTooltip(item) + extra;
       });
       grid.appendChild(row);
