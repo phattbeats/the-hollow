@@ -81,3 +81,46 @@ export function rateLimited(req: http.IncomingMessage, maxPerMinute = 20): boole
   }
   return updated.length > maxPerMinute;
 }
+
+// ---------------------------------------------------------------------------
+// Per-account failed-login throttle (#93)
+//
+// The per-IP limiter above can't stop credential stuffing: a botnet spreads
+// guesses for one account across thousands of IPs, each well under the IP cap.
+// This tracks FAILED login attempts keyed by username, so brute-forcing a
+// single account is throttled regardless of source IP. Successful logins clear
+// the counter, so a legitimate user who finally types the right password isn't
+// punished for earlier typos.
+const AUTH_FAIL_WINDOW_MS = 15 * 60_000; // 15 minutes
+const MAX_AUTH_FAILURES = 10; // per account per window
+const authFailures = new Map<string, number[]>();
+
+// Normalize so 'Alice', 'alice', and ' alice ' share one bucket and can't be
+// used to multiply the allowance against the same account.
+function authKey(username: string): string {
+  return username.trim().toLowerCase();
+}
+
+/** True once an account has hit the failed-attempt ceiling within the window. */
+export function authThrottled(username: string): boolean {
+  const key = authKey(username);
+  const windowStart = Date.now() - AUTH_FAIL_WINDOW_MS;
+  const recent = (authFailures.get(key) ?? []).filter((t) => t > windowStart);
+  if (recent.length > 0) authFailures.set(key, recent); else authFailures.delete(key);
+  return recent.length >= MAX_AUTH_FAILURES;
+}
+
+/** Record a failed login for an account (call on bad password / unknown user). */
+export function recordAuthFailure(username: string): void {
+  const key = authKey(username);
+  const windowStart = Date.now() - AUTH_FAIL_WINDOW_MS;
+  const recent = (authFailures.get(key) ?? []).filter((t) => t > windowStart);
+  recent.push(Date.now());
+  authFailures.set(key, recent);
+  if (authFailures.size > MAX_TRACKED_IPS) authFailures.clear(); // memory backstop
+}
+
+/** Clear an account's failure history after a successful login. */
+export function clearAuthFailures(username: string): void {
+  authFailures.delete(authKey(username));
+}

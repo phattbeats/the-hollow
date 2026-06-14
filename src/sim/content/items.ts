@@ -106,6 +106,16 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     id: 'roasted_boar', name: 'Roasted Boar Meat', kind: 'food', quality: 'common',
     foodHp: 117, sellValue: 12, buyValue: 100,
   },
+  // --- combat potions (vendor): instant, usable in combat, 60s shared cooldown.
+  // Restore less than sitting to eat/drink, the price you pay for not sitting (#103).
+  minor_healing_potion: {
+    id: 'minor_healing_potion', name: 'Minor Healing Potion', kind: 'potion', quality: 'common',
+    potionHp: 90, sellValue: 8, buyValue: 40,
+  },
+  minor_mana_potion: {
+    id: 'minor_mana_potion', name: 'Minor Mana Potion', kind: 'potion', quality: 'common',
+    potionMana: 120, sellValue: 8, buyValue: 40,
+  },
   conjured_water: {
     id: 'conjured_water', name: 'Conjured Spring Water', kind: 'drink', quality: 'common',
     drinkMana: 76, sellValue: 0,

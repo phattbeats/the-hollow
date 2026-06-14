@@ -95,6 +95,8 @@ export function questRewardItem(quest: QuestDef, cls: PlayerClass): string | und
   return quest.itemRewards[cls] ?? quest.itemRewards[REWARD_ARCHETYPE[cls]];
 }
 
+export const questRewardItemId = questRewardItem;
+
 // Vanilla group XP multipliers by party size (1-5).
 export const GROUP_XP_BONUS = [1, 1, 1.166, 1.3, 1.43];
 
