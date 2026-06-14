@@ -2079,6 +2079,71 @@ export class Hud {
     if (opts.readOnly) (input as HTMLInputElement)?.select?.();
   }
 
+  // Generic in-app dropdown (replaces native <select>). The selected value lives
+  // in root.dataset.value; pass onChange to react live. Closes on click-away.
+  private buildDropdown(options: { value: string; label: string }[], current: string, onChange?: (value: string) => void, placeholder?: string): HTMLElement {
+    const root = document.createElement('div');
+    root.className = 'ui-dd';
+    root.dataset.value = current;
+    const labelOf = (v: string) => options.find((o) => o.value === v)?.label ?? placeholder ?? '';
+    root.innerHTML = `<button type="button" class="btn ui-dd-btn"><span class="ui-dd-label">${esc(labelOf(current))}</span><span class="ui-dd-caret">▾</span></button>`
+      + `<div class="ui-dd-menu" hidden>${options.map((o) => `<div class="ui-dd-item${o.value === current ? ' sel' : ''}" data-val="${esc(o.value)}">${esc(o.label)}</div>`).join('')}</div>`;
+    const menu = root.querySelector('.ui-dd-menu') as HTMLElement;
+    const labelEl = root.querySelector('.ui-dd-label') as HTMLElement;
+    root.querySelector('.ui-dd-btn')!.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (menu.hasAttribute('hidden')) {
+        menu.removeAttribute('hidden');
+        setTimeout(() => document.addEventListener('click', () => menu.setAttribute('hidden', ''), { once: true }), 0);
+      } else menu.setAttribute('hidden', '');
+    });
+    root.querySelectorAll('.ui-dd-item').forEach((item) => item.addEventListener('click', () => {
+      const v = item.getAttribute('data-val') ?? '';
+      root.dataset.value = v;
+      labelEl.textContent = labelOf(v);
+      root.querySelectorAll('.ui-dd-item').forEach((x) => x.classList.toggle('sel', x === item));
+      menu.setAttribute('hidden', '');
+      onChange?.(v);
+    }));
+    return root;
+  }
+
+  // WoW-style choice-node picker: clicking an octagon node opens a flyout of its
+  // options; selecting one assigns it (spending a point if needed). Anchored to
+  // the node, closes on click-away.
+  private openChoicePopup(anchor: HTMLElement, node: TalentNode, stage: TalentAllocation): void {
+    document.getElementById('tal-choice-pop')?.remove();
+    const cls = this.sim.cfg.playerClass;
+    const total = this.sim.talentPoints().total;
+    const ranks = stage.ranks[node.id] ?? 0;
+    const pop = document.createElement('div');
+    pop.id = 'tal-choice-pop';
+    pop.className = 'tal-choice-pop';
+    pop.innerHTML = (node.choices ?? []).map((o) => {
+      const sel = stage.choices[node.id] === o.id;
+      return `<div class="tal-choice-opt${sel ? ' sel' : ''}" data-opt="${esc(o.id)}"><span class="tco-icon">${o.icon}</span>`
+        + `<span class="tco-text"><b>${esc(o.name)}</b><span>${esc(o.description)}</span></span></div>`;
+    }).join('');
+    document.body.appendChild(pop);
+    const r = anchor.getBoundingClientRect();
+    pop.style.left = `${Math.min(window.innerWidth - pop.offsetWidth - 8, r.right + 8)}px`;
+    pop.style.top = `${Math.max(8, Math.min(window.innerHeight - pop.offsetHeight - 8, r.top))}px`;
+    pop.querySelectorAll('.tal-choice-opt').forEach((optEl) => optEl.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const optId = optEl.getAttribute('data-opt') ?? '';
+      if (ranks === 0) {
+        const cand = cloneAllocation(stage);
+        cand.ranks[node.id] = 1; cand.choices[node.id] = optId;
+        if (!validateAllocation(cls, cand, total).ok) { pop.remove(); return; } // can't afford / gated
+        stage.ranks[node.id] = 1;
+      }
+      stage.choices[node.id] = optId;
+      pop.remove();
+      this.renderTalents();
+    }));
+    setTimeout(() => document.addEventListener('click', () => pop.remove(), { once: true }), 0);
+  }
+
   toggleLeaderboard(): void {
     const el = $('#leaderboard-window');
     if (el.style.display === 'block') { el.style.display = 'none'; this.hideTooltip(); return; }
@@ -2302,7 +2367,11 @@ export class Hud {
         div.appendChild(badge);
       }
       this.attachTooltip(div, () => this.talentTooltip(n, stage, isDormant));
-      div.addEventListener('click', () => this.talentNodeClick(stage, n));
+      div.addEventListener('click', () => {
+        // octagon choice nodes open a WoW-style option flyout; others add a rank
+        if (n.kind === 'choice') this.openChoicePopup(div, n, stage);
+        else this.talentNodeClick(stage, n);
+      });
       div.addEventListener('contextmenu', (e) => { e.preventDefault(); this.talentNodeRemove(stage, n); });
       host.appendChild(div);
     }
@@ -2312,20 +2381,6 @@ export class Hud {
     const cls = this.sim.cfg.playerClass;
     const total = this.sim.talentPoints().total;
     const ranks = stage.ranks[n.id] ?? 0;
-    if (n.kind === 'choice') {
-      if (ranks === 0) {
-        const cand = cloneAllocation(stage);
-        cand.ranks[n.id] = 1; cand.choices[n.id] = n.choices![0].id;
-        if (!validateAllocation(cls, cand, total).ok) return;
-        stage.ranks[n.id] = 1; stage.choices[n.id] = n.choices![0].id;
-      } else {
-        const opts = n.choices!;
-        const cur = opts.findIndex((o) => o.id === stage.choices[n.id]);
-        stage.choices[n.id] = opts[(cur + 1) % opts.length].id; // cycle option (still 1 point)
-      }
-      this.renderTalents();
-      return;
-    }
     if (ranks >= n.maxRank) return;
     const cand = cloneAllocation(stage); cand.ranks[n.id] = ranks + 1;
     if (!validateAllocation(cls, cand, total).ok) return;
@@ -2368,17 +2423,11 @@ export class Hud {
     const cls = this.sim.cfg.playerClass;
     const valid = validateAllocation(cls, stage, total).ok;
     const canApply = valid && !this.allocsEqual(stage, this.sim.talents);
-    const active = this.sim.loadouts[this.sim.activeLoadout];
-    const ddLabel = active ? esc(active.name) : t('game.talents.loadouts');
-    const items = this.sim.loadouts.length
-      ? this.sim.loadouts.map((l, i) => `<div class="tal-dd-item${i === this.sim.activeLoadout ? ' sel' : ''}" data-load="${i}">${esc(l.name)}</div>`).join('')
-      : `<div class="tal-dd-empty">${t('game.talents.noBuilds')}</div>`;
     return `<div class="tal-foot">`
       + `<button class="btn" data-act="apply"${canApply ? '' : ' disabled'}>${t('game.talents.apply')}</button>`
       + `<button class="btn" data-act="clear"${spent > 0 ? '' : ' disabled'}>${t('game.talents.clear')}</button>`
       + `<span class="tal-spacer"></span>`
-      + `<div class="tal-dd"><button class="btn tal-dd-btn" data-act="loadmenu">${ddLabel} <span class="tal-dd-caret">▾</span></button>`
-      + `<div class="tal-dd-menu" hidden>${items}</div></div>`
+      + `<span class="tal-loadslot"></span>`
       + `<button class="btn" data-act="save">${t('game.talents.saveBuild')}</button>`
       + `<button class="btn" data-act="del"${this.sim.activeLoadout >= 0 ? '' : ' disabled'}>${t('game.talents.deleteBuild')}</button>`
       + `<button class="btn" data-act="import">${t('game.talents.import')}</button>`
@@ -2404,27 +2453,23 @@ export class Hud {
         onOk: (name) => { const n = name.trim(); if (n) { this.sim.saveLoadout(n, [...this.slotMap]); this.renderTalents(); } },
       });
     });
-    // custom in-app loadout dropdown (no native <select>)
-    const ddBtn = el.querySelector('[data-act="loadmenu"]');
-    const ddMenu = el.querySelector('.tal-dd-menu') as HTMLElement | null;
-    ddBtn?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (!ddMenu) return;
-      const opening = ddMenu.hasAttribute('hidden');
-      if (opening) {
-        ddMenu.removeAttribute('hidden');
-        setTimeout(() => document.addEventListener('click', () => ddMenu.setAttribute('hidden', ''), { once: true }), 0);
-      } else ddMenu.setAttribute('hidden', '');
-    });
-    el.querySelectorAll('.tal-dd-item').forEach((item) => item.addEventListener('click', () => {
-      const i = parseInt(item.getAttribute('data-load') ?? '-1', 10);
-      const lo = this.sim.loadouts[i];
-      if (!lo) return;
-      this.sim.switchLoadout(i);
-      this.applyLoadoutBar(lo.bar);
-      this.talentStage = cloneAllocation(lo.alloc);
-      this.renderTalents();
-    }));
+    // in-app loadout dropdown (shared component, no native <select>)
+    const slot = el.querySelector('.tal-loadslot');
+    if (slot) {
+      const opts = this.sim.loadouts.length
+        ? this.sim.loadouts.map((l, i) => ({ value: String(i), label: l.name }))
+        : [{ value: '-1', label: t('game.talents.noBuilds') }];
+      const current = this.sim.activeLoadout >= 0 ? String(this.sim.activeLoadout) : '';
+      slot.replaceWith(this.buildDropdown(opts, current, (v) => {
+        const i = parseInt(v, 10);
+        const lo = this.sim.loadouts[i];
+        if (!lo) return;
+        this.sim.switchLoadout(i);
+        this.applyLoadoutBar(lo.bar);
+        this.talentStage = cloneAllocation(lo.alloc);
+        this.renderTalents();
+      }, t('game.talents.loadouts')));
+    }
     el.querySelector('[data-act="del"]')?.addEventListener('click', () => {
       if (this.sim.activeLoadout >= 0) { this.sim.deleteLoadout(this.sim.activeLoadout); this.renderTalents(); }
     });
@@ -2683,13 +2728,7 @@ export class Hud {
     el.innerHTML = `
       <div class="panel-title">Report ${esc(name)}<button data-close>×</button></div>
       <label class="report-label">Reason</label>
-      <select id="report-reason">
-        <option value="harassment">Harassment / abuse</option>
-        <option value="spam">Spam</option>
-        <option value="cheating">Cheating / exploit</option>
-        <option value="offensive_name_or_chat">Offensive name or chat</option>
-        <option value="other">Other</option>
-      </select>
+      <div id="report-reason-slot"></div>
       <label class="report-label">Details</label>
       <textarea id="report-details" maxlength="1000" placeholder="What happened?"></textarea>
       <div class="report-error" id="report-error"></div>
@@ -2700,10 +2739,18 @@ export class Hud {
     el.style.left = `${Math.max(12, Math.min(window.innerWidth - 340, window.innerWidth / 2 - 160))}px`;
     el.style.top = `${Math.max(20, Math.min(window.innerHeight - 300, window.innerHeight / 2 - 150))}px`;
     el.style.display = 'block';
+    const reasonDD = this.buildDropdown([
+      { value: 'harassment', label: 'Harassment / abuse' },
+      { value: 'spam', label: 'Spam' },
+      { value: 'cheating', label: 'Cheating / exploit' },
+      { value: 'offensive_name_or_chat', label: 'Offensive name or chat' },
+      { value: 'other', label: 'Other' },
+    ], 'harassment');
+    el.querySelector('#report-reason-slot')?.replaceWith(reasonDD);
     el.querySelectorAll('[data-close]').forEach((btn) => btn.addEventListener('click', () => { el.style.display = 'none'; }));
     const submit = $('#report-submit') as HTMLButtonElement;
     submit.addEventListener('click', () => {
-      const reason = ($('#report-reason') as HTMLSelectElement).value;
+      const reason = reasonDD.dataset.value ?? 'other';
       const details = ($('#report-details') as HTMLTextAreaElement).value;
       submit.disabled = true;
       const request = pid !== undefined

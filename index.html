@@ -559,16 +559,27 @@
   .cd-input { width: 100%; box-sizing: border-box; background: #14100a; color: #e8dcb0; border: 1px solid #5a4a22; border-radius: 4px; padding: 7px 8px; font-size: 12px; font-family: inherit; }
   .cd-input:focus { outline: none; border-color: var(--gold); }
   textarea.cd-input { resize: vertical; min-height: 48px; word-break: break-all; }
-  /* in-app loadout dropdown (replaces native <select>) */
-  .tal-dd { position: relative; }
-  .tal-dd-btn { min-width: 112px; display: inline-flex; align-items: center; justify-content: space-between; gap: 6px; }
-  .tal-dd-caret { font-size: 9px; opacity: 0.8; }
-  .tal-dd-menu { position: absolute; bottom: calc(100% + 4px); left: 0; min-width: 100%; max-height: 184px; overflow-y: auto; background: #1a140a; border: 1px solid var(--gold); border-radius: 5px; box-shadow: 0 6px 18px #000a; z-index: 70; padding: 3px; }
-  .tal-dd-menu[hidden] { display: none; }
-  .tal-dd-item { padding: 5px 8px; font-size: 12px; color: #e8dcb0; border-radius: 3px; cursor: pointer; white-space: nowrap; }
-  .tal-dd-item:hover { background: #ffffff12; }
-  .tal-dd-item.sel { color: var(--gold); }
-  .tal-dd-empty { padding: 6px 8px; font-size: 11px; color: #b9ac82; }
+  /* shared in-app dropdown (replaces native <select> — loadouts, report reason) */
+  .ui-dd { position: relative; display: inline-block; }
+  .ui-dd-btn { min-width: 112px; width: 100%; display: inline-flex; align-items: center; justify-content: space-between; gap: 6px; }
+  .ui-dd-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ui-dd-caret { font-size: 9px; opacity: 0.8; }
+  .ui-dd-menu { position: absolute; bottom: calc(100% + 4px); left: 0; min-width: 100%; max-height: 184px; overflow-y: auto; background: #1a140a; border: 1px solid var(--gold); border-radius: 5px; box-shadow: 0 6px 18px #000a; z-index: 80; padding: 3px; }
+  .ui-dd-menu[hidden] { display: none; }
+  .ui-dd-item { padding: 5px 8px; font-size: 12px; color: #e8dcb0; border-radius: 3px; cursor: pointer; white-space: nowrap; }
+  .ui-dd-item:hover { background: #ffffff12; }
+  .ui-dd-item.sel { color: var(--gold); }
+  /* report dialog: dropdown drops downward (dialog sits high), full width */
+  #report-window .ui-dd { display: block; }
+  #report-window .ui-dd-menu { bottom: auto; top: calc(100% + 4px); }
+  /* WoW-style choice-node option flyout */
+  .tal-choice-pop { position: fixed; z-index: 90; width: 232px; background: #1a140a; border: 1px solid var(--gold); border-radius: 6px; box-shadow: 0 8px 22px #000b; padding: 4px; }
+  .tal-choice-opt { display: flex; gap: 8px; align-items: flex-start; padding: 7px 8px; border-radius: 4px; cursor: pointer; }
+  .tal-choice-opt:hover { background: #ffffff10; }
+  .tal-choice-opt.sel { background: #2c2410; outline: 1px solid var(--gold); }
+  .tco-icon { font-size: 20px; line-height: 1; }
+  .tco-text { display: flex; flex-direction: column; gap: 2px; font-size: 11px; color: #c8b888; }
+  .tco-text b { color: #fff; font-size: 12px; }
 
   /* generic confirm dialog (prestige) */
   #confirm-dialog { left: 50%; top: 50%; transform: translate(-50%, -50%); width: 360px; padding: 14px; z-index: 60; }

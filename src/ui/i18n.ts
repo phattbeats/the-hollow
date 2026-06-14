@@ -108,7 +108,7 @@ export const gameStrings = {
     pointsGate: "points spent in tree",
     dormant: "Inactive — prerequisite refunded",
     editHint: "Left-click to add • Right-click to remove",
-    cycleHint: "Click to cycle options",
+    cycleHint: "Click to choose an option",
     combatLocked: "You can't change talents in combat.",
     nothingStaged: "No changes to apply.",
     pickSpecFirst: "Choose a specialization to access this tree.",
