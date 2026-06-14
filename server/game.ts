@@ -632,6 +632,7 @@ export class GameServer {
       case 'use': if (typeof msg.item === 'string') sim.useItem(msg.item, pid); break;
       case 'buy': if (typeof msg.npc === 'number' && typeof msg.item === 'string') sim.buyItem(msg.npc, msg.item, pid); break;
       case 'sell': if (typeof msg.item === 'string') sim.sellItem(msg.item, pid); break;
+      case 'buyback': if (typeof msg.item === 'string') sim.buyBackItem(msg.item, pid); break;
       case 'release': sim.releaseSpirit(pid); break;
       case 'chat': {
         if (typeof msg.text !== 'string') break;
@@ -912,6 +913,7 @@ export class GameServer {
       }
     };
     maybe('inv', meta.inventory);
+    maybe('buyback', meta.vendorBuyback);
     maybe('equip', meta.equipment);
     maybe('qlog', [...meta.questLog.values()]);
     maybe('qdone', [...meta.questsDone]);

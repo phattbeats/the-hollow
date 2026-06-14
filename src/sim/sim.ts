@@ -58,6 +58,7 @@ const MARKET_MAX_PRICE = 5_000_000; // 500g ceiling — guards against overflow 
 const MARKET_CUT = 0.05; // the Merchant's cut on a completed sale (a gold sink)
 const MARKET_LISTING_DURATION = 48 * 3600; // sim-seconds an unsold listing lingers before returning
 const MARKET_WIRE_LIMIT = 120; // most listings shipped to one client at a time
+const VENDOR_BUYBACK_LIMIT = 12;
 const INSTANCE_EMPTY_TIMEOUT = 300; // seconds before an empty instance resets
 const HUNTER_RANGED_DEADZONE = 8;
 const MAX_CLIMB_SLOPE = 1.5; // rise/run above which a ground move is blocked (cliffs, world rim)
@@ -172,6 +173,7 @@ export interface PlayerMeta {
   name: string;
   moveInput: MoveInput;
   inventory: InvSlot[];
+  vendorBuyback: InvSlot[];
   copper: number;
   equipment: PlayerEquipment;
   xp: number;
@@ -234,6 +236,7 @@ export interface CharacterState {
   facing: number;
   equipment: PlayerEquipment;
   inventory: InvSlot[];
+  vendorBuyback?: InvSlot[];
   questLog: { questId: string; counts: number[]; state: 'active' | 'ready' | 'done' }[];
   questsDone: string[];
   arenaRating?: number;
@@ -436,6 +439,7 @@ export class Sim {
       name,
       moveInput: emptyMoveInput(),
       inventory: [],
+      vendorBuyback: [],
       copper: 0,
       equipment: { mainhand: classDef.startWeapon, chest: classDef.startChest },
       xp: 0,
@@ -460,6 +464,7 @@ export class Sim {
       meta.copper = s.copper;
       meta.equipment = { ...s.equipment };
       meta.inventory = s.inventory.map((i) => ({ ...i }));
+      meta.vendorBuyback = (s.vendorBuyback ?? []).map((i) => ({ ...i }));
       for (const q of s.questLog) {
         if (q.state !== 'done') meta.questLog.set(q.questId, { questId: q.questId, counts: [...q.counts], state: q.state });
       }
@@ -538,6 +543,7 @@ export class Sim {
       facing: e.facing,
       equipment: { ...meta.equipment },
       inventory: meta.inventory.map((i) => ({ ...i })),
+      vendorBuyback: meta.vendorBuyback.map((i) => ({ ...i })),
       questLog: [...meta.questLog.values()].map((q) => ({ questId: q.questId, counts: [...q.counts], state: q.state })),
       questsDone: [...meta.questsDone],
       arenaRating: meta.arenaRating,
@@ -565,6 +571,9 @@ export class Sim {
   }
   get inventory(): InvSlot[] {
     return this.primary.inventory;
+  }
+  get vendorBuyback(): InvSlot[] {
+    return this.primary.vendorBuyback;
   }
   get equipment(): PlayerEquipment {
     return this.primary.equipment;
@@ -2858,6 +2867,23 @@ export class Sim {
     this.emit({ type: 'vendor', action: 'buy', itemId, pid: meta.entityId });
   }
 
+  private vendorInRange(p: Entity): boolean {
+    return [...this.entities.values()].some((e) =>
+      e.kind === 'npc' && e.vendorItems.length > 0 && dist2d(p.pos, e.pos) <= INTERACT_RANGE + 2);
+  }
+
+  private recordVendorBuyback(meta: PlayerMeta, itemId: string, count: number): void {
+    const existingIndex = meta.vendorBuyback.findIndex((s) => s.itemId === itemId);
+    if (existingIndex >= 0) {
+      const [existing] = meta.vendorBuyback.splice(existingIndex, 1);
+      existing.count += count;
+      meta.vendorBuyback.unshift(existing);
+    } else {
+      meta.vendorBuyback.unshift({ itemId, count });
+    }
+    while (meta.vendorBuyback.length > VENDOR_BUYBACK_LIMIT) meta.vendorBuyback.pop();
+  }
+
   sellItem(itemId: string, pid?: number): void {
     const r = this.resolve(pid);
     if (!r) return;
@@ -2865,15 +2891,32 @@ export class Sim {
     const def = ITEMS[itemId];
     if (!def || this.countItem(itemId, meta.entityId) <= 0) { this.error(meta.entityId, "You don't have that item."); return; }
     if (p.dead) { this.error(meta.entityId, "You can't do that while dead."); return; }
-    // mirror buyItem's gate: selling requires a vendor in interact range
-    const nearVendor = [...this.entities.values()].some((e) =>
-      e.kind === 'npc' && e.vendorItems.length > 0 && dist2d(p.pos, e.pos) <= INTERACT_RANGE + 2);
-    if (!nearVendor) { this.error(meta.entityId, 'There is no merchant nearby.'); return; }
+    if (!this.vendorInRange(p)) { this.error(meta.entityId, 'There is no merchant nearby.'); return; }
     if (def.kind === 'quest') { this.error(meta.entityId, 'You cannot sell quest items.'); return; }
     this.removeItem(itemId, 1, meta.entityId);
+    this.recordVendorBuyback(meta, itemId, 1);
     meta.copper += def.sellValue;
     this.emit({ type: 'vendor', action: 'sell', itemId, pid: meta.entityId });
     this.emit({ type: 'loot', text: `Sold ${def.name} for ${formatMoney(def.sellValue)}.`, pid: meta.entityId });
+  }
+
+  buyBackItem(itemId: string, pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    const { meta, e: p } = r;
+    const def = ITEMS[itemId];
+    const slot = meta.vendorBuyback.find((s) => s.itemId === itemId);
+    if (!def || !slot || slot.count <= 0) { this.error(meta.entityId, 'That item is not available for buyback.'); return; }
+    if (p.dead) { this.error(meta.entityId, "You can't do that while dead."); return; }
+    if (!this.vendorInRange(p)) { this.error(meta.entityId, 'There is no merchant nearby.'); return; }
+    if (meta.copper < def.sellValue) { this.error(meta.entityId, 'Not enough money.'); return; }
+    meta.copper -= def.sellValue;
+    slot.count -= 1;
+    if (slot.count <= 0) meta.vendorBuyback = meta.vendorBuyback.filter((s) => s !== slot);
+    this.addItemSilent(itemId, 1, meta);
+    this.onInventoryChangedForQuests(meta);
+    this.emit({ type: 'vendor', action: 'buyback', itemId, pid: meta.entityId });
+    this.emit({ type: 'loot', text: `Bought back ${def.name} for ${formatMoney(def.sellValue)}.`, pid: meta.entityId });
   }
 
   private addItemSilent(itemId: string, count: number, meta: PlayerMeta): void {
