@@ -114,6 +114,11 @@ export const gameStrings = {
     pickSpecFirst: "Choose a specialization to access this tree.",
     unlockBanner: "Talents Unlocked!",
     unlockHint: "You've earned your first talent point — press N to open Talents.",
+    copy: "Copy",
+    close: "Close",
+    cancel: "Cancel",
+    noBuilds: "No saved builds",
+    save: "Save",
   },
 };
 

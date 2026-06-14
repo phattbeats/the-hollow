@@ -2040,6 +2040,45 @@ export class Hud {
     el.querySelector('[data-ok]')?.addEventListener('click', () => { close(); onOk(); });
   }
 
+  // In-app text-input modal (reuses the confirm-dialog chrome) — replaces native
+  // window.prompt for build name / import / export. `readOnly` + `copy` powers
+  // the export view (selectable string + Copy button).
+  private inputDialog(opts: {
+    title: string; label?: string; value?: string; placeholder?: string;
+    multiline?: boolean; readOnly?: boolean; copy?: boolean;
+    okText?: string; cancelText?: string; onOk?: (value: string) => void;
+  }): void {
+    document.getElementById('confirm-dialog')?.remove();
+    const el = document.createElement('div');
+    el.id = 'confirm-dialog';
+    el.className = 'window panel';
+    el.style.display = 'block';
+    const field = opts.multiline
+      ? `<textarea class="cd-input" rows="3" ${opts.readOnly ? 'readonly' : ''} placeholder="${esc(opts.placeholder ?? '')}">${esc(opts.value ?? '')}</textarea>`
+      : `<input class="cd-input" type="text" ${opts.readOnly ? 'readonly' : ''} placeholder="${esc(opts.placeholder ?? '')}" value="${esc(opts.value ?? '')}">`;
+    el.innerHTML = `<div class="panel-title"><span>${esc(opts.title)}</span><span class="x-btn" data-cancel>✕</span></div>`
+      + (opts.label ? `<div class="cd-body">${esc(opts.label)}</div>` : '')
+      + `<div class="cd-field">${field}</div>`
+      + `<div class="cd-actions"><button class="btn" data-cancel>${esc(opts.cancelText ?? t('game.talents.cancel'))}</button>`
+      + (opts.copy ? `<button class="btn" data-copy>${t('game.talents.copy')}</button>` : '')
+      + (opts.onOk ? `<button class="btn cd-ok" data-ok>${esc(opts.okText ?? t('game.talents.save'))}</button>` : '')
+      + `</div>`;
+    document.body.appendChild(el);
+    const input = el.querySelector('.cd-input') as HTMLInputElement | HTMLTextAreaElement;
+    const close = () => el.remove();
+    const submit = () => { const v = input?.value ?? ''; close(); opts.onOk?.(v); };
+    el.querySelectorAll('[data-cancel]').forEach((b) => b.addEventListener('click', () => { audio.click(); close(); }));
+    el.querySelector('[data-ok]')?.addEventListener('click', submit);
+    el.querySelector('[data-copy]')?.addEventListener('click', () => {
+      input.select();
+      navigator.clipboard?.writeText(input.value).catch(() => { /* clipboard blocked; manual select still works */ });
+      this.showError(t('game.talents.exportCopied'));
+    });
+    if (!opts.multiline) input?.addEventListener('keydown', (e) => { if ((e as KeyboardEvent).key === 'Enter') { e.preventDefault(); submit(); } });
+    input?.focus();
+    if (opts.readOnly) (input as HTMLInputElement)?.select?.();
+  }
+
   toggleLeaderboard(): void {
     const el = $('#leaderboard-window');
     if (el.style.display === 'block') { el.style.display = 'none'; this.hideTooltip(); return; }
@@ -2329,13 +2368,17 @@ export class Hud {
     const cls = this.sim.cfg.playerClass;
     const valid = validateAllocation(cls, stage, total).ok;
     const canApply = valid && !this.allocsEqual(stage, this.sim.talents);
-    let opts = `<option value="-1">${t('game.talents.newBuild')}</option>`;
-    this.sim.loadouts.forEach((l, i) => { opts += `<option value="${i}"${i === this.sim.activeLoadout ? ' selected' : ''}>${esc(l.name)}</option>`; });
+    const active = this.sim.loadouts[this.sim.activeLoadout];
+    const ddLabel = active ? esc(active.name) : t('game.talents.loadouts');
+    const items = this.sim.loadouts.length
+      ? this.sim.loadouts.map((l, i) => `<div class="tal-dd-item${i === this.sim.activeLoadout ? ' sel' : ''}" data-load="${i}">${esc(l.name)}</div>`).join('')
+      : `<div class="tal-dd-empty">${t('game.talents.noBuilds')}</div>`;
     return `<div class="tal-foot">`
       + `<button class="btn" data-act="apply"${canApply ? '' : ' disabled'}>${t('game.talents.apply')}</button>`
       + `<button class="btn" data-act="clear"${spent > 0 ? '' : ' disabled'}>${t('game.talents.clear')}</button>`
       + `<span class="tal-spacer"></span>`
-      + `<select data-act="loadsel" title="${t('game.talents.loadouts')}">${opts}</select>`
+      + `<div class="tal-dd"><button class="btn tal-dd-btn" data-act="loadmenu">${ddLabel} <span class="tal-dd-caret">▾</span></button>`
+      + `<div class="tal-dd-menu" hidden>${items}</div></div>`
       + `<button class="btn" data-act="save">${t('game.talents.saveBuild')}</button>`
       + `<button class="btn" data-act="del"${this.sim.activeLoadout >= 0 ? '' : ' disabled'}>${t('game.talents.deleteBuild')}</button>`
       + `<button class="btn" data-act="import">${t('game.talents.import')}</button>`
@@ -2355,33 +2398,54 @@ export class Hud {
       this.renderTalents();
     });
     el.querySelector('[data-act="save"]')?.addEventListener('click', () => {
-      const name = window.prompt(t('game.talents.namePrompt'), `Build ${this.sim.loadouts.length + 1}`);
-      if (name) { this.sim.saveLoadout(name, [...this.slotMap]); this.renderTalents(); }
+      this.inputDialog({
+        title: t('game.talents.saveBuild'), label: t('game.talents.namePrompt'),
+        value: `Build ${this.sim.loadouts.length + 1}`, okText: t('game.talents.save'),
+        onOk: (name) => { const n = name.trim(); if (n) { this.sim.saveLoadout(n, [...this.slotMap]); this.renderTalents(); } },
+      });
     });
-    const sel = el.querySelector('[data-act="loadsel"]') as HTMLSelectElement | null;
-    sel?.addEventListener('change', () => {
-      const i = parseInt(sel.value, 10);
-      if (i < 0) return;
+    // custom in-app loadout dropdown (no native <select>)
+    const ddBtn = el.querySelector('[data-act="loadmenu"]');
+    const ddMenu = el.querySelector('.tal-dd-menu') as HTMLElement | null;
+    ddBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!ddMenu) return;
+      const opening = ddMenu.hasAttribute('hidden');
+      if (opening) {
+        ddMenu.removeAttribute('hidden');
+        setTimeout(() => document.addEventListener('click', () => ddMenu.setAttribute('hidden', ''), { once: true }), 0);
+      } else ddMenu.setAttribute('hidden', '');
+    });
+    el.querySelectorAll('.tal-dd-item').forEach((item) => item.addEventListener('click', () => {
+      const i = parseInt(item.getAttribute('data-load') ?? '-1', 10);
       const lo = this.sim.loadouts[i];
+      if (!lo) return;
       this.sim.switchLoadout(i);
-      if (lo) { this.applyLoadoutBar(lo.bar); this.talentStage = cloneAllocation(lo.alloc); }
+      this.applyLoadoutBar(lo.bar);
+      this.talentStage = cloneAllocation(lo.alloc);
       this.renderTalents();
-    });
+    }));
     el.querySelector('[data-act="del"]')?.addEventListener('click', () => {
       if (this.sim.activeLoadout >= 0) { this.sim.deleteLoadout(this.sim.activeLoadout); this.renderTalents(); }
     });
     el.querySelector('[data-act="export"]')?.addEventListener('click', () => {
-      const str = exportBuild(cls, this.sim.talents);
-      navigator.clipboard?.writeText(str).catch(() => { /* clipboard blocked */ });
-      window.prompt(t('game.talents.exportTitle'), str);
+      this.inputDialog({
+        title: t('game.talents.export'), label: t('game.talents.exportTitle'),
+        value: exportBuild(cls, this.sim.talents), multiline: true, readOnly: true,
+        copy: true, cancelText: t('game.talents.close'),
+      });
     });
     el.querySelector('[data-act="import"]')?.addEventListener('click', () => {
-      const str = window.prompt(t('game.talents.importPrompt'), '');
-      if (!str) return;
-      const res = importBuild(str.trim());
-      if (!res.ok || res.cls !== cls) { this.showError(t('game.talents.invalidBuild')); return; }
-      this.talentStage = res.alloc;
-      this.renderTalents();
+      this.inputDialog({
+        title: t('game.talents.import'), label: t('game.talents.importPrompt'),
+        placeholder: 'eyJ2Ijox…', multiline: true, okText: t('game.talents.import'),
+        onOk: (str) => {
+          const res = importBuild(str.trim());
+          if (!res.ok || res.cls !== cls) { this.showError(t('game.talents.invalidBuild')); return; }
+          this.talentStage = res.alloc;
+          this.renderTalents();
+        },
+      });
     });
   }
 
