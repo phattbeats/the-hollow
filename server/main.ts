@@ -6,7 +6,7 @@ import {
   ensureSchema, pool, createAccount, findAccount, getAccountsCount, touchLogin, saveToken, accountForToken,
   listCharacters, getCharacter, createCharacter, deleteCharacter, closeOrphanSessions,
   pruneChatLogs, searchCharacters, characterCountsByRealm, moderationStatusForAccount, renameCharacter,
-  findCharacterReportTargetByName,
+  findCharacterReportTargetByName, topArenaRatings,
 } from './db';
 import { cleanReportReason, createPlayerReport } from './moderation_db';
 import { resolveReportTarget } from './report_target';
@@ -303,6 +303,10 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
         names: [...game.clients.values()].map((s) => s.name),
       });
     }
+    if (req.method === 'GET' && url === '/api/arena/leaderboard') {
+      // public all-time Ashen Coliseum ladder (top rated characters)
+      return json(res, 200, { leaders: await topArenaRatings(20) });
+    }
     json(res, 404, { error: 'unknown endpoint' });
   } catch (err: any) {
     console.error('api error:', err);
@@ -331,6 +335,7 @@ async function main(): Promise<void> {
   if (orphans > 0) console.log(`closed ${orphans} orphaned play session(s) from a previous run`);
   const pruned = await pruneChatLogs(CHAT_LOG_RETENTION_DAYS);
   if (pruned > 0) console.log(`pruned ${pruned} chat log row(s) older than ${CHAT_LOG_RETENTION_DAYS} days`);
+  await game.loadMarket();
   setInterval(() => {
     void pruneChatLogs(CHAT_LOG_RETENTION_DAYS).catch((err) => console.error('chat log prune failed:', err));
   }, 24 * 3600 * 1000).unref();
@@ -453,6 +458,7 @@ async function main(): Promise<void> {
     console.log('shutting down: saving characters...');
     game.stop();
     await game.saveAll('shutdown');
+    await game.saveMarket();
     await game.endAllPlaySessions();
     await game.chatLog.stop();
     await pool.end();

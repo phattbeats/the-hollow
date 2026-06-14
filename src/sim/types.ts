@@ -223,6 +223,9 @@ export interface NpcDef {
   color: number;
   questIds: string[];
   vendorItems?: string[];
+  // The Merchant: talking to this NPC opens the player-driven World Market
+  // (auction house) instead of a fixed vendor stock.
+  market?: boolean;
   greeting: string;
 }
 
@@ -494,6 +497,13 @@ export type SimEvent = { pid?: number } & (
   | { type: 'duelCountdown'; seconds: number }
   | { type: 'duelStart' }
   | { type: 'duelEnd'; winnerName: string; loserName: string }
+  // Ashen Coliseum 1v1 arena: queue state, match lifecycle, and rating result
+  | { type: 'arenaQueued'; position: number }
+  | { type: 'arenaUnqueued' }
+  | { type: 'arenaFound'; oppName: string; oppClass: PlayerClass; oppLevel: number }
+  | { type: 'arenaCountdown'; seconds: number }
+  | { type: 'arenaStart' }
+  | { type: 'arenaEnd'; won: boolean; draw: boolean; oppName: string; ratingBefore: number; ratingAfter: number }
   | { type: 'heal2'; sourceId: number; targetId: number; amount: number; crit: boolean; ability: string }
   // visual-only cue for the renderer: spell projectiles, dot ticks, aoe novas
   | { type: 'spellfx'; sourceId: number; targetId: number; school: string; fx: 'projectile' | 'tick' | 'nova' }

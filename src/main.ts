@@ -355,6 +355,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
         case 'nameplates': renderer.showNameplates = !renderer.showNameplates; break;
         case 'meters': hud.toggleMeters(); break;
         case 'social': hud.toggleSocial(); break;
+        case 'arena': hud.toggleArena(); break;
         case 'chat': openChat(); break;
         case 'escape':
           // close the topmost panel; if nothing was open, open the game menu

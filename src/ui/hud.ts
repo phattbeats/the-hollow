@@ -1,5 +1,5 @@
 import { formatMoney, ResolvedAbility } from '../sim/sim';
-import type { IWorld } from '../world_api';
+import type { IWorld, MarketInfo } from '../world_api';
 import { Renderer } from '../render/renderer';
 import {
   ABILITIES, CLASSES, DUNGEON_LIST, DUNGEON_X_THRESHOLD, ITEMS, MOBS, NPCS, QUESTS,
@@ -92,6 +92,16 @@ export class Hud {
   private tradeWasOpen = false;
   private lastTradeSig = '';
   private lastPartySig = '';
+  private lastArenaSig = '';
+  private lastArenaStatusSig = '';
+  // World Market (the Merchant's auction house)
+  private marketOpen = false;
+  private marketTab: 'browse' | 'sell' | 'collect' = 'browse';
+  private marketSellItem: string | null = null; // bag item staged for listing
+  private lastMarketSig = '';
+  // all-time ladder, fetched best-effort from the server (online only)
+  private arenaAllTime: { name: string; class: string; level: number; rating: number; wins: number; losses: number }[] | null = null;
+  private arenaLbFetchedAt = 0;
   private lastCombatEventAt = 0;
   private lastZoneId = '';
   private mapZoneId = ''; // zone the cached map-window canvas was rendered for
@@ -139,6 +149,7 @@ export class Hud {
     $('#mm-map').addEventListener('click', () => this.toggleMap());
     $('#mm-bag').addEventListener('click', () => this.toggleBags());
     $('#social-fab').addEventListener('click', () => this.toggleSocial());
+    $('#mm-arena').addEventListener('click', () => this.toggleArena());
     const musicBtn = $('#mm-music');
     const styleMusicBtn = () => { musicBtn.style.color = music.enabled ? '#ffd100' : '#666'; };
     styleMusicBtn();
@@ -640,6 +651,7 @@ export class Hud {
     this.updateQuestTracker();
     this.updatePartyFrames();
     this.updateTradeWindow();
+    this.updateArenaStatus();
     this.updateMinimap();
     if ($('#map-window').style.display === 'block') this.updateMapWindow();
     if ($('#social-window').classList.contains('open')) {
@@ -653,6 +665,7 @@ export class Hud {
         if (content !== this.lastSocialContent) { this.lastSocialContent = content; this.refreshSocialList(); }
       }
     }
+    if ($('#arena-window').style.display === 'block') this.renderArenaWindow();
     if (this.openLootMobId !== null) {
       const mob = sim.entities.get(this.openLootMobId);
       if (!mob || !mob.lootable || dist2d(p.pos, mob.pos) > 7) this.closeLoot();
@@ -660,6 +673,10 @@ export class Hud {
     if (this.openVendorNpcId !== null) {
       const npc = sim.entities.get(this.openVendorNpcId);
       if (!npc || dist2d(p.pos, npc.pos) > 8) this.closeVendor();
+    }
+    if (this.marketOpen) {
+      if (!this.nearbyMarketNpc()) this.closeMarket();
+      else this.refreshMarket();
     }
   }
 
@@ -852,6 +869,116 @@ export class Hud {
 
   toggleMeters(): void {
     this.meters.toggle();
+  }
+
+  // -------------------------------------------------------------------------
+  // The Ashen Coliseum — 1v1 arena panel + in-match banner
+  // -------------------------------------------------------------------------
+
+  toggleArena(): void {
+    const el = $('#arena-window');
+    if (el.style.display === 'block') { el.style.display = 'none'; return; }
+    el.style.display = 'block';
+    this.lastArenaSig = '';
+    this.fetchArenaLeaderboard();
+    this.renderArenaWindow();
+  }
+
+  // Best-effort all-time ladder pull. Throttled; silently no-ops offline (no
+  // server) so the panel still shows the live online ladder either way.
+  private fetchArenaLeaderboard(): void {
+    const now = performance.now();
+    if (now - this.arenaLbFetchedAt < 15000) return;
+    this.arenaLbFetchedAt = now;
+    fetch('/api/arena/leaderboard')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (d && Array.isArray(d.leaders)) { this.arenaAllTime = d.leaders; this.lastArenaSig = ''; }
+      })
+      .catch(() => { /* offline or no server — live ladder only */ });
+  }
+
+  private renderArenaWindow(): void {
+    const el = $('#arena-window');
+    const a = this.sim.arenaInfo;
+    if (!a) {
+      // offline / not yet synced: arena is an online ranked feature
+      el.innerHTML = `<div class="panel-title"><span>The Ashen Coliseum</span><span class="x-btn" data-close>✕</span></div>`
+        + `<div class="arena-note">The Ashen Coliseum is a ranked 1v1 arena for the live world. Play online to enter the queue and climb the ladder.</div>`;
+      el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; });
+      return;
+    }
+    const inMatch = a.match !== null;
+    const myPid = this.sim.playerId;
+    const ladder = a.ladder.map((r, i) => {
+      const me = r.pid === myPid;
+      const cls = CLASSES[r.cls]?.name ?? r.cls;
+      return `<div class="ladder-row${me ? ' me' : ''}"><span class="rank">${i + 1}</span>`
+        + `<span class="lr-name" title="${r.name} — ${cls}">${r.name}</span>`
+        + `<span class="lr-rating">${r.rating}</span>`
+        + `<span class="lr-wl">${r.wins}-${r.losses}</span></div>`;
+    }).join('') || `<div class="ladder-empty">No challengers ranked yet — be the first.</div>`;
+
+    let action: string;
+    if (inMatch) {
+      action = `<div class="arena-queue-status">⚔ Match in progress vs ${a.match!.oppName}.</div>`;
+    } else if (a.queued) {
+      action = `<button class="btn leave" data-act="leave">Leave Queue</button>`
+        + `<div class="arena-queue-status">Searching for an opponent… (${a.queueSize} in queue)</div>`;
+    } else {
+      action = `<button class="btn" data-act="queue">Enter the Queue</button>`
+        + `<div class="arena-note">You will be matched with the nearest-rated challenger online, then teleported to the sands. Win to climb; first to yield (1 health) loses. You return exactly where you queued.</div>`;
+    }
+
+    this.fetchArenaLeaderboard();
+    const allTime = (this.arenaAllTime ?? []).map((r, i) => {
+      const me = r.name === this.sim.player.name;
+      const cls = CLASSES[r.class as keyof typeof CLASSES]?.name ?? r.class;
+      return `<div class="ladder-row${me ? ' me' : ''}"><span class="rank">${i + 1}</span>`
+        + `<span class="lr-name" title="${r.name} — Lv ${r.level} ${cls}">${r.name}</span>`
+        + `<span class="lr-rating">${r.rating}</span>`
+        + `<span class="lr-wl">${r.wins}-${r.losses}</span></div>`;
+    }).join('');
+    const allTimeSection = this.arenaAllTime && this.arenaAllTime.length > 0
+      ? `<div class="arena-sub">Ladder — All-Time</div>${allTime}`
+      : '';
+
+    const sig = JSON.stringify([a.rating, a.wins, a.losses, a.queued, a.queueSize, inMatch, a.ladder, this.arenaAllTime]);
+    if (sig === this.lastArenaSig) return; // nothing changed; skip the DOM churn (and re-bind)
+    this.lastArenaSig = sig;
+
+    el.innerHTML = `<div class="panel-title"><span>The Ashen Coliseum <span style="color:#998d6a;font-size:11px">1v1 Ranked</span></span><span class="x-btn" data-close>✕</span></div>`
+      + `<div class="arena-rank"><span class="rating">${a.rating}</span>`
+      + `<span class="wl">Rating &middot; <b>${a.wins}</b> wins / <i>${a.losses}</i> losses</span></div>`
+      + action
+      + `<div class="arena-sub">Ladder — Online</div>`
+      + ladder
+      + allTimeSection;
+
+    el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; });
+    el.querySelector('[data-act="queue"]')?.addEventListener('click', () => { this.sim.arenaQueueJoin(); audio.click(); });
+    el.querySelector('[data-act="leave"]')?.addEventListener('click', () => { this.sim.arenaQueueLeave(); audio.click(); });
+  }
+
+  // The pinned in-match banner: opponent name + countdown / live match timer.
+  private updateArenaStatus(): void {
+    const el = $('#arena-status');
+    const a = this.sim.arenaInfo;
+    const m = a?.match ?? null;
+    if (!m) {
+      if (el.style.display !== 'none') el.style.display = 'none';
+      this.lastArenaStatusSig = '';
+      return;
+    }
+    const label = m.state === 'countdown' ? 'Steel yourself…' : 'Fight to the yield!';
+    const sig = `${m.oppName}|${m.state}`;
+    if (sig !== this.lastArenaStatusSig) {
+      this.lastArenaStatusSig = sig;
+      const cls = CLASSES[m.oppClass]?.name ?? m.oppClass;
+      el.innerHTML = `<div class="as-vs">⚔ VS <span class="opp">${m.oppName}</span> <span style="color:#b6ad8c;font-size:11px">Lv ${m.oppLevel} ${cls}</span></div>`
+        + `<div class="as-timer">${label}</div>`;
+      el.style.display = 'block';
+    }
   }
 
   toggleMap(): void {
@@ -1109,6 +1236,44 @@ export class Hud {
           this.combatLog(`${ev.winnerName} has defeated ${ev.loserName} in a duel.`, '#fa6');
           audio.duelEnd();
           break;
+        case 'arenaQueued':
+          this.log(`Queued for the Ashen Coliseum (position ${ev.position}).`, '#ffa040');
+          break;
+        case 'arenaUnqueued':
+          this.log('You leave the Ashen Coliseum queue.', '#ffa040');
+          break;
+        case 'arenaFound': {
+          const cls = CLASSES[ev.oppClass]?.name ?? ev.oppClass;
+          this.showBanner(`Opponent found: ${ev.oppName}`);
+          this.log(`The Coliseum pairs you against ${ev.oppName}, level ${ev.oppLevel} ${cls}.`, '#ffa040');
+          audio.duelChallenge();
+          break;
+        }
+        case 'arenaCountdown':
+          this.showBanner(`The bout begins in ${ev.seconds}…`);
+          audio.duelCountdownTick();
+          break;
+        case 'arenaStart':
+          this.showBanner('Fight!');
+          audio.duelStart();
+          break;
+        case 'arenaEnd': {
+          const delta = ev.ratingAfter - ev.ratingBefore;
+          const sign = delta >= 0 ? '+' : '';
+          if (ev.draw) {
+            this.showBanner(`Arena draw vs ${ev.oppName} (${sign}${delta} rating)`);
+            this.combatLog(`Arena bout vs ${ev.oppName} ended in a draw. Rating ${ev.ratingAfter} (${sign}${delta}).`, '#fa6');
+          } else if (ev.won) {
+            this.showBanner(`Victory vs ${ev.oppName}!  Rating ${ev.ratingAfter} (${sign}${delta})`);
+            this.combatLog(`You defeated ${ev.oppName} in the Ashen Coliseum. Rating ${ev.ratingAfter} (${sign}${delta}).`, '#7fdc4f');
+            audio.duelEnd();
+          } else {
+            this.showBanner(`Defeated by ${ev.oppName}.  Rating ${ev.ratingAfter} (${sign}${delta})`);
+            this.combatLog(`${ev.oppName} bested you in the Ashen Coliseum. Rating ${ev.ratingAfter} (${sign}${delta}).`, '#ff7a6a');
+            audio.death();
+          }
+          break;
+        }
         case 'log': this.log(ev.text, ev.color ?? '#ccc'); break;
         case 'playerDeath': {
           this.log('You have died.', '#ff4444');
@@ -1241,6 +1406,9 @@ export class Hud {
     if (npc.vendorItems.length > 0) {
       html += `<div class="qd-list-item" data-vendor="1"><span style="color:#9fdc7f">$</span> Let me browse your goods.</div>`;
     }
+    if (def?.market) {
+      html += `<div class="qd-list-item" data-market="1"><span style="color:#ffd24a">⚖</span> Show me the World Market.</div>`;
+    }
     el.innerHTML = html;
     el.querySelectorAll('[data-quest]').forEach((item) => {
       item.addEventListener('click', () => this.renderQuestDetail(npc, (item as HTMLElement).dataset.quest!));
@@ -1248,6 +1416,10 @@ export class Hud {
     el.querySelector('[data-vendor]')?.addEventListener('click', () => {
       this.closeQuestDialog();
       this.openVendor(npc.id);
+    });
+    el.querySelector('[data-market]')?.addEventListener('click', () => {
+      this.closeQuestDialog();
+      this.openMarket();
     });
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
     el.style.display = 'block';
@@ -1407,6 +1579,210 @@ export class Hud {
   }
 
   // -------------------------------------------------------------------------
+  // The World Market — the Merchant's auction house
+  // -------------------------------------------------------------------------
+
+  openMarket(): void {
+    this.marketOpen = true;
+    this.marketTab = 'browse';
+    this.marketSellItem = null;
+    this.lastMarketSig = '';
+    this.renderMarket();
+    $('#market-window').style.display = 'flex';
+    // bags ride alongside so you can click items straight onto the Sell tab
+    this.renderBags();
+    $('#bags').style.display = 'block';
+    audio.bagOpen();
+  }
+
+  closeMarket(): void {
+    if (!this.marketOpen) return;
+    this.marketOpen = false;
+    this.marketSellItem = null;
+    $('#market-window').style.display = 'none';
+    this.hideTooltip();
+    if ($('#bags').style.display === 'block') this.renderBags();
+  }
+
+  get marketWindowOpen(): boolean {
+    return this.marketOpen;
+  }
+
+  private nearbyMarketNpc(): Entity | null {
+    const p = this.sim.player;
+    for (const e of this.sim.entities.values()) {
+      if (e.kind === 'npc' && NPCS[e.templateId]?.market && dist2d(p.pos, e.pos) <= 8) return e;
+    }
+    return null;
+  }
+
+  private bagCount(itemId: string): number {
+    return this.sim.inventory.filter((s) => s.itemId === itemId).reduce((n, s) => n + s.count, 0);
+  }
+
+  private renderMarket(): void {
+    const el = $('#market-window');
+    this.hideTooltip();
+    const info = this.sim.marketInfo;
+    const collectN = info ? (info.collectionCopper > 0 ? 1 : 0) + info.collectionItems.length : 0;
+    const tab = (id: typeof this.marketTab, label: string, pip = '') =>
+      `<div class="mkt-tab${this.marketTab === id ? ' sel' : ''}" data-tab="${id}">${label}${pip}</div>`;
+    el.innerHTML =
+      `<div class="panel-title"><span>The World Market <span style="color:#998d6a;font-size:11px">— the Merchant's exchange</span></span><span class="x-btn" data-close>✕</span></div>`
+      + `<div class="mkt-tabs">`
+      + tab('browse', 'Browse')
+      + tab('sell', 'Sell')
+      + tab('collect', 'Collect', collectN > 0 ? ` <span class="pip">(${collectN})</span>` : '')
+      + `</div>`
+      + `<div id="market-body"></div>`;
+    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeMarket());
+    el.querySelectorAll('[data-tab]').forEach((t) => {
+      t.addEventListener('click', () => {
+        const next = (t as HTMLElement).dataset.tab as typeof this.marketTab;
+        if (next === this.marketTab) return;
+        this.marketTab = next;
+        this.lastMarketSig = '';
+        audio.click();
+        this.renderMarket();
+      });
+    });
+    this.renderMarketContent(info);
+  }
+
+  // Per-frame: refresh the live lists (Browse/Collect) when they change. The
+  // Sell tab holds typed inputs, so it is only rebuilt on explicit actions.
+  private refreshMarket(): void {
+    if (!this.marketOpen || this.marketTab === 'sell') return;
+    const info = this.sim.marketInfo;
+    const collectN = info ? (info.collectionCopper > 0 ? 1 : 0) + info.collectionItems.length : 0;
+    const sig = JSON.stringify([this.marketTab, info?.listings, info?.collectionCopper, info?.collectionItems]);
+    if (sig === this.lastMarketSig) return;
+    this.lastMarketSig = sig;
+    const collectTab = $('#market-window').querySelector('[data-tab="collect"]');
+    if (collectTab) collectTab.innerHTML = `Collect${collectN > 0 ? ` <span class="pip">(${collectN})</span>` : ''}`;
+    this.renderMarketContent(info);
+  }
+
+  private renderMarketContent(info: MarketInfo | null): void {
+    const body = document.getElementById('market-body');
+    if (!body) return;
+    if (!info) { body.innerHTML = `<div class="mkt-empty">Step up to the Merchant to deal.</div>`; return; }
+    if (this.marketTab === 'browse') this.renderMarketBrowse(body, info);
+    else if (this.marketTab === 'sell') this.renderMarketSell(body, info);
+    else this.renderMarketCollect(body, info);
+  }
+
+  private renderMarketBrowse(body: HTMLElement, info: MarketInfo): void {
+    if (info.listings.length === 0) {
+      body.innerHTML = `<div class="mkt-empty">The market is quiet. Be the first — list something on the Sell tab.</div>`;
+      return;
+    }
+    body.innerHTML = `<div class="mkt-note">Goods listed by adventurers across the realm. Click Buy to purchase a stack outright.</div>`;
+    for (const l of info.listings) {
+      const item = ITEMS[l.itemId];
+      if (!item) continue;
+      const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
+      const row = document.createElement('div');
+      row.className = 'mkt-row';
+      const each = l.count > 1 ? `<br><span class="seller">${formatMoney(Math.ceil(l.price / l.count))} each</span>` : '';
+      row.innerHTML =
+        `${this.itemIcon(item)}`
+        + `<span class="mkt-name"><span class="nm" style="color:${qColor}">${item.name}${l.count > 1 ? ' <span style="color:#ccc">x' + l.count + '</span>' : ''}</span>`
+        + `<span class="seller${l.house ? ' house' : ''}">${l.house ? "Merchant's stock" : l.sellerName}</span></span>`
+        + `<span class="mkt-price">${this.moneyHtml(l.price)}${each}</span>`;
+      const btn = document.createElement('button');
+      btn.className = 'mkt-btn' + (l.mine ? ' cancel' : '');
+      btn.textContent = l.mine ? 'Reclaim' : 'Buy';
+      btn.addEventListener('click', () => {
+        if (l.mine) this.sim.marketCancel(l.id);
+        else this.sim.marketBuy(l.id);
+        audio.click();
+      });
+      row.appendChild(btn);
+      this.attachTooltip(row, () => this.itemTooltip(item));
+      body.appendChild(row);
+    }
+  }
+
+  private renderMarketSell(body: HTMLElement, info: MarketInfo): void {
+    body.innerHTML = `<div class="mkt-note">List goods from your bags. The Merchant takes a ${info.cutPct}% cut when an item sells. You are using ${info.myListingCount}/${info.maxListings} listing slots.</div>`;
+    const item = this.marketSellItem ? ITEMS[this.marketSellItem] : null;
+    const have = this.marketSellItem ? this.bagCount(this.marketSellItem) : 0;
+    const pick = document.createElement('div');
+    if (!item || have <= 0) {
+      pick.className = 'mkt-sell-pick empty';
+      pick.textContent = 'Click an item in your bags to choose what to sell.';
+      body.appendChild(pick);
+      return;
+    }
+    const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
+    pick.className = 'mkt-sell-pick';
+    pick.innerHTML = `${this.itemIcon(item)}<span class="ps-name" style="color:${qColor}">${item.name}</span>`;
+    body.appendChild(pick);
+
+    const form = document.createElement('div');
+    form.className = 'mkt-price-form';
+    const qtyRow = have > 1
+      ? `<div class="mkt-price-row"><label>Quantity</label><input class="coininput" id="mkt-qty" type="number" min="1" max="${have}" value="1"> <span class="mkt-coin-tag">of ${have}</span></div>`
+      : '';
+    // a gentle starting ask: a few times vendor value, never below 1c
+    const suggested = Math.max(1, item.buyValue ?? Math.max(1, item.sellValue) * 4);
+    const g = Math.floor(suggested / 10000), s = Math.floor((suggested % 10000) / 100), c = suggested % 100;
+    form.innerHTML = qtyRow
+      + `<div class="mkt-price-row"><label>Price each</label>`
+      + `<input class="coininput" id="mkt-g" type="number" min="0" value="${g}"><span class="mkt-coin-tag">g</span>`
+      + `<input class="coininput" id="mkt-s" type="number" min="0" max="99" value="${s}"><span class="mkt-coin-tag">s</span>`
+      + `<input class="coininput" id="mkt-c" type="number" min="0" max="99" value="${c}"><span class="mkt-coin-tag">c</span></div>`;
+    body.appendChild(form);
+
+    const listBtn = document.createElement('button');
+    listBtn.className = 'mkt-list-btn';
+    listBtn.textContent = 'List on the World Market';
+    listBtn.addEventListener('click', () => {
+      const qty = have > 1 ? Math.max(1, Math.min(have, parseInt(($('#mkt-qty') as HTMLInputElement)?.value || '1', 10) || 1)) : 1;
+      const gg = Math.max(0, parseInt(($('#mkt-g') as HTMLInputElement)?.value || '0', 10) || 0);
+      const ss = Math.max(0, parseInt(($('#mkt-s') as HTMLInputElement)?.value || '0', 10) || 0);
+      const cc = Math.max(0, parseInt(($('#mkt-c') as HTMLInputElement)?.value || '0', 10) || 0);
+      const each = gg * 10000 + ss * 100 + cc;
+      if (each < 1) { this.showError('Name a price of at least 1 copper.'); return; }
+      this.sim.marketList(this.marketSellItem!, qty, each * qty);
+      this.marketSellItem = null;
+      audio.coin();
+      this.renderMarket(); // the next snapshot echoes the new bags + listings
+    });
+    body.appendChild(listBtn);
+  }
+
+  private renderMarketCollect(body: HTMLElement, info: MarketInfo): void {
+    if (info.collectionCopper <= 0 && info.collectionItems.length === 0) {
+      body.innerHTML = `<div class="mkt-empty">Nothing waiting. Sale proceeds and expired listings collect here.</div>`;
+      return;
+    }
+    body.innerHTML = `<div class="mkt-note">Earnings and returned goods the Merchant is holding for you.</div>`;
+    if (info.collectionCopper > 0) {
+      const row = document.createElement('div');
+      row.className = 'mkt-collect';
+      row.innerHTML = `<span>Sale proceeds</span><span class="mkt-price">${this.moneyHtml(info.collectionCopper)}</span>`;
+      body.appendChild(row);
+    }
+    for (const s of info.collectionItems) {
+      const item = ITEMS[s.itemId];
+      if (!item) continue;
+      const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
+      const row = document.createElement('div');
+      row.className = 'mkt-collect';
+      row.innerHTML = `<span style="display:flex;gap:8px;align-items:center">${this.itemIcon(item)}<span style="color:${qColor}">${item.name}${s.count > 1 ? ' x' + s.count : ''}</span></span>`;
+      this.attachTooltip(row, () => this.itemTooltip(item));
+      body.appendChild(row);
+    }
+    const btn = document.createElement('button');
+    btn.className = 'mkt-list-btn';
+    btn.textContent = 'Collect All';
+    btn.addEventListener('click', () => { this.sim.marketCollect(); audio.coin(); });
+    body.appendChild(btn);
+  }
+
+  // -------------------------------------------------------------------------
   // Bags
   // -------------------------------------------------------------------------
 
@@ -1443,6 +1819,10 @@ export class Hud {
       row.addEventListener('click', () => {
         if (this.tradeOpen) {
           this.addItemToTrade(s.itemId);
+        } else if (this.marketOpen && this.marketTab === 'sell') {
+          if (item.kind === 'quest') { this.showError('The Merchant will not broker quest items.'); return; }
+          this.marketSellItem = s.itemId;
+          this.renderMarket();
         } else if (this.vendorOpen) {
           this.sim.sellItem(s.itemId);
         } else {
@@ -1453,6 +1833,7 @@ export class Hud {
       this.attachTooltip(row, () => {
         let extra = '';
         if (this.tradeOpen) extra = '<div class="tt-sub">Click to offer in trade</div>';
+        else if (this.marketOpen && this.marketTab === 'sell') extra = item.kind === 'quest' ? '<div class="tt-sub">Cannot be sold on the market</div>' : '<div class="tt-sub">Click to put on the market</div>';
         else if (this.vendorOpen) extra = '<div class="tt-sub">Click to sell</div>';
         else if (item.kind === 'weapon' || item.kind === 'armor') extra = '<div class="tt-sub">Click to equip</div>';
         else if (item.kind === 'food' || item.kind === 'drink') extra = '<div class="tt-sub">Click to consume</div>';
@@ -2557,7 +2938,8 @@ export class Hud {
       this.sim.tradeCancel();
       closed = true;
     }
-    for (const id of ['#quest-dialog', '#loot-window', '#vendor-window', '#bags', '#char-window', '#spellbook', '#quest-log-window', '#map-window', '#report-window']) {
+    if (this.marketOpen) { this.closeMarket(); closed = true; }
+    for (const id of ['#quest-dialog', '#loot-window', '#vendor-window', '#bags', '#char-window', '#spellbook', '#quest-log-window', '#map-window', '#report-window', '#arena-window']) {
       const el = $(id);
       if (el.style.display === 'block') {
         el.style.display = 'none';

@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import type { CharacterState } from '../src/sim/sim';
+import type { CharacterState, MarketSave } from '../src/sim/sim';
 import type { PlayerClass } from '../src/sim/types';
 import type { ChatLogRow } from './chat_log';
 import { SOCIAL_SCHEMA } from './social_db';
@@ -99,6 +99,11 @@ CREATE TABLE IF NOT EXISTS account_moderation_actions (
   expires_at TIMESTAMPTZ
 );
 CREATE INDEX IF NOT EXISTS account_moderation_actions_account ON account_moderation_actions(account_id, created_at DESC);
+CREATE TABLE IF NOT EXISTS world_state (
+  key TEXT PRIMARY KEY,
+  data JSONB NOT NULL,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 `;
 
 export async function ensureSchema(): Promise<void> {
@@ -317,6 +322,67 @@ export async function saveCharacterState(characterId: number, level: number, sta
 export async function isAdminAccount(accountId: number): Promise<boolean> {
   const res = await pool.query('SELECT is_admin FROM accounts WHERE id = $1', [accountId]);
   return res.rows[0]?.is_admin === true;
+}
+
+// ---------------------------------------------------------------------------
+// Arena rankings: the Ashen Coliseum's all-time ladder. Ratings/records live
+// inside each character's state JSONB (no schema migration needed); only
+// characters who have actually fought a bout appear.
+// ---------------------------------------------------------------------------
+
+export interface ArenaLeaderRow {
+  name: string;
+  class: PlayerClass;
+  level: number;
+  rating: number;
+  wins: number;
+  losses: number;
+}
+
+export async function topArenaRatings(limit = 20): Promise<ArenaLeaderRow[]> {
+  const res = await pool.query(
+    `SELECT name, class, level,
+            COALESCE((state->>'arenaRating')::int, 1500) AS rating,
+            COALESCE((state->>'arenaWins')::int, 0)     AS wins,
+            COALESCE((state->>'arenaLosses')::int, 0)   AS losses
+       FROM characters
+      WHERE state IS NOT NULL
+        AND COALESCE((state->>'arenaWins')::int, 0) + COALESCE((state->>'arenaLosses')::int, 0) > 0
+      ORDER BY rating DESC, wins DESC, name ASC
+      LIMIT $1`,
+    [Math.max(1, Math.min(100, limit))],
+  );
+  return res.rows.map((r) => ({
+    name: r.name, class: r.class, level: r.level,
+    rating: Number(r.rating), wins: Number(r.wins), losses: Number(r.losses),
+  }));
+}
+
+// ---------------------------------------------------------------------------
+// World state: a tiny key→JSONB store for shared, global game state that isn't
+// tied to one character. The World Market (the Merchant's auction house) lives
+// here under the 'market' key — listings + per-seller collections.
+// ---------------------------------------------------------------------------
+
+export async function loadWorldState<T>(key: string): Promise<T | null> {
+  const res = await pool.query('SELECT data FROM world_state WHERE key = $1', [key]);
+  return (res.rows[0]?.data as T) ?? null;
+}
+
+export async function saveWorldState(key: string, data: unknown): Promise<void> {
+  await pool.query(
+    `INSERT INTO world_state (key, data, updated_at) VALUES ($1, $2, now())
+     ON CONFLICT (key) DO UPDATE SET data = EXCLUDED.data, updated_at = now()`,
+    [key, JSON.stringify(data)],
+  );
+}
+
+export async function loadMarketState(): Promise<MarketSave | null> {
+  return loadWorldState<MarketSave>('market');
+}
+
+export async function saveMarketState(save: MarketSave): Promise<void> {
+  await saveWorldState('market', save);
 }
 
 // ---------------------------------------------------------------------------
