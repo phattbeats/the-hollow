@@ -12,6 +12,7 @@ export interface MobileControlCallbacks {
   onMenu(): void;
   onSocial(): void;
   onArena(): void;
+  onQuestLog(): void;
   onSpellbook(): void;
   onTalents(): void;
   onMeters(): void;
@@ -71,6 +72,7 @@ export class MobileControls {
     this.bindButton('mobile-menu', () => this.callbacks.onMenu());
     this.bindButton('mobile-social', () => this.callbacks.onSocial());
     this.bindButton('mobile-arena', () => this.callbacks.onArena());
+    this.bindButton('mobile-quest', () => this.callbacks.onQuestLog());
     this.bindButton('mobile-spellbook', () => this.callbacks.onSpellbook());
     this.bindButton('mobile-talents', () => this.callbacks.onTalents());
     this.bindButton('mobile-meters', () => this.callbacks.onMeters());

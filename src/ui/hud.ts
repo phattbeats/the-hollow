@@ -2,13 +2,16 @@ import { formatMoney, ResolvedAbility } from '../sim/sim';
 import type { FriendInfo, IWorld, MarketInfo } from '../world_api';
 import { Renderer } from '../render/renderer';
 import {
-  ABILITIES, CLASSES, DUNGEON_LIST, DUNGEON_X_THRESHOLD, ITEMS, MOBS, NPCS, PROPS, QUESTS, questRewardItemId,
-  WORLD_MAX_X, WORLD_MAX_Z, WORLD_MIN_X, WORLD_MIN_Z, ZONES, dungeonAt, zoneAt,
+  ABILITIES, CLASSES, DUNGEON_LIST, DUNGEON_X_THRESHOLD, ITEMS, MOBS, NPCS, PROPS, QUESTS,
+  WORLD_MAX_X, WORLD_MAX_Z, WORLD_MIN_X, WORLD_MIN_Z, ZONES, dungeonAt, questRewardItem, zoneAt,
   zoneWelcomeText,
 } from '../sim/data';
 import type { ZoneDef } from '../sim/data';
 import type { InvSlot } from '../sim/types';
-import { AbilityEffect, CONSUME_DURATION, Entity, GCD, ItemDef, SimEvent, dist2d, MAX_LEVEL, MELEE_RANGE, MILESTONES, virtualLevel, canPrestige, xpUntilNextPrestige } from '../sim/types';
+import {
+  AbilityEffect, CONSUME_DURATION, Entity, FISHING_CAST_ID, FISHING_CAST_NAME, GCD, ItemDef, SimEvent,
+  dist2d, xpForLevel, MAX_LEVEL, MELEE_RANGE, MILESTONES, virtualLevel, canPrestige, xpUntilNextPrestige,
+} from '../sim/types';
 import type { LeaderboardEntry } from '../world_api';
 import { xpBarView, formatXp } from './xp_bar';
 import { t } from './i18n';
@@ -17,17 +20,20 @@ import type { Decoration } from '../sim/world';
 import { Meters } from './meters';
 import { audio } from '../game/audio';
 import { music } from '../game/music';
-import { iconDataUrl, iconCanvas, QUALITY_COLOR } from './icons';
+import { iconDataUrl, iconCanvas, QUALITY_COLOR, raidMarkerDataUrl, RAID_MARKER_NAMES } from './icons';
 import { svgIcon } from './ui_icons';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
-import { Settings, GameSettings, SETTING_RANGES } from '../game/settings';
+import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES } from '../game/settings';
 import { chatPlayerContextActions } from './player_context_menu';
 import {
   talentsFor, computeTalentModifiers, validateAllocation, dormantNodes, pointsSpent,
   exportBuild, importBuild, cloneAllocation, talentPointsAtLevel, FIRST_TALENT_LEVEL,
   type TalentAllocation, type TalentNode, type SpecDef, type Role, type TalentEffect,
 } from '../sim/content/talents';
-import { placeAbilityOnSlot, clearSlot } from './hotbar';
+import {
+  clearHotbarSlot, encodeHotbarAction, HOTBAR_ACTION_MIME, HotbarAction, parseHotbarAction, parseHotbarActions,
+  placeAbilityOnSlot, placeItemOnSlot, swapHotbarSlots, syncHotbarActions,
+} from './hotbar';
 
 // hooks main wires after Input exists (the options menu drives input, audio,
 // graphics, and logout, all of which live outside the HUD)
@@ -35,7 +41,7 @@ export interface OptionsHooks {
   logout(): void;
   captureKey(cb: (code: string | null) => void): void;
   settings: Settings;
-  onSettingChange(key: keyof GameSettings, value: number): void;
+  onSettingChange(key: keyof GameSettings, value: GameSettings[keyof GameSettings]): void;
 }
 
 export interface ReportHooks {
@@ -50,6 +56,7 @@ const esc = (value: unknown): string => String(value ?? '')
   .replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;')
   .replace(/'/g, '&#39;');
+const castDisplayName = (id: string): string => id === FISHING_CAST_ID ? FISHING_CAST_NAME : ABILITIES[id]?.name ?? id;
 
 // Classic class colors (CLASSES[cls].color is a 0xRRGGBB number) as a CSS
 // string, used to color-code party members on the minimap and in the frames.
@@ -93,10 +100,11 @@ const MAP_DETAIL_ZOOM = 2.2; // at/above this zoom, overlay buildings + vegetati
 
 export class Hud {
   private static readonly BAR_ABILITY_SLOTS = 11; // bar slots 1..11; slot 0 is the fixed Attack toggle
-  private abilityButtons: { btn: HTMLButtonElement; label: HTMLSpanElement; keybindEl: HTMLSpanElement; cdOverlay: HTMLDivElement; cdText: HTMLDivElement; lastIcon: string }[] = [];
-  private slotMap: (string | null)[] = []; // index = barSlot-1, value = ability id
-  private dragAbilityId: string | null = null; // id being dragged (from a bar slot or the spellbook)
-  private seenAbilities = new Set<string>(); // abilities already auto-placed once; lets cleared slots stay empty
+  private abilityButtons: { btn: HTMLButtonElement; label: HTMLSpanElement; countEl: HTMLSpanElement; keybindEl: HTMLSpanElement; cdOverlay: HTMLDivElement; cdText: HTMLDivElement; lastIcon: string }[] = [];
+  private hotbarActions: HotbarAction[] = []; // index = barSlot-1
+  private loadedSlotMapFromStorage = false;
+  private knownAbilityIdsAtLastSlotSync: Set<string> | null = null;
+  private dragAction: { action: Exclude<HotbarAction, null>; sourceIndex: number | null } | null = null;
   private optionsHooks: OptionsHooks | null = null;
   private reportHooks: ReportHooks | null = null;
   private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' = 'main';
@@ -124,6 +132,7 @@ export class Hud {
   private lastPartySig = '';
   private lastArenaSig = '';
   private lastArenaStatusSig = '';
+  private arenaMatchSeen = false; // closes the queue panel once a bout starts
   // World Market (the Merchant's auction house)
   private marketOpen = false;
   private marketTab: 'browse' | 'sell' | 'collect' = 'browse';
@@ -182,6 +191,11 @@ export class Hud {
       const t = tid !== null ? this.sim.entities.get(tid) : null;
       if (t && t.kind === 'player' && t.id !== this.sim.playerId) {
         this.openContextMenu(t.id, t.name, (ev as MouseEvent).clientX, (ev as MouseEvent).clientY);
+      } else if (t && t.kind === 'mob' && !t.dead && t.hostile && t.ownerId === null && this.sim.partyInfo) {
+        // classic WoW: right-click an enemy's unit frame to set a raid marker.
+        // Mirror Sim.setMarker's markable criteria (live wild hostile mob) so the
+        // menu never appears for a pet/non-hostile mob where it would be a no-op.
+        this.openMarkerMenu(t.id, t.name, (ev as MouseEvent).clientX, (ev as MouseEvent).clientY);
       }
     });
     $('#mm-char').addEventListener('click', () => this.toggleChar());
@@ -350,6 +364,7 @@ export class Hud {
     }
     if (item.foodHp) html += `<div class="tt-desc">Use: Restores ${item.foodHp} health over 18 sec. Must remain seated while eating.</div>`;
     if (item.drinkMana) html += `<div class="tt-desc">Use: Restores ${item.drinkMana} mana over 18 sec. Must remain seated while drinking.</div>`;
+    if (item.use?.type === 'fishing') html += `<div class="tt-desc">Use: Fish in nearby waters.</div>`;
     if (item.potionHp) html += `<div class="tt-desc">Use: Instantly restores ${item.potionHp} health. Usable in combat. 1 min cooldown.</div>`;
     if (item.potionMana) html += `<div class="tt-desc">Use: Instantly restores ${item.potionMana} mana. Usable in combat. 1 min cooldown.</div>`;
     if (item.kind === 'quest') html += `<div class="tt-desc">Quest Item</div>`;
@@ -415,76 +430,72 @@ export class Hud {
   // Action bar
   // -------------------------------------------------------------------------
 
-  // The hotbar layout is a client-side remap over the learned abilities,
-  // keyed by ability id (known is class-ordered and shifts on level-up, so
-  // indices would not survive). Persisted per class+character.
+  // The hotbar layout is a client-side remap over learned abilities and item
+  // shortcuts. Abilities are keyed by id (known is class-ordered and shifts on
+  // level-up, so indices would not survive). Persisted per class+character.
   private slotMapKey(): string {
     return `woc_hotbar_${this.sim.cfg.playerClass}_${this.sim.player.name}`;
   }
 
-  private seenKey(): string {
-    return `${this.slotMapKey()}_seen`;
+  private isHotbarItemId(itemId: string): boolean {
+    const item = ITEMS[itemId];
+    return item?.kind === 'food' || item?.kind === 'drink' || item?.kind === 'potion' || item?.use?.type === 'fishing';
   }
 
   private loadSlotMap(): void {
     let arr: unknown = null;
     try { arr = JSON.parse(localStorage.getItem(this.slotMapKey()) ?? 'null'); } catch { /* corrupt */ }
-    const seen = new Set<string>();
-    const firstLoad = !Array.isArray(arr);
-    this.slotMap = Array.from({ length: Hud.BAR_ABILITY_SLOTS }, (_, i) => {
-      const v = Array.isArray(arr) ? arr[i] : null;
-      if (typeof v !== 'string' || !ABILITIES[v] || seen.has(v)) return null;
-      seen.add(v);
-      return v;
-    });
-    // Track which abilities have already been auto-placed so an intentionally
-    // cleared slot doesn't get refilled next frame. On a brand-new bar treat
-    // everything currently known as already-seen so we don't reshuffle.
-    this.seenAbilities = new Set<string>();
-    let storedSeen: unknown = null;
-    try { storedSeen = JSON.parse(localStorage.getItem(this.seenKey()) ?? 'null'); } catch { /* corrupt */ }
-    if (Array.isArray(storedSeen)) {
-      for (const id of storedSeen) if (typeof id === 'string') this.seenAbilities.add(id);
-    } else if (!firstLoad) {
-      // existing player with a saved bar but no seen-set: anything already on
-      // the bar has clearly been seen; unknown new spells still auto-place.
-      for (const id of this.slotMap) if (id) this.seenAbilities.add(id);
-    }
+    this.loadedSlotMapFromStorage = Array.isArray(arr);
+    this.hotbarActions = parseHotbarActions(
+      arr,
+      Hud.BAR_ABILITY_SLOTS,
+      (id) => !!ABILITIES[id],
+      (id) => this.isHotbarItemId(id),
+    );
   }
 
   private saveSlotMap(): void {
-    try {
-      localStorage.setItem(this.slotMapKey(), JSON.stringify(this.slotMap));
-      localStorage.setItem(this.seenKey(), JSON.stringify([...this.seenAbilities]));
-    } catch { /* storage unavailable */ }
+    try { localStorage.setItem(this.slotMapKey(), JSON.stringify(this.hotbarActions)); } catch { /* storage unavailable */ }
   }
 
-  // Drop unlearned ids; auto-place each newly learned ability ONCE into the
-  // first empty slot. Abilities already seen (including ones the player cleared
-  // off the bar) are left alone, so clearing/replacing slots sticks. If the bar
-  // is full when a new spell is learned, it stays in the spellbook for the
-  // player to drag onto a slot of their choosing.
+  // Drop unlearned ability ids; place newly learned abilities in the first
+  // empty slot. Item shortcuts stay assigned even when their count reaches 0.
   private syncSlotMap(): void {
-    const ids = new Set(this.sim.known.map((k) => k.def.id));
-    let dirty = false;
-    for (let i = 0; i < this.slotMap.length; i++) {
-      const id = this.slotMap[i];
-      if (id !== null && !ids.has(id)) { this.slotMap[i] = null; dirty = true; }
+    const knownAbilityIds = this.sim.known.map((k) => k.def.id);
+    const autoPlaceAbilityIds = new Set<string>();
+    if (this.knownAbilityIdsAtLastSlotSync === null) {
+      if (!this.loadedSlotMapFromStorage) {
+        for (const id of knownAbilityIds) autoPlaceAbilityIds.add(id);
+      }
+    } else {
+      for (const id of knownAbilityIds) {
+        if (!this.knownAbilityIdsAtLastSlotSync.has(id)) autoPlaceAbilityIds.add(id);
+      }
     }
-    for (const k of this.sim.known) {
-      if (this.seenAbilities.has(k.def.id)) continue;
-      this.seenAbilities.add(k.def.id);
-      dirty = true;
-      if (this.slotMap.includes(k.def.id)) continue;
-      const empty = this.slotMap.indexOf(null);
-      if (empty !== -1) this.slotMap[empty] = k.def.id;
-    }
-    if (dirty) this.saveSlotMap();
+    const synced = syncHotbarActions(this.hotbarActions, knownAbilityIds, autoPlaceAbilityIds);
+    this.hotbarActions = synced.actions;
+    if (synced.changed) this.saveSlotMap();
+    this.knownAbilityIdsAtLastSlotSync = new Set(knownAbilityIds);
+  }
+
+  private actionForSlot(barSlot: number): HotbarAction { // barSlot 1..11
+    return this.hotbarActions[barSlot - 1] ?? null;
   }
 
   abilityForSlot(barSlot: number): ResolvedAbility | null { // barSlot 1..11
-    const id = this.slotMap[barSlot - 1];
-    return id ? this.sim.known.find((k) => k.def.id === id) ?? null : null;
+    const action = this.actionForSlot(barSlot);
+    return action?.type === 'ability'
+      ? this.sim.known.find((k) => k.def.id === action.id) ?? null
+      : null;
+  }
+
+  private itemForSlot(barSlot: number): ItemDef | null {
+    const action = this.actionForSlot(barSlot);
+    return action?.type === 'item' ? ITEMS[action.id] ?? null : null;
+  }
+
+  private inventoryCount(itemId: string): number {
+    return this.sim.inventory.reduce((total, slot) => total + (slot.itemId === itemId ? slot.count : 0), 0);
   }
 
   // Shared entry point for hotbar clicks and the 1..0-= keybinds.
@@ -494,10 +505,31 @@ export class Hud {
       else this.sim.startAutoAttack();
       return;
     }
-    const known = this.abilityForSlot(barSlot);
-    // cast by ability id: the server validates against its own known list,
-    // so the client-side slot remap never desyncs slot semantics
-    if (known) this.sim.castAbility(known.def.id);
+    const action = this.actionForSlot(barSlot);
+    if (action?.type === 'ability') {
+      // cast by ability id: the server validates against its own known list,
+      // so the client-side slot remap never desyncs slot semantics
+      if (this.abilityForSlot(barSlot)) this.sim.castAbility(action.id);
+    } else if (action?.type === 'item' && this.isHotbarItemId(action.id)) {
+      if (this.tradeOpen) return;
+      this.sim.useItem(action.id);
+      if ($('#bags').style.display === 'block') this.renderBags();
+    }
+  }
+
+  private writeDraggedAction(dt: DataTransfer | null, action: Exclude<HotbarAction, null>): void {
+    if (!dt) return;
+    dt.setData(HOTBAR_ACTION_MIME, encodeHotbarAction(action));
+    dt.setData('text/plain', action.id);
+  }
+
+  private readDraggedAction(dt: DataTransfer | null): Exclude<HotbarAction, null> | null {
+    if (!dt) return null;
+    const raw = dt.getData(HOTBAR_ACTION_MIME);
+    if (!raw) return null;
+    let parsed: unknown = null;
+    try { parsed = JSON.parse(raw); } catch { return null; }
+    return parseHotbarAction(parsed, (id) => this.sim.known.some((k) => k.def.id === id), (id) => this.isHotbarItemId(id));
   }
 
   private buildActionBar(): void {
@@ -507,6 +539,8 @@ export class Hud {
       btn.className = 'action-btn empty';
       const label = document.createElement('span');
       label.className = 'icon-label';
+      const countEl = document.createElement('span');
+      countEl.className = 'item-count';
       const kb = document.createElement('span');
       kb.className = 'keybind';
       kb.textContent = this.keybinds.primaryLabel(`slot${i}`); // rebindable; refreshKeybindLabels keeps it current
@@ -514,7 +548,7 @@ export class Hud {
       cdOverlay.className = 'cd-overlay';
       const cdText = document.createElement('div');
       cdText.className = 'cdtext';
-      btn.append(label, kb, cdOverlay, cdText);
+      btn.append(label, countEl, kb, cdOverlay, cdText);
       const slot = i;
       // slot 0 is Attack for every class (auto-attack toggle — players
       // without right-click need a way in); the kit fills slots 1+
@@ -527,54 +561,90 @@ export class Hud {
           return '<div class="tt-title">Attack</div><div class="tt-sub">Toggle auto-attack on your target.<br>Right-clicking an enemy also attacks.</div>';
         }
         const known = this.abilityForSlot(slot);
-        return known ? this.abilityTooltip(known) : '<div class="tt-sub">Empty slot</div>';
+        if (known) return this.abilityTooltip(known) + '<div class="tt-sub">Shift-right-click or Shift-Delete to clear</div>';
+        const item = this.itemForSlot(slot);
+        if (item) {
+          const count = this.inventoryCount(item.id);
+          return this.itemTooltip(item)
+            + (count > 0 ? `<div class="tt-sub">In bags: ${count}</div>` : '<div class="tt-sub">None in bags</div>')
+            + '<div class="tt-sub">Shift-right-click or Shift-Delete to clear</div>';
+        }
+        return '<div class="tt-sub">Empty slot<br>Shift-right-click or Shift-Delete to clear</div>';
       });
       if (slot >= 1) {
-        // drag an ability onto a slot to place or swap it; drag one from the
-        // spellbook to fill/replace; right-click a slot to clear it. slot 0
-        // (Attack) stays fixed.
+        // drag an action onto another slot to place or swap it;
+        // slot 0 (Attack) stays fixed
         btn.draggable = true;
+        const clearSlot = () => {
+          this.hotbarActions = clearHotbarSlot(this.hotbarActions, slot - 1);
+          this.saveSlotMap();
+          btn.classList.add('empty');
+          btn.classList.remove('drop-target', 'oor', 'queued', 'unusable');
+          this.hideTooltip();
+        };
+        btn.addEventListener('contextmenu', (e) => {
+          if (!e.shiftKey) return;
+          e.preventDefault();
+          clearSlot();
+        });
+        btn.addEventListener('keydown', (e) => {
+          if (!e.shiftKey || (e.key !== 'Delete' && e.key !== 'Backspace')) return;
+          e.preventDefault();
+          e.stopPropagation();
+          clearSlot();
+        });
         btn.addEventListener('dragstart', (e) => {
-          const known = this.abilityForSlot(slot);
-          if (!known) { e.preventDefault(); return; }
-          this.dragAbilityId = known.def.id;
-          e.dataTransfer!.setData('text/plain', known.def.id);
+          const action = this.actionForSlot(slot);
+          if (!action) { e.preventDefault(); return; }
+          this.dragAction = { action, sourceIndex: slot - 1 };
+          this.writeDraggedAction(e.dataTransfer, action);
           e.dataTransfer!.effectAllowed = 'move';
           this.hideTooltip();
         });
         btn.addEventListener('dragover', (e) => {
-          if (this.dragAbilityId === null || this.slotMap[slot - 1] === this.dragAbilityId) return;
+          const dragged = this.dragAction?.action ?? this.readDraggedAction(e.dataTransfer);
+          if (!dragged) return;
+          if (this.dragAction?.sourceIndex === slot - 1) return;
           e.preventDefault(); // required to permit the drop
-          e.dataTransfer!.dropEffect = 'move';
+          e.dataTransfer!.dropEffect = this.dragAction?.sourceIndex === null && dragged.type === 'item' ? 'copy' : 'move';
           btn.classList.add('drop-target');
         });
         btn.addEventListener('dragleave', () => btn.classList.remove('drop-target'));
         btn.addEventListener('drop', (e) => {
           e.preventDefault();
           btn.classList.remove('drop-target');
-          const abilityId = this.dragAbilityId ?? e.dataTransfer?.getData('text/plain') ?? '';
-          this.dragAbilityId = null;
-          if (!this.sim.known.some((k) => k.def.id === abilityId)) return;
-          this.seenAbilities.add(abilityId); // placing it counts as seen
-          this.slotMap = placeAbilityOnSlot(this.slotMap, abilityId, slot - 1);
+          const dragged = this.dragAction ?? { action: this.readDraggedAction(e.dataTransfer), sourceIndex: null };
+          this.dragAction = null;
+          const action = dragged.action;
+          if (!action) return;
+          if (dragged.sourceIndex !== null) this.hotbarActions = swapHotbarSlots(this.hotbarActions, dragged.sourceIndex, slot - 1);
+          else if (action.type === 'ability' && this.sim.known.some((k) => k.def.id === action.id)) {
+            this.hotbarActions = placeAbilityOnSlot(this.hotbarActions, action.id, slot - 1);
+          } else if (action.type === 'item' && this.isHotbarItemId(action.id)) {
+            this.hotbarActions = placeItemOnSlot(this.hotbarActions, action.id, slot - 1);
+          }
           this.saveSlotMap();
         });
         btn.addEventListener('dragend', () => {
-          this.dragAbilityId = null;
-          bar.querySelectorAll('.drop-target').forEach((el) => el.classList.remove('drop-target'));
+          this.dragAction = null;
+          this.clearActionDropTargets();
         });
         // right-click clears the slot so a full bar can make room for new spells
         btn.addEventListener('contextmenu', (e) => {
           e.preventDefault();
-          if (this.slotMap[slot - 1] === null) return;
-          this.slotMap = clearSlot(this.slotMap, slot - 1);
+          if (this.hotbarActions[slot - 1] === null) return;
+          this.hotbarActions = clearHotbarSlot(this.hotbarActions, slot - 1);
           this.saveSlotMap();
           this.hideTooltip();
         });
       }
       bar.appendChild(btn);
-      this.abilityButtons.push({ btn, label, keybindEl: kb, cdOverlay, cdText, lastIcon: '' });
+      this.abilityButtons.push({ btn, label, countEl, keybindEl: kb, cdOverlay, cdText, lastIcon: '' });
     }
+  }
+
+  private clearActionDropTargets(): void {
+    document.querySelectorAll('#actionbar .drop-target').forEach((el) => el.classList.remove('drop-target'));
   }
 
   // Repaint the keycap on every action button from the current bindings.
@@ -668,7 +738,7 @@ export class Hud {
         ? p.castRemaining / Math.max(0.01, p.castTotal)
         : 1 - p.castRemaining / Math.max(0.01, p.castTotal);
       (cb.querySelector('.fill') as HTMLElement).style.width = `${(frac * 100).toFixed(1)}%`;
-      (cb.querySelector('.label') as HTMLElement).textContent = ABILITIES[p.castingAbility].name;
+      (cb.querySelector('.label') as HTMLElement).textContent = castDisplayName(p.castingAbility);
     } else if (p.eating || p.drinking) {
       cb.style.display = 'block';
       cb.classList.add('channel');
@@ -688,7 +758,7 @@ export class Hud {
     // action bar
     const tgtDist = target && !target.dead ? dist2d(p.pos, target.pos) : null;
     const actionbar = $('#actionbar');
-    actionbar.classList.toggle('many-spells', this.slotMap.filter((id) => id !== null).length > 10);
+    actionbar.classList.toggle('many-spells', this.hotbarActions.filter((action) => action !== null).length > 10);
     for (let i = 0; i < this.abilityButtons.length; i++) {
       const ab = this.abilityButtons[i];
       if (i === 0) {
@@ -698,37 +768,58 @@ export class Hud {
           ab.lastIcon = '__attack';
           ab.label.style.backgroundImage = `url(${iconDataUrl('ability', 'attack')})`;
         }
+        ab.countEl.textContent = '';
         ab.cdOverlay.style.height = '0%';
         ab.cdText.textContent = '';
         ab.btn.classList.toggle('queued', !!p.autoAttack);
         ab.btn.classList.toggle('oor', tgtDist !== null && tgtDist > MELEE_RANGE);
         continue;
       }
+      const action = this.actionForSlot(i);
       const known = this.abilityForSlot(i);
-      if (!known) {
+      const item = this.itemForSlot(i);
+      if (!known && !item) {
         ab.btn.classList.add('empty');
+        ab.btn.classList.remove('unusable', 'oor', 'queued');
         if (ab.lastIcon !== '') {
           ab.lastIcon = '';
           ab.label.style.backgroundImage = '';
         }
+        ab.countEl.textContent = '';
         ab.cdOverlay.style.height = '0%';
         ab.cdText.textContent = '';
         continue;
       }
-      const a = known.def;
       ab.btn.classList.remove('empty');
+      if (item && action?.type === 'item') {
+        const iconKey = `item:${item.id}`;
+        if (ab.lastIcon !== iconKey) {
+          ab.lastIcon = iconKey;
+          ab.label.style.backgroundImage = `url(${iconDataUrl('item', item.id)})`;
+        }
+        const count = this.inventoryCount(item.id);
+        ab.countEl.textContent = String(count);
+        ab.cdOverlay.style.height = '0%';
+        ab.cdText.textContent = '';
+        ab.btn.classList.toggle('unusable', count <= 0 || p.dead);
+        ab.btn.classList.remove('oor', 'queued');
+        continue;
+      }
+      const a = known!.def;
       // set the painted icon once per slot change, not every frame
-      if (ab.lastIcon !== a.id) {
-        ab.lastIcon = a.id;
+      const iconKey = `ability:${a.id}`;
+      if (ab.lastIcon !== iconKey) {
+        ab.lastIcon = iconKey;
         ab.label.style.backgroundImage = `url(${iconDataUrl('ability', a.id)})`;
       }
+      ab.countEl.textContent = '';
       const cd = p.cooldowns.get(a.id) ?? 0;
       const gcdActive = !a.offGcd && p.gcdRemaining > 0;
       const shown = Math.max(cd, gcdActive ? p.gcdRemaining : 0);
       const denom = cd > 0 ? a.cooldown : GCD;
       ab.cdOverlay.style.height = shown > 0 ? `${Math.min(100, (shown / Math.max(0.01, denom)) * 100)}%` : '0%';
       ab.cdText.textContent = cd > 1 ? Math.ceil(cd).toString() : '';
-      ab.btn.classList.toggle('unusable', p.resource < known.cost);
+      ab.btn.classList.toggle('unusable', p.resource < known!.cost);
       const oor = a.requiresTarget && tgtDist !== null && tgtDist > (a.range > 0 ? a.range : MELEE_RANGE);
       ab.btn.classList.toggle('oor', !!oor);
       ab.btn.classList.toggle('queued', p.queuedOnSwing === a.id);
@@ -781,6 +872,12 @@ export class Hud {
     this.updatePartyFrames();
     this.updateTradeWindow();
     this.updateArenaStatus();
+    // when a bout begins, get the queue panel out of the way for the fight
+    const inArenaMatch = !!this.sim.arenaInfo?.match;
+    if (inArenaMatch && !this.arenaMatchSeen && $('#arena-window').style.display === 'block') {
+      $('#arena-window').style.display = 'none';
+    }
+    this.arenaMatchSeen = inArenaMatch;
     this.updateMinimap();
     if ($('#map-window').style.display === 'block') this.updateMapWindow();
     if ($('#social-window').classList.contains('open')) {
@@ -1128,8 +1225,10 @@ export class Hud {
       this.lastArenaStatusSig = '';
       return;
     }
-    const label = m.state === 'countdown' ? 'Steel yourself…' : 'Fight to the yield!';
-    const sig = `${m.oppName}|${m.state}`;
+    const label = m.state === 'countdown' ? 'Steel yourself…'
+      : m.state === 'over' ? `Returning to the world… ${m.returnIn ?? 0}`
+      : 'Fight to the yield!';
+    const sig = `${m.oppName}|${m.state}|${m.state === 'over' ? (m.returnIn ?? 0) : ''}`;
     if (sig !== this.lastArenaStatusSig) {
       this.lastArenaStatusSig = sig;
       const cls = CLASSES[m.oppClass]?.name ?? m.oppClass;
@@ -1446,7 +1545,7 @@ export class Hud {
         case 'comboPoint': break;
         case 'loot': {
           this.log(ev.text, '#7fdc4f');
-          if (ev.text.includes('loot') || ev.text.includes('Sold')) audio.coin();
+          if (ev.text.includes('loot') || ev.text.includes('Sold') || ev.text.includes('Bought back')) audio.coin();
           else audio.lootItem();
           if ($('#bags').style.display === 'block') this.renderBags();
           break;
@@ -1741,7 +1840,7 @@ export class Hud {
     }
     html += `<div class="qd-sub">Rewards</div>`;
     html += `<div class="qd-obj">${quest.xpReward} experience &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
-    const rewardItem = questRewardItemId(quest, this.sim.cfg.playerClass);
+    const rewardItem = questRewardItem(quest, this.sim.cfg.playerClass);
     if (rewardItem) {
       const item = ITEMS[rewardItem];
       html += `<div class="qd-reward-row" data-reward>${this.itemIcon(item)}<span style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'};font-size:12px">${item.name}</span></div>`;
@@ -1794,6 +1893,8 @@ export class Hud {
   openLoot(mobId: number, screenX: number, screenY: number): void {
     const mob = this.sim.entities.get(mobId);
     if (!mob?.loot) return;
+    const visibleItems = mob.loot.items.filter((s) => !s.personalFor || s.personalFor.includes(this.sim.playerId));
+    if (mob.loot.copper <= 0 && visibleItems.length === 0) return;
     this.closeOtherWindows('#loot-window');
     this.openLootMobId = mobId;
     const el = $('#loot-window');
@@ -1801,7 +1902,7 @@ export class Hud {
     if (mob.loot.copper > 0) {
       html += `<div class="loot-item"><img class="item-icon q-common" src="${iconDataUrl('item', 'coin_gold')}" alt="" draggable="false"><span>${this.moneyHtml(mob.loot.copper)}</span></div>`;
     }
-    for (const s of mob.loot.items) {
+    for (const s of visibleItems) {
       const item = ITEMS[s.itemId];
       html += `<div class="loot-item" data-item="${s.itemId}">${this.itemIcon(item)}<span style="font-size:12px">${item.name}${s.count > 1 ? ' x' + s.count : ''}</span></div>`;
     }
@@ -1860,8 +1961,32 @@ export class Hud {
       row.innerHTML = `${this.itemIcon(item)}<span class="vi-name">${item.name}</span><span class="vi-price">${this.moneyHtml(item.buyValue)}</span>`;
       row.addEventListener('click', () => {
         this.sim.buyItem(npc.id, itemId);
+        if ($('#bags').style.display === 'block') this.renderBags();
+        this.renderVendor();
       });
       this.attachTooltip(row, () => this.itemTooltip(item) + '<div class="tt-sub">Click to buy</div>');
+      el.appendChild(row);
+    }
+    const buybackTitle = document.createElement('div');
+    buybackTitle.className = 'vendor-section-title';
+    buybackTitle.textContent = 'Buyback';
+    el.appendChild(buybackTitle);
+    const buyback = this.sim.vendorBuyback.filter((s) => ITEMS[s.itemId] && s.count > 0);
+    if (buyback.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'vendor-empty';
+      empty.textContent = 'No items';
+      el.appendChild(empty);
+    }
+    for (const s of buyback) {
+      const item = ITEMS[s.itemId]!;
+      const row = document.createElement('div');
+      row.className = 'vendor-item';
+      row.innerHTML = `${this.itemIcon(item)}<span class="vi-name">${item.name}${s.count > 1 ? ` x${s.count}` : ''}</span><span class="vi-price">${this.moneyHtml(item.sellValue)}</span>`;
+      row.addEventListener('click', () => {
+        this.sim.buyBackItem(s.itemId);
+      });
+      this.attachTooltip(row, () => this.itemTooltip(item) + '<div class="tt-sub">Click to buy back</div>');
       el.appendChild(row);
     }
     const hint = document.createElement('div');
@@ -2107,6 +2232,7 @@ export class Hud {
   // carry inventory separately from the event frames that normally redraw).
   onInventoryChanged(): void {
     if ($('#bags').style.display === 'block') this.renderBags();
+    if (this.openVendorNpcId !== null) this.renderVendor();
     this.renderCharIfOpen();
   }
 
@@ -2130,7 +2256,7 @@ export class Hud {
       row.className = 'bag-item';
       const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
       row.innerHTML = `${this.itemIcon(item)}<span style="color:${qColor}">${item.name}</span><span class="bi-count">${s.count > 1 ? 'x' + s.count : ''}</span>`;
-      row.addEventListener('click', () => {
+      row.addEventListener('click', (ev) => {
         if (this.tradeOpen) {
           this.addItemToTrade(s.itemId);
         } else if (this.marketOpen && this.marketTab === 'sell') {
@@ -2138,13 +2264,32 @@ export class Hud {
           this.marketSellItem = s.itemId;
           this.renderMarket();
         } else if (this.vendorOpen) {
-          this.sim.sellItem(s.itemId);
+          this.sellBagItem(s, ev);
         } else {
           this.sim.useItem(s.itemId);
           this.renderBags();
           this.renderCharIfOpen();
         }
       });
+      row.addEventListener('contextmenu', (ev) => {
+        if (!this.vendorOpen || (!ev.ctrlKey && !ev.metaKey)) return;
+        ev.preventDefault();
+        this.sellBagItem(s, ev);
+      });
+      if (!this.tradeOpen && !this.vendorOpen && this.isHotbarItemId(s.itemId)) {
+        row.draggable = true;
+        row.addEventListener('dragstart', (e) => {
+          const action = { type: 'item' as const, id: s.itemId };
+          this.dragAction = { action, sourceIndex: null };
+          this.writeDraggedAction(e.dataTransfer, action);
+          e.dataTransfer!.effectAllowed = 'copy';
+          this.hideTooltip();
+        });
+        row.addEventListener('dragend', () => {
+          this.dragAction = null;
+          this.clearActionDropTargets();
+        });
+      }
       this.attachTooltip(row, () => {
         let extra = '';
         if (this.tradeOpen) extra = '<div class="tt-sub">Click to offer in trade</div>';
@@ -2153,6 +2298,7 @@ export class Hud {
         else if (item.kind === 'weapon' || item.kind === 'armor') extra = '<div class="tt-sub">Click to equip</div>';
         else if (item.kind === 'food' || item.kind === 'drink') extra = '<div class="tt-sub">Click to consume</div>';
         else if (item.kind === 'potion') extra = '<div class="tt-sub">Click to use — instant, usable in combat</div>';
+        else if (item.use) extra = '<div class="tt-sub">Click to use</div>';
         return this.itemTooltip(item) + extra;
       });
       grid.appendChild(row);
@@ -2163,6 +2309,54 @@ export class Hud {
     money.innerHTML = this.moneyHtml(sim.copper);
     el.appendChild(money);
     el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; this.hideTooltip(); });
+  }
+
+  private sellBagItem(slot: InvSlot, ev: MouseEvent): void {
+    const count = Math.max(1, Math.floor(slot.count));
+    if (ev.ctrlKey || ev.metaKey) {
+      this.sim.sellItem(slot.itemId, count);
+    } else if (ev.shiftKey && count > 1) {
+      this.showSellQuantityPrompt(slot.itemId, count);
+    } else {
+      this.sim.sellItem(slot.itemId);
+    }
+  }
+
+  private showSellQuantityPrompt(itemId: string, maxCount: number): void {
+    document.querySelectorAll('.sell-quantity-prompt').forEach((el) => el.remove());
+    const item = ITEMS[itemId];
+    const stack = $('#prompt-stack');
+    const prompt = document.createElement('div');
+    prompt.className = 'prompt panel sell-quantity-prompt';
+    prompt.innerHTML = `<div class="prompt-text">Sell ${esc(item?.name ?? itemId)}</div>`;
+    const input = document.createElement('input');
+    input.className = 'prompt-number';
+    input.type = 'number';
+    input.min = '1';
+    input.max = String(maxCount);
+    input.step = '1';
+    input.value = '1';
+    const confirm = document.createElement('button');
+    confirm.className = 'btn';
+    confirm.textContent = 'Sell';
+    const cancel = document.createElement('button');
+    cancel.className = 'btn';
+    cancel.textContent = 'Cancel';
+    const close = () => prompt.remove();
+    const submit = () => {
+      const count = Math.max(1, Math.min(maxCount, Math.floor(Number(input.value) || 0)));
+      this.sim.sellItem(itemId, count);
+      close();
+    };
+    confirm.addEventListener('click', submit);
+    cancel.addEventListener('click', close);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submit();
+      else if (e.key === 'Escape') close();
+    });
+    prompt.append(input, confirm, cancel);
+    stack.appendChild(prompt);
+    window.setTimeout(() => { input.focus(); input.select(); }, 0);
   }
 
   // -------------------------------------------------------------------------
@@ -2486,16 +2680,18 @@ export class Hud {
         <div><div class="spell-name" style="${locked ? 'color:#777' : ''}">${def.name}${known && known.rank > 1 ? ` <span style="color:#998d6a;font-size:11px">Rank ${known.rank}</span>` : ''}</div>
         <div class="spell-sub">${locked ? `Trainable at level ${def.learnLevel}` : describeCost(known!, sim)}</div></div>`;
       if (known) {
-        // let players drag a learned spell straight onto an action slot,
-        // including spells that don't fit the visible bar layout
         row.draggable = true;
         row.addEventListener('dragstart', (e) => {
-          this.dragAbilityId = known.def.id;
-          e.dataTransfer!.setData('text/plain', known.def.id);
+          const action = { type: 'ability' as const, id: known.def.id };
+          this.dragAction = { action, sourceIndex: null };
+          this.writeDraggedAction(e.dataTransfer, action);
           e.dataTransfer!.effectAllowed = 'move';
           this.hideTooltip();
         });
-        row.addEventListener('dragend', () => { this.dragAbilityId = null; });
+        row.addEventListener('dragend', () => {
+          this.dragAction = null;
+          this.clearActionDropTargets();
+        });
         this.attachTooltip(row, () => this.abilityTooltip(known));
       } else this.attachTooltip(row, () => `<div class="tt-title" style="color:#999">${def.name}</div><div class="tt-sub">You will learn this at level ${def.learnLevel}.</div>`);
       el.appendChild(row);
@@ -2737,7 +2933,7 @@ export class Hud {
       this.inputDialog({
         title: t('game.talents.saveBuild'), label: t('game.talents.namePrompt'),
         value: `Build ${this.sim.loadouts.length + 1}`, okText: t('game.talents.save'),
-        onOk: (name) => { const n = name.trim(); if (n) { this.sim.saveLoadout(n, [...this.slotMap]); this.renderTalents(); } },
+        onOk: (name) => { const n = name.trim(); if (n) { this.sim.saveLoadout(n, this.hotbarActions.map((a) => (a && a.type === 'ability' ? a.id : null))); this.renderTalents(); } },
       });
     });
     // in-app loadout dropdown (shared component, no native <select>)
@@ -2784,9 +2980,9 @@ export class Hud {
   // Restore a saved loadout's action bar into the per-class slot map (reuses the
   // existing hotbar persistence; only places ids that resolve to real abilities).
   private applyLoadoutBar(bar: (string | null)[]): void {
-    this.slotMap = Array.from({ length: Hud.BAR_ABILITY_SLOTS }, (_, i) => {
+    this.hotbarActions = Array.from({ length: Hud.BAR_ABILITY_SLOTS }, (_, i) => {
       const v = bar[i];
-      return typeof v === 'string' && ABILITIES[v] ? v : null;
+      return typeof v === 'string' && ABILITIES[v] ? { type: 'ability' as const, id: v } : null;
     });
     this.saveSlotMap();
   }
@@ -2839,7 +3035,7 @@ export class Hud {
       html += quest.objectives.map((o, i) => `<div class="qd-obj" style="color:${qp.counts[i] >= o.count ? '#7fdc4f' : '#cfc6a8'}">&bull; ${o.label}: ${qp.counts[i]}/${o.count}</div>`).join('');
       html += `<div class="qd-text" style="margin-top:8px">${quest.text.replace(/\$N/g, sim.player.name)}</div>`;
       html += `<div class="qd-sub">Rewards</div><div class="qd-obj">${quest.xpReward} experience &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
-      const logReward = questRewardItemId(quest, this.sim.cfg.playerClass);
+      const logReward = questRewardItem(quest, this.sim.cfg.playerClass);
       if (logReward) {
         const ri = ITEMS[logReward];
         html += `<div class="qd-obj" style="color:${QUALITY_COLOR[ri.quality ?? 'common'] ?? '#fff'}">&bull; ${ri.name}</div>`;
@@ -2958,6 +3154,34 @@ export class Hud {
           else this.toggleChatIgnore(name);
         } else if (act === 'report') this.openReportWindow({ pid, name });
         else if (act === 'kick') this.sim.partyKick(pid);
+      });
+    });
+  }
+
+  // Raid/target marker picker for an enemy, opened from its target unit frame.
+  // Party-only (markers are a coordination feature); shows the 8 symbols with a
+  // check on the one currently on this mob, plus Clear and Cancel.
+  openMarkerMenu(entityId: number, name: string, x: number, y: number): void {
+    if (!this.sim.partyInfo) return;
+    const el = $('#ctx-menu');
+    const current = this.sim.markerFor(entityId);
+    let html = `<div class="ctx-title">${esc(name)}</div>`;
+    for (let i = 0; i < RAID_MARKER_NAMES.length; i++) {
+      const check = current === i ? ' ✓' : '';
+      html += `<div class="ctx-item" data-act="m${i}"><span class="ctx-mark" style="background-image:url(${raidMarkerDataUrl(i)})"></span>${RAID_MARKER_NAMES[i]}${check}</div>`;
+    }
+    html += `<div class="ctx-item" data-act="clear">Clear Marker</div>`;
+    html += `<div class="ctx-item" data-act="close">Cancel</div>`;
+    el.innerHTML = html;
+    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
+    el.style.top = `${Math.min(window.innerHeight - 340, y)}px`;
+    el.style.display = 'block';
+    el.querySelectorAll('.ctx-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        const act = (item as HTMLElement).dataset.act;
+        el.style.display = 'none';
+        if (act === 'clear') this.sim.clearMarker(entityId);
+        else if (act && act.startsWith('m')) this.sim.setMarker(entityId, Number(act.slice(1)));
       });
     });
   }
@@ -3201,7 +3425,6 @@ export class Hud {
     const head = `<div class="soc-guild-head">&lt;${esc(guild.name)}&gt; <span class="gm">— you are ${rankLabel(me)} &middot; ${guild.members.length} member${guild.members.length === 1 ? '' : 's'}</span></div>`;
     const rows = guild.members.map((m) => {
       const dot = m.online ? (m.status ?? 'online') : 'off';
-      // mirror the friends tab: show location AND a status label, not just the zone
       const meta = m.online
         ? `<span class="zone">${esc(m.zone ?? '')}</span><br>${statusLabel(m.status)}`
         : 'Offline';
@@ -3473,6 +3696,7 @@ export class Hud {
         this.tradeWasOpen = false;
         this.stagedTrade = { items: [], copper: 0 };
         this.lastTradeSig = '';
+        if ($('#bags').style.display === 'block') this.renderBags();
       }
       return;
     }
@@ -3599,7 +3823,7 @@ export class Hud {
   }
 
   // A labelled slider bound to a numeric setting; live-applies via the hook.
-  private settingSlider(parent: HTMLElement, label: string, key: keyof GameSettings): void {
+  private settingSlider(parent: HTMLElement, label: string, key: NumericSettingKey): void {
     const hooks = this.optionsHooks;
     if (!hooks) return;
     const r = SETTING_RANGES[key];
@@ -3627,7 +3851,7 @@ export class Hud {
     parent.appendChild(row);
   }
 
-  private settingToggle(parent: HTMLElement, label: string, key: keyof GameSettings): void {
+  private settingToggle(parent: HTMLElement, label: string, key: 'fullscreen' | 'showOverflowXp' | 'clickToMove'): void {
     const hooks = this.optionsHooks;
     if (!hooks) return;
     const row = document.createElement('div');
@@ -3718,7 +3942,7 @@ export class Hud {
     this.settingsViewFooter();
   }
 
-  // Display name for an action row. Action-bar slots show the ability that
+  // Display name for an action row. Action-bar slots show the shortcut that
   // currently occupies them (slot 0 is always Attack); everything else uses
   // its registry label.
   private actionDisplayName(actionId: string, fallback: string): string {
@@ -3726,15 +3950,47 @@ export class Hud {
     const slot = Number(actionId.slice(4));
     if (slot === 0) return 'Attack';
     const known = this.abilityForSlot(slot);
-    return known ? known.def.name : fallback;
+    if (known) return known.def.name;
+    const item = this.itemForSlot(slot);
+    return item ? item.name : fallback;
+  }
+
+  private settingBoolToggleKeybind(parent: HTMLElement, label: string, key: BoolSettingKey): void {
+    const hooks = this.optionsHooks;
+    if (!hooks) return;
+    const row = document.createElement('div');
+    row.className = 'kb-row kb-toggle-row';
+    const name = document.createElement('span');
+    name.className = 'kb-name';
+    name.textContent = label;
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'btn kb-key kb-toggle';
+    const sync = () => {
+      const on = hooks.settings.get(key);
+      toggle.textContent = on ? 'On' : 'Off';
+      toggle.classList.toggle('off', !on);
+      toggle.setAttribute('aria-pressed', on ? 'true' : 'false');
+    };
+    sync();
+    toggle.addEventListener('click', () => {
+      audio.click();
+      const next = !hooks.settings.get(key);
+      hooks.onSettingChange(key, hooks.settings.set(key, next));
+      sync();
+    });
+    row.append(name, toggle);
+    parent.appendChild(row);
   }
 
   private renderKeybinds(): void {
     const el = $('#options-menu');
     el.innerHTML = `<div class="panel-title"><span>Key Bindings</span><span class="x-btn" data-close>${svgIcon('close')}</span></div>`;
+    this.settingBoolToggleKeybind(el, 'Mouse Camera', 'mouseCamera');
     const note = document.createElement('div');
     note.className = 'kb-note';
-    note.textContent = this.keybindNote || 'Click a key cell, then press a key to bind it. Esc cancels. Each action has a primary and an alternate key.';
+    note.textContent = this.keybindNote
+      || 'Mouse Camera off: A/D turns, drag to orbit (classic). On: camera-relative WASD, A/D strafes. Click a key cell to rebind; Esc cancels.';
     el.appendChild(note);
     const rows = document.createElement('div');
     rows.className = 'kb-rows';
