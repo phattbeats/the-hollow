@@ -204,8 +204,6 @@ export interface AbilityDef {
   learnLevel: number;
   effects: AbilityEffect[];
   ranks?: AbilityRank[]; // later ranks (sorted by level)
-  icon: string; // short label for UI
-  iconColor: string;
   description: string; // tooltip text, $d = damage placeholder
 }
 

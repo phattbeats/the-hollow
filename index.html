@@ -59,7 +59,7 @@
 <link rel="preload" as="image" href="/loading-screen.jpg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Inter:wght@300..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..700&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <!-- Google tag (gtag.js) — skipped on localhost so dev sessions don't pollute analytics -->
 <script>
   if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) {
@@ -79,17 +79,33 @@
     --gold-dim: #c8a838;
     --border: #6f5a2a;
     --panel-bg: linear-gradient(170deg, #15151fF2 0%, #0b0b12F2 60%, #08080dF2 100%);
-    --title-font: 'Palatino Linotype', Palatino, Georgia, serif;
-    --ui-font: 'Arial', 'Helvetica', sans-serif;
-
-    /* Design Tokens */
-    --font-heading: 'Cinzel', 'Palatino Linotype', Palatino, Georgia, serif;
-    --font-sans: 'Inter', 'Arial', 'Helvetica', sans-serif;
+    /* Typography — Cinzel (heraldic display/headings), Alegreya Sans (UI + body),
+       Alegreya (serif flavour prose). Legacy token names alias the canonical set
+       so every existing usage resolves to the new system. */
+    --font-display: 'Cinzel', 'Palatino Linotype', Palatino, Georgia, serif;
+    --font-ui: 'Alegreya Sans', 'Segoe UI', system-ui, 'Helvetica Neue', sans-serif;
+    --font-serif: 'Alegreya', 'Palatino Linotype', Palatino, Georgia, serif;
+    --title-font: var(--font-display);
+    --font-heading: var(--font-display);
+    --ui-font: var(--font-ui);
+    --font-sans: var(--font-ui);
+    --body-font: var(--font-ui);
     
-    --color-primary: #ffd100;
-    --color-primary-dim: #c8a838;
+    /* --gold is the single source of truth for the primary accent */
+    --color-primary: var(--gold);
+    --color-primary-dim: var(--gold-dim);
     --color-primary-glow: rgba(255, 209, 0, 0.2);
     --color-primary-glow-heavy: rgba(255, 209, 0, 0.4);
+
+    /* resource bars / unit-frame states / auras (previously hardcoded across CSS + JS) */
+    --color-hp: #1eb838;
+    --color-mana: #2b7bd4;
+    --color-rage: #c0392b;
+    --color-energy: #e4c531;
+    --color-hostile: #ff6b5e;
+    --color-friendly: #9fdc7f;
+    --color-buff: #3a6ea8;
+    --color-debuff: #c0392b;
     
     --color-bg-dark: #08080d;
     --color-bg-input: #0a0a0f;
@@ -204,6 +220,12 @@
   .x-btn:hover { color: #fff; border-color: var(--gold-dim); }
   .gold { color: var(--gold); }
 
+  /* ---------- UI chrome icons (inline SVG from ui_icons.ts, tinted via currentColor) ---------- */
+  .ui-icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.125em; flex: none; pointer-events: none; }
+  .x-btn .ui-icon { width: 12px; height: 12px; vertical-align: middle; }
+  .micro-btn .ui-icon { width: 18px; height: 18px; vertical-align: middle; }
+  .pfm-crest { width: 16px; height: 16px; vertical-align: -3px; margin-right: 3px; border-radius: 3px; }
+
   /* ---------- nameplates ---------- */
   .nameplate { position: absolute; left: 0; top: 0; text-align: center; pointer-events: none;
     text-shadow: 1px 1px 2px #000; white-space: nowrap; will-change: transform; }
@@ -271,20 +293,20 @@
   .bar-fill { position: absolute; inset: 0; width: 100%; transform-origin: left;
     background-image: linear-gradient(rgba(255,255,255,0.25), rgba(255,255,255,0.02) 45%, rgba(0,0,0,0.15)); }
   .bar-text { position: absolute; inset: 0; text-align: center; font-size: 10px; line-height: 15px; color: #fff; text-shadow: 1px 1px 1px #000; font-weight: bold; }
-  .hp .bar-fill { background-color: #1eb838; }
-  .mana .bar-fill { background-color: #2b7bd4; }
-  .rage .bar-fill { background-color: #c0392b; }
-  .energy .bar-fill { background-color: #e4c531; }
+  .hp .bar-fill { background-color: var(--color-hp); }
+  .mana .bar-fill { background-color: var(--color-mana); }
+  .rage .bar-fill { background-color: var(--color-rage); }
+  .energy .bar-fill { background-color: var(--color-energy); }
   .combo-row { display: flex; gap: 4px; margin-top: 4px; height: 10px; }
   .combo-pip { width: 12px; height: 10px; border-radius: 50%; border: 1px solid #5c2020; background: #2a0d0d; }
   .combo-pip.on { background: radial-gradient(circle at 35% 30%, #ff7a5e, #c0392b); box-shadow: 0 0 5px #ff5533aa; border-color: #ffad99; }
 
   /* ---------- buff bar ---------- */
   #buff-bar { position: absolute; right: 196px; top: 14px; display: flex; flex-direction: row-reverse; flex-wrap: wrap; gap: 4px; max-width: 320px; pointer-events: auto; }
-  .buff { width: 28px; height: 28px; border: 1px solid #3a6ea8; border-radius: 4px;
+  .buff { width: 28px; height: 28px; border: 1px solid var(--color-buff); border-radius: 4px;
     position: relative; cursor: default; background-color: #10141c;
     background-size: cover; background-position: center; background-repeat: no-repeat; }
-  .buff.debuff { border-color: #c0392b; }
+  .buff.debuff { border-color: var(--color-debuff); }
   .buff .dur { position: absolute; bottom: -13px; left: 0; right: 0; text-align: center; font-size: 9px; color: #eee; text-shadow: 1px 1px 1px #000; }
 
   /* ---------- cast bar ---------- */
@@ -331,18 +353,44 @@
   .action-btn.queued { border-color: #fff; box-shadow: 0 0 9px #ffd100cc, inset 0 1px 0 #ffffff18; }
   .action-btn:not(.empty)[draggable="true"] { cursor: grab; }
   .action-btn.drop-target { border-color: #7fd1ff; box-shadow: 0 0 8px #7fd1ff88; }
-  #side-buttons { display: flex; flex-direction: column; gap: 4px; padding-bottom: 6px; }
+  /* micro-menu: bottom-right, stacked upward, sitting just above the
+     Discord/GitHub buttons (both right-aligned to the same edge). */
+  #side-buttons { position: absolute; right: 16px; bottom: 74px;
+    display: flex; flex-direction: column; gap: 4px; z-index: 19; }
   .micro-btn { width: 34px; height: 30px; border: 2px solid #4a3d1d; border-radius: 5px;
     background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f); color: #d8c89a; cursor: pointer;
     font-size: 12px; font-weight: bold; box-shadow: inset 0 1px 0 #ffffff18, 0 2px 4px #0009; position: relative; }
-  .micro-btn:hover { border-color: var(--gold); color: #fff; }
+  /* hover flyout: the button's background grows leftward to reveal its label.
+     The panel tucks 6px under the button (z-index:-1) so it reads as one surface. */
+  .micro-btn::before {
+    content: attr(aria-label);
+    position: absolute; right: calc(100% - 6px); top: 0; height: 100%;
+    display: flex; align-items: center; box-sizing: border-box;
+    max-width: 0; padding: 0; overflow: hidden; opacity: 0; white-space: nowrap;
+    font-family: var(--font-ui); font-size: 12px; font-weight: 600; letter-spacing: .3px; line-height: 1;
+    color: #d8c89a;
+    background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f);
+    border: 2px solid #4a3d1d; border-right: none; border-radius: 5px 0 0 5px;
+    box-shadow: inset 0 1px 0 #ffffff18, 0 2px 4px #0009;
+    pointer-events: none; z-index: -1;
+    transition: max-width .2s ease, opacity .15s ease, padding .2s ease, border-color .12s ease, color .12s ease; }
+  .micro-btn:hover::before { max-width: 220px; opacity: 1; padding: 0 18px 0 12px; }
+  .micro-btn:hover, .micro-btn:hover::before { border-color: var(--gold); color: #fff; }
   /* talent button glows while unspent talent points are available */
   .micro-btn.has-points, .mobile-btn.has-points { border-color: var(--gold); color: #fff; animation: tal-pulse 1.6s ease-in-out infinite; }
   @keyframes tal-pulse { 0%, 100% { box-shadow: 0 0 5px #ffd10066; } 50% { box-shadow: 0 0 12px #ffd100dd; } }
   .micro-btn .keybind { position: absolute; bottom: -1px; right: 2px; font-size: 8px; color: #998; }
+  /* music button: a bigger note with a small diagonal slash when audio is off */
+  #mm-music .ui-icon { width: 22px; height: 22px; }
+  .micro-btn.mm-muted::after {
+    content: ''; position: absolute; left: 50%; top: 50%; width: 17px; height: 2px; border-radius: 2px;
+    background: #f0e8d2; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7);
+    transform: translate(-50%, -50%) rotate(-45deg); pointer-events: none; }
 
   /* ---------- chat frame ---------- */
-  #chatlog-wrap { position: absolute; left: 12px; bottom: 8px; width: 370px; }
+  /* width shrinks on narrower screens so the chat never overlaps the centred
+     bottom bar (≈612px wide); caps at 370px when there's room. */
+  #chatlog-wrap { position: absolute; left: 12px; bottom: 8px; width: min(370px, calc(50vw - 330px)); }
   #chatlog-tabs { display: flex; gap: 2px; margin-left: 6px; margin-bottom: -1px; position: relative; z-index: 2; }
   .chat-tab { height: 22px; padding: 0 12px; border: 1px solid #3a321d; border-bottom: none;
     border-radius: 6px 6px 0 0; background: linear-gradient(#1c1824, #0d0b13); color: #95886a;
@@ -379,7 +427,6 @@
 
   /* ---------- combat meters ---------- */
   #meters-window { width: 240px; padding: 8px 10px; display: none; align-self: flex-end; margin-bottom: 6px; text-align: left; }
-  body.meters-open #bags { bottom: 204px; }
   #meters-window .panel-title { margin-bottom: 4px; }
   .mt-tab { background: #1a1410; border: 1px solid #463a1c; border-radius: 3px; color: #c9b27a;
     font-size: 11px; padding: 1px 7px; cursor: pointer; }
@@ -413,21 +460,28 @@
   #minimap { border-radius: 50%; border: 4px solid var(--border); outline: 1px solid #000; box-shadow: 0 0 14px #000c, inset 0 0 20px #0008; }
 
   /* ---------- community HUD ---------- */
-  #community-hud { position: absolute; right: 12px; top: 208px; width: 170px; padding: 7px; display: flex; gap: 6px; z-index: 18; }
-  .community-link { flex: 1; min-width: 0; height: 34px; display: inline-flex; align-items: center; justify-content: center; gap: 0;
-    color: #d8d9ff; text-decoration: none; border: 1px solid #3e4672; border-radius: 6px;
-    background: linear-gradient(180deg, #202238ee, #0d0e18ee); box-shadow: inset 0 1px 0 #ffffff16, 0 2px 8px #0008;
-    font-size: 0; font-weight: bold; text-shadow: 1px 1px 1px #000; transition: color .15s, border-color .15s, transform .15s; }
-  .community-link:hover { color: #fff; border-color: #7f8cff; transform: translateY(-1px); }
-  .community-link.github { color: #e4e4ea; border-color: #4a4a58; }
-  .community-link.github:hover { border-color: var(--gold-dim); }
-  .community-link svg { width: 17px; height: 17px; flex: none; display: block; }
-  .community-link span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* Discord/GitHub: bottom-right, directly below the micro-menu, right-aligned with it. */
+  /* Discord/GitHub: standalone square buttons matching the micro-menu (no panel
+     container) — only the hover border keeps each service's brand colour. */
+  #community-hud { position: absolute; right: 16px; bottom: 14px; display: flex; align-items: center; gap: 4px; z-index: 19; }
+  .community-link { width: 34px; height: 30px; display: inline-flex; align-items: center; justify-content: center;
+    color: #d8c89a; text-decoration: none; border: 2px solid #4a3d1d; border-radius: 5px;
+    background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f);
+    box-shadow: inset 0 1px 0 #ffffff18, 0 2px 4px #0009; transition: color .15s, border-color .15s; }
+  .community-link:hover { color: #fff; border-color: #7f8cff; }          /* Discord brand */
+  .community-link.github:hover { color: #fff; border-color: #e4e4ea; }   /* GitHub brand */
+  .community-link svg { width: 18px; height: 18px; flex: none; display: block; }
+  .community-link span { display: none; }
 
   /* ---------- windows ---------- */
-  .window { position: absolute; display: none; padding: 12px; z-index: 20; }
-  #quest-dialog { left: 50%; top: 14%; transform: translateX(-50%); width: 440px; max-height: 64%; overflow-y: auto; }
-  .qd-text { font-size: 12.5px; line-height: 1.55; color: #e8e0c8; margin-bottom: 10px; font-family: Georgia, serif; }
+  /* All modal windows share one position: centred on the page. Per-window rules
+     below set only size/look — never position. (Loot is the one exception: it
+     pops at the cursor, so openLoot() sets inline left/top + transform:none.) */
+  .window { position: absolute; display: none; padding: 12px; z-index: 20;
+    left: 50%; top: 10vh; transform: translateX(-50%);
+    max-height: calc(85vh - 24px); overflow-y: auto; }
+  #quest-dialog { width: 440px; }
+  .qd-text { font-size: 12.5px; line-height: 1.55; color: #e8e0c8; margin-bottom: 10px; font-family: var(--font-serif); }
   .qd-sub { font-family: var(--title-font); color: var(--gold); font-size: 13px; margin: 8px 0 4px; }
   .qd-obj { font-size: 12px; color: #cfc6a8; margin: 2px 0; }
   .qd-reward-row { display: flex; gap: 6px; align-items: center; margin-top: 4px; }
@@ -463,7 +517,7 @@
   .q-epic { border-color: #a335ee !important; box-shadow: 0 0 6px #a335ee66; }
 
   /* character window */
-  #char-window { left: 16px; top: 90px; width: 320px; }
+  #char-window { width: 320px; }
   .paperdoll { display: flex; gap: 10px; }
   .equip-col { display: flex; flex-direction: column; gap: 5px; }
   .equip-slot { display: flex; gap: 7px; align-items: center; width: 142px; }
@@ -474,7 +528,7 @@
   .char-stats b { color: #fff; font-weight: normal; }
 
   /* spellbook */
-  #spellbook { left: 50%; top: 16%; transform: translateX(-50%); width: 430px; max-height: 64%; overflow-y: auto; }
+  #spellbook { width: 430px; }
   .spell-row { display: flex; gap: 10px; padding: 6px; border-radius: 4px; align-items: center; }
   .spell-row:hover { background: #ffffff0e; }
   .spell-row .spell-name { font-size: 13px; color: #fff; font-family: var(--title-font); }
@@ -484,7 +538,7 @@
     border: 2px solid #4a3d1d; }
 
   /* quest log */
-  #quest-log-window { left: 50%; top: 14%; transform: translateX(-50%); width: 520px; max-height: 66%; display: none; }
+  #quest-log-window { width: 520px; }
   #quest-log-window .ql-cols { display: flex; gap: 12px; }
   .ql-list { width: 180px; border-right: 1px solid #463a1c; padding-right: 8px; }
   .ql-item { padding: 4px 6px; font-size: 12px; color: #d8c89a; cursor: pointer; border-radius: 3px; font-family: var(--title-font); }
@@ -505,7 +559,7 @@
   .cp-hint { font-size: 11px; color: #b9ac82; }
 
   /* lifetime-XP leaderboard panel (modeled on the quest-log window) */
-  #leaderboard-window { left: 50%; top: 12%; transform: translateX(-50%); width: 480px; max-height: 70%; display: none; }
+  #leaderboard-window { width: 480px; }
   .lb-body { margin-top: 8px; max-height: 56vh; overflow-y: auto; }
   .lb-loading, .lb-empty { font-size: 12px; color: #b9ac82; padding: 10px 4px; text-align: center; }
   .lb-row { display: grid; grid-template-columns: 44px 1fr 44px 48px 96px; align-items: center; gap: 6px; padding: 4px 8px; font-size: 12px; border-radius: 3px; }
@@ -521,7 +575,7 @@
   .lb-sticky { position: sticky; bottom: 0; margin-top: 6px; border-top: 1px solid #463a1c; background: #160f08; padding-top: 4px; }
 
   /* talents & specializations panel */
-  #talents-window { left: 50%; top: 7%; transform: translateX(-50%); width: 600px; max-height: 86vh; overflow-y: auto; display: none; }
+  #talents-window { width: 600px; }
   .tal-tabs { display: flex; gap: 6px; margin: 8px 0 6px; }
   .tal-tab { flex: 1; text-align: center; padding: 6px 4px; font-size: 12px; font-family: var(--title-font); color: #cdbd8e; background: #1c1609; border: 1px solid #463a1c; border-radius: 4px; cursor: pointer; }
   .tal-tab.active { color: #fff; background: #3a2d10; border-color: var(--gold); }
@@ -530,7 +584,7 @@
   .tal-head b { color: var(--gold); }
   .tal-tree { position: relative; margin: 6px auto; }
   .tal-arrows { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 0; }
-  .tal-node { position: absolute; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; background: #15110a; border: 2px solid #5a4a22; color: #e8dcb0; user-select: none; box-sizing: border-box; z-index: 1; }
+  .tal-node { position: absolute; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; cursor: pointer; background-color: #15110a; background-size: cover; background-position: center; border: 2px solid #5a4a22; color: #e8dcb0; user-select: none; box-sizing: border-box; z-index: 1; }
   .tal-node.circle { border-radius: 50%; }
   .tal-node.square { border-radius: 7px; }
   .tal-node.octagon { border-radius: 6px; clip-path: polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%); }
@@ -543,7 +597,7 @@
   .tal-specs { display: flex; gap: 8px; margin: 10px 0; }
   .tal-spec { flex: 1; padding: 8px 6px; border: 1px solid #463a1c; border-radius: 6px; background: #1a1409; cursor: pointer; text-align: center; }
   .tal-spec.sel { border-color: var(--gold); background: #2c2410; box-shadow: 0 0 8px #b8902a55; }
-  .tal-spec .ts-icon { font-size: 26px; }
+  .tal-spec .ts-icon { width: 42px; height: 42px; margin: 0 auto; border-radius: 6px; background-size: cover; background-position: center; }
   .tal-spec .ts-name { font-size: 12px; color: #fff; font-family: var(--title-font); margin-top: 2px; }
   .tal-spec .ts-role { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: .4px; }
   .tal-mastery { font-size: 11px; color: #c8b888; margin: 4px 2px 6px; padding: 6px 8px; border: 1px solid #463a1c; border-radius: 4px; background: #14100a; }
@@ -577,7 +631,7 @@
   .tal-choice-opt { display: flex; gap: 8px; align-items: flex-start; padding: 7px 8px; border-radius: 4px; cursor: pointer; }
   .tal-choice-opt:hover { background: #ffffff10; }
   .tal-choice-opt.sel { background: #2c2410; outline: 1px solid var(--gold); }
-  .tco-icon { font-size: 20px; line-height: 1; }
+  .tco-icon { width: 26px; height: 26px; flex: none; border-radius: 4px; background-size: cover; background-position: center; }
   .tco-text { display: flex; flex-direction: column; gap: 2px; font-size: 11px; color: #c8b888; }
   .tco-text b { color: #fff; font-size: 12px; }
 
@@ -588,7 +642,7 @@
   #confirm-dialog .cd-ok { background: linear-gradient(#8a6a26, #5a4413 55%, #473409); color: #ffe6a8; }
 
   /* vendor */
-  #vendor-window { left: 50%; top: 16%; transform: translateX(-50%); width: 400px; max-height: 68%; overflow-y: auto; }
+  #vendor-window { width: 400px; }
   .vendor-item { display: flex; gap: 8px; align-items: center; padding: 5px; border-radius: 4px; cursor: pointer; }
   .vendor-item:hover { background: #ffffff10; }
   .vendor-item .vi-name { font-size: 12px; flex: 1; }
@@ -596,7 +650,11 @@
   .vendor-hint { font-size: 11px; color: #c8b888; margin-top: 8px; border-top: 1px solid #463a1c; padding-top: 6px; }
 
   /* bags */
-  #bags { right: 12px; bottom: 64px; width: 310px; max-height: 60%; overflow-y: auto; }
+  #bags { width: 310px; }
+  /* the vendor opens bags alongside it — lay the pair out side-by-side, centred
+     together (overrides the single-window centring while body.vendor-open). */
+  body.vendor-open #vendor-window { left: calc(50% - 163px); }
+  body.vendor-open #bags { left: calc(50% + 208px); }
   .bag-grid { display: flex; flex-direction: column; gap: 2px; }
   .bag-item { display: flex; gap: 8px; align-items: center; font-size: 12px; padding: 3px 4px; border-radius: 3px; cursor: pointer; }
   .bag-item:hover { background: #ffffff12; }
@@ -608,17 +666,8 @@
   .coin.c { background: radial-gradient(circle at 35% 30%, #e8a87a, #8b4513); }
 
   /* social: friends / guild / ignore */
-  #social-window { right: 12px; bottom: 12px; width: 348px; height: 560px; max-height: calc(100vh - 24px);
-    display: none; flex-direction: column; }
+  #social-window { width: 348px; height: 560px; flex-direction: column; }
   #social-window.open { display: flex; }
-  /* friends launcher, pinned bottom-right; hidden while the panel is open */
-  #social-fab { position: absolute; right: 16px; bottom: 16px; width: 46px; height: 46px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 18; padding: 0;
-    background: radial-gradient(circle at 36% 30%, #2c2538, #14101c); border: 2px solid #6f5a2a;
-    box-shadow: 0 3px 10px #000b, inset 0 0 10px #0007; color: #e0c89a; transition: color .12s, border-color .12s, transform .12s; }
-  #social-fab:hover { color: var(--gold); border-color: var(--gold); transform: translateY(-1px); }
-  #social-fab svg { width: 22px; height: 22px; fill: currentColor; }
-  #social-window.open ~ #social-fab { display: none; }
   .soc-realm-tag { color: #7fd4ff; font-size: 11px; font-weight: 400; }
   .soc-tabs { display: flex; gap: 4px; margin: 6px 0 8px; flex: none; }
   .soc-tab { flex: 1; padding: 7px 0; font-size: 13px; font-family: var(--title-font); color: #d8c89a; cursor: pointer;
@@ -662,7 +711,14 @@
   .soc-guild-head .gm { color: #998d6a; font-size: 11px; }
 
   /* map */
-  #map-window { left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 14px; }
+  #map-window { padding: 14px; }
+  /* zoom controls, matching the micro-menu button look */
+  #map-zoom { position: absolute; right: 22px; bottom: 22px; display: flex; flex-direction: column; gap: 5px; z-index: 2; }
+  .map-zoom-btn { width: 32px; height: 32px; font-size: 20px; font-weight: bold; line-height: 1;
+    border: 2px solid #4a3d1d; border-radius: 5px; color: #d8c89a; cursor: pointer;
+    background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f);
+    box-shadow: inset 0 1px 0 #ffffff18, 0 2px 4px #0009; display: flex; align-items: center; justify-content: center; }
+  .map-zoom-btn:hover { border-color: var(--gold); color: #fff; }
   #map-close {
     position: absolute;
     right: 8px;
@@ -671,7 +727,7 @@
   }
 
   /* ---------- Ashen Coliseum (arena) ---------- */
-  #arena-window { left: 50%; top: 50%; transform: translate(-50%, -50%); width: 360px; padding: 14px; }
+  #arena-window { width: 360px; padding: 14px; }
   .arena-sub { font-family: var(--title-font); color: var(--gold); font-size: 12px; margin: 12px 0 5px; border-bottom: 1px solid #463a1c; padding-bottom: 3px; }
   .arena-rank { display: flex; align-items: baseline; gap: 10px; margin: 2px 0 6px; }
   .arena-rank .rating { font-family: var(--title-font); font-size: 30px; color: #ffb24a; text-shadow: 0 0 10px #cc5a1466, 1px 1px 2px #000; }
@@ -700,7 +756,7 @@
   #arena-status .as-timer { font-size: 11px; color: #d8cba0; margin-top: 1px; }
 
   /* ---------- The World Market (the Merchant's auction house) ---------- */
-  #market-window { left: 50%; top: 12%; transform: translateX(-50%); width: 470px; max-height: 76%; flex-direction: column; }
+  #market-window { width: 470px; flex-direction: column; }
   .mkt-tabs { display: flex; gap: 4px; margin: 2px 0 8px; }
   .mkt-tab { flex: 1; text-align: center; font-family: var(--title-font); font-size: 12px; color: #cabb8c;
     padding: 5px 4px; border-radius: 4px 4px 0 0; cursor: pointer; background: #ffffff08; border-bottom: 2px solid transparent; }
@@ -737,11 +793,10 @@
   .mkt-list-btn:disabled { opacity: 0.5; cursor: default; filter: none; }
   .mkt-collect { display: flex; align-items: center; justify-content: space-between; gap: 10px;
     padding: 8px; background: #ffffff0a; border-radius: 6px; margin-bottom: 8px; }
-  #map-canvas { border: 2px solid var(--border); outline: 1px solid #000; border-radius: 4px; }
+  #map-canvas { border: 2px solid var(--border); outline: 1px solid #000; border-radius: 4px; touch-action: none; }
 
   /* ---------- options / game menu (Esc) ---------- */
-  #options-menu { left: 50%; top: 50%; transform: translate(-50%, -50%); width: 420px;
-    max-height: 82%; overflow-y: auto; z-index: 40; }
+  #options-menu { width: 420px; z-index: 40; }
   .opt-list { display: flex; flex-direction: column; gap: 8px; align-items: stretch; padding: 4px 0; }
   .opt-btn { margin: 0; text-align: center; }
   .kb-rows { display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; }
@@ -769,6 +824,7 @@
     padding: 8px 10px; font-size: 12px; line-height: 1.5; }
   #tooltip .tt-title { font-family: var(--title-font); font-size: 13.5px; color: #fff; }
   #tooltip .tt-sub { color: #998d6a; font-size: 11px; }
+  .tt-opt-icon { width: 14px; height: 14px; vertical-align: -2px; border-radius: 3px; margin-right: 2px; }
   #tooltip .tt-desc { color: #ffd100; margin-top: 4px; font-size: 11.5px; }
   #tooltip .tt-stat { color: #fff; font-size: 11.5px; }
   #tooltip .tt-green { color: #1eff00; font-size: 11.5px; }
@@ -823,8 +879,10 @@
     align-items: center;
     padding: var(--spacing-sm) var(--spacing-lg);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-    z-index: 10;
+    z-index: 20;
     flex-shrink: 0;
+    position: sticky;
+    top: 0;
   }
 
   .header-menu-container {
@@ -1000,14 +1058,13 @@
 
   /* Views Container */
   #homepage-views-container {
-    flex: 1;
+    flex: 1 0 auto;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     width: 100%;
     position: relative;
     padding: var(--spacing-lg);
-    overflow-y: auto;
   }
 
   /* View Sections */
@@ -1285,8 +1342,6 @@
     align-items: center;
     gap: 8px;
     padding: var(--spacing-md) var(--spacing-lg);
-    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.6);
-    z-index: 10;
     flex-shrink: 0;
     text-align: center;
     margin-top: auto;
@@ -1420,11 +1475,11 @@
   .mode-card p { font-size: 12px; color: #a0aabf; line-height: 1.55; }
   #performance-tip {
     margin-top: var(--spacing-lg);
-    font-size: 11px;
+    font-size: 14px;
     color: var(--color-text-muted);
     font-family: var(--font-sans);
     text-align: center;
-    max-width: 500px;
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
     line-height: 1.6;
@@ -1759,7 +1814,7 @@
   }
   
   .auth-error::before {
-    content: "⚠️";
+    content: "\26A0\FE0E"; /* warning sign, text-presentation — inherits the error colour */
     display: inline-block;
     margin-right: 8px;
     font-size: 14px;
@@ -2032,7 +2087,7 @@
   #party-frames { position: absolute; left: 12px; top: 12px; display: flex; flex-direction: column; gap: 6px; z-index: 5; }
   #party-frames.below-target { top: 96px; }
   .party-frame { --cls: #7fb8ff; width: 170px; padding: 4px 8px 5px; cursor: pointer;
-    border-left: 3px solid var(--cls); transition: opacity 0.2s ease, box-shadow 0.2s ease; }
+    transition: opacity 0.2s ease, box-shadow 0.2s ease; }
   .party-frame .pfm-name { font-size: 12px; font-family: var(--title-font); display: flex;
     justify-content: space-between; align-items: center; gap: 6px; }
   .party-frame .pfm-id { color: var(--cls); letter-spacing: 0.3px; overflow: hidden;
@@ -2063,7 +2118,7 @@
   .prompt .prompt-text { font-size: 13.5px; color: #e8e0c8; margin-bottom: 4px; font-family: Georgia, serif; }
 
   /* ---------- trade window ---------- */
-  #trade-window { left: 50%; top: 18%; transform: translateX(-50%); width: 460px; }
+  #trade-window { width: 460px; }
   .trade-cols { display: flex; gap: 12px; }
   .trade-col { flex: 1; }
   .trade-col h4 { font-family: var(--title-font); font-size: 12.5px; color: var(--gold); margin-bottom: 6px; }
@@ -2617,7 +2672,9 @@
     width: 58px; height: 54px; border: 2px solid #4a3d1d; border-radius: 8px;
     background: radial-gradient(circle at 35% 30%, #2d3048d8, #11121ed8 72%); color: #eee8ff; cursor: pointer;
     font-size: 22px; font-weight: bold; text-shadow: 1px 1px 2px #000; box-shadow: inset 0 1px 0 #ffffff14, 0 2px 8px #0009;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
   }
+  body.mobile-touch .mobile-btn .ui-icon { width: 22px; height: 22px; }
   body.mobile-touch #mobile-attack-nearest { width: 124px; color: #ffdf9c; border-color: #8b4e2c; }
   body.mobile-touch #mobile-more {
     position: fixed;
@@ -2713,6 +2770,7 @@
   body.mobile-touch #community-hud {
     right: 8px;
     top: 130px;
+    bottom: auto;
     width: 70px;
     padding: 5px;
     flex-direction: column;
@@ -2726,7 +2784,6 @@
     width: 22px;
     height: 22px;
   }
-  body.mobile-touch #social-fab { display: none; }
   body.mobile-touch #chatlog-wrap { left: 10px; bottom: calc(160px + env(safe-area-inset-bottom)); width: min(340px, calc(100vw - 20px)); display: none; z-index: 24; }
   body.mobile-touch.mobile-chat-open #chatlog-wrap { display: block; }
   body.mobile-touch #chatlog-frame { height: 126px; }
@@ -3245,9 +3302,7 @@
   }
 
   @media (max-width: 760px) {
-    #community-hud { top: 208px; width: 146px; padding: 6px; gap: 5px; }
-    .community-link { height: 32px; }
-    .community-link svg { width: 17px; height: 17px; }
+    #community-hud { top: auto; }
     #quest-tracker { top: 260px; right: 12px; width: 190px; }
 
     /* Mobile First Homepage Header and Hamburger Menu */
@@ -3256,7 +3311,8 @@
     }
     .homepage-header {
       display: flex;
-      position: relative;
+      position: sticky;
+      top: 0;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
@@ -3365,7 +3421,7 @@
       <canvas id="minimap" width="162" height="162"></canvas>
     </div>
 
-    <div id="community-hud" class="panel" aria-label="Community links">
+    <div id="community-hud" aria-label="Community links">
       <a class="community-link discord" href="https://discord.gg/GjhnUsBtw" target="_blank" rel="noopener noreferrer" title="Join the Discord" aria-label="Join the Discord community">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.32 4.37A19.8 19.8 0 0 0 15.36 2.8a13.66 13.66 0 0 0-.64 1.32 18.47 18.47 0 0 0-5.45 0 13.02 13.02 0 0 0-.65-1.32 19.73 19.73 0 0 0-4.96 1.58C.53 9.03-.32 13.56.1 18.02a19.9 19.9 0 0 0 6.08 3.08c.49-.67.93-1.38 1.3-2.13-.72-.27-1.41-.6-2.06-.98.17-.13.34-.26.5-.4a14.16 14.16 0 0 0 12.16 0c.16.14.33.27.5.4-.65.39-1.34.72-2.07.99.38.74.81 1.45 1.31 2.12a19.86 19.86 0 0 0 6.08-3.08c.5-5.17-.85-9.66-3.58-13.65ZM8.02 15.28c-1.18 0-2.15-1.08-2.15-2.41 0-1.33.95-2.42 2.15-2.42 1.2 0 2.17 1.1 2.15 2.42 0 1.33-.95 2.41-2.15 2.41Zm7.96 0c-1.18 0-2.15-1.08-2.15-2.41 0-1.33.95-2.42 2.15-2.42 1.2 0 2.17 1.1 2.15 2.42 0 1.33-.95 2.41-2.15 2.41Z"/></svg>
         <span>Discord</span>
@@ -3395,17 +3451,6 @@
           <div id="xpbar"><div class="fill"></div><div class="ticks"></div><div class="label"></div></div>
           <div id="actionbar" class="panel"></div>
         </div>
-        <div id="side-buttons">
-          <button class="micro-btn" id="mm-char" title="Character Info">C<span class="keybind">c</span></button>
-          <button class="micro-btn" id="mm-spell" title="Spellbook">S<span class="keybind">p</span></button>
-          <button class="micro-btn" id="mm-talents" title="Talents &amp; Specialization">T<span class="keybind">n</span></button>
-          <button class="micro-btn" id="mm-quest" title="Quest Log">Q<span class="keybind">l</span></button>
-          <button class="micro-btn" id="mm-map" title="World Map">M<span class="keybind">m</span></button>
-          <button class="micro-btn" id="mm-bag" title="Bags">B<span class="keybind">b</span></button>
-          <button class="micro-btn" id="mm-arena" title="Ashen Coliseum (1v1 Arena)">⚔<span class="keybind">g</span></button>
-          <button class="micro-btn" id="mm-leaderboard" title="Leaderboard (Lifetime XP)">🏆<span class="keybind">k</span></button>
-          <button class="micro-btn" id="mm-music" title="Toggle Music">♪</button>
-        </div>
         <div id="meters-window" class="panel">
           <div class="panel-title">
             <span class="mt-tabs">
@@ -3414,9 +3459,9 @@
               <button class="mt-tab" data-tab="threat">Threat</button>
             </span>
             <span>
-              <button class="x-btn mt-prev" title="older segment">&#9664;</button>
-              <button class="x-btn mt-next" title="newer segment">&#9654;</button>
-              <button class="x-btn mt-close">&times;</button>
+              <button class="x-btn mt-prev" title="older segment" data-icon="prev"></button>
+              <button class="x-btn mt-next" title="newer segment" data-icon="next"></button>
+              <button class="x-btn mt-close" title="Close" data-icon="close"></button>
             </span>
           </div>
           <div class="mt-view"></div>
@@ -3446,7 +3491,11 @@
     <div id="quest-log-window" class="window panel"></div>
     <div id="vendor-window" class="window panel"></div>
     <div id="map-window" class="window panel">
-      <button class="x-btn" id="map-close" title="Close map" aria-label="Close map">&times;</button>
+      <button class="x-btn" id="map-close" title="Close map" aria-label="Close map" data-icon="close"></button>
+      <div id="map-zoom">
+        <button class="map-zoom-btn" id="map-zoom-in" title="Zoom in" aria-label="Zoom in">+</button>
+        <button class="map-zoom-btn" id="map-zoom-out" title="Zoom out" aria-label="Zoom out">&minus;</button>
+      </div>
       <canvas id="map-canvas" width="560" height="560"></canvas>
     </div>
     <div id="arena-window" class="window panel"></div>
@@ -3456,9 +3505,19 @@
     <div id="options-menu" class="window panel"></div>
     <div id="social-window" class="window panel"></div>
     <div id="report-window" class="window panel"></div>
-    <button id="social-fab" title="Friends &amp; Guild (O)" aria-label="Friends &amp; Guild">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-    </button>
+    <div id="side-buttons">
+      <button class="micro-btn" id="mm-char" aria-label="Character" data-icon="character"><span class="keybind">c</span></button>
+      <button class="micro-btn" id="mm-spell" aria-label="Spellbook" data-icon="spellbook"><span class="keybind">p</span></button>
+      <button class="micro-btn" id="mm-talents" aria-label="Talents" data-icon="talents"><span class="keybind">n</span></button>
+      <button class="micro-btn" id="mm-quest" aria-label="Quest Log" data-icon="questlog"><span class="keybind">l</span></button>
+      <button class="micro-btn" id="mm-map" aria-label="Map" data-icon="map"><span class="keybind">m</span></button>
+      <button class="micro-btn" id="mm-bag" aria-label="Bags" data-icon="bags"><span class="keybind">b</span></button>
+      <button class="micro-btn" id="mm-arena" aria-label="Arena" data-icon="arena"><span class="keybind">g</span></button>
+      <button class="micro-btn" id="mm-leaderboard" aria-label="Leaderboard" data-icon="leaderboard"><span class="keybind">k</span></button>
+      <button class="micro-btn" id="mm-music" aria-label="Music" data-icon="music"></button>
+      <button class="micro-btn" id="mm-social" aria-label="Friends" data-icon="social"><span class="keybind">o</span></button>
+      <button class="micro-btn" id="mm-options" aria-label="Settings" data-icon="menu"><span class="keybind">esc</span></button>
+    </div>
     <div id="tooltip" class="panel"></div>
 
     <div id="error-msg"></div>
@@ -3861,19 +3920,19 @@
       <div class="mobile-joy-label">Camera</div>
     </div>
     <div id="mobile-combat-controls">
-      <button class="mobile-btn" id="mobile-attack-nearest" title="Attack nearest enemy" aria-label="Attack nearest enemy">⚔<span class="mobile-label">Attack</span></button>
-      <button class="mobile-btn" id="mobile-target" title="Target nearest enemy" aria-label="Target nearest enemy">◎<span class="mobile-label">Target</span></button>
-      <button class="mobile-btn" id="mobile-chat" title="Chat" aria-label="Open chat">⌕<span class="mobile-label">Chat</span></button>
-      <button class="mobile-btn" id="mobile-more" title="More menus" aria-label="Show more menus">⋯<span class="mobile-label">More</span></button>
+      <button class="mobile-btn" id="mobile-attack-nearest" title="Attack nearest enemy" aria-label="Attack nearest enemy" data-icon="attack"><span class="mobile-label">Attack</span></button>
+      <button class="mobile-btn" id="mobile-target" title="Target nearest enemy" aria-label="Target nearest enemy" data-icon="target"><span class="mobile-label">Target</span></button>
+      <button class="mobile-btn" id="mobile-chat" title="Chat" aria-label="Open chat" data-icon="chat"><span class="mobile-label">Chat</span></button>
+      <button class="mobile-btn" id="mobile-more" title="More menus" aria-label="Show more menus" data-icon="more"><span class="mobile-label">More</span></button>
       <div id="mobile-extra-controls">
-        <button class="mobile-btn" id="mobile-social" title="Social" aria-label="Social">♟<span class="mobile-label">Social</span></button>
-        <button class="mobile-btn" id="mobile-arena" title="Arena" aria-label="Arena">⚔<span class="mobile-label">Arena</span></button>
-        <button class="mobile-btn" id="mobile-menu" title="Game menu" aria-label="Game menu">☰<span class="mobile-label">Menu</span></button>
-        <button class="mobile-btn" id="mobile-interact" title="Interact or loot" aria-label="Interact or loot">✦<span class="mobile-label">Use</span></button>
-        <button class="mobile-btn" id="mobile-spellbook" title="Spellbook" aria-label="Spellbook">✹<span class="mobile-label">Spellbook</span></button>
-        <button class="mobile-btn" id="mobile-talents" title="Talents" aria-label="Talents">✦<span class="mobile-label">Talents</span></button>
-        <button class="mobile-btn" id="mobile-meters" title="Meters" aria-label="Meters">▦<span class="mobile-label">Meters</span></button>
-        <button class="mobile-btn" id="mobile-map" title="Map" aria-label="Map">◇<span class="mobile-label">Map</span></button>
+        <button class="mobile-btn" id="mobile-social" title="Social" aria-label="Social" data-icon="social"><span class="mobile-label">Social</span></button>
+        <button class="mobile-btn" id="mobile-arena" title="Arena" aria-label="Arena" data-icon="arena"><span class="mobile-label">Arena</span></button>
+        <button class="mobile-btn" id="mobile-menu" title="Game menu" aria-label="Game menu" data-icon="menu"><span class="mobile-label">Menu</span></button>
+        <button class="mobile-btn" id="mobile-interact" title="Interact or loot" aria-label="Interact or loot" data-icon="interact"><span class="mobile-label">Use</span></button>
+        <button class="mobile-btn" id="mobile-spellbook" title="Spellbook" aria-label="Spellbook" data-icon="spellbook"><span class="mobile-label">Spellbook</span></button>
+        <button class="mobile-btn" id="mobile-talents" title="Talents" aria-label="Talents" data-icon="talents"><span class="mobile-label">Talents</span></button>
+        <button class="mobile-btn" id="mobile-meters" title="Meters" aria-label="Meters" data-icon="meters"><span class="mobile-label">Meters</span></button>
+        <button class="mobile-btn" id="mobile-map" title="Map" aria-label="Map" data-icon="map"><span class="mobile-label">Map</span></button>
       </div>
     </div>
   </div>

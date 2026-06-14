@@ -17,6 +17,7 @@ import { DT, INTERACT_RANGE, PlayerClass, dist2d } from './sim/types';
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
+import { hydrateIcons } from './ui/ui_icons';
 import { getLanguage, setLanguage, t, SupportedLanguage } from './ui/i18n';
 
 
@@ -248,6 +249,18 @@ function hideLoadingScreen(): void {
   }, LOADING_FADE_MS);
 }
 
+// Resolve only after the browser has actually painted. The scene build
+// (new Renderer/new Hud) runs fully synchronously and blocks the main thread,
+// so without a real paint first the loading screen never shows on warm loads
+// (cached assets ⇒ assetsReady resolves on a microtask) and entry looks frozen.
+// Two rAFs guarantee a paint happened between them — same idiom used to cut to
+// the game on the first rendered frame below.
+function nextPaint(): Promise<void> {
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+  });
+}
+
 // The loading screen blocks pointer input but a covered button keeps keyboard
 // focus, so Enter/Space could re-fire it mid-entry. One entry per page load;
 // every failure path recovers via fatalOverlay's reload.
@@ -295,6 +308,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   if (document.activeElement instanceof HTMLElement) {
     document.activeElement.blur();
   }
+  // Paint the loading screen before anything can block — assetsReady may resolve
+  // immediately when assets are already cached, and the scene build is synchronous.
+  await nextPaint();
   try {
     await assetsReady((done, total) => setLoadingProgress(done, total));
   } catch (err) {
@@ -302,6 +318,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     return;
   }
   setLoadingStatus('Entering the world…');
+  // Let the final status + full progress bar paint before the synchronous
+  // Renderer/Hud build freezes the main thread for a beat.
+  await nextPaint();
   mountGameUi();
 
   const canvas = $('#game-canvas') as unknown as HTMLCanvasElement;
@@ -314,6 +333,8 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   try {
     renderer = new Renderer(world, canvas, nameplates);
     hud = new Hud(world, renderer, keybinds);
+    hydrateIcons(); // swap [data-icon] placeholders (micro-menu, mobile bar, meters) for inline SVG
+
   } catch (err) {
     // e.g. WebGL context creation failure: surface it instead of leaving the
     // loading screen up forever
