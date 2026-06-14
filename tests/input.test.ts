@@ -15,9 +15,11 @@ function installStorage(): void {
 function makeInput() {
   const canvasListeners = new Map<string, (event: any) => void>();
   const windowListeners = new Map<string, (event: any) => void>();
+  const documentListeners = new Map<string, (event: any) => void>();
   const requestPointerLock = vi.fn();
   const exitPointerLock = vi.fn();
   const canvas = {
+    style: { cursor: '' },
     addEventListener: vi.fn((type: string, cb: (event: any) => void) => {
       canvasListeners.set(type, cb);
     }),
@@ -31,6 +33,10 @@ function makeInput() {
   (globalThis as any).document = {
     activeElement: null,
     pointerLockElement: null,
+    hidden: false,
+    addEventListener: vi.fn((type: string, cb: (event: any) => void) => {
+      documentListeners.set(type, cb);
+    }),
     exitPointerLock,
   };
   const cb = {
@@ -40,7 +46,7 @@ function makeInput() {
     onClickPick: vi.fn(),
   };
   const input = new Input(canvas as any, cb, new Keybinds());
-  return { canvas, canvasListeners, windowListeners, cb, input };
+  return { canvas, canvasListeners, windowListeners, documentListeners, cb, input };
 }
 
 beforeEach(() => {
