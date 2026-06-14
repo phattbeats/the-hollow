@@ -91,6 +91,16 @@ export interface InvSlot {
   count: number;
 }
 
+export interface LootSlot extends InvSlot {
+  // Quest corpse loot can be personal: each listed player can take one copy.
+  personalFor?: number[];
+}
+
+export interface CorpseLoot {
+  copper: number;
+  items: LootSlot[];
+}
+
 export interface LootEntry {
   itemId?: string;
   copper?: number;
@@ -450,7 +460,7 @@ export interface Entity {
   respawnTimer: number;
   corpseTimer: number;
   lootable: boolean;
-  loot: { copper: number; items: InvSlot[] } | null;
+  loot: CorpseLoot | null;
   xpValue: number;
   // npc
   questIds: string[];
