@@ -512,6 +512,38 @@ describe('food, drink, vendor', () => {
     expect(sim.player.drinking).toBe(null);
   });
 
+  it('combat potions restore instantly, work in combat, and share a cooldown (#103)', () => {
+    const sim = makeSim('mage');
+    sim.addItem('minor_mana_potion', 2);
+    sim.player.resource = 10;
+    sim.player.inCombat = true; // potions ignore the combat lockout that blocks food/drink
+    sim.player.combatTimer = 99;
+
+    sim.useItem('minor_mana_potion');
+    expect(sim.player.resource).toBe(10 + 120); // instant, no sitting
+    expect(sim.player.sitting).toBe(false);
+    expect(sim.countItem('minor_mana_potion')).toBe(1);
+
+    // second potion is blocked by the shared cooldown
+    const afterFirst = sim.player.resource;
+    sim.useItem('minor_mana_potion');
+    expect(sim.player.resource).toBe(afterFirst);
+    expect(sim.countItem('minor_mana_potion')).toBe(1); // not consumed
+  });
+
+  it('out-of-combat mana regen is brisk and scales past the old spi/4+2 rate (#103)', () => {
+    const sim = makeSim('mage');
+    sim.setPlayerLevel(10);
+    sim.player.resource = 0;
+    sim.player.inCombat = false;
+    sim.player.combatTimer = 0;
+    sim.player.fiveSecondRule = 99; // out of combat, past the 5s rule
+    const spi = sim.player.stats.spi;
+    const oldRatePer2s = spi / 4 + 2;
+    for (let i = 0; i < 20 * 2; i++) sim.tick(); // one 2s regen tick
+    expect(sim.player.resource).toBeGreaterThan(oldRatePer2s); // faster than before
+  });
+
   it('mage conjures water and drinking restores mana', () => {
     const sim = makeSim('mage');
     sim.setPlayerLevel(4);

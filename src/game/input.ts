@@ -39,6 +39,11 @@ export class Input {
   // while true, readMoveInput reports neutral — set when a modal (the options
   // menu) is open so held WASD doesn't drive the character behind it
   suspendMovement = false;
+  // click-to-move (#95): a world destination the player clicked; the frame loop
+  // walks toward it until arrival or until the player takes manual control.
+  // null when inactive. clickMoveStop is how close counts as "there".
+  clickMoveTarget: { x: number; z: number } | null = null;
+  clickMoveStop = 0.5;
   private dragDistance = 0;
   private downButton = -1;
   private pointerLockRequestedForDrag = false;

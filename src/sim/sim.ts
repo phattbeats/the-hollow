@@ -1,7 +1,7 @@
 import {
   ABILITIES, ARENA_SLOT_COUNT, CAMPS, CLASSES, DUNGEONS, DUNGEON_LIST, DungeonDef, arenaOrigin, dungeonAt,
   DUNGEON_X_THRESHOLD, GROUND_OBJECTS, GROUP_XP_BONUS, INSTANCE_SLOT_COUNT, isArenaPos,
-  ITEMS, MOBS, NPCS, PLAYER_START, QUESTS, questRewardItem, abilitiesKnownAt, instanceOrigin,
+  ITEMS, MOBS, NPCS, PLAYER_START, QUESTS, questRewardItemId, abilitiesKnownAt, instanceOrigin,
   zoneAt,
 } from './data';
 import { ARENA_SPAWN_A, ARENA_SPAWN_B } from './dungeon_layout';
@@ -18,7 +18,7 @@ import { groundHeight, WATER_LEVEL } from './world';
 import {
   AbilityDef, AbilityEffect, Aura, AuraKind, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION,
   CONSUME_TICKS, CrowdControlDrCategory, DT, Entity, EquipSlot, FISHING_CAST_ID, FISHING_CAST_TIME, GCD,
-  INTERACT_RANGE, InvSlot, MELEE_RANGE, MAX_LEVEL,
+  INTERACT_RANGE, InvSlot, MELEE_RANGE, MAX_LEVEL, MobFamily,
   MoveInput, PlayerClass, QuestProgress, QuestState, RUN_SPEED, SimConfig, SimEvent, TURN_SPEED, Vec3,
   angleTo, armorReduction, dist2d, emptyMoveInput, isConsuming, meleeMissChance, mobXpValue, normAngle,
   rageFromDealing, rageFromTaking, spellHitChance, xpForLevel,
@@ -26,8 +26,6 @@ import {
 
 const LEASH_DISTANCE = 45;
 const DUNGEON_LEASH_DISTANCE = 70;
-const SOCIAL_PULL_RADIUS = 5;
-const MURLOC_SOCIAL_PULL_RADIUS = 8;
 const CORPSE_DURATION = 60;
 const EVADE_SPEED_MULT = 1.6;
 const BACKPEDAL_MULT = 0.65;
@@ -65,8 +63,17 @@ const MARKET_LISTING_DURATION = 48 * 3600; // sim-seconds an unsold listing ling
 const MARKET_WIRE_LIMIT = 120; // most listings shipped to one client at a time
 const VENDOR_BUYBACK_LIMIT = 12;
 const INSTANCE_EMPTY_TIMEOUT = 300; // seconds before an empty instance resets
-const HUNTER_RANGED_DEADZONE = 8;
 const MAX_CLIMB_SLOPE = 1.5; // rise/run above which a ground move is blocked (cliffs, world rim)
+
+// How far a mob pulls same-family neighbours into a fight ("social aggro").
+// Murlocs (the clustered water mobs players call "frogs") used to pull too much,
+// chain-aggroing the whole pond and making solo pulls impossible (#102). Tune
+// per family here; everything else falls back to the default.
+const POTION_COOLDOWN = 60; // seconds; shared cooldown across combat potions (#103)
+const DEFAULT_SOCIAL_PULL_RADIUS = 5;
+const SOCIAL_PULL_RADIUS: Partial<Record<MobFamily, number>> = {
+  murloc: 8,
+};
 const SWIM_SURFACE_Y = WATER_LEVEL - 0.75; // body bobs just below the water line
 const SWIM_DEPTH = 0.8; // ground this far under the water line = deep water
 const SWIM_SPEED_MULT = 0.65;
@@ -1029,7 +1036,10 @@ export class Sim {
     if (this.tickCount % 40 !== 0) return; // every 2 seconds (the classic tick)
     if (p.resourceType === 'mana') {
       if (p.fiveSecondRule >= 5) {
-        const regen = p.stats.spi / 4 + 2;
+        // out-of-combat mana regen: faster than before and scales with spirit
+        // (gear/level) plus a small flat per-level floor so low-spirit casters
+        // still recover at a reasonable pace (#103)
+        const regen = p.stats.spi / 3 + 4 + Math.floor(p.level / 5);
         p.resource = Math.min(p.maxResource, p.resource + Math.round(regen));
       }
     } else if (p.resourceType === 'energy') {
@@ -1975,9 +1985,10 @@ export class Sim {
     const facingDiff = Math.abs(normAngle(angleTo(p.pos, t.pos) - p.facing));
     if (facingDiff > MELEE_ARC) return;
 
-    // hunter auto shot: ranged auto-attack with a dead zone inside 8 yards
+    // ranged auto-attack: hunters (auto shot, dead zone inside minRange) and
+    // casters (wand-style, no dead zone so they don't run into melee — #94)
     const ranged = CLASSES[meta.cls].ranged;
-    if (ranged && d >= HUNTER_RANGED_DEADZONE && d <= ranged.maxRange) {
+    if (ranged && d <= ranged.maxRange && d >= (ranged.wand ? 0 : ranged.minRange)) {
       this.rangedSwing(p, t, ranged);
       p.swingTimer = ranged.speed * this.swingIntervalMult(p);
       return;
@@ -1994,6 +2005,8 @@ export class Sim {
         const eff = queued.effects.find((e) => e.type === 'weaponDamage');
         if (p.resource >= queued.cost && eff && eff.type === 'weaponDamage') {
           this.spendResource(p, queued.cost);
+          // on-next-swing abilities (e.g. Raptor Strike) resolve here rather than
+          // in castAbility, so their cooldown must be applied on the swing too (#56)
           if (queued.def.cooldown > 0) p.cooldowns.set(queued.def.id, queued.def.cooldown);
           bonus = eff.bonus;
           abilityName = queued.def.name;
@@ -2007,19 +2020,25 @@ export class Sim {
     p.swingTimer = p.weapon.speed * this.swingIntervalMult(p);
   }
 
-  private rangedSwing(attacker: Entity, target: Entity, ranged: { min: number; max: number; speed: number }): void {
-    this.emit({ type: 'spellfx', sourceId: attacker.id, targetId: target.id, school: 'physical', fx: 'projectile' });
+  private rangedSwing(
+    attacker: Entity, target: Entity,
+    ranged: { min: number; max: number; speed: number; wand?: boolean; school?: string },
+  ): void {
+    const school = ranged.wand ? (ranged.school ?? 'arcane') : 'physical';
+    const label = ranged.wand ? 'Wand' : 'Auto Shot';
+    this.emit({ type: 'spellfx', sourceId: attacker.id, targetId: target.id, school, fx: 'projectile' });
     const missChance = meleeMissChance(attacker.level, target.level);
     if (this.rng.chance(missChance)) {
-      this.emit({ type: 'damage', sourceId: attacker.id, targetId: target.id, amount: 0, crit: false, school: 'physical', ability: 'Auto Shot', kind: 'miss' });
+      this.emit({ type: 'damage', sourceId: attacker.id, targetId: target.id, amount: 0, crit: false, school, ability: label, kind: 'miss' });
       this.enterCombat(attacker, target);
       return;
     }
     let dmg = this.rng.range(ranged.min, ranged.max) + (attacker.rangedPower / 14) * ranged.speed;
     const crit = this.rng.chance(attacker.critChance);
     if (crit) dmg *= 2;
-    dmg *= 1 - armorReduction(this.effectiveArmor(target), attacker.level);
-    this.dealDamage(attacker, target, Math.max(1, Math.round(dmg)), crit, 'physical', 'Auto Shot', 'hit');
+    // wand bolts are magic — armor doesn't apply; physical auto shot is mitigated
+    if (!ranged.wand) dmg *= 1 - armorReduction(this.effectiveArmor(target), attacker.level);
+    this.dealDamage(attacker, target, Math.max(1, Math.round(dmg)), crit, school, label, 'hit');
   }
 
   // Returns true if the swing connected.
@@ -2433,7 +2452,8 @@ export class Sim {
     mob.leashAnchor = { ...mob.pos };
     addThreat(mob, target.id, 1); // seed the hate table so taunts/heals have a baseline
     if (social) {
-      const pullRadius = MOBS[mob.templateId]?.family === 'murloc' ? MURLOC_SOCIAL_PULL_RADIUS : SOCIAL_PULL_RADIUS;
+      const family = MOBS[mob.templateId]?.family;
+      const pullRadius = (family && SOCIAL_PULL_RADIUS[family]) ?? DEFAULT_SOCIAL_PULL_RADIUS;
       this.grid.forEachInRadius(mob.pos.x, mob.pos.z, pullRadius, (m, d2) => {
         if (m.kind === 'mob' && m.id !== mob.id && !m.dead && m.hostile && m.aiState === 'idle' && m.ownerId === null
           && m.templateId === mob.templateId && d2 < pullRadius * pullRadius) {
@@ -2474,6 +2494,13 @@ export class Sim {
       this.updatePet(mob);
       return;
     }
+
+    // Self-healing safety net (#113/#99): every mob spawns hostile and only
+    // taming clears that (which always assigns an owner). A live, owner-less,
+    // non-hostile mob is therefore a leak — exactly the "immortal, invalid
+    // target" wolves players hit. Restore hostility so no mob can ever be left
+    // permanently untargetable, whatever path corrupted it.
+    if (!mob.hostile) mob.hostile = true;
 
     if (mob.inCombat) this.updateBossMechanics(mob);
 
@@ -2974,6 +3001,29 @@ export class Sim {
         remaining: CONSUME_DURATION,
       };
       this.emit({ type: 'log', text: def.kind === 'food' ? 'You sit down to eat.' : 'You sit down to drink.', color: '#999', pid: meta.entityId });
+    } else if (def.kind === 'potion') {
+      // instant, usable in combat, on a shared 60s cooldown (#103)
+      if (this.time < p.potionCooldownUntil) {
+        this.error(meta.entityId, 'That potion is not ready yet.');
+        return;
+      }
+      const restoresMana = (def.potionMana ?? 0) > 0 && p.resourceType === 'mana';
+      const restoresHp = (def.potionHp ?? 0) > 0 && p.hp < p.maxHp;
+      if (!restoresHp && !restoresMana) {
+        this.error(meta.entityId, p.hp >= p.maxHp && (def.potionMana ?? 0) === 0 ? 'You are already at full health.' : 'Nothing to restore.');
+        return;
+      }
+      this.removeItem(itemId, 1, meta.entityId);
+      p.potionCooldownUntil = this.time + POTION_COOLDOWN;
+      if (restoresHp) {
+        const heal = Math.min(def.potionHp!, p.maxHp - p.hp);
+        p.hp += heal;
+        this.emit({ type: 'heal', targetId: p.id, amount: heal });
+      }
+      if (restoresMana) {
+        p.resource = Math.min(p.maxResource, p.resource + def.potionMana!);
+      }
+      this.emit({ type: 'log', text: `You quaff ${def.name}.`, color: '#c9f', pid: meta.entityId });
     } else if (def.kind === 'weapon' || def.kind === 'armor') {
       this.equipItem(itemId, meta.entityId);
     }
@@ -3252,7 +3302,7 @@ export class Sim {
       meta.copper += quest.copperReward;
       this.emit({ type: 'loot', text: `You receive ${formatMoney(quest.copperReward)}.`, pid: meta.entityId });
     }
-    const rewardItem = questRewardItem(quest, meta.cls);
+    const rewardItem = questRewardItemId(quest, meta.cls);
     if (rewardItem) this.addItem(rewardItem, 1, meta.entityId);
     this.grantXp(quest.xpReward, meta);
     this.emit({ type: 'questDone', questId, pid: meta.entityId });

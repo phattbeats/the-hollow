@@ -1173,6 +1173,20 @@ export class Renderer {
     }
   }
 
+  // Click-to-move (#95): where a screen click meets the ground. Intersects a
+  // horizontal plane at the player's foot height — robust on the gentle terrain
+  // here and far cheaper than raycasting the terrain mesh.
+  groundPoint(clientX: number, clientY: number, planeY: number): { x: number; z: number } | null {
+    const ndc = new THREE.Vector2(
+      (clientX / window.innerWidth) * 2 - 1,
+      -(clientY / window.innerHeight) * 2 + 1,
+    );
+    this.raycaster.setFromCamera(ndc, this.camera);
+    const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -planeY);
+    const hit = new THREE.Vector3();
+    return this.raycaster.ray.intersectPlane(plane, hit) ? { x: hit.x, z: hit.z } : null;
+  }
+
   pick(clientX: number, clientY: number): number | null {
     const ndc = new THREE.Vector2(
       (clientX / this.viewport.width) * 2 - 1,

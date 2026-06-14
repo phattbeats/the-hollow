@@ -285,6 +285,8 @@ export class Hud {
     if (item.foodHp) html += `<div class="tt-desc">Use: Restores ${item.foodHp} health over 18 sec. Must remain seated while eating.</div>`;
     if (item.drinkMana) html += `<div class="tt-desc">Use: Restores ${item.drinkMana} mana over 18 sec. Must remain seated while drinking.</div>`;
     if (item.use?.type === 'fishing') html += `<div class="tt-desc">Use: Fish in nearby waters.</div>`;
+    if (item.potionHp) html += `<div class="tt-desc">Use: Instantly restores ${item.potionHp} health. Usable in combat. 1 min cooldown.</div>`;
+    if (item.potionMana) html += `<div class="tt-desc">Use: Instantly restores ${item.potionMana} mana. Usable in combat. 1 min cooldown.</div>`;
     if (item.kind === 'quest') html += `<div class="tt-desc">Quest Item</div>`;
     if (item.requiredClass) html += `<div class="tt-sub">Classes: ${item.requiredClass.map((c) => CLASSES[c].name).join(', ')}</div>`;
     if (item.sellValue > 0) html += `<div class="tt-sub">Sell price: ${formatMoney(item.sellValue)}</div>`;
@@ -357,7 +359,7 @@ export class Hud {
 
   private isHotbarItemId(itemId: string): boolean {
     const item = ITEMS[itemId];
-    return item?.kind === 'food' || item?.kind === 'drink';
+    return item?.kind === 'food' || item?.kind === 'drink' || item?.kind === 'potion' || item?.use?.type === 'fishing';
   }
 
   private loadSlotMap(): void {
@@ -1951,6 +1953,7 @@ export class Hud {
   onInventoryChanged(): void {
     if ($('#bags').style.display === 'block') this.renderBags();
     if (this.openVendorNpcId !== null) this.renderVendor();
+    if ($('#char-window').style.display === 'block') this.renderChar();
   }
 
   renderBags(): void {
@@ -2009,6 +2012,7 @@ export class Hud {
         else if (this.vendorOpen) extra = '<div class="tt-sub">Click to sell</div>';
         else if (item.kind === 'weapon' || item.kind === 'armor') extra = '<div class="tt-sub">Click to equip</div>';
         else if (item.kind === 'food' || item.kind === 'drink') extra = '<div class="tt-sub">Click to consume</div>';
+        else if (item.kind === 'potion') extra = '<div class="tt-sub">Click to use — instant, usable in combat</div>';
         else if (item.use) extra = '<div class="tt-sub">Click to use</div>';
         return this.itemTooltip(item) + extra;
       });
@@ -2540,7 +2544,7 @@ export class Hud {
         : `<span class="soc-name">${esc(f.name)}</span>`;
       const whisper = f.online ? `<span class="soc-x" data-whisper="${esc(f.name)}" title="Whisper ${esc(f.name)}">✉</span>` : '';
       return `<div class="soc-row">`
-        + `<span class="soc-dot ${dot === 'off' ? '' : dot}"></span>`
+        + `<span class="soc-dot ${dot === 'off' ? '' : dot}" title="${esc(dotTitle(f.online, f.status, f.zone))}"></span>`
         + `<span>${name}<br><span class="soc-meta">Lvl ${f.level} ${cap(f.cls)}</span></span>`
         + `<span class="soc-meta">${meta}</span>`
         + `<span class="soc-actions">${whisper}<span class="soc-x" data-act="unfriend" data-name="${esc(f.name)}" title="Remove ${esc(f.name)} from friends">✕</span></span>`
@@ -2564,7 +2568,9 @@ export class Hud {
     const head = `<div class="soc-guild-head">&lt;${esc(guild.name)}&gt; <span class="gm">— you are ${rankLabel(me)} &middot; ${guild.members.length} member${guild.members.length === 1 ? '' : 's'}</span></div>`;
     const rows = guild.members.map((m) => {
       const dot = m.online ? (m.status ?? 'online') : 'off';
-      const meta = m.online ? `<span class="zone">${esc(m.zone ?? '')}</span>` : 'Offline';
+      const meta = m.online
+        ? `<span class="zone">${esc(m.zone ?? '')}</span><br>${statusLabel(m.status)}`
+        : 'Offline';
       const self = m.name === this.sim.player.name;
       const nameInner = `${esc(m.name)}<span class="rank">${rankLabel(m.rank)}</span>`;
       const name = m.online && !self
@@ -2578,7 +2584,7 @@ export class Hud {
       const canKick = !self && ((me === 'leader' && m.rank !== 'leader') || (me === 'officer' && m.rank === 'member'));
       if (canKick) actions += `<span class="soc-x" data-act="gkick" data-name="${esc(m.name)}" title="Remove ${esc(m.name)} from guild">✕</span>`;
       return `<div class="soc-row">`
-        + `<span class="soc-dot ${dot === 'off' ? '' : dot}"></span>`
+        + `<span class="soc-dot ${dot === 'off' ? '' : dot}" title="${esc(dotTitle(m.online, m.status, m.zone))}"></span>`
         + `<span>${name}<br><span class="soc-meta">Lvl ${m.level} ${cap(m.cls)}</span></span>`
         + `<span class="soc-meta">${meta}</span>`
         + (actions ? `<span class="soc-actions">${actions}</span>` : '')
@@ -3212,6 +3218,12 @@ function statusLabel(status: string | undefined): string {
     case 'dead': return 'Dead';
     default: return 'Online';
   }
+}
+
+function dotTitle(online: boolean, status: string | undefined, zone: string | undefined): string {
+  if (!online) return 'Offline';
+  const where = zone ? ` — ${zone}` : '';
+  return `${statusLabel(status)}${where}`;
 }
 
 function rankLabel(rank: string): string {
