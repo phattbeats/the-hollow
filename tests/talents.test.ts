@@ -5,8 +5,15 @@ import {
   exportBuild, importBuild, TALENT_BUILD_VERSION, type TalentAllocation,
 } from '../src/sim/content/talents';
 import { MAX_LEVEL } from '../src/sim/types';
+import { Sim } from '../src/sim/sim';
 
 const alloc = (over: Partial<TalentAllocation> = {}): TalentAllocation => ({ ...emptyAllocation(), ...over });
+
+function warriorAtCap(seed = 7): Sim {
+  const sim = new Sim({ seed, playerClass: 'warrior' });
+  sim.setPlayerLevel(MAX_LEVEL);
+  return sim;
+}
 
 describe('talent tree validation (load-time)', () => {
   it('every registered tree is structurally valid', () => {
@@ -173,5 +180,67 @@ describe('build strings (import/export)', () => {
     const future = Buffer.from(JSON.stringify({ v: TALENT_BUILD_VERSION + 1, c: 'warrior', s: 'arms', r: {}, h: {} })).toString('base64');
     expect(importBuild(future)).toMatchObject({ ok: false });
     expect(importBuild(good).ok).toBe(true); // sanity: the current version still imports
+  });
+});
+
+describe('Sim integration — passive talents (Phase 1)', () => {
+  it('applies a passive stat talent through recalcPlayerStats and reverts on respec', () => {
+    const sim = warriorAtCap();
+    const critBefore = sim.player.critChance;
+    expect(sim.applyTalents(alloc({ ranks: { war_cruelty: 3 } }))).toBe(true);
+    expect(sim.player.critChance).toBeCloseTo(critBefore + 0.03); // +1% per rank
+    expect(sim.respec()).toBe(true);
+    expect(sim.player.critChance).toBeCloseTo(critBefore); // clean revert
+    expect(sim.talentPoints().spent).toBe(0);
+  });
+
+  it('applies an armor-percent talent multiplicatively', () => {
+    const sim = warriorAtCap();
+    const armorBefore = sim.player.stats.armor;
+    expect(sim.applyTalents(alloc({ ranks: { war_toughness: 3 } }))).toBe(true); // +12% armor
+    expect(sim.player.stats.armor).toBeCloseTo(Math.round(armorBefore * 1.12), 0);
+  });
+
+  it('rejects an over-budget allocation server-side', () => {
+    const sim = new Sim({ seed: 7, playerClass: 'warrior' });
+    sim.setPlayerLevel(10); // exactly 1 point
+    expect(sim.talentPoints().total).toBe(1);
+    expect(sim.applyTalents(alloc({ ranks: { war_cruelty: 3 } }))).toBe(false);
+    expect(sim.applyTalents(alloc({ ranks: { war_cruelty: 1 } }))).toBe(true);
+  });
+
+  it('locks respec/allocation in combat', () => {
+    const sim = warriorAtCap();
+    expect(sim.applyTalents(alloc({ ranks: { war_cruelty: 2 } }))).toBe(true);
+    sim.player.inCombat = true;
+    expect(sim.applyTalents(alloc({ ranks: { war_cruelty: 3 } }))).toBe(false);
+    expect(sim.respec()).toBe(false);
+    expect(sim.talentPoints().spent).toBe(2); // unchanged
+  });
+
+  it('persists talents across serialize -> addPlayer (JSONB round-trip, no migration)', () => {
+    const sim = warriorAtCap();
+    sim.applyTalents(alloc({ spec: 'arms', ranks: { war_cruelty: 2, arms_imp_overpower: 2 } }));
+    const state = sim.serializeCharacter(sim.playerId)!;
+    expect(state.talents).toBeTruthy();
+
+    const sim2 = new Sim({ seed: 9, playerClass: 'warrior', noPlayer: true });
+    const pid = sim2.addPlayer('warrior', 'Reloaded', { state });
+    const meta = sim2.meta(pid)!;
+    expect(meta.talents.spec).toBe('arms');
+    expect(meta.talents.ranks.war_cruelty).toBe(2);
+    expect(meta.talents.ranks.arms_imp_overpower).toBe(2);
+    // and the precomputed struct is rebuilt on load
+    expect(meta.talentMods.abilities.overpower.dmgPct).toBeCloseTo(0.5);
+  });
+
+  it('switching spec prunes the old spec tree but keeps the class tree', () => {
+    const sim = warriorAtCap();
+    sim.applyTalents(alloc({ spec: 'arms', ranks: { war_cruelty: 2, arms_imp_overpower: 2 } }));
+    expect(sim.setSpec('fury')).toBe(true);
+    const meta = sim.meta(sim.playerId)!;
+    expect(meta.talents.spec).toBe('fury');
+    expect(meta.talents.ranks.arms_imp_overpower).toBeUndefined(); // pruned
+    expect(meta.talents.ranks.war_cruelty).toBe(2); // class tree kept
   });
 });

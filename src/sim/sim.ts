@@ -8,6 +8,11 @@ import { ARENA_SPAWN_A, ARENA_SPAWN_B } from './dungeon_layout';
 import { resolvePosition } from './colliders';
 import { findPath } from './pathfind';
 import { createGroundObject, createMob, createNpc, createPlayer, recalcPlayerStats, PlayerEquipment } from './entity';
+import {
+  computeTalentModifiers, emptyAllocation, emptyModifiers, talentsFor, talentPointsAtLevel,
+  validateAllocation, cloneAllocation, pointsSpent,
+  type TalentAllocation, type TalentModifiers, type SavedLoadout,
+} from './content/talents';
 import { Rng } from './rng';
 import { SpatialGrid } from './spatial';
 import {
@@ -193,6 +198,13 @@ export interface PlayerMeta {
   arenaRating: number;
   arenaWins: number;
   arenaLosses: number;
+  // Talents & Specializations. `talents` is the active allocation; `talentMods`
+  // is its precomputed flat struct — resolved only on allocation/respec/loadout
+  // change (recomputeTalents), never walked on the combat or stat hot path.
+  talents: TalentAllocation;
+  talentMods: TalentModifiers;
+  loadouts: SavedLoadout[];
+  activeLoadout: number; // index into loadouts, or -1 for none
 }
 
 // ---------------------------------------------------------------------------
@@ -253,6 +265,11 @@ export interface CharacterState {
   arenaRating?: number;
   arenaWins?: number;
   arenaLosses?: number;
+  // Talents & Specializations (JSONB; no schema migration). All optional so
+  // characters saved before talents existed load cleanly (default: no points spent).
+  talents?: TalentAllocation;
+  loadouts?: SavedLoadout[];
+  activeLoadout?: number;
 }
 
 // Pure quest-state computation, shared by the sim and the network client.
@@ -464,6 +481,10 @@ export class Sim {
       arenaRating: opts?.state?.arenaRating ?? ARENA_BASE_RATING,
       arenaWins: opts?.state?.arenaWins ?? 0,
       arenaLosses: opts?.state?.arenaLosses ?? 0,
+      talents: emptyAllocation(),
+      talentMods: emptyModifiers(),
+      loadouts: [],
+      activeLoadout: -1,
     };
     this.players.set(player.id, meta);
     if (this.primaryId === -1) this.primaryId = player.id;
@@ -487,10 +508,16 @@ export class Sim {
         if (q.state !== 'done') meta.questLog.set(q.questId, { questId: q.questId, counts: [...q.counts], state: q.state });
       }
       for (const q of s.questsDone) meta.questsDone.add(q);
+      if (s.talents) meta.talents = { spec: s.talents.spec ?? null, ranks: { ...s.talents.ranks }, choices: { ...s.talents.choices } };
+      if (s.loadouts) meta.loadouts = s.loadouts.map((l) => ({ name: l.name, alloc: cloneAllocation(l.alloc), bar: [...(l.bar ?? [])] }));
+      if (typeof s.activeLoadout === 'number') meta.activeLoadout = s.activeLoadout;
     }
 
+    // Resolve the flat talent struct once, before the stat pass + ability
+    // resolver below consume it (they only ever read these flat numbers).
+    meta.talentMods = computeTalentModifiers(cls, meta.talents);
     this.refreshKnownAbilities(meta, false);
-    recalcPlayerStats(player, cls, meta.equipment);
+    recalcPlayerStats(player, cls, meta.equipment, meta.talentMods);
     if (opts?.state) {
       player.hp = Math.max(1, Math.min(player.maxHp, opts.state.hp));
       player.resource = classDef.resourceType === 'mana'
@@ -569,6 +596,9 @@ export class Sim {
       arenaRating: meta.arenaRating,
       arenaWins: meta.arenaWins,
       arenaLosses: meta.arenaLosses,
+      talents: cloneAllocation(meta.talents),
+      loadouts: meta.loadouts.map((l) => ({ name: l.name, alloc: cloneAllocation(l.alloc), bar: [...l.bar] })),
+      activeLoadout: meta.activeLoadout,
     };
   }
 
@@ -737,10 +767,95 @@ export class Sim {
     // from a sane baseline (virtualLevel never falls below the real level). Only
     // ever raises it — lifetimeXp is monotonic.
     r.meta.lifetimeXp = Math.max(r.meta.lifetimeXp, xpToReachLevel(r.e.level));
-    recalcPlayerStats(r.e, r.meta.cls, r.meta.equipment);
+    recalcPlayerStats(r.e, r.meta.cls, r.meta.equipment, r.meta.talentMods);
     r.e.hp = r.e.maxHp;
     if (r.e.resourceType === 'mana') r.e.resource = r.e.maxResource;
     this.refreshKnownAbilities(r.meta, false);
+  }
+
+  // -------------------------------------------------------------------------
+  // Talents & Specializations (server-authoritative). Every allocation change
+  // validates against the level-derived point budget + tree rules, then
+  // recomputes the flat modifier struct. Restricted to out-of-combat (and not
+  // mid-arena): talents never change during a fight.
+  // -------------------------------------------------------------------------
+
+  // The ONLY place a talent tree is walked. Re-resolves the flat modifier struct
+  // and refreshes the stat pass + known-ability resolver that consume it.
+  private recomputeTalents(meta: PlayerMeta): void {
+    meta.talentMods = computeTalentModifiers(meta.cls, meta.talents);
+    const e = this.entities.get(meta.entityId);
+    if (e) recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods);
+    this.refreshKnownAbilities(meta, false);
+  }
+
+  private talentLockReason(p: Entity): string | null {
+    if (p.inCombat) return 'You cannot change talents in combat.';
+    if (this.arenaMatches.has(p.id)) return 'You cannot change talents during an arena match.';
+    return null;
+  }
+
+  talentPoints(pid?: number): { total: number; spent: number } {
+    const r = this.resolve(pid);
+    if (!r) return { total: 0, spent: 0 };
+    return { total: talentPointsAtLevel(r.e.level), spent: pointsSpent(r.meta.talents) };
+  }
+
+  // Commit a whole staged allocation in one shot (the UI's "Apply"). Rejects any
+  // allocation that fails server-side validation with a reason event (FR-4.5).
+  applyTalents(alloc: TalentAllocation, pid?: number): boolean {
+    const r = this.resolve(pid);
+    if (!r) return false;
+    const lock = this.talentLockReason(r.e);
+    if (lock) { this.error(r.e.id, lock); return false; }
+    const sanitized: TalentAllocation = { spec: alloc.spec ?? null, ranks: {}, choices: { ...alloc.choices } };
+    for (const id in alloc.ranks) { const v = Math.floor(alloc.ranks[id]); if (v > 0) sanitized.ranks[id] = v; }
+    const check = validateAllocation(r.meta.cls, sanitized, talentPointsAtLevel(r.e.level));
+    if (!check.ok) { this.error(r.e.id, check.reason ?? 'Invalid talent build.'); return false; }
+    r.meta.talents = sanitized;
+    this.recomputeTalents(r.meta);
+    this.emit({ type: 'log', pid: r.e.id, text: 'Talents updated.', color: '#ffd100' });
+    return true;
+  }
+
+  // Spend a single point into a node (incremental API; the UI mostly stages then
+  // applies). Validated identically by building + checking a candidate alloc.
+  spendTalent(nodeId: string, pid?: number): boolean {
+    const r = this.resolve(pid);
+    if (!r) return false;
+    const cand = cloneAllocation(r.meta.talents);
+    cand.ranks[nodeId] = (cand.ranks[nodeId] ?? 0) + 1;
+    return this.applyTalents(cand, pid);
+  }
+
+  // Choose / change specialization. Switching specs drops the previous spec
+  // tree's points (they belonged to that tree); the class tree is untouched.
+  setSpec(specId: string | null, pid?: number): boolean {
+    const r = this.resolve(pid);
+    if (!r) return false;
+    const lock = this.talentLockReason(r.e);
+    if (lock) { this.error(r.e.id, lock); return false; }
+    const ct = talentsFor(r.meta.cls);
+    if (specId !== null && !ct?.specs.some((s) => s.id === specId)) { this.error(r.e.id, 'Unknown specialization.'); return false; }
+    const cand = cloneAllocation(r.meta.talents);
+    cand.spec = specId;
+    for (const id of Object.keys(cand.ranks)) {
+      const node = ct?.nodes.find((n) => n.id === id);
+      if (node?.tree === 'spec' && node.specId !== specId) { delete cand.ranks[id]; delete cand.choices[id]; }
+    }
+    return this.applyTalents(cand, pid);
+  }
+
+  // Free respec (out of combat): wipe all talent points. Spec is retained.
+  respec(pid?: number): boolean {
+    const r = this.resolve(pid);
+    if (!r) return false;
+    const lock = this.talentLockReason(r.e);
+    if (lock) { this.error(r.e.id, lock); return false; }
+    r.meta.talents = { spec: r.meta.talents.spec, ranks: {}, choices: {} };
+    this.recomputeTalents(r.meta);
+    this.emit({ type: 'log', pid: r.e.id, text: 'Talents reset.', color: '#ffd100' });
+    return true;
   }
 
   resolvedAbility(abilityId: string, pid?: number): ResolvedAbility | null {
@@ -1127,7 +1242,7 @@ export class Sim {
     }
     if (statsDirty && e.kind === 'player') {
       const meta = this.players.get(e.id);
-      if (meta) recalcPlayerStats(e, meta.cls, meta.equipment);
+      if (meta) recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods);
     }
   }
 
@@ -1703,7 +1818,7 @@ export class Sim {
             if (existing >= 0) {
               p.auras.splice(existing, 1);
               this.emit({ type: 'aura', targetId: p.id, name: ability.name, gained: false });
-              recalcPlayerStats(p, meta.cls, meta.equipment);
+              recalcPlayerStats(p, meta.cls, meta.equipment, meta.talentMods);
               break;
             }
           }
@@ -1722,7 +1837,7 @@ export class Sim {
             remaining: eff.duration, duration: eff.duration, value: eff.value,
             sourceId: p.id, school: ability.school,
           });
-          recalcPlayerStats(p, meta.cls, meta.equipment);
+          recalcPlayerStats(p, meta.cls, meta.equipment, meta.talentMods);
           break;
         }
         case 'gainResource': {
@@ -1815,7 +1930,7 @@ export class Sim {
     this.emit({ type: 'aura', targetId: target.id, name: aura.name, gained: true });
     if (target.kind === 'player') {
       const meta = this.players.get(target.id);
-      if (meta) recalcPlayerStats(target, meta.cls, meta.equipment);
+      if (meta) recalcPlayerStats(target, meta.cls, meta.equipment, meta.talentMods);
     }
   }
 
@@ -2280,7 +2395,7 @@ export class Sim {
       meta.xp -= xpForLevel(p.level);
       p.level++;
       meta.counters.levelUps++;
-      recalcPlayerStats(p, meta.cls, meta.equipment);
+      recalcPlayerStats(p, meta.cls, meta.equipment, meta.talentMods);
       p.hp = p.maxHp;
       if (p.resourceType === 'mana') p.resource = p.maxResource;
       this.emit({ type: 'levelup', level: p.level, pid: p.id });
@@ -2933,7 +3048,7 @@ export class Sim {
     this.removeItem(itemId, 1, meta.entityId);
     if (old) this.addItemSilent(old, 1, meta);
     meta.equipment[slot] = itemId;
-    recalcPlayerStats(p, meta.cls, meta.equipment);
+    recalcPlayerStats(p, meta.cls, meta.equipment, meta.talentMods);
     this.emit({ type: 'log', text: `Equipped ${def.name}.`, color: '#8f8', pid: meta.entityId });
   }
 
@@ -3272,7 +3387,7 @@ export class Sim {
     this.rebucket(p);
     p.facing = 0;
     p.auras = [];
-    recalcPlayerStats(p, meta.cls, meta.equipment);
+    recalcPlayerStats(p, meta.cls, meta.equipment, meta.talentMods);
     p.hp = p.maxHp;
     p.resource = p.resourceType === 'mana' ? p.maxResource : p.resourceType === 'energy' ? 100 : 0;
     p.targetId = null;
@@ -3784,7 +3899,7 @@ export class Sim {
   // walked in carrying: full health/resource, cooldowns and combat reset.
   private resetForArena(e: Entity): void {
     const meta = this.players.get(e.id);
-    if (meta) recalcPlayerStats(e, meta.cls, meta.equipment);
+    if (meta) recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods);
     e.auras = [];
     e.hp = e.maxHp;
     e.resource = e.resourceType === 'mana' ? e.maxResource : e.resourceType === 'energy' ? 100 : 0;
@@ -3853,7 +3968,7 @@ export class Sim {
       e.prevPos = { ...e.pos };
       e.facing = ret.facing;
       this.rebucket(e);
-      if (meta) recalcPlayerStats(e, meta.cls, meta.equipment);
+      if (meta) recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods);
       e.auras = [];
       e.dead = false;
       e.hp = e.maxHp;
