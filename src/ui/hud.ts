@@ -1,4 +1,4 @@
-import { formatMoney, ResolvedAbility } from '../sim/sim';
+import type { ResolvedAbility } from '../sim/sim';
 import type { IWorld, MarketInfo } from '../world_api';
 import { Renderer } from '../render/renderer';
 import {
@@ -7,7 +7,7 @@ import {
   zoneWelcomeText,
 } from '../sim/data';
 import type { ZoneDef } from '../sim/data';
-import type { AbilityDef, InvSlot, PlayerClass, ResourceType } from '../sim/types';
+import type { AbilityDef, EquipSlot, InvSlot, PlayerClass, ResourceType, Stats } from '../sim/types';
 import { AbilityEffect, CONSUME_DURATION, Entity, GCD, ItemDef, SimEvent, dist2d, xpForLevel, MAX_LEVEL, MELEE_RANGE } from '../sim/types';
 import { terrainHeight, WATER_LEVEL, roadDistance } from '../sim/world';
 import { Meters } from './meters';
@@ -17,7 +17,7 @@ import { iconDataUrl, QUALITY_COLOR } from './icons';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
 import { Settings, GameSettings, SETTING_RANGES } from '../game/settings';
 import { chatPlayerContextActions } from './player_context_menu';
-import { formatNumber, t, type TranslationKey } from './i18n';
+import { formatMoney as formatLocalizedMoney, formatNumber, moneyParts, t, type TranslationKey } from './i18n';
 
 // hooks main wires after Input exists (the options menu drives input, audio,
 // graphics, and logout, all of which live outside the HUD)
@@ -68,6 +68,36 @@ const RESOURCE_LABEL_KEYS: Record<ResourceType, TranslationKey> = {
 const FORM_LABEL_KEYS: Record<'bear' | 'cat', TranslationKey> = {
   bear: 'abilityUi.forms.bear',
   cat: 'abilityUi.forms.cat',
+};
+type ItemQuality = NonNullable<ItemDef['quality']>;
+const ITEM_SLOT_LABEL_KEYS: Record<EquipSlot, TranslationKey> = {
+  mainhand: 'itemUi.slots.mainhand',
+  chest: 'itemUi.slots.chest',
+  legs: 'itemUi.slots.legs',
+  feet: 'itemUi.slots.feet',
+};
+const ITEM_QUALITY_LABEL_KEYS: Record<ItemQuality, TranslationKey> = {
+  poor: 'itemUi.quality.poor',
+  common: 'itemUi.quality.common',
+  uncommon: 'itemUi.quality.uncommon',
+  rare: 'itemUi.quality.rare',
+  epic: 'itemUi.quality.epic',
+};
+const ITEM_KIND_LABEL_KEYS: Record<ItemDef['kind'], TranslationKey> = {
+  weapon: 'itemUi.kind.weapon',
+  armor: 'itemUi.kind.armor',
+  quest: 'itemUi.kind.quest',
+  junk: 'itemUi.kind.junk',
+  food: 'itemUi.kind.food',
+  drink: 'itemUi.kind.drink',
+};
+const ITEM_STAT_LABEL_KEYS: Partial<Record<keyof Stats, TranslationKey>> = {
+  armor: 'itemUi.stats.armor',
+  str: 'itemUi.stats.str',
+  agi: 'itemUi.stats.agi',
+  sta: 'itemUi.stats.sta',
+  int: 'itemUi.stats.int',
+  spi: 'itemUi.stats.spi',
 };
 
 // Classic class colors (CLASSES[cls].color is a 0xRRGGBB number) as a CSS
@@ -190,7 +220,7 @@ export class Hud {
     this.buildActionBar();
     this.refreshKeybindLabels();
     this.buildXpTicks();
-    document.addEventListener('woc:languagechange', () => this.refreshLocalizedQuestUi());
+    document.addEventListener('woc:languagechange', () => this.refreshLocalizedDynamicUi());
     $('#pf-name').textContent = sim.player.name;
     this.drawPortrait($('#pf-portrait') as unknown as HTMLCanvasElement, CLASS_GLYPH[sim.cfg.playerClass], CLASSES[sim.cfg.playerClass].color);
     const mm = $('#minimap') as unknown as HTMLCanvasElement;
@@ -265,14 +295,14 @@ export class Hud {
   }
 
   moneyHtml(copper: number): string {
-    const g = Math.floor(copper / 10000);
-    const s = Math.floor((copper % 10000) / 100);
-    const c = copper % 100;
+    const parts = moneyParts(copper);
+    const coin = (value: number, cls: 'g' | 's' | 'c', unitKey: TranslationKey): string =>
+      `<span class="coin-part"><span class="coin-amount">${esc(formatNumber(value, { maximumFractionDigits: 0 }))}</span><span class="coin ${cls}" aria-hidden="true"></span><span class="visually-hidden">${esc(t(unitKey))}</span></span>`;
     let html = '';
-    if (g > 0) html += `${g}<span class="coin g"></span>`;
-    if (s > 0 || g > 0) html += `${s}<span class="coin s"></span>`;
-    html += `${c}<span class="coin c"></span>`;
-    return html;
+    if (parts.gold > 0) html += coin(parts.gold, 'g', 'itemUi.money.gold');
+    if (parts.silver > 0 || parts.gold > 0) html += coin(parts.silver, 's', 'itemUi.money.silver');
+    html += coin(parts.copper, 'c', 'itemUi.money.copper');
+    return `<span class="money-inline" aria-label="${esc(formatLocalizedMoney(copper, 'long'))}">${html}</span>`;
   }
 
   attachTooltip(el: HTMLElement, html: () => string): void {
@@ -322,28 +352,44 @@ export class Hud {
 
   private itemTooltip(item: ItemDef): string {
     const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
-    let html = `<div class="tt-title" style="color:${qColor}">${item.name}</div>`;
+    let html = `<div class="tt-title" style="color:${qColor}">${esc(item.name)}</div>`;
+    html += `<div class="tt-sub">${esc(t('itemUi.tooltip.qualityKind', {
+      quality: itemQualityLabel(item.quality),
+      kind: itemKindLabel(item.kind),
+    }))}</div>`;
     if (item.slot) {
-      const slotNames: Record<string, string> = { mainhand: 'Main Hand', chest: 'Chest', legs: 'Legs', feet: 'Feet' };
-      html += `<div class="tt-sub">${slotNames[item.slot]}</div>`;
+      html += `<div class="tt-sub">${esc(itemSlotName(item.slot))}</div>`;
     }
     if (item.weapon) {
-      const dps = ((item.weapon.min + item.weapon.max) / 2 / item.weapon.speed).toFixed(1);
-      html += `<div class="tt-stat">${item.weapon.min} - ${item.weapon.max} Damage&nbsp;&nbsp;Speed ${item.weapon.speed.toFixed(1)}</div>`;
-      html += `<div class="tt-stat">(${dps} damage per second)</div>`;
-      if (item.weapon.dagger) html += `<div class="tt-sub">Dagger</div>`;
+      const dps = (item.weapon.min + item.weapon.max) / 2 / item.weapon.speed;
+      html += `<div class="tt-stat">${esc(t('itemUi.tooltip.damageSpeed', {
+        min: itemNumber(item.weapon.min),
+        max: itemNumber(item.weapon.max),
+        speed: itemNumber(item.weapon.speed, 1),
+      }))}</div>`;
+      html += `<div class="tt-stat">${esc(t('itemUi.tooltip.dps', { dps: itemNumber(dps, 1) }))}</div>`;
+      if (item.weapon.dagger) html += `<div class="tt-sub">${esc(t('itemUi.tooltip.dagger'))}</div>`;
     }
     if (item.stats) {
       for (const [k, v] of Object.entries(item.stats)) {
-        if (k === 'armor') html += `<div class="tt-stat">${v} Armor</div>`;
-        else html += `<div class="tt-green">+${v} ${k[0].toUpperCase()}${k.slice(1)}</div>`;
+        if (v === undefined) continue;
+        if (k === 'armor') {
+          html += `<div class="tt-stat">${esc(t('itemUi.tooltip.armorStat', { value: itemNumber(v) }))}</div>`;
+        } else {
+          html += `<div class="tt-green">${esc(t('itemUi.tooltip.stat', {
+            value: itemNumber(v),
+            stat: itemStatName(k),
+          }))}</div>`;
+        }
       }
     }
-    if (item.foodHp) html += `<div class="tt-desc">Use: Restores ${item.foodHp} health over 18 sec. Must remain seated while eating.</div>`;
-    if (item.drinkMana) html += `<div class="tt-desc">Use: Restores ${item.drinkMana} mana over 18 sec. Must remain seated while drinking.</div>`;
-    if (item.kind === 'quest') html += `<div class="tt-desc">Quest Item</div>`;
-    if (item.requiredClass) html += `<div class="tt-sub">Classes: ${item.requiredClass.map((c) => CLASSES[c].name).join(', ')}</div>`;
-    if (item.sellValue > 0) html += `<div class="tt-sub">Sell price: ${formatMoney(item.sellValue)}</div>`;
+    if (item.foodHp) html += `<div class="tt-desc">${esc(t('itemUi.tooltip.useFood', { amount: itemNumber(item.foodHp), seconds: itemNumber(CONSUME_DURATION) }))}</div>`;
+    if (item.drinkMana) html += `<div class="tt-desc">${esc(t('itemUi.tooltip.useDrink', { amount: itemNumber(item.drinkMana), seconds: itemNumber(CONSUME_DURATION) }))}</div>`;
+    if (item.kind === 'quest') html += `<div class="tt-desc">${esc(t('itemUi.tooltip.questItem'))}</div>`;
+    if (item.requiredClass) {
+      html += `<div class="tt-sub">${esc(t('itemUi.tooltip.classes', { classes: item.requiredClass.map(classDisplayName).join(', ') }))}</div>`;
+    }
+    if (item.sellValue > 0) html += `<div class="tt-sub">${esc(t('itemUi.tooltip.sellPrice', { money: formatLocalizedMoney(item.sellValue) }))}</div>`;
     return html;
   }
 
@@ -388,10 +434,17 @@ export class Hud {
     }, 0);
   }
 
-  private refreshLocalizedQuestUi(): void {
+  private refreshLocalizedDynamicUi(): void {
     this.updateQuestTracker();
     const log = $('#quest-log-window');
     if (log.style.display === 'block') this.renderQuestLog();
+    if ($('#bags').style.display === 'block') this.renderBags();
+    if (this.openVendorNpcId !== null && $('#vendor-window').style.display === 'block') this.renderVendor();
+    if (this.marketOpen) {
+      this.lastMarketSig = '';
+      this.renderMarket();
+    }
+    if ($('#char-window').style.display === 'block') this.renderChar();
     const dialog = $('#quest-dialog');
     if (dialog.style.display !== 'block' || this.openGossipNpcId === null) return;
     const npc = this.sim.entities.get(this.openGossipNpcId);
@@ -1544,6 +1597,18 @@ export class Hud {
       'That quest giver is not nearby.': 'questUi.errors.giverMissing',
       'That quest turn-in is not nearby.': 'questUi.errors.turnInMissing',
       'Too far away.': 'questUi.errors.tooFar',
+      'That item is not sold here.': 'itemUi.errors.notSoldHere',
+      'Not enough money.': 'itemUi.errors.notEnoughMoney',
+      'You must bring your goods to the Merchant.': 'itemUi.errors.bringGoods',
+      'The Merchant will not broker quest items.': 'itemUi.errors.noQuestItems',
+      'You do not have that many to sell.': 'itemUi.errors.notEnoughToSell',
+      'Name a price of at least 1 copper.': 'itemUi.errors.minPrice',
+      'That price is beyond what the Merchant will broker.': 'itemUi.errors.priceTooHigh',
+      'You are too far from the Merchant.': 'itemUi.errors.tooFar',
+      'That listing is no longer available.': 'itemUi.errors.listingUnavailable',
+      'You cannot afford that.': 'itemUi.errors.cannotAfford',
+      'That is not your listing.': 'itemUi.errors.notYourListing',
+      'You have nothing to collect.': 'itemUi.errors.nothingToCollect',
     };
     const key = exact[text];
     if (key) return t(key);
@@ -1568,6 +1633,10 @@ export class Hud {
     if (match) return t('hud.errors.alreadyInParty', { name: match[1] });
     match = /^(.+) already has a pending invitation\.$/.exec(text);
     if (match) return t('hud.errors.pendingInvite', { name: match[1] });
+    match = /^You may keep at most (\d+) goods on the market at once\.$/.exec(text);
+    if (match) return t('itemUi.errors.tooManyListings', { count: formatNumber(Number(match[1]), { maximumFractionDigits: 0 }) });
+    match = /^That is your own listing . cancel it to reclaim it\.$/.exec(text);
+    if (match) return t('itemUi.errors.ownListing');
     return text;
   }
 
@@ -1615,6 +1684,8 @@ export class Hud {
     if (match) return t('questUi.logs.completed', { name: match[1] });
     match = /^(.+) \(Complete\)$/.exec(text);
     if (match) return t('questUi.logs.ready', { name: match[1], status: t('questUi.log.readyStatus') });
+    match = /^Your market listing of (.+) expired and waits at the Merchant\.$/.exec(text);
+    if (match) return t('itemUi.logs.expiredListing', { item: match[1] });
     return text;
   }
 
@@ -1634,12 +1705,44 @@ export class Hud {
     let match = /^You receive: (.+)\.$/.exec(text);
     if (match) return t('hud.logs.lootReceiveItem', { item: match[1] });
     match = /^You receive (.+)\.$/.exec(text);
-    if (match) return t('hud.logs.lootReceiveMoney', { money: match[1] });
+    if (match) return t('hud.logs.lootReceiveMoney', { money: this.localizeSimMoney(match[1]) });
     match = /^You loot (.+)\.$/.exec(text);
-    if (match) return t('hud.logs.lootMoney', { money: match[1] });
+    if (match) return t('hud.logs.lootMoney', { money: this.localizeSimMoney(match[1]) });
     match = /^Sold (.+) for (.+)\.$/.exec(text);
-    if (match) return t('hud.logs.soldItem', { item: match[1], money: match[2] });
+    if (match) return t('hud.logs.soldItem', { item: match[1], money: this.localizeSimMoney(match[2]) });
+    match = /^Listed (.+?)( x\d+)? on the World Market for (.+)\.$/.exec(text);
+    if (match) return t('itemUi.logs.listedItem', {
+      item: this.itemStackLogName(match[1], match[2]),
+      money: this.localizeSimMoney(match[3]),
+    });
+    match = /^(.+) bought your (.+) for (.+?) . collect (.+) from the Merchant\.$/.exec(text);
+    if (match) return t('itemUi.logs.sellerSold', {
+      buyer: match[1],
+      item: match[2],
+      money: this.localizeSimMoney(match[3]),
+      proceeds: this.localizeSimMoney(match[4]),
+    });
+    match = /^Bought (.+?)( x\d+)? for (.+)\.$/.exec(text);
+    if (match) return t('itemUi.logs.boughtItem', {
+      item: this.itemStackLogName(match[1], match[2]),
+      money: this.localizeSimMoney(match[3]),
+    });
+    match = /^Reclaimed (.+?)( x\d+)? from the market\.$/.exec(text);
+    if (match) return t('itemUi.logs.reclaimedItem', { item: this.itemStackLogName(match[1], match[2]) });
+    match = /^You collect (.+) from the Merchant\.$/.exec(text);
+    if (match) return t('itemUi.logs.collectedMoney', { money: this.localizeSimMoney(match[1]) });
     return text;
+  }
+
+  private itemStackLogName(item: string, stackSuffix?: string): string {
+    if (!stackSuffix) return item;
+    const count = Number(stackSuffix.trim().slice(1));
+    return `${item} ${t('itemUi.bags.stackCount', { count: formatNumber(count, { maximumFractionDigits: 0 }) })}`;
+  }
+
+  private localizeSimMoney(text: string): string {
+    const copper = parseSimMoney(text);
+    return copper === null ? text : formatLocalizedMoney(copper);
   }
 
   private combatLog(text: string, color = '#ccc'): void {
@@ -1878,23 +1981,26 @@ export class Hud {
     // collapses the scrolled list — drop the tooltip and restore the scroll
     this.hideTooltip();
     const scrollTop = el.scrollTop;
-    let html = `<div class="panel-title"><span>${npc.name} — Goods</span><span class="x-btn" data-close>✕</span></div>`;
+    let html = `<div class="panel-title"><span>${esc(t('itemUi.vendor.goodsTitle', { name: npc.name }))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('itemUi.vendor.close'))}">✕</button></div>`;
     el.innerHTML = html;
     for (const itemId of npc.vendorItems) {
       const item = ITEMS[itemId];
       if (!item?.buyValue) continue;
-      const row = document.createElement('div');
+      const row = document.createElement('button');
+      row.type = 'button';
       row.className = 'vendor-item';
-      row.innerHTML = `${this.itemIcon(item)}<span class="vi-name">${item.name}</span><span class="vi-price">${this.moneyHtml(item.buyValue)}</span>`;
+      const price = formatLocalizedMoney(item.buyValue);
+      row.setAttribute('aria-label', t('itemUi.vendor.buyAria', { item: item.name, price }));
+      row.innerHTML = `${this.itemIcon(item)}<span class="vi-name">${esc(item.name)}</span><span class="vi-price">${this.moneyHtml(item.buyValue)}</span>`;
       row.addEventListener('click', () => {
         this.sim.buyItem(npc.id, itemId);
       });
-      this.attachTooltip(row, () => this.itemTooltip(item) + '<div class="tt-sub">Click to buy</div>');
+      this.attachTooltip(row, () => this.itemTooltip(item) + `<div class="tt-sub">${esc(t('itemUi.tooltip.clickBuy'))}</div>`);
       el.appendChild(row);
     }
     const hint = document.createElement('div');
     hint.className = 'vendor-hint';
-    hint.textContent = 'Click an item in your bags to sell it while this window is open.';
+    hint.textContent = t('itemUi.vendor.hint');
     el.appendChild(hint);
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeVendor());
     el.style.display = 'block';
@@ -1959,14 +2065,21 @@ export class Hud {
     this.hideTooltip();
     const info = this.sim.marketInfo;
     const collectN = info ? (info.collectionCopper > 0 ? 1 : 0) + info.collectionItems.length : 0;
-    const tab = (id: typeof this.marketTab, label: string, pip = '') =>
-      `<div class="mkt-tab${this.marketTab === id ? ' sel' : ''}" data-tab="${id}">${label}${pip}</div>`;
+    const tabLabel = (id: typeof this.marketTab): string => {
+      if (id === 'browse') return t('itemUi.market.browse');
+      if (id === 'sell') return t('itemUi.market.sell');
+      return collectN > 0
+        ? t('itemUi.market.collectWithCount', { count: formatNumber(collectN, { maximumFractionDigits: 0 }) })
+        : t('itemUi.market.collect');
+    };
+    const tab = (id: typeof this.marketTab) =>
+      `<button type="button" class="mkt-tab${this.marketTab === id ? ' sel' : ''}" data-tab="${id}" aria-pressed="${this.marketTab === id ? 'true' : 'false'}">${esc(tabLabel(id))}</button>`;
     el.innerHTML =
-      `<div class="panel-title"><span>The World Market <span style="color:#998d6a;font-size:11px">— the Merchant's exchange</span></span><span class="x-btn" data-close>✕</span></div>`
+      `<div class="panel-title"><span>${esc(t('itemUi.market.title'))} <span class="panel-subtitle">${esc(t('itemUi.market.subtitle'))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('itemUi.market.close'))}">✕</button></div>`
       + `<div class="mkt-tabs">`
-      + tab('browse', 'Browse')
-      + tab('sell', 'Sell')
-      + tab('collect', 'Collect', collectN > 0 ? ` <span class="pip">(${collectN})</span>` : '')
+      + tab('browse')
+      + tab('sell')
+      + tab('collect')
       + `</div>`
       + `<div id="market-body"></div>`;
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeMarket());
@@ -1993,14 +2106,18 @@ export class Hud {
     if (sig === this.lastMarketSig) return;
     this.lastMarketSig = sig;
     const collectTab = $('#market-window').querySelector('[data-tab="collect"]');
-    if (collectTab) collectTab.innerHTML = `Collect${collectN > 0 ? ` <span class="pip">(${collectN})</span>` : ''}`;
+    if (collectTab) {
+      collectTab.textContent = collectN > 0
+        ? t('itemUi.market.collectWithCount', { count: formatNumber(collectN, { maximumFractionDigits: 0 }) })
+        : t('itemUi.market.collect');
+    }
     this.renderMarketContent(info);
   }
 
   private renderMarketContent(info: MarketInfo | null): void {
     const body = document.getElementById('market-body');
     if (!body) return;
-    if (!info) { body.innerHTML = `<div class="mkt-empty">Step up to the Merchant to deal.</div>`; return; }
+    if (!info) { body.innerHTML = `<div class="mkt-empty">${esc(t('itemUi.market.noMerchant'))}</div>`; return; }
     if (this.marketTab === 'browse') this.renderMarketBrowse(body, info);
     else if (this.marketTab === 'sell') this.renderMarketSell(body, info);
     else this.renderMarketCollect(body, info);
@@ -2008,25 +2125,30 @@ export class Hud {
 
   private renderMarketBrowse(body: HTMLElement, info: MarketInfo): void {
     if (info.listings.length === 0) {
-      body.innerHTML = `<div class="mkt-empty">The market is quiet. Be the first — list something on the Sell tab.</div>`;
+      body.innerHTML = `<div class="mkt-empty">${esc(t('itemUi.market.emptyBrowse'))}</div>`;
       return;
     }
-    body.innerHTML = `<div class="mkt-note">Goods listed by adventurers across the realm. Click Buy to purchase a stack outright.</div>`;
+    body.innerHTML = `<div class="mkt-note">${esc(t('itemUi.market.browseNote'))}</div>`;
     for (const l of info.listings) {
       const item = ITEMS[l.itemId];
       if (!item) continue;
       const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
       const row = document.createElement('div');
       row.className = 'mkt-row';
-      const each = l.count > 1 ? `<br><span class="seller">${formatMoney(Math.ceil(l.price / l.count))} each</span>` : '';
+      const each = l.count > 1 ? `<br><span class="seller">${esc(t('itemUi.market.each', { money: formatLocalizedMoney(Math.ceil(l.price / l.count)) }))}</span>` : '';
+      const stack = l.count > 1 ? ` <span class="stack">${esc(t('itemUi.market.stackCount', { count: formatNumber(l.count, { maximumFractionDigits: 0 }) }))}</span>` : '';
       row.innerHTML =
         `${this.itemIcon(item)}`
-        + `<span class="mkt-name"><span class="nm" style="color:${qColor}">${item.name}${l.count > 1 ? ' <span style="color:#ccc">x' + l.count + '</span>' : ''}</span>`
-        + `<span class="seller${l.house ? ' house' : ''}">${l.house ? "Merchant's stock" : l.sellerName}</span></span>`
+        + `<span class="mkt-name"><span class="nm" style="color:${qColor}">${esc(item.name)}${stack}</span>`
+        + `<span class="seller${l.house ? ' house' : ''}">${esc(l.house ? t('itemUi.market.merchantStock') : l.sellerName)}</span></span>`
         + `<span class="mkt-price">${this.moneyHtml(l.price)}${each}</span>`;
       const btn = document.createElement('button');
       btn.className = 'mkt-btn' + (l.mine ? ' cancel' : '');
-      btn.textContent = l.mine ? 'Reclaim' : 'Buy';
+      btn.textContent = l.mine ? t('itemUi.market.reclaim') : t('itemUi.market.buy');
+      btn.setAttribute('aria-label', t(l.mine ? 'itemUi.market.reclaimAria' : 'itemUi.market.buyAria', {
+        item: item.name,
+        price: formatLocalizedMoney(l.price),
+      }));
       btn.addEventListener('click', () => {
         if (l.mine) this.sim.marketCancel(l.id);
         else this.sim.marketBuy(l.id);
@@ -2039,46 +2161,50 @@ export class Hud {
   }
 
   private renderMarketSell(body: HTMLElement, info: MarketInfo): void {
-    body.innerHTML = `<div class="mkt-note">List goods from your bags. The Merchant takes a ${info.cutPct}% cut when an item sells. You are using ${info.myListingCount}/${info.maxListings} listing slots.</div>`;
+    body.innerHTML = `<div class="mkt-note">${esc(t('itemUi.market.sellNote', {
+      cut: formatNumber(info.cutPct, { maximumFractionDigits: 0 }),
+      used: formatNumber(info.myListingCount, { maximumFractionDigits: 0 }),
+      max: formatNumber(info.maxListings, { maximumFractionDigits: 0 }),
+    }))}</div>`;
     const item = this.marketSellItem ? ITEMS[this.marketSellItem] : null;
     const have = this.marketSellItem ? this.bagCount(this.marketSellItem) : 0;
     const pick = document.createElement('div');
     if (!item || have <= 0) {
       pick.className = 'mkt-sell-pick empty';
-      pick.textContent = 'Click an item in your bags to choose what to sell.';
+      pick.textContent = t('itemUi.market.sellPickEmpty');
       body.appendChild(pick);
       return;
     }
     const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
     pick.className = 'mkt-sell-pick';
-    pick.innerHTML = `${this.itemIcon(item)}<span class="ps-name" style="color:${qColor}">${item.name}</span>`;
+    pick.innerHTML = `${this.itemIcon(item)}<span class="ps-name" style="color:${qColor}">${esc(item.name)}</span>`;
     body.appendChild(pick);
 
     const form = document.createElement('div');
     form.className = 'mkt-price-form';
     const qtyRow = have > 1
-      ? `<div class="mkt-price-row"><label>Quantity</label><input class="coininput" id="mkt-qty" type="number" min="1" max="${have}" value="1"> <span class="mkt-coin-tag">of ${have}</span></div>`
+      ? `<div class="mkt-price-row"><label for="mkt-qty">${esc(t('itemUi.market.quantity'))}</label><input class="coininput" id="mkt-qty" type="number" min="1" max="${have}" value="1"> <span class="mkt-coin-tag">${esc(t('itemUi.market.quantityOf', { count: formatNumber(have, { maximumFractionDigits: 0 }) }))}</span></div>`
       : '';
     // a gentle starting ask: a few times vendor value, never below 1c
     const suggested = Math.max(1, item.buyValue ?? Math.max(1, item.sellValue) * 4);
     const g = Math.floor(suggested / 10000), s = Math.floor((suggested % 10000) / 100), c = suggested % 100;
     form.innerHTML = qtyRow
-      + `<div class="mkt-price-row"><label>Price each</label>`
-      + `<input class="coininput" id="mkt-g" type="number" min="0" value="${g}"><span class="mkt-coin-tag">g</span>`
-      + `<input class="coininput" id="mkt-s" type="number" min="0" max="99" value="${s}"><span class="mkt-coin-tag">s</span>`
-      + `<input class="coininput" id="mkt-c" type="number" min="0" max="99" value="${c}"><span class="mkt-coin-tag">c</span></div>`;
+      + `<div class="mkt-price-row"><label>${esc(t('itemUi.market.priceEach'))}</label>`
+      + `<input class="coininput" id="mkt-g" type="number" min="0" value="${g}" aria-label="${esc(t('itemUi.money.gold'))}"><span class="mkt-coin-tag">${esc(t('itemUi.money.goldShort'))}</span>`
+      + `<input class="coininput" id="mkt-s" type="number" min="0" max="99" value="${s}" aria-label="${esc(t('itemUi.money.silver'))}"><span class="mkt-coin-tag">${esc(t('itemUi.money.silverShort'))}</span>`
+      + `<input class="coininput" id="mkt-c" type="number" min="0" max="99" value="${c}" aria-label="${esc(t('itemUi.money.copper'))}"><span class="mkt-coin-tag">${esc(t('itemUi.money.copperShort'))}</span></div>`;
     body.appendChild(form);
 
     const listBtn = document.createElement('button');
     listBtn.className = 'mkt-list-btn';
-    listBtn.textContent = 'List on the World Market';
+    listBtn.textContent = t('itemUi.market.listButton');
     listBtn.addEventListener('click', () => {
       const qty = have > 1 ? Math.max(1, Math.min(have, parseInt(($('#mkt-qty') as HTMLInputElement)?.value || '1', 10) || 1)) : 1;
       const gg = Math.max(0, parseInt(($('#mkt-g') as HTMLInputElement)?.value || '0', 10) || 0);
       const ss = Math.max(0, parseInt(($('#mkt-s') as HTMLInputElement)?.value || '0', 10) || 0);
       const cc = Math.max(0, parseInt(($('#mkt-c') as HTMLInputElement)?.value || '0', 10) || 0);
       const each = gg * 10000 + ss * 100 + cc;
-      if (each < 1) { this.showError('Name a price of at least 1 copper.'); return; }
+      if (each < 1) { this.showError(t('itemUi.market.minPriceError')); return; }
       this.sim.marketList(this.marketSellItem!, qty, each * qty);
       this.marketSellItem = null;
       audio.coin();
@@ -2089,14 +2215,14 @@ export class Hud {
 
   private renderMarketCollect(body: HTMLElement, info: MarketInfo): void {
     if (info.collectionCopper <= 0 && info.collectionItems.length === 0) {
-      body.innerHTML = `<div class="mkt-empty">Nothing waiting. Sale proceeds and expired listings collect here.</div>`;
+      body.innerHTML = `<div class="mkt-empty">${esc(t('itemUi.market.collectEmpty'))}</div>`;
       return;
     }
-    body.innerHTML = `<div class="mkt-note">Earnings and returned goods the Merchant is holding for you.</div>`;
+    body.innerHTML = `<div class="mkt-note">${esc(t('itemUi.market.collectNote'))}</div>`;
     if (info.collectionCopper > 0) {
       const row = document.createElement('div');
       row.className = 'mkt-collect';
-      row.innerHTML = `<span>Sale proceeds</span><span class="mkt-price">${this.moneyHtml(info.collectionCopper)}</span>`;
+      row.innerHTML = `<span>${esc(t('itemUi.market.saleProceeds'))}</span><span class="mkt-price">${this.moneyHtml(info.collectionCopper)}</span>`;
       body.appendChild(row);
     }
     for (const s of info.collectionItems) {
@@ -2105,13 +2231,14 @@ export class Hud {
       const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
       const row = document.createElement('div');
       row.className = 'mkt-collect';
-      row.innerHTML = `<span style="display:flex;gap:8px;align-items:center">${this.itemIcon(item)}<span style="color:${qColor}">${item.name}${s.count > 1 ? ' x' + s.count : ''}</span></span>`;
+      const stack = s.count > 1 ? ` ${t('itemUi.market.stackCount', { count: formatNumber(s.count, { maximumFractionDigits: 0 }) })}` : '';
+      row.innerHTML = `<span style="display:flex;gap:8px;align-items:center">${this.itemIcon(item)}<span style="color:${qColor}">${esc(item.name)}${esc(stack)}</span></span>`;
       this.attachTooltip(row, () => this.itemTooltip(item));
       body.appendChild(row);
     }
     const btn = document.createElement('button');
     btn.className = 'mkt-list-btn';
-    btn.textContent = 'Collect All';
+    btn.textContent = t('itemUi.market.collectAll');
     btn.addEventListener('click', () => { this.sim.marketCollect(); audio.coin(); });
     body.appendChild(btn);
   }
@@ -2137,24 +2264,29 @@ export class Hud {
   renderBags(): void {
     const el = $('#bags');
     const sim = this.sim;
-    el.innerHTML = `<div class="panel-title"><span>Bags</span><span class="x-btn" data-close>✕</span></div>`;
+    el.innerHTML = `<div class="panel-title"><span>${esc(t('itemUi.bags.title'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('itemUi.bags.close'))}">✕</button></div>`;
     const grid = document.createElement('div');
     grid.className = 'bag-grid';
     if (sim.inventory.length === 0) {
-      grid.innerHTML = `<div style="font-size:12px;color:#887c5c;padding:6px">Your bags are empty.</div>`;
+      grid.innerHTML = `<div class="bag-empty">${esc(t('itemUi.bags.empty'))}</div>`;
     }
     for (const s of [...sim.inventory]) {
       const item = ITEMS[s.itemId];
       if (!item) continue;
-      const row = document.createElement('div');
+      const row = document.createElement('button');
+      row.type = 'button';
       row.className = 'bag-item';
       const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
-      row.innerHTML = `${this.itemIcon(item)}<span style="color:${qColor}">${item.name}</span><span class="bi-count">${s.count > 1 ? 'x' + s.count : ''}</span>`;
+      row.setAttribute('aria-label', t('itemUi.bags.itemAria', {
+        item: item.name,
+        count: formatNumber(s.count, { maximumFractionDigits: 0 }),
+      }));
+      row.innerHTML = `${this.itemIcon(item)}<span style="color:${qColor}">${esc(item.name)}</span><span class="bi-count">${s.count > 1 ? esc(t('itemUi.bags.stackCount', { count: formatNumber(s.count, { maximumFractionDigits: 0 }) })) : ''}</span>`;
       row.addEventListener('click', () => {
         if (this.tradeOpen) {
           this.addItemToTrade(s.itemId);
         } else if (this.marketOpen && this.marketTab === 'sell') {
-          if (item.kind === 'quest') { this.showError('The Merchant will not broker quest items.'); return; }
+          if (item.kind === 'quest') { this.showError(t('itemUi.errors.noQuestItems')); return; }
           this.marketSellItem = s.itemId;
           this.renderMarket();
         } else if (this.vendorOpen) {
@@ -2166,11 +2298,11 @@ export class Hud {
       });
       this.attachTooltip(row, () => {
         let extra = '';
-        if (this.tradeOpen) extra = '<div class="tt-sub">Click to offer in trade</div>';
-        else if (this.marketOpen && this.marketTab === 'sell') extra = item.kind === 'quest' ? '<div class="tt-sub">Cannot be sold on the market</div>' : '<div class="tt-sub">Click to put on the market</div>';
-        else if (this.vendorOpen) extra = '<div class="tt-sub">Click to sell</div>';
-        else if (item.kind === 'weapon' || item.kind === 'armor') extra = '<div class="tt-sub">Click to equip</div>';
-        else if (item.kind === 'food' || item.kind === 'drink') extra = '<div class="tt-sub">Click to consume</div>';
+        if (this.tradeOpen) extra = `<div class="tt-sub">${esc(t('itemUi.tooltip.clickTradeOffer'))}</div>`;
+        else if (this.marketOpen && this.marketTab === 'sell') extra = item.kind === 'quest' ? `<div class="tt-sub">${esc(t('itemUi.tooltip.cannotMarket'))}</div>` : `<div class="tt-sub">${esc(t('itemUi.tooltip.clickMarketList'))}</div>`;
+        else if (this.vendorOpen) extra = `<div class="tt-sub">${esc(t('itemUi.tooltip.clickSell'))}</div>`;
+        else if (item.kind === 'weapon' || item.kind === 'armor') extra = `<div class="tt-sub">${esc(t('itemUi.tooltip.clickEquip'))}</div>`;
+        else if (item.kind === 'food' || item.kind === 'drink') extra = `<div class="tt-sub">${esc(t('itemUi.tooltip.clickConsume'))}</div>`;
         return this.itemTooltip(item) + extra;
       });
       grid.appendChild(row);
@@ -2199,24 +2331,25 @@ export class Hud {
     const sim = this.sim;
     const p = sim.player;
     const cls = CLASSES[sim.cfg.playerClass];
-    let html = `<div class="panel-title"><span>${p.name} <span style="color:#998d6a;font-size:11px">Level ${p.level} ${cls.name}</span></span><span class="x-btn" data-close>✕</span></div>`;
+    const className = classDisplayName(cls.id);
+    let html = `<div class="panel-title"><span>${esc(p.name)} <span class="panel-subtitle">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(p.level, { maximumFractionDigits: 0 }), className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">✕</button></div>`;
     html += `<div class="paperdoll"><div class="equip-col" id="equip-col"></div></div>`;
     const wpn = sim.equipment.mainhand ? ITEMS[sim.equipment.mainhand] : null;
     const dps = wpn?.weapon ? ((wpn.weapon.min + wpn.weapon.max) / 2 + (p.attackPower / 14) * wpn.weapon.speed) / wpn.weapon.speed : 0;
     html += `<div class="char-stats">
-      <span>Strength: <b>${p.stats.str}</b></span><span>Armor: <b>${p.stats.armor}</b></span>
-      <span>Agility: <b>${p.stats.agi}</b></span><span>Attack Power: <b>${p.attackPower}</b></span>
-      <span>Stamina: <b>${p.stats.sta}</b></span><span>Damage/sec: <b>${dps.toFixed(1)}</b></span>
-      <span>Intellect: <b>${p.stats.int}</b></span><span>Crit Chance: <b>${(p.critChance * 100).toFixed(1)}%</b></span>
-      <span>Spirit: <b>${p.stats.spi}</b></span><span>Dodge: <b>${(p.dodgeChance * 100).toFixed(1)}%</b></span>
+      <span>${esc(t('itemUi.stats.str'))}: <b>${formatNumber(p.stats.str, { maximumFractionDigits: 0 })}</b></span><span>${esc(t('itemUi.stats.armor'))}: <b>${formatNumber(p.stats.armor, { maximumFractionDigits: 0 })}</b></span>
+      <span>${esc(t('itemUi.stats.agi'))}: <b>${formatNumber(p.stats.agi, { maximumFractionDigits: 0 })}</b></span><span>${esc(t('itemUi.stats.attackPower'))}: <b>${formatNumber(p.attackPower, { maximumFractionDigits: 0 })}</b></span>
+      <span>${esc(t('itemUi.stats.sta'))}: <b>${formatNumber(p.stats.sta, { maximumFractionDigits: 0 })}</b></span><span>${esc(t('itemUi.stats.dps'))}: <b>${formatNumber(dps, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</b></span>
+      <span>${esc(t('itemUi.stats.int'))}: <b>${formatNumber(p.stats.int, { maximumFractionDigits: 0 })}</b></span><span>${esc(t('itemUi.stats.critChance'))}: <b>${formatNumber(p.critChance * 100, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%</b></span>
+      <span>${esc(t('itemUi.stats.spi'))}: <b>${formatNumber(p.stats.spi, { maximumFractionDigits: 0 })}</b></span><span>${esc(t('itemUi.stats.dodge'))}: <b>${formatNumber(p.dodgeChance * 100, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%</b></span>
     </div>`;
     el.innerHTML = html;
     const col = el.querySelector('#equip-col')!;
-    const slots: { key: 'mainhand' | 'chest' | 'legs' | 'feet'; name: string }[] = [
-      { key: 'mainhand', name: 'Main Hand' },
-      { key: 'chest', name: 'Chest' },
-      { key: 'legs', name: 'Legs' },
-      { key: 'feet', name: 'Feet' },
+    const slots: { key: EquipSlot; name: string }[] = [
+      { key: 'mainhand', name: itemSlotName('mainhand') },
+      { key: 'chest', name: itemSlotName('chest') },
+      { key: 'legs', name: itemSlotName('legs') },
+      { key: 'feet', name: itemSlotName('feet') },
     ];
     for (const slot of slots) {
       const itemId = sim.equipment[slot.key];
@@ -2225,7 +2358,7 @@ export class Hud {
       row.className = 'equip-slot';
       const qColor = !item ? '#666' : QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
       row.innerHTML = `${item ? this.itemIcon(item) : `<img class="item-icon" style="border-color:#444" src="${iconDataUrl('item', 'slot_empty')}" alt="" draggable="false">`}
-        <div><div class="slot-name">${slot.name}</div><div class="slot-item" style="color:${qColor}">${item ? item.name : 'Empty'}</div></div>`;
+        <div><div class="slot-name">${esc(slot.name)}</div><div class="slot-item" style="color:${qColor}">${item ? esc(item.name) : esc(t('itemUi.equipment.empty'))}</div></div>`;
       if (item) this.attachTooltip(row, () => this.itemTooltip(item));
       col.appendChild(row);
     }
@@ -3041,7 +3174,7 @@ export class Hud {
         <div class="trade-col ${info.theirAccepted ? 'accepted' : ''}">
           <h4>${info.otherName}'s offer</h4>
           <div class="trade-items">${info.theirOffer.items.map((s) => itemRow(s, false)).join('') || '<div style="color:#665c40;font-size:11px;padding:4px">Nothing offered yet</div>'}</div>
-          <div class="trade-money">Money: <span class="gold">${formatMoney(info.theirOffer.copper)}</span></div>
+          <div class="trade-money">Money: <span class="gold">${formatLocalizedMoney(info.theirOffer.copper)}</span></div>
         </div>
       </div>
       <div class="trade-hint">Click an offered item to remove it. Both sides must press Accept Trade.</div>`;
@@ -3409,6 +3542,41 @@ function classDisplayName(cls: PlayerClass): string {
 
 function resourceDisplayName(resourceType: ResourceType | null): string {
   return t(RESOURCE_LABEL_KEYS[resourceType ?? 'mana']);
+}
+
+function itemSlotName(slot: EquipSlot): string {
+  return t(ITEM_SLOT_LABEL_KEYS[slot]);
+}
+
+function itemQualityLabel(quality: ItemDef['quality']): string {
+  return t(ITEM_QUALITY_LABEL_KEYS[quality ?? 'common']);
+}
+
+function itemKindLabel(kind: ItemDef['kind']): string {
+  return t(ITEM_KIND_LABEL_KEYS[kind]);
+}
+
+function itemStatName(stat: string): string {
+  const key = ITEM_STAT_LABEL_KEYS[stat as keyof Stats];
+  return key ? t(key) : cap(stat);
+}
+
+function itemNumber(value: number, fractionDigits = 0): string {
+  return formatNumber(value, { minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits });
+}
+
+function parseSimMoney(text: string): number | null {
+  let copper = 0;
+  let matched = false;
+  for (const match of text.matchAll(/(\d+)\s*([gsc])/gi)) {
+    matched = true;
+    const amount = Number(match[1]);
+    const unit = match[2].toLowerCase();
+    if (unit === 'g') copper += amount * 10000;
+    else if (unit === 's') copper += amount * 100;
+    else copper += amount;
+  }
+  return matched ? copper : null;
 }
 
 function formatAbilityNumber(value: number): string {

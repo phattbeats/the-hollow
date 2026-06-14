@@ -4900,6 +4900,373 @@ const phase4 = {
 phase4.es_ES = phase4.es;
 phase4.fr_CA = phase4.fr_FR;
 
+const phase5En = {
+  itemUi: {
+    money: {
+      goldShort: "g",
+      silverShort: "s",
+      copperShort: "c",
+      gold: "gold",
+      silver: "silver",
+      copper: "copper",
+    },
+    slots: {
+      mainhand: "Main Hand",
+      chest: "Chest",
+      legs: "Legs",
+      feet: "Feet",
+    },
+    quality: {
+      poor: "Poor",
+      common: "Common",
+      uncommon: "Uncommon",
+      rare: "Rare",
+      epic: "Epic",
+    },
+    kind: {
+      weapon: "Weapon",
+      armor: "Armor",
+      quest: "Quest Item",
+      junk: "Junk",
+      food: "Food",
+      drink: "Drink",
+    },
+    stats: {
+      armor: "Armor",
+      str: "Strength",
+      agi: "Agility",
+      sta: "Stamina",
+      int: "Intellect",
+      spi: "Spirit",
+      attackPower: "Attack Power",
+      dps: "Damage/sec",
+      critChance: "Crit Chance",
+      dodge: "Dodge",
+    },
+    tooltip: {
+      qualityKind: "{quality} {kind}",
+      damageSpeed: "{min} - {max} Damage  Speed {speed}",
+      dps: "({dps} damage per second)",
+      dagger: "Dagger",
+      armorStat: "{value} Armor",
+      stat: "+{value} {stat}",
+      useFood: "Use: Restores {amount} health over {seconds} sec. Must remain seated while eating.",
+      useDrink: "Use: Restores {amount} mana over {seconds} sec. Must remain seated while drinking.",
+      questItem: "Quest Item",
+      classes: "Classes: {classes}",
+      sellPrice: "Sell price: {money}",
+      clickBuy: "Click to buy",
+      clickSell: "Click to sell",
+      clickEquip: "Click to equip",
+      clickConsume: "Click to consume",
+      clickTradeOffer: "Click to offer in trade",
+      clickMarketList: "Click to put on the market",
+      cannotMarket: "Cannot be sold on the market",
+    },
+    bags: {
+      title: "Bags",
+      close: "Close bags",
+      empty: "Your bags are empty.",
+      itemAria: "{item}, quantity {count}",
+      stackCount: "x{count}",
+    },
+    equipment: {
+      empty: "Empty",
+      levelClass: "Level {level} {className}",
+    },
+    vendor: {
+      goodsTitle: "{name}: Goods",
+      close: "Close vendor",
+      hint: "Click an item in your bags to sell it while this window is open.",
+      buyAria: "Buy {item} for {price}",
+    },
+    market: {
+      title: "The World Market",
+      subtitle: "the Merchant's exchange",
+      close: "Close market",
+      browse: "Browse",
+      sell: "Sell",
+      collect: "Collect",
+      collectWithCount: "Collect ({count})",
+      noMerchant: "Step up to the Merchant to deal.",
+      emptyBrowse: "The market is quiet. Be the first to list something on the Sell tab.",
+      browseNote: "Goods listed by adventurers across the realm. Choose Buy to purchase a stack outright.",
+      merchantStock: "Merchant stock",
+      stackCount: "x{count}",
+      each: "{money} each",
+      buy: "Buy",
+      reclaim: "Reclaim",
+      buyAria: "Buy {item} for {price}",
+      reclaimAria: "Reclaim {item}",
+      sellNote: "List goods from your bags. The Merchant takes a {cut}% cut when an item sells. You are using {used}/{max} listing slots.",
+      sellPickEmpty: "Click an item in your bags to choose what to sell.",
+      quantity: "Quantity",
+      quantityOf: "of {count}",
+      priceEach: "Price each",
+      listButton: "List on the World Market",
+      minPriceError: "Name a price of at least 1 copper.",
+      collectEmpty: "Nothing waiting. Sale proceeds and expired listings collect here.",
+      collectNote: "Earnings and returned goods the Merchant is holding for you.",
+      saleProceeds: "Sale proceeds",
+      collectAll: "Collect All",
+    },
+    logs: {
+      listedItem: "Listed {item} on the World Market for {money}.",
+      sellerSold: "{buyer} bought your {item} for {money}. Collect {proceeds} from the Merchant.",
+      boughtItem: "Bought {item} for {money}.",
+      collectedMoney: "You collect {money} from the Merchant.",
+      reclaimedItem: "Reclaimed {item} from the market.",
+      expiredListing: "Your market listing of {item} expired and waits at the Merchant.",
+    },
+    errors: {
+      notSoldHere: "That item is not sold here.",
+      notEnoughMoney: "Not enough money.",
+      bringGoods: "You must bring your goods to the Merchant.",
+      noQuestItems: "The Merchant will not broker quest items.",
+      notEnoughToSell: "You do not have that many to sell.",
+      minPrice: "Name a price of at least 1 copper.",
+      priceTooHigh: "That price is beyond what the Merchant will broker.",
+      tooManyListings: "You may keep at most {count} goods on the market at once.",
+      tooFar: "You are too far from the Merchant.",
+      listingUnavailable: "That listing is no longer available.",
+      ownListing: "That is your own listing. Cancel it to reclaim it.",
+      cannotAfford: "You cannot afford that.",
+      notYourListing: "That is not your listing.",
+      nothingToCollect: "You have nothing to collect.",
+    },
+  },
+};
+
+const phase5 = {
+  en: phase5En,
+  es: {
+    itemUi: {
+      money: { goldShort: "o", silverShort: "p", copperShort: "c", gold: "oro", silver: "plata", copper: "cobre" },
+      slots: { mainhand: "Mano principal", chest: "Pecho", legs: "Piernas", feet: "Pies" },
+      quality: { poor: "Pobre", common: "Común", uncommon: "Poco común", rare: "Raro", epic: "Épico" },
+      kind: { weapon: "Arma", armor: "Armadura", quest: "Objeto de misión", junk: "Chatarra", food: "Comida", drink: "Bebida" },
+      stats: { armor: "Armadura", str: "Fuerza", agi: "Agilidad", sta: "Aguante", int: "Intelecto", spi: "Espíritu", attackPower: "Poder de ataque", dps: "Daño/seg", critChance: "Prob. de crítico", dodge: "Esquiva" },
+      tooltip: {
+        qualityKind: "{kind} {quality}", damageSpeed: "{min} - {max} de daño  Velocidad {speed}", dps: "({dps} de daño por segundo)", dagger: "Daga", armorStat: "{value} de armadura", stat: "+{value} {stat}",
+        useFood: "Uso: restaura {amount} de salud durante {seconds} s. Debes permanecer sentado mientras comes.", useDrink: "Uso: restaura {amount} de maná durante {seconds} s. Debes permanecer sentado mientras bebes.", questItem: "Objeto de misión", classes: "Clases: {classes}", sellPrice: "Precio de venta: {money}",
+        clickBuy: "Haz clic para comprar", clickSell: "Haz clic para vender", clickEquip: "Haz clic para equipar", clickConsume: "Haz clic para consumir", clickTradeOffer: "Haz clic para ofrecer en el comercio", clickMarketList: "Haz clic para ponerlo en el mercado", cannotMarket: "No se puede vender en el mercado",
+      },
+      bags: { title: "Bolsas", close: "Cerrar bolsas", empty: "Tus bolsas están vacías.", itemAria: "{item}, cantidad {count}", stackCount: "x{count}" },
+      equipment: { empty: "Vacío", levelClass: "Nivel {level} {className}" },
+      vendor: { goodsTitle: "{name}: mercancías", close: "Cerrar vendedor", hint: "Haz clic en un objeto de tus bolsas para venderlo mientras esta ventana esté abierta.", buyAria: "Comprar {item} por {price}" },
+      market: {
+        title: "Mercado Mundial", subtitle: "intercambio del Mercader", close: "Cerrar mercado", browse: "Explorar", sell: "Vender", collect: "Recoger", collectWithCount: "Recoger ({count})", noMerchant: "Acércate al Mercader para comerciar.", emptyBrowse: "El mercado está tranquilo. Sé el primero en publicar algo en la pestaña Vender.", browseNote: "Mercancías publicadas por aventureros del reino entero. Elige Comprar para adquirir un montón al instante.", merchantStock: "Existencias del Mercader", stackCount: "x{count}", each: "{money} cada uno", buy: "Comprar", reclaim: "Recuperar", buyAria: "Comprar {item} por {price}", reclaimAria: "Recuperar {item}", sellNote: "Publica mercancías de tus bolsas. El Mercader toma un {cut}% cuando un objeto se vende. Usas {used}/{max} espacios de venta.", sellPickEmpty: "Haz clic en un objeto de tus bolsas para elegir qué vender.", quantity: "Cantidad", quantityOf: "de {count}", priceEach: "Precio por unidad", listButton: "Publicar en el Mercado Mundial", minPriceError: "Pon un precio de al menos 1 cobre.", collectEmpty: "No hay nada esperando. Las ganancias y publicaciones vencidas se recogen aquí.", collectNote: "Ganancias y bienes devueltos que el Mercader guarda para ti.", saleProceeds: "Ganancias de venta", collectAll: "Recoger lote completo",
+      },
+      logs: { listedItem: "{item} publicado en el Mercado Mundial por {money}.", sellerSold: "{buyer} compró tu {item} por {money}. Recoge {proceeds} del Mercader.", boughtItem: "Compraste {item} por {money}.", collectedMoney: "Recoges {money} del Mercader.", reclaimedItem: "Recuperaste {item} del mercado.", expiredListing: "Tu publicación de {item} venció y espera en el Mercader." },
+      errors: { notSoldHere: "Ese objeto no se vende aquí.", notEnoughMoney: "No tienes suficiente dinero.", bringGoods: "Debes llevar tus bienes al Mercader.", noQuestItems: "El Mercader no acepta objetos de misión.", notEnoughToSell: "No tienes tantos para vender.", minPrice: "Pon un precio de al menos 1 cobre.", priceTooHigh: "Ese precio supera lo que el Mercader aceptará.", tooManyListings: "Puedes mantener como máximo {count} mercancías en el mercado a la vez.", tooFar: "Estás demasiado lejos del Mercader.", listingUnavailable: "Esa publicación ya no está disponible.", ownListing: "Esa es tu propia publicación. Cancélala para recuperarla.", cannotAfford: "No puedes pagarlo.", notYourListing: "Esa publicación no es tuya.", nothingToCollect: "No tienes nada que recoger." },
+    },
+  },
+  es_ES: {} as typeof phase5En,
+  fr_FR: {
+    itemUi: {
+      money: { goldShort: "po", silverShort: "pa", copperShort: "pc", gold: "or", silver: "argent", copper: "cuivre" },
+      slots: { mainhand: "Main droite", chest: "Torse", legs: "Jambes", feet: "Pieds" },
+      quality: { poor: "Médiocre", common: "Commun", uncommon: "Inhabituel", rare: "Rare", epic: "Épique" },
+      kind: { weapon: "Arme", armor: "Armure", quest: "Objet de quête", junk: "Camelote", food: "Nourriture", drink: "Boisson" },
+      stats: { armor: "Armure", str: "Force", agi: "Agilité", sta: "Endurance", int: "Intelligence", spi: "Esprit", attackPower: "Puissance d'attaque", dps: "Dégâts/s", critChance: "Chances de critique", dodge: "Esquive" },
+      tooltip: {
+        qualityKind: "{kind} {quality}", damageSpeed: "{min} - {max} points de dégâts  Vitesse {speed}", dps: "({dps} dégâts par seconde)", dagger: "Dague", armorStat: "{value} armure", stat: "+{value} {stat}",
+        useFood: "Utiliser : rend {amount} points de vie en {seconds} s. Vous devez rester assis en mangeant.", useDrink: "Utiliser : rend {amount} points de mana en {seconds} s. Vous devez rester assis en buvant.", questItem: "Objet de quête", classes: "Classes : {classes}", sellPrice: "Prix de vente : {money}",
+        clickBuy: "Cliquer pour acheter", clickSell: "Cliquer pour vendre", clickEquip: "Cliquer pour équiper", clickConsume: "Cliquer pour consommer", clickTradeOffer: "Cliquer pour proposer en échange", clickMarketList: "Cliquer pour mettre au marché", cannotMarket: "Ne peut pas être vendu au marché",
+      },
+      bags: { title: "Sacs", close: "Fermer les sacs", empty: "Vos sacs sont vides.", itemAria: "{item}, quantité {count}", stackCount: "x{count}" },
+      equipment: { empty: "Vide", levelClass: "Niveau {level} {className}" },
+      vendor: { goodsTitle: "{name} : marchandises", close: "Fermer le vendeur", hint: "Cliquez sur un objet dans vos sacs pour le vendre tant que cette fenêtre est ouverte.", buyAria: "Acheter {item} pour {price}" },
+      market: {
+        title: "Marché mondial", subtitle: "bourse du Marchand", close: "Fermer le marché", browse: "Parcourir", sell: "Vendre", collect: "Récupérer", collectWithCount: "Récupérer ({count})", noMerchant: "Approchez-vous du Marchand pour faire affaire.", emptyBrowse: "Le marché est calme. Soyez le premier à publier quelque chose dans l'onglet Vendre.", browseNote: "Marchandises proposées par les aventuriers du royaume. Choisissez Acheter pour obtenir un lot immédiatement.", merchantStock: "Stock du Marchand", stackCount: "x{count}", each: "{money} l'unité", buy: "Acheter", reclaim: "Reprendre", buyAria: "Acheter {item} pour {price}", reclaimAria: "Reprendre {item}", sellNote: "Listez des marchandises depuis vos sacs. Le Marchand prend {cut}% quand un objet est vendu. Vous utilisez {used}/{max} emplacements.", sellPickEmpty: "Cliquez sur un objet dans vos sacs pour choisir quoi vendre.", quantity: "Quantité", quantityOf: "sur {count}", priceEach: "Prix unitaire", listButton: "Publier au Marché mondial", minPriceError: "Indiquez un prix d'au moins 1 cuivre.", collectEmpty: "Rien en attente. Les recettes et annonces expirées se récupèrent ici.", collectNote: "Recettes et biens retournés que le Marchand garde pour vous.", saleProceeds: "Recettes de vente", collectAll: "Tout récupérer",
+      },
+      logs: { listedItem: "{item} listé au Marché mondial pour {money}.", sellerSold: "{buyer} a acheté votre {item} pour {money}. Récupérez {proceeds} auprès du Marchand.", boughtItem: "{item} acheté pour {money}.", collectedMoney: "Vous récupérez {money} auprès du Marchand.", reclaimedItem: "{item} repris du marché.", expiredListing: "Votre annonce de {item} a expiré et attend chez le Marchand." },
+      errors: { notSoldHere: "Cet objet n'est pas vendu ici.", notEnoughMoney: "Pas assez d'argent.", bringGoods: "Vous devez apporter vos biens au Marchand.", noQuestItems: "Le Marchand ne traite pas les objets de quête.", notEnoughToSell: "Vous n'en avez pas autant à vendre.", minPrice: "Indiquez un prix d'au moins 1 cuivre.", priceTooHigh: "Ce prix dépasse ce que le Marchand acceptera.", tooManyListings: "Vous pouvez garder au maximum {count} marchandises au marché à la fois.", tooFar: "Vous êtes trop loin du Marchand.", listingUnavailable: "Cette annonce n'est plus disponible.", ownListing: "C'est votre propre annonce. Annulez-la pour la récupérer.", cannotAfford: "Vous n'avez pas les moyens.", notYourListing: "Cette annonce n'est pas la vôtre.", nothingToCollect: "Vous n'avez rien à récupérer." },
+    },
+  },
+  fr_CA: {} as typeof phase5En,
+  en_CA: phase5En,
+  it_IT: {
+    itemUi: {
+      money: { goldShort: "o", silverShort: "a", copperShort: "r", gold: "oro", silver: "argento", copper: "rame" },
+      slots: { mainhand: "Mano principale", chest: "Torace", legs: "Gambe", feet: "Piedi" },
+      quality: { poor: "Scadente", common: "Comune", uncommon: "Non comune", rare: "Raro", epic: "Epico" },
+      kind: { weapon: "Arma", armor: "Armatura", quest: "Oggetto missione", junk: "Cianfrusaglia", food: "Cibo", drink: "Bevanda" },
+      stats: { armor: "Armatura", str: "Forza", agi: "Agilità", sta: "Tempra", int: "Intelletto", spi: "Spirito", attackPower: "Potenza d'attacco", dps: "Danni/sec", critChance: "Prob. critico", dodge: "Schivata" },
+      tooltip: {
+        qualityKind: "{kind} {quality}", damageSpeed: "{min} - {max} danni  Velocità {speed}", dps: "({dps} danni al secondo)", dagger: "Pugnale", armorStat: "{value} armatura", stat: "+{value} {stat}",
+        useFood: "Usa: ripristina {amount} salute in {seconds} s. Devi restare seduto mentre mangi.", useDrink: "Usa: ripristina {amount} mana in {seconds} s. Devi restare seduto mentre bevi.", questItem: "Oggetto missione", classes: "Classi: {classes}", sellPrice: "Prezzo di vendita: {money}",
+        clickBuy: "Clicca per comprare", clickSell: "Clicca per vendere", clickEquip: "Clicca per equipaggiare", clickConsume: "Clicca per consumare", clickTradeOffer: "Clicca per offrire nello scambio", clickMarketList: "Clicca per mettere sul mercato", cannotMarket: "Non può essere venduto al mercato",
+      },
+      bags: { title: "Borse", close: "Chiudi borse", empty: "Le tue borse sono vuote.", itemAria: "{item}, quantità {count}", stackCount: "x{count}" },
+      equipment: { empty: "Vuoto", levelClass: "Livello {level} {className}" },
+      vendor: { goodsTitle: "{name}: merci", close: "Chiudi venditore", hint: "Clicca su un oggetto nelle borse per venderlo mentre questa finestra è aperta.", buyAria: "Compra {item} per {price}" },
+      market: {
+        title: "Mercato Mondiale", subtitle: "scambio del Mercante", close: "Chiudi mercato", browse: "Sfoglia", sell: "Vendi", collect: "Ritira", collectWithCount: "Ritira ({count})", noMerchant: "Avvicinati al Mercante per trattare.", emptyBrowse: "Il mercato è silenzioso. Sii il primo a pubblicare qualcosa nella scheda Vendi.", browseNote: "Merci pubblicate dagli avventurieri del reame. Scegli Compra per acquistare subito una pila.", merchantStock: "Scorte del Mercante", stackCount: "x{count}", each: "{money} ciascuno", buy: "Compra", reclaim: "Riprendi", buyAria: "Compra {item} per {price}", reclaimAria: "Riprendi {item}", sellNote: "Metti in vendita merci dalle borse. Il Mercante prende il {cut}% quando un oggetto viene venduto. Usi {used}/{max} spazi.", sellPickEmpty: "Clicca su un oggetto nelle borse per scegliere cosa vendere.", quantity: "Quantità", quantityOf: "di {count}", priceEach: "Prezzo unitario", listButton: "Metti sul Mercato Mondiale", minPriceError: "Indica un prezzo di almeno 1 rame.", collectEmpty: "Non c'è nulla in attesa. Ricavi e inserzioni scadute si ritirano qui.", collectNote: "Ricavi e merci restituite che il Mercante conserva per te.", saleProceeds: "Ricavi di vendita", collectAll: "Ritira tutto",
+      },
+      logs: { listedItem: "{item} messo sul Mercato Mondiale per {money}.", sellerSold: "{buyer} ha comprato il tuo {item} per {money}. Ritira {proceeds} dal Mercante.", boughtItem: "{item} comprato per {money}.", collectedMoney: "Ritiri {money} dal Mercante.", reclaimedItem: "{item} ripreso dal mercato.", expiredListing: "La tua inserzione di {item} è scaduta e attende dal Mercante." },
+      errors: { notSoldHere: "Questo oggetto non è venduto qui.", notEnoughMoney: "Denaro insufficiente.", bringGoods: "Devi portare le merci al Mercante.", noQuestItems: "Il Mercante non tratta oggetti missione.", notEnoughToSell: "Non ne hai così tanti da vendere.", minPrice: "Indica un prezzo di almeno 1 rame.", priceTooHigh: "Questo prezzo supera ciò che il Mercante accetterà.", tooManyListings: "Puoi tenere al massimo {count} merci sul mercato alla volta.", tooFar: "Sei troppo lontano dal Mercante.", listingUnavailable: "Questa inserzione non è più disponibile.", ownListing: "Questa è la tua inserzione. Annullala per riprenderla.", cannotAfford: "Non puoi permettertelo.", notYourListing: "Questa inserzione non è tua.", nothingToCollect: "Non hai nulla da ritirare." },
+    },
+  },
+  de_DE: {
+    itemUi: {
+      money: { goldShort: "G", silverShort: "S", copperShort: "K", gold: "Gold", silver: "Silber", copper: "Kupfer" },
+      slots: { mainhand: "Waffenhand", chest: "Brust", legs: "Beine", feet: "Füße" },
+      quality: { poor: "Schlecht", common: "Gewöhnlich", uncommon: "Ungewöhnlich", rare: "Selten", epic: "Episch" },
+      kind: { weapon: "Waffe", armor: "Rüstung", quest: "Questgegenstand", junk: "Plunder", food: "Essen", drink: "Getränk" },
+      stats: { armor: "Rüstung", str: "Stärke", agi: "Beweglichkeit", sta: "Ausdauer", int: "Intelligenz", spi: "Willenskraft", attackPower: "Angriffskraft", dps: "Schaden/Sek.", critChance: "Krit. Chance", dodge: "Ausweichen" },
+      tooltip: {
+        qualityKind: "{quality} {kind}", damageSpeed: "{min} - {max} Schaden  Tempo {speed}", dps: "({dps} Schaden pro Sekunde)", dagger: "Dolch", armorStat: "{value} Rüstung", stat: "+{value} {stat}",
+        useFood: "Benutzen: Stellt über {seconds} Sek. {amount} Gesundheit wieder her. Ihr müsst beim Essen sitzen bleiben.", useDrink: "Benutzen: Stellt über {seconds} Sek. {amount} Mana wieder her. Ihr müsst beim Trinken sitzen bleiben.", questItem: "Questgegenstand", classes: "Klassen: {classes}", sellPrice: "Verkaufspreis: {money}",
+        clickBuy: "Zum Kaufen klicken", clickSell: "Zum Verkaufen klicken", clickEquip: "Zum Anlegen klicken", clickConsume: "Zum Verbrauchen klicken", clickTradeOffer: "Zum Anbieten im Handel klicken", clickMarketList: "Zum Einstellen auf dem Markt klicken", cannotMarket: "Kann nicht auf dem Markt verkauft werden",
+      },
+      bags: { title: "Taschen", close: "Taschen schließen", empty: "Eure Taschen sind leer.", itemAria: "{item}, Menge {count}", stackCount: "x{count}" },
+      equipment: { empty: "Leer", levelClass: "Stufe {level} {className}" },
+      vendor: { goodsTitle: "{name}: Waren", close: "Händler schließen", hint: "Klickt auf einen Gegenstand in Euren Taschen, um ihn zu verkaufen, solange dieses Fenster geöffnet ist.", buyAria: "{item} für {price} kaufen" },
+      market: {
+        title: "Weltmarkt", subtitle: "Börse des Händlers", close: "Markt schließen", browse: "Durchsuchen", sell: "Verkaufen", collect: "Abholen", collectWithCount: "Abholen ({count})", noMerchant: "Tretet an den Händler heran, um zu handeln.", emptyBrowse: "Der Markt ist ruhig. Stellt als Erste etwas im Reiter Verkaufen ein.", browseNote: "Waren von Abenteurern im ganzen Reich. Wählt Kaufen, um einen Stapel sofort zu erwerben.", merchantStock: "Händlerbestand", stackCount: "x{count}", each: "{money} pro Stück", buy: "Kaufen", reclaim: "Zurückholen", buyAria: "{item} für {price} kaufen", reclaimAria: "{item} zurückholen", sellNote: "Stellt Waren aus Euren Taschen ein. Der Händler nimmt {cut}% beim Verkauf. Ihr nutzt {used}/{max} Verkaufsplätze.", sellPickEmpty: "Klickt auf einen Gegenstand in Euren Taschen, um ihn zu verkaufen.", quantity: "Menge", quantityOf: "von {count}", priceEach: "Preis je Stück", listButton: "Auf dem Weltmarkt einstellen", minPriceError: "Nennt einen Preis von mindestens 1 Kupfer.", collectEmpty: "Nichts wartet. Verkaufserlöse und abgelaufene Angebote werden hier abgeholt.", collectNote: "Erlöse und zurückgegebene Waren, die der Händler für Euch hält.", saleProceeds: "Verkaufserlöse", collectAll: "Alles abholen",
+      },
+      logs: { listedItem: "{item} für {money} auf dem Weltmarkt eingestellt.", sellerSold: "{buyer} hat Euren Gegenstand {item} für {money} gekauft. Holt {proceeds} beim Händler ab.", boughtItem: "{item} für {money} gekauft.", collectedMoney: "Ihr holt {money} beim Händler ab.", reclaimedItem: "{item} vom Markt zurückgeholt.", expiredListing: "Euer Marktangebot von {item} ist abgelaufen und wartet beim Händler." },
+      errors: { notSoldHere: "Dieser Gegenstand wird hier nicht verkauft.", notEnoughMoney: "Nicht genug Geld.", bringGoods: "Ihr müsst Eure Waren zum Händler bringen.", noQuestItems: "Der Händler vermittelt keine Questgegenstände.", notEnoughToSell: "Ihr habt nicht so viele zum Verkaufen.", minPrice: "Nennt einen Preis von mindestens 1 Kupfer.", priceTooHigh: "Dieser Preis übersteigt, was der Händler vermittelt.", tooManyListings: "Ihr könnt höchstens {count} Waren gleichzeitig auf dem Markt halten.", tooFar: "Ihr seid zu weit vom Händler entfernt.", listingUnavailable: "Dieses Angebot ist nicht mehr verfügbar.", ownListing: "Das ist Euer eigenes Angebot. Brecht es ab, um es zurückzuholen.", cannotAfford: "Das könnt Ihr Euch nicht leisten.", notYourListing: "Das ist nicht Euer Angebot.", nothingToCollect: "Ihr habt nichts abzuholen." },
+    },
+  },
+  zh_CN: {
+    itemUi: {
+      money: { goldShort: "金", silverShort: "银", copperShort: "铜", gold: "金币", silver: "银币", copper: "铜币" },
+      slots: { mainhand: "主手", chest: "胸部", legs: "腿部", feet: "脚部" },
+      quality: { poor: "粗糙", common: "普通", uncommon: "优秀", rare: "精良", epic: "史诗" },
+      kind: { weapon: "武器", armor: "护甲", quest: "任务物品", junk: "杂物", food: "食物", drink: "饮料" },
+      stats: { armor: "护甲", str: "力量", agi: "敏捷", sta: "耐力", int: "智力", spi: "精神", attackPower: "攻击强度", dps: "每秒伤害", critChance: "暴击几率", dodge: "躲闪" },
+      tooltip: {
+        qualityKind: "{quality}{kind}", damageSpeed: "{min} - {max} 伤害  速度 {speed}", dps: "（每秒 {dps} 伤害）", dagger: "匕首", armorStat: "{value} 护甲", stat: "+{value} {stat}",
+        useFood: "使用：在 {seconds} 秒内恢复 {amount} 点生命值。进食时必须保持坐下。", useDrink: "使用：在 {seconds} 秒内恢复 {amount} 点法力值。饮水时必须保持坐下。", questItem: "任务物品", classes: "职业：{classes}", sellPrice: "出售价格：{money}",
+        clickBuy: "点击购买", clickSell: "点击出售", clickEquip: "点击装备", clickConsume: "点击使用", clickTradeOffer: "点击加入交易", clickMarketList: "点击上架市场", cannotMarket: "不能在市场出售",
+      },
+      bags: { title: "背包", close: "关闭背包", empty: "你的背包是空的。", itemAria: "{item}，数量 {count}", stackCount: "x{count}" },
+      equipment: { empty: "空", levelClass: "{level} 级 {className}" },
+      vendor: { goodsTitle: "{name}：货物", close: "关闭商人", hint: "此窗口打开时，点击背包中的物品即可出售。", buyAria: "以 {price} 购买 {item}" },
+      market: {
+        title: "世界市场", subtitle: "商人的交易所", close: "关闭市场", browse: "浏览", sell: "出售", collect: "领取", collectWithCount: "领取（{count}）", noMerchant: "靠近商人才能交易。", emptyBrowse: "市场很安静。到出售标签页率先上架物品。", browseNote: "来自全境冒险者的货物。选择购买即可直接买下一组。", merchantStock: "商人库存", stackCount: "x{count}", each: "每个 {money}", buy: "购买", reclaim: "取回", buyAria: "以 {price} 购买 {item}", reclaimAria: "取回 {item}", sellNote: "从背包上架货物。物品售出时商人抽取 {cut}%。你正在使用 {used}/{max} 个上架位。", sellPickEmpty: "点击背包中的物品来选择要出售的货物。", quantity: "数量", quantityOf: "共 {count}", priceEach: "单价", listButton: "上架到世界市场", minPriceError: "价格至少为 1 铜币。", collectEmpty: "没有待领取内容。销售收益和过期上架会在这里领取。", collectNote: "商人为你保管的收益和退回货物。", saleProceeds: "销售收益", collectAll: "全部领取",
+      },
+      logs: { listedItem: "已将 {item} 以 {money} 上架到世界市场。", sellerSold: "{buyer} 以 {money} 买走了你的 {item}。向商人领取 {proceeds}。", boughtItem: "已以 {money} 购买 {item}。", collectedMoney: "你从商人处领取了 {money}。", reclaimedItem: "已从市场取回 {item}。", expiredListing: "你的 {item} 市场上架已过期，正在商人处等待领取。" },
+      errors: { notSoldHere: "这里不出售该物品。", notEnoughMoney: "金钱不足。", bringGoods: "你必须把货物带到商人处。", noQuestItems: "商人不会中介任务物品。", notEnoughToSell: "你没有那么多可出售。", minPrice: "价格至少为 1 铜币。", priceTooHigh: "这个价格超出商人愿意中介的范围。", tooManyListings: "你同时最多只能在市场保留 {count} 件货物。", tooFar: "你离商人太远。", listingUnavailable: "该上架已不可用。", ownListing: "这是你自己的上架。取消即可取回。", cannotAfford: "你买不起。", notYourListing: "这不是你的上架。", nothingToCollect: "你没有可领取内容。" },
+    },
+  },
+  zh_TW: {
+    itemUi: {
+      money: { goldShort: "金", silverShort: "銀", copperShort: "銅", gold: "金幣", silver: "銀幣", copper: "銅幣" },
+      slots: { mainhand: "主手", chest: "胸部", legs: "腿部", feet: "腳部" },
+      quality: { poor: "粗糙", common: "普通", uncommon: "優秀", rare: "精良", epic: "史詩" },
+      kind: { weapon: "武器", armor: "護甲", quest: "任務物品", junk: "雜物", food: "食物", drink: "飲料" },
+      stats: { armor: "護甲", str: "力量", agi: "敏捷", sta: "耐力", int: "智力", spi: "精神", attackPower: "攻擊強度", dps: "每秒傷害", critChance: "爆擊機率", dodge: "閃躲" },
+      tooltip: {
+        qualityKind: "{quality}{kind}", damageSpeed: "{min} - {max} 傷害  速度 {speed}", dps: "（每秒 {dps} 傷害）", dagger: "匕首", armorStat: "{value} 護甲", stat: "+{value} {stat}",
+        useFood: "使用：在 {seconds} 秒內恢復 {amount} 點生命值。進食時必須保持坐下。", useDrink: "使用：在 {seconds} 秒內恢復 {amount} 點法力值。飲水時必須保持坐下。", questItem: "任務物品", classes: "職業：{classes}", sellPrice: "出售價格：{money}",
+        clickBuy: "點擊購買", clickSell: "點擊出售", clickEquip: "點擊裝備", clickConsume: "點擊使用", clickTradeOffer: "點擊加入交易", clickMarketList: "點擊上架市場", cannotMarket: "不能在市場出售",
+      },
+      bags: { title: "背包", close: "關閉背包", empty: "你的背包是空的。", itemAria: "{item}，數量 {count}", stackCount: "x{count}" },
+      equipment: { empty: "空", levelClass: "{level} 級 {className}" },
+      vendor: { goodsTitle: "{name}：貨物", close: "關閉商人", hint: "此視窗開啟時，點擊背包中的物品即可出售。", buyAria: "以 {price} 購買 {item}" },
+      market: {
+        title: "世界市場", subtitle: "商人的交易所", close: "關閉市場", browse: "瀏覽", sell: "出售", collect: "領取", collectWithCount: "領取（{count}）", noMerchant: "靠近商人才能交易。", emptyBrowse: "市場很安靜。到出售分頁率先上架物品。", browseNote: "來自全境冒險者的貨物。選擇購買即可直接買下一組。", merchantStock: "商人庫存", stackCount: "x{count}", each: "每個 {money}", buy: "購買", reclaim: "取回", buyAria: "以 {price} 購買 {item}", reclaimAria: "取回 {item}", sellNote: "從背包上架貨物。物品售出時商人抽取 {cut}%。你正在使用 {used}/{max} 個上架位。", sellPickEmpty: "點擊背包中的物品來選擇要出售的貨物。", quantity: "數量", quantityOf: "共 {count}", priceEach: "單價", listButton: "上架到世界市場", minPriceError: "價格至少為 1 銅幣。", collectEmpty: "沒有待領取內容。銷售收益和過期上架會在這裡領取。", collectNote: "商人為你保管的收益和退回貨物。", saleProceeds: "銷售收益", collectAll: "全部領取",
+      },
+      logs: { listedItem: "已將 {item} 以 {money} 上架到世界市場。", sellerSold: "{buyer} 以 {money} 買走了你的 {item}。向商人領取 {proceeds}。", boughtItem: "已以 {money} 購買 {item}。", collectedMoney: "你從商人處領取了 {money}。", reclaimedItem: "已從市場取回 {item}。", expiredListing: "你的 {item} 市場上架已過期，正在商人處等待領取。" },
+      errors: { notSoldHere: "這裡不出售該物品。", notEnoughMoney: "金錢不足。", bringGoods: "你必須把貨物帶到商人處。", noQuestItems: "商人不會仲介任務物品。", notEnoughToSell: "你沒有那麼多可出售。", minPrice: "價格至少為 1 銅幣。", priceTooHigh: "這個價格超出商人願意仲介的範圍。", tooManyListings: "你同時最多只能在市場保留 {count} 件貨物。", tooFar: "你離商人太遠。", listingUnavailable: "該上架已不可用。", ownListing: "這是你自己的上架。取消即可取回。", cannotAfford: "你買不起。", notYourListing: "這不是你的上架。", nothingToCollect: "你沒有可領取內容。" },
+    },
+  },
+  ko_KR: {
+    itemUi: {
+      money: { goldShort: "금", silverShort: "은", copperShort: "동", gold: "금화", silver: "은화", copper: "동화" },
+      slots: { mainhand: "주장비", chest: "가슴", legs: "다리", feet: "발" },
+      quality: { poor: "하급", common: "일반", uncommon: "고급", rare: "희귀", epic: "영웅" },
+      kind: { weapon: "무기", armor: "방어구", quest: "퀘스트 아이템", junk: "잡동사니", food: "음식", drink: "음료" },
+      stats: { armor: "방어도", str: "힘", agi: "민첩성", sta: "체력", int: "지능", spi: "정신력", attackPower: "전투력", dps: "초당 피해", critChance: "치명타율", dodge: "회피" },
+      tooltip: {
+        qualityKind: "{quality} {kind}", damageSpeed: "{min} - {max} 피해  속도 {speed}", dps: "(초당 피해 {dps})", dagger: "단검", armorStat: "방어도 {value}", stat: "+{value} {stat}",
+        useFood: "사용 효과: {seconds}초에 걸쳐 생명력 {amount} 회복. 먹는 동안 앉아 있어야 합니다.", useDrink: "사용 효과: {seconds}초에 걸쳐 마나 {amount} 회복. 마시는 동안 앉아 있어야 합니다.", questItem: "퀘스트 아이템", classes: "직업: {classes}", sellPrice: "판매 가격: {money}",
+        clickBuy: "클릭하여 구매", clickSell: "클릭하여 판매", clickEquip: "클릭하여 장착", clickConsume: "클릭하여 사용", clickTradeOffer: "클릭하여 거래에 올리기", clickMarketList: "클릭하여 시장에 올리기", cannotMarket: "시장에서 판매할 수 없음",
+      },
+      bags: { title: "가방", close: "가방 닫기", empty: "가방이 비어 있습니다.", itemAria: "{item}, 수량 {count}", stackCount: "x{count}" },
+      equipment: { empty: "비어 있음", levelClass: "{level}레벨 {className}" },
+      vendor: { goodsTitle: "{name}: 상품", close: "상인 닫기", hint: "이 창이 열려 있을 때 가방의 아이템을 클릭하면 판매합니다.", buyAria: "{price}에 {item} 구매" },
+      market: {
+        title: "세계 시장", subtitle: "상인의 거래소", close: "시장 닫기", browse: "보기", sell: "판매", collect: "수령", collectWithCount: "수령 ({count})", noMerchant: "상인에게 가까이 가야 거래할 수 있습니다.", emptyBrowse: "시장이 조용합니다. 판매 탭에서 먼저 물건을 올려 보세요.", browseNote: "왕국 전역의 모험가가 올린 상품입니다. 구매를 선택하면 묶음을 바로 삽니다.", merchantStock: "상인 재고", stackCount: "x{count}", each: "개당 {money}", buy: "구매", reclaim: "회수", buyAria: "{price}에 {item} 구매", reclaimAria: "{item} 회수", sellNote: "가방의 상품을 올립니다. 아이템이 팔리면 상인이 {cut}%를 가져갑니다. 등록 칸 {used}/{max}개 사용 중입니다.", sellPickEmpty: "판매할 아이템을 선택하려면 가방에서 클릭하세요.", quantity: "수량", quantityOf: "/ {count}", priceEach: "개당 가격", listButton: "세계 시장에 등록", minPriceError: "가격은 최소 1동화여야 합니다.", collectEmpty: "기다리는 물건이 없습니다. 판매 대금과 만료된 등록품은 여기에서 받습니다.", collectNote: "상인이 보관 중인 수익과 반환된 상품입니다.", saleProceeds: "판매 대금", collectAll: "모두 수령",
+      },
+      logs: { listedItem: "{item}을(를) {money}에 세계 시장에 등록했습니다.", sellerSold: "{buyer}님이 당신의 {item}을(를) {money}에 샀습니다. 상인에게서 {proceeds}을(를) 수령하세요.", boughtItem: "{item}을(를) {money}에 구매했습니다.", collectedMoney: "상인에게서 {money}을(를) 수령합니다.", reclaimedItem: "시장에서 {item}을(를) 회수했습니다.", expiredListing: "{item} 시장 등록이 만료되어 상인에게 보관되었습니다." },
+      errors: { notSoldHere: "이 아이템은 여기서 판매하지 않습니다.", notEnoughMoney: "돈이 부족합니다.", bringGoods: "상품을 상인에게 가져가야 합니다.", noQuestItems: "상인은 퀘스트 아이템을 중개하지 않습니다.", notEnoughToSell: "판매할 만큼 충분히 가지고 있지 않습니다.", minPrice: "가격은 최소 1동화여야 합니다.", priceTooHigh: "그 가격은 상인이 중개할 수 있는 범위를 넘습니다.", tooManyListings: "시장에는 동시에 최대 {count}개의 상품만 둘 수 있습니다.", tooFar: "상인에게서 너무 멉니다.", listingUnavailable: "그 등록은 더 이상 이용할 수 없습니다.", ownListing: "자신의 등록입니다. 취소하면 회수할 수 있습니다.", cannotAfford: "그것을 살 돈이 부족합니다.", notYourListing: "당신의 등록이 아닙니다.", nothingToCollect: "수령할 것이 없습니다." },
+    },
+  },
+  ja_JP: {
+    itemUi: {
+      money: { goldShort: "金", silverShort: "銀", copperShort: "銅", gold: "金貨", silver: "銀貨", copper: "銅貨" },
+      slots: { mainhand: "メインハンド", chest: "胸", legs: "脚", feet: "足" },
+      quality: { poor: "粗悪", common: "一般", uncommon: "良質", rare: "レア", epic: "エピック" },
+      kind: { weapon: "武器", armor: "防具", quest: "クエストアイテム", junk: "雑貨", food: "食べ物", drink: "飲み物" },
+      stats: { armor: "防御力", str: "筋力", agi: "敏捷性", sta: "スタミナ", int: "知力", spi: "精神力", attackPower: "攻撃力", dps: "秒間ダメージ", critChance: "クリティカル率", dodge: "回避" },
+      tooltip: {
+        qualityKind: "{quality} {kind}", damageSpeed: "{min} - {max} ダメージ  速度 {speed}", dps: "（秒間 {dps} ダメージ）", dagger: "短剣", armorStat: "防御力 {value}", stat: "+{value} {stat}",
+        useFood: "使用: {seconds}秒かけて体力を{amount}回復します。食事中は座ったままでいる必要があります。", useDrink: "使用: {seconds}秒かけてマナを{amount}回復します。飲んでいる間は座ったままでいる必要があります。", questItem: "クエストアイテム", classes: "クラス: {classes}", sellPrice: "売却価格: {money}",
+        clickBuy: "クリックして購入", clickSell: "クリックして売却", clickEquip: "クリックして装備", clickConsume: "クリックして使用", clickTradeOffer: "クリックして取引に出す", clickMarketList: "クリックして市場に出す", cannotMarket: "市場では売却できません",
+      },
+      bags: { title: "バッグ", close: "バッグを閉じる", empty: "バッグは空です。", itemAria: "{item}、数量 {count}", stackCount: "x{count}" },
+      equipment: { empty: "空", levelClass: "レベル{level} {className}" },
+      vendor: { goodsTitle: "{name}: 商品", close: "商人を閉じる", hint: "このウィンドウが開いている間、バッグ内のアイテムをクリックすると売却できます。", buyAria: "{item}を{price}で購入" },
+      market: {
+        title: "ワールドマーケット", subtitle: "商人の取引所", close: "市場を閉じる", browse: "閲覧", sell: "売却", collect: "受取", collectWithCount: "受取（{count}）", noMerchant: "取引するには商人に近づいてください。", emptyBrowse: "市場は静かです。売却タブで最初に何かを出品しましょう。", browseNote: "王国中の冒険者が出品した品です。購入を選ぶとスタックを即時購入します。", merchantStock: "商人の在庫", stackCount: "x{count}", each: "各 {money}", buy: "購入", reclaim: "回収", buyAria: "{item}を{price}で購入", reclaimAria: "{item}を回収", sellNote: "バッグから品物を出品します。売れると商人が{cut}%を受け取ります。出品枠 {used}/{max} を使用中です。", sellPickEmpty: "売るものを選ぶにはバッグ内のアイテムをクリックしてください。", quantity: "数量", quantityOf: "/ {count}", priceEach: "単価", listButton: "ワールドマーケットに出品", minPriceError: "価格は最低1銅貨にしてください。", collectEmpty: "待機中のものはありません。売上と期限切れの出品はここで受け取ります。", collectNote: "商人が預かっている売上と返却品です。", saleProceeds: "売上", collectAll: "すべて受け取る",
+      },
+      logs: { listedItem: "{item}を{money}でワールドマーケットに出品しました。", sellerSold: "{buyer}があなたの{item}を{money}で購入しました。商人から{proceeds}を受け取ってください。", boughtItem: "{item}を{money}で購入しました。", collectedMoney: "商人から{money}を受け取ります。", reclaimedItem: "市場から{item}を回収しました。", expiredListing: "{item}の市場出品が期限切れになり、商人のもとで待機しています。" },
+      errors: { notSoldHere: "そのアイテムはここでは販売されていません。", notEnoughMoney: "お金が足りません。", bringGoods: "品物を商人のところへ持っていく必要があります。", noQuestItems: "商人はクエストアイテムを仲介しません。", notEnoughToSell: "売るだけの数を持っていません。", minPrice: "価格は最低1銅貨にしてください。", priceTooHigh: "その価格は商人が仲介できる範囲を超えています。", tooManyListings: "市場に同時に置ける品は最大{count}個です。", tooFar: "商人から遠すぎます。", listingUnavailable: "その出品はもう利用できません。", ownListing: "それは自分の出品です。キャンセルすると回収できます。", cannotAfford: "購入するお金が足りません。", notYourListing: "それはあなたの出品ではありません。", nothingToCollect: "受け取るものはありません。" },
+    },
+  },
+  pt_BR: {
+    itemUi: {
+      money: { goldShort: "o", silverShort: "p", copperShort: "c", gold: "ouro", silver: "prata", copper: "cobre" },
+      slots: { mainhand: "Mão principal", chest: "Peito", legs: "Pernas", feet: "Pés" },
+      quality: { poor: "Ruim", common: "Comum", uncommon: "Incomum", rare: "Raro", epic: "Épico" },
+      kind: { weapon: "Arma", armor: "Armadura", quest: "Item de missão", junk: "Sucata", food: "Comida", drink: "Bebida" },
+      stats: { armor: "Armadura", str: "Força", agi: "Agilidade", sta: "Vigor", int: "Intelecto", spi: "Espírito", attackPower: "Poder de ataque", dps: "Dano/s", critChance: "Chance crítica", dodge: "Esquiva" },
+      tooltip: {
+        qualityKind: "{kind} {quality}", damageSpeed: "{min} - {max} de dano  Velocidade {speed}", dps: "({dps} de dano por segundo)", dagger: "Adaga", armorStat: "{value} de armadura", stat: "+{value} {stat}",
+        useFood: "Usar: restaura {amount} de vida ao longo de {seconds} s. É preciso permanecer sentado enquanto come.", useDrink: "Usar: restaura {amount} de mana ao longo de {seconds} s. É preciso permanecer sentado enquanto bebe.", questItem: "Item de missão", classes: "Classes: {classes}", sellPrice: "Preço de venda: {money}",
+        clickBuy: "Clique para comprar", clickSell: "Clique para vender", clickEquip: "Clique para equipar", clickConsume: "Clique para consumir", clickTradeOffer: "Clique para oferecer na troca", clickMarketList: "Clique para colocar no mercado", cannotMarket: "Não pode ser vendido no mercado",
+      },
+      bags: { title: "Bolsas", close: "Fechar bolsas", empty: "Suas bolsas estão vazias.", itemAria: "{item}, quantidade {count}", stackCount: "x{count}" },
+      equipment: { empty: "Vazio", levelClass: "Nível {level} {className}" },
+      vendor: { goodsTitle: "{name}: mercadorias", close: "Fechar vendedor", hint: "Clique em um item nas suas bolsas para vendê-lo enquanto esta janela estiver aberta.", buyAria: "Comprar {item} por {price}" },
+      market: {
+        title: "Mercado Mundial", subtitle: "bolsa do Mercador", close: "Fechar mercado", browse: "Procurar", sell: "Vender", collect: "Coletar", collectWithCount: "Coletar ({count})", noMerchant: "Aproxime-se do Mercador para negociar.", emptyBrowse: "O mercado está quieto. Seja o primeiro a listar algo na aba Vender.", browseNote: "Mercadorias listadas por aventureiros do reino inteiro. Escolha Comprar para adquirir uma pilha imediatamente.", merchantStock: "Estoque do Mercador", stackCount: "x{count}", each: "{money} cada", buy: "Comprar", reclaim: "Recuperar", buyAria: "Comprar {item} por {price}", reclaimAria: "Recuperar {item}", sellNote: "Liste mercadorias das suas bolsas. O Mercador fica com {cut}% quando um item é vendido. Você usa {used}/{max} espaços.", sellPickEmpty: "Clique em um item nas suas bolsas para escolher o que vender.", quantity: "Quantidade", quantityOf: "de {count}", priceEach: "Preço unitário", listButton: "Listar no Mercado Mundial", minPriceError: "Informe um preço de pelo menos 1 cobre.", collectEmpty: "Nada esperando. Receitas de venda e listagens expiradas ficam aqui.", collectNote: "Receitas e bens devolvidos que o Mercador guarda para você.", saleProceeds: "Receitas da venda", collectAll: "Coletar tudo",
+      },
+      logs: { listedItem: "{item} listado no Mercado Mundial por {money}.", sellerSold: "{buyer} comprou seu {item} por {money}. Colete {proceeds} com o Mercador.", boughtItem: "{item} comprado por {money}.", collectedMoney: "Você coleta {money} com o Mercador.", reclaimedItem: "{item} recuperado do mercado.", expiredListing: "Sua listagem de {item} expirou e espera com o Mercador." },
+      errors: { notSoldHere: "Esse item não é vendido aqui.", notEnoughMoney: "Dinheiro insuficiente.", bringGoods: "Você precisa levar seus bens ao Mercador.", noQuestItems: "O Mercador não negocia itens de missão.", notEnoughToSell: "Você não tem essa quantidade para vender.", minPrice: "Informe um preço de pelo menos 1 cobre.", priceTooHigh: "Esse preço está além do que o Mercador aceitará.", tooManyListings: "Você pode manter no máximo {count} mercadorias no mercado por vez.", tooFar: "Você está longe demais do Mercador.", listingUnavailable: "Essa listagem não está mais disponível.", ownListing: "Essa é sua própria listagem. Cancele para recuperá-la.", cannotAfford: "Você não pode pagar por isso.", notYourListing: "Essa listagem não é sua.", nothingToCollect: "Você não tem nada para coletar." },
+    },
+  },
+  ru_RU: {
+    itemUi: {
+      money: { goldShort: "з", silverShort: "с", copperShort: "м", gold: "золото", silver: "серебро", copper: "медь" },
+      slots: { mainhand: "Правая рука", chest: "Грудь", legs: "Ноги", feet: "Ступни" },
+      quality: { poor: "Низкое", common: "Обычное", uncommon: "Необычное", rare: "Редкое", epic: "Эпическое" },
+      kind: { weapon: "Оружие", armor: "Броня", quest: "Задание", junk: "Хлам", food: "Еда", drink: "Напиток" },
+      stats: { armor: "Броня", str: "Сила", agi: "Ловкость", sta: "Выносливость", int: "Интеллект", spi: "Дух", attackPower: "Сила атаки", dps: "Урон/сек", critChance: "Шанс крита", dodge: "Уклонение" },
+      tooltip: {
+        qualityKind: "{quality} {kind}", damageSpeed: "{min} - {max} урона  Скорость {speed}", dps: "({dps} урона в секунду)", dagger: "Кинжал", armorStat: "{value} брони", stat: "+{value} {stat}",
+        useFood: "Использование: восстанавливает {amount} здоровья за {seconds} сек. Нужно оставаться сидя во время еды.", useDrink: "Использование: восстанавливает {amount} маны за {seconds} сек. Нужно оставаться сидя во время питья.", questItem: "Предмет задания", classes: "Классы: {classes}", sellPrice: "Цена продажи: {money}",
+        clickBuy: "Нажмите, чтобы купить", clickSell: "Нажмите, чтобы продать", clickEquip: "Нажмите, чтобы экипировать", clickConsume: "Нажмите, чтобы использовать", clickTradeOffer: "Нажмите, чтобы предложить в обмене", clickMarketList: "Нажмите, чтобы выставить на рынок", cannotMarket: "Нельзя продать на рынке",
+      },
+      bags: { title: "Сумки", close: "Закрыть сумки", empty: "Ваши сумки пусты.", itemAria: "{item}, количество {count}", stackCount: "x{count}" },
+      equipment: { empty: "Пусто", levelClass: "Уровень {level} {className}" },
+      vendor: { goodsTitle: "{name}: товары", close: "Закрыть торговца", hint: "Нажмите на предмет в сумках, чтобы продать его, пока это окно открыто.", buyAria: "Купить {item} за {price}" },
+      market: {
+        title: "Мировой рынок", subtitle: "биржа Торговца", close: "Закрыть рынок", browse: "Просмотр", sell: "Продать", collect: "Забрать", collectWithCount: "Забрать ({count})", noMerchant: "Подойдите к Торговцу, чтобы заключать сделки.", emptyBrowse: "На рынке тихо. Выставьте что-нибудь первым на вкладке Продать.", browseNote: "Товары, выставленные искателями приключений со всего мира. Выберите Купить, чтобы сразу приобрести стопку.", merchantStock: "Запасы Торговца", stackCount: "x{count}", each: "{money} за штуку", buy: "Купить", reclaim: "Вернуть", buyAria: "Купить {item} за {price}", reclaimAria: "Вернуть {item}", sellNote: "Выставляйте товары из сумок. Торговец берет {cut}% при продаже. Использовано мест: {used}/{max}.", sellPickEmpty: "Нажмите на предмет в сумках, чтобы выбрать товар для продажи.", quantity: "Количество", quantityOf: "из {count}", priceEach: "Цена за штуку", listButton: "Выставить на мировой рынок", minPriceError: "Назовите цену не меньше 1 меди.", collectEmpty: "Ничего не ждет. Выручка и истекшие лоты собираются здесь.", collectNote: "Выручка и возвращенные товары, которые Торговец хранит для вас.", saleProceeds: "Выручка", collectAll: "Забрать все",
+      },
+      logs: { listedItem: "{item} выставлен на мировой рынок за {money}.", sellerSold: "{buyer} купил ваш {item} за {money}. Заберите {proceeds} у Торговца.", boughtItem: "{item} куплен за {money}.", collectedMoney: "Вы забираете {money} у Торговца.", reclaimedItem: "{item} возвращен с рынка.", expiredListing: "Ваш лот {item} истек и ждет у Торговца." },
+      errors: { notSoldHere: "Этот предмет здесь не продается.", notEnoughMoney: "Недостаточно денег.", bringGoods: "Нужно принести товары к Торговцу.", noQuestItems: "Торговец не принимает предметы заданий.", notEnoughToSell: "У вас нет столько для продажи.", minPrice: "Назовите цену не меньше 1 меди.", priceTooHigh: "Эта цена выше той, которую Торговец согласится обработать.", tooManyListings: "На рынке можно держать не больше {count} товаров одновременно.", tooFar: "Вы слишком далеко от Торговца.", listingUnavailable: "Этот лот больше недоступен.", ownListing: "Это ваш собственный лот. Отмените его, чтобы вернуть.", cannotAfford: "Вам это не по карману.", notYourListing: "Это не ваш лот.", nothingToCollect: "Вам нечего забирать." },
+    },
+  },
+};
+
+phase5.es_ES = phase5.es;
+phase5.fr_CA = phase5.fr_FR;
+
 export const en = {
   nav: {
     home: "Home",
@@ -5032,6 +5399,7 @@ export const en = {
   ...phase2.en,
   ...phase3.en,
   ...phase4.en,
+  ...phase5.en,
 };
 
 export const es: typeof en = {
@@ -5166,6 +5534,7 @@ export const es: typeof en = {
   ...phase2.es,
   ...phase3.es,
   ...phase4.es,
+  ...phase5.es,
 };
 
 export const es_ES: typeof en = {
@@ -5300,6 +5669,7 @@ export const es_ES: typeof en = {
   ...phase2.es_ES,
   ...phase3.es_ES,
   ...phase4.es_ES,
+  ...phase5.es_ES,
 };
 
 export const fr_FR: typeof en = {
@@ -5434,6 +5804,7 @@ export const fr_FR: typeof en = {
   ...phase2.fr_FR,
   ...phase3.fr_FR,
   ...phase4.fr_FR,
+  ...phase5.fr_FR,
 };
 
 export const fr_CA: typeof en = {
@@ -5568,6 +5939,7 @@ export const fr_CA: typeof en = {
   ...phase2.fr_CA,
   ...phase3.fr_CA,
   ...phase4.fr_CA,
+  ...phase5.fr_CA,
 };
 
 export const en_CA: typeof en = {
@@ -5702,6 +6074,7 @@ export const en_CA: typeof en = {
   ...phase2.en_CA,
   ...phase3.en_CA,
   ...phase4.en_CA,
+  ...phase5.en_CA,
 };
 
 export const it_IT: typeof en = {
@@ -5836,6 +6209,7 @@ export const it_IT: typeof en = {
   ...phase2.it_IT,
   ...phase3.it_IT,
   ...phase4.it_IT,
+  ...phase5.it_IT,
 };
 
 export const de_DE: typeof en = {
@@ -5970,6 +6344,7 @@ export const de_DE: typeof en = {
   ...phase2.de_DE,
   ...phase3.de_DE,
   ...phase4.de_DE,
+  ...phase5.de_DE,
 };
 
 export const zh_CN: typeof en = {
@@ -6104,6 +6479,7 @@ export const zh_CN: typeof en = {
   ...phase2.zh_CN,
   ...phase3.zh_CN,
   ...phase4.zh_CN,
+  ...phase5.zh_CN,
 };
 
 export const zh_TW: typeof en = {
@@ -6238,6 +6614,7 @@ export const zh_TW: typeof en = {
   ...phase2.zh_TW,
   ...phase3.zh_TW,
   ...phase4.zh_TW,
+  ...phase5.zh_TW,
 };
 
 export const ko_KR: typeof en = {
@@ -6372,6 +6749,7 @@ export const ko_KR: typeof en = {
   ...phase2.ko_KR,
   ...phase3.ko_KR,
   ...phase4.ko_KR,
+  ...phase5.ko_KR,
 };
 
 export const ja_JP: typeof en = {
@@ -6506,6 +6884,7 @@ export const ja_JP: typeof en = {
   ...phase2.ja_JP,
   ...phase3.ja_JP,
   ...phase4.ja_JP,
+  ...phase5.ja_JP,
 };
 
 export const pt_BR: typeof en = {
@@ -6640,6 +7019,7 @@ export const pt_BR: typeof en = {
   ...phase2.pt_BR,
   ...phase3.pt_BR,
   ...phase4.pt_BR,
+  ...phase5.pt_BR,
 };
 
 export const ru_RU: typeof en = {
@@ -6774,6 +7154,7 @@ export const ru_RU: typeof en = {
   ...phase2.ru_RU,
   ...phase3.ru_RU,
   ...phase4.ru_RU,
+  ...phase5.ru_RU,
 };
 
 const translations = {
@@ -6867,4 +7248,44 @@ export function formatNumber(value: number, options?: Intl.NumberFormatOptions, 
 
 export function formatDateTime(value: Date | number, options?: Intl.DateTimeFormatOptions, lang: SupportedLanguage = currentLanguage): string {
   return new Intl.DateTimeFormat(languageTag(lang), options).format(value);
+}
+
+export interface MoneyParts {
+  gold: number;
+  silver: number;
+  copper: number;
+}
+
+export type MoneyDisplayStyle = "compact" | "long";
+
+export function moneyParts(copper: number): MoneyParts {
+  const safeCopper = Number.isFinite(copper) ? Math.max(0, Math.floor(copper)) : 0;
+  return {
+    gold: Math.floor(safeCopper / 10000),
+    silver: Math.floor((safeCopper % 10000) / 100),
+    copper: safeCopper % 100,
+  };
+}
+
+export function formatMoney(copper: number, style: MoneyDisplayStyle = "compact"): string {
+  const parts = moneyParts(copper);
+  const unitKeys = style === "compact"
+    ? {
+      gold: "itemUi.money.goldShort",
+      silver: "itemUi.money.silverShort",
+      copper: "itemUi.money.copperShort",
+    } satisfies Record<keyof MoneyParts, TranslationKey>
+    : {
+      gold: "itemUi.money.gold",
+      silver: "itemUi.money.silver",
+      copper: "itemUi.money.copper",
+    } satisfies Record<keyof MoneyParts, TranslationKey>;
+  const rows: { value: number; unit: TranslationKey }[] = [];
+  if (parts.gold > 0) rows.push({ value: parts.gold, unit: unitKeys.gold });
+  if (parts.silver > 0 || parts.gold > 0) rows.push({ value: parts.silver, unit: unitKeys.silver });
+  if (parts.copper > 0 || rows.length === 0) rows.push({ value: parts.copper, unit: unitKeys.copper });
+  return rows.map(({ value, unit }) => {
+    const amount = formatNumber(value, { maximumFractionDigits: 0 });
+    return style === "compact" ? `${amount}${t(unit)}` : `${amount} ${t(unit)}`;
+  }).join(" ");
 }

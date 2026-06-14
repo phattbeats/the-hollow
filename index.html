@@ -213,8 +213,18 @@
     justify-content: space-between;
     align-items: center;
   }
-  .x-btn { color: #c9b27a; cursor: pointer; font-size: 14px; padding: 0 4px; border: 1px solid #463a1c; border-radius: 3px; background: #1a1410; }
+  .x-btn { color: #c9b27a; cursor: pointer; font-size: 14px; padding: 0 4px; border: 1px solid #463a1c; border-radius: 3px; background: #1a1410; font-family: var(--ui-font); }
   .x-btn:hover { color: #fff; border-color: var(--gold-dim); }
+  .x-btn:focus-visible,
+  .vendor-item:focus-visible,
+  .bag-item:focus-visible,
+  .mkt-tab:focus-visible,
+  .mkt-btn:focus-visible,
+  .mkt-list-btn:focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
+  .panel-subtitle { color: var(--color-text-muted); font-size: 11px; font-weight: 400; }
   .gold { color: var(--gold); }
 
   /* ---------- nameplates ---------- */
@@ -524,7 +534,7 @@
 
   /* vendor */
   #vendor-window { left: 50%; top: 16%; transform: translateX(-50%); width: 400px; max-height: 68%; overflow-y: auto; }
-  .vendor-item { display: flex; gap: 8px; align-items: center; padding: 5px; border-radius: 4px; cursor: pointer; }
+  .vendor-item { display: flex; gap: 8px; align-items: center; width: 100%; padding: 5px; border: 0; border-radius: 4px; cursor: pointer; background: transparent; color: inherit; font-family: var(--ui-font); text-align: left; }
   .vendor-item:hover { background: #ffffff10; }
   .vendor-item .vi-name { font-size: 12px; flex: 1; }
   .vendor-item .vi-price { font-size: 11px; color: #ddd; }
@@ -533,10 +543,12 @@
   /* bags */
   #bags { right: 12px; bottom: 64px; width: 310px; max-height: 60%; overflow-y: auto; }
   .bag-grid { display: flex; flex-direction: column; gap: 2px; }
-  .bag-item { display: flex; gap: 8px; align-items: center; font-size: 12px; padding: 3px 4px; border-radius: 3px; cursor: pointer; }
+  .bag-item { display: flex; gap: 8px; align-items: center; width: 100%; font-size: 12px; padding: 3px 4px; border: 0; border-radius: 3px; cursor: pointer; background: transparent; color: inherit; font-family: var(--ui-font); text-align: left; }
   .bag-item:hover { background: #ffffff12; }
   .bag-item .bi-count { margin-left: auto; color: #ccc; }
+  .bag-empty { font-size: 12px; color: var(--color-text-muted); padding: 6px; }
   .money { margin-top: 8px; font-size: 12px; color: var(--gold); text-align: right; }
+  .money-inline, .coin-part { display: inline-flex; align-items: center; }
   .coin { display: inline-block; width: 11px; height: 11px; border-radius: 50%; vertical-align: -1px; margin-left: 6px; margin-right: 2px; }
   .coin.g { background: radial-gradient(circle at 35% 30%, #ffe98a, #b8860b); }
   .coin.s { background: radial-gradient(circle at 35% 30%, #e8e8e8, #888); }
@@ -638,7 +650,7 @@
   #market-window { left: 50%; top: 12%; transform: translateX(-50%); width: 470px; max-height: 76%; flex-direction: column; }
   .mkt-tabs { display: flex; gap: 4px; margin: 2px 0 8px; }
   .mkt-tab { flex: 1; text-align: center; font-family: var(--title-font); font-size: 12px; color: #cabb8c;
-    padding: 5px 4px; border-radius: 4px 4px 0 0; cursor: pointer; background: #ffffff08; border-bottom: 2px solid transparent; }
+    padding: 5px 4px; border: 0; border-radius: 4px 4px 0 0; cursor: pointer; background: #ffffff08; border-bottom: 2px solid transparent; }
   .mkt-tab:hover { background: #ffffff14; color: #ffe6a8; }
   .mkt-tab.sel { color: var(--gold); background: #ffffff16; border-bottom-color: #cc9a3c; }
   .mkt-tab .pip { color: #9fdc7f; font-size: 10.5px; }
@@ -649,6 +661,7 @@
   .mkt-row:hover { background: #ffffff0d; }
   .mkt-row .mkt-name { overflow: hidden; }
   .mkt-row .mkt-name .nm { display: block; }
+  .mkt-row .mkt-name .stack { color: var(--color-text-light); }
   .mkt-row .mkt-name .seller { font-size: 10.5px; color: #8c8468; }
   .mkt-row .mkt-name .seller.house { color: #d4af37; }
   .mkt-row .mkt-price { font-size: 11.5px; color: #ffe6a8; white-space: nowrap; text-align: right; }
@@ -662,7 +675,7 @@
   .mkt-sell-pick .ps-name { font-size: 13px; }
   .mkt-price-form { display: flex; flex-direction: column; gap: 9px; }
   .mkt-price-row { display: flex; gap: 8px; align-items: center; font-size: 12px; color: #cabb8c; }
-  .mkt-price-row label { width: 64px; }
+  .mkt-price-row label { min-width: 76px; }
   .mkt-price-row .coininput { width: 56px; background: #120d07; border: 1px solid #5a4a2a; color: #ffe6a8;
     border-radius: 4px; padding: 4px 6px; font-family: var(--ui-font, inherit); font-size: 12px; }
   .mkt-coin-tag { color: #998d6a; font-size: 11px; margin-right: 6px; }
@@ -2704,9 +2717,40 @@
   body.mobile-touch #quest-log-window,
   body.mobile-touch #spellbook,
   body.mobile-touch #vendor-window,
+  body.mobile-touch #market-window,
   body.mobile-touch #quest-dialog {
     left: 10px; right: 10px; top: 10px; width: auto; transform: none;
     box-sizing: border-box; overflow-y: auto;
+  }
+  body.mobile-touch #vendor-window,
+  body.mobile-touch #market-window {
+    max-height: calc(58vh - 20px);
+  }
+  body.mobile-touch #bags {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    width: auto;
+    max-height: calc(38vh - 20px);
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
+  body.mobile-touch .vendor-item,
+  body.mobile-touch .bag-item,
+  body.mobile-touch .mkt-tab,
+  body.mobile-touch .mkt-btn,
+  body.mobile-touch .mkt-list-btn {
+    min-height: 40px;
+    font-size: 16px;
+  }
+  body.mobile-touch .mkt-price-row {
+    flex-wrap: wrap;
+  }
+  body.mobile-touch .mkt-price-row .coininput {
+    min-height: 40px;
+    font-size: 16px;
+    box-sizing: border-box;
   }
   body.mobile-touch #quest-log-window,
   body.mobile-touch #quest-dialog {
@@ -3413,7 +3457,7 @@
           <button class="micro-btn" id="mm-spell" data-i18n-title="abilityUi.spellbook.title" title="Spellbook">S<span class="keybind">p</span></button>
           <button class="micro-btn" id="mm-quest" data-i18n-title="questUi.log.title" title="Quest Log">Q<span class="keybind">l</span></button>
           <button class="micro-btn" id="mm-map" title="World Map">M<span class="keybind">m</span></button>
-          <button class="micro-btn" id="mm-bag" title="Bags">B<span class="keybind">b</span></button>
+          <button class="micro-btn" id="mm-bag" data-i18n-title="itemUi.bags.title" title="Bags">B<span class="keybind">b</span></button>
           <button class="micro-btn" id="mm-arena" title="Ashen Coliseum (1v1 Arena)">⚔<span class="keybind">g</span></button>
           <button class="micro-btn" id="mm-music" title="Toggle Music">♪</button>
         </div>
