@@ -18,6 +18,8 @@ CREATE INDEX IF NOT EXISTS characters_realm ON characters(realm);
 -- constraint relaxation, so existing globally-unique rows always satisfy it.
 ALTER TABLE characters DROP CONSTRAINT IF EXISTS characters_name_key;
 CREATE UNIQUE INDEX IF NOT EXISTS characters_realm_name ON characters(realm, name);
+CREATE UNIQUE INDEX IF NOT EXISTS characters_realm_lower_name_unique
+  ON characters (realm, lower(name));
 CREATE INDEX IF NOT EXISTS characters_realm_lower_name_prefix
   ON characters (realm, lower(name) text_pattern_ops);
 
