@@ -30,4 +30,10 @@ describe('client HTML shell', () => {
     expect(liveHtml).not.toContain('Combat Log');
     expect(liveHtml).not.toContain('id="chat-input"');
   });
+
+  it('offers the quest log in the mobile controls drawer', () => {
+    expect(html).toContain('id="mobile-extra-controls"');
+    expect(html).toContain('id="mobile-quest"');
+    expect(html).toContain('aria-label="Quest Log"');
+  });
 });
