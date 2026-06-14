@@ -295,7 +295,7 @@ export class Meters {
       const label = document.createElement('span');
       label.className = 'mt-label';
       const hasAggro = isThreat && aggroPid === t.pid;
-      label.textContent = `${hasAggro ? '⚔ ' : ''}${t.name}`;
+      label.textContent = t.name;
       const num = document.createElement('span');
       num.className = 'mt-num';
       num.textContent = isThreat

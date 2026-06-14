@@ -1383,9 +1383,18 @@ export class Hud {
     sender.className = 'chat-player-name';
     sender.textContent = name;
     sender.title = t('hud.chat.rightClickName', { name });
+    sender.setAttribute('role', 'button');
+    sender.setAttribute('aria-label', t('hud.chat.rightClickName', { name }));
+    sender.tabIndex = 0;
     sender.addEventListener('contextmenu', (ev) => {
       ev.preventDefault();
       this.openChatPlayerContextMenu(name, ev.clientX, ev.clientY);
+    });
+    sender.addEventListener('keydown', (ev) => {
+      if (ev.key !== 'Enter' && ev.key !== ' ') return;
+      ev.preventDefault();
+      const rect = sender.getBoundingClientRect();
+      this.openChatPlayerContextMenu(name, rect.left, rect.bottom);
     });
     const nameToken = '__WOC_CHAT_NAME__';
     const messageToken = '__WOC_CHAT_MESSAGE__';
@@ -2282,22 +2291,18 @@ export class Hud {
     el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
     el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
     el.style.display = 'block';
-    el.querySelectorAll('.ctx-item').forEach((item) => {
-      item.addEventListener('click', () => {
-        const act = (item as HTMLElement).dataset.act;
-        el.style.display = 'none';
-        if (act === 'invite') this.sim.partyInvite(pid);
-        else if (act === 'trade') this.sim.tradeRequest(pid);
-        else if (act === 'duel') this.sim.duelRequest(pid);
-        else if (act === 'friend') this.sim.friendAdd(name);
-        else if (act === 'unfriend') this.sim.friendRemove(name);
-        else if (act === 'ginvite') this.sim.guildInvite(name);
-        else if (act === 'ignore') {
-          if (online) { ignored ? this.sim.blockRemove(name) : this.sim.blockAdd(name); }
-          else this.toggleChatIgnore(name);
-        } else if (act === 'report') this.openReportWindow({ pid, name });
-        else if (act === 'kick') this.sim.partyKick(pid);
-      });
+    this.bindContextMenuActions((act) => {
+      if (act === 'invite') this.sim.partyInvite(pid);
+      else if (act === 'trade') this.sim.tradeRequest(pid);
+      else if (act === 'duel') this.sim.duelRequest(pid);
+      else if (act === 'friend') this.sim.friendAdd(name);
+      else if (act === 'unfriend') this.sim.friendRemove(name);
+      else if (act === 'ginvite') this.sim.guildInvite(name);
+      else if (act === 'ignore') {
+        if (online) { ignored ? this.sim.blockRemove(name) : this.sim.blockAdd(name); }
+        else this.toggleChatIgnore(name);
+      } else if (act === 'report') this.openReportWindow({ pid, name });
+      else if (act === 'kick') this.sim.partyKick(pid);
     });
   }
 
@@ -2326,22 +2331,38 @@ export class Hud {
     el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
     el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
     el.style.display = 'block';
-    el.querySelectorAll('.ctx-item').forEach((item) => {
-      item.addEventListener('click', () => {
-        const act = (item as HTMLElement).dataset.act;
+    this.bindContextMenuActions((act) => {
+      const livePid = this.playerPidByName(name);
+      if (act === 'whisper') this.startWhisper(name);
+      else if (act === 'invite') {
+        if (livePid !== null) this.sim.partyInvite(livePid);
+        else this.showError(t('hud.system.playerNotNearby'));
+      } else if (act === 'friend') this.sim.friendAdd(name);
+      else if (act === 'unfriend') this.sim.friendRemove(name);
+      else if (act === 'ginvite') this.sim.guildInvite(name);
+      else if (act === 'ignore') {
+        if (online) { ignored ? this.sim.blockRemove(name) : this.sim.blockAdd(name); }
+        else this.toggleChatIgnore(name);
+      } else if (act === 'report') this.openReportWindow({ name });
+    });
+  }
+
+  private bindContextMenuActions(onActivate: (act: string) => void): void {
+    const el = $('#ctx-menu');
+    el.querySelectorAll<HTMLElement>('.ctx-item').forEach((item) => {
+      item.setAttribute('role', 'button');
+      item.tabIndex = 0;
+      const activate = () => {
+        const act = item.dataset.act;
+        if (!act) return;
         el.style.display = 'none';
-        const livePid = this.playerPidByName(name);
-        if (act === 'whisper') this.startWhisper(name);
-        else if (act === 'invite') {
-          if (livePid !== null) this.sim.partyInvite(livePid);
-          else this.showError(t('hud.system.playerNotNearby'));
-        } else if (act === 'friend') this.sim.friendAdd(name);
-        else if (act === 'unfriend') this.sim.friendRemove(name);
-        else if (act === 'ginvite') this.sim.guildInvite(name);
-        else if (act === 'ignore') {
-          if (online) { ignored ? this.sim.blockRemove(name) : this.sim.blockAdd(name); }
-          else this.toggleChatIgnore(name);
-        } else if (act === 'report') this.openReportWindow({ name });
+        onActivate(act);
+      };
+      item.addEventListener('click', activate);
+      item.addEventListener('keydown', (ev) => {
+        if (ev.key !== 'Enter' && ev.key !== ' ') return;
+        ev.preventDefault();
+        activate();
       });
     });
   }
@@ -2359,21 +2380,21 @@ export class Hud {
     const { pid, name } = target;
     const el = $('#report-window');
     el.innerHTML = `
-      <div class="panel-title">${esc(t('hud.report.title', { name }))}<button data-close>×</button></div>
-      <label class="report-label">${esc(t('hud.report.reason'))}</label>
-      <select id="report-reason">
+      <div class="panel-title">${esc(t('hud.report.title', { name }))}<button type="button" data-close aria-label="${esc(t('hud.report.cancel'))}" title="${esc(t('hud.report.cancel'))}">×</button></div>
+      <label class="report-label" for="report-reason">${esc(t('hud.report.reason'))}</label>
+      <select id="report-reason" aria-describedby="report-error">
         <option value="harassment">${esc(t('hud.report.reasons.harassment'))}</option>
         <option value="spam">${esc(t('hud.report.reasons.spam'))}</option>
         <option value="cheating">${esc(t('hud.report.reasons.cheating'))}</option>
         <option value="offensive_name_or_chat">${esc(t('hud.report.reasons.offensiveNameOrChat'))}</option>
         <option value="other">${esc(t('hud.report.reasons.other'))}</option>
       </select>
-      <label class="report-label">${esc(t('hud.report.details'))}</label>
-      <textarea id="report-details" maxlength="1000" placeholder="${esc(t('hud.report.detailsPlaceholder'))}"></textarea>
-      <div class="report-error" id="report-error"></div>
+      <label class="report-label" for="report-details">${esc(t('hud.report.details'))}</label>
+      <textarea id="report-details" maxlength="1000" placeholder="${esc(t('hud.report.detailsPlaceholder'))}" aria-describedby="report-error"></textarea>
+      <div class="report-error" id="report-error" role="alert" aria-live="polite"></div>
       <div class="report-actions">
-        <button class="btn" id="report-submit">${esc(t('hud.report.submit'))}</button>
-        <button class="btn" data-close>${esc(t('hud.report.cancel'))}</button>
+        <button class="btn" type="button" id="report-submit">${esc(t('hud.report.submit'))}</button>
+        <button class="btn" type="button" data-close>${esc(t('hud.report.cancel'))}</button>
       </div>`;
     el.style.left = `${Math.max(12, Math.min(window.innerWidth - 340, window.innerWidth / 2 - 160))}px`;
     el.style.top = `${Math.max(20, Math.min(window.innerHeight - 300, window.innerHeight / 2 - 150))}px`;
