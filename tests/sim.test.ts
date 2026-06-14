@@ -233,6 +233,56 @@ describe('combat', () => {
     expect(wolf.hp).toBe(wolf.maxHp);
   });
 
+  it('hostile actions refresh the mob leash anchor for kiting', () => {
+    const sim = makeSim('warrior');
+    const wolf = nearestMob(sim, 'forest_wolf');
+    wolf.maxHp = 5000;
+    wolf.hp = 5000;
+    wolf.pos.x = wolf.spawnPos.x + 50;
+    wolf.pos.z = wolf.spawnPos.z;
+    wolf.pos.y = terrainHeight(wolf.pos.x, wolf.pos.z, sim.cfg.seed);
+    wolf.prevPos = { ...wolf.pos };
+    teleportTo(sim, wolf.pos.x + 2, wolf.pos.z);
+
+    (sim as any).dealDamage(sim.player, wolf, 1, false, 'physical', 'Test', 'hit', true);
+    sim.tick();
+
+    expect(dist2d(wolf.pos, wolf.spawnPos)).toBeGreaterThan(45);
+    expect(wolf.aiState).not.toBe('evade');
+    expect(wolf.leashAnchor).not.toBeNull();
+  });
+
+  it('social pulls only very close same-template mobs', () => {
+    const sim = makeSim('warrior');
+    const wolf = nearestMob(sim, 'forest_wolf');
+    const otherWolf = [...sim.entities.values()].find((e: any) => e.kind === 'mob' && e.id !== wolf.id && e.templateId === 'forest_wolf') as any;
+    wolf.pos = { ...wolf.spawnPos };
+    otherWolf.pos = { x: wolf.pos.x + 6, y: wolf.pos.y, z: wolf.pos.z };
+    otherWolf.prevPos = { ...otherWolf.pos };
+    (sim as any).rebucket(wolf);
+    (sim as any).rebucket(otherWolf);
+    teleportTo(sim, wolf.pos.x + 2, wolf.pos.z);
+
+    (sim as any).aggroMob(wolf, sim.player, true);
+
+    expect(otherWolf.aiState).toBe('idle');
+
+    const murloc = nearestMob(sim, 'mudfin_murloc');
+    const otherMurloc = [...sim.entities.values()].find((e: any) => e.kind === 'mob' && e.id !== murloc.id && e.templateId === 'mudfin_murloc') as any;
+    murloc.aiState = 'idle';
+    otherMurloc.aiState = 'idle';
+    murloc.pos = { ...murloc.spawnPos };
+    otherMurloc.pos = { x: murloc.pos.x + 9, y: murloc.pos.y, z: murloc.pos.z };
+    otherMurloc.prevPos = { ...otherMurloc.pos };
+    (sim as any).rebucket(murloc);
+    (sim as any).rebucket(otherMurloc);
+    teleportTo(sim, murloc.pos.x + 2, murloc.pos.z);
+
+    (sim as any).aggroMob(murloc, sim.player, true);
+
+    expect(otherMurloc.aiState).toBe('idle');
+  });
+
   it('dead mobs respawn', () => {
     const sim = new Sim({ seed: 42, playerClass: 'warrior', respawnSeconds: 2 });
     const wolf = nearestMob(sim, 'forest_wolf');
@@ -466,6 +516,78 @@ describe('food, drink, vendor', () => {
     sim.sellItem('wolf_fang');
     expect(sim.copper).toBe(79);
     expect(sim.countItem('wolf_fang')).toBe(1);
+  });
+
+  it('vendor buyback restores recently sold gear for the sale price', () => {
+    const sim = makeSim('warrior');
+    const wilkes = [...sim.entities.values()].find((e) => e.templateId === 'trader_wilkes')!;
+    teleportTo(sim, wilkes.pos.x + 2, wilkes.pos.z);
+    sim.addItem('apprentice_staff', 1);
+
+    sim.sellItem('apprentice_staff');
+
+    expect(sim.countItem('apprentice_staff')).toBe(0);
+    expect(sim.vendorBuyback).toEqual([{ itemId: 'apprentice_staff', count: 1 }]);
+    expect(sim.copper).toBe(120);
+
+    sim.buyBackItem('apprentice_staff');
+
+    expect(sim.countItem('apprentice_staff')).toBe(1);
+    expect(sim.vendorBuyback).toEqual([]);
+    expect(sim.copper).toBe(0);
+  });
+
+  it('vendor buyback round-trips through saved character state', () => {
+    const sim = makeSim('warrior');
+    const wilkes = [...sim.entities.values()].find((e) => e.templateId === 'trader_wilkes')!;
+    teleportTo(sim, wilkes.pos.x + 2, wilkes.pos.z);
+    sim.addItem('apprentice_staff', 1);
+    sim.sellItem('apprentice_staff');
+
+    const state = sim.serializeCharacter(sim.playerId)!;
+    expect(state.vendorBuyback).toEqual([{ itemId: 'apprentice_staff', count: 1 }]);
+
+    const sim2 = new Sim({ seed: 42, playerClass: 'warrior', autoEquip: false });
+    const pid2 = sim2.addPlayer('warrior', 'Saved', { state });
+    const wilkes2 = [...sim2.entities.values()].find((e) => e.templateId === 'trader_wilkes')!;
+    teleportTo(sim2, wilkes2.pos.x + 2, wilkes2.pos.z);
+
+    expect(sim2.meta(pid2)!.vendorBuyback).toEqual([{ itemId: 'apprentice_staff', count: 1 }]);
+    sim2.buyBackItem('apprentice_staff', pid2);
+    expect(sim2.countItem('apprentice_staff', pid2)).toBe(1);
+    expect(sim2.meta(pid2)!.vendorBuyback).toEqual([]);
+  });
+
+  it('vendor buyback requires money and keeps only recent sold item groups', () => {
+    const sim = new Sim({ seed: 42, playerClass: 'warrior', autoEquip: false });
+    const wilkes = [...sim.entities.values()].find((e) => e.templateId === 'trader_wilkes')!;
+    teleportTo(sim, wilkes.pos.x + 2, wilkes.pos.z);
+    sim.addItem('wolf_fang', 2);
+    sim.sellItem('wolf_fang');
+    sim.sellItem('wolf_fang');
+    expect(sim.vendorBuyback).toEqual([{ itemId: 'wolf_fang', count: 2 }]);
+    sim.copper = 0;
+
+    sim.buyBackItem('wolf_fang');
+
+    expect(sim.countItem('wolf_fang')).toBe(0);
+    expect(sim.vendorBuyback).toEqual([{ itemId: 'wolf_fang', count: 2 }]);
+    expect(sim.events).toContainEqual({ type: 'error', text: 'Not enough money.', pid: sim.player.id });
+
+    const itemIds = [
+      'bandit_bandana', 'tough_jerky', 'mudfin_scale', 'tallow_candle',
+      'spider_leg', 'bone_fragments', 'linen_scrap', 'baked_bread',
+      'spring_water', 'roasted_boar', 'worn_sword', 'hickory_shortstaff',
+      'apprentice_staff',
+    ];
+    for (const itemId of itemIds) {
+      sim.addItem(itemId, 1);
+      sim.sellItem(itemId);
+    }
+
+    expect(sim.vendorBuyback).toHaveLength(12);
+    expect(sim.vendorBuyback[0]).toEqual({ itemId: 'apprentice_staff', count: 1 });
+    expect(sim.vendorBuyback.some((s) => s.itemId === 'wolf_fang')).toBe(false);
   });
 
   it('vendor buy rejects stale or invalid merchants with feedback', () => {

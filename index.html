@@ -320,6 +320,8 @@
   .action-btn:active { transform: translateY(1px); }
   .action-btn.empty { background: #0d0d13; cursor: default; box-shadow: inset 0 0 10px #000; }
   .action-btn .keybind { position: absolute; top: 1px; right: 3px; font-size: 9px; color: #ddd; font-family: var(--ui-font); }
+  .action-btn .item-count { position: absolute; right: 3px; bottom: 1px; min-width: 10px; text-align: right;
+    font-size: 10px; color: #fff; font-family: var(--ui-font); font-weight: bold; text-shadow: 1px 1px 2px #000; }
   .action-btn .cdtext { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
     font-size: 17px; color: var(--gold); text-shadow: 1px 1px 2px #000; }
   .action-btn .cd-overlay { position: absolute; left: 0; right: 0; bottom: 0; background: #000d; height: 0%; border-radius: 0 0 4px 4px; }
@@ -471,6 +473,7 @@
   #spellbook { left: 50%; top: 16%; transform: translateX(-50%); width: 430px; max-height: 64%; overflow-y: auto; }
   .spell-row { display: flex; gap: 10px; padding: 6px; border-radius: 4px; align-items: center; }
   .spell-row:hover { background: #ffffff0e; }
+  .spell-row[draggable="true"] { cursor: grab; }
   .spell-row .spell-name { font-size: 13px; color: #fff; font-family: var(--title-font); }
   .spell-row .spell-sub { font-size: 11px; color: #998d6a; }
   .spell-icon { width: 34px; height: 34px; border-radius: 5px; flex: none;
@@ -491,6 +494,8 @@
   .vendor-item:hover { background: #ffffff10; }
   .vendor-item .vi-name { font-size: 12px; flex: 1; }
   .vendor-item .vi-price { font-size: 11px; color: #ddd; }
+  .vendor-section-title { margin-top: 8px; padding-top: 7px; border-top: 1px solid #463a1c; color: var(--gold); font-family: var(--title-font); font-size: 12px; }
+  .vendor-empty { padding: 5px; font-size: 11px; color: #887c5c; }
   .vendor-hint { font-size: 11px; color: #c8b888; margin-top: 8px; border-top: 1px solid #463a1c; padding-top: 6px; }
 
   /* bags */

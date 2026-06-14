@@ -17,6 +17,10 @@ import { iconDataUrl, QUALITY_COLOR } from './icons';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
 import { Settings, GameSettings, SETTING_RANGES } from '../game/settings';
 import { chatPlayerContextActions } from './player_context_menu';
+import {
+  clearHotbarSlot, encodeHotbarAction, HOTBAR_ACTION_MIME, HotbarAction, parseHotbarAction, parseHotbarActions,
+  placeAbilityOnSlot, placeItemOnSlot, swapHotbarSlots, syncHotbarActions,
+} from './hotbar';
 
 // hooks main wires after Input exists (the options menu drives input, audio,
 // graphics, and logout, all of which live outside the HUD)
@@ -64,9 +68,11 @@ const IGNORED_CHAT_NAMES_KEY = 'woc_ignored_chat_names';
 
 export class Hud {
   private static readonly BAR_ABILITY_SLOTS = 11; // bar slots 1..11; slot 0 is the fixed Attack toggle
-  private abilityButtons: { btn: HTMLButtonElement; label: HTMLSpanElement; keybindEl: HTMLSpanElement; cdOverlay: HTMLDivElement; cdText: HTMLDivElement; lastIcon: string }[] = [];
-  private slotMap: (string | null)[] = []; // index = barSlot-1, value = ability id
-  private dragFromSlot: number | null = null;
+  private abilityButtons: { btn: HTMLButtonElement; label: HTMLSpanElement; countEl: HTMLSpanElement; keybindEl: HTMLSpanElement; cdOverlay: HTMLDivElement; cdText: HTMLDivElement; lastIcon: string }[] = [];
+  private hotbarActions: HotbarAction[] = []; // index = barSlot-1
+  private loadedSlotMapFromStorage = false;
+  private knownAbilityIdsAtLastSlotSync: Set<string> | null = null;
+  private dragAction: { action: Exclude<HotbarAction, null>; sourceIndex: number | null } | null = null;
   private optionsHooks: OptionsHooks | null = null;
   private reportHooks: ReportHooks | null = null;
   private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' = 'main';
@@ -336,49 +342,72 @@ export class Hud {
   // Action bar
   // -------------------------------------------------------------------------
 
-  // The hotbar layout is a client-side remap over the learned abilities,
-  // keyed by ability id (known is class-ordered and shifts on level-up, so
-  // indices would not survive). Persisted per class+character.
+  // The hotbar layout is a client-side remap over learned abilities and item
+  // shortcuts. Abilities are keyed by id (known is class-ordered and shifts on
+  // level-up, so indices would not survive). Persisted per class+character.
   private slotMapKey(): string {
     return `woc_hotbar_${this.sim.cfg.playerClass}_${this.sim.player.name}`;
+  }
+
+  private isHotbarItemId(itemId: string): boolean {
+    const item = ITEMS[itemId];
+    return item?.kind === 'food' || item?.kind === 'drink';
   }
 
   private loadSlotMap(): void {
     let arr: unknown = null;
     try { arr = JSON.parse(localStorage.getItem(this.slotMapKey()) ?? 'null'); } catch { /* corrupt */ }
-    const seen = new Set<string>();
-    this.slotMap = Array.from({ length: Hud.BAR_ABILITY_SLOTS }, (_, i) => {
-      const v = Array.isArray(arr) ? arr[i] : null;
-      if (typeof v !== 'string' || !ABILITIES[v] || seen.has(v)) return null;
-      seen.add(v);
-      return v;
-    });
+    this.loadedSlotMapFromStorage = Array.isArray(arr);
+    this.hotbarActions = parseHotbarActions(
+      arr,
+      Hud.BAR_ABILITY_SLOTS,
+      (id) => !!ABILITIES[id],
+      (id) => this.isHotbarItemId(id),
+    );
   }
 
   private saveSlotMap(): void {
-    try { localStorage.setItem(this.slotMapKey(), JSON.stringify(this.slotMap)); } catch { /* storage unavailable */ }
+    try { localStorage.setItem(this.slotMapKey(), JSON.stringify(this.hotbarActions)); } catch { /* storage unavailable */ }
   }
 
-  // Drop unlearned ids; place newly learned abilities in the first empty
-  // slot. With empty storage this reproduces the default class-order layout.
+  // Drop unlearned ability ids; place newly learned abilities in the first
+  // empty slot. Item shortcuts stay assigned even when their count reaches 0.
   private syncSlotMap(): void {
-    const ids = new Set(this.sim.known.map((k) => k.def.id));
-    let dirty = false;
-    for (let i = 0; i < this.slotMap.length; i++) {
-      const id = this.slotMap[i];
-      if (id !== null && !ids.has(id)) { this.slotMap[i] = null; dirty = true; }
+    const knownAbilityIds = this.sim.known.map((k) => k.def.id);
+    const autoPlaceAbilityIds = new Set<string>();
+    if (this.knownAbilityIdsAtLastSlotSync === null) {
+      if (!this.loadedSlotMapFromStorage) {
+        for (const id of knownAbilityIds) autoPlaceAbilityIds.add(id);
+      }
+    } else {
+      for (const id of knownAbilityIds) {
+        if (!this.knownAbilityIdsAtLastSlotSync.has(id)) autoPlaceAbilityIds.add(id);
+      }
     }
-    for (const k of this.sim.known) {
-      if (this.slotMap.includes(k.def.id)) continue;
-      const empty = this.slotMap.indexOf(null);
-      if (empty !== -1) { this.slotMap[empty] = k.def.id; dirty = true; }
-    }
-    if (dirty) this.saveSlotMap();
+    const synced = syncHotbarActions(this.hotbarActions, knownAbilityIds, autoPlaceAbilityIds);
+    this.hotbarActions = synced.actions;
+    if (synced.changed) this.saveSlotMap();
+    this.knownAbilityIdsAtLastSlotSync = new Set(knownAbilityIds);
+  }
+
+  private actionForSlot(barSlot: number): HotbarAction { // barSlot 1..11
+    return this.hotbarActions[barSlot - 1] ?? null;
   }
 
   abilityForSlot(barSlot: number): ResolvedAbility | null { // barSlot 1..11
-    const id = this.slotMap[barSlot - 1];
-    return id ? this.sim.known.find((k) => k.def.id === id) ?? null : null;
+    const action = this.actionForSlot(barSlot);
+    return action?.type === 'ability'
+      ? this.sim.known.find((k) => k.def.id === action.id) ?? null
+      : null;
+  }
+
+  private itemForSlot(barSlot: number): ItemDef | null {
+    const action = this.actionForSlot(barSlot);
+    return action?.type === 'item' ? ITEMS[action.id] ?? null : null;
+  }
+
+  private inventoryCount(itemId: string): number {
+    return this.sim.inventory.reduce((total, slot) => total + (slot.itemId === itemId ? slot.count : 0), 0);
   }
 
   // Shared entry point for hotbar clicks and the 1..0-= keybinds.
@@ -388,10 +417,31 @@ export class Hud {
       else this.sim.startAutoAttack();
       return;
     }
-    const known = this.abilityForSlot(barSlot);
-    // cast by ability id: the server validates against its own known list,
-    // so the client-side slot remap never desyncs slot semantics
-    if (known) this.sim.castAbility(known.def.id);
+    const action = this.actionForSlot(barSlot);
+    if (action?.type === 'ability') {
+      // cast by ability id: the server validates against its own known list,
+      // so the client-side slot remap never desyncs slot semantics
+      if (this.abilityForSlot(barSlot)) this.sim.castAbility(action.id);
+    } else if (action?.type === 'item' && this.isHotbarItemId(action.id)) {
+      if (this.tradeOpen) return;
+      this.sim.useItem(action.id);
+      if ($('#bags').style.display === 'block') this.renderBags();
+    }
+  }
+
+  private writeDraggedAction(dt: DataTransfer | null, action: Exclude<HotbarAction, null>): void {
+    if (!dt) return;
+    dt.setData(HOTBAR_ACTION_MIME, encodeHotbarAction(action));
+    dt.setData('text/plain', action.id);
+  }
+
+  private readDraggedAction(dt: DataTransfer | null): Exclude<HotbarAction, null> | null {
+    if (!dt) return null;
+    const raw = dt.getData(HOTBAR_ACTION_MIME);
+    if (!raw) return null;
+    let parsed: unknown = null;
+    try { parsed = JSON.parse(raw); } catch { return null; }
+    return parseHotbarAction(parsed, (id) => this.sim.known.some((k) => k.def.id === id), (id) => this.isHotbarItemId(id));
   }
 
   private buildActionBar(): void {
@@ -401,6 +451,8 @@ export class Hud {
       btn.className = 'action-btn empty';
       const label = document.createElement('span');
       label.className = 'icon-label';
+      const countEl = document.createElement('span');
+      countEl.className = 'item-count';
       const kb = document.createElement('span');
       kb.className = 'keybind';
       kb.textContent = this.keybinds.primaryLabel(`slot${i}`); // rebindable; refreshKeybindLabels keeps it current
@@ -408,7 +460,7 @@ export class Hud {
       cdOverlay.className = 'cd-overlay';
       const cdText = document.createElement('div');
       cdText.className = 'cdtext';
-      btn.append(label, kb, cdOverlay, cdText);
+      btn.append(label, countEl, kb, cdOverlay, cdText);
       const slot = i;
       // slot 0 is Attack for every class (auto-attack toggle — players
       // without right-click need a way in); the kit fills slots 1+
@@ -421,45 +473,82 @@ export class Hud {
           return '<div class="tt-title">Attack</div><div class="tt-sub">Toggle auto-attack on your target.<br>Right-clicking an enemy also attacks.</div>';
         }
         const known = this.abilityForSlot(slot);
-        return known ? this.abilityTooltip(known) : '<div class="tt-sub">Empty slot</div>';
+        if (known) return this.abilityTooltip(known) + '<div class="tt-sub">Shift-right-click or Shift-Delete to clear</div>';
+        const item = this.itemForSlot(slot);
+        if (item) {
+          const count = this.inventoryCount(item.id);
+          return this.itemTooltip(item)
+            + (count > 0 ? `<div class="tt-sub">In bags: ${count}</div>` : '<div class="tt-sub">None in bags</div>')
+            + '<div class="tt-sub">Shift-right-click or Shift-Delete to clear</div>';
+        }
+        return '<div class="tt-sub">Empty slot<br>Shift-right-click or Shift-Delete to clear</div>';
       });
       if (slot >= 1) {
-        // drag an ability onto another slot to swap the two keybinds;
+        // drag an action onto another slot to place or swap it;
         // slot 0 (Attack) stays fixed
         btn.draggable = true;
+        const clearSlot = () => {
+          this.hotbarActions = clearHotbarSlot(this.hotbarActions, slot - 1);
+          this.saveSlotMap();
+          btn.classList.add('empty');
+          btn.classList.remove('drop-target', 'oor', 'queued', 'unusable');
+          this.hideTooltip();
+        };
+        btn.addEventListener('contextmenu', (e) => {
+          if (!e.shiftKey) return;
+          e.preventDefault();
+          clearSlot();
+        });
+        btn.addEventListener('keydown', (e) => {
+          if (!e.shiftKey || (e.key !== 'Delete' && e.key !== 'Backspace')) return;
+          e.preventDefault();
+          e.stopPropagation();
+          clearSlot();
+        });
         btn.addEventListener('dragstart', (e) => {
-          const known = this.abilityForSlot(slot);
-          if (!known) { e.preventDefault(); return; }
-          this.dragFromSlot = slot;
-          e.dataTransfer!.setData('text/plain', known.def.id);
+          const action = this.actionForSlot(slot);
+          if (!action) { e.preventDefault(); return; }
+          this.dragAction = { action, sourceIndex: slot - 1 };
+          this.writeDraggedAction(e.dataTransfer, action);
           e.dataTransfer!.effectAllowed = 'move';
           this.hideTooltip();
         });
         btn.addEventListener('dragover', (e) => {
-          if (this.dragFromSlot === null || this.dragFromSlot === slot) return;
+          const dragged = this.dragAction?.action ?? this.readDraggedAction(e.dataTransfer);
+          if (!dragged) return;
+          if (this.dragAction?.sourceIndex === slot - 1) return;
           e.preventDefault(); // required to permit the drop
-          e.dataTransfer!.dropEffect = 'move';
+          e.dataTransfer!.dropEffect = this.dragAction?.sourceIndex === null && dragged.type === 'item' ? 'copy' : 'move';
           btn.classList.add('drop-target');
         });
         btn.addEventListener('dragleave', () => btn.classList.remove('drop-target'));
         btn.addEventListener('drop', (e) => {
           e.preventDefault();
           btn.classList.remove('drop-target');
-          const from = this.dragFromSlot;
-          this.dragFromSlot = null;
-          if (from === null || from === slot) return;
-          const a = from - 1, b = slot - 1;
-          [this.slotMap[a], this.slotMap[b]] = [this.slotMap[b], this.slotMap[a]]; // swap; empty target = move
+          const dragged = this.dragAction ?? { action: this.readDraggedAction(e.dataTransfer), sourceIndex: null };
+          this.dragAction = null;
+          const action = dragged.action;
+          if (!action) return;
+          if (dragged.sourceIndex !== null) this.hotbarActions = swapHotbarSlots(this.hotbarActions, dragged.sourceIndex, slot - 1);
+          else if (action.type === 'ability' && this.sim.known.some((k) => k.def.id === action.id)) {
+            this.hotbarActions = placeAbilityOnSlot(this.hotbarActions, action.id, slot - 1);
+          } else if (action.type === 'item' && this.isHotbarItemId(action.id)) {
+            this.hotbarActions = placeItemOnSlot(this.hotbarActions, action.id, slot - 1);
+          }
           this.saveSlotMap();
         });
         btn.addEventListener('dragend', () => {
-          this.dragFromSlot = null;
-          bar.querySelectorAll('.drop-target').forEach((el) => el.classList.remove('drop-target'));
+          this.dragAction = null;
+          this.clearActionDropTargets();
         });
       }
       bar.appendChild(btn);
-      this.abilityButtons.push({ btn, label, keybindEl: kb, cdOverlay, cdText, lastIcon: '' });
+      this.abilityButtons.push({ btn, label, countEl, keybindEl: kb, cdOverlay, cdText, lastIcon: '' });
     }
+  }
+
+  private clearActionDropTargets(): void {
+    document.querySelectorAll('#actionbar .drop-target').forEach((el) => el.classList.remove('drop-target'));
   }
 
   // Repaint the keycap on every action button from the current bindings.
@@ -565,7 +654,7 @@ export class Hud {
     // action bar
     const tgtDist = target && !target.dead ? dist2d(p.pos, target.pos) : null;
     const actionbar = $('#actionbar');
-    actionbar.classList.toggle('many-spells', this.slotMap.filter((id) => id !== null).length > 10);
+    actionbar.classList.toggle('many-spells', this.hotbarActions.filter((action) => action !== null).length > 10);
     for (let i = 0; i < this.abilityButtons.length; i++) {
       const ab = this.abilityButtons[i];
       if (i === 0) {
@@ -575,37 +664,58 @@ export class Hud {
           ab.lastIcon = '__attack';
           ab.label.style.backgroundImage = `url(${iconDataUrl('ability', 'attack')})`;
         }
+        ab.countEl.textContent = '';
         ab.cdOverlay.style.height = '0%';
         ab.cdText.textContent = '';
         ab.btn.classList.toggle('queued', !!p.autoAttack);
         ab.btn.classList.toggle('oor', tgtDist !== null && tgtDist > MELEE_RANGE);
         continue;
       }
+      const action = this.actionForSlot(i);
       const known = this.abilityForSlot(i);
-      if (!known) {
+      const item = this.itemForSlot(i);
+      if (!known && !item) {
         ab.btn.classList.add('empty');
+        ab.btn.classList.remove('unusable', 'oor', 'queued');
         if (ab.lastIcon !== '') {
           ab.lastIcon = '';
           ab.label.style.backgroundImage = '';
         }
+        ab.countEl.textContent = '';
         ab.cdOverlay.style.height = '0%';
         ab.cdText.textContent = '';
         continue;
       }
-      const a = known.def;
       ab.btn.classList.remove('empty');
+      if (item && action?.type === 'item') {
+        const iconKey = `item:${item.id}`;
+        if (ab.lastIcon !== iconKey) {
+          ab.lastIcon = iconKey;
+          ab.label.style.backgroundImage = `url(${iconDataUrl('item', item.id)})`;
+        }
+        const count = this.inventoryCount(item.id);
+        ab.countEl.textContent = String(count);
+        ab.cdOverlay.style.height = '0%';
+        ab.cdText.textContent = '';
+        ab.btn.classList.toggle('unusable', count <= 0 || p.dead);
+        ab.btn.classList.remove('oor', 'queued');
+        continue;
+      }
+      const a = known!.def;
       // set the painted icon once per slot change, not every frame
-      if (ab.lastIcon !== a.id) {
-        ab.lastIcon = a.id;
+      const iconKey = `ability:${a.id}`;
+      if (ab.lastIcon !== iconKey) {
+        ab.lastIcon = iconKey;
         ab.label.style.backgroundImage = `url(${iconDataUrl('ability', a.id)})`;
       }
+      ab.countEl.textContent = '';
       const cd = p.cooldowns.get(a.id) ?? 0;
       const gcdActive = !a.offGcd && p.gcdRemaining > 0;
       const shown = Math.max(cd, gcdActive ? p.gcdRemaining : 0);
       const denom = cd > 0 ? a.cooldown : GCD;
       ab.cdOverlay.style.height = shown > 0 ? `${Math.min(100, (shown / Math.max(0.01, denom)) * 100)}%` : '0%';
       ab.cdText.textContent = cd > 1 ? Math.ceil(cd).toString() : '';
-      ab.btn.classList.toggle('unusable', p.resource < known.cost);
+      ab.btn.classList.toggle('unusable', p.resource < known!.cost);
       const oor = a.requiresTarget && tgtDist !== null && tgtDist > (a.range > 0 ? a.range : MELEE_RANGE);
       ab.btn.classList.toggle('oor', !!oor);
       ab.btn.classList.toggle('queued', p.queuedOnSwing === a.id);
@@ -1149,7 +1259,7 @@ export class Hud {
         case 'comboPoint': break;
         case 'loot': {
           this.log(ev.text, '#7fdc4f');
-          if (ev.text.includes('loot') || ev.text.includes('Sold')) audio.coin();
+          if (ev.text.includes('loot') || ev.text.includes('Sold') || ev.text.includes('Bought back')) audio.coin();
           else audio.lootItem();
           if ($('#bags').style.display === 'block') this.renderBags();
           break;
@@ -1562,6 +1672,28 @@ export class Hud {
       this.attachTooltip(row, () => this.itemTooltip(item) + '<div class="tt-sub">Click to buy</div>');
       el.appendChild(row);
     }
+    const buybackTitle = document.createElement('div');
+    buybackTitle.className = 'vendor-section-title';
+    buybackTitle.textContent = 'Buyback';
+    el.appendChild(buybackTitle);
+    const buyback = this.sim.vendorBuyback.filter((s) => ITEMS[s.itemId] && s.count > 0);
+    if (buyback.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'vendor-empty';
+      empty.textContent = 'No items';
+      el.appendChild(empty);
+    }
+    for (const s of buyback) {
+      const item = ITEMS[s.itemId]!;
+      const row = document.createElement('div');
+      row.className = 'vendor-item';
+      row.innerHTML = `${this.itemIcon(item)}<span class="vi-name">${item.name}${s.count > 1 ? ` x${s.count}` : ''}</span><span class="vi-price">${this.moneyHtml(item.sellValue)}</span>`;
+      row.addEventListener('click', () => {
+        this.sim.buyBackItem(s.itemId);
+      });
+      this.attachTooltip(row, () => this.itemTooltip(item) + '<div class="tt-sub">Click to buy back</div>');
+      el.appendChild(row);
+    }
     const hint = document.createElement('div');
     hint.className = 'vendor-hint';
     hint.textContent = 'Click an item in your bags to sell it while this window is open.';
@@ -1802,6 +1934,7 @@ export class Hud {
   // carry inventory separately from the event frames that normally redraw).
   onInventoryChanged(): void {
     if ($('#bags').style.display === 'block') this.renderBags();
+    if (this.openVendorNpcId !== null) this.renderVendor();
   }
 
   renderBags(): void {
@@ -1835,10 +1968,24 @@ export class Hud {
         }
       });
       row.addEventListener('contextmenu', (ev) => {
-        if (!this.vendorOpen || !ev.ctrlKey) return;
+        if (!this.vendorOpen || (!ev.ctrlKey && !ev.metaKey)) return;
         ev.preventDefault();
         this.sellBagItem(s, ev);
       });
+      if (!this.tradeOpen && !this.vendorOpen && this.isHotbarItemId(s.itemId)) {
+        row.draggable = true;
+        row.addEventListener('dragstart', (e) => {
+          const action = { type: 'item' as const, id: s.itemId };
+          this.dragAction = { action, sourceIndex: null };
+          this.writeDraggedAction(e.dataTransfer, action);
+          e.dataTransfer!.effectAllowed = 'copy';
+          this.hideTooltip();
+        });
+        row.addEventListener('dragend', () => {
+          this.dragAction = null;
+          this.clearActionDropTargets();
+        });
+      }
       this.attachTooltip(row, () => {
         let extra = '';
         if (this.tradeOpen) extra = '<div class="tt-sub">Click to offer in trade</div>';
@@ -1980,8 +2127,21 @@ export class Hud {
       row.innerHTML = `<div class="spell-icon" style="background-image:url(${iconDataUrl('ability', abilityId)});${locked ? 'filter:grayscale(1) brightness(0.5)' : ''}"></div>
         <div><div class="spell-name" style="${locked ? 'color:#777' : ''}">${def.name}${known && known.rank > 1 ? ` <span style="color:#998d6a;font-size:11px">Rank ${known.rank}</span>` : ''}</div>
         <div class="spell-sub">${locked ? `Trainable at level ${def.learnLevel}` : describeCost(known!, sim)}</div></div>`;
-      if (known) this.attachTooltip(row, () => this.abilityTooltip(known));
-      else this.attachTooltip(row, () => `<div class="tt-title" style="color:#999">${def.name}</div><div class="tt-sub">You will learn this at level ${def.learnLevel}.</div>`);
+      if (known) {
+        row.draggable = true;
+        row.addEventListener('dragstart', (e) => {
+          const action = { type: 'ability' as const, id: known.def.id };
+          this.dragAction = { action, sourceIndex: null };
+          this.writeDraggedAction(e.dataTransfer, action);
+          e.dataTransfer!.effectAllowed = 'move';
+          this.hideTooltip();
+        });
+        row.addEventListener('dragend', () => {
+          this.dragAction = null;
+          this.clearActionDropTargets();
+        });
+        this.attachTooltip(row, () => this.abilityTooltip(known));
+      } else this.attachTooltip(row, () => `<div class="tt-title" style="color:#999">${def.name}</div><div class="tt-sub">You will learn this at level ${def.learnLevel}.</div>`);
       el.appendChild(row);
     }
     el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; this.hideTooltip(); });
@@ -2655,6 +2815,7 @@ export class Hud {
         this.tradeWasOpen = false;
         this.stagedTrade = { items: [], copper: 0 };
         this.lastTradeSig = '';
+        if ($('#bags').style.display === 'block') this.renderBags();
       }
       return;
     }
@@ -2897,7 +3058,7 @@ export class Hud {
     this.settingsViewFooter();
   }
 
-  // Display name for an action row. Action-bar slots show the ability that
+  // Display name for an action row. Action-bar slots show the shortcut that
   // currently occupies them (slot 0 is always Attack); everything else uses
   // its registry label.
   private actionDisplayName(actionId: string, fallback: string): string {
@@ -2905,7 +3066,9 @@ export class Hud {
     const slot = Number(actionId.slice(4));
     if (slot === 0) return 'Attack';
     const known = this.abilityForSlot(slot);
-    return known ? known.def.name : fallback;
+    if (known) return known.def.name;
+    const item = this.itemForSlot(slot);
+    return item ? item.name : fallback;
   }
 
   private renderKeybinds(): void {

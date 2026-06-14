@@ -26,6 +26,8 @@ import {
 
 const LEASH_DISTANCE = 45;
 const DUNGEON_LEASH_DISTANCE = 70;
+const SOCIAL_PULL_RADIUS = 5;
+const MURLOC_SOCIAL_PULL_RADIUS = 8;
 const CORPSE_DURATION = 60;
 const EVADE_SPEED_MULT = 1.6;
 const BACKPEDAL_MULT = 0.65;
@@ -58,6 +60,7 @@ const MARKET_MAX_PRICE = 5_000_000; // 500g ceiling — guards against overflow 
 const MARKET_CUT = 0.05; // the Merchant's cut on a completed sale (a gold sink)
 const MARKET_LISTING_DURATION = 48 * 3600; // sim-seconds an unsold listing lingers before returning
 const MARKET_WIRE_LIMIT = 120; // most listings shipped to one client at a time
+const VENDOR_BUYBACK_LIMIT = 12;
 const INSTANCE_EMPTY_TIMEOUT = 300; // seconds before an empty instance resets
 const HUNTER_RANGED_DEADZONE = 8;
 const MAX_CLIMB_SLOPE = 1.5; // rise/run above which a ground move is blocked (cliffs, world rim)
@@ -172,6 +175,7 @@ export interface PlayerMeta {
   name: string;
   moveInput: MoveInput;
   inventory: InvSlot[];
+  vendorBuyback: InvSlot[];
   copper: number;
   equipment: PlayerEquipment;
   xp: number;
@@ -234,6 +238,7 @@ export interface CharacterState {
   facing: number;
   equipment: PlayerEquipment;
   inventory: InvSlot[];
+  vendorBuyback?: InvSlot[];
   questLog: { questId: string; counts: number[]; state: 'active' | 'ready' | 'done' }[];
   questsDone: string[];
   arenaRating?: number;
@@ -436,6 +441,7 @@ export class Sim {
       name,
       moveInput: emptyMoveInput(),
       inventory: [],
+      vendorBuyback: [],
       copper: 0,
       equipment: { mainhand: classDef.startWeapon, chest: classDef.startChest },
       xp: 0,
@@ -460,6 +466,7 @@ export class Sim {
       meta.copper = s.copper;
       meta.equipment = { ...s.equipment };
       meta.inventory = s.inventory.map((i) => ({ ...i }));
+      meta.vendorBuyback = (s.vendorBuyback ?? []).map((i) => ({ ...i }));
       for (const q of s.questLog) {
         if (q.state !== 'done') meta.questLog.set(q.questId, { questId: q.questId, counts: [...q.counts], state: q.state });
       }
@@ -538,6 +545,7 @@ export class Sim {
       facing: e.facing,
       equipment: { ...meta.equipment },
       inventory: meta.inventory.map((i) => ({ ...i })),
+      vendorBuyback: meta.vendorBuyback.map((i) => ({ ...i })),
       questLog: [...meta.questLog.values()].map((q) => ({ questId: q.questId, counts: [...q.counts], state: q.state })),
       questsDone: [...meta.questsDone],
       arenaRating: meta.arenaRating,
@@ -565,6 +573,9 @@ export class Sim {
   }
   get inventory(): InvSlot[] {
     return this.primary.inventory;
+  }
+  get vendorBuyback(): InvSlot[] {
+    return this.primary.vendorBuyback;
   }
   get equipment(): PlayerEquipment {
     return this.primary.equipment;
@@ -789,10 +800,42 @@ export class Sim {
   private effectiveArmor(e: Entity): number {
     let armor = e.stats.armor;
     for (const a of e.auras) {
+      if (e.kind !== 'player' && a.kind === 'buff_armor') armor += a.value;
       if (a.kind === 'sunder') armor -= a.value * (a.stacks ?? 1);
     }
     return Math.max(0, armor);
   }
+
+  private effectiveAttackPower(e: Entity): number {
+    let attackPower = e.attackPower;
+    if (e.kind !== 'player') {
+      for (const a of e.auras) {
+        if (a.kind === 'buff_ap') attackPower += a.value;
+      }
+    }
+    return attackPower;
+  }
+
+  private nonPlayerAuraHp(aura: Aura): number {
+    if (aura.kind === 'buff_sta') return aura.value * 10;
+    if (aura.kind === 'buff_allstats') return aura.value * 10;
+    return 0;
+  }
+
+  private applyNonPlayerStatAura(target: Entity, aura: Aura, direction: 1 | -1): void {
+    if (target.kind === 'player') return;
+    const hpDelta = this.nonPlayerAuraHp(aura) * direction;
+    if (hpDelta === 0) return;
+    const hpFrac = target.maxHp > 0 ? target.hp / target.maxHp : 1;
+    target.maxHp = Math.max(1, target.maxHp + hpDelta);
+    target.hp = target.dead ? 0 : Math.max(1, Math.min(target.maxHp, Math.round(target.maxHp * hpFrac)));
+  }
+
+  private clearNonPlayerStatAuras(target: Entity): void {
+    if (target.kind === 'player') return;
+    for (const aura of target.auras) this.applyNonPlayerStatAura(target, aura, -1);
+  }
+
   // swing interval multiplier: >1 = slower (thunder clap), haste divides
   private swingIntervalMult(e: Entity): number {
     let m = 1;
@@ -1061,6 +1104,7 @@ export class Sim {
       }
       if (a.remaining <= 0) {
         e.auras.splice(i, 1);
+        this.applyNonPlayerStatAura(e, a, -1);
         this.emit({ type: 'aura', targetId: e.id, name: a.name, gained: false });
         if (a.kind.startsWith('buff') || a.kind.startsWith('form')) statsDirty = true;
       }
@@ -1439,7 +1483,7 @@ export class Sim {
         }
         case 'finisherDamage': {
           if (!target || spentCombo <= 0) break;
-          let dmg = eff.base + eff.perCombo * spentCombo + this.rng.range(0, eff.variance) + (p.attackPower / 14);
+          let dmg = eff.base + eff.perCombo * spentCombo + this.rng.range(0, eff.variance) + (this.effectiveAttackPower(p) / 14);
           const crit = this.rng.chance(p.critChance);
           if (crit) dmg *= 2;
           dmg *= 1 - armorReduction(this.effectiveArmor(target), p.level);
@@ -1750,9 +1794,15 @@ export class Sim {
   private applyAura(target: Entity, aura: Aura): void {
     if (target.kind === 'npc' && isRejectedFriendlyNpcAura(aura)) return;
     const existing = target.auras.findIndex((a) => a.id === aura.id && a.sourceId === aura.sourceId);
-    if (existing >= 0) target.auras.splice(existing, 1);
+    if (existing >= 0) {
+      this.applyNonPlayerStatAura(target, target.auras[existing], -1);
+      target.auras.splice(existing, 1);
+    }
     target.auras.push(aura);
+    this.applyNonPlayerStatAura(target, aura, 1);
     this.emit({ type: 'aura', targetId: target.id, name: aura.name, gained: true });
+    const source = this.entities.get(aura.sourceId);
+    this.refreshMobLeashFromAction(source ?? null, target);
     if (target.kind === 'player') {
       const meta = this.players.get(target.id);
       if (meta) recalcPlayerStats(target, meta.cls, meta.equipment);
@@ -1843,6 +1893,8 @@ export class Sim {
   /** Dismissal, owner logout, or pet respawn: the beast goes back to the wild
    *  and walks home. Mobs that were fighting it forget it. */
   private releasePetToWild(pet: Entity): void {
+    this.clearNonPlayerStatAuras(pet);
+    pet.auras = [];
     pet.ownerId = null;
     pet.petTauntTimer = 0;
     pet.hostile = true;
@@ -1959,7 +2011,7 @@ export class Sim {
     // weapon imbues (seals, rockbiter) add flat damage to every swing
     let imbueBonus = 0;
     for (const a of attacker.auras) if (a.kind === 'imbue') imbueBonus += a.value;
-    let dmg = (this.rng.range(attacker.weapon.min, attacker.weapon.max) + (attacker.attackPower / 14) * attacker.weapon.speed) * mult + bonus + imbueBonus;
+    let dmg = (this.rng.range(attacker.weapon.min, attacker.weapon.max) + (this.effectiveAttackPower(attacker) / 14) * attacker.weapon.speed) * mult + bonus + imbueBonus;
     const critChance = Math.max(0.005, attacker.critChance - Math.max(0, target.level - attacker.level) * 0.002);
     const crit = this.rng.chance(critChance);
     if (crit) dmg *= 2;
@@ -1984,6 +2036,11 @@ export class Sim {
   private dealDamage(source: Entity | null, target: Entity, amount: number, crit: boolean, school: string, ability: string | null, kind: 'hit' | 'miss' | 'dodge', noRage = false, threatOpts?: { flat?: number; mult?: number }): void {
     if (target.dead) return;
     if (target.gm) return; // GM characters are invulnerable — every damage path funnels here
+    // A mob that broke leash (or a pet freed to the wild) is in 'evade': it has
+    // dropped its hate table and walks home without fighting back, healing to
+    // full only on arrival. Classic mechanics make it immune while it retreats,
+    // so it can't be chipped down — or killed outright — for a risk-free kill.
+    if (target.kind === 'mob' && target.aiState === 'evade') return;
     amount = Math.max(0, amount);
 
     // Defensive Stance, classic: deal 10% less, take 10% less (and +30% threat below)
@@ -2052,6 +2109,7 @@ export class Sim {
     }
 
     if (source && source.id !== target.id) this.enterCombat(source, target);
+    this.refreshMobLeashFromAction(source, target);
 
     // classic threat: damage (and the ability's flat bonus) lands on the mob's
     // hate table, scaled by the attacker's stance/form modifiers
@@ -2113,6 +2171,7 @@ export class Sim {
   private handleDeath(e: Entity, killer: Entity | null): void {
     e.dead = true;
     e.hp = 0;
+    this.clearNonPlayerStatAuras(e);
     e.auras = [];
     e.castingAbility = null;
     this.emit({ type: 'death', entityId: e.id, killerId: killer?.id ?? -1 });
@@ -2263,9 +2322,15 @@ export class Sim {
   // Mob AI
   // -------------------------------------------------------------------------
 
+  private refreshMobLeashFromAction(source: Entity | null, target: Entity): void {
+    if (!source || source.id === target.id || target.kind !== 'mob' || target.ownerId !== null || target.dead) return;
+    if (source.kind !== 'player' && source.ownerId === null) return;
+    target.leashAnchor = { ...target.pos };
+  }
+
   // When a mob's target dies/leaves it swings to its next-highest-threat
-  // attacker; with an empty hate table it falls back to the nearest living
-  // player, and failing that it goes home.
+  // attacker. With no living threat left, it evades home instead of grabbing a
+  // nearby bystander who never acted on the mob.
   private retargetMob(mob: Entity): void {
     const next = this.highestThreatTarget(mob);
     if (next) {
@@ -2274,16 +2339,8 @@ export class Sim {
       mob.inCombat = true;
       return;
     }
-    const near = this.nearestLivingPlayer(mob.pos, 35);
-    if (near) {
-      addThreat(mob, near.e.id, 1);
-      mob.aggroTargetId = near.e.id;
-      mob.aiState = 'chase';
-      mob.inCombat = true;
-    } else {
-      mob.aggroTargetId = null;
-      mob.aiState = 'evade';
-    }
+    mob.aggroTargetId = null;
+    mob.aiState = 'evade';
   }
 
   /** Highest-threat living attacker on the table; prunes stale entries. */
@@ -2336,15 +2393,17 @@ export class Sim {
     mob.aiState = 'chase';
     mob.aggroTargetId = target.id;
     mob.inCombat = true;
+    mob.leashAnchor = { ...mob.pos };
     addThreat(mob, target.id, 1); // seed the hate table so taunts/heals have a baseline
     if (social) {
-      const pullRadius = MOBS[mob.templateId]?.family === 'murloc' ? 18 : 12;
+      const pullRadius = MOBS[mob.templateId]?.family === 'murloc' ? MURLOC_SOCIAL_PULL_RADIUS : SOCIAL_PULL_RADIUS;
       this.grid.forEachInRadius(mob.pos.x, mob.pos.z, pullRadius, (m, d2) => {
         if (m.kind === 'mob' && m.id !== mob.id && !m.dead && m.hostile && m.aiState === 'idle' && m.ownerId === null
           && m.templateId === mob.templateId && d2 < pullRadius * pullRadius) {
           m.aiState = 'chase';
           m.aggroTargetId = target.id;
           m.inCombat = true;
+          m.leashAnchor = { ...m.pos };
           addThreat(m, target.id, 1);
         }
       });
@@ -2438,10 +2497,12 @@ export class Sim {
           break;
         }
         const leash = mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
-        if (dist2d(mob.pos, mob.spawnPos) > leash) {
+        const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
+        if (dist2d(mob.pos, leashAnchor) > leash) {
           mob.aiState = 'evade';
           mob.aggroTargetId = null;
           clearThreat(mob);
+          mob.leashAnchor = null;
           break;
         }
         const d = dist2d(mob.pos, target.pos);
@@ -2492,6 +2553,7 @@ export class Sim {
           mob.auras = [];
           mob.inCombat = false;
           mob.tappedById = null;
+          mob.leashAnchor = null;
           clearThreat(mob);
           this.despawnSummonedAdds(mob);
           mob.firedSummons = 0;
@@ -2515,7 +2577,7 @@ export class Sim {
       this.emit({ type: 'damage', sourceId: mob.id, targetId: target.id, amount: 0, crit: false, school: 'physical', ability: null, kind: 'dodge' });
       return;
     }
-    let dmg = this.rng.range(mob.weapon.min, mob.weapon.max);
+    let dmg = this.rng.range(mob.weapon.min, mob.weapon.max) + (this.effectiveAttackPower(mob) / 14) * mob.weapon.speed;
     const crit = this.rng.chance(0.05);
     if (crit) dmg *= 2;
     const enrage = MOBS[mob.templateId]?.enrage;
@@ -2616,6 +2678,7 @@ export class Sim {
   }
 
   private respawnMob(mob: Entity): void {
+    this.clearNonPlayerStatAuras(mob);
     mob.dead = false;
     mob.lootable = false;
     mob.loot = null;
@@ -2631,6 +2694,7 @@ export class Sim {
     mob.aiState = 'idle';
     mob.aggroTargetId = null;
     mob.inCombat = false;
+    mob.leashAnchor = null;
     clearThreat(mob);
     this.despawnSummonedAdds(mob);
     mob.firedSummons = 0;
@@ -2858,6 +2922,23 @@ export class Sim {
     this.emit({ type: 'vendor', action: 'buy', itemId, pid: meta.entityId });
   }
 
+  private vendorInRange(p: Entity): boolean {
+    return [...this.entities.values()].some((e) =>
+      e.kind === 'npc' && e.vendorItems.length > 0 && dist2d(p.pos, e.pos) <= INTERACT_RANGE + 2);
+  }
+
+  private recordVendorBuyback(meta: PlayerMeta, itemId: string, count: number): void {
+    const existingIndex = meta.vendorBuyback.findIndex((s) => s.itemId === itemId);
+    if (existingIndex >= 0) {
+      const [existing] = meta.vendorBuyback.splice(existingIndex, 1);
+      existing.count += count;
+      meta.vendorBuyback.unshift(existing);
+    } else {
+      meta.vendorBuyback.unshift({ itemId, count });
+    }
+    while (meta.vendorBuyback.length > VENDOR_BUYBACK_LIMIT) meta.vendorBuyback.pop();
+  }
+
   sellItem(itemId: string, count = 1, pid?: number): void {
     const r = this.resolve(pid);
     if (!r) return;
@@ -2868,16 +2949,33 @@ export class Sim {
     if (p.dead) { this.error(meta.entityId, "You can't do that while dead."); return; }
     const sellCount = Number.isFinite(count) ? Math.min(Math.floor(count), available) : 0;
     if (sellCount <= 0) return;
-    // mirror buyItem's gate: selling requires a vendor in interact range
-    const nearVendor = [...this.entities.values()].some((e) =>
-      e.kind === 'npc' && e.vendorItems.length > 0 && dist2d(p.pos, e.pos) <= INTERACT_RANGE + 2);
-    if (!nearVendor) { this.error(meta.entityId, 'There is no merchant nearby.'); return; }
+    if (!this.vendorInRange(p)) { this.error(meta.entityId, 'There is no merchant nearby.'); return; }
     if (def.kind === 'quest') { this.error(meta.entityId, 'You cannot sell quest items.'); return; }
     this.removeItem(itemId, sellCount, meta.entityId);
+    this.recordVendorBuyback(meta, itemId, sellCount);
     const payout = def.sellValue * sellCount;
     meta.copper += payout;
     this.emit({ type: 'vendor', action: 'sell', itemId, pid: meta.entityId });
     this.emit({ type: 'loot', text: `Sold ${def.name}${sellCount > 1 ? ' x' + sellCount : ''} for ${formatMoney(payout)}.`, pid: meta.entityId });
+  }
+
+  buyBackItem(itemId: string, pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    const { meta, e: p } = r;
+    const def = ITEMS[itemId];
+    const slot = meta.vendorBuyback.find((s) => s.itemId === itemId);
+    if (!def || !slot || slot.count <= 0) { this.error(meta.entityId, 'That item is not available for buyback.'); return; }
+    if (p.dead) { this.error(meta.entityId, "You can't do that while dead."); return; }
+    if (!this.vendorInRange(p)) { this.error(meta.entityId, 'There is no merchant nearby.'); return; }
+    if (meta.copper < def.sellValue) { this.error(meta.entityId, 'Not enough money.'); return; }
+    meta.copper -= def.sellValue;
+    slot.count -= 1;
+    if (slot.count <= 0) meta.vendorBuyback = meta.vendorBuyback.filter((s) => s !== slot);
+    this.addItemSilent(itemId, 1, meta);
+    this.onInventoryChangedForQuests(meta);
+    this.emit({ type: 'vendor', action: 'buyback', itemId, pid: meta.entityId });
+    this.emit({ type: 'loot', text: `Bought back ${def.name} for ${formatMoney(def.sellValue)}.`, pid: meta.entityId });
   }
 
   private addItemSilent(itemId: string, count: number, meta: PlayerMeta): void {
@@ -3183,6 +3281,11 @@ export class Sim {
       return null;
     }
 
+    if (/^\/who(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, 'The /who roster is available in online play.');
+      return null;
+    }
+
     // "/w name message" — private whisper to an online player
     const wm = /^\/(?:w|whisper|t|tell)\s+(\S+)\s+([\s\S]+)$/i.exec(raw);
     if (wm) {
@@ -3264,8 +3367,12 @@ export class Sim {
   }
 
   private isFriendlyTo(caster: Entity, target: Entity): boolean {
-    if (target.kind !== 'player') return false;
-    return !this.isHostileTo(caster, target);
+    if (target.kind === 'player') return !this.isHostileTo(caster, target);
+    if (target.kind === 'mob' && target.ownerId !== null) {
+      const owner = this.entities.get(target.ownerId);
+      return !!owner && owner.kind === 'player' && !this.isHostileTo(caster, owner);
+    }
+    return false;
   }
 
   // -------------------------------------------------------------------------
@@ -3314,6 +3421,11 @@ export class Sim {
     const invite = this.partyInvites.get(r.meta.entityId);
     if (!invite || invite.expires < this.time) { this.error(r.meta.entityId, 'The invitation has expired.'); return; }
     this.partyInvites.delete(r.meta.entityId);
+    // A player can hold a stale incoming invite while having since joined or
+    // formed a party of their own (inviting others never consumes one's own
+    // pending invite). Accepting now would add them to a second party's member
+    // list, corrupting the "at most one party" invariant.
+    if (this.partyOf(r.meta.entityId)) { this.error(r.meta.entityId, 'You are already in a party.'); return; }
     const leaderMeta = this.players.get(invite.fromPid);
     if (!leaderMeta) return;
     let party = this.partyOf(invite.fromPid);

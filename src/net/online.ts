@@ -197,7 +197,7 @@ function blankEntity(id: number): Entity {
     sitting: false, eating: null, drinking: null,
     aiState: 'idle', tappedById: null, pulseTimer: 0, firedSummons: 0, summonedIds: [], enraged: false,
     threat: new Map(), forcedTargetId: null, forcedTargetTimer: 0, ownerId: null, petTauntTimer: 0,
-    spawnPos: { x: 0, y: 0, z: 0 }, wanderTarget: null, wanderTimer: 0,
+    spawnPos: { x: 0, y: 0, z: 0 }, leashAnchor: null, wanderTarget: null, wanderTimer: 0,
     aggroTargetId: null, respawnTimer: 0, corpseTimer: 0, lootable: false, loot: null,
     xpValue: 0, questIds: [], vendorItems: [], objectItemId: null, dungeonId: null,
     dead: false, scale: 1, color: 0xffffff,
@@ -210,6 +210,7 @@ export class ClientWorld implements IWorld {
   playerId = -1;
   moveInput: MoveInput = emptyMoveInput();
   inventory: InvSlot[] = [];
+  vendorBuyback: InvSlot[] = [];
   equipment: Partial<Record<EquipSlot, string>> = {};
   copper = 0;
   xp = 0;
@@ -502,6 +503,7 @@ export class ClientWorld implements IWorld {
       this.xp = s.xp ?? 0;
       this.copper = s.copper ?? 0;
       if (s.inv !== undefined) { this.inventory = s.inv; this.invChanged = true; }
+      if (s.buyback !== undefined) { this.vendorBuyback = s.buyback; this.invChanged = true; }
       if (s.equip !== undefined) this.equipment = s.equip;
       if (s.qlog !== undefined) this.questLog = new Map((s.qlog as QuestProgress[]).map((q) => [q.questId, q]));
       if (s.qdone !== undefined) this.questsDone = new Set(s.qdone);
@@ -606,6 +608,9 @@ export class ClientWorld implements IWorld {
   }
   sellItem(itemId: string, count?: number): void {
     this.cmd({ cmd: 'sell', item: itemId, count });
+  }
+  buyBackItem(itemId: string): void {
+    this.cmd({ cmd: 'buyback', item: itemId });
   }
   releaseSpirit(): void {
     this.cmd({ cmd: 'release' });
