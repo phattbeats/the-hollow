@@ -17,6 +17,7 @@ import {
   pt_BR,
   ru_RU,
   formatDateTime,
+  formatMoney,
   formatNumber,
   isSupportedLanguage,
   languageTag,
@@ -113,25 +114,51 @@ describe("i18n Localization Key Coverage", () => {
     "questUi.logs.accepted",
     "questUi.errors.unavailable",
   ];
+  const phaseFiveItemKeys: TranslationKey[] = [
+    "itemUi.money.goldShort",
+    "itemUi.money.copper",
+    "itemUi.slots.mainhand",
+    "itemUi.quality.rare",
+    "itemUi.kind.quest",
+    "itemUi.stats.attackPower",
+    "itemUi.tooltip.damageSpeed",
+    "itemUi.tooltip.useFood",
+    "itemUi.tooltip.sellPrice",
+    "itemUi.bags.title",
+    "itemUi.bags.itemAria",
+    "itemUi.equipment.levelClass",
+    "itemUi.vendor.goodsTitle",
+    "itemUi.vendor.buyAria",
+    "itemUi.market.title",
+    "itemUi.market.sellNote",
+    "itemUi.market.buyAria",
+    "itemUi.logs.sellerSold",
+    "itemUi.errors.tooManyListings",
+  ];
   const interpolationValues: Record<string, string | number> = {
     active: 3,
     ability: "Fireball",
     action: "Open Chat",
     amount: 42,
     base: 14,
+    buyer: "Mira",
+    classes: "Warrior, Mage",
     className: "Mage",
     command: "/dance",
     completed: 12,
     count: 5,
     cost: 30,
     current: 120,
+    cut: 5,
     delta: "+13",
+    dps: "7.4",
     duration: "15s",
     form: "Bear",
     guild: "Night Watch",
     index: 2,
     item: "Rough Bracers",
     key: "K",
+    kind: "Weapon",
     label: "Wolf",
     level: 10,
     loser: "Mira",
@@ -144,6 +171,9 @@ describe("i18n Localization Key Coverage", () => {
     perCombo: 7,
     percent: 30,
     position: 3,
+    price: "1g 20s",
+    proceeds: "95s",
+    quality: "Rare",
     rating: 1513,
     range: 30,
     rank: 2,
@@ -151,6 +181,8 @@ describe("i18n Localization Key Coverage", () => {
     seconds: 7,
     slot: 5,
     source: "Wolf",
+    speed: 2.4,
+    stat: "Strength",
     status: "Complete",
     summary: "30 Mana / Instant",
     tab: "Damage",
@@ -158,6 +190,8 @@ describe("i18n Localization Key Coverage", () => {
     view: "Current",
     winner: "Rook",
     total: 125,
+    used: 2,
+    value: 9,
     xp: 450,
     zone: "Northshire",
   };
@@ -300,6 +334,17 @@ describe("i18n Localization Key Coverage", () => {
     setLanguage("en");
   });
 
+  it("should include current phase item, vendor, market, and currency keys in every locale", () => {
+    for (const key of phaseFiveItemKeys) {
+      for (const lang of supportedLanguages) {
+        setLanguage(lang);
+        expect(t(key), `${lang}.${key}`).not.toBe(key);
+        expect(t(key).trim().length, `${lang}.${key}`).toBeGreaterThan(0);
+      }
+    }
+    setLanguage("en");
+  });
+
   it("should preserve and render every Phase 2 HUD interpolation placeholder in every locale", () => {
     const phaseTwoDynamicKeys = flattenStrings(en.hud, "hud")
       .map(({ key, value }) => ({ key, expected: placeholders(value) }))
@@ -372,6 +417,30 @@ describe("i18n Localization Key Coverage", () => {
     setLanguage("en");
   });
 
+  it("should preserve and render every Phase 5 item UI interpolation placeholder in every locale", () => {
+    const phaseFiveDynamicKeys = flattenStrings(en.itemUi, "itemUi")
+      .map(({ key, value }) => ({ key, expected: placeholders(value) }))
+      .filter(({ expected }) => expected.length > 0);
+    const allLocales: Record<string, typeof en> = { en, ...locales };
+
+    for (const { key, expected } of phaseFiveDynamicKeys) {
+      for (const [lang, locale] of Object.entries(allLocales)) {
+        const template = nestedString(locale, key);
+        expect(placeholders(template), `${lang}.${key} placeholders`).toEqual(expected);
+        expect(isSupportedLanguage(lang)).toBe(true);
+        if (!isSupportedLanguage(lang)) continue;
+        setLanguage(lang);
+        const rendered = t(key, interpolationValues);
+        expect(rendered, `${lang}.${key} should not leave placeholders unresolved`).not.toMatch(/\{[A-Za-z][A-Za-z0-9]*\}/);
+        for (const placeholder of expected) {
+          expect(rendered, `${lang}.${key} should include ${placeholder}`).toContain(String(interpolationValues[placeholder]));
+        }
+      }
+    }
+
+    setLanguage("en");
+  });
+
   it("should interpolate Phase 2 combat, chat, and log templates without dropping values", () => {
     setLanguage("de_DE");
     expect(t("hud.combat.damageDoneCrit", { ability: "Feuerball", target: "Wolf", amount: 42 })).toContain("42");
@@ -427,6 +496,23 @@ describe("i18n Localization Key Coverage", () => {
     setLanguage("en");
   });
 
+  it("should format Phase 5 item UI and money helpers without dropping dynamic values", () => {
+    setLanguage("de_DE");
+    expect(t("itemUi.vendor.goodsTitle", { name: "Haldren" })).toContain("Haldren");
+    expect(t("itemUi.market.sellNote", { cut: 5, used: 2, max: 12 })).toContain("5");
+    expect(formatMoney(123456)).toBe("12G 34S 56K");
+
+    setLanguage("fr_FR");
+    expect(t("itemUi.logs.sellerSold", { buyer: "Mira", item: "Cracked Wolf Fang", money: "1 po", proceeds: "95 pa" })).toContain("Mira");
+    expect(formatMoney(10001)).toBe("1po 0pa 1pc");
+
+    setLanguage("ja_JP");
+    expect(t("itemUi.tooltip.useFood", { amount: 61, seconds: 18 })).toContain("61");
+    expect(formatMoney(7)).toBe("7銅");
+
+    setLanguage("en");
+  });
+
   it("should expose all supported hreflang alternates in index.html", () => {
     const html = fs.readFileSync(path.resolve(process.cwd(), "index.html"), "utf8");
     const expectedHreflang = [
@@ -452,6 +538,7 @@ describe("i18n Localization Key Coverage", () => {
     expect(html).toContain('data-i18n-content="seo.description"');
     expect(html).toContain('data-i18n-placeholder="hud.core.chatPlaceholder"');
     expect(html).toContain('data-i18n="hud.core.chatTab"');
+    expect(html).toContain('data-i18n-title="itemUi.bags.title"');
     expect(html).toContain('id="structured-data"');
   });
 });
