@@ -483,10 +483,17 @@
 
   /* spellbook */
   #spellbook { left: 50%; top: 16%; transform: translateX(-50%); width: 430px; max-height: 64%; overflow-y: auto; }
-  .spell-row { display: flex; gap: 10px; padding: 6px; border-radius: 4px; align-items: center; }
+  .spellbook-class, .spell-rank { color: var(--color-text-muted); font-size: 11px; }
+  .spell-list { display: flex; flex-direction: column; gap: 2px; }
+  .spell-row { display: flex; gap: 10px; min-height: 46px; padding: 6px; border-radius: 4px; align-items: center; }
   .spell-row:hover { background: #ffffff0e; }
+  .spell-row:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 2px; background: var(--color-primary-glow); }
+  .spell-row.locked .spell-icon { filter: grayscale(1) brightness(0.5); }
+  .spell-row.locked .spell-name { color: var(--color-text-muted); }
+  .spell-row .spell-text { min-width: 0; flex: 1; }
   .spell-row .spell-name { font-size: 13px; color: #fff; font-family: var(--title-font); }
-  .spell-row .spell-sub { font-size: 11px; color: #998d6a; }
+  .spell-row .spell-sub { font-size: 11px; color: var(--color-text-muted); }
+  .spell-row .spell-name, .spell-row .spell-sub { overflow-wrap: anywhere; }
   .spell-icon { width: 34px; height: 34px; border-radius: 5px; flex: none;
     background-color: #15151f; background-size: cover; background-position: center; background-repeat: no-repeat;
     border: 2px solid #4a3d1d; }
@@ -2693,6 +2700,16 @@
     max-height: calc(100vh - 92px);
     transform: translateX(-50%);
   }
+  body.mobile-touch #spellbook [data-close] {
+    min-width: 40px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
   body.mobile-touch #options-menu .btn {
     min-height: 40px;
     padding-top: 9px;
@@ -2847,20 +2864,20 @@
       right: auto;
       bottom: calc(58px + env(safe-area-inset-bottom));
       grid-template-columns: repeat(2, 104px);
-      grid-auto-rows: 38px;
+      grid-auto-rows: 40px;
       gap: 6px;
     }
     body.mobile-touch #mobile-extra-controls .mobile-btn {
       width: 104px;
-      height: 38px;
+      height: 40px;
       font-size: 16px;
       padding: 0 9px;
     }
     body.mobile-touch #mobile-extra-controls .mobile-label { font-size: 9px; }
     body.mobile-touch #bottom-bar { bottom: calc(50px + env(safe-area-inset-bottom)); }
-    body.mobile-touch #actionbar { grid-template-columns: repeat(5, 38px); grid-auto-rows: 38px; gap: 4px; padding: 4px; width: max-content; background: linear-gradient(170deg, #15151fa8, #08080db8); }
-    body.mobile-touch #actionbar.many-spells { grid-template-columns: repeat(6, 38px); }
-    body.mobile-touch .action-btn { width: 38px; height: 38px; }
+    body.mobile-touch #actionbar { grid-template-columns: repeat(5, 40px); grid-auto-rows: 40px; gap: 4px; padding: 4px; width: max-content; background: linear-gradient(170deg, #15151fa8, #08080db8); }
+    body.mobile-touch #actionbar.many-spells { grid-template-columns: repeat(6, 40px); }
+    body.mobile-touch .action-btn { width: 40px; height: 40px; }
     body.mobile-touch #xpbar {
       left: calc(max(20px, env(safe-area-inset-left)) + 112px);
       bottom: calc(6px + env(safe-area-inset-bottom));
@@ -3343,7 +3360,7 @@
         </div>
         <div id="side-buttons">
           <button class="micro-btn" id="mm-char" title="Character Info">C<span class="keybind">c</span></button>
-          <button class="micro-btn" id="mm-spell" title="Spellbook">S<span class="keybind">p</span></button>
+          <button class="micro-btn" id="mm-spell" data-i18n-title="abilityUi.spellbook.title" title="Spellbook">S<span class="keybind">p</span></button>
           <button class="micro-btn" id="mm-quest" title="Quest Log">Q<span class="keybind">l</span></button>
           <button class="micro-btn" id="mm-map" title="World Map">M<span class="keybind">m</span></button>
           <button class="micro-btn" id="mm-bag" title="Bags">B<span class="keybind">b</span></button>
@@ -3810,7 +3827,7 @@
         <button class="mobile-btn" id="mobile-arena" title="Arena" aria-label="Arena">⚔<span class="mobile-label">Arena</span></button>
         <button class="mobile-btn" id="mobile-menu" title="Game menu" aria-label="Game menu">☰<span class="mobile-label">Menu</span></button>
         <button class="mobile-btn" id="mobile-interact" title="Interact or loot" aria-label="Interact or loot">✦<span class="mobile-label">Use</span></button>
-        <button class="mobile-btn" id="mobile-spellbook" title="Spellbook" aria-label="Spellbook">✹<span class="mobile-label">Spellbook</span></button>
+        <button class="mobile-btn" id="mobile-spellbook" data-i18n-title="abilityUi.spellbook.title" data-i18n-aria="abilityUi.spellbook.title" title="Spellbook" aria-label="Spellbook">✹<span class="mobile-label" data-i18n="abilityUi.spellbook.title">Spellbook</span></button>
         <button class="mobile-btn" id="mobile-meters" title="Meters" aria-label="Meters">▦<span class="mobile-label">Meters</span></button>
         <button class="mobile-btn" id="mobile-map" title="Map" aria-label="Map">◇<span class="mobile-label">Map</span></button>
       </div>

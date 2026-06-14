@@ -7,7 +7,7 @@ import {
   zoneWelcomeText,
 } from '../sim/data';
 import type { ZoneDef } from '../sim/data';
-import type { InvSlot } from '../sim/types';
+import type { AbilityDef, InvSlot, PlayerClass, ResourceType } from '../sim/types';
 import { AbilityEffect, CONSUME_DURATION, Entity, GCD, ItemDef, SimEvent, dist2d, xpForLevel, MAX_LEVEL, MELEE_RANGE } from '../sim/types';
 import { terrainHeight, WATER_LEVEL, roadDistance } from '../sim/world';
 import { Meters } from './meters';
@@ -17,7 +17,7 @@ import { iconDataUrl, QUALITY_COLOR } from './icons';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
 import { Settings, GameSettings, SETTING_RANGES } from '../game/settings';
 import { chatPlayerContextActions } from './player_context_menu';
-import { t, type TranslationKey } from './i18n';
+import { formatNumber, t, type TranslationKey } from './i18n';
 
 // hooks main wires after Input exists (the options menu drives input, audio,
 // graphics, and logout, all of which live outside the HUD)
@@ -48,6 +48,26 @@ const FAMILY_GLYPH: Record<string, string> = {
 const CLASS_GLYPH: Record<string, string> = {
   warrior: '⚔️', paladin: '🔨', hunter: '🏹', rogue: '🗡️', priest: '✝️',
   shaman: '🌩️', mage: '🔮', warlock: '🕯️', druid: '🐻',
+};
+const CLASS_NAME_KEYS: Record<PlayerClass, TranslationKey> = {
+  warrior: 'classes.warrior',
+  paladin: 'classes.paladin',
+  hunter: 'classes.hunter',
+  rogue: 'classes.rogue',
+  priest: 'classes.priest',
+  shaman: 'classes.shaman',
+  mage: 'classes.mage',
+  warlock: 'classes.warlock',
+  druid: 'classes.druid',
+};
+const RESOURCE_LABEL_KEYS: Record<ResourceType, TranslationKey> = {
+  mana: 'abilityUi.resources.mana',
+  rage: 'abilityUi.resources.rage',
+  energy: 'abilityUi.resources.energy',
+};
+const FORM_LABEL_KEYS: Record<'bear' | 'cat', TranslationKey> = {
+  bear: 'abilityUi.forms.bear',
+  cat: 'abilityUi.forms.cat',
 };
 
 // Classic class colors (CLASSES[cls].color is a 0xRRGGBB number) as a CSS
@@ -262,13 +282,16 @@ export class Hud {
       this.tooltipEl.innerHTML = html();
       this.tooltipEl.style.display = 'block';
       const tw = this.tooltipEl.offsetWidth, th = this.tooltipEl.offsetHeight;
-      this.tooltipEl.style.left = `${Math.min(window.innerWidth - tw - 8, x + 14)}px`;
+      this.tooltipEl.style.left = `${Math.max(8, Math.min(window.innerWidth - tw - 8, x + 14))}px`;
       this.tooltipEl.style.top = `${Math.max(8, y - th - 10)}px`;
+    };
+    const showNearElement = () => {
+      const rect = el.getBoundingClientRect();
+      showAt(rect.right, rect.top + rect.height / 2);
     };
     el.addEventListener('mouseenter', () => {
       if (mobile()) return;
-      this.tooltipEl.innerHTML = html();
-      this.tooltipEl.style.display = 'block';
+      showNearElement();
     });
     el.addEventListener('mousemove', (e) => {
       if (mobile()) return;
@@ -277,6 +300,8 @@ export class Hud {
       this.tooltipEl.style.top = `${Math.max(8, e.clientY - th - 10)}px`;
     });
     el.addEventListener('mouseleave', () => { clearTouchTimer(); this.tooltipEl.style.display = 'none'; });
+    el.addEventListener('focusin', showNearElement);
+    el.addEventListener('focusout', () => { clearTouchTimer(); this.tooltipEl.style.display = 'none'; });
     el.addEventListener('pointerdown', (e) => {
       if (!mobile() || e.pointerType === 'mouse') return;
       clearTouchTimer();
@@ -320,54 +345,27 @@ export class Hud {
 
   private abilityTooltip(res: ResolvedAbility): string {
     const a = res.def;
-    const resName = this.sim.player.resourceType === 'rage' ? 'Rage' : this.sim.player.resourceType === 'energy' ? 'Energy' : 'Mana';
-    let dmgText = '';
-    const primaryEffect = res.effects.find(eff => 
-      eff.type === 'directDamage' || 
-      eff.type === 'heal' || 
-      eff.type === 'weaponDamage' || 
-      eff.type === 'weaponStrike' || 
-      eff.type === 'aoeDamage' || 
-      eff.type === 'aoeRoot' ||
-      eff.type === 'finisherDamage' ||
-      eff.type === 'drainTick'
-    );
-    if (primaryEffect) {
-      if (primaryEffect.type === 'directDamage' || primaryEffect.type === 'aoeDamage' || primaryEffect.type === 'aoeRoot' || primaryEffect.type === 'drainTick') {
-        dmgText = primaryEffect.min === primaryEffect.max ? `${primaryEffect.min}` : `${primaryEffect.min} to ${primaryEffect.max}`;
-      } else if (primaryEffect.type === 'weaponDamage' || primaryEffect.type === 'weaponStrike') {
-        dmgText = `${primaryEffect.bonus}`;
-      } else if (primaryEffect.type === 'finisherDamage') {
-        dmgText = `${primaryEffect.base} plus ${primaryEffect.perCombo} per combo point`;
-      }
-    } else {
-      const secondaryEffect = res.effects.find(eff => 
-        eff.type === 'dot' || 
-        eff.type === 'hot' || 
-        eff.type === 'absorb' || 
-        eff.type === 'imbue'
-      );
-      if (secondaryEffect) {
-        if (secondaryEffect.type === 'dot' || secondaryEffect.type === 'hot') {
-          dmgText = `${secondaryEffect.total}`;
-        } else if (secondaryEffect.type === 'absorb') {
-          dmgText = `${secondaryEffect.amount}`;
-        } else if (secondaryEffect.type === 'imbue') {
-          dmgText = `${secondaryEffect.bonus}`;
-        }
-      }
-    }
-    let html = `<div class="tt-title">${a.name}</div>`;
-    html += `<div class="tt-sub">Rank ${res.rank}</div>`;
+    const damageText = abilityEffectText(res.effects);
+    let html = `<div class="tt-title">${esc(abilityDisplayName(a))}</div>`;
+    html += `<div class="tt-sub">${esc(t('abilityUi.tooltip.rank', { rank: formatAbilityNumber(res.rank) }))}</div>`;
     const costLine: string[] = [];
-    if (res.cost > 0) costLine.push(`${res.cost} ${resName}`);
-    if (a.range > 0) costLine.push(`${a.minRange ? a.minRange + '-' : ''}${a.range} yd range`);
-    if (costLine.length) html += `<div class="tt-stat">${costLine.join(' &nbsp; ')}</div>`;
-    const castLine: string[] = [];
-    castLine.push(a.channel ? `Channeled (${a.channel.duration} sec)` : res.castTime > 0 ? `${res.castTime} sec cast` : 'Instant');
-    if (a.cooldown > 0) castLine.push(`${a.cooldown} sec cooldown`);
-    html += `<div class="tt-stat">${castLine.join(' &nbsp; ')}</div>`;
-    html += `<div class="tt-desc">${a.description.replace('$d', dmgText)}</div>`;
+    if (res.cost > 0) {
+      costLine.push(t('abilityUi.tooltip.cost', {
+        cost: formatAbilityNumber(res.cost),
+        resource: resourceDisplayName(this.sim.player.resourceType),
+      }));
+    }
+    const rangeLine = abilityRangeLine(a);
+    if (rangeLine) costLine.push(rangeLine);
+    if (costLine.length) html += `<div class="tt-stat">${costLine.map(esc).join(' &nbsp; ')}</div>`;
+    const castLine = [abilityCastLine(res)];
+    if (a.cooldown > 0) castLine.push(t('abilityUi.tooltip.cooldownSeconds', { seconds: formatAbilityNumber(a.cooldown) }));
+    html += `<div class="tt-stat">${castLine.map(esc).join(' &nbsp; ')}</div>`;
+    html += `<div class="tt-desc">${esc(abilityDisplayDescription(a, damageText))}</div>`;
+    const requirements = abilityRequirementLines(a);
+    if (requirements.length) {
+      html += requirements.map((line) => `<div class="tt-sub">${esc(line)}</div>`).join('');
+    }
     return html;
   }
 
@@ -457,10 +455,10 @@ export class Hud {
       });
       this.attachTooltip(btn, () => {
         if (slot === 0) {
-          return '<div class="tt-title">Attack</div><div class="tt-sub">Toggle auto-attack on your target.<br>Right-clicking an enemy also attacks.</div>';
+          return `<div class="tt-title">${esc(t('abilityUi.actionBar.attackName'))}</div><div class="tt-sub">${esc(t('abilityUi.actionBar.attackTooltip'))}</div>`;
         }
         const known = this.abilityForSlot(slot);
-        return known ? this.abilityTooltip(known) : '<div class="tt-sub">Empty slot</div>';
+        return known ? this.abilityTooltip(known) : `<div class="tt-sub">${esc(t('abilityUi.actionBar.emptySlot'))}</div>`;
       });
       if (slot >= 1) {
         // drag an ability onto another slot to swap the two keybinds;
@@ -584,7 +582,7 @@ export class Hud {
         ? p.castRemaining / Math.max(0.01, p.castTotal)
         : 1 - p.castRemaining / Math.max(0.01, p.castTotal);
       (cb.querySelector('.fill') as HTMLElement).style.width = `${(frac * 100).toFixed(1)}%`;
-      (cb.querySelector('.label') as HTMLElement).textContent = ABILITIES[p.castingAbility].name;
+      (cb.querySelector('.label') as HTMLElement).textContent = abilityDisplayName(ABILITIES[p.castingAbility]);
     } else if (p.eating || p.drinking) {
       cb.style.display = 'block';
       cb.classList.add('channel');
@@ -610,6 +608,10 @@ export class Hud {
       if (i === 0) {
         // Attack button: glows while auto-attacking, red-edged out of range
         ab.btn.classList.remove('empty', 'unusable');
+        ab.btn.setAttribute('aria-label', t('abilityUi.actionBar.slotAria', {
+          slot: i + 1,
+          ability: t('abilityUi.actionBar.attackName'),
+        }));
         if (ab.lastIcon !== '__attack') {
           ab.lastIcon = '__attack';
           ab.label.style.backgroundImage = `url(${iconDataUrl('ability', 'attack')})`;
@@ -623,6 +625,7 @@ export class Hud {
       const known = this.abilityForSlot(i);
       if (!known) {
         ab.btn.classList.add('empty');
+        ab.btn.setAttribute('aria-label', t('abilityUi.actionBar.emptySlotAria', { slot: i + 1 }));
         if (ab.lastIcon !== '') {
           ab.lastIcon = '';
           ab.label.style.backgroundImage = '';
@@ -633,6 +636,10 @@ export class Hud {
       }
       const a = known.def;
       ab.btn.classList.remove('empty');
+      ab.btn.setAttribute('aria-label', t('abilityUi.actionBar.slotAria', {
+        slot: i + 1,
+        ability: abilityDisplayName(a),
+      }));
       // set the painted icon once per slot change, not every frame
       if (ab.lastIcon !== a.id) {
         ab.lastIcon = a.id;
@@ -2126,20 +2133,41 @@ export class Hud {
   renderSpellbook(): void {
     const el = $('#spellbook');
     const sim = this.sim;
-    el.innerHTML = `<div class="panel-title"><span>Spellbook</span><span class="x-btn" data-close>✕</span></div>`;
     const cls = CLASSES[sim.cfg.playerClass];
+    const className = classDisplayName(cls.id);
+    el.setAttribute('aria-label', t('abilityUi.spellbook.title'));
+    el.innerHTML = `<div class="panel-title"><span>${esc(t('abilityUi.spellbook.title'))} <span class="spellbook-class">${esc(t('abilityUi.spellbook.classSubtitle', { className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('abilityUi.spellbook.close'))}">✕</button></div>`;
+    const list = document.createElement('div');
+    list.className = 'spell-list';
+    list.setAttribute('role', 'list');
+    el.appendChild(list);
+    let rendered = 0;
     for (const abilityId of cls.abilities) {
       const def = ABILITIES[abilityId];
       const known = sim.known.find((k) => k.def.id === abilityId) ?? null;
       const row = document.createElement('div');
-      row.className = 'spell-row';
+      row.className = 'spell-row' + (known ? '' : ' locked');
+      row.tabIndex = 0;
+      row.setAttribute('role', 'listitem');
       const locked = !known;
-      row.innerHTML = `<div class="spell-icon" style="background-image:url(${iconDataUrl('ability', abilityId)});${locked ? 'filter:grayscale(1) brightness(0.5)' : ''}"></div>
-        <div><div class="spell-name" style="${locked ? 'color:#777' : ''}">${def.name}${known && known.rank > 1 ? ` <span style="color:#998d6a;font-size:11px">Rank ${known.rank}</span>` : ''}</div>
-        <div class="spell-sub">${locked ? `Trainable at level ${def.learnLevel}` : describeCost(known!, sim)}</div></div>`;
+      const summary = known ? describeAbilitySummary(known, sim.player.resourceType) : '';
+      const name = abilityDisplayName(def);
+      row.setAttribute('aria-label', known
+        ? t('abilityUi.spellbook.knownAbilityAria', { name, rank: formatAbilityNumber(known.rank), summary })
+        : t('abilityUi.spellbook.unlearnedAbilityAria', { name, level: def.learnLevel }));
+      row.innerHTML = `<div class="spell-icon" style="background-image:url(${iconDataUrl('ability', abilityId)})"></div>
+        <div class="spell-text"><div class="spell-name">${esc(name)}${known && known.rank > 1 ? ` <span class="spell-rank">${esc(t('abilityUi.tooltip.rank', { rank: formatAbilityNumber(known.rank) }))}</span>` : ''}</div>
+        <div class="spell-sub">${locked ? esc(t('abilityUi.spellbook.trainableAtLevel', { level: def.learnLevel })) : esc(summary)}</div></div>`;
       if (known) this.attachTooltip(row, () => this.abilityTooltip(known));
-      else this.attachTooltip(row, () => `<div class="tt-title" style="color:#999">${def.name}</div><div class="tt-sub">You will learn this at level ${def.learnLevel}.</div>`);
-      el.appendChild(row);
+      else this.attachTooltip(row, () => `<div class="tt-title">${esc(name)}</div><div class="tt-sub">${esc(t('abilityUi.spellbook.learnAtLevel', { level: def.learnLevel }))}</div>`);
+      list.appendChild(row);
+      rendered++;
+    }
+    if (rendered === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'spell-sub';
+      empty.textContent = t('abilityUi.spellbook.empty');
+      list.appendChild(empty);
     }
     el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; this.hideTooltip(); });
   }
@@ -3099,7 +3127,7 @@ export class Hud {
     const slot = Number(actionId.slice(4));
     if (slot === 0) return t('hud.keybinds.actions.attack');
     const known = this.abilityForSlot(slot);
-    return known ? known.def.name : t('hud.keybinds.actions.actionBarSlot', { slot: slot + 1 });
+    return known ? abilityDisplayName(known.def) : t('hud.keybinds.actions.actionBarSlot', { slot: slot + 1 });
   }
 
   private renderKeybinds(): void {
@@ -3207,13 +3235,135 @@ export class Hud {
   }
 }
 
-function describeCost(known: ResolvedAbility, sim: IWorld): string {
-  const resName = sim.player.resourceType === 'rage' ? 'Rage' : sim.player.resourceType === 'energy' ? 'Energy' : 'Mana';
+function describeAbilitySummary(known: ResolvedAbility, resourceType: ResourceType | null): string {
   const parts: string[] = [];
-  if (known.cost > 0) parts.push(`${known.cost} ${resName}`);
-  parts.push(known.def.channel ? 'Channeled' : known.castTime > 0 ? `${known.castTime}s cast` : 'Instant');
-  if (known.def.cooldown > 0) parts.push(`${known.def.cooldown}s cooldown`);
+  if (known.cost > 0) {
+    parts.push(t('abilityUi.tooltip.cost', {
+      cost: formatAbilityNumber(known.cost),
+      resource: resourceDisplayName(resourceType),
+    }));
+  }
+  parts.push(abilityCastLine(known));
+  if (known.def.cooldown > 0) {
+    parts.push(t('abilityUi.tooltip.cooldownSeconds', { seconds: formatAbilityNumber(known.def.cooldown) }));
+  }
   return parts.join(' · ');
+}
+
+function abilityDisplayName(def: AbilityDef): string {
+  return def.name;
+}
+
+function abilityDisplayDescription(def: AbilityDef, damageText: string): string {
+  return def.description.replace('$d', damageText);
+}
+
+function classDisplayName(cls: PlayerClass): string {
+  return t(CLASS_NAME_KEYS[cls]);
+}
+
+function resourceDisplayName(resourceType: ResourceType | null): string {
+  return t(RESOURCE_LABEL_KEYS[resourceType ?? 'mana']);
+}
+
+function formatAbilityNumber(value: number): string {
+  return formatNumber(value, { maximumFractionDigits: 1 });
+}
+
+function abilityRangeLine(def: AbilityDef): string | null {
+  if (def.range <= 0) return null;
+  if (def.minRange !== undefined) {
+    return t('abilityUi.tooltip.rangeWithMin', {
+      min: formatAbilityNumber(def.minRange),
+      max: formatAbilityNumber(def.range),
+    });
+  }
+  return t('abilityUi.tooltip.range', { range: formatAbilityNumber(def.range) });
+}
+
+function abilityCastLine(known: ResolvedAbility): string {
+  if (known.def.channel) {
+    return t('abilityUi.tooltip.channeledSeconds', { seconds: formatAbilityNumber(known.def.channel.duration) });
+  }
+  if (known.castTime > 0) {
+    return t('abilityUi.tooltip.castSeconds', { seconds: formatAbilityNumber(known.castTime) });
+  }
+  return t('abilityUi.tooltip.instant');
+}
+
+function abilityRequirementLines(def: AbilityDef): string[] {
+  const lines: string[] = [];
+  if (def.requiresForm) lines.push(t('abilityUi.tooltip.requiresForm', { form: t(FORM_LABEL_KEYS[def.requiresForm]) }));
+  if (def.requiresStealth) lines.push(t('abilityUi.tooltip.requiresStealth'));
+  if (def.spendsCombo) lines.push(t('abilityUi.tooltip.requiresCombo'));
+  if (def.requiresDodgeProc) lines.push(t('abilityUi.tooltip.requiresDodge'));
+  if (def.requiresOutOfCombat) lines.push(t('abilityUi.tooltip.requiresOutOfCombat'));
+  if (def.requiresTargetHpBelow !== undefined) {
+    lines.push(t('abilityUi.tooltip.requiresTargetHealthBelow', { percent: formatAbilityNumber(def.requiresTargetHpBelow * 100) }));
+  }
+  if (def.onNextSwing) lines.push(t('abilityUi.tooltip.onNextSwing'));
+  if (def.offGcd) lines.push(t('abilityUi.tooltip.offGlobalCooldown'));
+  if (def.targetType === 'friendly') lines.push(t('abilityUi.tooltip.friendlyTarget'));
+  else if (def.requiresTarget) lines.push(t('abilityUi.tooltip.enemyTarget'));
+  return lines;
+}
+
+function abilityEffectText(effects: AbilityEffect[]): string {
+  const primary = effects.find((eff) =>
+    eff.type === 'directDamage' ||
+    eff.type === 'heal' ||
+    eff.type === 'weaponDamage' ||
+    eff.type === 'weaponStrike' ||
+    eff.type === 'aoeDamage' ||
+    eff.type === 'aoeRoot' ||
+    eff.type === 'finisherDamage' ||
+    eff.type === 'drainTick'
+  );
+  if (primary) {
+    switch (primary.type) {
+      case 'directDamage':
+      case 'heal':
+      case 'aoeDamage':
+      case 'aoeRoot':
+      case 'drainTick':
+        return abilityAmountRange(primary.min, primary.max);
+      case 'weaponDamage':
+      case 'weaponStrike':
+        return formatAbilityNumber(primary.bonus);
+      case 'finisherDamage':
+        return t('abilityUi.tooltip.finisherDamage', {
+          base: formatAbilityNumber(primary.base),
+          perCombo: formatAbilityNumber(primary.perCombo),
+        });
+    }
+  }
+
+  const secondary = effects.find((eff) =>
+    eff.type === 'dot' ||
+    eff.type === 'hot' ||
+    eff.type === 'absorb' ||
+    eff.type === 'imbue'
+  );
+  if (!secondary) return '';
+  switch (secondary.type) {
+    case 'dot':
+    case 'hot':
+      return formatAbilityNumber(secondary.total);
+    case 'absorb':
+      return formatAbilityNumber(secondary.amount);
+    case 'imbue':
+      return formatAbilityNumber(secondary.bonus);
+    default:
+      return '';
+  }
+}
+
+function abilityAmountRange(min: number, max: number): string {
+  if (min === max) return formatAbilityNumber(min);
+  return t('abilityUi.tooltip.damageRange', {
+    min: formatAbilityNumber(min),
+    max: formatAbilityNumber(max),
+  });
 }
 
 function cap(s: string): string {
