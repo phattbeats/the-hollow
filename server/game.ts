@@ -68,6 +68,8 @@ export interface ClientSession {
   blockListLoaded: boolean;
   // name of the last player to whisper this session, for WoW's /r reply
   lastWhisperFrom: string | null;
+  // last explicit channel this player sent to; plain text follows it.
+  rememberedChat: RememberedChat;
   // serialized form of each delta self field as last sent to this client;
   // a field is omitted from a snapshot while its serialization is unchanged
   lastSent: Record<string, string>;
@@ -129,6 +131,10 @@ interface WhoRosterRow {
   zone: string;
   status: PresenceStatus;
 }
+
+type RememberedChat =
+  | { channel: 'say' | 'yell' | 'general' | 'party' | 'guild' | 'officer' }
+  | { channel: 'whisper'; target: string };
 
 // Identity fields rarely change, so they ride only in "full" records: on an
 // entity's first snapshot for a session and again whenever one of them
@@ -425,6 +431,7 @@ export class GameServer {
       blockedIds: new Set(),
       blockListLoaded: false,
       lastWhisperFrom: null,
+      rememberedChat: { channel: 'say' },
       lastSent: {},
       sentEnts: new Map(),
     };
@@ -678,12 +685,14 @@ export class GameServer {
           break;
         }
         // guild and officer chat are persistent + cross-zone, so they live in
-        // the server's SocialService rather than the sim (no guild concept)
-        const gm = /^\/(?:gu|guild)\s+([\s\S]+)$/i.exec(text);
+        // the server's SocialService rather than the sim (no guild concept).
+        // MMO convention: /g is guild; /general remains world chat.
+        const gm = /^\/(?:g|gu|guild)\s+([\s\S]+)$/i.exec(text);
         const om = gm ? null : /^\/(?:o|officer)\s+([\s\S]+)$/i.exec(text);
         if (gm || om) {
           const channel = gm ? 'guild' : 'officer';
           const body = censorChatText((gm ?? om!)[1]);
+          session.rememberedChat = { channel };
           const route = gm ? this.social.guildChat(this.actorFor(session), body)
             : this.social.officerChat(this.actorFor(session), body);
           void route.then((sent) => {
@@ -703,10 +712,11 @@ export class GameServer {
             this.send(session, { t: 'events', list: [{ type: 'error', text: 'No one has whispered you recently.' }] });
             break;
           }
+          session.rememberedChat = { channel: 'whisper', target: session.lastWhisperFrom };
           this.logChat(session, sim.chat(`/w ${session.lastWhisperFrom} ${censorChatText(rm[1])}`, pid));
           break;
         }
-        this.logChat(session, sim.chat(censorChatText(msg.text), pid));
+        this.logChat(session, this.routeRememberedChat(session, text, pid));
         break;
       }
       // party
@@ -1053,6 +1063,54 @@ export class GameServer {
     else if ('entityId' in ev && typeof ev.entityId === 'number') id = ev.entityId;
     if (id === undefined) return null; // chat/log etc: broadcast
     return this.sim.entities.get(id)?.pos ?? null;
+  }
+
+  private routeRememberedChat(session: ClientSession, rawText: string, pid: number): import('../src/sim/sim').SentChat | null {
+    const text = rawText.trim();
+    if (!text) return null;
+    if (!text.startsWith('/')) {
+      const body = censorChatText(text);
+      if (!body.trim()) return null;
+      switch (session.rememberedChat.channel) {
+        case 'guild':
+        case 'officer': {
+          const channel = session.rememberedChat.channel;
+          const route = channel === 'guild'
+            ? this.social.guildChat(this.actorFor(session), body)
+            : this.social.officerChat(this.actorFor(session), body);
+          void route.then((sent) => {
+            if (sent) {
+              this.chatLog.log({
+                accountId: session.accountId, characterId: session.characterId,
+                characterName: session.name, channel, message: body.trim().slice(0, 200),
+              });
+            }
+          }).catch((err) => console.error(`${channel} chat failed:`, err));
+          return null;
+        }
+        case 'whisper':
+          return this.sim.chat(`/w ${session.rememberedChat.target} ${body}`, pid);
+        case 'party':
+          return this.sim.chat(`/p ${body}`, pid);
+        case 'general':
+          return this.sim.chat(`/general ${body}`, pid);
+        case 'yell':
+          return this.sim.chat(`/y ${body}`, pid);
+        case 'say':
+          return this.sim.chat(body, pid);
+      }
+    }
+
+    const sent = this.sim.chat(censorChatText(text), pid);
+    if (sent) {
+      if (sent.channel === 'whisper') {
+        const wm = /^\/(?:w|whisper|t|tell)\s+(\S+)\s+[\s\S]+$/i.exec(text);
+        if (wm) session.rememberedChat = { channel: 'whisper', target: wm[1] };
+      } else {
+        session.rememberedChat = { channel: sent.channel };
+      }
+    }
+    return sent;
   }
 
   private logChat(session: ClientSession, sent: import('../src/sim/sim').SentChat | null): void {
