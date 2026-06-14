@@ -90,6 +90,18 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     id: 'spring_water', name: 'Refreshing Spring Water', kind: 'drink', quality: 'common',
     drinkMana: 76, sellValue: 6, buyValue: 25,
   },
+  simple_fishing_pole: {
+    id: 'simple_fishing_pole', name: 'Simple Fishing Pole', kind: 'tool', quality: 'common',
+    use: { type: 'fishing' }, sellValue: 4, buyValue: 20,
+  },
+  raw_mirror_trout: {
+    id: 'raw_mirror_trout', name: 'Raw Mirror Trout', kind: 'food', quality: 'common',
+    foodHp: 61, sellValue: 3,
+  },
+  tangled_weed: {
+    id: 'tangled_weed', name: 'Tangled Weed', kind: 'junk', quality: 'poor',
+    sellValue: 1,
+  },
   roasted_boar: {
     id: 'roasted_boar', name: 'Roasted Boar Meat', kind: 'food', quality: 'common',
     foodHp: 117, sellValue: 12, buyValue: 100,
