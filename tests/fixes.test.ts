@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { Sim } from '../src/sim/sim';
 import { Entity, dist2d } from '../src/sim/types';
-import { CRYPT_DOOR_POS, DUNGEON_X_THRESHOLD, LAKE, MOBS, NPCS, QUESTS, zoneAt, zoneWelcomeText } from '../src/sim/data';
+import { CRYPT_DOOR_POS, DUNGEON_LIST, DUNGEON_X_THRESHOLD, LAKE, MOBS, NPCS, QUESTS, zoneAt, zoneWelcomeText } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
 import { groundHeight, WATER_LEVEL } from '../src/sim/world';
 import { isBlocked, resolvePosition } from '../src/sim/colliders';
@@ -213,6 +213,26 @@ describe('the Hollow Crypt doors', () => {
     expect(slotA).not.toBeNull();
     expect(slotB).not.toBeNull();
     expect(slotA).not.toBe(slotB);
+  });
+});
+
+describe('dungeon instance placement and targetability', () => {
+  it('places every dungeon entry and mob spawn on unblocked instance ground', () => {
+    for (const dungeon of DUNGEON_LIST) {
+      const sim = makeSim();
+      sim.enterDungeon(dungeon.id);
+      const p = sim.player;
+      expect(p.pos.x, `${dungeon.id} entry is not inside an instance`).toBeGreaterThan(DUNGEON_X_THRESHOLD);
+      expect(isBlocked(SEED, p.pos.x, p.pos.z, 0.5), `${dungeon.id} entry spawned in geometry`).toBe(false);
+
+      const mobs = [...sim.entities.values()].filter((e) => e.kind === 'mob' && e.spawnPos.x > DUNGEON_X_THRESHOLD);
+      expect(mobs.length, `${dungeon.id} spawned no instance mobs`).toBeGreaterThan(0);
+      for (const mob of mobs) {
+        expect(mob.hostile, `${dungeon.id} ${mob.name} is not hostile`).toBe(true);
+        expect(sim.isHostileTo(sim.player, mob), `${dungeon.id} ${mob.name} is not targetable`).toBe(true);
+        expect(isBlocked(SEED, mob.pos.x, mob.pos.z, 0.5), `${dungeon.id} ${mob.name} spawned in geometry`).toBe(false);
+      }
+    }
   });
 });
 
