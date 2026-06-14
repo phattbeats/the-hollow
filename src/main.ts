@@ -207,13 +207,16 @@ function mobilePreflightCopy(): { detail: string; steps: string[] } {
   };
 }
 
-function showMobilePreflightPrompt(): void {
-  if (!isPhoneTouchDevice()) return;
+let mobilePreflightPromptPromise: Promise<void> | null = null;
+
+function showMobilePreflightPrompt(): Promise<void> {
+  if (!isPhoneTouchDevice()) return Promise.resolve();
+  if (mobilePreflightPromptPromise) return mobilePreflightPromptPromise;
   const prompt = document.getElementById('mobile-preflight') as HTMLElement | null;
   const detail = document.getElementById('mobile-preflight-detail') as HTMLElement | null;
   const steps = document.getElementById('mobile-preflight-steps') as HTMLOListElement | null;
   const continueBtn = document.getElementById('mobile-preflight-continue') as HTMLButtonElement | null;
-  if (!prompt || !detail || !steps || !continueBtn) return;
+  if (!prompt || !detail || !steps || !continueBtn) return Promise.resolve();
 
   const copy = mobilePreflightCopy();
   detail.textContent = copy.detail;
@@ -226,7 +229,18 @@ function showMobilePreflightPrompt(): void {
   document.body.classList.add('mobile-preflight-open', 'mobile-touch');
   prompt.style.display = 'flex';
   prompt.classList.add('visible');
-  continueBtn.onclick = () => hideMobilePreflightPrompt();
+  mobilePreflightPromptPromise = new Promise((resolve) => {
+    continueBtn.onclick = () => {
+      requestMobileFullscreenLandscape();
+      syncAppViewport();
+      window.setTimeout(syncAppViewport, 250);
+      window.setTimeout(syncAppViewport, 800);
+      hideMobilePreflightPrompt();
+      mobilePreflightPromptPromise = null;
+      resolve();
+    };
+  });
+  return mobilePreflightPromptPromise;
 }
 
 function hideMobilePreflightPrompt(): void {
@@ -339,7 +353,11 @@ function enterLoadingState(statusText: string): void {
 
 async function prepareWorldEntry(): Promise<boolean> {
   if (hasBegunWorldEntry) return false;
-  requestPreferredFullscreen();
+  if (isPhoneTouchDevice()) {
+    await showMobilePreflightPrompt();
+  } else {
+    requestPreferredFullscreen();
+  }
   syncAppViewport();
   window.setTimeout(syncAppViewport, 250);
   window.setTimeout(syncAppViewport, 800);

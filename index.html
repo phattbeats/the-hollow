@@ -878,6 +878,13 @@
     box-shadow: inset 0 0 5px rgba(255, 209, 0, 0.15), 0 0 8px var(--color-primary-glow);
   }
 
+  body.mobile-touch .nav-link {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   /* Language Selector */
   .language-selector {
     position: relative;
@@ -908,6 +915,12 @@
     color: var(--color-primary);
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffd100' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     box-shadow: 0 0 8px var(--color-primary-glow);
+  }
+
+  body.mobile-touch .lang-select-dropdown {
+    min-height: 40px;
+    font-size: 16px;
+    padding: 10px 36px 10px 16px;
   }
 
   /* Views Container */
@@ -1214,6 +1227,10 @@
   }
 
   .social-link svg { display: block; }
+
+  body.mobile-touch .social-link {
+    min-height: 40px;
+  }
 
   /* ---------- loading screen (entering the world) ---------- */
   #loading-screen {
@@ -1528,6 +1545,10 @@
     box-shadow: 0 0 8px var(--color-primary-glow);
     background-color: #12121a;
     outline: none;
+  }
+
+  body.mobile-touch .auth-panel-premium input {
+    font-size: 16px;
   }
 
   .password-wrapper {
@@ -3051,7 +3072,7 @@
     margin: 12px 0;
   }
   body.mobile-touch .mobile-char-tab {
-    height: 34px;
+    min-height: 40px;
     border: 1px solid #4a3d1d;
     border-radius: 5px;
     background: linear-gradient(#201b28, #100e16);
@@ -3117,9 +3138,14 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 7px;
   }
-  body.mobile-touch #charselect-panel .mini-class {
+  body.mobile-touch #charselect-panel .mini-class,
+  body.mobile-touch #offline-select .mini-class {
     min-width: 0;
+    min-height: 40px;
     padding: 9px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
   }
 
@@ -3171,6 +3197,10 @@
     .nav-link {
       width: 100%;
       text-align: center;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: var(--spacing-sm);
       font-size: 14px;
     }
@@ -3200,7 +3230,7 @@
     }
     .social-link {
       width: 42px;
-      height: 36px;
+      min-height: 40px;
       padding: 0;
       justify-content: center;
     }
