@@ -43,6 +43,7 @@ const CHAT_RATE_REFILL_PER_SECOND = 1 / 3; // sustained 20 messages/minute
 const CHAT_RATE_ERROR_COOLDOWN_SECONDS = 4;
 const CHAT_COOLDOWN_SECONDS = 20;
 const CHAT_RATE_VIOLATIONS_FOR_COOLDOWN = 3;
+const WHO_RESULT_LIMIT = 50;
 // Exponential moving average weight for the per-tick duration stat.
 const TICK_EMA_ALPHA = 0.05;
 
@@ -64,6 +65,7 @@ export interface ClientSession {
   // character ids this player has ignored; chat from them is dropped before
   // delivery. Loaded from the DB on join, kept in sync by social commands.
   blockedIds: Set<number>;
+  blockListLoaded: boolean;
   // name of the last player to whisper this session, for WoW's /r reply
   lastWhisperFrom: string | null;
   // serialized form of each delta self field as last sent to this client;
@@ -118,6 +120,14 @@ interface WireAura {
   kind: string;
   rem: number;
   dur: number;
+}
+
+interface WhoRosterRow {
+  name: string;
+  cls: string;
+  level: number;
+  zone: string;
+  status: PresenceStatus;
 }
 
 // Identity fields rarely change, so they ride only in "full" records: on an
@@ -413,6 +423,7 @@ export class GameServer {
       chatTokens: CHAT_RATE_BURST, chatLastRefill: Date.now() / 1000, chatLastRateError: 0,
       chatRateViolations: 0, chatCooldownUntil: 0,
       blockedIds: new Set(),
+      blockListLoaded: false,
       lastWhisperFrom: null,
       lastSent: {},
       sentEnts: new Map(),
@@ -442,6 +453,7 @@ export class GameServer {
   private async initSocial(session: ClientSession): Promise<void> {
     try {
       session.blockedIds = new Set(await this.socialDb.blockedIds(session.characterId));
+      session.blockListLoaded = true;
     } catch (err) {
       console.error('failed to load block list:', err);
     }
@@ -660,6 +672,10 @@ export class GameServer {
         if (typeof msg.text !== 'string') break;
         if (!this.consumeChatToken(session)) break;
         const text = msg.text.trim();
+        if (/^\/who(?:\s|$)/i.test(text)) {
+          this.sendWhoRoster(session);
+          break;
+        }
         // guild and officer chat are persistent + cross-zone, so they live in
         // the server's SocialService rather than the sim (no guild concept)
         const gm = /^\/(?:gu|guild)\s+([\s\S]+)$/i.exec(text);
@@ -1084,6 +1100,60 @@ export class GameServer {
       this.send(session, { t: 'events', list: [{ type: 'error', text: 'You are sending messages too quickly. Slow down.' }] });
     }
     return false;
+  }
+
+  private sendWhoRoster(session: ClientSession): void {
+    if (!session.blockListLoaded) {
+      this.send(session, { t: 'events', list: [{ type: 'error', text: 'Your ignore list is still loading. Try /who again in a moment.' }] });
+      return;
+    }
+    const rows = this.whoRosterFor(session);
+    const total = rows.length;
+    const list: { type: 'log'; text: string; color: string }[] = [{
+      type: 'log',
+      text: `Who: ${total} ${total === 1 ? 'player' : 'players'} online on ${REALM}.`,
+      color: '#7fd4ff',
+    }];
+    for (const row of rows.slice(0, WHO_RESULT_LIMIT)) {
+      const status = row.status === 'online' ? '' : ` (${row.status})`;
+      list.push({
+        type: 'log',
+        text: `${row.name} - level ${row.level} ${row.cls} - ${row.zone}${status}`,
+        color: '#c9b27a',
+      });
+    }
+    if (total > WHO_RESULT_LIMIT) {
+      list.push({
+        type: 'log',
+        text: `...and ${total - WHO_RESULT_LIMIT} more.`,
+        color: '#998d6a',
+      });
+    }
+    this.send(session, { t: 'events', list });
+  }
+
+  private whoRosterFor(viewer: ClientSession): WhoRosterRow[] {
+    const rows: WhoRosterRow[] = [];
+    for (const session of this.clients.values()) {
+      if (!this.canShowInWho(viewer, session)) continue;
+      const e = this.sim.entities.get(session.pid);
+      const meta = this.sim.meta(session.pid);
+      if (!e || !meta) continue;
+      rows.push({
+        name: session.name,
+        cls: meta.cls,
+        level: e.level,
+        ...this.presenceOf(session),
+      });
+    }
+    return rows.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  private canShowInWho(viewer: ClientSession, candidate: ClientSession): boolean {
+    if (!candidate.blockListLoaded) return false;
+    if (viewer.blockedIds.has(candidate.characterId)) return false;
+    if (candidate.characterId !== viewer.characterId && candidate.blockedIds.has(viewer.characterId)) return false;
+    return true;
   }
 
   private broadcastSystem(text: string): void {

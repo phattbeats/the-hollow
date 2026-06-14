@@ -3229,6 +3229,11 @@ export class Sim {
       return null;
     }
 
+    if (/^\/who(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, 'The /who roster is available in online play.');
+      return null;
+    }
+
     // "/w name message" — private whisper to an online player
     const wm = /^\/(?:w|whisper|t|tell)\s+(\S+)\s+([\s\S]+)$/i.exec(raw);
     if (wm) {

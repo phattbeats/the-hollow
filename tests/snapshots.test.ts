@@ -15,6 +15,7 @@ vi.mock('../server/db', () => ({
 import { censorChatText, GameServer, ClientSession } from '../server/game';
 import { saveCharacterState } from '../server/db';
 import { ClientWorld } from '../src/net/online';
+import type { PlayerClass } from '../src/sim/types';
 
 const DELTA_KEYS = ['inv', 'equip', 'qlog', 'qdone', 'cds', 'stats', 'weapon', 'party', 'trade', 'duel'];
 
@@ -35,10 +36,18 @@ function lastSnap(sent: any[]): any {
   return null;
 }
 
-function joinServer(server: GameServer, fc: FakeClient, characterId: number, name: string): ClientSession {
-  const session = server.join(fc.ws, characterId, characterId, name, 'warrior', null);
+function joinServer(server: GameServer, fc: FakeClient, characterId: number, name: string, cls: PlayerClass = 'warrior'): ClientSession {
+  const session = server.join(fc.ws, characterId, characterId, name, cls, null);
   if ('error' in session) throw new Error(session.error);
+  session.blockListLoaded = true;
   return session;
+}
+
+function eventTexts(sent: any[]): string[] {
+  return sent
+    .flatMap((msg) => msg.t === 'events' ? msg.list : [])
+    .filter((ev) => ev.type === 'log' || ev.type === 'error')
+    .map((ev) => ev.text);
 }
 
 function broadcast(server: GameServer): void {
@@ -368,6 +377,75 @@ describe('autosaves', () => {
 
     const savedCharacterIds = vi.mocked(saveCharacterState).mock.calls.map((call) => call[0]);
     expect(savedCharacterIds.sort((a, b) => a - b)).toEqual([1, 1, 2, 2]);
+  });
+});
+
+describe('/who command', () => {
+  it('lists online players with class, level, realm, and zone metadata', () => {
+    const server = new GameServer();
+    const fc = fakeWs();
+    const self = joinServer(server, fc, 1, 'Aleph', 'warrior');
+    const fc2 = fakeWs();
+    const other = joinServer(server, fc2, 2, 'Bet', 'mage');
+    server.sim.setPlayerLevel(7, other.pid);
+    fc.sent.length = 0;
+
+    server.handleMessage(self, JSON.stringify({ t: 'cmd', cmd: 'chat', text: '/who' }));
+
+    const text = eventTexts(fc.sent).join('\n');
+    expect(text).toContain('Who: 2 players online on Claudemoon.');
+    expect(text).toContain('Aleph - level 1 warrior - Eastbrook Vale');
+    expect(text).toContain('Bet - level 7 mage - Eastbrook Vale');
+  });
+
+  it('hides ignored players and players who ignored the requester', () => {
+    const server = new GameServer();
+    const fc = fakeWs();
+    const self = joinServer(server, fc, 1, 'Aleph');
+    const fcIgnored = fakeWs();
+    const ignored = joinServer(server, fcIgnored, 2, 'Bet');
+    const fcBlocking = fakeWs();
+    const blocking = joinServer(server, fcBlocking, 3, 'Gimel');
+    self.blockedIds = new Set([ignored.characterId]);
+    blocking.blockedIds = new Set([self.characterId]);
+    fc.sent.length = 0;
+
+    server.handleMessage(self, JSON.stringify({ t: 'cmd', cmd: 'chat', text: '/who' }));
+
+    const text = eventTexts(fc.sent).join('\n');
+    expect(text).toContain('Who: 1 player online on Claudemoon.');
+    expect(text).toContain('Aleph - level 1 warrior - Eastbrook Vale');
+    expect(text).not.toContain('Bet');
+    expect(text).not.toContain('Gimel');
+  });
+
+  it('waits for the requester ignore list before showing online players', () => {
+    const server = new GameServer();
+    const fc = fakeWs();
+    const self = joinServer(server, fc, 1, 'Aleph');
+    joinServer(server, fakeWs(), 2, 'Bet');
+    self.blockListLoaded = false;
+    fc.sent.length = 0;
+
+    server.handleMessage(self, JSON.stringify({ t: 'cmd', cmd: 'chat', text: '/who' }));
+
+    expect(eventTexts(fc.sent)).toContain('Your ignore list is still loading. Try /who again in a moment.');
+  });
+
+  it('omits players whose own ignore list is still loading', () => {
+    const server = new GameServer();
+    const fc = fakeWs();
+    const self = joinServer(server, fc, 1, 'Aleph');
+    const pending = joinServer(server, fakeWs(), 2, 'Bet');
+    pending.blockListLoaded = false;
+    fc.sent.length = 0;
+
+    server.handleMessage(self, JSON.stringify({ t: 'cmd', cmd: 'chat', text: '/who' }));
+
+    const text = eventTexts(fc.sent).join('\n');
+    expect(text).toContain('Who: 1 player online on Claudemoon.');
+    expect(text).toContain('Aleph - level 1 warrior - Eastbrook Vale');
+    expect(text).not.toContain('Bet');
   });
 });
 
