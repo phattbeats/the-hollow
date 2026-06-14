@@ -1,4 +1,5 @@
-import type { AbilityDef, PlayerClass, Stats, WeaponInfo } from '../types';
+import type { AbilityDef, AbilityEffect, PlayerClass, Stats, WeaponInfo } from '../types';
+import type { TalentModifiers } from './talents';
 
 // ---------------------------------------------------------------------------
 // Player classes — per-level base stats follow vanilla growth curves.
@@ -1318,14 +1319,121 @@ export const ABILITIES: Record<string, AbilityDef> = {
     icon: 'SF', iconColor: '#d2b4de',
     description: 'Calls down a bolt of stellar fire, causing $d Arcane damage.',
   },
+
+  // ============== TALENT-GRANTED (Warrior) ==============
+  // Not in CLASSES.warrior.abilities — unlocked only via talent grants (spec
+  // signatures + active nodes), so abilitiesKnownAt adds them by `mods.grants`.
+  mortal_strike: {
+    id: 'mortal_strike', name: 'Mortal Strike', class: 'warrior', learnLevel: 10,
+    cost: 30, castTime: 0, cooldown: 6, range: 0, school: 'physical',
+    requiresTarget: true, threat: { mult: 1.2 },
+    effects: [{ type: 'weaponStrike', bonus: 40 }],
+    icon: 'MS', iconColor: '#c0392b',
+    description: 'A vicious strike dealing weapon damage plus $d. (Arms signature)',
+  },
+  bloodthirst: {
+    id: 'bloodthirst', name: 'Bloodthirst', class: 'warrior', learnLevel: 10,
+    cost: 30, castTime: 0, cooldown: 6, range: 0, school: 'physical',
+    requiresTarget: true,
+    effects: [{ type: 'weaponStrike', bonus: 35, weaponMult: 0.6 }],
+    icon: 'BT', iconColor: '#922b21',
+    description: 'Instantly attack in a blood frenzy for $d. (Fury signature)',
+  },
+  shield_slam: {
+    id: 'shield_slam', name: 'Shield Slam', class: 'warrior', learnLevel: 10,
+    cost: 20, castTime: 0, cooldown: 6, range: 0, school: 'physical',
+    requiresTarget: true, threat: { flat: 110 },
+    effects: [{ type: 'weaponStrike', bonus: 30, weaponMult: 0.5 }],
+    icon: 'SS', iconColor: '#5dade2',
+    description: 'Slam the target with your shield for $d and massive threat. (Protection signature)',
+  },
+  whirlwind: {
+    id: 'whirlwind', name: 'Whirlwind', class: 'warrior', learnLevel: 10,
+    cost: 25, castTime: 0, cooldown: 10, range: 0, school: 'physical',
+    requiresTarget: true,
+    effects: [{ type: 'aoeDamage', min: 30, max: 42, radius: 8 }],
+    icon: 'WW', iconColor: '#e67e22',
+    description: 'Spin in a deadly arc, striking all nearby enemies for $d. (Fury talent)',
+  },
+  berserker_rage: {
+    id: 'berserker_rage', name: 'Berserker Rage', class: 'warrior', learnLevel: 10,
+    cost: 0, castTime: 0, cooldown: 30, range: 0, school: 'physical',
+    requiresTarget: false, offGcd: true,
+    effects: [{ type: 'gainResource', amount: 20 }],
+    icon: 'BR', iconColor: '#cb4335',
+    description: 'Enter a berserker rage, generating 20 rage. (Warrior talent)',
+  },
 };
 
-// Abilities a class knows at a given level, with active rank values resolved.
-export function abilitiesKnownAt(cls: PlayerClass, level: number): { def: AbilityDef; rank: number; cost: number; castTime: number; effects: AbilityDef['effects']; threatFlat: number; threatMult: number }[] {
-  const out = [];
-  for (const id of CLASSES[cls].abilities) {
+// A class ability resolved to a concrete rank, with talent modifiers already
+// folded into its cost / cast / cooldown / effects. The combat path reads only
+// these flat numbers — it never consults the talent tree. Structurally matches
+// sim's ResolvedAbility.
+export interface KnownAbility {
+  def: AbilityDef;
+  rank: number;
+  cost: number;
+  castTime: number;
+  cooldown: number;
+  effects: AbilityEffect[];
+  threatFlat: number;
+  threatMult: number;
+}
+
+// Scale one effect's damage/heal magnitudes, returning a NEW effect object — the
+// base content arrays are shared module data and must never be mutated. `flat`
+// is added once to the effect's primary magnitude.
+function scaleEffect(eff: AbilityEffect, dmgMult: number, healMult: number, flat: number): AbilityEffect {
+  switch (eff.type) {
+    case 'weaponDamage': return { ...eff, bonus: Math.round(eff.bonus * dmgMult + flat) };
+    case 'weaponStrike': return { ...eff, bonus: Math.round(eff.bonus * dmgMult + flat) };
+    case 'directDamage': return { ...eff, min: Math.round(eff.min * dmgMult + flat), max: Math.round(eff.max * dmgMult + flat) };
+    case 'dot': return { ...eff, total: Math.round(eff.total * dmgMult + flat) };
+    case 'aoeDamage': return { ...eff, min: Math.round(eff.min * dmgMult + flat), max: Math.round(eff.max * dmgMult + flat) };
+    case 'aoeRoot': return { ...eff, min: Math.round(eff.min * dmgMult), max: Math.round(eff.max * dmgMult) };
+    case 'drainTick': return { ...eff, min: Math.round(eff.min * dmgMult), max: Math.round(eff.max * dmgMult) };
+    case 'finisherDamage': return { ...eff, base: Math.round(eff.base * dmgMult + flat), perCombo: Math.round(eff.perCombo * dmgMult) };
+    case 'imbue': return { ...eff, bonus: Math.round(eff.bonus * dmgMult) };
+    case 'heal': return { ...eff, min: Math.round(eff.min * healMult + flat), max: Math.round(eff.max * healMult + flat) };
+    case 'hot': return { ...eff, total: Math.round(eff.total * healMult + flat) };
+    default: return eff;
+  }
+}
+
+// Fold precomputed talent modifiers into one resolved ability (FR-5.3). Global
+// melee/spell/heal mults apply to every ability of the right school; per-ability
+// mods stack on top and also tune cost / cast time / cooldown.
+function applyTalentMods(entry: KnownAbility, mods: TalentModifiers): void {
+  const am = mods.abilities[entry.def.id];
+  const physical = entry.def.school === 'physical';
+  const globalDmg = physical ? mods.global.meleeDmgPct : mods.global.spellDmgPct;
+  const dmgMult = 1 + globalDmg + (am?.dmgPct ?? 0);
+  const healMult = 1 + mods.global.healPct + (am?.dmgPct ?? 0);
+  const flat = am?.flatDmg ?? 0;
+  if (dmgMult !== 1 || healMult !== 1 || flat !== 0) {
+    entry.effects = entry.effects.map((e) => scaleEffect(e, dmgMult, healMult, flat));
+  }
+  if (am) {
+    if (am.costPct) entry.cost = Math.max(0, Math.round(entry.cost * (1 + am.costPct)));
+    if (am.castPct) entry.castTime = Math.max(0, entry.castTime * (1 + am.castPct));
+    if (am.cooldownPct) entry.cooldown = Math.max(0, entry.cooldown * (1 + am.cooldownPct));
+  }
+}
+
+// Abilities a class knows at a given level, with rank values resolved and any
+// talent modifiers (granted abilities + per-ability/global tweaks) applied.
+export function abilitiesKnownAt(cls: PlayerClass, level: number, mods?: TalentModifiers): KnownAbility[] {
+  const out: KnownAbility[] = [];
+  const baseIds = CLASSES[cls].abilities;
+  const ids = [...baseIds];
+  for (const g of mods?.grants ?? []) if (!ids.includes(g.ability)) ids.push(g.ability);
+
+  for (const id of ids) {
     const def = ABILITIES[id];
-    if (def.learnLevel > level) continue;
+    if (!def) continue;
+    const granted = !baseIds.includes(id);
+    if (!granted && def.learnLevel > level) continue; // class kit is level-gated; grants bypass it
+
     let rank = 1, cost = def.cost, castTime = def.castTime, effects = def.effects;
     let threatFlat = def.threat?.flat ?? 0;
     const threatMult = def.threat?.mult ?? 1;
@@ -1338,7 +1446,9 @@ export function abilitiesKnownAt(cls: PlayerClass, level: number): { def: Abilit
         if (r.threatFlat !== undefined) threatFlat = r.threatFlat;
       }
     }
-    out.push({ def, rank, cost, castTime, effects, threatFlat, threatMult });
+    const entry: KnownAbility = { def, rank, cost, castTime, cooldown: def.cooldown, effects, threatFlat, threatMult };
+    if (mods) applyTalentMods(entry, mods);
+    out.push(entry);
   }
   return out;
 }

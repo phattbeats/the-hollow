@@ -4,8 +4,10 @@ import {
   validateAllocation, dormantNodes, computeTalentModifiers, emptyAllocation,
   exportBuild, importBuild, TALENT_BUILD_VERSION, type TalentAllocation,
 } from '../src/sim/content/talents';
-import { MAX_LEVEL } from '../src/sim/types';
+import { MAX_LEVEL, dist2d } from '../src/sim/types';
 import { Sim } from '../src/sim/sim';
+import { abilitiesKnownAt } from '../src/sim/content/classes';
+import { terrainHeight } from '../src/sim/world';
 
 const alloc = (over: Partial<TalentAllocation> = {}): TalentAllocation => ({ ...emptyAllocation(), ...over });
 
@@ -14,6 +16,18 @@ function warriorAtCap(seed = 7): Sim {
   sim.setPlayerLevel(MAX_LEVEL);
   return sim;
 }
+
+function nearestMob(sim: Sim) {
+  let best: any = null, bestD = Infinity;
+  for (const e of sim.entities.values()) {
+    if (e.kind !== 'mob' || e.dead) continue;
+    const d = dist2d(sim.player.pos, e.pos);
+    if (d < bestD) { bestD = d; best = e; }
+  }
+  return best;
+}
+
+const effOf = (k: any, i = 0) => k.effects[i] as any;
 
 describe('talent tree validation (load-time)', () => {
   it('every registered tree is structurally valid', () => {
@@ -242,5 +256,94 @@ describe('Sim integration — passive talents (Phase 1)', () => {
     expect(meta.talents.spec).toBe('fury');
     expect(meta.talents.ranks.arms_imp_overpower).toBeUndefined(); // pruned
     expect(meta.talents.ranks.war_cruelty).toBe(2); // class tree kept
+  });
+});
+
+describe('Sim integration — active talents & ability modifiers (Phase 3)', () => {
+  it('grants spec signature + active-node abilities into the known set', () => {
+    const sim = warriorAtCap();
+    expect(sim.known.some((k) => k.def.id === 'mortal_strike')).toBe(false);
+    expect(sim.applyTalents(alloc({ spec: 'arms' }))).toBe(true);
+    expect(sim.known.some((k) => k.def.id === 'mortal_strike')).toBe(true); // Arms signature
+
+    // Fury whirlwind is an active node (gate: 2 points above row 1 -> fury_cruelty 2)
+    expect(sim.applyTalents(alloc({ spec: 'fury', ranks: { fury_cruelty: 2, fury_whirlwind: 1 } }))).toBe(true);
+    expect(sim.known.some((k) => k.def.id === 'whirlwind')).toBe(true);
+    expect(sim.known.some((k) => k.def.id === 'bloodthirst')).toBe(true);  // Fury signature
+    expect(sim.known.some((k) => k.def.id === 'mortal_strike')).toBe(false); // Arms signature gone
+  });
+
+  it('gates specialization choice to the first talent level', () => {
+    const sim = new Sim({ seed: 7, playerClass: 'warrior' });
+    sim.setPlayerLevel(5);
+    expect(sim.setSpec('arms')).toBe(false);
+    expect(sim.known.some((k) => k.def.id === 'mortal_strike')).toBe(false);
+  });
+
+  it('snapshot-locks Overpower damage before/after Improved Overpower (+ Arms mastery)', () => {
+    const baseBonus = effOf(abilitiesKnownAt('warrior', 20).find((k) => k.def.id === 'overpower')).bonus;
+    const mods = computeTalentModifiers('warrior', alloc({ spec: 'arms', ranks: { arms_imp_overpower: 2 } }));
+    const buffed = effOf(abilitiesKnownAt('warrior', 20, mods).find((k) => k.def.id === 'overpower')).bonus;
+    // Arms mastery (+10% melee) + Improved Overpower r2 (+50%) => x1.60
+    expect(buffed).toBe(Math.round(baseBonus * 1.6));
+    expect(buffed).toBeGreaterThan(baseBonus);
+    // shared content data must NOT be mutated by the modifier pass
+    const baseAgain = effOf(abilitiesKnownAt('warrior', 20).find((k) => k.def.id === 'overpower')).bonus;
+    expect(baseAgain).toBe(baseBonus);
+  });
+
+  it('snapshot-locks Heroic Strike cost before/after Improved Heroic Strike', () => {
+    const baseCost = abilitiesKnownAt('warrior', 20).find((k) => k.def.id === 'heroic_strike')!.cost;
+    const mods = computeTalentModifiers('warrior', alloc({ ranks: { war_toughness: 1, war_imp_heroic_strike: 2 } }));
+    const cost = abilitiesKnownAt('warrior', 20, mods).find((k) => k.def.id === 'heroic_strike')!.cost;
+    expect(cost).toBe(Math.round(baseCost * 0.8)); // -20%
+  });
+
+  it('applies cooldown and cast-time modifiers', () => {
+    const taunt = abilitiesKnownAt('warrior', 20, computeTalentModifiers('warrior',
+      alloc({ spec: 'prot', ranks: { prot_choice: 1 }, choices: { prot_choice: 'pc_imp_taunt' } }))
+    ).find((k) => k.def.id === 'taunt')!;
+    expect(taunt.cooldown).toBeCloseTo(10 * 0.8); // Improved Taunt -20% -> 8s
+
+    const slam = abilitiesKnownAt('warrior', 20, computeTalentModifiers('warrior',
+      alloc({ spec: 'arms', ranks: { arms_imp_slam: 2 } }))
+    ).find((k) => k.def.id === 'slam')!;
+    expect(slam.castTime).toBeCloseTo(1.5 * 0.5); // Improved Slam r2 -50% -> 0.75s
+  });
+
+  it('a choice node applies only the chosen option ability mod', () => {
+    const baseMin = effOf(abilitiesKnownAt('warrior', 20).find((k) => k.def.id === 'cleave')).min;
+    const sweeping = effOf(abilitiesKnownAt('warrior', 20, computeTalentModifiers('warrior',
+      alloc({ spec: 'arms', ranks: { arms_choice: 1 }, choices: { arms_choice: 'ac_sweeping' } }))
+    ).find((k) => k.def.id === 'cleave')).min;
+    const impale = effOf(abilitiesKnownAt('warrior', 20, computeTalentModifiers('warrior',
+      alloc({ spec: 'arms', ranks: { arms_choice: 1 }, choices: { arms_choice: 'ac_impale' } }))
+    ).find((k) => k.def.id === 'cleave')).min;
+    expect(sweeping).toBe(Math.round(baseMin * 1.4)); // arms mastery .10 + sweeping .30
+    expect(impale).toBe(Math.round(baseMin * 1.1));   // arms mastery only; impale is crit
+  });
+
+  it('tank-role Vengeance Mastery multiplies generated threat (+30%)', () => {
+    const sunderThreat = (vengeance: boolean): number => {
+      const sim = new Sim({ seed: 3, playerClass: 'warrior' });
+      sim.setPlayerLevel(20);
+      if (vengeance) expect(sim.setSpec('prot')).toBe(true); // grants Vengeance (+30% threat)
+      const mob = nearestMob(sim);
+      sim.player.pos.x = mob.pos.x;
+      sim.player.pos.z = mob.pos.z - 3;
+      sim.player.pos.y = terrainHeight(sim.player.pos.x, sim.player.pos.z, sim.cfg.seed);
+      sim.player.facing = Math.atan2(mob.pos.x - sim.player.pos.x, mob.pos.z - sim.player.pos.z);
+      sim.player.resource = 100;
+      sim.targetEntity(mob.id);
+      sim.castAbility('sunder_armor');
+      return mob.threat.get(sim.playerId) ?? 0;
+    };
+    const base = sunderThreat(false);
+    const venge = sunderThreat(true);
+    expect(base).toBeGreaterThan(0);
+    // ~+30% (a tiny constant "seed" threat on combat entry isn't multiplied, so
+    // assert the band rather than the exact ratio): clearly boosted, not doubled.
+    expect(venge / base).toBeGreaterThan(1.25);
+    expect(venge / base).toBeLessThan(1.31);
   });
 });

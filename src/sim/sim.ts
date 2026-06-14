@@ -10,7 +10,7 @@ import { findPath } from './pathfind';
 import { createGroundObject, createMob, createNpc, createPlayer, recalcPlayerStats, PlayerEquipment } from './entity';
 import {
   computeTalentModifiers, emptyAllocation, emptyModifiers, talentsFor, talentPointsAtLevel,
-  validateAllocation, cloneAllocation, pointsSpent,
+  validateAllocation, cloneAllocation, pointsSpent, FIRST_TALENT_LEVEL,
   type TalentAllocation, type TalentModifiers, type SavedLoadout,
 } from './content/talents';
 import { Rng } from './rng';
@@ -149,6 +149,7 @@ export interface ResolvedAbility {
   rank: number;
   cost: number;
   castTime: number;
+  cooldown: number;   // base def.cooldown, after talent cooldown modifiers
   effects: AbilityEffect[];
   threatFlat: number; // classic bonus threat on a successful use
   threatMult: number; // classic multiplier on this ability's damage-threat
@@ -732,7 +733,7 @@ export class Sim {
     const e = this.entities.get(meta.entityId);
     if (!e) return;
     const before = new Map(meta.known.map((k) => [k.def.id, k.rank]));
-    meta.known = abilitiesKnownAt(meta.cls, e.level);
+    meta.known = abilitiesKnownAt(meta.cls, e.level, meta.talentMods);
     if (announce) {
       for (const k of meta.known) {
         const prev = before.get(k.def.id);
@@ -810,6 +811,7 @@ export class Sim {
     if (lock) { this.error(r.e.id, lock); return false; }
     const sanitized: TalentAllocation = { spec: alloc.spec ?? null, ranks: {}, choices: { ...alloc.choices } };
     for (const id in alloc.ranks) { const v = Math.floor(alloc.ranks[id]); if (v > 0) sanitized.ranks[id] = v; }
+    if (sanitized.spec && r.e.level < FIRST_TALENT_LEVEL) { this.error(r.e.id, `You may choose a specialization at level ${FIRST_TALENT_LEVEL}.`); return false; }
     const check = validateAllocation(r.meta.cls, sanitized, talentPointsAtLevel(r.e.level));
     if (!check.ok) { this.error(r.e.id, check.reason ?? 'Invalid talent build.'); return false; }
     r.meta.talents = sanitized;
@@ -856,6 +858,17 @@ export class Sim {
     this.recomputeTalents(r.meta);
     this.emit({ type: 'log', pid: r.e.id, text: 'Talents reset.', color: '#ffd100' });
     return true;
+  }
+
+  // Threat modifier including the tank-role talent bonus (e.g. Protection's
+  // Vengeance Mastery). Reads the precomputed flat threatPct — no tree walk.
+  private threatMod(source: Entity, school: string): number {
+    let m = threatModifier(source, school);
+    if (source.kind === 'player') {
+      const meta = this.players.get(source.id);
+      if (meta) m *= 1 + meta.talentMods.global.threatPct;
+    }
+    return m;
   }
 
   resolvedAbility(abilityId: string, pid?: number): ResolvedAbility | null {
@@ -1410,7 +1423,7 @@ export class Sim {
 
     if (ability.channel) {
       this.spendResource(p, res.cost);
-      if (ability.cooldown > 0) p.cooldowns.set(ability.id, ability.cooldown);
+      if (res.cooldown > 0) p.cooldowns.set(ability.id, res.cooldown);
       p.castingAbility = ability.id;
       p.castTotal = ability.channel.duration;
       p.castRemaining = ability.channel.duration;
@@ -1503,7 +1516,7 @@ export class Sim {
   // Party membership does not change threat; it only affects social systems.
   private healingThreat(source: Entity, target: Entity, healed: number): void {
     if (source.kind !== 'player' || healed <= 0) return;
-    const total = healed * HEAL_THREAT_FACTOR * threatModifier(source, 'physical');
+    const total = healed * HEAL_THREAT_FACTOR * this.threatMod(source, 'physical');
     const aware: Entity[] = [];
     for (const m of this.entities.values()) {
       if (m.kind !== 'mob' || m.dead || !m.hostile || !m.inCombat || m.threat.size === 0) continue;
@@ -1552,14 +1565,14 @@ export class Sim {
     // helpful spells never miss
     if (ability.targetType === 'friendly') {
       this.spendResource(p, res.cost);
-      if (ability.cooldown > 0) p.cooldowns.set(ability.id, ability.cooldown);
+      if (res.cooldown > 0) p.cooldowns.set(ability.id, res.cooldown);
       this.runEffects(p, meta, target, res);
       return;
     }
 
     if (target && ability.school !== 'physical') {
       this.spendResource(p, res.cost);
-      if (ability.cooldown > 0) p.cooldowns.set(ability.id, ability.cooldown);
+      if (res.cooldown > 0) p.cooldowns.set(ability.id, res.cooldown);
       this.emit({ type: 'spellfx', sourceId: p.id, targetId: target.id, school: ability.school, fx: 'projectile' });
       if (!this.rng.chance(spellHitChance(p.level, target.level))) {
         this.emit({ type: 'damage', sourceId: p.id, targetId: target.id, amount: 0, crit: false, school: ability.school, ability: ability.name, kind: 'miss' });
@@ -1571,7 +1584,7 @@ export class Sim {
     }
 
     this.spendAbilityCost(p, res);
-    if (ability.cooldown > 0) p.cooldowns.set(ability.id, ability.cooldown);
+    if (res.cooldown > 0) p.cooldowns.set(ability.id, res.cooldown);
     this.runEffects(p, meta, target, res);
   }
 
@@ -1883,7 +1896,7 @@ export class Sim {
             });
           }
           // sunder deals no damage: its threat is the flat value, stance-scaled
-          addThreat(target, p.id, res.threatFlat * threatModifier(p, 'physical'));
+          addThreat(target, p.id, res.threatFlat * this.threatMod(p, 'physical'));
           this.enterCombat(p, target);
           break;
         }
@@ -2232,7 +2245,7 @@ export class Sim {
     // hate table, scaled by the attacker's stance/form modifiers
     if (source && source.id !== target.id && target.kind === 'mob' && target.hostile
       && (source.kind === 'player' || source.ownerId !== null)) {
-      const threat = (amount * (threatOpts?.mult ?? 1) + (threatOpts?.flat ?? 0)) * threatModifier(source, school);
+      const threat = (amount * (threatOpts?.mult ?? 1) + (threatOpts?.flat ?? 0)) * this.threatMod(source, school);
       addThreat(target, source.id, threat);
     }
 
