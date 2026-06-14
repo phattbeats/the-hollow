@@ -37,6 +37,7 @@ const QUARTER_RATE_DIVISOR = 4;
 const WIRE_CACHE_SWEEP_TICKS = 1200;
 const EVENT_RADIUS = 90;
 const AUTOSAVE_SECONDS = 30;
+const SAVE_CONCURRENCY = 4;
 const CHAT_RATE_BURST = 5;
 const CHAT_RATE_REFILL_PER_SECOND = 1 / 3; // sustained 20 messages/minute
 const CHAT_RATE_ERROR_COOLDOWN_SECONDS = 4;
@@ -286,6 +287,7 @@ export class GameServer {
   private lastWireSweepTick = 0;
   private interval: NodeJS.Timeout | null = null;
   private saveTimer = 0;
+  private saveAllInFlight: Promise<void> | null = null;
   private readonly startedAt = Date.now();
   private peakOnline = 0;
   private tickMsAvg = 0;
@@ -474,9 +476,31 @@ export class GameServer {
   }
 
   async saveAll(reason: string): Promise<void> {
-    for (const session of this.clients.values()) {
-      await this.saveCharacter(session).catch((err) => console.error(`${reason} failed for ${session.name}:`, err));
+    while (this.saveAllInFlight) {
+      const inFlight = this.saveAllInFlight;
+      if (reason !== 'shutdown') return;
+      await inFlight;
     }
+    const run = this.saveAllSnapshot(reason);
+    this.saveAllInFlight = run;
+    try {
+      await run;
+    } finally {
+      if (this.saveAllInFlight === run) this.saveAllInFlight = null;
+    }
+  }
+
+  private async saveAllSnapshot(reason: string): Promise<void> {
+    const sessions = [...this.clients.values()];
+    let next = 0;
+    const worker = async () => {
+      for (;;) {
+        const session = sessions[next++];
+        if (!session) return;
+        await this.saveCharacter(session).catch((err) => console.error(`${reason} failed for ${session.name}:`, err));
+      }
+    };
+    await Promise.all(Array.from({ length: Math.min(SAVE_CONCURRENCY, sessions.length) }, worker));
   }
 
   // The World Market is shared global state, persisted as a single JSONB blob.

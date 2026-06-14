@@ -13,6 +13,7 @@ vi.mock('../server/db', () => ({
 }));
 
 import { censorChatText, GameServer, ClientSession } from '../server/game';
+import { saveCharacterState } from '../server/db';
 import { ClientWorld } from '../src/net/online';
 
 const DELTA_KEYS = ['inv', 'equip', 'qlog', 'qdone', 'cds', 'stats', 'weapon', 'party', 'trade', 'duel'];
@@ -305,6 +306,68 @@ describe('chat moderation', () => {
       warn.mockRestore();
       rmSync(dir, { force: true, recursive: true });
     }
+  });
+});
+
+describe('autosaves', () => {
+  beforeEach(() => {
+    vi.mocked(saveCharacterState).mockReset();
+    vi.mocked(saveCharacterState).mockResolvedValue(undefined);
+  });
+
+  it('skips overlapping saveAll runs while saving each current session once', async () => {
+    const server = new GameServer();
+    joinServer(server, fakeWs(), 1, 'Testa');
+    joinServer(server, fakeWs(), 2, 'Testb');
+    joinServer(server, fakeWs(), 3, 'Testc');
+
+    let resolveFirstSave!: () => void;
+    const firstSave = new Promise<void>((resolve) => {
+      resolveFirstSave = resolve;
+    });
+    vi.mocked(saveCharacterState).mockImplementationOnce(() => firstSave);
+
+    const firstRun = server.saveAll('test');
+    await vi.waitFor(() => {
+      expect(saveCharacterState).toHaveBeenCalledTimes(3);
+    });
+
+    await server.saveAll('test');
+    expect(saveCharacterState).toHaveBeenCalledTimes(3);
+
+    resolveFirstSave();
+    await firstRun;
+
+    const savedCharacterIds = vi.mocked(saveCharacterState).mock.calls.map((call) => call[0]);
+    expect(savedCharacterIds.sort((a, b) => a - b)).toEqual([1, 2, 3]);
+  });
+
+  it('waits for an active autosave before running the shutdown save pass', async () => {
+    const server = new GameServer();
+    joinServer(server, fakeWs(), 1, 'Testa');
+    joinServer(server, fakeWs(), 2, 'Testb');
+
+    let resolveFirstSave!: () => void;
+    const firstSave = new Promise<void>((resolve) => {
+      resolveFirstSave = resolve;
+    });
+    vi.mocked(saveCharacterState).mockImplementationOnce(() => firstSave);
+
+    const autosave = server.saveAll('autosave');
+    await vi.waitFor(() => {
+      expect(saveCharacterState).toHaveBeenCalledTimes(2);
+    });
+
+    const shutdown = server.saveAll('shutdown');
+    await Promise.resolve();
+    expect(saveCharacterState).toHaveBeenCalledTimes(2);
+
+    resolveFirstSave();
+    await autosave;
+    await shutdown;
+
+    const savedCharacterIds = vi.mocked(saveCharacterState).mock.calls.map((call) => call[0]);
+    expect(savedCharacterIds.sort((a, b) => a - b)).toEqual([1, 1, 2, 2]);
   });
 });
 
