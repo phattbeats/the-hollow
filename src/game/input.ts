@@ -5,6 +5,7 @@
 // F interacts, R autorun.
 
 import { Keybinds, actionKind } from './keybinds';
+import { cursorForHover, type HoverCursorKind } from './cursors';
 import { sanitizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
 import type { MoveInput } from '../sim/types';
 
@@ -44,6 +45,11 @@ export class Input {
   // null when inactive. clickMoveStop is how close counts as "there".
   clickMoveTarget: { x: number; z: number } | null = null;
   clickMoveStop = 0.5;
+  /** Latest pointer position while over the canvas (for hover pick). */
+  hoverX = 0;
+  hoverY = 0;
+  hoverActive = false;
+  private hoverKind: HoverCursorKind = 'default';
   private dragDistance = 0;
   private downButton = -1;
   private pointerLockRequestedForDrag = false;
@@ -71,6 +77,24 @@ export class Input {
       this.camDist = Math.min(22, Math.max(3, this.camDist + Math.sign(e.deltaY) * 1.4));
     }, { passive: false });
     canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+    canvas.addEventListener('mouseenter', () => { this.hoverActive = true; });
+    canvas.addEventListener('mouseleave', () => {
+      this.hoverActive = false;
+      this.setHoverCursor('default');
+    });
+    this.updateCursor();
+  }
+
+  /** True while a mouse button is held for camera drag. */
+  isDragging(): boolean {
+    return this.leftDown || this.rightDown;
+  }
+
+  /** Update hand / sword / shield cursor from a hover pick (called once per frame). */
+  setHoverCursor(kind: HoverCursorKind): void {
+    if (this.hoverKind === kind) return;
+    this.hoverKind = kind;
+    this.updateCursor();
   }
 
   /** Capture the next keypress (for the rebind UI) instead of acting on it. */
@@ -131,6 +155,11 @@ export class Input {
 
   controllerFacingOverride(): number | null {
     return this.controllerFacing;
+  }
+
+  private updateCursor(): void {
+    if (this.isDragging() || document.pointerLockElement === this.canvas) return;
+    this.canvas.style.cursor = cursorForHover(this.hoverKind, false);
   }
 
   private onKeyDown(e: KeyboardEvent): void {
@@ -200,9 +229,14 @@ export class Input {
     }
     this.downButton = -1;
     this.pointerLockRequestedForDrag = false;
+    this.updateCursor();
   }
 
   private onMouseMove(e: MouseEvent): void {
+    if (e.target === this.canvas) {
+      this.hoverX = e.clientX;
+      this.hoverY = e.clientY;
+    }
     if (!this.leftDown && !this.rightDown) return;
     const mx = e.movementX ?? 0, my = e.movementY ?? 0;
     this.dragDistance += Math.abs(mx) + Math.abs(my);
