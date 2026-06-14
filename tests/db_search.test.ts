@@ -24,6 +24,11 @@ describe('character typeahead search', () => {
     expect(SOCIAL_SCHEMA).toContain('ON characters (realm, lower(name) text_pattern_ops)');
   });
 
+  it('enforces case-insensitive character-name uniqueness per realm', () => {
+    expect(SOCIAL_SCHEMA).toContain('CREATE UNIQUE INDEX IF NOT EXISTS characters_realm_lower_name_unique');
+    expect(SOCIAL_SCHEMA).toContain('ON characters (realm, lower(name))');
+  });
+
   it('uses the lower-name prefix predicate and preserves wildcard escaping', async () => {
     dbMock.query.mockResolvedValueOnce({ rows: [{ name: 'Al%_', cls: 'mage', level: 12 }] });
 
