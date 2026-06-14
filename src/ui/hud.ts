@@ -17,6 +17,7 @@ import { iconDataUrl, QUALITY_COLOR } from './icons';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
 import { Settings, GameSettings, SETTING_RANGES } from '../game/settings';
 import { chatPlayerContextActions } from './player_context_menu';
+import { t, type TranslationKey } from './i18n';
 
 // hooks main wires after Input exists (the options menu drives input, audio,
 // graphics, and logout, all of which live outside the HUD)
@@ -61,6 +62,44 @@ const PARTY_RANGE_YD = 100;
 // yards past a zone boundary before the crossing banner/welcome commits
 const ZONE_BANNER_DEADBAND = 5;
 const IGNORED_CHAT_NAMES_KEY = 'woc_ignored_chat_names';
+const BIND_CATEGORY_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
+  Movement: 'hud.keybinds.categories.movement',
+  Targeting: 'hud.keybinds.categories.targeting',
+  Interface: 'hud.keybinds.categories.interface',
+  'Action Bar': 'hud.keybinds.categories.actionBar',
+};
+const BIND_ACTION_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
+  forward: 'hud.keybinds.actions.forward',
+  back: 'hud.keybinds.actions.back',
+  turnLeft: 'hud.keybinds.actions.turnLeft',
+  turnRight: 'hud.keybinds.actions.turnRight',
+  strafeLeft: 'hud.keybinds.actions.strafeLeft',
+  strafeRight: 'hud.keybinds.actions.strafeRight',
+  jump: 'hud.keybinds.actions.jump',
+  autorun: 'hud.keybinds.actions.autorun',
+  target: 'hud.keybinds.actions.target',
+  interact: 'hud.keybinds.actions.interact',
+  char: 'hud.keybinds.actions.char',
+  spellbook: 'hud.keybinds.actions.spellbook',
+  questlog: 'hud.keybinds.actions.questlog',
+  map: 'hud.keybinds.actions.map',
+  bags: 'hud.keybinds.actions.bags',
+  nameplates: 'hud.keybinds.actions.nameplates',
+  meters: 'hud.keybinds.actions.meters',
+  social: 'hud.keybinds.actions.social',
+  arena: 'hud.keybinds.actions.arena',
+  chat: 'hud.keybinds.actions.chat',
+};
+const CHAT_TEMPLATE_KEYS = {
+  party: 'hud.chat.templates.party',
+  yell: 'hud.chat.templates.yell',
+  whisper: 'hud.chat.templates.whisper',
+  toWhisper: 'hud.chat.templates.toWhisper',
+  general: 'hud.chat.templates.general',
+  guild: 'hud.chat.templates.guild',
+  officer: 'hud.chat.templates.officer',
+  say: 'hud.chat.templates.say',
+} satisfies Record<string, TranslationKey>;
 
 export class Hud {
   private static readonly BAR_ABILITY_SLOTS = 11; // bar slots 1..11; slot 0 is the fixed Attack toggle
@@ -161,7 +200,7 @@ export class Hud {
     const startZone = zoneAt(sim.player.pos.z);
     this.lastZoneId = startZone.id;
     this.showBanner(startZone.name);
-    this.log(`Welcome to ${startZone.name}!`, '#ffd100');
+    this.log(t('hud.core.welcomeZone', { zone: startZone.name }), '#ffd100');
     this.logZoneWelcome(startZone);
   }
 
@@ -502,11 +541,11 @@ export class Hud {
     if (target && target.kind !== 'object') {
       tf.style.display = 'flex';
       tf.classList.toggle('elite', !!MOBS[target.templateId]?.elite);
-      $('#tf-elite-tag').textContent = MOBS[target.templateId]?.boss ? 'BOSS' : 'ELITE';
+      $('#tf-elite-tag').textContent = MOBS[target.templateId]?.boss ? t('hud.core.boss') : t('hud.core.elite');
       $('#tf-name').textContent = target.name;
       $('#tf-level').textContent = MOBS[target.templateId]?.boss ? '☠' : String(target.level);
       ($('#tf-hp') as HTMLElement).style.transform = `scaleX(${target.hp / Math.max(1, target.maxHp)})`;
-      $('#tf-hp-text').textContent = target.dead ? 'Dead' : `${target.hp} / ${target.maxHp}`;
+      $('#tf-hp-text').textContent = target.dead ? t('hud.core.dead') : `${target.hp} / ${target.maxHp}`;
       ($('#tf-name') as HTMLElement).style.color = target.hostile ? '#ff6b5e' : '#9fdc7f';
       if (this.lastPortraitTarget !== target.id) {
         this.lastPortraitTarget = target.id;
@@ -554,7 +593,7 @@ export class Hud {
         : (p.eating ?? p.drinking)!;
       (cb.querySelector('.fill') as HTMLElement).style.width = `${((c.remaining / CONSUME_DURATION) * 100).toFixed(1)}%`;
       (cb.querySelector('.label') as HTMLElement).textContent =
-        p.eating && p.drinking ? 'Eating & Drinking…' : p.eating ? 'Eating…' : 'Drinking…';
+        p.eating && p.drinking ? t('hud.core.eatingDrinking') : p.eating ? t('hud.core.eating') : t('hud.core.drinking');
     } else {
       cb.style.display = 'none';
       cb.classList.remove('channel');
@@ -615,7 +654,9 @@ export class Hud {
     const xpNeed = xpForLevel(p.level);
     const xpFrac = p.level >= MAX_LEVEL ? 1 : sim.xp / xpNeed;
     ($('#xpbar .fill') as HTMLElement).style.width = `${(xpFrac * 100).toFixed(1)}%`;
-    $('#xpbar .label').textContent = p.level >= MAX_LEVEL ? 'MAX LEVEL' : `${sim.xp} / ${xpNeed} XP (${Math.floor(xpFrac * 100)}%)`;
+    $('#xpbar .label').textContent = p.level >= MAX_LEVEL
+      ? t('hud.core.maxLevel')
+      : t('hud.core.xpProgress', { current: sim.xp, needed: xpNeed, percent: Math.floor(xpFrac * 100) });
 
     $('#death-overlay').style.display = p.dead ? 'flex' : 'none';
 
@@ -632,7 +673,7 @@ export class Hud {
       if (pastDeadBand) {
         if (this.lastZoneId !== '') {
           this.showBanner(currentZone.name);
-          this.log(`Entering ${currentZone.name}.`, '#ffd100');
+          this.log(t('hud.core.enteringZone', { zone: currentZone.name }), '#ffd100');
           this.logZoneWelcome(currentZone);
         }
         this.lastZoneId = currentZone.id;
@@ -700,7 +741,7 @@ export class Hud {
       dur.className = 'dur';
       dur.textContent = a.remaining < 99 ? `${Math.ceil(a.remaining)}s` : '';
       d.appendChild(dur);
-      this.attachTooltip(d, () => `<div class="tt-title">${a.name}</div><div class="tt-sub">${Math.ceil(a.remaining)} seconds remaining</div>`);
+      this.attachTooltip(d, () => `<div class="tt-title">${a.name}</div><div class="tt-sub">${t('hud.core.secondsRemaining', { seconds: Math.ceil(a.remaining) })}</div>`);
       el.appendChild(d);
     }
   }
@@ -1101,9 +1142,12 @@ export class Hud {
           const isPlayerTarget = ev.targetId === sim.playerId;
           if (isPlayerSource || isPlayerTarget) this.lastCombatEventAt = performance.now();
           if (ev.kind === 'miss' || ev.kind === 'dodge') {
-            this.fct(tgt, ev.kind === 'miss' ? 'Miss' : 'Dodge', isPlayerTarget ? '#bbb' : '#fff', false);
+            this.fct(tgt, ev.kind === 'miss' ? t('hud.combat.floatingMiss') : t('hud.combat.floatingDodge'), isPlayerTarget ? '#bbb' : '#fff', false);
             if (isPlayerSource) {
-              this.combatLog(`Your ${ev.ability ?? 'attack'} ${ev.kind === 'miss' ? 'misses' : 'is dodged by'} ${tgt.name}.`, '#ccc');
+              this.combatLog(t(ev.kind === 'miss' ? 'hud.combat.miss' : 'hud.combat.dodged', {
+                ability: ev.ability ?? t('hud.combat.attack'),
+                target: tgt.name,
+              }), '#ccc');
               audio.meleeMiss();
             }
             break;
@@ -1111,14 +1155,21 @@ export class Hud {
           if (isPlayerSource && !isPlayerTarget) {
             const color = ev.ability ? '#ffe97a' : '#fff';
             this.fct(tgt, `${ev.amount}${ev.crit ? '!' : ''}`, color, ev.crit);
-            this.combatLog(`Your ${ev.ability ?? 'attack'} hits ${tgt.name} for ${ev.amount}${ev.crit ? ' (Critical)' : ''}.`, ev.ability ? '#ffe97a' : '#eee');
+            this.combatLog(t(ev.crit ? 'hud.combat.damageDoneCrit' : 'hud.combat.damageDone', {
+              ability: ev.ability ?? t('hud.combat.attack'),
+              target: tgt.name,
+              amount: ev.amount,
+            }), ev.ability ? '#ffe97a' : '#eee');
             if (ev.school === 'fire') audio.fire();
             else if (ev.school === 'frost') audio.frost();
             else if (ev.school === 'arcane') audio.arcane();
             else audio.meleeHit(ev.crit);
           } else if (isPlayerTarget) {
             this.fct(tgt, `-${ev.amount}`, '#ff5544', ev.crit);
-            this.combatLog(`${src?.name ?? 'Something'} hits you for ${ev.amount}${ev.crit ? ' (Critical)' : ''}.`, '#ff8877');
+            this.combatLog(t(ev.crit ? 'hud.combat.damageTakenCrit' : 'hud.combat.damageTaken', {
+              source: src?.name ?? '?',
+              amount: ev.amount,
+            }), '#ff8877');
             audio.hitTaken();
           }
           break;
@@ -1131,24 +1182,24 @@ export class Hud {
         }
         case 'death': {
           const e = sim.entities.get(ev.entityId);
-          if (e && ev.entityId !== sim.playerId) this.combatLog(`${e.name} dies.`, '#aaa');
+          if (e && ev.entityId !== sim.playerId) this.combatLog(t('hud.combat.death', { name: e.name }), '#aaa');
           break;
         }
         case 'xp': {
-          this.fct(sim.player, `+${ev.amount} XP`, '#b974ff', false);
-          this.log(`You gain ${ev.amount} experience.`, '#a980d8');
+          this.fct(sim.player, t('hud.core.xpFloat', { amount: ev.amount }), '#b974ff', false);
+          this.log(t('hud.core.xpGain', { amount: ev.amount }), '#a980d8');
           break;
         }
         case 'levelup': {
-          this.showBanner(`Level ${ev.level}!`);
-          this.log(`You have reached level ${ev.level}!`, '#ffd100');
+          this.showBanner(t('hud.core.levelBanner', { level: ev.level }));
+          this.log(t('hud.core.levelLog', { level: ev.level }), '#ffd100');
           audio.levelUp();
           break;
         }
         case 'learnAbility': break; // logged by sim
         case 'comboPoint': break;
         case 'loot': {
-          this.log(ev.text, '#7fdc4f');
+          this.log(this.localizeLootText(ev.text), '#7fdc4f');
           if (ev.text.includes('loot') || ev.text.includes('Sold')) audio.coin();
           else audio.lootItem();
           if ($('#bags').style.display === 'block') this.renderBags();
@@ -1159,7 +1210,7 @@ export class Hud {
           if (this.openVendorNpcId !== null) this.renderVendor();
           break;
         }
-        case 'error': this.showError(ev.text); break;
+        case 'error': this.showError(this.localizeErrorText(ev.text)); break;
         case 'questAccepted':
           audio.questAccept();
           this.refreshGossip();
@@ -1178,16 +1229,16 @@ export class Hud {
         case 'chat': {
           if (this.isChatIgnored(ev.from)) break;
           switch (ev.channel) {
-            case 'party': this.chatLogFrom(ev.from, ev.text, '#7fd4ff', '[Party] ', ': '); break;
-            case 'yell': this.chatLogFrom(ev.from, ev.text, '#ff5040', '', ' yells: '); break;
+            case 'party': this.chatLogFrom(ev.from, ev.text, '#7fd4ff', CHAT_TEMPLATE_KEYS.party); break;
+            case 'yell': this.chatLogFrom(ev.from, ev.text, '#ff5040', CHAT_TEMPLATE_KEYS.yell); break;
             case 'whisper':
-              if (ev.to) this.chatLogFrom(ev.to, ev.text, '#ff80ff', 'To ', ': ');
-              else { this.chatLogFrom(ev.from, ev.text, '#ff80ff', '', ' whispers: '); audio.whisper(); }
+              if (ev.to) this.chatLogFrom(ev.to, ev.text, '#ff80ff', CHAT_TEMPLATE_KEYS.toWhisper);
+              else { this.chatLogFrom(ev.from, ev.text, '#ff80ff', CHAT_TEMPLATE_KEYS.whisper); audio.whisper(); }
               break;
-            case 'general': this.chatLogFrom(ev.from, ev.text, '#ffc864', '[General] ', ': '); break;
-            case 'guild': this.chatLogFrom(ev.from, ev.text, '#40d264', '[Guild] ', ': '); break;
-            case 'officer': this.chatLogFrom(ev.from, ev.text, '#4ce0c0', '[Officer] ', ': '); break;
-            default: this.chatLogFrom(ev.from, ev.text, '#f0ead8', '', ' says: '); break;
+            case 'general': this.chatLogFrom(ev.from, ev.text, '#ffc864', CHAT_TEMPLATE_KEYS.general); break;
+            case 'guild': this.chatLogFrom(ev.from, ev.text, '#40d264', CHAT_TEMPLATE_KEYS.guild); break;
+            case 'officer': this.chatLogFrom(ev.from, ev.text, '#4ce0c0', CHAT_TEMPLATE_KEYS.officer); break;
+            default: this.chatLogFrom(ev.from, ev.text, '#f0ead8', CHAT_TEMPLATE_KEYS.say); break;
           }
           if ((ev.channel === 'say' || ev.channel === 'yell') && ev.entityId !== undefined) {
             this.renderer.showChatBubble(ev.entityId, ev.text, ev.channel === 'yell');
@@ -1203,88 +1254,96 @@ export class Hud {
           if (tgt && ev.amount > 0) {
             this.fct(tgt, `+${ev.amount}${ev.crit ? '!' : ''}`, '#3ce63c', ev.crit);
             if (ev.sourceId === sim.playerId) {
-              this.combatLog(`Your ${ev.ability} heals ${ev.targetId === sim.playerId ? 'you' : tgt.name} for ${ev.amount}${ev.crit ? ' (Critical)' : ''}.`, '#7fdc4f');
+              const selfTarget = ev.targetId === sim.playerId;
+              this.combatLog(t(selfTarget
+                ? (ev.crit ? 'hud.combat.healSelfCrit' : 'hud.combat.healSelf')
+                : (ev.crit ? 'hud.combat.healOtherCrit' : 'hud.combat.healOther'), {
+                ability: ev.ability,
+                target: tgt.name,
+                amount: ev.amount,
+              }), '#7fdc4f');
             }
           }
           break;
         }
         case 'partyInvite':
           audio.questAccept();
-          this.showPrompt(`<b>${ev.fromName}</b> invites you to join their party.`, 'Join Party',
+          this.showPrompt(t('hud.prompts.partyInvite', { name: `<b>${esc(ev.fromName)}</b>` }), t('hud.prompts.joinParty'),
             () => this.sim.partyAccept(), () => this.sim.partyDecline());
           break;
         case 'guildInvite':
           audio.questAccept();
-          this.showPrompt(`<b>${ev.fromName}</b> invites you to join <span class="gold">&lt;${ev.guildName}&gt;</span>.`, 'Join Guild',
+          this.showPrompt(t('hud.prompts.guildInvite', { name: `<b>${esc(ev.fromName)}</b>`, guild: `<span class="gold">&lt;${esc(ev.guildName)}&gt;</span>` }), t('hud.prompts.joinGuild'),
             () => this.sim.guildAccept(), () => this.sim.guildDecline());
           break;
         case 'tradeRequest':
           audio.click();
-          this.showPrompt(`<b>${ev.fromName}</b> wants to trade with you.`, 'Open Trade',
+          this.showPrompt(t('hud.prompts.tradeRequest', { name: `<b>${esc(ev.fromName)}</b>` }), t('hud.prompts.openTrade'),
             () => this.sim.tradeAccept(), () => { /* let it expire */ });
           break;
         case 'duelRequest':
           audio.duelChallenge();
-          this.showPrompt(`<b>${ev.fromName}</b> has challenged you to a duel!`, 'Accept Duel',
+          this.showPrompt(t('hud.prompts.duelRequest', { name: `<b>${esc(ev.fromName)}</b>` }), t('hud.prompts.acceptDuel'),
             () => this.sim.duelAccept(), () => this.sim.duelDecline());
           break;
         case 'duelCountdown':
-          this.showBanner(`Duel begins in ${ev.seconds}…`);
+          this.showBanner(t('hud.system.duelCountdown', { seconds: ev.seconds }));
           audio.duelCountdownTick();
           break;
         case 'duelStart':
           audio.duelStart();
           break;
         case 'duelEnd':
-          this.showBanner(`${ev.winnerName} has defeated ${ev.loserName} in a duel!`);
-          this.combatLog(`${ev.winnerName} has defeated ${ev.loserName} in a duel.`, '#fa6');
+          this.showBanner(t('hud.system.duelEndBanner', { winner: ev.winnerName, loser: ev.loserName }));
+          this.combatLog(t('hud.system.duelEndLog', { winner: ev.winnerName, loser: ev.loserName }), '#fa6');
           audio.duelEnd();
           break;
         case 'arenaQueued':
-          this.log(`Queued for the Ashen Coliseum (position ${ev.position}).`, '#ffa040');
+          this.log(t('hud.system.arenaQueued', { position: ev.position }), '#ffa040');
           break;
         case 'arenaUnqueued':
-          this.log('You leave the Ashen Coliseum queue.', '#ffa040');
+          this.log(t('hud.system.arenaUnqueued'), '#ffa040');
           break;
         case 'arenaFound': {
           const cls = CLASSES[ev.oppClass]?.name ?? ev.oppClass;
-          this.showBanner(`Opponent found: ${ev.oppName}`);
-          this.log(`The Coliseum pairs you against ${ev.oppName}, level ${ev.oppLevel} ${cls}.`, '#ffa040');
+          this.showBanner(t('hud.system.arenaFoundBanner', { name: ev.oppName }));
+          this.log(t('hud.system.arenaFoundLog', { name: ev.oppName, level: ev.oppLevel, className: cls }), '#ffa040');
           audio.duelChallenge();
           break;
         }
         case 'arenaCountdown':
-          this.showBanner(`The bout begins in ${ev.seconds}…`);
+          this.showBanner(t('hud.system.arenaCountdown', { seconds: ev.seconds }));
           audio.duelCountdownTick();
           break;
         case 'arenaStart':
-          this.showBanner('Fight!');
+          this.showBanner(t('hud.system.arenaStart'));
           audio.duelStart();
           break;
         case 'arenaEnd': {
           const delta = ev.ratingAfter - ev.ratingBefore;
           const sign = delta >= 0 ? '+' : '';
+          const ratingDelta = `${sign}${delta}`;
           if (ev.draw) {
-            this.showBanner(`Arena draw vs ${ev.oppName} (${sign}${delta} rating)`);
-            this.combatLog(`Arena bout vs ${ev.oppName} ended in a draw. Rating ${ev.ratingAfter} (${sign}${delta}).`, '#fa6');
+            this.showBanner(t('hud.system.arenaDrawBanner', { name: ev.oppName, delta: ratingDelta }));
+            this.combatLog(t('hud.system.arenaDrawLog', { name: ev.oppName, rating: ev.ratingAfter, delta: ratingDelta }), '#fa6');
           } else if (ev.won) {
-            this.showBanner(`Victory vs ${ev.oppName}!  Rating ${ev.ratingAfter} (${sign}${delta})`);
-            this.combatLog(`You defeated ${ev.oppName} in the Ashen Coliseum. Rating ${ev.ratingAfter} (${sign}${delta}).`, '#7fdc4f');
+            this.showBanner(t('hud.system.arenaVictoryBanner', { name: ev.oppName, rating: ev.ratingAfter, delta: ratingDelta }));
+            this.combatLog(t('hud.system.arenaVictoryLog', { name: ev.oppName, rating: ev.ratingAfter, delta: ratingDelta }), '#7fdc4f');
             audio.duelEnd();
           } else {
-            this.showBanner(`Defeated by ${ev.oppName}.  Rating ${ev.ratingAfter} (${sign}${delta})`);
-            this.combatLog(`${ev.oppName} bested you in the Ashen Coliseum. Rating ${ev.ratingAfter} (${sign}${delta}).`, '#ff7a6a');
+            this.showBanner(t('hud.system.arenaDefeatBanner', { name: ev.oppName, rating: ev.ratingAfter, delta: ratingDelta }));
+            this.combatLog(t('hud.system.arenaDefeatLog', { name: ev.oppName, rating: ev.ratingAfter, delta: ratingDelta }), '#ff7a6a');
             audio.death();
           }
           break;
         }
-        case 'log': this.log(ev.text, ev.color ?? '#ccc'); break;
+        case 'log': this.log(this.localizeSystemText(ev.text), ev.color ?? '#ccc'); break;
         case 'playerDeath': {
-          this.log('You have died.', '#ff4444');
+          this.log(t('hud.system.playerDeath'), '#ff4444');
           audio.death();
           break;
         }
-        case 'respawn': this.log('You feel rested and whole again.', '#7fdc4f'); break;
+        case 'respawn': this.log(t('hud.system.respawn'), '#7fdc4f'); break;
         case 'castStart': {
           const a = ABILITIES[ev.ability];
           if (a?.school === 'fire') audio.castStart();
@@ -1297,9 +1356,9 @@ export class Hud {
           const tgt = sim.entities.get(ev.targetId);
           if (ev.name === 'Polymorph' && ev.gained) audio.sheep();
           if (ev.targetId === sim.playerId) {
-            this.combatLog(ev.gained ? `You gain ${ev.name}.` : `${ev.name} fades from you.`, '#d8a0d8');
+            this.combatLog(t(ev.gained ? 'hud.combat.auraGain' : 'hud.combat.auraFade', { name: ev.name }), '#d8a0d8');
           } else if (tgt && ev.gained) {
-            this.combatLog(`${tgt.name} is afflicted by ${ev.name}.`, '#d8a0d8');
+            this.combatLog(t('hud.combat.auraAfflicted', { target: tgt.name, name: ev.name }), '#d8a0d8');
           }
           break;
         }
@@ -1316,23 +1375,165 @@ export class Hud {
     if (text) this.log(text, '#ffd100');
   }
 
-  private chatLogFrom(name: string, text: string, color: string, prefix: string, separator: string): void {
+  private chatLogFrom(name: string, text: string, color: string, templateKey: TranslationKey): void {
     const wasNearBottom = this.chatLogEl.scrollHeight - this.chatLogEl.scrollTop - this.chatLogEl.clientHeight < 24;
     const div = document.createElement('div');
     div.style.color = color;
-    if (prefix) div.append(document.createTextNode(prefix));
     const sender = document.createElement('span');
     sender.className = 'chat-player-name';
     sender.textContent = name;
-    sender.title = `Right-click ${name}`;
+    sender.title = t('hud.chat.rightClickName', { name });
     sender.addEventListener('contextmenu', (ev) => {
       ev.preventDefault();
       this.openChatPlayerContextMenu(name, ev.clientX, ev.clientY);
     });
-    div.append(sender, document.createTextNode(`${separator}${text}`));
+    const nameToken = '__WOC_CHAT_NAME__';
+    const messageToken = '__WOC_CHAT_MESSAGE__';
+    const rendered = t(templateKey, { name: nameToken, message: messageToken });
+    let senderAppended = false;
+    let messageAppended = false;
+    for (const part of rendered.split(/(__WOC_CHAT_NAME__|__WOC_CHAT_MESSAGE__)/)) {
+      if (part === nameToken) {
+        div.append(sender);
+        senderAppended = true;
+      } else if (part === messageToken) {
+        div.append(document.createTextNode(text));
+        messageAppended = true;
+      } else if (part) {
+        div.append(document.createTextNode(part));
+      }
+    }
+    if (!senderAppended || !messageAppended) {
+      div.textContent = '';
+      div.append(sender, document.createTextNode(`: ${text}`));
+    }
     this.chatLogEl.appendChild(div);
     while (this.chatLogEl.children.length > 200) this.chatLogEl.removeChild(this.chatLogEl.firstChild!);
     if (wasNearBottom) this.chatLogEl.scrollTop = this.chatLogEl.scrollHeight;
+  }
+
+  private localizeErrorText(text: string): string {
+    const exact: Record<string, TranslationKey> = {
+      'You are stunned!': 'hud.errors.stunned',
+      'You are busy.': 'hud.errors.busy',
+      'That ability is not ready yet.': 'hud.errors.abilityNotReady',
+      'Not enough rage!': 'hud.errors.notEnoughRage',
+      'Not enough energy!': 'hud.errors.notEnoughEnergy',
+      'Not enough mana!': 'hud.errors.notEnoughMana',
+      'Not enough health.': 'hud.errors.notEnoughHealth',
+      'Your target must dodge first.': 'hud.errors.targetMustDodge',
+      'That ability requires combo points.': 'hud.errors.requiresCombo',
+      "You can't do that while shapeshifted.": 'hud.errors.shapeshifted',
+      'You must be stealthed.': 'hud.errors.stealthed',
+      "You can't do that while in combat.": 'hud.errors.inCombat',
+      'Out of range.': 'hud.errors.outOfRange',
+      'You have no target.': 'hud.errors.noTarget',
+      'Too close!': 'hud.errors.tooClose',
+      'You must be facing your target.': 'hud.errors.facing',
+      'You must wield a dagger.': 'hud.errors.dagger',
+      'You must be behind your target.': 'hud.errors.behindTarget',
+      'This creature cannot be polymorphed.': 'hud.errors.polymorph',
+      'You have no active Seal.': 'hud.errors.noSeal',
+      'You cannot taunt that.': 'hud.errors.cannotTaunt',
+      'You have no pet.': 'hud.errors.noPet',
+      'Invalid attack target.': 'hud.errors.invalidAttackTarget',
+      'You are sending messages too quickly.': 'hud.errors.chatTooFast',
+      'You are sending messages too quickly. Slow down.': 'hud.errors.chatSlowDown',
+      'No one has whispered you recently.': 'hud.errors.noRecentWhisper',
+      'You mutter to yourself. Nobody hears it.': 'hud.errors.whisperSelf',
+      'You are not in a party.': 'hud.errors.notInParty',
+      'Only the party leader may invite.': 'hud.errors.partyLeaderInvite',
+      'Your party is full.': 'hud.errors.partyFull',
+      'That party is full.': 'hud.errors.partyFull',
+      'The invitation has expired.': 'hud.errors.invitationExpired',
+      'Target is too far away.': 'hud.errors.targetTooFar',
+      'A duel is already in progress.': 'hud.errors.duelInProgress',
+      'The challenge has expired.': 'hud.errors.challengeExpired',
+      'You are already in an arena match.': 'hud.errors.arenaAlreadyInMatch',
+      'You cannot queue for the arena while dead.': 'hud.errors.arenaQueueDead',
+      'You cannot queue while dueling.': 'hud.errors.arenaQueueDueling',
+      'Finish your trade before queueing.': 'hud.errors.arenaQueueTrading',
+      'You cannot queue from inside an instance.': 'hud.errors.arenaQueueInstance',
+      'A trade is already in progress.': 'hud.errors.tradeInProgress',
+      'Target is too far away to trade.': 'hud.errors.tradeTooFar',
+      'The trade request has expired.': 'hud.errors.tradeExpired',
+      'Trade failed: items or money no longer available.': 'hud.errors.tradeFailed',
+    };
+    const key = exact[text];
+    if (key) return t(key);
+
+    let match = /^You must be in (Bear|Cat) Form\.$/.exec(text);
+    if (match) return t('hud.errors.requiresForm', { form: t(match[1] === 'Bear' ? 'hud.errors.bear' : 'hud.errors.cat') });
+    match = /^That ability requires the target below (\d+)% health\.$/.exec(text);
+    if (match) return t('hud.errors.targetHealthBelow', { percent: match[1] });
+    match = /^Not enough (.+)!$/.exec(text);
+    if (match) return t('hud.errors.notEnoughResource', { resource: match[1] });
+    match = /^Several players match '(.+)'\. Use exact capitalization\.$/.exec(text);
+    if (match) return t('hud.errors.whisperAmbiguous', { name: match[1] });
+    match = /^There is no player named '(.+)' online\.$/.exec(text);
+    if (match) return t('hud.errors.whisperMissing', { name: match[1] });
+    match = /^Unknown command: (.+)\. Try \/s \/y \/w \/p \/g\.$/.exec(text);
+    if (match) return t('hud.errors.unknownCommand', { command: match[1] });
+    match = /^Chat is on cooldown for (\d+)s\.$/.exec(text);
+    if (match) return t('hud.errors.chatCooldown', { seconds: match[1] });
+    match = /^Chat locked for (\d+)s because you are sending messages too quickly\.$/.exec(text);
+    if (match) return t('hud.errors.chatLocked', { seconds: match[1] });
+    match = /^(.+) is already in a party\.$/.exec(text);
+    if (match) return t('hud.errors.alreadyInParty', { name: match[1] });
+    match = /^(.+) already has a pending invitation\.$/.exec(text);
+    if (match) return t('hud.errors.pendingInvite', { name: match[1] });
+    return text;
+  }
+
+  private localizeSystemText(text: string): string {
+    const exact: Record<string, TranslationKey> = {
+      'You stand up.': 'hud.logs.standUp',
+      'Your party has disbanded.': 'hud.logs.partyDisbanded',
+      'The duel has begun!': 'hud.logs.duelBegun',
+      'The duel has ended.': 'hud.logs.duelEnded',
+      'You join the Ashen Coliseum queue. Stand by for a worthy opponent...': 'hud.logs.arenaJoin',
+      'You join the Ashen Coliseum queue. Stand by for a worthy opponent…': 'hud.logs.arenaJoin',
+      'You leave the Ashen Coliseum queue.': 'hud.logs.arenaLeave',
+      'You step onto the sands of the Ashen Coliseum.': 'hud.logs.arenaSands',
+      'Fight!': 'hud.system.arenaStart',
+      'Trade window opened.': 'hud.logs.tradeOpened',
+      'Trade complete.': 'hud.logs.tradeComplete',
+      'Trade cancelled.': 'hud.logs.tradeCancelled',
+    };
+    const key = exact[text];
+    if (key) return t(key);
+
+    let match = /^You have invited (.+) to your party\.$/.exec(text);
+    if (match) return t('hud.logs.partyInviteSent', { name: match[1] });
+    match = /^(.+) joins the party\.$/.exec(text);
+    if (match) return t('hud.logs.partyJoin', { name: match[1] });
+    match = /^(.+) declines your invitation\.$/.exec(text);
+    if (match) return t('hud.logs.partyDecline', { name: match[1] });
+    match = /^(.+) is now the party leader\.$/.exec(text);
+    if (match) return t('hud.logs.partyLeader', { name: match[1] });
+    match = /^You have challenged (.+) to a duel\.$/.exec(text);
+    if (match) return t('hud.logs.duelChallengeSent', { name: match[1] });
+    match = /^(.+) declines your challenge\.$/.exec(text);
+    if (match) return t('hud.logs.duelDecline', { name: match[1] });
+    match = /^You have requested to trade with (.+)\.$/.exec(text);
+    if (match) return t('hud.logs.tradeRequestSent', { name: match[1] });
+    match = /^(.+) has come online\.$/.exec(text);
+    if (match) return t('hud.logs.friendOnline', { name: match[1] });
+    match = /^(.+) has gone offline\.$/.exec(text);
+    if (match) return t('hud.logs.friendOffline', { name: match[1] });
+    return text;
+  }
+
+  private localizeLootText(text: string): string {
+    let match = /^You receive: (.+)\.$/.exec(text);
+    if (match) return t('hud.logs.lootReceiveItem', { item: match[1] });
+    match = /^You receive (.+)\.$/.exec(text);
+    if (match) return t('hud.logs.lootReceiveMoney', { money: match[1] });
+    match = /^You loot (.+)\.$/.exec(text);
+    if (match) return t('hud.logs.lootMoney', { money: match[1] });
+    match = /^Sold (.+) for (.+)\.$/.exec(text);
+    if (match) return t('hud.logs.soldItem', { item: match[1], money: match[2] });
+    return text;
   }
 
   private combatLog(text: string, color = '#ccc'): void {
@@ -2066,15 +2267,17 @@ export class Hud {
       ? !!social?.blocks.some((b) => b.name === name)
       : this.isChatIgnored(name);
     let html = `<div class="ctx-title">${esc(name)}</div>`;
-    if (!isMember) html += `<div class="ctx-item" data-act="invite">Invite to Party</div>`;
-    html += `<div class="ctx-item" data-act="trade">Trade</div>`;
-    html += `<div class="ctx-item" data-act="duel">Challenge to a Duel</div>`;
-    if (online) html += `<div class="ctx-item" data-act="${isFriend ? 'unfriend' : 'friend'}">${isFriend ? 'Remove Friend' : 'Add Friend'}</div>`;
-    if (inGuildWithInvite && !alreadyGuilded) html += `<div class="ctx-item" data-act="ginvite">Invite to Guild</div>`;
-    html += `<div class="ctx-item" data-act="ignore">${ignored ? 'Unignore' : 'Ignore'}${online ? '' : ' Chat'}</div>`;
-    if (this.reportHooks && pid !== this.sim.playerId) html += `<div class="ctx-item" data-act="report">Report Player</div>`;
-    if (isLeader && isMember && pid !== this.sim.playerId) html += `<div class="ctx-item" data-act="kick">Remove from Party</div>`;
-    html += `<div class="ctx-item" data-act="close">Cancel</div>`;
+    if (!isMember) html += `<div class="ctx-item" data-act="invite">${esc(t('hud.chat.context.invite'))}</div>`;
+    html += `<div class="ctx-item" data-act="trade">${esc(t('hud.chat.context.trade'))}</div>`;
+    html += `<div class="ctx-item" data-act="duel">${esc(t('hud.chat.context.challengeDuel'))}</div>`;
+    if (online) html += `<div class="ctx-item" data-act="${isFriend ? 'unfriend' : 'friend'}">${esc(t(isFriend ? 'hud.chat.context.removeFriend' : 'hud.chat.context.addFriend'))}</div>`;
+    if (inGuildWithInvite && !alreadyGuilded) html += `<div class="ctx-item" data-act="ginvite">${esc(t('hud.chat.context.inviteGuild'))}</div>`;
+    html += `<div class="ctx-item" data-act="ignore">${esc(t(ignored
+      ? (online ? 'hud.chat.context.unignore' : 'hud.chat.context.unignoreChat')
+      : (online ? 'hud.chat.context.ignore' : 'hud.chat.context.ignoreChat')))}</div>`;
+    if (this.reportHooks && pid !== this.sim.playerId) html += `<div class="ctx-item" data-act="report">${esc(t('hud.chat.context.report'))}</div>`;
+    if (isLeader && isMember && pid !== this.sim.playerId) html += `<div class="ctx-item" data-act="kick">${esc(t('hud.chat.context.removeParty'))}</div>`;
+    html += `<div class="ctx-item" data-act="close">${esc(t('hud.chat.context.cancel'))}</div>`;
     el.innerHTML = html;
     el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
     el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
@@ -2131,7 +2334,7 @@ export class Hud {
         if (act === 'whisper') this.startWhisper(name);
         else if (act === 'invite') {
           if (livePid !== null) this.sim.partyInvite(livePid);
-          else this.showError('That player is not nearby.');
+          else this.showError(t('hud.system.playerNotNearby'));
         } else if (act === 'friend') this.sim.friendAdd(name);
         else if (act === 'unfriend') this.sim.friendRemove(name);
         else if (act === 'ginvite') this.sim.guildInvite(name);
@@ -2156,21 +2359,21 @@ export class Hud {
     const { pid, name } = target;
     const el = $('#report-window');
     el.innerHTML = `
-      <div class="panel-title">Report ${esc(name)}<button data-close>×</button></div>
-      <label class="report-label">Reason</label>
+      <div class="panel-title">${esc(t('hud.report.title', { name }))}<button data-close>×</button></div>
+      <label class="report-label">${esc(t('hud.report.reason'))}</label>
       <select id="report-reason">
-        <option value="harassment">Harassment / abuse</option>
-        <option value="spam">Spam</option>
-        <option value="cheating">Cheating / exploit</option>
-        <option value="offensive_name_or_chat">Offensive name or chat</option>
-        <option value="other">Other</option>
+        <option value="harassment">${esc(t('hud.report.reasons.harassment'))}</option>
+        <option value="spam">${esc(t('hud.report.reasons.spam'))}</option>
+        <option value="cheating">${esc(t('hud.report.reasons.cheating'))}</option>
+        <option value="offensive_name_or_chat">${esc(t('hud.report.reasons.offensiveNameOrChat'))}</option>
+        <option value="other">${esc(t('hud.report.reasons.other'))}</option>
       </select>
-      <label class="report-label">Details</label>
-      <textarea id="report-details" maxlength="1000" placeholder="What happened?"></textarea>
+      <label class="report-label">${esc(t('hud.report.details'))}</label>
+      <textarea id="report-details" maxlength="1000" placeholder="${esc(t('hud.report.detailsPlaceholder'))}"></textarea>
       <div class="report-error" id="report-error"></div>
       <div class="report-actions">
-        <button class="btn" id="report-submit">Submit Report</button>
-        <button class="btn" data-close>Cancel</button>
+        <button class="btn" id="report-submit">${esc(t('hud.report.submit'))}</button>
+        <button class="btn" data-close>${esc(t('hud.report.cancel'))}</button>
       </div>`;
     el.style.left = `${Math.max(12, Math.min(window.innerWidth - 340, window.innerWidth / 2 - 160))}px`;
     el.style.top = `${Math.max(20, Math.min(window.innerHeight - 300, window.innerHeight / 2 - 150))}px`;
@@ -2185,19 +2388,35 @@ export class Hud {
         ? this.reportHooks!.submit(pid, reason, details)
         : this.reportHooks!.submitByName?.(name, reason, details);
       if (!request) {
-        $('#report-error').textContent = 'Could not submit report.';
+        submit.disabled = false;
+        $('#report-error').textContent = t('hud.report.failed');
         return;
       }
       request
         .then(() => {
           el.style.display = 'none';
-          this.log(`Report submitted for ${name}.`, '#ffd100');
+          this.log(t('hud.report.submitted', { name }), '#ffd100');
         })
         .catch((err: unknown) => {
           submit.disabled = false;
-          $('#report-error').textContent = err instanceof Error ? err.message : 'Could not submit report.';
+          $('#report-error').textContent = this.localizeReportError(err);
         });
     });
+  }
+
+  private localizeReportError(err: unknown): string {
+    const text = err instanceof Error ? err.message : '';
+    const keyByMessage: Record<string, TranslationKey> = {
+      'choose a report reason': 'hud.report.chooseReason',
+      'invalid report target': 'hud.report.invalidTarget',
+      'That player is no longer online.': 'hud.report.targetOffline',
+      'That player could not be found.': 'hud.report.targetMissing',
+      'cannot report yourself': 'hud.report.cannotReportSelf',
+      'you have already reported this player recently': 'hud.report.alreadyReported',
+      'reporting character not found': 'hud.report.reportingCharacterMissing',
+      'could not submit report': 'hud.report.failed',
+    };
+    return keyByMessage[text] ? t(keyByMessage[text]) : t('hud.report.failed');
   }
 
   private chatIgnoreKey(name: string): string {
@@ -2227,10 +2446,10 @@ export class Hud {
     if (!key) return;
     if (this.ignoredChatNames.has(key)) {
       this.ignoredChatNames.delete(key);
-      this.log(`No longer ignoring ${name}.`, '#aaf');
+      this.log(t('hud.system.noLongerIgnoring', { name }), '#aaf');
     } else {
       this.ignoredChatNames.add(key);
-      this.log(`Ignoring chat from ${name}.`, '#aaf');
+      this.log(t('hud.system.ignoringChat', { name }), '#aaf');
     }
     this.saveIgnoredChatNames();
   }
@@ -2561,7 +2780,7 @@ export class Hud {
     accept.textContent = acceptLabel;
     const decline = document.createElement('button');
     decline.className = 'btn';
-    decline.textContent = 'Decline';
+    decline.textContent = t('hud.prompts.decline');
     accept.addEventListener('click', () => { prompt.remove(); onAccept(); });
     decline.addEventListener('click', () => { prompt.remove(); onDecline(); });
     prompt.append(accept, decline);
@@ -2706,7 +2925,7 @@ export class Hud {
     if (this.optionsView === 'graphics') { this.renderGraphics(); return; }
     if (this.optionsView === 'audio') { this.renderAudio(); return; }
     const el = $('#options-menu');
-    el.innerHTML = `<div class="panel-title"><span>Game Menu</span><span class="x-btn" data-close>✕</span></div>`;
+    el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.gameMenu'))}</span><span class="x-btn" data-close>✕</span></div>`;
     const list = document.createElement('div');
     list.className = 'opt-list';
     const add = (text: string, onClick: () => void) => {
@@ -2717,11 +2936,11 @@ export class Hud {
       list.appendChild(b);
     };
     const goto = (view: 'keybinds' | 'graphics' | 'audio') => { this.optionsView = view; this.keybindNote = ''; this.renderOptions(); };
-    add('Key Bindings', () => goto('keybinds'));
-    add('Graphics', () => goto('graphics'));
-    add('Audio', () => goto('audio'));
-    add('Logout', () => this.optionsHooks?.logout());
-    add('Return to Game', () => this.closeOptions());
+    add(t('hud.options.keyBindings'), () => goto('keybinds'));
+    add(t('hud.options.graphics'), () => goto('graphics'));
+    add(t('hud.options.audio'), () => goto('audio'));
+    add(t('hud.options.logout'), () => this.optionsHooks?.logout());
+    add(t('hud.options.returnToGame'), () => this.closeOptions());
     el.appendChild(list);
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeOptions());
   }
@@ -2743,6 +2962,7 @@ export class Hud {
     slider.max = String(r.max);
     slider.step = '0.05';
     slider.value = String(hooks.settings.get(key));
+    slider.setAttribute('aria-label', label);
     const val = document.createElement('span');
     val.className = 'set-val';
     const pct = () => `${Math.round(hooks.settings.get(key) * 100)}%`;
@@ -2767,9 +2987,10 @@ export class Hud {
     toggle.className = 'btn set-toggle';
     const sync = () => {
       const on = hooks.settings.get(key) >= 0.5;
-      toggle.textContent = on ? 'On' : 'Off';
+      toggle.textContent = on ? t('hud.options.on') : t('hud.options.off');
       toggle.classList.toggle('off', !on);
       toggle.setAttribute('aria-pressed', String(on));
+      toggle.setAttribute('aria-label', label);
     };
     sync();
     toggle.addEventListener('click', () => {
@@ -2784,7 +3005,7 @@ export class Hud {
 
   private settingsViewShell(title: string): HTMLElement {
     const el = $('#options-menu');
-    el.innerHTML = `<div class="panel-title"><span>${title}</span><span class="x-btn" data-close>✕</span></div>`;
+    el.innerHTML = `<div class="panel-title"><span>${esc(title)}</span><span class="x-btn" data-close>✕</span></div>`;
     const body = document.createElement('div');
     body.className = 'set-rows';
     el.appendChild(body);
@@ -2795,7 +3016,7 @@ export class Hud {
     const el = $('#options-menu');
     const reset = document.createElement('button');
     reset.className = 'btn';
-    reset.textContent = 'Reset to Defaults';
+    reset.textContent = t('hud.options.resetToDefaults');
     reset.addEventListener('click', () => {
       audio.click();
       this.optionsHooks?.settings.reset();
@@ -2806,37 +3027,42 @@ export class Hud {
     });
     const back = document.createElement('button');
     back.className = 'btn';
-    back.textContent = 'Back';
+    back.textContent = t('hud.options.back');
     back.addEventListener('click', () => { audio.click(); this.optionsView = 'main'; this.renderOptions(); });
     el.append(reset, back);
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeOptions());
   }
 
   private renderGraphics(): void {
-    const body = this.settingsViewShell('Graphics');
-    this.settingSlider(body, 'Camera Speed', 'cameraSpeed');
-    this.settingSlider(body, 'Brightness', 'brightness');
-    this.settingSlider(body, 'Render Quality', 'renderScale');
-    this.settingToggle(body, 'Fullscreen', 'fullscreen');
+    const body = this.settingsViewShell(t('hud.options.graphics'));
+    this.settingSlider(body, t('hud.options.cameraSpeed'), 'cameraSpeed');
+    this.settingSlider(body, t('hud.options.brightness'), 'brightness');
+    this.settingSlider(body, t('hud.options.renderQuality'), 'renderScale');
+    this.settingToggle(body, t('hud.options.fullscreen'), 'fullscreen');
     const note = document.createElement('div');
     note.className = 'set-note';
-    note.textContent = 'Lower Camera Speed for a calmer mouselook. Render Quality below 100% boosts FPS on weaker machines.';
+    note.textContent = t('hud.options.graphicsNote');
     $('#options-menu').appendChild(note);
     this.settingsViewFooter();
   }
 
   private renderAudio(): void {
-    const body = this.settingsViewShell('Audio');
-    this.settingSlider(body, 'Sound Effects', 'sfxVolume');
-    this.settingSlider(body, 'Music Volume', 'musicVolume');
+    const body = this.settingsViewShell(t('hud.options.audio'));
+    this.settingSlider(body, t('hud.options.soundEffects'), 'sfxVolume');
+    this.settingSlider(body, t('hud.options.musicVolume'), 'musicVolume');
     const row = document.createElement('div');
     row.className = 'set-row';
     const name = document.createElement('span');
     name.className = 'set-name';
-    name.textContent = 'Music';
+    name.textContent = t('hud.options.music');
     const toggle = document.createElement('button');
     toggle.className = 'btn set-toggle';
-    const sync = () => { toggle.textContent = music.enabled ? 'On' : 'Off'; toggle.classList.toggle('off', !music.enabled); };
+    const sync = () => {
+      toggle.textContent = music.enabled ? t('hud.options.on') : t('hud.options.off');
+      toggle.classList.toggle('off', !music.enabled);
+      toggle.setAttribute('aria-pressed', String(music.enabled));
+      toggle.setAttribute('aria-label', t('hud.options.music'));
+    };
     sync();
     toggle.addEventListener('click', () => { audio.click(); music.setEnabled(!music.enabled); sync(); });
     row.append(name, toggle);
@@ -2848,26 +3074,26 @@ export class Hud {
   // currently occupies them (slot 0 is always Attack); everything else uses
   // its registry label.
   private actionDisplayName(actionId: string, fallback: string): string {
-    if (!actionId.startsWith('slot')) return fallback;
+    if (!actionId.startsWith('slot')) return BIND_ACTION_LABEL_KEYS[actionId] ? t(BIND_ACTION_LABEL_KEYS[actionId]) : fallback;
     const slot = Number(actionId.slice(4));
-    if (slot === 0) return 'Attack';
+    if (slot === 0) return t('hud.keybinds.actions.attack');
     const known = this.abilityForSlot(slot);
-    return known ? known.def.name : fallback;
+    return known ? known.def.name : t('hud.keybinds.actions.actionBarSlot', { slot: slot + 1 });
   }
 
   private renderKeybinds(): void {
     const el = $('#options-menu');
-    el.innerHTML = `<div class="panel-title"><span>Key Bindings</span><span class="x-btn" data-close>✕</span></div>`;
+    el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.keyBindings'))}</span><span class="x-btn" data-close>✕</span></div>`;
     const note = document.createElement('div');
     note.className = 'kb-note';
-    note.textContent = this.keybindNote || 'Click a key cell, then press a key to bind it. Esc cancels. Each action has a primary and an alternate key.';
+    note.textContent = this.keybindNote || t('hud.options.keybindHelp');
     el.appendChild(note);
     const rows = document.createElement('div');
     rows.className = 'kb-rows';
     for (const category of BIND_CATEGORIES) {
       const header = document.createElement('div');
       header.className = 'kb-cat';
-      header.textContent = category;
+      header.textContent = BIND_CATEGORY_LABEL_KEYS[category] ? t(BIND_CATEGORY_LABEL_KEYS[category]) : category;
       rows.appendChild(header);
       for (const action of BIND_ACTIONS.filter((a) => a.category === category)) {
         const row = document.createElement('div');
@@ -2880,8 +3106,9 @@ export class Hud {
           const capturing = this.capturingKey?.action === action.id && this.capturingKey?.index === index;
           const key = document.createElement('button');
           key.className = 'btn kb-key' + (capturing ? ' capturing' : '');
-          key.textContent = capturing ? '…' : (this.keybinds.labelAt(action.id, index) || '—');
-          key.title = index === 0 ? 'Primary' : 'Alternate';
+          key.textContent = capturing ? '...' : (this.keybinds.labelAt(action.id, index) || t('hud.options.unbound'));
+          key.title = index === 0 ? t('hud.options.primary') : t('hud.options.alternate');
+          key.setAttribute('aria-label', `${this.actionDisplayName(action.id, action.label)} ${key.title}`);
           key.addEventListener('click', () => this.beginCapture(action.id, index, action.label));
           row.appendChild(key);
         }
@@ -2891,18 +3118,18 @@ export class Hud {
     el.appendChild(rows);
     const reset = document.createElement('button');
     reset.className = 'btn';
-    reset.textContent = 'Reset to Defaults';
+    reset.textContent = t('hud.options.resetToDefaults');
     reset.addEventListener('click', () => {
       audio.click();
       this.keybinds.reset();
       this.capturingKey = null;
-      this.keybindNote = 'Bindings reset to defaults.';
+      this.keybindNote = t('hud.options.keybindReset');
       this.refreshKeybindLabels();
       this.renderKeybinds();
     });
     const back = document.createElement('button');
     back.className = 'btn';
-    back.textContent = 'Back';
+    back.textContent = t('hud.options.back');
     back.addEventListener('click', () => { audio.click(); this.optionsView = 'main'; this.capturingKey = null; this.renderOptions(); });
     el.append(reset, back);
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeOptions());
@@ -2912,16 +3139,16 @@ export class Hud {
     if (!this.optionsHooks) return;
     const name = this.actionDisplayName(actionId, fallbackLabel);
     this.capturingKey = { action: actionId, index };
-    this.keybindNote = `Press a key for "${name}"…`;
+    this.keybindNote = t('hud.options.keybindCapture', { action: name });
     this.renderKeybinds();
     this.optionsHooks.captureKey((code) => {
       this.capturingKey = null;
       if (code === null) {
-        this.keybindNote = 'Rebinding cancelled.';
+        this.keybindNote = t('hud.options.keybindCancelled');
       } else if (isReservedCode(code)) {
-        this.keybindNote = `${keyLabel(code)} is reserved and can't be bound.`;
+        this.keybindNote = t('hud.options.keybindReserved', { key: keyLabel(code) });
       } else if (this.keybinds.bind(actionId, index, code)) {
-        this.keybindNote = `Bound "${name}" to ${keyLabel(code)}.`;
+        this.keybindNote = t('hud.options.keybindBound', { action: name, key: keyLabel(code) });
         this.refreshKeybindLabels();
       }
       // re-render only if the menu is still open (player may have closed it)

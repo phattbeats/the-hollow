@@ -2629,7 +2629,14 @@
   body.mobile-touch.mobile-chat-open #chatlog-wrap { display: block; }
   body.mobile-touch #chatlog-frame { height: 126px; }
   body.mobile-touch #chatlog-tabs { transform: scale(0.92); transform-origin: left bottom; }
-  body.mobile-touch #chat-input { left: 10px; bottom: calc(296px + env(safe-area-inset-bottom)); width: min(360px, calc(100vw - 20px)); }
+  body.mobile-touch #chat-input {
+    left: 10px;
+    bottom: calc(296px + env(safe-area-inset-bottom));
+    width: min(360px, calc(100vw - 20px));
+    min-height: 40px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
   body.mobile-touch #player-frame {
     position: fixed;
     left: max(8px, env(safe-area-inset-left));
@@ -2683,6 +2690,12 @@
     width: min(560px, calc(100vw - 170px));
     max-height: calc(100vh - 92px);
     transform: translateX(-50%);
+  }
+  body.mobile-touch #options-menu .btn {
+    min-height: 40px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    font-size: 16px;
   }
   body.mobile-touch #social-window {
     left: 50%;
@@ -3249,7 +3262,7 @@
       <div class="portrait-wrap">
         <div class="portrait"><canvas id="tf-portrait" width="54" height="54"></canvas></div>
         <div class="level-chip" id="tf-level"></div>
-        <div id="tf-elite-tag">ELITE</div>
+        <div id="tf-elite-tag" data-i18n="hud.core.elite">ELITE</div>
       </div>
       <div class="uf-bars">
         <div class="uf-name" id="tf-name"></div>
@@ -3316,14 +3329,14 @@
         <div id="meters-window" class="panel">
           <div class="panel-title">
             <span class="mt-tabs">
-              <button class="mt-tab on" data-tab="dmg">Dmg</button>
-              <button class="mt-tab" data-tab="heal">Heal</button>
-              <button class="mt-tab" data-tab="threat">Threat</button>
+              <button class="mt-tab on" data-tab="dmg" data-i18n="hud.meters.damageShort">Dmg</button>
+              <button class="mt-tab" data-tab="heal" data-i18n="hud.meters.healingShort">Heal</button>
+              <button class="mt-tab" data-tab="threat" data-i18n="hud.meters.threat">Threat</button>
             </span>
             <span>
-              <button class="x-btn mt-prev" title="older segment">&#9664;</button>
-              <button class="x-btn mt-next" title="newer segment">&#9654;</button>
-              <button class="x-btn mt-close">&times;</button>
+              <button class="x-btn mt-prev" data-i18n-title="hud.meters.olderSegment" title="Older segment">&#9664;</button>
+              <button class="x-btn mt-next" data-i18n-title="hud.meters.newerSegment" title="Newer segment">&#9654;</button>
+              <button class="x-btn mt-close" data-i18n-title="hud.meters.close" data-i18n-aria="hud.meters.close" aria-label="Close meters">&times;</button>
             </span>
           </div>
           <div class="mt-view"></div>
@@ -3335,8 +3348,8 @@
 
     <div id="chatlog-wrap">
       <div id="chatlog-tabs">
-        <button class="chat-tab active" data-log-tab="chat">Chat</button>
-        <button class="chat-tab" data-log-tab="combat">Combat Log</button>
+        <button class="chat-tab active" data-log-tab="chat" data-i18n="hud.core.chatTab">Chat</button>
+        <button class="chat-tab" data-log-tab="combat" data-i18n="hud.core.combatLogTab">Combat Log</button>
       </div>
       <div id="chatlog-frame" class="panel">
         <div id="chatlog" class="chat-pane active"></div>
@@ -3370,12 +3383,12 @@
     <div id="banner"></div>
 
     <div id="death-overlay">
-      <h2>You have died.</h2>
-      <button class="btn" id="release-btn">Release Spirit</button>
+      <h2 data-i18n="hud.core.deathTitle">You have died.</h2>
+      <button class="btn" id="release-btn" data-i18n="hud.core.releaseSpirit">Release Spirit</button>
     </div>
   </div>
 
-  <input id="chat-input" maxlength="200" placeholder="Say something… (/w name whisper, /r reply, /p party, /gu guild, /o officer, /g general)" autocomplete="off" />
+  <input id="chat-input" maxlength="200" data-i18n-placeholder="hud.core.chatPlaceholder" placeholder="Say something... (/w name whisper, /r reply, /p party, /gu guild, /o officer, /g general)" autocomplete="off" />
   </template>
 
   <main id="start-screen">

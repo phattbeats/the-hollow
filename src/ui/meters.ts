@@ -12,6 +12,7 @@
 import type { IWorld } from '../world_api';
 import type { SimEvent } from '../sim/types';
 import { CLASSES } from '../sim/data';
+import { t, type TranslationKey } from './i18n';
 
 const ENCOUNTER_END_SECONDS = 5;
 const HISTORY_CAP = 8;
@@ -143,7 +144,16 @@ export class MeterData {
 
 type Tab = 'dmg' | 'heal' | 'threat';
 
-const TAB_LABEL: Record<Tab, string> = { dmg: 'Damage', heal: 'Healing', threat: 'Threat' };
+const TAB_LABEL_KEY: Record<Tab, TranslationKey> = {
+  dmg: 'hud.meters.damage',
+  heal: 'hud.meters.healing',
+  threat: 'hud.meters.threat',
+};
+const TAB_SHORT_LABEL_KEY: Record<Tab, TranslationKey> = {
+  dmg: 'hud.meters.damageShort',
+  heal: 'hud.meters.healingShort',
+  threat: 'hud.meters.threat',
+};
 
 export class Meters {
   private data: MeterData;
@@ -163,15 +173,24 @@ export class Meters {
     this.titleEl = this.root.querySelector('.mt-view') as HTMLElement;
     this.subEl = this.root.querySelector('.mt-sub') as HTMLElement;
     for (const tab of ['dmg', 'heal', 'threat'] as Tab[]) {
-      (this.root.querySelector(`.mt-tab[data-tab="${tab}"]`) as HTMLElement).addEventListener('click', () => {
+      const tabButton = this.root.querySelector(`.mt-tab[data-tab="${tab}"]`) as HTMLElement;
+      tabButton.textContent = t(TAB_SHORT_LABEL_KEY[tab]);
+      tabButton.addEventListener('click', () => {
         this.tab = tab;
         this.refreshTabs();
         this.render(true);
       });
     }
-    (this.root.querySelector('.mt-prev') as HTMLElement).addEventListener('click', () => this.page(1));
-    (this.root.querySelector('.mt-next') as HTMLElement).addEventListener('click', () => this.page(-1));
-    (this.root.querySelector('.mt-close') as HTMLElement).addEventListener('click', () => this.toggle());
+    const prev = this.root.querySelector('.mt-prev') as HTMLElement;
+    const next = this.root.querySelector('.mt-next') as HTMLElement;
+    const close = this.root.querySelector('.mt-close') as HTMLElement;
+    prev.setAttribute('title', t('hud.meters.olderSegment'));
+    next.setAttribute('title', t('hud.meters.newerSegment'));
+    close.setAttribute('title', t('hud.meters.close'));
+    close.setAttribute('aria-label', t('hud.meters.close'));
+    prev.addEventListener('click', () => this.page(1));
+    next.addEventListener('click', () => this.page(-1));
+    close.addEventListener('click', () => this.toggle());
     this.refreshTabs();
   }
 
@@ -222,23 +241,23 @@ export class Meters {
   private viewedEncounter(): { enc: Encounter | null; viewName: string } {
     const h = this.data.history;
     if (this.viewIdx === h.length + 1 || (this.viewIdx > 0 && h.length === 0)) {
-      return { enc: this.data.allTime, viewName: 'All (session)' };
+      return { enc: this.data.allTime, viewName: t('hud.meters.allSession') };
     }
     if (this.viewIdx === 0) {
       const enc = this.data.current ?? h[0] ?? null;
-      return { enc, viewName: this.data.current ? 'Current' : enc ? 'Last fight' : 'Current' };
+      return { enc, viewName: this.data.current ? t('hud.meters.current') : enc ? t('hud.meters.lastFight') : t('hud.meters.current') };
     }
-    return { enc: h[this.viewIdx - 1] ?? null, viewName: `Fight -${this.viewIdx}` };
+    return { enc: h[this.viewIdx - 1] ?? null, viewName: t('hud.meters.fightIndex', { index: this.viewIdx }) };
   }
 
   render(force = false): void {
     if (!this.isOpen && !force) return;
     this.lastRender = performance.now();
     const { enc, viewName } = this.viewedEncounter();
-    this.titleEl.textContent = `${TAB_LABEL[this.tab]} — ${viewName}`;
+    this.titleEl.textContent = t('hud.meters.title', { tab: t(TAB_LABEL_KEY[this.tab]), view: viewName });
 
     if (!enc || enc.tallies.size === 0) {
-      this.subEl.textContent = 'No combat recorded yet.';
+      this.subEl.textContent = t('hud.meters.noCombat');
       this.rowsEl.innerHTML = '';
       return;
     }
@@ -246,9 +265,10 @@ export class Meters {
     const isThreat = this.tab === 'threat';
     const mob = isThreat && enc.mainMobId !== null ? this.world.entities.get(enc.mainMobId) : null;
     const aggroPid = mob && !mob.dead ? mob.aggroTargetId : null;
+    const encounterLabel = enc.label === 'Combat' || enc.label === 'All (session)' ? viewName : enc.label;
     this.subEl.textContent = isThreat
-      ? (enc.mainMobName ? `Target: ${enc.mainMobName}` : 'No target engaged.')
-      : `${enc.label} — ${fmtDuration(enc.duration)}`;
+      ? (enc.mainMobName ? t('hud.meters.target', { name: enc.mainMobName }) : t('hud.meters.noTargetEngaged'))
+      : t('hud.meters.segmentSummary', { label: encounterLabel, duration: fmtDuration(enc.duration) });
 
     const liveThreat = mob && !mob.dead && mob.threat.size > 0 ? mob.threat : null;
     const rows = [...enc.tallies.values()]

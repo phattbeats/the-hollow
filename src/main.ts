@@ -370,6 +370,7 @@ function mountGameUi(): void {
   const startScreen = document.getElementById('start-screen');
   if (!template || !startScreen) throw new Error('Game UI shell is missing.');
   document.body.insertBefore(template.content.cloneNode(true), startScreen);
+  translatePage();
 }
 
 // ---------------------------------------------------------------------------
