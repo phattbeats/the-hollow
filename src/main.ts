@@ -7,7 +7,7 @@ import { MobileControls, PHONE_TOUCH_QUERY, isPhoneTouchDevice } from './game/mo
 import { Hud } from './ui/hud';
 import { audio } from './game/audio';
 import { music } from './game/music';
-import { handlePickedEntity } from './game/interactions';
+import { handlePickedEntity, hoverCursorKind } from './game/interactions';
 import { Api, ClientWorld, CharacterSummary } from './net/online';
 import type { IWorld } from './world_api';
 import { assetsReady } from './render/assets/preload';
@@ -504,6 +504,24 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     lastInterpFacing = interpFacing; // track through mouselook too — no snap on release
   }
 
+  function partyMemberIds(): Set<number> {
+    const ids = new Set<number>();
+    for (const m of world.partyInfo?.members ?? []) {
+      if (m.pid !== world.playerId) ids.add(m.pid);
+    }
+    return ids;
+  }
+
+  function updateHoverCursor(): void {
+    if (!input.hoverActive || input.isDragging() || hud.isModalOpen()) {
+      input.setHoverCursor('default');
+      return;
+    }
+    const id = renderer.pick(input.hoverX, input.hoverY);
+    const entity = id !== null ? world.entities.get(id) : undefined;
+    input.setHoverCursor(hoverCursorKind(entity, world.playerId, partyMemberIds()));
+  }
+
   function frame(now: number): void {
     requestAnimationFrame(frame);
     let frameDt = (now - last) / 1000;
@@ -514,6 +532,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     // character behind it (other windows stay non-modal, as before)
     input.suspendMovement = hud.isModalOpen();
     input.updateTouchLook(frameDt);
+    updateHoverCursor();
 
     const mouselook = input.isMouselookActive() && !world.player.dead;
 

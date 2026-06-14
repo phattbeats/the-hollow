@@ -5,6 +5,7 @@
 // F interacts, R autorun.
 
 import { Keybinds, actionKind } from './keybinds';
+import { cursorForHover, type HoverCursorKind } from './cursors';
 
 // the camera sensitivity that used to be hard-coded in onMouseMove; the
 // settings slider scales this (cameraSpeed 1.0 reproduces the old feel)
@@ -37,6 +38,11 @@ export class Input {
   // while true, readMoveInput reports neutral — set when a modal (the options
   // menu) is open so held WASD doesn't drive the character behind it
   suspendMovement = false;
+  /** Latest pointer position while over the canvas (for hover pick). */
+  hoverX = 0;
+  hoverY = 0;
+  hoverActive = false;
+  private hoverKind: HoverCursorKind = 'default';
   private dragDistance = 0;
   private downButton = -1;
   // one-shot key capture for the rebind UI: the next keydown is delivered here
@@ -61,6 +67,24 @@ export class Input {
       this.camDist = Math.min(22, Math.max(3, this.camDist + Math.sign(e.deltaY) * 1.4));
     }, { passive: false });
     canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+    canvas.addEventListener('mouseenter', () => { this.hoverActive = true; });
+    canvas.addEventListener('mouseleave', () => {
+      this.hoverActive = false;
+      this.setHoverCursor('default');
+    });
+    this.updateCursor();
+  }
+
+  /** True while a mouse button is held for camera drag. */
+  isDragging(): boolean {
+    return this.leftDown || this.rightDown;
+  }
+
+  /** Update hand / sword / shield cursor from a hover pick (called once per frame). */
+  setHoverCursor(kind: HoverCursorKind): void {
+    if (this.hoverKind === kind) return;
+    this.hoverKind = kind;
+    this.updateCursor();
   }
 
   /** Capture the next keypress (for the rebind UI) instead of acting on it. */
@@ -103,6 +127,11 @@ export class Input {
 
   isMouselookActive(): boolean {
     return this.rightDown || this.touchLookActive;
+  }
+
+  private updateCursor(): void {
+    if (this.isDragging() || document.pointerLockElement === this.canvas) return;
+    this.canvas.style.cursor = cursorForHover(this.hoverKind, false);
   }
 
   private onKeyDown(e: KeyboardEvent): void {
@@ -171,9 +200,14 @@ export class Input {
       this.cb.onClickPick(e.clientX, e.clientY, e.button);
     }
     this.downButton = -1;
+    this.updateCursor();
   }
 
   private onMouseMove(e: MouseEvent): void {
+    if (e.target === this.canvas) {
+      this.hoverX = e.clientX;
+      this.hoverY = e.clientY;
+    }
     if (!this.leftDown && !this.rightDown) return;
     const mx = e.movementX ?? 0, my = e.movementY ?? 0;
     this.dragDistance += Math.abs(mx) + Math.abs(my);
