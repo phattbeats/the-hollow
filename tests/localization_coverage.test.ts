@@ -57,6 +57,24 @@ describe("i18n Localization Key Coverage", () => {
     "mobilePreflight.title",
     "serverUnavailable.heading",
   ];
+  const phaseTwoHudKeys: TranslationKey[] = [
+    "hud.core.chatPlaceholder",
+    "hud.core.xpGain",
+    "hud.options.gameMenu",
+    "hud.options.keybindHelp",
+    "hud.options.unbound",
+    "hud.keybinds.categories.movement",
+    "hud.keybinds.actions.forward",
+    "hud.meters.noCombat",
+    "hud.chat.templates.guild",
+    "hud.chat.context.trade",
+    "hud.report.reasons.offensiveNameOrChat",
+    "hud.prompts.duelRequest",
+    "hud.combat.damageDoneCrit",
+    "hud.system.arenaVictoryLog",
+    "hud.errors.chatCooldown",
+    "hud.logs.lootReceiveItem",
+  ];
 
   function verifyKeys(base: Record<string, unknown>, target: Record<string, unknown>, path = "") {
     for (const key in base) {
@@ -137,6 +155,33 @@ describe("i18n Localization Key Coverage", () => {
     setLanguage("en");
   });
 
+  it("should include current phase HUD, chat, and combat keys in every locale", () => {
+    for (const key of phaseTwoHudKeys) {
+      for (const lang of supportedLanguages) {
+        setLanguage(lang);
+        expect(t(key), `${lang}.${key}`).not.toBe(key);
+        expect(t(key).trim().length, `${lang}.${key}`).toBeGreaterThan(0);
+      }
+    }
+    setLanguage("en");
+  });
+
+  it("should interpolate Phase 2 combat, chat, and log templates without dropping values", () => {
+    setLanguage("de_DE");
+    expect(t("hud.combat.damageDoneCrit", { ability: "Feuerball", target: "Wolf", amount: 42 })).toContain("42");
+    expect(t("hud.errors.chatCooldown", { seconds: 7 })).toContain("7");
+
+    setLanguage("ja_JP");
+    const guildChat = t("hud.chat.templates.guild", { name: "Aki", message: "集合" });
+    expect(guildChat).toContain("Aki");
+    expect(guildChat).toContain("集合");
+
+    setLanguage("zh_CN");
+    expect(t("hud.logs.lootReceiveItem", { item: "粗糙护腕" })).toContain("粗糙护腕");
+
+    setLanguage("en");
+  });
+
   it("should expose all supported hreflang alternates in index.html", () => {
     const html = fs.readFileSync(path.resolve(process.cwd(), "index.html"), "utf8");
     const expectedHreflang = [
@@ -160,6 +205,8 @@ describe("i18n Localization Key Coverage", () => {
       expect(html, `missing hreflang ${hreflang}`).toContain(`hreflang="${hreflang}"`);
     }
     expect(html).toContain('data-i18n-content="seo.description"');
+    expect(html).toContain('data-i18n-placeholder="hud.core.chatPlaceholder"');
+    expect(html).toContain('data-i18n="hud.core.chatTab"');
     expect(html).toContain('id="structured-data"');
   });
 });
