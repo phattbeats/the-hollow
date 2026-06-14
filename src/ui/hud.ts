@@ -146,6 +146,8 @@ export class Hud {
   private openGossipNpcId: number | null = null;
   private openQuestDetailId: string | null = null;
   private selectedQuestLogId: string | null = null;
+  private questDialogReturnFocus: HTMLElement | null = null;
+  private questLogReturnFocus: HTMLElement | null = null;
   private lastPortraitTarget = -999;
   // trading: locally staged offer, pushed to the server on change
   private stagedTrade: { items: InvSlot[]; copper: number } = { items: [], copper: 0 };
@@ -360,6 +362,21 @@ export class Hud {
   private questSuggestedPlayersHtml(count?: number): string {
     if (!count) return '';
     return ` <span class="quest-suggested">${esc(t('questUi.log.suggestedPlayers', { count: this.questNumber(count) }))}</span>`;
+  }
+
+  private canRestoreFocusTo(target: HTMLElement | null): target is HTMLElement {
+    return Boolean(target?.isConnected && target.getClientRects().length > 0);
+  }
+
+  private currentFocusableElement(): HTMLElement | null {
+    const active = document.activeElement;
+    return active instanceof HTMLElement && active !== document.body && this.canRestoreFocusTo(active) ? active : null;
+  }
+
+  private restoreFocus(target: HTMLElement | null, fallback?: HTMLElement | null): void {
+    const candidate = this.canRestoreFocusTo(target) ? target : this.canRestoreFocusTo(fallback ?? null) ? fallback! : null;
+    if (!candidate) return;
+    window.setTimeout(() => candidate.focus(), 0);
   }
 
   private focusFirstInteractive(root: HTMLElement, preferredSelector?: string): void {
@@ -1674,6 +1691,7 @@ export class Hud {
   openQuestDialog(npcId: number): void {
     const npc = this.sim.entities.get(npcId);
     if (!npc || npc.kind !== 'npc') return;
+    if ($('#quest-dialog').style.display !== 'block') this.questDialogReturnFocus = this.currentFocusableElement();
     this.renderGossip(npc);
   }
 
@@ -1716,11 +1734,11 @@ export class Hud {
       item.addEventListener('click', () => this.renderQuestDetail(npc, (item as HTMLElement).dataset.quest!));
     });
     el.querySelector('[data-vendor]')?.addEventListener('click', () => {
-      this.closeQuestDialog();
+      this.closeQuestDialog(false);
       this.openVendor(npc.id);
     });
     el.querySelector('[data-market]')?.addEventListener('click', () => {
-      this.closeQuestDialog();
+      this.closeQuestDialog(false);
       this.openMarket();
     });
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
@@ -1779,14 +1797,17 @@ export class Hud {
     el.appendChild(back);
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
     el.style.display = 'block';
-    this.focusFirstInteractive(el, '.ql-item.sel');
+    this.focusFirstInteractive(el);
   }
 
-  closeQuestDialog(): void {
+  closeQuestDialog(restoreFocus = true): void {
     $('#quest-dialog').style.display = 'none';
     this.openGossipNpcId = null;
     this.openQuestDetailId = null;
     this.hideTooltip();
+    const target = this.questDialogReturnFocus;
+    this.questDialogReturnFocus = null;
+    if (restoreFocus) this.restoreFocus(target);
   }
 
   // Re-render the open gossip dialog after quest state changes so completed
@@ -2271,9 +2292,18 @@ export class Hud {
 
   toggleQuestLog(): void {
     const el = $('#quest-log-window');
-    if (el.style.display === 'block') { el.style.display = 'none'; this.hideTooltip(); return; }
+    if (el.style.display === 'block') { this.closeQuestLog(); return; }
+    this.questLogReturnFocus = this.currentFocusableElement() ?? $('#mm-quest');
     this.renderQuestLog();
     el.style.display = 'block';
+  }
+
+  private closeQuestLog(restoreFocus = true): void {
+    $('#quest-log-window').style.display = 'none';
+    this.hideTooltip();
+    const target = this.questLogReturnFocus ?? $('#mm-quest');
+    this.questLogReturnFocus = null;
+    if (restoreFocus) this.restoreFocus(target, $('#mm-quest'));
   }
 
   renderQuestLog(): void {
@@ -2340,7 +2370,7 @@ export class Hud {
       abandon.addEventListener('click', () => { sim.abandonQuest(this.selectedQuestLogId!); this.renderQuestLog(); });
       detail.appendChild(abandon);
     }
-    el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; this.hideTooltip(); });
+    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestLog());
     this.focusFirstInteractive(el);
   }
 
@@ -3332,7 +3362,9 @@ export class Hud {
       closed = true;
     }
     if (this.marketOpen) { this.closeMarket(); closed = true; }
-    for (const id of ['#quest-dialog', '#loot-window', '#vendor-window', '#bags', '#char-window', '#spellbook', '#quest-log-window', '#map-window', '#report-window', '#arena-window']) {
+    if ($('#quest-dialog').style.display === 'block') { this.closeQuestDialog(); closed = true; }
+    if ($('#quest-log-window').style.display === 'block') { this.closeQuestLog(); closed = true; }
+    for (const id of ['#loot-window', '#vendor-window', '#bags', '#char-window', '#spellbook', '#map-window', '#report-window', '#arena-window']) {
       const el = $(id);
       if (el.style.display === 'block') {
         el.style.display = 'none';
