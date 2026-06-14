@@ -730,6 +730,63 @@ describe('RL observation encoding', () => {
   });
 });
 
+describe('pet heel warp', () => {
+  it('keeps the spatial grid exact when a pet warps to its owner', () => {
+    const sim = makeSim();
+    const p = sim.player;
+    // park the owner in open space away from the spawn camp
+    teleportTo(sim, p.pos.x + 400, p.pos.z + 400);
+
+    // adopt a wild beast as a heeling pet and strand it far from the owner
+    const pet = [...sim.entities.values()].find((e) => e.kind === 'mob' && !e.dead)!;
+    pet.ownerId = p.id;
+    pet.hostile = false;
+    pet.aggroTargetId = null;
+    pet.inCombat = false;
+    pet.pos = { x: p.pos.x + 200, z: p.pos.z, y: p.pos.y };
+    pet.prevPos = { ...pet.pos };
+    (sim as any).grid.update(pet); // grid now buckets the pet at its far cell
+
+    // 200 yds away with nothing to fight: the pet warps back to heel
+    (sim as any).updatePet(pet);
+    expect(dist2d(pet.pos, p.pos)).toBeLessThan(1);
+
+    // a same-tick radius query at the warp destination must see the pet — it
+    // would miss it if the grid still held the pet in its stale far-away cell
+    const found: number[] = [];
+    (sim as any).grid.forEachInRadius(p.pos.x, p.pos.z, 5, (e: Entity) => found.push(e.id));
+    expect(found).toContain(pet.id);
+  });
+});
+
+describe('mob tap rights', () => {
+  function wolf(sim: Sim): Entity {
+    return [...sim.entities.values()].find((e) => e.kind === 'mob' && e.templateId === 'forest_wolf')!;
+  }
+
+  it('a hit that deals real damage claims the mob', () => {
+    const sim = makeSim('mage');
+    const m = wolf(sim);
+    expect(m.tappedById).toBeNull();
+    (sim as any).dealDamage(sim.player, m, 7, false, 'fire', 'test', 'hit');
+    expect(m.tappedById).toBe(sim.player.id);
+  });
+
+  it('a fully absorbed (zero-damage) hit does not claim the mob', () => {
+    const sim = makeSim('mage');
+    const m = wolf(sim);
+    // a shield that soaks the whole hit — the mob takes no real damage
+    m.auras.push({
+      id: 'test_absorb', name: 'Test Shield', kind: 'absorb',
+      remaining: 30, duration: 30, value: 1000, sourceId: m.id, school: 'arcane',
+    } as any);
+    const hpBefore = m.hp;
+    (sim as any).dealDamage(sim.player, m, 50, false, 'fire', 'test', 'hit');
+    expect(m.hp).toBe(hpBefore); // nothing got through
+    expect(m.tappedById).toBeNull(); // so nobody owns the tap yet
+  });
+});
+
 describe('spell visuals', () => {
   it('hostile casts emit projectile spellfx events', () => {
     const sim = makeSim('mage');
