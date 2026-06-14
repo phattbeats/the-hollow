@@ -75,6 +75,40 @@ describe("i18n Localization Key Coverage", () => {
     "hud.errors.chatCooldown",
     "hud.logs.lootReceiveItem",
   ];
+  const interpolationValues: Record<string, string | number> = {
+    ability: "Fireball",
+    action: "Open Chat",
+    amount: 42,
+    className: "Mage",
+    command: "/dance",
+    current: 120,
+    delta: "+13",
+    duration: "15s",
+    form: "Bear",
+    guild: "Night Watch",
+    index: 2,
+    item: "Rough Bracers",
+    key: "K",
+    label: "Wolf",
+    level: 10,
+    loser: "Mira",
+    message: "Meet at the inn",
+    money: "12 copper",
+    name: "Aki",
+    needed: 400,
+    percent: 30,
+    position: 3,
+    rating: 1513,
+    resource: "mana",
+    seconds: 7,
+    slot: 5,
+    source: "Wolf",
+    tab: "Damage",
+    target: "Wolf",
+    view: "Current",
+    winner: "Rook",
+    zone: "Northshire",
+  };
 
   function verifyKeys(base: Record<string, unknown>, target: Record<string, unknown>, path = "") {
     for (const key in base) {
@@ -92,6 +126,32 @@ describe("i18n Localization Key Coverage", () => {
         expect(text, `${currentPath} should not contain placeholder markers`).not.toMatch(placeholderPattern);
       }
     }
+  }
+
+  function nestedString(target: Record<string, unknown>, key: string): string {
+    let node: unknown = target;
+    for (const segment of key.split(".")) {
+      if (typeof node !== "object" || node === null || !(segment in node)) return "";
+      node = (node as Record<string, unknown>)[segment];
+    }
+    return typeof node === "string" ? node : "";
+  }
+
+  function flattenStrings(base: Record<string, unknown>, path = ""): { key: TranslationKey; value: string }[] {
+    const entries: { key: TranslationKey; value: string }[] = [];
+    for (const [key, value] of Object.entries(base)) {
+      const currentPath = path ? `${path}.${key}` : key;
+      if (typeof value === "string") {
+        entries.push({ key: currentPath as TranslationKey, value });
+      } else if (typeof value === "object" && value !== null) {
+        entries.push(...flattenStrings(value as Record<string, unknown>, currentPath));
+      }
+    }
+    return entries;
+  }
+
+  function placeholders(value: string): string[] {
+    return [...value.matchAll(/\{([A-Za-z][A-Za-z0-9]*)\}/g)].map((match) => match[1]).sort();
   }
 
   for (const [code, locale] of Object.entries(locales)) {
@@ -163,6 +223,30 @@ describe("i18n Localization Key Coverage", () => {
         expect(t(key).trim().length, `${lang}.${key}`).toBeGreaterThan(0);
       }
     }
+    setLanguage("en");
+  });
+
+  it("should preserve and render every Phase 2 HUD interpolation placeholder in every locale", () => {
+    const phaseTwoDynamicKeys = flattenStrings(en.hud, "hud")
+      .map(({ key, value }) => ({ key, expected: placeholders(value) }))
+      .filter(({ expected }) => expected.length > 0);
+    const allLocales: Record<string, typeof en> = { en, ...locales };
+
+    for (const { key, expected } of phaseTwoDynamicKeys) {
+      for (const [lang, locale] of Object.entries(allLocales)) {
+        const template = nestedString(locale, key);
+        expect(placeholders(template), `${lang}.${key} placeholders`).toEqual(expected);
+        expect(isSupportedLanguage(lang)).toBe(true);
+        if (!isSupportedLanguage(lang)) continue;
+        setLanguage(lang);
+        const rendered = t(key, interpolationValues);
+        expect(rendered, `${lang}.${key} should not leave placeholders unresolved`).not.toMatch(/\{[A-Za-z][A-Za-z0-9]*\}/);
+        for (const placeholder of expected) {
+          expect(rendered, `${lang}.${key} should include ${placeholder}`).toContain(String(interpolationValues[placeholder]));
+        }
+      }
+    }
+
     setLanguage("en");
   });
 
