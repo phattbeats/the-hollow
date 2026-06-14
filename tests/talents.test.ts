@@ -8,6 +8,7 @@ import { MAX_LEVEL, dist2d } from '../src/sim/types';
 import { Sim } from '../src/sim/sim';
 import { abilitiesKnownAt } from '../src/sim/content/classes';
 import { terrainHeight } from '../src/sim/world';
+import { ClientWorld } from '../src/net/online';
 
 const alloc = (over: Partial<TalentAllocation> = {}): TalentAllocation => ({ ...emptyAllocation(), ...over });
 
@@ -405,5 +406,56 @@ describe('Sim integration — loadouts & build strings (Phase 4)', () => {
     const lowbie = new Sim({ seed: 5, playerClass: 'warrior' });
     lowbie.setPlayerLevel(10); // only 1 point
     expect(lowbie.applyTalents(imported.ok ? imported.alloc : alloc())).toBe(false);
+  });
+});
+
+describe('ClientWorld path (online display reflects server state)', () => {
+  function bareClient(pid: number): any {
+    const c: any = Object.create(ClientWorld.prototype);
+    c.cfg = { seed: 20061, playerClass: 'warrior' };
+    c.entities = new Map();
+    c.playerId = pid;
+    c.moveInput = {}; c.inventory = []; c.equipment = {}; c.copper = 0; c.xp = 0;
+    c.known = []; c.questLog = new Map(); c.questsDone = new Set();
+    c.lastSnapAt = 0; c.snapInterval = 50; c.pendingFacingDelta = 0;
+    c.connected = true; c.eventQueue = []; c.mouselookFacing = null;
+    return c;
+  }
+  const selfWire = (over: any = {}) => ({
+    id: 1, k: 'player', tid: 'warrior', nm: 'Tank', lv: 20,
+    x: 0, y: 0, z: 0, f: 0, hp: 100, mhp: 100,
+    res: 0, mres: 100, rtype: 'rage', xp: 0, copper: 0,
+    inv: [], equip: {}, qlog: [], qdone: [], cds: {}, gcd: 0,
+    stats: { str: 1, agi: 1, sta: 1, int: 1, spi: 1, armor: 0 },
+    weapon: { min: 1, max: 2, speed: 2 }, ...over,
+  });
+
+  it('decodes the talent snapshot field and recomputes known with granted abilities', () => {
+    const c = bareClient(1);
+    c.applySnapshot({ t: 'snap', tick: 1, time: 0, ents: [], self: selfWire({
+      tal: { alloc: { spec: 'prot', ranks: { prot_toughness: 2 }, choices: {} }, spec: 'prot', role: 'tank', loadouts: [{ name: 'MT', alloc: emptyAllocation(), bar: [] }], activeLoadout: 0 },
+    }) });
+    expect(c.talents.spec).toBe('prot');
+    expect(c.talentSpec).toBe('prot');
+    expect(c.talentRole).toBe('tank');
+    expect(c.loadouts.length).toBe(1);
+    expect(c.activeLoadout).toBe(0);
+    // the client resolves known with the precomputed mods -> shield_slam granted
+    expect(c.known.some((k: any) => k.def.id === 'shield_slam')).toBe(true);
+    expect(c.talentPoints()).toMatchObject({ total: 11, spent: 2 });
+  });
+});
+
+describe('performance invariant (no per-tick tree walk)', () => {
+  it('keeps the resolved known-ability set stable across many ticks', () => {
+    const sim = warriorAtCap();
+    sim.applyTalents(alloc({ spec: 'arms', ranks: { arms_imp_overpower: 2 } }));
+    const knownRef = sim.meta(sim.playerId)!.known;
+    const overpowerRef = knownRef.find((k) => k.def.id === 'overpower');
+    expect(overpowerRef).toBeTruthy();
+    for (let i = 0; i < 600; i++) sim.tick(); // 30s of ticks
+    // identical array + object identity => talents resolved once, never per tick
+    expect(sim.meta(sim.playerId)!.known).toBe(knownRef);
+    expect(sim.meta(sim.playerId)!.known.find((k) => k.def.id === 'overpower')).toBe(overpowerRef);
   });
 });
