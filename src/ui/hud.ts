@@ -1805,7 +1805,7 @@ export class Hud {
     const npcName = npcDisplayName(npc.templateId);
     const npcTitle = def ? npcDisplayTitle(def.id) : '';
     let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(npcName)}<span class="quest-muted"> &lt;${esc(npcTitle)}&gt;</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">✕</button></div>`;
-    html += `<div class="qd-text">"${esc(def ? npcGreeting(def.id, CLASSES[this.sim.cfg.playerClass].name.toLowerCase()) : t('questUi.dialog.greetingFallback'))}"</div>`;
+    html += `<div class="qd-text">"${esc(def ? npcGreeting(def.id, this.sim.cfg.playerClass) : t('questUi.dialog.greetingFallback'))}"</div>`;
     if (interesting.length > 0) {
       for (const qid of interesting) {
         const st = this.sim.questState(qid);
@@ -3563,8 +3563,9 @@ function npcDisplayTitle(npcId: string): string {
   return tEntity({ kind: 'npc', id: npcId, field: 'title' });
 }
 
-function npcGreeting(npcId: string, className: string): string {
-  return tEntity({ kind: 'npc', id: npcId, field: 'greeting', values: { className } });
+function npcGreeting(npcId: string, playerClass: PlayerClass): string {
+  const className = classDisplayName(playerClass);
+  return tEntity({ kind: 'npc', id: npcId, field: 'greeting', values: { className, classNameLower: className.toLocaleLowerCase() } });
 }
 
 function questTitle(questId: string): string {

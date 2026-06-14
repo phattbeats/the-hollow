@@ -402,12 +402,16 @@ describe("i18n Localization Key Coverage", () => {
     const ability = ABILITIES.fireball;
     const abilityName = tEntity({ kind: "ability", id: ability.id, field: "name" });
     const abilityDescription = tEntity({ kind: "ability", id: ability.id, field: "description", values: { damage: "11-14" } });
+    const npcGreeting = tEntity({ kind: "npc", id: "marshal_redbrook", field: "greeting", values: { className: "Magier", classNameLower: "magier" } });
     expect(abilityName).toBe(ability.name);
     expect(abilityDescription).toContain("11-14");
     expect(abilityDescription).not.toContain("$d");
+    expect(npcGreeting).toContain("magier");
+    expect(npcGreeting).not.toContain("$C");
     expect(entityTranslationFallbackLog().map((entry) => entry.key)).toEqual(expect.arrayContaining([
       entityTranslationKey({ kind: "ability", id: ability.id, field: "name" }),
       entityTranslationKey({ kind: "ability", id: ability.id, field: "description" }),
+      entityTranslationKey({ kind: "npc", id: "marshal_redbrook", field: "greeting" }),
     ]));
 
     setLanguage("en");

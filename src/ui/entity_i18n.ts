@@ -88,9 +88,10 @@ function compareById<T extends { id: string }>(a: T, b: T): number {
 
 function interpolateSource(source: string, values?: InterpolationValues): string {
   if (!values) return source;
+  const className = values.classNameLower ?? values.className ?? '$C';
   const legacy = source
     .replace(/\$N/g, String(values.playerName ?? values.name ?? '$N'))
-    .replace(/\$C/g, String(values.className ?? '$C'))
+    .replace(/\$C/g, String(className))
     .replace(/\$d/g, String(values.damage ?? values.d ?? '$d'));
   return legacy.replace(/\{([A-Za-z0-9_]+)\}/g, (match, name: string) => {
     const value = values[name];
