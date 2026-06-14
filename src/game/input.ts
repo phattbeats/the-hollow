@@ -37,6 +37,11 @@ export class Input {
   // while true, readMoveInput reports neutral — set when a modal (the options
   // menu) is open so held WASD doesn't drive the character behind it
   suspendMovement = false;
+  // click-to-move (#95): a world destination the player clicked; the frame loop
+  // walks toward it until arrival or until the player takes manual control.
+  // null when inactive. clickMoveStop is how close counts as "there".
+  clickMoveTarget: { x: number; z: number } | null = null;
+  clickMoveStop = 0.5;
   private dragDistance = 0;
   private downButton = -1;
   // one-shot key capture for the rebind UI: the next keydown is delivered here
@@ -157,7 +162,10 @@ export class Input {
     if (e.button === 2) this.rightDown = true;
     this.downButton = e.button;
     this.dragDistance = 0;
-    this.canvas.requestPointerLock?.();
+    // Pointer lock is requested lazily once a drag actually begins (see
+    // onMouseMove) — NOT on every press. Locking per-click made the browser's
+    // "mouse capture" banner spam the top of the screen on every right-click
+    // used to attack/look (#116).
   }
 
   private onMouseUp(e: MouseEvent): void {
@@ -177,6 +185,12 @@ export class Input {
     if (!this.leftDown && !this.rightDown) return;
     const mx = e.movementX ?? 0, my = e.movementY ?? 0;
     this.dragDistance += Math.abs(mx) + Math.abs(my);
+    // Engage pointer lock only once the press turns into an actual camera drag,
+    // and only if we aren't already locked — one banner per drag, none for a
+    // plain click (#116).
+    if (this.dragDistance > 4 && !document.pointerLockElement) {
+      this.canvas.requestPointerLock?.();
+    }
     this.camYaw -= mx * this.lookSensitivity;
     this.camPitch = Math.min(1.35, Math.max(-0.4, this.camPitch + my * this.lookSensitivity));
   }

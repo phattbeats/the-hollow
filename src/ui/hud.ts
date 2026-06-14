@@ -2,7 +2,7 @@ import { formatMoney, ResolvedAbility } from '../sim/sim';
 import type { IWorld, MarketInfo } from '../world_api';
 import { Renderer } from '../render/renderer';
 import {
-  ABILITIES, CLASSES, DUNGEON_LIST, DUNGEON_X_THRESHOLD, ITEMS, MOBS, NPCS, QUESTS,
+  ABILITIES, CLASSES, DUNGEON_LIST, DUNGEON_X_THRESHOLD, ITEMS, MOBS, NPCS, QUESTS, questRewardItemId,
   WORLD_MAX_X, WORLD_MAX_Z, WORLD_MIN_X, WORLD_MIN_Z, ZONES, dungeonAt, zoneAt,
   zoneWelcomeText,
 } from '../sim/data';
@@ -17,6 +17,7 @@ import { iconDataUrl, QUALITY_COLOR } from './icons';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
 import { Settings, GameSettings, SETTING_RANGES } from '../game/settings';
 import { chatPlayerContextActions } from './player_context_menu';
+import { placeAbilityOnSlot, clearSlot } from './hotbar';
 
 // hooks main wires after Input exists (the options menu drives input, audio,
 // graphics, and logout, all of which live outside the HUD)
@@ -66,7 +67,8 @@ export class Hud {
   private static readonly BAR_ABILITY_SLOTS = 11; // bar slots 1..11; slot 0 is the fixed Attack toggle
   private abilityButtons: { btn: HTMLButtonElement; label: HTMLSpanElement; keybindEl: HTMLSpanElement; cdOverlay: HTMLDivElement; cdText: HTMLDivElement; lastIcon: string }[] = [];
   private slotMap: (string | null)[] = []; // index = barSlot-1, value = ability id
-  private dragFromSlot: number | null = null;
+  private dragAbilityId: string | null = null; // id being dragged (from a bar slot or the spellbook)
+  private seenAbilities = new Set<string>(); // abilities already auto-placed once; lets cleared slots stay empty
   private optionsHooks: OptionsHooks | null = null;
   private reportHooks: ReportHooks | null = null;
   private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' = 'main';
@@ -273,6 +275,8 @@ export class Hud {
     }
     if (item.foodHp) html += `<div class="tt-desc">Use: Restores ${item.foodHp} health over 18 sec. Must remain seated while eating.</div>`;
     if (item.drinkMana) html += `<div class="tt-desc">Use: Restores ${item.drinkMana} mana over 18 sec. Must remain seated while drinking.</div>`;
+    if (item.potionHp) html += `<div class="tt-desc">Use: Instantly restores ${item.potionHp} health. Usable in combat. 1 min cooldown.</div>`;
+    if (item.potionMana) html += `<div class="tt-desc">Use: Instantly restores ${item.potionMana} mana. Usable in combat. 1 min cooldown.</div>`;
     if (item.kind === 'quest') html += `<div class="tt-desc">Quest Item</div>`;
     if (item.requiredClass) html += `<div class="tt-sub">Classes: ${item.requiredClass.map((c) => CLASSES[c].name).join(', ')}</div>`;
     if (item.sellValue > 0) html += `<div class="tt-sub">Sell price: ${formatMoney(item.sellValue)}</div>`;
@@ -343,24 +347,48 @@ export class Hud {
     return `woc_hotbar_${this.sim.cfg.playerClass}_${this.sim.player.name}`;
   }
 
+  private seenKey(): string {
+    return `${this.slotMapKey()}_seen`;
+  }
+
   private loadSlotMap(): void {
     let arr: unknown = null;
     try { arr = JSON.parse(localStorage.getItem(this.slotMapKey()) ?? 'null'); } catch { /* corrupt */ }
     const seen = new Set<string>();
+    const firstLoad = !Array.isArray(arr);
     this.slotMap = Array.from({ length: Hud.BAR_ABILITY_SLOTS }, (_, i) => {
       const v = Array.isArray(arr) ? arr[i] : null;
       if (typeof v !== 'string' || !ABILITIES[v] || seen.has(v)) return null;
       seen.add(v);
       return v;
     });
+    // Track which abilities have already been auto-placed so an intentionally
+    // cleared slot doesn't get refilled next frame. On a brand-new bar treat
+    // everything currently known as already-seen so we don't reshuffle.
+    this.seenAbilities = new Set<string>();
+    let storedSeen: unknown = null;
+    try { storedSeen = JSON.parse(localStorage.getItem(this.seenKey()) ?? 'null'); } catch { /* corrupt */ }
+    if (Array.isArray(storedSeen)) {
+      for (const id of storedSeen) if (typeof id === 'string') this.seenAbilities.add(id);
+    } else if (!firstLoad) {
+      // existing player with a saved bar but no seen-set: anything already on
+      // the bar has clearly been seen; unknown new spells still auto-place.
+      for (const id of this.slotMap) if (id) this.seenAbilities.add(id);
+    }
   }
 
   private saveSlotMap(): void {
-    try { localStorage.setItem(this.slotMapKey(), JSON.stringify(this.slotMap)); } catch { /* storage unavailable */ }
+    try {
+      localStorage.setItem(this.slotMapKey(), JSON.stringify(this.slotMap));
+      localStorage.setItem(this.seenKey(), JSON.stringify([...this.seenAbilities]));
+    } catch { /* storage unavailable */ }
   }
 
-  // Drop unlearned ids; place newly learned abilities in the first empty
-  // slot. With empty storage this reproduces the default class-order layout.
+  // Drop unlearned ids; auto-place each newly learned ability ONCE into the
+  // first empty slot. Abilities already seen (including ones the player cleared
+  // off the bar) are left alone, so clearing/replacing slots sticks. If the bar
+  // is full when a new spell is learned, it stays in the spellbook for the
+  // player to drag onto a slot of their choosing.
   private syncSlotMap(): void {
     const ids = new Set(this.sim.known.map((k) => k.def.id));
     let dirty = false;
@@ -369,9 +397,12 @@ export class Hud {
       if (id !== null && !ids.has(id)) { this.slotMap[i] = null; dirty = true; }
     }
     for (const k of this.sim.known) {
+      if (this.seenAbilities.has(k.def.id)) continue;
+      this.seenAbilities.add(k.def.id);
+      dirty = true;
       if (this.slotMap.includes(k.def.id)) continue;
       const empty = this.slotMap.indexOf(null);
-      if (empty !== -1) { this.slotMap[empty] = k.def.id; dirty = true; }
+      if (empty !== -1) this.slotMap[empty] = k.def.id;
     }
     if (dirty) this.saveSlotMap();
   }
@@ -424,19 +455,20 @@ export class Hud {
         return known ? this.abilityTooltip(known) : '<div class="tt-sub">Empty slot</div>';
       });
       if (slot >= 1) {
-        // drag an ability onto another slot to swap the two keybinds;
-        // slot 0 (Attack) stays fixed
+        // drag an ability onto a slot to place or swap it; drag one from the
+        // spellbook to fill/replace; right-click a slot to clear it. slot 0
+        // (Attack) stays fixed.
         btn.draggable = true;
         btn.addEventListener('dragstart', (e) => {
           const known = this.abilityForSlot(slot);
           if (!known) { e.preventDefault(); return; }
-          this.dragFromSlot = slot;
+          this.dragAbilityId = known.def.id;
           e.dataTransfer!.setData('text/plain', known.def.id);
           e.dataTransfer!.effectAllowed = 'move';
           this.hideTooltip();
         });
         btn.addEventListener('dragover', (e) => {
-          if (this.dragFromSlot === null || this.dragFromSlot === slot) return;
+          if (this.dragAbilityId === null || this.slotMap[slot - 1] === this.dragAbilityId) return;
           e.preventDefault(); // required to permit the drop
           e.dataTransfer!.dropEffect = 'move';
           btn.classList.add('drop-target');
@@ -445,16 +477,24 @@ export class Hud {
         btn.addEventListener('drop', (e) => {
           e.preventDefault();
           btn.classList.remove('drop-target');
-          const from = this.dragFromSlot;
-          this.dragFromSlot = null;
-          if (from === null || from === slot) return;
-          const a = from - 1, b = slot - 1;
-          [this.slotMap[a], this.slotMap[b]] = [this.slotMap[b], this.slotMap[a]]; // swap; empty target = move
+          const abilityId = this.dragAbilityId ?? e.dataTransfer?.getData('text/plain') ?? '';
+          this.dragAbilityId = null;
+          if (!this.sim.known.some((k) => k.def.id === abilityId)) return;
+          this.seenAbilities.add(abilityId); // placing it counts as seen
+          this.slotMap = placeAbilityOnSlot(this.slotMap, abilityId, slot - 1);
           this.saveSlotMap();
         });
         btn.addEventListener('dragend', () => {
-          this.dragFromSlot = null;
+          this.dragAbilityId = null;
           bar.querySelectorAll('.drop-target').forEach((el) => el.classList.remove('drop-target'));
+        });
+        // right-click clears the slot so a full bar can make room for new spells
+        btn.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          if (this.slotMap[slot - 1] === null) return;
+          this.slotMap = clearSlot(this.slotMap, slot - 1);
+          this.saveSlotMap();
+          this.hideTooltip();
         });
       }
       bar.appendChild(btn);
@@ -1443,7 +1483,7 @@ export class Hud {
     }
     html += `<div class="qd-sub">Rewards</div>`;
     html += `<div class="qd-obj">${quest.xpReward} experience &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
-    const rewardItem = quest.itemRewards[this.sim.cfg.playerClass];
+    const rewardItem = questRewardItemId(quest, this.sim.cfg.playerClass);
     if (rewardItem) {
       const item = ITEMS[rewardItem];
       html += `<div class="qd-reward-row" data-reward>${this.itemIcon(item)}<span style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'};font-size:12px">${item.name}</span></div>`;
@@ -1802,6 +1842,11 @@ export class Hud {
   // carry inventory separately from the event frames that normally redraw).
   onInventoryChanged(): void {
     if ($('#bags').style.display === 'block') this.renderBags();
+    this.renderCharIfOpen();
+  }
+
+  private renderCharIfOpen(): void {
+    if ($('#char-window').style.display === 'block') this.renderChar();
   }
 
   renderBags(): void {
@@ -1832,6 +1877,7 @@ export class Hud {
         } else {
           this.sim.useItem(s.itemId);
           this.renderBags();
+          this.renderCharIfOpen();
         }
       });
       this.attachTooltip(row, () => {
@@ -1841,6 +1887,7 @@ export class Hud {
         else if (this.vendorOpen) extra = '<div class="tt-sub">Click to sell</div>';
         else if (item.kind === 'weapon' || item.kind === 'armor') extra = '<div class="tt-sub">Click to equip</div>';
         else if (item.kind === 'food' || item.kind === 'drink') extra = '<div class="tt-sub">Click to consume</div>';
+        else if (item.kind === 'potion') extra = '<div class="tt-sub">Click to use — instant, usable in combat</div>';
         return this.itemTooltip(item) + extra;
       });
       grid.appendChild(row);
@@ -1927,8 +1974,19 @@ export class Hud {
       row.innerHTML = `<div class="spell-icon" style="background-image:url(${iconDataUrl('ability', abilityId)});${locked ? 'filter:grayscale(1) brightness(0.5)' : ''}"></div>
         <div><div class="spell-name" style="${locked ? 'color:#777' : ''}">${def.name}${known && known.rank > 1 ? ` <span style="color:#998d6a;font-size:11px">Rank ${known.rank}</span>` : ''}</div>
         <div class="spell-sub">${locked ? `Trainable at level ${def.learnLevel}` : describeCost(known!, sim)}</div></div>`;
-      if (known) this.attachTooltip(row, () => this.abilityTooltip(known));
-      else this.attachTooltip(row, () => `<div class="tt-title" style="color:#999">${def.name}</div><div class="tt-sub">You will learn this at level ${def.learnLevel}.</div>`);
+      if (known) {
+        // let players drag a learned spell straight onto an action slot,
+        // including spells that don't fit the visible bar layout
+        row.draggable = true;
+        row.addEventListener('dragstart', (e) => {
+          this.dragAbilityId = known.def.id;
+          e.dataTransfer!.setData('text/plain', known.def.id);
+          e.dataTransfer!.effectAllowed = 'move';
+          this.hideTooltip();
+        });
+        row.addEventListener('dragend', () => { this.dragAbilityId = null; });
+        this.attachTooltip(row, () => this.abilityTooltip(known));
+      } else this.attachTooltip(row, () => `<div class="tt-title" style="color:#999">${def.name}</div><div class="tt-sub">You will learn this at level ${def.learnLevel}.</div>`);
       el.appendChild(row);
     }
     el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; this.hideTooltip(); });
@@ -1981,6 +2039,11 @@ export class Hud {
       html += quest.objectives.map((o, i) => `<div class="qd-obj" style="color:${qp.counts[i] >= o.count ? '#7fdc4f' : '#cfc6a8'}">&bull; ${o.label}: ${qp.counts[i]}/${o.count}</div>`).join('');
       html += `<div class="qd-text" style="margin-top:8px">${quest.text.replace(/\$N/g, sim.player.name)}</div>`;
       html += `<div class="qd-sub">Rewards</div><div class="qd-obj">${quest.xpReward} experience &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
+      const logReward = questRewardItemId(quest, this.sim.cfg.playerClass);
+      if (logReward) {
+        const ri = ITEMS[logReward];
+        html += `<div class="qd-obj" style="color:${QUALITY_COLOR[ri.quality ?? 'common'] ?? '#fff'}">&bull; ${ri.name}</div>`;
+      }
       const giver = NPCS[quest.turnInNpcId];
       html += `<div class="qd-obj" style="margin-top:6px;color:#998d6a">Return to ${giver?.name ?? '?'}</div>`;
       detail.innerHTML = html;
@@ -2309,10 +2372,11 @@ export class Hud {
         ? `<span class="soc-name soc-link" data-whisper="${esc(f.name)}" title="Whisper ${esc(f.name)}">${esc(f.name)}</span>`
         : `<span class="soc-name">${esc(f.name)}</span>`;
       const whisper = f.online ? `<span class="soc-x" data-whisper="${esc(f.name)}" title="Whisper ${esc(f.name)}">✉</span>` : '';
+      const tip = esc(dotTitle(f.online, f.status, f.zone));
       return `<div class="soc-row">`
-        + `<span class="soc-dot ${dot === 'off' ? '' : dot}"></span>`
-        + `<span>${name}<br><span class="soc-meta">Lvl ${f.level} ${cap(f.cls)}</span></span>`
-        + `<span class="soc-meta">${meta}</span>`
+        + `<span class="soc-dot ${dot === 'off' ? '' : dot}" title="${tip}"></span>`
+        + `<span class="soc-id">${name}<span class="soc-sub">Lvl ${f.level} ${cap(f.cls)}</span></span>`
+        + `<span class="soc-meta" title="${tip}">${meta}</span>`
         + `<span class="soc-actions">${whisper}<span class="soc-x" data-act="unfriend" data-name="${esc(f.name)}" title="Remove ${esc(f.name)} from friends">✕</span></span>`
         + `</div>`;
     }).join('');
@@ -2334,7 +2398,10 @@ export class Hud {
     const head = `<div class="soc-guild-head">&lt;${esc(guild.name)}&gt; <span class="gm">— you are ${rankLabel(me)} &middot; ${guild.members.length} member${guild.members.length === 1 ? '' : 's'}</span></div>`;
     const rows = guild.members.map((m) => {
       const dot = m.online ? (m.status ?? 'online') : 'off';
-      const meta = m.online ? `<span class="zone">${esc(m.zone ?? '')}</span>` : 'Offline';
+      // mirror the friends tab: show location AND a status label, not just the zone
+      const meta = m.online
+        ? `<span class="zone">${esc(m.zone ?? '')}</span><br>${statusLabel(m.status)}`
+        : 'Offline';
       const self = m.name === this.sim.player.name;
       const nameInner = `${esc(m.name)}<span class="rank">${rankLabel(m.rank)}</span>`;
       const name = m.online && !self
@@ -2347,10 +2414,11 @@ export class Hud {
       // leaders may remove members + officers; officers may remove only members
       const canKick = !self && ((me === 'leader' && m.rank !== 'leader') || (me === 'officer' && m.rank === 'member'));
       if (canKick) actions += `<span class="soc-x" data-act="gkick" data-name="${esc(m.name)}" title="Remove ${esc(m.name)} from guild">✕</span>`;
+      const tip = esc(dotTitle(m.online, m.status, m.zone));
       return `<div class="soc-row">`
-        + `<span class="soc-dot ${dot === 'off' ? '' : dot}"></span>`
-        + `<span>${name}<br><span class="soc-meta">Lvl ${m.level} ${cap(m.cls)}</span></span>`
-        + `<span class="soc-meta">${meta}</span>`
+        + `<span class="soc-dot ${dot === 'off' ? '' : dot}" title="${tip}"></span>`
+        + `<span class="soc-id">${name}<span class="soc-sub">Lvl ${m.level} ${cap(m.cls)}</span></span>`
+        + `<span class="soc-meta" title="${tip}">${meta}</span>`
         + (actions ? `<span class="soc-actions">${actions}</span>` : '')
         + `</div>`;
     }).join('');
@@ -2818,9 +2886,10 @@ export class Hud {
     this.settingSlider(body, 'Brightness', 'brightness');
     this.settingSlider(body, 'Render Quality', 'renderScale');
     this.settingToggle(body, 'Fullscreen', 'fullscreen');
+    this.settingToggle(body, 'Click to Move', 'clickToMove');
     const note = document.createElement('div');
     note.className = 'set-note';
-    note.textContent = 'Lower Camera Speed for a calmer mouselook. Render Quality below 100% boosts FPS on weaker machines.';
+    note.textContent = 'Lower Camera Speed for a calmer mouselook. Render Quality below 100% boosts FPS on weaker machines. Click to Move lets you left-click the ground or an enemy to walk there.';
     $('#options-menu').appendChild(note);
     this.settingsViewFooter();
   }
@@ -2979,6 +3048,14 @@ function statusLabel(status: string | undefined): string {
     case 'dead': return 'Dead';
     default: return 'Online';
   }
+}
+
+// Hover text spelling out what a status dot means, so the orange/grey circles
+// aren't a mystery (#100).
+function dotTitle(online: boolean, status: string | undefined, zone: string | undefined): string {
+  if (!online) return 'Offline';
+  const where = zone ? ` — ${zone}` : '';
+  return `${statusLabel(status)}${where}`;
 }
 
 function rankLabel(rank: string): string {

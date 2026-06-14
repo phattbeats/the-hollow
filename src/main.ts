@@ -8,6 +8,7 @@ import { Hud } from './ui/hud';
 import { audio } from './game/audio';
 import { music } from './game/music';
 import { handlePickedEntity } from './game/interactions';
+import { clickMoveStep, manualMovementOverrides } from './game/click_move';
 import { Api, ClientWorld, CharacterSummary } from './net/online';
 import type { IWorld } from './world_api';
 import { assetsReady } from './render/assets/preload';
@@ -466,9 +467,23 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
   function handlePick(x: number, y: number, button: number): void {
     const id = renderer.pick(x, y);
+    const clickToMove = settings.get('clickToMove') > 0 && !world.player.dead;
     if (id === null) {
-      if (button === 0) world.targetEntity(null);
+      if (button === 0) {
+        world.targetEntity(null);
+        // left-click on open ground walks there, if the option is enabled (#95)
+        if (clickToMove) {
+          const g = renderer.groundPoint(x, y, world.player.pos.y);
+          if (g) { input.clickMoveTarget = g; input.clickMoveStop = 0.5; }
+        }
+      }
       return;
+    }
+    // left-click on an entity: approach it (walk into melee range) when
+    // click-to-move is on, in addition to the normal target/interact handling
+    if (clickToMove && button === 0) {
+      const e = world.entities.get(id);
+      if (e && e.id !== world.player.id) { input.clickMoveTarget = { x: e.pos.x, z: e.pos.z }; input.clickMoveStop = 3.5; }
     }
     handlePickedEntity(world, hud, id, button, x, y);
   }
@@ -504,6 +519,30 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     lastInterpFacing = interpFacing; // track through mouselook too — no snap on release
   }
 
+  // Resolve this step's movement input, folding in click-to-move (#95). Returns
+  // the move flags plus an optional forced facing (mouselook angle, or the
+  // bearing toward a click-to-move destination). Any manual movement, an open
+  // modal, mouselook, or the option being switched off cancels click-to-move.
+  function resolveMove(mouselook: boolean, playerPos: { x: number; z: number }):
+    { mi: ReturnType<typeof input.readMoveInput>; facing: number | null } {
+    const mi = input.readMoveInput();
+    let facing: number | null = mouselook ? input.camYaw : null;
+    if (input.clickMoveTarget) {
+      if (mouselook || input.suspendMovement || settings.get('clickToMove') <= 0 || manualMovementOverrides(mi)) {
+        input.clickMoveTarget = null;
+      } else {
+        const step = clickMoveStep(playerPos, input.clickMoveTarget, input.clickMoveStop);
+        if (step.arrived) {
+          input.clickMoveTarget = null;
+        } else {
+          mi.forward = true;
+          facing = step.facing;
+        }
+      }
+    }
+    return { mi, facing };
+  }
+
   function frame(now: number): void {
     requestAnimationFrame(frame);
     let frameDt = (now - last) / 1000;
@@ -520,9 +559,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     if (offlineSim) {
       acc += frameDt;
       while (acc >= DT) {
-        const mi = input.readMoveInput();
+        const { mi, facing } = resolveMove(mouselook, offlineSim.player.pos);
         Object.assign(offlineSim.moveInput, mi);
-        if (mouselook) offlineSim.player.facing = input.camYaw;
+        if (facing !== null) offlineSim.player.facing = facing;
         const events = offlineSim.tick();
         hud.handleEvents(events);
         acc -= DT;
@@ -539,8 +578,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
     // online: inputs stream on a timer inside ClientWorld; here we mirror state
     const net = online!;
-    Object.assign(net.moveInput, input.readMoveInput());
-    net.setMouselookFacing(mouselook ? input.camYaw : null);
+    const resolved = resolveMove(mouselook, world.player.pos);
+    Object.assign(net.moveInput, resolved.mi);
+    net.setMouselookFacing(resolved.facing);
     net.pendingFacingDelta = 0; // superseded by the interpolated follow below
     hud.handleEvents(net.drainEvents());
     if (net.consumeInventoryChanged()) hud.onInventoryChanged();

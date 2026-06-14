@@ -72,7 +72,7 @@ export type EquipSlot = 'mainhand' | 'chest' | 'legs' | 'feet';
 export interface ItemDef {
   id: string;
   name: string;
-  kind: 'weapon' | 'armor' | 'quest' | 'junk' | 'food' | 'drink';
+  kind: 'weapon' | 'armor' | 'quest' | 'junk' | 'food' | 'drink' | 'potion';
   slot?: EquipSlot;
   weapon?: WeaponInfo;
   stats?: Partial<Stats>;
@@ -82,6 +82,9 @@ export interface ItemDef {
   // consumables: total restored over 18 seconds while sitting
   foodHp?: number;
   drinkMana?: number;
+  // potions: restored instantly, usable in combat, share a cooldown (#103)
+  potionHp?: number;
+  potionMana?: number;
   quality?: 'poor' | 'common' | 'uncommon' | 'rare' | 'epic'; // gray/white/green/blue/purple name colors
   requiredClass?: PlayerClass[];
 }
@@ -413,6 +416,7 @@ export interface Entity {
   comboPoints: number;
   comboTargetId: number | null;
   overpowerUntil: number; // sim-time until which overpower is usable
+  potionCooldownUntil: number; // sim-time until a combat potion can be used again (#103)
   // warrior charge: forced run toward the target along a pathfound route
   chargeTargetId: number | null;
   chargeTimeLeft: number; // seconds; failsafe so a blocked charge can't run forever
