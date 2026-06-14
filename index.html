@@ -10,8 +10,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="screen-orientation" content="landscape" />
 <meta name="orientation" content="landscape" />
-<title>World of ClaudeCraft: Classic-Style Web MMO</title>
-<meta name="description" content="Embark on an epic adventure in World of ClaudeCraft, a WoW-Classic-style micro-MMO playable directly in your browser. Join a persistent shared realm, level up classes, and defeat enemies!" />
+<title data-i18n="seo.title">World of ClaudeCraft: Classic-Style Web MMO</title>
+<meta name="description" data-i18n-content="seo.description" content="Embark on an epic adventure in World of ClaudeCraft, a WoW-Classic-style micro-MMO playable directly in your browser. Join a persistent shared realm, level up classes, and defeat enemies!" />
 <link rel="manifest" href="/manifest.webmanifest" />
 
 <!-- Canonical URL -->
@@ -20,23 +20,35 @@
 <!-- GEO / Multilingual Alternates -->
 <link rel="alternate" hreflang="en" href="https://worldofclaudecraft.com/" />
 <link rel="alternate" hreflang="es" href="https://worldofclaudecraft.com/?lang=es" />
+<link rel="alternate" hreflang="es-ES" href="https://worldofclaudecraft.com/?lang=es_ES" />
+<link rel="alternate" hreflang="fr-FR" href="https://worldofclaudecraft.com/?lang=fr_FR" />
+<link rel="alternate" hreflang="fr-CA" href="https://worldofclaudecraft.com/?lang=fr_CA" />
+<link rel="alternate" hreflang="en-CA" href="https://worldofclaudecraft.com/?lang=en_CA" />
+<link rel="alternate" hreflang="it-IT" href="https://worldofclaudecraft.com/?lang=it_IT" />
+<link rel="alternate" hreflang="de-DE" href="https://worldofclaudecraft.com/?lang=de_DE" />
+<link rel="alternate" hreflang="zh-CN" href="https://worldofclaudecraft.com/?lang=zh_CN" />
+<link rel="alternate" hreflang="zh-TW" href="https://worldofclaudecraft.com/?lang=zh_TW" />
+<link rel="alternate" hreflang="ko-KR" href="https://worldofclaudecraft.com/?lang=ko_KR" />
+<link rel="alternate" hreflang="ja-JP" href="https://worldofclaudecraft.com/?lang=ja_JP" />
+<link rel="alternate" hreflang="pt-BR" href="https://worldofclaudecraft.com/?lang=pt_BR" />
+<link rel="alternate" hreflang="ru-RU" href="https://worldofclaudecraft.com/?lang=ru_RU" />
 <link rel="alternate" hreflang="x-default" href="https://worldofclaudecraft.com/" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="World of ClaudeCraft: Classic-Style Web MMO" />
-<meta property="og:description" content="Embark on an epic adventure in World of ClaudeCraft, a WoW-Classic-style micro-MMO playable directly in your browser. Join a persistent shared realm, level up classes, and defeat enemies!" />
+<meta property="og:title" data-i18n-content="seo.title" content="World of ClaudeCraft: Classic-Style Web MMO" />
+<meta property="og:description" data-i18n-content="seo.description" content="Embark on an epic adventure in World of ClaudeCraft, a WoW-Classic-style micro-MMO playable directly in your browser. Join a persistent shared realm, level up classes, and defeat enemies!" />
 <meta property="og:image" content="https://worldofclaudecraft.com/woc_logo_square.webp" />
 <meta property="og:url" content="https://worldofclaudecraft.com/" />
 
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="World of ClaudeCraft: Classic-Style Web MMO" />
-<meta name="twitter:description" content="Embark on an epic adventure in World of ClaudeCraft, a WoW-Classic-style micro-MMO playable directly in your browser. Join a persistent shared realm, level up classes, and defeat enemies!" />
+<meta name="twitter:title" data-i18n-content="seo.title" content="World of ClaudeCraft: Classic-Style Web MMO" />
+<meta name="twitter:description" data-i18n-content="seo.description" content="Embark on an epic adventure in World of ClaudeCraft, a WoW-Classic-style micro-MMO playable directly in your browser. Join a persistent shared realm, level up classes, and defeat enemies!" />
 <meta name="twitter:image" content="https://worldofclaudecraft.com/woc_logo_square.webp" />
 
 <!-- Structured Data (Schema.org JSON-LD VideoGame) -->
-<script type="application/ld+json">
+<script id="structured-data" type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
@@ -47,7 +59,8 @@
   "operatingSystem": "Web Browser",
   "url": "https://worldofclaudecraft.com/",
   "image": "https://worldofclaudecraft.com/woc_logo_square.webp",
-  "description": "Embark on an epic adventure in World of ClaudeCraft, a WoW-Classic-style micro-MMO playable directly in your browser. Join a persistent shared realm, level up classes, and defeat enemies!"
+  "description": "Embark on an epic adventure in World of ClaudeCraft, a WoW-Classic-style micro-MMO playable directly in your browser. Join a persistent shared realm, level up classes, and defeat enemies!",
+  "inLanguage": "en"
 }
 </script>
 
@@ -60,7 +73,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Inter:wght@300..700&display=swap" rel="stylesheet">
-<!-- Google tag (gtag.js) — skipped on localhost so dev sessions don't pollute analytics -->
+<!-- Google tag (gtag.js) - skipped on localhost so dev sessions don't pollute analytics -->
 <script>
   if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) {
     const s = document.createElement('script');
@@ -782,12 +795,12 @@
     display: none;
     flex-direction: column;
     justify-content: space-between;
-    width: 24px;
-    height: 18px;
+    width: 40px;
+    height: 40px;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
+    padding: 11px 8px;
     z-index: 20;
     border-radius: var(--radius-sm);
     transition: box-shadow var(--transition-speed);
@@ -798,7 +811,8 @@
     box-shadow: 0 0 8px var(--color-primary-glow);
   }
   .hamburger-bar {
-    width: 100%;
+    width: 24px;
+    align-self: center;
     height: 2px;
     background-color: var(--color-primary-dim);
     border-radius: 1px;
@@ -1299,7 +1313,7 @@
     outline: none;
     border-radius: var(--radius-sm);
     padding: 8px 12px;
-    font-size: 14px;
+    font-size: 16px;
     font-family: var(--font-sans);
     user-select: text;
     transition: border-color var(--transition-speed);
@@ -1606,10 +1620,16 @@
   }
   
   .auth-error::before {
-    content: "⚠️";
+    content: "!";
     display: inline-block;
     margin-right: 8px;
     font-size: 14px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border-invalid);
+    text-align: center;
+    line-height: 14px;
     vertical-align: middle;
     filter: drop-shadow(0 0 2px rgba(255, 143, 133, 0.6));
   }
@@ -1623,6 +1643,14 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm);
     margin-top: var(--spacing-md);
+  }
+  .auth-panel .btn,
+  .confirm-modal .btn,
+  #mobile-preflight-continue {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   .auth-actions-split {
     max-width: 400px;
@@ -2468,7 +2496,8 @@
   body.mobile-touch #mobile-attack-nearest { width: 124px; color: #ffdf9c; border-color: #8b4e2c; }
   body.mobile-touch #mobile-more {
     position: fixed;
-    left: calc(50% + 190px);
+    left: auto;
+    right: max(8px, env(safe-area-inset-right));
     bottom: calc(4px + env(safe-area-inset-bottom));
     z-index: 19;
   }
@@ -2476,7 +2505,8 @@
   body.mobile-touch .mobile-btn .mobile-label { display: block; margin-top: 1px; font-size: 8px; font-family: var(--ui-font); color: #bfb28a; }
   body.mobile-touch #mobile-extra-controls {
     position: fixed;
-    left: calc(50% + 190px);
+    left: auto;
+    right: max(8px, env(safe-area-inset-right));
     bottom: calc(66px + env(safe-area-inset-bottom));
     display: none;
     grid-template-columns: repeat(2, 112px);
@@ -2751,10 +2781,12 @@
     body.mobile-touch #mobile-attack-nearest { width: 115px; }
     body.mobile-touch #mobile-more {
       left: calc(50% + 176px);
+      right: auto;
       bottom: calc(2px + env(safe-area-inset-bottom));
     }
     body.mobile-touch #mobile-extra-controls {
       left: calc(50% + 176px);
+      right: auto;
       bottom: calc(58px + env(safe-area-inset-bottom));
       grid-template-columns: repeat(2, 104px);
       grid-auto-rows: 38px;
@@ -3326,19 +3358,19 @@
 
     <header class="homepage-header">
       <div class="header-logo-container">
-        <button type="button" class="header-logo-btn" id="header-logo-btn" aria-label="Go to Homepage" title="Go to Homepage">
-          <img class="header-logo" src="/icon-192.png" alt="World of ClaudeCraft" />
+        <button type="button" class="header-logo-btn" id="header-logo-btn" data-i18n-aria="a11y.goHome" data-i18n-title="a11y.goHome" aria-label="Go to homepage" title="Go to homepage">
+          <img class="header-logo" src="/icon-192.png" data-i18n-alt="serverUnavailable.logoAlt" alt="World of ClaudeCraft" />
         </button>
       </div>
       
-      <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
+      <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" data-i18n-aria="a11y.toggleMenu" aria-label="Toggle menu" aria-expanded="false">
         <span class="hamburger-bar"></span>
         <span class="hamburger-bar"></span>
         <span class="hamburger-bar"></span>
       </button>
       
       <div class="header-menu-container" id="header-menu-container">
-        <nav aria-label="Main Navigation" class="homepage-nav">
+        <nav data-i18n-aria="a11y.mainNavigation" aria-label="Main navigation" class="homepage-nav">
           <ul class="nav-list" role="list">
             <li class="nav-item">
               <button type="button" class="nav-link active" id="nav-btn-play" aria-selected="true" aria-pressed="true" data-i18n="nav.play">Play</button>
@@ -3363,7 +3395,7 @@
 
         <div class="header-actions">
           <div class="language-selector">
-            <label for="lang-select" class="visually-hidden">Language Selection</label>
+            <label for="lang-select" class="visually-hidden" data-i18n="a11y.languageSelection">Language selection</label>
             <select id="lang-select" class="lang-select-dropdown">
               <option value="en">English (US)</option>
               <option value="es">Español (LatAm)</option>
@@ -3390,7 +3422,7 @@
         <h1 class="visually-hidden">World of ClaudeCraft</h1>
         
         <!-- Main Logo -->
-        <img class="main-logo" id="title-logo" src="/worldofclaudecraft-logo.png" alt="World of ClaudeCraft" />
+        <img class="main-logo" id="title-logo" src="/worldofclaudecraft-logo.png" data-i18n-alt="serverUnavailable.logoAlt" alt="World of ClaudeCraft" />
 
         <!-- Project Stats Panel (Realm Status, accounts, players, realm name) -->
         <div id="project-stats-panel" class="panel stats-panel-premium">
@@ -3490,9 +3522,9 @@
           <h2 class="auth-title"><span data-i18n="auth.characters">Characters:</span> <span id="charselect-user" class="gold"></span></h2>
           <div class="cs-realm" id="charselect-realm"></div>
           <button type="button" class="btn btn-secondary btn-small" id="btn-change-realm" data-i18n="auth.changeRealm">Change Realm</button>
-          <div class="mobile-char-tabs" role="tablist" aria-label="Character actions">
-            <button type="button" class="mobile-char-tab active" data-char-tab="characters" role="tab" aria-selected="true">Characters</button>
-            <button type="button" class="mobile-char-tab" data-char-tab="create" role="tab" aria-selected="false">Create</button>
+          <div class="mobile-char-tabs" role="tablist" data-i18n-aria="a11y.characterActions" aria-label="Character actions">
+            <button type="button" class="mobile-char-tab active" data-char-tab="characters" role="tab" aria-selected="true" data-i18n="character.tabCharacters">Characters</button>
+            <button type="button" class="mobile-char-tab" data-char-tab="create" role="tab" aria-selected="false" data-i18n="character.tabCreate">Create</button>
           </div>
           <div class="charselect-layout">
             <!-- Left Column: Character List & Creation Controls -->
@@ -3661,25 +3693,26 @@
 
     <div id="delete-character-modal" class="modal-backdrop" hidden>
       <div class="confirm-modal panel auth-panel-premium" role="dialog" aria-modal="true" aria-labelledby="delete-character-title">
-        <h2 id="delete-character-title">Delete Character</h2>
-        <p>This permanently deletes <strong id="delete-character-name"></strong>. This cannot be undone.</p>
-        <label for="delete-character-confirm" class="auth-label">Type the character name to confirm</label>
+        <h2 id="delete-character-title" data-i18n="deleteCharacter.title">Delete Character</h2>
+        <p id="delete-character-body">This permanently deletes the selected character. This cannot be undone.</p>
+        <span id="delete-character-name" hidden></span>
+        <label for="delete-character-confirm" class="auth-label" data-i18n="deleteCharacter.confirmLabel">Type the character name to confirm</label>
         <input id="delete-character-confirm" maxlength="16" autocomplete="off" />
         <div id="delete-character-error" class="auth-error" aria-live="polite"></div>
         <div class="confirm-actions">
-          <button type="button" class="btn btn-secondary" id="btn-cancel-delete-character">Cancel</button>
-          <button type="button" class="btn btn-danger" id="btn-confirm-delete-character" disabled>Delete Permanently</button>
+          <button type="button" class="btn btn-secondary" id="btn-cancel-delete-character" data-i18n="deleteCharacter.cancel">Cancel</button>
+          <button type="button" class="btn btn-danger" id="btn-confirm-delete-character" disabled data-i18n="deleteCharacter.confirm">Delete Permanently</button>
         </div>
       </div>
     </div>
 
     <footer class="homepage-footer">
       <div class="footer-social-row">
-        <a class="social-link" href="https://github.com/levy-street/world-of-claudecraft" target="_blank" rel="noopener noreferrer">
+        <a class="social-link" href="https://github.com/levy-street/world-of-claudecraft" target="_blank" rel="noopener noreferrer" data-i18n-aria="a11y.githubProject" aria-label="Open the World of ClaudeCraft GitHub project">
           <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
           <span data-i18n="footer.githubLabel">Open Source Project</span>
         </a>
-        <a class="social-link" href="https://discord.gg/GjhnUsBtw" target="_blank" rel="noopener noreferrer">
+        <a class="social-link" href="https://discord.gg/GjhnUsBtw" target="_blank" rel="noopener noreferrer" data-i18n-aria="a11y.discordCommunity" aria-label="Join the World of ClaudeCraft Discord community">
           <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M20.32 4.37A19.8 19.8 0 0 0 15.36 2.8a13.66 13.66 0 0 0-.64 1.32 18.47 18.47 0 0 0-5.45 0 13.02 13.02 0 0 0-.65-1.32 19.73 19.73 0 0 0-4.96 1.58C.53 9.03-.32 13.56.1 18.02a19.9 19.9 0 0 0 6.08 3.08c.49-.67.93-1.38 1.3-2.13-.72-.27-1.41-.6-2.06-.98.17-.13.34-.26.5-.4a14.16 14.16 0 0 0 12.16 0c.16.14.33.27.5.4-.65.39-1.34.72-2.07.99.38.74.81 1.45 1.31 2.12a19.86 19.86 0 0 0 6.08-3.08c.5-5.17-.85-9.66-3.58-13.65ZM8.02 15.28c-1.18 0-2.15-1.08-2.15-2.41 0-1.33.95-2.42 2.15-2.42 1.2 0 2.17 1.1 2.15 2.42 0 1.33-.95 2.41-2.15 2.41Zm7.96 0c-1.18 0-2.15-1.08-2.15-2.41 0-1.33.95-2.42 2.15-2.42 1.2 0 2.17 1.1 2.15 2.42 0 1.33-.95 2.41-2.15 2.41Z"/></svg>
           <span data-i18n="footer.discordLabel">Join the Discord</span>
         </a>
@@ -3718,25 +3751,25 @@
   </div>
   <div id="mobile-preflight" role="dialog" aria-modal="true" aria-labelledby="mobile-preflight-title">
     <div class="preflight-panel">
-      <h2 id="mobile-preflight-title">Play in Landscape Fullscreen</h2>
+      <h2 id="mobile-preflight-title" data-i18n="mobilePreflight.title">Play in Landscape Fullscreen</h2>
       <p id="mobile-preflight-detail"></p>
       <ol id="mobile-preflight-steps"></ol>
-      <button class="btn" id="mobile-preflight-continue">Continue to Game</button>
+      <button class="btn" id="mobile-preflight-continue" data-i18n="mobilePreflight.continue">Continue to Game</button>
     </div>
   </div>
   <div id="rotate-device">
     <div>
       <div class="rotate-icon">↻</div>
-      <div class="rotate-title">Rotate to Landscape</div>
-      <div class="rotate-sub">Play in landscape fullscreen for the best mobile experience.</div>
+      <div class="rotate-title" data-i18n="mobilePreflight.rotateTitle">Rotate to Landscape</div>
+      <div class="rotate-sub" data-i18n="mobilePreflight.rotateSub">Play in landscape fullscreen for the best mobile experience.</div>
     </div>
   </div>
 
   <div id="loading-screen">
-    <img class="ls-logo" src="/worldofclaudecraft-logo.png" alt="World of ClaudeCraft" />
+    <img class="ls-logo" src="/worldofclaudecraft-logo.png" data-i18n-alt="serverUnavailable.logoAlt" alt="World of ClaudeCraft" />
     <div class="ls-progress">
       <div class="ls-bar"><div id="ls-fill"></div></div>
-      <div id="ls-status">Entering the world&hellip;</div>
+      <div id="ls-status" data-i18n="loading.enteringWorld">Entering the world...</div>
     </div>
   </div>
 
