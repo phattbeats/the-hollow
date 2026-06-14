@@ -22,7 +22,7 @@ import { Settings, GameSettings, SETTING_RANGES } from '../game/settings';
 import { chatPlayerContextActions } from './player_context_menu';
 import {
   talentsFor, computeTalentModifiers, validateAllocation, dormantNodes, pointsSpent,
-  exportBuild, importBuild, cloneAllocation, talentPointsAtLevel,
+  exportBuild, importBuild, cloneAllocation, talentPointsAtLevel, FIRST_TALENT_LEVEL,
   type TalentAllocation, type TalentNode, type SpecDef, type Role,
 } from '../sim/content/talents';
 
@@ -156,6 +156,7 @@ export class Hud {
     });
     $('#mm-char').addEventListener('click', () => this.toggleChar());
     $('#mm-spell').addEventListener('click', () => this.toggleSpellbook());
+    $('#mm-talents')?.addEventListener('click', () => this.toggleTalents());
     $('#mm-quest').addEventListener('click', () => this.toggleQuestLog());
     $('#mm-map').addEventListener('click', () => this.toggleMap());
     $('#map-close').addEventListener('click', () => { $('#map-window').style.display = 'none'; });
@@ -495,6 +496,12 @@ export class Hud {
     const p = sim.player;
     this.meters.update();
     this.syncSlotMap(); // picks up newly learned abilities mid-session
+
+    // talent buttons glow while the player has unspent points (and a tree exists)
+    const tp = sim.talentPoints();
+    const talGlow = talentsFor(sim.cfg.playerClass) !== null && tp.spent < tp.total;
+    document.getElementById('mm-talents')?.classList.toggle('has-points', talGlow);
+    document.getElementById('mobile-talents')?.classList.toggle('has-points', talGlow);
 
     // player frame
     $('#pf-level').textContent = String(p.level);
@@ -1157,6 +1164,11 @@ export class Hud {
           this.showBanner(`Level ${ev.level}!`);
           this.log(`You have reached level ${ev.level}!`, '#ffd100');
           audio.levelUp();
+          // First talent point (and spec) unlock — nudge the player to the panel.
+          if (ev.level === FIRST_TALENT_LEVEL && talentsFor(this.sim.cfg.playerClass)) {
+            this.showBanner(t('game.talents.unlockBanner'));
+            this.log(t('game.talents.unlockHint'), '#ffd100');
+          }
           break;
         }
         case 'virtualLevelUp': {

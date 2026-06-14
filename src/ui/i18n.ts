@@ -112,6 +112,8 @@ export const gameStrings = {
     combatLocked: "You can't change talents in combat.",
     nothingStaged: "No changes to apply.",
     pickSpecFirst: "Choose a specialization to access this tree.",
+    unlockBanner: "Talents Unlocked!",
+    unlockHint: "You've earned your first talent point — press N to open Talents.",
   },
 };
 
