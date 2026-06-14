@@ -145,6 +145,7 @@ describe("i18n Localization Key Coverage", () => {
     "itemUi.market.buyAria",
     "itemUi.logs.sellerSold",
     "itemUi.errors.tooManyListings",
+    "itemUi.loot.takeAll",
   ];
   const interpolationValues: Record<string, string | number> = {
     active: 3,
@@ -266,6 +267,13 @@ describe("i18n Localization Key Coverage", () => {
       return { kind: "ability", id: entry.id, field: entry.field as "name" | "description", values: { damage: "11-14" } };
     }
     throw new Error(`Unexpected Phase 7 entity kind: ${entry.kind}`);
+  }
+
+  function phaseEightRequest(entry: EntityManifestEntry): EntityRequest {
+    if (entry.kind === "item") {
+      return { kind: "item", id: entry.id, field: "name" };
+    }
+    throw new Error(`Unexpected Phase 8 entity kind: ${entry.kind}`);
   }
 
   function sourceFilesUnder(relativeDir: string): string[] {
@@ -461,6 +469,34 @@ describe("i18n Localization Key Coverage", () => {
     setLanguage("en");
   });
 
+  it("should provide every Phase 8 item translation in every locale without canonical fallbacks", () => {
+    const phaseEightEntries = entityTranslationManifest().filter((entry) => entry.phase === "phase8");
+    expect(phaseEightEntries).toHaveLength(Object.keys(ITEMS).length);
+    expect(missingEntityTranslationsForPhases(["phase7", "phase8"])).toHaveLength(0);
+
+    for (const lang of supportedLanguages) {
+      setLanguage(lang);
+      resetEntityTranslationFallbackLog();
+      for (const entry of phaseEightEntries) {
+        const rendered = tEntity(phaseEightRequest(entry));
+        expect(rendered.trim().length, `${lang}.${entry.key}`).toBeGreaterThan(0);
+        expect(rendered, `${lang}.${entry.key}`).not.toBe(entry.key);
+        if (lang !== "en" && lang !== "en_CA") {
+          expect(rendered, `${lang}.${entry.key} should not copy canonical English item text`).not.toBe(entry.source);
+        }
+      }
+      expect(entityTranslationFallbackLog(), `${lang} Phase 8 fallback log`).toHaveLength(0);
+    }
+
+    setLanguage("de_DE");
+    resetEntityTranslationFallbackLog();
+    expect(tEntity({ kind: "item", id: "worn_sword", field: "name" })).toBe("Abgenutztes Kurzschwert");
+    expect(tEntity({ kind: "item", id: "gravecaller_sigil", field: "name" })).toBe("Gravecallers Siegel");
+    expect(entityTranslationFallbackLog()).toHaveLength(0);
+
+    setLanguage("en");
+  });
+
   it("should route Phase 7 class-detail damage ranges through localized templates", () => {
     const source = fs.readFileSync(path.resolve(process.cwd(), "src/main.ts"), "utf8");
     expect(source).toContain("abilityUi.tooltip.damageRange");
@@ -479,11 +515,12 @@ describe("i18n Localization Key Coverage", () => {
     const phaseSevenMissing = missingEntityTranslationsForPhases(["phase7"]);
     expect(phaseSevenMissing).toHaveLength(0);
 
-    expect(missingEntityTranslationsForPhases(["phase8"]).some((entry) => entry.key === entityTranslationKey({ kind: "item", id: "worn_sword", field: "name" }))).toBe(true);
+    expect(missingEntityTranslationsForPhases(["phase7", "phase8"])).toHaveLength(0);
     expect(missingEntityTranslationsForPhases(["phase9"]).some((entry) => entry.key === entityTranslationKey({ kind: "npc", id: "marshal_redbrook", field: "greeting" }))).toBe(true);
     expect(missingEntityTranslationsForPhases(["phase9"]).some((entry) => entry.key === entityTranslationKey({ kind: "questObjective", questId: "q_wolves", objectiveIndex: 0, field: "label" }))).toBe(true);
     expect(() => assertEntityTranslationsReady([])).not.toThrow();
     expect(() => assertEntityTranslationsReady(["phase7"])).not.toThrow();
+    expect(() => assertEntityTranslationsReady(["phase7", "phase8"])).not.toThrow();
   });
 
   it("should keep the entity resolver out of simulation and server modules", () => {
