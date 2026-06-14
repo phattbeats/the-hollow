@@ -29,6 +29,8 @@ export interface AttachDef {
   bone: string;
   position?: [number, number, number];
   rotationY?: number;
+  /** Copy grip from a built-in accessory node on the character rig (e.g. Spellbook_open). */
+  gripRef?: string;
 }
 
 export interface VisualDef {
@@ -135,7 +137,8 @@ export const VISUALS: Record<string, VisualDef> = {
   player_warrior: {
     url: `${CHARS}/knight.glb`, height: HUMANOID_H,
     clips: kaykit(['1H_Melee_Attack_Chop', '1H_Melee_Attack_Slice_Diagonal']),
-    show: ['1H_Sword', 'Badge_Shield', 'Knight_Helmet', 'Knight_Cape'],
+    show: ['Badge_Shield', 'Knight_Helmet', 'Knight_Cape'],
+    attach: [{ url: `${WEAPONS}/sword_1handed.glb`, bone: 'handslot.r' }],
   },
   player_paladin: {
     url: `${CHARS}/knight.glb`, height: HUMANOID_H,
@@ -149,25 +152,31 @@ export const VISUALS: Record<string, VisualDef> = {
     clips: kaykit(['2H_Ranged_Shoot']),
     show: ['Barbarian_Cape'],
     attach: [
-      { url: `${WEAPONS}/crossbow_2handed.glb`, bone: 'handslot.r' },
+      { url: `${WEAPONS}/crossbow_1handed.glb`, bone: 'handslot.r' },
       { url: `${WEAPONS}/quiver.glb`, bone: 'chest', position: [0, 0.05, -0.28], rotationY: Math.PI },
     ],
   },
   player_rogue: {
     url: `${CHARS}/rogue.glb`, height: HUMANOID_H,
     clips: kaykit(['Dualwield_Melee_Attack_Chop']),
-    show: ['Knife', 'Knife_Offhand', 'Rogue_Cape'],
+    show: ['Rogue_Cape'],
+    attach: [
+      { url: `${WEAPONS}/dagger.glb`, bone: 'handslot.r' },
+      { url: `${WEAPONS}/dagger.glb`, bone: 'handslot.l' },
+    ],
   },
   player_priest: {
     url: `${CHARS}/mage.glb`, height: HUMANOID_H,
     clips: kaykit(['2H_Melee_Attack_Chop']),
-    show: ['2H_Staff'],
+    show: [],
+    attach: [{ url: `${WEAPONS}/staff.glb`, bone: 'handslot.r' }],
     tint: 0xf0e9d6, tintStrength: 0.5,
   },
   player_shaman: {
     url: `${CHARS}/barbarian.glb`, height: HUMANOID_H,
     clips: kaykit(['1H_Melee_Attack_Chop', '1H_Melee_Attack_Slice_Diagonal']),
-    show: ['1H_Axe', 'Barbarian_Round_Shield', 'Barbarian_Hat'],
+    show: ['Barbarian_Round_Shield', 'Barbarian_Hat'],
+    attach: [{ url: `${WEAPONS}/axe_1handed.glb`, bone: 'handslot.r' }],
     tint: 0x6f8fc9, tintStrength: 0.4,
   },
   player_mage: {
@@ -175,18 +184,24 @@ export const VISUALS: Record<string, VisualDef> = {
     clips: kaykit(['2H_Melee_Attack_Chop']),
     // no Mage_Hat on players: the brim hides the whole body from the default
     // chase-camera pitch (NPC mages keep theirs — they're seen from the side)
-    show: ['2H_Staff', 'Mage_Cape'],
+    show: ['Mage_Cape'],
+    attach: [{ url: `${WEAPONS}/staff.glb`, bone: 'handslot.r' }],
   },
   player_warlock: {
     url: `${CHARS}/mage.glb`, height: HUMANOID_H,
     clips: kaykit(['Spellcast_Shoot']), // wand zap reads better than a staff bonk
-    show: ['1H_Wand', 'Spellbook_open'],
+    show: [],
+    attach: [
+      { url: `${WEAPONS}/wand.glb`, bone: 'handslot.r' },
+      { url: `${WEAPONS}/spellbook_open.glb`, bone: 'handslot.l', gripRef: 'Spellbook_open' },
+    ],
     tint: 0x8d5fd3, tintStrength: 0.45,
   },
   player_druid: {
     url: `${CHARS}/mage.glb`, height: HUMANOID_H,
     clips: kaykit(['2H_Melee_Attack_Chop']),
-    show: ['2H_Staff'],
+    show: [],
+    attach: [{ url: `${WEAPONS}/staff.glb`, bone: 'handslot.r' }],
     tint: 0x7da05c, tintStrength: 0.45,
   },
 
