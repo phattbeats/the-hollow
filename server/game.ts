@@ -675,6 +675,9 @@ export class GameServer {
       case 'pdecline': sim.partyDecline(pid); break;
       case 'pleave': sim.partyLeave(pid); break;
       case 'pkick': if (typeof msg.id === 'number') sim.partyKick(msg.id, pid); break;
+      // raid/target markers
+      case 'setMarker': if (typeof msg.id === 'number' && typeof msg.marker === 'number') sim.setMarker(msg.id, msg.marker, pid); break;
+      case 'clearMarker': if (typeof msg.id === 'number') sim.clearMarker(msg.id, pid); break;
       // trade
       case 'trade_req': if (typeof msg.id === 'number') sim.tradeRequest(msg.id, pid); break;
       case 'trade_accept': sim.tradeAccept(pid); break;
@@ -919,6 +922,7 @@ export class GameServer {
     maybe('stats', p.stats);
     maybe('weapon', p.weapon);
     maybe('party', this.partyWire(session.pid));
+    maybe('marks', this.markersWire(session.pid));
     maybe('trade', this.tradeWire(session.pid));
     maybe('duel', this.duelWire(session.pid));
     maybe('arena', this.sim.arenaInfoFor(session.pid));
@@ -943,6 +947,14 @@ export class GameServer {
         } : null;
       }).filter(Boolean),
     };
+  }
+
+  // Raid markers the player's party can see, as { entityId: markerId }; null
+  // when the player is in no party. Pure read — the sim owns marker cleanup.
+  private markersWire(pid: number): unknown {
+    const party = this.sim.partyOf(pid);
+    if (!party) return null;
+    return this.sim.markersFor(pid);
   }
 
   private tradeWire(pid: number): unknown {
