@@ -83,6 +83,16 @@ const animal = (attack: string[]): ClipMap => ({
   hit: ['Idle_HitReact_Left', 'Idle_HitReact_Right'], death: 'Death',
 });
 
+// Custom wild boar rig (wild_boar.glb)
+const WILD_BOAR: ClipMap = {
+  idle: 'Idle1',
+  walk: 'Move2 (shuffle)',
+  run: 'Move1 (jump)',
+  attack: ['Attack1 (marracca)', 'Attack2 (tusks)'],
+  hit: ['Hurt'],
+  death: 'Dying',
+};
+
 // 14-clip biped rig (orc/frog/demonalt/yetialt)
 const BIPED14: ClipMap = {
   idle: 'Idle', walk: 'Walk', run: 'Run', attack: ['Punch', 'Weapon'],
@@ -196,8 +206,8 @@ export const VISUALS: Record<string, VisualDef> = {
     clips: animal(['Attack']), tint: 'entity', tintStrength: 0.35,
   },
   mob_boar: {
-    url: `${CREATURES}/bull.glb`, height: 1.45,
-    clips: animal(['Attack_Headbutt']), tint: 'entity', tintStrength: 0.4,
+    url: `${CREATURES}/wild_boar.glb`, height: 1.45,
+    clips: WILD_BOAR, tint: 'entity', tintStrength: 0.4,
   },
   mob_spider: {
     url: `${CREATURES}/spider.glb`, height: 1.4,
