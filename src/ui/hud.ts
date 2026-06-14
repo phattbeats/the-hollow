@@ -4,7 +4,6 @@ import { Renderer } from '../render/renderer';
 import {
   ABILITIES, CLASSES, DUNGEON_LIST, DUNGEON_X_THRESHOLD, ITEMS, MOBS, NPCS, QUESTS,
   WORLD_MAX_X, WORLD_MAX_Z, WORLD_MIN_X, WORLD_MIN_Z, ZONES, dungeonAt, zoneAt,
-  zoneWelcomeText,
 } from '../sim/data';
 import type { ZoneDef } from '../sim/data';
 import type { AbilityDef, EquipSlot, InvSlot, PlayerClass, ResourceType, Stats } from '../sim/types';
@@ -242,9 +241,10 @@ export class Hud {
       styleMusicBtn();
     });
     const startZone = zoneAt(sim.player.pos.z);
+    const startZoneName = zoneDisplayName(startZone.id);
     this.lastZoneId = startZone.id;
-    this.showBanner(startZone.name);
-    this.log(t('hud.core.welcomeZone', { zone: startZone.name }), '#ffd100');
+    this.showBanner(startZoneName);
+    this.log(t('hud.core.welcomeZone', { zone: startZoneName }), '#ffd100');
     this.logZoneWelcome(startZone);
   }
 
@@ -786,8 +786,9 @@ export class Hud {
         || p.pos.z >= lastZone.zMax + ZONE_BANNER_DEADBAND;
       if (pastDeadBand) {
         if (this.lastZoneId !== '') {
-          this.showBanner(currentZone.name);
-          this.log(t('hud.core.enteringZone', { zone: currentZone.name }), '#ffd100');
+          const currentZoneName = zoneDisplayName(currentZone.id);
+          this.showBanner(currentZoneName);
+          this.log(t('hud.core.enteringZone', { zone: currentZoneName }), '#ffd100');
           this.logZoneWelcome(currentZone);
         }
         this.lastZoneId = currentZone.id;
@@ -925,6 +926,7 @@ export class Hud {
     const ctx = this.minimapCtx;
     const S = 162;
     const p = this.sim.player;
+    $('#zone-label').textContent = zoneDisplayName(zoneAt(p.pos.z).id);
     ctx.clearRect(0, 0, S, S);
     ctx.save();
     ctx.beginPath();
@@ -1183,8 +1185,9 @@ export class Hud {
     ctx.strokeStyle = '#000';
     ctx.lineWidth = 3;
     ctx.fillStyle = '#ffe9a0';
-    ctx.strokeText(zone.name, S / 2, 20);
-    ctx.fillText(zone.name, S / 2, 20);
+    const zoneName = zoneDisplayName(zone.id);
+    ctx.strokeText(zoneName, S / 2, 20);
+    ctx.fillText(zoneName, S / 2, 20);
     // labels
     ctx.font = 'bold 13px Georgia';
     const label = (x: number, z: number, text: string) => {
@@ -1192,7 +1195,7 @@ export class Hud {
       ctx.strokeText(text, mx, my);
       ctx.fillText(text, mx, my);
     };
-    for (const poi of zone.pois) label(poi.x, poi.z, poi.label);
+    zone.pois.forEach((poi, poiIndex) => label(poi.x, poi.z, zonePoiLabel(zone.id, poiIndex)));
     // dungeon entrance portals in this zone
     for (const dungeon of DUNGEON_LIST) {
       if (dungeon.doorPos.z < zone.zMin || dungeon.doorPos.z >= zone.zMax) continue;
@@ -1204,8 +1207,9 @@ export class Hud {
       ctx.stroke();
       ctx.fillStyle = '#e0c0ff';
       ctx.font = 'bold 12px Georgia';
-      ctx.strokeText(dungeon.name, mx, my - 9);
-      ctx.fillText(dungeon.name, mx, my - 9);
+      const dungeonName = dungeonDisplayName(dungeon.id);
+      ctx.strokeText(dungeonName, mx, my - 9);
+      ctx.fillText(dungeonName, mx, my - 9);
       ctx.font = 'bold 13px Georgia';
       ctx.fillStyle = '#ffe9a0';
     }
@@ -1488,8 +1492,8 @@ export class Hud {
   }
 
   private logZoneWelcome(zone: ZoneDef): void {
-    const text = zoneWelcomeText(zone, (questId) => this.sim.questState(questId));
-    if (text) this.log(text, '#ffd100');
+    if (zone.welcomeQuestId && this.sim.questState(zone.welcomeQuestId) !== 'available') return;
+    this.log(zoneWelcome(zone.id), '#ffd100');
   }
 
   private chatLogFrom(name: string, text: string, color: string, templateKey: TranslationKey): void {
@@ -1630,6 +1634,8 @@ export class Hud {
     if (match) return t('itemUi.errors.tooManyListings', { count: formatNumber(Number(match[1]), { maximumFractionDigits: 0 }) });
     match = /^That is your own listing (?:\u2014|-) cancel it to reclaim it\.$/.exec(text);
     if (match) return t('itemUi.errors.ownListing');
+    match = /^All instances of (.+) are busy\. Try again soon\.$/.exec(text);
+    if (match) return t('worldContent.dungeonInstanceBusy', { name: dungeonDisplayNameFromSource(match[1]) });
     return text;
   }
 
@@ -1650,6 +1656,10 @@ export class Hud {
     };
     const key = exact[text];
     if (key) return t(key);
+    for (const dungeon of DUNGEON_LIST) {
+      if (text === dungeon.enterText) return dungeonText(dungeon.id, 'enterText');
+      if (text === dungeon.leaveText) return dungeonText(dungeon.id, 'leaveText');
+    }
 
     let match = /^You have invited (.+) to your party\.$/.exec(text);
     if (match) return t('hud.logs.partyInviteSent', { name: match[1] });
@@ -1725,6 +1735,13 @@ export class Hud {
     if (match) return t('itemUi.logs.reclaimedItem', { item: itemStackDisplayName(match[1], match[2]) });
     match = /^You collect (.+) from the Merchant\.$/.exec(text);
     if (match) return t('itemUi.logs.collectedMoney', { money: this.localizeSimMoney(match[1]) });
+    match = /^(.+) is meant for a full party of (\d+)\. Tread carefully\.$/.exec(text);
+    if (match) {
+      return t('worldContent.dungeonPartyWarning', {
+        name: dungeonDisplayNameFromSource(match[1]),
+        count: formatNumber(Number(match[2]), { maximumFractionDigits: 0 }),
+      });
+    }
     return text;
   }
 
@@ -1805,7 +1822,7 @@ export class Hud {
     const npcName = npcDisplayName(npc.templateId);
     const npcTitle = def ? npcDisplayTitle(def.id) : '';
     let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(npcName)}<span class="quest-muted"> &lt;${esc(npcTitle)}&gt;</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">✕</button></div>`;
-    html += `<div class="qd-text">"${esc(def ? npcGreeting(def.id, this.sim.cfg.playerClass) : t('questUi.dialog.greetingFallback'))}"</div>`;
+    html += `<div class="qd-text">"${esc(def ? npcGreeting(def.id, this.sim.cfg.playerClass, this.sim.player.name) : t('questUi.dialog.greetingFallback'))}"</div>`;
     if (interesting.length > 0) {
       for (const qid of interesting) {
         const st = this.sim.questState(qid);
@@ -3563,9 +3580,9 @@ function npcDisplayTitle(npcId: string): string {
   return tEntity({ kind: 'npc', id: npcId, field: 'title' });
 }
 
-function npcGreeting(npcId: string, playerClass: PlayerClass): string {
+function npcGreeting(npcId: string, playerClass: PlayerClass, playerName: string): string {
   const className = classDisplayName(playerClass);
-  return tEntity({ kind: 'npc', id: npcId, field: 'greeting', values: { className, classNameLower: className.toLocaleLowerCase() } });
+  return tEntity({ kind: 'npc', id: npcId, field: 'greeting', values: { className, classNameLower: className.toLocaleLowerCase(), playerName } });
 }
 
 function questTitle(questId: string): string {
@@ -3583,6 +3600,31 @@ function questObjectiveLabel(questId: string, objectiveIndex: number): string {
 function questTitleFromSource(name: string): string {
   const quest = Object.values(QUESTS).find((candidate) => candidate.name === name);
   return quest ? questTitle(quest.id) : name;
+}
+
+function zoneDisplayName(zoneId: string): string {
+  return tEntity({ kind: 'zone', id: zoneId, field: 'name' });
+}
+
+function zoneWelcome(zoneId: string): string {
+  return tEntity({ kind: 'zone', id: zoneId, field: 'welcome' });
+}
+
+function zonePoiLabel(zoneId: string, poiIndex: number): string {
+  return tEntity({ kind: 'zonePoi', zoneId, poiIndex, field: 'label' });
+}
+
+function dungeonDisplayName(dungeonId: string): string {
+  return tEntity({ kind: 'dungeon', id: dungeonId, field: 'name' });
+}
+
+function dungeonText(dungeonId: string, field: 'enterText' | 'leaveText'): string {
+  return tEntity({ kind: 'dungeon', id: dungeonId, field });
+}
+
+function dungeonDisplayNameFromSource(name: string): string {
+  const dungeon = DUNGEON_LIST.find((candidate) => candidate.name === name);
+  return dungeon ? dungeonDisplayName(dungeon.id) : name;
 }
 
 function entityDisplayName(entity: Entity): string {

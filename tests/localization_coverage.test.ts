@@ -625,6 +625,20 @@ describe("i18n Localization Key Coverage", () => {
     }
   });
 
+  it("should route rendered world-content labels through localized entity helpers", () => {
+    const hudSource = fs.readFileSync(path.resolve(process.cwd(), "src/ui/hud.ts"), "utf8");
+    expect(hudSource).toContain("zoneDisplayName");
+    expect(hudSource).toContain("$('#zone-label').textContent = zoneDisplayName");
+    expect(hudSource).toContain("zonePoiLabel");
+    expect(hudSource).toContain("dungeonDisplayNameFromSource");
+    expect(hudSource).not.toContain("zoneWelcomeText(");
+
+    const rendererSource = fs.readFileSync(path.resolve(process.cwd(), "src/render/renderer.ts"), "utf8");
+    expect(rendererSource).toContain("objectDisplayName");
+    expect(rendererSource).toContain("worldContent.corpseName");
+    expect(rendererSource).not.toContain("`${e.name} (corpse)`");
+  });
+
   it("should preserve and render every Phase 2 HUD interpolation placeholder in every locale", () => {
     const phaseTwoDynamicKeys = flattenStrings(en.hud, "hud")
       .map(({ key, value }) => ({ key, expected: placeholders(value) }))

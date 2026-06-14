@@ -22,6 +22,8 @@ import { buildWater, WaterView } from './water';
 import { buildClouds, buildSky, SkyView } from './sky';
 import { buildFoliage, FoliageView } from './foliage';
 import { shouldRenderStealthGhost } from './stealth';
+import { t } from '../ui/i18n';
+import { tEntity } from '../ui/entity_i18n';
 
 const NAMEPLATE_RANGE = 55;
 // Entities further than this from the player are hidden entirely: their rigs
@@ -94,6 +96,28 @@ function collectCasters(root: THREE.Object3D, into: THREE.Object3D[]): void {
   root.traverse((o) => {
     if ((o as THREE.Mesh).isMesh && (o as THREE.Mesh).castShadow) into.push(o);
   });
+}
+
+function mobDisplayName(mobId: string): string {
+  return tEntity({ kind: 'mob', id: mobId, field: 'name' });
+}
+
+function npcDisplayName(npcId: string): string {
+  return tEntity({ kind: 'npc', id: npcId, field: 'name' });
+}
+
+function dungeonDisplayName(dungeonId: string): string {
+  return tEntity({ kind: 'dungeon', id: dungeonId, field: 'name' });
+}
+
+function objectDisplayName(entity: Entity): string {
+  if ((entity.templateId === 'dungeon_door' || entity.templateId === 'dungeon_exit') && entity.dungeonId) {
+    const dungeonName = dungeonDisplayName(entity.dungeonId);
+    return entity.templateId === 'dungeon_exit'
+      ? t('worldContent.dungeonExitName', { name: dungeonName })
+      : dungeonName;
+  }
+  return entity.name;
 }
 
 export class Renderer {
@@ -1075,7 +1099,7 @@ export class Renderer {
       if (e.kind === 'object') {
         // dungeon doorways announce themselves
         v.nameEl.style.color = '#c084ff';
-        v.nameEl.textContent = e.name;
+        v.nameEl.textContent = objectDisplayName(e);
         v.hpBar.style.display = 'none';
         v.markerEl.textContent = '';
       } else if (e.kind === 'player') {
@@ -1088,7 +1112,7 @@ export class Renderer {
         v.markerEl.textContent = '';
       } else if (e.kind === 'npc') {
         v.nameEl.style.color = '#9fdc7f';
-        v.nameEl.textContent = e.name;
+        v.nameEl.textContent = npcDisplayName(e.templateId);
         v.hpBar.style.display = 'none';
         let marker = '';
         let cls = '';
@@ -1108,8 +1132,9 @@ export class Renderer {
         const diff = e.level - p.level;
         const template = MOBS[e.templateId];
         const elite = !!template?.elite;
+        const name = mobDisplayName(e.templateId);
         v.nameEl.style.color = e.dead ? '#999' : diff >= 3 ? '#ff4444' : diff >= 1 ? '#ffaa33' : diff >= -2 ? '#ffe97a' : diff >= -5 ? '#7fdc4f' : '#9d9d9d';
-        v.nameEl.textContent = e.dead ? `${e.name} (corpse)` : `[${e.level}${elite ? '+' : ''}] ${e.name}`;
+        v.nameEl.textContent = e.dead ? t('worldContent.corpseName', { name }) : `[${e.level}${elite ? '+' : ''}] ${name}`;
         v.hpBar.style.display = e.dead ? 'none' : '';
         v.hpFill.style.width = `${(100 * e.hp / Math.max(1, e.maxHp)).toFixed(1)}%`;
         v.markerEl.textContent = e.lootable ? '$' : elite && !e.dead ? '◆' : '';
