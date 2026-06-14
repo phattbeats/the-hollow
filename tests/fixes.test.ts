@@ -440,7 +440,7 @@ describe('boss loot and encounter resets', () => {
     expect(mob.loot).toBeNull();
   });
 
-  it('quest drops go to every eligible nearby party member and are not rolled', () => {
+  it('quest drops stay on the corpse as personal loot for every eligible nearby party member', () => {
     const sim = makeSim();
     const a = sim.playerId;
     const b = sim.addPlayer('mage', 'Bert');
@@ -459,9 +459,27 @@ describe('boss loot and encounter resets', () => {
       boarHide.chance = oldChance;
     }
 
+    expect(sim.countItem('boar_hide', a)).toBe(0);
+    expect(sim.countItem('boar_hide', b)).toBe(0);
+    expect(mob.loot?.items).toContainEqual({ itemId: 'boar_hide', count: 1, personalFor: [a, b] });
+
+    mob.dead = true;
+    mob.lootable = true;
+    mob.tappedById = a;
+    sim.entities.set(mob.id, mob);
+    teleportTo(sim, 20, 20, a);
+    teleportTo(sim, 21, 20, b);
+
+    sim.lootCorpse(mob.id, a);
     expect(sim.countItem('boar_hide', a)).toBe(1);
+    expect(sim.countItem('boar_hide', b)).toBe(0);
+    expect(mob.lootable).toBe(true);
+    expect(mob.loot?.items).toContainEqual({ itemId: 'boar_hide', count: 1, personalFor: [b] });
+
+    sim.lootCorpse(mob.id, b);
     expect(sim.countItem('boar_hide', b)).toBe(1);
-    expect(mob.loot?.items.some((s) => s.itemId === 'boar_hide')).not.toBe(true);
+    expect(mob.loot).toBeNull();
+    expect(mob.lootable).toBe(false);
   });
 
   it('boss adds despawn on encounter reset instead of stacking across pulls', () => {

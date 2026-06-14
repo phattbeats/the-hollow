@@ -18,7 +18,7 @@ import { groundHeight, WATER_LEVEL } from './world';
 import {
   AbilityDef, AbilityEffect, Aura, AuraKind, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION,
   CONSUME_TICKS, CrowdControlDrCategory, DT, Entity, EquipSlot, FISHING_CAST_ID, FISHING_CAST_TIME, GCD,
-  INTERACT_RANGE, InvSlot, LootEntry, MELEE_RANGE, MAX_LEVEL, MobFamily,
+  INTERACT_RANGE, InvSlot, LootEntry, LootSlot, MELEE_RANGE, MAX_LEVEL, MobFamily,
   MoveInput, PlayerClass, QuestProgress, QuestState, RUN_SPEED, SimConfig, SimEvent, TURN_SPEED, Vec3,
   angleTo, armorReduction, dist2d, emptyMoveInput, isConsuming, meleeMissChance, mobXpValue, normAngle,
   rageFromDealing, rageFromTaking, spellHitChance, xpForLevel,
@@ -2357,7 +2357,7 @@ export class Sim {
     const template = MOBS[mob.templateId];
     if (!template) return;
     let copper = 0;
-    const items: InvSlot[] = [];
+    const items: LootSlot[] = [];
     const rolledGroups = new Set<string>();
     for (const entry of template.loot) {
       // Exclusive groups: a single rng draw is partitioned by the group
@@ -2382,7 +2382,7 @@ export class Sim {
         const questRecipients = eligible.filter((m) => this.needsQuestDrop(entry, m));
         if (questRecipients.length === 0) continue;
         if (!this.rng.chance(entry.chance)) continue;
-        for (const recipient of questRecipients) this.addItem(entry.itemId!, 1, recipient.entityId);
+        items.push({ itemId: entry.itemId!, count: 1, personalFor: questRecipients.map((m) => m.entityId) });
         continue;
       }
       if (!this.rng.chance(entry.chance)) continue;
@@ -2421,6 +2421,20 @@ export class Sim {
     }
     this.addItem(itemId, 1, winner.entityId);
     return true;
+  }
+
+  private lootSlotVisibleTo(slot: LootSlot, pid: number): boolean {
+    return !slot.personalFor || slot.personalFor.includes(pid);
+  }
+
+  private pruneCorpseLoot(mob: Entity): void {
+    if (!mob.loot) return;
+    mob.loot.items = mob.loot.items.filter((s) => s.count > 0 && (!s.personalFor || s.personalFor.length > 0));
+    if (mob.loot.copper <= 0 && mob.loot.items.length === 0) {
+      mob.loot = null;
+      mob.lootable = false;
+      mob.corpseTimer = Math.min(mob.corpseTimer, 4);
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -3197,15 +3211,21 @@ export class Sim {
       meta.copper += mob.loot.copper;
       meta.counters.lootCopper += mob.loot.copper;
       this.emit({ type: 'loot', text: `You loot ${formatMoney(mob.loot.copper)}.`, pid: meta.entityId });
+      mob.loot.copper = 0;
     }
-    for (const s of mob.loot.items) {
+    for (const s of [...mob.loot.items]) {
+      if (!this.lootSlotVisibleTo(s, meta.entityId)) continue;
+      if (s.personalFor) {
+        this.addItem(s.itemId, 1, meta.entityId);
+        s.personalFor = s.personalFor.filter((id) => id !== meta.entityId);
+        continue;
+      }
       for (let i = 0; i < s.count; i++) {
         if (!this.rollGroupLoot(s.itemId, mob, meta)) this.addItem(s.itemId, 1, meta.entityId);
       }
+      s.count = 0;
     }
-    mob.loot = null;
-    mob.lootable = false;
-    mob.corpseTimer = Math.min(mob.corpseTimer, 4);
+    this.pruneCorpseLoot(mob);
     if (p.targetId === mobId) p.targetId = null;
   }
 

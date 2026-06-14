@@ -1622,13 +1622,15 @@ export class Hud {
   openLoot(mobId: number, screenX: number, screenY: number): void {
     const mob = this.sim.entities.get(mobId);
     if (!mob?.loot) return;
+    const visibleItems = mob.loot.items.filter((s) => !s.personalFor || s.personalFor.includes(this.sim.playerId));
+    if (mob.loot.copper <= 0 && visibleItems.length === 0) return;
     this.openLootMobId = mobId;
     const el = $('#loot-window');
     let html = `<div class="panel-title"><span>${mob.name}</span><span class="x-btn" data-close>✕</span></div>`;
     if (mob.loot.copper > 0) {
       html += `<div class="loot-item"><img class="item-icon q-common" src="${iconDataUrl('item', 'coin_gold')}" alt="" draggable="false"><span>${this.moneyHtml(mob.loot.copper)}</span></div>`;
     }
-    for (const s of mob.loot.items) {
+    for (const s of visibleItems) {
       const item = ITEMS[s.itemId];
       html += `<div class="loot-item" data-item="${s.itemId}">${this.itemIcon(item)}<span style="font-size:12px">${item.name}${s.count > 1 ? ' x' + s.count : ''}</span></div>`;
     }
