@@ -19,6 +19,8 @@ export type PresenceStatus = 'online' | 'combat' | 'dungeon' | 'dead';
 export interface Presence {
   zone: string;
   status: PresenceStatus;
+  x?: number;
+  z?: number;
 }
 
 export interface CharRef {
@@ -36,6 +38,8 @@ export interface FriendEntry extends CharInfo {
   online: boolean;
   zone?: string;
   status?: PresenceStatus;
+  x?: number;
+  z?: number;
 }
 
 export interface GuildMemberEntry extends CharInfo {
@@ -43,6 +47,8 @@ export interface GuildMemberEntry extends CharInfo {
   online: boolean;
   zone?: string;
   status?: PresenceStatus;
+  x?: number;
+  z?: number;
 }
 
 export interface GuildView {
@@ -169,9 +175,9 @@ export class SocialService {
   }
 
   // Collapse a character's online presence into the fields a roster row needs.
-  private presence(charId: number): { online: boolean; zone?: string; status?: PresenceStatus } {
+  private presence(charId: number): { online: boolean; zone?: string; status?: PresenceStatus; x?: number; z?: number } {
     const loc = this.tx.locationOf(charId);
-    return loc ? { online: true, zone: loc.zone, status: loc.status } : { online: false };
+    return loc ? { online: true, zone: loc.zone, status: loc.status, x: loc.x, z: loc.z } : { online: false };
   }
 
   private push(charId: number): void {

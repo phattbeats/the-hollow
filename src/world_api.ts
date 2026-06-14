@@ -57,6 +57,9 @@ export interface FriendInfo {
   online: boolean;
   zone?: string;
   status?: PresenceStatus;
+  // live world position of an online character, for plotting on the map
+  x?: number;
+  z?: number;
 }
 
 export interface GuildMemberInfo extends FriendInfo {

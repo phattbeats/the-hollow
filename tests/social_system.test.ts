@@ -183,6 +183,14 @@ describe('friends', () => {
     expect(snap.friends[1].zone).toBeUndefined();
   });
 
+  it('carries live coordinates for online friends (for the world map)', async () => {
+    await h.svc.friendAdd(h.actor(1), 'Bet');
+    h.tx.setOnline(2, { zone: 'Mirewood', status: 'online', x: 12.5, z: -34 });
+    const snap = await h.svc.snapshot(1);
+    expect(snap.friends[0].x).toBe(12.5);
+    expect(snap.friends[0].z).toBe(-34);
+  });
+
   it('refuses self-friending and duplicates', async () => {
     await h.svc.friendAdd(h.actor(1), 'Aleph');
     expect(h.tx.errorsFor(1).join()).toMatch(/yourself/i);

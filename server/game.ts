@@ -70,6 +70,10 @@ export interface ClientSession {
   // wire versions of each entity this client knows about: known entities
   // get identity-less "lite" records, unchanged ones ride in the keep list
   sentEnts: Map<number, SentEntityVersions>;
+  // character ids of this player's friends + guild members, captured from the
+  // last social snapshot. Drives the cheap periodic position push (no DB) that
+  // keeps allies live on the world map.
+  socialTrackedIds?: number[];
 }
 
 interface SentEntityVersions {
@@ -285,6 +289,7 @@ export class GameServer {
   private lastWireSweepTick = 0;
   private interval: NodeJS.Timeout | null = null;
   private saveTimer = 0;
+  private socialPosTimer = 0;
   private readonly startedAt = Date.now();
   private peakOnline = 0;
   private tickMsAvg = 0;
@@ -329,7 +334,7 @@ export class GameServer {
     else if (e.dungeonId) status = 'dungeon';
     else if (e.inCombat) status = 'combat';
     const zone = e.dungeonId ? (DUNGEONS[e.dungeonId]?.name ?? e.dungeonId) : zoneAt(e.pos.z).name;
-    return { zone, status };
+    return { zone, status, x: e.pos.x, z: e.pos.z };
   }
 
   private socialTransport(): SocialTransport {
@@ -357,8 +362,31 @@ export class GameServer {
     try {
       const snap = await this.social.snapshot(charId);
       this.send(session, { t: 'social', ...snap });
+      // remember who to track for the live position push (friends + guildmates)
+      session.socialTrackedIds = [
+        ...snap.friends.map((f) => f.id),
+        ...(snap.guild ? snap.guild.members.map((m) => m.id) : []),
+      ];
     } catch (err) {
       console.error('social snapshot failed:', err);
+    }
+  }
+
+  // Cheap (no-DB) periodic push: refresh the live positions of each client's
+  // already-known friends/guildmates so they stay current on the world map.
+  private broadcastSocialPositions(): void {
+    for (const session of this.clients.values()) {
+      const ids = session.socialTrackedIds;
+      if (!ids || ids.length === 0) continue;
+      const list: { id: number; x: number; z: number; zone: string; status: PresenceStatus }[] = [];
+      for (const id of ids) {
+        const other = this.sessionByCharacterId(id);
+        if (!other) continue; // offline — snapshots own the online/offline flip
+        const loc = this.presenceOf(other);
+        if (loc.x === undefined || loc.z === undefined) continue;
+        list.push({ id, x: loc.x, z: loc.z, zone: loc.zone, status: loc.status });
+      }
+      if (list.length > 0) this.send(session, { t: 'socialpos', list });
     }
   }
 
@@ -377,6 +405,11 @@ export class GameServer {
         acc -= DT;
       }
       this.broadcastSnapshots();
+      this.socialPosTimer += dt;
+      if (this.socialPosTimer >= 1) {
+        this.socialPosTimer = 0;
+        this.broadcastSocialPositions();
+      }
       const tickMs = Number(process.hrtime.bigint() - now) / 1e6;
       this.tickMsAvg = this.tickMsAvg === 0 ? tickMs : this.tickMsAvg + TICK_EMA_ALPHA * (tickMs - this.tickMsAvg);
       this.saveTimer += dt;

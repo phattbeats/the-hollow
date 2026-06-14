@@ -10,7 +10,7 @@ import {
   Entity, EquipSlot, InvSlot, MoveInput, PlayerClass, QuestProgress, QuestState, SimEvent,
   emptyMoveInput,
 } from '../sim/types';
-import type { ArenaInfo, CharacterSearchResult, DuelInfo, IWorld, LeaderboardEntry, MarketInfo, PartyInfo, SocialInfo, TradeInfo } from '../world_api';
+import type { ArenaInfo, CharacterSearchResult, DuelInfo, FriendInfo, IWorld, LeaderboardEntry, MarketInfo, PartyInfo, PresenceStatus, SocialInfo, TradeInfo } from '../world_api';
 
 // ---------------------------------------------------------------------------
 // REST
@@ -367,6 +367,23 @@ export class ClientWorld implements IWorld {
     if (msg.t === 'social') {
       this.socialInfo = { friends: msg.friends ?? [], blocks: msg.blocks ?? [], guild: msg.guild ?? null };
       this.socialDirty = true;
+      return;
+    }
+    if (msg.t === 'socialpos') {
+      // live position refresh for friends/guildmates (drives the world map);
+      // merge into the existing roster in place — snapshots own online/offline.
+      if (this.socialInfo && Array.isArray(msg.list)) {
+        const byId = new Map<number, { x: number; z: number; zone: string; status: PresenceStatus }>();
+        for (const e of msg.list) byId.set(e.id, e);
+        const apply = (arr: FriendInfo[]) => {
+          for (const m of arr) {
+            const u = byId.get(m.id);
+            if (u) { m.x = u.x; m.z = u.z; m.zone = u.zone; m.status = u.status; m.online = true; }
+          }
+        };
+        apply(this.socialInfo.friends);
+        if (this.socialInfo.guild) apply(this.socialInfo.guild.members);
+      }
       return;
     }
     if (msg.t === 'snap') {
