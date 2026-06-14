@@ -86,6 +86,12 @@ export const REWARD_ARCHETYPE: Record<PlayerClass, PlayerClass> = {
   mage: 'mage', priest: 'mage', warlock: 'mage', druid: 'mage',
 };
 
+// Single source of truth for which item a quest hands a given class, so the
+// client reward preview and the server turn-in can never disagree (#98).
+export function questRewardItemId(quest: QuestDef, cls: PlayerClass): string | undefined {
+  return quest.itemRewards[cls] ?? quest.itemRewards[REWARD_ARCHETYPE[cls]];
+}
+
 // Vanilla group XP multipliers by party size (1-5).
 export const GROUP_XP_BONUS = [1, 1, 1.166, 1.3, 1.43];
 

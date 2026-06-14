@@ -10,6 +10,7 @@ export interface GameSettings {
   renderScale: number;  // resolution multiplier on top of the device pixel ratio
   fullscreen: number;   // 0/1 browser fullscreen preference
   showOverflowXp: number; // 1 = show post-cap virtual-level overflow bar (default), 0 = classic "MAX LEVEL"
+  clickToMove: number;  // 0 = off (default), 1 = click ground/enemy to walk there (#95)
 }
 
 interface Range { min: number; max: number; def: number }
@@ -27,6 +28,9 @@ export const SETTING_RANGES: Record<keyof GameSettings, Range> = {
   // on by default: post-cap players see their overflow/virtual-level bar; turn
   // off for the classic static "MAX LEVEL" text (Max-Level XP Overflow)
   showOverflowXp: { min: 0, max: 1, def: 1 },
+  // off by default: always-on click-to-move would disrupt the precise melee
+  // positioning the team wanted to preserve, so it's opt-in (#95)
+  clickToMove: { min: 0, max: 1, def: 0 },
 };
 
 const STORE_KEY = 'woc_settings';
