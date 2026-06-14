@@ -259,8 +259,9 @@ async function main() {
       await page.goto(langUrl, { waitUntil: 'networkidle0', timeout: 15000 });
       
       const currentHtmlLang = await page.evaluate(() => document.documentElement.lang);
-      if (currentHtmlLang !== langCheck.code) {
-        throw new Error(`Expected html lang to be "${langCheck.code}", got "${currentHtmlLang}"`);
+      const expectedHtmlLang = langCheck.code.replace('_', '-');
+      if (currentHtmlLang !== expectedHtmlLang) {
+        throw new Error(`Expected html lang to be "${expectedHtmlLang}", got "${currentHtmlLang}"`);
       }
 
       const playText = await page.evaluate(() => {
