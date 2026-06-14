@@ -2630,6 +2630,17 @@
   body.mobile-touch #quest-dialog {
     left: 10px; right: 10px; top: 10px; width: auto; transform: none;
   }
+  body.mobile-touch #quest-log-window,
+  body.mobile-touch #vendor-window,
+  body.mobile-touch #quest-dialog {
+    left: 50%;
+    right: auto;
+    top: 12px;
+    width: clamp(320px, 76vw, 680px);
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 92px);
+    transform: translateX(-50%);
+  }
   body.mobile-touch #spellbook,
   body.mobile-touch #options-menu {
     left: 50%;
