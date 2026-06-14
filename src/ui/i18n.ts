@@ -5399,7 +5399,7 @@ const phase7 = {
       abilities: abilityTranslations([
         ["heroic_strike", "Golpe heroico", "Un ataque poderoso que aumenta el daño cuerpo a cuerpo en {damage}. Se activa en tu siguiente golpe."],
         ["battle_shout", "Grito de batalla", "Aumenta tu poder de ataque en 20 durante 2 min."],
-        ["charge", "Cargar", "Carga contra un enemigo, genera 9 de ira y lo aturde durante 1 s. Alcance de 8-25 yd."],
+        ["charge", "Cargar", "Carga contra un enemigo, genera 9 de ira y lo aturde durante 1 s. Alcance de 8-25 m."],
         ["rend", "Desgarrar", "Hiere al objetivo y le hace sangrar por {damage} de daño durante 9 s."],
         ["thunder_clap", "Atronar", "Golpea a los enemigos cercanos por {damage} de daño y ralentiza sus ataques un 10% durante 10 s."],
         ["hamstring", "Seccionar", "Mutila al enemigo por 5 de daño y reduce su velocidad de movimiento un 50% durante 15 s."],
@@ -5513,7 +5513,7 @@ const phase7 = {
       abilities: abilityTranslations([
         ["heroic_strike", "Frappe héroïque", "Une attaque puissante qui augmente les dégâts de mêlée de {damage}. S'active lors de votre prochaine frappe."],
         ["battle_shout", "Cri de guerre", "Augmente votre puissance d'attaque de 20 pendant 2 min."],
-        ["charge", "Charge", "Charge un ennemi, génère 9 rage et l'étourdit pendant 1 s. Portée de 8-25 yd."],
+        ["charge", "Charge", "Charge un ennemi, génère 9 rage et l'étourdit pendant 1 s. Portée de 8-25 m."],
         ["rend", "Pourfendre", "Blesse la cible et la fait saigner pour {damage} points de dégâts en 9 s."],
         ["thunder_clap", "Coup de tonnerre", "Frappe les ennemis proches pour {damage} points de dégâts et ralentit leurs attaques de 10% pendant 10 s."],
         ["hamstring", "Brise-genou", "Mutile l'ennemi pour 5 points de dégâts et réduit sa vitesse de déplacement de 50% pendant 15 s."],
@@ -5628,7 +5628,7 @@ const phase7 = {
       abilities: abilityTranslations([
         ["heroic_strike", "Colpo Eroico", "Un attacco potente che aumenta i danni in mischia di {damage}. Si attiva al tuo prossimo colpo."],
         ["battle_shout", "Urlo di Battaglia", "Aumenta la tua potenza d'attacco di 20 per 2 min."],
-        ["charge", "Carica", "Carica un nemico, genera 9 rabbia e lo stordisce per 1 s. Portata 8-25 yd."],
+        ["charge", "Carica", "Carica un nemico, genera 9 rabbia e lo stordisce per 1 s. Portata 8-25 m."],
         ["rend", "Squarcio", "Ferisce il bersaglio e lo fa sanguinare per {damage} danni in 9 s."],
         ["thunder_clap", "Boato Tonante", "Colpisce i nemici vicini per {damage} danni e rallenta i loro attacchi del 10% per 10 s."],
         ["hamstring", "Taglio ai Tendini", "Menoma il nemico per 5 danni, riducendo la sua velocità di movimento del 50% per 15 s."],
@@ -5741,7 +5741,7 @@ const phase7 = {
       abilities: abilityTranslations([
         ["heroic_strike", "Heldenhafter Stoß", "Ein mächtiger Angriff, der den Nahkampfschaden um {damage} erhöht. Wird bei eurem nächsten Schwung ausgelöst."],
         ["battle_shout", "Schlachtruf", "Erhöht eure Angriffskraft 2 Min. lang um 20."],
-        ["charge", "Sturmangriff", "Stürmt auf einen Gegner zu, erzeugt 9 Wut und betäubt ihn 1 Sek. lang. Reichweite 8-25 yd."],
+        ["charge", "Sturmangriff", "Stürmt auf einen Gegner zu, erzeugt 9 Wut und betäubt ihn 1 Sek. lang. Reichweite 8-25 m."],
         ["rend", "Verwunden", "Verwundet das Ziel und lässt es über 9 Sek. für {damage} Schaden bluten."],
         ["thunder_clap", "Donnerknall", "Trifft nahe Gegner für {damage} Schaden und verlangsamt ihre Angriffe 10 Sek. lang um 10%."],
         ["hamstring", "Kniesehne", "Verkrüppelt den Gegner für 5 Schaden und verringert sein Bewegungstempo 15 Sek. lang um 50%."],
@@ -6306,7 +6306,7 @@ const phase7 = {
       abilities: abilityTranslations([
         ["heroic_strike", "Golpe Heroico", "Um ataque forte que aumenta o dano corpo a corpo em {damage}. Ativa no seu próximo golpe."],
         ["battle_shout", "Grito de Batalha", "Aumenta seu poder de ataque em 20 por 2 min."],
-        ["charge", "Investida", "Investe contra um inimigo, gera 9 de raiva e o atordoa por 1 s. Alcance de 8-25 yd."],
+        ["charge", "Investida", "Investe contra um inimigo, gera 9 de raiva e o atordoa por 1 s. Alcance de 8-25 m."],
         ["rend", "Rasgar", "Fere o alvo, fazendo-o sangrar por {damage} de dano ao longo de 9 s."],
         ["thunder_clap", "Trovoada", "Atinge inimigos próximos com {damage} de dano e reduz seus ataques em 10% por 10 s."],
         ["hamstring", "Cortar Tendão", "Mutila o inimigo, causando 5 de dano e reduzindo sua velocidade de movimento em 50% por 15 s."],
@@ -6419,7 +6419,7 @@ const phase7 = {
       abilities: abilityTranslations([
         ["heroic_strike", "Удар героя", "Мощная атака, увеличивающая урон в ближнем бою на {damage}. Срабатывает при следующем взмахе оружием."],
         ["battle_shout", "Боевой крик", "Повышает вашу силу атаки на 20 на 2 мин."],
-        ["charge", "Рывок", "Вы бросаетесь к врагу, накапливаете 9 ярости и оглушаете его на 1 сек. Дальность 8-25 yd."],
+        ["charge", "Рывок", "Вы бросаетесь к врагу, накапливаете 9 ярости и оглушаете его на 1 сек. Дальность 8-25 м."],
         ["rend", "Кровопускание", "Ранит цель, вызывая кровотечение на {damage} ед. урона за 9 сек."],
         ["thunder_clap", "Удар грома", "Поражает ближайших врагов на {damage} ед. урона и замедляет их атаки на 10% на 10 сек."],
         ["hamstring", "Подрезать сухожилия", "Калечит врага, нанося 5 ед. урона и снижая его скорость передвижения на 50% на 15 сек."],

@@ -16,7 +16,7 @@ import { DT, INTERACT_RANGE, PlayerClass, dist2d } from './sim/types';
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
-import { getLanguage, isSupportedLanguage, languageTag, setLanguage, t, type SupportedLanguage, type TranslationKey } from './ui/i18n';
+import { formatNumber, getLanguage, isSupportedLanguage, languageTag, setLanguage, t, type SupportedLanguage, type TranslationKey } from './ui/i18n';
 import { tEntity } from './ui/entity_i18n';
 
 
@@ -39,6 +39,18 @@ function classDisplayName(className: PlayerClass): string {
 
 function classDisplayDescription(className: PlayerClass): string {
   return tEntity({ kind: 'class', id: className, field: 'description' });
+}
+
+function formatClassDetailNumber(value: number): string {
+  return formatNumber(value, { maximumFractionDigits: 1 });
+}
+
+function classDetailAmountRange(min: number, max: number): string {
+  if (min === max) return formatClassDetailNumber(min);
+  return t('abilityUi.tooltip.damageRange', {
+    min: formatClassDetailNumber(min),
+    max: formatClassDetailNumber(max),
+  });
 }
 
 function escapeHtml(text: string): string {
@@ -1378,11 +1390,14 @@ function renderClassDetails(panelId: string, className: PlayerClass): void {
     );
     if (primaryEffect) {
       if (primaryEffect.type === 'directDamage' || primaryEffect.type === 'heal' || primaryEffect.type === 'aoeDamage' || primaryEffect.type === 'aoeRoot' || primaryEffect.type === 'drainTick') {
-        dmgText = primaryEffect.min === primaryEffect.max ? `${primaryEffect.min}` : `${primaryEffect.min} to ${primaryEffect.max}`;
+        dmgText = classDetailAmountRange(primaryEffect.min, primaryEffect.max);
       } else if (primaryEffect.type === 'weaponDamage' || primaryEffect.type === 'weaponStrike') {
-        dmgText = `${primaryEffect.bonus}`;
+        dmgText = formatClassDetailNumber(primaryEffect.bonus);
       } else if (primaryEffect.type === 'finisherDamage') {
-        dmgText = `${primaryEffect.base} plus ${primaryEffect.perCombo} per combo point`;
+        dmgText = t('abilityUi.tooltip.finisherDamage', {
+          base: formatClassDetailNumber(primaryEffect.base),
+          perCombo: formatClassDetailNumber(primaryEffect.perCombo),
+        });
       }
     } else {
       const secondaryEffect = a.effects.find(eff => 
@@ -1393,11 +1408,11 @@ function renderClassDetails(panelId: string, className: PlayerClass): void {
       );
       if (secondaryEffect) {
         if (secondaryEffect.type === 'dot' || secondaryEffect.type === 'hot') {
-          dmgText = `${secondaryEffect.total}`;
+          dmgText = formatClassDetailNumber(secondaryEffect.total);
         } else if (secondaryEffect.type === 'absorb') {
-          dmgText = `${secondaryEffect.amount}`;
+          dmgText = formatClassDetailNumber(secondaryEffect.amount);
         } else if (secondaryEffect.type === 'imbue') {
-          dmgText = `${secondaryEffect.bonus}`;
+          dmgText = formatClassDetailNumber(secondaryEffect.bonus);
         }
       }
     }
