@@ -383,6 +383,7 @@ describe('boss loot and encounter resets', () => {
   it('dungeon bosses always drop gear but cap bonus quality drops', () => {
     const sim = makeSim();
     const meta = sim.meta(sim.playerId)!;
+    const lootOf = (m: Entity) => m.loot;
     for (const bossId of [
       'morthen',
       'knight_commander_olen',
@@ -396,7 +397,7 @@ describe('boss loot and encounter resets', () => {
       for (let i = 0; i < 300; i++) {
         mob.loot = null;
         (sim as any).rollLoot(mob, meta);
-        const gear = (mob.loot?.items ?? []).filter((s) => {
+        const gear = (lootOf(mob)?.items ?? []).filter((s) => {
           const q = ITEMS[s.itemId]?.quality;
           return q === 'uncommon' || q === 'rare' || q === 'epic';
         });
