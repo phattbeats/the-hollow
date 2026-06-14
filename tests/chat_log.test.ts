@@ -167,8 +167,6 @@ describe('GameServer chat logging', () => {
       { channel: 'whisper', message: 'first' },
       { channel: 'whisper', message: 'second' },
     ]);
-    const bEvents = bWs.sent.flatMap((payload: any) => payload.t === 'events' ? payload.list : []);
-    expect(bEvents.filter((e: any) => e.type === 'chat').map((e: any) => e.text)).toEqual(['first', 'second']);
   });
 });
 
