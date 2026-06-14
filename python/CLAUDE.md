@@ -37,9 +37,10 @@ Override the bundle path with `server_path=` / interpreter with `node_binary=`.
 ## Gotchas
 - **The Node bundle must be rebuilt** after any change to `src/sim/` or
   `headless/` — this client loads `dist-env/env_server.cjs`, not the TS source.
-- The class docstring still says `Discrete(18)` / "6 ability slots" — **stale**.
-  Runtime is correct (it reads `num_actions`/`actions` from `info`); trust the
-  queried spaces, not the comment.
+- **Never hardcode space sizes.** `obs_size`/`num_actions`/`actions` are
+  content-dependent and queried from the `info` cmd at startup; the action set is
+  defined by `ACTIONS` in `src/sim/obs.ts`. Trust the queried spaces over any
+  prose or docstring.
 
 ## Never here
 - **Don't reimplement obs/action/reward in Python.** Decode in `src/sim/obs.ts`;
