@@ -17,6 +17,7 @@ import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeybo
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
 import { getLanguage, isSupportedLanguage, languageTag, setLanguage, t, type SupportedLanguage, type TranslationKey } from './ui/i18n';
+import { tEntity } from './ui/entity_i18n';
 
 
 const WORLD_SEED = 20061; // fixed: World of Claudecraft is a persistent place
@@ -26,23 +27,19 @@ let pendingDeleteCharacter: CharacterSummary | null = null;
 
 const SITE_URL = 'https://worldofclaudecraft.com/';
 
-const CLASS_NAME_KEYS: Record<PlayerClass, TranslationKey> = {
-  warrior: 'classes.warrior',
-  paladin: 'classes.paladin',
-  hunter: 'classes.hunter',
-  rogue: 'classes.rogue',
-  priest: 'classes.priest',
-  shaman: 'classes.shaman',
-  mage: 'classes.mage',
-  warlock: 'classes.warlock',
-  druid: 'classes.druid',
-};
-
 const RESOURCE_KEYS = {
   mana: 'classDetails.resources.mana',
   energy: 'classDetails.resources.energy',
   rage: 'classDetails.resources.rage',
 } satisfies Record<string, TranslationKey>;
+
+function classDisplayName(className: PlayerClass): string {
+  return tEntity({ kind: 'class', id: className, field: 'name' });
+}
+
+function classDisplayDescription(className: PlayerClass): string {
+  return tEntity({ kind: 'class', id: className, field: 'description' });
+}
 
 function escapeHtml(text: string): string {
   return text.replace(/[&<>"']/g, (char) => {
@@ -1065,7 +1062,7 @@ async function refreshCharacters(): Promise<void> {
       row.setAttribute('role', 'option');
       row.setAttribute('aria-selected', 'false');
       row.dataset.class = c.class;
-      const className = t(CLASS_NAME_KEYS[c.class]);
+      const className = classDisplayName(c.class);
       const statusText = c.online ? ` (${t('character.inWorld')})` : c.forceRename ? ` (${t('character.renameRequired')})` : '';
       row.innerHTML = `<span class="char-name">${escapeHtml(c.name)}</span>
         <span class="char-sub">${escapeHtml(t('character.levelClass', { level: c.level, className }))}${escapeHtml(statusText)}</span>
@@ -1302,7 +1299,7 @@ function renderClassDetails(panelId: string, className: PlayerClass): void {
 
   const existingContent = panel.querySelector('.class-details-content');
   const existingName = panel.querySelector('.class-details-name')?.textContent;
-  const classLabel = t(CLASS_NAME_KEYS[className]);
+  const classLabel = classDisplayName(className);
   const roleLabel = t(details.roleKey);
   const armorLabel = t(details.armorKey);
   const weaponsLabel = t(details.weaponsKey);
@@ -1404,13 +1401,14 @@ function renderClassDetails(panelId: string, className: PlayerClass): void {
         }
       }
     }
-    const resolvedDesc = a.description.replace('$d', dmgText);
+    const abilityName = tEntity({ kind: 'ability', id: a.id, field: 'name' });
+    const resolvedDesc = tEntity({ kind: 'ability', id: a.id, field: 'description', values: { damage: dmgText } });
 
     return `
       <li class="details-spell-item">
-        <img class="details-spell-icon-img" src="${escapeHtml(iconUrl)}" alt="${escapeHtml(a.name)}" width="32" height="32" />
+        <img class="details-spell-icon-img" src="${escapeHtml(iconUrl)}" alt="${escapeHtml(abilityName)}" width="32" height="32" />
         <div class="details-spell-text">
-          <strong>${escapeHtml(a.name)}</strong>
+          <strong>${escapeHtml(abilityName)}</strong>
           ${escapeHtml(resolvedDesc)}
         </div>
       </li>
@@ -1429,7 +1427,7 @@ function renderClassDetails(panelId: string, className: PlayerClass): void {
             <span class="class-details-role role-${details.roleType}">${escapeHtml(roleLabel)}</span>
           </div>
         </div>
-        <p class="class-details-lore">${escapeHtml(t(details.loreKey))}</p>
+        <p class="class-details-lore">${escapeHtml(classDisplayDescription(className))}</p>
         <div class="class-details-grid">
           <div class="class-details-stats-col">
             <h4 class="details-section-title">${escapeHtml(t('classDetails.sections.startingStats'))}</h4>

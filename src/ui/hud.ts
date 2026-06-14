@@ -18,6 +18,7 @@ import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } fro
 import { Settings, GameSettings, SETTING_RANGES } from '../game/settings';
 import { chatPlayerContextActions } from './player_context_menu';
 import { formatMoney as formatLocalizedMoney, formatNumber, moneyParts, t, type TranslationKey } from './i18n';
+import { tEntity } from './entity_i18n';
 
 // hooks main wires after Input exists (the options menu drives input, audio,
 // graphics, and logout, all of which live outside the HUD)
@@ -48,17 +49,6 @@ const FAMILY_GLYPH: Record<string, string> = {
 const CLASS_GLYPH: Record<string, string> = {
   warrior: '⚔️', paladin: '🔨', hunter: '🏹', rogue: '🗡️', priest: '✝️',
   shaman: '🌩️', mage: '🔮', warlock: '🕯️', druid: '🐻',
-};
-const CLASS_NAME_KEYS: Record<PlayerClass, TranslationKey> = {
-  warrior: 'classes.warrior',
-  paladin: 'classes.paladin',
-  hunter: 'classes.hunter',
-  rogue: 'classes.rogue',
-  priest: 'classes.priest',
-  shaman: 'classes.shaman',
-  mage: 'classes.mage',
-  warlock: 'classes.warlock',
-  druid: 'classes.druid',
 };
 const RESOURCE_LABEL_KEYS: Record<ResourceType, TranslationKey> = {
   mana: 'abilityUi.resources.mana',
@@ -352,7 +342,7 @@ export class Hud {
 
   private itemTooltip(item: ItemDef): string {
     const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
-    let html = `<div class="tt-title" style="color:${qColor}">${esc(item.name)}</div>`;
+    let html = `<div class="tt-title" style="color:${qColor}">${esc(itemDisplayName(item))}</div>`;
     html += `<div class="tt-sub">${esc(t('itemUi.tooltip.qualityKind', {
       quality: itemQualityLabel(item.quality),
       kind: itemKindLabel(item.kind),
@@ -656,7 +646,7 @@ export class Hud {
       tf.style.display = 'flex';
       tf.classList.toggle('elite', !!MOBS[target.templateId]?.elite);
       $('#tf-elite-tag').textContent = MOBS[target.templateId]?.boss ? t('hud.core.boss') : t('hud.core.elite');
-      $('#tf-name').textContent = target.name;
+      $('#tf-name').textContent = entityDisplayName(target);
       $('#tf-level').textContent = MOBS[target.templateId]?.boss ? '☠' : String(target.level);
       ($('#tf-hp') as HTMLElement).style.transform = `scaleX(${target.hp / Math.max(1, target.maxHp)})`;
       $('#tf-hp-text').textContent = target.dead ? t('hud.core.dead') : `${target.hp} / ${target.maxHp}`;
@@ -865,7 +855,8 @@ export class Hud {
       dur.className = 'dur';
       dur.textContent = a.remaining < 99 ? `${Math.ceil(a.remaining)}s` : '';
       d.appendChild(dur);
-      this.attachTooltip(d, () => `<div class="tt-title">${a.name}</div><div class="tt-sub">${t('hud.core.secondsRemaining', { seconds: Math.ceil(a.remaining) })}</div>`);
+      const auraName = ABILITIES[a.id] ? abilityDisplayName(ABILITIES[a.id]) : a.name;
+      this.attachTooltip(d, () => `<div class="tt-title">${esc(auraName)}</div><div class="tt-sub">${esc(t('hud.core.secondsRemaining', { seconds: Math.ceil(a.remaining) }))}</div>`);
       el.appendChild(d);
     }
   }
@@ -875,10 +866,10 @@ export class Hud {
     let html = this.sim.questLog.size > 0 ? `<div class="qt-header">${esc(t('questUi.tracker.title'))}</div>` : '';
     for (const qp of this.sim.questLog.values()) {
       const quest = QUESTS[qp.questId];
-      html += `<div class="qt-title">${esc(quest.name)}${qp.state === 'ready' ? ` <span class="quest-complete">(${esc(t('questUi.tracker.complete'))})</span>` : ''}</div>`;
+      html += `<div class="qt-title">${esc(questTitle(qp.questId))}${qp.state === 'ready' ? ` <span class="quest-complete">(${esc(t('questUi.tracker.complete'))})</span>` : ''}</div>`;
       quest.objectives.forEach((obj, i) => {
         const done = qp.counts[i] >= obj.count;
-        html += `<div class="qt-obj${done ? ' done' : ''}">- ${esc(this.questProgressText(obj.label, qp.counts[i], obj.count))}</div>`;
+        html += `<div class="qt-obj${done ? ' done' : ''}">- ${esc(this.questProgressText(questObjectiveLabel(qp.questId, i), qp.counts[i], obj.count))}</div>`;
       });
     }
     if (el.innerHTML !== html) el.innerHTML = html;
@@ -1081,7 +1072,8 @@ export class Hud {
     const myPid = this.sim.playerId;
     const ladder = a.ladder.map((r, i) => {
       const me = r.pid === myPid;
-      const cls = CLASSES[r.cls]?.name ?? r.cls;
+      const classId = r.cls as PlayerClass;
+      const cls = CLASSES[classId] ? classDisplayName(classId) : r.cls;
       return `<div class="ladder-row${me ? ' me' : ''}"><span class="rank">${i + 1}</span>`
         + `<span class="lr-name" title="${r.name} — ${cls}">${r.name}</span>`
         + `<span class="lr-rating">${r.rating}</span>`
@@ -1102,7 +1094,8 @@ export class Hud {
     this.fetchArenaLeaderboard();
     const allTime = (this.arenaAllTime ?? []).map((r, i) => {
       const me = r.name === this.sim.player.name;
-      const cls = CLASSES[r.class as keyof typeof CLASSES]?.name ?? r.class;
+      const classId = r.class as PlayerClass;
+      const cls = CLASSES[classId] ? classDisplayName(classId) : r.class;
       return `<div class="ladder-row${me ? ' me' : ''}"><span class="rank">${i + 1}</span>`
         + `<span class="lr-name" title="${r.name} — Lv ${r.level} ${cls}">${r.name}</span>`
         + `<span class="lr-rating">${r.rating}</span>`
@@ -1143,7 +1136,7 @@ export class Hud {
     const sig = `${m.oppName}|${m.state}`;
     if (sig !== this.lastArenaStatusSig) {
       this.lastArenaStatusSig = sig;
-      const cls = CLASSES[m.oppClass]?.name ?? m.oppClass;
+      const cls = CLASSES[m.oppClass] ? classDisplayName(m.oppClass) : m.oppClass;
       el.innerHTML = `<div class="as-vs">⚔ VS <span class="opp">${m.oppName}</span> <span style="color:#b6ad8c;font-size:11px">Lv ${m.oppLevel} ${cls}</span></div>`
         + `<div class="as-timer">${label}</div>`;
       el.style.display = 'block';
@@ -1269,8 +1262,8 @@ export class Hud {
             this.fct(tgt, ev.kind === 'miss' ? t('hud.combat.floatingMiss') : t('hud.combat.floatingDodge'), isPlayerTarget ? '#bbb' : '#fff', false);
             if (isPlayerSource) {
               this.combatLog(t(ev.kind === 'miss' ? 'hud.combat.miss' : 'hud.combat.dodged', {
-                ability: ev.ability ?? t('hud.combat.attack'),
-                target: tgt.name,
+                ability: combatAbilityName(ev.ability),
+                target: entityDisplayName(tgt),
               }), '#ccc');
               audio.meleeMiss();
             }
@@ -1280,8 +1273,8 @@ export class Hud {
             const color = ev.ability ? '#ffe97a' : '#fff';
             this.fct(tgt, `${ev.amount}${ev.crit ? '!' : ''}`, color, ev.crit);
             this.combatLog(t(ev.crit ? 'hud.combat.damageDoneCrit' : 'hud.combat.damageDone', {
-              ability: ev.ability ?? t('hud.combat.attack'),
-              target: tgt.name,
+              ability: combatAbilityName(ev.ability),
+              target: entityDisplayName(tgt),
               amount: ev.amount,
             }), ev.ability ? '#ffe97a' : '#eee');
             if (ev.school === 'fire') audio.fire();
@@ -1291,7 +1284,7 @@ export class Hud {
           } else if (isPlayerTarget) {
             this.fct(tgt, `-${ev.amount}`, '#ff5544', ev.crit);
             this.combatLog(t(ev.crit ? 'hud.combat.damageTakenCrit' : 'hud.combat.damageTaken', {
-              source: src?.name ?? '?',
+              source: src ? entityDisplayName(src) : '?',
               amount: ev.amount,
             }), '#ff8877');
             audio.hitTaken();
@@ -1306,7 +1299,7 @@ export class Hud {
         }
         case 'death': {
           const e = sim.entities.get(ev.entityId);
-          if (e && ev.entityId !== sim.playerId) this.combatLog(t('hud.combat.death', { name: e.name }), '#aaa');
+          if (e && ev.entityId !== sim.playerId) this.combatLog(t('hud.combat.death', { name: entityDisplayName(e) }), '#aaa');
           break;
         }
         case 'xp': {
@@ -1341,8 +1334,7 @@ export class Hud {
           break;
         case 'questProgress': this.log(this.localizeQuestProgressText(ev.questId, ev.text), '#dcd29f'); break;
         case 'questReady': {
-          const q = QUESTS[ev.questId];
-          this.showBanner(t('questUi.logs.ready', { name: q.name, status: t('questUi.log.readyStatus') }));
+          this.showBanner(t('questUi.logs.ready', { name: questTitle(ev.questId), status: t('questUi.log.readyStatus') }));
           audio.questDone();
           break;
         }
@@ -1382,8 +1374,8 @@ export class Hud {
               this.combatLog(t(selfTarget
                 ? (ev.crit ? 'hud.combat.healSelfCrit' : 'hud.combat.healSelf')
                 : (ev.crit ? 'hud.combat.healOtherCrit' : 'hud.combat.healOther'), {
-                ability: ev.ability,
-                target: tgt.name,
+                ability: abilityDisplayNameFromSource(ev.ability),
+                target: entityDisplayName(tgt),
                 amount: ev.amount,
               }), '#7fdc4f');
             }
@@ -1429,7 +1421,7 @@ export class Hud {
           this.log(t('hud.system.arenaUnqueued'), '#ffa040');
           break;
         case 'arenaFound': {
-          const cls = CLASSES[ev.oppClass]?.name ?? ev.oppClass;
+          const cls = CLASSES[ev.oppClass] ? classDisplayName(ev.oppClass) : ev.oppClass;
           this.showBanner(t('hud.system.arenaFoundBanner', { name: ev.oppName }));
           this.log(t('hud.system.arenaFoundLog', { name: ev.oppName, level: ev.oppLevel, className: cls }), '#ffa040');
           audio.duelChallenge();
@@ -1478,11 +1470,12 @@ export class Hud {
         case 'castStop': break;
         case 'aura': {
           const tgt = sim.entities.get(ev.targetId);
+          const auraName = abilityDisplayNameFromSource(ev.name);
           if (ev.name === 'Polymorph' && ev.gained) audio.sheep();
           if (ev.targetId === sim.playerId) {
-            this.combatLog(t(ev.gained ? 'hud.combat.auraGain' : 'hud.combat.auraFade', { name: ev.name }), '#d8a0d8');
+            this.combatLog(t(ev.gained ? 'hud.combat.auraGain' : 'hud.combat.auraFade', { name: auraName }), '#d8a0d8');
           } else if (tgt && ev.gained) {
-            this.combatLog(t('hud.combat.auraAfflicted', { target: tgt.name, name: ev.name }), '#d8a0d8');
+            this.combatLog(t('hud.combat.auraAfflicted', { target: entityDisplayName(tgt), name: auraName }), '#d8a0d8');
           }
           break;
         }
@@ -1677,15 +1670,15 @@ export class Hud {
     match = /^(.+) has gone offline\.$/.exec(text);
     if (match) return t('hud.logs.friendOffline', { name: match[1] });
     match = /^Quest accepted: (.+)$/.exec(text);
-    if (match) return t('questUi.logs.accepted', { name: match[1] });
+    if (match) return t('questUi.logs.accepted', { name: questTitleFromSource(match[1]) });
     match = /^Quest abandoned: (.+)$/.exec(text);
-    if (match) return t('questUi.logs.abandoned', { name: match[1] });
+    if (match) return t('questUi.logs.abandoned', { name: questTitleFromSource(match[1]) });
     match = /^Quest completed: (.+)$/.exec(text);
-    if (match) return t('questUi.logs.completed', { name: match[1] });
+    if (match) return t('questUi.logs.completed', { name: questTitleFromSource(match[1]) });
     match = /^(.+) \(Complete\)$/.exec(text);
-    if (match) return t('questUi.logs.ready', { name: match[1], status: t('questUi.log.readyStatus') });
+    if (match) return t('questUi.logs.ready', { name: questTitleFromSource(match[1]), status: t('questUi.log.readyStatus') });
     match = /^Your market listing of (.+) expired and waits at the Merchant\.$/.exec(text);
-    if (match) return t('itemUi.logs.expiredListing', { item: match[1] });
+    if (match) return t('itemUi.logs.expiredListing', { item: itemDisplayNameFromSource(match[1]) });
     return text;
   }
 
@@ -1693,7 +1686,8 @@ export class Hud {
     const quest = QUESTS[questId];
     const match = /^(.+): (\d+)\/(\d+)$/.exec(text);
     if (!quest || !match) return text;
-    const label = quest.objectives.find((objective) => objective.label === match[1])?.label ?? match[1];
+    const objectiveIndex = quest.objectives.findIndex((objective) => objective.label === match[1]);
+    const label = objectiveIndex >= 0 ? questObjectiveLabel(questId, objectiveIndex) : match[1];
     return t('questUi.logs.progress', {
       label,
       current: this.questNumber(Number(match[2])),
@@ -1703,41 +1697,35 @@ export class Hud {
 
   private localizeLootText(text: string): string {
     let match = /^You receive: (.+)\.$/.exec(text);
-    if (match) return t('hud.logs.lootReceiveItem', { item: match[1] });
+    if (match) return t('hud.logs.lootReceiveItem', { item: itemDisplayNameFromSource(match[1]) });
     match = /^You receive (.+)\.$/.exec(text);
     if (match) return t('hud.logs.lootReceiveMoney', { money: this.localizeSimMoney(match[1]) });
     match = /^You loot (.+)\.$/.exec(text);
     if (match) return t('hud.logs.lootMoney', { money: this.localizeSimMoney(match[1]) });
     match = /^Sold (.+) for (.+)\.$/.exec(text);
-    if (match) return t('hud.logs.soldItem', { item: match[1], money: this.localizeSimMoney(match[2]) });
+    if (match) return t('hud.logs.soldItem', { item: itemDisplayNameFromSource(match[1]), money: this.localizeSimMoney(match[2]) });
     match = /^Listed (.+?)( x\d+)? on the World Market for (.+)\.$/.exec(text);
     if (match) return t('itemUi.logs.listedItem', {
-      item: this.itemStackLogName(match[1], match[2]),
+      item: itemStackDisplayName(match[1], match[2]),
       money: this.localizeSimMoney(match[3]),
     });
     match = /^(.+) bought your (.+) for (.+?) (?:\u2014|-) collect (.+) from the Merchant\.$/.exec(text);
     if (match) return t('itemUi.logs.sellerSold', {
       buyer: match[1],
-      item: match[2],
+      item: itemDisplayNameFromSource(match[2]),
       money: this.localizeSimMoney(match[3]),
       proceeds: this.localizeSimMoney(match[4]),
     });
     match = /^Bought (.+?)( x\d+)? for (.+)\.$/.exec(text);
     if (match) return t('itemUi.logs.boughtItem', {
-      item: this.itemStackLogName(match[1], match[2]),
+      item: itemStackDisplayName(match[1], match[2]),
       money: this.localizeSimMoney(match[3]),
     });
     match = /^Reclaimed (.+?)( x\d+)? from the market\.$/.exec(text);
-    if (match) return t('itemUi.logs.reclaimedItem', { item: this.itemStackLogName(match[1], match[2]) });
+    if (match) return t('itemUi.logs.reclaimedItem', { item: itemStackDisplayName(match[1], match[2]) });
     match = /^You collect (.+) from the Merchant\.$/.exec(text);
     if (match) return t('itemUi.logs.collectedMoney', { money: this.localizeSimMoney(match[1]) });
     return text;
-  }
-
-  private itemStackLogName(item: string, stackSuffix?: string): string {
-    if (!stackSuffix) return item;
-    const count = Number(stackSuffix.trim().slice(1));
-    return `${item} ${t('itemUi.bags.stackCount', { count: formatNumber(count, { maximumFractionDigits: 0 }) })}`;
   }
 
   private localizeSimMoney(text: string): string {
@@ -1814,20 +1802,23 @@ export class Hud {
     el.setAttribute('aria-modal', 'false');
     el.setAttribute('aria-labelledby', 'quest-dialog-title');
     el.setAttribute('tabindex', '-1');
-    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(npc.name)}<span class="quest-muted"> &lt;${esc(def?.title ?? '')}&gt;</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">✕</button></div>`;
-    html += `<div class="qd-text">"${esc((def?.greeting ?? t('questUi.dialog.greetingFallback')).replace('$C', CLASSES[this.sim.cfg.playerClass].name.toLowerCase()))}"</div>`;
+    const npcName = npcDisplayName(npc.templateId);
+    const npcTitle = def ? npcDisplayTitle(def.id) : '';
+    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(npcName)}<span class="quest-muted"> &lt;${esc(npcTitle)}&gt;</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">✕</button></div>`;
+    html += `<div class="qd-text">"${esc(def ? npcGreeting(def.id, CLASSES[this.sim.cfg.playerClass].name.toLowerCase()) : t('questUi.dialog.greetingFallback'))}"</div>`;
     if (interesting.length > 0) {
       for (const qid of interesting) {
         const st = this.sim.questState(qid);
         const icon = st === 'ready' ? '<span class="gold">?</span> ' : '<span class="gold">!</span> ';
+        const title = questTitle(qid);
         const aria = st === 'ready'
-          ? t('questUi.dialog.readyQuestAria', { name: QUESTS[qid].name })
-          : t('questUi.dialog.availableQuestAria', { name: QUESTS[qid].name });
-        html += `<button type="button" class="qd-list-item" data-quest="${esc(qid)}" aria-label="${esc(aria)}">${icon}${esc(QUESTS[qid].name)}</button>`;
+          ? t('questUi.dialog.readyQuestAria', { name: title })
+          : t('questUi.dialog.availableQuestAria', { name: title });
+        html += `<button type="button" class="qd-list-item" data-quest="${esc(qid)}" aria-label="${esc(aria)}">${icon}${esc(title)}</button>`;
       }
     }
     if (npc.vendorItems.length > 0) {
-      html += `<button type="button" class="qd-list-item" data-vendor="1" aria-label="${esc(t('questUi.dialog.browseGoodsAria', { name: npc.name }))}"><span class="quest-complete">$</span> ${esc(t('questUi.dialog.browseGoods'))}</button>`;
+      html += `<button type="button" class="qd-list-item" data-vendor="1" aria-label="${esc(t('questUi.dialog.browseGoodsAria', { name: npcName }))}"><span class="quest-complete">$</span> ${esc(t('questUi.dialog.browseGoods'))}</button>`;
     }
     if (def?.market) {
       html += `<button type="button" class="qd-list-item" data-market="1" aria-label="${esc(t('questUi.dialog.worldMarketAria'))}"><span class="gold">$</span> ${esc(t('questUi.dialog.worldMarket'))}</button>`;
@@ -1854,24 +1845,24 @@ export class Hud {
     const quest = QUESTS[questId];
     this.openQuestDetailId = questId;
     const state = this.sim.questState(questId);
-    const text = (state === 'ready' ? quest.completionText : quest.text).replace(/\$N/g, this.sim.player.name);
+    const text = questNarrative(questId, state === 'ready' ? 'completion' : 'text', this.sim.player.name);
     el.setAttribute('role', 'dialog');
     el.setAttribute('aria-modal', 'false');
     el.setAttribute('aria-labelledby', 'quest-dialog-title');
     el.setAttribute('tabindex', '-1');
-    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(quest.name)}${this.questSuggestedPlayersHtml(quest.suggestedPlayers)}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">✕</button></div>`;
+    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(questTitle(questId))}${this.questSuggestedPlayersHtml(quest.suggestedPlayers)}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">✕</button></div>`;
     html += `<div class="qd-text">${esc(text)}</div>`;
     if (state !== 'ready') {
       const qp = this.sim.questLog.get(questId);
       html += `<div class="qd-sub">${esc(t('questUi.detail.objectives'))}</div>`;
-      html += quest.objectives.map((o, i) => `<div class="qd-obj">${esc(this.questProgressText(o.label, qp ? Math.min(qp.counts[i], o.count) : 0, o.count))}</div>`).join('');
+      html += quest.objectives.map((o, i) => `<div class="qd-obj">${esc(this.questProgressText(questObjectiveLabel(questId, i), qp ? Math.min(qp.counts[i], o.count) : 0, o.count))}</div>`).join('');
     }
     html += `<div class="qd-sub">${esc(t('questUi.detail.rewards'))}</div>`;
     html += `<div class="qd-obj">${esc(t('questUi.detail.xpReward', { xp: this.questNumber(quest.xpReward) }))} &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
     const rewardItem = quest.itemRewards[this.sim.cfg.playerClass];
     if (rewardItem) {
       const item = ITEMS[rewardItem];
-      html += `<div class="qd-reward-row" data-reward><span class="qd-reward-label">${esc(t('questUi.detail.itemReward'))}</span>${this.itemIcon(item)}<span class="qd-reward-name" style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'}">${esc(item.name)}</span></div>`;
+      html += `<div class="qd-reward-row" data-reward><span class="qd-reward-label">${esc(t('questUi.detail.itemReward'))}</span>${this.itemIcon(item)}<span class="qd-reward-name" style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'}">${esc(itemDisplayName(item))}</span></div>`;
     }
     el.innerHTML = html;
     const rewardRow = el.querySelector('[data-reward]') as HTMLElement | null;
@@ -1931,13 +1922,13 @@ export class Hud {
     if (!mob?.loot) return;
     this.openLootMobId = mobId;
     const el = $('#loot-window');
-    let html = `<div class="panel-title"><span>${mob.name}</span><span class="x-btn" data-close>✕</span></div>`;
+    let html = `<div class="panel-title"><span>${esc(entityDisplayName(mob))}</span><span class="x-btn" data-close>✕</span></div>`;
     if (mob.loot.copper > 0) {
       html += `<div class="loot-item"><img class="item-icon q-common" src="${iconDataUrl('item', 'coin_gold')}" alt="" draggable="false"><span>${this.moneyHtml(mob.loot.copper)}</span></div>`;
     }
     for (const s of mob.loot.items) {
       const item = ITEMS[s.itemId];
-      html += `<div class="loot-item" data-item="${s.itemId}">${this.itemIcon(item)}<span style="font-size:12px">${item.name}${s.count > 1 ? ' x' + s.count : ''}</span></div>`;
+      html += `<div class="loot-item" data-item="${s.itemId}">${this.itemIcon(item)}<span style="font-size:12px">${esc(itemDisplayName(item))}${s.count > 1 ? ' x' + s.count : ''}</span></div>`;
     }
     el.innerHTML = html;
     el.querySelectorAll('[data-item]').forEach((row) => {
@@ -1981,7 +1972,7 @@ export class Hud {
     // collapses the scrolled list — drop the tooltip and restore the scroll
     this.hideTooltip();
     const scrollTop = el.scrollTop;
-    let html = `<div class="panel-title"><span>${esc(t('itemUi.vendor.goodsTitle', { name: npc.name }))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('itemUi.vendor.close'))}">✕</button></div>`;
+    let html = `<div class="panel-title"><span>${esc(t('itemUi.vendor.goodsTitle', { name: entityDisplayName(npc) }))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('itemUi.vendor.close'))}">✕</button></div>`;
     el.innerHTML = html;
     for (const itemId of npc.vendorItems) {
       const item = ITEMS[itemId];
@@ -1990,8 +1981,9 @@ export class Hud {
       row.type = 'button';
       row.className = 'vendor-item';
       const price = formatLocalizedMoney(item.buyValue);
-      row.setAttribute('aria-label', t('itemUi.vendor.buyAria', { item: item.name, price }));
-      row.innerHTML = `${this.itemIcon(item)}<span class="vi-name">${esc(item.name)}</span><span class="vi-price">${this.moneyHtml(item.buyValue)}</span>`;
+      const itemName = itemDisplayName(item);
+      row.setAttribute('aria-label', t('itemUi.vendor.buyAria', { item: itemName, price }));
+      row.innerHTML = `${this.itemIcon(item)}<span class="vi-name">${esc(itemName)}</span><span class="vi-price">${this.moneyHtml(item.buyValue)}</span>`;
       row.addEventListener('click', () => {
         this.sim.buyItem(npc.id, itemId);
       });
@@ -2135,18 +2127,19 @@ export class Hud {
       const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
       const row = document.createElement('div');
       row.className = 'mkt-row';
+      const itemName = itemDisplayName(item);
       const each = l.count > 1 ? `<br><span class="seller">${esc(t('itemUi.market.each', { money: formatLocalizedMoney(Math.ceil(l.price / l.count)) }))}</span>` : '';
       const stack = l.count > 1 ? ` <span class="stack">${esc(t('itemUi.market.stackCount', { count: formatNumber(l.count, { maximumFractionDigits: 0 }) }))}</span>` : '';
       row.innerHTML =
         `${this.itemIcon(item)}`
-        + `<span class="mkt-name"><span class="nm" style="color:${qColor}">${esc(item.name)}${stack}</span>`
+        + `<span class="mkt-name"><span class="nm" style="color:${qColor}">${esc(itemName)}${stack}</span>`
         + `<span class="seller${l.house ? ' house' : ''}">${esc(l.house ? t('itemUi.market.merchantStock') : l.sellerName)}</span></span>`
         + `<span class="mkt-price">${this.moneyHtml(l.price)}${each}</span>`;
       const btn = document.createElement('button');
       btn.className = 'mkt-btn' + (l.mine ? ' cancel' : '');
       btn.textContent = l.mine ? t('itemUi.market.reclaim') : t('itemUi.market.buy');
       btn.setAttribute('aria-label', t(l.mine ? 'itemUi.market.reclaimAria' : 'itemUi.market.buyAria', {
-        item: item.name,
+        item: itemName,
         price: formatLocalizedMoney(l.price),
       }));
       btn.addEventListener('click', () => {
@@ -2177,7 +2170,7 @@ export class Hud {
     }
     const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
     pick.className = 'mkt-sell-pick';
-    pick.innerHTML = `${this.itemIcon(item)}<span class="ps-name" style="color:${qColor}">${esc(item.name)}</span>`;
+    pick.innerHTML = `${this.itemIcon(item)}<span class="ps-name" style="color:${qColor}">${esc(itemDisplayName(item))}</span>`;
     body.appendChild(pick);
 
     const form = document.createElement('div');
@@ -2232,7 +2225,7 @@ export class Hud {
       const row = document.createElement('div');
       row.className = 'mkt-collect';
       const stack = s.count > 1 ? ` ${t('itemUi.market.stackCount', { count: formatNumber(s.count, { maximumFractionDigits: 0 }) })}` : '';
-      row.innerHTML = `<span style="display:flex;gap:8px;align-items:center">${this.itemIcon(item)}<span style="color:${qColor}">${esc(item.name)}${esc(stack)}</span></span>`;
+      row.innerHTML = `<span style="display:flex;gap:8px;align-items:center">${this.itemIcon(item)}<span style="color:${qColor}">${esc(itemDisplayName(item))}${esc(stack)}</span></span>`;
       this.attachTooltip(row, () => this.itemTooltip(item));
       body.appendChild(row);
     }
@@ -2277,11 +2270,12 @@ export class Hud {
       row.type = 'button';
       row.className = 'bag-item';
       const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
+      const itemName = itemDisplayName(item);
       row.setAttribute('aria-label', t('itemUi.bags.itemAria', {
-        item: item.name,
+        item: itemName,
         count: formatNumber(s.count, { maximumFractionDigits: 0 }),
       }));
-      row.innerHTML = `${this.itemIcon(item)}<span style="color:${qColor}">${esc(item.name)}</span><span class="bi-count">${s.count > 1 ? esc(t('itemUi.bags.stackCount', { count: formatNumber(s.count, { maximumFractionDigits: 0 }) })) : ''}</span>`;
+      row.innerHTML = `${this.itemIcon(item)}<span style="color:${qColor}">${esc(itemName)}</span><span class="bi-count">${s.count > 1 ? esc(t('itemUi.bags.stackCount', { count: formatNumber(s.count, { maximumFractionDigits: 0 }) })) : ''}</span>`;
       row.addEventListener('click', () => {
         if (this.tradeOpen) {
           this.addItemToTrade(s.itemId);
@@ -2358,7 +2352,7 @@ export class Hud {
       row.className = 'equip-slot';
       const qColor = !item ? '#666' : QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
       row.innerHTML = `${item ? this.itemIcon(item) : `<img class="item-icon" style="border-color:#444" src="${iconDataUrl('item', 'slot_empty')}" alt="" draggable="false">`}
-        <div><div class="slot-name">${esc(slot.name)}</div><div class="slot-item" style="color:${qColor}">${item ? esc(item.name) : esc(t('itemUi.equipment.empty'))}</div></div>`;
+        <div><div class="slot-name">${esc(slot.name)}</div><div class="slot-item" style="color:${qColor}">${item ? esc(itemDisplayName(item)) : esc(t('itemUi.equipment.empty'))}</div></div>`;
       if (item) this.attachTooltip(row, () => this.itemTooltip(item));
       col.appendChild(row);
     }
@@ -2471,28 +2465,29 @@ export class Hud {
       const quest = QUESTS[qp.questId];
       const item = document.createElement('button');
       const status = qp.state === 'ready' ? t('questUi.log.readyStatus') : t('questUi.log.activeStatus');
+      const title = questTitle(qp.questId);
       item.type = 'button';
       item.className = 'ql-item' + (qp.questId === this.selectedQuestLogId ? ' sel' : '');
       item.setAttribute('aria-pressed', qp.questId === this.selectedQuestLogId ? 'true' : 'false');
-      item.setAttribute('aria-label', t('questUi.log.selectedQuestAria', { name: quest.name, status }));
-      item.innerHTML = `${esc(quest.name)}${qp.state === 'ready' ? ` <span class="quest-complete">(${esc(t('questUi.log.readyStatus'))})</span>` : ''}`;
+      item.setAttribute('aria-label', t('questUi.log.selectedQuestAria', { name: title, status }));
+      item.innerHTML = `${esc(title)}${qp.state === 'ready' ? ` <span class="quest-complete">(${esc(t('questUi.log.readyStatus'))})</span>` : ''}`;
       item.addEventListener('click', () => { this.selectedQuestLogId = qp.questId; this.renderQuestLog(); });
       list.appendChild(item);
     }
     if (this.selectedQuestLogId) {
       const qp = sim.questLog.get(this.selectedQuestLogId)!;
       const quest = QUESTS[this.selectedQuestLogId];
-      let html = `<div class="qd-sub ql-detail-title">${esc(quest.name)}${this.questSuggestedPlayersHtml(quest.suggestedPlayers)}</div>`;
-      html += quest.objectives.map((o, i) => `<div class="qd-obj${qp.counts[i] >= o.count ? ' done' : ''}">${esc(this.questProgressText(o.label, qp.counts[i], o.count))}</div>`).join('');
-      html += `<div class="qd-text ql-detail-text">${esc(quest.text.replace(/\$N/g, sim.player.name))}</div>`;
+      let html = `<div class="qd-sub ql-detail-title">${esc(questTitle(this.selectedQuestLogId))}${this.questSuggestedPlayersHtml(quest.suggestedPlayers)}</div>`;
+      html += quest.objectives.map((o, i) => `<div class="qd-obj${qp.counts[i] >= o.count ? ' done' : ''}">${esc(this.questProgressText(questObjectiveLabel(this.selectedQuestLogId!, i), qp.counts[i], o.count))}</div>`).join('');
+      html += `<div class="qd-text ql-detail-text">${esc(questNarrative(this.selectedQuestLogId, 'text', sim.player.name))}</div>`;
       html += `<div class="qd-sub">${esc(t('questUi.detail.rewards'))}</div><div class="qd-obj">${esc(t('questUi.detail.xpReward', { xp: this.questNumber(quest.xpReward) }))} &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
       const rewardItem = quest.itemRewards[sim.cfg.playerClass];
       if (rewardItem) {
         const item = ITEMS[rewardItem];
-        html += `<div class="qd-reward-row" data-reward><span class="qd-reward-label">${esc(t('questUi.detail.itemReward'))}</span>${this.itemIcon(item)}<span class="qd-reward-name" style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'}">${esc(item.name)}</span></div>`;
+        html += `<div class="qd-reward-row" data-reward><span class="qd-reward-label">${esc(t('questUi.detail.itemReward'))}</span>${this.itemIcon(item)}<span class="qd-reward-name" style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'}">${esc(itemDisplayName(item))}</span></div>`;
       }
       const giver = NPCS[quest.turnInNpcId];
-      html += `<div class="qd-obj quest-return">${esc(t('questUi.log.returnTo', { name: giver?.name ?? '?' }))}</div>`;
+      html += `<div class="qd-obj quest-return">${esc(t('questUi.log.returnTo', { name: giver ? npcDisplayName(giver.id) : '?' }))}</div>`;
       detail.innerHTML = html;
       const rewardRow = detail.querySelector('[data-reward]') as HTMLElement | null;
       if (rewardRow && rewardItem) this.attachTooltip(rewardRow, () => this.itemTooltip(ITEMS[rewardItem]));
@@ -3161,7 +3156,7 @@ export class Hud {
 
     const itemRow = (s: InvSlot, mine: boolean) => {
       const item = ITEMS[s.itemId];
-      return `<div class="trade-item${mine ? ' mine' : ''}" data-item="${mine ? s.itemId : ''}">${this.itemIcon(item)}<span>${item?.name ?? s.itemId}${s.count > 1 ? ' x' + s.count : ''}</span></div>`;
+      return `<div class="trade-item${mine ? ' mine' : ''}" data-item="${mine ? s.itemId : ''}">${this.itemIcon(item)}<span>${item ? esc(itemDisplayName(item)) : esc(s.itemId)}${s.count > 1 ? ' x' + s.count : ''}</span></div>`;
     };
     el.innerHTML = `
       <div class="panel-title"><span>Trade with ${info.otherName}</span><span class="x-btn" data-close>✕</span></div>
@@ -3529,15 +3524,79 @@ function describeAbilitySummary(known: ResolvedAbility, resourceType: ResourceTy
 }
 
 function abilityDisplayName(def: AbilityDef): string {
-  return def.name;
+  return tEntity({ kind: 'ability', id: def.id, field: 'name' });
 }
 
 function abilityDisplayDescription(def: AbilityDef, damageText: string): string {
-  return def.description.replace('$d', damageText);
+  return tEntity({ kind: 'ability', id: def.id, field: 'description', values: { damage: damageText } });
 }
 
 function classDisplayName(cls: PlayerClass): string {
-  return t(CLASS_NAME_KEYS[cls]);
+  return tEntity({ kind: 'class', id: cls, field: 'name' });
+}
+
+function itemDisplayName(item: ItemDef): string {
+  return tEntity({ kind: 'item', id: item.id, field: 'name' });
+}
+
+function itemDisplayNameFromSource(name: string): string {
+  const item = Object.values(ITEMS).find((candidate) => candidate.name === name);
+  return item ? itemDisplayName(item) : name;
+}
+
+function itemStackDisplayName(item: string, stackSuffix?: string): string {
+  const itemName = itemDisplayNameFromSource(item);
+  if (!stackSuffix) return itemName;
+  const count = Number(stackSuffix.trim().slice(1));
+  return `${itemName} ${t('itemUi.bags.stackCount', { count: formatNumber(count, { maximumFractionDigits: 0 }) })}`;
+}
+
+function mobDisplayName(mobId: string): string {
+  return tEntity({ kind: 'mob', id: mobId, field: 'name' });
+}
+
+function npcDisplayName(npcId: string): string {
+  return tEntity({ kind: 'npc', id: npcId, field: 'name' });
+}
+
+function npcDisplayTitle(npcId: string): string {
+  return tEntity({ kind: 'npc', id: npcId, field: 'title' });
+}
+
+function npcGreeting(npcId: string, className: string): string {
+  return tEntity({ kind: 'npc', id: npcId, field: 'greeting', values: { className } });
+}
+
+function questTitle(questId: string): string {
+  return tEntity({ kind: 'quest', id: questId, field: 'title' });
+}
+
+function questNarrative(questId: string, field: 'text' | 'completion', playerName: string): string {
+  return tEntity({ kind: 'quest', id: questId, field, values: { playerName } });
+}
+
+function questObjectiveLabel(questId: string, objectiveIndex: number): string {
+  return tEntity({ kind: 'questObjective', questId, objectiveIndex, field: 'label' });
+}
+
+function questTitleFromSource(name: string): string {
+  const quest = Object.values(QUESTS).find((candidate) => candidate.name === name);
+  return quest ? questTitle(quest.id) : name;
+}
+
+function entityDisplayName(entity: Entity): string {
+  if (entity.kind === 'mob') return mobDisplayName(entity.templateId);
+  if (entity.kind === 'npc') return npcDisplayName(entity.templateId);
+  return entity.name;
+}
+
+function abilityDisplayNameFromSource(name: string): string {
+  const ability = Object.values(ABILITIES).find((candidate) => candidate.name === name);
+  return ability ? abilityDisplayName(ability) : name;
+}
+
+function combatAbilityName(name: string | null): string {
+  return name ? abilityDisplayNameFromSource(name) : t('hud.combat.attack');
 }
 
 function resourceDisplayName(resourceType: ResourceType | null): string {
