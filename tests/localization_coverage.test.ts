@@ -93,13 +93,36 @@ describe("i18n Localization Key Coverage", () => {
     "abilityUi.tooltip.finisherDamage",
     "abilityUi.resources.mana",
   ];
+  const phaseFourQuestKeys: TranslationKey[] = [
+    "questUi.tracker.title",
+    "questUi.tracker.complete",
+    "questUi.log.title",
+    "questUi.log.summary",
+    "questUi.log.emptyTitle",
+    "questUi.log.emptyHint",
+    "questUi.log.returnTo",
+    "questUi.log.abandon",
+    "questUi.dialog.accept",
+    "questUi.dialog.completeQuest",
+    "questUi.dialog.back",
+    "questUi.dialog.availableQuestAria",
+    "questUi.detail.objectives",
+    "questUi.detail.rewards",
+    "questUi.detail.xpReward",
+    "questUi.detail.objectiveProgress",
+    "questUi.logs.accepted",
+    "questUi.errors.unavailable",
+  ];
   const interpolationValues: Record<string, string | number> = {
+    active: 3,
     ability: "Fireball",
     action: "Open Chat",
     amount: 42,
     base: 14,
     className: "Mage",
     command: "/dance",
+    completed: 12,
+    count: 5,
     cost: 30,
     current: 120,
     delta: "+13",
@@ -128,11 +151,14 @@ describe("i18n Localization Key Coverage", () => {
     seconds: 7,
     slot: 5,
     source: "Wolf",
+    status: "Complete",
     summary: "30 Mana / Instant",
     tab: "Damage",
     target: "Wolf",
     view: "Current",
     winner: "Rook",
+    total: 125,
+    xp: 450,
     zone: "Northshire",
   };
 
@@ -263,6 +289,17 @@ describe("i18n Localization Key Coverage", () => {
     setLanguage("en");
   });
 
+  it("should include current phase quest log and dialogue keys in every locale", () => {
+    for (const key of phaseFourQuestKeys) {
+      for (const lang of supportedLanguages) {
+        setLanguage(lang);
+        expect(t(key), `${lang}.${key}`).not.toBe(key);
+        expect(t(key).trim().length, `${lang}.${key}`).toBeGreaterThan(0);
+      }
+    }
+    setLanguage("en");
+  });
+
   it("should preserve and render every Phase 2 HUD interpolation placeholder in every locale", () => {
     const phaseTwoDynamicKeys = flattenStrings(en.hud, "hud")
       .map(({ key, value }) => ({ key, expected: placeholders(value) }))
@@ -294,6 +331,30 @@ describe("i18n Localization Key Coverage", () => {
     const allLocales: Record<string, typeof en> = { en, ...locales };
 
     for (const { key, expected } of phaseThreeDynamicKeys) {
+      for (const [lang, locale] of Object.entries(allLocales)) {
+        const template = nestedString(locale, key);
+        expect(placeholders(template), `${lang}.${key} placeholders`).toEqual(expected);
+        expect(isSupportedLanguage(lang)).toBe(true);
+        if (!isSupportedLanguage(lang)) continue;
+        setLanguage(lang);
+        const rendered = t(key, interpolationValues);
+        expect(rendered, `${lang}.${key} should not leave placeholders unresolved`).not.toMatch(/\{[A-Za-z][A-Za-z0-9]*\}/);
+        for (const placeholder of expected) {
+          expect(rendered, `${lang}.${key} should include ${placeholder}`).toContain(String(interpolationValues[placeholder]));
+        }
+      }
+    }
+
+    setLanguage("en");
+  });
+
+  it("should preserve and render every Phase 4 quest UI interpolation placeholder in every locale", () => {
+    const phaseFourDynamicKeys = flattenStrings(en.questUi, "questUi")
+      .map(({ key, value }) => ({ key, expected: placeholders(value) }))
+      .filter(({ expected }) => expected.length > 0);
+    const allLocales: Record<string, typeof en> = { en, ...locales };
+
+    for (const { key, expected } of phaseFourDynamicKeys) {
       for (const [lang, locale] of Object.entries(allLocales)) {
         const template = nestedString(locale, key);
         expect(placeholders(template), `${lang}.${key} placeholders`).toEqual(expected);
@@ -345,6 +406,23 @@ describe("i18n Localization Key Coverage", () => {
     const finisher = t("abilityUi.tooltip.finisherDamage", { base: 14, perCombo: 7 });
     expect(finisher).toContain("14");
     expect(finisher).toContain("7");
+
+    setLanguage("en");
+  });
+
+  it("should format Phase 4 quest UI templates without dropping dynamic values", () => {
+    setLanguage("de_DE");
+    expect(t("questUi.log.summary", { active: 3, completed: 8 })).toContain("3");
+    expect(t("questUi.log.summary", { active: 3, completed: 8 })).toContain("8");
+
+    setLanguage("fr_FR");
+    expect(t("questUi.dialog.availableQuestAria", { name: "A Swift Response" })).toContain("A Swift Response");
+
+    setLanguage("ja_JP");
+    const progress = t("questUi.detail.objectiveProgress", { label: "Forest Wolves slain", current: 4, total: 8 });
+    expect(progress).toContain("Forest Wolves slain");
+    expect(progress).toContain("4");
+    expect(progress).toContain("8");
 
     setLanguage("en");
   });
