@@ -829,8 +829,8 @@ describe("i18n Localization Key Coverage", () => {
     }
 
     setLanguage("es");
-    expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "war_toughness" && entry.field === "name")!)).toContain("dureza");
-    expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "arms.mastery" && entry.field === "description")!)).toContain("dano");
+    expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "war_toughness" && entry.field === "name")!)).toContain("Dureza");
+    expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "arms.mastery" && entry.field === "description")!)).toContain("daño");
 
     setLanguage("zh_CN");
     expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "war_cruelty" && entry.field === "name")!)).toContain("残忍");
