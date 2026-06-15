@@ -28,6 +28,8 @@ export interface MobileControlCallbacks {
   onLeaderboard(): void;
   /** Toggle world nameplates; returns the new on/off state to sync the button glow. */
   onNameplates(): boolean;
+  /** Toggle background music; returns whether music is now enabled. */
+  onMusic(): boolean;
 }
 
 export function isPhoneTouchDevice(win: Pick<Window, 'matchMedia'> = window): boolean {
@@ -139,6 +141,13 @@ export class MobileControls {
     this.bindButton('mobile-nameplates', () => {
       const on = this.callbacks.onNameplates();
       nameplatesBtn?.classList.toggle('active', on);
+    });
+    const musicBtn = document.getElementById('mobile-music');
+    this.bindButton('mobile-music', () => {
+      const on = this.callbacks.onMusic();
+      // mirror the desktop #mm-music control: a diagonal slash (.mm-muted) signals
+      // "off", rather than dimming the note
+      musicBtn?.classList.toggle('mm-muted', !on);
     });
     this.bindButton('mobile-more', () => {
       this.root?.classList.toggle('expanded');
