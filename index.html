@@ -3139,11 +3139,11 @@
     width: 22px;
     height: 22px;
   }
-  body.mobile-touch #chatlog-wrap { left: 10px; bottom: calc(160px + env(safe-area-inset-bottom)); width: min(340px, calc(100vw - 20px)); display: none; z-index: 24; }
+  body.mobile-touch #chatlog-wrap { left: max(10px, env(safe-area-inset-left)); bottom: calc(160px + env(safe-area-inset-bottom)); width: min(340px, calc(100vw - 20px)); display: none; z-index: 24; }
   body.mobile-touch.mobile-chat-open #chatlog-wrap { display: block; }
   body.mobile-touch #chatlog-frame { height: 126px; }
   body.mobile-touch #chatlog-tabs { transform: scale(0.92); transform-origin: left bottom; }
-  body.mobile-touch #chat-input { left: 10px; bottom: calc(296px + env(safe-area-inset-bottom)); width: min(360px, calc(100vw - 20px)); }
+  body.mobile-touch #chat-input { left: max(10px, env(safe-area-inset-left)); bottom: calc(296px + env(safe-area-inset-bottom)); width: min(360px, calc(100vw - 20px)); }
   body.mobile-touch #player-frame {
     position: fixed;
     left: max(8px, env(safe-area-inset-left));
@@ -3387,9 +3387,9 @@
     body.mobile-touch #community-hud { top: 108px; right: max(8px, env(safe-area-inset-right)); width: 62px; padding: 4px; gap: 4px; }
     body.mobile-touch .community-link { height: 40px; }
     body.mobile-touch .community-link svg { width: 20px; height: 20px; }
-    body.mobile-touch #chatlog-wrap { left: 10px; bottom: calc(112px + env(safe-area-inset-bottom)); width: min(330px, 44vw); }
+    body.mobile-touch #chatlog-wrap { left: max(10px, env(safe-area-inset-left)); bottom: calc(112px + env(safe-area-inset-bottom)); width: min(330px, 44vw); }
     body.mobile-touch #chatlog-frame { height: 92px; }
-    body.mobile-touch #chat-input { left: 10px; bottom: calc(213px + env(safe-area-inset-bottom)); width: min(330px, 44vw); }
+    body.mobile-touch #chat-input { left: max(10px, env(safe-area-inset-left)); bottom: calc(213px + env(safe-area-inset-bottom)); width: min(330px, 44vw); }
     body.mobile-touch #player-frame {
       left: max(6px, env(safe-area-inset-left));
       top: max(6px, env(safe-area-inset-top));
