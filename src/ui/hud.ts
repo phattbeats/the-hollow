@@ -3262,7 +3262,7 @@ export class Hud {
     if (this.optionsView === 'graphics') { this.renderGraphics(); return; }
     if (this.optionsView === 'audio') { this.renderAudio(); return; }
     const el = $('#options-menu');
-    el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.gameMenu'))}</span><span class="x-btn" data-close>✕</span></div>`;
+    el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.gameMenu'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">✕</button></div>`;
     const list = document.createElement('div');
     list.className = 'opt-list';
     const add = (text: string, onClick: () => void) => {
@@ -3342,7 +3342,7 @@ export class Hud {
 
   private settingsViewShell(title: string): HTMLElement {
     const el = $('#options-menu');
-    el.innerHTML = `<div class="panel-title"><span>${esc(title)}</span><span class="x-btn" data-close>✕</span></div>`;
+    el.innerHTML = `<div class="panel-title"><span>${esc(title)}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">✕</button></div>`;
     const body = document.createElement('div');
     body.className = 'set-rows';
     el.appendChild(body);
@@ -3420,7 +3420,7 @@ export class Hud {
 
   private renderKeybinds(): void {
     const el = $('#options-menu');
-    el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.keyBindings'))}</span><span class="x-btn" data-close>✕</span></div>`;
+    el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.keyBindings'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">✕</button></div>`;
     const note = document.createElement('div');
     note.className = 'kb-note';
     note.textContent = this.keybindNote || t('hud.options.keybindHelp');
