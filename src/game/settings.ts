@@ -18,6 +18,10 @@ export const SETTING_RANGES = {
   // off by default: always-on click-to-move would disrupt the precise melee
   // positioning the team wanted to preserve, so it's opt-in (#95)
   clickToMove: { min: 0, max: 1, def: 0 },
+  // touch-only: scales the camera (look) joystick turn/pitch rate. The Camera
+  // Speed slider only scales mouselook, so before this phones had no way to
+  // tune look sensitivity; surfaced in Graphics only on phone touch devices.
+  touchLookSpeed: { min: 0.4, max: 1.8, def: 1 },
 } as const;
 
 export const BOOL_SETTINGS = {

@@ -64,6 +64,16 @@ describe('Settings', () => {
     expect(b.get('leftHandedTouch')).toBe(true);
   });
 
+  it('defaults touch look speed to 1x, clamps, and persists', () => {
+    const a = new Settings();
+    expect(a.get('touchLookSpeed')).toBe(SETTING_RANGES.touchLookSpeed.def);
+    expect(a.set('touchLookSpeed', 99)).toBe(SETTING_RANGES.touchLookSpeed.max);
+    expect(a.set('touchLookSpeed', -5)).toBe(SETTING_RANGES.touchLookSpeed.min);
+    a.set('touchLookSpeed', 1.5);
+    const b = new Settings();
+    expect(b.get('touchLookSpeed')).toBe(1.5);
+  });
+
   it('falls back to defaults for missing/corrupt keys', () => {
     localStorage.setItem('woc_settings', JSON.stringify({ cameraSpeed: 0.5 }));
     const s = new Settings();

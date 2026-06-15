@@ -472,6 +472,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     const v = settings.set(key as keyof typeof SETTING_RANGES, value as number);
     switch (key) {
       case 'cameraSpeed': input.setCameraSpeed(v); break;
+      case 'touchLookSpeed': input.setTouchLookSpeed(v); break;
       case 'sfxVolume': audio.setVolume(v); break;
       case 'musicVolume': music.setVolume(v); break;
       case 'brightness': renderer.setBrightness(v); break;

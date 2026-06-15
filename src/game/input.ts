@@ -72,6 +72,9 @@ export class Input {
   private touchJump = false;
   private touchLookActive = false;
   private touchLookVector = { x: 0, y: 0 };
+  // multiplier on the touch look (camera joystick) rate; setTouchLookSpeed
+  // drives it from the settings menu. Mouselook uses lookSensitivity instead.
+  private touchLookSpeed = 1;
 
   constructor(private canvas: HTMLCanvasElement, private cb: InputCallbacks, private keybinds: Keybinds) {
     window.addEventListener('keydown', (e) => this.onKeyDown(e));
@@ -139,6 +142,10 @@ export class Input {
     this.lookSensitivity = BASE_LOOK_SENS * mult;
   }
 
+  setTouchLookSpeed(mult: number): void {
+    this.touchLookSpeed = mult;
+  }
+
   setTouchMove(move: TouchMoveInput): void {
     const changed = move.forward !== this.touchMove.forward || move.back !== this.touchMove.back
       || move.strafeLeft !== this.touchMove.strafeLeft || move.strafeRight !== this.touchMove.strafeRight;
@@ -185,8 +192,8 @@ export class Input {
 
   updateTouchLook(dt: number): void {
     if (!this.touchLookActive) return;
-    this.camYaw -= this.touchLookVector.x * TOUCH_LOOK_YAW_RATE * dt;
-    this.camPitch = Math.min(1.35, Math.max(-0.4, this.camPitch + this.touchLookVector.y * TOUCH_LOOK_PITCH_RATE * dt));
+    this.camYaw -= this.touchLookVector.x * TOUCH_LOOK_YAW_RATE * this.touchLookSpeed * dt;
+    this.camPitch = Math.min(1.35, Math.max(-0.4, this.camPitch + this.touchLookVector.y * TOUCH_LOOK_PITCH_RATE * this.touchLookSpeed * dt));
   }
 
   isMouselookActive(): boolean {

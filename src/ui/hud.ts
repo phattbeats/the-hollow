@@ -25,6 +25,7 @@ import { iconDataUrl, iconCanvas, QUALITY_COLOR, raidMarkerDataUrl, RAID_MARKER_
 import { svgIcon } from './ui_icons';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
 import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES } from '../game/settings';
+import { isPhoneTouchDevice } from '../game/mobile_controls';
 import { chatPlayerContextActions } from './player_context_menu';
 import { TouchPeekGuard, TOOLTIP_PEEK_MS } from './touch_peek';
 import {
@@ -4424,6 +4425,9 @@ export class Hud {
   private renderGraphics(): void {
     const body = this.settingsViewShell('Graphics');
     this.settingSlider(body, 'Camera Speed', 'cameraSpeed');
+    // Camera Speed only scales mouselook; on touch the camera joystick has its
+    // own rate, so phones get a dedicated sensitivity slider here.
+    if (isPhoneTouchDevice()) this.settingSlider(body, 'Touch Look Speed', 'touchLookSpeed');
     this.settingSlider(body, 'Brightness', 'brightness');
     this.settingSlider(body, 'Render Quality', 'renderScale');
     this.settingToggle(body, 'Fullscreen', 'fullscreen');
