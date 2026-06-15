@@ -4,7 +4,7 @@ import { Entity, dist2d } from '../src/sim/types';
 import { CRYPT_DOOR_POS, DUNGEON_LIST, DUNGEON_X_THRESHOLD, ITEMS, LAKE, MOBS, NPCS, QUESTS, zoneAt, zoneWelcomeText } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
 import { groundHeight, WATER_LEVEL } from '../src/sim/world';
-import { isBlocked, resolvePosition } from '../src/sim/colliders';
+import { cameraOcclusion, isBlocked, resolvePosition } from '../src/sim/colliders';
 
 const SEED = 20061;
 
@@ -130,6 +130,32 @@ describe('collision & terrain', () => {
     const open = resolvePosition(SEED, 0, -40, 0.5); // open road
     expect(open.x).toBe(0);
     expect(open.z).toBe(-40);
+  });
+
+  it('camera occlusion pulls in at prop surfaces without blocking clear or overhead rays', () => {
+    const groundY = groundHeight(10, 4, SEED);
+    const eyeY = groundY + 2;
+
+    const hit = cameraOcclusion(SEED, 10, eyeY, 4, 10, eyeY + 1.5, 20, 0.35);
+    expect(hit).toBeGreaterThan(0);
+    expect(hit).toBeLessThan(1);
+
+    const clear = cameraOcclusion(SEED, 0, eyeY, -40, 0, eyeY + 1.5, -48, 0.35);
+    expect(clear).toBe(1);
+
+    const overhead = cameraOcclusion(SEED, 10, eyeY, 4, 10, eyeY + 24, 20, 0.35);
+    expect(overhead).toBe(1);
+  });
+
+  it('camera occlusion ignores campfires when the ray is above their visual height', () => {
+    const groundY = groundHeight(3, -4, SEED);
+
+    const eyeHeightRay = cameraOcclusion(SEED, 3, groundY + 2.0, -12, 3, groundY + 2.2, 4, 0.35);
+    expect(eyeHeightRay).toBe(1);
+
+    const lowRay = cameraOcclusion(SEED, 3, groundY + 0.8, -12, 3, groundY + 0.9, 4, 0.35);
+    expect(lowRay).toBeGreaterThan(0);
+    expect(lowRay).toBeLessThan(1);
   });
 });
 

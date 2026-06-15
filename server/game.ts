@@ -12,6 +12,7 @@ import { SocialService } from './social';
 import type { Presence, PresenceStatus, SocialActor, SocialEvent, SocialTransport } from './social';
 import { PgSocialDb } from './social_db';
 import { REALM } from './realm';
+import { isOverheadEmoteId } from '../src/world_api';
 
 const WORLD_SEED = 20061;
 // Interest management: the client renders entities out to 80yd, so new
@@ -171,6 +172,10 @@ function dynamicFields(e: Entity): Record<string, unknown> {
   if (e.aggroTargetId !== null) out.aggro = e.aggroTargetId;
   if (e.tappedById !== null) out.tap = e.tappedById;
   if (e.ownerId !== null) out.own = e.ownerId;
+  if (e.overheadEmoteId) {
+    out.emo = e.overheadEmoteId;
+    out.emoSeq = e.overheadEmoteSeq;
+  }
   // top hate-table entries so the party threat meter shows real numbers
   if (e.kind === 'mob' && !e.dead && e.threat.size > 0) out.thr = threatEntries(e, 8);
   if (e.auras.length > 0) {
@@ -761,6 +766,9 @@ export class GameServer {
         this.logChat(session, this.routeRememberedChat(session, text, pid));
         break;
       }
+      case 'emote':
+        if (isOverheadEmoteId(msg.emote)) sim.playEmote(msg.emote, pid);
+        break;
       // party
       case 'pinvite': if (typeof msg.id === 'number') sim.partyInvite(msg.id, pid); break;
       case 'paccept': sim.partyAccept(pid); break;

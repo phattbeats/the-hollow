@@ -11,7 +11,7 @@ import {
   emptyMoveInput,
 } from '../sim/types';
 import { normalizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
-import type { ArenaInfo, CharacterSearchResult, DuelInfo, FriendInfo, IWorld, LeaderboardEntry, MarketInfo, PartyInfo, PresenceStatus, SocialInfo, TradeInfo } from '../world_api';
+import { isOverheadEmoteId, type ArenaInfo, type CharacterSearchResult, type DuelInfo, type FriendInfo, type IWorld, type LeaderboardEntry, type MarketInfo, type OverheadEmoteId, type PartyInfo, type PresenceStatus, type SocialInfo, type TradeInfo } from '../world_api';
 
 // ---------------------------------------------------------------------------
 // REST
@@ -203,6 +203,7 @@ function blankEntity(id: number): Entity {
     pos: { x: 0, y: 0, z: 0 }, prevPos: { x: 0, y: 0, z: 0 }, facing: 0, prevFacing: 0,
     vy: 0, onGround: true, fallStartY: 0,
     hp: 1, maxHp: 1, resource: 0, maxResource: 0, resourceType: null,
+    overheadEmoteId: null, overheadEmoteUntil: 0, overheadEmoteSeq: 0,
     stats: { str: 0, agi: 0, sta: 0, int: 0, spi: 0, armor: 0 },
     weapon: { min: 1, max: 2, speed: 2 },
     attackPower: 0, rangedPower: 0, critChance: 0.05, dodgeChance: 0.05, moveSpeed: 7, hostile: false,
@@ -505,6 +506,9 @@ export class ClientWorld implements IWorld {
       e.facing = w.f;
       e.hp = w.hp;
       e.maxHp = w.mhp;
+      e.overheadEmoteId = isOverheadEmoteId(w.emo) ? w.emo : null;
+      e.overheadEmoteUntil = e.overheadEmoteId ? Number.POSITIVE_INFINITY : 0;
+      if (typeof w.emoSeq === 'number') e.overheadEmoteSeq = w.emoSeq;
       e.dead = !!w.dead;
       e.lootable = !!w.loot;
       e.hostile = !!w.h;
@@ -696,6 +700,14 @@ export class ClientWorld implements IWorld {
   }
   chat(text: string): void {
     this.cmd({ cmd: 'chat', text });
+  }
+  playEmote(emoteId: OverheadEmoteId): void {
+    if (!this.player.dead) {
+      this.player.overheadEmoteId = emoteId;
+      this.player.overheadEmoteUntil = Number.POSITIVE_INFINITY;
+      this.player.overheadEmoteSeq += 1;
+    }
+    this.cmd({ cmd: 'emote', emote: emoteId });
   }
   // social systems
   partyInvite(targetPid: number): void {

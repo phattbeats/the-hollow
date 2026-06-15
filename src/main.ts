@@ -413,6 +413,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
           break;
       }
     },
+    onEmoteWheel: (open) => hud.setEmoteWheelOpen(open),
     onClickPick: (x, y, button) => handlePick(x, y, button),
     canUseGameKeys: () => !hud.isModalOpen() && chatInput.style.display !== 'block',
   }, keybinds);

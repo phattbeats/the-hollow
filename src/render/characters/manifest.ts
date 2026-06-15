@@ -3,6 +3,13 @@
 // Pure data + dispatch — no three.js imports, no loading.
 import type { Entity } from '../../sim/types';
 import { MOBS } from '../../sim/data';
+import type { OverheadEmoteId } from '../../world_api';
+
+export interface EmoteClipSpec {
+  clips: readonly string[];
+  timeScale?: number;
+  repeats?: number;
+}
 
 export interface ClipMap {
   idle: string;
@@ -19,9 +26,13 @@ export interface ClipMap {
   sitIdle?: string;
   /** swim base (prone pitch is procedural on top) */
   swim?: string;
+  /** airborne base pose while jumping/falling */
+  jump?: string;
   walkBack?: string;
   /** one-shot played on respawn (skeleton awaken / boss taunt) */
   flourish?: string;
+  /** player-facing overhead emote one-shots; clips are sourced from the GLB. */
+  emote?: Partial<Record<OverheadEmoteId, EmoteClipSpec>>;
 }
 
 export interface AttachDef {
@@ -58,6 +69,22 @@ export interface VisualDef {
 // Clip sets per source rig family
 // ---------------------------------------------------------------------------
 
+const KAYKIT_EMOTES: Partial<Record<OverheadEmoteId, EmoteClipSpec>> = {
+  wave: { clips: ['Spellcast_Raise', 'Cheer'], timeScale: 0.9 },
+  laugh: { clips: ['Hit_A', 'Cheer'], timeScale: 1.45, repeats: 2 },
+  question: { clips: ['Block', 'Spellcast_Raise'], timeScale: 1.15 },
+  cheer: { clips: ['Cheer'], timeScale: 1.05, repeats: 2 },
+  dance: { clips: ['Running_Strafe_Left', 'Running_Strafe_Right', 'Cheer'], timeScale: 1.05, repeats: 2 },
+  point: { clips: ['Spellcast_Shoot', '2H_Ranged_Shoot'], timeScale: 0.95 },
+  flex: { clips: ['Block', 'Cheer'], timeScale: 0.8 },
+  salute: { clips: ['Spellcast_Raise', 'Block'], timeScale: 1.18 },
+  cry: { clips: ['Hit_A', 'Sit_Floor_Down'], timeScale: 0.65 },
+  bow: { clips: ['Sit_Floor_Down', 'Spellcast_Raise'], timeScale: 1.35 },
+  clap: { clips: ['1H_Melee_Attack_Slice_Diagonal', 'Cheer'], timeScale: 1.55, repeats: 2 },
+  roar: { clips: ['2H_Melee_Attack_Chop', '1H_Melee_Attack_Chop', 'Cheer'], timeScale: 0.9 },
+  kneel: { clips: ['Sit_Floor_Down'], timeScale: 0.85 },
+};
+
 const kaykit = (attack: string[], idle = 'Idle'): ClipMap => ({
   idle,
   walk: 'Walking_A',
@@ -70,6 +97,8 @@ const kaykit = (attack: string[], idle = 'Idle'): ClipMap => ({
   sitDown: 'Sit_Floor_Down',
   sitIdle: 'Sit_Floor_Idle',
   swim: 'Lie_Idle',
+  jump: 'Jump_Idle',
+  emote: KAYKIT_EMOTES,
 });
 
 const skeletonClips = (attack: string[], flourish = 'Skeletons_Awaken_Standing'): ClipMap => ({
