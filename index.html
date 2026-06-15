@@ -3881,6 +3881,10 @@
     border: 2px solid #b7a35a80; background: radial-gradient(circle at 50% 50%, #1b1b2960 0%, #0b0b1280 62%, #0505089a 100%);
     box-shadow: 0 3px 18px #0008, inset 0 1px 0 #ffffff12, inset 0 0 26px #0008;
     opacity: 0.4; transition: opacity .18s ease;
+    /* Joystick Size setting: grow/shrink from the anchored bottom corner so the
+       pad stays in the same screen position while resizing. --joy-scale is set
+       on #mobile-controls by applySetting('joystickScale'). */
+    transform: scale(var(--joy-scale, 1)); transform-origin: left bottom;
   }
   body.mobile-touch .mobile-joystick.active { opacity: 1; }
   @media (prefers-reduced-motion: reduce) {
@@ -3906,7 +3910,7 @@
     box-shadow: 0 3px 18px #0008, inset 0 1px 0 #ffffff12, inset 0 0 26px #0008, 0 0 16px 3px #e3c66a55;
   }
   body.mobile-touch #mobile-camera-joystick {
-    left: auto; right: max(18px, env(safe-area-inset-right));
+    left: auto; right: max(18px, env(safe-area-inset-right)); transform-origin: right bottom;
   }
   body.mobile-touch .mobile-stick {
     position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%;
