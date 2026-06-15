@@ -219,3 +219,23 @@ export function isBlocked(seed: number, x: number, z: number, r = 0.5): boolean 
   const res = resolvePosition(seed, x, z, r);
   return Math.abs(res.x - x) > 1e-4 || Math.abs(res.z - z) > 1e-4;
 }
+
+export function lineOfSightClear(
+  seed: number,
+  from: { x: number; z: number },
+  to: { x: number; z: number },
+  r = 0.05,
+): boolean {
+  const dx = to.x - from.x;
+  const dz = to.z - from.z;
+  const d = Math.hypot(dx, dz);
+  if (d < 1e-6) return true;
+  const steps = Math.max(2, Math.ceil(d / 0.5));
+  for (let i = 1; i < steps; i++) {
+    const t = i / steps;
+    const x = from.x + dx * t;
+    const z = from.z + dz * t;
+    if (isBlocked(seed, x, z, r)) return false;
+  }
+  return true;
+}
