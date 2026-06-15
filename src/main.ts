@@ -19,6 +19,7 @@ import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeybo
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
 import { formatNumber, getLanguage, isSupportedLanguage, languageTag, setLanguage, t, type SupportedLanguage, type TranslationKey } from './ui/i18n';
+import { tServer } from './ui/server_i18n';
 import { tEntity } from './ui/entity_i18n';
 import { hydrateIcons } from './ui/ui_icons';
 
@@ -97,6 +98,13 @@ function userFacingApiError(err: unknown): string {
   if (normalized === 'this account has been banned.') return t('errors.api.accountBanned');
   if (normalized === 'character already in world') return t('errors.api.alreadyInWorld');
   if (normalized === 'this character must be renamed before entering the world.') return t('errors.api.renameBeforeEntering');
+  // WebSocket disconnect reasons surfaced through the fatal overlay (net/online.ts).
+  if (normalized === 'connection to the server was lost.') return t('loading.connectionLost');
+  if (normalized === 'rejected by server') return t('loading.connectionRejected');
+  // Moderation kicks and the login brute-force throttle (server/admin.ts, server/main.ts).
+  if (normalized === 'this account is suspended.') return tServer('moderation.suspended');
+  if (normalized === 'a moderator requires one of your characters to be renamed.') return tServer('moderation.forceRename');
+  if (normalized.startsWith('too many failed attempts')) return tServer('moderation.tooManyFailed');
   // Transport/runtime failures are diagnostic code errors. Preserve their
   // English source text so browser logs and support reports match exactly.
   return text;

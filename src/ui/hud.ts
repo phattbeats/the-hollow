@@ -25,6 +25,7 @@ import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANG
 import { chatPlayerContextActions } from './player_context_menu';
 import { formatMoney as formatLocalizedMoney, formatNumber, moneyParts, t, type TranslationKey } from './i18n';
 import { tEntity } from './entity_i18n';
+import { localizeServerText } from './server_i18n';
 import { tTalent } from './talent_i18n';
 import {
   talentsFor, computeTalentModifiers, validateAllocation, dormantNodes, pointsSpent,
@@ -162,6 +163,11 @@ const BIND_ACTION_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
   social: 'hud.keybinds.actions.social',
   arena: 'hud.keybinds.actions.arena',
   chat: 'hud.keybinds.actions.chat',
+  // Reuse the existing window/feature names so these labels localize everywhere
+  // without duplicating strings (these two ids were previously absent from the
+  // map and fell back to the raw English BIND_ACTIONS labels).
+  talents: 'game.talents.title',
+  leaderboard: 'game.leaderboard.title',
 };
 const CHAT_TEMPLATE_KEYS = {
   party: 'hud.chat.templates.party',
@@ -268,7 +274,7 @@ export class Hud {
     this.minimapCtx = mm.getContext('2d')!;
     this.minimapBg = this.renderTerrainCanvas(140, { minX: WORLD_MIN_X, maxX: WORLD_MAX_X, minZ: WORLD_MIN_Z, maxZ: WORLD_MAX_Z });
     mm.style.cursor = 'pointer';
-    mm.title = 'Open world map';
+    mm.title = t('controls.worldMap');
     mm.addEventListener('click', () => this.toggleMap());
     $('#release-btn').addEventListener('click', () => { this.sim.releaseSpirit(); });
     // classic WoW: the player interaction menu opens from the target portrait
@@ -2054,6 +2060,8 @@ export class Hud {
     if (match) return t('itemUi.errors.ownListing');
     match = /^All instances of (.+) are busy\. Try again soon\.$/.exec(text);
     if (match) return t('worldContent.dungeonInstanceBusy', { name: dungeonDisplayNameFromSource(match[1]) });
+    const server = localizeServerText(text);
+    if (server !== null) return server;
     return text;
   }
 
@@ -2165,6 +2173,8 @@ export class Hud {
         count: formatNumber(Number(match[2]), { maximumFractionDigits: 0 }),
       });
     }
+    const server = localizeServerText(text);
+    if (server !== null) return server;
     return text;
   }
 
@@ -2201,7 +2211,7 @@ export class Hud {
   }
 
   showError(text: string): void {
-    this.errorEl.textContent = text;
+    this.errorEl.textContent = this.localizeErrorText(text);
     this.errorEl.style.opacity = '1';
     clearTimeout(this.errorTimer);
     this.errorTimer = window.setTimeout(() => { this.errorEl.style.opacity = '0'; }, 1600);
@@ -3217,7 +3227,7 @@ export class Hud {
     const rowHtml = (r: LeaderboardEntry, mine: boolean): string => {
       const cls = CLASSES[r.cls];
       const star = r.prestigeRank > 0 ? `<span class="lb-prestige" title="${t('game.prestige.rank')} ${r.prestigeRank}">★${r.prestigeRank}</span> ` : '';
-      const title = cls ? ` title="${cls.name}"` : '';
+      const title = cls ? ` title="${esc(classDisplayName(r.cls))}"` : '';
       return `<div class="lb-row${mine ? ' lb-mine' : ''}"><span class="lb-rank">${r.rank}</span>`
         + `<span class="lb-name"${title}>${star}${r.name}${mine ? ` <span class="lb-you">(${t('game.leaderboard.you')})</span>` : ''}</span>`
         + `<span class="lb-lvl">${r.level}</span><span class="lb-vlvl">${r.virtualLevel}</span><span class="lb-xp">${formatXp(r.lifetimeXp)}</span></div>`;

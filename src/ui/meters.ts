@@ -13,6 +13,7 @@ import type { IWorld } from '../world_api';
 import type { SimEvent } from '../sim/types';
 import { CLASSES } from '../sim/data';
 import { t, type TranslationKey } from './i18n';
+import { tEntity } from './entity_i18n';
 
 const ENCOUNTER_END_SECONDS = 5;
 const HISTORY_CAP = 8;
@@ -37,6 +38,8 @@ export interface Encounter {
   /** mob entity id with the most party damage (threat tab subject) */
   mainMobId: number | null;
   mainMobName: string;
+  /** template id of the threat-subject mob, so its name localizes at render time */
+  mainMobTemplateId: string | null;
   /** maxHp of the biggest mob damaged — used to pick the label */
   biggestMobHp: number;
 }
@@ -44,7 +47,7 @@ export interface Encounter {
 function newEncounter(now: number): Encounter {
   return {
     label: 'Combat', startedAt: now, duration: 0, tallies: new Map(),
-    mainMobId: null, mainMobName: '', biggestMobHp: -1,
+    mainMobId: null, mainMobName: '', mainMobTemplateId: null, biggestMobHp: -1,
   };
 }
 
@@ -98,6 +101,7 @@ export class MeterData {
           this.current.biggestMobHp = target.maxHp;
           this.current.label = target.name;
           this.current.mainMobName = target.name;
+          this.current.mainMobTemplateId = target.templateId;
           this.current.mainMobId = ev.targetId;
         }
       }
@@ -265,9 +269,10 @@ export class Meters {
     const isThreat = this.tab === 'threat';
     const mob = isThreat && enc.mainMobId !== null ? this.world.entities.get(enc.mainMobId) : null;
     const aggroPid = mob && !mob.dead ? mob.aggroTargetId : null;
-    const encounterLabel = enc.label === 'Combat' || enc.label === 'All (session)' ? viewName : enc.label;
+    const mobName = enc.mainMobTemplateId ? tEntity({ kind: 'mob', id: enc.mainMobTemplateId, field: 'name' }) : enc.mainMobName;
+    const encounterLabel = enc.label === 'Combat' || enc.label === 'All (session)' ? viewName : mobName;
     this.subEl.textContent = isThreat
-      ? (enc.mainMobName ? t('hud.meters.target', { name: enc.mainMobName }) : t('hud.meters.noTargetEngaged'))
+      ? (enc.mainMobName ? t('hud.meters.target', { name: mobName }) : t('hud.meters.noTargetEngaged'))
       : t('hud.meters.segmentSummary', { label: encounterLabel, duration: fmtDuration(enc.duration) });
 
     const liveThreat = mob && !mob.dead && mob.threat.size > 0 ? mob.threat : null;
