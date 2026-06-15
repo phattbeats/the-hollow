@@ -127,6 +127,7 @@ export class MobileControls {
     if (!this.active || this.joyPointer !== null) return;
     e.preventDefault();
     this.joyPointer = e.pointerId;
+    this.moveJoystick?.classList.add('touching');
     try { this.moveJoystick?.setPointerCapture(e.pointerId); } catch { /* synthetic test event */ }
     this.onMoveMove(e);
   }
@@ -153,6 +154,7 @@ export class MobileControls {
 
   private releaseMove(): void {
     this.joyPointer = null;
+    this.moveJoystick?.classList.remove('touching');
     this.input.clearTouchMove();
     if (this.moveStick) this.moveStick.style.transform = '';
   }
@@ -161,6 +163,7 @@ export class MobileControls {
     if (!this.active || this.lookPointer !== null) return;
     e.preventDefault();
     this.lookPointer = e.pointerId;
+    this.cameraJoystick?.classList.add('touching');
     this.input.setTouchLook(true);
     try { this.cameraJoystick?.setPointerCapture(e.pointerId); } catch { /* synthetic test event */ }
     this.onCameraMove(e);
@@ -188,6 +191,7 @@ export class MobileControls {
 
   private releaseCamera(): void {
     this.lookPointer = null;
+    this.cameraJoystick?.classList.remove('touching');
     this.input.setTouchLook(false);
     this.input.setTouchLookVector({ x: 0, y: 0 });
     if (this.cameraStick) this.cameraStick.style.transform = '';
