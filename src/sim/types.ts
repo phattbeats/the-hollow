@@ -35,7 +35,7 @@ export type AuraKind =
   | 'dot' | 'slow' | 'stun' | 'root' | 'incapacitate' | 'polymorph'
   | 'attackspeed' | 'buff_ap' | 'buff_armor' | 'buff_int' | 'buff_dodge' | 'buff_speed' | 'buff_haste'
   | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_allstats' | 'thorns' | 'form_bear'
-  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder';
+  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound';
 
 export interface Aura {
   id: string; // ability id that applied it
@@ -163,6 +163,9 @@ export interface MobTemplate {
   summonAdds?: { mobId: string; count: number; atHpPct: number[] };
   // Boss mechanic: damage multiplier once hp drops below the threshold.
   enrage?: { belowHpPct: number; dmgMult: number };
+  // Melee mechanic: a landed swing has `chance` to inflict a Mortal Wound debuff
+  // that reduces all healing the victim receives by `healReduction` for `duration`.
+  mortalStrike?: { chance: number; healReduction: number; duration: number; name: string; school?: string };
 }
 
 export type AbilityEffect =
