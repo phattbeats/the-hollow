@@ -3882,6 +3882,17 @@ export class Sim {
       return null;
     }
 
+    // "/target" (alias "/tar") — self-only readout of your current target.
+    // Reads existing p.targetId state, so it needs no server wiring: it falls
+    // through routeRememberedChat to here and works online for free.
+    if (/^\/(?:target|tar)(?:\s|$)/i.test(raw)) {
+      const tid = r.e.targetId;
+      const t = tid !== null ? this.entities.get(tid) ?? null : null;
+      if (!t) { this.error(r.meta.entityId, 'You have no target.'); return null; }
+      this.error(r.meta.entityId, this.targetReadout(t));
+      return null;
+    }
+
     // "/w name message" — private whisper to an online player
     const wm = /^\/(?:w|whisper|t|tell)\s+(\S+)\s+([\s\S]+)$/i.exec(line);
     if (wm) {
@@ -5300,6 +5311,16 @@ export class Sim {
       'Whisper a player with /w <name> <message>.',
       '/who lists who is online (online play only).',
     ];
+  }
+
+  // One-line description of an entity for the self-only "/target" readout:
+  // name, level, what it is (player / pet / mob), and current health. A dead
+  // body reports "dead" instead of a percentage so a lootable corpse reads
+  // sensibly.
+  private targetReadout(t: Entity): string {
+    const kind = t.kind === 'player' ? 'player' : t.ownerId !== null ? 'pet' : 'mob';
+    const health = t.dead ? 'dead' : `${Math.round((t.hp / t.maxHp) * 100)}% HP`;
+    return `Target: ${t.name} (level ${t.level} ${kind}) — ${health}.`;
   }
 }
 
