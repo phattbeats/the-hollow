@@ -38,6 +38,12 @@ describe('talent tree validation (load-time)', () => {
     }
   });
 
+  it('keeps non-warrior talent trees explicitly unavailable for graceful UI fallback', () => {
+    for (const cls of ['paladin', 'hunter', 'rogue', 'priest', 'shaman', 'mage', 'warlock', 'druid'] as const) {
+      expect(talentsFor(cls)).toBeNull();
+    }
+  });
+
   it('detects cycles in the requires graph', () => {
     const broken = {
       class: 'warrior' as const,

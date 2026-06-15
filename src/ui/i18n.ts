@@ -119,6 +119,8 @@ export const gameStrings = {
     cancel: "Cancel",
     noBuilds: "No saved builds",
     save: "Save",
+    comingSoonTitle: "Talents coming soon",
+    comingSoonBody: "This class does not have talent trees yet. You can keep playing normally; full trees will arrive in a future update.",
   },
 };
 

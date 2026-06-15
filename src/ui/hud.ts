@@ -2788,7 +2788,11 @@ export class Hud {
     const ct = talentsFor(cls);
     const close = `<span class="x-btn" data-close>${svgIcon('close')}</span>`;
     if (!ct) {
-      el.innerHTML = `<div class="panel-title"><span>${t('game.talents.title')}</span>${close}</div><div class="tal-empty">—</div>`;
+      el.innerHTML = `<div class="panel-title"><span>${t('game.talents.title')} <span style="color:#998d6a;font-size:11px">${esc(CLASSES[cls].name)}</span></span>${close}</div>`
+        + `<div class="tal-empty tal-coming-soon" data-talents-coming-soon>`
+        + `<b>${t('game.talents.comingSoonTitle')}</b>`
+        + `<span>${t('game.talents.comingSoonBody')}</span>`
+        + `</div>`;
       el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; this.hideTooltip(); });
       return;
     }
