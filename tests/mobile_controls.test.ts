@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import {
   clampJoystickOrigin,
   HAPTICS_STORE_KEY,
@@ -6,10 +6,12 @@ import {
   loadHapticsEnabled,
   mapJoystickVector,
   mapLookVector,
+  MobileControls,
   pinchZoomDelta,
   saveHapticsEnabled,
   triggerHaptic,
 } from '../src/game/mobile_controls';
+import type { Input, TouchMoveInput } from '../src/game/input';
 
 describe('mapJoystickVector', () => {
   it('returns neutral inside the deadzone', () => {
@@ -137,5 +139,204 @@ describe('haptics', () => {
   it('swallows Vibration API exceptions', () => {
     const nav = { vibrate: () => { throw new Error('blocked'); } };
     expect(triggerHaptic([12, 40, 12], true, nav)).toBe(false);
+  });
+});
+
+class FakeClassList {
+  private values = new Set<string>();
+
+  add(...names: string[]): void {
+    for (const name of names) this.values.add(name);
+  }
+
+  remove(...names: string[]): void {
+    for (const name of names) this.values.delete(name);
+  }
+
+  contains(name: string): boolean {
+    return this.values.has(name);
+  }
+
+  toggle(name: string, force?: boolean): boolean {
+    const next = force ?? !this.values.has(name);
+    if (next) this.values.add(name);
+    else this.values.delete(name);
+    return next;
+  }
+}
+
+class FakeElement extends EventTarget {
+  classList = new FakeClassList();
+  style = { transform: '', left: '', top: '' };
+  offsetWidth = 122;
+  private captured = new Set<number>();
+
+  constructor(private rect = { left: 0, top: 0, right: 100, bottom: 100, width: 100, height: 100 }) {
+    super();
+  }
+
+  getBoundingClientRect(): DOMRect {
+    return this.rect as DOMRect;
+  }
+
+  setPointerCapture(pointerId: number): void {
+    this.captured.add(pointerId);
+  }
+
+  releasePointerCapture(pointerId: number): void {
+    this.captured.delete(pointerId);
+  }
+
+  hasPointerCapture(pointerId: number): boolean {
+    return this.captured.has(pointerId);
+  }
+
+  closest(): Element | null {
+    return null;
+  }
+
+  querySelector(): Element | null {
+    return null;
+  }
+
+  setAttribute(): void {}
+}
+
+class FakeMediaQueryList extends EventTarget {
+  matches = true;
+}
+
+const previousGlobals = {
+  document: globalThis.document,
+  window: globalThis.window,
+};
+
+afterEach(() => {
+  Object.defineProperty(globalThis, 'document', { value: previousGlobals.document, configurable: true });
+  Object.defineProperty(globalThis, 'window', { value: previousGlobals.window, configurable: true });
+});
+
+function installMobileControlDom(): {
+  moveZone: FakeElement;
+  moveJoystick: FakeElement;
+  cameraJoystick: FakeElement;
+  windowTarget: EventTarget;
+} {
+  const elements = new Map<string, FakeElement>([
+    ['mobile-controls', new FakeElement()],
+    ['mobile-move-zone', new FakeElement({ left: 0, top: 0, right: 240, bottom: 240, width: 240, height: 240 })],
+    ['mobile-move-joystick', new FakeElement()],
+    ['mobile-move-stick', new FakeElement()],
+    ['mobile-camera-joystick', new FakeElement()],
+    ['mobile-camera-stick', new FakeElement()],
+  ]);
+  const body = new FakeElement();
+  const documentTarget = new EventTarget();
+  const windowTarget = new EventTarget() as EventTarget & { matchMedia(query: string): FakeMediaQueryList };
+  windowTarget.matchMedia = () => new FakeMediaQueryList();
+
+  const documentFake = documentTarget as EventTarget & {
+    body: FakeElement;
+    visibilityState: DocumentVisibilityState;
+    getElementById(id: string): FakeElement | null;
+  };
+  documentFake.body = body;
+  documentFake.visibilityState = 'visible';
+  documentFake.getElementById = (id: string) => elements.get(id) ?? null;
+
+  Object.defineProperty(globalThis, 'document', { value: documentFake, configurable: true });
+  Object.defineProperty(globalThis, 'window', { value: windowTarget, configurable: true });
+
+  return {
+    moveZone: elements.get('mobile-move-zone')!,
+    moveJoystick: elements.get('mobile-move-joystick')!,
+    cameraJoystick: elements.get('mobile-camera-joystick')!,
+    windowTarget,
+  };
+}
+
+function pointerEvent(type: string, init: { pointerId: number; clientX?: number; clientY?: number }): Event {
+  const event = new Event(type, { bubbles: true, cancelable: true });
+  Object.defineProperties(event, {
+    pointerId: { value: init.pointerId },
+    clientX: { value: init.clientX ?? 0 },
+    clientY: { value: init.clientY ?? 0 },
+  });
+  return event;
+}
+
+function mobileCallbacks() {
+  const noop = () => {};
+  return {
+    onAttackNearest: noop,
+    onJump: noop,
+    onTarget: noop,
+    onInteract: noop,
+    onAutorun: () => false,
+    onChat: noop,
+    onMenu: noop,
+    onSocial: noop,
+    onArena: noop,
+    onQuestLog: noop,
+    onCharacter: noop,
+    onBags: noop,
+    onSpellbook: noop,
+    onTalents: noop,
+    onMeters: noop,
+    onMap: noop,
+    onLeaderboard: noop,
+    onNameplates: () => false,
+    onMusic: () => true,
+  };
+}
+
+describe('MobileControls pointer lifecycle', () => {
+  it('clears movement when the active pointer ends outside the joystick element', () => {
+    const { moveZone, windowTarget } = installMobileControlDom();
+    let lastMove: TouchMoveInput | null = null;
+    let clearCount = 0;
+    const input = {
+      setTouchMove: (move: TouchMoveInput) => { lastMove = move; },
+      clearTouchMove: () => { clearCount += 1; lastMove = null; },
+      setTouchLook: () => {},
+      setTouchLookVector: () => {},
+    } as unknown as Input;
+
+    new MobileControls(input, mobileCallbacks()).start();
+
+    moveZone.dispatchEvent(pointerEvent('pointerdown', { pointerId: 4, clientX: 100, clientY: 50 }));
+    moveZone.dispatchEvent(pointerEvent('pointermove', { pointerId: 4, clientX: 160, clientY: 50 }));
+
+    expect(lastMove).toEqual({ forward: false, back: false, strafeLeft: false, strafeRight: true });
+
+    windowTarget.dispatchEvent(pointerEvent('pointerup', { pointerId: 4 }));
+
+    expect(clearCount).toBe(1);
+    expect(lastMove).toBeNull();
+  });
+
+  it('keeps updating camera look when the active pointer moves outside the joystick element', () => {
+    const { cameraJoystick, windowTarget } = installMobileControlDom();
+    let touchLookActive = false;
+    let lastLook = { x: 0, y: 0 };
+    const input = {
+      setTouchMove: () => {},
+      clearTouchMove: () => {},
+      setTouchLook: (active: boolean) => { touchLookActive = active; },
+      setTouchLookVector: (look: { x: number; y: number }) => { lastLook = look; },
+    } as unknown as Input;
+
+    new MobileControls(input, mobileCallbacks()).start();
+
+    cameraJoystick.dispatchEvent(pointerEvent('pointerdown', { pointerId: 9, clientX: 50, clientY: 50 }));
+    windowTarget.dispatchEvent(pointerEvent('pointermove', { pointerId: 9, clientX: 100, clientY: 50 }));
+
+    expect(touchLookActive).toBe(true);
+    expect(lastLook).toEqual({ x: 0.8, y: 0 });
+
+    windowTarget.dispatchEvent(pointerEvent('pointercancel', { pointerId: 9 }));
+
+    expect(touchLookActive).toBe(false);
+    expect(lastLook).toEqual({ x: 0, y: 0 });
   });
 });
