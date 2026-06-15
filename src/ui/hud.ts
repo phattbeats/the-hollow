@@ -5755,6 +5755,9 @@ export class Hud {
     this.settingToggle(body, t('game.settings.showOverflowXp'), 'showOverflowXp');
     // Touch-only: lets phone players dim the on-screen joysticks + buttons.
     if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.touchOpacity'), 'touchOpacity');
+    // Touch-only: a larger deadzone resists accidental drift from a resting
+    // thumb on the move stick; only meaningful with on-screen controls.
+    if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.joystickDeadzone'), 'joystickDeadzone');
     const note = document.createElement('div');
     note.className = 'set-note';
     note.textContent = t('hud.options.graphicsNote');

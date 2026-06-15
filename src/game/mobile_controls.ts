@@ -111,6 +111,7 @@ export class MobileControls {
   private joyPointer: number | null = null;
   private lookPointer: number | null = null;
   private mq: MediaQueryList | null = null;
+  private moveDeadzone = DEADZONE;
 
   private moveOriginX = 0;
   private moveOriginY = 0;
@@ -136,6 +137,11 @@ export class MobileControls {
   private autorunButton = document.getElementById('mobile-autorun') as HTMLElement | null;
 
   constructor(private input: Input, private callbacks: MobileControlCallbacks) {}
+
+  /** Tune how far the move thumbstick must travel before movement registers. */
+  setMoveDeadzone(deadzone: number): void {
+    this.moveDeadzone = deadzone;
+  }
 
   start(): void {
     if (!this.root || !this.moveJoystick || !this.moveStick || !this.cameraJoystick || !this.cameraStick) return;
@@ -357,7 +363,7 @@ export class MobileControls {
     const x = rawX / mag;
     const y = rawY / mag;
     this.moveStick.style.transform = `translate(${(x * radius * 0.46).toFixed(1)}px, ${(y * radius * 0.46).toFixed(1)}px)`;
-    const move = mapJoystickVector(x, y);
+    const move = mapJoystickVector(x, y, this.moveDeadzone);
     this.input.setTouchMove(move);
     // setTouchMove cancels autorun on forward/back input — keep the button glow honest.
     if (move.forward || move.back) this.autorunButton?.classList.remove('active');

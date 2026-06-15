@@ -37,6 +37,10 @@ export const SETTING_RANGES = {
   // 1.0 (fully opaque) by default; touch-only. Lets phone players dim the
   // on-screen joysticks + buttons so they obscure less of the world.
   touchOpacity: { min: 0.3, max: 1, def: 1 },
+  // touch-only: how far the move thumbstick must travel before it registers
+  // movement. Higher values resist accidental drift on a jittery thumb; lower
+  // values make the stick more responsive. Default matches the old fixed 0.22.
+  joystickDeadzone: { min: 0.1, max: 0.4, def: 0.22 },
 } as const;
 
 export const BOOL_SETTINGS = {
