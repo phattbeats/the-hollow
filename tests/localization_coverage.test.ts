@@ -338,6 +338,22 @@ describe("i18n Localization Key Coverage", () => {
       .trim();
   }
 
+  function copiedEnglishComparable(value: string): string {
+    return value
+      .normalize("NFKC")
+      .replace(/\u2014/g, "-")
+      .replace(/[“”]/g, "\"")
+      .replace(/[‘’]/g, "'")
+      .replace(/\$N/g, "Mira")
+      .replace(/\$C/g, "Mage")
+      .replace(/\{playerName\}/g, "Mira")
+      .replace(/\{className\}/g, "Mage")
+      .replace(/\{classNameLower\}/g, "mage")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+  }
+
   for (const [code, locale] of Object.entries(locales)) {
     it(`should have 100% key match and non-empty translations for locale: ${code}`, () => {
       verifyKeys(en, locale);
@@ -598,6 +614,10 @@ describe("i18n Localization Key Coverage", () => {
         expect(rendered.trim().length, `${lang}.${entry.key}`).toBeGreaterThan(0);
         expect(rendered, `${lang}.${entry.key}`).not.toBe(entry.key);
         expect(rendered, `${lang}.${entry.key}`).not.toMatch(/\$N|\$C|\{playerName\}|\{className\}|\{classNameLower\}/);
+        if (lang !== "en" && lang !== "en_CA" && entry.kind === "quest" && (entry.field === "text" || entry.field === "completion")) {
+          expect(copiedEnglishComparable(rendered), `${lang}.${entry.key} should not copy canonical English quest narrative`)
+            .not.toBe(copiedEnglishComparable(entry.source));
+        }
       }
       expect(entityTranslationFallbackLog(), `${lang} Phase 9 fallback log`).toHaveLength(0);
     }
@@ -633,6 +653,7 @@ describe("i18n Localization Key Coverage", () => {
     const phaseNineSource = fs.readFileSync(path.resolve(process.cwd(), "src/ui/phase9_i18n.ts"), "utf8");
     expect(phaseNineSource).not.toContain("questText:");
     expect(phaseNineSource).not.toContain("questCompletion:");
+    expect(phaseNineSource).not.toContain("...zhCnData");
     expect(phaseNineSource).not.toMatch(/const zhTwData[\s\S]*\.\.\.zhCnData[\s\S]*const koData/);
 
     const genericPatterns = [
