@@ -10,10 +10,14 @@ import type { EventEmitter } from 'node:events';
 // bufferHandshakeMessages captures those in-flight frames and returns a flush
 // callback. Call flush once the real handler is attached to replay the frames
 // in order. Frames that arrive after flush are delivered live by the real
-// handler, so flushing never duplicates them.
-export function bufferHandshakeMessages(ws: EventEmitter): () => void {
+// handler, so flushing never duplicates them. Keep the buffer bounded because
+// these frames arrive before authentication has completed.
+const MAX_HANDSHAKE_FRAMES = 64;
+
+export function bufferHandshakeMessages(ws: EventEmitter, maxFrames = MAX_HANDSHAKE_FRAMES): () => void {
   const pending: unknown[] = [];
   const capture = (data: unknown) => {
+    if (pending.length >= maxFrames) return;
     pending.push(data);
   };
   ws.on('message', capture);

@@ -57,6 +57,20 @@ describe('bufferHandshakeMessages', () => {
     expect(handled).toEqual(['once']);
   });
 
+  it('bounds pre-auth buffering and drops excess frames', () => {
+    const ws = new EventEmitter();
+    const flush = bufferHandshakeMessages(ws, 2);
+    ws.emit('message', 'a');
+    ws.emit('message', 'b');
+    ws.emit('message', 'c');
+
+    const handled: unknown[] = [];
+    ws.on('message', (d) => handled.push(d));
+    flush();
+
+    expect(handled).toEqual(['a', 'b']);
+  });
+
   it('documents the underlying drop the buffer prevents', () => {
     // Without buffering, a frame emitted before any listener is attached is
     // silently discarded by EventEmitter — exactly the lost-input failure mode.
