@@ -252,6 +252,9 @@ export interface PlayerMeta {
   questsDone: Set<string>;
   counters: RewardCounters;
   autoEquip: boolean;
+  // sim.time when this character entered the world; powers /played. Session-only
+  // (sim.time resets to 0 each server boot), so it reports time this session.
+  joinedAt: number;
   // Ashen Coliseum standing — persisted in CharacterState
   arenaRating: number;
   arenaWins: number;
@@ -557,6 +560,7 @@ export class Sim {
       questsDone: new Set(),
       counters: freshCounters(),
       autoEquip: opts?.autoEquip ?? false,
+      joinedAt: this.time,
       arenaRating: opts?.state?.arenaRating ?? ARENA_BASE_RATING,
       arenaWins: opts?.state?.arenaWins ?? 0,
       arenaLosses: opts?.state?.arenaLosses ?? 0,
@@ -4175,6 +4179,21 @@ export class Sim {
       if (target.entityId === r.meta.entityId) { this.error(r.meta.entityId, "You can't follow yourself."); return null; }
       r.e.followTargetId = target.entityId;
       this.error(r.meta.entityId, `Now following ${target.name}.`);
+      return null;
+    }
+
+    // "/played" — report how long this character has been in the world this
+    // session. Self-only informational line, like /who's reply.
+    if (/^\/played(?:\s|$)/i.test(raw)) {
+      const secs = Math.max(0, Math.floor(this.time - r.meta.joinedAt));
+      const h = Math.floor(secs / 3600);
+      const m = Math.floor((secs % 3600) / 60);
+      const s = secs % 60;
+      const parts: string[] = [];
+      if (h) parts.push(`${h}h`);
+      if (h || m) parts.push(`${m}m`);
+      parts.push(`${s}s`);
+      this.error(r.meta.entityId, `Time played this session: ${parts.join(' ')}.`);
       return null;
     }
 
