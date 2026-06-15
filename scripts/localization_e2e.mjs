@@ -37,6 +37,7 @@ const VIEWPORTS = [
 ];
 
 const MOBILE_AUDIT_ROOTS = [
+  '#start-screen',
   '#offline-select',
   '#mobile-preflight',
   '#mobile-combat-controls',
@@ -53,7 +54,10 @@ const MOBILE_AUDIT_ROOTS = [
 ];
 
 const FOCUS_SELECTORS = [
+  '.mobile-menu-toggle',
+  '#header-logo-btn',
   '#lang-select',
+  '#nav-btn-play',
   '#btn-offline',
   '#btn-start-offline',
   '#actionbar .action-btn:not(.empty)',
@@ -92,9 +96,22 @@ function localUrlForLocale(locale) {
   return url.toString();
 }
 
+function isProjectStatsUrl(url) {
+  try {
+    return new URL(url).pathname.endsWith('/api/project-stats');
+  } catch {
+    return url.includes('/api/project-stats');
+  }
+}
+
 function isAllowedBrowserError(text) {
-  return /502|Bad Gateway|Failed to load resource|Failed to fetch project stats|project-stats/i.test(text)
+  return /Failed to fetch project stats|project-stats/i.test(text)
+    || (/Failed to load resource/i.test(text) && /502|Bad Gateway/i.test(text))
     || /fullscreen|screen\.orientation|orientation\.lock/i.test(text);
+}
+
+function isAllowedNetworkIssue(url) {
+  return isProjectStatsUrl(url);
 }
 
 async function waitForServer(url, timeoutMs = 20000) {
@@ -132,6 +149,16 @@ async function newAuditedPage(browser, viewport, label) {
     const text = message.text();
     if (isAllowedBrowserError(text)) return;
     diagnostics.push(`CONSOLE ${label}: ${text}`);
+  });
+  page.on('response', (response) => {
+    const status = response.status();
+    if (status < 400 || isAllowedNetworkIssue(response.url())) return;
+    diagnostics.push(`RESPONSE ${label}: ${status} ${response.url()}`);
+  });
+  page.on('requestfailed', (request) => {
+    if (isAllowedNetworkIssue(request.url())) return;
+    const failure = request.failure()?.errorText ?? 'request failed';
+    diagnostics.push(`REQUEST ${label}: ${failure} ${request.url()}`);
   });
   return {
     page,
@@ -276,6 +303,7 @@ async function assertNoClippedText(page, label) {
       '.mkt-row',
       '.mkt-note',
       '#error-msg',
+      '#banner',
     ].join(',');
     return [...document.querySelectorAll(selector)]
       .filter((el) => {
@@ -580,6 +608,32 @@ async function runHomepageLocaleMatrix(browser) {
   }
 }
 
+async function runMobileHomepageAudit(page, locale, viewport) {
+  await assertAuditBasics(page, `mobile homepage ${locale} ${viewport.name}`, { mobile: true });
+  await assertFocusVisible(page, `mobile homepage focus ${locale} ${viewport.name}`, [
+    '.mobile-menu-toggle',
+    '#header-logo-btn',
+    '#btn-offline',
+    '#lang-select',
+  ]);
+  await page.click('.mobile-menu-toggle');
+  await page.waitForFunction(() => {
+    return document.querySelector('.homepage-header')?.classList.contains('menu-open');
+  }, { timeout: WAIT_TIMEOUT });
+  await assertAuditBasics(page, `mobile homepage menu ${locale} ${viewport.name}`, { mobile: true });
+  await assertFocusVisible(page, `mobile homepage menu focus ${locale} ${viewport.name}`, [
+    '.mobile-menu-toggle',
+    '#header-logo-btn',
+    '#nav-btn-play',
+    '#nav-btn-highscores',
+    '#nav-btn-wiki',
+    '#nav-btn-news',
+    '#nav-btn-download',
+    '#lang-select',
+  ]);
+  await page.click('.mobile-menu-toggle');
+}
+
 async function enterOfflineGame(page, locale, viewport) {
   await page.click('#btn-offline');
   await page.waitForSelector('#offline-select:not([hidden])', { timeout: WAIT_TIMEOUT });
@@ -790,6 +844,7 @@ async function runDeepGameScenario(browser, locale, viewport) {
   try {
     await gotoLocale(page, locale);
     await assertHomepageLocale(page, locale);
+    if (viewport.isMobile) await runMobileHomepageAudit(page, locale, viewport);
     await enterOfflineGame(page, locale, viewport);
     const scene = await setupGameScene(page);
     await runChatAndCombat(page, scene, locale, viewport);

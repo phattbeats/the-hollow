@@ -45,7 +45,7 @@ async function main() {
   page.on('console', (msg) => {
     if (msg.type() === 'error') {
       const text = msg.text();
-      if (text.includes('502') || text.includes('Bad Gateway') || text.includes('Failed to load resource')) {
+      if (text.includes('502') || text.includes('Bad Gateway') || text.includes('project-stats')) {
         console.log(`Ignoring transient browser startup network error: ${text}`);
         return;
       }
