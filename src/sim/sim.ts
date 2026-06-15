@@ -2685,6 +2685,34 @@ export class Sim {
             }
           }
         }
+        // Boss/miniboss War Stomp: a periodic ground slam that stuns (and
+        // optionally damages) nearby players. Telegraphed via createMob, which
+        // seeds stompTimer to one full interval so the first slam never lands
+        // the instant combat opens.
+        const stomp = MOBS[mob.templateId]?.stomp;
+        if (stomp) {
+          mob.stompTimer -= DT;
+          if (mob.stompTimer <= 0) {
+            mob.stompTimer = stomp.every;
+            const school = stomp.school ?? 'physical';
+            this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
+            this.emit({ type: 'log', text: `${mob.name} unleashes ${stomp.name}!`, color: '#ff9933', entityId: mob.id });
+            for (const meta of this.players.values()) {
+              const pe = this.entities.get(meta.entityId);
+              if (!pe || pe.dead || dist2d(pe.pos, mob.pos) > stomp.radius) continue;
+              if (stomp.min !== undefined && stomp.max !== undefined) {
+                const dmg = Math.round(this.rng.range(stomp.min, stomp.max));
+                this.dealDamage(mob, pe, dmg, false, school, stomp.name, 'hit', true);
+              }
+              if (pe.dead) continue; // a fatal slam shouldn't also stun the corpse
+              this.applyAura(pe, {
+                id: 'stomp_stun', name: stomp.name, kind: 'stun',
+                remaining: stomp.duration, duration: stomp.duration, value: 0,
+                sourceId: mob.id, school: school as Aura['school'],
+              });
+            }
+          }
+        }
         break;
       }
       case 'evade': {
@@ -2725,6 +2753,7 @@ export class Sim {
     this.despawnSummonedAdds(mob);
     mob.firedSummons = 0;
     mob.enraged = false;
+    mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
   }
 
@@ -2889,6 +2918,7 @@ export class Sim {
     this.despawnSummonedAdds(mob);
     mob.firedSummons = 0;
     mob.enraged = false;
+    mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
     for (const meta of this.players.values()) {
       const e = this.entities.get(meta.entityId);

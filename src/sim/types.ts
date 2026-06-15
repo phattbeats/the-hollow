@@ -163,6 +163,10 @@ export interface MobTemplate {
   summonAdds?: { mobId: string; count: number; atHpPct: number[] };
   // Boss mechanic: damage multiplier once hp drops below the threshold.
   enrage?: { belowHpPct: number; dmgMult: number };
+  // Boss mechanic ("War Stomp"): periodic ground slam that stuns nearby players
+  // for `duration`s (and optionally deals min..max damage). Telegraphed: the
+  // first slam only lands one full `every` interval after combat starts.
+  stomp?: { radius: number; every: number; duration: number; min?: number; max?: number; name: string; school?: string };
 }
 
 export type AbilityEffect =
@@ -466,6 +470,7 @@ export interface Entity {
   ownerId: number | null; // controlled pets: owning player's entity id (null = wild)
   petTauntTimer: number; // controlled pet Growl cooldown
   pulseTimer: number; // boss aoe pulse countdown
+  stompTimer: number; // boss War Stomp stun-pulse countdown
   firedSummons: number; // summonAdds thresholds already triggered
   summonedIds: number[]; // live adds this boss summoned; despawned on reset
   enraged: boolean; // enrage mechanic active
