@@ -1583,10 +1583,12 @@ export class Hud {
             case 'general': this.chatLogFrom(ev.from, ev.text, '#ffc864', '[General] ', ': '); break;
             case 'guild': this.chatLogFrom(ev.from, ev.text, '#40d264', '[Guild] ', ': '); break;
             case 'officer': this.chatLogFrom(ev.from, ev.text, '#4ce0c0', '[Officer] ', ': '); break;
+            case 'emote': this.chatLogFrom(ev.from, ev.text, '#ff8040', '', ' '); break;
             default: this.chatLogFrom(ev.from, ev.text, '#f0ead8', '', ' says: '); break;
           }
-          if ((ev.channel === 'say' || ev.channel === 'yell') && ev.entityId !== undefined) {
-            this.renderer.showChatBubble(ev.entityId, ev.text, ev.channel === 'yell');
+          if ((ev.channel === 'say' || ev.channel === 'yell' || ev.channel === 'emote') && ev.entityId !== undefined) {
+            const bubble = ev.channel === 'emote' ? `${ev.from} ${ev.text}` : ev.text;
+            this.renderer.showChatBubble(ev.entityId, bubble, ev.channel === 'yell');
           }
           break;
         }
@@ -2265,6 +2267,8 @@ export class Hud {
           this.renderMarket();
         } else if (this.vendorOpen) {
           this.sellBagItem(s, ev);
+        } else if (item.kind === 'quest') {
+          this.showDiscardItemPrompt(s.itemId, Math.max(1, Math.floor(s.count)));
         } else {
           this.sim.useItem(s.itemId);
           this.renderBags();
@@ -2294,7 +2298,8 @@ export class Hud {
         let extra = '';
         if (this.tradeOpen) extra = '<div class="tt-sub">Click to offer in trade</div>';
         else if (this.marketOpen && this.marketTab === 'sell') extra = item.kind === 'quest' ? '<div class="tt-sub">Cannot be sold on the market</div>' : '<div class="tt-sub">Click to put on the market</div>';
-        else if (this.vendorOpen) extra = '<div class="tt-sub">Click to sell</div>';
+        else if (this.vendorOpen) extra = item.kind === 'quest' ? '<div class="tt-sub">Cannot be sold to merchants</div>' : '<div class="tt-sub">Click to sell</div>';
+        else if (item.kind === 'quest') extra = '<div class="tt-sub">Click to destroy</div>';
         else if (item.kind === 'weapon' || item.kind === 'armor') extra = '<div class="tt-sub">Click to equip</div>';
         else if (item.kind === 'food' || item.kind === 'drink') extra = '<div class="tt-sub">Click to consume</div>';
         else if (item.kind === 'potion') extra = '<div class="tt-sub">Click to use — instant, usable in combat</div>';
@@ -2320,6 +2325,51 @@ export class Hud {
     } else {
       this.sim.sellItem(slot.itemId);
     }
+  }
+
+  private showDiscardItemPrompt(itemId: string, maxCount: number): void {
+    document.querySelectorAll('.discard-item-prompt').forEach((el) => el.remove());
+    const item = ITEMS[itemId];
+    const stack = $('#prompt-stack');
+    const prompt = document.createElement('div');
+    prompt.className = 'prompt panel discard-item-prompt';
+    prompt.innerHTML = `<div class="prompt-text">Destroy ${esc(item?.name ?? itemId)}</div>`;
+    let input: HTMLInputElement | null = null;
+    if (maxCount > 1) {
+      input = document.createElement('input');
+      input.className = 'prompt-number';
+      input.type = 'number';
+      input.min = '1';
+      input.max = String(maxCount);
+      input.step = '1';
+      input.value = '1';
+      prompt.appendChild(input);
+    }
+    const confirm = document.createElement('button');
+    confirm.className = 'btn';
+    confirm.textContent = 'Destroy';
+    const cancel = document.createElement('button');
+    cancel.className = 'btn';
+    cancel.textContent = 'Cancel';
+    const close = () => prompt.remove();
+    const submit = () => {
+      const count = input ? Math.max(1, Math.min(maxCount, Math.floor(Number(input.value) || 0))) : 1;
+      this.sim.discardItem(itemId, count);
+      close();
+      this.hideTooltip();
+      this.renderBags();
+    };
+    confirm.addEventListener('click', submit);
+    cancel.addEventListener('click', close);
+    if (input) {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') submit();
+        else if (e.key === 'Escape') close();
+      });
+    }
+    prompt.append(confirm, cancel);
+    stack.appendChild(prompt);
+    if (input) window.setTimeout(() => { input.focus(); input.select(); }, 0);
   }
 
   private showSellQuantityPrompt(itemId: string, maxCount: number): void {
@@ -3788,6 +3838,7 @@ export class Hud {
     this.keybindNote = '';
     this.renderOptions();
     $('#options-menu').style.display = 'block';
+    music.pauseForMenu();
     audio.click();
   }
 
@@ -3795,6 +3846,7 @@ export class Hud {
     $('#options-menu').style.display = 'none';
     this.capturingKey = null;
     this.hideTooltip();
+    music.resumeFromMenu();
   }
 
   private renderOptions(): void {

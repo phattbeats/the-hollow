@@ -112,6 +112,9 @@ export interface SocialTransport {
   pushSnapshot(characterId: number): void;
   // a character's block set changed; refresh the in-memory chat filter
   onBlocksChanged(characterId: number, blockedIds: number[]): void;
+  // true if `recipientId` has `senderCharacterId` on their ignore list, so
+  // guild/officer chat can honour the same filter say/whisper already apply
+  isIgnoring(recipientId: number, senderCharacterId: number): boolean;
 }
 
 export type SocialEvent =
@@ -213,6 +216,14 @@ export class SocialService {
     const target = await this.resolveTarget(actor, name);
     if (!target) return;
     if (target.id === actor.characterId) { this.err(actor.characterId, 'You cannot befriend yourself.'); return; }
+    // friends and ignore are mutually exclusive — blockAdd drops an ignored
+    // player from your friends, so friendAdd must refuse the reverse, or a
+    // player could end up both ignored and friended at once.
+    const blocks = await this.db.listBlocks(actor.characterId);
+    if (blocks.some((b) => b.id === target.id)) {
+      this.err(actor.characterId, `You are ignoring ${target.name}. Remove them from your ignore list first.`);
+      return;
+    }
     const friends = await this.db.listFriends(actor.characterId);
     if (friends.some((f) => f.id === target.id)) { this.err(actor.characterId, `${target.name} is already your friend.`); return; }
     if (friends.length >= FRIEND_LIMIT) { this.err(actor.characterId, 'Your friends list is full.'); return; }
@@ -317,6 +328,10 @@ export class SocialService {
     if (target.id === actor.characterId) { this.err(actor.characterId, 'You are already in the guild.'); return; }
     if (!this.tx.isOnline(target.id)) { this.err(actor.characterId, `${target.name} must be online to be invited.`); return; }
     if (await this.db.guildMembership(target.id)) { this.err(actor.characterId, `${target.name} is already in a guild.`); return; }
+    const existing = this.pendingGuildInvites.get(target.id);
+    if (existing && existing.expiresAt >= this.now()) {
+      this.err(actor.characterId, `${target.name} already has a pending guild invitation.`); return;
+    }
     const members = await this.db.guildMembers(membership.guildId);
     if (members.length >= GUILD_MEMBER_LIMIT) { this.err(actor.characterId, 'Your guild is full.'); return; }
     this.pendingGuildInvites.set(target.id, {
@@ -450,7 +465,15 @@ export class SocialService {
     if (!text) return false;
     const membership = await this.db.guildMembership(actor.characterId);
     if (!membership) { this.err(actor.characterId, 'You are not in a guild.'); return false; }
-    await this.broadcastGuild(membership.guildId, [{ type: 'chat', from: actor.name, text, channel: 'guild' }]);
+    const event: SocialEvent = { type: 'chat', from: actor.name, text, channel: 'guild' };
+    const members = await this.db.guildMembers(membership.guildId);
+    for (const m of members) {
+      if (!this.tx.isOnline(m.id)) continue;
+      // a player who ignores the speaker does not see their guild chat (the
+      // speaker always sees their own line); mirrors say/whisper filtering
+      if (m.id !== actor.characterId && this.tx.isIgnoring(m.id, actor.characterId)) continue;
+      this.tx.deliver(m.id, [event]);
+    }
     return true;
   }
 
@@ -464,6 +487,8 @@ export class SocialService {
     const members = await this.db.guildMembers(membership.guildId);
     for (const m of members) {
       if ((m.rank === 'officer' || m.rank === 'leader') && this.tx.isOnline(m.id)) {
+        // honour the recipient's ignore list, just like guild/say/whisper
+        if (m.id !== actor.characterId && this.tx.isIgnoring(m.id, actor.characterId)) continue;
         this.tx.deliver(m.id, [{ type: 'chat', from: actor.name, text, channel: 'officer' }]);
       }
     }

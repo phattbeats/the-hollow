@@ -61,6 +61,36 @@ const PVP_CC_DR_RESET = 18; // seconds before a repeated PvP CC category is fres
 const PVP_CC_DR_MULTIPLIERS = [1, 0.5, 0.25] as const;
 const SAY_RANGE = 25; // /say carries a short distance; /yell across a camp
 const YELL_RANGE = 100;
+
+// Predefined social emotes. Each entry maps a command (and its aliases) to the
+// third-person action text shown to everyone in /say range. `solo` is used with
+// no target; `target` (when present) is used when the emote names another
+// player and contains a `%t` placeholder for that player's name. The actor's
+// own name is rendered separately by the client, so these strings start at the
+// verb (e.g. "Aleph" + " waves.").
+interface EmoteDef { solo: string; target?: string }
+const EMOTES: Record<string, EmoteDef> = {
+  wave: { solo: 'waves.', target: 'waves at %t.' },
+  bow: { solo: 'bows.', target: 'bows before %t.' },
+  cheer: { solo: 'cheers!', target: 'cheers at %t!' },
+  dance: { solo: 'bursts into dance.', target: 'dances with %t.' },
+  laugh: { solo: 'laughs.', target: 'laughs at %t.' },
+  cry: { solo: 'cries.', target: "cries on %t's shoulder." },
+  salute: { solo: 'salutes.', target: 'salutes %t.' },
+  thank: { solo: 'thanks everyone.', target: 'thanks %t.' },
+  clap: { solo: 'applauds. Bravo!', target: 'applauds %t. Bravo!' },
+  greet: { solo: 'greets everyone with a hearty hello.', target: 'greets %t with a hearty hello.' },
+  roar: { solo: 'lets out a mighty roar.', target: 'roars at %t.' },
+  sigh: { solo: 'sighs.', target: 'sighs at %t.' },
+  kneel: { solo: 'kneels down.', target: 'kneels before %t.' },
+  point: { solo: 'points.', target: 'points at %t.' },
+  flex: { solo: 'flexes.', target: 'flexes at %t.' },
+  cower: { solo: 'cowers in fear.', target: 'cowers in fear at the sight of %t.' },
+};
+// Command aliases → canonical emote key above.
+const EMOTE_ALIASES: Record<string, string> = {
+  hi: 'greet', hello: 'greet', thanks: 'thank', applaud: 'clap',
+};
 const CHAT_BURST = 8; // messages a player may send back-to-back...
 const CHAT_REFILL = 2; // ...then this many more per second (caps spam amplifiers)
 const DUEL_FORFEIT_DISTANCE = 60;
@@ -1013,9 +1043,18 @@ export class Sim {
     // with, instead of one full scan per player
     this.engagedPids.clear();
     for (const e of this.entities.values()) {
-      if (e.kind === 'mob' && !e.dead && (e.aiState === 'chase' || e.aiState === 'attack') && e.aggroTargetId !== null) {
+      if (e.kind !== 'mob' || e.dead) continue;
+      // a wild mob actively engaged keeps its target in combat — and if that
+      // target is someone's pet, the pet's owner stays in combat too, so a
+      // hunter/warlock can't regen, eat/drink, or use out-of-combat abilities
+      // while their pet tanks
+      if (e.ownerId === null && (e.aiState === 'chase' || e.aiState === 'attack') && e.aggroTargetId !== null) {
         this.engagedPids.add(e.aggroTargetId);
+        const tgt = this.entities.get(e.aggroTargetId);
+        if (tgt && tgt.ownerId !== null) this.engagedPids.add(tgt.ownerId);
       }
+      // a player's pet that is engaging an enemy keeps its owner in combat
+      if (e.ownerId !== null && e.aggroTargetId !== null) this.engagedPids.add(e.ownerId);
     }
     for (const meta of this.players.values()) {
       const p = this.entities.get(meta.entityId);
@@ -1929,7 +1968,10 @@ export class Sim {
           this.emit({ type: 'spellfx', sourceId: p.id, targetId: p.id, school: ability.school, fx: 'nova' });
           for (const m of this.mobsInRadius(p.pos, eff.radius)) {
             let dmg = this.rng.range(eff.min, eff.max);
-            dmg *= 1 - armorReduction(this.effectiveArmor(m), p.level);
+            // Armor only mitigates physical damage, mirroring the single-target
+            // path above — spell-school AoE (Arcane Explosion, Consecration) is
+            // not reduced by the target's armor.
+            if (!isSpell) dmg *= 1 - armorReduction(this.effectiveArmor(m), p.level);
             this.dealDamage(p, m, Math.round(dmg), false, ability.school, ability.name, 'hit', false, threatOpts);
           }
           break;
@@ -2676,7 +2718,11 @@ export class Sim {
     if (!qp || qp.state !== 'active') return false;
     const quest = QUESTS[entry.questId];
     const objIdx = quest.objectives.findIndex((o) => o.type === 'collect' && o.itemId === entry.itemId);
-    return objIdx < 0 || this.countItem(entry.itemId, meta.entityId) < quest.objectives[objIdx].count;
+    // A quest-gated drop is only "needed" while the player has an actual collect
+    // objective for this item that is still short of its required count. If the
+    // quest has no matching collect objective, the player never needs the item,
+    // so it must not drop (fail closed rather than dropping unconditionally).
+    return objIdx >= 0 && this.countItem(entry.itemId, meta.entityId) < quest.objectives[objIdx].count;
   }
 
   private rollLoot(mob: Entity, meta: PlayerMeta, eligible: PlayerMeta[] = [meta]): void {
@@ -3114,6 +3160,10 @@ export class Sim {
     if (d > PET_TELEPORT_DISTANCE) {
       pet.pos = { ...owner.pos };
       pet.prevPos = { ...pet.pos };
+      // a warp is a teleport: keep the spatial grid exact this tick instead of
+      // waiting for the end-of-tick refresh, so same-tick aggro/AoE queries
+      // don't miss the pet at its old cell (matches every other teleport site)
+      this.rebucket(pet);
     } else if (d > PET_FOLLOW_DISTANCE && !this.isRooted(pet)) {
       this.moveToward(pet, owner.pos, Math.max(pet.moveSpeed, RUN_SPEED * 1.1) * this.moveSpeedMult(pet));
     }
@@ -3359,6 +3409,24 @@ export class Sim {
     this.onInventoryChangedForQuests(meta);
   }
 
+  discardItem(itemId: string, count = 1, pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    const { meta } = r;
+    const def = ITEMS[itemId];
+    const available = this.countItem(itemId, meta.entityId);
+    if (!def || available <= 0) { this.error(meta.entityId, "You don't have that item."); return; }
+    const discardCount = Number.isFinite(count) ? Math.min(Math.floor(count), available) : 0;
+    if (discardCount <= 0) return;
+    this.removeItem(itemId, discardCount, meta.entityId);
+    this.emit({
+      type: 'log',
+      text: `Discarded ${def.name}${discardCount > 1 ? ' x' + discardCount : ''}.`,
+      color: '#999',
+      pid: meta.entityId,
+    });
+  }
+
   equipItem(itemId: string, pid?: number): void {
     const r = this.resolve(pid);
     if (!r) return;
@@ -3445,7 +3513,7 @@ export class Sim {
         this.error(meta.entityId, 'That potion is not ready yet.');
         return;
       }
-      const restoresMana = (def.potionMana ?? 0) > 0 && p.resourceType === 'mana';
+      const restoresMana = (def.potionMana ?? 0) > 0 && p.resourceType === 'mana' && p.resource < p.maxResource;
       const restoresHp = (def.potionHp ?? 0) > 0 && p.hp < p.maxHp;
       if (!restoresHp && !restoresMana) {
         this.error(meta.entityId, p.hp >= p.maxHp && (def.potionMana ?? 0) === 0 ? 'You are already at full health.' : 'Nothing to restore.');
@@ -3908,13 +3976,42 @@ export class Sim {
       return { channel: 'general', message: clean };
     }
 
+    // "/me <action>" — freeform third-person action text, e.g.
+    // "/me ponders the void" → "Aleph ponders the void". Emotes never become
+    // the player's sticky chat channel, so this returns null on success.
+    const meMatch = /^\/(?:me|emote|e)\s+([\s\S]+)$/i.exec(raw);
+    if (meMatch) {
+      const action = meMatch[1].trim();
+      if (action) this.broadcastEmote(r.meta, r.e, action);
+      return null;
+    }
+
+    // "/wave", "/dance [name]" — predefined social emotes. An optional name
+    // targets an online player (in range or not); unknown names fall back to
+    // the untargeted form, matching WoW.
+    const emMatch = /^\/([a-z]+)(?:\s+(\S+))?\s*$/i.exec(raw);
+    if (emMatch) {
+      const key = EMOTE_ALIASES[emMatch[1].toLowerCase()] ?? emMatch[1].toLowerCase();
+      const def = EMOTES[key];
+      if (def) {
+        const targetName = emMatch[2];
+        let text = def.solo;
+        if (targetName && def.target) {
+          const t = this.findPlayerByName(targetName);
+          if (t) text = def.target.replace('%t', t.name === r.meta.name ? 'themselves' : t.name);
+        }
+        this.broadcastEmote(r.meta, r.e, text);
+        return null;
+      }
+    }
+
     // bare text and "/s" are local say; "/y" carries further — both are
     // delivered per-player by range and carry the speaker for chat bubbles
     let channel: 'say' | 'yell' = 'say';
     let clean = raw;
     if (/^\/y(ell)?\s/i.test(raw)) { channel = 'yell'; clean = raw.replace(/^\/y(ell)?\s+/i, '').trim(); }
     else if (/^\/s(ay)?\s/i.test(raw)) { clean = raw.replace(/^\/s(ay)?\s+/i, '').trim(); }
-    else if (raw.startsWith('/')) { this.error(r.meta.entityId, `Unknown command: ${raw.split(' ')[0]}. Try /s /y /w /p /g.`); return null; }
+    else if (raw.startsWith('/')) { this.error(r.meta.entityId, `Unknown command: ${raw.split(' ')[0]}. Try /s /y /w /p /g, /me, or an emote like /wave.`); return null; }
     if (!clean) return null;
     const range = channel === 'yell' ? YELL_RANGE : SAY_RANGE;
     for (const meta of this.players.values()) {
@@ -3923,6 +4020,31 @@ export class Sim {
       this.emit({ type: 'chat', fromPid: r.meta.entityId, from: r.meta.name, text: clean, channel, entityId: r.e.id, pid: meta.entityId });
     }
     return { channel, message: clean };
+  }
+
+  // Resolve a player by name the same way whispers do: an exact-case match
+  // wins outright, otherwise a case-insensitive match is used only when it is
+  // unambiguous.
+  private findPlayerByName(name: string): PlayerMeta | null {
+    const wanted = name.toLowerCase();
+    const ci: PlayerMeta[] = [];
+    for (const meta of this.players.values()) {
+      if (meta.name === name) return meta;
+      if (meta.name.toLowerCase() === wanted) ci.push(meta);
+    }
+    return ci.length === 1 ? ci[0] : null;
+  }
+
+  // Send a third-person emote to every player within /say range (including the
+  // actor). `from` carries the actor's name so the client can render it as a
+  // clickable name; `text` is the action predicate (e.g. "waves at Bet.").
+  private broadcastEmote(actor: PlayerMeta, actorEntity: Entity, text: string): void {
+    const body = text.slice(0, 200);
+    for (const meta of this.players.values()) {
+      const e = this.entities.get(meta.entityId);
+      if (!e || dist2d(actorEntity.pos, e.pos) > SAY_RANGE) continue;
+      this.emit({ type: 'chat', fromPid: actor.entityId, from: actor.name, text: body, channel: 'emote', entityId: actorEntity.id, pid: meta.entityId });
+    }
   }
 
   // -------------------------------------------------------------------------

@@ -14,7 +14,7 @@ import { resolveRealm } from '../server/realm';
 class FakeDb implements SocialDb {
   private chars = new Map<number, CharInfo>();
   private friends = new Map<number, Set<number>>();
-  private blocks = new Map<number, Set<number>>();
+  blocks = new Map<number, Set<number>>();
   private guilds = new Map<number, string>();
   private members = new Map<number, { guildId: number; rank: GuildRank }>();
   private nextGuildId = 1;
@@ -112,6 +112,9 @@ class FakeTransport implements SocialTransport {
   }
   pushSnapshot(id: number): void { this.snapshotCount.set(id, (this.snapshotCount.get(id) ?? 0) + 1); }
   onBlocksChanged(id: number, ids: number[]): void { this.blockSets.set(id, ids); }
+  isIgnoring(recipientId: number, senderCharacterId: number): boolean {
+    return !!this.db.blocks.get(recipientId)?.has(senderCharacterId);
+  }
 
   eventsFor(id: number): SocialEvent[] { return this.delivered.get(id) ?? []; }
   errorsFor(id: number): string[] { return this.eventsFor(id).filter((e) => e.type === 'error').map((e: any) => e.text); }
@@ -271,6 +274,16 @@ describe('ignore / block', () => {
     await h.svc.blockAdd(h.actor(1), 'Aleph');
     expect(h.tx.errorsFor(1).join()).toMatch(/yourself/i);
   });
+
+  it('refuses to friend a player you are ignoring', async () => {
+    await h.svc.blockAdd(h.actor(1), 'Bet');
+    h.tx.clear();
+    await h.svc.friendAdd(h.actor(1), 'Bet');
+    expect(h.tx.errorsFor(1).join()).toMatch(/ignoring/i);
+    const snap = await h.svc.snapshot(1);
+    expect(snap.friends).toHaveLength(0);
+    expect(snap.blocks.map((b) => b.name)).toEqual(['Bet']);
+  });
 });
 
 describe('guilds', () => {
@@ -375,6 +388,30 @@ describe('guilds', () => {
     expect((await h.svc.snapshot(2)).guild).toBeNull();
   });
 
+  it('rejects inviting someone who already has a pending guild invite', async () => {
+    await h.svc.guildCreate(h.actor(1), 'Knights');
+    await h.svc.guildCreate(h.actor(3), 'Raiders');
+    await h.svc.guildInvite(h.actor(1), 'Bet');
+    h.tx.clear();
+    // a second guild tries to invite Bet while the first invite is still live
+    await h.svc.guildInvite(h.actor(3), 'Bet');
+    expect(h.tx.errorsFor(3).join()).toMatch(/already has a pending guild invitation/i);
+    // the original invite is untouched, so Bet still joins the first guild
+    await h.svc.guildAccept(h.actor(2));
+    expect((await h.svc.snapshot(2)).guild?.name).toBe('Knights');
+  });
+
+  it('allows a fresh invite once the previous one has expired', async () => {
+    await h.svc.guildCreate(h.actor(1), 'Knights');
+    await h.svc.guildCreate(h.actor(3), 'Raiders');
+    await h.svc.guildInvite(h.actor(1), 'Bet');
+    h.advance(61_000); // first invite lapses
+    h.tx.clear();
+    await h.svc.guildInvite(h.actor(3), 'Bet');
+    expect(h.tx.errorsFor(3)).toHaveLength(0);
+    expect(h.tx.eventsFor(2).some((e) => e.type === 'guildInvite')).toBe(true);
+  });
+
   it('routes guild chat only to guild members', async () => {
     await h.svc.guildCreate(h.actor(1), 'Knights');
     await h.svc.guildInvite(h.actor(1), 'Bet');
@@ -385,6 +422,37 @@ describe('guilds', () => {
     expect(h.tx.eventsFor(1).some((e) => e.type === 'chat' && e.channel === 'guild' && e.text === 'hello guild')).toBe(true);
     expect(h.tx.eventsFor(2).some((e) => e.type === 'chat' && e.text === 'hello guild')).toBe(true);
     expect(h.tx.eventsFor(3)).toHaveLength(0); // Gimel is not in the guild
+  });
+
+  it('suppresses guild chat from a player the recipient ignores', async () => {
+    await h.svc.guildCreate(h.actor(1), 'Knights');
+    await h.svc.guildInvite(h.actor(1), 'Bet');
+    await h.svc.guildAccept(h.actor(2));
+    await h.svc.guildInvite(h.actor(1), 'Gimel');
+    await h.svc.guildAccept(h.actor(3));
+    // Bet ignores Aleph
+    await h.svc.blockAdd(h.actor(2), 'Aleph');
+    h.tx.clear();
+    const ok = await h.svc.guildChat(h.actor(1), 'hello guild');
+    expect(ok).toBe(true);
+    // Aleph still sees their own line; an uninvolved member (Gimel) sees it
+    expect(h.tx.eventsFor(1).some((e) => e.type === 'chat' && e.text === 'hello guild')).toBe(true);
+    expect(h.tx.eventsFor(3).some((e) => e.type === 'chat' && e.text === 'hello guild')).toBe(true);
+    // Bet, who ignores Aleph, receives nothing
+    expect(h.tx.eventsFor(2)).toHaveLength(0);
+  });
+
+  it('suppresses officer chat from an officer the recipient ignores', async () => {
+    await h.svc.guildCreate(h.actor(1), 'Knights');
+    await h.svc.guildInvite(h.actor(1), 'Bet');
+    await h.svc.guildAccept(h.actor(2));
+    await h.svc.guildSetRank(h.actor(1), 'Bet', 'officer');
+    // Bet ignores the Guild Master Aleph
+    await h.svc.blockAdd(h.actor(2), 'Aleph');
+    h.tx.clear();
+    expect(await h.svc.officerChat(h.actor(1), 'officers only')).toBe(true);
+    expect(h.tx.eventsFor(1).some((e) => e.type === 'chat' && e.channel === 'officer')).toBe(true);
+    expect(h.tx.eventsFor(2)).toHaveLength(0);
   });
 
   it('blocks guild chat from a non-member', async () => {
