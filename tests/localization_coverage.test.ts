@@ -36,6 +36,7 @@ import {
   tEntity,
 } from "../src/ui/entity_i18n";
 import {
+  hasTalentTitleOverride,
   renderTalentManifestEntry,
   talentTranslationManifest,
 } from "../src/ui/talent_i18n";
@@ -813,6 +814,15 @@ describe("i18n Localization Key Coverage", () => {
         expect(rendered, `${lang}.${entry.id}.${entry.field}`).not.toMatch(placeholderPattern);
         if (lang !== "en" && lang !== "en_CA" && entry.field === "description") {
           expect(copiedEnglishComparable(rendered), `${lang}.${entry.id}.${entry.field} should not copy canonical English talent prose`)
+            .not.toBe(copiedEnglishComparable(entry.source));
+        }
+        // Talent NAMES must not leak English either. A name may legitimately equal
+        // English only when it is a deliberate cross-language cognate recorded as an
+        // explicit titleOverride (e.g. French "Riposte", Spanish "Vigor"); a name that
+        // matches English WITHOUT such an override is an accidental leak (e.g. a new
+        // talent whose vocabulary the translation tables do not yet cover).
+        if (lang !== "en" && lang !== "en_CA" && entry.field === "name" && !hasTalentTitleOverride(lang, entry.source)) {
+          expect(copiedEnglishComparable(rendered), `${lang}.${entry.id}.name leaks English with no explicit titleOverride`)
             .not.toBe(copiedEnglishComparable(entry.source));
         }
       }
