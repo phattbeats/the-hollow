@@ -4269,6 +4269,9 @@ export class Sim {
     // error reply, matches no server interceptor, so it works online for free.
     if (/^\/(?:nearby|near|around)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.nearbyReadout(r.e));
+    // "/arena" (aliases "/pvp", "/rating") — self-only Ashen Coliseum standing
+    if (/^\/(?:arena|pvp|rating)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.arenaReadout(r.meta));
       return null;
     }
 
@@ -5737,6 +5740,15 @@ export class Sim {
       return z.id === here.id ? `${line} [you are here]` : line;
     });
     return `Zones (${ZONES.length}): ${parts.join(', ')}.`;
+  // Self-only readout of a character's Ashen Coliseum standing. Reads only the
+  // persisted PlayerMeta arena fields (no new state). Draws count as neither a
+  // win nor a loss (see resolveArena), so "matches played" is wins + losses.
+  private arenaReadout(meta: PlayerMeta): string {
+    const { arenaRating: rating, arenaWins: wins, arenaLosses: losses } = meta;
+    const played = wins + losses;
+    if (played <= 0) return `Arena: Rating ${rating} — no matches played yet.`;
+    const pct = Math.round((wins / played) * 100);
+    return `Arena: Rating ${rating} — ${wins} wins, ${losses} losses (${pct}% win rate).`;
   }
 
   private error(pid: number, text: string): void {
