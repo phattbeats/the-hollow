@@ -4335,6 +4335,10 @@ export class Sim {
       this.error(r.meta.entityId, this.castingReadout(r.e));
     if (/^\/(?:speed|movespeed|ms)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.speedReadout(r.e));
+    // "/attack" (aliases /autoattack, /aa) — self-only readout of auto-attack
+    // state: whether it is engaged, what it is striking, and the next swing.
+    if (/^\/(?:attack|autoattack|aa)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.attackReadout(r.e, r.meta));
       return null;
     }
 
@@ -5937,6 +5941,20 @@ export class Sim {
     if (pct > 100) return `Movement speed: ${pct}% of normal (hastened).`;
     if (pct < 100) return `Movement speed: ${pct}% of normal (slowed).`;
     return 'Movement speed: 100% of normal.';
+  // Self-only readout for /attack: reads only live Entity auto-attack state
+  // (autoAttack/swingTimer/targetId). The displayed swing interval reuses the
+  // exact expression the engine resets the timer with (weapon.speed *
+  // swingIntervalMult), so it reflects any active haste/slow auras.
+  private attackReadout(p: Entity, meta: PlayerMeta): string {
+    if (!p.autoAttack) return 'Auto-attack is off.';
+    const t = p.targetId !== null ? this.entities.get(p.targetId) : null;
+    if (!t || t.dead) return 'Auto-attack is on, but you have no valid target.';
+    // ranged classes (hunter auto shot, caster wands) swing at their ranged
+    // speed; everyone else uses the equipped weapon's speed
+    const base = CLASSES[meta.cls].ranged?.speed ?? p.weapon.speed;
+    const interval = base * this.swingIntervalMult(p);
+    const next = p.swingTimer <= 0 ? 'now' : `in ${p.swingTimer.toFixed(1)}s`;
+    return `Auto-attack is on against ${t.name} — next swing ${next} (${interval.toFixed(1)}s swing).`;
   }
 
   private error(pid: number, text: string): void {
