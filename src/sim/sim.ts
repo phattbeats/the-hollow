@@ -4289,6 +4289,12 @@ export class Sim {
     // logged nor spoken; works online for free (no server interceptor).
     if (/^\/(?:combat|cb|incombat)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.combatReadout(r.e));
+    // "/graveyard" (aliases /gy, /spirithealer) — self-only readout of where
+    // your spirit will resurrect if you die at your current location. Mirrors
+    // the resurrection target picked in releaseSpirit. Self-only error reply,
+    // returns null so it is neither logged nor spoken; works online for free.
+    if (/^\/(?:graveyard|gy|spirithealer)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.graveyardReadout(r.e));
       return null;
     }
 
@@ -5794,6 +5800,16 @@ export class Sim {
       return `You are in combat — leaving in ${Math.ceil(remaining)}s if no further action.`;
     }
     return 'You are in combat (enemies still engaged).';
+  // Readout for "/graveyard": names the zone graveyard your spirit returns to
+  // if you die here, and its coordinates. Reads only existing zone/dungeon
+  // lookups (no new fields) and resolves the same target as releaseSpirit —
+  // dying inside a dungeon resurrects you at the graveyard of the zone its door
+  // sits in, dying outdoors at your current zone's graveyard.
+  private graveyardReadout(p: Entity): string {
+    const dungeon = dungeonAt(p.pos.x);
+    const zone = zoneAt(dungeon ? dungeon.doorPos.z : p.pos.z);
+    const gy = zone.graveyard;
+    return `If you fall here, your spirit returns to the ${zone.name} graveyard at (${Math.floor(gy.x)}, ${Math.floor(gy.z)}).`;
   }
 
   private error(pid: number, text: string): void {
