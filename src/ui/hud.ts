@@ -2115,6 +2115,11 @@ export class Hud {
     if (match) return t('questUi.logs.ready', { name: questTitleFromSource(match[1]), status: t('questUi.log.readyStatus') });
     match = /^Your market listing of (.+) expired and waits at the Merchant\.$/.exec(text);
     if (match) return t('itemUi.logs.expiredListing', { item: itemDisplayNameFromSource(match[1]) });
+    // Server-sent friends/guild/who/world messages arrive as 'log' events; fall
+    // back to the shared server-message localizer (same as localizeErrorText /
+    // localizeLootText) so they are not displayed in raw English.
+    const server = localizeServerText(text);
+    if (server !== null) return server;
     return text;
   }
 
