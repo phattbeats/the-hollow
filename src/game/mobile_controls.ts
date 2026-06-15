@@ -4,6 +4,47 @@ export const PHONE_TOUCH_QUERY = '(pointer: coarse) and (max-width: 940px), (poi
 const DEADZONE = 0.22;
 const CAMERA_SENSITIVITY = 0.8;
 
+// Haptic feedback: short Vibration-API buzzes so touch actions feel physical.
+// On by default (own localStorage key, like music's ev_music_on); try/catch +
+// feature-detect guarded so it no-ops on desktop and under Vitest/jsdom.
+export const HAPTICS_STORE_KEY = 'woc_haptics_on';
+export const HAPTIC_TAP = 10;        // a button press
+export const HAPTIC_JOYSTICK = 6;    // grabbing a joystick
+export const HAPTIC_CONFIRM = [12, 40, 12]; // haptics toggled back on
+
+type VibrationNavigator = { vibrate?: (pattern: number | number[]) => boolean };
+
+export function loadHapticsEnabled(storage: Pick<Storage, 'getItem'> | null = safeLocalStorage()): boolean {
+  if (!storage) return true;
+  try {
+    return storage.getItem(HAPTICS_STORE_KEY) !== '0';
+  } catch {
+    return true;
+  }
+}
+
+export function saveHapticsEnabled(on: boolean, storage: Pick<Storage, 'setItem'> | null = safeLocalStorage()): void {
+  try { storage?.setItem(HAPTICS_STORE_KEY, on ? '1' : '0'); } catch { /* storage unavailable */ }
+}
+
+/** Fire a haptic pulse when enabled and the Vibration API exists. Returns whether it fired. */
+export function triggerHaptic(
+  pattern: number | number[],
+  enabled: boolean,
+  nav: VibrationNavigator | null = typeof navigator !== 'undefined' ? navigator : null,
+): boolean {
+  if (!enabled || !nav || typeof nav.vibrate !== 'function') return false;
+  try {
+    return nav.vibrate(pattern);
+  } catch {
+    return false;
+  }
+}
+
+function safeLocalStorage(): Pick<Storage, 'getItem' | 'setItem'> | null {
+  try { return typeof localStorage !== 'undefined' ? localStorage : null; } catch { return null; }
+}
+
 export interface MobileControlCallbacks {
   onAttackNearest(): void;
   onTarget(): void;
@@ -37,6 +78,7 @@ export function mapJoystickVector(x: number, y: number, deadzone = DEADZONE): To
 
 export class MobileControls {
   private active = false;
+  private hapticsOn = loadHapticsEnabled();
   private joyPointer: number | null = null;
   private lookPointer: number | null = null;
   private mq: MediaQueryList | null = null;
@@ -77,6 +119,7 @@ export class MobileControls {
     this.bindButton('mobile-talents', () => this.callbacks.onTalents());
     this.bindButton('mobile-meters', () => this.callbacks.onMeters());
     this.bindButton('mobile-map', () => this.callbacks.onMap());
+    this.bindHapticsToggle('mobile-haptics');
     this.bindButton('mobile-more', () => {
       this.root?.classList.toggle('expanded');
       document.body.classList.toggle('mobile-more-open', this.root?.classList.contains('expanded') ?? false);
@@ -101,12 +144,38 @@ export class MobileControls {
     button?.addEventListener('click', (e) => {
       if (!this.active) return;
       e.preventDefault();
+      triggerHaptic(HAPTIC_TAP, this.hapticsOn);
       cb();
       if (button.closest('#mobile-extra-controls')) {
         this.root?.classList.remove('expanded');
         document.body.classList.remove('mobile-more-open');
       }
     });
+  }
+
+  /** The haptics button is a stateful toggle, so it bypasses bindButton (no tray
+   *  auto-close, no buzz on the press that turns buzzing off) and reflects state
+   *  via aria-pressed + an .is-on class. */
+  private bindHapticsToggle(id: string): void {
+    const button = document.getElementById(id);
+    if (!button) return;
+    this.syncHapticsButton(button);
+    button.addEventListener('click', (e) => {
+      if (!this.active) return;
+      e.preventDefault();
+      this.hapticsOn = !this.hapticsOn;
+      saveHapticsEnabled(this.hapticsOn);
+      this.syncHapticsButton(button);
+      // confirm with a pulse only when enabling, so the player feels what they turned on
+      if (this.hapticsOn) triggerHaptic(HAPTIC_CONFIRM, true);
+    });
+  }
+
+  private syncHapticsButton(button: HTMLElement): void {
+    button.classList.toggle('is-on', this.hapticsOn);
+    button.setAttribute('aria-pressed', this.hapticsOn ? 'true' : 'false');
+    const label = button.querySelector('.mobile-label');
+    if (label) label.textContent = this.hapticsOn ? 'Haptics' : 'Haptics Off';
   }
 
   private toggleChat(): void {
@@ -127,6 +196,7 @@ export class MobileControls {
     if (!this.active || this.joyPointer !== null) return;
     e.preventDefault();
     this.joyPointer = e.pointerId;
+    triggerHaptic(HAPTIC_JOYSTICK, this.hapticsOn);
     try { this.moveJoystick?.setPointerCapture(e.pointerId); } catch { /* synthetic test event */ }
     this.onMoveMove(e);
   }
@@ -162,6 +232,7 @@ export class MobileControls {
     e.preventDefault();
     this.lookPointer = e.pointerId;
     this.input.setTouchLook(true);
+    triggerHaptic(HAPTIC_JOYSTICK, this.hapticsOn);
     try { this.cameraJoystick?.setPointerCapture(e.pointerId); } catch { /* synthetic test event */ }
     this.onCameraMove(e);
   }

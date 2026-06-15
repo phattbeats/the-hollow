@@ -2822,6 +2822,8 @@
     z-index: 19;
   }
   body.mobile-touch .mobile-btn:active { transform: translateY(1px); border-color: var(--gold); color: #fff; }
+  body.mobile-touch .mobile-btn.is-on { border-color: var(--gold); color: #fff; }
+  body.mobile-touch .mobile-btn:not(.is-on)#mobile-haptics { opacity: 0.55; }
   body.mobile-touch .mobile-btn .mobile-label { display: block; margin-top: 1px; font-size: 8px; font-family: var(--ui-font); color: #bfb28a; }
   body.mobile-touch #mobile-extra-controls {
     position: fixed;
@@ -4098,6 +4100,7 @@
         <button class="mobile-btn" id="mobile-talents" title="Talents" aria-label="Talents" data-icon="talents"><span class="mobile-label">Talents</span></button>
         <button class="mobile-btn" id="mobile-meters" title="Meters" aria-label="Meters" data-icon="meters"><span class="mobile-label">Meters</span></button>
         <button class="mobile-btn" id="mobile-map" title="Map" aria-label="Map" data-icon="map"><span class="mobile-label">Map</span></button>
+        <button class="mobile-btn" id="mobile-haptics" title="Toggle haptic feedback" aria-label="Toggle haptic feedback" aria-pressed="true" data-icon="vibrate"><span class="mobile-label">Haptics</span></button>
       </div>
     </div>
   </div>

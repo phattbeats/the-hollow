@@ -20,7 +20,7 @@ export type UiIconName =
   | 'chat' | 'interact'
   // hand-authored geometrics
   | 'close' | 'prev' | 'next' | 'more' | 'meters'
-  | 'whisper' | 'music' | 'talents' | 'skull';
+  | 'whisper' | 'music' | 'talents' | 'skull' | 'vibrate';
 
 // Inner SVG markup per icon (one or more <path>). Default fill rule is nonzero
 // (correct for game-icons.net art incl. overlaps); the two hand-authored cut-out
@@ -52,6 +52,8 @@ const ICONS: Record<UiIconName, string> = {
   music: '<path d="M158 374a54 54 0 1 0 108 0 54 54 0 1 0-108 0M260 128h22v246h-22zM282 122c46 16 70 58 46 98 12-32-6-62-46-74z"/>',
   talents: '<path d="M256 138v104M256 242l-96 86M256 242l96 86" stroke="currentColor" stroke-width="28" fill="none" stroke-linecap="round"/><circle cx="256" cy="116" r="44"/><circle cx="150" cy="352" r="44"/><circle cx="362" cy="352" r="44"/>',
   skull: '<path fill-rule="evenodd" d="M256 64C176 64 112 124 112 198c0 38 16 70 40 92v44a24 24 0 0 0 24 24h160a24 24 0 0 0 24-24v-44c24-22 40-54 40-92 0-74-64-134-144-134zM196 176a36 36 0 0 0 0 72 36 36 0 0 0 0-72zM316 176a36 36 0 0 0 0 72 36 36 0 0 0 0-72zM238 300h36v58h-36z"/>',
+  // phone handset flanked by vibration waves (hand-authored to match the bar glyphs)
+  vibrate: '<path fill-rule="evenodd" d="M196 80h120a24 24 0 0 1 24 24v304a24 24 0 0 1-24 24H196a24 24 0 0 1-24-24V104a24 24 0 0 1 24-24zm4 40v272h112V120H200z"/><path d="M96 176v160h28V176zM388 176v160h28V176zM40 216v80h26v-80zM446 216v80h26v-80z"/>',
 };
 
 export function hasUiIcon(name: string): name is UiIconName {

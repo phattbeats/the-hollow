@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { isPhoneTouchDevice, mapJoystickVector, mapLookVector } from '../src/game/mobile_controls';
+import {
+  HAPTICS_STORE_KEY,
+  isPhoneTouchDevice,
+  loadHapticsEnabled,
+  mapJoystickVector,
+  mapLookVector,
+  saveHapticsEnabled,
+  triggerHaptic,
+} from '../src/game/mobile_controls';
 
 describe('mapJoystickVector', () => {
   it('returns neutral inside the deadzone', () => {
@@ -45,5 +53,46 @@ describe('mapLookVector', () => {
     const v = mapLookVector(0.45, -0.25);
     expect(v.x).toBeCloseTo(0.36);
     expect(v.y).toBeCloseTo(-0.2);
+  });
+});
+
+describe('haptics', () => {
+  const makeStore = (initial: Record<string, string> = {}) => {
+    const map = new Map(Object.entries(initial));
+    return {
+      getItem: (k: string) => (map.has(k) ? map.get(k)! : null),
+      setItem: (k: string, v: string) => { map.set(k, v); },
+      map,
+    };
+  };
+
+  it('defaults to enabled when nothing is stored or storage is missing', () => {
+    expect(loadHapticsEnabled(makeStore())).toBe(true);
+    expect(loadHapticsEnabled(null)).toBe(true);
+  });
+
+  it('round-trips the stored preference (only "0" disables)', () => {
+    const store = makeStore();
+    saveHapticsEnabled(false, store);
+    expect(store.map.get(HAPTICS_STORE_KEY)).toBe('0');
+    expect(loadHapticsEnabled(store)).toBe(false);
+    saveHapticsEnabled(true, store);
+    expect(store.map.get(HAPTICS_STORE_KEY)).toBe('1');
+    expect(loadHapticsEnabled(store)).toBe(true);
+  });
+
+  it('vibrates only when enabled and the API exists', () => {
+    const calls: Array<number | number[]> = [];
+    const nav = { vibrate: (p: number | number[]) => { calls.push(p); return true; } };
+    expect(triggerHaptic(10, true, nav)).toBe(true);
+    expect(triggerHaptic(10, false, nav)).toBe(false); // disabled
+    expect(triggerHaptic(10, true, {})).toBe(false);    // no Vibration API
+    expect(triggerHaptic(10, true, null)).toBe(false);  // no navigator
+    expect(calls).toEqual([10]);
+  });
+
+  it('swallows Vibration API exceptions', () => {
+    const nav = { vibrate: () => { throw new Error('blocked'); } };
+    expect(triggerHaptic([12, 40, 12], true, nav)).toBe(false);
   });
 });
