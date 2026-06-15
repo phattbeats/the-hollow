@@ -2840,9 +2840,9 @@ export class Hud {
         + (m.oor ? ' oor' : '');
       frame.style.setProperty('--cls', classCss(m.cls));
       const resClass = m.rtype === 'rage' ? 'rage' : m.rtype === 'energy' ? 'energy' : 'mana';
-      const badge = m.dead ? '<span class="pf-badge dead" title="Dead">💀</span>'
-        : m.inCombat ? '<span class="pf-badge combat" title="In combat">⚔️</span>' : '';
-      const range = m.oor ? '<span class="pf-badge oor" title="Out of range">⤢</span>' : '';
+      const badge = m.dead ? `<span class="pf-badge dead" title="${esc(t('hud.social.status.dead'))}">💀</span>`
+        : m.inCombat ? `<span class="pf-badge combat" title="${esc(t('hud.social.status.combat'))}">⚔️</span>` : '';
+      const range = m.oor ? `<span class="pf-badge oor" title="${esc(t('hud.errors.outOfRange'))}">⤢</span>` : '';
       frame.innerHTML = `
         <div class="pfm-name"><span class="pfm-id">${CLASS_GLYPH[m.cls] ?? ''} ${m.name}</span><span class="pfm-meta">${badge}${range}<span class="lead">${info.leader === m.pid ? '★' : ''}${m.level}</span></span></div>
         <div class="bar hp"><div class="bar-fill" style="transform:scaleX(${(m.hp / Math.max(1, m.mhp)).toFixed(3)})"></div></div>
@@ -2857,7 +2857,7 @@ export class Hud {
     const leave = document.createElement('button');
     leave.className = 'btn';
     leave.id = 'party-leave';
-    leave.textContent = 'Leave Party';
+    leave.textContent = t('hud.social.leaveParty');
     leave.addEventListener('click', () => this.sim.partyLeave());
     el.appendChild(leave);
   }
@@ -3152,12 +3152,12 @@ export class Hud {
     if (!el.classList.contains('open')) return;
     const tab = this.socialTab;
     const online = this.sim.socialInfo !== null;
-    const realmTag = online && this.sim.realm ? ` <span class="soc-realm-tag">— ${esc(this.sim.realm)}</span>` : '';
-    el.innerHTML = `<div class="panel-title"><span>Social${realmTag}</span><span class="x-btn" data-close>✕</span></div>`
+    const realmTag = online && this.sim.realm ? ` <span class="soc-realm-tag">- ${esc(this.sim.realm)}</span>` : '';
+    el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.social.title'))}${realmTag}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">✕</button></div>`
       + `<div class="soc-tabs">`
-      + `<div class="soc-tab ${tab === 'friends' ? 'on' : ''}" data-tab="friends">Friends</div>`
-      + `<div class="soc-tab ${tab === 'guild' ? 'on' : ''}" data-tab="guild">Guild</div>`
-      + `<div class="soc-tab ${tab === 'ignore' ? 'on' : ''}" data-tab="ignore">Ignore</div>`
+      + `<button type="button" class="soc-tab ${tab === 'friends' ? 'on' : ''}" data-tab="friends" aria-pressed="${tab === 'friends' ? 'true' : 'false'}">${esc(t('hud.social.friendsTab'))}</button>`
+      + `<button type="button" class="soc-tab ${tab === 'guild' ? 'on' : ''}" data-tab="guild" aria-pressed="${tab === 'guild' ? 'true' : 'false'}">${esc(t('hud.social.guildTab'))}</button>`
+      + `<button type="button" class="soc-tab ${tab === 'ignore' ? 'on' : ''}" data-tab="ignore" aria-pressed="${tab === 'ignore' ? 'true' : 'false'}">${esc(t('hud.social.ignoreTab'))}</button>`
       + `</div>`
       + `<div class="soc-body"></div>`
       + `<div class="soc-notice"></div>`
@@ -3174,7 +3174,7 @@ export class Hud {
     if (!body) return;
     const online = this.sim.socialInfo !== null;
     body.innerHTML = !online
-      ? `<div class="soc-empty">Friends, guilds, and ignore lists are available in online play.</div>`
+      ? `<div class="soc-empty">${esc(t('hud.social.offlineEmpty'))}</div>`
       : this.socialTab === 'friends' ? this.friendsHtml()
         : this.socialTab === 'guild' ? this.guildHtml()
           : this.ignoreHtml();
@@ -3183,37 +3183,37 @@ export class Hud {
 
   private friendsHtml(): string {
     const friends = this.sim.socialInfo?.friends ?? [];
-    if (friends.length === 0) return `<div class="soc-empty">No friends yet. Search for someone by name below.</div>`;
+    if (friends.length === 0) return `<div class="soc-empty">${esc(t('hud.social.friendsEmpty'))}</div>`;
     return friends.map((f) => {
       const dot = f.online ? (f.status ?? 'online') : 'off';
       const meta = f.online
         ? `<span class="zone">${esc(f.zone ?? '')}</span><br>${esc(statusLabel(f.status))}`
-        : t('hud.social.status.offline');
+        : esc(t('hud.social.status.offline'));
       const name = f.online
-        ? `<span class="soc-name soc-link" data-whisper="${esc(f.name)}" title="Whisper ${esc(f.name)}">${esc(f.name)}</span>`
+        ? `<button type="button" class="soc-name soc-link" data-whisper="${esc(f.name)}" title="${esc(t('hud.social.whisperTitle', { name: f.name }))}">${esc(f.name)}</button>`
         : `<span class="soc-name">${esc(f.name)}</span>`;
-      const whisper = f.online ? `<span class="soc-x" data-whisper="${esc(f.name)}" title="Whisper ${esc(f.name)}">✉</span>` : '';
+      const whisper = f.online ? `<button type="button" class="soc-x" data-whisper="${esc(f.name)}" title="${esc(t('hud.social.whisperTitle', { name: f.name }))}">✉</button>` : '';
       return `<div class="soc-row">`
         + `<span class="soc-dot ${dot === 'off' ? '' : dot}" title="${esc(dotTitle(f.online, f.status, f.zone))}"></span>`
-        + `<span>${name}<br><span class="soc-meta">Lvl ${f.level} ${cap(f.cls)}</span></span>`
+        + `<span>${name}<br><span class="soc-meta">${esc(t('hud.social.levelClass', { level: formatNumber(f.level, { maximumFractionDigits: 0 }), className: playerClassDisplayName(f.cls) }))}</span></span>`
         + `<span class="soc-meta">${meta}</span>`
-        + `<span class="soc-actions">${whisper}<span class="soc-x" data-act="unfriend" data-name="${esc(f.name)}" title="Remove ${esc(f.name)} from friends">✕</span></span>`
+        + `<span class="soc-actions">${whisper}<button type="button" class="soc-x" data-act="unfriend" data-name="${esc(f.name)}" title="${esc(t('hud.social.removeFriendTitle', { name: f.name }))}">✕</button></span>`
         + `</div>`;
     }).join('');
   }
 
   private ignoreHtml(): string {
     const blocks = this.sim.socialInfo?.blocks ?? [];
-    if (blocks.length === 0) return `<div class="soc-empty">Your ignore list is empty.</div>`;
+    if (blocks.length === 0) return `<div class="soc-empty">${esc(t('hud.social.ignoreEmpty'))}</div>`;
     return blocks.map((b) => `<div class="soc-row">`
       + `<span class="soc-name">${esc(b.name)}</span>`
-      + `<span class="soc-actions" style="margin-left:auto"><span class="soc-x" data-act="unblock" data-name="${esc(b.name)}" title="Stop ignoring ${esc(b.name)}">✕</span></span>`
+      + `<span class="soc-actions" style="margin-left:auto"><button type="button" class="soc-x" data-act="unblock" data-name="${esc(b.name)}" title="${esc(t('hud.social.stopIgnoringTitle', { name: b.name }))}">✕</button></span>`
       + `</div>`).join('');
   }
 
   private guildHtml(): string {
     const guild = this.sim.socialInfo?.guild ?? null;
-    if (!guild) return `<div class="soc-empty">You are not in a guild. Found one below, or get invited by an existing guild.</div>`;
+    if (!guild) return `<div class="soc-empty">${esc(t('hud.social.noGuild'))}</div>`;
     const me = guild.rank;
     const guildHeadKey = guild.members.length === 1 ? 'hud.social.guildHeadOne' : 'hud.social.guildHeadMany';
     const guildCount = formatNumber(guild.members.length, { maximumFractionDigits: 0 });
@@ -3222,22 +3222,22 @@ export class Hud {
       const dot = m.online ? (m.status ?? 'online') : 'off';
       const meta = m.online
         ? `<span class="zone">${esc(m.zone ?? '')}</span><br>${esc(statusLabel(m.status))}`
-        : t('hud.social.status.offline');
+        : esc(t('hud.social.status.offline'));
       const self = m.name === this.sim.player.name;
-      const nameInner = `${esc(m.name)}<span class="rank">${rankLabel(m.rank)}</span>`;
+      const nameInner = `${esc(m.name)}<span class="rank">${esc(rankLabel(m.rank))}</span>`;
       const name = m.online && !self
-        ? `<span class="soc-name soc-link" data-whisper="${esc(m.name)}" title="Whisper ${esc(m.name)}">${nameInner}</span>`
+        ? `<button type="button" class="soc-name soc-link" data-whisper="${esc(m.name)}" title="${esc(t('hud.social.whisperTitle', { name: m.name }))}">${nameInner}</button>`
         : `<span class="soc-name">${nameInner}</span>`;
-      let actions = m.online && !self ? `<span class="soc-x" data-whisper="${esc(m.name)}" title="Whisper ${esc(m.name)}">✉</span>` : '';
-      if (!self && me === 'leader') actions += `<span class="soc-x" data-act="gtransfer" data-name="${esc(m.name)}" title="Make ${esc(m.name)} Guild Master">♛</span>`;
-      if (!self && me === 'leader' && m.rank === 'member') actions += `<span class="soc-x" data-act="promote" data-name="${esc(m.name)}" title="Promote ${esc(m.name)} to officer">▲</span>`;
-      if (!self && me === 'leader' && m.rank === 'officer') actions += `<span class="soc-x" data-act="demote" data-name="${esc(m.name)}" title="Demote ${esc(m.name)} to member">▼</span>`;
+      let actions = m.online && !self ? `<button type="button" class="soc-x" data-whisper="${esc(m.name)}" title="${esc(t('hud.social.whisperTitle', { name: m.name }))}">✉</button>` : '';
+      if (!self && me === 'leader') actions += `<button type="button" class="soc-x" data-act="gtransfer" data-name="${esc(m.name)}" title="${esc(t('hud.social.makeGuildMasterTitle', { name: m.name }))}">♛</button>`;
+      if (!self && me === 'leader' && m.rank === 'member') actions += `<button type="button" class="soc-x" data-act="promote" data-name="${esc(m.name)}" title="${esc(t('hud.social.promoteTitle', { name: m.name }))}">▲</button>`;
+      if (!self && me === 'leader' && m.rank === 'officer') actions += `<button type="button" class="soc-x" data-act="demote" data-name="${esc(m.name)}" title="${esc(t('hud.social.demoteTitle', { name: m.name }))}">▼</button>`;
       // leaders may remove members + officers; officers may remove only members
       const canKick = !self && ((me === 'leader' && m.rank !== 'leader') || (me === 'officer' && m.rank === 'member'));
-      if (canKick) actions += `<span class="soc-x" data-act="gkick" data-name="${esc(m.name)}" title="Remove ${esc(m.name)} from guild">✕</span>`;
+      if (canKick) actions += `<button type="button" class="soc-x" data-act="gkick" data-name="${esc(m.name)}" title="${esc(t('hud.social.removeGuildTitle', { name: m.name }))}">✕</button>`;
       return `<div class="soc-row">`
         + `<span class="soc-dot ${dot === 'off' ? '' : dot}" title="${esc(dotTitle(m.online, m.status, m.zone))}"></span>`
-        + `<span>${name}<br><span class="soc-meta">Lvl ${m.level} ${cap(m.cls)}</span></span>`
+        + `<span>${name}<br><span class="soc-meta">${esc(t('hud.social.levelClass', { level: formatNumber(m.level, { maximumFractionDigits: 0 }), className: playerClassDisplayName(m.cls) }))}</span></span>`
         + `<span class="soc-meta">${meta}</span>`
         + (actions ? `<span class="soc-actions">${actions}</span>` : '')
         + `</div>`;
@@ -3248,25 +3248,25 @@ export class Hud {
   // The add/action row changes with the tab (and guild membership). Inputs
   // tagged data-suggest get the username typeahead.
   private socialFooter(): string {
-    if (this.socialTab === 'friends') return this.addRow('friend', 'friend-add', 'Search to add a friend…', 'Add', 16, true);
-    if (this.socialTab === 'ignore') return this.addRow('ignore', 'block-add', 'Search to ignore…', 'Ignore', 16, true);
+    if (this.socialTab === 'friends') return this.addRow('friend', 'friend-add', t('hud.social.friendSearchPlaceholder'), t('hud.social.add'), 16, true);
+    if (this.socialTab === 'ignore') return this.addRow('ignore', 'block-add', t('hud.social.ignoreSearchPlaceholder'), t('hud.social.ignoreAction'), 16, true);
     const guild = this.sim.socialInfo?.guild ?? null;
-    if (!guild) return this.addRow('gname', 'guild-create', 'Name your new guild', 'Found', 24, false);
+    if (!guild) return this.addRow('gname', 'guild-create', t('hud.social.guildNamePlaceholder'), t('hud.social.found'), 24, false);
     let foot = '';
-    if (guild.rank !== 'member') foot += this.addRow('ginvite', 'guild-invite', 'Search to invite…', 'Invite', 16, true);
+    if (guild.rank !== 'member') foot += this.addRow('ginvite', 'guild-invite', t('hud.social.guildInvitePlaceholder'), t('hud.social.invite'), 16, true);
     // WoW: a Guild Master with other members can't just leave — they disband
     // (or hand over leadership via the ♛ action). Everyone else can leave.
     foot += guild.rank === 'leader' && guild.members.length > 1
-      ? `<div class="soc-add soc-leave"><button class="btn" data-act="guild-disband">Disband Guild</button></div>`
-      : `<div class="soc-add soc-leave"><button class="btn" data-act="guild-leave">Leave Guild</button></div>`;
+      ? `<div class="soc-add soc-leave"><button class="btn" data-act="guild-disband">${esc(t('hud.social.disbandGuild'))}</button></div>`
+      : `<div class="soc-add soc-leave"><button class="btn" data-act="guild-leave">${esc(t('hud.social.leaveGuild'))}</button></div>`;
     return foot;
   }
 
   private addRow(field: string, act: string, placeholder: string, label: string, maxlen: number, suggest: boolean): string {
     return `<div class="soc-add">`
-      + (suggest ? `<div class="soc-suggest" data-for="${field}"></div>` : '')
-      + `<input maxlength="${maxlen}" placeholder="${placeholder}" data-field="${field}"${suggest ? ' data-suggest="1"' : ''} autocomplete="off" spellcheck="false"/>`
-      + `<button class="btn" data-act="${act}">${label}</button></div>`;
+      + (suggest ? `<div class="soc-suggest" data-for="${field}" role="listbox"></div>` : '')
+      + `<input maxlength="${maxlen}" aria-label="${esc(placeholder)}" placeholder="${esc(placeholder)}" data-field="${field}"${suggest ? ' data-suggest="1" aria-autocomplete="list"' : ''} autocomplete="off" spellcheck="false"/>`
+      + `<button class="btn" data-act="${act}">${esc(label)}</button></div>`;
   }
 
   // Wire the parts that survive a content refresh: close, tabs, footer + search.
@@ -3285,7 +3285,7 @@ export class Hud {
       else if (act === 'guild-invite') void this.socialResolveAndAct('ginvite', field('ginvite'));
       else if (act === 'guild-create') { const n = field('gname'); if (n) { this.sim.guildCreate(n); this.clearSocialInput('gname'); } }
       else if (act === 'guild-leave') this.sim.guildLeave();
-      else if (act === 'guild-disband') this.showPrompt('Disband your guild? This cannot be undone.', 'Disband', () => this.sim.guildDisband(), () => { /* keep */ });
+      else if (act === 'guild-disband') this.showPrompt(esc(t('hud.social.disbandPrompt')), t('hud.social.disbandConfirm'), () => this.sim.guildDisband(), () => { /* keep */ });
     };
     el.querySelectorAll('.soc-add .btn').forEach((b) => b.addEventListener('click', () => submit((b as HTMLElement).dataset.act)));
     // Enter-to-submit only for plain inputs (the guild name). Search inputs get
@@ -3307,7 +3307,7 @@ export class Hud {
       else if (act === 'gkick') this.sim.guildKick(name);
       else if (act === 'promote') this.sim.guildPromote(name);
       else if (act === 'demote') this.sim.guildDemote(name);
-      else if (act === 'gtransfer') this.showPrompt(`Make <b>${esc(name)}</b> the Guild Master? You will step down to Officer.`, 'Promote', () => this.sim.guildTransfer(name), () => { /* keep */ });
+      else if (act === 'gtransfer') this.showPrompt(t('hud.social.transferPrompt', { name: `<b>${esc(name)}</b>` }), t('hud.social.transferConfirm'), () => this.sim.guildTransfer(name), () => { /* keep */ });
     }));
     scope.querySelectorAll('[data-whisper]').forEach((w) => w.addEventListener('click', () => {
       this.startWhisper((w as HTMLElement).dataset.whisper ?? '');
@@ -3356,8 +3356,13 @@ export class Hud {
     this.socialSuggest = { field, items: results, index: -1 };
     if (results.length === 0) { box.style.display = 'none'; box.innerHTML = ''; return; }
     const kind = this.suggestKind(field);
-    box.innerHTML = results.map((r, i) =>
-      `<div class="soc-sugg-item" data-i="${i}" data-name="${esc(r.name)}"><span class="soc-name">${esc(r.name)}</span><span class="soc-meta">Lvl ${r.level} ${cap(r.cls)}</span></div>`).join('');
+    box.innerHTML = results.map((r, i) => {
+      const meta = t('hud.social.levelClass', {
+        level: formatNumber(r.level, { maximumFractionDigits: 0 }),
+        className: playerClassDisplayName(r.cls),
+      });
+      return `<button type="button" class="soc-sugg-item" data-i="${i}" data-name="${esc(r.name)}" role="option"><span class="soc-name">${esc(r.name)}</span><span class="soc-meta">${esc(meta)}</span></button>`;
+    }).join('');
     box.style.display = 'block';
     box.querySelectorAll('.soc-sugg-item').forEach((it) => {
       it.addEventListener('mousedown', (e) => {
@@ -3396,13 +3401,13 @@ export class Hud {
     const results = await this.sim.searchCharacters(name);
     const exact = results.find((r) => r.name.toLowerCase() === name.toLowerCase());
     if (!exact) {
-      this.setSocialNotice(`No player named “${name}” on ${this.sim.realm || 'this realm'}.`, true);
+      this.setSocialNotice(t('hud.social.noPlayerNamed', { name, realm: this.sim.realm || t('hud.social.currentRealm') }), true);
       return;
     }
-    if (exact.name === this.sim.player.name) { this.setSocialNotice('That is you!', true); return; }
-    if (kind === 'friend') { this.sim.friendAdd(exact.name); this.setSocialNotice(`Added ${exact.name} to your friends.`, false); this.clearSocialInput('friend'); }
-    else if (kind === 'ignore') { this.sim.blockAdd(exact.name); this.setSocialNotice(`Now ignoring ${exact.name}.`, false); this.clearSocialInput('ignore'); }
-    else { this.sim.guildInvite(exact.name); this.setSocialNotice(`Invited ${exact.name} to your guild.`, false); this.clearSocialInput('ginvite'); }
+    if (exact.name === this.sim.player.name) { this.setSocialNotice(t('hud.social.selfNotice'), true); return; }
+    if (kind === 'friend') { this.sim.friendAdd(exact.name); this.setSocialNotice(t('hud.social.friendAdded', { name: exact.name }), false); this.clearSocialInput('friend'); }
+    else if (kind === 'ignore') { this.sim.blockAdd(exact.name); this.setSocialNotice(t('hud.social.nowIgnoring', { name: exact.name }), false); this.clearSocialInput('ignore'); }
+    else { this.sim.guildInvite(exact.name); this.setSocialNotice(t('hud.social.guildInvited', { name: exact.name }), false); this.clearSocialInput('ginvite'); }
     this.renderSuggest(kind, []);
   }
 
@@ -3506,31 +3511,35 @@ export class Hud {
 
     const itemRow = (s: InvSlot, mine: boolean) => {
       const item = ITEMS[s.itemId];
-      return `<div class="trade-item${mine ? ' mine' : ''}" data-item="${mine ? s.itemId : ''}">${this.itemIcon(item)}<span>${item ? esc(itemDisplayName(item)) : esc(s.itemId)}${s.count > 1 ? ' x' + s.count : ''}</span></div>`;
+      const label = `${item ? itemDisplayName(item) : s.itemId}${s.count > 1 ? ' x' + formatNumber(s.count, { maximumFractionDigits: 0 }) : ''}`;
+      const inner = `${this.itemIcon(item)}<span>${esc(label)}</span>`;
+      return mine
+        ? `<button type="button" class="trade-item mine" data-item="${esc(s.itemId)}">${inner}</button>`
+        : `<div class="trade-item">${inner}</div>`;
     };
     el.innerHTML = `
-      <div class="panel-title"><span>Trade with ${info.otherName}</span><span class="x-btn" data-close>✕</span></div>
+      <div class="panel-title"><span>${esc(t('hud.trade.title', { name: info.otherName }))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.trade.cancel'))}">✕</button></div>
       <div class="trade-cols">
         <div class="trade-col ${info.myAccepted ? 'accepted' : ''}">
-          <h4>Your offer</h4>
-          <div class="trade-items">${info.myOffer.items.map((s) => itemRow(s, true)).join('') || '<div style="color:#665c40;font-size:11px;padding:4px">Click items in your bags to add them</div>'}</div>
-          <div class="trade-money">Money: <input id="trade-copper" type="number" min="0" value="${this.stagedTrade.copper}" /> copper</div>
+          <h4>${esc(t('hud.trade.yourOffer'))}</h4>
+          <div class="trade-items">${info.myOffer.items.map((s) => itemRow(s, true)).join('') || `<div class="trade-empty">${esc(t('hud.trade.emptyMine'))}</div>`}</div>
+          <label class="trade-money" for="trade-copper">${esc(t('hud.trade.money'))}: <input id="trade-copper" type="number" min="0" value="${this.stagedTrade.copper}" /> ${esc(t('hud.trade.copper'))}</label>
         </div>
         <div class="trade-col ${info.theirAccepted ? 'accepted' : ''}">
-          <h4>${info.otherName}'s offer</h4>
-          <div class="trade-items">${info.theirOffer.items.map((s) => itemRow(s, false)).join('') || '<div style="color:#665c40;font-size:11px;padding:4px">Nothing offered yet</div>'}</div>
-          <div class="trade-money">Money: <span class="gold">${formatLocalizedMoney(info.theirOffer.copper)}</span></div>
+          <h4>${esc(t('hud.trade.theirOffer', { name: info.otherName }))}</h4>
+          <div class="trade-items">${info.theirOffer.items.map((s) => itemRow(s, false)).join('') || `<div class="trade-empty">${esc(t('hud.trade.emptyTheirs'))}</div>`}</div>
+          <div class="trade-money">${esc(t('hud.trade.money'))}: <span class="gold">${formatLocalizedMoney(info.theirOffer.copper)}</span></div>
         </div>
       </div>
-      <div class="trade-hint">Click an offered item to remove it. Both sides must press Accept Trade.</div>`;
+      <div class="trade-hint">${esc(t('hud.trade.hint'))}</div>`;
     const acceptBtn = document.createElement('button');
     acceptBtn.className = 'btn';
-    acceptBtn.textContent = info.myAccepted ? 'Waiting…' : 'Accept Trade';
+    acceptBtn.textContent = info.myAccepted ? t('hud.trade.waiting') : t('hud.trade.accept');
     acceptBtn.disabled = info.myAccepted;
     acceptBtn.addEventListener('click', () => this.sim.tradeConfirm());
     const cancelBtn = document.createElement('button');
     cancelBtn.className = 'btn';
-    cancelBtn.textContent = 'Cancel';
+    cancelBtn.textContent = t('hud.trade.cancel');
     cancelBtn.addEventListener('click', () => this.sim.tradeCancel());
     el.append(acceptBtn, cancelBtn);
     el.querySelector('[data-close]')?.addEventListener('click', () => this.sim.tradeCancel());
@@ -4148,6 +4157,11 @@ function abilityAmountRange(min: number, max: number): string {
 
 function cap(s: string): string {
   return s ? s[0].toUpperCase() + s.slice(1) : s;
+}
+
+function playerClassDisplayName(value: string): string {
+  const cls = value as PlayerClass;
+  return CLASSES[cls] ? classDisplayName(cls) : cap(value);
 }
 
 function raidMarkerDisplayName(index: number): string {
