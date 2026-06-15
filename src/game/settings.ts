@@ -22,6 +22,10 @@ export const SETTING_RANGES = {
   // button in Key Bindings so click-to-move's trigger is remappable without
   // pretending mouse buttons are keyboard codes.
   clickToMoveButton: { min: 0, max: 2, def: 0 },
+  // touch-only: scales the camera (look) joystick turn/pitch rate. The Camera
+  // Speed slider only scales mouselook, so before this phones had no way to
+  // tune look sensitivity; surfaced in Graphics only on phone touch devices.
+  touchLookSpeed: { min: 0.4, max: 1.8, def: 1 },
 } as const;
 
 export const BOOL_SETTINGS = {
