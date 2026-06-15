@@ -6,6 +6,7 @@ const CAMERA_SENSITIVITY = 0.8;
 
 export interface MobileControlCallbacks {
   onAttackNearest(): void;
+  onJump(): void;
   onTarget(): void;
   onInteract(): void;
   onChat(): void;
@@ -66,6 +67,7 @@ export class MobileControls {
     this.cameraJoystick.addEventListener('pointercancel', (e) => this.onCameraEnd(e));
 
     this.bindButton('mobile-attack-nearest', () => this.callbacks.onAttackNearest());
+    this.bindButton('mobile-jump', () => this.callbacks.onJump());
     this.bindButton('mobile-target', () => this.callbacks.onTarget());
     this.bindButton('mobile-interact', () => this.callbacks.onInteract());
     this.bindButton('mobile-chat', () => this.toggleChat());
