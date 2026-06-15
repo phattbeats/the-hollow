@@ -50,6 +50,16 @@ function safeLocalStorage(): Pick<Storage, 'getItem' | 'setItem'> | null {
   try { return typeof localStorage !== 'undefined' ? localStorage : null; } catch { return null; }
 }
 
+/** Hold the Chat button at least this long (ms) to toggle the read-only log peek
+ * instead of opening the keyboard composer. */
+export const CHAT_LONG_PRESS_MS = 420;
+
+/** A press is a "long press" (log-peek toggle) once it has been held for at least
+ * {@link CHAT_LONG_PRESS_MS}; shorter presses are taps that open the composer. */
+export function isChatLongPress(heldMs: number, threshold = CHAT_LONG_PRESS_MS): boolean {
+  return heldMs >= threshold;
+}
+
 export interface MobileControlCallbacks {
   onAttackNearest(): void;
   onJump(): void;
@@ -125,6 +135,9 @@ export class MobileControls {
   private swipeLookLastX = 0;
   private swipeLookLastY = 0;
   private swipeLookActive = false;
+
+  private chatPressTimer: ReturnType<typeof setTimeout> | null = null;
+  private chatLongFired = false;
 
   private canvas = document.getElementById('game-canvas') as HTMLElement | null;
   private root = document.getElementById('mobile-controls') as HTMLElement | null;
@@ -212,7 +225,7 @@ export class MobileControls {
     this.bindButton('mobile-jump', () => this.callbacks.onJump());
     this.bindButton('mobile-target', () => this.callbacks.onTarget());
     this.bindButton('mobile-interact', () => this.callbacks.onInteract());
-    this.bindButton('mobile-chat', () => this.toggleChat());
+    this.bindChatButton('mobile-chat');
     this.bindButton('mobile-menu', () => this.callbacks.onMenu());
     this.bindButton('mobile-social', () => this.callbacks.onSocial());
     this.bindButton('mobile-emote', () => this.callbacks.onEmotes());
@@ -261,7 +274,7 @@ export class MobileControls {
     if (!active) {
       this.root?.classList.remove('expanded');
       this.autorunButton?.classList.remove('active');
-      document.body.classList.remove('mobile-more-open', 'mobile-chat-open');
+      document.body.classList.remove('mobile-more-open', 'mobile-chat-open', 'mobile-chatlog-peek');
       this.releaseMove();
       this.releaseCamera();
       this.releasePinch();
@@ -313,7 +326,48 @@ export class MobileControls {
     if (label) label.textContent = this.hapticsOn ? 'Haptics' : 'Haptics Off';
   }
 
+  /** The Chat button taps to open the keyboard composer, but a long press toggles
+   * a read-only "peek" at the chat/combat log without raising the keyboard — so
+   * touch players can follow whispers, party chat, loot and combat text while the
+   * composer (and its keyboard) stays out of the way. */
+  private bindChatButton(id: string): void {
+    const button = document.getElementById(id);
+    if (!button) return;
+    const cancel = () => {
+      if (this.chatPressTimer !== null) { clearTimeout(this.chatPressTimer); this.chatPressTimer = null; }
+    };
+    button.addEventListener('pointerdown', (e) => {
+      if (!this.active) return;
+      e.preventDefault();
+      this.chatLongFired = false;
+      cancel();
+      this.chatPressTimer = setTimeout(() => {
+        this.chatLongFired = true;
+        this.chatPressTimer = null;
+        this.toggleLogPeek();
+      }, CHAT_LONG_PRESS_MS);
+    });
+    button.addEventListener('pointerup', (e) => {
+      if (!this.active) return;
+      e.preventDefault();
+      cancel();
+      if (!this.chatLongFired) this.toggleChat();
+    });
+    button.addEventListener('pointercancel', cancel);
+    button.addEventListener('pointerleave', cancel);
+  }
+
+  /** Toggle the read-only chat-log peek. Opening it makes sure the composer (and
+   * keyboard) is dismissed; opening the composer elsewhere clears the peek. */
+  private toggleLogPeek(): void {
+    const peeking = document.body.classList.toggle('mobile-chatlog-peek');
+    if (peeking && document.body.classList.contains('mobile-chat-open')) {
+      this.toggleChat();
+    }
+  }
+
   private toggleChat(): void {
+    document.body.classList.remove('mobile-chatlog-peek');
     document.body.classList.toggle('mobile-chat-open');
     if (document.body.classList.contains('mobile-chat-open')) {
       this.callbacks.onChat();

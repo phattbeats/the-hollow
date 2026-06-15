@@ -1,7 +1,9 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import {
+  CHAT_LONG_PRESS_MS,
   clampJoystickOrigin,
   HAPTICS_STORE_KEY,
+  isChatLongPress,
   isPhoneTouchDevice,
   loadHapticsEnabled,
   mapJoystickVector,
@@ -45,6 +47,18 @@ describe('isPhoneTouchDevice', () => {
     expect(queries[0]).toContain('pointer: coarse');
     expect(queries[0]).toContain('max-width: 940px');
     expect(queries[0]).toContain('max-height: 760px');
+  });
+});
+
+describe('isChatLongPress', () => {
+  it('treats short presses as taps (open composer)', () => {
+    expect(isChatLongPress(0)).toBe(false);
+    expect(isChatLongPress(CHAT_LONG_PRESS_MS - 1)).toBe(false);
+  });
+
+  it('treats presses at or beyond the threshold as a long press (peek the log)', () => {
+    expect(isChatLongPress(CHAT_LONG_PRESS_MS)).toBe(true);
+    expect(isChatLongPress(CHAT_LONG_PRESS_MS + 500)).toBe(true);
   });
 });
 
