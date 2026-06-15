@@ -59,6 +59,9 @@ ALTER TABLE accounts ADD COLUMN IF NOT EXISTS created_ip TEXT;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS created_user_agent TEXT;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS last_login_ip TEXT;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS last_login_user_agent TEXT;
+CREATE INDEX IF NOT EXISTS accounts_created_at ON accounts(created_at DESC);
+CREATE INDEX IF NOT EXISTS accounts_created_ip_created ON accounts(created_ip, created_at DESC);
+CREATE INDEX IF NOT EXISTS accounts_created_user_agent_created ON accounts(created_user_agent, created_at DESC);
 ALTER TABLE characters ADD COLUMN IF NOT EXISTS is_gm BOOLEAN NOT NULL DEFAULT FALSE;
 ALTER TABLE characters ADD COLUMN IF NOT EXISTS force_rename BOOLEAN NOT NULL DEFAULT FALSE;
 CREATE TABLE IF NOT EXISTS play_sessions (
