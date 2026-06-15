@@ -513,7 +513,7 @@ export class Hud {
     } else if (action?.type === 'item' && this.isHotbarItemId(action.id)) {
       if (this.tradeOpen) return;
       this.sim.useItem(action.id);
-      if ($('#bags').style.display === 'block') this.renderBags();
+      if ($('#bags').style.display !== 'none') this.renderBags();
     }
   }
 
@@ -1547,11 +1547,11 @@ export class Hud {
           this.log(ev.text, '#7fdc4f');
           if (ev.text.includes('loot') || ev.text.includes('Sold') || ev.text.includes('Bought back')) audio.coin();
           else audio.lootItem();
-          if ($('#bags').style.display === 'block') this.renderBags();
+          if ($('#bags').style.display !== 'none') this.renderBags();
           break;
         }
         case 'vendor': {
-          if ($('#bags').style.display === 'block') this.renderBags();
+          if ($('#bags').style.display !== 'none') this.renderBags();
           if (this.openVendorNpcId !== null) this.renderVendor();
           break;
         }
@@ -1593,7 +1593,7 @@ export class Hud {
           break;
         }
         case 'tradeDone':
-          if ($('#bags').style.display === 'block') this.renderBags();
+          if ($('#bags').style.display !== 'none') this.renderBags();
           audio.coin();
           break;
         case 'heal2': {
@@ -1941,7 +1941,7 @@ export class Hud {
     document.body.classList.add('vendor-open');
     this.renderVendor();
     this.renderBags();
-    $('#bags').style.display = 'block';
+    $('#bags').style.display = 'flex';
   }
 
   private renderVendor(): void {
@@ -1963,7 +1963,7 @@ export class Hud {
       row.innerHTML = `${this.itemIcon(item)}<span class="vi-name">${item.name}</span><span class="vi-price">${this.moneyHtml(item.buyValue)}</span>`;
       row.addEventListener('click', () => {
         this.sim.buyItem(npc.id, itemId);
-        if ($('#bags').style.display === 'block') this.renderBags();
+        if ($('#bags').style.display !== 'none') this.renderBags();
         this.renderVendor();
       });
       this.attachTooltip(row, () => this.itemTooltip(item) + '<div class="tt-sub">Click to buy</div>');
@@ -2005,7 +2005,7 @@ export class Hud {
     this.openVendorNpcId = null;
     document.body.classList.remove('vendor-open'); // bags (if still open) re-centres
     this.hideTooltip();
-    if ($('#bags').style.display === 'block') this.renderBags();
+    if ($('#bags').style.display !== 'none') this.renderBags();
   }
 
   get vendorOpen(): boolean {
@@ -2026,7 +2026,7 @@ export class Hud {
     $('#market-window').style.display = 'flex';
     // bags ride alongside so you can click items straight onto the Sell tab
     this.renderBags();
-    $('#bags').style.display = 'block';
+    $('#bags').style.display = 'flex';
     audio.bagOpen();
   }
 
@@ -2036,7 +2036,7 @@ export class Hud {
     this.marketSellItem = null;
     $('#market-window').style.display = 'none';
     this.hideTooltip();
-    if ($('#bags').style.display === 'block') this.renderBags();
+    if ($('#bags').style.display !== 'none') this.renderBags();
   }
 
   get marketWindowOpen(): boolean {
@@ -2223,17 +2223,17 @@ export class Hud {
 
   toggleBags(): void {
     const el = $('#bags');
-    if (el.style.display === 'block') { el.style.display = 'none'; this.hideTooltip(); audio.bagClose(); return; }
+    if (el.style.display !== 'none') { el.style.display = 'none'; this.hideTooltip(); audio.bagClose(); return; }
     this.closeOtherWindows('#bags');
     this.renderBags();
-    el.style.display = 'block';
+    el.style.display = 'flex';
     audio.bagOpen();
   }
 
   // Called when an authoritative inventory delta lands (online snapshots
   // carry inventory separately from the event frames that normally redraw).
   onInventoryChanged(): void {
-    if ($('#bags').style.display === 'block') this.renderBags();
+    if ($('#bags').style.display !== 'none') this.renderBags();
     if (this.openVendorNpcId !== null) this.renderVendor();
     this.renderCharIfOpen();
   }
@@ -3846,7 +3846,7 @@ export class Hud {
         this.tradeWasOpen = false;
         this.stagedTrade = { items: [], copper: 0 };
         this.lastTradeSig = '';
-        if ($('#bags').style.display === 'block') this.renderBags();
+        if ($('#bags').style.display !== 'none') this.renderBags();
       }
       return;
     }
@@ -3854,7 +3854,7 @@ export class Hud {
       this.tradeWasOpen = true;
       this.stagedTrade = { items: [], copper: 0 };
       this.renderBags();
-      $('#bags').style.display = 'block';
+      $('#bags').style.display = 'flex';
     }
     const sig = JSON.stringify([info.myOffer, info.theirOffer, info.myAccepted, info.theirAccepted, this.stagedTrade]);
     if (sig === this.lastTradeSig) return;

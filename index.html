@@ -723,12 +723,25 @@
   .vendor-empty { padding: 5px; font-size: 11px; color: #887c5c; }
   .vendor-hint { font-size: 11px; color: #c8b888; margin-top: 8px; border-top: 1px solid #463a1c; padding-top: 6px; }
 
-  /* bags */
-  #bags { width: 310px; }
-  /* the vendor opens bags alongside it — lay the pair out side-by-side, centred
-     together (overrides the single-window centring while body.vendor-open). */
-  body.vendor-open #vendor-window { left: calc(50% - 163px); }
-  body.vendor-open #bags { left: calc(50% + 208px); }
+  /* bags — centred in the bottom gap between the action cluster and micro-menu */
+  #bags {
+    --bags-bar-half: 306px;
+    --bags-gap: 12px;
+    --bags-micro-r: calc(16px + 34px + var(--bags-gap));
+    --bags-slot-w: max(180px, calc(100vw - 50% - var(--bags-bar-half) - var(--bags-gap) - var(--bags-micro-r)));
+    left: calc((100% + 50% + var(--bags-bar-half) + var(--bags-gap) - var(--bags-micro-r)) / 2);
+    right: auto;
+    bottom: 6px;
+    top: auto;
+    width: min(310px, var(--bags-slot-w));
+    transform: translateX(-50%);
+    max-height: calc(100vh - 18px);
+    overflow: hidden;
+    flex-direction: column;
+  }
+  #bags .panel-title { flex: none; }
+  #bags .bag-grid { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+  #bags .money { flex: none; }
   .bag-grid { display: flex; flex-direction: column; gap: 2px; }
   .bag-item { display: flex; gap: 8px; align-items: center; font-size: 12px; padding: 3px 4px; border-radius: 3px; cursor: pointer; }
   .bag-item:hover { background: #ffffff12; }
