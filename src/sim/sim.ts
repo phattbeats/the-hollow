@@ -4339,6 +4339,9 @@ export class Sim {
     // state: whether it is engaged, what it is striking, and the next swing.
     if (/^\/(?:attack|autoattack|aa)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.attackReadout(r.e, r.meta));
+    // "/consumable" — self-only readout of active food/drink regen
+    if (/^\/(consumable|consumables|eat|drink)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.consumableReadout(r.e));
       return null;
     }
 
@@ -6214,6 +6217,23 @@ function isHarmfulAura(kind: AuraKind): boolean {
     const name = ABILITIES[e.castingAbility]?.name ?? e.castingAbility;
     const verb = e.channeling ? 'Channeling' : 'Casting';
     return `${verb} ${name} — ${remaining}s of ${total}s remaining.`;
+  // Self-only readout of what the player is currently eating/drinking. Food and
+  // drink occupy separate slots and tick concurrently, each on its own remaining
+  // timer, so both are reported with their own restore rate and time left.
+  private consumableReadout(e: Entity): string {
+    const parts: string[] = [];
+    for (const c of [e.eating, e.drinking]) {
+      if (!c) continue;
+      const name = ITEMS[c.itemId]?.name ?? c.itemId;
+      const restores: string[] = [];
+      if (c.hpPer2s > 0) restores.push(`+${c.hpPer2s} HP/2s`);
+      if (c.manaPer2s > 0) restores.push(`+${c.manaPer2s} mana/2s`);
+      restores.push(`${Math.ceil(c.remaining)}s left`);
+      const verb = c.kind === 'food' ? 'eating' : 'drinking';
+      parts.push(`${verb} ${name} (${restores.join(', ')})`);
+    }
+    if (parts.length === 0) return 'You are not eating or drinking.';
+    return `You are ${parts.join(' and ')}.`;
   }
 }
 
