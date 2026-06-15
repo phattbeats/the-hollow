@@ -5,6 +5,7 @@ import { PlayerClass } from '../../sim/types';
 const PREVIEW_ANIM_STATE = {
   speed: 0,
   moving: false,
+  airborne: false,
   backwards: false,
   dead: false,
   casting: false,

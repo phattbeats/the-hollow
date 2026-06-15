@@ -25,7 +25,7 @@ import {
   AbilityDef, AbilityEffect, Aura, AuraKind, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION,
   CONSUME_TICKS, CrowdControlDrCategory, DT, Entity, EquipSlot, FISHING_CAST_ID, FISHING_CAST_TIME, GCD,
   INTERACT_RANGE, InvSlot, LootEntry, LootSlot, MELEE_RANGE, MAX_LEVEL, MobFamily,
-  MoveInput, PlayerClass, QuestProgress, QuestState, RUN_SPEED, SimConfig, SimEvent, TURN_SPEED, Vec3,
+  MoveInput, OverheadEmoteId, PlayerClass, QuestProgress, QuestState, RUN_SPEED, SimConfig, SimEvent, TURN_SPEED, Vec3,
   angleTo, armorReduction, dist2d, emptyMoveInput, isConsuming, meleeMissChance, mobXpValue, normAngle,
   rageFromDealing, rageFromTaking, spellHitChance, xpForLevel,
   MILESTONES, virtualLevel, xpToReachLevel, canPrestige,
@@ -61,6 +61,7 @@ const PVP_CC_DR_RESET = 18; // seconds before a repeated PvP CC category is fres
 const PVP_CC_DR_MULTIPLIERS = [1, 0.5, 0.25] as const;
 const SAY_RANGE = 25; // /say carries a short distance; /yell across a camp
 const YELL_RANGE = 100;
+const OVERHEAD_EMOTE_DURATION = 3.2;
 
 // Predefined social emotes. Each entry maps a command (and its aliases) to the
 // third-person action text shown to everyone in /say range. `solo` is used with
@@ -1081,6 +1082,10 @@ export class Sim {
     for (const e of this.entities.values()) {
       copyPos(e.prevPos, e.pos);
       e.prevFacing = e.facing;
+      if (e.overheadEmoteId && this.time >= e.overheadEmoteUntil) {
+        e.overheadEmoteId = null;
+        e.overheadEmoteUntil = 0;
+      }
     }
 
     for (const meta of this.players.values()) {
@@ -4401,6 +4406,14 @@ export class Sim {
       this.emit({ type: 'chat', fromPid: r.meta.entityId, from: r.meta.name, text: clean, channel, entityId: r.e.id, pid: meta.entityId });
     }
     return { channel, message: clean };
+  }
+
+  playEmote(emoteId: OverheadEmoteId, pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    r.e.overheadEmoteId = emoteId;
+    r.e.overheadEmoteUntil = this.time + OVERHEAD_EMOTE_DURATION;
+    r.e.overheadEmoteSeq += 1;
   }
 
   // Resolve a player by name the same way whispers do: an exact-case match

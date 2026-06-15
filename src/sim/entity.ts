@@ -8,6 +8,7 @@ function baseEntity(id: number, pos: Vec3): Entity {
     pos: { ...pos }, prevPos: { ...pos }, facing: 0, prevFacing: 0,
     vy: 0, onGround: true, fallStartY: pos.y,
     hp: 1, maxHp: 1, resource: 0, maxResource: 0, resourceType: null,
+    overheadEmoteId: null, overheadEmoteUntil: 0, overheadEmoteSeq: 0,
     stats: { str: 0, agi: 0, sta: 0, int: 0, spi: 0, armor: 0 },
     weapon: { min: 1, max: 2, speed: 2 },
     attackPower: 0, rangedPower: 0, critChance: 0.05, dodgeChance: 0.05, moveSpeed: 7, hostile: false,

@@ -20,6 +20,10 @@ export const ALL_CLASSES: PlayerClass[] = [
   'warrior', 'paladin', 'hunter', 'rogue', 'priest', 'shaman', 'mage', 'warlock', 'druid',
 ];
 export type ResourceType = 'rage' | 'mana' | 'energy';
+export const OVERHEAD_EMOTE_IDS = [
+  'wave', 'laugh', 'question', 'cheer', 'dance', 'point', 'flex', 'salute', 'cry', 'bow', 'clap', 'roar', 'kneel',
+] as const;
+export type OverheadEmoteId = typeof OVERHEAD_EMOTE_IDS[number];
 
 export interface Vec3 {
   x: number;
@@ -414,6 +418,9 @@ export interface Entity {
   resource: number;
   maxResource: number;
   resourceType: ResourceType | null;
+  overheadEmoteId: OverheadEmoteId | null;
+  overheadEmoteUntil: number;
+  overheadEmoteSeq: number;
   stats: Stats;
   weapon: WeaponInfo;
   attackPower: number;

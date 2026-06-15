@@ -1,6 +1,7 @@
 import { formatMoney, ResolvedAbility } from '../sim/sim';
-import type { FriendInfo, IWorld, MarketInfo } from '../world_api';
+import { OVERHEAD_EMOTES, isOverheadEmoteId, type FriendInfo, type IWorld, type MarketInfo, type OverheadEmoteId } from '../world_api';
 import { Renderer } from '../render/renderer';
+import { emoteIconUrl } from './emote_icons';
 import {
   ABILITIES, CLASSES, DUNGEON_LIST, DUNGEON_X_THRESHOLD, ITEMS, MOBS, NPCS, PROPS, QUESTS,
   WORLD_MAX_X, WORLD_MAX_Z, WORLD_MIN_X, WORLD_MIN_Z, ZONES, dungeonAt, questRewardItem, zoneAt,
@@ -88,6 +89,8 @@ function talentEffectIcon(effect: TalentEffect | undefined, kind: string): strin
 // Party frames dim and the minimap pins members to the rim once they pass
 // this range (yards) — just inside the server's ~120 yd interest scope.
 const PARTY_RANGE_YD = 100;
+const EMOTE_WHEEL_LIMIT = 8;
+const DEFAULT_EMOTE_WHEEL: OverheadEmoteId[] = ['wave', 'laugh', 'question', 'cheer', 'dance', 'point', 'flex', 'cry'];
 
 // yards past a zone boundary before the crossing banner/welcome commits
 const ZONE_BANNER_DEADBAND = 5;
@@ -111,6 +114,11 @@ export class Hud {
   private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' = 'main';
   private capturingKey: { action: string; index: number } | null = null; // binding awaiting a key
   private keybindNote = '';
+  private emoteWheelOpen = false;
+  private emoteWheelHover: OverheadEmoteId | 'edit' | null = null;
+  private emoteWheelSlots: OverheadEmoteId[] = [];
+  private emoteWheelEl: HTMLDivElement | null = null;
+  private emoteWheelPinned = false;
   private chatLogEl = $('#chatlog');
   private combatLogEl = $('#combatlog');
   private errorEl = $('#error-msg');
@@ -174,6 +182,7 @@ export class Hud {
     this.ignoredChatNames = this.loadIgnoredChatNames();
     this.meters = new Meters(sim);
     this.bindLogTabs();
+    this.emoteWheelSlots = this.loadEmoteWheelSlots();
     this.loadSlotMap();
     this.buildActionBar();
     this.refreshKeybindLabels();
@@ -186,6 +195,18 @@ export class Hud {
     mm.style.cursor = 'pointer';
     mm.title = 'Open world map';
     mm.addEventListener('click', () => this.toggleMap());
+    window.addEventListener('pointermove', (ev) => {
+      if (this.emoteWheelOpen) this.updateEmoteWheelPointer(ev.clientX, ev.clientY);
+    });
+    window.addEventListener('mousemove', (ev) => {
+      if (this.emoteWheelOpen) this.updateEmoteWheelPointer(ev.clientX, ev.clientY);
+    });
+    window.addEventListener('pointerdown', (ev) => {
+      if (!this.emoteWheelOpen || !this.emoteWheelPinned) return;
+      const target = ev.target as Node | null;
+      if (target && (this.emoteWheelEl?.contains(target) || document.getElementById('mm-emote')?.contains(target))) return;
+      this.hideEmoteWheel();
+    });
     $('#release-btn').addEventListener('click', () => { this.sim.releaseSpirit(); });
     // classic WoW: the player interaction menu opens from the target portrait
     $('#target-frame').addEventListener('contextmenu', (ev) => {
@@ -246,6 +267,15 @@ export class Hud {
     $('#mm-options')?.addEventListener('click', () => this.toggleOptionsMenu());
     $('#mm-arena').addEventListener('click', () => this.toggleArena());
     $('#mm-leaderboard').addEventListener('click', () => this.toggleLeaderboard());
+    const emoteBtn = $('#mm-emote');
+    emoteBtn.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      if (this.emoteWheelOpen && this.emoteWheelPinned) {
+        this.hideEmoteWheel();
+        return;
+      }
+      this.showEmoteWheel(true);
+    });
     const musicBtn = $('#mm-music');
     const styleMusicBtn = () => {
       // keep the note clearly readable when off (a plain tan, not gold) — the
@@ -276,6 +306,223 @@ export class Hud {
         $('#combatlog').classList.toggle('active', which === 'combat');
       });
     });
+  }
+
+  // -------------------------------------------------------------------------
+  // Emote wheel
+  // -------------------------------------------------------------------------
+
+  private emoteWheelKey(): string {
+    return `woc_emote_wheel_${this.sim.cfg.playerClass}_${this.sim.player.name}`;
+  }
+
+  private emoteWheelVersionKey(): string {
+    return `${this.emoteWheelKey()}_v2`;
+  }
+
+  private loadEmoteWheelSlots(): OverheadEmoteId[] {
+    let raw: unknown = null;
+    try { raw = JSON.parse(localStorage.getItem(this.emoteWheelKey()) ?? 'null'); } catch { /* corrupt */ }
+    const ids = Array.isArray(raw) ? raw.filter(isOverheadEmoteId) : [];
+    const deduped = ids.filter((id, i) => ids.indexOf(id) === i).slice(0, EMOTE_WHEEL_LIMIT);
+    let migrated = false;
+    try { migrated = localStorage.getItem(this.emoteWheelVersionKey()) === '1'; } catch { /* storage unavailable */ }
+    if (deduped.length > 0 && !migrated && !deduped.includes('question')) {
+      deduped.splice(2, 0, 'question');
+      deduped.length = Math.min(deduped.length, EMOTE_WHEEL_LIMIT);
+      try {
+        localStorage.setItem(this.emoteWheelKey(), JSON.stringify(deduped));
+        localStorage.setItem(this.emoteWheelVersionKey(), '1');
+      } catch { /* storage unavailable */ }
+    }
+    return deduped.length > 0 ? deduped : [...DEFAULT_EMOTE_WHEEL];
+  }
+
+  private saveEmoteWheelSlots(): void {
+    try {
+      localStorage.setItem(this.emoteWheelKey(), JSON.stringify(this.emoteWheelSlots));
+      localStorage.setItem(this.emoteWheelVersionKey(), '1');
+    } catch { /* storage unavailable */ }
+  }
+
+  private emoteLabel(id: OverheadEmoteId): string {
+    return OVERHEAD_EMOTES.find((e) => e.id === id)?.label ?? id;
+  }
+
+  private emoteWheelKeyLabel(): string {
+    return this.keybinds.primaryLabel('emoteWheel') || 'X';
+  }
+
+  private emoteWheelDisplayLabel(id: OverheadEmoteId): string {
+    return `${this.emoteLabel(id)} (${this.emoteWheelKeyLabel()})`;
+  }
+
+  setEmoteWheelOpen(open: boolean): void {
+    if (open) {
+      if (this.emoteWheelOpen) return;
+      this.closeContextMenu();
+      this.hideTooltip();
+      this.showEmoteWheel(false);
+      return;
+    }
+    if (!this.emoteWheelOpen) return;
+    const picked = this.emoteWheelHover;
+    this.hideEmoteWheel();
+    if (picked === 'edit') this.openEmoteEditor();
+    else if (picked) {
+      this.sim.playEmote(picked);
+      audio.click();
+    }
+  }
+
+  private selectEmoteWheelChoice(choice: OverheadEmoteId | 'edit'): void {
+    this.hideEmoteWheel();
+    if (choice === 'edit') this.openEmoteEditor();
+    else {
+      this.sim.playEmote(choice);
+      audio.click();
+    }
+  }
+
+  private showEmoteWheel(pinned = false): void {
+    let el = this.emoteWheelEl;
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'emote-wheel';
+      document.getElementById('ui')?.appendChild(el);
+      this.emoteWheelEl = el;
+    }
+    const slots = this.emoteWheelSlots.filter(isOverheadEmoteId).slice(0, EMOTE_WHEEL_LIMIT);
+    el.innerHTML = `<div class="emote-wheel-ring"></div><button class="emote-wheel-edit" data-edit>Edit</button>`;
+    slots.forEach((id, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'emote-wheel-item';
+      btn.dataset.emote = id;
+      btn.title = this.emoteLabel(id);
+      const icon = document.createElement('img');
+      icon.className = 'emote-wheel-icon';
+      icon.src = emoteIconUrl(id);
+      icon.alt = '';
+      const label = document.createElement('span');
+      label.className = 'emote-wheel-label';
+      label.textContent = this.emoteWheelDisplayLabel(id);
+      btn.append(icon, label);
+      btn.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        this.selectEmoteWheelChoice(id);
+      });
+      const angle = -Math.PI / 2 + (i / Math.max(1, slots.length)) * Math.PI * 2;
+      btn.style.left = `${50 + Math.cos(angle) * 39}%`;
+      btn.style.top = `${50 + Math.sin(angle) * 39}%`;
+      el.appendChild(btn);
+    });
+    el.querySelector<HTMLButtonElement>('.emote-wheel-edit')?.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      this.selectEmoteWheelChoice('edit');
+    });
+    this.emoteWheelOpen = true;
+    this.emoteWheelPinned = pinned;
+    this.emoteWheelHover = null;
+    el.style.display = 'block';
+  }
+
+  private hideEmoteWheel(): void {
+    this.emoteWheelOpen = false;
+    this.emoteWheelPinned = false;
+    this.emoteWheelHover = null;
+    if (this.emoteWheelEl) this.emoteWheelEl.style.display = 'none';
+  }
+
+  private updateEmoteWheelPointer(x: number, y: number): void {
+    const el = this.emoteWheelEl;
+    if (!el || !this.emoteWheelOpen) return;
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = x - cx;
+    const dy = y - cy;
+    const dist = Math.hypot(dx, dy);
+    let hover: OverheadEmoteId | 'edit' | null = null;
+    if (dist <= 44) {
+      hover = 'edit';
+    } else if (dist >= 58 && dist <= rect.width * 0.58 && this.emoteWheelSlots.length > 0) {
+      const angle = (Math.atan2(dy, dx) + Math.PI / 2 + Math.PI * 2) % (Math.PI * 2);
+      const idx = Math.round(angle / (Math.PI * 2) * this.emoteWheelSlots.length) % this.emoteWheelSlots.length;
+      hover = this.emoteWheelSlots[idx] ?? null;
+    }
+    this.emoteWheelHover = hover;
+    el.querySelector('.emote-wheel-edit')?.classList.toggle('selected', hover === 'edit');
+    el.querySelectorAll<HTMLElement>('.emote-wheel-item').forEach((item) => {
+      item.classList.toggle('selected', item.dataset.emote === hover);
+    });
+  }
+
+  private openEmoteEditor(): void {
+    this.closeOtherWindows('#emote-editor');
+    this.renderEmoteEditor();
+    $('#emote-editor').style.display = 'block';
+  }
+
+  private closeEmoteEditor(): void {
+    $('#emote-editor').style.display = 'none';
+    this.hideTooltip();
+  }
+
+  private renderEmoteEditor(): void {
+    const el = $('#emote-editor');
+    el.innerHTML = `<div class="panel-title"><span>Emotes</span><span class="x-btn" data-close>${svgIcon('close')}</span></div>`;
+    const count = document.createElement('div');
+    count.className = 'emote-editor-count';
+    const grid = document.createElement('div');
+    grid.className = 'emote-editor-grid';
+    const selected = new Set(this.emoteWheelSlots);
+    const syncCount = () => { count.textContent = `${selected.size}/${EMOTE_WHEEL_LIMIT}`; };
+    const syncButtons = () => {
+      grid.querySelectorAll<HTMLButtonElement>('.emote-editor-item').forEach((b) => {
+        const id = b.dataset.emote;
+        const on = !!id && selected.has(id as OverheadEmoteId);
+        b.classList.toggle('selected', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        b.disabled = !on && selected.size >= EMOTE_WHEEL_LIMIT;
+      });
+    };
+    for (const def of OVERHEAD_EMOTES) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'emote-editor-item';
+      btn.dataset.emote = def.id;
+      const icon = document.createElement('img');
+      icon.className = 'emote-editor-icon';
+      icon.src = emoteIconUrl(def.id);
+      icon.alt = '';
+      const label = document.createElement('span');
+      label.textContent = def.label;
+      btn.append(icon, label);
+      btn.addEventListener('click', () => {
+        audio.click();
+        if (selected.has(def.id)) selected.delete(def.id);
+        else if (selected.size < EMOTE_WHEEL_LIMIT) selected.add(def.id);
+        this.emoteWheelSlots = OVERHEAD_EMOTES.map((e) => e.id).filter((id): id is OverheadEmoteId => selected.has(id));
+        this.saveEmoteWheelSlots();
+        syncCount();
+        syncButtons();
+      });
+      grid.appendChild(btn);
+    }
+    syncCount();
+    syncButtons();
+    const footer = document.createElement('div');
+    footer.className = 'emote-editor-footer';
+    const done = document.createElement('button');
+    done.className = 'btn';
+    done.textContent = 'Done';
+    done.addEventListener('click', () => this.closeEmoteEditor());
+    footer.append(count, done);
+    el.append(grid, footer);
+    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeEmoteEditor());
   }
 
   // -------------------------------------------------------------------------
@@ -664,6 +911,26 @@ export class Hud {
   private refreshKeybindLabels(): void {
     for (let i = 0; i < this.abilityButtons.length; i++) {
       this.abilityButtons[i].keybindEl.textContent = this.keybinds.primaryLabel(`slot${i}`);
+    }
+    const sideButtons: [selector: string, action: string, label: string][] = [
+      ['#mm-char', 'char', 'Character'],
+      ['#mm-spell', 'spellbook', 'Spellbook'],
+      ['#mm-talents', 'talents', 'Talents'],
+      ['#mm-quest', 'questlog', 'Quest Log'],
+      ['#mm-map', 'map', 'Map'],
+      ['#mm-bag', 'bags', 'Bags'],
+      ['#mm-arena', 'arena', 'Arena'],
+      ['#mm-leaderboard', 'leaderboard', 'Leaderboard'],
+      ['#mm-emote', 'emoteWheel', 'Emotes'],
+      ['#mm-social', 'social', 'Friends'],
+    ];
+    for (const [selector, action, label] of sideButtons) {
+      const btn = document.querySelector<HTMLElement>(selector);
+      if (!btn) continue;
+      const key = this.keybinds.primaryLabel(action);
+      const keyEl = btn.querySelector<HTMLElement>('.keybind');
+      if (keyEl) keyEl.textContent = key.toLowerCase();
+      btn.setAttribute('aria-label', key ? `${label} (${key})` : label);
     }
   }
 
@@ -3943,7 +4210,7 @@ export class Hud {
 
   // True while a menu that should pause character movement is up.
   isModalOpen(): boolean {
-    return this.optionsOpen;
+    return this.optionsOpen || this.emoteWheelOpen || $('#emote-editor').style.display === 'block';
   }
 
   toggleOptionsMenu(): void {
@@ -4177,7 +4444,14 @@ export class Hud {
         row.className = 'kb-row';
         const name = document.createElement('span');
         name.className = 'kb-name';
-        name.textContent = this.actionDisplayName(action.id, action.label);
+        const label = document.createElement('span');
+        label.className = 'kb-label';
+        label.textContent = this.actionDisplayName(action.id, action.label);
+        const hint = document.createElement('span');
+        hint.className = 'kb-inline-key';
+        const primary = this.keybinds.labelAt(action.id, 0);
+        hint.textContent = primary ? `(${primary})` : '';
+        name.append(label, hint);
         row.appendChild(name);
         for (let index = 0; index < 2; index++) {
           const capturing = this.capturingKey?.action === action.id && this.capturingKey?.index === index;
@@ -4237,7 +4511,7 @@ export class Hud {
   // The mutually-exclusive modal windows. They all share one centred position
   // (see the `.window` rule), so only one may be visible at a time — the vendor
   // is the lone pairing (it opens bags alongside, laid out side-by-side).
-  private static readonly MODAL_IDS = ['#quest-dialog', '#loot-window', '#vendor-window', '#bags', '#char-window', '#spellbook', '#talents-window', '#quest-log-window', '#map-window', '#report-window', '#arena-window', '#leaderboard-window'];
+  private static readonly MODAL_IDS = ['#quest-dialog', '#loot-window', '#vendor-window', '#bags', '#char-window', '#spellbook', '#talents-window', '#quest-log-window', '#map-window', '#report-window', '#arena-window', '#leaderboard-window', '#emote-editor'];
 
   // Opening any window closes the others first, so panels never stack. `keep`
   // is the window (or windows, e.g. vendor+bags) being opened.
@@ -4266,6 +4540,7 @@ export class Hud {
   closeAll(): boolean {
     let closed = false;
     this.closeContextMenu();
+    if (this.emoteWheelOpen) { this.hideEmoteWheel(); closed = true; }
     if (this.optionsOpen) { this.closeOptions(); return true; }
     const socialEl = $('#social-window');
     if (socialEl.classList.contains('open')) { socialEl.classList.remove('open'); closed = true; }
