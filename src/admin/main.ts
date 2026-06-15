@@ -131,7 +131,7 @@ async function refreshActivity(): Promise<void> {
         a.sessions.map((p) => ({
           label: dayLabel(p.day),
           value: p.sessions,
-          title: `${p.day}: ${p.sessions} sessions, ${p.uniqueAccounts} accounts, ${fmtDuration(p.playtimeSeconds)} played`,
+          title: t('charts.sessionsTooltip', { day: p.day, sessions: p.sessions, accounts: p.uniqueAccounts, played: fmtDuration(p.playtimeSeconds) }),
         })),
       )),
       chartPanel(t('charts.classDistribution'), barChart(
