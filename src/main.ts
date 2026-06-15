@@ -1854,7 +1854,7 @@ async function loadHighscores(): Promise<void> {
     const star = r.prestigeRank > 0 ? `<span class="hs-prestige" title="${t('game.prestige.rank')} ${r.prestigeRank}">★${r.prestigeRank}</span>` : '';
     return `<div class="hs-row${r.rank <= 3 ? ' hs-top' : ''}">`
       + `<span class="hs-rank">${r.rank}</span>`
-      + `<span class="hs-name"${cls ? ` title="${esc(cls.name)}"` : ''}>${star}${esc(r.name)}</span>`
+      + `<span class="hs-name"${cls ? ` title="${esc(classDisplayName(r.cls))}"` : ''}>${star}${esc(r.name)}</span>`
       + `<span class="hs-realm">${esc(r.realm ?? '')}</span>`
       + `<span class="hs-lvl">${r.level}</span>`
       + `<span class="hs-vlvl">${r.virtualLevel}</span>`
