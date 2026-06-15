@@ -54,9 +54,10 @@ export function fmtCopper(copper: number): string {
   const gold = Math.floor(c / 10_000);
   const silver = Math.floor((c % 10_000) / 100);
   const rest = c % 100;
-  if (gold > 0) return `${gold}g ${silver}s ${rest}c`;
-  if (silver > 0) return `${silver}s ${rest}c`;
-  return `${rest}c`;
+  const g = t('money.gold'), s = t('money.silver'), cu = t('money.copper');
+  if (gold > 0) return `${gold}${g} ${silver}${s} ${rest}${cu}`;
+  if (silver > 0) return `${silver}${s} ${rest}${cu}`;
+  return `${rest}${cu}`;
 }
 
 export function fmtBytes(bytes: number): string {

@@ -1,7 +1,7 @@
 import { apiGet, apiLogin, apiPost, clearSession, getAdminName, getToken, ApiError } from './api';
 import { barChart, chartPanel } from './charts';
 import { escapeHtml, fmtBytes, fmtDuration } from './format';
-import { t } from './i18n';
+import { t, localizeAdminError } from './i18n';
 import {
   renderAccountDetail, renderAccountsTable, renderCharactersTable, renderModerationDetail,
   renderModerationQueue, renderOnlineTable, renderPager,
@@ -275,7 +275,7 @@ function handleModerationActionClick(e: Event, source: 'account' | 'moderation')
   }
   if (target.closest('[data-confirm-moderation]')) {
     void finishModerationAction()
-      .catch((err: unknown) => { if (!handleAuthFailure(err)) window.alert(err instanceof Error ? err.message : t('alert.actionFailed')); });
+      .catch((err: unknown) => { if (!handleAuthFailure(err)) window.alert(err instanceof Error ? localizeAdminError(err.message) : t('alert.actionFailed')); });
     return true;
   }
   const actionWrap = target.closest('[data-action-account-id]') as HTMLElement | null;
@@ -408,7 +408,7 @@ function wireEvents(): void {
     apiLogin(username, password)
       .then(() => showApp())
       .catch((err: unknown) => {
-        $('login-error').textContent = err instanceof ApiError ? err.message : t('auth.loginFailed');
+        $('login-error').textContent = err instanceof ApiError ? localizeAdminError(err.message) : t('auth.loginFailed');
       });
   });
 
@@ -468,7 +468,7 @@ function wireEvents(): void {
           void refreshModeration();
           if (Number.isFinite(accountId)) void openModerationAccount(accountId);
         })
-        .catch((err: unknown) => { if (!handleAuthFailure(err)) window.alert(err instanceof Error ? err.message : t('alert.actionFailed')); });
+        .catch((err: unknown) => { if (!handleAuthFailure(err)) window.alert(err instanceof Error ? localizeAdminError(err.message) : t('alert.actionFailed')); });
       return;
     }
     handleModerationActionClick(e, 'moderation');
