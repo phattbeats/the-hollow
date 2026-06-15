@@ -163,6 +163,9 @@ export interface MobTemplate {
   summonAdds?: { mobId: string; count: number; atHpPct: number[] };
   // Boss mechanic: damage multiplier once hp drops below the threshold.
   enrage?: { belowHpPct: number; dmgMult: number };
+  // Melee mechanic: each landed swing also splashes onto other players near the
+  // primary target for `mult` of the (pre-armor) hit. Classic-WoW Cleave.
+  cleave?: { radius: number; mult: number; name?: string };
 }
 
 export type AbilityEffect =
