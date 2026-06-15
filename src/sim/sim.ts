@@ -3932,6 +3932,12 @@ export class Sim {
       return null;
     }
 
+    // "/bags" (aliases /inv, /inventory) — self-only readout of carried items
+    if (/^\/(?:bags|inv|inventory)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.bagsReadout(r.meta));
+      return null;
+    }
+
     // "/w name message" — private whisper to an online player
     const wm = /^\/(?:w|whisper|t|tell)\s+(\S+)\s+([\s\S]+)$/i.exec(line);
     if (wm) {
@@ -5350,6 +5356,27 @@ export class Sim {
     }
     line += `. AP ${Math.round(e.attackPower)}, Crit ${crit}%, Armor ${Math.round(e.stats.armor)}.`;
     return line;
+  }
+
+  // Self-only readout of carried items for "/bags": items sorted by quality
+  // (epic first), ties keeping inventory order, with the purse appended via
+  // formatMoney. Reads only PlayerMeta state, so it works online for free.
+  private bagsReadout(meta: PlayerMeta): string {
+    const purse = `Purse: ${formatMoney(meta.copper)}.`;
+    if (meta.inventory.length === 0) return `Your bags are empty. ${purse}`;
+    const rank: Record<string, number> = { epic: 0, rare: 1, uncommon: 2, common: 3, poor: 4 };
+    const sorted = meta.inventory
+      .map((s, i) => ({ s, i }))
+      .sort((a, b) => {
+        const qa = rank[ITEMS[a.s.itemId]?.quality ?? 'common'] ?? 3;
+        const qb = rank[ITEMS[b.s.itemId]?.quality ?? 'common'] ?? 3;
+        return qa - qb || a.i - b.i;
+      });
+    const parts = sorted.map(({ s }) => {
+      const name = ITEMS[s.itemId]?.name ?? s.itemId;
+      return s.count > 1 ? `${name} x${s.count}` : name;
+    });
+    return `Bags (${parts.length}): ${parts.join(', ')}. ${purse}`;
   }
 
   private error(pid: number, text: string): void {
