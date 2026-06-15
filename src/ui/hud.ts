@@ -237,7 +237,7 @@ export class Hud {
     window.addEventListener('pointerdown', (ev) => {
       if (!this.emoteWheelOpen || !this.emoteWheelPinned) return;
       const target = ev.target as Node | null;
-      if (target && (this.emoteWheelEl?.contains(target) || document.getElementById('mm-emote')?.contains(target))) return;
+      if (target && (this.emoteWheelEl?.contains(target) || document.getElementById('mm-emote')?.contains(target) || document.getElementById('mobile-emote')?.contains(target))) return;
       this.hideEmoteWheel();
     });
     $('#release-btn').addEventListener('click', () => { this.sim.releaseSpirit(); });
@@ -303,11 +303,7 @@ export class Hud {
     const emoteBtn = $('#mm-emote');
     emoteBtn.addEventListener('click', (ev) => {
       ev.preventDefault();
-      if (this.emoteWheelOpen && this.emoteWheelPinned) {
-        this.hideEmoteWheel();
-        return;
-      }
-      this.showEmoteWheel(true);
+      this.toggleEmoteWheel();
     });
     const musicBtn = $('#mm-music');
     const styleMusicBtn = () => {
@@ -571,6 +567,25 @@ export class Hud {
 
   private emoteLabel(id: OverheadEmoteId): string {
     return OVERHEAD_EMOTES.find((e) => e.id === id)?.label ?? id;
+  }
+
+  private emoteWheelKeyLabel(): string {
+    return this.keybinds.primaryLabel('emoteWheel') || 'X';
+  }
+
+  private emoteWheelDisplayLabel(id: OverheadEmoteId): string {
+    return `${this.emoteLabel(id)} (${this.emoteWheelKeyLabel()})`;
+  }
+
+  /** Tap-to-toggle the pinned emote wheel — used by the menu-bar and on-screen
+   *  touch Emote buttons (touch has no key to hold, so the wheel stays pinned
+   *  until a slice or the outside is tapped). */
+  toggleEmoteWheel(): void {
+    if (this.emoteWheelOpen && this.emoteWheelPinned) {
+      this.hideEmoteWheel();
+      return;
+    }
+    this.showEmoteWheel(true);
   }
 
   setEmoteWheelOpen(open: boolean): void {
