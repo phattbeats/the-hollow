@@ -274,6 +274,36 @@ export async function createCharacter(accountId: number, name: string, cls: Play
   return res.rows[0];
 }
 
+export async function createCharacterCapped(
+  accountId: number,
+  name: string,
+  cls: PlayerClass,
+  limit = 10,
+): Promise<CharacterRow | null> {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const account = await client.query('SELECT id FROM accounts WHERE id = $1 FOR UPDATE', [accountId]);
+    if ((account.rowCount ?? 0) === 0) { await client.query('ROLLBACK'); return null; }
+    const count = await client.query(
+      'SELECT count(*)::int AS n FROM characters WHERE account_id = $1 AND realm = $2',
+      [accountId, REALM],
+    );
+    if (Number(count.rows[0]?.n ?? 0) >= limit) { await client.query('ROLLBACK'); return null; }
+    const res = await client.query(
+      'INSERT INTO characters (account_id, name, class, realm) VALUES ($1, $2, $3, $4) RETURNING id, account_id, name, class, level, state, is_gm, force_rename',
+      [accountId, name, cls, REALM],
+    );
+    await client.query('COMMIT');
+    return res.rows[0];
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {});
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
 export async function deleteCharacter(accountId: number, characterId: number): Promise<boolean> {
   const res = await pool.query('DELETE FROM characters WHERE id = $1 AND account_id = $2 AND realm = $3', [characterId, accountId, REALM]);
   return (res.rowCount ?? 0) > 0;
