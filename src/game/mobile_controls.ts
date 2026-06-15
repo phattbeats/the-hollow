@@ -17,6 +17,7 @@ export interface MobileControlCallbacks {
   onTalents(): void;
   onMeters(): void;
   onMap(): void;
+  onLeaderboard(): void;
 }
 
 export function isPhoneTouchDevice(win: Pick<Window, 'matchMedia'> = window): boolean {
@@ -77,6 +78,7 @@ export class MobileControls {
     this.bindButton('mobile-talents', () => this.callbacks.onTalents());
     this.bindButton('mobile-meters', () => this.callbacks.onMeters());
     this.bindButton('mobile-map', () => this.callbacks.onMap());
+    this.bindButton('mobile-leaderboard', () => this.callbacks.onLeaderboard());
     this.bindButton('mobile-more', () => {
       this.root?.classList.toggle('expanded');
       document.body.classList.toggle('mobile-more-open', this.root?.classList.contains('expanded') ?? false);
