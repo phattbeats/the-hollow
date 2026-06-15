@@ -37,6 +37,11 @@ describe('client HTML shell', () => {
     expect(html).toContain('aria-label="Quest Log"');
   });
 
+  it('only displays mobile touch controls after the game is active', () => {
+    expect(html).toContain('body.mobile-touch.game-active #mobile-controls');
+    expect(html).not.toContain('body.mobile-touch #mobile-controls { position: absolute; inset: 0; display: block;');
+  });
+
   it('caps mobile quest and NPC panels instead of stretching them edge to edge', () => {
     expect(html).toContain('body.mobile-touch #quest-log-window,\n  body.mobile-touch #vendor-window,\n  body.mobile-touch #quest-dialog');
     expect(html).toContain('width: clamp(320px, 76vw, 680px);');
