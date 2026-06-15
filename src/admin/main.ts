@@ -1,7 +1,7 @@
 import { apiGet, apiLogin, apiPost, clearSession, getAdminName, getToken, ApiError } from './api';
 import { barChart, chartPanel } from './charts';
 import { escapeHtml, fmtBytes, fmtDuration } from './format';
-import { t, localizeAdminError } from './i18n';
+import { classLabel, t, localizeAdminError } from './i18n';
 import {
   renderAccountDetail, renderAccountsTable, renderCharactersTable, renderModerationDetail,
   renderModerationQueue, renderOnlineTable, renderPager,
@@ -135,7 +135,7 @@ async function refreshActivity(): Promise<void> {
         })),
       )),
       chartPanel(t('charts.classDistribution'), barChart(
-        a.classes.map((p) => ({ label: p.key, value: p.count })),
+        a.classes.map((p) => ({ label: classLabel(p.key), value: p.count })),
       )),
       chartPanel(t('charts.levelDistribution'), barChart(
         a.levels.map((p) => ({ label: p.key, value: p.count })),
@@ -337,6 +337,10 @@ function handleModerationActionClick(e: Event, source: 'account' | 'moderation')
     const expiry = raw ? new Date(raw) : null;
     if (!expiry || !Number.isFinite(expiry.getTime())) {
       window.alert(t('alert.customExpiryRequired'));
+      return true;
+    }
+    if (expiry.getTime() <= Date.now()) {
+      window.alert(t('alert.customExpiryFuture'));
       return true;
     }
     showModerationConfirm({

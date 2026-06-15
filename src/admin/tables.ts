@@ -1,5 +1,5 @@
 import { escapeHtml, fmtCopper, fmtDate, fmtDuration, fmtRelative } from './format';
-import { t } from './i18n';
+import { classLabel, t } from './i18n';
 import type { AccountDetail, AccountRow, CharacterRow, LivePlayer, ModerationAccountDetail, ModerationQueueRow } from './types';
 
 // Pure HTML-string renderers for the dashboard tables. All dynamic values go
@@ -10,7 +10,7 @@ export function renderOnlineTable(players: LivePlayer[]): string {
   const rows = players.map((p) => `
     <tr>
       <td>${escapeHtml(p.name)}</td>
-      <td>${escapeHtml(p.class)}</td>
+      <td>${escapeHtml(classLabel(p.class))}</td>
       <td class="num">${p.level}</td>
       <td>${escapeHtml(p.zone)}</td>
       <td class="num">${Math.round(p.x)}, ${Math.round(p.z)}</td>
@@ -72,7 +72,7 @@ export function renderAccountDetail(d: AccountDetail, includeAdminControls = fal
         d.characters.map((c) => `
           <tr>
             <td>${escapeHtml(c.name)}</td>
-            <td>${escapeHtml(c.class)}</td>
+            <td>${escapeHtml(classLabel(c.class))}</td>
             <td class="num">${c.level}</td>
             <td class="num">${c.xp}</td>
             <td class="num">${fmtCopper(c.copper)}</td>
@@ -127,7 +127,7 @@ export function renderCharactersTable(rows: CharacterRow[], sort: string, dir: s
     <tr>
       <td class="num">${c.id}</td>
       <td>${escapeHtml(c.name)}</td>
-      <td>${escapeHtml(c.class)}</td>
+      <td>${escapeHtml(classLabel(c.class))}</td>
       <td class="num">${c.level}</td>
       <td class="num">${c.xp}</td>
       <td class="num">${fmtCopper(c.copper)}</td>
