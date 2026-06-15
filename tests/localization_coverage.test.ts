@@ -71,6 +71,22 @@ describe("i18n Localization Key Coverage", () => {
   const phaseTwoHudKeys: TranslationKey[] = [
     "hud.core.chatPlaceholder",
     "hud.core.xpGain",
+    "hud.core.communityLinks",
+    "hud.core.mobileControls",
+    "hud.core.mobileMove",
+    "hud.core.mobileCamera",
+    "hud.core.mobileAttack",
+    "hud.core.mobileTarget",
+    "hud.core.mobileChat",
+    "hud.core.mobileMore",
+    "hud.core.mobileMoreAria",
+    "hud.core.mobileSocial",
+    "hud.core.mobileArena",
+    "hud.core.mobileMenu",
+    "hud.core.mobileUse",
+    "hud.core.mobileMeters",
+    "hud.core.mobileMap",
+    "hud.core.closeMap",
     "hud.options.gameMenu",
     "hud.options.keybindHelp",
     "hud.options.unbound",
@@ -181,6 +197,43 @@ describe("i18n Localization Key Coverage", () => {
     "hud.markers.cancel",
     "hud.markers.markerAria",
     "hud.markers.markerSelectedAria",
+    "hud.social.title",
+    "hud.social.friendsTab",
+    "hud.social.guildTab",
+    "hud.social.ignoreTab",
+    "hud.social.leaveParty",
+    "hud.social.offlineEmpty",
+    "hud.social.friendsEmpty",
+    "hud.social.ignoreEmpty",
+    "hud.social.noGuild",
+    "hud.social.whisperTitle",
+    "hud.social.removeFriendTitle",
+    "hud.social.stopIgnoringTitle",
+    "hud.social.makeGuildMasterTitle",
+    "hud.social.promoteTitle",
+    "hud.social.demoteTitle",
+    "hud.social.removeGuildTitle",
+    "hud.social.friendSearchPlaceholder",
+    "hud.social.ignoreSearchPlaceholder",
+    "hud.social.guildNamePlaceholder",
+    "hud.social.guildInvitePlaceholder",
+    "hud.social.add",
+    "hud.social.ignoreAction",
+    "hud.social.found",
+    "hud.social.invite",
+    "hud.social.disbandGuild",
+    "hud.social.leaveGuild",
+    "hud.social.disbandPrompt",
+    "hud.social.disbandConfirm",
+    "hud.social.transferPrompt",
+    "hud.social.transferConfirm",
+    "hud.social.selfNotice",
+    "hud.social.noPlayerNamed",
+    "hud.social.currentRealm",
+    "hud.social.friendAdded",
+    "hud.social.nowIgnoring",
+    "hud.social.guildInvited",
+    "hud.social.levelClass",
     "hud.social.status.online",
     "hud.social.status.offline",
     "hud.social.status.combat",
@@ -192,6 +245,17 @@ describe("i18n Localization Key Coverage", () => {
     "hud.social.ranks.member",
     "hud.social.guildHeadOne",
     "hud.social.guildHeadMany",
+    "hud.trade.title",
+    "hud.trade.yourOffer",
+    "hud.trade.theirOffer",
+    "hud.trade.emptyMine",
+    "hud.trade.emptyTheirs",
+    "hud.trade.money",
+    "hud.trade.copper",
+    "hud.trade.hint",
+    "hud.trade.accept",
+    "hud.trade.waiting",
+    "hud.trade.cancel",
     "hud.arena.title",
     "hud.arena.subtitle",
     "hud.arena.close",
@@ -257,6 +321,7 @@ describe("i18n Localization Key Coverage", () => {
     rating: 1513,
     range: 30,
     rank: 2,
+    realm: "Eastbrook",
     resource: "Mana",
     seconds: 7,
     slot: 5,
@@ -1038,7 +1103,22 @@ describe("i18n Localization Key Coverage", () => {
     expect(html).toContain('data-i18n-content="seo.description"');
     expect(html).toContain('data-i18n-placeholder="hud.core.chatPlaceholder"');
     expect(html).toContain('data-i18n="hud.core.chatTab"');
+    expect(html).toContain('data-i18n="entities.zones.eastbrook_vale.name"');
     expect(html).toContain('data-i18n-title="itemUi.bags.title"');
+    expect(html).toContain('data-i18n-aria="hud.core.mobileControls"');
+    expect(html).toContain('data-i18n="hud.core.mobileMove"');
+    expect(html).toContain('data-i18n="hud.core.mobileCamera"');
+    expect(html).toContain('data-i18n="hud.core.mobileAttack"');
+    expect(html).toContain('data-i18n="hud.core.mobileTarget"');
+    expect(html).toContain('data-i18n="hud.core.mobileChat"');
+    expect(html).toContain('data-i18n="hud.core.mobileMore"');
+    expect(html).toContain('data-i18n="hud.core.mobileSocial"');
+    expect(html).toContain('data-i18n="hud.core.mobileArena"');
+    expect(html).toContain('data-i18n="hud.core.mobileMenu"');
+    expect(html).toContain('data-i18n="hud.core.mobileUse"');
+    expect(html).toContain('data-i18n="hud.core.mobileMeters"');
+    expect(html).toContain('data-i18n="hud.core.mobileMap"');
+    expect(html).toContain('data-i18n-title="hud.core.closeMap"');
     expect(html).toContain('id="structured-data"');
   });
 });

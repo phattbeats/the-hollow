@@ -49,6 +49,8 @@ const MOBILE_AUDIT_ROOTS = [
   '#quest-log-window',
   '#vendor-window',
   '#market-window',
+  '#social-window',
+  '#trade-window',
   '#bags',
   '#chat-input',
 ];
@@ -70,6 +72,12 @@ const FOCUS_SELECTORS = [
   '#market-window .mkt-tab',
   '#market-window .mkt-btn',
   '#market-window .mkt-list-btn',
+  '#social-window .soc-tab',
+  '#social-window .soc-x',
+  '#social-window .soc-name.soc-link',
+  '#trade-window .trade-item.mine',
+  '#trade-window .btn',
+  '#trade-copper',
   '#bags .bag-item',
 ];
 
@@ -838,6 +846,66 @@ async function runItemVendorMarket(page, scene, locale, viewport) {
   await assertAuditBasics(page, `market and error state ${locale} ${viewport.name}`, { mobile: viewport.isMobile });
 }
 
+async function runSocialAndTradeSurfaces(page, locale, viewport) {
+  await page.evaluate(() => {
+    const g = window.__game;
+    const player = g.sim.player;
+    g.sim.realm = 'Eastbrook';
+    g.sim.socialInfo = {
+      friends: [
+        { id: 801, name: 'Boro', cls: 'warrior', level: 12, realm: 'Eastbrook', online: true, zone: 'Eastbrook Vale', status: 'online' },
+      ],
+      blocks: [{ id: 802, name: 'Rook' }],
+      guild: {
+        id: 21,
+        name: 'Dawn Wardens',
+        rank: 'leader',
+        members: [
+          { id: player.id, name: player.name, cls: 'mage', level: player.level, realm: 'Eastbrook', online: true, zone: 'Eastbrook Vale', status: 'online', rank: 'leader' },
+          { id: 803, name: 'Ilyra', cls: 'priest', level: 14, realm: 'Eastbrook', online: true, zone: 'Mirefen Marsh', status: 'dungeon', rank: 'officer' },
+        ],
+      },
+    };
+    g.hud.closeAll();
+    g.hud.toggleSocial();
+  });
+  await page.waitForSelector('#social-window.open .soc-tab', { timeout: WAIT_TIMEOUT });
+  await assertNonEnglishNotFallback(page, locale, '#social-window .panel-title span', 'Social', `social ${locale} ${viewport.name}`);
+  await assertAuditBasics(page, `social friends ${locale} ${viewport.name}`, { mobile: viewport.isMobile });
+  await page.click('#social-window .soc-tab[data-tab="guild"]');
+  await assertAuditBasics(page, `social guild ${locale} ${viewport.name}`, { mobile: viewport.isMobile });
+  await page.click('#social-window .soc-tab[data-tab="ignore"]');
+  await assertAuditBasics(page, `social ignore ${locale} ${viewport.name}`, { mobile: viewport.isMobile });
+
+  await page.evaluate(() => {
+    const g = window.__game;
+    const tradeInfo = {
+      otherPid: 803,
+      otherName: 'Ilyra',
+      myOffer: { items: [{ itemId: 'wolf_fang', count: 2 }], copper: 17 },
+      theirOffer: { items: [{ itemId: 'baked_bread', count: 1 }], copper: 25 },
+      myAccepted: false,
+      theirAccepted: true,
+    };
+    Object.defineProperty(g.sim, 'tradeInfo', { configurable: true, get: () => tradeInfo });
+    g.sim.tradeSetOffer = () => {};
+    g.sim.tradeConfirm = () => {};
+    g.sim.tradeCancel = () => {};
+    g.hud.closeAll();
+    g.hud.updateTradeWindow();
+  });
+  await page.waitForSelector('#trade-window .trade-cols', { timeout: WAIT_TIMEOUT });
+  await assertNonEnglishNotFallback(page, locale, '#trade-window .panel-title span', 'Trade with', `trade ${locale} ${viewport.name}`);
+  await assertAuditBasics(page, `trade ${locale} ${viewport.name}`, { mobile: viewport.isMobile });
+  await page.evaluate(() => {
+    const g = window.__game;
+    Object.defineProperty(g.sim, 'tradeInfo', { configurable: true, get: () => null });
+    document.querySelector('#trade-window').style.display = 'none';
+    document.querySelector('#bags').style.display = 'none';
+    g.hud.closeAll();
+  });
+}
+
 async function runDeepGameScenario(browser, locale, viewport) {
   const label = `${locale} ${viewport.name}`;
   const { page, assertNoDiagnostics } = await newAuditedPage(browser, viewport, label);
@@ -852,6 +920,7 @@ async function runDeepGameScenario(browser, locale, viewport) {
     await runSpellbookAndActions(page, locale, viewport);
     await runQuestSurfaces(page, scene, locale, viewport);
     await runItemVendorMarket(page, scene, locale, viewport);
+    await runSocialAndTradeSurfaces(page, locale, viewport);
     await assertFocusVisible(page, `focus visibility ${label}`);
     await assertNoVisibleMarkers(page, `final visible markers ${label}`);
     await assertNoHorizontalOverflow(page, `final overflow ${label}`);
