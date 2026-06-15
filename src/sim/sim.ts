@@ -4358,6 +4358,9 @@ export class Sim {
     // spoken, and works online for free (no server interceptor).
     if (/^\/(?:stats|st|sheet)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.statsReadout(r.meta, r.e));
+    // "/quest" (aliases /quests, /ql) — self-only readout of the active quest log
+    if (/^\/(?:quests?|ql)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.questReadout(r.meta));
       return null;
     }
 
@@ -5781,6 +5784,22 @@ export class Sim {
       .sort((a, b) => a[1] - b[1])
       .map(([id, remaining]) => `${ABILITIES[id]?.name ?? id} (${Math.ceil(remaining)}s)`);
     return `Abilities on cooldown (${parts.length}): ${parts.join(', ')}.`;
+  // Self-only readout of the active quest log: one entry per tracked quest with
+  // per-objective progress. questLog only ever holds 'active'/'ready' quests
+  // (turn-in deletes the entry), so iterating it gives exactly what to show.
+  private questReadout(meta: PlayerMeta): string {
+    const lines: string[] = [];
+    for (const [qid, qp] of meta.questLog) {
+      const quest = QUESTS[qid];
+      if (!quest) continue;
+      const objs = quest.objectives
+        .map((o, i) => `${o.label} ${Math.min(qp.counts[i] ?? 0, o.count)}/${o.count}`)
+        .join(', ');
+      const tag = qp.state === 'ready' ? ' (ready)' : '';
+      lines.push(`${quest.name}${tag} — ${objs}`);
+    }
+    if (lines.length === 0) return 'Your quest log is empty.';
+    return `Quest log (${lines.length}): ${lines.join(' | ')}.`;
   }
 }
 
