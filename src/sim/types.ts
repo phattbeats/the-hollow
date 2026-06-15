@@ -163,6 +163,11 @@ export interface MobTemplate {
   summonAdds?: { mobId: string; count: number; atHpPct: number[] };
   // Boss mechanic: damage multiplier once hp drops below the threshold.
   enrage?: { belowHpPct: number; dmgMult: number };
+  // Combat mechanic: a landed melee hit has `chance` to corrode the victim's
+  // armor — a stacking `sunder` debuff (up to `maxStacks`) so the victim takes
+  // more physical damage from everyone until it expires. Rides the existing
+  // sunder aura; no new aura kind.
+  corrode?: { chance: number; armor: number; maxStacks: number; duration: number; name: string; school?: Aura['school'] };
 }
 
 export type AbilityEffect =
