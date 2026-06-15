@@ -239,6 +239,9 @@
     justify-content: space-between;
     align-items: center;
   }
+  .window .panel-title { cursor: move; touch-action: none; }
+  .window .panel-title .x-btn { cursor: pointer; }
+  .window.window-dragging { cursor: move; }
   .x-btn { color: #c9b27a; cursor: pointer; font-size: 14px; padding: 0 4px; border: 1px solid #463a1c; border-radius: 3px; background: #1a1410; }
   .x-btn:hover { color: #fff; border-color: var(--gold-dim); }
   .gold { color: var(--gold); }

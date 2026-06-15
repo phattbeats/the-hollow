@@ -186,6 +186,9 @@ export class Hud {
   private mapDrag: { px: number; py: number; cx: number; cz: number } | null = null;
   private mapView: { spanX: number; spanZ: number; minX: number; maxX: number; minZ: number; maxZ: number } | null = null;
   private mapDecorations: Decoration[] | null = null; // cached trees/rocks (whole world)
+  private windowDrag: { el: HTMLElement; pointerId: number; offsetX: number; offsetY: number } | null = null;
+  private windowObserver: MutationObserver | null = null;
+  private windowZ = 50;
   private ignoredChatNames = new Set<string>();
   private socialTab: 'friends' | 'guild' | 'ignore' = 'friends';
   // split signatures: structural changes (tab, guild membership) rebuild the
@@ -211,6 +214,7 @@ export class Hud {
     this.ignoredChatNames = this.loadIgnoredChatNames();
     this.meters = new Meters(sim);
     this.bindLogTabs();
+    this.initWindowManagement();
     this.emoteWheelSlots = this.loadEmoteWheelSlots();
     this.loadSlotMap();
     this.buildActionBar();
@@ -363,6 +367,157 @@ export class Hud {
       hotDomSkippedWrites: this.hotDomSkippedWrites,
       hotDomSkipRate: total > 0 ? Math.round((this.hotDomSkippedWrites / total) * 1000) / 1000 : 0,
     };
+  }
+
+  private initWindowManagement(): void {
+    const observeWindow = (el: HTMLElement) => {
+      this.windowObserver?.observe(el, { attributes: true, attributeFilter: ['class', 'style', 'hidden'] });
+    };
+    this.windowObserver = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.type === 'childList') {
+          m.addedNodes.forEach((node) => {
+            if (!(node instanceof HTMLElement)) return;
+            if (node.matches('.window.panel')) observeWindow(node);
+            node.querySelectorAll<HTMLElement>('.window.panel').forEach(observeWindow);
+          });
+          continue;
+        }
+        if (m.target instanceof HTMLElement && m.target.matches('.window.panel')) {
+          this.syncWindowOpenState(m.target);
+        }
+      }
+    });
+    document.querySelectorAll<HTMLElement>('.window.panel').forEach(observeWindow);
+    this.windowObserver.observe(document.body, { childList: true, subtree: true });
+
+    document.addEventListener('pointerdown', (ev) => {
+      const target = ev.target as HTMLElement | null;
+      const el = target?.closest?.('.window.panel') as HTMLElement | null;
+      if (!el) return;
+      this.bringWindowToFront(el);
+      if (ev.button !== 0 || !target || !this.isWindowDragHandle(target, el)) return;
+      ev.preventDefault();
+      this.hideTooltip();
+      const rect = el.getBoundingClientRect();
+      this.setWindowPixelPosition(el, rect.left, rect.top, rect);
+      this.windowDrag = { el, pointerId: ev.pointerId, offsetX: ev.clientX - rect.left, offsetY: ev.clientY - rect.top };
+      el.classList.add('window-dragging');
+      el.dataset.windowMoved = '1';
+      try { target.setPointerCapture?.(ev.pointerId); } catch { /* synthetic/legacy pointer without active capture */ }
+    });
+    document.addEventListener('pointermove', (ev) => {
+      const drag = this.windowDrag;
+      if (!drag || drag.pointerId !== ev.pointerId) return;
+      ev.preventDefault();
+      const rect = drag.el.getBoundingClientRect();
+      this.setWindowPixelPosition(drag.el, ev.clientX - drag.offsetX, ev.clientY - drag.offsetY, rect);
+    });
+    const endDrag = (ev: PointerEvent) => {
+      const drag = this.windowDrag;
+      if (!drag || drag.pointerId !== ev.pointerId) return;
+      drag.el.classList.remove('window-dragging');
+      this.windowDrag = null;
+    };
+    document.addEventListener('pointerup', endDrag);
+    document.addEventListener('pointercancel', endDrag);
+    window.addEventListener('resize', () => {
+      document.querySelectorAll<HTMLElement>('.window.panel').forEach((el) => {
+        if (!this.isWindowVisible(el) || el.dataset.windowMoved !== '1') return;
+        const rect = el.getBoundingClientRect();
+        this.setWindowPixelPosition(el, rect.left, rect.top, rect);
+      });
+    });
+  }
+
+  private isWindowVisible(el: HTMLElement): boolean {
+    if (el.id === 'social-window') return el.classList.contains('open');
+    if (el.hidden || el.hasAttribute('hidden')) return false;
+    return getComputedStyle(el).display !== 'none';
+  }
+
+  private syncWindowOpenState(el: HTMLElement): void {
+    if (!this.isWindowVisible(el)) {
+      delete el.dataset.windowOpen;
+      return;
+    }
+    if (el.dataset.windowOpen === '1') return;
+    el.dataset.windowOpen = '1';
+    this.placeNewWindow(el);
+    this.bringWindowToFront(el);
+  }
+
+  private placeNewWindow(el: HTMLElement): void {
+    if (el.dataset.windowMoved === '1' || el.id === 'loot-window') return;
+    if (document.body.classList.contains('vendor-open') && (el.id === 'vendor-window' || el.id === 'bags')) return;
+    const openCount = [...document.querySelectorAll<HTMLElement>('.window.panel')]
+      .filter((win) => win !== el && this.isWindowVisible(win)).length;
+    if (openCount <= 0) return;
+    const rect = el.getBoundingClientRect();
+    const offset = ((openCount - 1) % 8 + 1) * 28;
+    this.setWindowPixelPosition(el, rect.left + offset, rect.top + offset, rect);
+  }
+
+  private bringWindowToFront(el: HTMLElement): void {
+    if (this.windowZ >= 89) this.normalizeWindowZ();
+    el.style.zIndex = String(++this.windowZ);
+  }
+
+  private normalizeWindowZ(): void {
+    const open = [...document.querySelectorAll<HTMLElement>('.window.panel')]
+      .filter((el) => this.isWindowVisible(el))
+      .sort((a, b) => this.windowZValue(a) - this.windowZValue(b));
+    this.windowZ = 50;
+    for (const el of open) el.style.zIndex = String(++this.windowZ);
+  }
+
+  private windowZValue(el: HTMLElement): number {
+    const z = Number.parseInt(el.style.zIndex || getComputedStyle(el).zIndex || '', 10);
+    return Number.isFinite(z) ? z : 0;
+  }
+
+  private isWindowDragHandle(target: HTMLElement, win: HTMLElement): boolean {
+    if (target.closest('button, input, textarea, select, a, .x-btn, .ui-dd, [draggable="true"], #map-canvas, #map-zoom')) return false;
+    const title = target.closest('.panel-title');
+    if (title && win.contains(title)) return true;
+    return win.id === 'map-window' && target === win;
+  }
+
+  private setWindowPixelPosition(el: HTMLElement, left: number, top: number, rect = el.getBoundingClientRect()): void {
+    const margin = 8;
+    const width = Math.min(rect.width, window.innerWidth - margin * 2);
+    const height = Math.min(rect.height, window.innerHeight - margin * 2);
+    const maxLeft = Math.max(margin, window.innerWidth - width - margin);
+    const maxTop = Math.max(margin, window.innerHeight - height - margin);
+    el.style.left = `${Math.max(margin, Math.min(maxLeft, left))}px`;
+    el.style.top = `${Math.max(margin, Math.min(maxTop, top))}px`;
+    el.style.right = 'auto';
+    el.style.bottom = 'auto';
+    el.style.transform = 'none';
+  }
+
+  private topmostOpenWindow(): HTMLElement | null {
+    return [...document.querySelectorAll<HTMLElement>('.window.panel')]
+      .filter((el) => this.isWindowVisible(el))
+      .sort((a, b) => this.windowZValue(b) - this.windowZValue(a))[0] ?? null;
+  }
+
+  private closeManagedWindow(el: HTMLElement): void {
+    if (this.windowDrag?.el === el) this.windowDrag = null;
+    delete el.dataset.windowOpen;
+    switch (el.id) {
+      case 'confirm-dialog': el.remove(); break;
+      case 'options-menu': this.closeOptions(); break;
+      case 'social-window': el.classList.remove('open'); this.hideTooltip(); break;
+      case 'trade-window': this.sim.tradeCancel(); this.hideTooltip(); break;
+      case 'market-window': this.closeMarket(); break;
+      case 'vendor-window': this.closeVendor(); break;
+      case 'loot-window': this.closeLoot(); break;
+      case 'quest-dialog': this.closeQuestDialog(); break;
+      case 'talents-window': el.style.display = 'none'; this.talentStage = null; this.hideTooltip(); break;
+      case 'emote-editor': this.closeEmoteEditor(); break;
+      default: el.style.display = 'none'; this.hideTooltip(); break;
+    }
   }
 
   private bindLogTabs(): void {
@@ -4587,62 +4742,22 @@ export class Hud {
 
   // -------------------------------------------------------------------------
 
-  // The mutually-exclusive modal windows. They all share one centred position
-  // (see the `.window` rule), so only one may be visible at a time — the vendor
-  // is the lone pairing (it opens bags alongside, laid out side-by-side).
-  private static readonly MODAL_IDS = ['#quest-dialog', '#loot-window', '#vendor-window', '#bags', '#char-window', '#spellbook', '#talents-window', '#quest-log-window', '#map-window', '#report-window', '#arena-window', '#leaderboard-window', '#emote-editor'];
-
-  // Opening any window closes the others first, so panels never stack. `keep`
-  // is the window (or windows, e.g. vendor+bags) being opened.
-  private closeOtherWindows(keep?: string | string[]): void {
-    const keepSet = new Set(Array.isArray(keep) ? keep : keep ? [keep] : []);
-    for (const id of Hud.MODAL_IDS) {
-      if (keepSet.has(id)) continue;
-      const el = document.querySelector<HTMLElement>(id);
-      if (el && el.style.display !== 'none' && el.style.display !== '') el.style.display = 'none';
-    }
-    if (!keepSet.has('#talents-window')) this.talentStage = null;
-    if (!keepSet.has('#loot-window')) this.openLootMobId = null;
-    if (!keepSet.has('#vendor-window')) {
-      this.openVendorNpcId = null;
-      document.body.classList.remove('vendor-open');
-    }
-    const social = document.querySelector<HTMLElement>('#social-window');
-    if (!keepSet.has('#social-window') && social?.classList.contains('open')) social.classList.remove('open');
-    if (!keepSet.has('#options-menu') && this.optionsOpen) this.closeOptions();
-    if (!keepSet.has('#market-window') && this.marketOpen) this.closeMarket();
+  // Historical name retained for the existing call sites. Opening a window no
+  // longer closes its siblings; it only clears transient overlays.
+  private closeOtherWindows(_keep?: string | string[]): void {
     this.closeContextMenu();
     this.hideTooltip();
   }
 
   // Closes the topmost UI. Returns true if something was closed.
   closeAll(): boolean {
-    let closed = false;
-    this.closeContextMenu();
-    if (this.emoteWheelOpen) { this.hideEmoteWheel(); closed = true; }
-    if (this.optionsOpen) { this.closeOptions(); return true; }
-    const socialEl = $('#social-window');
-    if (socialEl.classList.contains('open')) { socialEl.classList.remove('open'); closed = true; }
-    if (this.tradeOpen) {
-      this.sim.tradeCancel();
-      closed = true;
-    }
-    if (this.marketOpen) { this.closeMarket(); closed = true; }
-    const confirmEl = document.getElementById('confirm-dialog');
-    if (confirmEl) { confirmEl.remove(); closed = true; }
-    for (const id of Hud.MODAL_IDS) {
-      const el = $(id);
-      if (el.style.display === 'block') {
-        el.style.display = 'none';
-        closed = true;
-      }
-    }
-    if (closed) {
-      this.openLootMobId = null;
-      this.openVendorNpcId = null;
-      this.hideTooltip();
-    }
-    return closed;
+    const ctx = $('#ctx-menu');
+    if (ctx.style.display !== 'none' && ctx.style.display !== '') { this.closeContextMenu(); return true; }
+    if (this.emoteWheelOpen) { this.hideEmoteWheel(); return true; }
+    const top = this.topmostOpenWindow();
+    if (!top) return false;
+    this.closeManagedWindow(top);
+    return true;
   }
 }
 
