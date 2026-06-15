@@ -102,7 +102,7 @@ describe('moderation report helpers', () => {
     });
 
     expect(result).toEqual({ created: false, signals: [] });
-    expect(query).toHaveBeenCalledTimes(4);
+    expect(query).toHaveBeenCalledTimes(3);
   });
 
   it('sorts moderation queue by open report count, recency, then online status', async () => {

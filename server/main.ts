@@ -10,13 +10,13 @@ import {
 } from './db';
 import { virtualLevel } from '../src/sim/types';
 import type { LeaderboardEntry } from '../src/world_api';
-import { cleanReportReason, createPlayerReport } from './moderation_db';
+import { cleanReportReason, createPlayerReport, createSuspiciousRegistrationReport } from './moderation_db';
 import { resolveReportTarget } from './report_target';
 import {
   hashPassword, verifyPassword, newToken, validUsernameShape, offensiveName, validPassword, normalizeCharName,
 } from './auth';
 import { json, readBody, isUniqueViolation } from './http_util';
-import { rateLimited, authThrottled, recordAuthFailure, clearAuthFailures } from './ratelimit';
+import { requestIp, rateLimited, authThrottled, recordAuthFailure, clearAuthFailures } from './ratelimit';
 import { handleAdminApi } from './admin';
 import { GameServer } from './game';
 import { REALM, REALM_DIRECTORY, REALM_ORIGINS } from './realm';
@@ -94,6 +94,13 @@ async function bearerActiveAccount(req: http.IncomingMessage, res: http.ServerRe
     return null;
   }
   return accountId;
+}
+
+function requestMetadata(req: http.IncomingMessage): { ip: string; userAgent: string } {
+  return {
+    ip: requestIp(req),
+    userAgent: String(req.headers['user-agent'] ?? ''),
+  };
 }
 
 const MIME: Record<string, string> = {
@@ -200,7 +207,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (existing) return json(res, 409, { error: 'username already taken' });
       let account;
       try {
-        account = await createAccount(body.username, await hashPassword(body.password));
+        account = await createAccount(body.username, await hashPassword(body.password), requestMetadata(req));
       } catch (err: any) {
         // a concurrent registration can win the insert after our findAccount
         // check; the username UNIQUE index is the real guard. Surface it as a
@@ -210,6 +217,11 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       }
       const token = newToken();
       await saveToken(token, account.id);
+      void createSuspiciousRegistrationReport({
+        accountId: account.id,
+        username: account.username,
+        ...requestMetadata(req),
+      }).catch((err) => console.error('suspicious registration report failed:', err));
       return json(res, 200, { token, username: account.username });
     }
     if (req.method === 'POST' && url === '/api/login') {
@@ -228,7 +240,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       const status = await moderationStatusForAccount(account.id);
       if (status.locked) return json(res, 403, { error: status.message });
       clearAuthFailures(username); // correct password: forgive earlier typos
-      await touchLogin(account.id);
+      await touchLogin(account.id, requestMetadata(req));
       const token = newToken();
       await saveToken(token, account.id);
       return json(res, 200, { token, username: account.username });
@@ -448,11 +460,11 @@ async function main(): Promise<void> {
       return;
     }
     wss.handleUpgrade(req, socket, head, (ws) => {
-      void onConnection(ws);
+      void onConnection(ws, req);
     });
   });
 
-  async function authenticateWebSocket(ws: WebSocket, raw: string): Promise<void> {
+  async function authenticateWebSocket(ws: WebSocket, raw: string, req: http.IncomingMessage): Promise<void> {
     let msg: any;
     try {
       msg = JSON.parse(raw);
@@ -492,7 +504,16 @@ async function main(): Promise<void> {
       ws.close();
       return;
     }
-    const result = game.join(ws, accountId, character.id, character.name, character.class, character.state, character.is_gm);
+    const result = game.join(
+      ws,
+      accountId,
+      character.id,
+      character.name,
+      character.class,
+      character.state,
+      character.is_gm,
+      requestMetadata(req),
+    );
     if ('error' in result) {
       ws.send(JSON.stringify({ t: 'error', error: result.error }));
       ws.close();
@@ -512,7 +533,7 @@ async function main(): Promise<void> {
     });
   }
 
-  async function onConnection(ws: WebSocket): Promise<void> {
+  async function onConnection(ws: WebSocket, req: http.IncomingMessage): Promise<void> {
     const authTimer = setTimeout(() => {
       ws.send(JSON.stringify({ t: 'error', error: 'authentication timed out' }));
       ws.close();
@@ -529,7 +550,7 @@ async function main(): Promise<void> {
 
     ws.once('message', (data) => {
       clearTimeout(authTimer);
-      void authenticateWebSocket(ws, String(data));
+      void authenticateWebSocket(ws, String(data), req);
     });
   }
 

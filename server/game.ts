@@ -7,6 +7,7 @@ import { parseMoveInputFrame } from '../src/sim/move_input';
 import { stealthDetectionRadius, threatEntries } from '../src/sim/threat';
 import { zoneAt, DUNGEONS } from '../src/sim/data';
 import { saveCharacterState, openPlaySession, closePlaySession, insertChatLogs, pool, loadMarketState, saveMarketState } from './db';
+import type { RequestMetadata } from './db';
 import { ChatLogger } from './chat_log';
 import { SocialService } from './social';
 import type { Presence, PresenceStatus, SocialActor, SocialEvent, SocialTransport } from './social';
@@ -450,7 +451,16 @@ export class GameServer {
 
   // -------------------------------------------------------------------------
 
-  join(ws: WebSocket, accountId: number, characterId: number, name: string, cls: import('../src/sim/types').PlayerClass, state: import('../src/sim/sim').CharacterState | null, isGm = false): ClientSession | { error: string } {
+  join(
+    ws: WebSocket,
+    accountId: number,
+    characterId: number,
+    name: string,
+    cls: import('../src/sim/types').PlayerClass,
+    state: import('../src/sim/sim').CharacterState | null,
+    isGm = false,
+    meta: RequestMetadata = {},
+  ): ClientSession | { error: string } {
     if (this.sessionsByCharacterId.has(characterId)) return { error: 'character already in world' };
     const pid = this.sim.addPlayer(cls, name, { state: state ?? undefined });
     if (isGm) {
@@ -475,7 +485,7 @@ export class GameServer {
     this.clients.set(pid, session);
     this.sessionsByCharacterId.set(characterId, session);
     this.peakOnline = Math.max(this.peakOnline, this.clients.size);
-    openPlaySession(accountId, characterId, name)
+    openPlaySession(accountId, characterId, name, meta)
       .then((id) => { session.dbSessionId = id; })
       .catch((err) => console.error('failed to open play session:', err));
 
