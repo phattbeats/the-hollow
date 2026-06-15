@@ -665,6 +665,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     net.setMouselookFacing(netFacing);
     net.pendingFacingDelta = 0; // superseded by the interpolated follow below
     hud.handleEvents(net.drainEvents());
+    if (net.consumeProfanityChanged()) hud.setProfanityWords(net.profanityWords);
     if (net.consumeInventoryChanged()) hud.onInventoryChanged();
     const alpha = net.lastSnapAt > 0
       ? Math.min(1.25, (performance.now() - net.lastSnapAt) / Math.max(20, net.snapInterval))

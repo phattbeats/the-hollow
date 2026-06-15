@@ -414,6 +414,7 @@ async function main(): Promise<void> {
   const pruned = await pruneChatLogs(CHAT_LOG_RETENTION_DAYS);
   if (pruned > 0) console.log(`pruned ${pruned} chat log row(s) older than ${CHAT_LOG_RETENTION_DAYS} days`);
   await game.loadMarket();
+  await game.loadChatFilter();
   setInterval(() => {
     void pruneChatLogs(CHAT_LOG_RETENTION_DAYS).catch((err) => console.error('chat log prune failed:', err));
   }, 24 * 3600 * 1000).unref();
@@ -492,7 +493,7 @@ async function main(): Promise<void> {
       ws.close();
       return;
     }
-    const result = game.join(ws, accountId, character.id, character.name, character.class, character.state, character.is_gm);
+    const result = game.join(ws, accountId, character.id, character.name, character.class, character.state, character.is_gm, status.chatMutedUntil, status.chatStrikes);
     if ('error' in result) {
       ws.send(JSON.stringify({ t: 'error', error: result.error }));
       ws.close();
