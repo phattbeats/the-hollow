@@ -4295,6 +4295,12 @@ export class Sim {
     // returns null so it is neither logged nor spoken; works online for free.
     if (/^\/(?:graveyard|gy|spirithealer)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.graveyardReadout(r.e));
+    // "/dungeons" (aliases /dungeon, /instances) — self-only readout of every
+    // group instance, the overworld zone its door sits in, and its suggested
+    // party size. Self-only error reply, returns null so it is neither logged
+    // nor spoken; works online for free (no server interceptor).
+    if (/^\/(?:dungeons|dungeon|instances)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.dungeonsReadout());
       return null;
     }
 
@@ -5810,6 +5816,13 @@ export class Sim {
     const zone = zoneAt(dungeon ? dungeon.doorPos.z : p.pos.z);
     const gy = zone.graveyard;
     return `If you fall here, your spirit returns to the ${zone.name} graveyard at (${Math.floor(gy.x)}, ${Math.floor(gy.z)}).`;
+  // Readout for "/dungeons": lists every group instance in entrance order with
+  // the overworld zone its door sits in and its suggested party size. Reads
+  // only the static DUNGEON_LIST (already entrance-sorted by index) and the
+  // door zone via zoneAt — no new fields.
+  private dungeonsReadout(): string {
+    const parts = DUNGEON_LIST.map((d) => `${d.name} (${zoneAt(d.doorPos.z).name}, ${d.suggestedPlayers} players)`);
+    return `Dungeons (${parts.length}): ${parts.join(', ')}.`;
   }
 
   private error(pid: number, text: string): void {
