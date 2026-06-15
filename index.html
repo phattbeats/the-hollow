@@ -2851,6 +2851,13 @@
     font-size: 10px;
     color: #e6d8ae;
   }
+  /* music toggle: a diagonal slash over the note signals "off" (mirrors #mm-music) */
+  body.mobile-touch #mobile-music { position: relative; }
+  body.mobile-touch #mobile-music.mm-muted::after {
+    content: ''; position: absolute; left: 21px; top: 50%; width: 24px; height: 2px; border-radius: 2px;
+    background: #f0e8d2; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7);
+    transform: translate(-50%, -50%) rotate(-45deg); pointer-events: none;
+  }
   body.mobile-touch #bottom-bar {
     left: 0; right: 0; bottom: calc(62px + env(safe-area-inset-bottom));
     width: 100%;
@@ -4098,6 +4105,7 @@
         <button class="mobile-btn" id="mobile-talents" title="Talents" aria-label="Talents" data-icon="talents"><span class="mobile-label">Talents</span></button>
         <button class="mobile-btn" id="mobile-meters" title="Meters" aria-label="Meters" data-icon="meters"><span class="mobile-label">Meters</span></button>
         <button class="mobile-btn" id="mobile-map" title="Map" aria-label="Map" data-icon="map"><span class="mobile-label">Map</span></button>
+        <button class="mobile-btn" id="mobile-music" title="Music" aria-label="Toggle music" data-icon="music"><span class="mobile-label">Music</span></button>
       </div>
     </div>
   </div>

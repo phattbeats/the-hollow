@@ -433,8 +433,15 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     onTalents: () => hud.toggleTalents(),
     onMeters: () => hud.toggleMeters(),
     onMap: () => hud.toggleMap(),
+    onMusic: () => {
+      music.setEnabled(!music.enabled);
+      return music.enabled;
+    },
   });
   mobileControls.start();
+  // reflect the current music state on the touch toggle (it may already be off
+  // from a prior session, persisted in localStorage)
+  document.getElementById('mobile-music')?.classList.toggle('mm-muted', !music.enabled);
 
   // apply a setting to its live subsystem (also used to apply all on startup)
   function applySetting(key: keyof GameSettings, value: number | boolean): void {

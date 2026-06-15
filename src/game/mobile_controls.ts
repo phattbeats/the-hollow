@@ -17,6 +17,8 @@ export interface MobileControlCallbacks {
   onTalents(): void;
   onMeters(): void;
   onMap(): void;
+  /** Toggle background music; returns whether music is now enabled. */
+  onMusic(): boolean;
 }
 
 export function isPhoneTouchDevice(win: Pick<Window, 'matchMedia'> = window): boolean {
@@ -77,6 +79,13 @@ export class MobileControls {
     this.bindButton('mobile-talents', () => this.callbacks.onTalents());
     this.bindButton('mobile-meters', () => this.callbacks.onMeters());
     this.bindButton('mobile-map', () => this.callbacks.onMap());
+    const musicBtn = document.getElementById('mobile-music');
+    this.bindButton('mobile-music', () => {
+      const on = this.callbacks.onMusic();
+      // mirror the desktop #mm-music control: a diagonal slash (.mm-muted) signals
+      // "off", rather than dimming the note
+      musicBtn?.classList.toggle('mm-muted', !on);
+    });
     this.bindButton('mobile-more', () => {
       this.root?.classList.toggle('expanded');
       document.body.classList.toggle('mobile-more-open', this.root?.classList.contains('expanded') ?? false);
