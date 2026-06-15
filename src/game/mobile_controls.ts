@@ -253,6 +253,7 @@ export class MobileControls {
     if (!this.active || this.lookPointer !== null) return;
     e.preventDefault();
     this.lookPointer = e.pointerId;
+    this.cameraJoystick?.classList.add('active');
     this.input.setTouchLook(true);
     try { this.cameraJoystick?.setPointerCapture(e.pointerId); } catch { /* synthetic test event */ }
     this.onCameraMove(e);
@@ -280,6 +281,7 @@ export class MobileControls {
 
   private releaseCamera(): void {
     this.lookPointer = null;
+    this.cameraJoystick?.classList.remove('active');
     this.input.setTouchLook(false);
     this.input.setTouchLookVector({ x: 0, y: 0 });
     if (this.cameraStick) this.cameraStick.style.transform = '';
