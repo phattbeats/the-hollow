@@ -4347,6 +4347,12 @@ export class Sim {
     // "/overpower" — self-only readout of the warrior Overpower reactive window
     if (/^\/(?:overpower|op|overpowered)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.overpowerReadout(r.e, r.meta));
+    // "/form" — self-only readout of the active shapeshift form or combat
+    // stance. Distinct from /buffs (which lists every aura with its timer):
+    // forms/stances are persistent toggles, so this reports the one active
+    // toggle by name, without a meaningless countdown.
+    if (/^\/(form|stance|shapeshift)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.formReadout(r.e));
       return null;
     }
 
@@ -5973,6 +5979,17 @@ export class Sim {
       return `Overpower is ready — strike within ${remaining}s (an enemy dodged your attack).`;
     }
     return 'Overpower is not available. It opens for 5s after an enemy dodges your attack.';
+  // Reports the active shapeshift form or combat stance. Anchored to the
+  // same toggle set the cast path treats as mutually-exclusive persistent
+  // states (form_bear / form_cat / defensive_stance / stealth); realistically
+  // only one is ever active, so the first match is the answer.
+  private formReadout(e: Entity): string {
+    const form = e.auras.find((a) =>
+      a.kind === 'form_bear' || a.kind === 'form_cat'
+      || a.kind === 'defensive_stance' || a.kind === 'stealth');
+    if (!form) return 'You are not in any form or stance.';
+    if (form.kind === 'stealth') return 'You are stealthed.';
+    return `You are in ${form.name}.`;
   }
 
   private error(pid: number, text: string): void {
