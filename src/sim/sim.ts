@@ -217,9 +217,14 @@ export interface RewardCounters {
 }
 
 export interface SentChat {
-  channel: 'say' | 'yell' | 'whisper' | 'general' | 'party';
+  channel: 'say' | 'yell' | 'whisper' | 'general' | 'party' | 'world' | 'lfg';
   message: string;
 }
+
+// Opt-in global chat channels a player can /join and /leave. `general` is
+// always-on (everyone hears /general), so it is intentionally not joinable here.
+export const JOINABLE_CHANNELS = ['world', 'lfg'] as const;
+export type JoinableChannel = (typeof JOINABLE_CHANNELS)[number];
 
 // Per-player progression and bags. The entity holds combat state; this holds
 // everything that belongs to the character sheet.
@@ -256,6 +261,19 @@ export interface PlayerMeta {
   talentMods: TalentModifiers;
   loadouts: SavedLoadout[];
   activeLoadout: number; // index into loadouts, or -1 for none
+  // Transient presence status. Set by /afk and /dnd, cleared when the player
+  // chats again. Session-only — never persisted, so it resets on login.
+  away: AwayStatus | null;
+  // Session-only: name of the last player who whispered us, for "/r" replies.
+  // Never persisted — a fresh login starts with no reply target.
+  lastWhisperFrom?: string;
+}
+
+// Away-from-keyboard / do-not-disturb presence. `afk` still delivers whispers
+// (the sender just gets a heads-up); `dnd` withholds them.
+export interface AwayStatus {
+  mode: 'afk' | 'dnd';
+  message: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -401,6 +419,8 @@ export class Sim {
   private nextArenaMatchId = 1;
   // per-player chat token bucket (anti-spam); refilled lazily by sim time
   private chatTokens = new Map<number, { tokens: number; at: number }>();
+  // per-player set of opt-in global channels (world, lfg) joined via /join
+  private channelSubs = new Map<number, Set<JoinableChannel>>();
   // dungeon instances
   instances: InstanceSlot[] = [];
   // the World Market: one shared listing book, per-seller collections keyed by
@@ -542,6 +562,7 @@ export class Sim {
       talentMods: emptyModifiers(),
       loadouts: [],
       activeLoadout: -1,
+      away: null,
     };
     this.players.set(player.id, meta);
     if (this.primaryId === -1) this.primaryId = player.id;
@@ -629,6 +650,7 @@ export class Sim {
     this.dropEntity(pid);
     this.players.delete(pid);
     this.chatTokens.delete(pid);
+    this.channelSubs.delete(pid);
     if (this.primaryId === pid) this.primaryId = this.players.size > 0 ? [...this.players.keys()][0] : -1;
   }
 
@@ -3956,13 +3978,113 @@ export class Sim {
       return null;
     }
 
+    // "/afk [message]" / "/dnd [message]" — set a presence status. Repeating
+    // the same command with no message toggles it off. While away, anyone who
+    // whispers you gets an auto-reply; /dnd also withholds the whisper itself.
+    const awaym = /^\/(afk|dnd)(?:\s+([\s\S]+))?$/i.exec(raw);
+    if (awaym) {
+      const mode = awaym[1].toLowerCase() as AwayStatus['mode'];
+      const custom = awaym[2]?.trim();
+      if (r.meta.away?.mode === mode && !custom) {
+        r.meta.away = null;
+        this.emit({ type: 'log', text: mode === 'afk' ? 'You are no longer Away From Keyboard.' : 'You have left Do Not Disturb mode.', color: '#ffd100', pid: r.meta.entityId });
+      } else {
+        const message = custom || (mode === 'afk' ? 'Away From Keyboard' : 'Do Not Disturb');
+        r.meta.away = { mode, message };
+        this.emit({ type: 'log', text: mode === 'afk' ? `You are now Away From Keyboard: ${message}` : `You are now in Do Not Disturb mode: ${message}`, color: '#ffd100', pid: r.meta.entityId });
+      }
+      return null;
+    }
+
+    // Any other chat means you're back — clear a lingering away status.
+    if (r.meta.away) {
+      r.meta.away = null;
+      this.emit({ type: 'log', text: 'You are no longer marked as away.', color: '#ffd100', pid: r.meta.entityId });
+    }
+
     if (/^\/who(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, 'The /who roster is available in online play.');
       return null;
     }
 
+    // "/help" (or "/?" / "/commands") lists the available chat commands as a
+    // system notice to the asker only. Like /who, it produces no chat message,
+    // so it works identically offline and online without server wiring.
+    if (/^\/(?:help|commands|\?)(?:\s|$)/i.test(raw)) {
+      for (const line of this.helpLines()) this.error(r.meta.entityId, line);
+      return null;
+    }
+
+    // "/roll", "/roll N", "/roll M-N" — a classic random roll for loot disputes
+    // and social play. Rolled through the deterministic sim RNG so it is
+    // server-authoritative (clients can't fake a result) and identical offline.
+    const rollm = /^\/roll(?:\s+(\d+)(?:\s*-\s*(\d+))?)?\s*$/i.exec(raw);
+    if (rollm) {
+      let lo = 1, hi = 100;
+      if (rollm[1] !== undefined) {
+        const n = parseInt(rollm[1], 10);
+        if (rollm[2] !== undefined) { lo = n; hi = parseInt(rollm[2], 10); }
+        else { hi = n; }
+      }
+      const MAX_ROLL = 1_000_000;
+      if (lo < 1 || hi > MAX_ROLL || lo > hi) {
+        this.error(r.meta.entityId, `Invalid roll range. Use /roll, /roll N, or /roll M-N (1-${MAX_ROLL}).`);
+        return null;
+      }
+      const result = this.rng.int(lo, hi);
+      const text = `${result} (${lo}-${hi})`;
+      const party = this.partyOf(r.meta.entityId);
+      if (party) {
+        for (const mPid of party.members) {
+          this.emit({ type: 'chat', fromPid: r.meta.entityId, from: r.meta.name, text, channel: 'roll', pid: mPid });
+        }
+      } else {
+        for (const meta of this.players.values()) {
+          const e = this.entities.get(meta.entityId);
+          if (!e || dist2d(r.e.pos, e.pos) > SAY_RANGE) continue;
+          this.emit({ type: 'chat', fromPid: r.meta.entityId, from: r.meta.name, text, channel: 'roll', pid: meta.entityId });
+        }
+      }
+      return null;
+    }
+
+    // "/r message" — reply to the last player who whispered us. Rewrite it to
+    // the "/w <name> message" form so delivery, the echo, and case-matching
+    // all stay in the single whisper handler below.
+    const rm = /^\/r(?:eply)?\s+([\s\S]+)$/i.exec(raw);
+    let line = raw;
+    if (rm) {
+      const replyTo = r.meta.lastWhisperFrom;
+      if (!replyTo) { this.error(r.meta.entityId, 'You have no one to reply to.'); return null; }
+      line = `/w ${replyTo} ${rm[1]}`;
+    }
+
+    // "/inspect name" — self-only readout of another online player's level,
+    // class, and health. The first cross-player readout; mirrors WoW's Inspect.
+    const im = /^\/(?:inspect|ins|examine)(?:\s+([\s\S]+))?$/i.exec(raw);
+    if (im) {
+      const targetName = (im[1] ?? '').trim();
+      if (!targetName) { this.error(r.meta.entityId, 'Inspect whom? Usage: /inspect <name>.'); return null; }
+      // resolve by name with the same exact-then-unambiguous-CI rule as /w
+      let target: PlayerMeta | null = null;
+      const ciMatches: PlayerMeta[] = [];
+      const wanted = targetName.toLowerCase();
+      for (const meta of this.players.values()) {
+        if (meta.name === targetName) { target = meta; break; }
+        if (meta.name.toLowerCase() === wanted) ciMatches.push(meta);
+      }
+      if (!target) {
+        if (ciMatches.length === 1) target = ciMatches[0];
+        else if (ciMatches.length > 1) { this.error(r.meta.entityId, `Several players match '${targetName}'. Use exact capitalization.`); return null; }
+      }
+      const te = target ? this.entities.get(target.entityId) : null;
+      if (!target || !te) { this.error(r.meta.entityId, `There is no player named '${targetName}' online.`); return null; }
+      this.error(r.meta.entityId, this.inspectReadout(target, te));
+      return null;
+    }
+
     // "/w name message" — private whisper to an online player
-    const wm = /^\/(?:w|whisper|t|tell)\s+(\S+)\s+([\s\S]+)$/i.exec(raw);
+    const wm = /^\/(?:w|whisper|t|tell)\s+(\S+)\s+([\s\S]+)$/i.exec(line);
     if (wm) {
       const targetName = wm[1];
       const msg = wm[2].trim();
@@ -3983,10 +4105,24 @@ export class Sim {
       }
       if (!target) { this.error(r.meta.entityId, `There is no player named '${targetName}' online.`); return null; }
       if (target.entityId === r.meta.entityId) { this.error(r.meta.entityId, 'You mutter to yourself. Nobody hears it.'); return null; }
+      if (target.away) {
+        const label = target.away.mode === 'afk' ? 'Away From Keyboard' : 'Do Not Disturb';
+        this.emit({ type: 'log', text: `${target.name} is ${label}: ${target.away.message}`, color: '#ffd100', pid: r.meta.entityId });
+        if (target.away.mode === 'dnd') {
+          // Withhold the whisper, but still echo the sender's own line so they
+          // see what they tried to send.
+          this.emit({ type: 'chat', fromPid: r.meta.entityId, from: r.meta.name, to: target.name, text: msg, channel: 'whisper', pid: r.meta.entityId });
+          return { channel: 'whisper', message: msg };
+        }
+      }
+      // classic-WoW "/r": the recipient's reply target is whoever last
+      // whispered them, so record it on the target (not the sender).
+      target.lastWhisperFrom = r.meta.name;
       this.emit({ type: 'chat', fromPid: r.meta.entityId, from: r.meta.name, text: msg, channel: 'whisper', pid: target.entityId });
       this.emit({ type: 'chat', fromPid: r.meta.entityId, from: r.meta.name, to: target.name, text: msg, channel: 'whisper', pid: r.meta.entityId });
       return { channel: 'whisper', message: msg };
     }
+
 
     // "/p message" goes to the party channel
     if (/^\/p(arty)?\s/i.test(raw)) {
@@ -4006,6 +4142,33 @@ export class Sim {
       if (!clean) return null;
       this.emit({ type: 'chat', fromPid: r.meta.entityId, from: r.meta.name, text: clean, channel: 'general' });
       return { channel: 'general', message: clean };
+    }
+
+    // "/join <channel>" / "/leave <channel>" — opt-in global channels
+    const jm = /^\/(join|leave)\b\s*(\S*)\s*$/i.exec(raw);
+    if (jm) {
+      this.handleChannelMembership(r.meta, jm[1].toLowerCase() as 'join' | 'leave', jm[2].toLowerCase());
+      return null;
+    }
+
+    // "/world message" / "/lfg message" — talk in an opt-in channel; only
+    // players who have /join-ed it hear the message (the sender included)
+    const cm = /^\/(world|lfg)\s+([\s\S]+)$/i.exec(raw);
+    if (cm) {
+      const channel = cm[1].toLowerCase() as JoinableChannel;
+      const clean = cm[2].trim();
+      if (!clean) return null;
+      const mine = this.channelSubs.get(r.meta.entityId);
+      if (!mine || !mine.has(channel)) {
+        this.error(r.meta.entityId, `You are not in the ${channel} channel. Type /join ${channel} first.`);
+        return null;
+      }
+      for (const [subPid, set] of this.channelSubs) {
+        if (set.has(channel) && this.players.has(subPid)) {
+          this.emit({ type: 'chat', fromPid: r.meta.entityId, from: r.meta.name, text: clean, channel, pid: subPid });
+        }
+      }
+      return { channel, message: clean };
     }
 
     // "/me <action>" — freeform third-person action text, e.g.
@@ -4043,7 +4206,7 @@ export class Sim {
     let clean = raw;
     if (/^\/y(ell)?\s/i.test(raw)) { channel = 'yell'; clean = raw.replace(/^\/y(ell)?\s+/i, '').trim(); }
     else if (/^\/s(ay)?\s/i.test(raw)) { clean = raw.replace(/^\/s(ay)?\s+/i, '').trim(); }
-    else if (raw.startsWith('/')) { this.error(r.meta.entityId, `Unknown command: ${raw.split(' ')[0]}. Try /s /y /w /p /g, /me, or an emote like /wave.`); return null; }
+    else if (raw.startsWith('/')) { this.error(r.meta.entityId, `Unknown command: ${raw.split(' ')[0]}. Type /help for a list.`); return null; }
     if (!clean) return null;
     const range = channel === 'yell' ? YELL_RANGE : SAY_RANGE;
     for (const meta of this.players.values()) {
@@ -5316,6 +5479,61 @@ export class Sim {
 
   private error(pid: number, text: string): void {
     this.emit({ type: 'error', text, pid });
+  }
+
+  // Lines shown by the "/help" command, one system notice per entry. Keep this
+  // in sync with the commands handled in chat() above.
+  private helpLines(): string[] {
+    return [
+      'Chat channels: /s say, /y yell, /general, /p party, /world, /lfg.',
+      'Whisper a player with /w <name> <message>, reply with /r.',
+      'Other commands: /join <world|lfg>, /roll, /inspect <name>, /afk, /dnd, /who.',
+    ];
+  }
+
+  // One-line readout for /inspect: another player's level, class, and health.
+  private inspectReadout(target: PlayerMeta, e: Entity): string {
+    const cls = CLASSES[target.cls]?.name ?? target.cls;
+    const hp = e.hp <= 0
+      ? 'dead'
+      : `${Math.round(Math.max(0, Math.min(1, e.hp / e.maxHp)) * 100)}%`;
+    return `${target.name}: Level ${e.level} ${cls} — HP ${hp}.`;
+  }
+
+  // A positive, personal chat-log notice (e.g. confirming a /join). Unlike
+  // error(), this lands in the chat log rather than flashing the error toast.
+  private notice(pid: number, text: string, color = '#ffd100'): void {
+    this.emit({ type: 'log', text, color, pid });
+  }
+
+  // Handles /join and /leave for the opt-in global channels.
+  private handleChannelMembership(meta: PlayerMeta, action: 'join' | 'leave', arg: string): void {
+    const pid = meta.entityId;
+    if (!arg) {
+      this.error(pid, `Usage: /${action} <channel>. Channels: ${JOINABLE_CHANNELS.join(', ')}.`);
+      return;
+    }
+    if (arg === 'general') {
+      this.error(pid, 'The General channel is always on - just use /general.');
+      return;
+    }
+    if (!JOINABLE_CHANNELS.includes(arg as JoinableChannel)) {
+      this.error(pid, `There is no channel named '${arg}'. Channels: ${JOINABLE_CHANNELS.join(', ')}.`);
+      return;
+    }
+    const channel = arg as JoinableChannel;
+    let set = this.channelSubs.get(pid);
+    if (action === 'join') {
+      if (!set) { set = new Set(); this.channelSubs.set(pid, set); }
+      if (set.has(channel)) { this.error(pid, `You are already in the ${channel} channel.`); return; }
+      set.add(channel);
+      this.notice(pid, `Joined the ${channel} channel. Type /${channel} <message> to talk.`);
+    } else {
+      if (!set || !set.has(channel)) { this.error(pid, `You are not in the ${channel} channel.`); return; }
+      set.delete(channel);
+      if (set.size === 0) this.channelSubs.delete(pid);
+      this.notice(pid, `Left the ${channel} channel.`);
+    }
   }
 }
 
