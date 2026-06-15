@@ -4276,6 +4276,10 @@ export class Sim {
     // player's current target is, and whether it sits inside melee reach
     if (/^\/(?:range|dist|distance)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.rangeReadout(r.e));
+    // "/buyback" — self-only readout of items sold to a merchant that can
+    // still be repurchased (each at its sell value); never broadcast.
+    if (/^\/(?:buyback|bb|repurchase)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.buybackReadout(r.meta));
       return null;
     }
 
@@ -5753,6 +5757,15 @@ export class Sim {
     if (played <= 0) return `Arena: Rating ${rating} — no matches played yet.`;
     const pct = Math.round((wins / played) * 100);
     return `Arena: Rating ${rating} — ${wins} wins, ${losses} losses (${pct}% win rate).`;
+  private buybackReadout(meta: PlayerMeta): string {
+    const slots = meta.vendorBuyback.filter((s) => ITEMS[s.itemId] && s.count > 0);
+    if (slots.length === 0) return 'Your vendor buyback list is empty.';
+    const parts = slots.map((s) => {
+      const def = ITEMS[s.itemId];
+      const qty = s.count > 1 ? ` x${s.count}` : '';
+      return `${def.name}${qty} (${formatMoney(def.sellValue)} each)`;
+    });
+    return `Vendor buyback (${slots.length}): ${parts.join(', ')}. Repurchase at any merchant.`;
   }
 
   private error(pid: number, text: string): void {
