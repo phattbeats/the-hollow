@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { clampJoystickOrigin, isPhoneTouchDevice, mapJoystickVector, mapLookVector } from '../src/game/mobile_controls';
+import { clampJoystickOrigin, isPhoneTouchDevice, mapJoystickVector, mapLookVector, pinchZoomDelta } from '../src/game/mobile_controls';
 
 describe('mapJoystickVector', () => {
   it('returns neutral inside the deadzone', () => {
@@ -67,5 +67,24 @@ describe('clampJoystickOrigin', () => {
   it('falls back to the axis midpoint when the zone is smaller than the joystick', () => {
     const tight = { left: 0, top: 0, right: 80, bottom: 600 };
     expect(clampJoystickOrigin(10, 300, radius, tight)).toEqual({ x: 40, y: 300 });
+  });
+});
+
+describe('pinchZoomDelta', () => {
+  it('returns zero when the pinch distance is unchanged', () => {
+    expect(pinchZoomDelta(120, 120)).toBe(0);
+  });
+
+  it('zooms in (negative delta) when the fingers spread apart', () => {
+    expect(pinchZoomDelta(100, 150, 0.04)).toBeCloseTo(-2);
+  });
+
+  it('zooms out (positive delta) when the fingers pinch together', () => {
+    expect(pinchZoomDelta(150, 100, 0.04)).toBeCloseTo(2);
+  });
+
+  it('scales the delta by the magnitude of the spread', () => {
+    expect(pinchZoomDelta(100, 110, 0.04)).toBeCloseTo(-0.4);
+    expect(pinchZoomDelta(100, 200, 0.04)).toBeCloseTo(-4);
   });
 });

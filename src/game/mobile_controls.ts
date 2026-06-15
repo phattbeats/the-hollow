@@ -3,6 +3,10 @@ import type { Input, TouchMoveInput } from './input';
 export const PHONE_TOUCH_QUERY = '(pointer: coarse) and (max-width: 940px), (pointer: coarse) and (max-height: 760px)';
 const DEADZONE = 0.22;
 const CAMERA_SENSITIVITY = 0.8;
+// Pinch: each pixel the two fingers spread/close maps to this many yards of
+// camera distance. Tuned so a comfortable thumb-to-finger pinch sweeps roughly
+// the full 3..22yd zoom range in one gesture.
+const PINCH_ZOOM_SCALE = 0.04;
 
 export interface MobileControlCallbacks {
   onAttackNearest(): void;
@@ -67,6 +71,11 @@ export class MobileControls {
   private moveOriginY = 0;
   private moveRadius = 1;
 
+  // two-finger pinch-to-zoom on the game view (phones have no scroll wheel)
+  private pinchPointers = new Map<number, { x: number; y: number }>();
+  private pinchPrevDist: number | null = null;
+
+  private canvas = document.getElementById('game-canvas') as HTMLElement | null;
   private root = document.getElementById('mobile-controls') as HTMLElement | null;
   private moveZone = document.getElementById('mobile-move-zone') as HTMLElement | null;
   private moveJoystick = document.getElementById('mobile-move-joystick') as HTMLElement | null;
@@ -105,6 +114,11 @@ export class MobileControls {
       this.autorunButton?.classList.toggle('active', on);
     });
 
+    this.canvas?.addEventListener('pointerdown', (e) => this.onPinchDown(e));
+    this.canvas?.addEventListener('pointermove', (e) => this.onPinchMove(e));
+    this.canvas?.addEventListener('pointerup', (e) => this.onPinchEnd(e));
+    this.canvas?.addEventListener('pointercancel', (e) => this.onPinchEnd(e));
+
     this.bindButton('mobile-attack-nearest', () => this.callbacks.onAttackNearest());
     this.bindButton('mobile-jump', () => this.callbacks.onJump());
     this.bindButton('mobile-target', () => this.callbacks.onTarget());
@@ -141,6 +155,7 @@ export class MobileControls {
       document.body.classList.remove('mobile-more-open', 'mobile-chat-open');
       this.releaseMove();
       this.releaseCamera();
+      this.releasePinch();
     } else {
       document.body.classList.remove('mobile-chat-open');
     }
@@ -260,9 +275,50 @@ export class MobileControls {
     this.input.setTouchLookVector({ x: 0, y: 0 });
     if (this.cameraStick) this.cameraStick.style.transform = '';
   }
+
+  private onPinchDown(e: PointerEvent): void {
+    if (!this.active || e.pointerType !== 'touch') return;
+    this.pinchPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (this.pinchPointers.size === 2) this.pinchPrevDist = this.currentPinchDist();
+  }
+
+  private onPinchMove(e: PointerEvent): void {
+    if (!this.active || !this.pinchPointers.has(e.pointerId)) return;
+    this.pinchPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (this.pinchPointers.size === 2 && this.pinchPrevDist !== null) {
+      e.preventDefault();
+      const cur = this.currentPinchDist();
+      this.input.zoomBy(pinchZoomDelta(this.pinchPrevDist, cur));
+      this.pinchPrevDist = cur;
+    }
+  }
+
+  private onPinchEnd(e: PointerEvent): void {
+    this.pinchPointers.delete(e.pointerId);
+    if (this.pinchPointers.size < 2) this.pinchPrevDist = null;
+  }
+
+  private releasePinch(): void {
+    this.pinchPointers.clear();
+    this.pinchPrevDist = null;
+  }
+
+  private currentPinchDist(): number {
+    const pts = [...this.pinchPointers.values()];
+    return Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+  }
 }
 
 export function mapLookVector(x: number, y: number, deadzone = DEADZONE): { x: number; y: number } {
   if (Math.hypot(x, y) < deadzone) return { x: 0, y: 0 };
   return { x: x * CAMERA_SENSITIVITY, y: y * CAMERA_SENSITIVITY };
+}
+
+/**
+ * Camera-distance delta for a pinch frame, in yards. Fingers spreading apart
+ * (curDist > prevDist) zooms IN, i.e. returns a negative delta to shrink camDist;
+ * pinching together zooms out. Matches the sign convention of the wheel handler.
+ */
+export function pinchZoomDelta(prevDist: number, curDist: number, scale = PINCH_ZOOM_SCALE): number {
+  return (prevDist - curDist) * scale;
 }
