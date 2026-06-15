@@ -222,7 +222,7 @@ export interface SentChat {
 }
 
 // Opt-in global chat channels a player can /join and /leave. `general` is
-// always-on (everyone hears /g), so it is intentionally not joinable here.
+// always-on (everyone hears /general), so it is intentionally not joinable here.
 export const JOINABLE_CHANNELS = ['world', 'lfg'] as const;
 export type JoinableChannel = (typeof JOINABLE_CHANNELS)[number];
 
@@ -5485,7 +5485,7 @@ export class Sim {
   // in sync with the commands handled in chat() above.
   private helpLines(): string[] {
     return [
-      'Chat channels: /s say, /y yell, /g general, /p party, /world, /lfg.',
+      'Chat channels: /s say, /y yell, /general, /p party, /world, /lfg.',
       'Whisper a player with /w <name> <message>, reply with /r.',
       'Other commands: /join <world|lfg>, /roll, /inspect <name>, /afk, /dnd, /who.',
     ];
@@ -5514,7 +5514,7 @@ export class Sim {
       return;
     }
     if (arg === 'general') {
-      this.error(pid, 'The General channel is always on — just use /g.');
+      this.error(pid, 'The General channel is always on - just use /general.');
       return;
     }
     if (!JOINABLE_CHANNELS.includes(arg as JoinableChannel)) {
