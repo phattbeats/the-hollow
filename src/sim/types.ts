@@ -163,6 +163,9 @@ export interface MobTemplate {
   summonAdds?: { mobId: string; count: number; atHpPct: number[] };
   // Boss mechanic: damage multiplier once hp drops below the threshold.
   enrage?: { belowHpPct: number; dmgMult: number };
+  // On-hit debuff: a chance per landed melee swing to inflict a stacking-refresh
+  // damage-over-time poison on the struck target (spiders, serpents, scorpions).
+  venom?: { chance: number; perTick: number; interval: number; duration: number; name: string; school?: string };
 }
 
 export type AbilityEffect =
