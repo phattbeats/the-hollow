@@ -69,7 +69,9 @@ describe('Keybinds defaults', () => {
     expect(kb.actionForCode('KeyX')).toBe('emoteWheel');
     expect(kb.actionForCode('Digit1')).toBe('slot0'); // Attack
     expect(kb.actionForCode('Equal')).toBe('slot11');
-    expect(kb.actionForCode('KeyJ')).toBe(null);
+    expect(kb.actionForCode('KeyH')).toBe('targetFriendly');
+    expect(kb.actionForCode('KeyJ')).toBe('targetFriendlyNext');
+    expect(kb.actionForCode('KeyZ')).toBe(null);
   });
 
   it('exposes primary/secondary codes and labels', () => {
@@ -147,6 +149,37 @@ describe('persistence', () => {
     expect(b.actionForCode('KeyR')).toBe('slot0');
     expect(b.actionForCode('KeyJ')).toBe('jump');
     expect(b.actionForCode('Space')).toBe(null);
+  });
+
+  it('keeps defaults for actions missing from older saved data', () => {
+    // Simulate a save written before some actions existed: it only contains a
+    // couple of bindings. Every other action must keep its default, not load
+    // unbound.
+    localStorage.setItem('woc_keybinds', JSON.stringify({
+      slot0: ['KeyR', null],
+      jump: ['KeyJ', null],
+    }));
+    const kb = new Keybinds();
+    expect(kb.actionForCode('KeyR')).toBe('slot0');
+    expect(kb.actionForCode('KeyJ')).toBe('jump');
+    expect(kb.actionForCode('KeyW')).toBe('forward');
+    expect(kb.actionForCode('Tab')).toBe('target');
+    expect(kb.actionForCode('KeyN')).toBe('talents');
+    expect(kb.actionForCode('KeyH')).toBe('targetFriendly');
+    expect(kb.actionForCode('Enter')).toBe('chat');
+    expect(kb.actionForCode('Equal')).toBe('slot11');
+  });
+
+  it('drops a retained default that a stored binding already claimed', () => {
+    // A stored binding takes KeyH (the default for the newer friendly-target
+    // action), which is absent from the blob. The new action must not also keep
+    // KeyH.
+    localStorage.setItem('woc_keybinds', JSON.stringify({
+      jump: ['KeyH', null],
+    }));
+    const kb = new Keybinds();
+    expect(kb.actionForCode('KeyH')).toBe('jump');
+    expect(kb.codeAt('targetFriendly', 0)).toBe(null);
   });
 
   it('drops duplicate codes when loading corrupt storage', () => {

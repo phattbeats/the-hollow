@@ -1850,6 +1850,7 @@ export class Sim {
 
   private applyAbility(p: Entity, meta: PlayerMeta, res: ResolvedAbility): void {
     const ability = res.def;
+    const togglingOff = isToggleBuff(ability) && p.auras.some((a) => a.id === ability.id);
     if (ability.id === 'conjure_water') {
       this.spendResource(p, res.cost);
       // higher ranks conjure better water (falls back if the item isn't defined)
@@ -1875,14 +1876,14 @@ export class Sim {
     // helpful spells never miss
     if (ability.targetType === 'friendly') {
       this.spendResource(p, res.cost);
-      if (res.cooldown > 0) p.cooldowns.set(ability.id, res.cooldown);
+      if (res.cooldown > 0 && !togglingOff) p.cooldowns.set(ability.id, res.cooldown);
       this.runEffects(p, meta, target, res);
       return;
     }
 
     if (target && ability.school !== 'physical') {
       this.spendResource(p, res.cost);
-      if (res.cooldown > 0) p.cooldowns.set(ability.id, res.cooldown);
+      if (res.cooldown > 0 && !togglingOff) p.cooldowns.set(ability.id, res.cooldown);
       this.emit({ type: 'spellfx', sourceId: p.id, targetId: target.id, school: ability.school, fx: 'projectile' });
       if (!this.rng.chance(spellHitChance(p.level, target.level))) {
         this.emit({ type: 'damage', sourceId: p.id, targetId: target.id, amount: 0, crit: false, school: ability.school, ability: ability.name, kind: 'miss' });
@@ -1894,7 +1895,7 @@ export class Sim {
     }
 
     this.spendAbilityCost(p, res);
-    if (res.cooldown > 0) p.cooldowns.set(ability.id, res.cooldown);
+    if (res.cooldown > 0 && !togglingOff) p.cooldowns.set(ability.id, res.cooldown);
     this.runEffects(p, meta, target, res);
   }
 
@@ -3087,15 +3088,19 @@ export class Sim {
     switch (mob.aiState) {
       case 'idle': {
         const template = MOBS[mob.templateId];
-        const nearest = this.nearestLivingPlayer(mob.pos, 25);
-        if (nearest) {
-          let radius = Math.max(4, Math.min(20, template.aggroRadius + (mob.level - nearest.e.level) * 1.5));
+        let detected: Entity | null = null;
+        let detectedD = Infinity;
+        this.playerGrid.forEachInRadius(mob.pos.x, mob.pos.z, 25, (e, d2) => {
+          if (e.dead) return;
+          let radius = Math.max(4, Math.min(20, template.aggroRadius + (mob.level - e.level) * 1.5));
           // stealthed rogues are harder to detect, relative to observer level
-          if (nearest.e.auras.some((a) => a.kind === 'stealth')) radius = stealthDetectionRadius(mob, nearest.e, radius);
-          if (nearest.d < radius) {
-            this.aggroMob(mob, nearest.e, true);
-            break;
-          }
+          if (e.auras.some((a) => a.kind === 'stealth')) radius = stealthDetectionRadius(mob, e, radius);
+          const d = Math.sqrt(d2);
+          if (d < radius && d < detectedD) { detected = e; detectedD = d; }
+        });
+        if (detected) {
+          this.aggroMob(mob, detected, true);
+          break;
         }
         mob.wanderTimer -= DT;
         if (mob.wanderTimer <= 0) {
@@ -3497,6 +3502,41 @@ export class Sim {
       if (d2 < bestD2) { bestD2 = d2; best = e; }
     });
     if (best) p.targetId = (best as Entity).id;
+  }
+
+  // Nearby allies a beneficial spell can land on: other players and friendly
+  // pets within range, never yourself, never dead/hostile.
+  private friendlyCandidates(p: Entity): { e: Entity; d: number }[] {
+    const out: { e: Entity; d: number }[] = [];
+    this.grid.forEachInRadius(p.pos.x, p.pos.z, 40, (e, d2) => {
+      if (e.id === p.id || e.dead || !this.isFriendlyTo(p, e)) return;
+      out.push({ e, d: Math.sqrt(d2) });
+    });
+    return out;
+  }
+
+  targetNearestFriendly(pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    const p = r.e;
+    let best: Entity | null = null;
+    let bestD = Infinity;
+    for (const c of this.friendlyCandidates(p)) {
+      if (c.d < bestD) { bestD = c.d; best = c.e; }
+    }
+    if (best) p.targetId = best.id;
+  }
+
+  friendlyTabTarget(pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    const p = r.e;
+    const candidates = this.friendlyCandidates(p);
+    if (candidates.length === 0) return;
+    candidates.sort((a, b) => a.d - b.d);
+    const curIdx = candidates.findIndex((c) => c.e.id === p.targetId);
+    const next = candidates[(curIdx + 1) % candidates.length];
+    p.targetId = next.e.id;
   }
 
   // -------------------------------------------------------------------------
@@ -4665,6 +4705,10 @@ export class Sim {
     this.duelInvites.delete(r.meta.entityId);
     const other = this.players.get(invite.fromPid);
     if (!other) return;
+    if (this.duels.has(invite.fromPid) || this.duels.has(r.meta.entityId)) {
+      this.error(r.meta.entityId, 'A duel is already in progress.');
+      return;
+    }
     const duel: DuelState = { a: invite.fromPid, b: r.meta.entityId, state: 'countdown', timer: DUEL_COUNTDOWN };
     this.duels.set(duel.a, duel);
     this.duels.set(duel.b, duel);
@@ -4739,6 +4783,21 @@ export class Sim {
     }
   }
 
+  private clearAurasFromSource(target: Entity, sourceId: number): void {
+    let statsDirty = false;
+    for (let i = target.auras.length - 1; i >= 0; i--) {
+      const a = target.auras[i];
+      if (a.sourceId !== sourceId) continue;
+      target.auras.splice(i, 1);
+      this.emit({ type: 'aura', targetId: target.id, name: a.name, gained: false });
+      if (a.kind.startsWith('buff') || a.kind.startsWith('form')) statsDirty = true;
+    }
+    if (statsDirty && target.kind === 'player') {
+      const meta = this.players.get(target.id);
+      if (meta) recalcPlayerStats(target, meta.cls, meta.equipment, meta.talentMods);
+    }
+  }
+
   // winnerPid null = draw/cancelled
   private endDuel(duel: DuelState, winnerPid: number | null): void {
     this.duels.delete(duel.a);
@@ -4754,6 +4813,8 @@ export class Sim {
         e.autoAttack = false;
       }
     }
+    if (ea) this.clearAurasFromSource(ea, duel.b);
+    if (eb) this.clearAurasFromSource(eb, duel.a);
     if (winnerPid !== null && aMeta && bMeta) {
       const winner = winnerPid === duel.a ? aMeta : bMeta;
       const loser = winnerPid === duel.a ? bMeta : aMeta;
@@ -5108,6 +5169,10 @@ export class Sim {
     if (!invite || invite.expires < this.time) { this.error(r.meta.entityId, 'The trade request has expired.'); return; }
     this.tradeInvites.delete(r.meta.entityId);
     if (!this.players.get(invite.fromPid)) return;
+    if (this.trades.has(invite.fromPid) || this.trades.has(r.meta.entityId)) {
+      this.error(r.meta.entityId, 'That player is already trading.');
+      return;
+    }
     const session: TradeSession = {
       a: invite.fromPid, b: r.meta.entityId,
       offerA: { items: [], copper: 0 }, offerB: { items: [], copper: 0 },
