@@ -2443,7 +2443,7 @@ export class Sim {
     }
 
     // tap rights: the first player (or their pet) to damage a mob owns it
-    if (source && target.kind === 'mob' && target.hostile && target.tappedById === null && amount >= 0) {
+    if (source && target.kind === 'mob' && target.hostile && target.tappedById === null && amount > 0) {
       if (source.kind === 'player') target.tappedById = source.id;
       else if (source.ownerId !== null) target.tappedById = source.ownerId;
     }
@@ -4779,6 +4779,7 @@ export class Sim {
     const def = ITEMS[itemId];
     if (!def) return;
     if (def.kind === 'quest') { this.error(meta.entityId, 'The Merchant will not broker quest items.'); return; }
+    if (!Number.isFinite(count)) { this.error(meta.entityId, 'Name how many you wish to sell.'); return; }
     const want = Math.max(1, Math.floor(count));
     if (this.countItem(itemId, meta.entityId) < want) { this.error(meta.entityId, 'You do not have that many to sell.'); return; }
     const ask = Math.floor(price);

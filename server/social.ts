@@ -80,10 +80,13 @@ export interface SocialDb {
   listBlocks(charId: number): Promise<CharRef[]>;
   blockedIds(charId: number): Promise<number[]>;
   // guilds (a character belongs to at most one)
-  createGuild(name: string): Promise<number>; // returns guild id; throws on duplicate name
+  // create the guild and seat its leader in one transaction, so a racing or
+  // duplicate create packet can never orphan a leaderless guild
+  createGuildWithLeader(name: string, leaderId: number): Promise<{ guildId: number } | { error: 'name_taken' | 'already_in_guild' }>;
   deleteGuild(id: number): Promise<void>;
   guildMembership(charId: number): Promise<{ guildId: number; guildName: string; rank: GuildRank } | null>;
-  addGuildMember(guildId: number, charId: number, rank: GuildRank): Promise<void>;
+  // seat a member atomically, enforcing the cap under concurrent accepts
+  addGuildMemberAtomic(guildId: number, charId: number, rank: GuildRank, limit: number): Promise<'ok' | 'full' | 'already_member' | 'no_guild'>;
   removeGuildMember(charId: number): Promise<void>;
   setGuildRank(charId: number, rank: GuildRank): Promise<void>;
   guildMembers(guildId: number): Promise<(CharInfo & { rank: GuildRank })[]>;
@@ -221,6 +224,8 @@ export class SocialService {
   async friendRemove(actor: SocialActor, name: string): Promise<void> {
     const target = await this.db.findCharacterByName(String(name ?? '').trim());
     if (!target) { this.err(actor.characterId, `No character named '${name}' on your friends list.`); return; }
+    const friends = await this.db.listFriends(actor.characterId);
+    if (!friends.some((f) => f.id === target.id)) { this.err(actor.characterId, `${target.name} is not on your friends list.`); return; }
     await this.db.removeFriend(actor.characterId, target.id);
     this.info(actor.characterId, `${target.name} removed from friends.`);
     this.push(actor.characterId);
@@ -277,6 +282,8 @@ export class SocialService {
   async blockRemove(actor: SocialActor, name: string): Promise<void> {
     const target = await this.db.findCharacterByName(String(name ?? '').trim());
     if (!target) { this.err(actor.characterId, `No character named '${name}' on your ignore list.`); return; }
+    const blocks = await this.db.listBlocks(actor.characterId);
+    if (!blocks.some((b) => b.id === target.id)) { this.err(actor.characterId, `${target.name} is not on your ignore list.`); return; }
     await this.db.removeBlock(actor.characterId, target.id);
     this.info(actor.characterId, `${target.name} is no longer ignored.`);
     this.tx.onBlocksChanged(actor.characterId, await this.db.blockedIds(actor.characterId));
@@ -290,15 +297,13 @@ export class SocialService {
   async guildCreate(actor: SocialActor, rawName: string): Promise<void> {
     const name = validateGuildName(rawName);
     if (!name) { this.err(actor.characterId, 'Guild names are 3-24 letters (spaces allowed).'); return; }
-    if (await this.db.guildMembership(actor.characterId)) { this.err(actor.characterId, 'You are already in a guild.'); return; }
-    let guildId: number;
-    try {
-      guildId = await this.db.createGuild(name);
-    } catch {
-      this.err(actor.characterId, `A guild named '${name}' already exists.`);
+    const result = await this.db.createGuildWithLeader(name, actor.characterId);
+    if ('error' in result) {
+      this.err(actor.characterId, result.error === 'name_taken'
+        ? `A guild named '${name}' already exists.`
+        : 'You are already in a guild.');
       return;
     }
-    await this.db.addGuildMember(guildId, actor.characterId, 'leader');
     this.info(actor.characterId, `You found the guild <${name}>! You are its Guild Master.`, '#40ff7f');
     this.push(actor.characterId);
   }
@@ -328,11 +333,10 @@ export class SocialService {
     const invite = this.pendingGuildInvites.get(actor.characterId);
     this.pendingGuildInvites.delete(actor.characterId);
     if (!invite || invite.expiresAt < this.now()) { this.err(actor.characterId, 'The guild invitation has expired.'); return; }
-    if (await this.db.guildMembership(actor.characterId)) { this.err(actor.characterId, 'You are already in a guild.'); return; }
-    const members = await this.db.guildMembers(invite.guildId);
-    if (members.length === 0) { this.err(actor.characterId, 'That guild no longer exists.'); return; }
-    if (members.length >= GUILD_MEMBER_LIMIT) { this.err(actor.characterId, 'That guild is full.'); return; }
-    await this.db.addGuildMember(invite.guildId, actor.characterId, 'member');
+    const result = await this.db.addGuildMemberAtomic(invite.guildId, actor.characterId, 'member', GUILD_MEMBER_LIMIT);
+    if (result === 'no_guild') { this.err(actor.characterId, 'That guild no longer exists.'); return; }
+    if (result === 'already_member') { this.err(actor.characterId, 'You are already in a guild.'); return; }
+    if (result === 'full') { this.err(actor.characterId, 'That guild is full.'); return; }
     await this.broadcastGuild(invite.guildId, [{ type: 'log', text: `${actor.name} has joined the guild.`, color: '#40ff7f' }]);
     await this.pushGuild(invite.guildId);
   }
