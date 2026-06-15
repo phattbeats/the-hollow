@@ -4272,6 +4272,10 @@ export class Sim {
     // "/arena" (aliases "/pvp", "/rating") — self-only Ashen Coliseum standing
     if (/^\/(?:arena|pvp|rating)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.arenaReadout(r.meta));
+    // "/range" (also /dist, /distance) — self-only readout of how far the
+    // player's current target is, and whether it sits inside melee reach
+    if (/^\/(?:range|dist|distance)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.rangeReadout(r.e));
       return null;
     }
 
@@ -5970,6 +5974,18 @@ export class Sim {
     const more = found.length - shown.length;
     if (more > 0) labels.push(`(+${more} more)`);
     return `Nearby (${found.length}): ${labels.join(', ')}.`;
+  // Distance from the player to their current target. Reads only live Entity
+  // state (targetId + positions), so it needs no new fields and works online
+  // for free. The in-melee hint compares the RAW distance to MELEE_RANGE — the
+  // same threshold the swing-resolution code uses — while the displayed yards
+  // are rounded, so the hint stays truthful even when rounding lands on 5yd.
+  private rangeReadout(self: Entity): string {
+    if (self.targetId === null) return 'You have no target.';
+    const t = this.entities.get(self.targetId);
+    if (!t) return 'You have no target.';
+    const d = dist2d(self.pos, t.pos);
+    const reach = d <= MELEE_RANGE ? 'in melee range' : 'out of melee range';
+    return `Your target ${t.name} is ${Math.round(d)}yd away (${reach}).`;
   }
 }
 
