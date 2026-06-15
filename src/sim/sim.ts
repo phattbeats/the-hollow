@@ -4367,6 +4367,9 @@ export class Sim {
       this.error(r.meta.entityId, this.petTauntReadout(r.e));
     if (/^\/(queued|onswing|swingqueue)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.queuedReadout(r.e));
+    // "/savedmana" — how much mana is parked while shapeshifted out of a form
+    if (/^\/(?:savedmana|parkedmana|sm)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.savedManaReadout(r.meta, r.e));
       return null;
     }
 
@@ -6046,6 +6049,22 @@ export class Sim {
       return `Your pet's Growl is ready — it will taunt its target on the next melee swing.`;
     }
     return `Your pet's Growl is on cooldown — ready in ${Math.ceil(pet.petTauntTimer)}s.`;
+  // Druid forms park the mana bar in savedMana and run on rage/energy instead
+  // (entity.ts:126-130). That parked pool has no in-game UI — the bar shows the
+  // form's resource — so this readout is the only way to see what returns on
+  // shift-out. Gates on the class's natural resource so non-casters get a clean
+  // "never applies" rather than a misleading zero.
+  private savedManaReadout(meta: PlayerMeta, e: Entity): string {
+    if (CLASSES[meta.cls].resourceType !== 'mana') {
+      return 'Only mana-using classes park mana; your class never does.';
+    }
+    if (e.resourceType === 'mana') {
+      return 'Your mana is not parked — you are not shapeshifted.';
+    }
+    if (e.savedMana <= 0) {
+      return 'You have no mana parked while shifted.';
+    }
+    return `You have ${Math.round(e.savedMana)} mana parked while shifted; it returns when you leave your form.`;
   }
 
   private error(pid: number, text: string): void {
