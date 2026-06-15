@@ -4325,6 +4325,10 @@ export class Sim {
     // works online for free (no server interceptor).
     if (/^\/(?:listings|mylistings|auctions)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.listingsReadout(r.meta));
+    // "/targetbuffs" (aliases /debuffs, /tb) — self-only readout of the auras
+    // currently on your target, each tagged as a buff or debuff
+    if (/^\/(?:targetbuffs|debuffs|tb)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.targetBuffsReadout(r.e));
       return null;
     }
 
@@ -5902,6 +5906,20 @@ export class Sim {
       return `${name}${qty} — ${formatMoney(l.price)} (${left} left)`;
     });
     return `Your market listings (${parts.length}/${MARKET_MAX_LISTINGS}): ${parts.join(', ')}.`;
+  // Self-only readout of the auras on the player's current target, each tagged
+  // [buff] or [debuff]. Mirrors the self-aura readout but reaches across to the
+  // target's live Entity.auras, so it works for mobs, pets, and other players.
+  private targetBuffsReadout(self: Entity): string {
+    const target = self.targetId !== null ? this.entities.get(self.targetId) : undefined;
+    if (!target || target.hp <= 0) return 'You have no target.';
+    const auras = target.auras;
+    if (auras.length === 0) return `${target.name} has no active effects.`;
+    const parts = auras.map((a) => {
+      const stack = (a.stacks ?? 1) > 1 ? ` x${a.stacks}` : '';
+      const tag = isHarmfulAura(a.kind) ? 'debuff' : 'buff';
+      return `${a.name}${stack} [${tag}] (${Math.ceil(a.remaining)}s)`;
+    });
+    return `Effects on ${target.name} (${auras.length}): ${parts.join(', ')}.`;
   }
 
   private error(pid: number, text: string): void {
@@ -6136,6 +6154,17 @@ export class Sim {
     const reach = d <= MELEE_RANGE ? 'in melee range' : 'out of melee range';
     return `Your target ${t.name} is ${Math.round(d)}yd away (${reach}).`;
   }
+}
+
+// The auras a target carries that are working against it. Everything else
+// (buff_*, hot, absorb, imbue, stances, forms, stealth, thorns, attackspeed
+// haste) is treated as helpful/neutral. Used by /targetbuffs to tag each aura.
+const HARMFUL_AURA_KINDS: ReadonlySet<AuraKind> = new Set<AuraKind>([
+  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'sunder',
+]);
+
+function isHarmfulAura(kind: AuraKind): boolean {
+  return HARMFUL_AURA_KINDS.has(kind);
 }
 
 export function formatMoney(copper: number): string {
