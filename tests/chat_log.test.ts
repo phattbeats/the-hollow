@@ -168,6 +168,26 @@ describe('GameServer chat logging', () => {
       { channel: 'whisper', message: 'second' },
     ]);
   });
+
+  it('blocks chat from muted accounts and shows the mute warning', () => {
+    const server = new GameServer();
+    const aWs = fakeWs();
+    const a = server.join(aWs.ws, 11, 101, 'Aleph', 'warrior', null, false, {
+      chatMutedUntil: new Date(Date.now() + 3600_000).toISOString(),
+      chatMuteReason: 'keep chat civil',
+    } as any);
+    if ('error' in a) throw new Error('join failed');
+
+    const logSpy = vi.spyOn(server.chatLog, 'log').mockImplementation(() => {});
+
+    server.handleMessage(a, JSON.stringify({ t: 'cmd', cmd: 'chat', text: 'hello world' }));
+
+    expect(logSpy).not.toHaveBeenCalled();
+    expect(aWs.sent.some((msg: any) =>
+      msg.t === 'events' &&
+      msg.list?.some((ev: any) => ev.type === 'error' && /muted from chat/i.test(ev.text) && /keep chat civil/i.test(ev.text)),
+    )).toBe(true);
+  });
 });
 
 describe('ChatLogger', () => {

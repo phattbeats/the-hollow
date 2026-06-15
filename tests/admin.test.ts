@@ -30,12 +30,13 @@ vi.mock('../server/moderation_db', () => ({
   moderationReportsForAccount: vi.fn(),
   ignoreReport: vi.fn(),
   moderateAccount: vi.fn(),
+  muteAccountChat: vi.fn(),
 }));
 
 import { handleAdminApi, parsePageParams } from '../server/admin';
 import { accountForToken, isAdminAccount, findAccount } from '../server/db';
 import { overviewCounts, listAccounts, accountDetail, escapeLike } from '../server/admin_db';
-import { forceCharacterRename, ignoreReport, moderateAccount, moderationQueue, moderationReportsForAccount } from '../server/moderation_db';
+import { forceCharacterRename, ignoreReport, moderateAccount, moderationQueue, moderationReportsForAccount, muteAccountChat } from '../server/moderation_db';
 
 const VALID_TOKEN = 'a'.repeat(64);
 
@@ -72,6 +73,7 @@ const fakeGame: any = {
   liveSessions: () => [],
   liveAccountIds: () => new Set([9]),
   disconnectAccount: vi.fn(),
+  muteAccountChat: vi.fn(),
 };
 
 beforeEach(() => {
@@ -257,6 +259,25 @@ describe('admin api auth', () => {
     expect(res.statusCode).toBe(200);
     expect(moderateAccount).toHaveBeenCalledWith({ accountId: 9, adminAccountId: 7, action: 'ban', reason: 'severe abuse', expiresAt: undefined });
     expect(fakeGame.disconnectAccount).toHaveBeenCalledWith(9, 'This account has been banned.');
+  });
+
+  it('mutes account chat and sends a live warning without disconnecting', async () => {
+    vi.mocked(accountForToken).mockResolvedValue(7);
+    vi.mocked(isAdminAccount).mockResolvedValueOnce(true).mockResolvedValueOnce(false);
+    vi.mocked(muteAccountChat).mockResolvedValue();
+    const res = fakeRes();
+    const expiresAt = new Date(Date.now() + 3600_000).toISOString();
+
+    await handleAdminApi(
+      fakeReq({ method: 'POST', token: VALID_TOKEN, url: '/admin/api/moderation/accounts/9/chat-mute', body: { reason: 'keep chat civil', expiresAt } }),
+      res,
+      fakeGame,
+    );
+
+    expect(res.statusCode).toBe(200);
+    expect(muteAccountChat).toHaveBeenCalledWith({ accountId: 9, adminAccountId: 7, reason: 'keep chat civil', expiresAt });
+    expect(fakeGame.muteAccountChat).toHaveBeenCalledWith(9, expiresAt, 'keep chat civil');
+    expect(fakeGame.disconnectAccount).not.toHaveBeenCalled();
   });
 
   it('unbans without disconnecting the account', async () => {

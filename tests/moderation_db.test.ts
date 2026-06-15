@@ -7,7 +7,7 @@ vi.mock('../server/db', () => ({
 import { pool } from '../server/db';
 import {
   cleanReportReason, cleanText, createPlayerReport, createSuspiciousRegistrationReport, forceCharacterRename, moderateAccount,
-  moderationQueue, moderationReportsForAccount,
+  muteAccountChat, moderationQueue, moderationReportsForAccount,
 } from '../server/moderation_db';
 
 const query = vi.mocked(pool.query);
@@ -165,6 +165,38 @@ describe('moderation report helpers', () => {
       expiresAt: '2020-01-01T00:00:00Z',
     })).rejects.toThrow(/future/);
     expect(query).not.toHaveBeenCalled();
+  });
+
+  it('requires a future chat mute expiry', async () => {
+    await expect(muteAccountChat({
+      accountId: 2,
+      adminAccountId: 1,
+      reason: 'cool down',
+      expiresAt: '2020-01-01T00:00:00Z',
+    })).rejects.toThrow(/future/);
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it('mutes account chat and writes an audit action in one transaction', async () => {
+    const client = clientStub();
+    connect.mockResolvedValue(client as any);
+    const expiresAt = new Date(Date.now() + 3600_000).toISOString();
+
+    await muteAccountChat({
+      accountId: 2,
+      adminAccountId: 1,
+      reason: 'tone it down',
+      expiresAt,
+    });
+
+    expect(connect).toHaveBeenCalledTimes(1);
+    expect(client.query.mock.calls[0][0]).toBe('BEGIN');
+    expect(client.query.mock.calls[1][0]).toMatch(/chat_muted_until/);
+    expect(client.query.mock.calls[1][1]).toEqual([2, new Date(expiresAt), 'tone it down']);
+    expect(client.query.mock.calls[2][0]).toMatch(/account_moderation_actions/);
+    expect(client.query.mock.calls[2][1]).toEqual([2, 1, 'chat_mute', 'tone it down', new Date(expiresAt)]);
+    expect(client.query.mock.calls[3][0]).toBe('COMMIT');
+    expect(client.release).toHaveBeenCalledTimes(1);
   });
 
   it('requires a moderation reason for suspend and ban actions', async () => {
