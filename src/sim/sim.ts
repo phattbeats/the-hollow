@@ -4360,6 +4360,11 @@ export class Sim {
       this.error(r.meta.entityId, this.manaRegenReadout(r.e));
     if (/^\/(?:falling|jump|airborne)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.fallingReadout(r.e));
+    // "/pettaunt" (aliases /pettaunt /growl) — self-only readout of the
+    // controlled pet's Growl (taunt) cooldown, the otherwise-invisible
+    // petTauntTimer that drives the pet's forced-aggro pulses
+    if (/^\/(?:pettaunt|petgrowl|growl)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.petTauntReadout(r.e));
       return null;
     }
 
@@ -6027,6 +6032,18 @@ export class Sim {
         ? ' Brace for impact — this fall is going to hurt.'
         : ' It should be a safe landing.';
     return `You are falling — ${height}yd above the ground.${danger}`;
+  // Self-only readout of the controlled pet's Growl (taunt) cooldown. Reads
+  // only the live pet Entity's petTauntTimer (the same field updatePet counts
+  // down at sim.ts ~2770 and resets to PET_GROWL_INTERVAL after each growl), so
+  // it stays truthful without any new state. Distinct from /pet (vitals) and
+  // /cooldowns (the player's own ability map, which never holds this timer).
+  private petTauntReadout(owner: Entity): string {
+    const pet = this.petOf(owner.id);
+    if (!pet) return 'You do not have a pet.';
+    if (pet.petTauntTimer <= 0) {
+      return `Your pet's Growl is ready — it will taunt its target on the next melee swing.`;
+    }
+    return `Your pet's Growl is on cooldown — ready in ${Math.ceil(pet.petTauntTimer)}s.`;
   }
 
   private error(pid: number, text: string): void {
