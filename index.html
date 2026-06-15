@@ -2950,9 +2950,9 @@
     transform: scale(0.82);
     transform-origin: left top;
   }
-  body.mobile-touch #buff-bar { right: 10px; top: 140px; max-width: 180px; }
-  body.mobile-touch #minimap-wrap { right: 8px; top: 8px; transform: scale(0.72); transform-origin: right top; }
-  body.mobile-touch #quest-tracker { right: 10px; top: 150px; width: 190px; font-size: 11px; }
+  body.mobile-touch #buff-bar { right: max(10px, env(safe-area-inset-right)); top: max(140px, env(safe-area-inset-top)); max-width: 180px; }
+  body.mobile-touch #minimap-wrap { right: max(8px, env(safe-area-inset-right)); top: max(8px, env(safe-area-inset-top)); transform: scale(0.72); transform-origin: right top; }
+  body.mobile-touch #quest-tracker { right: max(10px, env(safe-area-inset-right)); top: max(150px, env(safe-area-inset-top)); width: 190px; font-size: 11px; }
   body.mobile-touch #meters-window {
     position: fixed;
     left: calc(max(18px, env(safe-area-inset-left)) + 132px);
@@ -3166,8 +3166,8 @@
       top: calc(max(6px, env(safe-area-inset-top)) + 50px);
       transform: scale(0.6);
     }
-    body.mobile-touch #buff-bar { right: 98px; top: 8px; max-width: 160px; transform: scale(0.85); transform-origin: right top; }
-    body.mobile-touch #minimap-wrap { right: 6px; top: 6px; transform: scale(0.46); }
+    body.mobile-touch #buff-bar { right: calc(98px + env(safe-area-inset-right)); top: max(8px, env(safe-area-inset-top)); max-width: 160px; transform: scale(0.85); transform-origin: right top; }
+    body.mobile-touch #minimap-wrap { right: max(6px, env(safe-area-inset-right)); top: max(6px, env(safe-area-inset-top)); transform: scale(0.46); }
     body.mobile-touch #quest-tracker { display: none; }
     body.mobile-touch #meters-window {
       position: fixed;
