@@ -4365,6 +4365,8 @@ export class Sim {
     // petTauntTimer that drives the pet's forced-aggro pulses
     if (/^\/(?:pettaunt|petgrowl|growl)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.petTauntReadout(r.e));
+    if (/^\/(queued|onswing|swingqueue)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.queuedReadout(r.e));
       return null;
     }
 
@@ -6328,6 +6330,23 @@ function isHarmfulAura(kind: AuraKind): boolean {
     const remaining = e.potionCooldownUntil - this.time;
     if (remaining <= 0) return 'Combat potion is ready to use.';
     return `Combat potion on cooldown — ready in ${Math.ceil(remaining)}s.`;
+  // Self-only readout of the ability armed to fire on the next melee swing
+  // (Heroic Strike / Raptor Strike / Maul). Distinct from /casting (active
+  // cast bar) and /cooldowns (recharge timers): an on-swing ability is neither
+  // casting nor on cooldown, just waiting for the swing — and it silently
+  // fizzles if the resource can't be paid when the swing lands (see swing
+  // resolution), so the readout flags that case up front.
+  private queuedReadout(e: Entity): string {
+    if (!e.queuedOnSwing) return 'You have no ability queued for your next swing.';
+    const queued = this.resolvedAbility(e.queuedOnSwing, e.id);
+    const name = queued?.def.name ?? e.queuedOnSwing;
+    if (!queued) return `${name} is queued for your next melee swing.`;
+    const res = e.resourceType ?? 'resource';
+    const have = Math.floor(e.resource);
+    if (e.resource >= queued.cost) {
+      return `${name} is queued for your next melee swing (costs ${queued.cost} ${res}; you have ${have}).`;
+    }
+    return `${name} is queued for your next melee swing, but you cannot afford it (costs ${queued.cost} ${res}; you have ${have}) — it will fizzle.`;
   }
 }
 
