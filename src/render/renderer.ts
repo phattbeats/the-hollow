@@ -11,7 +11,8 @@ import type { BiomeId } from '../sim/types';
 import { AnimState, CharacterVisual, createCharacterVisual } from './characters';
 import { LocoTrack, newLocoTrack, updateLocomotion } from './locomotion';
 import { buildProps } from './props';
-import { plankTexture, sparkleTexture } from './textures';
+import { buildGroundQuestObject } from './quest_objects';
+import { sparkleTexture } from './textures';
 import { DungeonInteriors } from './dungeon';
 import { Vfx } from './vfx';
 import {
@@ -433,8 +434,6 @@ export class Renderer {
   // Shared object-view resources: views must not own materials/textures, or
   // interest churn leaks them (removeView only disposes per-view geometry).
   private doorStoneMat: THREE.Material | null = null;
-  private crateMat: THREE.Material | null = null;
-  private crateLidMat: THREE.Material | null = null;
   private sparkleMat: THREE.SpriteMaterial | null = null;
 
   private createView(e: Entity): void {
@@ -502,32 +501,9 @@ export class Renderer {
       body!.add(glow);
       objectMesh = body!;
     } else if (e.kind === 'object') {
-      body = new THREE.Group();
-      height = 1.2;
-      // braced plank crate matching the props.ts crates — never a bare cube
-      this.crateMat ??= new THREE.MeshLambertMaterial({ map: plankTexture() });
-      this.crateLidMat ??= new THREE.MeshLambertMaterial({ color: 0x4a3320 });
-      const crate = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.78, 0.78), this.crateMat);
-      crate.position.y = 0.42;
-      crate.castShadow = true;
-      body!.add(crate);
-      for (const sx of [1, -1]) {
-        for (const sz of [1, -1]) {
-          const brace = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.86, 0.1), this.crateLidMat);
-          brace.position.set(sx * 0.37, 0.42, sz * 0.37);
-          body!.add(brace);
-        }
-      }
-      for (const sy of [0.06, 0.78]) {
-        for (const s of [1, -1]) {
-          const stripA = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.08, 0.08), this.crateLidMat);
-          stripA.position.set(0, sy, s * 0.38);
-          const stripB = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.08, 0.82), this.crateLidMat);
-          stripB.position.set(s * 0.38, sy, 0);
-          body!.add(stripA, stripB);
-        }
-      }
-      body!.rotation.y = (e.id % 7) * 0.45; // break identical alignment
+      const built = buildGroundQuestObject(e.objectItemId ?? '', e.id);
+      body = built.group;
+      height = built.height;
       objectMesh = body!;
       if (!this.sparkleMat) {
         this.sparkleMat = new THREE.SpriteMaterial({ map: sparkleTexture(), transparent: true, depthWrite: false });

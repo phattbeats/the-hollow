@@ -409,8 +409,11 @@ export class Sim {
   private marketCollections = new Map<string, MarketCollection>();
   private nextListingId = 1;
   private merchantId = -1;
+  /** When true, /dev level|tp|give chat commands are accepted (local dev only). */
+  readonly devCommands: boolean;
 
   constructor(cfg: SimConfig) {
+    this.devCommands = cfg.devCommands ?? false;
     this.cfg = {
       seed: cfg.seed,
       playerClass: cfg.playerClass,
@@ -3713,11 +3716,14 @@ export class Sim {
     const def = ITEMS[obj.objectItemId];
     if (def?.questId) {
       const qp = meta.questLog.get(def.questId);
-      if (!qp || qp.state !== 'active') { this.error(meta.entityId, 'It is nailed shut.'); return; }
+      if (!qp || (qp.state !== 'active' && qp.state !== 'ready')) {
+        this.error(meta.entityId, def.pickupDeny ?? `You cannot take the ${def.name} yet.`);
+        return;
+      }
       const quest = QUESTS[def.questId];
       const objIdx = quest.objectives.findIndex((o) => o.type === 'collect' && o.itemId === obj.objectItemId);
       if (objIdx >= 0 && this.countItem(obj.objectItemId, meta.entityId) >= quest.objectives[objIdx].count) {
-        this.error(meta.entityId, 'You have enough of those.');
+        this.error(meta.entityId, def.pickupEnough ?? 'You have enough of those.');
         return;
       }
     }
@@ -3946,6 +3952,48 @@ export class Sim {
     return true;
   }
 
+  // Dev chat cheats — only when Sim.devCommands is enabled (offline local play
+  // or online server with ALLOW_DEV_COMMANDS=1). Returns null when handled
+  // (no channel message), or undefined when not a dev command.
+  private handleDevChat(raw: string, pid: number): SentChat | null | undefined {
+    const levelM = /^\/(?:dev\s+level|devlevel)\s+(\d+)\s*$/i.exec(raw);
+    if (levelM) {
+      const level = Number(levelM[1]);
+      this.setPlayerLevel(level, pid);
+      this.emit({ type: 'log', text: `[dev] Level set to ${Math.max(1, Math.min(MAX_LEVEL, level))}.`, pid });
+      return null;
+    }
+    const tpM = /^\/(?:dev\s+tp|devtp)\s+(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)\s*$/i.exec(raw);
+    if (tpM) {
+      const e = this.entities.get(pid);
+      if (e) {
+        const p = this.groundPos(Number(tpM[1]), Number(tpM[2]));
+        e.pos = p;
+        e.prevPos = { ...p };
+        this.grid.update(e);
+        this.playerGrid.update(e);
+        this.emit({ type: 'log', text: `[dev] Teleported to ${p.x.toFixed(1)}, ${p.z.toFixed(1)}.`, pid });
+      }
+      return null;
+    }
+    const giveM = /^\/(?:dev\s+give|devgive)\s+(\S+)(?:\s+(\d+))?\s*$/i.exec(raw);
+    if (giveM) {
+      const itemId = giveM[1];
+      const count = Math.max(1, Math.min(20, Number(giveM[2] ?? 1)));
+      if (!ITEMS[itemId]) {
+        this.error(pid, `[dev] Unknown item '${itemId}'.`);
+        return null;
+      }
+      this.addItem(itemId, count, pid);
+      return null;
+    }
+    if (/^\/dev(?:\s|$)/i.test(raw)) {
+      this.error(pid, 'Dev commands: /dev level N, /dev tp X Z, /dev give itemId [count]');
+      return null;
+    }
+    return undefined;
+  }
+
   chat(text: string, pid?: number): SentChat | null {
     const r = this.resolve(pid);
     if (!r) return null;
@@ -3954,6 +4002,11 @@ export class Sim {
     if (!this.chatAllowed(r.meta.entityId)) {
       this.error(r.meta.entityId, 'You are sending messages too quickly.');
       return null;
+    }
+
+    if (this.devCommands) {
+      const devHandled = this.handleDevChat(raw, r.meta.entityId);
+      if (devHandled !== null) return devHandled;
     }
 
     if (/^\/who(?:\s|$)/i.test(raw)) {

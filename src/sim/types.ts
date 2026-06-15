@@ -93,6 +93,10 @@ export interface ItemDef {
   sellValue: number; // copper (vendor buys at this)
   buyValue?: number; // copper (vendor sells at this)
   questId?: string;
+  /** Shown when interacting with a ground quest object before the quest is active. */
+  pickupDeny?: string;
+  /** Shown when the quest is active but the collect count is already met. */
+  pickupEnough?: string;
   // consumables: total restored over 18 seconds while sitting
   foodHp?: number;
   drinkMana?: number;
@@ -566,6 +570,7 @@ export interface SimConfig {
   autoEquip?: boolean; // auto-equip better gear on loot (headless convenience)
   playerName?: string;
   noPlayer?: boolean; // multiplayer server: start with an empty world and addPlayer() later
+  devCommands?: boolean; // local dev: /dev level|tp|give chat cheats
 }
 
 export function emptyMoveInput(): MoveInput {

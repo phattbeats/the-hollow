@@ -5,7 +5,8 @@ import {
   type SimEvent, dist2d, FISHING_CAST_ID, FISHING_CAST_TIME, MAX_LEVEL, xpForLevel, mobXpValue,
   rageConversion, rageFromDealing, spellHitChance, meleeMissChance,
 } from '../src/sim/types';
-import { LAKE, QUESTS, abilitiesKnownAt } from '../src/sim/data';
+import { LAKE, QUESTS, GROUND_OBJECTS, ITEMS, abilitiesKnownAt } from '../src/sim/data';
+import { GROUND_PICKUP_LINES } from '../src/sim/content/ground_pickup_lines';
 import { terrainHeight, WATER_LEVEL } from '../src/sim/world';
 
 function makeSim(cls: 'warrior' | 'mage' | 'rogue' = 'warrior', seed = 42) {
@@ -951,7 +952,8 @@ describe('quests', () => {
     const crate = [...sim.entities.values()].find((e) => e.kind === 'object')!;
     teleportTo(sim, crate.pos.x + 1, crate.pos.z);
     sim.pickUpObject(crate.id);
-    expect(sim.countItem('supply_crate')).toBe(0); // not on quest -> nailed shut
+    expect(sim.countItem('supply_crate')).toBe(0);
+    expect(sim.events).toContainEqual({ type: 'error', text: 'The crate is nailed shut.', pid: sim.player.id });
     sim.questLog.set('q_supplies', { questId: 'q_supplies', counts: [0], state: 'active' });
     sim.pickUpObject(crate.id);
     expect(sim.countItem('supply_crate')).toBe(1);
@@ -959,6 +961,34 @@ describe('quests', () => {
     // respawns
     for (let i = 0; i < 20 * 31; i++) sim.tick();
     expect(crate.lootable).toBe(true);
+  });
+
+  it('every ground object has custom pickup deny and enough lines', () => {
+    const ids = [...new Set(GROUND_OBJECTS.map((o) => o.itemId))].sort();
+    expect(ids).toHaveLength(12);
+    for (const id of ids) {
+      expect(GROUND_PICKUP_LINES[id]?.deny, `${id} deny`).toBeTruthy();
+      expect(GROUND_PICKUP_LINES[id]?.enough, `${id} enough`).toBeTruthy();
+      expect(ITEMS[id]?.pickupDeny).toBe(GROUND_PICKUP_LINES[id].deny);
+      expect(ITEMS[id]?.pickupEnough).toBe(GROUND_PICKUP_LINES[id].enough);
+    }
+  });
+
+  it('ground object pickup uses item-specific enough message', () => {
+    const sim = makeSim('warrior');
+    sim.player.level = 3;
+    const crate = [...sim.entities.values()].find((e) => e.kind === 'object' && e.objectItemId === 'supply_crate')!;
+    teleportTo(sim, crate.pos.x + 1, crate.pos.z);
+    sim.questLog.set('q_supplies', { questId: 'q_supplies', counts: [0], state: 'active' });
+    for (let i = 0; i < 4; i++) sim.addItem('supply_crate', 1);
+    sim.events = [];
+    sim.pickUpObject(crate.id);
+    expect(sim.countItem('supply_crate')).toBe(4);
+    expect(sim.events).toContainEqual({
+      type: 'error',
+      text: 'You already have enough supply crates.',
+      pid: sim.player.id,
+    });
   });
 
   it('quest reward weapon is granted and auto-equipped', () => {
