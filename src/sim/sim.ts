@@ -4221,6 +4221,10 @@ export class Sim {
     // logged or broadcast, and with no server interceptor it works online too.
     if (/^\/(?:gold|money|coins)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.goldReadout(r.meta.copper));
+    // "/buffs" (aliases "/buff", "/auras") — self-only readout of the active
+    // auras on you, newest last, with the remaining time on timed effects.
+    if (/^\/(?:buffs?|auras)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.buffsReadout(r.e));
       return null;
     }
 
@@ -5720,6 +5724,20 @@ export class Sim {
   private goldReadout(copper: number): string {
     if (copper <= 0) return 'Your purse is empty.';
     return `You have ${formatMoney(copper)}.`;
+  // Self-only readout for "/buffs": summarise the auras currently on the
+  // entity. Auras carry no buff/debuff flag, only an AuraKind and a `remaining`
+  // time in seconds; toggles (stances, forms, stealth) use a 3600s sentinel
+  // duration rather than Infinity, so a raw "(3600s)" reads poorly.
+  private buffsReadout(e: Entity): string {
+    if (e.auras.length === 0) return 'You have no active effects.';
+    const parts = e.auras.map((a) => this.auraLabel(a));
+    return `Active effects (${e.auras.length}): ${parts.join(', ')}.`;
+  }
+
+  // Render one aura for the /buffs list, e.g. "Rend (4s)". `remaining` is a
+  // float, so Math.ceil keeps a still-active 0.3s remainder showing as "(1s)".
+  private auraLabel(a: Aura): string {
+    return `${a.name} (${Math.ceil(a.remaining)}s)`;
   }
 }
 
