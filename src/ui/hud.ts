@@ -26,7 +26,8 @@ import { chatPlayerContextActions } from './player_context_menu';
 import { formatMoney as formatLocalizedMoney, formatNumber, moneyParts, t, type TranslationKey } from './i18n';
 import { tEntity } from './entity_i18n';
 import { localizeServerText } from './server_i18n';
-import { tTalent } from './talent_i18n';
+import { localizeSimText, localizeSimAuraName } from './sim_i18n';
+import { tTalent, localizeTalentTitle } from './talent_i18n';
 import {
   talentsFor, computeTalentModifiers, validateAllocation, dormantNodes, pointsSpent,
   exportBuild, importBuild, cloneAllocation, talentPointsAtLevel, FIRST_TALENT_LEVEL,
@@ -1094,7 +1095,7 @@ export class Hud {
       dur.className = 'dur';
       dur.textContent = a.remaining < 99 ? `${Math.ceil(a.remaining)}s` : '';
       d.appendChild(dur);
-      const auraName = ABILITIES[a.id] ? abilityDisplayName(ABILITIES[a.id]) : a.name;
+      const auraName = ABILITIES[a.id] ? abilityDisplayName(ABILITIES[a.id]) : auraDisplayNameFromSource(a.name);
       this.attachTooltip(d, () => `<div class="tt-title">${esc(auraName)}</div><div class="tt-sub">${esc(t('hud.core.secondsRemaining', { seconds: Math.ceil(a.remaining) }))}</div>`);
       el.appendChild(d);
     }
@@ -1898,7 +1899,7 @@ export class Hud {
         case 'castStop': break;
         case 'aura': {
           const tgt = sim.entities.get(ev.targetId);
-          const auraName = abilityDisplayNameFromSource(ev.name);
+          const auraName = auraDisplayNameFromSource(ev.name);
           if (ev.name === 'Polymorph' && ev.gained) audio.sheep();
           if (ev.targetId === sim.playerId) {
             this.combatLog(t(ev.gained ? 'hud.combat.auraGain' : 'hud.combat.auraFade', { name: auraName }), '#d8a0d8');
@@ -2044,7 +2045,10 @@ export class Hud {
     if (match) return t('hud.errors.whisperAmbiguous', { name: match[1] });
     match = /^There is no player named '(.+)' online\.$/.exec(text);
     if (match) return t('hud.errors.whisperMissing', { name: match[1] });
-    match = /^Unknown command: (.+)\. Try \/s \/y \/w \/p \/g\.$/.exec(text);
+    // Lenient suffix match: the sim's command-help list (". Try /s /y /w /p /g, /me, …")
+    // evolves over time; capture the command non-greedily and tolerate any "Try /…" tail
+    // so this never silently falls through to raw English again.
+    match = /^Unknown command: (.+?)\. Try \/.*$/.exec(text);
     if (match) return t('hud.errors.unknownCommand', { command: match[1] });
     match = /^Chat is on cooldown for (\d+)s\.$/.exec(text);
     if (match) return t('hud.errors.chatCooldown', { seconds: match[1] });
@@ -2062,6 +2066,10 @@ export class Hud {
     if (match) return t('worldContent.dungeonInstanceBusy', { name: dungeonDisplayNameFromSource(match[1]) });
     const server = localizeServerText(text);
     if (server !== null) return server;
+    // Sim-emitted log/error/loot text (src/sim) is English at the source; localize it
+    // here, the same way server-sent text is handled above.
+    const simLocalized = localizeSimText(text);
+    if (simLocalized !== null) return simLocalized;
     return text;
   }
 
@@ -2120,6 +2128,10 @@ export class Hud {
     // localizeLootText) so they are not displayed in raw English.
     const server = localizeServerText(text);
     if (server !== null) return server;
+    // Sim-emitted log/error/loot text (src/sim) is English at the source; localize it
+    // here, the same way server-sent text is handled above.
+    const simLocalized = localizeSimText(text);
+    if (simLocalized !== null) return simLocalized;
     return text;
   }
 
@@ -2180,6 +2192,10 @@ export class Hud {
     }
     const server = localizeServerText(text);
     if (server !== null) return server;
+    // Sim-emitted log/error/loot text (src/sim) is English at the source; localize it
+    // here, the same way server-sent text is handled above.
+    const simLocalized = localizeSimText(text);
+    if (simLocalized !== null) return simLocalized;
     return text;
   }
 
@@ -4049,8 +4065,11 @@ export class Hud {
     const keyByMessage: Record<string, TranslationKey> = {
       'choose a report reason': 'hud.report.chooseReason',
       'invalid report target': 'hud.report.invalidTarget',
-      'That player is no longer online.': 'hud.report.targetOffline',
-      'That player could not be found.': 'hud.report.targetMissing',
+      // Server (server/report_target.ts) emits these lowercase and without a
+      // trailing period — keys MUST match those exact bytes or they fall through
+      // to the generic hud.report.failed in every locale.
+      'that player is no longer online': 'hud.report.targetOffline',
+      'that player could not be found': 'hud.report.targetMissing',
       'cannot report yourself': 'hud.report.cannotReportSelf',
       'you have already reported this player recently': 'hud.report.alreadyReported',
       'reporting character not found': 'hud.report.reportingCharacterMissing',
@@ -5028,6 +5047,16 @@ function entityDisplayName(entity: Entity): string {
 function abilityDisplayNameFromSource(name: string): string {
   const ability = Object.values(ABILITIES).find((candidate) => candidate.name === name);
   return ability ? abilityDisplayName(ability) : name;
+}
+
+// Localize an aura/buff name that surfaces by its raw English name (buff frame tooltip,
+// combat-log gain/fade). Most auras are granted by an ability or talent and have a
+// localized title already; a few are pure flavor (e.g. a hunter's "Tamed" pet buff) and
+// live in sim_i18n. Falls back to the English name only if nothing matches.
+function auraDisplayNameFromSource(name: string): string {
+  const viaTitle = localizeTalentTitle(name);
+  if (viaTitle !== name) return viaTitle;
+  return localizeSimAuraName(name) ?? name;
 }
 
 function combatAbilityName(name: string | null): string {

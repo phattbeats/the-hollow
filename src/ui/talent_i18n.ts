@@ -293,7 +293,7 @@ const titleOverrides: Partial<Record<SupportedLanguage, Record<string, string>>>
     "Call of Flame": "Llamada de la llama",
     "Camouflage": "Camuflaje",
     "Cataclysm": "Cataclismo",
-    "Clearcasting": "Lanzamiento límpido",
+    "Clearcasting": "Lanzamiento libre",
     "Cold Blood": "Sangre fría",
     "Cold Snap": "Frío repentino",
     "Combustion": "Combustión",
@@ -949,7 +949,7 @@ const titleOverrides: Partial<Record<SupportedLanguage, Record<string, string>>>
     "Cataclysm": "Cataclysme",
     "Clearcasting": "Esprit clair",
     "Cold Blood": "Sang-froid",
-    "Cold Snap": "Vague de froid",
+    "Cold Snap": "Coup de froid",
     "Combustion": "Combustion",
     "Concussion": "Commotion",
     "Convection": "Convection",
@@ -1174,7 +1174,7 @@ const titleOverrides: Partial<Record<SupportedLanguage, Record<string, string>>>
     "Improved Frost Nova": "Nova de givre améliorée",
     "Improved Frostbolt": "Éclair de givre amélioré",
     "Improved Ghost Wolf": "Loup fantôme amélioré",
-    "Improved Gouge": "Suriner amélioré",
+    "Improved Gouge": "Mutilation améliorée",
     "Improved Healing Wave": "Vague de soins améliorée",
     "Improved Heroic Strike": "Frappe héroïque améliorée",
     "Improved Holy Light": "Lumière sacrée améliorée",
@@ -1198,7 +1198,7 @@ const titleOverrides: Partial<Record<SupportedLanguage, Record<string, string>>>
     "Improved Searing Pain": "Douleur brûlante améliorée",
     "Improved Shadow Word: Pain": "Mot de l'ombre : Douleur amélioré",
     "Improved Shield Slam": "Heurt de bouclier amélioré",
-    "Improved Sinister Strike": "Attaque pernicieuse améliorée",
+    "Improved Sinister Strike": "Attaque sournoise améliorée",
     "Improved Slam": "Heurtoir amélioré",
     "Improved Sprint": "Sprint amélioré",
     "Improved Sunder Armor": "Fracasser l'armure amélioré",
@@ -1501,7 +1501,7 @@ const titleOverrides: Partial<Record<SupportedLanguage, Record<string, string>>>
     "Improved Frost Nova": "Nova de givre améliorée",
     "Improved Frostbolt": "Éclair de givre amélioré",
     "Improved Ghost Wolf": "Loup fantôme amélioré",
-    "Improved Gouge": "Suriner amélioré",
+    "Improved Gouge": "Mutilation améliorée",
     "Improved Healing Wave": "Vague de soins améliorée",
     "Improved Heroic Strike": "Frappe héroïque améliorée",
     "Improved Holy Light": "Lumière sacrée améliorée",
@@ -1525,7 +1525,7 @@ const titleOverrides: Partial<Record<SupportedLanguage, Record<string, string>>>
     "Improved Searing Pain": "Douleur brûlante améliorée",
     "Improved Shadow Word: Pain": "Mot de l'ombre : Douleur amélioré",
     "Improved Shield Slam": "Heurt de bouclier amélioré",
-    "Improved Sinister Strike": "Attaque pernicieuse améliorée",
+    "Improved Sinister Strike": "Attaque sournoise améliorée",
     "Improved Slam": "Heurtoir amélioré",
     "Improved Sprint": "Sprint amélioré",
     "Improved Sunder Armor": "Fracasser armure amélioré",
@@ -4233,6 +4233,14 @@ function abilityName(id: string): string {
 // because the word-substitution dictionary does not cover its vocabulary.
 export function hasTalentTitleOverride(lang: SupportedLanguage, source: string): boolean {
   return titleOverrides[lang]?.[source] !== undefined;
+}
+
+// Public wrapper: localize a content title given its English source name. Resolves an
+// ability name (via the entity dictionary) or a talent-title override, else returns the
+// source unchanged. Used by the HUD to localize aura/buff names that are granted by a
+// talent or ability but surface in the buff frame / combat log by their raw English name.
+export function localizeTalentTitle(source: string, lang: SupportedLanguage = getLanguage()): string {
+  return translateTitle(source, lang);
 }
 
 function effectDescription(effect: TalentEffect | undefined, maxRank: number, lang: SupportedLanguage): string {
