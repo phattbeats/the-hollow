@@ -3110,6 +3110,9 @@
     left: auto; right: calc(max(18px, env(safe-area-inset-right)) + 132px);
   }
   body.mobile-touch .window { max-width: calc(100vw - 20px); max-height: calc(100vh - 40px); }
+  body.mobile-touch.mobile-window-open #ui {
+    z-index: 90;
+  }
   body.mobile-touch #options-menu,
   body.mobile-touch #quest-log-window,
   body.mobile-touch #spellbook,
@@ -3136,6 +3139,17 @@
     width: min(560px, calc(100vw - 170px));
     max-height: calc(100vh - 92px);
     transform: translateX(-50%);
+  }
+  body.mobile-touch #talents-window {
+    position: fixed;
+    left: 50%;
+    right: auto;
+    top: 50%;
+    width: min(600px, calc(100vw - 20px));
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 24px);
+    transform: translate(-50%, -50%);
+    z-index: 95 !important;
   }
   body.mobile-touch #social-window {
     left: 50%;
@@ -4270,7 +4284,6 @@
         <button class="mobile-btn" id="mobile-bags" title="Bags" aria-label="Bags" data-icon="bags"><span class="mobile-label">Bags</span></button>
         <button class="mobile-btn" id="mobile-spellbook" title="Spellbook" aria-label="Spellbook" data-icon="spellbook"><span class="mobile-label">Spellbook</span></button>
         <button class="mobile-btn" id="mobile-talents" title="Talents" aria-label="Talents" data-icon="talents"><span class="mobile-label">Talents</span></button>
-        <button class="mobile-btn" id="mobile-meters" title="Meters" aria-label="Meters" data-icon="meters"><span class="mobile-label">Meters</span></button>
         <button class="mobile-btn" id="mobile-map" title="Map" aria-label="Map" data-icon="map"><span class="mobile-label">Map</span></button>
         <button class="mobile-btn" id="mobile-leaderboard" title="Leaderboard" aria-label="Leaderboard" data-icon="leaderboard"><span class="mobile-label">Ranks</span></button>
         <button class="mobile-btn active" id="mobile-nameplates" title="Toggle nameplates" aria-label="Toggle nameplates" data-icon="nameplates"><span class="mobile-label">Names</span></button>

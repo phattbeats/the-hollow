@@ -443,7 +443,6 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     onBags: () => hud.toggleBags(),
     onSpellbook: () => hud.toggleSpellbook(),
     onTalents: () => hud.toggleTalents(),
-    onMeters: () => hud.toggleMeters(),
     onMap: () => hud.toggleMap(),
     onLeaderboard: () => hud.toggleLeaderboard(),
     onNameplates: () => (renderer.showNameplates = !renderer.showNameplates),
