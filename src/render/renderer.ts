@@ -1,12 +1,13 @@
 import * as THREE from 'three';
 import { Entity, SimEvent } from '../sim/types';
-import type { IWorld } from '../world_api';
+import { OVERHEAD_EMOTES, type IWorld } from '../world_api';
 import { groundHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
 import {
   MOBS, ABILITIES, DUNGEON_X_THRESHOLD, DUNGEON_LIST, QUESTS,
   instanceOrigin, INSTANCE_SLOT_COUNT, ARENA_SLOT_COUNT, arenaOrigin, arenaOriginAt, isArenaPos,
 } from '../sim/data';
 import { ARENA_LAYOUT, DUNGEON_WALL_X } from '../sim/dungeon_layout';
+import { cameraOcclusion } from '../sim/colliders';
 import type { BiomeId } from '../sim/types';
 import { AnimState, CharacterVisual, createCharacterVisual } from './characters';
 import { LocoTrack, newLocoTrack, updateLocomotion } from './locomotion';
@@ -27,6 +28,7 @@ import { raidMarkerDataUrl } from '../ui/icons';
 import { isProjectedNameplateAnchorVisible } from './nameplate_projection';
 
 const NAMEPLATE_RANGE = 55;
+const emoteIconUrl = (id: string): string => `/ui/emotes/emote-${id}.png`;
 // Entities further than this from the player are hidden entirely: their rigs
 // are several draw calls each and read as sub-pixel specks long before this.
 const ENTITY_DRAW_RANGE = 80;
@@ -52,6 +54,12 @@ const LIGHT_BUDGET_RANGE_SQ = 55 * 55;
 const SELECTION_RING_BOOST = 1.5;
 const SPARKLE_BOOST = 1.5;
 const PORTAL_BOOST = 2;
+// Third-person camera collision (see updateCamera). PAD keeps the cam just off
+// the surface; MIN_DIST never slams it onto the player; PULL_OUT_RATE eases the
+// cam back out (per second) so clearing a wall edge doesn't pop.
+const CAMERA_COLLIDER_PAD = 0.35;
+const CAMERA_MIN_DIST = 1.2;
+const CAMERA_PULL_OUT_RATE = 6;
 const SUN_HALO_OPACITY = 0.35; // bloom now supplies most of the halo
 // lighting rig (high/ultra) — IBL supplies ambient, sun carries the key
 const HEMI_INTENSITY = 0.45;
@@ -86,6 +94,9 @@ interface EntityView {
   nameEl: HTMLDivElement;
   hpBar: HTMLDivElement;
   hpFill: HTMLDivElement;
+  emoteEl: HTMLDivElement;
+  emoteIconEl: HTMLImageElement;
+  emoteLabelEl: HTMLSpanElement;
   markerEl: HTMLDivElement;
   raidMarkEl: HTMLDivElement; // party raid/target marker, above the name
   nameplateDisplay: string;
@@ -98,6 +109,7 @@ interface EntityView {
   objectCasters: THREE.Object3D[]; // object-view shadow meshes, distance-gated
   shadowOn: boolean;
   isFar: boolean;
+  lastOverheadEmoteKey: string | null;
   // render-space position last frame, for true u/s locomotion speed
   lastX: number;
   lastZ: number;
@@ -147,6 +159,8 @@ export class Renderer {
   camYaw = Math.PI;
   camPitch = 0.32;
   camDist = 12;
+  // smoothed chase-cam occlusion fraction (1 = no pull-in); see updateCamera
+  private camPullT = 1;
   showNameplates = true;
   // settings-menu graphics knobs (applied live)
   private renderScale = 1; // user-requested resolution ceiling on top of the device pixel ratio
@@ -748,6 +762,15 @@ export class Renderer {
     const np = document.createElement('div');
     np.className = 'nameplate';
     np.style.display = 'none';
+    const emoteEl = document.createElement('div');
+    emoteEl.className = 'np-emote';
+    emoteEl.style.display = 'none';
+    const emoteIconEl = document.createElement('img');
+    emoteIconEl.className = 'np-emote-icon';
+    emoteIconEl.alt = '';
+    const emoteLabelEl = document.createElement('span');
+    emoteLabelEl.className = 'np-emote-label';
+    emoteEl.append(emoteIconEl, emoteLabelEl);
     const raidMark = document.createElement('div');
     raidMark.className = 'np-raidmark';
     raidMark.style.display = 'none';
@@ -761,7 +784,7 @@ export class Renderer {
     const hpFill = document.createElement('div');
     hpFill.className = 'np-hpfill';
     hpBar.appendChild(hpFill);
-    np.append(raidMark, marker, nameEl, hpBar);
+    np.append(emoteEl, raidMark, marker, nameEl, hpBar);
     this.nameplateLayer.appendChild(np);
 
     // object views gate their own casters; character shadows live in visual
@@ -769,9 +792,9 @@ export class Renderer {
     if (!visual) collectCasters(group, objectCasters);
     this.views.set(e.id, {
       group, visual, sheepVisual: null, bearVisual: null, height, clickTarget,
-      nameplate: np, nameEl, hpBar, hpFill, markerEl: marker, raidMarkEl: raidMark, sparkle, objectMesh, portal,
+      nameplate: np, nameEl, hpBar, hpFill, emoteEl, emoteIconEl, emoteLabelEl, markerEl: marker, raidMarkEl: raidMark, sparkle, objectMesh, portal,
       nameplateDisplay: 'none', nameplateTransform: '', nameplateSig: '', nameplateHpWidth: '',
-      objectCasters, shadowOn: true, isFar: false,
+      objectCasters, shadowOn: true, isFar: false, lastOverheadEmoteKey: null,
       lastX: e.pos.x, lastZ: e.pos.z,
       loco: newLocoTrack(),
     });
@@ -1102,6 +1125,7 @@ export class Renderer {
       const st: AnimState = {
         speed: loco.speed,
         moving,
+        airborne: !e.onGround && !swimming && !e.dead,
         backwards: loco.backwards,
         dead: e.dead,
         casting: e.castingAbility !== null && !e.dead,
@@ -1116,6 +1140,18 @@ export class Renderer {
         else if (d2 > ENTITY_SHADOW_RANGE_SQ) animate = ((this.frameIdx + e.id) & 1) === 0;
       }
       active.update(dt, st, animate);
+
+      const emoteId = e.kind === 'player' && e.overheadEmoteId && !e.dead ? e.overheadEmoteId : null;
+      const emoteKey = emoteId ? `${emoteId}:${e.overheadEmoteSeq}` : null;
+      if (emoteKey !== v.lastOverheadEmoteKey) {
+        const canPlayEmote = emoteId && !moving && !st.airborne && !st.swimming && !st.casting && !st.sitting;
+        if (canPlayEmote) {
+          active.playEmote(emoteId);
+          v.lastOverheadEmoteKey = emoteKey;
+        } else if (!emoteId) {
+          v.lastOverheadEmoteKey = null;
+        }
+      }
 
       if (st.casting) {
         this.vfx.castSparkle(e.id, ABILITIES[e.castingAbility!]?.school ?? 'arcane', dt);
@@ -1187,7 +1223,7 @@ export class Renderer {
 
     this.vfx.update(dt);
 
-    this.updateCamera(alpha);
+    this.updateCamera(alpha, dt);
     this.updateAmbience(p.pos.x, this.camera.position.y, dt);
     // shadow frustum follows the player
     const pv = this.views.get(p.id);
@@ -1271,14 +1307,15 @@ export class Renderer {
     }
   }
 
-  private updateCamera(alpha: number): void {
+  private updateCamera(alpha: number, dt: number): void {
     const p = this.sim.player;
+    const seed = this.sim.cfg.seed;
     const px = p.prevPos.x + (p.pos.x - p.prevPos.x) * alpha;
     const py = p.prevPos.y + (p.pos.y - p.prevPos.y) * alpha;
     const pz = p.prevPos.z + (p.pos.z - p.prevPos.z) * alpha;
     const eyeY = py + 2.0;
     let cx = px - Math.sin(this.camYaw) * Math.cos(this.camPitch) * this.camDist;
-    const cy = eyeY + Math.sin(this.camPitch) * this.camDist;
+    let cy = eyeY + Math.sin(this.camPitch) * this.camDist;
     let cz = pz - Math.cos(this.camYaw) * Math.cos(this.camPitch) * this.camDist;
     // The Ashen Coliseum is a small enclosed pit and the combatants spawn only
     // ~6yd from the end walls, so the 12yd chase cam would otherwise sit outside
@@ -1289,7 +1326,20 @@ export class Renderer {
       cx = Math.min(Math.max(cx, o.x - DUNGEON_WALL_X + m), o.x + DUNGEON_WALL_X - m);
       cz = Math.min(Math.max(cz, o.z + ARENA_LAYOUT.zMin + m), o.z + ARENA_LAYOUT.zMax - m);
     }
-    const groundY = groundHeight(cx, cz, this.sim.cfg.seed) + 0.6;
+    // Camera collision: pull the cam in to the surface of any building/object
+    // between the player's head and the desired position so it never sits
+    // inside geometry. Snap inward instantly (don't let a frame clip through a
+    // wall), ease back out (don't pop when an occluder edge clears).
+    let t = cameraOcclusion(seed, px, eyeY, pz, cx, cy, cz, CAMERA_COLLIDER_PAD);
+    const segLen = Math.hypot(cx - px, cy - eyeY, cz - pz);
+    if (segLen > 1e-3) t = Math.min(1, Math.max(t, CAMERA_MIN_DIST / segLen));
+    if (t < this.camPullT) this.camPullT = t;
+    else this.camPullT += (t - this.camPullT) * Math.min(1, dt * CAMERA_PULL_OUT_RATE);
+    const ct = this.camPullT;
+    cx = px + (cx - px) * ct;
+    cy = eyeY + (cy - eyeY) * ct;
+    cz = pz + (cz - pz) * ct;
+    const groundY = groundHeight(cx, cz, seed) + 0.6;
     this.camera.position.set(cx, Math.max(cy, groundY), cz);
     this.camera.lookAt(px, eyeY, pz);
     this.camera.updateMatrixWorld();
@@ -1308,8 +1358,10 @@ export class Renderer {
       if (!fullPass && !urgent) continue;
       const dist = Math.sqrt(d2);
       const isSelf = id === p.id;
+      const hasOverheadEmote = !!(e.kind === 'player' && e.overheadEmoteId && !e.dead);
+      v.nameplate.classList.toggle('has-emote', hasOverheadEmote);
       const isDoor = e.templateId === 'dungeon_door' || e.templateId === 'dungeon_exit';
-      const hidden = isSelf || dist > NAMEPLATE_RANGE
+      const hidden = (isSelf && !hasOverheadEmote) || dist > NAMEPLATE_RANGE
         || (e.dead && !e.lootable && e.kind === 'mob')
         || (e.kind === 'object' && !isDoor)
         || (!this.showNameplates && e.kind === 'mob' && !e.dead);
@@ -1320,8 +1372,9 @@ export class Renderer {
         }
         continue;
       }
+      v.nameplate.style.display = '';
       this.tmpV.copy(v.group.position);
-      this.tmpV.y += v.height * e.scale + 0.5;
+      this.tmpV.y += v.height * e.scale + (isSelf && hasOverheadEmote ? 0.2 : 0.8);
       if (!isProjectedNameplateAnchorVisible(this.camera, this.tmpV, this.tmpV2)) {
         if (v.nameplateDisplay !== 'none') {
           v.nameplate.style.display = 'none';
@@ -1350,6 +1403,17 @@ export class Renderer {
       }
 
       // party raid/target marker (only mobs are markable, so this is null elsewhere)
+      const emote = e.overheadEmoteId ? OVERHEAD_EMOTES.find((x) => x.id === e.overheadEmoteId) : null;
+      if (emote && e.kind === 'player' && !e.dead) {
+        v.emoteIconEl.src = emoteIconUrl(emote.id);
+        v.emoteLabelEl.textContent = emote.label;
+        v.emoteEl.title = emote.label;
+        v.emoteEl.style.display = '';
+      } else {
+        v.emoteEl.style.display = 'none';
+      }
+      v.nameEl.style.display = '';
+
       const raidMark = this.sim.markerFor(e.id);
       if (raidMark !== null) {
         v.raidMarkEl.style.backgroundImage = `url(${raidMarkerDataUrl(raidMark)})`;
@@ -1364,8 +1428,10 @@ export class Renderer {
       } else if (e.kind === 'player') {
         // other players: friendly blue with an hp bar
         const opacity = e.auras.some((a) => a.kind === 'stealth') ? '0.55' : '1';
-        const hpDisplay = e.dead ? 'none' : '';
-        this.setNameplateStatic(v, `player|${e.name}|${hpDisplay}|${opacity}`, e.name, '#7fb8ff', hpDisplay, '', 'np-marker', opacity);
+        const nameDisplay = isSelf ? 'none' : '';
+        const hpDisplay = e.dead || isSelf ? 'none' : '';
+        this.setNameplateStatic(v, `player|${e.name}|${nameDisplay}|${hpDisplay}|${opacity}`, e.name, '#7fb8ff', hpDisplay, '', 'np-marker', opacity);
+        v.nameEl.style.display = nameDisplay;
         this.setNameplateHp(v, e);
       } else if (e.kind === 'npc') {
         let marker = '';

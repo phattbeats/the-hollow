@@ -18,6 +18,7 @@ export interface InputCallbacks {
   onTab(): void;
   onAbility(slot: number): void;
   onUiKey(key: 'interact' | 'bags' | 'char' | 'spellbook' | 'talents' | 'questlog' | 'map' | 'nameplates' | 'escape' | 'chat' | 'meters' | 'social' | 'arena' | 'leaderboard'): void;
+  onEmoteWheel(open: boolean): void;
   onClickPick(x: number, y: number, button: number): void;
   /** When false, edge actions (spells, UI keys) are ignored. */
   canUseGameKeys?: () => boolean;
@@ -61,6 +62,7 @@ export class Input {
   private captureCb: ((code: string | null) => void) | null = null;
   private controllerMoveInput: MoveInput | null = null;
   private controllerFacing: number | null = null;
+  private emoteWheelHeldCodes = new Set<string>();
   // mouse-look sensitivity, in radians per pixel of drag; the old fixed value
   // was BASE_LOOK_SENS — setCameraSpeed scales it from the settings menu
   private lookSensitivity = BASE_LOOK_SENS;
@@ -71,9 +73,7 @@ export class Input {
 
   constructor(private canvas: HTMLCanvasElement, private cb: InputCallbacks, private keybinds: Keybinds) {
     window.addEventListener('keydown', (e) => this.onKeyDown(e));
-    window.addEventListener('keyup', (e) => {
-      if (this.keys.delete(e.code)) this.noteIntent('move');
-    });
+    window.addEventListener('keyup', (e) => this.onKeyUp(e));
     window.addEventListener('blur', () => this.releaseCapture('blur'));
     window.addEventListener('pointerup', (e) => this.onMouseUp(e));
     window.addEventListener('pointercancel', (e) => this.onMouseUp(e));
@@ -223,6 +223,10 @@ export class Input {
     // normally, so clearing keys here would cancel a walk the instant a camera
     // drag ends (every right/left-drag exits pointer lock on release).
     if (reason !== 'pointerlock') this.keys.clear();
+    if (reason !== 'pointerlock' && this.emoteWheelHeldCodes.size > 0) {
+      this.emoteWheelHeldCodes.clear();
+      this.cb.onEmoteWheel(false);
+    }
     this.updateCursor();
     if (hadInput) this.noteIntent('move');
   }
@@ -248,12 +252,26 @@ export class Input {
     const action = this.keybinds.actionForCode(e.code);
     if (action === null) return;
     if (actionKind(action) === 'held') {
+      if (action === 'emoteWheel') {
+        this.emoteWheelHeldCodes.add(e.code);
+        this.cb.onEmoteWheel(true);
+        e.preventDefault();
+        return;
+      }
       this.keys.add(e.code);
       if (action === 'forward' || action === 'back') this.autorun = false;
       this.noteIntent('move');
       return;
     }
     this.dispatchEdge(action);
+  }
+
+  private onKeyUp(e: KeyboardEvent): void {
+    if (this.keys.delete(e.code)) this.noteIntent('move');
+    if (this.emoteWheelHeldCodes.delete(e.code) && this.emoteWheelHeldCodes.size === 0) {
+      this.cb.onEmoteWheel(false);
+      e.preventDefault();
+    }
   }
 
   private dispatchEdge(action: string): void {

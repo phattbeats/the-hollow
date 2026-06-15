@@ -637,6 +637,21 @@ describe('emotes', () => {
     const events2 = sim.tick();
     expect(events2.some((e) => e.type === 'error')).toBe(true);
   });
+
+  it('sets and expires a network-visible overhead emote without chat spam', () => {
+    const sim = makeWorld();
+    const a = sim.addPlayer('warrior', 'Aleph');
+    sim.tick();
+
+    sim.playEmote('laugh', a);
+    expect(sim.entities.get(a)?.overheadEmoteId).toBe('laugh');
+    expect(sim.entities.get(a)?.overheadEmoteSeq).toBe(1);
+    sim.playEmote('laugh', a);
+    expect(sim.entities.get(a)?.overheadEmoteSeq).toBe(2);
+    expect(chatEvents(sim.tick())).toHaveLength(0);
+    for (let i = 0; i < 70; i++) sim.tick();
+    expect(sim.entities.get(a)?.overheadEmoteId).toBeNull();
+  });
 });
 
 describe('trade completion event', () => {
@@ -709,6 +724,27 @@ describe('snapshot interpolation continuity', () => {
     expect(e.prevPos.x).toBeLessThanOrEqual(12.5); // <= 1.25 extrapolation cap
     // and the interpolation target is always ahead of the anchor
     expect(e.prevPos.x).toBeLessThan(e.pos.x);
+  });
+
+  it('mirrors overhead emotes from snapshots and clears them when absent', () => {
+    const c = bareClient(7);
+    const self = (emo?: string, emoSeq?: number) => ({
+      ...wire(7, 0), ...(emo ? { emo, emoSeq } : {}),
+      res: 0, mres: 100, rtype: 'mana', xp: 0, copper: 0,
+      inv: [], equip: {}, qlog: [], qdone: [], cds: {}, gcd: 0,
+      stats: { str: 1, agi: 1, sta: 1, int: 1, spi: 1, armor: 0 },
+      weapon: { min: 1, max: 2, speed: 2 },
+    });
+    c.applySnapshot({ t: 'snap', tick: 1, time: 0, self: self('laugh', 4), ents: [] });
+    expect(c.entities.get(7)?.overheadEmoteId).toBe('laugh');
+    expect(c.entities.get(7)?.overheadEmoteSeq).toBe(4);
+
+    c.applySnapshot({ t: 'snap', tick: 2, time: 0.05, self: self('laugh', 5), ents: [] });
+    expect(c.entities.get(7)?.overheadEmoteSeq).toBe(5);
+
+    c.applySnapshot({ t: 'snap', tick: 3, time: 0.1, self: self(), ents: [] });
+
+    expect(c.entities.get(7)?.overheadEmoteId).toBeNull();
   });
 });
 

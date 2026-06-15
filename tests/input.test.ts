@@ -43,6 +43,7 @@ function makeInput() {
     onTab: vi.fn(),
     onAbility: vi.fn(),
     onUiKey: vi.fn(),
+    onEmoteWheel: vi.fn(),
     onClickPick: vi.fn(),
   };
   const input = new Input(canvas as any, cb, new Keybinds());
@@ -132,7 +133,6 @@ describe('Input movement is not cancelled by a camera drag', () => {
     expect(input.readMoveInput().forward).toBe(false);
   });
 });
-
 describe('touch jump', () => {
   it('jump is off until the touch button arms it', () => {
     const { input } = makeInput();
@@ -145,5 +145,28 @@ describe('touch jump', () => {
     expect(input.readMoveInput().jump).toBe(true);
     // momentary: a single poll consumes it so it cannot stick on like a held key
     expect(input.readMoveInput().jump).toBe(false);
+  });
+});
+
+describe('Input emote wheel hold', () => {
+  it('opens on the held binding and closes when the key is released', () => {
+    const { windowListeners, cb } = makeInput();
+    const preventDefault = vi.fn();
+
+    windowListeners.get('keydown')!({ code: 'KeyX', repeat: false, preventDefault });
+    expect(cb.onEmoteWheel).toHaveBeenLastCalledWith(true);
+    expect(preventDefault).toHaveBeenCalled();
+
+    windowListeners.get('keyup')!({ code: 'KeyX', preventDefault });
+    expect(cb.onEmoteWheel).toHaveBeenLastCalledWith(false);
+  });
+
+  it('closes the wheel on focus loss', () => {
+    const { windowListeners, cb } = makeInput();
+    windowListeners.get('keydown')!({ code: 'KeyX', repeat: false, preventDefault: vi.fn() });
+
+    windowListeners.get('blur')!({});
+
+    expect(cb.onEmoteWheel).toHaveBeenLastCalledWith(false);
   });
 });

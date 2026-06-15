@@ -34,6 +34,7 @@ describe('registry', () => {
   it('classifies movement as held and the rest as edge', () => {
     expect(actionKind('forward')).toBe('held');
     expect(actionKind('jump')).toBe('held');
+    expect(actionKind('emoteWheel')).toBe('held');
     expect(actionKind('autorun')).toBe('edge');
     expect(actionKind('target')).toBe('edge');
     expect(actionKind('slot0')).toBe('edge');
@@ -65,6 +66,7 @@ describe('Keybinds defaults', () => {
     expect(kb.actionForCode('Space')).toBe('jump');
     expect(kb.actionForCode('Tab')).toBe('target');
     expect(kb.actionForCode('KeyB')).toBe('bags');
+    expect(kb.actionForCode('KeyX')).toBe('emoteWheel');
     expect(kb.actionForCode('Digit1')).toBe('slot0'); // Attack
     expect(kb.actionForCode('Equal')).toBe('slot11');
     expect(kb.actionForCode('KeyJ')).toBe(null);
