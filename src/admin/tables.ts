@@ -1,5 +1,5 @@
 import { escapeHtml, fmtCopper, fmtDate, fmtDuration, fmtRelative } from './format';
-import { classLabel, t } from './i18n';
+import { classLabel, zoneLabel, t } from './i18n';
 import type { AccountDetail, AccountRow, CharacterRow, LivePlayer, ModerationAccountDetail, ModerationQueueRow } from './types';
 
 // Pure HTML-string renderers for the dashboard tables. All dynamic values go
@@ -12,7 +12,7 @@ export function renderOnlineTable(players: LivePlayer[]): string {
       <td>${escapeHtml(p.name)}</td>
       <td>${escapeHtml(classLabel(p.class))}</td>
       <td class="num">${p.level}</td>
-      <td>${escapeHtml(p.zone)}</td>
+      <td>${escapeHtml(zoneLabel(p.zone))}</td>
       <td class="num">${Math.round(p.x)}, ${Math.round(p.z)}</td>
       <td class="num">${p.hp}/${p.maxHp}</td>
       <td class="num">${fmtDuration(p.sessionSeconds)}</td>
