@@ -26,6 +26,9 @@ export const SETTING_RANGES = {
   // Speed slider only scales mouselook, so before this phones had no way to
   // tune look sensitivity; surfaced in Graphics only on phone touch devices.
   touchLookSpeed: { min: 0.4, max: 1.8, def: 1 },
+  // 1.0 (fully opaque) by default; touch-only. Lets phone players dim the
+  // on-screen joysticks + buttons so they obscure less of the world.
+  touchOpacity: { min: 0.3, max: 1, def: 1 },
 } as const;
 
 export const BOOL_SETTINGS = {

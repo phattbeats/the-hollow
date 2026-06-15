@@ -489,6 +489,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       case 'fullscreen': v >= 0.5 ? requestPreferredFullscreen() : exitBrowserFullscreen(); break;
       case 'clickToMove': if (v < 0.5) input.clearClickMove(); syncClickMoveInput(); break;
       case 'clickToMoveButton': syncClickMoveInput(); break;
+      case 'touchOpacity': document.documentElement.style.setProperty('--touch-opacity', String(v)); break;
     }
   }
   // apply persisted settings to the freshly-built subsystems

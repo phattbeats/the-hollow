@@ -4594,6 +4594,8 @@ export class Hud {
     this.settingSlider(body, 'Render Quality', 'renderScale');
     this.settingToggle(body, 'Fullscreen', 'fullscreen');
     this.settingToggle(body, t('game.settings.showOverflowXp'), 'showOverflowXp');
+    // Touch-only: lets phone players dim the on-screen joysticks + buttons.
+    if (isPhoneTouchDevice()) this.settingSlider(body, 'Touch Controls Opacity', 'touchOpacity');
     const note = document.createElement('div');
     note.className = 'set-note';
     note.textContent = 'Lower Camera Speed for a calmer mouselook. Render Quality below 100% boosts FPS on weaker machines. Show Overflow XP keeps the XP bar filling past the level cap.';
