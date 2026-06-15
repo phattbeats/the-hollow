@@ -35,7 +35,7 @@ describe('camera follow', () => {
     expect(next.lastInterpFacing).toBe(0.6);
   });
 
-  it('snaps large moving offsets behind the character instead of easing a 180 turn', () => {
+  it('eases large moving offsets instead of snapping the camera behind the character', () => {
     const next = updateFollowCameraYaw({
       camYaw: Math.PI,
       interpFacing: 0,
@@ -45,7 +45,8 @@ describe('camera follow', () => {
       moving: true,
       orbiting: false,
     });
-    expect(next.camYaw).toBe(0);
+    expect(next.camYaw).toBeLessThan(Math.PI);
+    expect(next.camYaw).toBeGreaterThan(Math.PI - 0.2);
   });
 
   it('settles medium moving offsets quickly but not instantly', () => {
@@ -60,14 +61,14 @@ describe('camera follow', () => {
     });
     expect(next.camYaw).toBeLessThan(1.2);
     expect(next.camYaw).toBeGreaterThan(0);
-    expect(next.camYaw).toBeLessThan(1.02);
+    expect(next.camYaw).toBeGreaterThan(1.0);
   });
 
-  it('does not auto-settle while the player is actively orbit-dragging', () => {
+  it('does not follow or auto-settle while the player is actively orbit-dragging', () => {
     const next = updateFollowCameraYaw({
       camYaw: 1,
-      interpFacing: 0,
-      lastInterpFacing: 0,
+      interpFacing: 0.4,
+      lastInterpFacing: 0.1,
       frameDt: 1 / 60,
       mouselook: false,
       moving: true,
