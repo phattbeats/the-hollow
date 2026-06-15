@@ -327,6 +327,17 @@ describe("i18n Localization Key Coverage", () => {
     return files;
   }
 
+  function questNarrativeSkeleton(value: string): string {
+    return value
+      .replace(/"[^"]*"|'[^']*'|“[^”]*”|「[^」]*」/g, "<title>")
+      .replace(/\b\d+\b/g, "<count>")
+      .split(/[.!?。！？:：]/)[0]
+      .toLowerCase()
+      .replace(/\{playername\}/g, "<player>")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
   for (const [code, locale] of Object.entries(locales)) {
     it(`should have 100% key match and non-empty translations for locale: ${code}`, () => {
       verifyKeys(en, locale);
@@ -615,6 +626,98 @@ describe("i18n Localization Key Coverage", () => {
     expect(tEntity({ kind: "quest", id: "q_wolves", field: "title" })).not.toBe("Lobos a la puerta");
     expect(entityTranslationFallbackLog()).toHaveLength(0);
 
+    setLanguage("en");
+  });
+
+  it("should use explicit Phase 9 quest narrative translations instead of generated templates", () => {
+    const phaseNineSource = fs.readFileSync(path.resolve(process.cwd(), "src/ui/phase9_i18n.ts"), "utf8");
+    expect(phaseNineSource).not.toContain("questText:");
+    expect(phaseNineSource).not.toContain("questCompletion:");
+    expect(phaseNineSource).not.toMatch(/const zhTwData[\s\S]*\.\.\.zhCnData[\s\S]*const koData/);
+
+    const genericPatterns = [
+      /^Para ".+", completa estos objetivos:/,
+      /^Has completado ".+"\./,
+      /^Pour ".+", accomplissez ces objectifs:/,
+      /^".+" est terminé\./,
+      /^Per ".+", completa questi obiettivi:/,
+      /^".+" è completata\./,
+      /^Für ".+" erfülle diese Ziele:/,
+      /^".+" ist abgeschlossen\./,
+      /^执行“.+”：完成这些目标：/,
+      /^“.+”已经完成。你的援手让这片地区得以喘息。$/,
+      /^執行「.+」：完成這些目標：/,
+      /^「.+」已完成。你的援手讓這片地區得以喘息。$/,
+      /^".+" 임무를 위해 다음 목표를 완료하십시오:/,
+      /^".+" 임무를 완료했습니다。?/,
+      /^「.+」では次の目標を達成してください:/,
+      /^「.+」は完了しました。/,
+      /^Para ".+", cumpra estes objetivos:/,
+      /^".+" foi concluída\./,
+      /^Для задания ".+" выполните цели:/,
+      /^Задание ".+" выполнено\./,
+    ];
+
+    const questIds = Object.keys(QUESTS);
+    const checkedLanguages = supportedLanguages.filter((lang) => lang !== "en" && lang !== "en_CA");
+
+    for (const lang of checkedLanguages) {
+      setLanguage(lang);
+      const textSkeletons = new Set<string>();
+      const completionSkeletons = new Set<string>();
+
+      for (const questId of questIds) {
+        const text = tEntity({ kind: "quest", id: questId, field: "text", values: { playerName: "Mira" } });
+        const completion = tEntity({ kind: "quest", id: questId, field: "completion", values: { playerName: "Mira" } });
+        for (const pattern of genericPatterns) {
+          expect(text, `${lang}.${questId}.text generic narrative`).not.toMatch(pattern);
+          expect(completion, `${lang}.${questId}.completion generic narrative`).not.toMatch(pattern);
+        }
+        textSkeletons.add(questNarrativeSkeleton(text));
+        completionSkeletons.add(questNarrativeSkeleton(completion));
+      }
+
+      expect(textSkeletons.size, `${lang} quest text skeleton diversity`).toBeGreaterThan(Math.floor(questIds.length * 0.8));
+      expect(completionSkeletons.size, `${lang} quest completion skeleton diversity`).toBeGreaterThan(Math.floor(questIds.length * 0.6));
+    }
+
+    setLanguage("en");
+  });
+
+  it("should keep representative Phase 9 quest narratives translated with quest-specific content", () => {
+    const expectations: Array<readonly [typeof supportedLanguages[number], string, "text" | "completion", string]> = [
+      ["es", "q_hollow", "completion", "Eastbrook te debe"],
+      ["fr_FR", "q_idols", "completion", "La secte a commencé ici"],
+      ["it_IT", "q_bastion_door", "completion", "corda marcia"],
+      ["de_DE", "q_wolves", "text", "Nordstraße"],
+      ["zh_CN", "q_wyrm_sigils", "text", "墓龙科祖尔"],
+      ["zh_TW", "q_gravewyrm", "completion", "三地死者"],
+      ["ko_KR", "q_necromancers", "completion", "십일조"],
+      ["ja_JP", "q_mistcaller", "text", "百人"],
+      ["pt_BR", "q_drogmar", "completion", "comprou um inverno"],
+      ["ru_RU", "q_gravewyrm", "text", "полупроснувшийся Wyrm"],
+    ];
+
+    for (const [lang, questId, field, expected] of expectations) {
+      setLanguage(lang);
+      expect(tEntity({ kind: "quest", id: questId, field, values: { playerName: "Mira" } })).toContain(expected);
+    }
+
+    setLanguage("en");
+  });
+
+  it("should keep Traditional Chinese Phase 9 world content out of Simplified-only shortcuts", () => {
+    const simplifiedOnlyCharacters = /[颚猪网潜强盗宁无钳鱼妇贪鲁唤师执荆军风领热灵蹒垒缚仆骑挥雾维圣卫复这门进队战击个补桥吗块环声钥]/;
+    const phaseNineEntries = entityTranslationManifest().filter((entry) => entry.phase === "phase9");
+
+    setLanguage("zh_TW");
+    for (const entry of phaseNineEntries) {
+      const rendered = tEntity(phaseNineRequest(entry));
+      expect(rendered, `zh_TW.${entry.key}`).not.toMatch(simplifiedOnlyCharacters);
+    }
+
+    expect(t("worldContent.dungeonInstanceBusy", { name: "墓龍聖所" })).toContain("佔用");
+    expect(t("worldContent.dungeonInstanceBusy", { name: "墓龍聖所" })).not.toMatch(simplifiedOnlyCharacters);
     setLanguage("en");
   });
 
