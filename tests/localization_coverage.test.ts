@@ -35,6 +35,10 @@ import {
   resetEntityTranslationFallbackLog,
   tEntity,
 } from "../src/ui/entity_i18n";
+import {
+  renderTalentManifestEntry,
+  talentTranslationManifest,
+} from "../src/ui/talent_i18n";
 import type { PlayerClass } from "../src/sim/types";
 
 const locales: Record<string, typeof en> = {
@@ -792,6 +796,37 @@ describe("i18n Localization Key Coverage", () => {
     expect(tEntity({ kind: "quest", id: "q_wolves", field: "title" })).toBe("Lobos à porta");
     expect(tEntity({ kind: "quest", id: "q_wolves", field: "title" })).not.toBe("Lobos a la puerta");
     expect(entityTranslationFallbackLog()).toHaveLength(0);
+
+    setLanguage("en");
+  });
+
+  it("should provide Phase 12 talent content translations for every supported locale", () => {
+    const talentEntries = talentTranslationManifest();
+    expect(talentEntries.length).toBeGreaterThan(250);
+    expect(new Set(talentEntries.map((entry) => `${entry.kind}:${entry.classId}:${entry.specId ?? "class"}:${entry.id}:${entry.field}`)).size).toBe(talentEntries.length);
+
+    for (const lang of supportedLanguages) {
+      setLanguage(lang);
+      for (const entry of talentEntries) {
+        const rendered = renderTalentManifestEntry(entry);
+        expect(rendered.trim().length, `${lang}.${entry.id}.${entry.field}`).toBeGreaterThan(0);
+        expect(rendered, `${lang}.${entry.id}.${entry.field}`).not.toMatch(placeholderPattern);
+        if (lang !== "en" && lang !== "en_CA" && entry.field === "description") {
+          expect(copiedEnglishComparable(rendered), `${lang}.${entry.id}.${entry.field} should not copy canonical English talent prose`)
+            .not.toBe(copiedEnglishComparable(entry.source));
+        }
+      }
+    }
+
+    setLanguage("es");
+    expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "war_toughness" && entry.field === "name")!)).toContain("dureza");
+    expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "arms.mastery" && entry.field === "description")!)).toContain("dano");
+
+    setLanguage("zh_CN");
+    expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "war_cruelty" && entry.field === "name")!)).toContain("残忍");
+
+    setLanguage("ko_KR");
+    expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "prot_choice.pc_last_stand" && entry.field === "description")!)).toContain("생명력");
 
     setLanguage("en");
   });

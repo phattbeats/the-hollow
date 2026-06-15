@@ -32,6 +32,7 @@ const phase1 = {
       characterActions: "Character actions",
       githubProject: "Open the World of ClaudeCraft GitHub project",
       discordCommunity: "Join the World of ClaudeCraft Discord community",
+      donateProject: "Donate to support World of ClaudeCraft",
     },
     loading: {
       world: "Loading world...",
@@ -212,6 +213,7 @@ const phase1 = {
       characterActions: "Acciones de personaje",
       githubProject: "Abrir el proyecto de World of ClaudeCraft en GitHub",
       discordCommunity: "Unirse a la comunidad de World of ClaudeCraft en Discord",
+      donateProject: "Donar para apoyar World of ClaudeCraft",
     },
     loading: {
       world: "Cargando mundo...",
@@ -392,6 +394,7 @@ const phase1 = {
       characterActions: "Acciones del personaje",
       githubProject: "Abrir el proyecto World of ClaudeCraft en GitHub",
       discordCommunity: "Unirse a la comunidad de World of ClaudeCraft en Discord",
+      donateProject: "Donar para apoyar World of ClaudeCraft",
     },
     loading: {
       world: "Cargando mundo...",
@@ -572,6 +575,7 @@ const phase1 = {
       characterActions: "Actions de personnage",
       githubProject: "Ouvrir le projet World of ClaudeCraft sur GitHub",
       discordCommunity: "Rejoindre la communauté World of ClaudeCraft sur Discord",
+      donateProject: "Faire un don pour soutenir World of ClaudeCraft",
     },
     loading: {
       world: "Chargement du monde...",
@@ -752,6 +756,7 @@ const phase1 = {
       characterActions: "Actions de personnage",
       githubProject: "Ouvrir le projet World of ClaudeCraft sur GitHub",
       discordCommunity: "Rejoindre la communauté World of ClaudeCraft sur Discord",
+      donateProject: "Faire un don pour soutenir World of ClaudeCraft",
     },
     loading: {
       world: "Chargement du monde...",
@@ -932,6 +937,7 @@ const phase1 = {
       characterActions: "Character actions",
       githubProject: "Open the World of ClaudeCraft GitHub project",
       discordCommunity: "Join the World of ClaudeCraft Discord community",
+      donateProject: "Donate to support World of ClaudeCraft",
     },
     loading: {
       world: "Loading world...",
@@ -1112,6 +1118,7 @@ const phase1 = {
       characterActions: "Azioni personaggio",
       githubProject: "Apri il progetto World of ClaudeCraft su GitHub",
       discordCommunity: "Entra nella community Discord di World of ClaudeCraft",
+      donateProject: "Fai una donazione per sostenere World of ClaudeCraft",
     },
     loading: {
       world: "Caricamento del mondo...",
@@ -1292,6 +1299,7 @@ const phase1 = {
       characterActions: "Charakteraktionen",
       githubProject: "World of ClaudeCraft-Projekt auf GitHub öffnen",
       discordCommunity: "Der World of ClaudeCraft-Community auf Discord beitreten",
+      donateProject: "Spenden, um World of ClaudeCraft zu unterstützen",
     },
     loading: {
       world: "Welt wird geladen...",
@@ -1472,6 +1480,7 @@ const phase1 = {
       characterActions: "角色操作",
       githubProject: "打开 World of ClaudeCraft 的 GitHub 项目",
       discordCommunity: "加入 World of ClaudeCraft 的 Discord 社区",
+      donateProject: "捐赠支持 World of ClaudeCraft",
     },
     loading: {
       world: "正在加载世界...",
@@ -1652,6 +1661,7 @@ const phase1 = {
       characterActions: "角色操作",
       githubProject: "開啟 World of ClaudeCraft 的 GitHub 專案",
       discordCommunity: "加入 World of ClaudeCraft 的 Discord 社群",
+      donateProject: "捐贈支持 World of ClaudeCraft",
     },
     loading: {
       world: "正在載入世界...",
@@ -1832,6 +1842,7 @@ const phase1 = {
       characterActions: "캐릭터 작업",
       githubProject: "GitHub에서 World of ClaudeCraft 프로젝트 열기",
       discordCommunity: "World of ClaudeCraft Discord 커뮤니티 참여",
+      donateProject: "World of ClaudeCraft 후원하기",
     },
     loading: {
       world: "세계 불러오는 중...",
@@ -2012,6 +2023,7 @@ const phase1 = {
       characterActions: "キャラクター操作",
       githubProject: "GitHubでWorld of ClaudeCraftプロジェクトを開く",
       discordCommunity: "World of ClaudeCraftのDiscordコミュニティに参加",
+      donateProject: "World of ClaudeCraftを支援するために寄付",
     },
     loading: {
       world: "世界を読み込み中...",
@@ -2192,6 +2204,7 @@ const phase1 = {
       characterActions: "Ações de personagem",
       githubProject: "Abrir o projeto World of ClaudeCraft no GitHub",
       discordCommunity: "Entrar na comunidade World of ClaudeCraft no Discord",
+      donateProject: "Doar para apoiar World of ClaudeCraft",
     },
     loading: {
       world: "Carregando mundo...",
@@ -2372,6 +2385,7 @@ const phase1 = {
       characterActions: "Действия персонажа",
       githubProject: "Открыть проект World of ClaudeCraft на GitHub",
       discordCommunity: "Присоединиться к Discord-сообществу World of ClaudeCraft",
+      donateProject: "Пожертвовать на поддержку World of ClaudeCraft",
     },
     loading: {
       world: "Загрузка мира...",
@@ -2577,6 +2591,8 @@ const phase2En = {
       mobileMeters: "Meters",
       mobileMap: "Map",
       closeMap: "Close map",
+      zoomIn: "Zoom in",
+      zoomOut: "Zoom out",
     },
     options: {
       gameMenu: "Game Menu",
@@ -2593,6 +2609,7 @@ const phase2En = {
       brightness: "Brightness",
       renderQuality: "Render Quality",
       fullscreen: "Fullscreen",
+      clickToMove: "Click to Move",
       graphicsNote: "Lower Camera Speed for a calmer mouselook. Render Quality below 100% boosts FPS on weaker machines.",
       soundEffects: "Sound Effects",
       musicVolume: "Music Volume",
@@ -2669,6 +2686,7 @@ const phase2En = {
         guild: "[Guild] {name}: {message}",
         officer: "[Officer] {name}: {message}",
         say: "{name} says: {message}",
+        emote: "{name} {message}",
       },
       context: {
         whisper: "Whisper",
@@ -2890,6 +2908,8 @@ const phase2 = {
         mobileMeters: "Medidores",
         mobileMap: "Mapa",
         closeMap: "Cerrar mapa",
+        zoomIn: "Acercar",
+        zoomOut: "Alejar",
       },
       options: {
         gameMenu: "Menú del juego",
@@ -2906,6 +2926,7 @@ const phase2 = {
         brightness: "Brillo",
         renderQuality: "Calidad de renderizado",
         fullscreen: "Pantalla completa",
+        clickToMove: "Clic para moverse",
         graphicsNote: "Baja la velocidad de cámara para un control más tranquilo. La calidad de renderizado bajo 100% mejora los FPS en equipos modestos.",
         soundEffects: "Efectos de sonido",
         musicVolume: "Volumen de música",
@@ -2932,7 +2953,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "Clic derecho en {name}",
-        templates: { party: "[Grupo] {name}: {message}", yell: "{name} grita: {message}", whisper: "{name} susurra: {message}", toWhisper: "A {name}: {message}", general: "[General] {name}: {message}", guild: "[Hermandad] {name}: {message}", officer: "[Oficiales] {name}: {message}", say: "{name} dice: {message}" },
+        templates: { party: "[Grupo] {name}: {message}", yell: "{name} grita: {message}", whisper: "{name} susurra: {message}", toWhisper: "A {name}: {message}", general: "[General] {name}: {message}", guild: "[Hermandad] {name}: {message}", officer: "[Oficiales] {name}: {message}", say: "{name} dice: {message}", emote: "{name} {message}" },
         context: { whisper: "Susurrar", invite: "Invitar al grupo", trade: "Comerciar", challengeDuel: "Desafiar a duelo", addFriend: "Agregar amigo", removeFriend: "Eliminar amigo", inviteGuild: "Invitar a hermandad", ignore: "Ignorar", ignoreChat: "Ignorar chat", unignore: "Dejar de ignorar", unignoreChat: "Dejar de ignorar chat", report: "Reportar jugador", removeParty: "Expulsar del grupo", cancel: "Cancelar" },
       },
       report: {
@@ -2988,6 +3009,8 @@ const phase2 = {
         mobileMeters: "Compteurs",
         mobileMap: "Carte",
         closeMap: "Fermer la carte",
+        zoomIn: "Zoom avant",
+        zoomOut: "Zoom arrière",
       },
       options: {
         gameMenu: "Menu du jeu",
@@ -3004,6 +3027,7 @@ const phase2 = {
         brightness: "Luminosité",
         renderQuality: "Qualité de rendu",
         fullscreen: "Plein écran",
+        clickToMove: "Cliquer pour se déplacer",
         graphicsNote: "Réduisez la vitesse de caméra pour une visée plus calme. Une qualité de rendu sous 100 % améliore les FPS sur les machines modestes.",
         soundEffects: "Effets sonores",
         musicVolume: "Volume de la musique",
@@ -3030,7 +3054,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "Clic droit sur {name}",
-        templates: { party: "[Groupe] {name} : {message}", yell: "{name} crie : {message}", whisper: "{name} chuchote : {message}", toWhisper: "À {name} : {message}", general: "[Général] {name} : {message}", guild: "[Guilde] {name} : {message}", officer: "[Officiers] {name} : {message}", say: "{name} dit : {message}" },
+        templates: { party: "[Groupe] {name} : {message}", yell: "{name} crie : {message}", whisper: "{name} chuchote : {message}", toWhisper: "À {name} : {message}", general: "[Général] {name} : {message}", guild: "[Guilde] {name} : {message}", officer: "[Officiers] {name} : {message}", say: "{name} dit : {message}", emote: "{name} {message}" },
         context: { whisper: "Chuchoter", invite: "Inviter dans le groupe", trade: "Échanger", challengeDuel: "Provoquer en duel", addFriend: "Ajouter un ami", removeFriend: "Retirer l'ami", inviteGuild: "Inviter dans la guilde", ignore: "Ignorer", ignoreChat: "Ignorer la discussion", unignore: "Ne plus ignorer", unignoreChat: "Ne plus ignorer la discussion", report: "Signaler le joueur", removeParty: "Retirer du groupe", cancel: "Annuler" },
       },
       report: {
@@ -3087,6 +3111,8 @@ const phase2 = {
         mobileMeters: "Misuratori",
         mobileMap: "Mappa",
         closeMap: "Chiudi mappa",
+        zoomIn: "Aumenta zoom",
+        zoomOut: "Riduci zoom",
       },
       options: {
         gameMenu: "Menu di gioco",
@@ -3103,6 +3129,7 @@ const phase2 = {
         brightness: "Luminosità",
         renderQuality: "Qualità rendering",
         fullscreen: "Schermo intero",
+        clickToMove: "Clicca per muoverti",
         graphicsNote: "Riduci la velocità della camera per un mouselook più stabile. La qualità rendering sotto il 100% aumenta gli FPS sui dispositivi meno potenti.",
         soundEffects: "Effetti sonori",
         musicVolume: "Volume musica",
@@ -3129,7 +3156,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "Clic destro su {name}",
-        templates: { party: "[Gruppo] {name}: {message}", yell: "{name} urla: {message}", whisper: "{name} sussurra: {message}", toWhisper: "A {name}: {message}", general: "[Generale] {name}: {message}", guild: "[Gilda] {name}: {message}", officer: "[Ufficiali] {name}: {message}", say: "{name} dice: {message}" },
+        templates: { party: "[Gruppo] {name}: {message}", yell: "{name} urla: {message}", whisper: "{name} sussurra: {message}", toWhisper: "A {name}: {message}", general: "[Generale] {name}: {message}", guild: "[Gilda] {name}: {message}", officer: "[Ufficiali] {name}: {message}", say: "{name} dice: {message}", emote: "{name} {message}" },
         context: { whisper: "Sussurra", invite: "Invita nel gruppo", trade: "Commercia", challengeDuel: "Sfida a duello", addFriend: "Aggiungi amico", removeFriend: "Rimuovi amico", inviteGuild: "Invita in gilda", ignore: "Ignora", ignoreChat: "Ignora chat", unignore: "Non ignorare", unignoreChat: "Non ignorare la chat", report: "Segnala giocatore", removeParty: "Rimuovi dal gruppo", cancel: "Annulla" },
       },
       report: {
@@ -3184,6 +3211,8 @@ const phase2 = {
         mobileMeters: "Anzeigen",
         mobileMap: "Karte",
         closeMap: "Karte schließen",
+        zoomIn: "Heranzoomen",
+        zoomOut: "Herauszoomen",
       },
       options: {
         gameMenu: "Spielmenü",
@@ -3200,6 +3229,7 @@ const phase2 = {
         brightness: "Helligkeit",
         renderQuality: "Renderqualität",
         fullscreen: "Vollbild",
+        clickToMove: "Klicken zum Bewegen",
         graphicsNote: "Senkt die Kamerageschwindigkeit für ruhigere Maussteuerung. Renderqualität unter 100 % verbessert die FPS auf schwächeren Geräten.",
         soundEffects: "Soundeffekte",
         musicVolume: "Musiklautstärke",
@@ -3226,7 +3256,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "Rechtsklick auf {name}",
-        templates: { party: "[Gruppe] {name}: {message}", yell: "{name} schreit: {message}", whisper: "{name} flüstert: {message}", toWhisper: "An {name}: {message}", general: "[Allgemein] {name}: {message}", guild: "[Gilde] {name}: {message}", officer: "[Offiziere] {name}: {message}", say: "{name} sagt: {message}" },
+        templates: { party: "[Gruppe] {name}: {message}", yell: "{name} schreit: {message}", whisper: "{name} flüstert: {message}", toWhisper: "An {name}: {message}", general: "[Allgemein] {name}: {message}", guild: "[Gilde] {name}: {message}", officer: "[Offiziere] {name}: {message}", say: "{name} sagt: {message}", emote: "{name} {message}" },
         context: { whisper: "Flüstern", invite: "In Gruppe einladen", trade: "Handeln", challengeDuel: "Zum Duell fordern", addFriend: "Freund hinzufügen", removeFriend: "Freund entfernen", inviteGuild: "In Gilde einladen", ignore: "Ignorieren", ignoreChat: "Chat ignorieren", unignore: "Nicht mehr ignorieren", unignoreChat: "Chat nicht mehr ignorieren", report: "Spieler melden", removeParty: "Aus Gruppe entfernen", cancel: "Abbrechen" },
       },
       report: {
@@ -3281,6 +3311,8 @@ const phase2 = {
         mobileMeters: "统计",
         mobileMap: "地图",
         closeMap: "关闭地图",
+        zoomIn: "放大",
+        zoomOut: "缩小",
       },
       options: {
         gameMenu: "游戏菜单",
@@ -3297,6 +3329,7 @@ const phase2 = {
         brightness: "亮度",
         renderQuality: "渲染质量",
         fullscreen: "全屏",
+        clickToMove: "点击移动",
         graphicsNote: "降低镜头速度可让鼠标视角更平稳。渲染质量低于 100% 可在较弱设备上提升 FPS。",
         soundEffects: "音效",
         musicVolume: "音乐音量",
@@ -3323,7 +3356,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "右键点击 {name}",
-        templates: { party: "[队伍] {name}：{message}", yell: "{name}大喊：{message}", whisper: "{name}悄悄说：{message}", toWhisper: "对{name}说：{message}", general: "[综合] {name}：{message}", guild: "[公会] {name}：{message}", officer: "[官员] {name}：{message}", say: "{name}说：{message}" },
+        templates: { party: "[队伍] {name}：{message}", yell: "{name}大喊：{message}", whisper: "{name}悄悄说：{message}", toWhisper: "对{name}说：{message}", general: "[综合] {name}：{message}", guild: "[公会] {name}：{message}", officer: "[官员] {name}：{message}", say: "{name}说：{message}", emote: "{name} {message}" },
         context: { whisper: "密语", invite: "邀请入队", trade: "交易", challengeDuel: "发起决斗", addFriend: "添加好友", removeFriend: "移除好友", inviteGuild: "邀请入会", ignore: "屏蔽", ignoreChat: "屏蔽聊天", unignore: "取消屏蔽", unignoreChat: "取消屏蔽聊天", report: "举报玩家", removeParty: "移出队伍", cancel: "取消" },
       },
       report: {
@@ -3378,6 +3411,8 @@ const phase2 = {
         mobileMeters: "統計",
         mobileMap: "地圖",
         closeMap: "關閉地圖",
+        zoomIn: "放大",
+        zoomOut: "縮小",
       },
       options: {
         gameMenu: "遊戲選單",
@@ -3394,6 +3429,7 @@ const phase2 = {
         brightness: "亮度",
         renderQuality: "渲染品質",
         fullscreen: "全螢幕",
+        clickToMove: "點擊移動",
         graphicsNote: "降低鏡頭速度可讓滑鼠視角更平穩。渲染品質低於 100% 可在較弱裝置上提升 FPS。",
         soundEffects: "音效",
         musicVolume: "音樂音量",
@@ -3420,7 +3456,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "右鍵點擊 {name}",
-        templates: { party: "[隊伍] {name}：{message}", yell: "{name}大喊：{message}", whisper: "{name}悄悄說：{message}", toWhisper: "對{name}說：{message}", general: "[綜合] {name}：{message}", guild: "[公會] {name}：{message}", officer: "[幹部] {name}：{message}", say: "{name}說：{message}" },
+        templates: { party: "[隊伍] {name}：{message}", yell: "{name}大喊：{message}", whisper: "{name}悄悄說：{message}", toWhisper: "對{name}說：{message}", general: "[綜合] {name}：{message}", guild: "[公會] {name}：{message}", officer: "[幹部] {name}：{message}", say: "{name}說：{message}", emote: "{name} {message}" },
         context: { whisper: "密語", invite: "邀請入隊", trade: "交易", challengeDuel: "發起決鬥", addFriend: "新增好友", removeFriend: "移除好友", inviteGuild: "邀請入會", ignore: "封鎖", ignoreChat: "封鎖聊天", unignore: "取消封鎖", unignoreChat: "取消封鎖聊天", report: "檢舉玩家", removeParty: "移出隊伍", cancel: "取消" },
       },
       report: {
@@ -3475,6 +3511,8 @@ const phase2 = {
         mobileMeters: "미터",
         mobileMap: "지도",
         closeMap: "지도 닫기",
+        zoomIn: "확대",
+        zoomOut: "축소",
       },
       options: {
         gameMenu: "게임 메뉴",
@@ -3491,6 +3529,7 @@ const phase2 = {
         brightness: "밝기",
         renderQuality: "렌더 품질",
         fullscreen: "전체 화면",
+        clickToMove: "클릭하여 이동",
         graphicsNote: "카메라 속도를 낮추면 마우스 시점이 더 안정됩니다. 렌더 품질을 100% 아래로 낮추면 낮은 사양 장치에서 FPS가 향상됩니다.",
         soundEffects: "효과음",
         musicVolume: "음악 음량",
@@ -3517,7 +3556,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "{name} 우클릭",
-        templates: { party: "[파티] {name}: {message}", yell: "{name} 외침: {message}", whisper: "{name} 귓속말: {message}", toWhisper: "{name}에게: {message}", general: "[일반] {name}: {message}", guild: "[길드] {name}: {message}", officer: "[장교] {name}: {message}", say: "{name}: {message}" },
+        templates: { party: "[파티] {name}: {message}", yell: "{name} 외침: {message}", whisper: "{name} 귓속말: {message}", toWhisper: "{name}에게: {message}", general: "[일반] {name}: {message}", guild: "[길드] {name}: {message}", officer: "[장교] {name}: {message}", say: "{name}: {message}", emote: "{name} {message}" },
         context: { whisper: "귓속말", invite: "파티 초대", trade: "거래", challengeDuel: "결투 신청", addFriend: "친구 추가", removeFriend: "친구 삭제", inviteGuild: "길드 초대", ignore: "차단", ignoreChat: "채팅 차단", unignore: "차단 해제", unignoreChat: "채팅 차단 해제", report: "플레이어 신고", removeParty: "파티에서 제거", cancel: "취소" },
       },
       report: {
@@ -3572,6 +3611,8 @@ const phase2 = {
         mobileMeters: "メーター",
         mobileMap: "マップ",
         closeMap: "マップを閉じる",
+        zoomIn: "ズームイン",
+        zoomOut: "ズームアウト",
       },
       options: {
         gameMenu: "ゲームメニュー",
@@ -3588,6 +3629,7 @@ const phase2 = {
         brightness: "明るさ",
         renderQuality: "描画品質",
         fullscreen: "フルスクリーン",
+        clickToMove: "クリック移動",
         graphicsNote: "カメラ速度を下げるとマウス視点が落ち着きます。描画品質を100%未満にすると、低性能環境でFPSが向上します。",
         soundEffects: "効果音",
         musicVolume: "音楽音量",
@@ -3614,7 +3656,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "{name}を右クリック",
-        templates: { party: "[パーティ] {name}: {message}", yell: "{name}の叫び: {message}", whisper: "{name}のささやき: {message}", toWhisper: "{name}へ: {message}", general: "[一般] {name}: {message}", guild: "[ギルド] {name}: {message}", officer: "[オフィサー] {name}: {message}", say: "{name}: {message}" },
+        templates: { party: "[パーティ] {name}: {message}", yell: "{name}の叫び: {message}", whisper: "{name}のささやき: {message}", toWhisper: "{name}へ: {message}", general: "[一般] {name}: {message}", guild: "[ギルド] {name}: {message}", officer: "[オフィサー] {name}: {message}", say: "{name}: {message}", emote: "{name} {message}" },
         context: { whisper: "ささやく", invite: "パーティに招待", trade: "取引", challengeDuel: "決闘を申し込む", addFriend: "フレンド追加", removeFriend: "フレンド削除", inviteGuild: "ギルドに招待", ignore: "無視", ignoreChat: "チャットを無視", unignore: "無視解除", unignoreChat: "チャット無視解除", report: "プレイヤーを通報", removeParty: "パーティから外す", cancel: "キャンセル" },
       },
       report: {
@@ -3669,6 +3711,8 @@ const phase2 = {
         mobileMeters: "Medidores",
         mobileMap: "Mapa",
         closeMap: "Fechar mapa",
+        zoomIn: "Aproximar",
+        zoomOut: "Afastar",
       },
       options: {
         gameMenu: "Menu do jogo",
@@ -3685,6 +3729,7 @@ const phase2 = {
         brightness: "Brilho",
         renderQuality: "Qualidade de renderização",
         fullscreen: "Tela cheia",
+        clickToMove: "Clique para mover",
         graphicsNote: "Reduza a velocidade da câmera para um mouselook mais calmo. Qualidade de renderização abaixo de 100% melhora o FPS em máquinas mais fracas.",
         soundEffects: "Efeitos sonoros",
         musicVolume: "Volume da música",
@@ -3711,7 +3756,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "Clique direito em {name}",
-        templates: { party: "[Grupo] {name}: {message}", yell: "{name} grita: {message}", whisper: "{name} sussurra: {message}", toWhisper: "Para {name}: {message}", general: "[Geral] {name}: {message}", guild: "[Guilda] {name}: {message}", officer: "[Oficiais] {name}: {message}", say: "{name} diz: {message}" },
+        templates: { party: "[Grupo] {name}: {message}", yell: "{name} grita: {message}", whisper: "{name} sussurra: {message}", toWhisper: "Para {name}: {message}", general: "[Geral] {name}: {message}", guild: "[Guilda] {name}: {message}", officer: "[Oficiais] {name}: {message}", say: "{name} diz: {message}", emote: "{name} {message}" },
         context: { whisper: "Sussurrar", invite: "Convidar para grupo", trade: "Negociar", challengeDuel: "Desafiar para duelo", addFriend: "Adicionar amigo", removeFriend: "Remover amigo", inviteGuild: "Convidar para guilda", ignore: "Ignorar", ignoreChat: "Ignorar chat", unignore: "Parar de ignorar", unignoreChat: "Parar de ignorar chat", report: "Denunciar jogador", removeParty: "Remover do grupo", cancel: "Cancelar" },
       },
       report: {
@@ -3766,6 +3811,8 @@ const phase2 = {
         mobileMeters: "Счетчики",
         mobileMap: "Карта",
         closeMap: "Закрыть карту",
+        zoomIn: "Приблизить",
+        zoomOut: "Отдалить",
       },
       options: {
         gameMenu: "Меню игры",
@@ -3782,6 +3829,7 @@ const phase2 = {
         brightness: "Яркость",
         renderQuality: "Качество рендера",
         fullscreen: "Полный экран",
+        clickToMove: "Движение по щелчку",
         graphicsNote: "Уменьшите скорость камеры для более спокойного обзора мышью. Качество рендера ниже 100% повышает FPS на слабых устройствах.",
         soundEffects: "Звуковые эффекты",
         musicVolume: "Громкость музыки",
@@ -3808,7 +3856,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "ПКМ по {name}",
-        templates: { party: "[Группа] {name}: {message}", yell: "{name} кричит: {message}", whisper: "{name} шепчет: {message}", toWhisper: "Кому {name}: {message}", general: "[Общий] {name}: {message}", guild: "[Гильдия] {name}: {message}", officer: "[Офицеры] {name}: {message}", say: "{name} говорит: {message}" },
+        templates: { party: "[Группа] {name}: {message}", yell: "{name} кричит: {message}", whisper: "{name} шепчет: {message}", toWhisper: "Кому {name}: {message}", general: "[Общий] {name}: {message}", guild: "[Гильдия] {name}: {message}", officer: "[Офицеры] {name}: {message}", say: "{name} говорит: {message}", emote: "{name} {message}" },
         context: { whisper: "Шепнуть", invite: "Пригласить в группу", trade: "Торговать", challengeDuel: "Вызвать на дуэль", addFriend: "Добавить друга", removeFriend: "Удалить друга", inviteGuild: "Пригласить в гильдию", ignore: "Игнорировать", ignoreChat: "Игнорировать чат", unignore: "Убрать игнор", unignoreChat: "Убрать игнор чата", report: "Пожаловаться на игрока", removeParty: "Удалить из группы", cancel: "Отмена" },
       },
       report: {
@@ -5140,6 +5188,8 @@ const phase5En = {
       clickTradeOffer: "Click to offer in trade",
       clickMarketList: "Click to put on the market",
       cannotMarket: "Cannot be sold on the market",
+      cannotVendor: "Cannot be sold to merchants",
+      clickDestroy: "Click to destroy",
     },
     bags: {
       title: "Bags",
@@ -5147,6 +5197,9 @@ const phase5En = {
       empty: "Your bags are empty.",
       itemAria: "{item}, quantity {count}",
       stackCount: "x{count}",
+      destroyTitle: "Destroy {item}",
+      destroyConfirm: "Destroy",
+      destroyCancel: "Cancel",
     },
     equipment: {
       empty: "Empty",
@@ -5227,9 +5280,9 @@ const phase5 = {
       tooltip: {
         qualityKind: "{kind} {quality}", damageSpeed: "{min} - {max} de daño  Velocidad {speed}", dps: "({dps} de daño por segundo)", dagger: "Daga", armorStat: "{value} de armadura", stat: "+{value} {stat}",
         useFood: "Uso: restaura {amount} de salud durante {seconds} s. Debes permanecer sentado mientras comes.", useDrink: "Uso: restaura {amount} de maná durante {seconds} s. Debes permanecer sentado mientras bebes.", questItem: "Objeto de misión", classes: "Clases: {classes}", sellPrice: "Precio de venta: {money}",
-        clickBuy: "Haz clic para comprar", clickSell: "Haz clic para vender", clickEquip: "Haz clic para equipar", clickConsume: "Haz clic para consumir", clickTradeOffer: "Haz clic para ofrecer en el comercio", clickMarketList: "Haz clic para ponerlo en el mercado", cannotMarket: "No se puede vender en el mercado",
+        clickBuy: "Haz clic para comprar", clickSell: "Haz clic para vender", clickEquip: "Haz clic para equipar", clickConsume: "Haz clic para consumir", clickTradeOffer: "Haz clic para ofrecer en el comercio", clickMarketList: "Haz clic para ponerlo en el mercado", cannotMarket: "No se puede vender en el mercado", cannotVendor: "No se puede vender a comerciantes", clickDestroy: "Haz clic para destruir",
       },
-      bags: { title: "Bolsas", close: "Cerrar bolsas", empty: "Tus bolsas están vacías.", itemAria: "{item}, cantidad {count}", stackCount: "x{count}" },
+      bags: { title: "Bolsas", close: "Cerrar bolsas", empty: "Tus bolsas están vacías.", itemAria: "{item}, cantidad {count}", stackCount: "x{count}", destroyTitle: "Destruir {item}", destroyConfirm: "Destruir", destroyCancel: "Cancelar" },
       equipment: { empty: "Vacío", levelClass: "Nivel {level} {className}" },
       vendor: { goodsTitle: "{name}: mercancías", close: "Cerrar vendedor", hint: "Haz clic en un objeto de tus bolsas para venderlo mientras esta ventana esté abierta.", buyAria: "Comprar {item} por {price}" },
       market: {
@@ -5250,9 +5303,9 @@ const phase5 = {
       tooltip: {
         qualityKind: "{kind} {quality}", damageSpeed: "{min} - {max} points de dégâts  Vitesse {speed}", dps: "({dps} dégâts par seconde)", dagger: "Dague", armorStat: "{value} armure", stat: "+{value} {stat}",
         useFood: "Utiliser : rend {amount} points de vie en {seconds} s. Vous devez rester assis en mangeant.", useDrink: "Utiliser : rend {amount} points de mana en {seconds} s. Vous devez rester assis en buvant.", questItem: "Objet de quête", classes: "Classes : {classes}", sellPrice: "Prix de vente : {money}",
-        clickBuy: "Cliquer pour acheter", clickSell: "Cliquer pour vendre", clickEquip: "Cliquer pour équiper", clickConsume: "Cliquer pour consommer", clickTradeOffer: "Cliquer pour proposer en échange", clickMarketList: "Cliquer pour mettre au marché", cannotMarket: "Ne peut pas être vendu au marché",
+        clickBuy: "Cliquer pour acheter", clickSell: "Cliquer pour vendre", clickEquip: "Cliquer pour équiper", clickConsume: "Cliquer pour consommer", clickTradeOffer: "Cliquer pour proposer en échange", clickMarketList: "Cliquer pour mettre au marché", cannotMarket: "Ne peut pas être vendu au marché", cannotVendor: "Ne peut pas être vendu aux marchands", clickDestroy: "Cliquer pour détruire",
       },
-      bags: { title: "Sacs", close: "Fermer les sacs", empty: "Vos sacs sont vides.", itemAria: "{item}, quantité {count}", stackCount: "x{count}" },
+      bags: { title: "Sacs", close: "Fermer les sacs", empty: "Vos sacs sont vides.", itemAria: "{item}, quantité {count}", stackCount: "x{count}", destroyTitle: "Détruire {item}", destroyConfirm: "Détruire", destroyCancel: "Annuler" },
       equipment: { empty: "Vide", levelClass: "Niveau {level} {className}" },
       vendor: { goodsTitle: "{name} : marchandises", close: "Fermer le vendeur", hint: "Cliquez sur un objet dans vos sacs pour le vendre tant que cette fenêtre est ouverte.", buyAria: "Acheter {item} pour {price}" },
       market: {
@@ -5274,9 +5327,9 @@ const phase5 = {
       tooltip: {
         qualityKind: "{kind} {quality}", damageSpeed: "{min} - {max} danni  Velocità {speed}", dps: "({dps} danni al secondo)", dagger: "Pugnale", armorStat: "{value} armatura", stat: "+{value} {stat}",
         useFood: "Usa: ripristina {amount} salute in {seconds} s. Devi restare seduto mentre mangi.", useDrink: "Usa: ripristina {amount} mana in {seconds} s. Devi restare seduto mentre bevi.", questItem: "Oggetto missione", classes: "Classi: {classes}", sellPrice: "Prezzo di vendita: {money}",
-        clickBuy: "Clicca per comprare", clickSell: "Clicca per vendere", clickEquip: "Clicca per equipaggiare", clickConsume: "Clicca per consumare", clickTradeOffer: "Clicca per offrire nello scambio", clickMarketList: "Clicca per mettere sul mercato", cannotMarket: "Non può essere venduto al mercato",
+        clickBuy: "Clicca per comprare", clickSell: "Clicca per vendere", clickEquip: "Clicca per equipaggiare", clickConsume: "Clicca per consumare", clickTradeOffer: "Clicca per offrire nello scambio", clickMarketList: "Clicca per mettere sul mercato", cannotMarket: "Non può essere venduto al mercato", cannotVendor: "Non può essere venduto ai mercanti", clickDestroy: "Clicca per distruggere",
       },
-      bags: { title: "Borse", close: "Chiudi borse", empty: "Le tue borse sono vuote.", itemAria: "{item}, quantità {count}", stackCount: "x{count}" },
+      bags: { title: "Borse", close: "Chiudi borse", empty: "Le tue borse sono vuote.", itemAria: "{item}, quantità {count}", stackCount: "x{count}", destroyTitle: "Distruggi {item}", destroyConfirm: "Distruggi", destroyCancel: "Annulla" },
       equipment: { empty: "Vuoto", levelClass: "Livello {level} {className}" },
       vendor: { goodsTitle: "{name}: merci", close: "Chiudi venditore", hint: "Clicca su un oggetto nelle borse per venderlo mentre questa finestra è aperta.", buyAria: "Compra {item} per {price}" },
       market: {
@@ -5296,9 +5349,9 @@ const phase5 = {
       tooltip: {
         qualityKind: "{quality} {kind}", damageSpeed: "{min} - {max} Schaden  Tempo {speed}", dps: "({dps} Schaden pro Sekunde)", dagger: "Dolch", armorStat: "{value} Rüstung", stat: "+{value} {stat}",
         useFood: "Benutzen: Stellt über {seconds} Sek. {amount} Gesundheit wieder her. Ihr müsst beim Essen sitzen bleiben.", useDrink: "Benutzen: Stellt über {seconds} Sek. {amount} Mana wieder her. Ihr müsst beim Trinken sitzen bleiben.", questItem: "Questgegenstand", classes: "Klassen: {classes}", sellPrice: "Verkaufspreis: {money}",
-        clickBuy: "Zum Kaufen klicken", clickSell: "Zum Verkaufen klicken", clickEquip: "Zum Anlegen klicken", clickConsume: "Zum Verbrauchen klicken", clickTradeOffer: "Zum Anbieten im Handel klicken", clickMarketList: "Zum Einstellen auf dem Markt klicken", cannotMarket: "Kann nicht auf dem Markt verkauft werden",
+        clickBuy: "Zum Kaufen klicken", clickSell: "Zum Verkaufen klicken", clickEquip: "Zum Anlegen klicken", clickConsume: "Zum Verbrauchen klicken", clickTradeOffer: "Zum Anbieten im Handel klicken", clickMarketList: "Zum Einstellen auf dem Markt klicken", cannotMarket: "Kann nicht auf dem Markt verkauft werden", cannotVendor: "Kann nicht an Händler verkauft werden", clickDestroy: "Zum Zerstören klicken",
       },
-      bags: { title: "Taschen", close: "Taschen schließen", empty: "Eure Taschen sind leer.", itemAria: "{item}, Menge {count}", stackCount: "x{count}" },
+      bags: { title: "Taschen", close: "Taschen schließen", empty: "Eure Taschen sind leer.", itemAria: "{item}, Menge {count}", stackCount: "x{count}", destroyTitle: "{item} zerstören", destroyConfirm: "Zerstören", destroyCancel: "Abbrechen" },
       equipment: { empty: "Leer", levelClass: "Stufe {level} {className}" },
       vendor: { goodsTitle: "{name}: Waren", close: "Händler schließen", hint: "Klickt auf einen Gegenstand in Euren Taschen, um ihn zu verkaufen, solange dieses Fenster geöffnet ist.", buyAria: "{item} für {price} kaufen" },
       market: {
@@ -5318,9 +5371,9 @@ const phase5 = {
       tooltip: {
         qualityKind: "{quality}{kind}", damageSpeed: "{min} - {max} 伤害  速度 {speed}", dps: "（每秒 {dps} 伤害）", dagger: "匕首", armorStat: "{value} 护甲", stat: "+{value} {stat}",
         useFood: "使用：在 {seconds} 秒内恢复 {amount} 点生命值。进食时必须保持坐下。", useDrink: "使用：在 {seconds} 秒内恢复 {amount} 点法力值。饮水时必须保持坐下。", questItem: "任务物品", classes: "职业：{classes}", sellPrice: "出售价格：{money}",
-        clickBuy: "点击购买", clickSell: "点击出售", clickEquip: "点击装备", clickConsume: "点击使用", clickTradeOffer: "点击加入交易", clickMarketList: "点击上架市场", cannotMarket: "不能在市场出售",
+        clickBuy: "点击购买", clickSell: "点击出售", clickEquip: "点击装备", clickConsume: "点击使用", clickTradeOffer: "点击加入交易", clickMarketList: "点击上架市场", cannotMarket: "不能在市场出售", cannotVendor: "不能卖给商人", clickDestroy: "点击摧毁",
       },
-      bags: { title: "背包", close: "关闭背包", empty: "你的背包是空的。", itemAria: "{item}，数量 {count}", stackCount: "x{count}" },
+      bags: { title: "背包", close: "关闭背包", empty: "你的背包是空的。", itemAria: "{item}，数量 {count}", stackCount: "x{count}", destroyTitle: "摧毁 {item}", destroyConfirm: "摧毁", destroyCancel: "取消" },
       equipment: { empty: "空", levelClass: "{level} 级 {className}" },
       vendor: { goodsTitle: "{name}：货物", close: "关闭商人", hint: "此窗口打开时，点击背包中的物品即可出售。", buyAria: "以 {price} 购买 {item}" },
       market: {
@@ -5340,9 +5393,9 @@ const phase5 = {
       tooltip: {
         qualityKind: "{quality}{kind}", damageSpeed: "{min} - {max} 傷害  速度 {speed}", dps: "（每秒 {dps} 傷害）", dagger: "匕首", armorStat: "{value} 護甲", stat: "+{value} {stat}",
         useFood: "使用：在 {seconds} 秒內恢復 {amount} 點生命值。進食時必須保持坐下。", useDrink: "使用：在 {seconds} 秒內恢復 {amount} 點法力值。飲水時必須保持坐下。", questItem: "任務物品", classes: "職業：{classes}", sellPrice: "出售價格：{money}",
-        clickBuy: "點擊購買", clickSell: "點擊出售", clickEquip: "點擊裝備", clickConsume: "點擊使用", clickTradeOffer: "點擊加入交易", clickMarketList: "點擊上架市場", cannotMarket: "不能在市場出售",
+        clickBuy: "點擊購買", clickSell: "點擊出售", clickEquip: "點擊裝備", clickConsume: "點擊使用", clickTradeOffer: "點擊加入交易", clickMarketList: "點擊上架市場", cannotMarket: "不能在市場出售", cannotVendor: "不能賣給商人", clickDestroy: "點擊摧毀",
       },
-      bags: { title: "背包", close: "關閉背包", empty: "你的背包是空的。", itemAria: "{item}，數量 {count}", stackCount: "x{count}" },
+      bags: { title: "背包", close: "關閉背包", empty: "你的背包是空的。", itemAria: "{item}，數量 {count}", stackCount: "x{count}", destroyTitle: "摧毀 {item}", destroyConfirm: "摧毀", destroyCancel: "取消" },
       equipment: { empty: "空", levelClass: "{level} 級 {className}" },
       vendor: { goodsTitle: "{name}：貨物", close: "關閉商人", hint: "此視窗開啟時，點擊背包中的物品即可出售。", buyAria: "以 {price} 購買 {item}" },
       market: {
@@ -5362,9 +5415,9 @@ const phase5 = {
       tooltip: {
         qualityKind: "{quality} {kind}", damageSpeed: "{min} - {max} 피해  속도 {speed}", dps: "(초당 피해 {dps})", dagger: "단검", armorStat: "방어도 {value}", stat: "+{value} {stat}",
         useFood: "사용 효과: {seconds}초에 걸쳐 생명력 {amount} 회복. 먹는 동안 앉아 있어야 합니다.", useDrink: "사용 효과: {seconds}초에 걸쳐 마나 {amount} 회복. 마시는 동안 앉아 있어야 합니다.", questItem: "퀘스트 아이템", classes: "직업: {classes}", sellPrice: "판매 가격: {money}",
-        clickBuy: "클릭하여 구매", clickSell: "클릭하여 판매", clickEquip: "클릭하여 장착", clickConsume: "클릭하여 사용", clickTradeOffer: "클릭하여 거래에 올리기", clickMarketList: "클릭하여 시장에 올리기", cannotMarket: "시장에서 판매할 수 없음",
+        clickBuy: "클릭하여 구매", clickSell: "클릭하여 판매", clickEquip: "클릭하여 장착", clickConsume: "클릭하여 사용", clickTradeOffer: "클릭하여 거래에 올리기", clickMarketList: "클릭하여 시장에 올리기", cannotMarket: "시장에서 판매할 수 없음", cannotVendor: "상인에게 판매할 수 없음", clickDestroy: "클릭하여 파괴",
       },
-      bags: { title: "가방", close: "가방 닫기", empty: "가방이 비어 있습니다.", itemAria: "{item}, 수량 {count}", stackCount: "x{count}" },
+      bags: { title: "가방", close: "가방 닫기", empty: "가방이 비어 있습니다.", itemAria: "{item}, 수량 {count}", stackCount: "x{count}", destroyTitle: "{item} 파괴", destroyConfirm: "파괴", destroyCancel: "취소" },
       equipment: { empty: "비어 있음", levelClass: "{level}레벨 {className}" },
       vendor: { goodsTitle: "{name}: 상품", close: "상인 닫기", hint: "이 창이 열려 있을 때 가방의 아이템을 클릭하면 판매합니다.", buyAria: "{price}에 {item} 구매" },
       market: {
@@ -5384,9 +5437,9 @@ const phase5 = {
       tooltip: {
         qualityKind: "{quality} {kind}", damageSpeed: "{min} - {max} ダメージ  速度 {speed}", dps: "（秒間 {dps} ダメージ）", dagger: "短剣", armorStat: "防御力 {value}", stat: "+{value} {stat}",
         useFood: "使用: {seconds}秒かけて体力を{amount}回復します。食事中は座ったままでいる必要があります。", useDrink: "使用: {seconds}秒かけてマナを{amount}回復します。飲んでいる間は座ったままでいる必要があります。", questItem: "クエストアイテム", classes: "クラス: {classes}", sellPrice: "売却価格: {money}",
-        clickBuy: "クリックして購入", clickSell: "クリックして売却", clickEquip: "クリックして装備", clickConsume: "クリックして使用", clickTradeOffer: "クリックして取引に出す", clickMarketList: "クリックして市場に出す", cannotMarket: "市場では売却できません",
+        clickBuy: "クリックして購入", clickSell: "クリックして売却", clickEquip: "クリックして装備", clickConsume: "クリックして使用", clickTradeOffer: "クリックして取引に出す", clickMarketList: "クリックして市場に出す", cannotMarket: "市場では売却できません", cannotVendor: "商人には売却できません", clickDestroy: "クリックして破棄",
       },
-      bags: { title: "バッグ", close: "バッグを閉じる", empty: "バッグは空です。", itemAria: "{item}、数量 {count}", stackCount: "x{count}" },
+      bags: { title: "バッグ", close: "バッグを閉じる", empty: "バッグは空です。", itemAria: "{item}、数量 {count}", stackCount: "x{count}", destroyTitle: "{item}を破棄", destroyConfirm: "破棄", destroyCancel: "キャンセル" },
       equipment: { empty: "空", levelClass: "レベル{level} {className}" },
       vendor: { goodsTitle: "{name}: 商品", close: "商人を閉じる", hint: "このウィンドウが開いている間、バッグ内のアイテムをクリックすると売却できます。", buyAria: "{item}を{price}で購入" },
       market: {
@@ -5406,9 +5459,9 @@ const phase5 = {
       tooltip: {
         qualityKind: "{kind} {quality}", damageSpeed: "{min} - {max} de dano  Velocidade {speed}", dps: "({dps} de dano por segundo)", dagger: "Adaga", armorStat: "{value} de armadura", stat: "+{value} {stat}",
         useFood: "Usar: restaura {amount} de vida ao longo de {seconds} s. É preciso permanecer sentado enquanto come.", useDrink: "Usar: restaura {amount} de mana ao longo de {seconds} s. É preciso permanecer sentado enquanto bebe.", questItem: "Item de missão", classes: "Classes: {classes}", sellPrice: "Preço de venda: {money}",
-        clickBuy: "Clique para comprar", clickSell: "Clique para vender", clickEquip: "Clique para equipar", clickConsume: "Clique para consumir", clickTradeOffer: "Clique para oferecer na troca", clickMarketList: "Clique para colocar no mercado", cannotMarket: "Não pode ser vendido no mercado",
+        clickBuy: "Clique para comprar", clickSell: "Clique para vender", clickEquip: "Clique para equipar", clickConsume: "Clique para consumir", clickTradeOffer: "Clique para oferecer na troca", clickMarketList: "Clique para colocar no mercado", cannotMarket: "Não pode ser vendido no mercado", cannotVendor: "Não pode ser vendido a mercadores", clickDestroy: "Clique para destruir",
       },
-      bags: { title: "Bolsas", close: "Fechar bolsas", empty: "Suas bolsas estão vazias.", itemAria: "{item}, quantidade {count}", stackCount: "x{count}" },
+      bags: { title: "Bolsas", close: "Fechar bolsas", empty: "Suas bolsas estão vazias.", itemAria: "{item}, quantidade {count}", stackCount: "x{count}", destroyTitle: "Destruir {item}", destroyConfirm: "Destruir", destroyCancel: "Cancelar" },
       equipment: { empty: "Vazio", levelClass: "Nível {level} {className}" },
       vendor: { goodsTitle: "{name}: mercadorias", close: "Fechar vendedor", hint: "Clique em um item nas suas bolsas para vendê-lo enquanto esta janela estiver aberta.", buyAria: "Comprar {item} por {price}" },
       market: {
@@ -5428,9 +5481,9 @@ const phase5 = {
       tooltip: {
         qualityKind: "{quality} {kind}", damageSpeed: "{min} - {max} урона  Скорость {speed}", dps: "({dps} урона в секунду)", dagger: "Кинжал", armorStat: "{value} брони", stat: "+{value} {stat}",
         useFood: "Использование: восстанавливает {amount} здоровья за {seconds} сек. Нужно оставаться сидя во время еды.", useDrink: "Использование: восстанавливает {amount} маны за {seconds} сек. Нужно оставаться сидя во время питья.", questItem: "Предмет задания", classes: "Классы: {classes}", sellPrice: "Цена продажи: {money}",
-        clickBuy: "Нажмите, чтобы купить", clickSell: "Нажмите, чтобы продать", clickEquip: "Нажмите, чтобы экипировать", clickConsume: "Нажмите, чтобы использовать", clickTradeOffer: "Нажмите, чтобы предложить в обмене", clickMarketList: "Нажмите, чтобы выставить на рынок", cannotMarket: "Нельзя продать на рынке",
+        clickBuy: "Нажмите, чтобы купить", clickSell: "Нажмите, чтобы продать", clickEquip: "Нажмите, чтобы экипировать", clickConsume: "Нажмите, чтобы использовать", clickTradeOffer: "Нажмите, чтобы предложить в обмене", clickMarketList: "Нажмите, чтобы выставить на рынок", cannotMarket: "Нельзя продать на рынке", cannotVendor: "Нельзя продать торговцам", clickDestroy: "Нажмите, чтобы уничтожить",
       },
-      bags: { title: "Сумки", close: "Закрыть сумки", empty: "Ваши сумки пусты.", itemAria: "{item}, количество {count}", stackCount: "x{count}" },
+      bags: { title: "Сумки", close: "Закрыть сумки", empty: "Ваши сумки пусты.", itemAria: "{item}, количество {count}", stackCount: "x{count}", destroyTitle: "Уничтожить {item}", destroyConfirm: "Уничтожить", destroyCancel: "Отмена" },
       equipment: { empty: "Пусто", levelClass: "Уровень {level} {className}" },
       vendor: { goodsTitle: "{name}: товары", close: "Закрыть торговца", hint: "Нажмите на предмет в сумках, чтобы продать его, пока это окно открыто.", buyAria: "Купить {item} за {price}" },
       market: {
@@ -5566,6 +5619,11 @@ const phase7En = {
       ["regrowth", "Regrowth", "Heals a friendly target for {damage} and an additional amount over 21 sec."],
       ["barkskin", "Barkskin", "Your skin hardens like bark, increasing armor by 150 for 15 sec."],
       ["starfire", "Starfire", "Calls down a bolt of stellar fire, causing {damage} Arcane damage."],
+      ["mortal_strike", "Mortal Strike", "A vicious strike dealing weapon damage plus {damage}. (Arms signature)"],
+      ["bloodthirst", "Bloodthirst", "Instantly attack in a blood frenzy for {damage}. (Fury signature)"],
+      ["shield_slam", "Shield Slam", "Slam the target with your shield for {damage} and massive threat. (Protection signature)"],
+      ["whirlwind", "Whirlwind", "Spin in a deadly arc, striking all nearby enemies for {damage}. (Fury talent)"],
+      ["berserker_rage", "Berserker Rage", "Enter a berserker rage, generating 20 rage. (Warrior talent)"],
     ]),
   },
 };
@@ -5682,6 +5740,11 @@ const phase7 = {
         ["regrowth", "Recrecimiento", "Sana a un objetivo amistoso por {damage} y una cantidad adicional durante 21 s."],
         ["barkskin", "Piel de corteza", "Tu piel se endurece como corteza y aumenta la armadura en 150 durante 15 s."],
         ["starfire", "Fuego estelar", "Invoca una descarga de fuego estelar que causa {damage} de daño Arcano."],
+        ["mortal_strike", "Golpe mortal", "Ataque brutal que inflige daño de arma más {damage}. (habilidad distintiva de Armas)"],
+        ["bloodthirst", "Sed de sangre", "Atacas al instante en un frenesí sangriento por {damage}. (habilidad distintiva de Furia)"],
+        ["shield_slam", "Embate con escudo", "Golpeas al objetivo con tu escudo por {damage} y generas una amenaza enorme. (habilidad distintiva de Protección)"],
+        ["whirlwind", "Torbellino", "Giras en un arco letal y golpeas a todos los enemigos cercanos por {damage}. (talento de Furia)"],
+        ["berserker_rage", "Ira rabiosa", "Entras en una ira rabiosa y generas 20 de ira. (talento de guerrero)"],
       ]),
     },
   },
@@ -5796,6 +5859,11 @@ const phase7 = {
         ["regrowth", "Rétablissement", "Rend {damage} points de vie à une cible alliée plus une quantité supplémentaire en 21 s."],
         ["barkskin", "Écorce", "Votre peau durcit comme de l'écorce et augmente l'armure de 150 pendant 15 s."],
         ["starfire", "Feu stellaire", "Fait tomber un trait de feu stellaire qui inflige {damage} points de dégâts des Arcanes."],
+        ["mortal_strike", "Frappe mortelle", "Frappe vicieuse infligeant les dégâts de l'arme plus {damage}. (signature Armes)"],
+        ["bloodthirst", "Sanguinaire", "Attaque instantanément dans une frénésie sanguinaire pour {damage}. (signature Fureur)"],
+        ["shield_slam", "Heurt de bouclier", "Heurte la cible avec votre bouclier pour {damage} et génère une menace énorme. (signature Protection)"],
+        ["whirlwind", "Tourbillon", "Tournoie dans un arc mortel et frappe tous les ennemis proches pour {damage}. (talent Fureur)"],
+        ["berserker_rage", "Rage berserker", "Entre dans une rage berserker et génère 20 rage. (talent de guerrier)"],
       ]),
     },
   },
@@ -5911,6 +5979,11 @@ const phase7 = {
         ["regrowth", "Ricrescita", "Cura un bersaglio alleato di {damage} e di una quantità aggiuntiva in 21 s."],
         ["barkskin", "Pelle di Corteccia", "La tua pelle si indurisce come corteccia, aumentando l'armatura di 150 per 15 s."],
         ["starfire", "Fuoco Stellare", "Richiama un dardo di fuoco stellare, infliggendo {damage} danni Arcani."],
+        ["mortal_strike", "Colpo Mortale", "Un colpo feroce che infligge danni dell'arma più {damage}. (firma Armi)"],
+        ["bloodthirst", "Sete di Sangue", "Attacca istantaneamente in una frenesia sanguigna per {damage}. (firma Furia)"],
+        ["shield_slam", "Colpo di Scudo", "Colpisce il bersaglio con lo scudo per {damage} e genera una minaccia enorme. (firma Protezione)"],
+        ["whirlwind", "Turbine", "Ruoti in un arco letale, colpendo tutti i nemici vicini per {damage}. (talento Furia)"],
+        ["berserker_rage", "Rabbia del Berserker", "Entri in una furia berserker e generi 20 rabbia. (talento del guerriero)"],
       ]),
     },
   },
@@ -6024,6 +6097,11 @@ const phase7 = {
         ["regrowth", "Nachwachsen", "Heilt ein freundliches Ziel um {damage} und zusätzlich über 21 Sek."],
         ["barkskin", "Baumrinde", "Eure Haut härtet wie Rinde und erhöht die Rüstung 15 Sek. lang um 150."],
         ["starfire", "Sternenfeuer", "Ruft einen Bolzen aus Sternenfeuer herab, der {damage} Arkanschaden verursacht."],
+        ["mortal_strike", "Tödlicher Stoß", "Ein bösartiger Schlag, der Waffenschaden plus {damage} verursacht. (Waffen-Signatur)"],
+        ["bloodthirst", "Blutdurst", "Greift sofort in blutiger Raserei an und verursacht {damage}. (Furor-Signatur)"],
+        ["shield_slam", "Schildschlag", "Schlägt das Ziel mit eurem Schild für {damage} und erzeugt enorme Bedrohung. (Schutz-Signatur)"],
+        ["whirlwind", "Wirbelwind", "Dreht euch in einem tödlichen Bogen und trefft alle nahen Gegner für {damage}. (Furor-Talent)"],
+        ["berserker_rage", "Berserkerwut", "Ihr verfallt in Berserkerwut und erzeugt 20 Wut. (Krieger-Talent)"],
       ]),
     },
   },
@@ -6137,6 +6215,11 @@ const phase7 = {
         ["regrowth", "愈合", "为一个友方目标恢复 {damage} 点生命值，并在 21 秒内额外恢复一定生命值。"],
         ["barkskin", "树皮术", "你的皮肤硬化如树皮，使护甲提高 150，持续 15 秒。"],
         ["starfire", "星火术", "召下一道星辰之火，造成 {damage} 点奥术伤害。"],
+        ["mortal_strike", "致死打击", "凶狠打击，造成武器伤害外加 {damage} 点伤害。（武器专精标志技能）"],
+        ["bloodthirst", "嗜血", "在鲜血狂怒中立即攻击，造成 {damage} 点伤害。（狂怒专精标志技能）"],
+        ["shield_slam", "盾牌猛击", "用盾牌猛击目标，造成 {damage} 点伤害并产生巨量威胁。（防护专精标志技能）"],
+        ["whirlwind", "旋风斩", "以致命弧线旋转，打击附近所有敌人，造成 {damage} 点伤害。（狂怒天赋）"],
+        ["berserker_rage", "狂暴之怒", "进入狂暴之怒，产生 20 点怒气。（战士天赋）"],
       ]),
     },
   },
@@ -6250,6 +6333,11 @@ const phase7 = {
         ["regrowth", "癒合", "為一個友方目標恢復 {damage} 點生命值，並在 21 秒內額外恢復一定生命值。"],
         ["barkskin", "樹皮術", "你的皮膚硬化如樹皮，使護甲提高 150，持續 15 秒。"],
         ["starfire", "星火術", "召下一道星辰之火，造成 {damage} 點秘法傷害。"],
+        ["mortal_strike", "致死打擊", "凶狠打擊，造成武器傷害外加 {damage} 點傷害。（武器專精標誌技能）"],
+        ["bloodthirst", "嗜血", "在鮮血狂怒中立即攻擊，造成 {damage} 點傷害。（狂怒專精標誌技能）"],
+        ["shield_slam", "盾牌猛擊", "用盾牌猛擊目標，造成 {damage} 點傷害並產生巨量威脅。（防護專精標誌技能）"],
+        ["whirlwind", "旋風斬", "以致命弧線旋轉，打擊附近所有敵人，造成 {damage} 點傷害。（狂怒天賦）"],
+        ["berserker_rage", "狂暴之怒", "進入狂暴之怒，產生 20 點怒氣。（戰士天賦）"],
       ]),
     },
   },
@@ -6363,6 +6451,11 @@ const phase7 = {
         ["regrowth", "재생", "아군 대상의 생명력을 {damage}만큼 회복시키고 21초에 걸쳐 추가로 회복시킵니다."],
         ["barkskin", "나무 껍질", "피부가 나무껍질처럼 단단해져 15초 동안 방어도가 150만큼 증가합니다."],
         ["starfire", "별빛 화살", "별의 불꽃을 불러 내려 {damage}의 비전 피해를 입힙니다."],
+        ["mortal_strike", "죽음의 일격", "잔혹한 일격으로 무기 피해에 {damage}의 피해를 더합니다. (무기 특화 대표 기술)"],
+        ["bloodthirst", "피의 갈증", "피의 광란으로 즉시 공격하여 {damage}의 피해를 줍니다. (분노 특화 대표 기술)"],
+        ["shield_slam", "방패 밀쳐내기", "방패로 대상을 강타해 {damage}의 피해를 주고 막대한 위협을 생성합니다. (방어 특화 대표 기술)"],
+        ["whirlwind", "소용돌이", "치명적인 호를 그리며 돌아 주변 모든 적에게 {damage}의 피해를 줍니다. (분노 특성)"],
+        ["berserker_rage", "광전사의 격노", "광전사의 격노에 들어가 분노 20을 생성합니다. (전사 특성)"],
       ]),
     },
   },
@@ -6476,6 +6569,11 @@ const phase7 = {
         ["regrowth", "リグロース", "味方対象の体力を {damage} 回復し、さらに21秒間追加で回復します。"],
         ["barkskin", "バークスキン", "肌が樹皮のように硬くなり、15秒間アーマーが150増加します。"],
         ["starfire", "スターファイア", "星の炎を呼び下ろし、{damage} の秘術ダメージを与えます。"],
+        ["mortal_strike", "致死打撃", "凶悪な一撃で武器ダメージに加えて {damage} のダメージを与えます。（武器シグネチャー）"],
+        ["bloodthirst", "血の渇き", "血の狂乱に身を任せて即座に攻撃し、{damage} のダメージを与えます。（狂怒シグネチャー）"],
+        ["shield_slam", "シールドスラム", "盾で対象を叩きつけ、{damage} のダメージと大量の脅威を与えます。（防御シグネチャー）"],
+        ["whirlwind", "旋風斬", "致命的な弧を描いて回転し、近くのすべての敵に {damage} のダメージを与えます。（狂怒タレント）"],
+        ["berserker_rage", "バーサーカーレイジ", "バーサーカーの怒りに入り、怒りを20生成します。（戦士タレント）"],
       ]),
     },
   },
@@ -6589,6 +6687,11 @@ const phase7 = {
         ["regrowth", "Recrescimento", "Cura um alvo aliado em {damage} e em uma quantidade adicional ao longo de 21 s."],
         ["barkskin", "Casca Grossa", "Sua pele endurece como casca, aumentando a armadura em 150 por 15 s."],
         ["starfire", "Fogo Estelar", "Invoca um raio de fogo estelar, causando {damage} de dano Arcano."],
+        ["mortal_strike", "Golpe Mortal", "Um golpe cruel que causa dano da arma mais {damage}. (assinatura de Armas)"],
+        ["bloodthirst", "Sede de Sangue", "Ataca instantaneamente em frenesi sangrento, causando {damage}. (assinatura de Fúria)"],
+        ["shield_slam", "Impacto com Escudo", "Golpeia o alvo com seu escudo, causando {damage} e muita ameaça. (assinatura de Proteção)"],
+        ["whirlwind", "Redemoinho", "Gira em um arco mortal, atingindo todos os inimigos próximos por {damage}. (talento de Fúria)"],
+        ["berserker_rage", "Raiva Berserker", "Entra em raiva berserker e gera 20 de raiva. (talento de guerreiro)"],
       ]),
     },
   },
@@ -6702,6 +6805,11 @@ const phase7 = {
         ["regrowth", "Восстановление", "Исцеляет дружественную цель на {damage} и дополнительно в течение 21 сек."],
         ["barkskin", "Дубовая кожа", "Ваша кожа твердеет, как кора, повышая броню на 150 на 15 сек."],
         ["starfire", "Звездный огонь", "Обрушивает вспышку звездного огня, нанося {damage} ед. урона от тайной магии."],
+        ["mortal_strike", "Смертельный удар", "Жестокий удар, наносящий урон оружием плюс {damage}. (ключевая способность ветки «Оружие»)"],
+        ["bloodthirst", "Кровожадность", "Мгновенно атакует в кровавом исступлении, нанося {damage}. (ключевая способность ветки «Неистовство»)"],
+        ["shield_slam", "Мощный удар щитом", "Бьет цель щитом, нанося {damage} и создавая огромную угрозу. (ключевая способность ветки «Защита»)"],
+        ["whirlwind", "Вихрь", "Кружится смертельной дугой, поражая всех ближайших врагов на {damage}. (талант ветки «Неистовство»)"],
+        ["berserker_rage", "Ярость берсерка", "Впадаете в ярость берсерка и получаете 20 ярости. (талант воина)"],
       ]),
     },
   },
@@ -6755,7 +6863,7 @@ function itemTranslations(names: readonly string[]): ItemEntityTranslations {
 const phase8En = {
   itemUi: {
     ...phase5.en.itemUi,
-    loot: { takeAll: "Take All" },
+    loot: { takeAll: "Take All", close: "Close loot" },
   },
   entities: {
     ...phase7En.entities,
@@ -6788,7 +6896,7 @@ const phase8 = {
   es: {
     itemUi: {
       ...phase5.es.itemUi,
-      loot: { takeAll: "Recoger botín" },
+      loot: { takeAll: "Recoger botín", close: "Cerrar botín" },
     },
     entities: {
       ...phase7.es.entities,
@@ -6819,7 +6927,7 @@ const phase8 = {
   fr_FR: {
     itemUi: {
       ...phase5.fr_FR.itemUi,
-      loot: { takeAll: "Tout prendre" },
+      loot: { takeAll: "Tout prendre", close: "Fermer le butin" },
     },
     entities: {
       ...phase7.fr_FR.entities,
@@ -6851,7 +6959,7 @@ const phase8 = {
   it_IT: {
     itemUi: {
       ...phase5.it_IT.itemUi,
-      loot: { takeAll: "Prendi tutto" },
+      loot: { takeAll: "Prendi tutto", close: "Chiudi bottino" },
     },
     entities: {
       ...phase7.it_IT.entities,
@@ -6881,7 +6989,7 @@ const phase8 = {
   de_DE: {
     itemUi: {
       ...phase5.de_DE.itemUi,
-      loot: { takeAll: "Alles nehmen" },
+      loot: { takeAll: "Alles nehmen", close: "Beute schließen" },
     },
     entities: {
       ...phase7.de_DE.entities,
@@ -6911,7 +7019,7 @@ const phase8 = {
   zh_CN: {
     itemUi: {
       ...phase5.zh_CN.itemUi,
-      loot: { takeAll: "全部拾取" },
+      loot: { takeAll: "全部拾取", close: "关闭战利品" },
     },
     entities: {
       ...phase7.zh_CN.entities,
@@ -6941,7 +7049,7 @@ const phase8 = {
   zh_TW: {
     itemUi: {
       ...phase5.zh_TW.itemUi,
-      loot: { takeAll: "全部拾取" },
+      loot: { takeAll: "全部拾取", close: "關閉戰利品" },
     },
     entities: {
       ...phase7.zh_TW.entities,
@@ -6971,7 +7079,7 @@ const phase8 = {
   ko_KR: {
     itemUi: {
       ...phase5.ko_KR.itemUi,
-      loot: { takeAll: "모두 가져가기" },
+      loot: { takeAll: "모두 가져가기", close: "전리품 닫기" },
     },
     entities: {
       ...phase7.ko_KR.entities,
@@ -7001,7 +7109,7 @@ const phase8 = {
   ja_JP: {
     itemUi: {
       ...phase5.ja_JP.itemUi,
-      loot: { takeAll: "すべて取る" },
+      loot: { takeAll: "すべて取る", close: "戦利品を閉じる" },
     },
     entities: {
       ...phase7.ja_JP.entities,
@@ -7031,7 +7139,7 @@ const phase8 = {
   pt_BR: {
     itemUi: {
       ...phase5.pt_BR.itemUi,
-      loot: { takeAll: "Pegar tudo" },
+      loot: { takeAll: "Pegar tudo", close: "Fechar saque" },
     },
     entities: {
       ...phase7.pt_BR.entities,
@@ -7061,7 +7169,7 @@ const phase8 = {
   ru_RU: {
     itemUi: {
       ...phase5.ru_RU.itemUi,
-      loot: { takeAll: "Взять все" },
+      loot: { takeAll: "Взять все", close: "Закрыть добычу" },
     },
     entities: {
       ...phase7.ru_RU.entities,
@@ -8955,7 +9063,560 @@ const phase11Entities = {
 phase11Entities.es_ES = phase11Entities.es;
 phase11Entities.fr_CA = phase11Entities.fr_FR;
 
+// In-game HUD strings for the Max-Level XP Overflow / post-cap progression
+// system. These route through t() per the i18n constraint; each supported
+// locale provides its own object below.
+export const gameStrings = {
+  xp: {
+    suffix: "XP",
+    maxLevel: "MAX LEVEL",
+    totalXp: "total XP",
+    lv: "Lv",
+    toNext: "to next",
+  },
+  progression: {
+    heading: "Progression",
+    totalXp: "Total XP",
+    virtualLevel: "Virtual Level",
+    prestigeRank: "Prestige Rank",
+    milestones: "Milestones",
+    none: "None yet",
+    virtualLevelUp: "Virtual Level",
+  },
+  leaderboard: {
+    title: "Leaderboard",
+    subtitle: "Lifetime XP",
+    rank: "Rank",
+    name: "Name",
+    realmCol: "Realm",
+    level: "Lvl",
+    vlevel: "V.Lvl",
+    lifetimeXp: "Lifetime XP",
+    yourRank: "Your Standing",
+    empty: "No champions yet — be the first to make your mark.",
+    loading: "Loading rankings…",
+    unranked: "Unranked",
+    you: "You",
+    globalSubtitle: "Top champions across all realms",
+    retry: "Could not load the leaderboard. Try again.",
+  },
+  milestone: {
+    unlocked: "Milestone Unlocked",
+    veteran: "Veteran",
+    champion: "Champion",
+    paragon: "Paragon",
+    mythic: "Mythic",
+    eternal: "Eternal",
+  },
+  prestige: {
+    action: "Prestige",
+    title: "Prestige Character",
+    body: "Prestige raises your Prestige Rank by 1 and resets your level XP bar. It does NOT change your level, gear, talents, abilities, or your lifetime XP and leaderboard standing — it is a cosmetic flex only.",
+    confirm: "Prestige",
+    cancel: "Cancel",
+    rank: "Prestige",
+    needCap: "You must be at the level cap to prestige.",
+    needXp: "more lifetime XP to prestige",
+  },
+  settings: {
+    showOverflowXp: "Show Overflow XP",
+  },
+  // Talents & Specializations — UI chrome only (node/spec names are content,
+  // rendered directly like ability names). Registered here so the panel routes
+  // through t() per the i18n constraint.
+  talents: {
+    title: "Talents",
+    classTab: "Class",
+    specTab: "Specialization",
+    available: "Available",
+    spent: "Spent",
+    pointSource: "Earn 1 talent point each level from level {first} to {cap}. Level up to get more points.",
+    apply: "Apply changes",
+    clear: "Reset points",
+    reset: "Reset",
+    chooseSpec: "Choose a Specialization",
+    noSpec: "No specialization chosen",
+    role: "Role",
+    mastery: "Mastery",
+    signature: "Signature",
+    roleTank: "Tank",
+    roleHealer: "Healer",
+    roleDps: "Damage",
+    loadouts: "Saved builds",
+    currentBuild: "Current build",
+    createBuild: "Create build",
+    saveBuild: "Save current",
+    saveBuildAs: "Save build",
+    newBuild: "New build",
+    deleteBuild: "Delete",
+    currentBuildHint: "Choose a saved build, then Save current to update it. Export shares the selected build.",
+    createBuildHint: "New build saves your current points as a separate build. Import pastes a shared build string.",
+    buildHint: "Choose a saved build, update it with Save current, or create another with New build.",
+    buildInvalid: "This build is not valid yet.",
+    selectBuildFirst: "Select a saved build to delete.",
+    deleteBuildTitle: "Delete saved build?",
+    deleteBuildBody: "Delete “{name}”? This removes only the saved build; your current talents stay unchanged.",
+    deleteBuildConfirm: "Delete build",
+    namePrompt: "Name this build:",
+    import: "Import",
+    export: "Export",
+    importPrompt: "Paste a build string:",
+    exportCopied: "Build string copied to clipboard.",
+    exportTitle: "Build string (copy & share):",
+    invalidBuild: "That build string is invalid.",
+    rank: "Rank",
+    requires: "Requires",
+    pointsGate: "points spent in tree",
+    dormant: "Inactive — prerequisite refunded",
+    editHint: "Left-click to add • Right-click to remove",
+    cycleHint: "Click to choose an option",
+    combatLocked: "You can't change talents in combat.",
+    nothingStaged: "No changes to apply.",
+    pickSpecFirst: "Choose a specialization to access this tree.",
+    unlockBanner: "Talents Unlocked!",
+    unlockHint: "You've earned your first talent point — press N to open Talents.",
+    copy: "Copy",
+    close: "Close",
+    cancel: "Cancel",
+    noBuilds: "No saved builds",
+    save: "Save",
+    comingSoonTitle: "Talents coming soon",
+    comingSoonBody: "This class does not have talent trees yet. You can keep playing normally; full trees will arrive in a future update.",
+  },
+};
+
+const gameStringsEnCA: typeof gameStrings = {
+  ...gameStrings,
+  leaderboard: {
+    ...gameStrings.leaderboard,
+    globalSubtitle: "Top champions across all realms",
+  },
+};
+
+const gameStringsEs: typeof gameStrings = {
+  xp: { suffix: "EXP", maxLevel: "NIVEL MAX.", totalXp: "EXP total", lv: "Nv", toNext: "para el siguiente" },
+  progression: {
+    heading: "Progreso",
+    totalXp: "EXP total",
+    virtualLevel: "Nivel virtual",
+    prestigeRank: "Rango de prestigio",
+    milestones: "Hitos",
+    none: "Aun ninguno",
+    virtualLevelUp: "Nivel virtual",
+  },
+  leaderboard: {
+    title: "Clasificacion",
+    subtitle: "EXP de por vida",
+    rank: "Puesto",
+    name: "Nombre",
+    realmCol: "Reino",
+    level: "Nv",
+    vlevel: "Nv. V.",
+    lifetimeXp: "EXP de por vida",
+    yourRank: "Tu posicion",
+    empty: "Aun no hay campeones; se el primero en dejar huella.",
+    loading: "Cargando clasificacion...",
+    unranked: "Sin clasificar",
+    you: "Tu",
+    globalSubtitle: "Mejores campeones de todos los reinos",
+    retry: "No se pudo cargar la clasificacion. Intenta de nuevo.",
+  },
+  milestone: {
+    unlocked: "Hito desbloqueado",
+    veteran: "Veterano",
+    champion: "Campeon",
+    paragon: "Paragon",
+    mythic: "Mitico",
+    eternal: "Eterno",
+  },
+  prestige: {
+    action: "Prestigio",
+    title: "Prestigiar personaje",
+    body: "El prestigio aumenta tu rango de prestigio en 1 y reinicia la barra de EXP de nivel. No cambia tu nivel, equipo, talentos, habilidades ni tu EXP de por vida o posicion en la clasificacion; solo es una muestra cosmetica.",
+    confirm: "Prestigiar",
+    cancel: "Cancelar",
+    rank: "Prestigio",
+    needCap: "Debes estar en el nivel maximo para ganar prestigio.",
+    needXp: "mas EXP de por vida para prestigio",
+  },
+  settings: { showOverflowXp: "Mostrar EXP excedente" },
+  talents: {
+    title: "Talentos",
+    classTab: "Clase",
+    specTab: "Especializacion",
+    available: "Disponibles",
+    spent: "Gastados",
+    pointSource: "Ganas 1 punto de talento por nivel desde el nivel {first} hasta el {cap}. Sube de nivel para conseguir mas puntos.",
+    apply: "Aplicar cambios",
+    clear: "Reiniciar puntos",
+    reset: "Reiniciar",
+    chooseSpec: "Elige una especializacion",
+    noSpec: "Sin especializacion elegida",
+    role: "Rol",
+    mastery: "Maestria",
+    signature: "Firma",
+    roleTank: "Tanque",
+    roleHealer: "Sanador",
+    roleDps: "Dano",
+    loadouts: "Configuraciones guardadas",
+    currentBuild: "Configuracion actual",
+    createBuild: "Crear configuracion",
+    saveBuild: "Guardar actual",
+    saveBuildAs: "Guardar configuracion",
+    newBuild: "Nueva configuracion",
+    deleteBuild: "Eliminar",
+    currentBuildHint: "Elige una configuracion guardada y luego usa Guardar actual para actualizarla. Exportar comparte la configuracion seleccionada.",
+    createBuildHint: "Nueva configuracion guarda tus puntos actuales por separado. Importar pega una cadena compartida.",
+    buildHint: "Elige una configuracion guardada, actualizala con Guardar actual o crea otra con Nueva configuracion.",
+    buildInvalid: "Esta configuracion aun no es valida.",
+    selectBuildFirst: "Elige una configuracion guardada para eliminar.",
+    deleteBuildTitle: "Eliminar configuracion guardada?",
+    deleteBuildBody: "Eliminar \"{name}\"? Esto borra solo la configuracion guardada; tus talentos actuales no cambian.",
+    deleteBuildConfirm: "Eliminar configuracion",
+    namePrompt: "Nombre de esta configuracion:",
+    import: "Importar",
+    export: "Exportar",
+    importPrompt: "Pega una cadena de configuracion:",
+    exportCopied: "Cadena de configuracion copiada al portapapeles.",
+    exportTitle: "Cadena de configuracion (copia y comparte):",
+    invalidBuild: "Esa cadena de configuracion no es valida.",
+    rank: "Rango",
+    requires: "Requiere",
+    pointsGate: "puntos gastados en el arbol",
+    dormant: "Inactivo: se reembolso el requisito",
+    editHint: "Clic izquierdo para sumar - clic derecho para quitar",
+    cycleHint: "Haz clic para elegir una opcion",
+    combatLocked: "No puedes cambiar talentos en combate.",
+    nothingStaged: "No hay cambios por aplicar.",
+    pickSpecFirst: "Elige una especializacion para acceder a este arbol.",
+    unlockBanner: "Talentos desbloqueados!",
+    unlockHint: "Ganaste tu primer punto de talento: presiona N para abrir Talentos.",
+    copy: "Copiar",
+    close: "Cerrar",
+    cancel: "Cancelar",
+    noBuilds: "Sin configuraciones guardadas",
+    save: "Guardar",
+    comingSoonTitle: "Talentos proximamente",
+    comingSoonBody: "Esta clase aun no tiene arboles de talentos. Puedes seguir jugando normalmente; los arboles completos llegaran en una actualizacion futura.",
+  },
+};
+
+const gameStringsEsES: typeof gameStrings = gameStringsEs;
+
+const gameStringsFrFR: typeof gameStrings = {
+  xp: { suffix: "EXP", maxLevel: "NIVEAU MAX.", totalXp: "EXP totale", lv: "Niv.", toNext: "avant le suivant" },
+  progression: {
+    heading: "Progression",
+    totalXp: "EXP totale",
+    virtualLevel: "Niveau virtuel",
+    prestigeRank: "Rang de prestige",
+    milestones: "Jalons",
+    none: "Aucun pour l'instant",
+    virtualLevelUp: "Niveau virtuel",
+  },
+  leaderboard: {
+    title: "Classement",
+    subtitle: "EXP a vie",
+    rank: "Rang",
+    name: "Nom",
+    realmCol: "Royaume",
+    level: "Niv.",
+    vlevel: "Niv. V.",
+    lifetimeXp: "EXP a vie",
+    yourRank: "Votre rang",
+    empty: "Aucun champion pour l'instant; soyez le premier a marquer les esprits.",
+    loading: "Chargement du classement...",
+    unranked: "Non classe",
+    you: "Vous",
+    globalSubtitle: "Meilleurs champions de tous les royaumes",
+    retry: "Impossible de charger le classement. Reessayez.",
+  },
+  milestone: {
+    unlocked: "Jalon debloque",
+    veteran: "Veteran",
+    champion: "Champion",
+    paragon: "Parangon",
+    mythic: "Mythique",
+    eternal: "Eternel",
+  },
+  prestige: {
+    action: "Prestige",
+    title: "Donner du prestige au personnage",
+    body: "Le prestige augmente votre rang de prestige de 1 et remet a zero votre barre d'EXP de niveau. Il ne change ni votre niveau, ni votre equipement, ni vos talents, ni vos techniques, ni votre EXP a vie ou votre place au classement; c'est seulement une marque cosmetique.",
+    confirm: "Prestige",
+    cancel: "Annuler",
+    rank: "Prestige",
+    needCap: "Vous devez etre au niveau maximum pour obtenir du prestige.",
+    needXp: "EXP a vie supplementaire pour le prestige",
+  },
+  settings: { showOverflowXp: "Afficher l'EXP excedentaire" },
+  talents: {
+    title: "Talents",
+    classTab: "Classe",
+    specTab: "Specialisation",
+    available: "Disponibles",
+    spent: "Depenses",
+    pointSource: "Gagnez 1 point de talent par niveau du niveau {first} au niveau {cap}. Montez de niveau pour obtenir plus de points.",
+    apply: "Appliquer les changements",
+    clear: "Reinitialiser les points",
+    reset: "Reinitialiser",
+    chooseSpec: "Choisir une specialisation",
+    noSpec: "Aucune specialisation choisie",
+    role: "Role",
+    mastery: "Maitrise",
+    signature: "Signature",
+    roleTank: "Tank",
+    roleHealer: "Soigneur",
+    roleDps: "Degats",
+    loadouts: "Configurations sauvegardees",
+    currentBuild: "Configuration actuelle",
+    createBuild: "Creer une configuration",
+    saveBuild: "Sauvegarder l'actuelle",
+    saveBuildAs: "Sauvegarder la configuration",
+    newBuild: "Nouvelle configuration",
+    deleteBuild: "Supprimer",
+    currentBuildHint: "Choisissez une configuration sauvegardee, puis Sauvegarder l'actuelle pour la mettre a jour. Exporter partage la configuration selectionnee.",
+    createBuildHint: "Nouvelle configuration sauvegarde vos points actuels separement. Importer colle une chaine partagee.",
+    buildHint: "Choisissez une configuration sauvegardee, mettez-la a jour avec Sauvegarder l'actuelle ou creez-en une autre.",
+    buildInvalid: "Cette configuration n'est pas encore valide.",
+    selectBuildFirst: "Selectionnez une configuration sauvegardee a supprimer.",
+    deleteBuildTitle: "Supprimer la configuration sauvegardee?",
+    deleteBuildBody: "Supprimer \"{name}\"? Cela retire seulement la configuration sauvegardee; vos talents actuels restent inchanges.",
+    deleteBuildConfirm: "Supprimer la configuration",
+    namePrompt: "Nom de cette configuration:",
+    import: "Importer",
+    export: "Exporter",
+    importPrompt: "Collez une chaine de configuration:",
+    exportCopied: "Chaine de configuration copiee dans le presse-papiers.",
+    exportTitle: "Chaine de configuration (copiez et partagez):",
+    invalidBuild: "Cette chaine de configuration est invalide.",
+    rank: "Rang",
+    requires: "Requiert",
+    pointsGate: "points depenses dans l'arbre",
+    dormant: "Inactif: pre-requis rembourse",
+    editHint: "Clic gauche pour ajouter - clic droit pour retirer",
+    cycleHint: "Cliquez pour choisir une option",
+    combatLocked: "Vous ne pouvez pas changer de talents en combat.",
+    nothingStaged: "Aucun changement a appliquer.",
+    pickSpecFirst: "Choisissez une specialisation pour acceder a cet arbre.",
+    unlockBanner: "Talents debloques!",
+    unlockHint: "Vous avez gagne votre premier point de talent: appuyez sur N pour ouvrir Talents.",
+    copy: "Copier",
+    close: "Fermer",
+    cancel: "Annuler",
+    noBuilds: "Aucune configuration sauvegardee",
+    save: "Sauvegarder",
+    comingSoonTitle: "Talents a venir",
+    comingSoonBody: "Cette classe n'a pas encore d'arbres de talents. Vous pouvez continuer a jouer normalement; les arbres complets arriveront dans une future mise a jour.",
+  },
+};
+
+const gameStringsFrCA: typeof gameStrings = gameStringsFrFR;
+
+const gameStringsItIT: typeof gameStrings = {
+  xp: { suffix: "PE", maxLevel: "LIVELLO MAX", totalXp: "PE totali", lv: "Liv", toNext: "al prossimo" },
+  progression: { heading: "Progressione", totalXp: "PE totali", virtualLevel: "Livello virtuale", prestigeRank: "Rango prestigio", milestones: "Traguardi", none: "Ancora nessuno", virtualLevelUp: "Livello virtuale" },
+  leaderboard: { title: "Classifica", subtitle: "PE totali", rank: "Posizione", name: "Nome", realmCol: "Reame", level: "Liv", vlevel: "Liv.V", lifetimeXp: "PE totali", yourRank: "La tua posizione", empty: "Non ci sono ancora campioni: lascia il primo segno.", loading: "Caricamento classifica...", unranked: "Non classificato", you: "Tu", globalSubtitle: "Migliori campioni di tutti i reami", retry: "Impossibile caricare la classifica. Riprova." },
+  milestone: { unlocked: "Traguardo sbloccato", veteran: "Veterano", champion: "Campione", paragon: "Esemplare", mythic: "Mitico", eternal: "Eterno" },
+  prestige: { action: "Prestigio", title: "Prestigio personaggio", body: "Il prestigio aumenta il tuo rango prestigio di 1 e azzera la barra PE del livello. Non cambia livello, equipaggiamento, talenti, abilita, PE totali o posizione in classifica: e solo un segno cosmetico.", confirm: "Prestigio", cancel: "Annulla", rank: "Prestigio", needCap: "Devi essere al livello massimo per ottenere prestigio.", needXp: "PE totali in piu per il prestigio" },
+  settings: { showOverflowXp: "Mostra PE eccedenti" },
+  talents: {
+    title: "Talenti", classTab: "Classe", specTab: "Specializzazione", available: "Disponibili", spent: "Spesi", pointSource: "Ottieni 1 punto talento a ogni livello dal {first} al {cap}. Sali di livello per ottenerne altri.", apply: "Applica modifiche", clear: "Azzera punti", reset: "Azzera", chooseSpec: "Scegli una specializzazione", noSpec: "Nessuna specializzazione scelta", role: "Ruolo", mastery: "Maestria", signature: "Firma", roleTank: "Difensore", roleHealer: "Guaritore", roleDps: "Danni", loadouts: "Build salvate", currentBuild: "Build attuale", createBuild: "Crea build", saveBuild: "Salva attuale", saveBuildAs: "Salva build", newBuild: "Nuova build", deleteBuild: "Elimina", currentBuildHint: "Scegli una build salvata, poi Salva attuale per aggiornarla. Esporta condivide la build selezionata.", createBuildHint: "Nuova build salva i punti attuali separatamente. Importa incolla una stringa condivisa.", buildHint: "Scegli una build salvata, aggiornala con Salva attuale o creane un'altra.", buildInvalid: "Questa build non e ancora valida.", selectBuildFirst: "Seleziona una build salvata da eliminare.", deleteBuildTitle: "Eliminare la build salvata?", deleteBuildBody: "Eliminare \"{name}\"? Rimuove solo la build salvata; i talenti attuali restano invariati.", deleteBuildConfirm: "Elimina build", namePrompt: "Nome di questa build:", import: "Importa", export: "Esporta", importPrompt: "Incolla una stringa build:", exportCopied: "Stringa build copiata negli appunti.", exportTitle: "Stringa build (copia e condividi):", invalidBuild: "Questa stringa build non e valida.", rank: "Grado", requires: "Richiede", pointsGate: "punti spesi nell'albero", dormant: "Inattivo: prerequisito rimborsato", editHint: "Clic sinistro per aggiungere - clic destro per rimuovere", cycleHint: "Clicca per scegliere un'opzione", combatLocked: "Non puoi cambiare talenti in combattimento.", nothingStaged: "Nessuna modifica da applicare.", pickSpecFirst: "Scegli una specializzazione per accedere a questo albero.", unlockBanner: "Talenti sbloccati!", unlockHint: "Hai ottenuto il tuo primo punto talento: premi N per aprire Talenti.", copy: "Copia", close: "Chiudi", cancel: "Annulla", noBuilds: "Nessuna build salvata", save: "Salva", comingSoonTitle: "Talenti in arrivo", comingSoonBody: "Questa classe non ha ancora alberi dei talenti. Puoi continuare a giocare normalmente; gli alberi completi arriveranno in un futuro aggiornamento.",
+  },
+};
+
+const gameStringsDeDE: typeof gameStrings = {
+  xp: { suffix: "EP", maxLevel: "MAX. STUFE", totalXp: "EP gesamt", lv: "St.", toNext: "bis zur naechsten" },
+  progression: { heading: "Fortschritt", totalXp: "EP gesamt", virtualLevel: "Virtuelle Stufe", prestigeRank: "Prestigerang", milestones: "Meilensteine", none: "Noch keine", virtualLevelUp: "Virtuelle Stufe" },
+  leaderboard: { title: "Rangliste", subtitle: "Lebenszeit-EP", rank: "Rang", name: "Name", realmCol: "Realm", level: "St.", vlevel: "V.St.", lifetimeXp: "Lebenszeit-EP", yourRank: "Euer Rang", empty: "Noch keine Champions; setzt als Erste ein Zeichen.", loading: "Rangliste wird geladen...", unranked: "Ohne Rang", you: "Ihr", globalSubtitle: "Beste Champions aller Realms", retry: "Rangliste konnte nicht geladen werden. Versucht es erneut." },
+  milestone: { unlocked: "Meilenstein freigeschaltet", veteran: "Veteran", champion: "Champion", paragon: "Paragon", mythic: "Mythisch", eternal: "Ewig" },
+  prestige: { action: "Prestige", title: "Charakter prestigen", body: "Prestige erhoeht Euren Prestigerang um 1 und setzt die Stufen-EP-Leiste zurueck. Stufe, Ausruestung, Talente, Faehigkeiten, Lebenszeit-EP und Ranglistenplatz bleiben unveraendert; es ist nur ein kosmetisches Zeichen.", confirm: "Prestige", cancel: "Abbrechen", rank: "Prestige", needCap: "Ihr muesst die Maximalstufe erreicht haben, um Prestige zu erhalten.", needXp: "mehr Lebenszeit-EP fuer Prestige" },
+  settings: { showOverflowXp: "Ueberschuss-EP anzeigen" },
+  talents: {
+    title: "Talente", classTab: "Klasse", specTab: "Spezialisierung", available: "Verfuegbar", spent: "Ausgegeben", pointSource: "Ihr erhaltet pro Stufe von {first} bis {cap} 1 Talentpunkt. Steigt auf, um mehr Punkte zu bekommen.", apply: "Aenderungen anwenden", clear: "Punkte zuruecksetzen", reset: "Zuruecksetzen", chooseSpec: "Spezialisierung waehlen", noSpec: "Keine Spezialisierung gewaehlt", role: "Rolle", mastery: "Meisterschaft", signature: "Signatur", roleTank: "Tank", roleHealer: "Heiler", roleDps: "Schaden", loadouts: "Gespeicherte Builds", currentBuild: "Aktueller Build", createBuild: "Build erstellen", saveBuild: "Aktuellen speichern", saveBuildAs: "Build speichern", newBuild: "Neuer Build", deleteBuild: "Loeschen", currentBuildHint: "Waehlt einen gespeicherten Build und dann Aktuellen speichern, um ihn zu aktualisieren. Exportieren teilt den gewaehlten Build.", createBuildHint: "Neuer Build speichert Eure aktuellen Punkte separat. Importieren fuegt eine geteilte Zeichenfolge ein.", buildHint: "Waehlt einen gespeicherten Build, aktualisiert ihn oder erstellt einen neuen.", buildInvalid: "Dieser Build ist noch nicht gueltig.", selectBuildFirst: "Waehlt zuerst einen gespeicherten Build zum Loeschen.", deleteBuildTitle: "Gespeicherten Build loeschen?", deleteBuildBody: "\"{name}\" loeschen? Nur der gespeicherte Build wird entfernt; Eure aktuellen Talente bleiben erhalten.", deleteBuildConfirm: "Build loeschen", namePrompt: "Name dieses Builds:", import: "Importieren", export: "Exportieren", importPrompt: "Build-Zeichenfolge einfuegen:", exportCopied: "Build-Zeichenfolge in die Zwischenablage kopiert.", exportTitle: "Build-Zeichenfolge (kopieren und teilen):", invalidBuild: "Diese Build-Zeichenfolge ist ungueltig.", rank: "Rang", requires: "Benoetigt", pointsGate: "Punkte im Baum ausgegeben", dormant: "Inaktiv: Voraussetzung erstattet", editHint: "Linksklick zum Hinzufuegen - Rechtsklick zum Entfernen", cycleHint: "Klicken, um eine Option zu waehlen", combatLocked: "Im Kampf koennt Ihr keine Talente aendern.", nothingStaged: "Keine Aenderungen zum Anwenden.", pickSpecFirst: "Waehlt eine Spezialisierung, um diesen Baum zu oeffnen.", unlockBanner: "Talente freigeschaltet!", unlockHint: "Ihr habt Euren ersten Talentpunkt verdient: Drueckt N, um Talente zu oeffnen.", copy: "Kopieren", close: "Schliessen", cancel: "Abbrechen", noBuilds: "Keine gespeicherten Builds", save: "Speichern", comingSoonTitle: "Talente folgen bald", comingSoonBody: "Diese Klasse hat noch keine Talentbaeume. Ihr koennt normal weiterspielen; vollstaendige Baeume kommen in einem zukuenftigen Update.",
+  },
+};
+
+const gameStringsZhCN: typeof gameStrings = {
+  xp: { suffix: "经验", maxLevel: "满级", totalXp: "总经验", lv: "等级", toNext: "到下一级" },
+  progression: { heading: "进度", totalXp: "总经验", virtualLevel: "虚拟等级", prestigeRank: "声望阶级", milestones: "里程碑", none: "尚无", virtualLevelUp: "虚拟等级" },
+  leaderboard: { title: "排行榜", subtitle: "终身经验", rank: "名次", name: "名称", realmCol: "服务器", level: "等级", vlevel: "虚等", lifetimeXp: "终身经验", yourRank: "你的排名", empty: "还没有冠军；成为第一个留下传说的人。", loading: "正在加载排名...", unranked: "未上榜", you: "你", globalSubtitle: "所有服务器的顶尖冠军", retry: "无法加载排行榜。请重试。" },
+  milestone: { unlocked: "里程碑解锁", veteran: "老兵", champion: "冠军", paragon: "典范", mythic: "神话", eternal: "永恒" },
+  prestige: { action: "声望晋升", title: "角色声望晋升", body: "声望晋升会使你的声望阶级提高 1，并重置等级经验条。它不会改变等级、装备、天赋、技能、终身经验或排行榜位置；这只是外观荣誉。", confirm: "声望晋升", cancel: "取消", rank: "声望", needCap: "你必须达到等级上限才能进行声望晋升。", needXp: "更多终身经验才可声望晋升" },
+  settings: { showOverflowXp: "显示溢出经验" },
+  talents: {
+    title: "天赋", classTab: "职业", specTab: "专精", available: "可用", spent: "已用", pointSource: "从 {first} 级到 {cap} 级，每升一级获得 1 点天赋点。继续升级可获得更多点数。", apply: "应用更改", clear: "重置点数", reset: "重置", chooseSpec: "选择一个专精", noSpec: "未选择专精", role: "职责", mastery: "精通", signature: "标志技能", roleTank: "坦克", roleHealer: "治疗", roleDps: "伤害", loadouts: "已保存配置", currentBuild: "当前配置", createBuild: "创建配置", saveBuild: "保存当前", saveBuildAs: "保存配置", newBuild: "新配置", deleteBuild: "删除", currentBuildHint: "选择已保存配置，然后用保存当前更新它。导出会分享所选配置。", createBuildHint: "新配置会把当前点数另存为一个配置。导入可粘贴分享字符串。", buildHint: "选择已保存配置，用保存当前更新，或创建新配置。", buildInvalid: "此配置尚未有效。", selectBuildFirst: "先选择要删除的已保存配置。", deleteBuildTitle: "删除已保存配置？", deleteBuildBody: "删除“{name}”？这只会移除已保存配置；当前天赋不会改变。", deleteBuildConfirm: "删除配置", namePrompt: "为此配置命名：", import: "导入", export: "导出", importPrompt: "粘贴配置字符串：", exportCopied: "配置字符串已复制到剪贴板。", exportTitle: "配置字符串（复制并分享）：", invalidBuild: "该配置字符串无效。", rank: "等级", requires: "需要", pointsGate: "点已投入此树", dormant: "未激活：前置已退还", editHint: "左键添加 - 右键移除", cycleHint: "点击选择选项", combatLocked: "战斗中不能更改天赋。", nothingStaged: "没有要应用的更改。", pickSpecFirst: "选择专精后才能使用此树。", unlockBanner: "天赋已解锁！", unlockHint: "你获得了第一个天赋点：按 N 打开天赋。", copy: "复制", close: "关闭", cancel: "取消", noBuilds: "没有已保存配置", save: "保存", comingSoonTitle: "天赋即将推出", comingSoonBody: "此职业还没有天赋树。你可以继续正常游玩；完整天赋树会在未来更新中到来。",
+  },
+};
+
+const gameStringsZhTW: typeof gameStrings = {
+  xp: { suffix: "經驗", maxLevel: "滿級", totalXp: "總經驗", lv: "等級", toNext: "到下一級" },
+  progression: { heading: "進度", totalXp: "總經驗", virtualLevel: "虛擬等級", prestigeRank: "威望階級", milestones: "里程碑", none: "尚無", virtualLevelUp: "虛擬等級" },
+  leaderboard: { title: "排行榜", subtitle: "終身經驗", rank: "名次", name: "名稱", realmCol: "伺服器", level: "等級", vlevel: "虛等", lifetimeXp: "終身經驗", yourRank: "你的排名", empty: "還沒有冠軍；成為第一個留下傳說的人。", loading: "正在載入排名...", unranked: "未上榜", you: "你", globalSubtitle: "所有伺服器的頂尖冠軍", retry: "無法載入排行榜。請再試一次。" },
+  milestone: { unlocked: "里程碑解鎖", veteran: "老兵", champion: "冠軍", paragon: "典範", mythic: "神話", eternal: "永恆" },
+  prestige: { action: "威望晉升", title: "角色威望晉升", body: "威望晉升會使你的威望階級提高 1，並重置等級經驗條。它不會改變等級、裝備、天賦、技能、終身經驗或排行榜位置；這只是外觀榮譽。", confirm: "威望晉升", cancel: "取消", rank: "威望", needCap: "你必須達到等級上限才能進行威望晉升。", needXp: "更多終身經驗才可威望晉升" },
+  settings: { showOverflowXp: "顯示溢出經驗" },
+  talents: {
+    title: "天賦",
+    classTab: "職業",
+    specTab: "專精",
+    available: "可用",
+    spent: "已用",
+    pointSource: "從 {first} 級到 {cap} 級，每升一級獲得 1 點天賦點。繼續升級可獲得更多點數。",
+    apply: "套用變更",
+    clear: "重置點數",
+    reset: "重置",
+    chooseSpec: "選擇一個專精",
+    noSpec: "未選擇專精",
+    role: "職責",
+    mastery: "精通",
+    signature: "代表技能",
+    roleTank: "坦克",
+    roleHealer: "治療",
+    roleDps: "傷害",
+    loadouts: "已儲存配置",
+    currentBuild: "目前配置",
+    createBuild: "建立配置",
+    saveBuild: "儲存目前",
+    saveBuildAs: "儲存配置",
+    newBuild: "新配置",
+    deleteBuild: "刪除",
+    currentBuildHint: "選擇已儲存配置，然後用儲存目前更新它。匯出會分享所選配置。",
+    createBuildHint: "新配置會把目前點數另存為一個配置。匯入可貼上分享字串。",
+    buildHint: "選擇已儲存配置，用儲存目前更新，或建立新配置。",
+    buildInvalid: "此配置尚未有效。",
+    selectBuildFirst: "先選擇要刪除的已儲存配置。",
+    deleteBuildTitle: "刪除已儲存配置？",
+    deleteBuildBody: "刪除「{name}」？這只會移除已儲存配置；目前天賦不會改變。",
+    deleteBuildConfirm: "刪除配置",
+    namePrompt: "為此配置命名：",
+    import: "匯入",
+    export: "匯出",
+    importPrompt: "貼上配置字串：",
+    exportCopied: "配置字串已複製到剪貼簿。",
+    exportTitle: "配置字串（複製並分享）：",
+    invalidBuild: "該配置字串無效。",
+    rank: "等級",
+    requires: "需要",
+    pointsGate: "點已投入此樹",
+    dormant: "未啟用：前置已退還",
+    editHint: "左鍵新增 - 右鍵移除",
+    cycleHint: "點擊選擇選項",
+    combatLocked: "戰鬥中不能更改天賦。",
+    nothingStaged: "沒有要套用的變更。",
+    pickSpecFirst: "選擇專精後才能使用此樹。",
+    unlockBanner: "天賦已解鎖！",
+    unlockHint: "你獲得了第一個天賦點：按 N 開啟天賦。",
+    copy: "複製",
+    close: "關閉",
+    cancel: "取消",
+    noBuilds: "沒有已儲存配置",
+    save: "儲存",
+    comingSoonTitle: "天賦即將推出",
+    comingSoonBody: "此職業還沒有天賦樹。你可以繼續正常遊玩；完整天賦樹會在未來更新中到來。",
+  },
+};
+
+const gameStringsKoKR: typeof gameStrings = {
+  xp: { suffix: "경험치", maxLevel: "최대 레벨", totalXp: "총 경험치", lv: "레벨", toNext: "다음까지" },
+  progression: { heading: "진행도", totalXp: "총 경험치", virtualLevel: "가상 레벨", prestigeRank: "명예 등급", milestones: "이정표", none: "아직 없음", virtualLevelUp: "가상 레벨" },
+  leaderboard: { title: "순위표", subtitle: "누적 경험치", rank: "순위", name: "이름", realmCol: "서버", level: "레벨", vlevel: "가상", lifetimeXp: "누적 경험치", yourRank: "내 순위", empty: "아직 영웅이 없습니다. 첫 흔적을 남겨 보세요.", loading: "순위 불러오는 중...", unranked: "순위 없음", you: "나", globalSubtitle: "모든 서버의 최고 영웅", retry: "순위표를 불러오지 못했습니다. 다시 시도하세요." },
+  milestone: { unlocked: "이정표 해제", veteran: "베테랑", champion: "용사", paragon: "귀감", mythic: "신화", eternal: "영원" },
+  prestige: { action: "명예 승급", title: "캐릭터 명예 승급", body: "명예 승급은 명예 등급을 1 올리고 레벨 경험치 막대를 초기화합니다. 레벨, 장비, 특성, 능력, 누적 경험치, 순위표 위치는 바뀌지 않으며 외형적 표시입니다.", confirm: "명예 승급", cancel: "취소", rank: "명예", needCap: "명예 승급을 하려면 최대 레벨이어야 합니다.", needXp: "명예 승급까지 필요한 추가 누적 경험치" },
+  settings: { showOverflowXp: "초과 경험치 표시" },
+  talents: { title: "특성", classTab: "직업", specTab: "전문화", available: "사용 가능", spent: "사용함", pointSource: "{first}레벨부터 {cap}레벨까지 레벨마다 특성 점수 1점을 얻습니다. 더 많은 점수를 얻으려면 레벨을 올리세요.", apply: "변경 적용", clear: "점수 초기화", reset: "초기화", chooseSpec: "전문화 선택", noSpec: "선택한 전문화 없음", role: "역할", mastery: "숙련", signature: "대표 기술", roleTank: "방어", roleHealer: "치유", roleDps: "피해", loadouts: "저장한 빌드", currentBuild: "현재 빌드", createBuild: "빌드 만들기", saveBuild: "현재 저장", saveBuildAs: "빌드 저장", newBuild: "새 빌드", deleteBuild: "삭제", currentBuildHint: "저장한 빌드를 고른 뒤 현재 저장으로 갱신하세요. 내보내기는 선택한 빌드를 공유합니다.", createBuildHint: "새 빌드는 현재 점수를 별도 빌드로 저장합니다. 가져오기는 공유 문자열을 붙여넣습니다.", buildHint: "저장한 빌드를 고르고 현재 저장으로 갱신하거나 새 빌드를 만드세요.", buildInvalid: "이 빌드는 아직 유효하지 않습니다.", selectBuildFirst: "삭제할 저장 빌드를 먼저 선택하세요.", deleteBuildTitle: "저장한 빌드를 삭제할까요?", deleteBuildBody: "\"{name}\"을(를) 삭제할까요? 저장한 빌드만 삭제되며 현재 특성은 유지됩니다.", deleteBuildConfirm: "빌드 삭제", namePrompt: "이 빌드 이름:", import: "가져오기", export: "내보내기", importPrompt: "빌드 문자열 붙여넣기:", exportCopied: "빌드 문자열이 클립보드에 복사되었습니다.", exportTitle: "빌드 문자열(복사해 공유):", invalidBuild: "그 빌드 문자열은 유효하지 않습니다.", rank: "등급", requires: "필요", pointsGate: "점이 이 트리에 사용됨", dormant: "비활성: 선행 조건 환불됨", editHint: "왼쪽 클릭 추가 - 오른쪽 클릭 제거", cycleHint: "클릭해 옵션 선택", combatLocked: "전투 중에는 특성을 바꿀 수 없습니다.", nothingStaged: "적용할 변경이 없습니다.", pickSpecFirst: "이 트리를 사용하려면 전문화를 선택하세요.", unlockBanner: "특성 해제!", unlockHint: "첫 특성 점수를 얻었습니다. N을 눌러 특성을 여세요.", copy: "복사", close: "닫기", cancel: "취소", noBuilds: "저장한 빌드 없음", save: "저장", comingSoonTitle: "특성 준비 중", comingSoonBody: "이 직업은 아직 특성 트리가 없습니다. 계속 정상적으로 플레이할 수 있으며 전체 트리는 향후 업데이트에 추가됩니다." },
+};
+
+const gameStringsJaJP: typeof gameStrings = {
+  xp: { suffix: "経験値", maxLevel: "最大レベル", totalXp: "総経験値", lv: "Lv", toNext: "次まで" },
+  progression: { heading: "進行", totalXp: "総経験値", virtualLevel: "仮想レベル", prestigeRank: "威信ランク", milestones: "到達点", none: "まだなし", virtualLevelUp: "仮想レベル" },
+  leaderboard: { title: "ランキング", subtitle: "累計経験値", rank: "順位", name: "名前", realmCol: "レルム", level: "Lv", vlevel: "仮Lv", lifetimeXp: "累計経験値", yourRank: "あなたの順位", empty: "まだ英雄はいません。最初の名を刻みましょう。", loading: "ランキングを読み込み中...", unranked: "順位なし", you: "あなた", globalSubtitle: "全レルムの上位英雄", retry: "ランキングを読み込めませんでした。もう一度お試しください。" },
+  milestone: { unlocked: "到達点解除", veteran: "古参", champion: "勇者", paragon: "範士", mythic: "神話", eternal: "永遠" },
+  prestige: { action: "威信", title: "キャラクター威信化", body: "威信は威信ランクを1上げ、レベル経験値バーをリセットします。レベル、装備、タレント、アビリティ、累計経験値、ランキング順位は変わりません。見た目の栄誉です。", confirm: "威信", cancel: "キャンセル", rank: "威信", needCap: "威信を得るにはレベル上限に達している必要があります。", needXp: "威信までに必要な追加累計経験値" },
+  settings: { showOverflowXp: "超過経験値を表示" },
+  talents: { title: "タレント", classTab: "クラス", specTab: "専門化", available: "使用可能", spent: "使用済み", pointSource: "レベル{first}から{cap}まで、レベルごとにタレントポイントを1獲得します。さらにポイントを得るにはレベルを上げてください。", apply: "変更を適用", clear: "ポイントをリセット", reset: "リセット", chooseSpec: "専門化を選択", noSpec: "専門化未選択", role: "役割", mastery: "熟達", signature: "シグネチャ", roleTank: "タンク", roleHealer: "ヒーラー", roleDps: "ダメージ", loadouts: "保存ビルド", currentBuild: "現在のビルド", createBuild: "ビルド作成", saveBuild: "現在を保存", saveBuildAs: "ビルド保存", newBuild: "新規ビルド", deleteBuild: "削除", currentBuildHint: "保存ビルドを選び、現在を保存で更新します。エクスポートは選択したビルドを共有します。", createBuildHint: "新規ビルドは現在のポイントを別ビルドとして保存します。インポートは共有文字列を貼り付けます。", buildHint: "保存ビルドを選び、現在を保存で更新するか、新規ビルドを作成します。", buildInvalid: "このビルドはまだ有効ではありません。", selectBuildFirst: "削除する保存ビルドを選択してください。", deleteBuildTitle: "保存ビルドを削除しますか?", deleteBuildBody: "\"{name}\"を削除しますか? 保存ビルドだけを削除し、現在のタレントは変わりません。", deleteBuildConfirm: "ビルド削除", namePrompt: "このビルドの名前:", import: "インポート", export: "エクスポート", importPrompt: "ビルド文字列を貼り付け:", exportCopied: "ビルド文字列をクリップボードにコピーしました。", exportTitle: "ビルド文字列(コピーして共有):", invalidBuild: "そのビルド文字列は無効です。", rank: "ランク", requires: "必要", pointsGate: "ポイントをこのツリーに使用", dormant: "休眠: 前提が払い戻されました", editHint: "左クリックで追加 - 右クリックで削除", cycleHint: "クリックして選択", combatLocked: "戦闘中はタレントを変更できません。", nothingStaged: "適用する変更はありません。", pickSpecFirst: "このツリーを使うには専門化を選択してください。", unlockBanner: "タレント解除!", unlockHint: "最初のタレントポイントを獲得しました。Nでタレントを開きます。", copy: "コピー", close: "閉じる", cancel: "キャンセル", noBuilds: "保存ビルドなし", save: "保存", comingSoonTitle: "タレント準備中", comingSoonBody: "このクラスにはまだタレントツリーがありません。通常通りプレイできます。完全なツリーは今後のアップデートで追加されます。" },
+};
+
+const gameStringsPtBR: typeof gameStrings = {
+  xp: { suffix: "EXP", maxLevel: "NIVEL MAX.", totalXp: "EXP total", lv: "Nv", toNext: "para o proximo" },
+  progression: { heading: "Progressao", totalXp: "EXP total", virtualLevel: "Nivel virtual", prestigeRank: "Grau de prestigio", milestones: "Marcos", none: "Nenhum ainda", virtualLevelUp: "Nivel virtual" },
+  leaderboard: { title: "Classificacao", subtitle: "EXP vitalicia", rank: "Posicao", name: "Nome", realmCol: "Reino", level: "Nv", vlevel: "Nv.V", lifetimeXp: "EXP vitalicia", yourRank: "Sua posicao", empty: "Ainda nao ha campeoes; seja o primeiro a deixar sua marca.", loading: "Carregando classificacao...", unranked: "Sem ranking", you: "Voce", globalSubtitle: "Maiores campeoes de todos os reinos", retry: "Nao foi possivel carregar a classificacao. Tente novamente." },
+  milestone: { unlocked: "Marco desbloqueado", veteran: "Veterano", champion: "Campeao", paragon: "Paragono", mythic: "Mitico", eternal: "Eterno" },
+  prestige: { action: "Prestigiar", title: "Prestigiar personagem", body: "Prestigio aumenta seu grau de prestigio em 1 e reinicia a barra de EXP do nivel. Ele nao muda nivel, equipamento, talentos, habilidades, EXP vitalicia nem posicao na classificacao; e apenas um destaque cosmetico.", confirm: "Prestigiar", cancel: "Cancelar", rank: "Prestigio", needCap: "Voce precisa estar no nivel maximo para prestigiar.", needXp: "mais EXP vitalicia para prestigiar" },
+  settings: { showOverflowXp: "Mostrar EXP excedente" },
+  talents: {
+    title: "Talentos",
+    classTab: "Classe",
+    specTab: "Especializacao",
+    available: "Disponiveis",
+    spent: "Gastos",
+    pointSource: "Ganhe 1 ponto de talento por nivel do {first} ao {cap}. Suba de nivel para conseguir mais pontos.",
+    apply: "Aplicar mudancas",
+    clear: "Redefinir pontos",
+    reset: "Redefinir",
+    chooseSpec: "Escolha uma especializacao",
+    noSpec: "Nenhuma especializacao escolhida",
+    role: "Funcao",
+    mastery: "Maestria",
+    signature: "Assinatura",
+    roleTank: "Tanque",
+    roleHealer: "Curador",
+    roleDps: "Dano",
+    loadouts: "Builds salvas",
+    currentBuild: "Build atual",
+    createBuild: "Criar build",
+    saveBuild: "Salvar atual",
+    saveBuildAs: "Salvar build",
+    newBuild: "Nova build",
+    deleteBuild: "Excluir",
+    currentBuildHint: "Escolha uma build salva e use Salvar atual para atualiza-la. Exportar compartilha a build selecionada.",
+    createBuildHint: "Nova build salva seus pontos atuais como uma build separada. Importar cola uma string compartilhada.",
+    buildHint: "Escolha uma build salva, atualize com Salvar atual ou crie outra.",
+    buildInvalid: "Esta build ainda nao e valida.",
+    selectBuildFirst: "Selecione uma build salva para excluir.",
+    deleteBuildTitle: "Excluir build salva?",
+    deleteBuildBody: "Excluir \"{name}\"? Isso remove apenas a build salva; seus talentos atuais nao mudam.",
+    deleteBuildConfirm: "Excluir build",
+    namePrompt: "Nome desta build:",
+    import: "Importar",
+    export: "Exportar",
+    importPrompt: "Cole uma string de build:",
+    exportCopied: "String de build copiada para a area de transferencia.",
+    exportTitle: "String de build (copie e compartilhe):",
+    invalidBuild: "Essa string de build e invalida.",
+    rank: "Grau",
+    requires: "Requer",
+    pointsGate: "pontos gastos na arvore",
+    dormant: "Inativo: pre-requisito reembolsado",
+    editHint: "Clique esquerdo para adicionar - clique direito para remover",
+    cycleHint: "Clique para escolher uma opcao",
+    combatLocked: "Voce nao pode mudar talentos em combate.",
+    nothingStaged: "Nao ha mudancas para aplicar.",
+    pickSpecFirst: "Escolha uma especializacao para acessar esta arvore.",
+    unlockBanner: "Talentos desbloqueados!",
+    unlockHint: "Voce ganhou seu primeiro ponto de talento: pressione N para abrir Talentos.",
+    copy: "Copiar",
+    close: "Fechar",
+    cancel: "Cancelar",
+    noBuilds: "Nenhuma build salva",
+    save: "Salvar",
+    comingSoonTitle: "Talentos em breve",
+    comingSoonBody: "Esta classe ainda nao tem arvores de talentos. Voce pode continuar jogando normalmente; as arvores completas chegarao em uma atualizacao futura.",
+  },
+};
+
+const gameStringsRuRU: typeof gameStrings = {
+  xp: { suffix: "опыт", maxLevel: "МАКС. УРОВЕНЬ", totalXp: "всего опыта", lv: "Ур.", toNext: "до следующего" },
+  progression: { heading: "Прогресс", totalXp: "Всего опыта", virtualLevel: "Виртуальный уровень", prestigeRank: "Ранг престижа", milestones: "Вехи", none: "Пока нет", virtualLevelUp: "Виртуальный уровень" },
+  leaderboard: { title: "Рейтинг", subtitle: "Опыт за все время", rank: "Место", name: "Имя", realmCol: "Мир", level: "Ур.", vlevel: "Вирт.", lifetimeXp: "Опыт за все время", yourRank: "Ваше место", empty: "Чемпионов пока нет; станьте первым.", loading: "Загрузка рейтинга...", unranked: "Без места", you: "Вы", globalSubtitle: "Лучшие чемпионы всех миров", retry: "Не удалось загрузить рейтинг. Попробуйте еще раз." },
+  milestone: { unlocked: "Веха открыта", veteran: "Ветеран", champion: "Чемпион", paragon: "Образец", mythic: "Мифический", eternal: "Вечный" },
+  prestige: { action: "Престиж", title: "Престиж персонажа", body: "Престиж повышает ранг престижа на 1 и сбрасывает шкалу опыта уровня. Он не меняет уровень, снаряжение, таланты, способности, общий опыт или место в рейтинге; это только косметический знак.", confirm: "Престиж", cancel: "Отмена", rank: "Престиж", needCap: "Для престижа нужен максимальный уровень.", needXp: "еще общего опыта до престижа" },
+  settings: { showOverflowXp: "Показывать лишний опыт" },
+  talents: { title: "Таланты", classTab: "Класс", specTab: "Специализация", available: "Доступно", spent: "Потрачено", pointSource: "Получайте 1 очко талантов за каждый уровень с {first} по {cap}. Повышайте уровень, чтобы получить больше очков.", apply: "Применить изменения", clear: "Сбросить очки", reset: "Сброс", chooseSpec: "Выберите специализацию", noSpec: "Специализация не выбрана", role: "Роль", mastery: "Мастерство", signature: "Ключевое", roleTank: "Танк", roleHealer: "Лекарь", roleDps: "Урон", loadouts: "Сохраненные билды", currentBuild: "Текущий билд", createBuild: "Создать билд", saveBuild: "Сохранить текущий", saveBuildAs: "Сохранить билд", newBuild: "Новый билд", deleteBuild: "Удалить", currentBuildHint: "Выберите сохраненный билд, затем сохраните текущий для обновления. Экспорт делится выбранным билдом.", createBuildHint: "Новый билд сохраняет текущие очки отдельно. Импорт вставляет общую строку.", buildHint: "Выберите сохраненный билд, обновите его или создайте новый.", buildInvalid: "Этот билд пока недействителен.", selectBuildFirst: "Сначала выберите сохраненный билд для удаления.", deleteBuildTitle: "Удалить сохраненный билд?", deleteBuildBody: "Удалить \"{name}\"? Будет удален только сохраненный билд; текущие таланты не изменятся.", deleteBuildConfirm: "Удалить билд", namePrompt: "Название этого билда:", import: "Импорт", export: "Экспорт", importPrompt: "Вставьте строку билда:", exportCopied: "Строка билда скопирована в буфер обмена.", exportTitle: "Строка билда (скопируйте и поделитесь):", invalidBuild: "Эта строка билда недействительна.", rank: "Ранг", requires: "Требуется", pointsGate: "очков вложено в дерево", dormant: "Неактивно: требование возвращено", editHint: "ЛКМ добавить - ПКМ убрать", cycleHint: "Щелкните, чтобы выбрать вариант", combatLocked: "В бою нельзя менять таланты.", nothingStaged: "Нет изменений для применения.", pickSpecFirst: "Выберите специализацию, чтобы открыть это дерево.", unlockBanner: "Таланты открыты!", unlockHint: "Вы получили первое очко талантов: нажмите N, чтобы открыть Таланты.", copy: "Копировать", close: "Закрыть", cancel: "Отмена", noBuilds: "Нет сохраненных билдов", save: "Сохранить", comingSoonTitle: "Таланты скоро появятся", comingSoonBody: "У этого класса еще нет деревьев талантов. Можно продолжать играть как обычно; полные деревья появятся в будущем обновлении." },
+};
+
 export const en = {
+  game: gameStrings,
   nav: {
     home: "Home",
     play: "Play",
@@ -8966,6 +9627,7 @@ export const en = {
     news: "News",
     download: "Download",
     loginRegister: "Login/Register",
+    donate: "Donate",
   },
   stats: {
     title: "Realm Status",
@@ -9102,6 +9764,7 @@ export const en = {
 };
 
 export const es: typeof en = {
+  game: gameStringsEs,
   nav: {
     home: "Inicio",
     play: "Jugar",
@@ -9112,6 +9775,7 @@ export const es: typeof en = {
     news: "Noticias",
     download: "Descargar",
     loginRegister: "Iniciar Sesión/Registrarse",
+    donate: "Donar",
   },
   stats: {
     title: "Estado del Reino",
@@ -9248,6 +9912,7 @@ export const es: typeof en = {
 };
 
 export const es_ES: typeof en = {
+  game: gameStringsEsES,
   nav: {
     home: "Inicio",
     play: "Jugar",
@@ -9258,6 +9923,7 @@ export const es_ES: typeof en = {
     news: "Noticias",
     download: "Descargar",
     loginRegister: "Iniciar sesión/Registrarse",
+    donate: "Donar",
   },
   stats: {
     title: "Estado del Reino",
@@ -9394,6 +10060,7 @@ export const es_ES: typeof en = {
 };
 
 export const fr_FR: typeof en = {
+  game: gameStringsFrFR,
   nav: {
     home: "Accueil",
     play: "Jouer",
@@ -9404,6 +10071,7 @@ export const fr_FR: typeof en = {
     news: "Actualités",
     download: "Télécharger",
     loginRegister: "Se connecter/S'inscrire",
+    donate: "Faire un don",
   },
   stats: {
     title: "Statut du royaume",
@@ -9540,6 +10208,7 @@ export const fr_FR: typeof en = {
 };
 
 export const fr_CA: typeof en = {
+  game: gameStringsFrCA,
   nav: {
     home: "Accueil",
     play: "Jouer",
@@ -9550,6 +10219,7 @@ export const fr_CA: typeof en = {
     news: "Actualités",
     download: "Télécharger",
     loginRegister: "Se connecter/S'enregistrer",
+    donate: "Faire un don",
   },
   stats: {
     title: "Statut du royaume",
@@ -9686,6 +10356,7 @@ export const fr_CA: typeof en = {
 };
 
 export const en_CA: typeof en = {
+  game: gameStringsEnCA,
   nav: {
     home: "Home",
     play: "Play",
@@ -9696,6 +10367,7 @@ export const en_CA: typeof en = {
     news: "News",
     download: "Download",
     loginRegister: "Login/Register",
+    donate: "Donate",
   },
   stats: {
     title: "Realm Status",
@@ -9832,6 +10504,7 @@ export const en_CA: typeof en = {
 };
 
 export const it_IT: typeof en = {
+  game: gameStringsItIT,
   nav: {
     home: "Pagina principale",
     play: "Gioca",
@@ -9842,6 +10515,7 @@ export const it_IT: typeof en = {
     news: "Novità",
     download: "Scarica",
     loginRegister: "Accedi/Registrati",
+    donate: "Dona",
   },
   stats: {
     title: "Stato del Reame",
@@ -9978,6 +10652,7 @@ export const it_IT: typeof en = {
 };
 
 export const de_DE: typeof en = {
+  game: gameStringsDeDE,
   nav: {
     home: "Startseite",
     play: "Spielen",
@@ -9988,6 +10663,7 @@ export const de_DE: typeof en = {
     news: "Neuigkeiten",
     download: "Herunterladen",
     loginRegister: "Einloggen/Registrieren",
+    donate: "Spenden",
   },
   stats: {
     title: "Realmstatus",
@@ -10124,6 +10800,7 @@ export const de_DE: typeof en = {
 };
 
 export const zh_CN: typeof en = {
+  game: gameStringsZhCN,
   nav: {
     home: "首页",
     play: "开始游戏",
@@ -10134,6 +10811,7 @@ export const zh_CN: typeof en = {
     news: "新闻资讯",
     download: "下载客户端",
     loginRegister: "登录/注册",
+    donate: "捐赠",
   },
   stats: {
     title: "服务器状态",
@@ -10270,6 +10948,7 @@ export const zh_CN: typeof en = {
 };
 
 export const zh_TW: typeof en = {
+  game: gameStringsZhTW,
   nav: {
     home: "首頁",
     play: "開始遊戲",
@@ -10280,6 +10959,7 @@ export const zh_TW: typeof en = {
     news: "最新消息",
     download: "下載客戶端",
     loginRegister: "登入/註冊",
+    donate: "捐贈",
   },
   stats: {
     title: "伺服器狀態",
@@ -10416,6 +11096,7 @@ export const zh_TW: typeof en = {
 };
 
 export const ko_KR: typeof en = {
+  game: gameStringsKoKR,
   nav: {
     home: "홈",
     play: "플레이",
@@ -10426,6 +11107,7 @@ export const ko_KR: typeof en = {
     news: "새소식",
     download: "다운로드",
     loginRegister: "로그인/회원가입",
+    donate: "후원",
   },
   stats: {
     title: "렐름 상태",
@@ -10562,6 +11244,7 @@ export const ko_KR: typeof en = {
 };
 
 export const ja_JP: typeof en = {
+  game: gameStringsJaJP,
   nav: {
     home: "ホーム",
     play: "プレイ",
@@ -10572,6 +11255,7 @@ export const ja_JP: typeof en = {
     news: "ニュース",
     download: "ダウンロード",
     loginRegister: "ログイン/登録",
+    donate: "寄付",
   },
   stats: {
     title: "レルムステータス",
@@ -10708,6 +11392,7 @@ export const ja_JP: typeof en = {
 };
 
 export const pt_BR: typeof en = {
+  game: gameStringsPtBR,
   nav: {
     home: "Início",
     play: "Jogar",
@@ -10718,6 +11403,7 @@ export const pt_BR: typeof en = {
     news: "Notícias",
     download: "Baixar",
     loginRegister: "Entrar/Registrar",
+    donate: "Doar",
   },
   stats: {
     title: "Status do Reino",
@@ -10854,6 +11540,7 @@ export const pt_BR: typeof en = {
 };
 
 export const ru_RU: typeof en = {
+  game: gameStringsRuRU,
   nav: {
     home: "Главная",
     play: "Играть",
@@ -10864,6 +11551,7 @@ export const ru_RU: typeof en = {
     news: "Новости",
     download: "Скачать",
     loginRegister: "Войти / Зарегистрироваться",
+    donate: "Пожертвовать",
   },
   stats: {
     title: "Статус игрового мира",
