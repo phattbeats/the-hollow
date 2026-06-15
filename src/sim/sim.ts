@@ -4353,6 +4353,11 @@ export class Sim {
     // toggle by name, without a meaningless countdown.
     if (/^\/(form|stance|shapeshift)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.formReadout(r.e));
+    // "/manaregen" (aliases /regen, /5sr) — self-only readout of the classic
+    // five-second-rule mana state. Reads only existing Entity fields; returns
+    // null so it is never broadcast, mirroring the other self-readouts.
+    if (/^\/(?:manaregen|regen|5sr)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.manaRegenReadout(r.e));
       return null;
     }
 
@@ -5990,6 +5995,21 @@ export class Sim {
     if (!form) return 'You are not in any form or stance.';
     if (form.kind === 'stealth') return 'You are stealthed.';
     return `You are in ${form.name}.`;
+  // Self-only readout of the five-second-rule mana state (#103 out-of-combat
+  // regen). `fiveSecondRule` is the seconds elapsed since the player last spent
+  // mana on an ability (reset to 0 at sim.ts cast path, bumped by DT each tick);
+  // out-of-combat mana regen only ticks once it reaches FSR_THRESHOLD. Only
+  // mana users have meaningful state here — rage/energy classes never spend mana.
+  private manaRegenReadout(e: Entity): string {
+    const FSR_THRESHOLD = 5; // matches the `fiveSecondRule >= 5` gate in updateRegen
+    if (e.resourceType !== 'mana') {
+      return 'Mana regeneration does not apply to your class.';
+    }
+    if (e.fiveSecondRule >= FSR_THRESHOLD) {
+      return 'Your mana is regenerating (out of combat for 5s+).';
+    }
+    const resumesIn = Math.ceil(FSR_THRESHOLD - e.fiveSecondRule);
+    return `Mana regen is paused — resumes in ${resumesIn}s (you spent mana recently).`;
   }
 
   private error(pid: number, text: string): void {
