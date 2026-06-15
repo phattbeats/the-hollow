@@ -1,13 +1,14 @@
 // Captures a mobile (landscape phone) screenshot of the offline game world to
 // showcase the new mobile Jump button. Needs `npm run dev` running on :5173.
 // Run: node scripts/mobile_jump_shot.mjs
-import puppeteer from '../node_modules/puppeteer-core/lib/puppeteer/puppeteer-core.js';
+import puppeteer from 'puppeteer-core';
+import { BROWSER_PATH } from './browser_path.mjs';
 
 const URL = process.env.WOC_URL || 'http://localhost:5173/';
 const OUT = process.env.OUT || 'mobile-jump.png';
 
 const browser = await puppeteer.launch({
-  executablePath: '/usr/bin/chromium',
+  executablePath: BROWSER_PATH,
   headless: 'new',
   args: [
     '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
