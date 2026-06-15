@@ -48,6 +48,7 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
       { itemId: 'wolf_fang', chance: 0.45 },
     ],
     scale: 0.9, color: 0x7f8c8d,
+    packFrenzy: { radius: 12, hasteMult: 1.3, duration: 8 },
   },
   old_greyjaw: {
     id: 'old_greyjaw', name: 'Old Greyjaw', minLevel: 4, maxLevel: 4, family: 'beast', rare: true,

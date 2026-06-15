@@ -163,6 +163,10 @@ export interface MobTemplate {
   summonAdds?: { mobId: string; count: number; atHpPct: number[] };
   // Boss mechanic: damage multiplier once hp drops below the threshold.
   enrage?: { belowHpPct: number; dmgMult: number };
+  // Classic beast "Frenzy": when a mob with this trait dies, nearby living
+  // same-family hostile mobs briefly attack faster (hasteMult, e.g. 1.3 = +30%
+  // swing speed) for `duration` seconds. Applied as a buff_haste aura.
+  packFrenzy?: { radius: number; hasteMult: number; duration: number };
 }
 
 export type AbilityEffect =
