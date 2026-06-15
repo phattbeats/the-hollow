@@ -2900,6 +2900,8 @@
     background: radial-gradient(circle at 35% 30%, #5a4a1ed8, #2a230fd8 72%);
     box-shadow: inset 0 1px 0 #ffffff20, 0 0 12px #e3c46a80;
   }
+  body.mobile-touch .mobile-btn.is-on { border-color: var(--gold); color: #fff; }
+  body.mobile-touch .mobile-btn:not(.is-on)#mobile-haptics { opacity: 0.55; }
   body.mobile-touch .mobile-btn .mobile-label { display: block; margin-top: 1px; font-size: 8px; font-family: var(--ui-font); color: #bfb28a; }
   body.mobile-touch #mobile-extra-controls {
     position: fixed;
@@ -4222,6 +4224,7 @@
         <button class="mobile-btn" id="mobile-leaderboard" title="Leaderboard" aria-label="Leaderboard" data-icon="leaderboard"><span class="mobile-label">Ranks</span></button>
         <button class="mobile-btn active" id="mobile-nameplates" title="Toggle nameplates" aria-label="Toggle nameplates" data-icon="nameplates"><span class="mobile-label">Names</span></button>
         <button class="mobile-btn" id="mobile-music" title="Music" aria-label="Toggle music" data-icon="music"><span class="mobile-label">Music</span></button>
+        <button class="mobile-btn" id="mobile-haptics" title="Toggle haptic feedback" aria-label="Toggle haptic feedback" aria-pressed="true" data-icon="vibrate"><span class="mobile-label">Haptics</span></button>
       </div>
     </div>
   </div>
