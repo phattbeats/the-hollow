@@ -4,8 +4,9 @@
 //
 // Prereq: `npm run dev` running on :5173.
 //   node scripts/mobile_tooltip_peek_shot.mjs
-import puppeteer from '../node_modules/puppeteer-core/lib/puppeteer/puppeteer-core.js';
+import puppeteer from 'puppeteer-core';
 import { mkdirSync } from 'node:fs';
+import { BROWSER_PATH } from './browser_path.mjs';
 
 const URL = 'http://localhost:5173/';
 const OUT = 'tmp/shots';
@@ -14,7 +15,7 @@ mkdirSync(OUT, { recursive: true });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const browser = await puppeteer.launch({
-  executablePath: '/usr/bin/chromium',
+  executablePath: BROWSER_PATH,
   headless: 'new',
   args: [
     '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
