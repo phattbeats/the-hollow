@@ -362,6 +362,41 @@ export async function moderateAccount(input: {
   }
 }
 
+export async function muteAccountChat(input: {
+  accountId: number;
+  adminAccountId: number;
+  reason: unknown;
+  expiresAt: unknown;
+}): Promise<void> {
+  const reason = cleanText(input.reason, ACTION_REASON_MAX);
+  if (!reason) throw new Error('moderation reason is required');
+  const expiresAt = new Date(String(input.expiresAt ?? ''));
+  if (!Number.isFinite(expiresAt.getTime()) || expiresAt.getTime() <= Date.now()) {
+    throw new Error('chat mute expiry must be in the future');
+  }
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query(
+      `UPDATE accounts
+       SET chat_muted_until = $2, chat_mute_reason = $3
+       WHERE id = $1`,
+      [input.accountId, expiresAt, reason],
+    );
+    await client.query(
+      `INSERT INTO account_moderation_actions (account_id, admin_account_id, action, reason, expires_at)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [input.accountId, input.adminAccountId, 'chat_mute', reason, expiresAt],
+    );
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {});
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
 export async function forceCharacterRename(input: {
   characterId: number;
   adminAccountId: number;

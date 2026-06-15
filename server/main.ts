@@ -6,7 +6,7 @@ import {
   ensureSchema, pool, createAccount, findAccount, getAccountsCount, touchLogin, saveToken, accountForToken,
   listCharacters, getCharacter, createCharacter, deleteCharacter, closeOrphanSessions,
   pruneChatLogs, searchCharacters, characterCountsByRealm, moderationStatusForAccount, renameCharacter,
-  findCharacterReportTargetByName, topArenaRatings, topLifetimeXp,
+  findCharacterReportTargetByName, topArenaRatings, topLifetimeXp, chatMuteStatusForAccount,
 } from './db';
 import { virtualLevel } from '../src/sim/types';
 import type { LeaderboardEntry } from '../src/world_api';
@@ -504,6 +504,7 @@ async function main(): Promise<void> {
       ws.close();
       return;
     }
+    const chatMute = await chatMuteStatusForAccount(accountId);
     const result = game.join(
       ws,
       accountId,
@@ -512,7 +513,7 @@ async function main(): Promise<void> {
       character.class,
       character.state,
       character.is_gm,
-      requestMetadata(req),
+      { ...requestMetadata(req), ...chatMute },
     );
     if ('error' in result) {
       ws.send(JSON.stringify({ t: 'error', error: result.error }));

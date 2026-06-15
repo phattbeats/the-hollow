@@ -354,6 +354,53 @@ function handleModerationActionClick(e: Event, source: 'account' | 'moderation')
     });
     return true;
   }
+  const chatMuteBtn = target.closest('button[data-chat-mute-hours]') as HTMLButtonElement | null;
+  if (chatMuteBtn) {
+    if (!requireNote()) return true;
+    const hours = Number(chatMuteBtn.dataset.chatMuteHours);
+    const expiresAt = new Date(Date.now() + hours * 3600 * 1000).toISOString();
+    showModerationConfirm({
+      title: 'Confirm chat mute',
+      rows: [
+        { label: 'Account', value: `#${accountId}` },
+        { label: 'Action', value: 'Mute chat and send warning' },
+        { label: 'Length', value: `${hours} hour${hours === 1 ? '' : 's'}` },
+        { label: 'Until', value: new Date(expiresAt).toLocaleString() },
+        { label: 'Reason', value: note },
+      ],
+      endpoint: `/admin/api/moderation/accounts/${accountId}/chat-mute`,
+      body: { reason: note, expiresAt },
+      accountId,
+      source,
+      confirmEl,
+    });
+    return true;
+  }
+  const customChatMute = target.closest('button[data-chat-mute-custom]') as HTMLButtonElement | null;
+  if (customChatMute) {
+    if (!requireNote()) return true;
+    const raw = moderationCustomExpiryInput(target)?.value ?? '';
+    const expiry = raw ? new Date(raw) : null;
+    if (!expiry || !Number.isFinite(expiry.getTime())) {
+      window.alert('Choose a custom chat mute expiry.');
+      return true;
+    }
+    showModerationConfirm({
+      title: 'Confirm custom chat mute',
+      rows: [
+        { label: 'Account', value: `#${accountId}` },
+        { label: 'Action', value: 'Mute chat and send warning' },
+        { label: 'Until', value: expiry.toLocaleString() },
+        { label: 'Reason', value: note },
+      ],
+      endpoint: `/admin/api/moderation/accounts/${accountId}/chat-mute`,
+      body: { reason: note, expiresAt: expiry.toISOString() },
+      accountId,
+      source,
+      confirmEl,
+    });
+    return true;
+  }
   const banBtn = target.closest('button[data-ban-account]') as HTMLButtonElement | null;
   if (banBtn) {
     if (!requireNote()) return true;

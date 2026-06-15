@@ -173,8 +173,8 @@ describe('GameServer chat logging', () => {
     const server = new GameServer();
     const aWs = fakeWs();
     const a = server.join(aWs.ws, 11, 101, 'Aleph', 'warrior', null, false, {
-      chatMutedUntil: new Date(Date.now() + 3600_000).toISOString(),
-      chatMuteReason: 'keep chat civil',
+      mutedUntil: new Date(Date.now() + 3600_000).toISOString(),
+      reason: 'keep chat civil',
     } as any);
     if ('error' in a) throw new Error('join failed');
 

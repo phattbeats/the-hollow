@@ -58,9 +58,10 @@ function accountStatusBadge(a: { bannedAt: string | null; suspendedUntil: string
 
 function accountStatusDetail(d: AccountDetail): string {
   const activeSuspension = d.suspendedUntil !== null && new Date(d.suspendedUntil).getTime() > Date.now();
+  const activeChatMute = d.chatMutedUntil !== null && new Date(d.chatMutedUntil).getTime() > Date.now();
   if (d.bannedAt) return `<span class="badge bad">banned</span> <span class="hint">since ${fmtDate(d.bannedAt)}</span>`;
   if (activeSuspension) return `<span class="badge warn">suspended until ${fmtDate(d.suspendedUntil)}</span>`;
-  return '<span class="badge">active</span>';
+  return `<span class="badge">active</span>${activeChatMute ? ` <span class="badge warn">chat muted until ${fmtDate(d.chatMutedUntil)}</span>` : ''}`;
 }
 
 export function renderAccountDetail(d: AccountDetail, includeAdminControls = false): string {
@@ -100,10 +101,13 @@ export function renderAccountDetail(d: AccountDetail, includeAdminControls = fal
       <button data-suspend-hours="720">Suspend 30d</button>
       <input class="account-custom-expiry" type="datetime-local" />
       <button data-suspend-custom="1">Suspend Custom</button>
+      <button data-chat-mute-hours="1">Mute Chat 1h</button>
+      <button data-chat-mute-custom="1">Mute Chat Custom</button>
       <button data-ban-account="1" class="danger">Ban</button>`;
   const adminControls = canModerateAccount ? `
     <div class="account-admin-controls mod-account-actions" data-action-account-id="${d.id}">
       <div class="account-status"><b>Status:</b> ${accountStatus}${d.moderationReason ? ` <span class="hint">reason: ${escapeHtml(d.moderationReason)}</span>` : ''}</div>
+      ${d.chatMutedUntil && new Date(d.chatMutedUntil).getTime() > Date.now() && d.chatMuteReason ? `<div class="account-status"><b>Chat mute:</b> <span class="hint">reason: ${escapeHtml(d.chatMuteReason)}</span></div>` : ''}
       <input class="account-mod-reason" placeholder="Moderator note / reason" maxlength="500" />
       ${accountActionButtons}
     </div>
@@ -212,6 +216,8 @@ export function renderModerationDetail(d: ModerationAccountDetail): string {
       <button data-suspend-hours="720">Suspend 30d</button>
       <input id="mod-custom-expiry" type="datetime-local" />
       <button data-suspend-custom="1">Suspend Custom</button>
+      <button data-chat-mute-hours="1">Mute Chat 1h</button>
+      <button data-chat-mute-custom="1">Mute Chat Custom</button>
       <button data-ban-account="1">Ban</button>`;
   return `<div class="mod-detail">
     <div class="panel-title">

@@ -55,6 +55,8 @@ ALTER TABLE accounts ADD COLUMN IF NOT EXISTS is_admin BOOLEAN NOT NULL DEFAULT 
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS suspended_until TIMESTAMPTZ;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS banned_at TIMESTAMPTZ;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS moderation_reason TEXT;
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS chat_muted_until TIMESTAMPTZ;
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS chat_mute_reason TEXT;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS created_ip TEXT;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS created_user_agent TEXT;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS last_login_ip TEXT;
@@ -157,6 +159,11 @@ export interface AccountModerationStatus {
   message: string;
 }
 
+export interface AccountChatMuteStatus {
+  mutedUntil: string | null;
+  reason: string;
+}
+
 export interface RequestMetadata {
   ip?: string | null;
   userAgent?: string | null;
@@ -242,6 +249,21 @@ export async function moderationStatusForAccount(accountId: number): Promise<Acc
     };
   }
   return { locked: false, banned: false, suspendedUntil: null, reason: '', message: '' };
+}
+
+export async function chatMuteStatusForAccount(accountId: number): Promise<AccountChatMuteStatus> {
+  const res = await pool.query(
+    `SELECT chat_muted_until, chat_mute_reason
+     FROM accounts WHERE id = $1`,
+    [accountId],
+  );
+  const row = res.rows[0];
+  const mutedUntil = row?.chat_muted_until ? new Date(row.chat_muted_until) : null;
+  if (!mutedUntil || mutedUntil.getTime() <= Date.now()) return { mutedUntil: null, reason: '' };
+  return {
+    mutedUntil: mutedUntil.toISOString(),
+    reason: row.chat_mute_reason ?? '',
+  };
 }
 
 export interface CharacterRow {

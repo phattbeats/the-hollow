@@ -87,6 +87,8 @@ export interface AccountDetail {
   bannedAt: string | null;
   suspendedUntil: string | null;
   moderationReason: string;
+  chatMutedUntil: string | null;
+  chatMuteReason: string;
   playtimeSeconds: number;
   characters: {
     id: number;
