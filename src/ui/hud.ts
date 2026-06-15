@@ -390,6 +390,7 @@ export class Hud {
     });
     document.querySelectorAll<HTMLElement>('.window.panel').forEach(observeWindow);
     this.windowObserver.observe(document.body, { childList: true, subtree: true });
+    this.syncAnyWindowOpenState();
 
     document.addEventListener('pointerdown', (ev) => {
       const target = ev.target as HTMLElement | null;
@@ -439,12 +440,21 @@ export class Hud {
   private syncWindowOpenState(el: HTMLElement): void {
     if (!this.isWindowVisible(el)) {
       delete el.dataset.windowOpen;
+      this.syncAnyWindowOpenState();
       return;
     }
-    if (el.dataset.windowOpen === '1') return;
-    el.dataset.windowOpen = '1';
-    this.placeNewWindow(el);
-    this.bringWindowToFront(el);
+    if (el.dataset.windowOpen !== '1') {
+      el.dataset.windowOpen = '1';
+      this.placeNewWindow(el);
+      this.bringWindowToFront(el);
+    }
+    this.syncAnyWindowOpenState();
+  }
+
+  private syncAnyWindowOpenState(): void {
+    const anyOpen = [...document.querySelectorAll<HTMLElement>('.window.panel')]
+      .some((win) => this.isWindowVisible(win));
+    document.body.classList.toggle('mobile-window-open', anyOpen);
   }
 
   private placeNewWindow(el: HTMLElement): void {
@@ -518,6 +528,7 @@ export class Hud {
       case 'emote-editor': this.closeEmoteEditor(); break;
       default: el.style.display = 'none'; this.hideTooltip(); break;
     }
+    this.syncAnyWindowOpenState();
   }
 
   private bindLogTabs(): void {
