@@ -4333,6 +4333,8 @@ export class Sim {
     // current cast or channel progress
     if (/^\/(?:casting|cast|castbar)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.castingReadout(r.e));
+    if (/^\/(?:speed|movespeed|ms)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.speedReadout(r.e));
       return null;
     }
 
@@ -5924,6 +5926,17 @@ export class Sim {
       return `${a.name}${stack} [${tag}] (${Math.ceil(a.remaining)}s)`;
     });
     return `Effects on ${target.name} (${auras.length}): ${parts.join(', ')}.`;
+  // Self-only readout of current movement speed as a percent of normal run
+  // speed. Effective speed is RUN_SPEED * moveSpeedMult(p), where the
+  // multiplier folds slow/stealth auras against speed buffs; a root pins the
+  // player regardless of the multiplier, so it is reported first.
+  private speedReadout(e: Entity): string {
+    if (this.isRooted(e)) return 'You are rooted in place and cannot move.';
+    const mult = this.moveSpeedMult(e);
+    const pct = Math.round(mult * 100);
+    if (pct > 100) return `Movement speed: ${pct}% of normal (hastened).`;
+    if (pct < 100) return `Movement speed: ${pct}% of normal (slowed).`;
+    return 'Movement speed: 100% of normal.';
   }
 
   private error(pid: number, text: string): void {
