@@ -91,6 +91,16 @@ const EMOTES: Record<string, EmoteDef> = {
 const EMOTE_ALIASES: Record<string, string> = {
   hi: 'greet', hello: 'greet', thanks: 'thank', applaud: 'clap',
 };
+// The auras a target carries that are working against it. Everything else
+// (buff_*, hot, absorb, imbue, stances, forms, stealth, thorns, attackspeed
+// haste) is treated as helpful/neutral. Used by /targetbuffs to tag each aura.
+const HARMFUL_AURA_KINDS: ReadonlySet<AuraKind> = new Set<AuraKind>([
+  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'sunder',
+]);
+
+function isHarmfulAura(kind: AuraKind): boolean {
+  return HARMFUL_AURA_KINDS.has(kind);
+}
 const NEARBY_RANGE = 40; // /nearby scan radius — wider than say, tighter than yell
 const NEARBY_MAX = 10; // cap the /nearby list so a crowded camp can't spam chat
 const CHAT_BURST = 8; // messages a player may send back-to-back...
@@ -4203,175 +4213,61 @@ export class Sim {
       if (h || m) parts.push(`${m}m`);
       parts.push(`${s}s`);
       this.error(r.meta.entityId, `Time played this session: ${parts.join(' ')}.`);
-    // "/where" (aliases /loc, /zone) — self-only report of the caller's current
-    // zone, its level range, and coordinates. Reuses the self-only error reply
-    // like /who and /played; emits no chat event and is not logged.
+      return null;
+    }
+
+    // Self-only readouts: emit a private system line and never become chat.
     if (/^\/(?:where|loc|zone)(?:\s|$)/i.test(raw)) {
       const zone = zoneAt(r.e.pos.z);
       const [lo, hi] = zone.levelRange;
-      const x = Math.floor(r.e.pos.x);
-      const z = Math.floor(r.e.pos.z);
-      this.error(r.meta.entityId, `You are in ${zone.name} (levels ${lo}–${hi}) at (${x}, ${z}).`);
-    // "/target" (alias "/tar") — self-only readout of your current target.
-    // Reads existing p.targetId state, so it needs no server wiring: it falls
-    // through routeRememberedChat to here and works online for free.
+      this.error(r.meta.entityId, `You are in ${zone.name} (levels ${lo}–${hi}) at (${Math.floor(r.e.pos.x)}, ${Math.floor(r.e.pos.z)}).`);
+      return null;
+    }
     if (/^\/(?:target|tar)(?:\s|$)/i.test(raw)) {
       const tid = r.e.targetId;
       const t = tid !== null ? this.entities.get(tid) ?? null : null;
-      if (!t) { this.error(r.meta.entityId, 'You have no target.'); return null; }
-      this.error(r.meta.entityId, this.targetReadout(t));
-    // "/xp" (aliases /exp, /experience) — self-only readout of leveling
-    // progress. Like /who's reply it returns null so it is never logged or
-    // said, and works online for free (no server interceptor routes it).
-    if (/^\/(?:xp|exp|experience)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.xpReadout(r.meta, r.e.level));
-    // "/gold" (aliases /money, /coins) — a self-only readout of your purse.
-    // Reads only meta.copper; like /who's reply it returns null so it is never
-    // logged or broadcast, and with no server interceptor it works online too.
-    if (/^\/(?:gold|money|coins)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.goldReadout(r.meta.copper));
-    // "/buffs" (aliases "/buff", "/auras") — self-only readout of the active
-    // auras on you, newest last, with the remaining time on timed effects.
-    if (/^\/(?:buffs?|auras)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.buffsReadout(r.e));
-    // "/cooldowns" (aliases "/cd", "/cds") — self-only readout of the abilities
-    // currently on cooldown, soonest-ready first. The shared GCD lives in a
-    // separate field and is intentionally not listed here.
-    if (/^\/(?:cooldowns?|cds?)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.cooldownsReadout(r.e));
-    // "/bags" (aliases /inv, /inventory) — self-only readout of carried items
-    if (/^\/(?:bags|inv|inventory)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.bagsReadout(r.meta));
-    // "/gear" (aliases /equip, /equipment) — self-only readout of equipped items
-    if (/^\/(?:gear|equip|equipment)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.gearReadout(r.meta));
-    if (/^\/(?:abilities|spells|spellbook)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.abilitiesReadout(r.meta, r.e));
-    // "/pet" (aliases /companion /pets) — self-only readout of your active pet
-    if (/^\/(?:pet|pets|companion)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.petReadout(r.e));
-    // "/session" — self-only readout of this session's combat tally. Like the
-    // other readouts it emits a private error line and returns null, so it is
-    // never logged or broadcast and works online without a server interceptor.
-    if (/^\/(?:session|sess|sessionstats)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.sessionReadout(r.meta));
-    // "/threat" (alias "/aggro") — self-only readout of the threat table on the
-    // player's current target. Reads live state only; returns null so the line
-    // is shown only to the caller and never broadcast or logged.
-    if (/^\/(?:threat|aggro)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.threatReadout(r.e));
-    // "/zones" (aliases /zonelist, /worldmap) — self-only readout of every
-    // overworld zone with its level range, tagging the one you're standing in.
-    if (/^\/(?:zones|zonelist|worldmap)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.zonesReadout(r.e.pos.z));
-    // "/nearby" (aliases "/near", "/around") — self-only readout of players,
-    // pets, mobs, and NPCs within scan range, nearest first. Self-targeted
-    // error reply, matches no server interceptor, so it works online for free.
-    if (/^\/(?:nearby|near|around)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.nearbyReadout(r.e));
-    // "/arena" (aliases "/pvp", "/rating") — self-only Ashen Coliseum standing
-    if (/^\/(?:arena|pvp|rating)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.arenaReadout(r.meta));
-    // "/range" (also /dist, /distance) — self-only readout of how far the
-    // player's current target is, and whether it sits inside melee reach
-    if (/^\/(?:range|dist|distance)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.rangeReadout(r.e));
-    // "/buyback" — self-only readout of items sold to a merchant that can
-    // still be repurchased (each at its sell value); never broadcast.
-    if (/^\/(?:buyback|bb|repurchase)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.buybackReadout(r.meta));
-    // "/combo" — self-only readout of combo points built on the current target
-    if (/^\/(?:combo|cp|combopoints)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.comboReadout(r.e));
-    // "/combat" (aliases /cb, /incombat) — self-only readout of whether you are
-    // in combat and, when only the linger timer is keeping you there, how long
-    // until you drop out. Self-only error reply, returns null so it is neither
-    // logged nor spoken; works online for free (no server interceptor).
-    if (/^\/(?:combat|cb|incombat)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.combatReadout(r.e));
-    // "/graveyard" (aliases /gy, /spirithealer) — self-only readout of where
-    // your spirit will resurrect if you die at your current location. Mirrors
-    // the resurrection target picked in releaseSpirit. Self-only error reply,
-    // returns null so it is neither logged nor spoken; works online for free.
-    if (/^\/(?:graveyard|gy|spirithealer)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.graveyardReadout(r.e));
-    // "/dungeons" (aliases /dungeon, /instances) — self-only readout of every
-    // group instance, the overworld zone its door sits in, and its suggested
-    // party size. Self-only error reply, returns null so it is neither logged
-    // nor spoken; works online for free (no server interceptor).
-    if (/^\/(?:dungeons|dungeon|instances)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.dungeonsReadout());
-    // "/consider" (aliases /con, /difficulty) — self-only readout sizing up your
-    // current target's level relative to yours, with a difficulty verdict. Self-
-    // only error reply, returns null so it is neither logged nor spoken; works
-    // online for free (no server interceptor).
-    if (/^\/(?:consider|con|difficulty)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.considerReadout(r.e));
-    // "/pois" (aliases /poi, /landmarks) — self-only readout of the named
-    // landmarks in your current zone, nearest first, with their distance. Self-
-    // only error reply, returns null so it is neither logged nor spoken; works
-    // online for free (no server interceptor).
-    if (/^\/(?:pois|poi|landmarks)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.poisReadout(r.e));
-    // "/completed" (aliases /questsdone, /qdone) — self-only readout of the
-    // quests you have turned in, in completion order. Self-only error reply,
-    // returns null so it is neither logged nor spoken; works online for free
-    // (no server interceptor).
-    if (/^\/(?:completed|questsdone|qdone)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.completedReadout(r.meta));
-    // "/listings" (aliases /mylistings, /auctions) — self-only readout of your
-    // own active World Market listings: item, asking price, and time left.
-    // Self-only error reply, returns null so it is neither logged nor spoken;
-    // works online for free (no server interceptor).
-    if (/^\/(?:listings|mylistings|auctions)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.listingsReadout(r.meta));
-    // "/targetbuffs" (aliases /debuffs, /tb) — self-only readout of the auras
-    // currently on your target, each tagged as a buff or debuff
-    if (/^\/(?:targetbuffs|debuffs|tb)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.targetBuffsReadout(r.e));
-    // "/casting" (aliases /cast, /castbar) — self-only readout of the player's
-    // current cast or channel progress
-    if (/^\/(?:casting|cast|castbar)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.castingReadout(r.e));
-    if (/^\/(?:speed|movespeed|ms)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.speedReadout(r.e));
-    // "/attack" (aliases /autoattack, /aa) — self-only readout of auto-attack
-    // state: whether it is engaged, what it is striking, and the next swing.
-    if (/^\/(?:attack|autoattack|aa)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.attackReadout(r.e, r.meta));
-    // "/consumable" — self-only readout of active food/drink regen
-    if (/^\/(consumable|consumables|eat|drink)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.consumableReadout(r.e));
-    if (/^\/(?:potion|potioncd|pot)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.potionReadout(r.e));
-    // "/overpower" — self-only readout of the warrior Overpower reactive window
-    if (/^\/(?:overpower|op|overpowered)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.overpowerReadout(r.e, r.meta));
-    // "/form" — self-only readout of the active shapeshift form or combat
-    // stance. Distinct from /buffs (which lists every aura with its timer):
-    // forms/stances are persistent toggles, so this reports the one active
-    // toggle by name, without a meaningless countdown.
-    if (/^\/(form|stance|shapeshift)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.formReadout(r.e));
-    // "/manaregen" (aliases /regen, /5sr) — self-only readout of the classic
-    // five-second-rule mana state. Reads only existing Entity fields; returns
-    // null so it is never broadcast, mirroring the other self-readouts.
-    if (/^\/(?:manaregen|regen|5sr)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.manaRegenReadout(r.e));
-    if (/^\/(?:falling|jump|airborne)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.fallingReadout(r.e));
-    // "/pettaunt" (aliases /pettaunt /growl) — self-only readout of the
-    // controlled pet's Growl (taunt) cooldown, the otherwise-invisible
-    // petTauntTimer that drives the pet's forced-aggro pulses
-    if (/^\/(?:pettaunt|petgrowl|growl)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.petTauntReadout(r.e));
-    if (/^\/(queued|onswing|swingqueue)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.queuedReadout(r.e));
-    // "/savedmana" — how much mana is parked while shapeshifted out of a form
-    if (/^\/(?:savedmana|parkedmana|sm)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.savedManaReadout(r.meta, r.e));
+      if (!t) this.error(r.meta.entityId, 'You have no target.');
+      else this.error(r.meta.entityId, this.targetReadout(t));
       return null;
     }
+    if (/^\/(?:xp|exp|experience)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.xpReadout(r.meta, r.e.level)); return null; }
+    if (/^\/(?:gold|money|coins)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.goldReadout(r.meta.copper)); return null; }
+    if (/^\/(?:stats|st|sheet)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.statsReadout(r.meta, r.e)); return null; }
+    if (/^\/(?:buffs?|auras)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.buffsReadout(r.e)); return null; }
+    if (/^\/(?:cooldowns?|cds?)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.cooldownsReadout(r.e)); return null; }
+    if (/^\/(?:bags|inv|inventory)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.bagsReadout(r.meta)); return null; }
+    if (/^\/(?:quests?|ql)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.questReadout(r.meta)); return null; }
+    if (/^\/(?:gear|equip|equipment)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.gearReadout(r.meta)); return null; }
+    if (/^\/(?:abilities|spells|spellbook)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.abilitiesReadout(r.meta, r.e)); return null; }
+    if (/^\/(?:pet|pets|companion)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.petReadout(r.e)); return null; }
+    if (/^\/(?:session|sess|sessionstats)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.sessionReadout(r.meta)); return null; }
+    if (/^\/(?:threat|aggro)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.threatReadout(r.e)); return null; }
+    if (/^\/(?:zones|zonelist|worldmap)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.zonesReadout(r.e.pos.z)); return null; }
+    if (/^\/(?:nearby|near|around)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.nearbyReadout(r.e)); return null; }
+    if (/^\/(?:arena|pvp|rating)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.arenaReadout(r.meta)); return null; }
+    if (/^\/(?:range|dist|distance)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.rangeReadout(r.e)); return null; }
+    if (/^\/(?:buyback|bb|repurchase)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.buybackReadout(r.meta)); return null; }
+    if (/^\/(?:combo|cp|combopoints)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.comboReadout(r.e)); return null; }
+    if (/^\/(?:combat|cb|incombat)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.combatReadout(r.e)); return null; }
+    if (/^\/(?:graveyard|gy|spirithealer)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.graveyardReadout(r.e)); return null; }
+    if (/^\/(?:dungeons|dungeon|instances)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.dungeonsReadout()); return null; }
+    if (/^\/(?:consider|con|difficulty)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.considerReadout(r.e)); return null; }
+    if (/^\/(?:pois|poi|landmarks)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.poisReadout(r.e)); return null; }
+    if (/^\/(?:completed|questsdone|qdone)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.completedReadout(r.meta)); return null; }
+    if (/^\/(?:listings|mylistings|auctions)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.listingsReadout(r.meta)); return null; }
+    if (/^\/(?:targetbuffs|debuffs|tb)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.targetBuffsReadout(r.e)); return null; }
+    if (/^\/(?:casting|cast|castbar)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.castingReadout(r.e)); return null; }
+    if (/^\/(?:speed|movespeed|ms)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.speedReadout(r.e)); return null; }
+    if (/^\/(?:attack|autoattack|aa)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.attackReadout(r.e, r.meta)); return null; }
+    if (/^\/(consumable|consumables|eat|drink)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.consumableReadout(r.e)); return null; }
+    if (/^\/(?:potion|potioncd|pot)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.potionReadout(r.e)); return null; }
+    if (/^\/(?:overpower|op|overpowered)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.overpowerReadout(r.e, r.meta)); return null; }
+    if (/^\/(form|stance|shapeshift)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.formReadout(r.e)); return null; }
+    if (/^\/(?:manaregen|regen|5sr)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.manaRegenReadout(r.e)); return null; }
+    if (/^\/(?:falling|jump|airborne)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.fallingReadout(r.e)); return null; }
+    if (/^\/(?:pettaunt|petgrowl|growl)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.petTauntReadout(r.e)); return null; }
+    if (/^\/(queued|onswing|swingqueue)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.queuedReadout(r.e)); return null; }
+    if (/^\/(?:savedmana|parkedmana|sm)(?:\s|$)/i.test(raw)) { this.error(r.meta.entityId, this.savedManaReadout(r.meta, r.e)); return null; }
 
     // "/w name message" — private whisper to an online player
     const wm = /^\/(?:w|whisper|t|tell)\s+(\S+)\s+([\s\S]+)$/i.exec(line);
@@ -4488,17 +4384,6 @@ export class Sim {
         this.broadcastEmote(r.meta, r.e, text);
         return null;
       }
-    }
-
-    // "/stats" (aliases "/st", "/sheet") — self-only character sheet readout.
-    // Reads only live entity state, returns null so it is neither logged nor
-    // spoken, and works online for free (no server interceptor).
-    if (/^\/(?:stats|st|sheet)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.statsReadout(r.meta, r.e));
-    // "/quest" (aliases /quests, /ql) — self-only readout of the active quest log
-    if (/^\/(?:quests?|ql)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.questReadout(r.meta));
-      return null;
     }
 
     // bare text and "/s" are local say; "/y" carries further — both are
@@ -5791,6 +5676,7 @@ export class Sim {
     }
     line += `. AP ${Math.round(e.attackPower)}, Crit ${crit}%, Armor ${Math.round(e.stats.armor)}.`;
     return line;
+  }
   // Self-only readout of carried items for "/bags": items sorted by quality
   // (epic first), ties keeping inventory order, with the purse appended via
   // formatMoney. Reads only PlayerMeta state, so it works online for free.
@@ -5810,6 +5696,7 @@ export class Sim {
       return s.count > 1 ? `${name} x${s.count}` : name;
     });
     return `Bags (${parts.length}): ${parts.join(', ')}. ${purse}`;
+  }
   // Self-only readout of the player's party: each member in join order with
   // level, class, and HP% (or (dead)/(offline)), the leader tagged [leader].
   private partyReadout(pid: number): string {
@@ -5825,6 +5712,7 @@ export class Sim {
       return `${meta.name} (Lvl ${e.level} ${cls}, ${state})${tag}`;
     });
     return `Party (${party.members.length}/${PARTY_MAX}): ${parts.join(', ')}.`;
+  }
   // Self-only readout for "/zones": lists every overworld zone in travel order
   // (south -> north) with its level range, tagging the zone the player is in.
   // `currentZ` is the player's world Z (use zoneAt(currentZ) to find their zone).
@@ -5838,6 +5726,7 @@ export class Sim {
       return z.id === here.id ? `${line} [you are here]` : line;
     });
     return `Zones (${ZONES.length}): ${parts.join(', ')}.`;
+  }
   // Self-only readout of a character's Ashen Coliseum standing. Reads only the
   // persisted PlayerMeta arena fields (no new state). Draws count as neither a
   // win nor a loss (see resolveArena), so "matches played" is wins + losses.
@@ -5847,6 +5736,7 @@ export class Sim {
     if (played <= 0) return `Arena: Rating ${rating} — no matches played yet.`;
     const pct = Math.round((wins / played) * 100);
     return `Arena: Rating ${rating} — ${wins} wins, ${losses} losses (${pct}% win rate).`;
+  }
   private buybackReadout(meta: PlayerMeta): string {
     const slots = meta.vendorBuyback.filter((s) => ITEMS[s.itemId] && s.count > 0);
     if (slots.length === 0) return 'Your vendor buyback list is empty.';
@@ -5856,11 +5746,13 @@ export class Sim {
       return `${def.name}${qty} (${formatMoney(def.sellValue)} each)`;
     });
     return `Vendor buyback (${slots.length}): ${parts.join(', ')}. Repurchase at any merchant.`;
+  }
   private comboReadout(e: Entity): string {
     if (e.comboPoints <= 0) return 'You have no combo points built up.';
     const target = e.comboTargetId !== null ? this.entities.get(e.comboTargetId) : undefined;
     const on = target ? ` on ${target.name}` : '';
     return `Combo points: ${e.comboPoints}/5${on}.`;
+  }
   // Readout for "/combat": reads only the live Entity.inCombat / combatTimer
   // (no new fields). combatTimer is "time since last combat event"; a player
   // lingers in combat until it reaches COMBAT_LINGER (the literal 5s drop-out
@@ -5875,6 +5767,7 @@ export class Sim {
       return `You are in combat — leaving in ${Math.ceil(remaining)}s if no further action.`;
     }
     return 'You are in combat (enemies still engaged).';
+  }
   // Readout for "/graveyard": names the zone graveyard your spirit returns to
   // if you die here, and its coordinates. Reads only existing zone/dungeon
   // lookups (no new fields) and resolves the same target as releaseSpirit —
@@ -5885,6 +5778,7 @@ export class Sim {
     const zone = zoneAt(dungeon ? dungeon.doorPos.z : p.pos.z);
     const gy = zone.graveyard;
     return `If you fall here, your spirit returns to the ${zone.name} graveyard at (${Math.floor(gy.x)}, ${Math.floor(gy.z)}).`;
+  }
   // Readout for "/dungeons": lists every group instance in entrance order with
   // the overworld zone its door sits in and its suggested party size. Reads
   // only the static DUNGEON_LIST (already entrance-sorted by index) and the
@@ -5892,6 +5786,7 @@ export class Sim {
   private dungeonsReadout(): string {
     const parts = DUNGEON_LIST.map((d) => `${d.name} (${zoneAt(d.doorPos.z).name}, ${d.suggestedPlayers} players)`);
     return `Dungeons (${parts.length}): ${parts.join(', ')}.`;
+  }
   // Readout for "/consider": sizes up the current target's level versus yours.
   // The verdict bands track the real combat model — meleeMissChance (types.ts)
   // applies a sharp miss penalty once the target is 3+ levels above you (its
@@ -5910,6 +5805,7 @@ export class Sim {
     else if (diff >= -2) verdict = 'a manageable fight';
     else verdict = 'an easy fight';
     return `${t.name} is level ${t.level} — ${verdict} for you (level ${self.level}).`;
+  }
   // Readout for "/pois": the named landmarks of your current zone, nearest
   // first, each with its distance in yards. Reads only the static ZoneDef.pois
   // (the same labels the HUD pins on the map) and your live position — no new
@@ -5922,6 +5818,7 @@ export class Sim {
       .sort((a, b) => a.d - b.d)
       .map((p) => `${p.label} (${Math.round(p.d)}yd)`);
     return `Landmarks in ${zone.name} (${parts.length}): ${parts.join(', ')}.`;
+  }
   // Readout for "/completed": the quests you have turned in, in completion
   // order (questsDone is a Set whose insertion order is preserved on save/load).
   // Reads only PlayerMeta.questsDone + the QUESTS registry for names (no new
@@ -5930,6 +5827,7 @@ export class Sim {
     const names = [...meta.questsDone].map((id) => QUESTS[id]?.name ?? id);
     if (names.length === 0) return 'You have not completed any quests yet.';
     return `Completed quests (${names.length}): ${names.join(', ')}.`;
+  }
   // Readout for "/listings": your own active World Market listings (house stock
   // and other sellers excluded), each with item, asking price, and time left
   // before it returns unsold. Reads only the live marketListings, ITEMS names,
@@ -5947,6 +5845,7 @@ export class Sim {
       return `${name}${qty} — ${formatMoney(l.price)} (${left} left)`;
     });
     return `Your market listings (${parts.length}/${MARKET_MAX_LISTINGS}): ${parts.join(', ')}.`;
+  }
   // Self-only readout of the auras on the player's current target, each tagged
   // [buff] or [debuff]. Mirrors the self-aura readout but reaches across to the
   // target's live Entity.auras, so it works for mobs, pets, and other players.
@@ -5961,6 +5860,7 @@ export class Sim {
       return `${a.name}${stack} [${tag}] (${Math.ceil(a.remaining)}s)`;
     });
     return `Effects on ${target.name} (${auras.length}): ${parts.join(', ')}.`;
+  }
   // Self-only readout of current movement speed as a percent of normal run
   // speed. Effective speed is RUN_SPEED * moveSpeedMult(p), where the
   // multiplier folds slow/stealth auras against speed buffs; a root pins the
@@ -5972,6 +5872,7 @@ export class Sim {
     if (pct > 100) return `Movement speed: ${pct}% of normal (hastened).`;
     if (pct < 100) return `Movement speed: ${pct}% of normal (slowed).`;
     return 'Movement speed: 100% of normal.';
+  }
   // Self-only readout for /attack: reads only live Entity auto-attack state
   // (autoAttack/swingTimer/targetId). The displayed swing interval reuses the
   // exact expression the engine resets the timer with (weapon.speed *
@@ -5986,6 +5887,7 @@ export class Sim {
     const interval = base * this.swingIntervalMult(p);
     const next = p.swingTimer <= 0 ? 'now' : `in ${p.swingTimer.toFixed(1)}s`;
     return `Auto-attack is on against ${t.name} — next swing ${next} (${interval.toFixed(1)}s swing).`;
+  }
   // Overpower is a warrior reactive: an enemy dodging the player's attack opens
   // a 5s window (overpowerUntil = time + 5) in which the ability becomes usable.
   // It is neither an aura nor a normal cooldown, so no other readout exposes it.
@@ -5996,6 +5898,7 @@ export class Sim {
       return `Overpower is ready — strike within ${remaining}s (an enemy dodged your attack).`;
     }
     return 'Overpower is not available. It opens for 5s after an enemy dodges your attack.';
+  }
   // Reports the active shapeshift form or combat stance. Anchored to the
   // same toggle set the cast path treats as mutually-exclusive persistent
   // states (form_bear / form_cat / defensive_stance / stealth); realistically
@@ -6007,6 +5910,7 @@ export class Sim {
     if (!form) return 'You are not in any form or stance.';
     if (form.kind === 'stealth') return 'You are stealthed.';
     return `You are in ${form.name}.`;
+  }
   // Self-only readout of the five-second-rule mana state (#103 out-of-combat
   // regen). `fiveSecondRule` is the seconds elapsed since the player last spent
   // mana on an ability (reset to 0 at sim.ts cast path, bumped by DT each tick);
@@ -6022,6 +5926,7 @@ export class Sim {
     }
     const resumesIn = Math.ceil(FSR_THRESHOLD - e.fiveSecondRule);
     return `Mana regen is paused — resumes in ${resumesIn}s (you spent mana recently).`;
+  }
   // Self-only readout of vertical/fall state — surfaces the otherwise-invisible
   // jump physics (sim.ts updatePlayerMovement). Reads only live Entity fields and
   // the same groundHeight()/FALL_SAFE_DISTANCE the landing-damage model uses, so
@@ -6037,6 +5942,7 @@ export class Sim {
         ? ' Brace for impact — this fall is going to hurt.'
         : ' It should be a safe landing.';
     return `You are falling — ${height}yd above the ground.${danger}`;
+  }
   // Self-only readout of the controlled pet's Growl (taunt) cooldown. Reads
   // only the live pet Entity's petTauntTimer (the same field updatePet counts
   // down at sim.ts ~2770 and resets to PET_GROWL_INTERVAL after each growl), so
@@ -6049,6 +5955,7 @@ export class Sim {
       return `Your pet's Growl is ready — it will taunt its target on the next melee swing.`;
     }
     return `Your pet's Growl is on cooldown — ready in ${Math.ceil(pet.petTauntTimer)}s.`;
+  }
   // Druid forms park the mana bar in savedMana and run on rage/energy instead
   // (entity.ts:126-130). That parked pool has no in-game UI — the bar shows the
   // form's resource — so this readout is the only way to see what returns on
@@ -6078,6 +5985,10 @@ export class Sim {
       'Chat channels: /s say, /y yell, /general, /p party, /world, /lfg.',
       'Whisper a player with /w <name> <message>, reply with /r.',
       'Other commands: /join <world|lfg>, /roll, /inspect <name>, /follow <name>, /unfollow, /afk, /dnd, /who.',
+      'Character readouts: /played, /xp, /gold, /stats, /bags, /gear, /abilities, /buffs, /cooldowns, /quest, /completed.',
+      'World readouts: /where, /zones, /nearby, /pois, /graveyard, /dungeons, /arena, /session, /listings, /buyback.',
+      'Combat readouts: /target, /targetbuffs, /range, /attack, /casting, /combat, /threat, /consider, /combo, /overpower.',
+      'State readouts: /pet, /pettaunt, /speed, /consumable, /potion, /form, /manaregen, /falling, /queued, /savedmana.',
     ];
   }
 
@@ -6124,6 +6035,7 @@ export class Sim {
       if (set.size === 0) this.channelSubs.delete(pid);
       this.notice(pid, `Left the ${channel} channel.`);
     }
+  }
   // One-line description of an entity for the self-only "/target" readout:
   // name, level, what it is (player / pet / mob), and current health. A dead
   // body reports "dead" instead of a percentage so a lootable corpse reads
@@ -6132,6 +6044,7 @@ export class Sim {
     const kind = t.kind === 'player' ? 'player' : t.ownerId !== null ? 'pet' : 'mob';
     const health = t.dead ? 'dead' : `${Math.round((t.hp / t.maxHp) * 100)}% HP`;
     return `Target: ${t.name} (level ${t.level} ${kind}) — ${health}.`;
+  }
   // One-line leveling summary for the /xp readout. At MAX_LEVEL there is no
   // "next level" so we avoid the percent/remaining math (xpForLevel is 0 there).
   private xpReadout(meta: PlayerMeta, level: number): string {
@@ -6141,11 +6054,13 @@ export class Sim {
     const pct = Math.floor((have / need) * 100);
     const fmt = (n: number) => n.toLocaleString('en-US');
     return `Level ${level} — ${fmt(have)}/${fmt(need)} XP (${pct}%), ${fmt(need - have)} to go.`;
+  }
   // Render the /gold readout. An empty purse gets flavor text rather than the
   // bare "You have 0c." that formatMoney would otherwise produce.
   private goldReadout(copper: number): string {
     if (copper <= 0) return 'Your purse is empty.';
     return `You have ${formatMoney(copper)}.`;
+  }
   // Self-only readout for "/buffs": summarise the auras currently on the
   // entity. Auras carry no buff/debuff flag, only an AuraKind and a `remaining`
   // time in seconds; toggles (stances, forms, stealth) use a 3600s sentinel
@@ -6160,6 +6075,7 @@ export class Sim {
   // float, so Math.ceil keeps a still-active 0.3s remainder showing as "(1s)".
   private auraLabel(a: Aura): string {
     return `${a.name} (${Math.ceil(a.remaining)}s)`;
+  }
   // Self-only readout for "/cooldowns": summarise the abilities currently on
   // cooldown for this entity, soonest-ready first.
   //
@@ -6176,6 +6092,7 @@ export class Sim {
       .sort((a, b) => a[1] - b[1])
       .map(([id, remaining]) => `${ABILITIES[id]?.name ?? id} (${Math.ceil(remaining)}s)`);
     return `Abilities on cooldown (${parts.length}): ${parts.join(', ')}.`;
+  }
   // Self-only readout of the active quest log: one entry per tracked quest with
   // per-objective progress. questLog only ever holds 'active'/'ready' quests
   // (turn-in deletes the entry), so iterating it gives exactly what to show.
@@ -6192,6 +6109,7 @@ export class Sim {
     }
     if (lines.length === 0) return 'Your quest log is empty.';
     return `Quest log (${lines.length}): ${lines.join(' | ')}.`;
+  }
   // Self-only readout of equipped items, walked in a fixed slot order so the
   // line is stable and empty slots are visible (the point of a gear check).
   private gearReadout(meta: PlayerMeta): string {
@@ -6210,11 +6128,13 @@ export class Sim {
     });
     if (worn === 0) return 'You have nothing equipped.';
     return `Equipped (${worn}/${slots.length}): ${parts.join(', ')}.`;
+  }
   private abilitiesReadout(meta: PlayerMeta, e: Entity): string {
     const known = abilitiesKnownAt(meta.cls, e.level);
     if (known.length === 0) return 'You have not learned any abilities yet.';
     const list = known.map((k) => `${k.def.name} (Rank ${k.rank})`).join(', ');
     return `Spellbook (${known.length}): ${list}.`;
+  }
   // Self-only readout of the player's active pet: name, level, beast family,
   // and current health. Reads live pet state via petOf() so it stays accurate
   // regardless of how the pet was acquired (tame, summon).
@@ -6225,6 +6145,7 @@ export class Sim {
     const kind = family ? ` ${family}` : '';
     const pct = pet.maxHp > 0 ? Math.round((pet.hp / pet.maxHp) * 100) : 0;
     return `Your pet: ${pet.name} (level ${pet.level}${kind}) — HP ${pet.hp}/${pet.maxHp} (${pct}%).`;
+  }
   // Build the self-only "/session" line from this session's RewardCounters.
   // Counters are reset each boot (freshCounters), so this is always per-session.
   // Format kills/deaths first, then a damage clause, then XP — using
@@ -6236,6 +6157,7 @@ export class Sim {
     return `Session: ${plural(c.kills, 'kill')}, ${plural(c.deaths, 'death')}. ` +
       `Damage dealt ${n(c.damageDealt)}, taken ${n(c.damageTaken)}. ` +
       `XP gained ${n(c.xpGained)}.`;
+  }
   /** Self-only readout of the threat table on the player's current target,
    *  highest first, as a percentage of the current threat leader. */
   private threatReadout(self: Entity): string {
@@ -6260,6 +6182,7 @@ export class Sim {
     const meta = this.players.get(id);
     if (meta) return meta.name;
     return this.entities.get(id)?.name || 'Unknown';
+  }
   // One scannable entry per nearby entity: name, what it is, and how far.
   // Pets are mobs with a non-null ownerId; players have no level prefix.
   private nearbyLabel(e: Entity, d: number): string {
@@ -6286,6 +6209,7 @@ export class Sim {
     const more = found.length - shown.length;
     if (more > 0) labels.push(`(+${more} more)`);
     return `Nearby (${found.length}): ${labels.join(', ')}.`;
+  }
   // Distance from the player to their current target. Reads only live Entity
   // state (targetId + positions), so it needs no new fields and works online
   // for free. The in-melee hint compares the RAW distance to MELEE_RANGE — the
@@ -6299,17 +6223,6 @@ export class Sim {
     const reach = d <= MELEE_RANGE ? 'in melee range' : 'out of melee range';
     return `Your target ${t.name} is ${Math.round(d)}yd away (${reach}).`;
   }
-}
-
-// The auras a target carries that are working against it. Everything else
-// (buff_*, hot, absorb, imbue, stances, forms, stealth, thorns, attackspeed
-// haste) is treated as helpful/neutral. Used by /targetbuffs to tag each aura.
-const HARMFUL_AURA_KINDS: ReadonlySet<AuraKind> = new Set<AuraKind>([
-  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'sunder',
-]);
-
-function isHarmfulAura(kind: AuraKind): boolean {
-  return HARMFUL_AURA_KINDS.has(kind);
   // Reads the live cast-bar state (no stored fields): castingAbility holds an
   // ability id or the FISHING_CAST_ID sentinel, channeling distinguishes a
   // channel from a normal cast. Times are fractional seconds, so toFixed(1)
@@ -6324,6 +6237,7 @@ function isHarmfulAura(kind: AuraKind): boolean {
     const name = ABILITIES[e.castingAbility]?.name ?? e.castingAbility;
     const verb = e.channeling ? 'Channeling' : 'Casting';
     return `${verb} ${name} — ${remaining}s of ${total}s remaining.`;
+  }
   // Self-only readout of what the player is currently eating/drinking. Food and
   // drink occupy separate slots and tick concurrently, each on its own remaining
   // timer, so both are reported with their own restore rate and time left.
@@ -6341,6 +6255,7 @@ function isHarmfulAura(kind: AuraKind): boolean {
     }
     if (parts.length === 0) return 'You are not eating or drinking.';
     return `You are ${parts.join(' and ')}.`;
+  }
   // Self-only readout of the shared combat-potion cooldown (#103). Distinct from
   // /cooldowns, which reads the per-ability Entity.cooldowns map and never shows
   // this separate 60s potion timer. potionCooldownUntil is an absolute sim-time
@@ -6349,6 +6264,7 @@ function isHarmfulAura(kind: AuraKind): boolean {
     const remaining = e.potionCooldownUntil - this.time;
     if (remaining <= 0) return 'Combat potion is ready to use.';
     return `Combat potion on cooldown — ready in ${Math.ceil(remaining)}s.`;
+  }
   // Self-only readout of the ability armed to fire on the next melee swing
   // (Heroic Strike / Raptor Strike / Maul). Distinct from /casting (active
   // cast bar) and /cooldowns (recharge timers): an on-swing ability is neither

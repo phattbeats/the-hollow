@@ -247,6 +247,15 @@ describe('chat channels', () => {
     teleport(sim, a, 0, -40);
     sim.tick();
     sim.chat('/played', a);
+    const events = sim.tick();
+    expect(chatEvents(events)).toHaveLength(0);
+    expect(events).toContainEqual(expect.objectContaining({
+      type: 'error',
+      pid: a,
+      text: 'Time played this session: 0s.',
+    }));
+  });
+
   it('/where reports the caller\'s zone, level range, and coordinates', () => {
     const sim = makeWorld();
     const a = sim.addPlayer('warrior', 'Aleph');
@@ -260,7 +269,7 @@ describe('chat channels', () => {
     expect(events).toContainEqual(expect.objectContaining({
       type: 'error',
       pid: a,
-      text: 'Time played this session: 0s.',
+      text: `You are in ${zone.name} (levels ${lo}–${hi}) at (12, -340).`,
     }));
   });
 
@@ -279,8 +288,6 @@ describe('chat channels', () => {
     );
     // once past a minute the line switches to "Xm Ys" form
     expect(played?.text).toMatch(/^Time played this session: 1m \d+s\.$/);
-      text: `You are in ${zone.name} (levels ${lo}–${hi}) at (12, -340).`,
-    }));
   });
 
   it('/where accepts the /loc and /zone aliases', () => {
