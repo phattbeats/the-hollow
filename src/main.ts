@@ -24,7 +24,7 @@ import { tEntity } from './ui/entity_i18n';
 import { hydrateIcons } from './ui/ui_icons';
 
 
-const WORLD_SEED = 20061; // fixed: World of Claudecraft is a persistent place
+const WORLD_SEED = 20061; // fixed: World of ClaudeCraft is a persistent place
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.querySelector(sel) as T;
 let pendingDeleteCharacter: CharacterSummary | null = null;
