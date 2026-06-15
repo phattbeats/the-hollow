@@ -4313,6 +4313,12 @@ export class Sim {
     // online for free (no server interceptor).
     if (/^\/(?:pois|poi|landmarks)(?:\s|$)/i.test(raw)) {
       this.error(r.meta.entityId, this.poisReadout(r.e));
+    // "/completed" (aliases /questsdone, /qdone) — self-only readout of the
+    // quests you have turned in, in completion order. Self-only error reply,
+    // returns null so it is neither logged nor spoken; works online for free
+    // (no server interceptor).
+    if (/^\/(?:completed|questsdone|qdone)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.completedReadout(r.meta));
       return null;
     }
 
@@ -5865,6 +5871,14 @@ export class Sim {
       .sort((a, b) => a.d - b.d)
       .map((p) => `${p.label} (${Math.round(p.d)}yd)`);
     return `Landmarks in ${zone.name} (${parts.length}): ${parts.join(', ')}.`;
+  // Readout for "/completed": the quests you have turned in, in completion
+  // order (questsDone is a Set whose insertion order is preserved on save/load).
+  // Reads only PlayerMeta.questsDone + the QUESTS registry for names (no new
+  // fields); distinct from /quest, which lists the active log.
+  private completedReadout(meta: PlayerMeta): string {
+    const names = [...meta.questsDone].map((id) => QUESTS[id]?.name ?? id);
+    if (names.length === 0) return 'You have not completed any quests yet.';
+    return `Completed quests (${names.length}): ${names.join(', ')}.`;
   }
 
   private error(pid: number, text: string): void {
