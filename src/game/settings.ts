@@ -37,6 +37,10 @@ export const SETTING_RANGES = {
   // 1.0 (fully opaque) by default; touch-only. Lets phone players dim the
   // on-screen joysticks + buttons so they obscure less of the world.
   touchOpacity: { min: 0.3, max: 1, def: 1 },
+  // touch only: scale the on-screen action button cluster so players with
+  // larger or smaller thumbs can size the controls to taste (default 1.0x).
+  // Surfaced in the Esc menu only on phone-touch devices.
+  actionButtonScale: { min: 0.8, max: 1.3, def: 1 },
 } as const;
 
 export const BOOL_SETTINGS = {

@@ -3917,7 +3917,8 @@
     position: absolute; left: 0; right: 0; bottom: -18px; text-align: center; font-size: 9px; color: #c8b888; text-shadow: 1px 1px 2px #000;
   }
   body.mobile-touch #mobile-combat-controls {
-    position: absolute; left: 50%; bottom: calc(3px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+    position: absolute; left: 50%; bottom: calc(3px + env(safe-area-inset-bottom));
+    transform: translateX(-50%) scale(var(--btn-scale, 1)); transform-origin: center bottom;
     display: grid; grid-template-columns: 124px repeat(6, 58px); gap: 8px; pointer-events: auto; align-items: end; z-index: 30;
   }
   body.mobile-touch .mobile-btn {

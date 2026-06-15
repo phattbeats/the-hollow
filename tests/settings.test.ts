@@ -126,6 +126,14 @@ describe('Settings', () => {
     expect(s.get('mouseCamera')).toBe(false);
   });
 
+  it('action button scale defaults to 1.0 and clamps to its slider bounds', () => {
+    const s = new Settings();
+    expect(s.get('actionButtonScale')).toBe(1);
+    expect(s.set('actionButtonScale', 5)).toBe(SETTING_RANGES.actionButtonScale.max);
+    expect(s.set('actionButtonScale', 0)).toBe(SETTING_RANGES.actionButtonScale.min);
+    expect(s.set('actionButtonScale', 1.1)).toBe(1.1);
+  });
+
   it('all() returns an independent snapshot', () => {
     const s = new Settings();
     const snap = s.all();
