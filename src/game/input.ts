@@ -267,6 +267,12 @@ export class Input {
     this.camPitch = Math.min(1.35, Math.max(-0.4, this.camPitch + this.touchLookVector.y * TOUCH_LOOK_PITCH_RATE * this.touchLookSpeed * dt));
   }
 
+  /** Snap the orbit camera back behind the character (mobile recenter gesture). */
+  recenterCameraBehind(facing: number): void {
+    if (Number.isFinite(facing)) this.camYaw = facing;
+    this.camPitch = 0.32;
+  }
+
   isMouselookActive(): boolean {
     if (this.mouseCameraEnabled) return this.touchLookActive;
     return (this.rightDown && this.cameraDragActive) || this.touchLookActive;

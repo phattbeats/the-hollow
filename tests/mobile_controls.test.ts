@@ -3,11 +3,13 @@ import {
   clampJoystickOrigin,
   HAPTICS_STORE_KEY,
   isPhoneTouchDevice,
+  isRecenterDoubleTap,
   loadHapticsEnabled,
   mapJoystickVector,
   mapLookVector,
   MobileControls,
   pinchZoomDelta,
+  RECENTER_DOUBLE_TAP_MS,
   saveHapticsEnabled,
   triggerHaptic,
 } from '../src/game/mobile_controls';
@@ -45,6 +47,24 @@ describe('isPhoneTouchDevice', () => {
     expect(queries[0]).toContain('pointer: coarse');
     expect(queries[0]).toContain('max-width: 940px');
     expect(queries[0]).toContain('max-height: 760px');
+  });
+});
+
+describe('isRecenterDoubleTap', () => {
+  it('fires for a quick, stationary second tap', () => {
+    expect(isRecenterDoubleTap(1000, 1000 + RECENTER_DOUBLE_TAP_MS - 50, false)).toBe(true);
+  });
+
+  it('ignores a tap that dragged the camera (a look, not a tap)', () => {
+    expect(isRecenterDoubleTap(1000, 1100, true)).toBe(false);
+  });
+
+  it('ignores a slow second tap outside the double-tap window', () => {
+    expect(isRecenterDoubleTap(1000, 1000 + RECENTER_DOUBLE_TAP_MS + 1, false)).toBe(false);
+  });
+
+  it('ignores the very first tap (no prior tap recorded)', () => {
+    expect(isRecenterDoubleTap(0, 120, false)).toBe(false);
   });
 });
 
@@ -294,6 +314,7 @@ function mobileCallbacks() {
     onLeaderboard: noop,
     onNameplates: () => false,
     onMusic: () => true,
+    onRecenterCamera: noop,
   };
 }
 
