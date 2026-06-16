@@ -33,6 +33,7 @@ import { raidMarkerDataUrl } from '../ui/icons';
 import { isProjectedNameplateAnchorVisible, nameplateScreenTransform } from './nameplate_projection';
 import { comboPipsFor, COMBO_PIP_MAX } from './nameplate_combo';
 import { stepCameraOcclusion, type CameraOcclusionState } from './camera_collision';
+import { castBarState } from './cast_bar';
 
 const NAMEPLATE_RANGE = 55;
 const NAMEPLATE_RANGE_SQ = NAMEPLATE_RANGE * NAMEPLATE_RANGE;
@@ -120,6 +121,9 @@ interface EntityView {
   emoteIconEl: HTMLImageElement;
   emoteLabelEl: HTMLSpanElement;
   markerEl: HTMLDivElement;
+  castBar: HTMLDivElement; // overhead spell cast/channel bar, below the hp bar
+  castFill: HTMLDivElement;
+  castLabel: HTMLDivElement;
   raidMarkEl: HTMLDivElement; // party raid/target marker, above the name
   comboRow: HTMLDivElement; // rogue/druid combo-point pips, above the name
   comboPips: HTMLDivElement[]; // the COMBO_PIP_MAX pip cells, lit left-to-right
@@ -826,7 +830,16 @@ export class Renderer {
     const hpFill = document.createElement('div');
     hpFill.className = 'np-hpfill';
     hpBar.appendChild(hpFill);
-    np.append(emoteEl, raidMark, comboRow, marker, nameEl, hpBar);
+    // overhead cast bar — hidden until the entity starts casting/channeling
+    const castBar = document.createElement('div');
+    castBar.className = 'np-castbar';
+    castBar.style.display = 'none';
+    const castFill = document.createElement('div');
+    castFill.className = 'np-castfill';
+    const castLabel = document.createElement('div');
+    castLabel.className = 'np-castlabel';
+    castBar.append(castFill, castLabel);
+    np.append(emoteEl, raidMark, comboRow, marker, nameEl, hpBar, castBar);
     this.nameplateLayer.appendChild(np);
 
     // object views gate their own casters; character shadows live in visual
@@ -834,7 +847,7 @@ export class Renderer {
     if (!visual) collectCasters(group, objectCasters);
     this.views.set(e.id, {
       group, visual, sheepVisual: null, bearVisual: null, catVisual: null, height, clickTarget,
-      nameplate: np, nameEl, hpBar, hpFill, emoteEl, emoteIconEl, emoteLabelEl, markerEl: marker, raidMarkEl: raidMark, comboRow, comboPips, sparkle, objectMesh, portal,
+      nameplate: np, nameEl, hpBar, hpFill, emoteEl, emoteIconEl, emoteLabelEl, markerEl: marker, raidMarkEl: raidMark, comboRow, comboPips, castBar, castFill, castLabel, sparkle, objectMesh, portal,
       nameplateDisplay: 'none', nameplateTransform: '', nameplateSig: '', nameplateHpWidth: '', comboSig: '',
       objectCasters, shadowOn: true, isFar: false, lastOverheadEmoteKey: null,
       lastX: e.pos.x, lastZ: e.pos.z, skin: e.skin,
@@ -1561,6 +1574,8 @@ export class Renderer {
         this.setNameplateStatic(v, `mob|${name}|${color}|${hpDisplay}|${marker}`, name, color, hpDisplay, marker, 'np-marker loot', '1');
         this.setNameplateHp(v, e);
       }
+
+      this.updateCastBar(v, e);
     }
   }
 
@@ -1602,6 +1617,22 @@ export class Renderer {
     for (let i = 0; i < v.comboPips.length; i++) {
       v.comboPips[i].classList.toggle('lit', i < n);
     }
+  }
+
+  // Overhead spell cast/channel bar. The fill + label rules live in the DOM-free
+  // castBarState() helper (cast_bar.ts); here we just push them to the DOM. Casts
+  // fill up toward completion, channels drain down — both honest to the live
+  // cast fields the sim and the online snapshot already expose.
+  private updateCastBar(v: EntityView, e: Entity): void {
+    const st = castBarState(e);
+    if (!st.visible) {
+      if (v.castBar.style.display !== 'none') v.castBar.style.display = 'none';
+      return;
+    }
+    v.castBar.style.display = '';
+    v.castBar.classList.toggle('channel', st.channel);
+    v.castFill.style.width = `${(st.fill * 100).toFixed(1)}%`;
+    v.castLabel.textContent = st.label;
   }
 
   // Hang a speech bubble over an entity's head; it follows the entity and
