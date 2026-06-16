@@ -1,8 +1,24 @@
-# World of Claudecraft — a classic-style MMO
+<div align="center">
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-ESM-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Three.js](https://img.shields.io/badge/Three.js-r165-000000?logo=threedotjs&logoColor=white)](https://threejs.org/)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
+[![Vitest](https://img.shields.io/badge/Vitest-4.1-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-0.6.0-blue)](package.json)
+[![Discord](https://img.shields.io/badge/Discord-join-5865F2?logo=discord&logoColor=white)](https://discord.gg/GjhnUsBtw)
+
+**English** · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md)
+
+</div>
+
+# World of ClaudeCraft — a classic-style MMO
 
 [Join the community Discord](https://discord.gg/GjhnUsBtw)
 
-![World of Claudecraft title screen](docs/screenshots/title-screen.jpg)
+![World of ClaudeCraft title screen](docs/screenshots/title-screen.jpg)
 
 A classic-era-MMO-flavored micro-MMO you can host and play:
 
@@ -26,7 +42,7 @@ runs for everyone online.
 
 ![World of Claude](worldofclaude.png)
 
-![World of Claudecraft community](woc_community.png)
+![World of ClaudeCraft community](woc_community.png)
 
 ---
 
