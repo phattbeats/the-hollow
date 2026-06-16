@@ -27,6 +27,39 @@ hashed with SHA-256, the baseline lives in `src/ui/i18n.resolved.sha256`, and
 Cheat sheet for the packet is `docs/i18n-scaling/state.md`; running status is
 `docs/i18n-scaling/progress.md`.
 
+## Phase 3 handoff reality (read before planning this phase)
+
+Phase 3 flattened the 13 main-table overlays by FULL-INLINE: each
+`src/ui/i18n.locales/<lang>.ts` is now a standalone flat `Record<string, string>`
+(1925 dense keys) that no longer imports or spreads the `i18n.en.ts` content
+layers OR `world_entity_i18n.ts`. Two consequences for this phase:
+
+- The MAIN-table dialect dedup below is unaffected and is still the core of the
+  phase: es_ES / fr_CA / en_CA exist as full dense FLAT overlays you can diff
+  against their base (es / fr_FR / en) and reduce to divergence-only. Good to go.
+
+- The two ISLAND files were deliberately NOT flattened in Phase 3, so the picture
+  differs from what the "What this phase does" / "grounded fact" paragraphs below
+  assume:
+  - `src/ui/world_entity_i18n.ts`: after full-inline its NON-ENGLISH slices feed
+    nothing (the overlays carry every entity key inline; there are zero runtime
+    path-indexers; only its `.en` slice still feeds nested `en`). That data is now
+    DEAD and is NOT in the byte-gated table, so "replace the
+    `{} as WorldEntityTranslations` casts with real overlay semantics" is really a
+    KEEP-vs-REMOVE decision: either re-establish world_entity as the single
+    entity-name source (un-inline the overlays so they reference it) OR delete the
+    dead non-English slices. Choose deliberately; do not restructure dead data for
+    its own sake. Either way the byte gate must stay green.
+  - `src/ui/talent_i18n.ts`: a SEPARATE channel (not in the resolved table), read
+    nested at runtime by `tTalent`, whose `localeText` leaves are FUNCTIONS
+    (`chooseOne`/`specDescription`/`grant`/`increase`/`reduce`) - it cannot become
+    a flat string map. Its dialect aliasing is `localeText.es_ES = localeText.es`
+    (a runtime reassignment, not a `{} as` cast). If you touch it, keep it nested
+    and add behavior tests - no byte gate covers it.
+
+Full rationale: state.md "PHASE 3 HANDOFF TO PHASE 4 (islands)" + progress.md
+Phase 3 DEVIATION.
+
 ## What this phase does
 
 Make dialect inheritance first-class and uniform. `es_ES` becomes an overlay
