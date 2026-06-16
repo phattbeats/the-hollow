@@ -817,6 +817,10 @@ export class Sim {
     return true;
   }
 
+  changeSkin(skin: number): void {
+    this.setPlayerSkin(this.primaryId, skin);
+  }
+
   // -------------------------------------------------------------------------
   // Back-compat accessors: single-player contexts (offline game, RL env, tests)
   // address "the" player; these delegate to the primary player.

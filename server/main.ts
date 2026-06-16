@@ -9,6 +9,8 @@ import {
   findCharacterReportTargetByName, topArenaRatings, topLifetimeXp, chatMuteStatusForAccount,
 } from './db';
 import { virtualLevel } from '../src/sim/types';
+import { Sim } from '../src/sim/sim';
+import type { PlayerClass } from '../src/sim/types';
 import type { LeaderboardEntry } from '../src/world_api';
 import { cleanReportReason, createPlayerReport, createSuspiciousRegistrationReport } from './moderation_db';
 import { resolveReportTarget } from './report_target';
@@ -30,6 +32,12 @@ const WIKI_URL = process.env.WIKI_URL ?? 'http://localhost:8080/wiki/index.php/M
 const CHAT_LOG_RETENTION_DAYS = Number(process.env.CHAT_LOG_RETENTION_DAYS ?? 90);
 
 const game = new GameServer();
+
+function initialCharacterState(cls: PlayerClass, name: string, skin: number): import('../src/sim/sim').CharacterState {
+  const sim = new Sim({ seed: 20061, playerClass: cls, playerName: name });
+  sim.setPlayerSkin(sim.playerId, skin);
+  return sim.serializeCharacter(sim.playerId)!;
+}
 
 // ---------------------------------------------------------------------------
 // Lifetime-XP leaderboard cache (Max-Level XP Overflow, FR-4.2 / PR-3).
@@ -261,6 +269,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
           realm: REALM,
           characters: chars.map((c) => ({
             id: c.id, name: c.name, class: c.class, level: c.level,
+            skin: c.state?.skin ?? 0,
             online: [...game.clients.values()].some((s) => s.characterId === c.id),
             forceRename: c.force_rename,
           })),
@@ -273,10 +282,11 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
         if (offensiveName(name)) return json(res, 400, { error: 'character name is not allowed' });
         const validClasses = ['warrior', 'paladin', 'hunter', 'rogue', 'priest', 'shaman', 'mage', 'warlock', 'druid'];
         if (!validClasses.includes(body.class)) return json(res, 400, { error: 'invalid class' });
+        const skin = Math.max(0, Math.min(7, Math.floor(typeof body.skin === 'number' ? body.skin : 0)));
         try {
-          const c = await createCharacterCapped(accountId, name, body.class, 10);
+          const c = await createCharacterCapped(accountId, name, body.class, 10, initialCharacterState(body.class, name, skin));
           if (!c) return json(res, 400, { error: 'character limit reached' });
-          return json(res, 200, { id: c.id, name: c.name, class: c.class, level: c.level, forceRename: c.force_rename });
+          return json(res, 200, { id: c.id, name: c.name, class: c.class, level: c.level, skin: c.state?.skin ?? skin, forceRename: c.force_rename });
         } catch (err: any) {
           if (isUniqueViolation(err)) return json(res, 409, { error: 'that name is taken' });
           throw err;

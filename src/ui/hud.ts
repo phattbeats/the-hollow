@@ -1,6 +1,8 @@
 import type { ResolvedAbility } from '../sim/sim';
 import { OVERHEAD_EMOTES, isOverheadEmoteId, type FriendInfo, type IWorld, type LeaderboardEntry, type MarketInfo, type OverheadEmoteId } from '../world_api';
 import { Renderer } from '../render/renderer';
+import { CharacterPreview } from '../render/characters';
+import { skinCount } from '../render/characters/manifest';
 import { emoteIconUrl } from './emote_icons';
 import {
   ABILITIES, CLASSES, DUNGEON_LIST, DUNGEON_X_THRESHOLD, ITEMS, MOBS, NPCS, PROPS, QUESTS,
@@ -336,6 +338,8 @@ export class Hud {
   private lastHudFastAt = 0;
   private lastHudMediumAt = 0;
   private lastHudSlowAt = 0;
+  private charPreview: CharacterPreview | null = null;
+  private charPreviewCanvas: HTMLCanvasElement | null = null;
   // current typeahead state: which input, its results, and the keyboard-
   // highlighted row (-1 = none), so Enter/Arrow keys can pick a suggestion
   private socialSuggest: { field: string; items: { name: string; cls: string; level: number }[]; index: number } = { field: '', items: [], index: -1 };
@@ -3696,7 +3700,13 @@ export class Hud {
     const cls = CLASSES[sim.cfg.playerClass];
     const className = classDisplayName(cls.id);
     let html = `<div class="panel-title"><span>${esc(p.name)} <span class="panel-subtitle">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(p.level, { maximumFractionDigits: 0 }), className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
-    html += `<div class="paperdoll"><div class="equip-col" id="equip-col"></div></div>`;
+    html += `<div class="paperdoll">
+      <div class="equip-col" id="equip-col"></div>
+      <div class="char-model-panel">
+        <div id="char-model-preview" class="char-model-preview"></div>
+        <div id="char-skin-row" class="skin-row char-skin-row" role="list" aria-label="Chroma"></div>
+      </div>
+    </div>`;
     const wpn = sim.equipment.mainhand ? ITEMS[sim.equipment.mainhand] : null;
     const dps = wpn?.weapon ? ((wpn.weapon.min + wpn.weapon.max) / 2 + (p.attackPower / 14) * wpn.weapon.speed) / wpn.weapon.speed : 0;
     html += `<div class="char-stats">
@@ -3728,7 +3738,49 @@ export class Hud {
       if (item) this.attachTooltip(row, () => this.itemTooltip(item));
       col.appendChild(row);
     }
+    this.renderCharPreview();
+    this.renderCharSkinPicker();
     el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; this.hideTooltip(); });
+  }
+
+  private renderCharPreview(): void {
+    const container = $('#char-model-preview') as HTMLElement | null;
+    if (!container) return;
+    if (!this.charPreviewCanvas) this.charPreviewCanvas = document.createElement('canvas');
+    if (!this.charPreview) {
+      container.appendChild(this.charPreviewCanvas);
+      this.charPreview = new CharacterPreview(container, this.charPreviewCanvas);
+    } else {
+      this.charPreview.setContainer(container);
+    }
+    this.charPreview.setClass(this.sim.cfg.playerClass);
+    this.charPreview.setSkin(this.sim.player.skin ?? 0);
+  }
+
+  private renderCharSkinPicker(): void {
+    const row = $('#char-skin-row') as HTMLElement | null;
+    if (!row) return;
+    const cls = this.sim.cfg.playerClass;
+    const count = skinCount(`player_${cls}`);
+    row.innerHTML = '';
+    row.style.setProperty('--class-color', classCss(cls));
+    if (count <= 1) return;
+    const current = Math.max(0, Math.min(count - 1, this.sim.player.skin ?? 0));
+    for (let i = 0; i < count; i++) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'skin-swatch' + (i === current ? ' sel' : '');
+      b.textContent = String(i + 1);
+      b.setAttribute('role', 'listitem');
+      b.setAttribute('aria-label', `Chroma ${i + 1}`);
+      b.addEventListener('click', () => {
+        row.querySelectorAll('.skin-swatch').forEach((x) => x.classList.remove('sel'));
+        b.classList.add('sel');
+        this.sim.changeSkin(i);
+        this.charPreview?.setSkin(i);
+      });
+      row.appendChild(b);
+    }
   }
 
   // -------------------------------------------------------------------------

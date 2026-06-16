@@ -22,6 +22,7 @@ export interface CharacterSummary {
   name: string;
   class: PlayerClass;
   level: number;
+  skin: number;
   online: boolean;
   forceRename: boolean;
 }
@@ -141,8 +142,8 @@ export class Api {
     return data.characters;
   }
 
-  async createCharacter(name: string, cls: PlayerClass): Promise<void> {
-    await this.post('/api/characters', { name, class: cls });
+  async createCharacter(name: string, cls: PlayerClass, skin = 0): Promise<void> {
+    await this.post('/api/characters', { name, class: cls, skin });
   }
 
   async renameCharacter(characterId: number, name: string): Promise<void> {
@@ -515,6 +516,7 @@ export class ClientWorld implements IWorld {
         e.templateId = w.tid;
         e.name = w.nm;
         e.level = w.lv;
+        e.skin = w.sk ?? 0;
         e.scale = w.sc ?? 1;
         e.color = w.c ?? 0xffffff;
         e.dungeonId = w.dgn ?? null;
@@ -778,6 +780,12 @@ export class ClientWorld implements IWorld {
   }
   buyBackItem(itemId: string): void {
     this.cmd({ cmd: 'buyback', item: itemId });
+  }
+  changeSkin(skin: number): void {
+    const idx = Math.max(0, Math.min(7, Math.floor(skin)));
+    const p = this.entities.get(this.playerId);
+    if (p) p.skin = idx;
+    this.cmd({ cmd: 'change_skin', skin: idx });
   }
   releaseSpirit(): void {
     this.cmd({ cmd: 'release' });

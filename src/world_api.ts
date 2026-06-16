@@ -216,6 +216,7 @@ export interface IWorld {
   buyItem(npcId: number, itemId: string): void;
   sellItem(itemId: string, count?: number): void;
   buyBackItem(itemId: string): void;
+  changeSkin(skin: number): void;
   releaseSpirit(): void;
   chat(text: string): void;
   playEmote(emoteId: OverheadEmoteId): void;

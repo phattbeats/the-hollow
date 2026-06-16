@@ -938,6 +938,7 @@ let activeTransitionTimeout: number | null = null;
 let activeTransitionCleanup: (() => void) | null = null;
 let characterPreview: CharacterPreview | null = null;
 let offlineSkin = 0; // chosen appearance skin for the offline quick-start character
+let onlineSkin = 0; // chosen appearance skin for new online characters
 
 /** Fill a skin-picker row with one swatch per available skin for the class. */
 function renderSkinPicker(rowId: string, cls: PlayerClass, current: number, onPick: (i: number) => void): void {
@@ -950,6 +951,7 @@ function renderSkinPicker(rowId: string, cls: PlayerClass, current: number, onPi
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'skin-swatch' + (i === current ? ' sel' : '');
+    b.dataset.skin = String(i);
     b.textContent = String(i + 1);
     b.setAttribute('role', 'listitem');
     b.setAttribute('aria-label', `Skin ${i + 1}`);
@@ -962,12 +964,29 @@ function renderSkinPicker(rowId: string, cls: PlayerClass, current: number, onPi
   }
 }
 
+function selectedSkin(rowId: string, fallback: number): number {
+  const selected = document.querySelector(`${rowId} .skin-swatch.sel`) as HTMLElement | null;
+  const raw = selected?.dataset.skin;
+  const parsed = raw === undefined ? Number.NaN : Number(raw);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
 /** Reset to the default skin and (re)render the offline picker for a class. */
 function refreshOfflineSkins(cls: PlayerClass): void {
   offlineSkin = 0;
   characterPreview?.setSkin(0);
   renderSkinPicker('#offline-skin-row', cls, 0, (i) => {
     offlineSkin = i;
+    characterPreview?.setSkin(i);
+  });
+}
+
+/** Reset to the default skin and (re)render the online creation picker for a class. */
+function refreshOnlineSkins(cls: PlayerClass): void {
+  onlineSkin = 0;
+  characterPreview?.setSkin(0);
+  renderSkinPicker('#online-skin-row', cls, 0, (i) => {
+    onlineSkin = i;
     characterPreview?.setSkin(i);
   });
 }
@@ -986,7 +1005,8 @@ function updatePreviewContainer(panelId: string): void {
     if (selEl) {
       const cls = selEl.dataset.class as PlayerClass;
       characterPreview.setClass(cls);
-      if (panelId !== '#charselect-panel') refreshOfflineSkins(cls);
+      if (panelId === '#charselect-panel') refreshOnlineSkins(cls);
+      else refreshOfflineSkins(cls);
     }
   }
 }
@@ -1406,6 +1426,9 @@ async function refreshCharacters(): Promise<void> {
         row.classList.add('sel');
         row.setAttribute('aria-selected', 'true');
         renderClassDetails('online-class-details', c.class);
+        characterPreview?.setSkin(c.skin ?? 0);
+        const skinRow = $('#online-skin-row') as HTMLElement | null;
+        if (skinRow) skinRow.innerHTML = '';
       };
 
       row.addEventListener('click', selectRow);
@@ -2041,7 +2064,7 @@ function wireStartScreens(): void {
     audio.init();
     music.init();
     const name = sanitizeOfflineName(rawName);
-    void startOffline(cls, name, offlineSkin);
+    void startOffline(cls, name, selectedSkin('#offline-skin-row', offlineSkin));
   };
 
   const handleOfflineSelect = () => {
@@ -2308,6 +2331,7 @@ function wireStartScreens(): void {
       
       const cls = (el as HTMLElement).dataset.class as PlayerClass;
       renderClassDetails('online-class-details', cls);
+      refreshOnlineSkins(cls);
     };
     el.addEventListener('click', handleMiniClassSelect);
     el.addEventListener('keydown', (e) => handleKeyboardActivation(e as KeyboardEvent, handleMiniClassSelect));
@@ -2403,6 +2427,7 @@ function wireStartScreens(): void {
     defaultOnlineClass.classList.add('sel');
     defaultOnlineClass.setAttribute('aria-pressed', 'true');
     renderClassDetails('online-class-details', 'warrior');
+    refreshOnlineSkins('warrior');
   }
   const newCharNameInput = $('#new-char-name') as HTMLInputElement;
   const charselectError = $('#charselect-error');
@@ -2456,7 +2481,7 @@ function wireStartScreens(): void {
     newCharNameInput.removeAttribute('aria-invalid');
 
     try {
-      await api.createCharacter(name, clsEl.dataset.class as PlayerClass);
+      await api.createCharacter(name, clsEl.dataset.class as PlayerClass, selectedSkin('#online-skin-row', onlineSkin));
       newCharNameInput.value = '';
       charselectError.textContent = '';
       await refreshCharacters();

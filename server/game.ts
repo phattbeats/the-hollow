@@ -163,6 +163,7 @@ type RememberedChat =
 // changes. The client treats their absence in a record as "unchanged".
 function identityFields(e: Entity): Record<string, unknown> {
   const out: Record<string, unknown> = { k: e.kind, tid: e.templateId, nm: e.name, lv: e.level };
+  if (e.skin) out.sk = e.skin;
   if (e.dungeonId) out.dgn = e.dungeonId;
   if (e.scale !== 1) out.sc = e.scale;
   if (e.color !== 0xffffff) out.c = e.color;
@@ -807,6 +808,7 @@ export class GameServer {
         }
         break;
       case 'buyback': if (typeof msg.item === 'string') sim.buyBackItem(msg.item, pid); break;
+      case 'change_skin': if (typeof msg.skin === 'number') sim.setPlayerSkin(pid, msg.skin); break;
       case 'release': sim.releaseSpirit(pid); break;
       case 'chat': {
         if (typeof msg.text !== 'string') break;
