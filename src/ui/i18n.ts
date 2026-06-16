@@ -7128,6 +7128,7 @@ const ITEM_ENTITY_IDS = [
   "fang_of_korzul", "trail_hardtack", "meltwater_flask", "roast_mountain_goat", "glacier_melt", "highwatch_warblade", "craghorn_staff",
   "icevein_dirk", "highwatch_breastplate", "peakwool_robe", "stalkerhide_jerkin", "cragwalker_boots", "windguard_leggings",
   "ogre_toe_ring", "inert_storm_shard", "frayed_prayer_beads", "cracked_wyrm_scale",
+  "elixir_of_the_bear",
 ] as const;
 
 type ItemEntityId = typeof ITEM_ENTITY_IDS[number];
@@ -7174,6 +7175,7 @@ const itemNamesEn = {
       "Wyrmcult Grand Robe", "Wyrmscale Jerkin", "Wyrmfang Greatblade", "Staff of the Gravewyrm", "Fang of Korzul", "Highwatch Trail Hardtack", "Meltwater Flask",
       "Roast Mountain Goat", "Glacier Melt", "Highwatch Warblade", "Craghorn Staff", "Icevein Dirk", "Highwatch Breastplate", "Peakwool Robe", "Stalkerhide Jerkin",
       "Cragwalker Boots", "Windguard Leggings", "Ogre Toe Ring", "Inert Storm Shard", "Frayed Prayer Beads", "Cracked Wyrm Scale",
+      "Elixir of the Bear",
     ]),
   },
 };
@@ -7207,6 +7209,7 @@ const itemNames = {
         "Gran toga del Culto del Wyrm", "Jubón de escamas de wyrm", "Gran hoja Colmillo de Wyrm", "Bastón del Gravewyrm", "Colmillo de Korzul", "Galleta de viaje de Highwatch", "Frasco de agua de deshielo",
         "Cabra montesa asada", "Agua de glaciar", "Hoja de guerra de Highwatch", "Bastón de Cuernorroca", "Puñal Vena de Hielo", "Coraza de Highwatch", "Toga de lana de cumbre", "Jubón de piel de acechador",
         "Botas Caminarrocas", "Leotardos Guardavientos", "Anillo de dedo de ogro", "Fragmento de tormenta inerte", "Cuentas de oración deshilachadas", "Escama de wyrm agrietada",
+        "Elixir del Oso",
       ]),
     },
   },
@@ -7238,6 +7241,7 @@ const itemNames = {
         "Grande robe du Culte du Wyrm", "Pourpoint en écailles de wyrm", "Grande lame Croc-de-wyrm", "Bâton du Gravewyrm", "Croc de Korzul", "Biscuit de route de Highwatch", "Flasque d'eau de fonte",
         "Chèvre de montagne rôtie", "Fonte de glacier", "Lame de guerre de Highwatch", "Bâton de corne-roche", "Dague Veine-de-glace", "Cuirasse de Highwatch", "Robe en laine des cimes", "Pourpoint en peau de rôdeur",
         "Bottes Marchecrag", "Jambières Gardevent", "Anneau d'orteil ogre", "Éclat de tempête inerte", "Perles de prière effilochées", "Écaille de wyrm fendue",
+        "Élixir de l'Ours",
       ]),
     },
   },
@@ -7270,6 +7274,7 @@ const itemNames = {
         "Grande veste del Culto del Wyrm", "Giaco di scaglie di wyrm", "Spadone Zanna di Wyrm", "Bastone del Gravewyrm", "Zanna di Korzul", "Galletta da sentiero di Highwatch", "Fiasca di acqua di disgelo",
         "Capra di montagna arrosto", "Fusione glaciale", "Lama da guerra di Highwatch", "Bastone di Corno Roccioso", "Pugnale Venaghiaccio", "Corazza di Highwatch", "Veste di lana delle vette", "Giaco di pelle di predatore",
         "Stivali Camminarocce", "Gambiere Guardavento", "Anello da dito d'ogre", "Scheggia di tempesta inerte", "Grani di preghiera sfilacciati", "Scaglia di wyrm incrinata",
+        "Elisir dell'Orso",
       ]),
     },
   },
@@ -7300,6 +7305,7 @@ const itemNames = {
         "Große Robe des Wyrmkults", "Wyrmschuppenwams", "Wyrmzahn-Großklinge", "Stab des Gravewyrm", "Korzuls Fangzahn", "Highwatch-Reisezwieback", "Schmelzwasserflasche",
         "Gebratene Bergziege", "Gletscherschmelze", "Highwatch-Kriegsklinge", "Felshornstab", "Eisaderdolch", "Highwatch-Brustplatte", "Gipfelwollrobe", "Pirschhauttunika",
         "Felswandererstiefel", "Windwachtgamaschen", "Ogerzehenring", "Träger Sturmsplitter", "Ausgefranste Gebetsperlen", "Gesprungene Wyrmschuppe",
+        "Bärenelixir",
       ]),
     },
   },
@@ -7330,6 +7336,7 @@ const itemNames = {
         "龙教大长袍", "龙鳞皮甲", "龙牙巨刃", "墓龙法杖", "科祖尔之牙", "高望行军硬饼", "融雪水瓶",
         "烤山羊", "冰川融水", "高望战刃", "岩角法杖", "冰脉短匕", "高望胸甲", "峰羊毛长袍", "潜猎者皮甲",
         "岩行者长靴", "风卫护腿", "食人魔趾环", "惰性风暴碎片", "磨损的祈祷珠", "裂开的龙鳞",
+        "熊之灵药",
       ]),
     },
   },
@@ -7360,6 +7367,7 @@ const itemNames = {
         "龍教大長袍", "龍鱗皮甲", "龍牙巨刃", "墓龍法杖", "科祖爾之牙", "高望行軍硬餅", "融雪水瓶",
         "烤山羊", "冰川融水", "高望戰刃", "岩角法杖", "冰脈短匕", "高望胸甲", "峰羊毛長袍", "潛獵者皮甲",
         "岩行者長靴", "風衛護腿", "巨魔趾環", "惰性風暴碎片", "磨損的祈禱珠", "裂開的龍鱗",
+        "熊之靈藥",
       ]),
     },
   },
@@ -7390,6 +7398,7 @@ const itemNames = {
         "고룡교단 대로브", "고룡비늘 웃옷", "고룡송곳니 대검", "무덤고룡의 지팡이", "코르줄의 송곳니", "하이워치 여정 건빵", "눈녹은 물 플라스크",
         "구운 산양", "빙하 녹은물", "하이워치 전투검", "바위뿔 지팡이", "얼음맥 더크", "하이워치 흉갑", "봉우리양모 로브", "추적자가죽 웃옷",
         "바위걸음 장화", "바람수호 다리보호구", "오우거 발가락 반지", "비활성 폭풍 파편", "해진 기도 구슬", "갈라진 고룡 비늘",
+        "곰의 묘약",
       ]),
     },
   },
@@ -7420,6 +7429,7 @@ const itemNames = {
         "ワーム教団の大ローブ", "ワーム鱗のジャーキン", "ワーム牙の大剣", "墓ワームの杖", "コルズルの牙", "ハイウォッチの旅堅パン", "雪解け水のフラスコ",
         "焼き山羊肉", "氷河の融け水", "ハイウォッチの戦刃", "岩角の杖", "氷脈のダーク", "ハイウォッチの胸当て", "峰羊毛のローブ", "追跡者革のジャーキン",
         "岩歩きのブーツ", "風守りのレギンス", "オーガの足指輪", "不活性の嵐片", "ほつれた祈りの数珠", "割れたワームの鱗",
+        "熊の霊薬",
       ]),
     },
   },
@@ -7450,6 +7460,7 @@ const itemNames = {
         "Grande veste do Culto do Wyrm", "Gibão de escamas de wyrm", "Grande lâmina Presa de Wyrm", "Cajado do Gravewyrm", "Presa de Korzul", "Biscoito de trilha de Highwatch", "Frasco de água de degelo",
         "Cabra montesa assada", "Derretimento glacial", "Lâmina de guerra de Highwatch", "Cajado Chifre de Rocha", "Punhal Veiogelo", "Peitoral de Highwatch", "Veste de lã das alturas", "Gibão de pele de espreitador",
         "Botas Caminhapedra", "Perneiras Guardavento", "Anel de dedo de ogro", "Estilhaço de tempestade inerte", "Contas de oração desfiadas", "Escama de wyrm rachada",
+        "Elixir do Urso",
       ]),
     },
   },
@@ -7480,6 +7491,7 @@ const itemNames = {
         "Великая роба Культа Вирма", "Куртка из вирмовой чешуи", "Великий клинок Клык Вирма", "Посох Могильного Вирма", "Клык Корзула", "Походный сухарь Хайвотча", "Фляга талой воды",
         "Жареный горный козел", "Ледниковая талая вода", "Боевой клинок Хайвотча", "Посох Камнерога", "Кортик Ледяной Жилы", "Кираса Хайвотча", "Роба из горной шерсти", "Куртка из шкуры охотника",
         "Сапоги Камнехода", "Поножи Ветростража", "Кольцо на палец огра", "Инертный осколок бури", "Истрепанные молитвенные четки", "Треснувшая чешуя вирма",
+        "Эликсир Медведя",
       ]),
     },
   },
@@ -7882,7 +7894,7 @@ const mergeStringsEn = {
   },
   itemUi: {
     ...itemNames.en.itemUi,
-    kind: { ...itemNames.en.itemUi.kind, tool: "Tool", potion: "Potion" },
+    kind: { ...itemNames.en.itemUi.kind, tool: "Tool", potion: "Potion", elixir: "Elixir" },
     tooltip: {
       ...itemNames.en.itemUi.tooltip,
       useFishing: "Use: Fish in nearby waters.",
@@ -8020,7 +8032,7 @@ const mergeStrings = {
     },
     itemUi: {
       ...itemNames.es.itemUi,
-      kind: { ...itemNames.es.itemUi.kind, tool: "Herramienta", potion: "Poción" },
+      kind: { ...itemNames.es.itemUi.kind, tool: "Herramienta", potion: "Poción", elixir: "Elixir" },
       tooltip: {
         ...itemNames.es.itemUi.tooltip,
         useFishing: "Uso: pesca en aguas cercanas.",
@@ -8156,7 +8168,7 @@ const mergeStrings = {
     },
     itemUi: {
       ...itemNames.fr_FR.itemUi,
-      kind: { ...itemNames.fr_FR.itemUi.kind, tool: "Outil", potion: "Potion" },
+      kind: { ...itemNames.fr_FR.itemUi.kind, tool: "Outil", potion: "Potion", elixir: "Élixir" },
       tooltip: {
         ...itemNames.fr_FR.itemUi.tooltip,
         useFishing: "Utiliser : pêcher dans les eaux proches.",
@@ -8293,7 +8305,7 @@ const mergeStrings = {
     },
     itemUi: {
       ...itemNames.it_IT.itemUi,
-      kind: { ...itemNames.it_IT.itemUi.kind, tool: "Strumento", potion: "Pozione" },
+      kind: { ...itemNames.it_IT.itemUi.kind, tool: "Strumento", potion: "Pozione", elixir: "Elisir" },
       tooltip: {
         ...itemNames.it_IT.itemUi.tooltip,
         useFishing: "Uso: pesca nelle acque vicine.",
@@ -8428,7 +8440,7 @@ const mergeStrings = {
     },
     itemUi: {
       ...itemNames.de_DE.itemUi,
-      kind: { ...itemNames.de_DE.itemUi.kind, tool: "Werkzeug", potion: "Trank" },
+      kind: { ...itemNames.de_DE.itemUi.kind, tool: "Werkzeug", potion: "Trank", elixir: "Elixier" },
       tooltip: {
         ...itemNames.de_DE.itemUi.tooltip,
         useFishing: "Benutzen: Angelt in nahen Gewässern.",
@@ -8563,7 +8575,7 @@ const mergeStrings = {
     },
     itemUi: {
       ...itemNames.zh_CN.itemUi,
-      kind: { ...itemNames.zh_CN.itemUi.kind, tool: "工具", potion: "药水" },
+      kind: { ...itemNames.zh_CN.itemUi.kind, tool: "工具", potion: "药水", elixir: "药剂" },
       tooltip: {
         ...itemNames.zh_CN.itemUi.tooltip,
         useFishing: "使用：在附近水域钓鱼。",
@@ -8698,7 +8710,7 @@ const mergeStrings = {
     },
     itemUi: {
       ...itemNames.zh_TW.itemUi,
-      kind: { ...itemNames.zh_TW.itemUi.kind, tool: "工具", potion: "藥水" },
+      kind: { ...itemNames.zh_TW.itemUi.kind, tool: "工具", potion: "藥水", elixir: "藥劑" },
       tooltip: {
         ...itemNames.zh_TW.itemUi.tooltip,
         useFishing: "使用：在附近水域釣魚。",
@@ -8833,7 +8845,7 @@ const mergeStrings = {
     },
     itemUi: {
       ...itemNames.ko_KR.itemUi,
-      kind: { ...itemNames.ko_KR.itemUi.kind, tool: "도구", potion: "물약" },
+      kind: { ...itemNames.ko_KR.itemUi.kind, tool: "도구", potion: "물약", elixir: "비약" },
       tooltip: {
         ...itemNames.ko_KR.itemUi.tooltip,
         useFishing: "사용: 가까운 물가에서 낚시합니다.",
@@ -8968,7 +8980,7 @@ const mergeStrings = {
     },
     itemUi: {
       ...itemNames.ja_JP.itemUi,
-      kind: { ...itemNames.ja_JP.itemUi.kind, tool: "道具", potion: "ポーション" },
+      kind: { ...itemNames.ja_JP.itemUi.kind, tool: "道具", potion: "ポーション", elixir: "エリクサー" },
       tooltip: {
         ...itemNames.ja_JP.itemUi.tooltip,
         useFishing: "使用: 近くの水辺で釣りをします。",
@@ -9103,7 +9115,7 @@ const mergeStrings = {
     },
     itemUi: {
       ...itemNames.pt_BR.itemUi,
-      kind: { ...itemNames.pt_BR.itemUi.kind, tool: "Ferramenta", potion: "Poção" },
+      kind: { ...itemNames.pt_BR.itemUi.kind, tool: "Ferramenta", potion: "Poção", elixir: "Elixir" },
       tooltip: {
         ...itemNames.pt_BR.itemUi.tooltip,
         useFishing: "Uso: pesca em águas próximas.",
@@ -9238,7 +9250,7 @@ const mergeStrings = {
     },
     itemUi: {
       ...itemNames.ru_RU.itemUi,
-      kind: { ...itemNames.ru_RU.itemUi.kind, tool: "Инструмент", potion: "Зелье" },
+      kind: { ...itemNames.ru_RU.itemUi.kind, tool: "Инструмент", potion: "Зелье", elixir: "Эликсир" },
       tooltip: {
         ...itemNames.ru_RU.itemUi.tooltip,
         useFishing: "Использование: ловите рыбу в ближайшей воде.",
