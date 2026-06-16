@@ -10,6 +10,7 @@ import { ARENA_LAYOUT, DUNGEON_WALL_X } from '../sim/dungeon_layout';
 import { cameraOcclusion } from '../sim/colliders';
 import type { BiomeId } from '../sim/types';
 import { AnimState, CharacterVisual, createCharacterVisual } from './characters';
+import { isVisuallyDead } from './anim_state';
 import { LocoTrack, newLocoTrack, updateLocomotion } from './locomotion';
 import { buildProps } from './props';
 import { plankTexture, sparkleTexture } from './textures';
@@ -1165,12 +1166,13 @@ export class Renderer {
       v.lastZ = z;
       const loco = updateLocomotion(v.loco, vx, vz, facing, dt);
       const moving = loco.moving;
+      const visuallyDead = isVisuallyDead(e);
       // `onGround` is authoritative offline but is never sent in online snapshots
       // (ClientWorld defaults it to true), so for players fall back to deriving the
       // airborne state from foot height vs terrain — keeps the jump pose working in
       // both worlds without a wire change. Gated to players (only they jump) to keep
       // the extra groundHeight sample off the hot path for mobs/NPCs.
-      const airborne = !e.dead && !swimming && (
+      const airborne = !visuallyDead && !swimming && (
         !e.onGround
         || (e.kind === 'player'
           && y - groundHeight(x, z, this.sim.cfg.seed) > AIRBORNE_EPS));
@@ -1179,8 +1181,8 @@ export class Renderer {
         moving,
         airborne,
         backwards: loco.backwards,
-        dead: e.dead,
-        casting: e.castingAbility !== null && !e.dead,
+        dead: visuallyDead,
+        casting: e.castingAbility !== null && !visuallyDead,
         swimming,
         sitting: e.kind === 'player' && (e.sitting || e.eating !== null || e.drinking !== null),
       };

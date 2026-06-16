@@ -288,7 +288,7 @@ export const VISUALS: Record<string, VisualDef> = {
   mob_boar: {
     url: `${CREATURES}/wild_boar.glb`, height: 1.45,
     clips: WILD_BOAR, tint: 'entity', tintStrength: 0.4,
-    deathTimeScale: 3.25,
+    deathTimeScale: 10,
   },
   mob_spider: {
     url: `${CREATURES}/spider.glb`, height: 1.4,
