@@ -99,11 +99,13 @@ describe('PvP control abilities in active duels', () => {
     { cls: 'druid', ability: 'entangling_roots', aura: 'root' },
   ])('$ability works on hostile players', ({ cls, ability, aura }) => {
     const { sim, aPid, b } = startDuel(cls, 'warrior');
+    if (ability === 'polymorph') b.hp = Math.max(1, b.maxHp - 120);
 
     sim.castAbility(ability, aPid);
     finishCast(sim, aPid);
 
     expect(b.auras.some((au) => au.kind === aura)).toBe(true);
+    if (ability === 'polymorph') expect(b.hp).toBe(b.maxHp);
   });
 
   it('does not polymorph non-hostile NPCs', () => {
