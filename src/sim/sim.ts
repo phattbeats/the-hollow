@@ -76,8 +76,10 @@ const ARENA_BASE_RATING = 1500; // every character starts here, unranked
 const ARENA_MIN_RATING = 100; // a rating floor so a losing streak can't go absurd
 const ARENA_K_FACTOR = 32; // Elo sensitivity per match
 const ARENA_LADDER_SIZE = 10; // live online standings shipped to clients
-const PVP_CC_DR_RESET = 18; // seconds before a repeated PvP CC category is fresh again
+const PVP_ROOT_DR_RESET = 18; // seconds before a repeated PvP root is fresh again
+const PVP_POLYMORPH_DR_RESET = 60;
 const PVP_CC_DR_MULTIPLIERS = [1, 0.5, 0.25] as const;
+const PVP_POLYMORPH_DR_DURATIONS = [10, 5, 1] as const;
 const SHAMAN_SHOCK_COOLDOWN_IDS = ['earth_shock', 'flame_shock', 'frost_shock'] as const;
 const DEMON_HEAL_CAST_ID = 'demon_heal';
 const SAY_RANGE = 25; // /say carries a short distance; /yell across a camp
@@ -2339,10 +2341,12 @@ export class Sim {
         }
         case 'polymorph': {
           if (!target || target.dead) break;
+          const remaining = this.diminishedCrowdControlDuration(p, target, 'polymorph', eff.duration);
+          if (remaining === null) break;
           target.hp = target.maxHp;
           this.applyAura(target, {
             id: ability.id, name: ability.name, kind: 'polymorph',
-            remaining: eff.duration, duration: eff.duration, value: 0,
+            remaining, duration: remaining, value: 0,
             tickInterval: 1, tickTimer: 1,
             sourceId: p.id, school: ability.school, breaksOnDamage: true,
           });
@@ -2561,8 +2565,13 @@ export class Sim {
     }
     const existing = target.ccDr.get(category);
     const stage = existing && existing.resetAt > this.time ? existing.stage : 0;
+    const reset = category === 'polymorph' ? PVP_POLYMORPH_DR_RESET : PVP_ROOT_DR_RESET;
+    if (category === 'polymorph') {
+      target.ccDr.set(category, { stage: stage + 1, resetAt: this.time + reset });
+      return PVP_POLYMORPH_DR_DURATIONS[Math.min(stage, PVP_POLYMORPH_DR_DURATIONS.length - 1)];
+    }
     if (stage >= PVP_CC_DR_MULTIPLIERS.length) return null;
-    target.ccDr.set(category, { stage: stage + 1, resetAt: this.time + PVP_CC_DR_RESET });
+    target.ccDr.set(category, { stage: stage + 1, resetAt: this.time + reset });
     return duration * PVP_CC_DR_MULTIPLIERS[stage];
   }
 
