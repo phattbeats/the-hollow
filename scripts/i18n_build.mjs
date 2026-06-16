@@ -1,12 +1,14 @@
 // Build the dense resolved translation table src/ui/i18n.resolved.generated.ts.
 //
-// This is the load-bearing tsc safety net for the i18n scaling refactor. Every
-// locale is overlaid onto a deep copy of the authoritative nested `en`, with any
-// missing leaf filled from the English value, so every emitted locale is DENSE
-// (no gaps). The generated file types each locale ": EnTranslations" (= typeof
-// en), so tsc still red-fails any missing or renamed key. Client and admin read
-// this generated table, never the raw per-locale objects (which become sparse in
-// later phases).
+// This is the load-bearing tsc safety net for the i18n scaling refactor. `en`
+// (src/ui/i18n.en.ts) is the authoritative NESTED base; the 13 non-English
+// locales are FLAT dotted-key overlays (`Record<string, string>`, Phase 3). Each
+// overlay is unflattened back to a nested object and overlaid onto a deep copy of
+// `en`, with any missing leaf filled from the English value, so every emitted
+// locale is DENSE (no gaps). The generated file types each locale
+// ": EnTranslations" (= typeof en), so tsc still red-fails any missing or renamed
+// key. Client and admin read this generated table, never the raw per-locale
+// overlays (which become sparse in later phases).
 //
 // Zero runtime deps; bundles the TS source with esbuild (the same pattern as
 // scripts/i18n_resolved_hash.mjs and scripts/export_loot_spreadsheet.mjs). Writes
@@ -21,15 +23,17 @@
 import * as esbuild from 'esbuild';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { unflatten } from './i18n_flatten.mjs';
 
 const root = process.cwd();
 const OUT_PATH = path.join(root, 'src/ui/i18n.resolved.generated.ts');
 
 // The authoritative ordered locale set. `en` is the nested base; the other 13 are
-// the Phase 1 split locale files. This list drives both the emit order and the
-// runtime supportedLanguages (Object.keys of the generated `translations`). The
-// generator reads these SOURCE modules directly and never imports src/ui/i18n.ts,
-// so it never depends on the file it generates (no circular import at build time).
+// the flat dotted-key overlay files (src/ui/i18n.locales/<lang>.ts). This list
+// drives both the emit order and the runtime supportedLanguages (Object.keys of
+// the generated `translations`). The generator reads these SOURCE modules directly
+// and never imports src/ui/i18n.ts, so it never depends on the file it generates
+// (no circular import at build time).
 const LOCALES = [
   'en',
   'es',
@@ -130,7 +134,10 @@ async function main() {
   const en = locales.en;
   const resolved = {};
   for (const lang of LOCALES) {
-    resolved[lang] = deepMerge(deepCopy(en), locales[lang]);
+    // `en` is nested and authoritative; every other locale is a flat dotted-key
+    // overlay (Phase 3) that we unflatten before overlaying onto a copy of `en`.
+    const overlay = lang === 'en' ? en : unflatten(locales[lang]);
+    resolved[lang] = deepMerge(deepCopy(en), overlay);
   }
   const text = emit(resolved);
   writeFileSync(OUT_PATH, text);
