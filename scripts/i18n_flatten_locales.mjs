@@ -14,8 +14,12 @@
 // TranslationKey. The exact-key-set and byte-equivalence gates enforce key
 // validity instead (tests/i18n_flat_overlay_dense.test.ts + the resolved hash).
 //
-// Idempotent: re-running on already-flat files reproduces them unchanged. Not
-// wired into any build; run by hand once:  node scripts/i18n_flatten_locales.mjs
+// One-shot: this migration already ran (the locale files now export flat
+// dotted-key maps), and re-running it THROWS by design. flatten (i18n_flatten.mjs)
+// rejects any key segment containing a literal '.', and a flat overlay's top-level
+// keys are exactly such dotted paths ("meta.builtOn", ...), so the first key fails
+// loud rather than double-flattening. Not safe to re-run on flat input, and not
+// wired into any build; it was run by hand once:  node scripts/i18n_flatten_locales.mjs
 
 import * as esbuild from 'esbuild';
 import { writeFileSync } from 'node:fs';
@@ -35,9 +39,10 @@ function localePath(lang) {
 }
 
 // Bundle the nested `en` plus every nested locale and import the result, the same
-// esbuild-stub pattern scripts/i18n_build.mjs uses. Runs against whatever the
-// locale files currently export (nested before migration, flat after - flatten is
-// idempotent on a flat map, so the migration is safe to re-run).
+// esbuild-stub pattern scripts/i18n_build.mjs uses. This expects NESTED locale
+// sources (the pre-migration shape). The migration already ran, so the files are
+// flat now; re-running flatten on them throws (dotted keys are unrepresentable),
+// which is the intended fail-loud, not a re-run path.
 async function loadSources() {
   const stub = [
     `export { en } from './src/ui/i18n.en';`,
