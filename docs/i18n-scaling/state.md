@@ -5,7 +5,7 @@ The single source of truth a fresh session reads before doing anything. Record d
 ---
 
 ## Current status
-- **Active phase:** Phase 1 (not started)
+- **Active phase:** Phase 1 DONE (commits `573bd5a`, `20e8cca`, `d918244`); next up Phase 1 QA, then Phase 2
 - **Branch:** `refactor/i18n-phase-naming` (Phase 0 - the `phaseN`->content-name rename - is DONE and lives here). Later phases may branch `feature/i18n-<slug>` off this; confirm with the user before branching (shared worktree).
 - **RFC:** `docs/design/i18n-translation-scaling.md` - the authoritative design. This packet implements it with the four decisions below applied.
 
@@ -29,10 +29,12 @@ The single source of truth a fresh session reads before doing anything. Record d
 - **Shared worktree:** stage explicit paths, never `git add -A`. A concurrent session may share this checkout.
 
 ## The byte-equivalence safety net (Phases 1-5)
-Every behavior-preserving phase is gated by **byte-equivalence of the resolved 14-locale table**. Phase 0 proved the method: the resolved table is deterministic (1,583,881 bytes on `main`, matching SHA-256). The mechanism for this packet:
-- A script `scripts/i18n_resolved_hash.mjs` serializes the assembled/resolved `translations` table deterministically (stable key order) and prints its SHA-256.
+Every behavior-preserving phase is gated by **byte-equivalence of the resolved 14-locale table**. Phase 0 proved the method (the resolved table is deterministic and serializes reproducibly). The current baseline (captured in Phase 1) is **SHA-256 `d9db528bea1c7a1e02835c4d3edb3fabcee3687aad2186608f1f1d2ac83b3b9b`, 1,584,856 bytes**.
+- NOTE on the byte count: Phase 0 measured 1,583,881 bytes; the current tree is 1,584,856 because commit `1c751c4` (`feat(auth): Cloudflare Turnstile`) plus a `main` merge added auth/registration i18n keys to `i18n.ts` AFTER Phase 0's snapshot. This is legitimate content, not a refactor drift. The authoritative gate is the committed `src/ui/i18n.resolved.sha256`, not the byte figure - quote the SHA, not the count.
+- The mechanism for this packet (built in Phase 1):
+- A script `scripts/i18n_resolved_hash.mjs` (zero deps; esbuild-bundles `src/ui/i18n.ts` like `export_loot_spreadsheet.mjs`, reassembles `translations` from the locale exports + `supportedLanguages`) serializes it deterministically with **recursive key sort** (so the hash is insertion-order-independent) and prints/`--check`s/`--write`s its SHA-256. `npm run i18n:hash` prints it.
 - A committed baseline `src/ui/i18n.resolved.sha256` holds the expected hash.
-- A test `tests/i18n_resolved_equivalence.test.ts` recomputes and asserts equality.
+- A test `tests/i18n_resolved_equivalence.test.ts` runs the script via subprocess and asserts equality.
 - **The baseline hash changes ONLY in phases that deliberately change resolved output (Phase 6 onward, when `pending` keys begin to English-fill).** Phases 1-5 must leave it byte-identical. If a phase needs to touch the baseline, that is a red flag - stop and confirm the change is intended.
 
 ## Validation matrix by change type
@@ -64,7 +66,7 @@ Every behavior-preserving phase is gated by **byte-equivalence of the resolved 1
 
 ### New (created by this packet - see per-phase files for exactly when)
 - `src/ui/i18n.en.ts` - authoritative nested `en` + `Leaves`/`TranslationKey`/`DeepPartial` machinery. (Phase 1)
-- `src/ui/i18n.locales/<lang>.ts` - flat `Partial<Record<TranslationKey,string>>` sparse overlays; the only files a translator edits. (Phase 3)
+- `src/ui/i18n.locales/<lang>.ts` - created NESTED `: typeof en` in Phase 1 (the 13 non-English locale objects, behavior-preserving). Phase 3 converts them to flat `Partial<Record<TranslationKey,string>>` sparse overlays; the only files a translator edits.
 - `src/ui/i18n.resolved.generated.ts` - generated dense `: typeof en` table; client + admin import this. (Phase 2)
 - `src/ui/i18n.status.json` - generated registry: `translated`/`pending`/`blocked` + `srcHash` + `by`. (Phase 5)
 - `src/ui/i18n.resolved.sha256` - committed byte-equivalence baseline. (Phase 1)
@@ -83,7 +85,7 @@ Every behavior-preserving phase is gated by **byte-equivalence of the resolved 1
 ## Per-phase additions log (fill in as phases complete)
 | Phase | New files | New scripts | New tests | Notes |
 |---|---|---|---|---|
-| 1 | - | - | - | (pending) |
+| 1 | `src/ui/i18n.en.ts`; `src/ui/i18n.locales/{es,es_ES,fr_FR,fr_CA,en_CA,it_IT,de_DE,zh_CN,zh_TW,ko_KR,ja_JP,pt_BR,ru_RU}.ts`; `src/ui/i18n.resolved.sha256` | `scripts/i18n_resolved_hash.mjs` (`i18n:hash`) | `tests/i18n_resolved_equivalence.test.ts` | Monolith split into en base + 13 nested `: typeof en` locale files + thin runtime; all public exports preserved; resolved table byte-identical. Locale files are created NESTED here (Phase 3 flattens them). `en`/locales are assembled by spreading shared content layers (`shellStrings`..`mergeExtra`, now exported from `i18n.en`) + `worldNames` (from `world_entity_i18n`) + a `gameStrings` variant + inline literals; the data is NOT one literal per locale. |
 | 2 | - | - | - | (pending) |
 | 3 | - | - | - | (pending) |
 | 4 | - | - | - | (pending) |

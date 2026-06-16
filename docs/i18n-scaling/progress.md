@@ -4,7 +4,7 @@
 | Phase | Status | Started | Completed |
 |---|---|---|---|
 | 0 - Layer rename (pre-packet) | DONE | - | (on branch `refactor/i18n-phase-naming`) |
-| 1 - Foundation & split | NOT STARTED | | |
+| 1 - Foundation & split | DONE | 2026-06-16 | 2026-06-16 |
 | 1 QA | NOT STARTED | | |
 | 2 - Resolved artifact | NOT STARTED | | |
 | 2 QA | NOT STARTED | | |
@@ -26,12 +26,15 @@
 ## Deliverable checklists
 
 ### Phase 1 - Foundation & monolith split
-- [ ] Authoritative nested `en` + `Leaves`/`TranslationKey`/`DeepPartial` machinery extracted to `src/ui/i18n.en.ts`
-- [ ] `src/ui/i18n.ts` is the thin runtime; ALL public exports unchanged (`t`, `tOptional`, `hasTranslation`, formatters, `getLanguage`/`setLanguage`, `supportedLanguages`, types)
-- [ ] Locale data split along seams into separate files (behavior-preserving; still nested `: typeof en`)
-- [ ] `scripts/i18n_resolved_hash.mjs` + committed `src/ui/i18n.resolved.sha256` baseline
-- [ ] `tests/i18n_resolved_equivalence.test.ts` asserts the resolved table matches the baseline
-- [ ] tsc clean; full localization suite green; resolved table byte-identical to pre-change
+- [x] Authoritative nested `en` + `Leaves`/`TranslationKey`/`DeepPartial` machinery extracted to `src/ui/i18n.en.ts`
+- [x] `src/ui/i18n.ts` is the thin runtime; ALL public exports unchanged (`t`, `tOptional`, `hasTranslation`, formatters, `getLanguage`/`setLanguage`, `supportedLanguages`, types)
+- [x] Locale data split along seams into separate files (`src/ui/i18n.locales/<code>.ts`, 13 files; behavior-preserving; still nested `: typeof en`)
+- [x] `scripts/i18n_resolved_hash.mjs` + committed `src/ui/i18n.resolved.sha256` baseline (`i18n:hash` npm script)
+- [x] `tests/i18n_resolved_equivalence.test.ts` asserts the resolved table matches the baseline
+- [x] tsc clean; full localization suite green (1239/1239); resolved table byte-identical to pre-change
+
+Commits: `573bd5a` (extract en base + types), `20e8cca` (thin runtime + locale split), `d918244` (byte-equivalence baseline + gate).
+Baseline: SHA-256 `d9db528bea1c7a1e02835c4d3edb3fabcee3687aad2186608f1f1d2ac83b3b9b`, 1,584,856 bytes (see state.md for why this differs from the doc's stale 1,583,881).
 
 ### Phase 2 - Dense resolved artifact
 - [ ] `scripts/i18n_build.mjs` overlays locales onto `en`, emits `src/ui/i18n.resolved.generated.ts` (nested, `: typeof en`, do-not-edit banner)
