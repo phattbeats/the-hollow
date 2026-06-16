@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+const mainTs = readFileSync(new URL('../src/main.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 
 function splitGameUiTemplate(): { templateHtml: string; liveHtml: string } {
   const marker = '<template id="game-ui-template">';
@@ -40,6 +41,42 @@ describe('client HTML shell', () => {
   it('only displays mobile touch controls after the game is active', () => {
     expect(html).toContain('body.mobile-touch.game-active #mobile-controls');
     expect(html).not.toContain('body.mobile-touch #mobile-controls { position: absolute; inset: 0; display: block;');
+  });
+
+  it('does not expose inert scrollbars on fixed mobile game overlays', () => {
+    expect(html).toContain('#ui { position: fixed; left: 0; top: 0; width: var(--app-vw); max-width: 100vw; height: var(--app-vh); overflow: hidden;');
+    expect(html).toContain('body.mobile-touch.game-active #ui,\n  body.mobile-touch.game-active #nameplates,\n  body.mobile-touch.game-active #mobile-controls {\n    overflow: hidden;\n    scrollbar-width: none;');
+    expect(html).toContain('body.mobile-touch.game-active #ui::-webkit-scrollbar,\n  body.mobile-touch.game-active #nameplates::-webkit-scrollbar,\n  body.mobile-touch.game-active #mobile-controls::-webkit-scrollbar');
+    expect(html).toContain('height: 0;\n    display: none;');
+    expect(html).toContain('body.mobile-touch.game-active::-webkit-scrollbar {\n    height: 0;');
+    expect(html).toContain('body.mobile-touch.game-active *::-webkit-scrollbar {\n    height: 0;');
+    expect(html).toContain('body.mobile-touch.game-active *::-webkit-scrollbar:horizontal {\n    height: 0;\n    display: none;');
+  });
+
+  it('hides only the in-game community donate affordance on mobile', () => {
+    expect(html).toContain('<a class="donate-cta"');
+    expect(html).toContain('<a class="community-link donate"');
+    expect(html).toContain('body.mobile-touch .community-link.donate {\n    display: none;');
+    expect(html).not.toContain('body.mobile-touch .donate-cta {\n    display: none;');
+  });
+
+  it('renders the mobile XP bar under the top-left player card', () => {
+    expect(html).toContain('body.mobile-touch #xpbar {\n    position: fixed;');
+    expect(html).toContain('left: max(8px, env(safe-area-inset-left));');
+    expect(html).toContain('top: calc(max(8px, env(safe-area-inset-top)) + 70px);');
+    expect(html).toContain('bottom: auto;');
+    expect(html).toContain('width: 246px;');
+    expect(html).toContain('height: 6px;\n    display: block;');
+    expect(html).not.toContain('body.mobile-touch.mobile-left-handed #xpbar,');
+  });
+
+  it('keeps the mobile homepage scrollable with a sticky header', () => {
+    expect(html).toContain('touch-action: pan-y; overscroll-behavior-y: auto;');
+    expect(html).toContain('body.game-active {\n    overflow: hidden;\n    touch-action: none;');
+    expect(html).toContain('-webkit-overflow-scrolling: touch;');
+    expect(html).toContain('body.mobile-touch .homepage-header {\n    display: flex;\n    position: sticky;\n    top: 0;\n    z-index: 120;');
+    expect(html).not.toContain('body.mobile-touch .homepage-header {\n    display: flex;\n    position: relative;');
+    expect(mainTs).not.toContain("visualViewport?.addEventListener('scroll', syncAppViewport)");
   });
 
   it('lays out mobile More tray buttons horizontally', () => {
