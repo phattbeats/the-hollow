@@ -3325,6 +3325,18 @@ export class Sim {
         this.dealDamage(mob, pe, Math.max(1, Math.round(sd)), crit, 'physical', cleave.name ?? 'Cleave', 'hit', true);
       }
     }
+    // venom: a landed swing may inflict a refreshing poison DoT (hostile mobs only,
+    // never a friendly pet — mobSwing is also the pet attack path).
+    const venom = MOBS[mob.templateId]?.venom;
+    if (venom && mob.hostile && !target.dead && this.rng.chance(venom.chance)) {
+      this.applyAura(target, {
+        id: 'venom_' + mob.templateId, name: venom.name, kind: 'dot',
+        remaining: venom.duration, duration: venom.duration,
+        value: Math.max(1, Math.round(venom.perTick)),
+        tickInterval: venom.interval, tickTimer: venom.interval,
+        sourceId: mob.id, school: (venom.school as Aura['school']) ?? 'nature',
+      });
+    }
     // thorns / lightning shield on the defender
     if (!mob.dead) {
       for (const a of target.auras) {
