@@ -136,6 +136,7 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     hpBase: 260, hpPerLevel: 36, dmgBase: 14, dmgPerLevel: 2.9, attackSpeed: 2.8,
     armorPerLevel: 30, moveSpeed: 7, aggroRadius: 15,
     enrage: { belowHpPct: 0.30, dmgMult: 1.5, hasteMult: 1.3 },
+    stomp: { radius: 10, every: 12, duration: 1.5, min: 20, max: 30, name: 'War Stomp' },
     loot: [
       { copper: 5000, chance: 1 },
       { itemId: 'boneplate_vest', chance: 0.34, rollGroup: 'korgath_guaranteed_uncommon' },

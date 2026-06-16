@@ -171,6 +171,10 @@ export interface MobTemplate {
   // Mob mechanic: a one-time desperation self-heal the first time hp drops
   // below the threshold (healPct is a fraction of maxHp). Resets on evade/respawn.
   desperateHeal?: { belowHpPct: number; healPct: number };
+  // Boss mechanic ("War Stomp"): periodic ground slam that stuns nearby players
+  // for `duration`s (and optionally deals min..max damage). Telegraphed: the
+  // first slam only lands one full `every` interval after combat starts.
+  stomp?: { radius: number; every: number; duration: number; min?: number; max?: number; name: string; school?: string };
 }
 
 export type AbilityEffect =
@@ -478,6 +482,7 @@ export interface Entity {
   ownerId: number | null; // controlled pets: owning player's entity id (null = wild)
   petTauntTimer: number; // controlled pet Growl cooldown
   pulseTimer: number; // boss aoe pulse countdown
+  stompTimer: number; // boss War Stomp stun-pulse countdown
   firedSummons: number; // summonAdds thresholds already triggered
   summonedIds: number[]; // live adds this boss summoned; despawned on reset
   enraged: boolean; // enrage mechanic active
