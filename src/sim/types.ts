@@ -163,6 +163,10 @@ export interface MobTemplate {
   summonAdds?: { mobId: string; count: number; atHpPct: number[] };
   // Boss mechanic: damage multiplier once hp drops below the threshold.
   enrage?: { belowHpPct: number; dmgMult: number };
+  // On-hit chill: a landed melee swing has `chance` to slow the victim's
+  // movement to `mult` of normal for `duration` seconds (frost school). Reuses
+  // the standard `slow` aura, so it rides the same movement path as Frostbolt.
+  chillOnHit?: { chance: number; mult: number; duration: number; name: string };
 }
 
 export type AbilityEffect =
