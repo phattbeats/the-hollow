@@ -5211,6 +5211,14 @@ export class Sim {
       return null;
     }
 
+    // "/talents" (aliases "/talent", "/spec") — self-only readout of the
+    // player's specialization and how their talent points are spent. Returns
+    // null (unlogged); no server interceptor, so it works online for free.
+    if (/^\/(?:talents|talent|spec)(?:\s|$)/i.test(raw)) {
+      this.error(r.meta.entityId, this.talentsReadout(r.meta, r.e));
+      return null;
+    }
+
     // "/help" (or "/?" / "/commands") lists the available chat commands as a
     // system notice to the asker only. Like /who, it produces no chat message,
     // so it works identically offline and online without server wiring.
@@ -7450,6 +7458,36 @@ export class Sim {
       return `${name} is queued for your next melee swing (costs ${queued.cost} ${res}; you have ${have}).`;
     }
     return `${name} is queued for your next melee swing, but you cannot afford it (costs ${queued.cost} ${res}; you have ${have}) — it will fizzle.`;
+  }
+
+  // Self-only readout for "/talents": the player's specialization and how their
+  // talent points are split across the Class tree and the chosen spec tree.
+  // Points are derived live from level (talentPointsAtLevel), so the total stays
+  // correct after a level-up even if the allocation hasn't been touched since.
+  private talentsReadout(meta: PlayerMeta, e: Entity): string {
+    const ct = talentsFor(meta.cls);
+    if (!ct) return 'Your class has no talent tree yet.';
+    const total = talentPointsAtLevel(e.level);
+    if (total <= 0) return `You have not unlocked talents yet — they begin at level ${FIRST_TALENT_LEVEL}.`;
+    const spent = pointsSpent(meta.talents);
+    // Split spent points by tree (cold path: walk the allocation once on demand).
+    const byId = new Map(ct.nodes.map((n) => [n.id, n] as const));
+    let classPts = 0;
+    let specPts = 0;
+    for (const id in meta.talents.ranks) {
+      const node = byId.get(id);
+      if (!node) continue;
+      if (node.tree === 'class') classPts += meta.talents.ranks[id];
+      else specPts += meta.talents.ranks[id];
+    }
+    const specName = meta.talents.spec
+      ? ct.specs.find((s) => s.id === meta.talents.spec)?.name ?? meta.talents.spec
+      : null;
+    const head = specName ?? 'no specialization';
+    const breakdown = specName ? `Class ${classPts}, ${specName} ${specPts}` : `Class ${classPts}`;
+    const unspent = total - spent;
+    const tail = unspent > 0 ? ` ${unspent} unspent.` : '';
+    return `Talents: ${head} — ${spent}/${total} points spent (${breakdown}).${tail}`;
   }
 }
 
