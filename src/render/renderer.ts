@@ -96,6 +96,7 @@ interface EntityView {
   visual: CharacterVisual | null;
   sheepVisual: CharacterVisual | null; // polymorph form, built lazily
   bearVisual: CharacterVisual | null; // druid bear form, built lazily
+  skin: number; // last-rendered appearance skin — diffed each frame for live swaps
   /** unscaled height — nameplate/vfx anchor reads height * e.scale */
   height: number;
   /** what removeView pulls back out of clickTargets */
@@ -780,7 +781,7 @@ export class Renderer {
       nameplate: np, nameEl, hpBar, hpFill, emoteEl, emoteIconEl, emoteLabelEl, markerEl: marker, raidMarkEl: raidMark, sparkle, objectMesh, portal,
       nameplateDisplay: 'none', nameplateTransform: '', nameplateSig: '', nameplateHpWidth: '',
       objectCasters, shadowOn: true, isFar: false, lastOverheadEmoteKey: null,
-      lastX: e.pos.x, lastZ: e.pos.z,
+      lastX: e.pos.x, lastZ: e.pos.z, skin: e.skin,
       loco: newLocoTrack(),
     });
   }
@@ -1073,6 +1074,9 @@ export class Renderer {
         continue;
       }
       if (!v.visual) continue;
+
+      // live skin swap — appearance changed (in-game changer or a multiplayer peer)
+      if (e.skin !== v.skin) { v.skin = e.skin; v.visual.setSkin(e.skin); }
 
       // swimming pose: prone at the surface (derived here — the sim is unaware)
       const swimming = !e.dead

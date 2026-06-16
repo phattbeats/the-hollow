@@ -12,5 +12,6 @@ export { CharacterPreview } from './preview';
 
 /** Build the visual for an entity (or an explicit form key: polymorph/bear). */
 export function createCharacterVisual(e: Entity, formKey?: 'form_sheep' | 'form_bear'): CharacterVisual {
-  return new CharacterVisual(formKey ?? visualKeyFor(e), e.color);
+  // forms (sheep/bear) are their own models — skins only apply to the base body
+  return new CharacterVisual(formKey ?? visualKeyFor(e), e.color, formKey ? 0 : (e.skin ?? 0));
 }

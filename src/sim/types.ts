@@ -535,6 +535,7 @@ export interface Entity {
   dead: boolean;
   scale: number;
   color: number;
+  skin: number; // player appearance: index into SKINS[visualKey]; 0 = default. synced in identity fields.
 }
 
 // `pid` (when present) marks a personal event that should only be delivered to

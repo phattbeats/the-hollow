@@ -14,6 +14,7 @@ import type { IWorld, LeaderboardEntry } from './world_api';
 import { formatXp } from './ui/xp_bar';
 import { assetsReady } from './render/assets/preload';
 import { CharacterPreview } from './render/characters';
+import { skinCount } from './render/characters/manifest';
 import { DT, INTERACT_RANGE, PlayerClass, dist2d } from './sim/types';
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
@@ -808,10 +809,11 @@ function sanitizeOfflineName(raw: string): string {
   return /^[A-Za-z][A-Za-z' -]{1,15}$/.test(stripped) ? stripped : 'Adventurer';
 }
 
-async function startOffline(playerClass: PlayerClass, name: string): Promise<void> {
+async function startOffline(playerClass: PlayerClass, name: string, skin = 0): Promise<void> {
   if (!(await prepareWorldEntry())) return;
   enterLoadingState('Loading world…');
   const sim = new Sim({ seed: WORLD_SEED, playerClass, playerName: name });
+  sim.setPlayerSkin(sim.playerId, skin);
   void startGame(sim, sim, null);
 }
 
@@ -824,6 +826,40 @@ const api = new Api();
 let activeTransitionTimeout: number | null = null;
 let activeTransitionCleanup: (() => void) | null = null;
 let characterPreview: CharacterPreview | null = null;
+let offlineSkin = 0; // chosen appearance skin for the offline quick-start character
+
+/** Fill a skin-picker row with one swatch per available skin for the class. */
+function renderSkinPicker(rowId: string, cls: PlayerClass, current: number, onPick: (i: number) => void): void {
+  const row = $(rowId) as HTMLElement | null;
+  if (!row) return;
+  row.innerHTML = '';
+  const count = skinCount(`player_${cls}`);
+  if (count <= 1) return; // only the default exists — nothing to pick
+  for (let i = 0; i < count; i++) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'skin-swatch' + (i === current ? ' sel' : '');
+    b.textContent = String(i + 1);
+    b.setAttribute('role', 'listitem');
+    b.setAttribute('aria-label', `Skin ${i + 1}`);
+    b.addEventListener('click', () => {
+      row.querySelectorAll('.skin-swatch').forEach((x) => x.classList.remove('sel'));
+      b.classList.add('sel');
+      onPick(i);
+    });
+    row.appendChild(b);
+  }
+}
+
+/** Reset to the default skin and (re)render the offline picker for a class. */
+function refreshOfflineSkins(cls: PlayerClass): void {
+  offlineSkin = 0;
+  characterPreview?.setSkin(0);
+  renderSkinPicker('#offline-skin-row', cls, 0, (i) => {
+    offlineSkin = i;
+    characterPreview?.setSkin(i);
+  });
+}
 
 function updatePreviewContainer(panelId: string): void {
   if (!characterPreview) return;
@@ -839,6 +875,7 @@ function updatePreviewContainer(panelId: string): void {
     if (selEl) {
       const cls = selEl.dataset.class as PlayerClass;
       characterPreview.setClass(cls);
+      if (panelId !== '#charselect-panel') refreshOfflineSkins(cls);
     }
   }
 }
@@ -1779,7 +1816,7 @@ function wireStartScreens(): void {
     audio.init();
     music.init();
     const name = sanitizeOfflineName(rawName);
-    void startOffline(cls, name);
+    void startOffline(cls, name, offlineSkin);
   };
 
   const handleOfflineSelect = () => {
@@ -1796,6 +1833,7 @@ function wireStartScreens(): void {
       warriorCard.setAttribute('aria-pressed', 'true');
       renderClassDetails('offline-class-details', 'warrior');
       btnStartOffline.removeAttribute('disabled');
+      refreshOfflineSkins('warrior');
     }
   };
 
@@ -1835,6 +1873,7 @@ function wireStartScreens(): void {
       const cls = (card as HTMLElement).dataset.class as PlayerClass;
       renderClassDetails('offline-class-details', cls);
       btnStartOffline.removeAttribute('disabled');
+      refreshOfflineSkins(cls);
     };
     card.addEventListener('click', handleClassSelect);
     card.addEventListener('keydown', (e) => handleKeyboardActivation(e as KeyboardEvent, handleClassSelect));

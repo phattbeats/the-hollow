@@ -10,18 +10,18 @@ import * as THREE from 'three';
 import { clone as cloneSkinned } from 'three/addons/utils/SkeletonUtils.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
-import { loadGltf } from '../assets/loader';
+import { loadGltf, loadTexture } from '../assets/loader';
 import { registerPreload } from '../assets/preload';
 import { GFX, addRimGlow } from '../gfx';
-import { manifestUrls, VISUALS, VisualDef, type AttachDef } from './manifest';
+import { manifestUrls, SKINS, VISUALS, VisualDef, type AttachDef } from './manifest';
 
 const DEFAULT_TINT_STRENGTH = 0.4;
 
 const LOW_URL_ALIAS: Record<string, string> = {
-  'models/chars/skeleton_warrior.glb': 'models/chars/skeleton_minion.glb',
-  'models/chars/skeleton_rogue.glb': 'models/chars/skeleton_minion.glb',
-  'models/chars/skeleton_mage.glb': 'models/chars/skeleton_minion.glb',
-  'models/chars/rogue_hooded.glb': 'models/chars/rogue.glb',
+  'models/chars/enemies/skeleton_warrior.glb': 'models/chars/enemies/skeleton_minion.glb',
+  'models/chars/enemies/skeleton_rogue.glb': 'models/chars/enemies/skeleton_minion.glb',
+  'models/chars/enemies/skeleton_mage.glb': 'models/chars/enemies/skeleton_minion.glb',
+  'models/chars/players/rogue_hooded.glb': 'models/chars/players/rogue.glb',
 };
 
 type HandGrip = {
@@ -174,6 +174,27 @@ for (const url of preloadUrls) {
   registerPreload(loadGltf(url).then((g) => { gltfByUrl.set(url, g); }));
 }
 
+// Skin textures: player alternate body atlases, loaded sRGB + flipY=false so
+// they line up with the glTF-embedded UVs. Standard tier only — low tier aliases
+// character models and keeps the default look.
+const skinTexByUrl = new Map<string, THREE.Texture>();
+if (GFX.standardMaterials) {
+  for (const url of [...new Set(Object.values(SKINS).flat().filter((u): u is string => !!u))]) {
+    registerPreload(loadTexture(url, { srgb: true }).then((t) => {
+      t.flipY = false;
+      t.needsUpdate = true;
+      skinTexByUrl.set(url, t);
+    }));
+  }
+}
+
+/** Resolved skin texture for a visual key + skin index, or null for the model's
+ *  embedded default (index 0, unknown key, or low tier). */
+export function skinTexture(key: string, skinIndex: number): THREE.Texture | null {
+  const url = SKINS[key]?.[skinIndex] ?? null;
+  return url ? skinTexByUrl.get(url) ?? null : null;
+}
+
 function resolvedGltf(url: string): GLTF {
   const resolvedUrl = assetUrl(url);
   const g = gltfByUrl.get(resolvedUrl);
@@ -260,6 +281,9 @@ function mergeSkinnedParts(root: THREE.Object3D): void {
  *  Pure model space — normalization (scale/yaw/feet offset) happens upstream. */
 export function assembleModel(def: VisualDef): THREE.Object3D {
   const root = cloneSkinned(optimizedScene(def.url));
+  // tag the character's own meshes (body + accessories share one texture atlas)
+  // so a skin override hits them but not the separate weapons attached below
+  root.traverse((o) => { if ((o as THREE.Mesh).isMesh) o.userData.bodyMesh = true; });
   // KayKit characters ship every accessory mesh visible; keep only the kit
   if (def.show) {
     const keep = new Set(def.show);
@@ -289,8 +313,8 @@ export function assembleModel(def: VisualDef): THREE.Object3D {
 const matCache = new Map<string, THREE.Material>();
 const tintScratch = new THREE.Color();
 
-export function tintedMaterial(src: THREE.Material, tint: number | null, strength: number): THREE.Material {
-  const key = `${src.uuid}|${tint ?? 'n'}|${tint === null ? 0 : strength}|${GFX.standardMaterials ? 's' : 'l'}`;
+export function tintedMaterial(src: THREE.Material, tint: number | null, strength: number, skinTex: THREE.Texture | null = null): THREE.Material {
+  const key = `${src.uuid}|${tint ?? 'n'}|${tint === null ? 0 : strength}|${GFX.standardMaterials ? 's' : 'l'}|${skinTex ? skinTex.uuid : 'n'}`;
   const cached = matCache.get(key);
   if (cached) return cached;
 
@@ -314,6 +338,7 @@ export function tintedMaterial(src: THREE.Material, tint: number | null, strengt
     // hand-painted textures muddy
     mat.color.lerp(tintScratch.set(tint), strength);
   }
+  if (skinTex) mat.map = skinTex; // alternate body atlas, same UVs as the default
   matCache.set(key, mat);
   return mat;
 }
@@ -325,16 +350,18 @@ function tintFor(def: VisualDef, entityColor: number): number | null {
 
 /** Swap every mesh material in an assembled clone for the shared tinted
  *  (and tier-appropriate) variant. Returns nothing — mutates the clone. */
-export function applyMaterials(root: THREE.Object3D, def: VisualDef, entityColor: number): void {
+export function applyMaterials(root: THREE.Object3D, def: VisualDef, entityColor: number, skinTex: THREE.Texture | null = null): void {
   const tint = tintFor(def, entityColor);
   const strength = def.tintStrength ?? DEFAULT_TINT_STRENGTH;
   root.traverse((o) => {
     const mesh = o as THREE.Mesh;
     if (!mesh.isMesh) return;
+    // skin override only touches the character's own atlas meshes, not weapons
+    const sk = skinTex && mesh.userData.bodyMesh ? skinTex : null;
     if (Array.isArray(mesh.material)) {
-      mesh.material = mesh.material.map((m) => tintedMaterial(m, tint, strength));
+      mesh.material = mesh.material.map((m) => tintedMaterial(m, tint, strength, sk));
     } else {
-      mesh.material = tintedMaterial(mesh.material, tint, strength);
+      mesh.material = tintedMaterial(mesh.material, tint, strength, sk);
     }
   });
 }

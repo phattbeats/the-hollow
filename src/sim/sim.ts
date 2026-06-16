@@ -268,6 +268,7 @@ export interface PlayerMeta {
   entityId: number;
   cls: PlayerClass;
   name: string;
+  skin: number; // appearance index into the render SKINS[player_<cls>]; persisted, synced
   moveInput: MoveInput;
   inventory: InvSlot[];
   vendorBuyback: InvSlot[];
@@ -379,6 +380,7 @@ export interface CharacterState {
   talents?: TalentAllocation;
   loadouts?: SavedLoadout[];
   activeLoadout?: number;
+  skin?: number; // appearance index (JSONB; optional so pre-skin saves load as 0)
 }
 
 // Pure quest-state computation, shared by the sim and the network client.
@@ -585,6 +587,7 @@ export class Sim {
       entityId: player.id,
       cls,
       name,
+      skin: opts?.state?.skin ?? 0,
       moveInput: emptyMoveInput(),
       inventory: [],
       vendorBuyback: [],
@@ -610,6 +613,7 @@ export class Sim {
       away: null,
     };
     this.players.set(player.id, meta);
+    player.skin = meta.skin; // mirror onto the entity so the renderer + wire can read it
     if (this.primaryId === -1) this.primaryId = player.id;
 
     if (opts?.state) {
@@ -725,7 +729,21 @@ export class Sim {
       talents: cloneAllocation(meta.talents),
       loadouts: meta.loadouts.map((l) => ({ name: l.name, alloc: cloneAllocation(l.alloc), bar: [...l.bar] })),
       activeLoadout: meta.activeLoadout,
+      skin: meta.skin,
     };
+  }
+
+  /** Set a player's appearance skin (meta + entity). Bounded; the renderer
+   *  falls back to the default for an unknown index. Used by creation, the
+   *  in-game changer, and the server's changeSkin command. */
+  setPlayerSkin(pid: number, skin: number): boolean {
+    const meta = this.players.get(pid);
+    const e = this.entities.get(pid);
+    if (!meta || !e) return false;
+    const idx = Math.max(0, Math.min(7, Math.floor(skin)));
+    meta.skin = idx;
+    e.skin = idx;
+    return true;
   }
 
   // -------------------------------------------------------------------------
