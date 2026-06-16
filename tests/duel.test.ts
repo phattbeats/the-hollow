@@ -115,6 +115,15 @@ describe('duel: PvP combat affordances', () => {
     expect(eb.hp).toBeLessThan(startHp);
   });
 
+  it('does not make a dueling pet hostile to its owner', () => {
+    const { sim, a } = startedDuel('hunter', 'mage');
+    const pet = givePet(sim, a);
+    const owner = sim.entities.get(a)!;
+
+    expect(sim.isHostileTo(pet, owner)).toBe(false);
+    expect(sim.isHostileTo(owner, pet)).toBe(false);
+  });
+
   it('treats pet damage as owner PvP damage for non-lethal duel endings', () => {
     const { sim, a, b } = startedDuel('hunter', 'mage');
     const pet = givePet(sim, a);

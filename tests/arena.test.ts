@@ -349,9 +349,7 @@ describe('arena: class ability target filters', () => {
     const target = sim.entities.get(b)!;
     sim.setPlayerLevel(level, a);
     sim.setPlayerLevel(level, b);
-    target.pos.x = caster.pos.x;
-    target.pos.z = caster.pos.z + 3;
-    target.prevPos = { ...target.pos };
+    teleport(sim, b, caster.pos.x, caster.pos.z + 3);
     caster.resource = caster.maxResource;
     caster.gcdRemaining = 0;
     setup?.(sim, a);
