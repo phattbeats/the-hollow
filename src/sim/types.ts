@@ -231,6 +231,11 @@ export interface MobTemplate {
   // movement to `mult` of normal for `duration` seconds (frost school). Reuses
   // the standard `slow` aura, so it rides the same movement path as Frostbolt.
   chillOnHit?: { chance: number; mult: number; duration: number; name: string };
+  // On-hit affix: a successful melee hit saps the player victim's attack power
+  // for a few seconds (classic Demoralizing Shout / Curse of Weakness), making
+  // the damage *they* deal weaker. `ap` is the attack-power reduction (applied
+  // as a negative buff_ap aura); `chance` defaults to 1 (every hit, refreshing).
+  demoralize?: { ap: number; duration: number; chance?: number; name?: string };
 }
 
 export type AbilityEffect =
