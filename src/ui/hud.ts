@@ -25,7 +25,7 @@ import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANG
 import { chatPlayerContextActions } from './player_context_menu';
 import { formatMoney as formatLocalizedMoney, formatNumber, moneyParts, t, type TranslationKey } from './i18n';
 import { tEntity } from './entity_i18n';
-import { localizeServerText } from './server_i18n';
+import { localizeServerText, localizeZone } from './server_i18n';
 import { localizeSimText, localizeSimAuraName } from './sim_i18n';
 import { tTalent, localizeTalentTitle } from './talent_i18n';
 import {
@@ -278,7 +278,7 @@ export class Hud {
     mm.title = t('controls.worldMap');
     mm.addEventListener('click', () => this.toggleMap());
     $('#release-btn').addEventListener('click', () => { this.sim.releaseSpirit(); });
-    // classic WoW: the player interaction menu opens from the target portrait
+    // classic MMOs: the player interaction menu opens from the target portrait
     $('#target-frame').addEventListener('contextmenu', (ev) => {
       ev.preventDefault();
       const tid = this.sim.player.targetId;
@@ -286,7 +286,7 @@ export class Hud {
       if (t && t.kind === 'player' && t.id !== this.sim.playerId) {
         this.openContextMenu(t.id, t.name, (ev as MouseEvent).clientX, (ev as MouseEvent).clientY);
       } else if (t && t.kind === 'mob' && !t.dead && t.hostile && t.ownerId === null && this.sim.partyInfo) {
-        // classic WoW: right-click an enemy's unit frame to set a raid marker.
+        // classic MMOs: right-click an enemy's unit frame to set a raid marker.
         // Mirror Sim.setMarker's markable criteria (live wild hostile mob) so the
         // menu never appears for a pet/non-hostile mob where it would be a no-op.
         this.openMarkerMenu(t.id, t.name, (ev as MouseEvent).clientX, (ev as MouseEvent).clientY);
@@ -3167,7 +3167,7 @@ export class Hud {
     return root;
   }
 
-  // WoW-style choice-node picker: clicking an octagon node opens a flyout of its
+  // classic-MMO-style choice-node picker: clicking an octagon node opens a flyout of its
   // options; selecting one assigns it (spending a point if needed). Anchored to
   // the node, closes on click-away.
   private openChoicePopup(anchor: HTMLElement, node: TalentNode, stage: TalentAllocation): void {
@@ -3523,7 +3523,7 @@ export class Hud {
       }
       this.attachTooltip(div, () => this.talentTooltip(n, stage, isDormant));
       div.addEventListener('click', () => {
-        // octagon choice nodes open a WoW-style option flyout; others add a rank
+        // octagon choice nodes open a classic-MMO-style option flyout; others add a rank
         if (n.kind === 'choice') this.openChoicePopup(div, n, stage);
         else this.talentNodeClick(stage, n);
       });
@@ -4184,7 +4184,7 @@ export class Hud {
     return friends.map((f) => {
       const dot = f.online ? (f.status ?? 'online') : 'off';
       const meta = f.online
-        ? `<span class="zone">${esc(f.zone ?? '')}</span><br>${esc(statusLabel(f.status))}`
+        ? `<span class="zone">${esc(f.zone ? localizeZone(f.zone) : '')}</span><br>${esc(statusLabel(f.status))}`
         : esc(t('hud.social.status.offline'));
       const name = f.online
         ? `<button type="button" class="soc-name soc-link" data-whisper="${esc(f.name)}" title="${esc(t('hud.social.whisperTitle', { name: f.name }))}">${esc(f.name)}</button>`
@@ -4219,7 +4219,7 @@ export class Hud {
     const rows = guild.members.map((m) => {
       const dot = m.online ? (m.status ?? 'online') : 'off';
       const meta = m.online
-        ? `<span class="zone">${esc(m.zone ?? '')}</span><br>${esc(statusLabel(m.status))}`
+        ? `<span class="zone">${esc(m.zone ? localizeZone(m.zone) : '')}</span><br>${esc(statusLabel(m.status))}`
         : esc(t('hud.social.status.offline'));
       const self = m.name === this.sim.player.name;
       const nameInner = `${esc(m.name)}<span class="rank">${esc(rankLabel(m.rank))}</span>`;
@@ -4253,7 +4253,7 @@ export class Hud {
     if (!guild) return this.addRow('gname', 'guild-create', t('hud.social.guildNamePlaceholder'), t('hud.social.found'), 24, false);
     let foot = '';
     if (guild.rank !== 'member') foot += this.addRow('ginvite', 'guild-invite', t('hud.social.guildInvitePlaceholder'), t('hud.social.invite'), 16, true);
-    // WoW: a Guild Master with other members can't just leave — they disband
+    // classic MMOs: a Guild Master with other members can't just leave — they disband
     // (or hand over leadership via the crown action). Everyone else can leave.
     foot += guild.rank === 'leader' && guild.members.length > 1
       ? `<div class="soc-add soc-leave"><button class="btn" data-act="guild-disband">${esc(t('hud.social.disbandGuild'))}</button></div>`
@@ -4429,7 +4429,7 @@ export class Hud {
     box.style.display = 'block';
   }
 
-  // Open the chat bar pre-filled with a whisper to this player (WoW-style DM).
+  // Open the chat bar pre-filled with a whisper to this player (classic-MMO-style DM).
   private startWhisper(name: string): void {
     if (!name || name === this.sim.player.name) return;
     const input = $('#chat-input') as unknown as HTMLInputElement;
@@ -5231,7 +5231,7 @@ function statusLabel(status: string | undefined): string {
 function dotTitle(online: boolean, status: string | undefined, zone: string | undefined): string {
   if (!online) return t('hud.social.status.offline');
   const label = statusLabel(status);
-  return zone ? t('hud.social.statusWithZone', { status: label, zone }) : label;
+  return zone ? t('hud.social.statusWithZone', { status: label, zone: localizeZone(zone) }) : label;
 }
 
 function rankLabel(rank: string): string {

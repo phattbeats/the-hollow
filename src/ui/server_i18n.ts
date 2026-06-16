@@ -43,7 +43,7 @@ const zoneNameToId = new Map<string, string>();
 for (const z of ZONES) zoneNameToId.set(z.name, z.id);
 const dungeonNameToId = new Map<string, string>();
 for (const [id, d] of Object.entries(DUNGEONS)) dungeonNameToId.set(d.name, id);
-function localizeZone(name: string): string {
+export function localizeZone(name: string): string {
   if (name === 'Unknown') return tServer('who.zoneUnknown');
   const zid = zoneNameToId.get(name);
   if (zid) return tEntity({ kind: 'zone', id: zid, field: 'name' });

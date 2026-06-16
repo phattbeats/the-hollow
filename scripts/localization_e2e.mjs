@@ -597,6 +597,21 @@ async function assertNonEnglishNotFallback(page, locale, selector, englishText, 
   check(!text.includes(englishText), `${label}: non-English surface still includes English fallback "${englishText}" in "${text}"`);
 }
 
+// Presence zones in the social roster come from the server as canonical English
+// (zoneAt().name / dungeon name); the client must re-localize them via
+// localizeZone(). Guard both the visible .zone span and the status tooltip so a
+// raw English zone name can never leak back into a translated social panel.
+async function assertSocialZonesLocalized(page, locale, englishZones, label) {
+  if (locale === 'en' || locale === 'en_CA') return;
+  const texts = await page.$$eval(
+    '#social-window .soc-row .zone, #social-window .soc-row [title]',
+    (els) => els.map((el) => `${el.textContent ?? ''} ${el.getAttribute('title') ?? ''}`.replace(/\s+/g, ' ').trim()),
+  );
+  for (const english of englishZones) {
+    check(!texts.some((tx) => tx.includes(english)), `${label}: social presence zone still shows English "${english}" in ${JSON.stringify(texts)}`);
+  }
+}
+
 async function runHomepageLocaleMatrix(browser) {
   const viewport = VIEWPORTS[0];
   const { page, assertNoDiagnostics } = await newAuditedPage(browser, viewport, 'homepage');
@@ -872,8 +887,10 @@ async function runSocialAndTradeSurfaces(page, locale, viewport) {
   await page.waitForSelector('#social-window.open .soc-tab', { timeout: WAIT_TIMEOUT });
   await assertNonEnglishNotFallback(page, locale, '#social-window .panel-title span', 'Social', `social ${locale} ${viewport.name}`);
   await assertAuditBasics(page, `social friends ${locale} ${viewport.name}`, { mobile: viewport.isMobile });
+  await assertSocialZonesLocalized(page, locale, ['Eastbrook Vale'], `social friends ${locale} ${viewport.name}`);
   await page.click('#social-window .soc-tab[data-tab="guild"]');
   await assertAuditBasics(page, `social guild ${locale} ${viewport.name}`, { mobile: viewport.isMobile });
+  await assertSocialZonesLocalized(page, locale, ['Eastbrook Vale', 'Mirefen Marsh'], `social guild ${locale} ${viewport.name}`);
   await page.click('#social-window .soc-tab[data-tab="ignore"]');
   await assertAuditBasics(page, `social ignore ${locale} ${viewport.name}`, { mobile: viewport.isMobile });
 
