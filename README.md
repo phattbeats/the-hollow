@@ -10,7 +10,7 @@
 [![Version](https://img.shields.io/badge/version-0.6.0-blue)](package.json)
 [![Discord](https://img.shields.io/badge/Discord-join-5865F2?logo=discord&logoColor=white)](https://discord.gg/GjhnUsBtw)
 
-**English** · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md)
+**English** · [Español](docs/i18n/README.es.md) · [Español (España)](docs/i18n/README.es_ES.md) · [Français](docs/i18n/README.fr_FR.md) · [Français (Canada)](docs/i18n/README.fr_CA.md) · [Italiano](docs/i18n/README.it_IT.md) · [Deutsch](docs/i18n/README.de_DE.md) · [简体中文](docs/i18n/README.zh_CN.md) · [繁體中文](docs/i18n/README.zh_TW.md) · [한국어](docs/i18n/README.ko_KR.md) · [日本語](docs/i18n/README.ja_JP.md) · [Português (Brasil)](docs/i18n/README.pt_BR.md) · [Русский](docs/i18n/README.ru_RU.md)
 
 </div>
 
@@ -325,6 +325,15 @@ scripts/      browser E2E + screenshot tour + multiplayer integration tests
 Names, quests and the zones are original; formulas and mechanics follow
 vanilla. World seed is fixed in `src/main.ts` so the world is the same place
 every visit.
+
+## Contributing
+
+Contributions of every kind are welcome: code, translations, bug reports, and
+documentation. Start with [CONTRIBUTING.md](CONTRIBUTING.md) for setup and
+guidelines, and please follow our [Code of Conduct](CODE_OF_CONDUCT.md). New here?
+Look for issues labeled [`good first issue`](https://github.com/levy-street/world-of-claudecraft/labels/good%20first%20issue),
+open an [issue](https://github.com/levy-street/world-of-claudecraft/issues/new/choose),
+or say hello on [Discord](https://discord.gg/GjhnUsBtw).
 
 ## License
 

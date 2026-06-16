@@ -6,11 +6,11 @@
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 [![Vitest](https://img.shields.io/badge/Vitest-4.1-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.6.0-blue)](package.json)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../../LICENSE)
+[![Version](https://img.shields.io/badge/version-0.6.0-blue)](../../package.json)
 [![Discord](https://img.shields.io/badge/Discord-join-5865F2?logo=discord&logoColor=white)](https://discord.gg/GjhnUsBtw)
 
-[English](README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · **简体中文** · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md)
+[English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · **简体中文** · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md)
 
 </div>
 
@@ -18,7 +18,7 @@
 
 [加入社区 Discord](https://discord.gg/GjhnUsBtw)
 
-![World of ClaudeCraft 标题画面](docs/screenshots/title-screen.jpg)
+![World of ClaudeCraft 标题画面](../../docs/screenshots/title-screen.jpg)
 
 一款带有经典时代 MMO 风味、可以自行托管并游玩的微型 MMO：
 
@@ -31,17 +31,17 @@
 
 ## Screenshots
 
-![一支小队聚集在 Eastbrook 的药剂师店外](docs/screenshots/party-questing.jpg)
+![一支小队聚集在 Eastbrook 的药剂师店外](../../docs/screenshots/party-questing.jpg)
 
 | | |
 |:---:|:---:|
-| ![Eastbrook 营火旁的黄昏](docs/screenshots/eastbrook-dusk.jpg)<br>*Eastbrook 营火旁的黄昏* | ![Hollow Crypt 中的精英拉怪](docs/screenshots/hollow-crypt.jpg)<br>*Hollow Crypt 中火把映照下的精英拉怪* |
-| ![废弃教堂处不安的亡者](docs/screenshots/restless-dead.jpg)<br>*废弃教堂处不安的亡者* | ![与 Vale Bandits 的混战](docs/screenshots/vale-bandits.jpg)<br>*在强盗营地以寡敌众* |
-| ![Old Greyjaw 在北方道路上被追杀](docs/screenshots/old-greyjaw.jpg)<br>*稀有刷新怪 Old Greyjaw 在北方道路上被追猎* | ![商人与背包界面](docs/screenshots/vendor-and-bags.jpg)<br>*在 Smith Haldren 处置装 —— 工具提示、背包、钱币* |
+| ![Eastbrook 营火旁的黄昏](../../docs/screenshots/eastbrook-dusk.jpg)<br>*Eastbrook 营火旁的黄昏* | ![Hollow Crypt 中的精英拉怪](../../docs/screenshots/hollow-crypt.jpg)<br>*Hollow Crypt 中火把映照下的精英拉怪* |
+| ![废弃教堂处不安的亡者](../../docs/screenshots/restless-dead.jpg)<br>*废弃教堂处不安的亡者* | ![与 Vale Bandits 的混战](../../docs/screenshots/vale-bandits.jpg)<br>*在强盗营地以寡敌众* |
+| ![Old Greyjaw 在北方道路上被追杀](../../docs/screenshots/old-greyjaw.jpg)<br>*稀有刷新怪 Old Greyjaw 在北方道路上被追猎* | ![商人与背包界面](../../docs/screenshots/vendor-and-bags.jpg)<br>*在 Smith Haldren 处置装 —— 工具提示、背包、钱币* |
 
-![World of Claude](worldofclaude.png)
+![World of Claude](../../worldofclaude.png)
 
-![World of ClaudeCraft 社区](woc_community.png)
+![World of ClaudeCraft 社区](../../woc_community.png)
 
 ---
 
@@ -267,10 +267,19 @@ scripts/      浏览器 E2E + 截图巡览 + 多人集成测试
 名字、任务和各个区域都是原创的；公式与机制则遵循初版。世界种子在 `src/main.ts`
 中被固定，因此每次造访时世界都是同一个地方。
 
+## 参与贡献
+
+我们欢迎各种形式的贡献：代码、翻译、bug 报告以及文档。请先阅读
+[CONTRIBUTING.zh_CN.md](CONTRIBUTING.zh_CN.md) 了解环境搭建与相关指南，并请遵守我们的
+[行为准则](../../CODE_OF_CONDUCT.md)。初来乍到？不妨找一找标有
+[`good first issue`](https://github.com/levy-street/world-of-claudecraft/labels/good%20first%20issue)
+标签的 issue，提交一个 [issue](https://github.com/levy-street/world-of-claudecraft/issues/new/choose)，
+或者来 [Discord](https://discord.gg/GjhnUsBtw) 上打个招呼。
+
 ## License
 
-代码采用 [MIT 许可证](LICENSE) —— 尽管 fork 它、混搭它、托管你自己的世界。
+代码采用 [MIT 许可证](../../LICENSE) —— 尽管 fork 它、混搭它、托管你自己的世界。
 
 随附的第三方美术素材（模型、纹理、HDRI）仍受其各自许可证约束 —— 除 MIT 授权的
-水面法线贴图外，其余全部为 CC0 公有领域，详见 [CREDITS.md](CREDITS.md) 中按素材包
+水面法线贴图外，其余全部为 CC0 公有领域，详见 [CREDITS.md](../../CREDITS.md) 中按素材包
 逐一记录的说明。
