@@ -266,7 +266,8 @@ for (const [id, ability] of Object.entries(ABILITIES)) {
 
 add('All Pages', section('Complete index', bullets(pages.map((page) => link(page.title)).sort())), ['Wiki']);
 
-const now = new Date().toISOString().replace(/\\.\\d{3}Z$/, 'Z');
+const seedTimestamp = process.env.MEDIAWIKI_SEED_TIMESTAMP ?? '2026-06-15T23:47:51Z';
+const now = new Date(seedTimestamp).toISOString().replace(/\\.\\d{3}Z$/, 'Z');
 const body = pages.map((page, index) => \`
   <page>
     <title>\${escXml(page.title)}</title>
