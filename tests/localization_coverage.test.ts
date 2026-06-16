@@ -31,7 +31,7 @@ import {
   assertEntityTranslationsReady,
   entityTranslationFallbackLog,
   entityTranslationManifest,
-  missingEntityTranslationsForPhases,
+  missingEntityTranslationsForGroups,
   resetEntityTranslationFallbackLog,
   tEntity,
 } from "../src/ui/entity_i18n";
@@ -398,7 +398,7 @@ describe("i18n Localization Key Coverage", () => {
   type EntityManifestEntry = ReturnType<typeof entityTranslationManifest>[number];
   type EntityRequest = Parameters<typeof tEntity>[0];
 
-  function phaseSevenRequest(entry: EntityManifestEntry): EntityRequest {
+  function classAbilityRequest(entry: EntityManifestEntry): EntityRequest {
     if (entry.kind === "class") {
       return { kind: "class", id: entry.id as PlayerClass, field: entry.field as "name" | "description" };
     }
@@ -408,7 +408,7 @@ describe("i18n Localization Key Coverage", () => {
     throw new Error(`Unexpected Phase 7 entity kind: ${entry.kind}`);
   }
 
-  function phaseEightRequest(entry: EntityManifestEntry): EntityRequest {
+  function itemRequest(entry: EntityManifestEntry): EntityRequest {
     if (entry.kind === "item") {
       return { kind: "item", id: entry.id, field: "name" };
     }
@@ -425,7 +425,7 @@ describe("i18n Localization Key Coverage", () => {
     return { ownerId, index };
   }
 
-  function phaseNineRequest(entry: EntityManifestEntry): EntityRequest {
+  function worldRequest(entry: EntityManifestEntry): EntityRequest {
     if (entry.kind === "mob") return { kind: "mob", id: entry.id, field: "name" };
     if (entry.kind === "npc") {
       return {
@@ -665,15 +665,15 @@ describe("i18n Localization Key Coverage", () => {
   });
 
   it("should provide every Phase 7 class and ability translation in every locale", () => {
-    const phaseSevenEntries = entityTranslationManifest().filter((entry) => entry.phase === "phase7");
-    expect(phaseSevenEntries).toHaveLength((Object.keys(CLASSES).length * 2) + (Object.keys(ABILITIES).length * 2));
-    expect(missingEntityTranslationsForPhases(["phase7"])).toHaveLength(0);
+    const classAbilityEntries = entityTranslationManifest().filter((entry) => entry.group === "classAbility");
+    expect(classAbilityEntries).toHaveLength((Object.keys(CLASSES).length * 2) + (Object.keys(ABILITIES).length * 2));
+    expect(missingEntityTranslationsForGroups(["classAbility"])).toHaveLength(0);
 
     for (const lang of supportedLanguages) {
       setLanguage(lang);
       resetEntityTranslationFallbackLog();
-      for (const entry of phaseSevenEntries) {
-        const rendered = tEntity(phaseSevenRequest(entry));
+      for (const entry of classAbilityEntries) {
+        const rendered = tEntity(classAbilityRequest(entry));
         expect(rendered.trim().length, `${lang}.${entry.key}`).toBeGreaterThan(0);
         expect(rendered, `${lang}.${entry.key}`).not.toBe(entry.key);
         expect(rendered, `${lang}.${entry.key}`).not.toContain("$d");
@@ -692,15 +692,15 @@ describe("i18n Localization Key Coverage", () => {
   });
 
   it("should provide every Phase 8 item translation in every locale without canonical fallbacks", () => {
-    const phaseEightEntries = entityTranslationManifest().filter((entry) => entry.phase === "phase8");
-    expect(phaseEightEntries).toHaveLength(Object.keys(ITEMS).length);
-    expect(missingEntityTranslationsForPhases(["phase7", "phase8"])).toHaveLength(0);
+    const itemEntries = entityTranslationManifest().filter((entry) => entry.group === "item");
+    expect(itemEntries).toHaveLength(Object.keys(ITEMS).length);
+    expect(missingEntityTranslationsForGroups(["classAbility", "item"])).toHaveLength(0);
 
     for (const lang of supportedLanguages) {
       setLanguage(lang);
       resetEntityTranslationFallbackLog();
-      for (const entry of phaseEightEntries) {
-        const rendered = tEntity(phaseEightRequest(entry));
+      for (const entry of itemEntries) {
+        const rendered = tEntity(itemRequest(entry));
         expect(rendered.trim().length, `${lang}.${entry.key}`).toBeGreaterThan(0);
         expect(rendered, `${lang}.${entry.key}`).not.toBe(entry.key);
         if (lang !== "en" && lang !== "en_CA") {
@@ -734,21 +734,21 @@ describe("i18n Localization Key Coverage", () => {
   });
 
   it("should expose no phase-gated missing entity translations through Phase 9", () => {
-    const phaseSevenMissing = missingEntityTranslationsForPhases(["phase7"]);
-    expect(phaseSevenMissing).toHaveLength(0);
+    const classAbilityMissing = missingEntityTranslationsForGroups(["classAbility"]);
+    expect(classAbilityMissing).toHaveLength(0);
 
-    expect(missingEntityTranslationsForPhases(["phase7", "phase8"])).toHaveLength(0);
-    expect(missingEntityTranslationsForPhases(["phase9"])).toHaveLength(0);
-    expect(missingEntityTranslationsForPhases(["phase7", "phase8", "phase9"])).toHaveLength(0);
+    expect(missingEntityTranslationsForGroups(["classAbility", "item"])).toHaveLength(0);
+    expect(missingEntityTranslationsForGroups(["world"])).toHaveLength(0);
+    expect(missingEntityTranslationsForGroups(["classAbility", "item", "world"])).toHaveLength(0);
     expect(() => assertEntityTranslationsReady([])).not.toThrow();
-    expect(() => assertEntityTranslationsReady(["phase7"])).not.toThrow();
-    expect(() => assertEntityTranslationsReady(["phase7", "phase8"])).not.toThrow();
-    expect(() => assertEntityTranslationsReady(["phase7", "phase8", "phase9"])).not.toThrow();
+    expect(() => assertEntityTranslationsReady(["classAbility"])).not.toThrow();
+    expect(() => assertEntityTranslationsReady(["classAbility", "item"])).not.toThrow();
+    expect(() => assertEntityTranslationsReady(["classAbility", "item", "world"])).not.toThrow();
   });
 
   it("should provide every Phase 9 world-content translation in every locale without canonical fallbacks", () => {
-    const phaseNineEntries = entityTranslationManifest().filter((entry) => entry.phase === "phase9");
-    const expectedPhaseNineCount =
+    const worldEntries = entityTranslationManifest().filter((entry) => entry.group === "world");
+    const expectedWorldCount =
       Object.keys(MOBS).length
       + (Object.keys(NPCS).length * 3)
       + (Object.keys(QUESTS).length * 3)
@@ -756,13 +756,13 @@ describe("i18n Localization Key Coverage", () => {
       + (ZONES.length * 2)
       + ZONES.reduce((sum, zone) => sum + zone.pois.length, 0)
       + (Object.keys(DUNGEONS).length * 3);
-    expect(phaseNineEntries).toHaveLength(expectedPhaseNineCount);
+    expect(worldEntries).toHaveLength(expectedWorldCount);
 
     for (const lang of supportedLanguages) {
       setLanguage(lang);
       resetEntityTranslationFallbackLog();
-      for (const entry of phaseNineEntries) {
-        const rendered = tEntity(phaseNineRequest(entry));
+      for (const entry of worldEntries) {
+        const rendered = tEntity(worldRequest(entry));
         expect(rendered.trim().length, `${lang}.${entry.key}`).toBeGreaterThan(0);
         expect(rendered, `${lang}.${entry.key}`).not.toBe(entry.key);
         expect(rendered, `${lang}.${entry.key}`).not.toMatch(/\$N|\$C|\{playerName\}|\{className\}|\{classNameLower\}/);
@@ -842,11 +842,11 @@ describe("i18n Localization Key Coverage", () => {
   });
 
   it("should use explicit Phase 9 quest narrative translations instead of generated templates", () => {
-    const phaseNineSource = fs.readFileSync(path.resolve(process.cwd(), "src/ui/phase9_i18n.ts"), "utf8");
-    expect(phaseNineSource).not.toContain("questText:");
-    expect(phaseNineSource).not.toContain("questCompletion:");
-    expect(phaseNineSource).not.toContain("...zhCnData");
-    expect(phaseNineSource).not.toMatch(/const zhTwData[\s\S]*\.\.\.zhCnData[\s\S]*const koData/);
+    const worldEntitySource = fs.readFileSync(path.resolve(process.cwd(), "src/ui/phase9_i18n.ts"), "utf8");
+    expect(worldEntitySource).not.toContain("questText:");
+    expect(worldEntitySource).not.toContain("questCompletion:");
+    expect(worldEntitySource).not.toContain("...zhCnData");
+    expect(worldEntitySource).not.toMatch(/const zhTwData[\s\S]*\.\.\.zhCnData[\s\S]*const koData/);
 
     const genericPatterns = [
       /^Para ".+", completa estos objetivos:/,
@@ -921,11 +921,11 @@ describe("i18n Localization Key Coverage", () => {
 
   it("should keep Traditional Chinese Phase 9 world content out of Simplified-only shortcuts", () => {
     const simplifiedOnlyCharacters = /[颚猪网潜强盗宁无钳鱼妇贪鲁唤师执荆军风领热灵蹒垒缚仆骑挥雾维圣卫复这门进队战击个补桥吗块环声钥]/;
-    const phaseNineEntries = entityTranslationManifest().filter((entry) => entry.phase === "phase9");
+    const worldEntries = entityTranslationManifest().filter((entry) => entry.group === "world");
 
     setLanguage("zh_TW");
-    for (const entry of phaseNineEntries) {
-      const rendered = tEntity(phaseNineRequest(entry));
+    for (const entry of worldEntries) {
+      const rendered = tEntity(worldRequest(entry));
       expect(rendered, `zh_TW.${entry.key}`).not.toMatch(simplifiedOnlyCharacters);
     }
 
