@@ -163,6 +163,11 @@ export interface MobTemplate {
   summonAdds?: { mobId: string; count: number; atHpPct: number[] };
   // Boss mechanic: damage multiplier once hp drops below the threshold.
   enrage?: { belowHpPct: number; dmgMult: number };
+  // On-hit affix: a successful melee hit saps the player victim's attack power
+  // for a few seconds (classic Demoralizing Shout / Curse of Weakness), making
+  // the damage *they* deal weaker. `ap` is the attack-power reduction (applied
+  // as a negative buff_ap aura); `chance` defaults to 1 (every hit, refreshing).
+  demoralize?: { ap: number; duration: number; chance?: number; name?: string };
 }
 
 export type AbilityEffect =

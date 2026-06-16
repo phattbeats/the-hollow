@@ -913,7 +913,10 @@ export class Hud {
     (el as any).__sig = sig;
     el.innerHTML = '';
     for (const a of e.auras) {
-      const isDebuff = ['dot', 'slow', 'root', 'stun', 'incapacitate', 'polymorph', 'attackspeed'].includes(a.kind);
+      // A negative-value stat aura (e.g. a mob's Withering Wail sapping attack
+      // power) is a debuff even though it reuses a buff_* kind.
+      const isDebuff = ['dot', 'slow', 'root', 'stun', 'incapacitate', 'polymorph', 'attackspeed'].includes(a.kind)
+        || (a.kind.startsWith('buff_') && a.value < 0);
       if (mode === 'debuffs' && !isDebuff) continue;
       const d = document.createElement('div');
       d.className = 'buff' + (isDebuff ? ' debuff' : '');
