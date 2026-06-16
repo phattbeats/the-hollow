@@ -4133,6 +4133,23 @@ export class Sim {
     if (ensnare && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(ensnare.chance)) {
       this.applyRootAura(mob, target, ensnare.name, `ensnare_${mob.templateId}`, ensnare.duration, ensnare.school ?? 'nature');
     }
+    // slowStrike: a landed hit may mire the victim, slowing their attack speed.
+    // Rides the existing `attackspeed` aura (swingIntervalMult: value > 1 = slower);
+    // refreshes by id and never stacks. Guarded on `hostile` so a friendly pet
+    // (mobSwing's other caller) never debuffs the party.
+    const slowStrike = MOBS[mob.templateId]?.slowStrike;
+    if (slowStrike && mob.hostile && !target.dead && this.rng.chance(slowStrike.chance)) {
+      this.applyAura(target, {
+        id: `slowstrike_${mob.templateId}`,
+        name: slowStrike.name,
+        kind: 'attackspeed',
+        remaining: slowStrike.duration,
+        duration: slowStrike.duration,
+        value: slowStrike.mult,
+        sourceId: mob.id,
+        school: (slowStrike.school as Aura['school']) ?? 'physical',
+      });
+    }
   }
 
   // Apply (or refresh + stack) a corrosive armor-shred debuff on the victim.

@@ -204,6 +204,11 @@ export interface MobTemplate {
   // existing root aura + crowd-control DR; no new aura kind. Players only; rooting a
   // fellow mob is meaningless and would let a friendly pet trivially lock enemies.
   ensnare?: { chance: number; duration: number; name: string; school?: Aura['school'] };
+  // On-hit debuff: a chance per landed melee swing to mire the victim, slowing
+  // their ATTACK SPEED (an `attackspeed` aura, `mult` > 1 lengthens the swing
+  // interval) for `duration`s. Rides the existing swingIntervalMult hook — no new
+  // combat math. Distinct from a movement snare (`slow`) or an AP cut (`debuff_ap`).
+  slowStrike?: { chance: number; mult: number; duration: number; name: string; school?: Aura['school'] };
   // Pet mechanic: this creature is a ranged caster (warlock Imp) — instead of
   // closing to melee, it stays at `range` and hurls bolts of `school` damage.
   // updatePet reads this; the bolt damage comes from the mob's weapon range.
