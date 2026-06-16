@@ -388,6 +388,7 @@ describe('combat', () => {
   it('dead mobs respawn', () => {
     const sim = new Sim({ seed: 42, playerClass: 'warrior', respawnSeconds: 2 });
     const wolf = nearestMob(sim, 'forest_wolf');
+    const spawn = { ...wolf.spawnPos };
     wolf.hp = 1;
     teleportTo(sim, wolf.pos.x + 2, wolf.pos.z);
     sim.targetEntity(wolf.id);
@@ -398,6 +399,9 @@ describe('combat', () => {
     sim.lootCorpse(wolf.id);
     for (let i = 0; i < 20 * 10 && wolf.dead; i++) sim.tick();
     expect(wolf.dead).toBe(false);
+    expect(wolf.pos.x).toBeCloseTo(spawn.x);
+    expect(wolf.pos.z).toBeCloseTo(spawn.z);
+    expect(wolf.prevPos).toEqual(wolf.pos);
   });
 
   it('mage casts fireball with a cast time and applies its dot', () => {

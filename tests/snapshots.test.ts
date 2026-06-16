@@ -189,6 +189,33 @@ describe('delta snapshots', () => {
     expect(client.consumeInputEchoSamples()).toEqual([]);
   });
 
+  it('snaps a dead mob to its respawn pose instead of interpolating from the corpse', () => {
+    const client = bareClient(1);
+    const corpse = {
+      id: 99, k: 'mob', tid: 'forest_wolf', nm: 'Forest Wolf', lv: 1,
+      x: 0, y: 0, z: 0, f: 0, hp: 0, mhp: 45, dead: true, h: true,
+    };
+    const respawned = {
+      id: 99, tid: 'forest_wolf', nm: 'Forest Wolf', lv: 1,
+      x: 10, y: 0, z: 0, f: 0, hp: 45, mhp: 45, dead: false, h: true,
+    };
+
+    const oldPerf = (globalThis as any).performance;
+    (globalThis as any).performance = { now: () => 100 };
+    try {
+      (client as any).applySnapshot({ t: 'snap', ents: [corpse] });
+      (globalThis as any).performance = { now: () => 125 };
+      (client as any).applySnapshot({ t: 'snap', ents: [respawned] });
+    } finally {
+      (globalThis as any).performance = oldPerf;
+    }
+
+    const mob = client.entities.get(99)!;
+    expect(mob.dead).toBe(false);
+    expect(mob.pos.x).toBe(10);
+    expect(mob.prevPos).toEqual(mob.pos);
+  });
+
   it('resends a heavy field once it changes', () => {
     broadcast(server);
     fc.sent.length = 0;

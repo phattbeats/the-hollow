@@ -65,6 +65,7 @@ export interface VisualDef {
   walkRef?: number;
   runRef?: number;
   attackTimeScale?: number;
+  deathTimeScale?: number;
 }
 
 // ---------------------------------------------------------------------------
