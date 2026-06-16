@@ -17,6 +17,8 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const scriptPath = path.join(root, "scripts/i18n_resolved_hash.mjs");
 const baselinePath = path.join(root, "src/ui/i18n.resolved.sha256");
+const buildScript = path.join(root, "scripts/i18n_build.mjs");
+const generatedPath = "src/ui/i18n.resolved.generated.ts";
 
 describe("i18n resolved-table byte equivalence", () => {
   it("matches the committed baseline hash", () => {
@@ -34,6 +36,33 @@ describe("i18n resolved-table byte equivalence", () => {
     // execFileSync throws on a non-zero exit, which fails the test.
     expect(() =>
       execFileSync("node", [scriptPath, "--check"], { cwd: root, encoding: "utf8" }),
+    ).not.toThrow();
+  });
+});
+
+describe("i18n resolved-artifact reproducibility", () => {
+  it("the generated dense artifact is committed (tracked by git)", () => {
+    // `git diff --exit-code` silently ignores an untracked path, so the
+    // reproducibility assertion below is only meaningful once the artifact is
+    // committed. Fail loudly if someone regenerates but forgets to commit it.
+    expect(() =>
+      execFileSync("git", ["ls-files", "--error-unmatch", "--", generatedPath], {
+        cwd: root,
+        encoding: "utf8",
+      }),
+    ).not.toThrow();
+  });
+
+  it("regenerating src/ui/i18n.resolved.generated.ts leaves the committed file unchanged", () => {
+    // The dense generated artifact is the tsc safety net and is committed. Like
+    // the media manifest, it must regenerate byte-identically: a drift here means
+    // the generator is non-deterministic or the committed file is stale.
+    execFileSync("node", [buildScript], { cwd: root, encoding: "utf8" });
+    expect(() =>
+      execFileSync("git", ["diff", "--exit-code", "--", generatedPath], {
+        cwd: root,
+        encoding: "utf8",
+      }),
     ).not.toThrow();
   });
 });
