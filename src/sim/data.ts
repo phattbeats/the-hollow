@@ -22,6 +22,17 @@ import {
   ZONE3_QUESTS, ZONE3_QUEST_ORDER, ZONE3_ROADS, ZONE3_ZONE,
 } from './content/zone3';
 import { DUNGEON_DEFS, DUNGEON_MOBS } from './content/dungeons';
+import { GROUND_PICKUP_LINES } from './content/ground_pickup_lines';
+
+function mergeItems(...parts: Record<string, ItemDef>[]): Record<string, ItemDef> {
+  const merged = Object.assign({}, ...parts);
+  for (const [id, lines] of Object.entries(GROUND_PICKUP_LINES)) {
+    if (merged[id]) {
+      merged[id] = { ...merged[id], pickupDeny: lines.deny, pickupEnough: lines.enough };
+    }
+  }
+  return merged;
+}
 
 export { CLASSES, ABILITIES, abilitiesKnownAt } from './content/classes';
 export type { ClassDef } from './content/classes';
@@ -34,9 +45,7 @@ export type {
 // Merged content tables
 // ---------------------------------------------------------------------------
 
-export const ITEMS: Record<string, ItemDef> = {
-  ...BASE_ITEMS, ...ZONE2_ITEMS, ...ZONE3_ITEMS,
-};
+export const ITEMS: Record<string, ItemDef> = mergeItems(BASE_ITEMS, ZONE2_ITEMS, ZONE3_ITEMS);
 
 export const MOBS: Record<string, MobTemplate> = {
   ...ZONE1_MOBS, ...ZONE2_MOBS, ...ZONE3_MOBS, ...DUNGEON_MOBS,
