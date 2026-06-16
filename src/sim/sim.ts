@@ -4101,6 +4101,13 @@ export class Sim {
         school: (ms.school as Aura['school']) ?? 'physical',
       });
     }
+    // Ensnare: a landed hit may web the victim in place (root). Hostile mobs only
+    // (a friendly pet shares this swing path) and only roots players — `applyRootAura`
+    // applies crowd-control DR so repeated webs from the same mob shrink and break.
+    const ensnare = MOBS[mob.templateId]?.ensnare;
+    if (ensnare && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(ensnare.chance)) {
+      this.applyRootAura(mob, target, ensnare.name, `ensnare_${mob.templateId}`, ensnare.duration, ensnare.school ?? 'nature');
+    }
   }
 
   // Apply (or refresh + stack) a corrosive armor-shred debuff on the victim.
