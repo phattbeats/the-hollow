@@ -213,6 +213,12 @@ export interface MobTemplate {
   // flat `amount` of mana from a mana-using victim (casters). Rage/energy users
   // are unaffected. Drains only what mana the victim still has; no overkill.
   manaBurn?: { chance: number; amount: number; name: string; school?: Aura['school'] };
+  // On-hit curse: a landed melee swing has `chance` to fog the victim's mind,
+  // draining `int` Intellect for `duration` and thus shrinking a caster's mana
+  // pool (recalcPlayerStats clamps current mana down with the smaller ceiling).
+  // Rides the existing buff_int aura with a NEGATIVE value, so there is no new
+  // resource math. Only meaningful on mana users — applied to them alone.
+  enfeeble?: { chance: number; int: number; duration: number; name: string; school?: Aura['school'] };
   // Pet mechanic: this creature is a ranged caster (warlock Imp) — instead of
   // closing to melee, it stays at `range` and hurls bolts of `school` damage.
   // updatePet reads this; the bolt damage comes from the mob's weapon range.
