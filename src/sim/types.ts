@@ -194,6 +194,11 @@ export interface MobTemplate {
   // Melee mechanic: a landed swing has `chance` to inflict a Mortal Wound debuff
   // that reduces all healing the victim receives by `healReduction` for `duration`.
   mortalStrike?: { chance: number; healReduction: number; duration: number; name: string; school?: string };
+  // On-hit lifesteal: a landed melee swing heals the mob for `healFrac` of the
+  // damage it just dealt (drowned undead, leeches, vampiric beasts). Unlike the
+  // other on-hit affixes it sustains the attacker instead of debuffing the
+  // victim. Optional `chance` gates the proc (defaults to every landed hit).
+  lifeleech?: { healFrac: number; chance?: number; name?: string };
   // Combat mechanic: a landed melee hit has `chance` to corrode the victim's
   // armor: a stacking `sunder` debuff (up to `maxStacks`) so the victim takes
   // more physical damage from everyone until it expires. Rides the existing

@@ -4045,7 +4045,20 @@ export class Sim {
     if (mob.enraged && enrage) dmg *= enrage.dmgMult;
     const rawDmg = dmg; // pre-armor, post-crit/enrage — basis for cleave splash
     dmg *= 1 - armorReduction(this.effectiveArmor(target), mob.level);
-    this.dealDamage(mob, target, Math.max(1, Math.round(dmg)), crit, 'physical', null, 'hit');
+    const dealt = Math.max(1, Math.round(dmg));
+    this.dealDamage(mob, target, dealt, crit, 'physical', null, 'hit');
+    // Lifesteal: a landed swing heals the mob for a fraction of the damage it
+    // just dealt. Hostile mobs only, so a friendly pet (mobSwing's other caller)
+    // never drains for its owner; skip if the mob is already topped off or died
+    // to the defender's thorns/reflect earlier this swing.
+    const leech = MOBS[mob.templateId]?.lifeleech;
+    if (leech && mob.hostile && !mob.dead && mob.hp < mob.maxHp && this.rng.chance(leech.chance ?? 1)) {
+      const heal = Math.min(mob.maxHp - mob.hp, Math.max(1, Math.round(dealt * leech.healFrac)));
+      if (heal > 0) {
+        mob.hp += heal;
+        this.emit({ type: 'heal', targetId: mob.id, amount: heal });
+      }
+    }
     // Cleave: the swing splashes onto other players standing near the primary
     // target, each taking the hit reduced by their own armor. Hostile mobs only,
     // so a friendly pet swinging through mobSwing never cleaves its owner's party.

@@ -126,6 +126,7 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     id: 'drowned_dead', name: 'Drowned Dead', minLevel: 9, maxLevel: 11, family: 'undead',
     hpBase: 52, hpPerLevel: 20, dmgBase: 8, dmgPerLevel: 2.3, attackSpeed: 2.3,
     armorPerLevel: 14, moveSpeed: 6.5, aggroRadius: 11,
+    lifeleech: { healFrac: 0.5, chance: 0.35, name: 'Drowning Grasp' },
     loot: [
       { copper: 42, chance: 1 },
       { itemId: 'bone_fragments', chance: 0.5 },
