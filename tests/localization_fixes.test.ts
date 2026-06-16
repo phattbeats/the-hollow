@@ -522,6 +522,7 @@ describe("S3: every sim.ts emit is recognized (drift guard)", () => {
     "Abilities on cooldown (5): Aki.",
     "Active effects (5): Aki.",
     "Aki attempts to flee!",
+    "Aki channels Aki.",
     "Aki draws on a desperate second wind!",
     "Aki flies into a frenzy!",
     "Aki is Aki: Aki",
