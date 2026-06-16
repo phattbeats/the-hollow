@@ -12,6 +12,7 @@ import * as http from 'node:http';
 // pin an explicit proxy list instead of the private-range default.
 const WINDOW_MS = 60_000;
 const MAX_TRACKED_IPS = 10_000;
+const BACKSTOP_EVICT_BATCH = 512;
 
 // The strictest (lowest) limit any caller passes to rateLimited(). The `attempts`
 // map is SHARED across routes — game login/register use the default 20, admin
@@ -23,6 +24,10 @@ const MAX_TRACKED_IPS = 10_000;
 const STRICTEST_RATE_LIMIT = 10;
 
 const attempts = new Map<string, number[]>();
+
+function backstopTargetSize(): number {
+  return Math.max(0, MAX_TRACKED_IPS - BACKSTOP_EVICT_BATCH);
+}
 
 function normalizeIp(ip: string): string {
   if (ip.startsWith('::ffff:')) return ip.slice('::ffff:'.length);
@@ -107,7 +112,8 @@ export function rateLimited(req: http.IncomingMessage, maxPerMinute = 20): boole
     // Fall back to evicting the least-recently-active IP, skipping the current
     // one and any currently-limited IP. If everything left is current or
     // limited, accept a soft over-cap rather than reset a live limit.
-    while (attempts.size > MAX_TRACKED_IPS) {
+    const targetSize = backstopTargetSize();
+    while (attempts.size > targetSize) {
       let oldestKey: string | undefined;
       let oldestSeen = Infinity;
       for (const [key, times] of attempts) {
@@ -214,7 +220,8 @@ export function recordAuthFailure(username: string): void {
   // victim's throttle simply by flooding the map with newer one-off failures.
   // Only non-throttled idle entries (the flood's count-of-1 buckets) are
   // sacrificed — the cost of a memory bound.
-  while (authFailures.size > MAX_TRACKED_IPS) {
+  const targetSize = backstopTargetSize();
+  while (authFailures.size > targetSize) {
     let oldestKey: string | undefined;
     let oldestSeen = Infinity;
     for (const [k, times] of authFailures) {
