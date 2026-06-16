@@ -11,6 +11,53 @@
 //
 // Matching folds common leet/confusable substitutions so "n1gg3r"-style evasion
 // still resolves to the underlying word.
+//
+// The hard tier has TWO layers, OR'd together:
+//   1. An always-on baseline built on `obscenity` — the same library `auth.ts`
+//      uses to screen names. Its English dataset (which lives in the dependency,
+//      NOT in this repo) folds leet/confusables/spacing AND affixes, so leetspeak,
+//      diacritics, and suffixed forms all resolve to the underlying slur, while
+//      still passing the Scunthorpe trap ("despicable", "classy pass"). This
+//      layer is non-disableable.
+//   2. The admin-editable hard list, matched per-token (see `tokenMatchesHard`).
+//      It covers slurs the baseline dataset misses and any custom terms an
+//      operator adds. Whole-token matching keeps it from snagging innocent words.
+// This OR layering mirrors `offensiveName` in auth.ts.
+//
+// NOTE: this is open-source. The repo intentionally ships NO plaintext slur
+// list — the actual offensive wordlist is the `obscenity` dependency's dataset.
+// Operators seed extra hard words (the few the dataset omits) privately via the
+// CHAT_FILTER_HARD_LIST / CHAT_FILTER_HARD_FILE env vars (see chat_filter_db.ts)
+// and manage them thereafter from the admin dashboard.
+
+import { RegExpMatcher, englishDataset, englishRecommendedTransformers } from 'obscenity';
+
+// Built once at module load (the constructor compiles the dataset to a regex).
+const builtinSlurMatcher = new RegExpMatcher({
+  ...englishDataset.build(),
+  ...englishRecommendedTransformers,
+});
+
+/**
+ * The canonical built-in slur `text` hits via the always-on `obscenity`
+ * baseline, or null. Returns the dataset's canonical spelling for the matched
+ * term (so an affixed/obfuscated input still logs as a stable term).
+ */
+export function findBuiltinSlur(text: string): string | null {
+  // Scan the raw text and a de-obfuscated copy: obscenity does its own folding,
+  // but it misses diacritics and a few leet glyphs that `foldConfusables` flattens.
+  return matchBuiltinSlur(text) ?? matchBuiltinSlur(foldConfusables(text));
+}
+
+function matchBuiltinSlur(text: string): string | null {
+  const matches = builtinSlurMatcher.getAllMatches(text, true);
+  if (matches.length === 0) return null;
+  const meta = englishDataset.getPayloadWithPhraseMetadata(matches[0]);
+  return (
+    meta.phraseMetadata?.originalWord ??
+    text.slice(matches[0].startIndex, matches[0].endIndex + 1).toLowerCase()
+  );
+}
 
 const CONFUSABLE_CHARS: Record<string, string> = {
   '0': 'o',
@@ -18,25 +65,45 @@ const CONFUSABLE_CHARS: Record<string, string> = {
   '3': 'e',
   '4': 'a',
   '5': 's',
+  '6': 'g',
   '7': 't',
   '8': 'b',
+  '9': 'g',
   '!': 'i',
   '|': 'i',
   '@': 'a',
   '$': 's',
   '+': 't',
+  '©': 'c',
+  '€': 'e',
+  '£': 'l',
 };
 
-// Tokens we scan: letters, digits and the leet punctuation that folds into
-// letters. Everything else is a separator.
-const TOKEN_RE = /[A-Za-z0-9_@$!|+]+/g;
+const CONFUSABLE_RE = /[0-9!|@$+©€£]/g;
 
-/** Fold a token to its comparable core: lowercase, de-leet, strip non-letters. */
-export function normalizeWord(term: string): string {
-  return term
+// Tokens we scan: any Unicode letter/mark/number plus the leet punctuation that
+// folds into letters. Unicode-aware so accented/styled glyphs (î, ⓖ, 𝓰, ｇ) stay
+// inside one token rather than splitting an evasion apart. Else = separator.
+const TOKEN_RE = /[\p{L}\p{M}\p{N}_@$!|+©€£]+/gu;
+
+/**
+ * Fold text toward its comparable ASCII core *without* dropping separators:
+ * Unicode-decompose (NFKD — so fullwidth ｇ, circled ⓖ, math 𝓰, and ligatures
+ * resolve), strip combining diacritics (î→i, é→e), lowercase, then map
+ * leet/confusable glyphs to letters. This is what the obscenity baseline scans
+ * a copy of, so "nî99er" / "ni66@" de-obfuscate to the underlying slur.
+ */
+export function foldConfusables(text: string): string {
+  return text
+    .normalize('NFKD')
+    .replace(/[̀-ͯ]/g, '')
     .toLowerCase()
-    .replace(/[0134578!|@$+]/g, (ch) => CONFUSABLE_CHARS[ch] ?? ch)
-    .replace(/[^a-z]/g, '');
+    .replace(CONFUSABLE_RE, (ch) => CONFUSABLE_CHARS[ch] ?? ch);
+}
+
+/** Fold a token to its comparable core: de-leet/deburr, then strip non-letters. */
+export function normalizeWord(term: string): string {
+  return foldConfusables(term).replace(/[^a-z]/g, '');
 }
 
 /** Split a raw blob (newline / comma / space separated) into normalized terms. */
@@ -74,20 +141,24 @@ function tokenMatchesHard(normalizedToken: string, terms: readonly string[]): bo
   return terms.some((term) => normalizedToken === term || singular === term);
 }
 
-/** First hard term a message hits, or null. The match drives enforcement. */
+/**
+ * First hard term a message hits, or null. The match drives enforcement.
+ * Checks the admin-editable list first, then falls through to the always-on
+ * `obscenity` baseline — so an empty or incomplete hard list never opens a hole.
+ */
 export function findHardWord(text: string, terms: readonly string[]): string | null {
-  if (terms.length === 0) return null;
   const tokens = text.match(TOKEN_RE);
-  if (!tokens) return null;
-  for (const tok of tokens) {
-    const normalized = normalizeWord(tok);
-    if (tokenMatchesHard(normalized, terms)) {
-      // Return the configured term that fired, for the incident log.
-      const singular = normalized.endsWith('s') ? normalized.slice(0, -1) : normalized;
-      return terms.find((term) => normalized === term || singular === term) ?? normalized;
+  if (tokens) {
+    for (const tok of tokens) {
+      const normalized = normalizeWord(tok);
+      if (tokenMatchesHard(normalized, terms)) {
+        // Return the configured term that fired, for the incident log.
+        const singular = normalized.endsWith('s') ? normalized.slice(0, -1) : normalized;
+        return terms.find((term) => normalized === term || singular === term) ?? normalized;
+      }
     }
   }
-  return null;
+  return findBuiltinSlur(text);
 }
 
 // -------------------------------------------------------------------------
@@ -170,18 +241,13 @@ export const DEFAULT_SOFT_WORDS: string[] = [
   'whore',
 ];
 
-// Slurs. These have to be stored in their real form to actually match input;
-// whole-token matching (above) keeps them from snagging innocent words.
-export const DEFAULT_HARD_WORDS: string[] = [
-  'nigger',
-  'nigga',
-  'faggot',
-  'chink',
-  'kike',
-  'tranny',
-  'gook',
-  'wetback',
-];
+// Slur seed list — intentionally EMPTY in this open-source repo. The always-on
+// `obscenity` baseline (its dataset ships in the dependency) enforces slurs out
+// of the box. The handful of slurs that dataset omits are seeded privately by
+// the operator via CHAT_FILTER_HARD_LIST / CHAT_FILTER_HARD_FILE (see
+// chat_filter_db.ts), then managed from the admin dashboard. Do NOT commit
+// slurs here.
+export const DEFAULT_HARD_WORDS: string[] = [];
 
 /** A live snapshot of the filter state, loaded from the DB and cached. */
 export interface ChatFilterState {
