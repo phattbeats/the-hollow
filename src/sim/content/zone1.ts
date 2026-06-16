@@ -111,6 +111,7 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
     hpBase: 30, hpPerLevel: 15, dmgBase: 4, dmgPerLevel: 1.7, attackSpeed: 1.8,
     armorPerLevel: 8, moveSpeed: 8, aggroRadius: 10,
     venom: { chance: 0.35, perTick: 2, interval: 2, duration: 10, name: 'Spider Venom', school: 'nature' },
+    ensnare: { chance: 0.25, duration: 3, name: 'Sticky Web', school: 'nature' },
     loot: [
       { copper: 14, chance: 1 },
       { itemId: 'webwood_silk', chance: 0.55, questId: 'q_spiders' },

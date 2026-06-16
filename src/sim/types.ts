@@ -199,6 +199,11 @@ export interface MobTemplate {
   // more physical damage from everyone until it expires. Rides the existing
   // sunder aura; no new aura kind.
   corrode?: { chance: number; armor: number; maxStacks: number; duration: number; name: string; school?: Aura['school'] };
+  // On-hit web mechanic: a landed melee swing has `chance` to ensnare the struck
+  // player in place — a `root` aura for `duration`s (naga/spider snares). Rides the
+  // existing root aura + crowd-control DR; no new aura kind. Players only; rooting a
+  // fellow mob is meaningless and would let a friendly pet trivially lock enemies.
+  ensnare?: { chance: number; duration: number; name: string; school?: Aura['school'] };
   // Pet mechanic: this creature is a ranged caster (warlock Imp) — instead of
   // closing to melee, it stays at `range` and hurls bolts of `school` damage.
   // updatePet reads this; the bolt damage comes from the mob's weapon range.
