@@ -25,6 +25,8 @@ import { buildWater, WaterView } from './water';
 import { buildClouds, buildSky, SkyView } from './sky';
 import { buildFoliage, FoliageView } from './foliage';
 import { shouldRenderStealthGhost } from './stealth';
+import { t } from '../ui/i18n';
+import { tEntity } from '../ui/entity_i18n';
 import { raidMarkerDataUrl } from '../ui/icons';
 import { isProjectedNameplateAnchorVisible, nameplateScreenTransform } from './nameplate_projection';
 import { stepCameraOcclusion, type CameraOcclusionState } from './camera_collision';
@@ -155,6 +157,31 @@ function summarizeMs(values: number[]): { count: number; avg: number; p95: numbe
     p95: roundMs(sorted[p95Idx]),
     max: roundMs(sorted[sorted.length - 1]),
   };
+}
+
+function mobDisplayName(mobId: string): string {
+  return tEntity({ kind: 'mob', id: mobId, field: 'name' });
+}
+
+function npcDisplayName(npcId: string): string {
+  return tEntity({ kind: 'npc', id: npcId, field: 'name' });
+}
+
+function dungeonDisplayName(dungeonId: string): string {
+  return tEntity({ kind: 'dungeon', id: dungeonId, field: 'name' });
+}
+
+function objectDisplayName(entity: Entity): string {
+  if ((entity.templateId === 'dungeon_door' || entity.templateId === 'dungeon_exit') && entity.dungeonId) {
+    const dungeonName = dungeonDisplayName(entity.dungeonId);
+    return entity.templateId === 'dungeon_exit'
+      ? t('worldContent.dungeonExitName', { name: dungeonName })
+      : dungeonName;
+  }
+  // Collectible/quest ground objects carry the item id they grant; localize the
+  // nameplate through the item dictionary instead of the raw English name.
+  if (entity.objectItemId) return tEntity({ kind: 'item', id: entity.objectItemId, field: 'name' });
+  return entity.name;
 }
 
 export class Renderer {
@@ -1427,7 +1454,8 @@ export class Renderer {
 
       if (e.kind === 'object') {
         // dungeon doorways announce themselves
-        this.setNameplateStatic(v, `object|${e.name}`, e.name, '#c084ff', 'none', '', 'np-marker', '1');
+        const objName = objectDisplayName(e);
+        this.setNameplateStatic(v, `object|${objName}`, objName, '#c084ff', 'none', '', 'np-marker', '1');
       } else if (e.kind === 'player') {
         // other players: friendly blue with an hp bar
         const opacity = e.auras.some((a) => a.kind === 'stealth') ? '0.55' : '1';
@@ -1437,6 +1465,7 @@ export class Renderer {
         v.nameEl.style.display = nameDisplay;
         this.setNameplateHp(v, e);
       } else if (e.kind === 'npc') {
+        const npcName = npcDisplayName(e.templateId);
         let marker = '';
         let cls = '';
         // role-aware: '!' only at the quest's giver, '?' only at its turn-in
@@ -1450,13 +1479,14 @@ export class Renderer {
           else if (st === 'active' && quest.turnInNpcId === e.templateId && !marker) { marker = '?'; cls = 'active'; }
         }
         const markerClass = cls ? `np-marker ${cls}` : 'np-marker';
-        this.setNameplateStatic(v, `npc|${e.name}|${marker}|${markerClass}`, e.name, '#9fdc7f', 'none', marker, markerClass, '1');
+        this.setNameplateStatic(v, `npc|${npcName}|${marker}|${markerClass}`, npcName, '#9fdc7f', 'none', marker, markerClass, '1');
       } else {
         const diff = e.level - p.level;
         const template = MOBS[e.templateId];
         const elite = !!template?.elite;
         const color = e.dead ? '#999' : diff >= 3 ? '#ff4444' : diff >= 1 ? '#ffaa33' : diff >= -2 ? '#ffe97a' : diff >= -5 ? '#7fdc4f' : '#9d9d9d';
-        const name = e.dead ? `${e.name} (corpse)` : `[${e.level}${elite ? '+' : ''}] ${e.name}`;
+        const mobName = mobDisplayName(e.templateId);
+        const name = e.dead ? t('worldContent.corpseName', { name: mobName }) : `[${e.level}${elite ? '+' : ''}] ${mobName}`;
         const hpDisplay = e.dead ? 'none' : '';
         const marker = e.lootable ? '$' : elite && !e.dead ? '◆' : '';
         this.setNameplateStatic(v, `mob|${name}|${color}|${hpDisplay}|${marker}`, name, color, hpDisplay, marker, 'np-marker loot', '1');

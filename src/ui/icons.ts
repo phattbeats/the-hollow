@@ -920,6 +920,7 @@ function r(bg: BgName, pal: PaletteName, prims: (PrimitiveName | Placement)[], f
 }
 
 const ABILITY_RECIPES: Record<string, IconRecipe> = {
+  attack: r('steel', 'steel', ['sword'], ['motion']),
   // warrior
   heroic_strike: r('fury', 'steel', ['sword'], ['glow']),
   battle_shout: r('fury', 'gold', ['fist'], ['arcs']),
@@ -1349,7 +1350,7 @@ function compose(recipe: IconRecipe, seedKey: string, size: number): HTMLCanvasE
 // Public API
 // ---------------------------------------------------------------------------
 
-// classic WoW item-name quality colors (shared by tooltips, bags, rewards)
+// classic-MMO item-name quality colors (shared by tooltips, bags, rewards)
 export const QUALITY_COLOR: Record<string, string> = {
   poor: '#9d9d9d',
   common: '#ffffff',

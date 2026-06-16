@@ -79,7 +79,7 @@ export interface ClientSession {
   // delivery. Loaded from the DB on join, kept in sync by social commands.
   blockedIds: Set<number>;
   blockListLoaded: boolean;
-  // name of the last player to whisper this session, for WoW's /r reply
+  // name of the last player to whisper this session, for the /r reply
   lastWhisperFrom: string | null;
   // last explicit channel this player sent to; plain text follows it.
   rememberedChat: RememberedChat;
@@ -515,7 +515,7 @@ export class GameServer {
       // at login; sending is still gated server-side regardless.
       chatMutedUntil: session.chatMutedUntil ?? null,
     });
-    this.broadcastSystem(`${name} has entered World of Claudecraft.`);
+    this.broadcastSystem(`${name} has entered World of ClaudeCraft.`);
     void this.initSocial(session);
     return session;
   }
@@ -837,7 +837,7 @@ export class GameServer {
           }).catch((err) => console.error(`${channel} chat failed:`, err));
           break;
         }
-        // WoW /r: reply to whoever last whispered you
+        // /r: reply to whoever last whispered you
         const rm = /^\/(?:r|reply)\s+([\s\S]+)$/i.exec(text);
         if (rm) {
           if (!session.lastWhisperFrom) {
