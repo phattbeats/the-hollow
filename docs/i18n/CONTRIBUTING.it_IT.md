@@ -1,6 +1,6 @@
 <div align="center">
 
-[English](CONTRIBUTING.md) · [Español](CONTRIBUTING.es.md) · [Español (España)](CONTRIBUTING.es_ES.md) · [Français](CONTRIBUTING.fr_FR.md) · [Français (Canada)](CONTRIBUTING.fr_CA.md) · **Italiano** · [Deutsch](CONTRIBUTING.de_DE.md) · [简体中文](CONTRIBUTING.zh_CN.md) · [繁體中文](CONTRIBUTING.zh_TW.md) · [한국어](CONTRIBUTING.ko_KR.md) · [日本語](CONTRIBUTING.ja_JP.md) · [Português (Brasil)](CONTRIBUTING.pt_BR.md) · [Русский](CONTRIBUTING.ru_RU.md)
+[English](../../CONTRIBUTING.md) · [Español](CONTRIBUTING.es.md) · [Español (España)](CONTRIBUTING.es_ES.md) · [Français](CONTRIBUTING.fr_FR.md) · [Français (Canada)](CONTRIBUTING.fr_CA.md) · **Italiano** · [Deutsch](CONTRIBUTING.de_DE.md) · [简体中文](CONTRIBUTING.zh_CN.md) · [繁體中文](CONTRIBUTING.zh_TW.md) · [한국어](CONTRIBUTING.ko_KR.md) · [日本語](CONTRIBUTING.ja_JP.md) · [Português (Brasil)](CONTRIBUTING.pt_BR.md) · [Русский](CONTRIBUTING.ru_RU.md)
 
 </div>
 
@@ -15,7 +15,7 @@ Questa guida ti aiuterà a configurare l'ambiente e a rendere semplice il tuo pr
 contributo. Non devi essere un esperto. Se qualcosa non è chiaro, chiedi su
 [Discord](https://discord.gg/GjhnUsBtw) e qualcuno sarà felice di darti una mano.
 
-Partecipando, accetti di seguire il nostro [Codice di Condotta](CODE_OF_CONDUCT.md).
+Partecipando, accetti di seguire il nostro [Codice di Condotta](../../CODE_OF_CONDUCT.md).
 
 ## Modi per contribuire
 
@@ -63,7 +63,7 @@ npm run server       # compila ed esegue il server di gioco autoritativo su :878
 npm run dev          # in un altro terminale; il client fa da proxy verso il server
 ```
 
-Il [README](README.md) contiene la guida completa per ospitare, sviluppare e
+Il [README](../../README.md) contiene la guida completa per ospitare, sviluppare e
 giocare, e i file `CLAUDE.md` presenti in tutto il repository documentano le
 convenzioni di ogni area.
 
@@ -81,7 +81,7 @@ convenzioni di ogni area.
 ### Cose da tenere a mente
 
 Queste sono le regole portanti del codice. Tutti i dettagli si trovano nel file
-[`CLAUDE.md`](CLAUDE.md) principale, ma in breve:
+[`CLAUDE.md`](../../CLAUDE.md) principale, ma in breve:
 
 - **Il nucleo di simulazione (`src/sim/`) è la fonte di verità**, e resta puro,
   senza import di DOM, browser o Three.js, così che lo stesso identico codice giri
@@ -114,12 +114,12 @@ Poi prova la tua modifica sia su desktop sia su mobile, includendo un viewport d
 dimensioni di un telefono in verticale e in orizzontale, se tocca qualcosa che i
 giocatori vedono. Le aree di tocco devono restare almeno di 40x40px e gli input dei
 moduli almeno a 16px di carattere. Gli standard dell'interfaccia sono documentati in
-[`src/ui/CLAUDE.md`](src/ui/CLAUDE.md).
+[`src/ui/CLAUDE.md`](../../src/ui/CLAUDE.md).
 
 ## Aprire la pull request
 
 Pubblica il tuo branch e apri una PR verso `main`. Il
-[modello di pull request](.github/PULL_REQUEST_TEMPLATE.md) ti guiderà attraverso
+[modello di pull request](../../.github/PULL_REQUEST_TEMPLATE.md) ti guiderà attraverso
 una breve checklist. Per favore compilala:
 
 - Descrivi **cosa** è cambiato e **perché**.
@@ -149,7 +149,7 @@ che il gioco cresce. Ogni stringa visibile ai giocatori è tradotta in ogni ling
 supportata.
 
 - Tutto il testo rivolto agli utenti è una chiave `t()` definita in
-  [`src/ui/i18n.ts`](src/ui/i18n.ts). Aggiungi prima una nuova stringa alla lingua
+  [`src/ui/i18n.ts`](../../src/ui/i18n.ts). Aggiungi prima una nuova stringa alla lingua
   `en`, poi fornisci una traduzione reale in ogni altra lingua presente in
   `supportedLanguages`. Niente segnaposto in inglese, e niente `// TODO`.
 - Numeri, denaro, date, unità e percentuali passano per i formatter
@@ -171,7 +171,7 @@ gran lunga aiutarti a finire piuttosto che vederti rinunciare.
 Vuoi migliorare una lingua, o aiutare a portare il gioco in una nuova? Non devi
 scrivere alcun codice di gioco per farlo:
 
-1. Apri [`src/ui/i18n.ts`](src/ui/i18n.ts) e trova la lingua su cui vuoi lavorare.
+1. Apri [`src/ui/i18n.ts`](../../src/ui/i18n.ts) e trova la lingua su cui vuoi lavorare.
    Ogni oggetto lingua elenca le stesse chiavi di `en`.
 2. Migliora le traduzioni esistenti, o completa quelle che suonano poco naturali.
 3. Esegui `npx tsc --noEmit` per confermare che non manchi nulla, poi apri una PR.
@@ -204,7 +204,7 @@ piccola, e i nuovi contributori sono sempre benvenuti.
 ## Licenza
 
 Contribuendo, accetti che i tuoi contributi siano rilasciati sotto la
-[Licenza MIT](LICENSE) del progetto, la stessa licenza che copre il progetto.
+[Licenza MIT](../../LICENSE) del progetto, la stessa licenza che copre il progetto.
 
 ---
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-[English](CONTRIBUTING.md) · [Español](CONTRIBUTING.es.md) · [Español (España)](CONTRIBUTING.es_ES.md) · [Français](CONTRIBUTING.fr_FR.md) · [Français (Canada)](CONTRIBUTING.fr_CA.md) · [Italiano](CONTRIBUTING.it_IT.md) · **Deutsch** · [简体中文](CONTRIBUTING.zh_CN.md) · [繁體中文](CONTRIBUTING.zh_TW.md) · [한국어](CONTRIBUTING.ko_KR.md) · [日本語](CONTRIBUTING.ja_JP.md) · [Português (Brasil)](CONTRIBUTING.pt_BR.md) · [Русский](CONTRIBUTING.ru_RU.md)
+[English](../../CONTRIBUTING.md) · [Español](CONTRIBUTING.es.md) · [Español (España)](CONTRIBUTING.es_ES.md) · [Français](CONTRIBUTING.fr_FR.md) · [Français (Canada)](CONTRIBUTING.fr_CA.md) · [Italiano](CONTRIBUTING.it_IT.md) · **Deutsch** · [简体中文](CONTRIBUTING.zh_CN.md) · [繁體中文](CONTRIBUTING.zh_TW.md) · [한국어](CONTRIBUTING.ko_KR.md) · [日本語](CONTRIBUTING.ja_JP.md) · [Português (Brasil)](CONTRIBUTING.pt_BR.md) · [Русский](CONTRIBUTING.ru_RU.md)
 
 </div>
 
@@ -17,7 +17,7 @@ ganz unkompliziert. Du musst kein Profi sein. Falls etwas unklar ist, frag einfa
 auf [Discord](https://discord.gg/GjhnUsBtw) nach, und jemand hilft dir gerne weiter.
 
 Mit deiner Teilnahme erklärst du dich damit einverstanden, unseren
-[Verhaltenskodex](CODE_OF_CONDUCT.md) einzuhalten.
+[Verhaltenskodex](../../CODE_OF_CONDUCT.md) einzuhalten.
 
 ## Möglichkeiten mitzuwirken
 
@@ -67,7 +67,7 @@ npm run server       # baue und starte den autoritativen Spielserver auf :8787
 npm run dev          # in einem anderen Terminal; der Client leitet zum Server weiter
 ```
 
-Die [README](README.md) enthält den vollständigen Leitfaden zum Hosten,
+Die [README](../../README.md) enthält den vollständigen Leitfaden zum Hosten,
 Entwickeln und Spielen, und die `CLAUDE.md`-Dateien im gesamten Repo dokumentieren
 die Konventionen für jeden Bereich.
 
@@ -85,7 +85,7 @@ die Konventionen für jeden Bereich.
 ### Worauf du achten solltest
 
 Dies sind die tragenden Regeln der Codebasis. Alle Details findest du in der
-[`CLAUDE.md`](CLAUDE.md) im Stammverzeichnis, aber kurz gefasst:
+[`CLAUDE.md`](../../CLAUDE.md) im Stammverzeichnis, aber kurz gefasst:
 
 - **Der Simulationskern (`src/sim/`) ist die Quelle der Wahrheit**, und er bleibt
   rein, ohne DOM-, Browser- oder Three.js-Importe, sodass exakt derselbe Code
@@ -120,13 +120,13 @@ Teste deine Änderung anschließend sowohl auf dem Desktop als auch auf dem Hand
 einschließlich eines telefongroßen Viewports im Hoch- und Querformat, falls sie
 etwas berührt, das Spieler zu sehen bekommen. Touch-Ziele sollten mindestens
 40x40px groß bleiben und Formularfelder eine Schriftgröße von mindestens 16px
-haben. Die UI-Standards sind in [`src/ui/CLAUDE.md`](src/ui/CLAUDE.md)
+haben. Die UI-Standards sind in [`src/ui/CLAUDE.md`](../../src/ui/CLAUDE.md)
 dokumentiert.
 
 ## Den Pull Request eröffnen
 
 Pushe deinen Branch und eröffne einen PR gegen `main`. Die
-[Pull-Request-Vorlage](.github/PULL_REQUEST_TEMPLATE.md) führt dich durch eine
+[Pull-Request-Vorlage](../../.github/PULL_REQUEST_TEMPLATE.md) führt dich durch eine
 kurze Checkliste. Bitte fülle sie aus:
 
 - Beschreibe, **was** sich geändert hat und **warum**.
@@ -157,7 +157,7 @@ das Spiel wächst. Jede spielersichtbare Zeichenkette wird in jede unterstützte
 Sprache übersetzt.
 
 - Sämtlicher für Nutzer sichtbarer Text ist ein `t()`-Key, der in
-  [`src/ui/i18n.ts`](src/ui/i18n.ts) definiert ist. Füge eine neue Zeichenkette
+  [`src/ui/i18n.ts`](../../src/ui/i18n.ts) definiert ist. Füge eine neue Zeichenkette
   zuerst zur Sprache `en` hinzu und liefere dann eine echte Übersetzung in jede
   andere Sprache in `supportedLanguages`. Keine englischen Platzhalter und kein
   `// TODO`.
@@ -181,7 +181,7 @@ dich zurückhältst.
 Möchtest du eine Sprache verbessern oder helfen, das Spiel in eine neue Sprache zu
 bringen? Dafür musst du keinen Spielcode schreiben:
 
-1. Öffne [`src/ui/i18n.ts`](src/ui/i18n.ts) und suche die Sprache, an der du
+1. Öffne [`src/ui/i18n.ts`](../../src/ui/i18n.ts) und suche die Sprache, an der du
    arbeiten möchtest. Jedes Sprachobjekt führt dieselben Keys wie `en` auf.
 2. Verbessere bestehende Übersetzungen oder überarbeite alle, die sich holprig
    lesen.
@@ -216,7 +216,7 @@ neue Mitwirkende sind immer willkommen.
 ## Lizenz
 
 Mit deinem Beitrag erklärst du dich damit einverstanden, dass deine Beiträge unter
-der [MIT License](LICENSE) des Projekts lizenziert werden, derselben Lizenz, die
+der [MIT License](../../LICENSE) des Projekts lizenziert werden, derselben Lizenz, die
 auch das Projekt abdeckt.
 
 ---

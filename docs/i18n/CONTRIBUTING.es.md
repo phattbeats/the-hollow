@@ -1,6 +1,6 @@
 <div align="center">
 
-[English](CONTRIBUTING.md) · **Español** · [Español (España)](CONTRIBUTING.es_ES.md) · [Français](CONTRIBUTING.fr_FR.md) · [Français (Canada)](CONTRIBUTING.fr_CA.md) · [Italiano](CONTRIBUTING.it_IT.md) · [Deutsch](CONTRIBUTING.de_DE.md) · [简体中文](CONTRIBUTING.zh_CN.md) · [繁體中文](CONTRIBUTING.zh_TW.md) · [한국어](CONTRIBUTING.ko_KR.md) · [日本語](CONTRIBUTING.ja_JP.md) · [Português (Brasil)](CONTRIBUTING.pt_BR.md) · [Русский](CONTRIBUTING.ru_RU.md)
+[English](../../CONTRIBUTING.md) · **Español** · [Español (España)](CONTRIBUTING.es_ES.md) · [Français](CONTRIBUTING.fr_FR.md) · [Français (Canada)](CONTRIBUTING.fr_CA.md) · [Italiano](CONTRIBUTING.it_IT.md) · [Deutsch](CONTRIBUTING.de_DE.md) · [简体中文](CONTRIBUTING.zh_CN.md) · [繁體中文](CONTRIBUTING.zh_TW.md) · [한국어](CONTRIBUTING.ko_KR.md) · [日本語](CONTRIBUTING.ja_JP.md) · [Português (Brasil)](CONTRIBUTING.pt_BR.md) · [Русский](CONTRIBUTING.ru_RU.md)
 
 </div>
 
@@ -16,7 +16,7 @@ salga sin contratiempos. No necesitas ser una persona experta. Si algo no queda
 claro, pregunta en [Discord](https://discord.gg/GjhnUsBtw) y alguien estará feliz
 de ayudarte.
 
-Al participar, aceptas seguir nuestro [Código de Conducta](CODE_OF_CONDUCT.md).
+Al participar, aceptas seguir nuestro [Código de Conducta](../../CODE_OF_CONDUCT.md).
 
 ## Formas de contribuir
 
@@ -63,7 +63,7 @@ npm run server       # compila y ejecuta el servidor de juego autoritativo en :8
 npm run dev          # en otra terminal; el cliente hace proxy hacia el servidor
 ```
 
-El [README](README.md) tiene la guía completa para alojar, desarrollar y jugar, y
+El [README](../../README.md) tiene la guía completa para alojar, desarrollar y jugar, y
 los archivos `CLAUDE.md` repartidos por el repo documentan las convenciones de
 cada área.
 
@@ -80,7 +80,7 @@ cada área.
 ### Cosas para tener en cuenta
 
 Estas son las reglas fundamentales del código. El detalle completo vive en el
-[`CLAUDE.md`](CLAUDE.md) raíz, pero la versión corta es:
+[`CLAUDE.md`](../../CLAUDE.md) raíz, pero la versión corta es:
 
 - **El núcleo de simulación (`src/sim/`) es la fuente de verdad**, y se mantiene
   puro, sin imports de DOM, navegador ni Three.js, de modo que el mismo código
@@ -114,12 +114,12 @@ Luego prueba tu cambio tanto en escritorio como en móvil, incluyendo un viewpor
 del tamaño de un teléfono en vertical y horizontal, si toca algo que los jugadores
 ven. Los objetivos táctiles deben mantenerse en al menos 40x40px y los campos de
 formulario en al menos 16px de fuente. Los estándares de la interfaz están
-documentados en [`src/ui/CLAUDE.md`](src/ui/CLAUDE.md).
+documentados en [`src/ui/CLAUDE.md`](../../src/ui/CLAUDE.md).
 
 ## Abrir el pull request
 
 Sube tu rama y abre un PR contra `main`. La
-[plantilla de pull request](.github/PULL_REQUEST_TEMPLATE.md) te guiará por una
+[plantilla de pull request](../../.github/PULL_REQUEST_TEMPLATE.md) te guiará por una
 lista de verificación corta. Por favor, complétala:
 
 - Describe **qué** cambió y **por qué**.
@@ -148,7 +148,7 @@ el juego crece. Cada cadena visible para los jugadores se traduce a cada idioma
 admitido.
 
 - Todo el texto de cara al usuario es una clave `t()` definida en
-  [`src/ui/i18n.ts`](src/ui/i18n.ts). Agrega una cadena nueva al idioma `en`
+  [`src/ui/i18n.ts`](../../src/ui/i18n.ts). Agrega una cadena nueva al idioma `en`
   primero, y luego provee una traducción real en cada uno de los demás idiomas de
   `supportedLanguages`. Nada de marcadores de posición en inglés, ni de
   `// TODO`.
@@ -171,7 +171,7 @@ más ayudarte a terminar que verte contenerte.
 ¿Quieres mejorar un idioma o ayudar a llevar el juego a uno nuevo? No necesitas
 escribir nada de código de juego para hacerlo:
 
-1. Abre [`src/ui/i18n.ts`](src/ui/i18n.ts) y busca el idioma en el que quieres
+1. Abre [`src/ui/i18n.ts`](../../src/ui/i18n.ts) y busca el idioma en el que quieres
    trabajar. Cada objeto de idioma lista las mismas claves que `en`.
 2. Mejora las traducciones existentes, o completa cualquiera que se lea forzada.
 3. Ejecuta `npx tsc --noEmit` para confirmar que no falte nada, y luego abre un PR.
@@ -204,7 +204,7 @@ bienvenidas.
 ## Licencia
 
 Al contribuir, aceptas que tus contribuciones queden bajo la
-[Licencia MIT](LICENSE) del proyecto, la misma licencia que cubre el proyecto.
+[Licencia MIT](../../LICENSE) del proyecto, la misma licencia que cubre el proyecto.
 
 ---
 

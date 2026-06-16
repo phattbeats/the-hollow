@@ -1,6 +1,6 @@
 <div align="center">
 
-[English](CONTRIBUTING.md) · [Español](CONTRIBUTING.es.md) · [Español (España)](CONTRIBUTING.es_ES.md) · [Français](CONTRIBUTING.fr_FR.md) · [Français (Canada)](CONTRIBUTING.fr_CA.md) · [Italiano](CONTRIBUTING.it_IT.md) · [Deutsch](CONTRIBUTING.de_DE.md) · [简体中文](CONTRIBUTING.zh_CN.md) · [繁體中文](CONTRIBUTING.zh_TW.md) · [한국어](CONTRIBUTING.ko_KR.md) · [日本語](CONTRIBUTING.ja_JP.md) · **Português (Brasil)** · [Русский](CONTRIBUTING.ru_RU.md)
+[English](../../CONTRIBUTING.md) · [Español](CONTRIBUTING.es.md) · [Español (España)](CONTRIBUTING.es_ES.md) · [Français](CONTRIBUTING.fr_FR.md) · [Français (Canada)](CONTRIBUTING.fr_CA.md) · [Italiano](CONTRIBUTING.it_IT.md) · [Deutsch](CONTRIBUTING.de_DE.md) · [简体中文](CONTRIBUTING.zh_CN.md) · [繁體中文](CONTRIBUTING.zh_TW.md) · [한국어](CONTRIBUTING.ko_KR.md) · [日本語](CONTRIBUTING.ja_JP.md) · **Português (Brasil)** · [Русский](CONTRIBUTING.ru_RU.md)
 
 </div>
 
@@ -17,7 +17,7 @@ algo tranquilo. Você não precisa ser especialista. Se algo não estiver claro,
 pergunte no [Discord](https://discord.gg/GjhnUsBtw) e alguém terá o maior prazer
 em ajudar.
 
-Ao participar, você concorda em seguir nosso [Código de Conduta](CODE_OF_CONDUCT.md).
+Ao participar, você concorda em seguir nosso [Código de Conduta](../../CODE_OF_CONDUCT.md).
 
 ## Formas de contribuir
 
@@ -65,7 +65,7 @@ npm run server       # compila e roda o servidor autoritativo do jogo na :8787
 npm run dev          # em outro terminal; o cliente faz proxy para o servidor
 ```
 
-O [README](README.md) traz o guia completo de hospedar, desenvolver e jogar, e os
+O [README](../../README.md) traz o guia completo de hospedar, desenvolver e jogar, e os
 arquivos `CLAUDE.md` espalhados pelo repositório documentam as convenções de cada
 área.
 
@@ -82,7 +82,7 @@ arquivos `CLAUDE.md` espalhados pelo repositório documentam as convenções de 
 ### Pontos para ter em mente
 
 Estas são as regras estruturais da base de código. O detalhe completo está no
-[`CLAUDE.md`](CLAUDE.md) da raiz, mas a versão curta é:
+[`CLAUDE.md`](../../CLAUDE.md) da raiz, mas a versão curta é:
 
 - **O núcleo da simulação (`src/sim/`) é a fonte da verdade**, e ele permanece
   puro, sem imports de DOM, navegador ou Three.js, para que exatamente o mesmo
@@ -116,12 +116,12 @@ Depois, teste sua alteração tanto no desktop quanto no mobile, incluindo uma
 viewport do tamanho de um celular em retrato e paisagem, se ela mexer em qualquer
 coisa que os jogadores vejam. Os alvos de toque devem ter pelo menos 40x40px e as
 entradas de formulário pelo menos 16px de fonte. Os padrões de UI estão
-documentados em [`src/ui/CLAUDE.md`](src/ui/CLAUDE.md).
+documentados em [`src/ui/CLAUDE.md`](../../src/ui/CLAUDE.md).
 
 ## Abrindo o pull request
 
 Suba o seu branch e abra um PR contra o `main`. O
-[modelo de pull request](.github/PULL_REQUEST_TEMPLATE.md) vai te guiar por uma
+[modelo de pull request](../../.github/PULL_REQUEST_TEMPLATE.md) vai te guiar por uma
 checklist curta. Por favor, preencha-a:
 
 - Descreva **o que** mudou e **por quê**.
@@ -151,7 +151,7 @@ assim conforme o jogo cresce. Cada string visível ao jogador é traduzida para
 todos os locales suportados.
 
 - Todo texto voltado ao usuário é uma chave `t()` definida em
-  [`src/ui/i18n.ts`](src/ui/i18n.ts). Adicione uma nova string ao locale `en`
+  [`src/ui/i18n.ts`](../../src/ui/i18n.ts). Adicione uma nova string ao locale `en`
   primeiro e, depois, forneça uma tradução de verdade em todos os outros locales
   em `supportedLanguages`. Nada de placeholders em inglês, e nada de `// TODO`.
 - Números, dinheiro, datas, unidades e porcentagens passam pelos formatadores
@@ -173,7 +173,7 @@ muito mais te ajudar a terminar do que ver você se segurar.
 Quer melhorar um idioma ou ajudar a levar o jogo para um novo? Você não precisa
 escrever nenhum código de jogo para isso:
 
-1. Abra [`src/ui/i18n.ts`](src/ui/i18n.ts) e encontre o locale em que você quer
+1. Abra [`src/ui/i18n.ts`](../../src/ui/i18n.ts) e encontre o locale em que você quer
    trabalhar. Cada objeto de locale lista as mesmas chaves que o `en`.
 2. Melhore as traduções existentes ou ajuste as que soam estranhas.
 3. Rode `npx tsc --noEmit` para confirmar que nada está faltando e depois abra um
@@ -205,7 +205,7 @@ demais, e novos contribuidores são sempre bem-vindos.
 ## Licença
 
 Ao contribuir, você concorda que suas contribuições serão licenciadas sob a
-[Licença MIT](LICENSE) do projeto, a mesma licença que cobre o projeto.
+[Licença MIT](../../LICENSE) do projeto, a mesma licença que cobre o projeto.
 
 ---
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-[English](CONTRIBUTING.md) · [Español](CONTRIBUTING.es.md) · [Español (España)](CONTRIBUTING.es_ES.md) · **Français** · [Français (Canada)](CONTRIBUTING.fr_CA.md) · [Italiano](CONTRIBUTING.it_IT.md) · [Deutsch](CONTRIBUTING.de_DE.md) · [简体中文](CONTRIBUTING.zh_CN.md) · [繁體中文](CONTRIBUTING.zh_TW.md) · [한국어](CONTRIBUTING.ko_KR.md) · [日本語](CONTRIBUTING.ja_JP.md) · [Português (Brasil)](CONTRIBUTING.pt_BR.md) · [Русский](CONTRIBUTING.ru_RU.md)
+[English](../../CONTRIBUTING.md) · [Español](CONTRIBUTING.es.md) · [Español (España)](CONTRIBUTING.es_ES.md) · **Français** · [Français (Canada)](CONTRIBUTING.fr_CA.md) · [Italiano](CONTRIBUTING.it_IT.md) · [Deutsch](CONTRIBUTING.de_DE.md) · [简体中文](CONTRIBUTING.zh_CN.md) · [繁體中文](CONTRIBUTING.zh_TW.md) · [한국어](CONTRIBUTING.ko_KR.md) · [日本語](CONTRIBUTING.ja_JP.md) · [Português (Brasil)](CONTRIBUTING.pt_BR.md) · [Русский](CONTRIBUTING.ru_RU.md)
 
 </div>
 
@@ -16,7 +16,7 @@ votre première contribution. Pas besoin d'être un expert. Si quelque chose n'e
 clair, demandez sur [Discord](https://discord.gg/GjhnUsBtw) et quelqu'un se fera un
 plaisir de vous aider.
 
-En participant, vous acceptez de respecter notre [Code de conduite](CODE_OF_CONDUCT.md).
+En participant, vous acceptez de respecter notre [Code de conduite](../../CODE_OF_CONDUCT.md).
 
 ## Comment contribuer
 
@@ -64,7 +64,7 @@ npm run server       # compile et lance le serveur de jeu autoritaire sur :8787
 npm run dev          # dans un autre terminal ; le client passe par un proxy vers le serveur
 ```
 
-Le [README](README.md) contient le guide complet d'hébergement, de développement et
+Le [README](../../README.md) contient le guide complet d'hébergement, de développement et
 de jeu, et les fichiers `CLAUDE.md` répartis dans le dépôt documentent les
 conventions de chaque domaine.
 
@@ -81,7 +81,7 @@ conventions de chaque domaine.
 ### À garder à l'esprit
 
 Voici les règles porteuses du code. Le détail complet se trouve dans le
-[`CLAUDE.md`](CLAUDE.md) à la racine, mais en résumé :
+[`CLAUDE.md`](../../CLAUDE.md) à la racine, mais en résumé :
 
 - **Le cœur de simulation (`src/sim/`) est la source de vérité**, et il reste pur,
   sans aucun import du DOM, du navigateur ni de Three.js, afin que le même code
@@ -117,12 +117,12 @@ Ensuite, testez votre modification à la fois sur ordinateur et sur mobile, y co
 sur une fenêtre de la taille d'un téléphone en portrait et en paysage, si elle touche
 à quoi que ce soit que les joueurs voient. Les cibles tactiles doivent rester d'au
 moins 40x40px et les champs de formulaire d'au moins 16px de police. Les standards de
-l'interface sont documentés dans [`src/ui/CLAUDE.md`](src/ui/CLAUDE.md).
+l'interface sont documentés dans [`src/ui/CLAUDE.md`](../../src/ui/CLAUDE.md).
 
 ## Ouvrir la pull request
 
 Poussez votre branche et ouvrez une PR vers `main`. Le
-[modèle de pull request](.github/PULL_REQUEST_TEMPLATE.md) vous guidera à travers une
+[modèle de pull request](../../.github/PULL_REQUEST_TEMPLATE.md) vous guidera à travers une
 courte liste de vérifications. Merci de la remplir :
 
 - Décrivez **ce qui** a changé et **pourquoi**.
@@ -150,7 +150,7 @@ World of ClaudeCraft est disponible dans de nombreuses langues, et nous le gardo
 ainsi à mesure que le jeu grandit. Chaque texte visible par les joueurs est traduit
 dans chaque langue prise en charge.
 
-- Tout texte destiné à l'utilisateur est une clé `t()` définie dans [`src/ui/i18n.ts`](src/ui/i18n.ts).
+- Tout texte destiné à l'utilisateur est une clé `t()` définie dans [`src/ui/i18n.ts`](../../src/ui/i18n.ts).
   Ajoutez d'abord un nouveau texte à la langue `en`, puis fournissez une vraie
   traduction dans chacune des autres langues de `supportedLanguages`. Pas de texte
   anglais provisoire, et pas de `// TODO`.
@@ -174,7 +174,7 @@ retenir.
 Vous voulez améliorer une langue, ou aider à porter le jeu dans une nouvelle ? Pas
 besoin d'écrire la moindre ligne de code du jeu pour cela :
 
-1. Ouvrez [`src/ui/i18n.ts`](src/ui/i18n.ts) et trouvez la langue sur laquelle vous
+1. Ouvrez [`src/ui/i18n.ts`](../../src/ui/i18n.ts) et trouvez la langue sur laquelle vous
    voulez travailler. Chaque objet de langue liste les mêmes clés que `en`.
 2. Améliorez les traductions existantes, ou complétez celles qui sonnent maladroites.
 3. Lancez `npx tsc --noEmit` pour confirmer que rien ne manque, puis ouvrez une PR.
@@ -205,7 +205,7 @@ petite, et les nouveaux contributeurs sont toujours les bienvenus.
 ## Licence
 
 En contribuant, vous acceptez que vos contributions soient placées sous la
-[Licence MIT](LICENSE) du projet, la même licence qui couvre le projet.
+[Licence MIT](../../LICENSE) du projet, la même licence qui couvre le projet.
 
 ---
 
