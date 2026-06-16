@@ -2636,7 +2636,27 @@ const phase2En = {
       cameraSpeed: "Camera Speed",
       brightness: "Brightness",
       renderQuality: "Render Quality",
+      graphicsQuality: "Graphics Quality",
+      graphicsPresetAuto: "Auto",
+      graphicsPresetLow: "Low",
+      graphicsPresetMedium: "Medium",
+      graphicsPresetHigh: "High",
+      graphicsPresetUltra: "Ultra",
+      graphicsPresetAdvanced: "Advanced",
+      terrainDetail: "Terrain Detail",
+      foliageDensity: "Foliage Density",
+      effectsQuality: "Effects & Lighting",
+      shadowQuality: "Shadow Quality",
+      terrainLow: "Low",
+      terrainHigh: "High",
+      touchOpacity: "Touch Controls Opacity",
+      graphicsReloadNote: "Graphics Quality and Terrain Detail apply after a reload.",
+      reloadNow: "Reload Now",
       fullscreen: "Fullscreen",
+      touchLookSpeed: "Touch Look Speed",
+      leftHandedTouch: "Left-handed Touch",
+      filterProfanity: "Filter Profanity",
+      clickMoveButton: "Click Move Button",
       clickToMove: "Click to Move",
       graphicsNote: "Lower Camera Speed for a calmer mouselook. Render Quality below 100% boosts FPS on weaker machines.",
       soundEffects: "Sound Effects",
@@ -2715,6 +2735,9 @@ const phase2En = {
         officer: "[Officer] {name}: {message}",
         say: "{name} says: {message}",
         emote: "{name} {message}",
+        world: "[World] {name}: {message}",
+        lfg: "[LFG] {name}: {message}",
+        roll: "{name} rolls {message}",
       },
       context: {
         whisper: "Whisper",
@@ -2822,7 +2845,7 @@ const phase2En = {
       requiresCombo: "That ability requires combo points.",
       requiresForm: "You must be in {form} Form.",
       bear: "Bear",
-      cat: "Cat",
+      cat: "Wolf",
       shapeshifted: "You cannot do that while shapeshifted.",
       stealthed: "You must be stealthed.",
       inCombat: "You cannot do that while in combat.",
@@ -2950,10 +2973,30 @@ const phase2 = {
         back: "Atrás",
         on: "Activado",
         off: "Desactivado",
-        cameraSpeed: "Velocidad de cámara",
-        brightness: "Brillo",
-        renderQuality: "Calidad de renderizado",
+      cameraSpeed: "Velocidad de cámara",
+      brightness: "Brillo",
+      renderQuality: "Calidad de renderizado",
+        graphicsQuality: "Calidad gráfica",
+        graphicsPresetAuto: "Auto",
+        graphicsPresetLow: "Baja",
+        graphicsPresetMedium: "Media",
+        graphicsPresetHigh: "Alta",
+        graphicsPresetUltra: "Ultra",
+        graphicsPresetAdvanced: "Avanzada",
+        terrainDetail: "Detalle del terreno",
+        foliageDensity: "Densidad de vegetación",
+        effectsQuality: "Efectos e iluminación",
+        shadowQuality: "Calidad de sombras",
+        terrainLow: "Bajo",
+        terrainHigh: "Alto",
+        touchOpacity: "Opacidad de controles táctiles",
+        graphicsReloadNote: "La calidad gráfica y el detalle del terreno se aplican al recargar.",
+        reloadNow: "Recargar ahora",
         fullscreen: "Pantalla completa",
+        touchLookSpeed: "Velocidad de cámara táctil",
+        leftHandedTouch: "Modo zurdo táctil",
+        filterProfanity: "Filtrar lenguaje",
+        clickMoveButton: "Botón de clic para mover",
         clickToMove: "Clic para moverse",
         graphicsNote: "Baja la velocidad de cámara para un control más tranquilo. La calidad de renderizado bajo 100% mejora los FPS en equipos modestos.",
         soundEffects: "Efectos de sonido",
@@ -2981,7 +3024,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "Clic derecho en {name}",
-        templates: { party: "[Grupo] {name}: {message}", yell: "{name} grita: {message}", whisper: "{name} susurra: {message}", toWhisper: "A {name}: {message}", general: "[General] {name}: {message}", guild: "[Hermandad] {name}: {message}", officer: "[Oficiales] {name}: {message}", say: "{name} dice: {message}", emote: "{name} {message}" },
+        templates: { party: "[Grupo] {name}: {message}", yell: "{name} grita: {message}", whisper: "{name} susurra: {message}", toWhisper: "A {name}: {message}", general: "[General] {name}: {message}", guild: "[Hermandad] {name}: {message}", officer: "[Oficiales] {name}: {message}", say: "{name} dice: {message}", emote: "{name} {message}", world: "[Mundo] {name}: {message}", lfg: "[Buscar grupo] {name}: {message}", roll: "{name} saca {message}" },
         context: { whisper: "Susurrar", invite: "Invitar al grupo", trade: "Comerciar", challengeDuel: "Desafiar a duelo", addFriend: "Agregar amigo", removeFriend: "Eliminar amigo", inviteGuild: "Invitar a hermandad", ignore: "Ignorar", ignoreChat: "Ignorar chat", unignore: "Dejar de ignorar", unignoreChat: "Dejar de ignorar chat", report: "Reportar jugador", removeParty: "Expulsar del grupo", cancel: "Cancelar" },
       },
       report: {
@@ -3054,7 +3097,27 @@ const phase2 = {
         cameraSpeed: "Vitesse de caméra",
         brightness: "Luminosité",
         renderQuality: "Qualité de rendu",
+        graphicsQuality: "Qualité graphique",
+        graphicsPresetAuto: "Auto",
+        graphicsPresetLow: "Basse",
+        graphicsPresetMedium: "Moyenne",
+        graphicsPresetHigh: "Haute",
+        graphicsPresetUltra: "Ultra",
+        graphicsPresetAdvanced: "Avancée",
+        terrainDetail: "Détail du terrain",
+        foliageDensity: "Densité de feuillage",
+        effectsQuality: "Effets et éclairage",
+        shadowQuality: "Qualité des ombres",
+        terrainLow: "Bas",
+        terrainHigh: "Élevé",
+        touchOpacity: "Opacité des commandes tactiles",
+        graphicsReloadNote: "La qualité graphique et le détail du terrain s'appliquent après un rechargement.",
+        reloadNow: "Recharger maintenant",
         fullscreen: "Plein écran",
+        touchLookSpeed: "Vitesse caméra tactile",
+        leftHandedTouch: "Mode gaucher tactile",
+        filterProfanity: "Filtrer le langage",
+        clickMoveButton: "Bouton clic pour déplacer",
         clickToMove: "Cliquer pour se déplacer",
         graphicsNote: "Réduisez la vitesse de caméra pour une visée plus calme. Une qualité de rendu sous 100 % améliore les FPS sur les machines modestes.",
         soundEffects: "Effets sonores",
@@ -3082,7 +3145,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "Clic droit sur {name}",
-        templates: { party: "[Groupe] {name} : {message}", yell: "{name} crie : {message}", whisper: "{name} chuchote : {message}", toWhisper: "À {name} : {message}", general: "[Général] {name} : {message}", guild: "[Guilde] {name} : {message}", officer: "[Officiers] {name} : {message}", say: "{name} dit : {message}", emote: "{name} {message}" },
+        templates: { party: "[Groupe] {name} : {message}", yell: "{name} crie : {message}", whisper: "{name} chuchote : {message}", toWhisper: "À {name} : {message}", general: "[Général] {name} : {message}", guild: "[Guilde] {name} : {message}", officer: "[Officiers] {name} : {message}", say: "{name} dit : {message}", emote: "{name} {message}", world: "[Monde] {name} : {message}", lfg: "[Recherche] {name} : {message}", roll: "{name} lance {message}" },
         context: { whisper: "Chuchoter", invite: "Inviter dans le groupe", trade: "Échanger", challengeDuel: "Provoquer en duel", addFriend: "Ajouter un ami", removeFriend: "Retirer l'ami", inviteGuild: "Inviter dans la guilde", ignore: "Ignorer", ignoreChat: "Ignorer la discussion", unignore: "Ne plus ignorer", unignoreChat: "Ne plus ignorer la discussion", report: "Signaler le joueur", removeParty: "Retirer du groupe", cancel: "Annuler" },
       },
       report: {
@@ -3156,7 +3219,27 @@ const phase2 = {
         cameraSpeed: "Velocità camera",
         brightness: "Luminosità",
         renderQuality: "Qualità rendering",
+        graphicsQuality: "Qualità grafica",
+        graphicsPresetAuto: "Auto",
+        graphicsPresetLow: "Bassa",
+        graphicsPresetMedium: "Media",
+        graphicsPresetHigh: "Alta",
+        graphicsPresetUltra: "Ultra",
+        graphicsPresetAdvanced: "Avanzata",
+        terrainDetail: "Dettaglio terreno",
+        foliageDensity: "Densità vegetazione",
+        effectsQuality: "Effetti e luci",
+        shadowQuality: "Qualità ombre",
+        terrainLow: "Basso",
+        terrainHigh: "Alto",
+        touchOpacity: "Opacità comandi touch",
+        graphicsReloadNote: "Qualità grafica e dettaglio terreno si applicano dopo un ricaricamento.",
+        reloadNow: "Ricarica ora",
         fullscreen: "Schermo intero",
+        touchLookSpeed: "Velocità camera touch",
+        leftHandedTouch: "Touch per mancini",
+        filterProfanity: "Filtra linguaggio",
+        clickMoveButton: "Pulsante clic per muovere",
         clickToMove: "Clicca per muoverti",
         graphicsNote: "Riduci la velocità della camera per un mouselook più stabile. La qualità rendering sotto il 100% aumenta gli FPS sui dispositivi meno potenti.",
         soundEffects: "Effetti sonori",
@@ -3184,7 +3267,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "Clic destro su {name}",
-        templates: { party: "[Gruppo] {name}: {message}", yell: "{name} urla: {message}", whisper: "{name} sussurra: {message}", toWhisper: "A {name}: {message}", general: "[Generale] {name}: {message}", guild: "[Gilda] {name}: {message}", officer: "[Ufficiali] {name}: {message}", say: "{name} dice: {message}", emote: "{name} {message}" },
+        templates: { party: "[Gruppo] {name}: {message}", yell: "{name} urla: {message}", whisper: "{name} sussurra: {message}", toWhisper: "A {name}: {message}", general: "[Generale] {name}: {message}", guild: "[Gilda] {name}: {message}", officer: "[Ufficiali] {name}: {message}", say: "{name} dice: {message}", emote: "{name} {message}", world: "[Mondo] {name}: {message}", lfg: "[Cerca gruppo] {name}: {message}", roll: "{name} tira {message}" },
         context: { whisper: "Sussurra", invite: "Invita nel gruppo", trade: "Commercia", challengeDuel: "Sfida a duello", addFriend: "Aggiungi amico", removeFriend: "Rimuovi amico", inviteGuild: "Invita in gilda", ignore: "Ignora", ignoreChat: "Ignora chat", unignore: "Non ignorare", unignoreChat: "Non ignorare la chat", report: "Segnala giocatore", removeParty: "Rimuovi dal gruppo", cancel: "Annulla" },
       },
       report: {
@@ -3256,7 +3339,27 @@ const phase2 = {
         cameraSpeed: "Kamerageschwindigkeit",
         brightness: "Helligkeit",
         renderQuality: "Renderqualität",
+        graphicsQuality: "Grafikqualität",
+        graphicsPresetAuto: "Auto",
+        graphicsPresetLow: "Niedrig",
+        graphicsPresetMedium: "Mittel",
+        graphicsPresetHigh: "Hoch",
+        graphicsPresetUltra: "Ultra",
+        graphicsPresetAdvanced: "Erweitert",
+        terrainDetail: "Geländedetail",
+        foliageDensity: "Pflanzendichte",
+        effectsQuality: "Effekte und Licht",
+        shadowQuality: "Schattenqualität",
+        terrainLow: "Niedrig",
+        terrainHigh: "Hoch",
+        touchOpacity: "Deckkraft der Touch-Steuerung",
+        graphicsReloadNote: "Grafikqualität und Geländedetail werden nach dem Neuladen angewendet.",
+        reloadNow: "Jetzt neu laden",
         fullscreen: "Vollbild",
+        touchLookSpeed: "Touch-Kamerageschwindigkeit",
+        leftHandedTouch: "Linkshänder-Touch",
+        filterProfanity: "Schimpfwörter filtern",
+        clickMoveButton: "Klick-Bewegungstaste",
         clickToMove: "Klicken zum Bewegen",
         graphicsNote: "Senkt die Kamerageschwindigkeit für ruhigere Maussteuerung. Renderqualität unter 100 % verbessert die FPS auf schwächeren Geräten.",
         soundEffects: "Soundeffekte",
@@ -3284,7 +3387,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "Rechtsklick auf {name}",
-        templates: { party: "[Gruppe] {name}: {message}", yell: "{name} schreit: {message}", whisper: "{name} flüstert: {message}", toWhisper: "An {name}: {message}", general: "[Allgemein] {name}: {message}", guild: "[Gilde] {name}: {message}", officer: "[Offiziere] {name}: {message}", say: "{name} sagt: {message}", emote: "{name} {message}" },
+        templates: { party: "[Gruppe] {name}: {message}", yell: "{name} schreit: {message}", whisper: "{name} flüstert: {message}", toWhisper: "An {name}: {message}", general: "[Allgemein] {name}: {message}", guild: "[Gilde] {name}: {message}", officer: "[Offiziere] {name}: {message}", say: "{name} sagt: {message}", emote: "{name} {message}", world: "[Welt] {name}: {message}", lfg: "[Gruppensuche] {name}: {message}", roll: "{name} würfelt {message}" },
         context: { whisper: "Flüstern", invite: "In Gruppe einladen", trade: "Handeln", challengeDuel: "Zum Duell fordern", addFriend: "Freund hinzufügen", removeFriend: "Freund entfernen", inviteGuild: "In Gilde einladen", ignore: "Ignorieren", ignoreChat: "Chat ignorieren", unignore: "Nicht mehr ignorieren", unignoreChat: "Chat nicht mehr ignorieren", report: "Spieler melden", removeParty: "Aus Gruppe entfernen", cancel: "Abbrechen" },
       },
       report: {
@@ -3356,7 +3459,27 @@ const phase2 = {
         cameraSpeed: "镜头速度",
         brightness: "亮度",
         renderQuality: "渲染质量",
+        graphicsQuality: "图形质量",
+        graphicsPresetAuto: "自动",
+        graphicsPresetLow: "低",
+        graphicsPresetMedium: "中",
+        graphicsPresetHigh: "高",
+        graphicsPresetUltra: "超高",
+        graphicsPresetAdvanced: "高级",
+        terrainDetail: "地形细节",
+        foliageDensity: "植被密度",
+        effectsQuality: "特效和光照",
+        shadowQuality: "阴影质量",
+        terrainLow: "低",
+        terrainHigh: "高",
+        touchOpacity: "触控控件透明度",
+        graphicsReloadNote: "图形质量和地形细节会在重新加载后生效。",
+        reloadNow: "立即重新加载",
         fullscreen: "全屏",
+        touchLookSpeed: "触屏视角速度",
+        leftHandedTouch: "左手触屏模式",
+        filterProfanity: "过滤脏话",
+        clickMoveButton: "点击移动按键",
         clickToMove: "点击移动",
         graphicsNote: "降低镜头速度可让鼠标视角更平稳。渲染质量低于 100% 可在较弱设备上提升 FPS。",
         soundEffects: "音效",
@@ -3384,7 +3507,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "右键点击 {name}",
-        templates: { party: "[队伍] {name}：{message}", yell: "{name}大喊：{message}", whisper: "{name}悄悄说：{message}", toWhisper: "对{name}说：{message}", general: "[综合] {name}：{message}", guild: "[公会] {name}：{message}", officer: "[官员] {name}：{message}", say: "{name}说：{message}", emote: "{name} {message}" },
+        templates: { party: "[队伍] {name}：{message}", yell: "{name}大喊：{message}", whisper: "{name}悄悄说：{message}", toWhisper: "对{name}说：{message}", general: "[综合] {name}：{message}", guild: "[公会] {name}：{message}", officer: "[官员] {name}：{message}", say: "{name}说：{message}", emote: "{name} {message}", world: "[世界] {name}：{message}", lfg: "[组队] {name}：{message}", roll: "{name} 掷出 {message}" },
         context: { whisper: "密语", invite: "邀请入队", trade: "交易", challengeDuel: "发起决斗", addFriend: "添加好友", removeFriend: "移除好友", inviteGuild: "邀请入会", ignore: "屏蔽", ignoreChat: "屏蔽聊天", unignore: "取消屏蔽", unignoreChat: "取消屏蔽聊天", report: "举报玩家", removeParty: "移出队伍", cancel: "取消" },
       },
       report: {
@@ -3456,7 +3579,27 @@ const phase2 = {
         cameraSpeed: "鏡頭速度",
         brightness: "亮度",
         renderQuality: "渲染品質",
+        graphicsQuality: "圖形品質",
+        graphicsPresetAuto: "自動",
+        graphicsPresetLow: "低",
+        graphicsPresetMedium: "中",
+        graphicsPresetHigh: "高",
+        graphicsPresetUltra: "超高",
+        graphicsPresetAdvanced: "進階",
+        terrainDetail: "地形細節",
+        foliageDensity: "植被密度",
+        effectsQuality: "特效與光照",
+        shadowQuality: "陰影品質",
+        terrainLow: "低",
+        terrainHigh: "高",
+        touchOpacity: "觸控控制透明度",
+        graphicsReloadNote: "圖形品質和地形細節會在重新載入後生效。",
+        reloadNow: "立即重新載入",
         fullscreen: "全螢幕",
+        touchLookSpeed: "觸控視角速度",
+        leftHandedTouch: "左手觸控模式",
+        filterProfanity: "過濾髒話",
+        clickMoveButton: "點擊移動按鍵",
         clickToMove: "點擊移動",
         graphicsNote: "降低鏡頭速度可讓滑鼠視角更平穩。渲染品質低於 100% 可在較弱裝置上提升 FPS。",
         soundEffects: "音效",
@@ -3484,7 +3627,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "右鍵點擊 {name}",
-        templates: { party: "[隊伍] {name}：{message}", yell: "{name}大喊：{message}", whisper: "{name}悄悄說：{message}", toWhisper: "對{name}說：{message}", general: "[綜合] {name}：{message}", guild: "[公會] {name}：{message}", officer: "[幹部] {name}：{message}", say: "{name}說：{message}", emote: "{name} {message}" },
+        templates: { party: "[隊伍] {name}：{message}", yell: "{name}大喊：{message}", whisper: "{name}悄悄說：{message}", toWhisper: "對{name}說：{message}", general: "[綜合] {name}：{message}", guild: "[公會] {name}：{message}", officer: "[幹部] {name}：{message}", say: "{name}說：{message}", emote: "{name} {message}", world: "[世界] {name}：{message}", lfg: "[組隊] {name}：{message}", roll: "{name} 擲出 {message}" },
         context: { whisper: "密語", invite: "邀請入隊", trade: "交易", challengeDuel: "發起決鬥", addFriend: "新增好友", removeFriend: "移除好友", inviteGuild: "邀請入會", ignore: "封鎖", ignoreChat: "封鎖聊天", unignore: "取消封鎖", unignoreChat: "取消封鎖聊天", report: "檢舉玩家", removeParty: "移出隊伍", cancel: "取消" },
       },
       report: {
@@ -3556,7 +3699,27 @@ const phase2 = {
         cameraSpeed: "카메라 속도",
         brightness: "밝기",
         renderQuality: "렌더 품질",
+        graphicsQuality: "그래픽 품질",
+        graphicsPresetAuto: "자동",
+        graphicsPresetLow: "낮음",
+        graphicsPresetMedium: "중간",
+        graphicsPresetHigh: "높음",
+        graphicsPresetUltra: "울트라",
+        graphicsPresetAdvanced: "고급",
+        terrainDetail: "지형 세부 묘사",
+        foliageDensity: "초목 밀도",
+        effectsQuality: "효과 및 조명",
+        shadowQuality: "그림자 품질",
+        terrainLow: "낮음",
+        terrainHigh: "높음",
+        touchOpacity: "터치 조작 투명도",
+        graphicsReloadNote: "그래픽 품질과 지형 세부 묘사는 새로고침 후 적용됩니다.",
+        reloadNow: "지금 새로고침",
         fullscreen: "전체 화면",
+        touchLookSpeed: "터치 시점 속도",
+        leftHandedTouch: "왼손잡이 터치",
+        filterProfanity: "비속어 필터",
+        clickMoveButton: "클릭 이동 버튼",
         clickToMove: "클릭하여 이동",
         graphicsNote: "카메라 속도를 낮추면 마우스 시점이 더 안정됩니다. 렌더 품질을 100% 아래로 낮추면 낮은 사양 장치에서 FPS가 향상됩니다.",
         soundEffects: "효과음",
@@ -3584,7 +3747,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "{name} 우클릭",
-        templates: { party: "[파티] {name}: {message}", yell: "{name} 외침: {message}", whisper: "{name} 귓속말: {message}", toWhisper: "{name}에게: {message}", general: "[일반] {name}: {message}", guild: "[길드] {name}: {message}", officer: "[장교] {name}: {message}", say: "{name}: {message}", emote: "{name} {message}" },
+        templates: { party: "[파티] {name}: {message}", yell: "{name} 외침: {message}", whisper: "{name} 귓속말: {message}", toWhisper: "{name}에게: {message}", general: "[일반] {name}: {message}", guild: "[길드] {name}: {message}", officer: "[장교] {name}: {message}", say: "{name}: {message}", emote: "{name} {message}", world: "[전체] {name}: {message}", lfg: "[파티찾기] {name}: {message}", roll: "{name} 주사위: {message}" },
         context: { whisper: "귓속말", invite: "파티 초대", trade: "거래", challengeDuel: "결투 신청", addFriend: "친구 추가", removeFriend: "친구 삭제", inviteGuild: "길드 초대", ignore: "차단", ignoreChat: "채팅 차단", unignore: "차단 해제", unignoreChat: "채팅 차단 해제", report: "플레이어 신고", removeParty: "파티에서 제거", cancel: "취소" },
       },
       report: {
@@ -3656,7 +3819,27 @@ const phase2 = {
         cameraSpeed: "カメラ速度",
         brightness: "明るさ",
         renderQuality: "描画品質",
+        graphicsQuality: "グラフィック品質",
+        graphicsPresetAuto: "自動",
+        graphicsPresetLow: "低",
+        graphicsPresetMedium: "中",
+        graphicsPresetHigh: "高",
+        graphicsPresetUltra: "ウルトラ",
+        graphicsPresetAdvanced: "詳細",
+        terrainDetail: "地形の詳細",
+        foliageDensity: "草木の密度",
+        effectsQuality: "エフェクトと照明",
+        shadowQuality: "影の品質",
+        terrainLow: "低",
+        terrainHigh: "高",
+        touchOpacity: "タッチ操作の不透明度",
+        graphicsReloadNote: "グラフィック品質と地形の詳細は再読み込み後に適用されます。",
+        reloadNow: "今すぐ再読み込み",
         fullscreen: "フルスクリーン",
+        touchLookSpeed: "タッチ視点速度",
+        leftHandedTouch: "左利きタッチ",
+        filterProfanity: "暴言フィルター",
+        clickMoveButton: "クリック移動ボタン",
         clickToMove: "クリック移動",
         graphicsNote: "カメラ速度を下げるとマウス視点が落ち着きます。描画品質を100%未満にすると、低性能環境でFPSが向上します。",
         soundEffects: "効果音",
@@ -3684,7 +3867,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "{name}を右クリック",
-        templates: { party: "[パーティ] {name}: {message}", yell: "{name}の叫び: {message}", whisper: "{name}のささやき: {message}", toWhisper: "{name}へ: {message}", general: "[一般] {name}: {message}", guild: "[ギルド] {name}: {message}", officer: "[オフィサー] {name}: {message}", say: "{name}: {message}", emote: "{name} {message}" },
+        templates: { party: "[パーティ] {name}: {message}", yell: "{name}の叫び: {message}", whisper: "{name}のささやき: {message}", toWhisper: "{name}へ: {message}", general: "[一般] {name}: {message}", guild: "[ギルド] {name}: {message}", officer: "[オフィサー] {name}: {message}", say: "{name}: {message}", emote: "{name} {message}", world: "[ワールド] {name}: {message}", lfg: "[仲間募集] {name}: {message}", roll: "{name} のサイコロ: {message}" },
         context: { whisper: "ささやく", invite: "パーティに招待", trade: "取引", challengeDuel: "決闘を申し込む", addFriend: "フレンド追加", removeFriend: "フレンド削除", inviteGuild: "ギルドに招待", ignore: "無視", ignoreChat: "チャットを無視", unignore: "無視解除", unignoreChat: "チャット無視解除", report: "プレイヤーを通報", removeParty: "パーティから外す", cancel: "キャンセル" },
       },
       report: {
@@ -3756,7 +3939,27 @@ const phase2 = {
         cameraSpeed: "Velocidade da câmera",
         brightness: "Brilho",
         renderQuality: "Qualidade de renderização",
+        graphicsQuality: "Qualidade gráfica",
+        graphicsPresetAuto: "Auto",
+        graphicsPresetLow: "Baixa",
+        graphicsPresetMedium: "Média",
+        graphicsPresetHigh: "Alta",
+        graphicsPresetUltra: "Ultra",
+        graphicsPresetAdvanced: "Avançada",
+        terrainDetail: "Detalhe do terreno",
+        foliageDensity: "Densidade da vegetação",
+        effectsQuality: "Efeitos e iluminação",
+        shadowQuality: "Qualidade das sombras",
+        terrainLow: "Baixo",
+        terrainHigh: "Alto",
+        touchOpacity: "Opacidade dos controles de toque",
+        graphicsReloadNote: "Qualidade gráfica e detalhe do terreno são aplicados após recarregar.",
+        reloadNow: "Recarregar agora",
         fullscreen: "Tela cheia",
+        touchLookSpeed: "Velocidade da câmera por toque",
+        leftHandedTouch: "Toque para canhotos",
+        filterProfanity: "Filtrar palavrões",
+        clickMoveButton: "Botão de clique para mover",
         clickToMove: "Clique para mover",
         graphicsNote: "Reduza a velocidade da câmera para um mouselook mais calmo. Qualidade de renderização abaixo de 100% melhora o FPS em máquinas mais fracas.",
         soundEffects: "Efeitos sonoros",
@@ -3784,7 +3987,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "Clique direito em {name}",
-        templates: { party: "[Grupo] {name}: {message}", yell: "{name} grita: {message}", whisper: "{name} sussurra: {message}", toWhisper: "Para {name}: {message}", general: "[Geral] {name}: {message}", guild: "[Guilda] {name}: {message}", officer: "[Oficiais] {name}: {message}", say: "{name} diz: {message}", emote: "{name} {message}" },
+        templates: { party: "[Grupo] {name}: {message}", yell: "{name} grita: {message}", whisper: "{name} sussurra: {message}", toWhisper: "Para {name}: {message}", general: "[Geral] {name}: {message}", guild: "[Guilda] {name}: {message}", officer: "[Oficiais] {name}: {message}", say: "{name} diz: {message}", emote: "{name} {message}", world: "[Mundo] {name}: {message}", lfg: "[Procurar grupo] {name}: {message}", roll: "{name} rola {message}" },
         context: { whisper: "Sussurrar", invite: "Convidar para grupo", trade: "Negociar", challengeDuel: "Desafiar para duelo", addFriend: "Adicionar amigo", removeFriend: "Remover amigo", inviteGuild: "Convidar para guilda", ignore: "Ignorar", ignoreChat: "Ignorar chat", unignore: "Parar de ignorar", unignoreChat: "Parar de ignorar chat", report: "Denunciar jogador", removeParty: "Remover do grupo", cancel: "Cancelar" },
       },
       report: {
@@ -3856,7 +4059,27 @@ const phase2 = {
         cameraSpeed: "Скорость камеры",
         brightness: "Яркость",
         renderQuality: "Качество рендера",
+        graphicsQuality: "Качество графики",
+        graphicsPresetAuto: "Авто",
+        graphicsPresetLow: "Низкое",
+        graphicsPresetMedium: "Среднее",
+        graphicsPresetHigh: "Высокое",
+        graphicsPresetUltra: "Ультра",
+        graphicsPresetAdvanced: "Расширенное",
+        terrainDetail: "Детализация местности",
+        foliageDensity: "Плотность растительности",
+        effectsQuality: "Эффекты и освещение",
+        shadowQuality: "Качество теней",
+        terrainLow: "Низкая",
+        terrainHigh: "Высокая",
+        touchOpacity: "Прозрачность сенсорного управления",
+        graphicsReloadNote: "Качество графики и детализация местности применяются после перезагрузки.",
+        reloadNow: "Перезагрузить сейчас",
         fullscreen: "Полный экран",
+        touchLookSpeed: "Скорость обзора (касание)",
+        leftHandedTouch: "Управление для левшей",
+        filterProfanity: "Фильтр нецензурной лексики",
+        clickMoveButton: "Кнопка клика для движения",
         clickToMove: "Движение по щелчку",
         graphicsNote: "Уменьшите скорость камеры для более спокойного обзора мышью. Качество рендера ниже 100% повышает FPS на слабых устройствах.",
         soundEffects: "Звуковые эффекты",
@@ -3884,7 +4107,7 @@ const phase2 = {
       },
       chat: {
         rightClickName: "ПКМ по {name}",
-        templates: { party: "[Группа] {name}: {message}", yell: "{name} кричит: {message}", whisper: "{name} шепчет: {message}", toWhisper: "Кому {name}: {message}", general: "[Общий] {name}: {message}", guild: "[Гильдия] {name}: {message}", officer: "[Офицеры] {name}: {message}", say: "{name} говорит: {message}", emote: "{name} {message}" },
+        templates: { party: "[Группа] {name}: {message}", yell: "{name} кричит: {message}", whisper: "{name} шепчет: {message}", toWhisper: "Кому {name}: {message}", general: "[Общий] {name}: {message}", guild: "[Гильдия] {name}: {message}", officer: "[Офицеры] {name}: {message}", say: "{name} говорит: {message}", emote: "{name} {message}", world: "[Мир] {name}: {message}", lfg: "[Поиск группы] {name}: {message}", roll: "{name} бросает {message}" },
         context: { whisper: "Шепнуть", invite: "Пригласить в группу", trade: "Торговать", challengeDuel: "Вызвать на дуэль", addFriend: "Добавить друга", removeFriend: "Удалить друга", inviteGuild: "Пригласить в гильдию", ignore: "Игнорировать", ignoreChat: "Игнорировать чат", unignore: "Убрать игнор", unignoreChat: "Убрать игнор чата", report: "Пожаловаться на игрока", removeParty: "Удалить из группы", cancel: "Отмена" },
       },
       report: {
@@ -3955,7 +4178,7 @@ const phase3En = {
     },
     forms: {
       bear: "Bear",
-      cat: "Cat",
+      cat: "Wolf",
     },
   },
 };
@@ -5640,9 +5863,9 @@ const phase7En = {
       ["bear_form", "Bear Form", "Shapeshift into a bear: armor +65%, attack power +15, your attacks build rage and generate 30% more threat. Cast again to return to caster form."],
       ["maul", "Maul", "A mauling attack that increases melee damage by {damage} and causes a high amount of threat. Activates on your next swing. Bear Form only."],
       ["growl", "Growl", "Growls at the target: your threat rises to match its most hated enemy and it is compelled to attack you for 3 sec. Bear Form only."],
-      ["cat_form", "Cat Form", "Shapeshift into a cat: attack power rises with your level, your attacks use energy and combo points, and you generate 29% less threat. Cast again to return to caster form."],
-      ["claw", "Claw", "Claw the enemy for weapon damage plus {damage}. Awards 1 combo point. Cat Form only."],
-      ["ferocious_bite", "Ferocious Bite", "Finishing move that causes damage per combo point. Cat Form only."],
+      ["cat_form", "Wolf Form", "Shapeshift into a wolf: attack power rises with your level, your attacks use energy and combo points, and you generate 29% less threat. Cast again to return to caster form."],
+      ["claw", "Claw", "Claw the enemy for weapon damage plus {damage}. Awards 1 combo point. Wolf Form only."],
+      ["ferocious_bite", "Ferocious Bite", "Finishing move that causes damage per combo point. Wolf Form only."],
       ["swipe", "Swipe", "Swipe nearby enemies for {damage} damage. Causes extra threat. Bear Form only."],
       ["regrowth", "Regrowth", "Heals a friendly target for {damage} and an additional amount over 21 sec."],
       ["barkskin", "Barkskin", "Your skin hardens like bark, increasing armor by 150 for 15 sec."],
@@ -5652,6 +5875,8 @@ const phase7En = {
       ["shield_slam", "Shield Slam", "Slam the target with your shield for {damage} and massive threat. (Protection signature)"],
       ["whirlwind", "Whirlwind", "Spin in a deadly arc, striking all nearby enemies for {damage}. (Fury talent)"],
       ["berserker_rage", "Berserker Rage", "Enter a berserker rage, generating 20 rage. (Warrior talent)"],
+      ["summon_imp", "Summon Imp", "Summons an Imp under the command of the Warlock. The Imp hurls Firebolts at your enemies from afar. Summoning a new demon dismisses your current one. You may have one demon at a time."],
+      ["summon_voidwalker", "Summon Voidwalker", "Summons a Voidwalker under the command of the Warlock. The Voidwalker is a sturdy demon that taunts your enemies and soaks up punishment. Summoning a new demon dismisses your current one. You may have one demon at a time."],
     ]),
   },
 };
@@ -5773,6 +5998,8 @@ const phase7 = {
         ["shield_slam", "Embate con escudo", "Golpeas al objetivo con tu escudo por {damage} y generas una amenaza enorme. (habilidad distintiva de Protección)"],
         ["whirlwind", "Torbellino", "Giras en un arco letal y golpeas a todos los enemigos cercanos por {damage}. (talento de Furia)"],
         ["berserker_rage", "Ira rabiosa", "Entras en una ira rabiosa y generas 20 de ira. (talento de guerrero)"],
+        ["summon_imp", "Invocar diablillo", "Invoca a un Diablillo bajo el mando del brujo. El Diablillo lanza Descargas de Fuego a tus enemigos desde la distancia. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."],
+        ["summon_voidwalker", "Invocar caminante del Vacío", "Invoca a un Caminante del Vacío bajo el mando del brujo. El Caminante del Vacío es un demonio resistente que provoca a tus enemigos y encaja el castigo. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."],
       ]),
     },
   },
@@ -5892,6 +6119,8 @@ const phase7 = {
         ["shield_slam", "Heurt de bouclier", "Heurte la cible avec votre bouclier pour {damage} et génère une menace énorme. (signature Protection)"],
         ["whirlwind", "Tourbillon", "Tournoie dans un arc mortel et frappe tous les ennemis proches pour {damage}. (talent Fureur)"],
         ["berserker_rage", "Rage berserker", "Entre dans une rage berserker et génère 20 rage. (talent de guerrier)"],
+        ["summon_imp", "Invoquer un diablotin", "Invoque un Diablotin sous le commandement du démoniste. Le Diablotin lance des Éclairs de feu sur vos ennemis à distance. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."],
+        ["summon_voidwalker", "Invoquer un marcheur du Vide", "Invoque un Marcheur du Vide sous le commandement du démoniste. Le Marcheur du Vide est un démon robuste qui provoque vos ennemis et encaisse les coups. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."],
       ]),
     },
   },
@@ -6012,6 +6241,8 @@ const phase7 = {
         ["shield_slam", "Colpo di Scudo", "Colpisce il bersaglio con lo scudo per {damage} e genera una minaccia enorme. (firma Protezione)"],
         ["whirlwind", "Turbine", "Ruoti in un arco letale, colpendo tutti i nemici vicini per {damage}. (talento Furia)"],
         ["berserker_rage", "Rabbia del Berserker", "Entri in una furia berserker e generi 20 rabbia. (talento del guerriero)"],
+        ["summon_imp", "Evoca folletto", "Evoca un Folletto al comando dello stregone. Il Folletto scaglia Dardi di fuoco contro i tuoi nemici a distanza. Evocare un nuovo demone congeda quello attuale. Puoi avere un solo demone alla volta."],
+        ["summon_voidwalker", "Evoca camminatore del Vuoto", "Evoca un Camminatore del Vuoto al comando dello stregone. Il Camminatore del Vuoto è un demone robusto che provoca i tuoi nemici e assorbe i colpi. Evocare un nuovo demone congeda quello attuale. Puoi avere un solo demone alla volta."],
       ]),
     },
   },
@@ -6130,6 +6361,8 @@ const phase7 = {
         ["shield_slam", "Schildschlag", "Schlägt das Ziel mit eurem Schild für {damage} und erzeugt enorme Bedrohung. (Schutz-Signatur)"],
         ["whirlwind", "Wirbelwind", "Dreht euch in einem tödlichen Bogen und trefft alle nahen Gegner für {damage}. (Furor-Talent)"],
         ["berserker_rage", "Berserkerwut", "Ihr verfallt in Berserkerwut und erzeugt 20 Wut. (Krieger-Talent)"],
+        ["summon_imp", "Wichtel beschwören", "Beschwört einen Wichtel unter dem Befehl des Hexenmeisters. Der Wichtel schleudert aus der Ferne Feuerblitze auf Eure Feinde. Das Beschwören eines neuen Dämons entlässt Euren aktuellen. Ihr könnt nur einen Dämon zur Zeit haben."],
+        ["summon_voidwalker", "Leerwandler beschwören", "Beschwört einen Leerwandler unter dem Befehl des Hexenmeisters. Der Leerwandler ist ein zäher Dämon, der Eure Feinde verhöhnt und Schaden einsteckt. Das Beschwören eines neuen Dämons entlässt Euren aktuellen. Ihr könnt nur einen Dämon zur Zeit haben."],
       ]),
     },
   },
@@ -6248,6 +6481,8 @@ const phase7 = {
         ["shield_slam", "盾牌猛击", "用盾牌猛击目标，造成 {damage} 点伤害并产生巨量威胁。（防护专精标志技能）"],
         ["whirlwind", "旋风斩", "以致命弧线旋转，打击附近所有敌人，造成 {damage} 点伤害。（狂怒天赋）"],
         ["berserker_rage", "狂暴之怒", "进入狂暴之怒，产生 20 点怒气。（战士天赋）"],
+        ["summon_imp", "召唤小鬼", "召唤一只听从术士命令的小鬼。小鬼会从远处向你的敌人投掷火焰箭。召唤新的恶魔会驱散你当前的恶魔。你同时只能拥有一只恶魔。"],
+        ["summon_voidwalker", "召唤虚空行者", "召唤一只听从术士命令的虚空行者。虚空行者是一种坚韧的恶魔，会嘲讽你的敌人并承受打击。召唤新的恶魔会驱散你当前的恶魔。你同时只能拥有一只恶魔。"],
       ]),
     },
   },
@@ -6366,6 +6601,8 @@ const phase7 = {
         ["shield_slam", "盾牌猛擊", "用盾牌猛擊目標，造成 {damage} 點傷害並產生巨量威脅。（防護專精標誌技能）"],
         ["whirlwind", "旋風斬", "以致命弧線旋轉，打擊附近所有敵人，造成 {damage} 點傷害。（狂怒天賦）"],
         ["berserker_rage", "狂暴之怒", "進入狂暴之怒，產生 20 點怒氣。（戰士天賦）"],
+        ["summon_imp", "召喚小鬼", "召喚一隻聽從術士命令的小鬼。小鬼會從遠處向你的敵人投擲火焰箭。召喚新的惡魔會驅散你目前的惡魔。你同時只能擁有一隻惡魔。"],
+        ["summon_voidwalker", "召喚虛空行者", "召喚一隻聽從術士命令的虛空行者。虛空行者是一種堅韌的惡魔，會嘲諷你的敵人並承受打擊。召喚新的惡魔會驅散你目前的惡魔。你同時只能擁有一隻惡魔。"],
       ]),
     },
   },
@@ -6484,6 +6721,8 @@ const phase7 = {
         ["shield_slam", "방패 밀쳐내기", "방패로 대상을 강타해 {damage}의 피해를 주고 막대한 위협을 생성합니다. (방어 특화 대표 기술)"],
         ["whirlwind", "소용돌이", "치명적인 호를 그리며 돌아 주변 모든 적에게 {damage}의 피해를 줍니다. (분노 특성)"],
         ["berserker_rage", "광전사의 격노", "광전사의 격노에 들어가 분노 20을 생성합니다. (전사 특성)"],
+        ["summon_imp", "임프 소환", "흑마법사의 명령을 따르는 임프를 소환합니다. 임프는 멀리서 적에게 화염 화살을 날립니다. 새로운 악마를 소환하면 현재 악마는 사라집니다. 한 번에 하나의 악마만 부릴 수 있습니다."],
+        ["summon_voidwalker", "공허추적자 소환", "흑마법사의 명령을 따르는 공허추적자를 소환합니다. 공허추적자는 적을 도발하고 피해를 견뎌내는 튼튼한 악마입니다. 새로운 악마를 소환하면 현재 악마는 사라집니다. 한 번에 하나의 악마만 부릴 수 있습니다."],
       ]),
     },
   },
@@ -6602,6 +6841,8 @@ const phase7 = {
         ["shield_slam", "シールドスラム", "盾で対象を叩きつけ、{damage} のダメージと大量の脅威を与えます。（防御シグネチャー）"],
         ["whirlwind", "旋風斬", "致命的な弧を描いて回転し、近くのすべての敵に {damage} のダメージを与えます。（狂怒タレント）"],
         ["berserker_rage", "バーサーカーレイジ", "バーサーカーの怒りに入り、怒りを20生成します。（戦士タレント）"],
+        ["summon_imp", "インプの召喚", "ウォーロックの命令に従うインプを召喚します。インプは遠くから敵にファイアボルトを放ちます。新たな悪魔を召喚すると現在の悪魔は解放されます。悪魔は一度に1体しか従えられません。"],
+        ["summon_voidwalker", "ヴォイドウォーカーの召喚", "ウォーロックの命令に従うヴォイドウォーカーを召喚します。ヴォイドウォーカーは敵を挑発し攻撃を受け止める頑強な悪魔です。新たな悪魔を召喚すると現在の悪魔は解放されます。悪魔は一度に1体しか従えられません。"],
       ]),
     },
   },
@@ -6720,6 +6961,8 @@ const phase7 = {
         ["shield_slam", "Impacto com Escudo", "Golpeia o alvo com seu escudo, causando {damage} e muita ameaça. (assinatura de Proteção)"],
         ["whirlwind", "Redemoinho", "Gira em um arco mortal, atingindo todos os inimigos próximos por {damage}. (talento de Fúria)"],
         ["berserker_rage", "Raiva Berserker", "Entra em raiva berserker e gera 20 de raiva. (talento de guerreiro)"],
+        ["summon_imp", "Invocar diabrete", "Invoca um Diabrete sob o comando do bruxo. O Diabrete arremessa Flechas de Fogo nos seus inimigos à distância. Invocar um novo demônio dispensa o atual. Você só pode ter um demônio por vez."],
+        ["summon_voidwalker", "Invocar caminhante do Vazio", "Invoca um Caminhante do Vazio sob o comando do bruxo. O Caminhante do Vazio é um demônio resistente que provoca seus inimigos e absorve o castigo. Invocar um novo demônio dispensa o atual. Você só pode ter um demônio por vez."],
       ]),
     },
   },
@@ -6838,6 +7081,8 @@ const phase7 = {
         ["shield_slam", "Мощный удар щитом", "Бьет цель щитом, нанося {damage} и создавая огромную угрозу. (ключевая способность ветки «Защита»)"],
         ["whirlwind", "Вихрь", "Кружится смертельной дугой, поражая всех ближайших врагов на {damage}. (талант ветки «Неистовство»)"],
         ["berserker_rage", "Ярость берсерка", "Впадаете в ярость берсерка и получаете 20 ярости. (талант воина)"],
+        ["summon_imp", "Призыв беса", "Призывает Беса под командование чернокнижника. Бес издалека мечет Огненные стрелы в ваших врагов. Призыв нового демона отпускает текущего. Одновременно у вас может быть только один демон."],
+        ["summon_voidwalker", "Призыв стража Бездны", "Призывает Стража Бездны под командование чернокнижника. Страж Бездны — крепкий демон, который провоцирует ваших врагов и принимает удары на себя. Призыв нового демона отпускает текущего. Одновременно у вас может быть только один демон."],
       ]),
     },
   },
@@ -7244,6 +7489,7 @@ const PHASE11_ITEM_IDS = [
 const PHASE11_MOB_IDS = [
   'elder_bristleback', 'ironvein_foreman', 'ironvein_sapper', 'marrowlord_varkas', 'mirejaw_frenzy', 'mirejaw_the_ravenous',
   'mogger', 'mogger_lackey', 'nhalia_mourner', 'sableweb_hatchling', 'sableweb_matriarch', 'sister_nhalia', 'varkas_boneguard',
+  'imp', 'voidwalker',
 ] as const;
 
 type Phase11NameTranslations<TId extends string> = Record<TId, { name: string }>;
@@ -7265,10 +7511,332 @@ function phase11NameTranslations<TId extends string>(
   return translations;
 }
 
+const phase11PetHud = {
+  en: {
+    attack: "Attack",
+    taunt: "Taunt",
+    healDemon: "Heal Demon",
+    healPet: "Heal Pet",
+    passive: "Passive",
+    defensive: "Defensive",
+    aggressive: "Aggressive",
+    petAttackTitle: "Pet Attack",
+    petAttackDesc: "Command your pet to attack your current hostile target.",
+    petTauntTitle: "Pet Taunt",
+    petTauntDesc: "Command your pet to engage and Growl when in range. 10 second cooldown.",
+    healDemonDesc: "Spend mana to channel healing into your demon over 5 seconds.",
+    healPetDesc: "Click, then click food in your bags to feed and heal your pet over 5 seconds.",
+    stanceTitle: "Pet Stance",
+    stanceDesc: "Click to choose Passive, Defensive, or Aggressive.",
+    passiveDesc: "Only attacks when you command it.",
+    defensiveDesc: "Attacks enemies that hurt you or your pet.",
+    aggressiveDesc: "Attacks nearby hostile enemies.",
+    rename: "Rename Pet",
+    revive: "Revive Pet",
+    abandon: "Abandon Pet",
+    cancel: "Cancel",
+    renameLabel: "Choose a new pet name.",
+    petNamePlaceholder: "Pet name",
+    renameConfirm: "Rename",
+    abandonBody: "Permanently abandon {name}? You will need to tame another pet.",
+    abandonConfirm: "Abandon",
+  },
+  es: {
+    attack: "Atacar",
+    taunt: "Provocar",
+    healDemon: "Sanar demonio",
+    healPet: "Sanar mascota",
+    passive: "Pasivo",
+    defensive: "Defensivo",
+    aggressive: "Agresivo",
+    petAttackTitle: "Ataque de mascota",
+    petAttackDesc: "Ordena a tu mascota atacar a tu objetivo hostil actual.",
+    petTauntTitle: "Provocación de mascota",
+    petTauntDesc: "Ordena a tu mascota entrar en combate y usar Gruñido al estar en alcance. Reutilización de 10 segundos.",
+    healDemonDesc: "Gasta maná para canalizar sanación hacia tu demonio durante 5 segundos.",
+    healPetDesc: "Haz clic y luego haz clic en comida de tus bolsas para alimentar y sanar a tu mascota durante 5 segundos.",
+    stanceTitle: "Actitud de mascota",
+    stanceDesc: "Haz clic para elegir Pasivo, Defensivo o Agresivo.",
+    passiveDesc: "Solo ataca cuando se lo ordenas.",
+    defensiveDesc: "Ataca a enemigos que te dañen a ti o a tu mascota.",
+    aggressiveDesc: "Ataca a enemigos hostiles cercanos.",
+    rename: "Renombrar mascota",
+    revive: "Revivir mascota",
+    abandon: "Abandonar mascota",
+    cancel: "Cancelar",
+    renameLabel: "Elige un nuevo nombre para la mascota.",
+    petNamePlaceholder: "Nombre de mascota",
+    renameConfirm: "Renombrar",
+    abandonBody: "¿Abandonar permanentemente a {name}? Tendrás que domesticar otra mascota.",
+    abandonConfirm: "Abandonar",
+  },
+  fr_FR: {
+    attack: "Attaquer",
+    taunt: "Provoquer",
+    healDemon: "Soigner le démon",
+    healPet: "Soigner le familier",
+    passive: "Passif",
+    defensive: "Défensif",
+    aggressive: "Agressif",
+    petAttackTitle: "Attaque du familier",
+    petAttackDesc: "Ordonne à votre familier d'attaquer votre cible hostile actuelle.",
+    petTauntTitle: "Provocation du familier",
+    petTauntDesc: "Ordonne à votre familier d'engager et de grogner à portée. Recharge de 10 secondes.",
+    healDemonDesc: "Dépense du mana pour canaliser des soins vers votre démon pendant 5 secondes.",
+    healPetDesc: "Cliquez, puis cliquez sur de la nourriture dans vos sacs pour nourrir et soigner votre familier pendant 5 secondes.",
+    stanceTitle: "Posture du familier",
+    stanceDesc: "Cliquez pour choisir Passif, Défensif ou Agressif.",
+    passiveDesc: "N'attaque que lorsque vous lui en donnez l'ordre.",
+    defensiveDesc: "Attaque les ennemis qui vous blessent, vous ou votre familier.",
+    aggressiveDesc: "Attaque les ennemis hostiles proches.",
+    rename: "Renommer le familier",
+    revive: "Ranimer le familier",
+    abandon: "Abandonner le familier",
+    cancel: "Annuler",
+    renameLabel: "Choisissez un nouveau nom de familier.",
+    petNamePlaceholder: "Nom du familier",
+    renameConfirm: "Renommer",
+    abandonBody: "Abandonner définitivement {name} ? Vous devrez dompter un autre familier.",
+    abandonConfirm: "Abandonner",
+  },
+  it_IT: {
+    attack: "Attacca",
+    taunt: "Provoca",
+    healDemon: "Cura demone",
+    healPet: "Cura mascotte",
+    passive: "Passiva",
+    defensive: "Difensiva",
+    aggressive: "Aggressiva",
+    petAttackTitle: "Attacco mascotte",
+    petAttackDesc: "Ordina alla tua mascotte di attaccare il tuo attuale bersaglio ostile.",
+    petTauntTitle: "Provocazione mascotte",
+    petTauntDesc: "Ordina alla tua mascotte di ingaggiare e usare Ringhio quando è a portata. Recupero di 10 secondi.",
+    healDemonDesc: "Spendi mana per canalizzare cure nel tuo demone per 5 secondi.",
+    healPetDesc: "Clicca, poi clicca del cibo nelle borse per nutrire e curare la mascotte per 5 secondi.",
+    stanceTitle: "Posizione mascotte",
+    stanceDesc: "Clicca per scegliere Passiva, Difensiva o Aggressiva.",
+    passiveDesc: "Attacca solo quando glielo ordini.",
+    defensiveDesc: "Attacca i nemici che feriscono te o la tua mascotte.",
+    aggressiveDesc: "Attacca i nemici ostili vicini.",
+    rename: "Rinomina mascotte",
+    revive: "Rianima mascotte",
+    abandon: "Abbandona mascotte",
+    cancel: "Annulla",
+    renameLabel: "Scegli un nuovo nome per la mascotte.",
+    petNamePlaceholder: "Nome mascotte",
+    renameConfirm: "Rinomina",
+    abandonBody: "Abbandonare definitivamente {name}? Dovrai domare un'altra mascotte.",
+    abandonConfirm: "Abbandona",
+  },
+  de_DE: {
+    attack: "Angreifen",
+    taunt: "Spotten",
+    healDemon: "Dämon heilen",
+    healPet: "Begleiter heilen",
+    passive: "Passiv",
+    defensive: "Defensiv",
+    aggressive: "Aggressiv",
+    petAttackTitle: "Begleiterangriff",
+    petAttackDesc: "Befiehlt deinem Begleiter, dein aktuelles feindliches Ziel anzugreifen.",
+    petTauntTitle: "Begleiterspott",
+    petTauntDesc: "Befiehlt deinem Begleiter, anzugreifen und in Reichweite Knurren einzusetzen. 10 Sekunden Abklingzeit.",
+    healDemonDesc: "Verbraucht Mana, um 5 Sekunden lang Heilung in deinen Dämon zu kanalisieren.",
+    healPetDesc: "Klicke hier und dann auf Nahrung in deinen Taschen, um deinen Begleiter 5 Sekunden lang zu füttern und zu heilen.",
+    stanceTitle: "Begleiterhaltung",
+    stanceDesc: "Klicken, um Passiv, Defensiv oder Aggressiv zu wählen.",
+    passiveDesc: "Greift nur an, wenn du es befiehlst.",
+    defensiveDesc: "Greift Gegner an, die dich oder deinen Begleiter verletzen.",
+    aggressiveDesc: "Greift nahe feindliche Gegner an.",
+    rename: "Begleiter umbenennen",
+    revive: "Begleiter wiederbeleben",
+    abandon: "Begleiter aufgeben",
+    cancel: "Abbrechen",
+    renameLabel: "Wähle einen neuen Begleiternamen.",
+    petNamePlaceholder: "Begleitername",
+    renameConfirm: "Umbenennen",
+    abandonBody: "{name} dauerhaft aufgeben? Du musst einen neuen Begleiter zähmen.",
+    abandonConfirm: "Aufgeben",
+  },
+  zh_CN: {
+    attack: "攻击",
+    taunt: "嘲讽",
+    healDemon: "治疗恶魔",
+    healPet: "治疗宠物",
+    passive: "被动",
+    defensive: "防御",
+    aggressive: "攻击",
+    petAttackTitle: "宠物攻击",
+    petAttackDesc: "命令你的宠物攻击当前敌对目标。",
+    petTauntTitle: "宠物嘲讽",
+    petTauntDesc: "命令你的宠物接战，并在进入范围时使用低吼。10 秒冷却。",
+    healDemonDesc: "消耗法力，在 5 秒内向你的恶魔引导治疗。",
+    healPetDesc: "点击后，再点击背包中的食物，在 5 秒内喂养并治疗你的宠物。",
+    stanceTitle: "宠物姿态",
+    stanceDesc: "点击选择被动、防御或攻击。",
+    passiveDesc: "只在你命令时攻击。",
+    defensiveDesc: "攻击伤害你或你宠物的敌人。",
+    aggressiveDesc: "攻击附近的敌对敌人。",
+    rename: "重命名宠物",
+    revive: "复活宠物",
+    abandon: "放弃宠物",
+    cancel: "取消",
+    renameLabel: "选择一个新的宠物名称。",
+    petNamePlaceholder: "宠物名称",
+    renameConfirm: "重命名",
+    abandonBody: "永久放弃 {name}？你需要驯服另一只宠物。",
+    abandonConfirm: "放弃",
+  },
+  zh_TW: {
+    attack: "攻擊",
+    taunt: "嘲諷",
+    healDemon: "治療惡魔",
+    healPet: "治療寵物",
+    passive: "被動",
+    defensive: "防禦",
+    aggressive: "攻擊",
+    petAttackTitle: "寵物攻擊",
+    petAttackDesc: "命令你的寵物攻擊目前敵對目標。",
+    petTauntTitle: "寵物嘲諷",
+    petTauntDesc: "命令你的寵物接戰，並在進入範圍時使用低吼。10 秒冷卻。",
+    healDemonDesc: "消耗法力，在 5 秒內向你的惡魔引導治療。",
+    healPetDesc: "點擊後，再點擊背包中的食物，在 5 秒內餵養並治療你的寵物。",
+    stanceTitle: "寵物姿態",
+    stanceDesc: "點擊選擇被動、防禦或攻擊。",
+    passiveDesc: "只在你命令時攻擊。",
+    defensiveDesc: "攻擊傷害你或你寵物的敵人。",
+    aggressiveDesc: "攻擊附近的敵對敵人。",
+    rename: "重新命名寵物",
+    revive: "復活寵物",
+    abandon: "放棄寵物",
+    cancel: "取消",
+    renameLabel: "選擇一個新的寵物名稱。",
+    petNamePlaceholder: "寵物名稱",
+    renameConfirm: "重新命名",
+    abandonBody: "永久放棄 {name}？你需要馴服另一隻寵物。",
+    abandonConfirm: "放棄",
+  },
+  ko_KR: {
+    attack: "공격",
+    taunt: "도발",
+    healDemon: "악마 치유",
+    healPet: "소환수 치유",
+    passive: "수동",
+    defensive: "방어",
+    aggressive: "공격",
+    petAttackTitle: "소환수 공격",
+    petAttackDesc: "현재 적대적인 대상에게 소환수가 공격하도록 명령합니다.",
+    petTauntTitle: "소환수 도발",
+    petTauntDesc: "소환수에게 교전하고 사거리 안에서 으르렁거리도록 명령합니다. 재사용 대기시간 10초.",
+    healDemonDesc: "마나를 소비해 5초 동안 악마에게 치유를 집중합니다.",
+    healPetDesc: "클릭한 뒤 가방의 음식을 클릭해 5초 동안 소환수에게 먹이를 주고 치유합니다.",
+    stanceTitle: "소환수 태세",
+    stanceDesc: "클릭해 수동, 방어 또는 공격을 선택하세요.",
+    passiveDesc: "명령할 때만 공격합니다.",
+    defensiveDesc: "당신이나 소환수를 해치는 적을 공격합니다.",
+    aggressiveDesc: "근처의 적대적인 적을 공격합니다.",
+    rename: "소환수 이름 변경",
+    revive: "소환수 되살리기",
+    abandon: "소환수 포기",
+    cancel: "취소",
+    renameLabel: "새 소환수 이름을 선택하세요.",
+    petNamePlaceholder: "소환수 이름",
+    renameConfirm: "이름 변경",
+    abandonBody: "{name}을(를) 영구적으로 포기할까요? 다른 소환수를 길들여야 합니다.",
+    abandonConfirm: "포기",
+  },
+  ja_JP: {
+    attack: "攻撃",
+    taunt: "挑発",
+    healDemon: "悪魔を治癒",
+    healPet: "ペットを治癒",
+    passive: "受動",
+    defensive: "防御",
+    aggressive: "攻撃",
+    petAttackTitle: "ペット攻撃",
+    petAttackDesc: "現在の敵対対象を攻撃するようペットに命令します。",
+    petTauntTitle: "ペット挑発",
+    petTauntDesc: "ペットに交戦を命じ、射程内でグロウルを使わせます。クールダウン10秒。",
+    healDemonDesc: "マナを消費し、5秒かけて悪魔へ治癒をチャネルします。",
+    healPetDesc: "クリックしてからバッグ内の食べ物をクリックし、5秒かけてペットに餌を与えて治癒します。",
+    stanceTitle: "ペットスタンス",
+    stanceDesc: "クリックして受動、防御、攻撃を選びます。",
+    passiveDesc: "命令した時だけ攻撃します。",
+    defensiveDesc: "あなたまたはペットを傷つけた敵を攻撃します。",
+    aggressiveDesc: "近くの敵対的な敵を攻撃します。",
+    rename: "ペット名変更",
+    revive: "ペット蘇生",
+    abandon: "ペット放棄",
+    cancel: "キャンセル",
+    renameLabel: "新しいペット名を選んでください。",
+    petNamePlaceholder: "ペット名",
+    renameConfirm: "名前変更",
+    abandonBody: "{name}を永久に放棄しますか? 別のペットを手なずける必要があります。",
+    abandonConfirm: "放棄",
+  },
+  pt_BR: {
+    attack: "Atacar",
+    taunt: "Provocar",
+    healDemon: "Curar demônio",
+    healPet: "Curar mascote",
+    passive: "Passivo",
+    defensive: "Defensivo",
+    aggressive: "Agressivo",
+    petAttackTitle: "Ataque do mascote",
+    petAttackDesc: "Comande seu mascote a atacar seu alvo hostil atual.",
+    petTauntTitle: "Provocação do mascote",
+    petTauntDesc: "Comande seu mascote a entrar em combate e usar Rosnar quando estiver ao alcance. Recarga de 10 segundos.",
+    healDemonDesc: "Gaste mana para canalizar cura no seu demônio por 5 segundos.",
+    healPetDesc: "Clique e depois clique em comida nas bolsas para alimentar e curar seu mascote por 5 segundos.",
+    stanceTitle: "Postura do mascote",
+    stanceDesc: "Clique para escolher Passivo, Defensivo ou Agressivo.",
+    passiveDesc: "Só ataca quando você comanda.",
+    defensiveDesc: "Ataca inimigos que ferem você ou seu mascote.",
+    aggressiveDesc: "Ataca inimigos hostis próximos.",
+    rename: "Renomear mascote",
+    revive: "Reviver mascote",
+    abandon: "Abandonar mascote",
+    cancel: "Cancelar",
+    renameLabel: "Escolha um novo nome para o mascote.",
+    petNamePlaceholder: "Nome do mascote",
+    renameConfirm: "Renomear",
+    abandonBody: "Abandonar {name} permanentemente? Você precisará domar outro mascote.",
+    abandonConfirm: "Abandonar",
+  },
+  ru_RU: {
+    attack: "Атаковать",
+    taunt: "Провокация",
+    healDemon: "Исцелить демона",
+    healPet: "Исцелить питомца",
+    passive: "Пассивный",
+    defensive: "Защитный",
+    aggressive: "Агрессивный",
+    petAttackTitle: "Атака питомца",
+    petAttackDesc: "Прикажите питомцу атаковать вашу текущую враждебную цель.",
+    petTauntTitle: "Провокация питомца",
+    petTauntDesc: "Прикажите питомцу вступить в бой и применить Рык в радиусе действия. Восстановление 10 секунд.",
+    healDemonDesc: "Потратьте ману, чтобы направлять исцеление в демона 5 секунд.",
+    healPetDesc: "Нажмите, затем выберите пищу в сумках, чтобы кормить и исцелять питомца 5 секунд.",
+    stanceTitle: "Стойка питомца",
+    stanceDesc: "Нажмите, чтобы выбрать Пассивный, Защитный или Агрессивный.",
+    passiveDesc: "Атакует только по вашей команде.",
+    defensiveDesc: "Атакует врагов, которые ранят вас или питомца.",
+    aggressiveDesc: "Атакует ближайших враждебных врагов.",
+    rename: "Переименовать питомца",
+    revive: "Воскресить питомца",
+    abandon: "Оставить питомца",
+    cancel: "Отмена",
+    renameLabel: "Выберите новое имя питомца.",
+    petNamePlaceholder: "Имя питомца",
+    renameConfirm: "Переименовать",
+    abandonBody: "Навсегда оставить {name}? Вам придется приручить другого питомца.",
+    abandonConfirm: "Оставить",
+  },
+};
+
 const phase11En = {
   abilityUi: {
     ...phase3.en.abilityUi,
-    cast: { fishing: "Fishing" },
+    cast: { fishing: "Fishing", demonHeal: "Demon Heal" },
     actionBar: {
       ...phase3.en.abilityUi.actionBar,
       clearHint: "Shift-right-click or Shift-Delete to clear",
@@ -7310,14 +7878,15 @@ const phase11En = {
       mouseCamera: "Mouse Camera",
       keybindHelpMouseCamera: "Mouse Camera off: A/D turns, drag to orbit (classic). On: camera-relative WASD, A/D strafes. Click a key cell to rebind; Esc cancels.",
     },
-    markers: {
-      names: { star: "Star", circle: "Circle", diamond: "Diamond", triangle: "Triangle", moon: "Moon", square: "Square", cross: "Cross", skull: "Skull" },
-      clear: "Clear Marker",
-      cancel: "Cancel",
-      markerAria: "Set {marker} marker",
-      markerSelectedAria: "{marker} marker selected",
-    },
-    social: {
+      markers: {
+        names: { star: "Star", circle: "Circle", diamond: "Diamond", triangle: "Triangle", moon: "Moon", square: "Square", cross: "Cross", skull: "Skull" },
+        clear: "Clear Marker",
+        cancel: "Cancel",
+        markerAria: "Set {marker} marker",
+        markerSelectedAria: "{marker} marker selected",
+      },
+      pet: phase11PetHud.en,
+      social: {
       title: "Social",
       friendsTab: "Friends",
       guildTab: "Guild",
@@ -7344,6 +7913,7 @@ const phase11En = {
       invite: "Invite",
       disbandGuild: "Disband Guild",
       leaveGuild: "Leave Guild",
+      leavePrompt: "Are you sure you want to leave your guild?",
       disbandPrompt: "Disband your guild? This cannot be undone.",
       disbandConfirm: "Disband",
       transferPrompt: "Make {name} the Guild Master? You will step down to Officer.",
@@ -7404,7 +7974,7 @@ const phase11 = {
   es: {
     abilityUi: {
       ...phase3.es.abilityUi,
-      cast: { fishing: "Pesca" },
+      cast: { fishing: "Pesca", demonHeal: "Sanación demoníaca" },
       actionBar: {
         ...phase3.es.abilityUi.actionBar,
         clearHint: "Mayús-clic derecho o Mayús-Supr para vaciar",
@@ -7453,6 +8023,7 @@ const phase11 = {
         markerAria: "Poner marcador {marker}",
         markerSelectedAria: "Marcador {marker} seleccionado",
       },
+      pet: phase11PetHud.es,
       social: {
         title: "Comunidad",
         friendsTab: "Amigos",
@@ -7480,6 +8051,7 @@ const phase11 = {
         invite: "Invitar",
         disbandGuild: "Disolver hermandad",
         leaveGuild: "Salir de la hermandad",
+        leavePrompt: "¿Seguro que quieres salir de tu hermandad?",
         disbandPrompt: "¿Disolver tu hermandad? Esto no se puede deshacer.",
         disbandConfirm: "Disolver",
         transferPrompt: "¿Hacer a {name} maestro de hermandad? Pasarás a oficial.",
@@ -7538,7 +8110,7 @@ const phase11 = {
   fr_FR: {
     abilityUi: {
       ...phase3.fr_FR.abilityUi,
-      cast: { fishing: "Pêche" },
+      cast: { fishing: "Pêche", demonHeal: "Soin démoniaque" },
       actionBar: {
         ...phase3.fr_FR.abilityUi.actionBar,
         clearHint: "Maj-clic droit ou Maj-Suppr pour vider",
@@ -7587,6 +8159,7 @@ const phase11 = {
         markerAria: "Placer le marqueur {marker}",
         markerSelectedAria: "Marqueur {marker} sélectionné",
       },
+      pet: phase11PetHud.fr_FR,
       social: {
         title: "Relations",
         friendsTab: "Amis",
@@ -7614,6 +8187,7 @@ const phase11 = {
         invite: "Inviter",
         disbandGuild: "Dissoudre la guilde",
         leaveGuild: "Quitter la guilde",
+        leavePrompt: "Êtes-vous sûr de vouloir quitter votre guilde ?",
         disbandPrompt: "Dissoudre votre guilde ? Cette action est définitive.",
         disbandConfirm: "Dissoudre",
         transferPrompt: "Nommer {name} maître de guilde ? Vous deviendrez officier.",
@@ -7673,7 +8247,7 @@ const phase11 = {
   it_IT: {
     abilityUi: {
       ...phase3.it_IT.abilityUi,
-      cast: { fishing: "Pesca" },
+      cast: { fishing: "Pesca", demonHeal: "Cura demoniaca" },
       actionBar: {
         ...phase3.it_IT.abilityUi.actionBar,
         clearHint: "Maiusc-clic destro o Maiusc-Canc per svuotare",
@@ -7722,6 +8296,7 @@ const phase11 = {
         markerAria: "Imposta marcatore {marker}",
         markerSelectedAria: "Marcatore {marker} selezionato",
       },
+      pet: phase11PetHud.it_IT,
       social: {
         title: "Sociale",
         friendsTab: "Amici",
@@ -7749,6 +8324,7 @@ const phase11 = {
         invite: "Invita",
         disbandGuild: "Sciogli gilda",
         leaveGuild: "Lascia gilda",
+        leavePrompt: "Sei sicuro di voler lasciare la gilda?",
         disbandPrompt: "Sciogliere la gilda? Questa azione non si può annullare.",
         disbandConfirm: "Sciogli",
         transferPrompt: "Rendere {name} capo gilda? Diventerai ufficiale.",
@@ -7806,7 +8382,7 @@ const phase11 = {
   de_DE: {
     abilityUi: {
       ...phase3.de_DE.abilityUi,
-      cast: { fishing: "Angeln" },
+      cast: { fishing: "Angeln", demonHeal: "Dämonenheilung" },
       actionBar: {
         ...phase3.de_DE.abilityUi.actionBar,
         clearHint: "Umschalt-Rechtsklick oder Umschalt-Entf zum Leeren",
@@ -7855,6 +8431,7 @@ const phase11 = {
         markerAria: "Marker {marker} setzen",
         markerSelectedAria: "Marker {marker} ausgewählt",
       },
+      pet: phase11PetHud.de_DE,
       social: {
         title: "Soziales",
         friendsTab: "Freunde",
@@ -7882,6 +8459,7 @@ const phase11 = {
         invite: "Einladen",
         disbandGuild: "Gilde auflösen",
         leaveGuild: "Gilde verlassen",
+        leavePrompt: "Möchtest du deine Gilde wirklich verlassen?",
         disbandPrompt: "Eure Gilde auflösen? Das kann nicht rückgängig gemacht werden.",
         disbandConfirm: "Auflösen",
         transferPrompt: "{name} zum Gildenmeister machen? Ihr werdet Offizier.",
@@ -7939,7 +8517,7 @@ const phase11 = {
   zh_CN: {
     abilityUi: {
       ...phase3.zh_CN.abilityUi,
-      cast: { fishing: "钓鱼" },
+      cast: { fishing: "钓鱼", demonHeal: "恶魔治疗" },
       actionBar: {
         ...phase3.zh_CN.abilityUi.actionBar,
         clearHint: "Shift-右键或 Shift-Delete 清除",
@@ -7988,6 +8566,7 @@ const phase11 = {
         markerAria: "设置{marker}标记",
         markerSelectedAria: "{marker}标记已选中",
       },
+      pet: phase11PetHud.zh_CN,
       social: {
         title: "社交",
         friendsTab: "好友",
@@ -8015,6 +8594,7 @@ const phase11 = {
         invite: "邀请",
         disbandGuild: "解散公会",
         leaveGuild: "离开公会",
+        leavePrompt: "确定要离开你的公会吗？",
         disbandPrompt: "要解散你的公会吗？此操作无法撤销。",
         disbandConfirm: "解散",
         transferPrompt: "要让 {name} 成为会长吗？你将降为官员。",
@@ -8072,7 +8652,7 @@ const phase11 = {
   zh_TW: {
     abilityUi: {
       ...phase3.zh_TW.abilityUi,
-      cast: { fishing: "釣魚" },
+      cast: { fishing: "釣魚", demonHeal: "惡魔治療" },
       actionBar: {
         ...phase3.zh_TW.abilityUi.actionBar,
         clearHint: "Shift-右鍵或 Shift-Delete 清除",
@@ -8121,6 +8701,7 @@ const phase11 = {
         markerAria: "設定{marker}標記",
         markerSelectedAria: "{marker}標記已選取",
       },
+      pet: phase11PetHud.zh_TW,
       social: {
         title: "社交",
         friendsTab: "好友",
@@ -8148,6 +8729,7 @@ const phase11 = {
         invite: "邀請",
         disbandGuild: "解散公會",
         leaveGuild: "離開公會",
+        leavePrompt: "確定要離開你的公會嗎？",
         disbandPrompt: "要解散你的公會嗎？此操作無法復原。",
         disbandConfirm: "解散",
         transferPrompt: "要讓 {name} 成為會長嗎？你將降為幹部。",
@@ -8205,7 +8787,7 @@ const phase11 = {
   ko_KR: {
     abilityUi: {
       ...phase3.ko_KR.abilityUi,
-      cast: { fishing: "낚시" },
+      cast: { fishing: "낚시", demonHeal: "악마 치유" },
       actionBar: {
         ...phase3.ko_KR.abilityUi.actionBar,
         clearHint: "Shift-우클릭 또는 Shift-Delete로 비우기",
@@ -8254,6 +8836,7 @@ const phase11 = {
         markerAria: "{marker} 징표 설정",
         markerSelectedAria: "{marker} 징표 선택됨",
       },
+      pet: phase11PetHud.ko_KR,
       social: {
         title: "소셜",
         friendsTab: "친구",
@@ -8281,6 +8864,7 @@ const phase11 = {
         invite: "초대",
         disbandGuild: "길드 해산",
         leaveGuild: "길드 떠나기",
+        leavePrompt: "정말 길드를 탈퇴하시겠습니까?",
         disbandPrompt: "길드를 해산하시겠습니까? 되돌릴 수 없습니다.",
         disbandConfirm: "해산",
         transferPrompt: "{name}을(를) 길드장으로 임명하시겠습니까? 당신은 장교가 됩니다.",
@@ -8338,7 +8922,7 @@ const phase11 = {
   ja_JP: {
     abilityUi: {
       ...phase3.ja_JP.abilityUi,
-      cast: { fishing: "釣り" },
+      cast: { fishing: "釣り", demonHeal: "悪魔の治癒" },
       actionBar: {
         ...phase3.ja_JP.abilityUi.actionBar,
         clearHint: "Shift-右クリックまたはShift-Deleteで消去",
@@ -8387,6 +8971,7 @@ const phase11 = {
         markerAria: "{marker}マーカーを設定",
         markerSelectedAria: "{marker}マーカー選択中",
       },
+      pet: phase11PetHud.ja_JP,
       social: {
         title: "ソーシャル",
         friendsTab: "フレンド",
@@ -8414,6 +8999,7 @@ const phase11 = {
         invite: "招待",
         disbandGuild: "ギルドを解散",
         leaveGuild: "ギルドを抜ける",
+        leavePrompt: "ギルドを脱退してもよろしいですか？",
         disbandPrompt: "ギルドを解散しますか？元には戻せません。",
         disbandConfirm: "解散",
         transferPrompt: "{name}をギルドマスターにしますか？あなたは士官になります。",
@@ -8471,7 +9057,7 @@ const phase11 = {
   pt_BR: {
     abilityUi: {
       ...phase3.pt_BR.abilityUi,
-      cast: { fishing: "Pesca" },
+      cast: { fishing: "Pesca", demonHeal: "Cura demoníaca" },
       actionBar: {
         ...phase3.pt_BR.abilityUi.actionBar,
         clearHint: "Shift-clique direito ou Shift-Delete para limpar",
@@ -8520,6 +9106,7 @@ const phase11 = {
         markerAria: "Definir marcador {marker}",
         markerSelectedAria: "Marcador {marker} selecionado",
       },
+      pet: phase11PetHud.pt_BR,
       social: {
         title: "Comunidade",
         friendsTab: "Amigos",
@@ -8547,6 +9134,7 @@ const phase11 = {
         invite: "Convidar",
         disbandGuild: "Dissolver guilda",
         leaveGuild: "Sair da guilda",
+        leavePrompt: "Tem certeza de que deseja sair da sua guilda?",
         disbandPrompt: "Dissolver sua guilda? Isso não pode ser desfeito.",
         disbandConfirm: "Dissolver",
         transferPrompt: "Tornar {name} Mestre da Guilda? Você passará a Oficial.",
@@ -8604,7 +9192,7 @@ const phase11 = {
   ru_RU: {
     abilityUi: {
       ...phase3.ru_RU.abilityUi,
-      cast: { fishing: "Рыбная ловля" },
+      cast: { fishing: "Рыбная ловля", demonHeal: "Исцеление демона" },
       actionBar: {
         ...phase3.ru_RU.abilityUi.actionBar,
         clearHint: "Shift-правый щелчок или Shift-Delete, чтобы очистить",
@@ -8653,6 +9241,7 @@ const phase11 = {
         markerAria: "Поставить метку {marker}",
         markerSelectedAria: "Метка {marker} выбрана",
       },
+      pet: phase11PetHud.ru_RU,
       social: {
         title: "Общение",
         friendsTab: "Друзья",
@@ -8680,6 +9269,7 @@ const phase11 = {
         invite: "Пригласить",
         disbandGuild: "Распустить гильдию",
         leaveGuild: "Покинуть гильдию",
+        leavePrompt: "Вы уверены, что хотите покинуть гильдию?",
         disbandPrompt: "Распустить вашу гильдию? Это нельзя отменить.",
         disbandConfirm: "Распустить",
         transferPrompt: "Назначить {name} главой гильдии? Вы станете офицером.",
@@ -8754,6 +9344,7 @@ const phase11EntitiesEn = {
   mobs: phase11NameTranslations(PHASE11_MOB_IDS, [
     "Elder Bristleback", "Ironvein Foreman", "Ironvein Sapper", "Marrowlord Varkas", "Mirejaw Frenzy", "Mirejaw the Ravenous",
     "Mogger", "Mogger Lackey", "Nhalia Mourner", "Sableweb Hatchling", "Sableweb Matriarch", "Sister Nhalia", "Varkas Boneguard",
+    "Imp", "Voidwalker",
   ], 'mob'),
   quests: {
     q_mogger_tracks: {
@@ -8788,6 +9379,7 @@ const phase11Entities = {
     mobs: phase11NameTranslations(PHASE11_MOB_IDS, [
       "Viejo Bristleback", "Capataz Vena de Hierro", "Zapador Vena de Hierro", "Señor de Médula Varkas", "Frenesí Mirejaw", "Mirejaw el Voraz",
       "Mogger", "Esbirro de Mogger", "Doliente de Nhalia", "Cría Sableweb", "Matriarca Sableweb", "Hermana Nhalia", "Guardahuesos de Varkas",
+      "Diablillo", "Caminante del Vacío",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -8820,6 +9412,7 @@ const phase11Entities = {
     mobs: phase11NameTranslations(PHASE11_MOB_IDS, [
       "Ancien Bristleback", "Contremaître Veinefer", "Sapeur Veinefer", "Seigneur de moelle Varkas", "Frénésie Mirejaw", "Mirejaw l'Affamé",
       "Mogger", "Laquais de Mogger", "Pleureuse de Nhalia", "Jeune Sableweb", "Matriarche Sableweb", "Soeur Nhalia", "Garde-os de Varkas",
+      "Diablotin", "Marcheur du Vide",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -8853,6 +9446,7 @@ const phase11Entities = {
     mobs: phase11NameTranslations(PHASE11_MOB_IDS, [
       "Bristleback anziano", "Caposquadra Venaferrata", "Zappatore Venaferrata", "Signore del Midollo Varkas", "Furia Mirejaw", "Mirejaw il Famelico",
       "Mogger", "Lacchè di Mogger", "Piangente di Nhalia", "Piccolo Sableweb", "Matriarca Sableweb", "Sorella Nhalia", "Guardia d'ossa di Varkas",
+      "Folletto", "Camminatore del Vuoto",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -8884,6 +9478,7 @@ const phase11Entities = {
     mobs: phase11NameTranslations(PHASE11_MOB_IDS, [
       "Alter Bristleback", "Eisenader-Vorarbeiter", "Eisenader-Pionier", "Marklord Varkas", "Mirejaw-Raserei", "Mirejaw der Gefräßige",
       "Mogger", "Moggers Lakai", "Nhalia-Trauernde", "Sableweb-Jungtier", "Sableweb-Matriarchin", "Schwester Nhalia", "Varkas' Knochenwache",
+      "Wichtel", "Leerwandler",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -8915,6 +9510,7 @@ const phase11Entities = {
     mobs: phase11NameTranslations(PHASE11_MOB_IDS, [
       "年长硬鬃", "铁脉工头", "铁脉爆破手", "髓王瓦尔卡斯", "泥颚狂鱼", "贪食者泥颚",
       "莫格", "莫格的爪牙", "娜莉娅哀悼者", "黑网幼蛛", "黑网主母", "娜莉娅修女", "瓦尔卡斯骨卫",
+      "小鬼", "虚空行者",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -8946,6 +9542,7 @@ const phase11Entities = {
     mobs: phase11NameTranslations(PHASE11_MOB_IDS, [
       "年長硬鬃", "鐵脈工頭", "鐵脈爆破手", "髓王瓦爾卡斯", "泥顎狂魚", "貪食者泥顎",
       "莫格", "莫格的爪牙", "娜莉亞哀悼者", "黑網幼蛛", "黑網主母", "娜莉亞修女", "瓦爾卡斯骨衛",
+      "小鬼", "虛空行者",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -8977,6 +9574,7 @@ const phase11Entities = {
     mobs: phase11NameTranslations(PHASE11_MOB_IDS, [
       "늙은 뻣센등뼈", "철맥 감독관", "철맥 폭파병", "골수군주 바르카스", "마이어죠 광란어", "굶주린 마이어죠",
       "모거", "모거의 졸개", "날리아 애도자", "검은그물 새끼", "검은그물 우두머리", "자매 날리아", "바르카스 뼈수호병",
+      "임프", "공허추적자",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9008,6 +9606,7 @@ const phase11Entities = {
     mobs: phase11NameTranslations(PHASE11_MOB_IDS, [
       "老ブリストルバック", "鉄脈の現場監督", "鉄脈の爆破兵", "髄王ヴァーカス", "マイアジョーの狂魚", "貪るマイアジョー",
       "モガー", "モガーの手下", "ナリアの嘆き手", "セーブルウェブの幼体", "セーブルウェブの女家長", "シスター・ナリア", "ヴァーカスの骨衛兵",
+      "インプ", "ヴォイドウォーカー",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9039,6 +9638,7 @@ const phase11Entities = {
     mobs: phase11NameTranslations(PHASE11_MOB_IDS, [
       "Bristleback ancião", "Capataz Veio de Ferro", "Sapador Veio de Ferro", "Senhor da Medula Varkas", "Frenesi Mirejaw", "Mirejaw, o Voraz",
       "Mogger", "Lacaio de Mogger", "Pranteadora de Nhalia", "Filhote Sableweb", "Matriarca Sableweb", "Irmã Nhalia", "Guardião dos ossos de Varkas",
+      "Diabrete", "Caminhante do Vazio",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9070,6 +9670,7 @@ const phase11Entities = {
     mobs: phase11NameTranslations(PHASE11_MOB_IDS, [
       "Старый Щетиноспин", "Прораб Железной жилы", "Сапер Железной жилы", "Владыка костного мозга Варкас", "Бешенство Миреджо", "Миреджо Ненасытный",
       "Моггер", "Приспешник Моггера", "Плакальщица Налии", "Детеныш Сейблвеб", "Матриарх Сейблвеб", "Сестра Налия", "Костяной страж Варкаса",
+      "Бес", "Страж Бездны",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9090,6 +9691,675 @@ const phase11Entities = {
 
 phase11Entities.es_ES = phase11Entities.es;
 phase11Entities.fr_CA = phase11Entities.fr_FR;
+
+// Phase 11 overlay extension: class quality-of-life abilities + Drowned Temple
+// (PR #390/#392). Merged into each locale's entities below.
+const DROWNED_ITEM_IDS = [
+  "briny_idol", "drowned_offering", "drownedmoon_kris", "drownedmoon_maul", "drownedmoon_scepter", "drownstep_sabatons", "drownstep_slippers", "drownstep_treads", "moongate_rubbing", "moonpale_scale", "moonscale_saber", "moonshroud_breastplate", "moonshroud_robe", "moonshroud_tunic", "pale_pearl", "palecoil_heartscale", "palecoil_rod", "selthes_seastriders", "tideglass_dirk", "tidewatchers_wraps", "ysols_pearl_greaves"
+] as const;
+
+const DROWNED_MOB_IDS = [
+  "choirmother_selthe", "drowned_templeguard", "drowned_votary", "glimmermere_wader", "glimmerscale_lurker", "moonspawn", "pale_choir_acolyte", "pearlguard_sentinel", "sethrael_palecoil", "warlock_imp", "warlock_voidwalker", "ysolei"
+] as const;
+
+const phase11ExtraEn = {
+    abilities: abilityTranslations([
+      ["bear_charge", "Bear Charge", "Charge an enemy, generating 9 rage and stunning it for 1 sec. 8-25 yd range. Bear Form only."],
+      ["demoralizing_roar", "Demoralizing Roar", "Demoralizes nearby enemies, reducing their attack power by 20 for 20 sec. Bear Form only."],
+      ["prowl", "Prowl", "Enter stealth while in Wolf Form. Cannot be used in combat."],
+      ["rake", "Rake", "A stealth opener that rakes the enemy for weapon damage plus {damage} and causes bleeding damage over 9 sec. Awards 1 combo point. Wolf Form only."],
+      ["revive_pet", "Revive Pet", "Revives your dead pet and returns it to your side."],
+    ]),
+    items: phase11NameTranslations(DROWNED_ITEM_IDS, [
+      "Briny Idol", "Drowned Offering", "Drowned Moon Kris", "Drowned Moon Maul", "Drowned Moon Scepter", "Drownstep Sabatons", "Drownstep Slippers", "Drownstep Treads", "Warding Rubbing", "Moonpale Scale", "Moonscale Saber", "Moonshroud Breastplate", "Moonshroud Robe", "Moonshroud Tunic", "Pale Pearl", "Sethrael's Heartscale", "Palecoil Rod", "Selthe's Sea-Striders", "Tideglass Dirk", "Tidewatcher's Wraps", "Ysolei's Pearl Greaves"
+    ], 'drowned item'),
+    mobs: phase11NameTranslations(DROWNED_MOB_IDS, [
+      "Choirmother Selthe", "Drowned Templeguard", "Drowned Votary", "Glimmermere Wader", "Glimmerscale Lurker", "Moonspawn", "Pale Choir Acolyte", "Pearlguard Sentinel", "Sethrael the Palecoil", "Fire Demon", "Void Demon", "Ysolei, Avatar of the Drowned Moon"
+    ], 'drowned mob'),
+    npcs: {
+      tidewatcher_ondrel: { name: "Ondrel Vane", title: "Tidewatcher", greeting: "The mere drinks the moonlight, {className}, and gives back the drowned. I have watched that gate for thirty nights — and tonight it is open." },
+    },
+    quests: {
+      q_drowned_choir: {
+        title: "The Drowned Choir",
+        text: "The waders do not act alone. Among them walk the Drowned Votaries — the cult that sank with the temple, still in their rotted vestments, still singing the prayer from the shore-rocks. Silence eight of them, and bring me six of the offerings they carry. I would know what they mean to give their goddess.",
+        completion: "Pearls, knuckle-bones, a child's carved fish... grave-gifts, {playerName}. They are not raising the dead. They are dressing them, the way you dress a body for burial. The temple is a tomb that refuses to close.",
+        objectives: { 0: { label: "Drowned Votary silenced" }, 1: { label: "Drowned Offering" } },
+      },
+      q_drowned_moon: {
+        title: "The Drowned Moon",
+        text: "I have read the last of the rubbings, {playerName}, and I understand now what the cult drowned themselves to keep asleep. Ysolei — the Drowned Moon made flesh — coils on the altar at the temple's heart, and the stolen warmth of every life the mere took is pouring into her waking. When the moon stands full she rises, and the water rises with her — the tarn, the wall, the whole mountain under it. Gather the strongest you can find and put her back to sleep. For good, this time.",
+        completion: "The altar is dark, the water is still, and the moon over the tarn is only the moon. You drowned a goddess tonight, {playerName} — and the mountain will never know how close it came. Let the wardens of the shore-rocks rest easy at last.",
+        objectives: { 0: { label: "Ysolei, Avatar of the Drowned Moon, slain" } },
+      },
+      q_glimmermere_light: {
+        title: "Light on the Water",
+        text: "Look there, {playerName} — under the surface, a stair of pale stone running down into the dark, and a gate of cold light at the head of it. The old wardens scratched warnings into the shore-rocks before the water took them. Take a rubbing of one for me; I would read what they feared before we go any closer.",
+        completion: "A waking-prayer... to something they called the Drowned Moon. And below it, in a steadier hand: \"It only sleeps.\" The water has been listening a long time, {playerName}.",
+        objectives: { 0: { label: "Warding Rubbing taken" } },
+      },
+      q_palecoil: {
+        title: "Sethrael the Palecoil",
+        text: "One shape in the mere is no drowned man. A serpent the colour of bone glides the deep shelf where the stair begins — Sethrael, the rubbings call it, the Palecoil, the moon's own watch-beast. While it guards that water, no one reaches the gate alive. Go down to the shelf and kill it, {playerName}. Take its heartscale so I know the deed is done.",
+        completion: "Cold as the bottom of the world, and still it twitches. The shelf is clear, {playerName} — the stair to the gate stands open. I almost wish it did not.",
+        objectives: { 0: { label: "Sethrael's Heartscale" } },
+      },
+      q_silence_the_choir: {
+        title: "Silence the Choir",
+        text: "The singing comes from below the gate now, and one voice leads it: Choirmother Selthe, who first taught the cult to drown without dying. While she keeps the prayer, the temple will never sleep — and the mere will never stop giving up its dead. Take companions through the gate and end her. This is no errand for a lone blade, {playerName}.",
+        completion: "The prayer falters... and for the first time in thirty nights, the mere is quiet. But quiet is not the same as ended. Selthe was only the choir. Something below it still listens.",
+        objectives: { 0: { label: "Choirmother Selthe slain" } },
+      },
+      q_tarn_waders: {
+        title: "What the Tarn Gives Up",
+        text: "Since the gate opened, things climb out of the mere at dusk — bloated, pale, finned where hands ought to be. Glimmermere Waders, the old rubbings name them. They drag anything living back down with them. Cull ten before they thin my watch to nothing.",
+        completion: "Ten back in the water. They feel no cold, {playerName}, and no fear — only the pull of that gate. Whatever sings to them, it sings loud.",
+        objectives: { 0: { label: "Glimmermere Wader slain" } },
+      },
+    },
+    dungeons: {
+      drowned_temple: { name: "The Drowned Temple", enterText: "You step through the moongate — the air turns to cold water and pale light, and the singing closes over your head.", leaveText: "You surface through the moongate into the mountain night." },
+    },
+};
+
+const phase11Extra = {
+  en: phase11ExtraEn,
+  es: {
+    abilities: abilityTranslations([
+      ["bear_charge", "Embestida del oso", "Embiste a un enemigo, generando 9 de furia y aturdiéndolo durante 1 s. Alcance de 7 a 23 m. Solo en Forma de oso."],
+      ["demoralizing_roar", "Rugido desmoralizador", "Desmoraliza a los enemigos cercanos, reduciendo su poder de ataque en 20 durante 20 s. Solo en Forma de oso."],
+      ["prowl", "Acechar", "Entra en sigilo mientras estás en Forma de lobo. No puede usarse en combate."],
+      ["rake", "Zarpazo", "Una apertura sigilosa que desgarra al enemigo causando el daño del arma más {damage} y provoca daño por sangrado durante 9 s. Otorga 1 punto de combo. Solo en Forma de lobo."],
+      ["revive_pet", "Revivir mascota", "Revive a tu mascota muerta y la devuelve a tu lado."],
+    ]),
+    items: phase11NameTranslations(DROWNED_ITEM_IDS, [
+      "Ídolo salobre", "Ofrenda ahogada", "Kris de la Luna Ahogada", "Maza de la Luna Ahogada", "Cetro de la Luna Ahogada", "Escarpes de Paso Ahogado", "Babuchas de Paso Ahogado", "Botas de Paso Ahogado", "Calco protector", "Escama de Lunapálida", "Sable de Escama Lunar", "Peto del Sudario Lunar", "Túnica del Sudario Lunar", "Sobreveste del Sudario Lunar", "Perla pálida", "Escama del corazón de Sethrael", "Vara de Espiral Pálida", "Zancadas marinas de Selthe", "Daga de Vidriomarea", "Vendas del Vigía de la Marea", "Grebas de perla de Ysolei"
+    ], 'drowned item'),
+    mobs: phase11NameTranslations(DROWNED_MOB_IDS, [
+      "Selthe, madre del coro", "Guardián ahogado del templo", "Devoto ahogado", "Vadeador de Glimmermere", "Acechador de Escama Reluciente", "Engendro lunar", "Acólito del Coro Pálido", "Centinela de la Guardia de Perla", "Sethrael, la Espiral Pálida", "Demonio de fuego", "Demonio del vacío", "Ysolei, Avatar de la Luna Ahogada"
+    ], 'drowned mob'),
+    npcs: {
+      tidewatcher_ondrel: { name: "Ondrel Vane", title: "Vigía de la Marea", greeting: "El lago bebe la luz de la luna, {className}, y devuelve a los ahogados. He vigilado esa puerta durante treinta noches... y esta noche está abierta." },
+    },
+    quests: {
+      q_drowned_choir: {
+        title: "El Coro Ahogado",
+        text: "Los vadeadores no actúan solos. Entre ellos caminan los Devotos Ahogados: la secta que se hundió con el templo, aún con sus vestiduras putrefactas, aún entonando la plegaria desde las rocas de la orilla. Silencia a ocho de ellos y tráeme seis de las ofrendas que portan. Quiero saber qué pretenden entregar a su diosa.",
+        completion: "Perlas, nudillos, un pez tallado de niño... ofrendas funerarias, {playerName}. No están resucitando a los muertos. Los están vistiendo, como se viste un cuerpo para el entierro. El templo es una tumba que se niega a cerrarse.",
+        objectives: { 0: { label: "Devoto ahogado silenciado" }, 1: { label: "Ofrenda ahogada" } },
+      },
+      q_drowned_moon: {
+        title: "La Luna Ahogada",
+        text: "He leído el último de los calcos, {playerName}, y ahora comprendo lo que la secta se ahogó para mantener dormido. Ysolei —la Luna Ahogada hecha carne— se enrosca en el altar en el corazón del templo, y el calor robado de cada vida que el lago se llevó se vierte en su despertar. Cuando la luna esté llena, ella se alzará, y el agua se alzará con ella: el lago, el muro, toda la montaña que hay debajo. Reúne a los más fuertes que encuentres y vuelve a dormirla. Esta vez, para siempre.",
+        completion: "El altar está apagado, el agua quieta, y la luna sobre el lago no es más que la luna. Esta noche ahogaste a una diosa, {playerName}, y la montaña nunca sabrá cuán cerca estuvo. Que los guardianes de las rocas de la orilla descansen al fin tranquilos.",
+        objectives: { 0: { label: "Ysolei, Avatar de la Luna Ahogada, abatida" } },
+      },
+      q_glimmermere_light: {
+        title: "Luz sobre el agua",
+        text: "Mira allí, {playerName}: bajo la superficie, una escalera de piedra pálida que desciende hacia la oscuridad, y una puerta de luz fría en lo alto de ella. Los viejos guardianes grabaron advertencias en las rocas de la orilla antes de que el agua se los llevara. Tómame un calco de una de ellas; quiero leer qué temían antes de acercarnos más.",
+        completion: "Una plegaria de despertar... a algo que llamaban la Luna Ahogada. Y debajo, con pulso más firme: «Solo duerme». El agua lleva mucho tiempo escuchando, {playerName}.",
+        objectives: { 0: { label: "Calco protector tomado" } },
+      },
+      q_palecoil: {
+        title: "Sethrael, la Espiral Pálida",
+        text: "Una silueta en el lago no es ningún ahogado. Una serpiente del color del hueso se desliza por la honda repisa donde empieza la escalera: Sethrael, la llaman los calcos, la Espiral Pálida, la bestia guardiana de la propia luna. Mientras vigile esas aguas, nadie llega vivo a la puerta. Baja a la repisa y mátala, {playerName}. Trae su escama del corazón para que sepa que está hecho.",
+        completion: "Fría como el fondo del mundo, y aún se estremece. La repisa está despejada, {playerName}: la escalera hacia la puerta queda abierta. Casi desearía que no fuera así.",
+        objectives: { 0: { label: "Escama del corazón de Sethrael" } },
+      },
+      q_silence_the_choir: {
+        title: "Silencia el coro",
+        text: "El canto viene ahora de debajo de la puerta, y una voz lo guía: Selthe, la madre del coro, que enseñó por primera vez a la secta a ahogarse sin morir. Mientras ella mantenga la plegaria, el templo nunca dormirá, y el lago nunca dejará de devolver a sus muertos. Lleva compañeros a través de la puerta y acaba con ella. Esto no es tarea para una espada solitaria, {playerName}.",
+        completion: "La plegaria flaquea... y por primera vez en treinta noches, el lago está en silencio. Pero el silencio no es lo mismo que el final. Selthe era solo el coro. Algo debajo de él aún escucha.",
+        objectives: { 0: { label: "Selthe, madre del coro, abatida" } },
+      },
+      q_tarn_waders: {
+        title: "Lo que el lago entrega",
+        text: "Desde que la puerta se abrió, hay cosas que trepan fuera del lago al anochecer: hinchadas, pálidas, con aletas donde deberían tener manos. Vadeadores de Glimmermere, los nombran los viejos calcos. Arrastran consigo a las profundidades cualquier cosa viva. Abate a diez antes de que mi guardia quede reducida a nada.",
+        completion: "Diez de vuelta al agua. No sienten frío, {playerName}, ni miedo: solo la atracción de esa puerta. Sea lo que sea lo que les canta, canta fuerte.",
+        objectives: { 0: { label: "Vadeador de Glimmermere abatido" } },
+      },
+    },
+    dungeons: {
+      drowned_temple: { name: "El Templo Ahogado", enterText: "Atraviesas la puerta lunar: el aire se vuelve agua fría y luz pálida, y el canto se cierra sobre tu cabeza.", leaveText: "Emerges a través de la puerta lunar a la noche de la montaña." },
+    },
+  },
+  fr_FR: {
+    abilities: abilityTranslations([
+      ["bear_charge", "Charge de l'ours", "Charge un ennemi, génère 9 points de rage et l'étourdit pendant 1 sec. Portée de 7 à 23 mètres. Forme d'ours uniquement."],
+      ["demoralizing_roar", "Rugissement démoralisant", "Démoralise les ennemis proches, réduisant leur puissance d'attaque de 20 pendant 20 sec. Forme d'ours uniquement."],
+      ["prowl", "Rôder", "Passe en camouflage tant que vous êtes en forme de loup. Inutilisable en combat."],
+      ["rake", "Lacérer", "Une attaque d'ouverture en camouflage qui lacère l'ennemi pour les dégâts de l'arme plus {damage} et inflige des dégâts de saignement sur 9 sec. Octroie 1 point de combo. Forme de loup uniquement."],
+      ["revive_pet", "Ranimer le familier", "Ranime votre familier mort et le ramène à vos côtés."],
+    ]),
+    items: phase11NameTranslations(DROWNED_ITEM_IDS, [
+      "Idole saumâtre", "Offrande noyée", "Kriss de la Lune noyée", "Maillet de la Lune noyée", "Sceptre de la Lune noyée", "Solerets du Pas noyé", "Chaussons du Pas noyé", "Sandales du Pas noyé", "Frottis de protection", "Écaille de Pâlelune", "Sabre en écailles de lune", "Plastron du Linceul de lune", "Robe du Linceul de lune", "Tunique du Linceul de lune", "Perle blafarde", "Écaille de cœur de Sethrael", "Verge de Pâlanneau", "Arpenteuses des mers de Selthe", "Dague de verre de marée", "Bandes du Veille-marées", "Jambières de perle d'Ysolei"
+    ], 'drowned item'),
+    mobs: phase11NameTranslations(DROWNED_MOB_IDS, [
+      "Selthe, mère de chœur", "Garde du temple noyé", "Dévot noyé", "Pataugeur de Lac-miroitant", "Rôdeur aux écailles miroitantes", "Engeance de lune", "Acolyte du Chœur blafard", "Sentinelle de la Garde de perle", "Sethrael le Pâlanneau", "Démon de feu", "Démon du néant", "Ysolei, avatar de la Lune noyée"
+    ], 'drowned mob'),
+    npcs: {
+      tidewatcher_ondrel: { name: "Ondrel Vane", title: "Veille-marées", greeting: "Le lac boit le clair de lune, {className}, et rend les noyés. J'ai surveillé cette porte trente nuits durant — et cette nuit, elle est ouverte." },
+    },
+    quests: {
+      q_drowned_choir: {
+        title: "Le Chœur noyé",
+        text: "Les pataugeurs n'agissent pas seuls. Parmi eux marchent les Dévots noyés — la secte qui a sombré avec le temple, encore vêtue de ses ornements putréfiés, chantant toujours la prière depuis les rochers du rivage. Réduis-en huit au silence et rapporte-moi six des offrandes qu'ils portent. Je veux savoir ce qu'ils comptent donner à leur déesse.",
+        completion: "Des perles, des osselets, le poisson sculpté d'un enfant... des présents funéraires, {playerName}. Ils ne relèvent pas les morts. Ils les parent, comme on apprête un corps pour l'enterrement. Le temple est une tombe qui refuse de se refermer.",
+        objectives: { 0: { label: "Dévot noyé réduit au silence" }, 1: { label: "Offrande noyée" } },
+      },
+      q_drowned_moon: {
+        title: "La Lune noyée",
+        text: "J'ai lu les derniers frottis, {playerName}, et je comprends à présent ce que la secte s'est noyée pour garder endormi. Ysolei — la Lune noyée faite chair — se love sur l'autel au cœur du temple, et la chaleur volée à chaque vie que le lac a prise se déverse dans son réveil. Quand la lune sera pleine, elle se lèvera, et l'eau se lèvera avec elle — le tarn, le rempart, la montagne tout entière en dessous. Rassemble les plus forts que tu pourras trouver et rendors-la. Pour de bon, cette fois.",
+        completion: "L'autel est éteint, l'eau est immobile, et la lune au-dessus du tarn n'est plus que la lune. Tu as noyé une déesse cette nuit, {playerName} — et la montagne ne saura jamais à quel point elle a frôlé l'abîme. Que les gardiens des rochers du rivage reposent enfin en paix.",
+        objectives: { 0: { label: "Ysolei, avatar de la Lune noyée, tuée" } },
+      },
+      q_glimmermere_light: {
+        title: "Lumière sur l'eau",
+        text: "Regarde là, {playerName} — sous la surface, un escalier de pierre pâle qui descend dans les ténèbres, et une porte de lumière froide à son sommet. Les anciens gardiens ont gravé des avertissements dans les rochers du rivage avant que l'eau ne les emporte. Prends-en un frottis pour moi ; je veux lire ce qu'ils redoutaient avant que nous n'allions plus loin.",
+        completion: "Une prière d'éveil... adressée à ce qu'ils appelaient la Lune noyée. Et au-dessous, d'une main plus ferme : « Elle ne fait que dormir. » L'eau écoute depuis bien longtemps, {playerName}.",
+        objectives: { 0: { label: "Frottis de protection prélevé" } },
+      },
+      q_palecoil: {
+        title: "Sethrael le Pâlanneau",
+        text: "Une forme dans le lac n'est pas un noyé. Un serpent de la couleur de l'os glisse sur la corniche profonde où commence l'escalier — Sethrael, le nomment les frottis, le Pâlanneau, la bête de garde de la lune elle-même. Tant qu'il garde ces eaux, nul n'atteint la porte vivant. Descends jusqu'à la corniche et tue-le, {playerName}. Prends son écaille de cœur, que je sache la chose accomplie.",
+        completion: "Froid comme le fond du monde, et pourtant il tressaille encore. La corniche est dégagée, {playerName} — l'escalier vers la porte est ouvert. Je souhaiterais presque qu'il ne le fût pas.",
+        objectives: { 0: { label: "Écaille de cœur de Sethrael" } },
+      },
+      q_silence_the_choir: {
+        title: "Faire taire le chœur",
+        text: "Le chant monte désormais de sous la porte, et une voix le mène : Selthe, la mère de chœur, qui la première a appris à la secte à se noyer sans mourir. Tant qu'elle entretient la prière, le temple ne dormira jamais — et le lac ne cessera jamais de rendre ses morts. Emmène des compagnons par la porte et achève-la. Ce n'est pas une besogne pour une lame solitaire, {playerName}.",
+        completion: "La prière faiblit... et pour la première fois en trente nuits, le lac est silencieux. Mais le silence n'est pas la fin. Selthe n'était que le chœur. Quelque chose, en dessous, écoute encore.",
+        objectives: { 0: { label: "Selthe, mère de chœur, tuée" } },
+      },
+      q_tarn_waders: {
+        title: "Ce que le tarn rend",
+        text: "Depuis que la porte s'est ouverte, des choses sortent du lac au crépuscule — boursouflées, blafardes, dotées de nageoires là où devraient être des mains. Des Pataugeurs de Lac-miroitant, ainsi les nomment les anciens frottis. Ils entraînent tout être vivant au fond avec eux. Abats-en dix avant qu'ils ne réduisent ma garde à néant.",
+        completion: "Dix rendus à l'eau. Ils ne ressentent ni le froid, {playerName}, ni la peur — seulement l'attrait de cette porte. Quoi qu'il leur chante, cela chante fort.",
+        objectives: { 0: { label: "Pataugeur de Lac-miroitant tué" } },
+      },
+    },
+    dungeons: {
+      drowned_temple: { name: "Le Temple noyé", enterText: "Tu franchis la porte de lune — l'air se mue en eau froide et en lumière blafarde, et le chant se referme au-dessus de ta tête.", leaveText: "Tu refais surface par la porte de lune dans la nuit de la montagne." },
+    },
+  },
+  it_IT: {
+    abilities: abilityTranslations([
+      ["bear_charge", "Carica dell'Orso", "Carica un nemico, generando 9 punti rabbia e stordendolo per 1 sec. Gittata di 7-23 metri. Solo in Forma dell'Orso."],
+      ["demoralizing_roar", "Ruggito Demoralizzante", "Demoralizza i nemici vicini, riducendone la potenza d'attacco di 20 per 20 sec. Solo in Forma dell'Orso."],
+      ["prowl", "Agguato", "Entra in furtività mentre sei in Forma del Lupo. Non utilizzabile in combattimento."],
+      ["rake", "Sventramento", "Un'apertura furtiva che dilania il nemico infliggendo danno dell'arma più {damage} e provoca danno da sanguinamento per 9 sec. Conferisce 1 punto combo. Solo in Forma del Lupo."],
+      ["revive_pet", "Rianima Famiglio", "Rianima il tuo famiglio morto e lo richiama al tuo fianco."],
+    ]),
+    items: phase11NameTranslations(DROWNED_ITEM_IDS, [
+      "Idolo Salmastro", "Offerta Annegata", "Kris della Luna Annegata", "Maglio della Luna Annegata", "Scettro della Luna Annegata", "Scarpe d'Arme di Passoannegato", "Pantofole di Passoannegato", "Stivali di Passoannegato", "Calco Protettivo", "Squama di Lunapallida", "Sciabola di Lunasquama", "Corazza del Sudario Lunare", "Veste del Sudario Lunare", "Tunica del Sudario Lunare", "Perla Pallida", "Squamacuore di Sethrael", "Verga di Spiropallido", "Camminamari di Selthe", "Pugnale di Vetromarea", "Fasce del Guardamarea", "Schinieri di Perla di Ysolei"
+    ], 'drowned item'),
+    mobs: phase11NameTranslations(DROWNED_MOB_IDS, [
+      "Selthe Madre del Coro", "Guardiano del Tempio Annegato", "Devoto Annegato", "Guadatore di Glimmermere", "Acquattato di Glimmerscaglia", "Progenie Lunare", "Accolito del Coro Pallido", "Sentinella della Guardia di Perla", "Sethrael lo Spiropallido", "Demone di Fuoco", "Demone del Vuoto", "Ysolei, Avatar della Luna Annegata"
+    ], 'drowned mob'),
+    npcs: {
+      tidewatcher_ondrel: { name: "Ondrel Vane", title: "Guardamarea", greeting: "Lo stagno beve la luce della luna, {className}, e restituisce gli annegati. Sorveglio quel cancello da trenta notti — e stanotte è aperto." },
+    },
+    quests: {
+      q_drowned_choir: {
+        title: "Il Coro Annegato",
+        text: "I guadatori non agiscono da soli. Tra loro camminano i Devoti Annegati — la setta che affondò col tempio, ancora nelle loro vesti marcite, ancora intenti a cantare la preghiera dalle rocce della riva. Riducine otto al silenzio e portami sei delle offerte che recano. Voglio sapere cosa intendono donare alla loro dea.",
+        completion: "Perle, ossa di nocche, un pesce intagliato da un bambino... doni funebri, {playerName}. Non stanno risvegliando i morti. Li stanno vestendo, come si veste un corpo per la sepoltura. Il tempio è una tomba che si rifiuta di chiudersi.",
+        objectives: { 0: { label: "Devoto Annegato ridotto al silenzio" }, 1: { label: "Offerta Annegata" } },
+      },
+      q_drowned_moon: {
+        title: "La Luna Annegata",
+        text: "Ho letto l'ultimo dei calchi, {playerName}, e ora capisco cosa la setta annegò se stessa per tenere addormentato. Ysolei — la Luna Annegata fatta carne — si avvolge sull'altare nel cuore del tempio, e il calore rubato a ogni vita che lo stagno ha preso si riversa nel suo risveglio. Quando la luna sarà piena, lei sorgerà, e l'acqua sorgerà con lei — il lago, la diga, l'intera montagna sotto di esso. Raduna i più forti che riesci a trovare e rimettila a dormire. Per sempre, stavolta.",
+        completion: "L'altare è spento, l'acqua è immobile, e la luna sul lago è soltanto la luna. Hai annegato una dea stanotte, {playerName} — e la montagna non saprà mai quanto fu vicina alla fine. Lascia che i guardiani delle rocce della riva riposino finalmente in pace.",
+        objectives: { 0: { label: "Ysolei, Avatar della Luna Annegata, uccisa" } },
+      },
+      q_glimmermere_light: {
+        title: "Luce sull'Acqua",
+        text: "Guarda là, {playerName} — sotto la superficie, una scalinata di pietra pallida che scende nel buio, e un cancello di luce gelida in cima ad essa. I vecchi guardiani incisero avvertimenti nelle rocce della riva prima che l'acqua li prendesse. Fammi un calco di uno; voglio leggere ciò che temevano prima di avvicinarci ancora.",
+        completion: "Una preghiera di risveglio... a qualcosa che chiamavano la Luna Annegata. E sotto, in una mano più ferma: \"Si limita a dormire\". L'acqua ascolta da molto tempo, {playerName}.",
+        objectives: { 0: { label: "Calco Protettivo prelevato" } },
+      },
+      q_palecoil: {
+        title: "Sethrael lo Spiropallido",
+        text: "Una sagoma nello stagno non è un annegato. Un serpente del colore dell'osso scivola sulla cengia profonda dove comincia la scalinata — Sethrael, lo chiamano i calchi, lo Spiropallido, la bestia di guardia della luna stessa. Finché custodisce quell'acqua, nessuno raggiunge vivo il cancello. Scendi alla cengia e uccidilo, {playerName}. Prendi la sua squamacuore così saprò che l'impresa è compiuta.",
+        completion: "Freddo come il fondo del mondo, eppure ancora si contorce. La cengia è libera, {playerName} — la scalinata verso il cancello è aperta. Quasi vorrei che non lo fosse.",
+        objectives: { 0: { label: "Squamacuore di Sethrael" } },
+      },
+      q_silence_the_choir: {
+        title: "Zittisci il Coro",
+        text: "Il canto proviene ora da sotto il cancello, e una voce lo guida: Selthe Madre del Coro, colei che per prima insegnò alla setta ad annegare senza morire. Finché lei mantiene la preghiera, il tempio non dormirà mai — e lo stagno non smetterà mai di restituire i suoi morti. Conduci dei compagni oltre il cancello e poni fine a lei. Questa non è impresa per una lama solitaria, {playerName}.",
+        completion: "La preghiera vacilla... e per la prima volta in trenta notti, lo stagno è silenzioso. Ma silenzio non è la stessa cosa di fine. Selthe era soltanto il coro. Qualcosa sotto di esso ascolta ancora.",
+        objectives: { 0: { label: "Selthe Madre del Coro uccisa" } },
+      },
+      q_tarn_waders: {
+        title: "Ciò che il Lago Restituisce",
+        text: "Da quando il cancello si è aperto, al crepuscolo cose risalgono dallo stagno — gonfie, pallide, con pinne là dove dovrebbero esserci le mani. Guadatori di Glimmermere, li nominano i vecchi calchi. Trascinano giù con sé qualunque cosa viva. Abbattine dieci prima che riducano a nulla la mia veglia.",
+        completion: "Dieci di nuovo nell'acqua. Non sentono il freddo, {playerName}, né la paura — solo il richiamo di quel cancello. Qualunque cosa canti per loro, canta forte.",
+        objectives: { 0: { label: "Guadatore di Glimmermere ucciso" } },
+      },
+    },
+    dungeons: {
+      drowned_temple: { name: "Il Tempio Annegato", enterText: "Attraversi il cancello lunare — l'aria si fa acqua gelida e luce pallida, e il canto si richiude sopra la tua testa.", leaveText: "Riemergi attraverso il cancello lunare nella notte della montagna." },
+    },
+  },
+  de_DE: {
+    abilities: abilityTranslations([
+      ["bear_charge", "Bärensturm", "Stürmt auf einen Gegner zu, erzeugt 9 Wut und betäubt ihn für 1 Sek. Reichweite 7-23 Meter. Nur in Bärengestalt."],
+      ["demoralizing_roar", "Demoralisierendes Gebrüll", "Demoralisiert nahe Gegner und senkt ihre Angriffskraft 20 Sek. lang um 20. Nur in Bärengestalt."],
+      ["prowl", "Anschleichen", "Geht in Wolfsgestalt in den Schleichmodus über. Im Kampf nicht einsetzbar."],
+      ["rake", "Krallenhieb", "Ein Schleicheröffner, der den Gegner für Waffenschaden plus {damage} aufreißt und über 9 Sek. Blutungsschaden verursacht. Gewährt 1 Combopunkt. Nur in Wolfsgestalt."],
+      ["revive_pet", "Begleiter wiederbeleben", "Belebt deinen toten Begleiter wieder und ruft ihn an deine Seite zurück."],
+    ]),
+    items: phase11NameTranslations(DROWNED_ITEM_IDS, [
+      "Salzlaken-Götze", "Ertränkte Opfergabe", "Kris des Ertränkten Mondes", "Streitkolben des Ertränkten Mondes", "Zepter des Ertränkten Mondes", "Ertränkungsschritt-Eisenschuhe", "Ertränkungsschritt-Schläppchen", "Ertränkungsschritt-Trittlinge", "Schutzzeichen-Abrieb", "Mondbleiche Schuppe", "Mondschuppen-Säbel", "Mondschleier-Brustpanzer", "Mondschleier-Robe", "Mondschleier-Wams", "Bleiche Perle", "Sethraels Herzschuppe", "Bleichwinder-Rute", "Selthes Meeresschreiter", "Gezeitenglas-Dolch", "Bandagen des Gezeitenwächters", "Ysoleis Perlenbeinschienen"
+    ], 'drowned item'),
+    mobs: phase11NameTranslations(DROWNED_MOB_IDS, [
+      "Chormutter Selthe", "Ertränkte Tempelwache", "Ertränkter Andächtiger", "Schimmersee-Wäter", "Schimmerschuppen-Lauerer", "Mondbrut", "Akolyth des Bleichen Chors", "Perlwächter-Schildwache", "Sethrael der Bleichwinder", "Feuerdämon", "Leerendämon", "Ysolei, Avatar des Ertränkten Mondes"
+    ], 'drowned mob'),
+    npcs: {
+      tidewatcher_ondrel: { name: "Ondrel Vane", title: "Gezeitenwächter", greeting: "Der See trinkt das Mondlicht, {className}, und gibt die Ertränkten zurück. Dreißig Nächte lang habe ich jenes Tor bewacht — und heute Nacht steht es offen." },
+    },
+    quests: {
+      q_drowned_choir: {
+        title: "Der Ertränkte Chor",
+        text: "Die Wäter handeln nicht allein. Unter ihnen wandeln die Ertränkten Andächtigen — der Kult, der mit dem Tempel versank, noch immer in seinen verfaulten Gewändern, noch immer das Gebet von den Uferfelsen singend. Bringe acht von ihnen zum Schweigen und bring mir sechs der Opfergaben, die sie bei sich tragen. Ich will wissen, was sie ihrer Göttin darbringen wollen.",
+        completion: "Perlen, Fingerknöchel, ein geschnitzter Fisch eines Kindes... Grabgaben, {playerName}. Sie erwecken die Toten nicht. Sie kleiden sie ein, so wie man einen Leichnam für das Begräbnis ankleidet. Der Tempel ist ein Grab, das sich weigert, sich zu schließen.",
+        objectives: { 0: { label: "Ertränkter Andächtiger zum Schweigen gebracht" }, 1: { label: "Ertränkte Opfergabe" } },
+      },
+      q_drowned_moon: {
+        title: "Der Ertränkte Mond",
+        text: "Ich habe den letzten der Abriebe gelesen, {playerName}, und ich begreife nun, was der Kult sich selbst ertränkte, um es schlafen zu halten. Ysolei — der Ertränkte Mond, Fleisch geworden — windet sich um den Altar im Herzen des Tempels, und die gestohlene Wärme jedes Lebens, das der See nahm, strömt in ihr Erwachen. Wenn der Mond voll steht, erhebt sie sich, und das Wasser steigt mit ihr — der Bergsee, der Wall, der ganze Berg darunter. Versammle die Stärksten, die du finden kannst, und bring sie wieder zum Schlafen. Diesmal für immer.",
+        completion: "Der Altar ist dunkel, das Wasser ist still, und der Mond über dem Bergsee ist nur der Mond. Du hast heute Nacht eine Göttin ertränkt, {playerName} — und der Berg wird nie erfahren, wie nahe er dem Untergang war. Mögen die Wächter der Uferfelsen endlich in Frieden ruhen.",
+        objectives: { 0: { label: "Ysolei, Avatar des Ertränkten Mondes, erschlagen" } },
+      },
+      q_glimmermere_light: {
+        title: "Licht auf dem Wasser",
+        text: "Sieh dort, {playerName} — unter der Oberfläche eine Treppe aus bleichem Stein, die hinab ins Dunkel führt, und an ihrem Kopf ein Tor aus kaltem Licht. Die alten Wächter kratzten Warnungen in die Uferfelsen, ehe das Wasser sie holte. Nimm mir einen Abrieb von einer davon; ich will lesen, was sie fürchteten, bevor wir näher gehen.",
+        completion: "Ein Erweckungsgebet... an etwas, das sie den Ertränkten Mond nannten. Und darunter, in festerer Hand: \"Es schläft nur.\" Das Wasser lauscht schon lange, {playerName}.",
+        objectives: { 0: { label: "Schutzzeichen-Abrieb genommen" } },
+      },
+      q_palecoil: {
+        title: "Sethrael der Bleichwinder",
+        text: "Eine Gestalt im See ist kein ertränkter Mensch. Eine Schlange in der Farbe von Knochen gleitet über das tiefe Felsband, wo die Treppe beginnt — Sethrael, so nennen die Abriebe sie, der Bleichwinder, das Wachbiest des Mondes. Solange sie jenes Wasser bewacht, erreicht niemand das Tor lebend. Steig hinab zum Felsband und töte sie, {playerName}. Nimm ihre Herzschuppe, damit ich weiß, dass die Tat vollbracht ist.",
+        completion: "Kalt wie der Grund der Welt, und dennoch zuckt sie noch. Das Felsband ist frei, {playerName} — die Treppe zum Tor steht offen. Beinahe wünschte ich, sie täte es nicht.",
+        objectives: { 0: { label: "Sethraels Herzschuppe" } },
+      },
+      q_silence_the_choir: {
+        title: "Bringt den Chor zum Schweigen",
+        text: "Der Gesang kommt nun von unterhalb des Tores, und eine Stimme führt ihn an: Chormutter Selthe, die den Kult zuerst lehrte, zu ertrinken, ohne zu sterben. Solange sie das Gebet aufrechterhält, wird der Tempel niemals schlafen — und der See wird niemals aufhören, seine Toten herzugeben. Nimm Gefährten mit durch das Tor und mach ihr ein Ende. Dies ist kein Auftrag für eine einzelne Klinge, {playerName}.",
+        completion: "Das Gebet stockt... und zum ersten Mal seit dreißig Nächten ist der See still. Doch still ist nicht dasselbe wie beendet. Selthe war nur der Chor. Etwas darunter lauscht noch immer.",
+        objectives: { 0: { label: "Chormutter Selthe erschlagen" } },
+      },
+      q_tarn_waders: {
+        title: "Was der Bergsee herausgibt",
+        text: "Seit das Tor sich öffnete, klettern bei Einbruch der Dämmerung Dinge aus dem See — aufgedunsen, bleich, mit Flossen, wo Hände sein sollten. Schimmersee-Wäter nennen die alten Abriebe sie. Sie zerren alles Lebendige mit sich hinab. Erschlage zehn, bevor sie meine Wache auf nichts zusammenschmelzen lassen.",
+        completion: "Zehn zurück im Wasser. Sie spüren keine Kälte, {playerName}, und keine Furcht — nur den Sog jenes Tores. Was auch immer ihnen singt, es singt laut.",
+        objectives: { 0: { label: "Schimmersee-Wäter erschlagen" } },
+      },
+    },
+    dungeons: {
+      drowned_temple: { name: "Der Ertränkte Tempel", enterText: "Du trittst durch das Mondtor — die Luft wird zu kaltem Wasser und bleichem Licht, und der Gesang schließt sich über deinem Haupt.", leaveText: "Du tauchst durch das Mondtor empor in die Bergnacht." },
+    },
+  },
+  zh_CN: {
+    abilities: abilityTranslations([
+      ["bear_charge", "野熊冲锋", "冲向一名敌人，生成9点怒气并将其昏迷1秒。射程8-25码。仅限熊形态使用。"],
+      ["demoralizing_roar", "挫志怒吼", "震慑附近的敌人，使其攻击强度降低20点，持续20秒。仅限熊形态使用。"],
+      ["prowl", "潜行", "在狼形态下进入潜行状态。无法在战斗中使用。"],
+      ["rake", "撕抓", "一记潜行起手技，以武器伤害外加{damage}撕抓敌人，并造成持续9秒的流血伤害。获得1点连击点数。仅限狼形态使用。"],
+      ["revive_pet", "复活宠物", "复活你死去的宠物，并将其召回身边。"],
+    ]),
+    items: phase11NameTranslations(DROWNED_ITEM_IDS, [
+      "咸海神像", "溺亡祭品", "溺月波刃匕", "溺月巨锤", "溺月权杖", "溺踪战靴", "溺踪软鞋", "溺踪皮靴", "守誓拓文", "苍月之鳞", "月鳞军刀", "月帷胸甲", "月帷长袍", "月帷外衣", "苍白之珠", "瑟斯雷尔的心鳞", "苍盘法杖", "塞尔瑟的踏海者", "潮镜短刃", "守潮者裹手", "伊索蕾的珍珠护胫"
+    ], 'drowned item'),
+    mobs: phase11NameTranslations(DROWNED_MOB_IDS, [
+      "唱诗母塞尔瑟", "溺亡神殿卫", "溺亡信徒", "微光潭涉行者", "微光鳞潜伏者", "月之孽生", "苍白唱诗侍僧", "珍珠卫哨兵", "苍盘者瑟斯雷尔", "火焰恶魔", "虚空恶魔", "伊索蕾，溺月化身"
+    ], 'drowned mob'),
+    npcs: {
+      tidewatcher_ondrel: { name: "翁德雷尔·凡恩", title: "守潮者", greeting: "潭水饮尽月光，{className}，又将溺者吐还。我守望那道门户已有三十夜——而今夜，它开了。" },
+    },
+    quests: {
+      q_drowned_choir: {
+        title: "溺亡唱诗班",
+        text: "那些涉行者并非孤身行动。它们之中游走着溺亡信徒——随神殿一同沉没的邪教徒，至今仍披着腐烂的法衣，仍在岸边礁石上吟唱祷词。让其中八名永远噤声，再为我带回它们随身携带的六件祭品。我想知道它们打算献给女神什么。",
+        completion: "珍珠、指骨、一条孩童雕刻的小鱼……这些都是陪葬之物，{playerName}。它们并非要让死者复生，而是在为死者更衣，就像为下葬的尸身着装一般。这座神殿是一座拒绝合拢的坟墓。",
+        objectives: { 0: { label: "已使溺亡信徒噤声" }, 1: { label: "溺亡祭品" } },
+      },
+      q_drowned_moon: {
+        title: "溺月",
+        text: "我已读完最后一份拓文，{playerName}，如今我终于明白这邪教为何将自己溺死，只为让某物长眠。伊索蕾——溺月化作的血肉之躯——盘踞在神殿核心的祭坛之上，而这潭水夺去的每一条性命的余温，都正涌入她的苏醒。当满月当空，她便会升起，潭水也随她而涨——那山潭、那石壁、连同它脚下的整座大山。召集你能找到的最强者，让她重归长眠。这一次，要永远沉睡。",
+        completion: "祭坛已暗，潭水已静，山潭之上的月亮也终于只是月亮。今夜你溺杀了一位女神，{playerName}——这座大山永远不会知道它曾离覆灭如此之近。让岸边礁石上的守誓者们终能安息吧。",
+        objectives: { 0: { label: "伊索蕾，溺月化身，已被消灭" } },
+      },
+      q_glimmermere_light: {
+        title: "水上之光",
+        text: "看那里，{playerName}——水面之下，一道苍白石阶没入黑暗，阶顶有一道冷光铸成的门户。古时的守誓者在水吞没他们之前，将警语刻入岸边的礁石。替我拓下其中一块；在我们再靠近之前，我想读懂他们所惧为何物。",
+        completion: "一篇唤醒之祷……献给他们称作溺月之物。其下，以更沉稳的笔迹写着：“它只是在沉睡。”这潭水已聆听了很久很久，{playerName}。",
+        objectives: { 0: { label: "已拓取守誓拓文" } },
+      },
+      q_palecoil: {
+        title: "苍盘者瑟斯雷尔",
+        text: "潭中有一道身影绝非溺亡之人。一条骨色的巨蛇游弋于石阶起始处的深崖之上——拓文称它为瑟斯雷尔，苍盘者，溺月亲选的守护之兽。只要它仍守着那片水域，便无人能活着抵达门户。下到那深崖去杀了它，{playerName}。取下它的心鳞，让我知道事已了结。",
+        completion: "它冷如世界之底，却仍在抽搐。深崖已清，{playerName}——通往门户的石阶已然敞开。我几乎宁愿它仍封闭着。",
+        objectives: { 0: { label: "瑟斯雷尔的心鳞" } },
+      },
+      q_silence_the_choir: {
+        title: "令唱诗班噤声",
+        text: "如今歌声从门户之下传来，有一道嗓音领唱其间：唱诗母塞尔瑟，正是她最先教会邪教徒如何溺而不死。只要她还维系着那祷词，神殿便永不沉眠——这潭水也永不停止吐还它的亡者。带上同伴穿过那道门户，了结她。这绝非一柄孤刃所能担当的差事，{playerName}。",
+        completion: "祷词渐弱……三十夜来头一回，这潭水安静了下来。但安静并不等于终结。塞尔瑟不过是唱诗班而已。它之下仍有某物在聆听。",
+        objectives: { 0: { label: "唱诗母塞尔瑟已被消灭" } },
+      },
+      q_tarn_waders: {
+        title: "山潭所吐还之物",
+        text: "自那门户开启以来，每到黄昏便有东西从潭中爬出——肿胀、苍白，本该长手之处却生着鳍。古老的拓文称它们为微光潭涉行者。它们会把任何活物拖回水底。在它们把我的守望者杀得一个不剩之前，铲除十个。",
+        completion: "十个都回到了水里。它们感觉不到寒冷，{playerName}，也毫无惧意——只有那门户的牵引。无论是什么在向它们歌唱，那歌声都唱得震天响。",
+        objectives: { 0: { label: "微光潭涉行者已被消灭" } },
+      },
+    },
+    dungeons: {
+      drowned_temple: { name: "溺亡神殿", enterText: "你踏过那道月门——空气化作冰冷的水与苍白的光，歌声在你头顶合拢。", leaveText: "你穿过月门，浮上山间的夜色之中。" },
+    },
+  },
+  zh_TW: {
+    abilities: abilityTranslations([
+      ["bear_charge", "猛熊衝鋒", "向敵人衝鋒，產生 9 點怒氣並將其昏迷 1 秒。射程 8-25 公尺。僅限熊形態。"],
+      ["demoralizing_roar", "挫志怒吼", "挫敗附近敵人的士氣，使其攻擊強度降低 20，持續 20 秒。僅限熊形態。"],
+      ["prowl", "潛行", "在狼形態下進入隱匿狀態。無法於戰鬥中使用。"],
+      ["rake", "撕裂", "一招隱匿起手技，以武器傷害外加 {damage} 撕裂敵人，並造成持續 9 秒的流血傷害。給予 1 點連擊點數。僅限狼形態。"],
+      ["revive_pet", "復活寵物", "復活你已死亡的寵物，並使其重回你身邊。"],
+    ]),
+    items: phase11NameTranslations(DROWNED_ITEM_IDS, [
+      "鹹海神像", "溺者供品", "溺月波刃匕", "溺月巨槌", "溺月權杖", "沉踏戰靴", "沉踏軟履", "沉踏踏靴", "守護拓印", "蒼月之鱗", "月鱗彎刀", "月帷胸甲", "月帷長袍", "月帷外衣", "蒼白珍珠", "賽斯瑞爾的心鱗", "蒼盤法杖", "瑟爾瑟的踏海靴", "潮鏡短劍", "守潮者護腕", "伊索蕾的珍珠脛甲"
+    ], 'drowned item'),
+    mobs: phase11NameTranslations(DROWNED_MOB_IDS, [
+      "唱詩之母瑟爾瑟", "溺亡神殿守衛", "溺亡信徒", "微光湖涉者", "微鱗潛伏者", "月之裔", "蒼白唱詩侍僧", "珍珠衛哨兵", "蒼盤者賽斯瑞爾", "火焰惡魔", "虛空惡魔", "伊索蕾，溺月化身"
+    ], 'drowned mob'),
+    npcs: {
+      tidewatcher_ondrel: { name: "翁德瑞爾·韋恩", title: "守潮者", greeting: "湖水飲盡了月光，{className}，再將溺者吐還。我已守望那道門三十夜——而今夜，它開了。" },
+    },
+    quests: {
+      q_drowned_choir: {
+        title: "溺亡唱詩班",
+        text: "那些涉者並非單獨行動。在牠們之間行走的，是溺亡信徒——隨神殿一同沉沒的邪教徒，仍披著腐朽的法衣，仍從岸岩之間唱著那篇禱文。讓其中八人歸於沉寂，並為我帶回他們所攜的六件供品。我想知道他們要獻給女神的究竟是什麼。",
+        completion: "珍珠、指骨、一條孩童雕刻的小魚……都是陪葬之物，{playerName}。他們並非在喚醒死者，而是在裝扮死者，就像替屍身著裝下葬一般。這座神殿是一座拒絕闔上的墳塚。",
+        objectives: { 0: { label: "溺亡信徒已沉寂" }, 1: { label: "溺者供品" } },
+      },
+      q_drowned_moon: {
+        title: "溺月",
+        text: "我已讀完最後一份拓印，{playerName}，如今我明白了那邪教不惜溺斃自己也要使其沉睡的是什麼。伊索蕾——化為血肉的溺月——盤踞在神殿核心的祭壇上，而湖水奪走的每一條性命所積的暖意，正全數灌入她的甦醒。當滿月當空，她便會升起，水也隨之上漲——湖泊、堤牆，乃至其下的整座山脈。集結你所能找到最強的同伴，將她重新送入沉睡。這一次，永遠地。",
+        completion: "祭壇已暗，湖水已靜，湖上的月也不過是月而已。今夜你溺殺了一位女神，{playerName}——而這座山永遠不會知道它曾離覆滅有多近。願岸岩的守望者們終能安息。",
+        objectives: { 0: { label: "溺月化身伊索蕾已被擊殺" } },
+      },
+      q_glimmermere_light: {
+        title: "水上之光",
+        text: "看那裡，{playerName}——水面之下，一道蒼白石階沒入黑暗，階首立著一道冷光之門。古老的守望者在水吞沒他們之前，將警語刻於岸岩之上。替我拓下其中一塊；在我們更靠近之前，我想讀懂他們所懼為何。",
+        completion: "一篇喚醒之禱……獻給他們稱之為溺月的存在。而在其下，以更沉穩的筆跡寫著：「牠只是沉睡。」水已聆聽了很久很久，{playerName}。",
+        objectives: { 0: { label: "已拓得守護拓印" } },
+      },
+      q_palecoil: {
+        title: "蒼盤者賽斯瑞爾",
+        text: "湖中有一道身影絕非溺亡之人。一條骨色巨蛇游弋於石階起始的深邃岩棚——拓印稱牠為賽斯瑞爾，蒼盤者，月之守獸。只要牠看守著那片水域，便無人能活著抵達那道門。下到岩棚去殺了牠，{playerName}。取下牠的心鱗，好讓我知道此事已了。",
+        completion: "冷如世界之底，卻仍在抽搐。岩棚已清，{playerName}——通往那道門的石階已然敞開。我幾乎寧願它仍是封閉的。",
+        objectives: { 0: { label: "賽斯瑞爾的心鱗" } },
+      },
+      q_silence_the_choir: {
+        title: "止息唱詩班",
+        text: "如今歌聲自門下傳來，而有一道嗓音領唱其中：唱詩之母瑟爾瑟，正是她最先教會那邪教溺水而不死。只要她持續著那篇禱文，神殿便永不安眠——湖水也永不停止吐還它的亡者。帶上同伴穿過那道門，了結她。這絕非孤身一劍所能應付的差事，{playerName}。",
+        completion: "禱文動搖了……三十夜以來頭一次，湖水歸於寂靜。但寂靜並不等於終結。瑟爾瑟不過是唱詩班罷了。在它之下，仍有某物在聆聽。",
+        objectives: { 0: { label: "唱詩之母瑟爾瑟已被擊殺" } },
+      },
+      q_tarn_waders: {
+        title: "山湖吐還之物",
+        text: "自那道門開啟以來，每逢黃昏便有東西自湖中爬出——腫脹、蒼白，本該是雙手的地方卻長著鰭。古老拓印稱牠們為微光湖涉者。牠們會將任何活物拖回水底。在牠們把我的守望者損耗殆盡之前，剷除十隻。",
+        completion: "十隻已回歸水中。牠們感受不到寒冷，{playerName}，也感受不到恐懼——只感受得到那道門的牽引。無論是什麼在向牠們歌唱，那歌聲都響亮得很。",
+        objectives: { 0: { label: "微光湖涉者已被擊殺" } },
+      },
+    },
+    dungeons: {
+      drowned_temple: { name: "溺亡神殿", enterText: "你踏過月門——空氣化作冰冷的水與蒼白的光，歌聲在你頭頂之上闔攏。", leaveText: "你穿過月門浮出水面，回到山間的夜色之中。" },
+    },
+  },
+  ko_KR: {
+    abilities: abilityTranslations([
+      ["bear_charge", "곰 돌진", "적에게 돌진하여 분노 9를 생성하고 1초 동안 기절시킵니다. 사거리 7~23미터. 곰 변신 상태에서만 사용 가능."],
+      ["demoralizing_roar", "사기 저하의 포효", "주변의 적들을 위축시켜 20초 동안 그들의 공격력을 20만큼 감소시킵니다. 곰 변신 상태에서만 사용 가능."],
+      ["prowl", "은신 보행", "늑대 변신 상태에서 은신합니다. 전투 중에는 사용할 수 없습니다."],
+      ["rake", "할퀴기", "은신 상태에서 적을 할퀴어 무기 피해에 더해 {damage}의 피해를 입히고 9초에 걸쳐 출혈 피해를 줍니다. 연계 점수 1을 부여합니다. 늑대 변신 상태에서만 사용 가능."],
+      ["revive_pet", "소환수 소생", "죽은 소환수를 되살려 당신의 곁으로 되돌립니다."],
+    ]),
+    items: phase11NameTranslations(DROWNED_ITEM_IDS, [
+      "소금기 어린 우상", "익사한 제물", "익사한 달의 크리스 단검", "익사한 달의 대망치", "익사한 달의 홀", "드라운스텝 사바톤", "드라운스텝 슬리퍼", "드라운스텝 군화", "수호의 탁본", "창백한 달빛 비늘", "달비늘 세이버", "달수의 흉갑", "달수의 법복", "달수의 튜닉", "창백한 진주", "세스라엘의 심장 비늘", "페일코일 막대", "셀세의 바다걸음 장화", "조수유리 단검", "조수지기의 손싸개", "이솔레이의 진주 정강이받이"
+    ], 'drowned item'),
+    mobs: phase11NameTranslations(DROWNED_MOB_IDS, [
+      "성가대모 셀세", "익사한 신전 수호병", "익사한 신도", "글리머미어 물거리", "반짝비늘 잠복자", "달의 부산물", "창백한 성가대 수습 사제", "진주수호 파수병", "페일코일의 세스라엘", "화염 악마", "공허 악마", "이솔레이, 익사한 달의 화신"
+    ], 'drowned mob'),
+    npcs: {
+      tidewatcher_ondrel: { name: "온드렐 베인", title: "조수지기", greeting: "이 호수는 달빛을 마시고, {className}, 익사한 자들을 되돌려 보낸다네. 나는 서른 밤 동안 저 관문을 지켜보았지 — 그리고 오늘 밤, 마침내 그것이 열렸네." },
+    },
+    quests: {
+      q_drowned_choir: {
+        title: "익사한 성가대",
+        text: "물거리들은 홀로 움직이지 않는다네. 그들 사이를 익사한 신도들이 걷고 있지 — 신전과 함께 가라앉은 그 광신도들은, 썩어버린 제의를 여전히 걸친 채 물가 바위에서 부르던 기도를 아직도 노래하고 있네. 그들 중 여덟을 침묵시키고, 그들이 지닌 제물 여섯 개를 내게 가져오게. 그들이 그 여신에게 무엇을 바치려는지 알고 싶네.",
+        completion: "진주, 손가락뼈, 아이가 깎아 만든 물고기... 무덤에 바치는 공물이로군, {playerName}. 그들은 죽은 자를 되살리려는 게 아니야. 마치 매장을 위해 시신을 단장하듯, 그들을 치장하고 있는 거지. 저 신전은 닫히기를 거부하는 무덤이라네.",
+        objectives: { 0: { label: "익사한 신도 침묵시킴" }, 1: { label: "익사한 제물" } },
+      },
+      q_drowned_moon: {
+        title: "익사한 달",
+        text: "마지막 탁본까지 모두 읽었네, {playerName}. 이제 그 광신도들이 무엇을 잠재워 두려고 스스로 익사했는지 알겠어. 이솔레이 — 살을 입은 익사한 달 — 그것이 신전 심장부의 제단 위에 똬리를 틀고 있고, 이 호수가 앗아간 모든 생명의 훔친 온기가 그것의 각성 속으로 쏟아져 들어가고 있네. 달이 가득 차오르면 그것은 일어나고, 물도 함께 차오를 거야 — 이 호수도, 둑도, 그 아래 산 전체가 말일세. 찾을 수 있는 가장 강한 자들을 모아 그것을 다시 잠재우게. 이번에는 영원히.",
+        completion: "제단은 어둠에 잠기고, 물은 고요하며, 호수 위의 달은 그저 달일 뿐이네. 그대는 오늘 밤 여신 하나를 익사시켰네, {playerName} — 그리고 이 산은 그것이 얼마나 가까이 다가왔는지 결코 알지 못하겠지. 물가 바위의 수호자들이 이제야 편히 쉴 수 있도록 하세나.",
+        objectives: { 0: { label: "이솔레이, 익사한 달의 화신 처치" } },
+      },
+      q_glimmermere_light: {
+        title: "물 위의 빛",
+        text: "저기를 보게, {playerName} — 수면 아래, 창백한 돌 계단이 어둠 속으로 내려가고, 그 머리맡에 차가운 빛의 관문이 있네. 옛 수호자들은 물이 그들을 삼키기 전에 물가 바위에 경고를 새겨 두었지. 그중 하나의 탁본을 떠 오게. 더 가까이 가기 전에 그들이 무엇을 두려워했는지 읽어 보고 싶네.",
+        completion: "각성의 기도라... 그들이 익사한 달이라 부른 무언가에게 바치는 것이군. 그리고 그 아래, 더 또렷한 필체로: \"그것은 잠들어 있을 뿐이다.\" 저 물은 아주 오랫동안 귀를 기울여 왔네, {playerName}.",
+        objectives: { 0: { label: "수호의 탁본 채취함" } },
+      },
+      q_palecoil: {
+        title: "페일코일의 세스라엘",
+        text: "호수 속의 한 형체는 익사한 사람이 아니라네. 뼈처럼 창백한 빛깔의 뱀이 계단이 시작되는 깊은 바닥을 미끄러져 다니지 — 탁본은 그것을 세스라엘, 페일코일, 달이 직접 부리는 감시 짐승이라 부르네. 그것이 저 물을 지키는 한, 누구도 살아서 관문에 닿지 못하네. 바닥으로 내려가 그것을 처치하게, {playerName}. 일이 끝났음을 알 수 있도록 그것의 심장 비늘을 가져오게.",
+        completion: "세상의 밑바닥처럼 차갑고, 그러면서도 여전히 꿈틀거리는군. 바닥은 깨끗해졌네, {playerName} — 관문으로 가는 계단이 활짝 열렸어. 차라리 열리지 않았더라면 싶을 정도로 말이야.",
+        objectives: { 0: { label: "세스라엘의 심장 비늘" } },
+      },
+      q_silence_the_choir: {
+        title: "성가대를 침묵시켜라",
+        text: "이제 노랫소리는 관문 아래에서 흘러나오고, 한 목소리가 그것을 이끌고 있네: 성가대모 셀세, 죽지 않고 익사하는 법을 그 광신도들에게 처음 가르친 자라네. 그녀가 기도를 이어 가는 한, 저 신전은 결코 잠들지 않을 것이고 — 이 호수는 결코 죽은 자를 토해 내기를 멈추지 않을 거야. 동료들을 데리고 관문을 지나 그녀를 끝장내게. 이것은 홀로 칼을 든 자가 감당할 심부름이 아니라네, {playerName}.",
+        completion: "기도가 흔들리고... 서른 밤 만에 처음으로, 호수가 고요해졌네. 하지만 고요함이 끝남과 같은 것은 아니지. 셀세는 그저 성가대였을 뿐이야. 그 아래의 무언가가 여전히 귀를 기울이고 있네.",
+        objectives: { 0: { label: "성가대모 셀세 처치" } },
+      },
+      q_tarn_waders: {
+        title: "호수가 토해 내는 것",
+        text: "관문이 열린 뒤로, 해 질 녘이면 무언가가 호수에서 기어 나온다네 — 퉁퉁 붓고 창백하며, 손이 있어야 할 자리에 지느러미가 달린 것들이지. 옛 탁본은 그것들을 글리머미어 물거리라 부르네. 그것들은 살아 있는 것이라면 무엇이든 함께 물밑으로 끌고 들어가지. 내 경비가 모조리 사라지기 전에 열 마리를 솎아 내게.",
+        completion: "열 마리를 물속으로 되돌려 보냈군. 그것들은 추위도, 두려움도 느끼지 못한다네, {playerName} — 오직 저 관문의 끌림만을 느낄 뿐이지. 무엇이 그것들에게 노래하든, 그 노래는 참으로 크게 울리는군.",
+        objectives: { 0: { label: "글리머미어 물거리 처치" } },
+      },
+    },
+    dungeons: {
+      drowned_temple: { name: "익사한 신전", enterText: "당신은 달의 관문을 지나갑니다 — 공기가 차가운 물과 창백한 빛으로 변하고, 노랫소리가 당신의 머리 위로 닫혀 옵니다.", leaveText: "당신은 달의 관문을 통해 산속의 밤으로 떠오릅니다." },
+    },
+  },
+  ja_JP: {
+    abilities: abilityTranslations([
+      ["bear_charge", "ベアチャージ", "敵に突進して激怒を9獲得し、1秒間スタンさせる。射程7～23メートル。ベアフォーム時のみ使用可能。"],
+      ["demoralizing_roar", "意気消沈の咆哮", "周囲の敵を萎縮させ、20秒間その攻撃力を20低下させる。ベアフォーム時のみ使用可能。"],
+      ["prowl", "忍び寄り", "ウルフフォーム中にステルス状態に入る。戦闘中は使用できない。"],
+      ["rake", "切り裂き", "ステルス状態からの先制攻撃で、武器ダメージに加えて{damage}のダメージを与え、9秒かけて出血ダメージを与える。コンボポイントを1獲得する。ウルフフォーム時のみ使用可能。"],
+      ["revive_pet", "ペット蘇生", "死んだペットを蘇生させ、自分のそばに呼び戻す。"],
+    ]),
+    items: phase11NameTranslations(DROWNED_ITEM_IDS, [
+      "潮辛の偶像", "溺れし供物", "溺月のクリス", "溺月の大槌", "溺月の笏", "溺歩のサバトン", "溺歩のスリッパ", "溺歩のトレッド", "守護の拓本", "蒼白月の鱗", "月鱗のサーベル", "月帷子の胸甲", "月帷子のローブ", "月帷子のチュニック", "蒼白の真珠", "セスラエルの心鱗", "蒼渦のロッド", "セルセの潮渡り靴", "潮硝子の短剣", "潮見の手布", "イソレイの真珠脚甲"
+    ], 'drowned item'),
+    mobs: phase11NameTranslations(DROWNED_MOB_IDS, [
+      "聖歌母セルセ", "溺れし神殿守", "溺れし信徒", "煌めき沼の渡り手", "煌鱗の潜み者", "月の落とし子", "蒼白聖歌隊の侍祭", "真珠衛の歩哨", "蒼渦のセスラエル", "炎の魔物", "虚無の魔物", "イソレイ、溺月の化身"
+    ], 'drowned mob'),
+    npcs: {
+      tidewatcher_ondrel: { name: "オンドレル・ヴェイン", title: "潮見の番人", greeting: "この沼は月光を飲み干し、{className}よ、溺れし者を吐き返すのだ。私はあの門を三十夜も見張ってきた——そして今宵、門は開いている。" },
+    },
+    quests: {
+      q_drowned_choir: {
+        title: "溺れし聖歌隊",
+        text: "渡り手どもは独りで動いているのではない。その中に溺れし信徒たちが歩いている——神殿とともに沈んだ教団だ。腐った祭服をまとったまま、岸の岩場から祈りを歌い続けている。八体を沈黙させ、奴らが携える供物を六つ持ち帰れ。奴らが女神に何を捧げようとしているのか、私は知りたいのだ。",
+        completion: "真珠、指の骨、子供が彫った魚……これは墓への供物だ、{playerName}。奴らは死者を蘇らせているのではない。死者を着飾らせているのだ——埋葬のために亡骸を整えるようにな。あの神殿は、閉じることを拒む墓場なのだ。",
+        objectives: { 0: { label: "溺れし信徒を沈黙させた" }, 1: { label: "溺れし供物" } },
+      },
+      q_drowned_moon: {
+        title: "溺れし月",
+        text: "最後の拓本を読み終えた、{playerName}。教団が自ら溺れ死んでまで眠らせ続けようとしたものが、今や私には分かる。イソレイ——肉を得た溺れし月——が神殿の中心の祭壇でとぐろを巻いている。そしてこの沼が奪った命の温もりことごとくが、彼女の目覚めへと注ぎ込まれているのだ。満月が天に立つとき彼女は起き上がり、水もまた彼女とともに満ちる——湖も、防壁も、その下の山すべてもだ。集められるかぎりの強者を集め、彼女を再び眠りにつかせよ。今度こそ、永遠にな。",
+        completion: "祭壇は暗く、水は静まり、湖に映る月はただの月だ。お前は今宵、女神を溺れさせたのだ、{playerName}——そして山は、どれほど破滅に近づいていたかを決して知ることはない。岸の岩場を守る番人たちも、ようやく安らかに眠れるだろう。",
+        objectives: { 0: { label: "溺月の化身イソレイを討伐した" } },
+      },
+      q_glimmermere_light: {
+        title: "水面の光",
+        text: "あそこを見ろ、{playerName}——水面の下に、蒼白の石でできた階段が闇へと続き、その頂には冷たい光の門がある。古の番人たちは、水に呑まれる前に岸の岩場へ警告を刻みつけた。そのひとつの拓本を取ってきてくれ。これ以上近づく前に、奴らが何を恐れたのかを読んでおきたいのだ。",
+        completion: "目覚めの祈り……奴らが溺れし月と呼んだ何かへの祈りだ。そしてその下に、より落ち着いた筆跡でこう記されている。「それはただ眠っているだけだ」。この水は長いあいだ、耳を澄ませてきたのだ、{playerName}。",
+        objectives: { 0: { label: "守護の拓本を取得した" } },
+      },
+      q_palecoil: {
+        title: "蒼渦のセスラエル",
+        text: "沼の中の、ある影は溺れた人間ではない。骨の色をした大蛇が、階段の始まる深き棚を滑り泳いでいる——拓本が語るところのセスラエル、蒼渦、月そのものの番獣だ。あれがあの水を守るかぎり、誰も生きて門にはたどり着けぬ。棚へ降りて、それを殺せ、{playerName}。事を成した証として、その心鱗を持ち帰れ。",
+        completion: "この世の底のように冷たく、それでもなお身をよじらせている。棚は片付いた、{playerName}——門へと続く階段が開け放たれた。いっそ開いていなければと、私は願ってしまうほどだ。",
+        objectives: { 0: { label: "セスラエルの心鱗" } },
+      },
+      q_silence_the_choir: {
+        title: "聖歌隊を沈黙させよ",
+        text: "歌声は今や門の下から響いてくる。そしてそれを率いる一つの声がある——聖歌母セルセ、教団に死なずして溺れる術を初めて教えた者だ。彼女が祈りを保ちつづけるかぎり、神殿は決して眠らず——沼もまた、その死者を吐き返すのをやめはしない。仲間を連れて門をくぐり、彼女を終わらせよ。これは一振りの剣だけで成せる用ではない、{playerName}。",
+        completion: "祈りが揺らぐ……そして三十夜ぶりに、沼は静まった。だが静けさは終わりと同じではない。セルセは聖歌隊にすぎなかった。その下の何かが、いまも耳を澄ませている。",
+        objectives: { 0: { label: "聖歌母セルセを討伐した" } },
+      },
+      q_tarn_waders: {
+        title: "沼が吐き返すもの",
+        text: "門が開いてからというもの、黄昏どきになると沼から這い出てくるものがいる——膨れ上がり、蒼白く、手のあるべきところに鰭を持つ者どもだ。煌めき沼の渡り手と、古の拓本はそれらを名づけている。奴らは生きとし生けるものを何でも水底へ引きずり込む。私の見張りが皆無にされる前に、十体を駆除せよ。",
+        completion: "十体が水に還った。奴らは寒さも恐れも感じぬのだ、{playerName}——ただあの門の引き寄せだけを感じている。奴らに何が歌いかけているにせよ、その歌は大きく響いているのだ。",
+        objectives: { 0: { label: "煌めき沼の渡り手を討伐した" } },
+      },
+    },
+    dungeons: {
+      drowned_temple: { name: "溺れし神殿", enterText: "月の門をくぐり抜けると——大気は冷たい水と蒼白の光に変わり、歌声が頭上で閉ざされていく。", leaveText: "月の門を抜けて、山の夜へと浮かび上がる。" },
+    },
+  },
+  pt_BR: {
+    abilities: abilityTranslations([
+      ["bear_charge", "Investida do Urso", "Investe contra um inimigo, gerando 9 de fúria e o atordoando por 1 seg. Alcance de 7-23 metros. Apenas na Forma de Urso."],
+      ["demoralizing_roar", "Rugido Desmoralizante", "Desmoraliza os inimigos próximos, reduzindo seu poder de ataque em 20 por 20 seg. Apenas na Forma de Urso."],
+      ["prowl", "Espreitar", "Entra em furtividade enquanto na Forma de Lobo. Não pode ser usado em combate."],
+      ["rake", "Dilacerar", "Um golpe de abertura furtivo que dilacera o inimigo causando dano de arma mais {damage} e provoca sangramento ao longo de 9 seg. Concede 1 ponto de combo. Apenas na Forma de Lobo."],
+      ["revive_pet", "Reviver Mascote", "Revive seu mascote morto e o traz de volta ao seu lado."],
+    ]),
+    items: phase11NameTranslations(DROWNED_ITEM_IDS, [
+      "Ídolo Salobro", "Oferenda Afogada", "Kris da Lua Afogada", "Maça da Lua Afogada", "Cetro da Lua Afogada", "Soleretes do Passo Afogado", "Sapatilhas do Passo Afogado", "Botinas do Passo Afogado", "Decalque Protetor", "Escama Pálido-Lunar", "Sabre de Escama Lunar", "Peitoral do Sudário Lunar", "Túnica do Sudário Lunar", "Gibão do Sudário Lunar", "Pérola Pálida", "Escama do Coração de Sethrael", "Vara do Anel Pálido", "Anda-Mares de Selthe", "Adaga de Vidro-Maré", "Faixas do Vigia das Marés", "Grevas de Pérola de Ysolei"
+    ], 'drowned item'),
+    mobs: phase11NameTranslations(DROWNED_MOB_IDS, [
+      "Mãe-do-Coro Selthe", "Guarda do Templo Afogado", "Devoto Afogado", "Vadeador de Glimmermere", "Espreitador de Escama Reluzente", "Cria da Lua", "Acólito do Coro Pálido", "Sentinela da Guarda Pérola", "Sethrael, o Anel Pálido", "Demônio de Fogo", "Demônio do Vazio", "Ysolei, Avatar da Lua Afogada"
+    ], 'drowned mob'),
+    npcs: {
+      tidewatcher_ondrel: { name: "Ondrel Vane", title: "Vigia das Marés", greeting: "O lago bebe o luar, {className}, e devolve os afogados. Vigio aquele portão há trinta noites — e esta noite ele está aberto." },
+    },
+    quests: {
+      q_drowned_choir: {
+        title: "O Coro Afogado",
+        text: "Os vadeadores não agem sozinhos. Entre eles caminham os Devotos Afogados — o culto que afundou com o templo, ainda em suas vestes apodrecidas, ainda cantando a prece desde as rochas da costa. Silencie oito deles e traga-me seis das oferendas que carregam. Eu gostaria de saber o que pretendem dar à sua deusa.",
+        completion: "Pérolas, ossos de dedos, um peixe entalhado de criança... presentes fúnebres, {playerName}. Eles não estão erguendo os mortos. Estão vestindo-os, do modo como se prepara um corpo para o sepultamento. O templo é um túmulo que se recusa a fechar.",
+        objectives: { 0: { label: "Devoto Afogado silenciado" }, 1: { label: "Oferenda Afogada" } },
+      },
+      q_drowned_moon: {
+        title: "A Lua Afogada",
+        text: "Li o último dos decalques, {playerName}, e compreendo agora o que o culto se afogou para manter adormecido. Ysolei — a Lua Afogada feita carne — enrosca-se no altar no coração do templo, e o calor roubado de cada vida que o lago tomou está vertendo para o seu despertar. Quando a lua estiver cheia, ela se erguerá, e a água se erguerá com ela — o tarn, a muralha, a montanha inteira sob ele. Reúna os mais fortes que encontrar e a faça dormir de novo. Para sempre, desta vez.",
+        completion: "O altar está escuro, a água está parada, e a lua sobre o tarn é apenas a lua. Você afogou uma deusa esta noite, {playerName} — e a montanha jamais saberá o quão perto chegou. Que os guardiões das rochas da costa repousem enfim em paz.",
+        objectives: { 0: { label: "Ysolei, Avatar da Lua Afogada, abatida" } },
+      },
+      q_glimmermere_light: {
+        title: "Luz sobre a Água",
+        text: "Olhe ali, {playerName} — sob a superfície, uma escadaria de pedra pálida descendo para a escuridão, e um portão de luz fria no topo dela. Os antigos guardiões riscaram avisos nas rochas da costa antes de a água os levar. Faça um decalque de um deles para mim; gostaria de ler o que temiam antes de nos aproximarmos mais.",
+        completion: "Uma prece-de-despertar... a algo que chamavam de Lua Afogada. E abaixo dela, numa caligrafia mais firme: \"Ela apenas dorme.\" A água vem escutando há muito tempo, {playerName}.",
+        objectives: { 0: { label: "Decalque Protetor recolhido" } },
+      },
+      q_palecoil: {
+        title: "Sethrael, o Anel Pálido",
+        text: "Uma forma no lago não é homem algum afogado. Uma serpente da cor do osso desliza pela plataforma profunda onde começa a escadaria — Sethrael, é como os decalques a chamam, o Anel Pálido, a fera-guardiã da própria lua. Enquanto ela vigiar aquela água, ninguém alcança o portão com vida. Desça até a plataforma e a mate, {playerName}. Traga a escama de seu coração para que eu saiba que o feito está consumado.",
+        completion: "Fria como o fundo do mundo, e ainda assim estremece. A plataforma está livre, {playerName} — a escadaria para o portão está aberta. Quase desejaria que não estivesse.",
+        objectives: { 0: { label: "Escama do Coração de Sethrael" } },
+      },
+      q_silence_the_choir: {
+        title: "Silenciar o Coro",
+        text: "O cântico vem agora de baixo do portão, e uma voz o conduz: a Mãe-do-Coro Selthe, que primeiro ensinou o culto a afogar-se sem morrer. Enquanto ela mantiver a prece, o templo jamais dormirá — e o lago jamais deixará de entregar seus mortos. Leve companheiros através do portão e acabe com ela. Esta não é tarefa para uma lâmina solitária, {playerName}.",
+        completion: "A prece vacila... e pela primeira vez em trinta noites, o lago está em silêncio. Mas silêncio não é o mesmo que fim. Selthe era apenas o coro. Algo mais abaixo ainda escuta.",
+        objectives: { 0: { label: "Mãe-do-Coro Selthe abatida" } },
+      },
+      q_tarn_waders: {
+        title: "O Que o Tarn Devolve",
+        text: "Desde que o portão se abriu, coisas sobem do lago ao anoitecer — inchadas, pálidas, com barbatanas onde deveria haver mãos. Vadeadores de Glimmermere, é como os antigos decalques os nomeiam. Eles arrastam tudo o que vive de volta para o fundo consigo. Abata dez antes que reduzam minha vigília a nada.",
+        completion: "Dez de volta à água. Não sentem frio, {playerName}, nem medo — apenas a atração daquele portão. Seja o que for que canta para eles, canta bem alto.",
+        objectives: { 0: { label: "Vadeador de Glimmermere abatido" } },
+      },
+    },
+    dungeons: {
+      drowned_temple: { name: "O Templo Afogado", enterText: "Você atravessa o portão lunar — o ar se transforma em água fria e luz pálida, e o cântico se fecha sobre a sua cabeça.", leaveText: "Você emerge através do portão lunar para a noite da montanha." },
+    },
+  },
+  ru_RU: {
+    abilities: abilityTranslations([
+      ["bear_charge", "Натиск медведя", "Бросок на врага, дающий 9 единиц ярости и оглушающий его на 1 сек. Дальность 7-23 метра. Только в облике медведя."],
+      ["demoralizing_roar", "Деморализующий рёв", "Деморализует врагов поблизости, снижая их силу атаки на 20 на 20 сек. Только в облике медведя."],
+      ["prowl", "Крадущийся хищник", "Переход в скрытность в облике волка. Нельзя использовать в бою."],
+      ["rake", "Раздирание", "Скрытная атака из засады, наносящая врагу урон оружием плюс {damage} и вызывающая кровотечение в течение 9 сек. Даёт 1 очко серии приёмов. Только в облике волка."],
+      ["revive_pet", "Оживление питомца", "Оживляет вашего павшего питомца и возвращает его к вам."],
+    ]),
+    items: phase11NameTranslations(DROWNED_ITEM_IDS, [
+      "Просоленный идол", "Подношение утопленников", "Крис Утонувшей луны", "Молот Утонувшей луны", "Скипетр Утонувшей луны", "Сабатоны Утопшего шага", "Туфли Утопшего шага", "Поступь Утопшего шага", "Оттиск оберега", "Чешуя Бледной луны", "Сабля из лунной чешуи", "Кираса Лунного савана", "Одеяние Лунного савана", "Туника Лунного савана", "Бледная жемчужина", "Сердечная чешуя Сетраэля", "Жезл Бледного кольца", "Морестопы Селте", "Кинжал Приливного стекла", "Обмотки Стража приливов", "Жемчужные поножи Изолеи"
+    ], 'drowned item'),
+    mobs: phase11NameTranslations(DROWNED_MOB_IDS, [
+      "Матерь хора Селте", "Утонувший храмовый страж", "Утонувший служитель", "Бродяга Мерцающего омута", "Затаившийся Мерцающечешуйный", "Лунное отродье", "Послушник Бледного хора", "Часовой Жемчужной стражи", "Сетраэль Бледное Кольцо", "Огненный демон", "Демон Пустоты", "Изолея, Воплощение Утонувшей луны"
+    ], 'drowned mob'),
+    npcs: {
+      tidewatcher_ondrel: { name: "Ондрел Вейн", title: "Страж приливов", greeting: "Омут пьёт лунный свет, {className}, и возвращает утопленников. Тридцать ночей я наблюдаю за теми вратами — и нынче ночью они открыты." },
+    },
+    quests: {
+      q_drowned_choir: {
+        title: "Утонувший хор",
+        text: "Бродяги действуют не одни. Среди них ходят Утонувшие служители — культ, что затонул вместе с храмом, всё ещё в истлевших облачениях, всё ещё поющий молитву с прибрежных скал. Заставь умолкнуть восьмерых из них и принеси мне шесть подношений, что они несут. Хочу знать, что они задумали поднести своей богине.",
+        completion: "Жемчуг, костяшки пальцев, детская резная рыбка... погребальные дары, {playerName}. Они не поднимают мёртвых. Они обряжают их, как обряжают тело к погребению. Храм — это гробница, что отказывается закрыться.",
+        objectives: { 0: { label: "Утонувший служитель умолк" }, 1: { label: "Подношение утопленников" } },
+      },
+      q_drowned_moon: {
+        title: "Утонувшая луна",
+        text: "Я прочёл последний из оттисков, {playerName}, и теперь понимаю, что культ утопил себя, дабы держать спящим. Изолея — Утонувшая луна, ставшая плотью, — обвилась вокруг алтаря в самом сердце храма, и украденное тепло каждой жизни, что забрал омут, вливается в её пробуждение. Когда луна станет полной, она восстанет, и вода поднимется вместе с ней — озерцо, стена, вся гора под ними. Собери сильнейших, кого найдёшь, и усыпи её вновь. На сей раз — навсегда.",
+        completion: "Алтарь тёмен, вода недвижна, а луна над озерцом — лишь луна. Этой ночью ты утопил богиню, {playerName} — и гора так и не узнает, как близко была к гибели. Пусть стражи прибрежных скал наконец упокоятся с миром.",
+        objectives: { 0: { label: "Изолея, Воплощение Утонувшей луны, повержена" } },
+      },
+      q_glimmermere_light: {
+        title: "Свет на воде",
+        text: "Взгляни туда, {playerName} — под поверхностью лестница из бледного камня уходит вниз во тьму, а у её начала врата холодного света. Старые стражи нацарапали предостережения на прибрежных скалах, прежде чем вода забрала их. Сними для меня оттиск одного из них; хочу прочесть, чего они страшились, прежде чем мы подойдём ближе.",
+        completion: "Молитва пробуждения... чему-то, что они называли Утонувшей луной. А под ней, более твёрдой рукой: «Она лишь спит». Вода прислушивается уже давно, {playerName}.",
+        objectives: { 0: { label: "Оттиск оберега снят" } },
+      },
+      q_palecoil: {
+        title: "Сетраэль Бледное Кольцо",
+        text: "Один силуэт в омуте — не утопленник. Змей цвета кости скользит по глубокому уступу, где начинается лестница — Сетраэль, как зовут его оттиски, Бледное Кольцо, лунный страж-зверь. Пока он сторожит ту воду, никто не доберётся до врат живым. Спустись на уступ и убей его, {playerName}. Возьми его сердечную чешую, чтобы я знал, что дело сделано.",
+        completion: "Холодный, как дно мира, и всё же подёргивается. Уступ свободен, {playerName} — лестница к вратам открыта. Я почти жалею, что это так.",
+        objectives: { 0: { label: "Сердечная чешуя Сетраэля" } },
+      },
+      q_silence_the_choir: {
+        title: "Заставь хор умолкнуть",
+        text: "Теперь пение доносится из-под врат, и один голос ведёт его: Матерь хора Селте, что первой научила культ тонуть, не умирая. Пока она держит молитву, храм никогда не уснёт — а омут никогда не перестанет отдавать своих мёртвых. Проведи спутников сквозь врата и покончи с ней. Это не поручение для одинокого клинка, {playerName}.",
+        completion: "Молитва дрогнула... и впервые за тридцать ночей омут затих. Но затишье — не то же, что конец. Селте была лишь хором. Нечто под ним всё ещё прислушивается.",
+        objectives: { 0: { label: "Матерь хора Селте повержена" } },
+      },
+      q_tarn_waders: {
+        title: "Что отдаёт озерцо",
+        text: "С тех пор как открылись врата, в сумерках из омута выползают твари — раздувшиеся, бледные, с плавниками там, где должны быть руки. Бродяги Мерцающего омута, так зовут их старые оттиски. Они утаскивают всё живое за собой вниз. Истреби десятерых, прежде чем они сведут мою стражу на нет.",
+        completion: "Десять вернулись в воду. Они не чувствуют ни холода, {playerName}, ни страха — лишь зов тех врат. Что бы ни пело им, поёт оно громко.",
+        objectives: { 0: { label: "Бродяга Мерцающего омута повержен" } },
+      },
+    },
+    dungeons: {
+      drowned_temple: { name: "Утонувший храм", enterText: "Ты проходишь сквозь лунные врата — воздух обращается в холодную воду и бледный свет, и пение смыкается над твоей головой.", leaveText: "Ты всплываешь сквозь лунные врата в горную ночь." },
+    },
+  },
+  es_ES: {} as typeof phase11ExtraEn,
+  fr_CA: {} as typeof phase11ExtraEn,
+  en_CA: phase11ExtraEn,
+};
+phase11Extra.es_ES = phase11Extra.es;
+phase11Extra.fr_CA = phase11Extra.fr_FR;
 
 // In-game HUD strings for the Max-Level XP Overflow / post-cap progression
 // system. These route through t() per the i18n constraint; each supported
@@ -9772,6 +11042,7 @@ export const en = {
     questLog: "Quest Log",
     worldMap: "World Map",
     bags: "Bags Inventory",
+    emoteWheel: "Hold Emote Wheel",
     friends: "Friends & Guild",
     chat: "Open Chat",
   },
@@ -9787,9 +11058,12 @@ export const en = {
   entities: {
     ...phase8.en.entities,
     ...phase9.en.entities,
-    items: { ...phase8.en.entities.items, ...phase11Entities.en.items },
-    mobs: { ...phase9.en.entities.mobs, ...phase11Entities.en.mobs },
-    quests: { ...phase9.en.entities.quests, ...phase11Entities.en.quests },
+    abilities: { ...phase8.en.entities.abilities, ...phase11Extra.en.abilities },
+    items: { ...phase8.en.entities.items, ...phase11Entities.en.items, ...phase11Extra.en.items },
+    mobs: { ...phase9.en.entities.mobs, ...phase11Entities.en.mobs, ...phase11Extra.en.mobs },
+    npcs: { ...phase9.en.entities.npcs, ...phase11Extra.en.npcs },
+    quests: { ...phase9.en.entities.quests, ...phase11Entities.en.quests, ...phase11Extra.en.quests },
+    dungeons: { ...phase9.en.entities.dungeons, ...phase11Extra.en.dungeons },
   },
 };
 
@@ -9922,6 +11196,7 @@ export const es: typeof en = {
     questLog: "Diario de Misiones",
     worldMap: "Mapa del Mundo",
     bags: "Inventario de Bolsas",
+    emoteWheel: "Mantener rueda de gestos",
     friends: "Amigos y Hermandad",
     chat: "Abrir Chat",
   },
@@ -9937,9 +11212,12 @@ export const es: typeof en = {
   entities: {
     ...phase8.es.entities,
     ...phase9.es.entities,
-    items: { ...phase8.es.entities.items, ...phase11Entities.es.items },
-    mobs: { ...phase9.es.entities.mobs, ...phase11Entities.es.mobs },
-    quests: { ...phase9.es.entities.quests, ...phase11Entities.es.quests },
+    abilities: { ...phase8.es.entities.abilities, ...phase11Extra.es.abilities },
+    items: { ...phase8.es.entities.items, ...phase11Entities.es.items, ...phase11Extra.es.items },
+    mobs: { ...phase9.es.entities.mobs, ...phase11Entities.es.mobs, ...phase11Extra.es.mobs },
+    npcs: { ...phase9.es.entities.npcs, ...phase11Extra.es.npcs },
+    quests: { ...phase9.es.entities.quests, ...phase11Entities.es.quests, ...phase11Extra.es.quests },
+    dungeons: { ...phase9.es.entities.dungeons, ...phase11Extra.es.dungeons },
   },
 };
 
@@ -10072,6 +11350,7 @@ export const es_ES: typeof en = {
     questLog: "Diario de misiones",
     worldMap: "Mapa del mundo",
     bags: "Inventario de bolsas",
+    emoteWheel: "Mantener rueda de gestos",
     friends: "Amigos y hermandad",
     chat: "Abrir chat",
   },
@@ -10087,9 +11366,12 @@ export const es_ES: typeof en = {
   entities: {
     ...phase8.es_ES.entities,
     ...phase9.es_ES.entities,
-    items: { ...phase8.es_ES.entities.items, ...phase11Entities.es_ES.items },
-    mobs: { ...phase9.es_ES.entities.mobs, ...phase11Entities.es_ES.mobs },
-    quests: { ...phase9.es_ES.entities.quests, ...phase11Entities.es_ES.quests },
+    abilities: { ...phase8.es_ES.entities.abilities, ...phase11Extra.es_ES.abilities },
+    items: { ...phase8.es_ES.entities.items, ...phase11Entities.es_ES.items, ...phase11Extra.es_ES.items },
+    mobs: { ...phase9.es_ES.entities.mobs, ...phase11Entities.es_ES.mobs, ...phase11Extra.es_ES.mobs },
+    npcs: { ...phase9.es_ES.entities.npcs, ...phase11Extra.es_ES.npcs },
+    quests: { ...phase9.es_ES.entities.quests, ...phase11Entities.es_ES.quests, ...phase11Extra.es_ES.quests },
+    dungeons: { ...phase9.es_ES.entities.dungeons, ...phase11Extra.es_ES.dungeons },
   },
 };
 
@@ -10222,6 +11504,7 @@ export const fr_FR: typeof en = {
     questLog: "Journal de quêtes",
     worldMap: "Carte du monde",
     bags: "Inventaire des sacs",
+    emoteWheel: "Maintenir la roue des emotes",
     friends: "Amis et guilde",
     chat: "Ouvrir le chat",
   },
@@ -10237,9 +11520,12 @@ export const fr_FR: typeof en = {
   entities: {
     ...phase8.fr_FR.entities,
     ...phase9.fr_FR.entities,
-    items: { ...phase8.fr_FR.entities.items, ...phase11Entities.fr_FR.items },
-    mobs: { ...phase9.fr_FR.entities.mobs, ...phase11Entities.fr_FR.mobs },
-    quests: { ...phase9.fr_FR.entities.quests, ...phase11Entities.fr_FR.quests },
+    abilities: { ...phase8.fr_FR.entities.abilities, ...phase11Extra.fr_FR.abilities },
+    items: { ...phase8.fr_FR.entities.items, ...phase11Entities.fr_FR.items, ...phase11Extra.fr_FR.items },
+    mobs: { ...phase9.fr_FR.entities.mobs, ...phase11Entities.fr_FR.mobs, ...phase11Extra.fr_FR.mobs },
+    npcs: { ...phase9.fr_FR.entities.npcs, ...phase11Extra.fr_FR.npcs },
+    quests: { ...phase9.fr_FR.entities.quests, ...phase11Entities.fr_FR.quests, ...phase11Extra.fr_FR.quests },
+    dungeons: { ...phase9.fr_FR.entities.dungeons, ...phase11Extra.fr_FR.dungeons },
   },
 };
 
@@ -10372,6 +11658,7 @@ export const fr_CA: typeof en = {
     questLog: "Journal de quêtes",
     worldMap: "Carte du monde",
     bags: "Inventaire des sacs",
+    emoteWheel: "Maintenir la roue des emotes",
     friends: "Amis et guilde",
     chat: "Ouvrir le chat",
   },
@@ -10387,9 +11674,12 @@ export const fr_CA: typeof en = {
   entities: {
     ...phase8.fr_CA.entities,
     ...phase9.fr_CA.entities,
-    items: { ...phase8.fr_CA.entities.items, ...phase11Entities.fr_CA.items },
-    mobs: { ...phase9.fr_CA.entities.mobs, ...phase11Entities.fr_CA.mobs },
-    quests: { ...phase9.fr_CA.entities.quests, ...phase11Entities.fr_CA.quests },
+    abilities: { ...phase8.fr_CA.entities.abilities, ...phase11Extra.fr_CA.abilities },
+    items: { ...phase8.fr_CA.entities.items, ...phase11Entities.fr_CA.items, ...phase11Extra.fr_CA.items },
+    mobs: { ...phase9.fr_CA.entities.mobs, ...phase11Entities.fr_CA.mobs, ...phase11Extra.fr_CA.mobs },
+    npcs: { ...phase9.fr_CA.entities.npcs, ...phase11Extra.fr_CA.npcs },
+    quests: { ...phase9.fr_CA.entities.quests, ...phase11Entities.fr_CA.quests, ...phase11Extra.fr_CA.quests },
+    dungeons: { ...phase9.fr_CA.entities.dungeons, ...phase11Extra.fr_CA.dungeons },
   },
 };
 
@@ -10522,6 +11812,7 @@ export const en_CA: typeof en = {
     questLog: "Quest Log",
     worldMap: "World Map",
     bags: "Bags Inventory",
+    emoteWheel: "Hold Emote Wheel",
     friends: "Friends & Guild",
     chat: "Open Chat",
   },
@@ -10537,9 +11828,12 @@ export const en_CA: typeof en = {
   entities: {
     ...phase8.en_CA.entities,
     ...phase9.en_CA.entities,
-    items: { ...phase8.en_CA.entities.items, ...phase11Entities.en_CA.items },
-    mobs: { ...phase9.en_CA.entities.mobs, ...phase11Entities.en_CA.mobs },
-    quests: { ...phase9.en_CA.entities.quests, ...phase11Entities.en_CA.quests },
+    abilities: { ...phase8.en_CA.entities.abilities, ...phase11Extra.en_CA.abilities },
+    items: { ...phase8.en_CA.entities.items, ...phase11Entities.en_CA.items, ...phase11Extra.en_CA.items },
+    mobs: { ...phase9.en_CA.entities.mobs, ...phase11Entities.en_CA.mobs, ...phase11Extra.en_CA.mobs },
+    npcs: { ...phase9.en_CA.entities.npcs, ...phase11Extra.en_CA.npcs },
+    quests: { ...phase9.en_CA.entities.quests, ...phase11Entities.en_CA.quests, ...phase11Extra.en_CA.quests },
+    dungeons: { ...phase9.en_CA.entities.dungeons, ...phase11Extra.en_CA.dungeons },
   },
 };
 
@@ -10672,6 +11966,7 @@ export const it_IT: typeof en = {
     questLog: "Registro delle missioni",
     worldMap: "Mappa del mondo",
     bags: "Inventario borse",
+    emoteWheel: "Tieni premuta la ruota emote",
     friends: "Amici e gilda",
     chat: "Apri chat",
   },
@@ -10687,9 +11982,12 @@ export const it_IT: typeof en = {
   entities: {
     ...phase8.it_IT.entities,
     ...phase9.it_IT.entities,
-    items: { ...phase8.it_IT.entities.items, ...phase11Entities.it_IT.items },
-    mobs: { ...phase9.it_IT.entities.mobs, ...phase11Entities.it_IT.mobs },
-    quests: { ...phase9.it_IT.entities.quests, ...phase11Entities.it_IT.quests },
+    abilities: { ...phase8.it_IT.entities.abilities, ...phase11Extra.it_IT.abilities },
+    items: { ...phase8.it_IT.entities.items, ...phase11Entities.it_IT.items, ...phase11Extra.it_IT.items },
+    mobs: { ...phase9.it_IT.entities.mobs, ...phase11Entities.it_IT.mobs, ...phase11Extra.it_IT.mobs },
+    npcs: { ...phase9.it_IT.entities.npcs, ...phase11Extra.it_IT.npcs },
+    quests: { ...phase9.it_IT.entities.quests, ...phase11Entities.it_IT.quests, ...phase11Extra.it_IT.quests },
+    dungeons: { ...phase9.it_IT.entities.dungeons, ...phase11Extra.it_IT.dungeons },
   },
 };
 
@@ -10822,6 +12120,7 @@ export const de_DE: typeof en = {
     questLog: "Questlog",
     worldMap: "Weltkarte",
     bags: "Tascheninventar",
+    emoteWheel: "Emote-Rad gedrückt halten",
     friends: "Freunde und Gilde",
     chat: "Chat öffnen",
   },
@@ -10837,9 +12136,12 @@ export const de_DE: typeof en = {
   entities: {
     ...phase8.de_DE.entities,
     ...phase9.de_DE.entities,
-    items: { ...phase8.de_DE.entities.items, ...phase11Entities.de_DE.items },
-    mobs: { ...phase9.de_DE.entities.mobs, ...phase11Entities.de_DE.mobs },
-    quests: { ...phase9.de_DE.entities.quests, ...phase11Entities.de_DE.quests },
+    abilities: { ...phase8.de_DE.entities.abilities, ...phase11Extra.de_DE.abilities },
+    items: { ...phase8.de_DE.entities.items, ...phase11Entities.de_DE.items, ...phase11Extra.de_DE.items },
+    mobs: { ...phase9.de_DE.entities.mobs, ...phase11Entities.de_DE.mobs, ...phase11Extra.de_DE.mobs },
+    npcs: { ...phase9.de_DE.entities.npcs, ...phase11Extra.de_DE.npcs },
+    quests: { ...phase9.de_DE.entities.quests, ...phase11Entities.de_DE.quests, ...phase11Extra.de_DE.quests },
+    dungeons: { ...phase9.de_DE.entities.dungeons, ...phase11Extra.de_DE.dungeons },
   },
 };
 
@@ -10972,6 +12274,7 @@ export const zh_CN: typeof en = {
     questLog: "任务日志",
     worldMap: "世界地图",
     bags: "背包",
+    emoteWheel: "按住表情轮盘",
     friends: "好友与公会",
     chat: "打开聊天框",
   },
@@ -10987,9 +12290,12 @@ export const zh_CN: typeof en = {
   entities: {
     ...phase8.zh_CN.entities,
     ...phase9.zh_CN.entities,
-    items: { ...phase8.zh_CN.entities.items, ...phase11Entities.zh_CN.items },
-    mobs: { ...phase9.zh_CN.entities.mobs, ...phase11Entities.zh_CN.mobs },
-    quests: { ...phase9.zh_CN.entities.quests, ...phase11Entities.zh_CN.quests },
+    abilities: { ...phase8.zh_CN.entities.abilities, ...phase11Extra.zh_CN.abilities },
+    items: { ...phase8.zh_CN.entities.items, ...phase11Entities.zh_CN.items, ...phase11Extra.zh_CN.items },
+    mobs: { ...phase9.zh_CN.entities.mobs, ...phase11Entities.zh_CN.mobs, ...phase11Extra.zh_CN.mobs },
+    npcs: { ...phase9.zh_CN.entities.npcs, ...phase11Extra.zh_CN.npcs },
+    quests: { ...phase9.zh_CN.entities.quests, ...phase11Entities.zh_CN.quests, ...phase11Extra.zh_CN.quests },
+    dungeons: { ...phase9.zh_CN.entities.dungeons, ...phase11Extra.zh_CN.dungeons },
   },
 };
 
@@ -11122,6 +12428,7 @@ export const zh_TW: typeof en = {
     questLog: "任務日誌",
     worldMap: "世界地圖",
     bags: "背包背包欄",
+    emoteWheel: "按住表情輪盤",
     friends: "好友與公會",
     chat: "開啟對話框",
   },
@@ -11137,9 +12444,12 @@ export const zh_TW: typeof en = {
   entities: {
     ...phase8.zh_TW.entities,
     ...phase9.zh_TW.entities,
-    items: { ...phase8.zh_TW.entities.items, ...phase11Entities.zh_TW.items },
-    mobs: { ...phase9.zh_TW.entities.mobs, ...phase11Entities.zh_TW.mobs },
-    quests: { ...phase9.zh_TW.entities.quests, ...phase11Entities.zh_TW.quests },
+    abilities: { ...phase8.zh_TW.entities.abilities, ...phase11Extra.zh_TW.abilities },
+    items: { ...phase8.zh_TW.entities.items, ...phase11Entities.zh_TW.items, ...phase11Extra.zh_TW.items },
+    mobs: { ...phase9.zh_TW.entities.mobs, ...phase11Entities.zh_TW.mobs, ...phase11Extra.zh_TW.mobs },
+    npcs: { ...phase9.zh_TW.entities.npcs, ...phase11Extra.zh_TW.npcs },
+    quests: { ...phase9.zh_TW.entities.quests, ...phase11Entities.zh_TW.quests, ...phase11Extra.zh_TW.quests },
+    dungeons: { ...phase9.zh_TW.entities.dungeons, ...phase11Extra.zh_TW.dungeons },
   },
 };
 
@@ -11272,6 +12582,7 @@ export const ko_KR: typeof en = {
     questLog: "퀘스트 목록",
     worldMap: "세계 지도",
     bags: "가방 소지품",
+    emoteWheel: "감정표현 휠 길게 누르기",
     friends: "친구 및 길드",
     chat: "채팅창 열기",
   },
@@ -11287,9 +12598,12 @@ export const ko_KR: typeof en = {
   entities: {
     ...phase8.ko_KR.entities,
     ...phase9.ko_KR.entities,
-    items: { ...phase8.ko_KR.entities.items, ...phase11Entities.ko_KR.items },
-    mobs: { ...phase9.ko_KR.entities.mobs, ...phase11Entities.ko_KR.mobs },
-    quests: { ...phase9.ko_KR.entities.quests, ...phase11Entities.ko_KR.quests },
+    abilities: { ...phase8.ko_KR.entities.abilities, ...phase11Extra.ko_KR.abilities },
+    items: { ...phase8.ko_KR.entities.items, ...phase11Entities.ko_KR.items, ...phase11Extra.ko_KR.items },
+    mobs: { ...phase9.ko_KR.entities.mobs, ...phase11Entities.ko_KR.mobs, ...phase11Extra.ko_KR.mobs },
+    npcs: { ...phase9.ko_KR.entities.npcs, ...phase11Extra.ko_KR.npcs },
+    quests: { ...phase9.ko_KR.entities.quests, ...phase11Entities.ko_KR.quests, ...phase11Extra.ko_KR.quests },
+    dungeons: { ...phase9.ko_KR.entities.dungeons, ...phase11Extra.ko_KR.dungeons },
   },
 };
 
@@ -11422,6 +12736,7 @@ export const ja_JP: typeof en = {
     questLog: "クエストログ",
     worldMap: "ワールドマップ",
     bags: "バッグのインベントリ",
+    emoteWheel: "エモートホイールを長押し",
     friends: "フレンド & ギルド",
     chat: "チャットを開く",
   },
@@ -11437,9 +12752,12 @@ export const ja_JP: typeof en = {
   entities: {
     ...phase8.ja_JP.entities,
     ...phase9.ja_JP.entities,
-    items: { ...phase8.ja_JP.entities.items, ...phase11Entities.ja_JP.items },
-    mobs: { ...phase9.ja_JP.entities.mobs, ...phase11Entities.ja_JP.mobs },
-    quests: { ...phase9.ja_JP.entities.quests, ...phase11Entities.ja_JP.quests },
+    abilities: { ...phase8.ja_JP.entities.abilities, ...phase11Extra.ja_JP.abilities },
+    items: { ...phase8.ja_JP.entities.items, ...phase11Entities.ja_JP.items, ...phase11Extra.ja_JP.items },
+    mobs: { ...phase9.ja_JP.entities.mobs, ...phase11Entities.ja_JP.mobs, ...phase11Extra.ja_JP.mobs },
+    npcs: { ...phase9.ja_JP.entities.npcs, ...phase11Extra.ja_JP.npcs },
+    quests: { ...phase9.ja_JP.entities.quests, ...phase11Entities.ja_JP.quests, ...phase11Extra.ja_JP.quests },
+    dungeons: { ...phase9.ja_JP.entities.dungeons, ...phase11Extra.ja_JP.dungeons },
   },
 };
 
@@ -11572,6 +12890,7 @@ export const pt_BR: typeof en = {
     questLog: "Registro de missões",
     worldMap: "Mapa do mundo",
     bags: "Inventário de bolsas",
+    emoteWheel: "Segurar roda de emotes",
     friends: "Amigos e guilda",
     chat: "Abrir chat",
   },
@@ -11587,9 +12906,12 @@ export const pt_BR: typeof en = {
   entities: {
     ...phase8.pt_BR.entities,
     ...phase9.pt_BR.entities,
-    items: { ...phase8.pt_BR.entities.items, ...phase11Entities.pt_BR.items },
-    mobs: { ...phase9.pt_BR.entities.mobs, ...phase11Entities.pt_BR.mobs },
-    quests: { ...phase9.pt_BR.entities.quests, ...phase11Entities.pt_BR.quests },
+    abilities: { ...phase8.pt_BR.entities.abilities, ...phase11Extra.pt_BR.abilities },
+    items: { ...phase8.pt_BR.entities.items, ...phase11Entities.pt_BR.items, ...phase11Extra.pt_BR.items },
+    mobs: { ...phase9.pt_BR.entities.mobs, ...phase11Entities.pt_BR.mobs, ...phase11Extra.pt_BR.mobs },
+    npcs: { ...phase9.pt_BR.entities.npcs, ...phase11Extra.pt_BR.npcs },
+    quests: { ...phase9.pt_BR.entities.quests, ...phase11Entities.pt_BR.quests, ...phase11Extra.pt_BR.quests },
+    dungeons: { ...phase9.pt_BR.entities.dungeons, ...phase11Extra.pt_BR.dungeons },
   },
 };
 
@@ -11722,6 +13044,7 @@ export const ru_RU: typeof en = {
     questLog: "Журнал заданий",
     worldMap: "Карта мира",
     bags: "Сумки",
+    emoteWheel: "Удерживать колесо эмоций",
     friends: "Друзья и гильдия",
     chat: "Открыть чат",
   },
@@ -11737,9 +13060,12 @@ export const ru_RU: typeof en = {
   entities: {
     ...phase8.ru_RU.entities,
     ...phase9.ru_RU.entities,
-    items: { ...phase8.ru_RU.entities.items, ...phase11Entities.ru_RU.items },
-    mobs: { ...phase9.ru_RU.entities.mobs, ...phase11Entities.ru_RU.mobs },
-    quests: { ...phase9.ru_RU.entities.quests, ...phase11Entities.ru_RU.quests },
+    abilities: { ...phase8.ru_RU.entities.abilities, ...phase11Extra.ru_RU.abilities },
+    items: { ...phase8.ru_RU.entities.items, ...phase11Entities.ru_RU.items, ...phase11Extra.ru_RU.items },
+    mobs: { ...phase9.ru_RU.entities.mobs, ...phase11Entities.ru_RU.mobs, ...phase11Extra.ru_RU.mobs },
+    npcs: { ...phase9.ru_RU.entities.npcs, ...phase11Extra.ru_RU.npcs },
+    quests: { ...phase9.ru_RU.entities.quests, ...phase11Entities.ru_RU.quests, ...phase11Extra.ru_RU.quests },
+    dungeons: { ...phase9.ru_RU.entities.dungeons, ...phase11Extra.ru_RU.dungeons },
   },
 };
 
@@ -11777,6 +13103,36 @@ export function languageTag(lang: SupportedLanguage): string {
   return lang.replace("_", "-");
 }
 
+function browserStorage(): Storage | null {
+  try {
+    const storage = globalThis.localStorage;
+    return storage && typeof storage === "object" ? storage : null;
+  } catch {
+    return null;
+  }
+}
+
+function getStoredLanguage(): SupportedLanguage | null {
+  const storage = browserStorage();
+  if (!storage || typeof storage.getItem !== "function") return null;
+  try {
+    const saved = storage.getItem("locale") as SupportedLanguage | null;
+    return saved && translations[saved] ? saved : null;
+  } catch {
+    return null;
+  }
+}
+
+function setStoredLanguage(lang: SupportedLanguage): void {
+  const storage = browserStorage();
+  if (!storage || typeof storage.setItem !== "function") return;
+  try {
+    storage.setItem("locale", lang);
+  } catch {
+    // Storage may be disabled or unavailable in test/browser privacy modes.
+  }
+}
+
 // Initialize language from URL query or localStorage if available (browser environments)
 if (typeof window !== "undefined" && window.location) {
   const params = new URLSearchParams(window.location.search);
@@ -11784,16 +13140,10 @@ if (typeof window !== "undefined" && window.location) {
   if (langParam && isSupportedLanguage(langParam)) {
     currentLanguage = langParam;
   } else {
-    const saved = localStorage.getItem("locale");
-    if (saved && isSupportedLanguage(saved)) {
-      currentLanguage = saved;
-    }
+    currentLanguage = getStoredLanguage() ?? currentLanguage;
   }
-} else if (typeof localStorage !== "undefined") {
-  const saved = localStorage.getItem("locale");
-  if (saved && isSupportedLanguage(saved)) {
-    currentLanguage = saved;
-  }
+} else {
+  currentLanguage = getStoredLanguage() ?? currentLanguage;
 }
 
 export function getLanguage(): SupportedLanguage {
@@ -11802,9 +13152,7 @@ export function getLanguage(): SupportedLanguage {
 
 export function setLanguage(lang: SupportedLanguage): void {
   currentLanguage = lang;
-  if (typeof localStorage !== "undefined") {
-    localStorage.setItem("locale", lang);
-  }
+  setStoredLanguage(lang);
 }
 
 function interpolate(template: string, values?: InterpolationValues): string {

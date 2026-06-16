@@ -1,13 +1,16 @@
 import type { ResolvedAbility } from '../sim/sim';
-import type { FriendInfo, IWorld, LeaderboardEntry, MarketInfo } from '../world_api';
+import { OVERHEAD_EMOTES, isOverheadEmoteId, type FriendInfo, type IWorld, type LeaderboardEntry, type MarketInfo, type OverheadEmoteId } from '../world_api';
 import { Renderer } from '../render/renderer';
+import { CharacterPreview } from '../render/characters';
+import { skinCount } from '../render/characters/manifest';
+import { emoteIconUrl } from './emote_icons';
 import {
   ABILITIES, CLASSES, DUNGEON_LIST, DUNGEON_X_THRESHOLD, ITEMS, MOBS, NPCS, PROPS, QUESTS,
   WORLD_MAX_X, WORLD_MAX_Z, WORLD_MIN_X, WORLD_MIN_Z, ZONES, dungeonAt, questRewardItem, zoneAt,
   zoneWelcomeText,
 } from '../sim/data';
 import type { ZoneDef } from '../sim/data';
-import type { AbilityDef, EquipSlot, InvSlot, PlayerClass, ResourceType, Stats } from '../sim/types';
+import type { AbilityDef, EquipSlot, InvSlot, PetMode, PlayerClass, ResourceType, Stats } from '../sim/types';
 import {
   AbilityEffect, CONSUME_DURATION, Entity, FISHING_CAST_ID, GCD, ItemDef, SimEvent,
   dist2d, xpForLevel, MAX_LEVEL, MELEE_RANGE, MILESTONES, virtualLevel, canPrestige, xpUntilNextPrestige,
@@ -17,12 +20,15 @@ import { terrainHeight, WATER_LEVEL, roadDistance, generateDecorations } from '.
 import type { Decoration } from '../sim/world';
 import { Meters } from './meters';
 import { audio } from '../game/audio';
-import { music } from '../game/music';
+import { music, musicZoneForLocation } from '../game/music';
 import { iconDataUrl, iconCanvas, QUALITY_COLOR, raidMarkerDataUrl, RAID_MARKER_NAMES } from './icons';
 import { svgIcon } from './ui_icons';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
-import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES } from '../game/settings';
+import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES, clickMoveButtonLabel, normalizeClickMoveButton } from '../game/settings';
+import { isPhoneTouchDevice } from '../game/mobile_controls';
 import { chatPlayerContextActions } from './player_context_menu';
+import { TouchPeekGuard, TOOLTIP_PEEK_MS } from './touch_peek';
+import { maskProfanity } from './profanity';
 import { formatMoney as formatLocalizedMoney, formatNumber, moneyParts, t, type TranslationKey } from './i18n';
 import { tEntity } from './entity_i18n';
 import { localizeServerText, localizeZone } from './server_i18n';
@@ -33,6 +39,7 @@ import {
   exportBuild, importBuild, cloneAllocation, talentPointsAtLevel, FIRST_TALENT_LEVEL,
   type TalentAllocation, type TalentNode, type SpecDef, type Role,
 } from '../sim/content/talents';
+import { talentChoiceIconDataUrl, talentNodeIconDataUrl } from './talent_icons';
 import {
   clearHotbarSlot, encodeHotbarAction, HOTBAR_ACTION_MIME, HotbarAction, parseHotbarAction, parseHotbarActions,
   placeAbilityOnSlot, placeItemOnSlot, swapHotbarSlots, syncHotbarActions,
@@ -61,6 +68,7 @@ const esc = (value: unknown): string => String(value ?? '')
   .replace(/'/g, '&#39;');
 const castDisplayName = (id: string): string => {
   if (id === FISHING_CAST_ID) return t('abilityUi.cast.fishing');
+  if (id === 'demon_heal') return t('abilityUi.cast.demonHeal');
   const ability = ABILITIES[id];
   return ability ? abilityDisplayName(ability) : id;
 };
@@ -91,6 +99,16 @@ const RAID_MARKER_LABEL_KEYS = [
 const FORM_LABEL_KEYS: Record<'bear' | 'cat', TranslationKey> = {
   bear: 'abilityUi.forms.bear',
   cat: 'abilityUi.forms.cat',
+};
+const PET_MODE_LABEL_KEYS: Record<PetMode, TranslationKey> = {
+  passive: 'hud.pet.passive',
+  defensive: 'hud.pet.defensive',
+  aggressive: 'hud.pet.aggressive',
+};
+const PET_MODE_DESC_KEYS: Record<PetMode, TranslationKey> = {
+  passive: 'hud.pet.passiveDesc',
+  defensive: 'hud.pet.defensiveDesc',
+  aggressive: 'hud.pet.aggressiveDesc',
 };
 type ItemQuality = NonNullable<ItemDef['quality']>;
 const ITEM_SLOT_LABEL_KEYS: Record<EquipSlot, TranslationKey> = {
@@ -133,6 +151,8 @@ const classCss = (cls: string): string =>
 // Party frames dim and the minimap pins members to the rim once they pass
 // this range (yards) — just inside the server's ~120 yd interest scope.
 const PARTY_RANGE_YD = 100;
+const EMOTE_WHEEL_LIMIT = 8;
+const DEFAULT_EMOTE_WHEEL: OverheadEmoteId[] = ['wave', 'laugh', 'question', 'cheer', 'dance', 'point', 'flex', 'cry'];
 
 // yards past a zone boundary before the crossing banner/welcome commits
 const ZONE_BANNER_DEADBAND = 5;
@@ -176,11 +196,15 @@ const CHAT_TEMPLATE_KEYS = {
   whisper: 'hud.chat.templates.whisper',
   toWhisper: 'hud.chat.templates.toWhisper',
   general: 'hud.chat.templates.general',
+  world: 'hud.chat.templates.world',
+  lfg: 'hud.chat.templates.lfg',
   guild: 'hud.chat.templates.guild',
   officer: 'hud.chat.templates.officer',
   emote: 'hud.chat.templates.emote',
+  roll: 'hud.chat.templates.roll',
   say: 'hud.chat.templates.say',
 } satisfies Record<string, TranslationKey>;
+type HotbarForm = 'normal' | 'bear' | 'cat' | 'stealth';
 
 // world map: terrain is pre-rendered for the whole zone at this resolution
 // (cached per zone) and a sub-rect is blitted for the current zoom.
@@ -194,19 +218,56 @@ export class Hud {
   private hotbarActions: HotbarAction[] = []; // index = barSlot-1
   private loadedSlotMapFromStorage = false;
   private knownAbilityIdsAtLastSlotSync: Set<string> | null = null;
+  private activeHotbarForm: HotbarForm = 'normal';
   private dragAction: { action: Exclude<HotbarAction, null>; sourceIndex: number | null } | null = null;
   private optionsHooks: OptionsHooks | null = null;
   private reportHooks: ReportHooks | null = null;
+  // Soft swear terms from the server (online only), masked in chat when the
+  // player's "Filter Profanity" setting is on. Fed by main.ts from ClientWorld.
+  private profanityWords: string[] = [];
   private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' = 'main';
   private capturingKey: { action: string; index: number } | null = null; // binding awaiting a key
   private keybindNote = '';
+  private emoteWheelOpen = false;
+  private emoteWheelHover: OverheadEmoteId | 'edit' | null = null;
+  private emoteWheelSlots: OverheadEmoteId[] = [];
+  private emoteWheelEl: HTMLDivElement | null = null;
+  private emoteWheelPinned = false;
   private chatLogEl = $('#chatlog');
   private combatLogEl = $('#combatlog');
   private errorEl = $('#error-msg');
   private bannerEl = $('#banner');
   private tooltipEl = $('#tooltip');
+  // Distinguishes a touch long-press "peek" (inspect, no action) from a tap.
+  private peekGuard = new TouchPeekGuard();
   private errorTimer: number | undefined;
   private bannerTimer: number | undefined;
+  private pfLevelEl = $('#pf-level');
+  private pfHpEl = $('#pf-hp');
+  private pfHpTextEl = $('#pf-hp-text');
+  private pfResEl = $('#pf-res');
+  private pfResTextEl = $('#pf-res-text');
+  private pfResourceEl = $('#pf-resource');
+  private buffBarEl = $('#buff-bar');
+  private targetFrameEl = $('#target-frame');
+  private targetEliteTagEl = $('#tf-elite-tag');
+  private targetNameEl = $('#tf-name');
+  private targetLevelEl = $('#tf-level');
+  private targetHpEl = $('#tf-hp');
+  private targetHpTextEl = $('#tf-hp-text');
+  private targetPortraitEl = $('#tf-portrait') as unknown as HTMLCanvasElement;
+  private targetDebuffsEl = $('#tf-debuffs');
+  private comboRowEl = $('#combo-row');
+  private castbarEl = $('#castbar');
+  private castbarFillEl = this.castbarEl.querySelector('.fill') as HTMLElement;
+  private castbarLabelEl = this.castbarEl.querySelector('.label') as HTMLElement;
+  private actionbarEl = $('#actionbar');
+  private xpFillEl = $('#xpbar .fill');
+  private xpLabelEl = $('#xpbar .label');
+  private deathOverlayEl = $('#death-overlay');
+  private hotWriteCache = new Map<HTMLElement, string>();
+  private hotDomWrites = 0;
+  private hotDomSkippedWrites = 0;
   private minimapCtx: CanvasRenderingContext2D;
   private minimapBg: HTMLCanvasElement;
   private mapBg: HTMLCanvasElement | null = null;
@@ -242,6 +303,9 @@ export class Hud {
   private mapDrag: { px: number; py: number; cx: number; cz: number } | null = null;
   private mapView: { spanX: number; spanZ: number; minX: number; maxX: number; minZ: number; maxZ: number } | null = null;
   private mapDecorations: Decoration[] | null = null; // cached trees/rocks (whole world)
+  private windowDrag: { el: HTMLElement; pointerId: number; offsetX: number; offsetY: number } | null = null;
+  private windowObserver: MutationObserver | null = null;
+  private windowZ = 50;
   private ignoredChatNames = new Set<string>();
   private socialTab: 'friends' | 'guild' | 'ignore' = 'friends';
   // split signatures: structural changes (tab, guild membership) rebuild the
@@ -251,11 +315,19 @@ export class Hud {
   private lastSocialContent = '';
   private socialNotice: { text: string; error: boolean } | null = null;
   private socialSuggestTimer: number | undefined;
+  private lastHudFastAt = 0;
+  private lastHudMediumAt = 0;
+  private lastHudSlowAt = 0;
+  private charPreview: CharacterPreview | null = null;
+  private charPreviewCanvas: HTMLCanvasElement | null = null;
   // current typeahead state: which input, its results, and the keyboard-
   // highlighted row (-1 = none), so Enter/Arrow keys can pick a suggestion
   private socialSuggest: { field: string; items: { name: string; cls: string; level: number }[]; index: number } = { field: '', items: [], index: -1 };
 
   private meters: Meters;
+  private lastPetBarSig = '';
+  private pendingPetFeed = false;
+  private petModeMenuOpen = false;
   // Talents: a local staged allocation the user edits before committing (Apply).
   private talentStage: TalentAllocation | null = null;
   private talentTab: 'class' | 'spec' = 'class';
@@ -264,6 +336,8 @@ export class Hud {
     this.ignoredChatNames = this.loadIgnoredChatNames();
     this.meters = new Meters(sim);
     this.bindLogTabs();
+    this.initWindowManagement();
+    this.emoteWheelSlots = this.loadEmoteWheelSlots();
     this.loadSlotMap();
     this.buildActionBar();
     this.refreshKeybindLabels();
@@ -277,6 +351,18 @@ export class Hud {
     mm.style.cursor = 'pointer';
     mm.title = t('controls.worldMap');
     mm.addEventListener('click', () => this.toggleMap());
+    window.addEventListener('pointermove', (ev) => {
+      if (this.emoteWheelOpen) this.updateEmoteWheelPointer(ev.clientX, ev.clientY);
+    });
+    window.addEventListener('mousemove', (ev) => {
+      if (this.emoteWheelOpen) this.updateEmoteWheelPointer(ev.clientX, ev.clientY);
+    });
+    window.addEventListener('pointerdown', (ev) => {
+      if (!this.emoteWheelOpen || !this.emoteWheelPinned) return;
+      const target = ev.target as Node | null;
+      if (target && (this.emoteWheelEl?.contains(target) || document.getElementById('mm-emote')?.contains(target) || document.getElementById('mobile-emote')?.contains(target))) return;
+      this.hideEmoteWheel();
+    });
     $('#release-btn').addEventListener('click', () => { this.sim.releaseSpirit(); });
     // classic MMOs: the player interaction menu opens from the target portrait
     $('#target-frame').addEventListener('contextmenu', (ev) => {
@@ -285,6 +371,8 @@ export class Hud {
       const t = tid !== null ? this.sim.entities.get(tid) : null;
       if (t && t.kind === 'player' && t.id !== this.sim.playerId) {
         this.openContextMenu(t.id, t.name, (ev as MouseEvent).clientX, (ev as MouseEvent).clientY);
+      } else if (t && t.kind === 'mob' && t.ownerId === this.sim.playerId) {
+        this.openPetMenu(t.id, t.name, t.dead, (ev as MouseEvent).clientX, (ev as MouseEvent).clientY);
       } else if (t && t.kind === 'mob' && !t.dead && t.hostile && t.ownerId === null && this.sim.partyInfo) {
         // classic MMOs: right-click an enemy's unit frame to set a raid marker.
         // Mirror Sim.setMarker's markable criteria (live wild hostile mob) so the
@@ -337,6 +425,11 @@ export class Hud {
     $('#mm-options')?.addEventListener('click', () => this.toggleOptionsMenu());
     $('#mm-arena').addEventListener('click', () => this.toggleArena());
     $('#mm-leaderboard').addEventListener('click', () => this.toggleLeaderboard());
+    const emoteBtn = $('#mm-emote');
+    emoteBtn.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      this.toggleEmoteWheel();
+    });
     const musicBtn = $('#mm-music');
     const styleMusicBtn = () => {
       // keep the note clearly readable when off (a plain tan, not gold) — the
@@ -355,6 +448,209 @@ export class Hud {
     this.showBanner(startZoneName);
     this.log(t('hud.core.welcomeZone', { zone: startZoneName }), '#ffd100');
     this.logZoneWelcome(startZone);
+    this.log('Tip: type /join world or /join lfg to chat with players across the realm.', '#7fd4ff');
+  }
+
+  private setText(el: HTMLElement, text: string): void {
+    if (this.hotWriteCache.get(el) === text) { this.hotDomSkippedWrites++; return; }
+    this.hotWriteCache.set(el, text);
+    this.hotDomWrites++;
+    el.textContent = text;
+  }
+
+  private setDisplay(el: HTMLElement, display: string): void {
+    const key = `display:${display}`;
+    if (this.hotWriteCache.get(el) === key) { this.hotDomSkippedWrites++; return; }
+    this.hotWriteCache.set(el, key);
+    this.hotDomWrites++;
+    el.style.display = display;
+  }
+
+  private setTransform(el: HTMLElement, transform: string): void {
+    const key = `transform:${transform}`;
+    if (this.hotWriteCache.get(el) === key) { this.hotDomSkippedWrites++; return; }
+    this.hotWriteCache.set(el, key);
+    this.hotDomWrites++;
+    el.style.transform = transform;
+  }
+
+  private setWidth(el: HTMLElement, width: string): void {
+    const key = `width:${width}`;
+    if (this.hotWriteCache.get(el) === key) { this.hotDomSkippedWrites++; return; }
+    this.hotWriteCache.set(el, key);
+    this.hotDomWrites++;
+    el.style.width = width;
+  }
+
+  perfStats(): { hotDomWrites: number; hotDomSkippedWrites: number; hotDomSkipRate: number } {
+    const total = this.hotDomWrites + this.hotDomSkippedWrites;
+    return {
+      hotDomWrites: this.hotDomWrites,
+      hotDomSkippedWrites: this.hotDomSkippedWrites,
+      hotDomSkipRate: total > 0 ? Math.round((this.hotDomSkippedWrites / total) * 1000) / 1000 : 0,
+    };
+  }
+
+  private initWindowManagement(): void {
+    const observeWindow = (el: HTMLElement) => {
+      this.windowObserver?.observe(el, { attributes: true, attributeFilter: ['class', 'style', 'hidden'] });
+    };
+    this.windowObserver = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.type === 'childList') {
+          m.addedNodes.forEach((node) => {
+            if (!(node instanceof HTMLElement)) return;
+            if (node.matches('.window.panel')) observeWindow(node);
+            node.querySelectorAll<HTMLElement>('.window.panel').forEach(observeWindow);
+          });
+          continue;
+        }
+        if (m.target instanceof HTMLElement && m.target.matches('.window.panel')) {
+          this.syncWindowOpenState(m.target);
+        }
+      }
+    });
+    document.querySelectorAll<HTMLElement>('.window.panel').forEach(observeWindow);
+    this.windowObserver.observe(document.body, { childList: true, subtree: true });
+    this.syncAnyWindowOpenState();
+
+    document.addEventListener('pointerdown', (ev) => {
+      const target = ev.target as HTMLElement | null;
+      const el = target?.closest?.('.window.panel') as HTMLElement | null;
+      if (!el) return;
+      this.bringWindowToFront(el);
+      if (ev.button !== 0 || !target || !this.isWindowDragHandle(target, el)) return;
+      ev.preventDefault();
+      this.hideTooltip();
+      const rect = el.getBoundingClientRect();
+      this.setWindowPixelPosition(el, rect.left, rect.top, rect);
+      this.windowDrag = { el, pointerId: ev.pointerId, offsetX: ev.clientX - rect.left, offsetY: ev.clientY - rect.top };
+      el.classList.add('window-dragging');
+      el.dataset.windowMoved = '1';
+      try { target.setPointerCapture?.(ev.pointerId); } catch { /* synthetic/legacy pointer without active capture */ }
+    });
+    document.addEventListener('pointermove', (ev) => {
+      const drag = this.windowDrag;
+      if (!drag || drag.pointerId !== ev.pointerId) return;
+      ev.preventDefault();
+      const rect = drag.el.getBoundingClientRect();
+      this.setWindowPixelPosition(drag.el, ev.clientX - drag.offsetX, ev.clientY - drag.offsetY, rect);
+    });
+    const endDrag = (ev: PointerEvent) => {
+      const drag = this.windowDrag;
+      if (!drag || drag.pointerId !== ev.pointerId) return;
+      drag.el.classList.remove('window-dragging');
+      this.windowDrag = null;
+    };
+    document.addEventListener('pointerup', endDrag);
+    document.addEventListener('pointercancel', endDrag);
+    window.addEventListener('resize', () => {
+      document.querySelectorAll<HTMLElement>('.window.panel').forEach((el) => {
+        if (!this.isWindowVisible(el) || el.dataset.windowMoved !== '1') return;
+        const rect = el.getBoundingClientRect();
+        this.setWindowPixelPosition(el, rect.left, rect.top, rect);
+      });
+    });
+  }
+
+  private isWindowVisible(el: HTMLElement): boolean {
+    if (el.id === 'social-window') return el.classList.contains('open');
+    if (el.hidden || el.hasAttribute('hidden')) return false;
+    return getComputedStyle(el).display !== 'none';
+  }
+
+  private syncWindowOpenState(el: HTMLElement): void {
+    if (!this.isWindowVisible(el)) {
+      delete el.dataset.windowOpen;
+      this.syncAnyWindowOpenState();
+      return;
+    }
+    if (el.dataset.windowOpen !== '1') {
+      el.dataset.windowOpen = '1';
+      this.placeNewWindow(el);
+      this.bringWindowToFront(el);
+    }
+    this.syncAnyWindowOpenState();
+  }
+
+  private syncAnyWindowOpenState(): void {
+    const anyOpen = [...document.querySelectorAll<HTMLElement>('.window.panel')]
+      .some((win) => this.isWindowVisible(win));
+    document.body.classList.toggle('mobile-window-open', anyOpen);
+  }
+
+  private placeNewWindow(el: HTMLElement): void {
+    if (el.dataset.windowMoved === '1' || el.id === 'loot-window') return;
+    if (document.body.classList.contains('vendor-open') && (el.id === 'vendor-window' || el.id === 'bags')) return;
+    const openCount = [...document.querySelectorAll<HTMLElement>('.window.panel')]
+      .filter((win) => win !== el && this.isWindowVisible(win)).length;
+    if (openCount <= 0) return;
+    const rect = el.getBoundingClientRect();
+    const offset = ((openCount - 1) % 8 + 1) * 28;
+    this.setWindowPixelPosition(el, rect.left + offset, rect.top + offset, rect);
+  }
+
+  private bringWindowToFront(el: HTMLElement): void {
+    if (this.windowZ >= 89) this.normalizeWindowZ();
+    el.style.zIndex = String(++this.windowZ);
+  }
+
+  private normalizeWindowZ(): void {
+    const open = [...document.querySelectorAll<HTMLElement>('.window.panel')]
+      .filter((el) => this.isWindowVisible(el))
+      .sort((a, b) => this.windowZValue(a) - this.windowZValue(b));
+    this.windowZ = 50;
+    for (const el of open) el.style.zIndex = String(++this.windowZ);
+  }
+
+  private windowZValue(el: HTMLElement): number {
+    const z = Number.parseInt(el.style.zIndex || getComputedStyle(el).zIndex || '', 10);
+    return Number.isFinite(z) ? z : 0;
+  }
+
+  private isWindowDragHandle(target: HTMLElement, win: HTMLElement): boolean {
+    if (target.closest('button, input, textarea, select, a, .x-btn, .ui-dd, [draggable="true"], #map-canvas, #map-zoom')) return false;
+    const title = target.closest('.panel-title');
+    if (title && win.contains(title)) return true;
+    return win.id === 'map-window' && target === win;
+  }
+
+  private setWindowPixelPosition(el: HTMLElement, left: number, top: number, rect = el.getBoundingClientRect()): void {
+    const margin = 8;
+    const width = Math.min(rect.width, window.innerWidth - margin * 2);
+    const height = Math.min(rect.height, window.innerHeight - margin * 2);
+    const maxLeft = Math.max(margin, window.innerWidth - width - margin);
+    const maxTop = Math.max(margin, window.innerHeight - height - margin);
+    el.style.left = `${Math.max(margin, Math.min(maxLeft, left))}px`;
+    el.style.top = `${Math.max(margin, Math.min(maxTop, top))}px`;
+    el.style.right = 'auto';
+    el.style.bottom = 'auto';
+    el.style.transform = 'none';
+  }
+
+  private topmostOpenWindow(): HTMLElement | null {
+    return [...document.querySelectorAll<HTMLElement>('.window.panel')]
+      .filter((el) => this.isWindowVisible(el))
+      .sort((a, b) => this.windowZValue(b) - this.windowZValue(a))[0] ?? null;
+  }
+
+  private closeManagedWindow(el: HTMLElement): void {
+    if (this.windowDrag?.el === el) this.windowDrag = null;
+    delete el.dataset.windowOpen;
+    switch (el.id) {
+      case 'confirm-dialog': el.remove(); break;
+      case 'options-menu': this.closeOptions(); break;
+      case 'social-window': el.classList.remove('open'); this.hideTooltip(); break;
+      case 'trade-window': this.sim.tradeCancel(); this.hideTooltip(); break;
+      case 'market-window': this.closeMarket(); break;
+      case 'vendor-window': this.closeVendor(); break;
+      case 'loot-window': this.closeLoot(); break;
+      case 'quest-dialog': this.closeQuestDialog(); break;
+      case 'talents-window': el.style.display = 'none'; this.talentStage = null; this.hideTooltip(); break;
+      case 'emote-editor': this.closeEmoteEditor(); break;
+      default: el.style.display = 'none'; this.hideTooltip(); break;
+    }
+    this.syncAnyWindowOpenState();
   }
 
   private bindLogTabs(): void {
@@ -367,6 +663,234 @@ export class Hud {
         $('#combatlog').classList.toggle('active', which === 'combat');
       });
     });
+  }
+
+  // -------------------------------------------------------------------------
+  // Emote wheel
+  // -------------------------------------------------------------------------
+
+  private emoteWheelKey(): string {
+    return `woc_emote_wheel_${this.sim.cfg.playerClass}_${this.sim.player.name}`;
+  }
+
+  private emoteWheelVersionKey(): string {
+    return `${this.emoteWheelKey()}_v2`;
+  }
+
+  private loadEmoteWheelSlots(): OverheadEmoteId[] {
+    let raw: unknown = null;
+    try { raw = JSON.parse(localStorage.getItem(this.emoteWheelKey()) ?? 'null'); } catch { /* corrupt */ }
+    const ids = Array.isArray(raw) ? raw.filter(isOverheadEmoteId) : [];
+    const deduped = ids.filter((id, i) => ids.indexOf(id) === i).slice(0, EMOTE_WHEEL_LIMIT);
+    let migrated = false;
+    try { migrated = localStorage.getItem(this.emoteWheelVersionKey()) === '1'; } catch { /* storage unavailable */ }
+    if (deduped.length > 0 && !migrated && !deduped.includes('question')) {
+      deduped.splice(2, 0, 'question');
+      deduped.length = Math.min(deduped.length, EMOTE_WHEEL_LIMIT);
+      try {
+        localStorage.setItem(this.emoteWheelKey(), JSON.stringify(deduped));
+        localStorage.setItem(this.emoteWheelVersionKey(), '1');
+      } catch { /* storage unavailable */ }
+    }
+    return deduped.length > 0 ? deduped : [...DEFAULT_EMOTE_WHEEL];
+  }
+
+  private saveEmoteWheelSlots(): void {
+    try {
+      localStorage.setItem(this.emoteWheelKey(), JSON.stringify(this.emoteWheelSlots));
+      localStorage.setItem(this.emoteWheelVersionKey(), '1');
+    } catch { /* storage unavailable */ }
+  }
+
+  private emoteLabel(id: OverheadEmoteId): string {
+    return OVERHEAD_EMOTES.find((e) => e.id === id)?.label ?? id;
+  }
+
+  private emoteWheelKeyLabel(): string {
+    return this.keybinds.primaryLabel('emoteWheel') || 'X';
+  }
+
+  private emoteWheelDisplayLabel(id: OverheadEmoteId): string {
+    return `${this.emoteLabel(id)} (${this.emoteWheelKeyLabel()})`;
+  }
+
+  /** Tap-to-toggle the pinned emote wheel — used by the menu-bar and on-screen
+   *  touch Emote buttons (touch has no key to hold, so the wheel stays pinned
+   *  until a slice or the outside is tapped). */
+  toggleEmoteWheel(): void {
+    if (this.emoteWheelOpen && this.emoteWheelPinned) {
+      this.hideEmoteWheel();
+      return;
+    }
+    this.showEmoteWheel(true);
+  }
+
+  setEmoteWheelOpen(open: boolean): void {
+    if (open) {
+      if (this.emoteWheelOpen) return;
+      this.closeContextMenu();
+      this.hideTooltip();
+      this.showEmoteWheel(false);
+      return;
+    }
+    if (!this.emoteWheelOpen) return;
+    const picked = this.emoteWheelHover;
+    this.hideEmoteWheel();
+    if (picked === 'edit') this.openEmoteEditor();
+    else if (picked) {
+      this.sim.playEmote(picked);
+      audio.click();
+    }
+  }
+
+  private selectEmoteWheelChoice(choice: OverheadEmoteId | 'edit'): void {
+    this.hideEmoteWheel();
+    if (choice === 'edit') this.openEmoteEditor();
+    else {
+      this.sim.playEmote(choice);
+      audio.click();
+    }
+  }
+
+  private showEmoteWheel(pinned = false): void {
+    let el = this.emoteWheelEl;
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'emote-wheel';
+      document.getElementById('ui')?.appendChild(el);
+      this.emoteWheelEl = el;
+    }
+    const slots = this.emoteWheelSlots.filter(isOverheadEmoteId).slice(0, EMOTE_WHEEL_LIMIT);
+    el.innerHTML = `<div class="emote-wheel-ring"></div><button class="emote-wheel-edit" data-edit>Edit</button>`;
+    slots.forEach((id, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'emote-wheel-item';
+      btn.dataset.emote = id;
+      btn.title = this.emoteLabel(id);
+      const icon = document.createElement('img');
+      icon.className = 'emote-wheel-icon';
+      icon.src = emoteIconUrl(id);
+      icon.alt = '';
+      const label = document.createElement('span');
+      label.className = 'emote-wheel-label';
+      label.textContent = this.emoteLabel(id);
+      btn.append(icon, label);
+      btn.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        this.selectEmoteWheelChoice(id);
+      });
+      const angle = -Math.PI / 2 + (i / Math.max(1, slots.length)) * Math.PI * 2;
+      btn.style.left = `${50 + Math.cos(angle) * 39}%`;
+      btn.style.top = `${50 + Math.sin(angle) * 39}%`;
+      el.appendChild(btn);
+    });
+    el.querySelector<HTMLButtonElement>('.emote-wheel-edit')?.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      this.selectEmoteWheelChoice('edit');
+    });
+    this.emoteWheelOpen = true;
+    this.emoteWheelPinned = pinned;
+    this.emoteWheelHover = null;
+    el.style.display = 'block';
+  }
+
+  private hideEmoteWheel(): void {
+    this.emoteWheelOpen = false;
+    this.emoteWheelPinned = false;
+    this.emoteWheelHover = null;
+    if (this.emoteWheelEl) this.emoteWheelEl.style.display = 'none';
+  }
+
+  private updateEmoteWheelPointer(x: number, y: number): void {
+    const el = this.emoteWheelEl;
+    if (!el || !this.emoteWheelOpen) return;
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = x - cx;
+    const dy = y - cy;
+    const dist = Math.hypot(dx, dy);
+    let hover: OverheadEmoteId | 'edit' | null = null;
+    if (dist <= 44) {
+      hover = 'edit';
+    } else if (dist >= 58 && dist <= rect.width * 0.58 && this.emoteWheelSlots.length > 0) {
+      const angle = (Math.atan2(dy, dx) + Math.PI / 2 + Math.PI * 2) % (Math.PI * 2);
+      const idx = Math.round(angle / (Math.PI * 2) * this.emoteWheelSlots.length) % this.emoteWheelSlots.length;
+      hover = this.emoteWheelSlots[idx] ?? null;
+    }
+    this.emoteWheelHover = hover;
+    el.querySelector('.emote-wheel-edit')?.classList.toggle('selected', hover === 'edit');
+    el.querySelectorAll<HTMLElement>('.emote-wheel-item').forEach((item) => {
+      item.classList.toggle('selected', item.dataset.emote === hover);
+    });
+  }
+
+  private openEmoteEditor(): void {
+    this.closeOtherWindows('#emote-editor');
+    this.renderEmoteEditor();
+    $('#emote-editor').style.display = 'block';
+  }
+
+  private closeEmoteEditor(): void {
+    $('#emote-editor').style.display = 'none';
+    this.hideTooltip();
+  }
+
+  private renderEmoteEditor(): void {
+    const el = $('#emote-editor');
+    el.innerHTML = `<div class="panel-title"><span>Emotes</span><span class="x-btn" data-close>${svgIcon('close')}</span></div>`;
+    const count = document.createElement('div');
+    count.className = 'emote-editor-count';
+    const grid = document.createElement('div');
+    grid.className = 'emote-editor-grid';
+    const selected = new Set(this.emoteWheelSlots);
+    const syncCount = () => { count.textContent = `${selected.size}/${EMOTE_WHEEL_LIMIT}`; };
+    const syncButtons = () => {
+      grid.querySelectorAll<HTMLButtonElement>('.emote-editor-item').forEach((b) => {
+        const id = b.dataset.emote;
+        const on = !!id && selected.has(id as OverheadEmoteId);
+        b.classList.toggle('selected', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        b.disabled = !on && selected.size >= EMOTE_WHEEL_LIMIT;
+      });
+    };
+    for (const def of OVERHEAD_EMOTES) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'emote-editor-item';
+      btn.dataset.emote = def.id;
+      const icon = document.createElement('img');
+      icon.className = 'emote-editor-icon';
+      icon.src = emoteIconUrl(def.id);
+      icon.alt = '';
+      const label = document.createElement('span');
+      label.textContent = def.label;
+      btn.append(icon, label);
+      btn.addEventListener('click', () => {
+        audio.click();
+        if (selected.has(def.id)) selected.delete(def.id);
+        else if (selected.size < EMOTE_WHEEL_LIMIT) selected.add(def.id);
+        this.emoteWheelSlots = OVERHEAD_EMOTES.map((e) => e.id).filter((id): id is OverheadEmoteId => selected.has(id));
+        this.saveEmoteWheelSlots();
+        syncCount();
+        syncButtons();
+      });
+      grid.appendChild(btn);
+    }
+    syncCount();
+    syncButtons();
+    const footer = document.createElement('div');
+    footer.className = 'emote-editor-footer';
+    const done = document.createElement('button');
+    done.className = 'btn';
+    done.textContent = 'Done';
+    done.addEventListener('click', () => this.closeEmoteEditor());
+    footer.append(count, done);
+    el.append(grid, footer);
+    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeEmoteEditor());
   }
 
   // -------------------------------------------------------------------------
@@ -405,7 +929,10 @@ export class Hud {
       if (touchTimer !== undefined) window.clearTimeout(touchTimer);
       touchTimer = undefined;
     };
-    const showAt = (x: number, y: number) => {
+    const showAt = (x: number, y: number, trigger: 'touch' | 'mouse' | 'focus') => {
+      // Touch-only path: showing the tooltip means the held control is being
+      // inspected, so the release click should peek, not fire its action.
+      this.peekGuard.tooltipShown(trigger);
       this.tooltipEl.innerHTML = html();
       this.tooltipEl.style.display = 'block';
       const tw = this.tooltipEl.offsetWidth, th = this.tooltipEl.offsetHeight;
@@ -414,11 +941,12 @@ export class Hud {
     };
     const showNearElement = () => {
       const rect = el.getBoundingClientRect();
-      showAt(rect.right, rect.top + rect.height / 2);
+      showAt(rect.right, rect.top + rect.height / 2, 'focus');
     };
     el.addEventListener('mouseenter', () => {
       if (mobile()) return;
-      showNearElement();
+      const rect = el.getBoundingClientRect();
+      showAt(rect.right, rect.top + rect.height / 2, 'mouse');
     });
     el.addEventListener('mousemove', (e) => {
       if (mobile()) return;
@@ -432,8 +960,11 @@ export class Hud {
     el.addEventListener('pointerdown', (e) => {
       if (!mobile() || e.pointerType === 'mouse') return;
       clearTouchTimer();
+      // A fresh press: drop any stale peek and dismiss a lingering tooltip.
+      this.peekGuard.press();
+      this.tooltipEl.style.display = 'none';
       const x = e.clientX, y = e.clientY;
-      touchTimer = window.setTimeout(() => showAt(x, y), 950);
+      touchTimer = window.setTimeout(() => showAt(x, y, 'touch'), TOOLTIP_PEEK_MS);
     });
     el.addEventListener('pointerup', clearTouchTimer);
     el.addEventListener('pointercancel', clearTouchTimer);
@@ -587,9 +1118,20 @@ export class Hud {
 
   // The hotbar layout is a client-side remap over learned abilities and item
   // shortcuts. Abilities are keyed by id (known is class-ordered and shifts on
-  // level-up, so indices would not survive). Persisted per class+character.
+  // level-up, so indices would not survive). Persisted per class+character,
+  // with separate form/stealth layouts because each state has a different kit.
   private slotMapKey(): string {
-    return `woc_hotbar_${this.sim.cfg.playerClass}_${this.sim.player.name}`;
+    const base = `woc_hotbar_${this.sim.cfg.playerClass}_${this.sim.player.name}`;
+    return this.activeHotbarForm === 'normal' ? base : `${base}_${this.activeHotbarForm}`;
+  }
+
+  private playerHotbarForm(): HotbarForm {
+    if (this.sim.cfg.playerClass === 'druid') {
+      if (this.sim.player.auras.some((a) => a.kind === 'form_bear')) return 'bear';
+      if (this.sim.player.auras.some((a) => a.kind === 'form_cat')) return 'cat';
+    }
+    if (this.sim.cfg.playerClass === 'rogue' && this.sim.player.auras.some((a) => a.kind === 'stealth')) return 'stealth';
+    return 'normal';
   }
 
   private isHotbarItemId(itemId: string): boolean {
@@ -599,18 +1141,34 @@ export class Hud {
 
   private loadSlotMap(): void {
     let arr: unknown = null;
-    try { arr = JSON.parse(localStorage.getItem(this.slotMapKey()) ?? 'null'); } catch { /* corrupt */ }
-    this.loadedSlotMapFromStorage = Array.isArray(arr);
+    let stored = false;
+    try {
+      const raw = localStorage.getItem(this.slotMapKey());
+      stored = raw !== null;
+      arr = JSON.parse(raw ?? 'null');
+    } catch { /* corrupt */ }
+    this.loadedSlotMapFromStorage = stored || this.activeHotbarForm !== 'normal';
     this.hotbarActions = parseHotbarActions(
       arr,
       Hud.BAR_ABILITY_SLOTS,
       (id) => !!ABILITIES[id],
       (id) => this.isHotbarItemId(id),
     );
+    this.knownAbilityIdsAtLastSlotSync = null;
   }
 
   private saveSlotMap(): void {
     try { localStorage.setItem(this.slotMapKey(), JSON.stringify(this.hotbarActions)); } catch { /* storage unavailable */ }
+  }
+
+  private syncActiveHotbarForm(): void {
+    const next = this.playerHotbarForm();
+    if (next === this.activeHotbarForm) return;
+    this.saveSlotMap();
+    this.activeHotbarForm = next;
+    this.dragAction = null;
+    this.clearActionDropTargets();
+    this.loadSlotMap();
   }
 
   // Drop unlearned ability ids; place newly learned abilities in the first
@@ -668,7 +1226,7 @@ export class Hud {
     } else if (action?.type === 'item' && this.isHotbarItemId(action.id)) {
       if (this.tradeOpen) return;
       this.sim.useItem(action.id);
-      if ($('#bags').style.display === 'block') this.renderBags();
+      if ($('#bags').style.display !== 'none') this.renderBags();
     }
   }
 
@@ -708,6 +1266,9 @@ export class Hud {
       // slot 0 is Attack for every class (auto-attack toggle — players
       // without right-click need a way in); the kit fills slots 1+
       btn.addEventListener('click', () => {
+        // On touch, the click that ends a long-press peek inspects the slot
+        // (tooltip already shown) instead of casting — release dismisses it.
+        if (this.peekGuard.consume()) { this.hideTooltip(); return; }
         audio.click();
         this.castSlot(slot);
       });
@@ -810,11 +1371,123 @@ export class Hud {
     for (let i = 0; i < this.abilityButtons.length; i++) {
       this.abilityButtons[i].keybindEl.textContent = this.keybinds.primaryLabel(`slot${i}`);
     }
+    const sideButtons: [selector: string, action: string, label: string][] = [
+      ['#mm-char', 'char', 'Character'],
+      ['#mm-spell', 'spellbook', 'Spellbook'],
+      ['#mm-talents', 'talents', 'Talents'],
+      ['#mm-quest', 'questlog', 'Quest Log'],
+      ['#mm-map', 'map', 'Map'],
+      ['#mm-bag', 'bags', 'Bags'],
+      ['#mm-arena', 'arena', 'Arena'],
+      ['#mm-leaderboard', 'leaderboard', 'Leaderboard'],
+      ['#mm-emote', 'emoteWheel', 'Emotes'],
+      ['#mm-social', 'social', 'Friends'],
+    ];
+    for (const [selector, action, label] of sideButtons) {
+      const btn = document.querySelector<HTMLElement>(selector);
+      if (!btn) continue;
+      const key = this.keybinds.primaryLabel(action);
+      const keyEl = btn.querySelector<HTMLElement>('.keybind');
+      if (keyEl) keyEl.textContent = key.toLowerCase();
+      btn.setAttribute('aria-label', key ? `${label} (${key})` : label);
+    }
   }
 
   private buildXpTicks(): void {
     const ticks = $('#xpbar .ticks');
     for (let i = 0; i < 20; i++) ticks.appendChild(document.createElement('i'));
+  }
+
+  private ownPet(): Entity | null {
+    for (const e of this.sim.entities.values()) {
+      if (e.kind === 'mob' && e.ownerId === this.sim.playerId) return e;
+    }
+    return null;
+  }
+
+  private renderPetBar(): void {
+    const bar = $('#petbar') as HTMLElement;
+    const pet = this.ownPet();
+    if (!pet || pet.dead) {
+      bar.style.display = 'none';
+      if (this.lastPetBarSig !== '') {
+        bar.innerHTML = '';
+        this.lastPetBarSig = '';
+      }
+      return;
+    }
+    const mode = pet.petMode ?? 'defensive';
+    const cd = Math.ceil(Math.max(0, pet.petTauntTimer));
+    const ownerClass = this.sim.cfg.playerClass;
+    const sig = `${pet.id}:${ownerClass}:${mode}:${cd}:${this.pendingPetFeed ? 'feed' : ''}:${this.petModeMenuOpen ? 'modes' : ''}`;
+    bar.style.display = 'flex';
+    if (sig === this.lastPetBarSig) return;
+    this.lastPetBarSig = sig;
+    bar.innerHTML = '';
+    const commands = document.createElement('div');
+    commands.className = 'petbar-group';
+    const stances = document.createElement('div');
+    stances.className = 'petbar-group';
+    bar.append(commands, stances);
+    const petTooltip = (title: string, desc: string): string =>
+      `<div class="tt-title">${esc(title)}</div><div class="tt-desc">${esc(desc)}</div>`;
+    const petModeLabel = (m: PetMode): string => t(PET_MODE_LABEL_KEYS[m]);
+    const addButton = (parent: HTMLElement, iconId: string, title: string, tooltip: string, onClick: () => void, opts: { active?: boolean; cooldownText?: string } = {}) => {
+      const btn = document.createElement('button');
+      btn.className = 'pet-btn';
+      if (opts.active) btn.classList.add('active');
+      if (opts.cooldownText) btn.classList.add('cooldown');
+      btn.title = title;
+      const icon = document.createElement('span');
+      icon.className = 'icon-label';
+      icon.style.backgroundImage = `url(${iconDataUrl('ability', iconId)})`;
+      btn.appendChild(icon);
+      if (opts.cooldownText) {
+        const cdText = document.createElement('span');
+        cdText.className = 'cdtext';
+        cdText.textContent = opts.cooldownText;
+        btn.appendChild(cdText);
+      }
+      btn.addEventListener('click', () => {
+        if (opts.cooldownText) return;
+        audio.click();
+        onClick();
+      });
+      this.attachTooltip(btn, () => tooltip);
+      parent.appendChild(btn);
+    };
+    addButton(commands, 'attack', t('hud.pet.attack'), petTooltip(t('hud.pet.petAttackTitle'), t('hud.pet.petAttackDesc')), () => this.sim.petAttack());
+    addButton(commands, 'growl', t('hud.pet.taunt'), petTooltip(t('hud.pet.petTauntTitle'), t('hud.pet.petTauntDesc')), () => this.sim.petTaunt(), { cooldownText: cd > 0 ? `${cd}` : undefined });
+    if (ownerClass === 'warlock') {
+      addButton(commands, 'drain_life', t('hud.pet.healDemon'), petTooltip(t('hud.pet.healDemon'), t('hud.pet.healDemonDesc')), () => {
+        this.sim.healPet();
+      });
+    } else {
+      addButton(commands, 'rejuvenation', t('hud.pet.healPet'), petTooltip(t('hud.pet.healPet'), t('hud.pet.healPetDesc')), () => {
+        this.pendingPetFeed = true;
+        this.lastPetBarSig = '';
+        $('#bags').style.display = 'block';
+        this.renderBags();
+      }, { active: this.pendingPetFeed });
+    }
+    const modes: { mode: PetMode; labelKey: TranslationKey; descKey: TranslationKey }[] = [
+      { mode: 'passive', labelKey: PET_MODE_LABEL_KEYS.passive, descKey: PET_MODE_DESC_KEYS.passive },
+      { mode: 'defensive', labelKey: PET_MODE_LABEL_KEYS.defensive, descKey: PET_MODE_DESC_KEYS.defensive },
+      { mode: 'aggressive', labelKey: PET_MODE_LABEL_KEYS.aggressive, descKey: PET_MODE_DESC_KEYS.aggressive },
+    ];
+    const modeIcons: Record<PetMode, string> = { passive: 'prowl', defensive: 'defensive_stance', aggressive: 'rapid_fire' };
+    addButton(stances, modeIcons[mode], petModeLabel(mode), petTooltip(`${t('hud.pet.stanceTitle')}: ${petModeLabel(mode)}`, t('hud.pet.stanceDesc')), () => {
+      this.petModeMenuOpen = !this.petModeMenuOpen;
+      this.lastPetBarSig = '';
+    }, { active: true });
+    if (!this.petModeMenuOpen) return;
+    for (const entry of modes) {
+      addButton(stances, modeIcons[entry.mode], t(entry.labelKey), petTooltip(t(entry.labelKey), t(entry.descKey)), () => {
+        this.sim.setPetMode(entry.mode);
+        this.petModeMenuOpen = false;
+        this.lastPetBarSig = '';
+      }, { active: mode === entry.mode });
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -824,7 +1497,16 @@ export class Hud {
   update(): void {
     const sim = this.sim;
     const p = sim.player;
+    const now = performance.now();
+    const fastHud = now - this.lastHudFastAt >= 100;
+    if (fastHud) this.lastHudFastAt = now;
+    const mediumHud = now - this.lastHudMediumAt >= 250;
+    if (mediumHud) this.lastHudMediumAt = now;
+    const slowHud = now - this.lastHudSlowAt >= 500;
+    if (slowHud) this.lastHudSlowAt = now;
+
     this.meters.update();
+    this.syncActiveHotbarForm();
     this.syncSlotMap(); // picks up newly learned abilities mid-session
 
     // talent buttons glow while the player has unspent points (and a tree exists)
@@ -834,89 +1516,87 @@ export class Hud {
     document.getElementById('mobile-talents')?.classList.toggle('has-points', talGlow);
 
     // player frame
-    $('#pf-level').textContent = String(p.level);
-    ($('#pf-hp') as HTMLElement).style.transform = `scaleX(${p.hp / Math.max(1, p.maxHp)})`;
-    $('#pf-hp-text').textContent = `${p.hp} / ${p.maxHp}`;
+    this.setText(this.pfLevelEl, String(p.level));
+    this.setTransform(this.pfHpEl, `scaleX(${p.hp / Math.max(1, p.maxHp)})`);
+    this.setText(this.pfHpTextEl, `${p.hp} / ${p.maxHp}`);
     const resFrac = p.resource / Math.max(1, p.maxResource);
-    ($('#pf-res') as HTMLElement).style.transform = `scaleX(${resFrac})`;
-    $('#pf-res-text').textContent = `${Math.round(p.resource)} / ${p.maxResource}`;
-    $('#pf-resource').className = 'bar ' + (p.resourceType === 'rage' ? 'rage' : p.resourceType === 'energy' ? 'energy' : 'mana');
+    this.setTransform(this.pfResEl, `scaleX(${resFrac})`);
+    this.setText(this.pfResTextEl, `${Math.round(p.resource)} / ${p.maxResource}`);
+    const resClass = 'bar ' + (p.resourceType === 'rage' ? 'rage' : p.resourceType === 'energy' ? 'energy' : 'mana');
+    if (this.pfResourceEl.className !== resClass) this.pfResourceEl.className = resClass;
 
     // buff bar (player buffs + debuffs)
-    this.renderAuras($('#buff-bar'), p, 'all');
+    this.renderAuras(this.buffBarEl, p, 'all');
 
     // target frame
     const target = p.targetId !== null ? sim.entities.get(p.targetId) : null;
-    const tf = $('#target-frame');
     if (target && target.kind !== 'object') {
-      tf.style.display = 'flex';
-      tf.classList.toggle('elite', !!MOBS[target.templateId]?.elite);
-      $('#tf-elite-tag').textContent = MOBS[target.templateId]?.boss ? t('hud.core.boss') : t('hud.core.elite');
-      $('#tf-name').textContent = entityDisplayName(target);
-      $('#tf-level').textContent = MOBS[target.templateId]?.boss ? '☠' : String(target.level);
-      ($('#tf-hp') as HTMLElement).style.transform = `scaleX(${target.hp / Math.max(1, target.maxHp)})`;
-      $('#tf-hp-text').textContent = target.dead ? t('hud.core.dead') : `${target.hp} / ${target.maxHp}`;
-      ($('#tf-name') as HTMLElement).style.color = target.hostile ? 'var(--color-hostile)' : 'var(--color-friendly)';
+      this.setDisplay(this.targetFrameEl, 'flex');
+      this.targetFrameEl.classList.toggle('elite', !!MOBS[target.templateId]?.elite);
+      this.setText(this.targetEliteTagEl, MOBS[target.templateId]?.boss ? t('hud.core.boss') : t('hud.core.elite'));
+      this.setText(this.targetNameEl, entityDisplayName(target));
+      this.setText(this.targetLevelEl, MOBS[target.templateId]?.boss ? '☠' : String(target.level));
+      this.setTransform(this.targetHpEl, `scaleX(${target.hp / Math.max(1, target.maxHp)})`);
+      this.setText(this.targetHpTextEl, target.dead ? t('hud.core.dead') : `${target.hp} / ${target.maxHp}`);
+      const targetNameColor = target.hostile ? 'var(--color-hostile)' : 'var(--color-friendly)';
+      if (this.targetNameEl.style.color !== targetNameColor) this.targetNameEl.style.color = targetNameColor;
       if (this.lastPortraitTarget !== target.id) {
         this.lastPortraitTarget = target.id;
         const crestId = target.kind === 'npc'
           ? 'status_npc'
           : `family_${MOBS[target.templateId]?.family ?? 'humanoid'}`;
-        this.drawPortrait($('#tf-portrait') as unknown as HTMLCanvasElement, crestId);
+        this.drawPortrait(this.targetPortraitEl, crestId);
       }
-      this.renderAuras($('#tf-debuffs'), target, 'debuffs');
+      this.renderAuras(this.targetDebuffsEl, target, 'debuffs');
       // combo points
-      const comboRow = $('#combo-row');
       if (p.resourceType === 'energy') {
-        comboRow.style.display = 'flex';
-        if (comboRow.children.length !== 5) {
-          comboRow.innerHTML = '';
+        this.setDisplay(this.comboRowEl, 'flex');
+        if (this.comboRowEl.children.length !== 5) {
+          this.comboRowEl.innerHTML = '';
           for (let i = 0; i < 5; i++) {
             const pip = document.createElement('div');
             pip.className = 'combo-pip';
-            comboRow.appendChild(pip);
+            this.comboRowEl.appendChild(pip);
           }
         }
         const points = p.comboTargetId === target.id ? p.comboPoints : 0;
-        [...comboRow.children].forEach((pip, i) => pip.classList.toggle('on', i < points));
+        [...this.comboRowEl.children].forEach((pip, i) => pip.classList.toggle('on', i < points));
       } else {
-        comboRow.style.display = 'none';
+        this.setDisplay(this.comboRowEl, 'none');
       }
     } else {
-      tf.style.display = 'none';
+      this.setDisplay(this.targetFrameEl, 'none');
       this.lastPortraitTarget = -999;
     }
 
     // cast bar
-    const cb = $('#castbar');
     if (p.castingAbility) {
-      cb.style.display = 'block';
-      cb.classList.toggle('channel', p.channeling);
+      this.setDisplay(this.castbarEl, 'block');
+      this.castbarEl.classList.toggle('channel', p.channeling);
       const frac = p.channeling
         ? p.castRemaining / Math.max(0.01, p.castTotal)
         : 1 - p.castRemaining / Math.max(0.01, p.castTotal);
-      (cb.querySelector('.fill') as HTMLElement).style.width = `${(frac * 100).toFixed(1)}%`;
-      (cb.querySelector('.label') as HTMLElement).textContent = castDisplayName(p.castingAbility);
+      this.setWidth(this.castbarFillEl, `${(frac * 100).toFixed(1)}%`);
+      this.setText(this.castbarLabelEl, castDisplayName(p.castingAbility));
     } else if (p.eating || p.drinking) {
-      cb.style.display = 'block';
-      cb.classList.add('channel');
+      this.setDisplay(this.castbarEl, 'block');
+      this.castbarEl.classList.add('channel');
       const c = p.eating && p.drinking
         ? (p.eating.remaining >= p.drinking.remaining ? p.eating : p.drinking)
         : (p.eating ?? p.drinking)!;
-      (cb.querySelector('.fill') as HTMLElement).style.width = `${((c.remaining / CONSUME_DURATION) * 100).toFixed(1)}%`;
-      (cb.querySelector('.label') as HTMLElement).textContent =
-        p.eating && p.drinking ? t('hud.core.eatingDrinking') : p.eating ? t('hud.core.eating') : t('hud.core.drinking');
+      this.setWidth(this.castbarFillEl, `${((c.remaining / CONSUME_DURATION) * 100).toFixed(1)}%`);
+      this.setText(this.castbarLabelEl, p.eating && p.drinking ? t('hud.core.eatingDrinking') : p.eating ? t('hud.core.eating') : t('hud.core.drinking'));
     } else {
-      cb.style.display = 'none';
-      cb.classList.remove('channel');
-      (cb.querySelector('.fill') as HTMLElement).style.width = '0%';
-      (cb.querySelector('.label') as HTMLElement).textContent = '';
+      this.setDisplay(this.castbarEl, 'none');
+      this.castbarEl.classList.remove('channel');
+      this.setWidth(this.castbarFillEl, '0%');
+      this.setText(this.castbarLabelEl, '');
     }
 
     // action bar
+    this.renderPetBar();
     const tgtDist = target && !target.dead ? dist2d(p.pos, target.pos) : null;
-    const actionbar = $('#actionbar');
-    actionbar.classList.toggle('many-spells', this.hotbarActions.filter((action) => action !== null).length > 10);
+    this.actionbarEl.classList.toggle('many-spells', this.hotbarActions.filter((action) => action !== null).length > 10);
     for (let i = 0; i < this.abilityButtons.length; i++) {
       const ab = this.abilityButtons[i];
       const slotLabel = formatAbilityNumber(i + 1);
@@ -931,9 +1611,9 @@ export class Hud {
           ab.lastIcon = '__attack';
           ab.label.style.backgroundImage = `url(${iconDataUrl('ability', 'attack')})`;
         }
-        ab.countEl.textContent = '';
-        ab.cdOverlay.style.height = '0%';
-        ab.cdText.textContent = '';
+        this.setText(ab.countEl, '');
+        if (ab.cdOverlay.style.height !== '0%') ab.cdOverlay.style.height = '0%';
+        this.setText(ab.cdText, '');
         ab.btn.classList.toggle('queued', !!p.autoAttack);
         ab.btn.classList.toggle('oor', tgtDist !== null && tgtDist > MELEE_RANGE);
         continue;
@@ -949,9 +1629,9 @@ export class Hud {
           ab.lastIcon = '';
           ab.label.style.backgroundImage = '';
         }
-        ab.countEl.textContent = '';
-        ab.cdOverlay.style.height = '0%';
-        ab.cdText.textContent = '';
+        this.setText(ab.countEl, '');
+        if (ab.cdOverlay.style.height !== '0%') ab.cdOverlay.style.height = '0%';
+        this.setText(ab.cdText, '');
         continue;
       }
       ab.btn.classList.remove('empty');
@@ -966,9 +1646,9 @@ export class Hud {
           ab.label.style.backgroundImage = `url(${iconDataUrl('item', item.id)})`;
         }
         const count = this.inventoryCount(item.id);
-        ab.countEl.textContent = String(count);
-        ab.cdOverlay.style.height = '0%';
-        ab.cdText.textContent = '';
+        this.setText(ab.countEl, String(count));
+        if (ab.cdOverlay.style.height !== '0%') ab.cdOverlay.style.height = '0%';
+        this.setText(ab.cdText, '');
         ab.btn.classList.toggle('unusable', count <= 0 || p.dead);
         ab.btn.classList.remove('oor', 'queued');
         continue;
@@ -984,13 +1664,14 @@ export class Hud {
         ab.lastIcon = iconKey;
         ab.label.style.backgroundImage = `url(${iconDataUrl('ability', a.id)})`;
       }
-      ab.countEl.textContent = '';
+      this.setText(ab.countEl, '');
       const cd = p.cooldowns.get(a.id) ?? 0;
       const gcdActive = !a.offGcd && p.gcdRemaining > 0;
       const shown = Math.max(cd, gcdActive ? p.gcdRemaining : 0);
       const denom = cd > 0 ? a.cooldown : GCD;
-      ab.cdOverlay.style.height = shown > 0 ? `${Math.min(100, (shown / Math.max(0.01, denom)) * 100)}%` : '0%';
-      ab.cdText.textContent = cd > 1 ? Math.ceil(cd).toString() : '';
+      const cdHeight = shown > 0 ? `${Math.min(100, (shown / Math.max(0.01, denom)) * 100)}%` : '0%';
+      if (ab.cdOverlay.style.height !== cdHeight) ab.cdOverlay.style.height = cdHeight;
+      this.setText(ab.cdText, cd > 1 ? Math.ceil(cd).toString() : '');
       ab.btn.classList.toggle('unusable', p.resource < known!.cost);
       const oor = a.requiresTarget && tgtDist !== null && tgtDist > (a.range > 0 ? a.range : MELEE_RANGE);
       ab.btn.classList.toggle('oor', !!oor);
@@ -1001,59 +1682,75 @@ export class Hud {
     // virtual level (Max-Level XP Overflow), with distinct prestige/gold styling.
     const showOverflow = (this.optionsHooks?.settings.get('showOverflowXp') ?? 1) >= 0.5;
     const bar = xpBarView({ level: p.level, xp: sim.xp, lifetimeXp: sim.lifetimeXp, showOverflow });
-    ($('#xpbar .fill') as HTMLElement).style.width = `${(bar.fillFrac * 100).toFixed(1)}%`;
-    $('#xpbar .label').textContent = bar.label;
+    this.setWidth(this.xpFillEl, `${(bar.fillFrac * 100).toFixed(1)}%`);
+    this.setText(this.xpLabelEl, bar.label);
     $('#xpbar').classList.toggle('overflow', bar.postCap);
 
-    $('#death-overlay').style.display = p.dead ? 'flex' : 'none';
+    this.setDisplay(this.deathOverlayEl, p.dead ? 'flex' : 'none');
 
-    // zone transitions: banner + welcome hint when crossing into a new band.
-    // A ~5yd dead-band past the boundary stops a player straddling the border
-    // from re-triggering the banner/log (and the map canvas regen) every step.
     const inDungeon = p.pos.x > DUNGEON_X_THRESHOLD;
     const currentZone = zoneAt(p.pos.z);
-    if (!inDungeon && currentZone.id !== this.lastZoneId) {
-      const lastZone = ZONES.find((z) => z.id === this.lastZoneId);
-      const pastDeadBand = !lastZone
-        || p.pos.z < lastZone.zMin - ZONE_BANNER_DEADBAND
-        || p.pos.z >= lastZone.zMax + ZONE_BANNER_DEADBAND;
-      if (pastDeadBand) {
-        if (this.lastZoneId !== '') {
-          const currentZoneName = zoneDisplayName(currentZone.id);
-          this.showBanner(currentZoneName);
-          this.log(t('hud.core.enteringZone', { zone: currentZoneName }), '#ffd100');
-          this.logZoneWelcome(currentZone);
+    if (mediumHud) {
+      // zone transitions: banner + welcome hint when crossing into a new band.
+      // A ~5yd dead-band past the boundary stops a player straddling the border
+      // from re-triggering the banner/log (and the map canvas regen) every step.
+      if (!inDungeon && currentZone.id !== this.lastZoneId) {
+        const lastZone = ZONES.find((z) => z.id === this.lastZoneId);
+        const pastDeadBand = !lastZone
+          || p.pos.z < lastZone.zMin - ZONE_BANNER_DEADBAND
+          || p.pos.z >= lastZone.zMax + ZONE_BANNER_DEADBAND;
+        if (pastDeadBand) {
+          if (this.lastZoneId !== '') {
+            const currentZoneName = zoneDisplayName(currentZone.id);
+            this.showBanner(currentZoneName);
+            this.log(t('hud.core.enteringZone', { zone: currentZoneName }), '#ffd100');
+            this.logZoneWelcome(currentZone);
+          }
+          this.lastZoneId = currentZone.id;
         }
-        this.lastZoneId = currentZone.id;
+      }
+
+      // soundtrack: pick the zone theme and layer in combat percussion.
+      // Combat = a mob is on us, or we traded blows in the last few seconds
+      // (the wire protocol doesn't ship the inCombat flag).
+      let aggroed = false;
+      for (const e of sim.entities.values()) {
+        if (e.kind === 'mob' && !e.dead && e.aggroTargetId === sim.playerId) { aggroed = true; break; }
+      }
+      const inCombat = aggroed || now - this.lastCombatEventAt < 5000;
+      const hub = currentZone.hub;
+      const inHub = !inDungeon
+        && Math.hypot(p.pos.x - hub.x, p.pos.z - hub.z) < hub.radius + 10;
+      const dungeon = inDungeon ? dungeonAt(p.pos.x) : null;
+      const zone = musicZoneForLocation(
+        currentZone.id, currentZone.biome, inHub, inDungeon, dungeon?.id ?? null,
+      );
+      music.update(zone, inCombat);
+
+      this.updateQuestTracker();
+      this.updatePartyFrames();
+      this.updateTradeWindow();
+      this.updateArenaStatus();
+      if ($('#map-window').style.display === 'block') this.updateMapWindow();
+      if ($('#arena-window').style.display === 'block') this.renderArenaWindow();
+      if (this.openLootMobId !== null) {
+        const mob = sim.entities.get(this.openLootMobId);
+        if (!mob || !mob.lootable || dist2d(p.pos, mob.pos) > 7) this.closeLoot();
+      }
+      if (this.openVendorNpcId !== null) {
+        const npc = sim.entities.get(this.openVendorNpcId);
+        if (!npc || dist2d(p.pos, npc.pos) > 8) this.closeVendor();
       }
     }
 
-    // soundtrack: pick the zone theme and layer in combat percussion.
-    // Combat = a mob is on us, or we traded blows in the last few seconds
-    // (the wire protocol doesn't ship the inCombat flag).
-    let aggroed = false;
-    for (const e of sim.entities.values()) {
-      if (e.kind === 'mob' && !e.dead && e.aggroTargetId === sim.playerId) { aggroed = true; break; }
-    }
-    const inCombat = aggroed || performance.now() - this.lastCombatEventAt < 5000;
-    const hub = currentZone.hub;
-    const zone = inDungeon ? 'dungeon'
-      : Math.hypot(p.pos.x - hub.x, p.pos.z - hub.z) < hub.radius + 10 ? 'town' : currentZone.biome;
-    music.update(zone, inCombat);
-
-    this.updateQuestTracker();
-    this.updatePartyFrames();
-    this.updateTradeWindow();
-    this.updateArenaStatus();
     // when a bout begins, get the queue panel out of the way for the fight
     const inArenaMatch = !!this.sim.arenaInfo?.match;
     if (inArenaMatch && !this.arenaMatchSeen && $('#arena-window').style.display === 'block') {
       $('#arena-window').style.display = 'none';
     }
     this.arenaMatchSeen = inArenaMatch;
-    this.updateMinimap();
-    if ($('#map-window').style.display === 'block') this.updateMapWindow();
-    if ($('#social-window').classList.contains('open')) {
+    if (fastHud) this.updateMinimap();
+    if (slowHud && $('#social-window').classList.contains('open')) {
       const struct = this.socialStructSig();
       if (struct !== this.lastSocialStruct) {
         this.lastSocialStruct = struct;
@@ -1064,16 +1761,7 @@ export class Hud {
         if (content !== this.lastSocialContent) { this.lastSocialContent = content; this.refreshSocialList(); }
       }
     }
-    if ($('#arena-window').style.display === 'block') this.renderArenaWindow();
-    if (this.openLootMobId !== null) {
-      const mob = sim.entities.get(this.openLootMobId);
-      if (!mob || !mob.lootable || dist2d(p.pos, mob.pos) > 7) this.closeLoot();
-    }
-    if (this.openVendorNpcId !== null) {
-      const npc = sim.entities.get(this.openVendorNpcId);
-      if (!npc || dist2d(p.pos, npc.pos) > 8) this.closeVendor();
-    }
-    if (this.marketOpen) {
+    if (slowHud && this.marketOpen) {
       if (!this.nearbyMarketNpc()) this.closeMarket();
       else this.refreshMarket();
     }
@@ -1086,7 +1774,7 @@ export class Hud {
     (el as any).__sig = sig;
     el.innerHTML = '';
     for (const a of e.auras) {
-      const isDebuff = ['dot', 'slow', 'root', 'stun', 'incapacitate', 'polymorph', 'attackspeed'].includes(a.kind);
+      const isDebuff = ['dot', 'slow', 'root', 'stun', 'incapacitate', 'polymorph', 'attackspeed', 'debuff_ap'].includes(a.kind);
       if (mode === 'debuffs' && !isDebuff) continue;
       const d = document.createElement('div');
       d.className = 'buff' + (isDebuff ? ' debuff' : '');
@@ -1746,11 +2434,11 @@ export class Hud {
           this.log(this.localizeLootText(ev.text), '#7fdc4f');
           if (ev.text.includes('loot') || ev.text.includes('Sold') || ev.text.includes('Bought back')) audio.coin();
           else audio.lootItem();
-          if ($('#bags').style.display === 'block') this.renderBags();
+          if ($('#bags').style.display !== 'none') this.renderBags();
           break;
         }
         case 'vendor': {
-          if ($('#bags').style.display === 'block') this.renderBags();
+          if ($('#bags').style.display !== 'none') this.renderBags();
           if (this.openVendorNpcId !== null) this.renderVendor();
           break;
         }
@@ -1779,19 +2467,23 @@ export class Hud {
               else { this.chatLogFrom(ev.from, ev.text, '#ff80ff', CHAT_TEMPLATE_KEYS.whisper); audio.whisper(); }
               break;
             case 'general': this.chatLogFrom(ev.from, ev.text, '#ffc864', CHAT_TEMPLATE_KEYS.general); break;
+            case 'world': this.chatLogFrom(ev.from, ev.text, '#ff9d5c', CHAT_TEMPLATE_KEYS.world); break;
+            case 'lfg': this.chatLogFrom(ev.from, ev.text, '#5cd6a0', CHAT_TEMPLATE_KEYS.lfg); break;
             case 'guild': this.chatLogFrom(ev.from, ev.text, '#40d264', CHAT_TEMPLATE_KEYS.guild); break;
             case 'officer': this.chatLogFrom(ev.from, ev.text, '#4ce0c0', CHAT_TEMPLATE_KEYS.officer); break;
             case 'emote': this.chatLogFrom(ev.from, ev.text, '#ff8040', CHAT_TEMPLATE_KEYS.emote); break;
+            case 'roll': this.chatLogFrom(ev.from, ev.text, '#ffd100', CHAT_TEMPLATE_KEYS.roll); break;
             default: this.chatLogFrom(ev.from, ev.text, '#f0ead8', CHAT_TEMPLATE_KEYS.say); break;
           }
           if ((ev.channel === 'say' || ev.channel === 'yell' || ev.channel === 'emote') && ev.entityId !== undefined) {
-            const bubble = ev.channel === 'emote' ? `${ev.from} ${ev.text}` : ev.text;
+            const masked = this.maskChat(ev.text);
+            const bubble = ev.channel === 'emote' ? `${ev.from} ${masked}` : masked;
             this.renderer.showChatBubble(ev.entityId, bubble, ev.channel === 'yell');
           }
           break;
         }
         case 'tradeDone':
-          if ($('#bags').style.display === 'block') this.renderBags();
+          if ($('#bags').style.display !== 'none') this.renderBags();
           audio.coin();
           break;
         case 'heal2': {
@@ -1942,6 +2634,7 @@ export class Hud {
       const rect = sender.getBoundingClientRect();
       this.openChatPlayerContextMenu(name, rect.left, rect.bottom);
     });
+    const masked = this.maskChat(text);
     const nameToken = '__WOC_CHAT_NAME__';
     const messageToken = '__WOC_CHAT_MESSAGE__';
     const rendered = t(templateKey, { name: nameToken, message: messageToken });
@@ -1952,7 +2645,7 @@ export class Hud {
         div.append(sender);
         senderAppended = true;
       } else if (part === messageToken) {
-        div.append(document.createTextNode(text));
+        div.append(document.createTextNode(masked));
         messageAppended = true;
       } else if (part) {
         div.append(document.createTextNode(part));
@@ -1960,11 +2653,25 @@ export class Hud {
     }
     if (!senderAppended || !messageAppended) {
       div.textContent = '';
-      div.append(sender, document.createTextNode(`: ${text}`));
+      div.append(sender, document.createTextNode(`: ${masked}`));
     }
     this.chatLogEl.appendChild(div);
     while (this.chatLogEl.children.length > 200) this.chatLogEl.removeChild(this.chatLogEl.firstChild!);
     if (wasNearBottom) this.chatLogEl.scrollTop = this.chatLogEl.scrollHeight;
+  }
+
+  /** Replace the server-supplied soft word list (online play only). */
+  setProfanityWords(words: string[]): void {
+    this.profanityWords = words;
+  }
+
+  // Mask a chat body with **** when the player's profanity filter is on. The
+  // filter defaults on; turning it off in Options shows the raw text the server
+  // sent. Slurs are blocked server-side and never reach this path.
+  private maskChat(text: string): string {
+    if (this.profanityWords.length === 0) return text;
+    if (!(this.optionsHooks?.settings.get('filterProfanity') ?? true)) return text;
+    return maskProfanity(text, this.profanityWords);
   }
 
   private localizeErrorText(text: string): string {
@@ -2035,7 +2742,7 @@ export class Hud {
     const key = exact[text];
     if (key) return t(key);
 
-    let match = /^You must be in (Bear|Cat) Form\.$/.exec(text);
+    let match = /^You must be in (Bear|Wolf) Form\.$/.exec(text);
     if (match) return t('hud.errors.requiresForm', { form: t(match[1] === 'Bear' ? 'hud.errors.bear' : 'hud.errors.cat') });
     match = /^That ability requires the target below (\d+)% health\.$/.exec(text);
     if (match) return t('hud.errors.targetHealthBelow', { percent: match[1] });
@@ -2440,7 +3147,7 @@ export class Hud {
     document.body.classList.add('vendor-open');
     this.renderVendor();
     this.renderBags();
-    $('#bags').style.display = 'block';
+    $('#bags').style.display = 'flex';
   }
 
   private renderVendor(): void {
@@ -2466,7 +3173,7 @@ export class Hud {
       row.innerHTML = `${this.itemIcon(item)}<span class="vi-name">${esc(itemName)}</span><span class="vi-price">${this.moneyHtml(item.buyValue)}</span>`;
       row.addEventListener('click', () => {
         this.sim.buyItem(npc.id, itemId);
-        if ($('#bags').style.display === 'block') this.renderBags();
+        if ($('#bags').style.display !== 'none') this.renderBags();
         this.renderVendor();
       });
       this.attachTooltip(row, () => this.itemTooltip(item) + `<div class="tt-sub">${esc(t('itemUi.tooltip.clickBuy'))}</div>`);
@@ -2514,7 +3221,7 @@ export class Hud {
     this.openVendorNpcId = null;
     document.body.classList.remove('vendor-open'); // bags (if still open) re-centres
     this.hideTooltip();
-    if ($('#bags').style.display === 'block') this.renderBags();
+    if ($('#bags').style.display !== 'none') this.renderBags();
   }
 
   get vendorOpen(): boolean {
@@ -2535,7 +3242,7 @@ export class Hud {
     $('#market-window').style.display = 'flex';
     // bags ride alongside so you can click items straight onto the Sell tab
     this.renderBags();
-    $('#bags').style.display = 'block';
+    $('#bags').style.display = 'flex';
     audio.bagOpen();
   }
 
@@ -2545,7 +3252,7 @@ export class Hud {
     this.marketSellItem = null;
     $('#market-window').style.display = 'none';
     this.hideTooltip();
-    if ($('#bags').style.display === 'block') this.renderBags();
+    if ($('#bags').style.display !== 'none') this.renderBags();
   }
 
   get marketWindowOpen(): boolean {
@@ -2754,17 +3461,17 @@ export class Hud {
 
   toggleBags(): void {
     const el = $('#bags');
-    if (el.style.display === 'block') { el.style.display = 'none'; this.hideTooltip(); audio.bagClose(); return; }
+    if (el.style.display !== 'none') { el.style.display = 'none'; this.hideTooltip(); audio.bagClose(); return; }
     this.closeOtherWindows('#bags');
     this.renderBags();
-    el.style.display = 'block';
+    el.style.display = 'flex';
     audio.bagOpen();
   }
 
   // Called when an authoritative inventory delta lands (online snapshots
   // carry inventory separately from the event frames that normally redraw).
   onInventoryChanged(): void {
-    if ($('#bags').style.display === 'block') this.renderBags();
+    if ($('#bags').style.display !== 'none') this.renderBags();
     if (this.openVendorNpcId !== null) this.renderVendor();
     this.renderCharIfOpen();
   }
@@ -2804,6 +3511,12 @@ export class Hud {
           this.renderMarket();
         } else if (this.vendorOpen) {
           this.sellBagItem(s, ev);
+        } else if (this.pendingPetFeed) {
+          if (item.kind !== 'food') { this.showError('Your pet can only eat food.'); return; }
+          this.sim.feedPet(s.itemId);
+          this.pendingPetFeed = false;
+          this.lastPetBarSig = '';
+          this.renderBags();
         } else if (item.kind === 'quest') {
           this.showDiscardItemPrompt(s.itemId, Math.max(1, Math.floor(s.count)));
         } else {
@@ -2968,7 +3681,13 @@ export class Hud {
     const cls = CLASSES[sim.cfg.playerClass];
     const className = classDisplayName(cls.id);
     let html = `<div class="panel-title"><span>${esc(p.name)} <span class="panel-subtitle">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(p.level, { maximumFractionDigits: 0 }), className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
-    html += `<div class="paperdoll"><div class="equip-col" id="equip-col"></div></div>`;
+    html += `<div class="paperdoll">
+      <div class="equip-col" id="equip-col"></div>
+      <div class="char-model-panel">
+        <div id="char-model-preview" class="char-model-preview"></div>
+        <div id="char-skin-row" class="skin-row char-skin-row" role="list" aria-label="Chroma"></div>
+      </div>
+    </div>`;
     const wpn = sim.equipment.mainhand ? ITEMS[sim.equipment.mainhand] : null;
     const dps = wpn?.weapon ? ((wpn.weapon.min + wpn.weapon.max) / 2 + (p.attackPower / 14) * wpn.weapon.speed) / wpn.weapon.speed : 0;
     html += `<div class="char-stats">
@@ -3000,7 +3719,49 @@ export class Hud {
       if (item) this.attachTooltip(row, () => this.itemTooltip(item));
       col.appendChild(row);
     }
+    this.renderCharPreview();
+    this.renderCharSkinPicker();
     el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; this.hideTooltip(); });
+  }
+
+  private renderCharPreview(): void {
+    const container = $('#char-model-preview') as HTMLElement | null;
+    if (!container) return;
+    if (!this.charPreviewCanvas) this.charPreviewCanvas = document.createElement('canvas');
+    if (!this.charPreview) {
+      container.appendChild(this.charPreviewCanvas);
+      this.charPreview = new CharacterPreview(container, this.charPreviewCanvas);
+    } else {
+      this.charPreview.setContainer(container);
+    }
+    this.charPreview.setClass(this.sim.cfg.playerClass);
+    this.charPreview.setSkin(this.sim.player.skin ?? 0);
+  }
+
+  private renderCharSkinPicker(): void {
+    const row = $('#char-skin-row') as HTMLElement | null;
+    if (!row) return;
+    const cls = this.sim.cfg.playerClass;
+    const count = skinCount(`player_${cls}`);
+    row.innerHTML = '';
+    row.style.setProperty('--class-color', classCss(cls));
+    if (count <= 1) return;
+    const current = Math.max(0, Math.min(count - 1, this.sim.player.skin ?? 0));
+    for (let i = 0; i < count; i++) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'skin-swatch' + (i === current ? ' sel' : '');
+      b.textContent = String(i + 1);
+      b.setAttribute('role', 'listitem');
+      b.setAttribute('aria-label', `Chroma ${i + 1}`);
+      b.addEventListener('click', () => {
+        row.querySelectorAll('.skin-swatch').forEach((x) => x.classList.remove('sel'));
+        b.classList.add('sel');
+        this.sim.changeSkin(i);
+        this.charPreview?.setSkin(i);
+      });
+      row.appendChild(b);
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -3182,7 +3943,7 @@ export class Hud {
     pop.setAttribute('aria-label', tTalent({ kind: 'talentNode', node, field: 'name' }));
     pop.innerHTML = (node.choices ?? []).map((o) => {
       const sel = stage.choices[node.id] === o.id;
-      return `<div class="tal-choice-opt${sel ? ' sel' : ''}" role="menuitemradio" tabindex="0" aria-checked="${sel}" data-opt="${esc(o.id)}"><span class="tco-icon">${esc(o.icon)}</span>`
+      return `<div class="tal-choice-opt${sel ? ' sel' : ''}" role="menuitemradio" tabindex="0" aria-checked="${sel}" data-opt="${esc(o.id)}"><span class="tco-icon" style="background-image:url(${esc(talentChoiceIconDataUrl(o))})"></span>`
         + `<span class="tco-text"><b>${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'name' }))}</b><span>${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'description' }))}</span></span></div>`;
     }).join('');
     document.body.appendChild(pop);
@@ -3515,7 +4276,7 @@ export class Hud {
       div.style.top = `${n.row * CH + TOP}px`;
       const icon = document.createElement('span');
       icon.className = 'tal-icon';
-      icon.textContent = chosen?.icon ?? n.icon;
+      icon.style.backgroundImage = `url(${chosen ? talentChoiceIconDataUrl(chosen) : talentNodeIconDataUrl(n)})`;
       div.appendChild(icon);
       if (ranks > 0 || n.maxRank > 1) {
         const badge = document.createElement('span'); badge.className = 'tal-rank'; badge.textContent = `${ranks}/${n.maxRank}`;
@@ -3569,7 +4330,7 @@ export class Hud {
     if (n.kind === 'choice') {
       for (const o of n.choices!) {
         const sel = stage.choices[n.id] === o.id;
-        html += `<div class="tt-sub" style="color:${sel ? '#ffd100' : '#aaa'}"><span class="tt-opt-icon">${esc(o.icon)}</span> ${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'name' }))} — ${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'description' }))}</div>`;
+        html += `<div class="tt-sub" style="color:${sel ? '#ffd100' : '#aaa'}"><span class="tt-opt-icon" style="background-image:url(${esc(talentChoiceIconDataUrl(o))})"></span> ${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'name' }))} — ${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'description' }))}</div>`;
       }
       html += `<div class="tt-sub" style="color:#8aa">${t('game.talents.cycleHint')}</div>`;
     } else {
@@ -3942,6 +4703,46 @@ export class Hud {
     });
   }
 
+  openPetMenu(entityId: number, name: string, dead: boolean, x: number, y: number): void {
+    const el = $('#ctx-menu');
+    const isWarlock = this.sim.cfg.playerClass === 'warlock';
+    let html = `<div class="ctx-title">${esc(name)}</div>`;
+    html += `<div class="ctx-item" data-act="rename">${esc(t('hud.pet.rename'))}</div>`;
+    if (dead) html += `<div class="ctx-item" data-act="revive">${esc(t('hud.pet.revive'))}</div>`;
+    if (!isWarlock) html += `<div class="ctx-item" data-act="abandon">${esc(t('hud.pet.abandon'))}</div>`;
+    html += `<div class="ctx-item" data-act="close">${esc(t('hud.pet.cancel'))}</div>`;
+    el.innerHTML = html;
+    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
+    el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
+    el.style.display = 'block';
+    el.querySelectorAll('.ctx-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        const act = (item as HTMLElement).dataset.act;
+        el.style.display = 'none';
+        if (act === 'rename') {
+          this.inputDialog({
+            title: t('hud.pet.rename'),
+            label: t('hud.pet.renameLabel'),
+            value: name,
+            placeholder: t('hud.pet.petNamePlaceholder'),
+            okText: t('hud.pet.renameConfirm'),
+            onOk: (value) => this.sim.renamePet(value),
+          });
+        } else if (act === 'revive') {
+          this.sim.castAbility('revive_pet');
+        } else if (act === 'abandon') {
+          this.confirmDialog(
+            t('hud.pet.abandon'),
+            t('hud.pet.abandonBody', { name: esc(name) }),
+            t('hud.pet.abandonConfirm'),
+            t('hud.pet.cancel'),
+            () => this.sim.abandonPet(),
+          );
+        }
+      });
+    });
+  }
+
   private openChatPlayerContextMenu(name: string, x: number, y: number): void {
     const el = $('#ctx-menu');
     const online = this.sim.socialInfo !== null;
@@ -4283,7 +5084,7 @@ export class Hud {
       else if (act === 'block-add') void this.socialResolveAndAct('ignore', field('ignore'));
       else if (act === 'guild-invite') void this.socialResolveAndAct('ginvite', field('ginvite'));
       else if (act === 'guild-create') { const n = field('gname'); if (n) { this.sim.guildCreate(n); this.clearSocialInput('gname'); } }
-      else if (act === 'guild-leave') this.sim.guildLeave();
+      else if (act === 'guild-leave') this.showPrompt(esc(t('hud.social.leavePrompt')), t('hud.social.leaveGuild'), () => this.sim.guildLeave(), () => {});
       else if (act === 'guild-disband') this.showPrompt(esc(t('hud.social.disbandPrompt')), t('hud.social.disbandConfirm'), () => this.sim.guildDisband(), () => { /* keep */ });
     };
     el.querySelectorAll('.soc-add .btn').forEach((b) => b.addEventListener('click', () => submit((b as HTMLElement).dataset.act)));
@@ -4494,7 +5295,7 @@ export class Hud {
         this.tradeWasOpen = false;
         this.stagedTrade = { items: [], copper: 0 };
         this.lastTradeSig = '';
-        if ($('#bags').style.display === 'block') this.renderBags();
+        if ($('#bags').style.display !== 'none') this.renderBags();
       }
       return;
     }
@@ -4502,7 +5303,7 @@ export class Hud {
       this.tradeWasOpen = true;
       this.stagedTrade = { items: [], copper: 0 };
       this.renderBags();
-      $('#bags').style.display = 'block';
+      $('#bags').style.display = 'flex';
     }
     const sig = JSON.stringify([info.myOffer, info.theirOffer, info.myAccepted, info.theirAccepted, this.stagedTrade]);
     if (sig === this.lastTradeSig) return;
@@ -4579,7 +5380,7 @@ export class Hud {
 
   // True while a menu that should pause character movement is up.
   isModalOpen(): boolean {
-    return this.optionsOpen;
+    return this.optionsOpen || this.emoteWheelOpen || $('#emote-editor').style.display === 'block';
   }
 
   toggleOptionsMenu(): void {
@@ -4684,6 +5485,44 @@ export class Hud {
     parent.appendChild(row);
   }
 
+  private settingChoice(parent: HTMLElement, label: string, key: NumericSettingKey, options: { value: number; label: string }[], onChange?: () => void): void {
+    const hooks = this.optionsHooks;
+    if (!hooks) return;
+    const row = document.createElement('div');
+    row.className = 'set-row';
+    const name = document.createElement('span');
+    name.className = 'set-name';
+    name.textContent = label;
+    const wrap = document.createElement('div');
+    wrap.className = 'set-choice';
+    const sync = () => {
+      const current = Math.round(hooks.settings.get(key));
+      for (const btn of [...wrap.querySelectorAll<HTMLButtonElement>('button[data-value]')]) {
+        const selected = Number(btn.dataset.value) === current;
+        btn.classList.toggle('sel', selected);
+        btn.setAttribute('aria-pressed', String(selected));
+      }
+    };
+    for (const option of options) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn set-choice-btn';
+      btn.dataset.value = String(option.value);
+      btn.textContent = option.label;
+      btn.setAttribute('aria-label', option.label);
+      btn.addEventListener('click', () => {
+        audio.click();
+        hooks.onSettingChange(key, option.value);
+        sync();
+        onChange?.();
+      });
+      wrap.appendChild(btn);
+    }
+    row.append(name, wrap);
+    parent.appendChild(row);
+    sync();
+  }
+
   private settingsViewShell(title: string): HTMLElement {
     const el = $('#options-menu');
     el.innerHTML = `<div class="panel-title"><span>${esc(title)}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
@@ -4716,15 +5555,55 @@ export class Hud {
 
   private renderGraphics(): void {
     const body = this.settingsViewShell(t('hud.options.graphics'));
+    this.settingChoice(body, t('hud.options.graphicsQuality'), 'graphicsPreset', [
+      { value: 0, label: t('hud.options.graphicsPresetAuto') },
+      { value: 1, label: t('hud.options.graphicsPresetLow') },
+      { value: 2, label: t('hud.options.graphicsPresetMedium') },
+      { value: 3, label: t('hud.options.graphicsPresetHigh') },
+      { value: 4, label: t('hud.options.graphicsPresetUltra') },
+      { value: 5, label: t('hud.options.graphicsPresetAdvanced') },
+    ], () => this.renderGraphics());
+    if (Math.round(this.optionsHooks?.settings.get('graphicsPreset') ?? 0) === 5) {
+      this.settingChoice(body, t('hud.options.terrainDetail'), 'terrainDetail', [
+        { value: 0, label: t('hud.options.terrainLow') },
+        { value: 1, label: t('hud.options.terrainHigh') },
+      ]);
+      this.settingChoice(body, t('hud.options.foliageDensity'), 'foliageDensity', [
+        { value: 0, label: t('hud.options.terrainLow') },
+        { value: 1, label: t('hud.options.terrainHigh') },
+      ]);
+      this.settingChoice(body, t('hud.options.effectsQuality'), 'effectsQuality', [
+        { value: 0, label: t('hud.options.terrainLow') },
+        { value: 1, label: t('hud.options.terrainHigh') },
+      ]);
+      this.settingChoice(body, t('hud.options.shadowQuality'), 'shadowQuality', [
+        { value: 0, label: t('hud.options.terrainLow') },
+        { value: 1, label: t('hud.options.terrainHigh') },
+      ]);
+    }
     this.settingSlider(body, t('hud.options.cameraSpeed'), 'cameraSpeed');
+    // Camera Speed only scales mouselook; on touch the camera joystick has its
+    // own rate, so phones get a dedicated sensitivity slider here.
+    if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.touchLookSpeed'), 'touchLookSpeed');
     this.settingSlider(body, t('hud.options.brightness'), 'brightness');
     this.settingSlider(body, t('hud.options.renderQuality'), 'renderScale');
     this.settingToggle(body, t('hud.options.fullscreen'), 'fullscreen');
     this.settingToggle(body, t('game.settings.showOverflowXp'), 'showOverflowXp');
+    // Touch-only: lets phone players dim the on-screen joysticks + buttons.
+    if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.touchOpacity'), 'touchOpacity');
     const note = document.createElement('div');
     note.className = 'set-note';
     note.textContent = t('hud.options.graphicsNote');
     $('#options-menu').appendChild(note);
+    const reloadNote = document.createElement('div');
+    reloadNote.className = 'set-note';
+    reloadNote.textContent = t('hud.options.graphicsReloadNote');
+    const reload = document.createElement('button');
+    reload.type = 'button';
+    reload.className = 'btn';
+    reload.textContent = t('hud.options.reloadNow');
+    reload.addEventListener('click', () => { audio.click(); location.reload(); });
+    $('#options-menu').append(reloadNote, reload);
     this.settingsViewFooter();
   }
 
@@ -4799,11 +5678,40 @@ export class Hud {
     parent.appendChild(row);
   }
 
+  private clickMoveMouseButtonRow(parent: HTMLElement): void {
+    const hooks = this.optionsHooks;
+    if (!hooks) return;
+    const row = document.createElement('div');
+    row.className = 'kb-row kb-toggle-row';
+    const name = document.createElement('span');
+    name.className = 'kb-name';
+    name.textContent = t('hud.options.clickMoveButton');
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'btn kb-key kb-toggle kb-mouse-toggle';
+    const sync = () => {
+      toggle.textContent = clickMoveButtonLabel(hooks.settings.get('clickToMoveButton'));
+      toggle.setAttribute('aria-label', `${t('hud.options.clickMoveButton')}: ${toggle.textContent}`);
+    };
+    sync();
+    toggle.addEventListener('click', () => {
+      audio.click();
+      const next = normalizeClickMoveButton(hooks.settings.get('clickToMoveButton')) === 0 ? 2 : 0;
+      hooks.onSettingChange('clickToMoveButton', next);
+      sync();
+    });
+    row.append(name, toggle);
+    parent.appendChild(row);
+  }
+
   private renderKeybinds(): void {
     const el = $('#options-menu');
     el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.keyBindings'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
     this.settingToggleKeybind(el, t('hud.options.mouseCamera'), 'mouseCamera');
     this.settingToggleKeybind(el, t('hud.options.clickToMove'), 'clickToMove');
+    this.clickMoveMouseButtonRow(el);
+    this.settingToggleKeybind(el, t('hud.options.leftHandedTouch'), 'leftHandedTouch');
+    this.settingToggleKeybind(el, t('hud.options.filterProfanity'), 'filterProfanity');
     const note = document.createElement('div');
     note.className = 'kb-note';
     note.textContent = this.keybindNote || t('hud.options.keybindHelpMouseCamera');
@@ -4820,7 +5728,14 @@ export class Hud {
         row.className = 'kb-row';
         const name = document.createElement('span');
         name.className = 'kb-name';
-        name.textContent = this.actionDisplayName(action.id, action.label);
+        const label = document.createElement('span');
+        label.className = 'kb-label';
+        label.textContent = this.actionDisplayName(action.id, action.label);
+        const hint = document.createElement('span');
+        hint.className = 'kb-inline-key';
+        const primary = this.keybinds.labelAt(action.id, 0);
+        hint.textContent = primary ? `(${primary})` : '';
+        name.append(label, hint);
         row.appendChild(name);
         for (let index = 0; index < 2; index++) {
           const capturing = this.capturingKey?.action === action.id && this.capturingKey?.index === index;
@@ -4878,63 +5793,22 @@ export class Hud {
 
   // -------------------------------------------------------------------------
 
-  // The mutually-exclusive modal windows. They all share one centred position
-  // (see the `.window` rule), so only one may be visible at a time — the vendor
-  // is the lone pairing (it opens bags alongside, laid out side-by-side).
-  private static readonly MODAL_IDS = ['#quest-dialog', '#loot-window', '#vendor-window', '#bags', '#char-window', '#spellbook', '#talents-window', '#quest-log-window', '#map-window', '#report-window', '#arena-window', '#leaderboard-window'];
-
-  // Opening any window closes the others first, so panels never stack. `keep`
-  // is the window (or windows, e.g. vendor+bags) being opened.
-  private closeOtherWindows(keep?: string | string[]): void {
-    const keepSet = new Set(Array.isArray(keep) ? keep : keep ? [keep] : []);
-    for (const id of Hud.MODAL_IDS) {
-      if (keepSet.has(id)) continue;
-      const el = document.querySelector<HTMLElement>(id);
-      if (el && el.style.display !== 'none' && el.style.display !== '') el.style.display = 'none';
-    }
-    if (!keepSet.has('#talents-window')) this.talentStage = null;
-    if (!keepSet.has('#loot-window')) this.openLootMobId = null;
-    if (!keepSet.has('#vendor-window')) {
-      this.openVendorNpcId = null;
-      document.body.classList.remove('vendor-open');
-    }
-    const social = document.querySelector<HTMLElement>('#social-window');
-    if (!keepSet.has('#social-window') && social?.classList.contains('open')) social.classList.remove('open');
-    if (!keepSet.has('#options-menu') && this.optionsOpen) this.closeOptions();
-    if (!keepSet.has('#market-window') && this.marketOpen) this.closeMarket();
+  // Historical name retained for the existing call sites. Opening a window no
+  // longer closes its siblings; it only clears transient overlays.
+  private closeOtherWindows(_keep?: string | string[]): void {
     this.closeContextMenu();
     this.hideTooltip();
   }
 
   // Closes the topmost UI. Returns true if something was closed.
   closeAll(): boolean {
-    let closed = false;
-    this.closeContextMenu();
-    if (this.optionsOpen) { this.closeOptions(); return true; }
-    const socialEl = $('#social-window');
-    if (socialEl.classList.contains('open')) { socialEl.classList.remove('open'); closed = true; }
-    if (this.tradeOpen) {
-      this.sim.tradeCancel();
-      closed = true;
-    }
-    if (this.marketOpen) { this.closeMarket(); closed = true; }
-    if ($('#quest-dialog').style.display === 'block') { this.closeQuestDialog(); closed = true; }
-    if ($('#quest-log-window').style.display === 'block') { this.closeQuestLog(); closed = true; }
-    const confirmEl = document.getElementById('confirm-dialog');
-    if (confirmEl) { confirmEl.remove(); closed = true; }
-    for (const id of Hud.MODAL_IDS) {
-      const el = $(id);
-      if (el.style.display === 'block') {
-        el.style.display = 'none';
-        closed = true;
-      }
-    }
-    if (closed) {
-      this.openLootMobId = null;
-      this.openVendorNpcId = null;
-      this.hideTooltip();
-    }
-    return closed;
+    const ctx = $('#ctx-menu');
+    if (ctx.style.display !== 'none' && ctx.style.display !== '') { this.closeContextMenu(); return true; }
+    if (this.emoteWheelOpen) { this.hideEmoteWheel(); return true; }
+    const top = this.topmostOpenWindow();
+    if (!top) return false;
+    this.closeManagedWindow(top);
+    return true;
   }
 }
 
@@ -5041,7 +5915,7 @@ function dungeonDisplayNameFromSource(name: string): string {
 }
 
 function entityDisplayName(entity: Entity): string {
-  if (entity.kind === 'mob') return mobDisplayName(entity.templateId);
+  if (entity.kind === 'mob') return entity.ownerId !== null ? entity.name : mobDisplayName(entity.templateId);
   if (entity.kind === 'npc') return npcDisplayName(entity.templateId);
   return entity.name;
 }

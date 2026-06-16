@@ -1,6 +1,9 @@
 import { escapeHtml, fmtCopper, fmtDate, fmtDuration, fmtRelative } from './format';
 import { classLabel, zoneLabel, t } from './i18n';
-import type { AccountDetail, AccountRow, CharacterRow, LivePlayer, ModerationAccountDetail, ModerationQueueRow } from './types';
+import type {
+  AccountDetail, AccountRow, CharacterRow, ChatFilterData, ChatModerationDetail, FilterWord,
+  LivePlayer, ModerationAccountDetail, ModerationQueueRow,
+} from './types';
 
 // Pure HTML-string renderers for the dashboard tables. All dynamic values go
 // through escapeHtml — usernames and character names are player-controlled.
@@ -59,9 +62,10 @@ function accountStatusBadge(a: { bannedAt: string | null; suspendedUntil: string
 
 function accountStatusDetail(d: AccountDetail): string {
   const activeSuspension = d.suspendedUntil !== null && new Date(d.suspendedUntil).getTime() > Date.now();
+  const activeChatMute = d.chatMutedUntil !== null && new Date(d.chatMutedUntil).getTime() > Date.now();
   if (d.bannedAt) return `<span class="badge bad">${t('accounts.badgeBanned')}</span> <span class="hint">${t('detail.since', { value: fmtDate(d.bannedAt) })}</span>`;
   if (activeSuspension) return `<span class="badge warn">${t('detail.suspendedUntil', { value: fmtDate(d.suspendedUntil) })}</span>`;
-  return `<span class="badge">${t('detail.statusActive')}</span>`;
+  return `<span class="badge">${t('detail.statusActive')}</span>${activeChatMute ? ` <span class="badge warn">chat muted until ${fmtDate(d.chatMutedUntil)}</span>` : ''}`;
 }
 
 export function renderAccountDetail(d: AccountDetail, includeAdminControls = false): string {
@@ -101,10 +105,13 @@ export function renderAccountDetail(d: AccountDetail, includeAdminControls = fal
       <button data-suspend-hours="720">${t('detail.suspend30d')}</button>
       <input class="account-custom-expiry" type="datetime-local" />
       <button data-suspend-custom="1">${t('detail.suspendCustom')}</button>
+      <button data-chat-mute-hours="1">Mute Chat 1h</button>
+      <button data-chat-mute-custom="1">Mute Chat Custom</button>
       <button data-ban-account="1" class="danger">${t('detail.ban')}</button>`;
   const adminControls = canModerateAccount ? `
     <div class="account-admin-controls mod-account-actions" data-action-account-id="${d.id}">
       <div class="account-status"><b>${t('detail.status')}</b> ${accountStatus}${d.moderationReason ? ` <span class="hint">${t('detail.reason', { value: escapeHtml(d.moderationReason) })}</span>` : ''}</div>
+      ${d.chatMutedUntil && new Date(d.chatMutedUntil).getTime() > Date.now() && d.chatMuteReason ? `<div class="account-status"><b>Chat mute:</b> <span class="hint">reason: ${escapeHtml(d.chatMuteReason)}</span></div>` : ''}
       <input class="account-mod-reason" placeholder="${t('detail.notePlaceholder')}" maxlength="500" />
       ${accountActionButtons}
     </div>
@@ -213,6 +220,8 @@ export function renderModerationDetail(d: ModerationAccountDetail): string {
       <button data-suspend-hours="720">${t('detail.suspend30d')}</button>
       <input id="mod-custom-expiry" type="datetime-local" />
       <button data-suspend-custom="1">${t('detail.suspendCustom')}</button>
+      <button data-chat-mute-hours="1">Mute Chat 1h</button>
+      <button data-chat-mute-custom="1">Mute Chat Custom</button>
       <button data-ban-account="1">${t('detail.ban')}</button>`;
   return `<div class="mod-detail">
     <div class="panel-title">
@@ -220,6 +229,7 @@ export function renderModerationDetail(d: ModerationAccountDetail): string {
       <span class="hint">${t('detail.accountNum', { id: d.account.id })}</span>
     </div>
     ${renderAccountDetail(d.account)}
+    ${renderChatModeration(d.chat)}
     <div class="mod-account-actions" data-action-account-id="${d.account.id}">
       <input id="mod-reason" placeholder="${t('detail.notePlaceholder')}" maxlength="500" />
       ${moderationAccountButtons}
@@ -228,6 +238,72 @@ export function renderModerationDetail(d: ModerationAccountDetail): string {
     <h4>${t('report.openReports')}</h4>
     ${reports || `<div class="empty">${t('report.noOpenReports')}</div>`}
   </div>`;
+}
+
+// Chat-filter state for an account: live mute status, strike count, the
+// warn/mute incident log, and manual lift/reset actions (slurs the player typed).
+function renderChatModeration(chat: ChatModerationDetail): string {
+  const muteStatus = chat.chatMutedUntil
+    ? `<span class="badge bad">muted until ${fmtDate(chat.chatMutedUntil)}</span>`
+    : '<span class="badge">not muted</span>';
+  const incidents = chat.violations.length === 0
+    ? '<div class="empty">no chat filter incidents</div>'
+    : `<table><thead><tr><th>Time</th><th>Channel</th><th>Word</th><th>Action</th><th>Message</th></tr></thead><tbody>${
+        chat.violations.map((v) => `
+          <tr>
+            <td>${fmtDate(v.createdAt)}</td>
+            <td>${escapeHtml(v.channel)}</td>
+            <td>${escapeHtml(v.term)}</td>
+            <td>${escapeHtml(v.action)}${v.muteSeconds > 0 ? ` (${escapeHtml(fmtDuration(v.muteSeconds))})` : ''}</td>
+            <td>${escapeHtml(v.message)}</td>
+          </tr>`).join('')
+      }</tbody></table>`;
+  return `<div class="panel chat-mod">
+    <div class="panel-title">Chat moderation</div>
+    <div class="chat-mod-status">Status: ${muteStatus} &middot; Strikes: <b>${chat.chatStrikes}</b></div>
+    <div class="mod-actions">
+      ${chat.chatMutedUntil ? '<button data-lift-mute="1">Lift mute</button>' : ''}
+      ${chat.chatStrikes > 0 ? '<button data-reset-strikes="1">Reset strikes</button>' : ''}
+    </div>
+    <h4>Recent chat filter incidents</h4>
+    ${incidents}
+  </div>`;
+}
+
+function renderWordChips(words: FilterWord[]): string {
+  if (words.length === 0) return '<div class="empty">no words yet</div>';
+  return `<div class="word-chips">${
+    words.map((w) => `<span class="word-chip">${escapeHtml(w.word)}<button class="word-del" data-del-word="${w.id}" title="Remove">&times;</button></span>`).join('')
+  }</div>`;
+}
+
+export function renderChatFilter(data: ChatFilterData): string {
+  const ladderHuman = data.config.muteLadderSeconds.map((s) => fmtDuration(s)).join(' → ');
+  return `
+    <div class="panel">
+      <div class="panel-title">Escalation</div>
+      <p class="hint">Typing a hard word blocks the message and warns the player, then applies escalating account-wide mutes (survives relog / character swap).</p>
+      <div class="cf-config">
+        <label>Warnings before first mute
+          <input id="cf-warnings" type="number" min="0" max="50" value="${data.config.warningsBeforeMute}" />
+        </label>
+        <label>Mute ladder (seconds, comma-separated)
+          <input id="cf-ladder" type="text" value="${escapeHtml(data.config.muteLadderSeconds.join(', '))}" />
+        </label>
+        <div class="hint">Current ladder: ${escapeHtml(ladderHuman || '—')}</div>
+        <button data-save-config="1">Save escalation settings</button>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Soft words <span class="hint">masked with **** in players' chat; players can toggle the filter off</span></div>
+      <form class="word-add" data-add-tier="soft"><input placeholder="add a soft word" maxlength="64" /><button>Add</button></form>
+      ${renderWordChips(data.soft)}
+    </div>
+    <div class="panel">
+      <div class="panel-title">Hard words <span class="hint">slurs — message blocked + escalating mutes; never shown to anyone, not toggleable</span></div>
+      <form class="word-add" data-add-tier="hard"><input placeholder="add a hard word" maxlength="64" /><button>Add</button></form>
+      ${renderWordChips(data.hard)}
+    </div>`;
 }
 
 function reasonLabel(reason: string): string {

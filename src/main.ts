@@ -2,18 +2,19 @@ import { Sim } from './sim/sim';
 import { Renderer } from './render/renderer';
 import { Input } from './game/input';
 import { Keybinds } from './game/keybinds';
-import { Settings, GameSettings, SETTING_RANGES } from './game/settings';
+import { Settings, GameSettings, SETTING_RANGES, normalizeClickMoveButton } from './game/settings';
 import { MobileControls, PHONE_TOUCH_QUERY, isPhoneTouchDevice } from './game/mobile_controls';
 import { Hud } from './ui/hud';
 import { audio } from './game/audio';
 import { music } from './game/music';
 import { handlePickedEntity, hoverCursorKind } from './game/interactions';
-import { clickMoveStep, manualMovementOverrides } from './game/click_move';
+import { clickMoveShouldCancel, clickMoveStep, stepAngleToward } from './game/click_move';
 import { Api, ClientWorld, CharacterSummary } from './net/online';
 import type { IWorld, LeaderboardEntry } from './world_api';
 import { formatXp } from './ui/xp_bar';
 import { assetsReady } from './render/assets/preload';
 import { CharacterPreview } from './render/characters';
+import { skinCount } from './render/characters/manifest';
 import { DT, INTERACT_RANGE, PlayerClass, dist2d } from './sim/types';
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
@@ -22,9 +23,12 @@ import { formatNumber, getLanguage, isSupportedLanguage, languageTag, setLanguag
 import { tServer } from './ui/server_i18n';
 import { tEntity } from './ui/entity_i18n';
 import { hydrateIcons } from './ui/ui_icons';
+import { createPerfMonitor } from './game/perf';
+import { updateFollowCameraYaw, wrapAngle } from './game/camera_follow';
 
 
 const WORLD_SEED = 20061; // fixed: World of ClaudeCraft is a persistent place
+const CLICK_MOVE_TURN_RATE = 4.2; // rad/sec; responsive turning while the camera stays decoupled from click spam
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.querySelector(sel) as T;
 let pendingDeleteCharacter: CharacterSummary | null = null;
@@ -171,7 +175,6 @@ window.addEventListener('orientationchange', () => {
   window.setTimeout(syncAppViewport, 800);
 });
 window.visualViewport?.addEventListener('resize', syncAppViewport);
-window.visualViewport?.addEventListener('scroll', syncAppViewport);
 document.addEventListener('fullscreenchange', syncAppViewport);
 
 function requestMobileFullscreenLandscape(): void {
@@ -455,11 +458,13 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   const settings = new Settings();
   let renderer!: Renderer;
   let hud!: Hud;
+  const perf = createPerfMonitor(null);
   try {
     renderer = new Renderer(world, canvas, nameplates);
+    perf.setRenderer(renderer);
     hud = new Hud(world, renderer, keybinds);
+    perf.setHud(hud);
     hydrateIcons(); // swap [data-icon] placeholders (micro-menu, mobile bar, meters) for inline SVG
-
   } catch (err) {
     // e.g. WebGL context creation failure: surface it instead of leaving the
     // loading screen up forever
@@ -468,6 +473,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   }
 
   const chatInput = $('#chat-input') as unknown as HTMLInputElement;
+  const clickMoveMarker = $('#click-move-marker') as HTMLDivElement;
   const recoverFromMobileKeyboard = (): void => {
     document.body.classList.remove('mobile-chat-open');
     syncAppViewport();
@@ -501,9 +507,12 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
   const input = new Input(canvas, {
     onTab: () => world.tabTarget(),
-    // slot 0 (key 1) is Attack for every class - auto-attack without needing
+    onTargetFriendly: () => world.targetNearestFriendly(),
+    onCycleFriendly: () => world.friendlyTabTarget(),
+    // slot 0 (key 1) is Attack for every class — auto-attack without needing
     // right-click; keys and clicks share the Hud's remappable slot layout
     onAbility: (slot) => hud.castSlot(slot),
+    onInputIntent: (kind) => perf.markInputIntent(kind),
     onUiKey: (key) => {
       switch (key) {
         case 'interact': interactKey(); break;
@@ -525,6 +534,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
           break;
       }
     },
+    onEmoteWheel: (open) => hud.setEmoteWheelOpen(open),
     onClickPick: (x, y, button) => handlePick(x, y, button),
     canUseGameKeys: () => !hud.isModalOpen() && chatInput.style.display !== 'block',
   }, keybinds);
@@ -532,37 +542,69 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
   const mobileControls = new MobileControls(input, {
     onAttackNearest: () => attackNearest(),
+    onJump: () => input.triggerTouchJump(),
     onTarget: () => world.tabTarget(),
     onInteract: () => interactKey(),
+    onAutorun: () => input.toggleAutorun(),
     onChat: () => openChat(),
     onMenu: () => {
       if (!hud.closeAll()) hud.toggleOptionsMenu();
     },
     onSocial: () => hud.toggleSocial(),
+    onEmotes: () => hud.toggleEmoteWheel(),
     onArena: () => hud.toggleArena(),
     onQuestLog: () => hud.toggleQuestLog(),
+    onCharacter: () => hud.toggleChar(),
+    onBags: () => hud.toggleBags(),
     onSpellbook: () => hud.toggleSpellbook(),
     onTalents: () => hud.toggleTalents(),
-    onMeters: () => hud.toggleMeters(),
     onMap: () => hud.toggleMap(),
+    onLeaderboard: () => hud.toggleLeaderboard(),
+    onNameplates: () => (renderer.showNameplates = !renderer.showNameplates),
+    onMusic: () => {
+      music.setEnabled(!music.enabled);
+      return music.enabled;
+    },
   });
   mobileControls.start();
+  // reflect the current music state on the touch toggle (it may already be off
+  // from a prior session, persisted in localStorage)
+  document.getElementById('mobile-music')?.classList.toggle('mm-muted', !music.enabled);
 
   // apply a setting to its live subsystem (also used to apply all on startup)
+  function syncClickMoveInput(): void {
+    input.setClickMoveMouseButton(settings.get('clickToMove') > 0
+      ? normalizeClickMoveButton(settings.get('clickToMoveButton'))
+      : null);
+  }
+
   function applySetting(key: keyof GameSettings, value: number | boolean): void {
     if (key === 'mouseCamera') {
       const v = settings.set('mouseCamera', !!value);
       input.setMouseCameraEnabled(v);
       return;
     }
+    if (key === 'leftHandedTouch') {
+      const v = settings.set('leftHandedTouch', !!value);
+      document.body.classList.toggle('mobile-left-handed', v);
+      return;
+    }
+    if (key === 'filterProfanity') {
+      settings.set('filterProfanity', !!value);
+      return;
+    }
     const v = settings.set(key as keyof typeof SETTING_RANGES, value as number);
     switch (key) {
       case 'cameraSpeed': input.setCameraSpeed(v); break;
+      case 'touchLookSpeed': input.setTouchLookSpeed(v); break;
       case 'sfxVolume': audio.setVolume(v); break;
       case 'musicVolume': music.setVolume(v); break;
       case 'brightness': renderer.setBrightness(v); break;
       case 'renderScale': renderer.setRenderScale(v); break;
       case 'fullscreen': v >= 0.5 ? requestPreferredFullscreen() : exitBrowserFullscreen(); break;
+      case 'clickToMove': if (v < 0.5) input.clearClickMove(); syncClickMoveInput(); break;
+      case 'clickToMoveButton': syncClickMoveInput(); break;
+      case 'touchOpacity': document.documentElement.style.setProperty('--touch-opacity', String(v)); break;
     }
   }
   // apply persisted settings to the freshly-built subsystems
@@ -624,24 +666,59 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   function handlePick(x: number, y: number, button: number): void {
     const id = renderer.pick(x, y);
     const clickToMove = settings.get('clickToMove') > 0 && !world.player.dead;
+    const clickToMoveButton = normalizeClickMoveButton(settings.get('clickToMoveButton'));
+    const isClickMoveButton = clickToMove && button === clickToMoveButton;
     if (id === null) {
       if (button === 0) {
         world.targetEntity(null);
-        // left-click on open ground walks there, if the option is enabled (#95)
-        if (clickToMove) {
-          const g = renderer.groundPoint(x, y, world.player.pos.y);
-          if (g) { input.clickMoveTarget = g; input.clickMoveStop = 0.5; }
-        }
+      }
+      if (isClickMoveButton) {
+        const g = renderer.groundPoint(x, y, world.player.pos.y);
+        if (g) input.setClickMoveTarget(g, 0.5);
       }
       return;
     }
-    // left-click on an entity: approach it (walk into melee range) when
-    // click-to-move is on, in addition to the normal target/interact handling
-    if (clickToMove && button === 0) {
+    // The configured click-to-move mouse button approaches entities while the
+    // regular click handler still performs target/interact behavior.
+    if (isClickMoveButton) {
       const e = world.entities.get(id);
-      if (e && e.id !== world.player.id) { input.clickMoveTarget = { x: e.pos.x, z: e.pos.z }; input.clickMoveStop = 3.5; }
+      if (e && e.id !== world.player.id) input.setClickMoveTarget({ x: e.pos.x, z: e.pos.z }, 3.5, e.id);
     }
     handlePickedEntity(world, hud, id, button, x, y);
+  }
+
+  let lastClickMoveMarkerPulse = -1;
+  let clickMoveMarkerHideAt = 0;
+  function updateClickMoveMarker(nowMs = performance.now()): void {
+    const pulseChanged = lastClickMoveMarkerPulse !== input.clickMovePulse;
+    if (pulseChanged) {
+      lastClickMoveMarkerPulse = input.clickMovePulse;
+      clickMoveMarkerHideAt = nowMs + 300;
+    }
+    const target = input.clickMoveTarget ?? input.clickMovePulseTarget;
+    const show = !!target && settings.get('clickToMove') > 0 && !world.player.dead
+      && (!!input.clickMoveTarget || nowMs < clickMoveMarkerHideAt);
+    if (!show) {
+      clickMoveMarker.classList.remove('active', 'entity', 'pulse');
+      return;
+    }
+    const screen = renderer.worldToScreen(target.x, world.player.pos.y + 0.05, target.z);
+    const offscreen = screen.behind
+      || screen.x < -80 || screen.x > window.innerWidth + 80
+      || screen.y < -80 || screen.y > window.innerHeight + 80;
+    if (offscreen) {
+      clickMoveMarker.classList.remove('active', 'pulse');
+      return;
+    }
+    clickMoveMarker.style.transform = `translate(${screen.x.toFixed(0)}px, ${screen.y.toFixed(0)}px) translate(-50%, -50%)`;
+    clickMoveMarker.classList.toggle('entity', input.clickMoveEntityId !== null);
+    clickMoveMarker.classList.add('active');
+    if (pulseChanged || clickMoveMarker.dataset.pulse !== String(input.clickMovePulse)) {
+      clickMoveMarker.dataset.pulse = String(input.clickMovePulse);
+      clickMoveMarker.classList.remove('pulse');
+      void clickMoveMarker.offsetWidth;
+      clickMoveMarker.classList.add('pulse');
+    }
   }
 
   let last = performance.now();
@@ -653,47 +730,57 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   // that's what killed the turn stutter. While running, the orbit offset
   // eases back to zero so the camera settles in behind the character.
   let lastInterpFacing: number | null = null;
-  const CAM_SETTLE_RATE = 3; // 1/s exponential ease
-
-  function wrapAngle(d: number): number {
-    while (d > Math.PI) d -= 2 * Math.PI;
-    while (d < -Math.PI) d += 2 * Math.PI;
-    return d;
-  }
-
   function updateCamera(frameDt: number, interpFacing: number): void {
-    if (input.isMouseCameraMode()) return;
-    if (!input.isMouselookActive()) {
-      // follow turns 1:1 (keeps any manual orbit offset constant)
-      if (lastInterpFacing !== null) input.camYaw += wrapAngle(interpFacing - lastInterpFacing);
-      // settle behind the character while moving, unless the player is
-      // actively holding an orbit drag
-      const mi = input.readMoveInput();
-      if ((mi.forward || mi.strafeLeft || mi.strafeRight) && !input.leftDown) {
-        input.camYaw += wrapAngle(interpFacing - input.camYaw) * (1 - Math.exp(-frameDt * CAM_SETTLE_RATE));
-      }
-    }
-    lastInterpFacing = interpFacing; // track through mouselook too - no snap on release
+    const mi = input.readMoveInput();
+    const clickMoving = !!input.clickMoveTarget && !input.suspendMovement && !world.player.dead;
+    const next = updateFollowCameraYaw({
+      camYaw: input.camYaw,
+      interpFacing,
+      frameDt,
+      lastInterpFacing,
+      mouselook: input.isMouselookActive(),
+      moving: mi.forward || mi.strafeLeft || mi.strafeRight || clickMoving,
+      clickMoving,
+      orbiting: input.leftDown && input.isCameraDragActive(),
+    });
+    input.camYaw = next.camYaw;
+    lastInterpFacing = next.lastInterpFacing; // track through mouselook too — no snap on release
   }
 
   // Resolve this step's movement input, folding in click-to-move (#95). Returns
   // the move flags plus an optional forced facing (mouselook angle, or the
   // bearing toward a click-to-move destination). Any manual movement, an open
-  // modal, mouselook, or the option being switched off cancels click-to-move.
-  function resolveMove(mouselook: boolean, playerPos: { x: number; z: number }):
+  // modal, mouselook, death, or the option being switched off cancels click-to-move.
+  function resolveMove(mouselook: boolean, playerPos: { x: number; z: number }, playerFacing: number):
     { mi: ReturnType<typeof input.readMoveInput>; facing: number | null } {
     const mi = input.readMoveInput();
     let facing: number | null = mouselook ? input.camYaw : null;
     if (input.clickMoveTarget) {
-      if (mouselook || input.suspendMovement || settings.get('clickToMove') <= 0 || manualMovementOverrides(mi)) {
-        input.clickMoveTarget = null;
+      if (clickMoveShouldCancel(mi, {
+        mouselook,
+        movementSuspended: input.suspendMovement,
+        playerDead: world.player.dead,
+        enabled: settings.get('clickToMove') > 0,
+      })) {
+        input.clearClickMove();
       } else {
+        if (input.clickMoveEntityId !== null) {
+          const e = world.entities.get(input.clickMoveEntityId);
+          if (!e || e.dead || e.id === world.player.id) {
+            input.clearClickMove();
+            return { mi, facing };
+          }
+          input.clickMoveTarget = { x: e.pos.x, z: e.pos.z };
+        }
         const step = clickMoveStep(playerPos, input.clickMoveTarget, input.clickMoveStop);
         if (step.arrived) {
-          input.clickMoveTarget = null;
+          input.clearClickMove();
         } else {
           mi.forward = true;
-          facing = step.facing;
+          const fromFacing = input.clickMoveFacing ?? playerFacing;
+          const smoothFacing = stepAngleToward(fromFacing, step.facing, CLICK_MOVE_TURN_RATE * DT);
+          input.clickMoveFacing = smoothFacing;
+          facing = smoothFacing;
         }
       }
     }
@@ -736,12 +823,14 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     let frameDt = (now - last) / 1000;
     last = now;
     if (frameDt > 0.25) frameDt = 0.25;
+    perf.frame(frameDt);
 
     // freeze movement while the game menu is up so WASD doesn't walk the
     // character behind it (other windows stay non-modal, as before)
     input.suspendMovement = hud.isModalOpen();
     input.updateTouchLook(frameDt);
     updateHoverCursor();
+    perf.markInputFrame(performance.now());
 
     const mouselook = input.isMouselookActive() && !world.player.dead;
     const controllerFacing = input.controllerFacingOverride();
@@ -751,12 +840,13 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     if (offlineSim) {
       acc += frameDt;
       while (acc >= DT) {
-        const { mi, facing } = resolveMove(mouselook, offlineSim.player.pos);
+        const { mi, facing } = resolveMove(mouselook, offlineSim.player.pos, offlineSim.player.facing);
         Object.assign(offlineSim.moveInput, mi);
         const stepFacing = movementFacing ?? facing;
         if (stepFacing !== null) offlineSim.player.facing = stepFacing;
-        const events = offlineSim.tick();
-        hud.handleEvents(events);
+        perf.markInputSent(performance.now());
+        const events = perf.time('sim', () => offlineSim.tick());
+        perf.time('events', () => hud.handleEvents(events));
         acc -= DT;
       }
       const pp = offlineSim.player;
@@ -764,31 +854,47 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       renderer.camYaw = input.camYaw;
       renderer.camPitch = input.camPitch;
       renderer.camDist = input.camDist;
-      renderer.sync(acc / DT, frameDt, movementFacing);
-      hud.update();
+      perf.setNetwork(null);
+      perf.time('renderer', () => renderer.sync(acc / DT, frameDt, movementFacing));
+      updateClickMoveMarker();
+      perf.markInputVisible(performance.now());
+      perf.time('hud', () => hud.update());
+      perf.tick(now);
       return;
     }
 
     // online: inputs stream on a timer inside ClientWorld; here we mirror state
     const net = online!;
-    const resolved = resolveMove(mouselook, world.player.pos);
+    const resolved = resolveMove(mouselook, world.player.pos, world.player.facing);
     const netFacing = movementFacing ?? resolved.facing;
     Object.assign(net.moveInput, resolved.mi);
     net.setMouselookFacing(netFacing);
+    if (net.flushInput()) perf.markInputSent(performance.now());
+    for (const sample of net.consumeInputEchoSamples()) perf.markInputEcho(sample);
     net.pendingFacingDelta = 0; // superseded by the interpolated follow below
-    hud.handleEvents(net.drainEvents());
+    perf.time('events', () => hud.handleEvents(net.drainEvents()));
+    if (net.consumeProfanityChanged()) hud.setProfanityWords(net.profanityWords);
     if (net.consumeInventoryChanged()) hud.onInventoryChanged();
     const alpha = net.lastSnapAt > 0
       ? Math.min(1.25, (performance.now() - net.lastSnapAt) / Math.max(20, net.snapInterval))
       : 1;
+    perf.setNetwork({
+      connected: net.connected,
+      snapInterval: Math.round(net.snapInterval),
+      lastSnapAge: net.lastSnapAt > 0 ? Math.round(performance.now() - net.lastSnapAt) : -1,
+      alpha: Math.round(alpha * 100) / 100,
+    });
     const pe = world.player;
     // facing interp capped at 1 - extrapolating angles past the snapshot oscillates
     updateCamera(frameDt, pe.prevFacing + wrapAngle(pe.facing - pe.prevFacing) * Math.min(1, alpha));
     renderer.camYaw = input.camYaw;
     renderer.camPitch = input.camPitch;
     renderer.camDist = input.camDist;
-    renderer.sync(alpha, frameDt, movementFacing);
-    hud.update();
+    perf.time('renderer', () => renderer.sync(alpha, frameDt, movementFacing));
+    updateClickMoveMarker();
+    perf.markInputVisible(performance.now());
+    perf.time('hud', () => hud.update());
+    perf.tick(now);
   }
   requestAnimationFrame(frame);
   // cut to the game only once the first frame is actually on screen
@@ -802,7 +908,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     face(facing: unknown) { input.setControllerFacing(facing); },
     stop() { input.clearControllerMoveInput(); },
   };
-  (window as any).__game = { sim: world, world, renderer, input, hud, online, controller };
+  (window as any).__game = { sim: world, world, renderer, input, hud, online, controller, perf };
 }
 
 // ---------------------------------------------------------------------------
@@ -817,10 +923,11 @@ function sanitizeOfflineName(raw: string): string {
   return /^[A-Za-z][A-Za-z' -]{1,15}$/.test(stripped) ? stripped : 'Adventurer';
 }
 
-async function startOffline(playerClass: PlayerClass, name: string): Promise<void> {
+async function startOffline(playerClass: PlayerClass, name: string, skin = 0): Promise<void> {
   if (!(await prepareWorldEntry())) return;
   enterLoadingState(t('loading.world'));
   const sim = new Sim({ seed: WORLD_SEED, playerClass, playerName: name });
+  sim.setPlayerSkin(sim.playerId, skin);
   void startGame(sim, sim, null);
 }
 
@@ -833,6 +940,59 @@ const api = new Api();
 let activeTransitionTimeout: number | null = null;
 let activeTransitionCleanup: (() => void) | null = null;
 let characterPreview: CharacterPreview | null = null;
+let offlineSkin = 0; // chosen appearance skin for the offline quick-start character
+let onlineSkin = 0; // chosen appearance skin for new online characters
+
+/** Fill a skin-picker row with one swatch per available skin for the class. */
+function renderSkinPicker(rowId: string, cls: PlayerClass, current: number, onPick: (i: number) => void): void {
+  const row = $(rowId) as HTMLElement | null;
+  if (!row) return;
+  row.innerHTML = '';
+  const count = skinCount(`player_${cls}`);
+  if (count <= 1) return; // only the default exists — nothing to pick
+  for (let i = 0; i < count; i++) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'skin-swatch' + (i === current ? ' sel' : '');
+    b.dataset.skin = String(i);
+    b.textContent = String(i + 1);
+    b.setAttribute('role', 'listitem');
+    b.setAttribute('aria-label', `Skin ${i + 1}`);
+    b.addEventListener('click', () => {
+      row.querySelectorAll('.skin-swatch').forEach((x) => x.classList.remove('sel'));
+      b.classList.add('sel');
+      onPick(i);
+    });
+    row.appendChild(b);
+  }
+}
+
+function selectedSkin(rowId: string, fallback: number): number {
+  const selected = document.querySelector(`${rowId} .skin-swatch.sel`) as HTMLElement | null;
+  const raw = selected?.dataset.skin;
+  const parsed = raw === undefined ? Number.NaN : Number(raw);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+/** Reset to the default skin and (re)render the offline picker for a class. */
+function refreshOfflineSkins(cls: PlayerClass): void {
+  offlineSkin = 0;
+  characterPreview?.setSkin(0);
+  renderSkinPicker('#offline-skin-row', cls, 0, (i) => {
+    offlineSkin = i;
+    characterPreview?.setSkin(i);
+  });
+}
+
+/** Reset to the default skin and (re)render the online creation picker for a class. */
+function refreshOnlineSkins(cls: PlayerClass): void {
+  onlineSkin = 0;
+  characterPreview?.setSkin(0);
+  renderSkinPicker('#online-skin-row', cls, 0, (i) => {
+    onlineSkin = i;
+    characterPreview?.setSkin(i);
+  });
+}
 
 function updatePreviewContainer(panelId: string): void {
   if (!characterPreview) return;
@@ -848,6 +1008,8 @@ function updatePreviewContainer(panelId: string): void {
     if (selEl) {
       const cls = selEl.dataset.class as PlayerClass;
       characterPreview.setClass(cls);
+      if (panelId === '#charselect-panel') refreshOnlineSkins(cls);
+      else refreshOfflineSkins(cls);
     }
   }
 }
@@ -1267,6 +1429,9 @@ async function refreshCharacters(): Promise<void> {
         row.classList.add('sel');
         row.setAttribute('aria-selected', 'true');
         renderClassDetails('online-class-details', c.class);
+        characterPreview?.setSkin(c.skin ?? 0);
+        const skinRow = $('#online-skin-row') as HTMLElement | null;
+        if (skinRow) skinRow.innerHTML = '';
       };
 
       row.addEventListener('click', selectRow);
@@ -1902,7 +2067,7 @@ function wireStartScreens(): void {
     audio.init();
     music.init();
     const name = sanitizeOfflineName(rawName);
-    void startOffline(cls, name);
+    void startOffline(cls, name, selectedSkin('#offline-skin-row', offlineSkin));
   };
 
   const handleOfflineSelect = () => {
@@ -1919,6 +2084,7 @@ function wireStartScreens(): void {
       warriorCard.setAttribute('aria-pressed', 'true');
       renderClassDetails('offline-class-details', 'warrior');
       btnStartOffline.removeAttribute('disabled');
+      refreshOfflineSkins('warrior');
     }
   };
 
@@ -1958,6 +2124,7 @@ function wireStartScreens(): void {
       const cls = (card as HTMLElement).dataset.class as PlayerClass;
       renderClassDetails('offline-class-details', cls);
       btnStartOffline.removeAttribute('disabled');
+      refreshOfflineSkins(cls);
     };
     card.addEventListener('click', handleClassSelect);
     card.addEventListener('keydown', (e) => handleKeyboardActivation(e as KeyboardEvent, handleClassSelect));
@@ -2167,6 +2334,7 @@ function wireStartScreens(): void {
       
       const cls = (el as HTMLElement).dataset.class as PlayerClass;
       renderClassDetails('online-class-details', cls);
+      refreshOnlineSkins(cls);
     };
     el.addEventListener('click', handleMiniClassSelect);
     el.addEventListener('keydown', (e) => handleKeyboardActivation(e as KeyboardEvent, handleMiniClassSelect));
@@ -2262,6 +2430,7 @@ function wireStartScreens(): void {
     defaultOnlineClass.classList.add('sel');
     defaultOnlineClass.setAttribute('aria-pressed', 'true');
     renderClassDetails('online-class-details', 'warrior');
+    refreshOnlineSkins('warrior');
   }
   const newCharNameInput = $('#new-char-name') as HTMLInputElement;
   const charselectError = $('#charselect-error');
@@ -2315,7 +2484,7 @@ function wireStartScreens(): void {
     newCharNameInput.removeAttribute('aria-invalid');
 
     try {
-      await api.createCharacter(name, clsEl.dataset.class as PlayerClass);
+      await api.createCharacter(name, clsEl.dataset.class as PlayerClass, selectedSkin('#online-skin-row', onlineSkin));
       newCharNameInput.value = '';
       charselectError.textContent = '';
       await refreshCharacters();

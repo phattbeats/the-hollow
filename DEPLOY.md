@@ -7,7 +7,7 @@
 > `ansible-playbook playbooks/setup_server.yml -e target_host=idyllic-games-prod`
 > pulls and redeploys. The guide below is the generic, standalone path.
 
-One EC2 instance runs everything: the game server, Postgres, and Caddy
+One EC2 instance runs everything: the game server, Postgres, MediaWiki, and Caddy
 (TLS reverse proxy). Sized for a small population — a `t4g.small`
 (~$14/month all-in) is comfortable for a handful of concurrent players.
 
@@ -58,6 +58,9 @@ the Elastic IP.
 ```bash
 ssh ubuntu@<elastic-ip>
 echo 'play.example.com {
+	route /wiki* {
+		reverse_proxy localhost:8080
+	}
 	reverse_proxy localhost:8787
 	encode gzip
 }' | sudo tee /etc/caddy/Caddyfile
@@ -102,9 +105,14 @@ For off-box safety, sync the directory to S3 occasionally:
 - **Username bans**: set `USERNAME_BANLIST_FILE=/opt/eastbrook/username-banlist.txt`
   to load blocked username terms from a private newline- or comma-separated
   file. `USERNAME_BANLIST` can also provide a comma-separated inline list.
-- **Chat censorship**: set `CHAT_CENSOR_FILE=/opt/eastbrook/chat-censor.txt`
-  to mask configured terms from a private newline- or comma-separated file.
-  `CHAT_CENSOR_LIST` can also provide a comma-separated inline list.
+- **Chat filter**: the word lists are now **managed live from the admin
+  dashboard** (Chat Filter tab), stored in the database and seeded with sensible
+  defaults on first boot. Two tiers: *soft* words are masked client-side with
+  `****` (players can toggle the filter off in Options), and *hard* words (slurs)
+  are blocked server-side and escalate from a warning to account-wide timed mutes
+  (durations editable in the same tab). `CHAT_CENSOR_LIST` / `CHAT_CENSOR_FILE`
+  are still read **once**, on the first boot of a fresh database, to seed the soft
+  list — after that they are ignored and the dashboard is authoritative.
 - **Realms (horizontal scaling)**: each server process serves one realm,
   set by `REALM_NAME` (default `Claudemoon`). To add a realm, run another
   process against the **same** `DATABASE_URL` with a different `REALM_NAME`

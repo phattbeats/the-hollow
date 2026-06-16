@@ -207,10 +207,108 @@
   [hidden] { display: none !important; }
   html, body {
     width: var(--app-vw); height: var(--app-vh); min-width: 100%; min-height: 100%;
-    overflow: hidden; background: #000; font-family: var(--ui-font); touch-action: none; overscroll-behavior: none;
+    overflow-x: hidden; overflow-y: hidden; background: #000; font-family: var(--ui-font);
+    touch-action: pan-y; overscroll-behavior-y: auto;
     -webkit-text-size-adjust: 100%;
   }
-  #game-canvas { position: fixed; left: 0; top: 0; width: var(--app-vw); height: var(--app-vh); display: block; }
+  body.game-active {
+    overflow: hidden;
+    touch-action: none;
+    overscroll-behavior: none;
+  }
+  #game-canvas { position: fixed; left: 0; top: 0; width: var(--app-vw); height: var(--app-vh); display: block; z-index: 0; }
+  .click-move-marker {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 56px;
+    height: 56px;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 2;
+    transform: translate(-999px, -999px);
+    transition: opacity 45ms ease-out;
+    filter: drop-shadow(0 2px 5px #000d);
+    --ctm-color: #7ef06b;
+    --ctm-core: #d9ffd1;
+    --ctm-edge: #245f1f;
+  }
+  .click-move-marker.active { opacity: 0.98; }
+  .click-move-marker.entity {
+    --ctm-color: #ffd35a;
+    --ctm-core: #fff0a8;
+    --ctm-edge: #6b4a10;
+  }
+  .click-move-marker::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    background: var(--ctm-core);
+    border: 1px solid var(--ctm-edge);
+    border-radius: 50%;
+    box-shadow: 0 0 8px color-mix(in srgb, var(--ctm-color) 85%, transparent);
+    transform: translate(-50%, -50%);
+  }
+  .click-move-marker::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    border: 1px solid color-mix(in srgb, var(--ctm-color) 72%, transparent);
+    border-radius: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+  }
+  .click-move-marker.pulse::after {
+    animation: click-move-core 220ms ease-out both;
+  }
+  .ctm-arrow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 11px;
+    height: 11px;
+    opacity: 0;
+    transform-origin: center;
+    will-change: transform, opacity;
+  }
+  .click-move-marker.pulse .ctm-arrow { animation: click-move-collapse 260ms cubic-bezier(.16,1,.3,1) both; }
+  .ctm-arrow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-style: solid;
+    border-color: var(--ctm-core);
+    border-width: 2px 2px 0 0;
+    box-shadow: 1.5px -1.5px 0 color-mix(in srgb, var(--ctm-edge) 58%, transparent);
+  }
+  .ctm-n { --ctm-x0: -5.5px; --ctm-y0: -36px; --ctm-x1: -5.5px; --ctm-y1: -23px; --ctm-r: 135deg; transform: translate(-5.5px, -36px) rotate(135deg); }
+  .ctm-e { --ctm-x0: 25px; --ctm-y0: -5.5px; --ctm-x1: 12px; --ctm-y1: -5.5px; --ctm-r: -135deg; transform: translate(25px, -5.5px) rotate(-135deg); }
+  .ctm-s { --ctm-x0: -5.5px; --ctm-y0: 25px; --ctm-x1: -5.5px; --ctm-y1: 12px; --ctm-r: -45deg; transform: translate(-5.5px, 25px) rotate(-45deg); }
+  .ctm-w { --ctm-x0: -36px; --ctm-y0: -5.5px; --ctm-x1: -23px; --ctm-y1: -5.5px; --ctm-r: 45deg; transform: translate(-36px, -5.5px) rotate(45deg); }
+  @keyframes click-move-collapse {
+    0% { opacity: 0.95; transform: translate(var(--ctm-x0), var(--ctm-y0)) rotate(var(--ctm-r, 0deg)) scale(1.05); }
+    16% { opacity: 1; }
+    72% { opacity: 0.95; transform: translate(var(--ctm-x1), var(--ctm-y1)) rotate(var(--ctm-r, 0deg)) scale(0.78); }
+    100% { opacity: 0; transform: translate(var(--ctm-x1), var(--ctm-y1)) rotate(var(--ctm-r, 0deg)) scale(0.62); }
+  }
+  @keyframes click-move-core {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.35); }
+    50% { opacity: 0.9; }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.7); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ctm-arrow,
+    .click-move-marker.pulse::after {
+      animation-duration: 0.01ms;
+      animation-iteration-count: 1;
+    }
+  }
 
   /* Pre-game screens use the same hand / sword cursors as in-world (cursors.ts). */
   #start-screen,
@@ -227,9 +325,11 @@
     cursor: text;
   }
 
-  #nameplates { position: fixed; left: 0; top: 0; width: var(--app-vw); height: var(--app-vh); overflow: hidden; pointer-events: none; }
-  #ui { position: fixed; left: 0; top: 0; width: var(--app-vw); max-width: 100vw; height: var(--app-vh); overflow-x: hidden; pointer-events: none; }
+  #nameplates { position: fixed; left: 0; top: 0; width: var(--app-vw); height: var(--app-vh); overflow: hidden; pointer-events: none; z-index: 1; }
+  #ui { position: fixed; left: 0; top: 0; width: var(--app-vw); max-width: 100vw; height: var(--app-vh); overflow: hidden; pointer-events: none; z-index: 10; }
   #ui > * { pointer-events: auto; }
+  #ui > .click-move-marker,
+  #ui > .click-move-marker * { pointer-events: none; }
 
   .panel {
     background: var(--panel-bg);
@@ -252,6 +352,9 @@
     justify-content: space-between;
     align-items: center;
   }
+  .window .panel-title { cursor: move; touch-action: none; }
+  .window .panel-title .x-btn { cursor: pointer; }
+  .window.window-dragging { cursor: move; }
   .x-btn { color: #c9b27a; cursor: pointer; font-size: 14px; padding: 0 4px; border: 1px solid #463a1c; border-radius: 3px; background: #1a1410; font-family: var(--ui-font); }
   .x-btn:hover { color: #fff; border-color: var(--gold-dim); }
   .x-btn:focus-visible,
@@ -279,6 +382,7 @@
   /* ---------- nameplates ---------- */
   .nameplate { position: absolute; left: 0; top: 0; text-align: center; pointer-events: none;
     text-shadow: 1px 1px 2px #000; white-space: nowrap; will-change: transform; }
+  .nameplate.has-emote { z-index: 30; }
   .np-name { font-size: 12px; font-weight: bold; font-family: var(--title-font); letter-spacing: 0.3px; }
   .np-hpbar { width: 78px; height: 6px; background: #2a0000; border: 1px solid #000; margin: 1px auto 0; border-radius: 2px; }
   .np-hpfill { height: 100%; background: linear-gradient(#48e060, #1d7a32); border-radius: 2px; }
@@ -293,6 +397,15 @@
   .np-raidmark { width: 30px; height: 30px; margin: 0 auto 1px; background-size: contain;
     background-repeat: no-repeat; background-position: center;
     filter: drop-shadow(0 0 2px #000) drop-shadow(0 1px 1px #000); }
+  .np-emote { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-width: 62px; height: 42px;
+    padding: 3px 9px 3px 4px; margin: 0 auto 5px; border-radius: 999px; border: 2px solid #f2d27a;
+    background: linear-gradient(#3a2a16, #16100a); color: #ffe9a3; font: 800 11px/1 var(--title-font);
+    letter-spacing: 0; box-shadow: 0 2px 0 #050301, 0 0 16px #ffd65a66, inset 0 1px 0 #fff4;
+    position: relative; z-index: 3; text-shadow: 0 1px 1px #000; will-change: transform, opacity; animation: emote-pop 260ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .np-emote-icon { width: 34px; height: 34px; flex: 0 0 auto; image-rendering: auto;
+    filter: drop-shadow(0 2px 1px #0009); }
+  .np-emote-label { display: block; max-width: 56px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  @keyframes emote-pop { from { transform: translateY(8px) scale(0.86); opacity: 0; } to { transform: none; opacity: 1; } }
 
   /* ---------- chat bubbles (/say, /yell) ---------- */
   .chat-bubble { position: absolute; left: 0; top: 0; max-width: 220px; pointer-events: none;
@@ -389,7 +502,20 @@
   #actionbar-row { display: flex; align-items: flex-end; gap: 8px; }
   /* xp bar stacks directly on the action bar; the taller side-button
      column must not push it up (it used to float ~150px above the bar) */
-  #actionbar-stack { display: flex; flex-direction: column; }
+  #actionbar-stack { display: flex; flex-direction: column; position: relative; }
+  #petbar { display: none; position: absolute; left: 0; top: -52px; gap: 6px; padding: 0; margin: 0;
+    background: transparent; border: 0; outline: 0; box-shadow: none; }
+  .petbar-group { display: flex; gap: 4px; padding: 4px; border: 2px solid #000; outline: 1px solid #5b4618;
+    border-radius: 6px; background: linear-gradient(170deg, #15131fdd, #09080edd); box-shadow: 0 2px 8px #000c; }
+  .pet-btn { width: 38px; height: 38px; padding: 0; border: 2px solid #4a3d1d; border-radius: 6px;
+    background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f); color: #f3df9a; cursor: pointer;
+    position: relative; box-shadow: inset 0 1px 0 #ffffff18, 0 2px 4px #0009; }
+  .pet-btn .icon-label { position: absolute; inset: 1px; border-radius: 4px; background-size: cover; background-position: center; background-repeat: no-repeat; pointer-events: none; }
+  .pet-btn:hover { border-color: var(--gold); }
+  .pet-btn.active { border-color: var(--gold); box-shadow: inset 0 0 0 1px #ffd10066, 0 0 6px #ffd10033; }
+  .pet-btn.cooldown { filter: grayscale(.8) brightness(.65); cursor: default; }
+  .pet-btn .cdtext { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: var(--gold); text-shadow: 1px 1px 2px #000; font-weight: bold; pointer-events: none; }
   #actionbar { display: flex; gap: 4px; padding: 6px; }
   .action-btn { width: 46px; height: 46px; position: relative; border: 2px solid #4a3d1d; border-radius: 6px;
     background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f); color: #fff; cursor: pointer;
@@ -594,12 +720,16 @@
   .q-epic { border-color: #a335ee !important; box-shadow: 0 0 6px #a335ee66; }
 
   /* character window */
-  #char-window { width: 320px; }
+  #char-window { width: 430px; }
   .paperdoll { display: flex; gap: 10px; }
   .equip-col { display: flex; flex-direction: column; gap: 5px; }
   .equip-slot { display: flex; gap: 7px; align-items: center; width: 142px; }
   .equip-slot .slot-name { font-size: 10px; color: #998d6a; }
   .equip-slot .slot-item { font-size: 11px; }
+  .char-model-panel { flex: 1; min-width: 0; height: 172px; border: 1px solid #463a1c; border-radius: 5px; background: rgba(0, 0, 0, 0.28); overflow: hidden; display: flex; flex-direction: column; }
+  .char-model-preview { width: 100%; flex: 1; min-height: 0; }
+  .char-model-preview canvas { display: block; width: 100% !important; height: 100% !important; }
+  .char-skin-row { justify-content: center; align-items: center; margin: 0; padding: 6px 0 8px; flex-shrink: 0; }
   .char-stats { font-size: 12px; line-height: 1.65; color: #cfc6a8; margin-top: 10px; border-top: 1px solid #463a1c; padding-top: 8px;
     display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
   .char-stats b { color: #fff; font-weight: normal; }
@@ -675,7 +805,7 @@
   .tal-tree { position: relative; margin: 6px auto; }
   .tal-arrows { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 0; }
   .tal-node { position: absolute; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: #15110a; border: 2px solid #5a4a22; color: #e8dcb0; user-select: none; box-sizing: border-box; z-index: 1; }
-  .tal-node .tal-icon { position: absolute; inset: 2px; display: flex; align-items: center; justify-content: center; background: #15110a; z-index: 1; font: 26px/1 "Apple Color Emoji", "Segoe UI Emoji", var(--body-font); text-shadow: 0 1px 2px #000; }
+  .tal-node .tal-icon { position: absolute; inset: 2px; display: block; background-color: #15110a; background-size: cover; background-position: center; background-repeat: no-repeat; z-index: 1; }
   .tal-node.circle { border-radius: 50%; }
   .tal-node.circle .tal-icon { border-radius: 50%; }
   .tal-node.square { border-radius: 7px; }
@@ -754,7 +884,7 @@
   .tal-choice-opt:hover, .tal-choice-opt:focus-visible { background: #ffffff10; border-color: #6f5a2a; outline: none; }
   .tal-choice-opt.sel { background: #2c2410; border-color: var(--gold); box-shadow: inset 0 0 0 1px #ffd10033; }
   .tal-choice-opt.sel::after { content: "✓"; position: absolute; right: 8px; top: 8px; width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; color: #120d04; background: #ffd100; border-radius: 50%; font: 700 10px/1 var(--body-font); }
-  .tco-icon { width: 28px; height: 28px; flex: none; border-radius: 4px; display: flex; align-items: center; justify-content: center; background: #15110a; color: #fff; border: 1px solid #5a4a22; font: 18px/1 "Apple Color Emoji", "Segoe UI Emoji", var(--body-font); text-shadow: 0 1px 2px #000; }
+  .tco-icon { width: 28px; height: 28px; flex: none; border-radius: 4px; display: block; background-color: #15110a; background-size: cover; background-position: center; background-repeat: no-repeat; border: 1px solid #5a4a22; }
   .tco-text { display: flex; flex-direction: column; gap: 2px; font-size: 11px; color: #c8b888; }
   .tco-text b { color: #fff; font-size: 12px; }
 
@@ -774,12 +904,25 @@
   .vendor-empty { padding: 5px; font-size: 11px; color: #887c5c; }
   .vendor-hint { font-size: 11px; color: #c8b888; margin-top: 8px; border-top: 1px solid #463a1c; padding-top: 6px; }
 
-  /* bags */
-  #bags { width: 310px; }
-  /* the vendor opens bags alongside it — lay the pair out side-by-side, centred
-     together (overrides the single-window centring while body.vendor-open). */
-  body.vendor-open #vendor-window { left: calc(50% - 163px); }
-  body.vendor-open #bags { left: calc(50% + 208px); }
+  /* bags — centred in the bottom gap between the action cluster and micro-menu */
+  #bags {
+    --bags-bar-half: 306px;
+    --bags-gap: 12px;
+    --bags-micro-r: calc(16px + 34px + var(--bags-gap));
+    --bags-slot-w: max(180px, calc(100vw - 50% - var(--bags-bar-half) - var(--bags-gap) - var(--bags-micro-r)));
+    left: calc((100% + 50% + var(--bags-bar-half) + var(--bags-gap) - var(--bags-micro-r)) / 2);
+    right: auto;
+    bottom: 6px;
+    top: auto;
+    width: min(310px, var(--bags-slot-w));
+    transform: translateX(-50%);
+    max-height: calc(100vh - 18px);
+    overflow: hidden;
+    flex-direction: column;
+  }
+  #bags .panel-title { flex: none; }
+  #bags .bag-grid { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+  #bags .money { flex: none; }
   .bag-grid { display: flex; flex-direction: column; gap: 2px; }
   .bag-item { display: flex; gap: 8px; align-items: center; width: 100%; font-size: 12px; padding: 3px 4px; border: 0; border-radius: 3px; cursor: pointer; background: transparent; color: inherit; font-family: var(--ui-font); text-align: left; }
   .bag-item:hover { background: #ffffff12; }
@@ -949,7 +1092,9 @@
   .kb-row { display: grid; grid-template-columns: 1fr 78px 78px; align-items: center;
     gap: 6px; padding: 2px 6px; border-radius: 4px; }
   .kb-row:nth-of-type(odd) { background: #ffffff0a; }
-  .kb-name { font-size: 12.5px; color: #e8e0c8; }
+  .kb-name { font-size: 12.5px; color: #e8e0c8; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; }
+  .kb-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .kb-inline-key { flex: 0 0 auto; color: #ffd100; font-family: var(--title-font); font-size: 11px; opacity: 0.9; }
   .kb-key { margin: 0; text-align: center; padding: 3px 6px; font-size: 12px;
     background: linear-gradient(#2c2c3a, #15151f); color: #ffd9a0; border-color: #4a3d1d; }
   .kb-key.capturing { border-color: var(--gold); color: #fff; box-shadow: 0 0 8px #ffd100aa; }
@@ -969,6 +1114,11 @@
     justify-self: start;
     box-sizing: border-box;
   }
+  .kb-toggle-row .kb-mouse-toggle {
+    width: 98px;
+    min-width: 98px;
+    max-width: 98px;
+  }
   .kb-toggle.off { filter: grayscale(0.6) brightness(0.8); color: #b9ac82; }
   .set-rows { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
   .set-row { display: grid; grid-template-columns: 120px 1fr 48px; align-items: center; gap: 10px; padding: 3px 6px; }
@@ -977,14 +1127,52 @@
   .set-val { font-size: 12px; color: #ffd9a0; text-align: right; font-variant-numeric: tabular-nums; }
   .set-toggle { margin: 0; padding: 3px 14px; }
   .set-toggle.off { filter: grayscale(0.6) brightness(0.8); }
+  .set-choice { display: flex; flex-wrap: wrap; gap: 4px; grid-column: 2 / 4; }
+  .set-choice-btn { margin: 0; min-height: 40px; padding: 3px 9px; font-size: 12px; }
+  .set-choice-btn.sel { outline: 1px solid var(--gold); box-shadow: inset 0 0 8px #ffd10033; color: #fff4c7; }
   .set-note { font-size: 11px; color: #b9ac82; margin: 6px 0 2px; line-height: 1.4; }
+
+  /* ---------- emote wheel ---------- */
+  #emote-wheel { position: absolute; left: 50%; top: 50%; width: 330px; height: 330px;
+    transform: translate(-50%, -50%); z-index: 80; display: none; pointer-events: auto;
+    animation: emote-wheel-in 180ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .emote-wheel-ring { position: absolute; inset: 24px; border-radius: 50%;
+    background: radial-gradient(circle, #24190dcc 0 24%, #3a2a17e6 25% 55%, #080706e0 56% 100%);
+    border: 2px solid #8a682c; box-shadow: 0 0 0 1px #000, 0 12px 34px #000b, inset 0 0 34px #000b; }
+  .emote-wheel-item, .emote-wheel-edit { position: absolute; transform: translate(-50%, -50%);
+    display: flex; align-items: center; justify-content: center; text-align: center; font-family: var(--title-font);
+    letter-spacing: 0; border: 2px solid #3f3118; color: #f0dfaf; background: linear-gradient(#2b2418, #16110b);
+    box-shadow: 0 2px 0 #000, inset 0 1px 0 #ffffff12; transition: transform 130ms cubic-bezier(0.25, 1, 0.5, 1), filter 130ms; }
+  .emote-wheel-item { width: 82px; height: 78px; border-radius: 50%; padding: 4px; flex-direction: column; gap: 1px; font-size: 10px; line-height: 1.05; }
+  .emote-wheel-edit { left: 50%; top: 50%; width: 62px; height: 62px; border-radius: 50%; font-size: 12px; }
+  .emote-wheel-item.selected, .emote-wheel-edit.selected { color: #231506; border-color: #ffe27a;
+    background: linear-gradient(#fff0a8, #c9821e); box-shadow: 0 0 18px #ffd65aaa, 0 3px 0 #4a2108;
+    transform: translate(-50%, -50%) scale(1.08); filter: brightness(1.08); }
+  .emote-wheel-icon { width: 42px; height: 42px; display: block; filter: drop-shadow(0 2px 1px #0009); }
+  .emote-wheel-label { max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #emote-editor { width: 390px; }
+  .emote-editor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 8px 2px 10px; }
+  .emote-editor-item { min-height: 58px; border: 1px solid #463a1c; border-radius: 6px; background: #15110a;
+    color: #d8c89a; cursor: pointer; font-family: var(--title-font); font-size: 11px; display: flex;
+    align-items: center; gap: 6px; padding: 6px; text-align: left; transition: transform 130ms cubic-bezier(0.25, 1, 0.5, 1), filter 130ms; }
+  .emote-editor-icon { width: 34px; height: 34px; flex: 0 0 auto; filter: drop-shadow(0 2px 1px #0009); }
+  .emote-editor-item.selected { color: #211507; border-color: #ffe27a; background: linear-gradient(#fff0a8, #c9821e); }
+  .emote-editor-item:not(:disabled):hover { transform: translateY(-1px); filter: brightness(1.08); }
+  .emote-editor-item:disabled { opacity: 0.45; cursor: not-allowed; filter: grayscale(0.6); }
+  .emote-editor-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .emote-editor-count { color: #ffd100; font-family: var(--title-font); font-size: 12px; }
+  @keyframes emote-wheel-in { from { transform: translate(-50%, -50%) scale(0.94); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .np-emote, #emote-wheel { animation: none; }
+    .emote-wheel-item, .emote-wheel-edit, .emote-editor-item { transition: none; }
+  }
 
   /* tooltip */
   #tooltip { position: absolute; display: none; z-index: 100; pointer-events: none; max-width: 280px;
     padding: 8px 10px; font-size: 12px; line-height: 1.5; }
   #tooltip .tt-title { font-family: var(--title-font); font-size: 13.5px; color: #fff; }
   #tooltip .tt-sub { color: #998d6a; font-size: 11px; }
-  .tt-opt-icon { width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; vertical-align: -3px; border-radius: 3px; margin-right: 2px; font: 14px/1 "Apple Color Emoji", "Segoe UI Emoji", var(--body-font); }
+  .tt-opt-icon { width: 16px; height: 16px; display: inline-block; vertical-align: -3px; border-radius: 3px; margin-right: 2px; background-size: cover; background-position: center; background-repeat: no-repeat; }
   #tooltip .tt-desc { color: #ffd100; margin-top: 4px; font-size: 11.5px; }
   #tooltip .tt-stat { color: #fff; font-size: 11.5px; }
   #tooltip .tt-green { color: #1eff00; font-size: 11.5px; }
@@ -1027,6 +1215,9 @@
     padding: 0;
     overflow-x: hidden;
     overflow-y: auto;
+    touch-action: pan-y;
+    overscroll-behavior-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Global Header Styling */
@@ -1846,6 +2037,41 @@
     border-color: var(--class-color);
     color: #fff;
     box-shadow: 0 0 10px var(--class-color);
+  }
+
+  /* ---------- Skin picker (alternate body textures) ---------- */
+  .skin-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px 0 2px;
+    min-height: 0;
+  }
+  .skin-row:empty { display: none; }
+  .skin-swatch {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--color-text-secondary, #b9b9c7);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.12s, box-shadow 0.12s, color 0.12s;
+  }
+  .skin-swatch:hover,
+  .skin-swatch:focus-visible {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+  }
+  .skin-swatch.sel {
+    border-color: var(--class-color, #69ccf0);
+    color: #fff;
+    box-shadow: 0 0 9px var(--class-color, #69ccf0);
   }
 
   /* ---------- Premium Accessible Login Form styling ---------- */
@@ -2885,21 +3111,65 @@
     text-shadow: 0 0 8px var(--class-color);
   }
 
-  /* ---------- mobile touch controls (runtime-gated with body.mobile-touch) ---------- */
+  /* ---------- mobile touch controls (runtime-gated with body.mobile-touch + game-active) ---------- */
   #mobile-controls { display: none; }
   #mobile-preflight { display: none; }
   #rotate-device { display: none; }
   body.mobile-touch #game-canvas { touch-action: none; }
   body.mobile-touch #ui { touch-action: none; }
-  body.mobile-touch #mobile-controls { position: absolute; inset: 0; display: block; pointer-events: none; z-index: 60; }
+  body.mobile-touch.game-active #mobile-controls { position: absolute; inset: 0; display: block; pointer-events: none; z-index: 60; opacity: var(--touch-opacity, 1); }
+  body.mobile-touch.game-active #ui,
+  body.mobile-touch.game-active #nameplates,
+  body.mobile-touch.game-active #mobile-controls {
+    overflow: hidden;
+    scrollbar-width: none;
+  }
+  body.mobile-touch.game-active #ui::-webkit-scrollbar,
+  body.mobile-touch.game-active #nameplates::-webkit-scrollbar,
+  body.mobile-touch.game-active #mobile-controls::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+  body.mobile-touch.game-active::-webkit-scrollbar {
+    height: 0;
+  }
+  body.mobile-touch.game-active *::-webkit-scrollbar {
+    height: 0;
+  }
+  body.mobile-touch.game-active *::-webkit-scrollbar:horizontal {
+    height: 0;
+    display: none;
+  }
   body.mobile-touch .mobile-joystick {
     position: absolute; left: max(18px, env(safe-area-inset-left)); bottom: calc(26px + env(safe-area-inset-bottom));
     width: 122px; height: 122px; border-radius: 50%; pointer-events: auto; touch-action: none;
     border: 2px solid #b7a35a80; background: radial-gradient(circle at 50% 50%, #1b1b2960 0%, #0b0b1280 62%, #0505089a 100%);
     box-shadow: 0 3px 18px #0008, inset 0 1px 0 #ffffff12, inset 0 0 26px #0008;
+    opacity: 0.4; transition: opacity .18s ease;
+  }
+  body.mobile-touch .mobile-joystick.active { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    body.mobile-touch .mobile-joystick { transition: none; }
   }
   body.mobile-touch .mobile-joystick::before {
     content: ''; position: absolute; inset: 28px; border-radius: 50%; border: 1px solid #ffffff18;
+  }
+  /* Floating move joystick: a lower-left capture zone lets the thumb land
+     anywhere; the joystick rests dimmed at home until touched, then springs to
+     the touch point with a gold "engaged" glow. */
+  body.mobile-touch #mobile-move-zone {
+    position: absolute; left: 0; bottom: 0; width: min(34vw, calc(50vw - 126px)); min-width: 142px; max-width: 300px; height: 58%;
+    pointer-events: auto; touch-action: none; z-index: 1;
+  }
+  body.mobile-touch.mobile-chat-open #mobile-move-zone { pointer-events: none; }
+  body.mobile-touch #mobile-move-joystick { opacity: .5; transition: opacity .12s linear; }
+  body.mobile-touch #mobile-move-joystick.floating {
+    opacity: 1; bottom: auto; left: 0; transition: none;
+  }
+  body.mobile-touch #mobile-move-joystick.active {
+    border-color: var(--gold);
+    box-shadow: 0 3px 18px #0008, inset 0 1px 0 #ffffff12, inset 0 0 26px #0008, 0 0 16px 3px #e3c66a55;
   }
   body.mobile-touch #mobile-camera-joystick {
     left: auto; right: max(18px, env(safe-area-inset-right));
@@ -2914,7 +3184,7 @@
   }
   body.mobile-touch #mobile-combat-controls {
     position: absolute; left: 50%; bottom: calc(4px + env(safe-area-inset-bottom)); transform: translateX(-50%);
-    display: grid; grid-template-columns: 124px 58px 58px; gap: 8px; pointer-events: auto; align-items: end;
+    display: grid; grid-template-columns: 124px repeat(5, 58px); gap: 8px; pointer-events: auto; align-items: end; z-index: 30;
   }
   body.mobile-touch .mobile-btn {
     width: 58px; height: 54px; border: 2px solid #4a3d1d; border-radius: 8px;
@@ -2925,31 +3195,50 @@
   body.mobile-touch .mobile-btn .ui-icon { width: 22px; height: 22px; }
   body.mobile-touch #mobile-attack-nearest { width: 124px; color: #ffdf9c; border-color: #8b4e2c; }
   body.mobile-touch #mobile-more {
-    position: fixed;
-    left: auto;
-    right: max(8px, env(safe-area-inset-right));
-    bottom: calc(4px + env(safe-area-inset-bottom));
+    position: static;
     z-index: 19;
   }
   body.mobile-touch .mobile-btn:active { transform: translateY(1px); border-color: var(--gold); color: #fff; }
+  body.mobile-touch #mobile-autorun {
+    position: fixed; pointer-events: auto;
+    left: max(calc(18px + env(safe-area-inset-left)), calc(50% - 208px));
+    bottom: calc(72px + env(safe-area-inset-bottom));
+    z-index: 19;
+  }
+  body.mobile-touch #mobile-autorun.active {
+    border-color: var(--gold); color: #fff;
+    background: radial-gradient(circle at 35% 30%, #5a4a1ed8, #2a230fd8 72%);
+    box-shadow: inset 0 1px 0 #ffffff20, 0 0 12px #e3c46a80;
+  }
+  body.mobile-touch.mobile-window-open #mobile-autorun { display: none; }
+  body.mobile-touch .mobile-btn.is-on { border-color: var(--gold); color: #fff; }
+  body.mobile-touch .mobile-btn:not(.is-on)#mobile-haptics { opacity: 0.55; }
   body.mobile-touch .mobile-btn .mobile-label { display: block; margin-top: 1px; font-size: 8px; font-family: var(--ui-font); color: #bfb28a; }
   body.mobile-touch #mobile-extra-controls {
     position: fixed;
-    left: auto;
-    right: max(8px, env(safe-area-inset-right));
+    left: min(calc(50% + 136px), calc(100vw - 222px - max(12px, env(safe-area-inset-right, 0px))));
     bottom: calc(66px + env(safe-area-inset-bottom));
     display: none;
-    grid-template-columns: repeat(2, 112px);
+    grid-template-columns: repeat(2, 104px);
     grid-auto-rows: 42px;
     gap: 7px;
     pointer-events: auto;
     z-index: 70;
+    /* The tray grows upward from a fixed bottom. As it has gained buttons it can
+       now run off the TOP of a short landscape phone, leaving the upper rows
+       unreachable, so cap it to the space above the bottom controls and let the
+       overflow scroll. 100dvh accounts for mobile browser chrome (unlike 100vh). */
+    max-height: calc(100dvh - 84px - env(safe-area-inset-bottom));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
   body.mobile-touch.mobile-more-open #mobile-extra-controls { display: grid; }
   body.mobile-touch #mobile-extra-controls .mobile-btn {
-    width: 112px;
+    width: 104px;
     height: 42px;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: flex-start;
     gap: 8px;
@@ -2962,8 +3251,24 @@
     font-size: 10px;
     color: #e6d8ae;
   }
+  body.mobile-touch #mobile-extra-controls .mobile-btn .ui-icon {
+    flex: 0 0 22px;
+  }
+  /* A toggle tray button (e.g. Nameplates) glows gold while its feature is on. */
+  body.mobile-touch #mobile-extra-controls .mobile-btn.active {
+    border-color: var(--gold);
+    box-shadow: 0 0 8px #ffd10066, inset 0 0 6px #ffd10033;
+  }
+  body.mobile-touch #mobile-extra-controls .mobile-btn.active .mobile-label { color: var(--gold); }
+  /* music toggle: a diagonal slash over the note signals "off" (mirrors #mm-music) */
+  body.mobile-touch #mobile-music { position: relative; }
+  body.mobile-touch #mobile-music.mm-muted::after {
+    content: ''; position: absolute; left: 21px; top: 50%; width: 24px; height: 2px; border-radius: 2px;
+    background: #f0e8d2; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7);
+    transform: translate(-50%, -50%) rotate(-45deg); pointer-events: none;
+  }
   body.mobile-touch #bottom-bar {
-    left: 0; right: 0; bottom: calc(62px + env(safe-area-inset-bottom));
+    left: 0; right: 0; bottom: calc(72px + env(safe-area-inset-bottom));
     width: 100%;
     transform: none;
     z-index: 18;
@@ -2974,10 +3279,12 @@
   body.mobile-touch #actionbar-row { pointer-events: auto; }
   body.mobile-touch #xpbar {
     position: fixed;
-    left: calc(max(18px, env(safe-area-inset-left)) + 132px);
-    bottom: calc(7px + env(safe-area-inset-bottom));
-    width: min(170px, calc(50vw - 164px));
-    min-width: 112px;
+    left: max(8px, env(safe-area-inset-left));
+    right: auto;
+    top: calc(max(8px, env(safe-area-inset-top)) + 70px);
+    bottom: auto;
+    width: 246px;
+    min-width: 0;
     height: 6px;
     display: block;
     margin: 0;
@@ -3000,6 +3307,16 @@
   }
   body.mobile-touch #castbar .label { display: none; }
   body.mobile-touch #actionbar-row { display: block; }
+  body.mobile-touch #petbar {
+    position: fixed;
+    left: 50%;
+    top: max(8px, env(safe-area-inset-top));
+    transform: translateX(-50%);
+    align-self: auto;
+    margin: 0;
+    z-index: 28;
+    pointer-events: auto;
+  }
   body.mobile-touch #side-buttons { display: none; }
   body.mobile-touch #actionbar {
     display: grid;
@@ -3018,7 +3335,7 @@
   body.mobile-touch .action-btn:first-child { display: none; }
   body.mobile-touch .action-btn.empty { display: none; }
   body.mobile-touch #community-hud {
-    right: 8px;
+    right: max(8px, env(safe-area-inset-right));
     top: 130px;
     bottom: auto;
     width: 70px;
@@ -3030,16 +3347,23 @@
     height: 46px;
     padding: 0;
   }
+  body.mobile-touch .community-link.donate {
+    display: none;
+  }
   body.mobile-touch .community-link svg {
     width: 22px;
     height: 22px;
   }
-  body.mobile-touch #chatlog-wrap { left: 10px; bottom: calc(160px + env(safe-area-inset-bottom)); width: min(340px, calc(100vw - 20px)); display: none; z-index: 24; }
+  body.mobile-touch .community-link.donate svg {
+    width: 16px;
+    height: 16px;
+  }
+  body.mobile-touch #chatlog-wrap { left: max(10px, env(safe-area-inset-left)); bottom: calc(160px + env(safe-area-inset-bottom)); width: min(340px, calc(100vw - 20px)); display: none; z-index: 24; }
   body.mobile-touch.mobile-chat-open #chatlog-wrap { display: block; }
   body.mobile-touch #chatlog-frame { height: 126px; }
   body.mobile-touch #chatlog-tabs { transform: scale(0.92); transform-origin: left bottom; }
   body.mobile-touch #chat-input {
-    left: 10px;
+    left: max(10px, env(safe-area-inset-left));
     bottom: calc(296px + env(safe-area-inset-bottom));
     width: min(360px, calc(100vw - 20px));
     min-height: 40px;
@@ -3068,9 +3392,9 @@
     transform: scale(0.82);
     transform-origin: left top;
   }
-  body.mobile-touch #buff-bar { right: 10px; top: 140px; max-width: 180px; }
-  body.mobile-touch #minimap-wrap { right: 8px; top: 8px; transform: scale(0.72); transform-origin: right top; }
-  body.mobile-touch #quest-tracker { right: 10px; top: 150px; width: 190px; font-size: 11px; }
+  body.mobile-touch #buff-bar { right: max(10px, env(safe-area-inset-right)); top: max(140px, env(safe-area-inset-top)); max-width: 180px; }
+  body.mobile-touch #minimap-wrap { right: max(8px, env(safe-area-inset-right)); top: max(8px, env(safe-area-inset-top)); transform: scale(0.72); transform-origin: right top; }
+  body.mobile-touch #quest-tracker { right: max(10px, env(safe-area-inset-right)); top: max(150px, env(safe-area-inset-top)); width: 190px; font-size: 11px; }
   body.mobile-touch #meters-window {
     position: fixed;
     left: calc(max(18px, env(safe-area-inset-left)) + 132px);
@@ -3083,6 +3407,28 @@
     overflow: hidden;
     z-index: 25;
   }
+  /* Left-handed mirror: swap the two thumb joysticks (and the bottom HUD that
+     hugs them) so the movement stick sits under the right thumb. Opt-in via the
+     "Left-handed Touch" toggle in Key Bindings; centred combat buttons stay put. */
+  body.mobile-touch.mobile-left-handed .mobile-joystick {
+    left: auto; right: max(18px, env(safe-area-inset-right));
+  }
+  body.mobile-touch.mobile-left-handed #mobile-camera-joystick {
+    right: auto; left: max(18px, env(safe-area-inset-left));
+  }
+  body.mobile-touch.mobile-left-handed #mobile-more {
+    left: auto; right: auto;
+  }
+  body.mobile-touch.mobile-left-handed #mobile-extra-controls {
+    left: auto;
+    right: min(calc(50% + 136px), calc(100vw - 222px - max(12px, env(safe-area-inset-right, 0px))));
+  }
+  body.mobile-touch.mobile-left-handed #castbar {
+    left: auto; right: calc(max(18px, env(safe-area-inset-right)) + 132px);
+  }
+  body.mobile-touch.mobile-left-handed #meters-window {
+    left: auto; right: calc(max(18px, env(safe-area-inset-right)) + 132px);
+  }
   body.mobile-touch #banner {
     top: 18%;
     max-width: calc(100vw - 24px);
@@ -3093,6 +3439,9 @@
     overflow-wrap: anywhere;
   }
   body.mobile-touch .window { max-width: calc(100vw - 20px); max-height: calc(100vh - 40px); }
+  body.mobile-touch.mobile-window-open #ui {
+    z-index: 90;
+  }
   body.mobile-touch #options-menu,
   body.mobile-touch #quest-log-window,
   body.mobile-touch #spellbook,
@@ -3224,6 +3573,17 @@
     width: min(560px, calc(100vw - 170px));
     max-height: calc(100vh - 92px);
     transform: translateX(-50%);
+  }
+  body.mobile-touch #talents-window {
+    position: fixed;
+    left: 50%;
+    right: auto;
+    top: 50%;
+    width: min(600px, calc(100vw - 20px));
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 24px);
+    transform: translate(-50%, -50%);
+    z-index: 95 !important;
   }
   body.mobile-touch #spellbook [data-close] {
     min-width: 40px;
@@ -3388,6 +3748,12 @@
 
   @media (orientation: portrait) {
     body.mobile-touch.game-active #rotate-device { display: flex; }
+    body.mobile-touch #mobile-combat-controls {
+      grid-template-columns: 96px repeat(5, 42px);
+      gap: 4px;
+    }
+    body.mobile-touch .mobile-btn { width: 42px; height: 44px; font-size: 16px; }
+    body.mobile-touch #mobile-attack-nearest { width: 96px; }
   }
 
   @media (orientation: landscape) {
@@ -3403,39 +3769,43 @@
     }
     body.mobile-touch .mobile-joy-label { bottom: -15px; font-size: 8px; color: #d7c987aa; }
     body.mobile-touch #mobile-combat-controls {
-      bottom: calc(2px + env(safe-area-inset-bottom)); grid-template-columns: 115px 54px 54px; gap: 7px;
+      bottom: calc(2px + env(safe-area-inset-bottom)); grid-template-columns: 115px repeat(5, 54px); gap: 7px;
     }
     body.mobile-touch .mobile-btn { width: 54px; height: 48px; font-size: 20px; background: radial-gradient(circle at 35% 30%, #2d3048bf, #11121ec2 72%); }
     body.mobile-touch #mobile-attack-nearest { width: 115px; }
-    body.mobile-touch #mobile-more {
-      left: calc(50% + 176px);
-      right: auto;
-      bottom: calc(2px + env(safe-area-inset-bottom));
-    }
     body.mobile-touch #mobile-extra-controls {
-      left: calc(50% + 176px);
-      right: auto;
+      left: min(calc(50% + 126px), calc(100vw - 208px - max(12px, env(safe-area-inset-right, 0px))));
       bottom: calc(58px + env(safe-area-inset-bottom));
-      grid-template-columns: repeat(2, 104px);
+      grid-template-columns: repeat(2, 98px);
       grid-auto-rows: 40px;
       gap: 6px;
+      max-height: calc(100dvh - 74px - env(safe-area-inset-bottom));
+    }
+    body.mobile-touch.mobile-left-handed #mobile-extra-controls {
+      left: auto;
+      right: min(calc(50% + 126px), calc(100vw - 208px - max(12px, env(safe-area-inset-right, 0px))));
     }
     body.mobile-touch #mobile-extra-controls .mobile-btn {
-      width: 104px;
+      width: 98px;
       height: 40px;
       font-size: 16px;
       padding: 0 9px;
     }
     body.mobile-touch #mobile-extra-controls .mobile-label { font-size: 9px; }
-    body.mobile-touch #bottom-bar { bottom: calc(50px + env(safe-area-inset-bottom)); }
+    body.mobile-touch #bottom-bar { bottom: calc(58px + env(safe-area-inset-bottom)); }
+    body.mobile-touch #mobile-autorun {
+      left: max(calc(20px + env(safe-area-inset-left)), calc(50% - 194px));
+      bottom: calc(58px + env(safe-area-inset-bottom));
+    }
     body.mobile-touch #actionbar { grid-template-columns: repeat(5, 40px); grid-auto-rows: 40px; gap: 4px; padding: 4px; width: max-content; background: linear-gradient(170deg, #15151fa8, #08080db8); }
     body.mobile-touch #actionbar.many-spells { grid-template-columns: repeat(6, 40px); }
     body.mobile-touch .action-btn { width: 40px; height: 40px; }
     body.mobile-touch #xpbar {
-      left: calc(max(20px, env(safe-area-inset-left)) + 112px);
-      bottom: calc(6px + env(safe-area-inset-bottom));
-      width: min(160px, calc(50vw - 166px));
-      min-width: 100px;
+      left: max(6px, env(safe-area-inset-left));
+      top: calc(max(6px, env(safe-area-inset-top)) + 48px);
+      bottom: auto;
+      width: 180px;
+      min-width: 0;
       height: 5px;
     }
     body.mobile-touch #castbar {
@@ -3445,12 +3815,17 @@
       min-width: 100px;
       height: 5px;
     }
-    body.mobile-touch #community-hud { top: 108px; right: 8px; width: 62px; padding: 4px; gap: 4px; }
+    body.mobile-touch #petbar {
+      top: max(6px, env(safe-area-inset-top));
+      transform: translateX(-50%) scale(0.88);
+      transform-origin: center top;
+    }
+    body.mobile-touch #community-hud { top: 108px; right: max(8px, env(safe-area-inset-right)); width: 62px; padding: 4px; gap: 4px; }
     body.mobile-touch .community-link { height: 40px; }
     body.mobile-touch .community-link svg { width: 20px; height: 20px; }
-    body.mobile-touch #chatlog-wrap { left: 10px; bottom: calc(112px + env(safe-area-inset-bottom)); width: min(330px, 44vw); }
+    body.mobile-touch #chatlog-wrap { left: max(10px, env(safe-area-inset-left)); bottom: calc(112px + env(safe-area-inset-bottom)); width: min(330px, 44vw); }
     body.mobile-touch #chatlog-frame { height: 92px; }
-    body.mobile-touch #chat-input { left: 10px; bottom: calc(213px + env(safe-area-inset-bottom)); width: min(330px, 44vw); }
+    body.mobile-touch #chat-input { left: max(10px, env(safe-area-inset-left)); bottom: calc(213px + env(safe-area-inset-bottom)); width: min(330px, 44vw); }
     body.mobile-touch #player-frame {
       left: max(6px, env(safe-area-inset-left));
       top: max(6px, env(safe-area-inset-top));
@@ -3466,8 +3841,8 @@
       top: calc(max(6px, env(safe-area-inset-top)) + 50px);
       transform: scale(0.6);
     }
-    body.mobile-touch #buff-bar { right: 98px; top: 8px; max-width: 160px; transform: scale(0.85); transform-origin: right top; }
-    body.mobile-touch #minimap-wrap { right: 6px; top: 6px; transform: scale(0.46); }
+    body.mobile-touch #buff-bar { right: calc(98px + env(safe-area-inset-right)); top: max(8px, env(safe-area-inset-top)); max-width: 160px; transform: scale(0.85); transform-origin: right top; }
+    body.mobile-touch #minimap-wrap { right: max(6px, env(safe-area-inset-right)); top: max(6px, env(safe-area-inset-top)); transform: scale(0.46); }
     body.mobile-touch #quest-tracker { display: none; }
     body.mobile-touch #meters-window {
       position: fixed;
@@ -3769,7 +4144,9 @@
   }
   body.mobile-touch .homepage-header {
     display: flex;
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 120;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -3906,6 +4283,9 @@
       padding: 0;
       justify-content: center;
     }
+    .community-link.donate {
+      display: none;
+    }
     .social-link span { display: none; }
     .social-link svg { width: 18px; height: 18px; }
   }
@@ -3917,6 +4297,12 @@
 
   <template id="game-ui-template">
   <div id="ui">
+    <div id="click-move-marker" class="click-move-marker" aria-hidden="true">
+      <span class="ctm-arrow ctm-n"></span>
+      <span class="ctm-arrow ctm-e"></span>
+      <span class="ctm-arrow ctm-s"></span>
+      <span class="ctm-arrow ctm-w"></span>
+    </div>
     <div id="target-frame" class="unitframe">
       <div class="portrait-wrap">
         <div class="portrait"><canvas id="tf-portrait" width="54" height="54"></canvas></div>
@@ -3977,6 +4363,7 @@
               <div class="bar mana" id="pf-resource"><div class="bar-fill" id="pf-res"></div><div class="bar-text" id="pf-res-text"></div></div>
             </div>
           </div>
+          <div id="petbar" class="panel"></div>
           <div id="xpbar"><div class="fill"></div><div class="ticks"></div><div class="label"></div></div>
           <div id="actionbar" class="panel"></div>
         </div>
@@ -4032,6 +4419,7 @@
     <div id="market-window" class="window panel"></div>
     <div id="arena-status"></div>
     <div id="options-menu" class="window panel"></div>
+    <div id="emote-editor" class="window panel"></div>
     <div id="social-window" class="window panel"></div>
     <div id="report-window" class="window panel"></div>
     <div id="side-buttons">
@@ -4043,6 +4431,7 @@
       <button class="micro-btn" id="mm-bag" data-i18n-title="itemUi.bags.title" data-i18n-aria="itemUi.bags.title" title="Bags" aria-label="Bags" data-icon="bags"><span class="keybind">b</span></button>
       <button class="micro-btn" id="mm-arena" data-i18n-title="hud.keybinds.actions.arena" data-i18n-aria="hud.keybinds.actions.arena" title="Arena (Ashen Coliseum)" aria-label="Arena (Ashen Coliseum)" data-icon="arena"><span class="keybind">g</span></button>
       <button class="micro-btn" id="mm-leaderboard" data-i18n-title="game.leaderboard.title" data-i18n-aria="game.leaderboard.title" title="Leaderboard" aria-label="Leaderboard" data-icon="leaderboard"><span class="keybind">k</span></button>
+      <button class="micro-btn" id="mm-emote" aria-label="Emotes" data-icon="emote"><span class="keybind">x</span></button>
       <button class="micro-btn" id="mm-music" data-i18n-title="hud.options.music" data-i18n-aria="hud.options.music" title="Music" aria-label="Music" data-icon="music"></button>
       <button class="micro-btn" id="mm-social" data-i18n-title="hud.keybinds.actions.social" data-i18n-aria="hud.keybinds.actions.social" title="Friends &amp; Guild" aria-label="Friends &amp; Guild" data-icon="social"><span class="keybind">o</span></button>
       <button class="micro-btn" id="mm-options" data-i18n-title="hud.options.gameMenu" data-i18n-aria="hud.options.gameMenu" title="Game Menu" aria-label="Game Menu" data-icon="menu"><span class="keybind">esc</span></button>
@@ -4058,7 +4447,7 @@
     </div>
   </div>
 
-  <input id="chat-input" maxlength="200" data-i18n-placeholder="hud.core.chatPlaceholder" placeholder="Say something... (/w name whisper, /r reply, /p party, /gu guild, /o officer, /g general)" autocomplete="off" />
+  <input id="chat-input" maxlength="200" data-i18n-placeholder="hud.core.chatPlaceholder" placeholder="Say something... (/w name, /r, /p, /gu, /o, /general, /join world|lfg, /afk, /dnd)" autocomplete="off" />
   </template>
 
   <main id="start-screen">
@@ -4107,25 +4496,6 @@
         </nav>
 
         <div class="header-actions">
-          <div class="language-selector">
-            <label for="lang-select" class="visually-hidden" data-i18n="a11y.languageSelection">Language selection</label>
-            <select id="lang-select" class="lang-select-dropdown">
-              <option value="en">English (US)</option>
-              <option value="es">Español (LatAm)</option>
-              <option value="es_ES">Español (España)</option>
-              <option value="fr_FR">Français (France)</option>
-              <option value="fr_CA">Français (Canada)</option>
-              <option value="en_CA">English (Canada)</option>
-              <option value="it_IT">Italiano</option>
-              <option value="de_DE">Deutsch</option>
-              <option value="zh_CN">简体中文</option>
-              <option value="zh_TW">繁體中文</option>
-              <option value="ko_KR">한국어</option>
-              <option value="ja_JP">日本語</option>
-              <option value="pt_BR">Português (Brasil)</option>
-              <option value="ru_RU">Русский</option>
-            </select>
-          </div>
           <a class="donate-cta" href="https://github.com/sponsors/levy-street" target="_blank" rel="noopener noreferrer" data-i18n-title="a11y.donateProject" data-i18n-aria="a11y.donateProject" title="Support the project" aria-label="Donate to support World of ClaudeCraft">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             <span data-i18n="nav.donate">Donate</span>
@@ -4264,6 +4634,7 @@
                   <li class="mini-class" data-class="warlock" role="button" tabindex="0" data-i18n-aria="classes.warlockAria" data-i18n="classes.warlock" aria-label="Warlock class" aria-pressed="false">Warlock</li>
                   <li class="mini-class" data-class="druid" role="button" tabindex="0" data-i18n-aria="classes.druidAria" data-i18n="classes.druid" aria-label="Druid class" aria-pressed="false">Druid</li>
                 </ul>
+                <div id="online-skin-row" class="skin-row" role="list" aria-label="Chroma"></div>
                 <div class="auth-actions">
                   <button class="btn btn-primary" id="btn-create-char" data-i18n="auth.create">Create</button>
                   <button class="btn btn-secondary" id="btn-charselect-back" data-i18n="auth.back">Back</button>
@@ -4302,6 +4673,7 @@
                   <li class="mini-class" data-class="warlock" role="button" tabindex="0" data-i18n-aria="classes.warlockAria" data-i18n="classes.warlock" aria-label="Warlock class" aria-pressed="false">Warlock</li>
                   <li class="mini-class" data-class="druid" role="button" tabindex="0" data-i18n-aria="classes.druidAria" data-i18n="classes.druid" aria-label="Druid class" aria-pressed="false">Druid</li>
                 </ul>
+                <div id="offline-skin-row" class="skin-row" role="list" aria-label="Skin"></div>
                 <div class="auth-actions">
                   <button type="button" class="btn btn-primary" id="btn-start-offline" data-i18n="auth.enterWorld">Enter World</button>
                   <button type="button" class="btn btn-secondary" id="btn-offline-back" data-i18n="auth.back">Back</button>
@@ -4376,6 +4748,7 @@
                 <div class="control-row"><kbd class="keycap">L</kbd> <span data-i18n="controls.questLog">Quest Log</span></div>
                 <div class="control-row"><kbd class="keycap">M</kbd> <span data-i18n="controls.worldMap">World Map</span></div>
                 <div class="control-row"><kbd class="keycap">B</kbd> <span data-i18n="controls.bags">Bags Inventory</span></div>
+                <div class="control-row"><kbd class="keycap">X</kbd> <span data-i18n="controls.emoteWheel">Hold Emote Wheel</span></div>
                 <div class="control-row"><kbd class="keycap">O</kbd> <span data-i18n="controls.friends">Friends & Guild</span></div>
                 <div class="control-row"><kbd class="keycap">Enter</kbd> <span data-i18n="controls.chat">Open Chat</span></div>
               </div>
@@ -4470,6 +4843,7 @@
   </main>
 
   <div id="mobile-controls" data-i18n-aria="hud.core.mobileControls" aria-label="Mobile controls">
+    <div id="mobile-move-zone" aria-hidden="true"></div>
     <div id="mobile-move-joystick" class="mobile-joystick" data-i18n-aria="hud.core.mobileMove" aria-label="Move">
       <div id="mobile-move-stick" class="mobile-stick"></div>
       <div class="mobile-joy-label" data-i18n="hud.core.mobileMove">Move</div>
@@ -4478,21 +4852,29 @@
       <div id="mobile-camera-stick" class="mobile-stick"></div>
       <div class="mobile-joy-label" data-i18n="hud.core.mobileCamera">Camera</div>
     </div>
+    <button class="mobile-btn" id="mobile-autorun" title="Toggle autorun" aria-label="Toggle autorun" data-icon="autorun"><span class="mobile-label">Autorun</span></button>
     <div id="mobile-combat-controls">
       <button class="mobile-btn" id="mobile-attack-nearest" data-i18n-title="hud.keybinds.actions.attack" data-i18n-aria="hud.keybinds.actions.attack" title="Attack" aria-label="Attack" data-icon="attack"><span class="mobile-label" data-i18n="hud.core.mobileAttack">Attack</span></button>
+      <button class="mobile-btn" id="mobile-jump" data-i18n-title="hud.keybinds.actions.jump" data-i18n-aria="hud.keybinds.actions.jump" title="Jump" aria-label="Jump" data-icon="jump"><span class="mobile-label">Jump</span></button>
       <button class="mobile-btn" id="mobile-target" data-i18n-title="hud.keybinds.actions.target" data-i18n-aria="hud.keybinds.actions.target" title="Target Nearest Enemy" aria-label="Target Nearest Enemy" data-icon="target"><span class="mobile-label" data-i18n="hud.core.mobileTarget">Target</span></button>
+      <button class="mobile-btn" id="mobile-interact" data-i18n-title="hud.keybinds.actions.interact" data-i18n-aria="hud.keybinds.actions.interact" title="Interact / Loot" aria-label="Interact / Loot" data-icon="interact"><span class="mobile-label" data-i18n="hud.core.mobileUse">Use</span></button>
       <button class="mobile-btn" id="mobile-chat" data-i18n-title="hud.keybinds.actions.chat" data-i18n-aria="hud.keybinds.actions.chat" title="Open Chat" aria-label="Open Chat" data-icon="chat"><span class="mobile-label" data-i18n="hud.core.mobileChat">Chat</span></button>
       <button class="mobile-btn" id="mobile-more" data-i18n-title="hud.core.mobileMoreAria" data-i18n-aria="hud.core.mobileMoreAria" title="Show more menus" aria-label="Show more menus" data-icon="more"><span class="mobile-label" data-i18n="hud.core.mobileMore">More</span></button>
       <div id="mobile-extra-controls">
         <button class="mobile-btn" id="mobile-social" data-i18n-title="hud.keybinds.actions.social" data-i18n-aria="hud.keybinds.actions.social" title="Friends &amp; Guild" aria-label="Friends &amp; Guild" data-icon="social"><span class="mobile-label" data-i18n="hud.core.mobileSocial">Social</span></button>
+        <button class="mobile-btn" id="mobile-emote" title="Emotes" aria-label="Emotes" data-icon="emote"><span class="mobile-label">Emotes</span></button>
         <button class="mobile-btn" id="mobile-arena" data-i18n-title="hud.keybinds.actions.arena" data-i18n-aria="hud.keybinds.actions.arena" title="Arena (Ashen Coliseum)" aria-label="Arena (Ashen Coliseum)" data-icon="arena"><span class="mobile-label" data-i18n="hud.core.mobileArena">Arena</span></button>
         <button class="mobile-btn" id="mobile-menu" data-i18n-title="hud.options.gameMenu" data-i18n-aria="hud.options.gameMenu" title="Game Menu" aria-label="Game Menu" data-icon="menu"><span class="mobile-label" data-i18n="hud.core.mobileMenu">Menu</span></button>
-        <button class="mobile-btn" id="mobile-interact" data-i18n-title="hud.keybinds.actions.interact" data-i18n-aria="hud.keybinds.actions.interact" title="Interact / Loot" aria-label="Interact / Loot" data-icon="interact"><span class="mobile-label" data-i18n="hud.core.mobileUse">Use</span></button>
         <button class="mobile-btn" id="mobile-quest" data-i18n-title="questUi.log.title" data-i18n-aria="questUi.log.title" title="Quest Log" aria-label="Quest Log" data-icon="questlog"><span class="mobile-label" data-i18n="questUi.log.title">Quests</span></button>
+        <button class="mobile-btn" id="mobile-char" data-i18n-title="hud.keybinds.actions.char" data-i18n-aria="hud.keybinds.actions.char" title="Character" aria-label="Character" data-icon="character"><span class="mobile-label">Character</span></button>
+        <button class="mobile-btn" id="mobile-bags" data-i18n-title="hud.keybinds.actions.bags" data-i18n-aria="hud.keybinds.actions.bags" title="Bags" aria-label="Bags" data-icon="bags"><span class="mobile-label">Bags</span></button>
         <button class="mobile-btn" id="mobile-spellbook" data-i18n-title="abilityUi.spellbook.title" data-i18n-aria="abilityUi.spellbook.title" title="Spellbook" aria-label="Spellbook" data-icon="spellbook"><span class="mobile-label" data-i18n="abilityUi.spellbook.title">Spellbook</span></button>
         <button class="mobile-btn" id="mobile-talents" data-i18n-title="game.talents.title" data-i18n-aria="game.talents.title" title="Talents" aria-label="Talents" data-icon="talents"><span class="mobile-label" data-i18n="game.talents.title">Talents</span></button>
-        <button class="mobile-btn" id="mobile-meters" data-i18n-title="hud.keybinds.actions.meters" data-i18n-aria="hud.keybinds.actions.meters" title="Damage Meters" aria-label="Damage Meters" data-icon="meters"><span class="mobile-label" data-i18n="hud.core.mobileMeters">Meters</span></button>
         <button class="mobile-btn" id="mobile-map" data-i18n-title="hud.keybinds.actions.map" data-i18n-aria="hud.keybinds.actions.map" title="World Map" aria-label="World Map" data-icon="map"><span class="mobile-label" data-i18n="hud.core.mobileMap">Map</span></button>
+        <button class="mobile-btn" id="mobile-leaderboard" data-i18n-title="game.leaderboard.title" data-i18n-aria="game.leaderboard.title" title="Leaderboard" aria-label="Leaderboard" data-icon="leaderboard"><span class="mobile-label">Ranks</span></button>
+        <button class="mobile-btn active" id="mobile-nameplates" data-i18n-title="hud.keybinds.actions.nameplates" data-i18n-aria="hud.keybinds.actions.nameplates" title="Toggle nameplates" aria-label="Toggle nameplates" data-icon="nameplates"><span class="mobile-label">Names</span></button>
+        <button class="mobile-btn" id="mobile-music" title="Music" aria-label="Toggle music" data-icon="music"><span class="mobile-label">Music</span></button>
+        <button class="mobile-btn" id="mobile-haptics" title="Toggle haptic feedback" aria-label="Toggle haptic feedback" aria-pressed="true" data-icon="vibrate"><span class="mobile-label">Haptics</span></button>
       </div>
     </div>
   </div>

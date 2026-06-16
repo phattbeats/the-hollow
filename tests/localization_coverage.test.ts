@@ -1161,7 +1161,9 @@ describe("i18n Localization Key Coverage", () => {
     expect(html).toContain('data-i18n="hud.core.mobileArena"');
     expect(html).toContain('data-i18n="hud.core.mobileMenu"');
     expect(html).toContain('data-i18n="hud.core.mobileUse"');
-    expect(html).toContain('data-i18n="hud.core.mobileMeters"');
+    // Note: the v0.7 layout moved damage meters from a mobile tray button to a
+    // dedicated #meters-window, so there is no longer a mobile-meters button to
+    // localize here (see client_shell.test.ts, which asserts no id="mobile-meters").
     expect(html).toContain('data-i18n="hud.core.mobileMap"');
     expect(html).toContain('data-i18n-title="hud.core.closeMap"');
     expect(html).toContain('id="structured-data"');
