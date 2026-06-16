@@ -20,11 +20,28 @@ const CLICK_MOVE_SETTLE_RATE = 1.8;
 const CLICK_MOVE_MAX_SETTLE_STEP = 0.022;
 const CLICK_MOVE_BIG_TURN_FLOOR = 0.18;
 const CLICK_MOVE_SMALL_TURN = 0.35;
+const MAX_AUTO_YAW_SPEED = 3.6; // rad/sec; caps all non-manual camera follow motion
 
 export function wrapAngle(d: number): number {
   while (d > Math.PI) d -= 2 * Math.PI;
   while (d < -Math.PI) d += 2 * Math.PI;
   return d;
+}
+
+function clamp(n: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, n));
+}
+
+function maxAutoYawStep(frameDt: number): number {
+  const dt = clamp(Math.max(0, frameDt), 0, 1 / 30);
+  return MAX_AUTO_YAW_SPEED * dt;
+}
+
+function stepAngleToward(current: number, target: number, maxStep: number): number {
+  const step = Math.max(0, maxStep);
+  const d = wrapAngle(target - current);
+  if (Math.abs(d) <= step) return target;
+  return current + Math.sign(d) * step;
 }
 
 function clickMoveSettleScale(absDelta: number): number {
@@ -38,15 +55,17 @@ export function updateFollowCameraYaw(input: CameraFollowInput): CameraFollowRes
   let camYaw = input.camYaw;
   if (!input.mouselook) {
     if (input.orbiting) return { camYaw, lastInterpFacing: input.interpFacing };
-    if (input.lastInterpFacing !== null && !input.clickMoving) camYaw += wrapAngle(input.interpFacing - input.lastInterpFacing);
+    let targetYaw = camYaw;
+    if (input.lastInterpFacing !== null && !input.clickMoving) targetYaw += wrapAngle(input.interpFacing - input.lastInterpFacing);
     if (input.moving && !input.orbiting) {
-      const delta = wrapAngle(input.interpFacing - camYaw);
+      const delta = wrapAngle(input.interpFacing - targetYaw);
       const clickMoveScale = input.clickMoving ? clickMoveSettleScale(Math.abs(delta)) : 1;
       const rate = input.clickMoving ? CLICK_MOVE_SETTLE_RATE * clickMoveScale : SETTLE_RATE;
       const maxStep = input.clickMoving ? CLICK_MOVE_MAX_SETTLE_STEP * clickMoveScale : MAX_SETTLE_STEP;
       const step = delta * (1 - Math.exp(-Math.max(0, input.frameDt) * rate));
-      camYaw += Math.max(-maxStep, Math.min(maxStep, step));
+      targetYaw += clamp(step, -maxStep, maxStep);
     }
+    camYaw = stepAngleToward(camYaw, targetYaw, maxAutoYawStep(input.frameDt));
   }
   return { camYaw, lastInterpFacing: input.interpFacing };
 }

@@ -25,10 +25,11 @@ import { buildClouds, buildSky, SkyView } from './sky';
 import { buildFoliage, FoliageView } from './foliage';
 import { shouldRenderStealthGhost } from './stealth';
 import { raidMarkerDataUrl } from '../ui/icons';
-import { isProjectedNameplateAnchorVisible } from './nameplate_projection';
+import { isProjectedNameplateAnchorVisible, nameplateScreenTransform } from './nameplate_projection';
 import { stepCameraOcclusion, type CameraOcclusionState } from './camera_collision';
 
 const NAMEPLATE_RANGE = 55;
+const NAMEPLATE_RANGE_SQ = NAMEPLATE_RANGE * NAMEPLATE_RANGE;
 const emoteIconUrl = (id: string): string => `/ui/emotes/emote-${id}.png`;
 // Entities further than this from the player are hidden entirely: their rigs
 // are several draw calls each and read as sub-pixel specks long before this.
@@ -1382,13 +1383,10 @@ export class Renderer {
       const dx = e.pos.x - p.pos.x, dz = e.pos.z - p.pos.z;
       const d2 = dx * dx + dz * dz;
       const urgent = id === p.targetId || d2 < 14 * 14 || e.castingAbility !== null;
-      if (!fullPass && !urgent) continue;
-      const dist = Math.sqrt(d2);
       const isSelf = id === p.id;
       const hasOverheadEmote = !!(e.kind === 'player' && e.overheadEmoteId && !e.dead);
-      v.nameplate.classList.toggle('has-emote', hasOverheadEmote);
       const isDoor = e.templateId === 'dungeon_door' || e.templateId === 'dungeon_exit';
-      const hidden = (isSelf && !hasOverheadEmote) || dist > NAMEPLATE_RANGE
+      const hidden = (isSelf && !hasOverheadEmote) || d2 > NAMEPLATE_RANGE_SQ
         || (e.dead && !e.lootable && e.kind === 'mob')
         || (e.kind === 'object' && !isDoor)
         || (!this.showNameplates && e.kind === 'mob' && !e.dead);
@@ -1399,7 +1397,6 @@ export class Renderer {
         }
         continue;
       }
-      v.nameplate.style.display = '';
       this.tmpV.copy(v.group.position);
       this.tmpV.y += v.height * e.scale + (isSelf && hasOverheadEmote ? 0.2 : 0.8);
       if (!isProjectedNameplateAnchorVisible(this.camera, this.tmpV, this.tmpV2)) {
@@ -1423,11 +1420,14 @@ export class Renderer {
         v.nameplate.style.display = '';
         v.nameplateDisplay = '';
       }
-      const transform = `translate(${sx.toFixed(0)}px, ${sy.toFixed(0)}px) translate(-50%, -100%)`;
+      const transform = nameplateScreenTransform(sx, sy);
       if (transform !== v.nameplateTransform) {
         v.nameplate.style.transform = transform;
         v.nameplateTransform = transform;
       }
+
+      if (!fullPass && !urgent) continue;
+      v.nameplate.classList.toggle('has-emote', hasOverheadEmote);
 
       // party raid/target marker (only mobs are markable, so this is null elsewhere)
       const emote = e.overheadEmoteId ? OVERHEAD_EMOTES.find((x) => x.id === e.overheadEmoteId) : null;
@@ -1561,7 +1561,7 @@ export class Renderer {
       b.el.style.display = '';
       const sx = (this.tmpV.x * 0.5 + 0.5) * w;
       const sy = (-this.tmpV.y * 0.5 + 0.5) * h;
-      b.el.style.transform = `translate(${sx.toFixed(0)}px, ${sy.toFixed(0)}px) translate(-50%, -100%)`;
+      b.el.style.transform = nameplateScreenTransform(sx, sy);
     }
   }
 

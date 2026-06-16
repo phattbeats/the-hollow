@@ -7,7 +7,7 @@ describe('camera follow', () => {
     expect(wrapAngle(-Math.PI * 1.5)).toBeCloseTo(Math.PI / 2);
   });
 
-  it('follows character turn deltas one-to-one without destroying orbit offset', () => {
+  it('animates character turn deltas under the global yaw-speed cap', () => {
     const next = updateFollowCameraYaw({
       camYaw: 1.0,
       interpFacing: 0.4,
@@ -17,8 +17,24 @@ describe('camera follow', () => {
       moving: false,
       orbiting: false,
     });
-    expect(next.camYaw).toBeCloseTo(1.2);
+    expect(next.camYaw).toBeGreaterThan(1.0);
+    expect(next.camYaw).toBeLessThan(1.2);
+    expect(next.camYaw).toBeCloseTo(1.06);
     expect(next.lastInterpFacing).toBe(0.4);
+  });
+
+  it('caps automatic yaw movement even after a long frame hitch', () => {
+    const next = updateFollowCameraYaw({
+      camYaw: 0,
+      interpFacing: Math.PI,
+      lastInterpFacing: 0,
+      frameDt: 1,
+      mouselook: false,
+      moving: true,
+      orbiting: false,
+    });
+    expect(next.camYaw).toBeGreaterThan(0);
+    expect(next.camYaw).toBeLessThan(0.13);
   });
 
   it('tracks facing through mouselook without changing yaw', () => {
