@@ -19,6 +19,31 @@ runtime-drawn icons.
 - All HTML interpolation goes through `esc()`. **Never `innerHTML` raw
   player/server text** — names, chat, guild names, etc. must pass through `esc`.
 
+## UI/UX, mobile & accessibility standards
+The HUD ships to real players on desktop **and** phones, so every visible control is
+held to these — verify in mobile portrait *and* landscape before calling UI work done.
+- **Aesthetic:** premium dark-fantasy theme (deep darks, gold-brown accents, rich
+  borders); avoid default browser-chrome looks. **No raw emojis as in-game icons** —
+  use the procedural `icons.ts` recipes (below) or real art. Transitions are smooth
+  and interruption-safe (cross-fades), never causing layout shift.
+- **Layout stability:** content updates must not resize the parent, jump, or clip.
+  Prefer `width:100%` + `max-width` over viewport units like `92vw` (they overflow
+  once margins/padding are added). Flex/grid + fluid type; no ad-hoc inline styles.
+- **Mobile touch** (gate on touch capability / runtime state, not only `max-width` —
+  landscape phones need it too):
+  - Every visible `input`/`select`/`textarea` is **≥16px** font, or iOS Safari
+    auto-zooms the page on focus.
+  - Every tappable target (buttons, links, selects, tabs, icon-only controls, anything
+    with `role="button"|"tab"|"option"`) is **≥40×40px**.
+  - Narrow headers collapse to a hamburger drawer rather than wrapping/overflowing.
+- **Accessibility (WCAG 2.1 AA):** full keyboard operation (Tab/Shift+Tab/Enter/Space);
+  high-contrast `:focus-visible` on every custom interactive element; correct
+  semantics / ARIA (`role`, `aria-selected`, `aria-pressed`, `aria-invalid`,
+  `aria-describedby`, `tabindex`); honor `prefers-reduced-motion` (drop cross-fades,
+  content translations, camera auto-rotate); **no `transform: scale()` on hover/focus**
+  of list/rail/chip items (motion-sickness trigger); text contrast ≥4.5:1 (≥3:1 large).
+  Accessible names are still `t()` keys (see i18n below).
+
 ## hud.ts (~5240 — one class `Hud`) — navigation map
 Every region is fenced by a `// ----` banner. `update()` (~L824) is the per-frame
 entry; `onEvent` paths feed log/FCT/audio/banners (~L1651). Jump by banner:
