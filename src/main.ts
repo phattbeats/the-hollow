@@ -881,7 +881,6 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       lastSnapAge: net.lastSnapAt > 0 ? Math.round(performance.now() - net.lastSnapAt) : -1,
       alpha: Math.round(alpha * 100) / 100,
     });
-    net.predictSelf(frameDt, resolved.mi, netFacing);
     const pe = world.player;
     // facing interp capped at 1 - extrapolating angles past the snapshot oscillates
     updateCamera(frameDt, pe.prevFacing + wrapAngle(pe.facing - pe.prevFacing) * Math.min(1, alpha));

@@ -17,8 +17,8 @@ locales, and a broad security/server-integrity hardening pass.
 
 - **New dungeon: The Drowned Temple** — a portal-reached, 5-player group instance.
 - **Character art overhaul** — KayKit full-pack models, merged animation sets, and
-  per-player skins; new Druid **Cat Form** visual; Warlock **Imp** and **Voidwalker**
-  demon pets.
+  per-player skins; **chroma/skin selection** with an in-game character-sheet preview;
+  new Druid **Cat Form** visual; Warlock **Imp** and **Voidwalker** demon pets.
 - **Living enemies** — a whole suite of reactive mob behaviours: frenzy, fleeing,
   self-healing, cleave, pack rage, poison/armor-shred/wound debuffs, and a **War Stomp**
   boss mechanic.
@@ -46,6 +46,12 @@ locales, and a broad security/server-integrity hardening pass.
 
 ## 🧙 Characters, Classes & Pets
 
+- **Chroma / skin selection** (#403) — a 1–4 chroma picker in online character
+  creation (matching offline creation), persisted into the initial online character
+  state and returned in character summaries so existing characters preview correctly.
+  Adds an in-game character-model preview to the character sheet with centered chroma
+  buttons, plus a shared `IWorld.changeSkin` action and online WS command so live skin
+  changes update the local player and sync through snapshots.
 - **KayKit full-pack character models** with merged animation sets and per-player
   skins (#396).
 - **Druid Cat Form** now has a dedicated visual model (#298).
@@ -161,7 +167,6 @@ The entire player- and operator-facing surface is now translated:
 
 ## ⚡ Performance
 
-- **Client movement prediction** for smoother online movement (#304).
 - **Browser performance doctor** — in-app diagnostics for performance issues (#339).
 - **Browser & mobile "performance feel"** improvements (#238); see
   `docs/performance-feel-audit.md`.

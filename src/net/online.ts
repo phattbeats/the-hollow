@@ -11,7 +11,6 @@ import {
   emptyMoveInput,
 } from '../sim/types';
 import { normalizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
-import { predictPlayerMovement } from './prediction';
 import { isOverheadEmoteId, type ArenaInfo, type CharacterSearchResult, type DuelInfo, type FriendInfo, type IWorld, type LeaderboardEntry, type MarketInfo, type OverheadEmoteId, type PartyInfo, type PresenceStatus, type SocialInfo, type TradeInfo } from '../world_api';
 
 // ---------------------------------------------------------------------------
@@ -197,7 +196,6 @@ function copyPos(dst: { x: number; y: number; z: number }, src: { x: number; y: 
 // walking; anything past this is a teleport (arena pit, dungeon portal,
 // graveyard release). Those are snapped, not interpolated — see applyWire.
 const TELEPORT_SNAP_DIST_SQ = 40 * 40;
-const SELF_RECONCILE_RATE = 14; // 1/s: quick correction without visible snapback
 
 function blankEntity(id: number): Entity {
   return {
@@ -289,11 +287,6 @@ export class ClientWorld implements IWorld {
   private pendingInputSeqSentAt = new Map<number, number>();
   private ackedInputSeq = 0;
   private inputEchoSamples: number[] = [];
-  private selfAuthPos: { x: number; y: number; z: number } | null = null;
-  private selfAuthFacing: number | null = null;
-  private selfRenderPos: { x: number; y: number; z: number } | null = null;
-  private selfRenderFacing: number | null = null;
-  private selfPredictionActive = false;
 
   constructor(token: string, characterId: number, cls: PlayerClass, base = '') {
     this.characterId = characterId;
@@ -352,30 +345,6 @@ export class ClientWorld implements IWorld {
     const samples = this.inputEchoSamples;
     this.inputEchoSamples = [];
     return samples;
-  }
-
-  predictSelf(dt: number, input: MoveInput = this.moveInput, facing: number | null = this.mouselookFacing): void {
-    const e = this.entities.get(this.playerId);
-    if (!e || e.dead) return;
-    this.selfPredictionActive = true;
-    const auth = this.selfAuthPos ?? e.pos;
-    if (!this.selfRenderPos) this.selfRenderPos = { ...e.pos };
-    if (this.selfRenderFacing === null) this.selfRenderFacing = e.facing;
-    if (this.selfAuthFacing === null) this.selfAuthFacing = e.facing;
-
-    const k = 1 - Math.exp(-Math.max(0, Math.min(dt, 0.1)) * SELF_RECONCILE_RATE);
-    this.selfRenderPos.x += (auth.x - this.selfRenderPos.x) * k;
-    this.selfRenderPos.y += (auth.y - this.selfRenderPos.y) * k;
-    this.selfRenderPos.z += (auth.z - this.selfRenderPos.z) * k;
-    const authFacing = this.selfAuthFacing ?? this.selfRenderFacing;
-    this.selfRenderFacing += wrapAngle(authFacing - this.selfRenderFacing) * k;
-    if (facing !== null) this.selfRenderFacing = facing;
-
-    this.selfRenderFacing = predictPlayerMovement(this.cfg.seed, e, this.selfRenderPos, this.selfRenderFacing, input, dt);
-    copyPos(e.prevPos, this.selfRenderPos);
-    copyPos(e.pos, this.selfRenderPos);
-    e.prevFacing = this.selfRenderFacing;
-    e.facing = this.selfRenderFacing;
   }
 
   // -----------------------------------------------------------------------
@@ -641,8 +610,6 @@ export class ClientWorld implements IWorld {
     const s = snap.self;
     const e = s ? applyWire(s) : null;
     if (s && e) {
-      const serverPos = { ...e.pos };
-      const serverFacing = e.facing;
       seen.add(s.id);
       if (typeof s.ack === 'number' && s.ack > this.ackedInputSeq) {
         for (let seq = this.ackedInputSeq + 1; seq <= s.ack; seq++) {
@@ -705,31 +672,9 @@ export class ClientWorld implements IWorld {
       if (s.duel !== undefined) this.duelInfo = s.duel;
       if (s.arena !== undefined) this.arenaInfo = s.arena;
       if (s.market !== undefined) this.marketInfo = s.market;
-      this.selfAuthPos = serverPos;
-      this.selfAuthFacing = serverFacing;
-      if (!this.selfPredictionActive) {
-        this.selfRenderPos = { ...serverPos };
-        this.selfRenderFacing = serverFacing;
-      } else if (!this.selfRenderPos) {
-        this.selfRenderPos = { ...serverPos };
-        this.selfRenderFacing = serverFacing;
-      } else {
-        const dx = serverPos.x - this.selfRenderPos.x;
-        const dz = serverPos.z - this.selfRenderPos.z;
-        if (dx * dx + dz * dz > TELEPORT_SNAP_DIST_SQ) {
-          this.selfRenderPos = { ...serverPos };
-          this.selfRenderFacing = serverFacing;
-        }
-      }
-      if (this.selfPredictionActive) {
-        copyPos(e.prevPos, this.selfRenderPos);
-        copyPos(e.pos, this.selfRenderPos);
-        e.prevFacing = this.selfRenderFacing ?? serverFacing;
-        e.facing = this.selfRenderFacing ?? serverFacing;
-      }
       // camera follows server-side facing changes when not mouselooking
       if (prevSelfFacing !== undefined && this.mouselookFacing === null) {
-        let d = serverFacing - prevSelfFacing;
+        let d = e.facing - prevSelfFacing;
         while (d > Math.PI) d -= 2 * Math.PI;
         while (d < -Math.PI) d += 2 * Math.PI;
         this.pendingFacingDelta += d;
