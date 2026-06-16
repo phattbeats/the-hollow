@@ -61,6 +61,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
       { itemId: 'soggy_moccasin', chance: 0.3 },
     ],
     scale: 0.95, color: 0x4d5656,
+    // Miring Pounce: the prowler drags its prey into the sucking mire, slowing
+    // the victim's swings (+30% swing interval) for 8s.
+    slowStrike: { chance: 0.3, mult: 1.3, duration: 8, name: 'Miring Pounce', school: 'physical' },
   },
   deepfen_murloc: {
     id: 'deepfen_murloc', name: 'Deepfen Snapper', minLevel: 8, maxLevel: 9, family: 'murloc',
