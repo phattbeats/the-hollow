@@ -51,6 +51,20 @@ const LOCALES = [
   'ru_RU',
 ];
 
+// Dialect locales declare a base locale (Phase 4). A dialect's (now
+// divergence-only) overlay is applied ON TOP of its base locale's overlay, which
+// is itself applied on top of nested `en`. So the resolve order for a dialect is
+//   nested en -> base-locale overlay -> dialect overlay
+// and any key the dialect omits falls through to the base, then to English. This
+// is the single, data-driven declaration of the dialect graph; the resolver below
+// reads it instead of branching on locale codes inline. A locale absent from this
+// map has no base and is overlaid directly onto `en`, exactly as before.
+const DIALECT_BASE = {
+  es_ES: 'es',
+  fr_CA: 'fr_FR',
+  en_CA: 'en',
+};
+
 function sourceModule(lang) {
   return lang === 'en' ? './src/ui/i18n.en' : `./src/ui/i18n.locales/${lang}`;
 }
@@ -136,8 +150,19 @@ async function main() {
   for (const lang of LOCALES) {
     // `en` is nested and authoritative; every other locale is a flat dotted-key
     // overlay (Phase 3) that we unflatten before overlaying onto a copy of `en`.
-    const overlay = lang === 'en' ? en : unflatten(locales[lang]);
-    resolved[lang] = deepMerge(deepCopy(en), overlay);
+    // A dialect (DIALECT_BASE) additionally has its base locale's overlay applied
+    // first, so its own overlay need only carry the keys that diverge from the base.
+    const out = deepCopy(en);
+    if (lang !== 'en') {
+      const baseLocale = DIALECT_BASE[lang];
+      // The base is `en` for en_CA (already the starting point, nothing to merge);
+      // for es_ES/fr_CA it is another flat overlay applied before the dialect's.
+      if (baseLocale && baseLocale !== 'en') {
+        deepMerge(out, unflatten(locales[baseLocale]));
+      }
+      deepMerge(out, unflatten(locales[lang]));
+    }
+    resolved[lang] = out;
   }
   const text = emit(resolved);
   writeFileSync(OUT_PATH, text);
