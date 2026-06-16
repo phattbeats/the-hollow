@@ -28,7 +28,16 @@ describe('Settings', () => {
     expect(s.get('fullscreen')).toBe(1);
     expect(s.get('clickToMove')).toBe(0);
     expect(s.get('clickToMoveButton')).toBe(0);
+    expect(s.get('cameraFov')).toBe(SETTING_RANGES.cameraFov.def);
+    expect(s.get('cameraFov')).toBe(60); // unchanged from the shipped look by default
     expect(s.get('mouseCamera')).toBe(false);
+  });
+
+  it('clamps the camera FOV to its comfort range', () => {
+    const s = new Settings();
+    expect(s.set('cameraFov', 999)).toBe(SETTING_RANGES.cameraFov.max);
+    expect(s.set('cameraFov', 0)).toBe(SETTING_RANGES.cameraFov.min);
+    expect(s.set('cameraFov', 75)).toBe(75);
   });
 
   it('clamps out-of-range values to the slider bounds', () => {
