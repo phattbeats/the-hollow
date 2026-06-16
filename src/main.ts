@@ -175,7 +175,6 @@ window.addEventListener('orientationchange', () => {
   window.setTimeout(syncAppViewport, 800);
 });
 window.visualViewport?.addEventListener('resize', syncAppViewport);
-window.visualViewport?.addEventListener('scroll', syncAppViewport);
 document.addEventListener('fullscreenchange', syncAppViewport);
 
 function requestMobileFullscreenLandscape(): void {
