@@ -10,7 +10,7 @@
 | 2 QA | NOT STARTED | | |
 | 3 - Flatten overlays | DONE | 2026-06-16 | 2026-06-16 |
 | 3 QA | DONE (PASS) | 2026-06-16 | 2026-06-16 |
-| 4 - Dialect inheritance | NOT STARTED | | |
+| 4 - Dialect inheritance | DONE | 2026-06-16 | 2026-06-16 |
 | 4 QA | NOT STARTED | | |
 | 5 - Status registry | NOT STARTED | | |
 | 5 QA | NOT STARTED | | |
@@ -58,11 +58,16 @@ Validation: `tsc --noEmit` clean; targeted suite 31/31 (flat-overlay-dense + res
 Reviews (coverage mode, whole diff): privacy-security-review PASS (no BLOCKING/SHOULD-FIX), cross-platform-sync PASS (no BLOCKING; islands-left-nested confirmed correct), correctness review PASS (round-trip proven total in both directions vs git HEAD; could not break it). Hardening applied from review NICE-TO-HAVEs: `flatten`/`unflatten` now throw on a dotted key segment or a prefix collision (fail-loud instead of silent corruption); neither is reachable in today's data.
 Type note: overlays are typed `Record<string, string>`, not `Record<TranslationKey, string>` - `TranslationKey = Leaves<typeof en, 5>` stops at depth 5, but the deepest real leaves (`entities.quests.<id>.objectives.0.label`, `entities.zones.<id>.pois.<n>.label`) are 6 segments deep, so they are not in `TranslationKey`. Key validity is enforced by the temporary completeness test + the byte gate instead.
 
-### Phase 4 - Dialect inheritance dedup
-- [ ] `es_ES` overlay carries only divergences from `es`; `fr_CA` only from `fr_FR`; `en_CA` thin alias of `en`
-- [ ] Resolver applies base then dialect overlay
-- [ ] `{} as WorldEntityTranslations` casts replaced with real overlay semantics
-- [ ] Resolved table byte-identical (dedup must not change output)
+### Phase 4 - Dialect inheritance dedup - DONE (2026-06-16)
+- [x] `es_ES` overlay carries only divergences from `es` (72 keys); `fr_CA` only from `fr_FR` (37 keys); `en_CA` thin alias of `en` (3 keys: `classDetails.labels.armor`+paladin/druid lore "armour"/"defence")
+- [x] Resolver applies base then dialect overlay; base declared data-driven via `DIALECT_BASE` map in `scripts/i18n_build.mjs` (`es_ES`->`es`, `fr_CA`->`fr_FR`, `en_CA`->`en`). Resolve order for a dialect: nested `en` -> base overlay -> dialect overlay; omitted keys fall through to base, then English.
+- [x] `{} as WorldEntityTranslations` casts removed (`src/ui/world_entity_i18n.ts` reduced to English-only; the dead non-English datasets + `makeLocaleWorldEntities` deleted - they had zero runtime consumers after the Phase 3 inline). The equivalent `{} as TalentLocaleText` casts in `src/ui/talent_i18n.ts` `localeText` replaced by explicit dialect aliases over a `satisfies`-typed base record (no cast, no post-hoc reassignment).
+- [x] Resolved table byte-identical (SHA-256 `d9db528..` unchanged; generated file regenerates byte-identical, `git diff --exit-code` clean)
+
+Commits: `feat(i18n): add declared-base dialect overlay resolution`, `refactor(i18n): dedup es_ES/fr_CA/en_CA to divergence-only overlays`, `refactor(i18n): remove unsafe world-entity and talent dialect casts`, this doc commit.
+Validation: `tsc --noEmit` clean; targeted suite 126/126 (localization_fixes + localization_coverage + server_i18n + i18n_resolved_equivalence + i18n_flat_overlay_dense + i18n_overlay_key_membership); full suite 1290/1290; `npm run build` (client+admin) + `build:env` + `build:server` clean; byte-equivalence SHA `d9db528bea1c7a1e02835c4d3edb3fabcee3687aad2186608f1f1d2ac83b3b9b` (14 locales, 1,584,856 bytes) unchanged; regeneration byte-identical. Main bundle gzip 1,120.64 KB unchanged (overlays are build-time source; the deleted world_entity non-English data was not in the client bundle).
+DESIGN NOTE (world_entity keep-vs-remove): the Phase 3 handoff left `world_entity_i18n.ts` non-English data dead (overlays superseded it; `tEntity` resolves via the resolved table, not this object; zero `worldEntityText[lang]` indexers). Chose DELETE (English-only) over re-establishing it as the single source (which would reverse Phase 3's full-inline) - maintainer-confirmed. The flat overlays are now the single non-English entity-name source; `worldEntityText.en` still feeds nested `en`.
+OUT OF SCOPE (untouched, deferred): talent `titleOverrides` es_ES/fr_CA full blocks left as-is (live, not byte-gated, no cast there; deduping them was not in the phase cadence); no sparseness for non-dialect locales (Phase 6); no locale registry (Phase 5); no `t()`-miss change; admin DICT untouched (Phase 8).
 
 ### Phase 5 - Status registry + scanner
 - [ ] `scripts/i18n_scan.mjs` (no LLM/network) walks `en` + matcher + admin keys, computes `srcHash` (English text + sorted placeholders), writes `src/ui/i18n.status.json`
