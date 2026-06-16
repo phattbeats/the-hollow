@@ -219,6 +219,11 @@ export interface MobTemplate {
   // Rides the existing buff_int aura with a NEGATIVE value, so there is no new
   // resource math. Only meaningful on mana users — applied to them alone.
   enfeeble?: { chance: number; int: number; duration: number; name: string; school?: Aura['school'] };
+  // Combat mechanic: a landed melee hit has `chance` to terrify the victim — a
+  // fear that sends the struck player fleeing for `duration`s. Rides the existing
+  // `fear_incap` incapacitate aura the player-cast Fear uses, so `updateFearMovement`
+  // drives the panicked run with no new aura kind or movement hook.
+  dread?: { chance: number; duration: number; name: string; school?: Aura['school'] };
   // Pet mechanic: this creature is a ranged caster (warlock Imp) — instead of
   // closing to melee, it stays at `range` and hurls bolts of `school` damage.
   // updatePet reads this; the bolt damage comes from the mob's weapon range.

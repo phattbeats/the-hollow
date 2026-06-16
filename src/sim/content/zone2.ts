@@ -175,6 +175,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     hpBase: 46, hpPerLevel: 19, dmgBase: 10, dmgPerLevel: 2.5, attackSpeed: 2.0,
     armorPerLevel: 16, moveSpeed: 7, aggroRadius: 12,
     silence: { chance: 0.3, duration: 4, name: 'Silencing Shriek', school: 'shadow' },
+    // Low dread proc so this mob doesn't routinely stack two panic effects
+    // (silence + fear) on one victim — keeps the encounter from feeling like a lockout.
+    dread: { chance: 0.12, duration: 4, name: 'Wail of the Grave', school: 'shadow' },
     loot: [
       { copper: 60, chance: 1 },
       { itemId: 'cult_cipher', chance: 0.6, questId: 'q_summoners' },
