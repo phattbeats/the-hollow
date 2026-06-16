@@ -621,7 +621,7 @@ export type SimEvent = { pid?: number } & (
   | { type: 'damage'; sourceId: number; targetId: number; amount: number; crit: boolean; school: string; ability: string | null; kind: 'hit' | 'miss' | 'dodge' | 'parry' }
   | { type: 'heal'; targetId: number; amount: number }
   | { type: 'death'; entityId: number; killerId: number }
-  | { type: 'xp'; amount: number }
+  | { type: 'xp'; amount: number; rested?: number }
   | { type: 'levelup'; level: number }
   // post-cap cosmetic progression (Max-Level XP Overflow): crossing a virtual
   // level past the cap, and unlocking a cosmetic lifetime-XP milestone

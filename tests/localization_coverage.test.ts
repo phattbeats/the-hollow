@@ -288,6 +288,7 @@ describe("i18n Localization Key Coverage", () => {
     action: "Open Chat",
     amount: 42,
     base: 14,
+    rested: 18,
     buyer: "Mira",
     classes: "Warrior, Mage",
     className: "Mage",
