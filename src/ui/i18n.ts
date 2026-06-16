@@ -18,7 +18,7 @@ const phase1 = {
   en: {
     seo: {
       title: "World of ClaudeCraft: Classic-Style Web MMO",
-      description: "Embark on an epic adventure in World of ClaudeCraft, a WoW-Classic-style micro-MMO playable directly in your browser. Join a persistent shared realm, level up classes, and defeat enemies!",
+      description: "Embark on an epic adventure in World of ClaudeCraft, a classic-style micro-MMO playable directly in your browser. Join a persistent shared realm, level up classes, and defeat enemies!",
       genre: "MMORPG",
       playMode: "Multiplayer",
       applicationCategory: "Game",
@@ -201,7 +201,7 @@ const phase1 = {
   es: {
     seo: {
       title: "World of ClaudeCraft: MMO web de estilo clásico",
-      description: "Emprende una aventura épica en World of ClaudeCraft, un micro-MMO al estilo WoW Classic que se juega directamente en el navegador. Entra a un reino compartido, sube de nivel y derrota enemigos.",
+      description: "Emprende una aventura épica en World of ClaudeCraft, un micro-MMO de estilo clásico que se juega directamente en el navegador. Entra a un reino compartido, sube de nivel y derrota enemigos.",
       genre: "MMORPG",
       playMode: "Multijugador",
       applicationCategory: "Juego",
@@ -384,7 +384,7 @@ const phase1 = {
   es_ES: {
     seo: {
       title: "World of ClaudeCraft: MMO web de estilo clásico",
-      description: "Emprende una aventura épica en World of ClaudeCraft, un micro-MMO al estilo WoW Classic jugable directamente en el navegador. Únete a un reino compartido, sube clases de nivel y derrota enemigos.",
+      description: "Emprende una aventura épica en World of ClaudeCraft, un micro-MMO de estilo clásico jugable directamente en el navegador. Únete a un reino compartido, sube clases de nivel y derrota enemigos.",
       genre: "MMORPG",
       playMode: "Multijugador",
       applicationCategory: "Juego",
@@ -567,7 +567,7 @@ const phase1 = {
   fr_FR: {
     seo: {
       title: "World of ClaudeCraft: MMO web de style classique",
-      description: "Partez pour une aventure épique dans World of ClaudeCraft, un micro-MMO façon WoW Classic jouable directement dans votre navigateur. Rejoignez un royaume persistant, progressez en classe et terrassez vos ennemis.",
+      description: "Partez pour une aventure épique dans World of ClaudeCraft, un micro-MMO au style classique jouable directement dans votre navigateur. Rejoignez un royaume persistant, progressez en classe et terrassez vos ennemis.",
       genre: "MMORPG",
       playMode: "Multijoueur",
       applicationCategory: "Jeu",
@@ -750,7 +750,7 @@ const phase1 = {
   fr_CA: {
     seo: {
       title: "World of ClaudeCraft: MMO Web de style classique",
-      description: "Partez à l'aventure dans World of ClaudeCraft, un micro-MMO inspiré de WoW Classic jouable directement dans votre navigateur. Rejoignez un royaume partagé, faites progresser vos classes et terrassez des ennemis.",
+      description: "Partez à l'aventure dans World of ClaudeCraft, un micro-MMO de style classique jouable directement dans votre navigateur. Rejoignez un royaume partagé, faites progresser vos classes et terrassez des ennemis.",
       genre: "MMORPG",
       playMode: "Multijoueur",
       applicationCategory: "Jeu",
@@ -933,7 +933,7 @@ const phase1 = {
   en_CA: {
     seo: {
       title: "World of ClaudeCraft: Classic-Style Web MMO",
-      description: "Embark on an epic adventure in World of ClaudeCraft, a WoW-Classic-style micro-MMO playable directly in your browser. Join a persistent shared realm, level up classes, and defeat enemies!",
+      description: "Embark on an epic adventure in World of ClaudeCraft, a classic-style micro-MMO playable directly in your browser. Join a persistent shared realm, level up classes, and defeat enemies!",
       genre: "MMORPG",
       playMode: "Multiplayer",
       applicationCategory: "Game",
@@ -1116,7 +1116,7 @@ const phase1 = {
   it_IT: {
     seo: {
       title: "World of ClaudeCraft: MMO web in stile classico",
-      description: "Parti per un'avventura epica in World of ClaudeCraft, un micro-MMO in stile WoW Classic giocabile direttamente dal browser. Entra in un reame condiviso, fai crescere le classi e sconfiggi i nemici.",
+      description: "Parti per un'avventura epica in World of ClaudeCraft, un micro-MMO in stile classico giocabile direttamente dal browser. Entra in un reame condiviso, fai crescere le classi e sconfiggi i nemici.",
       genre: "MMORPG",
       playMode: "Multigiocatore",
       applicationCategory: "Gioco",
@@ -1299,7 +1299,7 @@ const phase1 = {
   de_DE: {
     seo: {
       title: "World of ClaudeCraft: Klassisches Web-MMO",
-      description: "Begib dich in World of ClaudeCraft auf ein episches Abenteuer, ein WoW-Classic-artiges Micro-MMO direkt im Browser. Betritt einen gemeinsamen Realm, steigere Klassen und besiege Gegner.",
+      description: "Begib dich in World of ClaudeCraft auf ein episches Abenteuer, ein Micro-MMO im klassischen Stil direkt im Browser. Betritt einen gemeinsamen Realm, steigere Klassen und besiege Gegner.",
       genre: "MMORPG",
       playMode: "Mehrspieler",
       applicationCategory: "Spiel",
@@ -1482,7 +1482,7 @@ const phase1 = {
   zh_CN: {
     seo: {
       title: "World of ClaudeCraft：经典风格网页 MMO",
-      description: "在 World of ClaudeCraft 展开史诗冒险。这是一款可直接在浏览器中游玩的 WoW Classic 风格微型 MMO。加入持续共享的服务器，提升职业等级，击败敌人。",
+      description: "在 World of ClaudeCraft 展开史诗冒险。这是一款可直接在浏览器中游玩的经典风格微型 MMO。加入持续共享的服务器，提升职业等级，击败敌人。",
       genre: "MMORPG",
       playMode: "多人游戏",
       applicationCategory: "游戏",
@@ -1665,7 +1665,7 @@ const phase1 = {
   zh_TW: {
     seo: {
       title: "World of ClaudeCraft：經典風格網頁 MMO",
-      description: "在 World of ClaudeCraft 展開史詩冒險。這是一款可直接在瀏覽器中遊玩的 WoW Classic 風格微型 MMO。加入持續共享的伺服器，提升職業等級並擊敗敵人。",
+      description: "在 World of ClaudeCraft 展開史詩冒險。這是一款可直接在瀏覽器中遊玩的經典風格微型 MMO。加入持續共享的伺服器，提升職業等級並擊敗敵人。",
       genre: "MMORPG",
       playMode: "多人遊戲",
       applicationCategory: "遊戲",
@@ -1848,7 +1848,7 @@ const phase1 = {
   ko_KR: {
     seo: {
       title: "World of ClaudeCraft: 클래식 스타일 웹 MMO",
-      description: "브라우저에서 바로 즐기는 WoW Classic 스타일 마이크로 MMO, World of ClaudeCraft에서 장대한 모험을 시작하세요. 지속되는 공유 렐름에 접속해 직업을 성장시키고 적을 물리치세요.",
+      description: "브라우저에서 바로 즐기는 클래식 스타일 마이크로 MMO, World of ClaudeCraft에서 장대한 모험을 시작하세요. 지속되는 공유 렐름에 접속해 직업을 성장시키고 적을 물리치세요.",
       genre: "MMORPG",
       playMode: "멀티플레이어",
       applicationCategory: "게임",
@@ -2031,7 +2031,7 @@ const phase1 = {
   ja_JP: {
     seo: {
       title: "World of ClaudeCraft: クラシック風Web MMO",
-      description: "ブラウザで直接遊べる WoW Classic 風マイクロMMO、World of ClaudeCraft で壮大な冒険に出ましょう。永続的な共有レルムに参加し、クラスを育て、敵を倒してください。",
+      description: "ブラウザで直接遊べるクラシック風マイクロMMO、World of ClaudeCraft で壮大な冒険に出ましょう。永続的な共有レルムに参加し、クラスを育て、敵を倒してください。",
       genre: "MMORPG",
       playMode: "マルチプレイヤー",
       applicationCategory: "ゲーム",
@@ -2214,7 +2214,7 @@ const phase1 = {
   pt_BR: {
     seo: {
       title: "World of ClaudeCraft: MMO web em estilo clássico",
-      description: "Embarque em uma aventura épica em World of ClaudeCraft, um micro-MMO no estilo WoW Classic jogável diretamente no navegador. Entre em um reino compartilhado, evolua classes e derrote inimigos.",
+      description: "Embarque em uma aventura épica em World of ClaudeCraft, um micro-MMO de estilo clássico jogável diretamente no navegador. Entre em um reino compartilhado, evolua classes e derrote inimigos.",
       genre: "MMORPG",
       playMode: "Multijogador",
       applicationCategory: "Jogo",
@@ -2397,7 +2397,7 @@ const phase1 = {
   ru_RU: {
     seo: {
       title: "World of ClaudeCraft: веб-MMO в классическом стиле",
-      description: "Отправьтесь в эпическое приключение в World of ClaudeCraft, микро-MMO в стиле WoW Classic прямо в браузере. Присоединяйтесь к общему миру, развивайте классы и побеждайте врагов.",
+      description: "Отправьтесь в эпическое приключение в World of ClaudeCraft, микро-MMO в классическом стиле прямо в браузере. Присоединяйтесь к общему миру, развивайте классы и побеждайте врагов.",
       genre: "MMORPG",
       playMode: "Многопользовательская игра",
       applicationCategory: "Игра",
