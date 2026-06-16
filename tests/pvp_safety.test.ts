@@ -121,4 +121,27 @@ describe('PvP control abilities in active duels', () => {
 
     expect(npc!.auras.some((au) => au.kind === 'polymorph')).toBe(false);
   });
+
+  it('diminishes repeated duel Polymorphs to 10s, 5s, 1s and resets after 60s', () => {
+    const { sim, aPid, b } = startDuel('mage', 'warrior', 20);
+
+    const castPolymorph = () => {
+      b.auras = b.auras.filter((aura) => aura.kind !== 'polymorph');
+      const mage = sim.entities.get(aPid)!;
+      mage.gcdRemaining = 0;
+      mage.resource = mage.maxResource;
+      sim.castAbility('polymorph', aPid);
+      finishCast(sim, aPid);
+      return b.auras.find((aura) => aura.kind === 'polymorph')?.duration ?? 0;
+    };
+
+    expect(castPolymorph()).toBe(10);
+    expect(castPolymorph()).toBe(5);
+    expect(castPolymorph()).toBe(1);
+
+    b.auras = b.auras.filter((aura) => aura.kind !== 'polymorph');
+    for (let i = 0; i < 20 * 61; i++) sim.tick();
+
+    expect(castPolymorph()).toBe(10);
+  });
 });
