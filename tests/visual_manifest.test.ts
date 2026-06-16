@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { VISUALS } from '../src/render/characters/manifest';
 
 describe('character visual manifest', () => {
-  it('plays the custom boar death animation quickly enough to read as an instant death', () => {
+  it('uses the custom boar death clip without relying on a speed override', () => {
     expect(VISUALS.mob_boar.clips.death).toBe('Dying');
-    expect(VISUALS.mob_boar.deathTimeScale).toBeGreaterThanOrEqual(10);
+    expect(VISUALS.mob_boar.deathTimeScale).toBeUndefined();
   });
 });
