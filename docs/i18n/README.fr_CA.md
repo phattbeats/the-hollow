@@ -6,11 +6,11 @@
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 [![Vitest](https://img.shields.io/badge/Vitest-4.1-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.6.0-blue)](package.json)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../../LICENSE)
+[![Version](https://img.shields.io/badge/version-0.6.0-blue)](../../package.json)
 [![Discord](https://img.shields.io/badge/Discord-join-5865F2?logo=discord&logoColor=white)](https://discord.gg/GjhnUsBtw)
 
-[English](README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · **Français (Canada)** · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md)
+[English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · **Français (Canada)** · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md)
 
 </div>
 
@@ -18,7 +18,7 @@
 
 [Rejoignez le Discord de la communauté](https://discord.gg/GjhnUsBtw)
 
-![Écran-titre de World of ClaudeCraft](docs/screenshots/title-screen.jpg)
+![Écran-titre de World of ClaudeCraft](../../docs/screenshots/title-screen.jpg)
 
 Un micro-MMO aux saveurs de MMO d'antan que vous pouvez héberger et jouer :
 
@@ -33,17 +33,17 @@ multijoueur faisant autorité exécute pour tout le monde en ligne.
 
 ## Captures d'écran
 
-![Un groupe se rassemble devant l'apothicaire à Eastbrook](docs/screenshots/party-questing.jpg)
+![Un groupe se rassemble devant l'apothicaire à Eastbrook](../../docs/screenshots/party-questing.jpg)
 
 | | |
 |:---:|:---:|
-| ![Crépuscule au feu de camp d'Eastbrook](docs/screenshots/eastbrook-dusk.jpg)<br>*Crépuscule au feu de camp d'Eastbrook* | ![Pulls de mobs élites dans the Hollow Crypt](docs/screenshots/hollow-crypt.jpg)<br>*Pulls de mobs élites à la lueur des torches dans the Hollow Crypt* |
-| ![Les morts agités à la chapelle en ruines](docs/screenshots/restless-dead.jpg)<br>*Les morts agités à la chapelle en ruines* | ![Une bagarre avec les Vale Bandits](docs/screenshots/vale-bandits.jpg)<br>*En infériorité numérique au camp des bandits* |
-| ![Old Greyjaw traqué sur la route du nord](docs/screenshots/old-greyjaw.jpg)<br>*Old Greyjaw, le spawn rare, rattrapé sur la route du nord* | ![Interface du marchand et des sacs](docs/screenshots/vendor-and-bags.jpg)<br>*On s'équipe chez Smith Haldren — infobulles, sacs, pièces* |
+| ![Crépuscule au feu de camp d'Eastbrook](../../docs/screenshots/eastbrook-dusk.jpg)<br>*Crépuscule au feu de camp d'Eastbrook* | ![Pulls de mobs élites dans the Hollow Crypt](../../docs/screenshots/hollow-crypt.jpg)<br>*Pulls de mobs élites à la lueur des torches dans the Hollow Crypt* |
+| ![Les morts agités à la chapelle en ruines](../../docs/screenshots/restless-dead.jpg)<br>*Les morts agités à la chapelle en ruines* | ![Une bagarre avec les Vale Bandits](../../docs/screenshots/vale-bandits.jpg)<br>*En infériorité numérique au camp des bandits* |
+| ![Old Greyjaw traqué sur la route du nord](../../docs/screenshots/old-greyjaw.jpg)<br>*Old Greyjaw, le spawn rare, rattrapé sur la route du nord* | ![Interface du marchand et des sacs](../../docs/screenshots/vendor-and-bags.jpg)<br>*On s'équipe chez Smith Haldren — infobulles, sacs, pièces* |
 
-![World of Claude](worldofclaude.png)
+![World of Claude](../../worldofclaude.png)
 
-![La communauté de World of ClaudeCraft](woc_community.png)
+![La communauté de World of ClaudeCraft](../../woc_community.png)
 
 ---
 
@@ -315,11 +315,22 @@ Les noms, les quêtes et les zones sont originaux ; les formules et les
 mécaniques suivent vanilla. La graine du monde est fixée dans `src/main.ts` pour
 que le monde soit le même endroit à chaque visite.
 
+## Contribuer
+
+Les contributions de toutes sortes sont les bienvenues : code, traductions,
+signalements de bogues et documentation. Commencez par
+[CONTRIBUTING.fr_CA.md](CONTRIBUTING.fr_CA.md) pour la configuration et les
+consignes, et veuillez respecter notre [code de conduite](../../CODE_OF_CONDUCT.md).
+Nouveau ici ? Cherchez les tickets étiquetés
+[`good first issue`](https://github.com/levy-street/world-of-claudecraft/labels/good%20first%20issue),
+ouvrez un [ticket](https://github.com/levy-street/world-of-claudecraft/issues/new/choose),
+ou venez dire bonjour sur [Discord](https://discord.gg/GjhnUsBtw).
+
 ## Licence
 
-Le code est [sous licence MIT](LICENSE) — forkez-le, remixez-le, hébergez votre
+Le code est [sous licence MIT](../../LICENSE) — forkez-le, remixez-le, hébergez votre
 propre monde.
 
 Les assets artistiques tiers fournis (modèles, textures, HDRI) demeurent sous
 leurs propres licences — tous CC0 du domaine public sauf les normal maps d'eau
-sous licence MIT, comme documenté par pack dans [CREDITS.md](CREDITS.md).
+sous licence MIT, comme documenté par pack dans [CREDITS.md](../../CREDITS.md).

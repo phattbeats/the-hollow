@@ -6,11 +6,11 @@
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 [![Vitest](https://img.shields.io/badge/Vitest-4.1-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.6.0-blue)](package.json)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../../LICENSE)
+[![Version](https://img.shields.io/badge/version-0.6.0-blue)](../../package.json)
 [![Discord](https://img.shields.io/badge/Discord-join-5865F2?logo=discord&logoColor=white)](https://discord.gg/GjhnUsBtw)
 
-[English](README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · **한국어** · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md)
+[English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · **한국어** · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md)
 
 </div>
 
@@ -18,7 +18,7 @@
 
 [커뮤니티 Discord 참여하기](https://discord.gg/GjhnUsBtw)
 
-![World of ClaudeCraft 타이틀 화면](docs/screenshots/title-screen.jpg)
+![World of ClaudeCraft 타이틀 화면](../../docs/screenshots/title-screen.jpg)
 
 직접 호스팅하고 플레이할 수 있는, 클래식 시대 MMO 풍의 마이크로 MMO입니다:
 
@@ -29,17 +29,17 @@
 
 ## Screenshots
 
-![Eastbrook의 약초상 앞에 모인 파티](docs/screenshots/party-questing.jpg)
+![Eastbrook의 약초상 앞에 모인 파티](../../docs/screenshots/party-questing.jpg)
 
 | | |
 |:---:|:---:|
-| ![Eastbrook 모닥불가의 황혼](docs/screenshots/eastbrook-dusk.jpg)<br>*Eastbrook 모닥불가의 황혼* | ![Hollow Crypt에서의 정예 풀링](docs/screenshots/hollow-crypt.jpg)<br>*The Hollow Crypt에서 횃불에 비친 정예 풀링* |
-| ![폐허가 된 예배당의 안식 없는 망자들](docs/screenshots/restless-dead.jpg)<br>*폐허가 된 예배당의 안식 없는 망자들* | ![Vale Bandits와의 난투](docs/screenshots/vale-bandits.jpg)<br>*도적 야영지에서 수적 열세에 몰리다* |
-| ![북쪽 길에서 추격당한 Old Greyjaw](docs/screenshots/old-greyjaw.jpg)<br>*북쪽 길에서 추격당한 희귀 출현 몹 Old Greyjaw* | ![상인 및 가방 UI](docs/screenshots/vendor-and-bags.jpg)<br>*Smith Haldren에게서 장비 갖추기 — 툴팁, 가방, 동전* |
+| ![Eastbrook 모닥불가의 황혼](../../docs/screenshots/eastbrook-dusk.jpg)<br>*Eastbrook 모닥불가의 황혼* | ![Hollow Crypt에서의 정예 풀링](../../docs/screenshots/hollow-crypt.jpg)<br>*The Hollow Crypt에서 횃불에 비친 정예 풀링* |
+| ![폐허가 된 예배당의 안식 없는 망자들](../../docs/screenshots/restless-dead.jpg)<br>*폐허가 된 예배당의 안식 없는 망자들* | ![Vale Bandits와의 난투](../../docs/screenshots/vale-bandits.jpg)<br>*도적 야영지에서 수적 열세에 몰리다* |
+| ![북쪽 길에서 추격당한 Old Greyjaw](../../docs/screenshots/old-greyjaw.jpg)<br>*북쪽 길에서 추격당한 희귀 출현 몹 Old Greyjaw* | ![상인 및 가방 UI](../../docs/screenshots/vendor-and-bags.jpg)<br>*Smith Haldren에게서 장비 갖추기 — 툴팁, 가방, 동전* |
 
-![World of Claude](worldofclaude.png)
+![World of Claude](../../worldofclaude.png)
 
-![World of ClaudeCraft 커뮤니티](woc_community.png)
+![World of ClaudeCraft 커뮤니티](../../woc_community.png)
 
 ---
 
@@ -189,8 +189,12 @@ scripts/      브라우저 E2E + 스크린샷 투어 + 멀티플레이어 통합
 
 이름, 퀘스트, 구역은 독창적이며, 공식과 메커니즘은 바닐라를 따릅니다. 세계 시드는 `src/main.ts`에 고정되어 있어 방문할 때마다 세계가 같은 곳입니다.
 
+## 기여하기
+
+코드, 번역, 버그 제보, 문서 등 모든 종류의 기여를 환영합니다. 설정 방법과 가이드라인은 [CONTRIBUTING.ko_KR.md](CONTRIBUTING.ko_KR.md)에서 시작하시고, 저희의 [행동 강령](../../CODE_OF_CONDUCT.md)을 지켜 주세요. 처음이신가요? [`good first issue`](https://github.com/levy-street/world-of-claudecraft/labels/good%20first%20issue) 라벨이 붙은 이슈를 찾아보시거나, [이슈](https://github.com/levy-street/world-of-claudecraft/issues/new/choose)를 열어 주시거나, [Discord](https://discord.gg/GjhnUsBtw)에서 인사를 건네 주세요.
+
 ## License
 
-이 코드는 [MIT 라이선스](LICENSE)로 배포됩니다 — 포크하고, 리믹스하고, 당신만의 세계를 호스팅하세요.
+이 코드는 [MIT 라이선스](../../LICENSE)로 배포됩니다 — 포크하고, 리믹스하고, 당신만의 세계를 호스팅하세요.
 
-함께 묶인 서드파티 아트 에셋(모델, 텍스처, HDRI)은 각자의 라이선스 하에 남아 있습니다 — MIT 라이선스의 물 노멀 맵을 제외하면 모두 CC0 퍼블릭 도메인이며, [CREDITS.md](CREDITS.md)에 팩별로 문서화되어 있습니다.
+함께 묶인 서드파티 아트 에셋(모델, 텍스처, HDRI)은 각자의 라이선스 하에 남아 있습니다 — MIT 라이선스의 물 노멀 맵을 제외하면 모두 CC0 퍼블릭 도메인이며, [CREDITS.md](../../CREDITS.md)에 팩별로 문서화되어 있습니다.

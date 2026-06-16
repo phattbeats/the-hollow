@@ -6,11 +6,11 @@
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 [![Vitest](https://img.shields.io/badge/Vitest-4.1-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.6.0-blue)](package.json)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../../LICENSE)
+[![Version](https://img.shields.io/badge/version-0.6.0-blue)](../../package.json)
 [![Discord](https://img.shields.io/badge/Discord-join-5865F2?logo=discord&logoColor=white)](https://discord.gg/GjhnUsBtw)
 
-[English](README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · **繁體中文** · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md)
+[English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · **繁體中文** · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md)
 
 </div>
 
@@ -18,7 +18,7 @@
 
 [加入社群 Discord](https://discord.gg/GjhnUsBtw)
 
-![World of ClaudeCraft 標題畫面](docs/screenshots/title-screen.jpg)
+![World of ClaudeCraft 標題畫面](../../docs/screenshots/title-screen.jpg)
 
 一款帶有經典時代 MMO 風味、可自行架設與遊玩的微型 MMO：
 
@@ -29,17 +29,17 @@
 
 ## Screenshots
 
-![一支隊伍聚集在 Eastbrook 的藥劑師店外](docs/screenshots/party-questing.jpg)
+![一支隊伍聚集在 Eastbrook 的藥劑師店外](../../docs/screenshots/party-questing.jpg)
 
 | | |
 |:---:|:---:|
-| ![Eastbrook 營火旁的黃昏](docs/screenshots/eastbrook-dusk.jpg)<br>*Eastbrook 營火旁的黃昏* | ![在 Hollow Crypt 拉怪打菁英](docs/screenshots/hollow-crypt.jpg)<br>*在 The Hollow Crypt 火炬照明下拉怪打菁英* |
-| ![殘破禮拜堂中不得安息的亡者](docs/screenshots/restless-dead.jpg)<br>*殘破禮拜堂中不得安息的亡者* | ![與 Vale Bandits 的混戰](docs/screenshots/vale-bandits.jpg)<br>*在盜賊營地寡不敵眾* |
-| ![Old Greyjaw 在北方道路上被追擊獵殺](docs/screenshots/old-greyjaw.jpg)<br>*稀有生怪 Old Greyjaw 在北方道路上被追擊獵殺* | ![商人與背包介面](docs/screenshots/vendor-and-bags.jpg)<br>*在 Smith Haldren 處整裝——提示框、背包、金幣* |
+| ![Eastbrook 營火旁的黃昏](../../docs/screenshots/eastbrook-dusk.jpg)<br>*Eastbrook 營火旁的黃昏* | ![在 Hollow Crypt 拉怪打菁英](../../docs/screenshots/hollow-crypt.jpg)<br>*在 The Hollow Crypt 火炬照明下拉怪打菁英* |
+| ![殘破禮拜堂中不得安息的亡者](../../docs/screenshots/restless-dead.jpg)<br>*殘破禮拜堂中不得安息的亡者* | ![與 Vale Bandits 的混戰](../../docs/screenshots/vale-bandits.jpg)<br>*在盜賊營地寡不敵眾* |
+| ![Old Greyjaw 在北方道路上被追擊獵殺](../../docs/screenshots/old-greyjaw.jpg)<br>*稀有生怪 Old Greyjaw 在北方道路上被追擊獵殺* | ![商人與背包介面](../../docs/screenshots/vendor-and-bags.jpg)<br>*在 Smith Haldren 處整裝——提示框、背包、金幣* |
 
-![World of Claude](worldofclaude.png)
+![World of Claude](../../worldofclaude.png)
 
-![World of ClaudeCraft 社群](woc_community.png)
+![World of ClaudeCraft 社群](../../woc_community.png)
 
 ---
 
@@ -189,8 +189,12 @@ scripts/      瀏覽器 E2E + 截圖巡覽 + 多人整合測試
 
 名稱、任務與區域皆為原創；公式與機制則遵循原版。世界種子固定在 `src/main.ts` 中，因此每次造訪這個世界都是同一個地方。
 
+## 貢獻
+
+我們歡迎各種形式的貢獻：程式碼、翻譯、錯誤回報，以及文件。請先閱讀 [CONTRIBUTING.zh_TW.md](CONTRIBUTING.zh_TW.md) 了解環境設定與相關準則，並請遵守我們的[行為準則](../../CODE_OF_CONDUCT.md)。第一次來嗎？可以找找標記為 [`good first issue`](https://github.com/levy-street/world-of-claudecraft/labels/good%20first%20issue) 的議題，開一個[議題](https://github.com/levy-street/world-of-claudecraft/issues/new/choose)，或是到 [Discord](https://discord.gg/GjhnUsBtw) 上跟我們打聲招呼。
+
 ## License
 
-程式碼採用 [MIT 授權](LICENSE)——盡情 fork、改作、架設你自己的世界。
+程式碼採用 [MIT 授權](../../LICENSE)——盡情 fork、改作、架設你自己的世界。
 
-隨附的第三方美術素材（模型、貼圖、HDRI）仍受其各自授權約束——除了 MIT 授權的水面法線貼圖之外全為 CC0 公眾領域，詳如 [CREDITS.md](CREDITS.md) 中依各素材包所記載。
+隨附的第三方美術素材（模型、貼圖、HDRI）仍受其各自授權約束——除了 MIT 授權的水面法線貼圖之外全為 CC0 公眾領域，詳如 [CREDITS.md](../../CREDITS.md) 中依各素材包所記載。
