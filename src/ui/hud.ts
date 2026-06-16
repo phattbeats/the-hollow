@@ -2395,8 +2395,9 @@ export class Hud {
           break;
         }
         case 'heal': {
-          if (ev.targetId === sim.playerId && ev.amount > 0) {
-            this.fct(sim.player, `+${ev.amount}`, '#3ce63c', false);
+          if (ev.amount > 0) {
+            const healed = ev.targetId === sim.playerId ? sim.player : sim.entities.get(ev.targetId);
+            if (healed) this.fct(healed, `+${ev.amount}`, '#3ce63c', false);
           }
           break;
         }
