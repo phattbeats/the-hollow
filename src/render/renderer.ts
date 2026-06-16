@@ -98,6 +98,7 @@ interface EntityView {
   visual: CharacterVisual | null;
   sheepVisual: CharacterVisual | null; // polymorph form, built lazily
   bearVisual: CharacterVisual | null; // druid bear form, built lazily
+  catVisual: CharacterVisual | null; // druid cat form, built lazily
   /** unscaled height — nameplate/vfx anchor reads height * e.scale */
   height: number;
   /** what removeView pulls back out of clickTargets */
@@ -803,7 +804,7 @@ export class Renderer {
     const objectCasters: THREE.Object3D[] = [];
     if (!visual) collectCasters(group, objectCasters);
     this.views.set(e.id, {
-      group, visual, sheepVisual: null, bearVisual: null, height, clickTarget,
+      group, visual, sheepVisual: null, bearVisual: null, catVisual: null, height, clickTarget,
       nameplate: np, nameEl, hpBar, hpFill, emoteEl, emoteIconEl, emoteLabelEl, markerEl: marker, raidMarkEl: raidMark, sparkle, objectMesh, portal,
       nameplateDisplay: 'none', nameplateTransform: '', nameplateSig: '', nameplateHpWidth: '',
       objectCasters, shadowOn: true, isFar: false, lastOverheadEmoteKey: null,
@@ -816,6 +817,7 @@ export class Renderer {
   private activeVisual(v: EntityView): CharacterVisual | null {
     if (v.sheepVisual?.root.visible) return v.sheepVisual;
     if (v.bearVisual?.root.visible) return v.bearVisual;
+    if (v.catVisual?.root.visible) return v.catVisual;
     return v.visual;
   }
 
@@ -962,6 +964,7 @@ export class Renderer {
       v.visual.dispose();
       v.sheepVisual?.dispose();
       v.bearVisual?.dispose();
+      v.catVisual?.dispose();
     } else {
       // Object views (door arch, loot crates) own their geometries; their
       // materials are shared caches (door stone / crate planks / sparkle) and
@@ -1034,10 +1037,11 @@ export class Renderer {
     for (const [id, v] of this.views) {
       const e = sim.entities.get(id);
       if (!e) continue;
-      // form swaps (polymorph sheep, druid bear) — computed up front because
+      // form swaps (polymorph sheep, druid bear/cat) — computed up front because
       // the shadow gates below must not run the base rig's proxy under a form
       const polyed = e.auras.some((a) => a.kind === 'polymorph');
       const bear = !polyed && e.auras.some((a) => a.kind === 'form_bear');
+      const cat = !polyed && !bear && e.auras.some((a) => a.kind === 'form_cat');
       const stealthed = e.auras.some((a) => a.kind === 'stealth');
       // distance cull: far rigs are invisible specks but cost real draw calls
       const cdx = e.pos.x - p.pos.x, cdz = e.pos.z - p.pos.z;
@@ -1056,12 +1060,13 @@ export class Renderer {
           v.isFar = d2 > ENTITY_LOD_RANGE_SQ;
           // past the articulated gate the static-pose proxy carries the
           // shadow; an active form's own rig keeps casting instead
-          v.visual.setProxyShadow(!wantShadow && inProxyBand && !polyed && !bear);
-          // sheep/bear keep articulated shadows through the whole proxy band —
+          v.visual.setProxyShadow(!wantShadow && inProxyBand && !polyed && !bear && !cat);
+          // sheep/bear/cat keep articulated shadows through the whole proxy band —
           // a frozen humanoid proxy silhouette would be wrong under a form
           const wantFormShadow = wantShadow || inProxyBand;
           v.sheepVisual?.setShadow(wantFormShadow);
           v.bearVisual?.setShadow(wantFormShadow);
+          v.catVisual?.setShadow(wantFormShadow);
         } else if (wantShadow !== v.shadowOn) {
           v.shadowOn = wantShadow;
           for (const caster of v.objectCasters) (caster as THREE.Mesh).castShadow = wantShadow;
@@ -1117,10 +1122,17 @@ export class Renderer {
         v.bearVisual.root.scale.multiplyScalar(e.scale);
         v.group.add(v.bearVisual.root);
       }
+      if (cat && !v.catVisual) {
+        v.catVisual = createCharacterVisual(e, 'form_cat');
+        v.catVisual.root.scale.multiplyScalar(e.scale);
+        v.group.add(v.catVisual.root);
+      }
       if (v.sheepVisual) v.sheepVisual.root.visible = polyed;
       if (v.bearVisual) v.bearVisual.root.visible = bear;
+      if (v.catVisual) v.catVisual.root.visible = cat;
       const active = polyed && v.sheepVisual ? v.sheepVisual
-        : bear && v.bearVisual ? v.bearVisual : v.visual;
+        : bear && v.bearVisual ? v.bearVisual
+          : cat && v.catVisual ? v.catVisual : v.visual;
       const ghost = shouldRenderStealthGhost(this.sim.playerId, e);
       active.setGhost(ghost);
       v.visual.root.visible = active === v.visual;

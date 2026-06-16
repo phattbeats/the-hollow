@@ -609,6 +609,33 @@ describe('druid forms', () => {
     expect(sim.player.resource).toBeLessThanOrEqual(manaBefore);
   });
 
+  // Issue #298: bear should grant +65% armor and +15 AP, cat should raise AP.
+  // These apply in recalcPlayerStats; the bug the reporter hit was the missing
+  // cat-form *visual* (renderer), but lock the stat math so it can't regress.
+  it('bear form raises armor +65% and attack power +15', () => {
+    const sim = makeSim('druid');
+    sim.setPlayerLevel(20);
+    sim.tick();
+    const armorBefore = sim.player.stats.armor;
+    const apBefore = sim.player.attackPower;
+    sim.castAbility('bear_form');
+    sim.tick();
+    expect(sim.player.auras.some((a) => a.kind === 'form_bear')).toBe(true);
+    expect(sim.player.stats.armor).toBe(Math.round(armorBefore * 1.65));
+    expect(sim.player.attackPower).toBe(apBefore + 15);
+  });
+
+  it('cat form raises attack power', () => {
+    const sim = makeSim('druid');
+    sim.setPlayerLevel(20);
+    sim.tick();
+    const apBefore = sim.player.attackPower;
+    sim.castAbility('cat_form');
+    sim.tick();
+    expect(sim.player.auras.some((a) => a.kind === 'form_cat')).toBe(true);
+    expect(sim.player.attackPower).toBeGreaterThan(apBefore);
+  });
+
   it('claw needs cat form, builds combo points, and ferocious bite spends them', () => {
     const sim = makeSim('druid');
     sim.setPlayerLevel(14);
