@@ -188,6 +188,11 @@ export interface MobTemplate {
   // Melee mechanic: a landed swing has `chance` to inflict a Mortal Wound debuff
   // that reduces all healing the victim receives by `healReduction` for `duration`.
   mortalStrike?: { chance: number; healReduction: number; duration: number; name: string; school?: string };
+  // Combat mechanic: a landed melee hit has `chance` to corrode the victim's
+  // armor: a stacking `sunder` debuff (up to `maxStacks`) so the victim takes
+  // more physical damage from everyone until it expires. Rides the existing
+  // sunder aura; no new aura kind.
+  corrode?: { chance: number; armor: number; maxStacks: number; duration: number; name: string; school?: Aura['school'] };
 }
 
 export type AbilityEffect =

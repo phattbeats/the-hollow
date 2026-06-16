@@ -24,7 +24,7 @@ import type { LeaderboardEntry } from '../world_api';
 import {
   AbilityDef, AbilityEffect, Aura, AuraKind, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION,
   CONSUME_TICKS, CrowdControlDrCategory, DT, Entity, EquipSlot, FISHING_CAST_ID, FISHING_CAST_TIME, GCD,
-  INTERACT_RANGE, InvSlot, LootEntry, LootSlot, MELEE_RANGE, MAX_LEVEL, MobFamily,
+  INTERACT_RANGE, InvSlot, LootEntry, LootSlot, MELEE_RANGE, MAX_LEVEL, MobFamily, MobTemplate,
   MoveInput, OverheadEmoteId, PlayerClass, QuestProgress, QuestState, RUN_SPEED, SimConfig, SimEvent, TURN_SPEED, Vec3,
   angleTo, armorReduction, dist2d, emptyMoveInput, isConsuming, meleeMissChance, mobXpValue, normAngle,
   rageFromDealing, rageFromTaking, spellHitChance, xpForLevel,
@@ -3449,6 +3449,12 @@ export class Sim {
         sourceId: mob.id, school: (venom.school as Aura['school']) ?? 'nature',
       });
     }
+    // corrosive bite: a landed hit may shred the victim's armor (stacking sunder).
+    // Guarded on hostile so a friendly pet (the other mobSwing caller) never debuffs an ally.
+    const corrode = MOBS[mob.templateId]?.corrode;
+    if (corrode && mob.hostile && !target.dead && this.rng.chance(corrode.chance)) {
+      this.applyCorrosion(mob, target, corrode);
+    }
     // thorns / lightning shield on the defender
     if (!mob.dead) {
       for (const a of target.auras) {
@@ -3470,6 +3476,28 @@ export class Sim {
         value: ms.healReduction,
         sourceId: mob.id,
         school: (ms.school as Aura['school']) ?? 'physical',
+      });
+    }
+  }
+
+  // Apply (or refresh + stack) a corrosive armor-shred debuff on the victim.
+  // Mirrors the warrior Sunder Armor stacking: one shared `sunder` slot found by
+  // kind, bumped up to `maxStacks`, with its timer fully refreshed each application.
+  // effectiveArmor() already subtracts value*stacks, so the victim takes more
+  // physical damage from every attacker until it expires.
+  private applyCorrosion(mob: Entity, target: Entity, corrode: NonNullable<MobTemplate['corrode']>): void {
+    const existing = target.auras.find((a) => a.kind === 'sunder');
+    if (existing) {
+      existing.stacks = Math.min(corrode.maxStacks, (existing.stacks ?? 1) + 1);
+      existing.value = corrode.armor;
+      existing.remaining = existing.duration;
+      this.emit({ type: 'aura', targetId: target.id, name: corrode.name, gained: true });
+    } else {
+      this.applyAura(target, {
+        id: `corrode_${mob.templateId}`, name: corrode.name, kind: 'sunder',
+        remaining: corrode.duration, duration: corrode.duration,
+        value: corrode.armor, stacks: 1,
+        sourceId: mob.id, school: corrode.school ?? 'nature',
       });
     }
   }
