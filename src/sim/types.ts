@@ -178,6 +178,10 @@ export interface MobTemplate {
   // Melee mechanic: each landed swing also splashes onto other players near the
   // primary target for `mult` of the (pre-armor) hit. Classic-WoW Cleave.
   cleave?: { radius: number; mult: number; name?: string };
+  // Classic beast "Frenzy": when a mob with this trait dies, nearby living
+  // same-family hostile mobs briefly attack faster (hasteMult, e.g. 1.3 = +30%
+  // swing speed) for `duration` seconds. Applied as a buff_haste aura.
+  packFrenzy?: { radius: number; hasteMult: number; duration: number };
 }
 
 export type AbilityEffect =

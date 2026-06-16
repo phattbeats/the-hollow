@@ -129,6 +129,7 @@ const DEFAULT_SOCIAL_PULL_RADIUS = 5;
 const SOCIAL_PULL_RADIUS: Partial<Record<MobFamily, number>> = {
   murloc: 8,
 };
+const PACK_FRENZY_AURA_ID = 'pack_frenzy'; // attack-speed buff granted to surviving packmates
 const SWIM_SURFACE_Y = WATER_LEVEL - 0.75; // body bobs just below the water line
 const SWIM_DEPTH = 0.8; // ground this far under the water line = deep water
 const SWIM_SPEED_MULT = 0.65;
@@ -2758,6 +2759,7 @@ export class Sim {
         this.emit({ type: 'log', text: `${e.name} dies.`, color: '#f66', pid: e.ownerId });
         return; // pets drop no loot and grant no credit; they respawn wild
       }
+      this.frenzyPackmates(e); // wild packmates fly into a frenzy when one falls
 
       // credit goes to the tapping player (fall back to the killer)
       const creditId = e.tappedById ?? (killer?.kind === 'player' ? killer.id : null);
@@ -3493,6 +3495,40 @@ export class Sim {
       this.dropEntity(id);
     }
     boss.summonedIds = [];
+  }
+
+  // Classic beast "Frenzy": when a mob carrying the packFrenzy trait dies, the
+  // surviving same-family hostile mobs nearby briefly attack faster. Modelled as
+  // a refreshable buff_haste aura, so it rides the normal aura tick (expires on
+  // its own) and the existing snapshot wire — no new Entity field is needed.
+  private frenzyPackmates(dead: Entity): void {
+    const fr = MOBS[dead.templateId]?.packFrenzy;
+    if (!fr) return;
+    const r2 = fr.radius * fr.radius;
+    this.grid.forEachInRadius(dead.pos.x, dead.pos.z, fr.radius, (m, d2) => {
+      if (m.id === dead.id || m.kind !== 'mob' || m.dead || m.aiState === 'dead') return;
+      if (!m.hostile || m.ownerId !== null || d2 > r2) return;
+      // packmates = same creature type (a wolf pack), matching the social-aggro convention
+      if (m.templateId !== dead.templateId) return;
+      const existing = m.auras.find((a) => a.id === PACK_FRENZY_AURA_ID);
+      if (existing) {
+        existing.remaining = fr.duration; // refresh on each further loss; don't stack
+        return;
+      }
+      m.auras.push({
+        id: PACK_FRENZY_AURA_ID,
+        name: 'Pack Frenzy',
+        kind: 'buff_haste',
+        remaining: fr.duration,
+        duration: fr.duration,
+        value: fr.hasteMult,
+        sourceId: m.id,
+        school: 'physical',
+      });
+      this.emit({ type: 'aura', targetId: m.id, name: 'Pack Frenzy', gained: true });
+      this.emit({ type: 'log', text: `${m.name} flies into a frenzy!`, color: '#ff8c00', entityId: m.id });
+      this.emit({ type: 'spellfx', sourceId: m.id, targetId: m.id, school: 'physical', fx: 'nova' });
+    });
   }
 
   // Boss threshold mechanics: add waves (summonAdds) and enrage. Checked
