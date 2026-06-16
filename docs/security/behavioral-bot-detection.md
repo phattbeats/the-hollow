@@ -25,10 +25,9 @@ into a per-session score. Individual detection ideas are described in the sectio
 that follow, each with a **Code status** subsection grounded in the current tree.
 Response thresholds, architecture, and suggested implementation order are at the end.
 
-**Behavioral detection (this doc) is not implemented yet** — no `antibot.ts`, no
-`BotDetector`, no scored signals. Two **hard guardrails** are in open PRs (see
-Existing Protections); the sections below cover post-login detection still needed
-after those land.
+Two **hard guardrails** are in open PRs (see Existing Protections). The sections
+below cover detection that operates after those land; see **Implementation Phases**
+for what is already shipped.
 
 ---
 
@@ -93,19 +92,19 @@ Audited against `server/game.ts`, `server/main.ts`, `server/db.ts`, and `src/sim
 Nothing in the antibot module exists yet; the table below rates each signal against
 **what the code already provides** vs what still needs to be built.
 
-| Signal | Applicable now? | Effort | Main blocker |
+| Signal | Status | Effort | Notes |
 |---|---|---|---|
-| 1 — Timing variance | **Yes** | Low | Hook `dispatchMessage`; timestamp with `Date.now()` |
-| 2 — Sequence repetition | **Yes** | Medium | Fingerprint buffer; resolve `templateId` / `zoneAt` from sim |
-| 3 — Farm / movement ratio | **Partial** | Medium | Define idle vs movement; high false-positive risk without cohorts |
-| 4 — Farming efficiency (offline) | **Partial** | Medium–high | No kill log in DB; `RewardCounters.kills` is session-only, not persisted |
-| 6 — Multi-session per IP | **Yes — higher priority after #439** | Low | IP not stored on `ClientSession`; add at join |
-| 7 — Impossible actions | **Partial** | Medium | Sim validates range/GCD/LoS already; no antibot hook on rejections |
-| 8 — Reaction times | **Yes** | Medium | Correlate `SimEvent` (`death`, etc.) in `routeEvents` with WS commands |
-| 9 — Trajectories | **Yes** | Medium | Server-authoritative `pos`; sample every 2–5 s, not every tick |
-| 10 — Target selection | **Partial** | Medium–high | Must define "optimal target" server-side; party play adds false positives |
-| 11 — Economic graph (offline) | **Not ready** | High | No trade log, no market transaction log, no mail; cross-account mules only |
-| 12 — Honeypots | **Not ready** | Very high | All sim entities in interest radius are sent to clients; no server-only entities |
+| 1 — Timing variance | ✅ **Shipped (Phase 1)** | — | `COMBAT_CMDS` set; ring buffer + stdDev; TTL 2 min |
+| 2 — Sequence repetition | Planned (Phase 2) | Medium | Fingerprint buffer; resolve `templateId` / `zoneAt` from sim |
+| 3 — Farm / movement ratio | Planned (Phase 3) | Medium | High false-positive risk without cohort baselines |
+| 4 — Farming efficiency (offline) | Planned (Phase 3) | Medium–high | No kill log in DB; XP/h feasible from autosave deltas |
+| 6 — Multi-session per IP | ✅ **Shipped (Phase 1)** | — | Soft (score) + hard (1008 close); `MAX_WS_PER_IP_SOFT/HARD` env |
+| 7 — Impossible actions | Planned (Phase 2) | Medium | Sim validates already; needs antibot hook on repeated rejections |
+| 8 — Reaction times | ✅ **Shipped (Phase 1)** | — | `death` + `castStop`; Phase 1 threshold 150 ms, no RTT correction |
+| 9 — Trajectories | Planned (Phase 2) | Medium | In-memory first; cross-session hash needs schema |
+| 10 — Target selection | Planned (Phase 3) | Medium–high | Must define "optimal target" server-side; party false positives |
+| 11 — Economic graph (offline) | Blocked (Phase 4) | High | No trade log, no market transaction log |
+| 12 — Honeypots | Deferred | Very high | No server-only entities; sim + wire changes required |
 
 **Recommended first ship set (behavioral):** `BotDetector` shell, **6**, 1, 8 — all
 in-memory, no DB migration. Signals 11 and 12 remain roadmap items with explicit
@@ -163,11 +162,12 @@ often retains a discernible dominant frequency (autocorrelation or histogram by
 while preserving periodicity. This signal alone is not enough against a savvy operator —
 most useful against naive scripts and in combination with signals 2, 7, and 8.
 
-**Code status.** All combat commands flow through `dispatchMessage` (`server/game.ts`).
-Count **commands received**, not sim-accepted casts: GCD violations are rejected
-silently inside `Sim.castAbility` (`src/sim/sim.ts`, `gcdRemaining > 0` returns
-without error). Hook point: after field validation, before `sim.*` call. State lives
-on `ClientSession` (same pattern as `chatTokens`). No DB, no sim changes required.
+**Code status — Implemented (Phase 1).** Hook lives in `dispatchMessage`
+(`server/game.ts`) after the `msg.t !== 'cmd'` guard, before sim routing.
+Commands observed: `attack`, `cast`, `castSlot`, `loot`, `interact` (the
+`COMBAT_CMDS` set in `server/antibot.ts`). State on `ClientSession.bot.timing`
+(ring buffer, max 20 deltas). No DB, no sim changes. Harmonic detection (see
+*Complement* above) is not yet implemented.
 
 ---
 
@@ -286,12 +286,13 @@ for the Ansible `eastbrook_game` role (to verify).
 **Limit.** Serious operators distribute across multiple IPs (proxies, VPS). Useful
 against cheap farming, not dedicated infrastructure.
 
-**Code status.** **Ready to ship.** `requestMetadata(req).ip` in `server/main.ts`
-(already used for HTTP rate limiting via `server/ratelimit.ts` and stored in
-`play_sessions.ip_address` on join). **Gap:** IP is not copied onto `ClientSession`,
-so live counting requires adding `session.ip` at WS auth or maintaining a map at
-connect/disconnect. Reuse `TRUSTED_PROXY_IPS` / XFF logic from `ratelimit.ts` behind
-a proxy. No DB needed for enforcement.
+**Code status — Implemented (Phase 1).** `session.ip` added to `ClientSession`.
+`GameServer.ipSessionCounts: Map<string, number>` incremented in `join()`,
+decremented in `leave()`. Soft evidence (`multi_ip`, weight 0.4, session-scoped)
+added on `join()` when `ipCount > MAX_WS_PER_IP_SOFT` (env, default 5).
+Hard reject in `main.ts` `authenticateWebSocket()` when `ipCount >= MAX_WS_PER_IP_HARD`
+(env, default 20) — closes with 1008 before `game.join()`. IPv6 prefix grouping
+and Caddy-level `limit_conn` are not yet implemented.
 
 ---
 
@@ -349,12 +350,13 @@ appear suspicious even with human-level reactions.
 **Complement to signal 1:** artificial jitter on inter-action intervals does not
 mask instant reactions to world events.
 
-**Code status.** **Applicable.** Server-side event stream already exists:
-`SimEvent` types include `death`, `xp`, `castStop` (`src/sim/types.ts`);
-`routeEvents()` in `game.ts` delivers them per session. Timestamp WS commands in
-`observeAction`; correlate with events in `routeEvents` or post-tick. GCD-ready
-can be inferred from entity `gcdRemaining` or successful cast acceptance.
-Calibrate thresholds for real network latency (200–500 ms human, not lab-zero).
+**Code status — Implemented (Phase 1).** `observeEvent` hooked in `routeEvents`
+(`server/game.ts`) for `death` and `castStop` events (the `REACTION_EVENTS` set).
+`observeAction` clears `reactionPending` and accumulates a ring buffer (max 20).
+Phase 1 threshold: median < 150 ms → weight 0.6; stdDev < 30 ms → weight 0.3;
+both with TTL 2 min. **No RTT correction yet** (Phase 1 uses a conservative 150 ms
+threshold; even a 0-RTT bot can't sustain median < 150 ms at human-like reaction
+speed). Phase 2 will subtract estimated RTT and tighten to 80 ms.
 
 ---
 
@@ -505,9 +507,11 @@ Example indicative weights:
 
 ## Code Architecture
 
-This section describes how to wire the detection model into the existing server.
-**Behavioral detection is not implemented yet** — no `antibot.ts`, no
-`ClientSession.bot`, no `createAutomatedBotReport()`. Hard guardrails in PRs
+This section describes how the detection model is wired into the existing server.
+**Phase 1 is shipped:** `server/antibot.ts` (BotTracker, Signals 1/6/8, escalation
+state machine), `server/antibot_db.ts` (auto-reports into `player_reports`), hooks
+in `server/game.ts` (ClientSession, join/leave, dispatchMessage, routeEvents, game
+loop) and `server/main.ts` (hard IP reject). Hard guardrails in PRs
 [#439](https://github.com/levy-street/world-of-claudecraft/pull/439) and
 [#441](https://github.com/levy-street/world-of-claudecraft/pull/441) ship separately.
 The design follows current conventions: detection logic in a dedicated module, SQL
@@ -537,7 +541,7 @@ concrete schema as follows:
 | Piece | Status | Detail |
 |---|---|---|
 | `player_reports` table | **Exists** | `server/db.ts` — moderation queue already reads it |
-| `createAutomatedBotReport()` | **To create** | New function in `antibot_db.ts`, same pattern as `createSuspiciousRegistrationReport()` in `moderation_db.ts` |
+| `createAutomatedBotReport()` | **Exists** | `server/antibot_db.ts` — 24 h dedup, NULL reporter, `reason = 'cheating'`, details prefixed `Automated bot detection:` |
 | Admin queue UI | **Exists** | `moderationQueue()` surfaces open reports; no new UI needed for v1 |
 
 **When it fires:** score ≥ 0.5 for 30 s → one row in `player_reports`
@@ -620,6 +624,8 @@ server/
 ```typescript
 // server/antibot.ts
 
+// Phase 1 (shipped): 'timing' | 'reaction' | 'multi_ip'
+// Phase 2+: 'sequence' | 'trajectory' | 'impossible' | 'farm_ratio' | 'efficiency' | 'honeypot'
 export type BotEvidenceKind =
   | 'timing' | 'sequence' | 'trajectory' | 'reaction' | 'farm_ratio'
   | 'efficiency' | 'multi_ip' | 'impossible' | 'honeypot';
@@ -790,9 +796,8 @@ function checkEscalation(tracker: BotTracker, session: ClientSession, now: numbe
   }
 
   if (tracker.aboveKickSince && now - tracker.aboveKickSince >= 120_000) {
-    void flagAccountForReview(session.accountId, summarize(tracker))
-      .catch(err => console.error('[antibot] flag account failed', err));
-    return 'kick';  // game.ts dispatches game.kick(session, 'disconnected')
+    // Phase 2: flagAccountForReview(session.accountId, summarize(tracker))
+    return 'kick';  // game.ts calls game.leave(session, 'disconnected')
   }
 
   return 'none';
@@ -937,15 +942,17 @@ v1 requires no new admin UI beyond what exists:
 
 ### Testing strategy
 
-- **Unit (Vitest):** each signal detector as a pure function (`timingDetector(deltas)
-  → BotEvidence | null`). No WebSocket, no DB.
-- **Integration:** `BotDetector` escalation state machine with fake timers.
-- **E2E (dev only):** script that sends perfectly timed commands via WS; assert
-  auto-report created after 30 s. Requires `ALLOW_DEV_COMMANDS=1` or a test-only
-  command injector.
+- **Unit (Vitest):** `tests/antibot.test.ts` — 31 tests covering `createTracker`,
+  `addEvidence`, `recomputeScore`, Signals 1 and 8 (bot / human cases), escalation
+  state machine (log / throttle / kick timers, safety valve, honeypot single-kind
+  guard). `tests/antibot_db.test.ts` — 7 tests (dedup, insert, SQL params).
+  No WebSocket, no live DB.
+- **E2E:** `scripts/antibot_e2e.mjs` — no `ALLOW_DEV_COMMANDS=1` needed. Opens
+  5 background sessions + 1 bot session from `127.0.0.1` (triggers `multi_ip`),
+  sends `attack` every 500 ms (triggers Signal 1, stdDev ≈ 0), waits 38 s, then
+  queries Postgres to assert the auto-report was created.
 
-Add tests alongside each signal as it lands; build and test the score/escalation
-layer first (implementation priority item 1).
+Add tests alongside each signal as it lands.
 
 ---
 
@@ -976,13 +983,13 @@ it just farms half as fast, reducing impact without revealing that detection is 
 
 Grouped by what the codebase can support today without new economy logging.
 
-| Phase | Goal | Signals / scope | Postgres impact |
-|---|---|---|---|
-| **Phase 1 — Real-time guardrails, no migration** | Stop cheap bot waves; collect moderator-visible evidence | **`BotDetector` shell**, signal **6**, 1, 8; auto-reports. Account cap + web login: PRs **#439**, **#441** | None |
-| **Phase 2 — Behavioral depth + audit trail** | Catch scripted bots; review across reconnects | 2, 7 (rejection hooks), 9; shadow-throttle; kick; `bot_detection_events`; optional trajectory hash | New audit table (+ optional columns) |
-| **Phase 3 — Offline analytics (conditional)** | Outlier farming + weak economy heuristics | 3, 4 (XP/h from saves; kills/h needs `kill_events`); 10; 11-light (IP/social/chat/quest only) | Cohort tables; optional kill log |
-| **Phase 4 — Full economy graph (blocked on logging)** | Mule-network detection | 11-full after trade + market transaction logs | Trade log, market log, `bot_economy_clusters` |
-| **Deferred** | Honeypots | 12 — requires server-only entities + snapshot filtering | Sim + wire changes |
+| Phase | Goal | Signals / scope | Postgres impact | Status |
+|---|---|---|---|---|
+| **Phase 1 — Real-time guardrails, no migration** | Stop cheap bot waves; collect moderator-visible evidence | **`BotDetector` shell**, signal **6**, 1, 8; auto-reports. Account cap + web login: PRs **#439**, **#441** | None | **✅ Shipped** |
+| **Phase 2 — Behavioral depth + audit trail** | Catch scripted bots; review across reconnects | 2, 7 (rejection hooks), 9; shadow-throttle; kick; `bot_detection_events`; optional trajectory hash | New audit table (+ optional columns) | Planned |
+| **Phase 3 — Offline analytics (conditional)** | Outlier farming + weak economy heuristics | 3, 4 (XP/h from saves; kills/h needs `kill_events`); 10; 11-light (IP/social/chat/quest only) | Cohort tables; optional kill log | Planned |
+| **Phase 4 — Full economy graph (blocked on logging)** | Mule-network detection | 11-full after trade + market transaction logs | Trade log, market log, `bot_economy_clusters` | Blocked |
+| **Deferred** | Honeypots | 12 — requires server-only entities + snapshot filtering | Sim + wire changes | Deferred |
 
 **Recommended rollout:** Phase 1 first (highest ROI, zero schema change). Phase 2 once
 thresholds are calibrated on real traffic. Phase 3 only after enough save history for
@@ -996,15 +1003,11 @@ Order reflects **code readiness** (see Applicability at a glance). Build the she
 before individual detectors so each signal plugs in without rework.
 
 1. **PRs [#439](https://github.com/levy-street/world-of-claudecraft/pull/439) + [#441](https://github.com/levy-street/world-of-claudecraft/pull/441)** — hard guardrails (account cap, web Origin on auth). Not part of `BotDetector`.
-2. **`BotDetector` shell + escalation state machine** — `server/antibot.ts`, extend
-   `ClientSession`; no SQL. Required before signals 1–3, 7–10 produce useful output.
-3. **Signal 6** (WS per IP) — store `ip` on `ClientSession` at auth; count in
-   `main.ts` before `game.join()`. **Primary multibox counter after #439.**
-4. **Signal 1** (timing variance + harmonics) — hook `dispatchMessage`; count WS
-   commands received, not silent GCD rejects.
-5. **Signal 8** (reaction times) — hook `routeEvents` + command timestamps.
-6. **Auto-reports** — `createAutomatedBotReport()` in `antibot_db.ts`, pattern from
-   `createSuspiciousRegistrationReport()`; lands in existing moderation queue.
+2. ✅ **`BotDetector` shell + escalation state machine** — `server/antibot.ts`, `ClientSession.bot: BotTracker`; no SQL.
+3. ✅ **Signal 6** (WS per IP) — `session.ip`, `ipSessionCounts` map, soft evidence in `join()`, hard reject in `main.ts`.
+4. ✅ **Signal 1** (timing variance) — `COMBAT_CMDS` set, ring buffer in `observeAction`. Harmonic detection (item *Complement*) not yet done.
+5. ✅ **Signal 8** (reaction times) — `observeEvent` + `observeAction`, Phase 1 threshold 150 ms without RTT correction.
+6. ✅ **Auto-reports** — `server/antibot_db.ts`; 24 h dedup; lands in existing moderation queue.
 7. **Signal 2** (sequence repetition) — abstract fingerprint via `templateId` / `zoneAt`.
 8. **Signal 7** (impossible actions) — instrument sim **rejections** (range, dead target,
    LoS); not speedhack (already server-authoritative movement).
