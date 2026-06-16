@@ -42,10 +42,47 @@ describe('client HTML shell', () => {
     expect(html).not.toContain('body.mobile-touch #mobile-controls { position: absolute; inset: 0; display: block;');
   });
 
+  it('lays out mobile More tray buttons horizontally', () => {
+    expect(html).toContain('body.mobile-touch #mobile-extra-controls .mobile-btn');
+    expect(html).toContain('flex-direction: row;');
+    expect(html).toContain('body.mobile-touch #mobile-extra-controls .mobile-btn .ui-icon');
+  });
+
+  it('omits Meters from the mobile More tray while keeping the desktop window', () => {
+    expect(html).toContain('id="meters-window"');
+    expect(html).not.toContain('id="mobile-meters"');
+  });
+
+  it('keeps the mobile More button in the combat row', () => {
+    expect(html).toContain('grid-template-columns: 124px repeat(4, 58px);');
+    expect(html).toContain('grid-template-columns: 115px repeat(4, 54px);');
+    expect(html).toContain('body.mobile-touch #mobile-more {\n    position: static;');
+  });
+
+  it('places mobile Autorun beside the spell bar', () => {
+    expect(html).toContain('body.mobile-touch #mobile-autorun {\n    position: fixed;');
+    expect(html).toContain('left: max(calc(18px + env(safe-area-inset-left)), calc(50% - 208px));');
+    expect(html).toContain('bottom: calc(72px + env(safe-area-inset-bottom));');
+    expect(html).toContain('body.mobile-touch.mobile-window-open #mobile-autorun { display: none; }');
+  });
+
+  it('keeps the expanded mobile More tray inside the viewport', () => {
+    expect(html).toContain('calc(100vw - 222px - max(12px, env(safe-area-inset-right, 0px)))');
+    expect(html).toContain('calc(100vw - 208px - max(12px, env(safe-area-inset-right, 0px)))');
+  });
+
   it('caps mobile quest and NPC panels instead of stretching them edge to edge', () => {
     expect(html).toContain('body.mobile-touch #quest-log-window,\n  body.mobile-touch #vendor-window,\n  body.mobile-touch #quest-dialog');
     expect(html).toContain('width: clamp(320px, 76vw, 680px);');
     expect(html).toContain('max-width: calc(100vw - 20px);');
     expect(html).toContain('transform: translateX(-50%);');
+  });
+
+  it('centers mobile Talents above touch controls', () => {
+    expect(html).toContain('body.mobile-touch.mobile-window-open #ui {\n    z-index: 90;');
+    expect(html).toContain('body.mobile-touch #talents-window {\n    position: fixed;');
+    expect(html).toContain('top: 50%;');
+    expect(html).toContain('transform: translate(-50%, -50%);');
+    expect(html).toContain('z-index: 95 !important;');
   });
 });
