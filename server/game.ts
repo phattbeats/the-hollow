@@ -7,6 +7,7 @@ import { parseMoveInputFrame } from '../src/sim/move_input';
 import { stealthDetectionRadius, threatEntries } from '../src/sim/threat';
 import { zoneAt, DUNGEONS } from '../src/sim/data';
 import { saveCharacterState, openPlaySession, closePlaySession, insertChatLogs, pool, loadMarketState, saveMarketState } from './db';
+import type { AccountChatMuteStatus, RequestMetadata } from './db';
 import { ChatLogger } from './chat_log';
 import { SocialService } from './social';
 import type { Presence, PresenceStatus, SocialActor, SocialEvent, SocialTransport } from './social';
@@ -68,6 +69,8 @@ export interface ClientSession {
   chatLastRateError: number;
   chatRateViolations: number;
   chatCooldownUntil: number;
+  chatMutedUntil: number | null;
+  chatMuteReason: string;
   // character ids this player has ignored; chat from them is dropped before
   // delivery. Loaded from the DB on join, kept in sync by social commands.
   blockedIds: Set<number>;
@@ -478,7 +481,16 @@ export class GameServer {
 
   // -------------------------------------------------------------------------
 
-  join(ws: WebSocket, accountId: number, characterId: number, name: string, cls: import('../src/sim/types').PlayerClass, state: import('../src/sim/sim').CharacterState | null, isGm = false): ClientSession | { error: string } {
+  join(
+    ws: WebSocket,
+    accountId: number,
+    characterId: number,
+    name: string,
+    cls: import('../src/sim/types').PlayerClass,
+    state: import('../src/sim/sim').CharacterState | null,
+    isGm = false,
+    meta: RequestMetadata & Partial<AccountChatMuteStatus> = {},
+  ): ClientSession | { error: string } {
     if (this.sessionsByCharacterId.has(characterId)) return { error: 'character already in world' };
     const pid = this.sim.addPlayer(cls, name, { state: state ?? undefined });
     if (isGm) {
@@ -493,6 +505,8 @@ export class GameServer {
       lastSave: Date.now(), alive: true, joinedAt: Date.now(), dbSessionId: null, left: false,
       chatTokens: CHAT_RATE_BURST, chatLastRefill: Date.now() / 1000, chatLastRateError: 0,
       chatRateViolations: 0, chatCooldownUntil: 0,
+      chatMutedUntil: meta.mutedUntil ? new Date(meta.mutedUntil).getTime() : null,
+      chatMuteReason: meta.reason ?? '',
       blockedIds: new Set(),
       blockListLoaded: false,
       lastWhisperFrom: null,
@@ -505,7 +519,7 @@ export class GameServer {
     this.clients.set(pid, session);
     this.sessionsByCharacterId.set(characterId, session);
     this.peakOnline = Math.max(this.peakOnline, this.clients.size);
-    openPlaySession(accountId, characterId, name)
+    openPlaySession(accountId, characterId, name, meta)
       .then((id) => {
         session.dbSessionId = id;
         // If the player disconnected before this insert landed, leave() saw a
@@ -689,6 +703,17 @@ export class GameServer {
     }
   }
 
+  muteAccountChat(accountId: number, mutedUntil: string, reason: string): void {
+    const until = new Date(mutedUntil);
+    if (!Number.isFinite(until.getTime())) return;
+    for (const session of this.clients.values()) {
+      if (session.accountId !== accountId) continue;
+      session.chatMutedUntil = until.getTime();
+      session.chatMuteReason = reason.trim();
+      this.send(session, { t: 'events', list: [{ type: 'error', text: this.chatMuteMessage(session) }] });
+    }
+  }
+
   // -------------------------------------------------------------------------
   // Input & commands
   // -------------------------------------------------------------------------
@@ -764,6 +789,7 @@ export class GameServer {
       case 'release': sim.releaseSpirit(pid); break;
       case 'chat': {
         if (typeof msg.text !== 'string') break;
+        if (this.isChatMuted(session)) break;
         if (!this.consumeChatToken(session)) break;
         const text = msg.text.trim();
         if (/^\/who(?:\s|$)/i.test(text)) {
@@ -1304,6 +1330,24 @@ export class GameServer {
       this.send(session, { t: 'events', list: [{ type: 'error', text: 'You are sending messages too quickly. Slow down.' }] });
     }
     return false;
+  }
+
+  private isChatMuted(session: ClientSession): boolean {
+    if (session.chatMutedUntil === null) return false;
+    if (session.chatMutedUntil <= Date.now()) {
+      session.chatMutedUntil = null;
+      session.chatMuteReason = '';
+      return false;
+    }
+    this.send(session, { t: 'events', list: [{ type: 'error', text: this.chatMuteMessage(session) }] });
+    return true;
+  }
+
+  private chatMuteMessage(session: ClientSession): string {
+    const remainingMs = Math.max(0, (session.chatMutedUntil ?? Date.now()) - Date.now());
+    const minutes = Math.max(1, Math.ceil(remainingMs / 60_000));
+    const reason = session.chatMuteReason ? ` Reason: ${session.chatMuteReason}` : '';
+    return `You are muted from chat for ${minutes} more minute${minutes === 1 ? '' : 's'}.${reason}`;
   }
 
   private sendWhoRoster(session: ClientSession): void {

@@ -8,7 +8,7 @@ import {
   listAccounts, listCharacters, accountDetail,
 } from './admin_db';
 import {
-  forceCharacterRename, ignoreReport, moderateAccount, moderationQueue, moderationReportsForAccount,
+  forceCharacterRename, ignoreReport, moderateAccount, muteAccountChat, moderationQueue, moderationReportsForAccount,
 } from './moderation_db';
 import type { GameServer } from './game';
 
@@ -107,6 +107,26 @@ export async function handleAdminApi(
         return ok(res, { ok: true });
       } catch (err) {
         return fail(res, 400, err instanceof Error ? err.message : 'moderation action failed');
+      }
+    }
+    const chatMuteMatch = /^\/admin\/api\/moderation\/accounts\/(\d+)\/chat-mute$/.exec(path);
+    if (req.method === 'POST' && chatMuteMatch) {
+      const targetAccountId = Number(chatMuteMatch[1]);
+      if (await isAdminAccount(targetAccountId)) {
+        return fail(res, 400, 'admin accounts cannot be chat muted');
+      }
+      const body = await readBody(req);
+      try {
+        await muteAccountChat({
+          accountId: targetAccountId,
+          adminAccountId: accountId,
+          reason: body.reason,
+          expiresAt: body.expiresAt,
+        });
+        game.muteAccountChat(targetAccountId, String(body.expiresAt ?? ''), String(body.reason ?? ''));
+        return ok(res, { ok: true });
+      } catch (err) {
+        return fail(res, 400, err instanceof Error ? err.message : 'chat mute failed');
       }
     }
     const ignoreMatch = /^\/admin\/api\/moderation\/reports\/(\d+)\/ignore$/.exec(path);

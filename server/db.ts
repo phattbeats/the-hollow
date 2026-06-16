@@ -55,6 +55,15 @@ ALTER TABLE accounts ADD COLUMN IF NOT EXISTS is_admin BOOLEAN NOT NULL DEFAULT 
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS suspended_until TIMESTAMPTZ;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS banned_at TIMESTAMPTZ;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS moderation_reason TEXT;
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS chat_muted_until TIMESTAMPTZ;
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS chat_mute_reason TEXT;
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS created_ip TEXT;
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS created_user_agent TEXT;
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS last_login_ip TEXT;
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS last_login_user_agent TEXT;
+CREATE INDEX IF NOT EXISTS accounts_created_at ON accounts(created_at DESC);
+CREATE INDEX IF NOT EXISTS accounts_created_ip_created ON accounts(created_ip, created_at DESC);
+CREATE INDEX IF NOT EXISTS accounts_created_user_agent_created ON accounts(created_user_agent, created_at DESC);
 ALTER TABLE characters ADD COLUMN IF NOT EXISTS is_gm BOOLEAN NOT NULL DEFAULT FALSE;
 ALTER TABLE characters ADD COLUMN IF NOT EXISTS force_rename BOOLEAN NOT NULL DEFAULT FALSE;
 CREATE TABLE IF NOT EXISTS play_sessions (
@@ -65,6 +74,8 @@ CREATE TABLE IF NOT EXISTS play_sessions (
   started_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   ended_at TIMESTAMPTZ
 );
+ALTER TABLE play_sessions ADD COLUMN IF NOT EXISTS ip_address TEXT;
+ALTER TABLE play_sessions ADD COLUMN IF NOT EXISTS user_agent TEXT;
 CREATE INDEX IF NOT EXISTS play_sessions_account ON play_sessions(account_id);
 CREATE INDEX IF NOT EXISTS play_sessions_started ON play_sessions(started_at);
 CREATE TABLE IF NOT EXISTS chat_logs (
@@ -148,10 +159,27 @@ export interface AccountModerationStatus {
   message: string;
 }
 
-export async function createAccount(username: string, passwordHash: string): Promise<AccountRow> {
+export interface AccountChatMuteStatus {
+  mutedUntil: string | null;
+  reason: string;
+}
+
+export interface RequestMetadata {
+  ip?: string | null;
+  userAgent?: string | null;
+}
+
+function cleanMetadataText(value: string | null | undefined, max: number): string | null {
+  const text = typeof value === 'string' ? value.trim() : '';
+  return text ? text.slice(0, max) : null;
+}
+
+export async function createAccount(username: string, passwordHash: string, meta: RequestMetadata = {}): Promise<AccountRow> {
   const res = await pool.query(
-    'INSERT INTO accounts (username, password_hash) VALUES ($1, $2) RETURNING id, username, password_hash',
-    [username, passwordHash],
+    `INSERT INTO accounts (username, password_hash, created_ip, created_user_agent)
+     VALUES ($1, $2, $3, $4)
+     RETURNING id, username, password_hash`,
+    [username, passwordHash, cleanMetadataText(meta.ip, 128), cleanMetadataText(meta.userAgent, 512)],
   );
   return res.rows[0];
 }
@@ -167,8 +195,13 @@ export async function getAccountsCount(): Promise<number> {
 }
 
 
-export async function touchLogin(accountId: number): Promise<void> {
-  await pool.query('UPDATE accounts SET last_login = now() WHERE id = $1', [accountId]);
+export async function touchLogin(accountId: number, meta: RequestMetadata = {}): Promise<void> {
+  await pool.query(
+    `UPDATE accounts
+     SET last_login = now(), last_login_ip = $2, last_login_user_agent = $3
+     WHERE id = $1`,
+    [accountId, cleanMetadataText(meta.ip, 128), cleanMetadataText(meta.userAgent, 512)],
+  );
 }
 
 export async function saveToken(token: string, accountId: number, ttlHours = 24 * 7): Promise<void> {
@@ -216,6 +249,21 @@ export async function moderationStatusForAccount(accountId: number): Promise<Acc
     };
   }
   return { locked: false, banned: false, suspendedUntil: null, reason: '', message: '' };
+}
+
+export async function chatMuteStatusForAccount(accountId: number): Promise<AccountChatMuteStatus> {
+  const res = await pool.query(
+    `SELECT chat_muted_until, chat_mute_reason
+     FROM accounts WHERE id = $1`,
+    [accountId],
+  );
+  const row = res.rows[0];
+  const mutedUntil = row?.chat_muted_until ? new Date(row.chat_muted_until) : null;
+  if (!mutedUntil || mutedUntil.getTime() <= Date.now()) return { mutedUntil: null, reason: '' };
+  return {
+    mutedUntil: mutedUntil.toISOString(),
+    reason: row.chat_mute_reason ?? '',
+  };
 }
 
 export interface CharacterRow {
@@ -452,10 +500,13 @@ export async function openPlaySession(
   accountId: number,
   characterId: number,
   characterName: string,
+  meta: RequestMetadata = {},
 ): Promise<number> {
   const res = await pool.query(
-    'INSERT INTO play_sessions (account_id, character_id, character_name) VALUES ($1, $2, $3) RETURNING id',
-    [accountId, characterId, characterName],
+    `INSERT INTO play_sessions (account_id, character_id, character_name, ip_address, user_agent)
+     VALUES ($1, $2, $3, $4, $5)
+     RETURNING id`,
+    [accountId, characterId, characterName, cleanMetadataText(meta.ip, 128), cleanMetadataText(meta.userAgent, 512)],
   );
   return res.rows[0].id;
 }
