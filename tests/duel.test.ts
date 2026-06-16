@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { Sim } from '../src/sim/sim';
 import { groundHeight } from '../src/sim/world';
-import type { Aura } from '../src/sim/types';
+import type { Aura, Entity } from '../src/sim/types';
 
 function makeWorld() {
   return new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true });
@@ -17,10 +17,10 @@ function teleport(sim: Sim, pid: number, x: number, z: number) {
 
 // Start an accepted duel between two adjacent players and run the countdown
 // out so the bout is live.
-function startedDuel(): { sim: Sim; a: number; b: number } {
+function startedDuel(aClass: 'warrior' | 'mage' | 'hunter' | 'warlock' = 'warrior', bClass: 'warrior' | 'mage' | 'hunter' | 'warlock' = 'mage'): { sim: Sim; a: number; b: number } {
   const sim = makeWorld();
-  const a = sim.addPlayer('warrior', 'Aleph');
-  const b = sim.addPlayer('mage', 'Bet');
+  const a = sim.addPlayer(aClass, 'Aleph', { autoEquip: true });
+  const b = sim.addPlayer(bClass, 'Bet', { autoEquip: true });
   teleport(sim, a, 0, -40);
   teleport(sim, b, 4, -40);
   sim.duelRequest(b, a);
@@ -32,6 +32,19 @@ function startedDuel(): { sim: Sim; a: number; b: number } {
     if (d && d.state === 'active') break;
   }
   return { sim, a, b };
+}
+
+function givePet(sim: Sim, ownerPid: number): Entity {
+  for (const e of sim.entities.values()) {
+    if (e.kind === 'mob' && !e.dead && e.ownerId === null) {
+      e.ownerId = ownerPid;
+      e.hostile = false;
+      e.hp = e.maxHp;
+      teleport(sim, e.id, sim.entities.get(ownerPid)!.pos.x + 1, sim.entities.get(ownerPid)!.pos.z);
+      return e;
+    }
+  }
+  throw new Error('no wild mob available to adopt as a pet');
 }
 
 // A bleed/poison style damage-over-time applied by the opponent.
@@ -84,5 +97,66 @@ describe('duel: non-lethal cleanup', () => {
 
     for (let i = 0; i < 20 * 3; i++) sim.tick();
     expect(eb.dead).toBe(false);
+  });
+});
+
+describe('duel: PvP combat affordances', () => {
+  it('lets a commanded pet attack an active duel opponent', () => {
+    const { sim, a, b } = startedDuel('hunter', 'mage');
+    const pet = givePet(sim, a);
+    const eb = sim.entities.get(b)!;
+    const startHp = eb.hp;
+
+    sim.targetEntity(b, a);
+    sim.petAttack(a);
+    for (let i = 0; i < 20 * 5 && eb.hp === startHp; i++) sim.tick();
+
+    expect(pet.aggroTargetId).toBe(b);
+    expect(eb.hp).toBeLessThan(startHp);
+  });
+
+  it('treats pet damage as owner PvP damage for non-lethal duel endings', () => {
+    const { sim, a, b } = startedDuel('hunter', 'mage');
+    const pet = givePet(sim, a);
+    const eb = sim.entities.get(b)!;
+
+    (sim as any).dealDamage(pet, eb, eb.hp + 1000, false, 'physical', 'Pet Bite', 'hit');
+
+    expect((sim as any).duels.has(b)).toBe(false);
+    expect(eb.dead).toBe(false);
+    expect(eb.hp).toBe(1);
+  });
+
+  it('lets warlock self and hostile spells work against active duel opponents', () => {
+    const { sim, a, b } = startedDuel('warlock', 'warrior');
+    const warlock = sim.entities.get(a)!;
+    const warrior = sim.entities.get(b)!;
+    sim.setPlayerLevel(20, a);
+    sim.setPlayerLevel(20, b);
+    warlock.resource = Math.floor(warlock.maxResource / 2);
+    warlock.hp = warlock.maxHp - 50;
+    warlock.targetId = b;
+    warlock.facing = Math.atan2(warrior.pos.x - warlock.pos.x, warrior.pos.z - warlock.pos.z);
+
+    const hpBeforeTap = warlock.hp;
+    const manaBeforeTap = warlock.resource;
+    sim.castAbility('life_tap', a);
+    expect(warlock.hp).toBeLessThan(hpBeforeTap);
+    expect(warlock.resource).toBeGreaterThan(manaBeforeTap);
+
+    warlock.gcdRemaining = 0;
+    warlock.resource = warlock.maxResource;
+    sim.castAbility('curse_of_agony', a);
+    expect(warrior.auras.some((aura) => aura.id === 'curse_of_agony')).toBe(true);
+
+    warlock.gcdRemaining = 0;
+    warlock.resource = warlock.maxResource;
+    const warriorHpBeforeDrain = warrior.hp;
+    const warlockHpBeforeDrain = warlock.hp;
+    sim.castAbility('drain_life', a);
+    for (let i = 0; i < 20 * 2; i++) sim.tick();
+
+    expect(warrior.hp).toBeLessThan(warriorHpBeforeDrain);
+    expect(warlock.hp).toBeGreaterThan(warlockHpBeforeDrain);
   });
 });
