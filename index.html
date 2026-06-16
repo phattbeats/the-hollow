@@ -649,6 +649,8 @@
   #minimap-wrap { position: absolute; right: 12px; top: 10px; width: 170px; text-align: center; }
   #zone-label { font-size: 13px; color: var(--gold); font-family: var(--title-font); text-shadow: 1px 1px 3px #000; margin-bottom: 3px; letter-spacing: 0.5px; }
   #minimap { border-radius: 50%; border: 4px solid var(--border); outline: 1px solid #000; box-shadow: 0 0 14px #000c, inset 0 0 20px #0008; }
+  #minimap-coords { margin-top: 4px; display: inline-block; padding: 1px 8px; font-size: 11px; font-variant-numeric: tabular-nums;
+    color: #e8d9b0; background: #0008; border: 1px solid var(--border); border-radius: 9px; text-shadow: 1px 1px 2px #000; letter-spacing: 0.3px; }
 
   /* ---------- community HUD ---------- */
   /* Discord/GitHub: bottom-right, directly below the micro-menu, right-aligned with it. */
@@ -4343,6 +4345,7 @@
     <div id="minimap-wrap">
       <div id="zone-label" data-i18n="entities.zones.eastbrook_vale.name">Eastbrook Vale</div>
       <canvas id="minimap" width="162" height="162"></canvas>
+      <div id="minimap-coords" title="Your current world coordinates" aria-label="Coordinates">0, 0</div>
     </div>
 
     <div id="community-hud" data-i18n-aria="hud.core.communityLinks" aria-label="Community links">
