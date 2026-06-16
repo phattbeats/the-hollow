@@ -1727,6 +1727,9 @@ export class Hud {
       );
       music.update(zone, inCombat);
 
+      // classic combat indicator: crossed swords + red ring on the player portrait
+      $('#player-frame').classList.toggle('combat', inCombat);
+
       this.updateQuestTracker();
       this.updatePartyFrames();
       this.updateTradeWindow();
