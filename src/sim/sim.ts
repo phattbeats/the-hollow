@@ -1906,9 +1906,13 @@ export class Sim {
           if (behindDiff < Math.PI / 2) { this.error(p.id, 'You must be behind your target.'); return; }
         }
         if (eff.type === 'polymorph') {
-          if (target.kind !== 'mob') { this.error(p.id, 'This creature cannot be polymorphed.'); return; }
-          const fam = MOBS[target.templateId]?.family;
-          if (fam === 'undead' || target.templateId === 'gorrak') { this.error(p.id, 'This creature cannot be polymorphed.'); return; }
+          if (target.kind === 'mob') {
+            const fam = MOBS[target.templateId]?.family;
+            if (fam === 'undead' || target.templateId === 'gorrak') { this.error(p.id, 'This creature cannot be polymorphed.'); return; }
+          } else if (target.kind !== 'player') {
+            this.error(p.id, 'This creature cannot be polymorphed.');
+            return;
+          }
         }
         if (eff.type === 'judgement' && !p.auras.some((a) => a.kind === 'imbue' && a.value2 !== undefined)) {
           this.error(p.id, 'You have no active Seal.');
