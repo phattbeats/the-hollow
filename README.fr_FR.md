@@ -289,6 +289,17 @@ Les noms, les quêtes et les zones sont originaux ; les formules et les mécaniq
 vanilla. La graine du monde est fixée dans `src/main.ts` afin que le monde soit le même endroit
 à chaque visite.
 
+## Contribuer
+
+Les contributions de toutes sortes sont les bienvenues : code, traductions,
+rapports de bugs et documentation. Commencez par
+[CONTRIBUTING.fr_FR.md](CONTRIBUTING.fr_FR.md) pour la mise en place et les
+recommandations, et merci de respecter notre [Code de conduite](CODE_OF_CONDUCT.md).
+Vous débutez ici ? Cherchez les tickets étiquetés
+[`good first issue`](https://github.com/levy-street/world-of-claudecraft/labels/good%20first%20issue),
+ouvrez un [ticket](https://github.com/levy-street/world-of-claudecraft/issues/new/choose),
+ou venez dire bonjour sur [Discord](https://discord.gg/GjhnUsBtw).
+
 ## Licence
 
 Le code est [sous licence MIT](LICENSE) — forkez-le, remixez-le, hébergez votre propre monde.

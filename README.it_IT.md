@@ -311,6 +311,16 @@ I nomi, le quest e le zone sono originali; le formule e le meccaniche seguono il
 vanilla. Il seed del mondo è fissato in `src/main.ts`, così il mondo è lo stesso
 posto a ogni visita.
 
+## Contribuire
+
+I contributi di ogni tipo sono benvenuti: codice, traduzioni, segnalazioni di bug
+e documentazione. Inizia da [CONTRIBUTING.it_IT.md](CONTRIBUTING.it_IT.md) per la
+configurazione e le linee guida, e per favore segui il nostro
+[Codice di Condotta](CODE_OF_CONDUCT.md). Sei nuovo qui? Cerca le issue etichettate
+[`good first issue`](https://github.com/levy-street/world-of-claudecraft/labels/good%20first%20issue),
+apri una [issue](https://github.com/levy-street/world-of-claudecraft/issues/new/choose)
+oppure salutaci su [Discord](https://discord.gg/GjhnUsBtw).
+
 ## Licenza
 
 Il codice è [rilasciato sotto licenza MIT](LICENSE) — fanne un fork, remixalo,

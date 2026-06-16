@@ -189,6 +189,10 @@ scripts/      瀏覽器 E2E + 截圖巡覽 + 多人整合測試
 
 名稱、任務與區域皆為原創；公式與機制則遵循原版。世界種子固定在 `src/main.ts` 中，因此每次造訪這個世界都是同一個地方。
 
+## 貢獻
+
+我們歡迎各種形式的貢獻：程式碼、翻譯、錯誤回報，以及文件。請先閱讀 [CONTRIBUTING.zh_TW.md](CONTRIBUTING.zh_TW.md) 了解環境設定與相關準則，並請遵守我們的[行為準則](CODE_OF_CONDUCT.md)。第一次來嗎？可以找找標記為 [`good first issue`](https://github.com/levy-street/world-of-claudecraft/labels/good%20first%20issue) 的議題，開一個[議題](https://github.com/levy-street/world-of-claudecraft/issues/new/choose)，或是到 [Discord](https://discord.gg/GjhnUsBtw) 上跟我們打聲招呼。
+
 ## License
 
 程式碼採用 [MIT 授權](LICENSE)——盡情 fork、改作、架設你自己的世界。

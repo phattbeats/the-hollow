@@ -189,6 +189,10 @@ scripts/      브라우저 E2E + 스크린샷 투어 + 멀티플레이어 통합
 
 이름, 퀘스트, 구역은 독창적이며, 공식과 메커니즘은 바닐라를 따릅니다. 세계 시드는 `src/main.ts`에 고정되어 있어 방문할 때마다 세계가 같은 곳입니다.
 
+## 기여하기
+
+코드, 번역, 버그 제보, 문서 등 모든 종류의 기여를 환영합니다. 설정 방법과 가이드라인은 [CONTRIBUTING.ko_KR.md](CONTRIBUTING.ko_KR.md)에서 시작하시고, 저희의 [행동 강령](CODE_OF_CONDUCT.md)을 지켜 주세요. 처음이신가요? [`good first issue`](https://github.com/levy-street/world-of-claudecraft/labels/good%20first%20issue) 라벨이 붙은 이슈를 찾아보시거나, [이슈](https://github.com/levy-street/world-of-claudecraft/issues/new/choose)를 열어 주시거나, [Discord](https://discord.gg/GjhnUsBtw)에서 인사를 건네 주세요.
+
 ## License
 
 이 코드는 [MIT 라이선스](LICENSE)로 배포됩니다 — 포크하고, 리믹스하고, 당신만의 세계를 호스팅하세요.

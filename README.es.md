@@ -305,6 +305,15 @@ Los nombres, las misiones y las zonas son originales; las fórmulas y mecánicas
 siguen a vanilla. La semilla del mundo está fija en `src/main.ts` para que el mundo
 sea el mismo lugar en cada visita.
 
+## Contribuir
+
+Las contribuciones de todo tipo son bienvenidas: código, traducciones, reportes de
+bugs y documentación. Empieza por [CONTRIBUTING.es.md](CONTRIBUTING.es.md) para la
+configuración y las pautas, y por favor sigue nuestro [Código de Conducta](CODE_OF_CONDUCT.md).
+¿Eres nuevo aquí? Busca issues etiquetados como [`good first issue`](https://github.com/levy-street/world-of-claudecraft/labels/good%20first%20issue),
+abre un [issue](https://github.com/levy-street/world-of-claudecraft/issues/new/choose)
+o saluda en [Discord](https://discord.gg/GjhnUsBtw).
+
 ## Licencia
 
 El código tiene [licencia MIT](LICENSE) — bifúrcalo, remézclalo, hospeda tu propio mundo.
