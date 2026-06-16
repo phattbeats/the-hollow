@@ -20,6 +20,30 @@ function twoPlayers(clsA = 'mage', clsB = 'warrior') {
   return { sim, aPid, bPid, a, b };
 }
 
+function startDuel(clsA = 'mage', clsB = 'warrior', level = 20) {
+  const setup = twoPlayers(clsA, clsB);
+  const { sim, aPid, bPid, a, b } = setup;
+  sim.setPlayerLevel(level, aPid);
+  sim.setPlayerLevel(level, bPid);
+  a.resource = a.maxResource;
+  a.facing = Math.atan2(b.pos.x - a.pos.x, b.pos.z - a.pos.z);
+  sim.duelRequest(bPid, aPid);
+  sim.duelAccept(bPid);
+  for (let i = 0; i < 20 * 5; i++) {
+    sim.tick();
+    if (sim.duelFor(aPid)?.state === 'active') break;
+  }
+  sim.targetEntity(bPid, aPid);
+  return setup;
+}
+
+function finishCast(sim: Sim, pid: number) {
+  for (let i = 0; i < 20 * 4; i++) {
+    sim.tick();
+    if (!sim.entities.get(pid)!.castingAbility) return;
+  }
+}
+
 const hasCc = (e: Entity) =>
   e.auras.some((au) => au.kind === 'polymorph' || au.kind === 'stun' || au.kind === 'incapacitate' || au.kind === 'root');
 
@@ -64,5 +88,37 @@ describe('PvP safety outside duels (#96)', () => {
     sim.startAutoAttack(aPid);
     for (let i = 0; i < 20 * 6; i++) sim.tick();
     expect(b.hp).toBeLessThan(startHp); // duel combat works
+  });
+});
+
+describe('PvP control abilities in active duels', () => {
+  it.each([
+    { cls: 'mage', ability: 'polymorph', aura: 'polymorph' },
+    { cls: 'warlock', ability: 'fear', aura: 'incapacitate' },
+    { cls: 'paladin', ability: 'hammer_of_justice', aura: 'stun' },
+    { cls: 'druid', ability: 'entangling_roots', aura: 'root' },
+  ])('$ability works on hostile players', ({ cls, ability, aura }) => {
+    const { sim, aPid, b } = startDuel(cls, 'warrior');
+    if (ability === 'polymorph') b.hp = Math.max(1, b.maxHp - 120);
+
+    sim.castAbility(ability, aPid);
+    finishCast(sim, aPid);
+
+    expect(b.auras.some((au) => au.kind === aura)).toBe(true);
+    if (ability === 'polymorph') expect(b.hp).toBe(b.maxHp);
+  });
+
+  it('does not polymorph non-hostile NPCs', () => {
+    const sim = new Sim({ seed: 42, playerClass: 'mage', playerName: 'Caster', autoEquip: true });
+    const npc = [...sim.entities.values()].find((e) => e.kind === 'npc');
+    expect(npc).toBeDefined();
+    sim.setPlayerLevel(20);
+    sim.player.resource = sim.player.maxResource;
+    sim.targetEntity(npc!.id);
+
+    sim.castAbility('polymorph');
+    finishCast(sim, sim.primaryId);
+
+    expect(npc!.auras.some((au) => au.kind === 'polymorph')).toBe(false);
   });
 });

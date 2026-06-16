@@ -1906,9 +1906,13 @@ export class Sim {
           if (behindDiff < Math.PI / 2) { this.error(p.id, 'You must be behind your target.'); return; }
         }
         if (eff.type === 'polymorph') {
-          if (target.kind !== 'mob') { this.error(p.id, 'This creature cannot be polymorphed.'); return; }
-          const fam = MOBS[target.templateId]?.family;
-          if (fam === 'undead' || target.templateId === 'gorrak') { this.error(p.id, 'This creature cannot be polymorphed.'); return; }
+          if (target.kind === 'mob') {
+            const fam = MOBS[target.templateId]?.family;
+            if (fam === 'undead' || target.templateId === 'gorrak') { this.error(p.id, 'This creature cannot be polymorphed.'); return; }
+          } else if (target.kind !== 'player') {
+            this.error(p.id, 'This creature cannot be polymorphed.');
+            return;
+          }
         }
         if (eff.type === 'judgement' && !p.auras.some((a) => a.kind === 'imbue' && a.value2 !== undefined)) {
           this.error(p.id, 'You have no active Seal.');
@@ -2001,7 +2005,13 @@ export class Sim {
 
   private applyChannelTick(p: Entity, res: ResolvedAbility): void {
     const target = p.targetId !== null ? this.entities.get(p.targetId) : null;
-    if (!target || target.dead) { this.cancelCast(p); return; }
+    if (!target || target.dead || !this.isHostileTo(p, target)) { this.cancelCast(p); return; }
+    const maxRange = res.def.range > 0 ? res.def.range : MELEE_RANGE;
+    if (dist2d(p.pos, target.pos) > maxRange) {
+      this.error(p.id, 'Out of range.');
+      this.cancelCast(p);
+      return;
+    }
     if (this.lineOfSightBlocked(p, target, res.def)) {
       this.error(p.id, 'Line of sight.');
       this.cancelCast(p);
@@ -2329,6 +2339,7 @@ export class Sim {
         }
         case 'polymorph': {
           if (!target || target.dead) break;
+          target.hp = target.maxHp;
           this.applyAura(target, {
             id: ability.id, name: ability.name, kind: 'polymorph',
             remaining: eff.duration, duration: eff.duration, value: 0,
@@ -2341,7 +2352,7 @@ export class Sim {
         }
         case 'aoeDamage': {
           this.emit({ type: 'spellfx', sourceId: p.id, targetId: p.id, school: ability.school, fx: 'nova' });
-          for (const m of this.mobsInRadius(p.pos, eff.radius)) {
+          for (const m of this.hostilesInRadius(p, p.pos, eff.radius)) {
             if (!this.hasLineOfSight(p, m)) continue;
             let dmg = this.rng.range(eff.min, eff.max);
             // Armor only mitigates physical damage, mirroring the single-target
@@ -2353,7 +2364,7 @@ export class Sim {
           break;
         }
         case 'aoeAttackSpeed': {
-          for (const m of this.mobsInRadius(p.pos, eff.radius)) {
+          for (const m of this.hostilesInRadius(p, p.pos, eff.radius)) {
             if (m.dead) continue;
             if (!this.hasLineOfSight(p, m)) continue;
             this.applyAura(m, {
@@ -2365,7 +2376,7 @@ export class Sim {
           break;
         }
         case 'aoeAttackPower': {
-          for (const m of this.mobsInRadius(p.pos, eff.radius)) {
+          for (const m of this.hostilesInRadius(p, p.pos, eff.radius)) {
             if (m.dead) continue;
             this.applyAura(m, {
               id: ability.id + '_ap', name: ability.name, kind: 'debuff_ap',
@@ -2373,7 +2384,7 @@ export class Sim {
               sourceId: p.id, school: ability.school,
             });
             this.enterCombat(p, m);
-            if (m.hostile) addThreat(m, p.id, 10 * this.threatMod(p, ability.school));
+            if (m.kind === 'mob' && m.hostile) addThreat(m, p.id, 10 * this.threatMod(p, ability.school));
           }
           break;
         }
@@ -2837,13 +2848,13 @@ export class Sim {
     const pet = this.petOf(r.e.id);
     if (!pet) { this.error(r.e.id, 'You have no living pet.'); return; }
     const target = r.e.targetId !== null ? this.entities.get(r.e.targetId) : null;
-    if (!target || target.kind !== 'mob' || target.dead || !target.hostile || target.ownerId !== null) {
+    if (!target || target.dead || !this.isHostileTo(pet, target)) {
       this.error(r.e.id, 'Your pet needs a hostile target.');
       return;
     }
     pet.aggroTargetId = target.id;
     pet.inCombat = true;
-    addThreat(target, pet.id, 1);
+    if (target.kind === 'mob' && target.hostile) addThreat(target, pet.id, 1);
   }
 
   petTaunt(pid?: number): void {
@@ -3187,26 +3198,28 @@ export class Sim {
       }
     }
 
+    const sourcePlayer = this.pvpController(source);
+
     // duels end at 1 hp — nobody dies
     const duel = target.kind === 'player' ? this.duels.get(target.id) : undefined;
-    if (duel && duel.state === 'active' && source && (source.id === duel.a || source.id === duel.b)) {
+    if (duel && duel.state === 'active' && sourcePlayer && (sourcePlayer.id === duel.a || sourcePlayer.id === duel.b)) {
       if (target.hp - amount < 1) {
         amount = Math.max(0, target.hp - 1);
         target.hp = 1;
-        this.emit({ type: 'damage', sourceId: source.id, targetId: target.id, amount, crit, school, ability, kind });
-        this.endDuel(duel, source.id);
+        this.emit({ type: 'damage', sourceId: source?.id ?? -1, targetId: target.id, amount, crit, school, ability, kind });
+        this.endDuel(duel, sourcePlayer.id);
         return;
       }
     }
 
     // arena bouts also end at 1 hp — the loser yields, nobody actually dies
     const match = target.kind === 'player' ? this.arenaMatches.get(target.id) : undefined;
-    if (match && match.state === 'active' && source && (source.id === match.a || source.id === match.b)) {
+    if (match && match.state === 'active' && sourcePlayer && (sourcePlayer.id === match.a || sourcePlayer.id === match.b)) {
       if (target.hp - amount < 1) {
         amount = Math.max(0, target.hp - 1);
         target.hp = 1;
-        this.emit({ type: 'damage', sourceId: source.id, targetId: target.id, amount, crit, school, ability, kind });
-        this.endArenaMatch(match, source.id, 'defeat');
+        this.emit({ type: 'damage', sourceId: source?.id ?? -1, targetId: target.id, amount, crit, school, ability, kind });
+        this.endArenaMatch(match, sourcePlayer.id, 'defeat');
         return;
       }
     }
@@ -4092,7 +4105,7 @@ export class Sim {
     }
 
     let target = pet.aggroTargetId !== null ? this.entities.get(pet.aggroTargetId) ?? null : null;
-    if (target && (target.dead || target.kind !== 'mob' || !target.hostile)) target = null;
+    if (target && (target.dead || !this.isHostileTo(pet, target))) target = null;
     if (target && dist2d(owner.pos, pet.pos) > PET_LEASH) target = null;
     if (!target && !owner.dead) target = this.petPickTarget(pet, owner);
     pet.aggroTargetId = target?.id ?? null;
@@ -4114,7 +4127,7 @@ export class Sim {
         pet.swingTimer = Math.max(0, pet.swingTimer - DT);
       } else {
         pet.facing = angleTo(pet.pos, target.pos);
-        if (!ranged && pet.petTauntTimer <= 0) {
+        if (target.kind === 'mob' && !ranged && pet.petTauntTimer <= 0) {
           this.applyTaunt(pet, target);
           pet.petTauntTimer = PET_GROWL_INTERVAL;
         }
@@ -4184,9 +4197,9 @@ export class Sim {
     let best: Entity | null = null;
     let bestD = pet.petMode === 'aggressive' ? PET_AGGRESSIVE_RANGE : PET_ASSIST_RANGE;
     for (const m of this.entities.values()) {
-      if (m.kind !== 'mob' || m.dead || !m.hostile || m.ownerId !== null) continue;
-      const engagingUs = m.aggroTargetId === owner.id || m.aggroTargetId === pet.id;
-      const ownerOffense = owner.targetId === m.id && (owner.autoAttack || m.threat.has(owner.id));
+      if (m.id === pet.id || m.dead || !this.isHostileTo(pet, m)) continue;
+      const engagingUs = m.kind === 'mob' && (m.aggroTargetId === owner.id || m.aggroTargetId === pet.id);
+      const ownerOffense = owner.targetId === m.id && (owner.autoAttack || (m.kind === 'mob' && m.threat.has(owner.id)));
       const aggressive = pet.petMode === 'aggressive' && dist2d(pet.pos, m.pos) <= PET_AGGRESSIVE_RANGE;
       if (!engagingUs && !ownerOffense && !aggressive) continue;
       const d = dist2d(pet.pos, m.pos);
@@ -5499,17 +5512,40 @@ export class Sim {
   }
 
   // -------------------------------------------------------------------------
-  // Hostility: mobs are hostile to players; players are hostile to each other
-  // only while dueling.
+  // Hostility: mobs are hostile to players; controlled pets inherit their
+  // owner's PvP hostility during active duels and arena matches.
   // -------------------------------------------------------------------------
 
+  private pvpController(e: Entity | null): Entity | null {
+    if (!e) return null;
+    if (e.kind === 'player') return e;
+    if (e.kind === 'mob' && e.ownerId !== null) {
+      const owner = this.entities.get(e.ownerId);
+      return owner?.kind === 'player' ? owner : null;
+    }
+    return null;
+  }
+
   isHostileTo(attacker: Entity, target: Entity): boolean {
-    if (target.kind === 'mob') return target.hostile;
-    if (target.kind === 'player' && attacker.kind === 'player') {
-      const duel = this.duels.get(attacker.id);
-      if (duel && duel.state === 'active' && (duel.a === target.id || duel.b === target.id)) return true;
-      const match = this.arenaMatches.get(attacker.id);
-      return !!match && match.state === 'active' && (match.a === target.id || match.b === target.id);
+    if (target.kind === 'mob') {
+      if (target.ownerId !== null) {
+        const owner = this.entities.get(target.ownerId);
+        return !!owner && owner.kind === 'player' && this.isHostileTo(attacker, owner);
+      }
+      return target.hostile;
+    }
+    if (target.kind === 'player') {
+      const attackerPlayer = this.pvpController(attacker);
+      if (!attackerPlayer) return false;
+      if (attackerPlayer.id === target.id) return false;
+      const duel = this.duels.get(attackerPlayer.id);
+      if (duel && duel.state === 'active'
+        && ((duel.a === attackerPlayer.id && duel.b === target.id)
+          || (duel.b === attackerPlayer.id && duel.a === target.id))) return true;
+      const match = this.arenaMatches.get(attackerPlayer.id);
+      return !!match && match.state === 'active'
+        && ((match.a === attackerPlayer.id && match.b === target.id)
+          || (match.b === attackerPlayer.id && match.a === target.id));
     }
     return false;
   }
