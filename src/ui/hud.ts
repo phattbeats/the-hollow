@@ -2684,6 +2684,7 @@ export class Hud {
   private localizeErrorText(text: string): string {
     const exact: Record<string, TranslationKey> = {
       'You are stunned!': 'hud.errors.stunned',
+      'You are silenced!': 'hud.errors.silenced',
       'You are busy.': 'hud.errors.busy',
       'That ability is not ready yet.': 'hud.errors.abilityNotReady',
       'Not enough rage!': 'hud.errors.notEnoughRage',
