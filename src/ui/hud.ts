@@ -1778,7 +1778,10 @@ export class Hud {
     (el as any).__sig = sig;
     el.innerHTML = '';
     for (const a of e.auras) {
-      const isDebuff = ['dot', 'slow', 'root', 'stun', 'incapacitate', 'polymorph', 'attackspeed', 'debuff_ap'].includes(a.kind);
+      // A negative-value stat aura (e.g. a mob's Withering Wail sapping attack
+      // power, or an Intellect-draining curse) is a debuff even though it reuses a buff_* kind.
+      const isDebuff = ['dot', 'slow', 'root', 'stun', 'incapacitate', 'polymorph', 'attackspeed', 'debuff_ap'].includes(a.kind)
+        || (a.kind.startsWith('buff_') && a.value < 0);
       if (mode === 'debuffs' && !isDebuff) continue;
       const d = document.createElement('div');
       d.className = 'buff' + (isDebuff ? ' debuff' : '');
@@ -2392,8 +2395,9 @@ export class Hud {
           break;
         }
         case 'heal': {
-          if (ev.targetId === sim.playerId && ev.amount > 0) {
-            this.fct(sim.player, `+${ev.amount}`, '#3ce63c', false);
+          if (ev.amount > 0) {
+            const healed = ev.targetId === sim.playerId ? sim.player : sim.entities.get(ev.targetId);
+            if (healed) this.fct(healed, `+${ev.amount}`, '#3ce63c', false);
           }
           break;
         }
@@ -2681,6 +2685,7 @@ export class Hud {
   private localizeErrorText(text: string): string {
     const exact: Record<string, TranslationKey> = {
       'You are stunned!': 'hud.errors.stunned',
+      'You are silenced!': 'hud.errors.silenced',
       'You are busy.': 'hud.errors.busy',
       'That ability is not ready yet.': 'hud.errors.abilityNotReady',
       'Not enough rage!': 'hud.errors.notEnoughRage',

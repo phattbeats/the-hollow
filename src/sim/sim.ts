@@ -1307,6 +1307,11 @@ export class Sim {
     this.moveToward(e, dest, e.moveSpeed * FLEE_SPEED_MULT * this.moveSpeedMult(e));
     return true;
   }
+  // Silence locks out spell (non-physical) casts but leaves physical abilities,
+  // movement and melee untouched — unlike a stun, which freezes everything.
+  private isSilenced(e: Entity): boolean {
+    return e.auras.some((a) => a.kind === 'silence');
+  }
   private mobCanSwim(template: { family?: string; canSwim?: boolean } | undefined): boolean {
     return !!template;
   }
@@ -1767,6 +1772,12 @@ export class Sim {
   private updateCasting(p: Entity, meta: PlayerMeta): void {
     if (!p.castingAbility) return;
     if (this.isStunned(p)) { this.cancelCast(p); return; }
+    // a silence breaks an in-progress spell, but never the fishing cast or a
+    // physical channel (e.g. an aimed-shot kind) — those aren't spells.
+    if (this.isSilenced(p) && p.castingAbility !== FISHING_CAST_ID) {
+      const cast = this.resolvedAbility(p.castingAbility, p.id);
+      if (cast && cast.def.school !== 'physical') { this.cancelCast(p); return; }
+    }
     p.castRemaining -= DT;
 
     if (p.channeling) {
@@ -1846,6 +1857,7 @@ export class Sim {
     if (!res || p.dead) return;
     const ability = res.def;
     if (this.isStunned(p)) { this.error(p.id, 'You are stunned!'); return; }
+    if (ability.school !== 'physical' && this.isSilenced(p)) { this.error(p.id, 'You are silenced!'); return; }
     if (p.castingAbility) { this.error(p.id, 'You are busy.'); return; }
     if (!ability.offGcd && p.gcdRemaining > 0) return; // silent, classic spams this
     const togglingOff = isToggleBuff(ability) && p.auras.some((a) => a.id === ability.id);
@@ -3195,6 +3207,11 @@ export class Sim {
           this.dealDamage(target, attacker, a.value, false, a.school, a.name, 'hit', true);
         }
       }
+      // innate "spiked hide" mobs (e.g. bristleback boars) reflect on every hit
+      const spikes = MOBS[target.templateId]?.thorns;
+      if (spikes && !attacker.dead) {
+        this.dealDamage(target, attacker, spikes.value, false, spikes.school ?? 'physical', spikes.name ?? 'Spiked Hide', 'hit', true);
+      }
     }
     return true;
   }
@@ -3408,6 +3425,7 @@ export class Sim {
         return; // owned pets drop no loot/credit; demons unravel, hunters revive or abandon
       }
       this.frenzyPackmates(e); // wild packmates fly into a frenzy when one falls
+      this.armDeathThroes(e); // volatile corpses begin to destabilize, then burst
 
       // credit goes to the tapping player (fall back to the killer)
       const creditId = e.tappedById ?? (killer?.kind === 'player' ? killer.id : null);
@@ -3744,6 +3762,14 @@ export class Sim {
       if (mob.ownerId !== null && MOBS[mob.templateId]?.family !== 'demon') return;
       mob.corpseTimer -= DT;
       mob.respawnTimer -= DT;
+      // Death Throes: a volatile corpse counts down its fuse, then detonates once.
+      if (mob.detonateTimer !== Infinity) {
+        mob.detonateTimer -= DT;
+        if (mob.detonateTimer <= 0) {
+          mob.detonateTimer = Infinity;
+          this.detonateCorpse(mob);
+        }
+      }
       // a slain summoned demon unravels rather than respawning into the wild
       if (mob.ownerId !== null && MOBS[mob.templateId]?.family === 'demon') {
         if (mob.corpseTimer <= 0) this.despawnPet(mob);
@@ -3987,6 +4013,7 @@ export class Sim {
     mob.enraged = false;
     mob.healedThisPull = false;
     mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
+    mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
   }
 
@@ -4047,7 +4074,20 @@ export class Sim {
     if (mob.enraged && enrage) dmg *= enrage.dmgMult;
     const rawDmg = dmg; // pre-armor, post-crit/enrage — basis for cleave splash
     dmg *= 1 - armorReduction(this.effectiveArmor(target), mob.level);
-    this.dealDamage(mob, target, Math.max(1, Math.round(dmg)), crit, 'physical', null, 'hit');
+    const dealt = Math.max(1, Math.round(dmg));
+    this.dealDamage(mob, target, dealt, crit, 'physical', null, 'hit');
+    // Lifesteal: a landed swing heals the mob for a fraction of the damage it
+    // just dealt. Hostile mobs only, so a friendly pet (mobSwing's other caller)
+    // never drains for its owner; skip if the mob is already topped off or died
+    // to the defender's thorns/reflect earlier this swing.
+    const leech = MOBS[mob.templateId]?.lifeleech;
+    if (leech && mob.hostile && !mob.dead && mob.hp < mob.maxHp && this.rng.chance(leech.chance ?? 1)) {
+      const heal = Math.min(mob.maxHp - mob.hp, Math.max(1, Math.round(dealt * leech.healFrac)));
+      if (heal > 0) {
+        mob.hp += heal;
+        this.emit({ type: 'heal', targetId: mob.id, amount: heal });
+      }
+    }
     // Cleave: the swing splashes onto other players standing near the primary
     // target, each taking the hit reduced by their own armor. Hostile mobs only,
     // so a friendly pet swinging through mobSwing never cleaves its owner's party.
@@ -4080,6 +4120,17 @@ export class Sim {
     if (corrode && mob.hostile && !target.dead && this.rng.chance(corrode.chance)) {
       this.applyCorrosion(mob, target, corrode);
     }
+    // silencing shriek: anti-caster mobs can lock the victim's spells on a hit.
+    // Guard on hostile + alive so a friendly pet (the other mobSwing caller)
+    // never silences the party. updateCasting interrupts any live spell next tick.
+    const silence = MOBS[mob.templateId]?.silence;
+    if (silence && mob.hostile && !target.dead && this.rng.chance(silence.chance)) {
+      this.applyAura(target, {
+        id: `silence_${mob.templateId}`, name: silence.name, kind: 'silence',
+        remaining: silence.duration, duration: silence.duration, value: 0,
+        sourceId: mob.id, school: (silence.school ?? 'shadow') as Aura['school'],
+      });
+    }
     // thorns / lightning shield on the defender
     if (!mob.dead) {
       for (const a of target.auras) {
@@ -4102,6 +4153,100 @@ export class Sim {
         sourceId: mob.id,
         school: (ms.school as Aura['school']) ?? 'physical',
       });
+    }
+    // Ensnare: a landed hit may web the victim in place (root). Hostile mobs only
+    // (a friendly pet shares this swing path) and only roots players — `applyRootAura`
+    // applies crowd-control DR so repeated webs from the same mob shrink and break.
+    const ensnare = MOBS[mob.templateId]?.ensnare;
+    if (ensnare && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(ensnare.chance)) {
+      this.applyRootAura(mob, target, ensnare.name, `ensnare_${mob.templateId}`, ensnare.duration, ensnare.school ?? 'nature');
+    }
+    // slowStrike: a landed hit may mire the victim, slowing their attack speed.
+    // Rides the existing `attackspeed` aura (swingIntervalMult: value > 1 = slower);
+    // refreshes by id and never stacks. Guarded on `hostile` so a friendly pet
+    // (mobSwing's other caller) never debuffs the party.
+    const slowStrike = MOBS[mob.templateId]?.slowStrike;
+    if (slowStrike && mob.hostile && !target.dead && this.rng.chance(slowStrike.chance)) {
+      this.applyAura(target, {
+        id: `slowstrike_${mob.templateId}`,
+        name: slowStrike.name,
+        kind: 'attackspeed',
+        remaining: slowStrike.duration,
+        duration: slowStrike.duration,
+        value: slowStrike.mult,
+        sourceId: mob.id,
+        school: (slowStrike.school as Aura['school']) ?? 'physical',
+      });
+    }
+    // Mana Burn: a landed hit may sap a flat amount of mana from a mana-using
+    // victim (casters). No effect on rage/energy users. Guarded on `hostile` so
+    // a friendly pet (mobSwing's other caller) never drains an ally's mana. The
+    // mana bar visibly drops and the affix is surfaced via an `aura` log line.
+    const burn = MOBS[mob.templateId]?.manaBurn;
+    if (burn && mob.hostile && !target.dead && target.resourceType === 'mana' && target.resource > 0 && this.rng.chance(burn.chance)) {
+      target.resource = Math.max(0, target.resource - burn.amount);
+      this.emit({ type: 'aura', targetId: target.id, name: burn.name, gained: true });
+    }
+    // Maddening curse: a landed hit can fog a caster's mind, draining Intellect
+    // and thus shrinking their mana pool. Mana users only (it does nothing to
+    // rage/energy users); hostile mobs only, so a friendly pet (mobSwing's other
+    // caller) never debuffs the party. Rides buff_int with a negative value, so
+    // recalcPlayerStats folds it through to maxResource with no new math.
+    const enfeeble = MOBS[mob.templateId]?.enfeeble;
+    if (enfeeble && mob.hostile && !target.dead && target.resourceType === 'mana' && this.rng.chance(enfeeble.chance)) {
+      this.applyAura(target, {
+        id: `enfeeble_${mob.templateId}`,
+        name: enfeeble.name,
+        kind: 'buff_int',
+        remaining: enfeeble.duration,
+        duration: enfeeble.duration,
+        value: -Math.abs(enfeeble.int),
+        sourceId: mob.id,
+        school: enfeeble.school ?? 'shadow',
+      });
+    }
+    // On-hit chill: frost-touched mobs numb the victim, slowing their movement.
+    const chill = MOBS[mob.templateId]?.chillOnHit;
+    if (chill && !mob.dead && !target.dead && this.rng.chance(chill.chance)) {
+      this.applyAura(target, {
+        id: mob.templateId + '_chill', name: chill.name, kind: 'slow',
+        remaining: chill.duration, duration: chill.duration, value: chill.mult,
+        sourceId: mob.id, school: 'frost',
+      });
+    }
+    // Demoralizing affix: a successful hit saps the player victim's attack
+    // power for a few seconds, weakening the damage they deal back.
+    const demo = MOBS[mob.templateId]?.demoralize;
+    if (demo && !mob.dead && target.kind === 'player' && this.rng.chance(demo.chance ?? 1)) {
+      this.applyAura(target, {
+        id: 'mob_demoralize',
+        name: demo.name ?? 'Demoralized',
+        kind: 'buff_ap',
+        remaining: demo.duration,
+        duration: demo.duration,
+        value: -Math.abs(demo.ap),
+        sourceId: mob.id,
+        school: 'physical',
+      });
+    }
+    // Dread: a landed hit can terrify the victim into fleeing. Reuses the exact
+    // `fear_incap` incapacitate aura the player-cast Fear applies, so
+    // `updateFearMovement` drives the panicked run — no new aura kind or hook.
+    // Guarded on `hostile` (a friendly pet never fears the party) and on a player
+    // target (mobs can't flee via this path). `diminishedCrowdControlDuration`
+    // returns the full duration for a mob source (DR is PvP-only), so the victim
+    // gets the authored fear length.
+    const dread = MOBS[mob.templateId]?.dread;
+    if (dread && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(dread.chance)) {
+      const remaining = this.diminishedCrowdControlDuration(mob, target, 'fear', dread.duration);
+      if (remaining !== null) {
+        this.applyAura(target, {
+          id: 'fear_incap', name: dread.name, kind: 'incapacitate',
+          remaining, duration: remaining,
+          value: this.rng.range(-Math.PI, Math.PI),
+          sourceId: mob.id, school: dread.school ?? 'shadow', breaksOnDamage: true,
+        });
+      }
     }
   }
 
@@ -4335,6 +4480,7 @@ export class Sim {
     mob.enraged = false;
     mob.healedThisPull = false;
     mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
+    mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
     for (const meta of this.players.values()) {
       const e = this.entities.get(meta.entityId);
@@ -4393,12 +4539,42 @@ export class Sim {
     });
   }
 
+  // Death Throes (arm): a volatile creature does not explode the instant it
+  // dies. Its corpse destabilizes for `delay` seconds — a telegraph players can
+  // run from — by arming a fuse that the corpse tick (updateMob) counts down.
+  private armDeathThroes(dead: Entity): void {
+    const dt = MOBS[dead.templateId]?.deathThroes;
+    if (!dt) return;
+    dead.detonateTimer = dt.delay;
+    const school = dt.school ?? 'nature';
+    this.emit({ type: 'spellfx', sourceId: dead.id, targetId: dead.id, school, fx: 'nova' });
+    this.emit({ type: 'log', text: `${dead.name} begins to swell — get clear!`, color: '#9acd32', entityId: dead.id });
+  }
+
+  // Death Throes (detonate): the corpse bursts for min..max `school` damage to
+  // every living player within `radius`. Mirrors the aoePulse damage loop; the
+  // dead mob is the damage source so credit/threat resolve as a normal hit.
+  private detonateCorpse(dead: Entity): void {
+    const dt = MOBS[dead.templateId]?.deathThroes;
+    if (!dt) return;
+    const school = dt.school ?? 'nature';
+    this.emit({ type: 'spellfx', sourceId: dead.id, targetId: dead.id, school, fx: 'nova' });
+    this.emit({ type: 'log', text: `${dead.name} bursts in a cloud of ${dt.name}!`, color: '#9acd32', entityId: dead.id });
+    for (const meta of this.players.values()) {
+      const pe = this.entities.get(meta.entityId);
+      if (pe && !pe.dead && dist2d(pe.pos, dead.pos) <= dt.radius) {
+        const dmg = Math.round(this.rng.range(dt.min, dt.max));
+        this.dealDamage(dead, pe, dmg, false, school, dt.name, 'hit', true);
+      }
+    }
+  }
+
   // Boss threshold mechanics: add waves (summonAdds) and enrage. Checked
   // every tick while the boss is in combat; thresholds fire once per pull
   // and reset on evade/respawn.
   private updateBossMechanics(mob: Entity): void {
     const tmpl = MOBS[mob.templateId];
-    if (!tmpl || (!tmpl.summonAdds && !tmpl.enrage && !tmpl.desperateHeal)) return;
+    if (!tmpl || (!tmpl.summonAdds && !tmpl.enrage && !tmpl.desperateHeal && !tmpl.mendAlly)) return;
     const hpFrac = mob.hp / Math.max(1, mob.maxHp);
     if (tmpl.summonAdds) {
       const thresholds = tmpl.summonAdds.atHpPct;
@@ -4421,6 +4597,31 @@ export class Sim {
         this.emit({ type: 'heal', targetId: mob.id, amount: heal });
         this.emit({ type: 'log', text: `${mob.name} draws on a desperate second wind!`, color: '#66ff99', entityId: mob.id });
         this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school: 'nature', fx: 'nova' });
+      }
+    }
+    // Support "Mend": periodically heal every wounded friendly mob in range
+    // (including the caster). Telegraphed via createMob seeding mendTimer to a
+    // full interval, so the first cast never lands the instant combat opens.
+    if (tmpl.mendAlly) {
+      mob.mendTimer -= DT;
+      if (mob.mendTimer <= 0) {
+        mob.mendTimer = tmpl.mendAlly.every;
+        const wounded: Entity[] = [];
+        for (const ally of this.entities.values()) {
+          if (ally.kind !== 'mob' || ally.dead || ally.ownerId !== null) continue; // skip players, pets, corpses
+          if (ally.hostile !== mob.hostile || ally.hp >= ally.maxHp) continue; // only wounded same-faction mobs
+          if (dist2d(ally.pos, mob.pos) > tmpl.mendAlly.radius) continue;
+          wounded.push(ally);
+        }
+        if (wounded.length > 0) {
+          const school = tmpl.mendAlly.school ?? 'nature';
+          this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
+          this.emit({ type: 'log', text: `${mob.name} channels ${tmpl.mendAlly.name}.`, color: '#66ff99', entityId: mob.id });
+          for (const ally of wounded) {
+            const amount = Math.round(this.rng.range(tmpl.mendAlly.healMin, tmpl.mendAlly.healMax));
+            this.applyHeal(mob, ally, amount, tmpl.mendAlly.name);
+          }
+        }
       }
     }
   }

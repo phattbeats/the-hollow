@@ -39,7 +39,7 @@ export type AuraKind =
   | 'dot' | 'slow' | 'stun' | 'root' | 'incapacitate' | 'polymorph'
   | 'attackspeed' | 'debuff_ap' | 'buff_ap' | 'buff_armor' | 'buff_int' | 'buff_dodge' | 'buff_speed' | 'buff_haste'
   | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_allstats' | 'thorns' | 'form_bear'
-  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound';
+  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence';
 
 export interface Aura {
   id: string; // ability id that applied it
@@ -177,6 +177,12 @@ export interface MobTemplate {
   // Mob mechanic: a one-time desperation self-heal the first time hp drops
   // below the threshold (healPct is a fraction of maxHp). Resets on evade/respawn.
   desperateHeal?: { belowHpPct: number; healPct: number };
+  // Support mechanic ("Mend"): while in combat, periodically heal every wounded
+  // living friendly mob within `radius` (incl. itself) for `healMin..healMax`.
+  // Telegraphed: the first cast lands one full `every` interval after combat
+  // opens. Resets on evade/respawn. Routes through the normal heal path, so it
+  // shows green floating text and grants no threat to the menders themselves.
+  mendAlly?: { healMin: number; healMax: number; radius: number; every: number; name: string; school?: Aura['school'] };
   // Boss mechanic ("War Stomp"): periodic ground slam that stuns nearby players
   // for `duration`s (and optionally deals min..max damage). Telegraphed: the
   // first slam only lands one full `every` interval after combat starts.
@@ -187,6 +193,11 @@ export interface MobTemplate {
   // On-hit debuff: a chance per landed melee swing to inflict a stacking-refresh
   // damage-over-time poison on the struck target (spiders, serpents, scorpions).
   venom?: { chance: number; perTick: number; interval: number; duration: number; name: string; school?: string };
+  // On-death mechanic ("Death Throes"): a volatile creature does not detonate
+  // the instant it dies. Its corpse destabilizes for `delay` seconds (a
+  // telegraph players can run from), then bursts for min..max `school` damage
+  // to everyone within `radius`. Deterministic: the fuse rides the corpse tick.
+  deathThroes?: { min: number; max: number; radius: number; delay: number; name: string; school?: Aura['school'] };
   // Classic beast "Frenzy": when a mob with this trait dies, nearby living
   // same-family hostile mobs briefly attack faster (hasteMult, e.g. 1.3 = +30%
   // swing speed) for `duration` seconds. Applied as a buff_haste aura.
@@ -194,17 +205,61 @@ export interface MobTemplate {
   // Melee mechanic: a landed swing has `chance` to inflict a Mortal Wound debuff
   // that reduces all healing the victim receives by `healReduction` for `duration`.
   mortalStrike?: { chance: number; healReduction: number; duration: number; name: string; school?: string };
+  // On-hit lifesteal: a landed melee swing heals the mob for `healFrac` of the
+  // damage it just dealt (drowned undead, leeches, vampiric beasts). Unlike the
+  // other on-hit affixes it sustains the attacker instead of debuffing the
+  // victim. Optional `chance` gates the proc (defaults to every landed hit).
+  lifeleech?: { healFrac: number; chance?: number; name?: string };
   // Combat mechanic: a landed melee hit has `chance` to corrode the victim's
   // armor: a stacking `sunder` debuff (up to `maxStacks`) so the victim takes
   // more physical damage from everyone until it expires. Rides the existing
   // sunder aura; no new aura kind.
   corrode?: { chance: number; armor: number; maxStacks: number; duration: number; name: string; school?: Aura['school'] };
+  // On-hit web mechanic: a landed melee swing has `chance` to ensnare the struck
+  // player in place — a `root` aura for `duration`s (naga/spider snares). Rides the
+  // existing root aura + crowd-control DR; no new aura kind. Players only; rooting a
+  // fellow mob is meaningless and would let a friendly pet trivially lock enemies.
+  ensnare?: { chance: number; duration: number; name: string; school?: Aura['school'] };
+  // On-hit debuff: a chance per landed melee swing to mire the victim, slowing
+  // their ATTACK SPEED (an `attackspeed` aura, `mult` > 1 lengthens the swing
+  // interval) for `duration`s. Rides the existing swingIntervalMult hook — no new
+  // combat math. Distinct from a movement snare (`slow`) or an AP cut (`debuff_ap`).
+  slowStrike?: { chance: number; mult: number; duration: number; name: string; school?: Aura['school'] };
+  // On-hit mechanic ("Mana Burn"): a landed melee swing has `chance` to drain a
+  // flat `amount` of mana from a mana-using victim (casters). Rage/energy users
+  // are unaffected. Drains only what mana the victim still has; no overkill.
+  manaBurn?: { chance: number; amount: number; name: string; school?: Aura['school'] };
+  // On-hit curse: a landed melee swing has `chance` to fog the victim's mind,
+  // draining `int` Intellect for `duration` and thus shrinking a caster's mana
+  // pool (recalcPlayerStats clamps current mana down with the smaller ceiling).
+  // Rides the existing buff_int aura with a NEGATIVE value, so there is no new
+  // resource math. Only meaningful on mana users — applied to them alone.
+  enfeeble?: { chance: number; int: number; duration: number; name: string; school?: Aura['school'] };
+  // Combat mechanic: a landed melee hit has `chance` to terrify the victim — a
+  // fear that sends the struck player fleeing for `duration`s. Rides the existing
+  // `fear_incap` incapacitate aura the player-cast Fear uses, so `updateFearMovement`
+  // drives the panicked run with no new aura kind or movement hook.
+  dread?: { chance: number; duration: number; name: string; school?: Aura['school'] };
   // Pet mechanic: this creature is a ranged caster (warlock Imp) — instead of
   // closing to melee, it stays at `range` and hurls bolts of `school` damage.
   // updatePet reads this; the bolt damage comes from the mob's weapon range.
   petRanged?: { range: number; school: Aura['school'] };
   petRole?: PetRole;
   petSpell?: { name: string; school: 'physical' | 'fire' | 'frost' | 'arcane' | 'shadow' | 'holy' | 'nature'; min: number; max: number; range: number; every: number };
+  // On-hit mechanic: chance to silence the victim, locking out spell (non-physical) casts for a duration.
+  silence?: { chance: number; duration: number; name: string; school?: string };
+  // On-hit chill: a landed melee swing has `chance` to slow the victim's
+  // movement to `mult` of normal for `duration` seconds (frost school). Reuses
+  // the standard `slow` aura, so it rides the same movement path as Frostbolt.
+  chillOnHit?: { chance: number; mult: number; duration: number; name: string };
+  // On-hit affix: a successful melee hit saps the player victim's attack power
+  // for a few seconds (classic Demoralizing Shout / Curse of Weakness), making
+  // the damage *they* deal weaker. `ap` is the attack-power reduction (applied
+  // as a negative buff_ap aura); `chance` defaults to 1 (every hit, refreshing).
+  demoralize?: { ap: number; duration: number; chance?: number; name?: string };
+  // Innate "spiked hide" trait: melee attackers take flat damage back on every
+  // connecting swing — the mob-side equivalent of the druid Thorns aura.
+  thorns?: { value: number; school?: Aura['school']; name?: string };
 }
 
 export type AbilityEffect =
@@ -517,6 +572,8 @@ export interface Entity {
   petTauntTimer: number; // controlled pet Growl cooldown
   pulseTimer: number; // boss aoe pulse countdown
   stompTimer: number; // boss War Stomp stun-pulse countdown
+  detonateTimer: number; // Death Throes fuse on a volatile corpse; Infinity = no pending detonation
+  mendTimer: number; // mendAlly support-heal cast countdown
   firedSummons: number; // summonAdds thresholds already triggered
   summonedIds: number[]; // live adds this boss summoned; despawned on reset
   enraged: boolean; // enrage mechanic active

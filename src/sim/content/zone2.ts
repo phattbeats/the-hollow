@@ -61,6 +61,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
       { itemId: 'soggy_moccasin', chance: 0.3 },
     ],
     scale: 0.95, color: 0x4d5656,
+    // Miring Pounce: the prowler drags its prey into the sucking mire, slowing
+    // the victim's swings (+30% swing interval) for 8s.
+    slowStrike: { chance: 0.3, mult: 1.3, duration: 8, name: 'Miring Pounce', school: 'physical' },
   },
   deepfen_murloc: {
     id: 'deepfen_murloc', name: 'Deepfen Snapper', minLevel: 8, maxLevel: 9, family: 'murloc',
@@ -126,6 +129,7 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     id: 'drowned_dead', name: 'Drowned Dead', minLevel: 9, maxLevel: 11, family: 'undead',
     hpBase: 52, hpPerLevel: 20, dmgBase: 8, dmgPerLevel: 2.3, attackSpeed: 2.3,
     armorPerLevel: 14, moveSpeed: 6.5, aggroRadius: 11,
+    lifeleech: { healFrac: 0.5, chance: 0.35, name: 'Drowning Grasp' },
     loot: [
       { copper: 42, chance: 1 },
       { itemId: 'bone_fragments', chance: 0.5 },
@@ -171,11 +175,30 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     id: 'gravecaller_summoner', name: 'Gravecaller Summoner', minLevel: 11, maxLevel: 12, family: 'humanoid',
     hpBase: 46, hpPerLevel: 19, dmgBase: 10, dmgPerLevel: 2.5, attackSpeed: 2.0,
     armorPerLevel: 16, moveSpeed: 7, aggroRadius: 12,
+    silence: { chance: 0.3, duration: 4, name: 'Silencing Shriek', school: 'shadow' },
+    // Low dread proc so this mob doesn't routinely stack two panic effects
+    // (silence + fear) on one victim — keeps the encounter from feeling like a lockout.
+    dread: { chance: 0.12, duration: 4, name: 'Wail of the Grave', school: 'shadow' },
     loot: [
       { copper: 60, chance: 1 },
       { itemId: 'cult_cipher', chance: 0.6, questId: 'q_summoners' },
     ],
     scale: 1.0, color: 0x884ea0,
+  },
+  gravecaller_mender: {
+    id: 'gravecaller_mender', name: 'Gravecaller Mender', minLevel: 11, maxLevel: 12, family: 'humanoid',
+    hpBase: 44, hpPerLevel: 18, dmgBase: 8, dmgPerLevel: 2.2, attackSpeed: 2.1,
+    armorPerLevel: 16, moveSpeed: 7, aggroRadius: 12,
+    // Grave Mending: keeps its cultist pack alive, knitting every wounded ally's
+    // wounds shut on a slow cadence. Pull it away from the camp — or drop it
+    // first — or the fight never ends.
+    mendAlly: { healMin: 26, healMax: 38, radius: 14, every: 6, name: 'Grave Mending', school: 'shadow' },
+    loot: [
+      { copper: 58, chance: 1 },
+      { itemId: 'cult_cipher', chance: 0.4, questId: 'q_summoners' },
+      { itemId: 'tallow_candle', chance: 0.3 },
+    ],
+    scale: 1.0, color: 0x9b59b6,
   },
   sister_nhalia: {
     id: 'sister_nhalia', name: 'Sister Nhalia', minLevel: 12, maxLevel: 12, family: 'humanoid', rare: true,
@@ -210,6 +233,19 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
       { itemId: 'voss_sanctified_mace', chance: 0.25 },
     ],
     scale: 1.3, color: 0x512e5f,
+  },
+  bog_bloat: {
+    id: 'bog_bloat', name: 'Bog Bloat', minLevel: 9, maxLevel: 11, family: 'beast',
+    hpBase: 44, hpPerLevel: 17, dmgBase: 7, dmgPerLevel: 2.0, attackSpeed: 2.6,
+    armorPerLevel: 9, moveSpeed: 6, aggroRadius: 10,
+    // A swollen marsh gas-bag: when slain its corpse swells for 1.5s, then
+    // bursts in a cloud of caustic spores — get clear or share the blast.
+    deathThroes: { min: 14, max: 22, radius: 8, delay: 1.5, name: 'Caustic Spores', school: 'nature' },
+    loot: [
+      { copper: 40, chance: 1 },
+      { itemId: 'tangled_weed', chance: 0.5 },
+    ],
+    scale: 1.1, color: 0x6b8e23,
   },
 };
 
@@ -508,8 +544,13 @@ export const ZONE2_CAMPS: CampDef[] = [
   { mobId: 'gravecaller_cultist', center: { x: 15, z: 470 }, radius: 20, count: 7 },
   { mobId: 'gravecaller_cultist', center: { x: -25, z: 490 }, radius: 16, count: 6 },
   { mobId: 'gravecaller_summoner', center: { x: -5, z: 500 }, radius: 12, count: 4 },
+  { mobId: 'gravecaller_mender', center: { x: 18, z: 472 }, radius: 8, count: 2 },
   { mobId: 'sister_nhalia', center: { x: 24, z: 492 }, radius: 5, count: 1 },
   { mobId: 'deacon_voss', center: { x: 0, z: 510 }, radius: 2, count: 1 },
+  // Bog Bloats: volatile gas-bags drifting the dry eastern shelf of the marsh.
+  // Listed last so their spawn draws never perturb the other camps' placement.
+  { mobId: 'bog_bloat', center: { x: 72, z: 428 }, radius: 11, count: 5 },
+  { mobId: 'bog_bloat', center: { x: 110, z: 440 }, radius: 11, count: 4 },
 ];
 
 export const ZONE2_OBJECTS: GroundObjectDef[] = [
