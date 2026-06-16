@@ -1046,11 +1046,12 @@ export class Renderer {
     for (const [id, v] of this.views) {
       const e = sim.entities.get(id);
       if (!e) continue;
-      // form swaps (polymorph sheep, druid bear/cat) — computed up front because
+      // form swaps (polymorph sheep, druid forms) — computed up front because
       // the shadow gates below must not run the base rig's proxy under a form
       const polyed = e.auras.some((a) => a.kind === 'polymorph');
       const bear = !polyed && e.auras.some((a) => a.kind === 'form_bear');
-      const cat = !polyed && !bear && e.auras.some((a) => a.kind === 'form_cat');
+      const ghostWolf = !polyed && !bear && e.auras.some((a) => a.id === 'ghost_wolf');
+      const cat = !polyed && !bear && (ghostWolf || e.auras.some((a) => a.kind === 'form_cat'));
       const stealthed = e.auras.some((a) => a.kind === 'stealth');
       // distance cull: far rigs are invisible specks but cost real draw calls
       const cdx = e.pos.x - p.pos.x, cdz = e.pos.z - p.pos.z;
@@ -1070,7 +1071,7 @@ export class Renderer {
           // past the articulated gate the static-pose proxy carries the
           // shadow; an active form's own rig keeps casting instead
           v.visual.setProxyShadow(!wantShadow && inProxyBand && !polyed && !bear && !cat);
-          // sheep/bear/cat keep articulated shadows through the whole proxy band —
+          // sheep/forms keep articulated shadows through the whole proxy band —
           // a frozen humanoid proxy silhouette would be wrong under a form
           const wantFormShadow = wantShadow || inProxyBand;
           v.sheepVisual?.setShadow(wantFormShadow);
@@ -1142,7 +1143,7 @@ export class Renderer {
       const active = polyed && v.sheepVisual ? v.sheepVisual
         : bear && v.bearVisual ? v.bearVisual
           : cat && v.catVisual ? v.catVisual : v.visual;
-      const ghost = shouldRenderStealthGhost(this.sim.playerId, e);
+      const ghost = ghostWolf || shouldRenderStealthGhost(this.sim.playerId, e);
       active.setGhost(ghost);
       v.visual.root.visible = active === v.visual;
       // distant rigs swap to the single-draw baked idle-pose mesh
@@ -1187,7 +1188,7 @@ export class Renderer {
       }
 
       if (st.casting) {
-        this.vfx.castSparkle(e.id, ABILITIES[e.castingAbility!]?.school ?? 'arcane', dt);
+        this.vfx.castSparkle(e.id, e.castingAbility === 'demon_heal' ? 'shadow' : ABILITIES[e.castingAbility!]?.school ?? 'arcane', dt);
       }
       if (swimming) this.vfx.swimRipple(v.group.position, moving ? dt * 3 : dt);
     }

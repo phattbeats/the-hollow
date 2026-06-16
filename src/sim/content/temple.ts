@@ -118,7 +118,7 @@ export const TEMPLE_DUNGEON_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 28, moveSpeed: 7, aggroRadius: 18,
     aoePulse: { min: 22, max: 32, radius: 13, every: 9, name: 'Lunar Tide' },
     summonAdds: { mobId: 'moonspawn', count: 2, atHpPct: [0.6, 0.3] },
-    enrage: { belowHpPct: 0.30, dmgMult: 1.4 },
+    enrage: { belowHpPct: 0.30, dmgMult: 1.4, hasteMult: 1.3 },
     loot: [
       { copper: 6000, chance: 1 },
       { itemId: 'ysols_pearl_greaves', chance: 0.5 },

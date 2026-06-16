@@ -8,7 +8,7 @@ import {
   zoneWelcomeText,
 } from '../sim/data';
 import type { ZoneDef } from '../sim/data';
-import type { AbilityDef, EquipSlot, InvSlot, PlayerClass, ResourceType, Stats } from '../sim/types';
+import type { AbilityDef, EquipSlot, InvSlot, PetMode, PlayerClass, ResourceType, Stats } from '../sim/types';
 import {
   AbilityEffect, CONSUME_DURATION, Entity, FISHING_CAST_ID, GCD, ItemDef, SimEvent,
   dist2d, xpForLevel, MAX_LEVEL, MELEE_RANGE, MILESTONES, virtualLevel, canPrestige, xpUntilNextPrestige,
@@ -65,6 +65,7 @@ const esc = (value: unknown): string => String(value ?? '')
   .replace(/'/g, '&#39;');
 const castDisplayName = (id: string): string => {
   if (id === FISHING_CAST_ID) return t('abilityUi.cast.fishing');
+  if (id === 'demon_heal') return t('abilityUi.cast.demonHeal');
   const ability = ABILITIES[id];
   return ability ? abilityDisplayName(ability) : id;
 };
@@ -95,6 +96,16 @@ const RAID_MARKER_LABEL_KEYS = [
 const FORM_LABEL_KEYS: Record<'bear' | 'cat', TranslationKey> = {
   bear: 'abilityUi.forms.bear',
   cat: 'abilityUi.forms.cat',
+};
+const PET_MODE_LABEL_KEYS: Record<PetMode, TranslationKey> = {
+  passive: 'hud.pet.passive',
+  defensive: 'hud.pet.defensive',
+  aggressive: 'hud.pet.aggressive',
+};
+const PET_MODE_DESC_KEYS: Record<PetMode, TranslationKey> = {
+  passive: 'hud.pet.passiveDesc',
+  defensive: 'hud.pet.defensiveDesc',
+  aggressive: 'hud.pet.aggressiveDesc',
 };
 type ItemQuality = NonNullable<ItemDef['quality']>;
 const ITEM_SLOT_LABEL_KEYS: Record<EquipSlot, TranslationKey> = {
@@ -133,6 +144,27 @@ const ITEM_STAT_LABEL_KEYS: Partial<Record<keyof Stats, TranslationKey>> = {
 // string, used to color-code party members on the minimap and in the frames.
 const classCss = (cls: string): string =>
   '#' + ((CLASSES as Record<string, { color: number }>)[cls]?.color ?? 0x5fa8ff).toString(16).padStart(6, '0');
+
+// Talent icons derive from a node's effect — an ability-linked node shows that
+// ability's painted icon; a stat/global node shows a themed crest — so they
+// match the spellbook art and the 8 unwritten class trees inherit consistent
+// icons automatically, with no hand-set glyphs to keep in sync.
+const TALENT_STAT_CREST: Record<string, string> = {
+  armorPct: 'talent_armor', armor: 'talent_armor',
+  crit: 'talent_crit', spellPower: 'talent_crit',
+  dodge: 'talent_dodge',
+  ap: 'talent_ap', apPct: 'talent_ap',
+  maxHpPct: 'talent_health', sta: 'talent_health',
+  haste: 'talent_haste',
+};
+function talentEffectIcon(effect: TalentEffect | undefined, kind: string): string {
+  const ab = effect?.grant?.ability ?? effect?.ability?.[0]?.ability;
+  if (ab && ABILITIES[ab]) return iconDataUrl('ability', ab);
+  const stat = effect?.stats ? Object.keys(effect.stats)[0] : undefined;
+  if (stat) return iconDataUrl('crest', TALENT_STAT_CREST[stat] ?? 'talent_generic');
+  if (effect?.global) return iconDataUrl('crest', effect.global.threatPct ? 'talent_armor' : 'talent_crit');
+  return iconDataUrl('crest', kind === 'choice' ? 'talent_choice' : 'talent_generic');
+}
 
 // Party frames dim and the minimap pins members to the rim once they pass
 // this range (yards) — just inside the server's ~120 yd interest scope.
@@ -190,6 +222,7 @@ const CHAT_TEMPLATE_KEYS = {
   roll: 'hud.chat.templates.roll',
   say: 'hud.chat.templates.say',
 } satisfies Record<string, TranslationKey>;
+type HotbarForm = 'normal' | 'bear' | 'cat' | 'stealth';
 
 // world map: terrain is pre-rendered for the whole zone at this resolution
 // (cached per zone) and a sub-rect is blitted for the current zoom.
@@ -203,6 +236,7 @@ export class Hud {
   private hotbarActions: HotbarAction[] = []; // index = barSlot-1
   private loadedSlotMapFromStorage = false;
   private knownAbilityIdsAtLastSlotSync: Set<string> | null = null;
+  private activeHotbarForm: HotbarForm = 'normal';
   private dragAction: { action: Exclude<HotbarAction, null>; sourceIndex: number | null } | null = null;
   private optionsHooks: OptionsHooks | null = null;
   private reportHooks: ReportHooks | null = null;
@@ -307,6 +341,9 @@ export class Hud {
   private socialSuggest: { field: string; items: { name: string; cls: string; level: number }[]; index: number } = { field: '', items: [], index: -1 };
 
   private meters: Meters;
+  private lastPetBarSig = '';
+  private pendingPetFeed = false;
+  private petModeMenuOpen = false;
   // Talents: a local staged allocation the user edits before committing (Apply).
   private talentStage: TalentAllocation | null = null;
   private talentTab: 'class' | 'spec' = 'class';
@@ -350,6 +387,8 @@ export class Hud {
       const t = tid !== null ? this.sim.entities.get(tid) : null;
       if (t && t.kind === 'player' && t.id !== this.sim.playerId) {
         this.openContextMenu(t.id, t.name, (ev as MouseEvent).clientX, (ev as MouseEvent).clientY);
+      } else if (t && t.kind === 'mob' && t.ownerId === this.sim.playerId) {
+        this.openPetMenu(t.id, t.name, t.dead, (ev as MouseEvent).clientX, (ev as MouseEvent).clientY);
       } else if (t && t.kind === 'mob' && !t.dead && t.hostile && t.ownerId === null && this.sim.partyInfo) {
         // classic MMOs: right-click an enemy's unit frame to set a raid marker.
         // Mirror Sim.setMarker's markable criteria (live wild hostile mob) so the
@@ -1094,9 +1133,20 @@ export class Hud {
 
   // The hotbar layout is a client-side remap over learned abilities and item
   // shortcuts. Abilities are keyed by id (known is class-ordered and shifts on
-  // level-up, so indices would not survive). Persisted per class+character.
+  // level-up, so indices would not survive). Persisted per class+character,
+  // with separate form/stealth layouts because each state has a different kit.
   private slotMapKey(): string {
-    return `woc_hotbar_${this.sim.cfg.playerClass}_${this.sim.player.name}`;
+    const base = `woc_hotbar_${this.sim.cfg.playerClass}_${this.sim.player.name}`;
+    return this.activeHotbarForm === 'normal' ? base : `${base}_${this.activeHotbarForm}`;
+  }
+
+  private playerHotbarForm(): HotbarForm {
+    if (this.sim.cfg.playerClass === 'druid') {
+      if (this.sim.player.auras.some((a) => a.kind === 'form_bear')) return 'bear';
+      if (this.sim.player.auras.some((a) => a.kind === 'form_cat')) return 'cat';
+    }
+    if (this.sim.cfg.playerClass === 'rogue' && this.sim.player.auras.some((a) => a.kind === 'stealth')) return 'stealth';
+    return 'normal';
   }
 
   private isHotbarItemId(itemId: string): boolean {
@@ -1106,18 +1156,34 @@ export class Hud {
 
   private loadSlotMap(): void {
     let arr: unknown = null;
-    try { arr = JSON.parse(localStorage.getItem(this.slotMapKey()) ?? 'null'); } catch { /* corrupt */ }
-    this.loadedSlotMapFromStorage = Array.isArray(arr);
+    let stored = false;
+    try {
+      const raw = localStorage.getItem(this.slotMapKey());
+      stored = raw !== null;
+      arr = JSON.parse(raw ?? 'null');
+    } catch { /* corrupt */ }
+    this.loadedSlotMapFromStorage = stored || this.activeHotbarForm !== 'normal';
     this.hotbarActions = parseHotbarActions(
       arr,
       Hud.BAR_ABILITY_SLOTS,
       (id) => !!ABILITIES[id],
       (id) => this.isHotbarItemId(id),
     );
+    this.knownAbilityIdsAtLastSlotSync = null;
   }
 
   private saveSlotMap(): void {
     try { localStorage.setItem(this.slotMapKey(), JSON.stringify(this.hotbarActions)); } catch { /* storage unavailable */ }
+  }
+
+  private syncActiveHotbarForm(): void {
+    const next = this.playerHotbarForm();
+    if (next === this.activeHotbarForm) return;
+    this.saveSlotMap();
+    this.activeHotbarForm = next;
+    this.dragAction = null;
+    this.clearActionDropTargets();
+    this.loadSlotMap();
   }
 
   // Drop unlearned ability ids; place newly learned abilities in the first
@@ -1347,6 +1413,98 @@ export class Hud {
     for (let i = 0; i < 20; i++) ticks.appendChild(document.createElement('i'));
   }
 
+  private ownPet(): Entity | null {
+    for (const e of this.sim.entities.values()) {
+      if (e.kind === 'mob' && e.ownerId === this.sim.playerId) return e;
+    }
+    return null;
+  }
+
+  private renderPetBar(): void {
+    const bar = $('#petbar') as HTMLElement;
+    const pet = this.ownPet();
+    if (!pet || pet.dead) {
+      bar.style.display = 'none';
+      if (this.lastPetBarSig !== '') {
+        bar.innerHTML = '';
+        this.lastPetBarSig = '';
+      }
+      return;
+    }
+    const mode = pet.petMode ?? 'defensive';
+    const cd = Math.ceil(Math.max(0, pet.petTauntTimer));
+    const ownerClass = this.sim.cfg.playerClass;
+    const sig = `${pet.id}:${ownerClass}:${mode}:${cd}:${this.pendingPetFeed ? 'feed' : ''}:${this.petModeMenuOpen ? 'modes' : ''}`;
+    bar.style.display = 'flex';
+    if (sig === this.lastPetBarSig) return;
+    this.lastPetBarSig = sig;
+    bar.innerHTML = '';
+    const commands = document.createElement('div');
+    commands.className = 'petbar-group';
+    const stances = document.createElement('div');
+    stances.className = 'petbar-group';
+    bar.append(commands, stances);
+    const petTooltip = (title: string, desc: string): string =>
+      `<div class="tt-title">${esc(title)}</div><div class="tt-desc">${esc(desc)}</div>`;
+    const petModeLabel = (m: PetMode): string => t(PET_MODE_LABEL_KEYS[m]);
+    const addButton = (parent: HTMLElement, iconId: string, title: string, tooltip: string, onClick: () => void, opts: { active?: boolean; cooldownText?: string } = {}) => {
+      const btn = document.createElement('button');
+      btn.className = 'pet-btn';
+      if (opts.active) btn.classList.add('active');
+      if (opts.cooldownText) btn.classList.add('cooldown');
+      btn.title = title;
+      const icon = document.createElement('span');
+      icon.className = 'icon-label';
+      icon.style.backgroundImage = `url(${iconDataUrl('ability', iconId)})`;
+      btn.appendChild(icon);
+      if (opts.cooldownText) {
+        const cdText = document.createElement('span');
+        cdText.className = 'cdtext';
+        cdText.textContent = opts.cooldownText;
+        btn.appendChild(cdText);
+      }
+      btn.addEventListener('click', () => {
+        if (opts.cooldownText) return;
+        audio.click();
+        onClick();
+      });
+      this.attachTooltip(btn, () => tooltip);
+      parent.appendChild(btn);
+    };
+    addButton(commands, 'attack', t('hud.pet.attack'), petTooltip(t('hud.pet.petAttackTitle'), t('hud.pet.petAttackDesc')), () => this.sim.petAttack());
+    addButton(commands, 'growl', t('hud.pet.taunt'), petTooltip(t('hud.pet.petTauntTitle'), t('hud.pet.petTauntDesc')), () => this.sim.petTaunt(), { cooldownText: cd > 0 ? `${cd}` : undefined });
+    if (ownerClass === 'warlock') {
+      addButton(commands, 'drain_life', t('hud.pet.healDemon'), petTooltip(t('hud.pet.healDemon'), t('hud.pet.healDemonDesc')), () => {
+        this.sim.healPet();
+      });
+    } else {
+      addButton(commands, 'rejuvenation', t('hud.pet.healPet'), petTooltip(t('hud.pet.healPet'), t('hud.pet.healPetDesc')), () => {
+        this.pendingPetFeed = true;
+        this.lastPetBarSig = '';
+        $('#bags').style.display = 'block';
+        this.renderBags();
+      }, { active: this.pendingPetFeed });
+    }
+    const modes: { mode: PetMode; labelKey: TranslationKey; descKey: TranslationKey }[] = [
+      { mode: 'passive', labelKey: PET_MODE_LABEL_KEYS.passive, descKey: PET_MODE_DESC_KEYS.passive },
+      { mode: 'defensive', labelKey: PET_MODE_LABEL_KEYS.defensive, descKey: PET_MODE_DESC_KEYS.defensive },
+      { mode: 'aggressive', labelKey: PET_MODE_LABEL_KEYS.aggressive, descKey: PET_MODE_DESC_KEYS.aggressive },
+    ];
+    const modeIcons: Record<PetMode, string> = { passive: 'prowl', defensive: 'defensive_stance', aggressive: 'rapid_fire' };
+    addButton(stances, modeIcons[mode], petModeLabel(mode), petTooltip(`${t('hud.pet.stanceTitle')}: ${petModeLabel(mode)}`, t('hud.pet.stanceDesc')), () => {
+      this.petModeMenuOpen = !this.petModeMenuOpen;
+      this.lastPetBarSig = '';
+    }, { active: true });
+    if (!this.petModeMenuOpen) return;
+    for (const entry of modes) {
+      addButton(stances, modeIcons[entry.mode], t(entry.labelKey), petTooltip(t(entry.labelKey), t(entry.descKey)), () => {
+        this.sim.setPetMode(entry.mode);
+        this.petModeMenuOpen = false;
+        this.lastPetBarSig = '';
+      }, { active: mode === entry.mode });
+    }
+  }
+
   // -------------------------------------------------------------------------
   // Frame update
   // -------------------------------------------------------------------------
@@ -1363,6 +1521,7 @@ export class Hud {
     if (slowHud) this.lastHudSlowAt = now;
 
     this.meters.update();
+    this.syncActiveHotbarForm();
     this.syncSlotMap(); // picks up newly learned abilities mid-session
 
     // talent buttons glow while the player has unspent points (and a tree exists)
@@ -1450,6 +1609,7 @@ export class Hud {
     }
 
     // action bar
+    this.renderPetBar();
     const tgtDist = target && !target.dead ? dist2d(p.pos, target.pos) : null;
     this.actionbarEl.classList.toggle('many-spells', this.hotbarActions.filter((action) => action !== null).length > 10);
     for (let i = 0; i < this.abilityButtons.length; i++) {
@@ -1629,7 +1789,7 @@ export class Hud {
     (el as any).__sig = sig;
     el.innerHTML = '';
     for (const a of e.auras) {
-      const isDebuff = ['dot', 'slow', 'root', 'stun', 'incapacitate', 'polymorph', 'attackspeed'].includes(a.kind);
+      const isDebuff = ['dot', 'slow', 'root', 'stun', 'incapacitate', 'polymorph', 'attackspeed', 'debuff_ap'].includes(a.kind);
       if (mode === 'debuffs' && !isDebuff) continue;
       const d = document.createElement('div');
       d.className = 'buff' + (isDebuff ? ' debuff' : '');
@@ -3366,6 +3526,12 @@ export class Hud {
           this.renderMarket();
         } else if (this.vendorOpen) {
           this.sellBagItem(s, ev);
+        } else if (this.pendingPetFeed) {
+          if (item.kind !== 'food') { this.showError('Your pet can only eat food.'); return; }
+          this.sim.feedPet(s.itemId);
+          this.pendingPetFeed = false;
+          this.lastPetBarSig = '';
+          this.renderBags();
         } else if (item.kind === 'quest') {
           this.showDiscardItemPrompt(s.itemId, Math.max(1, Math.floor(s.count)));
         } else {
@@ -4500,6 +4666,46 @@ export class Hud {
         if (!(e instanceof KeyboardEvent) || (e.key !== 'Enter' && e.key !== ' ')) return;
         e.preventDefault();
         activate();
+      });
+    });
+  }
+
+  openPetMenu(entityId: number, name: string, dead: boolean, x: number, y: number): void {
+    const el = $('#ctx-menu');
+    const isWarlock = this.sim.cfg.playerClass === 'warlock';
+    let html = `<div class="ctx-title">${esc(name)}</div>`;
+    html += `<div class="ctx-item" data-act="rename">${esc(t('hud.pet.rename'))}</div>`;
+    if (dead) html += `<div class="ctx-item" data-act="revive">${esc(t('hud.pet.revive'))}</div>`;
+    if (!isWarlock) html += `<div class="ctx-item" data-act="abandon">${esc(t('hud.pet.abandon'))}</div>`;
+    html += `<div class="ctx-item" data-act="close">${esc(t('hud.pet.cancel'))}</div>`;
+    el.innerHTML = html;
+    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
+    el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
+    el.style.display = 'block';
+    el.querySelectorAll('.ctx-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        const act = (item as HTMLElement).dataset.act;
+        el.style.display = 'none';
+        if (act === 'rename') {
+          this.inputDialog({
+            title: t('hud.pet.rename'),
+            label: t('hud.pet.renameLabel'),
+            value: name,
+            placeholder: t('hud.pet.petNamePlaceholder'),
+            okText: t('hud.pet.renameConfirm'),
+            onOk: (value) => this.sim.renamePet(value),
+          });
+        } else if (act === 'revive') {
+          this.sim.castAbility('revive_pet');
+        } else if (act === 'abandon') {
+          this.confirmDialog(
+            t('hud.pet.abandon'),
+            t('hud.pet.abandonBody', { name: esc(name) }),
+            t('hud.pet.abandonConfirm'),
+            t('hud.pet.cancel'),
+            () => this.sim.abandonPet(),
+          );
+        }
       });
     });
   }

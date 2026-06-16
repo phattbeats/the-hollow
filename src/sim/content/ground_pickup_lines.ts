@@ -57,6 +57,10 @@ export const GROUND_PICKUP_LINES: Record<string, GroundPickupLines> = {
     deny: 'The shard is dormant and locked in place.',
     enough: 'You already have enough sanctum key shards.',
   },
+  moongate_rubbing: {
+    deny: 'The warding is not yours to copy until the watcher asks for it.',
+    enough: 'You already have the warding rubbing.',
+  },
 };
 
 export function groundPickupDeny(itemId: string, itemName: string): string {

@@ -37,7 +37,7 @@ export type AiState = 'idle' | 'chase' | 'attack' | 'flee' | 'evade' | 'dead';
 
 export type AuraKind =
   | 'dot' | 'slow' | 'stun' | 'root' | 'incapacitate' | 'polymorph'
-  | 'attackspeed' | 'buff_ap' | 'buff_armor' | 'buff_int' | 'buff_dodge' | 'buff_speed' | 'buff_haste'
+  | 'attackspeed' | 'debuff_ap' | 'buff_ap' | 'buff_armor' | 'buff_int' | 'buff_dodge' | 'buff_speed' | 'buff_haste'
   | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_allstats' | 'thorns' | 'form_bear'
   | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound';
 
@@ -139,6 +139,8 @@ export interface LootEntry {
 export type MobFamily =
   | 'beast' | 'humanoid' | 'murloc' | 'spider' | 'kobold' | 'undead'
   | 'troll' | 'ogre' | 'elemental' | 'dragonkin' | 'demon';
+export type PetMode = 'passive' | 'defensive' | 'aggressive';
+export type PetRole = 'melee_tank' | 'ranged_dps';
 
 export interface MobTemplate {
   id: string;
@@ -201,6 +203,8 @@ export interface MobTemplate {
   // closing to melee, it stays at `range` and hurls bolts of `school` damage.
   // updatePet reads this; the bolt damage comes from the mob's weapon range.
   petRanged?: { range: number; school: Aura['school'] };
+  petRole?: PetRole;
+  petSpell?: { name: string; school: 'physical' | 'fire' | 'frost' | 'arcane' | 'shadow' | 'holy' | 'nature'; min: number; max: number; range: number; every: number };
 }
 
 export type AbilityEffect =
@@ -224,6 +228,7 @@ export type AbilityEffect =
   | { type: 'polymorph'; duration: number } // sheep: breaks on damage, target heals
   | { type: 'aoeDamage'; min: number; max: number; radius: number }
   | { type: 'aoeAttackSpeed'; mult: number; duration: number; radius: number } // thunder clap rider
+  | { type: 'aoeAttackPower'; amount: number; duration: number; radius: number } // demoralizing roar/shout
   | { type: 'aoeRoot'; duration: number; radius: number; min: number; max: number }
   | { type: 'selfBuff'; kind: AuraKind; value: number; duration: number }
   | { type: 'finisherHaste'; mult: number; basedur: number; perCombo: number } // slice and dice
@@ -235,6 +240,7 @@ export type AbilityEffect =
   | { type: 'taunt' } // taunt/growl: match top threat and force-attack the caster
   | { type: 'tamePet' } // hunter tame beast: the targeted mob becomes the caster's pet
   | { type: 'dismissPet' } // release the caster's pet back to the wild
+  | { type: 'summonPet'; templateId: string } // warlock demon summon: creates/replaces a controlled pet
   | { type: 'summonDemon'; mobId: string }; // warlock: summon a demon pet (imp/voidwalker)
 
 export interface AbilityRank {
@@ -507,6 +513,7 @@ export interface Entity {
   forcedTargetId: number | null; // taunt/growl: attack this target while the timer runs
   forcedTargetTimer: number; // seconds left on the forced-attack window
   ownerId: number | null; // controlled pets: owning player's entity id (null = wild)
+  petMode: PetMode; // hunter pet behavior stance
   petTauntTimer: number; // controlled pet Growl cooldown
   pulseTimer: number; // boss aoe pulse countdown
   stompTimer: number; // boss War Stomp stun-pulse countdown
@@ -785,12 +792,15 @@ export function rageConversion(level: number): number {
   return 0.0091 * level * level + 3.23 * level + 4.27;
 }
 
-// Rage from dealing damage: 7.5 * d / c ; from taking damage: 2.5 * d / c
+// Rage from dealing damage uses the classic outgoing-damage scale.
 export function rageFromDealing(damage: number, level: number): number {
   return (7.5 * damage) / rageConversion(level);
 }
-export function rageFromTaking(damage: number, level: number): number {
-  return (2.5 * damage) / rageConversion(level);
+
+// Rage from taking damage scales with the attacker's level so dungeon tanks get
+// useful rage from being hit without hard-coding the current level cap.
+export function rageFromTaking(damage: number, attackerLevel: number): number {
+  return damage / (Math.max(1, attackerLevel) * 1.5);
 }
 
 // Vanilla spell hit table by level difference (target - caster):
