@@ -123,6 +123,28 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
     ],
     scale: 1.5, color: 0x8c3b2e,
   },
+  brutok_skullsmasher: {
+    // The ogre family's rare elite — a hulking two-fisted mauler that prowls
+    // the crags above the Crusher warbands. Slow, heavily armored and brutal:
+    // it slams the ground in a physical shockwave and goes berserk when low.
+    // Fills the ogre rare gap beside Ironvein Foreman (kobold), Shardlord
+    // Kazzix (elemental) and Marrowlord Varkas (undead).
+    id: 'brutok_skullsmasher', name: 'Brutok Skullsmasher', minLevel: 17, maxLevel: 17, family: 'ogre', rare: true,
+    elite: true, ccImmune: true, respawnMult: 432,
+    hpBase: 360, hpPerLevel: 60, dmgBase: 16, dmgPerLevel: 3.6, attackSpeed: 2.7,
+    armorPerLevel: 30, moveSpeed: 7, aggroRadius: 13,
+    aoePulse: { min: 22, max: 30, radius: 10, every: 10, name: 'Skull Smash', school: 'physical', fx: 'nova' },
+    enrage: { belowHpPct: 0.30, dmgMult: 1.5 },
+    loot: [
+      { copper: 320, chance: 1 },
+      { itemId: 'cracked_ogre_tusk', chance: 1 },
+      { itemId: 'skullsmasher_warbelt', chance: 0.3 },
+      { itemId: 'brutoks_maul', chance: 0.25, rollGroup: 'brutok_chase' },
+      { itemId: 'crag_warden_cudgel', chance: 0.25, rollGroup: 'brutok_chase' },
+      { itemId: 'skullsplitter_dirk', chance: 0.25, rollGroup: 'brutok_chase' },
+    ],
+    scale: 1.45, color: 0x6e5235,
+  },
   stormcrag_elemental: {
     id: 'stormcrag_elemental', name: 'Stormcrag Elemental', minLevel: 17, maxLevel: 18, family: 'elemental',
     hpBase: 62, hpPerLevel: 22, dmgBase: 12, dmgPerLevel: 2.7, attackSpeed: 2.2,
@@ -525,6 +547,8 @@ export const ZONE3_CAMPS: CampDef[] = [
   { mobId: 'thornpeak_ogre', center: { x: -60, z: 730 }, radius: 18, count: 6 },
   { mobId: 'ogre_crusher', center: { x: -125, z: 740 }, radius: 18, count: 8 },
   { mobId: 'warlord_drogmar', center: { x: -132, z: 748 }, radius: 2, count: 1 },
+  // A lone rare ogre prowls the ridge north of the warband
+  { mobId: 'brutok_skullsmasher', center: { x: -45, z: 768 }, radius: 4, count: 1 },
   // Elementals: Stormcrag, far west
   { mobId: 'stormcrag_elemental', center: { x: 110, z: 760 }, radius: 20, count: 8 },
   { mobId: 'stormcrag_elemental', center: { x: 135, z: 795 }, radius: 16, count: 6 },
@@ -627,7 +651,25 @@ export const ZONE3_ITEMS: Record<string, ItemDef> = {
     id: 'marrowlord_boneboots', name: 'Marrowlord Boneboots', kind: 'armor', slot: 'feet', quality: 'uncommon',
     stats: { armor: 90, sta: 5, str: 2 }, sellValue: 1050, requiredClass: ['warrior', 'paladin', 'shaman'],
   },
+  // Brutok Skullsmasher (rare ogre) — guaranteed trophy + warbelt
+  skullsmasher_warbelt: {
+    id: 'skullsmasher_warbelt', name: "Skullsmasher's Warbelt", kind: 'armor', slot: 'chest', quality: 'uncommon',
+    stats: { armor: 96, sta: 5, str: 3 }, sellValue: 1050,
+  },
   // --- quest & dungeon blues (rare) ---
+  // Brutok Skullsmasher chase weapons (mutually exclusive: brutok_chase)
+  brutoks_maul: {
+    id: 'brutoks_maul', name: "Brutok's Maul", kind: 'weapon', slot: 'mainhand', quality: 'rare',
+    weapon: { min: 24, max: 37, speed: 2.7 }, stats: { str: 8, sta: 3 }, sellValue: 2000, requiredClass: ['warrior', 'paladin', 'shaman'],
+  },
+  crag_warden_cudgel: {
+    id: 'crag_warden_cudgel', name: 'Crag Warden Cudgel', kind: 'weapon', slot: 'mainhand', quality: 'rare',
+    weapon: { min: 23, max: 36, speed: 3.0 }, stats: { int: 8, spi: 4 }, sellValue: 2000, requiredClass: ['mage', 'priest', 'warlock', 'druid'],
+  },
+  skullsplitter_dirk: {
+    id: 'skullsplitter_dirk', name: 'Skullsplitter Dirk', kind: 'weapon', slot: 'mainhand', quality: 'rare',
+    weapon: { min: 15, max: 23, speed: 1.7, dagger: true }, stats: { agi: 8, sta: 3 }, sellValue: 2000, requiredClass: ['rogue', 'hunter'],
+  },
   drogmars_skullcleaver: {
     id: 'drogmars_skullcleaver', name: "Drogmar's Skullcleaver", kind: 'weapon', slot: 'mainhand', quality: 'rare',
     weapon: { min: 22, max: 35, speed: 2.6 }, stats: { str: 7, sta: 4 }, sellValue: 2000, requiredClass: ['warrior', 'paladin', 'shaman'],
@@ -785,6 +827,7 @@ export const ZONE3_ITEMS: Record<string, ItemDef> = {
   },
   // --- junk (gray) ---
   ogre_toe_ring: { id: 'ogre_toe_ring', name: 'Ogre Toe Ring', kind: 'junk', quality: 'poor', sellValue: 25 },
+  cracked_ogre_tusk: { id: 'cracked_ogre_tusk', name: 'Cracked Ogre Tusk', kind: 'junk', quality: 'poor', sellValue: 42 },
   inert_storm_shard: { id: 'inert_storm_shard', name: 'Inert Storm Shard', kind: 'junk', quality: 'poor', sellValue: 28 },
   frayed_prayer_beads: { id: 'frayed_prayer_beads', name: 'Frayed Prayer Beads', kind: 'junk', quality: 'poor', sellValue: 30 },
   cracked_wyrm_scale: { id: 'cracked_wyrm_scale', name: 'Cracked Wyrm Scale', kind: 'junk', quality: 'poor', sellValue: 35 },
