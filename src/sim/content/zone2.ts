@@ -184,6 +184,21 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     ],
     scale: 1.0, color: 0x884ea0,
   },
+  gravecaller_mender: {
+    id: 'gravecaller_mender', name: 'Gravecaller Mender', minLevel: 11, maxLevel: 12, family: 'humanoid',
+    hpBase: 44, hpPerLevel: 18, dmgBase: 8, dmgPerLevel: 2.2, attackSpeed: 2.1,
+    armorPerLevel: 16, moveSpeed: 7, aggroRadius: 12,
+    // Grave Mending: keeps its cultist pack alive, knitting every wounded ally's
+    // wounds shut on a slow cadence. Pull it away from the camp — or drop it
+    // first — or the fight never ends.
+    mendAlly: { healMin: 26, healMax: 38, radius: 14, every: 6, name: 'Grave Mending', school: 'shadow' },
+    loot: [
+      { copper: 58, chance: 1 },
+      { itemId: 'cult_cipher', chance: 0.4, questId: 'q_summoners' },
+      { itemId: 'tallow_candle', chance: 0.3 },
+    ],
+    scale: 1.0, color: 0x9b59b6,
+  },
   sister_nhalia: {
     id: 'sister_nhalia', name: 'Sister Nhalia', minLevel: 12, maxLevel: 12, family: 'humanoid', rare: true,
     elite: true, canSwim: true, ccImmune: true, respawnMult: 648,
@@ -528,6 +543,7 @@ export const ZONE2_CAMPS: CampDef[] = [
   { mobId: 'gravecaller_cultist', center: { x: 15, z: 470 }, radius: 20, count: 7 },
   { mobId: 'gravecaller_cultist', center: { x: -25, z: 490 }, radius: 16, count: 6 },
   { mobId: 'gravecaller_summoner', center: { x: -5, z: 500 }, radius: 12, count: 4 },
+  { mobId: 'gravecaller_mender', center: { x: 18, z: 472 }, radius: 8, count: 2 },
   { mobId: 'sister_nhalia', center: { x: 24, z: 492 }, radius: 5, count: 1 },
   { mobId: 'deacon_voss', center: { x: 0, z: 510 }, radius: 2, count: 1 },
   // Bog Bloats: volatile gas-bags drifting the dry eastern shelf of the marsh.

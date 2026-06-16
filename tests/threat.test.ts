@@ -1160,6 +1160,12 @@ describe('shaman travel and shock mechanics', () => {
     sim.player.gm = true;
     const wolf = nearestMob(sim, 'forest_wolf');
     beefUp(wolf);
+    // This test is about Ghost Wolf's toggle/recast semantics, not the wolf's
+    // auto-attacks. A landed melee swing breaks the form (damage cancels Ghost
+    // Wolf), so root the wolf in place (it can never close the 12yd gap) to keep
+    // the form-checks independent of hit-table RNG. It stays alive and in range
+    // of the ranged shocks the test casts at it.
+    wolf.moveSpeed = 0;
     teleport(sim, sim.player, wolf.pos.x + 12, wolf.pos.z);
     sim.targetEntity(wolf.id);
     sim.player.facing = Math.atan2(wolf.pos.x - sim.player.pos.x, wolf.pos.z - sim.player.pos.z);

@@ -4,7 +4,7 @@ const MOB_IDS = [
   'forest_wolf', 'old_greyjaw', 'wild_boar', 'webwood_spider', 'mudfin_murloc', 'tunnel_rat',
   'vale_bandit', 'restless_bones', 'gorrak', 'mire_prowler', 'deepfen_murloc', 'mire_widow',
   'mirefen_broodmother', 'drowned_dead', 'fen_troll', 'grubjaw', 'gravecaller_cultist',
-  'gravecaller_summoner', 'deacon_voss', 'ridge_stalker', 'deeprock_kobold', 'thornpeak_ogre',
+  'gravecaller_summoner', 'gravecaller_mender', 'deacon_voss', 'ridge_stalker', 'deeprock_kobold', 'thornpeak_ogre',
   'ogre_crusher', 'warlord_drogmar', 'stormcrag_elemental', 'shardlord_kazzix',
   'wyrmcult_zealot', 'wyrmcult_necromancer', 'boneclad_revenant', 'crypt_shambler',
   'hollow_acolyte', 'bonechill_widow', 'sexton_marrow', 'morthen', 'bastion_revenant',
@@ -1134,7 +1134,7 @@ const esData: LocaleData = {
   mobs: [
     'Lobo del bosque', 'Viejo Greyjaw', 'Jabalí salvaje', 'Acechador de Webwood', 'Merodeador Aletabarro', 'Excavador Rata de Túnel',
     'Bandido del Valle', 'Huesos inquietos', 'Gorrak el Despiadado', 'Merodeador del lodazal', 'Chasqueador de Deepfen', 'Viuda de Mirefen',
-    'La Madre de la nidada', 'Muerto ahogado', 'Trol de Mirefen', 'Grubjaw el Glotón', 'Cultista Gravecaller', 'Invocador Gravecaller',
+    'La Madre de la nidada', 'Muerto ahogado', 'Trol de Mirefen', 'Grubjaw el Glotón', 'Cultista Gravecaller', 'Invocador Gravecaller', 'Sanador Gravecaller',
     'Diácono Voss', 'Acechador de la cresta', 'Tunelador de Deep Rock', 'Ogro de Thornpeak', 'Triturador de Thornpeak', 'Señor de la guerra Drogmar',
     'Elemental de Stormcrag', 'Señor de fragmentos Kazzix', 'Fanático del Culto del Wyrm', 'Nigromante del Culto del Wyrm', 'Aparecido de hueso',
     'Tambaleante de la Cripta', 'Acólito del Hueco', 'Viuda Huesofrío', 'Sacristán Marrow', 'Morthen el Gravecaller', 'Aparecido del Bastión',
@@ -1203,7 +1203,7 @@ const frData: LocaleData = {
   mobs: [
     'Loup des bois', 'Vieux Greyjaw', 'Sanglier sauvage', 'Rôdeur de Webwood', 'Rôdeur Aileron-de-boue', 'Terrassier Rat des tunnels',
     'Bandit du Val', 'Ossements agités', "Gorrak l'Impitoyable", 'Rôdeur du bourbier', 'Happeur de Deepfen', 'Veuve de Mirefen',
-    'La Mère des couvées', 'Mort noyé', 'Troll de Mirefen', 'Grubjaw le Glouton', 'Cultiste Gravecaller', 'Invocateur Gravecaller',
+    'La Mère des couvées', 'Mort noyé', 'Troll de Mirefen', 'Grubjaw le Glouton', 'Cultiste Gravecaller', 'Invocateur Gravecaller', 'Guérisseur Gravecaller',
     'Diacre Voss', 'Traqueur de crête', 'Tunnelier de Deeprock', 'Ogre de Thornpeak', 'Broyeur de Thornpeak', 'Seigneur de guerre Drogmar',
     'Élémentaire de Stormcrag', 'Seigneur des éclats Kazzix', 'Zélote du Culte du Wyrm', 'Nécromancien du Culte du Wyrm', "Revenant caparaçonné d'os",
     'Traînard de la crypte', 'Acolyte du Creux', 'Veuve Frissos', 'Sacristain Marrow', 'Morthen le Gravecaller', 'Revenant du Bastion',
@@ -1271,7 +1271,7 @@ const deData: LocaleData = {
   mobs: [
     'Waldwolf', 'Alter Greyjaw', 'Wilder Eber', 'Webwood-Lauerer', 'Schlammflossen-Schleicher', 'Tunnelratten-Gräber',
     'Talbandit', 'Ruhelose Knochen', 'Gorrak der Gnadenlose', 'Moorpirscher', 'Deepfen-Schnapper', 'Mirefen-Witwe',
-    'Die Brutmutter', 'Ertrunkener Toter', 'Mirefen-Troll', 'Grubjaw der Vielfraß', 'Gravecaller-Kultist', 'Gravecaller-Beschwörer',
+    'Die Brutmutter', 'Ertrunkener Toter', 'Mirefen-Troll', 'Grubjaw der Vielfraß', 'Gravecaller-Kultist', 'Gravecaller-Beschwörer', 'Gravecaller-Heiler',
     'Diakon Voss', 'Gratpirscher', 'Deeprock-Tunnelgräber', 'Thornpeak-Oger', 'Thornpeak-Zermalmer', 'Kriegsherr Drogmar',
     'Stormcrag-Elementar', 'Splitterlord Kazzix', 'Wyrmkult-Eiferer', 'Wyrmkult-Nekromant', 'Knochengepanzerter Wiedergänger',
     'Gruftschlurfer', 'Akolyth der Höhlung', 'Knochenkälte-Witwe', 'Küster Marrow', 'Morthen der Gravecaller', 'Bastion-Wiedergänger',
@@ -1339,7 +1339,7 @@ const itData: LocaleData = {
   mobs: [
     'Lupo della foresta', 'Vecchio Greyjaw', 'Cinghiale selvatico', 'Predatore di Webwood', 'Predatore Pinnalimo', 'Scavatore ratto di galleria',
     'Bandito della Valle', 'Ossa irrequiete', 'Gorrak lo Spietato', 'Predatore del pantano', 'Murloc di Deepfen', 'Vedova di Mirefen',
-    'Madre della covata', 'Morto annegato', 'Troll di Mirefen', 'Grubjaw il Goloso', 'Cultista Gravecaller', 'Evocatore Gravecaller',
+    'Madre della covata', 'Morto annegato', 'Troll di Mirefen', 'Grubjaw il Goloso', 'Cultista Gravecaller', 'Evocatore Gravecaller', 'Guaritore Gravecaller',
     'Diacono Voss', 'Braccatore della cresta', 'Coboldo di Deeprock', 'Ogre di Thornpeak', 'Frantumatore ogre', 'Signore della guerra Drogmar',
     'Elementale di Stormcrag', 'Signore dei frammenti Kazzix', 'Zelota del Culto del Wyrm', 'Negromante del Culto del Wyrm',
     'Revenant corazzato di ossa', 'Barcollante della cripta', 'Accolito del Vuoto', 'Vedova Freddosso', 'Sagrestano Marrow',
@@ -1408,7 +1408,7 @@ const zhCnData: LocaleData = {
   mobs: [
     '森林狼', '老灰颚', '野猪', '网木潜伏者', '泥鳍潜伏者', '地道鼠掘地者', '谷地强盗', '不宁骸骨', '无情者戈拉克',
     '泥沼潜伏兽', '深沼钳咬鱼人', '泥沼寡妇蛛', '蛛母', '溺亡死者', '泥沼巨魔', '贪食者格鲁布颚', '唤墓者教徒',
-    '唤墓者召唤师', '执事沃斯', '山脊潜猎者', '深岩掘地者', '荆峰食人魔', '荆峰粉碎者', '督军德罗格玛',
+    '唤墓者召唤师', '唤墓者医者', '执事沃斯', '山脊潜猎者', '深岩掘地者', '荆峰食人魔', '荆峰粉碎者', '督军德罗格玛',
     '风暴岩元素', '碎片领主卡兹克斯', '龙教狂热者', '龙教死灵法师', '骨甲亡魂', '墓穴蹒跚者', '空洞侍僧',
     '寒骨寡妇蛛', '司事马罗', '唤墓者莫森', '堡垒亡魂', '潮缚侍僧', '溺亡奴仆', '骑士指挥官奥伦',
     '唤雾者维尔', '圣所骨卫', '圣所龙人', '复生骨行者', '被缚者科加斯', '大死灵法师维尔卡', '墓龙科祖尔',
@@ -1469,7 +1469,7 @@ const zhTwData: LocaleData = {
   mobs: [
     '森林狼', '老灰顎', '野豬', '網木潛伏者', '泥鰭潛伏者', '地道鼠掘地者', '谷地強盜', '不寧骸骨',
     '無情者戈拉克', '泥沼潛伏獸', '深沼鉗咬魚人', '泥沼寡婦蛛', '蛛母', '溺亡死者', '泥沼巨魔',
-    '貪食者格魯布顎', '喚墓者教徒', '喚墓者召喚師', '執事沃斯', '山脊潛獵者', '深岩掘地者',
+    '貪食者格魯布顎', '喚墓者教徒', '喚墓者召喚師', '喚墓者醫者', '執事沃斯', '山脊潛獵者', '深岩掘地者',
     '荊峰食人魔', '荊峰粉碎者', '督軍德羅格瑪', '風暴岩元素', '碎片領主卡茲克斯', '龍教狂熱者',
     '龍教死靈法師', '骨甲亡魂', '墓穴蹣跚者', '空洞侍僧', '寒骨寡婦蛛', '司事馬羅', '喚墓者莫森',
     '堡壘亡魂', '潮縛侍僧', '溺亡奴僕', '騎士指揮官奧倫', '喚霧者維爾', '聖所骨衛', '聖所龍人',
@@ -1532,7 +1532,7 @@ const koData: LocaleData = {
   mobs: [
     '숲늑대', '늙은 그레이죠', '야생 멧돼지', '그물나무 잠복자', '진흙지느러미 잠복자', '굴쥐 채굴꾼', '계곡 도적',
     '불안한 뼈무더기', '무자비한 고라크', '수렁 배회자', '딥펜 무는이', '마이어펜 과부거미', '거미어미',
-    '익사한 망자', '마이어펜 트롤', '대식가 그럽죠', '무덤부름 교단원', '무덤부름 소환사', '부제 보스',
+    '익사한 망자', '마이어펜 트롤', '대식가 그럽죠', '무덤부름 교단원', '무덤부름 소환사', '무덤부름 치유사', '부제 보스',
     '산등성이 추적자', '깊은바위 굴꾼', '쏜피크 오우거', '쏜피크 분쇄자', '전쟁군주 드로그마르',
     '스톰크래그 정령', '파편군주 카직스', '고룡교단 광신도', '고룡교단 강령술사', '뼈갑옷 망령',
     '묘실 비틀거림꾼', '공허의 수행사제', '뼈서리 과부거미', '성구지기 매로우', '무덤부름 모르덴',
@@ -1599,7 +1599,7 @@ const jaData: LocaleData = {
     '森の狼', '老グレイジョー', '野生の猪', 'ウェブウッドの潜伏者', '泥ひれの潜伏者', 'トンネルラット掘り',
     '谷の盗賊', '安らがぬ骨', '無慈悲なるゴラック', '沼の徘徊者', 'ディープフェンのスナッパー', 'マイアフェンのウィドウ',
     '群れの母', '溺れ死者', 'マイアフェン・トロル', '大食いグラブジョー', 'グレイブコーラーの信徒',
-    'グレイブコーラーの召喚師', '助祭ヴォス', '尾根の追跡者', 'ディープロックの坑夫', 'ソーンピーク・オーガ',
+    'グレイブコーラーの召喚師', 'グレイブコーラーの癒し手', '助祭ヴォス', '尾根の追跡者', 'ディープロックの坑夫', 'ソーンピーク・オーガ',
     'ソーンピークの粉砕者', '将軍ドログマー', 'ストームクラッグの精霊', '破片卿カジックス',
     'ワーム教団の狂信者', 'ワーム教団の死霊術師', '骨まといの亡霊', '墓所のよろめき手',
     '虚ろの侍祭', '骨冷えのウィドウ', '墓守マロウ', '墓呼びのモーセン', '砦の亡霊',
@@ -1666,7 +1666,7 @@ const ptData: LocaleData = {
   mobs: [
     'Lobo da floresta', 'Velho Greyjaw', 'Javali selvagem', 'Espreitador de Webwood', 'Espreitador Barbatana-de-lodo', 'Escavador rato de túnel',
     'Bandido do Vale', 'Ossos inquietos', 'Gorrak o Impiedoso', 'Espreitador do brejo', 'Murloc de Deepfen', 'Viúva de Mirefen',
-    'Mãe da ninhada', 'Morto afogado', 'Troll de Mirefen', 'Grubjaw o Glutão', 'Cultista Gravecaller', 'Invocador Gravecaller',
+    'Mãe da ninhada', 'Morto afogado', 'Troll de Mirefen', 'Grubjaw o Glutão', 'Cultista Gravecaller', 'Invocador Gravecaller', 'Curandeiro Gravecaller',
     'Diácono Voss', 'Rastreador da crista', 'Kobold de Deeprock', 'Ogro de Thornpeak', 'Esmagador ogro', 'Senhor da guerra Drogmar',
     'Elemental de Stormcrag', 'Senhor dos fragmentos Kazzix', 'Zelote do Culto do Wyrm', 'Necromante do Culto do Wyrm',
     'Revenante encouraçado de ossos', 'Cambaleante da cripta', 'Acólito do Vazio', 'Viúva Frio-osso', 'Sacristão Marrow',
@@ -1736,7 +1736,7 @@ const ruData: LocaleData = {
   mobs: [
     'Лесной волк', 'Старый Серочелюст', 'Дикий кабан', 'Паук-скрытень Вебвуда', 'Илогривый скрытень', 'Копатель Туннельная Крыса',
     'Долинный бандит', 'Беспокойные кости', 'Горрак Безжалостный', 'Болотный хищник', 'Глубинный щелкун', 'Мирефенская вдова',
-    'Матка выводка', 'Утопший мертвец', 'Мирефенский тролль', 'Грубджо Обжора', 'Культист Могильного Зова', 'Призыватель Могильного Зова',
+    'Матка выводка', 'Утопший мертвец', 'Мирефенский тролль', 'Грубджо Обжора', 'Культист Могильного Зова', 'Призыватель Могильного Зова', 'Лекарь Могильного Зова',
     'Дьякон Восс', 'Хребтовый охотник', 'Глубокоскальный туннельщик', 'Огр Терновых Пиков', 'Крушитель Терновых Пиков',
     'Воевода Дрогмар', 'Элементаль Грозового Утеса', 'Осколочный владыка Каззикс', 'Фанатик Культа Вирма',
     'Некромант Культа Вирма', 'Костепанцирный ревенант', 'Склепный шатун', 'Послушник Пустоти', 'Ледяная вдова',

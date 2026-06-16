@@ -4013,6 +4013,7 @@ export class Sim {
     mob.enraged = false;
     mob.healedThisPull = false;
     mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
+    mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
   }
 
@@ -4466,6 +4467,7 @@ export class Sim {
     mob.enraged = false;
     mob.healedThisPull = false;
     mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
+    mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
     for (const meta of this.players.values()) {
       const e = this.entities.get(meta.entityId);
@@ -4559,7 +4561,7 @@ export class Sim {
   // and reset on evade/respawn.
   private updateBossMechanics(mob: Entity): void {
     const tmpl = MOBS[mob.templateId];
-    if (!tmpl || (!tmpl.summonAdds && !tmpl.enrage && !tmpl.desperateHeal)) return;
+    if (!tmpl || (!tmpl.summonAdds && !tmpl.enrage && !tmpl.desperateHeal && !tmpl.mendAlly)) return;
     const hpFrac = mob.hp / Math.max(1, mob.maxHp);
     if (tmpl.summonAdds) {
       const thresholds = tmpl.summonAdds.atHpPct;
@@ -4582,6 +4584,31 @@ export class Sim {
         this.emit({ type: 'heal', targetId: mob.id, amount: heal });
         this.emit({ type: 'log', text: `${mob.name} draws on a desperate second wind!`, color: '#66ff99', entityId: mob.id });
         this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school: 'nature', fx: 'nova' });
+      }
+    }
+    // Support "Mend": periodically heal every wounded friendly mob in range
+    // (including the caster). Telegraphed via createMob seeding mendTimer to a
+    // full interval, so the first cast never lands the instant combat opens.
+    if (tmpl.mendAlly) {
+      mob.mendTimer -= DT;
+      if (mob.mendTimer <= 0) {
+        mob.mendTimer = tmpl.mendAlly.every;
+        const wounded: Entity[] = [];
+        for (const ally of this.entities.values()) {
+          if (ally.kind !== 'mob' || ally.dead || ally.ownerId !== null) continue; // skip players, pets, corpses
+          if (ally.hostile !== mob.hostile || ally.hp >= ally.maxHp) continue; // only wounded same-faction mobs
+          if (dist2d(ally.pos, mob.pos) > tmpl.mendAlly.radius) continue;
+          wounded.push(ally);
+        }
+        if (wounded.length > 0) {
+          const school = tmpl.mendAlly.school ?? 'nature';
+          this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
+          this.emit({ type: 'log', text: `${mob.name} channels ${tmpl.mendAlly.name}.`, color: '#66ff99', entityId: mob.id });
+          for (const ally of wounded) {
+            const amount = Math.round(this.rng.range(tmpl.mendAlly.healMin, tmpl.mendAlly.healMax));
+            this.applyHeal(mob, ally, amount, tmpl.mendAlly.name);
+          }
+        }
       }
     }
   }

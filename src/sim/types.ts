@@ -177,6 +177,12 @@ export interface MobTemplate {
   // Mob mechanic: a one-time desperation self-heal the first time hp drops
   // below the threshold (healPct is a fraction of maxHp). Resets on evade/respawn.
   desperateHeal?: { belowHpPct: number; healPct: number };
+  // Support mechanic ("Mend"): while in combat, periodically heal every wounded
+  // living friendly mob within `radius` (incl. itself) for `healMin..healMax`.
+  // Telegraphed: the first cast lands one full `every` interval after combat
+  // opens. Resets on evade/respawn. Routes through the normal heal path, so it
+  // shows green floating text and grants no threat to the menders themselves.
+  mendAlly?: { healMin: number; healMax: number; radius: number; every: number; name: string; school?: Aura['school'] };
   // Boss mechanic ("War Stomp"): periodic ground slam that stuns nearby players
   // for `duration`s (and optionally deals min..max damage). Telegraphed: the
   // first slam only lands one full `every` interval after combat starts.
@@ -562,6 +568,7 @@ export interface Entity {
   pulseTimer: number; // boss aoe pulse countdown
   stompTimer: number; // boss War Stomp stun-pulse countdown
   detonateTimer: number; // Death Throes fuse on a volatile corpse; Infinity = no pending detonation
+  mendTimer: number; // mendAlly support-heal cast countdown
   firedSummons: number; // summonAdds thresholds already triggered
   summonedIds: number[]; // live adds this boss summoned; despawned on reset
   enraged: boolean; // enrage mechanic active
