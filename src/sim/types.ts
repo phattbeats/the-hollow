@@ -236,6 +236,9 @@ export interface MobTemplate {
   // the damage *they* deal weaker. `ap` is the attack-power reduction (applied
   // as a negative buff_ap aura); `chance` defaults to 1 (every hit, refreshing).
   demoralize?: { ap: number; duration: number; chance?: number; name?: string };
+  // Innate "spiked hide" trait: melee attackers take flat damage back on every
+  // connecting swing — the mob-side equivalent of the druid Thorns aura.
+  thorns?: { value: number; school?: Aura['school']; name?: string };
 }
 
 export type AbilityEffect =
