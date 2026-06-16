@@ -5,11 +5,13 @@ import type { IWorld } from '../src/world_api';
 
 describe('appearance skin selection', () => {
   it('updates offline player skin through the world contract', () => {
-    const sim: IWorld = new Sim({ seed: 1, playerClass: 'druid', playerName: 'Skintest' });
+    const sim = new Sim({ seed: 1, playerClass: 'druid', playerName: 'Skintest' });
+    const world: IWorld = sim;
 
-    sim.changeSkin(3);
+    world.changeSkin(3);
 
     expect(sim.player.skin).toBe(3);
+    // persistence is a Sim-concrete concern, not part of the IWorld seam
     expect(sim.serializeCharacter(sim.playerId)?.skin).toBe(3);
   });
 

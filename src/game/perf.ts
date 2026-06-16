@@ -228,7 +228,8 @@ export class PerfMonitor {
     if (now - this.lastOverlayAt < 1000) return;
     this.lastOverlayAt = now;
     this.lastSnapshot = this.snapshot(now);
-    if (this.enabled) this.renderOverlay(this.lastSnapshot);
+    if (!this.enabled) return;
+    this.renderOverlay(this.lastSnapshot);
     this.renderDoctor(this.lastSnapshot, now);
   }
 

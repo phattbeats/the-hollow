@@ -26,7 +26,16 @@ describe('click-to-move math (#95)', () => {
     expect(manualMovementOverrides(NO_INPUT)).toBe(false);
     expect(manualMovementOverrides({ ...NO_INPUT, forward: true })).toBe(true);
     expect(manualMovementOverrides({ ...NO_INPUT, strafeLeft: true })).toBe(true);
-    expect(manualMovementOverrides({ ...NO_INPUT, jump: true })).toBe(true);
+  });
+
+  it('jump does not cancel click-to-move — you keep travelling through the hop', () => {
+    expect(manualMovementOverrides({ ...NO_INPUT, jump: true })).toBe(false);
+    expect(clickMoveShouldCancel({ ...NO_INPUT, jump: true }, {
+      mouselook: false,
+      movementSuspended: false,
+      playerDead: false,
+      enabled: true,
+    })).toBe(false);
   });
 
   it('cancels click-to-move when the player dies', () => {

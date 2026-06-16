@@ -50,13 +50,15 @@ export function clickMoveStep(player: Point2, target: Point2, stopDistance: numb
   return { facing: facingToward(player, target), forward: true, arrived: false };
 }
 
-// Any deliberate movement key cancels click-to-move, like every ARPG: the
-// player took manual control.
+// Any deliberate *directional* movement key cancels click-to-move, like every
+// ARPG: the player took manual control. Jump is deliberately excluded — jumping
+// is not a change of heading, so you keep travelling to the destination through
+// the hop instead of stopping dead.
 export function manualMovementOverrides(mi: {
   forward: boolean; back: boolean; turnLeft: boolean; turnRight: boolean;
   strafeLeft: boolean; strafeRight: boolean; jump: boolean;
 }): boolean {
-  return mi.forward || mi.back || mi.turnLeft || mi.turnRight || mi.strafeLeft || mi.strafeRight || mi.jump;
+  return mi.forward || mi.back || mi.turnLeft || mi.turnRight || mi.strafeLeft || mi.strafeRight;
 }
 
 export function clickMoveShouldCancel(mi: {
