@@ -619,7 +619,7 @@ describe('hunter pets', () => {
     const state = sim.serializeCharacter(sim.playerId)!;
     expect(state.pet).toMatchObject({ templateId: 'forest_wolf', name: 'Barkley', level: wolf.level, dead: true });
 
-    const restored = new Sim({ seed: 42, noPlayer: true, autoEquip: true });
+    const restored = new Sim({ seed: 42, playerClass: 'hunter', noPlayer: true, autoEquip: true });
     const pid = restored.addPlayer('hunter', 'Hunter', { state });
     const pet = restored.petOf(pid, true)!;
     expect(pet).toBeTruthy();

@@ -8,7 +8,7 @@ import type { OverheadEmoteId } from '../../world_api';
 import { GFX } from '../gfx';
 import type { EmoteClipSpec, VisualDef } from './manifest';
 import {
-  applyMaterials, assembleModel, prepareVisual, tintedFarMaterials,
+  applyMaterials, assembleModel, prepareVisual, skinTexture, tintedFarMaterials,
 } from './assets';
 
 /** Renderer-derived animation inputs (same facts the old pose machine used). */
@@ -73,6 +73,10 @@ export class CharacterVisual {
   readonly clickProxy: THREE.Mesh;
 
   private def: VisualDef;
+  private key: string;
+  private entityColor: number;
+  private skinIndex: number;
+  private ghosted = false;
   private mixer: THREE.AnimationMixer;
   private actions = new Map<string, THREE.AnimationAction>();
   private model: THREE.Object3D;
@@ -101,14 +105,17 @@ export class CharacterVisual {
   private far = false;
   private bobPhase = Math.random() * Math.PI * 2;
 
-  constructor(key: string, entityColor: number) {
+  constructor(key: string, entityColor: number, skinIndex = 0) {
     const prep = prepareVisual(key);
     this.def = prep.def;
+    this.key = key;
+    this.entityColor = entityColor;
+    this.skinIndex = skinIndex;
     this.height = prep.def.height;
 
     // model: yaw/scale/feet normalization wrapper around the skinned clone
     this.model = assembleModel(prep.def);
-    applyMaterials(this.model, prep.def, entityColor);
+    applyMaterials(this.model, prep.def, entityColor, skinTexture(key, skinIndex));
     this.model.traverse((o) => {
       const mesh = o as THREE.Mesh;
       if (mesh.isMesh) this.originalMaterials.set(mesh, mesh.material);
@@ -285,12 +292,28 @@ export class CharacterVisual {
   }
 
   setGhost(on: boolean): void {
+    this.ghosted = on;
     for (const [mesh, original] of this.originalMaterials) {
       mesh.material = on ? this.toGhostMaterial(original) : original;
     }
     if (this.farMesh && this.farMaterials) {
       this.farMesh.material = on ? this.toGhostMaterial(this.farMaterials) : this.farMaterials;
     }
+  }
+
+  /** Swap the body skin (alternate texture atlas) at runtime; no-op if unchanged.
+   *  Reuses the shared skin-keyed material cache, so this is a cheap reassign. */
+  setSkin(skinIndex: number): void {
+    if (skinIndex === this.skinIndex) return;
+    this.skinIndex = skinIndex;
+    applyMaterials(this.model, this.def, this.entityColor, skinTexture(this.key, skinIndex));
+    // re-snapshot the material map ghost/restore relies on, then re-ghost if stealthed
+    this.originalMaterials.clear();
+    this.model.traverse((o) => {
+      const mesh = o as THREE.Mesh;
+      if (mesh.isMesh) this.originalMaterials.set(mesh, mesh.material);
+    });
+    if (this.ghosted) this.setGhost(true);
   }
 
   dispose(): void {

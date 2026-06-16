@@ -7655,7 +7655,7 @@ const phase11PetHud = {
     abandonBody: "Навсегда оставить {name}? Вам придется приручить другого питомца.",
     abandonConfirm: "Оставить",
   },
-} as const;
+};
 
 const phase11En = {
   abilityUi: {

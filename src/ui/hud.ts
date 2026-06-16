@@ -35,7 +35,7 @@ import { tTalent, localizeTalentTitle } from './talent_i18n';
 import {
   talentsFor, computeTalentModifiers, validateAllocation, dormantNodes, pointsSpent,
   exportBuild, importBuild, cloneAllocation, talentPointsAtLevel, FIRST_TALENT_LEVEL,
-  type TalentAllocation, type TalentNode, type SpecDef, type Role,
+  type TalentAllocation, type TalentNode, type TalentEffect, type SpecDef, type Role,
 } from '../sim/content/talents';
 import {
   clearHotbarSlot, encodeHotbarAction, HOTBAR_ACTION_MIME, HotbarAction, parseHotbarAction, parseHotbarActions,

@@ -279,6 +279,7 @@ export interface PlayerMeta {
   entityId: number;
   cls: PlayerClass;
   name: string;
+  skin: number; // appearance index into the render SKINS[player_<cls>]; persisted, synced
   moveInput: MoveInput;
   inventory: InvSlot[];
   vendorBuyback: InvSlot[];
@@ -391,6 +392,7 @@ export interface CharacterState {
   loadouts?: SavedLoadout[];
   activeLoadout?: number;
   pet?: PetState | null;
+  skin?: number; // appearance index (JSONB; optional so pre-skin saves load as 0)
 }
 
 export interface PetState {
@@ -653,6 +655,7 @@ export class Sim {
       entityId: player.id,
       cls,
       name,
+      skin: opts?.state?.skin ?? 0,
       moveInput: emptyMoveInput(),
       inventory: [],
       vendorBuyback: [],
@@ -678,6 +681,7 @@ export class Sim {
       away: null,
     };
     this.players.set(player.id, meta);
+    player.skin = meta.skin; // mirror onto the entity so the renderer + wire can read it
     if (this.primaryId === -1) this.primaryId = player.id;
 
     if (opts?.state) {
@@ -796,7 +800,21 @@ export class Sim {
       loadouts: meta.loadouts.map((l) => ({ name: l.name, alloc: cloneAllocation(l.alloc), bar: [...l.bar] })),
       activeLoadout: meta.activeLoadout,
       pet: this.serializePet(pid),
+      skin: meta.skin,
     };
+  }
+
+  /** Set a player's appearance skin (meta + entity). Bounded; the renderer
+   *  falls back to the default for an unknown index. Used by creation, the
+   *  in-game changer, and the server's changeSkin command. */
+  setPlayerSkin(pid: number, skin: number): boolean {
+    const meta = this.players.get(pid);
+    const e = this.entities.get(pid);
+    if (!meta || !e) return false;
+    const idx = Math.max(0, Math.min(7, Math.floor(skin)));
+    meta.skin = idx;
+    e.skin = idx;
+    return true;
   }
 
   // -------------------------------------------------------------------------
@@ -2923,6 +2941,25 @@ export class Sim {
       pet.autoAttack = false;
     }
     this.emit({ type: 'log', text: `${pet.name} is now ${mode}.`, color: '#ffd100', pid: r.e.id });
+  }
+
+  /** Release a tamed beast back to the wild: it drops its owner, sheds pet
+   *  auras, turns hostile/neutral again and evades home (or stays dead). */
+  private releasePetToWild(pet: Entity): void {
+    this.clearNonPlayerStatAuras(pet);
+    pet.auras = [];
+    pet.ownerId = null;
+    pet.petTauntTimer = 0;
+    pet.hostile = true;
+    pet.aggroTargetId = null;
+    pet.inCombat = false;
+    pet.aiState = pet.dead ? 'dead' : 'evade';
+    clearThreat(pet);
+    for (const m of this.entities.values()) {
+      if (m.kind !== 'mob' || m.id === pet.id) continue;
+      m.threat.delete(pet.id);
+      if (m.aggroTargetId === pet.id && !m.dead && m.aiState !== 'dead') this.retargetMob(m);
+    }
   }
 
   // -------------------------------------------------------------------------
