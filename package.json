@@ -10,6 +10,7 @@
     "build": "node scripts/build_media_manifest.mjs generate && vite build && node scripts/build_media_manifest.mjs emit",
     "preview": "vite preview",
     "test": "vitest run",
+    "i18n:hash": "node scripts/i18n_resolved_hash.mjs",
     "perf:tour": "node scripts/perf_tour.mjs",
     "feel:smoke": "node scripts/feel_smoke.mjs",
     "asset:budget": "node scripts/asset_budget.mjs",
