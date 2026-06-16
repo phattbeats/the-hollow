@@ -204,6 +204,28 @@ describe('Input pointer lock', () => {
     expect(cb.onClickPick).toHaveBeenCalledWith(120, 160, 0);
   });
 
+  it('allows the click-to-move mouse button to camera-drag after the click timer expires', () => {
+    let now = 1000;
+    vi.spyOn(performance, 'now').mockImplementation(() => now);
+    const { canvas, input, cb, canvasListeners, windowListeners } = makeInput();
+    input.setClickMoveMouseButton(2);
+    const yaw = input.camYaw;
+
+    canvasListeners.get('mousedown')!({ button: 2, clientX: 100, clientY: 100, preventDefault: vi.fn() });
+    now += 281;
+    windowListeners.get('mousemove')!({ movementX: 1, movementY: 0 });
+    expect(input.isCameraDragActive()).toBe(true);
+    expect(input.camYaw).toBe(yaw);
+    expect(canvas.requestPointerLock).not.toHaveBeenCalled();
+
+    windowListeners.get('mousemove')!({ movementX: 2, movementY: 0 });
+    expect(canvas.requestPointerLock).toHaveBeenCalledTimes(1);
+    expect(input.camYaw).toBeCloseTo(yaw - 2 * 0.0045);
+
+    windowListeners.get('mouseup')!({ button: 2, clientX: 103, clientY: 100, target: canvas });
+    expect(cb.onClickPick).not.toHaveBeenCalled();
+  });
+
   it('keeps camera drag available on the unbound mouse button', () => {
     const { canvas, input, canvasListeners, windowListeners } = makeInput();
     input.setClickMoveMouseButton(0);

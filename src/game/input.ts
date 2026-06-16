@@ -6,7 +6,7 @@
 
 import { Keybinds, actionKind } from './keybinds';
 import { cursorForHover, type HoverCursorKind } from './cursors';
-import { clickPickFromMouseGesture } from './pointer_pick';
+import { DEFAULT_CLICK_PICK_MAX_MS, clickPickFromMouseGesture } from './pointer_pick';
 import { sanitizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
 import type { MoveInput } from '../sim/types';
 
@@ -332,6 +332,10 @@ export class Input {
     return !!(document.fullscreenElement ?? doc.webkitFullscreenElement);
   }
 
+  private pressDurationMs(): number {
+    return Math.max(0, performance.now() - this.downAt);
+  }
+
   private onKeyDown(e: KeyboardEvent): void {
     if (e.repeat) return;
     if (this.captureCb) {
@@ -445,12 +449,12 @@ export class Input {
       this.hoverY = e.clientY;
     }
     if (!this.leftDown && !this.rightDown) return;
-    if (this.downButton === this.clickMoveMouseButton) return;
     const mx = e.movementX ?? 0, my = e.movementY ?? 0;
     if (mx === 0 && my === 0) return;
+    const heldMs = this.pressDurationMs();
+    if (this.downButton === this.clickMoveMouseButton && heldMs <= DEFAULT_CLICK_PICK_MAX_MS) return;
     this.dragDistance += Math.abs(mx) + Math.abs(my);
     if (!this.cameraDragActive) {
-      const heldMs = Math.max(0, performance.now() - this.downAt);
       if (this.dragDistance < CAMERA_DRAG_START_DISTANCE && heldMs < CAMERA_DRAG_START_MS) return;
       this.cameraDragActive = true;
       this.noteIntent('look');
