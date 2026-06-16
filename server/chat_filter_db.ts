@@ -24,20 +24,32 @@ export interface FilterWord {
   createdAt: string;
 }
 
-function envSeedSoftWords(): string[] {
-  // One-time migration nicety: fold any legacy CHAT_CENSOR_LIST / CHAT_CENSOR_FILE
-  // operator config into the initial soft seed. After first boot the list is
-  // DB-managed from the admin dashboard and these env vars are ignored.
-  let raw = process.env.CHAT_CENSOR_LIST ?? '';
-  const file = process.env.CHAT_CENSOR_FILE ?? '';
+// Fold an operator-supplied list + optional file into seed terms. Used for both
+// tiers; the env var names differ per tier. After first boot the list is
+// DB-managed from the admin dashboard and these env vars are ignored.
+function envSeedWords(listVar: string, fileVar: string): string[] {
+  let raw = process.env[listVar] ?? '';
+  const file = process.env[fileVar] ?? '';
   if (file) {
     try {
       raw += ` ${readFileSync(file, 'utf8')}`;
     } catch (err) {
-      console.warn(`could not read CHAT_CENSOR_FILE (${file}) for seed:`, err);
+      console.warn(`could not read ${fileVar} (${file}) for seed:`, err);
     }
   }
   return parseWordList(raw);
+}
+
+function envSeedSoftWords(): string[] {
+  // Legacy operator config for the cosmetic soft tier.
+  return envSeedWords('CHAT_CENSOR_LIST', 'CHAT_CENSOR_FILE');
+}
+
+function envSeedHardWords(): string[] {
+  // The hard (slur) tier ships no plaintext list in this open-source repo; the
+  // `obscenity` baseline enforces slurs, and operators seed the few it omits
+  // privately here. See DEFAULT_HARD_WORDS in chat_filter.ts.
+  return envSeedWords('CHAT_FILTER_HARD_LIST', 'CHAT_FILTER_HARD_FILE');
 }
 
 async function insertSeedWords(client: PoolClient, words: string[], tier: WordTier): Promise<void> {
@@ -65,7 +77,7 @@ export async function seedChatFilterDefaults(client: PoolClient): Promise<void> 
     await insertSeedWords(client, [...DEFAULT_SOFT_WORDS, ...envSeedSoftWords()], 'soft');
   }
   if (!byTier.get('hard')) {
-    await insertSeedWords(client, DEFAULT_HARD_WORDS, 'hard');
+    await insertSeedWords(client, [...DEFAULT_HARD_WORDS, ...envSeedHardWords()], 'hard');
   }
 }
 
