@@ -288,6 +288,12 @@ export const VISUALS: Record<string, VisualDef> = {
     // sanctum torchlight
     clips: FLOATING, tint: 'entity', tintStrength: 0.2,
   },
+  // warlock demon pets (imp/voidwalker) — one biped rig, the entity colour and
+  // the mob template's scale tell the little orange imp from the bulky voidwalker
+  mob_demon: {
+    url: `${CREATURES}/demonalt.glb`, height: 1.8,
+    clips: BIPED14, tint: 'entity', tintStrength: 0.5,
+  },
 
   // -- undead (KayKit skeletons, shared 41-joint rig) ------------------------
   skel_minion: {
@@ -387,6 +393,8 @@ export const VISUALS: Record<string, VisualDef> = {
 // ---------------------------------------------------------------------------
 
 const MOB_KEYS: Record<string, string> = {
+  imp: 'mob_demon',
+  voidwalker: 'mob_demon',
   wild_boar: 'mob_boar',
   elder_bristleback: 'mob_boar',
   // gravecaller cult + necromancers: dark-robed casters

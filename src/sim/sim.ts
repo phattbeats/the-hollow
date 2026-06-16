@@ -673,9 +673,10 @@ export class Sim {
     this.partyInvites.delete(pid);
     this.tradeInvites.delete(pid);
     this.duelInvites.delete(pid);
-    // a leaving player's pet goes wild, and mobs forget the player entirely
+    // a leaving player's pet goes wild (tamed beast) or unravels (summoned
+    // demon), and mobs forget the player entirely
     const pet = this.petOf(pid);
-    if (pet) this.releasePetToWild(pet);
+    if (pet) this.removePet(pet);
     for (const m of this.entities.values()) {
       if (m.kind !== 'mob') continue;
       m.threat.delete(pid);
@@ -2319,7 +2320,11 @@ export class Sim {
           const pet = this.petOf(p.id);
           if (!pet) { this.error(p.id, 'You have no pet.'); break; }
           this.emit({ type: 'log', text: `You dismiss ${pet.name}.`, color: '#999', pid: p.id });
-          this.releasePetToWild(pet);
+          this.removePet(pet);
+          break;
+        }
+        case 'summonDemon': {
+          this.summonDemon(p, eff.mobId);
           break;
         }
       }
@@ -2494,6 +2499,60 @@ export class Sim {
       m.threat.delete(pet.id);
       if (m.aggroTargetId === pet.id && !m.dead && m.aiState !== 'dead') this.retargetMob(m);
     }
+  }
+
+  // -------------------------------------------------------------------------
+  // Warlock demon pets — summoned (never tamed) demons that fight like hunter
+  // pets but unravel (despawn) on dismiss/death/logout instead of going feral.
+  // -------------------------------------------------------------------------
+
+  /** Summon a demon pet (imp/voidwalker) just behind the warlock, replacing any
+   *  existing pet. Created fresh at the owner's level — never a world mob. */
+  private summonDemon(owner: Entity, mobId: string): void {
+    const template = MOBS[mobId];
+    if (!template) return;
+    const existing = this.petOf(owner.id);
+    if (existing) this.removePet(existing);
+    // appear just behind the caster so the demon doesn't spawn inside the target
+    const ang = owner.facing + Math.PI;
+    const pos = this.groundPos(owner.pos.x + Math.sin(ang) * 2, owner.pos.z + Math.cos(ang) * 2);
+    const pet = createMob(this.nextId++, template, owner.level, pos);
+    pet.spawnPos = { ...pos };
+    pet.ownerId = owner.id;
+    pet.petTauntTimer = 0;
+    pet.hostile = false;
+    pet.aiState = 'idle';
+    pet.aggroTargetId = null;
+    pet.inCombat = false;
+    pet.tappedById = null;
+    pet.loot = null;
+    pet.lootable = false;
+    this.addEntity(pet);
+    this.emit({ type: 'log', text: `You summon ${template.name}.`, color: '#a78bfa', pid: owner.id });
+  }
+
+  /** Tear-down for any pet: summoned demons vanish from the world; tamed beasts
+   *  return to the wild and walk home. */
+  private removePet(pet: Entity): void {
+    if (MOBS[pet.templateId]?.family === 'demon') this.despawnPet(pet);
+    else this.releasePetToWild(pet);
+  }
+
+  /** Remove a summoned demon from the world entirely, scrubbing any references
+   *  (player targets/combo, other mobs' hate) the way boss adds are despawned. */
+  private despawnPet(pet: Entity): void {
+    for (const meta of this.players.values()) {
+      const e = this.entities.get(meta.entityId);
+      if (!e) continue;
+      if (e.targetId === pet.id) e.targetId = null;
+      if (e.comboTargetId === pet.id) { e.comboTargetId = null; e.comboPoints = 0; }
+    }
+    for (const m of this.entities.values()) {
+      if (m.kind !== 'mob' || m.id === pet.id) continue;
+      m.threat.delete(pet.id);
+      if (m.aggroTargetId === pet.id && !m.dead && m.aiState !== 'dead') this.retargetMob(m);
+    }
+    this.dropEntity(pet.id);
   }
 
   // -------------------------------------------------------------------------
@@ -2820,7 +2879,9 @@ export class Sim {
       clearThreat(e);
       if (e.ownerId !== null) {
         this.emit({ type: 'log', text: `${e.name} dies.`, color: '#f66', pid: e.ownerId });
-        return; // pets drop no loot and grant no credit; they respawn wild
+        // a slain summoned demon lingers only briefly, then unravels (updateMob)
+        if (MOBS[e.templateId]?.family === 'demon') e.corpseTimer = 3;
+        return; // pets drop no loot and grant no credit; tamed beasts respawn wild
       }
       this.frenzyPackmates(e); // wild packmates fly into a frenzy when one falls
 
@@ -3157,6 +3218,11 @@ export class Sim {
     if (mob.dead) {
       mob.corpseTimer -= DT;
       mob.respawnTimer -= DT;
+      // a slain summoned demon unravels rather than respawning into the wild
+      if (mob.ownerId !== null && MOBS[mob.templateId]?.family === 'demon') {
+        if (mob.corpseTimer <= 0) this.despawnPet(mob);
+        return;
+      }
       // dungeon mobs stay dead until the instance resets
       const isInstanceMob = mob.spawnPos.x > DUNGEON_X_THRESHOLD;
       if (!isInstanceMob && mob.respawnTimer <= 0 && (mob.corpseTimer <= 0 || !mob.lootable)) {
@@ -3540,7 +3606,7 @@ export class Sim {
   private updatePet(pet: Entity): void {
     const owner = pet.ownerId !== null ? this.entities.get(pet.ownerId) : null;
     if (!owner || owner.kind !== 'player' || !this.players.has(owner.id)) {
-      this.releasePetToWild(pet);
+      this.removePet(pet);
       return;
     }
     if (this.isStunned(pet)) return;
@@ -3554,19 +3620,24 @@ export class Sim {
     pet.inCombat = target !== null;
 
     if (target) {
+      // ranged demon (imp) holds its distance and hurls bolts; melee pets close
+      // in, taunt to hold threat (voidwalker tank), and swing
+      const ranged = MOBS[pet.templateId]?.petRanged;
+      const reach = ranged ? ranged.range : MELEE_RANGE * 0.8;
       const d = dist2d(pet.pos, target.pos);
-      if (d > MELEE_RANGE * 0.8) {
+      if (d > reach) {
         if (!this.isRooted(pet)) this.moveToward(pet, target.pos, pet.moveSpeed * this.moveSpeedMult(pet));
         pet.swingTimer = Math.max(0, pet.swingTimer - DT);
       } else {
         pet.facing = angleTo(pet.pos, target.pos);
-        if (pet.petTauntTimer <= 0) {
+        if (!ranged && pet.petTauntTimer <= 0) {
           this.applyTaunt(pet, target);
           pet.petTauntTimer = PET_GROWL_INTERVAL;
         }
         pet.swingTimer -= DT;
         if (pet.swingTimer <= 0) {
-          this.mobSwing(pet, target);
+          if (ranged) this.petRangedAttack(pet, target, ranged);
+          else this.mobSwing(pet, target);
           pet.swingTimer = pet.weapon.speed * this.swingIntervalMult(pet);
         }
       }
@@ -3586,6 +3657,17 @@ export class Sim {
     } else if (d > PET_FOLLOW_DISTANCE && !this.isRooted(pet)) {
       this.moveToward(pet, owner.pos, Math.max(pet.moveSpeed, RUN_SPEED * 1.1) * this.moveSpeedMult(pet));
     }
+  }
+
+  /** A ranged demon pet (imp) hurls a spell-school bolt: a telegraphed
+   *  projectile that bypasses armor, mirroring the player caster path. Damage
+   *  comes from the mob's weapon range + AP, exactly like its melee siblings. */
+  private petRangedAttack(pet: Entity, target: Entity, ranged: { range: number; school: Aura['school'] }): void {
+    this.emit({ type: 'spellfx', sourceId: pet.id, targetId: target.id, school: ranged.school, fx: 'projectile' });
+    const crit = this.rng.chance(0.05);
+    let dmg = this.rng.range(pet.weapon.min, pet.weapon.max) + (this.effectiveAttackPower(pet) / 14) * pet.weapon.speed;
+    if (crit) dmg *= 2;
+    this.dealDamage(pet, target, Math.max(1, Math.round(dmg)), crit, ranged.school, null, 'hit');
   }
 
   private petPickTarget(pet: Entity, owner: Entity): Entity | null {

@@ -138,7 +138,7 @@ export interface LootEntry {
 
 export type MobFamily =
   | 'beast' | 'humanoid' | 'murloc' | 'spider' | 'kobold' | 'undead'
-  | 'troll' | 'ogre' | 'elemental' | 'dragonkin';
+  | 'troll' | 'ogre' | 'elemental' | 'dragonkin' | 'demon';
 
 export interface MobTemplate {
   id: string;
@@ -197,6 +197,10 @@ export interface MobTemplate {
   // more physical damage from everyone until it expires. Rides the existing
   // sunder aura; no new aura kind.
   corrode?: { chance: number; armor: number; maxStacks: number; duration: number; name: string; school?: Aura['school'] };
+  // Pet mechanic: this creature is a ranged caster (warlock Imp) — instead of
+  // closing to melee, it stays at `range` and hurls bolts of `school` damage.
+  // updatePet reads this; the bolt damage comes from the mob's weapon range.
+  petRanged?: { range: number; school: Aura['school'] };
 }
 
 export type AbilityEffect =
@@ -230,7 +234,8 @@ export type AbilityEffect =
   | { type: 'sunder'; armor: number; maxStacks: number } // sunder armor: stacking armor debuff + flat threat
   | { type: 'taunt' } // taunt/growl: match top threat and force-attack the caster
   | { type: 'tamePet' } // hunter tame beast: the targeted mob becomes the caster's pet
-  | { type: 'dismissPet' }; // release the caster's pet back to the wild
+  | { type: 'dismissPet' } // release the caster's pet back to the wild
+  | { type: 'summonDemon'; mobId: string }; // warlock: summon a demon pet (imp/voidwalker)
 
 export interface AbilityRank {
   rank: number;

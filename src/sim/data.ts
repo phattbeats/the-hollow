@@ -22,6 +22,7 @@ import {
   ZONE3_QUESTS, ZONE3_QUEST_ORDER, ZONE3_ROADS, ZONE3_ZONE,
 } from './content/zone3';
 import { DUNGEON_DEFS, DUNGEON_MOBS } from './content/dungeons';
+import { WARLOCK_PET_MOBS } from './content/warlock_pets';
 import { GROUND_PICKUP_LINES } from './content/ground_pickup_lines';
 
 function mergeItems(...parts: Record<string, ItemDef>[]): Record<string, ItemDef> {
@@ -48,7 +49,7 @@ export type {
 export const ITEMS: Record<string, ItemDef> = mergeItems(BASE_ITEMS, ZONE2_ITEMS, ZONE3_ITEMS);
 
 export const MOBS: Record<string, MobTemplate> = {
-  ...ZONE1_MOBS, ...ZONE2_MOBS, ...ZONE3_MOBS, ...DUNGEON_MOBS,
+  ...ZONE1_MOBS, ...ZONE2_MOBS, ...ZONE3_MOBS, ...DUNGEON_MOBS, ...WARLOCK_PET_MOBS,
 };
 
 export const NPCS: Record<string, NpcDef> = {
