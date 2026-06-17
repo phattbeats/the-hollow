@@ -3869,13 +3869,17 @@ export class Hud {
     el.innerHTML = html;
     el.querySelector('[data-act="prestige"]')?.addEventListener('click', () => this.openPrestigeDialog());
     const col = el.querySelector('#equip-col')!;
+    // Ordered like the classic WoW character sheet: left column (head, shoulder,
+    // chest) top-to-bottom, then the right column (hands, waist, legs, feet),
+    // then weapons at the bottom. We have no neck/back/wrist/ring/trinket/off-hand
+    // slots, so those are simply omitted from each column.
     const slots: { key: EquipSlot; name: string }[] = [
       { key: 'helmet', name: itemSlotName('helmet') },
       { key: 'shoulder', name: itemSlotName('shoulder') },
       { key: 'chest', name: itemSlotName('chest') },
+      { key: 'gloves', name: itemSlotName('gloves') },
       { key: 'waist', name: itemSlotName('waist') },
       { key: 'legs', name: itemSlotName('legs') },
-      { key: 'gloves', name: itemSlotName('gloves') },
       { key: 'feet', name: itemSlotName('feet') },
       { key: 'mainhand', name: itemSlotName('mainhand') },
     ];

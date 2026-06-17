@@ -18,11 +18,12 @@ await page.setViewport({ width: 1280, height: 860 });
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const tap = (sel) => page.evaluate((s) => document.querySelector(s)?.click(), sel);
 
-// [class, epic id, paperdoll row nth-child (1=helmet,2=shoulder,...,6=gloves)]
+// [class, epic id, paperdoll row nth-child] — WoW order: 1=helmet, 2=shoulder,
+// 3=chest, 4=gloves, 5=waist, 6=legs, 7=feet, 8=mainhand.
 const CASES = [
   ['warrior', 'deathlords_dread_visage', 1],
   ['mage', 'necromancers_soulspire_mantle', 2],
-  ['rogue', 'wyrmshadow_talongrips', 6],
+  ['rogue', 'wyrmshadow_talongrips', 4],
 ];
 
 async function startAs(cls) {
