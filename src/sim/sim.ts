@@ -2103,10 +2103,31 @@ export class Sim {
     return mult < 0 ? 0 : mult;
   }
 
+  // Consume the victim's Heal-Absorb shields (classic necrotic blight): each such
+  // aura holds a remaining budget of healing it devours. Drains `healed` against
+  // every active shield, decrementing their stored budget and dropping any that
+  // run dry. Returns the healing that survives (>= 0). A no-op when none are set.
+  private consumeHealAbsorb(target: Entity, healed: number): number {
+    if (healed <= 0) return healed;
+    let remaining = healed;
+    let depleted = false;
+    for (const a of target.auras) {
+      if (a.kind !== 'heal_absorb' || a.value <= 0) continue;
+      const eaten = Math.min(remaining, a.value);
+      a.value -= eaten;
+      remaining -= eaten;
+      if (a.value <= 0) depleted = true;
+      if (remaining <= 0) break;
+    }
+    if (depleted) target.auras = target.auras.filter((a) => !(a.kind === 'heal_absorb' && a.value <= 0));
+    return remaining;
+  }
+
   private applyHeal(source: Entity, target: Entity, amount: number, ability: string): void {
     if (target.dead) return;
     const crit = this.rng.chance(this.spellCrit(source));
     let healed = Math.round(amount * (crit ? 1.5 : 1) * this.healingTakenMult(target));
+    healed = this.consumeHealAbsorb(target, healed);
     healed = Math.min(healed, target.maxHp - target.hp);
     target.hp += healed;
     this.emit({ type: 'heal2', sourceId: source.id, targetId: target.id, amount: healed, crit, ability });
@@ -4190,6 +4211,24 @@ export class Sim {
         value: ms.healReduction,
         sourceId: mob.id,
         school: (ms.school as Aura['school']) ?? 'physical',
+      });
+    }
+    // Heal-Absorb: a landed hit can brand the victim with a necrotic blight that
+    // devours the next chunk of incoming healing. The sibling of Mortal Strike —
+    // where Mortal Strike scales every heal down, this eats a fixed pool then
+    // fades. Guarded on `hostile` so a friendly pet (mobSwing's other caller)
+    // never blights an ally.
+    const ha = MOBS[mob.templateId]?.healAbsorb;
+    if (ha && mob.hostile && !target.dead && this.rng.chance(ha.chance)) {
+      this.applyAura(target, {
+        id: `heal_absorb_${mob.templateId}`,
+        name: ha.name,
+        kind: 'heal_absorb',
+        remaining: ha.duration,
+        duration: ha.duration,
+        value: ha.amount,
+        sourceId: mob.id,
+        school: (ha.school as Aura['school']) ?? 'shadow',
       });
     }
     // Ensnare: a landed hit may web the victim in place (root). Hostile mobs only

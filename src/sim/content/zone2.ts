@@ -181,6 +181,11 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     // Low dread proc so this mob doesn't routinely stack two panic effects
     // (silence + fear) on one victim — keeps the encounter from feeling like a lockout.
     dread: { chance: 0.12, duration: 4, name: 'Wail of the Grave', school: 'shadow' },
+    // Grave Blight: a landed hit can sear undeath into the wound, devouring the
+    // next 120 healing the victim receives before it fades. A sustain-denial axis
+    // that complements (not compounds) the summoner's silence/fear lockout —
+    // healers must out-pace the blight or top off after it lapses.
+    healAbsorb: { chance: 0.25, amount: 120, duration: 10, name: 'Grave Blight', school: 'shadow' },
     loot: [
       { copper: 60, chance: 1 },
       { itemId: 'cult_cipher', chance: 0.6, questId: 'q_summoners' },

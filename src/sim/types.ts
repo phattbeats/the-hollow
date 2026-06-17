@@ -47,7 +47,7 @@ export type AuraKind =
   | 'dot' | 'slow' | 'stun' | 'root' | 'incapacitate' | 'polymorph'
   | 'attackspeed' | 'debuff_ap' | 'buff_ap' | 'buff_armor' | 'buff_int' | 'buff_dodge' | 'buff_speed' | 'buff_haste'
   | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_allstats' | 'thorns' | 'form_bear'
-  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence';
+  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence' | 'heal_absorb';
 
 export interface Aura {
   id: string; // ability id that applied it
@@ -213,6 +213,11 @@ export interface MobTemplate {
   // Melee mechanic: a landed swing has `chance` to inflict a Mortal Wound debuff
   // that reduces all healing the victim receives by `healReduction` for `duration`.
   mortalStrike?: { chance: number; healReduction: number; duration: number; name: string; school?: string };
+  // Heal-absorb mechanic: a landed swing has `chance` to brand the victim with a
+  // necrotic blight that devours the next `amount` points of incoming healing
+  // (a consumable shield, not a percentage) before fading after `duration`.
+  // Distinct from mortalStrike, which scales every heal down for its whole life.
+  healAbsorb?: { chance: number; amount: number; duration: number; name: string; school?: string };
   // On-hit lifesteal: a landed melee swing heals the mob for `healFrac` of the
   // damage it just dealt (drowned undead, leeches, vampiric beasts). Unlike the
   // other on-hit affixes it sustains the attacker instead of debuffing the
