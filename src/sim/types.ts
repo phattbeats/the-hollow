@@ -268,6 +268,10 @@ export interface MobTemplate {
   // Innate "spiked hide" trait: melee attackers take flat damage back on every
   // connecting swing — the mob-side equivalent of the druid Thorns aura.
   thorns?: { value: number; school?: Aura['school']; name?: string };
+  // Innate "warded" trait: casters take flat damage back on every connecting
+  // SPELL hit — the magic-school twin of `thorns` (which only punishes melee).
+  // Reflects on any non-physical damage instance the mob survives.
+  spellReflect?: { value: number; school?: Aura['school']; name?: string };
 }
 
 export type AbilityEffect =

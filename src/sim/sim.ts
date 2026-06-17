@@ -3379,9 +3379,25 @@ export class Sim {
       }
     }
 
+    this.reflectSpellWard(source, target, amount, kind, school);
+
     if (target.hp <= 0) {
       this.handleDeath(target, source);
     }
+  }
+
+  /**
+   * Innate "warded" mobs reflect flat damage onto a caster whose SPELL connects
+   * — the magic-school twin of melee thorns (which only punishes melee swings).
+   * Fires for any non-physical hit the mob survives; the reflected blow is
+   * mob-sourced, so it can never re-trigger a reflect (players carry no template).
+   */
+  private reflectSpellWard(source: Entity | null, target: Entity, amount: number, kind: 'hit' | 'miss' | 'dodge', school: string): void {
+    if (!source || source.kind !== 'player' || source.id === target.id) return;
+    if (target.kind !== 'mob' || target.hp <= 0 || kind !== 'hit' || amount <= 0 || school === 'physical') return;
+    const ward = MOBS[target.templateId]?.spellReflect;
+    if (!ward) return;
+    this.dealDamage(target, source, ward.value, false, ward.school ?? 'shadow', ward.name ?? 'Spell Reflection', 'hit', true);
   }
 
   private enterCombat(a: Entity, b: Entity): void {

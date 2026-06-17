@@ -174,6 +174,9 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
       { itemId: 'linen_scrap', chance: 0.3 },
     ],
     manaBurn: { chance: 0.3, amount: 80, name: 'Mana Sear', school: 'shadow' },
+    // Spectral Ward: a shroud of dark wards that lashes back at any caster whose
+    // spell strikes the necromancer — the magic-school twin of melee thorns.
+    spellReflect: { value: 9, name: 'Spectral Ward', school: 'shadow' },
     scale: 1.0, color: 0x533566,
   },
   boneclad_revenant: {
