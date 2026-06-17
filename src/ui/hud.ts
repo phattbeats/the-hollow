@@ -2,6 +2,7 @@ import type { ResolvedAbility } from '../sim/sim';
 import { OVERHEAD_EMOTES, isOverheadEmoteId, type FriendInfo, type IWorld, type LeaderboardEntry, type MarketInfo, type OverheadEmoteId } from '../world_api';
 import { Renderer } from '../render/renderer';
 import { CharacterPreview } from '../render/characters';
+import { portraitChipHtml, hydratePortraits } from './portrait_chip';
 import { skinCount } from '../render/characters/manifest';
 import { emoteIconUrl } from './emote_icons';
 import {
@@ -351,7 +352,7 @@ export class Hud {
     const mm = $('#minimap') as unknown as HTMLCanvasElement;
     this.minimapCtx = mm.getContext('2d')!;
     this.minimapBg = this.renderTerrainCanvas(140, { minX: WORLD_MIN_X, maxX: WORLD_MAX_X, minZ: WORLD_MIN_Z, maxZ: WORLD_MAX_Z });
-    mm.style.cursor = 'pointer';
+    mm.style.cursor = 'var(--cursor-point)';
     mm.title = t('controls.worldMap');
     mm.addEventListener('click', () => this.toggleMap());
     window.addEventListener('pointermove', (ev) => {
@@ -3843,7 +3844,7 @@ export class Hud {
     const p = sim.player;
     const cls = CLASSES[sim.cfg.playerClass];
     const className = classDisplayName(cls.id);
-    let html = `<div class="panel-title"><span>${esc(p.name)} <span class="panel-subtitle">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(p.level, { maximumFractionDigits: 0 }), className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
+    let html = `<div class="panel-title char-title-portrait">${portraitChipHtml({ cls: sim.cfg.playerClass, skin: p.skin ?? 0, name: p.name, variant: 'md' })}<span class="char-title-text">${esc(p.name)} <span class="panel-subtitle">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(p.level, { maximumFractionDigits: 0 }), className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
     html += `<div class="paperdoll">
       <div class="equip-col" id="equip-col"></div>
       <div class="char-model-panel">
@@ -3863,6 +3864,7 @@ export class Hud {
     html += this.talentSummaryHtml();
     html += this.progressionHtml(p.level);
     el.innerHTML = html;
+    hydratePortraits(el);
     el.querySelector('[data-act="prestige"]')?.addEventListener('click', () => this.openPrestigeDialog());
     const col = el.querySelector('#equip-col')!;
     const slots: { key: EquipSlot; name: string }[] = [
@@ -4797,7 +4799,10 @@ export class Hud {
     const ignored = online
       ? !!social?.blocks.some((b) => b.name === name)
       : this.isChatIgnored(name);
-    let html = `<div class="ctx-title">${esc(name)}</div>`;
+    const ent = this.sim.entities.get(pid);
+    const entCls = ent && ent.kind === 'player' ? (ent.templateId as PlayerClass) : null;
+    let html = `<div class="ctx-title ctx-title-player">${entCls ? portraitChipHtml({ cls: entCls, skin: ent!.skin ?? 0, name, variant: 'sm' }) : ''}<span class="ctx-title-name">${esc(name)}</span></div>`;
+    if (entCls) html += `<div class="ctx-item" data-act="inspect">${esc(t('character.viewProfile'))}</div>`;
     if (!isMember) html += `<div class="ctx-item" data-act="invite">${esc(t('hud.chat.context.invite'))}</div>`;
     html += `<div class="ctx-item" data-act="trade">${esc(t('hud.chat.context.trade'))}</div>`;
     html += `<div class="ctx-item" data-act="duel">${esc(t('hud.chat.context.challengeDuel'))}</div>`;
@@ -4810,11 +4815,13 @@ export class Hud {
     if (isLeader && isMember && pid !== this.sim.playerId) html += `<div class="ctx-item" data-act="kick">${esc(t('hud.chat.context.removeParty'))}</div>`;
     html += `<div class="ctx-item" data-act="close">${esc(t('hud.chat.context.cancel'))}</div>`;
     el.innerHTML = html;
+    hydratePortraits(el);
     el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
     el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
     el.style.display = 'block';
     this.bindContextMenuActions((act) => {
-      if (act === 'invite') this.sim.partyInvite(pid);
+      if (act === 'inspect') this.openInspect(pid);
+      else if (act === 'invite') this.sim.partyInvite(pid);
       else if (act === 'trade') this.sim.tradeRequest(pid);
       else if (act === 'duel') this.sim.duelRequest(pid);
       else if (act === 'friend') this.sim.friendAdd(name);
@@ -4826,6 +4833,28 @@ export class Hud {
       } else if (act === 'report') this.openReportWindow({ pid, name });
       else if (act === 'kick') this.sim.partyKick(pid);
     });
+  }
+
+  /** Inspect another player: a profile window with their portrait, name, level
+   *  and class — rendered locally from their entity's class + skin. */
+  openInspect(pid: number): void {
+    const e = this.sim.entities.get(pid);
+    if (!e || e.kind !== 'player') return;
+    const cls = e.templateId as PlayerClass;
+    const className = classDisplayName(cls);
+    const el = $('#inspect-window');
+    this.closeOtherWindows('#inspect-window');
+    el.innerHTML =
+      `<div class="panel-title"><span>${esc(t('character.profile'))}</span>` +
+      `<button type="button" class="x-btn" data-close aria-label="${esc(t('character.closeProfile'))}">${svgIcon('close')}</button></div>` +
+      `<div class="inspect-card">` +
+      portraitChipHtml({ cls, skin: e.skin ?? 0, name: e.name, variant: 'lg' }) +
+      `<div class="inspect-name">${esc(e.name)}</div>` +
+      `<div class="inspect-meta">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(e.level, { maximumFractionDigits: 0 }), className }))}</div>` +
+      `</div>`;
+    hydratePortraits(el);
+    el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; });
+    el.style.display = 'block';
   }
 
   // Raid/target marker picker for an enemy, opened from its target unit frame.
@@ -4926,14 +4955,23 @@ export class Hud {
       alreadyGuilded,
       canReport: !!this.reportHooks?.submitByName,
     });
-    el.innerHTML = `<div class="ctx-title">${esc(name)}</div>`
+    // If the player is in view we know their class+skin, so show a portrait and
+    // a "View Profile" entry; otherwise the menu is name-only as before.
+    const livePidForMenu = this.playerPidByName(name);
+    const ent = livePidForMenu !== null ? this.sim.entities.get(livePidForMenu) : undefined;
+    const entCls = ent && ent.kind === 'player' ? (ent.templateId as PlayerClass) : null;
+    const titleHtml = `<div class="ctx-title ctx-title-player">${entCls ? portraitChipHtml({ cls: entCls, skin: ent!.skin ?? 0, name, variant: 'sm' }) : ''}<span class="ctx-title-name">${esc(name)}</span></div>`;
+    const inspectHtml = entCls ? `<div class="ctx-item" data-act="inspect">${esc(t('character.viewProfile'))}</div>` : '';
+    el.innerHTML = titleHtml + inspectHtml
       + actions.map((a) => `<div class="ctx-item" data-act="${a.id}">${esc(a.label)}</div>`).join('');
+    hydratePortraits(el);
     el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
     el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
     el.style.display = 'block';
     this.bindContextMenuActions((act) => {
       const livePid = this.playerPidByName(name);
-      if (act === 'whisper') this.startWhisper(name);
+      if (act === 'inspect') { if (livePid !== null) this.openInspect(livePid); }
+      else if (act === 'whisper') this.startWhisper(name);
       else if (act === 'invite') {
         if (livePid !== null) this.sim.partyInvite(livePid);
         else this.showError(t('hud.system.playerNotNearby'));

@@ -69,13 +69,14 @@
 </script>
 
 <link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 <link rel="preload" as="image" href="/loading-screen.jpg" />
-<link rel="preload" as="image" href="./ui/cursors/hand-default.png" />
-<link rel="preload" as="image" href="./ui/cursors/attack-sword.png" />
+<link rel="preload" as="image" href="./ui/cursors/gauntlet.png" />
+<link rel="preload" as="image" href="./ui/cursors/arrow.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..700&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -156,11 +157,15 @@
     --scrollbar-border: #7c6233;
     --app-vw: 100vw;
     --app-vh: 100vh;
-    /* Shared with src/game/cursors.ts — keep hotspots in sync. */
-    --cursor-hand: url('./ui/cursors/hand-default.png') 12 2, default;
-    --cursor-sword: url('./ui/cursors/attack-sword.png') 4 4, pointer;
-    --cursor-shield: url('./ui/cursors/friendly-shield.png') 13 30, default;
+    /* Shared with src/game/cursors.ts — keep hotspots in sync.
+       --cursor-arrow = default; --cursor-point = interactive/hover (gauntlet finger). */
+    --cursor-arrow: url('./ui/cursors/arrow.png') 7 2, default;
+    --cursor-point: url('./ui/cursors/gauntlet.png') 6 4, pointer;
     --cursor-grab: url('./ui/cursors/hand-grab.png') 11 16, grabbing;
+    /* Back-compat aliases */
+    --cursor-hand: var(--cursor-arrow);
+    --cursor-sword: var(--cursor-point);
+    --cursor-shield: var(--cursor-point);
   }
   * { 
     box-sizing: border-box; 
@@ -214,6 +219,7 @@
     overflow-x: hidden; overflow-y: hidden; background: #000; font-family: var(--ui-font);
     touch-action: pan-y; overscroll-behavior-y: auto;
     -webkit-text-size-adjust: 100%;
+    cursor: var(--cursor-arrow); /* custom arrow is the global default */
   }
   body.game-active {
     overflow: hidden;
@@ -358,9 +364,9 @@
     align-items: center;
   }
   .window .panel-title { cursor: move; touch-action: none; }
-  .window .panel-title .x-btn { cursor: pointer; }
+  .window .panel-title .x-btn { cursor: var(--cursor-point); }
   .window.window-dragging { cursor: move; }
-  .x-btn { color: #c9b27a; cursor: pointer; font-size: 14px; padding: 0 4px; border: 1px solid #463a1c; border-radius: 3px; background: #1a1410; font-family: var(--ui-font); }
+  .x-btn { color: #c9b27a; cursor: var(--cursor-point); font-size: 14px; padding: 0 4px; border: 1px solid #463a1c; border-radius: 3px; background: #1a1410; font-family: var(--ui-font); }
   .x-btn:hover { color: #fff; border-color: var(--gold-dim); }
   .x-btn:focus-visible,
   .action-btn:focus-visible,
@@ -522,7 +528,7 @@
   .petbar-group { display: flex; gap: 4px; padding: 4px; border: 2px solid #000; outline: 1px solid #5b4618;
     border-radius: 6px; background: linear-gradient(170deg, #15131fdd, #09080edd); box-shadow: 0 2px 8px #000c; }
   .pet-btn { width: 38px; height: 38px; padding: 0; border: 2px solid #4a3d1d; border-radius: 6px;
-    background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f); color: #f3df9a; cursor: pointer;
+    background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f); color: #f3df9a; cursor: var(--cursor-point);
     position: relative; box-shadow: inset 0 1px 0 #ffffff18, 0 2px 4px #0009; }
   .pet-btn .icon-label { position: absolute; inset: 1px; border-radius: 4px; background-size: cover; background-position: center; background-repeat: no-repeat; pointer-events: none; }
   .pet-btn:hover { border-color: var(--gold); }
@@ -532,7 +538,7 @@
     font-size: 13px; color: var(--gold); text-shadow: 1px 1px 2px #000; font-weight: bold; pointer-events: none; }
   #actionbar { display: flex; gap: 4px; padding: 6px; }
   .action-btn { width: 46px; height: 46px; position: relative; border: 2px solid #4a3d1d; border-radius: 6px;
-    background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f); color: #fff; cursor: pointer;
+    background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f); color: #fff; cursor: var(--cursor-point);
     font-family: var(--title-font); text-shadow: 1px 1px 2px #000;
     box-shadow: inset 0 1px 0 #ffffff18, 0 2px 4px #0009; }
   .action-btn .icon-label { position: absolute; inset: 1px; border-radius: 4px;
@@ -557,7 +563,7 @@
   #side-buttons { position: absolute; right: 16px; bottom: 74px;
     display: flex; flex-direction: column; gap: 4px; z-index: 19; }
   .micro-btn { width: 34px; height: 30px; border: 2px solid #4a3d1d; border-radius: 5px;
-    background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f); color: #d8c89a; cursor: pointer;
+    background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f); color: #d8c89a; cursor: var(--cursor-point);
     font-size: 12px; font-weight: bold; box-shadow: inset 0 1px 0 #ffffff18, 0 2px 4px #0009; position: relative; }
   /* hover flyout: the button's background grows leftward to reveal its label.
      The panel tucks 6px under the button (z-index:-1) so it reads as one surface. */
@@ -593,14 +599,14 @@
   #chatlog-tabs { display: flex; gap: 2px; margin-left: 6px; margin-bottom: -1px; position: relative; z-index: 2; }
   .chat-tab { height: 22px; padding: 0 12px; border: 1px solid #3a321d; border-bottom: none;
     border-radius: 6px 6px 0 0; background: linear-gradient(#1c1824, #0d0b13); color: #95886a;
-    cursor: pointer; font-family: var(--title-font); font-size: 12px; text-shadow: 1px 1px 1px #000; }
+    cursor: var(--cursor-point); font-family: var(--title-font); font-size: 12px; text-shadow: 1px 1px 1px #000; }
   .chat-tab.active { color: var(--gold); border-color: #6f5a2a; background: linear-gradient(#2a2436, #161220); }
   #chatlog-frame { height: 184px; padding: 0; overflow: hidden; border-radius: 0 6px 6px 6px; }
   .chat-pane { display: none; height: 100%; overflow-y: auto; overflow-x: hidden; padding: 7px 10px;
     font-size: 11px; line-height: 1.45; }
   .chat-pane.active { display: block; }
   .chat-pane div { text-shadow: 1px 1px 1px #000; overflow-wrap: break-word; user-select: text; }
-  .chat-player-name { cursor: context-menu; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  .chat-player-name { cursor: var(--cursor-point); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
   .chat-player-name:hover { filter: brightness(1.25); }
   .chat-player-name:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 2px; }
   .chat-pane::-webkit-scrollbar { width: 8px; }
@@ -608,7 +614,7 @@
   .chat-pane::-webkit-scrollbar-thumb { background: #4a3d1d; border-radius: 4px; }
   #report-window { width: 320px; z-index: 95; }
   #report-window .panel-title { display: flex; justify-content: space-between; align-items: center; }
-  #report-window [data-close] { background: transparent; border: 0; color: #c9b27a; cursor: pointer; font-size: 16px; }
+  #report-window [data-close] { background: transparent; border: 0; color: #c9b27a; cursor: var(--cursor-point); font-size: 16px; }
   .report-label { display: block; color: #c9b27a; font-size: 12px; margin: 8px 0 4px; }
   #report-window select, #report-window textarea {
     width: 100%; background: #101018; border: 1px solid #4a3d1d; border-radius: 4px; color: #e8d8a8; padding: 6px;
@@ -631,7 +637,7 @@
   #meters-window { width: 240px; padding: 8px 10px; display: none; align-self: flex-end; margin-bottom: 6px; text-align: left; }
   #meters-window .panel-title { margin-bottom: 4px; }
   .mt-tab { background: #1a1410; border: 1px solid #463a1c; border-radius: 3px; color: #c9b27a;
-    font-size: 11px; padding: 1px 7px; cursor: pointer; }
+    font-size: 11px; padding: 1px 7px; cursor: var(--cursor-point); }
   .mt-tab.on { color: var(--gold); border-color: var(--gold-dim); background: #2a2010; }
   .mt-view { font-size: 12px; color: var(--gold); font-family: var(--title-font); text-shadow: 1px 1px 1px #000; }
   .mt-sub { font-size: 10px; color: #9c8f6e; margin: 1px 0 6px; }
@@ -700,7 +706,7 @@
   .qd-reward-row { display: flex; gap: 6px; align-items: center; margin-top: 4px; }
   .qd-reward-label { color: var(--color-text-muted); font-size: 11px; }
   .qd-reward-name { font-size: 12px; }
-  .qd-list-item { display: block; width: 100%; padding: 5px 8px; cursor: pointer; border: 0; border-radius: 4px; background: transparent; text-align: left; font-size: 13px; color: var(--gold); font-family: var(--title-font); }
+  .qd-list-item { display: block; width: 100%; padding: 5px 8px; cursor: var(--cursor-point); border: 0; border-radius: 4px; background: transparent; text-align: left; font-size: 13px; color: var(--gold); font-family: var(--title-font); }
   .qd-text, .qd-sub, .qd-obj, .qd-reward-label, .qd-reward-name, .qd-list-item,
   .quest-muted, .quest-suggested, .ql-item, .ql-empty { overflow-wrap: anywhere; }
   .qd-reward-row { flex-wrap: wrap; }
@@ -709,7 +715,7 @@
   .qd-list-item:focus-visible,
   .ql-item:focus-visible { outline: 3px solid var(--color-border-focus); outline-offset: 2px; }
   .btn { background: linear-gradient(#8a3326, #5a1d12 55%, #471409); color: #ffd9a0; border: 1px solid #a86;
-    outline: 1px solid #000; border-radius: 4px; padding: 6px 16px; font-size: 12.5px; cursor: pointer;
+    outline: 1px solid #000; border-radius: 4px; padding: 6px 16px; font-size: 12.5px; cursor: var(--cursor-point);
     margin-top: 10px; margin-right: 8px; font-family: var(--title-font); letter-spacing: 0.4px;
     text-shadow: 1px 1px 1px #000; box-shadow: inset 0 1px 0 #ffffff2a, 0 2px 4px #0008;
     transition: filter var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed); }
@@ -774,7 +780,7 @@
   #quest-log-window { width: 520px; }
   #quest-log-window .ql-cols { display: flex; gap: 12px; }
   .ql-list { width: 180px; border-right: 1px solid #463a1c; padding-right: 8px; }
-  .ql-item { display: block; width: 100%; padding: 4px 6px; border: 0; background: transparent; text-align: left; font-size: 12px; color: #d8c89a; cursor: pointer; border-radius: 3px; font-family: var(--title-font); }
+  .ql-item { display: block; width: 100%; padding: 4px 6px; border: 0; background: transparent; text-align: left; font-size: 12px; color: #d8c89a; cursor: var(--cursor-point); border-radius: 3px; font-family: var(--title-font); }
   .ql-item:hover, .ql-item.sel { background: #ffffff14; color: var(--gold); }
   .ql-detail { flex: 1; font-size: 12px; max-height: 380px; overflow-y: auto; }
   .ql-empty { color: var(--color-text-muted); font-size: 12px; padding: var(--spacing-xs); }
@@ -813,7 +819,7 @@
   /* talents & specializations panel */
   #talents-window { width: min(600px, calc(100vw - 24px)); }
   .tal-tabs { display: flex; gap: 6px; margin: 8px 0 6px; }
-  .tal-tab { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; text-align: center; min-height: 34px; padding: 6px 8px; font-size: 12px; font-family: var(--title-font); color: #d8c89a; background: #1c1609; border: 1px solid #463a1c; border-radius: 4px; cursor: pointer; }
+  .tal-tab { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; text-align: center; min-height: 34px; padding: 6px 8px; font-size: 12px; font-family: var(--title-font); color: #d8c89a; background: #1c1609; border: 1px solid #463a1c; border-radius: 4px; cursor: var(--cursor-point); }
   .tal-tab.active { color: #fff7dc; background: #3a2d10; border-color: #ffd100; box-shadow: inset 0 0 0 1px #ffd10055, 0 0 8px #b8902a55; }
   .tal-tab.active::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; background: #ffd100; border-radius: 2px; }
   .tal-tab .tt-pts { min-width: 20px; height: 18px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #f4df9f; background: #0f0b06; border: 1px solid #5f4b1a; border-radius: 9px; font-family: var(--body-font); }
@@ -822,7 +828,7 @@
   #tal-body { overflow-x: auto; overflow-y: visible; padding: 0 8px 8px; margin: 0 -8px; }
   .tal-tree { position: relative; margin: 6px auto; }
   .tal-arrows { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 0; }
-  .tal-node { position: absolute; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: #15110a; border: 2px solid #5a4a22; color: #e8dcb0; user-select: none; box-sizing: border-box; z-index: 1; }
+  .tal-node { position: absolute; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; cursor: var(--cursor-point); background: #15110a; border: 2px solid #5a4a22; color: #e8dcb0; user-select: none; box-sizing: border-box; z-index: 1; }
   .tal-node .tal-icon { position: absolute; inset: 2px; display: block; background-color: #15110a; background-size: cover; background-position: center; background-repeat: no-repeat; z-index: 1; }
   .tal-node.circle { border-radius: 50%; }
   .tal-node.circle .tal-icon { border-radius: 50%; }
@@ -841,7 +847,7 @@
   .tal-node.dormant::after { content: "!"; position: absolute; left: -6px; top: -7px; min-width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; color: #fff6e8; background: #c0392b; border: 1px solid #3a0803; border-radius: 50%; font: 800 11px/1 var(--body-font); z-index: 3; }
   .tal-rank { position: absolute; right: -6px; bottom: -7px; min-width: 20px; text-align: center; font-size: 10px; color: #fff6d5; background: #171006; border: 1px solid #ffd100; border-radius: 8px; padding: 0 4px; line-height: 14px; z-index: 4; box-shadow: 0 1px 4px #000a; }
   .tal-specs { display: flex; gap: 8px; margin: 10px 0; }
-  .tal-spec { position: relative; flex: 1; padding: 8px 6px; border: 1px solid #463a1c; border-radius: 6px; background: #1a1409; cursor: pointer; text-align: center; }
+  .tal-spec { position: relative; flex: 1; padding: 8px 6px; border: 1px solid #463a1c; border-radius: 6px; background: #1a1409; cursor: var(--cursor-point); text-align: center; }
   .tal-spec.sel { border-color: #ffd100; background: #2c2410; box-shadow: inset 0 0 0 1px #ffd10055, 0 0 10px #b8902a66; }
   .tal-spec.sel::after { content: "✓"; position: absolute; right: 6px; top: 6px; width: 17px; height: 17px; display: flex; align-items: center; justify-content: center; color: #120d04; background: #ffd100; border: 1px solid #332403; border-radius: 50%; font: 700 11px/1 var(--body-font); }
   .tal-spec .ts-icon { width: 42px; height: 42px; margin: 0 auto; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: #15110a; color: #fff; border: 1px solid #5a4a22; font: 26px/1 "Apple Color Emoji", "Segoe UI Emoji", var(--body-font); text-shadow: 0 1px 2px #000; }
@@ -889,7 +895,7 @@
   .ui-dd-caret { font-size: 9px; opacity: 0.8; }
   .ui-dd-menu { position: absolute; bottom: calc(100% + 4px); left: 0; min-width: 100%; max-height: 184px; overflow-y: auto; background: #1a140a; border: 1px solid var(--gold); border-radius: 5px; box-shadow: 0 6px 18px #000a; z-index: 80; padding: 3px; }
   .ui-dd-menu[hidden] { display: none; }
-  .ui-dd-item { padding: 5px 8px; font-size: 12px; color: #e8dcb0; border-radius: 3px; cursor: pointer; white-space: nowrap; }
+  .ui-dd-item { padding: 5px 8px; font-size: 12px; color: #e8dcb0; border-radius: 3px; cursor: var(--cursor-point); white-space: nowrap; }
   .ui-dd-item:hover { background: #ffffff12; }
   .ui-dd-item.sel { color: var(--gold); }
   /* report dialog: dropdown drops downward (dialog sits high), full width */
@@ -898,7 +904,7 @@
   /* Choice-node option flyout */
   .tal-choice-pop { position: fixed; z-index: 90; width: 252px; background: #1a140a; border: 1px solid var(--gold); border-radius: 6px; box-shadow: 0 10px 24px #000c, inset 0 0 0 1px #ffd10022; padding: 5px; }
   .tal-choice-pop::before { content: ""; position: absolute; left: var(--tal-choice-caret-left, 50%); top: -6px; width: 10px; height: 10px; background: #1a140a; border-left: 1px solid var(--gold); border-top: 1px solid var(--gold); transform: translateX(-50%) rotate(45deg); }
-  .tal-choice-opt { position: relative; display: flex; gap: 8px; align-items: flex-start; padding: 8px 28px 8px 8px; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
+  .tal-choice-opt { position: relative; display: flex; gap: 8px; align-items: flex-start; padding: 8px 28px 8px 8px; border: 1px solid transparent; border-radius: 4px; cursor: var(--cursor-point); }
   .tal-choice-opt:hover, .tal-choice-opt:focus-visible { background: #ffffff10; border-color: #6f5a2a; outline: none; }
   .tal-choice-opt.sel { background: #2c2410; border-color: var(--gold); box-shadow: inset 0 0 0 1px #ffd10033; }
   .tal-choice-opt.sel::after { content: "✓"; position: absolute; right: 8px; top: 8px; width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; color: #120d04; background: #ffd100; border-radius: 50%; font: 700 10px/1 var(--body-font); }
@@ -914,7 +920,7 @@
 
   /* vendor */
   #vendor-window { width: 400px; }
-  .vendor-item { display: flex; gap: 8px; align-items: center; width: 100%; padding: 5px; border: 0; border-radius: 4px; cursor: pointer; background: transparent; color: inherit; font-family: var(--ui-font); text-align: left; }
+  .vendor-item { display: flex; gap: 8px; align-items: center; width: 100%; padding: 5px; border: 0; border-radius: 4px; cursor: var(--cursor-point); background: transparent; color: inherit; font-family: var(--ui-font); text-align: left; }
   .vendor-item:hover { background: #ffffff10; }
   .vendor-item .vi-name { font-size: 12px; flex: 1; }
   .vendor-item .vi-price { font-size: 11px; color: #ddd; }
@@ -942,7 +948,7 @@
   #bags .bag-grid { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
   #bags .money { flex: none; }
   .bag-grid { display: flex; flex-direction: column; gap: 2px; }
-  .bag-item { display: flex; gap: 8px; align-items: center; width: 100%; font-size: 12px; padding: 3px 4px; border: 0; border-radius: 3px; cursor: pointer; background: transparent; color: inherit; font-family: var(--ui-font); text-align: left; }
+  .bag-item { display: flex; gap: 8px; align-items: center; width: 100%; font-size: 12px; padding: 3px 4px; border: 0; border-radius: 3px; cursor: var(--cursor-point); background: transparent; color: inherit; font-family: var(--ui-font); text-align: left; }
   .bag-item:hover { background: #ffffff12; }
   .bag-item .bi-count { margin-left: auto; color: #ccc; }
   .bag-empty { font-size: 12px; color: var(--color-text-muted); padding: 6px; }
@@ -959,7 +965,7 @@
   #social-window.open { display: flex; }
   .soc-realm-tag { color: #7fd4ff; font-size: 11px; font-weight: 400; }
   .soc-tabs { display: flex; gap: 4px; margin: 6px 0 8px; flex: none; }
-  .soc-tab { flex: 1; padding: 7px 0; font-size: 13px; font-family: var(--title-font); color: #d8c89a; cursor: pointer;
+  .soc-tab { flex: 1; padding: 7px 0; font-size: 13px; font-family: var(--title-font); color: #d8c89a; cursor: var(--cursor-point);
     background: #1a1410; border: 1px solid #463a1c; border-radius: 4px; text-align: center; }
   .soc-tab:hover { color: var(--gold); }
   .soc-tab:focus-visible,
@@ -984,7 +990,7 @@
   .soc-id { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
   .soc-name { color: #f0ead8; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   button.soc-name { border: 0; background: transparent; padding: 0; font-family: var(--ui-font); font-size: inherit; text-align: left; }
-  .soc-name.soc-link { cursor: pointer; }
+  .soc-name.soc-link { cursor: var(--cursor-point); }
   .soc-name.soc-link:hover { color: #ff80ff; text-decoration: underline; }
   .soc-name .rank { color: #c9b27a; font-weight: 400; font-size: 10px; margin-left: 4px; display: inline-block; text-decoration: none; }
   .soc-sub { color: #998d6a; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -992,7 +998,7 @@
   .soc-meta { color: #998d6a; font-size: 11px; text-align: right; line-height: 1.25; white-space: nowrap; flex: none; }
   .soc-meta .zone { color: #7fd4ff; }
   .soc-actions { display: flex; gap: 5px; margin-left: 4px; flex: none; }
-  .soc-x { color: #e0c89a; cursor: pointer; font-size: 15px; line-height: 1; min-width: 26px; height: 26px;
+  .soc-x { color: #e0c89a; cursor: var(--cursor-point); font-size: 15px; line-height: 1; min-width: 26px; height: 26px;
     display: inline-flex; align-items: center; justify-content: center; padding: 0 5px;
     border: 1px solid #5a4a26; border-radius: 4px; background: #221a10; font-family: var(--ui-font); }
   .soc-x:hover { color: #fff0b0; border-color: #8a6f34; background: #2e2416; }
@@ -1006,7 +1012,7 @@
   .soc-suggest { position: absolute; left: 0; right: 0; bottom: calc(100% + 3px); display: none; z-index: 30;
     background: #14110d; border: 1px solid #6f5a2a; border-radius: 5px; max-height: 210px; overflow-y: auto;
     box-shadow: 0 -6px 18px #000a; }
-  .soc-sugg-item { display: flex; width: 100%; align-items: center; gap: 8px; padding: 7px 9px; cursor: pointer; font-size: 13px;
+  .soc-sugg-item { display: flex; width: 100%; align-items: center; gap: 8px; padding: 7px 9px; cursor: var(--cursor-point); font-size: 13px;
     border: 0; background: transparent; color: inherit; font-family: var(--ui-font); text-align: left; }
   .soc-sugg-item:hover, .soc-sugg-item.active { background: #2f2740; }
   .soc-sugg-item.active { box-shadow: inset 2px 0 0 var(--gold); }
@@ -1019,7 +1025,7 @@
   /* zoom controls, matching the micro-menu button look */
   #map-zoom { position: absolute; right: 22px; bottom: 22px; display: flex; flex-direction: column; gap: 5px; z-index: 2; }
   .map-zoom-btn { width: 32px; height: 32px; font-size: 20px; font-weight: bold; line-height: 1;
-    border: 2px solid #4a3d1d; border-radius: 5px; color: #d8c89a; cursor: pointer;
+    border: 2px solid #4a3d1d; border-radius: 5px; color: #d8c89a; cursor: var(--cursor-point);
     background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f);
     box-shadow: inset 0 1px 0 #ffffff18, 0 2px 4px #0009; display: flex; align-items: center; justify-content: center; }
   .map-zoom-btn:hover { border-color: var(--gold); color: #fff; }
@@ -1042,7 +1048,7 @@
   .arena-note { font-size: 11.5px; color: #b6ad8c; line-height: 1.45; margin: 4px 0 2px; font-family: Georgia, serif; }
   .arena-brackets { display: flex; gap: 6px; margin: 6px 0 4px; }
   .arena-bracket { flex: 1; padding: 5px 0; font-family: var(--title-font); font-size: 12px; color: #cfc6a8;
-    background: linear-gradient(#3a3018, #2a2208); border: 1px solid #5a4a20; cursor: pointer; border-radius: 4px; }
+    background: linear-gradient(#3a3018, #2a2208); border: 1px solid #5a4a20; cursor: var(--cursor-point); border-radius: 4px; }
   .arena-bracket.active { color: #ffb24a; border-color: #8a6a28; background: linear-gradient(#5a4a18, #3a2f0d 55%, #2a2208); }
   .arena-bracket.locked { opacity: 0.45; cursor: not-allowed; }
   .arena-bracket-tag { color: #998d6a; font-size: 11px; margin-left: 4px; }
@@ -1088,7 +1094,7 @@
   #market-window { width: 470px; display: none; flex-direction: column; }
   .mkt-tabs { display: flex; gap: 4px; margin: 2px 0 8px; }
   .mkt-tab { flex: 1; text-align: center; font-family: var(--title-font); font-size: 12px; color: #cabb8c;
-    padding: 5px 4px; border: 0; border-radius: 4px 4px 0 0; cursor: pointer; background: #ffffff08; border-bottom: 2px solid transparent; }
+    padding: 5px 4px; border: 0; border-radius: 4px 4px 0 0; cursor: var(--cursor-point); background: #ffffff08; border-bottom: 2px solid transparent; }
   .mkt-tab:hover { background: #ffffff14; color: #ffe6a8; }
   .mkt-tab.sel { color: var(--gold); background: #ffffff16; border-bottom-color: #cc9a3c; }
   .mkt-tab .pip { color: #9fdc7f; font-size: 10.5px; }
@@ -1103,7 +1109,7 @@
   .mkt-row .mkt-name .seller { font-size: 10.5px; color: #8c8468; }
   .mkt-row .mkt-name .seller.house { color: #d4af37; }
   .mkt-row .mkt-price { font-size: 11.5px; color: #ffe6a8; white-space: nowrap; text-align: right; }
-  .mkt-btn { font-family: var(--title-font); font-size: 11px; cursor: pointer; border-radius: 4px; padding: 4px 11px;
+  .mkt-btn { font-family: var(--title-font); font-size: 11px; cursor: var(--cursor-point); border-radius: 4px; padding: 4px 11px;
     border: 1px solid #5a4a18; background: linear-gradient(#3a6a28, #244a18 60%, #1a3812); color: #d6ffc8; white-space: nowrap; }
   .mkt-btn:hover { filter: brightness(1.18); }
   .mkt-btn.cancel { background: linear-gradient(#6a3a18, #4a2810 60%, #381c0c); color: #ffd8b8; }
@@ -1117,7 +1123,7 @@
   .mkt-price-row .coininput { width: 56px; background: #120d07; border: 1px solid #5a4a2a; color: #ffe6a8;
     border-radius: 4px; padding: 4px 6px; font-family: var(--ui-font, inherit); font-size: 12px; }
   .mkt-coin-tag { color: #998d6a; font-size: 11px; margin-right: 6px; }
-  .mkt-list-btn { font-family: var(--title-font); font-size: 13px; cursor: pointer; border-radius: 5px; padding: 8px;
+  .mkt-list-btn { font-family: var(--title-font); font-size: 13px; cursor: var(--cursor-point); border-radius: 5px; padding: 8px;
     border: 1px solid #5a4a18; background: linear-gradient(#5a4a18, #3a2f0d 55%, #2a2208); color: #ffe6a8; margin-top: 4px; }
   .mkt-list-btn:hover { filter: brightness(1.15); }
   .mkt-list-btn:disabled { opacity: 0.5; cursor: default; filter: none; }
@@ -1166,7 +1172,7 @@
   .set-rows { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
   .set-row { display: grid; grid-template-columns: 120px 1fr 48px; align-items: center; gap: 10px; padding: 3px 6px; }
   .set-name { font-size: 12.5px; color: #e8e0c8; }
-  .set-slider { width: 100%; accent-color: var(--gold); cursor: pointer; }
+  .set-slider { width: 100%; accent-color: var(--gold); cursor: var(--cursor-point); }
   .set-val { font-size: 12px; color: #ffd9a0; text-align: right; font-variant-numeric: tabular-nums; }
   .set-toggle { margin: 0; padding: 3px 14px; }
   .set-toggle.off { filter: grayscale(0.6) brightness(0.8); }
@@ -1196,7 +1202,7 @@
   #emote-editor { width: 390px; }
   .emote-editor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 8px 2px 10px; }
   .emote-editor-item { min-height: 58px; border: 1px solid #463a1c; border-radius: 6px; background: #15110a;
-    color: #d8c89a; cursor: pointer; font-family: var(--title-font); font-size: 11px; display: flex;
+    color: #d8c89a; cursor: var(--cursor-point); font-family: var(--title-font); font-size: 11px; display: flex;
     align-items: center; gap: 6px; padding: 6px; text-align: left; transition: transform 130ms cubic-bezier(0.25, 1, 0.5, 1), filter 130ms; }
   .emote-editor-icon { width: 34px; height: 34px; flex: 0 0 auto; filter: drop-shadow(0 2px 1px #0009); }
   .emote-editor-item.selected { color: #211507; border-color: #ffe27a; background: linear-gradient(#fff0a8, #c9821e); }
@@ -1300,7 +1306,7 @@
   .header-logo-btn {
     background: none;
     border: none;
-    cursor: pointer;
+    cursor: var(--cursor-point);
     padding: 0;
     display: flex;
     align-items: center;
@@ -1322,12 +1328,11 @@
     width: 40px;
     margin: 0;
     border-radius: var(--radius-sm);
-    border: 1px solid var(--color-border-default);
     filter: drop-shadow(0 0 10px rgba(199, 148, 26, 0.3)) drop-shadow(1px 1px 2px #000);
   }
 
   #title-logo {
-    width: min(360px, 84vw);
+    width: min(216px, 50vw);
     height: auto;
     filter: drop-shadow(0 0 20px rgba(199, 148, 26, 0.25)) drop-shadow(2px 2px 4px #000);
     animation: logo-pulse 2.5s ease-in-out infinite alternate;
@@ -1342,7 +1347,7 @@
     height: 40px;
     background: none;
     border: none;
-    cursor: pointer;
+    cursor: var(--cursor-point);
     padding: 11px 8px;
     z-index: 20;
     border-radius: var(--radius-sm);
@@ -1398,7 +1403,7 @@
     font-size: 13.5px;
     letter-spacing: 0.5px;
     padding: 6px var(--spacing-md);
-    cursor: pointer;
+    cursor: var(--cursor-point);
     transition: color var(--transition-speed) var(--transition-ease),
                 border-color var(--transition-speed) var(--transition-ease),
                 box-shadow var(--transition-speed) var(--transition-ease),
@@ -1445,7 +1450,7 @@
     padding: 6px 36px 6px 16px; /* Custom chevron layout with padding */
     font-family: var(--font-heading);
     font-size: 13px;
-    cursor: pointer;
+    cursor: var(--cursor-point);
     outline: none;
     transition: border-color var(--transition-speed), color var(--transition-speed), box-shadow var(--transition-speed);
     user-select: auto;
@@ -1478,7 +1483,7 @@
     border-radius: var(--radius-sm);
     background: linear-gradient(180deg, rgba(31, 27, 18, 0.95), rgba(9, 9, 14, 0.95));
     color: var(--color-primary);
-    cursor: pointer;
+    cursor: var(--cursor-point);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 8px rgba(0, 0, 0, 0.45);
     transition: color var(--transition-speed) var(--transition-ease),
                 border-color var(--transition-speed) var(--transition-ease),
@@ -1652,12 +1657,15 @@
     max-width: 472px;
     margin-inline: auto;
     padding: 26px 26px 22px;
-    background: linear-gradient(180deg, rgba(15, 15, 23, 0.56) 0%, rgba(8, 8, 14, 0.66) 100%);
-    border: 1px solid rgba(255, 209, 0, 0.16);
-    border-radius: 18px;
-    box-shadow: 0 26px 64px rgba(0, 0, 0, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(16px) saturate(1.1);
-    -webkit-backdrop-filter: blur(16px) saturate(1.1);
+    /* Match the auth-panel-premium container style */
+    background: linear-gradient(180deg, rgba(21, 21, 31, 0.96) 0%, rgba(11, 11, 18, 0.98) 100%);
+    border: 2px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8),
+                inset 0 0 20px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   /* Realm stats — live counts shown in the realm dropdown (trigger sub-line +
@@ -1687,20 +1695,13 @@
   .server-realm-line[hidden],
   .server-sub-offline[hidden] { display: none; }
 
-  /* Tip — its own slim overlay card under the console. */
-  #play-aside {
-    width: 100%;
-    max-width: 472px;
-    margin-inline: auto;
-    padding: 12px 20px;
-    background: linear-gradient(180deg, rgba(15, 15, 23, 0.5) 0%, rgba(8, 8, 14, 0.6) 100%);
-    border: 1px solid rgba(255, 209, 0, 0.12);
-    border-radius: 14px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(14px) saturate(1.1);
-    -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  /* Tip — an inner section of the play container (divider above), not a box. */
+  .play-tip {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 209, 0, 0.14);
   }
-  #play-aside #performance-tip {
+  .play-tip #performance-tip {
     margin: 0;
     padding: 0;
     max-width: none;
@@ -1708,13 +1709,6 @@
     border: none;
     font-size: 12.5px;
     text-align: center;
-  }
-  /* Hide the tip card whenever the play landing isn't the active panel. */
-  body[data-start-panel="login-panel"] #play-aside,
-  body[data-start-panel="realm-panel"] #play-aside,
-  body[data-start-panel="charselect-panel"] #play-aside,
-  body[data-start-panel="offline-select"] #play-aside {
-    display: none;
   }
 
 
@@ -2206,7 +2200,7 @@
     width: 100%;
     min-height: 58px;
     padding: 10px 16px;
-    cursor: pointer;
+    cursor: var(--cursor-point);
     text-align: left;
     color: var(--color-text-light);
     background: linear-gradient(180deg, rgba(24, 24, 34, 0.92) 0%, rgba(12, 12, 19, 0.94) 100%);
@@ -2291,7 +2285,7 @@
     padding: 11px 12px;
     min-height: 44px;
     border-radius: var(--radius-sm);
-    cursor: pointer;
+    cursor: var(--cursor-point);
     transition: background var(--transition-speed) var(--transition-ease);
   }
   .server-select-option .server-dot { margin-top: 5px; }
@@ -2337,7 +2331,7 @@
     width: 100%;
     min-height: 66px;
     padding: 16px 48px;
-    cursor: pointer;
+    cursor: var(--cursor-point);
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 24px;
@@ -2463,7 +2457,7 @@
     border: 1px solid rgba(199, 148, 26, 0.45);
     border-radius: var(--radius-md);
     color: var(--color-text-light);
-    cursor: pointer;
+    cursor: var(--cursor-point);
     font: inherit;
     text-align: left;
     transition: border-color var(--transition-speed) var(--transition-ease),
@@ -2640,7 +2634,7 @@
     padding: 8px 4px;
     border: 2px solid var(--color-border-default);
     border-radius: 5px;
-    cursor: pointer;
+    cursor: var(--cursor-point);
     font-size: 11px;
     color: var(--color-text-muted);
     background: #15151f;
@@ -2678,7 +2672,7 @@
     color: var(--color-text-secondary, #b9b9c7);
     font-size: 13px;
     font-weight: 500;
-    cursor: pointer;
+    cursor: var(--cursor-point);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2814,7 +2808,7 @@
     background: none;
     border: none;
     color: var(--color-text-muted);
-    cursor: pointer;
+    cursor: var(--cursor-point);
     padding: 0 10px;
     display: flex;
     align-items: center;
@@ -3084,7 +3078,9 @@
     will-change: opacity;
     pointer-events: none;
   }
-  /* The trailer only shows on the Play page; switchMainView toggles this when
+  /* Static key-art backdrop is shown by default (no JS reveal needed). */
+  .bg-home { opacity: 0.85; }
+  /* The backdrop only shows on the Play page; switchMainView toggles this when
      navigating to High Scores / Wiki / News / Download. */
   #start-screen-backdrop.trailer-off .bg-trailer,
   #start-screen-backdrop.trailer-off .bg-trailer-fade { display: none; }
@@ -3233,7 +3229,7 @@
   #realm-list { margin: 8px 0 12px; max-height: 50vh; overflow-y: auto; border: 1px solid #463a1c; border-radius: 5px; }
   .realm-loading { padding: 16px; text-align: center; color: #887c5c; font-size: 13px; }
   .realm-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 10px;
-    padding: 9px 12px; cursor: pointer; border-bottom: 1px solid #2a2418; }
+    padding: 9px 12px; cursor: var(--cursor-point); border-bottom: 1px solid #2a2418; }
   .realm-row:last-child { border-bottom: none; }
   .realm-row:hover { background: #ffffff10; }
   .realm-row.sel { background: linear-gradient(#2a2436, #161220); box-shadow: inset 3px 0 0 var(--gold); }
@@ -3259,7 +3255,7 @@
   /* ---------- party frames ---------- */
   #party-frames { position: absolute; left: 12px; top: 12px; display: flex; flex-direction: column; gap: 6px; z-index: 5; }
   #party-frames.below-target { top: 96px; }
-  .party-frame { --cls: #7fb8ff; width: 170px; padding: 4px 8px 5px; cursor: pointer;
+  .party-frame { --cls: #7fb8ff; width: 170px; padding: 4px 8px 5px; cursor: var(--cursor-point);
     transition: opacity 0.2s ease, box-shadow 0.2s ease; }
   .party-frame .pfm-name { font-size: 12px; font-family: var(--title-font); display: flex;
     justify-content: space-between; align-items: center; gap: 6px; }
@@ -3281,7 +3277,7 @@
   /* ---------- context menu ---------- */
   #ctx-menu { position: absolute; z-index: 90; padding: 6px; min-width: 150px; display: none; }
   #ctx-menu .ctx-title { font-family: var(--title-font); color: var(--gold); font-size: 13px; padding: 3px 8px; border-bottom: 1px solid #463a1c; margin-bottom: 4px; }
-  #ctx-menu .ctx-item { padding: 5px 10px; font-size: 12.5px; color: #e8d8a8; cursor: pointer; border-radius: 4px; }
+  #ctx-menu .ctx-item { padding: 5px 10px; font-size: 12.5px; color: #e8d8a8; cursor: var(--cursor-point); border-radius: 4px; }
   #ctx-menu .ctx-item:hover { background: #ffffff18; color: #fff; }
   #ctx-menu .ctx-item:focus-visible { background: #ffffff18; color: #fff; outline: 2px solid var(--color-border-focus); outline-offset: 2px; }
   #ctx-menu .ctx-mark { display: inline-block; width: 18px; height: 18px; vertical-align: middle;
@@ -3308,7 +3304,7 @@
   .trade-items { min-height: 120px; border: 1px solid #463a1c; border-radius: 4px; padding: 4px; background: #0c0c12; }
   .trade-item { display: flex; gap: 6px; align-items: center; width: 100%; font-size: 11.5px; padding: 3px; border: 0;
     border-radius: 3px; background: transparent; color: inherit; font-family: var(--ui-font); text-align: left; }
-  .trade-item.mine { cursor: pointer; }
+  .trade-item.mine { cursor: var(--cursor-point); }
   .trade-item.mine:hover { background: #ffffff14; }
   .trade-empty { color: var(--color-text-muted); font-size: 11px; padding: 4px; }
   .trade-money { margin-top: 6px; font-size: 12px; }
@@ -3332,7 +3328,7 @@
     font-family: var(--font-heading);
     font-size: 12.5px;
     letter-spacing: 0.5px;
-    cursor: pointer;
+    cursor: var(--cursor-point);
     border-radius: var(--radius-sm);
     box-shadow: 0 4px 10px rgba(0,0,0,0.4);
     transition: all var(--transition-speed) var(--transition-ease);
@@ -3773,7 +3769,7 @@
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    grid-template-columns: 1fr;
     gap: 10px;
   }
 
@@ -3922,7 +3918,7 @@
   }
   body.mobile-touch .mobile-btn {
     width: 58px; height: 54px; border: 2px solid #4a3d1d; border-radius: 8px;
-    background: radial-gradient(circle at 35% 30%, #2d3048d8, #11121ed8 72%); color: #eee8ff; cursor: pointer;
+    background: radial-gradient(circle at 35% 30%, #2d3048d8, #11121ed8 72%); color: #eee8ff; cursor: var(--cursor-point);
     font-size: 22px; font-weight: bold; text-shadow: 1px 1px 2px #000; box-shadow: inset 0 1px 0 #ffffff14, 0 2px 8px #0009;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
   }
@@ -4158,7 +4154,7 @@
     border-radius: 8px;
     background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f);
     box-shadow: inset 0 1px 0 #ffffff18, 0 2px 4px #0009;
-    cursor: pointer;
+    cursor: var(--cursor-point);
   }
   body.mobile-touch .community-toggle svg {
     width: 20px;
@@ -4625,7 +4621,7 @@
   }
   body.mobile-touch .class-row { grid-template-columns: repeat(2, minmax(138px, 1fr)); gap: 8px; width: min(340px, 92vw); }
   body.mobile-touch .class-card { padding: 9px 8px 8px; }
-  body.mobile-touch #title-logo { width: min(420px, 86vw); margin-bottom: 18px; }
+  body.mobile-touch #title-logo { width: min(252px, 52vw); margin-bottom: 18px; }
   body.mobile-preflight-open #mobile-preflight.visible {
     position: fixed; inset: 0; z-index: 250; display: flex; align-items: center; justify-content: center;
     padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
@@ -4863,6 +4859,7 @@
 
   /* Style name validation errors as absolute-positioned tooltips directly below the input */
   #charselect-panel .auth-error,
+  #charcreate-panel .auth-error,
   #offline-select .auth-error {
     position: absolute;
     top: calc(100% + 4px);
@@ -4884,18 +4881,15 @@
     text-align: center;
   }
   #charselect-panel .auth-error::before,
+  #charcreate-panel .auth-error::before,
   #offline-select .auth-error::before {
     content: none;
   }
 
+  /* The roster fills its column; sizing handled in the charselect-screen block. */
   #charselect-panel #char-list {
-    margin-bottom: var(--spacing-sm);
-    max-height: 180px;
+    margin: 0;
     overflow-y: auto;
-    border: 1px solid rgba(255, 209, 0, 0.15);
-    background: rgba(0, 0, 0, 0.25);
-    border-radius: var(--radius-sm);
-    padding: 6px var(--spacing-sm);
   }
 
   .mobile-char-tabs {
@@ -4904,6 +4898,7 @@
 
   @media (min-width: 900px) {
     #charselect-panel,
+    #charcreate-panel,
     #offline-select {
       width: min(1160px, 96vw) !important;
       max-width: none !important;
@@ -4916,6 +4911,7 @@
     }
 
     #charselect-panel .auth-title,
+    #charcreate-panel .auth-title,
     #offline-select .auth-title {
       margin-bottom: var(--spacing-sm);
       flex-shrink: 0;
@@ -4941,11 +4937,12 @@
     }
 
     #charselect-panel #char-list {
-      max-height: 112px;
-      flex: 0 0 auto;
+      flex: 1 1 auto;
+      min-height: 0;
     }
 
     #charselect-panel .char-create,
+    #charcreate-panel .char-create,
     #offline-select .char-create {
       flex-grow: 1;
       display: flex;
@@ -4974,11 +4971,12 @@
 
     /* Logo scales up with the viewport on desktop — bigger screen, bigger wordmark. */
     #title-logo {
-      width: clamp(340px, 20vw, 440px) !important;
+      width: clamp(204px, 12vw, 264px) !important;
     }
   }
 
-  body.mobile-touch #charselect-panel {
+  body.mobile-touch #charselect-panel,
+  body.mobile-touch #charcreate-panel {
     width: min(380px, calc(100vw - 48px));
     min-height: calc(var(--app-vh) - 178px);
     max-height: none;
@@ -4986,7 +4984,8 @@
     flex-direction: column;
     overflow: visible;
   }
-  body.mobile-touch #charselect-panel .auth-title {
+  body.mobile-touch #charselect-panel .auth-title,
+  body.mobile-touch #charcreate-panel .auth-title {
     font-size: 21px;
     margin-bottom: 8px;
     overflow-wrap: anywhere;
@@ -5009,7 +5008,7 @@
     color: #c9b27a;
     font-family: var(--title-font);
     font-size: 12px;
-    cursor: pointer;
+    cursor: var(--cursor-point);
   }
   body.mobile-touch .mobile-char-tab.active {
     color: var(--gold);
@@ -5104,11 +5103,12 @@
     font-size: 11px;
     white-space: nowrap;
   }
-  body.mobile-touch #charselect-panel .mini-class-row {
+  body.mobile-touch #charcreate-panel .mini-class-row,
+  body.mobile-touch #offline-select .mini-class-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 7px;
   }
-  body.mobile-touch #charselect-panel .mini-class,
+  body.mobile-touch #charcreate-panel .mini-class,
   body.mobile-touch #offline-select .mini-class {
     min-width: 0;
     min-height: 40px;
@@ -5118,6 +5118,434 @@
     justify-content: center;
     text-align: center;
   }
+
+  /* ===================================================================
+     Character-select & create screens (v2) — full-height roster, no heavy
+     bounding box, left-aligned realm dropdown, portrait-framed roster rows.
+     Scoped to .charselect-screen / .cs-* so the offline panel is untouched.
+     =================================================================== */
+  .charselect-screen {
+    width: 100%;
+    max-width: min(1160px, 96vw);
+    margin: 0 auto;
+    background: none;
+    border: 0;
+    outline: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    padding: 0;
+    text-align: left;
+  }
+  .cs-head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .cs-title { text-align: left; margin: 0; }
+
+  /* Realm dropdown — left-aligned, sits above the roster */
+  .cs-realm-switch { position: relative; }
+  .cs-realm-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 7px 12px;
+    background: linear-gradient(180deg, rgba(28, 28, 40, 0.92), rgba(14, 14, 22, 0.96));
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    color: #e9e3d2;
+    font-family: var(--title-font);
+    font-size: 13px;
+    cursor: var(--cursor-point);
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .cs-realm-btn:hover { border-color: var(--gold-dim); }
+  .cs-realm-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .cs-realm-caption {
+    font-size: 10px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #8a93a8;
+  }
+  .cs-realm-name { color: #7fd4ff; font-weight: 600; }
+  .cs-realm-caret { width: 16px; height: 16px; color: #9aa0b4; transition: transform 0.18s ease; }
+  .cs-realm-btn[aria-expanded="true"] .cs-realm-caret { transform: rotate(180deg); }
+  .cs-realm-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 60;
+    min-width: 280px;
+    max-width: 360px;
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 6px;
+    background: linear-gradient(180deg, rgba(24, 24, 34, 0.98), rgba(12, 12, 19, 0.99));
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.7);
+  }
+  /* Flat rows — no nested container box; the menu panel is the only container. */
+  .cs-realm-menu .realm-row {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    box-shadow: none;
+    padding: 9px 12px;
+  }
+  .cs-realm-menu .realm-row:hover { background: rgba(255, 255, 255, 0.06); }
+  .cs-realm-menu .realm-row.sel { background: rgba(255, 209, 0, 0.1); box-shadow: none; }
+  .cs-realm-row .realm-name { font-size: 14px; }
+
+  /* Body: roster | showcase */
+  .cs-body { display: flex; flex-direction: column; gap: 16px; }
+  .cs-list-col { display: flex; flex-direction: column; min-height: 0; gap: 12px; }
+  .cs-list-col #char-list {
+    list-style: none;
+    margin: 0;
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+  }
+  .cs-list-actions { display: flex; gap: 10px; flex: 0 0 auto; }
+  .cs-list-actions .btn { margin: 0; flex: 1 1 auto; }
+  .cs-new-btn { font-family: var(--title-font); }
+
+  /* The detail column is the framed scroll container: its dark background +
+     border stay fixed while the avatar and class card scroll inside it, so the
+     border never clips the content. The avatar sits on this dark section. */
+  .cs-detail-col {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    gap: 6px;
+    overflow-y: auto;
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.96) 0%, rgba(10, 10, 15, 0.98) 100%);
+    border: 2px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6), 0 6px 20px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+  }
+  .cs-preview {
+    flex: 0 0 auto;
+    height: 230px;
+    min-height: 230px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  /* Inner class card is now frameless — the outer column provides the frame. */
+  .cs-detail-col .class-details-panel {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    height: auto !important;
+    max-height: none;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+    flex: 0 0 auto;
+  }
+  /* Create screen: the form sits in its own framed panel (mirrors the showcase). */
+  .cs-create-col {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow-y: auto;
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.96) 0%, rgba(10, 10, 15, 0.98) 100%);
+    border: 2px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6), 0 6px 20px rgba(0, 0, 0, 0.5);
+    padding: 18px;
+  }
+  .cs-create-col .char-create { flex: 1 1 auto; }
+
+  /* Themed character-name input */
+  .char-create input {
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(8, 8, 14, 0.85);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    color: #f0ead8;
+    font-family: var(--title-font);
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    padding: 11px 14px;
+    text-align: center;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .char-create input::placeholder { color: #8a8597; }
+  .char-create input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px rgba(255, 209, 0, 0.22);
+  }
+
+  /* Skin / appearance selector with portrait previews */
+  .skin-picker { margin-top: 14px; }
+  .cs-section-header,
+  .skin-picker-header {
+    font-family: var(--title-font);
+    font-size: 12px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #c9b27a;
+    margin-bottom: 10px;
+  }
+  .cs-create-col .mini-class-row { margin-top: 0; }
+  /* Extra breathing room between the name input and the Class label. */
+  .cs-create-col .char-input-group + .cs-section-header { margin-top: 16px; }
+  /* Pack the form from the top so each label sits the same fixed distance above
+     its content (no space-between stretching the Name/Class gaps). */
+  #charcreate-panel .char-create { justify-content: flex-start; }
+  .skin-swatch-portrait {
+    width: 54px;
+    height: 54px;
+    border-radius: 10px;
+    padding: 0;
+    overflow: hidden;
+  }
+  .skin-swatch-portrait .skin-swatch-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 16%;
+    display: block;
+  }
+
+  /* Create form: full-width input, no top divider, stretched children */
+  .cs-create-col .char-create { border-top: 0; margin-top: 0; padding-top: 0; align-items: stretch; }
+  .cs-create-col .char-input-group { max-width: none; width: 100%; margin: 0 0 14px 0; }
+  .cs-create-col #new-char-name { width: 100%; margin: 0; }
+
+  /* Appearance: a full-width 4-up grid of larger portrait previews */
+  .cs-create-col .skin-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+    margin: 0;
+  }
+  .cs-create-col .skin-swatch-portrait { width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 12px; }
+
+  /* Login/Create-account toggle link */
+  .auth-switch {
+    margin: 16px 0 0;
+    text-align: center;
+    font-size: 13px;
+    color: var(--color-text-muted);
+  }
+  .auth-link {
+    background: none;
+    border: 0;
+    padding: 0 0 0 4px;
+    color: var(--gold);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: var(--cursor-point);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .auth-link { font-weight: 500; }
+  .auth-link:hover { color: #ffe27a; }
+
+  /* Login actions: Back (30%) and the primary action on one row */
+  #login-panel .auth-actions-row { display: flex; flex-direction: row; gap: 10px; }
+  #login-panel .auth-actions-row .btn { margin: 0; }
+  #login-panel #btn-login-back { flex: 0 0 30%; }
+  #login-panel #btn-login { flex: 1 1 auto; }
+  .auth-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 3px; }
+
+  /* Class buttons with a portrait preview of that class */
+  .mini-class.has-portrait {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 7px 10px;
+  }
+  .mini-class-portrait {
+    width: 36px;
+    height: 36px;
+    border-radius: 7px;
+    object-fit: cover;
+    object-position: 50% 15%;
+    flex: 0 0 auto;
+    background: radial-gradient(circle at 50% 34%, #232234, #0c0c14);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .mini-class-label { flex: 1 1 auto; min-width: 0; }
+
+  /* Char-select left roster also sits in a framed container (like create) */
+  .cs-list-col {
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.96) 0%, rgba(10, 10, 15, 0.98) 100%);
+    border: 2px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6), 0 6px 20px rgba(0, 0, 0, 0.5);
+    padding: 14px;
+  }
+  /* Keep roster row frames from being clipped by the scroll viewport */
+  .cs-list-col #char-list { padding: 2px; overflow-x: hidden; }
+
+  /* Actions: full width, Back 40% and the primary action the rest */
+  .cs-form-actions, .cs-list-actions { display: flex; gap: 10px; margin-top: 14px; }
+  .cs-form-actions .btn, .cs-list-actions .btn { margin: 0; }
+  /* Pin the create-form actions to the bottom of the panel. */
+  #charcreate-panel .cs-form-actions { margin-top: auto; padding-top: 16px; }
+  #btn-charcreate-back, #btn-charselect-back { flex: 0 0 40%; }
+  #btn-create-char, #btn-new-character { flex: 1 1 auto; }
+
+  /* Roster rows get a portrait + class ring */
+  #char-list .char-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 12px;
+    border: 1px solid rgba(78, 61, 29, 0.3);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(180deg, rgba(30, 28, 38, 0.55), rgba(16, 15, 22, 0.6));
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  #char-list .char-row:hover { border-color: rgba(255, 209, 0, 0.35); background: rgba(255, 209, 0, 0.05); }
+  #char-list .char-row.sel { border-color: var(--gold-dim); background: linear-gradient(180deg, rgba(58, 48, 24, 0.5), rgba(28, 24, 14, 0.6)); box-shadow: inset 0 0 0 1px rgba(255, 209, 0, 0.25); }
+  /* name stacked over level/class, vertically centered with the portrait */
+  #char-list .char-row .char-id {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+  }
+  #char-list .char-row .char-name { min-width: 0; }
+  #char-list .char-row .char-sub { flex: 0 0 auto; }
+  #char-list .char-row .char-actions { flex: 0 0 auto; }
+  .char-list-message { list-style: none; padding: 18px; text-align: center; color: var(--color-text-muted); font-size: 13px; }
+
+  /* Class color tokens — any element with data-class exposes --class-color */
+  [data-class="warrior"] { --class-color: #c79c6e; }
+  [data-class="paladin"] { --class-color: #f58cba; }
+  [data-class="hunter"]  { --class-color: #abd473; }
+  [data-class="rogue"]   { --class-color: #fff569; }
+  [data-class="priest"]  { --class-color: #ffffff; }
+  [data-class="shaman"]  { --class-color: #0070de; }
+  [data-class="mage"]    { --class-color: #69ccf0; }
+  [data-class="warlock"] { --class-color: #9482c9; }
+  [data-class="druid"]   { --class-color: #ff7d0a; }
+
+  /* Portrait chip — a class-ringed headshot rendered from the 3D model.
+     The ring clips the image; the chip itself stays overflow-visible so the
+     class badge can overlay the rim without being cut off. */
+  .portrait-chip {
+    position: relative;
+    flex: 0 0 auto;
+    display: inline-block;
+    overflow: visible;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6));
+  }
+  .portrait-chip .portrait-ring {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 34%, #232234, #0c0c14);
+    border: 2px solid var(--class-color, var(--color-border-default));
+    box-shadow: inset 0 0 10px color-mix(in oklab, var(--class-color, #888) 35%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  .portrait-chip .portrait-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .portrait-chip.is-fallback .portrait-img { padding: 14%; box-sizing: border-box; }
+  .portrait-chip .portrait-badge {
+    position: absolute;
+    right: -4%;
+    bottom: -4%;
+    width: 44%;
+    height: 44%;
+    border-radius: 50%;
+    border: 1.5px solid #0c0c14;
+    background: #0c0c14;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+    z-index: 1;
+  }
+  .portrait-sm { width: 46px; height: 46px; }
+  .portrait-md { width: 72px; height: 72px; }
+  .portrait-lg { width: 120px; height: 120px; }
+  .portrait-sm .portrait-badge { border-width: 1px; }
+
+  /* Profile/character-window header with a portrait beside the name */
+  .panel-title.char-title-portrait { display: flex; align-items: center; gap: 12px; }
+  .panel-title.char-title-portrait .char-title-text { flex: 1 1 auto; min-width: 0; }
+  .panel-title.char-title-portrait .portrait-chip { flex: 0 0 auto; }
+
+  /* Context-menu header with a portrait */
+  .ctx-title-player { display: flex; align-items: center; gap: 9px; }
+  .ctx-title-player .ctx-title-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Inspect-other-player profile window */
+  #inspect-window { width: 280px; }
+  .inspect-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 18px 16px 8px;
+    text-align: center;
+  }
+  .inspect-card .portrait-chip { width: 132px; height: 132px; }
+  .inspect-name { font-family: var(--title-font); font-size: 20px; color: #f0ead8; }
+  .inspect-meta { font-size: 13px; color: var(--color-text-muted); }
+
+  @media (min-width: 900px) {
+    /* Both screens share the same split so the right showcase panel is
+       identical in width on select + create (the roster column is the smaller). */
+    .cs-body,
+    .cs-body-create {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+    .cs-list-col, .cs-detail-col, .cs-create-col { height: 100%; }
+  }
+
+  body.mobile-touch .charselect-screen { max-width: none; }
+  body.mobile-touch .cs-body { flex: 1 1 auto; min-height: 0; }
+  body.mobile-touch .cs-detail-col .cs-preview { min-height: 200px; }
+  body.mobile-touch #char-list .char-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "portrait id" "actions actions";
+    column-gap: 12px;
+    row-gap: 8px;
+    align-items: center;
+  }
+  body.mobile-touch #char-list .char-row .portrait-chip { grid-area: portrait; align-self: center; }
+  body.mobile-touch #char-list .char-row .char-id { grid-area: id; }
+  body.mobile-touch #char-list .char-row .char-actions { grid-area: actions; display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 7px; width: 100%; }
 
   body.mobile-touch .mobile-menu-toggle {
     display: flex;
@@ -5268,7 +5696,7 @@
   }
 </style>
 </head>
-<body>
+<body data-start-panel="mode-select">
   <canvas id="game-canvas"></canvas>
   <div id="nameplates"></div>
 
@@ -5386,6 +5814,7 @@
     <div id="loot-window" class="window panel"></div>
     <div id="bags" class="window panel"></div>
     <div id="char-window" class="window panel"></div>
+    <div id="inspect-window" class="window panel"></div>
     <div id="spellbook" class="window panel"></div>
     <div id="talents-window" class="window panel"></div>
     <div id="quest-log-window" class="window panel"></div>
@@ -5437,28 +5866,12 @@
   <main id="start-screen">
     <!-- Keep the backdrop here at the top level so it spans the entire screen behind content -->
     <div id="start-screen-backdrop" aria-hidden="true">
-      <!-- Looping in-game cinematic. Muted + playsinline so it auto-plays on mobile;
-           playback is started from main.ts so it can respect reduced-motion / save-data.
-           The poster paints instantly while the MP4 streams (faststart). -->
-      <video
-        id="bg-trailer"
-        class="bg-trailer"
-        muted
-        loop
-        playsinline
-        preload="auto"
-        poster="/video/trailer-poster.jpg"
-        tabindex="-1"
-        disablepictureinpicture
-      >
-        <source src="/video/trailer.mp4" type="video/mp4" />
-      </video>
+      <!-- Static key-art backdrop (replaces the looping cinematic). -->
+      <img id="bg-home" class="bg-trailer bg-home" src="/home-bg.png" alt="" decoding="async" fetchpriority="high" />
       <div class="bg-trailer-scrim"></div>
       <div class="portal-ring"></div>
       <div class="portal-ring-reverse"></div>
       <div class="nebula-overlay"></div>
-      <!-- Fades the backdrop in from black on first play and on every loop. -->
-      <div class="bg-trailer-fade"></div>
     </div>
 
     <header class="homepage-header">
@@ -5520,7 +5933,6 @@
             <!-- Realm selector: a themed dropdown that defaults to Online and can switch to Offline.
                  It only chooses the destination; the Play button below commits. -->
             <div class="server-select" id="server-select" data-mode="online">
-              <span class="server-select-caption" id="server-select-caption" data-i18n="mode.serverLabel">Choose your realm</span>
               <button type="button" class="server-select-trigger" id="server-select-trigger"
                 aria-haspopup="listbox" aria-expanded="false" aria-controls="server-select-menu"
                 data-i18n-aria="mode.serverAria" aria-label="Select realm: Online or Offline">
@@ -5585,15 +5997,15 @@
             </button>
             <p class="token-ca-note" data-i18n="mode.caNote">WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel.</p>
           </div>
+
+          <!-- Tip — part of the same play container (divider above). -->
+          <div class="play-tip">
+            <p id="performance-tip"><b data-i18n="mode.tipTitle">TIP:</b> <span data-i18n="mode.tipText">For the smoothest experience, turn off ad blocker extensions on this site. Community reports found some blockers can cause lag.</span></p>
+          </div>
         </div>
 
-        <!-- Tip — a separate overlay card directly below the main console. -->
-        <div id="play-aside">
-          <p id="performance-tip"><b data-i18n="mode.tipTitle">TIP:</b> <span data-i18n="mode.tipText">For the smoothest experience, turn off ad blocker extensions on this site. Community reports found some blockers can cause lag.</span></p>
-        </div>
-
-        <form id="login-panel" class="panel auth-panel auth-panel-premium" hidden novalidate>
-          <h2 class="auth-title" data-i18n="auth.enterRealm">Enter the Realm</h2>
+        <form id="login-panel" class="panel auth-panel auth-panel-premium" data-auth-mode="login" hidden novalidate>
+          <h2 class="auth-title" id="auth-title" data-i18n="auth.enterRealm">Enter the Realm</h2>
           
           <div class="auth-field">
             <label for="login-user" class="auth-label" data-i18n="auth.username">Username</label>
@@ -5641,11 +6053,14 @@
 
           <div id="login-error" class="auth-error" aria-live="polite"></div>
 
-          <div class="auth-actions">
-            <button type="submit" class="btn btn-primary" id="btn-login" data-i18n="auth.logIn">Log In</button>
-            <button type="button" class="btn btn-secondary" id="btn-register" data-i18n="auth.createAccount">Create Account</button>
+          <div class="auth-actions auth-actions-row">
             <button type="button" class="btn btn-back" id="btn-login-back" data-i18n="auth.back">Back</button>
+            <button type="submit" class="btn btn-primary" id="btn-login" data-i18n="auth.logIn">Log In</button>
           </div>
+          <p class="auth-switch">
+            <span id="auth-switch-prompt" data-i18n="auth.noAccountPrompt">New to the realm?</span>
+            <button type="button" class="auth-link" id="btn-auth-toggle" data-i18n="auth.createAccount">Create Account</button>
+          </p>
         </form>
 
         <div id="realm-panel" class="panel auth-panel auth-panel-premium" hidden>
@@ -5656,24 +6071,50 @@
           </div>
         </div>
 
-        <div id="charselect-panel" class="panel auth-panel auth-panel-premium" data-mobile-tab="characters" hidden>
-          <h2 class="auth-title"><span data-i18n="auth.characters">Characters:</span> <span id="charselect-user" class="gold"></span></h2>
-          <div class="cs-realm" id="charselect-realm"></div>
-          <button type="button" class="btn btn-secondary btn-small" id="btn-change-realm" data-i18n="auth.changeRealm">Change Realm</button>
-          <div class="mobile-char-tabs" role="tablist" data-i18n-aria="a11y.characterActions" aria-label="Character actions">
-            <button type="button" class="mobile-char-tab active" data-char-tab="characters" role="tab" aria-selected="true" data-i18n="character.tabCharacters">Characters</button>
-            <button type="button" class="mobile-char-tab" data-char-tab="create" role="tab" aria-selected="false" data-i18n="character.tabCreate">Create</button>
-          </div>
-          <div class="charselect-layout">
-            <!-- Left Column: Character List & Creation Controls -->
-            <div class="charselect-col-left">
+        <div id="charselect-panel" class="panel charselect-screen" hidden>
+          <header class="cs-head">
+            <h2 class="auth-title cs-title"><span data-i18n="auth.characters">Characters:</span> <span id="charselect-user" class="gold"></span></h2>
+            <div class="cs-realm-switch">
+              <button type="button" id="btn-change-realm" class="cs-realm-btn" aria-haspopup="listbox" aria-expanded="false" data-i18n-aria="auth.changeRealm" aria-label="Change Realm">
+                <span class="cs-realm-caption" data-i18n="auth.realm">Realm</span>
+                <span id="charselect-realm" class="cs-realm-name"></span>
+                <svg class="cs-realm-caret" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+              </button>
+              <div id="cs-realm-menu" class="cs-realm-menu" role="listbox" data-i18n-aria="auth.realmList" aria-label="Realm List" hidden></div>
+            </div>
+          </header>
+          <div class="cs-body">
+            <!-- Left: full-height character roster -->
+            <div class="cs-list-col">
               <ul id="char-list" role="list"></ul>
+              <div class="cs-list-actions">
+                <button type="button" class="btn btn-secondary" id="btn-charselect-back" data-i18n="auth.back">Back</button>
+                <button type="button" class="btn btn-primary cs-new-btn" id="btn-new-character" data-i18n="auth.newCharacter">New Character</button>
+              </div>
+            </div>
+            <!-- Right: selected character showcase -->
+            <div class="cs-detail-col">
+              <div class="char-preview-container cs-preview" id="online-preview-container">
+                <canvas id="char-preview-canvas"></canvas>
+              </div>
+              <div id="charselect-class-details" class="class-details-panel" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="charcreate-panel" class="panel charselect-screen" hidden>
+          <header class="cs-head">
+            <h2 class="auth-title cs-title" data-i18n="auth.createCharacter">Create a Character</h2>
+          </header>
+          <div class="cs-body cs-body-create">
+            <div class="cs-create-col">
               <div class="char-create">
-                <label for="new-char-name" class="auth-label" data-i18n="auth.createCharacter">Create a Character</label>
+                <div class="cs-section-header" data-i18n="auth.name">Name</div>
                 <div class="char-input-group">
-                  <input id="new-char-name" maxlength="16" data-i18n-placeholder="auth.characterNamePlaceholder" placeholder="Character Name" aria-describedby="charselect-error" autocomplete="off" />
+                  <input id="new-char-name" maxlength="16" data-i18n-placeholder="auth.characterNamePlaceholder" placeholder="Character Name" data-i18n-aria="auth.characterName" aria-label="Character Name" aria-describedby="charselect-error" autocomplete="off" />
                   <div id="charselect-error" class="auth-error" aria-live="polite"></div>
                 </div>
+                <div class="cs-section-header" data-i18n="auth.class">Class</div>
                 <ul class="mini-class-row" role="list">
                   <li class="mini-class" data-class="warrior" role="button" tabindex="0" data-i18n-aria="classes.warriorAria" data-i18n="classes.warrior" aria-label="Warrior class" aria-pressed="false">Warrior</li>
                   <li class="mini-class" data-class="paladin" role="button" tabindex="0" data-i18n-aria="classes.paladinAria" data-i18n="classes.paladin" aria-label="Paladin class" aria-pressed="false">Paladin</li>
@@ -5685,19 +6126,19 @@
                   <li class="mini-class" data-class="warlock" role="button" tabindex="0" data-i18n-aria="classes.warlockAria" data-i18n="classes.warlock" aria-label="Warlock class" aria-pressed="false">Warlock</li>
                   <li class="mini-class" data-class="druid" role="button" tabindex="0" data-i18n-aria="classes.druidAria" data-i18n="classes.druid" aria-label="Druid class" aria-pressed="false">Druid</li>
                 </ul>
-                <div id="online-skin-row" class="skin-row" role="list" aria-label="Chroma"></div>
-                <div class="auth-actions">
+                <div class="skin-picker">
+                  <div class="skin-picker-header" data-i18n="auth.appearance">Appearance</div>
+                  <div id="online-skin-row" class="skin-row" role="list" data-i18n-aria="auth.appearance" aria-label="Appearance"></div>
+                </div>
+                <div class="auth-actions cs-form-actions">
+                  <button class="btn btn-secondary" id="btn-charcreate-back" data-i18n="auth.back">Back</button>
                   <button class="btn btn-primary" id="btn-create-char" data-i18n="auth.create">Create</button>
-                  <button class="btn btn-secondary" id="btn-charselect-back" data-i18n="auth.back">Back</button>
                 </div>
               </div>
             </div>
-            <!-- Right Column: Detailed Class Info & Preview -->
-            <div class="charselect-col-right">
-              <div class="char-preview-container" id="online-preview-container">
-                <canvas id="char-preview-canvas"></canvas>
-              </div>
-              <div id="online-class-details" class="class-details-panel" aria-live="polite"></div>
+            <div class="cs-detail-col">
+              <div class="char-preview-container cs-preview" id="charcreate-preview-container"></div>
+              <div id="charcreate-class-details" class="class-details-panel" aria-live="polite"></div>
             </div>
           </div>
         </div>

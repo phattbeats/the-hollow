@@ -24,6 +24,8 @@ import { formatDateTime, formatNumber, getLanguage, isSupportedLanguage, languag
 import { tServer } from './ui/server_i18n';
 import { tEntity } from './ui/entity_i18n';
 import { hydrateIcons } from './ui/ui_icons';
+import { portraitChipHtml, hydratePortraits } from './ui/portrait_chip';
+import { playerPortraitDataUrl } from './render/characters/portrait';
 import { createPerfMonitor } from './game/perf';
 import { updateFollowCameraYaw, wrapAngle } from './game/camera_follow';
 
@@ -37,7 +39,6 @@ const HOMEPAGE_MUSIC_VOLUME = 0.225;
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.querySelector(sel) as T;
 let pendingDeleteCharacter: CharacterSummary | null = null;
-let homepageTrailer: HTMLVideoElement | null = null;
 let homepageMusic: HTMLAudioElement | null = null;
 let homepageMusicStarted = false;
 let homepageMusicMuted = readHomepageMusicMuted();
@@ -481,8 +482,6 @@ function enterLoadingState(statusText: string): void {
   hideMobilePreflightPrompt();
   showLoadingScreen(statusText);
   $('#start-screen').style.display = 'none';
-  // The homepage is hidden once we enter the world — stop decoding the trailer.
-  if (homepageTrailer) homepageTrailer.pause();
 }
 
 async function prepareWorldEntry(): Promise<boolean> {
@@ -1057,31 +1056,78 @@ const api = new Api();
 let activeTransitionTimeout: number | null = null;
 let activeTransitionCleanup: (() => void) | null = null;
 let characterPreview: CharacterPreview | null = null;
+let authModeApply: ((mode: 'login' | 'register') => void) | null = null;
 let offlineSkin = 0; // chosen appearance skin for the offline quick-start character
 let onlineSkin = 0; // chosen appearance skin for new online characters
 
-/** Fill a skin-picker row with one swatch per available skin for the class. */
+/** Fill a skin-picker row with one option per available skin, each showing an
+ *  actual 2D portrait preview of the character in that chroma. */
 function renderSkinPicker(rowId: string, cls: PlayerClass, current: number, onPick: (i: number) => void): void {
   const row = $(rowId) as HTMLElement | null;
   if (!row) return;
   row.innerHTML = '';
   const count = skinCount(`player_${cls}`);
-  if (count <= 1) return; // only the default exists — nothing to pick
+  const picker = row.closest('.skin-picker') as HTMLElement | null;
+  if (count <= 1) { // only the default exists — nothing to pick
+    if (picker) picker.style.display = 'none';
+    return;
+  }
+  if (picker) picker.style.display = '';
+  row.style.setProperty('--class-color', '#' + CLASSES[cls].color.toString(16).padStart(6, '0'));
   for (let i = 0; i < count; i++) {
     const b = document.createElement('button');
     b.type = 'button';
-    b.className = 'skin-swatch' + (i === current ? ' sel' : '');
+    b.className = 'skin-swatch skin-swatch-portrait' + (i === current ? ' sel' : '');
     b.dataset.skin = String(i);
-    b.textContent = String(i + 1);
     b.setAttribute('role', 'listitem');
-    b.setAttribute('aria-label', `Skin ${i + 1}`);
+    b.setAttribute('aria-label', t('auth.chromaOption', { n: i + 1 }));
+    const url = playerPortraitDataUrl(cls, i);
+    if (url) {
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = '';
+      img.className = 'skin-swatch-img';
+      b.appendChild(img);
+    } else {
+      b.textContent = String(i + 1);
+    }
     b.addEventListener('click', () => {
       row.querySelectorAll('.skin-swatch').forEach((x) => x.classList.remove('sel'));
       b.classList.add('sel');
       onPick(i);
     });
+    // Live-preview the chroma on the right avatar while hovering; revert on leave.
+    b.addEventListener('mouseenter', () => characterPreview?.setSkin(i));
+    b.addEventListener('mouseleave', () => {
+      const sel = row.querySelector('.skin-swatch.sel') as HTMLElement | null;
+      characterPreview?.setSkin(sel ? Number(sel.dataset.skin ?? 0) || 0 : current);
+    });
     row.appendChild(b);
   }
+}
+
+/** Give each class button a small portrait preview of that class (run once
+ *  character assets are ready so portraits render synchronously). */
+function decorateClassChips(): void {
+  document.querySelectorAll<HTMLElement>('#charcreate-panel .mini-class, #offline-select .mini-class').forEach((li) => {
+    if (li.querySelector('.mini-class-portrait')) return;
+    const cls = li.dataset.class as PlayerClass;
+    const key = li.dataset.i18n;
+    const label = document.createElement('span');
+    label.className = 'mini-class-label';
+    if (key) label.dataset.i18n = key;
+    label.textContent = (li.textContent ?? '').trim();
+    li.removeAttribute('data-i18n'); // moved onto the label so i18n won't wipe the portrait
+    li.textContent = '';
+    const img = document.createElement('img');
+    img.className = 'mini-class-portrait';
+    img.alt = '';
+    const url = playerPortraitDataUrl(cls, 0);
+    if (url) img.src = url;
+    li.appendChild(img);
+    li.appendChild(label);
+    li.classList.add('has-portrait');
+  });
 }
 
 function selectedSkin(rowId: string, fallback: number): number {
@@ -1113,35 +1159,49 @@ function refreshOnlineSkins(cls: PlayerClass): void {
 
 function updatePreviewContainer(panelId: string): void {
   if (!characterPreview) return;
-  const containerId = panelId === '#charselect-panel' ? '#online-preview-container' : '#offline-preview-container';
+  const containerId =
+    panelId === '#charselect-panel' ? '#online-preview-container'
+    : panelId === '#charcreate-panel' ? '#charcreate-preview-container'
+    : '#offline-preview-container';
   const container = $(containerId);
-  if (container) {
-    characterPreview.setContainer(container);
-    
-    const selSelector = panelId === '#charselect-panel' 
-      ? '#charselect-panel .mini-class.sel' 
-      : '#offline-select .mini-class.sel';
-    const selEl = document.querySelector(selSelector) as HTMLElement | null;
-    if (selEl) {
-      const cls = selEl.dataset.class as PlayerClass;
-      characterPreview.setClass(cls);
-      if (panelId === '#charselect-panel') refreshOnlineSkins(cls);
-      else refreshOfflineSkins(cls);
-    }
+  if (!container) return;
+  characterPreview.setContainer(container);
+
+  if (panelId === '#charselect-panel') {
+    // The selected roster row drives the showcase (class + that character's chroma).
+    const row = document.querySelector('#char-list .char-row.sel') as HTMLElement | null;
+    const cls = (row?.dataset.class as PlayerClass) ?? 'warrior';
+    characterPreview.setClass(cls);
+    characterPreview.setSkin(Number(row?.dataset.skin ?? 0) || 0);
+    return;
+  }
+
+  const selSelector = panelId === '#charcreate-panel'
+    ? '#charcreate-panel .mini-class.sel'
+    : '#offline-select .mini-class.sel';
+  const selEl = document.querySelector(selSelector) as HTMLElement | null;
+  if (selEl) {
+    const cls = selEl.dataset.class as PlayerClass;
+    characterPreview.setClass(cls);
+    if (panelId === '#charcreate-panel') refreshOnlineSkins(cls);
+    else refreshOfflineSkins(cls);
   }
 }
 
 const currentlyRenderedClass: Record<string, PlayerClass | null> = {
   'offline-class-details': null,
-  'online-class-details': null
+  'charselect-class-details': null,
+  'charcreate-class-details': null
 };
 const revertTimeouts: Record<string, number | null> = {
   'offline-class-details': null,
-  'online-class-details': null
+  'charselect-class-details': null,
+  'charcreate-class-details': null
 };
 const hoverTimeouts: Record<string, number | null> = {
   'offline-class-details': null,
-  'online-class-details': null
+  'charselect-class-details': null,
+  'charcreate-class-details': null
 };
 
 function switchMainView(targetId: string): void {
@@ -1186,22 +1246,13 @@ function switchMainView(targetId: string): void {
       }
     });
 
-    // The cinematic trailer is for the Play page only; other views hide + pause it.
+    // The key-art backdrop is for the Play page only; hide it on other views.
     const onPlayPage = targetId === '#hero-view';
     const backdrop = document.getElementById('start-screen-backdrop');
     if (backdrop) backdrop.classList.toggle('trailer-off', !onPlayPage);
-    if (homepageTrailer) {
-      if (onPlayPage) {
-        if (!document.hidden && !document.body.classList.contains('game-active')) {
-          void homepageTrailer.play().catch(() => {});
-        }
-      } else {
-        homepageTrailer.pause();
-      }
-    }
 
     if (targetId === '#hero-view') {
-      const activePlayPanel = ['#charselect-panel', '#offline-select'].find(id => {
+      const activePlayPanel = ['#charselect-panel', '#charcreate-panel', '#offline-select'].find(id => {
         const el = $(id);
         return el && !el.hasAttribute('hidden');
       });
@@ -1240,11 +1291,11 @@ function show(el: string): void {
   switchMainView('#hero-view');
 
   // Mount the Turnstile widget the first time the login/register form appears.
-  if (el === '#login-panel') ensureTurnstile();
+  if (el === '#login-panel') { ensureTurnstile(); authModeApply?.('login'); }
 
   const logoImg = $('#title-logo');
   if (logoImg) {
-    const shouldHideLogo = el === '#charselect-panel' || el === '#offline-select';
+    const shouldHideLogo = el === '#charselect-panel' || el === '#charcreate-panel' || el === '#offline-select';
     logoImg.toggleAttribute('hidden', shouldHideLogo);
   }
 
@@ -1253,26 +1304,19 @@ function show(el: string): void {
   }
 
   // Reset currently rendered classes to force re-render/animation when opening a panel
-  currentlyRenderedClass['offline-class-details'] = null;
-  currentlyRenderedClass['online-class-details'] = null;
-  if (revertTimeouts['offline-class-details'] !== null) {
-    window.clearTimeout(revertTimeouts['offline-class-details']);
-    revertTimeouts['offline-class-details'] = null;
-  }
-  if (revertTimeouts['online-class-details'] !== null) {
-    window.clearTimeout(revertTimeouts['online-class-details']);
-    revertTimeouts['online-class-details'] = null;
-  }
-  if (hoverTimeouts['offline-class-details'] !== null) {
-    window.clearTimeout(hoverTimeouts['offline-class-details']);
-    hoverTimeouts['offline-class-details'] = null;
-  }
-  if (hoverTimeouts['online-class-details'] !== null) {
-    window.clearTimeout(hoverTimeouts['online-class-details']);
-    hoverTimeouts['online-class-details'] = null;
+  for (const key of ['offline-class-details', 'charselect-class-details', 'charcreate-class-details']) {
+    currentlyRenderedClass[key] = null;
+    if (revertTimeouts[key] !== null && revertTimeouts[key] !== undefined) {
+      window.clearTimeout(revertTimeouts[key]!);
+      revertTimeouts[key] = null;
+    }
+    if (hoverTimeouts[key] !== null && hoverTimeouts[key] !== undefined) {
+      window.clearTimeout(hoverTimeouts[key]!);
+      hoverTimeouts[key] = null;
+    }
   }
 
-  const panels = ['#mode-select', '#login-panel', '#realm-panel', '#charselect-panel', '#offline-select'];
+  const panels = ['#mode-select', '#login-panel', '#realm-panel', '#charselect-panel', '#charcreate-panel', '#offline-select'];
   document.body.dataset.startPanel = el.slice(1);
 
   // Find currently visible panel
@@ -1283,7 +1327,7 @@ function show(el: string): void {
     for (const id of panels) {
       $(id).toggleAttribute('hidden', id !== el);
     }
-    if (el === '#charselect-panel' || el === '#offline-select') {
+    if (el === '#charselect-panel' || el === '#charcreate-panel' || el === '#offline-select') {
       updatePreviewContainer(el);
     }
     return;
@@ -1306,7 +1350,7 @@ function show(el: string): void {
   if (isReducedMotion) {
     fromPanel.toggleAttribute('hidden', true);
     toPanel.toggleAttribute('hidden', false);
-    if (el === '#charselect-panel' || el === '#offline-select') {
+    if (el === '#charselect-panel' || el === '#charcreate-panel' || el === '#offline-select') {
       updatePreviewContainer(el);
     }
     return;
@@ -1330,7 +1374,7 @@ function show(el: string): void {
     // Set initial state for fade-in
     toPanel.classList.add('panel-transition', 'panel-fade-in-start');
     toPanel.toggleAttribute('hidden', false);
-    if (el === '#charselect-panel' || el === '#offline-select') {
+    if (el === '#charselect-panel' || el === '#charcreate-panel' || el === '#offline-select') {
       updatePreviewContainer(el);
     }
 
@@ -1452,6 +1496,72 @@ function selectRealm(entry: import('./net/online').RealmEntry): void {
   void refreshCharacters();
 }
 
+// --- Inline realm switcher (dropdown on the character-select screen) ----------
+const REALM_TYPE_KEYS = { 'Normal': 'realmTypes.normal', 'PvP': 'realmTypes.pvp', 'RP': 'realmTypes.rp', 'RP-PvP': 'realmTypes.rpPvp' } as const;
+let realmDropdownOpen = false;
+
+function closeRealmDropdown(): void {
+  const menu = document.getElementById('cs-realm-menu');
+  const btn = document.getElementById('btn-change-realm');
+  menu?.setAttribute('hidden', '');
+  btn?.setAttribute('aria-expanded', 'false');
+  realmDropdownOpen = false;
+}
+
+function toggleRealmDropdown(): void {
+  if (realmDropdownOpen) { closeRealmDropdown(); return; }
+  const menu = $('#cs-realm-menu');
+  const btn = $('#btn-change-realm');
+  menu.removeAttribute('hidden');
+  btn.setAttribute('aria-expanded', 'true');
+  realmDropdownOpen = true;
+  renderRealmDropdown();
+}
+
+function renderRealmDropdown(): void {
+  const menu = $('#cs-realm-menu');
+  menu.innerHTML = `<div class="realm-loading">${escapeHtml(t('realm.loading'))}</div>`;
+  void api.realms().then((d) => {
+    if (!realmDropdownOpen) return;
+    if (d.realms.length === 0) {
+      menu.innerHTML = `<div class="realm-loading">${escapeHtml(t('realm.noRealms'))}</div>`;
+      return;
+    }
+    menu.innerHTML = d.realms.map((r) => {
+      const sel = r.name === api.realm ? ' sel' : '';
+      return `<div class="realm-row cs-realm-row${sel}" role="option" aria-selected="${r.name === api.realm}" data-name="${escapeHtml(r.name)}" data-url="${escapeHtml(r.url)}">
+        <div class="realm-name">${escapeHtml(r.name)}</div>
+        <div class="realm-pop offline" data-pop>-</div>
+      </div>`;
+    }).join('');
+    menu.querySelectorAll('.realm-row').forEach((row) => row.addEventListener('click', () => {
+      const name = (row as HTMLElement).dataset.name!;
+      const entry = d.realms.find((r) => r.name === name);
+      if (entry) selectRealmInline(entry);
+    }));
+    void Promise.all(d.realms.map(async (r) => {
+      const st = await api.realmStatus(r.url || '');
+      const row = menu.querySelector(`.realm-row[data-name="${CSS.escape(r.name)}"]`) as HTMLElement | null;
+      if (!row) return;
+      const pop = realmPopulation(st.online, st.players);
+      const popEl = row.querySelector('[data-pop]') as HTMLElement;
+      popEl.textContent = t(pop.labelKey);
+      popEl.className = `realm-pop ${pop.cls}`;
+      row.classList.toggle('offline', !st.online);
+    }));
+  });
+}
+
+function selectRealmInline(entry: import('./net/online').RealmEntry): void {
+  closeRealmDropdown();
+  if (entry.name === api.realm) return;
+  api.setRealm(entry.url);
+  api.realm = entry.name;
+  localStorage.setItem(LAST_REALM_KEY, entry.name);
+  $('#charselect-realm').textContent = entry.name;
+  void refreshCharacters();
+}
+
 function setDeleteCharacterError(message: string): void {
   $('#delete-character-error').textContent = message;
 }
@@ -1488,21 +1598,18 @@ function openDeleteCharacterDialog(character: CharacterSummary): void {
 }
 
 async function refreshCharacters(): Promise<void> {
-  const panel = $('#charselect-panel');
-  panel.dataset.mobileTab = 'characters';
-  document.querySelectorAll<HTMLButtonElement>('#charselect-panel .mobile-char-tab').forEach((btn) => {
-    const on = btn.dataset.charTab === 'characters';
-    btn.classList.toggle('active', on);
-    btn.setAttribute('aria-selected', String(on));
-  });
+  if (api.realm) $('#charselect-realm').textContent = api.realm;
   const listEl = $('#char-list');
   listEl.innerHTML = `<li class="char-list-message">${escapeHtml(t('character.loading'))}</li>`;
   try {
     const chars = await api.characters();
-    if (api.realm) $('#charselect-realm').textContent = t('realm.selectedRealm', { name: api.realm });
+    if (api.realm) $('#charselect-realm').textContent = api.realm;
     listEl.innerHTML = '';
     if (chars.length === 0) {
+      // No characters on this realm — drop straight into the create screen.
       listEl.innerHTML = `<li class="char-list-message">${escapeHtml(t('character.noneYet'))}</li>`;
+      show('#charcreate-panel');
+      return;
     }
     for (const c of chars) {
       const row = document.createElement('li');
@@ -1511,10 +1618,14 @@ async function refreshCharacters(): Promise<void> {
       row.setAttribute('role', 'option');
       row.setAttribute('aria-selected', 'false');
       row.dataset.class = c.class;
+      row.dataset.skin = String(c.skin ?? 0);
       const className = classDisplayName(c.class);
       const statusText = c.online ? ` (${t('character.inWorld')})` : c.forceRename ? ` (${t('character.renameRequired')})` : '';
-      row.innerHTML = `<span class="char-name">${escapeHtml(c.name)}</span>
-        <span class="char-sub">${escapeHtml(t('character.levelClass', { level: c.level, className }))}${escapeHtml(statusText)}</span>
+      row.innerHTML = `${portraitChipHtml({ cls: c.class, skin: c.skin ?? 0, name: c.name, variant: 'sm' })}
+        <div class="char-id">
+          <span class="char-name">${escapeHtml(c.name)}</span>
+          <span class="char-sub">${escapeHtml(t('character.levelClass', { level: c.level, className }))}${escapeHtml(statusText)}</span>
+        </div>
         ${c.forceRename
           ? `<input class="rename-input" placeholder="${escapeHtml(t('character.newNamePlaceholder'))}" maxlength="16" /><span class="char-actions"><button class="btn btn-danger delete-char-btn" ${c.online ? 'disabled' : ''}>${escapeHtml(t('character.delete'))}</button><button class="btn rename-btn">${escapeHtml(t('character.rename'))}</button></span>`
           : `<span class="char-actions"><button class="btn btn-danger delete-char-btn" ${c.online ? 'disabled' : ''}>${escapeHtml(t('character.delete'))}</button><button class="btn enter-world-btn" ${c.online ? 'disabled' : ''}>${escapeHtml(t('auth.enterWorld'))}</button></span>`}`;
@@ -1549,19 +1660,11 @@ async function refreshCharacters(): Promise<void> {
           r.classList.remove('sel');
           r.setAttribute('aria-selected', 'false');
         });
-        
-        // Deselect class creator chips
-        document.querySelectorAll('#charselect-panel .mini-class').forEach((x) => {
-          x.classList.remove('sel');
-          x.setAttribute('aria-pressed', 'false');
-        });
-        
+
         row.classList.add('sel');
         row.setAttribute('aria-selected', 'true');
-        renderClassDetails('online-class-details', c.class);
+        renderClassDetails('charselect-class-details', c.class);
         characterPreview?.setSkin(c.skin ?? 0);
-        const skinRow = $('#online-skin-row') as HTMLElement | null;
-        if (skinRow) skinRow.innerHTML = '';
       };
 
       row.addEventListener('click', selectRow);
@@ -1575,10 +1678,14 @@ async function refreshCharacters(): Promise<void> {
       listEl.appendChild(row);
     }
 
-    // Select first character by default if present
+    hydratePortraits(listEl);
+
+    // Select first character by default if present, else show a default showcase.
     const firstRow = listEl.querySelector('.char-row') as HTMLElement | null;
     if (firstRow) {
       firstRow.click();
+    } else {
+      renderClassDetails('charselect-class-details', 'warrior');
     }
   } catch (err) {
     listEl.innerHTML = `<li class="char-list-message char-list-error">${escapeHtml(userFacingApiError(err))}</li>`;
@@ -2047,15 +2154,23 @@ function refreshLocalizedDynamicShell(): void {
     void refreshCharacters();
     return;
   }
+  if (activePanel === 'login-panel') {
+    const m = (document.getElementById('login-panel') as HTMLElement | null)?.dataset.authMode;
+    authModeApply?.(m === 'register' ? 'register' : 'login');
+    return;
+  }
+  if (activePanel === 'charcreate-panel') {
+    const sel = document.querySelector('#charcreate-panel .mini-class.sel') as HTMLElement | null;
+    if (sel) {
+      currentlyRenderedClass['charcreate-class-details'] = null;
+      renderClassDetails('charcreate-class-details', sel.dataset.class as PlayerClass);
+    }
+    return;
+  }
   const offlineSelected = document.querySelector('#offline-select .mini-class.sel') as HTMLElement | null;
   if (activePanel === 'offline-select' && offlineSelected) {
     currentlyRenderedClass['offline-class-details'] = null;
     renderClassDetails('offline-class-details', offlineSelected.dataset.class as PlayerClass);
-  }
-  const onlineSelected = document.querySelector('#charselect-panel .mini-class.sel, #char-list .char-row.sel') as HTMLElement | null;
-  if (onlineSelected) {
-    currentlyRenderedClass['online-class-details'] = null;
-    renderClassDetails('online-class-details', onlineSelected.dataset.class as PlayerClass);
   }
 }
 
@@ -2691,11 +2806,25 @@ function wireStartScreens(): void {
     });
   });
 
+  // Standard login / create-account UX: one form that switches between two modes
+  // via a link. The mode drives the title, primary button, prompt, and submit.
+  const setAuthMode = (mode: 'login' | 'register') => {
+    loginForm.dataset.authMode = mode;
+    const isLogin = mode === 'login';
+    $('#auth-title').textContent = t(isLogin ? 'auth.enterRealm' : 'auth.createAccount');
+    $('#btn-login').textContent = t(isLogin ? 'auth.logIn' : 'auth.createAccount');
+    $('#auth-switch-prompt').textContent = t(isLogin ? 'auth.noAccountPrompt' : 'auth.haveAccountPrompt');
+    $('#btn-auth-toggle').textContent = t(isLogin ? 'auth.createAccount' : 'auth.logIn');
+    passInput.setAttribute('autocomplete', isLogin ? 'current-password' : 'new-password');
+    loginError('');
+  };
+  authModeApply = setAuthMode;
+
   // Prevent default submission and perform validation
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     if (validateForm(loginForm)) {
-      void doAuth('login');
+      void doAuth(loginForm.dataset.authMode === 'register' ? 'register' : 'login');
     }
   });
 
@@ -2707,16 +2836,11 @@ function wireStartScreens(): void {
     }
   });
 
-  // Legacy clicks of Login/Register buttons
-  $('#btn-login').addEventListener('click', (e) => {
-    // Let the form submit handle it if it was clicked, but prevent default click just in case
-  });
-
-  $('#btn-register').addEventListener('click', (e) => {
+  // The link toggles between the login and create-account forms.
+  $('#btn-auth-toggle').addEventListener('click', (e) => {
     e.preventDefault();
-    if (validateForm(loginForm)) {
-      void doAuth('register');
-    }
+    setAuthMode(loginForm.dataset.authMode === 'register' ? 'login' : 'register');
+    userInput.focus();
   });
 
   $('#btn-login-back').addEventListener('click', (e) => {
@@ -2732,32 +2856,36 @@ function wireStartScreens(): void {
     show('#mode-select');
   });
   $('#btn-realm-back').addEventListener('click', () => show('#mode-select'));
-  $('#btn-change-realm').addEventListener('click', () => showRealmList());
-  document.querySelectorAll<HTMLButtonElement>('#charselect-panel .mobile-char-tab').forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const panel = $('#charselect-panel');
-      const activeTab = tab.dataset.charTab === 'create' ? 'create' : 'characters';
-      panel.dataset.mobileTab = activeTab;
-      document.querySelectorAll<HTMLButtonElement>('#charselect-panel .mobile-char-tab').forEach((btn) => {
-        const on = btn.dataset.charTab === activeTab;
-        btn.classList.toggle('active', on);
-        btn.setAttribute('aria-selected', String(on));
-      });
-    });
+  // Change Realm is now an inline dropdown on the character-select screen.
+  $('#btn-change-realm').addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleRealmDropdown();
+  });
+  // New Character opens the dedicated create screen; create's Back returns here.
+  $('#btn-new-character').addEventListener('click', () => show('#charcreate-panel'));
+  $('#btn-charcreate-back').addEventListener('click', () => show('#charselect-panel'));
+  // Close the realm dropdown on outside click or Escape.
+  document.addEventListener('click', (e) => {
+    if (!realmDropdownOpen) return;
+    const sw = document.querySelector('.cs-realm-switch');
+    if (sw && !sw.contains(e.target as Node)) closeRealmDropdown();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (realmDropdownOpen && e.key === 'Escape') closeRealmDropdown();
   });
 
   // character creation
-  document.querySelectorAll('#charselect-panel .mini-class').forEach((el) => {
+  document.querySelectorAll('#charcreate-panel .mini-class').forEach((el) => {
     const handleMiniClassSelect = () => {
-      if (hoverTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(hoverTimeouts['online-class-details']);
-        hoverTimeouts['online-class-details'] = null;
+      if (hoverTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['charcreate-class-details']);
+        hoverTimeouts['charcreate-class-details'] = null;
       }
-      if (revertTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(revertTimeouts['online-class-details']);
-        revertTimeouts['online-class-details'] = null;
+      if (revertTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['charcreate-class-details']);
+        revertTimeouts['charcreate-class-details'] = null;
       }
-      document.querySelectorAll('#charselect-panel .mini-class').forEach((x) => {
+      document.querySelectorAll('#charcreate-panel .mini-class').forEach((x) => {
         x.classList.remove('sel');
         x.setAttribute('aria-pressed', 'false');
       });
@@ -2769,7 +2897,7 @@ function wireStartScreens(): void {
       el.setAttribute('aria-pressed', 'true');
       
       const cls = (el as HTMLElement).dataset.class as PlayerClass;
-      renderClassDetails('online-class-details', cls);
+      renderClassDetails('charcreate-class-details', cls);
       refreshOnlineSkins(cls);
     };
     el.addEventListener('click', handleMiniClassSelect);
@@ -2777,95 +2905,95 @@ function wireStartScreens(): void {
     
     // A11y focus updates details
     el.addEventListener('focus', () => {
-      if (revertTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(revertTimeouts['online-class-details']);
-        revertTimeouts['online-class-details'] = null;
+      if (revertTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['charcreate-class-details']);
+        revertTimeouts['charcreate-class-details'] = null;
       }
-      if (hoverTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(hoverTimeouts['online-class-details']);
-        hoverTimeouts['online-class-details'] = null;
+      if (hoverTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['charcreate-class-details']);
+        hoverTimeouts['charcreate-class-details'] = null;
       }
       document.querySelectorAll('#char-list .char-row').forEach((r) => {
         r.classList.remove('sel');
         r.setAttribute('aria-selected', 'false');
       });
       const cls = (el as HTMLElement).dataset.class as PlayerClass;
-      renderClassDetails('online-class-details', cls);
+      renderClassDetails('charcreate-class-details', cls);
     });
 
     // Hover updates details with 50ms debounce
     el.addEventListener('mouseenter', () => {
-      if (revertTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(revertTimeouts['online-class-details']);
-        revertTimeouts['online-class-details'] = null;
+      if (revertTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['charcreate-class-details']);
+        revertTimeouts['charcreate-class-details'] = null;
       }
-      if (hoverTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(hoverTimeouts['online-class-details']);
+      if (hoverTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['charcreate-class-details']);
       }
       const cls = (el as HTMLElement).dataset.class as PlayerClass;
-      hoverTimeouts['online-class-details'] = window.setTimeout(() => {
-        renderClassDetails('online-class-details', cls);
-        hoverTimeouts['online-class-details'] = null;
+      hoverTimeouts['charcreate-class-details'] = window.setTimeout(() => {
+        renderClassDetails('charcreate-class-details', cls);
+        hoverTimeouts['charcreate-class-details'] = null;
       }, 50);
     });
 
     // Mouseleave reverts to currently selected class details with a 100ms debounce
     el.addEventListener('mouseleave', () => {
-      if (hoverTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(hoverTimeouts['online-class-details']);
-        hoverTimeouts['online-class-details'] = null;
+      if (hoverTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['charcreate-class-details']);
+        hoverTimeouts['charcreate-class-details'] = null;
       }
-      if (revertTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(revertTimeouts['online-class-details']);
+      if (revertTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['charcreate-class-details']);
       }
-      revertTimeouts['online-class-details'] = window.setTimeout(() => {
-        const selEl = document.querySelector('#charselect-panel .mini-class.sel') as HTMLElement | null;
+      revertTimeouts['charcreate-class-details'] = window.setTimeout(() => {
+        const selEl = document.querySelector('#charcreate-panel .mini-class.sel') as HTMLElement | null;
         if (selEl) {
           const cls = selEl.dataset.class as PlayerClass;
-          renderClassDetails('online-class-details', cls);
+          renderClassDetails('charcreate-class-details', cls);
         } else {
           const selChar = document.querySelector('#char-list .char-row.sel') as HTMLElement | null;
           if (selChar) {
             const cls = selChar.dataset.class as PlayerClass;
-            renderClassDetails('online-class-details', cls);
+            renderClassDetails('charcreate-class-details', cls);
           }
         }
-        revertTimeouts['online-class-details'] = null;
+        revertTimeouts['charcreate-class-details'] = null;
       }, 100);
     });
 
     // Blur reverts to currently selected class details with a 100ms debounce (matches mouseleave)
     el.addEventListener('blur', () => {
-      if (hoverTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(hoverTimeouts['online-class-details']);
-        hoverTimeouts['online-class-details'] = null;
+      if (hoverTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['charcreate-class-details']);
+        hoverTimeouts['charcreate-class-details'] = null;
       }
-      if (revertTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(revertTimeouts['online-class-details']);
+      if (revertTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['charcreate-class-details']);
       }
-      revertTimeouts['online-class-details'] = window.setTimeout(() => {
-        const selEl = document.querySelector('#charselect-panel .mini-class.sel') as HTMLElement | null;
+      revertTimeouts['charcreate-class-details'] = window.setTimeout(() => {
+        const selEl = document.querySelector('#charcreate-panel .mini-class.sel') as HTMLElement | null;
         if (selEl) {
           const cls = selEl.dataset.class as PlayerClass;
-          renderClassDetails('online-class-details', cls);
+          renderClassDetails('charcreate-class-details', cls);
         } else {
           const selChar = document.querySelector('#char-list .char-row.sel') as HTMLElement | null;
           if (selChar) {
             const cls = selChar.dataset.class as PlayerClass;
-            renderClassDetails('online-class-details', cls);
+            renderClassDetails('charcreate-class-details', cls);
           }
         }
-        revertTimeouts['online-class-details'] = null;
+        revertTimeouts['charcreate-class-details'] = null;
       }, 100);
     });
   });
 
   // Default select warrior in online character creator
-  const defaultOnlineClass = document.querySelector('#charselect-panel .mini-class[data-class="warrior"]') as HTMLElement | null;
+  const defaultOnlineClass = document.querySelector('#charcreate-panel .mini-class[data-class="warrior"]') as HTMLElement | null;
   if (defaultOnlineClass) {
     defaultOnlineClass.classList.add('sel');
     defaultOnlineClass.setAttribute('aria-pressed', 'true');
-    renderClassDetails('online-class-details', 'warrior');
+    renderClassDetails('charcreate-class-details', 'warrior');
     refreshOnlineSkins('warrior');
   }
   const newCharNameInput = $('#new-char-name') as HTMLInputElement;
@@ -2896,7 +3024,7 @@ function wireStartScreens(): void {
 
   $('#btn-create-char').addEventListener('click', async () => {
     const name = newCharNameInput.value.trim();
-    const clsEl = document.querySelector('#charselect-panel .mini-class.sel') as HTMLElement | null;
+    const clsEl = document.querySelector('#charcreate-panel .mini-class.sel') as HTMLElement | null;
     loginError('');
     charselectError.textContent = '';
     
@@ -2923,6 +3051,8 @@ function wireStartScreens(): void {
       await api.createCharacter(name, clsEl.dataset.class as PlayerClass, selectedSkin('#online-skin-row', onlineSkin));
       newCharNameInput.value = '';
       charselectError.textContent = '';
+      // Return to the roster and show the freshly-created character.
+      show('#charselect-panel');
       await refreshCharacters();
     } catch (err) {
       charselectError.textContent = userFacingApiError(err);
@@ -3103,113 +3233,15 @@ function wireStartScreens(): void {
       characterPreview = new CharacterPreview(container, canvas);
       const selSelector = activePanelId === '#offline-select'
         ? '#offline-select .mini-class.sel'
-        : '#charselect-panel .mini-class.sel';
+        : '#charcreate-panel .mini-class.sel';
       const selEl = document.querySelector(selSelector) as HTMLElement | null;
       const cls = selEl ? (selEl.dataset.class as PlayerClass) : 'warrior';
       characterPreview.setClass(cls);
     }
+    decorateClassChips();
   });
 }
 
-// ---------------------------------------------------------------------------
-// Homepage cinematic backdrop
-// ---------------------------------------------------------------------------
-function initHomepageTrailer(): void {
-  const video = document.getElementById('bg-trailer') as HTMLVideoElement | null;
-  const backdrop = document.getElementById('start-screen-backdrop');
-  if (!video || !backdrop) return;
-  homepageTrailer = video;
-
-  const fade = backdrop.querySelector<HTMLElement>('.bg-trailer-fade');
-  // Fade FROM black (first play + just after each loop wrap).
-  const runFadeIn = (): void => {
-    if (!fade) return;
-    fade.classList.remove('is-fading', 'is-fading-out');
-    void fade.offsetWidth; // force reflow so the animation replays
-    fade.classList.add('is-fading');
-  };
-  // Dip TO black just before the clip ends, so the loop seam is hidden.
-  const runFadeOut = (): void => {
-    if (!fade) return;
-    fade.classList.remove('is-fading');
-    void fade.offsetWidth;
-    fade.classList.add('is-fading-out');
-  };
-
-  // Reveal the backdrop layer so the (cheap) poster always provides atmosphere,
-  // even when we choose not to play the clip.
-  const reveal = (): void => backdrop.classList.add('trailer-ready');
-
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const reducedData = window.matchMedia('(prefers-reduced-data: reduce)').matches;
-  const conn = (navigator as unknown as { connection?: { saveData?: boolean } }).connection;
-  const saveData = Boolean(conn && conn.saveData);
-
-  if (reducedMotion || reducedData || saveData) {
-    // Honour the user's preference: keep the static poster, don't fetch/play video.
-    video.preload = 'none';
-    if (fade) fade.classList.add('revealed'); // lift the black wipe without animating
-    reveal();
-    return;
-  }
-
-  video.addEventListener('playing', () => {
-    backdrop.classList.add('trailer-ready', 'trailer-playing');
-    runFadeIn();
-  }, { once: true });
-
-  // Hide the loop seam: dip to black ~0.35s before the end, then fade back in
-  // right after the wrap. The `loop` attribute restarts playback seamlessly
-  // (no 'ended' event), so watch the playhead instead.
-  const FADE_LEAD = 0.35;
-  let dipping = false;
-  let lastTime = 0;
-  const onPlayhead = (currentTime: number): void => {
-    const duration = video.duration;
-    if (duration > 0) {
-      if (currentTime + 0.2 < lastTime) {
-        // Wrapped back to the start — reveal from black.
-        dipping = false;
-        runFadeIn();
-      } else if (!dipping && currentTime >= duration - FADE_LEAD) {
-        dipping = true;
-        runFadeOut();
-      }
-    }
-    lastTime = currentTime;
-  };
-
-  const rvfc = (video as unknown as {
-    requestVideoFrameCallback?: (cb: (now: number, meta: { mediaTime: number }) => void) => void;
-  }).requestVideoFrameCallback;
-  if (typeof rvfc === 'function') {
-    const onFrame = (_now: number, meta: { mediaTime: number }): void => {
-      onPlayhead(meta.mediaTime);
-      rvfc.call(video, onFrame);
-    };
-    rvfc.call(video, onFrame);
-  } else {
-    video.addEventListener('timeupdate', () => onPlayhead(video.currentTime));
-  }
-
-  const tryPlay = (): void => {
-    const p = video.play();
-    if (p && typeof p.then === 'function') {
-      // Muted inline autoplay is broadly allowed; if it's still blocked, the
-      // poster stays as a graceful fallback.
-      p.catch(() => reveal());
-    }
-  };
-  if (video.readyState >= 2) tryPlay();
-  else video.addEventListener('loadeddata', tryPlay, { once: true });
-
-  // Don't burn cycles decoding while the tab is backgrounded or in-game.
-  document.addEventListener('visibilitychange', () => {
-    if (document.body.classList.contains('game-active')) return;
-    if (document.hidden) video.pause();
-    else void video.play().catch(() => {});
-  });
-}
 
 // Looping home-page theme. Browsers block audio autoplay until a user gesture,
 // so we try immediately and otherwise start on the first interaction. It keeps
@@ -3254,5 +3286,4 @@ function fadeOutHomepageMusic(durationMs = 1600): void {
 }
 
 wireStartScreens();
-initHomepageTrailer();
 initHomepageMusic();
