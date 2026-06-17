@@ -148,6 +148,9 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
       { itemId: 'kazzix_heartshard', chance: 1, questId: 'q_kazzix' },
       { itemId: 'inert_storm_shard', chance: 1 },
     ],
+    // The Shardlord's rimebound core sheathes its blows in killing cold, leaving
+    // a frost burn that gnaws at the victim long after the strike lands.
+    frostbite: { chance: 0.3, perTick: 6, interval: 3, duration: 12, name: 'Frostbite', school: 'frost' },
     scale: 1.3, color: 0xaed6f1,
   },
   wyrmcult_zealot: {

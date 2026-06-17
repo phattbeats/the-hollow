@@ -4152,6 +4152,19 @@ export class Sim {
         sourceId: mob.id, school: (venom.school as Aura['school']) ?? 'nature',
       });
     }
+    // frostbite: a landed swing may sear the victim with a refreshing frost DoT
+    // (the frost twin of venom — chilling elementals). Hostile mobs only, never a
+    // friendly pet (mobSwing is also the pet attack path).
+    const frostbite = MOBS[mob.templateId]?.frostbite;
+    if (frostbite && mob.hostile && !target.dead && this.rng.chance(frostbite.chance)) {
+      this.applyAura(target, {
+        id: 'frostbite_' + mob.templateId, name: frostbite.name, kind: 'dot',
+        remaining: frostbite.duration, duration: frostbite.duration,
+        value: Math.max(1, Math.round(frostbite.perTick)),
+        tickInterval: frostbite.interval, tickTimer: frostbite.interval,
+        sourceId: mob.id, school: (frostbite.school as Aura['school']) ?? 'frost',
+      });
+    }
     // corrosive bite: a landed hit may shred the victim's armor (stacking sunder).
     // Guarded on hostile so a friendly pet (the other mobSwing caller) never debuffs an ally.
     const corrode = MOBS[mob.templateId]?.corrode;
