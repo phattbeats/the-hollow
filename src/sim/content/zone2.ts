@@ -160,6 +160,7 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
       { itemId: 'grubjaw_tusk', chance: 1, questId: 'q_grubjaw' },
       { itemId: 'chipped_tusk', chance: 1 },
     ],
+    purgeOnHit: { chance: 0.3, name: 'Devour Magic' },
     scale: 1.3, color: 0x145a32,
   },
   gravecaller_cultist: {

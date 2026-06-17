@@ -130,6 +130,15 @@ const HARMFUL_AURA_KINDS: ReadonlySet<AuraKind> = new Set<AuraKind>([
 function isHarmfulAura(kind: AuraKind): boolean {
   return HARMFUL_AURA_KINDS.has(kind);
 }
+// A "Devour Magic"-strippable beneficial enhancement: a positive buff_* stat
+// buff, a heal-over-time, an absorb shield, or a weapon imbue. Stances, forms,
+// stealth, righteous fury, thorns and every debuff (incl. negative buff_* drains
+// like enfeeble/wither) are deliberately left alone — only an active "magic"
+// enhancement is eaten. Mirrors the inverse of the HUD's debuff test.
+function isDevourableAura(a: Aura): boolean {
+  return (a.kind.startsWith('buff_') && a.value > 0)
+    || a.kind === 'hot' || a.kind === 'absorb' || a.kind === 'imbue';
+}
 const NEARBY_RANGE = 40; // /nearby scan radius — wider than say, tighter than yell
 const NEARBY_MAX = 10; // cap the /nearby list so a crowded camp can't spam chat
 const CHAT_BURST = 8; // messages a player may send back-to-back...
@@ -4286,6 +4295,30 @@ export class Sim {
         });
       }
     }
+    // Devour Magic: a landed hit can strip one beneficial enhancement buff off
+    // the player victim (classic warlock/demon Devour Magic). Hostile mobs only
+    // (a friendly pet — mobSwing's other caller — must never purge its owner's
+    // party) and players only. No-op when the victim carries no devourable buff.
+    const purge = MOBS[mob.templateId]?.purgeOnHit;
+    if (purge && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(purge.chance)) {
+      this.devourBeneficialAura(target, purge.name);
+    }
+  }
+
+  // Strip one beneficial enhancement aura from a player victim. Removes the
+  // first devourable buff (auras are in application order, so this is
+  // deterministic), recalcs the player's derived stats so a stripped
+  // buff_armor/buff_ap/buff_int actually un-folds, and surfaces the proc via the
+  // standard `aura` event (the full aura array on the next snapshot reflects the
+  // removal to online clients). Returns whether anything was devoured.
+  private devourBeneficialAura(target: Entity, name: string): boolean {
+    const idx = target.auras.findIndex(isDevourableAura);
+    if (idx < 0) return false;
+    target.auras.splice(idx, 1);
+    const meta = this.players.get(target.id);
+    if (meta) recalcPlayerStats(target, meta.cls, meta.equipment, meta.talentMods);
+    this.emit({ type: 'aura', targetId: target.id, name, gained: true });
+    return true;
   }
 
   // Apply (or refresh + stack) a corrosive armor-shred debuff on the victim.

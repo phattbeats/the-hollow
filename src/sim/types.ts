@@ -268,6 +268,14 @@ export interface MobTemplate {
   // Innate "spiked hide" trait: melee attackers take flat damage back on every
   // connecting swing — the mob-side equivalent of the druid Thorns aura.
   thorns?: { value: number; school?: Aura['school']; name?: string };
+  // On-hit purge ("Devour Magic"): a landed melee swing has `chance` to strip
+  // one beneficial enhancement aura off the player victim — a positive buff_*
+  // stat buff, a heal-over-time, an absorb shield, or a weapon imbue. Forms,
+  // stances, stealth, and every debuff are left untouched. Removes nothing if
+  // the victim carries no such buff. Players only; offensive against a fellow
+  // mob is meaningless and a friendly pet (mobSwing's other caller) must never
+  // strip its owner's party. Rides the existing aura system — no new aura kind.
+  purgeOnHit?: { chance: number; name: string };
 }
 
 export type AbilityEffect =
