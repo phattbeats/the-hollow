@@ -265,6 +265,7 @@ export class Hud {
   private xpFillEl = $('#xpbar .fill');
   private xpLabelEl = $('#xpbar .label');
   private deathOverlayEl = $('#death-overlay');
+  private releaseSpiritBtnEl = $('#release-btn');
   private hotWriteCache = new Map<HTMLElement, string>();
   private hotDomWrites = 0;
   private hotDomSkippedWrites = 0;
@@ -364,7 +365,10 @@ export class Hud {
       if (target && (this.emoteWheelEl?.contains(target) || document.getElementById('mm-emote')?.contains(target) || document.getElementById('mobile-emote')?.contains(target))) return;
       this.hideEmoteWheel();
     });
-    $('#release-btn').addEventListener('click', () => { this.sim.releaseSpirit(); });
+    this.releaseSpiritBtnEl.addEventListener('click', () => {
+      if (this.sim.arenaInfo?.match) return;
+      this.sim.releaseSpirit();
+    });
     // classic MMOs: the player interaction menu opens from the target portrait
     $('#target-frame').addEventListener('contextmenu', (ev) => {
       ev.preventDefault();
@@ -1687,7 +1691,9 @@ export class Hud {
     this.setText(this.xpLabelEl, bar.label);
     $('#xpbar').classList.toggle('overflow', bar.postCap);
 
+    const deadInArena = p.dead && !!this.sim.arenaInfo?.match;
     this.setDisplay(this.deathOverlayEl, p.dead ? 'flex' : 'none');
+    this.setDisplay(this.releaseSpiritBtnEl, deadInArena ? 'none' : '');
 
     const inDungeon = p.pos.x > DUNGEON_X_THRESHOLD;
     const currentZone = zoneAt(p.pos.z);

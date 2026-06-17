@@ -3261,17 +3261,17 @@ export class Sim {
       }
     }
 
-    // arena bouts also end at 1 hp — the loser yields, nobody actually dies
+    // Arena eliminations use normal death state so clients and combat logic see
+    // a real 0 HP defeat. The return timer revives everyone after the bout.
     const match = target.kind === 'player' ? this.arenaMatches.get(target.id) : undefined;
     if (match && match.state === 'active' && sourcePlayer && this.isArenaCrossTeam(match, sourcePlayer.id, target.id)) {
       if (match.defeated.has(target.id)) return;
-      if (target.hp - amount < 1) {
-        amount = Math.max(0, target.hp - 1);
-        target.hp = 1;
+      if (target.hp - amount <= 0) {
+        amount = Math.max(0, target.hp);
+        target.hp = 0;
         match.defeated.add(target.id);
-        target.targetId = null;
-        target.autoAttack = false;
         this.emit({ type: 'damage', sourceId: source?.id ?? -1, targetId: target.id, amount, crit, school, ability, kind });
+        this.handleDeath(target, source);
         const loserTeam = this.arenaTeamOf(match, target.id);
         if (loserTeam && this.isArenaTeamWiped(match, loserTeam)) {
           this.endArenaMatch(match, loserTeam === 'A' ? 'B' : 'A', 'defeat');
@@ -4490,11 +4490,7 @@ export class Sim {
     const r = this.resolve(pid);
     if (!r) return;
     const p = r.e;
-    const candidates: { e: Entity; d: number }[] = [];
-    this.grid.forEachInRadius(p.pos.x, p.pos.z, 40, (e, d2) => {
-      if (e.kind !== 'mob' || e.dead || !e.hostile) return;
-      candidates.push({ e, d: Math.sqrt(d2) });
-    });
+    const candidates = this.enemyCandidates(p);
     if (candidates.length === 0) return;
     candidates.sort((a, b) => a.d - b.d);
     const curIdx = candidates.findIndex((c) => c.e.id === p.targetId);
@@ -4509,10 +4505,36 @@ export class Sim {
     let best: Entity | null = null;
     let bestD2 = 40 * 40;
     this.grid.forEachInRadius(p.pos.x, p.pos.z, 40, (e, d2) => {
-      if (e.kind !== 'mob' || e.dead || !e.hostile) return;
+      if (!this.isEnemyTargetCandidate(p, e)) return;
       if (d2 < bestD2) { bestD2 = d2; best = e; }
     });
     if (best) p.targetId = (best as Entity).id;
+  }
+
+  private enemyCandidates(p: Entity): { e: Entity; d: number }[] {
+    const out: { e: Entity; d: number }[] = [];
+    if (p.dead) return out;
+    this.grid.forEachInRadius(p.pos.x, p.pos.z, 40, (e, d2) => {
+      if (!this.isEnemyTargetCandidate(p, e)) return;
+      out.push({ e, d: Math.sqrt(d2) });
+    });
+    return out;
+  }
+
+  private isEnemyTargetCandidate(attacker: Entity, target: Entity): boolean {
+    if (attacker.dead) return false;
+    if (target.id === attacker.id || target.dead) return false;
+    if (this.isHostileTo(attacker, target)) return true;
+    if (target.kind === 'mob' && target.ownerId !== null) {
+      const owner = this.entities.get(target.ownerId);
+      return !!owner && owner.kind === 'player' && this.isEnemyTargetCandidate(attacker, owner);
+    }
+    if (target.kind !== 'player') return false;
+    const attackerPlayer = this.pvpController(attacker);
+    if (!attackerPlayer || attackerPlayer.dead) return false;
+    const match = this.arenaMatches.get(attackerPlayer.id);
+    return !!match && match.state === 'countdown'
+      && this.isArenaCrossTeam(match, attackerPlayer.id, target.id);
   }
 
   // Nearby allies a beneficial spell can land on: other players (and friendly
@@ -5072,6 +5094,7 @@ export class Sim {
     if (!r) return;
     const { meta, e: p } = r;
     if (!p.dead) return;
+    if (this.arenaMatches.has(p.id)) return;
     p.dead = false;
     // dying in a dungeon sends you to the graveyard of the zone its door is
     // in; dying outdoors, to your current zone's graveyard
@@ -5594,13 +5617,14 @@ export class Sim {
     if (target.kind === 'player') {
       const attackerPlayer = this.pvpController(attacker);
       if (!attackerPlayer) return false;
+      if (attackerPlayer.dead) return false;
       if (attackerPlayer.id === target.id) return false;
       const duel = this.duels.get(attackerPlayer.id);
       if (duel && duel.state === 'active'
         && ((duel.a === attackerPlayer.id && duel.b === target.id)
           || (duel.b === attackerPlayer.id && duel.a === target.id))) return true;
       const match = this.arenaMatches.get(attackerPlayer.id);
-      return !!match && match.state === 'active'
+      return !!match && match.state === 'active' && !match.defeated.has(attackerPlayer.id)
         && this.isArenaCrossTeam(match, attackerPlayer.id, target.id);
     }
     return false;
@@ -6094,6 +6118,7 @@ export class Sim {
     const atkTeam = this.arenaTeamOf(match, attackerPid);
     const tgtTeam = this.arenaTeamOf(match, targetPid);
     if (!atkTeam || !tgtTeam || atkTeam === tgtTeam) return false;
+    if (match.defeated.has(attackerPid)) return false;
     return !match.defeated.has(targetPid);
   }
 
@@ -6358,6 +6383,7 @@ export class Sim {
   }
 
   private readyArenaFighter(e: Entity, opts: { clearPrep: boolean }): void {
+    e.dead = false;
     if (opts.clearPrep) {
       e.auras = [];
       e.cooldowns.clear();
@@ -6434,6 +6460,7 @@ export class Sim {
     if (!allPresent) { this.returnFromArena(match); return; }
 
     for (const pid of this.arenaAllPids(match)) {
+      if (match.defeated.has(pid)) continue;
       const e = this.entities.get(pid);
       if (e) this.resetForArena(e);
     }

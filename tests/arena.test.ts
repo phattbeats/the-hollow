@@ -168,7 +168,19 @@ describe('arena: a full bout', () => {
     expect(mage.auras.some((aura) => aura.id === 'frost_armor')).toBe(true);
   });
 
-  it('ends at 1 health: winner declared and scored at once, then a 5s aftermath returns both', () => {
+  it('keyboard enemy targeting can select arena opponents during the countdown', () => {
+    const { sim, a, b } = queueDuo();
+
+    expect(sim.arenaMatchFor(a)!.state).toBe('countdown');
+    sim.tabTarget(a);
+    expect(sim.entities.get(a)!.targetId).toBe(b);
+
+    sim.targetEntity(null, a);
+    sim.targetNearestEnemy(a);
+    expect(sim.entities.get(a)!.targetId).toBe(b);
+  });
+
+  it('kills the loser at 0 health, scores at once, then a 5s aftermath returns both', () => {
     const { sim, a, b } = queueDuo();
     startBout(sim);
     const ea = sim.entities.get(a)!;
@@ -181,10 +193,10 @@ describe('arena: a full bout', () => {
     const ev = sim.tick();
     const end = ev.find((e) => e.type === 'arenaEnd');
 
-    // scored immediately: winner declared, zero-sum Elo, loser yields (no death)
+    // scored immediately: winner declared, zero-sum Elo, loser is dead until return
     expect(end).toBeTruthy();
-    expect(eb.hp).toBeGreaterThanOrEqual(1);
-    expect(eb.dead).toBe(false);
+    expect(eb.hp).toBe(0);
+    expect(eb.dead).toBe(true);
     expect(sim.meta(a)!.arenaRating).toBe(rA0 + 16);
     expect(sim.meta(b)!.arenaRating).toBe(rB0 - 16);
     expect(sim.meta(a)!.arenaWins).toBe(1);
@@ -205,6 +217,7 @@ describe('arena: a full bout', () => {
     expect(Math.hypot(eb.pos.x - 6, eb.pos.z - (-40))).toBeLessThan(3);
     expect(ea.hp).toBe(ea.maxHp);
     expect(eb.hp).toBe(eb.maxHp);
+    expect(eb.dead).toBe(false);
   });
 
   it('a slot frees up after the bout so the arena can host again', () => {
@@ -376,7 +389,7 @@ describe('arena: 2v2 queue + matchmaking', () => {
 });
 
 describe('arena: 2v2 combat', () => {
-  it('first yield does not end the match; team wipe does', () => {
+  it('first kill does not end the match; team wipe does', () => {
     const { sim, pids } = queue2v2();
     startBout2v2(sim);
     const [a1, a2, b1, b2] = pids;
@@ -385,11 +398,17 @@ describe('arena: 2v2 combat', () => {
     (sim as any).dealDamage(ea1, eb1, 99999, false, 'physical', null, 'hit');
     sim.tick();
     expect(sim.arenaMatchFor(a1)!.state).toBe('active');
-    expect(eb1.hp).toBe(1);
+    expect(eb1.hp).toBe(0);
+    expect(eb1.dead).toBe(true);
+    expect(sim.isHostileTo(eb1, ea1)).toBe(false);
+    sim.releaseSpirit(b1);
+    expect(eb1.dead).toBe(true);
     const eb2 = sim.entities.get(b2)!;
     (sim as any).dealDamage(ea1, eb2, 99999, false, 'physical', null, 'hit');
     sim.tick();
     expect(sim.arenaMatchFor(a1)!.state).toBe('over');
+    expect(eb2.hp).toBe(0);
+    expect(eb2.dead).toBe(true);
     expect(sim.meta(a1)!.arenaWins).toBe(1);
     expect(sim.meta(b1)!.arenaLosses).toBe(1);
     expect(sim.meta(b2)!.arenaLosses).toBe(1);
