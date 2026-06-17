@@ -19,8 +19,8 @@
 | 7 - Release fill tooling | DONE | 2026-06-16 | 2026-06-16 |
 | 7 QA | DONE (PASS WITH FIXES) | 2026-06-16 | 2026-06-16 |
 | 8 - Admin catalog | DONE | 2026-06-16 | 2026-06-16 |
-| 8 QA | NOT STARTED | | |
-| 9 - Pseudo-locale (optional) | NOT STARTED | | |
+| 8 QA | DONE (PASS WITH FIXES) | 2026-06-16 | 2026-06-16 |
+| 9 - Pseudo-locale (optional) | DONE | 2026-06-16 | 2026-06-16 |
 | 9 QA + teardown | NOT STARTED | | |
 
 ## Deliverable checklists
@@ -113,10 +113,24 @@ Validation: `tsc --noEmit` clean; full suite 1318 passed / 7 skipped at the PR t
 Reviews (coverage mode): privacy-security-review NON-BLOCKING (escapeHtml preserved 33->33 on all player-controlled values; no secret/PII in new strings or the generated table; admin auth gate untouched; no new untrusted innerHTML sink); cross-platform-sync NON-BLOCKING (registry diff is 38 admin rows added, ZERO main/sim/server rows changed; admin bundle isolated; `src/sim`/`server`/IWorld/wire untouched; `DIALECT_BASE` identical across scan/build/worklist); qa-checklist NON-BLOCKING (RFC §9.7 holds; admin entry separate; resolved table dense for all 14); fresh correctness NON-BLOCKING (181 existing admin rows byte-identical, build reproducible, all `t()` keys exist + placeholders match, acceptance met; one optional cleanup applied: worklist now reads the admin source en for symmetry with the scanner).
 Commits: see Phase 8 cadence in state.md additions-log row 8.
 
-### Phase 9 - `en_XA` pseudo-locale (optional)
-- [ ] Generated accent/bracket pseudo-locale over every `en` leaf, selected via `?lang=en_XA`
-- [ ] Excluded from `supportedLanguages`, hreflang, and the release gate
-- [ ] Surfaces hard-coded literals that never became `t()` keys
+### Phase 9 - `en_XA` pseudo-locale (optional) - DONE (2026-06-16)
+- [x] Generated accent/bracket pseudo-locale over every `en` leaf, selected via `?lang=en_XA`. Shared deterministic transform `scripts/i18n_pseudo.mjs` (fixed 1:1 ASCII->Latin accent map; brackets each leaf; preserves any `{...}` token EXACTLY; emoji/non-ASCII pass through). Both build scripts emit a separate `export const en_XA` into their generated tables (`scripts/i18n_build.mjs` -> `src/ui/i18n.resolved.generated.ts`; `scripts/i18n_admin_build.mjs` -> `src/admin/i18n.resolved.generated.ts`). en_XA is GENERATED only, never in `src/ui/i18n.locales/`.
+- [x] Excluded from `supportedLanguages`, hreflang, and the release gate - BY CONSTRUCTION: en_XA is NOT a member of `translations`, so `supportedLanguages = Object.keys(translations)` omits it, the language picker (populated from supportedLanguages) omits it, `index.html` hreflang (hand-authored, 14 + x-default) is unchanged, and the scanner/registry (`supportedLanguages` minus `en`) never sees it. The byte-equivalence baseline `i18n_resolved_hash.mjs` reads `supportedLanguages` only, so the game gate SHA is UNCHANGED (`d9db528..`, 1,584,856 bytes).
+- [x] Selectable via `?lang=en_XA` in DEV ONLY. Game `src/ui/i18n.ts` + admin `src/admin/i18n.ts` accept the param only when `!isReleaseBuild()` (keeping the base locale at the real `"en"`, never persisted); a `tableFor()` indirection swaps in the pseudo table on the current-language read path. The en_XA reference sits behind a static `import.meta.env.PROD` guard, so a production `vite build` TREE-SHAKES the pseudo table out of both bundles (verified: 0 signature glyphs in `dist/assets/main-*.js` + `admin-*.js`; bundles unchanged at 1,121.05 / 33.17 KB gzip).
+- [x] Surfaces hard-coded literals that never became `t()` keys - PROVEN end-to-end via a live `?lang=en_XA` browser scan (login/HUD/6 windows/options/admin-login). en_XA paid for itself immediately - it surfaced real gaps the type system and the S3 guard both miss (see the surfaced-literals report below). Admin brought under the same model (Phase 8 QA deferred the admin literal-surfacing gap here).
+
+Validation, all green: `npx tsc --noEmit` clean; `tests/i18n_pseudo_locale.test.ts` (12: generator parity/bracketing/placeholder-preservation/accent/determinism + exclusion from supportedLanguages/isSupportedLanguage/admin DICT + dev-selector-on / release-off) pass; named suite `localization_fixes` + `localization_coverage` + `server_i18n` + `i18n_status_registry` + `i18n_t_behavior` + `i18n_admin_catalog` + `i18n_pseudo_locale` all green at the PR tier (the only "failures" mid-work were the two `regenerate-then-git-diff` reproducibility checks failing against an UNCOMMITTED artifact - they pass once the regenerated tables are committed, which is the by-design committed-state gate); `npm run build` clean (game + admin), generated tables deterministic + purely additive (only the en_XA export added; 14 locales/`translations`/`pending` untouched). Resolved-table baseline UNTOUCHED (`d9db528..`). Reviews: privacy-security-review + cross-platform-sync + correctness all NON-BLOCKING (0 BLOCKING/HIGH; tree-shake-out-of-prod and exclusions independently re-verified; the new test mutation-proven to bite).
+
+**Surfaced hard-coded literals (deferred follow-ups - per the spec, the MECHANISM ships here; FIXING these is out of Phase 9 scope):**
+- TRUE i18n gaps (player/operator-visible, not via `t()`):
+  1. Minimap side-button aria-labels - `src/ui/hud.ts:1386-1392`: the `sideButtons` array hard-codes English labels (Character/Spellbook/Talents/Quest Log/Map/Bags/Arena/Leaderboard/Emotes/Friends) and sets `aria-label` as `` `${label} (${key})` `` , bypassing `t()`. The `data-i18n-aria` keys exist in `index.html` but are overwritten dynamically by this literal. 10 controls.
+  2. Skin/Chroma swatch aria-labels - `src/ui/hud.ts:3688` (`aria-label="Chroma"` in the char-window template), `src/ui/hud.ts:3756` (`b.setAttribute('aria-label', \`Chroma ${i+1}\`)`), `index.html:4653` (online skin row `aria-label="Chroma"`), `index.html:4692` (offline skin row `aria-label="Skin"`). No `data-i18n-aria`.
+  3. Chat tip literal - `src/ui/hud.ts:451`: `this.log('Tip: type /join world or /join lfg to chat with players across the realm.', ...)` is a hard-coded English client chat message (not a `t()` key, not a matcher string).
+  4. Version/build footer - `src/main.ts:180`: `` `v${__APP_VERSION__} · build ${__APP_BUILD_ID__}` `` - the literal word "build" is player-visible English (low priority; technical string).
+- BY-DESIGN / acceptable (noted, not gaps): "World of ClaudeCraft" visually-hidden hero `<h1>` in `index.html` (brand verbatim, never translated per the glossary); keybind key-name labels ("esc" etc.) in the `.keybind` spans (physical key names, conventionally not localized).
+- en_XA SCOPE LIMITATIONS (so a future scan is not misread): en_XA pseudo-izes only the MAIN `t()` table (and the admin `t()` table) for the current language. Sim/server matcher-channel text (`localizeSimText`/`localizeServerText`) resolves via `DICT[getLanguage()]` = `en` under pseudo, so it renders plain English and is NOT a literal (a naive scan false-positives it; item 3 above is a true literal because it bypasses BOTH `t()` and the matcher). Canvas/WebGL text (FCT, nameplates) is not DOM and is not surfaced. The admin scan covered the LOGIN screen only (no server session); it showed 0 literals there.
+
+Commits: see Phase 9 cadence in state.md additions-log row 9.
 
 ## QA-phase checklists (fixes applied, tests added, dead code removed)
 Filled in by each QA session.
