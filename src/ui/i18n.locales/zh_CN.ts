@@ -1939,4 +1939,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   "worldContent.dungeonExitName": "{name}出口",
   "worldContent.dungeonPartyWarning": "{name}适合{count}人完整队伍挑战。请谨慎前进。",
   "worldContent.dungeonInstanceBusy": "{name}的所有副本都已被占用。请稍后再试。",
+  "entities.items.the_codfather.name": "鳕鱼教父",
+  "entities.quests.q_the_codfather.title": "鳕鱼教父",
+  "entities.quests.q_the_codfather.text": "鳕鱼教父不只是一条鱼，{playerName}，它是个冷血杀手。老人们发誓说它拿湿地徘徊者当早饭，就连米尔芬寡妇也会因恐惧而不敢在深沼浅滩附近结网。那片水域归它统治。拿上鱼竿，把那个老恶魔从它的水域里拖出来，我就承认你入了这个家族。",
+  "entities.quests.q_the_codfather.completion": "湿地诸圣在上……鳕鱼教父本尊。看看那些胡须。芬桥会把这次收获讲上一整年，{playerName}。",
+  "entities.quests.q_the_codfather.objectives.0.label": "鳕鱼教父",
 };

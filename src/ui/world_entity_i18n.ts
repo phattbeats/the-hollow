@@ -20,13 +20,13 @@ const MOB_IDS = [
   'forest_wolf', 'old_greyjaw', 'wild_boar', 'webwood_spider', 'mudfin_murloc', 'tunnel_rat',
   'vale_bandit', 'restless_bones', 'gorrak', 'mire_prowler', 'deepfen_murloc', 'mire_widow',
   'mirefen_broodmother', 'drowned_dead', 'fen_troll', 'grubjaw', 'gravecaller_cultist',
-  'gravecaller_summoner', 'deacon_voss', 'ridge_stalker', 'deeprock_kobold', 'thornpeak_ogre',
+  'gravecaller_summoner', 'gravecaller_mender', 'deacon_voss', 'ridge_stalker', 'deeprock_kobold', 'thornpeak_ogre',
   'ogre_crusher', 'warlord_drogmar', 'stormcrag_elemental', 'shardlord_kazzix',
   'wyrmcult_zealot', 'wyrmcult_necromancer', 'boneclad_revenant', 'crypt_shambler',
   'hollow_acolyte', 'bonechill_widow', 'sexton_marrow', 'morthen', 'bastion_revenant',
   'tidebound_acolyte', 'drowned_thrall', 'knight_commander_olen', 'vael_the_mistcaller',
   'sanctum_boneguard', 'sanctum_drakonid', 'raised_bonewalker', 'korgath_the_bound',
-  'grand_necromancer_velkhar', 'korzul_the_gravewyrm',
+  'grand_necromancer_velkhar', 'korzul_the_gravewyrm', 'bog_bloat',
 ] as const;
 
 const NPC_IDS = [
@@ -50,7 +50,7 @@ const QUEST_IDS = [
   'q_drogmar', 'q_elementals', 'q_shard_cores', 'q_kazzix', 'q_zealots', 'q_cult_orders',
   'q_necromancers', 'q_revenants', 'q_revenant_vanguard', 'q_wyrm_sigils',
   'q_breaking_the_seal', 'q_voice_below', 'q_sanctum_gate', 'q_korgath', 'q_velkhar',
-  'q_gravewyrm',
+  'q_gravewyrm', 'q_the_codfather',
 ] as const;
 
 const ZONE_IDS = ['eastbrook_vale', 'mirefen_marsh', 'thornpeak_heights'] as const;

@@ -1939,4 +1939,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   "worldContent.dungeonExitName": "Выход из {name}",
   "worldContent.dungeonPartyWarning": "{name} рассчитано на полную группу из {count} игроков. Продвигайтесь осторожно.",
   "worldContent.dungeonInstanceBusy": "Все копии {name} заняты. Попробуйте еще раз чуть позже.",
+  "entities.items.the_codfather.name": "Крестная треска",
+  "entities.quests.q_the_codfather.title": "Крестная треска",
+  "entities.quests.q_the_codfather.text": "Крестная треска не просто рыба, {playerName}, а хладнокровный убийца. Старики клянутся, что она ест болотных рыскунов на завтрак, и даже мирефенские вдовы от ужаса не плетут паутину у отмелей Дипфена. Она правит этими водами. Возьми удочку, вытащи этого старого дьявола из его вод, и я признаю, что ты вошел в семью.",
+  "entities.quests.q_the_codfather.completion": "Во имя промокших святых... Сама Крестная треска. Только взгляни на эти усы. Фенбридж будет целый год кормиться историями об этом улове, {playerName}.",
+  "entities.quests.q_the_codfather.objectives.0.label": "Крестная треска",
 };

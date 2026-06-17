@@ -1939,4 +1939,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   "worldContent.dungeonExitName": "Sortie de {name}",
   "worldContent.dungeonPartyWarning": "{name} est prévu pour un groupe complet de {count}. Avancez prudemment.",
   "worldContent.dungeonInstanceBusy": "Toutes les instances de {name} sont occupées. Réessayez bientôt.",
+  "entities.items.the_codfather.name": "Capitaine brochet",
+  "entities.quests.q_the_codfather.title": "Capitaine brochet",
+  "entities.quests.q_the_codfather.text": "Capitaine brochet n'est pas qu'un poisson, {playerName}, c'est un tueur à sang froid. Les anciens jurent qu'il mange des rôdeurs du bourbier au petit-déjeuner, et même les veuves de Mirefen ne tissent pas leurs toiles près des hauts-fonds de Deepfen, tant elles le craignent. Il règne sur ces eaux. Prenez une canne à pêche, tirez ce vieux démon hors de ses eaux, et j'admettrai que vous faites partie de la famille.",
+  "entities.quests.q_the_codfather.completion": "Je n'en crois pas mes yeux ! Capitaine brochet lui-même. Regardez moi ces moustaches diaboliques ! Tout Fenbridge parlera de votre belle prise durant un bon moment, {playerName}.",
+  "entities.quests.q_the_codfather.objectives.0.label": "Capitaine brochet",
 };

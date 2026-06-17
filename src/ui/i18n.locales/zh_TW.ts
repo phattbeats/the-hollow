@@ -1939,4 +1939,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   "worldContent.dungeonExitName": "{name}出口",
   "worldContent.dungeonPartyWarning": "{name}適合{count}人完整隊伍挑戰。請謹慎前進。",
   "worldContent.dungeonInstanceBusy": "{name}的所有副本都已被佔用。請稍後再試。",
+  "entities.items.the_codfather.name": "鱈魚教父",
+  "entities.quests.q_the_codfather.title": "鱈魚教父",
+  "entities.quests.q_the_codfather.text": "鱈魚教父不只是一條魚，{playerName}，牠是個冷血殺手。老人們發誓說牠拿濕地徘徊者當早飯，就連米爾芬寡婦也會因恐懼而不敢在深沼淺灘附近結網。那片水域歸牠統治。拿上釣竿，把那個老惡魔從牠的水域裡拖出來，我就承認你入了這個家族。",
+  "entities.quests.q_the_codfather.completion": "濕地諸聖在上……鱈魚教父本尊。看看那些鬚。芬橋會把這次收穫講上一整年，{playerName}。",
+  "entities.quests.q_the_codfather.objectives.0.label": "鱈魚教父",
 };

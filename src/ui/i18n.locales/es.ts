@@ -1939,4 +1939,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   "worldContent.dungeonExitName": "Salida de {name}",
   "worldContent.dungeonPartyWarning": "{name} está pensado para un grupo completo de {count}. Avanza con cuidado.",
   "worldContent.dungeonInstanceBusy": "Todas las instancias de {name} están ocupadas. Inténtalo de nuevo pronto.",
+  "entities.items.the_codfather.name": "El Bacaladrino",
+  "entities.quests.q_the_codfather.title": "El Bacaladrino",
+  "entities.quests.q_the_codfather.text": "El Bacaladrino no es solo un pez, {playerName}, es un asesino de sangre fría. Los veteranos juran que desayuna merodeadores del lodazal, e incluso las viudas de Mirefen no tejen sus redes cerca de los Bajíos de Deepfen por puro terror. Gobierna esas aguas. Toma una caña de pescar, arranca a ese viejo demonio de sus aguas y admitiré que ya eres de la familia.",
+  "entities.quests.q_the_codfather.completion": "Por los santos húmedos... El Bacaladrino en persona. Mira esos bigotes. Fenbridge vivirá un año entero contando historias de esta captura, {playerName}.",
+  "entities.quests.q_the_codfather.objectives.0.label": "El Bacaladrino",
 };

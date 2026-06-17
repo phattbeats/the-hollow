@@ -166,11 +166,17 @@ export const en: EnTranslations = {
   },
   "wiki": {
     "title": "Game Wiki & Guide",
-    "desc": "Discover the secrets of the realm, class guides, and strategies."
+    "desc": "Discover the secrets of the realm, class guides, and strategies.",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "News & Updates",
-    "desc": "Read the latest patch notes, events, and community updates."
+    "desc": "Read the latest patch notes, events, and community updates.",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "Download Desktop Launcher",
@@ -188,7 +194,17 @@ export const en: EnTranslations = {
     "offlineDesc": "Instant single-player world in your browser. Nothing is saved: perfect for a quick brawl or testing.",
     "offlineAria": "Play Offline: start an instant local single-player session",
     "tipTitle": "TIP:",
-    "tipText": "For the smoothest experience, turn off ad blocker extensions on this site. Community reports found some blockers can cause lag."
+    "tipText": "For the smoothest experience, turn off ad blocker extensions on this site. Community reports found some blockers can cause lag.",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "Enter the Realm",
@@ -701,6 +717,7 @@ export const en: EnTranslations = {
     },
     "errors": {
       "stunned": "You are stunned!",
+      "silenced": "You are silenced!",
       "busy": "You are busy.",
       "abilityNotReady": "That ability is not ready yet.",
       "notEnoughRage": "Not enough rage!",
@@ -824,7 +841,9 @@ export const en: EnTranslations = {
       "petNamePlaceholder": "Pet name",
       "renameConfirm": "Rename",
       "abandonBody": "Permanently abandon {name}? You will need to tame another pet.",
-      "abandonConfirm": "Abandon"
+      "abandonConfirm": "Abandon",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "Social",
@@ -2315,6 +2334,9 @@ export const en: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "Ysolei's Pearl Greaves"
+      },
+      "the_codfather": {
+        "name": "The Codfather"
       }
     },
     "mobs": {
@@ -2371,6 +2393,9 @@ export const en: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "Gravecaller Summoner"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "Deacon Voss"
@@ -2452,6 +2477,9 @@ export const en: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "Korzul the Gravewyrm"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "Elder Bristleback"
@@ -3292,6 +3320,16 @@ export const en: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "The Codfather",
+        "text": "The Codfather isn't just a fish, {playerName}, he's a cold-blooded killer. Old-timers swear he eats Mire Prowlers for breakfast, and even the Mirefen Widows won't spin their webs near the Deepfen Shallows out of sheer terror. He rules those waters. Grab a fishing pole, drag that old devil out of his waters, and I will admit you have joined the family.",
+        "completion": "By the damp saints... The Codfather himself. Look at those whiskers. Fenbridge will eat stories off this catch for a year, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Codfather"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "Mogger's Trail",
         "text": "Before you take the road north, Eastbrook has one last thorn in its side: Mogger. The brute has been trampling the lower meadow and driving the boars mad. Clear the meadow around his trail so we can see where he lairs.",
@@ -3662,11 +3700,17 @@ export const es: EnTranslations = {
   },
   "wiki": {
     "title": "Wiki y Guía del Juego",
-    "desc": "Descubre los secretos del reino, guías de clase y estrategias."
+    "desc": "Descubre los secretos del reino, guías de clase y estrategias.",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "Noticias y Actualizaciones",
-    "desc": "Lee las últimas notas del parche, eventos y noticias de la comunidad."
+    "desc": "Lee las últimas notas del parche, eventos y noticias de la comunidad.",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "Descargar Lanzador de Escritorio",
@@ -3684,7 +3728,17 @@ export const es: EnTranslations = {
     "offlineDesc": "Mundo instantáneo en solitario en tu navegador. Nada se guarda: perfecto para una pelea rápida o pruebas.",
     "offlineAria": "Jugar en Solitario: inicia una sesión local instantánea de un jugador",
     "tipTitle": "CONSEJO:",
-    "tipText": "Para la mejor experiencia, desactiva las extensiones de bloqueo de publicidad en este sitio. Reportes de la comunidad encontraron que algunos bloqueadores pueden causar retrasos."
+    "tipText": "Para la mejor experiencia, desactiva las extensiones de bloqueo de publicidad en este sitio. Reportes de la comunidad encontraron que algunos bloqueadores pueden causar retrasos.",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "Entrar al Reino",
@@ -4197,6 +4251,7 @@ export const es: EnTranslations = {
     },
     "errors": {
       "stunned": "¡Estás aturdido!",
+      "silenced": "You are silenced!",
       "busy": "Estás ocupado.",
       "abilityNotReady": "Esa habilidad aún no está lista.",
       "notEnoughRage": "¡No tienes suficiente ira!",
@@ -4320,7 +4375,9 @@ export const es: EnTranslations = {
       "petNamePlaceholder": "Nombre de mascota",
       "renameConfirm": "Renombrar",
       "abandonBody": "¿Abandonar permanentemente a {name}? Tendrás que domesticar otra mascota.",
-      "abandonConfirm": "Abandonar"
+      "abandonConfirm": "Abandonar",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "Comunidad",
@@ -5811,6 +5868,9 @@ export const es: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "Grebas de perla de Ysolei"
+      },
+      "the_codfather": {
+        "name": "El Bacaladrino"
       }
     },
     "mobs": {
@@ -5867,6 +5927,9 @@ export const es: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "Invocador Gravecaller"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "Diácono Voss"
@@ -5948,6 +6011,9 @@ export const es: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "Korzul el Gravewyrm"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "Viejo Bristleback"
@@ -6788,6 +6854,16 @@ export const es: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "El Bacaladrino",
+        "text": "El Bacaladrino no es solo un pez, {playerName}, es un asesino de sangre fría. Los veteranos juran que desayuna merodeadores del lodazal, e incluso las viudas de Mirefen no tejen sus redes cerca de los Bajíos de Deepfen por puro terror. Gobierna esas aguas. Toma una caña de pescar, arranca a ese viejo demonio de sus aguas y admitiré que ya eres de la familia.",
+        "completion": "Por los santos húmedos... El Bacaladrino en persona. Mira esos bigotes. Fenbridge vivirá un año entero contando historias de esta captura, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "El Bacaladrino"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "El rastro de Mogger",
         "text": "Antes de tomar el camino al norte, Eastbrook tiene una última espina clavada: Mogger. La bestia pisotea el prado bajo y enloquece a los jabalíes. Limpia la zona de su rastro para que veamos dónde se esconde.",
@@ -7158,11 +7234,17 @@ export const es_ES: EnTranslations = {
   },
   "wiki": {
     "title": "Wiki y guía del juego",
-    "desc": "Descubre los secretos del reino, guías de clase y estrategias."
+    "desc": "Descubre los secretos del reino, guías de clase y estrategias.",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "Noticias y actualizaciones",
-    "desc": "Lee las últimas notas del parche, eventos y noticias de la comunidad."
+    "desc": "Lee las últimas notas del parche, eventos y noticias de la comunidad.",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "Descargar lanzador de escritorio",
@@ -7180,7 +7262,17 @@ export const es_ES: EnTranslations = {
     "offlineDesc": "Mundo instantáneo en solitario en tu navegador. Nada se guarda: perfecto para una pelea rápida o pruebas.",
     "offlineAria": "Jugar en solitario: inicia una sesión local instantánea de un jugador",
     "tipTitle": "CONSEJO:",
-    "tipText": "Para la mejor experiencia, desactiva las extensiones de bloqueo de publicidad en este sitio. Reportes de la comunidad encontraron que algunos bloqueadores pueden causar retrasos."
+    "tipText": "Para la mejor experiencia, desactiva las extensiones de bloqueo de publicidad en este sitio. Reportes de la comunidad encontraron que algunos bloqueadores pueden causar retrasos.",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "Entrar al reino",
@@ -7693,6 +7785,7 @@ export const es_ES: EnTranslations = {
     },
     "errors": {
       "stunned": "¡Estás aturdido!",
+      "silenced": "You are silenced!",
       "busy": "Estás ocupado.",
       "abilityNotReady": "Esa habilidad aún no está lista.",
       "notEnoughRage": "¡No tienes suficiente ira!",
@@ -7816,7 +7909,9 @@ export const es_ES: EnTranslations = {
       "petNamePlaceholder": "Nombre de mascota",
       "renameConfirm": "Renombrar",
       "abandonBody": "¿Abandonar permanentemente a {name}? Tendrás que domesticar otra mascota.",
-      "abandonConfirm": "Abandonar"
+      "abandonConfirm": "Abandonar",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "Comunidad",
@@ -9307,6 +9402,9 @@ export const es_ES: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "Grebas de perla de Ysolei"
+      },
+      "the_codfather": {
+        "name": "El Bacaladrino"
       }
     },
     "mobs": {
@@ -9363,6 +9461,9 @@ export const es_ES: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "Invocador Gravecaller"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "Diácono Voss"
@@ -9444,6 +9545,9 @@ export const es_ES: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "Korzul el Gravewyrm"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "Viejo Bristleback"
@@ -10284,6 +10388,16 @@ export const es_ES: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "El Bacaladrino",
+        "text": "El Bacaladrino no es solo un pez, {playerName}, es un asesino de sangre fría. Los veteranos juran que desayuna merodeadores del lodazal, e incluso las viudas de Mirefen no tejen sus redes cerca de los Bajíos de Deepfen por puro terror. Gobierna esas aguas. Toma una caña de pescar, arranca a ese viejo demonio de sus aguas y admitiré que ya eres de la familia.",
+        "completion": "Por los santos húmedos... El Bacaladrino en persona. Mira esos bigotes. Fenbridge vivirá un año entero contando historias de esta captura, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "El Bacaladrino"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "El rastro de Mogger",
         "text": "Antes de tomar el camino al norte, Eastbrook tiene una última espina clavada: Mogger. La bestia pisotea el prado bajo y enloquece a los jabalíes. Limpia la zona de su rastro para que veamos dónde se esconde.",
@@ -10654,11 +10768,17 @@ export const fr_FR: EnTranslations = {
   },
   "wiki": {
     "title": "Wiki et guide du jeu",
-    "desc": "Découvrez les secrets du royaume, les guides de classe et les stratégies."
+    "desc": "Découvrez les secrets du royaume, les guides de classe et les stratégies.",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "Actualités et mises à jour",
-    "desc": "Lisez les dernières notes de mise à jour, les événements et les nouvelles de la communauté."
+    "desc": "Lisez les dernières notes de mise à jour, les événements et les nouvelles de la communauté.",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "Télécharger le lanceur de bureau",
@@ -10676,7 +10796,17 @@ export const fr_FR: EnTranslations = {
     "offlineDesc": "Un monde solo instantané dans votre navigateur. Rien n'est sauvegardé: parfait pour un combat rapide ou des tests.",
     "offlineAria": "Jouer hors ligne: démarrer une session solo locale instantanée",
     "tipTitle": "CONSEIL:",
-    "tipText": "Pour une expérience optimale, désactivez les extensions de blocage de publicité sur ce site. Certains bloqueurs peuvent causer des latences."
+    "tipText": "Pour une expérience optimale, désactivez les extensions de blocage de publicité sur ce site. Certains bloqueurs peuvent causer des latences.",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "Entrer dans le royaume",
@@ -11189,6 +11319,7 @@ export const fr_FR: EnTranslations = {
     },
     "errors": {
       "stunned": "Vous êtes étourdi !",
+      "silenced": "You are silenced!",
       "busy": "Vous êtes occupé.",
       "abilityNotReady": "Cette technique n'est pas encore prête.",
       "notEnoughRage": "Pas assez de rage !",
@@ -11312,7 +11443,9 @@ export const fr_FR: EnTranslations = {
       "petNamePlaceholder": "Nom du familier",
       "renameConfirm": "Renommer",
       "abandonBody": "Abandonner définitivement {name} ? Vous devrez dompter un autre familier.",
-      "abandonConfirm": "Abandonner"
+      "abandonConfirm": "Abandonner",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "Relations",
@@ -12803,6 +12936,9 @@ export const fr_FR: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "Jambières de perle d'Ysolei"
+      },
+      "the_codfather": {
+        "name": "Capitaine brochet"
       }
     },
     "mobs": {
@@ -12859,6 +12995,9 @@ export const fr_FR: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "Invocateur Gravecaller"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "Diacre Voss"
@@ -12940,6 +13079,9 @@ export const fr_FR: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "Korzul le Gravewyrm"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "Ancien Bristleback"
@@ -13780,6 +13922,16 @@ export const fr_FR: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "Capitaine brochet",
+        "text": "Capitaine brochet n'est pas qu'un poisson, {playerName}, c'est un tueur à sang froid. Les anciens jurent qu'il mange des rôdeurs du bourbier au petit-déjeuner, et même les veuves de Mirefen ne tissent pas leurs toiles près des hauts-fonds de Deepfen, tant elles le craignent. Il règne sur ces eaux. Prenez une canne à pêche, tirez ce vieux démon hors de ses eaux, et j'admettrai que vous faites partie de la famille.",
+        "completion": "Je n'en crois pas mes yeux ! Capitaine brochet lui-même. Regardez moi ces moustaches diaboliques ! Tout Fenbridge parlera de votre belle prise durant un bon moment, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Capitaine brochet"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "La piste de Mogger",
         "text": "Avant de prendre la route du nord, Eastbrook a une dernière épine dans le pied : Mogger. La brute piétine le pré bas et rend les sangliers fous. Nettoyez le pré autour de sa piste pour que nous voyions où il se terre.",
@@ -14150,11 +14302,17 @@ export const fr_CA: EnTranslations = {
   },
   "wiki": {
     "title": "Wiki et guide du jeu",
-    "desc": "Découvrez les secrets du royaume, les guides de classe et les stratégies."
+    "desc": "Découvrez les secrets du royaume, les guides de classe et les stratégies.",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "Actualités et mises à jour",
-    "desc": "Lisez les dernières notes de mise à jour, les événements et les nouvelles de la communauté."
+    "desc": "Lisez les dernières notes de mise à jour, les événements et les nouvelles de la communauté.",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "Télécharger le lanceur de bureau",
@@ -14172,7 +14330,17 @@ export const fr_CA: EnTranslations = {
     "offlineDesc": "Un monde solo instantané dans votre navigateur. Rien n'est sauvegardé: parfait pour un combat rapide ou des tests.",
     "offlineAria": "Jouer hors ligne: démarrer une session solo locale instantanée",
     "tipTitle": "CONSEIL:",
-    "tipText": "Pour une expérience optimale, désactivez les extensions de blocage de publicité sur ce site. Certains bloqueurs peuvent causer des latences."
+    "tipText": "Pour une expérience optimale, désactivez les extensions de blocage de publicité sur ce site. Certains bloqueurs peuvent causer des latences.",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "Entrer dans le royaume",
@@ -14685,6 +14853,7 @@ export const fr_CA: EnTranslations = {
     },
     "errors": {
       "stunned": "Vous êtes étourdi !",
+      "silenced": "You are silenced!",
       "busy": "Vous êtes occupé.",
       "abilityNotReady": "Cette technique n'est pas encore prête.",
       "notEnoughRage": "Pas assez de rage !",
@@ -14808,7 +14977,9 @@ export const fr_CA: EnTranslations = {
       "petNamePlaceholder": "Nom du familier",
       "renameConfirm": "Renommer",
       "abandonBody": "Abandonner définitivement {name} ? Vous devrez dompter un autre familier.",
-      "abandonConfirm": "Abandonner"
+      "abandonConfirm": "Abandonner",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "Relations",
@@ -16299,6 +16470,9 @@ export const fr_CA: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "Jambières de perle d'Ysolei"
+      },
+      "the_codfather": {
+        "name": "Capitaine brochet"
       }
     },
     "mobs": {
@@ -16355,6 +16529,9 @@ export const fr_CA: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "Invocateur Gravecaller"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "Diacre Voss"
@@ -16436,6 +16613,9 @@ export const fr_CA: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "Korzul le Gravewyrm"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "Ancien Bristleback"
@@ -17276,6 +17456,16 @@ export const fr_CA: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "Capitaine brochet",
+        "text": "Capitaine brochet n'est pas qu'un poisson, {playerName}, c'est un tueur à sang froid. Les anciens jurent qu'il mange des rôdeurs du bourbier au petit-déjeuner, et même les veuves de Mirefen ne tissent pas leurs toiles près des hauts-fonds de Deepfen, tant elles le craignent. Il règne sur ces eaux. Prenez une canne à pêche, tirez ce vieux démon hors de ses eaux, et j'admettrai que vous faites partie de la famille.",
+        "completion": "Je n'en crois pas mes yeux ! Capitaine brochet lui-même. Regardez moi ces moustaches diaboliques ! Tout Fenbridge parlera de votre belle prise durant un bon moment, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Capitaine brochet"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "La piste de Mogger",
         "text": "Avant de prendre la route du nord, Eastbrook a une dernière épine dans le pied : Mogger. La brute piétine le pré bas et rend les sangliers fous. Nettoyez le pré autour de sa piste pour que nous voyions où il se terre.",
@@ -17646,11 +17836,17 @@ export const en_CA: EnTranslations = {
   },
   "wiki": {
     "title": "Game Wiki & Guide",
-    "desc": "Discover the secrets of the realm, class guides, and strategies."
+    "desc": "Discover the secrets of the realm, class guides, and strategies.",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "News & Updates",
-    "desc": "Read the latest patch notes, events, and community updates."
+    "desc": "Read the latest patch notes, events, and community updates.",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "Download Desktop Launcher",
@@ -17668,7 +17864,17 @@ export const en_CA: EnTranslations = {
     "offlineDesc": "Instant single-player world in your browser. Nothing is saved: perfect for a quick brawl or testing.",
     "offlineAria": "Play Offline: start an instant local single-player session",
     "tipTitle": "TIP:",
-    "tipText": "For the smoothest experience, turn off ad blocker extensions on this site. Community reports found some blockers can cause lag."
+    "tipText": "For the smoothest experience, turn off ad blocker extensions on this site. Community reports found some blockers can cause lag.",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "Enter the Realm",
@@ -18181,6 +18387,7 @@ export const en_CA: EnTranslations = {
     },
     "errors": {
       "stunned": "You are stunned!",
+      "silenced": "You are silenced!",
       "busy": "You are busy.",
       "abilityNotReady": "That ability is not ready yet.",
       "notEnoughRage": "Not enough rage!",
@@ -18304,7 +18511,9 @@ export const en_CA: EnTranslations = {
       "petNamePlaceholder": "Pet name",
       "renameConfirm": "Rename",
       "abandonBody": "Permanently abandon {name}? You will need to tame another pet.",
-      "abandonConfirm": "Abandon"
+      "abandonConfirm": "Abandon",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "Social",
@@ -19795,6 +20004,9 @@ export const en_CA: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "Ysolei's Pearl Greaves"
+      },
+      "the_codfather": {
+        "name": "The Codfather"
       }
     },
     "mobs": {
@@ -19851,6 +20063,9 @@ export const en_CA: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "Gravecaller Summoner"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "Deacon Voss"
@@ -19932,6 +20147,9 @@ export const en_CA: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "Korzul the Gravewyrm"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "Elder Bristleback"
@@ -20772,6 +20990,16 @@ export const en_CA: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "The Codfather",
+        "text": "The Codfather isn't just a fish, {playerName}, he's a cold-blooded killer. Old-timers swear he eats Mire Prowlers for breakfast, and even the Mirefen Widows won't spin their webs near the Deepfen Shallows out of sheer terror. He rules those waters. Grab a fishing pole, drag that old devil out of his waters, and I will admit you have joined the family.",
+        "completion": "By the damp saints... The Codfather himself. Look at those whiskers. Fenbridge will eat stories off this catch for a year, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Codfather"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "Mogger's Trail",
         "text": "Before you take the road north, Eastbrook has one last thorn in its side: Mogger. The brute has been trampling the lower meadow and driving the boars mad. Clear the meadow around his trail so we can see where he lairs.",
@@ -21142,11 +21370,17 @@ export const it_IT: EnTranslations = {
   },
   "wiki": {
     "title": "Wiki e guida del gioco",
-    "desc": "Scopri i segreti del reame, le guide di classe e le strategie."
+    "desc": "Scopri i segreti del reame, le guide di classe e le strategie.",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "Notizie e aggiornamenti",
-    "desc": "Leggi le ultime note sulla patch, gli eventi e gli aggiornamenti della community."
+    "desc": "Leggi le ultime note sulla patch, gli eventi e gli aggiornamenti della community.",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "Scarica il launcher per desktop",
@@ -21164,7 +21398,17 @@ export const it_IT: EnTranslations = {
     "offlineDesc": "Un mondo a giocatore singolo istantaneo nel tuo browser. Nulla viene salvato: perfetto per un combattimento rapido o per testare.",
     "offlineAria": "Gioca offline: avvia una sessione locale a giocatore singolo istantanea",
     "tipTitle": "SUGGERIMENTO:",
-    "tipText": "Per un'esperienza ottimale, disattiva le estensioni di blocco della pubblicità su questo sito. Alcuni utenti segnalano che i blocchi possono causare rallentamenti."
+    "tipText": "Per un'esperienza ottimale, disattiva le estensioni di blocco della pubblicità su questo sito. Alcuni utenti segnalano che i blocchi possono causare rallentamenti.",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "Entra nel reame",
@@ -21677,6 +21921,7 @@ export const it_IT: EnTranslations = {
     },
     "errors": {
       "stunned": "Sei stordito!",
+      "silenced": "You are silenced!",
       "busy": "Sei occupato.",
       "abilityNotReady": "Quell'abilità non è ancora pronta.",
       "notEnoughRage": "Rabbia insufficiente!",
@@ -21800,7 +22045,9 @@ export const it_IT: EnTranslations = {
       "petNamePlaceholder": "Nome mascotte",
       "renameConfirm": "Rinomina",
       "abandonBody": "Abbandonare definitivamente {name}? Dovrai domare un'altra mascotte.",
-      "abandonConfirm": "Abbandona"
+      "abandonConfirm": "Abbandona",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "Sociale",
@@ -23291,6 +23538,9 @@ export const it_IT: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "Schinieri di Perla di Ysolei"
+      },
+      "the_codfather": {
+        "name": "Il Pescadrino"
       }
     },
     "mobs": {
@@ -23347,6 +23597,9 @@ export const it_IT: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "Evocatore Gravecaller"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "Diacono Voss"
@@ -23428,6 +23681,9 @@ export const it_IT: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "Korzul il Gravewyrm"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "Bristleback anziano"
@@ -24268,6 +24524,16 @@ export const it_IT: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "Il Pescadrino",
+        "text": "Il Pescadrino non è solo un pesce, {playerName}, è un assassino a sangue freddo. I vecchi giurano che mangi predatori del pantano a colazione, e persino le vedove di Mirefen non tessono le loro ragnatele vicino ai bassifondi di Deepfen per puro terrore. Governa quelle acque. Prendi una canna da pesca, trascina quel vecchio demonio fuori dalle sue acque e ammetterò che sei entrato nella famiglia.",
+        "completion": "Per i santi fradici... Il Pescadrino in persona. Guarda quei baffi. Fenbridge vivrà per un anno raccontando storie su questa cattura, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Il Pescadrino"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "La traccia di Mogger",
         "text": "Prima di prendere la strada a nord, Eastbrook ha un'ultima spina nel fianco: Mogger. Il bruto calpesta il prato basso e fa impazzire i cinghiali. Ripulisci il prato attorno alla sua traccia per scoprire dove si tana.",
@@ -24638,11 +24904,17 @@ export const de_DE: EnTranslations = {
   },
   "wiki": {
     "title": "Spiel-Wiki und Guides",
-    "desc": "Entdecke die Geheimnisse des Realms, Klassenguides und Strategien."
+    "desc": "Entdecke die Geheimnisse des Realms, Klassenguides und Strategien.",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "Neuigkeiten und Updates",
-    "desc": "Lies die neuesten Patchnotes, Events und Community-Updates."
+    "desc": "Lies die neuesten Patchnotes, Events und Community-Updates.",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "Desktop-Launcher herunterladen",
@@ -24660,7 +24932,17 @@ export const de_DE: EnTranslations = {
     "offlineDesc": "Sofortige Einzelspielerwelt in deinem Browser. Es wird nichts gespeichert: perfekt für einen schnellen Kampf oder zum Testen.",
     "offlineAria": "Offline spielen: Starte eine sofortige lokale Einzelspielersitzung",
     "tipTitle": "TIPP:",
-    "tipText": "Deaktiviere für das flüssigste Spielerlebnis Adblocker-Erweiterungen auf dieser Website. Community-Berichte zeigen, dass einige Blocker zu Verzögerungen führen können."
+    "tipText": "Deaktiviere für das flüssigste Spielerlebnis Adblocker-Erweiterungen auf dieser Website. Community-Berichte zeigen, dass einige Blocker zu Verzögerungen führen können.",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "Realm betreten",
@@ -25173,6 +25455,7 @@ export const de_DE: EnTranslations = {
     },
     "errors": {
       "stunned": "Ihr seid betäubt!",
+      "silenced": "You are silenced!",
       "busy": "Ihr seid beschäftigt.",
       "abilityNotReady": "Diese Fähigkeit ist noch nicht bereit.",
       "notEnoughRage": "Nicht genug Wut!",
@@ -25296,7 +25579,9 @@ export const de_DE: EnTranslations = {
       "petNamePlaceholder": "Begleitername",
       "renameConfirm": "Umbenennen",
       "abandonBody": "{name} dauerhaft aufgeben? Du musst einen neuen Begleiter zähmen.",
-      "abandonConfirm": "Aufgeben"
+      "abandonConfirm": "Aufgeben",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "Soziales",
@@ -26787,6 +27072,9 @@ export const de_DE: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "Ysoleis Perlenbeinschienen"
+      },
+      "the_codfather": {
+        "name": "Der Kabeljaupate"
       }
     },
     "mobs": {
@@ -26843,6 +27131,9 @@ export const de_DE: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "Gravecaller-Beschwörer"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "Diakon Voss"
@@ -26924,6 +27215,9 @@ export const de_DE: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "Korzul der Gravewyrm"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "Alter Bristleback"
@@ -27764,6 +28058,16 @@ export const de_DE: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "Der Kabeljaupate",
+        "text": "Der Kabeljaupate ist nicht nur ein Fisch, {playerName}, er ist ein kaltblütiger Mörder. Die Alten schwören, er frisst Moorpirscher zum Frühstück, und selbst die Mirefen-Witwen spinnen aus blanker Furcht keine Netze nahe den Deepfen-Untiefen. Er herrscht über diese Wasser. Schnapp dir eine Angel, zieh diesen alten Teufel aus seinen Gewässern, und ich gebe zu, dass du zur Familie gehörst.",
+        "completion": "Bei den klammen Heiligen... Der Kabeljaupate höchstpersönlich. Sieh dir diese Barteln an. Fenbridge wird ein Jahr lang Geschichten von diesem Fang erzählen, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Der Kabeljaupate"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "Moggers Spur",
         "text": "Bevor du die Straße nach Norden nimmst, hat Eastbrook noch einen letzten Dorn im Fleisch: Mogger. Der Grobian zertrampelt die untere Wiese und treibt die Eber in den Wahnsinn. Säubere die Wiese um seine Spur, damit wir sehen, wo er haust.",
@@ -28134,11 +28438,17 @@ export const zh_CN: EnTranslations = {
   },
   "wiki": {
     "title": "游戏百科与指南",
-    "desc": "探索世界的秘密、职业指南以及战术策略。"
+    "desc": "探索世界的秘密、职业指南以及战术策略。",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "新闻与更新说明",
-    "desc": "阅读最新补丁说明、游戏内事件和社区动态。"
+    "desc": "阅读最新补丁说明、游戏内事件和社区动态。",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "下载电脑版启动器",
@@ -28156,7 +28466,17 @@ export const zh_CN: EnTranslations = {
     "offlineDesc": "在浏览器中直接开启单人世界。所有数据均不保存：非常适合快速试玩或功能测试。",
     "offlineAria": "单机试玩：直接开始本地单人游戏会话",
     "tipTitle": "提示：",
-    "tipText": "为了获得最流畅的游玩体验，请在此网站上关闭广告拦截插件。根据社区反馈，部分拦截器可能会导致游戏卡顿。"
+    "tipText": "为了获得最流畅的游玩体验，请在此网站上关闭广告拦截插件。根据社区反馈，部分拦截器可能会导致游戏卡顿。",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "进入服务器",
@@ -28669,6 +28989,7 @@ export const zh_CN: EnTranslations = {
     },
     "errors": {
       "stunned": "你被击晕了！",
+      "silenced": "You are silenced!",
       "busy": "你正忙。",
       "abilityNotReady": "该技能尚未准备好。",
       "notEnoughRage": "怒气不足！",
@@ -28792,7 +29113,9 @@ export const zh_CN: EnTranslations = {
       "petNamePlaceholder": "宠物名称",
       "renameConfirm": "重命名",
       "abandonBody": "永久放弃 {name}？你需要驯服另一只宠物。",
-      "abandonConfirm": "放弃"
+      "abandonConfirm": "放弃",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "社交",
@@ -30283,6 +30606,9 @@ export const zh_CN: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "伊索蕾的珍珠护胫"
+      },
+      "the_codfather": {
+        "name": "鳕鱼教父"
       }
     },
     "mobs": {
@@ -30339,6 +30665,9 @@ export const zh_CN: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "唤墓者召唤师"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "执事沃斯"
@@ -30420,6 +30749,9 @@ export const zh_CN: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "墓龙科祖尔"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "年长硬鬃"
@@ -31260,6 +31592,16 @@ export const zh_CN: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "鳕鱼教父",
+        "text": "鳕鱼教父不只是一条鱼，{playerName}，它是个冷血杀手。老人们发誓说它拿湿地徘徊者当早饭，就连米尔芬寡妇也会因恐惧而不敢在深沼浅滩附近结网。那片水域归它统治。拿上鱼竿，把那个老恶魔从它的水域里拖出来，我就承认你入了这个家族。",
+        "completion": "湿地诸圣在上……鳕鱼教父本尊。看看那些胡须。芬桥会把这次收获讲上一整年，{playerName}。",
+        "objectives": {
+          "0": {
+            "label": "鳕鱼教父"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "莫格的踪迹",
         "text": "在你踏上北路前，东溪还有最后一根刺：莫格。那蛮兽践踏下方草地，把野猪都逼疯了。清理它踪迹周围的草地，我们才能看出它藏在哪里。",
@@ -31630,11 +31972,17 @@ export const zh_TW: EnTranslations = {
   },
   "wiki": {
     "title": "遊戲百科與指南",
-    "desc": "探索世界的秘密、職業指南以及戰術策略。"
+    "desc": "探索世界的秘密、職業指南以及戰術策略。",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "新聞與更新說明",
-    "desc": "閱讀最新修補程式說明、遊戲內事件和社群動態。"
+    "desc": "閱讀最新修補程式說明、遊戲內事件和社群動態。",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "下載電腦版啟動器",
@@ -31652,7 +32000,17 @@ export const zh_TW: EnTranslations = {
     "offlineDesc": "在瀏覽器中直接開啟單人世界。所有數據均不保存：非常適合快速試玩或功能測試。",
     "offlineAria": "單機試玩：直接開始本地單人遊戲會話",
     "tipTitle": "提示：",
-    "tipText": "為了獲得最流暢的遊玩體驗，請在此網站上關閉廣告攔截外掛。根據社群回饋，部分攔截器可能會導致遊戲延遲。"
+    "tipText": "為了獲得最流暢的遊玩體驗，請在此網站上關閉廣告攔截外掛。根據社群回饋，部分攔截器可能會導致遊戲延遲。",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "進入伺服器",
@@ -32165,6 +32523,7 @@ export const zh_TW: EnTranslations = {
     },
     "errors": {
       "stunned": "你被擊暈了！",
+      "silenced": "You are silenced!",
       "busy": "你正忙。",
       "abilityNotReady": "該技能尚未準備好。",
       "notEnoughRage": "怒氣不足！",
@@ -32288,7 +32647,9 @@ export const zh_TW: EnTranslations = {
       "petNamePlaceholder": "寵物名稱",
       "renameConfirm": "重新命名",
       "abandonBody": "永久放棄 {name}？你需要馴服另一隻寵物。",
-      "abandonConfirm": "放棄"
+      "abandonConfirm": "放棄",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "社交",
@@ -33779,6 +34140,9 @@ export const zh_TW: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "伊索蕾的珍珠脛甲"
+      },
+      "the_codfather": {
+        "name": "鱈魚教父"
       }
     },
     "mobs": {
@@ -33835,6 +34199,9 @@ export const zh_TW: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "喚墓者召喚師"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "執事沃斯"
@@ -33916,6 +34283,9 @@ export const zh_TW: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "墓龍科祖爾"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "年長硬鬃"
@@ -34756,6 +35126,16 @@ export const zh_TW: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "鱈魚教父",
+        "text": "鱈魚教父不只是一條魚，{playerName}，牠是個冷血殺手。老人們發誓說牠拿濕地徘徊者當早飯，就連米爾芬寡婦也會因恐懼而不敢在深沼淺灘附近結網。那片水域歸牠統治。拿上釣竿，把那個老惡魔從牠的水域裡拖出來，我就承認你入了這個家族。",
+        "completion": "濕地諸聖在上……鱈魚教父本尊。看看那些鬚。芬橋會把這次收穫講上一整年，{playerName}。",
+        "objectives": {
+          "0": {
+            "label": "鱈魚教父"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "莫格的蹤跡",
         "text": "在你踏上北路前，東溪還有最後一根刺：莫格。那蠻獸踐踏下方草地，把野豬都逼瘋了。清理牠蹤跡周圍的草地，我們才能看出牠藏在哪裡。",
@@ -35126,11 +35506,17 @@ export const ko_KR: EnTranslations = {
   },
   "wiki": {
     "title": "게임 위키 및 가이드",
-    "desc": "렐름의 비밀과 클래스 가이드, 전략 등을 확인해 보세요."
+    "desc": "렐름의 비밀과 클래스 가이드, 전략 등을 확인해 보세요.",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "새소식 및 업데이트",
-    "desc": "최신 패치 노트, 이벤트 소식, 커뮤니티 업데이트를 확인해 보세요."
+    "desc": "최신 패치 노트, 이벤트 소식, 커뮤니티 업데이트를 확인해 보세요.",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "데스크톱 런처 다운로드",
@@ -35148,7 +35534,17 @@ export const ko_KR: EnTranslations = {
     "offlineDesc": "브라우저에서 즉시 일인용 세상을 플레이합니다. 아무것도 저장되지 않아 빠른 전투나 연습에 적합합니다.",
     "offlineAria": "오프라인 플레이: 즉각적인 로컬 싱글 플레이 세션을 시작합니다",
     "tipTitle": "팁:",
-    "tipText": "가장 원활한 이용을 위해 이 웹사이트의 광고 차단기 확장 프로그램을 비활성화해 주세요. 일부 차단기가 게임 성능 지연을 유발할 수 있습니다."
+    "tipText": "가장 원활한 이용을 위해 이 웹사이트의 광고 차단기 확장 프로그램을 비활성화해 주세요. 일부 차단기가 게임 성능 지연을 유발할 수 있습니다.",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "렐름 입장",
@@ -35661,6 +36057,7 @@ export const ko_KR: EnTranslations = {
     },
     "errors": {
       "stunned": "기절했습니다!",
+      "silenced": "You are silenced!",
       "busy": "현재 다른 행동 중입니다.",
       "abilityNotReady": "그 능력은 아직 준비되지 않았습니다.",
       "notEnoughRage": "분노가 부족합니다!",
@@ -35784,7 +36181,9 @@ export const ko_KR: EnTranslations = {
       "petNamePlaceholder": "소환수 이름",
       "renameConfirm": "이름 변경",
       "abandonBody": "{name}을(를) 영구적으로 포기할까요? 다른 소환수를 길들여야 합니다.",
-      "abandonConfirm": "포기"
+      "abandonConfirm": "포기",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "소셜",
@@ -37275,6 +37674,9 @@ export const ko_KR: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "이솔레이의 진주 정강이받이"
+      },
+      "the_codfather": {
+        "name": "대구 대부"
       }
     },
     "mobs": {
@@ -37331,6 +37733,9 @@ export const ko_KR: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "무덤부름 소환사"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "부제 보스"
@@ -37412,6 +37817,9 @@ export const ko_KR: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "무덤고룡 코르줄"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "늙은 뻣센등뼈"
@@ -38252,6 +38660,16 @@ export const ko_KR: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "대구 대부",
+        "text": "대구 대부는 그저 물고기가 아니라네, {playerName}. 냉혈한 살인자지. 노인들은 놈이 늪지 배회자를 아침으로 먹는다고 맹세하고, 미어펜 과부거미조차 순전한 공포 때문에 딥펜 여울 근처에는 거미줄을 치지 않는다네. 놈이 그 물을 지배하지. 낚싯대를 들고 그 늙은 악마를 제 물가에서 끌어내 오게. 그러면 자네가 가족이 되었다고 인정하지.",
+        "completion": "축축한 성자들이시여... 대구 대부 그 자체로군. 저 수염 좀 보게. 펜브리지는 이 한 마리로 일 년 내내 이야깃거리를 삼을 걸세, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "대구 대부"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "모거의 흔적",
         "text": "북쪽 길을 떠나기 전에 이스트브룩에는 마지막 골칫거리, 모거가 남았습니다. 그 짐승은 아래 초원을 짓밟고 멧돼지를 미치게 합니다. 흔적 주변의 초원을 정리해 은신처를 찾아내십시오.",
@@ -38622,11 +39040,17 @@ export const ja_JP: EnTranslations = {
   },
   "wiki": {
     "title": "ゲームWiki & ガイド",
-    "desc": "レルムの秘密、クラスガイド、戦略を確認しましょう。"
+    "desc": "レルムの秘密、クラスガイド、戦略を確認しましょう。",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "ニュース & アップデート",
-    "desc": "最新のパッチノート、イベント、コミュニティの更新情報を確認しましょう。"
+    "desc": "最新のパッチノート、イベント、コミュニティの更新情報を確認しましょう。",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "デスクトップランチャーのダウンロード",
@@ -38644,7 +39068,17 @@ export const ja_JP: EnTranslations = {
     "offlineDesc": "ブラウザ上で即座にシングルプレイヤーの世界を起動します。保存は一切されず、小規模な対戦やテストに最適です。",
     "offlineAria": "オフラインでプレイ：即座にローカルシングルプレイヤーセッションを開始します",
     "tipTitle": "ヒント：",
-    "tipText": "よりスムーズな体験のために、本サイトでの広告ブロック拡張機能を無効にしてください。コミュニティの報告によると、一部のブロック機能がラグの原因になる場合があります。"
+    "tipText": "よりスムーズな体験のために、本サイトでの広告ブロック拡張機能を無効にしてください。コミュニティの報告によると、一部のブロック機能がラグの原因になる場合があります。",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "レルムに入る",
@@ -39157,6 +39591,7 @@ export const ja_JP: EnTranslations = {
     },
     "errors": {
       "stunned": "スタン中です！",
+      "silenced": "You are silenced!",
       "busy": "現在行動中です。",
       "abilityNotReady": "その能力はまだ準備できていません。",
       "notEnoughRage": "怒りが足りません！",
@@ -39280,7 +39715,9 @@ export const ja_JP: EnTranslations = {
       "petNamePlaceholder": "ペット名",
       "renameConfirm": "名前変更",
       "abandonBody": "{name}を永久に放棄しますか? 別のペットを手なずける必要があります。",
-      "abandonConfirm": "放棄"
+      "abandonConfirm": "放棄",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "ソーシャル",
@@ -40771,6 +41208,9 @@ export const ja_JP: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "イソレイの真珠脚甲"
+      },
+      "the_codfather": {
+        "name": "タラのゴッドファーザー"
       }
     },
     "mobs": {
@@ -40827,6 +41267,9 @@ export const ja_JP: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "グレイブコーラーの召喚師"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "助祭ヴォス"
@@ -40908,6 +41351,9 @@ export const ja_JP: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "墓ワームのコルズル"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "老ブリストルバック"
@@ -41748,6 +42194,16 @@ export const ja_JP: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "タラのゴッドファーザー",
+        "text": "タラのゴッドファーザーはただの魚ではない、{playerName}。冷血の殺し屋だ。古老たちは、奴がミレの徘徊者を朝飯に食うと誓っているし、ミレフェンのウィドウでさえ恐怖のあまりディープフェン浅瀬の近くには巣を張らぬ。あの水域は奴のものだ。釣り竿を手に取り、その老いた悪魔を奴の水域から引きずり出せ。そうすれば、お前もファミリーの一員と認めよう。",
+        "completion": "湿った聖人たちよ……タラのゴッドファーザーそのものだ。あのヒゲを見ろ。フェンブリッジはこの一匹の話で一年は食っていけるぞ、{playerName}。",
+        "objectives": {
+          "0": {
+            "label": "タラのゴッドファーザー"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "モガーの足跡",
         "text": "北への道を進む前に、イーストブルックには最後の厄介者がいます。モガーです。あの巨獣は低い草地を踏み荒らし、猪を狂わせています。足跡の周囲を片付け、巣を見つけられるようにしてください。",
@@ -42118,11 +42574,17 @@ export const pt_BR: EnTranslations = {
   },
   "wiki": {
     "title": "Wiki e guia do jogo",
-    "desc": "Descubra os segredos do reino, guias de classes e estratégias."
+    "desc": "Descubra os segredos do reino, guias de classes e estratégias.",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "Notícias e atualizações",
-    "desc": "Leia as últimas notas do patch, eventos e atualizações da comunidade."
+    "desc": "Leia as últimas notas do patch, eventos e atualizações da comunidade.",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "Baixar launcher para desktop",
@@ -42140,7 +42602,17 @@ export const pt_BR: EnTranslations = {
     "offlineDesc": "Mundo solo instantâneo no seu navegador. Nada é salvo: perfeito para uma luta rápida ou testes.",
     "offlineAria": "Jogar offline: inicie uma sessão local de um jogador instantânea",
     "tipTitle": "DICA:",
-    "tipText": "Para uma experiência mais suave, desative os bloqueadores de anúncios neste site. Relatos da comunidade indicam que alguns bloqueadores podem causar lag."
+    "tipText": "Para uma experiência mais suave, desative os bloqueadores de anúncios neste site. Relatos da comunidade indicam que alguns bloqueadores podem causar lag.",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "Entrar no reino",
@@ -42653,6 +43125,7 @@ export const pt_BR: EnTranslations = {
     },
     "errors": {
       "stunned": "Você está atordoado!",
+      "silenced": "You are silenced!",
       "busy": "Você está ocupado.",
       "abilityNotReady": "Essa habilidade ainda não está pronta.",
       "notEnoughRage": "Raiva insuficiente!",
@@ -42776,7 +43249,9 @@ export const pt_BR: EnTranslations = {
       "petNamePlaceholder": "Nome do mascote",
       "renameConfirm": "Renomear",
       "abandonBody": "Abandonar {name} permanentemente? Você precisará domar outro mascote.",
-      "abandonConfirm": "Abandonar"
+      "abandonConfirm": "Abandonar",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "Comunidade",
@@ -44267,6 +44742,9 @@ export const pt_BR: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "Grevas de Pérola de Ysolei"
+      },
+      "the_codfather": {
+        "name": "O Bacalhau-Padrinho"
       }
     },
     "mobs": {
@@ -44323,6 +44801,9 @@ export const pt_BR: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "Invocador Gravecaller"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "Diácono Voss"
@@ -44404,6 +44885,9 @@ export const pt_BR: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "Korzul o Gravewyrm"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "Bristleback ancião"
@@ -45244,6 +45728,16 @@ export const pt_BR: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "O Bacalhau-Padrinho",
+        "text": "O Bacalhau-Padrinho não é só um peixe, {playerName}, é um assassino de sangue frio. Os veteranos juram que ele come espreitadores do pântano no café da manhã, e nem as viúvas de Mirefen tecem suas teias perto dos Baixios de Deepfen de tanto terror. Ele manda nessas águas. Pegue uma vara de pesca, arranque esse velho demônio das águas dele e admitirei que você entrou para a família.",
+        "completion": "Pelos santos encharcados... O Bacalhau-Padrinho em pessoa. Veja esses bigodes. Fenbridge vai viver um ano inteiro de histórias com essa pescaria, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "O Bacalhau-Padrinho"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "A trilha de Mogger",
         "text": "Antes de pegar a estrada ao norte, Eastbrook tem um último espinho: Mogger. A fera pisoteia o prado baixo e enlouquece os javalis. Limpe o prado ao redor da trilha para descobrirmos onde ele se esconde.",
@@ -45614,11 +46108,17 @@ export const ru_RU: EnTranslations = {
   },
   "wiki": {
     "title": "Вики и руководство",
-    "desc": "Откройте секреты игрового мира, руководства по классам и стратегии."
+    "desc": "Откройте секреты игрового мира, руководства по классам и стратегии.",
+    "cta": "Browse the Wiki"
   },
   "news": {
     "title": "Новости и обновления",
-    "desc": "Читайте описание последних обновлений, информацию о событиях и новости сообщества."
+    "desc": "Читайте описание последних обновлений, информацию о событиях и новости сообщества.",
+    "loading": "Loading the latest updates…",
+    "error": "Couldn't load updates. Please try again later.",
+    "empty": "No updates yet — check back soon.",
+    "prerelease": "Pre-release",
+    "viewOnGithub": "View on GitHub"
   },
   "download": {
     "title": "Скачать загрузчик для ПК",
@@ -45636,7 +46136,17 @@ export const ru_RU: EnTranslations = {
     "offlineDesc": "Мгновенный одиночный мир прямо в браузере. Прогресс не сохраняется: идеально для быстрой драки или тестирования.",
     "offlineAria": "Играть вне сети: запуск мгновенного локального одиночного сеанса",
     "tipTitle": "СОВЕТ:",
-    "tipText": "Для максимально плавной игры отключите блокировщики рекламы на этом сайте. По отзывам сообщества, некоторые блокировщики могут вызывать задержки."
+    "tipText": "Для максимально плавной игры отключите блокировщики рекламы на этом сайте. По отзывам сообщества, некоторые блокировщики могут вызывать задержки.",
+    "serverOnline": "Online",
+    "serverOffline": "Offline",
+    "play": "Play",
+    "playAria": "Play World of ClaudeCraft",
+    "serverLabel": "Choose your realm",
+    "serverAria": "Select realm: Online or Offline",
+    "serverOfflineSub": "Instant local world",
+    "caLabel": "$WOC Contract Address",
+    "caCopyAria": "Copy contract address",
+    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
   },
   "auth": {
     "enterRealm": "Войти в игровой мир",
@@ -46149,6 +46659,7 @@ export const ru_RU: EnTranslations = {
     },
     "errors": {
       "stunned": "Вы оглушены!",
+      "silenced": "You are silenced!",
       "busy": "Вы заняты.",
       "abilityNotReady": "Эта способность еще не готова.",
       "notEnoughRage": "Недостаточно ярости!",
@@ -46272,7 +46783,9 @@ export const ru_RU: EnTranslations = {
       "petNamePlaceholder": "Имя питомца",
       "renameConfirm": "Переименовать",
       "abandonBody": "Навсегда оставить {name}? Вам придется приручить другого питомца.",
-      "abandonConfirm": "Оставить"
+      "abandonConfirm": "Оставить",
+      "noPetFood": "You have no food to feed your pet.",
+      "petEatsFoodOnly": "Your pet can only eat food."
     },
     "social": {
       "title": "Общение",
@@ -47763,6 +48276,9 @@ export const ru_RU: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "Жемчужные поножи Изолеи"
+      },
+      "the_codfather": {
+        "name": "Крестная треска"
       }
     },
     "mobs": {
@@ -47819,6 +48335,9 @@ export const ru_RU: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "Призыватель Могильного Зова"
+      },
+      "gravecaller_mender": {
+        "name": "Gravecaller Mender"
       },
       "deacon_voss": {
         "name": "Дьякон Восс"
@@ -47900,6 +48419,9 @@ export const ru_RU: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "Корзул Могильный Вирм"
+      },
+      "bog_bloat": {
+        "name": "Bog Bloat"
       },
       "elder_bristleback": {
         "name": "Старый Щетиноспин"
@@ -48740,6 +49262,16 @@ export const ru_RU: EnTranslations = {
           }
         }
       },
+      "q_the_codfather": {
+        "title": "Крестная треска",
+        "text": "Крестная треска не просто рыба, {playerName}, а хладнокровный убийца. Старики клянутся, что она ест болотных рыскунов на завтрак, и даже мирефенские вдовы от ужаса не плетут паутину у отмелей Дипфена. Она правит этими водами. Возьми удочку, вытащи этого старого дьявола из его вод, и я признаю, что ты вошел в семью.",
+        "completion": "Во имя промокших святых... Сама Крестная треска. Только взгляни на эти усы. Фенбридж будет целый год кормиться историями об этом улове, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Крестная треска"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "След Моггера",
         "text": "Прежде чем идти на северную дорогу, у Истврука осталась последняя заноза: Моггер. Зверь топчет нижний луг и сводит кабанов с ума. Очистите луг вокруг его следа, чтобы мы поняли, где он прячется.",
@@ -48971,19 +49503,283 @@ export const translations = {
 };
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "entities.mobs.bog_bloat.name",
+    "entities.mobs.gravecaller_mender.name",
+    "hud.errors.silenced",
+    "hud.pet.noPetFood",
+    "hud.pet.petEatsFoodOnly",
+    "mode.caCopyAria",
+    "mode.caLabel",
+    "mode.caNote",
+    "mode.play",
+    "mode.playAria",
+    "mode.serverAria",
+    "mode.serverLabel",
+    "mode.serverOffline",
+    "mode.serverOfflineSub",
+    "mode.serverOnline",
+    "news.empty",
+    "news.error",
+    "news.loading",
+    "news.prerelease",
+    "news.viewOnGithub",
+    "wiki.cta"
+  ],
+  "es_ES": [
+    "entities.mobs.bog_bloat.name",
+    "entities.mobs.gravecaller_mender.name",
+    "hud.errors.silenced",
+    "hud.pet.noPetFood",
+    "hud.pet.petEatsFoodOnly",
+    "mode.caCopyAria",
+    "mode.caLabel",
+    "mode.caNote",
+    "mode.play",
+    "mode.playAria",
+    "mode.serverAria",
+    "mode.serverLabel",
+    "mode.serverOffline",
+    "mode.serverOfflineSub",
+    "mode.serverOnline",
+    "news.empty",
+    "news.error",
+    "news.loading",
+    "news.prerelease",
+    "news.viewOnGithub",
+    "wiki.cta"
+  ],
+  "fr_FR": [
+    "entities.mobs.bog_bloat.name",
+    "entities.mobs.gravecaller_mender.name",
+    "hud.errors.silenced",
+    "hud.pet.noPetFood",
+    "hud.pet.petEatsFoodOnly",
+    "mode.caCopyAria",
+    "mode.caLabel",
+    "mode.caNote",
+    "mode.play",
+    "mode.playAria",
+    "mode.serverAria",
+    "mode.serverLabel",
+    "mode.serverOffline",
+    "mode.serverOfflineSub",
+    "mode.serverOnline",
+    "news.empty",
+    "news.error",
+    "news.loading",
+    "news.prerelease",
+    "news.viewOnGithub",
+    "wiki.cta"
+  ],
+  "fr_CA": [
+    "entities.mobs.bog_bloat.name",
+    "entities.mobs.gravecaller_mender.name",
+    "hud.errors.silenced",
+    "hud.pet.noPetFood",
+    "hud.pet.petEatsFoodOnly",
+    "mode.caCopyAria",
+    "mode.caLabel",
+    "mode.caNote",
+    "mode.play",
+    "mode.playAria",
+    "mode.serverAria",
+    "mode.serverLabel",
+    "mode.serverOffline",
+    "mode.serverOfflineSub",
+    "mode.serverOnline",
+    "news.empty",
+    "news.error",
+    "news.loading",
+    "news.prerelease",
+    "news.viewOnGithub",
+    "wiki.cta"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
-  "zh_CN": [],
-  "zh_TW": [],
-  "ko_KR": [],
-  "ja_JP": [],
-  "pt_BR": [],
-  "ru_RU": []
+  "it_IT": [
+    "entities.mobs.bog_bloat.name",
+    "entities.mobs.gravecaller_mender.name",
+    "hud.errors.silenced",
+    "hud.pet.noPetFood",
+    "hud.pet.petEatsFoodOnly",
+    "mode.caCopyAria",
+    "mode.caLabel",
+    "mode.caNote",
+    "mode.play",
+    "mode.playAria",
+    "mode.serverAria",
+    "mode.serverLabel",
+    "mode.serverOffline",
+    "mode.serverOfflineSub",
+    "mode.serverOnline",
+    "news.empty",
+    "news.error",
+    "news.loading",
+    "news.prerelease",
+    "news.viewOnGithub",
+    "wiki.cta"
+  ],
+  "de_DE": [
+    "entities.mobs.bog_bloat.name",
+    "entities.mobs.gravecaller_mender.name",
+    "hud.errors.silenced",
+    "hud.pet.noPetFood",
+    "hud.pet.petEatsFoodOnly",
+    "mode.caCopyAria",
+    "mode.caLabel",
+    "mode.caNote",
+    "mode.play",
+    "mode.playAria",
+    "mode.serverAria",
+    "mode.serverLabel",
+    "mode.serverOffline",
+    "mode.serverOfflineSub",
+    "mode.serverOnline",
+    "news.empty",
+    "news.error",
+    "news.loading",
+    "news.prerelease",
+    "news.viewOnGithub",
+    "wiki.cta"
+  ],
+  "zh_CN": [
+    "entities.mobs.bog_bloat.name",
+    "entities.mobs.gravecaller_mender.name",
+    "hud.errors.silenced",
+    "hud.pet.noPetFood",
+    "hud.pet.petEatsFoodOnly",
+    "mode.caCopyAria",
+    "mode.caLabel",
+    "mode.caNote",
+    "mode.play",
+    "mode.playAria",
+    "mode.serverAria",
+    "mode.serverLabel",
+    "mode.serverOffline",
+    "mode.serverOfflineSub",
+    "mode.serverOnline",
+    "news.empty",
+    "news.error",
+    "news.loading",
+    "news.prerelease",
+    "news.viewOnGithub",
+    "wiki.cta"
+  ],
+  "zh_TW": [
+    "entities.mobs.bog_bloat.name",
+    "entities.mobs.gravecaller_mender.name",
+    "hud.errors.silenced",
+    "hud.pet.noPetFood",
+    "hud.pet.petEatsFoodOnly",
+    "mode.caCopyAria",
+    "mode.caLabel",
+    "mode.caNote",
+    "mode.play",
+    "mode.playAria",
+    "mode.serverAria",
+    "mode.serverLabel",
+    "mode.serverOffline",
+    "mode.serverOfflineSub",
+    "mode.serverOnline",
+    "news.empty",
+    "news.error",
+    "news.loading",
+    "news.prerelease",
+    "news.viewOnGithub",
+    "wiki.cta"
+  ],
+  "ko_KR": [
+    "entities.mobs.bog_bloat.name",
+    "entities.mobs.gravecaller_mender.name",
+    "hud.errors.silenced",
+    "hud.pet.noPetFood",
+    "hud.pet.petEatsFoodOnly",
+    "mode.caCopyAria",
+    "mode.caLabel",
+    "mode.caNote",
+    "mode.play",
+    "mode.playAria",
+    "mode.serverAria",
+    "mode.serverLabel",
+    "mode.serverOffline",
+    "mode.serverOfflineSub",
+    "mode.serverOnline",
+    "news.empty",
+    "news.error",
+    "news.loading",
+    "news.prerelease",
+    "news.viewOnGithub",
+    "wiki.cta"
+  ],
+  "ja_JP": [
+    "entities.mobs.bog_bloat.name",
+    "entities.mobs.gravecaller_mender.name",
+    "hud.errors.silenced",
+    "hud.pet.noPetFood",
+    "hud.pet.petEatsFoodOnly",
+    "mode.caCopyAria",
+    "mode.caLabel",
+    "mode.caNote",
+    "mode.play",
+    "mode.playAria",
+    "mode.serverAria",
+    "mode.serverLabel",
+    "mode.serverOffline",
+    "mode.serverOfflineSub",
+    "mode.serverOnline",
+    "news.empty",
+    "news.error",
+    "news.loading",
+    "news.prerelease",
+    "news.viewOnGithub",
+    "wiki.cta"
+  ],
+  "pt_BR": [
+    "entities.mobs.bog_bloat.name",
+    "entities.mobs.gravecaller_mender.name",
+    "hud.errors.silenced",
+    "hud.pet.noPetFood",
+    "hud.pet.petEatsFoodOnly",
+    "mode.caCopyAria",
+    "mode.caLabel",
+    "mode.caNote",
+    "mode.play",
+    "mode.playAria",
+    "mode.serverAria",
+    "mode.serverLabel",
+    "mode.serverOffline",
+    "mode.serverOfflineSub",
+    "mode.serverOnline",
+    "news.empty",
+    "news.error",
+    "news.loading",
+    "news.prerelease",
+    "news.viewOnGithub",
+    "wiki.cta"
+  ],
+  "ru_RU": [
+    "entities.mobs.bog_bloat.name",
+    "entities.mobs.gravecaller_mender.name",
+    "hud.errors.silenced",
+    "hud.pet.noPetFood",
+    "hud.pet.petEatsFoodOnly",
+    "mode.caCopyAria",
+    "mode.caLabel",
+    "mode.caNote",
+    "mode.play",
+    "mode.playAria",
+    "mode.serverAria",
+    "mode.serverLabel",
+    "mode.serverOffline",
+    "mode.serverOfflineSub",
+    "mode.serverOnline",
+    "news.empty",
+    "news.error",
+    "news.loading",
+    "news.prerelease",
+    "news.viewOnGithub",
+    "wiki.cta"
+  ]
 };
 
 export const en_XA: EnTranslations = {
@@ -49143,11 +49939,17 @@ export const en_XA: EnTranslations = {
   },
   "wiki": {
     "title": "[Ĝáɱé Ŵíķí & Ĝúíðé]",
-    "desc": "[Ðíšçóʋéŕ ţĥé šéçŕéţš óƒ ţĥé ŕéáļɱ, çļášš ĝúíðéš, áñð šţŕáţéĝíéš.]"
+    "desc": "[Ðíšçóʋéŕ ţĥé šéçŕéţš óƒ ţĥé ŕéáļɱ, çļášš ĝúíðéš, áñð šţŕáţéĝíéš.]",
+    "cta": "[Ɓŕóŵšé ţĥé Ŵíķí]"
   },
   "news": {
     "title": "[Ñéŵš & Úþðáţéš]",
-    "desc": "[Ŕéáð ţĥé ļáţéšţ þáţçĥ ñóţéš, éʋéñţš, áñð çóɱɱúñíţý úþðáţéš.]"
+    "desc": "[Ŕéáð ţĥé ļáţéšţ þáţçĥ ñóţéš, éʋéñţš, áñð çóɱɱúñíţý úþðáţéš.]",
+    "loading": "[Ļóáðíñĝ ţĥé ļáţéšţ úþðáţéš…]",
+    "error": "[Çóúļðñ'ţ ļóáð úþðáţéš. Þļéášé ţŕý áĝáíñ ļáţéŕ.]",
+    "empty": "[Ñó úþðáţéš ýéţ — çĥéçķ ƀáçķ šóóñ.]",
+    "prerelease": "[Þŕé-ŕéļéášé]",
+    "viewOnGithub": "[Ʋíéŵ óñ ĜíţĤúƀ]"
   },
   "download": {
     "title": "[Ðóŵñļóáð Ðéšķţóþ Ļáúñçĥéŕ]",
@@ -49165,7 +49967,17 @@ export const en_XA: EnTranslations = {
     "offlineDesc": "[Íñšţáñţ šíñĝļé-þļáýéŕ ŵóŕļð íñ ýóúŕ ƀŕóŵšéŕ. Ñóţĥíñĝ íš šáʋéð: þéŕƒéçţ ƒóŕ á ɋúíçķ ƀŕáŵļ óŕ ţéšţíñĝ.]",
     "offlineAria": "[Þļáý Óƒƒļíñé: šţáŕţ áñ íñšţáñţ ļóçáļ šíñĝļé-þļáýéŕ šéššíóñ]",
     "tipTitle": "[ŢÍÞ:]",
-    "tipText": "[Ƒóŕ ţĥé šɱóóţĥéšţ éẋþéŕíéñçé, ţúŕñ óƒƒ áð ƀļóçķéŕ éẋţéñšíóñš óñ ţĥíš šíţé. Çóɱɱúñíţý ŕéþóŕţš ƒóúñð šóɱé ƀļóçķéŕš çáñ çáúšé ļáĝ.]"
+    "tipText": "[Ƒóŕ ţĥé šɱóóţĥéšţ éẋþéŕíéñçé, ţúŕñ óƒƒ áð ƀļóçķéŕ éẋţéñšíóñš óñ ţĥíš šíţé. Çóɱɱúñíţý ŕéþóŕţš ƒóúñð šóɱé ƀļóçķéŕš çáñ çáúšé ļáĝ.]",
+    "serverOnline": "[Óñļíñé]",
+    "serverOffline": "[Óƒƒļíñé]",
+    "play": "[Þļáý]",
+    "playAria": "[Þļáý Ŵóŕļð óƒ ÇļáúðéÇŕáƒţ]",
+    "serverLabel": "[Çĥóóšé ýóúŕ ŕéáļɱ]",
+    "serverAria": "[Šéļéçţ ŕéáļɱ: Óñļíñé óŕ Óƒƒļíñé]",
+    "serverOfflineSub": "[Íñšţáñţ ļóçáļ ŵóŕļð]",
+    "caLabel": "[$ŴÓÇ Çóñţŕáçţ Áððŕéšš]",
+    "caCopyAria": "[Çóþý çóñţŕáçţ áððŕéšš]",
+    "caNote": "[ŴÓÇ íš óúŕ çóɱɱúñíţý ţóķéñ. Íţ íš ñóţ ñééðéð ţó þļáý. Ĵóíñ Ðíšçóŕð ţó ðíšçúšš ţĥé ŴÓÇ úţíļíţý áñð ƒļýŵĥééļ.]"
   },
   "auth": {
     "enterRealm": "[Éñţéŕ ţĥé Ŕéáļɱ]",
@@ -49678,6 +50490,7 @@ export const en_XA: EnTranslations = {
     },
     "errors": {
       "stunned": "[Ýóú áŕé šţúññéð!]",
+      "silenced": "[Ýóú áŕé šíļéñçéð!]",
       "busy": "[Ýóú áŕé ƀúšý.]",
       "abilityNotReady": "[Ţĥáţ áƀíļíţý íš ñóţ ŕéáðý ýéţ.]",
       "notEnoughRage": "[Ñóţ éñóúĝĥ ŕáĝé!]",
@@ -49801,7 +50614,9 @@ export const en_XA: EnTranslations = {
       "petNamePlaceholder": "[Þéţ ñáɱé]",
       "renameConfirm": "[Ŕéñáɱé]",
       "abandonBody": "[Þéŕɱáñéñţļý áƀáñðóñ {name}? Ýóú ŵíļļ ñééð ţó ţáɱé áñóţĥéŕ þéţ.]",
-      "abandonConfirm": "[Áƀáñðóñ]"
+      "abandonConfirm": "[Áƀáñðóñ]",
+      "noPetFood": "[Ýóú ĥáʋé ñó ƒóóð ţó ƒééð ýóúŕ þéţ.]",
+      "petEatsFoodOnly": "[Ýóúŕ þéţ çáñ óñļý éáţ ƒóóð.]"
     },
     "social": {
       "title": "[Šóçíáļ]",
@@ -51292,6 +52107,9 @@ export const en_XA: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "[Ýšóļéí'š Þéáŕļ Ĝŕéáʋéš]"
+      },
+      "the_codfather": {
+        "name": "[Ţĥé Çóðƒáţĥéŕ]"
       }
     },
     "mobs": {
@@ -51348,6 +52166,9 @@ export const en_XA: EnTranslations = {
       },
       "gravecaller_summoner": {
         "name": "[Ĝŕáʋéçáļļéŕ Šúɱɱóñéŕ]"
+      },
+      "gravecaller_mender": {
+        "name": "[Ĝŕáʋéçáļļéŕ Ɱéñðéŕ]"
       },
       "deacon_voss": {
         "name": "[Ðéáçóñ Ʋóšš]"
@@ -51429,6 +52250,9 @@ export const en_XA: EnTranslations = {
       },
       "korzul_the_gravewyrm": {
         "name": "[Ķóŕžúļ ţĥé Ĝŕáʋéŵýŕɱ]"
+      },
+      "bog_bloat": {
+        "name": "[Ɓóĝ Ɓļóáţ]"
       },
       "elder_bristleback": {
         "name": "[Éļðéŕ Ɓŕíšţļéƀáçķ]"
@@ -52266,6 +53090,16 @@ export const en_XA: EnTranslations = {
         "objectives": {
           "0": {
             "label": "[Ķóŕžúļ ţĥé Ĝŕáʋéŵýŕɱ šļáíñ]"
+          }
+        }
+      },
+      "q_the_codfather": {
+        "title": "[Ţĥé Çóðƒáţĥéŕ]",
+        "text": "[Ţĥé Çóðƒáţĥéŕ íšñ'ţ ĵúšţ á ƒíšĥ, {playerName}, ĥé'š á çóļð-ƀļóóðéð ķíļļéŕ. Óļð-ţíɱéŕš šŵéáŕ ĥé éáţš Ɱíŕé Þŕóŵļéŕš ƒóŕ ƀŕéáķƒášţ, áñð éʋéñ ţĥé Ɱíŕéƒéñ Ŵíðóŵš ŵóñ'ţ šþíñ ţĥéíŕ ŵéƀš ñéáŕ ţĥé Ðééþƒéñ Šĥáļļóŵš óúţ óƒ šĥééŕ ţéŕŕóŕ. Ĥé ŕúļéš ţĥóšé ŵáţéŕš. Ĝŕáƀ á ƒíšĥíñĝ þóļé, ðŕáĝ ţĥáţ óļð ðéʋíļ óúţ óƒ ĥíš ŵáţéŕš, áñð Í ŵíļļ áðɱíţ ýóú ĥáʋé ĵóíñéð ţĥé ƒáɱíļý.]",
+        "completion": "[Ɓý ţĥé ðáɱþ šáíñţš... Ţĥé Çóðƒáţĥéŕ ĥíɱšéļƒ. Ļóóķ áţ ţĥóšé ŵĥíšķéŕš. Ƒéñƀŕíðĝé ŵíļļ éáţ šţóŕíéš óƒƒ ţĥíš çáţçĥ ƒóŕ á ýéáŕ, {playerName}.]",
+        "objectives": {
+          "0": {
+            "label": "[Ţĥé Çóðƒáţĥéŕ]"
           }
         }
       },

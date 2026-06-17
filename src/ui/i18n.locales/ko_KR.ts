@@ -1939,4 +1939,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   "worldContent.dungeonExitName": "{name} 출구",
   "worldContent.dungeonPartyWarning": "{name}은 {count}명의 완전한 파티를 위해 마련된 곳입니다. 조심해서 나아가십시오.",
   "worldContent.dungeonInstanceBusy": "{name}의 모든 인스턴스가 사용 중입니다. 잠시 후 다시 시도하십시오.",
+  "entities.items.the_codfather.name": "대구 대부",
+  "entities.quests.q_the_codfather.title": "대구 대부",
+  "entities.quests.q_the_codfather.text": "대구 대부는 그저 물고기가 아니라네, {playerName}. 냉혈한 살인자지. 노인들은 놈이 늪지 배회자를 아침으로 먹는다고 맹세하고, 미어펜 과부거미조차 순전한 공포 때문에 딥펜 여울 근처에는 거미줄을 치지 않는다네. 놈이 그 물을 지배하지. 낚싯대를 들고 그 늙은 악마를 제 물가에서 끌어내 오게. 그러면 자네가 가족이 되었다고 인정하지.",
+  "entities.quests.q_the_codfather.completion": "축축한 성자들이시여... 대구 대부 그 자체로군. 저 수염 좀 보게. 펜브리지는 이 한 마리로 일 년 내내 이야깃거리를 삼을 걸세, {playerName}.",
+  "entities.quests.q_the_codfather.objectives.0.label": "대구 대부",
 };

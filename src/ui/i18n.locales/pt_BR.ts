@@ -1939,4 +1939,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   "worldContent.dungeonExitName": "Saída de {name}",
   "worldContent.dungeonPartyWarning": "{name} foi feito para um grupo completo de {count}. Avance com cuidado.",
   "worldContent.dungeonInstanceBusy": "Todas as instâncias de {name} estão ocupadas. Tente novamente em breve.",
+  "entities.items.the_codfather.name": "O Bacalhau-Padrinho",
+  "entities.quests.q_the_codfather.title": "O Bacalhau-Padrinho",
+  "entities.quests.q_the_codfather.text": "O Bacalhau-Padrinho não é só um peixe, {playerName}, é um assassino de sangue frio. Os veteranos juram que ele come espreitadores do pântano no café da manhã, e nem as viúvas de Mirefen tecem suas teias perto dos Baixios de Deepfen de tanto terror. Ele manda nessas águas. Pegue uma vara de pesca, arranque esse velho demônio das águas dele e admitirei que você entrou para a família.",
+  "entities.quests.q_the_codfather.completion": "Pelos santos encharcados... O Bacalhau-Padrinho em pessoa. Veja esses bigodes. Fenbridge vai viver um ano inteiro de histórias com essa pescaria, {playerName}.",
+  "entities.quests.q_the_codfather.objectives.0.label": "O Bacalhau-Padrinho",
 };

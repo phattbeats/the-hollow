@@ -1939,4 +1939,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "worldContent.dungeonExitName": "{name}の出口",
   "worldContent.dungeonPartyWarning": "{name}は{count}人のフルパーティ向けです。慎重に進んでください。",
   "worldContent.dungeonInstanceBusy": "{name}のインスタンスはすべて使用中です。少し待ってから再試行してください。",
+  "entities.items.the_codfather.name": "タラのゴッドファーザー",
+  "entities.quests.q_the_codfather.title": "タラのゴッドファーザー",
+  "entities.quests.q_the_codfather.text": "タラのゴッドファーザーはただの魚ではない、{playerName}。冷血の殺し屋だ。古老たちは、奴がミレの徘徊者を朝飯に食うと誓っているし、ミレフェンのウィドウでさえ恐怖のあまりディープフェン浅瀬の近くには巣を張らぬ。あの水域は奴のものだ。釣り竿を手に取り、その老いた悪魔を奴の水域から引きずり出せ。そうすれば、お前もファミリーの一員と認めよう。",
+  "entities.quests.q_the_codfather.completion": "湿った聖人たちよ……タラのゴッドファーザーそのものだ。あのヒゲを見ろ。フェンブリッジはこの一匹の話で一年は食っていけるぞ、{playerName}。",
+  "entities.quests.q_the_codfather.objectives.0.label": "タラのゴッドファーザー",
 };

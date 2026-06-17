@@ -1939,4 +1939,9 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   "worldContent.dungeonExitName": "Uscita da {name}",
   "worldContent.dungeonPartyWarning": "{name} è pensato per un gruppo completo di {count}. Procedi con cautela.",
   "worldContent.dungeonInstanceBusy": "Tutte le istanze di {name} sono occupate. Riprova tra poco.",
+  "entities.items.the_codfather.name": "Il Pescadrino",
+  "entities.quests.q_the_codfather.title": "Il Pescadrino",
+  "entities.quests.q_the_codfather.text": "Il Pescadrino non è solo un pesce, {playerName}, è un assassino a sangue freddo. I vecchi giurano che mangi predatori del pantano a colazione, e persino le vedove di Mirefen non tessono le loro ragnatele vicino ai bassifondi di Deepfen per puro terrore. Governa quelle acque. Prendi una canna da pesca, trascina quel vecchio demonio fuori dalle sue acque e ammetterò che sei entrato nella famiglia.",
+  "entities.quests.q_the_codfather.completion": "Per i santi fradici... Il Pescadrino in persona. Guarda quei baffi. Fenbridge vivrà per un anno raccontando storie su questa cattura, {playerName}.",
+  "entities.quests.q_the_codfather.objectives.0.label": "Il Pescadrino",
 };

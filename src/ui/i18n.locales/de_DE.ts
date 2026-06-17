@@ -1939,4 +1939,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   "worldContent.dungeonExitName": "Ausgang von {name}",
   "worldContent.dungeonPartyWarning": "{name} ist für eine vollständige Gruppe von {count} gedacht. Geh vorsichtig vor.",
   "worldContent.dungeonInstanceBusy": "Alle Instanzen von {name} sind belegt. Versuch es bald erneut.",
+  "entities.items.the_codfather.name": "Der Kabeljaupate",
+  "entities.quests.q_the_codfather.title": "Der Kabeljaupate",
+  "entities.quests.q_the_codfather.text": "Der Kabeljaupate ist nicht nur ein Fisch, {playerName}, er ist ein kaltblütiger Mörder. Die Alten schwören, er frisst Moorpirscher zum Frühstück, und selbst die Mirefen-Witwen spinnen aus blanker Furcht keine Netze nahe den Deepfen-Untiefen. Er herrscht über diese Wasser. Schnapp dir eine Angel, zieh diesen alten Teufel aus seinen Gewässern, und ich gebe zu, dass du zur Familie gehörst.",
+  "entities.quests.q_the_codfather.completion": "Bei den klammen Heiligen... Der Kabeljaupate höchstpersönlich. Sieh dir diese Barteln an. Fenbridge wird ein Jahr lang Geschichten von diesem Fang erzählen, {playerName}.",
+  "entities.quests.q_the_codfather.objectives.0.label": "Der Kabeljaupate",
 };
