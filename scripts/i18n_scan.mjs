@@ -78,6 +78,8 @@ function cognateReason(scope, locale, key) {
   if (key === 'detail.lengthHours') return "Numeric duration format ('{count} h') is identical across locales.";
   if (key === 'app.title') return 'Admin brand title is not translated.';
   if (key === 'class.paladin') return "'Paladin' is the canonical class name in this locale (cognate).";
+  if (key === 'chatMod.status') return "'Status' is the accepted term in this locale and is identical to English (matches detail.status).";
+  if (key === 'chatFilter.escalationTitle') return "'Escalation' is a borrowed term already used across this locale's admin strings.";
   return 'Accepted cognate or borrowed term that is legitimately identical to English.';
 }
 

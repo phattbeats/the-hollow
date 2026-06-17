@@ -27,9 +27,9 @@
   "counts": {
     "keys": 2345,
     "rows": 30485,
-    "translated": 30442,
+    "translated": 30439,
     "pending": 0,
-    "blocked": 43,
+    "blocked": 46,
     "blockedSource": 106
   },
   "keys": {
@@ -158042,9 +158042,8 @@
           "by": "human"
         },
         "it_IT": {
-          "state": "translated",
-          "srcHash": "21c1e649b81159ed",
-          "by": "human"
+          "state": "blocked",
+          "reason": "'Escalation' is a borrowed term already used across this locale's admin strings."
         },
         "de_DE": {
           "state": "translated",
@@ -159489,9 +159488,8 @@
           "by": "human"
         },
         "de_DE": {
-          "state": "translated",
-          "srcHash": "86d4dc5571791ce0",
-          "by": "human"
+          "state": "blocked",
+          "reason": "'Status' is the accepted term in this locale and is identical to English (matches detail.status)."
         },
         "zh_CN": {
           "state": "translated",
@@ -159514,9 +159512,8 @@
           "by": "human"
         },
         "pt_BR": {
-          "state": "translated",
-          "srcHash": "86d4dc5571791ce0",
-          "by": "human"
+          "state": "blocked",
+          "reason": "'Status' is the accepted term in this locale and is identical to English (matches detail.status)."
         },
         "ru_RU": {
           "state": "translated",
