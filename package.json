@@ -14,6 +14,7 @@
     "i18n:build": "node scripts/i18n_build.mjs",
     "i18n:scan": "node scripts/i18n_scan.mjs",
     "i18n:hash": "node scripts/i18n_resolved_hash.mjs",
+    "i18n:worklist": "node scripts/i18n_fill_worklist.mjs",
     "perf:tour": "node scripts/perf_tour.mjs",
     "feel:smoke": "node scripts/feel_smoke.mjs",
     "asset:budget": "node scripts/asset_budget.mjs",
