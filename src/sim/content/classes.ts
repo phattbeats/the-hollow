@@ -55,7 +55,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
     startWeapon: 'gnarled_staff',
     startChest: 'apprentice_robe',
     ranged: { min: 3, max: 6, speed: 1.8, maxRange: 30, minRange: 0, wand: true, school: 'arcane' },
-    abilities: ['fireball', 'frost_armor', 'arcane_intellect', 'frostbolt', 'conjure_water', 'fire_blast', 'arcane_missiles', 'polymorph', 'frost_nova', 'arcane_explosion', 'scorch', 'ice_barrier'],
+    abilities: ['fireball', 'frost_armor', 'arcane_intellect', 'frostbolt', 'conjure_water', 'conjure_food', 'fire_blast', 'arcane_missiles', 'polymorph', 'frost_nova', 'arcane_explosion', 'scorch', 'ice_barrier'],
     color: 0x69ccf0,
   },
   rogue: {
@@ -381,6 +381,17 @@ export const ABILITIES: Record<string, AbilityDef> = {
       { rank: 3, level: 16, cost: 110, effects: [] },
     ],
     description: 'Conjures 2 bottles of water, restoring mana when drunk. Higher ranks conjure purer water.',
+  },
+  conjure_food: {
+    id: 'conjure_food', name: 'Conjure Food', class: 'mage', learnLevel: 6,
+    cost: 45, castTime: 3, cooldown: 0, range: 0, school: 'arcane',
+    requiresTarget: false,
+    effects: [], // special-cased: creates conjured_bread{rank} in bags
+    ranks: [
+      { rank: 2, level: 12, cost: 75, effects: [] },
+      { rank: 3, level: 18, cost: 115, effects: [] },
+    ],
+    description: 'Conjures 2 servings of bread, restoring health when eaten. Higher ranks conjure heartier fare.',
   },
   fire_blast: {
     id: 'fire_blast', name: 'Fire Blast', class: 'mage', learnLevel: 6,
