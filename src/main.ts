@@ -669,6 +669,10 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       document.body.classList.toggle('mobile-left-handed', v);
       return;
     }
+    if (key === 'touchInvertLook') {
+      input.setTouchInvertLook(settings.set('touchInvertLook', !!value));
+      return;
+    }
     if (key === 'filterProfanity') {
       settings.set('filterProfanity', !!value);
       return;
