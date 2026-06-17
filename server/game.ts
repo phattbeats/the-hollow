@@ -50,6 +50,7 @@ const CHAT_RATE_ERROR_COOLDOWN_SECONDS = 4;
 const CHAT_COOLDOWN_SECONDS = 20;
 const CHAT_RATE_VIOLATIONS_FOR_COOLDOWN = 3;
 const WHO_RESULT_LIMIT = 50;
+const MAX_ACTIVE_SESSIONS_PER_ACCOUNT = 2;
 const RESTART_COUNTDOWN_TOTAL_SECONDS = 600;
 const RESTART_COUNTDOWN_STEPS = [
   { atSeconds: 0, text: 'Server restart in 10 minutes.' },
@@ -520,12 +521,16 @@ export class GameServer {
     meta: RequestMetadata & Partial<AccountChatMuteStatus> & { chatStrikes?: number } = {},
   ): ClientSession | { error: string } {
     if (this.sessionsByCharacterId.has(characterId)) return { error: 'character already in world' };
-    // Anti-bot: only ONE character per account may be in the world at a time. An account can
-    // still own up to 10 characters (creation is unaffected) — this only caps *simultaneous*
-    // online sessions, which is what bot/multibox farms abuse. GMs are exempt for supervision.
+    // Anti-bot: cap simultaneous online characters per account. Accounts can
+    // still own up to 10 characters; this only limits live sessions. GMs are
+    // exempt for supervision.
     if (!isGm) {
+      let activeForAccount = 0;
       for (const s of this.clients.values()) {
-        if (s.accountId === accountId) return { error: 'another character on this account is already in the world' };
+        if (s.accountId === accountId) activeForAccount++;
+      }
+      if (activeForAccount >= MAX_ACTIVE_SESSIONS_PER_ACCOUNT) {
+        return { error: 'too many characters on this account are already in the world' };
       }
     }
     const pid = this.sim.addPlayer(cls, name, { state: state ?? undefined });
