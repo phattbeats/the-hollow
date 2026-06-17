@@ -4,13 +4,13 @@ const MOB_IDS = [
   'forest_wolf', 'old_greyjaw', 'wild_boar', 'webwood_spider', 'mudfin_murloc', 'tunnel_rat',
   'vale_bandit', 'restless_bones', 'gorrak', 'mire_prowler', 'deepfen_murloc', 'mire_widow',
   'mirefen_broodmother', 'drowned_dead', 'fen_troll', 'grubjaw', 'gravecaller_cultist',
-  'gravecaller_summoner', 'deacon_voss', 'ridge_stalker', 'deeprock_kobold', 'thornpeak_ogre',
+  'gravecaller_summoner', 'gravecaller_mender', 'deacon_voss', 'ridge_stalker', 'deeprock_kobold', 'thornpeak_ogre',
   'ogre_crusher', 'warlord_drogmar', 'stormcrag_elemental', 'shardlord_kazzix',
   'wyrmcult_zealot', 'wyrmcult_necromancer', 'boneclad_revenant', 'crypt_shambler',
   'hollow_acolyte', 'bonechill_widow', 'sexton_marrow', 'morthen', 'bastion_revenant',
   'tidebound_acolyte', 'drowned_thrall', 'knight_commander_olen', 'vael_the_mistcaller',
   'sanctum_boneguard', 'sanctum_drakonid', 'raised_bonewalker', 'korgath_the_bound',
-  'grand_necromancer_velkhar', 'korzul_the_gravewyrm',
+  'grand_necromancer_velkhar', 'korzul_the_gravewyrm', 'bog_bloat',
 ] as const;
 
 const NPC_IDS = [
@@ -66,7 +66,7 @@ type ZoneTranslations = Record<ZoneId, { name: string; welcome: string; pois: Re
 type DungeonTranslations = Record<DungeonId, { name: string; enterText: string; leaveText: string }>;
 type ObjectiveItemTranslations = Record<ObjectiveItemId, string>;
 
-type Phase9Translations = {
+type WorldEntityTranslations = {
   worldContent: {
     corpseName: string;
     dungeonExitName: string;
@@ -179,7 +179,7 @@ function normalizeSourceText(text: string): string {
 function orderedValues<T>(ids: readonly string[], source: Record<string, T>): T[] {
   return ids.map((id) => {
     const value = source[id];
-    if (!value) throw new Error(`Missing Phase 9 source entry for ${id}`);
+    if (!value) throw new Error(`Missing world entity source entry for ${id}`);
     return value;
   });
 }
@@ -281,7 +281,7 @@ function makeDungeonTranslations(rows: readonly (readonly [string, string, strin
   return dungeons;
 }
 
-function makeEnglishPhase9(): Phase9Translations {
+function makeEnglishWorldEntities(): WorldEntityTranslations {
   const mobs = {} as MobTranslations;
   orderedValues(MOB_IDS, MOBS).forEach((mob) => { mobs[mob.id as MobId] = { name: mob.name }; });
 
@@ -339,7 +339,7 @@ function makeEnglishPhase9(): Phase9Translations {
   };
 }
 
-function makeLocalePhase9(data: LocaleData, text: LocaleText, narratives: QuestNarrativeTranslations): Phase9Translations {
+function makeLocaleWorldEntities(data: LocaleData, text: LocaleText, narratives: QuestNarrativeTranslations): WorldEntityTranslations {
   const mobs = makeMobTranslations(data.mobs);
   const npcs = makeNpcTranslations(data.npcRows);
   const objectiveItems = makeObjectiveItems(data.objectiveItems);
@@ -1134,12 +1134,13 @@ const esData: LocaleData = {
   mobs: [
     'Lobo del bosque', 'Viejo Greyjaw', 'Jabalí salvaje', 'Acechador de Webwood', 'Merodeador Aletabarro', 'Excavador Rata de Túnel',
     'Bandido del Valle', 'Huesos inquietos', 'Gorrak el Despiadado', 'Merodeador del lodazal', 'Chasqueador de Deepfen', 'Viuda de Mirefen',
-    'La Madre de la nidada', 'Muerto ahogado', 'Trol de Mirefen', 'Grubjaw el Glotón', 'Cultista Gravecaller', 'Invocador Gravecaller',
+    'La Madre de la nidada', 'Muerto ahogado', 'Trol de Mirefen', 'Grubjaw el Glotón', 'Cultista Gravecaller', 'Invocador Gravecaller', 'Sanador Gravecaller',
     'Diácono Voss', 'Acechador de la cresta', 'Tunelador de Deep Rock', 'Ogro de Thornpeak', 'Triturador de Thornpeak', 'Señor de la guerra Drogmar',
     'Elemental de Stormcrag', 'Señor de fragmentos Kazzix', 'Fanático del Culto del Wyrm', 'Nigromante del Culto del Wyrm', 'Aparecido de hueso',
     'Tambaleante de la Cripta', 'Acólito del Hueco', 'Viuda Huesofrío', 'Sacristán Marrow', 'Morthen el Gravecaller', 'Aparecido del Bastión',
     'Acólito atado a la marea', 'Siervo ahogado', 'Caballero comandante Olen', 'Vael el Mistcaller', 'Guardahuesos del Santuario', 'Dracónido del Santuario',
     'Caminahuesos alzado', 'Korgath el Encadenado', 'Gran nigromante Velkhar', 'Korzul el Gravewyrm',
+    'Hinchazón del Pantano',
   ],
   npcRows: [
     ['El Mercader', 'Guardián del Mercado Mundial', 'Bienvenido al Mercado Mundial, {className}. Compra a aventureros de cada rincón del reino o vende tus propias mercancías.'],
@@ -1202,12 +1203,13 @@ const frData: LocaleData = {
   mobs: [
     'Loup des bois', 'Vieux Greyjaw', 'Sanglier sauvage', 'Rôdeur de Webwood', 'Rôdeur Aileron-de-boue', 'Terrassier Rat des tunnels',
     'Bandit du Val', 'Ossements agités', "Gorrak l'Impitoyable", 'Rôdeur du bourbier', 'Happeur de Deepfen', 'Veuve de Mirefen',
-    'La Mère des couvées', 'Mort noyé', 'Troll de Mirefen', 'Grubjaw le Glouton', 'Cultiste Gravecaller', 'Invocateur Gravecaller',
+    'La Mère des couvées', 'Mort noyé', 'Troll de Mirefen', 'Grubjaw le Glouton', 'Cultiste Gravecaller', 'Invocateur Gravecaller', 'Guérisseur Gravecaller',
     'Diacre Voss', 'Traqueur de crête', 'Tunnelier de Deeprock', 'Ogre de Thornpeak', 'Broyeur de Thornpeak', 'Seigneur de guerre Drogmar',
     'Élémentaire de Stormcrag', 'Seigneur des éclats Kazzix', 'Zélote du Culte du Wyrm', 'Nécromancien du Culte du Wyrm', "Revenant caparaçonné d'os",
     'Traînard de la crypte', 'Acolyte du Creux', 'Veuve Frissos', 'Sacristain Marrow', 'Morthen le Gravecaller', 'Revenant du Bastion',
     'Acolyte lié aux marées', 'Serviteur noyé', 'Chevalier-commandant Olen', 'Vael le Mistcaller', 'Garde-os du Sanctuaire', 'Drakonide du Sanctuaire',
     'Marche-os relevé', "Korgath l'Enchaîné", 'Grand nécromancien Velkhar', 'Korzul le Gravewyrm',
+    'Baudruche des marais',
   ],
   npcRows: [
     ['Le Marchand', 'Gardien du Marché mondial', 'Bienvenue au Marché mondial, {className}. Achetez aux aventuriers du royaume ou proposez vos propres marchandises.'],
@@ -1269,12 +1271,13 @@ const deData: LocaleData = {
   mobs: [
     'Waldwolf', 'Alter Greyjaw', 'Wilder Eber', 'Webwood-Lauerer', 'Schlammflossen-Schleicher', 'Tunnelratten-Gräber',
     'Talbandit', 'Ruhelose Knochen', 'Gorrak der Gnadenlose', 'Moorpirscher', 'Deepfen-Schnapper', 'Mirefen-Witwe',
-    'Die Brutmutter', 'Ertrunkener Toter', 'Mirefen-Troll', 'Grubjaw der Vielfraß', 'Gravecaller-Kultist', 'Gravecaller-Beschwörer',
+    'Die Brutmutter', 'Ertrunkener Toter', 'Mirefen-Troll', 'Grubjaw der Vielfraß', 'Gravecaller-Kultist', 'Gravecaller-Beschwörer', 'Gravecaller-Heiler',
     'Diakon Voss', 'Gratpirscher', 'Deeprock-Tunnelgräber', 'Thornpeak-Oger', 'Thornpeak-Zermalmer', 'Kriegsherr Drogmar',
     'Stormcrag-Elementar', 'Splitterlord Kazzix', 'Wyrmkult-Eiferer', 'Wyrmkult-Nekromant', 'Knochengepanzerter Wiedergänger',
     'Gruftschlurfer', 'Akolyth der Höhlung', 'Knochenkälte-Witwe', 'Küster Marrow', 'Morthen der Gravecaller', 'Bastion-Wiedergänger',
     'Gezeitengebundener Akolyth', 'Ertrunkener Knecht', 'Ritterkommandant Olen', 'Vael der Mistcaller', 'Heiligtums-Knochenwache',
     'Heiligtumsdrakonid', 'Erhobener Knochenläufer', 'Korgath der Gebundene', 'Großnekromant Velkhar', 'Korzul der Gravewyrm',
+    'Sumpfbläher',
   ],
   npcRows: [
     ['Der Händler', 'Hüter des Weltmarkts', 'Willkommen auf dem Weltmarkt, {className}. Kaufe von Abenteurern aus dem ganzen Reich oder biete deine eigenen Waren an.'],
@@ -1336,13 +1339,14 @@ const itData: LocaleData = {
   mobs: [
     'Lupo della foresta', 'Vecchio Greyjaw', 'Cinghiale selvatico', 'Predatore di Webwood', 'Predatore Pinnalimo', 'Scavatore ratto di galleria',
     'Bandito della Valle', 'Ossa irrequiete', 'Gorrak lo Spietato', 'Predatore del pantano', 'Murloc di Deepfen', 'Vedova di Mirefen',
-    'Madre della covata', 'Morto annegato', 'Troll di Mirefen', 'Grubjaw il Goloso', 'Cultista Gravecaller', 'Evocatore Gravecaller',
+    'Madre della covata', 'Morto annegato', 'Troll di Mirefen', 'Grubjaw il Goloso', 'Cultista Gravecaller', 'Evocatore Gravecaller', 'Guaritore Gravecaller',
     'Diacono Voss', 'Braccatore della cresta', 'Coboldo di Deeprock', 'Ogre di Thornpeak', 'Frantumatore ogre', 'Signore della guerra Drogmar',
     'Elementale di Stormcrag', 'Signore dei frammenti Kazzix', 'Zelota del Culto del Wyrm', 'Negromante del Culto del Wyrm',
     'Revenant corazzato di ossa', 'Barcollante della cripta', 'Accolito del Vuoto', 'Vedova Freddosso', 'Sagrestano Marrow',
     'Morthen il Gravecaller', 'Revenant del Bastione', 'Accolito legato alla marea', 'Servo annegato', 'Cavaliere comandante Olen',
     'Vael il Mistcaller', 'Guardiano osseo del Santuario', 'Draconide del Santuario', 'Camminatore di ossa risorto',
     'Korgath il Vincolato', 'Grande negromante Velkhar', 'Korzul il Gravewyrm',
+    'Gonfiore della palude',
   ],
   npcRows: [
     ['Il Mercante', 'Custode del Mercato Mondiale', 'Benvenuto al Mercato Mondiale, {className}. Compra dagli avventurieri del reame o vendi le tue merci.'],
@@ -1404,10 +1408,11 @@ const zhCnData: LocaleData = {
   mobs: [
     '森林狼', '老灰颚', '野猪', '网木潜伏者', '泥鳍潜伏者', '地道鼠掘地者', '谷地强盗', '不宁骸骨', '无情者戈拉克',
     '泥沼潜伏兽', '深沼钳咬鱼人', '泥沼寡妇蛛', '蛛母', '溺亡死者', '泥沼巨魔', '贪食者格鲁布颚', '唤墓者教徒',
-    '唤墓者召唤师', '执事沃斯', '山脊潜猎者', '深岩掘地者', '荆峰食人魔', '荆峰粉碎者', '督军德罗格玛',
+    '唤墓者召唤师', '唤墓者医者', '执事沃斯', '山脊潜猎者', '深岩掘地者', '荆峰食人魔', '荆峰粉碎者', '督军德罗格玛',
     '风暴岩元素', '碎片领主卡兹克斯', '龙教狂热者', '龙教死灵法师', '骨甲亡魂', '墓穴蹒跚者', '空洞侍僧',
     '寒骨寡妇蛛', '司事马罗', '唤墓者莫森', '堡垒亡魂', '潮缚侍僧', '溺亡奴仆', '骑士指挥官奥伦',
     '唤雾者维尔', '圣所骨卫', '圣所龙人', '复生骨行者', '被缚者科加斯', '大死灵法师维尔卡', '墓龙科祖尔',
+    '沼泽胀囊',
   ],
   npcRows: [
     ['商人', '世界市场守护者', '欢迎来到世界市场，{className}。从王国各地的冒险者手中购买，或出售你自己的货物。'],
@@ -1464,11 +1469,12 @@ const zhTwData: LocaleData = {
   mobs: [
     '森林狼', '老灰顎', '野豬', '網木潛伏者', '泥鰭潛伏者', '地道鼠掘地者', '谷地強盜', '不寧骸骨',
     '無情者戈拉克', '泥沼潛伏獸', '深沼鉗咬魚人', '泥沼寡婦蛛', '蛛母', '溺亡死者', '泥沼巨魔',
-    '貪食者格魯布顎', '喚墓者教徒', '喚墓者召喚師', '執事沃斯', '山脊潛獵者', '深岩掘地者',
+    '貪食者格魯布顎', '喚墓者教徒', '喚墓者召喚師', '喚墓者醫者', '執事沃斯', '山脊潛獵者', '深岩掘地者',
     '荊峰食人魔', '荊峰粉碎者', '督軍德羅格瑪', '風暴岩元素', '碎片領主卡茲克斯', '龍教狂熱者',
     '龍教死靈法師', '骨甲亡魂', '墓穴蹣跚者', '空洞侍僧', '寒骨寡婦蛛', '司事馬羅', '喚墓者莫森',
     '堡壘亡魂', '潮縛侍僧', '溺亡奴僕', '騎士指揮官奧倫', '喚霧者維爾', '聖所骨衛', '聖所龍人',
     '復生骨行者', '被縛者科加斯', '大死靈法師維爾卡', '墓龍科祖爾',
+    '沼澤脹囊',
   ],
   npcRows: [
     ['商人', '世界市場守護者', '歡迎來到世界市場，{className}。向王國各地的冒險者購買，或出售你自己的貨物。'],
@@ -1526,12 +1532,13 @@ const koData: LocaleData = {
   mobs: [
     '숲늑대', '늙은 그레이죠', '야생 멧돼지', '그물나무 잠복자', '진흙지느러미 잠복자', '굴쥐 채굴꾼', '계곡 도적',
     '불안한 뼈무더기', '무자비한 고라크', '수렁 배회자', '딥펜 무는이', '마이어펜 과부거미', '거미어미',
-    '익사한 망자', '마이어펜 트롤', '대식가 그럽죠', '무덤부름 교단원', '무덤부름 소환사', '부제 보스',
+    '익사한 망자', '마이어펜 트롤', '대식가 그럽죠', '무덤부름 교단원', '무덤부름 소환사', '무덤부름 치유사', '부제 보스',
     '산등성이 추적자', '깊은바위 굴꾼', '쏜피크 오우거', '쏜피크 분쇄자', '전쟁군주 드로그마르',
     '스톰크래그 정령', '파편군주 카직스', '고룡교단 광신도', '고룡교단 강령술사', '뼈갑옷 망령',
     '묘실 비틀거림꾼', '공허의 수행사제', '뼈서리 과부거미', '성구지기 매로우', '무덤부름 모르덴',
     '요새 망령', '조수결속 수행사제', '익사한 노예', '기사대장 올렌', '안개부름 바엘', '성소 뼈수호자',
     '성소 드라코니드', '되살아난 뼈걸음꾼', '속박된 코르가스', '대강령술사 벨카르', '무덤고룡 코르줄',
+    '늪 팽창체',
   ],
   npcRows: [
     ['상인', '세계 시장 관리자', '세계 시장에 오신 것을 환영합니다, {className}. 왕국의 모험가들에게서 물건을 사거나 자신의 물건을 내놓으십시오.'],
@@ -1592,12 +1599,13 @@ const jaData: LocaleData = {
     '森の狼', '老グレイジョー', '野生の猪', 'ウェブウッドの潜伏者', '泥ひれの潜伏者', 'トンネルラット掘り',
     '谷の盗賊', '安らがぬ骨', '無慈悲なるゴラック', '沼の徘徊者', 'ディープフェンのスナッパー', 'マイアフェンのウィドウ',
     '群れの母', '溺れ死者', 'マイアフェン・トロル', '大食いグラブジョー', 'グレイブコーラーの信徒',
-    'グレイブコーラーの召喚師', '助祭ヴォス', '尾根の追跡者', 'ディープロックの坑夫', 'ソーンピーク・オーガ',
+    'グレイブコーラーの召喚師', 'グレイブコーラーの癒し手', '助祭ヴォス', '尾根の追跡者', 'ディープロックの坑夫', 'ソーンピーク・オーガ',
     'ソーンピークの粉砕者', '将軍ドログマー', 'ストームクラッグの精霊', '破片卿カジックス',
     'ワーム教団の狂信者', 'ワーム教団の死霊術師', '骨まといの亡霊', '墓所のよろめき手',
     '虚ろの侍祭', '骨冷えのウィドウ', '墓守マロウ', '墓呼びのモーセン', '砦の亡霊',
     '潮縛りの侍祭', '溺れた下僕', '騎士司令官オレン', '霧呼びのヴァエル', '聖所の骨衛兵',
     '聖所のドラコニッド', '甦った骨歩き', '縛られしコルガス', '大死霊術師ヴェルカー', '墓ワームのコルズル',
+    '沼地の膨れ',
   ],
   npcRows: [
     ['商人', '世界市場の守り手', '世界市場へようこそ、{className}。王国中の冒険者から買うことも、自分の品を売ることもできます。'],
@@ -1658,13 +1666,14 @@ const ptData: LocaleData = {
   mobs: [
     'Lobo da floresta', 'Velho Greyjaw', 'Javali selvagem', 'Espreitador de Webwood', 'Espreitador Barbatana-de-lodo', 'Escavador rato de túnel',
     'Bandido do Vale', 'Ossos inquietos', 'Gorrak o Impiedoso', 'Espreitador do brejo', 'Murloc de Deepfen', 'Viúva de Mirefen',
-    'Mãe da ninhada', 'Morto afogado', 'Troll de Mirefen', 'Grubjaw o Glutão', 'Cultista Gravecaller', 'Invocador Gravecaller',
+    'Mãe da ninhada', 'Morto afogado', 'Troll de Mirefen', 'Grubjaw o Glutão', 'Cultista Gravecaller', 'Invocador Gravecaller', 'Curandeiro Gravecaller',
     'Diácono Voss', 'Rastreador da crista', 'Kobold de Deeprock', 'Ogro de Thornpeak', 'Esmagador ogro', 'Senhor da guerra Drogmar',
     'Elemental de Stormcrag', 'Senhor dos fragmentos Kazzix', 'Zelote do Culto do Wyrm', 'Necromante do Culto do Wyrm',
     'Revenante encouraçado de ossos', 'Cambaleante da cripta', 'Acólito do Vazio', 'Viúva Frio-osso', 'Sacristão Marrow',
     'Morthen o Gravecaller', 'Revenante do Bastião', 'Acólito preso à maré', 'Servo afogado', 'Cavaleiro-comandante Olen',
     'Vael o Mistcaller', 'Guarda-osso do Santuário', 'Draconídeo do Santuário', 'Andarilho de ossos erguido',
     'Korgath o Acorrentado', 'Grande necromante Velkhar', 'Korzul o Gravewyrm',
+    'Inchaço do Brejo',
   ],
   npcRows: [
     ['O Mercador', 'Guardião do Mercado Mundial', 'Bem-vindo ao Mercado Mundial, {className}. Compre de aventureiros do reino ou venda suas próprias mercadorias.'],
@@ -1727,13 +1736,14 @@ const ruData: LocaleData = {
   mobs: [
     'Лесной волк', 'Старый Серочелюст', 'Дикий кабан', 'Паук-скрытень Вебвуда', 'Илогривый скрытень', 'Копатель Туннельная Крыса',
     'Долинный бандит', 'Беспокойные кости', 'Горрак Безжалостный', 'Болотный хищник', 'Глубинный щелкун', 'Мирефенская вдова',
-    'Матка выводка', 'Утопший мертвец', 'Мирефенский тролль', 'Грубджо Обжора', 'Культист Могильного Зова', 'Призыватель Могильного Зова',
+    'Матка выводка', 'Утопший мертвец', 'Мирефенский тролль', 'Грубджо Обжора', 'Культист Могильного Зова', 'Призыватель Могильного Зова', 'Лекарь Могильного Зова',
     'Дьякон Восс', 'Хребтовый охотник', 'Глубокоскальный туннельщик', 'Огр Терновых Пиков', 'Крушитель Терновых Пиков',
     'Воевода Дрогмар', 'Элементаль Грозового Утеса', 'Осколочный владыка Каззикс', 'Фанатик Культа Вирма',
     'Некромант Культа Вирма', 'Костепанцирный ревенант', 'Склепный шатун', 'Послушник Пустоти', 'Ледяная вдова',
     'Пономарь Марроу', 'Мортен Могильный Зов', 'Ревенант бастиона', 'Приливный послушник', 'Утопший раб',
     'Рыцарь-командор Олен', 'Ваэль Зовущий Туман', 'Костяной страж святилища', 'Драконид святилища',
     'Поднятый костеход', 'Коргат Связанный', 'Верховный некромант Велхар', 'Корзул Могильный Вирм',
+    'Болотный вздутень',
   ],
   npcRows: [
     ['Торговец', 'Хранитель мирового рынка', 'Добро пожаловать на Мировой рынок, {className}. Покупайте у искателей приключений всего королевства или выставляйте свои товары.'],
@@ -1791,22 +1801,22 @@ const ruData: LocaleData = {
   ],
 };
 
-export const phase9 = {
-  en: makeEnglishPhase9(),
-  es: makeLocalePhase9(esData, esText, esQuestNarratives),
-  es_ES: {} as Phase9Translations,
-  fr_FR: makeLocalePhase9(frData, frText, frQuestNarratives),
-  fr_CA: {} as Phase9Translations,
-  en_CA: makeEnglishPhase9(),
-  it_IT: makeLocalePhase9(itData, itText, itQuestNarratives),
-  de_DE: makeLocalePhase9(deData, deText, deQuestNarratives),
-  zh_CN: makeLocalePhase9(zhCnData, zhCnText, zhCnQuestNarratives),
-  zh_TW: makeLocalePhase9(zhTwData, zhTwText, zhTwQuestNarratives),
-  ko_KR: makeLocalePhase9(koData, koText, koQuestNarratives),
-  ja_JP: makeLocalePhase9(jaData, jaText, jaQuestNarratives),
-  pt_BR: makeLocalePhase9(ptData, ptText, ptQuestNarratives),
-  ru_RU: makeLocalePhase9(ruData, ruText, ruQuestNarratives),
+export const worldEntityText = {
+  en: makeEnglishWorldEntities(),
+  es: makeLocaleWorldEntities(esData, esText, esQuestNarratives),
+  es_ES: {} as WorldEntityTranslations,
+  fr_FR: makeLocaleWorldEntities(frData, frText, frQuestNarratives),
+  fr_CA: {} as WorldEntityTranslations,
+  en_CA: makeEnglishWorldEntities(),
+  it_IT: makeLocaleWorldEntities(itData, itText, itQuestNarratives),
+  de_DE: makeLocaleWorldEntities(deData, deText, deQuestNarratives),
+  zh_CN: makeLocaleWorldEntities(zhCnData, zhCnText, zhCnQuestNarratives),
+  zh_TW: makeLocaleWorldEntities(zhTwData, zhTwText, zhTwQuestNarratives),
+  ko_KR: makeLocaleWorldEntities(koData, koText, koQuestNarratives),
+  ja_JP: makeLocaleWorldEntities(jaData, jaText, jaQuestNarratives),
+  pt_BR: makeLocaleWorldEntities(ptData, ptText, ptQuestNarratives),
+  ru_RU: makeLocaleWorldEntities(ruData, ruText, ruQuestNarratives),
 };
 
-phase9.es_ES = phase9.es;
-phase9.fr_CA = phase9.fr_FR;
+worldEntityText.es_ES = worldEntityText.es;
+worldEntityText.fr_CA = worldEntityText.fr_FR;
