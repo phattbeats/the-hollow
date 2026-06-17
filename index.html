@@ -2562,6 +2562,7 @@
   .realm-pop.high { color: #ff9030; }
   .realm-pop.full { color: #ff5040; }
   .realm-pop.offline { color: #888; }
+  .realm-meta { display: contents; }
 
   /* ---------- chat ---------- */
   #chat-input { position: absolute; left: 12px; bottom: 204px; width: 370px; display: none; z-index: 25;
@@ -3732,6 +3733,61 @@
     margin-top: 0;
     width: min(360px, calc(100vw - 48px));
   }
+  body.mobile-touch .realm-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 10px;
+  }
+  body.mobile-touch .realm-row > div:first-child {
+    min-width: 0;
+  }
+  body.mobile-touch .realm-name,
+  body.mobile-touch .realm-sub {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  body.mobile-touch .realm-name .rn-chars,
+  body.mobile-touch .realm-name .rn-rec {
+    display: inline-block;
+    max-width: 100%;
+    vertical-align: middle;
+  }
+  body.mobile-touch .realm-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 2px;
+    min-width: 48px;
+  }
+  body.mobile-touch .realm-type,
+  body.mobile-touch .realm-pop {
+    min-width: 0;
+    line-height: 1.1;
+    text-align: right;
+    white-space: nowrap;
+  }
+  body.mobile-touch .realm-pop {
+    font-size: 11px;
+  }
+  body.mobile-touch .portal-ring,
+  body.mobile-touch .portal-ring-reverse,
+  body.mobile-touch .nebula-overlay {
+    animation: none;
+  }
+  body.mobile-touch .portal-ring,
+  body.mobile-touch .portal-ring-reverse {
+    filter: none;
+    opacity: 0.18;
+  }
+  body.mobile-touch .nebula-overlay {
+    mix-blend-mode: normal;
+    opacity: 0.78;
+  }
+  body.mobile-touch .embers-container {
+    display: none;
+  }
   body.mobile-touch .class-row { grid-template-columns: repeat(2, minmax(138px, 1fr)); gap: 8px; width: min(340px, 92vw); }
   body.mobile-touch .class-card { padding: 9px 8px 8px; }
   body.mobile-touch #title-logo { width: min(360px, 82vw); margin-bottom: 18px; }
@@ -4065,8 +4121,11 @@
 
   body.mobile-touch #charselect-panel {
     width: min(380px, calc(100vw - 48px));
-    max-height: calc(100vh - 112px);
-    overflow-y: auto;
+    min-height: calc(var(--app-vh) - 178px);
+    max-height: none;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
   }
   body.mobile-touch #charselect-panel .auth-title {
     font-size: 21px;
@@ -4108,14 +4167,54 @@
     border-top: 0;
     margin-top: 0;
     padding-top: 0;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  body.mobile-touch #charselect-panel .charselect-layout {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    gap: 12px;
+    min-height: 0;
+  }
+  body.mobile-touch #charselect-panel .charselect-col-left {
+    flex-direction: column;
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  body.mobile-touch #charselect-panel .charselect-col-right {
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
   }
   body.mobile-touch #charselect-panel #char-list {
+    flex: 1 1 auto;
     max-height: none;
     border: 0;
     background: transparent;
     padding: 0;
     margin: 0;
     overflow: visible;
+  }
+  body.mobile-touch #charselect-panel #online-class-details {
+    flex: 1 1 auto;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    margin-bottom: 0;
+    overflow: visible;
+  }
+  body.mobile-touch #charselect-panel #online-class-details .class-details-content {
+    min-height: 100%;
+    height: auto;
+  }
+  body.mobile-touch #charselect-panel #online-class-details .class-details-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
   }
   body.mobile-touch .char-row {
     display: grid;

@@ -195,9 +195,6 @@ function preventMobileZoom(): void {
   document.addEventListener('gesturestart', prevent, { passive: false });
   document.addEventListener('gesturechange', prevent, { passive: false });
   document.addEventListener('gestureend', prevent, { passive: false });
-  document.addEventListener('touchmove', (e) => {
-    if (e.touches.length > 1) e.preventDefault();
-  }, { passive: false });
   document.addEventListener('touchend', (e) => {
     const now = Date.now();
     if (now - lastTouchEnd <= 320) e.preventDefault();
@@ -1327,8 +1324,10 @@ function showRealmList(dir?: import('./net/online').RealmDirectory): void {
       return `<div class="realm-row" data-name="${escapeHtml(r.name)}" data-url="${escapeHtml(r.url)}">
         <div><div class="realm-name">${escapeHtml(r.name)}${charTag}<span class="rn-rec" data-rec hidden>${escapeHtml(t('realm.recommended'))}</span></div>
           <div class="realm-sub" data-sub>${escapeHtml(t('realm.checkingStatus'))}</div></div>
-        <div class="realm-type">${escapeHtml(typeLabel)}</div>
-        <div class="realm-pop offline" data-pop>-</div>
+        <div class="realm-meta">
+          <div class="realm-type">${escapeHtml(typeLabel)}</div>
+          <div class="realm-pop offline" data-pop>-</div>
+        </div>
       </div>`;
     }).join('');
     listEl.querySelectorAll('.realm-row').forEach((row) => row.addEventListener('click', () => {
@@ -2687,6 +2686,7 @@ function wireStartScreens(): void {
 
   // Dynamically initialize background embers
   const initBackgroundEmbers = () => {
+    if (isPhoneTouchDevice()) return;
     const backdrop = $('#start-screen-backdrop');
     if (!backdrop) return;
     
