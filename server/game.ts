@@ -62,6 +62,9 @@ const RESTART_COUNTDOWN_STEPS = [
   { atSeconds: 600, text: 'Server restarting now.' },
 ] as const;
 const MAX_WS_PER_IP_SOFT = Number(process.env.MAX_WS_PER_IP_SOFT ?? '5');
+// Antibot enforcement (shadow-throttle + auto-kick), off by default: detection runs
+// report-only until the signals are mature and the false-positive rate is measured.
+const ANTIBOT_ENFORCE = process.env.ANTIBOT_ENFORCE === '1';
 // Clients stream movement intent every 50ms. If that stream goes silent while
 // the last packet held a key down, stop applying it instead of turning/running
 // forever. 750ms leaves room for normal jitter and short browser stalls.
@@ -350,6 +353,25 @@ export class GameServer {
     return this.ipSessionCounts.get(ip) ?? 0;
   }
 
+  // Reconcile multi_ip evidence for every session on `ip` against the live session
+  // count. Called on join/leave (the only events that change the count), so the
+  // signal marks all sessions on a crowded IP and clears once it thins out.
+  private refreshMultiIpEvidence(ip: string): void {
+    if (!ip) return;
+    const count = this.countIpSessions(ip);
+    const crowded = count > MAX_WS_PER_IP_SOFT;
+
+    const clientsWithSameIp = [...this.clients.values()].filter(s => s.ip === ip);
+    clientsWithSameIp.forEach(s => {
+      if (crowded) {
+        antibot.addEvidence(s.bot, { kind: 'multi_ip', weight: 0.4, expiresAt: Infinity,
+          detail: `${count} sessions from ${ip}` });
+      } else {
+        antibot.removeEvidence(s.bot, 'multi_ip');
+      }
+    });
+  }
+
   // -------------------------------------------------------------------------
   // Social presence/transport: bridges the persistent SocialService to the
   // live client map + sim. Keyed by character id (stable across sessions),
@@ -490,7 +512,7 @@ export class GameServer {
       // Skip sessions with no evidence and no active escalation timers (CPU budget).
       const t = session.bot;
       if (t.evidence.length === 0 && t.aboveLogSince === null && t.aboveThrottleSince === null && t.aboveKickSince === null) continue;
-      const action = antibot.onSimTick(t, session, now);
+      const action = antibot.onSimTick(t, session, now, ANTIBOT_ENFORCE);
       if (action === 'kick') {
         void this.leave(session, 'disconnected');
       }
@@ -561,17 +583,10 @@ export class GameServer {
       ip: sessionIp,
       bot: antibot.createTracker(),
     };
-    // Per-IP session counting: update the map and seed multi_ip evidence if over soft threshold.
-    const ipCount = (this.ipSessionCounts.get(sessionIp) ?? 0) + 1;
-    this.ipSessionCounts.set(sessionIp, ipCount);
-    if (sessionIp && ipCount > MAX_WS_PER_IP_SOFT) {
-      antibot.addEvidence(session.bot, {
-        kind: 'multi_ip', weight: 0.4, expiresAt: Infinity,
-        detail: `${ipCount} sessions from ${sessionIp}`,
-      });
-    }
+    this.ipSessionCounts.set(sessionIp, (this.ipSessionCounts.get(sessionIp) ?? 0) + 1);
     this.clients.set(pid, session);
     this.sessionsByCharacterId.set(characterId, session);
+    this.refreshMultiIpEvidence(sessionIp);
     this.peakOnline = Math.max(this.peakOnline, this.clients.size);
     openPlaySession(accountId, characterId, name, meta)
       .then((id) => {
@@ -628,6 +643,7 @@ export class GameServer {
       const prev = this.ipSessionCounts.get(session.ip) ?? 1;
       if (prev <= 1) this.ipSessionCounts.delete(session.ip);
       else this.ipSessionCounts.set(session.ip, prev - 1);
+      this.refreshMultiIpEvidence(session.ip);
     }
     this.social.forget(session.characterId);
     // delete from clients first so friends see them as offline in the notice
@@ -1378,10 +1394,6 @@ export class GameServer {
             if (ev.type === 'chat' && ev.channel === 'whisper' && ev.to === undefined && ev.fromPid !== session.pid) {
               session.lastWhisperFrom = ev.from;
             }
-            // Reaction time: record stimulus when a triggering event lands.
-            if (ev.type === 'death' || ev.type === 'castStop') {
-              antibot.observeEvent(session.bot, ev.type, Date.now());
-            }
           }
           continue;
         }
@@ -1389,10 +1401,6 @@ export class GameServer {
         const anchor = this.eventAnchor(ev);
         if (anchor === null || dist2d(p.pos, anchor) <= EVENT_RADIUS) {
           mine.push(ev);
-          // Reaction time: castStop/death are world events (no pid) — match by entityId.
-          if ((ev.type === 'castStop' || ev.type === 'death') && ev.entityId === session.pid) {
-            antibot.observeEvent(session.bot, ev.type, Date.now());
-          }
         }
       }
       if (mine.length > 0) this.send(session, { t: 'events', list: mine });
