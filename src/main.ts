@@ -30,6 +30,7 @@ import { updateFollowCameraYaw, wrapAngle } from './game/camera_follow';
 const WORLD_SEED = 20061; // fixed: World of ClaudeCraft is a persistent place
 const CLICK_MOVE_TURN_RATE = 4.2; // rad/sec; responsive turning while the camera stays decoupled from click spam
 const HOMEPAGE_MUSIC_MUTED_KEY = 'woc_homepage_music_muted';
+const HOMEPAGE_MUSIC_VOLUME = 0.225;
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.querySelector(sel) as T;
 let pendingDeleteCharacter: CharacterSummary | null = null;
@@ -232,6 +233,13 @@ function preventMobileZoom(): void {
 
 function syncPhoneTouchClass(): void {
   document.body.classList.toggle('mobile-touch', isPhoneTouchDevice());
+  syncCommunityMenuMode();
+}
+
+function syncCommunityMenuMode(): void {
+  const communityMenu = document.getElementById('community-menu') as HTMLDetailsElement | null;
+  if (!communityMenu) return;
+  communityMenu.open = !isPhoneTouchDevice();
 }
 
 syncAppViewport();
@@ -494,6 +502,7 @@ function mountGameUi(): void {
   if (!template || !startScreen) throw new Error('Game UI shell is missing.');
   document.body.insertBefore(template.content.cloneNode(true), startScreen);
   translatePage();
+  syncCommunityMenuMode();
 }
 
 // ---------------------------------------------------------------------------
@@ -3176,7 +3185,7 @@ function initHomepageMusic(): void {
   el.loop = true;
   el.muted = homepageMusicMuted;
   el.preload = 'auto';
-  el.volume = 0.45;
+  el.volume = HOMEPAGE_MUSIC_VOLUME;
   homepageMusic = el;
 
   const gestureEvents: Array<keyof WindowEventMap> = ['pointerdown', 'keydown', 'touchstart'];
