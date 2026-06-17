@@ -71,6 +71,9 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
     id: 'old_greyjaw', name: 'Old Greyjaw', minLevel: 4, maxLevel: 4, family: 'beast', rare: true,
     hpBase: 110, hpPerLevel: 20, dmgBase: 5, dmgPerLevel: 2.0, attackSpeed: 1.8,
     armorPerLevel: 16, moveSpeed: 8.5, aggroRadius: 12,
+    // The old wolf turns savage as the fight wears on: each wound it takes can
+    // send it into a blood frenzy, swinging 30% faster for 8s.
+    frenzyOnHit: { chance: 0.25, hasteMult: 1.3, duration: 8, name: 'Blood Frenzy' },
     loot: [
       { copper: 60, chance: 1 },
       { itemId: 'greyjaw_fang', chance: 1, questId: 'q_greyjaw' },

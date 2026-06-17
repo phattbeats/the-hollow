@@ -158,6 +158,7 @@ const SOCIAL_PULL_RADIUS: Partial<Record<MobFamily, number>> = {
   murloc: 8,
 };
 const PACK_FRENZY_AURA_ID = 'pack_frenzy'; // attack-speed buff granted to surviving packmates
+const BLOOD_FRENZY_AURA_ID = 'blood_frenzy'; // self attack-speed buff a wounded frenzyOnHit mob gains
 const SWIM_SURFACE_Y = WATER_LEVEL - 0.75; // body bobs just below the water line
 const SWIM_DEPTH = 0.8; // ground this far under the water line = deep water
 const SWIM_SPEED_MULT = 0.65;
@@ -3379,9 +3380,51 @@ export class Sim {
       }
     }
 
+    // Reactive "Frenzy": a wounded mob carrying frenzyOnHit may lash out faster.
+    // Rolls only for mobs that actually carry the trait (the helper bails before
+    // touching rng otherwise), so existing fixed-seed combat stays byte-identical.
+    if (kind === 'hit' && amount > 0 && !target.dead && target.hp > 0) {
+      this.maybeFrenzyOnHit(target, source);
+    }
+
     if (target.hp <= 0) {
       this.handleDeath(target, source);
     }
+  }
+
+  // Reactive beast "Frenzy": when a mob with the frenzyOnHit trait is struck by a
+  // player (or their pet), it has a chance to fly into a blood frenzy and swing
+  // faster for a few seconds. Modelled as a refreshable buff_haste self-aura — the
+  // same primitive packFrenzy uses — so it rides the normal aura tick and snapshot
+  // wire with no new Entity field. The struck mob buffs ITSELF, so there is no
+  // recursion risk (the buff is not damage) and no player-facing debuff string.
+  private maybeFrenzyOnHit(target: Entity, source: Entity | null): void {
+    const fr = MOBS[target.templateId]?.frenzyOnHit;
+    if (!fr) return; // non-carriers never reach rng — keeps determinism neutral
+    if (target.kind !== 'mob' || !target.hostile || target.ownerId !== null) return;
+    if (!source || source.id === target.id) return;
+    const fromPlayer = source.kind === 'player' || source.ownerId !== null;
+    if (!fromPlayer) return;
+    if (!this.rng.chance(fr.chance)) return;
+    const name = fr.name ?? 'Blood Frenzy';
+    const existing = target.auras.find((a) => a.id === BLOOD_FRENZY_AURA_ID);
+    if (existing) {
+      existing.remaining = fr.duration; // refresh on each further wound; don't stack
+      return;
+    }
+    target.auras.push({
+      id: BLOOD_FRENZY_AURA_ID,
+      name,
+      kind: 'buff_haste',
+      remaining: fr.duration,
+      duration: fr.duration,
+      value: fr.hasteMult,
+      sourceId: target.id,
+      school: 'physical',
+    });
+    this.emit({ type: 'aura', targetId: target.id, name, gained: true });
+    this.emit({ type: 'log', text: `${target.name} flies into a frenzy!`, color: '#ff8c00', entityId: target.id });
+    this.emit({ type: 'spellfx', sourceId: target.id, targetId: target.id, school: 'physical', fx: 'nova' });
   }
 
   private enterCombat(a: Entity, b: Entity): void {

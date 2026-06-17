@@ -268,6 +268,13 @@ export interface MobTemplate {
   // Innate "spiked hide" trait: melee attackers take flat damage back on every
   // connecting swing — the mob-side equivalent of the druid Thorns aura.
   thorns?: { value: number; school?: Aura['school']; name?: string };
+  // Reactive "Frenzy": when this creature is WOUNDED (takes a landed player hit)
+  // it has `chance` to fly into a blood frenzy, swinging faster (`hasteMult`,
+  // e.g. 1.3 = +30% swing speed) for `duration`s. Rides the existing buff_haste
+  // aura packFrenzy uses — no new combat math. Unlike packFrenzy (a death-rattle
+  // that buffs survivors) or enrage (a fixed HP threshold), this is a per-hit
+  // self-buff on the struck mob; it refreshes rather than stacks.
+  frenzyOnHit?: { chance: number; hasteMult: number; duration: number; name?: string };
 }
 
 export type AbilityEffect =
