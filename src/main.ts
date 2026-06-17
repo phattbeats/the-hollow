@@ -198,10 +198,14 @@ declare const __APP_VERSION__: string;
 declare const __APP_BUILD_ID__: string;
 declare const __APP_BUILD_DATE__: string;
 
+function formatFooterVersion(version: string): string {
+  return version.replace(/\.0$/, '');
+}
+
 function syncBuildInfo(): void {
   const el = document.getElementById('game-version');
   if (!el) return;
-  el.textContent = `v${__APP_VERSION__} · build ${__APP_BUILD_ID__}`;
+  el.textContent = `v${formatFooterVersion(__APP_VERSION__)} · build ${__APP_BUILD_ID__}`;
   el.title = t('meta.builtOn', { date: __APP_BUILD_DATE__ });
 }
 
