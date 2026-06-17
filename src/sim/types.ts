@@ -47,7 +47,7 @@ export type AuraKind =
   | 'dot' | 'slow' | 'stun' | 'root' | 'incapacitate' | 'polymorph'
   | 'attackspeed' | 'debuff_ap' | 'buff_ap' | 'buff_armor' | 'buff_int' | 'buff_dodge' | 'buff_speed' | 'buff_haste'
   | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_allstats' | 'thorns' | 'form_bear'
-  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence';
+  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence' | 'expose';
 
 export interface Aura {
   id: string; // ability id that applied it
@@ -218,6 +218,10 @@ export interface MobTemplate {
   // other on-hit affixes it sustains the attacker instead of debuffing the
   // victim. Optional `chance` gates the proc (defaults to every landed hit).
   lifeleech?: { healFrac: number; chance?: number; name?: string };
+  // Melee mechanic: a landed swing has `chance` to crack the victim's guard with
+  // an Expose debuff that raises the physical damage they take by `dmgIncrease`
+  // (e.g. 0.15 = +15%) for `duration` seconds. Stacks multiplicatively with armor.
+  expose?: { chance: number; dmgIncrease: number; duration: number; name: string; school?: string };
   // Combat mechanic: a landed melee hit has `chance` to corrode the victim's
   // armor: a stacking `sunder` debuff (up to `maxStacks`) so the victim takes
   // more physical damage from everyone until it expires. Rides the existing
