@@ -18,12 +18,13 @@ await page.setViewport({ width: 1280, height: 860 });
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const tap = (sel) => page.evaluate((s) => document.querySelector(s)?.click(), sel);
 
-// [class, epic id, paperdoll row nth-child] — WoW order: 1=helmet, 2=shoulder,
-// 3=chest, 4=gloves, 5=waist, 6=legs, 7=feet, 8=mainhand.
+// [class, epic id, column selector, row nth-child]
+// Left col: helmet(1), shoulder(2), chest(3), mainhand(4).
+// Right col: gloves(1), waist(2), legs(3), feet(4).
 const CASES = [
-  ['warrior', 'deathlords_dread_visage', 1],
-  ['mage', 'necromancers_soulspire_mantle', 2],
-  ['rogue', 'wyrmshadow_talongrips', 4],
+  ['warrior', 'deathlords_dread_visage', '#equip-col-left', 1],
+  ['mage', 'necromancers_soulspire_mantle', '#equip-col-left', 2],
+  ['rogue', 'wyrmshadow_talongrips', '#equip-col-right', 1],
 ];
 
 async function startAs(cls) {
@@ -39,7 +40,7 @@ async function startAs(cls) {
   await wait(3000);
 }
 
-for (const [cls, epic, row] of CASES) {
+for (const [cls, epic, colSel, row] of CASES) {
   await startAs(cls);
   await page.evaluate((id) => {
     const sim = window.__game.sim;
@@ -50,7 +51,7 @@ for (const [cls, epic, row] of CASES) {
   await wait(200);
   await page.evaluate(() => window.__game.hud.toggleChar());
   await wait(400);
-  await page.hover(`#equip-col .equip-slot:nth-child(${row})`);
+  await page.hover(`${colSel} .equip-slot:nth-child(${row})`);
   await wait(400);
   const box = await page.evaluate(() => {
     const el = document.querySelector('#tooltip');
