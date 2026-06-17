@@ -46,9 +46,10 @@ function envSeedSoftWords(): string[] {
 }
 
 function envSeedHardWords(): string[] {
-  // The hard (slur) tier ships no plaintext list in this open-source repo; the
-  // `obscenity` baseline enforces slurs, and operators seed the few it omits
-  // privately here. See DEFAULT_HARD_WORDS in chat_filter.ts.
+  // The hard (slur) tier ships no plaintext list in this open-source repo and is
+  // the SOLE punitive trigger, so the operator MUST seed the slur list here at
+  // first boot — with nothing seeded, nothing is enforced. Managed from the admin
+  // dashboard thereafter. See DEFAULT_HARD_WORDS in chat_filter.ts.
   return envSeedWords('CHAT_FILTER_HARD_LIST', 'CHAT_FILTER_HARD_FILE');
 }
 
