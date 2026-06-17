@@ -86,6 +86,7 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     hpBase: 320, hpPerLevel: 58, dmgBase: 15, dmgPerLevel: 3.7, attackSpeed: 1.8,
     armorPerLevel: 26, moveSpeed: 8.2, aggroRadius: 14,
     aoePulse: { min: 18, max: 26, radius: 10, every: 9, name: 'Ravenous Frenzy', school: 'nature' },
+    sapVigor: { chance: 0.3, amount: 25, name: 'Sapping Bite' },
     summonAdds: { mobId: 'mirejaw_frenzy', count: 2, atHpPct: [0.55] },
     loot: [
       { copper: 260, chance: 1 },
