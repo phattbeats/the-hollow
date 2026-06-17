@@ -88,16 +88,20 @@ function sourceModule(lang) {
   return lang === 'en' ? './src/ui/i18n.en' : `./src/ui/i18n.locales/${lang}`;
 }
 
-// Bundle the source locale objects + the three matcher DICTs via a tiny stub and
-// import the result. Same esbuild-to-data-URL pattern as i18n_build.mjs; none of
-// this touches the generated registry, so there is no self-dependency.
+// Bundle the source locale objects + the matcher DICTs + the admin source via a
+// tiny stub and import the result. Same esbuild-to-data-URL pattern as
+// i18n_build.mjs; none of this touches the generated registry, so there is no
+// self-dependency. The admin scope reads the SPARSE source (i18n.en + the flat
+// overlays), NOT the dense resolved table or the runtime src/admin/i18n.ts, so an
+// admin key a locale omits naturally yields `pending` exactly like a main key.
 async function loadSources() {
   const lines = [];
   lines.push(`export { en } from '${sourceModule('en')}';`);
   for (const lang of NON_EN) lines.push(`export { ${lang} } from '${sourceModule(lang)}';`);
   lines.push("export { DICT as serverDICT } from './src/ui/server_i18n';");
   lines.push("export { DICT as simDICT } from './src/ui/sim_i18n';");
-  lines.push("export { DICT as adminDICT } from './src/admin/i18n';");
+  lines.push("export { en as adminEn } from './src/admin/i18n.en';");
+  for (const lang of NON_EN) lines.push(`export { ${lang} as admin_${lang} } from './src/admin/i18n.locales/${lang}';`);
   const build = await esbuild.build({
     stdin: {
       contents: lines.join('\n'),
@@ -115,13 +119,15 @@ async function loadSources() {
   const mod = await import(dataUrl);
   const overlays = {};
   for (const lang of NON_EN) overlays[lang] = mod[lang];
-  return { en: mod.en, overlays, serverDICT: mod.serverDICT, simDICT: mod.simDICT, adminDICT: mod.adminDICT };
+  const adminOverlays = {};
+  for (const lang of NON_EN) adminOverlays[lang] = mod[`admin_${lang}`];
+  return { en: mod.en, overlays, serverDICT: mod.serverDICT, simDICT: mod.simDICT, adminEn: mod.adminEn, adminOverlays };
 }
 
 const isPresent = (v) => typeof v === 'string' && v.trim().length > 0;
 
 async function main() {
-  const { en, overlays, serverDICT, simDICT, adminDICT } = await loadSources();
+  const { en, overlays, serverDICT, simDICT, adminEn, adminOverlays } = await loadSources();
   const enFlat = flatten(en); // dotted key -> English string
 
   // Per-key per-locale blocked seed: "scope:key" -> Map(locale -> reason).
@@ -167,7 +173,7 @@ async function main() {
     keyEntries.push({ composite: `main:${key}`, scope: 'main', key, enHash, placeholders: ph, locales });
   }
 
-  // DICT scopes: sim / server / admin. Each is a flat Record<locale, Record<key,string>>.
+  // DICT scopes: sim / server. Each is a DENSE flat Record<locale, Record<key,string>>.
   const addDictScope = (scope, dict) => {
     for (const key of Object.keys(dict.en)) {
       const enVal = dict.en[key];
@@ -191,7 +197,48 @@ async function main() {
   };
   addDictScope('sim', simDICT);
   addDictScope('server', serverDICT);
-  addDictScope('admin', adminDICT);
+
+  // admin scope: a flat en base + SPARSE flat overlays (Phase 8). Unlike sim/server
+  // it is dialect-aware and sparse-capable: a locale "provides" a key via its own
+  // overlay or (for a dialect) its base chain, exactly like the main scope's
+  // providedByLang - so an omitted admin key naturally yields `pending`. The blocked
+  // seed still takes precedence (the admin cognate backstops).
+  const addSparseScope = (scope, enMap, scopeOverlays) => {
+    const enKeys = Object.keys(enMap);
+    const provided = {};
+    for (const lang of NON_EN) {
+      const set = new Set();
+      const own = scopeOverlays[lang] || {};
+      for (const k of Object.keys(own)) if (isPresent(own[k])) set.add(k);
+      const base = DIALECT_BASE[lang];
+      if (base === 'en') {
+        for (const k of enKeys) set.add(k); // English dialect inherits every key
+      } else if (base) {
+        const baseOverlay = scopeOverlays[base] || {};
+        for (const k of Object.keys(baseOverlay)) if (isPresent(baseOverlay[k])) set.add(k);
+      }
+      provided[lang] = set;
+    }
+    for (const key of enKeys) {
+      const enVal = enMap[key];
+      const ph = placeholdersOf(enVal);
+      const enHash = contentHash(enVal, ph);
+      const blockedForKey = blockedRows.get(`${scope}:${key}`);
+      const locales = {};
+      for (const lang of NON_EN) {
+        const reason = blockedForKey && blockedForKey.get(lang);
+        if (reason !== undefined) {
+          locales[lang] = { state: 'blocked', reason };
+        } else {
+          locales[lang] = provided[lang].has(key)
+            ? { state: 'translated', srcHash: enHash, by: 'human' }
+            : { state: 'pending' };
+        }
+      }
+      keyEntries.push({ composite: `${scope}:${key}`, scope, key, enHash, placeholders: ph, locales });
+    }
+  };
+  addSparseScope('admin', adminEn, adminOverlays);
 
   // Deterministic ordering: by scope rank, then by key path (codepoint order).
   keyEntries.sort(
