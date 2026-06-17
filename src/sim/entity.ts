@@ -90,6 +90,7 @@ export function recalcPlayerStats(e: Entity, cls: PlayerClass, equipment: Player
     if (a.kind === 'buff_ap') bonusAp += a.value;
     else if (a.kind === 'buff_armor') s.armor += a.value;
     else if (a.kind === 'buff_int') s.int += a.value;
+    else if (a.kind === 'buff_spi') s.spi += a.value;
     else if (a.kind === 'buff_sta') s.sta += a.value;
     else if (a.kind === 'buff_allstats') {
       s.str += a.value; s.agi += a.value; s.sta += a.value; s.int += a.value; s.spi += a.value;
@@ -117,6 +118,9 @@ export function recalcPlayerStats(e: Entity, cls: PlayerClass, equipment: Player
     s.agi += Math.max(2, Math.floor(lvl / 2));
   }
   if (mods?.stats.armorPct) s.armor = Math.round(s.armor * (1 + mods.stats.armorPct));
+  // Floor Spirit at 0 so a Spirit-siphoning debuff (negative buff_spi) can never
+  // drive out-of-combat regen (updateRegen reads stats.spi) below zero.
+  s.spi = Math.max(0, s.spi);
 
   e.stats = s;
   const weapon = (equipment.mainhand && ITEMS[equipment.mainhand]?.weapon) || { min: 1, max: 2, speed: 2 };

@@ -46,7 +46,7 @@ export type AiState = 'idle' | 'chase' | 'attack' | 'flee' | 'evade' | 'dead';
 export type AuraKind =
   | 'dot' | 'slow' | 'stun' | 'root' | 'incapacitate' | 'polymorph'
   | 'attackspeed' | 'debuff_ap' | 'buff_ap' | 'buff_armor' | 'buff_int' | 'buff_dodge' | 'buff_speed' | 'buff_haste'
-  | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_allstats' | 'thorns' | 'form_bear'
+  | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_spi' | 'buff_allstats' | 'thorns' | 'form_bear'
   | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence';
 
 export interface Aura {
@@ -265,6 +265,15 @@ export interface MobTemplate {
   // the damage *they* deal weaker. `ap` is the attack-power reduction (applied
   // as a negative buff_ap aura); `chance` defaults to 1 (every hit, refreshing).
   demoralize?: { ap: number; duration: number; chance?: number; name?: string };
+  // On-hit curse: a landed melee swing has `chance` to siphon the victim's
+  // Spirit for `duration`, slowing their out-of-combat mana/health regen
+  // (updateRegen reads `stats.spi`). Rides a `buff_spi` aura with a NEGATIVE
+  // value — recalcPlayerStats folds it and floors Spirit at 0, so there is no
+  // new regen math. Distinct from manaBurn (one-shot mana drain) and enfeeble
+  // (Intellect → mana-pool size): this attacks the REGEN axis. Only meaningful
+  // on mana users; applied to them alone. Hostile mobs only (a friendly pet,
+  // mobSwing's other caller, never debuffs the party).
+  siphonSpirit?: { chance: number; spi: number; duration: number; name: string; school?: Aura['school'] };
   // Innate "spiked hide" trait: melee attackers take flat damage back on every
   // connecting swing — the mob-side equivalent of the druid Thorns aura.
   thorns?: { value: number; school?: Aura['school']; name?: string };

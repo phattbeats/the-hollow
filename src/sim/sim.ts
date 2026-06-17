@@ -4243,6 +4243,25 @@ export class Sim {
         school: enfeeble.school ?? 'shadow',
       });
     }
+    // Spirit Siphon: a landed hit can drain a caster's Spirit, slowing their
+    // out-of-combat mana/health regen (updateRegen reads stats.spi). Mana users
+    // only (it does nothing to rage/energy users); hostile mobs only, so a
+    // friendly pet (mobSwing's other caller) never debuffs the party. Rides
+    // buff_spi with a negative value, so recalcPlayerStats folds it through with
+    // no new regen math; it expires like any buff* aura.
+    const siphon = MOBS[mob.templateId]?.siphonSpirit;
+    if (siphon && mob.hostile && !target.dead && target.resourceType === 'mana' && this.rng.chance(siphon.chance)) {
+      this.applyAura(target, {
+        id: `siphon_spirit_${mob.templateId}`,
+        name: siphon.name,
+        kind: 'buff_spi',
+        remaining: siphon.duration,
+        duration: siphon.duration,
+        value: -Math.abs(siphon.spi),
+        sourceId: mob.id,
+        school: siphon.school ?? 'shadow',
+      });
+    }
     // On-hit chill: frost-touched mobs numb the victim, slowing their movement.
     const chill = MOBS[mob.templateId]?.chillOnHit;
     if (chill && !mob.dead && !target.dead && this.rng.chance(chill.chance)) {

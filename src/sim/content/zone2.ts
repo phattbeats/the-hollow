@@ -208,6 +208,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     hpBase: 330, hpPerLevel: 60, dmgBase: 16, dmgPerLevel: 3.8, attackSpeed: 2.0,
     armorPerLevel: 30, moveSpeed: 7, aggroRadius: 13,
     aoePulse: { min: 18, max: 26, radius: 11, every: 9, name: 'Dirge of Nhalia', school: 'shadow' },
+    // Spirit Siphon: the priestess's touch drains a caster's Spirit, choking
+    // their out-of-combat mana regen for the duration (see siphonSpirit affix).
+    siphonSpirit: { chance: 0.3, spi: 14, duration: 10, name: 'Spirit Siphon', school: 'shadow' },
     summonAdds: { mobId: 'nhalia_mourner', count: 2, atHpPct: [0.65, 0.35] },
     loot: [
       { copper: 350, chance: 1 },
