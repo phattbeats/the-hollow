@@ -73,30 +73,34 @@ describe('GameServer sessions', () => {
     expect(closePlaySession).toHaveBeenCalledWith(99);
   });
 
-  it('allows only one ONLINE character per account, and lets the account back in once it leaves', async () => {
+  it('allows two ONLINE characters per account, and lets the account back in once one leaves', async () => {
     const server = new GameServer();
     const a = expectJoined(server.join(fakeWs(), 20, 201, 'Aone', 'warrior', null));
+    const a2 = expectJoined(server.join(fakeWs(), 20, 202, 'Atwo', 'mage', null));
 
-    // same account, a different character is rejected while the first is online
-    expect(server.join(fakeWs(), 20, 202, 'Atwo', 'mage', null)).toEqual({
-      error: 'another character on this account is already in the world',
+    expect((server as any).sessionByCharacterId(202)).toBe(a2);
+
+    // same account, a third character is rejected while two are online
+    expect(server.join(fakeWs(), 20, 204, 'Athree', 'rogue', null)).toEqual({
+      error: 'too many characters on this account are already in the world',
     });
 
     // a different account is unaffected
     const b = expectJoined(server.join(fakeWs(), 21, 203, 'Bone', 'priest', null));
     expect((server as any).sessionByCharacterId(203)).toBe(b);
 
-    // once the account's online character leaves, another of its characters may join
+    // once one of the account's online characters leaves, another of its characters may join
     await server.leave(a, 'test');
-    const a2 = expectJoined(server.join(fakeWs(), 20, 202, 'Atwo', 'mage', null));
-    expect((server as any).sessionByCharacterId(202)).toBe(a2);
+    const a3 = expectJoined(server.join(fakeWs(), 20, 204, 'Athree', 'rogue', null));
+    expect((server as any).sessionByCharacterId(204)).toBe(a3);
   });
 
-  it('exempts GM characters from the one-per-account cap (for supervision)', () => {
+  it('exempts GM characters from the per-account session cap (for supervision)', () => {
     const server = new GameServer();
     expectJoined(server.join(fakeWs(), 30, 301, 'Gmaa', 'warrior', null));
-    // a second character on the same account joins because it is flagged GM
-    expectJoined(server.join(fakeWs(), 30, 302, 'Gmbb', 'warrior', null, true));
-    expect((server as any).sessionByCharacterId(302)).not.toBeNull();
+    expectJoined(server.join(fakeWs(), 30, 302, 'Gmbb', 'warrior', null));
+    // a third character on the same account joins because it is flagged GM
+    expectJoined(server.join(fakeWs(), 30, 303, 'Gmcc', 'warrior', null, true));
+    expect((server as any).sessionByCharacterId(303)).not.toBeNull();
   });
 });
