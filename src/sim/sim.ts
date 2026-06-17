@@ -2103,10 +2103,22 @@ export class Sim {
     return mult < 0 ? 0 : mult;
   }
 
+  // Weakening Hex: while a `hex` aura rides the source, the damage AND healing it
+  // deals are scaled by (1 - value). Read by dealDamage (outgoing damage) and
+  // applyHeal (outgoing healing) so a hexed player's whole output is throttled.
+  private hexOutputMult(source: Entity | null): number {
+    if (!source) return 1;
+    let mult = 1;
+    for (const a of source.auras) {
+      if (a.kind === 'hex') mult *= 1 - a.value;
+    }
+    return mult < 0 ? 0 : mult;
+  }
+
   private applyHeal(source: Entity, target: Entity, amount: number, ability: string): void {
     if (target.dead) return;
     const crit = this.rng.chance(this.spellCrit(source));
-    let healed = Math.round(amount * (crit ? 1.5 : 1) * this.healingTakenMult(target));
+    let healed = Math.round(amount * (crit ? 1.5 : 1) * this.hexOutputMult(source) * this.healingTakenMult(target));
     healed = Math.min(healed, target.maxHp - target.hp);
     target.hp += healed;
     this.emit({ type: 'heal2', sourceId: source.id, targetId: target.id, amount: healed, crit, ability });
@@ -3271,6 +3283,13 @@ export class Sim {
       amount = Math.round(amount * 0.9);
     }
 
+    // Weakening Hex: a hexed source deals less damage (mirrors the healing cut in
+    // applyHeal). Self-damage paths (source === target) are left untouched.
+    if (source && source.id !== target.id) {
+      const hexMult = this.hexOutputMult(source);
+      if (hexMult !== 1) amount = Math.round(amount * hexMult);
+    }
+
     // absorb shields soak damage first
     if (amount > 0) {
       for (let i = target.auras.length - 1; i >= 0 && amount > 0; i--) {
@@ -4285,6 +4304,23 @@ export class Sim {
           sourceId: mob.id, school: dread.school ?? 'shadow', breaksOnDamage: true,
         });
       }
+    }
+    // Weakening Hex: a landed hit can curse the player victim, scaling the damage
+    // AND healing they deal by (1 - reductionPct) for a while. Guarded on
+    // `hostile` so a friendly pet (mobSwing's other caller) never hexes the party,
+    // and on a player target. Rides a dedicated `hex` aura read by hexOutputMult.
+    const hex = MOBS[mob.templateId]?.hex;
+    if (hex && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(hex.chance)) {
+      this.applyAura(target, {
+        id: `hex_${mob.templateId}`,
+        name: hex.name,
+        kind: 'hex',
+        remaining: hex.duration,
+        duration: hex.duration,
+        value: hex.reductionPct,
+        sourceId: mob.id,
+        school: hex.school ?? 'shadow',
+      });
     }
   }
 
