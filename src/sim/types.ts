@@ -201,6 +201,10 @@ export interface MobTemplate {
   // On-hit debuff: a chance per landed melee swing to inflict a stacking-refresh
   // damage-over-time poison on the struck target (spiders, serpents, scorpions).
   venom?: { chance: number; perTick: number; interval: number; duration: number; name: string; school?: string };
+  // On-hit debuff: the fire-school twin of `venom` — a chance per landed melee
+  // swing to set a stacking-refresh burning damage-over-time (cinder/ember mobs,
+  // demolitionists carrying blasting powder). Same DoT seam, school defaults 'fire'.
+  cinder?: { chance: number; perTick: number; interval: number; duration: number; name: string; school?: string };
   // On-death mechanic ("Death Throes"): a volatile creature does not detonate
   // the instant it dies. Its corpse destabilizes for `delay` seconds (a
   // telegraph players can run from), then bursts for min..max `school` damage
