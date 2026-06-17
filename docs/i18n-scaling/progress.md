@@ -14,7 +14,7 @@
 | 4 QA | DONE (PASS) | 2026-06-16 | 2026-06-16 |
 | 5 - Status registry | DONE (2026-06-16) | scanner + registry + views | pending set empty (still dense) |
 | 5 QA | DONE (PASS) | 2026-06-16 | 2026-06-16 |
-| 6 - Unlock + two-tier CI | NOT STARTED | | |
+| 6 - Unlock + two-tier CI | DONE | 2026-06-16 | 2026-06-16 |
 | 6 QA | NOT STARTED | | |
 | 7 - Release fill tooling | NOT STARTED | | |
 | 7 QA | NOT STARTED | | |
@@ -76,12 +76,21 @@ OUT OF SCOPE (untouched, deferred): talent `titleOverrides` es_ES/fr_CA full blo
 - [x] `i18n:scan` wired into `build` + `pretest` (after `i18n:build`); reproducibility + registry-in-sync test `tests/i18n_status_registry.test.ts` green (coverage of full universe, independent enHash re-derivation, pending-empty, blocked load-bearing/no-over-allow, placeholder-in-hash sensitivity, regenerate-then-`git diff --exit-code`). Teeth proven by mutation (drop a key -> coverage fails; forge a non-cognate blocked row -> over-allow fails).
 - [x] `pending` set empty at this stage (everything still dense after Phase 4). Resolved-table byte-equivalence unchanged (SHA `d9db528..`).
 
-### Phase 6 - The unlock: relax types + two-tier CI
-- [ ] Flat overlays relaxed to `Partial<Record<TranslationKey,string>>` (sparse legal)
-- [ ] `t()` throws on untracked key in dev/test; renders English for `pending` keys on non-release builds only; release build asserts empty `pending`
-- [ ] `.github/workflows/ci.yml` split by ref: PR gate (tsc on dense artifact, registry-in-sync, `s3_registered`, placeholder parity for existing) vs release gate (14-locale H3/H3b, copied-English content, `s3_localized`, empty-pending)
-- [ ] S3 guard split into `s3_registered` (PR) + `s3_localized` (release); content tests moved to release tier
-- [ ] Proof: English-only sample key passes PR tier; deliberately incomplete locale fails release tier
+### Phase 6 - The unlock: relax types + two-tier CI - DONE (2026-06-16)
+- [x] Flat overlays relaxed to `Partial<Record<TranslationKey,string>>` (sparse legal). `TranslationKey` deepened to `Leaves<typeof en, 6>` so it reaches the depth-6 leaves (objectives/pois `.label`); measured no tsc cost. Temporary dense test `i18n_flat_overlay_dense.test.ts` deleted; permanent subset guard `i18n_overlay_key_membership.test.ts` kept (catches entity-id typos the template-literal `${string}` key members accept).
+- [x] `t()` throws on an untracked key in dev/test (returns raw key on release), renders English for a registry-`pending` key on **non-release builds only**, and HARD-FAILS on a pending key on a release build. `tOptional`/`hasTranslation`/`translationValue` UNCHANGED (return null on miss, so `tEntity` fallback is preserved). Release flag: `isReleaseBuild()` = `I18N_RELEASE=1` (tests/release step) OR `import.meta.env.PROD` (real Vite build), read lazily on the cold path. `scripts/i18n_build.mjs` emits a per-locale `pending` list (dialect-aware, mirrors `i18n_scan.mjs`; empty while dense).
+- [x] `.github/workflows/ci.yml` split by ref into two jobs in one file: `pr-gate` (pull_request / push non-release / dispatch; `npm test` without the tier flag) vs `release-gate` (push `release/**`; `I18N_RELEASE_TIER=1 npm test`). Routing proven: exactly one job per event.
+- [x] S3 guard split into `s3_registered` (PR) + `s3_localized` (release, all 14 locales), preserving the `sim.ts`/`hud.ts` source scraping; H3b + coverage quest/talent copied-English + empty-`pending` (registry AND t-behavior) moved to release-only via `I18N_RELEASE_TIER`.
+- [x] Proof (5 gate cases, all confirmed directly): English-only sample key (pending) PASSES PR tier (118 passed/7 skipped) and renders English on non-release; same key FAILS the release tier (empty-pending blocks); untracked key THROWS in dev/test and FAILS the PR gate (tsc `TS2345`); pending key HARD-FAILS on a release build (doMock test). Full suite: PR tier 1282 passed/7 skipped; release tier 1289 passed. `npm run build`/`build:env`/`build:server` clean.
+
+Commits: `3307adb` (relax overlay types), `1ece3dc` (t() miss + pending emit), `8a6a473` (CI split), `9beb071` (S3 split + content re-home), `dcd07bd` (gate-proof fix: t-behavior empty-pending -> release tier), this doc commit.
+BASELINE NOTE: `src/ui/i18n.resolved.sha256` is UNCHANGED (`d9db528..`). The dense tree's resolved table does not change in Phase 6 - overlays are NOT depopulated, so `pending` is empty and nothing English-fills differently; adding the generated `pending` export does not touch `translations`, so the hash is identical. The phase doc's STEP 3 expectation that the baseline moves is conditional on actual depopulation (Phase 7); it does not happen while overlays stay full. (Verified: regen byte-identical, hash `d9db528..`.) This is a phase-DOC defect, not a code defect - both the correctness and cross-platform review lanes independently confirmed the no-baseline-change is correct. NOTE FOR PHASE 6 QA: do NOT flag the unchanged hash as a missed STEP-3 step.
+
+Reviews (coverage mode, whole diff `30e070e..HEAD`, adversarial-verify Workflow + a direct re-run of the privacy lane): **0 BLOCKING / 0 HIGH / 0 MEDIUM / 0 LOW, 10 INFO.**
+- `privacy-security-review`: NON-BLOCKING. "English cannot leak to a translated player on any release path" - `import.meta.env.PROD` is reliably `true` in the `vite build` client (no mode/define override); `I18N_RELEASE` only ADDS release-ness; the pending branch throws before `interpolate` on release; with `PENDING_TOTAL===0` the hot path is byte-identical to before; no new non-client leak path. Fail-closed by design.
+- `cross-platform-sync`: NON-BLOCKING. S3 split preserves the full `sim.ts`/`hud.ts` scraping + recognition coverage (recognition is locale-independent, so `s3_registered` in `en` still catches an unregistered emit); the build `computePending` and scan `providedByLang` produce byte-identical pending sets (verified dense AND synthetic-sparse, dialect-aware); determinism + `src/sim`/`server` import isolation intact; baseline `d9db528..` unchanged.
+- correctness/requirement-gaps: NON-BLOCKING. `t()` correct on every branch; no existing runtime caller breaks (no template-literal main-`t()` keys; entity ids use `tOptional`, unchanged; `index.html` keys newly pinned); CI routes exactly one job per event, release is a true superset; membership/pending/English-fill invariants each fail correctly when a violation is planted.
+- Deferred INFO (optional hardening, not required for Phase 6): (1) extract the duplicated `DIALECT_BASE`/`LOCALES`/`isPresent` shared by `scripts/i18n_build.mjs` (computePending) and `scripts/i18n_scan.mjs` (providedByLang) into one module so a future edit cannot silently break their lockstep - better yet, when `pending` goes live in Phase 7 add a test cross-checking build-pending == registry-pending; (2) optionally have `readTranslationKey` validate against the table (return null on a miss) so a future runtime-injected `data-i18n` attribute degrades to no-op instead of throwing in dev (no such injection exists today).
 
 ### Phase 7 - Release fill worklist + docs
 - [ ] `scripts/i18n_fill_worklist.mjs` emits per-language `pending` delta (`{key, english, placeholders, siblings}`), one batch per language
