@@ -29,11 +29,15 @@ import { updateFollowCameraYaw, wrapAngle } from './game/camera_follow';
 
 const WORLD_SEED = 20061; // fixed: World of ClaudeCraft is a persistent place
 const CLICK_MOVE_TURN_RATE = 4.2; // rad/sec; responsive turning while the camera stays decoupled from click spam
+const HOMEPAGE_MUSIC_MUTED_KEY = 'woc_homepage_music_muted';
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.querySelector(sel) as T;
 let pendingDeleteCharacter: CharacterSummary | null = null;
 let homepageTrailer: HTMLVideoElement | null = null;
 let homepageMusic: HTMLAudioElement | null = null;
+let homepageMusicStarted = false;
+let homepageMusicMuted = readHomepageMusicMuted();
+let removeHomepageMusicGestureListeners: (() => void) | null = null;
 
 const SITE_URL = 'https://worldofclaudecraft.com/';
 
@@ -78,6 +82,24 @@ function escapeHtml(text: string): string {
 
 function technicalErrorMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
+}
+
+function readHomepageMusicMuted(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return window.localStorage.getItem(HOMEPAGE_MUSIC_MUTED_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function saveHomepageMusicMuted(muted: boolean): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(HOMEPAGE_MUSIC_MUTED_KEY, muted ? '1' : '0');
+  } catch {
+    // Private browsing or storage failures should not block the control.
+  }
 }
 
 function userFacingApiError(err: unknown): string {
@@ -2213,11 +2235,57 @@ function wireContractAddressCopy(): void {
   });
 }
 
+function syncHomepageMusicToggle(): void {
+  const btn = document.getElementById('homepage-music-toggle') as HTMLButtonElement | null;
+  if (!btn) return;
+  btn.classList.toggle('is-muted', homepageMusicMuted);
+  btn.setAttribute('aria-pressed', String(!homepageMusicMuted));
+}
+
+function playHomepageMusic(): void {
+  const el = homepageMusic;
+  if (!el || homepageMusicMuted || homepageMusicStarted) return;
+  void el.play().then(() => {
+    homepageMusicStarted = true;
+    removeHomepageMusicGestureListeners?.();
+    removeHomepageMusicGestureListeners = null;
+  }).catch(() => {
+    // Autoplay still blocked: a later gesture will retry.
+  });
+}
+
+function setHomepageMusicMuted(muted: boolean): void {
+  homepageMusicMuted = muted;
+  saveHomepageMusicMuted(muted);
+  const el = homepageMusic;
+  if (el) {
+    el.muted = muted;
+    if (muted) {
+      el.pause();
+      homepageMusicStarted = false;
+    } else {
+      playHomepageMusic();
+    }
+  }
+  syncHomepageMusicToggle();
+}
+
+function wireHomepageMusicToggle(): void {
+  const btn = document.getElementById('homepage-music-toggle') as HTMLButtonElement | null;
+  if (!btn) return;
+  syncHomepageMusicToggle();
+  btn.addEventListener('click', () => {
+    setHomepageMusicMuted(!homepageMusicMuted);
+  });
+}
+
 function wireStartScreens(): void {
   // Initial page translation and stats load
   translatePage();
+  hydrateIcons();
   void loadProjectStats();
   wireContractAddressCopy();
+  wireHomepageMusicToggle();
 
   // mode select
   const onlineBtn = $('#btn-online');
@@ -3104,30 +3172,27 @@ function initHomepageMusic(): void {
   if (homepageMusic) return;
   const el = new Audio('/audio/main-theme.mp3');
   el.loop = true;
+  el.muted = homepageMusicMuted;
   el.preload = 'auto';
   el.volume = 0.45;
   homepageMusic = el;
 
   const gestureEvents: Array<keyof WindowEventMap> = ['pointerdown', 'keydown', 'touchstart'];
-  let started = false;
-  const removeGestureListeners = (): void => {
+  removeHomepageMusicGestureListeners = (): void => {
     gestureEvents.forEach((ev) => window.removeEventListener(ev, onGesture));
   };
-  const start = (): void => {
-    if (started || !homepageMusic) return;
-    void el.play().then(() => { started = true; removeGestureListeners(); }).catch(() => {
-      // Autoplay still blocked — a later gesture will retry.
-    });
-  };
-  const onGesture = (): void => start();
+  const onGesture = (): void => playHomepageMusic();
   gestureEvents.forEach((ev) => window.addEventListener(ev, onGesture, { passive: true }));
-  start();
+  syncHomepageMusicToggle();
+  playHomepageMusic();
 }
 
 function fadeOutHomepageMusic(durationMs = 1600): void {
   const el = homepageMusic;
   if (!el) return;
   homepageMusic = null; // stop further control + block restarts
+  removeHomepageMusicGestureListeners?.();
+  removeHomepageMusicGestureListeners = null;
   const startVol = el.volume;
   const steps = 32;
   let i = 0;
@@ -3137,6 +3202,7 @@ function fadeOutHomepageMusic(durationMs = 1600): void {
     if (i >= steps) {
       window.clearInterval(id);
       el.pause();
+      homepageMusicStarted = false;
     }
   }, durationMs / steps);
 }
