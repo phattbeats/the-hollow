@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 const mainTs = readFileSync(new URL('../src/main.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+const hudTs = readFileSync(new URL('../src/ui/hud.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 
 function splitGameUiTemplate(): { templateHtml: string; liveHtml: string } {
   const marker = '<template id="game-ui-template">';
@@ -67,17 +68,27 @@ describe('client HTML shell', () => {
     expect(html).not.toContain('body.mobile-touch .donate-cta {\n    display: none;');
   });
 
-  it('renders the mobile XP bar under the top-left player card', () => {
-    expect(html).toContain('body.mobile-touch #xpbar {\n    position: fixed;');
-    expect(html).toContain('left: calc(max(8px, env(safe-area-inset-left)) + 52px);');
-    expect(html).toContain('top: calc(max(8px, env(safe-area-inset-top)) + 70px);');
-    expect(html).toContain('bottom: auto;');
-    expect(html).toContain('width: 194px;');
-    expect(html).toContain('height: 6px;\n    display: block;');
+  it('renders the mobile XP bar as a ring around the top-left class circle', () => {
+    expect(html).toContain('body.mobile-touch #xpbar {\n    display: none;\n  }');
+    expect(html).toContain('body.mobile-touch #player-frame {\n    --xp-ring-start: 210deg;\n    --xp-ring-arc: 360deg;');
+    expect(html).toContain('body.mobile-touch #player-frame::before {\n    content: "";');
+    expect(html).toContain('width: 73px;\n    height: 73px;');
+    expect(html).toContain('z-index: 2;');
+    expect(html).toContain('conic-gradient(from var(--xp-ring-start),');
+    expect(html).toContain('calc(var(--xp-fill, 0) * 360deg)');
+    expect(html).toContain('transparent var(--xp-ring-arc) 360deg');
+    expect(html).toContain('body.mobile-touch #player-frame {\n    position: fixed;\n    left: max(8px, env(safe-area-inset-left));\n    top: max(8px, env(safe-area-inset-top));\n    z-index: 21;');
+    expect(html).toContain('body.mobile-touch #player-frame .portrait-wrap { z-index: 3; }');
+    expect(html).toContain('body.mobile-touch #player-frame .uf-bars {\n    position: relative;\n    z-index: 1;');
+    expect(html).toContain('-webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));');
+    expect(html).toContain('body.mobile-touch #xpbar .fill,\n  body.mobile-touch #xpbar .ticks { display: none; }');
+    expect(html).toContain('body.mobile-touch #player-frame::before {\n      left: -5px;\n      top: -5px;\n      width: 73px;\n      height: 73px;');
     expect(html).toContain('body.mobile-touch #target-frame {\n    left: max(8px, env(safe-area-inset-left));\n    top: calc(max(8px, env(safe-area-inset-top)) + 90px);');
     expect(html).toContain('body.mobile-touch #party-frames {\n    position: fixed;\n    left: max(8px, env(safe-area-inset-left));\n    top: calc(max(8px, env(safe-area-inset-top)) + 92px);');
     expect(html).toContain('body.mobile-touch #party-frames.below-target {\n    top: calc(max(8px, env(safe-area-inset-top)) + 148px);');
     expect(html).not.toContain('body.mobile-touch.mobile-left-handed #xpbar,');
+    expect(hudTs).toContain("$('#xpbar').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));");
+    expect(hudTs).toContain("$('#player-frame').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));");
   });
 
   it('keeps the mobile homepage scrollable with a sticky header', () => {
@@ -106,29 +117,34 @@ describe('client HTML shell', () => {
     expect(html).not.toContain('id="mobile-meters"');
   });
 
-  it('keeps the mobile More button in the combat row', () => {
+  it('keeps the mobile More and Autorun buttons in the combat row', () => {
     const combatControls = html.slice(html.indexOf('<div id="mobile-combat-controls">'), html.indexOf('<div id="mobile-extra-controls">'));
     const primaryButtons = [...combatControls.matchAll(/<button class="mobile-btn"/g)];
+    const attack = combatControls.indexOf('id="mobile-attack-nearest"');
+    const autorun = combatControls.indexOf('id="mobile-autorun"');
+    const jump = combatControls.indexOf('id="mobile-jump"');
 
-    expect(primaryButtons).toHaveLength(6);
-    expect(html).toContain('grid-template-columns: 124px repeat(5, 58px);');
-    expect(html).toContain('grid-template-columns: 115px repeat(5, 54px);');
-    expect(html).toContain('grid-template-columns: 96px repeat(5, 42px);');
+    expect(primaryButtons).toHaveLength(7);
+    expect(attack).toBeGreaterThanOrEqual(0);
+    expect(autorun).toBeGreaterThan(attack);
+    expect(jump).toBeGreaterThan(autorun);
+    expect(html).toContain('grid-template-columns: 124px repeat(6, 58px);');
+    expect(html).toContain('grid-template-columns: 115px repeat(6, 54px);');
+    expect(html).toContain('grid-template-columns: 96px repeat(6, 42px);');
     expect(html).toContain('pointer-events: auto; align-items: end; z-index: 30;');
     expect(html).toContain('body.mobile-touch #mobile-more {\n    position: static;');
   });
 
-  it('keeps the mobile move zone clear of the centered skill bar', () => {
-    expect(html).toContain('width: min(34vw, calc(50vw - 126px));');
-    expect(html).toContain('min-width: 142px;');
-    expect(html).toContain('max-width: 300px;');
-  });
-
-  it('places mobile Autorun beside the spell bar', () => {
-    expect(html).toContain('body.mobile-touch #mobile-autorun {\n    position: fixed;');
-    expect(html).toContain('left: max(calc(18px + env(safe-area-inset-left)), calc(50% - 208px));');
-    expect(html).toContain('bottom: calc(72px + env(safe-area-inset-bottom));');
-    expect(html).toContain('body.mobile-touch.mobile-window-open #mobile-autorun { display: none; }');
+  it('keeps the mobile spell bar in a scrollable row between the joysticks', () => {
+    expect(html).toContain('width: min(30vw, 132px);');
+    expect(html).toContain('min-width: 112px;');
+    expect(html).toContain('height: min(36vh, 172px);');
+    expect(html).toContain('left: calc(max(18px, env(safe-area-inset-left)) + 134px);');
+    expect(html).toContain('right: calc(max(18px, env(safe-area-inset-right)) + 134px);');
+    expect(html).toContain('body.mobile-touch #actionbar {\n    display: flex;\n    flex-wrap: nowrap;');
+    expect(html).toContain('overflow-x: auto;\n    overflow-y: hidden;');
+    expect(html).toContain('touch-action: pan-x;');
+    expect(html).toContain('body.mobile-touch .action-btn { width: 42px; height: 42px; flex: 0 0 42px;');
   });
 
   it('keeps the expanded mobile More tray inside the viewport', () => {
