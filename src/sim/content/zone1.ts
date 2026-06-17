@@ -204,6 +204,8 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
       { itemId: 'linen_scrap', chance: 0.3 },
     ],
     scale: 1.0, color: 0x943126,
+    // A practiced thug flings a handful of road grit to foul your aim.
+    blind: { chance: 0.25, miss: 0.3, duration: 5, name: 'Blinding Powder', school: 'physical' },
   },
   restless_bones: {
     id: 'restless_bones', name: 'Restless Bones', minLevel: 5, maxLevel: 7, family: 'undead',
