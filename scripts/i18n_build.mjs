@@ -24,6 +24,7 @@ import * as esbuild from 'esbuild';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { flatten, unflatten } from './i18n_flatten.mjs';
+import { pseudoLocalize } from './i18n_pseudo.mjs';
 
 const root = process.cwd();
 const OUT_PATH = path.join(root, 'src/ui/i18n.resolved.generated.ts');
@@ -130,7 +131,7 @@ function banner() {
   ].join('\n');
 }
 
-function emit(resolved, pending) {
+function emit(resolved, pending, enXA) {
   const lines = [banner(), '', "import type { EnTranslations } from './i18n.en';", ''];
   for (const lang of LOCALES) {
     lines.push(`export const ${lang}: EnTranslations = ${JSON.stringify(resolved[lang], null, 2)};`);
@@ -148,6 +149,16 @@ function emit(resolved, pending) {
   // `providedByLang`; `en` is the source and is never pending. EMPTY while the
   // overlays stay dense.
   lines.push('export const pending: Record<string, readonly string[]> = ' + JSON.stringify(pending, null, 2) + ';');
+  lines.push('');
+  // en_XA: the dev-only pseudo-locale (Phase 9). Every `en` leaf accent-pushed and
+  // bracketed with {placeholders} preserved (see scripts/i18n_pseudo.mjs). It is
+  // DELIBERATELY NOT a member of `translations` above, so it never enters
+  // supportedLanguages, the language picker, hreflang, or the release gate. The
+  // runtime loads it ONLY behind a dev gate (?lang=en_XA on a non-release build) to
+  // surface hard-coded literals that never became t() keys, and a production build
+  // tree-shakes it out via an import.meta.env.PROD guard. Typed `: EnTranslations`
+  // because the transform preserves the `en` structure exactly.
+  lines.push(`export const en_XA: EnTranslations = ${JSON.stringify(enXA, null, 2)};`);
   lines.push('');
   return lines.join('\n');
 }
@@ -201,10 +212,13 @@ async function main() {
     resolved[lang] = out;
   }
   const pending = computePending(en, locales);
-  const text = emit(resolved, pending);
+  // Generate en_XA from the resolved (dense) `en` so the pseudo table carries every
+  // leaf, then emit it as a separate dev-only export (never in `translations`).
+  const enXA = pseudoLocalize(resolved.en);
+  const text = emit(resolved, pending, enXA);
   writeFileSync(OUT_PATH, text);
   console.log(
-    `generated ${path.relative(root, OUT_PATH)} (${LOCALES.length} locales, ${Buffer.byteLength(text, 'utf8')} bytes)`,
+    `generated ${path.relative(root, OUT_PATH)} (${LOCALES.length} locales + en_XA pseudo, ${Buffer.byteLength(text, 'utf8')} bytes)`,
   );
 }
 

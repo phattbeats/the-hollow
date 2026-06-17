@@ -24,6 +24,7 @@
 import * as esbuild from 'esbuild';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { pseudoLocalize } from './i18n_pseudo.mjs';
 
 const root = process.cwd();
 const OUT_PATH = path.join(root, 'src/admin/i18n.resolved.generated.ts');
@@ -76,7 +77,7 @@ function banner() {
   ].join('\n');
 }
 
-function emit(resolved, pending) {
+function emit(resolved, pending, enXA) {
   const lines = [banner(), '', "import type { AdminTranslations } from './i18n.en';", ''];
   for (const lang of LOCALES) {
     lines.push(`export const ${lang}: AdminTranslations = ${JSON.stringify(resolved[lang], null, 2)};`);
@@ -92,6 +93,15 @@ function emit(resolved, pending) {
   // gate asserts this set is empty). Dialect-aware; `en` is the source, never
   // pending. Mirrors scripts/i18n_scan.mjs `providedByLang` so build + registry agree.
   lines.push('export const pending: Record<string, readonly string[]> = ' + JSON.stringify(pending, null, 2) + ';');
+  lines.push('');
+  // en_XA: the dev-only ADMIN pseudo-locale (Phase 9). Operators are users, so the
+  // admin dashboard gets the same literal-surfacing tool as the game. Every admin
+  // `en` value accent-pushed and bracketed with {placeholders} preserved. NOT a
+  // member of `translations`, so it never enters the admin supportedLanguages, the
+  // operator language list, or the admin release gate; the admin runtime loads it
+  // only behind a dev gate (?lang=en_XA on a non-release build) and a production
+  // build tree-shakes it out via an import.meta.env.PROD guard.
+  lines.push(`export const en_XA: AdminTranslations = ${JSON.stringify(enXA, null, 2)};`);
   lines.push('');
   return lines.join('\n');
 }
@@ -145,11 +155,14 @@ async function main() {
     resolved[lang] = out;
   }
   const pending = computePending(enKeys, locales);
-  const text = emit(resolved, pending);
+  // Generate en_XA from the resolved (dense) admin `en` and emit it as a separate
+  // dev-only export (never in `translations`).
+  const enXA = pseudoLocalize(resolved.en);
+  const text = emit(resolved, pending, enXA);
   writeFileSync(OUT_PATH, text);
   const pendingTotal = Object.values(pending).reduce((n, ks) => n + ks.length, 0);
   console.log(
-    `generated ${path.relative(root, OUT_PATH)} (${LOCALES.length} locales, ${enKeys.length} keys, ` +
+    `generated ${path.relative(root, OUT_PATH)} (${LOCALES.length} locales + en_XA pseudo, ${enKeys.length} keys, ` +
       `pending=${pendingTotal}, ${Buffer.byteLength(text, 'utf8')} bytes)`,
   );
 }

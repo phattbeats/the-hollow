@@ -1,6 +1,7 @@
 import {
   translations,
   pending,
+  en_XA,
   en, es, es_ES, fr_FR, fr_CA, en_CA, it_IT, de_DE, zh_CN, zh_TW, ko_KR, ja_JP, pt_BR, ru_RU,
 } from './i18n.resolved.generated';
 import type { Leaves, TranslationKey, InterpolationValue, InterpolationValues, DeepPartial } from './i18n.en';
@@ -28,6 +29,21 @@ export type SupportedLanguage = keyof typeof translations;
 export const supportedLanguages = Object.keys(translations) as SupportedLanguage[];
 
 let currentLanguage: SupportedLanguage = "en";
+
+// --- Phase 9: en_XA dev-only pseudo-locale --------------------------------------
+//
+// en_XA is the generated pseudo-locale (accent-pushed + bracketed `en`, with
+// {placeholders} preserved - see scripts/i18n_pseudo.mjs). It is deliberately NOT a
+// member of `translations`, so it never appears in supportedLanguages, the language
+// picker (populated from supportedLanguages), index.html hreflang, or the release
+// gate / registry. It is selectable ONLY via ?lang=en_XA on a NON-RELEASE build, as
+// a developer tool: any on-screen text that stays plain ASCII with no brackets is a
+// hard-coded literal that never became a t() key. The import.meta.env.PROD guard in
+// tableFor() is statically true in a production `vite build`, so Rollup
+// dead-code-eliminates the en_XA reference and tree-shakes the pseudo table out of
+// the shipped bundle entirely.
+const DEV_PSEUDO_LOCALE = "en_XA";
+let pseudoActive = false;
 
 export function isSupportedLanguage(value: string): value is SupportedLanguage {
   return Object.prototype.hasOwnProperty.call(translations, value);
@@ -71,7 +87,13 @@ function setStoredLanguage(lang: SupportedLanguage): void {
 if (typeof window !== "undefined" && window.location) {
   const params = new URLSearchParams(window.location.search);
   const langParam = params.get("lang");
-  if (langParam && isSupportedLanguage(langParam)) {
+  if (langParam === DEV_PSEUDO_LOCALE && !isReleaseBuild()) {
+    // Dev-only en_XA pseudo-locale: keep currentLanguage = "en" as the base and flip
+    // the pseudo flag. en_XA is not a SupportedLanguage and is never persisted, so it
+    // cannot leak into supportedLanguages, the picker, or a stored preference. On a
+    // release build this branch is skipped, so ?lang=en_XA degrades to the default.
+    pseudoActive = true;
+  } else if (langParam && isSupportedLanguage(langParam)) {
     currentLanguage = langParam;
   } else {
     currentLanguage = getStoredLanguage() ?? currentLanguage;
@@ -85,6 +107,7 @@ export function getLanguage(): SupportedLanguage {
 }
 
 export function setLanguage(lang: SupportedLanguage): void {
+  pseudoActive = false; // selecting a real locale leaves the dev pseudo-locale
   currentLanguage = lang;
   setStoredLanguage(lang);
 }
@@ -148,9 +171,23 @@ function onUntrackedKey(key: string): string {
   return key;
 }
 
+type ResolvedTable = (typeof translations)[SupportedLanguage];
+
+// The dense table the current-language read paths resolve against. Normally
+// translations[lang]; the en_XA pseudo table only when the dev pseudo-locale is
+// active AND the requested locale is the current one (so an explicit read of some
+// other locale is unaffected). en_XA is referenced solely inside the
+// !import.meta.env.PROD branch, so a production build tree-shakes it away.
+function tableFor(lang: SupportedLanguage): ResolvedTable {
+  if (!import.meta.env.PROD && pseudoActive && lang === currentLanguage) {
+    return en_XA;
+  }
+  return translations[lang];
+}
+
 export function t(key: TranslationKey, values?: InterpolationValues): string {
   const parts = key.split(".");
-  let current: unknown = translations[currentLanguage];
+  let current: unknown = tableFor(currentLanguage);
   for (const part of parts) {
     if (current && typeof current === "object" && part in current) {
       current = (current as Record<string, unknown>)[part];
@@ -169,7 +206,7 @@ export function t(key: TranslationKey, values?: InterpolationValues): string {
 
 function translationValue(key: string, lang: SupportedLanguage): string | null {
   const parts = key.split(".");
-  let current: unknown = translations[lang];
+  let current: unknown = tableFor(lang);
   for (const part of parts) {
     if (current && typeof current === "object" && part in current) {
       current = (current as Record<string, unknown>)[part];

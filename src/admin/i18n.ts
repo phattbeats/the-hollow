@@ -1,4 +1,4 @@
-import { translations, pending } from './i18n.resolved.generated';
+import { translations, pending, en_XA } from './i18n.resolved.generated';
 
 // The admin dashboard's own i18n layer (Phase 8: overlay + registry + release-gate
 // model). Operators are users, so ALL rendered admin text routes through t().
@@ -14,10 +14,25 @@ export const DICT = translations as Record<string, Record<string, string>>;
 
 const SUPPORTED = Object.keys(DICT);
 let current = "en";
+
+// --- Phase 9: en_XA dev-only pseudo-locale (mirrors src/ui/i18n.ts) -------------
+//
+// Operators are users, so the admin dashboard gets the same literal-surfacing tool
+// as the game. en_XA is the generated pseudo-locale (accent-pushed + bracketed `en`,
+// {placeholders} preserved); it is NOT a member of `translations`/SUPPORTED, so it
+// never enters the operator language list or the admin release gate. Selectable ONLY
+// via ?lang=en_XA on a NON-RELEASE build; the import.meta.env.PROD guard in
+// tableFor() tree-shakes the pseudo table out of the production admin bundle.
+const DEV_PSEUDO_LOCALE = "en_XA";
+let pseudoActive = false;
+
 function detect(): string {
   try {
     if (typeof window !== "undefined" && window.location) {
       const q = new URLSearchParams(window.location.search).get("lang");
+      // Dev-only pseudo-locale: flip the flag, keep the base locale at "en". Skipped
+      // on a release build, so ?lang=en_XA degrades to the default for operators.
+      if (q === DEV_PSEUDO_LOCALE && !isReleaseBuild()) { pseudoActive = true; return "en"; }
       if (q && SUPPORTED.includes(q)) return q;
     }
     if (typeof localStorage !== "undefined") {
@@ -30,7 +45,7 @@ function detect(): string {
 current = detect();
 
 export function adminLanguage(): string { return current; }
-export function setAdminLanguage(lang: string): void { if (SUPPORTED.includes(lang)) current = lang; }
+export function setAdminLanguage(lang: string): void { if (SUPPORTED.includes(lang)) { pseudoActive = false; current = lang; } }
 
 // --- release detection + the t() miss / pending policy (mirrors src/ui/i18n.ts) ---
 //
@@ -82,8 +97,17 @@ function interpolate(tmpl: string, params?: Record<string, string | number>): st
   });
 }
 
+// The table the admin t() resolves against. Normally DICT[current]; the en_XA
+// pseudo table only when the dev pseudo-locale is active. en_XA is referenced solely
+// inside the !import.meta.env.PROD branch, so the production admin build tree-shakes
+// it away.
+function tableFor(lang: string): Record<string, string> {
+  if (!import.meta.env.PROD && pseudoActive) return en_XA as Record<string, string>;
+  return DICT[lang] ?? DICT.en;
+}
+
 export function t(key: string, params?: Record<string, string | number>): string {
-  const table = DICT[current] ?? DICT.en;
+  const table = tableFor(current);
   const tmpl = table[key];
   if (typeof tmpl !== "string") return onUntrackedKey(key);
   if (PENDING_TOTAL > 0 && PENDING_SETS[current]?.has(key) && isReleaseBuild()) {
