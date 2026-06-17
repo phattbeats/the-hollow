@@ -96,13 +96,40 @@ describe("t(): pending key (untranslated; the dense table English-fills it)", ()
   });
 });
 
+// The release gate's empty-pending assertion, factored into one helper so the
+// real-data check below and its teeth test run the SAME logic and cannot drift.
+function assertNoPending(pendingByLang: Record<string, readonly string[]>) {
+  for (const [lang, keys] of Object.entries(pendingByLang)) {
+    expect(keys, `${lang} has unexpected pending keys`).toEqual([]);
+  }
+}
+
 // RELEASE-TIER ONLY: a pending key is legal on a PR (the dense table English-fills
 // it); the release gate is where the pending set must be empty.
 describe.runIf(RELEASE_TIER)("t(): the committed pending set is empty (release tier)", () => {
   it("every locale's generated pending list is empty", () => {
-    for (const [lang, keys] of Object.entries(realPending)) {
-      expect(keys, `${lang} has unexpected pending keys`).toEqual([]);
-    }
+    // Non-vacuous floor: the gate must actually enumerate the non-en locales, so a
+    // future regression that collapsed `pending` to `{}` cannot pass by iterating
+    // zero times.
+    expect(Object.keys(realPending).length, "pending must enumerate the non-en locales").toBeGreaterThan(10);
+    assertNoPending(realPending);
+  });
+});
+
+// Teeth for the empty-pending GATE itself (runs at BOTH tiers; uses synthetic data,
+// not the real/empty committed set). The check above only proves today's data is
+// clean - it would still pass if the assertion were ever weakened or the data shape
+// went to {}. Feeding the SAME assertNoPending() a non-empty map proves it FAILS, so
+// the load-bearing "a pending key blocks the release gate" guarantee is asserted,
+// not assumed. (The t() runtime hard-fail on a release build is the separate backstop
+// covered by the doMock test above.)
+describe("t(): the empty-pending gate has teeth (a non-empty pending set fails)", () => {
+  it("throws when any locale carries a pending key", () => {
+    const synthetic: Record<string, readonly string[]> = { es: [], de_DE: ["some.untranslated.key"], fr_FR: [] };
+    expect(() => assertNoPending(synthetic)).toThrow(/de_DE has unexpected pending keys/);
+  });
+  it("does not false-positive on a clean all-empty map", () => {
+    expect(() => assertNoPending({ es: [], de_DE: [], fr_FR: [] })).not.toThrow();
   });
 });
 
