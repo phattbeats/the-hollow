@@ -89,7 +89,7 @@ for (const [cls, { name, set }] of Object.entries(LOADOUTS)) {
 
   // Warrior: also capture the epic helmet tooltip (proves slot + quality + stats).
   if (cls === 'warrior') {
-    await page.hover('#equip-col .equip-slot:nth-child(1)'); // helmet row is first
+    await page.hover('#equip-col-left .equip-slot:nth-child(1)'); // helmet = left column, first row
     await wait(500);
     await page.screenshot({ path: 'tmp/inv2_epic_tooltip.png' });
   }
