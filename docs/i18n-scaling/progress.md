@@ -21,7 +21,15 @@
 | 8 - Admin catalog | DONE | 2026-06-16 | 2026-06-16 |
 | 8 QA | DONE (PASS WITH FIXES) | 2026-06-16 | 2026-06-16 |
 | 9 - Pseudo-locale (optional) | DONE | 2026-06-16 | 2026-06-16 |
-| 9 QA + teardown | NOT STARTED | | |
+| 9 QA + whole-packet QA | DONE (PASS-WITH-FOLLOWUPS) | 2026-06-16 | 2026-06-16 |
+| Packet teardown | GATED on explicit user confirmation | | |
+
+**PACKET COMPLETE (2026-06-16):** all 9 phases DONE (Phase 9 optional, delivered); each phase
+QA'd; whole-feature QA verdict PASS-WITH-FOLLOWUPS (see Phase 9 QA below). Core goal met:
+an English-only PR passes the PR tier; the release tier blocks until the 14-locale fill lands.
+Deferred follow-ups (do NOT lose on teardown): the en_XA-surfaced hard-coded literals (Phase 9
+section), the OPEN RFC 9.6 release-fill ownership / API-key item, and the admin chat-filter
+pending fill (456 rows) that the release gate is correctly holding.
 
 ## Deliverable checklists
 
@@ -231,6 +239,83 @@ Verdict: PASS WITH FIXES. Method: every load-bearing claim re-proven DIRECTLY in
   - MEDIUM (test-coverage): no test proves the localized hardcoded admin strings (main.ts alerts, tables.ts title/placeholder) route through `t()` - there is no admin equivalent of the game-side `hud.ts` source-scan. Confirmed done by grep (all 8 `window.alert` + `document.title` route through `t()`/`localizeAdminError`), but unguarded against a future re-introduced literal. DEFERRED to Phase 9: the `en_XA` pseudo-locale is purpose-built to surface hard-coded literals that never became `t()` keys (admin included), which is the right backstop for this gap.
   - LOW/INFO: `adminLanguage()` getter is unused (kept as public-API symmetry with the used `setAdminLanguage`); H3b copied-English release gate short-circuits on the first offender (diagnostics quality; the registry pending-count gate independently covers the full set); the worklist admin-pending path is covered by the live tool run + `classify()` unit but not the `buildWorklistOutputs` fixture (optional fixture add); `src/admin/CLAUDE.md` attributes `reasonLabel` to `i18n.ts` but it lives in `tables.ts` (pre-existing doc nit); migration script exits 0 (not non-zero) on its refuse-to-re-run path (benign for a manual tool).
 Commits: `b9cc7cd` (test fix), `7b3e195` (scanner comment fix), this doc commit. Handoff: Phase 9 (`docs/i18n-scaling/phase-09-pseudo-locale.md`, optional pseudo-locale) - or declare the packet complete if stopping here.
+
+### Phase 9 QA + whole-packet QA - PASS-WITH-FOLLOWUPS (2026-06-16)
+Verdict: PASS-WITH-FOLLOWUPS. This is the FINAL whole-packet QA. Method: every load-bearing gate
+re-run DIRECTLY in the main loop (not trusted from the implementer), then a 6-lane read-only
+coverage Workflow (correctness, test-coverage, dead-code/cleanup, privacy-security-review,
+cross-platform-sync, qa-checklist) with the one HIGH finding adversarially verified. Across all
+lanes + main-loop proofs: **0 BLOCKING / 1 HIGH (adversarially downgraded to MEDIUM; FIXED) / 0
+other MEDIUM / 4 LOW / 15 INFO.** Neither stopping rule tripped (no whole-feature invariant
+failed; en_XA never leaks into supportedLanguages, hreflang, the release gate, or the player /
+operator picker - all four exclusions re-verified directly in source).
+- Deterministic gates, all as expected: `npx tsc --noEmit` clean; PR tier `npm test` = 131 files,
+  **1331 passed / 7 skipped** (= prior 1330 + this QA's new index.html-absence assertion; the 7
+  skips are the pre-existing release-tier-only gates); release tier (`I18N_RELEASE_TIER=1`) fails
+  on EXACTLY the 2 intended Phase 8 checks (`i18n_status_registry` empty-pending = 456, and the
+  admin H3b copied-English) with ZERO collateral and ZERO Phase 9 regression - this is the
+  two-tier gate correctly demanding the deferred 14-locale admin fill, not a defect; `npm run
+  build:env` + `build:server` + `build` (game + admin) all exit 0; reproducibility EXACT
+  (`git status --porcelain` clean after both the pretest regen and the full build - both resolved
+  tables + `i18n.status.json` + media manifest regenerate byte-identical); game byte-equivalence
+  baseline UNCHANGED (`d9db528..`, 1,584,856 B - the hash reads `supportedLanguages` only, which
+  omits en_XA); bundle NOT regressed (main 1,121.05 KB / admin 33.17 KB gzip, byte-identical to
+  state.md); copy review clean (no em dashes / emojis introduced in any shipped string or doc).
+- en_XA PROD tree-shake PROVEN EMPIRICALLY (not by reading): 0 pseudo-only glyphs (`ɱ ʋ ɋ ẋ ĝ ĥ`,
+  used only by the accent map, never by the 14 real locales) in `dist/assets/main-*.js` +
+  `admin-*.js`. The pseudo table is dead-code-eliminated from both production bundles; the lone
+  surviving `en_XA` token is the `DEV_PSEUDO_LOCALE` string constant, not table data.
+- The 6 lanes: correctness PASS; test-coverage PASS_WITH_FINDINGS (the one HIGH below);
+  dead-code PASS_WITH_FINDINGS (shared transform genuinely shared via `scripts/i18n_pseudo.mjs`;
+  every en_XA symbol reachable; no scaffolding); privacy-security-review PASS (FAIL-CLOSED: the
+  only writer of `pseudoActive` is the URL selector, gated by `!isReleaseBuild()` covering both
+  prod signals; two independent locks with the `tableFor` PROD guard; en_XA never persisted,
+  unselectable via setLanguage/setAdminLanguage; no secret/PII/XSS/auth surface touched);
+  cross-platform-sync PASS (`src/sim/`, `server/`, `headless/`, `python/`, `net/`, `render/`,
+  `game/`, `world_api.ts` all untouched by the diff; matchers unchanged; offline Sim and online
+  ClientWorld render through the same `t()`); qa-checklist PASS_WITH_FINDINGS.
+- Fix landed (1 commit, explicit path) - `test(i18n): assert en_XA absent from index.html
+  (hreflang + picker)` (`590d7b3`): the HIGH finding. The Phase 9 pseudo test file's header
+  CLAIMED hreflang exclusion coverage but only asserted the supportedLanguages / isSupportedLanguage
+  / admin-DICT exclusions; the `localization_coverage` hreflang test is PRESENCE-ONLY, so a future
+  hand-edit leaking `<link hreflang="en-XA">` or an `en_XA <option>` into index.html would pass CI.
+  Added a whole-file, case-insensitive assertion that index.html references neither `en_XA` nor
+  `en-XA` (guards both the hreflang block AND the static language picker at once), making the
+  header claim true. index.html is clean today, so this is regression-prevention, not a live leak.
+- Deferred (non-blocking, recorded; QA chose discipline over scope-creep, per prior phases):
+  - LOW (correctness / dead-code / qa-checklist, CONVERGED): admin `tableFor()` (`src/admin/i18n.ts:105`)
+    omits the game's `lang === current` guard (`src/ui/i18n.ts:182`). BENIGN today - admin `t()` is
+    the sole caller and always passes `current` (no admin per-lang read path exists), so the looser
+    predicate is unreachable as a bug. Latent footgun only if a future admin feature reads a
+    non-current locale while `pseudoActive`. Optional one-line hardening: mirror the game guard.
+  - INFO: `tableFor` gates the pseudo return on `!import.meta.env.PROD` while the selector gates
+    `pseudoActive` on the stronger `!isReleaseBuild()`. This is INTENTIONAL and correct: only the
+    literal `import.meta.env.PROD` is statically replaced by Rollup, so it (not the `isReleaseBuild()`
+    function call) is what dead-code-eliminates the en_XA reference; the selector's `!isReleaseBuild()`
+    is the real runtime gate and covers the dev + `I18N_RELEASE=1` case. Empirically confirmed by the
+    glyph-free dist.
+  - INFO (doc accuracy, optional): under en_XA the sim/server matcher MESSAGE TEMPLATES stay English
+    (getLanguage() = "en"), but keyed ENTITY names spliced into them (item/mob/zone via `tEntity` ->
+    `tableFor`) DO render pseudo-localized - correct, since those are real `t()` keys. The phase doc's
+    "matcher channel stays English" note is therefore partial; refine if revisited.
+  - INFO: leaf-count thresholds in the pseudo test (`>1000` / `>100`) are loose lower bounds; the
+    per-path parity test already enforces no missing leaves, so coverage is fine.
+- Whole-feature QA matrix (`docs/i18n-scaling/qa-checklist.md`), per row: the invariant ("a key
+  neither translated nor registered fails the PR gate; a merely-`pending` key cannot survive a cut
+  release") HOLDS at both tiers - demonstrated live by the 456 admin pending rows (legal at PR,
+  blocking at release). Completeness & safety: PASS. Two-tier gate: PASS (PR green, release blocks
+  incomplete, ci.yml ref-routing proven in Phase 6). Sim/server boundary: PASS (untouched).
+  Determinism: PASS (pure fixed map, no RNG/clock). Persistence: PASS (no DDL/JSONB change).
+  Performance/bundle: PASS (gzip unchanged; `asset:budget`/`perf:tour` N/A - zero render/asset
+  change). Copy & a11y: PASS (no em dashes/emojis; `hud.ts:1674` `Math.ceil` cooldown bypass noted
+  PRE-EXISTING). Non-client surfaces (RFC 9.7): PASS (re-confirmed Phase 8 + en_XA exclusion).
+  Build gate: PASS. Contributor experience: PASS (add-key-to-en flow + worklist no-op proven Phases
+  6/7). Deploy verification: N/A (not deployed in this pass).
+
+OPEN carried forward (surface before teardown): the en_XA-surfaced hard-coded literals (Phase 9
+section above), the OPEN RFC 9.6 release-fill ownership / API-key item, and the admin chat-filter
+14-locale fill (456 pending rows) the release gate is correctly holding.
+Commits: `590d7b3` (hreflang/picker absence test), this doc commit.
 
 ## Notes (per phase, post-completion)
 - Phase 0: pure rename, verified byte-identical resolved table (SHA-256), 73 localization tests green. Prerequisite readability step, already on the branch.
