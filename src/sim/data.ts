@@ -69,7 +69,13 @@ export const QUEST_ORDER: string[] = [
   ...ZONE1_QUEST_ORDER, ...ZONE2_QUEST_ORDER, ...ZONE3_QUEST_ORDER, ...TEMPLE_QUEST_ORDER,
 ];
 
-export const CAMPS: CampDef[] = [...ZONE1_CAMPS, ...ZONE2_CAMPS, ...ZONE3_CAMPS, ...TEMPLE_CAMPS];
+// Camps spawn in array order, each drawing world-gen RNG, so an entry inserted
+// before others shifts their spawn positions. The Eastbrook rare Grix is spawned
+// LAST here so every existing zone camp keeps its exact draw order (determinism).
+export const CAMPS: CampDef[] = [
+  ...ZONE1_CAMPS, ...ZONE2_CAMPS, ...ZONE3_CAMPS, ...TEMPLE_CAMPS,
+  { mobId: 'grix_the_tunnelking', center: { x: -95, z: -78 }, radius: 4, count: 1 },
+];
 
 export const GROUND_OBJECTS: GroundObjectDef[] = [...ZONE1_OBJECTS, ...ZONE2_OBJECTS, ...ZONE3_OBJECTS, ...TEMPLE_OBJECTS];
 

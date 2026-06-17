@@ -194,6 +194,25 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
     ],
     scale: 0.85, color: 0x9c640c,
   },
+  grix_the_tunnelking: {
+    id: 'grix_the_tunnelking', name: 'Grix the Tunnelking', minLevel: 7, maxLevel: 7, family: 'kobold', rare: true,
+    elite: true, canSwim: true, ccImmune: true, respawnMult: 432,
+    hpBase: 280, hpPerLevel: 52, dmgBase: 11, dmgPerLevel: 3.3, attackSpeed: 2.0,
+    armorPerLevel: 24, moveSpeed: 7, aggroRadius: 13,
+    aoePulse: { min: 12, max: 18, radius: 8, every: 9, name: 'Cave-In', school: 'physical' },
+    summonAdds: { mobId: 'tunnel_rat', count: 2, atHpPct: [0.55, 0.30] },
+    enrage: { belowHpPct: 0.30, dmgMult: 1.4, hasteMult: 1.3 },
+    loot: [
+      { copper: 150, chance: 1 },
+      { itemId: 'tallow_candle', chance: 1 },
+      // The hoarder's stash — a guaranteed step up the potion ladder this early.
+      { itemId: 'lesser_healing_potion', chance: 1 },
+      { itemId: 'tunnelkings_spade', chance: 0.3 },
+      { itemId: 'moggers_copper_cudgel', chance: 0.25, rollGroup: 'grix_tunnelking_chase' },
+      { itemId: 'hollowbone_hauberk', chance: 0.25, rollGroup: 'grix_tunnelking_chase' },
+    ],
+    scale: 1.15, color: 0xb9770e,
+  },
   vale_bandit: {
     id: 'vale_bandit', name: 'Vale Bandit', minLevel: 3, maxLevel: 5, family: 'humanoid',
     hpBase: 40, hpPerLevel: 18, dmgBase: 5, dmgPerLevel: 2.0, attackSpeed: 2.0,

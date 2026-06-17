@@ -63,6 +63,7 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
       { copper: 65, chance: 1 },
       { itemId: 'glowing_wax', chance: 0.5, questId: 'q_glowing_wax' },
       { itemId: 'tallow_candle', chance: 0.4 },
+      { itemId: 'healing_potion', chance: 0.08 },
     ],
     scale: 0.85, color: 0x9c7a3c,
   },
@@ -242,6 +243,7 @@ export const ZONE3_NPCS: Record<string, NpcDef> = {
     questIds: ['q_stalker_pelts', 'q_glowing_wax'],
     vendorItems: [
       'trail_hardtack', 'meltwater_flask', 'roast_mountain_goat', 'glacier_melt',
+      'healing_potion', 'mana_potion',
       'highwatch_breastplate', 'peakwool_robe', 'stalkerhide_jerkin', 'cragwalker_boots', 'windguard_leggings',
     ],
     greeting: 'Wool, hardtack, and steel-shod boots — Highwatch runs on all three, and I am short of everything.',
