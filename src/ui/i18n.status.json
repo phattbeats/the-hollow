@@ -128752,7 +128752,7 @@
     },
     "main:itemUi.tooltip.damageSpeed": {
       "scope": "main",
-      "enHash": "0c64fdd5b73fe653",
+      "enHash": "b225d19889a2d06b",
       "placeholders": [
         "max",
         "min",
@@ -128761,67 +128761,67 @@
       "locales": {
         "es": {
           "state": "translated",
-          "srcHash": "0c64fdd5b73fe653",
+          "srcHash": "b225d19889a2d06b",
           "by": "human"
         },
         "es_ES": {
           "state": "translated",
-          "srcHash": "0c64fdd5b73fe653",
+          "srcHash": "b225d19889a2d06b",
           "by": "human"
         },
         "fr_FR": {
           "state": "translated",
-          "srcHash": "0c64fdd5b73fe653",
+          "srcHash": "b225d19889a2d06b",
           "by": "human"
         },
         "fr_CA": {
           "state": "translated",
-          "srcHash": "0c64fdd5b73fe653",
+          "srcHash": "b225d19889a2d06b",
           "by": "human"
         },
         "en_CA": {
           "state": "translated",
-          "srcHash": "0c64fdd5b73fe653",
+          "srcHash": "b225d19889a2d06b",
           "by": "human"
         },
         "it_IT": {
           "state": "translated",
-          "srcHash": "0c64fdd5b73fe653",
+          "srcHash": "b225d19889a2d06b",
           "by": "human"
         },
         "de_DE": {
           "state": "translated",
-          "srcHash": "0c64fdd5b73fe653",
+          "srcHash": "b225d19889a2d06b",
           "by": "human"
         },
         "zh_CN": {
           "state": "translated",
-          "srcHash": "0c64fdd5b73fe653",
+          "srcHash": "b225d19889a2d06b",
           "by": "human"
         },
         "zh_TW": {
           "state": "translated",
-          "srcHash": "0c64fdd5b73fe653",
+          "srcHash": "b225d19889a2d06b",
           "by": "human"
         },
         "ko_KR": {
           "state": "translated",
-          "srcHash": "0c64fdd5b73fe653",
+          "srcHash": "b225d19889a2d06b",
           "by": "human"
         },
         "ja_JP": {
           "state": "translated",
-          "srcHash": "0c64fdd5b73fe653",
+          "srcHash": "b225d19889a2d06b",
           "by": "human"
         },
         "pt_BR": {
           "state": "translated",
-          "srcHash": "0c64fdd5b73fe653",
+          "srcHash": "b225d19889a2d06b",
           "by": "human"
         },
         "ru_RU": {
           "state": "translated",
-          "srcHash": "0c64fdd5b73fe653",
+          "srcHash": "b225d19889a2d06b",
           "by": "human"
         }
       }
