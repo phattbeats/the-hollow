@@ -647,6 +647,7 @@ export class Hud {
       case 'vendor-window': this.closeVendor(); break;
       case 'loot-window': this.closeLoot(); break;
       case 'quest-dialog': this.closeQuestDialog(); break;
+      case 'bags': el.style.display = 'none'; this.hideTooltip(); this.cancelPetFeed(); break;
       case 'talents-window': el.style.display = 'none'; this.talentStage = null; this.hideTooltip(); break;
       case 'emote-editor': this.closeEmoteEditor(); break;
       default: el.style.display = 'none'; this.hideTooltip(); break;
@@ -1465,6 +1466,12 @@ export class Hud {
       });
     } else {
       addButton(commands, 'rejuvenation', t('hud.pet.healPet'), petTooltip(t('hud.pet.healPet'), t('hud.pet.healPetDesc')), () => {
+        // Toggle: a second click cancels the pending feed instead of trapping
+        // the player in food-selection mode.
+        if (this.pendingPetFeed) { this.cancelPetFeed(); return; }
+        // With no edible food there is nothing to select, so entering feed mode
+        // would strand the player on the bag screen — surface an error instead.
+        if (!this.hasPetFood()) { this.showError(t('hud.pet.noPetFood')); return; }
         this.pendingPetFeed = true;
         this.lastPetBarSig = '';
         $('#bags').style.display = 'block';
@@ -3468,9 +3475,27 @@ export class Hud {
   // Bags
   // -------------------------------------------------------------------------
 
+  // True when the player has at least one edible food stack — mirrors the
+  // food check in Sim.feedPet so the pet-feed flow never starts when it can't
+  // possibly complete.
+  private hasPetFood(): boolean {
+    return this.sim.inventory.some((s) => {
+      const item = ITEMS[s.itemId];
+      return !!item && item.kind === 'food' && !!item.foodHp && s.count > 0;
+    });
+  }
+
+  // Leave pet food-selection mode. Safe to call unconditionally; it only
+  // redraws the pet bar when something actually changed.
+  private cancelPetFeed(): void {
+    if (!this.pendingPetFeed) return;
+    this.pendingPetFeed = false;
+    this.lastPetBarSig = '';
+  }
+
   toggleBags(): void {
     const el = $('#bags');
-    if (el.style.display !== 'none') { el.style.display = 'none'; this.hideTooltip(); audio.bagClose(); return; }
+    if (el.style.display !== 'none') { el.style.display = 'none'; this.hideTooltip(); audio.bagClose(); this.cancelPetFeed(); return; }
     this.closeOtherWindows('#bags');
     this.renderBags();
     el.style.display = 'flex';
@@ -3521,7 +3546,7 @@ export class Hud {
         } else if (this.vendorOpen) {
           this.sellBagItem(s, ev);
         } else if (this.pendingPetFeed) {
-          if (item.kind !== 'food') { this.showError('Your pet can only eat food.'); return; }
+          if (item.kind !== 'food') { this.showError(t('hud.pet.petEatsFoodOnly')); return; }
           this.sim.feedPet(s.itemId);
           this.pendingPetFeed = false;
           this.lastPetBarSig = '';
@@ -3572,7 +3597,7 @@ export class Hud {
     money.className = 'money';
     money.innerHTML = this.moneyHtml(sim.copper);
     el.appendChild(money);
-    el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; this.hideTooltip(); });
+    el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; this.hideTooltip(); this.cancelPetFeed(); });
   }
 
   private sellBagItem(slot: InvSlot, ev: MouseEvent): void {

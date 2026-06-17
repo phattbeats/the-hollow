@@ -569,7 +569,9 @@ export class GameServer {
       // at login; sending is still gated server-side regardless.
       chatMutedUntil: session.chatMutedUntil ?? null,
     });
-    this.broadcastSystem(`${name} has entered World of ClaudeCraft.`);
+    // Only the entering player sees their own world-entry notice; we don't
+    // broadcast it to everyone (and likewise don't broadcast departures below).
+    this.send(session, { t: 'events', list: [{ type: 'log', text: `${name} has entered World of ClaudeCraft.`, color: '#ffd100' }] });
     void this.initSocial(session);
     return session;
   }
@@ -607,7 +609,8 @@ export class GameServer {
     }
     await this.saveCharacter(session).catch((err) => console.error('save on leave failed:', err));
     this.sim.removePlayer(session.pid);
-    this.broadcastSystem(`${session.name} has left the world. (${reason})`);
+    // Departures are no longer broadcast to the realm — the leaving player has
+    // already disconnected, so there is no one to show their own notice to.
   }
 
   async saveCharacter(session: ClientSession): Promise<void> {
@@ -1575,12 +1578,6 @@ export class GameServer {
     if (viewer.blockedIds.has(candidate.characterId)) return false;
     if (candidate.characterId !== viewer.characterId && candidate.blockedIds.has(viewer.characterId)) return false;
     return true;
-  }
-
-  private broadcastSystem(text: string): void {
-    for (const session of this.clients.values()) {
-      this.send(session, { t: 'events', list: [{ type: 'log', text, color: '#ffd100' }] });
-    }
   }
 
   // force the next snapshot to carry quest state even when a quest command
