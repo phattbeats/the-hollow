@@ -208,6 +208,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     hpBase: 330, hpPerLevel: 60, dmgBase: 16, dmgPerLevel: 3.8, attackSpeed: 2.0,
     armorPerLevel: 30, moveSpeed: 7, aggroRadius: 13,
     aoePulse: { min: 18, max: 26, radius: 11, every: 9, name: 'Dirge of Nhalia', school: 'shadow' },
+    // A bone-chilling shriek that sends the living fleeing in terror — her dirge
+    // is grief, her wail is dread. Telegraphed: first scream after one interval.
+    terrify: { radius: 12, every: 16, duration: 3, name: "Banshee's Wail", school: 'shadow' },
     summonAdds: { mobId: 'nhalia_mourner', count: 2, atHpPct: [0.65, 0.35] },
     loot: [
       { copper: 350, chance: 1 },

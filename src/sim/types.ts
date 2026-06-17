@@ -195,6 +195,13 @@ export interface MobTemplate {
   // for `duration`s (and optionally deals min..max damage). Telegraphed: the
   // first slam only lands one full `every` interval after combat starts.
   stomp?: { radius: number; every: number; duration: number; min?: number; max?: number; name: string; school?: string };
+  // Boss/elite mechanic ("Banshee's Wail"): a periodic, telegraphed scream that
+  // terrifies every nearby player into fleeing for `duration`s. Unlike the
+  // on-hit `dread`, this is a timed AoE — the room-clearing analogue of `stomp`,
+  // but it applies the same `fear_incap` aura the player-cast Fear uses (driven
+  // by `updateFearMovement`) instead of a stun. Telegraphed: the first wail only
+  // lands one full `every` interval after combat opens. No new aura kind.
+  terrify?: { radius: number; every: number; duration: number; name: string; school?: Aura['school'] };
   // Melee mechanic: each landed swing also splashes onto other players near the
   // primary target for `mult` of the (pre-armor) hit. Classic-WoW Cleave.
   cleave?: { radius: number; mult: number; name?: string };
@@ -580,6 +587,7 @@ export interface Entity {
   petTauntTimer: number; // controlled pet Growl cooldown
   pulseTimer: number; // boss aoe pulse countdown
   stompTimer: number; // boss War Stomp stun-pulse countdown
+  terrifyTimer: number; // Banshee's Wail fear-pulse countdown
   detonateTimer: number; // Death Throes fuse on a volatile corpse; Infinity = no pending detonation
   mendTimer: number; // mendAlly support-heal cast countdown
   firedSummons: number; // summonAdds thresholds already triggered

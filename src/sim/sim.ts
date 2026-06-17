@@ -3977,6 +3977,34 @@ export class Sim {
             }
           }
         }
+        // Banshee's Wail: a periodic, telegraphed scream that terrifies nearby
+        // players into fleeing. The fear analogue of War Stomp — same timed,
+        // room-wide cadence — but it applies the `fear_incap` aura the on-hit
+        // `dread` and player-cast Fear share, so `updateFearMovement` drives the
+        // panic. Telegraphed via createMob, which seeds terrifyTimer to one full
+        // interval so the first wail never lands the instant combat opens.
+        const terrify = MOBS[mob.templateId]?.terrify;
+        if (terrify) {
+          mob.terrifyTimer -= DT;
+          if (mob.terrifyTimer <= 0) {
+            mob.terrifyTimer = terrify.every;
+            const school = terrify.school ?? 'shadow';
+            this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
+            this.emit({ type: 'log', text: `${mob.name} unleashes ${terrify.name}!`, color: '#ff9933', entityId: mob.id });
+            for (const meta of this.players.values()) {
+              const pe = this.entities.get(meta.entityId);
+              if (!pe || pe.dead || dist2d(pe.pos, mob.pos) > terrify.radius) continue;
+              const remaining = this.diminishedCrowdControlDuration(mob, pe, 'fear', terrify.duration);
+              if (remaining === null) continue;
+              this.applyAura(pe, {
+                id: 'fear_incap', name: terrify.name, kind: 'incapacitate',
+                remaining, duration: remaining,
+                value: this.rng.range(-Math.PI, Math.PI),
+                sourceId: mob.id, school, breaksOnDamage: true,
+              });
+            }
+          }
+        }
         break;
       }
       case 'flee': {
@@ -4051,6 +4079,7 @@ export class Sim {
     mob.enraged = false;
     mob.healedThisPull = false;
     mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
+    mob.terrifyTimer = MOBS[mob.templateId]?.terrify?.every ?? 0;
     mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
   }
@@ -4518,6 +4547,7 @@ export class Sim {
     mob.enraged = false;
     mob.healedThisPull = false;
     mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
+    mob.terrifyTimer = MOBS[mob.templateId]?.terrify?.every ?? 0;
     mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
     for (const meta of this.players.values()) {
