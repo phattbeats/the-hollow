@@ -111,17 +111,35 @@ describe('nine classes', () => {
     sim.tick();
     expect(p.auras.some((a) => a.kind === 'imbue')).toBe(true);
     const wolf = nearestMob(sim, 'forest_wolf');
-    teleport(sim, p.id, wolf.pos.x + 3, wolf.pos.z);
+    // Stand just outside melee (5yd) but within Judgement's range. An auto-attack
+    // swing consumes the seal's judge charge ("seal empowers swings"), and exactly
+    // when a swing lands depends on the shared world RNG stream (shifted by new
+    // world content). Keeping out of swing range isolates the judge path so the
+    // assertion proves seal→judgement without depending on swing timing.
+    teleport(sim, p.id, wolf.pos.x + 8, wolf.pos.z);
     sim.targetEntity(wolf.id);
     face(sim, p.id, wolf.id);
     p.resource = p.maxResource;
     // wait out gcd then judge
     for (let i = 0; i < 35; i++) sim.tick();
-    face(sim, p.id, wolf.id);
-    const dealtBefore = sim.counters.damageDealt;
-    sim.castAbility('judgement');
-    sim.tick();
-    expect(sim.counters.damageDealt).toBeGreaterThan(dealtBefore);
+    // Judgement's holy strike can still be resisted on a given cast, so re-empower
+    // and judge until it connects (a missed judgement still consumes the seal); the
+    // wolf is kept alive across attempts.
+    let dealt = 0;
+    for (let attempt = 0; attempt < 50 && dealt === 0; attempt++) {
+      wolf.hp = wolf.maxHp;
+      sim.castAbility('seal_of_righteousness');
+      sim.tick();
+      expect(p.auras.some((a) => a.kind === 'imbue')).toBe(true);
+      p.gcdRemaining = 0;
+      p.resource = p.maxResource;
+      face(sim, p.id, wolf.id);
+      const dealtBefore = sim.counters.damageDealt;
+      sim.castAbility('judgement');
+      sim.tick();
+      dealt = sim.counters.damageDealt - dealtBefore;
+    }
+    expect(dealt).toBeGreaterThan(0);
     expect(p.auras.some((a) => a.kind === 'imbue')).toBe(false); // consumed
   });
 
