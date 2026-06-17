@@ -298,6 +298,16 @@ function handleModerationActionClick(e: Event, source: 'account' | 'moderation')
     window.alert(t('alert.noteRequired'));
     return false;
   };
+  // Lift mute / reset strikes: non-destructive, no note/confirm. Available for
+  // any account (incl. admins) so an auto-muted operator can clear it themselves.
+  const chatModBtn = target.closest('button[data-lift-mute], button[data-reset-strikes]') as HTMLButtonElement | null;
+  if (chatModBtn && Number.isFinite(accountId)) {
+    const endpoint = chatModBtn.dataset.liftMute !== undefined ? 'lift-mute' : 'reset-strikes';
+    void apiPost(`/admin/api/moderation/accounts/${accountId}/${endpoint}`, {})
+      .then(() => { if (source === 'account') void refreshOpenAccountDetail(accountId); else void openModerationAccount(accountId); })
+      .catch((err: unknown) => { if (!handleAuthFailure(err)) window.alert(err instanceof Error ? localizeAdminError(err.message) : t('alert.actionFailed')); });
+    return true;
+  }
   const forceRenameBtn = target.closest('button[data-force-rename-character]') as HTMLButtonElement | null;
   if (forceRenameBtn) {
     if (!requireNote()) return true;

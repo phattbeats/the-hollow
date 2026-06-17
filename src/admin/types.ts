@@ -89,6 +89,7 @@ export interface AccountDetail {
   moderationReason: string;
   chatMutedUntil: string | null;
   chatMuteReason: string;
+  chatStrikes: number;
   playtimeSeconds: number;
   characters: {
     id: number;

@@ -119,7 +119,16 @@ export function renderAccountDetail(d: AccountDetail, includeAdminControls = fal
     <div class="account-admin-controls">
       <div class="account-status"><b>${t('detail.status')}</b> <span class="badge">${t('accounts.badgeAdmin')}</span> ${accountStatus}</div>
     </div>` : '';
-  return `<div class="account-detail" data-action-account-id="${d.id}">${adminControls}<div class="detail-grid">
+  // Chat-mute controls are shown for EVERY account (admins included): the chat
+  // filter auto-mutes admins too, and ban/suspend gating must not strand them.
+  const activeChatMute = d.chatMutedUntil !== null && new Date(d.chatMutedUntil).getTime() > Date.now();
+  const chatModControls = includeAdminControls ? `
+    <div class="account-admin-controls chat-mod-controls" data-action-account-id="${d.id}">
+      <div class="account-status"><b>Chat:</b> ${activeChatMute ? `<span class="badge warn">muted until ${fmtDate(d.chatMutedUntil)}</span>` : '<span class="badge">not muted</span>'} &middot; strikes: <b>${d.chatStrikes}</b></div>
+      ${activeChatMute ? '<button data-lift-mute="1">Lift chat mute</button>' : ''}
+      ${d.chatStrikes > 0 ? '<button data-reset-strikes="1">Reset chat strikes</button>' : ''}
+    </div>` : '';
+  return `<div class="account-detail" data-action-account-id="${d.id}">${adminControls}${chatModControls}<div class="detail-grid">
     <div><h4>${t('detail.charactersHeader')}</h4>${chars}</div>
     <div><h4>${t('detail.sessionsHeader', { value: fmtDuration(d.playtimeSeconds) })}</h4>${sessions}</div>
   </div></div>`;
