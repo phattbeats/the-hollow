@@ -1,7 +1,30 @@
 import { describe, expect, it } from 'vitest';
-import { angleDelta, clickMoveShouldCancel, clickMoveStep, facingToward, manualMovementOverrides, stepAngleToward } from '../src/game/click_move';
+import { CLICK_MOVE_FORWARD_CONE, angleDelta, cameraRelativeMoveFacing, clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, facingToward, manualMovementOverrides, stepAngleToward } from '../src/game/click_move';
 
 const NO_INPUT = { forward: false, back: false, turnLeft: false, turnRight: false, strafeLeft: false, strafeRight: false, jump: false };
+
+describe('action-camera steering (cameraRelativeMoveFacing)', () => {
+  const wrap = (a: number) => angleDelta(0, a); // normalize to (-pi, pi]
+  it('forward runs straight along the camera heading', () => {
+    expect(cameraRelativeMoveFacing({ ...NO_INPUT, forward: true }, 1.3)).toBeCloseTo(1.3);
+  });
+  it('strafe-right rotates the body 90° clockwise (toward screen-right)', () => {
+    expect(wrap(cameraRelativeMoveFacing({ ...NO_INPUT, strafeRight: true }, 0)!)).toBeCloseTo(-Math.PI / 2);
+  });
+  it('strafe-left rotates the body 90° counter-clockwise', () => {
+    expect(wrap(cameraRelativeMoveFacing({ ...NO_INPUT, strafeLeft: true }, 0)!)).toBeCloseTo(Math.PI / 2);
+  });
+  it('back turns the body around to run away from the camera', () => {
+    expect(Math.abs(wrap(cameraRelativeMoveFacing({ ...NO_INPUT, back: true }, 0)!))).toBeCloseTo(Math.PI);
+  });
+  it('forward+right runs along the 45° diagonal', () => {
+    expect(wrap(cameraRelativeMoveFacing({ ...NO_INPUT, forward: true, strafeRight: true }, 0)!)).toBeCloseTo(-Math.PI / 4);
+  });
+  it('returns null when there is no directional input (offset stays untouched)', () => {
+    expect(cameraRelativeMoveFacing({ ...NO_INPUT, jump: true }, 2.0)).toBeNull();
+    expect(cameraRelativeMoveFacing({ ...NO_INPUT, forward: true, back: true, strafeLeft: true, strafeRight: true }, 2.0)).toBeNull();
+  });
+});
 
 describe('click-to-move math (#95)', () => {
   it('walks forward and faces the destination while far away', () => {
@@ -54,6 +77,41 @@ describe('click-to-move math (#95)', () => {
       playerDead: false,
       enabled: true,
     })).toBe(false);
+  });
+
+  it('only walks forward when aimed within the cone, else turns in place', () => {
+    expect(clickMoveShouldWalk(0, 0)).toBe(true); // dead on
+    expect(clickMoveShouldWalk(0, CLICK_MOVE_FORWARD_CONE - 0.01)).toBe(true);
+    expect(clickMoveShouldWalk(0, CLICK_MOVE_FORWARD_CONE + 0.01)).toBe(false);
+    expect(clickMoveShouldWalk(0, Math.PI / 2)).toBe(false); // target to the side
+    expect(clickMoveShouldWalk(0, Math.PI)).toBe(false); // target behind
+    // shortest-arc aware, sign-independent
+    expect(clickMoveShouldWalk(0, -(CLICK_MOVE_FORWARD_CONE + 0.01))).toBe(false);
+  });
+
+  it('converges instead of orbiting at close range (regression)', () => {
+    // Reproduces the orbit bug: full-speed walk along a turn-rate-capped facing
+    // orbits the target forever when speed/distance exceeds the turn rate. With
+    // the forward gate the player turns in place and converges. Mirrors the
+    // main.ts loop: smooth facing toward the bearing, walk only when aligned.
+    const DT = 1 / 20;
+    const SPEED = 5.6; // RUN_SPEED yd/s
+    const TURN_RATE = 4.2; // CLICK_MOVE_TURN_RATE rad/s
+    const STOP = 0.5;
+    const target = { x: 0, z: 0 };
+    // Start close and offset so the naive version would orbit.
+    let pos = { x: 1.2, z: 0 };
+    let facing = facingToward(pos, target) + Math.PI / 2; // initially sideways
+    let arrived = false;
+    for (let i = 0; i < 20 * 10 && !arrived; i++) {
+      const step = clickMoveStep(pos, target, STOP);
+      if (step.arrived) { arrived = true; break; }
+      facing = stepAngleToward(facing, step.facing, TURN_RATE * DT);
+      if (clickMoveShouldWalk(facing, step.facing)) {
+        pos = { x: pos.x + Math.sin(facing) * SPEED * DT, z: pos.z + Math.cos(facing) * SPEED * DT };
+      }
+    }
+    expect(arrived).toBe(true);
   });
 
   it('steps facing toward the destination along the shortest arc', () => {

@@ -80,6 +80,23 @@ describe('camera follow', () => {
     expect(next.camYaw).toBeGreaterThan(1.0);
   });
 
+  it('does not auto-follow while the camera drives the facing (mouse-camera move)', () => {
+    // facing is slaved to camYaw this frame, so the follower must leave camYaw
+    // untouched — chasing its own output is what produced the wobble.
+    const next = updateFollowCameraYaw({
+      camYaw: 1.0,
+      interpFacing: 0.2,
+      lastInterpFacing: 0.9,
+      frameDt: 1 / 60,
+      mouselook: false,
+      moving: true,
+      cameraDriven: true,
+      orbiting: false,
+    });
+    expect(next.camYaw).toBe(1.0);
+    expect(next.lastInterpFacing).toBe(0.2); // still tracked so re-coupling won't snap
+  });
+
   it('does not follow or auto-settle while the player is actively orbit-dragging', () => {
     const next = updateFollowCameraYaw({
       camYaw: 1,
