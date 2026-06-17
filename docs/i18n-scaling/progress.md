@@ -12,7 +12,7 @@
 | 3 QA | DONE (PASS) | 2026-06-16 | 2026-06-16 |
 | 4 - Dialect inheritance | DONE | 2026-06-16 | 2026-06-16 |
 | 4 QA | DONE (PASS) | 2026-06-16 | 2026-06-16 |
-| 5 - Status registry | NOT STARTED | | |
+| 5 - Status registry | DONE (2026-06-16) | scanner + registry + views | pending set empty (still dense) |
 | 5 QA | NOT STARTED | | |
 | 6 - Unlock + two-tier CI | NOT STARTED | | |
 | 6 QA | NOT STARTED | | |
@@ -69,12 +69,12 @@ Validation: `tsc --noEmit` clean; targeted suite 126/126 (localization_fixes + l
 DESIGN NOTE (world_entity keep-vs-remove): the Phase 3 handoff left `world_entity_i18n.ts` non-English data dead (overlays superseded it; `tEntity` resolves via the resolved table, not this object; zero `worldEntityText[lang]` indexers). Chose DELETE (English-only) over re-establishing it as the single source (which would reverse Phase 3's full-inline) - maintainer-confirmed. The flat overlays are now the single non-English entity-name source; `worldEntityText.en` still feeds nested `en`.
 OUT OF SCOPE (untouched, deferred): talent `titleOverrides` es_ES/fr_CA full blocks left as-is (live, not byte-gated, no cast there; deduping them was not in the phase cadence); no sparseness for non-dialect locales (Phase 6); no locale registry (Phase 5); no `t()`-miss change; admin DICT untouched (Phase 8).
 
-### Phase 5 - Status registry + scanner
-- [ ] `scripts/i18n_scan.mjs` (no LLM/network) walks `en` + matcher + admin keys, computes `srcHash` (English text + sorted placeholders), writes `src/ui/i18n.status.json`
-- [ ] Registry states: `translated` (with `srcHash`, `by`), `pending`, `blocked` (with `reason`)
-- [ ] `COPIED_ALLOW` / `ALLOW_V07_SLASH` become generated views over the registry
-- [ ] `i18n:scan` in build + `pretest`; registry reproducibility + registry-in-sync tests green
-- [ ] `pending` set empty at this stage (everything still dense)
+### Phase 5 - Status registry + scanner - DONE (2026-06-16)
+- [x] `scripts/i18n_scan.mjs` (no LLM/network) walks `en` + matcher (`sim_i18n`/`server_i18n` DICTs) + admin keys, computes `srcHash` (English text + sorted placeholders via the shared `scripts/i18n_hash.mjs`), writes `src/ui/i18n.status.json`. 2278 keys x 13 locales; scoped `<main|sim|server|admin>:<key>` rows; pure function of source (no prior-output read), deterministic ordering (scope rank, then key).
+- [x] Registry states: `translated` (with `srcHash`==`enHash`, `by:human`), `pending`, `blocked` (with `reason`). Cognates seeded as per-key per-locale `blocked` rows; the v0.7 slash-command source strings as a `blockedSource` list (channel `sim`). Seed in `scripts/i18n_blocked_seed.mjs` (byte-faithful extraction of the former in-test Sets; now the canonical hand-maintained source).
+- [x] `COPIED_ALLOW` (43) / `ALLOW_V07_SLASH` (105) are now VIEWS over the registry in `tests/localization_fixes.test.ts` (literal Sets removed); H3b copied-English + S3 drift guards still bind unchanged.
+- [x] `i18n:scan` wired into `build` + `pretest` (after `i18n:build`); reproducibility + registry-in-sync test `tests/i18n_status_registry.test.ts` green (coverage of full universe, independent enHash re-derivation, pending-empty, blocked load-bearing/no-over-allow, placeholder-in-hash sensitivity, regenerate-then-`git diff --exit-code`). Teeth proven by mutation (drop a key -> coverage fails; forge a non-cognate blocked row -> over-allow fails).
+- [x] `pending` set empty at this stage (everything still dense after Phase 4). Resolved-table byte-equivalence unchanged (SHA `d9db528..`).
 
 ### Phase 6 - The unlock: relax types + two-tier CI
 - [ ] Flat overlays relaxed to `Partial<Record<TranslationKey,string>>` (sparse legal)
@@ -141,3 +141,4 @@ Verdict: PASS. Findings across 6 lanes: 0 BLOCKING, 1 SHOULD-FIX acted on (1 new
 
 ## Notes (per phase, post-completion)
 - Phase 0: pure rename, verified byte-identical resolved table (SHA-256), 73 localization tests green. Prerequisite readability step, already on the branch.
+- Phase 5: scanner is a PURE function of source (en + sim/server/admin DICTs + the static seed) - it deliberately does NOT read its own prior output, so reproducibility holds from-scratch AND incrementally. Consequence: `srcHash` is recomputed from current English each run, so it always equals the per-key `enHash` this phase and the translated/stale split is DORMANT (pending stays empty while dense). The `srcHash`/`enHash` fields are recorded now so the staleness comparison (`srcHash !== enHash` -> pending) can go live in Phase 6+ once sparse overlays + the fill pipeline persist translation-time hashes. Two helper scripts added beyond the doc's `i18n_scan.mjs`: `scripts/i18n_hash.mjs` (side-effect-free content hash, shared with the registry test) and `scripts/i18n_blocked_seed.mjs` (canonical blocked-surface seed). Reviewed by privacy-security-review + cross-platform-sync + an adversarial correctness pass: 0 BLOCKING. cross-platform-sync confirmed the HUD-local matcher maps (`localizeErrorText`/`localizeSystemText`/`localizeLootText`) are correctly NOT registry rows - their target `t()` keys live in the `main` scope (translation axis) and their recognition is still guarded by the S3 source-scraper (recognition axis); split-axis by design, not a gap.
