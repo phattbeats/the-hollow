@@ -11086,7 +11086,11 @@ export const en = {
 // tsc still red-fails any missing or renamed key.
 export type EnTranslations = typeof en;
 
-export type TranslationKey = Leaves<typeof en>;
+// Depth 6 so the deepest real leaves (entities.quests.<id>.objectives.<n>.label,
+// entities.zones.<id>.pois.<n>.label) are members. Phase 6 types the sparse
+// overlays `Partial<Record<TranslationKey, string>>`, so TranslationKey must reach
+// every overlay key; depth 5 stopped one segment short. (Measured: no tsc cost.)
+export type TranslationKey = Leaves<typeof en, 6>;
 export type InterpolationValue = string | number;
 export type InterpolationValues = Record<string, InterpolationValue>;
 

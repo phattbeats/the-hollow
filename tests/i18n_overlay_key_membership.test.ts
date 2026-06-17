@@ -4,19 +4,24 @@
 // never had, and the generated locale is typed `: EnTranslations`, so a phantom
 // branch either bloats the resolved table or shadows a real value.
 //
-// tsc cannot enforce this: the overlays are typed `Record<string, string>` because
-// `TranslationKey = Leaves<typeof en, 5>` stops at depth 5 while the deepest real
-// leaves (entities.quests.<id>.objectives.0.label) are 6 segments deep. So this
-// test is the guard the phase invariant calls for ("a typo'd dotted key must fail
-// tsc OR a test").
+// As of Phase 6 the overlays ARE typed `Partial<Record<TranslationKey, string>>`
+// (TranslationKey = Leaves<typeof en, 6>), so tsc rejects a structurally-wrong key.
+// But that type does NOT fully replace this test: the entity sub-trees are
+// `Record<string, ...>` / `Record<number, ...>`, so TranslationKey carries
+// template-literal members like `entities.abilities.${string}.name` that accept
+// ANY id. A typo'd entity id (e.g. `entities.abilities.firebal.name`) therefore
+// type-checks but is not a real `en` leaf. This test is the runtime backstop that
+// pins every overlay key to the ACTUAL `en` leaf set, catching the id typos the
+// type cannot.
 //
-// This is a SUBSET check (every overlay key is in Leaves(en)), distinct from the
-// dense exact-equality check in i18n_flat_overlay_dense.test.ts. Subset is the
-// PERMANENT invariant: when Phase 6 relaxes the overlays to sparse, the dense check
-// goes away but "no key outside Leaves(en)" must still hold, so this guard stays.
+// This is a SUBSET check (every overlay key is in Leaves(en)). Phase 6 relaxed the
+// overlays from dense to sparse, so the former dense exact-equality companion
+// (i18n_flat_overlay_dense.test.ts) was deleted; "no key outside Leaves(en)" is the
+// PERMANENT invariant and survives the sparse relax, so this guard stays.
 
 import { describe, expect, it } from 'vitest';
 import { en } from '../src/ui/i18n.en';
+import type { TranslationKey } from '../src/ui/i18n.en';
 import { es } from '../src/ui/i18n.locales/es';
 import { es_ES } from '../src/ui/i18n.locales/es_ES';
 import { fr_FR } from '../src/ui/i18n.locales/fr_FR';
@@ -50,11 +55,11 @@ const enLeaves = new Set(Object.keys(flatten(en)));
 
 // The guard predicate: dotted keys present in the overlay that are NOT real `en`
 // leaves. An empty result means every key is a member of Leaves(en).
-function keysNotInEnLeaves(overlay: Record<string, string>): string[] {
+function keysNotInEnLeaves(overlay: Record<string, unknown>): string[] {
   return Object.keys(overlay).filter((k) => !enLeaves.has(k)).sort();
 }
 
-const overlays: Record<string, Record<string, string>> = {
+const overlays: Record<string, Partial<Record<TranslationKey, string>>> = {
   es, es_ES, fr_FR, fr_CA, en_CA, it_IT, de_DE,
   zh_CN, zh_TW, ko_KR, ja_JP, pt_BR, ru_RU,
 };

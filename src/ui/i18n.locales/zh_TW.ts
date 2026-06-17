@@ -4,11 +4,16 @@
 // in `en`'s leaf order. This is the translator-edited source: edit a value to
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
-// must be a real `en` leaf path (enforced by tests/i18n_flat_overlay_dense.test.ts
-// and the resolved-table byte-equivalence gate). Overlays are DENSE this phase;
-// Phase 6 relaxes them to sparse (only translated keys).
+// must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
+// string>>` so tsc rejects a structurally-wrong key, plus
+// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
+// template-literal key type cannot. Overlays are SPARSE as of Phase 6: an
+// untranslated key is omitted and the build fills it from English, then the
+// registry (src/ui/i18n.status.json) marks it `pending`.
 
-export const zh_TW: Record<string, string> = {
+import type { TranslationKey } from '../i18n.en';
+
+export const zh_TW: Partial<Record<TranslationKey, string>> = {
   "meta.builtOn": "建置於 {date}",
   "realmTypes.normal": "一般",
   "realmTypes.pvp": "PvP",

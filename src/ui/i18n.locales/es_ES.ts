@@ -4,12 +4,13 @@
 // nested `en` -> es overlay -> this overlay, so any key absent here falls through to es, then to English. This file
 // therefore carries ONLY the keys whose value differs from es; every other key is
 // intentionally omitted. A key must NOT be re-added with a value equal to es
-// (redundant duplication) - the divergence-only shape is enforced by
-// tests/i18n_flat_overlay_dense.test.ts, and every key here must be a real `en` leaf
+// (redundant duplication). Every key here must be a real `en` leaf
 // path (tests/i18n_overlay_key_membership.test.ts + the byte gate). Keys are in `en`'s
 // leaf order.
 
-export const es_ES: Record<string, string> = {
+import type { TranslationKey } from '../i18n.en';
+
+export const es_ES: Partial<Record<TranslationKey, string>> = {
   "nav.loginRegister": "Iniciar sesión/Registrarse",
   "stats.accountsCreated": "Cuentas creadas",
   "stats.playersOnline": "Jugadores en línea",
