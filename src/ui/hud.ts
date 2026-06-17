@@ -1687,6 +1687,8 @@ export class Hud {
     const showOverflow = (this.optionsHooks?.settings.get('showOverflowXp') ?? 1) >= 0.5;
     const bar = xpBarView({ level: p.level, xp: sim.xp, lifetimeXp: sim.lifetimeXp, showOverflow });
     this.setWidth(this.xpFillEl, `${(bar.fillFrac * 100).toFixed(1)}%`);
+    $('#xpbar').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));
+    $('#player-frame').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));
     this.setText(this.xpLabelEl, bar.label);
     $('#xpbar').classList.toggle('overflow', bar.postCap);
 

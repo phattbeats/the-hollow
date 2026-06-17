@@ -3424,7 +3424,7 @@
      anywhere; the joystick rests dimmed at home until touched, then springs to
      the touch point with a gold "engaged" glow. */
   body.mobile-touch #mobile-move-zone {
-    position: absolute; left: 0; bottom: 0; width: min(34vw, calc(50vw - 126px)); min-width: 142px; max-width: 300px; height: 58%;
+    position: absolute; left: 0; bottom: 0; width: min(30vw, 132px); min-width: 112px; max-width: 132px; height: min(36vh, 172px);
     pointer-events: auto; touch-action: none; z-index: 1;
   }
   body.mobile-touch.mobile-chat-open #mobile-move-zone { pointer-events: none; }
@@ -3449,7 +3449,7 @@
   }
   body.mobile-touch #mobile-combat-controls {
     position: absolute; left: 50%; bottom: calc(4px + env(safe-area-inset-bottom)); transform: translateX(-50%);
-    display: grid; grid-template-columns: 124px repeat(5, 58px); gap: 8px; pointer-events: auto; align-items: end; z-index: 30;
+    display: grid; grid-template-columns: 124px repeat(6, 58px); gap: 8px; pointer-events: auto; align-items: end; z-index: 30;
   }
   body.mobile-touch .mobile-btn {
     width: 58px; height: 54px; border: 2px solid #4a3d1d; border-radius: 8px;
@@ -3465,9 +3465,8 @@
   }
   body.mobile-touch .mobile-btn:active { transform: translateY(1px); border-color: var(--gold); color: #fff; }
   body.mobile-touch #mobile-autorun {
-    position: fixed; pointer-events: auto;
-    left: max(calc(18px + env(safe-area-inset-left)), calc(50% - 208px));
-    bottom: calc(72px + env(safe-area-inset-bottom));
+    position: static;
+    pointer-events: auto;
     z-index: 19;
   }
   body.mobile-touch #mobile-autorun.active {
@@ -3533,29 +3532,58 @@
     transform: translate(-50%, -50%) rotate(-45deg); pointer-events: none;
   }
   body.mobile-touch #bottom-bar {
-    left: 0; right: 0; bottom: calc(72px + env(safe-area-inset-bottom));
-    width: 100%;
+    left: calc(max(18px, env(safe-area-inset-left)) + 134px);
+    right: calc(max(18px, env(safe-area-inset-right)) + 134px);
+    bottom: calc(72px + env(safe-area-inset-bottom));
+    width: auto;
     transform: none;
     z-index: 18;
     display: flex;
     justify-content: center;
     pointer-events: none;
   }
-  body.mobile-touch #actionbar-row { pointer-events: auto; }
-  body.mobile-touch #xpbar {
-    position: fixed;
-    left: calc(max(8px, env(safe-area-inset-left)) + 52px);
-    right: auto;
-    top: calc(max(8px, env(safe-area-inset-top)) + 70px);
-    bottom: auto;
-    width: 194px;
+  body.mobile-touch #actionbar-row {
+    pointer-events: auto;
+    width: 100%;
     min-width: 0;
-    height: 6px;
-    display: block;
-    margin: 0;
-    z-index: 19;
-    opacity: 0.86;
   }
+  body.mobile-touch #xpbar {
+    display: none;
+  }
+  body.mobile-touch #player-frame {
+    --xp-ring-start: 210deg;
+    --xp-ring-arc: 360deg;
+  }
+  body.mobile-touch #player-frame::before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    width: 73px;
+    height: 73px;
+    z-index: 2;
+    opacity: 0.96;
+    pointer-events: none;
+    border-radius: 50%;
+    background:
+      conic-gradient(from var(--xp-ring-start),
+        #b85eff 0deg calc(var(--xp-fill, 0) * 360deg),
+        rgba(125, 88, 158, 0.34) calc(var(--xp-fill, 0) * 360deg) var(--xp-ring-arc),
+        transparent var(--xp-ring-arc) 360deg);
+    box-shadow: 0 0 8px rgba(184, 94, 255, 0.28);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));
+  }
+  body.mobile-touch #player-frame:has(#xpbar.overflow)::before {
+    background:
+      conic-gradient(from var(--xp-ring-start),
+        #ffe27a 0deg calc(var(--xp-fill, 0) * 360deg),
+        rgba(184, 144, 42, 0.34) calc(var(--xp-fill, 0) * 360deg) var(--xp-ring-arc),
+        transparent var(--xp-ring-arc) 360deg);
+    box-shadow: 0 0 9px rgba(245, 200, 67, 0.34);
+  }
+  body.mobile-touch #xpbar .fill,
+  body.mobile-touch #xpbar .ticks { display: none; }
   body.mobile-touch #xpbar .label { display: none; }
   body.mobile-touch #castbar {
     position: fixed;
@@ -3572,6 +3600,10 @@
   }
   body.mobile-touch #castbar .label { display: none; }
   body.mobile-touch #actionbar-row { display: block; }
+  body.mobile-touch #actionbar-stack {
+    width: 100%;
+    min-width: 0;
+  }
   body.mobile-touch #petbar {
     position: fixed;
     left: 50%;
@@ -3584,16 +3616,22 @@
   }
   body.mobile-touch #side-buttons { display: none; }
   body.mobile-touch #actionbar {
-    display: grid;
-    grid-template-columns: repeat(5, 42px);
-    grid-auto-rows: 42px;
+    display: flex;
+    flex-wrap: nowrap;
     gap: 4px;
     padding: 4px;
-    width: max-content;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
     background: linear-gradient(170deg, #15151fc8, #08080dd8);
   }
-  body.mobile-touch #actionbar.many-spells { grid-template-columns: repeat(6, 42px); }
-  body.mobile-touch .action-btn { width: 42px; height: 42px; border-radius: 7px; }
+  body.mobile-touch #actionbar.many-spells { grid-template-columns: none; }
+  body.mobile-touch .action-btn { width: 42px; height: 42px; flex: 0 0 42px; border-radius: 7px; }
   body.mobile-touch .action-btn .icon-label { border-radius: 6px; }
   body.mobile-touch .action-btn .cd-text { font-size: 13px; }
   body.mobile-touch .action-btn .keybind { display: none; }
@@ -3639,6 +3677,7 @@
     position: fixed;
     left: max(8px, env(safe-area-inset-left));
     top: max(8px, env(safe-area-inset-top));
+    z-index: 21;
     width: 300px;
     margin: 0;
     display: flex;
@@ -3646,7 +3685,10 @@
     transform: scale(0.82);
     transform-origin: left top;
   }
+  body.mobile-touch #player-frame .portrait-wrap { z-index: 3; }
   body.mobile-touch #player-frame .uf-bars {
+    position: relative;
+    z-index: 1;
     width: 224px;
     max-width: 224px;
     flex: none;
@@ -4078,7 +4120,7 @@
   @media (orientation: portrait) {
     body.mobile-touch.game-active #rotate-device { display: flex; }
     body.mobile-touch #mobile-combat-controls {
-      grid-template-columns: 96px repeat(5, 42px);
+      grid-template-columns: 96px repeat(6, 42px);
       gap: 4px;
     }
     body.mobile-touch .mobile-btn { width: 42px; height: 44px; font-size: 16px; }
@@ -4110,7 +4152,7 @@
     }
     body.mobile-touch .mobile-joy-label { bottom: -15px; font-size: 8px; color: #d7c987aa; }
     body.mobile-touch #mobile-combat-controls {
-      bottom: calc(2px + env(safe-area-inset-bottom)); grid-template-columns: 115px repeat(5, 54px); gap: 7px;
+      bottom: calc(2px + env(safe-area-inset-bottom)); grid-template-columns: 115px repeat(6, 54px); gap: 7px;
     }
     body.mobile-touch .mobile-btn { width: 54px; height: 48px; font-size: 20px; background: radial-gradient(circle at 35% 30%, #2d3048bf, #11121ec2 72%); }
     body.mobile-touch #mobile-attack-nearest { width: 115px; }
@@ -4133,21 +4175,24 @@
       padding: 0 9px;
     }
     body.mobile-touch #mobile-extra-controls .mobile-label { font-size: 9px; }
-    body.mobile-touch #bottom-bar { bottom: calc(58px + env(safe-area-inset-bottom)); }
-    body.mobile-touch #mobile-autorun {
-      left: max(calc(20px + env(safe-area-inset-left)), calc(50% - 194px));
+    body.mobile-touch #bottom-bar {
+      left: calc(max(20px, env(safe-area-inset-left)) + 112px);
+      right: calc(max(20px, env(safe-area-inset-right)) + 112px);
       bottom: calc(58px + env(safe-area-inset-bottom));
     }
-    body.mobile-touch #actionbar { grid-template-columns: repeat(5, 40px); grid-auto-rows: 40px; gap: 4px; padding: 4px; width: max-content; background: linear-gradient(170deg, #15151fa8, #08080db8); }
-    body.mobile-touch #actionbar.many-spells { grid-template-columns: repeat(6, 40px); }
-    body.mobile-touch .action-btn { width: 40px; height: 40px; }
+    body.mobile-touch #actionbar { gap: 4px; padding: 4px; background: linear-gradient(170deg, #15151fa8, #08080db8); }
+    body.mobile-touch #actionbar.many-spells { grid-template-columns: none; }
+    body.mobile-touch .action-btn { width: 40px; height: 40px; flex-basis: 40px; }
     body.mobile-touch #xpbar {
-      left: calc(max(6px, env(safe-area-inset-left)) + 38px);
-      top: calc(max(6px, env(safe-area-inset-top)) + 48px);
-      bottom: auto;
-      width: 142px;
-      min-width: 0;
-      height: 5px;
+      display: none;
+    }
+    body.mobile-touch #player-frame::before {
+      left: -5px;
+      top: -5px;
+      width: 73px;
+      height: 73px;
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));
+      mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));
     }
     body.mobile-touch #castbar {
       left: calc(max(20px, env(safe-area-inset-left)) + 112px);
@@ -5261,9 +5306,9 @@
       <div id="mobile-camera-stick" class="mobile-stick"></div>
       <div class="mobile-joy-label" data-i18n="hud.core.mobileCamera">Camera</div>
     </div>
-    <button class="mobile-btn" id="mobile-autorun" title="Toggle autorun" aria-label="Toggle autorun" data-icon="autorun"><span class="mobile-label">Autorun</span></button>
     <div id="mobile-combat-controls">
       <button class="mobile-btn" id="mobile-attack-nearest" data-i18n-title="hud.keybinds.actions.attack" data-i18n-aria="hud.keybinds.actions.attack" title="Attack" aria-label="Attack" data-icon="attack"><span class="mobile-label" data-i18n="hud.core.mobileAttack">Attack</span></button>
+      <button class="mobile-btn" id="mobile-autorun" title="Toggle autorun" aria-label="Toggle autorun" data-icon="autorun"><span class="mobile-label">Autorun</span></button>
       <button class="mobile-btn" id="mobile-jump" data-i18n-title="hud.keybinds.actions.jump" data-i18n-aria="hud.keybinds.actions.jump" title="Jump" aria-label="Jump" data-icon="jump"><span class="mobile-label">Jump</span></button>
       <button class="mobile-btn" id="mobile-target" data-i18n-title="hud.keybinds.actions.target" data-i18n-aria="hud.keybinds.actions.target" title="Target Nearest Enemy" aria-label="Target Nearest Enemy" data-icon="target"><span class="mobile-label" data-i18n="hud.core.mobileTarget">Target</span></button>
       <button class="mobile-btn" id="mobile-interact" data-i18n-title="hud.keybinds.actions.interact" data-i18n-aria="hud.keybinds.actions.interact" title="Interact / Loot" aria-label="Interact / Loot" data-icon="interact"><span class="mobile-label" data-i18n="hud.core.mobileUse">Use</span></button>
