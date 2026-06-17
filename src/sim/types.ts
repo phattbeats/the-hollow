@@ -47,7 +47,8 @@ export type AuraKind =
   | 'dot' | 'slow' | 'stun' | 'root' | 'incapacitate' | 'polymorph'
   | 'attackspeed' | 'debuff_ap' | 'buff_ap' | 'buff_armor' | 'buff_int' | 'buff_dodge' | 'buff_speed' | 'buff_haste'
   | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_allstats' | 'thorns' | 'form_bear'
-  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence';
+  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence'
+  | 'cost_tax';
 
 export interface Aura {
   id: string; // ability id that applied it
@@ -256,6 +257,10 @@ export interface MobTemplate {
   petSpell?: { name: string; school: 'physical' | 'fire' | 'frost' | 'arcane' | 'shadow' | 'holy' | 'nature'; min: number; max: number; range: number; every: number };
   // On-hit mechanic: chance to silence the victim, locking out spell (non-physical) casts for a duration.
   silence?: { chance: number; duration: number; name: string; school?: string };
+  // On-hit "draining curse": a landed swing has `chance` to inflate every
+  // ability the victim uses by `pct` (e.g. 0.4 = +40% resource cost) for
+  // `duration` seconds — taxes mana/rage/energy alike, not a stat drain.
+  costTax?: { chance: number; pct: number; duration: number; name: string; school?: string };
   // On-hit chill: a landed melee swing has `chance` to slow the victim's
   // movement to `mult` of normal for `duration` seconds (frost school). Reuses
   // the standard `slow` aura, so it rides the same movement path as Frostbolt.

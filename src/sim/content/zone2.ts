@@ -195,6 +195,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     // wounds shut on a slow cadence. Pull it away from the camp — or drop it
     // first — or the fight never ends.
     mendAlly: { healMin: 26, healMax: 38, radius: 14, every: 6, name: 'Grave Mending', school: 'shadow' },
+    // Draining Litany: the mender siphons the victim's vigour to fuel its grave
+    // prayers, inflating every ability the victim uses by 40% for 8s on a hit.
+    costTax: { chance: 0.3, pct: 0.4, duration: 8, name: 'Draining Litany', school: 'shadow' },
     loot: [
       { copper: 58, chance: 1 },
       { itemId: 'cult_cipher', chance: 0.4, questId: 'q_summoners' },

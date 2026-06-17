@@ -124,7 +124,7 @@ const EMOTE_ALIASES: Record<string, string> = {
 // (buff_*, hot, absorb, imbue, stances, forms, stealth, thorns, attackspeed
 // haste) is treated as helpful/neutral. Used by /targetbuffs to tag each aura.
 const HARMFUL_AURA_KINDS: ReadonlySet<AuraKind> = new Set<AuraKind>([
-  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'sunder',
+  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'sunder', 'cost_tax',
 ]);
 
 function isHarmfulAura(kind: AuraKind): boolean {
@@ -186,7 +186,7 @@ const DEMON_HEAL_DURATION = 5;
 const DEMON_HEAL_TICK = 1;
 const TAMED_TARGET_RESPAWN_SECONDS = 60;
 const FRIENDLY_NPC_REJECTED_AURA_KINDS: ReadonlySet<AuraKind> = new Set([
-  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'attackspeed', 'sunder',
+  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'attackspeed', 'sunder', 'cost_tax',
 ]);
 
 function isRejectedFriendlyNpcAura(aura: Aura): boolean {
@@ -1213,7 +1213,23 @@ export class Sim {
   resolvedAbility(abilityId: string, pid?: number): ResolvedAbility | null {
     const r = this.resolve(pid);
     if (!r) return null;
-    return r.meta.known.find((k) => k.def.id === abilityId) ?? null;
+    const found = r.meta.known.find((k) => k.def.id === abilityId) ?? null;
+    if (!found) return null;
+    // A "draining curse" (cost_tax aura) inflates the resource cost of every
+    // ability the victim uses. Resolve it here, the single choke point all cost
+    // checks/spends read, so the affordability check and the spend stay in
+    // lockstep. Return a shallow copy so the cached known-list entry is never
+    // mutated.
+    const tax = this.costTaxMult(r.e);
+    if (tax > 1 && found.cost > 0) return { ...found, cost: Math.ceil(found.cost * tax) };
+    return found;
+  }
+
+  // Highest active cost_tax aura, expressed as a cost multiplier (1 = no tax).
+  private costTaxMult(e: Entity): number {
+    let pct = 0;
+    for (const a of e.auras) if (a.kind === 'cost_tax' && a.value > pct) pct = a.value;
+    return 1 + pct;
   }
 
   // -------------------------------------------------------------------------
@@ -4167,6 +4183,17 @@ export class Sim {
         id: `silence_${mob.templateId}`, name: silence.name, kind: 'silence',
         remaining: silence.duration, duration: silence.duration, value: 0,
         sourceId: mob.id, school: (silence.school ?? 'shadow') as Aura['school'],
+      });
+    }
+    // draining curse: a landed hit can leave a cost-tax debuff that inflates the
+    // victim's ability costs. Guarded on hostile + alive so a friendly pet (the
+    // other mobSwing caller) never debuffs the party.
+    const costTax = MOBS[mob.templateId]?.costTax;
+    if (costTax && mob.hostile && !target.dead && this.rng.chance(costTax.chance)) {
+      this.applyAura(target, {
+        id: `cost_tax_${mob.templateId}`, name: costTax.name, kind: 'cost_tax',
+        remaining: costTax.duration, duration: costTax.duration, value: costTax.pct,
+        sourceId: mob.id, school: (costTax.school ?? 'shadow') as Aura['school'],
       });
     }
     // thorns / lightning shield on the defender
