@@ -9709,11 +9709,11 @@ mergeEntities.fr_CA = mergeEntities.fr_FR;
 // Merge overlay extension: class quality-of-life abilities + Drowned Temple
 // (PR #390/#392). Merged into each locale's entities below.
 const DROWNED_ITEM_IDS = [
-  "briny_idol", "drowned_offering", "drownedmoon_kris", "drownedmoon_maul", "drownedmoon_scepter", "drownstep_sabatons", "drownstep_slippers", "drownstep_treads", "moongate_rubbing", "moonpale_scale", "moonscale_saber", "moonshroud_breastplate", "moonshroud_robe", "moonshroud_tunic", "pale_pearl", "palecoil_heartscale", "palecoil_rod", "selthes_seastriders", "tideglass_dirk", "tidewatchers_wraps", "ysols_pearl_greaves", "the_codfather"
+  "briny_idol", "drowned_offering", "drownedmoon_kris", "drownedmoon_maul", "drownedmoon_scepter", "drownstep_sabatons", "drownstep_slippers", "drownstep_treads", "moongate_rubbing", "moonpale_scale", "moonscale_saber", "moonshroud_breastplate", "moonshroud_robe", "moonshroud_tunic", "pale_pearl", "palecoil_heartscale", "palecoil_rod", "selthes_seastriders", "tideglass_dirk", "tidewatchers_wraps", "ysols_pearl_greaves", "the_codfather", "tidereaver_gaff", "sloomtooth_tidefang", "drowned_tide_scepter"
 ] as const;
 
 const DROWNED_MOB_IDS = [
-  "choirmother_selthe", "drowned_templeguard", "drowned_votary", "glimmermere_wader", "glimmerscale_lurker", "moonspawn", "pale_choir_acolyte", "pearlguard_sentinel", "sethrael_palecoil", "warlock_imp", "warlock_voidwalker", "ysolei"
+  "choirmother_selthe", "drowned_templeguard", "drowned_votary", "glimmermere_wader", "glimmerscale_lurker", "moonspawn", "pale_choir_acolyte", "pearlguard_sentinel", "sethrael_palecoil", "warlock_imp", "warlock_voidwalker", "ysolei", "sloomtooth_the_drowned"
 ] as const;
 
 const mergeExtraEn = {
@@ -9725,10 +9725,10 @@ const mergeExtraEn = {
       ["revive_pet", "Revive Pet", "Revives your dead pet and returns it to your side."],
     ]),
     items: mergeNameTranslations(DROWNED_ITEM_IDS, [
-      "Briny Idol", "Drowned Offering", "Drowned Moon Kris", "Drowned Moon Maul", "Drowned Moon Scepter", "Drownstep Sabatons", "Drownstep Slippers", "Drownstep Treads", "Warding Rubbing", "Moonpale Scale", "Moonscale Saber", "Moonshroud Breastplate", "Moonshroud Robe", "Moonshroud Tunic", "Pale Pearl", "Sethrael's Heartscale", "Palecoil Rod", "Selthe's Sea-Striders", "Tideglass Dirk", "Tidewatcher's Wraps", "Ysolei's Pearl Greaves", "The Codfather"
+      "Briny Idol", "Drowned Offering", "Drowned Moon Kris", "Drowned Moon Maul", "Drowned Moon Scepter", "Drownstep Sabatons", "Drownstep Slippers", "Drownstep Treads", "Warding Rubbing", "Moonpale Scale", "Moonscale Saber", "Moonshroud Breastplate", "Moonshroud Robe", "Moonshroud Tunic", "Pale Pearl", "Sethrael's Heartscale", "Palecoil Rod", "Selthe's Sea-Striders", "Tideglass Dirk", "Tidewatcher's Wraps", "Ysolei's Pearl Greaves", "The Codfather", "Tidereaver Gaff", "Sloomtooth's Tidefang", "Drowned Tide Scepter"
     ], 'drowned item'),
     mobs: mergeNameTranslations(DROWNED_MOB_IDS, [
-      "Choirmother Selthe", "Drowned Templeguard", "Drowned Votary", "Glimmermere Wader", "Glimmerscale Lurker", "Moonspawn", "Pale Choir Acolyte", "Pearlguard Sentinel", "Sethrael the Palecoil", "Fire Demon", "Void Demon", "Ysolei, Avatar of the Drowned Moon"
+      "Choirmother Selthe", "Drowned Templeguard", "Drowned Votary", "Glimmermere Wader", "Glimmerscale Lurker", "Moonspawn", "Pale Choir Acolyte", "Pearlguard Sentinel", "Sethrael the Palecoil", "Fire Demon", "Void Demon", "Ysolei, Avatar of the Drowned Moon", "Sloomtooth the Drowned"
     ], 'drowned mob'),
     npcs: {
       tidewatcher_ondrel: { name: "Ondrel Vane", title: "Tidewatcher", greeting: "The mere drinks the moonlight, {className}, and gives back the drowned. I have watched that gate for thirty nights — and tonight it is open." },
@@ -9793,10 +9793,10 @@ const mergeExtra = {
       ["revive_pet", "Revivir mascota", "Revive a tu mascota muerta y la devuelve a tu lado."],
     ]),
     items: mergeNameTranslations(DROWNED_ITEM_IDS, [
-      "Ídolo salobre", "Ofrenda ahogada", "Kris de la Luna Ahogada", "Maza de la Luna Ahogada", "Cetro de la Luna Ahogada", "Escarpes de Paso Ahogado", "Babuchas de Paso Ahogado", "Botas de Paso Ahogado", "Calco protector", "Escama de Lunapálida", "Sable de Escama Lunar", "Peto del Sudario Lunar", "Túnica del Sudario Lunar", "Sobreveste del Sudario Lunar", "Perla pálida", "Escama del corazón de Sethrael", "Vara de Espiral Pálida", "Zancadas marinas de Selthe", "Daga de Vidriomarea", "Vendas del Vigía de la Marea", "Grebas de perla de Ysolei", "El Bacaladrino"
+      "Ídolo salobre", "Ofrenda ahogada", "Kris de la Luna Ahogada", "Maza de la Luna Ahogada", "Cetro de la Luna Ahogada", "Escarpes de Paso Ahogado", "Babuchas de Paso Ahogado", "Botas de Paso Ahogado", "Calco protector", "Escama de Lunapálida", "Sable de Escama Lunar", "Peto del Sudario Lunar", "Túnica del Sudario Lunar", "Sobreveste del Sudario Lunar", "Perla pálida", "Escama del corazón de Sethrael", "Vara de Espiral Pálida", "Zancadas marinas de Selthe", "Daga de Vidriomarea", "Vendas del Vigía de la Marea", "Grebas de perla de Ysolei", "El Bacaladrino", "Garfio Saqueamareas", "Colmillo de Marea de Sloomtooth", "Cetro de la Marea Ahogada"
     ], 'drowned item'),
     mobs: mergeNameTranslations(DROWNED_MOB_IDS, [
-      "Selthe, madre del coro", "Guardián ahogado del templo", "Devoto ahogado", "Vadeador de Glimmermere", "Acechador de Escama Reluciente", "Engendro lunar", "Acólito del Coro Pálido", "Centinela de la Guardia de Perla", "Sethrael, la Espiral Pálida", "Demonio de fuego", "Demonio del vacío", "Ysolei, Avatar de la Luna Ahogada"
+      "Selthe, madre del coro", "Guardián ahogado del templo", "Devoto ahogado", "Vadeador de Glimmermere", "Acechador de Escama Reluciente", "Engendro lunar", "Acólito del Coro Pálido", "Centinela de la Guardia de Perla", "Sethrael, la Espiral Pálida", "Demonio de fuego", "Demonio del vacío", "Ysolei, Avatar de la Luna Ahogada", "Sloomtooth el Ahogado"
     ], 'drowned mob'),
     npcs: {
       tidewatcher_ondrel: { name: "Ondrel Vane", title: "Vigía de la Marea", greeting: "El lago bebe la luz de la luna, {className}, y devuelve a los ahogados. He vigilado esa puerta durante treinta noches... y esta noche está abierta." },
@@ -9858,10 +9858,10 @@ const mergeExtra = {
       ["revive_pet", "Ranimer le familier", "Ranime votre familier mort et le ramène à vos côtés."],
     ]),
     items: mergeNameTranslations(DROWNED_ITEM_IDS, [
-      "Idole saumâtre", "Offrande noyée", "Kriss de la Lune noyée", "Maillet de la Lune noyée", "Sceptre de la Lune noyée", "Solerets du Pas noyé", "Chaussons du Pas noyé", "Sandales du Pas noyé", "Frottis de protection", "Écaille de Pâlelune", "Sabre en écailles de lune", "Plastron du Linceul de lune", "Robe du Linceul de lune", "Tunique du Linceul de lune", "Perle blafarde", "Écaille de cœur de Sethrael", "Verge de Pâlanneau", "Arpenteuses des mers de Selthe", "Dague de verre de marée", "Bandes du Veille-marées", "Jambières de perle d'Ysolei", "Capitaine brochet"
+      "Idole saumâtre", "Offrande noyée", "Kriss de la Lune noyée", "Maillet de la Lune noyée", "Sceptre de la Lune noyée", "Solerets du Pas noyé", "Chaussons du Pas noyé", "Sandales du Pas noyé", "Frottis de protection", "Écaille de Pâlelune", "Sabre en écailles de lune", "Plastron du Linceul de lune", "Robe du Linceul de lune", "Tunique du Linceul de lune", "Perle blafarde", "Écaille de cœur de Sethrael", "Verge de Pâlanneau", "Arpenteuses des mers de Selthe", "Dague de verre de marée", "Bandes du Veille-marées", "Jambières de perle d'Ysolei", "Capitaine brochet", "Gaffe Ravage-Marée", "Croc-de-Marée de Sloomtooth", "Sceptre de la Marée Noyée"
     ], 'drowned item'),
     mobs: mergeNameTranslations(DROWNED_MOB_IDS, [
-      "Selthe, mère de chœur", "Garde du temple noyé", "Dévot noyé", "Pataugeur de Lac-miroitant", "Rôdeur aux écailles miroitantes", "Engeance de lune", "Acolyte du Chœur blafard", "Sentinelle de la Garde de perle", "Sethrael le Pâlanneau", "Démon de feu", "Démon du néant", "Ysolei, avatar de la Lune noyée"
+      "Selthe, mère de chœur", "Garde du temple noyé", "Dévot noyé", "Pataugeur de Lac-miroitant", "Rôdeur aux écailles miroitantes", "Engeance de lune", "Acolyte du Chœur blafard", "Sentinelle de la Garde de perle", "Sethrael le Pâlanneau", "Démon de feu", "Démon du néant", "Ysolei, avatar de la Lune noyée", "Sloomtooth le Noyé"
     ], 'drowned mob'),
     npcs: {
       tidewatcher_ondrel: { name: "Ondrel Vane", title: "Veille-marées", greeting: "Le lac boit le clair de lune, {className}, et rend les noyés. J'ai surveillé cette porte trente nuits durant — et cette nuit, elle est ouverte." },
@@ -9923,10 +9923,10 @@ const mergeExtra = {
       ["revive_pet", "Rianima Famiglio", "Rianima il tuo famiglio morto e lo richiama al tuo fianco."],
     ]),
     items: mergeNameTranslations(DROWNED_ITEM_IDS, [
-      "Idolo Salmastro", "Offerta Annegata", "Kris della Luna Annegata", "Maglio della Luna Annegata", "Scettro della Luna Annegata", "Scarpe d'Arme di Passoannegato", "Pantofole di Passoannegato", "Stivali di Passoannegato", "Calco Protettivo", "Squama di Lunapallida", "Sciabola di Lunasquama", "Corazza del Sudario Lunare", "Veste del Sudario Lunare", "Tunica del Sudario Lunare", "Perla Pallida", "Squamacuore di Sethrael", "Verga di Spiropallido", "Camminamari di Selthe", "Pugnale di Vetromarea", "Fasce del Guardamarea", "Schinieri di Perla di Ysolei", "Il Pescadrino"
+      "Idolo Salmastro", "Offerta Annegata", "Kris della Luna Annegata", "Maglio della Luna Annegata", "Scettro della Luna Annegata", "Scarpe d'Arme di Passoannegato", "Pantofole di Passoannegato", "Stivali di Passoannegato", "Calco Protettivo", "Squama di Lunapallida", "Sciabola di Lunasquama", "Corazza del Sudario Lunare", "Veste del Sudario Lunare", "Tunica del Sudario Lunare", "Perla Pallida", "Squamacuore di Sethrael", "Verga di Spiropallido", "Camminamari di Selthe", "Pugnale di Vetromarea", "Fasce del Guardamarea", "Schinieri di Perla di Ysolei", "Il Pescadrino", "Raffio Predamarea", "Zanna di Marea di Sloomtooth", "Scettro della Marea Annegata"
     ], 'drowned item'),
     mobs: mergeNameTranslations(DROWNED_MOB_IDS, [
-      "Selthe Madre del Coro", "Guardiano del Tempio Annegato", "Devoto Annegato", "Guadatore di Glimmermere", "Acquattato di Glimmerscaglia", "Progenie Lunare", "Accolito del Coro Pallido", "Sentinella della Guardia di Perla", "Sethrael lo Spiropallido", "Demone di Fuoco", "Demone del Vuoto", "Ysolei, Avatar della Luna Annegata"
+      "Selthe Madre del Coro", "Guardiano del Tempio Annegato", "Devoto Annegato", "Guadatore di Glimmermere", "Acquattato di Glimmerscaglia", "Progenie Lunare", "Accolito del Coro Pallido", "Sentinella della Guardia di Perla", "Sethrael lo Spiropallido", "Demone di Fuoco", "Demone del Vuoto", "Ysolei, Avatar della Luna Annegata", "Sloomtooth l'Annegato"
     ], 'drowned mob'),
     npcs: {
       tidewatcher_ondrel: { name: "Ondrel Vane", title: "Guardamarea", greeting: "Lo stagno beve la luce della luna, {className}, e restituisce gli annegati. Sorveglio quel cancello da trenta notti — e stanotte è aperto." },
@@ -9988,10 +9988,10 @@ const mergeExtra = {
       ["revive_pet", "Begleiter wiederbeleben", "Belebt deinen toten Begleiter wieder und ruft ihn an deine Seite zurück."],
     ]),
     items: mergeNameTranslations(DROWNED_ITEM_IDS, [
-      "Salzlaken-Götze", "Ertränkte Opfergabe", "Kris des Ertränkten Mondes", "Streitkolben des Ertränkten Mondes", "Zepter des Ertränkten Mondes", "Ertränkungsschritt-Eisenschuhe", "Ertränkungsschritt-Schläppchen", "Ertränkungsschritt-Trittlinge", "Schutzzeichen-Abrieb", "Mondbleiche Schuppe", "Mondschuppen-Säbel", "Mondschleier-Brustpanzer", "Mondschleier-Robe", "Mondschleier-Wams", "Bleiche Perle", "Sethraels Herzschuppe", "Bleichwinder-Rute", "Selthes Meeresschreiter", "Gezeitenglas-Dolch", "Bandagen des Gezeitenwächters", "Ysoleis Perlenbeinschienen", "Der Kabeljaupate"
+      "Salzlaken-Götze", "Ertränkte Opfergabe", "Kris des Ertränkten Mondes", "Streitkolben des Ertränkten Mondes", "Zepter des Ertränkten Mondes", "Ertränkungsschritt-Eisenschuhe", "Ertränkungsschritt-Schläppchen", "Ertränkungsschritt-Trittlinge", "Schutzzeichen-Abrieb", "Mondbleiche Schuppe", "Mondschuppen-Säbel", "Mondschleier-Brustpanzer", "Mondschleier-Robe", "Mondschleier-Wams", "Bleiche Perle", "Sethraels Herzschuppe", "Bleichwinder-Rute", "Selthes Meeresschreiter", "Gezeitenglas-Dolch", "Bandagen des Gezeitenwächters", "Ysoleis Perlenbeinschienen", "Der Kabeljaupate", "Fluträuber-Fischhaken", "Sloomtouths Flutzahn", "Zepter der Ertrunkenen Flut"
     ], 'drowned item'),
     mobs: mergeNameTranslations(DROWNED_MOB_IDS, [
-      "Chormutter Selthe", "Ertränkte Tempelwache", "Ertränkter Andächtiger", "Schimmersee-Wäter", "Schimmerschuppen-Lauerer", "Mondbrut", "Akolyth des Bleichen Chors", "Perlwächter-Schildwache", "Sethrael der Bleichwinder", "Feuerdämon", "Leerendämon", "Ysolei, Avatar des Ertränkten Mondes"
+      "Chormutter Selthe", "Ertränkte Tempelwache", "Ertränkter Andächtiger", "Schimmersee-Wäter", "Schimmerschuppen-Lauerer", "Mondbrut", "Akolyth des Bleichen Chors", "Perlwächter-Schildwache", "Sethrael der Bleichwinder", "Feuerdämon", "Leerendämon", "Ysolei, Avatar des Ertränkten Mondes", "Sloomtooth der Ertrunkene"
     ], 'drowned mob'),
     npcs: {
       tidewatcher_ondrel: { name: "Ondrel Vane", title: "Gezeitenwächter", greeting: "Der See trinkt das Mondlicht, {className}, und gibt die Ertränkten zurück. Dreißig Nächte lang habe ich jenes Tor bewacht — und heute Nacht steht es offen." },
@@ -10053,10 +10053,10 @@ const mergeExtra = {
       ["revive_pet", "复活宠物", "复活你死去的宠物，并将其召回身边。"],
     ]),
     items: mergeNameTranslations(DROWNED_ITEM_IDS, [
-      "咸海神像", "溺亡祭品", "溺月波刃匕", "溺月巨锤", "溺月权杖", "溺踪战靴", "溺踪软鞋", "溺踪皮靴", "守誓拓文", "苍月之鳞", "月鳞军刀", "月帷胸甲", "月帷长袍", "月帷外衣", "苍白之珠", "瑟斯雷尔的心鳞", "苍盘法杖", "塞尔瑟的踏海者", "潮镜短刃", "守潮者裹手", "伊索蕾的珍珠护胫", "鳕鱼教父"
+      "咸海神像", "溺亡祭品", "溺月波刃匕", "溺月巨锤", "溺月权杖", "溺踪战靴", "溺踪软鞋", "溺踪皮靴", "守誓拓文", "苍月之鳞", "月鳞军刀", "月帷胸甲", "月帷长袍", "月帷外衣", "苍白之珠", "瑟斯雷尔的心鳞", "苍盘法杖", "塞尔瑟的踏海者", "潮镜短刃", "守潮者裹手", "伊索蕾的珍珠护胫", "鳕鱼教父", "夺潮鱼叉", "斯卢姆图斯的潮牙", "溺潮权杖"
     ], 'drowned item'),
     mobs: mergeNameTranslations(DROWNED_MOB_IDS, [
-      "唱诗母塞尔瑟", "溺亡神殿卫", "溺亡信徒", "微光潭涉行者", "微光鳞潜伏者", "月之孽生", "苍白唱诗侍僧", "珍珠卫哨兵", "苍盘者瑟斯雷尔", "火焰恶魔", "虚空恶魔", "伊索蕾，溺月化身"
+      "唱诗母塞尔瑟", "溺亡神殿卫", "溺亡信徒", "微光潭涉行者", "微光鳞潜伏者", "月之孽生", "苍白唱诗侍僧", "珍珠卫哨兵", "苍盘者瑟斯雷尔", "火焰恶魔", "虚空恶魔", "伊索蕾，溺月化身", "溺亡者斯卢姆图斯"
     ], 'drowned mob'),
     npcs: {
       tidewatcher_ondrel: { name: "翁德雷尔·凡恩", title: "守潮者", greeting: "潭水饮尽月光，{className}，又将溺者吐还。我守望那道门户已有三十夜——而今夜，它开了。" },
@@ -10118,10 +10118,10 @@ const mergeExtra = {
       ["revive_pet", "復活寵物", "復活你已死亡的寵物，並使其重回你身邊。"],
     ]),
     items: mergeNameTranslations(DROWNED_ITEM_IDS, [
-      "鹹海神像", "溺者供品", "溺月波刃匕", "溺月巨槌", "溺月權杖", "沉踏戰靴", "沉踏軟履", "沉踏踏靴", "守護拓印", "蒼月之鱗", "月鱗彎刀", "月帷胸甲", "月帷長袍", "月帷外衣", "蒼白珍珠", "賽斯瑞爾的心鱗", "蒼盤法杖", "瑟爾瑟的踏海靴", "潮鏡短劍", "守潮者護腕", "伊索蕾的珍珠脛甲", "鱈魚教父"
+      "鹹海神像", "溺者供品", "溺月波刃匕", "溺月巨槌", "溺月權杖", "沉踏戰靴", "沉踏軟履", "沉踏踏靴", "守護拓印", "蒼月之鱗", "月鱗彎刀", "月帷胸甲", "月帷長袍", "月帷外衣", "蒼白珍珠", "賽斯瑞爾的心鱗", "蒼盤法杖", "瑟爾瑟的踏海靴", "潮鏡短劍", "守潮者護腕", "伊索蕾的珍珠脛甲", "鱈魚教父", "奪潮魚叉", "斯盧姆圖斯的潮牙", "溺潮權杖"
     ], 'drowned item'),
     mobs: mergeNameTranslations(DROWNED_MOB_IDS, [
-      "唱詩之母瑟爾瑟", "溺亡神殿守衛", "溺亡信徒", "微光湖涉者", "微鱗潛伏者", "月之裔", "蒼白唱詩侍僧", "珍珠衛哨兵", "蒼盤者賽斯瑞爾", "火焰惡魔", "虛空惡魔", "伊索蕾，溺月化身"
+      "唱詩之母瑟爾瑟", "溺亡神殿守衛", "溺亡信徒", "微光湖涉者", "微鱗潛伏者", "月之裔", "蒼白唱詩侍僧", "珍珠衛哨兵", "蒼盤者賽斯瑞爾", "火焰惡魔", "虛空惡魔", "伊索蕾，溺月化身", "溺斃者斯盧姆圖斯"
     ], 'drowned mob'),
     npcs: {
       tidewatcher_ondrel: { name: "翁德瑞爾·韋恩", title: "守潮者", greeting: "湖水飲盡了月光，{className}，再將溺者吐還。我已守望那道門三十夜——而今夜，它開了。" },
@@ -10183,10 +10183,10 @@ const mergeExtra = {
       ["revive_pet", "소환수 소생", "죽은 소환수를 되살려 당신의 곁으로 되돌립니다."],
     ]),
     items: mergeNameTranslations(DROWNED_ITEM_IDS, [
-      "소금기 어린 우상", "익사한 제물", "익사한 달의 크리스 단검", "익사한 달의 대망치", "익사한 달의 홀", "드라운스텝 사바톤", "드라운스텝 슬리퍼", "드라운스텝 군화", "수호의 탁본", "창백한 달빛 비늘", "달비늘 세이버", "달수의 흉갑", "달수의 법복", "달수의 튜닉", "창백한 진주", "세스라엘의 심장 비늘", "페일코일 막대", "셀세의 바다걸음 장화", "조수유리 단검", "조수지기의 손싸개", "이솔레이의 진주 정강이받이", "대구 대부"
+      "소금기 어린 우상", "익사한 제물", "익사한 달의 크리스 단검", "익사한 달의 대망치", "익사한 달의 홀", "드라운스텝 사바톤", "드라운스텝 슬리퍼", "드라운스텝 군화", "수호의 탁본", "창백한 달빛 비늘", "달비늘 세이버", "달수의 흉갑", "달수의 법복", "달수의 튜닉", "창백한 진주", "세스라엘의 심장 비늘", "페일코일 막대", "셀세의 바다걸음 장화", "조수유리 단검", "조수지기의 손싸개", "이솔레이의 진주 정강이받이", "대구 대부", "조수약탈자 갈고리", "슬룸투스의 조수송곳니", "익사한 조수의 셉터"
     ], 'drowned item'),
     mobs: mergeNameTranslations(DROWNED_MOB_IDS, [
-      "성가대모 셀세", "익사한 신전 수호병", "익사한 신도", "글리머미어 물거리", "반짝비늘 잠복자", "달의 부산물", "창백한 성가대 수습 사제", "진주수호 파수병", "페일코일의 세스라엘", "화염 악마", "공허 악마", "이솔레이, 익사한 달의 화신"
+      "성가대모 셀세", "익사한 신전 수호병", "익사한 신도", "글리머미어 물거리", "반짝비늘 잠복자", "달의 부산물", "창백한 성가대 수습 사제", "진주수호 파수병", "페일코일의 세스라엘", "화염 악마", "공허 악마", "이솔레이, 익사한 달의 화신", "익사자 슬룸투스"
     ], 'drowned mob'),
     npcs: {
       tidewatcher_ondrel: { name: "온드렐 베인", title: "조수지기", greeting: "이 호수는 달빛을 마시고, {className}, 익사한 자들을 되돌려 보낸다네. 나는 서른 밤 동안 저 관문을 지켜보았지 — 그리고 오늘 밤, 마침내 그것이 열렸네." },
@@ -10248,10 +10248,10 @@ const mergeExtra = {
       ["revive_pet", "ペット蘇生", "死んだペットを蘇生させ、自分のそばに呼び戻す。"],
     ]),
     items: mergeNameTranslations(DROWNED_ITEM_IDS, [
-      "潮辛の偶像", "溺れし供物", "溺月のクリス", "溺月の大槌", "溺月の笏", "溺歩のサバトン", "溺歩のスリッパ", "溺歩のトレッド", "守護の拓本", "蒼白月の鱗", "月鱗のサーベル", "月帷子の胸甲", "月帷子のローブ", "月帷子のチュニック", "蒼白の真珠", "セスラエルの心鱗", "蒼渦のロッド", "セルセの潮渡り靴", "潮硝子の短剣", "潮見の手布", "イソレイの真珠脚甲", "タラのゴッドファーザー"
+      "潮辛の偶像", "溺れし供物", "溺月のクリス", "溺月の大槌", "溺月の笏", "溺歩のサバトン", "溺歩のスリッパ", "溺歩のトレッド", "守護の拓本", "蒼白月の鱗", "月鱗のサーベル", "月帷子の胸甲", "月帷子のローブ", "月帷子のチュニック", "蒼白の真珠", "セスラエルの心鱗", "蒼渦のロッド", "セルセの潮渡り靴", "潮硝子の短剣", "潮見の手布", "イソレイの真珠脚甲", "タラのゴッドファーザー", "潮奪いの銛", "スルームトゥースの潮牙", "溺れし潮の杖"
     ], 'drowned item'),
     mobs: mergeNameTranslations(DROWNED_MOB_IDS, [
-      "聖歌母セルセ", "溺れし神殿守", "溺れし信徒", "煌めき沼の渡り手", "煌鱗の潜み者", "月の落とし子", "蒼白聖歌隊の侍祭", "真珠衛の歩哨", "蒼渦のセスラエル", "炎の魔物", "虚無の魔物", "イソレイ、溺月の化身"
+      "聖歌母セルセ", "溺れし神殿守", "溺れし信徒", "煌めき沼の渡り手", "煌鱗の潜み者", "月の落とし子", "蒼白聖歌隊の侍祭", "真珠衛の歩哨", "蒼渦のセスラエル", "炎の魔物", "虚無の魔物", "イソレイ、溺月の化身", "溺者スルームトゥース"
     ], 'drowned mob'),
     npcs: {
       tidewatcher_ondrel: { name: "オンドレル・ヴェイン", title: "潮見の番人", greeting: "この沼は月光を飲み干し、{className}よ、溺れし者を吐き返すのだ。私はあの門を三十夜も見張ってきた——そして今宵、門は開いている。" },
@@ -10313,10 +10313,10 @@ const mergeExtra = {
       ["revive_pet", "Reviver Mascote", "Revive seu mascote morto e o traz de volta ao seu lado."],
     ]),
     items: mergeNameTranslations(DROWNED_ITEM_IDS, [
-      "Ídolo Salobro", "Oferenda Afogada", "Kris da Lua Afogada", "Maça da Lua Afogada", "Cetro da Lua Afogada", "Soleretes do Passo Afogado", "Sapatilhas do Passo Afogado", "Botinas do Passo Afogado", "Decalque Protetor", "Escama Pálido-Lunar", "Sabre de Escama Lunar", "Peitoral do Sudário Lunar", "Túnica do Sudário Lunar", "Gibão do Sudário Lunar", "Pérola Pálida", "Escama do Coração de Sethrael", "Vara do Anel Pálido", "Anda-Mares de Selthe", "Adaga de Vidro-Maré", "Faixas do Vigia das Marés", "Grevas de Pérola de Ysolei", "O Bacalhau-Padrinho"
+      "Ídolo Salobro", "Oferenda Afogada", "Kris da Lua Afogada", "Maça da Lua Afogada", "Cetro da Lua Afogada", "Soleretes do Passo Afogado", "Sapatilhas do Passo Afogado", "Botinas do Passo Afogado", "Decalque Protetor", "Escama Pálido-Lunar", "Sabre de Escama Lunar", "Peitoral do Sudário Lunar", "Túnica do Sudário Lunar", "Gibão do Sudário Lunar", "Pérola Pálida", "Escama do Coração de Sethrael", "Vara do Anel Pálido", "Anda-Mares de Selthe", "Adaga de Vidro-Maré", "Faixas do Vigia das Marés", "Grevas de Pérola de Ysolei", "O Bacalhau-Padrinho", "Gancho Saqueia-Marés", "Presa-da-Maré de Sloomtooth", "Cetro da Maré Afogada"
     ], 'drowned item'),
     mobs: mergeNameTranslations(DROWNED_MOB_IDS, [
-      "Mãe-do-Coro Selthe", "Guarda do Templo Afogado", "Devoto Afogado", "Vadeador de Glimmermere", "Espreitador de Escama Reluzente", "Cria da Lua", "Acólito do Coro Pálido", "Sentinela da Guarda Pérola", "Sethrael, o Anel Pálido", "Demônio de Fogo", "Demônio do Vazio", "Ysolei, Avatar da Lua Afogada"
+      "Mãe-do-Coro Selthe", "Guarda do Templo Afogado", "Devoto Afogado", "Vadeador de Glimmermere", "Espreitador de Escama Reluzente", "Cria da Lua", "Acólito do Coro Pálido", "Sentinela da Guarda Pérola", "Sethrael, o Anel Pálido", "Demônio de Fogo", "Demônio do Vazio", "Ysolei, Avatar da Lua Afogada", "Sloomtooth, o Afogado"
     ], 'drowned mob'),
     npcs: {
       tidewatcher_ondrel: { name: "Ondrel Vane", title: "Vigia das Marés", greeting: "O lago bebe o luar, {className}, e devolve os afogados. Vigio aquele portão há trinta noites — e esta noite ele está aberto." },
@@ -10378,10 +10378,10 @@ const mergeExtra = {
       ["revive_pet", "Оживление питомца", "Оживляет вашего павшего питомца и возвращает его к вам."],
     ]),
     items: mergeNameTranslations(DROWNED_ITEM_IDS, [
-      "Просоленный идол", "Подношение утопленников", "Крис Утонувшей луны", "Молот Утонувшей луны", "Скипетр Утонувшей луны", "Сабатоны Утопшего шага", "Туфли Утопшего шага", "Поступь Утопшего шага", "Оттиск оберега", "Чешуя Бледной луны", "Сабля из лунной чешуи", "Кираса Лунного савана", "Одеяние Лунного савана", "Туника Лунного савана", "Бледная жемчужина", "Сердечная чешуя Сетраэля", "Жезл Бледного кольца", "Морестопы Селте", "Кинжал Приливного стекла", "Обмотки Стража приливов", "Жемчужные поножи Изолеи", "Крестная треска"
+      "Просоленный идол", "Подношение утопленников", "Крис Утонувшей луны", "Молот Утонувшей луны", "Скипетр Утонувшей луны", "Сабатоны Утопшего шага", "Туфли Утопшего шага", "Поступь Утопшего шага", "Оттиск оберега", "Чешуя Бледной луны", "Сабля из лунной чешуи", "Кираса Лунного савана", "Одеяние Лунного савана", "Туника Лунного савана", "Бледная жемчужина", "Сердечная чешуя Сетраэля", "Жезл Бледного кольца", "Морестопы Селте", "Кинжал Приливного стекла", "Обмотки Стража приливов", "Жемчужные поножи Изолеи", "Крестная треска", "Багор Приливного грабителя", "Приливный клык Слумтута", "Скипетр Утонувшего прилива"
     ], 'drowned item'),
     mobs: mergeNameTranslations(DROWNED_MOB_IDS, [
-      "Матерь хора Селте", "Утонувший храмовый страж", "Утонувший служитель", "Бродяга Мерцающего омута", "Затаившийся Мерцающечешуйный", "Лунное отродье", "Послушник Бледного хора", "Часовой Жемчужной стражи", "Сетраэль Бледное Кольцо", "Огненный демон", "Демон Пустоты", "Изолея, Воплощение Утонувшей луны"
+      "Матерь хора Селте", "Утонувший храмовый страж", "Утонувший служитель", "Бродяга Мерцающего омута", "Затаившийся Мерцающечешуйный", "Лунное отродье", "Послушник Бледного хора", "Часовой Жемчужной стражи", "Сетраэль Бледное Кольцо", "Огненный демон", "Демон Пустоты", "Изолея, Воплощение Утонувшей луны", "Слумтут Утонувший"
     ], 'drowned mob'),
     npcs: {
       tidewatcher_ondrel: { name: "Ондрел Вейн", title: "Страж приливов", greeting: "Омут пьёт лунный свет, {className}, и возвращает утопленников. Тридцать ночей я наблюдаю за теми вратами — и нынче ночью они открыты." },
