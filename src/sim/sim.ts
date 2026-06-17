@@ -4192,6 +4192,25 @@ export class Sim {
         school: (ms.school as Aura['school']) ?? 'physical',
       });
     }
+    // Staggering blow: a landed hit may knock the victim off-balance, cutting their
+    // dodge for a short while so attacks land more reliably. Hostile mobs only (a
+    // friendly pet shares this swing path) and only players have a meaningful dodge
+    // chance. Rides buff_dodge with a NEGATIVE value — recalcPlayerStats already
+    // folds buff_dodge into e.dodgeChance and it recalcs on expiry (buff* kind), so
+    // no new aura kind is needed.
+    const stagger = MOBS[mob.templateId]?.staggerHit;
+    if (stagger && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(stagger.chance)) {
+      this.applyAura(target, {
+        id: `stagger_${mob.templateId}`,
+        name: stagger.name,
+        kind: 'buff_dodge',
+        remaining: stagger.duration,
+        duration: stagger.duration,
+        value: -stagger.dodgeReduction,
+        sourceId: mob.id,
+        school: 'physical',
+      });
+    }
     // Ensnare: a landed hit may web the victim in place (root). Hostile mobs only
     // (a friendly pet shares this swing path) and only roots players — `applyRootAura`
     // applies crowd-control DR so repeated webs from the same mob shrink and break.

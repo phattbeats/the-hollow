@@ -132,7 +132,8 @@ export function recalcPlayerStats(e: Entity, cls: PlayerClass, equipment: Player
   e.rangedPower = cls === 'hunter' ? Math.round((s.agi * 2 + bonusAp) * (1 + (mods?.stats.apPct ?? 0))) : 0;
   // Crit: ~1% per 20 agi at low level
   e.critChance = 0.05 + s.agi * 0.0005 + (mods?.stats.crit ?? 0);
-  e.dodgeChance = 0.05 + s.agi * 0.0005 + bonusDodge;
+  // Floored at 0: an off-balance debuff (negative buff_dodge) can drive dodge to nothing.
+  e.dodgeChance = Math.max(0, 0.05 + s.agi * 0.0005 + bonusDodge);
 
   const hpFrac = e.maxHp > 0 ? e.hp / e.maxHp : 1;
   e.maxHp = def.baseHp + def.hpPerLevel * (lvl - 1) + hpFromStamina(s.sta);
