@@ -3512,7 +3512,7 @@ export class Sim {
     }
   }
 
-  // Opt-in cosmetic prestige (Phase 4): only at the cap. Resets the level XP
+  // Opt-in cosmetic prestige: only at the cap. Resets the level XP
   // bar, bumps the prestige rank for a badge by the name + on the leaderboard,
   // and deliberately leaves lifetimeXp, level, gear, talents, and learned
   // abilities untouched — strictly cosmetic, zero power change (FR-6.1/6.3).

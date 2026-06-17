@@ -281,7 +281,7 @@ export interface IWorld {
   enterDungeon(dungeonId: string): void;
   leaveDungeon(): void;
   // Post-cap progression: the realm-scoped lifetime-XP leaderboard, and the
-  // opt-in cosmetic prestige action (Phase 4).
+  // opt-in cosmetic prestige action.
   leaderboard(): Promise<LeaderboardEntry[]>;
   prestige(): void;
   // Talents & Specializations. State is server-authoritative; the client stages
