@@ -620,9 +620,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     onInteract: () => interactKey(),
     onAutorun: () => input.toggleAutorun(),
     onChat: () => openChat(),
-    onMenu: () => {
-      if (!hud.closeAll()) hud.toggleOptionsMenu();
-    },
+    onMenu: () => hud.toggleOptionsMenu(),
     onSocial: () => hud.toggleSocial(),
     onEmotes: () => hud.toggleEmoteWheel(),
     onArena: () => hud.toggleArena(),

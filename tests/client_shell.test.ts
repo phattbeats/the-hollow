@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 const mainTs = readFileSync(new URL('../src/main.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 const hudTs = readFileSync(new URL('../src/ui/hud.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+const mobileControlsTs = readFileSync(new URL('../src/game/mobile_controls.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 
 function splitGameUiTemplate(): { templateHtml: string; liveHtml: string } {
   const marker = '<template id="game-ui-template">';
@@ -61,11 +62,34 @@ describe('client HTML shell', () => {
     expect(html).toContain('-webkit-user-select: text;\n    -webkit-touch-callout: default;');
   });
 
-  it('hides only the in-game community donate affordance on mobile', () => {
+  it('collapses in-game mobile community links behind one Community control', () => {
     expect(html).toContain('<a class="donate-cta"');
+    expect(html).toContain('<details id="community-menu">');
+    expect(html).toContain('<summary class="community-toggle"');
+    expect(html).toContain('<div class="community-tray">');
+    expect(html).toContain('<a class="community-link discord"');
+    expect(html).toContain('<a class="community-link github"');
     expect(html).toContain('<a class="community-link donate"');
-    expect(html).toContain('body.mobile-touch .community-link.donate {\n    display: none;');
+    expect(html).toContain('body.mobile-touch.game-active #ui { z-index: 80; }');
+    expect(html).toContain('body.mobile-touch .community-toggle {\n    width: 44px;\n    height: 44px;');
+    expect(html).toContain('body.mobile-touch .community-toggle svg {\n    width: 20px;\n    height: 20px;');
+    expect(html).toContain('body.mobile-touch .community-toggle { width: 40px; height: 40px; }');
+    expect(html).toContain('body.mobile-touch .community-tray {\n    position: absolute;');
+    expect(html).toContain('z-index: 90;');
+    expect(html).toContain('body.mobile-touch #community-menu[open] .community-tray { display: flex; }');
+    expect(html).toContain('body.mobile-touch .community-link.donate { display: inline-flex;');
+    expect(html).not.toContain('body.mobile-touch .community-link.donate {\n    display: none;');
     expect(html).not.toContain('body.mobile-touch .donate-cta {\n    display: none;');
+  });
+
+  it('closes mobile community and More trays when tapping outside', () => {
+    expect(hudTs).toContain("const communityMenu = document.getElementById('community-menu') as HTMLDetailsElement | null;");
+    expect(hudTs).toContain('if (communityMenu?.open && !communityMenu.contains(target)) {\n        communityMenu.open = false;\n      }');
+    expect(hudTs).toContain("if (document.body.classList.contains('mobile-more-open')) {");
+    expect(hudTs).toContain("document.body.classList.remove('mobile-more-open');");
+    expect(hudTs).toContain("document.getElementById('mobile-controls')?.classList.remove('expanded');");
+    expect(hudTs).toContain("more?.classList.remove('active');");
+    expect(hudTs).toContain("document.getElementById('mobile-more-close')?.addEventListener('click', () => {");
   });
 
   it('renders the mobile XP bar as a ring around the top-left class circle', () => {
@@ -101,9 +125,34 @@ describe('client HTML shell', () => {
   });
 
   it('lays out mobile More tray buttons horizontally', () => {
+    expect(html).toContain('<div id="mobile-extra-controls" class="window panel" role="dialog" aria-modal="true" aria-labelledby="mobile-more-title">');
+    expect(html).toContain('<div class="panel-title">');
+    expect(html).toContain('id="mobile-more-close"');
+    expect(html).toContain('<div id="mobile-extra-grid">');
+    expect(html).toContain('body.mobile-touch.mobile-more-open #mobile-controls { z-index: 140; }');
+    expect(html).toContain('body.mobile-touch #mobile-extra-controls {\n    position: fixed;\n    left: 50%;\n    top: max(14px, env(safe-area-inset-top));\n    bottom: auto;\n    transform: translateX(-50%);');
+    expect(html).toContain('z-index: 100;');
+    expect(html).toContain('border-radius: 10px;');
+    expect(html).toContain('max-width: calc(100vw - 32px - env(safe-area-inset-left) - env(safe-area-inset-right));');
+    expect(html).toContain('max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));');
+    expect(html).toContain('body.mobile-touch.mobile-more-open #mobile-extra-controls { display: flex; flex-direction: column; }');
+    expect(html).toContain('body.mobile-touch #mobile-extra-controls .panel-title {\n    min-height: 32px;');
+    expect(html).toContain('width: min(560px, calc(100vw - 32px - env(safe-area-inset-left) - env(safe-area-inset-right)));');
+    expect(html).toContain('body.mobile-touch #mobile-extra-grid {\n    display: grid;\n    grid-template-columns: repeat(3, minmax(0, 1fr));');
     expect(html).toContain('body.mobile-touch #mobile-extra-controls .mobile-btn');
+    expect(html).toContain('body.mobile-touch #mobile-extra-controls .mobile-btn {\n    width: 100%;');
     expect(html).toContain('flex-direction: row;');
     expect(html).toContain('body.mobile-touch #mobile-extra-controls .mobile-btn .ui-icon');
+    expect(mobileControlsTs).toContain("const open = !document.body.classList.contains('mobile-more-open');");
+    expect(mobileControlsTs).toContain("this.root?.classList.toggle('expanded', open);");
+    expect(mobileControlsTs).toContain("document.body.classList.toggle('mobile-more-open', open);");
+    expect(mobileControlsTs).toContain("modal.style.left = '50%';");
+    expect(mobileControlsTs).toContain("modal.style.top = 'max(14px, env(safe-area-inset-top))';");
+    expect(mobileControlsTs).toContain("modal.style.transform = 'translateX(-50%)';");
+    expect(mobileControlsTs).toContain('delete modal.dataset.windowMoved;');
+    expect(mobileControlsTs).toContain('private closeMoreModal(): void {');
+    expect(mobileControlsTs).toContain("document.getElementById('mobile-controls')?.classList.remove('expanded');");
+    expect(hudTs).toContain(".filter((win) => win.id !== 'mobile-extra-controls')");
   });
 
   it('replaces the dual mode cards with one Play CTA and a realm selector', () => {
@@ -135,7 +184,7 @@ describe('client HTML shell', () => {
   });
 
   it('keeps the mobile More and Autorun buttons in the combat row', () => {
-    const combatControls = html.slice(html.indexOf('<div id="mobile-combat-controls">'), html.indexOf('<div id="mobile-extra-controls">'));
+    const combatControls = html.slice(html.indexOf('<div id="mobile-combat-controls">'), html.indexOf('<div id="mobile-extra-controls"'));
     const primaryButtons = [...combatControls.matchAll(/<button class="mobile-btn"/g)];
     const attack = combatControls.indexOf('id="mobile-attack-nearest"');
     const autorun = combatControls.indexOf('id="mobile-autorun"');
@@ -148,16 +197,23 @@ describe('client HTML shell', () => {
     expect(html).toContain('grid-template-columns: 124px repeat(6, 58px);');
     expect(html).toContain('grid-template-columns: 115px repeat(6, 54px);');
     expect(html).toContain('grid-template-columns: 96px repeat(6, 42px);');
+    expect(html).toContain('position: absolute; left: 50%; bottom: calc(3px + env(safe-area-inset-bottom));');
+    expect(html).toContain('bottom: calc(2px + env(safe-area-inset-bottom)); grid-template-columns: 115px repeat(6, 54px);');
     expect(html).toContain('pointer-events: auto; align-items: end; z-index: 30;');
     expect(html).toContain('body.mobile-touch #mobile-more {\n    position: static;');
+    expect(mainTs).toContain('onMenu: () => hud.toggleOptionsMenu(),');
   });
 
   it('keeps the mobile spell bar in a scrollable row between the joysticks', () => {
     expect(html).toContain('width: min(30vw, 132px);');
     expect(html).toContain('min-width: 112px;');
     expect(html).toContain('height: min(36vh, 172px);');
-    expect(html).toContain('left: calc(max(18px, env(safe-area-inset-left)) + 134px);');
-    expect(html).toContain('right: calc(max(18px, env(safe-area-inset-right)) + 134px);');
+    expect(html).toContain('left: calc(max(18px, env(safe-area-inset-left)) + 154px);');
+    expect(html).toContain('right: calc(max(18px, env(safe-area-inset-right)) + 154px);');
+    expect(html).toContain('bottom: calc(64px + env(safe-area-inset-bottom));');
+    expect(html).toContain('left: calc(max(20px, env(safe-area-inset-left)) + 136px);');
+    expect(html).toContain('right: calc(max(20px, env(safe-area-inset-right)) + 136px);');
+    expect(html).toContain('bottom: calc(57px + env(safe-area-inset-bottom));');
     expect(html).toContain('body.mobile-touch #actionbar {\n    display: flex;\n    flex-wrap: nowrap;');
     expect(html).toContain('overflow-x: auto;\n    overflow-y: hidden;');
     expect(html).toContain('touch-action: pan-x;');
@@ -165,8 +221,8 @@ describe('client HTML shell', () => {
   });
 
   it('keeps the expanded mobile More tray inside the viewport', () => {
-    expect(html).toContain('calc(100vw - 222px - max(12px, env(safe-area-inset-right, 0px)))');
-    expect(html).toContain('calc(100vw - 208px - max(12px, env(safe-area-inset-right, 0px)))');
+    expect(html).toContain('body.mobile-touch.mobile-left-handed #mobile-extra-controls {\n    left: 50%;\n    right: auto;');
+    expect(html).toContain('max-height: calc(100dvh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom));');
   });
 
   it('caps mobile quest and NPC panels instead of stretching them edge to edge', () => {

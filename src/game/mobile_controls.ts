@@ -238,8 +238,20 @@ export class MobileControls {
     });
     this.bindHapticsToggle('mobile-haptics');
     this.bindButton('mobile-more', () => {
-      this.root?.classList.toggle('expanded');
-      document.body.classList.toggle('mobile-more-open', this.root?.classList.contains('expanded') ?? false);
+      const open = !document.body.classList.contains('mobile-more-open');
+      this.root?.classList.toggle('expanded', open);
+      document.body.classList.toggle('mobile-more-open', open);
+      if (open) {
+        const modal = document.getElementById('mobile-extra-controls');
+        if (modal) {
+          modal.style.left = '50%';
+          modal.style.top = 'max(14px, env(safe-area-inset-top))';
+          modal.style.right = 'auto';
+          modal.style.bottom = 'auto';
+          modal.style.transform = 'translateX(-50%)';
+          delete modal.dataset.windowMoved;
+        }
+      }
     });
   }
 
@@ -266,10 +278,14 @@ export class MobileControls {
       triggerHaptic(HAPTIC_TAP, this.hapticsOn);
       cb();
       if (button.closest('#mobile-extra-controls')) {
-        this.root?.classList.remove('expanded');
-        document.body.classList.remove('mobile-more-open');
+        this.closeMoreModal();
       }
     });
+  }
+
+  private closeMoreModal(): void {
+    document.getElementById('mobile-controls')?.classList.remove('expanded');
+    document.body.classList.remove('mobile-more-open');
   }
 
   /** The haptics button is a stateful toggle, so it bypasses bindButton (no tray
