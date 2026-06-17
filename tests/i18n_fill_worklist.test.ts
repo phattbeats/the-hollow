@@ -14,7 +14,7 @@
 
 import { describe, it, expect } from "vitest";
 // @ts-ignore - shared zero-dep JS tool (no .d.ts); same pattern as the registry test importing scripts/i18n_hash.mjs. We exercise its exported pure helpers.
-import { classify, siblingKeys, expandGlossaryTerms, patternToRegExp } from "../scripts/i18n_fill_worklist.mjs";
+import { classify, siblingKeys, expandGlossaryTerms, patternToRegExp, buildWorklistOutputs, assertAutoFillableHasNoProse } from "../scripts/i18n_fill_worklist.mjs";
 
 type GlossaryTerm = { category: string; key: string };
 
@@ -158,5 +158,126 @@ describe("sibling selection (deterministic context)", () => {
 
   it("returns no siblings for a lone key with no namespace family", () => {
     expect(siblingKeys("solo.lonely", ["solo.lonely"], 6)).toEqual([]);
+  });
+});
+
+// End-to-end assembly teeth: drive the PURE core buildWorklistOutputs against a
+// fixture registry (no fs, no esbuild, no CLI). This locks the two invariants the
+// QA spec names that the pure-helper tests above do NOT reach:
+//   (a) the output is DETERMINISTIC / byte-stable on unchanged inputs (the no-op),
+//       and the inputHash actually moves when an English value changes (teeth);
+//   (b) a pending PROSE key routes to humanRequired and is ABSENT from autoFillable
+//       end to end (not just at the classify() unit level), plus the glossary ships
+//       in every batch and resolves each term per-locale.
+describe("worklist assembly (deterministic + blocked-prose segregation, end to end)", () => {
+  // A minimal but representative in-memory registry + sources. de_DE has 3 pending
+  // keys: one chrome (loading.worldProgress, with {done}/{total}), two prose
+  // (classes.mage, entities.quests.q_wolves.title). es is fully translated (no work).
+  const enFlat: Record<string, string> = {
+    "loading.world": "Loading world...",
+    "loading.worldProgress": "Loading world... {done}/{total}",
+    "loading.enteringWorld": "Entering world...",
+    "classes.mage": "Mage",
+    "classes.warrior": "Warrior",
+    "entities.quests.q_wolves.title": "Wolves at the Door",
+    "nav.home": "Home",
+  };
+  const dictEn = {
+    sim: { "combat.miss": "Miss" },
+    server: { "who.online": "Online" },
+    admin: { "app.title": "Admin" },
+  };
+  // de_DE has translated the glossary term classes.warrior (own overlay) but not mage.
+  const overlays: Record<string, Record<string, string>> = { de_DE: { "classes.warrior": "Krieger" }, es: {} };
+  const glossarySrc = {
+    verbatim: [{ term: "World of ClaudeCraft", note: "brand" }],
+    categories: { classNames: { keyPatterns: ["classes.mage", "classes.warrior"] } },
+  };
+  const P = { state: "pending" };
+  const T = { state: "translated" };
+  const row = (scope: string, de: typeof P | typeof T) => ({ scope, enHash: "h", locales: { de_DE: de, es: T } });
+  const makeFixture = () => ({
+    registry: {
+      hashAlgo: "sha256(enText + sortedPlaceholders).slice(0,16)",
+      locales: ["de_DE", "es"],
+      keys: {
+        "main:loading.world": row("main", T),
+        "main:loading.worldProgress": row("main", P), // chrome -> autoFillable
+        "main:loading.enteringWorld": row("main", T),
+        "main:classes.mage": row("main", P), // prose -> humanRequired
+        "main:classes.warrior": row("main", T),
+        "main:entities.quests.q_wolves.title": row("main", P), // prose -> humanRequired
+        "main:nav.home": row("main", T),
+      },
+    },
+    enFlat: { ...enFlat },
+    dictEn,
+    overlays,
+    glossarySrc,
+    targetLocales: ["de_DE", "es"],
+    scope: "all-locales" as const,
+  });
+
+  it("(a) is deterministic: identical inputs produce byte-identical fileEntries + inputHash", () => {
+    const a = buildWorklistOutputs(makeFixture());
+    const b = buildWorklistOutputs(makeFixture());
+    expect(JSON.stringify(a.fileEntries)).toBe(JSON.stringify(b.fileEntries));
+    expect(a.inputHash).toBe(b.inputHash);
+    // The no-op cache rests on inputHash; prove it is NOT a constant by changing one
+    // English value and asserting the hash moves (otherwise the cache could never
+    // detect a real change, and the no-op claim would be vacuous).
+    const fx = makeFixture();
+    fx.enFlat["loading.worldProgress"] = "Loading world... {done}/{total}!";
+    expect(buildWorklistOutputs(fx).inputHash).not.toBe(a.inputHash);
+  });
+
+  it("(b) routes a pending prose key to humanRequired and NEVER to autoFillable, end to end", () => {
+    const { batchObjs, fileEntries } = buildWorklistOutputs(makeFixture());
+    const de = batchObjs.get("de_DE");
+    expect(de, "de_DE has pending work, so it gets a batch").not.toBeNull();
+
+    // chrome key lands in autoFillable with placeholders + siblings
+    const wp = de.autoFillable.find((e: any) => e.key === "loading.worldProgress");
+    expect(wp, "chrome key must be auto-fillable").toBeTruthy();
+    expect(wp.placeholders).toEqual(["done", "total"]);
+    expect(wp.siblings.length).toBeGreaterThan(0);
+    expect(wp.siblings.every((s: any) => s.key.startsWith("loading."))).toBe(true);
+
+    // both prose keys land in humanRequired and are ABSENT from autoFillable
+    for (const pk of ["classes.mage", "entities.quests.q_wolves.title"]) {
+      expect(de.humanRequired.some((e: any) => e.key === pk), `prose ${pk} in humanRequired`).toBe(true);
+      expect(de.autoFillable.some((e: any) => e.key === pk), `prose ${pk} not in autoFillable`).toBe(false);
+    }
+    // stopping rule across the WHOLE batch: no autoFillable entry is prose
+    const PROSE = ["entities.", "classes.", "classDetails.lore.", "seo."];
+    expect(de.autoFillable.every((e: any) => e.scope !== "main" || !PROSE.some((p) => e.key.startsWith(p)))).toBe(true);
+
+    // a fully-translated language produces no batch and no file entry
+    expect(batchObjs.get("es")).toBeNull();
+    expect(fileEntries.map(([name]: [string, unknown]) => name)).toEqual(["de_DE.json"]);
+  });
+
+  it("ships the glossary in every batch and resolves each term per-locale (own overlay -> English)", () => {
+    const { batchObjs } = buildWorklistOutputs(makeFixture());
+    const de = batchObjs.get("de_DE");
+    expect(de.glossary.verbatim.map((v: any) => v.term)).toContain("World of ClaudeCraft");
+    expect(de.glossary.terms.length).toBeGreaterThan(0);
+    // classes.warrior is translated in the de_DE overlay -> established localized form
+    expect(de.glossary.terms.find((t: any) => t.key === "classes.warrior").localized).toBe("Krieger");
+    // classes.mage has no de_DE overlay value -> falls through to English (not invented)
+    expect(de.glossary.terms.find((t: any) => t.key === "classes.mage").localized).toBe("Mage");
+  });
+
+  it("the belt-and-suspenders stopping-rule assertion bites if a prose key is in autoFillable", () => {
+    // Independent of the (correct) classifier: a forced prose entry must throw.
+    expect(() => assertAutoFillableHasNoProse([{ scope: "main", key: "classes.mage" }])).toThrow(/leaked into autoFillable/);
+    expect(() => assertAutoFillableHasNoProse([{ scope: "main", key: "entities.quests.q_wolves.title" }])).toThrow(/leaked into autoFillable/);
+    // A genuinely chrome-only autoFillable list does not throw (no false positive).
+    expect(() =>
+      assertAutoFillableHasNoProse([
+        { scope: "main", key: "loading.worldProgress" },
+        { scope: "sim", key: "combat.miss" },
+      ]),
+    ).not.toThrow();
   });
 });
