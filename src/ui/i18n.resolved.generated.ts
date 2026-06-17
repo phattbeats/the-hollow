@@ -3701,16 +3701,16 @@ export const es: EnTranslations = {
   "wiki": {
     "title": "Wiki y Guía del Juego",
     "desc": "Descubre los secretos del reino, guías de clase y estrategias.",
-    "cta": "Browse the Wiki"
+    "cta": "Explorar la Wiki"
   },
   "news": {
     "title": "Noticias y Actualizaciones",
     "desc": "Lee las últimas notas del parche, eventos y noticias de la comunidad.",
-    "loading": "Loading the latest updates…",
-    "error": "Couldn't load updates. Please try again later.",
-    "empty": "No updates yet — check back soon.",
-    "prerelease": "Pre-release",
-    "viewOnGithub": "View on GitHub"
+    "loading": "Cargando las últimas novedades...",
+    "error": "No se pudieron cargar las novedades. Inténtalo de nuevo más tarde.",
+    "empty": "Aún no hay novedades; vuelve pronto.",
+    "prerelease": "Versión preliminar",
+    "viewOnGithub": "Ver en GitHub"
   },
   "download": {
     "title": "Descargar Lanzador de Escritorio",
@@ -3729,16 +3729,16 @@ export const es: EnTranslations = {
     "offlineAria": "Jugar en Solitario: inicia una sesión local instantánea de un jugador",
     "tipTitle": "CONSEJO:",
     "tipText": "Para la mejor experiencia, desactiva las extensiones de bloqueo de publicidad en este sitio. Reportes de la comunidad encontraron que algunos bloqueadores pueden causar retrasos.",
-    "serverOnline": "Online",
-    "serverOffline": "Offline",
-    "play": "Play",
-    "playAria": "Play World of ClaudeCraft",
-    "serverLabel": "Choose your realm",
-    "serverAria": "Select realm: Online or Offline",
-    "serverOfflineSub": "Instant local world",
-    "caLabel": "$WOC Contract Address",
-    "caCopyAria": "Copy contract address",
-    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
+    "serverOnline": "En Línea",
+    "serverOffline": "Desconectado",
+    "play": "Jugar",
+    "playAria": "Jugar World of ClaudeCraft",
+    "serverLabel": "Elige tu reino",
+    "serverAria": "Selecciona el reino: En Línea o Desconectado",
+    "serverOfflineSub": "Mundo local instantáneo",
+    "caLabel": "Dirección del contrato de $WOC",
+    "caCopyAria": "Copiar dirección del contrato",
+    "caNote": "WOC es nuestro token comunitario. No es necesario para jugar. Únete a Discord para hablar sobre la utilidad y el flywheel de WOC."
   },
   "auth": {
     "enterRealm": "Entrar al Reino",
@@ -4251,7 +4251,7 @@ export const es: EnTranslations = {
     },
     "errors": {
       "stunned": "¡Estás aturdido!",
-      "silenced": "You are silenced!",
+      "silenced": "¡Estás silenciado!",
       "busy": "Estás ocupado.",
       "abilityNotReady": "Esa habilidad aún no está lista.",
       "notEnoughRage": "¡No tienes suficiente ira!",
@@ -4376,8 +4376,8 @@ export const es: EnTranslations = {
       "renameConfirm": "Renombrar",
       "abandonBody": "¿Abandonar permanentemente a {name}? Tendrás que domesticar otra mascota.",
       "abandonConfirm": "Abandonar",
-      "noPetFood": "You have no food to feed your pet.",
-      "petEatsFoodOnly": "Your pet can only eat food."
+      "noPetFood": "No tienes comida para alimentar a tu mascota.",
+      "petEatsFoodOnly": "Tu mascota solo puede comer comida."
     },
     "social": {
       "title": "Comunidad",
@@ -5929,7 +5929,7 @@ export const es: EnTranslations = {
         "name": "Invocador Gravecaller"
       },
       "gravecaller_mender": {
-        "name": "Gravecaller Mender"
+        "name": "Sanador Gravecaller"
       },
       "deacon_voss": {
         "name": "Diácono Voss"
@@ -6013,7 +6013,7 @@ export const es: EnTranslations = {
         "name": "Korzul el Gravewyrm"
       },
       "bog_bloat": {
-        "name": "Bog Bloat"
+        "name": "Hinchado del pantano"
       },
       "elder_bristleback": {
         "name": "Viejo Bristleback"
@@ -7235,16 +7235,16 @@ export const es_ES: EnTranslations = {
   "wiki": {
     "title": "Wiki y guía del juego",
     "desc": "Descubre los secretos del reino, guías de clase y estrategias.",
-    "cta": "Browse the Wiki"
+    "cta": "Explorar la Wiki"
   },
   "news": {
     "title": "Noticias y actualizaciones",
     "desc": "Lee las últimas notas del parche, eventos y noticias de la comunidad.",
-    "loading": "Loading the latest updates…",
-    "error": "Couldn't load updates. Please try again later.",
-    "empty": "No updates yet — check back soon.",
-    "prerelease": "Pre-release",
-    "viewOnGithub": "View on GitHub"
+    "loading": "Cargando las últimas novedades...",
+    "error": "No se pudieron cargar las novedades. Inténtalo de nuevo más tarde.",
+    "empty": "Aún no hay novedades; vuelve pronto.",
+    "prerelease": "Versión preliminar",
+    "viewOnGithub": "Ver en GitHub"
   },
   "download": {
     "title": "Descargar lanzador de escritorio",
@@ -7263,16 +7263,16 @@ export const es_ES: EnTranslations = {
     "offlineAria": "Jugar en solitario: inicia una sesión local instantánea de un jugador",
     "tipTitle": "CONSEJO:",
     "tipText": "Para la mejor experiencia, desactiva las extensiones de bloqueo de publicidad en este sitio. Reportes de la comunidad encontraron que algunos bloqueadores pueden causar retrasos.",
-    "serverOnline": "Online",
-    "serverOffline": "Offline",
-    "play": "Play",
-    "playAria": "Play World of ClaudeCraft",
-    "serverLabel": "Choose your realm",
-    "serverAria": "Select realm: Online or Offline",
-    "serverOfflineSub": "Instant local world",
-    "caLabel": "$WOC Contract Address",
-    "caCopyAria": "Copy contract address",
-    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
+    "serverOnline": "En Línea",
+    "serverOffline": "Desconectado",
+    "play": "Jugar",
+    "playAria": "Jugar World of ClaudeCraft",
+    "serverLabel": "Elige tu reino",
+    "serverAria": "Selecciona el reino: En Línea o Desconectado",
+    "serverOfflineSub": "Mundo local instantáneo",
+    "caLabel": "Dirección del contrato de $WOC",
+    "caCopyAria": "Copiar dirección del contrato",
+    "caNote": "WOC es nuestro token comunitario. No es necesario para jugar. Únete a Discord para hablar sobre la utilidad y el flywheel de WOC."
   },
   "auth": {
     "enterRealm": "Entrar al reino",
@@ -7785,7 +7785,7 @@ export const es_ES: EnTranslations = {
     },
     "errors": {
       "stunned": "¡Estás aturdido!",
-      "silenced": "You are silenced!",
+      "silenced": "¡Estás silenciado!",
       "busy": "Estás ocupado.",
       "abilityNotReady": "Esa habilidad aún no está lista.",
       "notEnoughRage": "¡No tienes suficiente ira!",
@@ -7910,8 +7910,8 @@ export const es_ES: EnTranslations = {
       "renameConfirm": "Renombrar",
       "abandonBody": "¿Abandonar permanentemente a {name}? Tendrás que domesticar otra mascota.",
       "abandonConfirm": "Abandonar",
-      "noPetFood": "You have no food to feed your pet.",
-      "petEatsFoodOnly": "Your pet can only eat food."
+      "noPetFood": "No tienes comida para alimentar a tu mascota.",
+      "petEatsFoodOnly": "Tu mascota solo puede comer comida."
     },
     "social": {
       "title": "Comunidad",
@@ -9463,7 +9463,7 @@ export const es_ES: EnTranslations = {
         "name": "Invocador Gravecaller"
       },
       "gravecaller_mender": {
-        "name": "Gravecaller Mender"
+        "name": "Sanador Gravecaller"
       },
       "deacon_voss": {
         "name": "Diácono Voss"
@@ -9547,7 +9547,7 @@ export const es_ES: EnTranslations = {
         "name": "Korzul el Gravewyrm"
       },
       "bog_bloat": {
-        "name": "Bog Bloat"
+        "name": "Hinchado del pantano"
       },
       "elder_bristleback": {
         "name": "Viejo Bristleback"
@@ -10769,16 +10769,16 @@ export const fr_FR: EnTranslations = {
   "wiki": {
     "title": "Wiki et guide du jeu",
     "desc": "Découvrez les secrets du royaume, les guides de classe et les stratégies.",
-    "cta": "Browse the Wiki"
+    "cta": "Parcourir le Wiki"
   },
   "news": {
     "title": "Actualités et mises à jour",
     "desc": "Lisez les dernières notes de mise à jour, les événements et les nouvelles de la communauté.",
-    "loading": "Loading the latest updates…",
-    "error": "Couldn't load updates. Please try again later.",
-    "empty": "No updates yet — check back soon.",
-    "prerelease": "Pre-release",
-    "viewOnGithub": "View on GitHub"
+    "loading": "Chargement des dernières mises à jour...",
+    "error": "Impossible de charger les mises à jour. Réessayez plus tard.",
+    "empty": "Aucune mise à jour pour l'instant ; revenez bientôt.",
+    "prerelease": "Préversion",
+    "viewOnGithub": "Voir sur GitHub"
   },
   "download": {
     "title": "Télécharger le lanceur de bureau",
@@ -10797,16 +10797,16 @@ export const fr_FR: EnTranslations = {
     "offlineAria": "Jouer hors ligne: démarrer une session solo locale instantanée",
     "tipTitle": "CONSEIL:",
     "tipText": "Pour une expérience optimale, désactivez les extensions de blocage de publicité sur ce site. Certains bloqueurs peuvent causer des latences.",
-    "serverOnline": "Online",
-    "serverOffline": "Offline",
-    "play": "Play",
-    "playAria": "Play World of ClaudeCraft",
-    "serverLabel": "Choose your realm",
-    "serverAria": "Select realm: Online or Offline",
-    "serverOfflineSub": "Instant local world",
-    "caLabel": "$WOC Contract Address",
-    "caCopyAria": "Copy contract address",
-    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
+    "serverOnline": "En ligne",
+    "serverOffline": "Hors ligne",
+    "play": "Jouer",
+    "playAria": "Jouer à World of ClaudeCraft",
+    "serverLabel": "Choisissez votre royaume",
+    "serverAria": "Choisir le royaume : En ligne ou Hors ligne",
+    "serverOfflineSub": "Monde local instantané",
+    "caLabel": "Adresse du contrat $WOC",
+    "caCopyAria": "Copier l'adresse du contrat",
+    "caNote": "WOC est notre jeton communautaire. Il n'est pas nécessaire pour jouer. Rejoignez le Discord pour discuter de l'utilité et de la dynamique du WOC."
   },
   "auth": {
     "enterRealm": "Entrer dans le royaume",
@@ -11319,7 +11319,7 @@ export const fr_FR: EnTranslations = {
     },
     "errors": {
       "stunned": "Vous êtes étourdi !",
-      "silenced": "You are silenced!",
+      "silenced": "Vous êtes réduit au silence !",
       "busy": "Vous êtes occupé.",
       "abilityNotReady": "Cette technique n'est pas encore prête.",
       "notEnoughRage": "Pas assez de rage !",
@@ -11444,8 +11444,8 @@ export const fr_FR: EnTranslations = {
       "renameConfirm": "Renommer",
       "abandonBody": "Abandonner définitivement {name} ? Vous devrez dompter un autre familier.",
       "abandonConfirm": "Abandonner",
-      "noPetFood": "You have no food to feed your pet.",
-      "petEatsFoodOnly": "Your pet can only eat food."
+      "noPetFood": "Vous n'avez aucune nourriture pour votre familier.",
+      "petEatsFoodOnly": "Votre familier ne peut manger que de la nourriture."
     },
     "social": {
       "title": "Relations",
@@ -12997,7 +12997,7 @@ export const fr_FR: EnTranslations = {
         "name": "Invocateur Gravecaller"
       },
       "gravecaller_mender": {
-        "name": "Gravecaller Mender"
+        "name": "Soigneur Gravecaller"
       },
       "deacon_voss": {
         "name": "Diacre Voss"
@@ -13081,7 +13081,7 @@ export const fr_FR: EnTranslations = {
         "name": "Korzul le Gravewyrm"
       },
       "bog_bloat": {
-        "name": "Bog Bloat"
+        "name": "Boursouflé du bourbier"
       },
       "elder_bristleback": {
         "name": "Ancien Bristleback"
@@ -14303,16 +14303,16 @@ export const fr_CA: EnTranslations = {
   "wiki": {
     "title": "Wiki et guide du jeu",
     "desc": "Découvrez les secrets du royaume, les guides de classe et les stratégies.",
-    "cta": "Browse the Wiki"
+    "cta": "Parcourir le Wiki"
   },
   "news": {
     "title": "Actualités et mises à jour",
     "desc": "Lisez les dernières notes de mise à jour, les événements et les nouvelles de la communauté.",
-    "loading": "Loading the latest updates…",
-    "error": "Couldn't load updates. Please try again later.",
-    "empty": "No updates yet — check back soon.",
-    "prerelease": "Pre-release",
-    "viewOnGithub": "View on GitHub"
+    "loading": "Chargement des dernières mises à jour...",
+    "error": "Impossible de charger les mises à jour. Réessayez plus tard.",
+    "empty": "Aucune mise à jour pour l'instant ; revenez bientôt.",
+    "prerelease": "Préversion",
+    "viewOnGithub": "Voir sur GitHub"
   },
   "download": {
     "title": "Télécharger le lanceur de bureau",
@@ -14331,16 +14331,16 @@ export const fr_CA: EnTranslations = {
     "offlineAria": "Jouer hors ligne: démarrer une session solo locale instantanée",
     "tipTitle": "CONSEIL:",
     "tipText": "Pour une expérience optimale, désactivez les extensions de blocage de publicité sur ce site. Certains bloqueurs peuvent causer des latences.",
-    "serverOnline": "Online",
-    "serverOffline": "Offline",
-    "play": "Play",
-    "playAria": "Play World of ClaudeCraft",
-    "serverLabel": "Choose your realm",
-    "serverAria": "Select realm: Online or Offline",
-    "serverOfflineSub": "Instant local world",
-    "caLabel": "$WOC Contract Address",
-    "caCopyAria": "Copy contract address",
-    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
+    "serverOnline": "En ligne",
+    "serverOffline": "Hors ligne",
+    "play": "Jouer",
+    "playAria": "Jouer à World of ClaudeCraft",
+    "serverLabel": "Choisissez votre royaume",
+    "serverAria": "Choisir le royaume : En ligne ou Hors ligne",
+    "serverOfflineSub": "Monde local instantané",
+    "caLabel": "Adresse du contrat $WOC",
+    "caCopyAria": "Copier l'adresse du contrat",
+    "caNote": "WOC est notre jeton communautaire. Il n'est pas nécessaire pour jouer. Rejoignez le Discord pour discuter de l'utilité et de la dynamique du WOC."
   },
   "auth": {
     "enterRealm": "Entrer dans le royaume",
@@ -14853,7 +14853,7 @@ export const fr_CA: EnTranslations = {
     },
     "errors": {
       "stunned": "Vous êtes étourdi !",
-      "silenced": "You are silenced!",
+      "silenced": "Vous êtes réduit au silence !",
       "busy": "Vous êtes occupé.",
       "abilityNotReady": "Cette technique n'est pas encore prête.",
       "notEnoughRage": "Pas assez de rage !",
@@ -14978,8 +14978,8 @@ export const fr_CA: EnTranslations = {
       "renameConfirm": "Renommer",
       "abandonBody": "Abandonner définitivement {name} ? Vous devrez dompter un autre familier.",
       "abandonConfirm": "Abandonner",
-      "noPetFood": "You have no food to feed your pet.",
-      "petEatsFoodOnly": "Your pet can only eat food."
+      "noPetFood": "Vous n'avez aucune nourriture pour votre familier.",
+      "petEatsFoodOnly": "Votre familier ne peut manger que de la nourriture."
     },
     "social": {
       "title": "Relations",
@@ -16531,7 +16531,7 @@ export const fr_CA: EnTranslations = {
         "name": "Invocateur Gravecaller"
       },
       "gravecaller_mender": {
-        "name": "Gravecaller Mender"
+        "name": "Soigneur Gravecaller"
       },
       "deacon_voss": {
         "name": "Diacre Voss"
@@ -16615,7 +16615,7 @@ export const fr_CA: EnTranslations = {
         "name": "Korzul le Gravewyrm"
       },
       "bog_bloat": {
-        "name": "Bog Bloat"
+        "name": "Boursouflé du bourbier"
       },
       "elder_bristleback": {
         "name": "Ancien Bristleback"
@@ -21371,16 +21371,16 @@ export const it_IT: EnTranslations = {
   "wiki": {
     "title": "Wiki e guida del gioco",
     "desc": "Scopri i segreti del reame, le guide di classe e le strategie.",
-    "cta": "Browse the Wiki"
+    "cta": "Sfoglia la Wiki"
   },
   "news": {
     "title": "Notizie e aggiornamenti",
     "desc": "Leggi le ultime note sulla patch, gli eventi e gli aggiornamenti della community.",
-    "loading": "Loading the latest updates…",
-    "error": "Couldn't load updates. Please try again later.",
-    "empty": "No updates yet — check back soon.",
-    "prerelease": "Pre-release",
-    "viewOnGithub": "View on GitHub"
+    "loading": "Caricamento degli ultimi aggiornamenti...",
+    "error": "Impossibile caricare gli aggiornamenti. Riprova più tardi.",
+    "empty": "Ancora nessun aggiornamento: torna presto a controllare.",
+    "prerelease": "Anteprima",
+    "viewOnGithub": "Vedi su GitHub"
   },
   "download": {
     "title": "Scarica il launcher per desktop",
@@ -21401,14 +21401,14 @@ export const it_IT: EnTranslations = {
     "tipText": "Per un'esperienza ottimale, disattiva le estensioni di blocco della pubblicità su questo sito. Alcuni utenti segnalano che i blocchi possono causare rallentamenti.",
     "serverOnline": "Online",
     "serverOffline": "Offline",
-    "play": "Play",
-    "playAria": "Play World of ClaudeCraft",
-    "serverLabel": "Choose your realm",
-    "serverAria": "Select realm: Online or Offline",
-    "serverOfflineSub": "Instant local world",
-    "caLabel": "$WOC Contract Address",
-    "caCopyAria": "Copy contract address",
-    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
+    "play": "Gioca",
+    "playAria": "Gioca a World of ClaudeCraft",
+    "serverLabel": "Scegli il tuo reame",
+    "serverAria": "Seleziona il reame: Online o Offline",
+    "serverOfflineSub": "Mondo locale istantaneo",
+    "caLabel": "Indirizzo del contratto $WOC",
+    "caCopyAria": "Copia l'indirizzo del contratto",
+    "caNote": "WOC è il token della nostra community. Non serve per giocare. Entra nel Discord per discutere dell'utilità e del flywheel di WOC."
   },
   "auth": {
     "enterRealm": "Entra nel reame",
@@ -21921,7 +21921,7 @@ export const it_IT: EnTranslations = {
     },
     "errors": {
       "stunned": "Sei stordito!",
-      "silenced": "You are silenced!",
+      "silenced": "Sei ridotto al silenzio!",
       "busy": "Sei occupato.",
       "abilityNotReady": "Quell'abilità non è ancora pronta.",
       "notEnoughRage": "Rabbia insufficiente!",
@@ -22046,8 +22046,8 @@ export const it_IT: EnTranslations = {
       "renameConfirm": "Rinomina",
       "abandonBody": "Abbandonare definitivamente {name}? Dovrai domare un'altra mascotte.",
       "abandonConfirm": "Abbandona",
-      "noPetFood": "You have no food to feed your pet.",
-      "petEatsFoodOnly": "Your pet can only eat food."
+      "noPetFood": "Non hai cibo per nutrire la tua mascotte.",
+      "petEatsFoodOnly": "La tua mascotte può mangiare solo cibo."
     },
     "social": {
       "title": "Sociale",
@@ -23599,7 +23599,7 @@ export const it_IT: EnTranslations = {
         "name": "Evocatore Gravecaller"
       },
       "gravecaller_mender": {
-        "name": "Gravecaller Mender"
+        "name": "Risanatore Gravecaller"
       },
       "deacon_voss": {
         "name": "Diacono Voss"
@@ -23683,7 +23683,7 @@ export const it_IT: EnTranslations = {
         "name": "Korzul il Gravewyrm"
       },
       "bog_bloat": {
-        "name": "Bog Bloat"
+        "name": "Gonfione del pantano"
       },
       "elder_bristleback": {
         "name": "Bristleback anziano"
@@ -24905,16 +24905,16 @@ export const de_DE: EnTranslations = {
   "wiki": {
     "title": "Spiel-Wiki und Guides",
     "desc": "Entdecke die Geheimnisse des Realms, Klassenguides und Strategien.",
-    "cta": "Browse the Wiki"
+    "cta": "Wiki durchstöbern"
   },
   "news": {
     "title": "Neuigkeiten und Updates",
     "desc": "Lies die neuesten Patchnotes, Events und Community-Updates.",
-    "loading": "Loading the latest updates…",
-    "error": "Couldn't load updates. Please try again later.",
-    "empty": "No updates yet — check back soon.",
-    "prerelease": "Pre-release",
-    "viewOnGithub": "View on GitHub"
+    "loading": "Neueste Neuigkeiten werden geladen...",
+    "error": "Neuigkeiten konnten nicht geladen werden. Bitte versuche es später erneut.",
+    "empty": "Noch keine Neuigkeiten - schau bald wieder vorbei.",
+    "prerelease": "Vorabversion",
+    "viewOnGithub": "Auf GitHub ansehen"
   },
   "download": {
     "title": "Desktop-Launcher herunterladen",
@@ -24935,14 +24935,14 @@ export const de_DE: EnTranslations = {
     "tipText": "Deaktiviere für das flüssigste Spielerlebnis Adblocker-Erweiterungen auf dieser Website. Community-Berichte zeigen, dass einige Blocker zu Verzögerungen führen können.",
     "serverOnline": "Online",
     "serverOffline": "Offline",
-    "play": "Play",
-    "playAria": "Play World of ClaudeCraft",
-    "serverLabel": "Choose your realm",
-    "serverAria": "Select realm: Online or Offline",
-    "serverOfflineSub": "Instant local world",
-    "caLabel": "$WOC Contract Address",
-    "caCopyAria": "Copy contract address",
-    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
+    "play": "Spielen",
+    "playAria": "World of ClaudeCraft spielen",
+    "serverLabel": "Wähle deinen Realm",
+    "serverAria": "Realm wählen: Online oder Offline",
+    "serverOfflineSub": "Sofortige lokale Welt",
+    "caLabel": "$WOC-Vertragsadresse",
+    "caCopyAria": "Vertragsadresse kopieren",
+    "caNote": "WOC ist unser Community-Token. Es wird zum Spielen nicht benötigt. Tritt dem Discord bei, um über den Nutzen und das Schwungrad von WOC zu sprechen."
   },
   "auth": {
     "enterRealm": "Realm betreten",
@@ -25455,7 +25455,7 @@ export const de_DE: EnTranslations = {
     },
     "errors": {
       "stunned": "Ihr seid betäubt!",
-      "silenced": "You are silenced!",
+      "silenced": "Ihr seid stummgeschaltet!",
       "busy": "Ihr seid beschäftigt.",
       "abilityNotReady": "Diese Fähigkeit ist noch nicht bereit.",
       "notEnoughRage": "Nicht genug Wut!",
@@ -25580,8 +25580,8 @@ export const de_DE: EnTranslations = {
       "renameConfirm": "Umbenennen",
       "abandonBody": "{name} dauerhaft aufgeben? Du musst einen neuen Begleiter zähmen.",
       "abandonConfirm": "Aufgeben",
-      "noPetFood": "You have no food to feed your pet.",
-      "petEatsFoodOnly": "Your pet can only eat food."
+      "noPetFood": "Du hast keine Nahrung, um deinen Begleiter zu füttern.",
+      "petEatsFoodOnly": "Dein Begleiter frisst nur Nahrung."
     },
     "social": {
       "title": "Soziales",
@@ -27133,7 +27133,7 @@ export const de_DE: EnTranslations = {
         "name": "Gravecaller-Beschwörer"
       },
       "gravecaller_mender": {
-        "name": "Gravecaller Mender"
+        "name": "Gravecaller-Wundheiler"
       },
       "deacon_voss": {
         "name": "Diakon Voss"
@@ -27217,7 +27217,7 @@ export const de_DE: EnTranslations = {
         "name": "Korzul der Gravewyrm"
       },
       "bog_bloat": {
-        "name": "Bog Bloat"
+        "name": "Moor-Aufgedunsener"
       },
       "elder_bristleback": {
         "name": "Alter Bristleback"
@@ -28439,16 +28439,16 @@ export const zh_CN: EnTranslations = {
   "wiki": {
     "title": "游戏百科与指南",
     "desc": "探索世界的秘密、职业指南以及战术策略。",
-    "cta": "Browse the Wiki"
+    "cta": "浏览百科指南"
   },
   "news": {
     "title": "新闻与更新说明",
     "desc": "阅读最新补丁说明、游戏内事件和社区动态。",
-    "loading": "Loading the latest updates…",
-    "error": "Couldn't load updates. Please try again later.",
-    "empty": "No updates yet — check back soon.",
-    "prerelease": "Pre-release",
-    "viewOnGithub": "View on GitHub"
+    "loading": "正在加载最新更新...",
+    "error": "无法加载更新，请稍后重试。",
+    "empty": "暂无更新，敬请期待。",
+    "prerelease": "预发布",
+    "viewOnGithub": "在 GitHub 上查看"
   },
   "download": {
     "title": "下载电脑版启动器",
@@ -28467,16 +28467,16 @@ export const zh_CN: EnTranslations = {
     "offlineAria": "单机试玩：直接开始本地单人游戏会话",
     "tipTitle": "提示：",
     "tipText": "为了获得最流畅的游玩体验，请在此网站上关闭广告拦截插件。根据社区反馈，部分拦截器可能会导致游戏卡顿。",
-    "serverOnline": "Online",
-    "serverOffline": "Offline",
-    "play": "Play",
-    "playAria": "Play World of ClaudeCraft",
-    "serverLabel": "Choose your realm",
-    "serverAria": "Select realm: Online or Offline",
-    "serverOfflineSub": "Instant local world",
-    "caLabel": "$WOC Contract Address",
-    "caCopyAria": "Copy contract address",
-    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
+    "serverOnline": "在线",
+    "serverOffline": "离线",
+    "play": "开始游戏",
+    "playAria": "开始游玩 World of ClaudeCraft",
+    "serverLabel": "选择你的服务器",
+    "serverAria": "选择服务器：在线或离线",
+    "serverOfflineSub": "即时本地世界",
+    "caLabel": "$WOC 合约地址",
+    "caCopyAria": "复制合约地址",
+    "caNote": "WOC 是我们的社区代币。游玩游戏并不需要它。加入 Discord 一起讨论 WOC 的用途与飞轮效应。"
   },
   "auth": {
     "enterRealm": "进入服务器",
@@ -28989,7 +28989,7 @@ export const zh_CN: EnTranslations = {
     },
     "errors": {
       "stunned": "你被击晕了！",
-      "silenced": "You are silenced!",
+      "silenced": "你已被沉默！",
       "busy": "你正忙。",
       "abilityNotReady": "该技能尚未准备好。",
       "notEnoughRage": "怒气不足！",
@@ -29114,8 +29114,8 @@ export const zh_CN: EnTranslations = {
       "renameConfirm": "重命名",
       "abandonBody": "永久放弃 {name}？你需要驯服另一只宠物。",
       "abandonConfirm": "放弃",
-      "noPetFood": "You have no food to feed your pet.",
-      "petEatsFoodOnly": "Your pet can only eat food."
+      "noPetFood": "你没有可以喂给宠物的食物。",
+      "petEatsFoodOnly": "你的宠物只能吃食物。"
     },
     "social": {
       "title": "社交",
@@ -30667,7 +30667,7 @@ export const zh_CN: EnTranslations = {
         "name": "唤墓者召唤师"
       },
       "gravecaller_mender": {
-        "name": "Gravecaller Mender"
+        "name": "唤墓者医者"
       },
       "deacon_voss": {
         "name": "执事沃斯"
@@ -30751,7 +30751,7 @@ export const zh_CN: EnTranslations = {
         "name": "墓龙科祖尔"
       },
       "bog_bloat": {
-        "name": "Bog Bloat"
+        "name": "沼泽臃肿兽"
       },
       "elder_bristleback": {
         "name": "年长硬鬃"
@@ -31973,16 +31973,16 @@ export const zh_TW: EnTranslations = {
   "wiki": {
     "title": "遊戲百科與指南",
     "desc": "探索世界的秘密、職業指南以及戰術策略。",
-    "cta": "Browse the Wiki"
+    "cta": "瀏覽百科指南"
   },
   "news": {
     "title": "新聞與更新說明",
     "desc": "閱讀最新修補程式說明、遊戲內事件和社群動態。",
-    "loading": "Loading the latest updates…",
-    "error": "Couldn't load updates. Please try again later.",
-    "empty": "No updates yet — check back soon.",
-    "prerelease": "Pre-release",
-    "viewOnGithub": "View on GitHub"
+    "loading": "正在載入最新更新…",
+    "error": "無法載入更新。請稍後再試。",
+    "empty": "目前尚無更新，敬請期待。",
+    "prerelease": "搶先版",
+    "viewOnGithub": "在 GitHub 上檢視"
   },
   "download": {
     "title": "下載電腦版啟動器",
@@ -32001,16 +32001,16 @@ export const zh_TW: EnTranslations = {
     "offlineAria": "單機試玩：直接開始本地單人遊戲會話",
     "tipTitle": "提示：",
     "tipText": "為了獲得最流暢的遊玩體驗，請在此網站上關閉廣告攔截外掛。根據社群回饋，部分攔截器可能會導致遊戲延遲。",
-    "serverOnline": "Online",
-    "serverOffline": "Offline",
-    "play": "Play",
-    "playAria": "Play World of ClaudeCraft",
-    "serverLabel": "Choose your realm",
-    "serverAria": "Select realm: Online or Offline",
-    "serverOfflineSub": "Instant local world",
-    "caLabel": "$WOC Contract Address",
-    "caCopyAria": "Copy contract address",
-    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
+    "serverOnline": "線上",
+    "serverOffline": "離線",
+    "play": "開始遊戲",
+    "playAria": "遊玩 World of ClaudeCraft",
+    "serverLabel": "選擇你的伺服器",
+    "serverAria": "選擇伺服器：線上或離線",
+    "serverOfflineSub": "即時本地世界",
+    "caLabel": "$WOC 合約地址",
+    "caCopyAria": "複製合約地址",
+    "caNote": "WOC 是我們的社群代幣，並非遊玩所需。加入 Discord 一起討論 WOC 的用途與飛輪效應。"
   },
   "auth": {
     "enterRealm": "進入伺服器",
@@ -32523,7 +32523,7 @@ export const zh_TW: EnTranslations = {
     },
     "errors": {
       "stunned": "你被擊暈了！",
-      "silenced": "You are silenced!",
+      "silenced": "你已被沉默！",
       "busy": "你正忙。",
       "abilityNotReady": "該技能尚未準備好。",
       "notEnoughRage": "怒氣不足！",
@@ -32648,8 +32648,8 @@ export const zh_TW: EnTranslations = {
       "renameConfirm": "重新命名",
       "abandonBody": "永久放棄 {name}？你需要馴服另一隻寵物。",
       "abandonConfirm": "放棄",
-      "noPetFood": "You have no food to feed your pet.",
-      "petEatsFoodOnly": "Your pet can only eat food."
+      "noPetFood": "你沒有可餵食寵物的食物。",
+      "petEatsFoodOnly": "你的寵物只能吃食物。"
     },
     "social": {
       "title": "社交",
@@ -34201,7 +34201,7 @@ export const zh_TW: EnTranslations = {
         "name": "喚墓者召喚師"
       },
       "gravecaller_mender": {
-        "name": "Gravecaller Mender"
+        "name": "喚墓者醫者"
       },
       "deacon_voss": {
         "name": "執事沃斯"
@@ -34285,7 +34285,7 @@ export const zh_TW: EnTranslations = {
         "name": "墓龍科祖爾"
       },
       "bog_bloat": {
-        "name": "Bog Bloat"
+        "name": "沼澤腫脹獸"
       },
       "elder_bristleback": {
         "name": "年長硬鬃"
@@ -35507,16 +35507,16 @@ export const ko_KR: EnTranslations = {
   "wiki": {
     "title": "게임 위키 및 가이드",
     "desc": "렐름의 비밀과 클래스 가이드, 전략 등을 확인해 보세요.",
-    "cta": "Browse the Wiki"
+    "cta": "위키 둘러보기"
   },
   "news": {
     "title": "새소식 및 업데이트",
     "desc": "최신 패치 노트, 이벤트 소식, 커뮤니티 업데이트를 확인해 보세요.",
-    "loading": "Loading the latest updates…",
-    "error": "Couldn't load updates. Please try again later.",
-    "empty": "No updates yet — check back soon.",
-    "prerelease": "Pre-release",
-    "viewOnGithub": "View on GitHub"
+    "loading": "최신 소식을 불러오는 중...",
+    "error": "소식을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.",
+    "empty": "아직 새 소식이 없습니다. 곧 다시 확인해 주세요.",
+    "prerelease": "사전 출시",
+    "viewOnGithub": "GitHub에서 보기"
   },
   "download": {
     "title": "데스크톱 런처 다운로드",
@@ -35535,16 +35535,16 @@ export const ko_KR: EnTranslations = {
     "offlineAria": "오프라인 플레이: 즉각적인 로컬 싱글 플레이 세션을 시작합니다",
     "tipTitle": "팁:",
     "tipText": "가장 원활한 이용을 위해 이 웹사이트의 광고 차단기 확장 프로그램을 비활성화해 주세요. 일부 차단기가 게임 성능 지연을 유발할 수 있습니다.",
-    "serverOnline": "Online",
-    "serverOffline": "Offline",
-    "play": "Play",
-    "playAria": "Play World of ClaudeCraft",
-    "serverLabel": "Choose your realm",
-    "serverAria": "Select realm: Online or Offline",
-    "serverOfflineSub": "Instant local world",
-    "caLabel": "$WOC Contract Address",
-    "caCopyAria": "Copy contract address",
-    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
+    "serverOnline": "온라인",
+    "serverOffline": "오프라인",
+    "play": "플레이",
+    "playAria": "World of ClaudeCraft 플레이",
+    "serverLabel": "렐름을 선택하세요",
+    "serverAria": "렐름 선택: 온라인 또는 오프라인",
+    "serverOfflineSub": "즉시 시작하는 로컬 세상",
+    "caLabel": "$WOC 계약 주소",
+    "caCopyAria": "계약 주소 복사",
+    "caNote": "WOC는 커뮤니티 토큰입니다. 플레이에는 필요하지 않습니다. WOC의 활용과 선순환 구조에 관해 이야기하려면 Discord에 참여하세요."
   },
   "auth": {
     "enterRealm": "렐름 입장",
@@ -36057,7 +36057,7 @@ export const ko_KR: EnTranslations = {
     },
     "errors": {
       "stunned": "기절했습니다!",
-      "silenced": "You are silenced!",
+      "silenced": "침묵 상태입니다!",
       "busy": "현재 다른 행동 중입니다.",
       "abilityNotReady": "그 능력은 아직 준비되지 않았습니다.",
       "notEnoughRage": "분노가 부족합니다!",
@@ -36182,8 +36182,8 @@ export const ko_KR: EnTranslations = {
       "renameConfirm": "이름 변경",
       "abandonBody": "{name}을(를) 영구적으로 포기할까요? 다른 소환수를 길들여야 합니다.",
       "abandonConfirm": "포기",
-      "noPetFood": "You have no food to feed your pet.",
-      "petEatsFoodOnly": "Your pet can only eat food."
+      "noPetFood": "소환수에게 먹일 음식이 없습니다.",
+      "petEatsFoodOnly": "소환수는 음식만 먹을 수 있습니다."
     },
     "social": {
       "title": "소셜",
@@ -37735,7 +37735,7 @@ export const ko_KR: EnTranslations = {
         "name": "무덤부름 소환사"
       },
       "gravecaller_mender": {
-        "name": "Gravecaller Mender"
+        "name": "무덤부름 치유사"
       },
       "deacon_voss": {
         "name": "부제 보스"
@@ -37819,7 +37819,7 @@ export const ko_KR: EnTranslations = {
         "name": "무덤고룡 코르줄"
       },
       "bog_bloat": {
-        "name": "Bog Bloat"
+        "name": "늪 부푸리"
       },
       "elder_bristleback": {
         "name": "늙은 뻣센등뼈"
@@ -39041,16 +39041,16 @@ export const ja_JP: EnTranslations = {
   "wiki": {
     "title": "ゲームWiki & ガイド",
     "desc": "レルムの秘密、クラスガイド、戦略を確認しましょう。",
-    "cta": "Browse the Wiki"
+    "cta": "Wikiを見る"
   },
   "news": {
     "title": "ニュース & アップデート",
     "desc": "最新のパッチノート、イベント、コミュニティの更新情報を確認しましょう。",
-    "loading": "Loading the latest updates…",
-    "error": "Couldn't load updates. Please try again later.",
-    "empty": "No updates yet — check back soon.",
-    "prerelease": "Pre-release",
-    "viewOnGithub": "View on GitHub"
+    "loading": "最新の更新情報を読み込み中...",
+    "error": "更新情報を読み込めませんでした。しばらくしてからお試しください。",
+    "empty": "まだ更新はありません。またのぞいてみてください。",
+    "prerelease": "プレリリース",
+    "viewOnGithub": "GitHubで見る"
   },
   "download": {
     "title": "デスクトップランチャーのダウンロード",
@@ -39069,16 +39069,16 @@ export const ja_JP: EnTranslations = {
     "offlineAria": "オフラインでプレイ：即座にローカルシングルプレイヤーセッションを開始します",
     "tipTitle": "ヒント：",
     "tipText": "よりスムーズな体験のために、本サイトでの広告ブロック拡張機能を無効にしてください。コミュニティの報告によると、一部のブロック機能がラグの原因になる場合があります。",
-    "serverOnline": "Online",
-    "serverOffline": "Offline",
-    "play": "Play",
-    "playAria": "Play World of ClaudeCraft",
-    "serverLabel": "Choose your realm",
-    "serverAria": "Select realm: Online or Offline",
-    "serverOfflineSub": "Instant local world",
-    "caLabel": "$WOC Contract Address",
-    "caCopyAria": "Copy contract address",
-    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
+    "serverOnline": "オンライン",
+    "serverOffline": "オフライン",
+    "play": "プレイ",
+    "playAria": "World of ClaudeCraftをプレイ",
+    "serverLabel": "レルムを選択",
+    "serverAria": "レルムを選択：オンラインまたはオフライン",
+    "serverOfflineSub": "即座にローカルの世界へ",
+    "caLabel": "$WOC コントラクトアドレス",
+    "caCopyAria": "コントラクトアドレスをコピー",
+    "caNote": "WOCはコミュニティトークンです。プレイには必要ありません。Discordに参加して、WOCのユーティリティとフライホイールについて語り合いましょう。"
   },
   "auth": {
     "enterRealm": "レルムに入る",
@@ -39591,7 +39591,7 @@ export const ja_JP: EnTranslations = {
     },
     "errors": {
       "stunned": "スタン中です！",
-      "silenced": "You are silenced!",
+      "silenced": "沈黙状態です！",
       "busy": "現在行動中です。",
       "abilityNotReady": "その能力はまだ準備できていません。",
       "notEnoughRage": "怒りが足りません！",
@@ -39716,8 +39716,8 @@ export const ja_JP: EnTranslations = {
       "renameConfirm": "名前変更",
       "abandonBody": "{name}を永久に放棄しますか? 別のペットを手なずける必要があります。",
       "abandonConfirm": "放棄",
-      "noPetFood": "You have no food to feed your pet.",
-      "petEatsFoodOnly": "Your pet can only eat food."
+      "noPetFood": "ペットに与える食べ物がありません。",
+      "petEatsFoodOnly": "ペットは食べ物しか食べられません。"
     },
     "social": {
       "title": "ソーシャル",
@@ -41269,7 +41269,7 @@ export const ja_JP: EnTranslations = {
         "name": "グレイブコーラーの召喚師"
       },
       "gravecaller_mender": {
-        "name": "Gravecaller Mender"
+        "name": "グレイブコーラーの癒し手"
       },
       "deacon_voss": {
         "name": "助祭ヴォス"
@@ -41353,7 +41353,7 @@ export const ja_JP: EnTranslations = {
         "name": "墓ワームのコルズル"
       },
       "bog_bloat": {
-        "name": "Bog Bloat"
+        "name": "沼の膨れ者"
       },
       "elder_bristleback": {
         "name": "老ブリストルバック"
@@ -42575,16 +42575,16 @@ export const pt_BR: EnTranslations = {
   "wiki": {
     "title": "Wiki e guia do jogo",
     "desc": "Descubra os segredos do reino, guias de classes e estratégias.",
-    "cta": "Browse the Wiki"
+    "cta": "Explorar a Wiki"
   },
   "news": {
     "title": "Notícias e atualizações",
     "desc": "Leia as últimas notas do patch, eventos e atualizações da comunidade.",
-    "loading": "Loading the latest updates…",
-    "error": "Couldn't load updates. Please try again later.",
-    "empty": "No updates yet — check back soon.",
-    "prerelease": "Pre-release",
-    "viewOnGithub": "View on GitHub"
+    "loading": "Carregando as últimas novidades...",
+    "error": "Não foi possível carregar as novidades. Tente novamente mais tarde.",
+    "empty": "Ainda não há novidades; volte em breve.",
+    "prerelease": "Pré-lançamento",
+    "viewOnGithub": "Ver no GitHub"
   },
   "download": {
     "title": "Baixar launcher para desktop",
@@ -42605,14 +42605,14 @@ export const pt_BR: EnTranslations = {
     "tipText": "Para uma experiência mais suave, desative os bloqueadores de anúncios neste site. Relatos da comunidade indicam que alguns bloqueadores podem causar lag.",
     "serverOnline": "Online",
     "serverOffline": "Offline",
-    "play": "Play",
-    "playAria": "Play World of ClaudeCraft",
-    "serverLabel": "Choose your realm",
-    "serverAria": "Select realm: Online or Offline",
-    "serverOfflineSub": "Instant local world",
-    "caLabel": "$WOC Contract Address",
-    "caCopyAria": "Copy contract address",
-    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
+    "play": "Jogar",
+    "playAria": "Jogar World of ClaudeCraft",
+    "serverLabel": "Escolha seu reino",
+    "serverAria": "Escolher reino: Online ou Offline",
+    "serverOfflineSub": "Mundo local instantâneo",
+    "caLabel": "Endereço do contrato $WOC",
+    "caCopyAria": "Copiar endereço do contrato",
+    "caNote": "WOC é o token da nossa comunidade. Não é necessário para jogar. Entre no Discord para discutir a utilidade e o flywheel do WOC."
   },
   "auth": {
     "enterRealm": "Entrar no reino",
@@ -43125,7 +43125,7 @@ export const pt_BR: EnTranslations = {
     },
     "errors": {
       "stunned": "Você está atordoado!",
-      "silenced": "You are silenced!",
+      "silenced": "Você está silenciado!",
       "busy": "Você está ocupado.",
       "abilityNotReady": "Essa habilidade ainda não está pronta.",
       "notEnoughRage": "Raiva insuficiente!",
@@ -43250,8 +43250,8 @@ export const pt_BR: EnTranslations = {
       "renameConfirm": "Renomear",
       "abandonBody": "Abandonar {name} permanentemente? Você precisará domar outro mascote.",
       "abandonConfirm": "Abandonar",
-      "noPetFood": "You have no food to feed your pet.",
-      "petEatsFoodOnly": "Your pet can only eat food."
+      "noPetFood": "Você não tem comida para alimentar seu mascote.",
+      "petEatsFoodOnly": "Seu mascote só pode comer comida."
     },
     "social": {
       "title": "Comunidade",
@@ -44803,7 +44803,7 @@ export const pt_BR: EnTranslations = {
         "name": "Invocador Gravecaller"
       },
       "gravecaller_mender": {
-        "name": "Gravecaller Mender"
+        "name": "Restaurador Gravecaller"
       },
       "deacon_voss": {
         "name": "Diácono Voss"
@@ -44887,7 +44887,7 @@ export const pt_BR: EnTranslations = {
         "name": "Korzul o Gravewyrm"
       },
       "bog_bloat": {
-        "name": "Bog Bloat"
+        "name": "Inchaço do brejo"
       },
       "elder_bristleback": {
         "name": "Bristleback ancião"
@@ -46109,16 +46109,16 @@ export const ru_RU: EnTranslations = {
   "wiki": {
     "title": "Вики и руководство",
     "desc": "Откройте секреты игрового мира, руководства по классам и стратегии.",
-    "cta": "Browse the Wiki"
+    "cta": "Открыть Вики"
   },
   "news": {
     "title": "Новости и обновления",
     "desc": "Читайте описание последних обновлений, информацию о событиях и новости сообщества.",
-    "loading": "Loading the latest updates…",
-    "error": "Couldn't load updates. Please try again later.",
-    "empty": "No updates yet — check back soon.",
-    "prerelease": "Pre-release",
-    "viewOnGithub": "View on GitHub"
+    "loading": "Загрузка последних обновлений...",
+    "error": "Не удалось загрузить обновления. Попробуйте позже.",
+    "empty": "Обновлений пока нет: загляните позже.",
+    "prerelease": "Предварительная версия",
+    "viewOnGithub": "Открыть на GitHub"
   },
   "download": {
     "title": "Скачать загрузчик для ПК",
@@ -46137,16 +46137,16 @@ export const ru_RU: EnTranslations = {
     "offlineAria": "Играть вне сети: запуск мгновенного локального одиночного сеанса",
     "tipTitle": "СОВЕТ:",
     "tipText": "Для максимально плавной игры отключите блокировщики рекламы на этом сайте. По отзывам сообщества, некоторые блокировщики могут вызывать задержки.",
-    "serverOnline": "Online",
-    "serverOffline": "Offline",
-    "play": "Play",
-    "playAria": "Play World of ClaudeCraft",
-    "serverLabel": "Choose your realm",
-    "serverAria": "Select realm: Online or Offline",
-    "serverOfflineSub": "Instant local world",
-    "caLabel": "$WOC Contract Address",
-    "caCopyAria": "Copy contract address",
-    "caNote": "WOC is our community token. It is not needed to play. Join Discord to discuss the WOC utility and flywheel."
+    "serverOnline": "В сети",
+    "serverOffline": "Не в сети",
+    "play": "Играть",
+    "playAria": "Играть в World of ClaudeCraft",
+    "serverLabel": "Выберите свой мир",
+    "serverAria": "Выберите мир: В сети или Не в сети",
+    "serverOfflineSub": "Мгновенный локальный мир",
+    "caLabel": "Адрес контракта $WOC",
+    "caCopyAria": "Скопировать адрес контракта",
+    "caNote": "WOC - токен нашего сообщества. Он не нужен для игры. Присоединяйтесь к Discord, чтобы обсудить применение и экосистему WOC."
   },
   "auth": {
     "enterRealm": "Войти в игровой мир",
@@ -46659,7 +46659,7 @@ export const ru_RU: EnTranslations = {
     },
     "errors": {
       "stunned": "Вы оглушены!",
-      "silenced": "You are silenced!",
+      "silenced": "Вы лишены дара речи!",
       "busy": "Вы заняты.",
       "abilityNotReady": "Эта способность еще не готова.",
       "notEnoughRage": "Недостаточно ярости!",
@@ -46784,8 +46784,8 @@ export const ru_RU: EnTranslations = {
       "renameConfirm": "Переименовать",
       "abandonBody": "Навсегда оставить {name}? Вам придется приручить другого питомца.",
       "abandonConfirm": "Оставить",
-      "noPetFood": "You have no food to feed your pet.",
-      "petEatsFoodOnly": "Your pet can only eat food."
+      "noPetFood": "У вас нет пищи, чтобы покормить питомца.",
+      "petEatsFoodOnly": "Ваш питомец ест только пищу."
     },
     "social": {
       "title": "Общение",
@@ -48337,7 +48337,7 @@ export const ru_RU: EnTranslations = {
         "name": "Призыватель Могильного Зова"
       },
       "gravecaller_mender": {
-        "name": "Gravecaller Mender"
+        "name": "Лекарь Могильного Зова"
       },
       "deacon_voss": {
         "name": "Дьякон Восс"
@@ -48421,7 +48421,7 @@ export const ru_RU: EnTranslations = {
         "name": "Корзул Могильный Вирм"
       },
       "bog_bloat": {
-        "name": "Bog Bloat"
+        "name": "Болотный раздутень"
       },
       "elder_bristleback": {
         "name": "Старый Щетиноспин"
@@ -49503,283 +49503,19 @@ export const translations = {
 };
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [
-    "entities.mobs.bog_bloat.name",
-    "entities.mobs.gravecaller_mender.name",
-    "hud.errors.silenced",
-    "hud.pet.noPetFood",
-    "hud.pet.petEatsFoodOnly",
-    "mode.caCopyAria",
-    "mode.caLabel",
-    "mode.caNote",
-    "mode.play",
-    "mode.playAria",
-    "mode.serverAria",
-    "mode.serverLabel",
-    "mode.serverOffline",
-    "mode.serverOfflineSub",
-    "mode.serverOnline",
-    "news.empty",
-    "news.error",
-    "news.loading",
-    "news.prerelease",
-    "news.viewOnGithub",
-    "wiki.cta"
-  ],
-  "es_ES": [
-    "entities.mobs.bog_bloat.name",
-    "entities.mobs.gravecaller_mender.name",
-    "hud.errors.silenced",
-    "hud.pet.noPetFood",
-    "hud.pet.petEatsFoodOnly",
-    "mode.caCopyAria",
-    "mode.caLabel",
-    "mode.caNote",
-    "mode.play",
-    "mode.playAria",
-    "mode.serverAria",
-    "mode.serverLabel",
-    "mode.serverOffline",
-    "mode.serverOfflineSub",
-    "mode.serverOnline",
-    "news.empty",
-    "news.error",
-    "news.loading",
-    "news.prerelease",
-    "news.viewOnGithub",
-    "wiki.cta"
-  ],
-  "fr_FR": [
-    "entities.mobs.bog_bloat.name",
-    "entities.mobs.gravecaller_mender.name",
-    "hud.errors.silenced",
-    "hud.pet.noPetFood",
-    "hud.pet.petEatsFoodOnly",
-    "mode.caCopyAria",
-    "mode.caLabel",
-    "mode.caNote",
-    "mode.play",
-    "mode.playAria",
-    "mode.serverAria",
-    "mode.serverLabel",
-    "mode.serverOffline",
-    "mode.serverOfflineSub",
-    "mode.serverOnline",
-    "news.empty",
-    "news.error",
-    "news.loading",
-    "news.prerelease",
-    "news.viewOnGithub",
-    "wiki.cta"
-  ],
-  "fr_CA": [
-    "entities.mobs.bog_bloat.name",
-    "entities.mobs.gravecaller_mender.name",
-    "hud.errors.silenced",
-    "hud.pet.noPetFood",
-    "hud.pet.petEatsFoodOnly",
-    "mode.caCopyAria",
-    "mode.caLabel",
-    "mode.caNote",
-    "mode.play",
-    "mode.playAria",
-    "mode.serverAria",
-    "mode.serverLabel",
-    "mode.serverOffline",
-    "mode.serverOfflineSub",
-    "mode.serverOnline",
-    "news.empty",
-    "news.error",
-    "news.loading",
-    "news.prerelease",
-    "news.viewOnGithub",
-    "wiki.cta"
-  ],
+  "es": [],
+  "es_ES": [],
+  "fr_FR": [],
+  "fr_CA": [],
   "en_CA": [],
-  "it_IT": [
-    "entities.mobs.bog_bloat.name",
-    "entities.mobs.gravecaller_mender.name",
-    "hud.errors.silenced",
-    "hud.pet.noPetFood",
-    "hud.pet.petEatsFoodOnly",
-    "mode.caCopyAria",
-    "mode.caLabel",
-    "mode.caNote",
-    "mode.play",
-    "mode.playAria",
-    "mode.serverAria",
-    "mode.serverLabel",
-    "mode.serverOffline",
-    "mode.serverOfflineSub",
-    "mode.serverOnline",
-    "news.empty",
-    "news.error",
-    "news.loading",
-    "news.prerelease",
-    "news.viewOnGithub",
-    "wiki.cta"
-  ],
-  "de_DE": [
-    "entities.mobs.bog_bloat.name",
-    "entities.mobs.gravecaller_mender.name",
-    "hud.errors.silenced",
-    "hud.pet.noPetFood",
-    "hud.pet.petEatsFoodOnly",
-    "mode.caCopyAria",
-    "mode.caLabel",
-    "mode.caNote",
-    "mode.play",
-    "mode.playAria",
-    "mode.serverAria",
-    "mode.serverLabel",
-    "mode.serverOffline",
-    "mode.serverOfflineSub",
-    "mode.serverOnline",
-    "news.empty",
-    "news.error",
-    "news.loading",
-    "news.prerelease",
-    "news.viewOnGithub",
-    "wiki.cta"
-  ],
-  "zh_CN": [
-    "entities.mobs.bog_bloat.name",
-    "entities.mobs.gravecaller_mender.name",
-    "hud.errors.silenced",
-    "hud.pet.noPetFood",
-    "hud.pet.petEatsFoodOnly",
-    "mode.caCopyAria",
-    "mode.caLabel",
-    "mode.caNote",
-    "mode.play",
-    "mode.playAria",
-    "mode.serverAria",
-    "mode.serverLabel",
-    "mode.serverOffline",
-    "mode.serverOfflineSub",
-    "mode.serverOnline",
-    "news.empty",
-    "news.error",
-    "news.loading",
-    "news.prerelease",
-    "news.viewOnGithub",
-    "wiki.cta"
-  ],
-  "zh_TW": [
-    "entities.mobs.bog_bloat.name",
-    "entities.mobs.gravecaller_mender.name",
-    "hud.errors.silenced",
-    "hud.pet.noPetFood",
-    "hud.pet.petEatsFoodOnly",
-    "mode.caCopyAria",
-    "mode.caLabel",
-    "mode.caNote",
-    "mode.play",
-    "mode.playAria",
-    "mode.serverAria",
-    "mode.serverLabel",
-    "mode.serverOffline",
-    "mode.serverOfflineSub",
-    "mode.serverOnline",
-    "news.empty",
-    "news.error",
-    "news.loading",
-    "news.prerelease",
-    "news.viewOnGithub",
-    "wiki.cta"
-  ],
-  "ko_KR": [
-    "entities.mobs.bog_bloat.name",
-    "entities.mobs.gravecaller_mender.name",
-    "hud.errors.silenced",
-    "hud.pet.noPetFood",
-    "hud.pet.petEatsFoodOnly",
-    "mode.caCopyAria",
-    "mode.caLabel",
-    "mode.caNote",
-    "mode.play",
-    "mode.playAria",
-    "mode.serverAria",
-    "mode.serverLabel",
-    "mode.serverOffline",
-    "mode.serverOfflineSub",
-    "mode.serverOnline",
-    "news.empty",
-    "news.error",
-    "news.loading",
-    "news.prerelease",
-    "news.viewOnGithub",
-    "wiki.cta"
-  ],
-  "ja_JP": [
-    "entities.mobs.bog_bloat.name",
-    "entities.mobs.gravecaller_mender.name",
-    "hud.errors.silenced",
-    "hud.pet.noPetFood",
-    "hud.pet.petEatsFoodOnly",
-    "mode.caCopyAria",
-    "mode.caLabel",
-    "mode.caNote",
-    "mode.play",
-    "mode.playAria",
-    "mode.serverAria",
-    "mode.serverLabel",
-    "mode.serverOffline",
-    "mode.serverOfflineSub",
-    "mode.serverOnline",
-    "news.empty",
-    "news.error",
-    "news.loading",
-    "news.prerelease",
-    "news.viewOnGithub",
-    "wiki.cta"
-  ],
-  "pt_BR": [
-    "entities.mobs.bog_bloat.name",
-    "entities.mobs.gravecaller_mender.name",
-    "hud.errors.silenced",
-    "hud.pet.noPetFood",
-    "hud.pet.petEatsFoodOnly",
-    "mode.caCopyAria",
-    "mode.caLabel",
-    "mode.caNote",
-    "mode.play",
-    "mode.playAria",
-    "mode.serverAria",
-    "mode.serverLabel",
-    "mode.serverOffline",
-    "mode.serverOfflineSub",
-    "mode.serverOnline",
-    "news.empty",
-    "news.error",
-    "news.loading",
-    "news.prerelease",
-    "news.viewOnGithub",
-    "wiki.cta"
-  ],
-  "ru_RU": [
-    "entities.mobs.bog_bloat.name",
-    "entities.mobs.gravecaller_mender.name",
-    "hud.errors.silenced",
-    "hud.pet.noPetFood",
-    "hud.pet.petEatsFoodOnly",
-    "mode.caCopyAria",
-    "mode.caLabel",
-    "mode.caNote",
-    "mode.play",
-    "mode.playAria",
-    "mode.serverAria",
-    "mode.serverLabel",
-    "mode.serverOffline",
-    "mode.serverOfflineSub",
-    "mode.serverOnline",
-    "news.empty",
-    "news.error",
-    "news.loading",
-    "news.prerelease",
-    "news.viewOnGithub",
-    "wiki.cta"
-  ]
+  "it_IT": [],
+  "de_DE": [],
+  "zh_CN": [],
+  "zh_TW": [],
+  "ko_KR": [],
+  "ja_JP": [],
+  "pt_BR": [],
+  "ru_RU": []
 };
 
 export const en_XA: EnTranslations = {
