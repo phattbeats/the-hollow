@@ -1,4 +1,4 @@
-// Divergence-only dialect overlay for "fr_CA" over base locale "fr_FR" (Phase 4).
+// Divergence-only dialect overlay for "fr_CA" over base locale "fr_FR".
 //
 // "fr_CA" inherits from "fr_FR": the build (scripts/i18n_build.mjs) resolves it as
 // nested `en` -> fr_FR overlay -> this overlay, so any key absent here falls through to fr_FR, then to English. This file

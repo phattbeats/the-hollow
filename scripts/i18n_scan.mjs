@@ -1,9 +1,9 @@
-// Build the i18n status registry src/ui/i18n.status.json (Phase 5).
+// Build the i18n status registry src/ui/i18n.status.json.
 //
 // A no-LLM, no-network scanner that records, per key per locale, whether a real
 // translation exists. It walks the full key universe - every `en` leaf, plus the
 // matcher DICT keys (sim_i18n + server_i18n) and the admin keys (read sparsely
-// from the admin en base + overlays since Phase 8) - and for
+// from the admin en base + overlays) - and for
 // each (key, locale) emits one of three states:
 //
 //   translated  the locale provides a real translation. Stores `srcHash` (a hash
@@ -13,8 +13,8 @@
 //               Seeded from the two hand-maintained allow-lists that used to live
 //               in tests/localization_fixes.test.ts (scripts/i18n_blocked_seed.mjs).
 //   pending     untranslated, or stale (the recorded English source drifted from
-//               the current one). Non-empty since Phase 6 (game) and Phase 8
-//               (admin): a locale that omits an overlay key is pending - the
+//               the current one). Non-empty for the game and admin scopes:
+//               a locale that omits an overlay key is pending - the
 //               resolved table English-fills it for non-release; release is gated.
 //
 // Determinism / reproducibility (the load-bearing property): the registry is a
@@ -26,10 +26,10 @@
 // like i18n.resolved.generated.ts and the media manifest.
 //
 // On staleness: because srcHash is recomputed from the current English each run,
-// it always equals the per-key enHash this phase, so the translated/stale
+// it always equals the per-key enHash for now, so the translated/stale
 // distinction is dormant (no key is stale while everything is dense and `en` is
 // unchanged). The srcHash + enHash fields are recorded now so the staleness
-// comparison (srcHash !== enHash -> pending) becomes live in Phase 6+ once
+// comparison (srcHash !== enHash -> pending) becomes live once
 // sparse overlays and the fill pipeline persist translation-time hashes.
 //
 // Zero runtime deps; bundles the TS source with esbuild (same pattern as
@@ -57,7 +57,7 @@ const LOCALES = [
 ];
 const NON_EN = LOCALES.filter((l) => l !== 'en');
 
-// Dialect locales resolve through a base locale (Phase 4): a key the dialect
+// Dialect locales resolve through a base locale: a key the dialect
 // overlay omits falls through to the base overlay, then to English. So a dialect
 // "provides" a key if its own overlay OR its base chain provides it. en_CA's base
 // is `en` itself, so it provides every key (an English dialect intentionally
@@ -199,7 +199,7 @@ async function main() {
   addDictScope('sim', simDICT);
   addDictScope('server', serverDICT);
 
-  // admin scope: a flat en base + SPARSE flat overlays (Phase 8). Unlike sim/server
+  // admin scope: a flat en base + SPARSE flat overlays. Unlike sim/server
   // it is dialect-aware and sparse-capable: a locale "provides" a key via its own
   // overlay or (for a dialect) its base chain, exactly like the main scope's
   // providedByLang - so an omitted admin key naturally yields `pending`. The blocked

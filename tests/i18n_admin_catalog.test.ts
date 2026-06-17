@@ -1,4 +1,4 @@
-// Phase 8: the admin catalog is under the overlay + registry + release-gate model.
+// The admin catalog is under the overlay + registry + release-gate model.
 //
 // This suite proves the admin-specific guarantees that the shared i18n tests do
 // not: the admin two-tier t() gate (English-only legal at the PR tier, hard-fail
@@ -35,7 +35,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const adminEnKeys = new Set(Object.keys(adminEn));
 
 // --- The admin two-tier t() gate (mirrors tests/i18n_t_behavior.test.ts) --------
-// The real admin `pending` set is non-empty (the Phase 8 chat-filter keys), but it
+// The real admin `pending` set is non-empty (the chat-filter keys), but it
 // is locale-specific, so to exercise the t() pending BRANCH deterministically we
 // inject a synthetic pending key through the generated module - the same technique
 // the game-client behavior test uses.

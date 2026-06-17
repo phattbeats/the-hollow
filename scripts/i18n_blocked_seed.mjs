@@ -1,5 +1,5 @@
-// Seed data for the i18n status registry (Phase 5) - the verbatim blocked-surface
-// allow-lists. These were extracted byte-faithfully (once) from the pre-Phase-5
+// Seed data for the i18n status registry - the verbatim blocked-surface
+// allow-lists. These were extracted byte-faithfully (once) from the earlier
 // hand-maintained Sets that used to live in tests/localization_fixes.test.ts;
 // there is NO regenerator - this file is now the CANONICAL hand-maintained source
 // (those in-test Sets are gone, so edit the blocked surface HERE). The registry

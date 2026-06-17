@@ -12,7 +12,7 @@ on:
 permissions:
   contents: read
 
-# Two-tier i18n gate (Phase 6), split by git ref in this one file:
+# Two-tier i18n gate, split by git ref in this one file:
 #
 #   pr-gate       cheap, English-only-legal tier. Runs on pull requests, on pushes
 #                 to non-release branches (main, dev-*), and on manual dispatch.

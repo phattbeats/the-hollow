@@ -1,4 +1,4 @@
-// Phase 6: the t() miss / pending policy and its release-vs-non-release split.
+// The t() miss / pending policy and its release-vs-non-release split.
 //
 // Locked decision #4: on a miss, t() THROWS for an untracked key in dev/test,
 // renders English for a registry-`pending` key on a non-release build only, and
@@ -22,7 +22,7 @@ import { t, setLanguage, type TranslationKey } from "../src/ui/i18n";
 // type) so we can exercise the runtime untracked path.
 const tRaw = t as unknown as (key: string, values?: Record<string, string | number>) => string;
 
-// Phase 6 two-tier gate (see .github/workflows/ci.yml): an empty pending set is a
+// The two-tier gate (see .github/workflows/ci.yml): an empty pending set is a
 // RELEASE guarantee, not a PR one - an English-only PR legitimately leaves keys
 // pending - so that assertion runs release-only.
 const RELEASE_TIER = process.env.I18N_RELEASE_TIER === "1";

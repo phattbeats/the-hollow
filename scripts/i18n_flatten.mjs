@@ -1,4 +1,4 @@
-// Flatten/unflatten contract for the i18n locale overlays (Phase 3).
+// Flatten/unflatten contract for the i18n locale overlays.
 //
 // A nested object {a:{b:"x"}} corresponds to the flat dotted-key map {"a.b":"x"}.
 // The separator is a literal dot. We recurse into PLAIN objects only; arrays and

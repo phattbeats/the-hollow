@@ -1,5 +1,5 @@
 // Build the dense resolved admin translation table
-// src/admin/i18n.resolved.generated.ts (Phase 8).
+// src/admin/i18n.resolved.generated.ts.
 //
 // The admin twin of scripts/i18n_build.mjs. `en` (src/admin/i18n.en.ts) is the
 // authoritative FLAT English base; the 13 non-English locales are FLAT overlays
@@ -36,7 +36,7 @@ const LOCALES = [
   'zh_CN', 'zh_TW', 'ko_KR', 'ja_JP', 'pt_BR', 'ru_RU',
 ];
 
-// Dialect locales resolve through a base (Phase 4 model): nested en -> base
+// Dialect locales resolve through a base (base-resolution model): nested en -> base
 // overlay -> dialect overlay. Mirror of scripts/i18n_build.mjs DIALECT_BASE.
 const DIALECT_BASE = { es_ES: 'es', fr_CA: 'fr_FR', en_CA: 'en' };
 
@@ -94,7 +94,7 @@ function emit(resolved, pending, enXA) {
   // pending. Mirrors scripts/i18n_scan.mjs `providedByLang` so build + registry agree.
   lines.push('export const pending: Record<string, readonly string[]> = ' + JSON.stringify(pending, null, 2) + ';');
   lines.push('');
-  // en_XA: the dev-only ADMIN pseudo-locale (Phase 9). Operators are users, so the
+  // en_XA: the dev-only ADMIN pseudo-locale. Operators are users, so the
   // admin dashboard gets the same literal-surfacing tool as the game. Every admin
   // `en` value accent-pushed and bracketed with {placeholders} preserved. NOT a
   // member of `translations`, so it never enters the admin supportedLanguages, the

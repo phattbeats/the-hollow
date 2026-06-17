@@ -1,4 +1,4 @@
-// Authoritative English admin catalog (Phase 8). FLAT dotted-key map - the
+// Authoritative English admin catalog. FLAT dotted-key map - the
 // source of truth for every admin operator-visible string. This is the file a
 // contributor edits to ADD a key (then renders it through t()); the 13 overlays
 // in src/admin/i18n.locales/ are translator-edited and may omit a key, which the
@@ -191,7 +191,7 @@ export const en = {
   "dungeon.hollow_crypt": "The Hollow Crypt",
   "dungeon.sunken_bastion": "The Sunken Bastion",
   "dungeon.gravewyrm_sanctum": "Gravewyrm Sanctum",
-  // Phase 8: chat-filter + chat-moderation operator surface. Added English-only;
+  // Chat-filter + chat-moderation operator surface. Added English-only;
   // the 13 overlays omit them, so the build English-fills them and the registry
   // marks them `pending` until a release fill provides translations.
   "nav.chatFilter": "Chat Filter",

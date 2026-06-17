@@ -5,9 +5,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 // Byte-equivalence safety net for the i18n scaling refactor. Every
-// behavior-preserving phase must leave the resolved 14-locale table
+// behavior-preserving change must leave the resolved 14-locale table
 // byte-identical; this asserts the table's deterministic SHA-256 still matches
-// the committed baseline. The baseline changes ONLY in a phase that
+// the committed baseline. The baseline changes ONLY in a change that
 // deliberately changes resolved output - a drift here is a bug, not a re-baseline.
 //
 // We invoke the real hash script as a subprocess so the test exercises exactly

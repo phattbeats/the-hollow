@@ -7,7 +7,7 @@
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
 // string>>` so tsc rejects a structurally-wrong key, plus
 // tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE as of Phase 6: an
+// template-literal key type cannot. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 

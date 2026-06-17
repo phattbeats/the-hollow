@@ -12,7 +12,7 @@ import { DICT as adminDICT } from "../src/admin/i18n";
 // rather than a copy of the scanner's own arithmetic.
 import { contentHash, placeholdersOf } from "../scripts/i18n_hash.mjs";
 
-// Phase 5: src/ui/i18n.status.json is the generated per-key per-locale status
+// src/ui/i18n.status.json is the generated per-key per-locale status
 // registry (scripts/i18n_scan.mjs, regenerated in pretest). This suite is the
 // registry-in-sync + reproducibility net: the registry must cover the whole key
 // universe, every enHash must independently re-derive from the English source,
@@ -25,7 +25,7 @@ const registryRel = "src/ui/i18n.status.json";
 const registry: any = JSON.parse(fs.readFileSync(path.join(root, registryRel), "utf8"));
 const NON_EN = supportedLanguages.filter((l) => l !== "en");
 
-// Phase 6 two-tier gate: the release tier runs with I18N_RELEASE_TIER=1 (see
+// Two-tier gate: the release tier runs with I18N_RELEASE_TIER=1 (see
 // .github/workflows/ci.yml). An empty-`pending` set is a RELEASE guarantee, not a
 // PR one - an English-only PR legitimately leaves keys pending - so that assertion
 // runs release-only. Registry-in-sync (universe coverage, enHash re-derivation,
@@ -89,7 +89,7 @@ describe("i18n status registry: enHash re-derivation (independent)", () => {
 });
 
 describe("i18n status registry: states", () => {
-  // RELEASE-TIER ONLY (Phase 6). A `pending` key must never reach a cut release;
+  // RELEASE-TIER ONLY. A `pending` key must never reach a cut release;
   // the release gate asserts the set is empty. At the PR tier a pending key is
   // LEGAL (English-only PRs), so this is skipped there. Today the set is empty at
   // both tiers because the overlays are still dense - this gate guards the future.
@@ -147,7 +147,7 @@ describe("i18n status registry: blocked rows are load-bearing (no over-allow)", 
     }
   });
 
-  it("only server/admin scopes carry blocked rows this phase (main/sim carry none)", () => {
+  it("only server/admin scopes carry blocked rows (main/sim carry none)", () => {
     for (const [ck, entry] of keyEntries()) {
       const scope = ck.slice(0, ck.indexOf(":"));
       if (scope === "server" || scope === "admin") continue;

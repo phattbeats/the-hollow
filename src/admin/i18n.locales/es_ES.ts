@@ -1,4 +1,4 @@
-// Sparse flat admin overlay for "es_ES" (Phase 8). Mirrors the game client's
+// Sparse flat admin overlay for "es_ES". Mirrors the game client's
 // src/ui/i18n.locales/<lang>.ts: ONLY this file is translator-edited. A key
 // omitted here is filled from the English admin base by the build
 // (scripts/i18n_admin_build.mjs) and tracked as `pending` in the registry

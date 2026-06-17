@@ -1,4 +1,4 @@
-// Divergence-only dialect overlay for "es_ES" over base locale "es" (Phase 4).
+// Divergence-only dialect overlay for "es_ES" over base locale "es".
 //
 // "es_ES" inherits from "es": the build (scripts/i18n_build.mjs) resolves it as
 // nested `en` -> es overlay -> this overlay, so any key absent here falls through to es, then to English. This file

@@ -1,4 +1,4 @@
-// Release-fill worklist generator (Phase 7).
+// Release-fill worklist generator.
 //
 // A DATA-ONLY, no-LLM, no-network tool the maintainer runs before a release to
 // turn the registry's `pending` slice into a per-language fill delta. It reads
@@ -59,7 +59,7 @@ const FORMAT_VERSION = 1;
 const MAX_SIBLINGS = 6;
 
 // Mirror of scripts/i18n_scan.mjs / i18n_build.mjs. Dialect locales resolve a key
-// they omit through their base, then English (Phase 4). Kept in lockstep with the
+// they omit through their base, then English. Kept in lockstep with the
 // scanner by hand; the worklist round-trip test would surface a divergence.
 const DIALECT_BASE = { es_ES: 'es', fr_CA: 'fr_FR', en_CA: 'en' };
 const SCOPE_RANK = { main: 0, sim: 1, server: 2, admin: 3 };

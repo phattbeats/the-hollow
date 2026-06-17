@@ -8,9 +8,9 @@ import { DUNGEONS, MOBS, NPCS, QUESTS, ZONES } from '../sim/data';
 // build then overlays each per-locale flat overlay (src/ui/i18n.locales/<lang>.ts) onto
 // that `en` to produce the dense resolved table.
 //
-// Non-English entity names are NOT here. Phase 3 fully inlined every entity key into the
+// Non-English entity names are NOT here. The flatten migration inlined every entity key into the
 // flat overlays, which left this module's non-English datasets dead (zero runtime
-// consumers - tEntity resolves through the resolved table, not this object). Phase 4
+// consumers - tEntity resolves through the resolved table, not this object). A later cleanup
 // removed those dead datasets along with the `{} as WorldEntityTranslations` casts that
 // faked es_ES->es / fr_CA->fr_FR dialect inheritance here; dialect inheritance is now a
 // declared-base merge in the build resolver (scripts/i18n_build.mjs). Only `.en` is

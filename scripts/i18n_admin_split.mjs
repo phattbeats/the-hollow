@@ -1,4 +1,4 @@
-// One-time migration (Phase 8): split the monolithic admin DICT into the
+// One-time migration: split the monolithic admin DICT into the
 // overlay-model source shape, mirroring scripts/i18n_flatten_locales.mjs for the
 // game client.
 //
@@ -63,7 +63,7 @@ function objectBody(keys, pick) {
 
 function enFile(enKeys, en) {
   return [
-    '// Authoritative English admin catalog (Phase 8). FLAT dotted-key map - the',
+    '// Authoritative English admin catalog. FLAT dotted-key map - the',
     '// source of truth for every admin operator-visible string. This is the file a',
     '// contributor edits to ADD a key (then renders it through t()); the 13 overlays',
     '// in src/admin/i18n.locales/ are translator-edited and may omit a key, which the',
@@ -85,7 +85,7 @@ function enFile(enKeys, en) {
 
 function overlayFile(lang, enKeys, slice) {
   return [
-    `// Sparse flat admin overlay for "${lang}" (Phase 8). Mirrors the game client's`,
+    `// Sparse flat admin overlay for "${lang}". Mirrors the game client's`,
     '// src/ui/i18n.locales/<lang>.ts: ONLY this file is translator-edited. A key',
     '// omitted here is filled from the English admin base by the build',
     '// (scripts/i18n_admin_build.mjs) and tracked as `pending` in the registry',

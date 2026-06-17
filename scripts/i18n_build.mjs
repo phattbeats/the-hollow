@@ -2,13 +2,13 @@
 //
 // This is the load-bearing tsc safety net for the i18n scaling refactor. `en`
 // (src/ui/i18n.en.ts) is the authoritative NESTED base; the 13 non-English
-// locales are FLAT dotted-key overlays (`Record<string, string>`, Phase 3). Each
+// locales are FLAT dotted-key overlays (`Record<string, string>`). Each
 // overlay is unflattened back to a nested object and overlaid onto a deep copy of
 // `en`, with any missing leaf filled from the English value, so every emitted
 // locale is DENSE (no gaps). The generated file types each locale
 // ": EnTranslations" (= typeof en), so tsc still red-fails any missing or renamed
 // key. Client and admin read this generated table, never the raw per-locale
-// overlays (which become sparse in later phases).
+// overlays (which later become sparse).
 //
 // Zero runtime deps; bundles the TS source with esbuild (the same pattern as
 // scripts/i18n_resolved_hash.mjs and scripts/export_loot_spreadsheet.mjs). Writes
@@ -52,7 +52,7 @@ const LOCALES = [
   'ru_RU',
 ];
 
-// Dialect locales declare a base locale (Phase 4). A dialect's (now
+// Dialect locales declare a base locale. A dialect's (now
 // divergence-only) overlay is applied ON TOP of its base locale's overlay, which
 // is itself applied on top of nested `en`. So the resolve order for a dialect is
 //   nested en -> base-locale overlay -> dialect overlay
@@ -150,7 +150,7 @@ function emit(resolved, pending, enXA) {
   // overlays stay dense.
   lines.push('export const pending: Record<string, readonly string[]> = ' + JSON.stringify(pending, null, 2) + ';');
   lines.push('');
-  // en_XA: the dev-only pseudo-locale (Phase 9). Every `en` leaf accent-pushed and
+  // en_XA: the dev-only pseudo-locale. Every `en` leaf accent-pushed and
   // bracketed with {placeholders} preserved (see scripts/i18n_pseudo.mjs). It is
   // DELIBERATELY NOT a member of `translations` above, so it never enters
   // supportedLanguages, the language picker, hreflang, or the release gate. The
@@ -196,7 +196,7 @@ async function main() {
   const resolved = {};
   for (const lang of LOCALES) {
     // `en` is nested and authoritative; every other locale is a flat dotted-key
-    // overlay (Phase 3) that we unflatten before overlaying onto a copy of `en`.
+    // overlay that we unflatten before overlaying onto a copy of `en`.
     // A dialect (DIALECT_BASE) additionally has its base locale's overlay applied
     // first, so its own overlay need only carry the keys that diverge from the base.
     const out = deepCopy(en);

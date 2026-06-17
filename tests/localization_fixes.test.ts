@@ -15,7 +15,7 @@ import { ABILITIES } from "../src/sim/data";
 const locales: Record<string, any> = { en, es, es_ES, fr_FR, fr_CA, en_CA, it_IT, de_DE, zh_CN, zh_TW, ko_KR, ja_JP, pt_BR, ru_RU };
 const ph = (s: string) => [...String(s).matchAll(/\{([A-Za-z0-9_]+)\}/g)].map((m) => m[1]).sort().join(",");
 
-// --- Phase 5: the copied-English and v0.7-slash allow-lists are VIEWS over the
+// --- The copied-English and v0.7-slash allow-lists are VIEWS over the
 // generated status registry (src/ui/i18n.status.json, written by
 // scripts/i18n_scan.mjs and regenerated in pretest), not hand-maintained Sets.
 // COPIED_ALLOW = blocked server/admin cognate rows; ALLOW_V07_SLASH = the
@@ -41,7 +41,7 @@ const ALLOW_V07_SLASH: ReadonlySet<string> = new Set<string>(
   statusRegistry.blockedSource.filter((b) => b.channel === "sim").map((b) => b.text),
 );
 
-// Phase 6 two-tier gate (see .github/workflows/ci.yml). The release tier runs with
+// Two-tier gate (see .github/workflows/ci.yml). The release tier runs with
 // I18N_RELEASE_TIER=1. PR-tier checks (registration / key existence) run always;
 // full-localization checks (s3_localized, the copied-English content guards) run
 // release-only - an English-only PR is legal, so it must not have to localize every
@@ -233,7 +233,7 @@ describe("H3: DICT key parity, non-empty values, placeholder integrity", () => {
       }
     }
   }
-  // RELEASE-TIER ONLY (Phase 6): copied-English is a release-quality bar, not a PR
+  // RELEASE-TIER ONLY: copied-English is a release-quality bar, not a PR
   // one. An English-only PR (or a sparse locale) legitimately ships English for an
   // untranslated key; that becomes a `pending` row and is blocked at the release
   // gate, not flagged on every PR.

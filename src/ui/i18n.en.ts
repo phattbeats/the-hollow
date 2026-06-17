@@ -11087,15 +11087,15 @@ export const en = {
 export type EnTranslations = typeof en;
 
 // Depth 6 so the deepest real leaves (entities.quests.<id>.objectives.<n>.label,
-// entities.zones.<id>.pois.<n>.label) are members. Phase 6 types the sparse
-// overlays `Partial<Record<TranslationKey, string>>`, so TranslationKey must reach
+// entities.zones.<id>.pois.<n>.label) are members. The sparse overlays are typed
+// `Partial<Record<TranslationKey, string>>`, so TranslationKey must reach
 // every overlay key; depth 5 stopped one segment short. (Measured: no tsc cost.)
 export type TranslationKey = Leaves<typeof en, 6>;
 export type InterpolationValue = string | number;
 export type InterpolationValues = Record<string, InterpolationValue>;
 
 // Deep-partial of the authoritative en shape. Non-English locales are dense
-// ": typeof en" objects today; later phases relax them to DeepPartial overlays.
+// ": typeof en" objects today; they are later relaxed to DeepPartial overlays.
 export type DeepPartial<T> = T extends object
   ? { [P in keyof T]?: DeepPartial<T[P]> }
   : T;

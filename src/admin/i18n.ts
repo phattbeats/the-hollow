@@ -1,6 +1,6 @@
 import { translations, pending, en_XA } from './i18n.resolved.generated';
 
-// The admin dashboard's own i18n layer (Phase 8: overlay + registry + release-gate
+// The admin dashboard's own i18n layer (overlay + registry + release-gate
 // model). Operators are users, so ALL rendered admin text routes through t().
 //
 // DICT is the dense resolved admin table (src/admin/i18n.resolved.generated.ts):
@@ -15,7 +15,7 @@ export const DICT = translations as Record<string, Record<string, string>>;
 const SUPPORTED = Object.keys(DICT);
 let current = "en";
 
-// --- Phase 9: en_XA dev-only pseudo-locale (mirrors src/ui/i18n.ts) -------------
+// --- en_XA dev-only pseudo-locale (mirrors src/ui/i18n.ts) -------------
 //
 // Operators are users, so the admin dashboard gets the same literal-surfacing tool
 // as the game. en_XA is the generated pseudo-locale (accent-pushed + bracketed `en`,

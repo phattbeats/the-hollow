@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { en, es, es_ES, en_CA } from "../src/ui/i18n.resolved.generated";
 
-// Phase 2 build gap-fill semantics, asserted on the GENERATED resolved table
+// Build gap-fill semantics, asserted on the GENERATED resolved table
 // (src/ui/i18n.resolved.generated.ts). scripts/i18n_build.mjs overlays each locale
 // onto a deep copy of nested `en` (deepMerge), so a leaf the overlay OMITS keeps the
 // English value (fill-from-English) and a leaf the overlay PROVIDES is preserved.

@@ -1,4 +1,4 @@
-// Deterministic en_XA pseudo-locale transform (Phase 9, dev-only).
+// Deterministic en_XA pseudo-locale transform (dev-only).
 //
 // en_XA is the ONLY mechanism that catches hard-coded literals that never became
 // `t()` keys - the gap the type system cannot see. Every `en` leaf is accent-pushed

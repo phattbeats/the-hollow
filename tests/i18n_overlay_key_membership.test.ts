@@ -4,7 +4,7 @@
 // never had, and the generated locale is typed `: EnTranslations`, so a phantom
 // branch either bloats the resolved table or shadows a real value.
 //
-// As of Phase 6 the overlays ARE typed `Partial<Record<TranslationKey, string>>`
+// The overlays ARE typed `Partial<Record<TranslationKey, string>>`
 // (TranslationKey = Leaves<typeof en, 6>), so tsc rejects a structurally-wrong key.
 // But that type does NOT fully replace this test: the entity sub-trees are
 // `Record<string, ...>` / `Record<number, ...>`, so TranslationKey carries
@@ -14,8 +14,8 @@
 // pins every overlay key to the ACTUAL `en` leaf set, catching the id typos the
 // type cannot.
 //
-// This is a SUBSET check (every overlay key is in Leaves(en)). Phase 6 relaxed the
-// overlays from dense to sparse, so the former dense exact-equality companion
+// This is a SUBSET check (every overlay key is in Leaves(en)). The overlays were
+// relaxed from dense to sparse, so the former dense exact-equality companion
 // (i18n_flat_overlay_dense.test.ts) was deleted; "no key outside Leaves(en)" is the
 // PERMANENT invariant and survives the sparse relax, so this guard stays.
 

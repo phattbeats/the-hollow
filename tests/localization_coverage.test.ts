@@ -58,7 +58,7 @@ const locales: Record<string, typeof en> = {
   ru_RU,
 };
 
-// Phase 6 two-tier gate (see .github/workflows/ci.yml). The release tier runs with
+// Two-tier gate (see .github/workflows/ci.yml). The release tier runs with
 // I18N_RELEASE_TIER=1. Structural coverage (every key resolves non-empty,
 // placeholders preserved, source scrapes) runs at the PR tier; copied-English /
 // real-translation content checks run RELEASE-only, because an English-only PR or a
@@ -859,7 +859,7 @@ describe("i18n Localization Key Coverage", () => {
     setLanguage("en");
   });
 
-  // RELEASE-TIER ONLY (Phase 6): real quest-narrative content checks. A sparse /
+  // RELEASE-TIER ONLY: real quest-narrative content checks. A sparse /
   // English-only overlay renders the English fill for an untranslated quest (legal
   // on a PR as a `pending` row, blocked at the release gate), so the generic-template
   // and per-locale-diversity assertions are release-only.
@@ -919,7 +919,7 @@ describe("i18n Localization Key Coverage", () => {
     setLanguage("en");
   });
 
-  // RELEASE-TIER ONLY (Phase 6): pins specific non-English quest narratives, which
+  // RELEASE-TIER ONLY: pins specific non-English quest narratives, which
   // an untranslated (English-filled) overlay would not satisfy on a PR.
   it.runIf(RELEASE_TIER)("should keep representative quest narratives translated with quest-specific content", () => {
     const expectations: Array<readonly [typeof supportedLanguages[number], string, "text" | "completion", string]> = [

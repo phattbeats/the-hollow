@@ -1,12 +1,12 @@
-// One-time Phase 3 migration: convert the 13 non-English locale files under
+// One-time migration: convert the 13 non-English locale files under
 // src/ui/i18n.locales/ from nested ": typeof en" objects into FLAT dotted-key
 // overlays (`Record<string, string>`). `en` (src/ui/i18n.en.ts) stays nested and
 // authoritative; the island files (world_entity_i18n.ts, talent_i18n.ts) are left
-// nested this phase. The build (scripts/i18n_build.mjs) unflattens each overlay,
+// nested for now. The build (scripts/i18n_build.mjs) unflattens each overlay,
 // overlays it onto nested `en`, and emits the byte-identical dense resolved table.
 //
 // Each emitted file lists every key in `en`'s leaf order (the overlays are still
-// DENSE this phase; sparseness lands in Phase 6), so two locales diff cleanly and
+// DENSE for now; sparseness lands later), so two locales diff cleanly and
 // a missing/typo'd key is obvious. Keys are typed `Record<string, string>` rather
 // than `Record<TranslationKey, string>`: `TranslationKey = Leaves<typeof en, 5>`
 // only reaches depth 5, but the deepest real leaves (e.g.
@@ -69,8 +69,8 @@ function header(lang) {
     '// translate that key. The build (scripts/i18n_build.mjs) unflattens this map and',
     '// overlays it onto nested `en` to produce the dense resolved table; any key here',
     '// must be a real `en` leaf path (enforced by tests/i18n_flat_overlay_dense.test.ts',
-    '// and the resolved-table byte-equivalence gate). Overlays are DENSE this phase;',
-    '// Phase 6 relaxes them to sparse (only translated keys).',
+    '// and the resolved-table byte-equivalence gate). Overlays start DENSE;',
+    '// they are later relaxed to sparse (only translated keys).',
   ].join('\n');
 }
 

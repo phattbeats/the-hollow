@@ -10,7 +10,7 @@ import type { Leaves, TranslationKey, InterpolationValue, InterpolationValues, D
 // (src/ui/i18n.resolved.generated.ts), where every locale is overlaid onto `en`
 // and filled from English. Every read-path below (t, translationValue,
 // hasTranslation, tOptional) reads that dense table, never the raw per-locale
-// objects - those go sparse in later phases, so a direct read of them would
+// objects - those can go sparse, so a direct read of them would
 // return undefined or the wrong value.
 //
 // Re-export the dense per-locale objects, gameStrings, and the type machinery so
@@ -30,7 +30,7 @@ export const supportedLanguages = Object.keys(translations) as SupportedLanguage
 
 let currentLanguage: SupportedLanguage = "en";
 
-// --- Phase 9: en_XA dev-only pseudo-locale --------------------------------------
+// --- en_XA dev-only pseudo-locale --------------------------------------
 //
 // en_XA is the generated pseudo-locale (accent-pushed + bracketed `en`, with
 // {placeholders} preserved - see scripts/i18n_pseudo.mjs). It is deliberately NOT a
@@ -120,7 +120,7 @@ function interpolate(template: string, values?: InterpolationValues): string {
   });
 }
 
-// --- Phase 6: release detection + the t() miss / pending policy -----------------
+// --- release detection + the t() miss / pending policy -----------------
 //
 // A non-release build (dev / pre-release / vitest) MAY render English for a key the
 // active locale has not translated yet (a registry-`pending` key): the dense table

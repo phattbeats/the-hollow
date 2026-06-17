@@ -1,7 +1,7 @@
 // Deterministic SHA-256 of the resolved 14-locale translation table.
 //
 // This is the byte-equivalence safety net for the i18n scaling refactor: every
-// behavior-preserving phase must leave the resolved table byte-identical, proven
+// behavior-preserving change must leave the resolved table byte-identical, proven
 // by this hash. Zero runtime deps; bundles the TS source with esbuild (the same
 // pattern as scripts/export_loot_spreadsheet.mjs) and serializes with a stable
 // recursive key order so the hash does not depend on object insertion order.
@@ -82,7 +82,7 @@ if (invokedDirectly) {
     const baseline = readBaseline();
     if (baseline !== sha256) {
       console.error(`MISMATCH: resolved table hash ${sha256} != baseline ${baseline}`);
-      console.error('The resolved 14-locale table changed. For a behavior-preserving phase this is a bug, not a re-baseline.');
+      console.error('The resolved 14-locale table changed. For a behavior-preserving change this is a bug, not a re-baseline.');
       process.exit(1);
     }
     console.log('OK: resolved table matches the committed baseline.');

@@ -1,4 +1,4 @@
-// Content-hash helpers for the i18n status registry (Phase 5).
+// Content-hash helpers for the i18n status registry.
 //
 // Side-effect-free shared module (the same role i18n_flatten.mjs plays for the
 // build): imported by scripts/i18n_scan.mjs to build the registry and by

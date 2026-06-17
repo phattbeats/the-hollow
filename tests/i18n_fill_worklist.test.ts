@@ -1,4 +1,4 @@
-// Phase 7: unit teeth for the release-fill worklist tool's PURE logic
+// Unit teeth for the release-fill worklist tool's PURE logic
 // (scripts/i18n_fill_worklist.mjs). The end-to-end round-trip (introduce a
 // pending key -> worklist -> fill -> scan -> pending shrinks) is proven by the
 // implementer against the real registry; here we lock the load-bearing
