@@ -4152,6 +4152,18 @@ export class Sim {
         sourceId: mob.id, school: (venom.school as Aura['school']) ?? 'nature',
       });
     }
+    // smoldering fuse: a landed swing may ignite a refreshing fire DoT — the
+    // fire-school sibling of venom (same guards: hostile mobs only, never a pet).
+    const smolder = MOBS[mob.templateId]?.smolder;
+    if (smolder && mob.hostile && !target.dead && this.rng.chance(smolder.chance)) {
+      this.applyAura(target, {
+        id: 'smolder_' + mob.templateId, name: smolder.name, kind: 'dot',
+        remaining: smolder.duration, duration: smolder.duration,
+        value: Math.max(1, Math.round(smolder.perTick)),
+        tickInterval: smolder.interval, tickTimer: smolder.interval,
+        sourceId: mob.id, school: (smolder.school as Aura['school']) ?? 'fire',
+      });
+    }
     // corrosive bite: a landed hit may shred the victim's armor (stacking sunder).
     // Guarded on hostile so a friendly pet (the other mobSwing caller) never debuffs an ally.
     const corrode = MOBS[mob.templateId]?.corrode;
