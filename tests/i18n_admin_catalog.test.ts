@@ -94,9 +94,24 @@ describe("admin t(): pending key (English-only legal at PR; hard-fail at release
 // --- Bundle isolation: admin imports its OWN tables, never the game i18n ---------
 describe("admin bundle stays separate from the game client", () => {
   const adminDir = path.join(root, "src/admin");
-  const files = fs.readdirSync(adminDir).filter((f) => f.endsWith(".ts"));
+  // Recurse: the per-locale overlays live in src/admin/i18n.locales/, so a flat
+  // readdir would miss a game-table import smuggled into an overlay file. Walk the
+  // whole admin tree and check every .ts.
+  const walkTs = (dir: string, rel = ""): string[] => {
+    const out: string[] = [];
+    for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
+      const r = rel ? `${rel}/${ent.name}` : ent.name;
+      if (ent.isDirectory()) out.push(...walkTs(path.join(dir, ent.name), r));
+      else if (ent.name.endsWith(".ts")) out.push(r);
+    }
+    return out;
+  };
+  const files = walkTs(adminDir);
 
   it("no admin source file imports from outside src/admin/ (no game locale table)", () => {
+    // sanity: the scan must reach the i18n.locales/ overlays, not just the top level.
+    expect(files.length, "should recurse into i18n.locales/").toBeGreaterThan(15);
+    expect(files.some((f) => f.startsWith("i18n.locales/")), "overlays must be scanned").toBe(true);
     const offenders: string[] = [];
     for (const f of files) {
       const src = fs.readFileSync(path.join(adminDir, f), "utf8");
