@@ -370,6 +370,28 @@ export class Hud {
       if (this.sim.arenaInfo?.match) return;
       this.sim.releaseSpirit();
     });
+    document.addEventListener('pointerdown', (ev) => {
+      const target = ev.target as Node | null;
+      if (!target) return;
+      const communityMenu = document.getElementById('community-menu') as HTMLDetailsElement | null;
+      if (communityMenu?.open && !communityMenu.contains(target)) {
+        communityMenu.open = false;
+      }
+      if (document.body.classList.contains('mobile-more-open')) {
+        const more = document.getElementById('mobile-more');
+        const extra = document.getElementById('mobile-extra-controls');
+        if (!more?.contains(target) && !extra?.contains(target)) {
+          document.body.classList.remove('mobile-more-open');
+          document.getElementById('mobile-controls')?.classList.remove('expanded');
+          more?.classList.remove('active');
+        }
+      }
+    });
+    document.getElementById('mobile-more-close')?.addEventListener('click', () => {
+      document.body.classList.remove('mobile-more-open');
+      document.getElementById('mobile-controls')?.classList.remove('expanded');
+      document.getElementById('mobile-more')?.classList.remove('active');
+    });
     // classic MMOs: the player interaction menu opens from the target portrait
     $('#target-frame').addEventListener('contextmenu', (ev) => {
       ev.preventDefault();
@@ -581,6 +603,7 @@ export class Hud {
 
   private syncAnyWindowOpenState(): void {
     const anyOpen = [...document.querySelectorAll<HTMLElement>('.window.panel')]
+      .filter((win) => win.id !== 'mobile-extra-controls')
       .some((win) => this.isWindowVisible(win));
     document.body.classList.toggle('mobile-window-open', anyOpen);
   }

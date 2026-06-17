@@ -666,6 +666,9 @@
   /* Discord/GitHub: standalone square buttons matching the micro-menu (no panel
      container) — only the hover border keeps each service's brand colour. */
   #community-hud { position: absolute; right: 16px; bottom: 14px; display: flex; align-items: center; gap: 4px; z-index: 19; }
+  #community-menu { display: contents; }
+  .community-toggle { display: none; }
+  .community-tray { display: flex; align-items: center; gap: 4px; }
   .community-link { width: 34px; height: 30px; display: inline-flex; align-items: center; justify-content: center;
     color: #d8c89a; text-decoration: none; border: 2px solid #4a3d1d; border-radius: 5px;
     background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f);
@@ -3847,6 +3850,8 @@
     -webkit-touch-callout: default;
   }
   body.mobile-touch.game-active #mobile-controls { position: absolute; inset: 0; display: block; pointer-events: none; z-index: 60; opacity: var(--touch-opacity, 1); }
+  body.mobile-touch.game-active #ui { z-index: 80; }
+  body.mobile-touch.mobile-more-open #mobile-controls { z-index: 140; }
   body.mobile-touch.game-active #ui,
   body.mobile-touch.game-active #nameplates,
   body.mobile-touch.game-active #mobile-controls {
@@ -3912,7 +3917,7 @@
     position: absolute; left: 0; right: 0; bottom: -18px; text-align: center; font-size: 9px; color: #c8b888; text-shadow: 1px 1px 2px #000;
   }
   body.mobile-touch #mobile-combat-controls {
-    position: absolute; left: 50%; bottom: calc(4px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+    position: absolute; left: 50%; bottom: calc(3px + env(safe-area-inset-bottom)); transform: translateX(-50%);
     display: grid; grid-template-columns: 124px repeat(6, 58px); gap: 8px; pointer-events: auto; align-items: end; z-index: 30;
   }
   body.mobile-touch .mobile-btn {
@@ -3944,26 +3949,50 @@
   body.mobile-touch .mobile-btn .mobile-label { display: block; margin-top: 1px; font-size: 8px; font-family: var(--ui-font); color: #bfb28a; }
   body.mobile-touch #mobile-extra-controls {
     position: fixed;
-    left: min(calc(50% + 136px), calc(100vw - 222px - max(12px, env(safe-area-inset-right, 0px))));
-    bottom: calc(66px + env(safe-area-inset-bottom));
+    left: 50%;
+    top: max(14px, env(safe-area-inset-top));
+    bottom: auto;
+    transform: translateX(-50%);
     display: none;
-    grid-template-columns: repeat(2, 104px);
-    grid-auto-rows: 42px;
-    gap: 7px;
+    width: min(560px, calc(100vw - 32px - env(safe-area-inset-left) - env(safe-area-inset-right)));
+    padding: 10px;
     pointer-events: auto;
-    z-index: 70;
-    /* The tray grows upward from a fixed bottom. As it has gained buttons it can
-       now run off the TOP of a short landscape phone, leaving the upper rows
-       unreachable, so cap it to the space above the bottom controls and let the
-       overflow scroll. 100dvh accounts for mobile browser chrome (unlike 100vh). */
-    max-height: calc(100dvh - 84px - env(safe-area-inset-bottom));
+    z-index: 100;
+    border: 2px solid #5b4618;
+    border-radius: 10px;
+    background: linear-gradient(170deg, #15151ff2, #08080df8);
+    box-shadow: 0 8px 28px #000d, inset 0 1px 0 #ffffff12;
+    /* Top-centred modal: cap to the safe viewport so short landscape phones can
+       scroll the full menu without hiding rows behind controls or browser chrome. */
+    max-width: calc(100vw - 32px - env(safe-area-inset-left) - env(safe-area-inset-right));
+    max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
   }
-  body.mobile-touch.mobile-more-open #mobile-extra-controls { display: grid; }
+  body.mobile-touch.mobile-more-open #mobile-extra-controls { display: flex; flex-direction: column; }
+  body.mobile-touch #mobile-extra-controls .panel-title {
+    min-height: 32px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    cursor: move;
+    touch-action: none;
+  }
+  body.mobile-touch #mobile-extra-controls .panel-title .x-btn {
+    min-width: 32px;
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  body.mobile-touch #mobile-extra-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 42px;
+    gap: 7px;
+  }
   body.mobile-touch #mobile-extra-controls .mobile-btn {
-    width: 104px;
+    width: 100%;
     height: 42px;
     display: flex;
     flex-direction: row;
@@ -3996,9 +4025,9 @@
     transform: translate(-50%, -50%) rotate(-45deg); pointer-events: none;
   }
   body.mobile-touch #bottom-bar {
-    left: calc(max(18px, env(safe-area-inset-left)) + 134px);
-    right: calc(max(18px, env(safe-area-inset-right)) + 134px);
-    bottom: calc(72px + env(safe-area-inset-bottom));
+    left: calc(max(18px, env(safe-area-inset-left)) + 154px);
+    right: calc(max(18px, env(safe-area-inset-right)) + 154px);
+    bottom: calc(64px + env(safe-area-inset-bottom));
     width: auto;
     transform: none;
     z-index: 18;
@@ -4107,25 +4136,71 @@
     top: 130px;
     bottom: auto;
     width: 70px;
-    padding: 5px;
-    flex-direction: column;
-    gap: 5px;
-  }
-  body.mobile-touch .community-link {
-    height: 46px;
     padding: 0;
+    display: block;
   }
-  body.mobile-touch .community-link.donate {
+  body.mobile-touch #community-menu {
+    display: block;
+    position: relative;
+    width: 100%;
+  }
+  body.mobile-touch #community-menu > summary { list-style: none; }
+  body.mobile-touch #community-menu > summary::-webkit-details-marker { display: none; }
+  body.mobile-touch .community-toggle {
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d8c89a;
+    border: 2px solid #4a3d1d;
+    border-radius: 8px;
+    background: radial-gradient(circle at 35% 30%, #2c2c3a, #15151f);
+    box-shadow: inset 0 1px 0 #ffffff18, 0 2px 4px #0009;
+    cursor: pointer;
+  }
+  body.mobile-touch .community-toggle svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+  body.mobile-touch #community-menu[open] .community-toggle {
+    color: #fff;
+    border-color: var(--gold-dim);
+  }
+  body.mobile-touch .community-tray {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
     display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+    width: 118px;
+    padding: 5px;
+    border: 2px solid #3d3218;
+    border-radius: 8px;
+    background: linear-gradient(170deg, #15151fe8, #08080df0);
+    box-shadow: 0 4px 14px #000b, inset 0 1px 0 #ffffff12;
+    z-index: 90;
+  }
+  body.mobile-touch #community-menu[open] .community-tray { display: flex; }
+  body.mobile-touch .community-link {
+    width: 100%;
+    height: 40px;
+    gap: 7px;
+    padding: 0 9px;
+    justify-content: flex-start;
+    font-size: 12px;
+    font-weight: 700;
   }
   body.mobile-touch .community-link svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
   }
-  body.mobile-touch .community-link.donate svg {
-    width: 16px;
-    height: 16px;
-  }
+  body.mobile-touch .community-link span { display: inline; line-height: 1; }
+  body.mobile-touch .community-link.donate { display: inline-flex; width: 100%; padding: 0 9px; font-size: 12px; }
   body.mobile-touch #chatlog-wrap { left: max(10px, env(safe-area-inset-left)); bottom: calc(160px + env(safe-area-inset-bottom)); width: min(340px, calc(100vw - 20px)); display: none; z-index: 24; }
   body.mobile-touch.mobile-chat-open #chatlog-wrap { display: block; }
   body.mobile-touch #chatlog-frame { height: 126px; }
@@ -4201,8 +4276,8 @@
     left: auto; right: auto;
   }
   body.mobile-touch.mobile-left-handed #mobile-extra-controls {
-    left: auto;
-    right: min(calc(50% + 136px), calc(100vw - 222px - max(12px, env(safe-area-inset-right, 0px))));
+    left: 50%;
+    right: auto;
   }
   body.mobile-touch.mobile-left-handed #castbar {
     left: auto; right: calc(max(18px, env(safe-area-inset-right)) + 132px);
@@ -4621,28 +4696,32 @@
     body.mobile-touch .mobile-btn { width: 54px; height: 48px; font-size: 20px; background: radial-gradient(circle at 35% 30%, #2d3048bf, #11121ec2 72%); }
     body.mobile-touch #mobile-attack-nearest { width: 115px; }
     body.mobile-touch #mobile-extra-controls {
-      left: min(calc(50% + 126px), calc(100vw - 208px - max(12px, env(safe-area-inset-right, 0px))));
-      bottom: calc(58px + env(safe-area-inset-bottom));
-      grid-template-columns: repeat(2, 98px);
+      left: 50%;
+      top: max(10px, env(safe-area-inset-top));
+      bottom: auto;
+      padding: 8px;
+      max-height: calc(100dvh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    }
+    body.mobile-touch #mobile-extra-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       grid-auto-rows: 40px;
       gap: 6px;
-      max-height: calc(100dvh - 74px - env(safe-area-inset-bottom));
     }
     body.mobile-touch.mobile-left-handed #mobile-extra-controls {
-      left: auto;
-      right: min(calc(50% + 126px), calc(100vw - 208px - max(12px, env(safe-area-inset-right, 0px))));
+      left: 50%;
+      right: auto;
     }
     body.mobile-touch #mobile-extra-controls .mobile-btn {
-      width: 98px;
+      width: 100%;
       height: 40px;
       font-size: 16px;
       padding: 0 9px;
     }
     body.mobile-touch #mobile-extra-controls .mobile-label { font-size: 9px; }
     body.mobile-touch #bottom-bar {
-      left: calc(max(20px, env(safe-area-inset-left)) + 112px);
-      right: calc(max(20px, env(safe-area-inset-right)) + 112px);
-      bottom: calc(58px + env(safe-area-inset-bottom));
+      left: calc(max(20px, env(safe-area-inset-left)) + 136px);
+      right: calc(max(20px, env(safe-area-inset-right)) + 136px);
+      bottom: calc(57px + env(safe-area-inset-bottom));
     }
     body.mobile-touch #actionbar { gap: 4px; padding: 4px; background: linear-gradient(170deg, #15151fa8, #08080db8); }
     body.mobile-touch #actionbar.many-spells { grid-template-columns: none; }
@@ -4671,6 +4750,7 @@
       transform-origin: center top;
     }
     body.mobile-touch #community-hud { top: 108px; right: max(8px, env(safe-area-inset-right)); width: 62px; padding: 4px; gap: 4px; }
+    body.mobile-touch .community-toggle { width: 40px; height: 40px; }
     body.mobile-touch .community-link { height: 40px; }
     body.mobile-touch .community-link svg { width: 20px; height: 20px; }
     body.mobile-touch #chatlog-wrap { left: max(10px, env(safe-area-inset-left)); bottom: calc(112px + env(safe-area-inset-bottom)); width: min(330px, 44vw); }
@@ -5233,18 +5313,25 @@
     </div>
 
     <div id="community-hud" data-i18n-aria="hud.core.communityLinks" aria-label="Community links">
-      <a class="community-link discord" href="https://discord.gg/GjhnUsBtw" target="_blank" rel="noopener noreferrer" data-i18n-title="a11y.discordCommunity" data-i18n-aria="a11y.discordCommunity" title="Join the World of ClaudeCraft Discord community" aria-label="Join the World of ClaudeCraft Discord community">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.32 4.37A19.8 19.8 0 0 0 15.36 2.8a13.66 13.66 0 0 0-.64 1.32 18.47 18.47 0 0 0-5.45 0 13.02 13.02 0 0 0-.65-1.32 19.73 19.73 0 0 0-4.96 1.58C.53 9.03-.32 13.56.1 18.02a19.9 19.9 0 0 0 6.08 3.08c.49-.67.93-1.38 1.3-2.13-.72-.27-1.41-.6-2.06-.98.17-.13.34-.26.5-.4a14.16 14.16 0 0 0 12.16 0c.16.14.33.27.5.4-.65.39-1.34.72-2.07.99.38.74.81 1.45 1.31 2.12a19.86 19.86 0 0 0 6.08-3.08c.5-5.17-.85-9.66-3.58-13.65ZM8.02 15.28c-1.18 0-2.15-1.08-2.15-2.41 0-1.33.95-2.42 2.15-2.42 1.2 0 2.17 1.1 2.15 2.42 0 1.33-.95 2.41-2.15 2.41Zm7.96 0c-1.18 0-2.15-1.08-2.15-2.41 0-1.33.95-2.42 2.15-2.42 1.2 0 2.17 1.1 2.15 2.42 0 1.33-.95 2.41-2.15 2.41Z"/></svg>
-        <span>Discord</span>
-      </a>
-      <a class="community-link github" href="https://github.com/levy-street/world-of-claudecraft" target="_blank" rel="noopener noreferrer" data-i18n-title="a11y.githubProject" data-i18n-aria="a11y.githubProject" title="Open the World of ClaudeCraft GitHub project" aria-label="Open the World of ClaudeCraft GitHub project">
-        <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-        <span>GitHub</span>
-      </a>
-      <a class="community-link donate" href="https://github.com/sponsors/levy-street" target="_blank" rel="noopener noreferrer" data-i18n-title="a11y.donateProject" data-i18n-aria="a11y.donateProject" title="Support the project" aria-label="Donate to support World of ClaudeCraft">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-        <span data-i18n="nav.donate">Donate</span>
-      </a>
+      <details id="community-menu">
+        <summary class="community-toggle" data-i18n-title="hud.core.communityLinks" data-i18n-aria="hud.core.communityLinks" title="Community links" aria-label="Community links">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7.5 11.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm9 0a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7ZM1.7 19.6c.5-3.6 2.6-5.5 5.8-5.5s5.3 1.9 5.8 5.5c.1.6-.4 1.1-1 1.1H2.7c-.6 0-1.1-.5-1-1.1Zm9.7-4.6c1.1-.7 2.8-.9 5.1-.9 3.2 0 5.3 1.9 5.8 5.5.1.6-.4 1.1-1 1.1h-6.6c-.3-2.3-1.4-4.2-3.3-5.7Z"/></svg>
+        </summary>
+        <div class="community-tray">
+          <a class="community-link discord" href="https://discord.gg/GjhnUsBtw" target="_blank" rel="noopener noreferrer" data-i18n-title="a11y.discordCommunity" data-i18n-aria="a11y.discordCommunity" title="Join the World of ClaudeCraft Discord community" aria-label="Join the World of ClaudeCraft Discord community">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.32 4.37A19.8 19.8 0 0 0 15.36 2.8a13.66 13.66 0 0 0-.64 1.32 18.47 18.47 0 0 0-5.45 0 13.02 13.02 0 0 0-.65-1.32 19.73 19.73 0 0 0-4.96 1.58C.53 9.03-.32 13.56.1 18.02a19.9 19.9 0 0 0 6.08 3.08c.49-.67.93-1.38 1.3-2.13-.72-.27-1.41-.6-2.06-.98.17-.13.34-.26.5-.4a14.16 14.16 0 0 0 12.16 0c.16.14.33.27.5.4-.65.39-1.34.72-2.07.99.38.74.81 1.45 1.31 2.12a19.86 19.86 0 0 0 6.08-3.08c.5-5.17-.85-9.66-3.58-13.65ZM8.02 15.28c-1.18 0-2.15-1.08-2.15-2.41 0-1.33.95-2.42 2.15-2.42 1.2 0 2.17 1.1 2.15 2.42 0 1.33-.95 2.41-2.15 2.41Zm7.96 0c-1.18 0-2.15-1.08-2.15-2.41 0-1.33.95-2.42 2.15-2.42 1.2 0 2.17 1.1 2.15 2.42 0 1.33-.95 2.41-2.15 2.41Z"/></svg>
+            <span>Discord</span>
+          </a>
+          <a class="community-link github" href="https://github.com/levy-street/world-of-claudecraft" target="_blank" rel="noopener noreferrer" data-i18n-title="a11y.githubProject" data-i18n-aria="a11y.githubProject" title="Open the World of ClaudeCraft GitHub project" aria-label="Open the World of ClaudeCraft GitHub project">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+            <span>GitHub</span>
+          </a>
+          <a class="community-link donate" href="https://github.com/sponsors/levy-street" target="_blank" rel="noopener noreferrer" data-i18n-title="a11y.donateProject" data-i18n-aria="a11y.donateProject" title="Support the project" aria-label="Donate to support World of ClaudeCraft">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span data-i18n="nav.donate">Donate</span>
+          </a>
+        </div>
+      </details>
     </div>
 
     <div id="quest-tracker"></div>
@@ -5830,23 +5917,29 @@
       <button class="mobile-btn" id="mobile-interact" data-i18n-title="hud.keybinds.actions.interact" data-i18n-aria="hud.keybinds.actions.interact" title="Interact / Loot" aria-label="Interact / Loot" data-icon="interact"><span class="mobile-label" data-i18n="hud.core.mobileUse">Use</span></button>
       <button class="mobile-btn" id="mobile-chat" data-i18n-title="hud.keybinds.actions.chat" data-i18n-aria="hud.keybinds.actions.chat" title="Open Chat" aria-label="Open Chat" data-icon="chat"><span class="mobile-label" data-i18n="hud.core.mobileChat">Chat</span></button>
       <button class="mobile-btn" id="mobile-more" data-i18n-title="hud.core.mobileMoreAria" data-i18n-aria="hud.core.mobileMoreAria" title="Show more menus" aria-label="Show more menus" data-icon="more"><span class="mobile-label" data-i18n="hud.core.mobileMore">More</span></button>
-      <div id="mobile-extra-controls">
-        <button class="mobile-btn" id="mobile-social" data-i18n-title="hud.keybinds.actions.social" data-i18n-aria="hud.keybinds.actions.social" title="Friends &amp; Guild" aria-label="Friends &amp; Guild" data-icon="social"><span class="mobile-label" data-i18n="hud.core.mobileSocial">Social</span></button>
-        <button class="mobile-btn" id="mobile-emote" title="Emotes" aria-label="Emotes" data-icon="emote"><span class="mobile-label">Emotes</span></button>
-        <button class="mobile-btn" id="mobile-arena" data-i18n-title="hud.keybinds.actions.arena" data-i18n-aria="hud.keybinds.actions.arena" title="Arena (Ashen Coliseum)" aria-label="Arena (Ashen Coliseum)" data-icon="arena"><span class="mobile-label" data-i18n="hud.core.mobileArena">Arena</span></button>
-        <button class="mobile-btn" id="mobile-menu" data-i18n-title="hud.options.gameMenu" data-i18n-aria="hud.options.gameMenu" title="Game Menu" aria-label="Game Menu" data-icon="menu"><span class="mobile-label" data-i18n="hud.core.mobileMenu">Menu</span></button>
-        <button class="mobile-btn" id="mobile-quest" data-i18n-title="questUi.log.title" data-i18n-aria="questUi.log.title" title="Quest Log" aria-label="Quest Log" data-icon="questlog"><span class="mobile-label" data-i18n="questUi.log.title">Quests</span></button>
-        <button class="mobile-btn" id="mobile-char" data-i18n-title="hud.keybinds.actions.char" data-i18n-aria="hud.keybinds.actions.char" title="Character" aria-label="Character" data-icon="character"><span class="mobile-label">Character</span></button>
-        <button class="mobile-btn" id="mobile-bags" data-i18n-title="hud.keybinds.actions.bags" data-i18n-aria="hud.keybinds.actions.bags" title="Bags" aria-label="Bags" data-icon="bags"><span class="mobile-label">Bags</span></button>
-        <button class="mobile-btn" id="mobile-spellbook" data-i18n-title="abilityUi.spellbook.title" data-i18n-aria="abilityUi.spellbook.title" title="Spellbook" aria-label="Spellbook" data-icon="spellbook"><span class="mobile-label" data-i18n="abilityUi.spellbook.title">Spellbook</span></button>
-        <button class="mobile-btn" id="mobile-talents" data-i18n-title="game.talents.title" data-i18n-aria="game.talents.title" title="Talents" aria-label="Talents" data-icon="talents"><span class="mobile-label" data-i18n="game.talents.title">Talents</span></button>
-        <button class="mobile-btn" id="mobile-map" data-i18n-title="hud.keybinds.actions.map" data-i18n-aria="hud.keybinds.actions.map" title="World Map" aria-label="World Map" data-icon="map"><span class="mobile-label" data-i18n="hud.core.mobileMap">Map</span></button>
-        <button class="mobile-btn" id="mobile-leaderboard" data-i18n-title="game.leaderboard.title" data-i18n-aria="game.leaderboard.title" title="Leaderboard" aria-label="Leaderboard" data-icon="leaderboard"><span class="mobile-label">Ranks</span></button>
-        <button class="mobile-btn active" id="mobile-nameplates" data-i18n-title="hud.keybinds.actions.nameplates" data-i18n-aria="hud.keybinds.actions.nameplates" title="Toggle nameplates" aria-label="Toggle nameplates" data-icon="nameplates"><span class="mobile-label">Names</span></button>
-        <button class="mobile-btn" id="mobile-music" title="Music" aria-label="Toggle music" data-icon="music"><span class="mobile-label">Music</span></button>
-        <button class="mobile-btn" id="mobile-haptics" title="Toggle haptic feedback" aria-label="Toggle haptic feedback" aria-pressed="true" data-icon="vibrate"><span class="mobile-label">Haptics</span></button>
-      </div>
     </div>
+      <div id="mobile-extra-controls" class="window panel" role="dialog" aria-modal="true" aria-labelledby="mobile-more-title">
+        <div class="panel-title">
+          <span id="mobile-more-title" data-i18n="hud.core.mobileMore">More</span>
+          <button type="button" class="x-btn" id="mobile-more-close" data-i18n-title="hud.options.returnToGame" data-i18n-aria="hud.options.returnToGame" title="Return to Game" aria-label="Return to Game" data-icon="close"></button>
+        </div>
+        <div id="mobile-extra-grid">
+          <button class="mobile-btn" id="mobile-social" data-i18n-title="hud.keybinds.actions.social" data-i18n-aria="hud.keybinds.actions.social" title="Friends &amp; Guild" aria-label="Friends &amp; Guild" data-icon="social"><span class="mobile-label" data-i18n="hud.core.mobileSocial">Social</span></button>
+          <button class="mobile-btn" id="mobile-emote" title="Emotes" aria-label="Emotes" data-icon="emote"><span class="mobile-label">Emotes</span></button>
+          <button class="mobile-btn" id="mobile-arena" data-i18n-title="hud.keybinds.actions.arena" data-i18n-aria="hud.keybinds.actions.arena" title="Arena (Ashen Coliseum)" aria-label="Arena (Ashen Coliseum)" data-icon="arena"><span class="mobile-label" data-i18n="hud.core.mobileArena">Arena</span></button>
+          <button class="mobile-btn" id="mobile-menu" data-i18n-title="hud.options.gameMenu" data-i18n-aria="hud.options.gameMenu" title="Game Menu" aria-label="Game Menu" data-icon="menu"><span class="mobile-label" data-i18n="hud.core.mobileMenu">Menu</span></button>
+          <button class="mobile-btn" id="mobile-quest" data-i18n-title="questUi.log.title" data-i18n-aria="questUi.log.title" title="Quest Log" aria-label="Quest Log" data-icon="questlog"><span class="mobile-label" data-i18n="questUi.log.title">Quests</span></button>
+          <button class="mobile-btn" id="mobile-char" data-i18n-title="hud.keybinds.actions.char" data-i18n-aria="hud.keybinds.actions.char" title="Character" aria-label="Character" data-icon="character"><span class="mobile-label">Character</span></button>
+          <button class="mobile-btn" id="mobile-bags" data-i18n-title="hud.keybinds.actions.bags" data-i18n-aria="hud.keybinds.actions.bags" title="Bags" aria-label="Bags" data-icon="bags"><span class="mobile-label">Bags</span></button>
+          <button class="mobile-btn" id="mobile-spellbook" data-i18n-title="abilityUi.spellbook.title" data-i18n-aria="abilityUi.spellbook.title" title="Spellbook" aria-label="Spellbook" data-icon="spellbook"><span class="mobile-label" data-i18n="abilityUi.spellbook.title">Spellbook</span></button>
+          <button class="mobile-btn" id="mobile-talents" data-i18n-title="game.talents.title" data-i18n-aria="game.talents.title" title="Talents" aria-label="Talents" data-icon="talents"><span class="mobile-label" data-i18n="game.talents.title">Talents</span></button>
+          <button class="mobile-btn" id="mobile-map" data-i18n-title="hud.keybinds.actions.map" data-i18n-aria="hud.keybinds.actions.map" title="World Map" aria-label="World Map" data-icon="map"><span class="mobile-label" data-i18n="hud.core.mobileMap">Map</span></button>
+          <button class="mobile-btn" id="mobile-leaderboard" data-i18n-title="game.leaderboard.title" data-i18n-aria="game.leaderboard.title" title="Leaderboard" aria-label="Leaderboard" data-icon="leaderboard"><span class="mobile-label">Ranks</span></button>
+          <button class="mobile-btn active" id="mobile-nameplates" data-i18n-title="hud.keybinds.actions.nameplates" data-i18n-aria="hud.keybinds.actions.nameplates" title="Toggle nameplates" aria-label="Toggle nameplates" data-icon="nameplates"><span class="mobile-label">Names</span></button>
+          <button class="mobile-btn" id="mobile-music" title="Music" aria-label="Toggle music" data-icon="music"><span class="mobile-label">Music</span></button>
+          <button class="mobile-btn" id="mobile-haptics" title="Toggle haptic feedback" aria-label="Toggle haptic feedback" aria-pressed="true" data-icon="vibrate"><span class="mobile-label">Haptics</span></button>
+        </div>
+      </div>
   </div>
   <div id="mobile-preflight" role="dialog" aria-modal="true" aria-labelledby="mobile-preflight-title">
     <div class="preflight-panel">
