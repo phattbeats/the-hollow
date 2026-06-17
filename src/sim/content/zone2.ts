@@ -166,6 +166,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     id: 'gravecaller_cultist', name: 'Gravecaller Cultist', minLevel: 10, maxLevel: 12, family: 'humanoid',
     hpBase: 50, hpPerLevel: 20, dmgBase: 9, dmgPerLevel: 2.4, attackSpeed: 2.0,
     armorPerLevel: 20, moveSpeed: 7, aggroRadius: 11,
+    // The cultist's hex leaves the victim taking more damage from everyone —
+    // a soft-up that rewards a group focusing the cursed player's target down.
+    vulnerability: { chance: 0.2, amp: 0.15, duration: 10, name: 'Curse of Frailty', school: 'shadow' },
     loot: [
       { copper: 55, chance: 1 },
       { itemId: 'linen_scrap', chance: 0.3 },

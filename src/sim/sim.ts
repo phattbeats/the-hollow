@@ -123,7 +123,7 @@ const EMOTE_ALIASES: Record<string, string> = {
 // (buff_*, hot, absorb, imbue, stances, forms, stealth, thorns, attackspeed
 // haste) is treated as helpful/neutral. Used by /targetbuffs to tag each aura.
 const HARMFUL_AURA_KINDS: ReadonlySet<AuraKind> = new Set<AuraKind>([
-  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'sunder',
+  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'sunder', 'vulnerability',
 ]);
 
 function isHarmfulAura(kind: AuraKind): boolean {
@@ -185,7 +185,7 @@ const DEMON_HEAL_DURATION = 5;
 const DEMON_HEAL_TICK = 1;
 const TAMED_TARGET_RESPAWN_SECONDS = 60;
 const FRIENDLY_NPC_REJECTED_AURA_KINDS: ReadonlySet<AuraKind> = new Set([
-  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'attackspeed', 'sunder',
+  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'attackspeed', 'sunder', 'vulnerability',
 ]);
 
 function isRejectedFriendlyNpcAura(aura: Aura): boolean {
@@ -3242,6 +3242,15 @@ export class Sim {
       amount = Math.round(amount * 0.9);
     }
 
+    // Curse of frailty: a cursed victim takes more damage from every source. The
+    // offensive mirror of Defensive Stance's cut above. Multiple curses stack
+    // additively (sum of amps) so layered curses can't multiply out of control.
+    if (amount > 0) {
+      let vuln = 0;
+      for (const a of target.auras) if (a.kind === 'vulnerability') vuln += a.value;
+      if (vuln > 0) amount = Math.round(amount * (1 + vuln));
+    }
+
     // absorb shields soak damage first
     if (amount > 0) {
       for (let i = target.auras.length - 1; i >= 0 && amount > 0; i--) {
@@ -4251,6 +4260,23 @@ export class Sim {
           sourceId: mob.id, school: dread.school ?? 'shadow', breaksOnDamage: true,
         });
       }
+    }
+    // Curse of frailty: a landed hit may curse the victim so they take more
+    // damage from every source (a `vulnerability` aura read in dealDamage).
+    // Players only, hostile mobs only, so a friendly pet (mobSwing's other
+    // caller) never softens an ally. Refreshes by id, never stacks past one.
+    const vuln = MOBS[mob.templateId]?.vulnerability;
+    if (vuln && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(vuln.chance)) {
+      this.applyAura(target, {
+        id: `vulnerability_${mob.templateId}`,
+        name: vuln.name,
+        kind: 'vulnerability',
+        remaining: vuln.duration,
+        duration: vuln.duration,
+        value: vuln.amp,
+        sourceId: mob.id,
+        school: vuln.school ?? 'shadow',
+      });
     }
   }
 

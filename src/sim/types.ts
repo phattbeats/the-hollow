@@ -39,7 +39,7 @@ export type AuraKind =
   | 'dot' | 'slow' | 'stun' | 'root' | 'incapacitate' | 'polymorph'
   | 'attackspeed' | 'debuff_ap' | 'buff_ap' | 'buff_armor' | 'buff_int' | 'buff_dodge' | 'buff_speed' | 'buff_haste'
   | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_allstats' | 'thorns' | 'form_bear'
-  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence';
+  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence' | 'vulnerability';
 
 export interface Aura {
   id: string; // ability id that applied it
@@ -240,6 +240,13 @@ export interface MobTemplate {
   // `fear_incap` incapacitate aura the player-cast Fear uses, so `updateFearMovement`
   // drives the panicked run with no new aura kind or movement hook.
   dread?: { chance: number; duration: number; name: string; school?: Aura['school'] };
+  // On-hit curse: a landed melee swing has `chance` to lay a curse of frailty on
+  // the victim, raising all damage they take by `amp` (e.g. 0.15 = +15%) from
+  // every source for `duration`s. Introduces the `vulnerability` aura kind, read
+  // once in dealDamage as a damage multiplier (the offensive mirror of Defensive
+  // Stance's 10% cut). Players only — amplifying a fellow mob would let a friendly
+  // pet soften enemies for its owner.
+  vulnerability?: { chance: number; amp: number; duration: number; name: string; school?: Aura['school'] };
   // Pet mechanic: this creature is a ranged caster (warlock Imp) — instead of
   // closing to melee, it stays at `range` and hurls bolts of `school` damage.
   // updatePet reads this; the bolt damage comes from the mob's weapon range.
