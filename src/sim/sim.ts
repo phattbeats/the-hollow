@@ -3977,6 +3977,25 @@ export class Sim {
             }
           }
         }
+        // Stoneskin: a periodic self-absorb barrier. Telegraphed via createMob,
+        // which seeds stoneskinTimer to one full interval so the first barrier
+        // never snaps up the instant combat opens. Reuses the `absorb` aura,
+        // which dealDamage already soaks before any health is lost.
+        const stoneskin = MOBS[mob.templateId]?.stoneskin;
+        if (stoneskin) {
+          mob.stoneskinTimer -= DT;
+          if (mob.stoneskinTimer <= 0) {
+            mob.stoneskinTimer = stoneskin.every;
+            const school = (stoneskin.school ?? 'physical') as Aura['school'];
+            this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
+            this.emit({ type: 'log', text: `${mob.name} unleashes ${stoneskin.name}!`, color: '#c9c2b5', entityId: mob.id });
+            this.applyAura(mob, {
+              id: `stoneskin_${mob.templateId}`, name: stoneskin.name, kind: 'absorb',
+              remaining: stoneskin.duration, duration: stoneskin.duration, value: stoneskin.amount,
+              sourceId: mob.id, school,
+            });
+          }
+        }
         break;
       }
       case 'flee': {
@@ -4052,6 +4071,7 @@ export class Sim {
     mob.healedThisPull = false;
     mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
     mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
+    mob.stoneskinTimer = MOBS[mob.templateId]?.stoneskin?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
   }
 
@@ -4519,6 +4539,7 @@ export class Sim {
     mob.healedThisPull = false;
     mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
     mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
+    mob.stoneskinTimer = MOBS[mob.templateId]?.stoneskin?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
     for (const meta of this.players.values()) {
       const e = this.entities.get(meta.entityId);

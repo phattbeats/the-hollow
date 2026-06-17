@@ -195,6 +195,10 @@ export interface MobTemplate {
   // for `duration`s (and optionally deals min..max damage). Telegraphed: the
   // first slam only lands one full `every` interval after combat starts.
   stomp?: { radius: number; every: number; duration: number; min?: number; max?: number; name: string; school?: string };
+  // Periodic self-shield: the mob wraps itself in a damage-absorbing barrier
+  // every `every` seconds, soaking up to `amount` damage for `duration` seconds.
+  // Reuses the existing `absorb` aura (soaked first in dealDamage) — no new combat math.
+  stoneskin?: { amount: number; every: number; duration: number; name: string; school?: string };
   // Melee mechanic: each landed swing also splashes onto other players near the
   // primary target for `mult` of the (pre-armor) hit. Classic-WoW Cleave.
   cleave?: { radius: number; mult: number; name?: string };
@@ -580,6 +584,7 @@ export interface Entity {
   petTauntTimer: number; // controlled pet Growl cooldown
   pulseTimer: number; // boss aoe pulse countdown
   stompTimer: number; // boss War Stomp stun-pulse countdown
+  stoneskinTimer: number; // periodic self-absorb barrier countdown
   detonateTimer: number; // Death Throes fuse on a volatile corpse; Infinity = no pending detonation
   mendTimer: number; // mendAlly support-heal cast countdown
   firedSummons: number; // summonAdds thresholds already triggered

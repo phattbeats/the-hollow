@@ -193,6 +193,7 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 44, moveSpeed: 6.5, aggroRadius: 13,
     aoePulse: { min: 30, max: 42, radius: 11, every: 9, name: 'Marrow Rot', school: 'shadow' },
     summonAdds: { mobId: 'varkas_boneguard', count: 2, atHpPct: [0.66, 0.33] },
+    stoneskin: { amount: 260, every: 14, duration: 8, name: 'Bone Carapace', school: 'shadow' },
     loot: [
       { copper: 650, chance: 1 },
       { itemId: 'bone_fragments', chance: 1 },
