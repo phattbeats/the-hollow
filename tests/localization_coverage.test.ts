@@ -58,6 +58,15 @@ const locales: Record<string, typeof en> = {
   ru_RU,
 };
 
+// Phase 6 two-tier gate (see .github/workflows/ci.yml). The release tier runs with
+// I18N_RELEASE_TIER=1. Structural coverage (every key resolves non-empty,
+// placeholders preserved, source scrapes) runs at the PR tier; copied-English /
+// real-translation content checks run RELEASE-only, because an English-only PR or a
+// sparse locale legitimately renders the English fill for an untranslated key (the
+// dense resolved table fills it) - that is a `pending` row blocked at the release
+// gate, not a PR failure.
+const RELEASE_TIER = process.env.I18N_RELEASE_TIER === "1";
+
 describe("i18n Localization Key Coverage", () => {
   const placeholderPattern = /\b(TODO|TBD|FIXME|PLACEHOLDER|TRANSLATE|LOREM)\b/i;
   const shellKeys: TranslationKey[] = [
@@ -766,7 +775,10 @@ describe("i18n Localization Key Coverage", () => {
         expect(rendered.trim().length, `${lang}.${entry.key}`).toBeGreaterThan(0);
         expect(rendered, `${lang}.${entry.key}`).not.toBe(entry.key);
         expect(rendered, `${lang}.${entry.key}`).not.toMatch(/\$N|\$C|\{playerName\}|\{className\}|\{classNameLower\}/);
-        if (lang !== "en" && lang !== "en_CA" && entry.kind === "quest" && (entry.field === "text" || entry.field === "completion")) {
+        // RELEASE-TIER ONLY: a sparse/English-only overlay renders the English fill
+        // for an untranslated quest narrative, which is legal on a PR (a `pending`
+        // row) and blocked only at the release gate.
+        if (RELEASE_TIER && lang !== "en" && lang !== "en_CA" && entry.kind === "quest" && (entry.field === "text" || entry.field === "completion")) {
           expect(copiedEnglishComparable(rendered), `${lang}.${entry.key} should not copy canonical English quest narrative`)
             .not.toBe(copiedEnglishComparable(entry.source));
         }
@@ -812,7 +824,9 @@ describe("i18n Localization Key Coverage", () => {
         const rendered = renderTalentManifestEntry(entry);
         expect(rendered.trim().length, `${lang}.${entry.id}.${entry.field}`).toBeGreaterThan(0);
         expect(rendered, `${lang}.${entry.id}.${entry.field}`).not.toMatch(placeholderPattern);
-        if (lang !== "en" && lang !== "en_CA" && entry.field === "description") {
+        // RELEASE-TIER ONLY (copied-English talent content): an untranslated talent
+        // renders the English fill on a PR (a `pending` row), blocked at release.
+        if (RELEASE_TIER && lang !== "en" && lang !== "en_CA" && entry.field === "description") {
           expect(copiedEnglishComparable(rendered), `${lang}.${entry.id}.${entry.field} should not copy canonical English talent prose`)
             .not.toBe(copiedEnglishComparable(entry.source));
         }
@@ -821,27 +835,35 @@ describe("i18n Localization Key Coverage", () => {
         // explicit titleOverride (e.g. French "Riposte", Spanish "Vigor"); a name that
         // matches English WITHOUT such an override is an accidental leak (e.g. a new
         // talent whose vocabulary the translation tables do not yet cover).
-        if (lang !== "en" && lang !== "en_CA" && entry.field === "name" && !hasTalentTitleOverride(lang, entry.source)) {
+        if (RELEASE_TIER && lang !== "en" && lang !== "en_CA" && entry.field === "name" && !hasTalentTitleOverride(lang, entry.source)) {
           expect(copiedEnglishComparable(rendered), `${lang}.${entry.id}.name leaks English with no explicit titleOverride`)
             .not.toBe(copiedEnglishComparable(entry.source));
         }
       }
     }
 
-    setLanguage("es");
-    expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "war_toughness" && entry.field === "name")!)).toContain("Dureza");
-    expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "arms.mastery" && entry.field === "description")!)).toContain("daño");
+    // RELEASE-TIER ONLY: specific real-translation spot-checks (would render the
+    // English fill, not these strings, for an untranslated key on a PR).
+    if (RELEASE_TIER) {
+      setLanguage("es");
+      expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "war_toughness" && entry.field === "name")!)).toContain("Dureza");
+      expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "arms.mastery" && entry.field === "description")!)).toContain("daño");
 
-    setLanguage("zh_CN");
-    expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "war_cruelty" && entry.field === "name")!)).toContain("残忍");
+      setLanguage("zh_CN");
+      expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "war_cruelty" && entry.field === "name")!)).toContain("残忍");
 
-    setLanguage("ko_KR");
-    expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "prot_choice.pc_last_stand" && entry.field === "description")!)).toContain("생명력");
+      setLanguage("ko_KR");
+      expect(renderTalentManifestEntry(talentEntries.find((entry) => entry.id === "prot_choice.pc_last_stand" && entry.field === "description")!)).toContain("생명력");
+    }
 
     setLanguage("en");
   });
 
-  it("should use explicit quest narrative translations instead of generated templates", () => {
+  // RELEASE-TIER ONLY (Phase 6): real quest-narrative content checks. A sparse /
+  // English-only overlay renders the English fill for an untranslated quest (legal
+  // on a PR as a `pending` row, blocked at the release gate), so the generic-template
+  // and per-locale-diversity assertions are release-only.
+  it.runIf(RELEASE_TIER)("should use explicit quest narrative translations instead of generated templates", () => {
     const worldEntitySource = fs.readFileSync(path.resolve(process.cwd(), "src/ui/world_entity_i18n.ts"), "utf8");
     expect(worldEntitySource).not.toContain("questText:");
     expect(worldEntitySource).not.toContain("questCompletion:");
@@ -897,7 +919,9 @@ describe("i18n Localization Key Coverage", () => {
     setLanguage("en");
   });
 
-  it("should keep representative quest narratives translated with quest-specific content", () => {
+  // RELEASE-TIER ONLY (Phase 6): pins specific non-English quest narratives, which
+  // an untranslated (English-filled) overlay would not satisfy on a PR.
+  it.runIf(RELEASE_TIER)("should keep representative quest narratives translated with quest-specific content", () => {
     const expectations: Array<readonly [typeof supportedLanguages[number], string, "text" | "completion", string]> = [
       ["es", "q_hollow", "completion", "Eastbrook te debe"],
       ["fr_FR", "q_idols", "completion", "La secte a commencé ici"],

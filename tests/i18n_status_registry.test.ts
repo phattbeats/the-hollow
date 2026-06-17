@@ -25,6 +25,13 @@ const registryRel = "src/ui/i18n.status.json";
 const registry: any = JSON.parse(fs.readFileSync(path.join(root, registryRel), "utf8"));
 const NON_EN = supportedLanguages.filter((l) => l !== "en");
 
+// Phase 6 two-tier gate: the release tier runs with I18N_RELEASE_TIER=1 (see
+// .github/workflows/ci.yml). An empty-`pending` set is a RELEASE guarantee, not a
+// PR one - an English-only PR legitimately leaves keys pending - so that assertion
+// runs release-only. Registry-in-sync (universe coverage, enHash re-derivation,
+// reproducibility) stays at the PR tier.
+const RELEASE_TIER = process.env.I18N_RELEASE_TIER === "1";
+
 // Same object-vs-leaf rule as scripts/i18n_flatten.mjs (recurse PLAIN objects;
 // arrays and non-objects are leaves), so the universe we expect matches the one
 // the scanner walked.
@@ -82,7 +89,11 @@ describe("i18n status registry: enHash re-derivation (independent)", () => {
 });
 
 describe("i18n status registry: states", () => {
-  it("the pending set is empty (everything is still dense after Phase 4)", () => {
+  // RELEASE-TIER ONLY (Phase 6). A `pending` key must never reach a cut release;
+  // the release gate asserts the set is empty. At the PR tier a pending key is
+  // LEGAL (English-only PRs), so this is skipped there. Today the set is empty at
+  // both tiers because the overlays are still dense - this gate guards the future.
+  it.runIf(RELEASE_TIER)("the pending set is empty (release tier: no untranslated key may ship)", () => {
     expect(registry.counts.pending).toBe(0);
     let pending = 0;
     for (const [, entry] of keyEntries())

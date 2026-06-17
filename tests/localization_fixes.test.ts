@@ -41,6 +41,13 @@ const ALLOW_V07_SLASH: ReadonlySet<string> = new Set<string>(
   statusRegistry.blockedSource.filter((b) => b.channel === "sim").map((b) => b.text),
 );
 
+// Phase 6 two-tier gate (see .github/workflows/ci.yml). The release tier runs with
+// I18N_RELEASE_TIER=1. PR-tier checks (registration / key existence) run always;
+// full-localization checks (s3_localized, the copied-English content guards) run
+// release-only - an English-only PR is legal, so it must not have to localize every
+// locale to pass the PR gate.
+const RELEASE_TIER = process.env.I18N_RELEASE_TIER === "1";
+
 // --- B1: the log-event path must localize server-sent friends/guild/who/world messages ---
 describe("B1: server log-type messages localize through the log path", () => {
   it("all three hud matchers call AND return the localizeServerText fallback", () => {
@@ -226,8 +233,12 @@ describe("H3: DICT key parity, non-empty values, placeholder integrity", () => {
       }
     }
   }
-  it("H3b: server DICT has no un-allowlisted copied-English", () => checkNoCopiedEnglish(serverDICT as any, "server"));
-  it("H3b: admin DICT has no un-allowlisted copied-English", () => checkNoCopiedEnglish(adminDICT as any, "admin"));
+  // RELEASE-TIER ONLY (Phase 6): copied-English is a release-quality bar, not a PR
+  // one. An English-only PR (or a sparse locale) legitimately ships English for an
+  // untranslated key; that becomes a `pending` row and is blocked at the release
+  // gate, not flagged on every PR.
+  it.runIf(RELEASE_TIER)("H3b: server DICT has no un-allowlisted copied-English", () => checkNoCopiedEnglish(serverDICT as any, "server"));
+  it.runIf(RELEASE_TIER)("H3b: admin DICT has no un-allowlisted copied-English", () => checkNoCopiedEnglish(adminDICT as any, "admin"));
 });
 
 // --- H1b: no two talents in the same class tree may render with the same name ---
@@ -551,20 +562,63 @@ describe("S3: every sim.ts emit is recognized (drift guard)", () => {
     for (const r of arm.regs) { r.lastIndex = 0; if (r.test(s)) return true; }
     return localizeServerText(s) !== null || localizeSimText(s) !== null;
   };
+  // The localized form IF a real server/sim matcher resolves it (locale-sensitive
+  // output). Strings handled only by a hud-local arm map localize via the hud's own
+  // t() keys and have no reachable output here, so they return null and s3_localized
+  // checks recognition for them rather than the rendered text.
+  const localizedOut = (s: string): string | null => {
+    const srv = localizeServerText(s);
+    if (srv !== null) return srv;
+    return localizeSimText(s);
+  };
 
-  it("enumerates sim.ts emit sites and finds no unlocalized player-facing string", () => {
-    setLanguage("de_DE");
-    const cands = extract();
-    expect(cands.length, "sanity: should enumerate many emit sites").toBeGreaterThan(80);
-    const leaks: string[] = [];
-    for (const c of cands) {
+  // The non-skipped candidate emit strings, deduped (shared by both tiers).
+  const candidateStrings = (): { type: Cand["type"]; s: string }[] => {
+    const out: { type: Cand["type"]; s: string }[] = [];
+    for (const c of extract()) {
       if (TMPL_SKIP.some((re) => re.test(c.tmpl))) continue;
       const s = concrete(c.tmpl);
       if (ALLOW.some((re) => re.test(s))) continue;
       if (ALLOW_V07_SLASH.has(s)) continue;
-      if (!recognized(c.type, s)) leaks.push(`(${c.type}) ${JSON.stringify(s)}`);
+      out.push({ type: c.type, s });
+    }
+    return out;
+  };
+
+  // PR TIER: every emit maps to a registered key OR RULE (recognition is
+  // locale-independent, so registration is proven once, in en).
+  it("s3_registered: every sim.ts emit maps to a registered key/RULE (PR tier)", () => {
+    setLanguage("en");
+    const cands = candidateStrings();
+    expect(cands.length, "sanity: should enumerate many emit sites").toBeGreaterThan(80);
+    const leaks: string[] = [];
+    for (const { type, s } of cands) {
+      if (!recognized(type, s)) leaks.push(`(${type}) ${JSON.stringify(s)}`);
     }
     setLanguage("en");
-    expect(leaks, "unlocalized sim emit strings (add a key/RULE to sim_i18n.ts)").toEqual([]);
+    expect(leaks, "unregistered sim emit strings (add a key/RULE to sim_i18n.ts)").toEqual([]);
+  });
+
+  // RELEASE TIER: the same coverage across all 14 locales, and where a real matcher
+  // resolves the string, its localized form is not raw English in any translated
+  // locale (no silently-shipped English).
+  it.runIf(RELEASE_TIER)("s3_localized: every emit is recognized in all 14 locales and not left English where a matcher resolves it", () => {
+    const cands = candidateStrings();
+    expect(cands.length, "sanity: should enumerate many emit sites").toBeGreaterThan(80);
+    const leaks: string[] = [];
+    for (const lang of supportedLanguages) {
+      setLanguage(lang);
+      for (const { type, s } of cands) {
+        if (!recognized(type, s)) {
+          leaks.push(`${lang} (${type}) ${JSON.stringify(s)} not recognized`);
+          continue;
+        }
+        if (lang === "en" || lang === "en_CA") continue;
+        const out = localizedOut(s);
+        if (out !== null && out === s) leaks.push(`${lang} (${type}) ${JSON.stringify(s)} stayed English`);
+      }
+    }
+    setLanguage("en");
+    expect(leaks, "sim emit strings unlocalized in some locale").toEqual([]);
   });
 });
