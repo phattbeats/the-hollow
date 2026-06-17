@@ -1036,6 +1036,22 @@
   #arena-window .btn { width: 100%; margin: 4px 0 0; box-sizing: border-box; text-align: center; }
   #arena-window .btn.leave { background: linear-gradient(#5a4a18, #3a2f0d 55%, #2a2208); color: #ffe6a8; }
   .arena-note { font-size: 11.5px; color: #b6ad8c; line-height: 1.45; margin: 4px 0 2px; font-family: Georgia, serif; }
+  .arena-brackets { display: flex; gap: 6px; margin: 6px 0 4px; }
+  .arena-bracket { flex: 1; padding: 5px 0; font-family: var(--title-font); font-size: 12px; color: #cfc6a8;
+    background: linear-gradient(#3a3018, #2a2208); border: 1px solid #5a4a20; cursor: pointer; border-radius: 4px; }
+  .arena-bracket.active { color: #ffb24a; border-color: #8a6a28; background: linear-gradient(#5a4a18, #3a2f0d 55%, #2a2208); }
+  .arena-bracket.locked { opacity: 0.45; cursor: not-allowed; }
+  .arena-bracket-tag { color: #998d6a; font-size: 11px; margin-left: 4px; }
+  .arena-party { margin: 6px 0 4px; padding: 8px 10px; border: 1px solid #5a4a20; border-radius: 6px;
+    background: linear-gradient(#1a1408aa, #0d0a04aa); }
+  .arena-party-title { font-family: var(--title-font); font-size: 11px; color: var(--gold); margin-bottom: 5px; letter-spacing: 0.3px; }
+  .arena-party-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 3px 0; font-size: 12px; }
+  .arena-party-row.me .apr-name { color: #ffd100; }
+  .arena-party-row .apr-name { color: #cfe0ff; font-weight: bold; }
+  .arena-party-row .apr-meta { color: #8c8468; font-size: 10.5px; white-space: nowrap; }
+  .arena-party-invite { border-left: 2px solid #6a5a28; padding-left: 8px; margin-top: 4px; }
+  .arena-warn { color: #ff9a7a; border-left: 2px solid #aa4a28; padding-left: 8px; }
+  #arena-window .btn.disabled { opacity: 0.55; cursor: not-allowed; filter: grayscale(0.25); }
   .arena-queue-status { font-size: 12px; color: #ffd100; margin-top: 6px; text-align: center; }
   .ladder-row { display: grid; grid-template-columns: 24px 1fr auto auto; gap: 8px; align-items: center;
     font-size: 12px; padding: 3px 6px; border-radius: 4px; color: #e0d6b4; }
@@ -1050,10 +1066,19 @@
   #arena-status { position: absolute; top: 70px; left: 50%; transform: translateX(-50%);
     display: none; text-align: center; pointer-events: none; z-index: 18;
     background: linear-gradient(#1a120bdd, #0d0805dd); border: 1px solid #cc5a14;
-    border-radius: 8px; padding: 5px 16px; box-shadow: 0 2px 14px #000a, inset 0 0 16px #cc5a1422; }
+    border-radius: 8px; padding: 6px 16px 5px; box-shadow: 0 2px 14px #000a, inset 0 0 16px #cc5a1422; min-width: 220px; }
   #arena-status .as-vs { font-family: var(--title-font); font-size: 13px; color: #ffb24a; text-shadow: 1px 1px 2px #000; letter-spacing: 0.5px; }
   #arena-status .as-vs .opp { color: #ff8d7a; }
-  #arena-status .as-timer { font-size: 11px; color: #d8cba0; margin-top: 1px; }
+  #arena-status .as-lvl { color: #b6ad8c; font-size: 11px; font-family: Georgia, serif; }
+  #arena-status .as-teams { display: flex; align-items: center; gap: 10px; justify-content: center; }
+  #arena-status .as-team { text-align: center; min-width: 80px; }
+  #arena-status .as-team .as-label { display: block; font-family: var(--title-font); font-size: 9px; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 2px; }
+  #arena-status .as-team.allies .as-label { color: #7fdc4f; }
+  #arena-status .as-team.allies .as-names { color: #b8e8a0; font-size: 12px; }
+  #arena-status .as-team.enemies .as-label { color: #ff8d7a; }
+  #arena-status .as-team.enemies .as-names { color: #ffb0a0; font-size: 12px; }
+  #arena-status .as-mid { font-family: var(--title-font); font-size: 11px; color: #ffb24a; opacity: 0.85; }
+  #arena-status .as-timer { font-size: 11px; color: #d8cba0; margin-top: 4px; }
 
   /* ---------- The World Market (the Merchant's auction house) ---------- */
   #market-window { width: 470px; display: none; flex-direction: column; }

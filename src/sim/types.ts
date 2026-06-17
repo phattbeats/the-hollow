@@ -16,6 +16,14 @@ export const FISHING_CAST_TIME = 5;
 export type PlayerClass =
   | 'warrior' | 'paladin' | 'hunter' | 'rogue' | 'priest'
   | 'shaman' | 'mage' | 'warlock' | 'druid';
+export type ArenaFormat = '1v1' | '2v2';
+
+export interface ArenaCombatant {
+  pid: number;
+  name: string;
+  cls: PlayerClass;
+  level: number;
+}
 export const ALL_CLASSES: PlayerClass[] = [
   'warrior', 'paladin', 'hunter', 'rogue', 'priest', 'shaman', 'mage', 'warlock', 'druid',
 ];
@@ -648,13 +656,13 @@ export type SimEvent = { pid?: number } & (
   | { type: 'duelCountdown'; seconds: number }
   | { type: 'duelStart' }
   | { type: 'duelEnd'; winnerName: string; loserName: string }
-  // Ashen Coliseum 1v1 arena: queue state, match lifecycle, and rating result
-  | { type: 'arenaQueued'; position: number }
+  // Ashen Coliseum arena: queue state, match lifecycle, and rating result
+  | { type: 'arenaQueued'; position: number; format: ArenaFormat }
   | { type: 'arenaUnqueued' }
-  | { type: 'arenaFound'; oppName: string; oppClass: PlayerClass; oppLevel: number }
+  | { type: 'arenaFound'; format: ArenaFormat; oppName: string; oppClass: PlayerClass; oppLevel: number; allies: ArenaCombatant[]; enemies: ArenaCombatant[] }
   | { type: 'arenaCountdown'; seconds: number }
   | { type: 'arenaStart' }
-  | { type: 'arenaEnd'; won: boolean; draw: boolean; oppName: string; ratingBefore: number; ratingAfter: number }
+  | { type: 'arenaEnd'; format: ArenaFormat; won: boolean; draw: boolean; oppName: string; ratingBefore: number; ratingAfter: number; allies: ArenaCombatant[]; enemies: ArenaCombatant[] }
   | { type: 'heal2'; sourceId: number; targetId: number; amount: number; crit: boolean; ability: string }
   // visual-only cue for the renderer: spell projectiles, dot ticks, aoe novas
   | { type: 'spellfx'; sourceId: number; targetId: number; school: string; fx: 'projectile' | 'tick' | 'nova' }

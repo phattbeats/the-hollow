@@ -266,6 +266,7 @@ export class Hud {
   private xpFillEl = $('#xpbar .fill');
   private xpLabelEl = $('#xpbar .label');
   private deathOverlayEl = $('#death-overlay');
+  private releaseSpiritBtnEl = $('#release-btn');
   private hotWriteCache = new Map<HTMLElement, string>();
   private hotDomWrites = 0;
   private hotDomSkippedWrites = 0;
@@ -288,6 +289,7 @@ export class Hud {
   private lastArenaSig = '';
   private lastArenaStatusSig = '';
   private arenaMatchSeen = false; // closes the queue panel once a bout starts
+  private arenaBracket: import('../world_api').ArenaFormat = '1v1';
   // World Market (the Merchant's auction house)
   private marketOpen = false;
   private marketTab: 'browse' | 'sell' | 'collect' = 'browse';
@@ -364,7 +366,10 @@ export class Hud {
       if (target && (this.emoteWheelEl?.contains(target) || document.getElementById('mm-emote')?.contains(target) || document.getElementById('mobile-emote')?.contains(target))) return;
       this.hideEmoteWheel();
     });
-    $('#release-btn').addEventListener('click', () => { this.sim.releaseSpirit(); });
+    this.releaseSpiritBtnEl.addEventListener('click', () => {
+      if (this.sim.arenaInfo?.match) return;
+      this.sim.releaseSpirit();
+    });
     // classic MMOs: the player interaction menu opens from the target portrait
     $('#target-frame').addEventListener('contextmenu', (ev) => {
       ev.preventDefault();
@@ -1699,7 +1704,9 @@ export class Hud {
     this.setText(this.xpLabelEl, bar.label);
     $('#xpbar').classList.toggle('overflow', bar.postCap);
 
+    const deadInArena = p.dead && !!this.sim.arenaInfo?.match;
     this.setDisplay(this.deathOverlayEl, p.dead ? 'flex' : 'none');
+    this.setDisplay(this.releaseSpiritBtnEl, deadInArena ? 'none' : '');
 
     const inDungeon = p.pos.x > DUNGEON_X_THRESHOLD;
     const currentZone = zoneAt(p.pos.z);
@@ -2043,7 +2050,15 @@ export class Hud {
       return;
     }
     const inMatch = a.match !== null;
+    const queuedFmt = a.queued ? a.format : null;
+    const bracket = a.match?.format ?? queuedFmt ?? this.arenaBracket;
+    if (queuedFmt || a.match) this.arenaBracket = bracket;
+    const canSwitchBracket = !a.queued && !inMatch;
     const myPid = this.sim.playerId;
+    const party = this.sim.partyInfo;
+    const partySize = party?.members.length ?? 1;
+    const isLeader = !party || party.leader === myPid;
+
     const ladder = a.ladder.map((r, i) => {
       const me = r.pid === myPid;
       const classId = r.cls as PlayerClass;
@@ -2054,6 +2069,31 @@ export class Hud {
         + `<span class="lr-wl">${esc(formatNumber(r.wins, { maximumFractionDigits: 0 }))}-${esc(formatNumber(r.losses, { maximumFractionDigits: 0 }))}</span></div>`;
     }).join('') || `<div class="ladder-empty">${esc(t('hud.arena.noChallengers'))}</div>`;
 
+    const bracketBtn = (fmt: import('../world_api').ArenaFormat) => {
+      const active = bracket === fmt;
+      const locked = !canSwitchBracket && !active;
+      return `<button class="arena-bracket${active ? ' active' : ''}${locked ? ' locked' : ''}" data-bracket="${fmt}" aria-pressed="${active ? 'true' : 'false'}"${locked ? ' disabled' : ''}>${esc(fmt)}</button>`;
+    };
+    const bracketTabs = `<div class="arena-brackets">${bracketBtn('1v1')}${bracketBtn('2v2')}</div>`;
+
+    let partySection = '';
+    if (bracket === '2v2' && !inMatch && !a.queued) {
+      if (party && partySize === 2) {
+        const rows = party.members.map((m) => {
+          const cls = CLASSES[m.cls] ? classDisplayName(m.cls) : m.cls;
+          const me = m.pid === myPid ? ' me' : '';
+          return `<div class="arena-party-row${me}"><span class="apr-name">${esc(m.name)}</span>`
+            + `<span class="apr-meta">${esc(t('hud.arena.levelClass', {
+              level: formatNumber(m.level, { maximumFractionDigits: 0 }),
+              className: cls,
+            }))}</span></div>`;
+        }).join('');
+        partySection = `<div class="arena-party">${rows}</div>`;
+      } else if (party && partySize > 2) {
+        partySection = `<div class="arena-note arena-warn">${esc(t('hud.arena.queueNote'))}</div>`;
+      }
+    }
+
     let action: string;
     if (inMatch) {
       action = `<div class="arena-queue-status">${svgIcon('arena')} ${esc(t('hud.arena.matchInProgress', { name: a.match!.oppName }))}</div>`;
@@ -2061,7 +2101,17 @@ export class Hud {
       action = `<button class="btn leave" data-act="leave">${esc(t('hud.arena.leaveQueue'))}</button>`
         + `<div class="arena-queue-status">${esc(t('hud.arena.searching', { count: formatNumber(a.queueSize, { maximumFractionDigits: 0 }) }))}</div>`;
     } else {
-      action = `<button class="btn" data-act="queue">${esc(t('hud.arena.enterQueue'))}</button>`
+      let queueDisabled = false;
+      if (bracket === '2v2' && party && partySize === 2 && !isLeader) {
+        queueDisabled = true;
+      } else if (bracket === '2v2' && party && partySize > 2) {
+        queueDisabled = true;
+      } else if (bracket === '1v1' && party && partySize > 1) {
+        queueDisabled = true;
+      }
+      const btnCls = queueDisabled ? 'btn disabled' : 'btn';
+      const queueLabel = t('hud.arena.enterQueue');
+      action = `<button class="${btnCls}" data-act="queue"${queueDisabled ? ' disabled' : ''}>${esc(queueLabel)}</button>`
         + `<div class="arena-note">${esc(t('hud.arena.queueNote'))}</div>`;
     }
 
@@ -2083,23 +2133,36 @@ export class Hud {
       ? `<div class="arena-sub">${esc(t('hud.arena.ladderAllTime'))}</div>${allTime}`
       : '';
 
-    const sig = JSON.stringify([a.rating, a.wins, a.losses, a.queued, a.queueSize, inMatch, a.ladder, this.arenaAllTime]);
-    if (sig === this.lastArenaSig) return; // nothing changed; skip the DOM churn (and re-bind)
+    const sig = JSON.stringify([a.rating, a.wins, a.losses, a.queued, a.queueSize, inMatch, a.ladder, this.arenaAllTime, bracket, party, canSwitchBracket]);
+    if (sig === this.lastArenaSig) return;
     this.lastArenaSig = sig;
 
-    el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.arena.title'))} <span style="color:#998d6a;font-size:11px">${esc(t('hud.arena.subtitle'))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.arena.close'))}">${svgIcon('close')}</button></div>`
+    el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.arena.title'))} <span class="arena-bracket-tag">${esc(bracket)}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.arena.close'))}">${svgIcon('close')}</button></div>`
+      + bracketTabs
       + `<div class="arena-rank"><span class="rating">${esc(formatNumber(a.rating, { maximumFractionDigits: 0 }))}</span>`
       + `<span class="wl">${esc(t('hud.arena.ratingSummary', {
         wins: formatNumber(a.wins, { maximumFractionDigits: 0 }),
         losses: formatNumber(a.losses, { maximumFractionDigits: 0 }),
       }))}</span></div>`
+      + partySection
       + action
       + `<div class="arena-sub">${esc(t('hud.arena.ladderOnline'))}</div>`
       + ladder
       + allTimeSection;
 
     el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; });
-    el.querySelector('[data-act="queue"]')?.addEventListener('click', () => { this.sim.arenaQueueJoin(); audio.click(); });
+    el.querySelectorAll('[data-bracket]:not([disabled])').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        this.arenaBracket = (btn as HTMLElement).dataset.bracket as import('../world_api').ArenaFormat;
+        this.lastArenaSig = '';
+        this.renderArenaWindow();
+        audio.click();
+      });
+    });
+    el.querySelector('[data-act="queue"]:not([disabled])')?.addEventListener('click', () => {
+      this.sim.arenaQueueJoin(bracket);
+      audio.click();
+    });
     el.querySelector('[data-act="leave"]')?.addEventListener('click', () => { this.sim.arenaQueueLeave(); audio.click(); });
   }
 
@@ -2116,15 +2179,27 @@ export class Hud {
     const label = m.state === 'countdown' ? t('hud.arena.statusCountdown')
       : m.state === 'over' ? t('hud.arena.statusReturning', { seconds: formatNumber(m.returnIn ?? 0, { maximumFractionDigits: 0 }) })
       : t('hud.arena.statusFight');
-    const sig = `${m.oppName}|${m.state}|${m.state === 'over' ? (m.returnIn ?? 0) : ''}`;
-    if (sig !== this.lastArenaStatusSig) {
-      this.lastArenaStatusSig = sig;
+    let vsBlock: string;
+    if (m.format === '2v2') {
+      const allyNames = [esc(t('hud.core.you')), ...m.allies.map((c) => esc(c.name))].join(' - ');
+      const enemyNames = m.enemies.map((c) => esc(c.name)).join(' - ');
+      const vs = esc(t('hud.arena.vsLine', { name: '' }).trim());
+      vsBlock = `<div class="as-teams">`
+        + `<div class="as-team allies"><span class="as-names">${allyNames}</span></div>`
+        + `<div class="as-mid">${vs}</div>`
+        + `<div class="as-team enemies"><span class="as-names">${enemyNames}</span></div>`
+        + `</div>`;
+    } else {
       const cls = CLASSES[m.oppClass] ? classDisplayName(m.oppClass) : m.oppClass;
-      el.innerHTML = `<div class="as-vs">${svgIcon('arena')} ${esc(t('hud.arena.vsLine', { name: m.oppName }))} <span style="color:#b6ad8c;font-size:11px">${esc(t('hud.arena.levelClass', {
+      vsBlock = `<div class="as-vs">${svgIcon('arena')} ${esc(t('hud.arena.vsLine', { name: m.oppName }))} <span style="color:#b6ad8c;font-size:11px">${esc(t('hud.arena.levelClass', {
         level: formatNumber(m.oppLevel, { maximumFractionDigits: 0 }),
         className: cls,
-      }))}</span></div>`
-        + `<div class="as-timer">${esc(label)}</div>`;
+      }))}</span></div>`;
+    }
+    const sig = `${m.format}|${vsBlock}|${m.state}|${m.state === 'over' ? (m.returnIn ?? 0) : ''}`;
+    if (sig !== this.lastArenaStatusSig) {
+      this.lastArenaStatusSig = sig;
+      el.innerHTML = `${vsBlock}<div class="as-timer">${esc(label)}</div>`;
       el.style.display = 'block';
     }
   }
@@ -2553,20 +2628,25 @@ export class Hud {
           audio.duelEnd();
           break;
         case 'arenaQueued':
-          this.log(t('hud.system.arenaQueued', { position: ev.position }), '#ffa040');
+          this.log(t('hud.system.arenaQueued', { position: formatNumber(ev.position, { maximumFractionDigits: 0 }) }), '#ffa040');
           break;
         case 'arenaUnqueued':
           this.log(t('hud.system.arenaUnqueued'), '#ffa040');
           break;
         case 'arenaFound': {
+          const name = ev.enemies.length > 1 ? ev.enemies.map((e) => e.name).join(' & ') : ev.oppName;
           const cls = CLASSES[ev.oppClass] ? classDisplayName(ev.oppClass) : ev.oppClass;
-          this.showBanner(t('hud.system.arenaFoundBanner', { name: ev.oppName }));
-          this.log(t('hud.system.arenaFoundLog', { name: ev.oppName, level: ev.oppLevel, className: cls }), '#ffa040');
+          this.showBanner(t('hud.system.arenaFoundBanner', { name }));
+          this.log(t('hud.system.arenaFoundLog', {
+            name,
+            level: formatNumber(ev.oppLevel, { maximumFractionDigits: 0 }),
+            className: cls,
+          }), '#ffa040');
           audio.duelChallenge();
           break;
         }
         case 'arenaCountdown':
-          this.showBanner(t('hud.system.arenaCountdown', { seconds: ev.seconds }));
+          this.showBanner(t('hud.system.arenaCountdown', { seconds: formatNumber(ev.seconds, { maximumFractionDigits: 0 }) }));
           audio.duelCountdownTick();
           break;
         case 'arenaStart':
@@ -2576,17 +2656,18 @@ export class Hud {
         case 'arenaEnd': {
           const delta = ev.ratingAfter - ev.ratingBefore;
           const sign = delta >= 0 ? '+' : '';
-          const ratingDelta = `${sign}${delta}`;
+          const ratingDelta = `${sign}${formatNumber(delta, { maximumFractionDigits: 0 })}`;
+          const ratingAfter = formatNumber(ev.ratingAfter, { maximumFractionDigits: 0 });
           if (ev.draw) {
             this.showBanner(t('hud.system.arenaDrawBanner', { name: ev.oppName, delta: ratingDelta }));
-            this.combatLog(t('hud.system.arenaDrawLog', { name: ev.oppName, rating: ev.ratingAfter, delta: ratingDelta }), '#fa6');
+            this.combatLog(t('hud.system.arenaDrawLog', { name: ev.oppName, rating: ratingAfter, delta: ratingDelta }), '#fa6');
           } else if (ev.won) {
-            this.showBanner(t('hud.system.arenaVictoryBanner', { name: ev.oppName, rating: ev.ratingAfter, delta: ratingDelta }));
-            this.combatLog(t('hud.system.arenaVictoryLog', { name: ev.oppName, rating: ev.ratingAfter, delta: ratingDelta }), '#7fdc4f');
+            this.showBanner(t('hud.system.arenaVictoryBanner', { name: ev.oppName, rating: ratingAfter, delta: ratingDelta }));
+            this.combatLog(t('hud.system.arenaVictoryLog', { name: ev.oppName, rating: ratingAfter, delta: ratingDelta }), '#7fdc4f');
             audio.duelEnd();
           } else {
-            this.showBanner(t('hud.system.arenaDefeatBanner', { name: ev.oppName, rating: ev.ratingAfter, delta: ratingDelta }));
-            this.combatLog(t('hud.system.arenaDefeatLog', { name: ev.oppName, rating: ev.ratingAfter, delta: ratingDelta }), '#ff7a6a');
+            this.showBanner(t('hud.system.arenaDefeatBanner', { name: ev.oppName, rating: ratingAfter, delta: ratingDelta }));
+            this.combatLog(t('hud.system.arenaDefeatLog', { name: ev.oppName, rating: ratingAfter, delta: ratingDelta }), '#ff7a6a');
             audio.death();
           }
           break;

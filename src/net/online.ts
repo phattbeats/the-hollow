@@ -429,6 +429,11 @@ export class ClientWorld implements IWorld {
     this.ws.send(JSON.stringify({ t: 'cmd', ...payload }));
   }
 
+  /** Raw WS command — used by dev scripts and browser console when online. */
+  devCmd(payload: Record<string, unknown>): void {
+    this.cmd(payload);
+  }
+
   private onMessage(raw: string): void {
     let msg: any;
     try {
@@ -928,8 +933,8 @@ export class ClientWorld implements IWorld {
       return [];
     }
   }
-  arenaQueueJoin(): void {
-    this.cmd({ cmd: 'arena_queue' });
+  arenaQueueJoin(format?: import('../world_api').ArenaFormat): void {
+    this.cmd({ cmd: 'arena_queue', format: format ?? '1v1' });
   }
   arenaQueueLeave(): void {
     this.cmd({ cmd: 'arena_leave' });

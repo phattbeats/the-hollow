@@ -315,7 +315,12 @@ export class GameServer {
   private readonly ipSessionCounts = new Map<string, number>();
 
   constructor() {
-    this.sim = new Sim({ seed: WORLD_SEED, playerClass: 'warrior', noPlayer: true });
+    this.sim = new Sim({
+      seed: WORLD_SEED,
+      playerClass: 'warrior',
+      noPlayer: true,
+      devCommands: process.env.ALLOW_DEV_COMMANDS === '1',
+    });
     this.social = new SocialService(this.socialDb, this.socialTransport());
   }
 
@@ -971,8 +976,12 @@ export class GameServer {
       case 'guild_demote': if (typeof msg.name === 'string') void this.social.guildSetRank(this.actorFor(session), msg.name, 'member').catch(logSocialErr); break;
       case 'guild_transfer': if (typeof msg.name === 'string') void this.social.guildTransferLeader(this.actorFor(session), msg.name).catch(logSocialErr); break;
       case 'guild_disband': void this.social.guildDisband(this.actorFor(session)).catch(logSocialErr); break;
-      // arena (Ashen Coliseum 1v1 queue)
-      case 'arena_queue': sim.arenaQueueJoin(pid); break;
+      // arena (Ashen Coliseum queue)
+      case 'arena_queue': {
+        const fmt = msg.format === '2v2' ? '2v2' : '1v1';
+        sim.arenaQueueJoin(pid, fmt);
+        break;
+      }
       case 'arena_leave': sim.arenaQueueLeave(pid); break;
 
       // post-cap cosmetic prestige (Max-Level XP Overflow, Phase 4)
