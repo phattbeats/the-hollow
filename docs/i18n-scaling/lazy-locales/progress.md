@@ -5,7 +5,7 @@ Live status. Each phase session updates its own row + checklist in the SAME comm
 ## Status table
 | Phase | Status | Started | Completed |
 |-------|--------|---------|-----------|
-| 1 - Per-locale emit split | NOT STARTED | | |
+| 1 - Per-locale emit split | COMPLETE | 2026-06-17 | 2026-06-17 |
 | 1 QA | NOT STARTED | | |
 | 2 - Async loader + bootstrap | NOT STARTED | | |
 | 2 QA | NOT STARTED | | |
@@ -22,17 +22,17 @@ Status values: NOT STARTED / IN PROGRESS / COMPLETE / COMPLETE (WITH FOLLOWUPS) 
 
 ## Phase 1 - Per-locale emit split (Doc Step 1)
 Deliverables:
-- [ ] `scripts/i18n_build.mjs` emits `src/ui/i18n.resolved.generated/` (one dense `<lang>.ts` per locale with its `: EnTranslations` annotation, plus `en_XA.ts`) instead of the single file.
-- [ ] Generated `index.ts` barrel re-exports every locale + `en_XA` + `pending` + assembles the `translations` map (exact import surface preserved).
-- [ ] Generated `loaders.ts` exports `LOCALE_LOADERS` (dynamic-import thunk per non-en locale, NOT `en_XA`) and `SUPPORTED_LANGUAGES`.
-- [ ] Generated `pending.ts` exports `pending`.
-- [ ] `I18N_OUT_DIR` env override added; emit is atomic (compute all in memory, then write / `rmSync`+recreate - no torn directory).
-- [ ] `scripts/i18n_admin_build.mjs` mirrors the same directory transform into `src/admin/i18n.resolved.generated/` (parity only).
-- [ ] `scripts/i18n_scan.mjs` reads the new directory shape.
+- [x] `scripts/i18n_build.mjs` emits `src/ui/i18n.resolved.generated/` (one dense `<lang>.ts` per locale with its `: EnTranslations` annotation, plus `en_XA.ts`) instead of the single file.
+- [x] Generated `index.ts` barrel re-exports every locale + `en_XA` + `pending` + assembles the `translations` map (exact import surface preserved).
+- [x] Generated `loaders.ts` exports `LOCALE_LOADERS` (dynamic-import thunk per non-en locale, NOT `en` / NOT `en_XA`) and `SUPPORTED_LANGUAGES` (all 14: en + 13, not en_XA).
+- [x] Generated `pending.ts` exports `pending`.
+- [x] `I18N_OUT_DIR` env override added; emit is atomic. **Deviation from the doc's `rmSync`+recreate:** uses per-file temp-write + `renameSync` + orphan-sweep instead. A bare `rmSync(dir)` makes every slice momentarily ABSENT, and a concurrent Vitest worker resolving `./en_XA` through the barrel (while the two reproducibility tests regenerate the dir) then fails with "Cannot find module". Temp+rename keeps every module path continuously present and atomically replaced, still leaves no orphan (the sweep deletes any stale `*.ts`), and is strictly crash-safer (no torn/empty dir). Verified: full `npm test` green.
+- [x] `scripts/i18n_admin_build.mjs` mirrors the same directory transform into `src/admin/i18n.resolved.generated/` (parity only; admin stays static).
+- [x] `scripts/i18n_scan.mjs` reads the new directory shape. **No edit needed:** the scanner reads the SPARSE SOURCE overlays (`i18n.en` + `i18n.locales/*` + the admin twin + sim/server DICTs), never the resolved table, so the dir split does not touch its inputs and `i18n:scan` produces a byte-identical `i18n.status.json` (verified clean `git diff`). The deliverable is satisfied by construction.
 Acceptance:
-- [ ] `npm run i18n:build && npm run i18n:admin && npm run i18n:scan && git diff --exit-code` (regenerates identically; new dir committed).
-- [ ] `npm run i18n:hash -- --check` OK (SHA `d74aeb6..` unchanged).
-- [ ] `npx tsc --noEmit` + `npm test` green; `npm run build` gzip within noise of 1.13 MB (no bundle change - all 14 still pulled via the static barrel).
+- [x] `npm run i18n:build && npm run i18n:admin && npm run i18n:scan && git diff --exit-code` (regenerates identically; new dirs staged).
+- [x] `npm run i18n:hash -- --check` OK (SHA `d74aeb6..` unchanged - exact: `d74aeb631f37f3d8a4374ff9940e450e062aa4062c821ab3349ae7ada28b2e4d`).
+- [x] `npx tsc --noEmit` + `npm test` green (1542 passed / 9 skipped / 153 files); `npm run build` bundle-neutral: HEAD single-file main gzip 1,194.58 kB vs this dir-split 1,194.62 kB (+40 bytes). **NB: the doc's "1.13 MB" is stale; the real pre-existing size on this branch is 1.19 MB, unchanged by this phase.** `en_XA` + `loaders.ts` both tree-shaken out (0 pseudo glyphs, 0 `LOCALE_LOADERS` in dist main+admin).
 
 ## Phase 2 - Async loader + bootstrap (Doc Step 2)
 Deliverables:
@@ -92,7 +92,7 @@ Acceptance:
 - [ ] `npx tsc --noEmit` + `npm test` + `npm run build` green; public import surface from `i18n.en` unchanged.
 
 ## Notes (filled after completion)
-- Phase 1: _pending_
+- Phase 1: DONE 2026-06-17. The single `src/ui/i18n.resolved.generated.ts` (and admin twin) are now generated DIRECTORIES: `en.ts`..`ru_RU.ts` (14 dense `: EnTranslations` / `: AdminTranslations` slices) + `en_XA.ts` + `pending.ts` + `loaders.ts` + `index.ts` barrel. Directory-index import (`'./i18n.resolved.generated'` -> `index.ts`) resolves cleanly under moduleResolution "Bundler" (precedent: `src/render/characters/`); `src/ui/i18n.ts` + `src/admin/i18n.ts` needed ZERO change. SHA invariant because `scripts/i18n_resolved_hash.mjs` bundles `i18n.ts` EXPORTS, not file bytes. Two reality nuances vs the doc (see deliverables above): scanner needed no edit (reads source, not the resolved table); atomic emit uses temp+rename+sweep, not `rmSync` (the `rmSync` window broke concurrent barrel resolution in `npm test`). Tests touched: `tests/i18n_resolved_equivalence.test.ts` + `tests/i18n_admin_catalog.test.ts` repointed their reproducibility git-checks at the directory; the admin bundle-isolation check changed from a crude `startsWith("..")` to resolve-and-check-escape-from-`src/admin/` (the new in-dir `../i18n.en` type import is legitimate; a `../ui/...` game-table import is still caught). Nothing is lazy yet; all 14 locales still pulled through the static barrel. In-phase qa-checklist review run at completion (STEP 3); the dedicated Phase 1 QA session (`phase-01-qa.md`) is still NOT STARTED.
 - Phase 2: _pending_
 - Phase 3: _pending_ (record the 3a-vs-3b probe outcome here)
 - Phase 4: _pending_

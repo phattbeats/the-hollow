@@ -3,7 +3,7 @@
 The single source of truth a fresh session reads before any phase. Record once, reference forever.
 
 ## Current status
-- **Active phase:** Phase 1 (not started)
+- **Active phase:** Phase 2 (Phase 1 COMPLETE 2026-06-17; the resolved table is now a generated DIRECTORY + barrel, SHA invariant, bundle-neutral)
 - **Branch:** all code work on `feature/i18n-lazy-locales` (cut off `release/v0.9`), PR'd back into `release/v0.9`. Planning docs were committed on `release/v0.9` directly.
 - **Canonical design:** `docs/i18n-scaling/phase-3-lazy-locales-and-contributor-workflow.md` (818 lines, audited 2026-06-17). This packet decomposes that doc's code Steps 1-4 into Phases 1-5; Phase 6 is the doc's open Q6 (the `i18n.en.ts` directory split), which the maintainer chose to include.
 
@@ -73,7 +73,7 @@ It does **NOT** touch `src/sim/`, `server/`, `src/net/`, `src/world_api.ts` (IWo
 - `src/ui/i18n.en/` (dir: `shell.ts`, `hud.ts`, `abilities.ts`, `quests.ts`, `items.ts`, `game.ts`, `_merge.ts`, `index.ts`) - Phase 6.
 
 ## New symbols added per phase
-- **Phase 1:** `I18N_OUT_DIR` env var (both build scripts + scanner); generated `index.ts` barrel, `loaders.ts` (`export const LOCALE_LOADERS`, `export const SUPPORTED_LANGUAGES`), `pending.ts`.
+- **Phase 1 (LANDED 2026-06-17):** `I18N_OUT_DIR` env var on **both build scripts** (NOT the scanner - the scanner reads source overlays, never the resolved table, so it has no resolved-dir to redirect and needed zero edit; it produces a byte-identical `status.json`); a `writeModuleDir(dir, modules)` helper (per-file temp-write + `renameSync` + orphan-sweep) duplicated in each build script; generated `index.ts` barrel, `loaders.ts` (`export const LOCALE_LOADERS`, `export const SUPPORTED_LANGUAGES`), `pending.ts`, `en_XA.ts`, and one dense `<lang>.ts` per locale. `src/ui/i18n.ts` + `src/admin/i18n.ts` unchanged (directory-index resolution). Tests touched: `i18n_resolved_equivalence` + `i18n_admin_catalog` (repointed reproducibility git-checks to the dir; admin bundle-isolation check now resolves-and-checks-escape instead of `startsWith("..")`).
 - **Phase 2:** in `src/ui/i18n.ts`: `resident` map, `inflight` map, `export async function ensureLocaleLoaded(lang)`, `export function isLocaleResident(lang)`, `reportLocaleLoadFailure(lang, err)`; `tableFor()` gains the `resident[lang] ?? resident.en!` line. Admin: `ensureAdminLocaleLoaded`. New `en` keys: `settings.languageLoadFailed`, `settings.languageLoadUnavailable`, `settings.languageLoading`.
 - **Phase 4:** inline boot `<script>` in `index.html`; a post-build hook to resolve the stored locale's hashed chunk from `dist/.vite/manifest.json`; runtime prefetch helper.
 - **Phase 5:** `i18n:gen` package script (`i18n:build && i18n:admin && i18n:scan`); `assertDeterministic` in `tests/helpers/i18n_determinism.ts`; optional committed `src/ui/i18n.status.summary.json`.
@@ -92,7 +92,8 @@ It does **NOT** touch `src/sim/`, `server/`, `src/net/`, `src/world_api.ts` (IWo
 - **Release-tier fill of the 3 Phase 2 keys** (above) - maintainer action; gates the release-tier merge, not the PR.
 - **Test-env dynamic import shape:** under vitest (node, no DOM) `import('./es')` resolves the SOURCE `.ts` with named exports, so `mod.default` is `undefined`. The loader read must be shape-tolerant: `resident[lang] = mod.default ?? mod[lang]`.
 - **`import.meta.env.PROD` is not statically replaced under raw vitest** - reuse the existing `isReleaseBuild()` try-catch pattern, not a bare `import.meta.env.PROD`.
-- **Torn directory write:** the emit must compute every module fully in memory, then write all (or `rmSync` + recreate), so a crash never leaves a half-written generated dir.
+- **Torn directory write (RESOLVED in Phase 1, drift from the doc):** the emit computes every module in memory, then writes each via a temp file + `renameSync` + an orphan-sweep - NOT `rmSync(dir)` + recreate as the doc prescribed. `rmSync(dir)` makes every per-locale slice momentarily ABSENT, and a concurrent Vitest worker resolving `./en_XA` through the barrel (the two reproducibility tests regenerate the dir while other workers import it) then fails with "Cannot find module". Temp+rename keeps every module path continuously present and atomically replaced, still leaves no orphan, and is strictly crash-safer. Any future per-locale emit (Phase 6) must keep this pattern, not `rmSync`.
+- **Real bundle size on this branch is ~1.19 MB gzip, not the 1.13 MB printed in these docs** (the 1.13 figure predates merges into the `release/v0.9` lineage this branch was cut from). Phase 1 is bundle-neutral: HEAD single-file main gzip 1,194.58 kB vs the dir-split 1,194.62 kB. Phase 3's ~590 KB target is a *relative* drop from this ~1.19 MB, not from 1.13 MB.
 - **Modulepreload manifest resolution (Phase 4):** read the hashed locale-chunk filename from Vite's post-build `manifest.json`; match `crossorigin` to the module request to avoid a double-fetch. Do NOT speculatively preload other locales.
 - **Stale-chunk window on deploy (R11):** a returning user mid-deploy may 404 an old chunk hash; the immutable `/assets/*` cache + `no-cache` index.html + the loader's English-fallback covers it. No `server/static_cache.ts` change needed.
 - **No `manualChunks` change in `vite.config.ts`** - Rollup auto-splits on the `loaders.ts` `import()` thunks.
