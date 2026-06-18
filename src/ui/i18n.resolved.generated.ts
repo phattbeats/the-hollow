@@ -1248,6 +1248,10 @@ export const en: EnTranslations = {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
       },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
+      },
       "charge": {
         "name": "Charge",
         "description": "Charges an enemy, generating 9 rage and stunning it for 1 sec. 8-25 yd range."
@@ -4872,6 +4876,10 @@ export const es: EnTranslations = {
       "commanding_shout": {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
+      },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
       },
       "charge": {
         "name": "Cargar",
@@ -8498,6 +8506,10 @@ export const es_ES: EnTranslations = {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
       },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
+      },
       "charge": {
         "name": "Cargar",
         "description": "Carga contra un enemigo, genera 9 de ira y lo aturde durante 1 s. Alcance de 8-25 m."
@@ -12122,6 +12134,10 @@ export const fr_FR: EnTranslations = {
       "commanding_shout": {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
+      },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
       },
       "charge": {
         "name": "Charge",
@@ -15748,6 +15764,10 @@ export const fr_CA: EnTranslations = {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
       },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
+      },
       "charge": {
         "name": "Charge",
         "description": "Charge un ennemi, génère 9 rage et l'étourdit pendant 1 s. Portée de 8-25 m."
@@ -19372,6 +19392,10 @@ export const en_CA: EnTranslations = {
       "commanding_shout": {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
+      },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
       },
       "charge": {
         "name": "Charge",
@@ -22998,6 +23022,10 @@ export const it_IT: EnTranslations = {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
       },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
+      },
       "charge": {
         "name": "Carica",
         "description": "Carica un nemico, genera 9 rabbia e lo stordisce per 1 s. Portata 8-25 m."
@@ -26622,6 +26650,10 @@ export const de_DE: EnTranslations = {
       "commanding_shout": {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
+      },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
       },
       "charge": {
         "name": "Sturmangriff",
@@ -30248,6 +30280,10 @@ export const zh_CN: EnTranslations = {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
       },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
+      },
       "charge": {
         "name": "冲锋",
         "description": "向一名敌人冲锋，产生 9 点怒气并使其昏迷 1 秒。8-25 码距离。"
@@ -33872,6 +33908,10 @@ export const zh_TW: EnTranslations = {
       "commanding_shout": {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
+      },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
       },
       "charge": {
         "name": "衝鋒",
@@ -37498,6 +37538,10 @@ export const ko_KR: EnTranslations = {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
       },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
+      },
       "charge": {
         "name": "돌진",
         "description": "적에게 돌진하여 분노 9를 생성하고 1초 동안 기절시킵니다. 사거리 8-25yd."
@@ -41122,6 +41166,10 @@ export const ja_JP: EnTranslations = {
       "commanding_shout": {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
+      },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
       },
       "charge": {
         "name": "チャージ",
@@ -44748,6 +44796,10 @@ export const pt_BR: EnTranslations = {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
       },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
+      },
       "charge": {
         "name": "Investida",
         "description": "Investe contra um inimigo, gera 9 de raiva e o atordoa por 1 s. Alcance de 8-25 m."
@@ -48373,6 +48425,10 @@ export const ru_RU: EnTranslations = {
         "name": "Commanding Shout",
         "description": "Increases your Stamina by 6 for 2 min."
       },
+      "demoralizing_shout": {
+        "name": "Demoralizing Shout",
+        "description": "Lets out a fearsome shout, reducing the attack power of all nearby enemies by 30 for 30 sec."
+      },
       "charge": {
         "name": "Рывок",
         "description": "Вы бросаетесь к врагу, накапливаете 9 ярости и оглушаете его на 1 сек. Дальность 8-25 м."
@@ -50784,6 +50840,8 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.commanding_shout.name",
     "entities.abilities.conjure_food.description",
     "entities.abilities.conjure_food.name",
+    "entities.abilities.demoralizing_shout.description",
+    "entities.abilities.demoralizing_shout.name",
     "entities.abilities.flametongue_weapon.description",
     "entities.abilities.flametongue_weapon.name",
     "entities.abilities.frostbrand_weapon.description",
@@ -50805,6 +50863,8 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.commanding_shout.name",
     "entities.abilities.conjure_food.description",
     "entities.abilities.conjure_food.name",
+    "entities.abilities.demoralizing_shout.description",
+    "entities.abilities.demoralizing_shout.name",
     "entities.abilities.flametongue_weapon.description",
     "entities.abilities.flametongue_weapon.name",
     "entities.abilities.frostbrand_weapon.description",
@@ -50826,6 +50886,8 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.commanding_shout.name",
     "entities.abilities.conjure_food.description",
     "entities.abilities.conjure_food.name",
+    "entities.abilities.demoralizing_shout.description",
+    "entities.abilities.demoralizing_shout.name",
     "entities.abilities.flametongue_weapon.description",
     "entities.abilities.flametongue_weapon.name",
     "entities.abilities.frostbrand_weapon.description",
@@ -50847,6 +50909,8 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.commanding_shout.name",
     "entities.abilities.conjure_food.description",
     "entities.abilities.conjure_food.name",
+    "entities.abilities.demoralizing_shout.description",
+    "entities.abilities.demoralizing_shout.name",
     "entities.abilities.flametongue_weapon.description",
     "entities.abilities.flametongue_weapon.name",
     "entities.abilities.frostbrand_weapon.description",
@@ -50869,6 +50933,8 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.commanding_shout.name",
     "entities.abilities.conjure_food.description",
     "entities.abilities.conjure_food.name",
+    "entities.abilities.demoralizing_shout.description",
+    "entities.abilities.demoralizing_shout.name",
     "entities.abilities.flametongue_weapon.description",
     "entities.abilities.flametongue_weapon.name",
     "entities.abilities.frostbrand_weapon.description",
@@ -50890,6 +50956,8 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.commanding_shout.name",
     "entities.abilities.conjure_food.description",
     "entities.abilities.conjure_food.name",
+    "entities.abilities.demoralizing_shout.description",
+    "entities.abilities.demoralizing_shout.name",
     "entities.abilities.flametongue_weapon.description",
     "entities.abilities.flametongue_weapon.name",
     "entities.abilities.frostbrand_weapon.description",
@@ -50911,6 +50979,8 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.commanding_shout.name",
     "entities.abilities.conjure_food.description",
     "entities.abilities.conjure_food.name",
+    "entities.abilities.demoralizing_shout.description",
+    "entities.abilities.demoralizing_shout.name",
     "entities.abilities.flametongue_weapon.description",
     "entities.abilities.flametongue_weapon.name",
     "entities.abilities.frostbrand_weapon.description",
@@ -50932,6 +51002,8 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.commanding_shout.name",
     "entities.abilities.conjure_food.description",
     "entities.abilities.conjure_food.name",
+    "entities.abilities.demoralizing_shout.description",
+    "entities.abilities.demoralizing_shout.name",
     "entities.abilities.flametongue_weapon.description",
     "entities.abilities.flametongue_weapon.name",
     "entities.abilities.frostbrand_weapon.description",
@@ -50953,6 +51025,8 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.commanding_shout.name",
     "entities.abilities.conjure_food.description",
     "entities.abilities.conjure_food.name",
+    "entities.abilities.demoralizing_shout.description",
+    "entities.abilities.demoralizing_shout.name",
     "entities.abilities.flametongue_weapon.description",
     "entities.abilities.flametongue_weapon.name",
     "entities.abilities.frostbrand_weapon.description",
@@ -50974,6 +51048,8 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.commanding_shout.name",
     "entities.abilities.conjure_food.description",
     "entities.abilities.conjure_food.name",
+    "entities.abilities.demoralizing_shout.description",
+    "entities.abilities.demoralizing_shout.name",
     "entities.abilities.flametongue_weapon.description",
     "entities.abilities.flametongue_weapon.name",
     "entities.abilities.frostbrand_weapon.description",
@@ -50995,6 +51071,8 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.commanding_shout.name",
     "entities.abilities.conjure_food.description",
     "entities.abilities.conjure_food.name",
+    "entities.abilities.demoralizing_shout.description",
+    "entities.abilities.demoralizing_shout.name",
     "entities.abilities.flametongue_weapon.description",
     "entities.abilities.flametongue_weapon.name",
     "entities.abilities.frostbrand_weapon.description",
@@ -51016,6 +51094,8 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.commanding_shout.name",
     "entities.abilities.conjure_food.description",
     "entities.abilities.conjure_food.name",
+    "entities.abilities.demoralizing_shout.description",
+    "entities.abilities.demoralizing_shout.name",
     "entities.abilities.flametongue_weapon.description",
     "entities.abilities.flametongue_weapon.name",
     "entities.abilities.frostbrand_weapon.description",
@@ -52270,6 +52350,10 @@ export const en_XA: EnTranslations = {
       "commanding_shout": {
         "name": "[Çóɱɱáñðíñĝ Šĥóúţ]",
         "description": "[Íñçŕéášéš ýóúŕ Šţáɱíñá ƀý 6 ƒóŕ 2 ɱíñ.]"
+      },
+      "demoralizing_shout": {
+        "name": "[Ðéɱóŕáļížíñĝ Šĥóúţ]",
+        "description": "[Ļéţš óúţ á ƒéáŕšóɱé šĥóúţ, ŕéðúçíñĝ ţĥé áţţáçķ þóŵéŕ óƒ áļļ ñéáŕƀý éñéɱíéš ƀý 30 ƒóŕ 30 šéç.]"
       },
       "charge": {
         "name": "[Çĥáŕĝé]",
