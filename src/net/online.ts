@@ -25,6 +25,8 @@ export interface CharacterSummary {
   skin: number;
   online: boolean;
   forceRename: boolean;
+  lastPlayed?: string | null;
+  playtimeSeconds?: number;
 }
 
 export function buildWebSocketUrl(protocol: string, host: string): string {

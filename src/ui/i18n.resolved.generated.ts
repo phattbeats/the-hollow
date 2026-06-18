@@ -379,7 +379,14 @@ export const en: EnTranslations = {
     "portraitAlt": "Portrait of {name}",
     "viewProfile": "View Profile",
     "profile": "Profile",
-    "closeProfile": "Close profile"
+    "closeProfile": "Close profile",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "Delete Character",
@@ -4085,7 +4092,14 @@ export const es: EnTranslations = {
     "portraitAlt": "Retrato de {name}",
     "viewProfile": "Ver perfil",
     "profile": "Perfil",
-    "closeProfile": "Cerrar perfil"
+    "closeProfile": "Cerrar perfil",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "Eliminar personaje",
@@ -7791,7 +7805,14 @@ export const es_ES: EnTranslations = {
     "portraitAlt": "Retrato de {name}",
     "viewProfile": "Ver perfil",
     "profile": "Perfil",
-    "closeProfile": "Cerrar perfil"
+    "closeProfile": "Cerrar perfil",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "Eliminar personaje",
@@ -11497,7 +11518,14 @@ export const fr_FR: EnTranslations = {
     "portraitAlt": "Portrait de {name}",
     "viewProfile": "Voir le profil",
     "profile": "Profil",
-    "closeProfile": "Fermer le profil"
+    "closeProfile": "Fermer le profil",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "Supprimer le personnage",
@@ -15203,7 +15231,14 @@ export const fr_CA: EnTranslations = {
     "portraitAlt": "Portrait de {name}",
     "viewProfile": "Voir le profil",
     "profile": "Profil",
-    "closeProfile": "Fermer le profil"
+    "closeProfile": "Fermer le profil",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "Supprimer le personnage",
@@ -18909,7 +18944,14 @@ export const en_CA: EnTranslations = {
     "portraitAlt": "Portrait of {name}",
     "viewProfile": "View Profile",
     "profile": "Profile",
-    "closeProfile": "Close profile"
+    "closeProfile": "Close profile",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "Delete Character",
@@ -22615,7 +22657,14 @@ export const it_IT: EnTranslations = {
     "portraitAlt": "Ritratto di {name}",
     "viewProfile": "Vedi profilo",
     "profile": "Profilo",
-    "closeProfile": "Chiudi profilo"
+    "closeProfile": "Chiudi profilo",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "Elimina personaggio",
@@ -26321,7 +26370,14 @@ export const de_DE: EnTranslations = {
     "portraitAlt": "Porträt von {name}",
     "viewProfile": "Profil ansehen",
     "profile": "Profil",
-    "closeProfile": "Profil schließen"
+    "closeProfile": "Profil schließen",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "Charakter löschen",
@@ -30027,7 +30083,14 @@ export const zh_CN: EnTranslations = {
     "portraitAlt": "{name}的头像",
     "viewProfile": "查看资料",
     "profile": "角色资料",
-    "closeProfile": "关闭资料"
+    "closeProfile": "关闭资料",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "删除角色",
@@ -33733,7 +33796,14 @@ export const zh_TW: EnTranslations = {
     "portraitAlt": "{name}的頭像",
     "viewProfile": "查看資料",
     "profile": "角色資料",
-    "closeProfile": "關閉資料"
+    "closeProfile": "關閉資料",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "刪除角色",
@@ -37439,7 +37509,14 @@ export const ko_KR: EnTranslations = {
     "portraitAlt": "{name}의 초상화",
     "viewProfile": "프로필 보기",
     "profile": "프로필",
-    "closeProfile": "프로필 닫기"
+    "closeProfile": "프로필 닫기",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "캐릭터 삭제",
@@ -41145,7 +41222,14 @@ export const ja_JP: EnTranslations = {
     "portraitAlt": "{name}の肖像",
     "viewProfile": "プロフィールを見る",
     "profile": "プロフィール",
-    "closeProfile": "プロフィールを閉じる"
+    "closeProfile": "プロフィールを閉じる",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "キャラクターを削除",
@@ -44851,7 +44935,14 @@ export const pt_BR: EnTranslations = {
     "portraitAlt": "Retrato de {name}",
     "viewProfile": "Ver perfil",
     "profile": "Perfil",
-    "closeProfile": "Fechar perfil"
+    "closeProfile": "Fechar perfil",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "Excluir personagem",
@@ -48557,7 +48648,14 @@ export const ru_RU: EnTranslations = {
     "portraitAlt": "Портрет {name}",
     "viewProfile": "Профиль",
     "profile": "Профиль",
-    "closeProfile": "Закрыть профиль"
+    "closeProfile": "Закрыть профиль",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "Удалить персонажа",
@@ -51911,19 +52009,115 @@ export const translations = {
 };
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "character.sortBy",
+    "character.sortByLabel",
+    "character.sortLevel",
+    "character.sortMenuLabel",
+    "character.sortName",
+    "character.sortPlaytime",
+    "character.sortRecent"
+  ],
+  "es_ES": [
+    "character.sortBy",
+    "character.sortByLabel",
+    "character.sortLevel",
+    "character.sortMenuLabel",
+    "character.sortName",
+    "character.sortPlaytime",
+    "character.sortRecent"
+  ],
+  "fr_FR": [
+    "character.sortBy",
+    "character.sortByLabel",
+    "character.sortLevel",
+    "character.sortMenuLabel",
+    "character.sortName",
+    "character.sortPlaytime",
+    "character.sortRecent"
+  ],
+  "fr_CA": [
+    "character.sortBy",
+    "character.sortByLabel",
+    "character.sortLevel",
+    "character.sortMenuLabel",
+    "character.sortName",
+    "character.sortPlaytime",
+    "character.sortRecent"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
-  "zh_CN": [],
-  "zh_TW": [],
-  "ko_KR": [],
-  "ja_JP": [],
-  "pt_BR": [],
-  "ru_RU": []
+  "it_IT": [
+    "character.sortBy",
+    "character.sortByLabel",
+    "character.sortLevel",
+    "character.sortMenuLabel",
+    "character.sortName",
+    "character.sortPlaytime",
+    "character.sortRecent"
+  ],
+  "de_DE": [
+    "character.sortBy",
+    "character.sortByLabel",
+    "character.sortLevel",
+    "character.sortMenuLabel",
+    "character.sortName",
+    "character.sortPlaytime",
+    "character.sortRecent"
+  ],
+  "zh_CN": [
+    "character.sortBy",
+    "character.sortByLabel",
+    "character.sortLevel",
+    "character.sortMenuLabel",
+    "character.sortName",
+    "character.sortPlaytime",
+    "character.sortRecent"
+  ],
+  "zh_TW": [
+    "character.sortBy",
+    "character.sortByLabel",
+    "character.sortLevel",
+    "character.sortMenuLabel",
+    "character.sortName",
+    "character.sortPlaytime",
+    "character.sortRecent"
+  ],
+  "ko_KR": [
+    "character.sortBy",
+    "character.sortByLabel",
+    "character.sortLevel",
+    "character.sortMenuLabel",
+    "character.sortName",
+    "character.sortPlaytime",
+    "character.sortRecent"
+  ],
+  "ja_JP": [
+    "character.sortBy",
+    "character.sortByLabel",
+    "character.sortLevel",
+    "character.sortMenuLabel",
+    "character.sortName",
+    "character.sortPlaytime",
+    "character.sortRecent"
+  ],
+  "pt_BR": [
+    "character.sortBy",
+    "character.sortByLabel",
+    "character.sortLevel",
+    "character.sortMenuLabel",
+    "character.sortName",
+    "character.sortPlaytime",
+    "character.sortRecent"
+  ],
+  "ru_RU": [
+    "character.sortBy",
+    "character.sortByLabel",
+    "character.sortLevel",
+    "character.sortMenuLabel",
+    "character.sortName",
+    "character.sortPlaytime",
+    "character.sortRecent"
+  ]
 };
 
 export const en_XA: EnTranslations = {
@@ -52296,7 +52490,14 @@ export const en_XA: EnTranslations = {
     "portraitAlt": "[Þóŕţŕáíţ óƒ {name}]",
     "viewProfile": "[Ʋíéŵ Þŕóƒíļé]",
     "profile": "[Þŕóƒíļé]",
-    "closeProfile": "[Çļóšé þŕóƒíļé]"
+    "closeProfile": "[Çļóšé þŕóƒíļé]",
+    "sortBy": "[Šóŕţ]",
+    "sortByLabel": "[Šóŕţ çĥáŕáçţéŕš]",
+    "sortMenuLabel": "[Šóŕţ óþţíóñš]",
+    "sortLevel": "[Ļéʋéļ]",
+    "sortName": "[Ñáɱé]",
+    "sortRecent": "[Ŕéçéñţļý Þļáýéð]",
+    "sortPlaytime": "[Þļáýţíɱé]"
   },
   "deleteCharacter": {
     "title": "[Ðéļéţé Çĥáŕáçţéŕ]",

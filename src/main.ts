@@ -10,6 +10,7 @@ import { music } from './game/music';
 import { activePvpOpponentIds, handlePickedEntity, hoverCursorKind, isAttackableEntity } from './game/interactions';
 import { clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, distance2d, latencyAdjustedStopDistance, stepAngleToward } from './game/click_move';
 import { Api, ClientWorld, CharacterSummary, type ReleaseEntry } from './net/online';
+import { CHAR_SORT_MODES, normalizeCharSortMode, sortCharacters, type CharSortMode } from './net/char_sort';
 import type { IWorld, LeaderboardEntry } from './world_api';
 import { findPlayerPath, resolvePlayerDestination } from './sim/pathfind';
 import { pathCrossesFence } from './sim/colliders';
@@ -1762,6 +1763,58 @@ function selectRealmInline(entry: import('./net/online').RealmEntry): void {
   void refreshCharacters();
 }
 
+// --- Character sort dropdown (character-select screen) ------------------------
+const CHAR_SORT_KEY = 'wocc.charSort';
+const CHAR_SORT_LABEL_KEYS: Record<CharSortMode, TranslationKey> = {
+  level: 'character.sortLevel',
+  name: 'character.sortName',
+  recent: 'character.sortRecent',
+  playtime: 'character.sortPlaytime',
+};
+let charSortMode: CharSortMode = normalizeCharSortMode(localStorage.getItem(CHAR_SORT_KEY));
+let sortDropdownOpen = false;
+
+function updateSortButtonLabel(): void {
+  const el = document.getElementById('cs-sort-current');
+  if (el) el.textContent = t(CHAR_SORT_LABEL_KEYS[charSortMode]);
+}
+
+function closeSortDropdown(): void {
+  document.getElementById('cs-sort-menu')?.setAttribute('hidden', '');
+  document.getElementById('cs-sort-btn')?.setAttribute('aria-expanded', 'false');
+  sortDropdownOpen = false;
+}
+
+function setCharSort(mode: CharSortMode): void {
+  closeSortDropdown();
+  if (mode === charSortMode) return;
+  charSortMode = mode;
+  localStorage.setItem(CHAR_SORT_KEY, mode);
+  updateSortButtonLabel();
+  void refreshCharacters();
+}
+
+function renderSortDropdown(): void {
+  const menu = $('#cs-sort-menu');
+  menu.innerHTML = CHAR_SORT_MODES.map((m) => {
+    const sel = m === charSortMode;
+    return `<div class="realm-row cs-realm-row cs-sort-row${sel ? ' sel' : ''}" role="option" aria-selected="${sel}" data-mode="${m}">
+        <div class="realm-name">${escapeHtml(t(CHAR_SORT_LABEL_KEYS[m]))}</div>
+      </div>`;
+  }).join('');
+  menu.querySelectorAll('.cs-sort-row').forEach((row) => row.addEventListener('click', () => {
+    setCharSort(normalizeCharSortMode((row as HTMLElement).dataset.mode));
+  }));
+}
+
+function toggleSortDropdown(): void {
+  if (sortDropdownOpen) { closeSortDropdown(); return; }
+  $('#cs-sort-btn').setAttribute('aria-expanded', 'true');
+  $('#cs-sort-menu').removeAttribute('hidden');
+  sortDropdownOpen = true;
+  renderSortDropdown();
+}
+
 function setDeleteCharacterError(message: string): void {
   $('#delete-character-error').textContent = message;
 }
@@ -1799,10 +1852,11 @@ function openDeleteCharacterDialog(character: CharacterSummary): void {
 
 async function refreshCharacters(): Promise<void> {
   if (api.realm) $('#charselect-realm').textContent = api.realm;
+  updateSortButtonLabel();
   const listEl = $('#char-list');
   listEl.innerHTML = `<li class="char-list-message">${escapeHtml(t('character.loading'))}</li>`;
   try {
-    const chars = await api.characters();
+    const chars = sortCharacters(await api.characters(), charSortMode);
     if (api.realm) $('#charselect-realm').textContent = api.realm;
     listEl.innerHTML = '';
     if (chars.length === 0) {
@@ -3074,6 +3128,20 @@ function wireStartScreens(): void {
     if (realmDropdownOpen && e.key === 'Escape') closeRealmDropdown();
   });
 
+  // Character sort dropdown: toggle, outside-click, and Escape.
+  $('#cs-sort-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleSortDropdown();
+  });
+  document.addEventListener('click', (e) => {
+    if (!sortDropdownOpen) return;
+    const sw = document.querySelector('.cs-sort-switch');
+    if (sw && !sw.contains(e.target as Node)) closeSortDropdown();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (sortDropdownOpen && e.key === 'Escape') closeSortDropdown();
+  });
+
   // character creation
   document.querySelectorAll('#charcreate-panel .mini-class').forEach((el) => {
     const handleMiniClassSelect = () => {
@@ -3376,6 +3444,7 @@ function wireStartScreens(): void {
       
       translatePage();
       refreshLocalizedDynamicShell();
+      updateSortButtonLabel();
       document.dispatchEvent(new CustomEvent('woc:languagechange', { detail: { language: selected } }));
     });
   }

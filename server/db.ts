@@ -332,6 +332,8 @@ export interface CharacterRow {
   state: CharacterState | null;
   is_gm: boolean;
   force_rename: boolean;
+  last_played?: Date | string | null;
+  playtime_seconds?: string | number | null;
 }
 
 // Character reads/writes are scoped to this process's realm: an account may
@@ -339,7 +341,19 @@ export interface CharacterRow {
 // process only ever lists, loads, or creates characters on its own realm.
 export async function listCharacters(accountId: number): Promise<CharacterRow[]> {
   const res = await pool.query(
-    'SELECT id, account_id, name, class, level, state, is_gm, force_rename FROM characters WHERE account_id = $1 AND realm = $2 ORDER BY id',
+    `SELECT c.id, c.account_id, c.name, c.class, c.level, c.state, c.is_gm, c.force_rename,
+            ps.last_played, ps.playtime_seconds
+       FROM characters c
+       LEFT JOIN (
+         SELECT character_id,
+                MAX(started_at) AS last_played,
+                COALESCE(SUM(EXTRACT(EPOCH FROM (COALESCE(ended_at, now()) - started_at))), 0)::bigint AS playtime_seconds
+           FROM play_sessions
+          WHERE account_id = $1
+          GROUP BY character_id
+       ) ps ON ps.character_id = c.id
+      WHERE c.account_id = $1 AND c.realm = $2
+      ORDER BY c.id`,
     [accountId, REALM],
   );
   return res.rows;

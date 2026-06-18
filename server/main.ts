@@ -372,6 +372,8 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
             skin: c.state?.skin ?? 0,
             online: [...game.clients.values()].some((s) => s.characterId === c.id),
             forceRename: c.force_rename,
+            lastPlayed: c.last_played ? new Date(c.last_played).toISOString() : null,
+            playtimeSeconds: Number(c.playtime_seconds ?? 0),
           })),
         });
       }
