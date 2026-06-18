@@ -1992,4 +1992,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   "auth.noAccountPrompt": "Впервые в мире?",
   "auth.haveAccountPrompt": "Уже есть аккаунт?",
 
+  "entities.items.conjured_bread.name": "Сотворённый хлеб",
+  "entities.items.conjured_bread2.name": "Сотворённый ржаной хлеб",
+  "entities.items.conjured_bread3.name": "Сотворённая сладкая булочка",
 };

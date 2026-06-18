@@ -1992,4 +1992,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   "auth.noAccountPrompt": "初來乍到？",
   "auth.haveAccountPrompt": "已有帳號？",
 
+  "entities.items.conjured_bread.name": "魔法麵包",
+  "entities.items.conjured_bread2.name": "魔法黑麥麵包",
+  "entities.items.conjured_bread3.name": "魔法甜麵包",
 };

@@ -1992,4 +1992,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   "auth.noAccountPrompt": "Novo no reino?",
   "auth.haveAccountPrompt": "Já tem uma conta?",
 
+  "entities.items.conjured_bread.name": "Pão conjurado",
+  "entities.items.conjured_bread2.name": "Pão preto conjurado",
+  "entities.items.conjured_bread3.name": "Pãozinho doce conjurado",
 };

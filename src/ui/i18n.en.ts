@@ -5912,6 +5912,7 @@ const classAbilityNamesEn = {
       ["berserker_rage", "Berserker Rage", "Enter a berserker rage, generating 20 rage. (Warrior talent)"],
       ["summon_imp", "Summon Imp", "Summons an Imp under the command of the Warlock. The Imp hurls Firebolts at your enemies from afar. Summoning a new demon dismisses your current one. You may have one demon at a time."],
       ["summon_voidwalker", "Summon Voidwalker", "Summons a Voidwalker under the command of the Warlock. The Voidwalker is a sturdy demon that taunts your enemies and soaks up punishment. Summoning a new demon dismisses your current one. You may have one demon at a time."],
+      ["summon_succubus", "Summon Succubus", "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."],
     ]),
   },
 };
@@ -6041,6 +6042,7 @@ export const classAbilityNames = {
         ["berserker_rage", "Ira rabiosa", "Entras en una ira rabiosa y generas 20 de ira. (talento de guerrero)"],
         ["summon_imp", "Invocar diablillo", "Invoca a un Diablillo bajo el mando del brujo. El Diablillo lanza Descargas de Fuego a tus enemigos desde la distancia. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."],
         ["summon_voidwalker", "Invocar caminante del Vacío", "Invoca a un Caminante del Vacío bajo el mando del brujo. El Caminante del Vacío es un demonio resistente que provoca a tus enemigos y encaja el castigo. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."],
+        ["summon_succubus", "Invocar súcubo", "Invoca a un Súcubo bajo el mando del brujo. El Súcubo es un demonio ágil que despedaza a tus enemigos con feroces golpes cuerpo a cuerpo. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."],
       ]),
     },
   },
@@ -6168,6 +6170,7 @@ export const classAbilityNames = {
         ["berserker_rage", "Rage berserker", "Entre dans une rage berserker et génère 20 rage. (talent de guerrier)"],
         ["summon_imp", "Invoquer un diablotin", "Invoque un Diablotin sous le commandement du démoniste. Le Diablotin lance des Éclairs de feu sur vos ennemis à distance. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."],
         ["summon_voidwalker", "Invoquer un marcheur du Vide", "Invoque un Marcheur du Vide sous le commandement du démoniste. Le Marcheur du Vide est un démon robuste qui provoque vos ennemis et encaisse les coups. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."],
+        ["summon_succubus", "Invoquer une succube", "Invoque une Succube sous le commandement du démoniste. La Succube est un démon rapide qui déchire vos ennemis de violents coups au corps à corps. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."],
       ]),
     },
   },
@@ -6296,6 +6299,7 @@ export const classAbilityNames = {
         ["berserker_rage", "Rabbia del Berserker", "Entri in una furia berserker e generi 20 rabbia. (talento del guerriero)"],
         ["summon_imp", "Evoca folletto", "Evoca un Folletto al comando dello stregone. Il Folletto scaglia Dardi di fuoco contro i tuoi nemici a distanza. Evocare un nuovo demone congeda quello attuale. Puoi avere un solo demone alla volta."],
         ["summon_voidwalker", "Evoca camminatore del Vuoto", "Evoca un Camminatore del Vuoto al comando dello stregone. Il Camminatore del Vuoto è un demone robusto che provoca i tuoi nemici e assorbe i colpi. Evocare un nuovo demone congeda quello attuale. Puoi avere un solo demone alla volta."],
+        ["summon_succubus", "Evoca succube", "Evoca una Succube al comando dello stregone. La Succube è un demone rapido che fa a pezzi i tuoi nemici con feroci colpi in mischia. Evocare un nuovo demone congeda quello attuale. Puoi avere un solo demone alla volta."],
       ]),
     },
   },
@@ -6422,6 +6426,7 @@ export const classAbilityNames = {
         ["berserker_rage", "Berserkerwut", "Ihr verfallt in Berserkerwut und erzeugt 20 Wut. (Krieger-Talent)"],
         ["summon_imp", "Wichtel beschwören", "Beschwört einen Wichtel unter dem Befehl des Hexenmeisters. Der Wichtel schleudert aus der Ferne Feuerblitze auf Eure Feinde. Das Beschwören eines neuen Dämons entlässt Euren aktuellen. Ihr könnt nur einen Dämon zur Zeit haben."],
         ["summon_voidwalker", "Leerwandler beschwören", "Beschwört einen Leerwandler unter dem Befehl des Hexenmeisters. Der Leerwandler ist ein zäher Dämon, der Eure Feinde verhöhnt und Schaden einsteckt. Das Beschwören eines neuen Dämons entlässt Euren aktuellen. Ihr könnt nur einen Dämon zur Zeit haben."],
+        ["summon_succubus", "Sukkubus beschwören", "Beschwört einen Sukkubus unter dem Befehl des Hexenmeisters. Der Sukkubus ist ein flinker Dämon, der Eure Feinde mit wilden Nahkampfschlägen zerfetzt. Das Beschwören eines neuen Dämons entlässt Euren aktuellen. Ihr könnt nur einen Dämon zur Zeit haben."],
       ]),
     },
   },
@@ -6548,6 +6553,7 @@ export const classAbilityNames = {
         ["berserker_rage", "狂暴之怒", "进入狂暴之怒，产生 20 点怒气。（战士天赋）"],
         ["summon_imp", "召唤小鬼", "召唤一只听从术士命令的小鬼。小鬼会从远处向你的敌人投掷火焰箭。召唤新的恶魔会驱散你当前的恶魔。你同时只能拥有一只恶魔。"],
         ["summon_voidwalker", "召唤虚空行者", "召唤一只听从术士命令的虚空行者。虚空行者是一种坚韧的恶魔，会嘲讽你的敌人并承受打击。召唤新的恶魔会驱散你当前的恶魔。你同时只能拥有一只恶魔。"],
+        ["summon_succubus", "召唤魅魔", "召唤一只听从术士命令的魅魔。魅魔是一种敏捷的恶魔，会用凶狠的近战攻击撕裂你的敌人。召唤新的恶魔会驱散你当前的恶魔。你同时只能拥有一只恶魔。"],
       ]),
     },
   },
@@ -6674,6 +6680,7 @@ export const classAbilityNames = {
         ["berserker_rage", "狂暴之怒", "進入狂暴之怒，產生 20 點怒氣。（戰士天賦）"],
         ["summon_imp", "召喚小鬼", "召喚一隻聽從術士命令的小鬼。小鬼會從遠處向你的敵人投擲火焰箭。召喚新的惡魔會驅散你目前的惡魔。你同時只能擁有一隻惡魔。"],
         ["summon_voidwalker", "召喚虛空行者", "召喚一隻聽從術士命令的虛空行者。虛空行者是一種堅韌的惡魔，會嘲諷你的敵人並承受打擊。召喚新的惡魔會驅散你目前的惡魔。你同時只能擁有一隻惡魔。"],
+        ["summon_succubus", "召喚魅魔", "召喚一隻聽從術士命令的魅魔。魅魔是一種敏捷的惡魔，會用兇狠的近戰攻擊撕裂你的敵人。召喚新的惡魔會驅散你目前的惡魔。你同時只能擁有一隻惡魔。"],
       ]),
     },
   },
@@ -6800,6 +6807,7 @@ export const classAbilityNames = {
         ["berserker_rage", "광전사의 격노", "광전사의 격노에 들어가 분노 20을 생성합니다. (전사 특성)"],
         ["summon_imp", "임프 소환", "흑마법사의 명령을 따르는 임프를 소환합니다. 임프는 멀리서 적에게 화염 화살을 날립니다. 새로운 악마를 소환하면 현재 악마는 사라집니다. 한 번에 하나의 악마만 부릴 수 있습니다."],
         ["summon_voidwalker", "공허추적자 소환", "흑마법사의 명령을 따르는 공허추적자를 소환합니다. 공허추적자는 적을 도발하고 피해를 견뎌내는 튼튼한 악마입니다. 새로운 악마를 소환하면 현재 악마는 사라집니다. 한 번에 하나의 악마만 부릴 수 있습니다."],
+        ["summon_succubus", "서큐버스 소환", "흑마법사의 명령을 따르는 서큐버스를 소환합니다. 서큐버스는 사나운 근접 공격으로 적을 갈가리 찢는 날렵한 악마입니다. 새로운 악마를 소환하면 현재 악마는 사라집니다. 한 번에 하나의 악마만 부릴 수 있습니다."],
       ]),
     },
   },
@@ -6926,6 +6934,7 @@ export const classAbilityNames = {
         ["berserker_rage", "バーサーカーレイジ", "バーサーカーの怒りに入り、怒りを20生成します。（戦士タレント）"],
         ["summon_imp", "インプの召喚", "ウォーロックの命令に従うインプを召喚します。インプは遠くから敵にファイアボルトを放ちます。新たな悪魔を召喚すると現在の悪魔は解放されます。悪魔は一度に1体しか従えられません。"],
         ["summon_voidwalker", "ヴォイドウォーカーの召喚", "ウォーロックの命令に従うヴォイドウォーカーを召喚します。ヴォイドウォーカーは敵を挑発し攻撃を受け止める頑強な悪魔です。新たな悪魔を召喚すると現在の悪魔は解放されます。悪魔は一度に1体しか従えられません。"],
+        ["summon_succubus", "サキュバスの召喚", "ウォーロックの命令に従うサキュバスを召喚します。サキュバスは素早い悪魔で、激しい近接攻撃で敵を引き裂きます。新たな悪魔を召喚すると現在の悪魔は解放されます。悪魔は一度に1体しか従えられません。"],
       ]),
     },
   },
@@ -7052,6 +7061,7 @@ export const classAbilityNames = {
         ["berserker_rage", "Raiva Berserker", "Entra em raiva berserker e gera 20 de raiva. (talento de guerreiro)"],
         ["summon_imp", "Invocar diabrete", "Invoca um Diabrete sob o comando do bruxo. O Diabrete arremessa Flechas de Fogo nos seus inimigos à distância. Invocar um novo demônio dispensa o atual. Você só pode ter um demônio por vez."],
         ["summon_voidwalker", "Invocar caminhante do Vazio", "Invoca um Caminhante do Vazio sob o comando do bruxo. O Caminhante do Vazio é um demônio resistente que provoca seus inimigos e absorve o castigo. Invocar um novo demônio dispensa o atual. Você só pode ter um demônio por vez."],
+        ["summon_succubus", "Invocar súcubo", "Invoca um Súcubo sob o comando do bruxo. O Súcubo é um demônio veloz que despedaça seus inimigos com ferozes golpes corpo a corpo. Invocar um novo demônio dispensa o atual. Você só pode ter um demônio por vez."],
       ]),
     },
   },
@@ -7178,6 +7188,7 @@ export const classAbilityNames = {
         ["berserker_rage", "Ярость берсерка", "Впадаете в ярость берсерка и получаете 20 ярости. (талант воина)"],
         ["summon_imp", "Призыв беса", "Призывает Беса под командование чернокнижника. Бес издалека мечет Огненные стрелы в ваших врагов. Призыв нового демона отпускает текущего. Одновременно у вас может быть только один демон."],
         ["summon_voidwalker", "Призыв стража Бездны", "Призывает Стража Бездны под командование чернокнижника. Страж Бездны — крепкий демон, который провоцирует ваших врагов и принимает удары на себя. Призыв нового демона отпускает текущего. Одновременно у вас может быть только один демон."],
+        ["summon_succubus", "Призыв суккуба", "Призывает Суккуба под командование чернокнижника. Суккуб — стремительный демон, который раздирает ваших врагов яростными ударами в ближнем бою. Призыв нового демона отпускает текущего. Одновременно у вас может быть только один демон."],
       ]),
     },
   },
@@ -7596,7 +7607,7 @@ const MERGE_ITEM_IDS = [
 const MERGE_MOB_IDS = [
   'elder_bristleback', 'ironvein_foreman', 'ironvein_sapper', 'marrowlord_varkas', 'mirejaw_frenzy', 'mirejaw_the_ravenous',
   'mogger', 'mogger_lackey', 'nhalia_mourner', 'sableweb_hatchling', 'sableweb_matriarch', 'sister_nhalia', 'varkas_boneguard',
-  'imp', 'voidwalker',
+  'imp', 'voidwalker', 'succubus',
 ] as const;
 
 type MergeNameTranslations<TId extends string> = Record<TId, { name: string }>;
@@ -9457,7 +9468,7 @@ const mergeEntitiesEn = {
   mobs: mergeNameTranslations(MERGE_MOB_IDS, [
     "Elder Bristleback", "Ironvein Foreman", "Ironvein Sapper", "Marrowlord Varkas", "Mirejaw Frenzy", "Mirejaw the Ravenous",
     "Mogger", "Mogger Lackey", "Nhalia Mourner", "Sableweb Hatchling", "Sableweb Matriarch", "Sister Nhalia", "Varkas Boneguard",
-    "Imp", "Voidwalker",
+    "Imp", "Voidwalker", "Succubus",
   ], 'mob'),
   quests: {
     q_mogger_tracks: {
@@ -9492,7 +9503,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Viejo Bristleback", "Capataz Vena de Hierro", "Zapador Vena de Hierro", "Señor de Médula Varkas", "Frenesí Mirejaw", "Mirejaw el Voraz",
       "Mogger", "Esbirro de Mogger", "Doliente de Nhalia", "Cría Sableweb", "Matriarca Sableweb", "Hermana Nhalia", "Guardahuesos de Varkas",
-      "Diablillo", "Caminante del Vacío",
+      "Diablillo", "Caminante del Vacío", "Súcubo",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9525,7 +9536,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Ancien Bristleback", "Contremaître Veinefer", "Sapeur Veinefer", "Seigneur de moelle Varkas", "Frénésie Mirejaw", "Mirejaw l'Affamé",
       "Mogger", "Laquais de Mogger", "Pleureuse de Nhalia", "Jeune Sableweb", "Matriarche Sableweb", "Soeur Nhalia", "Garde-os de Varkas",
-      "Diablotin", "Marcheur du Vide",
+      "Diablotin", "Marcheur du Vide", "Succube",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9559,7 +9570,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Bristleback anziano", "Caposquadra Venaferrata", "Zappatore Venaferrata", "Signore del Midollo Varkas", "Furia Mirejaw", "Mirejaw il Famelico",
       "Mogger", "Lacchè di Mogger", "Piangente di Nhalia", "Piccolo Sableweb", "Matriarca Sableweb", "Sorella Nhalia", "Guardia d'ossa di Varkas",
-      "Folletto", "Camminatore del Vuoto",
+      "Folletto", "Camminatore del Vuoto", "Succube",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9591,7 +9602,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Alter Bristleback", "Eisenader-Vorarbeiter", "Eisenader-Pionier", "Marklord Varkas", "Mirejaw-Raserei", "Mirejaw der Gefräßige",
       "Mogger", "Moggers Lakai", "Nhalia-Trauernde", "Sableweb-Jungtier", "Sableweb-Matriarchin", "Schwester Nhalia", "Varkas' Knochenwache",
-      "Wichtel", "Leerwandler",
+      "Wichtel", "Leerwandler", "Sukkubus",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9623,7 +9634,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "年长硬鬃", "铁脉工头", "铁脉爆破手", "髓王瓦尔卡斯", "泥颚狂鱼", "贪食者泥颚",
       "莫格", "莫格的爪牙", "娜莉娅哀悼者", "黑网幼蛛", "黑网主母", "娜莉娅修女", "瓦尔卡斯骨卫",
-      "小鬼", "虚空行者",
+      "小鬼", "虚空行者", "魅魔",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9655,7 +9666,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "年長硬鬃", "鐵脈工頭", "鐵脈爆破手", "髓王瓦爾卡斯", "泥顎狂魚", "貪食者泥顎",
       "莫格", "莫格的爪牙", "娜莉亞哀悼者", "黑網幼蛛", "黑網主母", "娜莉亞修女", "瓦爾卡斯骨衛",
-      "小鬼", "虛空行者",
+      "小鬼", "虛空行者", "魅魔",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9687,7 +9698,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "늙은 뻣센등뼈", "철맥 감독관", "철맥 폭파병", "골수군주 바르카스", "마이어죠 광란어", "굶주린 마이어죠",
       "모거", "모거의 졸개", "날리아 애도자", "검은그물 새끼", "검은그물 우두머리", "자매 날리아", "바르카스 뼈수호병",
-      "임프", "공허추적자",
+      "임프", "공허추적자", "서큐버스",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9719,7 +9730,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "老ブリストルバック", "鉄脈の現場監督", "鉄脈の爆破兵", "髄王ヴァーカス", "マイアジョーの狂魚", "貪るマイアジョー",
       "モガー", "モガーの手下", "ナリアの嘆き手", "セーブルウェブの幼体", "セーブルウェブの女家長", "シスター・ナリア", "ヴァーカスの骨衛兵",
-      "インプ", "ヴォイドウォーカー",
+      "インプ", "ヴォイドウォーカー", "サキュバス",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9751,7 +9762,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Bristleback ancião", "Capataz Veio de Ferro", "Sapador Veio de Ferro", "Senhor da Medula Varkas", "Frenesi Mirejaw", "Mirejaw, o Voraz",
       "Mogger", "Lacaio de Mogger", "Pranteadora de Nhalia", "Filhote Sableweb", "Matriarca Sableweb", "Irmã Nhalia", "Guardião dos ossos de Varkas",
-      "Diabrete", "Caminhante do Vazio",
+      "Diabrete", "Caminhante do Vazio", "Súcubo",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9783,7 +9794,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Старый Щетиноспин", "Прораб Железной жилы", "Сапер Железной жилы", "Владыка костного мозга Варкас", "Бешенство Миреджо", "Миреджо Ненасытный",
       "Моггер", "Приспешник Моггера", "Плакальщица Налии", "Детеныш Сейблвеб", "Матриарх Сейблвеб", "Сестра Налия", "Костяной страж Варкаса",
-      "Бес", "Страж Бездны",
+      "Бес", "Страж Бездны", "Суккуб",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {

@@ -1992,4 +1992,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   "auth.noAccountPrompt": "처음이신가요?",
   "auth.haveAccountPrompt": "이미 계정이 있으신가요?",
 
+  "entities.items.conjured_bread.name": "마력의 빵",
+  "entities.items.conjured_bread2.name": "마력의 호밀빵",
+  "entities.items.conjured_bread3.name": "마력의 단빵",
 };

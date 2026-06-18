@@ -48,4 +48,7 @@ export const fr_CA: Partial<Record<TranslationKey, string>> = {
   "mobilePreflight.androidInstallStep": "Dans Chrome, touchez le menu, puis Installer l'application ou Ajouter à l'écran d'accueil.",
   "serverUnavailable.body": "Nous redémarrons le service de jeu et Claudemoon devrait revenir sous peu. Cette page continuera de vérifier automatiquement.",
   "serverUnavailable.status": "De retour bientôt",
+  "entities.items.conjured_bread.name": "Pain conjuré",
+  "entities.items.conjured_bread2.name": "Pain noir conjuré",
+  "entities.items.conjured_bread3.name": "Brioche conjurée",
 };

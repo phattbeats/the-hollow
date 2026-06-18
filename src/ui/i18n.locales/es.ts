@@ -1992,4 +1992,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   "auth.noAccountPrompt": "¿Nuevo en el reino?",
   "auth.haveAccountPrompt": "¿Ya tienes una cuenta?",
 
+  "entities.items.conjured_bread.name": "Pan invocado",
+  "entities.items.conjured_bread2.name": "Pan negro invocado",
+  "entities.items.conjured_bread3.name": "Bollo dulce invocado",
 };

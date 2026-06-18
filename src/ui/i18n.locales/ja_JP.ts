@@ -1992,4 +1992,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "auth.noAccountPrompt": "初めてですか？",
   "auth.haveAccountPrompt": "アカウントをお持ちですか？",
 
+  "entities.items.conjured_bread.name": "魔法のパン",
+  "entities.items.conjured_bread2.name": "魔法のライ麦パン",
+  "entities.items.conjured_bread3.name": "魔法の菓子パン",
 };

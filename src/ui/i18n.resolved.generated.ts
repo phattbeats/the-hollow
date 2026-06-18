@@ -1716,6 +1716,10 @@ export const en: EnTranslations = {
         "name": "Summon Voidwalker",
         "description": "Summons a Voidwalker under the command of the Warlock. The Voidwalker is a sturdy demon that taunts your enemies and soaks up punishment. Summoning a new demon dismisses your current one. You may have one demon at a time."
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "Bear Charge",
         "description": "Charge an enemy, generating 9 rage and stunning it for 1 sec. 8-25 yd range. Bear Form only."
@@ -2609,6 +2613,9 @@ export const en: EnTranslations = {
       },
       "voidwalker": {
         "name": "Voidwalker"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "Choirmother Selthe"
@@ -5334,6 +5341,10 @@ export const es: EnTranslations = {
         "name": "Invocar caminante del Vacío",
         "description": "Invoca a un Caminante del Vacío bajo el mando del brujo. El Caminante del Vacío es un demonio resistente que provoca a tus enemigos y encaja el castigo. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "Embestida del oso",
         "description": "Embiste a un enemigo, generando 9 de furia y aturdiéndolo durante 1 s. Alcance de 7 a 23 m. Solo en Forma de oso."
@@ -5786,13 +5797,13 @@ export const es: EnTranslations = {
         "name": "Escama de wyrm agrietada"
       },
       "conjured_bread": {
-        "name": "Conjured Bread"
+        "name": "Pan invocado"
       },
       "conjured_bread2": {
-        "name": "Conjured Pumpernickel"
+        "name": "Pan negro invocado"
       },
       "conjured_bread3": {
-        "name": "Conjured Sweet Roll"
+        "name": "Bollo dulce invocado"
       },
       "bristleback_maul": {
         "name": "Maza Bristleback"
@@ -6227,6 +6238,9 @@ export const es: EnTranslations = {
       },
       "voidwalker": {
         "name": "Caminante del Vacío"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "Selthe, madre del coro"
@@ -8952,6 +8966,10 @@ export const es_ES: EnTranslations = {
         "name": "Invocar caminante del Vacío",
         "description": "Invoca a un Caminante del Vacío bajo el mando del brujo. El Caminante del Vacío es un demonio resistente que provoca a tus enemigos y encaja el castigo. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "Embestida del oso",
         "description": "Embiste a un enemigo, generando 9 de furia y aturdiéndolo durante 1 s. Alcance de 7 a 23 m. Solo en Forma de oso."
@@ -9404,13 +9422,13 @@ export const es_ES: EnTranslations = {
         "name": "Escama de wyrm agrietada"
       },
       "conjured_bread": {
-        "name": "Conjured Bread"
+        "name": "Pan invocado"
       },
       "conjured_bread2": {
-        "name": "Conjured Pumpernickel"
+        "name": "Pan negro invocado"
       },
       "conjured_bread3": {
-        "name": "Conjured Sweet Roll"
+        "name": "Bollo dulce invocado"
       },
       "bristleback_maul": {
         "name": "Maza Bristleback"
@@ -9845,6 +9863,9 @@ export const es_ES: EnTranslations = {
       },
       "voidwalker": {
         "name": "Caminante del Vacío"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "Selthe, madre del coro"
@@ -12570,6 +12591,10 @@ export const fr_FR: EnTranslations = {
         "name": "Invoquer un marcheur du Vide",
         "description": "Invoque un Marcheur du Vide sous le commandement du démoniste. Le Marcheur du Vide est un démon robuste qui provoque vos ennemis et encaisse les coups. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "Charge de l'ours",
         "description": "Charge un ennemi, génère 9 points de rage et l'étourdit pendant 1 sec. Portée de 7 à 23 mètres. Forme d'ours uniquement."
@@ -13022,13 +13047,13 @@ export const fr_FR: EnTranslations = {
         "name": "Écaille de wyrm fendue"
       },
       "conjured_bread": {
-        "name": "Conjured Bread"
+        "name": "Pain conjuré"
       },
       "conjured_bread2": {
-        "name": "Conjured Pumpernickel"
+        "name": "Pain noir conjuré"
       },
       "conjured_bread3": {
-        "name": "Conjured Sweet Roll"
+        "name": "Brioche conjurée"
       },
       "bristleback_maul": {
         "name": "Maillet Bristleback"
@@ -13463,6 +13488,9 @@ export const fr_FR: EnTranslations = {
       },
       "voidwalker": {
         "name": "Marcheur du Vide"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "Selthe, mère de chœur"
@@ -16188,6 +16216,10 @@ export const fr_CA: EnTranslations = {
         "name": "Invoquer un marcheur du Vide",
         "description": "Invoque un Marcheur du Vide sous le commandement du démoniste. Le Marcheur du Vide est un démon robuste qui provoque vos ennemis et encaisse les coups. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "Charge de l'ours",
         "description": "Charge un ennemi, génère 9 points de rage et l'étourdit pendant 1 sec. Portée de 7 à 23 mètres. Forme d'ours uniquement."
@@ -16640,13 +16672,13 @@ export const fr_CA: EnTranslations = {
         "name": "Écaille de wyrm fendue"
       },
       "conjured_bread": {
-        "name": "Conjured Bread"
+        "name": "Pain conjuré"
       },
       "conjured_bread2": {
-        "name": "Conjured Pumpernickel"
+        "name": "Pain noir conjuré"
       },
       "conjured_bread3": {
-        "name": "Conjured Sweet Roll"
+        "name": "Brioche conjurée"
       },
       "bristleback_maul": {
         "name": "Maillet Bristleback"
@@ -17081,6 +17113,9 @@ export const fr_CA: EnTranslations = {
       },
       "voidwalker": {
         "name": "Marcheur du Vide"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "Selthe, mère de chœur"
@@ -19806,6 +19841,10 @@ export const en_CA: EnTranslations = {
         "name": "Summon Voidwalker",
         "description": "Summons a Voidwalker under the command of the Warlock. The Voidwalker is a sturdy demon that taunts your enemies and soaks up punishment. Summoning a new demon dismisses your current one. You may have one demon at a time."
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "Bear Charge",
         "description": "Charge an enemy, generating 9 rage and stunning it for 1 sec. 8-25 yd range. Bear Form only."
@@ -20699,6 +20738,9 @@ export const en_CA: EnTranslations = {
       },
       "voidwalker": {
         "name": "Voidwalker"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "Choirmother Selthe"
@@ -23424,6 +23466,10 @@ export const it_IT: EnTranslations = {
         "name": "Evoca camminatore del Vuoto",
         "description": "Evoca un Camminatore del Vuoto al comando dello stregone. Il Camminatore del Vuoto è un demone robusto che provoca i tuoi nemici e assorbe i colpi. Evocare un nuovo demone congeda quello attuale. Puoi avere un solo demone alla volta."
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "Carica dell'Orso",
         "description": "Carica un nemico, generando 9 punti rabbia e stordendolo per 1 sec. Gittata di 7-23 metri. Solo in Forma dell'Orso."
@@ -23876,13 +23922,13 @@ export const it_IT: EnTranslations = {
         "name": "Scaglia di wyrm incrinata"
       },
       "conjured_bread": {
-        "name": "Conjured Bread"
+        "name": "Pane evocato"
       },
       "conjured_bread2": {
-        "name": "Conjured Pumpernickel"
+        "name": "Pane nero evocato"
       },
       "conjured_bread3": {
-        "name": "Conjured Sweet Roll"
+        "name": "Panino dolce evocato"
       },
       "bristleback_maul": {
         "name": "Maglio Bristleback"
@@ -24317,6 +24363,9 @@ export const it_IT: EnTranslations = {
       },
       "voidwalker": {
         "name": "Camminatore del Vuoto"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "Selthe Madre del Coro"
@@ -27042,6 +27091,10 @@ export const de_DE: EnTranslations = {
         "name": "Leerwandler beschwören",
         "description": "Beschwört einen Leerwandler unter dem Befehl des Hexenmeisters. Der Leerwandler ist ein zäher Dämon, der Eure Feinde verhöhnt und Schaden einsteckt. Das Beschwören eines neuen Dämons entlässt Euren aktuellen. Ihr könnt nur einen Dämon zur Zeit haben."
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "Bärensturm",
         "description": "Stürmt auf einen Gegner zu, erzeugt 9 Wut und betäubt ihn für 1 Sek. Reichweite 7-23 Meter. Nur in Bärengestalt."
@@ -27494,13 +27547,13 @@ export const de_DE: EnTranslations = {
         "name": "Gesprungene Wyrmschuppe"
       },
       "conjured_bread": {
-        "name": "Conjured Bread"
+        "name": "Herbeigezaubertes Brot"
       },
       "conjured_bread2": {
-        "name": "Conjured Pumpernickel"
+        "name": "Herbeigezaubertes Schwarzbrot"
       },
       "conjured_bread3": {
-        "name": "Conjured Sweet Roll"
+        "name": "Herbeigezauberte Süße Schnecke"
       },
       "bristleback_maul": {
         "name": "Bristleback-Schlägel"
@@ -27935,6 +27988,9 @@ export const de_DE: EnTranslations = {
       },
       "voidwalker": {
         "name": "Leerwandler"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "Chormutter Selthe"
@@ -30660,6 +30716,10 @@ export const zh_CN: EnTranslations = {
         "name": "召唤虚空行者",
         "description": "召唤一只听从术士命令的虚空行者。虚空行者是一种坚韧的恶魔，会嘲讽你的敌人并承受打击。召唤新的恶魔会驱散你当前的恶魔。你同时只能拥有一只恶魔。"
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "野熊冲锋",
         "description": "冲向一名敌人，生成9点怒气并将其昏迷1秒。射程8-25码。仅限熊形态使用。"
@@ -31112,13 +31172,13 @@ export const zh_CN: EnTranslations = {
         "name": "裂开的龙鳞"
       },
       "conjured_bread": {
-        "name": "Conjured Bread"
+        "name": "魔法面包"
       },
       "conjured_bread2": {
-        "name": "Conjured Pumpernickel"
+        "name": "魔法黑麦面包"
       },
       "conjured_bread3": {
-        "name": "Conjured Sweet Roll"
+        "name": "魔法甜面包"
       },
       "bristleback_maul": {
         "name": "硬鬃重槌"
@@ -31553,6 +31613,9 @@ export const zh_CN: EnTranslations = {
       },
       "voidwalker": {
         "name": "虚空行者"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "唱诗母塞尔瑟"
@@ -34278,6 +34341,10 @@ export const zh_TW: EnTranslations = {
         "name": "召喚虛空行者",
         "description": "召喚一隻聽從術士命令的虛空行者。虛空行者是一種堅韌的惡魔，會嘲諷你的敵人並承受打擊。召喚新的惡魔會驅散你目前的惡魔。你同時只能擁有一隻惡魔。"
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "猛熊衝鋒",
         "description": "向敵人衝鋒，產生 9 點怒氣並將其昏迷 1 秒。射程 8-25 公尺。僅限熊形態。"
@@ -34730,13 +34797,13 @@ export const zh_TW: EnTranslations = {
         "name": "裂開的龍鱗"
       },
       "conjured_bread": {
-        "name": "Conjured Bread"
+        "name": "魔法麵包"
       },
       "conjured_bread2": {
-        "name": "Conjured Pumpernickel"
+        "name": "魔法黑麥麵包"
       },
       "conjured_bread3": {
-        "name": "Conjured Sweet Roll"
+        "name": "魔法甜麵包"
       },
       "bristleback_maul": {
         "name": "硬鬃重槌"
@@ -35171,6 +35238,9 @@ export const zh_TW: EnTranslations = {
       },
       "voidwalker": {
         "name": "虛空行者"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "唱詩之母瑟爾瑟"
@@ -37896,6 +37966,10 @@ export const ko_KR: EnTranslations = {
         "name": "공허추적자 소환",
         "description": "흑마법사의 명령을 따르는 공허추적자를 소환합니다. 공허추적자는 적을 도발하고 피해를 견뎌내는 튼튼한 악마입니다. 새로운 악마를 소환하면 현재 악마는 사라집니다. 한 번에 하나의 악마만 부릴 수 있습니다."
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "곰 돌진",
         "description": "적에게 돌진하여 분노 9를 생성하고 1초 동안 기절시킵니다. 사거리 7~23미터. 곰 변신 상태에서만 사용 가능."
@@ -38348,13 +38422,13 @@ export const ko_KR: EnTranslations = {
         "name": "갈라진 고룡 비늘"
       },
       "conjured_bread": {
-        "name": "Conjured Bread"
+        "name": "마력의 빵"
       },
       "conjured_bread2": {
-        "name": "Conjured Pumpernickel"
+        "name": "마력의 호밀빵"
       },
       "conjured_bread3": {
-        "name": "Conjured Sweet Roll"
+        "name": "마력의 단빵"
       },
       "bristleback_maul": {
         "name": "뻣센등뼈 철퇴"
@@ -38789,6 +38863,9 @@ export const ko_KR: EnTranslations = {
       },
       "voidwalker": {
         "name": "공허추적자"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "성가대모 셀세"
@@ -41514,6 +41591,10 @@ export const ja_JP: EnTranslations = {
         "name": "ヴォイドウォーカーの召喚",
         "description": "ウォーロックの命令に従うヴォイドウォーカーを召喚します。ヴォイドウォーカーは敵を挑発し攻撃を受け止める頑強な悪魔です。新たな悪魔を召喚すると現在の悪魔は解放されます。悪魔は一度に1体しか従えられません。"
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "ベアチャージ",
         "description": "敵に突進して激怒を9獲得し、1秒間スタンさせる。射程7～23メートル。ベアフォーム時のみ使用可能。"
@@ -41966,13 +42047,13 @@ export const ja_JP: EnTranslations = {
         "name": "割れたワームの鱗"
       },
       "conjured_bread": {
-        "name": "Conjured Bread"
+        "name": "魔法のパン"
       },
       "conjured_bread2": {
-        "name": "Conjured Pumpernickel"
+        "name": "魔法のライ麦パン"
       },
       "conjured_bread3": {
-        "name": "Conjured Sweet Roll"
+        "name": "魔法の菓子パン"
       },
       "bristleback_maul": {
         "name": "ブリストルバックの大槌"
@@ -42407,6 +42488,9 @@ export const ja_JP: EnTranslations = {
       },
       "voidwalker": {
         "name": "ヴォイドウォーカー"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "聖歌母セルセ"
@@ -45132,6 +45216,10 @@ export const pt_BR: EnTranslations = {
         "name": "Invocar caminhante do Vazio",
         "description": "Invoca um Caminhante do Vazio sob o comando do bruxo. O Caminhante do Vazio é um demônio resistente que provoca seus inimigos e absorve o castigo. Invocar um novo demônio dispensa o atual. Você só pode ter um demônio por vez."
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "Investida do Urso",
         "description": "Investe contra um inimigo, gerando 9 de fúria e o atordoando por 1 seg. Alcance de 7-23 metros. Apenas na Forma de Urso."
@@ -45584,13 +45672,13 @@ export const pt_BR: EnTranslations = {
         "name": "Escama de wyrm rachada"
       },
       "conjured_bread": {
-        "name": "Conjured Bread"
+        "name": "Pão conjurado"
       },
       "conjured_bread2": {
-        "name": "Conjured Pumpernickel"
+        "name": "Pão preto conjurado"
       },
       "conjured_bread3": {
-        "name": "Conjured Sweet Roll"
+        "name": "Pãozinho doce conjurado"
       },
       "bristleback_maul": {
         "name": "Malho Bristleback"
@@ -46025,6 +46113,9 @@ export const pt_BR: EnTranslations = {
       },
       "voidwalker": {
         "name": "Caminhante do Vazio"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "Mãe-do-Coro Selthe"
@@ -48750,6 +48841,10 @@ export const ru_RU: EnTranslations = {
         "name": "Призыв стража Бездны",
         "description": "Призывает Стража Бездны под командование чернокнижника. Страж Бездны — крепкий демон, который провоцирует ваших врагов и принимает удары на себя. Призыв нового демона отпускает текущего. Одновременно у вас может быть только один демон."
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a swift demon that tears your enemies apart with savage melee strikes. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "Натиск медведя",
         "description": "Бросок на врага, дающий 9 единиц ярости и оглушающий его на 1 сек. Дальность 7-23 метра. Только в облике медведя."
@@ -49202,13 +49297,13 @@ export const ru_RU: EnTranslations = {
         "name": "Треснувшая чешуя вирма"
       },
       "conjured_bread": {
-        "name": "Conjured Bread"
+        "name": "Сотворённый хлеб"
       },
       "conjured_bread2": {
-        "name": "Conjured Pumpernickel"
+        "name": "Сотворённый ржаной хлеб"
       },
       "conjured_bread3": {
-        "name": "Conjured Sweet Roll"
+        "name": "Сотворённая сладкая булочка"
       },
       "bristleback_maul": {
         "name": "Кувалда Щетиноспина"
@@ -49643,6 +49738,9 @@ export const ru_RU: EnTranslations = {
       },
       "voidwalker": {
         "name": "Страж Бездны"
+      },
+      "succubus": {
+        "name": "Succubus"
       },
       "choirmother_selthe": {
         "name": "Матерь хора Селте"
@@ -50692,9 +50790,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.frostbrand_weapon.name",
     "entities.abilities.pyroblast.description",
     "entities.abilities.pyroblast.name",
-    "entities.items.conjured_bread.name",
-    "entities.items.conjured_bread2.name",
-    "entities.items.conjured_bread3.name",
+    "entities.abilities.summon_succubus.description",
+    "entities.abilities.summon_succubus.name",
+    "entities.mobs.succubus.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -50713,9 +50811,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.frostbrand_weapon.name",
     "entities.abilities.pyroblast.description",
     "entities.abilities.pyroblast.name",
-    "entities.items.conjured_bread.name",
-    "entities.items.conjured_bread2.name",
-    "entities.items.conjured_bread3.name",
+    "entities.abilities.summon_succubus.description",
+    "entities.abilities.summon_succubus.name",
+    "entities.mobs.succubus.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -50734,9 +50832,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.frostbrand_weapon.name",
     "entities.abilities.pyroblast.description",
     "entities.abilities.pyroblast.name",
-    "entities.items.conjured_bread.name",
-    "entities.items.conjured_bread2.name",
-    "entities.items.conjured_bread3.name",
+    "entities.abilities.summon_succubus.description",
+    "entities.abilities.summon_succubus.name",
+    "entities.mobs.succubus.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -50755,9 +50853,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.frostbrand_weapon.name",
     "entities.abilities.pyroblast.description",
     "entities.abilities.pyroblast.name",
-    "entities.items.conjured_bread.name",
-    "entities.items.conjured_bread2.name",
-    "entities.items.conjured_bread3.name",
+    "entities.abilities.summon_succubus.description",
+    "entities.abilities.summon_succubus.name",
+    "entities.mobs.succubus.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -50777,9 +50875,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.frostbrand_weapon.name",
     "entities.abilities.pyroblast.description",
     "entities.abilities.pyroblast.name",
-    "entities.items.conjured_bread.name",
-    "entities.items.conjured_bread2.name",
-    "entities.items.conjured_bread3.name",
+    "entities.abilities.summon_succubus.description",
+    "entities.abilities.summon_succubus.name",
+    "entities.mobs.succubus.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -50798,9 +50896,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.frostbrand_weapon.name",
     "entities.abilities.pyroblast.description",
     "entities.abilities.pyroblast.name",
-    "entities.items.conjured_bread.name",
-    "entities.items.conjured_bread2.name",
-    "entities.items.conjured_bread3.name",
+    "entities.abilities.summon_succubus.description",
+    "entities.abilities.summon_succubus.name",
+    "entities.mobs.succubus.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -50819,9 +50917,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.frostbrand_weapon.name",
     "entities.abilities.pyroblast.description",
     "entities.abilities.pyroblast.name",
-    "entities.items.conjured_bread.name",
-    "entities.items.conjured_bread2.name",
-    "entities.items.conjured_bread3.name",
+    "entities.abilities.summon_succubus.description",
+    "entities.abilities.summon_succubus.name",
+    "entities.mobs.succubus.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -50840,9 +50938,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.frostbrand_weapon.name",
     "entities.abilities.pyroblast.description",
     "entities.abilities.pyroblast.name",
-    "entities.items.conjured_bread.name",
-    "entities.items.conjured_bread2.name",
-    "entities.items.conjured_bread3.name",
+    "entities.abilities.summon_succubus.description",
+    "entities.abilities.summon_succubus.name",
+    "entities.mobs.succubus.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -50861,9 +50959,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.frostbrand_weapon.name",
     "entities.abilities.pyroblast.description",
     "entities.abilities.pyroblast.name",
-    "entities.items.conjured_bread.name",
-    "entities.items.conjured_bread2.name",
-    "entities.items.conjured_bread3.name",
+    "entities.abilities.summon_succubus.description",
+    "entities.abilities.summon_succubus.name",
+    "entities.mobs.succubus.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -50882,9 +50980,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.frostbrand_weapon.name",
     "entities.abilities.pyroblast.description",
     "entities.abilities.pyroblast.name",
-    "entities.items.conjured_bread.name",
-    "entities.items.conjured_bread2.name",
-    "entities.items.conjured_bread3.name",
+    "entities.abilities.summon_succubus.description",
+    "entities.abilities.summon_succubus.name",
+    "entities.mobs.succubus.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -50903,9 +51001,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.frostbrand_weapon.name",
     "entities.abilities.pyroblast.description",
     "entities.abilities.pyroblast.name",
-    "entities.items.conjured_bread.name",
-    "entities.items.conjured_bread2.name",
-    "entities.items.conjured_bread3.name",
+    "entities.abilities.summon_succubus.description",
+    "entities.abilities.summon_succubus.name",
+    "entities.mobs.succubus.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -50924,9 +51022,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.frostbrand_weapon.name",
     "entities.abilities.pyroblast.description",
     "entities.abilities.pyroblast.name",
-    "entities.items.conjured_bread.name",
-    "entities.items.conjured_bread2.name",
-    "entities.items.conjured_bread3.name",
+    "entities.abilities.summon_succubus.description",
+    "entities.abilities.summon_succubus.name",
+    "entities.mobs.succubus.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -52641,6 +52739,10 @@ export const en_XA: EnTranslations = {
         "name": "[Šúɱɱóñ Ʋóíðŵáļķéŕ]",
         "description": "[Šúɱɱóñš á Ʋóíðŵáļķéŕ úñðéŕ ţĥé çóɱɱáñð óƒ ţĥé Ŵáŕļóçķ. Ţĥé Ʋóíðŵáļķéŕ íš á šţúŕðý ðéɱóñ ţĥáţ ţáúñţš ýóúŕ éñéɱíéš áñð šóáķš úþ þúñíšĥɱéñţ. Šúɱɱóñíñĝ á ñéŵ ðéɱóñ ðíšɱíššéš ýóúŕ çúŕŕéñţ óñé. Ýóú ɱáý ĥáʋé óñé ðéɱóñ áţ á ţíɱé.]"
       },
+      "summon_succubus": {
+        "name": "[Šúɱɱóñ Šúççúƀúš]",
+        "description": "[Šúɱɱóñš á Šúççúƀúš úñðéŕ ţĥé çóɱɱáñð óƒ ţĥé Ŵáŕļóçķ. Ţĥé Šúççúƀúš íš á šŵíƒţ ðéɱóñ ţĥáţ ţéáŕš ýóúŕ éñéɱíéš áþáŕţ ŵíţĥ šáʋáĝé ɱéļéé šţŕíķéš. Šúɱɱóñíñĝ á ñéŵ ðéɱóñ ðíšɱíššéš ýóúŕ çúŕŕéñţ óñé. Ýóú ɱáý ĥáʋé óñé ðéɱóñ áţ á ţíɱé.]"
+      },
       "bear_charge": {
         "name": "[Ɓéáŕ Çĥáŕĝé]",
         "description": "[Çĥáŕĝé áñ éñéɱý, ĝéñéŕáţíñĝ 9 ŕáĝé áñð šţúññíñĝ íţ ƒóŕ 1 šéç. 8-25 ýð ŕáñĝé. Ɓéáŕ Ƒóŕɱ óñļý.]"
@@ -53534,6 +53636,9 @@ export const en_XA: EnTranslations = {
       },
       "voidwalker": {
         "name": "[Ʋóíðŵáļķéŕ]"
+      },
+      "succubus": {
+        "name": "[Šúççúƀúš]"
       },
       "choirmother_selthe": {
         "name": "[Çĥóíŕɱóţĥéŕ Šéļţĥé]"
