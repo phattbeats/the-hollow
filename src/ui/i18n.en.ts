@@ -7881,7 +7881,7 @@ const mergeStringsEn = {
   },
   itemUi: {
     ...itemNames.en.itemUi,
-    kind: { ...itemNames.en.itemUi.kind, tool: "Tool", potion: "Potion" },
+    kind: { ...itemNames.en.itemUi.kind, tool: "Tool", potion: "Potion", elixir: "Elixir" },
     tooltip: {
       ...itemNames.en.itemUi.tooltip,
       useFishing: "Use: Fish in nearby waters.",
@@ -8019,7 +8019,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.es.itemUi,
-      kind: { ...itemNames.es.itemUi.kind, tool: "Herramienta", potion: "Poción" },
+      kind: { ...itemNames.es.itemUi.kind, tool: "Herramienta", potion: "Poción", elixir: "Elixir" },
       tooltip: {
         ...itemNames.es.itemUi.tooltip,
         useFishing: "Uso: pesca en aguas cercanas.",
@@ -8155,7 +8155,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.fr_FR.itemUi,
-      kind: { ...itemNames.fr_FR.itemUi.kind, tool: "Outil", potion: "Potion" },
+      kind: { ...itemNames.fr_FR.itemUi.kind, tool: "Outil", potion: "Potion", elixir: "Élixir" },
       tooltip: {
         ...itemNames.fr_FR.itemUi.tooltip,
         useFishing: "Utiliser : pêcher dans les eaux proches.",
@@ -8292,7 +8292,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.it_IT.itemUi,
-      kind: { ...itemNames.it_IT.itemUi.kind, tool: "Strumento", potion: "Pozione" },
+      kind: { ...itemNames.it_IT.itemUi.kind, tool: "Strumento", potion: "Pozione", elixir: "Elisir" },
       tooltip: {
         ...itemNames.it_IT.itemUi.tooltip,
         useFishing: "Uso: pesca nelle acque vicine.",
@@ -8427,7 +8427,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.de_DE.itemUi,
-      kind: { ...itemNames.de_DE.itemUi.kind, tool: "Werkzeug", potion: "Trank" },
+      kind: { ...itemNames.de_DE.itemUi.kind, tool: "Werkzeug", potion: "Trank", elixir: "Elixier" },
       tooltip: {
         ...itemNames.de_DE.itemUi.tooltip,
         useFishing: "Benutzen: Angelt in nahen Gewässern.",
@@ -8562,7 +8562,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.zh_CN.itemUi,
-      kind: { ...itemNames.zh_CN.itemUi.kind, tool: "工具", potion: "药水" },
+      kind: { ...itemNames.zh_CN.itemUi.kind, tool: "工具", potion: "药水", elixir: "药剂" },
       tooltip: {
         ...itemNames.zh_CN.itemUi.tooltip,
         useFishing: "使用：在附近水域钓鱼。",
@@ -8697,7 +8697,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.zh_TW.itemUi,
-      kind: { ...itemNames.zh_TW.itemUi.kind, tool: "工具", potion: "藥水" },
+      kind: { ...itemNames.zh_TW.itemUi.kind, tool: "工具", potion: "藥水", elixir: "藥劑" },
       tooltip: {
         ...itemNames.zh_TW.itemUi.tooltip,
         useFishing: "使用：在附近水域釣魚。",
@@ -8832,7 +8832,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.ko_KR.itemUi,
-      kind: { ...itemNames.ko_KR.itemUi.kind, tool: "도구", potion: "물약" },
+      kind: { ...itemNames.ko_KR.itemUi.kind, tool: "도구", potion: "물약", elixir: "비약" },
       tooltip: {
         ...itemNames.ko_KR.itemUi.tooltip,
         useFishing: "사용: 가까운 물가에서 낚시합니다.",
@@ -8967,7 +8967,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.ja_JP.itemUi,
-      kind: { ...itemNames.ja_JP.itemUi.kind, tool: "道具", potion: "ポーション" },
+      kind: { ...itemNames.ja_JP.itemUi.kind, tool: "道具", potion: "ポーション", elixir: "エリクサー" },
       tooltip: {
         ...itemNames.ja_JP.itemUi.tooltip,
         useFishing: "使用: 近くの水辺で釣りをします。",
@@ -9102,7 +9102,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.pt_BR.itemUi,
-      kind: { ...itemNames.pt_BR.itemUi.kind, tool: "Ferramenta", potion: "Poção" },
+      kind: { ...itemNames.pt_BR.itemUi.kind, tool: "Ferramenta", potion: "Poção", elixir: "Elixir" },
       tooltip: {
         ...itemNames.pt_BR.itemUi.tooltip,
         useFishing: "Uso: pesca em águas próximas.",
@@ -9237,7 +9237,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.ru_RU.itemUi,
-      kind: { ...itemNames.ru_RU.itemUi.kind, tool: "Инструмент", potion: "Зелье" },
+      kind: { ...itemNames.ru_RU.itemUi.kind, tool: "Инструмент", potion: "Зелье", elixir: "Эликсир" },
       tooltip: {
         ...itemNames.ru_RU.itemUi.tooltip,
         useFishing: "Использование: ловите рыбу в ближайшей воде.",

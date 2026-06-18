@@ -1105,7 +1105,8 @@ export const en: EnTranslations = {
       "food": "Food",
       "drink": "Drink",
       "tool": "Tool",
-      "potion": "Potion"
+      "potion": "Potion",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "Armor",
@@ -4690,7 +4691,8 @@ export const es: EnTranslations = {
       "food": "Comida",
       "drink": "Bebida",
       "tool": "Herramienta",
-      "potion": "Poción"
+      "potion": "Poción",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "Armadura",
@@ -8275,7 +8277,8 @@ export const es_ES: EnTranslations = {
       "food": "Comida",
       "drink": "Bebida",
       "tool": "Herramienta",
-      "potion": "Poción"
+      "potion": "Poción",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "Armadura",
@@ -11860,7 +11863,8 @@ export const fr_FR: EnTranslations = {
       "food": "Nourriture",
       "drink": "Boisson",
       "tool": "Outil",
-      "potion": "Potion"
+      "potion": "Potion",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "Armure",
@@ -15445,7 +15449,8 @@ export const fr_CA: EnTranslations = {
       "food": "Nourriture",
       "drink": "Boisson",
       "tool": "Outil",
-      "potion": "Potion"
+      "potion": "Potion",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "Armure",
@@ -19030,7 +19035,8 @@ export const en_CA: EnTranslations = {
       "food": "Food",
       "drink": "Drink",
       "tool": "Tool",
-      "potion": "Potion"
+      "potion": "Potion",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "Armor",
@@ -22615,7 +22621,8 @@ export const it_IT: EnTranslations = {
       "food": "Cibo",
       "drink": "Bevanda",
       "tool": "Strumento",
-      "potion": "Pozione"
+      "potion": "Pozione",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "Armatura",
@@ -26200,7 +26207,8 @@ export const de_DE: EnTranslations = {
       "food": "Essen",
       "drink": "Getränk",
       "tool": "Werkzeug",
-      "potion": "Trank"
+      "potion": "Trank",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "Rüstung",
@@ -29785,7 +29793,8 @@ export const zh_CN: EnTranslations = {
       "food": "食物",
       "drink": "饮料",
       "tool": "工具",
-      "potion": "药水"
+      "potion": "药水",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "护甲",
@@ -33370,7 +33379,8 @@ export const zh_TW: EnTranslations = {
       "food": "食物",
       "drink": "飲料",
       "tool": "工具",
-      "potion": "藥水"
+      "potion": "藥水",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "護甲",
@@ -36955,7 +36965,8 @@ export const ko_KR: EnTranslations = {
       "food": "음식",
       "drink": "음료",
       "tool": "도구",
-      "potion": "물약"
+      "potion": "물약",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "방어도",
@@ -40540,7 +40551,8 @@ export const ja_JP: EnTranslations = {
       "food": "食べ物",
       "drink": "飲み物",
       "tool": "道具",
-      "potion": "ポーション"
+      "potion": "ポーション",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "防御力",
@@ -44125,7 +44137,8 @@ export const pt_BR: EnTranslations = {
       "food": "Comida",
       "drink": "Bebida",
       "tool": "Ferramenta",
-      "potion": "Poção"
+      "potion": "Poção",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "Armadura",
@@ -47710,7 +47723,8 @@ export const ru_RU: EnTranslations = {
       "food": "Еда",
       "drink": "Напиток",
       "tool": "Инструмент",
-      "potion": "Зелье"
+      "potion": "Зелье",
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "Броня",
@@ -50218,24 +50232,28 @@ export const translations = {
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
+    "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "es_ES": [
+    "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "fr_FR": [
+    "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "fr_CA": [
+    "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -50243,48 +50261,56 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "en_CA": [],
   "it_IT": [
+    "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "de_DE": [
+    "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "zh_CN": [
+    "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "zh_TW": [
+    "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "ko_KR": [
+    "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "ja_JP": [
+    "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "pt_BR": [
+    "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "ru_RU": [
+    "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -51388,7 +51414,8 @@ export const en_XA: EnTranslations = {
       "food": "[Ƒóóð]",
       "drink": "[Ðŕíñķ]",
       "tool": "[Ţóóļ]",
-      "potion": "[Þóţíóñ]"
+      "potion": "[Þóţíóñ]",
+      "elixir": "[Éļíẋíŕ]"
     },
     "stats": {
       "armor": "[Áŕɱóŕ]",
