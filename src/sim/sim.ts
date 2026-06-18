@@ -4175,6 +4175,27 @@ export class Sim {
         this.emit({ type: 'heal', targetId: mob.id, amount: heal });
       }
     }
+    // Battle Fury (Rampage): a landed swing whips this attacker into an escalating
+    // frenzy — a self-applied, stacking buff_ap aura (up to `maxStacks`) that grows
+    // its attack power, and thus its melee damage, the longer the fight drags on.
+    // Rides the existing buff_ap aura that effectiveAttackPower already folds into
+    // mob swing damage, so there is no new combat math. Hostile mobs only, so a
+    // friendly pet (mobSwing's other caller) never self-buffs off the party's kills;
+    // skip if the mob died to the defender's thorns/reflect earlier this swing. The
+    // single shared aura slot is bumped and refreshed each hit; left alone it falls
+    // off after `duration`s, so burning the mob down or kiting it out of melee both
+    // reset the ramp.
+    const rampage = MOBS[mob.templateId]?.rampage;
+    if (rampage && mob.hostile && !mob.dead) {
+      const existing = mob.auras.find((a) => a.id === `rampage_${mob.templateId}` && a.sourceId === mob.id);
+      const stacks = Math.min(rampage.maxStacks, (existing?.stacks ?? 0) + 1);
+      this.applyAura(mob, {
+        id: `rampage_${mob.templateId}`, name: rampage.name, kind: 'buff_ap',
+        remaining: rampage.duration, duration: rampage.duration,
+        value: rampage.ap * stacks, stacks,
+        sourceId: mob.id, school: rampage.school ?? 'physical',
+      });
+    }
     // Cleave: the swing splashes onto other players standing near the primary
     // target, each taking the hit reduced by their own armor. Hostile mobs only,
     // so a friendly pet swinging through mobSwing never cleaves its owner's party.

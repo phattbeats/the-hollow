@@ -132,6 +132,11 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
     hpBase: 200, hpPerLevel: 30, dmgBase: 12, dmgPerLevel: 2.7, attackSpeed: 2.6,
     armorPerLevel: 28, moveSpeed: 7, aggroRadius: 14,
     aoePulse: { min: 22, max: 30, radius: 10, every: 12, name: 'Ground Slam' },
+    // The longer the warlord is left to swing, the harder he hits: every landed
+    // blow stokes his Battle Fury, stacking attack power up to a hard cap. A
+    // drawn-out fight snowballs, so burn him down or kite him off you to bleed
+    // the stacks back off.
+    rampage: { ap: 20, maxStacks: 5, duration: 10, name: 'Battle Fury', school: 'physical' },
     loot: [
       { copper: 2000, chance: 1 },
       { itemId: 'drogmar_warboots', chance: 0.3 },

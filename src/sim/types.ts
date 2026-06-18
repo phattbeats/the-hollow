@@ -193,6 +193,17 @@ export interface MobTemplate {
   // Mob mechanic: a one-time desperation self-heal the first time hp drops
   // below the threshold (healPct is a fraction of maxHp). Resets on evade/respawn.
   desperateHeal?: { belowHpPct: number; healPct: number };
+  // Self-buff affix ("Battle Fury" / Rampage): every landed melee swing whips the
+  // attacker into an escalating frenzy — a self-applied, stacking buff_ap aura (up
+  // to `maxStacks`) that grows its attack power, and thus its melee damage, the
+  // longer the fight drags on. Rides the existing buff_ap aura that
+  // effectiveAttackPower already folds into mob swing damage, so there is no new
+  // combat math. Unlike `enrage` (a one-shot threshold burst) or `packFrenzy` (a
+  // haste pulse on an ally's death), this ramps continuously while the mob keeps
+  // connecting. The single shared aura slot is refreshed each hit; left alone it
+  // falls off after `duration`s, undoing the ramp — so burning the mob down or
+  // kiting it out of melee both reset its fury.
+  rampage?: { ap: number; maxStacks: number; duration: number; name: string; school?: Aura['school'] };
   // Support mechanic ("Mend"): while in combat, periodically heal every wounded
   // living friendly mob within `radius` (incl. itself) for `healMin..healMax`.
   // Telegraphed: the first cast lands one full `every` interval after combat
