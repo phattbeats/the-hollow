@@ -2620,6 +2620,8 @@ const hudStringsEn = {
       levelLog: "You have reached level {level}!",
       xpGain: "You gain {amount} experience.",
       xpFloat: "+{amount} XP",
+      xpFloatRested: "+{amount} rested",
+      xpGainRested: "You gain {amount} experience ({rested} bonus from resting).",
       deathTitle: "You have died.",
       releaseSpirit: "Release Spirit",
       chatTab: "Chat",
@@ -2649,6 +2651,7 @@ const hudStringsEn = {
       keyBindings: "Key Bindings",
       graphics: "Graphics",
       audio: "Audio",
+      interface: "Interface",
       logout: "Logout",
       returnToGame: "Return to Game",
       resetToDefaults: "Reset to Defaults",
@@ -2681,6 +2684,7 @@ const hudStringsEn = {
       clickMoveButton: "Click Move Button",
       clickToMove: "Click to Move",
       graphicsNote: "Lower Camera Speed for a calmer mouselook. Render Quality below 100% boosts FPS on weaker machines.",
+      fieldOfView: "Field of View",
       soundEffects: "Sound Effects",
       musicVolume: "Music Volume",
       music: "Music",
@@ -2963,6 +2967,8 @@ export const hudStrings = {
         levelLog: "Has alcanzado el nivel {level}.",
         xpGain: "Ganas {amount} de experiencia.",
         xpFloat: "+{amount} XP",
+        xpFloatRested: "+{amount} descansado",
+        xpGainRested: "Ganas {amount} de experiencia ({rested} de bonificación por descansar).",
         deathTitle: "Has muerto.",
         releaseSpirit: "Liberar espíritu",
         chatTab: "Chat",
@@ -2992,6 +2998,7 @@ export const hudStrings = {
         keyBindings: "Atajos de teclado",
         graphics: "Gráficos",
         audio: "Audio",
+        interface: "Interfaz",
         logout: "Cerrar sesión",
         returnToGame: "Volver al juego",
         resetToDefaults: "Restablecer valores",
@@ -3024,6 +3031,7 @@ export const hudStrings = {
         clickMoveButton: "Botón de clic para mover",
         clickToMove: "Clic para moverse",
         graphicsNote: "Baja la velocidad de cámara para un control más tranquilo. La calidad de renderizado bajo 100% mejora los FPS en equipos modestos.",
+        fieldOfView: "Campo de visión",
         soundEffects: "Efectos de sonido",
         musicVolume: "Volumen de música",
         music: "Música",
@@ -3084,6 +3092,8 @@ export const hudStrings = {
         levelLog: "Vous avez atteint le niveau {level} !",
         xpGain: "Vous gagnez {amount} points d'expérience.",
         xpFloat: "+{amount} XP",
+        xpFloatRested: "+{amount} repos",
+        xpGainRested: "Vous gagnez {amount} points d'expérience ({rested} bonus de repos).",
         deathTitle: "Vous êtes mort.",
         releaseSpirit: "Libérer l'esprit",
         chatTab: "Discussion",
@@ -3113,6 +3123,7 @@ export const hudStrings = {
         keyBindings: "Raccourcis clavier",
         graphics: "Graphismes",
         audio: "Audio",
+        interface: "Interface",
         logout: "Déconnexion",
         returnToGame: "Retour au jeu",
         resetToDefaults: "Réinitialiser",
@@ -3145,6 +3156,7 @@ export const hudStrings = {
         clickMoveButton: "Bouton clic pour déplacer",
         clickToMove: "Cliquer pour se déplacer",
         graphicsNote: "Réduisez la vitesse de caméra pour une visée plus calme. Une qualité de rendu sous 100 % améliore les FPS sur les machines modestes.",
+        fieldOfView: "Champ de vision",
         soundEffects: "Effets sonores",
         musicVolume: "Volume de la musique",
         music: "Musique",
@@ -3206,6 +3218,8 @@ export const hudStrings = {
         levelLog: "Hai raggiunto il livello {level}!",
         xpGain: "Guadagni {amount} esperienza.",
         xpFloat: "+{amount} PE",
+        xpFloatRested: "+{amount} riposo",
+        xpGainRested: "Guadagni {amount} esperienza ({rested} bonus dal riposo).",
         deathTitle: "Sei morto.",
         releaseSpirit: "Libera spirito",
         chatTab: "Chat",
@@ -3235,6 +3249,7 @@ export const hudStrings = {
         keyBindings: "Comandi da tastiera",
         graphics: "Grafica",
         audio: "Audio",
+        interface: "Interfaccia",
         logout: "Esci",
         returnToGame: "Torna al gioco",
         resetToDefaults: "Ripristina predefiniti",
@@ -3267,6 +3282,7 @@ export const hudStrings = {
         clickMoveButton: "Pulsante clic per muovere",
         clickToMove: "Clicca per muoverti",
         graphicsNote: "Riduci la velocità della camera per un mouselook più stabile. La qualità rendering sotto il 100% aumenta gli FPS sui dispositivi meno potenti.",
+        fieldOfView: "Campo visivo",
         soundEffects: "Effetti sonori",
         musicVolume: "Volume musica",
         music: "Musica",
@@ -3326,6 +3342,8 @@ export const hudStrings = {
         levelLog: "Ihr habt Stufe {level} erreicht!",
         xpGain: "Ihr erhaltet {amount} Erfahrung.",
         xpFloat: "+{amount} EP",
+        xpFloatRested: "+{amount} ausgeruht",
+        xpGainRested: "Ihr erhaltet {amount} Erfahrung ({rested} Bonus durch Ausruhen).",
         deathTitle: "Ihr seid gestorben.",
         releaseSpirit: "Geist freigeben",
         chatTab: "Chat",
@@ -3355,6 +3373,7 @@ export const hudStrings = {
         keyBindings: "Tastenbelegung",
         graphics: "Grafik",
         audio: "Audio",
+        interface: "Benutzeroberfläche",
         logout: "Ausloggen",
         returnToGame: "Zurück zum Spiel",
         resetToDefaults: "Standardwerte",
@@ -3387,6 +3406,7 @@ export const hudStrings = {
         clickMoveButton: "Klick-Bewegungstaste",
         clickToMove: "Klicken zum Bewegen",
         graphicsNote: "Senkt die Kamerageschwindigkeit für ruhigere Maussteuerung. Renderqualität unter 100 % verbessert die FPS auf schwächeren Geräten.",
+        fieldOfView: "Sichtfeld",
         soundEffects: "Soundeffekte",
         musicVolume: "Musiklautstärke",
         music: "Musik",
@@ -3446,6 +3466,8 @@ export const hudStrings = {
         levelLog: "你已达到 {level} 级！",
         xpGain: "你获得 {amount} 点经验。",
         xpFloat: "+{amount} 经验",
+        xpFloatRested: "+{amount} 休息",
+        xpGainRested: "你获得 {amount} 点经验（休息奖励 {rested} 点）。",
         deathTitle: "你已经死亡。",
         releaseSpirit: "释放灵魂",
         chatTab: "聊天",
@@ -3475,6 +3497,7 @@ export const hudStrings = {
         keyBindings: "按键绑定",
         graphics: "图形",
         audio: "音频",
+        interface: "界面",
         logout: "退出登录",
         returnToGame: "返回游戏",
         resetToDefaults: "恢复默认",
@@ -3507,6 +3530,7 @@ export const hudStrings = {
         clickMoveButton: "点击移动按键",
         clickToMove: "点击移动",
         graphicsNote: "降低镜头速度可让鼠标视角更平稳。渲染质量低于 100% 可在较弱设备上提升 FPS。",
+        fieldOfView: "视野",
         soundEffects: "音效",
         musicVolume: "音乐音量",
         music: "音乐",
@@ -3566,6 +3590,8 @@ export const hudStrings = {
         levelLog: "你已達到 {level} 級！",
         xpGain: "你獲得 {amount} 點經驗值。",
         xpFloat: "+{amount} 經驗值",
+        xpFloatRested: "+{amount} 休息",
+        xpGainRested: "你獲得 {amount} 點經驗值（休息獎勵 {rested} 點）。",
         deathTitle: "你已經死亡。",
         releaseSpirit: "釋放靈魂",
         chatTab: "聊天",
@@ -3595,6 +3621,7 @@ export const hudStrings = {
         keyBindings: "按鍵設定",
         graphics: "圖形",
         audio: "音訊",
+        interface: "介面",
         logout: "登出",
         returnToGame: "返回遊戲",
         resetToDefaults: "恢復預設",
@@ -3627,6 +3654,7 @@ export const hudStrings = {
         clickMoveButton: "點擊移動按鍵",
         clickToMove: "點擊移動",
         graphicsNote: "降低鏡頭速度可讓滑鼠視角更平穩。渲染品質低於 100% 可在較弱裝置上提升 FPS。",
+        fieldOfView: "視野",
         soundEffects: "音效",
         musicVolume: "音樂音量",
         music: "音樂",
@@ -3686,6 +3714,8 @@ export const hudStrings = {
         levelLog: "{level} 레벨이 되었습니다!",
         xpGain: "경험치 {amount}을 획득했습니다.",
         xpFloat: "+{amount} 경험치",
+        xpFloatRested: "+{amount} 휴식",
+        xpGainRested: "경험치 {amount}을 획득했습니다 (휴식 보너스 {rested}).",
         deathTitle: "사망했습니다.",
         releaseSpirit: "영혼 풀어주기",
         chatTab: "채팅",
@@ -3715,6 +3745,7 @@ export const hudStrings = {
         keyBindings: "키 설정",
         graphics: "그래픽",
         audio: "오디오",
+        interface: "인터페이스",
         logout: "로그아웃",
         returnToGame: "게임으로 돌아가기",
         resetToDefaults: "기본값 복원",
@@ -3747,6 +3778,7 @@ export const hudStrings = {
         clickMoveButton: "클릭 이동 버튼",
         clickToMove: "클릭하여 이동",
         graphicsNote: "카메라 속도를 낮추면 마우스 시점이 더 안정됩니다. 렌더 품질을 100% 아래로 낮추면 낮은 사양 장치에서 FPS가 향상됩니다.",
+        fieldOfView: "시야각",
         soundEffects: "효과음",
         musicVolume: "음악 음량",
         music: "음악",
@@ -3806,6 +3838,8 @@ export const hudStrings = {
         levelLog: "レベル {level}になりました！",
         xpGain: "{amount}の経験値を獲得しました。",
         xpFloat: "+{amount} 経験値",
+        xpFloatRested: "+{amount} 休息",
+        xpGainRested: "{amount}の経験値を獲得しました（休息ボーナス {rested}）。",
         deathTitle: "死亡しました。",
         releaseSpirit: "霊魂を解放",
         chatTab: "チャット",
@@ -3835,6 +3869,7 @@ export const hudStrings = {
         keyBindings: "キー設定",
         graphics: "グラフィック",
         audio: "オーディオ",
+        interface: "インターフェース",
         logout: "ログアウト",
         returnToGame: "ゲームに戻る",
         resetToDefaults: "初期設定に戻す",
@@ -3867,6 +3902,7 @@ export const hudStrings = {
         clickMoveButton: "クリック移動ボタン",
         clickToMove: "クリック移動",
         graphicsNote: "カメラ速度を下げるとマウス視点が落ち着きます。描画品質を100%未満にすると、低性能環境でFPSが向上します。",
+        fieldOfView: "視野",
         soundEffects: "効果音",
         musicVolume: "音楽音量",
         music: "音楽",
@@ -3926,6 +3962,8 @@ export const hudStrings = {
         levelLog: "Você alcançou o nível {level}!",
         xpGain: "Você ganha {amount} de experiência.",
         xpFloat: "+{amount} XP",
+        xpFloatRested: "+{amount} descanso",
+        xpGainRested: "Você ganha {amount} de experiência ({rested} de bônus por descanso).",
         deathTitle: "Você morreu.",
         releaseSpirit: "Liberar espírito",
         chatTab: "Chat",
@@ -3955,6 +3993,7 @@ export const hudStrings = {
         keyBindings: "Atalhos de teclado",
         graphics: "Gráficos",
         audio: "Áudio",
+        interface: "Interface",
         logout: "Sair",
         returnToGame: "Voltar ao jogo",
         resetToDefaults: "Restaurar padrões",
@@ -3987,6 +4026,7 @@ export const hudStrings = {
         clickMoveButton: "Botão de clique para mover",
         clickToMove: "Clique para mover",
         graphicsNote: "Reduza a velocidade da câmera para um mouselook mais calmo. Qualidade de renderização abaixo de 100% melhora o FPS em máquinas mais fracas.",
+        fieldOfView: "Campo de visão",
         soundEffects: "Efeitos sonoros",
         musicVolume: "Volume da música",
         music: "Música",
@@ -4046,6 +4086,8 @@ export const hudStrings = {
         levelLog: "Вы достигли уровня {level}!",
         xpGain: "Вы получаете {amount} опыта.",
         xpFloat: "+{amount} опыта",
+        xpFloatRested: "+{amount} отдых",
+        xpGainRested: "Вы получаете {amount} опыта ({rested} бонус за отдых).",
         deathTitle: "Вы погибли.",
         releaseSpirit: "Освободить дух",
         chatTab: "Чат",
@@ -4075,6 +4117,7 @@ export const hudStrings = {
         keyBindings: "Назначение клавиш",
         graphics: "Графика",
         audio: "Звук",
+        interface: "Интерфейс",
         logout: "Выйти",
         returnToGame: "Вернуться в игру",
         resetToDefaults: "Сбросить настройки",
@@ -4107,6 +4150,7 @@ export const hudStrings = {
         clickMoveButton: "Кнопка клика для движения",
         clickToMove: "Движение по щелчку",
         graphicsNote: "Уменьшите скорость камеры для более спокойного обзора мышью. Качество рендера ниже 100% повышает FPS на слабых устройствах.",
+        fieldOfView: "Поле зрения",
         soundEffects: "Звуковые эффекты",
         musicVolume: "Громкость музыки",
         music: "Музыка",
@@ -7519,6 +7563,7 @@ const MERGE_ITEM_IDS = [
   'nhalias_funeral_wraps', 'raw_mirror_trout', 'sableweb_slippers', 'simple_fishing_pole', 'tangled_weed', 'tideguard_greaves',
   'tideguard_sabatons', 'valeborn_spellblade', 'voss_sanctified_mace', 'wyrmcult_soulsteps', 'wyrmshadow_harness', 'wyrmshadow_legguards',
   'wyrmshadow_treads',
+  'glimmerfin_koi', 'raw_bog_eel', 'raw_frostgill_trout', 'raw_marsh_pike', 'raw_river_perch', 'raw_stonescale_carp', 'soggy_boot',
 ] as const;
 
 const MERGE_MOB_IDS = [
@@ -9381,6 +9426,7 @@ const mergeEntitiesEn = {
     "Nhalia's Funeral Wraps", "Raw Mirror Trout", "Sableweb Slippers", "Simple Fishing Pole", "Tangled Weed", "Tideguard Greaves",
     "Tideguard Sabatons", "Valeborn Spellblade", "Voss's Sanctified Mace", "Wyrmcult Soulsteps", "Wyrmshadow Harness", "Wyrmshadow Legguards",
     "Wyrmshadow Treads",
+    "Glimmerfin Koi", "Raw Bog Eel", "Raw Frostgill Trout", "Raw Marsh Pike", "Raw River Perch", "Raw Stonescale Carp", "Soggy Boot",
   ], 'item'),
   mobs: mergeNameTranslations(MERGE_MOB_IDS, [
     "Elder Bristleback", "Ironvein Foreman", "Ironvein Sapper", "Marrowlord Varkas", "Mirejaw Frenzy", "Mirejaw the Ravenous",
@@ -9416,6 +9462,7 @@ export const mergeEntities = {
       "Envolturas funerarias de Nhalia", "Trucha espejo cruda", "Zapatillas Sableweb", "Caña de pescar sencilla", "Hierba enredada", "Grebas Guardamarea",
       "Escarpes Guardamarea", "Hoja mágica Natavalle", "Maza santificada de Voss", "Pisadas de alma del Culto del Wyrm", "Arnés Sombravermis", "Guardapiernas Sombravermis",
       "Botines Sombravermis",
+      "Koi Aletadestello", "Anguila de Ciénaga Cruda", "Trucha Branquiescarcha Cruda", "Lucio de Marisma Crudo", "Perca de Río Cruda", "Carpa Escamapétrea Cruda", "Bota Empapada",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Viejo Bristleback", "Capataz Vena de Hierro", "Zapador Vena de Hierro", "Señor de Médula Varkas", "Frenesí Mirejaw", "Mirejaw el Voraz",
@@ -9449,6 +9496,7 @@ export const mergeEntities = {
       "Bandelettes funéraires de Nhalia", "Truite miroir crue", "Mules Sableweb", "Canne à pêche simple", "Herbe emmêlée", "Grèves Garde-marée",
       "Solerets Garde-marée", "Lame-sort née du Val", "Masse sanctifiée de Voss", "Pas-d'âme du Culte du Wyrm", "Harnais Ombrewyrm", "Garde-jambes Ombrewyrm",
       "Bottines Ombrewyrm",
+      "Koï Nageoluisante", "Anguille des marais crue", "Truite Givrebranchie crue", "Brochet des marais cru", "Perche de rivière crue", "Carpe Écaillepierre crue", "Botte détrempée",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Ancien Bristleback", "Contremaître Veinefer", "Sapeur Veinefer", "Seigneur de moelle Varkas", "Frénésie Mirejaw", "Mirejaw l'Affamé",
@@ -9483,6 +9531,7 @@ export const mergeEntities = {
       "Bende funebri di Nhalia", "Trota specchio cruda", "Pantofole Sableweb", "Canna da pesca semplice", "Erbaccia aggrovigliata", "Schinieri Guardiamarea",
       "Calzari Guardiamarea", "Lama magica Natavalle", "Mazza santificata di Voss", "Passi d'anima del Culto del Wyrm", "Finimenti Ombrawyrm", "Gambiere Ombrawyrm",
       "Calzari Ombrawyrm",
+      "Koi Pinnabaglio", "Anguilla di Palude Cruda", "Trota Branchiebrina Cruda", "Luccio di Palude Crudo", "Pesce Persico di Fiume Crudo", "Carpa Squamapietra Cruda", "Stivale Fradicio",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Bristleback anziano", "Caposquadra Venaferrata", "Zappatore Venaferrata", "Signore del Midollo Varkas", "Furia Mirejaw", "Mirejaw il Famelico",
@@ -9515,6 +9564,7 @@ export const mergeEntities = {
       "Nhalias Leichenwickel", "Rohe Spiegeltrutte", "Sableweb-Pantoffeln", "Einfache Angel", "Verheddertes Kraut", "Gezeitenwachtbeinschienen",
       "Gezeitenwachtsabatons", "Talgeborene Zauberklinge", "Voss' geheiligter Streitkolben", "Seelenschritte des Wyrmkults", "Wyrmschattenharnisch", "Wyrmschattenbeinschützer",
       "Wyrmschattentreter",
+      "Schimmerflossen-Koi", "Roher Moor-Aal", "Rohe Frostkiemen-Forelle", "Roher Sumpfhecht", "Roher Flussbarsch", "Roher Steinschuppen-Karpfen", "Durchnässter Stiefel",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Alter Bristleback", "Eisenader-Vorarbeiter", "Eisenader-Pionier", "Marklord Varkas", "Mirejaw-Raserei", "Mirejaw der Gefräßige",
@@ -9547,6 +9597,7 @@ export const mergeEntities = {
       "娜莉娅的葬缠", "生镜鳟鱼", "黑网便鞋", "简易鱼竿", "缠结水草", "潮卫护胫",
       "潮卫护靴", "谷裔法刃", "沃斯的圣化战锤", "龙教魂步", "龙影挽具", "龙影腿甲",
       "龙影足垫",
+      "闪鳍锦鲤", "生沼鳗", "生霜鳃鳟", "生沼狗鱼", "生河鲈", "生石鳞鲤", "湿透的靴子",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "年长硬鬃", "铁脉工头", "铁脉爆破手", "髓王瓦尔卡斯", "泥颚狂鱼", "贪食者泥颚",
@@ -9579,6 +9630,7 @@ export const mergeEntities = {
       "娜莉亞的葬纏", "生鏡鱒魚", "黑網便鞋", "簡易釣竿", "纏結水草", "潮衛護脛",
       "潮衛護靴", "谷裔法刃", "沃斯的聖化戰錘", "龍教魂步", "龍影挽具", "龍影腿甲",
       "龍影足墊",
+      "閃鰭錦鯉", "生沼鰻", "生霜鰓鱒", "生沼狗魚", "生河鱸", "生石鱗鯉", "濕透的靴子",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "年長硬鬃", "鐵脈工頭", "鐵脈爆破手", "髓王瓦爾卡斯", "泥顎狂魚", "貪食者泥顎",
@@ -9611,6 +9663,7 @@ export const mergeEntities = {
       "날리아의 장례 붕대", "날거울송어", "검은그물 슬리퍼", "간단한 낚싯대", "엉킨 물풀", "파도수호 경갑",
       "파도수호 쇠장화", "계곡태생 주문검", "보스의 성화된 철퇴", "고룡교단 영혼걸음", "고룡그림자 멜빵", "고룡그림자 다리보호구",
       "고룡그림자 발보호구",
+      "빛지느러미 잉어", "생 늪장어", "생 서리아가미 송어", "생 늪 창꼬치", "생 강 농어", "생 돌비늘 잉어", "흠뻑 젖은 장화",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "늙은 뻣센등뼈", "철맥 감독관", "철맥 폭파병", "골수군주 바르카스", "마이어죠 광란어", "굶주린 마이어죠",
@@ -9643,6 +9696,7 @@ export const mergeEntities = {
       "ナリアの葬送巻き", "生の鏡マス", "セーブルウェブのスリッパ", "簡素な釣り竿", "絡まった水草", "潮守りのグリーヴ",
       "潮守りのサバトン", "谷生まれの呪文刃", "ヴォスの聖別メイス", "ワーム教団の魂歩き", "ワーム影のハーネス", "ワーム影のレッグガード",
       "ワーム影の足具",
+      "輝きビレの鯉", "生の沼ウナギ", "生のフロストギル・トラウト", "生の沼カワカマス", "生の川スズキ", "生の石鱗コイ", "ずぶ濡れのブーツ",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "老ブリストルバック", "鉄脈の現場監督", "鉄脈の爆破兵", "髄王ヴァーカス", "マイアジョーの狂魚", "貪るマイアジョー",
@@ -9675,6 +9729,7 @@ export const mergeEntities = {
       "Bandagens funerárias de Nhalia", "Truta-espelho crua", "Pantufas Sableweb", "Vara de pesca simples", "Erva emaranhada", "Grevas Guardamaré",
       "Escarpes Guardamaré", "Lâmina mágica Nascivale", "Maça santificada de Voss", "Passos de alma do Culto do Wyrm", "Arnês Sombra de Wyrm", "Guarda-pernas Sombra de Wyrm",
       "Pisantes Sombra de Wyrm",
+      "Carpa Koi Brilhobarbatana", "Enguia do Pântano Crua", "Truta Brânquia-Gélida Crua", "Lúcio do Brejo Cru", "Perca de Rio Crua", "Carpa Escama-de-Pedra Crua", "Bota Encharcada",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Bristleback ancião", "Capataz Veio de Ferro", "Sapador Veio de Ferro", "Senhor da Medula Varkas", "Frenesi Mirejaw", "Mirejaw, o Voraz",
@@ -9707,6 +9762,7 @@ export const mergeEntities = {
       "Погребальные обмотки Налии", "Сырая зеркальная форель", "Туфли Сейблвеб", "Простая удочка", "Спутанные водоросли", "Наголенники Стража прилива",
       "Сабатоны Стража прилива", "Долиннорожденный чароклинок", "Освященная булава Восса", "Шаги души Культа вирма", "Сбруя Тени вирма", "Поножи Тени вирма",
       "Ступни Тени вирма",
+      "Карп Сияющий Плавник", "Сырой болотный угорь", "Сырая морозножаберная форель", "Сырая болотная щука", "Сырой речной окунь", "Сырой камнечешуйчатый карп", "Промокший сапог",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Старый Щетиноспин", "Прораб Железной жилы", "Сапер Железной жилы", "Владыка костного мозга Варкас", "Бешенство Миреджо", "Миреджо Ненасытный",
@@ -10451,6 +10507,7 @@ export const gameStrings = {
     totalXp: "total XP",
     lv: "Lv",
     toNext: "to next",
+    rested: "Rested",
   },
   progression: {
     heading: "Progression",
@@ -10573,7 +10630,7 @@ export const gameStringsEnCA: typeof gameStrings = {
 };
 
 export const gameStringsEs: typeof gameStrings = {
-  xp: { suffix: "EXP", maxLevel: "NIVEL MÁX.", totalXp: "EXP total", lv: "Nv", toNext: "para el siguiente" },
+  xp: { suffix: "EXP", maxLevel: "NIVEL MÁX.", totalXp: "EXP total", lv: "Nv", toNext: "para el siguiente", rested: "Descansado" },
   progression: {
     heading: "Progreso",
     totalXp: "EXP total",
@@ -10683,7 +10740,7 @@ export const gameStringsEs: typeof gameStrings = {
 export const gameStringsEsES: typeof gameStrings = gameStringsEs;
 
 export const gameStringsFrFR: typeof gameStrings = {
-  xp: { suffix: "EXP", maxLevel: "NIVEAU MAX.", totalXp: "EXP totale", lv: "Niv.", toNext: "avant le suivant" },
+  xp: { suffix: "EXP", maxLevel: "NIVEAU MAX.", totalXp: "EXP totale", lv: "Niv.", toNext: "avant le suivant", rested: "Reposé" },
   progression: {
     heading: "Progression",
     totalXp: "EXP totale",
@@ -10793,7 +10850,7 @@ export const gameStringsFrFR: typeof gameStrings = {
 export const gameStringsFrCA: typeof gameStrings = gameStringsFrFR;
 
 export const gameStringsItIT: typeof gameStrings = {
-  xp: { suffix: "PE", maxLevel: "LIVELLO MAX", totalXp: "PE totali", lv: "Liv", toNext: "al prossimo" },
+  xp: { suffix: "PE", maxLevel: "LIVELLO MAX", totalXp: "PE totali", lv: "Liv", toNext: "al prossimo", rested: "Riposato" },
   progression: { heading: "Progressione", totalXp: "PE totali", virtualLevel: "Livello virtuale", prestigeRank: "Rango prestigio", milestones: "Traguardi", none: "Ancora nessuno", virtualLevelUp: "Livello virtuale" },
   leaderboard: { title: "Classifica", subtitle: "PE totali", rank: "Posizione", name: "Nome", realmCol: "Reame", level: "Liv", vlevel: "Liv.V", lifetimeXp: "PE totali", yourRank: "La tua posizione", empty: "Non ci sono ancora campioni: lascia il primo segno.", loading: "Caricamento classifica...", unranked: "Non classificato", you: "Tu", globalSubtitle: "Migliori campioni di tutti i reami", retry: "Impossibile caricare la classifica. Riprova." },
   milestone: { unlocked: "Traguardo sbloccato", veteran: "Veterano", champion: "Campione", paragon: "Esemplare", mythic: "Mitico", eternal: "Eterno" },
@@ -10805,7 +10862,7 @@ export const gameStringsItIT: typeof gameStrings = {
 };
 
 export const gameStringsDeDE: typeof gameStrings = {
-  xp: { suffix: "EP", maxLevel: "MAX. STUFE", totalXp: "EP gesamt", lv: "St.", toNext: "bis zur nächsten" },
+  xp: { suffix: "EP", maxLevel: "MAX. STUFE", totalXp: "EP gesamt", lv: "St.", toNext: "bis zur nächsten", rested: "Ausgeruht" },
   progression: { heading: "Fortschritt", totalXp: "EP gesamt", virtualLevel: "Virtuelle Stufe", prestigeRank: "Prestigerang", milestones: "Meilensteine", none: "Noch keine", virtualLevelUp: "Virtuelle Stufe" },
   leaderboard: { title: "Rangliste", subtitle: "Lebenszeit-EP", rank: "Rang", name: "Name", realmCol: "Realm", level: "St.", vlevel: "V.St.", lifetimeXp: "Lebenszeit-EP", yourRank: "Euer Rang", empty: "Noch keine Champions; setzt als Erste ein Zeichen.", loading: "Rangliste wird geladen...", unranked: "Ohne Rang", you: "Ihr", globalSubtitle: "Beste Champions aller Realms", retry: "Rangliste konnte nicht geladen werden. Versucht es erneut." },
   milestone: { unlocked: "Meilenstein freigeschaltet", veteran: "Veteran", champion: "Champion", paragon: "Paragon", mythic: "Mythisch", eternal: "Ewig" },
@@ -10817,7 +10874,7 @@ export const gameStringsDeDE: typeof gameStrings = {
 };
 
 export const gameStringsZhCN: typeof gameStrings = {
-  xp: { suffix: "经验", maxLevel: "满级", totalXp: "总经验", lv: "等级", toNext: "到下一级" },
+  xp: { suffix: "经验", maxLevel: "满级", totalXp: "总经验", lv: "等级", toNext: "到下一级", rested: "充分休息" },
   progression: { heading: "进度", totalXp: "总经验", virtualLevel: "虚拟等级", prestigeRank: "声望阶级", milestones: "里程碑", none: "尚无", virtualLevelUp: "虚拟等级" },
   leaderboard: { title: "排行榜", subtitle: "终身经验", rank: "名次", name: "名称", realmCol: "服务器", level: "等级", vlevel: "虚等", lifetimeXp: "终身经验", yourRank: "你的排名", empty: "还没有冠军；成为第一个留下传说的人。", loading: "正在加载排名...", unranked: "未上榜", you: "你", globalSubtitle: "所有服务器的顶尖冠军", retry: "无法加载排行榜。请重试。" },
   milestone: { unlocked: "里程碑解锁", veteran: "老兵", champion: "冠军", paragon: "典范", mythic: "神话", eternal: "永恒" },
@@ -10829,7 +10886,7 @@ export const gameStringsZhCN: typeof gameStrings = {
 };
 
 export const gameStringsZhTW: typeof gameStrings = {
-  xp: { suffix: "經驗", maxLevel: "滿級", totalXp: "總經驗", lv: "等級", toNext: "到下一級" },
+  xp: { suffix: "經驗", maxLevel: "滿級", totalXp: "總經驗", lv: "等級", toNext: "到下一級", rested: "充分休息" },
   progression: { heading: "進度", totalXp: "總經驗", virtualLevel: "虛擬等級", prestigeRank: "威望階級", milestones: "里程碑", none: "尚無", virtualLevelUp: "虛擬等級" },
   leaderboard: { title: "排行榜", subtitle: "終身經驗", rank: "名次", name: "名稱", realmCol: "伺服器", level: "等級", vlevel: "虛等", lifetimeXp: "終身經驗", yourRank: "你的排名", empty: "還沒有冠軍；成為第一個留下傳說的人。", loading: "正在載入排名...", unranked: "未上榜", you: "你", globalSubtitle: "所有伺服器的頂尖冠軍", retry: "無法載入排行榜。請再試一次。" },
   milestone: { unlocked: "里程碑解鎖", veteran: "老兵", champion: "冠軍", paragon: "典範", mythic: "神話", eternal: "永恆" },
@@ -10897,7 +10954,7 @@ export const gameStringsZhTW: typeof gameStrings = {
 };
 
 export const gameStringsKoKR: typeof gameStrings = {
-  xp: { suffix: "경험치", maxLevel: "최대 레벨", totalXp: "총 경험치", lv: "레벨", toNext: "다음까지" },
+  xp: { suffix: "경험치", maxLevel: "최대 레벨", totalXp: "총 경험치", lv: "레벨", toNext: "다음까지", rested: "휴식" },
   progression: { heading: "진행도", totalXp: "총 경험치", virtualLevel: "가상 레벨", prestigeRank: "명예 등급", milestones: "이정표", none: "아직 없음", virtualLevelUp: "가상 레벨" },
   leaderboard: { title: "순위표", subtitle: "누적 경험치", rank: "순위", name: "이름", realmCol: "서버", level: "레벨", vlevel: "가상", lifetimeXp: "누적 경험치", yourRank: "내 순위", empty: "아직 영웅이 없습니다. 첫 흔적을 남겨 보세요.", loading: "순위 불러오는 중...", unranked: "순위 없음", you: "나", globalSubtitle: "모든 서버의 최고 영웅", retry: "순위표를 불러오지 못했습니다. 다시 시도하세요." },
   milestone: { unlocked: "이정표 해제", veteran: "베테랑", champion: "용사", paragon: "귀감", mythic: "신화", eternal: "영원" },
@@ -10907,7 +10964,7 @@ export const gameStringsKoKR: typeof gameStrings = {
 };
 
 export const gameStringsJaJP: typeof gameStrings = {
-  xp: { suffix: "経験値", maxLevel: "最大レベル", totalXp: "総経験値", lv: "Lv", toNext: "次まで" },
+  xp: { suffix: "経験値", maxLevel: "最大レベル", totalXp: "総経験値", lv: "Lv", toNext: "次まで", rested: "休息" },
   progression: { heading: "進行", totalXp: "総経験値", virtualLevel: "仮想レベル", prestigeRank: "威信ランク", milestones: "到達点", none: "まだなし", virtualLevelUp: "仮想レベル" },
   leaderboard: { title: "ランキング", subtitle: "累計経験値", rank: "順位", name: "名前", realmCol: "レルム", level: "Lv", vlevel: "仮Lv", lifetimeXp: "累計経験値", yourRank: "あなたの順位", empty: "まだ英雄はいません。最初の名を刻みましょう。", loading: "ランキングを読み込み中...", unranked: "順位なし", you: "あなた", globalSubtitle: "全レルムの上位英雄", retry: "ランキングを読み込めませんでした。もう一度お試しください。" },
   milestone: { unlocked: "到達点解除", veteran: "古参", champion: "勇者", paragon: "範士", mythic: "神話", eternal: "永遠" },
@@ -10917,7 +10974,7 @@ export const gameStringsJaJP: typeof gameStrings = {
 };
 
 export const gameStringsPtBR: typeof gameStrings = {
-  xp: { suffix: "EXP", maxLevel: "NÍVEL MAX.", totalXp: "EXP total", lv: "Nv", toNext: "para o próximo" },
+  xp: { suffix: "EXP", maxLevel: "NÍVEL MAX.", totalXp: "EXP total", lv: "Nv", toNext: "para o próximo", rested: "Descansado" },
   progression: { heading: "Progressão", totalXp: "EXP total", virtualLevel: "Nível virtual", prestigeRank: "Grau de prestígio", milestones: "Marcos", none: "Nenhum ainda", virtualLevelUp: "Nível virtual" },
   leaderboard: { title: "Classificação", subtitle: "EXP vitalícia", rank: "Posição", name: "Nome", realmCol: "Reino", level: "Nv", vlevel: "Nv.V", lifetimeXp: "EXP vitalícia", yourRank: "Sua posição", empty: "Ainda não há campeões; seja o primeiro a deixar sua marca.", loading: "Carregando classificação...", unranked: "Sem ranking", you: "Você", globalSubtitle: "Maiores campeões de todos os reinos", retry: "Não foi possível carregar a classificação. Tente novamente." },
   milestone: { unlocked: "Marco desbloqueado", veteran: "Veterano", champion: "Campeão", paragon: "Paragão", mythic: "Mítico", eternal: "Eterno" },
@@ -10985,7 +11042,7 @@ export const gameStringsPtBR: typeof gameStrings = {
 };
 
 export const gameStringsRuRU: typeof gameStrings = {
-  xp: { suffix: "опыт", maxLevel: "МАКС. УРОВЕНЬ", totalXp: "всего опыта", lv: "Ур.", toNext: "до следующего" },
+  xp: { suffix: "опыт", maxLevel: "МАКС. УРОВЕНЬ", totalXp: "всего опыта", lv: "Ур.", toNext: "до следующего", rested: "Отдохнувший" },
   progression: { heading: "Прогресс", totalXp: "Всего опыта", virtualLevel: "Виртуальный уровень", prestigeRank: "Ранг престижа", milestones: "Вехи", none: "Пока нет", virtualLevelUp: "Виртуальный уровень" },
   leaderboard: { title: "Рейтинг", subtitle: "Опыт за все время", rank: "Место", name: "Имя", realmCol: "Мир", level: "Ур.", vlevel: "Вирт.", lifetimeXp: "Опыт за все время", yourRank: "Ваше место", empty: "Чемпионов пока нет; станьте первым.", loading: "Загрузка рейтинга...", unranked: "Без места", you: "Вы", globalSubtitle: "Лучшие чемпионы всех миров", retry: "Не удалось загрузить рейтинг. Попробуйте еще раз." },
   milestone: { unlocked: "Веха открыта", veteran: "Ветеран", champion: "Чемпион", paragon: "Образец", mythic: "Мифический", eternal: "Вечный" },

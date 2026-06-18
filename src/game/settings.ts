@@ -18,6 +18,10 @@ export const SETTING_RANGES = {
   foliageDensity: { min: 0, max: 1, def: 1 },
   effectsQuality: { min: 0, max: 1, def: 1 },
   shadowQuality: { min: 0, max: 1, def: 1 },
+  // vertical camera field of view in degrees. def 60 keeps the shipped look;
+  // a wider FOV shows more of the world (good for situational awareness) while
+  // a narrower one zooms in. Purely a comfort/visibility preference.
+  cameraFov: { min: 55, max: 100, def: 60 },
   renderScale: { min: 0.5, max: 1, def: 1 },
   fullscreen: { min: 0, max: 1, def: 1 },
   // on by default: post-cap players see their overflow/virtual-level bar; turn

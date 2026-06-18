@@ -1277,6 +1277,7 @@ export class GameServer {
       rtype: p.resourceType,
       xp: meta.xp,
       lxp: meta.lifetimeXp,
+      rxp: Math.round(meta.restedXp),
       prk: meta.prestigeRank,
       copper: meta.copper,
       gcd: round2(p.gcdRemaining),

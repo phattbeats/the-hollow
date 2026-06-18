@@ -36,6 +36,7 @@ import { tEntity } from './entity_i18n';
 import { localizeServerText, localizeZone } from './server_i18n';
 import { localizeSimText, localizeSimAuraName } from './sim_i18n';
 import { tTalent, localizeTalentTitle } from './talent_i18n';
+import { type ChatClock, clampChatClock, formatChatTimestamp } from './chat_timestamp';
 import {
   talentsFor, computeTalentModifiers, validateAllocation, dormantNodes, pointsSpent,
   exportBuild, importBuild, cloneAllocation, talentPointsAtLevel, FIRST_TALENT_LEVEL,
@@ -243,7 +244,7 @@ export class Hud {
   // Soft swear terms from the server (online only), masked in chat when the
   // player's "Filter Profanity" setting is on. Fed by main.ts from ClientWorld.
   private profanityWords: string[] = [];
-  private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' = 'main';
+  private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' | 'interface' = 'main';
   private capturingKey: { action: string; index: number } | null = null; // binding awaiting a key
   private keybindNote = '';
   private emoteWheelOpen = false;
@@ -252,6 +253,10 @@ export class Hud {
   private emoteWheelEl: HTMLDivElement | null = null;
   private emoteWheelPinned = false;
   private chatLogEl = $('#chatlog');
+  // Classic "Show Timestamps" interface option — off by default, persisted to
+  // localStorage. New chat lines get a bracketed wall-clock prefix when on.
+  private chatTimestamps = localStorage.getItem('chatTimestamps') === '1';
+  private chatClock: ChatClock = clampChatClock(localStorage.getItem('chatClock'));
   private combatLogEl = $('#combatlog');
   private errorEl = $('#error-msg');
   private bannerEl = $('#banner');
@@ -1972,12 +1977,17 @@ export class Hud {
     // xp bar — pre-cap shows the level bar; post-cap fills toward the next
     // virtual level (Max-Level XP Overflow), with distinct prestige/gold styling.
     const showOverflow = (this.optionsHooks?.settings.get('showOverflowXp') ?? 1) >= 0.5;
-    const bar = xpBarView({ level: p.level, xp: sim.xp, lifetimeXp: sim.lifetimeXp, showOverflow });
+    const bar = xpBarView({ level: p.level, xp: sim.xp, lifetimeXp: sim.lifetimeXp, restedXp: sim.restedXp, showOverflow });
     this.setWidth(this.xpFillEl, `${(bar.fillFrac * 100).toFixed(1)}%`);
     $('#xpbar').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));
     $('#player-frame').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));
+    // Rested overlay sits ahead of the fill (classic inn-rested bonus preview).
+    const restedEl = $('#xpbar .rested') as HTMLElement;
+    restedEl.style.left = `${(bar.fillFrac * 100).toFixed(1)}%`;
+    restedEl.style.width = `${(bar.restedFrac * 100).toFixed(1)}%`;
     this.setText(this.xpLabelEl, bar.label);
     $('#xpbar').classList.toggle('overflow', bar.postCap);
+    $('#xpbar').classList.toggle('rested', bar.restedFrac > 0);
 
     const deadInArena = p.dead && !!this.sim.arenaInfo?.match;
     this.setDisplay(this.deathOverlayEl, p.dead ? 'flex' : 'none');
@@ -2767,7 +2777,12 @@ export class Hud {
         }
         case 'xp': {
           this.fct(sim.player, t('hud.core.xpFloat', { amount: ev.amount }), '#b974ff', false);
-          this.log(t('hud.core.xpGain', { amount: ev.amount }), '#a980d8');
+          if (ev.rested && ev.rested > 0) {
+            this.fct(sim.player, t('hud.core.xpFloatRested', { amount: ev.rested }), '#4a9eff', false);
+            this.log(t('hud.core.xpGainRested', { amount: ev.amount, rested: ev.rested }), '#a980d8');
+          } else {
+            this.log(t('hud.core.xpGain', { amount: ev.amount }), '#a980d8');
+          }
           break;
         }
         case 'levelup': {
@@ -2989,7 +3004,18 @@ export class Hud {
   }
 
   log(text: string, color = '#ccc'): void {
-    this.appendLog(this.chatLogEl, text, color);
+    this.appendLog(this.chatLogEl, text, color, true);
+  }
+
+  // Prepend a dim bracketed wall-clock prefix to a chat line when the "Show
+  // Timestamps" option is on. No-op otherwise. Wall-clock time is fine here —
+  // the determinism ban is sim-only.
+  private prependTimestamp(div: HTMLElement): void {
+    if (!this.chatTimestamps) return;
+    const ts = document.createElement('span');
+    ts.className = 'chat-ts';
+    ts.textContent = `${formatChatTimestamp(new Date(), this.chatClock)} `;
+    div.appendChild(ts);
   }
 
   private logZoneWelcome(zone: ZoneDef): void {
@@ -3001,6 +3027,7 @@ export class Hud {
     const wasNearBottom = this.chatLogEl.scrollHeight - this.chatLogEl.scrollTop - this.chatLogEl.clientHeight < 24;
     const div = document.createElement('div');
     div.style.color = color;
+    this.prependTimestamp(div);
     const sender = document.createElement('span');
     sender.className = 'chat-player-name';
     sender.textContent = name;
@@ -3302,11 +3329,12 @@ export class Hud {
     this.appendLog(this.combatLogEl, text, color);
   }
 
-  private appendLog(el: HTMLElement, text: string, color: string): void {
+  private appendLog(el: HTMLElement, text: string, color: string, timestamp = false): void {
     const wasNearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
     const div = document.createElement('div');
-    div.textContent = text;
     div.style.color = color;
+    if (timestamp) this.prependTimestamp(div);
+    div.append(document.createTextNode(text));
     el.appendChild(div);
     while (el.children.length > 200) el.removeChild(el.firstChild!);
     if (wasNearBottom) el.scrollTop = el.scrollHeight;
@@ -5922,6 +5950,7 @@ export class Hud {
     if (this.optionsView === 'keybinds') { this.renderKeybinds(); return; }
     if (this.optionsView === 'graphics') { this.renderGraphics(); return; }
     if (this.optionsView === 'audio') { this.renderAudio(); return; }
+    if (this.optionsView === 'interface') { this.renderInterface(); return; }
     const el = $('#options-menu');
     el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.gameMenu'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
     const list = document.createElement('div');
@@ -5933,10 +5962,11 @@ export class Hud {
       b.addEventListener('click', () => { audio.click(); onClick(); });
       list.appendChild(b);
     };
-    const goto = (view: 'keybinds' | 'graphics' | 'audio') => { this.optionsView = view; this.keybindNote = ''; this.renderOptions(); };
+    const goto = (view: 'keybinds' | 'graphics' | 'audio' | 'interface') => { this.optionsView = view; this.keybindNote = ''; this.renderOptions(); };
     add(t('hud.options.keyBindings'), () => goto('keybinds'));
     add(t('hud.options.graphics'), () => goto('graphics'));
     add(t('hud.options.audio'), () => goto('audio'));
+    add(t('hud.options.interface'), () => goto('interface'));
     add(t('hud.options.logout'), () => this.optionsHooks?.logout());
     add(t('hud.options.returnToGame'), () => this.closeOptions());
     el.appendChild(list);
@@ -5944,7 +5974,9 @@ export class Hud {
   }
 
   // A labelled slider bound to a numeric setting; live-applies via the hook.
-  private settingSlider(parent: HTMLElement, label: string, key: NumericSettingKey): void {
+  // opts.fmt renders the readout (default: a percentage); opts.step overrides the
+  // 0.05 increment for settings measured in whole units (e.g. FOV degrees).
+  private settingSlider(parent: HTMLElement, label: string, key: NumericSettingKey, opts?: { fmt?: (v: number) => string; step?: number }): void {
     const hooks = this.optionsHooks;
     if (!hooks) return;
     const r = SETTING_RANGES[key];
@@ -5958,16 +5990,17 @@ export class Hud {
     slider.className = 'set-slider';
     slider.min = String(r.min);
     slider.max = String(r.max);
-    slider.step = '0.05';
+    slider.step = String(opts?.step ?? 0.05);
     slider.value = String(hooks.settings.get(key));
     slider.setAttribute('aria-label', label);
     const val = document.createElement('span');
     val.className = 'set-val';
-    const pct = () => `${Math.round(hooks.settings.get(key) * 100)}%`;
-    val.textContent = pct();
+    const fmt = opts?.fmt ?? ((v: number) => `${Math.round(v * 100)}%`);
+    const readout = () => fmt(hooks.settings.get(key));
+    val.textContent = readout();
     slider.addEventListener('input', () => {
       hooks.onSettingChange(key, Number(slider.value));
-      val.textContent = pct();
+      val.textContent = readout();
     });
     row.append(name, slider, val);
     parent.appendChild(row);
@@ -6102,6 +6135,7 @@ export class Hud {
     // own rate, so phones get a dedicated sensitivity slider here.
     if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.touchLookSpeed'), 'touchLookSpeed');
     this.settingSlider(body, t('hud.options.brightness'), 'brightness');
+    this.settingSlider(body, t('hud.options.fieldOfView'), 'cameraFov', { fmt: (v) => `${Math.round(v)}°`, step: 1 });
     this.settingSlider(body, t('hud.options.renderQuality'), 'renderScale');
     this.settingToggle(body, t('hud.options.fullscreen'), 'fullscreen');
     this.settingToggle(body, t('game.settings.showOverflowXp'), 'showOverflowXp');
@@ -6146,6 +6180,82 @@ export class Hud {
     row.append(name, toggle);
     body.appendChild(row);
     this.settingsViewFooter();
+  }
+
+  // Interface options. Self-contained client-side toggles (persisted to
+  // localStorage, not the GameSettings store) — currently the classic "Show
+  // Timestamps" chat option plus its 12/24-hour clock format.
+  private renderInterface(): void {
+    const body = this.settingsViewShell('Interface');
+
+    // On/off toggle for chat timestamps.
+    const tsRow = document.createElement('div');
+    tsRow.className = 'set-row';
+    const tsName = document.createElement('span');
+    tsName.className = 'set-name';
+    tsName.textContent = 'Show Chat Timestamps';
+    const tsToggle = document.createElement('button');
+    tsToggle.className = 'btn set-toggle';
+
+    // 12/24-hour format selector — two segmented buttons, dimmed when off.
+    const fmtRow = document.createElement('div');
+    fmtRow.className = 'set-row';
+    const fmtName = document.createElement('span');
+    fmtName.className = 'set-name';
+    fmtName.textContent = 'Timestamp Format';
+    const seg = document.createElement('div');
+    seg.className = 'set-seg';
+    const btn12 = document.createElement('button');
+    btn12.className = 'btn set-seg-btn';
+    btn12.textContent = '12-hour';
+    const btn24 = document.createElement('button');
+    btn24.className = 'btn set-seg-btn';
+    btn24.textContent = '24-hour';
+    seg.append(btn12, btn24);
+    fmtRow.append(fmtName, seg);
+
+    const sync = () => {
+      tsToggle.textContent = this.chatTimestamps ? 'On' : 'Off';
+      tsToggle.classList.toggle('off', !this.chatTimestamps);
+      tsToggle.setAttribute('aria-pressed', String(this.chatTimestamps));
+      btn12.classList.toggle('active', this.chatClock === '12h');
+      btn24.classList.toggle('active', this.chatClock === '24h');
+      fmtRow.classList.toggle('disabled', !this.chatTimestamps);
+      btn12.disabled = !this.chatTimestamps;
+      btn24.disabled = !this.chatTimestamps;
+    };
+    sync();
+
+    tsToggle.addEventListener('click', () => {
+      audio.click();
+      this.chatTimestamps = !this.chatTimestamps;
+      localStorage.setItem('chatTimestamps', this.chatTimestamps ? '1' : '0');
+      sync();
+    });
+    const setClock = (clock: ChatClock) => {
+      if (!this.chatTimestamps) return;
+      audio.click();
+      this.chatClock = clock;
+      localStorage.setItem('chatClock', clock);
+      sync();
+    };
+    btn12.addEventListener('click', () => setClock('12h'));
+    btn24.addEventListener('click', () => setClock('24h'));
+
+    tsRow.append(tsName, tsToggle);
+    body.append(tsRow, fmtRow);
+
+    const note = document.createElement('div');
+    note.className = 'set-note';
+    note.textContent = 'Prefixes each new chat line with the time it arrived, e.g. [14:32]. Only affects messages received while the option is on.';
+    $('#options-menu').appendChild(note);
+
+    const back = document.createElement('button');
+    back.className = 'btn';
+    back.textContent = 'Back';
+    back.addEventListener('click', () => { audio.click(); this.optionsView = 'main'; this.renderOptions(); });
+    $('#options-menu').appendChild(back);
+    $('#options-menu').querySelector('[data-close]')?.addEventListener('click', () => this.closeOptions());
   }
 
   // Display name for an action row. Action-bar slots show the shortcut that
