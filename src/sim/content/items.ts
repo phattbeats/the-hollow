@@ -203,6 +203,20 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     id: 'conjured_water3', name: 'Conjured Sparkling Water', kind: 'drink', quality: 'common',
     drinkMana: 672, sellValue: 0,
   },
+  // --- conjured food (mage Conjure Food ranks; foodHp tiers pair with the
+  // conjured-water mana tiers above) ---
+  conjured_bread: {
+    id: 'conjured_bread', name: 'Conjured Bread', kind: 'food', quality: 'common',
+    foodHp: 61, sellValue: 0,
+  },
+  conjured_bread2: {
+    id: 'conjured_bread2', name: 'Conjured Pumpernickel', kind: 'food', quality: 'common',
+    foodHp: 243, sellValue: 0,
+  },
+  conjured_bread3: {
+    id: 'conjured_bread3', name: 'Conjured Sweet Roll', kind: 'food', quality: 'common',
+    foodHp: 552, sellValue: 0,
+  },
   // --- Smith Haldren's stock (common/white, levels 3-7) ---
   eastbrook_arming_sword: {
     id: 'eastbrook_arming_sword', name: 'Eastbrook Arming Sword', kind: 'weapon', slot: 'mainhand', quality: 'common',
