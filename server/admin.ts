@@ -5,7 +5,7 @@ import { findAccount, touchLogin, saveToken, accountForToken, isAdminAccount } f
 import { verifyPassword, newToken } from './auth';
 import {
   overviewCounts, registrationsByDay, sessionsByDay, classDistribution, levelDistribution,
-  listAccounts, listCharacters, accountDetail,
+  listAccounts, listCharacters, accountDetail, clientPerfSummary, clientPerfRaw,
 } from './admin_db';
 import {
   forceCharacterRename, ignoreReport, moderateAccount, muteAccountChat, moderationQueue, moderationReportsForAccount,
@@ -229,6 +229,15 @@ export async function handleAdminApi(
         levelDistribution(),
       ]);
       return ok(res, { days: ACTIVITY_WINDOW_DAYS, registrations, sessions, classes, levels });
+    }
+    if (path === '/admin/api/perf/summary') {
+      const hours = Number(url.searchParams.get('hours') ?? '24');
+      return ok(res, await clientPerfSummary(hours));
+    }
+    if (path === '/admin/api/perf/raw') {
+      const hours = Number(url.searchParams.get('hours') ?? '24');
+      const limit = Number(url.searchParams.get('limit') ?? '100');
+      return ok(res, { rows: await clientPerfRaw(hours, limit) });
     }
     if (path === '/admin/api/accounts') {
       const { page, limit } = parsePageParams(url.searchParams);

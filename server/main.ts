@@ -23,6 +23,7 @@ import { requestIp, rateLimited, authThrottled, recordAuthFailure, clearAuthFail
 import { verifyTurnstile } from './turnstile';
 import { handleAdminApi } from './admin';
 import { handleInternalApi } from './internal';
+import { handlePerfReport } from './perf_report';
 import { GameServer } from './game';
 import { REALM, REALM_DIRECTORY, REALM_ORIGINS } from './realm';
 import { webLoginEnforced, isWebClientRequest } from './web_login_guard';
@@ -480,6 +481,9 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       } catch (err) {
         return json(res, 400, { error: err instanceof Error ? err.message : 'could not submit report' });
       }
+    }
+    if (req.method === 'POST' && url === '/api/perf-report') {
+      return await handlePerfReport(req, res);
     }
     if (req.method === 'GET' && url === '/api/project-stats') {
       const accountsCount = await getAccountsCount();

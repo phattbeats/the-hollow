@@ -8,9 +8,11 @@ import { BROWSER_PATH } from './browser_path.mjs';
 
 const BASE_URL = process.env.GAME_URL ?? 'http://localhost:5173';
 const VIEWPORT_MODE = process.env.PERF_VIEWPORT ?? 'both';
+const PERF_SCENARIO = process.env.PERF_SCENARIO ?? 'bench_perf_tour';
 const STEP_MS = Number(process.env.PERF_STEP_MS ?? 2500);
 const SETTLE_MS = Number(process.env.PERF_SETTLE_MS ?? 600);
 const BOOT_TIMEOUT_MS = Number(process.env.PERF_BOOT_TIMEOUT_MS ?? 120000);
+const NAV_TIMEOUT_MS = Number(process.env.PERF_NAV_TIMEOUT_MS ?? 30000);
 const OUTPUT = process.env.PERF_OUT ?? path.join('tmp', `perf-tour-${new Date().toISOString().replace(/[:.]/g, '-')}.json`);
 
 const THRESHOLDS = {
@@ -68,6 +70,7 @@ function numberEnv(name) {
 function perfUrl() {
   const url = new URL(BASE_URL);
   url.searchParams.set('perf', '');
+  url.searchParams.set('perfScenario', PERF_SCENARIO);
   return url.toString();
 }
 
@@ -84,7 +87,7 @@ function isIgnorableConsoleError(text) {
 
 async function bootOffline(page, viewport) {
   await page.setViewport(viewport);
-  await page.goto(perfUrl(), { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.goto(perfUrl(), { waitUntil: 'domcontentloaded', timeout: NAV_TIMEOUT_MS });
   await page.waitForSelector('#btn-offline', { timeout: 30000 });
   await page.$eval('#btn-offline', (el) => el.click());
   await page.waitForSelector('#char-name', { timeout: 30000 });
@@ -398,9 +401,11 @@ const artifact = {
   generatedAt: startedAt,
   baseUrl: BASE_URL,
   url: perfUrl(),
+  scenario: PERF_SCENARIO,
   stepMs: STEP_MS,
   settleMs: SETTLE_MS,
   bootTimeoutMs: BOOT_TIMEOUT_MS,
+  navTimeoutMs: NAV_TIMEOUT_MS,
   browserPath: BROWSER_PATH,
   thresholds: THRESHOLDS,
   summary: Object.fromEntries(results.map((r) => [r.viewport, r.summary])),

@@ -1,0 +1,110 @@
+import { EventEmitter } from 'node:events';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+vi.mock('../server/db', () => ({
+  accountForToken: vi.fn(),
+  getCharacter: vi.fn(),
+  insertClientPerfReport: vi.fn(async () => {}),
+}));
+
+import { handlePerfReport, perfReportInternalsForTest } from '../server/perf_report';
+import { accountForToken, getCharacter, insertClientPerfReport } from '../server/db';
+
+const VALID_TOKEN = 'b'.repeat(64);
+
+function fakeReq(body: unknown, opts: { token?: string; method?: string } = {}) {
+  const req: any = new EventEmitter();
+  req.method = opts.method ?? 'POST';
+  req.url = '/api/perf-report';
+  req.headers = {
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/605.1.15 Version/17.0 Safari/605.1.15',
+    ...(opts.token ? { authorization: `Bearer ${opts.token}` } : {}),
+  };
+  req.socket = { remoteAddress: '203.0.113.10' };
+  setImmediate(() => {
+    req.emit('data', JSON.stringify(body));
+    req.emit('end');
+  });
+  return req;
+}
+
+function fakeRes() {
+  const res: any = {
+    statusCode: 0,
+    body: null as any,
+    writeHead(status: number) { this.statusCode = status; },
+    end(data?: string) { this.body = data ? JSON.parse(data) : null; },
+  };
+  return res;
+}
+
+beforeEach(() => {
+  vi.clearAllMocks();
+});
+
+describe('perf report ingestion', () => {
+  it('sanitizes and stores a bounded report with authenticated account context', async () => {
+    vi.mocked(accountForToken).mockResolvedValue(10);
+    vi.mocked(getCharacter).mockResolvedValue({ id: 55 } as any);
+    const res = fakeRes();
+
+    await handlePerfReport(fakeReq({
+      schemaVersion: 99,
+      releaseVersion: '0.9.0',
+      buildId: 'abcdef123456',
+      sessionId: 'sess',
+      characterId: 55,
+      graphicsPreset: 'ultra',
+      gfxTier: 'ultra',
+      autoGovernor: false,
+      targetFps: 60,
+      renderScale: 1,
+      effectiveRenderScale: 0.95,
+      fpsAvg: 58,
+      frameP95Ms: 22,
+      frameP99Ms: 38,
+      longFrameCount: 2,
+      rendererCalls: 600,
+      rendererTriangles: 400000,
+      rendererTextures: 90,
+      rendererPrograms: 40,
+      contextLostCount: 0,
+      longTaskCount: 1,
+      longTaskP95Ms: 70,
+      memoryUsedMb: 120,
+      memoryLimitMb: 4096,
+      dpr: 2,
+      viewportWidth: 1440,
+      viewportHeight: 900,
+      deviceMemory: 8,
+      hardwareConcurrency: 12,
+      mobileTouch: false,
+      glVendor: 'Apple',
+      glRenderer: 'ANGLE (Apple, ANGLE Metal Renderer: Apple M2)',
+      source: 'benchmark',
+      zoneOrScenario: 'bench_town',
+      rawSummary: { large: 'x'.repeat(9000) },
+    }, { token: VALID_TOKEN }), res);
+
+    expect(res.statusCode).toBe(200);
+    expect(insertClientPerfReport).toHaveBeenCalledTimes(1);
+    expect(insertClientPerfReport).toHaveBeenCalledWith(expect.objectContaining({
+      schemaVersion: 1,
+      accountId: 10,
+      characterId: 55,
+      graphicsPreset: 'ultra',
+      gfxTier: 'ultra',
+      glRendererBucket: 'apple-m2',
+      browserFamily: 'safari',
+      osFamily: 'macos',
+      viewportBucket: 'large-1440x900',
+      rawSummary: { truncated: true },
+    }));
+  });
+
+  it('keeps GPU bucketing coarse', () => {
+    expect(perfReportInternalsForTest.bucketGpu('Google SwiftShader')).toBe('software');
+    expect(perfReportInternalsForTest.bucketGpu('ANGLE (Intel, Intel(R) Iris(TM) Plus Graphics 655)')).toBe('intel-iris');
+    expect(perfReportInternalsForTest.bucketGpu('ANGLE (AMD Radeon Pro)')).toBe('amd');
+  });
+});

@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { forcedTierFromSearch, isConstrainedBrowser, isWeakIntegratedGpu, tierFromHints, type GfxRuntimeHints } from '../src/render/gfx';
+import {
+  forcedTierFromSearch, graphicsPresetLabel, isConstrainedBrowser, isWeakIntegratedGpu,
+  shouldUseAutoGovernor, tierFromHints, GFX_BUDGETS, type GfxRuntimeHints,
+} from '../src/render/gfx';
 
 const desktop: GfxRuntimeHints = {
   search: '',
@@ -41,6 +44,31 @@ describe('graphics tier resolution', () => {
     expect(tierFromHints({ ...desktop, graphicsPreset: 4 }, false)).toBe('ultra');
     expect(tierFromHints({ ...desktop, graphicsPreset: 5 }, false)).toBe('high');
     expect(tierFromHints({ ...desktop, search: '?gfx=low', graphicsPreset: 3 }, false)).toBe('low');
+  });
+
+  it('labels presets and only enables the runtime governor for unforced Auto', () => {
+    expect(graphicsPresetLabel(undefined)).toBe('auto');
+    expect(graphicsPresetLabel(1)).toBe('low');
+    expect(graphicsPresetLabel(2)).toBe('medium');
+    expect(graphicsPresetLabel(3)).toBe('high');
+    expect(graphicsPresetLabel(4)).toBe('ultra');
+    expect(graphicsPresetLabel(5)).toBe('advanced');
+    expect(shouldUseAutoGovernor({ search: '', graphicsPreset: 0 })).toBe(true);
+    expect(shouldUseAutoGovernor({ search: '', graphicsPreset: undefined })).toBe(true);
+    expect(shouldUseAutoGovernor({ search: '', graphicsPreset: 3 })).toBe(false);
+    expect(shouldUseAutoGovernor({ search: '?gfx=high', graphicsPreset: 0 })).toBe(false);
+  });
+
+  it('keeps every quality tier bounded by explicit runtime budgets', () => {
+    for (const [tier, budget] of Object.entries(GFX_BUDGETS)) {
+      expect(budget.targetFps).toBeGreaterThanOrEqual(30);
+      expect(budget.maxRenderScale).toBeLessThanOrEqual(1);
+      expect(budget.minRenderScaleDesktop).toBeGreaterThanOrEqual(0.5);
+      expect(budget.minRenderScaleMobile).toBeGreaterThanOrEqual(0.5);
+      expect(budget.dropFrameMs).toBeLessThan(budget.urgentFrameMs);
+      expect(budget.recoverFrameMs).toBeLessThan(budget.dropFrameMs);
+      expect(tier).toMatch(/^(low|medium|high|ultra)$/);
+    }
   });
 
   it('treats older Intel integrated GPUs as constrained in auto mode', () => {

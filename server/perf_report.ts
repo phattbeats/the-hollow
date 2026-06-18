@@ -1,0 +1,199 @@
+import * as http from 'node:http';
+import { accountForToken, getCharacter, insertClientPerfReport, type ClientPerfReportInsert } from './db';
+import { json, readBody } from './http_util';
+import { requestIp } from './ratelimit';
+import { REALM } from './realm';
+
+const PERF_REPORT_SCHEMA_VERSION = 1;
+const PERF_REPORT_MAX_PER_MINUTE = 30;
+const PERF_REPORT_WINDOW_MS = 60_000;
+const PERF_REPORT_MAX_TRACKED_IPS = 5000;
+const RAW_SUMMARY_MAX_BYTES = 8192;
+
+const perfReportAttempts = new Map<string, number[]>();
+
+function rateLimitedPerfReport(req: http.IncomingMessage): boolean {
+  const ip = requestIp(req);
+  const now = Date.now();
+  const windowStart = now - PERF_REPORT_WINDOW_MS;
+  const updated = (perfReportAttempts.get(ip) ?? []).filter((t) => t > windowStart);
+  updated.push(now);
+  perfReportAttempts.set(ip, updated);
+
+  if (perfReportAttempts.size > PERF_REPORT_MAX_TRACKED_IPS) {
+    for (const [key, times] of perfReportAttempts) {
+      if (times.length === 0 || times[times.length - 1] <= windowStart) perfReportAttempts.delete(key);
+      if (perfReportAttempts.size <= PERF_REPORT_MAX_TRACKED_IPS) break;
+    }
+  }
+
+  return updated.length > PERF_REPORT_MAX_PER_MINUTE;
+}
+
+function numberIn(value: unknown, min: number, max: number, fallback: number): number {
+  const n = typeof value === 'number' ? value : Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, n));
+}
+
+function intIn(value: unknown, min: number, max: number, fallback: number): number {
+  return Math.floor(numberIn(value, min, max, fallback));
+}
+
+function nullableNumberIn(value: unknown, min: number, max: number): number | null {
+  if (value === null || value === undefined || value === '') return null;
+  const n = typeof value === 'number' ? value : Number(value);
+  if (!Number.isFinite(n)) return null;
+  return Math.min(max, Math.max(min, n));
+}
+
+function textIn(value: unknown, max: number, fallback = ''): string {
+  const text = typeof value === 'string' ? value.trim() : '';
+  return (text || fallback).slice(0, max);
+}
+
+function choiceIn(value: unknown, choices: readonly string[], fallback: string): string {
+  const text = textIn(value, 64);
+  return choices.includes(text) ? text : fallback;
+}
+
+function browserFamily(userAgent: string): string {
+  const ua = userAgent.toLowerCase();
+  if (ua.includes('edg/')) return 'edge';
+  if (ua.includes('firefox/')) return 'firefox';
+  if (ua.includes('chrome/') || ua.includes('crios/')) return 'chrome';
+  if (ua.includes('safari/')) return 'safari';
+  return 'other';
+}
+
+function osFamily(userAgent: string): string {
+  const ua = userAgent.toLowerCase();
+  if (ua.includes('windows')) return 'windows';
+  if (ua.includes('iphone') || ua.includes('ipad') || ua.includes('ios')) return 'ios';
+  if (ua.includes('mac os') || ua.includes('macintosh')) return 'macos';
+  if (ua.includes('android')) return 'android';
+  if (ua.includes('linux')) return 'linux';
+  return 'other';
+}
+
+function bucketGpu(renderer: string): string {
+  const r = renderer.toLowerCase();
+  if (!r) return 'unknown';
+  if (/swiftshader|llvmpipe|software/.test(r)) return 'software';
+  if (/apple/.test(r)) {
+    const chip = /(m[1-9][a-z0-9 ]*)/i.exec(renderer)?.[1]?.toLowerCase().replace(/\s+/g, '-');
+    return chip ? `apple-${chip}` : 'apple';
+  }
+  if (/intel/.test(r)) {
+    if (/iris/.test(r)) return 'intel-iris';
+    if (/uhd|hd graphics/.test(r)) return 'intel-uhd';
+    return 'intel';
+  }
+  if (/nvidia|geforce|rtx|gtx/.test(r)) return 'nvidia';
+  if (/amd|radeon/.test(r)) return 'amd';
+  return renderer.slice(0, 48).replace(/[^\w.-]+/g, '-').toLowerCase() || 'other';
+}
+
+function viewportBucket(body: Record<string, unknown>): string {
+  const supplied = textIn(body.viewportBucket, 32);
+  if (/^(small|medium|large|wide|mobile|unknown)(-\d+x\d+)?$/.test(supplied)) return supplied;
+  const w = intIn(body.viewportWidth, 0, 10000, 0);
+  const h = intIn(body.viewportHeight, 0, 10000, 0);
+  if (w <= 0 || h <= 0) return 'unknown';
+  const short = Math.min(w, h);
+  const long = Math.max(w, h);
+  if (short <= 480) return `mobile-${w}x${h}`;
+  if (long >= 1800) return `wide-${w}x${h}`;
+  if (long >= 1200) return `large-${w}x${h}`;
+  return `medium-${w}x${h}`;
+}
+
+function rawSummary(value: unknown): Record<string, unknown> {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  try {
+    const text = JSON.stringify(value);
+    if (Buffer.byteLength(text) > RAW_SUMMARY_MAX_BYTES) return { truncated: true };
+    return JSON.parse(text) as Record<string, unknown>;
+  } catch {
+    return {};
+  }
+}
+
+async function authenticatedAccountId(req: http.IncomingMessage): Promise<number | null> {
+  const m = /^Bearer ([a-f0-9]{64})$/.exec(req.headers.authorization ?? '');
+  if (!m) return null;
+  return accountForToken(m[1]);
+}
+
+async function authenticatedCharacterId(accountId: number | null, value: unknown): Promise<number | null> {
+  if (accountId === null) return null;
+  const id = intIn(value, 1, Number.MAX_SAFE_INTEGER, 0);
+  if (id <= 0) return null;
+  const character = await getCharacter(accountId, id);
+  return character ? id : null;
+}
+
+export async function handlePerfReport(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
+  if (req.method !== 'POST') return json(res, 405, { ok: false });
+  if (rateLimitedPerfReport(req)) return json(res, 200, { ok: true });
+
+  const body = await readBody(req) as Record<string, unknown>;
+  const accountId = await authenticatedAccountId(req);
+  const userAgent = String(req.headers['user-agent'] ?? '');
+  const glRenderer = textIn(body.glRenderer, 160);
+  const releaseVersion = textIn(body.releaseVersion, 40);
+  const buildId = textIn(body.buildId, 40);
+  const source = choiceIn(body.source, ['gameplay', 'benchmark'], 'gameplay');
+
+  const row: ClientPerfReportInsert = {
+    schemaVersion: intIn(body.schemaVersion, 1, PERF_REPORT_SCHEMA_VERSION, PERF_REPORT_SCHEMA_VERSION),
+    releaseVersion,
+    buildId,
+    sessionId: textIn(body.sessionId, 64),
+    accountId,
+    characterId: await authenticatedCharacterId(accountId, body.characterId),
+    realm: REALM,
+    graphicsPreset: choiceIn(body.graphicsPreset, ['auto', 'low', 'medium', 'high', 'ultra', 'advanced'], 'auto'),
+    gfxTier: choiceIn(body.gfxTier, ['low', 'medium', 'high', 'ultra'], 'low'),
+    autoGovernor: Boolean(body.autoGovernor),
+    targetFps: intIn(body.targetFps, 0, 240, 0),
+    renderScale: numberIn(body.renderScale, 0.3, 1.5, 1),
+    effectiveRenderScale: numberIn(body.effectiveRenderScale, 0.3, 1.5, 1),
+    fpsAvg: numberIn(body.fpsAvg, 0, 300, 0),
+    frameP95Ms: numberIn(body.frameP95Ms, 0, 1000, 0),
+    frameP99Ms: numberIn(body.frameP99Ms, 0, 1000, 0),
+    longFrameCount: intIn(body.longFrameCount, 0, 1_000_000, 0),
+    rendererCalls: intIn(body.rendererCalls, 0, 1_000_000, 0),
+    rendererTriangles: intIn(body.rendererTriangles, 0, 100_000_000, 0),
+    rendererTextures: intIn(body.rendererTextures, 0, 100_000, 0),
+    rendererPrograms: intIn(body.rendererPrograms, 0, 100_000, 0),
+    contextLostCount: intIn(body.contextLostCount, 0, 1000, 0),
+    longTaskCount: intIn(body.longTaskCount, 0, 1_000_000, 0),
+    longTaskP95Ms: numberIn(body.longTaskP95Ms, 0, 1000, 0),
+    memoryUsedMb: nullableNumberIn(body.memoryUsedMb, 0, 1_000_000),
+    memoryLimitMb: nullableNumberIn(body.memoryLimitMb, 0, 1_000_000),
+    dpr: numberIn(body.dpr, 0.1, 8, 1),
+    viewportBucket: viewportBucket(body),
+    deviceMemory: nullableNumberIn(body.deviceMemory, 0, 1024),
+    hardwareConcurrency: intIn(body.hardwareConcurrency, 0, 1024, 0),
+    mobileTouch: Boolean(body.mobileTouch),
+    browserFamily: choiceIn(body.browserFamily, ['chrome', 'safari', 'firefox', 'edge', 'other'], browserFamily(userAgent)),
+    osFamily: choiceIn(body.osFamily, ['macos', 'windows', 'ios', 'android', 'linux', 'other'], osFamily(userAgent)),
+    glVendor: textIn(body.glVendor, 80),
+    glRendererBucket: bucketGpu(glRenderer || textIn(body.glRendererBucket, 80)),
+    zoneOrScenario: textIn(body.zoneOrScenario, 80, source === 'benchmark' ? 'benchmark' : 'gameplay'),
+    source,
+    rawSummary: rawSummary(body.rawSummary),
+  };
+
+  await insertClientPerfReport(row);
+  return json(res, 200, { ok: true });
+}
+
+export const perfReportInternalsForTest = {
+  bucketGpu,
+  browserFamily,
+  osFamily,
+  viewportBucket,
+  rawSummary,
+};

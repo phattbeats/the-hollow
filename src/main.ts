@@ -30,6 +30,7 @@ import { hydrateIcons } from './ui/ui_icons';
 import { portraitChipHtml, hydratePortraits } from './ui/portrait_chip';
 import { playerPortraitDataUrl } from './render/characters/portrait';
 import { createPerfMonitor } from './game/perf';
+import { startPerfReporter } from './game/perf_reporter';
 import { updateFollowCameraYaw, wrapAngle } from './game/camera_follow';
 
 
@@ -820,6 +821,12 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       submitByName: (targetName, reason, details) => api.reportPlayerByName(online.characterId, targetName, reason, details),
     });
   }
+  startPerfReporter({
+    perf,
+    settings,
+    tokenProvider: () => api.token,
+    characterIdProvider: () => online?.characterId ?? null,
+  });
 
   function interactKey(): void {
     const p = world.player;

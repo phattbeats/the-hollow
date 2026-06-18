@@ -659,6 +659,8 @@ export class Renderer {
 
   perfStats(): {
     tier: string;
+    autoGovernor: boolean;
+    budget: typeof GFX.budget;
     renderScale: number;
     effectiveRenderScale: number;
     pixelRatio: number;
@@ -678,6 +680,8 @@ export class Renderer {
     const info = this.webgl.info;
     return {
       tier: GFX.tier,
+      autoGovernor: GFX.autoGovernor,
+      budget: GFX.budget,
       renderScale: this.renderScale,
       effectiveRenderScale: this.effectiveRenderScale,
       pixelRatio: this.webgl.getPixelRatio(),
@@ -716,6 +720,7 @@ export class Renderer {
 
   private updateAdaptiveResolution(dt: number): void {
     if (!Number.isFinite(dt) || dt <= 0) return;
+    if (!GFX.autoGovernor) return;
     const frameMs = Math.min(250, dt * 1000);
     this.frameMsEma += (frameMs - this.frameMsEma) * 0.08;
     if (this.adaptiveGrace > 0) {
@@ -727,27 +732,26 @@ export class Renderer {
       return;
     }
 
+    const budget = GFX.budget;
     const mobile = this.isMobileRuntime();
-    const minScale = mobile ? 0.55 : (GFX.tier === 'low' ? 0.9 : 0.7);
-    const dropThreshold = mobile ? 20 : 24; // ~50fps mobile, ~42fps desktop
-    const urgentThreshold = mobile ? 28 : 34;
-    const recoverThreshold = mobile ? 15.5 : 14.5;
+    const minScale = mobile ? budget.minRenderScaleMobile : budget.minRenderScaleDesktop;
+    const maxScale = Math.min(this.renderScale, budget.maxRenderScale);
 
-    if (this.frameMsEma >= dropThreshold && this.effectiveRenderScale > minScale) {
-      const step = this.frameMsEma >= urgentThreshold ? 0.15 : 0.1;
+    if (this.frameMsEma >= budget.dropFrameMs && this.effectiveRenderScale > minScale) {
+      const step = this.frameMsEma >= budget.urgentFrameMs ? budget.urgentDropStep : budget.dropStep;
       this.effectiveRenderScale = Math.max(minScale, Math.round((this.effectiveRenderScale - step) * 100) / 100);
       this.stableFrameTime = 0;
-      this.adaptiveCooldown = 1.25;
+      this.adaptiveCooldown = budget.cooldownSeconds;
       this.applyResolution();
       return;
     }
 
-    if (this.frameMsEma <= recoverThreshold && this.effectiveRenderScale < this.renderScale) {
+    if (this.frameMsEma <= budget.recoverFrameMs && this.effectiveRenderScale < maxScale) {
       this.stableFrameTime += dt;
-      if (this.stableFrameTime >= 6) {
-        this.effectiveRenderScale = Math.min(this.renderScale, Math.round((this.effectiveRenderScale + 0.05) * 100) / 100);
+      if (this.stableFrameTime >= budget.recoverStableSeconds) {
+        this.effectiveRenderScale = Math.min(maxScale, Math.round((this.effectiveRenderScale + budget.recoverStep) * 100) / 100);
         this.stableFrameTime = 0;
-        this.adaptiveCooldown = 2.0;
+        this.adaptiveCooldown = budget.cooldownSeconds * 1.5;
         this.applyResolution();
       }
     } else {

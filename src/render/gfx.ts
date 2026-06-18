@@ -28,6 +28,8 @@ export interface GfxRuntimeHints {
 
 export interface GfxSettings {
   readonly tier: GfxTier;
+  readonly budget: GfxRuntimeBudget;
+  readonly autoGovernor: boolean;
   /** post-processing chain (N8AO + bloom + grade) */
   readonly composer: boolean;
   /** N8AO screen-space ambient occlusion pass */
@@ -46,6 +48,21 @@ export interface GfxSettings {
   readonly maxPointLights: number;
 }
 
+export interface GfxRuntimeBudget {
+  readonly targetFps: number;
+  readonly minRenderScaleDesktop: number;
+  readonly minRenderScaleMobile: number;
+  readonly maxRenderScale: number;
+  readonly dropFrameMs: number;
+  readonly urgentFrameMs: number;
+  readonly recoverFrameMs: number;
+  readonly dropStep: number;
+  readonly urgentDropStep: number;
+  readonly recoverStep: number;
+  readonly recoverStableSeconds: number;
+  readonly cooldownSeconds: number;
+}
+
 const PRESET_AUTO = 0;
 const PRESET_LOW = 1;
 const PRESET_MEDIUM = 2;
@@ -53,12 +70,90 @@ const PRESET_HIGH = 3;
 const PRESET_ULTRA = 4;
 const PRESET_ADVANCED = 5;
 
+export const GFX_BUDGETS: Record<GfxTier, GfxRuntimeBudget> = {
+  low: {
+    targetFps: 30,
+    minRenderScaleDesktop: 0.82,
+    minRenderScaleMobile: 0.55,
+    maxRenderScale: 1,
+    dropFrameMs: 28,
+    urgentFrameMs: 38,
+    recoverFrameMs: 22,
+    dropStep: 0.1,
+    urgentDropStep: 0.15,
+    recoverStep: 0.05,
+    recoverStableSeconds: 8,
+    cooldownSeconds: 1.5,
+  },
+  medium: {
+    targetFps: 45,
+    minRenderScaleDesktop: 0.72,
+    minRenderScaleMobile: 0.55,
+    maxRenderScale: 1,
+    dropFrameMs: 24,
+    urgentFrameMs: 34,
+    recoverFrameMs: 17,
+    dropStep: 0.1,
+    urgentDropStep: 0.15,
+    recoverStep: 0.05,
+    recoverStableSeconds: 7,
+    cooldownSeconds: 1.35,
+  },
+  high: {
+    targetFps: 60,
+    minRenderScaleDesktop: 0.7,
+    minRenderScaleMobile: 0.6,
+    maxRenderScale: 1,
+    dropFrameMs: 22,
+    urgentFrameMs: 32,
+    recoverFrameMs: 15,
+    dropStep: 0.1,
+    urgentDropStep: 0.15,
+    recoverStep: 0.05,
+    recoverStableSeconds: 7,
+    cooldownSeconds: 1.35,
+  },
+  ultra: {
+    targetFps: 60,
+    minRenderScaleDesktop: 0.78,
+    minRenderScaleMobile: 0.68,
+    maxRenderScale: 1,
+    dropFrameMs: 24,
+    urgentFrameMs: 34,
+    recoverFrameMs: 15,
+    dropStep: 0.08,
+    urgentDropStep: 0.12,
+    recoverStep: 0.04,
+    recoverStableSeconds: 9,
+    cooldownSeconds: 1.5,
+  },
+};
+
+export function graphicsPresetLabel(value: number | undefined): 'auto' | 'low' | 'medium' | 'high' | 'ultra' | 'advanced' {
+  switch (Math.round(value ?? PRESET_AUTO)) {
+    case PRESET_LOW: return 'low';
+    case PRESET_MEDIUM: return 'medium';
+    case PRESET_HIGH: return 'high';
+    case PRESET_ULTRA: return 'ultra';
+    case PRESET_ADVANCED: return 'advanced';
+    default: return 'auto';
+  }
+}
+
+export function shouldUseAutoGovernor(hints?: Pick<GfxRuntimeHints, 'search' | 'graphicsPreset'>): boolean {
+  if (!hints) return false;
+  if (forcedTierFromSearch(hints.search)) return false;
+  return graphicsPresetLabel(hints.graphicsPreset) === 'auto';
+}
+
 function settingsFor(
   tier: GfxTier,
-  hints?: Pick<GfxRuntimeHints, 'graphicsPreset' | 'terrainDetail' | 'foliageDensity' | 'effectsQuality' | 'shadowQuality'>,
+  hints?: Pick<GfxRuntimeHints, 'search' | 'graphicsPreset' | 'terrainDetail' | 'foliageDensity' | 'effectsQuality' | 'shadowQuality'>,
 ): GfxSettings {
   let settings: GfxSettings = {
     tier,
+    budget: GFX_BUDGETS[tier],
+    autoGovernor: shouldUseAutoGovernor(hints),
     composer: tier === 'high' || tier === 'ultra',
     // N8AO runs on both composer tiers: half-res + Low quality on high keeps
     // it ~1ms-class on real GPUs; ultra gets full-res Medium
