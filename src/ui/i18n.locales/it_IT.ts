@@ -2051,4 +2051,10 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   "entities.items.conjured_bread.name": "Pane evocato",
   "entities.items.conjured_bread2.name": "Pane nero evocato",
   "entities.items.conjured_bread3.name": "Panino dolce evocato",
+  "entities.items.elixir_of_the_bear.name": "Elisir dell'Orso",
+  "entities.items.healing_potion.name": "Pozione di cura",
+  "entities.items.lesser_healing_potion.name": "Pozione di cura inferiore",
+  "entities.items.mana_potion.name": "Pozione di mana",
+  "entities.items.lesser_mana_potion.name": "Pozione di mana inferiore",
+  "entities.items.tunnelkings_spade.name": "Vanga del Re dei Tunnel",
 };

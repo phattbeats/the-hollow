@@ -2051,4 +2051,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "entities.items.conjured_bread.name": "魔法のパン",
   "entities.items.conjured_bread2.name": "魔法のライ麦パン",
   "entities.items.conjured_bread3.name": "魔法の菓子パン",
+  "entities.items.elixir_of_the_bear.name": "熊のエリクサー",
+  "entities.items.healing_potion.name": "回復のポーション",
+  "entities.items.lesser_healing_potion.name": "下級回復のポーション",
+  "entities.items.mana_potion.name": "マナのポーション",
+  "entities.items.lesser_mana_potion.name": "下級マナのポーション",
+  "entities.items.tunnelkings_spade.name": "トンネルキングのスペード",
 };

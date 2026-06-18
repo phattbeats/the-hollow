@@ -2051,4 +2051,10 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   "entities.items.conjured_bread.name": "魔法麵包",
   "entities.items.conjured_bread2.name": "魔法黑麥麵包",
   "entities.items.conjured_bread3.name": "魔法甜麵包",
+  "entities.items.elixir_of_the_bear.name": "巨熊藥劑",
+  "entities.items.healing_potion.name": "治療藥水",
+  "entities.items.lesser_healing_potion.name": "次級治療藥水",
+  "entities.items.mana_potion.name": "法力藥水",
+  "entities.items.lesser_mana_potion.name": "次級法力藥水",
+  "entities.items.tunnelkings_spade.name": "隧道王之鏟",
 };

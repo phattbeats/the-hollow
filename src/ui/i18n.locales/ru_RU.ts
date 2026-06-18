@@ -2051,4 +2051,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   "entities.items.conjured_bread.name": "Сотворённый хлеб",
   "entities.items.conjured_bread2.name": "Сотворённый ржаной хлеб",
   "entities.items.conjured_bread3.name": "Сотворённая сладкая булочка",
+  "entities.items.elixir_of_the_bear.name": "Эликсир медведя",
+  "entities.items.healing_potion.name": "Лечебное зелье",
+  "entities.items.lesser_healing_potion.name": "Слабое лечебное зелье",
+  "entities.items.mana_potion.name": "Зелье маны",
+  "entities.items.lesser_mana_potion.name": "Слабое зелье маны",
+  "entities.items.tunnelkings_spade.name": "Лопата Короля тоннелей",
 };

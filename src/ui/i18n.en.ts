@@ -7720,12 +7720,14 @@ const MERGE_ITEM_IDS = [
   'tideguard_sabatons', 'valeborn_spellblade', 'voss_sanctified_mace', 'wyrmcult_soulsteps', 'wyrmshadow_harness', 'wyrmshadow_legguards',
   'wyrmshadow_treads',
   'glimmerfin_koi', 'raw_bog_eel', 'raw_frostgill_trout', 'raw_marsh_pike', 'raw_river_perch', 'raw_stonescale_carp', 'soggy_boot',
+  'elixir_of_the_bear', 'lesser_healing_potion', 'lesser_mana_potion', 'healing_potion', 'mana_potion', 'tunnelkings_spade',
 ] as const;
 
 const MERGE_MOB_IDS = [
   'elder_bristleback', 'ironvein_foreman', 'ironvein_sapper', 'marrowlord_varkas', 'mirejaw_frenzy', 'mirejaw_the_ravenous',
   'mogger', 'mogger_lackey', 'nhalia_mourner', 'sableweb_hatchling', 'sableweb_matriarch', 'sister_nhalia', 'varkas_boneguard',
   'imp', 'voidwalker', 'succubus',
+  'grix_the_tunnelking',
 ] as const;
 
 type MergeNameTranslations<TId extends string> = Record<TId, { name: string }>;
@@ -8088,7 +8090,7 @@ const mergeStringsEn = {
   },
   itemUi: {
     ...itemNames.en.itemUi,
-    kind: { ...itemNames.en.itemUi.kind, tool: "Tool", potion: "Potion" },
+    kind: { ...itemNames.en.itemUi.kind, tool: "Tool", potion: "Potion", elixir: "Elixir" },
     tooltip: {
       ...itemNames.en.itemUi.tooltip,
       useFishing: "Use: Fish in nearby waters.",
@@ -8226,7 +8228,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.es.itemUi,
-      kind: { ...itemNames.es.itemUi.kind, tool: "Herramienta", potion: "Poción" },
+      kind: { ...itemNames.es.itemUi.kind, tool: "Herramienta", potion: "Poción", elixir: "Elixir" },
       tooltip: {
         ...itemNames.es.itemUi.tooltip,
         useFishing: "Uso: pesca en aguas cercanas.",
@@ -8362,7 +8364,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.fr_FR.itemUi,
-      kind: { ...itemNames.fr_FR.itemUi.kind, tool: "Outil", potion: "Potion" },
+      kind: { ...itemNames.fr_FR.itemUi.kind, tool: "Outil", potion: "Potion", elixir: "Élixir" },
       tooltip: {
         ...itemNames.fr_FR.itemUi.tooltip,
         useFishing: "Utiliser : pêcher dans les eaux proches.",
@@ -8499,7 +8501,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.it_IT.itemUi,
-      kind: { ...itemNames.it_IT.itemUi.kind, tool: "Strumento", potion: "Pozione" },
+      kind: { ...itemNames.it_IT.itemUi.kind, tool: "Strumento", potion: "Pozione", elixir: "Elisir" },
       tooltip: {
         ...itemNames.it_IT.itemUi.tooltip,
         useFishing: "Uso: pesca nelle acque vicine.",
@@ -8634,7 +8636,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.de_DE.itemUi,
-      kind: { ...itemNames.de_DE.itemUi.kind, tool: "Werkzeug", potion: "Trank" },
+      kind: { ...itemNames.de_DE.itemUi.kind, tool: "Werkzeug", potion: "Trank", elixir: "Elixier" },
       tooltip: {
         ...itemNames.de_DE.itemUi.tooltip,
         useFishing: "Benutzen: Angelt in nahen Gewässern.",
@@ -8769,7 +8771,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.zh_CN.itemUi,
-      kind: { ...itemNames.zh_CN.itemUi.kind, tool: "工具", potion: "药水" },
+      kind: { ...itemNames.zh_CN.itemUi.kind, tool: "工具", potion: "药水", elixir: "药剂" },
       tooltip: {
         ...itemNames.zh_CN.itemUi.tooltip,
         useFishing: "使用：在附近水域钓鱼。",
@@ -8904,7 +8906,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.zh_TW.itemUi,
-      kind: { ...itemNames.zh_TW.itemUi.kind, tool: "工具", potion: "藥水" },
+      kind: { ...itemNames.zh_TW.itemUi.kind, tool: "工具", potion: "藥水", elixir: "藥劑" },
       tooltip: {
         ...itemNames.zh_TW.itemUi.tooltip,
         useFishing: "使用：在附近水域釣魚。",
@@ -9039,7 +9041,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.ko_KR.itemUi,
-      kind: { ...itemNames.ko_KR.itemUi.kind, tool: "도구", potion: "물약" },
+      kind: { ...itemNames.ko_KR.itemUi.kind, tool: "도구", potion: "물약", elixir: "비약" },
       tooltip: {
         ...itemNames.ko_KR.itemUi.tooltip,
         useFishing: "사용: 가까운 물가에서 낚시합니다.",
@@ -9174,7 +9176,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.ja_JP.itemUi,
-      kind: { ...itemNames.ja_JP.itemUi.kind, tool: "道具", potion: "ポーション" },
+      kind: { ...itemNames.ja_JP.itemUi.kind, tool: "道具", potion: "ポーション", elixir: "エリクサー" },
       tooltip: {
         ...itemNames.ja_JP.itemUi.tooltip,
         useFishing: "使用: 近くの水辺で釣りをします。",
@@ -9309,7 +9311,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.pt_BR.itemUi,
-      kind: { ...itemNames.pt_BR.itemUi.kind, tool: "Ferramenta", potion: "Poção" },
+      kind: { ...itemNames.pt_BR.itemUi.kind, tool: "Ferramenta", potion: "Poção", elixir: "Elixir" },
       tooltip: {
         ...itemNames.pt_BR.itemUi.tooltip,
         useFishing: "Uso: pesca em águas próximas.",
@@ -9444,7 +9446,7 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.ru_RU.itemUi,
-      kind: { ...itemNames.ru_RU.itemUi.kind, tool: "Инструмент", potion: "Зелье" },
+      kind: { ...itemNames.ru_RU.itemUi.kind, tool: "Инструмент", potion: "Зелье", elixir: "Эликсир" },
       tooltip: {
         ...itemNames.ru_RU.itemUi.tooltip,
         useFishing: "Использование: ловите рыбу в ближайшей воде.",
@@ -9583,11 +9585,13 @@ const mergeEntitiesEn = {
     "Tideguard Sabatons", "Valeborn Spellblade", "Voss's Sanctified Mace", "Wyrmcult Soulsteps", "Wyrmshadow Harness", "Wyrmshadow Legguards",
     "Wyrmshadow Treads",
     "Glimmerfin Koi", "Raw Bog Eel", "Raw Frostgill Trout", "Raw Marsh Pike", "Raw River Perch", "Raw Stonescale Carp", "Soggy Boot",
+    "Elixir of the Bear", "Lesser Healing Potion", "Lesser Mana Potion", "Healing Potion", "Mana Potion", "Tunnelking's Spade",
   ], 'item'),
   mobs: mergeNameTranslations(MERGE_MOB_IDS, [
     "Elder Bristleback", "Ironvein Foreman", "Ironvein Sapper", "Marrowlord Varkas", "Mirejaw Frenzy", "Mirejaw the Ravenous",
     "Mogger", "Mogger Lackey", "Nhalia Mourner", "Sableweb Hatchling", "Sableweb Matriarch", "Sister Nhalia", "Varkas Boneguard",
     "Imp", "Voidwalker", "Succubus",
+    "Grix the Tunnelking",
   ], 'mob'),
   quests: {
     q_mogger_tracks: {
@@ -9619,11 +9623,13 @@ export const mergeEntities = {
       "Escarpes Guardamarea", "Hoja mágica Natavalle", "Maza santificada de Voss", "Pisadas de alma del Culto del Wyrm", "Arnés Sombravermis", "Guardapiernas Sombravermis",
       "Botines Sombravermis",
       "Koi Aletadestello", "Anguila de Ciénaga Cruda", "Trucha Branquiescarcha Cruda", "Lucio de Marisma Crudo", "Perca de Río Cruda", "Carpa Escamapétrea Cruda", "Bota Empapada",
+      "Elixir del Oso", "Poción inferior de sanación", "Poción inferior de maná", "Poción de sanación", "Poción de maná", "Pala del Rey del Túnel",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Viejo Bristleback", "Capataz Vena de Hierro", "Zapador Vena de Hierro", "Señor de Médula Varkas", "Frenesí Mirejaw", "Mirejaw el Voraz",
       "Mogger", "Esbirro de Mogger", "Doliente de Nhalia", "Cría Sableweb", "Matriarca Sableweb", "Hermana Nhalia", "Guardahuesos de Varkas",
       "Diablillo", "Caminante del Vacío", "Súcubo",
+      "Grix el Rey del Túnel",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9653,11 +9659,13 @@ export const mergeEntities = {
       "Solerets Garde-marée", "Lame-sort née du Val", "Masse sanctifiée de Voss", "Pas-d'âme du Culte du Wyrm", "Harnais Ombrewyrm", "Garde-jambes Ombrewyrm",
       "Bottines Ombrewyrm",
       "Koï Nageoluisante", "Anguille des marais crue", "Truite Givrebranchie crue", "Brochet des marais cru", "Perche de rivière crue", "Carpe Écaillepierre crue", "Botte détrempée",
+      "Elixir of the Bear", "Potion de soins inférieure", "Potion de mana inférieure", "Potion de soins", "Potion de mana", "Pelle du Roi des tunnels",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Ancien Bristleback", "Contremaître Veinefer", "Sapeur Veinefer", "Seigneur de moelle Varkas", "Frénésie Mirejaw", "Mirejaw l'Affamé",
       "Mogger", "Laquais de Mogger", "Pleureuse de Nhalia", "Jeune Sableweb", "Matriarche Sableweb", "Soeur Nhalia", "Garde-os de Varkas",
       "Diablotin", "Marcheur du Vide", "Succube",
+      "Grix le Roi des tunnels",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9688,11 +9696,13 @@ export const mergeEntities = {
       "Calzari Guardiamarea", "Lama magica Natavalle", "Mazza santificata di Voss", "Passi d'anima del Culto del Wyrm", "Finimenti Ombrawyrm", "Gambiere Ombrawyrm",
       "Calzari Ombrawyrm",
       "Koi Pinnabaglio", "Anguilla di Palude Cruda", "Trota Branchiebrina Cruda", "Luccio di Palude Crudo", "Pesce Persico di Fiume Crudo", "Carpa Squamapietra Cruda", "Stivale Fradicio",
+      "Elixir of the Bear", "Pozione curativa inferiore", "Pozione di mana inferiore", "Pozione curativa", "Pozione di mana", "Vanga del Re dei tunnel",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Bristleback anziano", "Caposquadra Venaferrata", "Zappatore Venaferrata", "Signore del Midollo Varkas", "Furia Mirejaw", "Mirejaw il Famelico",
       "Mogger", "Lacchè di Mogger", "Piangente di Nhalia", "Piccolo Sableweb", "Matriarca Sableweb", "Sorella Nhalia", "Guardia d'ossa di Varkas",
       "Folletto", "Camminatore del Vuoto", "Succube",
+      "Grix il Re dei tunnel",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9721,11 +9731,13 @@ export const mergeEntities = {
       "Gezeitenwachtsabatons", "Talgeborene Zauberklinge", "Voss' geheiligter Streitkolben", "Seelenschritte des Wyrmkults", "Wyrmschattenharnisch", "Wyrmschattenbeinschützer",
       "Wyrmschattentreter",
       "Schimmerflossen-Koi", "Roher Moor-Aal", "Rohe Frostkiemen-Forelle", "Roher Sumpfhecht", "Roher Flussbarsch", "Roher Steinschuppen-Karpfen", "Durchnässter Stiefel",
+      "Bärenelixir", "Schwacher Heiltrank", "Schwacher Manatrank", "Heiltrank", "Manatrank", "Spaten des Tunnelkönigs",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Alter Bristleback", "Eisenader-Vorarbeiter", "Eisenader-Pionier", "Marklord Varkas", "Mirejaw-Raserei", "Mirejaw der Gefräßige",
       "Mogger", "Moggers Lakai", "Nhalia-Trauernde", "Sableweb-Jungtier", "Sableweb-Matriarchin", "Schwester Nhalia", "Varkas' Knochenwache",
       "Wichtel", "Leerwandler", "Sukkubus",
+      "Grix der Tunnelkönig",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9754,11 +9766,13 @@ export const mergeEntities = {
       "潮卫护靴", "谷裔法刃", "沃斯的圣化战锤", "龙教魂步", "龙影挽具", "龙影腿甲",
       "龙影足垫",
       "闪鳍锦鲤", "生沼鳗", "生霜鳃鳟", "生沼狗鱼", "生河鲈", "生石鳞鲤", "湿透的靴子",
+      "Elixir of the Bear", "次级治疗药水", "次级法力药水", "治疗药水", "法力药水", "隧道之王的铲子",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "年长硬鬃", "铁脉工头", "铁脉爆破手", "髓王瓦尔卡斯", "泥颚狂鱼", "贪食者泥颚",
       "莫格", "莫格的爪牙", "娜莉娅哀悼者", "黑网幼蛛", "黑网主母", "娜莉娅修女", "瓦尔卡斯骨卫",
       "小鬼", "虚空行者", "魅魔",
+      "Grix the Tunnelking",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9787,11 +9801,13 @@ export const mergeEntities = {
       "潮衛護靴", "谷裔法刃", "沃斯的聖化戰錘", "龍教魂步", "龍影挽具", "龍影腿甲",
       "龍影足墊",
       "閃鰭錦鯉", "生沼鰻", "生霜鰓鱒", "生沼狗魚", "生河鱸", "生石鱗鯉", "濕透的靴子",
+      "Elixir of the Bear", "次級治療藥水", "次級法力藥水", "治療藥水", "法力藥水", "隧道之王的鏟子",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "年長硬鬃", "鐵脈工頭", "鐵脈爆破手", "髓王瓦爾卡斯", "泥顎狂魚", "貪食者泥顎",
       "莫格", "莫格的爪牙", "娜莉亞哀悼者", "黑網幼蛛", "黑網主母", "娜莉亞修女", "瓦爾卡斯骨衛",
       "小鬼", "虛空行者", "魅魔",
+      "Grix the Tunnelking",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9820,11 +9836,13 @@ export const mergeEntities = {
       "파도수호 쇠장화", "계곡태생 주문검", "보스의 성화된 철퇴", "고룡교단 영혼걸음", "고룡그림자 멜빵", "고룡그림자 다리보호구",
       "고룡그림자 발보호구",
       "빛지느러미 잉어", "생 늪장어", "생 서리아가미 송어", "생 늪 창꼬치", "생 강 농어", "생 돌비늘 잉어", "흠뻑 젖은 장화",
+      "Elixir of the Bear", "중급 치유 물약", "중급 마나 물약", "치유 물약", "마나 물약", "땅굴왕의 삽",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "늙은 뻣센등뼈", "철맥 감독관", "철맥 폭파병", "골수군주 바르카스", "마이어죠 광란어", "굶주린 마이어죠",
       "모거", "모거의 졸개", "날리아 애도자", "검은그물 새끼", "검은그물 우두머리", "자매 날리아", "바르카스 뼈수호병",
       "임프", "공허추적자", "서큐버스",
+      "Grix the Tunnelking",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9853,11 +9871,13 @@ export const mergeEntities = {
       "潮守りのサバトン", "谷生まれの呪文刃", "ヴォスの聖別メイス", "ワーム教団の魂歩き", "ワーム影のハーネス", "ワーム影のレッグガード",
       "ワーム影の足具",
       "輝きビレの鯉", "生の沼ウナギ", "生のフロストギル・トラウト", "生の沼カワカマス", "生の川スズキ", "生の石鱗コイ", "ずぶ濡れのブーツ",
+      "Elixir of the Bear", "中級回復ポーション", "中級マナポーション", "回復ポーション", "マナポーション", "トンネルキングのシャベル",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "老ブリストルバック", "鉄脈の現場監督", "鉄脈の爆破兵", "髄王ヴァーカス", "マイアジョーの狂魚", "貪るマイアジョー",
       "モガー", "モガーの手下", "ナリアの嘆き手", "セーブルウェブの幼体", "セーブルウェブの女家長", "シスター・ナリア", "ヴァーカスの骨衛兵",
       "インプ", "ヴォイドウォーカー", "サキュバス",
+      "Grix the Tunnelking",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9886,11 +9906,13 @@ export const mergeEntities = {
       "Escarpes Guardamaré", "Lâmina mágica Nascivale", "Maça santificada de Voss", "Passos de alma do Culto do Wyrm", "Arnês Sombra de Wyrm", "Guarda-pernas Sombra de Wyrm",
       "Pisantes Sombra de Wyrm",
       "Carpa Koi Brilhobarbatana", "Enguia do Pântano Crua", "Truta Brânquia-Gélida Crua", "Lúcio do Brejo Cru", "Perca de Rio Crua", "Carpa Escama-de-Pedra Crua", "Bota Encharcada",
+      "Elixir do Urso", "Poção de cura inferior", "Poção de mana inferior", "Poção de cura", "Poção de mana", "Pá do Rei dos Túneis",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Bristleback ancião", "Capataz Veio de Ferro", "Sapador Veio de Ferro", "Senhor da Medula Varkas", "Frenesi Mirejaw", "Mirejaw, o Voraz",
       "Mogger", "Lacaio de Mogger", "Pranteadora de Nhalia", "Filhote Sableweb", "Matriarca Sableweb", "Irmã Nhalia", "Guardião dos ossos de Varkas",
       "Diabrete", "Caminhante do Vazio", "Súcubo",
+      "Grix, o Rei dos Túneis",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9919,11 +9941,13 @@ export const mergeEntities = {
       "Сабатоны Стража прилива", "Долиннорожденный чароклинок", "Освященная булава Восса", "Шаги души Культа вирма", "Сбруя Тени вирма", "Поножи Тени вирма",
       "Ступни Тени вирма",
       "Карп Сияющий Плавник", "Сырой болотный угорь", "Сырая морозножаберная форель", "Сырая болотная щука", "Сырой речной окунь", "Сырой камнечешуйчатый карп", "Промокший сапог",
+      "Elixir of the Bear", "Слабое зелье лечения", "Слабое зелье маны", "Зелье лечения", "Зелье маны", "Лопата Короля туннелей",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Старый Щетиноспин", "Прораб Железной жилы", "Сапер Железной жилы", "Владыка костного мозга Варкас", "Бешенство Миреджо", "Миреджо Ненасытный",
       "Моггер", "Приспешник Моггера", "Плакальщица Налии", "Детеныш Сейблвеб", "Матриарх Сейблвеб", "Сестра Налия", "Костяной страж Варкаса",
       "Бес", "Страж Бездны", "Суккуб",
+      "Грикс, Король туннелей",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {

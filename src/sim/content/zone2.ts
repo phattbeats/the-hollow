@@ -61,6 +61,7 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
       { copper: 30, chance: 1 },
       { itemId: 'mire_prowler_pelt', chance: 0.6, questId: 'q_prowler_pelts' },
       { itemId: 'soggy_moccasin', chance: 0.3 },
+      { itemId: 'lesser_healing_potion', chance: 0.08 },
     ],
     scale: 0.95, color: 0x4d5656,
     // Miring Pounce: the prowler drags its prey into the sucking mire, slowing
@@ -148,6 +149,7 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
       { itemId: 'troll_fetish', chance: 0.6, questId: 'q_troll_fetishes' },
       { itemId: 'chipped_tusk', chance: 0.4 },
       { itemId: 'bogiron_nugget', chance: 0.3 },
+      { itemId: 'elixir_of_the_bear', chance: 0.07 },
     ],
     scale: 1.15, color: 0x229954,
   },
@@ -277,6 +279,7 @@ export const ZONE2_NPCS: Record<string, NpcDef> = {
     questIds: ['q_prowler_pelts', 'q_fen_supplies', 'q_the_codfather', 'q_grubjaw'],
     vendorItems: [
       'fenbridge_rye', 'marsh_mint_tea', 'smoked_eel', 'silvermist_cordial',
+      'lesser_healing_potion', 'lesser_mana_potion',
       'bogiron_mace', 'fenreed_staff', 'mirefen_skinner', 'bogiron_hauberk',
       'marshcloth_robe', 'reedwoven_jerkin', 'fenwalker_boots', 'reedwoven_trousers',
     ],
