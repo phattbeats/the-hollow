@@ -7513,12 +7513,16 @@ const MERGE_ITEM_IDS = [
   'nhalias_funeral_wraps', 'raw_mirror_trout', 'sableweb_slippers', 'simple_fishing_pole', 'tangled_weed', 'tideguard_greaves',
   'tideguard_sabatons', 'valeborn_spellblade', 'voss_sanctified_mace', 'wyrmcult_soulsteps', 'wyrmshadow_harness', 'wyrmshadow_legguards',
   'wyrmshadow_treads',
+  'brutoks_maul', 'cracked_ogre_tusk', 'crag_warden_cudgel', 'cragmaw_prowlboots', 'drowned_tide_scepter', 'emberfang_warblade',
+  'emberwing_cinderscale', 'emberwing_legguards', 'gravewardens_shiv', 'hollow_vigil_staff', 'maldrecs_soulbinder', 'oathbound_greaves',
+  'skullsmasher_warbelt', 'skullsplitter_dirk', 'sloomtooth_tidefang', 'tidereaver_gaff', 'verlans_oathblade',
 ] as const;
 
 const MERGE_MOB_IDS = [
   'elder_bristleback', 'ironvein_foreman', 'ironvein_sapper', 'marrowlord_varkas', 'mirejaw_frenzy', 'mirejaw_the_ravenous',
   'mogger', 'mogger_lackey', 'nhalia_mourner', 'sableweb_hatchling', 'sableweb_matriarch', 'sister_nhalia', 'varkas_boneguard',
   'imp', 'voidwalker',
+  'brutok_skullsmasher', 'captain_verlan', 'old_cragmaw', 'sloomtooth_the_drowned', 'voskar_emberwing', 'wraithbinder_maldrec',
 ] as const;
 
 type MergeNameTranslations<TId extends string> = Record<TId, { name: string }>;
@@ -9375,11 +9379,15 @@ const mergeEntitiesEn = {
     "Nhalia's Funeral Wraps", "Raw Mirror Trout", "Sableweb Slippers", "Simple Fishing Pole", "Tangled Weed", "Tideguard Greaves",
     "Tideguard Sabatons", "Valeborn Spellblade", "Voss's Sanctified Mace", "Wyrmcult Soulsteps", "Wyrmshadow Harness", "Wyrmshadow Legguards",
     "Wyrmshadow Treads",
+      "Brutok's Maul", "Cracked Ogre Tusk", "Crag Warden Cudgel", "Cragmaw Prowlboots", "Drowned Tide Scepter", "Emberfang Warblade",
+      "Emberwing Cinderscale", "Emberwing Legguards", "Gravewarden's Shiv", "Staff of the Hollow Vigil", "Maldrec's Soulbinder", "Oathbound Greaves",
+      "Skullsmasher's Warbelt", "Skullsplitter Dirk", "Sloomtooth's Tidefang", "Tidereaver Gaff", "Verlan's Oathblade",
   ], 'item'),
   mobs: mergeNameTranslations(MERGE_MOB_IDS, [
     "Elder Bristleback", "Ironvein Foreman", "Ironvein Sapper", "Marrowlord Varkas", "Mirejaw Frenzy", "Mirejaw the Ravenous",
     "Mogger", "Mogger Lackey", "Nhalia Mourner", "Sableweb Hatchling", "Sableweb Matriarch", "Sister Nhalia", "Varkas Boneguard",
     "Imp", "Voidwalker",
+    "Brutok Skullsmasher", "Captain Verlan", "Old Cragmaw", "Sloomtooth the Drowned", "Voskar the Emberwing", "Wraithbinder Maldrec",
   ], 'mob'),
   quests: {
     q_mogger_tracks: {
@@ -9410,11 +9418,15 @@ export const mergeEntities = {
       "Envolturas funerarias de Nhalia", "Trucha espejo cruda", "Zapatillas Sableweb", "Caña de pescar sencilla", "Hierba enredada", "Grebas Guardamarea",
       "Escarpes Guardamarea", "Hoja mágica Natavalle", "Maza santificada de Voss", "Pisadas de alma del Culto del Wyrm", "Arnés Sombravermis", "Guardapiernas Sombravermis",
       "Botines Sombravermis",
+      "Mazo de Brutok", "Colmillo de ogro agrietado", "Garrote del guardián del risco", "Botas acechadoras de Cragmaw", "Cetro de la marea ahogada", "Espada de guerra colmillo de brasa",
+      "Escama de ceniza de Aladebrasa", "Quijotes de Aladebrasa", "Punzón del guardián de tumbas", "Bastón de la vigilia hueca", "Atadora de almas de Maldrec", "Grebas del juramento",
+      "Cinturón de guerra del rompecráneos", "Daga partecráneos", "Colmillo de marea de Sloomtooth", "Bichero del segamareas", "Espada del juramento de Verlan",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Viejo Bristleback", "Capataz Vena de Hierro", "Zapador Vena de Hierro", "Señor de Médula Varkas", "Frenesí Mirejaw", "Mirejaw el Voraz",
       "Mogger", "Esbirro de Mogger", "Doliente de Nhalia", "Cría Sableweb", "Matriarca Sableweb", "Hermana Nhalia", "Guardahuesos de Varkas",
       "Diablillo", "Caminante del Vacío",
+      "Brutok Rompecráneos", "Capitán Verlan", "Viejo Cragmaw", "Sloomtooth el Ahogado", "Voskar Aladebrasa", "Maldrec el Ataespectros",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9443,11 +9455,15 @@ export const mergeEntities = {
       "Bandelettes funéraires de Nhalia", "Truite miroir crue", "Mules Sableweb", "Canne à pêche simple", "Herbe emmêlée", "Grèves Garde-marée",
       "Solerets Garde-marée", "Lame-sort née du Val", "Masse sanctifiée de Voss", "Pas-d'âme du Culte du Wyrm", "Harnais Ombrewyrm", "Garde-jambes Ombrewyrm",
       "Bottines Ombrewyrm",
+      "Maillet de Brutok", "Défense d'ogre fêlée", "Gourdin du gardien des falaises", "Bottes rôdeuses de Cragmaw", "Sceptre de la marée noyée", "Lame de guerre crocs-de-braise",
+      "Écaille de cendre d'Aile-de-braise", "Jambières d'Aile-de-braise", "Surin du gardien des tombes", "Bâton de la veille creuse", "Lieur d'âmes de Maldrec", "Jambières du serment",
+      "Ceinturon de guerre du briseur de crânes", "Dague fend-crâne", "Croc-de-marée de Sloomtooth", "Gaffe du fendeur de marées", "Lame du serment de Verlan",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Ancien Bristleback", "Contremaître Veinefer", "Sapeur Veinefer", "Seigneur de moelle Varkas", "Frénésie Mirejaw", "Mirejaw l'Affamé",
       "Mogger", "Laquais de Mogger", "Pleureuse de Nhalia", "Jeune Sableweb", "Matriarche Sableweb", "Soeur Nhalia", "Garde-os de Varkas",
       "Diablotin", "Marcheur du Vide",
+      "Brutok Brise-crânes", "Capitaine Verlan", "Vieux Cragmaw", "Sloomtooth le Noyé", "Voskar Aile-de-braise", "Maldrec le Lie-spectres",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9477,11 +9493,15 @@ export const mergeEntities = {
       "Bende funebri di Nhalia", "Trota specchio cruda", "Pantofole Sableweb", "Canna da pesca semplice", "Erbaccia aggrovigliata", "Schinieri Guardiamarea",
       "Calzari Guardiamarea", "Lama magica Natavalle", "Mazza santificata di Voss", "Passi d'anima del Culto del Wyrm", "Finimenti Ombrawyrm", "Gambiere Ombrawyrm",
       "Calzari Ombrawyrm",
+      "Mazza di Brutok", "Zanna d'ogre incrinata", "Randello del guardiano della rupe", "Stivali predatori di Cragmaw", "Scettro della marea annegata", "Spada da guerra zanna di brace",
+      "Squama di cenere di Aladibrace", "Gambali di Aladibrace", "Pugnale del guardiano delle tombe", "Bastone della veglia cava", "Legatore d'anime di Maldrec", "Gambali del giuramento",
+      "Cintura da guerra dello spaccacranio", "Daga spaccacranio", "Zanna di marea di Sloomtooth", "Gancio del falciamaree", "Lama del giuramento di Verlan",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Bristleback anziano", "Caposquadra Venaferrata", "Zappatore Venaferrata", "Signore del Midollo Varkas", "Furia Mirejaw", "Mirejaw il Famelico",
       "Mogger", "Lacchè di Mogger", "Piangente di Nhalia", "Piccolo Sableweb", "Matriarca Sableweb", "Sorella Nhalia", "Guardia d'ossa di Varkas",
       "Folletto", "Camminatore del Vuoto",
+      "Brutok Spaccacranio", "Capitano Verlan", "Vecchio Cragmaw", "Sloomtooth l'Annegato", "Voskar Aladibrace", "Maldrec il Legaspettri",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9509,11 +9529,15 @@ export const mergeEntities = {
       "Nhalias Leichenwickel", "Rohe Spiegeltrutte", "Sableweb-Pantoffeln", "Einfache Angel", "Verheddertes Kraut", "Gezeitenwachtbeinschienen",
       "Gezeitenwachtsabatons", "Talgeborene Zauberklinge", "Voss' geheiligter Streitkolben", "Seelenschritte des Wyrmkults", "Wyrmschattenharnisch", "Wyrmschattenbeinschützer",
       "Wyrmschattentreter",
+      "Brutoks Streitkolben", "Rissiger Ogerhauer", "Knüppel des Felswächters", "Schleicherstiefel von Cragmaw", "Zepter der ertrunkenen Flut", "Glutzahn-Kriegsklinge",
+      "Aschenschuppe von Glutschwinge", "Beinschienen von Glutschwinge", "Stilett des Grabwächters", "Stab der hohlen Wacht", "Maldrecs Seelenbinder", "Eidgebundene Beinschienen",
+      "Kriegsgürtel des Schädelschmetterers", "Schädelspalterdolch", "Sloomzahns Flutzahn", "Flutschnitter-Enterhaken", "Verlans Eidklinge",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Alter Bristleback", "Eisenader-Vorarbeiter", "Eisenader-Pionier", "Marklord Varkas", "Mirejaw-Raserei", "Mirejaw der Gefräßige",
       "Mogger", "Moggers Lakai", "Nhalia-Trauernde", "Sableweb-Jungtier", "Sableweb-Matriarchin", "Schwester Nhalia", "Varkas' Knochenwache",
       "Wichtel", "Leerwandler",
+      "Brutok Schädelschmetterer", "Hauptmann Verlan", "Alter Cragmaw", "Sloomzahn der Ertrunkene", "Voskar Glutschwinge", "Maldrec der Geisterbinder",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9541,11 +9565,15 @@ export const mergeEntities = {
       "娜莉娅的葬缠", "生镜鳟鱼", "黑网便鞋", "简易鱼竿", "缠结水草", "潮卫护胫",
       "潮卫护靴", "谷裔法刃", "沃斯的圣化战锤", "龙教魂步", "龙影挽具", "龙影腿甲",
       "龙影足垫",
+      "布鲁托克的巨槌", "破裂的食人魔獠牙", "峭壁守卫者短棍", "裂颚潜行靴", "溺亡潮汐权杖", "炽牙战刃",
+      "炽翼煤鳞", "炽翼护腿", "守墓人尖刀", "空寂守望之杖", "玛尔德雷克的缚魂器", "誓约护胫",
+      "碎颅者战腰带", "裂颅匕首", "涝牙的潮汐之牙", "裂潮者钩杆", "维尔兰的誓约之刃",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "年长硬鬃", "铁脉工头", "铁脉爆破手", "髓王瓦尔卡斯", "泥颚狂鱼", "贪食者泥颚",
       "莫格", "莫格的爪牙", "娜莉娅哀悼者", "黑网幼蛛", "黑网主母", "娜莉娅修女", "瓦尔卡斯骨卫",
       "小鬼", "虚空行者",
+      "碎颅者布鲁托克", "维尔兰队长", "老裂颚", "溺亡者涝牙", "炽翼沃斯卡", "缚魂者玛尔德雷克",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9573,11 +9601,15 @@ export const mergeEntities = {
       "娜莉亞的葬纏", "生鏡鱒魚", "黑網便鞋", "簡易釣竿", "纏結水草", "潮衛護脛",
       "潮衛護靴", "谷裔法刃", "沃斯的聖化戰錘", "龍教魂步", "龍影挽具", "龍影腿甲",
       "龍影足墊",
+      "布魯托克的巨槌", "破裂的食人魔獠牙", "峭壁守衛者短棍", "裂顎潛行靴", "溺亡潮汐權杖", "熾牙戰刃",
+      "熾翼煤鱗", "熾翼護腿", "守墓人尖刀", "空寂守望之杖", "瑪爾德雷克的縛魂器", "誓約護脛",
+      "碎顱者戰腰帶", "裂顱匕首", "澇牙的潮汐之牙", "裂潮者鉤桿", "維爾蘭的誓約之刃",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "年長硬鬃", "鐵脈工頭", "鐵脈爆破手", "髓王瓦爾卡斯", "泥顎狂魚", "貪食者泥顎",
       "莫格", "莫格的爪牙", "娜莉亞哀悼者", "黑網幼蛛", "黑網主母", "娜莉亞修女", "瓦爾卡斯骨衛",
       "小鬼", "虛空行者",
+      "碎顱者布魯托克", "維爾蘭隊長", "老裂顎", "溺亡者澇牙", "熾翼沃斯卡", "縛魂者瑪爾德雷克",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9605,11 +9637,15 @@ export const mergeEntities = {
       "날리아의 장례 붕대", "날거울송어", "검은그물 슬리퍼", "간단한 낚싯대", "엉킨 물풀", "파도수호 경갑",
       "파도수호 쇠장화", "계곡태생 주문검", "보스의 성화된 철퇴", "고룡교단 영혼걸음", "고룡그림자 멜빵", "고룡그림자 다리보호구",
       "고룡그림자 발보호구",
+      "브루톡의 망치", "금 간 오우거 엄니", "바위 수호자의 곤봉", "크래그모의 잠행 장화", "익사한 조수의 셉터", "잿불송곳니 전투검",
+      "잿불날개의 잿비늘", "잿불날개의 다리보호구", "무덤지기의 단도", "공허한 불침번의 지팡이", "말드렉의 영혼결속기", "맹세로 묶인 정강이받이",
+      "해골분쇄자의 전투 허리띠", "두개골 쪼개기 단검", "슬룸투스의 조수송곳니", "조수가르기의 갈고리", "베를란의 맹세검",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "늙은 뻣센등뼈", "철맥 감독관", "철맥 폭파병", "골수군주 바르카스", "마이어죠 광란어", "굶주린 마이어죠",
       "모거", "모거의 졸개", "날리아 애도자", "검은그물 새끼", "검은그물 우두머리", "자매 날리아", "바르카스 뼈수호병",
       "임프", "공허추적자",
+      "해골분쇄자 브루톡", "베를란 대장", "늙은 크래그모", "익사한 슬룸투스", "잿불날개 보스카르", "영혼결속자 말드렉",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9637,11 +9673,15 @@ export const mergeEntities = {
       "ナリアの葬送巻き", "生の鏡マス", "セーブルウェブのスリッパ", "簡素な釣り竿", "絡まった水草", "潮守りのグリーヴ",
       "潮守りのサバトン", "谷生まれの呪文刃", "ヴォスの聖別メイス", "ワーム教団の魂歩き", "ワーム影のハーネス", "ワーム影のレッグガード",
       "ワーム影の足具",
+      "ブルトークの大槌", "ひびの入ったオーガの牙", "岩壁の番人の棍棒", "クラッグモウの忍び歩きブーツ", "溺れた潮の笏", "燃え牙の戦刃",
+      "燃え翼の燼鱗", "燃え翼の脚甲", "墓守りの短刀", "虚ろな守夜の杖", "マルドレクの魂縛り", "誓約の具足",
+      "頭蓋砕きの戦帯", "頭蓋割りのダーク", "スルームトゥースの潮牙", "潮裂きのギャフ", "ヴァーランの誓約刃",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "老ブリストルバック", "鉄脈の現場監督", "鉄脈の爆破兵", "髄王ヴァーカス", "マイアジョーの狂魚", "貪るマイアジョー",
       "モガー", "モガーの手下", "ナリアの嘆き手", "セーブルウェブの幼体", "セーブルウェブの女家長", "シスター・ナリア", "ヴァーカスの骨衛兵",
       "インプ", "ヴォイドウォーカー",
+      "頭蓋砕きブルトーク", "ヴァーラン隊長", "老いたるクラッグモウ", "溺れし者スルームトゥース", "燃え翼のヴォスカル", "魂縛りマルドレク",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9669,11 +9709,15 @@ export const mergeEntities = {
       "Bandagens funerárias de Nhalia", "Truta-espelho crua", "Pantufas Sableweb", "Vara de pesca simples", "Erva emaranhada", "Grevas Guardamaré",
       "Escarpes Guardamaré", "Lâmina mágica Nascivale", "Maça santificada de Voss", "Passos de alma do Culto do Wyrm", "Arnês Sombra de Wyrm", "Guarda-pernas Sombra de Wyrm",
       "Pisantes Sombra de Wyrm",
+      "Marreta de Brutok", "Presa de ogro rachada", "Porrete do guardião do penhasco", "Botas furtivas de Cragmaw", "Cetro da maré afogada", "Lâmina de guerra presa de brasa",
+      "Escama de cinza de Asa-de-brasa", "Grevas de Asa-de-brasa", "Adaga do guardião dos túmulos", "Cajado da vigília oca", "Atador de almas de Maldrec", "Grevas do juramento",
+      "Cinturão de guerra do quebra-crânios", "Adaga racha-crânio", "Presa-de-maré de Sloomtooth", "Gancho do ceifa-marés", "Lâmina do juramento de Verlan",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Bristleback ancião", "Capataz Veio de Ferro", "Sapador Veio de Ferro", "Senhor da Medula Varkas", "Frenesi Mirejaw", "Mirejaw, o Voraz",
       "Mogger", "Lacaio de Mogger", "Pranteadora de Nhalia", "Filhote Sableweb", "Matriarca Sableweb", "Irmã Nhalia", "Guardião dos ossos de Varkas",
       "Diabrete", "Caminhante do Vazio",
+      "Brutok Quebra-crânios", "Capitão Verlan", "Velho Cragmaw", "Sloomtooth o Afogado", "Voskar Asa-de-brasa", "Maldrec o Atador-de-espectros",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {
@@ -9701,11 +9745,15 @@ export const mergeEntities = {
       "Погребальные обмотки Налии", "Сырая зеркальная форель", "Туфли Сейблвеб", "Простая удочка", "Спутанные водоросли", "Наголенники Стража прилива",
       "Сабатоны Стража прилива", "Долиннорожденный чароклинок", "Освященная булава Восса", "Шаги души Культа вирма", "Сбруя Тени вирма", "Поножи Тени вирма",
       "Ступни Тени вирма",
+      "Молот Бруток", "Треснувший клык огра", "Дубина стража утёса", "Крадущиеся сапоги Крэгмо", "Скипетр утопшего прилива", "Боевой клинок Жароклыка",
+      "Пепельная чешуя Жарокрыла", "Поножи Жарокрыла", "Заточка стража могил", "Посох пустого бдения", "Пленитель душ Малдрека", "Поножи клятвы",
+      "Боевой пояс Сокрушителя черепов", "Кинжал черепокола", "Приливный клык Слумтуса", "Багор Приливореза", "Клинок клятвы Верлана",
     ], 'item'),
     mobs: mergeNameTranslations(MERGE_MOB_IDS, [
       "Старый Щетиноспин", "Прораб Железной жилы", "Сапер Железной жилы", "Владыка костного мозга Варкас", "Бешенство Миреджо", "Миреджо Ненасытный",
       "Моггер", "Приспешник Моггера", "Плакальщица Налии", "Детеныш Сейблвеб", "Матриарх Сейблвеб", "Сестра Налия", "Костяной страж Варкаса",
       "Бес", "Страж Бездны",
+      "Бруток Сокрушитель черепов", "Капитан Верлан", "Старый Крэгмо", "Слумтус Утопший", "Воскар Жарокрыл", "Малдрек Пленитель призраков",
     ], 'mob'),
     quests: {
       q_mogger_tracks: {

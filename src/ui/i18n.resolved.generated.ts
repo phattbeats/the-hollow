@@ -2290,6 +2290,57 @@ export const en: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Wyrmshadow Treads"
       },
+      "brutoks_maul": {
+        "name": "Brutok's Maul"
+      },
+      "cracked_ogre_tusk": {
+        "name": "Cracked Ogre Tusk"
+      },
+      "crag_warden_cudgel": {
+        "name": "Crag Warden Cudgel"
+      },
+      "cragmaw_prowlboots": {
+        "name": "Cragmaw Prowlboots"
+      },
+      "drowned_tide_scepter": {
+        "name": "Drowned Tide Scepter"
+      },
+      "emberfang_warblade": {
+        "name": "Emberfang Warblade"
+      },
+      "emberwing_cinderscale": {
+        "name": "Emberwing Cinderscale"
+      },
+      "emberwing_legguards": {
+        "name": "Emberwing Legguards"
+      },
+      "gravewardens_shiv": {
+        "name": "Gravewarden's Shiv"
+      },
+      "hollow_vigil_staff": {
+        "name": "Staff of the Hollow Vigil"
+      },
+      "maldrecs_soulbinder": {
+        "name": "Maldrec's Soulbinder"
+      },
+      "oathbound_greaves": {
+        "name": "Oathbound Greaves"
+      },
+      "skullsmasher_warbelt": {
+        "name": "Skullsmasher's Warbelt"
+      },
+      "skullsplitter_dirk": {
+        "name": "Skullsplitter Dirk"
+      },
+      "sloomtooth_tidefang": {
+        "name": "Sloomtooth's Tidefang"
+      },
+      "tidereaver_gaff": {
+        "name": "Tidereaver Gaff"
+      },
+      "verlans_oathblade": {
+        "name": "Verlan's Oathblade"
+      },
       "briny_idol": {
         "name": "Briny Idol"
       },
@@ -2576,6 +2627,24 @@ export const en: EnTranslations = {
       },
       "voidwalker": {
         "name": "Voidwalker"
+      },
+      "brutok_skullsmasher": {
+        "name": "Brutok Skullsmasher"
+      },
+      "captain_verlan": {
+        "name": "Captain Verlan"
+      },
+      "old_cragmaw": {
+        "name": "Old Cragmaw"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "Sloomtooth the Drowned"
+      },
+      "voskar_emberwing": {
+        "name": "Voskar the Emberwing"
+      },
+      "wraithbinder_maldrec": {
+        "name": "Wraithbinder Maldrec"
       },
       "choirmother_selthe": {
         "name": "Choirmother Selthe"
@@ -5875,6 +5944,57 @@ export const es: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Botines Sombravermis"
       },
+      "brutoks_maul": {
+        "name": "Mazo de Brutok"
+      },
+      "cracked_ogre_tusk": {
+        "name": "Colmillo de ogro agrietado"
+      },
+      "crag_warden_cudgel": {
+        "name": "Garrote del guardián del risco"
+      },
+      "cragmaw_prowlboots": {
+        "name": "Botas acechadoras de Cragmaw"
+      },
+      "drowned_tide_scepter": {
+        "name": "Cetro de la marea ahogada"
+      },
+      "emberfang_warblade": {
+        "name": "Espada de guerra colmillo de brasa"
+      },
+      "emberwing_cinderscale": {
+        "name": "Escama de ceniza de Aladebrasa"
+      },
+      "emberwing_legguards": {
+        "name": "Quijotes de Aladebrasa"
+      },
+      "gravewardens_shiv": {
+        "name": "Punzón del guardián de tumbas"
+      },
+      "hollow_vigil_staff": {
+        "name": "Bastón de la vigilia hueca"
+      },
+      "maldrecs_soulbinder": {
+        "name": "Atadora de almas de Maldrec"
+      },
+      "oathbound_greaves": {
+        "name": "Grebas del juramento"
+      },
+      "skullsmasher_warbelt": {
+        "name": "Cinturón de guerra del rompecráneos"
+      },
+      "skullsplitter_dirk": {
+        "name": "Daga partecráneos"
+      },
+      "sloomtooth_tidefang": {
+        "name": "Colmillo de marea de Sloomtooth"
+      },
+      "tidereaver_gaff": {
+        "name": "Bichero del segamareas"
+      },
+      "verlans_oathblade": {
+        "name": "Espada del juramento de Verlan"
+      },
       "briny_idol": {
         "name": "Ídolo salobre"
       },
@@ -6161,6 +6281,24 @@ export const es: EnTranslations = {
       },
       "voidwalker": {
         "name": "Caminante del Vacío"
+      },
+      "brutok_skullsmasher": {
+        "name": "Brutok Rompecráneos"
+      },
+      "captain_verlan": {
+        "name": "Capitán Verlan"
+      },
+      "old_cragmaw": {
+        "name": "Viejo Cragmaw"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "Sloomtooth el Ahogado"
+      },
+      "voskar_emberwing": {
+        "name": "Voskar Aladebrasa"
+      },
+      "wraithbinder_maldrec": {
+        "name": "Maldrec el Ataespectros"
       },
       "choirmother_selthe": {
         "name": "Selthe, madre del coro"
@@ -9460,6 +9598,57 @@ export const es_ES: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Botines Sombravermis"
       },
+      "brutoks_maul": {
+        "name": "Mazo de Brutok"
+      },
+      "cracked_ogre_tusk": {
+        "name": "Colmillo de ogro agrietado"
+      },
+      "crag_warden_cudgel": {
+        "name": "Garrote del guardián del risco"
+      },
+      "cragmaw_prowlboots": {
+        "name": "Botas acechadoras de Cragmaw"
+      },
+      "drowned_tide_scepter": {
+        "name": "Cetro de la marea ahogada"
+      },
+      "emberfang_warblade": {
+        "name": "Espada de guerra colmillo de brasa"
+      },
+      "emberwing_cinderscale": {
+        "name": "Escama de ceniza de Aladebrasa"
+      },
+      "emberwing_legguards": {
+        "name": "Quijotes de Aladebrasa"
+      },
+      "gravewardens_shiv": {
+        "name": "Punzón del guardián de tumbas"
+      },
+      "hollow_vigil_staff": {
+        "name": "Bastón de la vigilia hueca"
+      },
+      "maldrecs_soulbinder": {
+        "name": "Atadora de almas de Maldrec"
+      },
+      "oathbound_greaves": {
+        "name": "Grebas del juramento"
+      },
+      "skullsmasher_warbelt": {
+        "name": "Cinturón de guerra del rompecráneos"
+      },
+      "skullsplitter_dirk": {
+        "name": "Daga partecráneos"
+      },
+      "sloomtooth_tidefang": {
+        "name": "Colmillo de marea de Sloomtooth"
+      },
+      "tidereaver_gaff": {
+        "name": "Bichero del segamareas"
+      },
+      "verlans_oathblade": {
+        "name": "Espada del juramento de Verlan"
+      },
       "briny_idol": {
         "name": "Ídolo salobre"
       },
@@ -9746,6 +9935,24 @@ export const es_ES: EnTranslations = {
       },
       "voidwalker": {
         "name": "Caminante del Vacío"
+      },
+      "brutok_skullsmasher": {
+        "name": "Brutok Rompecráneos"
+      },
+      "captain_verlan": {
+        "name": "Capitán Verlan"
+      },
+      "old_cragmaw": {
+        "name": "Viejo Cragmaw"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "Sloomtooth el Ahogado"
+      },
+      "voskar_emberwing": {
+        "name": "Voskar Aladebrasa"
+      },
+      "wraithbinder_maldrec": {
+        "name": "Maldrec el Ataespectros"
       },
       "choirmother_selthe": {
         "name": "Selthe, madre del coro"
@@ -13045,6 +13252,57 @@ export const fr_FR: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Bottines Ombrewyrm"
       },
+      "brutoks_maul": {
+        "name": "Maillet de Brutok"
+      },
+      "cracked_ogre_tusk": {
+        "name": "Défense d'ogre fêlée"
+      },
+      "crag_warden_cudgel": {
+        "name": "Gourdin du gardien des falaises"
+      },
+      "cragmaw_prowlboots": {
+        "name": "Bottes rôdeuses de Cragmaw"
+      },
+      "drowned_tide_scepter": {
+        "name": "Sceptre de la marée noyée"
+      },
+      "emberfang_warblade": {
+        "name": "Lame de guerre crocs-de-braise"
+      },
+      "emberwing_cinderscale": {
+        "name": "Écaille de cendre d'Aile-de-braise"
+      },
+      "emberwing_legguards": {
+        "name": "Jambières d'Aile-de-braise"
+      },
+      "gravewardens_shiv": {
+        "name": "Surin du gardien des tombes"
+      },
+      "hollow_vigil_staff": {
+        "name": "Bâton de la veille creuse"
+      },
+      "maldrecs_soulbinder": {
+        "name": "Lieur d'âmes de Maldrec"
+      },
+      "oathbound_greaves": {
+        "name": "Jambières du serment"
+      },
+      "skullsmasher_warbelt": {
+        "name": "Ceinturon de guerre du briseur de crânes"
+      },
+      "skullsplitter_dirk": {
+        "name": "Dague fend-crâne"
+      },
+      "sloomtooth_tidefang": {
+        "name": "Croc-de-marée de Sloomtooth"
+      },
+      "tidereaver_gaff": {
+        "name": "Gaffe du fendeur de marées"
+      },
+      "verlans_oathblade": {
+        "name": "Lame du serment de Verlan"
+      },
       "briny_idol": {
         "name": "Idole saumâtre"
       },
@@ -13331,6 +13589,24 @@ export const fr_FR: EnTranslations = {
       },
       "voidwalker": {
         "name": "Marcheur du Vide"
+      },
+      "brutok_skullsmasher": {
+        "name": "Brutok Brise-crânes"
+      },
+      "captain_verlan": {
+        "name": "Capitaine Verlan"
+      },
+      "old_cragmaw": {
+        "name": "Vieux Cragmaw"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "Sloomtooth le Noyé"
+      },
+      "voskar_emberwing": {
+        "name": "Voskar Aile-de-braise"
+      },
+      "wraithbinder_maldrec": {
+        "name": "Maldrec le Lie-spectres"
       },
       "choirmother_selthe": {
         "name": "Selthe, mère de chœur"
@@ -16630,6 +16906,57 @@ export const fr_CA: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Bottines Ombrewyrm"
       },
+      "brutoks_maul": {
+        "name": "Maillet de Brutok"
+      },
+      "cracked_ogre_tusk": {
+        "name": "Défense d'ogre fêlée"
+      },
+      "crag_warden_cudgel": {
+        "name": "Gourdin du gardien des falaises"
+      },
+      "cragmaw_prowlboots": {
+        "name": "Bottes rôdeuses de Cragmaw"
+      },
+      "drowned_tide_scepter": {
+        "name": "Sceptre de la marée noyée"
+      },
+      "emberfang_warblade": {
+        "name": "Lame de guerre crocs-de-braise"
+      },
+      "emberwing_cinderscale": {
+        "name": "Écaille de cendre d'Aile-de-braise"
+      },
+      "emberwing_legguards": {
+        "name": "Jambières d'Aile-de-braise"
+      },
+      "gravewardens_shiv": {
+        "name": "Surin du gardien des tombes"
+      },
+      "hollow_vigil_staff": {
+        "name": "Bâton de la veille creuse"
+      },
+      "maldrecs_soulbinder": {
+        "name": "Lieur d'âmes de Maldrec"
+      },
+      "oathbound_greaves": {
+        "name": "Jambières du serment"
+      },
+      "skullsmasher_warbelt": {
+        "name": "Ceinturon de guerre du briseur de crânes"
+      },
+      "skullsplitter_dirk": {
+        "name": "Dague fend-crâne"
+      },
+      "sloomtooth_tidefang": {
+        "name": "Croc-de-marée de Sloomtooth"
+      },
+      "tidereaver_gaff": {
+        "name": "Gaffe du fendeur de marées"
+      },
+      "verlans_oathblade": {
+        "name": "Lame du serment de Verlan"
+      },
       "briny_idol": {
         "name": "Idole saumâtre"
       },
@@ -16916,6 +17243,24 @@ export const fr_CA: EnTranslations = {
       },
       "voidwalker": {
         "name": "Marcheur du Vide"
+      },
+      "brutok_skullsmasher": {
+        "name": "Brutok Brise-crânes"
+      },
+      "captain_verlan": {
+        "name": "Capitaine Verlan"
+      },
+      "old_cragmaw": {
+        "name": "Vieux Cragmaw"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "Sloomtooth le Noyé"
+      },
+      "voskar_emberwing": {
+        "name": "Voskar Aile-de-braise"
+      },
+      "wraithbinder_maldrec": {
+        "name": "Maldrec le Lie-spectres"
       },
       "choirmother_selthe": {
         "name": "Selthe, mère de chœur"
@@ -20215,6 +20560,57 @@ export const en_CA: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Wyrmshadow Treads"
       },
+      "brutoks_maul": {
+        "name": "Brutok's Maul"
+      },
+      "cracked_ogre_tusk": {
+        "name": "Cracked Ogre Tusk"
+      },
+      "crag_warden_cudgel": {
+        "name": "Crag Warden Cudgel"
+      },
+      "cragmaw_prowlboots": {
+        "name": "Cragmaw Prowlboots"
+      },
+      "drowned_tide_scepter": {
+        "name": "Drowned Tide Scepter"
+      },
+      "emberfang_warblade": {
+        "name": "Emberfang Warblade"
+      },
+      "emberwing_cinderscale": {
+        "name": "Emberwing Cinderscale"
+      },
+      "emberwing_legguards": {
+        "name": "Emberwing Legguards"
+      },
+      "gravewardens_shiv": {
+        "name": "Gravewarden's Shiv"
+      },
+      "hollow_vigil_staff": {
+        "name": "Staff of the Hollow Vigil"
+      },
+      "maldrecs_soulbinder": {
+        "name": "Maldrec's Soulbinder"
+      },
+      "oathbound_greaves": {
+        "name": "Oathbound Greaves"
+      },
+      "skullsmasher_warbelt": {
+        "name": "Skullsmasher's Warbelt"
+      },
+      "skullsplitter_dirk": {
+        "name": "Skullsplitter Dirk"
+      },
+      "sloomtooth_tidefang": {
+        "name": "Sloomtooth's Tidefang"
+      },
+      "tidereaver_gaff": {
+        "name": "Tidereaver Gaff"
+      },
+      "verlans_oathblade": {
+        "name": "Verlan's Oathblade"
+      },
       "briny_idol": {
         "name": "Briny Idol"
       },
@@ -20501,6 +20897,24 @@ export const en_CA: EnTranslations = {
       },
       "voidwalker": {
         "name": "Voidwalker"
+      },
+      "brutok_skullsmasher": {
+        "name": "Brutok Skullsmasher"
+      },
+      "captain_verlan": {
+        "name": "Captain Verlan"
+      },
+      "old_cragmaw": {
+        "name": "Old Cragmaw"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "Sloomtooth the Drowned"
+      },
+      "voskar_emberwing": {
+        "name": "Voskar the Emberwing"
+      },
+      "wraithbinder_maldrec": {
+        "name": "Wraithbinder Maldrec"
       },
       "choirmother_selthe": {
         "name": "Choirmother Selthe"
@@ -23800,6 +24214,57 @@ export const it_IT: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Calzari Ombrawyrm"
       },
+      "brutoks_maul": {
+        "name": "Mazza di Brutok"
+      },
+      "cracked_ogre_tusk": {
+        "name": "Zanna d'ogre incrinata"
+      },
+      "crag_warden_cudgel": {
+        "name": "Randello del guardiano della rupe"
+      },
+      "cragmaw_prowlboots": {
+        "name": "Stivali predatori di Cragmaw"
+      },
+      "drowned_tide_scepter": {
+        "name": "Scettro della marea annegata"
+      },
+      "emberfang_warblade": {
+        "name": "Spada da guerra zanna di brace"
+      },
+      "emberwing_cinderscale": {
+        "name": "Squama di cenere di Aladibrace"
+      },
+      "emberwing_legguards": {
+        "name": "Gambali di Aladibrace"
+      },
+      "gravewardens_shiv": {
+        "name": "Pugnale del guardiano delle tombe"
+      },
+      "hollow_vigil_staff": {
+        "name": "Bastone della veglia cava"
+      },
+      "maldrecs_soulbinder": {
+        "name": "Legatore d'anime di Maldrec"
+      },
+      "oathbound_greaves": {
+        "name": "Gambali del giuramento"
+      },
+      "skullsmasher_warbelt": {
+        "name": "Cintura da guerra dello spaccacranio"
+      },
+      "skullsplitter_dirk": {
+        "name": "Daga spaccacranio"
+      },
+      "sloomtooth_tidefang": {
+        "name": "Zanna di marea di Sloomtooth"
+      },
+      "tidereaver_gaff": {
+        "name": "Gancio del falciamaree"
+      },
+      "verlans_oathblade": {
+        "name": "Lama del giuramento di Verlan"
+      },
       "briny_idol": {
         "name": "Idolo Salmastro"
       },
@@ -24086,6 +24551,24 @@ export const it_IT: EnTranslations = {
       },
       "voidwalker": {
         "name": "Camminatore del Vuoto"
+      },
+      "brutok_skullsmasher": {
+        "name": "Brutok Spaccacranio"
+      },
+      "captain_verlan": {
+        "name": "Capitano Verlan"
+      },
+      "old_cragmaw": {
+        "name": "Vecchio Cragmaw"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "Sloomtooth l'Annegato"
+      },
+      "voskar_emberwing": {
+        "name": "Voskar Aladibrace"
+      },
+      "wraithbinder_maldrec": {
+        "name": "Maldrec il Legaspettri"
       },
       "choirmother_selthe": {
         "name": "Selthe Madre del Coro"
@@ -27385,6 +27868,57 @@ export const de_DE: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Wyrmschattentreter"
       },
+      "brutoks_maul": {
+        "name": "Brutoks Streitkolben"
+      },
+      "cracked_ogre_tusk": {
+        "name": "Rissiger Ogerhauer"
+      },
+      "crag_warden_cudgel": {
+        "name": "Knüppel des Felswächters"
+      },
+      "cragmaw_prowlboots": {
+        "name": "Schleicherstiefel von Cragmaw"
+      },
+      "drowned_tide_scepter": {
+        "name": "Zepter der ertrunkenen Flut"
+      },
+      "emberfang_warblade": {
+        "name": "Glutzahn-Kriegsklinge"
+      },
+      "emberwing_cinderscale": {
+        "name": "Aschenschuppe von Glutschwinge"
+      },
+      "emberwing_legguards": {
+        "name": "Beinschienen von Glutschwinge"
+      },
+      "gravewardens_shiv": {
+        "name": "Stilett des Grabwächters"
+      },
+      "hollow_vigil_staff": {
+        "name": "Stab der hohlen Wacht"
+      },
+      "maldrecs_soulbinder": {
+        "name": "Maldrecs Seelenbinder"
+      },
+      "oathbound_greaves": {
+        "name": "Eidgebundene Beinschienen"
+      },
+      "skullsmasher_warbelt": {
+        "name": "Kriegsgürtel des Schädelschmetterers"
+      },
+      "skullsplitter_dirk": {
+        "name": "Schädelspalterdolch"
+      },
+      "sloomtooth_tidefang": {
+        "name": "Sloomzahns Flutzahn"
+      },
+      "tidereaver_gaff": {
+        "name": "Flutschnitter-Enterhaken"
+      },
+      "verlans_oathblade": {
+        "name": "Verlans Eidklinge"
+      },
       "briny_idol": {
         "name": "Salzlaken-Götze"
       },
@@ -27671,6 +28205,24 @@ export const de_DE: EnTranslations = {
       },
       "voidwalker": {
         "name": "Leerwandler"
+      },
+      "brutok_skullsmasher": {
+        "name": "Brutok Schädelschmetterer"
+      },
+      "captain_verlan": {
+        "name": "Hauptmann Verlan"
+      },
+      "old_cragmaw": {
+        "name": "Alter Cragmaw"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "Sloomzahn der Ertrunkene"
+      },
+      "voskar_emberwing": {
+        "name": "Voskar Glutschwinge"
+      },
+      "wraithbinder_maldrec": {
+        "name": "Maldrec der Geisterbinder"
       },
       "choirmother_selthe": {
         "name": "Chormutter Selthe"
@@ -30970,6 +31522,57 @@ export const zh_CN: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "龙影足垫"
       },
+      "brutoks_maul": {
+        "name": "布鲁托克的巨槌"
+      },
+      "cracked_ogre_tusk": {
+        "name": "破裂的食人魔獠牙"
+      },
+      "crag_warden_cudgel": {
+        "name": "峭壁守卫者短棍"
+      },
+      "cragmaw_prowlboots": {
+        "name": "裂颚潜行靴"
+      },
+      "drowned_tide_scepter": {
+        "name": "溺亡潮汐权杖"
+      },
+      "emberfang_warblade": {
+        "name": "炽牙战刃"
+      },
+      "emberwing_cinderscale": {
+        "name": "炽翼煤鳞"
+      },
+      "emberwing_legguards": {
+        "name": "炽翼护腿"
+      },
+      "gravewardens_shiv": {
+        "name": "守墓人尖刀"
+      },
+      "hollow_vigil_staff": {
+        "name": "空寂守望之杖"
+      },
+      "maldrecs_soulbinder": {
+        "name": "玛尔德雷克的缚魂器"
+      },
+      "oathbound_greaves": {
+        "name": "誓约护胫"
+      },
+      "skullsmasher_warbelt": {
+        "name": "碎颅者战腰带"
+      },
+      "skullsplitter_dirk": {
+        "name": "裂颅匕首"
+      },
+      "sloomtooth_tidefang": {
+        "name": "涝牙的潮汐之牙"
+      },
+      "tidereaver_gaff": {
+        "name": "裂潮者钩杆"
+      },
+      "verlans_oathblade": {
+        "name": "维尔兰的誓约之刃"
+      },
       "briny_idol": {
         "name": "咸海神像"
       },
@@ -31256,6 +31859,24 @@ export const zh_CN: EnTranslations = {
       },
       "voidwalker": {
         "name": "虚空行者"
+      },
+      "brutok_skullsmasher": {
+        "name": "碎颅者布鲁托克"
+      },
+      "captain_verlan": {
+        "name": "维尔兰队长"
+      },
+      "old_cragmaw": {
+        "name": "老裂颚"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "溺亡者涝牙"
+      },
+      "voskar_emberwing": {
+        "name": "炽翼沃斯卡"
+      },
+      "wraithbinder_maldrec": {
+        "name": "缚魂者玛尔德雷克"
       },
       "choirmother_selthe": {
         "name": "唱诗母塞尔瑟"
@@ -34555,6 +35176,57 @@ export const zh_TW: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "龍影足墊"
       },
+      "brutoks_maul": {
+        "name": "布魯托克的巨槌"
+      },
+      "cracked_ogre_tusk": {
+        "name": "破裂的食人魔獠牙"
+      },
+      "crag_warden_cudgel": {
+        "name": "峭壁守衛者短棍"
+      },
+      "cragmaw_prowlboots": {
+        "name": "裂顎潛行靴"
+      },
+      "drowned_tide_scepter": {
+        "name": "溺亡潮汐權杖"
+      },
+      "emberfang_warblade": {
+        "name": "熾牙戰刃"
+      },
+      "emberwing_cinderscale": {
+        "name": "熾翼煤鱗"
+      },
+      "emberwing_legguards": {
+        "name": "熾翼護腿"
+      },
+      "gravewardens_shiv": {
+        "name": "守墓人尖刀"
+      },
+      "hollow_vigil_staff": {
+        "name": "空寂守望之杖"
+      },
+      "maldrecs_soulbinder": {
+        "name": "瑪爾德雷克的縛魂器"
+      },
+      "oathbound_greaves": {
+        "name": "誓約護脛"
+      },
+      "skullsmasher_warbelt": {
+        "name": "碎顱者戰腰帶"
+      },
+      "skullsplitter_dirk": {
+        "name": "裂顱匕首"
+      },
+      "sloomtooth_tidefang": {
+        "name": "澇牙的潮汐之牙"
+      },
+      "tidereaver_gaff": {
+        "name": "裂潮者鉤桿"
+      },
+      "verlans_oathblade": {
+        "name": "維爾蘭的誓約之刃"
+      },
       "briny_idol": {
         "name": "鹹海神像"
       },
@@ -34841,6 +35513,24 @@ export const zh_TW: EnTranslations = {
       },
       "voidwalker": {
         "name": "虛空行者"
+      },
+      "brutok_skullsmasher": {
+        "name": "碎顱者布魯托克"
+      },
+      "captain_verlan": {
+        "name": "維爾蘭隊長"
+      },
+      "old_cragmaw": {
+        "name": "老裂顎"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "溺亡者澇牙"
+      },
+      "voskar_emberwing": {
+        "name": "熾翼沃斯卡"
+      },
+      "wraithbinder_maldrec": {
+        "name": "縛魂者瑪爾德雷克"
       },
       "choirmother_selthe": {
         "name": "唱詩之母瑟爾瑟"
@@ -38140,6 +38830,57 @@ export const ko_KR: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "고룡그림자 발보호구"
       },
+      "brutoks_maul": {
+        "name": "브루톡의 망치"
+      },
+      "cracked_ogre_tusk": {
+        "name": "금 간 오우거 엄니"
+      },
+      "crag_warden_cudgel": {
+        "name": "바위 수호자의 곤봉"
+      },
+      "cragmaw_prowlboots": {
+        "name": "크래그모의 잠행 장화"
+      },
+      "drowned_tide_scepter": {
+        "name": "익사한 조수의 셉터"
+      },
+      "emberfang_warblade": {
+        "name": "잿불송곳니 전투검"
+      },
+      "emberwing_cinderscale": {
+        "name": "잿불날개의 잿비늘"
+      },
+      "emberwing_legguards": {
+        "name": "잿불날개의 다리보호구"
+      },
+      "gravewardens_shiv": {
+        "name": "무덤지기의 단도"
+      },
+      "hollow_vigil_staff": {
+        "name": "공허한 불침번의 지팡이"
+      },
+      "maldrecs_soulbinder": {
+        "name": "말드렉의 영혼결속기"
+      },
+      "oathbound_greaves": {
+        "name": "맹세로 묶인 정강이받이"
+      },
+      "skullsmasher_warbelt": {
+        "name": "해골분쇄자의 전투 허리띠"
+      },
+      "skullsplitter_dirk": {
+        "name": "두개골 쪼개기 단검"
+      },
+      "sloomtooth_tidefang": {
+        "name": "슬룸투스의 조수송곳니"
+      },
+      "tidereaver_gaff": {
+        "name": "조수가르기의 갈고리"
+      },
+      "verlans_oathblade": {
+        "name": "베를란의 맹세검"
+      },
       "briny_idol": {
         "name": "소금기 어린 우상"
       },
@@ -38426,6 +39167,24 @@ export const ko_KR: EnTranslations = {
       },
       "voidwalker": {
         "name": "공허추적자"
+      },
+      "brutok_skullsmasher": {
+        "name": "해골분쇄자 브루톡"
+      },
+      "captain_verlan": {
+        "name": "베를란 대장"
+      },
+      "old_cragmaw": {
+        "name": "늙은 크래그모"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "익사한 슬룸투스"
+      },
+      "voskar_emberwing": {
+        "name": "잿불날개 보스카르"
+      },
+      "wraithbinder_maldrec": {
+        "name": "영혼결속자 말드렉"
       },
       "choirmother_selthe": {
         "name": "성가대모 셀세"
@@ -41725,6 +42484,57 @@ export const ja_JP: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "ワーム影の足具"
       },
+      "brutoks_maul": {
+        "name": "ブルトークの大槌"
+      },
+      "cracked_ogre_tusk": {
+        "name": "ひびの入ったオーガの牙"
+      },
+      "crag_warden_cudgel": {
+        "name": "岩壁の番人の棍棒"
+      },
+      "cragmaw_prowlboots": {
+        "name": "クラッグモウの忍び歩きブーツ"
+      },
+      "drowned_tide_scepter": {
+        "name": "溺れた潮の笏"
+      },
+      "emberfang_warblade": {
+        "name": "燃え牙の戦刃"
+      },
+      "emberwing_cinderscale": {
+        "name": "燃え翼の燼鱗"
+      },
+      "emberwing_legguards": {
+        "name": "燃え翼の脚甲"
+      },
+      "gravewardens_shiv": {
+        "name": "墓守りの短刀"
+      },
+      "hollow_vigil_staff": {
+        "name": "虚ろな守夜の杖"
+      },
+      "maldrecs_soulbinder": {
+        "name": "マルドレクの魂縛り"
+      },
+      "oathbound_greaves": {
+        "name": "誓約の具足"
+      },
+      "skullsmasher_warbelt": {
+        "name": "頭蓋砕きの戦帯"
+      },
+      "skullsplitter_dirk": {
+        "name": "頭蓋割りのダーク"
+      },
+      "sloomtooth_tidefang": {
+        "name": "スルームトゥースの潮牙"
+      },
+      "tidereaver_gaff": {
+        "name": "潮裂きのギャフ"
+      },
+      "verlans_oathblade": {
+        "name": "ヴァーランの誓約刃"
+      },
       "briny_idol": {
         "name": "潮辛の偶像"
       },
@@ -42011,6 +42821,24 @@ export const ja_JP: EnTranslations = {
       },
       "voidwalker": {
         "name": "ヴォイドウォーカー"
+      },
+      "brutok_skullsmasher": {
+        "name": "頭蓋砕きブルトーク"
+      },
+      "captain_verlan": {
+        "name": "ヴァーラン隊長"
+      },
+      "old_cragmaw": {
+        "name": "老いたるクラッグモウ"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "溺れし者スルームトゥース"
+      },
+      "voskar_emberwing": {
+        "name": "燃え翼のヴォスカル"
+      },
+      "wraithbinder_maldrec": {
+        "name": "魂縛りマルドレク"
       },
       "choirmother_selthe": {
         "name": "聖歌母セルセ"
@@ -45310,6 +46138,57 @@ export const pt_BR: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Pisantes Sombra de Wyrm"
       },
+      "brutoks_maul": {
+        "name": "Marreta de Brutok"
+      },
+      "cracked_ogre_tusk": {
+        "name": "Presa de ogro rachada"
+      },
+      "crag_warden_cudgel": {
+        "name": "Porrete do guardião do penhasco"
+      },
+      "cragmaw_prowlboots": {
+        "name": "Botas furtivas de Cragmaw"
+      },
+      "drowned_tide_scepter": {
+        "name": "Cetro da maré afogada"
+      },
+      "emberfang_warblade": {
+        "name": "Lâmina de guerra presa de brasa"
+      },
+      "emberwing_cinderscale": {
+        "name": "Escama de cinza de Asa-de-brasa"
+      },
+      "emberwing_legguards": {
+        "name": "Grevas de Asa-de-brasa"
+      },
+      "gravewardens_shiv": {
+        "name": "Adaga do guardião dos túmulos"
+      },
+      "hollow_vigil_staff": {
+        "name": "Cajado da vigília oca"
+      },
+      "maldrecs_soulbinder": {
+        "name": "Atador de almas de Maldrec"
+      },
+      "oathbound_greaves": {
+        "name": "Grevas do juramento"
+      },
+      "skullsmasher_warbelt": {
+        "name": "Cinturão de guerra do quebra-crânios"
+      },
+      "skullsplitter_dirk": {
+        "name": "Adaga racha-crânio"
+      },
+      "sloomtooth_tidefang": {
+        "name": "Presa-de-maré de Sloomtooth"
+      },
+      "tidereaver_gaff": {
+        "name": "Gancho do ceifa-marés"
+      },
+      "verlans_oathblade": {
+        "name": "Lâmina do juramento de Verlan"
+      },
       "briny_idol": {
         "name": "Ídolo Salobro"
       },
@@ -45596,6 +46475,24 @@ export const pt_BR: EnTranslations = {
       },
       "voidwalker": {
         "name": "Caminhante do Vazio"
+      },
+      "brutok_skullsmasher": {
+        "name": "Brutok Quebra-crânios"
+      },
+      "captain_verlan": {
+        "name": "Capitão Verlan"
+      },
+      "old_cragmaw": {
+        "name": "Velho Cragmaw"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "Sloomtooth o Afogado"
+      },
+      "voskar_emberwing": {
+        "name": "Voskar Asa-de-brasa"
+      },
+      "wraithbinder_maldrec": {
+        "name": "Maldrec o Atador-de-espectros"
       },
       "choirmother_selthe": {
         "name": "Mãe-do-Coro Selthe"
@@ -48895,6 +49792,57 @@ export const ru_RU: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Ступни Тени вирма"
       },
+      "brutoks_maul": {
+        "name": "Молот Бруток"
+      },
+      "cracked_ogre_tusk": {
+        "name": "Треснувший клык огра"
+      },
+      "crag_warden_cudgel": {
+        "name": "Дубина стража утёса"
+      },
+      "cragmaw_prowlboots": {
+        "name": "Крадущиеся сапоги Крэгмо"
+      },
+      "drowned_tide_scepter": {
+        "name": "Скипетр утопшего прилива"
+      },
+      "emberfang_warblade": {
+        "name": "Боевой клинок Жароклыка"
+      },
+      "emberwing_cinderscale": {
+        "name": "Пепельная чешуя Жарокрыла"
+      },
+      "emberwing_legguards": {
+        "name": "Поножи Жарокрыла"
+      },
+      "gravewardens_shiv": {
+        "name": "Заточка стража могил"
+      },
+      "hollow_vigil_staff": {
+        "name": "Посох пустого бдения"
+      },
+      "maldrecs_soulbinder": {
+        "name": "Пленитель душ Малдрека"
+      },
+      "oathbound_greaves": {
+        "name": "Поножи клятвы"
+      },
+      "skullsmasher_warbelt": {
+        "name": "Боевой пояс Сокрушителя черепов"
+      },
+      "skullsplitter_dirk": {
+        "name": "Кинжал черепокола"
+      },
+      "sloomtooth_tidefang": {
+        "name": "Приливный клык Слумтуса"
+      },
+      "tidereaver_gaff": {
+        "name": "Багор Приливореза"
+      },
+      "verlans_oathblade": {
+        "name": "Клинок клятвы Верлана"
+      },
       "briny_idol": {
         "name": "Просоленный идол"
       },
@@ -49181,6 +50129,24 @@ export const ru_RU: EnTranslations = {
       },
       "voidwalker": {
         "name": "Страж Бездны"
+      },
+      "brutok_skullsmasher": {
+        "name": "Бруток Сокрушитель черепов"
+      },
+      "captain_verlan": {
+        "name": "Капитан Верлан"
+      },
+      "old_cragmaw": {
+        "name": "Старый Крэгмо"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "Слумтус Утопший"
+      },
+      "voskar_emberwing": {
+        "name": "Воскар Жарокрыл"
+      },
+      "wraithbinder_maldrec": {
+        "name": "Малдрек Пленитель призраков"
       },
       "choirmother_selthe": {
         "name": "Матерь хора Селте"
@@ -52573,6 +53539,57 @@ export const en_XA: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "[Ŵýŕɱšĥáðóŵ Ţŕéáðš]"
       },
+      "brutoks_maul": {
+        "name": "[Ɓŕúţóķ'š Ɱáúļ]"
+      },
+      "cracked_ogre_tusk": {
+        "name": "[Çŕáçķéð Óĝŕé Ţúšķ]"
+      },
+      "crag_warden_cudgel": {
+        "name": "[Çŕáĝ Ŵáŕðéñ Çúðĝéļ]"
+      },
+      "cragmaw_prowlboots": {
+        "name": "[Çŕáĝɱáŵ Þŕóŵļƀóóţš]"
+      },
+      "drowned_tide_scepter": {
+        "name": "[Ðŕóŵñéð Ţíðé Šçéþţéŕ]"
+      },
+      "emberfang_warblade": {
+        "name": "[Éɱƀéŕƒáñĝ Ŵáŕƀļáðé]"
+      },
+      "emberwing_cinderscale": {
+        "name": "[Éɱƀéŕŵíñĝ Çíñðéŕšçáļé]"
+      },
+      "emberwing_legguards": {
+        "name": "[Éɱƀéŕŵíñĝ Ļéĝĝúáŕðš]"
+      },
+      "gravewardens_shiv": {
+        "name": "[Ĝŕáʋéŵáŕðéñ'š Šĥíʋ]"
+      },
+      "hollow_vigil_staff": {
+        "name": "[Šţáƒƒ óƒ ţĥé Ĥóļļóŵ Ʋíĝíļ]"
+      },
+      "maldrecs_soulbinder": {
+        "name": "[Ɱáļðŕéç'š Šóúļƀíñðéŕ]"
+      },
+      "oathbound_greaves": {
+        "name": "[Óáţĥƀóúñð Ĝŕéáʋéš]"
+      },
+      "skullsmasher_warbelt": {
+        "name": "[Šķúļļšɱášĥéŕ'š Ŵáŕƀéļţ]"
+      },
+      "skullsplitter_dirk": {
+        "name": "[Šķúļļšþļíţţéŕ Ðíŕķ]"
+      },
+      "sloomtooth_tidefang": {
+        "name": "[Šļóóɱţóóţĥ'š Ţíðéƒáñĝ]"
+      },
+      "tidereaver_gaff": {
+        "name": "[Ţíðéŕéáʋéŕ Ĝáƒƒ]"
+      },
+      "verlans_oathblade": {
+        "name": "[Ʋéŕļáñ'š Óáţĥƀļáðé]"
+      },
       "briny_idol": {
         "name": "[Ɓŕíñý Íðóļ]"
       },
@@ -52859,6 +53876,24 @@ export const en_XA: EnTranslations = {
       },
       "voidwalker": {
         "name": "[Ʋóíðŵáļķéŕ]"
+      },
+      "brutok_skullsmasher": {
+        "name": "[Ɓŕúţóķ Šķúļļšɱášĥéŕ]"
+      },
+      "captain_verlan": {
+        "name": "[Çáþţáíñ Ʋéŕļáñ]"
+      },
+      "old_cragmaw": {
+        "name": "[Óļð Çŕáĝɱáŵ]"
+      },
+      "sloomtooth_the_drowned": {
+        "name": "[Šļóóɱţóóţĥ ţĥé Ðŕóŵñéð]"
+      },
+      "voskar_emberwing": {
+        "name": "[Ʋóšķáŕ ţĥé Éɱƀéŕŵíñĝ]"
+      },
+      "wraithbinder_maldrec": {
+        "name": "[Ŵŕáíţĥƀíñðéŕ Ɱáļðŕéç]"
       },
       "choirmother_selthe": {
         "name": "[Çĥóíŕɱóţĥéŕ Šéļţĥé]"
