@@ -1,11 +1,27 @@
 import { describe, expect, it } from 'vitest';
 import { isBlocked, pathCrossesFence, resolveMovement, resolvePosition } from '../src/sim/colliders';
 import { Sim } from '../src/sim/sim';
-import { findPlayerPath, resolvePlayerDestination } from '../src/sim/pathfind';
+import { findPath, findPlayerPath, resolvePlayerDestination } from '../src/sim/pathfind';
 import { groundHeight } from '../src/sim/world';
 import { PROPS } from '../src/sim/data';
 
 describe('player pathfinding', () => {
+  it('smooths open-grid A* stair steps into one direct movement leg', () => {
+    const from = { x: 1000, z: 1000 };
+    const to = { x: 1008, z: 1005 };
+
+    const path = findPath(from, to, {
+      seed: 20061,
+      bodyRadius: 0,
+      maxClimbSlope: Infinity,
+      minGround: -Infinity,
+      maxSpan: 128,
+      ignoreFences: true,
+    });
+
+    expect(path).toEqual([to]);
+  });
+
   it('routes around static blockers instead of walking straight through them', () => {
     const seed = 20061;
     const from = { x: -4, z: 2 };

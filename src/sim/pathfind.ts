@@ -1,4 +1,4 @@
-import { isBlocked, resolvePosition } from './colliders';
+import { isBlocked, pathCrossesFence, resolvePosition } from './colliders';
 import { groundHeight, WATER_LEVEL } from './world';
 
 // Local A* over a 1-yard grid, used for short forced moves (warrior Charge).
@@ -19,10 +19,66 @@ export interface PathOpts {
 const CELL = 1; // yards
 const MARGIN = 8; // yards of slack around the start/goal bounding box
 const MAX_SPAN = 64; // cells per axis; beyond this fall back to a straight line
+const SMOOTH_SAMPLE_STEP = 0.25; // yards; keeps line-of-sight smoothing inside movement sweep granularity
 
 export const PLAYER_BODY_RADIUS = 0.5;
 export const PLAYER_MAX_CLIMB_SLOPE = 1.5;
 export const PLAYER_SWIM_DEPTH = 0.8;
+
+function segmentWalkable(
+  from: { x: number; z: number },
+  to: { x: number; z: number },
+  o: PathOpts,
+  allowBlockedEnd: boolean,
+): boolean {
+  const dx = to.x - from.x;
+  const dz = to.z - from.z;
+  const d = Math.hypot(dx, dz);
+  if (d < 1e-6) return true;
+  if (!o.ignoreFences && pathCrossesFence(from.x, from.z, to.x, to.z, o.bodyRadius)) return false;
+
+  const steps = Math.max(1, Math.ceil(d / SMOOTH_SAMPLE_STEP));
+  let prevX = from.x;
+  let prevZ = from.z;
+  let prevH = groundHeight(prevX, prevZ, o.seed);
+  for (let i = 1; i <= steps; i++) {
+    const t = i / steps;
+    const x = from.x + dx * t;
+    const z = from.z + dz * t;
+    const h = groundHeight(x, z, o.seed);
+    const isEnd = i === steps;
+    if ((!isEnd || !allowBlockedEnd) && (h < o.minGround || isBlocked(o.seed, x, z, o.bodyRadius, o.ignoreFences))) {
+      return false;
+    }
+    const stepLen = Math.hypot(x - prevX, z - prevZ);
+    const rise = h - prevH;
+    if (stepLen > 1e-6 && rise > 0 && rise / stepLen > o.maxClimbSlope) return false;
+    prevX = x;
+    prevZ = z;
+    prevH = h;
+  }
+  return true;
+}
+
+function smoothPath(
+  points: { x: number; z: number }[],
+  o: PathOpts,
+): { x: number; z: number }[] {
+  if (points.length <= 2) return points.slice(1);
+
+  const out: { x: number; z: number }[] = [];
+  let anchor = 0;
+  while (anchor < points.length - 1) {
+    let next = points.length - 1;
+    while (next > anchor + 1 && !segmentWalkable(points[anchor], points[next], o, next === points.length - 1)) {
+      next--;
+    }
+    out.push(points[next]);
+    anchor = next;
+  }
+
+  return out;
+}
 
 // Returns world-space waypoints from `from` to `to`, excluding the start and
 // ending exactly at `to`. Falls back to [to] (straight line) when the window
@@ -135,18 +191,18 @@ export function findPath(
   }
   if (!found) return [{ x: to.x, z: to.z }];
 
-  // reconstruct, dropping collinear interior points
+  // reconstruct, then string-pull through any intermediate grid corners that
+  // have a direct walkable segment. A* gives legal cells; this converts the
+  // 1-yard stair-step route into longer natural legs for movement followers.
   const cells: number[] = [];
   for (let i = goalIdx; i !== -1; i = cameFrom[i]) cells.push(i);
   cells.reverse();
-  const path: { x: number; z: number }[] = [];
-  for (let k = 1; k < cells.length - 1; k++) {
-    const dirIn = cells[k] - cells[k - 1];
-    const dirOut = cells[k + 1] - cells[k];
-    if (dirIn !== dirOut) path.push({ x: cx(cells[k] % W), z: cz((cells[k] / W) | 0) });
-  }
-  path.push({ x: to.x, z: to.z });
-  return path;
+  const points = [
+    from,
+    ...cells.slice(1, -1).map((cell) => ({ x: cx(cell % W), z: cz((cell / W) | 0) })),
+    to,
+  ];
+  return smoothPath(points, o);
 }
 
 export function findPlayerPath(
