@@ -84,12 +84,12 @@ describe('hoverCursorKind', () => {
     expect(hoverCursorKind(npc, 1, new Set())).toBe('friendly');
   });
 
-  it('returns friendly for party members only', () => {
+  it('returns friendly for other players', () => {
     const ally = stubEntity({ id: 4, kind: 'player' });
     const stranger = stubEntity({ id: 5, kind: 'player' });
     const party = new Set([4]);
     expect(hoverCursorKind(ally, 1, party)).toBe('friendly');
-    expect(hoverCursorKind(stranger, 1, party)).toBe('default');
+    expect(hoverCursorKind(stranger, 1, party)).toBe('friendly');
     expect(hoverCursorKind(ally, 4, party)).toBe('default');
   });
 

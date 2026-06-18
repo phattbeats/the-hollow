@@ -105,6 +105,10 @@ export const shellStrings = {
       newNamePlaceholder: "New character name",
       tabCharacters: "Characters",
       tabCreate: "Create",
+      portraitAlt: "Portrait of {name}",
+      viewProfile: "View Profile",
+      profile: "Profile",
+      closeProfile: "Close profile",
     },
     deleteCharacter: {
       title: "Delete Character",
@@ -1025,6 +1029,10 @@ export const shellStrings = {
       newNamePlaceholder: "New character name",
       tabCharacters: "Characters",
       tabCreate: "Create",
+      portraitAlt: "Portrait of {name}",
+      viewProfile: "View Profile",
+      profile: "Profile",
+      closeProfile: "Close profile",
     },
     deleteCharacter: {
       title: "Delete Character",
@@ -2703,6 +2711,7 @@ const hudStringsEn = {
         jump: "Jump",
         autorun: "Toggle Autorun",
         target: "Target Nearest Enemy",
+        attackMove: "Attack Move",
         interact: "Interact / Loot",
         char: "Character",
         spellbook: "Spellbook",
@@ -2808,6 +2817,7 @@ const hudStringsEn = {
     combat: {
       floatingMiss: "Miss",
       floatingDodge: "Dodge",
+      cannotMove: "Can't move!",
       attack: "attack",
       damageDone: "Your {ability} hits {target} for {amount}.",
       damageDoneCrit: "Your {ability} critically hits {target} for {amount}.",
@@ -3031,7 +3041,7 @@ export const hudStrings = {
         categories: { movement: "Movimiento", targeting: "Objetivos", interface: "Interfaz", actionBar: "Barra de acción" },
         actions: {
           forward: "Avanzar", back: "Retroceder", turnLeft: "Girar a la izquierda", turnRight: "Girar a la derecha", strafeLeft: "Desplazarse a la izquierda", strafeRight: "Desplazarse a la derecha", jump: "Saltar", autorun: "Alternar carrera automática",
-          target: "Objetivo enemigo más cercano", interact: "Interactuar / Saquear", char: "Personaje", spellbook: "Libro de hechizos", questlog: "Registro de misiones", map: "Mapa del mundo", bags: "Bolsas", nameplates: "Alternar placas de nombre", meters: "Medidores de daño", social: "Amigos y hermandad", arena: "Arena (Coliseo Cinéreo)", chat: "Abrir chat", attack: "Atacar", actionBarSlot: "Barra de acción {slot}",
+          target: "Objetivo enemigo más cercano", attackMove: "Mover y atacar", interact: "Interactuar / Saquear", char: "Personaje", spellbook: "Libro de hechizos", questlog: "Registro de misiones", map: "Mapa del mundo", bags: "Bolsas", nameplates: "Alternar placas de nombre", meters: "Medidores de daño", social: "Amigos y hermandad", arena: "Arena (Coliseo Cinéreo)", chat: "Abrir chat", attack: "Atacar", actionBarSlot: "Barra de acción {slot}",
         },
       },
       meters: {
@@ -3046,7 +3056,7 @@ export const hudStrings = {
         title: "Reportar a {name}", reason: "Motivo", reasons: { harassment: "Acoso / abuso", spam: "Spam", cheating: "Trampas / exploit", offensiveNameOrChat: "Nombre o chat ofensivo", other: "Otro" }, details: "Detalles", detailsPlaceholder: "¿Qué ocurrió?", submit: "Enviar reporte", cancel: "Cancelar", submitted: "Reporte enviado por {name}.", failed: "No se pudo enviar el reporte.", chooseReason: "Elige un motivo de reporte.", invalidTarget: "Objetivo de reporte no válido.", targetOffline: "Ese jugador ya no está en línea.", targetMissing: "No se pudo encontrar a ese jugador.", cannotReportSelf: "No puedes reportarte a ti mismo.", alreadyReported: "Ya reportaste a este jugador recientemente.", reportingCharacterMissing: "No se encontró el personaje que reporta.",
       },
       prompts: { partyInvite: "{name} te invita a unirte a su grupo.", joinParty: "Unirse al grupo", guildInvite: "{name} te invita a unirte a {guild}.", joinGuild: "Unirse a hermandad", tradeRequest: "{name} quiere comerciar contigo.", openTrade: "Abrir comercio", duelRequest: "¡{name} te ha desafiado a un duelo!", acceptDuel: "Aceptar duelo", decline: "Rechazar" },
-      combat: { floatingMiss: "Fallo", floatingDodge: "Esquiva", attack: "ataque", damageDone: "Tu {ability} golpea a {target} por {amount}.", damageDoneCrit: "Tu {ability} golpea críticamente a {target} por {amount}.", damageTaken: "{source} te golpea por {amount}.", damageTakenCrit: "{source} te golpea críticamente por {amount}.", miss: "Tu {ability} falla contra {target}.", dodged: "{target} esquiva tu {ability}.", healSelf: "Tu {ability} te sana {amount}.", healSelfCrit: "Tu {ability} te sana críticamente {amount}.", healOther: "Tu {ability} sana a {target} por {amount}.", healOtherCrit: "Tu {ability} sana críticamente a {target} por {amount}.", death: "{name} muere.", auraGain: "Obtienes {name}.", auraFade: "{name} se desvanece de ti.", auraAfflicted: "{target} queda afectado por {name}." },
+      combat: { floatingMiss: "Fallo", floatingDodge: "Esquiva", cannotMove: "¡No puedes moverte!", attack: "ataque", damageDone: "Tu {ability} golpea a {target} por {amount}.", damageDoneCrit: "Tu {ability} golpea críticamente a {target} por {amount}.", damageTaken: "{source} te golpea por {amount}.", damageTakenCrit: "{source} te golpea críticamente por {amount}.", miss: "Tu {ability} falla contra {target}.", dodged: "{target} esquiva tu {ability}.", healSelf: "Tu {ability} te sana {amount}.", healSelfCrit: "Tu {ability} te sana críticamente {amount}.", healOther: "Tu {ability} sana a {target} por {amount}.", healOtherCrit: "Tu {ability} sana críticamente a {target} por {amount}.", death: "{name} muere.", auraGain: "Obtienes {name}.", auraFade: "{name} se desvanece de ti.", auraAfflicted: "{target} queda afectado por {name}." },
       system: { playerDeath: "Has muerto.", respawn: "Te sientes descansado y completo de nuevo.", ignoringChat: "Ignorando el chat de {name}.", noLongerIgnoring: "Ya no ignoras a {name}.", playerNotNearby: "Ese jugador no está cerca.", duelCountdown: "El duelo empieza en {seconds}...", duelEndBanner: "¡{winner} ha derrotado a {loser} en un duelo!", duelEndLog: "{winner} ha derrotado a {loser} en un duelo.", arenaQueued: "En cola para el Coliseo Cinéreo (posición {position}).", arenaUnqueued: "Sales de la cola del Coliseo Cinéreo.", arenaFoundBanner: "Oponente encontrado: {name}", arenaFoundLog: "El Coliseo te empareja contra {name}, nivel {level} {className}.", arenaCountdown: "El combate empieza en {seconds}...", arenaStart: "¡Lucha!", arenaDrawBanner: "Empate de arena vs {name} ({delta} de índice)", arenaDrawLog: "El combate de arena vs {name} terminó en empate. Índice {rating} ({delta}).", arenaVictoryBanner: "¡Victoria vs {name}! Índice {rating} ({delta})", arenaVictoryLog: "Derrotaste a {name} en el Coliseo Cinéreo. Índice {rating} ({delta}).", arenaDefeatBanner: "Derrotado por {name}. Índice {rating} ({delta})", arenaDefeatLog: "{name} te superó en el Coliseo Cinéreo. Índice {rating} ({delta})." },
       errors: {
         stunned: "¡Estás aturdido!", silenced: "¡Estás silenciado!", busy: "Estás ocupado.", abilityNotReady: "Esa habilidad aún no está lista.", notEnoughRage: "¡No tienes suficiente ira!", notEnoughEnergy: "¡No tienes suficiente energía!", notEnoughMana: "¡No tienes suficiente maná!", notEnoughResource: "¡No tienes suficiente {resource}!", notEnoughHealth: "No tienes suficiente salud.", targetMustDodge: "Tu objetivo debe esquivar primero.", requiresCombo: "Esa habilidad requiere puntos de combo.", requiresForm: "Debes estar en forma de {form}.", bear: "oso", cat: "felino", shapeshifted: "No puedes hacer eso transformado.", stealthed: "Debes estar en sigilo.", inCombat: "No puedes hacer eso en combate.", outOfRange: "Fuera de alcance.", noTarget: "No tienes objetivo.", tooClose: "¡Demasiado cerca!", facing: "Debes mirar a tu objetivo.", targetHealthBelow: "Esa habilidad requiere que el objetivo tenga menos de {percent}% de salud.", dagger: "Debes llevar una daga.", behindTarget: "Debes estar detrás de tu objetivo.", polymorph: "Esta criatura no puede ser polimorfada.", noSeal: "No tienes un Sello activo.", cannotTaunt: "No puedes provocar a eso.", noPet: "No tienes mascota.", invalidAttackTarget: "Objetivo de ataque no válido.", chatTooFast: "Estás enviando mensajes demasiado rápido.", chatSlowDown: "Estás enviando mensajes demasiado rápido. Ve más despacio.", noRecentWhisper: "Nadie te ha susurrado recientemente.", whisperAmbiguous: "Varios jugadores coinciden con '{name}'. Usa las mayúsculas exactas.", whisperMissing: "No hay ningún jugador llamado '{name}' en línea.", whisperSelf: "Murmuras para ti. Nadie lo oye.", notInParty: "No estás en un grupo.", unknownCommand: "Comando desconocido: {command}. Prueba /s /y /w /p /g.", chatCooldown: "El chat está en recarga durante {seconds}s.", chatLocked: "Chat bloqueado durante {seconds}s por enviar mensajes demasiado rápido.", partyLeaderInvite: "Solo el líder del grupo puede invitar.", partyFull: "Tu grupo está lleno.", alreadyInParty: "{name} ya está en un grupo.", pendingInvite: "{name} ya tiene una invitación pendiente.", invitationExpired: "La invitación ha expirado.", targetTooFar: "El objetivo está demasiado lejos.", duelInProgress: "Ya hay un duelo en curso.", challengeExpired: "El desafío ha expirado.", arenaAlreadyInMatch: "Ya estás en un combate de arena.", arenaQueueDead: "No puedes entrar en cola de arena estando muerto.", arenaQueueDueling: "No puedes entrar en cola mientras duelas.", arenaQueueTrading: "Termina tu comercio antes de entrar en cola.", arenaQueueInstance: "No puedes entrar en cola desde una instancia.", tradeInProgress: "Ya hay un comercio en curso.", tradeTooFar: "El objetivo está demasiado lejos para comerciar.", tradeExpired: "La solicitud de comercio ha expirado.", tradeFailed: "Comercio fallido: los objetos o el dinero ya no están disponibles.",
@@ -3152,7 +3162,7 @@ export const hudStrings = {
         categories: { movement: "Déplacement", targeting: "Ciblage", interface: "Interface", actionBar: "Barre d'action" },
         actions: {
           forward: "Avancer", back: "Reculer", turnLeft: "Tourner à gauche", turnRight: "Tourner à droite", strafeLeft: "Pas latéral gauche", strafeRight: "Pas latéral droit", jump: "Sauter", autorun: "Activer la course automatique",
-          target: "Cibler l'ennemi le plus proche", interact: "Interagir / Ramasser", char: "Personnage", spellbook: "Grimoire", questlog: "Journal de quêtes", map: "Carte du monde", bags: "Sacs", nameplates: "Afficher les barres de nom", meters: "Compteurs de dégâts", social: "Amis et guilde", arena: "Arène (Colisée cendré)", chat: "Ouvrir la discussion", attack: "Attaquer", actionBarSlot: "Barre d'action {slot}",
+          target: "Cibler l'ennemi le plus proche", attackMove: "Déplacement offensif", interact: "Interagir / Ramasser", char: "Personnage", spellbook: "Grimoire", questlog: "Journal de quêtes", map: "Carte du monde", bags: "Sacs", nameplates: "Afficher les barres de nom", meters: "Compteurs de dégâts", social: "Amis et guilde", arena: "Arène (Colisée cendré)", chat: "Ouvrir la discussion", attack: "Attaquer", actionBarSlot: "Barre d'action {slot}",
         },
       },
       meters: {
@@ -3167,7 +3177,7 @@ export const hudStrings = {
         title: "Signaler {name}", reason: "Motif", reasons: { harassment: "Harcèlement / abus", spam: "Spam", cheating: "Triche / exploit", offensiveNameOrChat: "Nom ou discussion offensants", other: "Autre" }, details: "Détails", detailsPlaceholder: "Que s'est-il passé ?", submit: "Envoyer le signalement", cancel: "Annuler", submitted: "Signalement envoyé pour {name}.", failed: "Impossible d'envoyer le signalement.", chooseReason: "Choisissez un motif de signalement.", invalidTarget: "Cible de signalement invalide.", targetOffline: "Ce joueur n'est plus en ligne.", targetMissing: "Ce joueur est introuvable.", cannotReportSelf: "Vous ne pouvez pas vous signaler vous-même.", alreadyReported: "Vous avez déjà signalé ce joueur récemment.", reportingCharacterMissing: "Personnage signalant introuvable.",
       },
       prompts: { partyInvite: "{name} vous invite à rejoindre son groupe.", joinParty: "Rejoindre le groupe", guildInvite: "{name} vous invite à rejoindre {guild}.", joinGuild: "Rejoindre la guilde", tradeRequest: "{name} veut échanger avec vous.", openTrade: "Ouvrir l'échange", duelRequest: "{name} vous a provoqué en duel !", acceptDuel: "Accepter le duel", decline: "Refuser" },
-      combat: { floatingMiss: "Raté", floatingDodge: "Esquive", attack: "attaque", damageDone: "Votre {ability} touche {target} pour {amount}.", damageDoneCrit: "Votre {ability} inflige un coup critique à {target} pour {amount}.", damageTaken: "{source} vous touche pour {amount}.", damageTakenCrit: "{source} vous inflige un coup critique pour {amount}.", miss: "Votre {ability} rate {target}.", dodged: "{target} esquive votre {ability}.", healSelf: "Votre {ability} vous rend {amount} points de vie.", healSelfCrit: "Votre {ability} vous rend un soin critique de {amount}.", healOther: "Votre {ability} soigne {target} pour {amount}.", healOtherCrit: "Votre {ability} soigne {target} d'un coup critique pour {amount}.", death: "{name} meurt.", auraGain: "Vous gagnez {name}.", auraFade: "{name} se dissipe de vous.", auraAfflicted: "{target} est affecté par {name}." },
+      combat: { floatingMiss: "Raté", floatingDodge: "Esquive", cannotMove: "Immobilisé !", attack: "attaque", damageDone: "Votre {ability} touche {target} pour {amount}.", damageDoneCrit: "Votre {ability} inflige un coup critique à {target} pour {amount}.", damageTaken: "{source} vous touche pour {amount}.", damageTakenCrit: "{source} vous inflige un coup critique pour {amount}.", miss: "Votre {ability} rate {target}.", dodged: "{target} esquive votre {ability}.", healSelf: "Votre {ability} vous rend {amount} points de vie.", healSelfCrit: "Votre {ability} vous rend un soin critique de {amount}.", healOther: "Votre {ability} soigne {target} pour {amount}.", healOtherCrit: "Votre {ability} soigne {target} d'un coup critique pour {amount}.", death: "{name} meurt.", auraGain: "Vous gagnez {name}.", auraFade: "{name} se dissipe de vous.", auraAfflicted: "{target} est affecté par {name}." },
       system: { playerDeath: "Vous êtes mort.", respawn: "Vous vous sentez reposé et entier à nouveau.", ignoringChat: "Discussion de {name} ignorée.", noLongerIgnoring: "Vous n'ignorez plus {name}.", playerNotNearby: "Ce joueur n'est pas à proximité.", duelCountdown: "Le duel commence dans {seconds}...", duelEndBanner: "{winner} a vaincu {loser} en duel !", duelEndLog: "{winner} a vaincu {loser} en duel.", arenaQueued: "En file pour le Colisée cendré (position {position}).", arenaUnqueued: "Vous quittez la file du Colisée cendré.", arenaFoundBanner: "Adversaire trouvé : {name}", arenaFoundLog: "Le Colisée vous oppose à {name}, niveau {level} {className}.", arenaCountdown: "Le combat commence dans {seconds}...", arenaStart: "Combattez !", arenaDrawBanner: "Match nul d'arène contre {name} ({delta} de cote)", arenaDrawLog: "Le combat d'arène contre {name} se termine par un match nul. Cote {rating} ({delta}).", arenaVictoryBanner: "Victoire contre {name} ! Cote {rating} ({delta})", arenaVictoryLog: "Vous avez vaincu {name} au Colisée cendré. Cote {rating} ({delta}).", arenaDefeatBanner: "Vaincu par {name}. Cote {rating} ({delta})", arenaDefeatLog: "{name} vous a battu au Colisée cendré. Cote {rating} ({delta})." },
       errors: {
         stunned: "Vous êtes étourdi !", silenced: "Vous êtes réduit au silence !", busy: "Vous êtes occupé.", abilityNotReady: "Cette technique n'est pas encore prête.", notEnoughRage: "Pas assez de rage !", notEnoughEnergy: "Pas assez d'énergie !", notEnoughMana: "Pas assez de mana !", notEnoughResource: "Pas assez de {resource} !", notEnoughHealth: "Pas assez de points de vie.", targetMustDodge: "Votre cible doit d'abord esquiver.", requiresCombo: "Cette technique requiert des points de combo.", requiresForm: "Vous devez être en forme de {form}.", bear: "ours", cat: "félin", shapeshifted: "Vous ne pouvez pas faire cela en forme changeante.", stealthed: "Vous devez être camouflé.", inCombat: "Vous ne pouvez pas faire cela en combat.", outOfRange: "Hors de portée.", noTarget: "Vous n'avez pas de cible.", tooClose: "Trop près !", facing: "Vous devez faire face à votre cible.", targetHealthBelow: "Cette technique requiert une cible sous {percent} % de points de vie.", dagger: "Vous devez porter une dague.", behindTarget: "Vous devez être derrière votre cible.", polymorph: "Cette créature ne peut pas être métamorphosée.", noSeal: "Vous n'avez aucun Sceau actif.", cannotTaunt: "Vous ne pouvez pas provoquer cela.", noPet: "Vous n'avez pas de familier.", invalidAttackTarget: "Cible d'attaque invalide.", chatTooFast: "Vous envoyez des messages trop vite.", chatSlowDown: "Vous envoyez des messages trop vite. Ralentissez.", noRecentWhisper: "Personne ne vous a chuchoté récemment.", whisperAmbiguous: "Plusieurs joueurs correspondent à '{name}'. Respectez la casse exacte.", whisperMissing: "Aucun joueur nommé '{name}' n'est en ligne.", whisperSelf: "Vous marmonnez pour vous-même. Personne ne l'entend.", notInParty: "Vous n'êtes pas dans un groupe.", unknownCommand: "Commande inconnue : {command}. Essayez /s /y /w /p /g.", chatCooldown: "La discussion est en recharge pendant {seconds}s.", chatLocked: "Discussion verrouillée pendant {seconds}s car vous envoyez des messages trop vite.", partyLeaderInvite: "Seul le chef de groupe peut inviter.", partyFull: "Votre groupe est complet.", alreadyInParty: "{name} est déjà dans un groupe.", pendingInvite: "{name} a déjà une invitation en attente.", invitationExpired: "L'invitation a expiré.", targetTooFar: "La cible est trop éloignée.", duelInProgress: "Un duel est déjà en cours.", challengeExpired: "Le défi a expiré.", arenaAlreadyInMatch: "Vous êtes déjà dans un combat d'arène.", arenaQueueDead: "Vous ne pouvez pas rejoindre la file d'arène en étant mort.", arenaQueueDueling: "Vous ne pouvez pas rejoindre la file pendant un duel.", arenaQueueTrading: "Terminez votre échange avant de rejoindre la file.", arenaQueueInstance: "Vous ne pouvez pas rejoindre la file depuis une instance.", tradeInProgress: "Un échange est déjà en cours.", tradeTooFar: "La cible est trop éloignée pour échanger.", tradeExpired: "La demande d'échange a expiré.", tradeFailed: "Échange échoué : objets ou argent indisponibles.",
@@ -9735,9 +9745,22 @@ const mergeExtraEn = {
       ["rake", "Rake", "A stealth opener that rakes the enemy for weapon damage plus {damage} and causes bleeding damage over 9 sec. Awards 1 combo point. Wolf Form only."],
       ["revive_pet", "Revive Pet", "Revives your dead pet and returns it to your side."],
     ]),
-    items: mergeNameTranslations(DROWNED_ITEM_IDS, [
+    items: {
+      ...mergeNameTranslations(DROWNED_ITEM_IDS, [
       "Briny Idol", "Drowned Offering", "Drowned Moon Kris", "Drowned Moon Maul", "Drowned Moon Scepter", "Drownstep Sabatons", "Drownstep Slippers", "Drownstep Treads", "Warding Rubbing", "Moonpale Scale", "Moonscale Saber", "Moonshroud Breastplate", "Moonshroud Robe", "Moonshroud Tunic", "Pale Pearl", "Sethrael's Heartscale", "Palecoil Rod", "Selthe's Sea-Striders", "Tideglass Dirk", "Tidewatcher's Wraps", "Ysolei's Pearl Greaves"
-    ], 'drowned item'),
+      ], 'drowned item'),
+      boundstone_girdle: { name: "Boundstone Girdle" },
+      boundstone_helm: { name: "Boundstone Helm" },
+      cryptbone_helm: { name: "Cryptbone Helm" },
+      cryptbone_pauldrons: { name: "Cryptbone Pauldrons" },
+      deathlords_dread_visage: { name: "Deathlord's Dread Visage" },
+      gravewyrm_gauntlets: { name: "Gravewyrm Gauntlets" },
+      gravewyrm_mantle: { name: "Gravewyrm Mantle" },
+      mistveil_cord: { name: "Mistveil Cord" },
+      mistveil_grips: { name: "Mistveil Grips" },
+      necromancers_soulspire_mantle: { name: "Necromancer's Soulspire Mantle" },
+      wyrmshadow_talongrips: { name: "Wyrmshadow Talongrips" },
+    },
     mobs: mergeNameTranslations(DROWNED_MOB_IDS, [
       "Choirmother Selthe", "Drowned Templeguard", "Drowned Votary", "Glimmermere Wader", "Glimmerscale Lurker", "Moonspawn", "Pale Choir Acolyte", "Pearlguard Sentinel", "Sethrael the Palecoil", "Fire Demon", "Void Demon", "Ysolei, Avatar of the Drowned Moon"
     ], 'drowned mob'),
@@ -10956,7 +10979,7 @@ export const en = {
   },
   stats: {
     title: "Realm Status",
-    accountsCreated: "Accounts Created",
+    accountsCreated: "Players",
     playersOnline: "Players Online",
     realmName: "Realm Name",
   },
@@ -11030,6 +11053,14 @@ export const en = {
     realmList: "Realm List",
     loadingRealms: "Loading realms...",
     changeRealm: "Change Realm",
+    realm: "Realm",
+    newCharacter: "New Character",
+    appearance: "Appearance",
+    class: "Class",
+    name: "Name",
+    chromaOption: "Chroma {n}",
+    noAccountPrompt: "New to the realm?",
+    haveAccountPrompt: "Already have an account?",
     characters: "Characters:",
     createCharacter: "Create Character",
     characterName: "Character Name",

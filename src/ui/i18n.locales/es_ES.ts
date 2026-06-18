@@ -12,7 +12,6 @@ import type { TranslationKey } from '../i18n.en';
 
 export const es_ES: Partial<Record<TranslationKey, string>> = {
   "nav.loginRegister": "Iniciar sesión/Registrarse",
-  "stats.accountsCreated": "Cuentas creadas",
   "stats.playersOnline": "Jugadores en línea",
   "stats.realmName": "Nombre del reino",
   "footer.githubLabel": "Proyecto de código abierto",

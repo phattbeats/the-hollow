@@ -7,6 +7,12 @@ export interface CameraFollowInput {
   moving: boolean;
   clickMoving?: boolean;
   orbiting: boolean;
+  // True when the player's facing is being set *from* the camera yaw this frame
+  // (mouselook, or mouse-camera-mode while a movement key is held). In that case
+  // the camera owns the heading and must NOT auto-follow it — doing so chases a
+  // value the camera itself just produced, which feeds back into a wobble. We
+  // still advance lastInterpFacing so re-coupling later doesn't snap.
+  cameraDriven?: boolean;
 }
 
 export interface CameraFollowResult {
@@ -53,7 +59,7 @@ function clickMoveSettleScale(absDelta: number): number {
 
 export function updateFollowCameraYaw(input: CameraFollowInput): CameraFollowResult {
   let camYaw = input.camYaw;
-  if (!input.mouselook) {
+  if (!input.mouselook && !input.cameraDriven) {
     if (input.orbiting) return { camYaw, lastInterpFacing: input.interpFacing };
     let targetYaw = camYaw;
     if (input.lastInterpFacing !== null && !input.clickMoving) targetYaw += wrapAngle(input.interpFacing - input.lastInterpFacing);

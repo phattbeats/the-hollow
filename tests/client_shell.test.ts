@@ -176,11 +176,11 @@ describe('client HTML shell', () => {
   });
 
   it('ships a looping cinematic backdrop with a poster fallback', () => {
-    expect(html).toContain('id="bg-trailer"');
-    expect(html).toContain('poster="/video/trailer-poster.jpg"');
-    expect(html).toContain('<source src="/video/trailer.mp4" type="video/mp4"');
-    // Playback is started from main.ts so it can honour reduced-motion / save-data.
-    expect(mainTs).toContain('initHomepageTrailer');
+    expect(html).toContain('id="bg-home"');
+    expect(html).toContain('poster="/home-bg.png"');
+    expect(html).toContain('<source src="/home-bg.mp4" type="video/mp4"');
+    expect(html).toContain('autoplay loop muted playsinline');
+    // View transitions still honour reduced-motion.
     expect(mainTs).toContain("prefers-reduced-motion: reduce");
   });
 

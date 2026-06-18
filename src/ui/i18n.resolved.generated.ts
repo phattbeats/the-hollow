@@ -148,7 +148,7 @@ export const en: EnTranslations = {
   },
   "stats": {
     "title": "Realm Status",
-    "accountsCreated": "Accounts Created",
+    "accountsCreated": "Players",
     "playersOnline": "Players Online",
     "realmName": "Realm Name"
   },
@@ -222,6 +222,14 @@ export const en: EnTranslations = {
     "realmList": "Realm List",
     "loadingRealms": "Loading realms...",
     "changeRealm": "Change Realm",
+    "realm": "Realm",
+    "newCharacter": "New Character",
+    "appearance": "Appearance",
+    "class": "Class",
+    "name": "Name",
+    "chromaOption": "Chroma {n}",
+    "noAccountPrompt": "New to the realm?",
+    "haveAccountPrompt": "Already have an account?",
     "characters": "Characters:",
     "createCharacter": "Create Character",
     "characterName": "Character Name",
@@ -367,7 +375,11 @@ export const en: EnTranslations = {
     "rename": "Rename",
     "newNamePlaceholder": "New character name",
     "tabCharacters": "Characters",
-    "tabCreate": "Create"
+    "tabCreate": "Create",
+    "portraitAlt": "Portrait of {name}",
+    "viewProfile": "View Profile",
+    "profile": "Profile",
+    "closeProfile": "Close profile"
   },
   "deleteCharacter": {
     "title": "Delete Character",
@@ -572,6 +584,7 @@ export const en: EnTranslations = {
         "jump": "Jump",
         "autorun": "Toggle Autorun",
         "target": "Target Nearest Enemy",
+        "attackMove": "Attack Move",
         "interact": "Interact / Loot",
         "char": "Character",
         "spellbook": "Spellbook",
@@ -677,6 +690,7 @@ export const en: EnTranslations = {
     "combat": {
       "floatingMiss": "Miss",
       "floatingDodge": "Dodge",
+      "cannotMove": "Can't move!",
       "attack": "attack",
       "damageDone": "Your {ability} hits {target} for {amount}.",
       "damageDoneCrit": "Your {ability} critically hits {target} for {amount}.",
@@ -2338,6 +2352,39 @@ export const en: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "Ysolei's Pearl Greaves"
+      },
+      "boundstone_girdle": {
+        "name": "Boundstone Girdle"
+      },
+      "boundstone_helm": {
+        "name": "Boundstone Helm"
+      },
+      "cryptbone_helm": {
+        "name": "Cryptbone Helm"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Cryptbone Pauldrons"
+      },
+      "deathlords_dread_visage": {
+        "name": "Deathlord's Dread Visage"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Gravewyrm Gauntlets"
+      },
+      "gravewyrm_mantle": {
+        "name": "Gravewyrm Mantle"
+      },
+      "mistveil_cord": {
+        "name": "Mistveil Cord"
+      },
+      "mistveil_grips": {
+        "name": "Mistveil Grips"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Necromancer's Soulspire Mantle"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Wyrmshadow Talongrips"
       },
       "the_codfather": {
         "name": "The Codfather"
@@ -3686,7 +3733,7 @@ export const es: EnTranslations = {
   },
   "stats": {
     "title": "Estado del Reino",
-    "accountsCreated": "Cuentas Creadas",
+    "accountsCreated": "Jugadores",
     "playersOnline": "Jugadores en Línea",
     "realmName": "Nombre del Reino"
   },
@@ -3760,6 +3807,14 @@ export const es: EnTranslations = {
     "realmList": "Lista de Reinos",
     "loadingRealms": "Cargando reinos...",
     "changeRealm": "Cambiar de Reino",
+    "realm": "Reino",
+    "newCharacter": "Nuevo personaje",
+    "appearance": "Apariencia",
+    "class": "Clase",
+    "name": "Nombre",
+    "chromaOption": "Croma {n}",
+    "noAccountPrompt": "¿Nuevo en el reino?",
+    "haveAccountPrompt": "¿Ya tienes una cuenta?",
     "characters": "Personajes:",
     "createCharacter": "Crear Personaje",
     "characterName": "Nombre del Personaje",
@@ -3905,7 +3960,11 @@ export const es: EnTranslations = {
     "rename": "Renombrar",
     "newNamePlaceholder": "Nuevo nombre de personaje",
     "tabCharacters": "Personajes",
-    "tabCreate": "Crear"
+    "tabCreate": "Crear",
+    "portraitAlt": "Retrato de {name}",
+    "viewProfile": "Ver perfil",
+    "profile": "Perfil",
+    "closeProfile": "Cerrar perfil"
   },
   "deleteCharacter": {
     "title": "Eliminar personaje",
@@ -4110,6 +4169,7 @@ export const es: EnTranslations = {
         "jump": "Saltar",
         "autorun": "Alternar carrera automática",
         "target": "Objetivo enemigo más cercano",
+        "attackMove": "Mover y atacar",
         "interact": "Interactuar / Saquear",
         "char": "Personaje",
         "spellbook": "Libro de hechizos",
@@ -4215,6 +4275,7 @@ export const es: EnTranslations = {
     "combat": {
       "floatingMiss": "Fallo",
       "floatingDodge": "Esquiva",
+      "cannotMove": "¡No puedes moverte!",
       "attack": "ataque",
       "damageDone": "Tu {ability} golpea a {target} por {amount}.",
       "damageDoneCrit": "Tu {ability} golpea críticamente a {target} por {amount}.",
@@ -5876,6 +5937,39 @@ export const es: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "Grebas de perla de Ysolei"
+      },
+      "boundstone_girdle": {
+        "name": "Cinturón Piedravínculo"
+      },
+      "boundstone_helm": {
+        "name": "Yelmo Piedravínculo"
+      },
+      "cryptbone_helm": {
+        "name": "Yelmo Huesocripta"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Hombreras Huesocripta"
+      },
+      "deathlords_dread_visage": {
+        "name": "Visaje aterrador del Señor de la Muerte"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Guanteletes del Gravewyrm"
+      },
+      "gravewyrm_mantle": {
+        "name": "Manto del Gravewyrm"
+      },
+      "mistveil_cord": {
+        "name": "Cordón Veloniebla"
+      },
+      "mistveil_grips": {
+        "name": "Agarraderas Veloniebla"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Manto Aguja de Almas del nigromante"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Agarraderas Garra Sombravermis"
       },
       "the_codfather": {
         "name": "El Bacaladrino"
@@ -7224,7 +7318,7 @@ export const es_ES: EnTranslations = {
   },
   "stats": {
     "title": "Estado del Reino",
-    "accountsCreated": "Cuentas creadas",
+    "accountsCreated": "Jugadores",
     "playersOnline": "Jugadores en línea",
     "realmName": "Nombre del reino"
   },
@@ -7298,6 +7392,14 @@ export const es_ES: EnTranslations = {
     "realmList": "Lista de reinos",
     "loadingRealms": "Cargando reinos...",
     "changeRealm": "Cambiar de reino",
+    "realm": "Reino",
+    "newCharacter": "Nuevo personaje",
+    "appearance": "Apariencia",
+    "class": "Clase",
+    "name": "Nombre",
+    "chromaOption": "Croma {n}",
+    "noAccountPrompt": "¿Nuevo en el reino?",
+    "haveAccountPrompt": "¿Ya tienes una cuenta?",
     "characters": "Personajes:",
     "createCharacter": "Crear personaje",
     "characterName": "Nombre del personaje",
@@ -7443,7 +7545,11 @@ export const es_ES: EnTranslations = {
     "rename": "Renombrar",
     "newNamePlaceholder": "Nuevo nombre de personaje",
     "tabCharacters": "Personajes",
-    "tabCreate": "Crear"
+    "tabCreate": "Crear",
+    "portraitAlt": "Retrato de {name}",
+    "viewProfile": "Ver perfil",
+    "profile": "Perfil",
+    "closeProfile": "Cerrar perfil"
   },
   "deleteCharacter": {
     "title": "Eliminar personaje",
@@ -7648,6 +7754,7 @@ export const es_ES: EnTranslations = {
         "jump": "Saltar",
         "autorun": "Alternar carrera automática",
         "target": "Objetivo enemigo más cercano",
+        "attackMove": "Mover y atacar",
         "interact": "Interactuar / Saquear",
         "char": "Personaje",
         "spellbook": "Libro de hechizos",
@@ -7753,6 +7860,7 @@ export const es_ES: EnTranslations = {
     "combat": {
       "floatingMiss": "Fallo",
       "floatingDodge": "Esquiva",
+      "cannotMove": "¡No puedes moverte!",
       "attack": "ataque",
       "damageDone": "Tu {ability} golpea a {target} por {amount}.",
       "damageDoneCrit": "Tu {ability} golpea críticamente a {target} por {amount}.",
@@ -9415,6 +9523,39 @@ export const es_ES: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Grebas de perla de Ysolei"
       },
+      "boundstone_girdle": {
+        "name": "Cinturón Piedravínculo"
+      },
+      "boundstone_helm": {
+        "name": "Yelmo Piedravínculo"
+      },
+      "cryptbone_helm": {
+        "name": "Yelmo Huesocripta"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Hombreras Huesocripta"
+      },
+      "deathlords_dread_visage": {
+        "name": "Visaje aterrador del Señor de la Muerte"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Guanteletes del Gravewyrm"
+      },
+      "gravewyrm_mantle": {
+        "name": "Manto del Gravewyrm"
+      },
+      "mistveil_cord": {
+        "name": "Cordón Veloniebla"
+      },
+      "mistveil_grips": {
+        "name": "Agarraderas Veloniebla"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Manto Aguja de Almas del nigromante"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Agarraderas Garra Sombravermis"
+      },
       "the_codfather": {
         "name": "El Bacaladrino"
       }
@@ -10762,7 +10903,7 @@ export const fr_FR: EnTranslations = {
   },
   "stats": {
     "title": "Statut du royaume",
-    "accountsCreated": "Comptes créés",
+    "accountsCreated": "Joueurs",
     "playersOnline": "Joueurs en ligne",
     "realmName": "Nom du royaume"
   },
@@ -10836,6 +10977,14 @@ export const fr_FR: EnTranslations = {
     "realmList": "Liste des royaumes",
     "loadingRealms": "Chargement des royaumes...",
     "changeRealm": "Changer de royaume",
+    "realm": "Royaume",
+    "newCharacter": "Nouveau personnage",
+    "appearance": "Apparence",
+    "class": "Classe",
+    "name": "Nom",
+    "chromaOption": "Chroma {n}",
+    "noAccountPrompt": "Nouveau dans le royaume ?",
+    "haveAccountPrompt": "Vous avez déjà un compte ?",
     "characters": "Personnages:",
     "createCharacter": "Créer un personnage",
     "characterName": "Nom du personnage",
@@ -10981,7 +11130,11 @@ export const fr_FR: EnTranslations = {
     "rename": "Renommer",
     "newNamePlaceholder": "Nouveau nom de personnage",
     "tabCharacters": "Personnages",
-    "tabCreate": "Créer"
+    "tabCreate": "Créer",
+    "portraitAlt": "Portrait de {name}",
+    "viewProfile": "Voir le profil",
+    "profile": "Profil",
+    "closeProfile": "Fermer le profil"
   },
   "deleteCharacter": {
     "title": "Supprimer le personnage",
@@ -11186,6 +11339,7 @@ export const fr_FR: EnTranslations = {
         "jump": "Sauter",
         "autorun": "Activer la course automatique",
         "target": "Cibler l'ennemi le plus proche",
+        "attackMove": "Déplacement offensif",
         "interact": "Interagir / Ramasser",
         "char": "Personnage",
         "spellbook": "Grimoire",
@@ -11291,6 +11445,7 @@ export const fr_FR: EnTranslations = {
     "combat": {
       "floatingMiss": "Raté",
       "floatingDodge": "Esquive",
+      "cannotMove": "Immobilisé !",
       "attack": "attaque",
       "damageDone": "Votre {ability} touche {target} pour {amount}.",
       "damageDoneCrit": "Votre {ability} inflige un coup critique à {target} pour {amount}.",
@@ -12952,6 +13107,39 @@ export const fr_FR: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "Jambières de perle d'Ysolei"
+      },
+      "boundstone_girdle": {
+        "name": "Ceinturon de pierre-liée"
+      },
+      "boundstone_helm": {
+        "name": "Heaume de pierre-liée"
+      },
+      "cryptbone_helm": {
+        "name": "Heaume d'os de crypte"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Espauliers d'os de crypte"
+      },
+      "deathlords_dread_visage": {
+        "name": "Visage d'effroi du Seigneur de mort"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Gantelets du Gravewyrm"
+      },
+      "gravewyrm_mantle": {
+        "name": "Mantelet du Gravewyrm"
+      },
+      "mistveil_cord": {
+        "name": "Corde Voilebrume"
+      },
+      "mistveil_grips": {
+        "name": "Poignes Voilebrume"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Mantelet Flèche-d'âme du nécromancien"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Poignes Serre Ombrewyrm"
       },
       "the_codfather": {
         "name": "Capitaine brochet"
@@ -14300,7 +14488,7 @@ export const fr_CA: EnTranslations = {
   },
   "stats": {
     "title": "Statut du royaume",
-    "accountsCreated": "Comptes créés",
+    "accountsCreated": "Joueurs",
     "playersOnline": "Joueurs en ligne",
     "realmName": "Nom du royaume"
   },
@@ -14374,6 +14562,14 @@ export const fr_CA: EnTranslations = {
     "realmList": "Liste des royaumes",
     "loadingRealms": "Chargement des royaumes...",
     "changeRealm": "Changer de royaume",
+    "realm": "Royaume",
+    "newCharacter": "Nouveau personnage",
+    "appearance": "Apparence",
+    "class": "Classe",
+    "name": "Nom",
+    "chromaOption": "Chroma {n}",
+    "noAccountPrompt": "Nouveau dans le royaume ?",
+    "haveAccountPrompt": "Vous avez déjà un compte ?",
     "characters": "Personnages:",
     "createCharacter": "Créer un personnage",
     "characterName": "Nom du personnage",
@@ -14519,7 +14715,11 @@ export const fr_CA: EnTranslations = {
     "rename": "Renommer",
     "newNamePlaceholder": "Nouveau nom de personnage",
     "tabCharacters": "Personnages",
-    "tabCreate": "Créer"
+    "tabCreate": "Créer",
+    "portraitAlt": "Portrait de {name}",
+    "viewProfile": "Voir le profil",
+    "profile": "Profil",
+    "closeProfile": "Fermer le profil"
   },
   "deleteCharacter": {
     "title": "Supprimer le personnage",
@@ -14724,6 +14924,7 @@ export const fr_CA: EnTranslations = {
         "jump": "Sauter",
         "autorun": "Activer la course automatique",
         "target": "Cibler l'ennemi le plus proche",
+        "attackMove": "Déplacement offensif",
         "interact": "Interagir / Ramasser",
         "char": "Personnage",
         "spellbook": "Grimoire",
@@ -14829,6 +15030,7 @@ export const fr_CA: EnTranslations = {
     "combat": {
       "floatingMiss": "Raté",
       "floatingDodge": "Esquive",
+      "cannotMove": "Immobilisé !",
       "attack": "attaque",
       "damageDone": "Votre {ability} touche {target} pour {amount}.",
       "damageDoneCrit": "Votre {ability} inflige un coup critique à {target} pour {amount}.",
@@ -16491,6 +16693,39 @@ export const fr_CA: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Jambières de perle d'Ysolei"
       },
+      "boundstone_girdle": {
+        "name": "Ceinturon de pierre-liée"
+      },
+      "boundstone_helm": {
+        "name": "Heaume de pierre-liée"
+      },
+      "cryptbone_helm": {
+        "name": "Heaume d'os de crypte"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Espauliers d'os de crypte"
+      },
+      "deathlords_dread_visage": {
+        "name": "Visage d'effroi du Seigneur de mort"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Gantelets du Gravewyrm"
+      },
+      "gravewyrm_mantle": {
+        "name": "Mantelet du Gravewyrm"
+      },
+      "mistveil_cord": {
+        "name": "Corde Voilebrume"
+      },
+      "mistveil_grips": {
+        "name": "Poignes Voilebrume"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Mantelet Flèche-d'âme du nécromancien"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Poignes Serre Ombrewyrm"
+      },
       "the_codfather": {
         "name": "Capitaine brochet"
       }
@@ -17838,7 +18073,7 @@ export const en_CA: EnTranslations = {
   },
   "stats": {
     "title": "Realm Status",
-    "accountsCreated": "Accounts Created",
+    "accountsCreated": "Players",
     "playersOnline": "Players Online",
     "realmName": "Realm Name"
   },
@@ -17912,6 +18147,14 @@ export const en_CA: EnTranslations = {
     "realmList": "Realm List",
     "loadingRealms": "Loading realms...",
     "changeRealm": "Change Realm",
+    "realm": "Realm",
+    "newCharacter": "New Character",
+    "appearance": "Appearance",
+    "class": "Class",
+    "name": "Name",
+    "chromaOption": "Chroma {n}",
+    "noAccountPrompt": "New to the realm?",
+    "haveAccountPrompt": "Already have an account?",
     "characters": "Characters:",
     "createCharacter": "Create Character",
     "characterName": "Character Name",
@@ -18057,7 +18300,11 @@ export const en_CA: EnTranslations = {
     "rename": "Rename",
     "newNamePlaceholder": "New character name",
     "tabCharacters": "Characters",
-    "tabCreate": "Create"
+    "tabCreate": "Create",
+    "portraitAlt": "Portrait of {name}",
+    "viewProfile": "View Profile",
+    "profile": "Profile",
+    "closeProfile": "Close profile"
   },
   "deleteCharacter": {
     "title": "Delete Character",
@@ -18262,6 +18509,7 @@ export const en_CA: EnTranslations = {
         "jump": "Jump",
         "autorun": "Toggle Autorun",
         "target": "Target Nearest Enemy",
+        "attackMove": "Attack Move",
         "interact": "Interact / Loot",
         "char": "Character",
         "spellbook": "Spellbook",
@@ -18367,6 +18615,7 @@ export const en_CA: EnTranslations = {
     "combat": {
       "floatingMiss": "Miss",
       "floatingDodge": "Dodge",
+      "cannotMove": "Can't move!",
       "attack": "attack",
       "damageDone": "Your {ability} hits {target} for {amount}.",
       "damageDoneCrit": "Your {ability} critically hits {target} for {amount}.",
@@ -20029,6 +20278,39 @@ export const en_CA: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Ysolei's Pearl Greaves"
       },
+      "boundstone_girdle": {
+        "name": "Boundstone Girdle"
+      },
+      "boundstone_helm": {
+        "name": "Boundstone Helm"
+      },
+      "cryptbone_helm": {
+        "name": "Cryptbone Helm"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Cryptbone Pauldrons"
+      },
+      "deathlords_dread_visage": {
+        "name": "Deathlord's Dread Visage"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Gravewyrm Gauntlets"
+      },
+      "gravewyrm_mantle": {
+        "name": "Gravewyrm Mantle"
+      },
+      "mistveil_cord": {
+        "name": "Mistveil Cord"
+      },
+      "mistveil_grips": {
+        "name": "Mistveil Grips"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Necromancer's Soulspire Mantle"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Wyrmshadow Talongrips"
+      },
       "the_codfather": {
         "name": "The Codfather"
       }
@@ -21376,7 +21658,7 @@ export const it_IT: EnTranslations = {
   },
   "stats": {
     "title": "Stato del Reame",
-    "accountsCreated": "Account creati",
+    "accountsCreated": "Giocatori",
     "playersOnline": "Giocatori online",
     "realmName": "Nome del reame"
   },
@@ -21450,6 +21732,14 @@ export const it_IT: EnTranslations = {
     "realmList": "Lista dei reami",
     "loadingRealms": "Caricamento dei reami...",
     "changeRealm": "Cambia reame",
+    "realm": "Reame",
+    "newCharacter": "Nuovo personaggio",
+    "appearance": "Aspetto",
+    "class": "Classe",
+    "name": "Nome",
+    "chromaOption": "Croma {n}",
+    "noAccountPrompt": "Nuovo nel reame?",
+    "haveAccountPrompt": "Hai già un account?",
     "characters": "Personaggi:",
     "createCharacter": "Crea personaggio",
     "characterName": "Nome del personaggio",
@@ -21595,7 +21885,11 @@ export const it_IT: EnTranslations = {
     "rename": "Rinomina",
     "newNamePlaceholder": "Nuovo nome personaggio",
     "tabCharacters": "Personaggi",
-    "tabCreate": "Crea"
+    "tabCreate": "Crea",
+    "portraitAlt": "Ritratto di {name}",
+    "viewProfile": "Vedi profilo",
+    "profile": "Profilo",
+    "closeProfile": "Chiudi profilo"
   },
   "deleteCharacter": {
     "title": "Elimina personaggio",
@@ -21800,6 +22094,7 @@ export const it_IT: EnTranslations = {
         "jump": "Salta",
         "autorun": "Attiva corsa automatica",
         "target": "Bersaglia il nemico più vicino",
+        "attackMove": "Movimento d'attacco",
         "interact": "Interagisci / Saccheggia",
         "char": "Personaggio",
         "spellbook": "Libro degli incantesimi",
@@ -21905,6 +22200,7 @@ export const it_IT: EnTranslations = {
     "combat": {
       "floatingMiss": "Mancato",
       "floatingDodge": "Schivata",
+      "cannotMove": "Non puoi muoverti!",
       "attack": "attacco",
       "damageDone": "Il tuo {ability} colpisce {target} per {amount}.",
       "damageDoneCrit": "Il tuo {ability} colpisce criticamente {target} per {amount}.",
@@ -23567,6 +23863,39 @@ export const it_IT: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Schinieri di Perla di Ysolei"
       },
+      "boundstone_girdle": {
+        "name": "Cintura Pietrvincolo"
+      },
+      "boundstone_helm": {
+        "name": "Elmo Pietrvincolo"
+      },
+      "cryptbone_helm": {
+        "name": "Elmo d'osso di cripta"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Paraspalle d'osso di cripta"
+      },
+      "deathlords_dread_visage": {
+        "name": "Volto del terrore del Signore della Morte"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Guanti d'arme del Gravewyrm"
+      },
+      "gravewyrm_mantle": {
+        "name": "Manto del Gravewyrm"
+      },
+      "mistveil_cord": {
+        "name": "Cordone Velonebbia"
+      },
+      "mistveil_grips": {
+        "name": "Prese Velonebbia"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Manto Pinnacolo d'anima del negromante"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Prese Artiglio Ombrawyrm"
+      },
       "the_codfather": {
         "name": "Il Pescadrino"
       }
@@ -24914,7 +25243,7 @@ export const de_DE: EnTranslations = {
   },
   "stats": {
     "title": "Realmstatus",
-    "accountsCreated": "Erstellte Accounts",
+    "accountsCreated": "Spieler",
     "playersOnline": "Spieler online",
     "realmName": "Realmname"
   },
@@ -24988,6 +25317,14 @@ export const de_DE: EnTranslations = {
     "realmList": "Realmliste",
     "loadingRealms": "Realms werden geladen...",
     "changeRealm": "Realm wechseln",
+    "realm": "Realm",
+    "newCharacter": "Neuer Charakter",
+    "appearance": "Aussehen",
+    "class": "Klasse",
+    "name": "Name",
+    "chromaOption": "Chroma {n}",
+    "noAccountPrompt": "Neu im Reich?",
+    "haveAccountPrompt": "Schon ein Konto?",
     "characters": "Charaktere:",
     "createCharacter": "Charakter erstellen",
     "characterName": "Charaktername",
@@ -25133,7 +25470,11 @@ export const de_DE: EnTranslations = {
     "rename": "Umbenennen",
     "newNamePlaceholder": "Neuer Charaktername",
     "tabCharacters": "Charaktere",
-    "tabCreate": "Erstellen"
+    "tabCreate": "Erstellen",
+    "portraitAlt": "Porträt von {name}",
+    "viewProfile": "Profil ansehen",
+    "profile": "Profil",
+    "closeProfile": "Profil schließen"
   },
   "deleteCharacter": {
     "title": "Charakter löschen",
@@ -25338,6 +25679,7 @@ export const de_DE: EnTranslations = {
         "jump": "Springen",
         "autorun": "Automatisch laufen",
         "target": "Nächsten Gegner anvisieren",
+        "attackMove": "Angriffsbewegung",
         "interact": "Interagieren / Plündern",
         "char": "Charakter",
         "spellbook": "Zauberbuch",
@@ -25443,6 +25785,7 @@ export const de_DE: EnTranslations = {
     "combat": {
       "floatingMiss": "Verfehlt",
       "floatingDodge": "Ausgewichen",
+      "cannotMove": "Bewegungsunfähig!",
       "attack": "Angriff",
       "damageDone": "Euer {ability} trifft {target} für {amount}.",
       "damageDoneCrit": "Euer {ability} trifft {target} kritisch für {amount}.",
@@ -27105,6 +27448,39 @@ export const de_DE: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Ysoleis Perlenbeinschienen"
       },
+      "boundstone_girdle": {
+        "name": "Gebundstein-Gurt"
+      },
+      "boundstone_helm": {
+        "name": "Gebundstein-Helm"
+      },
+      "cryptbone_helm": {
+        "name": "Gruftknochenhelm"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Gruftknochenschulterstücke"
+      },
+      "deathlords_dread_visage": {
+        "name": "Schreckensantlitz des Todeslords"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Gravewyrm-Stulpen"
+      },
+      "gravewyrm_mantle": {
+        "name": "Gravewyrm-Mantel"
+      },
+      "mistveil_cord": {
+        "name": "Nebelschleierkordel"
+      },
+      "mistveil_grips": {
+        "name": "Nebelschleiergriffe"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Seelenspitzenmantel des Nekromanten"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Wyrmschatten-Krallengriffe"
+      },
       "the_codfather": {
         "name": "Der Kabeljaupate"
       }
@@ -28452,7 +28828,7 @@ export const zh_CN: EnTranslations = {
   },
   "stats": {
     "title": "服务器状态",
-    "accountsCreated": "已创建账号",
+    "accountsCreated": "玩家",
     "playersOnline": "在线玩家数",
     "realmName": "服务器名称"
   },
@@ -28526,6 +28902,14 @@ export const zh_CN: EnTranslations = {
     "realmList": "服务器列表",
     "loadingRealms": "正在加载服务器...",
     "changeRealm": "切换服务器",
+    "realm": "服务器",
+    "newCharacter": "新建角色",
+    "appearance": "外观",
+    "class": "职业",
+    "name": "名称",
+    "chromaOption": "配色 {n}",
+    "noAccountPrompt": "初来乍到？",
+    "haveAccountPrompt": "已有账号？",
     "characters": "角色列表：",
     "createCharacter": "创建角色",
     "characterName": "角色名称",
@@ -28671,7 +29055,11 @@ export const zh_CN: EnTranslations = {
     "rename": "改名",
     "newNamePlaceholder": "新角色名称",
     "tabCharacters": "角色",
-    "tabCreate": "创建"
+    "tabCreate": "创建",
+    "portraitAlt": "{name}的头像",
+    "viewProfile": "查看资料",
+    "profile": "角色资料",
+    "closeProfile": "关闭资料"
   },
   "deleteCharacter": {
     "title": "删除角色",
@@ -28876,6 +29264,7 @@ export const zh_CN: EnTranslations = {
         "jump": "跳跃",
         "autorun": "切换自动奔跑",
         "target": "选中最近敌人",
+        "attackMove": "攻击移动",
         "interact": "互动 / 拾取",
         "char": "角色",
         "spellbook": "法术书",
@@ -28981,6 +29370,7 @@ export const zh_CN: EnTranslations = {
     "combat": {
       "floatingMiss": "未命中",
       "floatingDodge": "闪避",
+      "cannotMove": "无法移动！",
       "attack": "攻击",
       "damageDone": "你的{ability}击中{target}，造成 {amount} 点伤害。",
       "damageDoneCrit": "你的{ability}对{target}造成暴击，造成 {amount} 点伤害。",
@@ -30643,6 +31033,39 @@ export const zh_CN: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "伊索蕾的珍珠护胫"
       },
+      "boundstone_girdle": {
+        "name": "缚石腰带"
+      },
+      "boundstone_helm": {
+        "name": "缚石头盔"
+      },
+      "cryptbone_helm": {
+        "name": "墓骨头盔"
+      },
+      "cryptbone_pauldrons": {
+        "name": "墓骨肩甲"
+      },
+      "deathlords_dread_visage": {
+        "name": "死亡领主恐惧面甲"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "墓龙护手"
+      },
+      "gravewyrm_mantle": {
+        "name": "墓龙披肩"
+      },
+      "mistveil_cord": {
+        "name": "雾幕束带"
+      },
+      "mistveil_grips": {
+        "name": "雾幕握套"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "死灵法师魂尖披肩"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "龙影利爪握套"
+      },
       "the_codfather": {
         "name": "鳕鱼教父"
       }
@@ -31990,7 +32413,7 @@ export const zh_TW: EnTranslations = {
   },
   "stats": {
     "title": "伺服器狀態",
-    "accountsCreated": "已建立帳號",
+    "accountsCreated": "玩家",
     "playersOnline": "線上玩家數",
     "realmName": "伺服器名稱"
   },
@@ -32064,6 +32487,14 @@ export const zh_TW: EnTranslations = {
     "realmList": "伺服器列表",
     "loadingRealms": "正在載入伺服器...",
     "changeRealm": "切換伺服器",
+    "realm": "伺服器",
+    "newCharacter": "新增角色",
+    "appearance": "外觀",
+    "class": "職業",
+    "name": "名稱",
+    "chromaOption": "配色 {n}",
+    "noAccountPrompt": "初來乍到？",
+    "haveAccountPrompt": "已有帳號？",
     "characters": "角色列表：",
     "createCharacter": "建立角色",
     "characterName": "角色名稱",
@@ -32209,7 +32640,11 @@ export const zh_TW: EnTranslations = {
     "rename": "更名",
     "newNamePlaceholder": "新角色名稱",
     "tabCharacters": "角色",
-    "tabCreate": "建立"
+    "tabCreate": "建立",
+    "portraitAlt": "{name}的頭像",
+    "viewProfile": "查看資料",
+    "profile": "角色資料",
+    "closeProfile": "關閉資料"
   },
   "deleteCharacter": {
     "title": "刪除角色",
@@ -32414,6 +32849,7 @@ export const zh_TW: EnTranslations = {
         "jump": "跳躍",
         "autorun": "切換自動奔跑",
         "target": "選取最近敵人",
+        "attackMove": "攻擊移動",
         "interact": "互動 / 拾取",
         "char": "角色",
         "spellbook": "法術書",
@@ -32519,6 +32955,7 @@ export const zh_TW: EnTranslations = {
     "combat": {
       "floatingMiss": "未命中",
       "floatingDodge": "閃避",
+      "cannotMove": "無法移動！",
       "attack": "攻擊",
       "damageDone": "你的{ability}擊中{target}，造成 {amount} 點傷害。",
       "damageDoneCrit": "你的{ability}對{target}造成致命一擊，造成 {amount} 點傷害。",
@@ -34181,6 +34618,39 @@ export const zh_TW: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "伊索蕾的珍珠脛甲"
       },
+      "boundstone_girdle": {
+        "name": "縛石腰帶"
+      },
+      "boundstone_helm": {
+        "name": "縛石頭盔"
+      },
+      "cryptbone_helm": {
+        "name": "墓骨頭盔"
+      },
+      "cryptbone_pauldrons": {
+        "name": "墓骨肩甲"
+      },
+      "deathlords_dread_visage": {
+        "name": "死亡領主恐懼面甲"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "墓龍護手"
+      },
+      "gravewyrm_mantle": {
+        "name": "墓龍披肩"
+      },
+      "mistveil_cord": {
+        "name": "霧幕束帶"
+      },
+      "mistveil_grips": {
+        "name": "霧幕握套"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "死靈法師魂尖披肩"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "龍影利爪握套"
+      },
       "the_codfather": {
         "name": "鱈魚教父"
       }
@@ -35528,7 +35998,7 @@ export const ko_KR: EnTranslations = {
   },
   "stats": {
     "title": "렐름 상태",
-    "accountsCreated": "생성된 계정 수",
+    "accountsCreated": "플레이어",
     "playersOnline": "현재 접속자 수",
     "realmName": "렐름 이름"
   },
@@ -35602,6 +36072,14 @@ export const ko_KR: EnTranslations = {
     "realmList": "렐름 목록",
     "loadingRealms": "렐름을 불러오는 중...",
     "changeRealm": "렐름 변경",
+    "realm": "렐름",
+    "newCharacter": "새 캐릭터",
+    "appearance": "외형",
+    "class": "직업",
+    "name": "이름",
+    "chromaOption": "색상 {n}",
+    "noAccountPrompt": "처음이신가요?",
+    "haveAccountPrompt": "이미 계정이 있으신가요?",
     "characters": "캐릭터 목록:",
     "createCharacter": "캐릭터 생성",
     "characterName": "캐릭터 이름",
@@ -35747,7 +36225,11 @@ export const ko_KR: EnTranslations = {
     "rename": "이름 변경",
     "newNamePlaceholder": "새 캐릭터 이름",
     "tabCharacters": "캐릭터",
-    "tabCreate": "생성"
+    "tabCreate": "생성",
+    "portraitAlt": "{name}의 초상화",
+    "viewProfile": "프로필 보기",
+    "profile": "프로필",
+    "closeProfile": "프로필 닫기"
   },
   "deleteCharacter": {
     "title": "캐릭터 삭제",
@@ -35952,6 +36434,7 @@ export const ko_KR: EnTranslations = {
         "jump": "점프",
         "autorun": "자동 달리기 전환",
         "target": "가장 가까운 적 대상 지정",
+        "attackMove": "공격 이동",
         "interact": "상호작용 / 전리품",
         "char": "캐릭터",
         "spellbook": "마법책",
@@ -36057,6 +36540,7 @@ export const ko_KR: EnTranslations = {
     "combat": {
       "floatingMiss": "빗나감",
       "floatingDodge": "회피",
+      "cannotMove": "이동 불가!",
       "attack": "공격",
       "damageDone": "{ability}이 {target}에게 {amount}의 피해를 입혔습니다.",
       "damageDoneCrit": "{ability}이 {target}에게 치명타로 {amount}의 피해를 입혔습니다.",
@@ -37719,6 +38203,39 @@ export const ko_KR: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "이솔레이의 진주 정강이받이"
       },
+      "boundstone_girdle": {
+        "name": "속박석 요대"
+      },
+      "boundstone_helm": {
+        "name": "속박석 투구"
+      },
+      "cryptbone_helm": {
+        "name": "묘지뼈 투구"
+      },
+      "cryptbone_pauldrons": {
+        "name": "묘지뼈 견갑"
+      },
+      "deathlords_dread_visage": {
+        "name": "죽음군주의 공포 얼굴가리개"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "무덤고룡 건틀릿"
+      },
+      "gravewyrm_mantle": {
+        "name": "무덤고룡 어깨덮개"
+      },
+      "mistveil_cord": {
+        "name": "안개장막 허리끈"
+      },
+      "mistveil_grips": {
+        "name": "안개장막 손아귀"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "강령술사의 영혼첨탑 어깨덮개"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "고룡그림자 갈퀴손아귀"
+      },
       "the_codfather": {
         "name": "대구 대부"
       }
@@ -39066,7 +39583,7 @@ export const ja_JP: EnTranslations = {
   },
   "stats": {
     "title": "レルムステータス",
-    "accountsCreated": "作成アカウント数",
+    "accountsCreated": "プレイヤー",
     "playersOnline": "オンラインプレイヤー数",
     "realmName": "レルム名"
   },
@@ -39140,6 +39657,14 @@ export const ja_JP: EnTranslations = {
     "realmList": "レルムリスト",
     "loadingRealms": "レルムを読み込み中...",
     "changeRealm": "レルム変更",
+    "realm": "レルム",
+    "newCharacter": "新規キャラクター",
+    "appearance": "外見",
+    "class": "クラス",
+    "name": "名前",
+    "chromaOption": "カラー {n}",
+    "noAccountPrompt": "初めてですか？",
+    "haveAccountPrompt": "アカウントをお持ちですか？",
     "characters": "キャラクター数：",
     "createCharacter": "キャラクター作成",
     "characterName": "キャラクター名",
@@ -39285,7 +39810,11 @@ export const ja_JP: EnTranslations = {
     "rename": "名前変更",
     "newNamePlaceholder": "新しいキャラクター名",
     "tabCharacters": "キャラクター",
-    "tabCreate": "作成"
+    "tabCreate": "作成",
+    "portraitAlt": "{name}の肖像",
+    "viewProfile": "プロフィールを見る",
+    "profile": "プロフィール",
+    "closeProfile": "プロフィールを閉じる"
   },
   "deleteCharacter": {
     "title": "キャラクターを削除",
@@ -39490,6 +40019,7 @@ export const ja_JP: EnTranslations = {
         "jump": "ジャンプ",
         "autorun": "オートラン切り替え",
         "target": "最も近い敵をターゲット",
+        "attackMove": "アタックムーブ",
         "interact": "相互作用 / 戦利品",
         "char": "キャラクター",
         "spellbook": "魔法書",
@@ -39595,6 +40125,7 @@ export const ja_JP: EnTranslations = {
     "combat": {
       "floatingMiss": "ミス",
       "floatingDodge": "回避",
+      "cannotMove": "動けない！",
       "attack": "攻撃",
       "damageDone": "{ability}が{target}に命中し、{amount}のダメージ。",
       "damageDoneCrit": "{ability}が{target}にクリティカルし、{amount}のダメージ。",
@@ -41257,6 +41788,39 @@ export const ja_JP: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "イソレイの真珠脚甲"
       },
+      "boundstone_girdle": {
+        "name": "束縛石のガードル"
+      },
+      "boundstone_helm": {
+        "name": "束縛石の兜"
+      },
+      "cryptbone_helm": {
+        "name": "墓骨の兜"
+      },
+      "cryptbone_pauldrons": {
+        "name": "墓骨のポールドロン"
+      },
+      "deathlords_dread_visage": {
+        "name": "死王の恐怖の面貌"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "墓ワームのガントレット"
+      },
+      "gravewyrm_mantle": {
+        "name": "墓ワームのマントル"
+      },
+      "mistveil_cord": {
+        "name": "霧覆いのコード"
+      },
+      "mistveil_grips": {
+        "name": "霧覆いの握り"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "死霊術師の魂尖塔マントル"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "ワーム影の鉤爪握り"
+      },
       "the_codfather": {
         "name": "タラのゴッドファーザー"
       }
@@ -42604,7 +43168,7 @@ export const pt_BR: EnTranslations = {
   },
   "stats": {
     "title": "Status do Reino",
-    "accountsCreated": "Contas criadas",
+    "accountsCreated": "Jogadores",
     "playersOnline": "Jogadores online",
     "realmName": "Nome do reino"
   },
@@ -42678,6 +43242,14 @@ export const pt_BR: EnTranslations = {
     "realmList": "Lista de reinos",
     "loadingRealms": "Carregando reinos...",
     "changeRealm": "Mudar de reino",
+    "realm": "Reino",
+    "newCharacter": "Novo personagem",
+    "appearance": "Aparência",
+    "class": "Classe",
+    "name": "Nome",
+    "chromaOption": "Croma {n}",
+    "noAccountPrompt": "Novo no reino?",
+    "haveAccountPrompt": "Já tem uma conta?",
     "characters": "Personagens:",
     "createCharacter": "Criar personagem",
     "characterName": "Nome do personagem",
@@ -42823,7 +43395,11 @@ export const pt_BR: EnTranslations = {
     "rename": "Renomear",
     "newNamePlaceholder": "Novo nome do personagem",
     "tabCharacters": "Personagens",
-    "tabCreate": "Criar"
+    "tabCreate": "Criar",
+    "portraitAlt": "Retrato de {name}",
+    "viewProfile": "Ver perfil",
+    "profile": "Perfil",
+    "closeProfile": "Fechar perfil"
   },
   "deleteCharacter": {
     "title": "Excluir personagem",
@@ -43028,6 +43604,7 @@ export const pt_BR: EnTranslations = {
         "jump": "Pular",
         "autorun": "Alternar corrida automática",
         "target": "Selecionar inimigo mais próximo",
+        "attackMove": "Mover e atacar",
         "interact": "Interagir / Saquear",
         "char": "Personagem",
         "spellbook": "Livro de feitiços",
@@ -43133,6 +43710,7 @@ export const pt_BR: EnTranslations = {
     "combat": {
       "floatingMiss": "Errou",
       "floatingDodge": "Esquivou",
+      "cannotMove": "Não pode se mover!",
       "attack": "ataque",
       "damageDone": "Seu {ability} acerta {target} causando {amount}.",
       "damageDoneCrit": "Seu {ability} acerta criticamente {target} causando {amount}.",
@@ -44795,6 +45373,39 @@ export const pt_BR: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Grevas de Pérola de Ysolei"
       },
+      "boundstone_girdle": {
+        "name": "Cinturão Pedra-vínculo"
+      },
+      "boundstone_helm": {
+        "name": "Elmo Pedra-vínculo"
+      },
+      "cryptbone_helm": {
+        "name": "Elmo Osso de Cripta"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Espaldares Osso de Cripta"
+      },
+      "deathlords_dread_visage": {
+        "name": "Visagem Pavorosa do Senhor da Morte"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Manoplas do Gravewyrm"
+      },
+      "gravewyrm_mantle": {
+        "name": "Manto do Gravewyrm"
+      },
+      "mistveil_cord": {
+        "name": "Cordão Véu-neblina"
+      },
+      "mistveil_grips": {
+        "name": "Pegas Véu-neblina"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Manto Pináculo de Alma do necromante"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Pegas Garra Sombra de Wyrm"
+      },
       "the_codfather": {
         "name": "O Bacalhau-Padrinho"
       }
@@ -46142,7 +46753,7 @@ export const ru_RU: EnTranslations = {
   },
   "stats": {
     "title": "Статус игрового мира",
-    "accountsCreated": "Создано учетных записей",
+    "accountsCreated": "Игроки",
     "playersOnline": "Игроков в сети",
     "realmName": "Название игрового мира"
   },
@@ -46216,6 +46827,14 @@ export const ru_RU: EnTranslations = {
     "realmList": "Список игровых миров",
     "loadingRealms": "Загрузка списка миров...",
     "changeRealm": "Сменить игровой мир",
+    "realm": "Мир",
+    "newCharacter": "Новый персонаж",
+    "appearance": "Внешность",
+    "class": "Класс",
+    "name": "Имя",
+    "chromaOption": "Расцветка {n}",
+    "noAccountPrompt": "Впервые в мире?",
+    "haveAccountPrompt": "Уже есть аккаунт?",
     "characters": "Персонажи:",
     "createCharacter": "Создать персонажа",
     "characterName": "Имя персонажа",
@@ -46361,7 +46980,11 @@ export const ru_RU: EnTranslations = {
     "rename": "Переименовать",
     "newNamePlaceholder": "Новое имя персонажа",
     "tabCharacters": "Персонажи",
-    "tabCreate": "Создать"
+    "tabCreate": "Создать",
+    "portraitAlt": "Портрет {name}",
+    "viewProfile": "Профиль",
+    "profile": "Профиль",
+    "closeProfile": "Закрыть профиль"
   },
   "deleteCharacter": {
     "title": "Удалить персонажа",
@@ -46566,6 +47189,7 @@ export const ru_RU: EnTranslations = {
         "jump": "Прыжок",
         "autorun": "Автобег",
         "target": "Ближайший враг",
+        "attackMove": "Атака с движением",
         "interact": "Взаимодействовать / добыча",
         "char": "Персонаж",
         "spellbook": "Книга заклинаний",
@@ -46671,6 +47295,7 @@ export const ru_RU: EnTranslations = {
     "combat": {
       "floatingMiss": "Промах",
       "floatingDodge": "Уклон",
+      "cannotMove": "Не двигается!",
       "attack": "атака",
       "damageDone": "Ваше {ability} поражает {target} на {amount}.",
       "damageDoneCrit": "Ваше {ability} критически поражает {target} на {amount}.",
@@ -48333,6 +48958,39 @@ export const ru_RU: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Жемчужные поножи Изолеи"
       },
+      "boundstone_girdle": {
+        "name": "Ремень Связанного камня"
+      },
+      "boundstone_helm": {
+        "name": "Шлем Связанного камня"
+      },
+      "cryptbone_helm": {
+        "name": "Шлем из склеповой кости"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Наплечники из склеповой кости"
+      },
+      "deathlords_dread_visage": {
+        "name": "Ужасающий лик Владыки Смерти"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Рукавицы Могильного Вирма"
+      },
+      "gravewyrm_mantle": {
+        "name": "Мантия Могильного Вирма"
+      },
+      "mistveil_cord": {
+        "name": "Шнур Туманной завесы"
+      },
+      "mistveil_grips": {
+        "name": "Захваты Туманной завесы"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Мантия шпиля души некроманта"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Захваты когтя Тени вирма"
+      },
       "the_codfather": {
         "name": "Крестная треска"
       }
@@ -49773,7 +50431,7 @@ export const en_XA: EnTranslations = {
   },
   "stats": {
     "title": "[Ŕéáļɱ Šţáţúš]",
-    "accountsCreated": "[Áççóúñţš Çŕéáţéð]",
+    "accountsCreated": "[Þļáýéŕš]",
     "playersOnline": "[Þļáýéŕš Óñļíñé]",
     "realmName": "[Ŕéáļɱ Ñáɱé]"
   },
@@ -49847,6 +50505,14 @@ export const en_XA: EnTranslations = {
     "realmList": "[Ŕéáļɱ Ļíšţ]",
     "loadingRealms": "[Ļóáðíñĝ ŕéáļɱš...]",
     "changeRealm": "[Çĥáñĝé Ŕéáļɱ]",
+    "realm": "[Ŕéáļɱ]",
+    "newCharacter": "[Ñéŵ Çĥáŕáçţéŕ]",
+    "appearance": "[Áþþéáŕáñçé]",
+    "class": "[Çļášš]",
+    "name": "[Ñáɱé]",
+    "chromaOption": "[Çĥŕóɱá {n}]",
+    "noAccountPrompt": "[Ñéŵ ţó ţĥé ŕéáļɱ?]",
+    "haveAccountPrompt": "[Áļŕéáðý ĥáʋé áñ áççóúñţ?]",
     "characters": "[Çĥáŕáçţéŕš:]",
     "createCharacter": "[Çŕéáţé Çĥáŕáçţéŕ]",
     "characterName": "[Çĥáŕáçţéŕ Ñáɱé]",
@@ -49992,7 +50658,11 @@ export const en_XA: EnTranslations = {
     "rename": "[Ŕéñáɱé]",
     "newNamePlaceholder": "[Ñéŵ çĥáŕáçţéŕ ñáɱé]",
     "tabCharacters": "[Çĥáŕáçţéŕš]",
-    "tabCreate": "[Çŕéáţé]"
+    "tabCreate": "[Çŕéáţé]",
+    "portraitAlt": "[Þóŕţŕáíţ óƒ {name}]",
+    "viewProfile": "[Ʋíéŵ Þŕóƒíļé]",
+    "profile": "[Þŕóƒíļé]",
+    "closeProfile": "[Çļóšé þŕóƒíļé]"
   },
   "deleteCharacter": {
     "title": "[Ðéļéţé Çĥáŕáçţéŕ]",
@@ -50197,6 +50867,7 @@ export const en_XA: EnTranslations = {
         "jump": "[Ĵúɱþ]",
         "autorun": "[Ţóĝĝļé Áúţóŕúñ]",
         "target": "[Ţáŕĝéţ Ñéáŕéšţ Éñéɱý]",
+        "attackMove": "[Áţţáçķ Ɱóʋé]",
         "interact": "[Íñţéŕáçţ / Ļóóţ]",
         "char": "[Çĥáŕáçţéŕ]",
         "spellbook": "[Šþéļļƀóóķ]",
@@ -50302,6 +50973,7 @@ export const en_XA: EnTranslations = {
     "combat": {
       "floatingMiss": "[Ɱíšš]",
       "floatingDodge": "[Ðóðĝé]",
+      "cannotMove": "[Çáñ'ţ ɱóʋé!]",
       "attack": "[áţţáçķ]",
       "damageDone": "[Ýóúŕ {ability} ĥíţš {target} ƒóŕ {amount}.]",
       "damageDoneCrit": "[Ýóúŕ {ability} çŕíţíçáļļý ĥíţš {target} ƒóŕ {amount}.]",
@@ -51963,6 +52635,39 @@ export const en_XA: EnTranslations = {
       },
       "ysols_pearl_greaves": {
         "name": "[Ýšóļéí'š Þéáŕļ Ĝŕéáʋéš]"
+      },
+      "boundstone_girdle": {
+        "name": "[Ɓóúñðšţóñé Ĝíŕðļé]"
+      },
+      "boundstone_helm": {
+        "name": "[Ɓóúñðšţóñé Ĥéļɱ]"
+      },
+      "cryptbone_helm": {
+        "name": "[Çŕýþţƀóñé Ĥéļɱ]"
+      },
+      "cryptbone_pauldrons": {
+        "name": "[Çŕýþţƀóñé Þáúļðŕóñš]"
+      },
+      "deathlords_dread_visage": {
+        "name": "[Ðéáţĥļóŕð'š Ðŕéáð Ʋíšáĝé]"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "[Ĝŕáʋéŵýŕɱ Ĝáúñţļéţš]"
+      },
+      "gravewyrm_mantle": {
+        "name": "[Ĝŕáʋéŵýŕɱ Ɱáñţļé]"
+      },
+      "mistveil_cord": {
+        "name": "[Ɱíšţʋéíļ Çóŕð]"
+      },
+      "mistveil_grips": {
+        "name": "[Ɱíšţʋéíļ Ĝŕíþš]"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "[Ñéçŕóɱáñçéŕ'š Šóúļšþíŕé Ɱáñţļé]"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "[Ŵýŕɱšĥáðóŵ Ţáļóñĝŕíþš]"
       },
       "the_codfather": {
         "name": "[Ţĥé Çóðƒáţĥéŕ]"

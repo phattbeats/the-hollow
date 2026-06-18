@@ -35,7 +35,8 @@ export function hoverCursorKind(
   if (!e) return 'default';
   if (e.kind === 'mob' && !e.dead && e.hostile) return 'attack';
   if (e.kind === 'npc') return 'friendly';
-  if (e.kind === 'player' && e.id !== playerId && partyMemberIds.has(e.id)) return 'friendly';
+  if (e.kind === 'player' && e.id !== playerId) return 'friendly';
+  void partyMemberIds;
   return 'default';
 }
 

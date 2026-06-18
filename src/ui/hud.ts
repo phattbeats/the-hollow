@@ -2,6 +2,8 @@ import type { ResolvedAbility } from '../sim/sim';
 import { OVERHEAD_EMOTES, isOverheadEmoteId, type FriendInfo, type IWorld, type LeaderboardEntry, type MarketInfo, type OverheadEmoteId } from '../world_api';
 import { Renderer } from '../render/renderer';
 import { CharacterPreview } from '../render/characters';
+import { portraitChipHtml, hydratePortraits } from './portrait_chip';
+import { playerPortraitDataUrl, onPortraitsReady } from '../render/characters/portrait';
 import { skinCount } from '../render/characters/manifest';
 import { emoteIconUrl } from './emote_icons';
 import {
@@ -177,6 +179,7 @@ const BIND_ACTION_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
   jump: 'hud.keybinds.actions.jump',
   autorun: 'hud.keybinds.actions.autorun',
   target: 'hud.keybinds.actions.target',
+  attackMove: 'hud.keybinds.actions.attackMove',
   interact: 'hud.keybinds.actions.interact',
   char: 'hud.keybinds.actions.char',
   spellbook: 'hud.keybinds.actions.spellbook',
@@ -362,11 +365,17 @@ export class Hud {
     this.buildXpTicks();
     document.addEventListener('woc:languagechange', () => this.refreshLocalizedDynamicUi());
     $('#pf-name').textContent = sim.player.name;
-    this.drawPortrait($('#pf-portrait') as unknown as HTMLCanvasElement, `class_${sim.cfg.playerClass}`);
+    this.drawPlayerFramePortrait();
+    // Character GLBs preload after the HUD mounts; once the real 3D portraits are
+    // ready, upgrade the player frame and force the target frame to redraw.
+    onPortraitsReady(() => {
+      this.drawPlayerFramePortrait();
+      this.lastPortraitTarget = -999;
+    });
     const mm = $('#minimap') as unknown as HTMLCanvasElement;
     this.minimapCtx = mm.getContext('2d')!;
     this.minimapBg = this.renderTerrainCanvas(140, { minX: WORLD_MIN_X, maxX: WORLD_MAX_X, minZ: WORLD_MIN_Z, maxZ: WORLD_MAX_Z });
-    mm.style.cursor = 'pointer';
+    mm.style.cursor = 'var(--cursor-point)';
     mm.title = t('controls.worldMap');
     mm.addEventListener('click', () => this.toggleMap());
     window.addEventListener('pointermove', (ev) => {
@@ -945,10 +954,54 @@ export class Hud {
   // Portrait = the procedural crest for a class (`class_<id>`), mob family
   // (`family_<id>`) or status (`status_npc`), painted by icons.ts and blitted in.
   private drawPortrait(canvas: HTMLCanvasElement, crestId: string): void {
+    // Crest fallback — also invalidates any pending headshot image-load for this
+    // canvas (see drawPortraitImage) so a late decode can't paint over the crest.
+    canvas.dataset.portrait = '';
     const ctx = canvas.getContext('2d')!;
     const s = canvas.width;
     ctx.clearRect(0, 0, s, s);
     ctx.drawImage(iconCanvas('crest', crestId, s), 0, 0, s, s);
+  }
+
+  // Decoded headshot images, keyed by their portrait data URL.
+  private portraitImgCache = new Map<string, HTMLImageElement>();
+
+  /** Paint a 3D-headshot data URL into a unit-frame portrait canvas. The decode
+   *  is async even for a data URL, so we tag the canvas with the desired URL and
+   *  only draw if it still matches on load (the target may have changed). */
+  private drawPortraitImage(canvas: HTMLCanvasElement, url: string): void {
+    canvas.dataset.portrait = url;
+    const draw = (img: HTMLImageElement) => {
+      if (canvas.dataset.portrait !== url) return; // target changed mid-decode
+      const ctx = canvas.getContext('2d')!;
+      const s = canvas.width;
+      ctx.clearRect(0, 0, s, s);
+      ctx.drawImage(img, 0, 0, s, s);
+    };
+    const cached = this.portraitImgCache.get(url);
+    if (cached?.complete && cached.naturalWidth) { draw(cached); return; }
+    const img = cached ?? new Image();
+    img.addEventListener('load', () => draw(img), { once: true });
+    if (!cached) {
+      this.portraitImgCache.set(url, img);
+      img.src = url;
+    }
+  }
+
+  /** Draw a (class, skin) headshot into a unit-frame portrait, falling back to
+   *  the class crest until the 3D portraits have finished loading. */
+  private drawClassPortrait(canvas: HTMLCanvasElement, cls: PlayerClass, skin: number): void {
+    const url = playerPortraitDataUrl(cls, skin);
+    if (url) this.drawPortraitImage(canvas, url);
+    else this.drawPortrait(canvas, `class_${cls}`);
+  }
+
+  private drawPlayerFramePortrait(): void {
+    this.drawClassPortrait(
+      $('#pf-portrait') as unknown as HTMLCanvasElement,
+      this.sim.cfg.playerClass,
+      this.sim.player.skin ?? 0,
+    );
   }
 
   private itemIcon(item: ItemDef): string {
@@ -1767,10 +1820,16 @@ export class Hud {
       if (this.targetNameEl.style.color !== targetNameColor) this.targetNameEl.style.color = targetNameColor;
       if (this.lastPortraitTarget !== target.id) {
         this.lastPortraitTarget = target.id;
-        const crestId = target.kind === 'npc'
-          ? 'status_npc'
-          : `family_${MOBS[target.templateId]?.family ?? 'humanoid'}`;
-        this.drawPortrait(this.targetPortraitEl, crestId);
+        if (target.kind === 'player') {
+          // Other players: their real 3D headshot, rendered locally from the
+          // class (templateId) + skin in their synced identity fields.
+          this.drawClassPortrait(this.targetPortraitEl, target.templateId as PlayerClass, target.skin ?? 0);
+        } else {
+          const crestId = target.kind === 'npc'
+            ? 'status_npc'
+            : `family_${MOBS[target.templateId]?.family ?? 'humanoid'}`;
+          this.drawPortrait(this.targetPortraitEl, crestId);
+        }
       }
       this.renderAuras(this.targetDebuffsEl, target, 'debuffs');
       // combo points
@@ -3239,6 +3298,12 @@ export class Hud {
     if (wasNearBottom) el.scrollTop = el.scrollHeight;
   }
 
+  // A floating note over the local player (e.g. "Can't move!" when a movement
+  // command lands while rooted/stunned). Throttling is the caller's job.
+  showSelfNote(text: string, color = '#ff8c66'): void {
+    this.fct(this.sim.player, text, color, false);
+  }
+
   private fct(target: Entity, text: string, color: string, crit: boolean): void {
     const v = this.renderer.worldToScreen(target.pos.x, target.pos.y + 2.2 * target.scale, target.pos.z);
     if (v.behind) return;
@@ -4010,7 +4075,7 @@ export class Hud {
     const p = sim.player;
     const cls = CLASSES[sim.cfg.playerClass];
     const className = classDisplayName(cls.id);
-    let html = `<div class="panel-title"><span>${esc(p.name)} <span class="panel-subtitle">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(p.level, { maximumFractionDigits: 0 }), className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
+    let html = `<div class="panel-title char-title-portrait">${portraitChipHtml({ cls: sim.cfg.playerClass, skin: p.skin ?? 0, name: p.name, variant: 'md' })}<span class="char-title-text">${esc(p.name)} <span class="panel-subtitle">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(p.level, { maximumFractionDigits: 0 }), className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
     html += `<div class="paperdoll">
       <div class="equip-col" id="equip-col-left"></div>
       <div class="char-model-panel">
@@ -4031,6 +4096,7 @@ export class Hud {
     html += this.talentSummaryHtml();
     html += this.progressionHtml(p.level);
     el.innerHTML = html;
+    hydratePortraits(el);
     el.querySelector('[data-act="prestige"]')?.addEventListener('click', () => this.openPrestigeDialog());
     const leftCol = el.querySelector('#equip-col-left')!;
     const rightCol = el.querySelector('#equip-col-right')!;
@@ -4999,7 +5065,10 @@ export class Hud {
     const ignored = online
       ? !!social?.blocks.some((b) => b.name === name)
       : this.isChatIgnored(name);
-    let html = `<div class="ctx-title">${esc(name)}</div>`;
+    const ent = this.sim.entities.get(pid);
+    const entCls = ent && ent.kind === 'player' ? (ent.templateId as PlayerClass) : null;
+    let html = `<div class="ctx-title ctx-title-player">${entCls ? portraitChipHtml({ cls: entCls, skin: ent!.skin ?? 0, name, variant: 'sm' }) : ''}<span class="ctx-title-name">${esc(name)}</span></div>`;
+    if (entCls) html += `<div class="ctx-item" data-act="inspect">${esc(t('character.viewProfile'))}</div>`;
     if (!isMember) html += `<div class="ctx-item" data-act="invite">${esc(t('hud.chat.context.invite'))}</div>`;
     html += `<div class="ctx-item" data-act="trade">${esc(t('hud.chat.context.trade'))}</div>`;
     html += `<div class="ctx-item" data-act="duel">${esc(t('hud.chat.context.challengeDuel'))}</div>`;
@@ -5012,11 +5081,13 @@ export class Hud {
     if (isLeader && isMember && pid !== this.sim.playerId) html += `<div class="ctx-item" data-act="kick">${esc(t('hud.chat.context.removeParty'))}</div>`;
     html += `<div class="ctx-item" data-act="close">${esc(t('hud.chat.context.cancel'))}</div>`;
     el.innerHTML = html;
+    hydratePortraits(el);
     el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
     el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
     el.style.display = 'block';
     this.bindContextMenuActions((act) => {
-      if (act === 'invite') this.sim.partyInvite(pid);
+      if (act === 'inspect') this.openInspect(pid);
+      else if (act === 'invite') this.sim.partyInvite(pid);
       else if (act === 'trade') this.sim.tradeRequest(pid);
       else if (act === 'duel') this.sim.duelRequest(pid);
       else if (act === 'friend') this.sim.friendAdd(name);
@@ -5028,6 +5099,28 @@ export class Hud {
       } else if (act === 'report') this.openReportWindow({ pid, name });
       else if (act === 'kick') this.sim.partyKick(pid);
     });
+  }
+
+  /** Inspect another player: a profile window with their portrait, name, level
+   *  and class — rendered locally from their entity's class + skin. */
+  openInspect(pid: number): void {
+    const e = this.sim.entities.get(pid);
+    if (!e || e.kind !== 'player') return;
+    const cls = e.templateId as PlayerClass;
+    const className = classDisplayName(cls);
+    const el = $('#inspect-window');
+    this.closeOtherWindows('#inspect-window');
+    el.innerHTML =
+      `<div class="panel-title"><span>${esc(t('character.profile'))}</span>` +
+      `<button type="button" class="x-btn" data-close aria-label="${esc(t('character.closeProfile'))}">${svgIcon('close')}</button></div>` +
+      `<div class="inspect-card">` +
+      portraitChipHtml({ cls, skin: e.skin ?? 0, name: e.name, variant: 'lg' }) +
+      `<div class="inspect-name">${esc(e.name)}</div>` +
+      `<div class="inspect-meta">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(e.level, { maximumFractionDigits: 0 }), className }))}</div>` +
+      `</div>`;
+    hydratePortraits(el);
+    el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; });
+    el.style.display = 'block';
   }
 
   // Raid/target marker picker for an enemy, opened from its target unit frame.
@@ -5128,14 +5221,23 @@ export class Hud {
       alreadyGuilded,
       canReport: !!this.reportHooks?.submitByName,
     });
-    el.innerHTML = `<div class="ctx-title">${esc(name)}</div>`
+    // If the player is in view we know their class+skin, so show a portrait and
+    // a "View Profile" entry; otherwise the menu is name-only as before.
+    const livePidForMenu = this.playerPidByName(name);
+    const ent = livePidForMenu !== null ? this.sim.entities.get(livePidForMenu) : undefined;
+    const entCls = ent && ent.kind === 'player' ? (ent.templateId as PlayerClass) : null;
+    const titleHtml = `<div class="ctx-title ctx-title-player">${entCls ? portraitChipHtml({ cls: entCls, skin: ent!.skin ?? 0, name, variant: 'sm' }) : ''}<span class="ctx-title-name">${esc(name)}</span></div>`;
+    const inspectHtml = entCls ? `<div class="ctx-item" data-act="inspect">${esc(t('character.viewProfile'))}</div>` : '';
+    el.innerHTML = titleHtml + inspectHtml
       + actions.map((a) => `<div class="ctx-item" data-act="${a.id}">${esc(a.label)}</div>`).join('');
+    hydratePortraits(el);
     el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
     el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
     el.style.display = 'block';
     this.bindContextMenuActions((act) => {
       const livePid = this.playerPidByName(name);
-      if (act === 'whisper') this.startWhisper(name);
+      if (act === 'inspect') { if (livePid !== null) this.openInspect(livePid); }
+      else if (act === 'whisper') this.startWhisper(name);
       else if (act === 'invite') {
         if (livePid !== null) this.sim.partyInvite(livePid);
         else this.showError(t('hud.system.playerNotNearby'));
@@ -6038,6 +6140,8 @@ export class Hud {
       if (key === 'clickToMove') hooks.onSettingChange(key, next ? 1 : 0);
       else hooks.onSettingChange(key, hooks.settings.set(key, next));
       sync();
+      // Attack Move reveals/hides its rebindable key row, so redraw the panel.
+      if (key === 'attackMove') this.renderKeybinds();
     });
     row.append(name, toggle);
     parent.appendChild(row);
@@ -6075,6 +6179,7 @@ export class Hud {
     this.settingToggleKeybind(el, t('hud.options.mouseCamera'), 'mouseCamera');
     this.settingToggleKeybind(el, t('hud.options.clickToMove'), 'clickToMove');
     this.clickMoveMouseButtonRow(el);
+    this.settingToggleKeybind(el, t('hud.keybinds.actions.attackMove'), 'attackMove');
     this.settingToggleKeybind(el, t('hud.options.leftHandedTouch'), 'leftHandedTouch');
     this.settingToggleKeybind(el, t('hud.options.filterProfanity'), 'filterProfanity');
     const note = document.createElement('div');
@@ -6083,12 +6188,17 @@ export class Hud {
     el.appendChild(note);
     const rows = document.createElement('div');
     rows.className = 'kb-rows';
+    // The Attack Move key is only meaningful (and only rebindable) while its mode
+    // is on; otherwise hide its row so it can't shadow Turn Left's A in the list.
+    const attackMoveOn = !!this.optionsHooks?.settings.get('attackMove');
     for (const category of BIND_CATEGORIES) {
+      const visible = BIND_ACTIONS.filter((a) => a.category === category && (a.id !== 'attackMove' || attackMoveOn));
+      if (visible.length === 0) continue;
       const header = document.createElement('div');
       header.className = 'kb-cat';
       header.textContent = BIND_CATEGORY_LABEL_KEYS[category] ? t(BIND_CATEGORY_LABEL_KEYS[category]) : category;
       rows.appendChild(header);
-      for (const action of BIND_ACTIONS.filter((a) => a.category === category)) {
+      for (const action of visible) {
         const row = document.createElement('div');
         row.className = 'kb-row';
         const name = document.createElement('span');
