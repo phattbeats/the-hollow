@@ -4,9 +4,8 @@ import { OVERHEAD_EMOTES, type IWorld } from '../world_api';
 import { groundHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
 import {
   MOBS, ABILITIES, DUNGEON_X_THRESHOLD, DUNGEON_LIST, QUESTS,
-  instanceOrigin, INSTANCE_SLOT_COUNT, ARENA_SLOT_COUNT, arenaOrigin, arenaOriginAt, isArenaPos, dungeonAt,
+  instanceOrigin, INSTANCE_SLOT_COUNT, ARENA_SLOT_COUNT, arenaOrigin, isArenaPos, dungeonAt,
 } from '../sim/data';
-import { ARENA_LAYOUT, DUNGEON_WALL_X } from '../sim/dungeon_layout';
 import { cameraOcclusion } from '../sim/colliders';
 import type { BiomeId } from '../sim/types';
 import { AnimState, CharacterVisual, createCharacterVisual } from './characters';
@@ -67,11 +66,9 @@ const LIGHT_BUDGET_RANGE_SQ = 55 * 55;
 const SELECTION_RING_BOOST = 1.5;
 const SPARKLE_BOOST = 1.5;
 const PORTAL_BOOST = 2;
-// Third-person camera collision (see updateCamera). HARD_PAD keeps the camera
-// just off the surface; SOFT_PAD starts easing before the hard ray hits;
-// MIN_DIST never slams it onto the player. When the hard limit still appears
-// suddenly, lens/FOV compensation smooths the perceived zoom while the physical
-// camera remains clamped outside geometry.
+// Third-person camera collision (see updateCamera). Prop colliders marked
+// camGhost are hidden by props.ts/foliage.ts instead; this path is for
+// non-hideable blockers such as large rocks and interior walls.
 const CAMERA_COLLIDER_PAD = 0.35;
 const CAMERA_SOFT_COLLIDER_PAD = 1.65;
 const CAMERA_MIN_DIST = 1.2;
@@ -80,6 +77,8 @@ const CAMERA_PULL_OUT_RATE = 6;
 const CAMERA_SOFT_PULL_WEIGHT = 0.45;
 const CAMERA_BASE_FOV = 60;
 const CAMERA_MAX_COMP_FOV = 98;
+const SELF_RENDER_SMOOTH_RATE = 30;
+const SELF_RENDER_SNAP_DIST_SQ = 6 * 6;
 const SUN_HALO_OPACITY = 0.35; // bloom now supplies most of the halo
 // lighting rig (high/ultra) — IBL supplies ambient, sun carries the key
 const HEMI_INTENSITY = 0.45;
@@ -99,6 +98,10 @@ const RENDERER_PHASE_SAMPLE_LIMIT = 720;
 
 type RendererPhase = 'setup' | 'entities' | 'world' | 'nameplates' | 'submit' | 'total';
 type RendererPhaseStats = Record<RendererPhase, { count: number; avg: number; p95: number; max: number }>;
+
+function selfSnapshotAlpha(alpha: number, lead: number): number {
+  return Math.min(1.25, alpha + Math.max(0, lead));
+}
 
 interface EntityView {
   group: THREE.Group;
@@ -181,6 +184,7 @@ function npcDisplayName(npcId: string): string {
 }
 
 function dungeonDisplayName(dungeonId: string): string {
+  if (dungeonId === 'nythraxis_crypt') return DUNGEON_LIST.find((d) => d.id === dungeonId)?.name ?? 'Abandoned Crypt';
   return tEntity({ kind: 'dungeon', id: dungeonId, field: 'name' });
 }
 
@@ -223,6 +227,9 @@ export class Renderer {
   private tmpV = new THREE.Vector3();
   private viewCandidates: { e: Entity; d2: number }[] = [];
   private tmpV2 = new THREE.Vector3();
+  private selfRenderPosition = new THREE.Vector3();
+  private selfRenderPositionReady = false;
+  private cameraLookAt = new THREE.Vector3();
   // floating /say-/yell bubbles, keyed by speaker entity id
   private chatBubbles = new Map<number, { el: HTMLDivElement; until: number }>();
   private sun: THREE.DirectionalLight;
@@ -240,7 +247,13 @@ export class Renderer {
   private fogScratch = new THREE.Color();
   private flames: THREE.Mesh[];
   private fireLights: THREE.PointLight[];
-  private propsView!: { update(camX: number, camY: number, camZ: number, fogFar: number): void };
+  private propsView!: {
+    update(
+      camX: number, camY: number, camZ: number,
+      eyeX: number, eyeY: number, eyeZ: number,
+      fogFar: number,
+    ): void;
+  };
   private lightRank: { light: THREE.PointLight; d2: number; worldPos: THREE.Vector3 }[] = [];
   private doomedIds: number[] = [];
   private dungeons: DungeonInteriors | null = null;
@@ -685,6 +698,10 @@ export class Renderer {
   // Shared object-view resources: views must not own materials/textures, or
   // interest churn leaks them (removeView only disposes per-view geometry).
   private doorStoneMat: THREE.Material | null = null;
+  private doorMineRockMat: THREE.Material | null = null;
+  private doorMineWoodMat: THREE.Material | null = null;
+  private doorMineDarkMat: THREE.Material | null = null;
+  private doorLanternMat: THREE.Material | null = null;
   private sparkleMat: THREE.SpriteMaterial | null = null;
 
   private createView(e: Entity): void {
@@ -694,6 +711,7 @@ export class Renderer {
     let height = 1.2;
     let sparkle: THREE.Sprite | undefined;
     let objectMesh: THREE.Object3D | undefined;
+    const isQuestVision = e.kind === 'mob' && e.templateId.startsWith('vision_');
 
     let portal: THREE.Mesh | undefined;
     if (e.kind === 'object' && (e.templateId === 'dungeon_door' || e.templateId === 'dungeon_exit')) {
@@ -704,52 +722,61 @@ export class Renderer {
       height = 4.6;
       this.doorStoneMat ??= new THREE.MeshLambertMaterial({ color: 0x6a6a72 });
       const stone = this.doorStoneMat;
-      // carved stone arch: pointed outer/inner outline + keystone + plinths
-      // (no raw pillar-and-lintel boxes)
-      const outer = new THREE.Shape();
-      outer.moveTo(-2.1, 0);
-      outer.lineTo(-2.1, 3.1);
-      outer.quadraticCurveTo(-2.1, 4.85, 0, 5.05);
-      outer.quadraticCurveTo(2.1, 4.85, 2.1, 3.1);
-      outer.lineTo(2.1, 0);
-      outer.closePath();
-      const inner = new THREE.Path();
-      inner.moveTo(-1.3, -0.5);
-      inner.lineTo(-1.3, 2.9);
-      inner.quadraticCurveTo(-1.3, 4.05, 0, 4.22);
-      inner.quadraticCurveTo(1.3, 4.05, 1.3, 2.9);
-      inner.lineTo(1.3, -0.5);
-      inner.closePath();
-      outer.holes.push(inner);
-      const archGeo = new THREE.ExtrudeGeometry(outer, {
-        depth: 0.7, bevelEnabled: true, bevelThickness: 0.07, bevelSize: 0.07, bevelSegments: 1,
-      });
-      archGeo.translate(0, 0, -0.35);
-      const arch = new THREE.Mesh(archGeo, stone);
-      arch.castShadow = true;
-      body!.add(arch);
-      const keystone = new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.0, 0.95), stone);
-      keystone.position.set(0, 4.75, 0);
-      keystone.castShadow = true;
-      body!.add(keystone);
-      for (const sx of [-1.7, 1.7]) {
-        const plinth = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.7, 1.15), stone);
-        plinth.position.set(sx, 0.35, 0);
-        plinth.castShadow = true;
-        body!.add(plinth);
+      if (entering && e.dungeonId === 'nythraxis_crypt') {
+        const clickMat = new THREE.MeshBasicMaterial({
+          color: 0x000000, transparent: true, opacity: 0.001, depthWrite: false,
+        });
+        const clickBox = new THREE.Mesh(new THREE.BoxGeometry(4.6, 4.2, 2.4), clickMat);
+        clickBox.position.y = 2.1;
+        body!.add(clickBox);
+      } else {
+        // carved stone arch: pointed outer/inner outline + keystone + plinths
+        // (no raw pillar-and-lintel boxes)
+        const outer = new THREE.Shape();
+        outer.moveTo(-2.1, 0);
+        outer.lineTo(-2.1, 3.1);
+        outer.quadraticCurveTo(-2.1, 4.85, 0, 5.05);
+        outer.quadraticCurveTo(2.1, 4.85, 2.1, 3.1);
+        outer.lineTo(2.1, 0);
+        outer.closePath();
+        const inner = new THREE.Path();
+        inner.moveTo(-1.3, -0.5);
+        inner.lineTo(-1.3, 2.9);
+        inner.quadraticCurveTo(-1.3, 4.05, 0, 4.22);
+        inner.quadraticCurveTo(1.3, 4.05, 1.3, 2.9);
+        inner.lineTo(1.3, -0.5);
+        inner.closePath();
+        outer.holes.push(inner);
+        const archGeo = new THREE.ExtrudeGeometry(outer, {
+          depth: 0.7, bevelEnabled: true, bevelThickness: 0.07, bevelSize: 0.07, bevelSegments: 1,
+        });
+        archGeo.translate(0, 0, -0.35);
+        const arch = new THREE.Mesh(archGeo, stone);
+        arch.castShadow = true;
+        body!.add(arch);
+        const keystone = new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.0, 0.95), stone);
+        keystone.position.set(0, 4.75, 0);
+        keystone.castShadow = true;
+        body!.add(keystone);
+        for (const sx of [-1.7, 1.7]) {
+          const plinth = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.7, 1.15), stone);
+          plinth.position.set(sx, 0.35, 0);
+          plinth.castShadow = true;
+          body!.add(plinth);
+        }
+        const portalMat = new THREE.MeshBasicMaterial({
+          color: tint, transparent: true, opacity: 0.55, side: THREE.DoubleSide,
+          blending: THREE.AdditiveBlending, depthWrite: false,
+        });
+        if (!this.lowGfx) portalMat.color.multiplyScalar(PORTAL_BOOST); // HDR swirl -> bloom
+        portal = new THREE.Mesh(new THREE.CircleGeometry(1.55, 24), portalMat);
+        portal.position.y = 2.15;
+        portal.scale.set(1, 1.35, 1);
+        body!.add(portal);
+        const glow = new THREE.PointLight(tint, 9, 15, 2);
+        glow.position.y = 2.4;
+        body!.add(glow);
       }
-      const portalMat = new THREE.MeshBasicMaterial({
-        color: tint, transparent: true, opacity: 0.55, side: THREE.DoubleSide,
-        blending: THREE.AdditiveBlending, depthWrite: false,
-      });
-      if (!this.lowGfx) portalMat.color.multiplyScalar(PORTAL_BOOST); // HDR swirl -> bloom
-      portal = new THREE.Mesh(new THREE.CircleGeometry(1.55, 24), portalMat);
-      portal.position.y = 2.15;
-      portal.scale.set(1, 1.35, 1);
-      body!.add(portal);
-      const glow = new THREE.PointLight(tint, 9, 15, 2);
-      glow.position.y = 2.4;
-      body!.add(glow);
       objectMesh = body!;
     } else if (e.kind === 'object') {
       const built = buildGroundQuestObject(e.objectItemId ?? '', e.id);
@@ -775,7 +802,7 @@ export class Renderer {
     if (visual) {
       // raycasting skinned meshes is expensive — pick against the invisible
       // capsule proxy instead (three's raycaster ignores `visible`)
-      visual.clickProxy.userData.entityId = e.id;
+      if (!isQuestVision) visual.clickProxy.userData.entityId = e.id;
       clickTarget = visual.clickProxy;
     } else {
       body!.scale.multiplyScalar(e.scale);
@@ -786,7 +813,7 @@ export class Renderer {
     group.position.set(e.pos.x, e.pos.y, e.pos.z);
     group.userData.entityId = e.id;
     this.scene.add(group);
-    this.clickTargets.push(clickTarget);
+    if (!isQuestVision) this.clickTargets.push(clickTarget);
 
     // nameplate
     const np = document.createElement('div');
@@ -820,7 +847,7 @@ export class Renderer {
     marker.className = 'np-marker';
     const nameEl = document.createElement('div');
     nameEl.className = 'np-name';
-    nameEl.textContent = e.name;
+    nameEl.textContent = e.kind === 'object' ? objectDisplayName(e) : e.name;
     const hpBar = document.createElement('div');
     hpBar.className = 'np-hpbar';
     const hpFill = document.createElement('div');
@@ -858,6 +885,14 @@ export class Renderer {
   triggerHit(entityId: number): void {
     const v = this.views.get(entityId);
     if (v) this.activeVisual(v)?.playHit();
+  }
+
+  private isHostileSelectionTarget(target: Entity): boolean {
+    if (target.kind === 'mob') return target.hostile;
+    if (target.kind !== 'player' || target.dead || target.id === this.sim.playerId) return false;
+    if (this.sim.duelInfo?.state === 'active' && this.sim.duelInfo.otherPid === target.id) return true;
+    const match = this.sim.arenaInfo?.match;
+    return match?.state === 'active' && (match.oppPid === target.id || match.enemies.some((e) => e.pid === target.id));
   }
 
   // -------------------------------------------------------------------------
@@ -1016,7 +1051,7 @@ export class Renderer {
     this.views.delete(id);
   }
 
-  sync(alpha: number, dt: number, renderFacingOverride: number | null): void {
+  sync(alpha: number, dt: number, renderFacingOverride: number | null, selfAlphaLead = 0): void {
     const totalStart = performance.now();
     let phaseStart = totalStart;
     const markPhase = (phase: RendererPhase): void => {
@@ -1039,6 +1074,7 @@ export class Renderer {
     const sim = this.sim;
     const p = sim.player;
     const now = performance.now();
+    const selfPos = this.updateSelfRenderPosition(alpha, dt, selfAlphaLead);
     markPhase('setup');
 
     // dynamic worlds: create nearby views lazily and drop views for leavers or
@@ -1115,12 +1151,13 @@ export class Renderer {
       // each interpolates on its own clock so they move smoothly instead of
       // freezing and dashing once per update (self keeps the global alpha
       // the camera follow uses)
+      const isSelf = e.id === p.id;
       const ea = e.id !== p.id && e.netUpdatedAt !== undefined && e.netInterval !== undefined
         ? Math.min(1.25, (now - e.netUpdatedAt) / Math.max(20, e.netInterval))
-        : alpha;
-      const x = e.prevPos.x + (e.pos.x - e.prevPos.x) * ea;
-      const y = e.prevPos.y + (e.pos.y - e.prevPos.y) * ea;
-      const z = e.prevPos.z + (e.pos.z - e.prevPos.z) * ea;
+        : isSelf ? selfSnapshotAlpha(alpha, selfAlphaLead) : alpha;
+      const x = isSelf ? selfPos.x : e.prevPos.x + (e.pos.x - e.prevPos.x) * ea;
+      const y = isSelf ? selfPos.y : e.prevPos.y + (e.pos.y - e.prevPos.y) * ea;
+      const z = isSelf ? selfPos.z : e.prevPos.z + (e.pos.z - e.prevPos.z) * ea;
       v.group.position.set(x, y, z);
       let facing = e.prevFacing + shortestAngle(e.prevFacing, e.facing) * ea;
       if (id === p.id && renderFacingOverride !== null) facing = renderFacingOverride;
@@ -1175,17 +1212,26 @@ export class Renderer {
       const active = polyed && v.sheepVisual ? v.sheepVisual
         : bear && v.bearVisual ? v.bearVisual
           : cat && v.catVisual ? v.catVisual : v.visual;
-      const ghost = ghostWolf || shouldRenderStealthGhost(this.sim.playerId, e);
+      const ghost = ghostWolf || shouldRenderStealthGhost(this.sim.playerId, e) || e.templateId.startsWith('vision_');
       active.setGhost(ghost);
       v.visual.root.visible = active === v.visual;
       // distant rigs swap to the single-draw baked idle-pose mesh
       v.visual.setFar(v.isFar && active === v.visual);
 
       // animation state machine inputs, derived from render-space motion with
-      // hysteresis so a one-frame speed dip can't reset the walk clip
-      const vx = x - v.lastX, vz = z - v.lastZ;
-      v.lastX = x;
-      v.lastZ = z;
+      // hysteresis so a one-frame speed dip can't reset the walk clip.
+      // For the local player online, sample the *plain* interpolated sim motion
+      // (ax/ay/az), never the smoothed/predicted self render position (selfPos):
+      // the online self predictor freezes-then-jumps within each snapshot
+      // interval, and feeding that jitter to the cadence/airborne logic
+      // intermittently flips the base state and resets the walk clip. The
+      // predictor moves only the mesh. Offline, ax==x so this is a no-op.
+      const ax = isSelf ? e.prevPos.x + (e.pos.x - e.prevPos.x) * alpha : x;
+      const ay = isSelf ? e.prevPos.y + (e.pos.y - e.prevPos.y) * alpha : y;
+      const az = isSelf ? e.prevPos.z + (e.pos.z - e.prevPos.z) * alpha : z;
+      const vx = ax - v.lastX, vz = az - v.lastZ;
+      v.lastX = ax;
+      v.lastZ = az;
       const loco = updateLocomotion(v.loco, vx, vz, facing, dt);
       const moving = loco.moving;
       const visuallyDead = isVisuallyDead(e);
@@ -1197,7 +1243,7 @@ export class Renderer {
       const airborne = !visuallyDead && !swimming && (
         !e.onGround
         || (e.kind === 'player'
-          && y - groundHeight(x, z, this.sim.cfg.seed) > AIRBORNE_EPS));
+          && ay - groundHeight(ax, az, this.sim.cfg.seed) > AIRBORNE_EPS));
       const st: AnimState = {
         speed: loco.speed,
         moving,
@@ -1245,7 +1291,7 @@ export class Renderer {
         this.selectionRing.position.y += 0.08;
         this.selectionRing.scale.setScalar(target.scale);
         const ringMat = this.selectionRing.material as THREE.MeshBasicMaterial;
-        ringMat.color.setHex(target.hostile ? 0xcc2222 : 0xd4af37);
+        ringMat.color.setHex(this.isHostileSelectionTarget(target) ? 0xcc2222 : 0xd4af37);
         if (!this.lowGfx) ringMat.color.multiplyScalar(SELECTION_RING_BOOST); // subtle bloom edge
         this.selectionRing.visible = true;
       } else {
@@ -1291,17 +1337,30 @@ export class Renderer {
 
     // water shimmer (low-tier texture scroll; shader water rides uTime)
     this.waterView.update(this.time);
-    // fully-fogged terrain chunks / tree buckets are dropped before the
-    // frustum; the grass ring follows the player
-    const fogFar = (this.scene.fog as THREE.Fog).far;
-    this.terrainView.update(this.camera.position.x, this.camera.position.z, fogFar);
-    this.propsView.update(this.camera.position.x, this.camera.position.y, this.camera.position.z, fogFar);
-    this.foliage.update(p.pos.x, p.pos.z, this.camera.position.x, this.camera.position.z, fogFar);
-    this.fish.update(p.pos.x, p.pos.z, dt);
-
     this.vfx.update(dt);
 
-    this.updateCamera(alpha, dt);
+    this.updateCamera(selfPos, dt);
+    // Fully-fogged terrain chunks / tree buckets are dropped before the
+    // frustum; camera-ghost props hide against the current eye-to-camera ray.
+    const fogFar = (this.scene.fog as THREE.Fog).far;
+    this.terrainView.update(this.camera.position.x, this.camera.position.z, fogFar);
+    this.propsView.update(
+      this.camera.position.x, this.camera.position.y, this.camera.position.z,
+      this.cameraLookAt.x, this.cameraLookAt.y, this.cameraLookAt.z,
+      fogFar,
+    );
+    this.dungeons?.update(
+      this.camera.position.x, this.camera.position.y, this.camera.position.z,
+      this.cameraLookAt.x, this.cameraLookAt.y, this.cameraLookAt.z,
+    );
+    this.foliage.update(
+      p.pos.x, p.pos.z,
+      this.camera.position.x, this.camera.position.y, this.camera.position.z,
+      this.cameraLookAt.x, this.cameraLookAt.y, this.cameraLookAt.z,
+      fogFar,
+    );
+    this.fish.update(p.pos.x, p.pos.z, dt);
+
     this.updateAmbience(p.pos.x, this.camera.position.y, dt);
     // shadow frustum follows the player
     const pv = this.views.get(p.id);
@@ -1385,49 +1444,71 @@ export class Renderer {
     }
   }
 
-  private updateCamera(alpha: number, dt: number): void {
+  private updateSelfRenderPosition(alpha: number, dt: number, selfAlphaLead: number): THREE.Vector3 {
+    const p = this.sim.player;
+    const playerAlpha = selfSnapshotAlpha(alpha, selfAlphaLead);
+    const px = p.prevPos.x + (p.pos.x - p.prevPos.x) * playerAlpha;
+    const py = p.prevPos.y + (p.pos.y - p.prevPos.y) * playerAlpha;
+    const pz = p.prevPos.z + (p.pos.z - p.prevPos.z) * playerAlpha;
+    if (selfAlphaLead > 0) {
+      const dx = px - this.selfRenderPosition.x;
+      const dy = py - this.selfRenderPosition.y;
+      const dz = pz - this.selfRenderPosition.z;
+      if (!this.selfRenderPositionReady || dx * dx + dy * dy + dz * dz > SELF_RENDER_SNAP_DIST_SQ) {
+        this.selfRenderPosition.set(px, py, pz);
+        this.selfRenderPositionReady = true;
+      } else {
+        const t = 1 - Math.exp(-SELF_RENDER_SMOOTH_RATE * Math.max(0, dt));
+        this.selfRenderPosition.x += dx * t;
+        this.selfRenderPosition.y += dy * t;
+        this.selfRenderPosition.z += dz * t;
+      }
+    } else {
+      this.selfRenderPosition.set(px, py, pz);
+      this.selfRenderPositionReady = true;
+    }
+    return this.selfRenderPosition;
+  }
+
+  private updateCamera(selfPos: THREE.Vector3, dt: number): void {
     const p = this.sim.player;
     const seed = this.sim.cfg.seed;
-    const px = p.prevPos.x + (p.pos.x - p.prevPos.x) * alpha;
-    const py = p.prevPos.y + (p.pos.y - p.prevPos.y) * alpha;
-    const pz = p.prevPos.z + (p.pos.z - p.prevPos.z) * alpha;
+    const px = selfPos.x;
+    const py = selfPos.y;
+    const pz = selfPos.z;
     const eyeY = py + 2.0;
     let cx = px - Math.sin(this.camYaw) * Math.cos(this.camPitch) * this.camDist;
     let cy = eyeY + Math.sin(this.camPitch) * this.camDist;
     let cz = pz - Math.cos(this.camYaw) * Math.cos(this.camPitch) * this.camDist;
-    // The Ashen Coliseum is a small enclosed pit and the combatants spawn only
-    // ~6yd from the end walls, so the 12yd chase cam would otherwise sit outside
-    // the walls looking in. Keep it inside the room's interior box.
     if (isArenaPos(p.pos.x)) {
-      const o = arenaOriginAt(p.pos.z);
-      const m = 2; // clearance from the wall faces
-      cx = Math.min(Math.max(cx, o.x - DUNGEON_WALL_X + m), o.x + DUNGEON_WALL_X - m);
-      cz = Math.min(Math.max(cz, o.z + ARENA_LAYOUT.zMin + m), o.z + ARENA_LAYOUT.zMax - m);
+      // Arena walls hide from the camera like buildings, so the chase camera
+      // stays at the player's requested zoom instead of clamping inside the pit.
+      this.camOcclusion.pullT = 1;
+      this.camOcclusion.lensT = 1;
+      this.camOcclusion.fov = CAMERA_BASE_FOV;
+    } else {
+      // Camera collision for non-hideable blockers. Camera-ghost props are left
+      // at the requested zoom and hidden in props.ts while keeping their shadows.
+      let hardT = cameraOcclusion(seed, px, eyeY, pz, cx, cy, cz, CAMERA_COLLIDER_PAD);
+      let softT = cameraOcclusion(seed, px, eyeY, pz, cx, cy, cz, CAMERA_SOFT_COLLIDER_PAD);
+      const segLen = Math.hypot(cx - px, cy - eyeY, cz - pz);
+      if (segLen > 1e-3) {
+        const minT = CAMERA_MIN_DIST / segLen;
+        hardT = Math.min(1, Math.max(hardT, minT));
+        softT = Math.min(1, Math.max(softT, minT));
+      }
+      stepCameraOcclusion(
+        this.camOcclusion,
+        hardT,
+        softT,
+        dt,
+        CAMERA_PULL_IN_RATE,
+        CAMERA_PULL_OUT_RATE,
+        CAMERA_SOFT_PULL_WEIGHT,
+        CAMERA_BASE_FOV,
+        CAMERA_MAX_COMP_FOV,
+      );
     }
-    // Camera collision: pull the cam in to the surface of any building/object
-    // between the player's head and the desired position so it never sits
-    // inside geometry. A soft sweep starts the pull slightly before the hard
-    // collider hits; if the hard limit appears suddenly, the physical camera is
-    // clamped safe and the lens eases the perceived zoom instead of clipping.
-    let hardT = cameraOcclusion(seed, px, eyeY, pz, cx, cy, cz, CAMERA_COLLIDER_PAD);
-    let softT = cameraOcclusion(seed, px, eyeY, pz, cx, cy, cz, CAMERA_SOFT_COLLIDER_PAD);
-    const segLen = Math.hypot(cx - px, cy - eyeY, cz - pz);
-    if (segLen > 1e-3) {
-      const minT = CAMERA_MIN_DIST / segLen;
-      hardT = Math.min(1, Math.max(hardT, minT));
-      softT = Math.min(1, Math.max(softT, minT));
-    }
-    stepCameraOcclusion(
-      this.camOcclusion,
-      hardT,
-      softT,
-      dt,
-      CAMERA_PULL_IN_RATE,
-      CAMERA_PULL_OUT_RATE,
-      CAMERA_SOFT_PULL_WEIGHT,
-      CAMERA_BASE_FOV,
-      CAMERA_MAX_COMP_FOV,
-    );
     const ct = this.camOcclusion.pullT;
     cx = px + (cx - px) * ct;
     cy = eyeY + (cy - eyeY) * ct;
@@ -1438,7 +1519,8 @@ export class Renderer {
       this.camera.fov = this.camOcclusion.fov;
       this.camera.updateProjectionMatrix();
     }
-    this.camera.lookAt(px, eyeY, pz);
+    this.cameraLookAt.set(px, eyeY, pz);
+    this.camera.lookAt(this.cameraLookAt);
     this.camera.updateMatrixWorld();
   }
 

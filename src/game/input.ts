@@ -13,6 +13,7 @@ import type { MoveInput } from '../sim/types';
 const BASE_LOOK_SENS = 0.0045;
 const TOUCH_LOOK_YAW_RATE = 3.2;
 const TOUCH_LOOK_PITCH_RATE = 2.2;
+const TOUCH_JUMP_LATCH_MS = 220;
 const CAMERA_DRAG_START_DISTANCE = 18;
 const CAMERA_DRAG_START_MS = 140;
 
@@ -34,6 +35,8 @@ export interface InputCallbacks {
   onUiKey(key: 'interact' | 'bags' | 'char' | 'spellbook' | 'talents' | 'questlog' | 'map' | 'nameplates' | 'escape' | 'chat' | 'meters' | 'social' | 'arena' | 'leaderboard'): void;
   onEmoteWheel(open: boolean): void;
   onClickPick(x: number, y: number, button: number): void;
+  /** Attack-move key pressed (only fires while Attack Move mode is on); x/y is the cursor. */
+  onAttackMove?(x: number, y: number): void;
   /** When false, edge actions (spells, UI keys) are ignored. */
   canUseGameKeys?: () => boolean;
   onInputIntent?(kind: 'move' | 'look' | 'zoom'): void;
@@ -57,13 +60,24 @@ export class Input {
   suspendMovement = false;
   // click-to-move (#95): a world destination the player clicked; the frame loop
   // walks toward it until arrival or until the player takes manual control.
-  // null when inactive. clickMoveStop is how close counts as "there".
+  // null when inactive. clickMoveTarget is the current waypoint; clickMoveGoal
+  // is the final clicked location or live entity position. clickMoveStop is how
+  // close counts as "there" at the final waypoint.
   clickMoveTarget: { x: number; z: number } | null = null;
+  clickMoveGoal: { x: number; z: number } | null = null;
+  clickMovePath: { x: number; z: number }[] = [];
+  clickMovePathIndex = 0;
   clickMoveEntityId: number | null = null;
   clickMoveStop = 0.5;
   clickMoveFacing: number | null = null;
   clickMovePulse = 0;
   clickMovePulseTarget: { x: number; z: number } | null = null;
+  // True while the current click-to-move was issued as an attack-move (walk to
+  // the point and auto-attack enemies). Set by setClickMoveTarget, cleared on stop.
+  clickMoveAttack = false;
+  // When on (the Attack Move setting), WASD/keyboard steering is disabled and the
+  // Attack Move key issues attack-moves toward the cursor instead of turning.
+  private attackMoveEnabled = false;
   /** Latest pointer position while over the canvas (for hover pick). */
   hoverX = 0;
   hoverY = 0;
@@ -88,7 +102,7 @@ export class Input {
   // was BASE_LOOK_SENS — setCameraSpeed scales it from the settings menu
   private lookSensitivity = BASE_LOOK_SENS;
   private touchMove: TouchMoveInput = { forward: false, back: false, strafeLeft: false, strafeRight: false };
-  private touchJump = false;
+  private touchJumpUntil = 0;
   private touchLookActive = false;
   private touchLookVector = { x: 0, y: 0 };
   // multiplier on the touch look (camera joystick) rate; setTouchLookSpeed
@@ -197,6 +211,14 @@ export class Input {
     return this.mouseCameraEnabled;
   }
 
+  isAttackMoveEnabled(): boolean {
+    return this.attackMoveEnabled;
+  }
+
+  setAttackMoveEnabled(on: boolean): void {
+    this.attackMoveEnabled = on;
+  }
+
   setMouseCameraEnabled(on: boolean): void {
     this.mouseCameraEnabled = on;
     if (on && document.pointerLockElement === this.canvas) {
@@ -231,11 +253,11 @@ export class Input {
     if (changed) this.noteIntent('move');
   }
 
-  // A touch jump is momentary: the on-screen button arms this flag and the next
-  // readMoveInput() poll consumes it, yielding a single frame of jump=true (the
-  // sim only launches when grounded, so one frame is enough — same as a Space tap).
+  // A touch jump is momentary, but readMoveInput() is also used by camera/HUD
+  // helpers between sim ticks. Latch the tap briefly so those reads cannot eat
+  // the jump before the grounded movement tick sees it.
   triggerTouchJump(): void {
-    this.touchJump = true;
+    this.touchJumpUntil = Math.max(this.touchJumpUntil, performance.now() + TOUCH_JUMP_LATCH_MS);
   }
 
   // Touch-reachable autorun toggle (the keyboard path is the 'autorun' edge action).
@@ -286,10 +308,17 @@ export class Input {
     this.controllerFacing = null;
   }
 
-  setClickMoveTarget(target: { x: number; z: number }, stopDistance: number, entityId: number | null = null): void {
-    this.clickMoveTarget = target;
+  setClickMoveTarget(
+    target: { x: number; z: number },
+    stopDistance: number,
+    entityId: number | null = null,
+    path: { x: number; z: number }[] = [target],
+    attack = false,
+  ): void {
+    this.applyClickMovePath(target, path);
     this.clickMoveStop = stopDistance;
     this.clickMoveEntityId = entityId;
+    this.clickMoveAttack = attack;
     this.clickMoveFacing = null;
     this.clickMovePulseTarget = target;
     this.clickMovePulse++;
@@ -297,12 +326,41 @@ export class Input {
     this.noteIntent('move');
   }
 
+  rerouteClickMoveTarget(target: { x: number; z: number }, path: { x: number; z: number }[] = [target]): void {
+    if (!this.clickMoveTarget) return;
+    this.applyClickMovePath(target, path);
+  }
+
+  advanceClickMoveWaypoint(): boolean {
+    if (!this.clickMoveTarget) return false;
+    if (this.clickMovePathIndex >= this.clickMovePath.length - 1) return false;
+    this.clickMovePathIndex++;
+    this.clickMoveTarget = this.clickMovePath[this.clickMovePathIndex];
+    return true;
+  }
+
+  isClickMoveFinalWaypoint(): boolean {
+    return !!this.clickMoveTarget && this.clickMovePathIndex >= this.clickMovePath.length - 1;
+  }
+
   clearClickMove(): void {
     if (!this.clickMoveTarget && this.clickMoveEntityId === null) return;
     this.clickMoveTarget = null;
+    this.clickMoveGoal = null;
+    this.clickMovePath = [];
+    this.clickMovePathIndex = 0;
     this.clickMoveEntityId = null;
     this.clickMoveFacing = null;
+    this.clickMoveAttack = false;
     this.noteIntent('move');
+  }
+
+  private applyClickMovePath(target: { x: number; z: number }, path: { x: number; z: number }[]): void {
+    this.clickMoveGoal = target;
+    const cleaned = path.filter((p) => Number.isFinite(p.x) && Number.isFinite(p.z));
+    this.clickMovePath = cleaned.length > 0 ? cleaned : [target];
+    this.clickMovePathIndex = 0;
+    this.clickMoveTarget = this.clickMovePath[0];
   }
 
   controllerFacingOverride(): number | null {
@@ -359,6 +417,14 @@ export class Input {
     if (this.cb.canUseGameKeys && !this.cb.canUseGameKeys()) return;
     if (e.code === 'Tab') e.preventDefault();
     if (e.code === 'Space') e.preventDefault?.();
+    // Attack Move mode: the bound key (default A) issues an attack-move toward the
+    // cursor and wins over whatever movement action shares that code (Turn Left).
+    if (this.attackMoveEnabled && this.hoverActive
+        && this.keybinds.codesForAction('attackMove').includes(e.code)) {
+      e.preventDefault();
+      this.cb.onAttackMove?.(this.hoverX, this.hoverY);
+      return;
+    }
     const action = this.keybinds.actionForCode(e.code);
     if (action === null) return;
     if (actionKind(action) === 'held') {
@@ -493,12 +559,16 @@ export class Input {
     }
     if (this.controllerMoveInput) return { ...this.controllerMoveInput };
     const k = this.keys;
-    const held = (id: string) => this.keybinds.codesForAction(id).some((c) => k.has(c));
+    // Attack Move mode replaces keyboard steering with click/key-driven movement,
+    // so WASD (and Q/E strafe / arrow turn) are ignored; the mouse-run, autorun
+    // and touch joystick still work.
+    const held = (id: string) => !this.attackMoveEnabled
+      && this.keybinds.codesForAction(id).some((c) => k.has(c));
     const bothButtons = this.leftDown && this.rightDown;
     const forward = held('forward') || bothButtons || this.autorun || this.touchMove.forward;
     const back = held('back') || this.touchMove.back;
-    const jump = held('jump') || this.touchJump;
-    this.touchJump = false;
+    // Jump is not a WASD key, so it keeps working in Attack Move mode.
+    const jump = this.keybinds.codesForAction('jump').some((c) => k.has(c)) || performance.now() <= this.touchJumpUntil;
 
     if (this.mouseCameraEnabled) {
       return {

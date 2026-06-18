@@ -26,7 +26,7 @@ function gitSha(): string | undefined {
   }
 }
 
-const appVersion = env(['APP_VERSION', 'npm_package_version']) ?? pkg.version ?? '0.0.0';
+const appVersion = pkg.version ?? env(['APP_VERSION', 'npm_package_version']) ?? '0.0.0';
 const appBuildDate = env(['APP_BUILD_DATE', 'BUILD_DATE']) ?? new Date().toISOString();
 const appBuildId = env([
   'APP_BUILD_ID',

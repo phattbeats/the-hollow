@@ -46,6 +46,8 @@ export interface AttachDef {
 
 export interface VisualDef {
   url: string;
+  /** Optional extra GLBs that provide animation clips for static rig files. */
+  animUrls?: string[];
   /** world-unit height (pivot->crown) at e.scale = 1 */
   height: number;
   clips: ClipMap;
@@ -107,6 +109,15 @@ const kaykit = (attack: string[], idle = 'Idle'): ClipMap => ({
 const skeletonClips = (attack: string[], flourish = 'Skeletons_Awaken_Standing'): ClipMap => ({
   ...kaykit(attack, 'Idle_Combat'),
   flourish,
+});
+
+const skeletonLargeClips = (attack: string[]): ClipMap => ({
+  idle: 'Idle',
+  walk: 'Walking_A',
+  run: 'Running_A',
+  attack,
+  hit: ['Hit_A'],
+  death: 'Death_A',
 });
 
 // Quaternius 2021 animal rig (wolf/bull/alpaca/fox/stag)
@@ -344,16 +355,11 @@ export const VISUALS: Record<string, VisualDef> = {
   skel_warrior: {
     url: `${ENEMIES}/skeleton_warrior.glb`, height: 2.5,
     clips: skeletonClips(['1H_Melee_Attack_Chop', '1H_Melee_Attack_Slice_Diagonal']),
-    attach: [
-      { url: `${WEAPONS}/skeleton_blade.glb`, bone: 'handslot.r' },
-      { url: `${WEAPONS}/skeleton_shield_large_a.glb`, bone: 'handslot.l' },
-    ],
     tint: 'entity', tintStrength: 0.25,
   },
   skel_rogue: {
     url: `${ENEMIES}/skeleton_rogue.glb`, height: 2.5,
     clips: skeletonClips(['1H_Melee_Attack_Chop', '1H_Melee_Attack_Slice_Diagonal']),
-    attach: [{ url: `${WEAPONS}/skeleton_axe.glb`, bone: 'handslot.r' }],
     tint: 'entity', tintStrength: 0.25,
   },
   skel_mage: {
@@ -366,6 +372,16 @@ export const VISUALS: Record<string, VisualDef> = {
     url: `${ENEMIES}/skeleton_mage.glb`, height: 2.5,
     clips: skeletonClips(['2H_Melee_Attack_Chop'], 'Taunt'),
     attach: [{ url: `${WEAPONS}/skeleton_staff.glb`, bone: 'handslot.r' }],
+    tint: 'entity', tintStrength: 0.25,
+  },
+  skel_necromancer: {
+    url: `${ENEMIES}/necromancer.glb`, height: 2.5,
+    clips: skeletonClips(['2H_Melee_Attack_Chop']),
+    tint: 'entity', tintStrength: 0.25,
+  },
+  skel_golem: {
+    url: `${ENEMIES}/skeleton_golem.glb`, height: 3.4,
+    clips: skeletonLargeClips(['2H_Melee_Attack_Chop', '1H_Melee_Attack_Chop']),
     tint: 'entity', tintStrength: 0.25,
   },
 
@@ -479,6 +495,12 @@ const MOB_KEYS: Record<string, string> = {
   sexton_marrow: 'skel_mage',
   morthen: 'skel_boss',
   crypt_shambler: 'skel_rogue',
+  fallen_captain_aldren: 'skel_warrior',
+  corrupted_priest_malric: 'skel_necromancer',
+  deathstalker_voss: 'skel_rogue',
+  vision_aldren_warrior: 'player_warrior',
+  vision_malric_mage: 'player_mage',
+  vision_deathstalker_voss: 'player_rogue',
 };
 
 const FAMILY_KEYS: Record<string, string> = {
@@ -533,6 +555,7 @@ export function manifestUrls(): string[] {
   const urls = new Set<string>();
   for (const def of Object.values(VISUALS)) {
     urls.add(def.url);
+    for (const url of def.animUrls ?? []) urls.add(url);
     for (const a of def.attach ?? []) urls.add(a.url);
   }
   return [...urls];

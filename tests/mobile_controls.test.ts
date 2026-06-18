@@ -221,6 +221,7 @@ function installMobileControlDom(): {
   moveZone: FakeElement;
   moveJoystick: FakeElement;
   cameraJoystick: FakeElement;
+  jumpButton: FakeElement;
   emoteButton: FakeElement;
   windowTarget: EventTarget;
 } {
@@ -232,6 +233,7 @@ function installMobileControlDom(): {
     ['mobile-move-stick', new FakeElement()],
     ['mobile-camera-joystick', new FakeElement()],
     ['mobile-camera-stick', new FakeElement()],
+    ['mobile-jump', new FakeElement()],
     ['mobile-emote', new FakeElement()],
   ]);
   const body = new FakeElement();
@@ -256,6 +258,7 @@ function installMobileControlDom(): {
     moveZone: elements.get('mobile-move-zone')!,
     moveJoystick: elements.get('mobile-move-joystick')!,
     cameraJoystick: elements.get('mobile-camera-joystick')!,
+    jumpButton: elements.get('mobile-jump')!,
     emoteButton: elements.get('mobile-emote')!,
     windowTarget,
   };
@@ -363,6 +366,26 @@ describe('MobileControls pointer lifecycle', () => {
     emoteButton.dispatchEvent(new Event('click', { bubbles: true, cancelable: true }));
 
     expect(emotes).toBe(1);
+  });
+
+  it('fires the Jump callback immediately on pointerdown without double-firing the generated click', () => {
+    const { jumpButton } = installMobileControlDom();
+    const input = {
+      setTouchMove: () => {},
+      clearTouchMove: () => {},
+      setTouchLook: () => {},
+      setTouchLookVector: () => {},
+    } as unknown as Input;
+
+    let jumps = 0;
+    const callbacks = { ...mobileCallbacks(), onJump: () => { jumps += 1; } };
+    new MobileControls(input, callbacks).start();
+
+    jumpButton.dispatchEvent(pointerEvent('pointerdown', { pointerId: 30, pointerType: 'touch' }));
+    expect(jumps).toBe(1);
+
+    jumpButton.dispatchEvent(new Event('click', { bubbles: true, cancelable: true }));
+    expect(jumps).toBe(1);
   });
 
   it('rotates the camera from a single-finger swipe on the game canvas', () => {

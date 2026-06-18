@@ -415,6 +415,76 @@ const PRIMITIVES = {
     ctx.moveTo(9, -10); ctx.lineTo(10.5, 24);
     ctx.stroke();
   },
+  helm(ctx, pal) {
+    // domed great-helm: rounded crown, brow ridge, horizontal eye slit + breath slit
+    ctx.beginPath();
+    ctx.moveTo(-15, 6);
+    ctx.lineTo(-15, -4);
+    ctx.quadraticCurveTo(-15, -22, 0, -22);
+    ctx.quadraticCurveTo(15, -22, 15, -4);
+    ctx.lineTo(15, 6);
+    ctx.quadraticCurveTo(15, 16, 0, 19);
+    ctx.quadraticCurveTo(-15, 16, -15, 6);
+    ctx.closePath();
+    ctx.fillStyle = lin(ctx, -12, -20, 10, 16, [[0, pal.light], [0.5, pal.base], [1, pal.dark]]);
+    ctx.fill(); edge(ctx, pal.accent, 2);
+    noShadow(ctx);
+    ctx.strokeStyle = withAlpha(pal.dark, 0.9); ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.moveTo(-13, -2); ctx.quadraticCurveTo(0, -7, 13, -2); ctx.stroke();
+    ctx.fillStyle = withAlpha('#000000', 0.78);
+    rrPath(ctx, -11, 1, 22, 4, 2); ctx.fill();
+    rrPath(ctx, -1.4, 6, 2.8, 9, 1.4); ctx.fill();
+    ctx.fillStyle = withAlpha(pal.light, 0.5); rrPath(ctx, -3, -21, 6, 5, 2); ctx.fill();
+  },
+  belt(ctx, pal) {
+    // horizontal strap with a central buckle
+    ctx.fillStyle = lin(ctx, 0, -8, 0, 8, [[0, pal.light], [0.5, pal.base], [1, pal.dark]]);
+    rrPath(ctx, -22, -7, 44, 14, 4); ctx.fill(); edge(ctx, pal.accent, 1.8);
+    noShadow(ctx);
+    ctx.strokeStyle = withAlpha(pal.dark, 0.7); ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(-20, -4.5); ctx.lineTo(20, -4.5); ctx.moveTo(-20, 4.5); ctx.lineTo(20, 4.5); ctx.stroke();
+    ctx.fillStyle = lin(ctx, -9, -10, 9, 10, [[0, pal.light], [1, pal.dark]]);
+    rrPath(ctx, -10, -11, 20, 22, 4); ctx.fill(); edge(ctx, pal.accent, 2);
+    ctx.fillStyle = withAlpha('#000000', 0.72); rrPath(ctx, -5.5, -6.5, 11, 13, 3); ctx.fill();
+    ctx.strokeStyle = pal.accent; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, -6); ctx.lineTo(0, 6); ctx.stroke();
+    ctx.fillStyle = withAlpha(pal.light, 0.5); rrPath(ctx, -9, -10, 4, 20, 2); ctx.fill();
+  },
+  pauldron(ctx, pal) {
+    // rounded shoulder cap with layered lames and a top stud
+    ctx.beginPath();
+    ctx.moveTo(-20, 14);
+    ctx.quadraticCurveTo(-22, -8, -6, -18);
+    ctx.quadraticCurveTo(8, -24, 19, -12);
+    ctx.quadraticCurveTo(22, -2, 20, 14);
+    ctx.closePath();
+    ctx.fillStyle = lin(ctx, -14, -18, 12, 14, [[0, pal.light], [0.5, pal.base], [1, pal.dark]]);
+    ctx.fill(); edge(ctx, pal.accent, 2);
+    noShadow(ctx);
+    ctx.strokeStyle = withAlpha(pal.dark, 0.85); ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(0, 18, 20, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke();
+    ctx.beginPath(); ctx.arc(0, 22, 26, Math.PI * 1.12, Math.PI * 1.88); ctx.stroke();
+    ctx.fillStyle = pal.accent;
+    ctx.beginPath(); ctx.moveTo(-4, -16); ctx.lineTo(0, -24); ctx.lineTo(4, -16); ctx.closePath(); ctx.fill(); edge(ctx, pal.dark, 0.8);
+    ctx.fillStyle = withAlpha(pal.light, 0.45); ctx.beginPath(); ctx.ellipse(-6, -6, 5, 8, -0.4, 0, Math.PI * 2); ctx.fill();
+  },
+  gauntlet(ctx, pal) {
+    // armored fist: flared cuff, plated back-of-hand, knuckle studs, short fingers + thumb
+    ctx.fillStyle = lin(ctx, 0, 6, 0, 20, [[0, pal.base], [1, pal.dark]]);
+    ctx.beginPath();
+    ctx.moveTo(-13, 6); ctx.lineTo(13, 6); ctx.lineTo(16, 20); ctx.lineTo(-16, 20); ctx.closePath();
+    ctx.fill(); edge(ctx, pal.accent, 1.8);
+    ctx.fillStyle = lin(ctx, -12, -10, 10, 8, [[0, pal.light], [0.5, pal.base], [1, pal.dark]]);
+    rrPath(ctx, -13, -10, 26, 18, 5); ctx.fill(); edge(ctx, pal.accent, 1.8);
+    noShadow(ctx);
+    ctx.fillStyle = lin(ctx, 0, -18, 0, -8, [[0, pal.light], [1, pal.dark]]);
+    for (const x of [-9.5, -3.2, 3.2, 9.5]) { rrPath(ctx, x - 2.4, -18, 4.8, 11, 2); ctx.fill(); edge(ctx, pal.dark, 0.9); }
+    ctx.fillStyle = pal.accent;
+    for (const x of [-9, -3, 3, 9]) { ctx.beginPath(); ctx.arc(x, -8, 2.4, 0, Math.PI * 2); ctx.fill(); edge(ctx, pal.dark, 0.7); }
+    ctx.save(); ctx.rotate(-0.5);
+    ctx.fillStyle = lin(ctx, -19, -2, -10, 4, [[0, pal.light], [1, pal.dark]]);
+    rrPath(ctx, -20, -2, 9, 5, 2.5); ctx.fill(); edge(ctx, pal.dark, 0.9); ctx.restore();
+    ctx.fillStyle = withAlpha(pal.light, 0.4); rrPath(ctx, -11, -8, 6, 12, 3); ctx.fill();
+  },
   pelt(ctx, pal) {
     ctx.beginPath();
     ctx.moveTo(-19, -15); ctx.lineTo(-11, -11);
@@ -1249,8 +1319,12 @@ function itemFallback(id: string): IconRecipe | null {
     const prim: PrimitiveName =
       it.slot === 'feet' ? 'boot'
         : it.slot === 'legs' ? 'trousers'
-          : has(name, ['shield', 'bulwark', 'aegis']) ? 'shield'
-            : 'chestplate';
+          : it.slot === 'helmet' ? 'helm'
+            : it.slot === 'waist' ? 'belt'
+              : it.slot === 'shoulder' ? 'pauldron'
+                : it.slot === 'gloves' ? 'gauntlet'
+                  : has(name, ['shield', 'bulwark', 'aegis']) ? 'shield'
+                    : 'chestplate';
     const pal: PaletteName = isCloth ? 'cloth' : isMetal ? 'steel' : 'leather';
     return r(isCloth ? 'cloth' : isMetal ? 'steel' : 'leather', pal, [{ p: prim, pal }], fx);
   }
@@ -1363,6 +1437,84 @@ export const QUALITY_COLOR: Record<string, string> = {
   epic: '#a335ee',
 };
 
+// ---------------------------------------------------------------------------
+// Photographic weapon icons
+//
+// Obtainable weapons (loot / vendor / quest drops) use a rendered thumbnail of
+// the KayKit weapon model instead of a procedural recipe — see
+// scripts/render_weapon_icons.mjs, which writes public/ui/weapons/<model>.jpg.
+// Several items intentionally share a model (the pack has fewer meshes than we
+// have weapons); the flashier meshes are reserved for rare/epic items. The
+// model is purely cosmetic — rarity colour still comes from item.quality (the
+// CSS .q-* border), exactly like the procedural icons.
+// ---------------------------------------------------------------------------
+
+const WEAPON_ICON_DIR = '/ui/weapons';
+
+const ITEM_ICON_IMAGES: Record<string, string> = {
+  // swords
+  worn_sword: 'sword_a',
+  eastbrook_arming_sword: 'sword_b',
+  redbrook_blade: 'sword_d',
+  mistcallers_edge: 'sword_d',
+  zealotsbane_blade: 'sword_e',
+  highwatch_warblade: 'sword_e',
+  gravecaller_blade: 'sword_c',
+  valeborn_spellblade: 'sword_g', // crystalline — fits a spellblade
+  wyrmfang_greatblade: 'sword_f', // flaming — epic dragon blade
+  // daggers
+  rusty_dagger: 'dagger_a',
+  vale_carving_knife: 'dagger_a',
+  mirefen_skinner: 'dagger_a',
+  ironvein_pickblade: 'dagger_a',
+  icevein_dirk: 'dagger_b',
+  keen_dirk: 'dagger_b',
+  mistbinder_kris: 'dagger_b',
+  mirejaw_biteblade: 'dagger_b',
+  cultist_flayer: 'dagger_b',
+  moggers_shiv: 'dagger_c', // emerald blade — rare/epic daggers
+  widowfang_dirk: 'dagger_c',
+  nhalias_dirgeblade: 'dagger_c',
+  riptide_dirk: 'dagger_c',
+  gutripper_shiv: 'dagger_c',
+  fang_of_korzul: 'dagger_c',
+  // staves
+  gnarled_staff: 'staff_a',
+  hickory_shortstaff: 'staff_a',
+  fenreed_staff: 'staff_a',
+  craghorn_staff: 'staff_a',
+  apprentice_staff: 'staff_b',
+  staff_of_drowned_prayers: 'staff_b',
+  vaels_mist_staff: 'staff_b',
+  emberwood_staff: 'staff_d',
+  ironvein_lantern_staff: 'staff_d',
+  staff_of_velkhar: 'staff_d',
+  ogre_bonecharm_staff: 'staff_d',
+  gravecaller_staff: 'staff_c', // glowing gem — rare/epic staves
+  mirejaw_oracle_staff: 'staff_c',
+  staff_of_the_gravewyrm: 'staff_c',
+  // maces (KayKit "hammer" meshes)
+  training_mace: 'hammer_a',
+  bronzework_mace: 'hammer_a',
+  bogiron_mace: 'hammer_d',
+  bristleback_maul: 'hammer_d',
+  voss_sanctified_mace: 'hammer_c',
+  moggers_copper_cudgel: 'hammer_b',
+  // axes
+  rusty_hatchet: 'axe_a',
+  deacons_cleaver: 'axe_c',
+  drogmars_skullcleaver: 'axe_b',
+  gorraks_cruel_chopper: 'axe_d',
+  // polearm
+  fen_reaver_glaive: 'halberd',
+};
+
+/** Static URL of a weapon's rendered thumbnail, or null if it uses a recipe. */
+function weaponIconUrl(id: string): string | null {
+  const model = ITEM_ICON_IMAGES[id];
+  return model ? `${WEAPON_ICON_DIR}/${model}.jpg` : null;
+}
+
 const urlCache = new Map<string, string>();
 const warnedIds = new Set<string>();
 
@@ -1403,8 +1555,14 @@ export function iconCanvas(kind: IconKind, id: string, size: number = DEFAULT_IC
   return canvas;
 }
 
-// Returns a cached PNG data URL for the icon of the given ability/item/aura/crest id.
+// Returns the icon URL for an ability/item/aura/crest id — a static image URL
+// for weapons that have a rendered thumbnail, otherwise a cached procedural PNG
+// data URL. Both forms work as an <img src> or CSS background-image.
 export function iconDataUrl(kind: IconKind, id: string, size: number = DEFAULT_ICON_SIZE): string {
+  if (kind === 'item') {
+    const img = weaponIconUrl(id);
+    if (img) return img;
+  }
   const key = `${kind}|${id}|${size}`;
   const cached = urlCache.get(key);
   if (cached) return cached;
