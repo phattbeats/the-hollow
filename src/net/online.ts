@@ -227,7 +227,7 @@ function blankEntity(id: number): Entity {
   return {
     id, kind: 'mob', templateId: '', name: '', level: 1, mendTimer: 0,
     pos: { x: 0, y: 0, z: 0 }, prevPos: { x: 0, y: 0, z: 0 }, facing: 0, prevFacing: 0,
-    vx: 0, vz: 0, vy: 0, onGround: true, fallStartY: 0,
+    vx: 0, vz: 0, vy: 0, onGround: true, jumping: false, fallStartY: 0,
     hp: 1, maxHp: 1, resource: 0, maxResource: 0, resourceType: null,
     overheadEmoteId: null, overheadEmoteUntil: 0, overheadEmoteSeq: 0,
     stats: { str: 0, agi: 0, sta: 0, int: 0, spi: 0, armor: 0 },
@@ -550,6 +550,7 @@ export class ClientWorld implements IWorld {
         e.scale = w.sc ?? 1;
         e.color = w.c ?? 0xffffff;
         e.dungeonId = w.dgn ?? null;
+        e.objectItemId = w.obj ?? null;
         if (e.kind === 'npc') {
           const def = NPCS[e.templateId];
           e.questIds = def ? [...def.questIds] : [];

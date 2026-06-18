@@ -183,8 +183,84 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
     loot: [
       { copper: 100, chance: 1 },
       { itemId: 'bone_fragments', chance: 0.6 },
+      { itemId: 'runed_bone_shard', chance: 0.7, questId: 'q_nythraxis_restless_dead' },
     ],
     scale: 1.05, color: 0xcacfd2,
+  },
+  fallen_captain_aldren: {
+    id: 'fallen_captain_aldren', name: 'Fallen Captain Aldren', minLevel: 20, maxLevel: 20, family: 'undead',
+    elite: true, rare: true, canSwim: true, ccImmune: true, respawnMult: 4,
+    hpBase: 390, hpPerLevel: 72, dmgBase: 22, dmgPerLevel: 4.2, attackSpeed: 2.2,
+    armorPerLevel: 42, moveSpeed: 7.2, aggroRadius: 18,
+    cleave: { radius: 7, mult: 0.75, name: 'Grave-Cleaver' },
+    loot: [
+      { copper: 450, chance: 1 },
+      { itemId: 'captains_crest', chance: 1, questId: 'q_nythraxis_sealed_crypt' },
+      { itemId: 'bone_fragments', chance: 1 },
+    ],
+    scale: 1.15, color: 0xbfc7ca,
+  },
+  corrupted_priest_malric: {
+    id: 'corrupted_priest_malric', name: 'Corrupted Priest Malric', minLevel: 20, maxLevel: 20, family: 'undead',
+    elite: true, rare: true, canSwim: true, ccImmune: true, respawnMult: 4,
+    hpBase: 360, hpPerLevel: 68, dmgBase: 23, dmgPerLevel: 4.3, attackSpeed: 2.3,
+    armorPerLevel: 26, moveSpeed: 6.9, aggroRadius: 18,
+    manaBurn: { chance: 0.4, amount: 130, name: 'Withered Benediction', school: 'shadow' },
+    mendAlly: { healMin: 48, healMax: 70, radius: 14, every: 7, name: 'Profane Mending', school: 'shadow' },
+    petSpell: { name: 'Mind Blast', school: 'shadow', min: 38, max: 56, range: 28, every: 2.8 },
+    aoePulse: { min: 28, max: 42, radius: 16, every: 8, name: 'Shadow Nova', school: 'shadow', fx: 'nova' },
+    loot: [
+      { copper: 450, chance: 1 },
+      { itemId: 'priests_sigil', chance: 1, questId: 'q_nythraxis_sealed_crypt' },
+      { itemId: 'frayed_prayer_beads', chance: 0.5 },
+    ],
+    scale: 1.05, color: 0xd5d0e8,
+  },
+  deathstalker_voss: {
+    id: 'deathstalker_voss', name: 'Deathstalker Voss', minLevel: 20, maxLevel: 20, family: 'undead',
+    elite: true, rare: true, canSwim: true, ccImmune: true, respawnMult: 4,
+    hpBase: 410, hpPerLevel: 74, dmgBase: 24, dmgPerLevel: 4.5, attackSpeed: 2.1,
+    armorPerLevel: 44, moveSpeed: 7.4, aggroRadius: 18,
+    cleave: { radius: 7, mult: 0.7, name: 'Deathstalker Cleave' },
+    mortalStrike: { chance: 0.45, healReduction: 0.5, duration: 10, name: 'Forgotten Wound', school: 'physical' },
+    loot: [
+      { copper: 450, chance: 1 },
+      { itemId: 'royal_seal', chance: 1, questId: 'q_nythraxis_sealed_crypt' },
+      { itemId: 'bone_fragments', chance: 1 },
+    ],
+    scale: 1.18, color: 0xc7c0b2,
+  },
+  vision_aldren_warrior: {
+    id: 'vision_aldren_warrior', name: 'Vision of Captain Aldren', minLevel: 20, maxLevel: 20, family: 'humanoid',
+    hpBase: 1, hpPerLevel: 0, dmgBase: 0, dmgPerLevel: 0, attackSpeed: 2,
+    armorPerLevel: 0, moveSpeed: 0, aggroRadius: 0,
+    loot: [], scale: 1.0, color: 0xb8d7ff,
+  },
+  vision_malric_mage: {
+    id: 'vision_malric_mage', name: 'Vision of High Priest Malric', minLevel: 20, maxLevel: 20, family: 'humanoid',
+    hpBase: 1, hpPerLevel: 0, dmgBase: 0, dmgPerLevel: 0, attackSpeed: 2,
+    armorPerLevel: 0, moveSpeed: 0, aggroRadius: 0,
+    loot: [], scale: 1.0, color: 0xc9b6ff,
+  },
+  vision_deathstalker_voss: {
+    id: 'vision_deathstalker_voss', name: 'Vision of Royal Assassin Voss', minLevel: 20, maxLevel: 20, family: 'humanoid',
+    hpBase: 1, hpPerLevel: 0, dmgBase: 0, dmgPerLevel: 0, attackSpeed: 2,
+    armorPerLevel: 0, moveSpeed: 0, aggroRadius: 0,
+    loot: [], scale: 1.0, color: 0xb8d7ff,
+  },
+  bound_guardian: {
+    id: 'bound_guardian', name: 'The Bound Guardian', minLevel: 20, maxLevel: 20, family: 'undead',
+    elite: true, boss: true, canSwim: true, ccImmune: true, respawnMult: 1000,
+    hpBase: 310, hpPerLevel: 48, dmgBase: 16, dmgPerLevel: 3.4, attackSpeed: 2.4,
+    armorPerLevel: 42, moveSpeed: 6.8, aggroRadius: 16,
+    aoePulse: { min: 30, max: 44, radius: 10, every: 10, name: 'Sealbreak Shockwave', school: 'shadow' },
+    summonAdds: { mobId: 'varkas_boneguard', count: 2, atHpPct: [0.50] },
+    enrage: { belowHpPct: 0.25, dmgMult: 1.45, hasteMult: 1.25 },
+    loot: [
+      { copper: 1200, chance: 1 },
+      { itemId: 'kings_signet', chance: 1, questId: 'q_nythraxis_bound_guardian' },
+    ],
+    scale: 1.35, color: 0xa8b0b8,
   },
   marrowlord_varkas: {
     id: 'marrowlord_varkas', name: 'Marrowlord Varkas', minLevel: 19, maxLevel: 19, family: 'undead', rare: true,
@@ -227,6 +303,8 @@ export const ZONE3_NPCS: Record<string, NpcDef> = {
     questIds: [
       'q_zealots', 'q_cult_orders', 'q_necromancers', 'q_wyrm_sigils', 'q_breaking_the_seal',
       'q_voice_below', 'q_sanctum_gate', 'q_velkhar', 'q_gravewyrm',
+      'q_nythraxis_restless_dead', 'q_nythraxis_graves', 'q_nythraxis_sealed_crypt',
+      'q_nythraxis_bound_guardian',
     ],
     greeting: 'From a chapel yard in the Vale to the roof of the world... the trail we have followed ends here. I can feel the mountain listening.',
   },
@@ -506,6 +584,56 @@ export const ZONE3_QUESTS: Record<string, QuestDef> = {
     itemRewards: { warrior: 'gravewyrm_scale_hauberk', mage: 'wyrmcult_grand_robe', rogue: 'wyrmscale_jerkin' },
     requiresQuest: 'q_velkhar', minLevel: 18, suggestedPlayers: 5,
   },
+  q_nythraxis_restless_dead: {
+    id: 'q_nythraxis_restless_dead', name: 'Unrest in the Bonefields',
+    giverNpcId: 'brother_aldric_highwatch', turnInNpcId: 'brother_aldric_highwatch',
+    text: 'Something has changed in Thornpeak Heights, $N. The dead no longer wander aimlessly. They gather and march through the northern bonefields beyond Highwatch, where the old battlefield meets the cliff road. Go there, investigate the unrest among the Boneclad Revenants, and bring back any proof of what is driving them.',
+    completionText: 'The same mark appears on every shard... a crown. I have seen this before, cut into old graves no Eastbrook record remembers.',
+    objectives: [{ type: 'collect', itemId: 'runed_bone_shard', count: 10, label: 'Runed Bone Shard' }],
+    xpReward: 4200, copperReward: 2000, itemRewards: {},
+    minLevel: 20,
+  },
+  q_nythraxis_graves: {
+    id: 'q_nythraxis_graves', name: 'Graves of the Forgotten',
+    giverNpcId: 'brother_aldric_highwatch', turnInNpcId: 'brother_aldric_highwatch',
+    text: 'I have seen these marks before, on three old graves around the northern battlefield. Captain Aldren lies on the eastern rise, High Priest Malric near the central broken road, and Royal Assassin Voss by the western cliff. Touch each grave and listen, $N. The dead may remember what the living forgot.',
+    completionText: 'Aldren remained loyal, Malric refused to accept death, and Voss saw the danger before anyone else. All three served the same forgotten king.',
+    objectives: [
+      { type: 'interact', targetObjectItemId: 'grave_sir_aldren', count: 1, label: 'Vision at the Grave of Captain Aldren' },
+      { type: 'interact', targetObjectItemId: 'grave_high_priest_malric', count: 1, label: 'Vision at the Grave of High Priest Malric' },
+      { type: 'interact', targetObjectItemId: 'grave_captain_voss', count: 1, label: 'Vision at the Grave of Royal Assassin Voss' },
+    ],
+    xpReward: 4300, copperReward: 2200, itemRewards: {},
+    requiresQuest: 'q_nythraxis_restless_dead', minLevel: 20,
+  },
+  q_nythraxis_sealed_crypt: {
+    id: 'q_nythraxis_sealed_crypt', name: 'The Abandoned Crypt',
+    giverNpcId: 'brother_aldric_highwatch', turnInNpcId: 'brother_aldric_highwatch',
+    text: 'The visions point to the abandoned crypt in the western cliff. There is an old legend that the crypt housed a king. Perhaps Thornpeak sealed him below after Malric\'s ritual twisted him into something deathless. Enter the crypt and see what remains inside.',
+    completionText: 'The keystone halves fit together, and Voss\'s diary names what they sealed: the signet of King Nythraxis. If the diary is true, that signet is the key to his tomb.',
+    objectives: [
+      { type: 'collect', itemId: 'captains_crest', count: 1, label: 'Crypt Keystone Upper' },
+      { type: 'collect', itemId: 'priests_sigil', count: 1, label: 'Crypt Keystone Lower' },
+      { type: 'collect', itemId: 'royal_seal', count: 1, label: 'Ancient Diary' },
+    ],
+    xpReward: 4600, copperReward: 2500,
+    itemRewards: { warrior: 'crypt_keystone', mage: 'crypt_keystone', rogue: 'crypt_keystone' },
+    requiresQuest: 'q_nythraxis_graves', minLevel: 20,
+  },
+  q_nythraxis_bound_guardian: {
+    id: 'q_nythraxis_bound_guardian', name: 'The Bound Guardian',
+    giverNpcId: 'brother_aldric_highwatch', turnInNpcId: 'brother_aldric_highwatch',
+    text: 'Voss wrote that the survivors sealed the King\'s Signet behind an ancient guardian, so no one could reach the tomb of Nythraxis by accident or ambition. Take the Crypt Keystone to the ritual circle on the flat ground east of the abandoned crypt and south-east of the western grave. Use it there, break the guardian, and bring back the signet.',
+    completionText: 'The three relics tell the same story: Aldren fought to defend his king, Malric broke the boundary of death, and Voss tried to stop what followed. The seal is weakening, and this signet is the key to Nythraxis\'s tomb. You are now attuned to enter The Crypt of Nythraxis.',
+    objectives: [
+      { type: 'interact', targetObjectItemId: 'crypt_ritual_circle', count: 1, label: 'Crypt Keystone used at the ritual circle' },
+      { type: 'kill', targetMobId: 'bound_guardian', count: 1, label: 'The Bound Guardian defeated' },
+      { type: 'collect', itemId: 'kings_signet', count: 1, label: "King's Signet" },
+    ],
+    xpReward: 5200, copperReward: 3500,
+    itemRewards: { warrior: 'kings_signet', mage: 'kings_signet', rogue: 'kings_signet' },
+    requiresQuest: 'q_nythraxis_sealed_crypt', minLevel: 20, suggestedPlayers: 5,
+  },
 };
 
 export const ZONE3_QUEST_ORDER = [
@@ -514,6 +642,8 @@ export const ZONE3_QUEST_ORDER = [
   'q_elementals', 'q_shard_cores', 'q_kazzix', 'q_zealots', 'q_cult_orders',
   'q_necromancers', 'q_revenants', 'q_revenant_vanguard', 'q_wyrm_sigils', 'q_breaking_the_seal',
   'q_voice_below', 'q_sanctum_gate', 'q_korgath', 'q_velkhar', 'q_gravewyrm',
+  'q_nythraxis_restless_dead', 'q_nythraxis_graves', 'q_nythraxis_sealed_crypt',
+  'q_nythraxis_bound_guardian',
 ];
 
 // ---------------------------------------------------------------------------
@@ -571,6 +701,26 @@ export const ZONE3_OBJECTS: GroundObjectDef[] = [
     name: 'Sanctum Key Shard',
     positions: [{ x: -6, z: 872 }, { x: -2, z: 876 }, { x: 2, z: 873 }, { x: 6, z: 878 }],
   },
+  {
+    itemId: 'grave_sir_aldren',
+    name: 'Grave of Captain Aldren',
+    positions: [{ x: 138, z: 838 }],
+  },
+  {
+    itemId: 'grave_high_priest_malric',
+    name: 'Grave of High Priest Malric',
+    positions: [{ x: 141, z: 712 }],
+  },
+  {
+    itemId: 'grave_captain_voss',
+    name: 'Grave of Royal Assassin Voss',
+    positions: [{ x: -139, z: 787 }],
+  },
+  {
+    itemId: 'crypt_ritual_circle',
+    name: 'Ritual Circle',
+    positions: [{ x: 68, z: 800 }],
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -590,6 +740,17 @@ export const ZONE3_ITEMS: Record<string, ItemDef> = {
   gravewyrm_sigil: { id: 'gravewyrm_sigil', name: 'Gravewyrm Sigil', kind: 'quest', sellValue: 0, questId: 'q_wyrm_sigils' },
   blessed_embers: { id: 'blessed_embers', name: 'Blessed Embers', kind: 'quest', sellValue: 0, questId: 'q_breaking_the_seal' },
   sanctum_key_shard: { id: 'sanctum_key_shard', name: 'Sanctum Key Shard', kind: 'quest', sellValue: 0, questId: 'q_sanctum_gate' },
+  runed_bone_shard: { id: 'runed_bone_shard', name: 'Runed Bone Shard', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_restless_dead' },
+  grave_sir_aldren: { id: 'grave_sir_aldren', name: 'Grave of Captain Aldren', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_graves' },
+  grave_high_priest_malric: { id: 'grave_high_priest_malric', name: 'Grave of High Priest Malric', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_graves' },
+  grave_captain_voss: { id: 'grave_captain_voss', name: 'Grave of Royal Assassin Voss', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_graves' },
+  ancient_crypt_door: { id: 'ancient_crypt_door', name: 'Ancient Crypt Door', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_sealed_crypt' },
+  captains_crest: { id: 'captains_crest', name: 'Crypt Keystone Upper', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_sealed_crypt' },
+  priests_sigil: { id: 'priests_sigil', name: 'Crypt Keystone Lower', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_sealed_crypt' },
+  royal_seal: { id: 'royal_seal', name: 'Ancient Diary', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_sealed_crypt' },
+  crypt_keystone: { id: 'crypt_keystone', name: 'Crypt Keystone', kind: 'quest', quality: 'uncommon', sellValue: 0, questId: 'q_nythraxis_bound_guardian' },
+  crypt_ritual_circle: { id: 'crypt_ritual_circle', name: 'Ritual Circle', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_bound_guardian' },
+  kings_signet: { id: 'kings_signet', name: "King's Signet", kind: 'quest', quality: 'rare', sellValue: 0, questId: 'q_nythraxis_bound_guardian' },
   // --- quest greens (uncommon) ---
   ridgestalker_treads: {
     id: 'ridgestalker_treads', name: 'Ridgestalker Treads', kind: 'armor', slot: 'feet', quality: 'uncommon',
@@ -741,6 +902,22 @@ export const ZONE3_ITEMS: Record<string, ItemDef> = {
     id: 'fang_of_korzul', name: 'Fang of Korzul', kind: 'weapon', slot: 'mainhand', quality: 'epic',
     weapon: { min: 19, max: 30, speed: 1.7, dagger: true }, stats: { agi: 11, sta: 5 }, sellValue: 8000, requiredClass: ['rogue', 'hunter'],
   },
+  // --- Inventory 2.0 epics: one per armor archetype, filling the new slots and
+  // named into the existing Deathlord/Necromancer's/Wyrmshadow Korzul epic families.
+  // Budgeted just under the matching chest epic and slot-weighted (head≈1.0,
+  // shoulder≈0.75, gloves≈0.65) so they slot cleanly into each set. ---
+  deathlords_dread_visage: {
+    id: 'deathlords_dread_visage', name: "Deathlord's Dread Visage", kind: 'armor', slot: 'helmet', quality: 'epic',
+    stats: { armor: 245, str: 7, sta: 9 }, sellValue: 9000, requiredClass: ['warrior', 'paladin', 'shaman'],
+  },
+  necromancers_soulspire_mantle: {
+    id: 'necromancers_soulspire_mantle', name: "Necromancer's Soulspire Mantle", kind: 'armor', slot: 'shoulder', quality: 'epic',
+    stats: { armor: 70, int: 11, spi: 6 }, sellValue: 9000, requiredClass: ['mage', 'priest', 'warlock', 'druid'],
+  },
+  wyrmshadow_talongrips: {
+    id: 'wyrmshadow_talongrips', name: 'Wyrmshadow Talongrips', kind: 'armor', slot: 'gloves', quality: 'epic',
+    stats: { armor: 110, agi: 10, sta: 5 }, sellValue: 9000, requiredClass: ['rogue', 'hunter'],
+  },
   // --- vendor food & drink (Quartermaster Bree) ---
   trail_hardtack: {
     id: 'trail_hardtack', name: 'Highwatch Trail Hardtack', kind: 'food', quality: 'common',
@@ -816,7 +993,10 @@ export const ZONE3_PROPS: ZonePropsDef = {
     { x: -7.5, z: 667, rot: Math.PI / 2, r: 1.7 },   // Quartermaster Bree
     { x: -4.5, z: 673.5, rot: -0.6, r: 1.7 },        // Armorer Hode
   ],
-  mines: [{ x: 88, z: 612, rot: -2.0 }],             // Deeprock Burrows
+  mines: [
+    { x: 88, z: 612, rot: -2.0 },                    // Deeprock Burrows
+    { x: -152, z: 610, rot: Math.PI / 2 },           // Abandoned crypt entrance
+  ],
   docks: [],
   tents: [
     // Drogmar's war-camp
@@ -834,6 +1014,9 @@ export const ZONE3_PROPS: ZonePropsDef = {
   mudHuts: [],
   ruinRings: [
     { x: -40, z: 830, ringR: 7, columns: 6 },        // Revenant Fields battlefield
+    { x: 141, z: 712, ringR: 7, columns: 6 },        // Malric grave ruins
+    { x: 138, z: 838, ringR: 7, columns: 6 },        // Aldren grave ruins
+    { x: -139, z: 787, ringR: 7, columns: 6 },       // Royal Assassin Voss grave ruins
     { x: -12, z: 862, ringR: 6, columns: 5 },        // Sanctum Approach ruins
     { x: 12, z: 858, ringR: 6, columns: 5 },
   ],
@@ -841,5 +1024,10 @@ export const ZONE3_PROPS: ZonePropsDef = {
     { x1: -14, z1: 649, x2: -4, z2: 647 },           // south gate, east run
     { x1: 4, z1: 647, x2: 14, z2: 649 },             // south gate, west run
   ],
-  graveyards: [{ x: 15, z: 645 }],
+  graveyards: [
+    { x: 15, z: 645 },
+    { x: 141, z: 712 },
+    { x: 138, z: 838 },
+    { x: -139, z: 787 },
+  ],
 };

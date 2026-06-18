@@ -148,7 +148,7 @@ export const en: EnTranslations = {
   },
   "stats": {
     "title": "Realm Status",
-    "accountsCreated": "Accounts Created",
+    "accountsCreated": "Players",
     "playersOnline": "Players Online",
     "realmName": "Realm Name"
   },
@@ -222,6 +222,14 @@ export const en: EnTranslations = {
     "realmList": "Realm List",
     "loadingRealms": "Loading realms...",
     "changeRealm": "Change Realm",
+    "realm": "Realm",
+    "newCharacter": "New Character",
+    "appearance": "Appearance",
+    "class": "Class",
+    "name": "Name",
+    "chromaOption": "Chroma {n}",
+    "noAccountPrompt": "New to the realm?",
+    "haveAccountPrompt": "Already have an account?",
     "characters": "Characters:",
     "createCharacter": "Create Character",
     "characterName": "Character Name",
@@ -367,7 +375,11 @@ export const en: EnTranslations = {
     "rename": "Rename",
     "newNamePlaceholder": "New character name",
     "tabCharacters": "Characters",
-    "tabCreate": "Create"
+    "tabCreate": "Create",
+    "portraitAlt": "Portrait of {name}",
+    "viewProfile": "View Profile",
+    "profile": "Profile",
+    "closeProfile": "Close profile"
   },
   "deleteCharacter": {
     "title": "Delete Character",
@@ -572,6 +584,7 @@ export const en: EnTranslations = {
         "jump": "Jump",
         "autorun": "Toggle Autorun",
         "target": "Target Nearest Enemy",
+        "attackMove": "Attack Move",
         "interact": "Interact / Loot",
         "char": "Character",
         "spellbook": "Spellbook",
@@ -677,6 +690,7 @@ export const en: EnTranslations = {
     "combat": {
       "floatingMiss": "Miss",
       "floatingDodge": "Dodge",
+      "cannotMove": "Can't move!",
       "attack": "attack",
       "damageDone": "Your {ability} hits {target} for {amount}.",
       "damageDoneCrit": "Your {ability} critically hits {target} for {amount}.",
@@ -1020,6 +1034,9 @@ export const en: EnTranslations = {
       "greetingFallback": "Greetings.",
       "availableQuestAria": "Available quest: {name}",
       "readyQuestAria": "Quest ready to turn in: {name}",
+      "discussQuest": "Discuss {name}.",
+      "discussQuestAria": "Discuss quest: {name}",
+      "nythraxisDeathlessKingWarning": "The three relics tell the same story: Aldren fought to defend his king, Malric broke the boundary of death, and Voss tried to stop what followed. The seal is weakening, and the abandoned crypt is the way down.",
       "browseGoods": "Let me browse your goods.",
       "browseGoodsAria": "Browse goods from {name}",
       "worldMarket": "Show me the World Market.",
@@ -1027,6 +1044,7 @@ export const en: EnTranslations = {
       "accept": "Accept",
       "decline": "Decline",
       "continue": "Continue",
+      "done": "Done",
       "completeQuest": "Complete Quest",
       "turnIn": "Turn In",
       "back": "Back",
@@ -1068,8 +1086,12 @@ export const en: EnTranslations = {
     },
     "slots": {
       "mainhand": "Main Hand",
+      "helmet": "Helmet",
+      "shoulder": "Shoulder",
       "chest": "Chest",
+      "waist": "Waist",
       "legs": "Legs",
+      "gloves": "Gloves",
       "feet": "Feet"
     },
     "quality": {
@@ -1103,7 +1125,7 @@ export const en: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
-      "damageSpeed": "{min} - {max} Damage  Speed {speed}",
+      "damageSpeed": "{min} - {max} Damage Speed {speed}",
       "dps": "({dps} damage per second)",
       "dagger": "Dagger",
       "armorStat": "{value} Armor",
@@ -2335,8 +2357,74 @@ export const en: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Ysolei's Pearl Greaves"
       },
+      "boundstone_girdle": {
+        "name": "Boundstone Girdle"
+      },
+      "boundstone_helm": {
+        "name": "Boundstone Helm"
+      },
+      "cryptbone_helm": {
+        "name": "Cryptbone Helm"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Cryptbone Pauldrons"
+      },
+      "deathlords_dread_visage": {
+        "name": "Deathlord's Dread Visage"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Gravewyrm Gauntlets"
+      },
+      "gravewyrm_mantle": {
+        "name": "Gravewyrm Mantle"
+      },
+      "mistveil_cord": {
+        "name": "Mistveil Cord"
+      },
+      "mistveil_grips": {
+        "name": "Mistveil Grips"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Necromancer's Soulspire Mantle"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Wyrmshadow Talongrips"
+      },
       "the_codfather": {
         "name": "The Codfather"
+      },
+      "runed_bone_shard": {
+        "name": "Runed Bone Shard"
+      },
+      "grave_sir_aldren": {
+        "name": "Grave of Captain Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Grave of High Priest Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Grave of Royal Assassin Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Ancient Crypt Door"
+      },
+      "captains_crest": {
+        "name": "Crypt Keystone Upper"
+      },
+      "priests_sigil": {
+        "name": "Crypt Keystone Lower"
+      },
+      "royal_seal": {
+        "name": "Ancient Diary"
+      },
+      "crypt_keystone": {
+        "name": "Crypt Keystone"
+      },
+      "crypt_ritual_circle": {
+        "name": "Ritual Circle"
+      },
+      "kings_signet": {
+        "name": "King's Signet"
       }
     },
     "mobs": {
@@ -2480,6 +2568,27 @@ export const en: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Bog Bloat"
+      },
+      "fallen_captain_aldren": {
+        "name": "Fallen Captain Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Corrupted Priest Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Deathstalker Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Vision of Captain Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Vision of High Priest Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Vision of Royal Assassin Voss"
+      },
+      "bound_guardian": {
+        "name": "The Bound Guardian"
       },
       "elder_bristleback": {
         "name": "Elder Bristleback"
@@ -3330,6 +3439,64 @@ export const en: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Unrest in the Bonefields",
+        "text": "Something has changed in Thornpeak Heights, {playerName}. The dead no longer wander aimlessly. They gather and march through the northern bonefields beyond Highwatch, where the old battlefield meets the cliff road. Go there, investigate the unrest among the Boneclad Revenants, and bring back any proof of what is driving them.",
+        "completion": "The same mark appears on every shard... a crown. I have seen this before, cut into old graves no Eastbrook record remembers.",
+        "objectives": {
+          "0": {
+            "label": "Runed Bone Shard"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Graves of the Forgotten",
+        "text": "I have seen these marks before, on three old graves around the northern battlefield. Captain Aldren lies on the eastern rise, High Priest Malric near the central broken road, and Royal Assassin Voss by the western cliff. Touch each grave and listen, {playerName}. The dead may remember what the living forgot.",
+        "completion": "Aldren remained loyal, Malric refused to accept death, and Voss saw the danger before anyone else. All three served the same forgotten king.",
+        "objectives": {
+          "0": {
+            "label": "Vision at the Grave of Captain Aldren"
+          },
+          "1": {
+            "label": "Vision at the Grave of High Priest Malric"
+          },
+          "2": {
+            "label": "Vision at the Grave of Royal Assassin Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "The Abandoned Crypt",
+        "text": "The visions point to the abandoned crypt in the western cliff. There is an old legend that the crypt housed a king. Perhaps Thornpeak sealed him below after Malric's ritual twisted him into something deathless. Enter the crypt and see what remains inside.",
+        "completion": "The keystone halves fit together, and Voss's diary names what they sealed: the signet of King Nythraxis. If the diary is true, that signet is the key to his tomb.",
+        "objectives": {
+          "0": {
+            "label": "Crypt Keystone Upper"
+          },
+          "1": {
+            "label": "Crypt Keystone Lower"
+          },
+          "2": {
+            "label": "Ancient Diary"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "The Bound Guardian",
+        "text": "Voss wrote that the survivors sealed the King's Signet behind an ancient guardian, so no one could reach the tomb of Nythraxis by accident or ambition. Take the Crypt Keystone to the ritual circle on the flat ground east of the abandoned crypt and south-east of the western grave. Use it there, break the guardian, and bring back the signet.",
+        "completion": "The three relics tell the same story: Aldren fought to defend his king, Malric broke the boundary of death, and Voss tried to stop what followed. The seal is weakening, and this signet is the key to Nythraxis's tomb. You are now attuned to enter The Crypt of Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Crypt Keystone used at the ritual circle"
+          },
+          "1": {
+            "label": "The Bound Guardian defeated"
+          },
+          "2": {
+            "label": "King's Signet"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "Mogger's Trail",
         "text": "Before you take the road north, Eastbrook has one last thorn in its side: Mogger. The brute has been trampling the lower meadow and driving the boars mad. Clear the meadow around his trail so we can see where he lairs.",
@@ -3528,6 +3695,11 @@ export const en: EnTranslations = {
         "enterText": "The air goes cold. Something vast breathes below...",
         "leaveText": "You stagger back into the mountain wind."
       },
+      "nythraxis_crypt": {
+        "name": "Abandoned Crypt",
+        "enterText": "You descend into the abandoned crypt beneath the forgotten ruins of Thornpeak.",
+        "leaveText": "You climb back out of the abandoned crypt into the mountain wind."
+      },
       "drowned_temple": {
         "name": "The Drowned Temple",
         "enterText": "You step through the moongate — the air turns to cold water and pale light, and the singing closes over your head.",
@@ -3682,7 +3854,7 @@ export const es: EnTranslations = {
   },
   "stats": {
     "title": "Estado del Reino",
-    "accountsCreated": "Cuentas Creadas",
+    "accountsCreated": "Jugadores",
     "playersOnline": "Jugadores en Línea",
     "realmName": "Nombre del Reino"
   },
@@ -3756,6 +3928,14 @@ export const es: EnTranslations = {
     "realmList": "Lista de Reinos",
     "loadingRealms": "Cargando reinos...",
     "changeRealm": "Cambiar de Reino",
+    "realm": "Reino",
+    "newCharacter": "Nuevo personaje",
+    "appearance": "Apariencia",
+    "class": "Clase",
+    "name": "Nombre",
+    "chromaOption": "Croma {n}",
+    "noAccountPrompt": "¿Nuevo en el reino?",
+    "haveAccountPrompt": "¿Ya tienes una cuenta?",
     "characters": "Personajes:",
     "createCharacter": "Crear Personaje",
     "characterName": "Nombre del Personaje",
@@ -3901,7 +4081,11 @@ export const es: EnTranslations = {
     "rename": "Renombrar",
     "newNamePlaceholder": "Nuevo nombre de personaje",
     "tabCharacters": "Personajes",
-    "tabCreate": "Crear"
+    "tabCreate": "Crear",
+    "portraitAlt": "Retrato de {name}",
+    "viewProfile": "Ver perfil",
+    "profile": "Perfil",
+    "closeProfile": "Cerrar perfil"
   },
   "deleteCharacter": {
     "title": "Eliminar personaje",
@@ -4106,6 +4290,7 @@ export const es: EnTranslations = {
         "jump": "Saltar",
         "autorun": "Alternar carrera automática",
         "target": "Objetivo enemigo más cercano",
+        "attackMove": "Mover y atacar",
         "interact": "Interactuar / Saquear",
         "char": "Personaje",
         "spellbook": "Libro de hechizos",
@@ -4211,6 +4396,7 @@ export const es: EnTranslations = {
     "combat": {
       "floatingMiss": "Fallo",
       "floatingDodge": "Esquiva",
+      "cannotMove": "¡No puedes moverte!",
       "attack": "ataque",
       "damageDone": "Tu {ability} golpea a {target} por {amount}.",
       "damageDoneCrit": "Tu {ability} golpea críticamente a {target} por {amount}.",
@@ -4554,6 +4740,9 @@ export const es: EnTranslations = {
       "greetingFallback": "Saludos.",
       "availableQuestAria": "Misión disponible: {name}",
       "readyQuestAria": "Misión lista para entregar: {name}",
+      "discussQuest": "Hablar sobre {name}.",
+      "discussQuestAria": "Hablar sobre la misión: {name}",
+      "nythraxisDeathlessKingWarning": "Las tres reliquias cuentan la misma historia: Aldren lucho para defender a su rey, Malric rompio el limite de la muerte y Voss intento detener lo que vino despues. El sello se debilita, y la cripta abandonada es el camino hacia abajo.",
       "browseGoods": "Déjame ver tus mercancías.",
       "browseGoodsAria": "Ver mercancías de {name}",
       "worldMarket": "Muéstrame el Mercado Mundial.",
@@ -4561,6 +4750,7 @@ export const es: EnTranslations = {
       "accept": "Aceptar",
       "decline": "Rechazar",
       "continue": "Continuar",
+      "done": "Listo",
       "completeQuest": "Completar misión",
       "turnIn": "Entregar",
       "back": "Atrás",
@@ -4602,8 +4792,12 @@ export const es: EnTranslations = {
     },
     "slots": {
       "mainhand": "Mano principal",
+      "helmet": "Cabeza",
+      "shoulder": "Hombros",
       "chest": "Pecho",
+      "waist": "Cintura",
       "legs": "Piernas",
+      "gloves": "Manos",
       "feet": "Pies"
     },
     "quality": {
@@ -4637,7 +4831,7 @@ export const es: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{kind} {quality}",
-      "damageSpeed": "{min} - {max} de daño  Velocidad {speed}",
+      "damageSpeed": "{min} - {max} de daño Velocidad {speed}",
       "dps": "({dps} de daño por segundo)",
       "dagger": "Daga",
       "armorStat": "{value} de armadura",
@@ -5869,8 +6063,74 @@ export const es: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Grebas de perla de Ysolei"
       },
+      "boundstone_girdle": {
+        "name": "Cinturón Piedravínculo"
+      },
+      "boundstone_helm": {
+        "name": "Yelmo Piedravínculo"
+      },
+      "cryptbone_helm": {
+        "name": "Yelmo Huesocripta"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Hombreras Huesocripta"
+      },
+      "deathlords_dread_visage": {
+        "name": "Visaje aterrador del Señor de la Muerte"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Guanteletes del Gravewyrm"
+      },
+      "gravewyrm_mantle": {
+        "name": "Manto del Gravewyrm"
+      },
+      "mistveil_cord": {
+        "name": "Cordón Veloniebla"
+      },
+      "mistveil_grips": {
+        "name": "Agarraderas Veloniebla"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Manto Aguja de Almas del nigromante"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Agarraderas Garra Sombravermis"
+      },
       "the_codfather": {
         "name": "El Bacaladrino"
+      },
+      "runed_bone_shard": {
+        "name": "Fragmento óseo rúnico"
+      },
+      "grave_sir_aldren": {
+        "name": "Tumba del capitán Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Tumba del sumo sacerdote Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Tumba del asesino real Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Puerta antigua de la cripta"
+      },
+      "captains_crest": {
+        "name": "Parte superior de la piedra clave"
+      },
+      "priests_sigil": {
+        "name": "Parte inferior de la piedra clave"
+      },
+      "royal_seal": {
+        "name": "Diario antiguo"
+      },
+      "crypt_keystone": {
+        "name": "Piedra clave de la cripta"
+      },
+      "crypt_ritual_circle": {
+        "name": "Círculo ritual"
+      },
+      "kings_signet": {
+        "name": "Anillo del rey"
       }
     },
     "mobs": {
@@ -6014,6 +6274,27 @@ export const es: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Hinchado del pantano"
+      },
+      "fallen_captain_aldren": {
+        "name": "Capitán caído Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Sacerdote corrupto Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Acechamuerte Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Visión del capitán Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Visión del sumo sacerdote Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Visión del asesino real Voss"
+      },
+      "bound_guardian": {
+        "name": "Guardián Vinculado"
       },
       "elder_bristleback": {
         "name": "Viejo Bristleback"
@@ -6864,6 +7145,64 @@ export const es: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Inquietud en los campos de huesos",
+        "text": "Algo ha cambiado en Thornpeak Heights, {playerName}. Los muertos ya no vagan sin rumbo. Se reunen y marchan por los campos de huesos del norte, mas alla de Highwatch, donde el viejo campo de batalla llega al camino del acantilado. Ve alli, investiga la inquietud entre los Revenants de Hueso, y trae cualquier prueba de lo que los impulsa.",
+        "completion": "El mismo simbolo aparece en cada fragmento... una corona. Ya lo he visto antes, tallado en viejas tumbas que ningun registro de Eastbrook recuerda.",
+        "objectives": {
+          "0": {
+            "label": "Fragmento óseo rúnico"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Tumbas de los olvidados",
+        "text": "He visto estas marcas antes, en tres viejas tumbas alrededor del campo de batalla del norte. El capitan Aldren yace en la elevacion oriental, el sumo sacerdote Malric cerca del camino central roto, y el asesino real Voss junto al acantilado occidental. Toca cada tumba y escucha, {playerName}. Los muertos pueden recordar lo que los vivos olvidaron.",
+        "completion": "Aldren siguio siendo leal, Malric se nego a aceptar la muerte y Voss vio el peligro antes que nadie. Los tres sirvieron al mismo rey olvidado.",
+        "objectives": {
+          "0": {
+            "label": "Visión en la tumba del capitán Aldren"
+          },
+          "1": {
+            "label": "Visión en la tumba del sumo sacerdote Malric"
+          },
+          "2": {
+            "label": "Visión en la tumba del asesino real Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "La cripta abandonada",
+        "text": "Las visiones senalan la cripta abandonada en el acantilado occidental. Hay una vieja leyenda que dice que la cripta albergaba a un rey. Tal vez Thornpeak lo sello abajo despues de que el ritual de Malric lo torciera en algo inmortal. Entra en la cripta y mira que queda dentro.",
+        "completion": "Las mitades de la piedra clave encajan, y el diario de Voss nombra lo que sellaron: el anillo del rey Nythraxis. Si el diario dice la verdad, ese anillo es la llave de su tumba.",
+        "objectives": {
+          "0": {
+            "label": "Parte superior de la piedra clave"
+          },
+          "1": {
+            "label": "Parte inferior de la piedra clave"
+          },
+          "2": {
+            "label": "Diario antiguo"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "El Guardián Vinculado",
+        "text": "Voss escribio que los supervivientes sellaron el Anillo del rey tras un guardian antiguo, para que nadie pudiera alcanzar la tumba de Nythraxis por accidente o ambicion. Lleva la Piedra clave de la cripta al circulo ritual en el terreno llano al este de la cripta abandonada y al sureste de la tumba occidental. Usala alli, rompe al guardian y trae el anillo.",
+        "completion": "Las tres reliquias cuentan la misma historia: Aldren lucho para defender a su rey, Malric rompio el limite de la muerte y Voss intento detener lo que vino despues. El sello se debilita, y este anillo es la llave de la tumba de Nythraxis. Ahora estas armonizado para entrar en La Cripta de Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Piedra clave usada en el círculo ritual"
+          },
+          "1": {
+            "label": "Guardián Vinculado derrotado"
+          },
+          "2": {
+            "label": "Anillo del rey"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "El rastro de Mogger",
         "text": "Antes de tomar el camino al norte, Eastbrook tiene una última espina clavada: Mogger. La bestia pisotea el prado bajo y enloquece a los jabalíes. Limpia la zona de su rastro para que veamos dónde se esconde.",
@@ -7062,6 +7401,11 @@ export const es: EnTranslations = {
         "enterText": "El aire se vuelve frío. Algo inmenso respira abajo...",
         "leaveText": "Sales tambaleándote al viento de la montaña."
       },
+      "nythraxis_crypt": {
+        "name": "Cripta abandonada",
+        "enterText": "Cruzas el umbral de la cripta abandonada.",
+        "leaveText": "Vuelves a salir al aire frío de Thornpeak."
+      },
       "drowned_temple": {
         "name": "El Templo Ahogado",
         "enterText": "Atraviesas la puerta lunar: el aire se vuelve agua fría y luz pálida, y el canto se cierra sobre tu cabeza.",
@@ -7216,7 +7560,7 @@ export const es_ES: EnTranslations = {
   },
   "stats": {
     "title": "Estado del Reino",
-    "accountsCreated": "Cuentas creadas",
+    "accountsCreated": "Jugadores",
     "playersOnline": "Jugadores en línea",
     "realmName": "Nombre del reino"
   },
@@ -7290,6 +7634,14 @@ export const es_ES: EnTranslations = {
     "realmList": "Lista de reinos",
     "loadingRealms": "Cargando reinos...",
     "changeRealm": "Cambiar de reino",
+    "realm": "Reino",
+    "newCharacter": "Nuevo personaje",
+    "appearance": "Apariencia",
+    "class": "Clase",
+    "name": "Nombre",
+    "chromaOption": "Croma {n}",
+    "noAccountPrompt": "¿Nuevo en el reino?",
+    "haveAccountPrompt": "¿Ya tienes una cuenta?",
     "characters": "Personajes:",
     "createCharacter": "Crear personaje",
     "characterName": "Nombre del personaje",
@@ -7435,7 +7787,11 @@ export const es_ES: EnTranslations = {
     "rename": "Renombrar",
     "newNamePlaceholder": "Nuevo nombre de personaje",
     "tabCharacters": "Personajes",
-    "tabCreate": "Crear"
+    "tabCreate": "Crear",
+    "portraitAlt": "Retrato de {name}",
+    "viewProfile": "Ver perfil",
+    "profile": "Perfil",
+    "closeProfile": "Cerrar perfil"
   },
   "deleteCharacter": {
     "title": "Eliminar personaje",
@@ -7640,6 +7996,7 @@ export const es_ES: EnTranslations = {
         "jump": "Saltar",
         "autorun": "Alternar carrera automática",
         "target": "Objetivo enemigo más cercano",
+        "attackMove": "Mover y atacar",
         "interact": "Interactuar / Saquear",
         "char": "Personaje",
         "spellbook": "Libro de hechizos",
@@ -7745,6 +8102,7 @@ export const es_ES: EnTranslations = {
     "combat": {
       "floatingMiss": "Fallo",
       "floatingDodge": "Esquiva",
+      "cannotMove": "¡No puedes moverte!",
       "attack": "ataque",
       "damageDone": "Tu {ability} golpea a {target} por {amount}.",
       "damageDoneCrit": "Tu {ability} golpea críticamente a {target} por {amount}.",
@@ -8088,6 +8446,9 @@ export const es_ES: EnTranslations = {
       "greetingFallback": "Saludos.",
       "availableQuestAria": "Misión disponible: {name}",
       "readyQuestAria": "Misión lista para entregar: {name}",
+      "discussQuest": "Hablar sobre {name}.",
+      "discussQuestAria": "Hablar sobre la misión: {name}",
+      "nythraxisDeathlessKingWarning": "Las tres reliquias cuentan la misma historia: Aldren lucho para defender a su rey, Malric rompio el limite de la muerte y Voss intento detener lo que vino despues. El sello se debilita, y la cripta abandonada es el camino hacia abajo.",
       "browseGoods": "Déjame ver tus mercancías.",
       "browseGoodsAria": "Ver mercancías de {name}",
       "worldMarket": "Muéstrame el Mercado Mundial.",
@@ -8095,6 +8456,7 @@ export const es_ES: EnTranslations = {
       "accept": "Aceptar",
       "decline": "Rechazar",
       "continue": "Continuar",
+      "done": "Listo",
       "completeQuest": "Completar misión",
       "turnIn": "Entregar",
       "back": "Atrás",
@@ -8136,8 +8498,12 @@ export const es_ES: EnTranslations = {
     },
     "slots": {
       "mainhand": "Mano principal",
+      "helmet": "Cabeza",
+      "shoulder": "Hombros",
       "chest": "Pecho",
+      "waist": "Cintura",
       "legs": "Piernas",
+      "gloves": "Manos",
       "feet": "Pies"
     },
     "quality": {
@@ -8171,7 +8537,7 @@ export const es_ES: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{kind} {quality}",
-      "damageSpeed": "{min} - {max} de daño  Velocidad {speed}",
+      "damageSpeed": "{min} - {max} de daño Velocidad {speed}",
       "dps": "({dps} de daño por segundo)",
       "dagger": "Daga",
       "armorStat": "{value} de armadura",
@@ -9403,8 +9769,74 @@ export const es_ES: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Grebas de perla de Ysolei"
       },
+      "boundstone_girdle": {
+        "name": "Cinturón Piedravínculo"
+      },
+      "boundstone_helm": {
+        "name": "Yelmo Piedravínculo"
+      },
+      "cryptbone_helm": {
+        "name": "Yelmo Huesocripta"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Hombreras Huesocripta"
+      },
+      "deathlords_dread_visage": {
+        "name": "Visaje aterrador del Señor de la Muerte"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Guanteletes del Gravewyrm"
+      },
+      "gravewyrm_mantle": {
+        "name": "Manto del Gravewyrm"
+      },
+      "mistveil_cord": {
+        "name": "Cordón Veloniebla"
+      },
+      "mistveil_grips": {
+        "name": "Agarraderas Veloniebla"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Manto Aguja de Almas del nigromante"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Agarraderas Garra Sombravermis"
+      },
       "the_codfather": {
         "name": "El Bacaladrino"
+      },
+      "runed_bone_shard": {
+        "name": "Fragmento óseo rúnico"
+      },
+      "grave_sir_aldren": {
+        "name": "Tumba del capitán Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Tumba del sumo sacerdote Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Tumba del asesino real Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Puerta antigua de la cripta"
+      },
+      "captains_crest": {
+        "name": "Parte superior de la piedra clave"
+      },
+      "priests_sigil": {
+        "name": "Parte inferior de la piedra clave"
+      },
+      "royal_seal": {
+        "name": "Diario antiguo"
+      },
+      "crypt_keystone": {
+        "name": "Piedra clave de la cripta"
+      },
+      "crypt_ritual_circle": {
+        "name": "Círculo ritual"
+      },
+      "kings_signet": {
+        "name": "Anillo del rey"
       }
     },
     "mobs": {
@@ -9548,6 +9980,27 @@ export const es_ES: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Hinchado del pantano"
+      },
+      "fallen_captain_aldren": {
+        "name": "Capitán caído Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Sacerdote corrupto Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Acechamuerte Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Visión del capitán Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Visión del sumo sacerdote Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Visión del asesino real Voss"
+      },
+      "bound_guardian": {
+        "name": "Guardián Vinculado"
       },
       "elder_bristleback": {
         "name": "Viejo Bristleback"
@@ -10398,6 +10851,64 @@ export const es_ES: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Inquietud en los campos de huesos",
+        "text": "Algo ha cambiado en Thornpeak Heights, {playerName}. Los muertos ya no vagan sin rumbo. Se reunen y marchan por los campos de huesos del norte, mas alla de Highwatch, donde el viejo campo de batalla llega al camino del acantilado. Ve alli, investiga la inquietud entre los Revenants de Hueso, y trae cualquier prueba de lo que los impulsa.",
+        "completion": "El mismo simbolo aparece en cada fragmento... una corona. Ya lo he visto antes, tallado en viejas tumbas que ningun registro de Eastbrook recuerda.",
+        "objectives": {
+          "0": {
+            "label": "Fragmento óseo rúnico"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Tumbas de los olvidados",
+        "text": "He visto estas marcas antes, en tres viejas tumbas alrededor del campo de batalla del norte. El capitan Aldren yace en la elevacion oriental, el sumo sacerdote Malric cerca del camino central roto, y el asesino real Voss junto al acantilado occidental. Toca cada tumba y escucha, {playerName}. Los muertos pueden recordar lo que los vivos olvidaron.",
+        "completion": "Aldren siguio siendo leal, Malric se nego a aceptar la muerte y Voss vio el peligro antes que nadie. Los tres sirvieron al mismo rey olvidado.",
+        "objectives": {
+          "0": {
+            "label": "Visión en la tumba del capitán Aldren"
+          },
+          "1": {
+            "label": "Visión en la tumba del sumo sacerdote Malric"
+          },
+          "2": {
+            "label": "Visión en la tumba del asesino real Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "La cripta abandonada",
+        "text": "Las visiones senalan la cripta abandonada en el acantilado occidental. Hay una vieja leyenda que dice que la cripta albergaba a un rey. Tal vez Thornpeak lo sello abajo despues de que el ritual de Malric lo torciera en algo inmortal. Entra en la cripta y mira que queda dentro.",
+        "completion": "Las mitades de la piedra clave encajan, y el diario de Voss nombra lo que sellaron: el anillo del rey Nythraxis. Si el diario dice la verdad, ese anillo es la llave de su tumba.",
+        "objectives": {
+          "0": {
+            "label": "Parte superior de la piedra clave"
+          },
+          "1": {
+            "label": "Parte inferior de la piedra clave"
+          },
+          "2": {
+            "label": "Diario antiguo"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "El Guardián Vinculado",
+        "text": "Voss escribio que los supervivientes sellaron el Anillo del rey tras un guardian antiguo, para que nadie pudiera alcanzar la tumba de Nythraxis por accidente o ambicion. Lleva la Piedra clave de la cripta al circulo ritual en el terreno llano al este de la cripta abandonada y al sureste de la tumba occidental. Usala alli, rompe al guardian y trae el anillo.",
+        "completion": "Las tres reliquias cuentan la misma historia: Aldren lucho para defender a su rey, Malric rompio el limite de la muerte y Voss intento detener lo que vino despues. El sello se debilita, y este anillo es la llave de la tumba de Nythraxis. Ahora estas armonizado para entrar en La Cripta de Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Piedra clave usada en el círculo ritual"
+          },
+          "1": {
+            "label": "Guardián Vinculado derrotado"
+          },
+          "2": {
+            "label": "Anillo del rey"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "El rastro de Mogger",
         "text": "Antes de tomar el camino al norte, Eastbrook tiene una última espina clavada: Mogger. La bestia pisotea el prado bajo y enloquece a los jabalíes. Limpia la zona de su rastro para que veamos dónde se esconde.",
@@ -10596,6 +11107,11 @@ export const es_ES: EnTranslations = {
         "enterText": "El aire se vuelve frío. Algo inmenso respira abajo...",
         "leaveText": "Sales tambaleándote al viento de la montaña."
       },
+      "nythraxis_crypt": {
+        "name": "Cripta abandonada",
+        "enterText": "Cruzas el umbral de la cripta abandonada.",
+        "leaveText": "Vuelves a salir al aire frío de Thornpeak."
+      },
       "drowned_temple": {
         "name": "El Templo Ahogado",
         "enterText": "Atraviesas la puerta lunar: el aire se vuelve agua fría y luz pálida, y el canto se cierra sobre tu cabeza.",
@@ -10750,7 +11266,7 @@ export const fr_FR: EnTranslations = {
   },
   "stats": {
     "title": "Statut du royaume",
-    "accountsCreated": "Comptes créés",
+    "accountsCreated": "Joueurs",
     "playersOnline": "Joueurs en ligne",
     "realmName": "Nom du royaume"
   },
@@ -10824,6 +11340,14 @@ export const fr_FR: EnTranslations = {
     "realmList": "Liste des royaumes",
     "loadingRealms": "Chargement des royaumes...",
     "changeRealm": "Changer de royaume",
+    "realm": "Royaume",
+    "newCharacter": "Nouveau personnage",
+    "appearance": "Apparence",
+    "class": "Classe",
+    "name": "Nom",
+    "chromaOption": "Chroma {n}",
+    "noAccountPrompt": "Nouveau dans le royaume ?",
+    "haveAccountPrompt": "Vous avez déjà un compte ?",
     "characters": "Personnages:",
     "createCharacter": "Créer un personnage",
     "characterName": "Nom du personnage",
@@ -10969,7 +11493,11 @@ export const fr_FR: EnTranslations = {
     "rename": "Renommer",
     "newNamePlaceholder": "Nouveau nom de personnage",
     "tabCharacters": "Personnages",
-    "tabCreate": "Créer"
+    "tabCreate": "Créer",
+    "portraitAlt": "Portrait de {name}",
+    "viewProfile": "Voir le profil",
+    "profile": "Profil",
+    "closeProfile": "Fermer le profil"
   },
   "deleteCharacter": {
     "title": "Supprimer le personnage",
@@ -11174,6 +11702,7 @@ export const fr_FR: EnTranslations = {
         "jump": "Sauter",
         "autorun": "Activer la course automatique",
         "target": "Cibler l'ennemi le plus proche",
+        "attackMove": "Déplacement offensif",
         "interact": "Interagir / Ramasser",
         "char": "Personnage",
         "spellbook": "Grimoire",
@@ -11279,6 +11808,7 @@ export const fr_FR: EnTranslations = {
     "combat": {
       "floatingMiss": "Raté",
       "floatingDodge": "Esquive",
+      "cannotMove": "Immobilisé !",
       "attack": "attaque",
       "damageDone": "Votre {ability} touche {target} pour {amount}.",
       "damageDoneCrit": "Votre {ability} inflige un coup critique à {target} pour {amount}.",
@@ -11622,6 +12152,9 @@ export const fr_FR: EnTranslations = {
       "greetingFallback": "Salutations.",
       "availableQuestAria": "Quête disponible : {name}",
       "readyQuestAria": "Quête prête à rendre : {name}",
+      "discussQuest": "Discuter de {name}.",
+      "discussQuestAria": "Discuter de la quête : {name}",
+      "nythraxisDeathlessKingWarning": "Les trois reliques racontent la meme histoire: Aldren combattit pour defendre son roi, Malric franchit la frontiere de la mort, et Voss tenta d arreter ce qui suivit. Le sceau faiblit, et la crypte abandonnee est le chemin vers les profondeurs.",
       "browseGoods": "Laissez-moi voir vos marchandises.",
       "browseGoodsAria": "Voir les marchandises de {name}",
       "worldMarket": "Montrez-moi le marché mondial.",
@@ -11629,6 +12162,7 @@ export const fr_FR: EnTranslations = {
       "accept": "Accepter",
       "decline": "Refuser",
       "continue": "Continuer",
+      "done": "Terminé",
       "completeQuest": "Terminer la quête",
       "turnIn": "Rendre",
       "back": "Retour",
@@ -11670,8 +12204,12 @@ export const fr_FR: EnTranslations = {
     },
     "slots": {
       "mainhand": "Main droite",
+      "helmet": "Tête",
+      "shoulder": "Épaules",
       "chest": "Torse",
+      "waist": "Taille",
       "legs": "Jambes",
+      "gloves": "Mains",
       "feet": "Pieds"
     },
     "quality": {
@@ -11705,7 +12243,7 @@ export const fr_FR: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{kind} {quality}",
-      "damageSpeed": "{min} - {max} points de dégâts  Vitesse {speed}",
+      "damageSpeed": "{min} - {max} points de dégâts Vitesse {speed}",
       "dps": "({dps} dégâts par seconde)",
       "dagger": "Dague",
       "armorStat": "{value} armure",
@@ -12937,8 +13475,74 @@ export const fr_FR: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Jambières de perle d'Ysolei"
       },
+      "boundstone_girdle": {
+        "name": "Ceinturon de pierre-liée"
+      },
+      "boundstone_helm": {
+        "name": "Heaume de pierre-liée"
+      },
+      "cryptbone_helm": {
+        "name": "Heaume d'os de crypte"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Espauliers d'os de crypte"
+      },
+      "deathlords_dread_visage": {
+        "name": "Visage d'effroi du Seigneur de mort"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Gantelets du Gravewyrm"
+      },
+      "gravewyrm_mantle": {
+        "name": "Mantelet du Gravewyrm"
+      },
+      "mistveil_cord": {
+        "name": "Corde Voilebrume"
+      },
+      "mistveil_grips": {
+        "name": "Poignes Voilebrume"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Mantelet Flèche-d'âme du nécromancien"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Poignes Serre Ombrewyrm"
+      },
       "the_codfather": {
         "name": "Capitaine brochet"
+      },
+      "runed_bone_shard": {
+        "name": "Fragment d'os runique"
+      },
+      "grave_sir_aldren": {
+        "name": "Tombe du capitaine Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Tombe du grand prêtre Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Tombe de l'assassin royal Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Porte antique de la crypte"
+      },
+      "captains_crest": {
+        "name": "Partie superieure de la clef"
+      },
+      "priests_sigil": {
+        "name": "Partie inferieure de la clef"
+      },
+      "royal_seal": {
+        "name": "Journal ancien"
+      },
+      "crypt_keystone": {
+        "name": "Clef de la crypte"
+      },
+      "crypt_ritual_circle": {
+        "name": "Cercle rituel"
+      },
+      "kings_signet": {
+        "name": "Chevalière du roi"
       }
     },
     "mobs": {
@@ -13082,6 +13686,27 @@ export const fr_FR: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Boursouflé du bourbier"
+      },
+      "fallen_captain_aldren": {
+        "name": "Capitaine déchu Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Prêtre corrompu Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Traquemort Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Vision du capitaine Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Vision du grand prêtre Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Vision de l'assassin royal Voss"
+      },
+      "bound_guardian": {
+        "name": "Gardien lié"
       },
       "elder_bristleback": {
         "name": "Ancien Bristleback"
@@ -13932,6 +14557,64 @@ export const fr_FR: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Agitation dans les champs d os",
+        "text": "Quelque chose a change dans les hauteurs de Thornpeak, {playerName}. Les morts ne vagabondent plus sans but. Ils se rassemblent et marchent dans les champs d os du nord, au-dela de Highwatch, la ou l ancien champ de bataille rejoint la route de la falaise. Allez-y, enquetez sur cette agitation parmi les revenants cuirasses d os, et rapportez toute preuve de ce qui les pousse.",
+        "completion": "Le meme symbole apparait sur chaque fragment... une couronne. Je l ai deja vu, grave sur de vieilles tombes qu aucun registre d Eastbrook ne mentionne.",
+        "objectives": {
+          "0": {
+            "label": "Fragment d'os runique"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Tombes des oubliés",
+        "text": "J ai deja vu ces marques, sur trois vieilles tombes autour du champ de bataille du nord. Le capitaine Aldren repose sur la hauteur orientale, le grand pretre Malric pres de la route centrale brisee, et l assassin royal Voss pres de la falaise occidentale. Touchez chaque tombe et ecoutez, {playerName}. Les morts peuvent se souvenir de ce que les vivants ont oublie.",
+        "completion": "Aldren resta loyal, Malric refusa d accepter la mort, et Voss vit le danger avant tous les autres. Tous trois servaient le meme roi oublie.",
+        "objectives": {
+          "0": {
+            "label": "Vision à la tombe du capitaine Aldren"
+          },
+          "1": {
+            "label": "Vision à la tombe du grand prêtre Malric"
+          },
+          "2": {
+            "label": "Vision à la tombe de l'assassin royal Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "La crypte abandonnée",
+        "text": "Les visions indiquent la crypte abandonnee dans la falaise occidentale. Une vieille legende dit que la crypte abritait un roi. Peut-etre Thornpeak l a-t-il scelle la-dessous apres que le rituel de Malric l eut tordu en quelque chose d immortel. Entrez dans la crypte et voyez ce qu il reste a l interieur.",
+        "completion": "Les deux moities de la clef s assemblent, et le journal de Voss nomme ce qu elles ont scelle: la chevaliere du roi Nythraxis. Si le journal dit vrai, cette chevaliere est la clef de sa tombe.",
+        "objectives": {
+          "0": {
+            "label": "Partie superieure de la clef"
+          },
+          "1": {
+            "label": "Partie inferieure de la clef"
+          },
+          "2": {
+            "label": "Journal ancien"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "Le Gardien lié",
+        "text": "Voss ecrivit que les survivants scellerent la Chevaliere du roi derriere un gardien ancien, afin que nul n atteigne la tombe de Nythraxis par accident ou par ambition. Portez la Clef de la crypte au cercle rituel sur le terrain plat a l est de la crypte abandonnee et au sud-est de la tombe occidentale. Utilisez-la la-bas, brisez le gardien et rapportez la chevaliere.",
+        "completion": "Les trois reliques racontent la meme histoire: Aldren combattit pour defendre son roi, Malric franchit la frontiere de la mort, et Voss tenta d arreter ce qui suivit. Le sceau faiblit, et cette chevaliere est la clef de la tombe de Nythraxis. Vous etes maintenant harmonise pour entrer dans la Crypte de Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Clef utilisée au cercle rituel"
+          },
+          "1": {
+            "label": "Gardien lié vaincu"
+          },
+          "2": {
+            "label": "Chevaliere du roi"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "La piste de Mogger",
         "text": "Avant de prendre la route du nord, Eastbrook a une dernière épine dans le pied : Mogger. La brute piétine le pré bas et rend les sangliers fous. Nettoyez le pré autour de sa piste pour que nous voyions où il se terre.",
@@ -14130,6 +14813,11 @@ export const fr_FR: EnTranslations = {
         "enterText": "L'air devient froid. Quelque chose d'immense respire en bas...",
         "leaveText": "Vous titubez dans le vent de la montagne."
       },
+      "nythraxis_crypt": {
+        "name": "Crypte abandonnée",
+        "enterText": "Vous franchissez le seuil de la crypte abandonnée.",
+        "leaveText": "Vous ressortez dans l'air froid de Thornpeak."
+      },
       "drowned_temple": {
         "name": "Le Temple noyé",
         "enterText": "Tu franchis la porte de lune — l'air se mue en eau froide et en lumière blafarde, et le chant se referme au-dessus de ta tête.",
@@ -14284,7 +14972,7 @@ export const fr_CA: EnTranslations = {
   },
   "stats": {
     "title": "Statut du royaume",
-    "accountsCreated": "Comptes créés",
+    "accountsCreated": "Joueurs",
     "playersOnline": "Joueurs en ligne",
     "realmName": "Nom du royaume"
   },
@@ -14358,6 +15046,14 @@ export const fr_CA: EnTranslations = {
     "realmList": "Liste des royaumes",
     "loadingRealms": "Chargement des royaumes...",
     "changeRealm": "Changer de royaume",
+    "realm": "Royaume",
+    "newCharacter": "Nouveau personnage",
+    "appearance": "Apparence",
+    "class": "Classe",
+    "name": "Nom",
+    "chromaOption": "Chroma {n}",
+    "noAccountPrompt": "Nouveau dans le royaume ?",
+    "haveAccountPrompt": "Vous avez déjà un compte ?",
     "characters": "Personnages:",
     "createCharacter": "Créer un personnage",
     "characterName": "Nom du personnage",
@@ -14503,7 +15199,11 @@ export const fr_CA: EnTranslations = {
     "rename": "Renommer",
     "newNamePlaceholder": "Nouveau nom de personnage",
     "tabCharacters": "Personnages",
-    "tabCreate": "Créer"
+    "tabCreate": "Créer",
+    "portraitAlt": "Portrait de {name}",
+    "viewProfile": "Voir le profil",
+    "profile": "Profil",
+    "closeProfile": "Fermer le profil"
   },
   "deleteCharacter": {
     "title": "Supprimer le personnage",
@@ -14708,6 +15408,7 @@ export const fr_CA: EnTranslations = {
         "jump": "Sauter",
         "autorun": "Activer la course automatique",
         "target": "Cibler l'ennemi le plus proche",
+        "attackMove": "Déplacement offensif",
         "interact": "Interagir / Ramasser",
         "char": "Personnage",
         "spellbook": "Grimoire",
@@ -14813,6 +15514,7 @@ export const fr_CA: EnTranslations = {
     "combat": {
       "floatingMiss": "Raté",
       "floatingDodge": "Esquive",
+      "cannotMove": "Immobilisé !",
       "attack": "attaque",
       "damageDone": "Votre {ability} touche {target} pour {amount}.",
       "damageDoneCrit": "Votre {ability} inflige un coup critique à {target} pour {amount}.",
@@ -15156,6 +15858,9 @@ export const fr_CA: EnTranslations = {
       "greetingFallback": "Salutations.",
       "availableQuestAria": "Quête disponible : {name}",
       "readyQuestAria": "Quête prête à rendre : {name}",
+      "discussQuest": "Discuter de {name}.",
+      "discussQuestAria": "Discuter de la quête : {name}",
+      "nythraxisDeathlessKingWarning": "Les trois reliques racontent la meme histoire: Aldren combattit pour defendre son roi, Malric franchit la frontiere de la mort, et Voss tenta d arreter ce qui suivit. Le sceau faiblit, et la crypte abandonnee est le chemin vers les profondeurs.",
       "browseGoods": "Laissez-moi voir vos marchandises.",
       "browseGoodsAria": "Voir les marchandises de {name}",
       "worldMarket": "Montrez-moi le marché mondial.",
@@ -15163,6 +15868,7 @@ export const fr_CA: EnTranslations = {
       "accept": "Accepter",
       "decline": "Refuser",
       "continue": "Continuer",
+      "done": "Terminé",
       "completeQuest": "Terminer la quête",
       "turnIn": "Rendre",
       "back": "Retour",
@@ -15204,8 +15910,12 @@ export const fr_CA: EnTranslations = {
     },
     "slots": {
       "mainhand": "Main droite",
+      "helmet": "Tête",
+      "shoulder": "Épaules",
       "chest": "Torse",
+      "waist": "Taille",
       "legs": "Jambes",
+      "gloves": "Mains",
       "feet": "Pieds"
     },
     "quality": {
@@ -15239,7 +15949,7 @@ export const fr_CA: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{kind} {quality}",
-      "damageSpeed": "{min} - {max} points de dégâts  Vitesse {speed}",
+      "damageSpeed": "{min} - {max} points de dégâts Vitesse {speed}",
       "dps": "({dps} dégâts par seconde)",
       "dagger": "Dague",
       "armorStat": "{value} armure",
@@ -16471,8 +17181,74 @@ export const fr_CA: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Jambières de perle d'Ysolei"
       },
+      "boundstone_girdle": {
+        "name": "Ceinturon de pierre-liée"
+      },
+      "boundstone_helm": {
+        "name": "Heaume de pierre-liée"
+      },
+      "cryptbone_helm": {
+        "name": "Heaume d'os de crypte"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Espauliers d'os de crypte"
+      },
+      "deathlords_dread_visage": {
+        "name": "Visage d'effroi du Seigneur de mort"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Gantelets du Gravewyrm"
+      },
+      "gravewyrm_mantle": {
+        "name": "Mantelet du Gravewyrm"
+      },
+      "mistveil_cord": {
+        "name": "Corde Voilebrume"
+      },
+      "mistveil_grips": {
+        "name": "Poignes Voilebrume"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Mantelet Flèche-d'âme du nécromancien"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Poignes Serre Ombrewyrm"
+      },
       "the_codfather": {
         "name": "Capitaine brochet"
+      },
+      "runed_bone_shard": {
+        "name": "Fragment d'os runique"
+      },
+      "grave_sir_aldren": {
+        "name": "Tombe du capitaine Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Tombe du grand prêtre Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Tombe de l'assassin royal Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Porte antique de la crypte"
+      },
+      "captains_crest": {
+        "name": "Partie superieure de la clef"
+      },
+      "priests_sigil": {
+        "name": "Partie inferieure de la clef"
+      },
+      "royal_seal": {
+        "name": "Journal ancien"
+      },
+      "crypt_keystone": {
+        "name": "Clef de la crypte"
+      },
+      "crypt_ritual_circle": {
+        "name": "Cercle rituel"
+      },
+      "kings_signet": {
+        "name": "Chevalière du roi"
       }
     },
     "mobs": {
@@ -16616,6 +17392,27 @@ export const fr_CA: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Boursouflé du bourbier"
+      },
+      "fallen_captain_aldren": {
+        "name": "Capitaine déchu Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Prêtre corrompu Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Traquemort Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Vision du capitaine Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Vision du grand prêtre Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Vision de l'assassin royal Voss"
+      },
+      "bound_guardian": {
+        "name": "Gardien lié"
       },
       "elder_bristleback": {
         "name": "Ancien Bristleback"
@@ -17466,6 +18263,64 @@ export const fr_CA: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Agitation dans les champs d os",
+        "text": "Quelque chose a change dans les hauteurs de Thornpeak, {playerName}. Les morts ne vagabondent plus sans but. Ils se rassemblent et marchent dans les champs d os du nord, au-dela de Highwatch, la ou l ancien champ de bataille rejoint la route de la falaise. Allez-y, enquetez sur cette agitation parmi les revenants cuirasses d os, et rapportez toute preuve de ce qui les pousse.",
+        "completion": "Le meme symbole apparait sur chaque fragment... une couronne. Je l ai deja vu, grave sur de vieilles tombes qu aucun registre d Eastbrook ne mentionne.",
+        "objectives": {
+          "0": {
+            "label": "Fragment d'os runique"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Tombes des oubliés",
+        "text": "J ai deja vu ces marques, sur trois vieilles tombes autour du champ de bataille du nord. Le capitaine Aldren repose sur la hauteur orientale, le grand pretre Malric pres de la route centrale brisee, et l assassin royal Voss pres de la falaise occidentale. Touchez chaque tombe et ecoutez, {playerName}. Les morts peuvent se souvenir de ce que les vivants ont oublie.",
+        "completion": "Aldren resta loyal, Malric refusa d accepter la mort, et Voss vit le danger avant tous les autres. Tous trois servaient le meme roi oublie.",
+        "objectives": {
+          "0": {
+            "label": "Vision à la tombe du capitaine Aldren"
+          },
+          "1": {
+            "label": "Vision à la tombe du grand prêtre Malric"
+          },
+          "2": {
+            "label": "Vision à la tombe de l'assassin royal Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "La crypte abandonnée",
+        "text": "Les visions indiquent la crypte abandonnee dans la falaise occidentale. Une vieille legende dit que la crypte abritait un roi. Peut-etre Thornpeak l a-t-il scelle la-dessous apres que le rituel de Malric l eut tordu en quelque chose d immortel. Entrez dans la crypte et voyez ce qu il reste a l interieur.",
+        "completion": "Les deux moities de la clef s assemblent, et le journal de Voss nomme ce qu elles ont scelle: la chevaliere du roi Nythraxis. Si le journal dit vrai, cette chevaliere est la clef de sa tombe.",
+        "objectives": {
+          "0": {
+            "label": "Partie superieure de la clef"
+          },
+          "1": {
+            "label": "Partie inferieure de la clef"
+          },
+          "2": {
+            "label": "Journal ancien"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "Le Gardien lié",
+        "text": "Voss ecrivit que les survivants scellerent la Chevaliere du roi derriere un gardien ancien, afin que nul n atteigne la tombe de Nythraxis par accident ou par ambition. Portez la Clef de la crypte au cercle rituel sur le terrain plat a l est de la crypte abandonnee et au sud-est de la tombe occidentale. Utilisez-la la-bas, brisez le gardien et rapportez la chevaliere.",
+        "completion": "Les trois reliques racontent la meme histoire: Aldren combattit pour defendre son roi, Malric franchit la frontiere de la mort, et Voss tenta d arreter ce qui suivit. Le sceau faiblit, et cette chevaliere est la clef de la tombe de Nythraxis. Vous etes maintenant harmonise pour entrer dans la Crypte de Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Clef utilisée au cercle rituel"
+          },
+          "1": {
+            "label": "Gardien lié vaincu"
+          },
+          "2": {
+            "label": "Chevaliere du roi"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "La piste de Mogger",
         "text": "Avant de prendre la route du nord, Eastbrook a une dernière épine dans le pied : Mogger. La brute piétine le pré bas et rend les sangliers fous. Nettoyez le pré autour de sa piste pour que nous voyions où il se terre.",
@@ -17664,6 +18519,11 @@ export const fr_CA: EnTranslations = {
         "enterText": "L'air devient froid. Quelque chose d'immense respire en bas...",
         "leaveText": "Vous titubez dans le vent de la montagne."
       },
+      "nythraxis_crypt": {
+        "name": "Crypte abandonnée",
+        "enterText": "Vous franchissez le seuil de la crypte abandonnée.",
+        "leaveText": "Vous ressortez dans l'air froid de Thornpeak."
+      },
       "drowned_temple": {
         "name": "Le Temple noyé",
         "enterText": "Tu franchis la porte de lune — l'air se mue en eau froide et en lumière blafarde, et le chant se referme au-dessus de ta tête.",
@@ -17818,7 +18678,7 @@ export const en_CA: EnTranslations = {
   },
   "stats": {
     "title": "Realm Status",
-    "accountsCreated": "Accounts Created",
+    "accountsCreated": "Players",
     "playersOnline": "Players Online",
     "realmName": "Realm Name"
   },
@@ -17892,6 +18752,14 @@ export const en_CA: EnTranslations = {
     "realmList": "Realm List",
     "loadingRealms": "Loading realms...",
     "changeRealm": "Change Realm",
+    "realm": "Realm",
+    "newCharacter": "New Character",
+    "appearance": "Appearance",
+    "class": "Class",
+    "name": "Name",
+    "chromaOption": "Chroma {n}",
+    "noAccountPrompt": "New to the realm?",
+    "haveAccountPrompt": "Already have an account?",
     "characters": "Characters:",
     "createCharacter": "Create Character",
     "characterName": "Character Name",
@@ -18037,7 +18905,11 @@ export const en_CA: EnTranslations = {
     "rename": "Rename",
     "newNamePlaceholder": "New character name",
     "tabCharacters": "Characters",
-    "tabCreate": "Create"
+    "tabCreate": "Create",
+    "portraitAlt": "Portrait of {name}",
+    "viewProfile": "View Profile",
+    "profile": "Profile",
+    "closeProfile": "Close profile"
   },
   "deleteCharacter": {
     "title": "Delete Character",
@@ -18242,6 +19114,7 @@ export const en_CA: EnTranslations = {
         "jump": "Jump",
         "autorun": "Toggle Autorun",
         "target": "Target Nearest Enemy",
+        "attackMove": "Attack Move",
         "interact": "Interact / Loot",
         "char": "Character",
         "spellbook": "Spellbook",
@@ -18347,6 +19220,7 @@ export const en_CA: EnTranslations = {
     "combat": {
       "floatingMiss": "Miss",
       "floatingDodge": "Dodge",
+      "cannotMove": "Can't move!",
       "attack": "attack",
       "damageDone": "Your {ability} hits {target} for {amount}.",
       "damageDoneCrit": "Your {ability} critically hits {target} for {amount}.",
@@ -18690,6 +19564,9 @@ export const en_CA: EnTranslations = {
       "greetingFallback": "Greetings.",
       "availableQuestAria": "Available quest: {name}",
       "readyQuestAria": "Quest ready to turn in: {name}",
+      "discussQuest": "Discuss {name}.",
+      "discussQuestAria": "Discuss quest: {name}",
+      "nythraxisDeathlessKingWarning": "The three relics tell the same story: Aldren fought to defend his king, Malric broke the boundary of death, and Voss tried to stop what followed. The seal is weakening, and the abandoned crypt is the way down.",
       "browseGoods": "Let me browse your goods.",
       "browseGoodsAria": "Browse goods from {name}",
       "worldMarket": "Show me the World Market.",
@@ -18697,6 +19574,7 @@ export const en_CA: EnTranslations = {
       "accept": "Accept",
       "decline": "Decline",
       "continue": "Continue",
+      "done": "Done",
       "completeQuest": "Complete Quest",
       "turnIn": "Turn In",
       "back": "Back",
@@ -18738,8 +19616,12 @@ export const en_CA: EnTranslations = {
     },
     "slots": {
       "mainhand": "Main Hand",
+      "helmet": "Helmet",
+      "shoulder": "Shoulder",
       "chest": "Chest",
+      "waist": "Waist",
       "legs": "Legs",
+      "gloves": "Gloves",
       "feet": "Feet"
     },
     "quality": {
@@ -18773,7 +19655,7 @@ export const en_CA: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
-      "damageSpeed": "{min} - {max} Damage  Speed {speed}",
+      "damageSpeed": "{min} - {max} Damage Speed {speed}",
       "dps": "({dps} damage per second)",
       "dagger": "Dagger",
       "armorStat": "{value} Armor",
@@ -20005,8 +20887,74 @@ export const en_CA: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Ysolei's Pearl Greaves"
       },
+      "boundstone_girdle": {
+        "name": "Boundstone Girdle"
+      },
+      "boundstone_helm": {
+        "name": "Boundstone Helm"
+      },
+      "cryptbone_helm": {
+        "name": "Cryptbone Helm"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Cryptbone Pauldrons"
+      },
+      "deathlords_dread_visage": {
+        "name": "Deathlord's Dread Visage"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Gravewyrm Gauntlets"
+      },
+      "gravewyrm_mantle": {
+        "name": "Gravewyrm Mantle"
+      },
+      "mistveil_cord": {
+        "name": "Mistveil Cord"
+      },
+      "mistveil_grips": {
+        "name": "Mistveil Grips"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Necromancer's Soulspire Mantle"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Wyrmshadow Talongrips"
+      },
       "the_codfather": {
         "name": "The Codfather"
+      },
+      "runed_bone_shard": {
+        "name": "Runed Bone Shard"
+      },
+      "grave_sir_aldren": {
+        "name": "Grave of Captain Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Grave of High Priest Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Grave of Royal Assassin Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Ancient Crypt Door"
+      },
+      "captains_crest": {
+        "name": "Crypt Keystone Upper"
+      },
+      "priests_sigil": {
+        "name": "Crypt Keystone Lower"
+      },
+      "royal_seal": {
+        "name": "Ancient Diary"
+      },
+      "crypt_keystone": {
+        "name": "Crypt Keystone"
+      },
+      "crypt_ritual_circle": {
+        "name": "Ritual Circle"
+      },
+      "kings_signet": {
+        "name": "King's Signet"
       }
     },
     "mobs": {
@@ -20150,6 +21098,27 @@ export const en_CA: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Bog Bloat"
+      },
+      "fallen_captain_aldren": {
+        "name": "Fallen Captain Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Corrupted Priest Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Deathstalker Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Vision of Captain Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Vision of High Priest Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Vision of Royal Assassin Voss"
+      },
+      "bound_guardian": {
+        "name": "The Bound Guardian"
       },
       "elder_bristleback": {
         "name": "Elder Bristleback"
@@ -21000,6 +21969,64 @@ export const en_CA: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Unrest in the Bonefields",
+        "text": "Something has changed in Thornpeak Heights, {playerName}. The dead no longer wander aimlessly. They gather and march through the northern bonefields beyond Highwatch, where the old battlefield meets the cliff road. Go there, investigate the unrest among the Boneclad Revenants, and bring back any proof of what is driving them.",
+        "completion": "The same mark appears on every shard... a crown. I have seen this before, cut into old graves no Eastbrook record remembers.",
+        "objectives": {
+          "0": {
+            "label": "Runed Bone Shard"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Graves of the Forgotten",
+        "text": "I have seen these marks before, on three old graves around the northern battlefield. Captain Aldren lies on the eastern rise, High Priest Malric near the central broken road, and Royal Assassin Voss by the western cliff. Touch each grave and listen, {playerName}. The dead may remember what the living forgot.",
+        "completion": "Aldren remained loyal, Malric refused to accept death, and Voss saw the danger before anyone else. All three served the same forgotten king.",
+        "objectives": {
+          "0": {
+            "label": "Vision at the Grave of Captain Aldren"
+          },
+          "1": {
+            "label": "Vision at the Grave of High Priest Malric"
+          },
+          "2": {
+            "label": "Vision at the Grave of Royal Assassin Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "The Abandoned Crypt",
+        "text": "The visions point to the abandoned crypt in the western cliff. There is an old legend that the crypt housed a king. Perhaps Thornpeak sealed him below after Malric's ritual twisted him into something deathless. Enter the crypt and see what remains inside.",
+        "completion": "The keystone halves fit together, and Voss's diary names what they sealed: the signet of King Nythraxis. If the diary is true, that signet is the key to his tomb.",
+        "objectives": {
+          "0": {
+            "label": "Crypt Keystone Upper"
+          },
+          "1": {
+            "label": "Crypt Keystone Lower"
+          },
+          "2": {
+            "label": "Ancient Diary"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "The Bound Guardian",
+        "text": "Voss wrote that the survivors sealed the King's Signet behind an ancient guardian, so no one could reach the tomb of Nythraxis by accident or ambition. Take the Crypt Keystone to the ritual circle on the flat ground east of the abandoned crypt and south-east of the western grave. Use it there, break the guardian, and bring back the signet.",
+        "completion": "The three relics tell the same story: Aldren fought to defend his king, Malric broke the boundary of death, and Voss tried to stop what followed. The seal is weakening, and this signet is the key to Nythraxis's tomb. You are now attuned to enter The Crypt of Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Crypt Keystone used at the ritual circle"
+          },
+          "1": {
+            "label": "The Bound Guardian defeated"
+          },
+          "2": {
+            "label": "King's Signet"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "Mogger's Trail",
         "text": "Before you take the road north, Eastbrook has one last thorn in its side: Mogger. The brute has been trampling the lower meadow and driving the boars mad. Clear the meadow around his trail so we can see where he lairs.",
@@ -21198,6 +22225,11 @@ export const en_CA: EnTranslations = {
         "enterText": "The air goes cold. Something vast breathes below...",
         "leaveText": "You stagger back into the mountain wind."
       },
+      "nythraxis_crypt": {
+        "name": "Abandoned Crypt",
+        "enterText": "You descend into the abandoned crypt beneath the forgotten ruins of Thornpeak.",
+        "leaveText": "You climb back out of the abandoned crypt into the mountain wind."
+      },
       "drowned_temple": {
         "name": "The Drowned Temple",
         "enterText": "You step through the moongate — the air turns to cold water and pale light, and the singing closes over your head.",
@@ -21352,7 +22384,7 @@ export const it_IT: EnTranslations = {
   },
   "stats": {
     "title": "Stato del Reame",
-    "accountsCreated": "Account creati",
+    "accountsCreated": "Giocatori",
     "playersOnline": "Giocatori online",
     "realmName": "Nome del reame"
   },
@@ -21426,6 +22458,14 @@ export const it_IT: EnTranslations = {
     "realmList": "Lista dei reami",
     "loadingRealms": "Caricamento dei reami...",
     "changeRealm": "Cambia reame",
+    "realm": "Reame",
+    "newCharacter": "Nuovo personaggio",
+    "appearance": "Aspetto",
+    "class": "Classe",
+    "name": "Nome",
+    "chromaOption": "Croma {n}",
+    "noAccountPrompt": "Nuovo nel reame?",
+    "haveAccountPrompt": "Hai già un account?",
     "characters": "Personaggi:",
     "createCharacter": "Crea personaggio",
     "characterName": "Nome del personaggio",
@@ -21571,7 +22611,11 @@ export const it_IT: EnTranslations = {
     "rename": "Rinomina",
     "newNamePlaceholder": "Nuovo nome personaggio",
     "tabCharacters": "Personaggi",
-    "tabCreate": "Crea"
+    "tabCreate": "Crea",
+    "portraitAlt": "Ritratto di {name}",
+    "viewProfile": "Vedi profilo",
+    "profile": "Profilo",
+    "closeProfile": "Chiudi profilo"
   },
   "deleteCharacter": {
     "title": "Elimina personaggio",
@@ -21776,6 +22820,7 @@ export const it_IT: EnTranslations = {
         "jump": "Salta",
         "autorun": "Attiva corsa automatica",
         "target": "Bersaglia il nemico più vicino",
+        "attackMove": "Movimento d'attacco",
         "interact": "Interagisci / Saccheggia",
         "char": "Personaggio",
         "spellbook": "Libro degli incantesimi",
@@ -21881,6 +22926,7 @@ export const it_IT: EnTranslations = {
     "combat": {
       "floatingMiss": "Mancato",
       "floatingDodge": "Schivata",
+      "cannotMove": "Non puoi muoverti!",
       "attack": "attacco",
       "damageDone": "Il tuo {ability} colpisce {target} per {amount}.",
       "damageDoneCrit": "Il tuo {ability} colpisce criticamente {target} per {amount}.",
@@ -22224,6 +23270,9 @@ export const it_IT: EnTranslations = {
       "greetingFallback": "Salute.",
       "availableQuestAria": "Missione disponibile: {name}",
       "readyQuestAria": "Missione pronta da consegnare: {name}",
+      "discussQuest": "Discuti {name}.",
+      "discussQuestAria": "Discuti missione: {name}",
+      "nythraxisDeathlessKingWarning": "Le tre reliquie raccontano la stessa storia: Aldren combatte per difendere il suo re, Malric spezzo il confine della morte e Voss tento di fermare cio che segui. Il sigillo si indebolisce, e la cripta abbandonata e la via verso il basso.",
       "browseGoods": "Fammi vedere la tua merce.",
       "browseGoodsAria": "Vedi la merce di {name}",
       "worldMarket": "Mostrami il Mercato Mondiale.",
@@ -22231,6 +23280,7 @@ export const it_IT: EnTranslations = {
       "accept": "Accetta",
       "decline": "Rifiuta",
       "continue": "Continua",
+      "done": "Fatto",
       "completeQuest": "Completa missione",
       "turnIn": "Consegna",
       "back": "Indietro",
@@ -22272,8 +23322,12 @@ export const it_IT: EnTranslations = {
     },
     "slots": {
       "mainhand": "Mano principale",
+      "helmet": "Testa",
+      "shoulder": "Spalle",
       "chest": "Torace",
+      "waist": "Vita",
       "legs": "Gambe",
+      "gloves": "Mani",
       "feet": "Piedi"
     },
     "quality": {
@@ -22307,7 +23361,7 @@ export const it_IT: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{kind} {quality}",
-      "damageSpeed": "{min} - {max} danni  Velocità {speed}",
+      "damageSpeed": "{min} - {max} danni Velocità {speed}",
       "dps": "({dps} danni al secondo)",
       "dagger": "Pugnale",
       "armorStat": "{value} armatura",
@@ -23539,8 +24593,74 @@ export const it_IT: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Schinieri di Perla di Ysolei"
       },
+      "boundstone_girdle": {
+        "name": "Cintura Pietrvincolo"
+      },
+      "boundstone_helm": {
+        "name": "Elmo Pietrvincolo"
+      },
+      "cryptbone_helm": {
+        "name": "Elmo d'osso di cripta"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Paraspalle d'osso di cripta"
+      },
+      "deathlords_dread_visage": {
+        "name": "Volto del terrore del Signore della Morte"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Guanti d'arme del Gravewyrm"
+      },
+      "gravewyrm_mantle": {
+        "name": "Manto del Gravewyrm"
+      },
+      "mistveil_cord": {
+        "name": "Cordone Velonebbia"
+      },
+      "mistveil_grips": {
+        "name": "Prese Velonebbia"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Manto Pinnacolo d'anima del negromante"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Prese Artiglio Ombrawyrm"
+      },
       "the_codfather": {
         "name": "Il Pescadrino"
+      },
+      "runed_bone_shard": {
+        "name": "Frammento d'osso runico"
+      },
+      "grave_sir_aldren": {
+        "name": "Tomba del capitano Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Tomba dell'alto sacerdote Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Tomba dell'assassino reale Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Porta antica della cripta"
+      },
+      "captains_crest": {
+        "name": "Parte superiore della chiave"
+      },
+      "priests_sigil": {
+        "name": "Parte inferiore della chiave"
+      },
+      "royal_seal": {
+        "name": "Diario antico"
+      },
+      "crypt_keystone": {
+        "name": "Chiave di volta della cripta"
+      },
+      "crypt_ritual_circle": {
+        "name": "Cerchio rituale"
+      },
+      "kings_signet": {
+        "name": "Anello con sigillo del re"
       }
     },
     "mobs": {
@@ -23684,6 +24804,27 @@ export const it_IT: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Gonfione del pantano"
+      },
+      "fallen_captain_aldren": {
+        "name": "Capitano caduto Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Sacerdote corrotto Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Predamorte Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Visione del capitano Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Visione dell'alto sacerdote Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Visione dell'assassino reale Voss"
+      },
+      "bound_guardian": {
+        "name": "Guardiano Vincolato"
       },
       "elder_bristleback": {
         "name": "Bristleback anziano"
@@ -24534,6 +25675,64 @@ export const it_IT: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Disordine nei campi d ossa",
+        "text": "Qualcosa e cambiato nelle Alture di Thornpeak, {playerName}. I morti non vagano piu senza meta. Si radunano e marciano nei campi d ossa a nord di Highwatch, dove il vecchio campo di battaglia incontra la strada della scogliera. Vai li, indaga sul disordine tra i revenant corazzati d ossa e porta qualsiasi prova di cio che li spinge.",
+        "completion": "Lo stesso simbolo appare su ogni frammento... una corona. L ho gia visto, inciso su vecchie tombe che nessun registro di Eastbrook ricorda.",
+        "objectives": {
+          "0": {
+            "label": "Frammento d'osso runico"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Tombe dei dimenticati",
+        "text": "Ho gia visto questi segni, su tre vecchie tombe attorno al campo di battaglia settentrionale. Il capitano Aldren giace sull altura orientale, l alto sacerdote Malric vicino alla strada centrale spezzata e l assassino reale Voss presso la scogliera occidentale. Tocca ogni tomba e ascolta, {playerName}. I morti possono ricordare cio che i vivi hanno dimenticato.",
+        "completion": "Aldren rimase leale, Malric rifiuto di accettare la morte e Voss vide il pericolo prima di chiunque altro. Tutti e tre servirono lo stesso re dimenticato.",
+        "objectives": {
+          "0": {
+            "label": "Visione alla tomba del capitano Aldren"
+          },
+          "1": {
+            "label": "Visione alla tomba dell'alto sacerdote Malric"
+          },
+          "2": {
+            "label": "Visione alla tomba dell'assassino reale Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "La cripta abbandonata",
+        "text": "Le visioni indicano la cripta abbandonata nella scogliera occidentale. Una vecchia leggenda dice che la cripta ospitasse un re. Forse Thornpeak lo sigillo li sotto dopo che il rituale di Malric lo trasformo in qualcosa di immortale. Entra nella cripta e guarda cosa resta dentro.",
+        "completion": "Le due meta della chiave combaciano, e il diario di Voss nomina cio che sigillarono: l anello del re Nythraxis. Se il diario dice il vero, quell anello e la chiave della sua tomba.",
+        "objectives": {
+          "0": {
+            "label": "Parte superiore della chiave"
+          },
+          "1": {
+            "label": "Parte inferiore della chiave"
+          },
+          "2": {
+            "label": "Diario antico"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "Il Guardiano Vincolato",
+        "text": "Voss scrisse che i sopravvissuti sigillarono l Anello del re dietro un antico guardiano, cosi che nessuno potesse raggiungere la tomba di Nythraxis per caso o ambizione. Porta la Chiave della cripta al cerchio rituale sul terreno piano a est della cripta abbandonata e a sud-est della tomba occidentale. Usala li, spezza il guardiano e riporta l anello.",
+        "completion": "Le tre reliquie raccontano la stessa storia: Aldren combatte per difendere il suo re, Malric spezzo il confine della morte e Voss tento di fermare cio che segui. Il sigillo si indebolisce, e questo anello e la chiave della tomba di Nythraxis. Ora sei armonizzato per entrare nella Cripta di Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Chiave di volta usata al cerchio rituale"
+          },
+          "1": {
+            "label": "Guardiano Vincolato sconfitto"
+          },
+          "2": {
+            "label": "Anello del re"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "La traccia di Mogger",
         "text": "Prima di prendere la strada a nord, Eastbrook ha un'ultima spina nel fianco: Mogger. Il bruto calpesta il prato basso e fa impazzire i cinghiali. Ripulisci il prato attorno alla sua traccia per scoprire dove si tana.",
@@ -24732,6 +25931,11 @@ export const it_IT: EnTranslations = {
         "enterText": "L aria si fa fredda. Qualcosa di immenso respira sotto...",
         "leaveText": "Barcolli di nuovo nel vento di montagna."
       },
+      "nythraxis_crypt": {
+        "name": "Cripta abbandonata",
+        "enterText": "Attraversi la soglia della cripta abbandonata.",
+        "leaveText": "Riemergi nell'aria fredda di Thornpeak."
+      },
       "drowned_temple": {
         "name": "Il Tempio Annegato",
         "enterText": "Attraversi il cancello lunare — l'aria si fa acqua gelida e luce pallida, e il canto si richiude sopra la tua testa.",
@@ -24886,7 +26090,7 @@ export const de_DE: EnTranslations = {
   },
   "stats": {
     "title": "Realmstatus",
-    "accountsCreated": "Erstellte Accounts",
+    "accountsCreated": "Spieler",
     "playersOnline": "Spieler online",
     "realmName": "Realmname"
   },
@@ -24960,6 +26164,14 @@ export const de_DE: EnTranslations = {
     "realmList": "Realmliste",
     "loadingRealms": "Realms werden geladen...",
     "changeRealm": "Realm wechseln",
+    "realm": "Realm",
+    "newCharacter": "Neuer Charakter",
+    "appearance": "Aussehen",
+    "class": "Klasse",
+    "name": "Name",
+    "chromaOption": "Chroma {n}",
+    "noAccountPrompt": "Neu im Reich?",
+    "haveAccountPrompt": "Schon ein Konto?",
     "characters": "Charaktere:",
     "createCharacter": "Charakter erstellen",
     "characterName": "Charaktername",
@@ -25105,7 +26317,11 @@ export const de_DE: EnTranslations = {
     "rename": "Umbenennen",
     "newNamePlaceholder": "Neuer Charaktername",
     "tabCharacters": "Charaktere",
-    "tabCreate": "Erstellen"
+    "tabCreate": "Erstellen",
+    "portraitAlt": "Porträt von {name}",
+    "viewProfile": "Profil ansehen",
+    "profile": "Profil",
+    "closeProfile": "Profil schließen"
   },
   "deleteCharacter": {
     "title": "Charakter löschen",
@@ -25310,6 +26526,7 @@ export const de_DE: EnTranslations = {
         "jump": "Springen",
         "autorun": "Automatisch laufen",
         "target": "Nächsten Gegner anvisieren",
+        "attackMove": "Angriffsbewegung",
         "interact": "Interagieren / Plündern",
         "char": "Charakter",
         "spellbook": "Zauberbuch",
@@ -25415,6 +26632,7 @@ export const de_DE: EnTranslations = {
     "combat": {
       "floatingMiss": "Verfehlt",
       "floatingDodge": "Ausgewichen",
+      "cannotMove": "Bewegungsunfähig!",
       "attack": "Angriff",
       "damageDone": "Euer {ability} trifft {target} für {amount}.",
       "damageDoneCrit": "Euer {ability} trifft {target} kritisch für {amount}.",
@@ -25758,6 +26976,9 @@ export const de_DE: EnTranslations = {
       "greetingFallback": "Seid gegrüßt.",
       "availableQuestAria": "Verfügbare Quest: {name}",
       "readyQuestAria": "Quest bereit zur Abgabe: {name}",
+      "discussQuest": "{name} besprechen.",
+      "discussQuestAria": "Quest besprechen: {name}",
+      "nythraxisDeathlessKingWarning": "Die drei Relikte erzahlen dieselbe Geschichte: Aldren kampfte, um seinen Konig zu verteidigen, Malric durchbrach die Grenze des Todes, und Voss versuchte aufzuhalten, was danach kam. Das Siegel wird schwacher, und die verlassene Krypta ist der Weg hinab.",
       "browseGoods": "Lasst mich Eure Waren ansehen.",
       "browseGoodsAria": "Waren von {name} ansehen",
       "worldMarket": "Zeigt mir den Weltmarkt.",
@@ -25765,6 +26986,7 @@ export const de_DE: EnTranslations = {
       "accept": "Annehmen",
       "decline": "Ablehnen",
       "continue": "Weiter",
+      "done": "Fertig",
       "completeQuest": "Quest abschließen",
       "turnIn": "Abgeben",
       "back": "Zurück",
@@ -25806,8 +27028,12 @@ export const de_DE: EnTranslations = {
     },
     "slots": {
       "mainhand": "Waffenhand",
+      "helmet": "Kopf",
+      "shoulder": "Schultern",
       "chest": "Brust",
+      "waist": "Taille",
       "legs": "Beine",
+      "gloves": "Hände",
       "feet": "Füße"
     },
     "quality": {
@@ -25841,7 +27067,7 @@ export const de_DE: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
-      "damageSpeed": "{min} - {max} Schaden  Tempo {speed}",
+      "damageSpeed": "{min} - {max} Schaden Tempo {speed}",
       "dps": "({dps} Schaden pro Sekunde)",
       "dagger": "Dolch",
       "armorStat": "{value} Rüstung",
@@ -27073,8 +28299,74 @@ export const de_DE: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Ysoleis Perlenbeinschienen"
       },
+      "boundstone_girdle": {
+        "name": "Gebundstein-Gurt"
+      },
+      "boundstone_helm": {
+        "name": "Gebundstein-Helm"
+      },
+      "cryptbone_helm": {
+        "name": "Gruftknochenhelm"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Gruftknochenschulterstücke"
+      },
+      "deathlords_dread_visage": {
+        "name": "Schreckensantlitz des Todeslords"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Gravewyrm-Stulpen"
+      },
+      "gravewyrm_mantle": {
+        "name": "Gravewyrm-Mantel"
+      },
+      "mistveil_cord": {
+        "name": "Nebelschleierkordel"
+      },
+      "mistveil_grips": {
+        "name": "Nebelschleiergriffe"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Seelenspitzenmantel des Nekromanten"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Wyrmschatten-Krallengriffe"
+      },
       "the_codfather": {
         "name": "Der Kabeljaupate"
+      },
+      "runed_bone_shard": {
+        "name": "Runen-Knochensplitter"
+      },
+      "grave_sir_aldren": {
+        "name": "Grab von Hauptmann Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Grab von Hohepriester Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Grab des königlichen Assassinen Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Alte Kryptentür"
+      },
+      "captains_crest": {
+        "name": "Oberteil des Kryptenschlussels"
+      },
+      "priests_sigil": {
+        "name": "Unterteil des Kryptenschlussels"
+      },
+      "royal_seal": {
+        "name": "Altes Tagebuch"
+      },
+      "crypt_keystone": {
+        "name": "Krypten-Schlüsselstein"
+      },
+      "crypt_ritual_circle": {
+        "name": "Ritualkreis"
+      },
+      "kings_signet": {
+        "name": "Siegelring des Königs"
       }
     },
     "mobs": {
@@ -27218,6 +28510,27 @@ export const de_DE: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Moor-Aufgedunsener"
+      },
+      "fallen_captain_aldren": {
+        "name": "Gefallener Hauptmann Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Verderbter Priester Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Todespirscher Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Vision von Hauptmann Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Vision von Hohepriester Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Vision des königlichen Assassinen Voss"
+      },
+      "bound_guardian": {
+        "name": "Gebundener Wächter"
       },
       "elder_bristleback": {
         "name": "Alter Bristleback"
@@ -28068,6 +29381,64 @@ export const de_DE: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Unruhe in den Knochenfeldern",
+        "text": "Etwas hat sich in den Thornpeak-Hohen verandert, {playerName}. Die Toten wandern nicht mehr ziellos umher. Sie sammeln sich und marschieren durch die nordlichen Knochenfelder jenseits von Highwatch, wo das alte Schlachtfeld auf die Klippenstrasse trifft. Geh dorthin, untersuche die Unruhe unter den Knochengepanzerten Wiedergangern und bring jeden Beweis zuruck, der zeigt, was sie antreibt.",
+        "completion": "Dasselbe Zeichen erscheint auf jedem Splitter... eine Krone. Ich habe es schon einmal gesehen, eingeritzt in alte Graber, an die sich keine Aufzeichnung Eastbrooks erinnert.",
+        "objectives": {
+          "0": {
+            "label": "Runen-Knochensplitter"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Gräber der Vergessenen",
+        "text": "Ich habe diese Zeichen schon gesehen, auf drei alten Grabern rund um das nordliche Schlachtfeld. Hauptmann Aldren liegt auf der ostlichen Anhohe, Hohepriester Malric nahe der zerbrochenen mittleren Strasse und der konigliche Assassine Voss an der westlichen Klippe. Beruhre jedes Grab und lausche, {playerName}. Die Toten erinnern sich vielleicht an das, was die Lebenden vergessen haben.",
+        "completion": "Aldren blieb treu, Malric weigerte sich, den Tod zu akzeptieren, und Voss erkannte die Gefahr vor allen anderen. Alle drei dienten demselben vergessenen Konig.",
+        "objectives": {
+          "0": {
+            "label": "Vision am Grab von Hauptmann Aldren"
+          },
+          "1": {
+            "label": "Vision am Grab von Hohepriester Malric"
+          },
+          "2": {
+            "label": "Vision am Grab des königlichen Assassinen Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "Die verlassene Krypta",
+        "text": "Die Visionen weisen auf die verlassene Krypta in der westlichen Klippe. Eine alte Legende sagt, die Krypta habe einen Konig beherbergt. Vielleicht versiegelte Thornpeak ihn dort unten, nachdem Malrics Ritual ihn zu etwas Todeslosem verzerrt hatte. Betritt die Krypta und sieh nach, was darin geblieben ist.",
+        "completion": "Die beiden Schlusselhalften passen zusammen, und Voss Tagebuch nennt, was sie versiegelten: den Siegelring von Konig Nythraxis. Wenn das Tagebuch wahr ist, ist dieser Ring der Schlussel zu seinem Grab.",
+        "objectives": {
+          "0": {
+            "label": "Oberteil des Kryptenschlussels"
+          },
+          "1": {
+            "label": "Unterteil des Kryptenschlussels"
+          },
+          "2": {
+            "label": "Altes Tagebuch"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "Der Gebundene Wächter",
+        "text": "Voss schrieb, dass die Uberlebenden den Siegelring des Konigs hinter einem uralten Wachter versiegelten, damit niemand Nythraxis Grab durch Zufall oder Ehrgeiz erreicht. Bring den Kryptenschlussel zum Ritualkreis auf dem flachen Boden ostlich der verlassenen Krypta und sudostlich des westlichen Grabes. Benutze ihn dort, brich den Wachter und bring den Ring zuruck.",
+        "completion": "Die drei Relikte erzahlen dieselbe Geschichte: Aldren kampfte, um seinen Konig zu verteidigen, Malric durchbrach die Grenze des Todes, und Voss versuchte aufzuhalten, was folgte. Das Siegel wird schwacher, und dieser Ring ist der Schlussel zu Nythraxis Grab. Du bist nun eingestimmt, die Krypta von Nythraxis zu betreten.",
+        "objectives": {
+          "0": {
+            "label": "Schlüsselstein am Ritualkreis benutzt"
+          },
+          "1": {
+            "label": "Gebundener Wächter besiegt"
+          },
+          "2": {
+            "label": "Siegelring des Konigs"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "Moggers Spur",
         "text": "Bevor du die Straße nach Norden nimmst, hat Eastbrook noch einen letzten Dorn im Fleisch: Mogger. Der Grobian zertrampelt die untere Wiese und treibt die Eber in den Wahnsinn. Säubere die Wiese um seine Spur, damit wir sehen, wo er haust.",
@@ -28266,6 +29637,11 @@ export const de_DE: EnTranslations = {
         "enterText": "Die Luft wird kalt. Etwas Gewaltiges atmet in der Tiefe...",
         "leaveText": "Du taumelst zurück in den Bergwind."
       },
+      "nythraxis_crypt": {
+        "name": "Verlassene Krypta",
+        "enterText": "Du überschreitest die Schwelle der verlassenen Krypta.",
+        "leaveText": "Du trittst wieder in die kalte Luft von Thornpeak."
+      },
       "drowned_temple": {
         "name": "Der Ertränkte Tempel",
         "enterText": "Du trittst durch das Mondtor — die Luft wird zu kaltem Wasser und bleichem Licht, und der Gesang schließt sich über deinem Haupt.",
@@ -28420,7 +29796,7 @@ export const zh_CN: EnTranslations = {
   },
   "stats": {
     "title": "服务器状态",
-    "accountsCreated": "已创建账号",
+    "accountsCreated": "玩家",
     "playersOnline": "在线玩家数",
     "realmName": "服务器名称"
   },
@@ -28494,6 +29870,14 @@ export const zh_CN: EnTranslations = {
     "realmList": "服务器列表",
     "loadingRealms": "正在加载服务器...",
     "changeRealm": "切换服务器",
+    "realm": "服务器",
+    "newCharacter": "新建角色",
+    "appearance": "外观",
+    "class": "职业",
+    "name": "名称",
+    "chromaOption": "配色 {n}",
+    "noAccountPrompt": "初来乍到？",
+    "haveAccountPrompt": "已有账号？",
     "characters": "角色列表：",
     "createCharacter": "创建角色",
     "characterName": "角色名称",
@@ -28639,7 +30023,11 @@ export const zh_CN: EnTranslations = {
     "rename": "改名",
     "newNamePlaceholder": "新角色名称",
     "tabCharacters": "角色",
-    "tabCreate": "创建"
+    "tabCreate": "创建",
+    "portraitAlt": "{name}的头像",
+    "viewProfile": "查看资料",
+    "profile": "角色资料",
+    "closeProfile": "关闭资料"
   },
   "deleteCharacter": {
     "title": "删除角色",
@@ -28844,6 +30232,7 @@ export const zh_CN: EnTranslations = {
         "jump": "跳跃",
         "autorun": "切换自动奔跑",
         "target": "选中最近敌人",
+        "attackMove": "攻击移动",
         "interact": "互动 / 拾取",
         "char": "角色",
         "spellbook": "法术书",
@@ -28949,6 +30338,7 @@ export const zh_CN: EnTranslations = {
     "combat": {
       "floatingMiss": "未命中",
       "floatingDodge": "闪避",
+      "cannotMove": "无法移动！",
       "attack": "攻击",
       "damageDone": "你的{ability}击中{target}，造成 {amount} 点伤害。",
       "damageDoneCrit": "你的{ability}对{target}造成暴击，造成 {amount} 点伤害。",
@@ -29292,6 +30682,9 @@ export const zh_CN: EnTranslations = {
       "greetingFallback": "你好。",
       "availableQuestAria": "可接任务：{name}",
       "readyQuestAria": "可交付任务：{name}",
+      "discussQuest": "谈论{name}。",
+      "discussQuestAria": "谈论任务：{name}",
+      "nythraxisDeathlessKingWarning": "三件遗物讲述着同一个故事：奥德伦为守护国王而战，马尔里克打破了死亡的界限，沃斯试图阻止随后发生的一切。封印正在减弱，废弃墓穴就是通往地下的道路。",
       "browseGoods": "让我看看你的货物。",
       "browseGoodsAria": "查看 {name} 的货物",
       "worldMarket": "让我看看世界市场。",
@@ -29299,6 +30692,7 @@ export const zh_CN: EnTranslations = {
       "accept": "接受",
       "decline": "拒绝",
       "continue": "继续",
+      "done": "完成",
       "completeQuest": "完成任务",
       "turnIn": "交付",
       "back": "返回",
@@ -29340,8 +30734,12 @@ export const zh_CN: EnTranslations = {
     },
     "slots": {
       "mainhand": "主手",
+      "helmet": "头部",
+      "shoulder": "肩部",
       "chest": "胸部",
+      "waist": "腰部",
       "legs": "腿部",
+      "gloves": "手部",
       "feet": "脚部"
     },
     "quality": {
@@ -29375,7 +30773,7 @@ export const zh_CN: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality}{kind}",
-      "damageSpeed": "{min} - {max} 伤害  速度 {speed}",
+      "damageSpeed": "{min} - {max} 伤害 速度 {speed}",
       "dps": "（每秒 {dps} 伤害）",
       "dagger": "匕首",
       "armorStat": "{value} 护甲",
@@ -30607,8 +32005,74 @@ export const zh_CN: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "伊索蕾的珍珠护胫"
       },
+      "boundstone_girdle": {
+        "name": "缚石腰带"
+      },
+      "boundstone_helm": {
+        "name": "缚石头盔"
+      },
+      "cryptbone_helm": {
+        "name": "墓骨头盔"
+      },
+      "cryptbone_pauldrons": {
+        "name": "墓骨肩甲"
+      },
+      "deathlords_dread_visage": {
+        "name": "死亡领主恐惧面甲"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "墓龙护手"
+      },
+      "gravewyrm_mantle": {
+        "name": "墓龙披肩"
+      },
+      "mistveil_cord": {
+        "name": "雾幕束带"
+      },
+      "mistveil_grips": {
+        "name": "雾幕握套"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "死灵法师魂尖披肩"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "龙影利爪握套"
+      },
       "the_codfather": {
         "name": "鳕鱼教父"
+      },
+      "runed_bone_shard": {
+        "name": "符文骨片"
+      },
+      "grave_sir_aldren": {
+        "name": "奥德伦队长之墓"
+      },
+      "grave_high_priest_malric": {
+        "name": "大祭司马尔里克之墓"
+      },
+      "grave_captain_voss": {
+        "name": "皇家刺客沃斯之墓"
+      },
+      "ancient_crypt_door": {
+        "name": "古老墓穴之门"
+      },
+      "captains_crest": {
+        "name": "墓穴钥石上半部"
+      },
+      "priests_sigil": {
+        "name": "墓穴钥石下半部"
+      },
+      "royal_seal": {
+        "name": "古老日记"
+      },
+      "crypt_keystone": {
+        "name": "墓穴钥石"
+      },
+      "crypt_ritual_circle": {
+        "name": "仪式法阵"
+      },
+      "kings_signet": {
+        "name": "国王印戒"
       }
     },
     "mobs": {
@@ -30752,6 +32216,27 @@ export const zh_CN: EnTranslations = {
       },
       "bog_bloat": {
         "name": "沼泽臃肿兽"
+      },
+      "fallen_captain_aldren": {
+        "name": "堕落队长奥德伦"
+      },
+      "corrupted_priest_malric": {
+        "name": "腐化祭司马尔里克"
+      },
+      "deathstalker_voss": {
+        "name": "死亡潜猎者沃斯"
+      },
+      "vision_aldren_warrior": {
+        "name": "奥德伦队长的幻象"
+      },
+      "vision_malric_mage": {
+        "name": "大祭司马尔里克的幻象"
+      },
+      "vision_deathstalker_voss": {
+        "name": "皇家刺客沃斯的幻象"
+      },
+      "bound_guardian": {
+        "name": "受缚守卫者"
       },
       "elder_bristleback": {
         "name": "年长硬鬃"
@@ -31326,7 +32811,7 @@ export const zh_CN: EnTranslations = {
       "q_mistcaller": {
         "title": "唤雾者",
         "text": "维尔在堡垒底部等待，他的声音淹死百名旅人来筑军。带四名同伴，终结他，{playerName}。",
-        "completion": "维尔死了，雾第一次散开。但他的遗言让我血冷：{playerName}，Wyrm在群峰下苏醒。",
+        "completion": "维尔死了，雾第一次散开。但他的遗言让我血冷：{playerName}，墓龙在群峰下苏醒。",
         "objectives": {
           "0": {
             "label": "击败唤雾者维尔"
@@ -31335,7 +32820,7 @@ export const zh_CN: EnTranslations = {
       },
       "q_highwatch_summons": {
         "title": "群峰守望",
-        "text": "维尔的遗言仍在我耳边，{playerName}：Wyrm在群峰下苏醒。取下高望召令，告诉瑟萨莉我随后上山。",
+        "text": "维尔的遗言仍在我耳边，{playerName}：墓龙在群峰下苏醒。取下高望召令，告诉瑟萨莉我随后上山。",
         "completion": "奥德里克的消息传得很远。若他亲自上山，事情就和我担心的一样糟。{playerName}，欢迎来到高望。",
         "objectives": {
           "0": {
@@ -31396,7 +32881,7 @@ export const zh_CN: EnTranslations = {
       "q_ogre_totems": {
         "title": "战争图腾",
         "text": "食人魔在营地周围竖起皮与颅骨的图腾，那是集结，不是劫掠。拆下6个带回来。当心外围的碾压者，{playerName}。",
-        "completion": "颅骨、兽皮...还有Wyrm鳞绑带。这些图腾是邪教送的礼，{playerName}。",
+        "completion": "颅骨、兽皮...还有墓龙鳞绑带。这些图腾是邪教送的礼，{playerName}。",
         "objectives": {
           "0": {
             "label": "食人魔战争图腾"
@@ -31575,7 +33060,7 @@ export const zh_CN: EnTranslations = {
       "q_velkhar": {
         "title": "大死灵法师",
         "text": "我们追踪的每条线，莫森、维尔、护命匣，都由一只手编织：大死灵法师维尔卡。终结他，{playerName}。",
-        "completion": "维尔卡死了，仪式失去了头。但你也感觉到了吧？灵魂已经耗尽，Wyrm不再沉睡。",
+        "completion": "维尔卡死了，仪式失去了头。但你也感觉到了吧？灵魂已经耗尽，墓龙不再沉睡。",
         "objectives": {
           "0": {
             "label": "击败大死灵法师维尔卡"
@@ -31584,7 +33069,7 @@ export const zh_CN: EnTranslations = {
       },
       "q_gravewyrm": {
         "title": "墓龙科祖尔",
-        "text": "没有仪式可阻止了，{playerName}，只剩半醒的Wyrm，吞食了谷地和湿地的死者。带同伴进洞，完成我们从礼拜堂开始的事。",
+        "text": "没有仪式可阻止了，{playerName}，只剩半醒的墓龙，吞食了谷地和湿地的死者。带同伴进洞，完成我们从礼拜堂开始的事。",
         "completion": "结束了。三地死者得以安息，山也不再被鬼魂惊扰——今晚从这里到东溪，每一口钟鸣响的，都是你的名字，{playerName}。",
         "objectives": {
           "0": {
@@ -31599,6 +33084,64 @@ export const zh_CN: EnTranslations = {
         "objectives": {
           "0": {
             "label": "鳕鱼教父"
+          }
+        }
+      },
+      "q_nythraxis_restless_dead": {
+        "title": "骨原的异动",
+        "text": "Thornpeak Heights 出事了，{playerName}。亡者不再漫无目的地游荡。他们在 Highwatch 以北的骨原集结并行军，那里是旧战场与峭壁道路交汇之处。去那里调查骨甲亡魂的异动，并带回任何能说明是什么驱使它们的证据。",
+        "completion": "每块碎片上都有同一个标记……一顶王冠。我以前见过它，刻在一些 Eastbrook 记录中早已遗忘的旧坟上。",
+        "objectives": {
+          "0": {
+            "label": "符文骨片"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "被遗忘者的坟墓",
+        "text": "我以前见过这些标记，就在北方战场周围的三座旧坟上。奥德伦队长葬在东侧高地，马尔里克大祭司在中央破路旁，皇家刺客沃斯则在西侧峭壁边。触碰每座坟墓并倾听，{playerName}。死者或许记得生者遗忘的事。",
+        "completion": "奥德伦依旧忠诚，马尔里克拒绝接受死亡，而沃斯比任何人都更早看见危险。他们三人都侍奉同一位被遗忘的国王。",
+        "objectives": {
+          "0": {
+            "label": "奥德伦队长之墓的幻象"
+          },
+          "1": {
+            "label": "大祭司马尔里克之墓的幻象"
+          },
+          "2": {
+            "label": "皇家刺客沃斯之墓的幻象"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "废弃墓穴",
+        "text": "幻象指向西侧峭壁中的废弃墓穴。古老传说称，那座墓穴曾安置一位国王。也许在马尔里克的仪式把他扭曲成不死之物后，Thornpeak 将他封在了下面。进入墓穴，看看里面还剩下什么。",
+        "completion": "钥石的两半合在了一起，而沃斯的日记写明了它们封印之物：尼思拉克西斯国王的印戒。如果日记属实，那枚印戒就是通往他陵墓的钥匙。",
+        "objectives": {
+          "0": {
+            "label": "墓穴钥石上半部"
+          },
+          "1": {
+            "label": "墓穴钥石下半部"
+          },
+          "2": {
+            "label": "古老日记"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "受缚守卫者",
+        "text": "沃斯写道，幸存者把国王印戒封在一名古老守卫身后，免得任何人因偶然或野心抵达尼思拉克西斯的陵墓。把墓穴钥石带到废弃墓穴以东、西侧坟墓东南方平地上的仪式法阵。在那里使用它，击破守卫，并带回印戒。",
+        "completion": "三件遗物讲述着同一个故事：奥德伦为守护国王而战，马尔里克打破了死亡的界限，沃斯试图阻止随后发生的一切。封印正在减弱，而这枚印戒就是尼思拉克西斯陵墓的钥匙。你现在已经完成调谐，可以进入尼思拉克西斯墓穴。",
+        "objectives": {
+          "0": {
+            "label": "在仪式法阵使用墓穴钥石"
+          },
+          "1": {
+            "label": "击败受缚守卫者"
+          },
+          "2": {
+            "label": "国王印戒"
           }
         }
       },
@@ -31800,6 +33343,11 @@ export const zh_CN: EnTranslations = {
         "enterText": "空气变得冰冷。下方有庞然之物在呼吸...",
         "leaveText": "你踉跄回到山风之中。"
       },
+      "nythraxis_crypt": {
+        "name": "废弃墓穴",
+        "enterText": "你跨过废弃墓穴的门槛。",
+        "leaveText": "你回到 Thornpeak 的寒冷空气中。"
+      },
       "drowned_temple": {
         "name": "溺亡神殿",
         "enterText": "你踏过那道月门——空气化作冰冷的水与苍白的光，歌声在你头顶合拢。",
@@ -31954,7 +33502,7 @@ export const zh_TW: EnTranslations = {
   },
   "stats": {
     "title": "伺服器狀態",
-    "accountsCreated": "已建立帳號",
+    "accountsCreated": "玩家",
     "playersOnline": "線上玩家數",
     "realmName": "伺服器名稱"
   },
@@ -31978,7 +33526,7 @@ export const zh_TW: EnTranslations = {
   "news": {
     "title": "新聞與更新說明",
     "desc": "閱讀最新修補程式說明、遊戲內事件和社群動態。",
-    "loading": "正在載入最新更新…",
+    "loading": "正在載入最新更新...",
     "error": "無法載入更新。請稍後再試。",
     "empty": "目前尚無更新，敬請期待。",
     "prerelease": "搶先版",
@@ -32028,6 +33576,14 @@ export const zh_TW: EnTranslations = {
     "realmList": "伺服器列表",
     "loadingRealms": "正在載入伺服器...",
     "changeRealm": "切換伺服器",
+    "realm": "伺服器",
+    "newCharacter": "新增角色",
+    "appearance": "外觀",
+    "class": "職業",
+    "name": "名稱",
+    "chromaOption": "配色 {n}",
+    "noAccountPrompt": "初來乍到？",
+    "haveAccountPrompt": "已有帳號？",
     "characters": "角色列表：",
     "createCharacter": "建立角色",
     "characterName": "角色名稱",
@@ -32173,7 +33729,11 @@ export const zh_TW: EnTranslations = {
     "rename": "更名",
     "newNamePlaceholder": "新角色名稱",
     "tabCharacters": "角色",
-    "tabCreate": "建立"
+    "tabCreate": "建立",
+    "portraitAlt": "{name}的頭像",
+    "viewProfile": "查看資料",
+    "profile": "角色資料",
+    "closeProfile": "關閉資料"
   },
   "deleteCharacter": {
     "title": "刪除角色",
@@ -32378,6 +33938,7 @@ export const zh_TW: EnTranslations = {
         "jump": "跳躍",
         "autorun": "切換自動奔跑",
         "target": "選取最近敵人",
+        "attackMove": "攻擊移動",
         "interact": "互動 / 拾取",
         "char": "角色",
         "spellbook": "法術書",
@@ -32483,6 +34044,7 @@ export const zh_TW: EnTranslations = {
     "combat": {
       "floatingMiss": "未命中",
       "floatingDodge": "閃避",
+      "cannotMove": "無法移動！",
       "attack": "攻擊",
       "damageDone": "你的{ability}擊中{target}，造成 {amount} 點傷害。",
       "damageDoneCrit": "你的{ability}對{target}造成致命一擊，造成 {amount} 點傷害。",
@@ -32826,6 +34388,9 @@ export const zh_TW: EnTranslations = {
       "greetingFallback": "你好。",
       "availableQuestAria": "可接任務：{name}",
       "readyQuestAria": "可交付任務：{name}",
+      "discussQuest": "談論{name}。",
+      "discussQuestAria": "談論任務：{name}",
+      "nythraxisDeathlessKingWarning": "三件遺物講述著同一個故事：阿爾德倫為守護國王而戰，馬爾里克打破了死亡的界限，沃斯試圖阻止隨後發生的一切。封印正在減弱，廢棄墓穴就是通往地下的道路。",
       "browseGoods": "讓我看看你的貨物。",
       "browseGoodsAria": "查看 {name} 的貨物",
       "worldMarket": "讓我看看世界市場。",
@@ -32833,6 +34398,7 @@ export const zh_TW: EnTranslations = {
       "accept": "接受",
       "decline": "拒絕",
       "continue": "繼續",
+      "done": "完成",
       "completeQuest": "完成任務",
       "turnIn": "交付",
       "back": "返回",
@@ -32874,8 +34440,12 @@ export const zh_TW: EnTranslations = {
     },
     "slots": {
       "mainhand": "主手",
+      "helmet": "頭部",
+      "shoulder": "肩部",
       "chest": "胸部",
+      "waist": "腰部",
       "legs": "腿部",
+      "gloves": "手部",
       "feet": "腳部"
     },
     "quality": {
@@ -32909,7 +34479,7 @@ export const zh_TW: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality}{kind}",
-      "damageSpeed": "{min} - {max} 傷害  速度 {speed}",
+      "damageSpeed": "{min} - {max} 傷害 速度 {speed}",
       "dps": "（每秒 {dps} 傷害）",
       "dagger": "匕首",
       "armorStat": "{value} 護甲",
@@ -34141,8 +35711,74 @@ export const zh_TW: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "伊索蕾的珍珠脛甲"
       },
+      "boundstone_girdle": {
+        "name": "縛石腰帶"
+      },
+      "boundstone_helm": {
+        "name": "縛石頭盔"
+      },
+      "cryptbone_helm": {
+        "name": "墓骨頭盔"
+      },
+      "cryptbone_pauldrons": {
+        "name": "墓骨肩甲"
+      },
+      "deathlords_dread_visage": {
+        "name": "死亡領主恐懼面甲"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "墓龍護手"
+      },
+      "gravewyrm_mantle": {
+        "name": "墓龍披肩"
+      },
+      "mistveil_cord": {
+        "name": "霧幕束帶"
+      },
+      "mistveil_grips": {
+        "name": "霧幕握套"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "死靈法師魂尖披肩"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "龍影利爪握套"
+      },
       "the_codfather": {
         "name": "鱈魚教父"
+      },
+      "runed_bone_shard": {
+        "name": "符文骨片"
+      },
+      "grave_sir_aldren": {
+        "name": "奧德倫隊長之墓"
+      },
+      "grave_high_priest_malric": {
+        "name": "大祭司馬爾里克之墓"
+      },
+      "grave_captain_voss": {
+        "name": "皇家刺客沃斯之墓"
+      },
+      "ancient_crypt_door": {
+        "name": "古老墓穴之門"
+      },
+      "captains_crest": {
+        "name": "墓穴鑰石上半部"
+      },
+      "priests_sigil": {
+        "name": "墓穴鑰石下半部"
+      },
+      "royal_seal": {
+        "name": "古老日記"
+      },
+      "crypt_keystone": {
+        "name": "墓穴鑰石"
+      },
+      "crypt_ritual_circle": {
+        "name": "儀式法陣"
+      },
+      "kings_signet": {
+        "name": "國王印戒"
       }
     },
     "mobs": {
@@ -34286,6 +35922,27 @@ export const zh_TW: EnTranslations = {
       },
       "bog_bloat": {
         "name": "沼澤腫脹獸"
+      },
+      "fallen_captain_aldren": {
+        "name": "墮落隊長奧德倫"
+      },
+      "corrupted_priest_malric": {
+        "name": "腐化祭司馬爾里克"
+      },
+      "deathstalker_voss": {
+        "name": "死亡潛獵者沃斯"
+      },
+      "vision_aldren_warrior": {
+        "name": "奧德倫隊長的幻象"
+      },
+      "vision_malric_mage": {
+        "name": "大祭司馬爾里克的幻象"
+      },
+      "vision_deathstalker_voss": {
+        "name": "皇家刺客沃斯的幻象"
+      },
+      "bound_guardian": {
+        "name": "受縛守衛者"
       },
       "elder_bristleback": {
         "name": "年長硬鬃"
@@ -34860,7 +36517,7 @@ export const zh_TW: EnTranslations = {
       "q_mistcaller": {
         "title": "喚霧者",
         "text": "維爾在堡壘底部等待，他的聲音淹死百名旅人來築軍。帶四名同伴，終結他，{playerName}。",
-        "completion": "維爾死了，霧第一次散開。但他的遺言讓我血冷：Wyrm在群峰下甦醒。教派侍奉的東西比我們猜想的更古老，{playerName}。",
+        "completion": "維爾死了，霧第一次散開。但他的遺言讓我血冷：墓龍在群峰下甦醒。教派侍奉的東西比我們猜想的更古老，{playerName}。",
         "objectives": {
           "0": {
             "label": "擊敗喚霧者維爾"
@@ -34869,7 +36526,7 @@ export const zh_TW: EnTranslations = {
       },
       "q_highwatch_summons": {
         "title": "群峰守望",
-        "text": "維爾的遺言仍在我耳邊，{playerName}：Wyrm在群峰下甦醒。取下高望召令，告訴瑟薩莉我隨後上山。",
+        "text": "維爾的遺言仍在我耳邊，{playerName}：墓龍在群峰下甦醒。取下高望召令，告訴瑟薩莉我隨後上山。",
         "completion": "奧德里克的消息傳得很遠。若他親自上山，事情就和我擔心的一樣糟。歡迎來到高望，{playerName}。",
         "objectives": {
           "0": {
@@ -34930,7 +36587,7 @@ export const zh_TW: EnTranslations = {
       "q_ogre_totems": {
         "title": "戰爭圖騰",
         "text": "食人魔在營地周圍豎起皮與顱骨的圖騰，那是集結，不是劫掠。拆下6個帶回來。小心外圍的碾壓者，{playerName}。",
-        "completion": "顱骨、獸皮...還有Wyrm鱗綁帶。這些圖騰是邪教送的禮，{playerName}。",
+        "completion": "顱骨、獸皮...還有墓龍鱗綁帶。這些圖騰是邪教送的禮，{playerName}。",
         "objectives": {
           "0": {
             "label": "食人魔戰爭圖騰"
@@ -35109,7 +36766,7 @@ export const zh_TW: EnTranslations = {
       "q_velkhar": {
         "title": "大死靈法師",
         "text": "我們追蹤的每條線，莫森、維爾、護命匣，都由一隻手編織：大死靈法師維爾卡。終結他，{playerName}。",
-        "completion": "維爾卡死了，儀式失去了頭。但你也感覺到了吧？靈魂已經耗盡，Wyrm不再沉睡。",
+        "completion": "維爾卡死了，儀式失去了頭。但你也感覺到了吧？靈魂已經耗盡，墓龍不再沉睡。",
         "objectives": {
           "0": {
             "label": "擊敗大死靈法師維爾卡"
@@ -35118,7 +36775,7 @@ export const zh_TW: EnTranslations = {
       },
       "q_gravewyrm": {
         "title": "墓龍科祖爾",
-        "text": "沒有儀式可阻止了，{playerName}，只剩半醒的Wyrm，吞食了谷地和濕地的死者。帶同伴進洞，完成我們從禮拜堂開始的事。",
+        "text": "沒有儀式可阻止了，{playerName}，只剩半醒的墓龍，吞食了谷地和濕地的死者。帶同伴進洞，完成我們從禮拜堂開始的事。",
         "completion": "結束了。三地死者得以安息，山也不再被鬼魂驚擾，今晚每一口鐘鳴響的，都是你的名字，{playerName}。",
         "objectives": {
           "0": {
@@ -35133,6 +36790,64 @@ export const zh_TW: EnTranslations = {
         "objectives": {
           "0": {
             "label": "鱈魚教父"
+          }
+        }
+      },
+      "q_nythraxis_restless_dead": {
+        "title": "骨原的異動",
+        "text": "Thornpeak Heights 出事了，{playerName}。亡者不再漫無目的地遊蕩。他們在 Highwatch 以北的骨原集結並行軍，那裡是舊戰場與峭壁道路交會之處。去那裡調查骨甲亡魂的異動，並帶回任何能說明是什麼驅使它們的證據。",
+        "completion": "每塊碎片上都有同一個標記……一頂王冠。我以前見過它，刻在一些 Eastbrook 記錄中早已遺忘的舊墳上。",
+        "objectives": {
+          "0": {
+            "label": "符文骨片"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "被遺忘者的墳墓",
+        "text": "我以前見過這些標記，就在北方戰場周圍的三座舊墳上。阿爾德倫隊長葬在東側高地，馬爾里克大祭司在中央破路旁，皇家刺客沃斯則在西側峭壁邊。觸碰每座墳墓並傾聽，{playerName}。死者或許記得生者遺忘的事。",
+        "completion": "阿爾德倫依舊忠誠，馬爾里克拒絕接受死亡，而沃斯比任何人都更早看見危險。他們三人都侍奉同一位被遺忘的國王。",
+        "objectives": {
+          "0": {
+            "label": "奧德倫隊長之墓的幻象"
+          },
+          "1": {
+            "label": "大祭司馬爾里克之墓的幻象"
+          },
+          "2": {
+            "label": "皇家刺客沃斯之墓的幻象"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "廢棄墓穴",
+        "text": "幻象指向西側峭壁中的廢棄墓穴。古老傳說稱，那座墓穴曾安置一位國王。也許在馬爾里克的儀式把他扭曲成不死之物後，Thornpeak 將他封在了下面。進入墓穴，看看裡面還剩下什麼。",
+        "completion": "鑰石的兩半合在了一起，而沃斯的日記寫明了它們封印之物：尼思拉克西斯國王的印戒。如果日記屬實，那枚印戒就是通往他陵墓的鑰匙。",
+        "objectives": {
+          "0": {
+            "label": "墓穴鑰石上半部"
+          },
+          "1": {
+            "label": "墓穴鑰石下半部"
+          },
+          "2": {
+            "label": "古老日記"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "受縛守衛者",
+        "text": "沃斯寫道，倖存者把國王印戒封在一名古老守衛身後，免得任何人因偶然或野心抵達尼思拉克西斯的陵墓。把墓穴鑰石帶到廢棄墓穴以東、西側墳墓東南方平地上的儀式法陣。在那裡使用它，擊破守衛，並帶回印戒。",
+        "completion": "三件遺物講述著同一個故事：阿爾德倫為守護國王而戰，馬爾里克打破了死亡的界限，沃斯試圖阻止隨後發生的一切。封印正在減弱，而這枚印戒就是尼思拉克西斯陵墓的鑰匙。你現在已經完成調諧，可以進入尼思拉克西斯墓穴。",
+        "objectives": {
+          "0": {
+            "label": "在儀式法陣使用墓穴鑰石"
+          },
+          "1": {
+            "label": "擊敗受縛守衛者"
+          },
+          "2": {
+            "label": "國王印戒"
           }
         }
       },
@@ -35334,6 +37049,11 @@ export const zh_TW: EnTranslations = {
         "enterText": "空氣變得冰冷。下方有龐然之物在呼吸...",
         "leaveText": "你踉蹌回到山風之中。"
       },
+      "nythraxis_crypt": {
+        "name": "廢棄墓穴",
+        "enterText": "你跨過廢棄墓穴的門檻。",
+        "leaveText": "你回到 Thornpeak 的寒冷空氣中。"
+      },
       "drowned_temple": {
         "name": "溺亡神殿",
         "enterText": "你踏過月門——空氣化作冰冷的水與蒼白的光，歌聲在你頭頂之上闔攏。",
@@ -35381,7 +37101,7 @@ export const ko_KR: EnTranslations = {
       "subtitle": "누적 경험치",
       "rank": "순위",
       "name": "이름",
-      "realmCol": "서버",
+      "realmCol": "렐름",
       "level": "레벨",
       "vlevel": "가상",
       "lifetimeXp": "누적 경험치",
@@ -35488,7 +37208,7 @@ export const ko_KR: EnTranslations = {
   },
   "stats": {
     "title": "렐름 상태",
-    "accountsCreated": "생성된 계정 수",
+    "accountsCreated": "플레이어",
     "playersOnline": "현재 접속자 수",
     "realmName": "렐름 이름"
   },
@@ -35562,6 +37282,14 @@ export const ko_KR: EnTranslations = {
     "realmList": "렐름 목록",
     "loadingRealms": "렐름을 불러오는 중...",
     "changeRealm": "렐름 변경",
+    "realm": "렐름",
+    "newCharacter": "새 캐릭터",
+    "appearance": "외형",
+    "class": "직업",
+    "name": "이름",
+    "chromaOption": "색상 {n}",
+    "noAccountPrompt": "처음이신가요?",
+    "haveAccountPrompt": "이미 계정이 있으신가요?",
     "characters": "캐릭터 목록:",
     "createCharacter": "캐릭터 생성",
     "characterName": "캐릭터 이름",
@@ -35707,7 +37435,11 @@ export const ko_KR: EnTranslations = {
     "rename": "이름 변경",
     "newNamePlaceholder": "새 캐릭터 이름",
     "tabCharacters": "캐릭터",
-    "tabCreate": "생성"
+    "tabCreate": "생성",
+    "portraitAlt": "{name}의 초상화",
+    "viewProfile": "프로필 보기",
+    "profile": "프로필",
+    "closeProfile": "프로필 닫기"
   },
   "deleteCharacter": {
     "title": "캐릭터 삭제",
@@ -35912,6 +37644,7 @@ export const ko_KR: EnTranslations = {
         "jump": "점프",
         "autorun": "자동 달리기 전환",
         "target": "가장 가까운 적 대상 지정",
+        "attackMove": "공격 이동",
         "interact": "상호작용 / 전리품",
         "char": "캐릭터",
         "spellbook": "마법책",
@@ -36017,6 +37750,7 @@ export const ko_KR: EnTranslations = {
     "combat": {
       "floatingMiss": "빗나감",
       "floatingDodge": "회피",
+      "cannotMove": "이동 불가!",
       "attack": "공격",
       "damageDone": "{ability}이 {target}에게 {amount}의 피해를 입혔습니다.",
       "damageDoneCrit": "{ability}이 {target}에게 치명타로 {amount}의 피해를 입혔습니다.",
@@ -36360,6 +38094,9 @@ export const ko_KR: EnTranslations = {
       "greetingFallback": "안녕하세요.",
       "availableQuestAria": "받을 수 있는 퀘스트: {name}",
       "readyQuestAria": "완료 보고 가능한 퀘스트: {name}",
+      "discussQuest": "{name}에 대해 이야기합니다.",
+      "discussQuestAria": "퀘스트 논의: {name}",
+      "nythraxisDeathlessKingWarning": "세 유물은 같은 이야기를 전합니다. 알드렌은 왕을 지키기 위해 싸웠고, 말릭은 죽음의 경계를 깨뜨렸으며, 보스는 그 뒤에 일어난 일을 막으려 했습니다. 봉인은 약해지고 있고, 버려진 묘실이 아래로 향하는 길입니다.",
       "browseGoods": "물건을 보여 주세요.",
       "browseGoodsAria": "{name}의 물건 보기",
       "worldMarket": "세계 시장을 보여 주세요.",
@@ -36367,6 +38104,7 @@ export const ko_KR: EnTranslations = {
       "accept": "수락",
       "decline": "거절",
       "continue": "계속",
+      "done": "완료",
       "completeQuest": "퀘스트 완료",
       "turnIn": "보고",
       "back": "뒤로",
@@ -36408,8 +38146,12 @@ export const ko_KR: EnTranslations = {
     },
     "slots": {
       "mainhand": "주장비",
+      "helmet": "머리",
+      "shoulder": "어깨",
       "chest": "가슴",
+      "waist": "허리",
       "legs": "다리",
+      "gloves": "손",
       "feet": "발"
     },
     "quality": {
@@ -36443,7 +38185,7 @@ export const ko_KR: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
-      "damageSpeed": "{min} - {max} 피해  속도 {speed}",
+      "damageSpeed": "{min} - {max} 피해 속도 {speed}",
       "dps": "(초당 피해 {dps})",
       "dagger": "단검",
       "armorStat": "방어도 {value}",
@@ -37675,8 +39417,74 @@ export const ko_KR: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "이솔레이의 진주 정강이받이"
       },
+      "boundstone_girdle": {
+        "name": "속박석 요대"
+      },
+      "boundstone_helm": {
+        "name": "속박석 투구"
+      },
+      "cryptbone_helm": {
+        "name": "묘지뼈 투구"
+      },
+      "cryptbone_pauldrons": {
+        "name": "묘지뼈 견갑"
+      },
+      "deathlords_dread_visage": {
+        "name": "죽음군주의 공포 얼굴가리개"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "무덤고룡 건틀릿"
+      },
+      "gravewyrm_mantle": {
+        "name": "무덤고룡 어깨덮개"
+      },
+      "mistveil_cord": {
+        "name": "안개장막 허리끈"
+      },
+      "mistveil_grips": {
+        "name": "안개장막 손아귀"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "강령술사의 영혼첨탑 어깨덮개"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "고룡그림자 갈퀴손아귀"
+      },
       "the_codfather": {
         "name": "대구 대부"
+      },
+      "runed_bone_shard": {
+        "name": "룬 새긴 뼈 조각"
+      },
+      "grave_sir_aldren": {
+        "name": "대장 알드렌의 무덤"
+      },
+      "grave_high_priest_malric": {
+        "name": "대사제 말릭의 무덤"
+      },
+      "grave_captain_voss": {
+        "name": "왕실 암살자 보스의 무덤"
+      },
+      "ancient_crypt_door": {
+        "name": "고대 납골당 문"
+      },
+      "captains_crest": {
+        "name": "묘실 열쇠돌 상부"
+      },
+      "priests_sigil": {
+        "name": "묘실 열쇠돌 하부"
+      },
+      "royal_seal": {
+        "name": "오래된 일지"
+      },
+      "crypt_keystone": {
+        "name": "납골당 쐐기돌"
+      },
+      "crypt_ritual_circle": {
+        "name": "의식 원"
+      },
+      "kings_signet": {
+        "name": "왕의 인장 반지"
       }
     },
     "mobs": {
@@ -37820,6 +39628,27 @@ export const ko_KR: EnTranslations = {
       },
       "bog_bloat": {
         "name": "늪 부푸리"
+      },
+      "fallen_captain_aldren": {
+        "name": "타락한 대장 알드렌"
+      },
+      "corrupted_priest_malric": {
+        "name": "타락한 사제 말릭"
+      },
+      "deathstalker_voss": {
+        "name": "죽음추적자 보스"
+      },
+      "vision_aldren_warrior": {
+        "name": "대장 알드렌의 환영"
+      },
+      "vision_malric_mage": {
+        "name": "대사제 말릭의 환영"
+      },
+      "vision_deathstalker_voss": {
+        "name": "왕실 암살자 보스의 환영"
+      },
+      "bound_guardian": {
+        "name": "속박된 수호자"
       },
       "elder_bristleback": {
         "name": "늙은 뻣센등뼈"
@@ -38394,7 +40223,7 @@ export const ko_KR: EnTranslations = {
       "q_mistcaller": {
         "title": "안개부름",
         "text": "바엘은 요새 밑바닥에서 기다립니다. 백 명의 여행자를 익사시켜 군대를 만든 목소리입니다. 그를 끝내십시오, {playerName}이여. 네 동료와 함께라면 습지의 죽은 자들도 마침내 잠들 것입니다.",
-        "completion": "바엘은 죽었고 안개가 걷힙니다. 그러나 마지막 말이 피를 얼립니다. Wyrm이 봉우리 아래서 꿈틀댄다고 했습니다. {playerName}이여, 할 수 있을 때 쉬십시오. 다음은 산입니다.",
+        "completion": "바엘은 죽었고 안개가 걷힙니다. 그러나 마지막 말이 피를 얼립니다. 고룡이 봉우리 아래서 꿈틀댄다고 했습니다. {playerName}이여, 할 수 있을 때 쉬십시오. 다음은 산입니다.",
         "objectives": {
           "0": {
             "label": "안개부름 바엘 처치"
@@ -38464,7 +40293,7 @@ export const ko_KR: EnTranslations = {
       "q_ogre_totems": {
         "title": "전쟁 토템",
         "text": "오우거들은 가죽과 해골 토템을 세웠습니다. 약탈이 아니라 소집의 표식입니다. 6개를 쓰러뜨려 가져오십시오. 외곽의 분쇄자들을 조심하십시오, {playerName}이여.",
-        "completion": "해골, 가죽... 그리고 Wyrm 비늘 끈입니다. 교단의 선물입니다, {playerName}.",
+        "completion": "해골, 가죽... 그리고 고룡 비늘 끈입니다. 교단의 선물입니다, {playerName}.",
         "objectives": {
           "0": {
             "label": "오우거 전쟁 토템"
@@ -38599,7 +40428,7 @@ export const ko_KR: EnTranslations = {
       },
       "q_breaking_the_seal": {
         "title": "봉인 깨기",
-        "text": "성소의 봉인은 산불로 빚어졌습니다. 같은 불만이 찢지 않고 길을 엽니다. {playerName}이여, 축복받은 불씨 5개를 가져오십시오. 교단이 먼저 문을 열면 조심하지 않을 것이고, Wyrm은 곱게 깨어나지 않을 테니.",
+        "text": "성소의 봉인은 산불로 빚어졌습니다. 같은 불만이 찢지 않고 길을 엽니다. {playerName}이여, 축복받은 불씨 5개를 가져오십시오. 교단이 먼저 문을 열면 조심하지 않을 것이고, 고룡은 곱게 깨어나지 않을 테니.",
         "completion": "푸르고 맑게 탑니다. 산은 오래된 맹세를 기억합니다.",
         "objectives": {
           "0": {
@@ -38643,7 +40472,7 @@ export const ko_KR: EnTranslations = {
       "q_velkhar": {
         "title": "대강령술사",
         "text": "모르덴, 바엘, 성물함까지 모든 실은 대강령술사 벨카르가 엮었습니다. 그를 끝내십시오, {playerName}.",
-        "completion": "벨카르는 죽었고 의식은 머리를 잃었습니다. 하지만 느꼈겠지요. Wyrm은 더 이상 잠들지 않습니다.",
+        "completion": "벨카르는 죽었고 의식은 머리를 잃었습니다. 하지만 느꼈겠지요. 고룡은 더 이상 잠들지 않습니다.",
         "objectives": {
           "0": {
             "label": "대강령술사 벨카르 처치"
@@ -38652,7 +40481,7 @@ export const ko_KR: EnTranslations = {
       },
       "q_gravewyrm": {
         "title": "무덤고룡 코르줄",
-        "text": "멈출 의식은 없습니다, {playerName}. 반쯤 깬 Wyrm뿐입니다. 동료들과 들어가 예배당에서 시작한 일을 끝내십시오.",
+        "text": "멈출 의식은 없습니다, {playerName}. 반쯤 깬 고룡뿐입니다. 동료들과 들어가 예배당에서 시작한 일을 끝내십시오.",
         "completion": "끝났습니다. 세 땅의 죽은 자들이 쉬고 산은 혼령 없이 잠듭니다. 오늘 밤 여기서 이스트브룩까지 모든 종이 울리는 것은 바로 그대의 이름입니다, {playerName}이여.",
         "objectives": {
           "0": {
@@ -38667,6 +40496,64 @@ export const ko_KR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "대구 대부"
+          }
+        }
+      },
+      "q_nythraxis_restless_dead": {
+        "title": "뼈 들판의 소요",
+        "text": "Thornpeak Heights에 변화가 생겼습니다, {playerName}. 죽은 자들이 더는 정처 없이 떠돌지 않습니다. 그들은 Highwatch 너머 북쪽 뼈 들판, 옛 전장과 절벽길이 만나는 곳에서 모여 행군합니다. 그곳으로 가서 뼈갑옷 망령들의 소요를 조사하고, 무엇이 그들을 움직이는지 보여 줄 증거를 가져오십시오.",
+        "completion": "모든 조각에 같은 표식이 있습니다... 왕관입니다. Eastbrook 기록이 기억하지 못하는 오래된 무덤에 새겨진 것을 본 적이 있습니다.",
+        "objectives": {
+          "0": {
+            "label": "룬 새긴 뼈 조각"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "잊힌 자들의 무덤",
+        "text": "북쪽 전장 둘레의 세 오래된 무덤에서 이 표식을 본 적이 있습니다. 알드렌 대장은 동쪽 언덕에, 대사제 말릭은 가운데 부서진 길 근처에, 왕실 암살자 보스는 서쪽 절벽 곁에 묻혀 있습니다. 각 무덤을 만지고 귀 기울이십시오, {playerName}. 죽은 자들은 산 자들이 잊은 것을 기억할지도 모릅니다.",
+        "completion": "알드렌은 충성을 지켰고, 말릭은 죽음을 받아들이지 않았으며, 보스는 누구보다 먼저 위험을 보았습니다. 셋 모두 같은 잊힌 왕을 섬겼습니다.",
+        "objectives": {
+          "0": {
+            "label": "대장 알드렌의 무덤에서 본 환영"
+          },
+          "1": {
+            "label": "대사제 말릭의 무덤에서 본 환영"
+          },
+          "2": {
+            "label": "왕실 암살자 보스의 무덤에서 본 환영"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "버려진 납골당",
+        "text": "환영은 서쪽 절벽의 버려진 묘실을 가리킵니다. 그 묘실에 한 왕이 있었다는 옛 전설이 있습니다. 말릭의 의식이 그를 죽지 않는 존재로 뒤틀어 놓은 뒤 Thornpeak가 그를 아래에 봉인했을지도 모릅니다. 묘실에 들어가 안에 무엇이 남아 있는지 확인하십시오.",
+        "completion": "열쇠돌의 두 조각이 맞물리고, 보스의 일지는 그것들이 봉인한 것을 밝힙니다. 니트락시스 왕의 인장 반지입니다. 일지가 사실이라면 그 반지가 그의 무덤으로 가는 열쇠입니다.",
+        "objectives": {
+          "0": {
+            "label": "묘실 열쇠돌 상부"
+          },
+          "1": {
+            "label": "묘실 열쇠돌 하부"
+          },
+          "2": {
+            "label": "오래된 일지"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "속박된 수호자",
+        "text": "보스는 생존자들이 니트락시스의 무덤에 우연이나 야심으로 닿는 일을 막기 위해 왕의 인장 반지를 고대 수호자 뒤에 봉인했다고 썼습니다. 묘실 열쇠돌을 버려진 묘실 동쪽, 서쪽 무덤 남동쪽 평지의 의식진으로 가져가십시오. 그곳에서 사용하고, 수호자를 쓰러뜨린 뒤 반지를 가져오십시오.",
+        "completion": "세 유물은 같은 이야기를 전합니다. 알드렌은 왕을 지키려 싸웠고, 말릭은 죽음의 경계를 깨뜨렸으며, 보스는 그 뒤에 벌어진 일을 막으려 했습니다. 봉인이 약해지고 있으며, 이 반지는 니트락시스의 무덤으로 가는 열쇠입니다. 이제 당신은 니트락시스의 묘실에 들어갈 수 있도록 조율되었습니다.",
+        "objectives": {
+          "0": {
+            "label": "의식 원에서 납골당 쐐기돌 사용"
+          },
+          "1": {
+            "label": "속박된 수호자 처치"
+          },
+          "2": {
+            "label": "왕의 인장 반지"
           }
         }
       },
@@ -38868,6 +40755,11 @@ export const ko_KR: EnTranslations = {
         "enterText": "공기가 차가워집니다. 아래에서 거대한 무언가가 숨 쉽니다...",
         "leaveText": "산바람 속으로 비틀거리며 돌아옵니다."
       },
+      "nythraxis_crypt": {
+        "name": "버려진 납골당",
+        "enterText": "버려진 납골당의 문턱을 넘습니다.",
+        "leaveText": "Thornpeak의 차가운 공기 속으로 돌아옵니다."
+      },
       "drowned_temple": {
         "name": "익사한 신전",
         "enterText": "당신은 달의 관문을 지나갑니다 — 공기가 차가운 물과 창백한 빛으로 변하고, 노랫소리가 당신의 머리 위로 닫혀 옵니다.",
@@ -39022,7 +40914,7 @@ export const ja_JP: EnTranslations = {
   },
   "stats": {
     "title": "レルムステータス",
-    "accountsCreated": "作成アカウント数",
+    "accountsCreated": "プレイヤー",
     "playersOnline": "オンラインプレイヤー数",
     "realmName": "レルム名"
   },
@@ -39096,6 +40988,14 @@ export const ja_JP: EnTranslations = {
     "realmList": "レルムリスト",
     "loadingRealms": "レルムを読み込み中...",
     "changeRealm": "レルム変更",
+    "realm": "レルム",
+    "newCharacter": "新規キャラクター",
+    "appearance": "外見",
+    "class": "クラス",
+    "name": "名前",
+    "chromaOption": "カラー {n}",
+    "noAccountPrompt": "初めてですか？",
+    "haveAccountPrompt": "アカウントをお持ちですか？",
     "characters": "キャラクター数：",
     "createCharacter": "キャラクター作成",
     "characterName": "キャラクター名",
@@ -39241,7 +41141,11 @@ export const ja_JP: EnTranslations = {
     "rename": "名前変更",
     "newNamePlaceholder": "新しいキャラクター名",
     "tabCharacters": "キャラクター",
-    "tabCreate": "作成"
+    "tabCreate": "作成",
+    "portraitAlt": "{name}の肖像",
+    "viewProfile": "プロフィールを見る",
+    "profile": "プロフィール",
+    "closeProfile": "プロフィールを閉じる"
   },
   "deleteCharacter": {
     "title": "キャラクターを削除",
@@ -39446,6 +41350,7 @@ export const ja_JP: EnTranslations = {
         "jump": "ジャンプ",
         "autorun": "オートラン切り替え",
         "target": "最も近い敵をターゲット",
+        "attackMove": "アタックムーブ",
         "interact": "相互作用 / 戦利品",
         "char": "キャラクター",
         "spellbook": "魔法書",
@@ -39551,6 +41456,7 @@ export const ja_JP: EnTranslations = {
     "combat": {
       "floatingMiss": "ミス",
       "floatingDodge": "回避",
+      "cannotMove": "動けない！",
       "attack": "攻撃",
       "damageDone": "{ability}が{target}に命中し、{amount}のダメージ。",
       "damageDoneCrit": "{ability}が{target}にクリティカルし、{amount}のダメージ。",
@@ -39894,6 +41800,9 @@ export const ja_JP: EnTranslations = {
       "greetingFallback": "こんにちは。",
       "availableQuestAria": "受諾可能なクエスト: {name}",
       "readyQuestAria": "報告可能なクエスト: {name}",
+      "discussQuest": "{name}について話す。",
+      "discussQuestAria": "クエストについて話す: {name}",
+      "nythraxisDeathlessKingWarning": "三つの遺物は同じ物語を語っています。アルドレンは王を守るために戦い、マルリックは死の境界を破り、ヴォスはその後に起きたことを止めようとしました。封印は弱まり、廃棄された墓所こそ地下への道です。",
       "browseGoods": "品物を見せてください。",
       "browseGoodsAria": "{name}の品物を見る",
       "worldMarket": "ワールドマーケットを見せてください。",
@@ -39901,6 +41810,7 @@ export const ja_JP: EnTranslations = {
       "accept": "受諾",
       "decline": "辞退",
       "continue": "続ける",
+      "done": "完了",
       "completeQuest": "クエスト完了",
       "turnIn": "報告",
       "back": "戻る",
@@ -39942,8 +41852,12 @@ export const ja_JP: EnTranslations = {
     },
     "slots": {
       "mainhand": "メインハンド",
+      "helmet": "頭",
+      "shoulder": "肩",
       "chest": "胸",
+      "waist": "腰",
       "legs": "脚",
+      "gloves": "手",
       "feet": "足"
     },
     "quality": {
@@ -39977,7 +41891,7 @@ export const ja_JP: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
-      "damageSpeed": "{min} - {max} ダメージ  速度 {speed}",
+      "damageSpeed": "{min} - {max} ダメージ 速度 {speed}",
       "dps": "（秒間 {dps} ダメージ）",
       "dagger": "短剣",
       "armorStat": "防御力 {value}",
@@ -41209,8 +43123,74 @@ export const ja_JP: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "イソレイの真珠脚甲"
       },
+      "boundstone_girdle": {
+        "name": "束縛石のガードル"
+      },
+      "boundstone_helm": {
+        "name": "束縛石の兜"
+      },
+      "cryptbone_helm": {
+        "name": "墓骨の兜"
+      },
+      "cryptbone_pauldrons": {
+        "name": "墓骨のポールドロン"
+      },
+      "deathlords_dread_visage": {
+        "name": "死王の恐怖の面貌"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "墓ワームのガントレット"
+      },
+      "gravewyrm_mantle": {
+        "name": "墓ワームのマントル"
+      },
+      "mistveil_cord": {
+        "name": "霧覆いのコード"
+      },
+      "mistveil_grips": {
+        "name": "霧覆いの握り"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "死霊術師の魂尖塔マントル"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "ワーム影の鉤爪握り"
+      },
       "the_codfather": {
         "name": "タラのゴッドファーザー"
+      },
+      "runed_bone_shard": {
+        "name": "ルーン刻みの骨片"
+      },
+      "grave_sir_aldren": {
+        "name": "オルドレン隊長の墓"
+      },
+      "grave_high_priest_malric": {
+        "name": "大祭司マルリックの墓"
+      },
+      "grave_captain_voss": {
+        "name": "王家の暗殺者ヴォスの墓"
+      },
+      "ancient_crypt_door": {
+        "name": "古代の地下墓所の扉"
+      },
+      "captains_crest": {
+        "name": "墓所の要石上部"
+      },
+      "priests_sigil": {
+        "name": "墓所の要石下部"
+      },
+      "royal_seal": {
+        "name": "古い日誌"
+      },
+      "crypt_keystone": {
+        "name": "地下墓所の要石"
+      },
+      "crypt_ritual_circle": {
+        "name": "儀式の円"
+      },
+      "kings_signet": {
+        "name": "王の印章指輪"
       }
     },
     "mobs": {
@@ -41354,6 +43334,27 @@ export const ja_JP: EnTranslations = {
       },
       "bog_bloat": {
         "name": "沼の膨れ者"
+      },
+      "fallen_captain_aldren": {
+        "name": "堕ちた隊長オルドレン"
+      },
+      "corrupted_priest_malric": {
+        "name": "腐敗した司祭マルリック"
+      },
+      "deathstalker_voss": {
+        "name": "デスストーカー・ヴォス"
+      },
+      "vision_aldren_warrior": {
+        "name": "隊長オルドレンの幻視"
+      },
+      "vision_malric_mage": {
+        "name": "大祭司マルリックの幻視"
+      },
+      "vision_deathstalker_voss": {
+        "name": "王家の暗殺者ヴォスの幻視"
+      },
+      "bound_guardian": {
+        "name": "縛られし守護者"
       },
       "elder_bristleback": {
         "name": "老ブリストルバック"
@@ -41928,7 +43929,7 @@ export const ja_JP: EnTranslations = {
       "q_mistcaller": {
         "title": "霧呼び",
         "text": "ヴァエルは砦の底にいます。百人を溺れさせ、軍を作った声です。四人の仲間と終わらせてください、{playerName}。",
-        "completion": "ヴァエルは死に、霧は晴れています。だが最後の言葉は血を凍らせます。Wyrmが峰の下で動く、と。{playerName}、今のうちに休んでください。次は山です。",
+        "completion": "ヴァエルは死に、霧は晴れています。だが最後の言葉は血を凍らせます。ワームが峰の下で動く、と。{playerName}、今のうちに休んでください。次は山です。",
         "objectives": {
           "0": {
             "label": "霧呼びのヴァエルを討伐"
@@ -41998,7 +43999,7 @@ export const ja_JP: EnTranslations = {
       "q_ogre_totems": {
         "title": "戦のトーテム",
         "text": "オーガは皮と頭蓋のトーテムを立てました。襲撃ではなく集結の印です。6つ倒して持ち帰ってください。{playerName}、周囲の粉砕者に気をつけて。",
-        "completion": "頭蓋、皮...そしてWyrmの鱗の結び。教団の贈り物です、{playerName}。",
+        "completion": "頭蓋、皮...そしてワームの鱗の結び。教団の贈り物です、{playerName}。",
         "objectives": {
           "0": {
             "label": "オーガ戦のトーテム"
@@ -42177,7 +44178,7 @@ export const ja_JP: EnTranslations = {
       "q_velkhar": {
         "title": "大死霊術師",
         "text": "モーセン、ヴァエル、経箱、すべての糸は大死霊術師ヴェルカーが紡ぎました。彼を終わらせてください、{playerName}。",
-        "completion": "ヴェルカーは死に、儀式は頭を失いました。けれど感じたでしょう。Wyrmはもう眠っていません。",
+        "completion": "ヴェルカーは死に、儀式は頭を失いました。けれど感じたでしょう。ワームはもう眠っていません。",
         "objectives": {
           "0": {
             "label": "大死霊術師ヴェルカーを討伐"
@@ -42186,7 +44187,7 @@ export const ja_JP: EnTranslations = {
       },
       "q_gravewyrm": {
         "title": "墓ワームのコルズル",
-        "text": "止める儀式はもうありません、{playerName}。半ば目覚めたWyrmだけです。仲間と入り、礼拝堂で始めたことを終わらせてください。",
+        "text": "止める儀式はもうありません、{playerName}。半ば目覚めたワームだけです。仲間と入り、礼拝堂で始めたことを終わらせてください。",
         "completion": "終わりました。三つの地の死者は休み、山は憑かれずに眠ります。{playerName}、今夜すべての鐘があなたの名を鳴らします。",
         "objectives": {
           "0": {
@@ -42201,6 +44202,64 @@ export const ja_JP: EnTranslations = {
         "objectives": {
           "0": {
             "label": "タラのゴッドファーザー"
+          }
+        }
+      },
+      "q_nythraxis_restless_dead": {
+        "title": "骨原の異変",
+        "text": "Thornpeak Heightsで何かが変わりました、{playerName}。死者たちはもはや当てもなくさまよっていません。Highwatchの北、古い戦場と崖道が交わる骨原で集まり、行軍しています。そこへ向かい、骨鎧の亡者たちの異変を調べ、彼らを動かしているものの証拠を持ち帰ってください。",
+        "completion": "すべての欠片に同じ印があります... 王冠です。Eastbrookの記録には残っていない古い墓に刻まれているのを見たことがあります。",
+        "objectives": {
+          "0": {
+            "label": "ルーン刻みの骨片"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "忘れられし者の墓",
+        "text": "この印を以前にも見ました。北の戦場を囲む三つの古い墓です。アルドレン隊長は東の高台に、大神官マルリックは中央の壊れた道の近くに、王家の暗殺者ヴォスは西の崖のそばに眠っています。それぞれの墓に触れて耳を澄ませてください、{playerName}。死者は生者が忘れたことを覚えているかもしれません。",
+        "completion": "アルドレンは忠義を守り、マルリックは死を受け入れず、ヴォスは誰よりも早く危険を見抜きました。三人は同じ忘れられた王に仕えていました。",
+        "objectives": {
+          "0": {
+            "label": "隊長オルドレンの墓での幻視"
+          },
+          "1": {
+            "label": "大祭司マルリックの墓での幻視"
+          },
+          "2": {
+            "label": "王家の暗殺者ヴォスの墓での幻視"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "放棄された地下墓所",
+        "text": "幻視は、西の崖にある廃棄された墓所を示しています。その墓所には王がいたという古い伝説があります。マルリックの儀式が王を死なぬものへ歪めた後、Thornpeakが彼を地下に封じたのかもしれません。墓所へ入り、中に何が残っているか確かめてください。",
+        "completion": "要石の二つの半分が合わさり、ヴォスの日誌はそれらが封じたものの名を示しています。ニスラクシス王の印章指輪です。日誌が真実なら、その指輪こそ彼の墓への鍵です。",
+        "objectives": {
+          "0": {
+            "label": "墓所の要石上部"
+          },
+          "1": {
+            "label": "墓所の要石下部"
+          },
+          "2": {
+            "label": "古い日誌"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "縛られし守護者",
+        "text": "ヴォスは、生存者たちが偶然や野心でニスラクシスの墓に辿り着く者を防ぐため、王の印章指輪を古代の守護者の奥に封じたと記しています。墓所の要石を、廃棄された墓所の東、西の墓の南東にある平地の儀式陣へ持っていってください。そこで使い、守護者を破り、指輪を持ち帰ってください。",
+        "completion": "三つの遺物は同じ物語を語っています。アルドレンは王を守るために戦い、マルリックは死の境界を破り、ヴォスはその後に起きたことを止めようとしました。封印は弱まり、この指輪こそニスラクシスの墓への鍵です。あなたは今、ニスラクシスの墓所へ入るための調律を終えました。",
+        "objectives": {
+          "0": {
+            "label": "儀式の円で地下墓所の要石を使用"
+          },
+          "1": {
+            "label": "縛られし守護者を撃破"
+          },
+          "2": {
+            "label": "王の印章指輪"
           }
         }
       },
@@ -42402,6 +44461,11 @@ export const ja_JP: EnTranslations = {
         "enterText": "空気が冷たくなります。下で巨大な何かが息をしています...",
         "leaveText": "山風の中へよろめき戻ります。"
       },
+      "nythraxis_crypt": {
+        "name": "放棄された地下墓所",
+        "enterText": "放棄された地下墓所の敷居を越えます。",
+        "leaveText": "Thornpeakの冷たい空気へ戻ります。"
+      },
       "drowned_temple": {
         "name": "溺れし神殿",
         "enterText": "月の門をくぐり抜けると——大気は冷たい水と蒼白の光に変わり、歌声が頭上で閉ざされていく。",
@@ -42556,7 +44620,7 @@ export const pt_BR: EnTranslations = {
   },
   "stats": {
     "title": "Status do Reino",
-    "accountsCreated": "Contas criadas",
+    "accountsCreated": "Jogadores",
     "playersOnline": "Jogadores online",
     "realmName": "Nome do reino"
   },
@@ -42630,6 +44694,14 @@ export const pt_BR: EnTranslations = {
     "realmList": "Lista de reinos",
     "loadingRealms": "Carregando reinos...",
     "changeRealm": "Mudar de reino",
+    "realm": "Reino",
+    "newCharacter": "Novo personagem",
+    "appearance": "Aparência",
+    "class": "Classe",
+    "name": "Nome",
+    "chromaOption": "Croma {n}",
+    "noAccountPrompt": "Novo no reino?",
+    "haveAccountPrompt": "Já tem uma conta?",
     "characters": "Personagens:",
     "createCharacter": "Criar personagem",
     "characterName": "Nome do personagem",
@@ -42775,7 +44847,11 @@ export const pt_BR: EnTranslations = {
     "rename": "Renomear",
     "newNamePlaceholder": "Novo nome do personagem",
     "tabCharacters": "Personagens",
-    "tabCreate": "Criar"
+    "tabCreate": "Criar",
+    "portraitAlt": "Retrato de {name}",
+    "viewProfile": "Ver perfil",
+    "profile": "Perfil",
+    "closeProfile": "Fechar perfil"
   },
   "deleteCharacter": {
     "title": "Excluir personagem",
@@ -42980,6 +45056,7 @@ export const pt_BR: EnTranslations = {
         "jump": "Pular",
         "autorun": "Alternar corrida automática",
         "target": "Selecionar inimigo mais próximo",
+        "attackMove": "Mover e atacar",
         "interact": "Interagir / Saquear",
         "char": "Personagem",
         "spellbook": "Livro de feitiços",
@@ -43085,6 +45162,7 @@ export const pt_BR: EnTranslations = {
     "combat": {
       "floatingMiss": "Errou",
       "floatingDodge": "Esquivou",
+      "cannotMove": "Não pode se mover!",
       "attack": "ataque",
       "damageDone": "Seu {ability} acerta {target} causando {amount}.",
       "damageDoneCrit": "Seu {ability} acerta criticamente {target} causando {amount}.",
@@ -43428,6 +45506,9 @@ export const pt_BR: EnTranslations = {
       "greetingFallback": "Saudações.",
       "availableQuestAria": "Missão disponível: {name}",
       "readyQuestAria": "Missão pronta para entrega: {name}",
+      "discussQuest": "Discutir {name}.",
+      "discussQuestAria": "Discutir missão: {name}",
+      "nythraxisDeathlessKingWarning": "As três relíquias contam a mesma história: Aldren lutou para defender seu rei, Malric rompeu a fronteira da morte e Voss tentou impedir o que veio depois. O selo está enfraquecendo, e a cripta abandonada é o caminho para baixo.",
       "browseGoods": "Deixe-me ver suas mercadorias.",
       "browseGoodsAria": "Ver mercadorias de {name}",
       "worldMarket": "Mostre-me o Mercado Mundial.",
@@ -43435,6 +45516,7 @@ export const pt_BR: EnTranslations = {
       "accept": "Aceitar",
       "decline": "Recusar",
       "continue": "Continuar",
+      "done": "Pronto",
       "completeQuest": "Concluir missão",
       "turnIn": "Entregar",
       "back": "Voltar",
@@ -43476,8 +45558,12 @@ export const pt_BR: EnTranslations = {
     },
     "slots": {
       "mainhand": "Mão principal",
+      "helmet": "Cabeça",
+      "shoulder": "Ombros",
       "chest": "Peito",
+      "waist": "Cintura",
       "legs": "Pernas",
+      "gloves": "Mãos",
       "feet": "Pés"
     },
     "quality": {
@@ -43511,7 +45597,7 @@ export const pt_BR: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{kind} {quality}",
-      "damageSpeed": "{min} - {max} de dano  Velocidade {speed}",
+      "damageSpeed": "{min} - {max} de dano Velocidade {speed}",
       "dps": "({dps} de dano por segundo)",
       "dagger": "Adaga",
       "armorStat": "{value} de armadura",
@@ -44743,8 +46829,74 @@ export const pt_BR: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Grevas de Pérola de Ysolei"
       },
+      "boundstone_girdle": {
+        "name": "Cinturão Pedra-vínculo"
+      },
+      "boundstone_helm": {
+        "name": "Elmo Pedra-vínculo"
+      },
+      "cryptbone_helm": {
+        "name": "Elmo Osso de Cripta"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Espaldares Osso de Cripta"
+      },
+      "deathlords_dread_visage": {
+        "name": "Visagem Pavorosa do Senhor da Morte"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Manoplas do Gravewyrm"
+      },
+      "gravewyrm_mantle": {
+        "name": "Manto do Gravewyrm"
+      },
+      "mistveil_cord": {
+        "name": "Cordão Véu-neblina"
+      },
+      "mistveil_grips": {
+        "name": "Pegas Véu-neblina"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Manto Pináculo de Alma do necromante"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Pegas Garra Sombra de Wyrm"
+      },
       "the_codfather": {
         "name": "O Bacalhau-Padrinho"
+      },
+      "runed_bone_shard": {
+        "name": "Estilhaço de osso rúnico"
+      },
+      "grave_sir_aldren": {
+        "name": "Túmulo do capitão Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Túmulo do sumo sacerdote Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Túmulo do assassino real Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Porta antiga da cripta"
+      },
+      "captains_crest": {
+        "name": "Parte superior da pedra-chave"
+      },
+      "priests_sigil": {
+        "name": "Parte inferior da pedra-chave"
+      },
+      "royal_seal": {
+        "name": "Diario antigo"
+      },
+      "crypt_keystone": {
+        "name": "Pedra-chave da cripta"
+      },
+      "crypt_ritual_circle": {
+        "name": "Círculo ritual"
+      },
+      "kings_signet": {
+        "name": "Anel-sinete do rei"
       }
     },
     "mobs": {
@@ -44888,6 +47040,27 @@ export const pt_BR: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Inchaço do brejo"
+      },
+      "fallen_captain_aldren": {
+        "name": "Capitão caído Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Sacerdote corrompido Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Espreitador da Morte Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Visão do capitão Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Visão do sumo sacerdote Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Visão do assassino real Voss"
+      },
+      "bound_guardian": {
+        "name": "Guardião Vinculado"
       },
       "elder_bristleback": {
         "name": "Bristleback ancião"
@@ -45738,6 +47911,64 @@ export const pt_BR: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Agitacao nos Campos de Ossos",
+        "text": "Algo mudou em Thornpeak Heights, {playerName}. Os mortos nao vagam mais sem rumo. Eles se juntam e marcham pelos campos de ossos ao norte de Highwatch, onde o antigo campo de batalha encontra a estrada do penhasco. Va ate la, investigue a agitacao entre os Revenants Revestidos de Ossos e traga qualquer prova do que os esta movendo.",
+        "completion": "O mesmo simbolo aparece em cada fragmento... uma coroa. Ja vi isso antes, entalhado em tumulos antigos que nenhum registro de Eastbrook lembra.",
+        "objectives": {
+          "0": {
+            "label": "Estilhaço de osso rúnico"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Túmulos dos esquecidos",
+        "text": "Ja vi estas marcas antes, em tres tumulos antigos ao redor do campo de batalha ao norte. O capitao Aldren jaz na elevacao leste, o sumo sacerdote Malric perto da estrada central quebrada, e o assassino real Voss junto ao penhasco oeste. Toque cada tumulo e escute, {playerName}. Os mortos podem lembrar o que os vivos esqueceram.",
+        "completion": "Aldren permaneceu leal, Malric se recusou a aceitar a morte e Voss viu o perigo antes de todos. Os tres serviram ao mesmo rei esquecido.",
+        "objectives": {
+          "0": {
+            "label": "Visão no túmulo do capitão Aldren"
+          },
+          "1": {
+            "label": "Visão no túmulo do sumo sacerdote Malric"
+          },
+          "2": {
+            "label": "Visão no túmulo do assassino real Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "A cripta abandonada",
+        "text": "As visoes apontam para a cripta abandonada no penhasco oeste. Ha uma velha lenda de que a cripta abrigava um rei. Talvez Thornpeak o tenha selado la embaixo depois que o ritual de Malric o transformou em algo imortal. Entre na cripta e veja o que restou la dentro.",
+        "completion": "As metades da pedra-chave se encaixam, e o diario de Voss nomeia o que elas selaram: o anel-sinete do rei Nythraxis. Se o diario for verdadeiro, esse anel e a chave para sua tumba.",
+        "objectives": {
+          "0": {
+            "label": "Parte superior da pedra-chave"
+          },
+          "1": {
+            "label": "Parte inferior da pedra-chave"
+          },
+          "2": {
+            "label": "Diario antigo"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "O Guardião Vinculado",
+        "text": "Voss escreveu que os sobreviventes selaram o Anel-sinete do rei atras de um guardiao antigo, para que ninguem chegasse a tumba de Nythraxis por acidente ou ambicao. Leve a Pedra-chave da cripta ao circulo ritual no terreno plano a leste da cripta abandonada e a sudeste da tumba oeste. Use-a ali, quebre o guardiao e traga o anel.",
+        "completion": "As tres reliquias contam a mesma historia: Aldren lutou para defender seu rei, Malric rompeu a fronteira da morte e Voss tentou impedir o que veio depois. O selo esta enfraquecendo, e este anel e a chave da tumba de Nythraxis. Agora voce esta sintonizado para entrar na Cripta de Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Pedra-chave usada no círculo ritual"
+          },
+          "1": {
+            "label": "Guardião Vinculado derrotado"
+          },
+          "2": {
+            "label": "Anel-sinete do rei"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "A trilha de Mogger",
         "text": "Antes de pegar a estrada ao norte, Eastbrook tem um último espinho: Mogger. A fera pisoteia o prado baixo e enlouquece os javalis. Limpe o prado ao redor da trilha para descobrirmos onde ele se esconde.",
@@ -45936,6 +48167,11 @@ export const pt_BR: EnTranslations = {
         "enterText": "O ar fica frio. Algo imenso respira abaixo...",
         "leaveText": "Você cambaleia de volta ao vento da montanha."
       },
+      "nythraxis_crypt": {
+        "name": "Cripta abandonada",
+        "enterText": "Você cruza o limiar da cripta abandonada.",
+        "leaveText": "Você retorna ao ar frio de Thornpeak."
+      },
       "drowned_temple": {
         "name": "O Templo Afogado",
         "enterText": "Você atravessa o portão lunar — o ar se transforma em água fria e luz pálida, e o cântico se fecha sobre a sua cabeça.",
@@ -46090,7 +48326,7 @@ export const ru_RU: EnTranslations = {
   },
   "stats": {
     "title": "Статус игрового мира",
-    "accountsCreated": "Создано учетных записей",
+    "accountsCreated": "Игроки",
     "playersOnline": "Игроков в сети",
     "realmName": "Название игрового мира"
   },
@@ -46164,6 +48400,14 @@ export const ru_RU: EnTranslations = {
     "realmList": "Список игровых миров",
     "loadingRealms": "Загрузка списка миров...",
     "changeRealm": "Сменить игровой мир",
+    "realm": "Мир",
+    "newCharacter": "Новый персонаж",
+    "appearance": "Внешность",
+    "class": "Класс",
+    "name": "Имя",
+    "chromaOption": "Расцветка {n}",
+    "noAccountPrompt": "Впервые в мире?",
+    "haveAccountPrompt": "Уже есть аккаунт?",
     "characters": "Персонажи:",
     "createCharacter": "Создать персонажа",
     "characterName": "Имя персонажа",
@@ -46309,7 +48553,11 @@ export const ru_RU: EnTranslations = {
     "rename": "Переименовать",
     "newNamePlaceholder": "Новое имя персонажа",
     "tabCharacters": "Персонажи",
-    "tabCreate": "Создать"
+    "tabCreate": "Создать",
+    "portraitAlt": "Портрет {name}",
+    "viewProfile": "Профиль",
+    "profile": "Профиль",
+    "closeProfile": "Закрыть профиль"
   },
   "deleteCharacter": {
     "title": "Удалить персонажа",
@@ -46514,6 +48762,7 @@ export const ru_RU: EnTranslations = {
         "jump": "Прыжок",
         "autorun": "Автобег",
         "target": "Ближайший враг",
+        "attackMove": "Атака с движением",
         "interact": "Взаимодействовать / добыча",
         "char": "Персонаж",
         "spellbook": "Книга заклинаний",
@@ -46619,6 +48868,7 @@ export const ru_RU: EnTranslations = {
     "combat": {
       "floatingMiss": "Промах",
       "floatingDodge": "Уклон",
+      "cannotMove": "Не двигается!",
       "attack": "атака",
       "damageDone": "Ваше {ability} поражает {target} на {amount}.",
       "damageDoneCrit": "Ваше {ability} критически поражает {target} на {amount}.",
@@ -46962,6 +49212,9 @@ export const ru_RU: EnTranslations = {
       "greetingFallback": "Приветствую.",
       "availableQuestAria": "Доступное задание: {name}",
       "readyQuestAria": "Задание готово к сдаче: {name}",
+      "discussQuest": "Обсудить {name}.",
+      "discussQuestAria": "Обсудить задание: {name}",
+      "nythraxisDeathlessKingWarning": "Три реликвии рассказывают одну историю: Алдрен сражался, защищая своего короля, Малрик нарушил границу смерти, а Восс пытался остановить то, что последовало. Печать слабеет, и заброшенная крипта ведет вниз.",
       "browseGoods": "Покажите ваши товары.",
       "browseGoodsAria": "Посмотреть товары у {name}",
       "worldMarket": "Покажите мне мировой рынок.",
@@ -46969,6 +49222,7 @@ export const ru_RU: EnTranslations = {
       "accept": "Принять",
       "decline": "Отклонить",
       "continue": "Продолжить",
+      "done": "Готово",
       "completeQuest": "Завершить задание",
       "turnIn": "Сдать",
       "back": "Назад",
@@ -47010,8 +49264,12 @@ export const ru_RU: EnTranslations = {
     },
     "slots": {
       "mainhand": "Правая рука",
+      "helmet": "Голова",
+      "shoulder": "Плечи",
       "chest": "Грудь",
+      "waist": "Пояс",
       "legs": "Ноги",
+      "gloves": "Кисти рук",
       "feet": "Ступни"
     },
     "quality": {
@@ -47045,7 +49303,7 @@ export const ru_RU: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
-      "damageSpeed": "{min} - {max} урона  Скорость {speed}",
+      "damageSpeed": "{min} - {max} урона Скорость {speed}",
       "dps": "({dps} урона в секунду)",
       "dagger": "Кинжал",
       "armorStat": "{value} брони",
@@ -48277,8 +50535,74 @@ export const ru_RU: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "Жемчужные поножи Изолеи"
       },
+      "boundstone_girdle": {
+        "name": "Ремень Связанного камня"
+      },
+      "boundstone_helm": {
+        "name": "Шлем Связанного камня"
+      },
+      "cryptbone_helm": {
+        "name": "Шлем из склеповой кости"
+      },
+      "cryptbone_pauldrons": {
+        "name": "Наплечники из склеповой кости"
+      },
+      "deathlords_dread_visage": {
+        "name": "Ужасающий лик Владыки Смерти"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "Рукавицы Могильного Вирма"
+      },
+      "gravewyrm_mantle": {
+        "name": "Мантия Могильного Вирма"
+      },
+      "mistveil_cord": {
+        "name": "Шнур Туманной завесы"
+      },
+      "mistveil_grips": {
+        "name": "Захваты Туманной завесы"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "Мантия шпиля души некроманта"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "Захваты когтя Тени вирма"
+      },
       "the_codfather": {
         "name": "Крестная треска"
+      },
+      "runed_bone_shard": {
+        "name": "Рунный костяной осколок"
+      },
+      "grave_sir_aldren": {
+        "name": "Могила капитана Алдрена"
+      },
+      "grave_high_priest_malric": {
+        "name": "Могила верховного жреца Малрика"
+      },
+      "grave_captain_voss": {
+        "name": "Могила королевского убийцы Восса"
+      },
+      "ancient_crypt_door": {
+        "name": "Древняя дверь склепа"
+      },
+      "captains_crest": {
+        "name": "Верхняя часть ключ-камня"
+      },
+      "priests_sigil": {
+        "name": "Нижняя часть ключ-камня"
+      },
+      "royal_seal": {
+        "name": "Древний дневник"
+      },
+      "crypt_keystone": {
+        "name": "Ключ-камень склепа"
+      },
+      "crypt_ritual_circle": {
+        "name": "Ритуальный круг"
+      },
+      "kings_signet": {
+        "name": "Перстень короля"
       }
     },
     "mobs": {
@@ -48422,6 +50746,27 @@ export const ru_RU: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Болотный раздутень"
+      },
+      "fallen_captain_aldren": {
+        "name": "Павший капитан Алдрен"
+      },
+      "corrupted_priest_malric": {
+        "name": "Оскверненный жрец Малрик"
+      },
+      "deathstalker_voss": {
+        "name": "Смертолаз Восс"
+      },
+      "vision_aldren_warrior": {
+        "name": "Видение капитана Алдрена"
+      },
+      "vision_malric_mage": {
+        "name": "Видение верховного жреца Малрика"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Видение королевского убийцы Восса"
+      },
+      "bound_guardian": {
+        "name": "Связанный страж"
       },
       "elder_bristleback": {
         "name": "Старый Щетиноспин"
@@ -48996,7 +51341,7 @@ export const ru_RU: EnTranslations = {
       "q_mistcaller": {
         "title": "Зовущий Туман",
         "text": "Ваэль ждет на дне бастиона, голос, утопивший сотню путников ради армии. Возьмите четырех спутников, не меньше. Покончите с ним, {playerName}, и мертвецы топи наконец упокоятся.",
-        "completion": "Ваэль мертв, и туман поднимается. Но его последние слова леденят кровь: Wyrm шевелится под пиками. Секта служит чему-то древнее, чем мы думали, {playerName}.",
+        "completion": "Ваэль мертв, и туман поднимается. Но его последние слова леденят кровь: Вирм шевелится под пиками. Секта служит чему-то древнее, чем мы думали, {playerName}.",
         "objectives": {
           "0": {
             "label": "Ваэль Зовущий Туман: убито"
@@ -49066,7 +51411,7 @@ export const ru_RU: EnTranslations = {
       "q_ogre_totems": {
         "title": "Тотемы войны",
         "text": "Огры подняли тотемы из кожи и черепов: знак сбора, не набега. Сорвите 6 и принесите мне. Берегитесь дробителей по периметру, {playerName}.",
-        "completion": "Черепа, кожа... и перевязи из чешуи Wyrm. Подарки культа, {playerName}.",
+        "completion": "Черепа, кожа... и перевязи из чешуи Вирма. Подарки культа, {playerName}.",
         "objectives": {
           "0": {
             "label": "Боевой тотем огра"
@@ -49245,7 +51590,7 @@ export const ru_RU: EnTranslations = {
       "q_velkhar": {
         "title": "Верховный некромант",
         "text": "Мортен, Ваэль, филактерии - каждую нить сплел верховный некромант Велхар. Покончите с ним, {playerName}.",
-        "completion": "Велхар мертв, и обряд обезглавлен. Но вы почувствовали это: Wyrm больше не спит.",
+        "completion": "Велхар мертв, и обряд обезглавлен. Но вы почувствовали это: Вирм больше не спит.",
         "objectives": {
           "0": {
             "label": "Верховный некромант Велхар: убито"
@@ -49254,7 +51599,7 @@ export const ru_RU: EnTranslations = {
       },
       "q_gravewyrm": {
         "title": "Корзул Могильный Вирм",
-        "text": "Больше нет обряда, который можно остановить, {playerName}. Есть только полупроснувшийся Wyrm. Войдите со спутниками и завершите то, что началось у часовни.",
+        "text": "Больше нет обряда, который можно остановить, {playerName}. Есть только полупроснувшийся Вирм. Войдите со спутниками и завершите то, что началось у часовни.",
         "completion": "Все кончено. Мертвые трех земель покоятся, гора спит без призраков, и сегодня каждый колокол отсюда до Истбрука звонит твоим именем, {playerName}.",
         "objectives": {
           "0": {
@@ -49269,6 +51614,64 @@ export const ru_RU: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Крестная треска"
+          }
+        }
+      },
+      "q_nythraxis_restless_dead": {
+        "title": "Беспокойство на костяных полях",
+        "text": "Что-то изменилось в Thornpeak Heights, {playerName}. Мертвые больше не бродят бесцельно. Они собираются и маршируют по северным костяным полям за Highwatch, где старое поле битвы выходит к дороге у утеса. Идите туда, расследуйте беспокойство среди костяных ревенантов и принесите любое доказательство того, что ими движет.",
+        "completion": "На каждом осколке один и тот же знак... корона. Я уже видел его, вырезанным на старых могилах, которых не помнит ни одна запись Eastbrook.",
+        "objectives": {
+          "0": {
+            "label": "Рунный костяной осколок"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Могилы забытых",
+        "text": "Я уже видел эти знаки на трех старых могилах вокруг северного поля боя. Капитан Алдрен лежит на восточной возвышенности, верховный жрец Малрик - у разбитой центральной дороги, а королевский убийца Восс - у западного утеса. Коснитесь каждой могилы и слушайте, {playerName}. Мертвые могут помнить то, что живые забыли.",
+        "completion": "Алдрен остался верен, Малрик отказался принять смерть, а Восс увидел опасность раньше всех. Все трое служили одному забытому королю.",
+        "objectives": {
+          "0": {
+            "label": "Видение у могилы капитана Алдрена"
+          },
+          "1": {
+            "label": "Видение у могилы верховного жреца Малрика"
+          },
+          "2": {
+            "label": "Видение у могилы королевского убийцы Восса"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "Заброшенный склеп",
+        "text": "Видения указывают на заброшенную крипту в западном утесе. Есть старая легенда, что в крипте покоился король. Возможно, Thornpeak запечатал его там после того, как ритуал Малрика исказил его во что-то бессмертное. Войдите в крипту и посмотрите, что осталось внутри.",
+        "completion": "Две половины ключ-камня сходятся, а дневник Восса называет то, что они запечатали: перстень короля Нитраксиса. Если дневник говорит правду, этот перстень - ключ к его гробнице.",
+        "objectives": {
+          "0": {
+            "label": "Верхняя часть ключ-камня"
+          },
+          "1": {
+            "label": "Нижняя часть ключ-камня"
+          },
+          "2": {
+            "label": "Древний дневник"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "Связанный страж",
+        "text": "Восс писал, что выжившие запечатали Перстень короля за древним стражем, чтобы никто не достиг гробницы Нитраксиса случайно или из честолюбия. Отнесите ключ-камень крипты к ритуальному кругу на ровной земле восточнее заброшенной крипты и юго-восточнее западной могилы. Используйте его там, сокрушите стража и принесите перстень.",
+        "completion": "Три реликвии рассказывают одну историю: Алдрен сражался, защищая своего короля, Малрик нарушил границу смерти, а Восс пытался остановить то, что последовало. Печать слабеет, и этот перстень - ключ к гробнице Нитраксиса. Теперь вы настроены для входа в Крипту Нитраксиса.",
+        "objectives": {
+          "0": {
+            "label": "Ключ-камень использован у ритуального круга"
+          },
+          "1": {
+            "label": "Связанный страж побежден"
+          },
+          "2": {
+            "label": "Перстень короля"
           }
         }
       },
@@ -49470,6 +51873,11 @@ export const ru_RU: EnTranslations = {
         "enterText": "Воздух холодеет. Внизу дышит нечто огромное...",
         "leaveText": "Вы пошатываясь выходите на горный ветер."
       },
+      "nythraxis_crypt": {
+        "name": "Заброшенный склеп",
+        "enterText": "Вы переступаете порог заброшенного склепа.",
+        "leaveText": "Вы возвращаетесь в холодный воздух Thornpeak."
+      },
       "drowned_temple": {
         "name": "Утонувший храм",
         "enterText": "Ты проходишь сквозь лунные врата — воздух обращается в холодную воду и бледный свет, и пение смыкается над твоей головой.",
@@ -49657,7 +52065,7 @@ export const en_XA: EnTranslations = {
   },
   "stats": {
     "title": "[Ŕéáļɱ Šţáţúš]",
-    "accountsCreated": "[Áççóúñţš Çŕéáţéð]",
+    "accountsCreated": "[Þļáýéŕš]",
     "playersOnline": "[Þļáýéŕš Óñļíñé]",
     "realmName": "[Ŕéáļɱ Ñáɱé]"
   },
@@ -49731,6 +52139,14 @@ export const en_XA: EnTranslations = {
     "realmList": "[Ŕéáļɱ Ļíšţ]",
     "loadingRealms": "[Ļóáðíñĝ ŕéáļɱš...]",
     "changeRealm": "[Çĥáñĝé Ŕéáļɱ]",
+    "realm": "[Ŕéáļɱ]",
+    "newCharacter": "[Ñéŵ Çĥáŕáçţéŕ]",
+    "appearance": "[Áþþéáŕáñçé]",
+    "class": "[Çļášš]",
+    "name": "[Ñáɱé]",
+    "chromaOption": "[Çĥŕóɱá {n}]",
+    "noAccountPrompt": "[Ñéŵ ţó ţĥé ŕéáļɱ?]",
+    "haveAccountPrompt": "[Áļŕéáðý ĥáʋé áñ áççóúñţ?]",
     "characters": "[Çĥáŕáçţéŕš:]",
     "createCharacter": "[Çŕéáţé Çĥáŕáçţéŕ]",
     "characterName": "[Çĥáŕáçţéŕ Ñáɱé]",
@@ -49876,7 +52292,11 @@ export const en_XA: EnTranslations = {
     "rename": "[Ŕéñáɱé]",
     "newNamePlaceholder": "[Ñéŵ çĥáŕáçţéŕ ñáɱé]",
     "tabCharacters": "[Çĥáŕáçţéŕš]",
-    "tabCreate": "[Çŕéáţé]"
+    "tabCreate": "[Çŕéáţé]",
+    "portraitAlt": "[Þóŕţŕáíţ óƒ {name}]",
+    "viewProfile": "[Ʋíéŵ Þŕóƒíļé]",
+    "profile": "[Þŕóƒíļé]",
+    "closeProfile": "[Çļóšé þŕóƒíļé]"
   },
   "deleteCharacter": {
     "title": "[Ðéļéţé Çĥáŕáçţéŕ]",
@@ -50081,6 +52501,7 @@ export const en_XA: EnTranslations = {
         "jump": "[Ĵúɱþ]",
         "autorun": "[Ţóĝĝļé Áúţóŕúñ]",
         "target": "[Ţáŕĝéţ Ñéáŕéšţ Éñéɱý]",
+        "attackMove": "[Áţţáçķ Ɱóʋé]",
         "interact": "[Íñţéŕáçţ / Ļóóţ]",
         "char": "[Çĥáŕáçţéŕ]",
         "spellbook": "[Šþéļļƀóóķ]",
@@ -50186,6 +52607,7 @@ export const en_XA: EnTranslations = {
     "combat": {
       "floatingMiss": "[Ɱíšš]",
       "floatingDodge": "[Ðóðĝé]",
+      "cannotMove": "[Çáñ'ţ ɱóʋé!]",
       "attack": "[áţţáçķ]",
       "damageDone": "[Ýóúŕ {ability} ĥíţš {target} ƒóŕ {amount}.]",
       "damageDoneCrit": "[Ýóúŕ {ability} çŕíţíçáļļý ĥíţš {target} ƒóŕ {amount}.]",
@@ -50529,6 +52951,9 @@ export const en_XA: EnTranslations = {
       "greetingFallback": "[Ĝŕééţíñĝš.]",
       "availableQuestAria": "[Áʋáíļáƀļé ɋúéšţ: {name}]",
       "readyQuestAria": "[Ɋúéšţ ŕéáðý ţó ţúŕñ íñ: {name}]",
+      "discussQuest": "[Ðíšçúšš {name}.]",
+      "discussQuestAria": "[Ðíšçúšš ɋúéšţ: {name}]",
+      "nythraxisDeathlessKingWarning": "[Ţĥé ţĥŕéé ŕéļíçš ţéļļ ţĥé šáɱé šţóŕý: Áļðŕéñ ƒóúĝĥţ ţó ðéƒéñð ĥíš ķíñĝ, Ɱáļŕíç ƀŕóķé ţĥé ƀóúñðáŕý óƒ ðéáţĥ, áñð Ʋóšš ţŕíéð ţó šţóþ ŵĥáţ ƒóļļóŵéð. Ţĥé šéáļ íš ŵéáķéñíñĝ, áñð ţĥé áƀáñðóñéð çŕýþţ íš ţĥé ŵáý ðóŵñ.]",
       "browseGoods": "[Ļéţ ɱé ƀŕóŵšé ýóúŕ ĝóóðš.]",
       "browseGoodsAria": "[Ɓŕóŵšé ĝóóðš ƒŕóɱ {name}]",
       "worldMarket": "[Šĥóŵ ɱé ţĥé Ŵóŕļð Ɱáŕķéţ.]",
@@ -50536,6 +52961,7 @@ export const en_XA: EnTranslations = {
       "accept": "[Áççéþţ]",
       "decline": "[Ðéçļíñé]",
       "continue": "[Çóñţíñúé]",
+      "done": "[Ðóñé]",
       "completeQuest": "[Çóɱþļéţé Ɋúéšţ]",
       "turnIn": "[Ţúŕñ Íñ]",
       "back": "[Ɓáçķ]",
@@ -50577,8 +53003,12 @@ export const en_XA: EnTranslations = {
     },
     "slots": {
       "mainhand": "[Ɱáíñ Ĥáñð]",
+      "helmet": "[Ĥéļɱéţ]",
+      "shoulder": "[Šĥóúļðéŕ]",
       "chest": "[Çĥéšţ]",
+      "waist": "[Ŵáíšţ]",
       "legs": "[Ļéĝš]",
+      "gloves": "[Ĝļóʋéš]",
       "feet": "[Ƒééţ]"
     },
     "quality": {
@@ -50612,7 +53042,7 @@ export const en_XA: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "[{quality} {kind}]",
-      "damageSpeed": "[{min} - {max} Ðáɱáĝé  Šþééð {speed}]",
+      "damageSpeed": "[{min} - {max} Ðáɱáĝé Šþééð {speed}]",
       "dps": "[({dps} ðáɱáĝé þéŕ šéçóñð)]",
       "dagger": "[Ðáĝĝéŕ]",
       "armorStat": "[{value} Áŕɱóŕ]",
@@ -51844,8 +54274,74 @@ export const en_XA: EnTranslations = {
       "ysols_pearl_greaves": {
         "name": "[Ýšóļéí'š Þéáŕļ Ĝŕéáʋéš]"
       },
+      "boundstone_girdle": {
+        "name": "[Ɓóúñðšţóñé Ĝíŕðļé]"
+      },
+      "boundstone_helm": {
+        "name": "[Ɓóúñðšţóñé Ĥéļɱ]"
+      },
+      "cryptbone_helm": {
+        "name": "[Çŕýþţƀóñé Ĥéļɱ]"
+      },
+      "cryptbone_pauldrons": {
+        "name": "[Çŕýþţƀóñé Þáúļðŕóñš]"
+      },
+      "deathlords_dread_visage": {
+        "name": "[Ðéáţĥļóŕð'š Ðŕéáð Ʋíšáĝé]"
+      },
+      "gravewyrm_gauntlets": {
+        "name": "[Ĝŕáʋéŵýŕɱ Ĝáúñţļéţš]"
+      },
+      "gravewyrm_mantle": {
+        "name": "[Ĝŕáʋéŵýŕɱ Ɱáñţļé]"
+      },
+      "mistveil_cord": {
+        "name": "[Ɱíšţʋéíļ Çóŕð]"
+      },
+      "mistveil_grips": {
+        "name": "[Ɱíšţʋéíļ Ĝŕíþš]"
+      },
+      "necromancers_soulspire_mantle": {
+        "name": "[Ñéçŕóɱáñçéŕ'š Šóúļšþíŕé Ɱáñţļé]"
+      },
+      "wyrmshadow_talongrips": {
+        "name": "[Ŵýŕɱšĥáðóŵ Ţáļóñĝŕíþš]"
+      },
       "the_codfather": {
         "name": "[Ţĥé Çóðƒáţĥéŕ]"
+      },
+      "runed_bone_shard": {
+        "name": "[Ŕúñéð Ɓóñé Šĥáŕð]"
+      },
+      "grave_sir_aldren": {
+        "name": "[Ĝŕáʋé óƒ Çáþţáíñ Áļðŕéñ]"
+      },
+      "grave_high_priest_malric": {
+        "name": "[Ĝŕáʋé óƒ Ĥíĝĥ Þŕíéšţ Ɱáļŕíç]"
+      },
+      "grave_captain_voss": {
+        "name": "[Ĝŕáʋé óƒ Ŕóýáļ Áššáššíñ Ʋóšš]"
+      },
+      "ancient_crypt_door": {
+        "name": "[Áñçíéñţ Çŕýþţ Ðóóŕ]"
+      },
+      "captains_crest": {
+        "name": "[Çŕýþţ Ķéýšţóñé Úþþéŕ]"
+      },
+      "priests_sigil": {
+        "name": "[Çŕýþţ Ķéýšţóñé Ļóŵéŕ]"
+      },
+      "royal_seal": {
+        "name": "[Áñçíéñţ Ðíáŕý]"
+      },
+      "crypt_keystone": {
+        "name": "[Çŕýþţ Ķéýšţóñé]"
+      },
+      "crypt_ritual_circle": {
+        "name": "[Ŕíţúáļ Çíŕçļé]"
+      },
+      "kings_signet": {
+        "name": "[Ķíñĝ'š Šíĝñéţ]"
       }
     },
     "mobs": {
@@ -51989,6 +54485,27 @@ export const en_XA: EnTranslations = {
       },
       "bog_bloat": {
         "name": "[Ɓóĝ Ɓļóáţ]"
+      },
+      "fallen_captain_aldren": {
+        "name": "[Ƒáļļéñ Çáþţáíñ Áļðŕéñ]"
+      },
+      "corrupted_priest_malric": {
+        "name": "[Çóŕŕúþţéð Þŕíéšţ Ɱáļŕíç]"
+      },
+      "deathstalker_voss": {
+        "name": "[Ðéáţĥšţáļķéŕ Ʋóšš]"
+      },
+      "vision_aldren_warrior": {
+        "name": "[Ʋíšíóñ óƒ Çáþţáíñ Áļðŕéñ]"
+      },
+      "vision_malric_mage": {
+        "name": "[Ʋíšíóñ óƒ Ĥíĝĥ Þŕíéšţ Ɱáļŕíç]"
+      },
+      "vision_deathstalker_voss": {
+        "name": "[Ʋíšíóñ óƒ Ŕóýáļ Áššáššíñ Ʋóšš]"
+      },
+      "bound_guardian": {
+        "name": "[Ţĥé Ɓóúñð Ĝúáŕðíáñ]"
       },
       "elder_bristleback": {
         "name": "[Éļðéŕ Ɓŕíšţļéƀáçķ]"
@@ -52839,6 +55356,64 @@ export const en_XA: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "[Úñŕéšţ íñ ţĥé Ɓóñéƒíéļðš]",
+        "text": "[Šóɱéţĥíñĝ ĥáš çĥáñĝéð íñ Ţĥóŕñþéáķ Ĥéíĝĥţš, {playerName}. Ţĥé ðéáð ñó ļóñĝéŕ ŵáñðéŕ áíɱļéššļý. Ţĥéý ĝáţĥéŕ áñð ɱáŕçĥ ţĥŕóúĝĥ ţĥé ñóŕţĥéŕñ ƀóñéƒíéļðš ƀéýóñð Ĥíĝĥŵáţçĥ, ŵĥéŕé ţĥé óļð ƀáţţļéƒíéļð ɱééţš ţĥé çļíƒƒ ŕóáð. Ĝó ţĥéŕé, íñʋéšţíĝáţé ţĥé úñŕéšţ áɱóñĝ ţĥé Ɓóñéçļáð Ŕéʋéñáñţš, áñð ƀŕíñĝ ƀáçķ áñý þŕóóƒ óƒ ŵĥáţ íš ðŕíʋíñĝ ţĥéɱ.]",
+        "completion": "[Ţĥé šáɱé ɱáŕķ áþþéáŕš óñ éʋéŕý šĥáŕð... á çŕóŵñ. Í ĥáʋé šééñ ţĥíš ƀéƒóŕé, çúţ íñţó óļð ĝŕáʋéš ñó Éášţƀŕóóķ ŕéçóŕð ŕéɱéɱƀéŕš.]",
+        "objectives": {
+          "0": {
+            "label": "[Ŕúñéð Ɓóñé Šĥáŕð]"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "[Ĝŕáʋéš óƒ ţĥé Ƒóŕĝóţţéñ]",
+        "text": "[Í ĥáʋé šééñ ţĥéšé ɱáŕķš ƀéƒóŕé, óñ ţĥŕéé óļð ĝŕáʋéš áŕóúñð ţĥé ñóŕţĥéŕñ ƀáţţļéƒíéļð. Çáþţáíñ Áļðŕéñ ļíéš óñ ţĥé éášţéŕñ ŕíšé, Ĥíĝĥ Þŕíéšţ Ɱáļŕíç ñéáŕ ţĥé çéñţŕáļ ƀŕóķéñ ŕóáð, áñð Ŕóýáļ Áššáššíñ Ʋóšš ƀý ţĥé ŵéšţéŕñ çļíƒƒ. Ţóúçĥ éáçĥ ĝŕáʋé áñð ļíšţéñ, {playerName}. Ţĥé ðéáð ɱáý ŕéɱéɱƀéŕ ŵĥáţ ţĥé ļíʋíñĝ ƒóŕĝóţ.]",
+        "completion": "[Áļðŕéñ ŕéɱáíñéð ļóýáļ, Ɱáļŕíç ŕéƒúšéð ţó áççéþţ ðéáţĥ, áñð Ʋóšš šáŵ ţĥé ðáñĝéŕ ƀéƒóŕé áñýóñé éļšé. Áļļ ţĥŕéé šéŕʋéð ţĥé šáɱé ƒóŕĝóţţéñ ķíñĝ.]",
+        "objectives": {
+          "0": {
+            "label": "[Ʋíšíóñ áţ ţĥé Ĝŕáʋé óƒ Çáþţáíñ Áļðŕéñ]"
+          },
+          "1": {
+            "label": "[Ʋíšíóñ áţ ţĥé Ĝŕáʋé óƒ Ĥíĝĥ Þŕíéšţ Ɱáļŕíç]"
+          },
+          "2": {
+            "label": "[Ʋíšíóñ áţ ţĥé Ĝŕáʋé óƒ Ŕóýáļ Áššáššíñ Ʋóšš]"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "[Ţĥé Áƀáñðóñéð Çŕýþţ]",
+        "text": "[Ţĥé ʋíšíóñš þóíñţ ţó ţĥé áƀáñðóñéð çŕýþţ íñ ţĥé ŵéšţéŕñ çļíƒƒ. Ţĥéŕé íš áñ óļð ļéĝéñð ţĥáţ ţĥé çŕýþţ ĥóúšéð á ķíñĝ. Þéŕĥáþš Ţĥóŕñþéáķ šéáļéð ĥíɱ ƀéļóŵ áƒţéŕ Ɱáļŕíç'š ŕíţúáļ ţŵíšţéð ĥíɱ íñţó šóɱéţĥíñĝ ðéáţĥļéšš. Éñţéŕ ţĥé çŕýþţ áñð šéé ŵĥáţ ŕéɱáíñš íñšíðé.]",
+        "completion": "[Ţĥé ķéýšţóñé ĥáļʋéš ƒíţ ţóĝéţĥéŕ, áñð Ʋóšš'š ðíáŕý ñáɱéš ŵĥáţ ţĥéý šéáļéð: ţĥé šíĝñéţ óƒ Ķíñĝ Ñýţĥŕáẋíš. Íƒ ţĥé ðíáŕý íš ţŕúé, ţĥáţ šíĝñéţ íš ţĥé ķéý ţó ĥíš ţóɱƀ.]",
+        "objectives": {
+          "0": {
+            "label": "[Çŕýþţ Ķéýšţóñé Úþþéŕ]"
+          },
+          "1": {
+            "label": "[Çŕýþţ Ķéýšţóñé Ļóŵéŕ]"
+          },
+          "2": {
+            "label": "[Áñçíéñţ Ðíáŕý]"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "[Ţĥé Ɓóúñð Ĝúáŕðíáñ]",
+        "text": "[Ʋóšš ŵŕóţé ţĥáţ ţĥé šúŕʋíʋóŕš šéáļéð ţĥé Ķíñĝ'š Šíĝñéţ ƀéĥíñð áñ áñçíéñţ ĝúáŕðíáñ, šó ñó óñé çóúļð ŕéáçĥ ţĥé ţóɱƀ óƒ Ñýţĥŕáẋíš ƀý áççíðéñţ óŕ áɱƀíţíóñ. Ţáķé ţĥé Çŕýþţ Ķéýšţóñé ţó ţĥé ŕíţúáļ çíŕçļé óñ ţĥé ƒļáţ ĝŕóúñð éášţ óƒ ţĥé áƀáñðóñéð çŕýþţ áñð šóúţĥ-éášţ óƒ ţĥé ŵéšţéŕñ ĝŕáʋé. Úšé íţ ţĥéŕé, ƀŕéáķ ţĥé ĝúáŕðíáñ, áñð ƀŕíñĝ ƀáçķ ţĥé šíĝñéţ.]",
+        "completion": "[Ţĥé ţĥŕéé ŕéļíçš ţéļļ ţĥé šáɱé šţóŕý: Áļðŕéñ ƒóúĝĥţ ţó ðéƒéñð ĥíš ķíñĝ, Ɱáļŕíç ƀŕóķé ţĥé ƀóúñðáŕý óƒ ðéáţĥ, áñð Ʋóšš ţŕíéð ţó šţóþ ŵĥáţ ƒóļļóŵéð. Ţĥé šéáļ íš ŵéáķéñíñĝ, áñð ţĥíš šíĝñéţ íš ţĥé ķéý ţó Ñýţĥŕáẋíš'š ţóɱƀ. Ýóú áŕé ñóŵ áţţúñéð ţó éñţéŕ Ţĥé Çŕýþţ óƒ Ñýţĥŕáẋíš.]",
+        "objectives": {
+          "0": {
+            "label": "[Çŕýþţ Ķéýšţóñé úšéð áţ ţĥé ŕíţúáļ çíŕçļé]"
+          },
+          "1": {
+            "label": "[Ţĥé Ɓóúñð Ĝúáŕðíáñ ðéƒéáţéð]"
+          },
+          "2": {
+            "label": "[Ķíñĝ'š Šíĝñéţ]"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "[Ɱóĝĝéŕ'š Ţŕáíļ]",
         "text": "[Ɓéƒóŕé ýóú ţáķé ţĥé ŕóáð ñóŕţĥ, Éášţƀŕóóķ ĥáš óñé ļášţ ţĥóŕñ íñ íţš šíðé: Ɱóĝĝéŕ. Ţĥé ƀŕúţé ĥáš ƀééñ ţŕáɱþļíñĝ ţĥé ļóŵéŕ ɱéáðóŵ áñð ðŕíʋíñĝ ţĥé ƀóáŕš ɱáð. Çļéáŕ ţĥé ɱéáðóŵ áŕóúñð ĥíš ţŕáíļ šó ŵé çáñ šéé ŵĥéŕé ĥé ļáíŕš.]",
@@ -53036,6 +55611,11 @@ export const en_XA: EnTranslations = {
         "name": "[Ĝŕáʋéŵýŕɱ Šáñçţúɱ]",
         "enterText": "[Ţĥé áíŕ ĝóéš çóļð. Šóɱéţĥíñĝ ʋášţ ƀŕéáţĥéš ƀéļóŵ...]",
         "leaveText": "[Ýóú šţáĝĝéŕ ƀáçķ íñţó ţĥé ɱóúñţáíñ ŵíñð.]"
+      },
+      "nythraxis_crypt": {
+        "name": "[Áƀáñðóñéð Çŕýþţ]",
+        "enterText": "[Ýóú ðéšçéñð íñţó ţĥé áƀáñðóñéð çŕýþţ ƀéñéáţĥ ţĥé ƒóŕĝóţţéñ ŕúíñš óƒ Ţĥóŕñþéáķ.]",
+        "leaveText": "[Ýóú çļíɱƀ ƀáçķ óúţ óƒ ţĥé áƀáñðóñéð çŕýþţ íñţó ţĥé ɱóúñţáíñ ŵíñð.]"
       },
       "drowned_temple": {
         "name": "[Ţĥé Ðŕóŵñéð Ţéɱþļé]",

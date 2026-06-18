@@ -26,6 +26,9 @@ function expectJoined(result: ClientSession | { error: string }): ClientSession 
   return result;
 }
 
+const SOFT = 5; // MAX_WS_PER_IP_SOFT default
+const hasMultiIp = (s: ClientSession) => s.bot.evidence.some(e => e.kind === 'multi_ip');
+
 describe('GameServer sessions', () => {
   it('keeps the character-id session index coherent across join, duplicate join, leave, and rejoin', async () => {
     const server = new GameServer();
@@ -102,5 +105,42 @@ describe('GameServer sessions', () => {
     // a third character on the same account joins because it is flagged GM
     expectJoined(server.join(fakeWs(), 30, 303, 'Gmcc', 'warrior', null, true));
     expect((server as any).sessionByCharacterId(303)).not.toBeNull();
+  });
+});
+
+describe('multi_ip evidence lifecycle', () => {
+  // Distinct account/character ids per session so the per-account cap never rejects.
+  const joinIp = (server: GameServer, id: number, ip: string): ClientSession =>
+    expectJoined(server.join(fakeWs(), id, id, `Bot${id}`, 'warrior', null, false, { ip }));
+
+  it('flags every session on the IP once the soft threshold is exceeded — not just the last joiner', () => {
+    const server = new GameServer();
+    const ip = '203.0.113.7';
+    const sessions: ClientSession[] = [];
+    for (let i = 1; i <= SOFT; i++) sessions.push(joinIp(server, i, ip));
+    expect(sessions.some(hasMultiIp)).toBe(false);   // at the threshold: none yet
+
+    sessions.push(joinIp(server, SOFT + 1, ip));      // crosses it
+    expect(sessions.every(hasMultiIp)).toBe(true);    // ALL flagged, including the first joiner
+  });
+
+  it('clears multi_ip from the remaining sessions once the IP drops back to the threshold', async () => {
+    const server = new GameServer();
+    const ip = '203.0.113.8';
+    const sessions: ClientSession[] = [];
+    for (let i = 1; i <= SOFT + 1; i++) sessions.push(joinIp(server, i, ip));
+    expect(sessions.every(hasMultiIp)).toBe(true);
+
+    await server.leave(sessions[0], 'test');          // back down to the threshold
+    expect(sessions.slice(1).some(hasMultiIp)).toBe(false);
+  });
+
+  it('does not flag a session on a different IP', () => {
+    const server = new GameServer();
+    const crowded: ClientSession[] = [];
+    for (let i = 1; i <= SOFT + 1; i++) crowded.push(joinIp(server, i, '203.0.113.9'));
+    const lonely = joinIp(server, 99, '198.51.100.1');
+    expect(crowded.every(hasMultiIp)).toBe(true);
+    expect(hasMultiIp(lonely)).toBe(false);
   });
 });

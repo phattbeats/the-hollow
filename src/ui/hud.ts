@@ -1,7 +1,9 @@
 import type { ResolvedAbility } from '../sim/sim';
-import { OVERHEAD_EMOTES, isOverheadEmoteId, type FriendInfo, type IWorld, type LeaderboardEntry, type MarketInfo, type OverheadEmoteId } from '../world_api';
+import { OVERHEAD_EMOTES, isOverheadEmoteId, type ArenaFormat, type FriendInfo, type IWorld, type LeaderboardEntry, type MarketInfo, type OverheadEmoteId } from '../world_api';
 import { Renderer } from '../render/renderer';
 import { CharacterPreview } from '../render/characters';
+import { portraitChipHtml, hydratePortraits } from './portrait_chip';
+import { playerPortraitDataUrl, onPortraitsReady } from '../render/characters/portrait';
 import { skinCount } from '../render/characters/manifest';
 import { emoteIconUrl } from './emote_icons';
 import {
@@ -113,8 +115,12 @@ const PET_MODE_DESC_KEYS: Record<PetMode, TranslationKey> = {
 type ItemQuality = NonNullable<ItemDef['quality']>;
 const ITEM_SLOT_LABEL_KEYS: Record<EquipSlot, TranslationKey> = {
   mainhand: 'itemUi.slots.mainhand',
+  helmet: 'itemUi.slots.helmet',
+  shoulder: 'itemUi.slots.shoulder',
   chest: 'itemUi.slots.chest',
+  waist: 'itemUi.slots.waist',
   legs: 'itemUi.slots.legs',
+  gloves: 'itemUi.slots.gloves',
   feet: 'itemUi.slots.feet',
 };
 const ITEM_QUALITY_LABEL_KEYS: Record<ItemQuality, TranslationKey> = {
@@ -173,6 +179,7 @@ const BIND_ACTION_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
   jump: 'hud.keybinds.actions.jump',
   autorun: 'hud.keybinds.actions.autorun',
   target: 'hud.keybinds.actions.target',
+  attackMove: 'hud.keybinds.actions.attackMove',
   interact: 'hud.keybinds.actions.interact',
   char: 'hud.keybinds.actions.char',
   spellbook: 'hud.keybinds.actions.spellbook',
@@ -205,6 +212,15 @@ const CHAT_TEMPLATE_KEYS = {
   say: 'hud.chat.templates.say',
 } satisfies Record<string, TranslationKey>;
 type HotbarForm = 'normal' | 'bear' | 'cat' | 'stealth';
+type MobileHotbarDrag = {
+  pointerId: number;
+  sourceIndex: number;
+  startX: number;
+  startY: number;
+  active: boolean;
+  timer: number;
+  targetIndex: number | null;
+};
 
 // world map: terrain is pre-rendered for the whole zone at this resolution
 // (cached per zone) and a sub-rect is blitted for the current zoom.
@@ -220,6 +236,8 @@ export class Hud {
   private knownAbilityIdsAtLastSlotSync: Set<string> | null = null;
   private activeHotbarForm: HotbarForm = 'normal';
   private dragAction: { action: Exclude<HotbarAction, null>; sourceIndex: number | null } | null = null;
+  private mobileHotbarDrag: MobileHotbarDrag | null = null;
+  private suppressNextActionClick = false;
   private optionsHooks: OptionsHooks | null = null;
   private reportHooks: ReportHooks | null = null;
   // Soft swear terms from the server (online only), masked in chat when the
@@ -289,15 +307,15 @@ export class Hud {
   private lastArenaSig = '';
   private lastArenaStatusSig = '';
   private arenaMatchSeen = false; // closes the queue panel once a bout starts
-  private arenaBracket: import('../world_api').ArenaFormat = '1v1';
+  private arenaBracket: ArenaFormat = '1v1';
   // World Market (the Merchant's auction house)
   private marketOpen = false;
   private marketTab: 'browse' | 'sell' | 'collect' = 'browse';
   private marketSellItem: string | null = null; // bag item staged for listing
   private lastMarketSig = '';
   // all-time ladder, fetched best-effort from the server (online only)
-  private arenaAllTime: { name: string; class: string; level: number; rating: number; wins: number; losses: number }[] | null = null;
-  private arenaLbFetchedAt = 0;
+  private arenaAllTime: Partial<Record<ArenaFormat, { name: string; class: string; level: number; rating: number; wins: number; losses: number }[]>> = {};
+  private arenaLbFetchedAt: Partial<Record<ArenaFormat, number>> = {};
   private lastCombatEventAt = 0;
   private lastZoneId = '';
   private mapZoneId = ''; // zone the cached map-window canvas was rendered for
@@ -347,11 +365,17 @@ export class Hud {
     this.buildXpTicks();
     document.addEventListener('woc:languagechange', () => this.refreshLocalizedDynamicUi());
     $('#pf-name').textContent = sim.player.name;
-    this.drawPortrait($('#pf-portrait') as unknown as HTMLCanvasElement, `class_${sim.cfg.playerClass}`);
+    this.drawPlayerFramePortrait();
+    // Character GLBs preload after the HUD mounts; once the real 3D portraits are
+    // ready, upgrade the player frame and force the target frame to redraw.
+    onPortraitsReady(() => {
+      this.drawPlayerFramePortrait();
+      this.lastPortraitTarget = -999;
+    });
     const mm = $('#minimap') as unknown as HTMLCanvasElement;
     this.minimapCtx = mm.getContext('2d')!;
     this.minimapBg = this.renderTerrainCanvas(140, { minX: WORLD_MIN_X, maxX: WORLD_MAX_X, minZ: WORLD_MIN_Z, maxZ: WORLD_MAX_Z });
-    mm.style.cursor = 'pointer';
+    mm.style.cursor = 'var(--cursor-point)';
     mm.title = t('controls.worldMap');
     mm.addEventListener('click', () => this.toggleMap());
     window.addEventListener('pointermove', (ev) => {
@@ -374,7 +398,7 @@ export class Hud {
       const target = ev.target as Node | null;
       if (!target) return;
       const communityMenu = document.getElementById('community-menu') as HTMLDetailsElement | null;
-      if (communityMenu?.open && !communityMenu.contains(target)) {
+      if (document.body.classList.contains('mobile-touch') && communityMenu?.open && !communityMenu.contains(target)) {
         communityMenu.open = false;
       }
       if (document.body.classList.contains('mobile-more-open')) {
@@ -675,7 +699,10 @@ export class Hud {
       case 'vendor-window': this.closeVendor(); break;
       case 'loot-window': this.closeLoot(); break;
       case 'quest-dialog': this.closeQuestDialog(); break;
-      case 'bags': el.style.display = 'none'; this.hideTooltip(); this.cancelPetFeed(); break;
+      case 'bags':
+        if (this.vendorOpen && document.body.classList.contains('mobile-touch')) this.closeVendor();
+        else { el.style.display = 'none'; this.hideTooltip(); this.cancelPetFeed(); }
+        break;
       case 'talents-window': el.style.display = 'none'; this.talentStage = null; this.hideTooltip(); break;
       case 'emote-editor': this.closeEmoteEditor(); break;
       default: el.style.display = 'none'; this.hideTooltip(); break;
@@ -930,10 +957,54 @@ export class Hud {
   // Portrait = the procedural crest for a class (`class_<id>`), mob family
   // (`family_<id>`) or status (`status_npc`), painted by icons.ts and blitted in.
   private drawPortrait(canvas: HTMLCanvasElement, crestId: string): void {
+    // Crest fallback — also invalidates any pending headshot image-load for this
+    // canvas (see drawPortraitImage) so a late decode can't paint over the crest.
+    canvas.dataset.portrait = '';
     const ctx = canvas.getContext('2d')!;
     const s = canvas.width;
     ctx.clearRect(0, 0, s, s);
     ctx.drawImage(iconCanvas('crest', crestId, s), 0, 0, s, s);
+  }
+
+  // Decoded headshot images, keyed by their portrait data URL.
+  private portraitImgCache = new Map<string, HTMLImageElement>();
+
+  /** Paint a 3D-headshot data URL into a unit-frame portrait canvas. The decode
+   *  is async even for a data URL, so we tag the canvas with the desired URL and
+   *  only draw if it still matches on load (the target may have changed). */
+  private drawPortraitImage(canvas: HTMLCanvasElement, url: string): void {
+    canvas.dataset.portrait = url;
+    const draw = (img: HTMLImageElement) => {
+      if (canvas.dataset.portrait !== url) return; // target changed mid-decode
+      const ctx = canvas.getContext('2d')!;
+      const s = canvas.width;
+      ctx.clearRect(0, 0, s, s);
+      ctx.drawImage(img, 0, 0, s, s);
+    };
+    const cached = this.portraitImgCache.get(url);
+    if (cached?.complete && cached.naturalWidth) { draw(cached); return; }
+    const img = cached ?? new Image();
+    img.addEventListener('load', () => draw(img), { once: true });
+    if (!cached) {
+      this.portraitImgCache.set(url, img);
+      img.src = url;
+    }
+  }
+
+  /** Draw a (class, skin) headshot into a unit-frame portrait, falling back to
+   *  the class crest until the 3D portraits have finished loading. */
+  private drawClassPortrait(canvas: HTMLCanvasElement, cls: PlayerClass, skin: number): void {
+    const url = playerPortraitDataUrl(cls, skin);
+    if (url) this.drawPortraitImage(canvas, url);
+    else this.drawPortrait(canvas, `class_${cls}`);
+  }
+
+  private drawPlayerFramePortrait(): void {
+    this.drawClassPortrait(
+      $('#pf-portrait') as unknown as HTMLCanvasElement,
+      this.sim.cfg.playerClass,
+      this.sim.player.skin ?? 0,
+    );
   }
 
   private itemIcon(item: ItemDef): string {
@@ -960,6 +1031,7 @@ export class Hud {
       touchTimer = undefined;
     };
     const showAt = (x: number, y: number, trigger: 'touch' | 'mouse' | 'focus') => {
+      if (this.mobileHotbarDrag?.active) return;
       // Touch-only path: showing the tooltip means the held control is being
       // inspected, so the release click should peek, not fire its action.
       this.peekGuard.tooltipShown(trigger);
@@ -1149,9 +1221,9 @@ export class Hud {
   // shortcuts. Abilities are keyed by id (known is class-ordered and shifts on
   // level-up, so indices would not survive). Persisted per class+character,
   // with separate form/stealth layouts because each state has a different kit.
-  private slotMapKey(): string {
+  private slotMapKey(form: HotbarForm = this.activeHotbarForm): string {
     const base = `woc_hotbar_${this.sim.cfg.playerClass}_${this.sim.player.name}`;
-    return this.activeHotbarForm === 'normal' ? base : `${base}_${this.activeHotbarForm}`;
+    return form === 'normal' ? base : `${base}_${form}`;
   }
 
   private playerHotbarForm(): HotbarForm {
@@ -1176,18 +1248,79 @@ export class Hud {
       stored = raw !== null;
       arr = JSON.parse(raw ?? 'null');
     } catch { /* corrupt */ }
-    this.loadedSlotMapFromStorage = stored || this.activeHotbarForm !== 'normal';
-    this.hotbarActions = parseHotbarActions(
+    const parsed = parseHotbarActions(
       arr,
       Hud.BAR_ABILITY_SLOTS,
       (id) => !!ABILITIES[id],
       (id) => this.isHotbarItemId(id),
     );
+    const emptyFormMap = this.activeHotbarForm !== 'normal' && parsed.every((action) => action === null);
+    if (emptyFormMap) {
+      let fallback: unknown = null;
+      try { fallback = JSON.parse(localStorage.getItem(this.slotMapKey('normal')) ?? 'null'); } catch { /* corrupt */ }
+      const normalActions = parseHotbarActions(
+        fallback,
+        Hud.BAR_ABILITY_SLOTS,
+        (id) => !!ABILITIES[id],
+        (id) => this.isHotbarItemId(id),
+      );
+      if (normalActions.some((action) => action !== null)) {
+        this.loadedSlotMapFromStorage = true;
+        this.hotbarActions = normalActions;
+        this.knownAbilityIdsAtLastSlotSync = null;
+        return;
+      }
+    }
+    this.loadedSlotMapFromStorage = stored;
+    this.hotbarActions = parsed;
     this.knownAbilityIdsAtLastSlotSync = null;
   }
 
   private saveSlotMap(): void {
     try { localStorage.setItem(this.slotMapKey(), JSON.stringify(this.hotbarActions)); } catch { /* storage unavailable */ }
+  }
+
+  private firstEmptyHotbarIndex(): number {
+    return this.hotbarActions.findIndex((action) => action === null);
+  }
+
+  private hotbarIndexForAbility(abilityId: string): number {
+    return this.hotbarActions.findIndex((action) => action?.type === 'ability' && action.id === abilityId);
+  }
+
+  private addAbilityToHotbar(abilityId: string): boolean {
+    if (this.hotbarIndexForAbility(abilityId) !== -1) return false;
+    const target = this.firstEmptyHotbarIndex();
+    if (target === -1) return false;
+    this.hotbarActions = placeAbilityOnSlot(this.hotbarActions, abilityId, target);
+    this.saveSlotMap();
+    return true;
+  }
+
+  private removeAbilityFromHotbar(abilityId: string): boolean {
+    const target = this.hotbarIndexForAbility(abilityId);
+    if (target === -1) return false;
+    this.hotbarActions = clearHotbarSlot(this.hotbarActions, target);
+    this.saveSlotMap();
+    return true;
+  }
+
+  private refreshSpellbookHotbarControls(): void {
+    document.querySelectorAll<HTMLButtonElement>('#spellbook .spell-hotbar-toggle').forEach((btn) => {
+      const id = btn.dataset.abilityId;
+      if (!id) return;
+      const onBar = this.hotbarIndexForAbility(id) !== -1;
+      btn.textContent = onBar ? '-' : '+';
+      btn.classList.toggle('remove', onBar);
+      btn.setAttribute('aria-pressed', onBar ? 'true' : 'false');
+      btn.disabled = !onBar && this.firstEmptyHotbarIndex() === -1;
+    });
+  }
+
+  private formToggleAbilityId(): string | null {
+    if (this.activeHotbarForm === 'bear') return 'bear_form';
+    if (this.activeHotbarForm === 'cat') return 'cat_form';
+    return null;
   }
 
   private syncActiveHotbarForm(): void {
@@ -1214,6 +1347,8 @@ export class Hud {
         if (!this.knownAbilityIdsAtLastSlotSync.has(id)) autoPlaceAbilityIds.add(id);
       }
     }
+    const formToggle = this.formToggleAbilityId();
+    if (formToggle && knownAbilityIds.includes(formToggle)) autoPlaceAbilityIds.add(formToggle);
     const synced = syncHotbarActions(this.hotbarActions, knownAbilityIds, autoPlaceAbilityIds);
     this.hotbarActions = synced.actions;
     if (synced.changed) this.saveSlotMap();
@@ -1310,9 +1445,11 @@ export class Hud {
       cdText.className = 'cdtext';
       btn.append(label, countEl, kb, cdOverlay, cdText);
       const slot = i;
+      btn.dataset.hotbarSlot = String(slot);
       // slot 0 is Attack for every class (auto-attack toggle — players
       // without right-click need a way in); the kit fills slots 1+
       btn.addEventListener('click', () => {
+        if (this.suppressNextActionClick) { this.suppressNextActionClick = false; btn.blur(); return; }
         // On touch, the click that ends a long-press peek inspects the slot
         // (tooltip already shown) instead of casting — release dismisses it.
         if (this.peekGuard.consume()) { this.hideTooltip(); btn.blur(); return; }
@@ -1401,6 +1538,7 @@ export class Hud {
           this.dragAction = null;
           this.clearActionDropTargets();
         });
+        this.bindMobileActionDrag(btn, slot);
         // right-click clears the slot so a full bar can make room for new spells
         btn.addEventListener('contextmenu', (e) => {
           e.preventDefault();
@@ -1417,6 +1555,90 @@ export class Hud {
 
   private clearActionDropTargets(): void {
     document.querySelectorAll('#actionbar .drop-target').forEach((el) => el.classList.remove('drop-target'));
+  }
+
+  private actionButtonSlotFromPoint(x: number, y: number): number | null {
+    const el = document.elementFromPoint(x, y)?.closest?.('.action-btn') as HTMLButtonElement | null;
+    const raw = el?.dataset.hotbarSlot;
+    if (!raw) return null;
+    const slot = Number(raw);
+    return Number.isInteger(slot) && slot >= 1 ? slot : null;
+  }
+
+  private clearMobileHotbarDrag(): void {
+    const drag = this.mobileHotbarDrag;
+    if (drag) window.clearTimeout(drag.timer);
+    this.mobileHotbarDrag = null;
+    document.body.classList.remove('mobile-hotbar-dragging');
+    document.querySelectorAll('#actionbar .mobile-drag-source').forEach((el) => el.classList.remove('mobile-drag-source'));
+    this.clearActionDropTargets();
+  }
+
+  private bindMobileActionDrag(btn: HTMLButtonElement, slot: number): void {
+    btn.addEventListener('pointerdown', (e) => {
+      if (!document.body.classList.contains('mobile-touch') || e.pointerType !== 'touch') return;
+      if (this.actionForSlot(slot)?.type !== 'ability') return;
+      this.clearMobileHotbarDrag();
+      const sourceIndex = slot - 1;
+      const drag: MobileHotbarDrag = {
+        pointerId: e.pointerId,
+        sourceIndex,
+        startX: e.clientX,
+        startY: e.clientY,
+        active: false,
+        targetIndex: null,
+        timer: window.setTimeout(() => {
+          const current = this.mobileHotbarDrag;
+          if (!current || current.pointerId !== e.pointerId) return;
+          current.active = true;
+          current.targetIndex = sourceIndex;
+          this.suppressNextActionClick = true;
+          document.body.classList.add('mobile-hotbar-dragging');
+          btn.classList.add('mobile-drag-source');
+          btn.classList.add('drop-target');
+          this.hideTooltip();
+          try { btn.setPointerCapture?.(e.pointerId); } catch { /* pointer already released */ }
+        }, 320),
+      };
+      this.mobileHotbarDrag = drag;
+    });
+
+    btn.addEventListener('pointermove', (e) => {
+      const drag = this.mobileHotbarDrag;
+      if (!drag || drag.pointerId !== e.pointerId) return;
+      const moved = Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY);
+      if (!drag.active && moved > 9) {
+        this.clearMobileHotbarDrag();
+        return;
+      }
+      if (!drag.active) return;
+      e.preventDefault();
+      const targetSlot = this.actionButtonSlotFromPoint(e.clientX, e.clientY);
+      const targetIndex = targetSlot !== null ? targetSlot - 1 : null;
+      drag.targetIndex = targetIndex;
+      this.clearActionDropTargets();
+      const targetBtn = targetSlot !== null ? this.abilityButtons[targetSlot]?.btn : null;
+      if (targetBtn) targetBtn.classList.add('drop-target');
+      this.abilityButtons[drag.sourceIndex + 1]?.btn.classList.add('mobile-drag-source');
+    });
+
+    const finish = (e: PointerEvent) => {
+      const drag = this.mobileHotbarDrag;
+      if (!drag || drag.pointerId !== e.pointerId) return;
+      const wasActive = drag.active;
+      const targetIndex = drag.targetIndex;
+      if (wasActive) {
+        e.preventDefault();
+        this.suppressNextActionClick = true;
+        if (targetIndex !== null && targetIndex !== drag.sourceIndex) {
+          this.hotbarActions = swapHotbarSlots(this.hotbarActions, drag.sourceIndex, targetIndex);
+          this.saveSlotMap();
+        }
+      }
+      this.clearMobileHotbarDrag();
+    };
+    btn.addEventListener('pointerup', finish);
+    btn.addEventListener('pointercancel', finish);
   }
 
   // Repaint the keycap on every action button from the current bindings.
@@ -1601,10 +1823,16 @@ export class Hud {
       if (this.targetNameEl.style.color !== targetNameColor) this.targetNameEl.style.color = targetNameColor;
       if (this.lastPortraitTarget !== target.id) {
         this.lastPortraitTarget = target.id;
-        const crestId = target.kind === 'npc'
-          ? 'status_npc'
-          : `family_${MOBS[target.templateId]?.family ?? 'humanoid'}`;
-        this.drawPortrait(this.targetPortraitEl, crestId);
+        if (target.kind === 'player') {
+          // Other players: their real 3D headshot, rendered locally from the
+          // class (templateId) + skin in their synced identity fields.
+          this.drawClassPortrait(this.targetPortraitEl, target.templateId as PlayerClass, target.skin ?? 0);
+        } else {
+          const crestId = target.kind === 'npc'
+            ? 'status_npc'
+            : `family_${MOBS[target.templateId]?.family ?? 'humanoid'}`;
+          this.drawPortrait(this.targetPortraitEl, crestId);
+        }
       }
       this.renderAuras(this.targetDebuffsEl, target, 'debuffs');
       // combo points
@@ -1659,6 +1887,7 @@ export class Hud {
     this.renderPetBar();
     const tgtDist = target && !target.dead ? dist2d(p.pos, target.pos) : null;
     this.actionbarEl.classList.toggle('many-spells', this.hotbarActions.filter((action) => action !== null).length > 10);
+    if ($('#spellbook').style.display === 'block') this.refreshSpellbookHotbarControls();
     for (let i = 0; i < this.abilityButtons.length; i++) {
       const ab = this.abilityButtons[i];
       const slotLabel = formatAbilityNumber(i + 1);
@@ -2067,20 +2296,20 @@ export class Hud {
     this.closeOtherWindows('#arena-window');
     el.style.display = 'block';
     this.lastArenaSig = '';
-    this.fetchArenaLeaderboard();
+    this.fetchArenaLeaderboard(this.arenaBracket);
     this.renderArenaWindow();
   }
 
   // Best-effort all-time ladder pull. Throttled; silently no-ops offline (no
   // server) so the panel still shows the live online ladder either way.
-  private fetchArenaLeaderboard(): void {
+  private fetchArenaLeaderboard(format: ArenaFormat): void {
     const now = performance.now();
-    if (now - this.arenaLbFetchedAt < 15000) return;
-    this.arenaLbFetchedAt = now;
-    fetch('/api/arena/leaderboard')
+    if (now - (this.arenaLbFetchedAt[format] ?? 0) < 15000) return;
+    this.arenaLbFetchedAt[format] = now;
+    fetch(`/api/arena/leaderboard?format=${encodeURIComponent(format)}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
-        if (d && Array.isArray(d.leaders)) { this.arenaAllTime = d.leaders; this.lastArenaSig = ''; }
+        if (d && Array.isArray(d.leaders)) { this.arenaAllTime[format] = d.leaders; this.lastArenaSig = ''; }
       })
       .catch(() => { /* offline or no server — live ladder only */ });
   }
@@ -2100,12 +2329,14 @@ export class Hud {
     const bracket = a.match?.format ?? queuedFmt ?? this.arenaBracket;
     if (queuedFmt || a.match) this.arenaBracket = bracket;
     const canSwitchBracket = !a.queued && !inMatch;
+    const standing = a.standings[bracket];
+    const ladderRows = a.ladders[bracket];
     const myPid = this.sim.playerId;
     const party = this.sim.partyInfo;
     const partySize = party?.members.length ?? 1;
     const isLeader = !party || party.leader === myPid;
 
-    const ladder = a.ladder.map((r, i) => {
+    const ladder = ladderRows.map((r, i) => {
       const me = r.pid === myPid;
       const classId = r.cls as PlayerClass;
       const cls = CLASSES[classId] ? classDisplayName(classId) : r.cls;
@@ -2115,7 +2346,7 @@ export class Hud {
         + `<span class="lr-wl">${esc(formatNumber(r.wins, { maximumFractionDigits: 0 }))}-${esc(formatNumber(r.losses, { maximumFractionDigits: 0 }))}</span></div>`;
     }).join('') || `<div class="ladder-empty">${esc(t('hud.arena.noChallengers'))}</div>`;
 
-    const bracketBtn = (fmt: import('../world_api').ArenaFormat) => {
+    const bracketBtn = (fmt: ArenaFormat) => {
       const active = bracket === fmt;
       const locked = !canSwitchBracket && !active;
       return `<button class="arena-bracket${active ? ' active' : ''}${locked ? ' locked' : ''}" data-bracket="${fmt}" aria-pressed="${active ? 'true' : 'false'}"${locked ? ' disabled' : ''}>${esc(fmt)}</button>`;
@@ -2161,8 +2392,9 @@ export class Hud {
         + `<div class="arena-note">${esc(t('hud.arena.queueNote'))}</div>`;
     }
 
-    this.fetchArenaLeaderboard();
-    const allTime = (this.arenaAllTime ?? []).map((r, i) => {
+    this.fetchArenaLeaderboard(bracket);
+    const allTimeRows = this.arenaAllTime[bracket] ?? null;
+    const allTime = (allTimeRows ?? []).map((r, i) => {
       const me = r.name === this.sim.player.name;
       const classId = r.class as PlayerClass;
       const cls = CLASSES[classId] ? classDisplayName(classId) : r.class;
@@ -2175,20 +2407,20 @@ export class Hud {
         + `<span class="lr-rating">${esc(formatNumber(r.rating, { maximumFractionDigits: 0 }))}</span>`
         + `<span class="lr-wl">${esc(formatNumber(r.wins, { maximumFractionDigits: 0 }))}-${esc(formatNumber(r.losses, { maximumFractionDigits: 0 }))}</span></div>`;
     }).join('');
-    const allTimeSection = this.arenaAllTime && this.arenaAllTime.length > 0
+    const allTimeSection = allTimeRows && allTimeRows.length > 0
       ? `<div class="arena-sub">${esc(t('hud.arena.ladderAllTime'))}</div>${allTime}`
       : '';
 
-    const sig = JSON.stringify([a.rating, a.wins, a.losses, a.queued, a.queueSize, inMatch, a.ladder, this.arenaAllTime, bracket, party, canSwitchBracket]);
+    const sig = JSON.stringify([standing, a.queued, a.queueSize, inMatch, ladderRows, allTimeRows, bracket, party, canSwitchBracket]);
     if (sig === this.lastArenaSig) return;
     this.lastArenaSig = sig;
 
     el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.arena.title'))} <span class="arena-bracket-tag">${esc(bracket)}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.arena.close'))}">${svgIcon('close')}</button></div>`
       + bracketTabs
-      + `<div class="arena-rank"><span class="rating">${esc(formatNumber(a.rating, { maximumFractionDigits: 0 }))}</span>`
+      + `<div class="arena-rank"><span class="rating">${esc(formatNumber(standing.rating, { maximumFractionDigits: 0 }))}</span>`
       + `<span class="wl">${esc(t('hud.arena.ratingSummary', {
-        wins: formatNumber(a.wins, { maximumFractionDigits: 0 }),
-        losses: formatNumber(a.losses, { maximumFractionDigits: 0 }),
+        wins: formatNumber(standing.wins, { maximumFractionDigits: 0 }),
+        losses: formatNumber(standing.losses, { maximumFractionDigits: 0 }),
       }))}</span></div>`
       + partySection
       + action
@@ -2199,7 +2431,7 @@ export class Hud {
     el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; });
     el.querySelectorAll('[data-bracket]:not([disabled])').forEach((btn) => {
       btn.addEventListener('click', () => {
-        this.arenaBracket = (btn as HTMLElement).dataset.bracket as import('../world_api').ArenaFormat;
+        this.arenaBracket = (btn as HTMLElement).dataset.bracket as ArenaFormat;
         this.lastArenaSig = '';
         this.renderArenaWindow();
         audio.click();
@@ -2585,10 +2817,14 @@ export class Hud {
           audio.questAccept();
           this.refreshGossip();
           break;
-        case 'questProgress': this.log(this.localizeQuestProgressText(ev.questId, ev.text), '#dcd29f'); break;
+        case 'questProgress':
+          this.log(this.localizeQuestProgressText(ev.questId, ev.text), '#dcd29f');
+          this.refreshGossip();
+          break;
         case 'questReady': {
           this.showBanner(t('questUi.logs.ready', { name: questTitle(ev.questId), status: t('questUi.log.readyStatus') }));
           audio.questDone();
+          this.refreshGossip();
           break;
         }
         case 'questDone':
@@ -2718,7 +2954,26 @@ export class Hud {
           }
           break;
         }
-        case 'log': this.log(this.localizeSystemText(ev.text), ev.color ?? '#ccc'); break;
+        case 'log': {
+          const text = this.localizeSystemText(ev.text);
+          this.log(text, ev.color ?? '#ccc');
+          const isNythraxisVisionLine = [
+            'My king was a good man.',
+            'I swore my blade to him.',
+            'I would do so again.',
+            'There had to be another way.',
+            'I could not let him die.',
+            'I only wanted to save him.',
+            'The king was already dead.',
+            'Malric refused to accept it.',
+            'We should have let him rest.',
+            'If you find the crypt... end this.',
+          ].includes(ev.text);
+          if (ev.entityId !== undefined && (isNythraxisVisionLine || ev.text.includes(' yells, "'))) {
+            this.renderer.showChatBubble(ev.entityId, text, ev.text.includes(' yells, "'));
+          }
+          break;
+        }
         case 'playerDeath': {
           this.log(t('hud.system.playerDeath'), '#ff4444');
           audio.death();
@@ -3072,6 +3327,12 @@ export class Hud {
     if (wasNearBottom) el.scrollTop = el.scrollHeight;
   }
 
+  // A floating note over the local player (e.g. "Can't move!" when a movement
+  // command lands while rooted/stunned). Throttling is the caller's job.
+  showSelfNote(text: string, color = '#ff8c66'): void {
+    this.fct(this.sim.player, text, color, false);
+  }
+
   private fct(target: Entity, text: string, color: string, crit: boolean): void {
     const v = this.renderer.worldToScreen(target.pos.x, target.pos.y + 2.2 * target.scale, target.pos.z);
     if (v.behind) return;
@@ -3124,6 +3385,14 @@ export class Hud {
       return (st === 'available' && QUESTS[q].giverNpcId === npc.templateId)
         || (st === 'ready' && QUESTS[q].turnInNpcId === npc.templateId);
     });
+    const discussionQuests = [...this.sim.questLog.values()]
+      .filter((qp) => qp.state === 'active' && npc.questIds.includes(qp.questId))
+      .filter((qp) => QUESTS[qp.questId].objectives.some((objective, objectiveIndex) =>
+        objective.type === 'interact'
+        && objective.targetNpcId === npc.templateId
+        && qp.counts[objectiveIndex] < objective.count,
+      ))
+      .map((qp) => qp.questId);
     el.setAttribute('role', 'dialog');
     el.setAttribute('aria-modal', 'false');
     el.setAttribute('aria-labelledby', 'quest-dialog-title');
@@ -3143,6 +3412,12 @@ export class Hud {
         html += `<button type="button" class="qd-list-item" data-quest="${esc(qid)}" aria-label="${esc(aria)}">${icon}${esc(title)}</button>`;
       }
     }
+    if (discussionQuests.length > 0) {
+      for (const qid of discussionQuests) {
+        const title = questTitle(qid);
+        html += `<button type="button" class="qd-list-item" data-discuss="${esc(qid)}" aria-label="${esc(t('questUi.dialog.discussQuestAria', { name: title }))}"><span class="gold">?</span> ${esc(t('questUi.dialog.discussQuest', { name: title }))}</button>`;
+      }
+    }
     if (npc.vendorItems.length > 0) {
       html += `<button type="button" class="qd-list-item" data-vendor="1" aria-label="${esc(t('questUi.dialog.browseGoodsAria', { name: npcName }))}"><span class="quest-complete">$</span> ${esc(t('questUi.dialog.browseGoods'))}</button>`;
     }
@@ -3152,6 +3427,14 @@ export class Hud {
     el.innerHTML = html;
     el.querySelectorAll('[data-quest]').forEach((item) => {
       item.addEventListener('click', () => this.renderQuestDetail(npc, (item as HTMLElement).dataset.quest!));
+    });
+    el.querySelectorAll('[data-discuss]').forEach((item) => {
+      item.addEventListener('click', () => {
+        const questId = (item as HTMLElement).dataset.discuss!;
+        this.sim.targetEntity(npc.id);
+        this.sim.interact();
+        (item as HTMLButtonElement).disabled = true;
+      });
     });
     el.querySelector('[data-vendor]')?.addEventListener('click', () => {
       this.closeQuestDialog(false);
@@ -3209,6 +3492,45 @@ export class Hud {
       btn.addEventListener('click', () => { this.sim.turnInQuest(questId); this.renderGossip(npc); });
       el.appendChild(btn);
     }
+    const back = document.createElement('button');
+    back.className = 'btn';
+    back.type = 'button';
+    back.textContent = t('questUi.dialog.back');
+    back.addEventListener('click', () => this.renderGossip(npc));
+    el.appendChild(back);
+    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
+    el.style.display = 'block';
+    this.focusFirstInteractive(el);
+  }
+
+  private renderQuestDiscussion(npc: Entity, questId: string, page: number): void {
+    const el = $('#quest-dialog');
+    const pages = [
+      questNarrative(questId, 'text', this.sim.player.name),
+      questNarrative(questId, 'completion', this.sim.player.name),
+    ];
+    const clampedPage = Math.max(0, Math.min(page, pages.length - 1));
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'false');
+    el.setAttribute('aria-labelledby', 'quest-dialog-title');
+    el.setAttribute('tabindex', '-1');
+    el.innerHTML = `<div class="panel-title"><span id="quest-dialog-title">${esc(questTitle(questId))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">${svgIcon('close')}</button></div>`
+      + `<div class="qd-text">${esc(pages[clampedPage])}</div>`;
+    const action = document.createElement('button');
+    action.className = 'btn';
+    action.type = 'button';
+    if (clampedPage < pages.length - 1) {
+      action.textContent = t('questUi.dialog.continue');
+      action.addEventListener('click', () => this.renderQuestDiscussion(npc, questId, clampedPage + 1));
+    } else {
+      action.textContent = t('questUi.dialog.done');
+      action.addEventListener('click', () => {
+        this.sim.targetEntity(npc.id);
+        this.sim.interact();
+        this.renderGossip(npc);
+      });
+    }
+    el.appendChild(action);
     const back = document.createElement('button');
     back.className = 'btn';
     back.type = 'button';
@@ -3346,7 +3668,7 @@ export class Hud {
       row.innerHTML = `${this.itemIcon(item)}<span class="vi-name">${esc(itemName)}${s.count > 1 ? ` x${s.count}` : ''}</span><span class="vi-price">${this.moneyHtml(item.sellValue)}</span>`;
       row.addEventListener('click', () => {
         this.sim.buyBackItem(s.itemId);
-        if ($('#bags').style.display === 'block') this.renderBags();
+        if ($('#bags').style.display !== 'none') this.renderBags();
         this.renderVendor();
       });
       this.attachTooltip(row, () => this.itemTooltip(item) + `<div class="tt-sub">${esc(t('itemUi.tooltip.clickBuyback'))}</div>`);
@@ -3362,11 +3684,17 @@ export class Hud {
   }
 
   closeVendor(): void {
+    const closeMobileBags = document.body.classList.contains('mobile-touch') && $('#bags').style.display !== 'none';
     $('#vendor-window').style.display = 'none';
     this.openVendorNpcId = null;
     document.body.classList.remove('vendor-open'); // bags (if still open) re-centres
     this.hideTooltip();
-    if ($('#bags').style.display !== 'none') this.renderBags();
+    if (closeMobileBags) {
+      $('#bags').style.display = 'none';
+      this.cancelPetFeed();
+    } else if ($('#bags').style.display !== 'none') {
+      this.renderBags();
+    }
   }
 
   get vendorOpen(): boolean {
@@ -3726,7 +4054,15 @@ export class Hud {
     money.className = 'money';
     money.innerHTML = this.moneyHtml(sim.copper);
     el.appendChild(money);
-    el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; this.hideTooltip(); this.cancelPetFeed(); });
+    el.querySelector('[data-close]')?.addEventListener('click', () => {
+      if (this.vendorOpen && document.body.classList.contains('mobile-touch')) {
+        this.closeVendor();
+        return;
+      }
+      el.style.display = 'none';
+      this.hideTooltip();
+      this.cancelPetFeed();
+    });
   }
 
   private sellBagItem(slot: InvSlot, ev: MouseEvent): void {
@@ -3843,13 +4179,14 @@ export class Hud {
     const p = sim.player;
     const cls = CLASSES[sim.cfg.playerClass];
     const className = classDisplayName(cls.id);
-    let html = `<div class="panel-title"><span>${esc(p.name)} <span class="panel-subtitle">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(p.level, { maximumFractionDigits: 0 }), className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
+    let html = `<div class="panel-title char-title-portrait">${portraitChipHtml({ cls: sim.cfg.playerClass, skin: p.skin ?? 0, name: p.name, variant: 'md' })}<span class="char-title-text">${esc(p.name)} <span class="panel-subtitle">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(p.level, { maximumFractionDigits: 0 }), className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
     html += `<div class="paperdoll">
-      <div class="equip-col" id="equip-col"></div>
+      <div class="equip-col" id="equip-col-left"></div>
       <div class="char-model-panel">
         <div id="char-model-preview" class="char-model-preview"></div>
         <div id="char-skin-row" class="skin-row char-skin-row" role="list" aria-label="Chroma"></div>
       </div>
+      <div class="equip-col equip-col-right" id="equip-col-right"></div>
     </div>`;
     const wpn = sim.equipment.mainhand ? ITEMS[sim.equipment.mainhand] : null;
     const dps = wpn?.weapon ? ((wpn.weapon.min + wpn.weapon.max) / 2 + (p.attackPower / 14) * wpn.weapon.speed) / wpn.weapon.speed : 0;
@@ -3863,15 +4200,27 @@ export class Hud {
     html += this.talentSummaryHtml();
     html += this.progressionHtml(p.level);
     el.innerHTML = html;
+    hydratePortraits(el);
     el.querySelector('[data-act="prestige"]')?.addEventListener('click', () => this.openPrestigeDialog());
-    const col = el.querySelector('#equip-col')!;
-    const slots: { key: EquipSlot; name: string }[] = [
-      { key: 'mainhand', name: itemSlotName('mainhand') },
+    const leftCol = el.querySelector('#equip-col-left')!;
+    const rightCol = el.querySelector('#equip-col-right')!;
+    // Two columns flanking the model, like the classic WoW character sheet:
+    // the left column holds head/shoulder/chest (+ weapon, since we have no
+    // neck/back/wrist slots to fill it) and the right column holds the
+    // hands/waist/legs/feet quartet.
+    const leftSlots: { key: EquipSlot; name: string }[] = [
+      { key: 'helmet', name: itemSlotName('helmet') },
+      { key: 'shoulder', name: itemSlotName('shoulder') },
       { key: 'chest', name: itemSlotName('chest') },
+      { key: 'mainhand', name: itemSlotName('mainhand') },
+    ];
+    const rightSlots: { key: EquipSlot; name: string }[] = [
+      { key: 'gloves', name: itemSlotName('gloves') },
+      { key: 'waist', name: itemSlotName('waist') },
       { key: 'legs', name: itemSlotName('legs') },
       { key: 'feet', name: itemSlotName('feet') },
     ];
-    for (const slot of slots) {
+    const buildSlotRow = (slot: { key: EquipSlot; name: string }): HTMLElement => {
       const itemId = sim.equipment[slot.key];
       const item = itemId ? ITEMS[itemId] : null;
       const row = document.createElement('div');
@@ -3880,8 +4229,10 @@ export class Hud {
       row.innerHTML = `${item ? this.itemIcon(item) : `<img class="item-icon" style="border-color:#444" src="${iconDataUrl('item', 'slot_empty')}" alt="" draggable="false">`}
         <div><div class="slot-name">${esc(slot.name)}</div><div class="slot-item" style="color:${qColor}">${item ? esc(itemDisplayName(item)) : esc(t('itemUi.equipment.empty'))}</div></div>`;
       if (item) this.attachTooltip(row, () => this.itemTooltip(item));
-      col.appendChild(row);
-    }
+      return row;
+    };
+    for (const slot of leftSlots) leftCol.appendChild(buildSlotRow(slot));
+    for (const slot of rightSlots) rightCol.appendChild(buildSlotRow(slot));
     this.renderCharPreview();
     this.renderCharSkinPicker();
     el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; this.hideTooltip(); });
@@ -4230,6 +4581,27 @@ export class Hud {
         <div class="spell-text"><div class="spell-name">${esc(name)}${known && known.rank > 1 ? ` <span class="spell-rank">${esc(t('abilityUi.tooltip.rank', { rank: formatAbilityNumber(known.rank) }))}</span>` : ''}</div>
         <div class="spell-sub">${locked ? esc(t('abilityUi.spellbook.trainableAtLevel', { level: learnLevel })) : esc(summary)}</div></div>`;
       if (known) {
+        const onBar = this.hotbarIndexForAbility(known.def.id) !== -1;
+        const toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'spell-hotbar-toggle' + (onBar ? ' remove' : '');
+        toggle.dataset.abilityId = known.def.id;
+        toggle.textContent = onBar ? '-' : '+';
+        toggle.setAttribute('aria-label', `${name} ${onBar ? '-' : '+'}`);
+        toggle.setAttribute('aria-pressed', onBar ? 'true' : 'false');
+        toggle.disabled = !onBar && this.firstEmptyHotbarIndex() === -1;
+        toggle.addEventListener('pointerdown', (ev) => ev.stopPropagation());
+        toggle.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          const changed = this.hotbarIndexForAbility(known.def.id) !== -1
+            ? this.removeAbilityFromHotbar(known.def.id)
+            : this.addAbilityToHotbar(known.def.id);
+          if (!changed) return;
+          audio.click();
+          this.refreshSpellbookHotbarControls();
+        });
+        row.appendChild(toggle);
         row.draggable = true;
         row.addEventListener('dragstart', (e) => {
           const action = { type: 'ability' as const, id: known.def.id };
@@ -4797,7 +5169,10 @@ export class Hud {
     const ignored = online
       ? !!social?.blocks.some((b) => b.name === name)
       : this.isChatIgnored(name);
-    let html = `<div class="ctx-title">${esc(name)}</div>`;
+    const ent = this.sim.entities.get(pid);
+    const entCls = ent && ent.kind === 'player' ? (ent.templateId as PlayerClass) : null;
+    let html = `<div class="ctx-title ctx-title-player">${entCls ? portraitChipHtml({ cls: entCls, skin: ent!.skin ?? 0, name, variant: 'sm' }) : ''}<span class="ctx-title-name">${esc(name)}</span></div>`;
+    if (entCls) html += `<div class="ctx-item" data-act="inspect">${esc(t('character.viewProfile'))}</div>`;
     if (!isMember) html += `<div class="ctx-item" data-act="invite">${esc(t('hud.chat.context.invite'))}</div>`;
     html += `<div class="ctx-item" data-act="trade">${esc(t('hud.chat.context.trade'))}</div>`;
     html += `<div class="ctx-item" data-act="duel">${esc(t('hud.chat.context.challengeDuel'))}</div>`;
@@ -4810,11 +5185,13 @@ export class Hud {
     if (isLeader && isMember && pid !== this.sim.playerId) html += `<div class="ctx-item" data-act="kick">${esc(t('hud.chat.context.removeParty'))}</div>`;
     html += `<div class="ctx-item" data-act="close">${esc(t('hud.chat.context.cancel'))}</div>`;
     el.innerHTML = html;
+    hydratePortraits(el);
     el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
     el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
     el.style.display = 'block';
     this.bindContextMenuActions((act) => {
-      if (act === 'invite') this.sim.partyInvite(pid);
+      if (act === 'inspect') this.openInspect(pid);
+      else if (act === 'invite') this.sim.partyInvite(pid);
       else if (act === 'trade') this.sim.tradeRequest(pid);
       else if (act === 'duel') this.sim.duelRequest(pid);
       else if (act === 'friend') this.sim.friendAdd(name);
@@ -4826,6 +5203,28 @@ export class Hud {
       } else if (act === 'report') this.openReportWindow({ pid, name });
       else if (act === 'kick') this.sim.partyKick(pid);
     });
+  }
+
+  /** Inspect another player: a profile window with their portrait, name, level
+   *  and class — rendered locally from their entity's class + skin. */
+  openInspect(pid: number): void {
+    const e = this.sim.entities.get(pid);
+    if (!e || e.kind !== 'player') return;
+    const cls = e.templateId as PlayerClass;
+    const className = classDisplayName(cls);
+    const el = $('#inspect-window');
+    this.closeOtherWindows('#inspect-window');
+    el.innerHTML =
+      `<div class="panel-title"><span>${esc(t('character.profile'))}</span>` +
+      `<button type="button" class="x-btn" data-close aria-label="${esc(t('character.closeProfile'))}">${svgIcon('close')}</button></div>` +
+      `<div class="inspect-card">` +
+      portraitChipHtml({ cls, skin: e.skin ?? 0, name: e.name, variant: 'lg' }) +
+      `<div class="inspect-name">${esc(e.name)}</div>` +
+      `<div class="inspect-meta">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(e.level, { maximumFractionDigits: 0 }), className }))}</div>` +
+      `</div>`;
+    hydratePortraits(el);
+    el.querySelector('[data-close]')?.addEventListener('click', () => { el.style.display = 'none'; });
+    el.style.display = 'block';
   }
 
   // Raid/target marker picker for an enemy, opened from its target unit frame.
@@ -4926,14 +5325,23 @@ export class Hud {
       alreadyGuilded,
       canReport: !!this.reportHooks?.submitByName,
     });
-    el.innerHTML = `<div class="ctx-title">${esc(name)}</div>`
+    // If the player is in view we know their class+skin, so show a portrait and
+    // a "View Profile" entry; otherwise the menu is name-only as before.
+    const livePidForMenu = this.playerPidByName(name);
+    const ent = livePidForMenu !== null ? this.sim.entities.get(livePidForMenu) : undefined;
+    const entCls = ent && ent.kind === 'player' ? (ent.templateId as PlayerClass) : null;
+    const titleHtml = `<div class="ctx-title ctx-title-player">${entCls ? portraitChipHtml({ cls: entCls, skin: ent!.skin ?? 0, name, variant: 'sm' }) : ''}<span class="ctx-title-name">${esc(name)}</span></div>`;
+    const inspectHtml = entCls ? `<div class="ctx-item" data-act="inspect">${esc(t('character.viewProfile'))}</div>` : '';
+    el.innerHTML = titleHtml + inspectHtml
       + actions.map((a) => `<div class="ctx-item" data-act="${a.id}">${esc(a.label)}</div>`).join('');
+    hydratePortraits(el);
     el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
     el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
     el.style.display = 'block';
     this.bindContextMenuActions((act) => {
       const livePid = this.playerPidByName(name);
-      if (act === 'whisper') this.startWhisper(name);
+      if (act === 'inspect') { if (livePid !== null) this.openInspect(livePid); }
+      else if (act === 'whisper') this.startWhisper(name);
       else if (act === 'invite') {
         if (livePid !== null) this.sim.partyInvite(livePid);
         else this.showError(t('hud.system.playerNotNearby'));
@@ -5836,6 +6244,8 @@ export class Hud {
       if (key === 'clickToMove') hooks.onSettingChange(key, next ? 1 : 0);
       else hooks.onSettingChange(key, hooks.settings.set(key, next));
       sync();
+      // Attack Move reveals/hides its rebindable key row, so redraw the panel.
+      if (key === 'attackMove') this.renderKeybinds();
     });
     row.append(name, toggle);
     parent.appendChild(row);
@@ -5873,6 +6283,7 @@ export class Hud {
     this.settingToggleKeybind(el, t('hud.options.mouseCamera'), 'mouseCamera');
     this.settingToggleKeybind(el, t('hud.options.clickToMove'), 'clickToMove');
     this.clickMoveMouseButtonRow(el);
+    this.settingToggleKeybind(el, t('hud.keybinds.actions.attackMove'), 'attackMove');
     this.settingToggleKeybind(el, t('hud.options.leftHandedTouch'), 'leftHandedTouch');
     this.settingToggleKeybind(el, t('hud.options.filterProfanity'), 'filterProfanity');
     const note = document.createElement('div');
@@ -5881,12 +6292,17 @@ export class Hud {
     el.appendChild(note);
     const rows = document.createElement('div');
     rows.className = 'kb-rows';
+    // The Attack Move key is only meaningful (and only rebindable) while its mode
+    // is on; otherwise hide its row so it can't shadow Turn Left's A in the list.
+    const attackMoveOn = !!this.optionsHooks?.settings.get('attackMove');
     for (const category of BIND_CATEGORIES) {
+      const visible = BIND_ACTIONS.filter((a) => a.category === category && (a.id !== 'attackMove' || attackMoveOn));
+      if (visible.length === 0) continue;
       const header = document.createElement('div');
       header.className = 'kb-cat';
       header.textContent = BIND_CATEGORY_LABEL_KEYS[category] ? t(BIND_CATEGORY_LABEL_KEYS[category]) : category;
       rows.appendChild(header);
-      for (const action of BIND_ACTIONS.filter((a) => a.category === category)) {
+      for (const action of visible) {
         const row = document.createElement('div');
         row.className = 'kb-row';
         const name = document.createElement('span');

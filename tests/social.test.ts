@@ -355,7 +355,7 @@ describe('parties', () => {
     expect(metaB.questLog.get('q_wolves')!.counts[0]).toBe(1);
   });
 
-  it('party members may loot each other\'s tapped kills', () => {
+  it('party members may loot each other\'s tapped kills and split copper', () => {
     const { sim, a, b } = makeDuo();
     const wolf = nearestMob(sim, 'forest_wolf');
     wolf.hp = 1;
@@ -366,9 +366,14 @@ describe('parties', () => {
     sim.startAutoAttack(a);
     for (let i = 0; i < 20 * 20 && !wolf.dead; i++) { face(sim, a, wolf.id); sim.tick(); }
     expect(wolf.lootable).toBe(true);
-    const copperBefore = sim.meta(b)!.copper;
+    const copper = wolf.loot!.copper;
+    const aBefore = sim.meta(a)!.copper;
+    const bBefore = sim.meta(b)!.copper;
     sim.lootCorpse(wolf.id, b);
-    expect(sim.meta(b)!.copper).toBeGreaterThan(copperBefore);
+    const aGain = sim.meta(a)!.copper - aBefore;
+    const bGain = sim.meta(b)!.copper - bBefore;
+    expect(aGain + bGain).toBe(copper);
+    expect(Math.abs(aGain - bGain)).toBeLessThanOrEqual(1);
   });
 
   it('non-party members cannot loot tapped kills', () => {

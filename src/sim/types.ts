@@ -18,6 +18,12 @@ export type PlayerClass =
   | 'shaman' | 'mage' | 'warlock' | 'druid';
 export type ArenaFormat = '1v1' | '2v2';
 
+export interface ArenaStanding {
+  rating: number;
+  wins: number;
+  losses: number;
+}
+
 export interface ArenaCombatant {
   pid: number;
   name: string;
@@ -89,7 +95,15 @@ export interface WeaponInfo {
   dagger?: boolean; // backstab requires a dagger
 }
 
-export type EquipSlot = 'mainhand' | 'chest' | 'legs' | 'feet';
+export type EquipSlot =
+  | 'mainhand'
+  | 'helmet'
+  | 'shoulder'
+  | 'chest'
+  | 'waist'
+  | 'legs'
+  | 'gloves'
+  | 'feet';
 
 export type ItemUse =
   | { type: 'fishing' };
@@ -133,6 +147,21 @@ export interface CorpseLoot {
   copper: number;
   items: LootSlot[];
 }
+
+export type CurrencyLootStrategy = 'looter-takes-all' | 'fair-split';
+export type ItemLootStrategy = 'looter-takes-all' | 'random';
+
+export interface LootStrategies {
+  currency: CurrencyLootStrategy;
+  commonItems: ItemLootStrategy;
+  premiumItems: ItemLootStrategy;
+}
+
+export const DEFAULT_PARTY_LOOT_STRATEGIES: LootStrategies = {
+  currency: 'fair-split',
+  commonItems: 'random',
+  premiumItems: 'random',
+};
 
 export interface LootEntry {
   itemId?: string;
@@ -386,6 +415,13 @@ export interface DungeonSpawn {
   z: number;
 }
 
+export interface DungeonObjectSpawn {
+  itemId: string;
+  name: string;
+  x: number; // relative to instance origin
+  z: number;
+}
+
 export interface DungeonDef {
   id: string;
   name: string;
@@ -394,6 +430,7 @@ export interface DungeonDef {
   entry: { x: number; z: number }; // player arrival point (instance-local)
   exitOffset: { x: number; z: number }; // exit portal (instance-local)
   spawns: DungeonSpawn[];
+  objects?: DungeonObjectSpawn[];
   interior: 'crypt' | 'sanctum' | 'temple'; // renderer + collider interior builder key
   suggestedPlayers: number;
   enterText: string;
@@ -451,9 +488,11 @@ export function emptyZoneProps(): ZonePropsDef {
 }
 
 export interface QuestObjective {
-  type: 'kill' | 'collect';
+  type: 'kill' | 'collect' | 'interact';
   targetMobId?: string; // for kill
   itemId?: string; // for collect
+  targetObjectItemId?: string; // for interactable ground objects
+  targetNpcId?: string; // for interactable NPC objectives
   count: number;
   label: string;
 }
@@ -518,6 +557,9 @@ export interface Entity {
   vz: number; // horizontal air velocity (z, yards/sec)
   vy: number; // vertical velocity (jumping/falling)
   onGround: boolean;
+  // True while airborne from a deliberate jump (not from walking off a ledge).
+  // Lets a jump clear fences for the whole arc, independent of slope.
+  jumping: boolean;
   fallStartY: number;
   hp: number;
   maxHp: number;
@@ -599,6 +641,7 @@ export interface Entity {
   gm?: boolean;
   respawnTimer: number;
   corpseTimer: number;
+  despawnTimer?: number;
   lootable: boolean;
   loot: CorpseLoot | null;
   xpValue: number;

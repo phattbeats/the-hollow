@@ -7,15 +7,17 @@ import { MobileControls, PHONE_TOUCH_QUERY, isPhoneTouchDevice } from './game/mo
 import { Hud } from './ui/hud';
 import { audio } from './game/audio';
 import { music } from './game/music';
-import { handlePickedEntity, hoverCursorKind } from './game/interactions';
-import { clickMoveShouldCancel, clickMoveStep, stepAngleToward } from './game/click_move';
+import { activePvpOpponentIds, handlePickedEntity, hoverCursorKind, isAttackableEntity } from './game/interactions';
+import { clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, distance2d, latencyAdjustedStopDistance, stepAngleToward } from './game/click_move';
 import { Api, ClientWorld, CharacterSummary, type ReleaseEntry } from './net/online';
 import type { IWorld, LeaderboardEntry } from './world_api';
+import { findPlayerPath, resolvePlayerDestination } from './sim/pathfind';
+import { pathCrossesFence } from './sim/colliders';
 import { formatXp } from './ui/xp_bar';
 import { assetsReady } from './render/assets/preload';
 import { CharacterPreview } from './render/characters';
 import { skinCount } from './render/characters/manifest';
-import { DT, INTERACT_RANGE, PlayerClass, dist2d } from './sim/types';
+import { DT, INTERACT_RANGE, MELEE_RANGE, PlayerClass, RUN_SPEED, dist2d } from './sim/types';
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
@@ -23,18 +25,35 @@ import { formatDateTime, formatNumber, getLanguage, isSupportedLanguage, languag
 import { tServer } from './ui/server_i18n';
 import { tEntity } from './ui/entity_i18n';
 import { hydrateIcons } from './ui/ui_icons';
+import { portraitChipHtml, hydratePortraits } from './ui/portrait_chip';
+import { playerPortraitDataUrl } from './render/characters/portrait';
 import { createPerfMonitor } from './game/perf';
 import { updateFollowCameraYaw, wrapAngle } from './game/camera_follow';
 
 
 const WORLD_SEED = 20061; // fixed: World of ClaudeCraft is a persistent place
 const CLICK_MOVE_TURN_RATE = 4.2; // rad/sec; responsive turning while the camera stays decoupled from click spam
+const CLICK_MOVE_WAYPOINT_STOP = 0.8; // yards; intermediate A* corners should roll through, not stutter-stop
+const CLICK_MOVE_REROUTE_DISTANCE = 4; // yards; live entity targets can move this far before we recompute the path
+const CLICK_MOVE_FENCE_JUMP_LOOKAHEAD = 2; // yards ahead; auto-jump when a click-move path is about to cross a fence
+const CLICK_MOVE_STUCK_MS = 1100; // ms of no forward progress before we reroute around (then give up)
+const CLICK_MOVE_PROGRESS_EPSILON = 1.5; // yards of travel that counts as progress (a walking player clears this fast; a player hopping in place at a fence never does)
+const CLICK_MOVE_LATENCY_STOP_CAP_MS = 240; // avoid overshooting hosted click-move targets while preserving offline precision
+const CLICK_MOVE_LATENCY_STOP_MAX_EXTRA = 1.6; // yards; cap high-latency stop padding so clicks do not end obviously short
+const CLICK_MOVE_LATENCY_WAYPOINT_MAX_EXTRA = 0.8; // yards; helps online A* corners roll through despite input echo delay
+const ONLINE_SELF_RENDER_ALPHA_LEAD = 0.65; // fraction of a snapshot interval to reduce local-player visual delay online
+const ATTACK_MOVE_MELEE_STOP = 3.5; // yards; how close an attack-move approach stops from its target (inside melee)
+const ATTACK_MOVE_ACQUIRE_RANGE = 12; // yards; an attack-move toward open ground auto-targets a hostile this near
+// Aura kinds that stop the player from moving (mirrors the sim's isRooted/isStunned):
+// while one of these is up, click-to-move can't make progress, so the destination
+// marker shows a "held" state instead of looking like a stuck game.
+const IMMOBILE_AURA_KINDS = new Set(['stun', 'root', 'incapacitate', 'polymorph']);
+const IMMOBILE_NOTE_THROTTLE_MS = 1200; // min gap between "Can't move!" floats while held
 const HOMEPAGE_MUSIC_MUTED_KEY = 'woc_homepage_music_muted';
 const HOMEPAGE_MUSIC_VOLUME = 0.225;
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.querySelector(sel) as T;
 let pendingDeleteCharacter: CharacterSummary | null = null;
-let homepageTrailer: HTMLVideoElement | null = null;
 let homepageMusic: HTMLAudioElement | null = null;
 let homepageMusicStarted = false;
 let homepageMusicMuted = readHomepageMusicMuted();
@@ -478,8 +497,6 @@ function enterLoadingState(statusText: string): void {
   hideMobilePreflightPrompt();
   showLoadingScreen(statusText);
   $('#start-screen').style.display = 'none';
-  // The homepage is hidden once we enter the world — stop decoding the trailer.
-  if (homepageTrailer) homepageTrailer.pause();
 }
 
 async function prepareWorldEntry(): Promise<boolean> {
@@ -618,6 +635,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     },
     onEmoteWheel: (open) => hud.setEmoteWheelOpen(open),
     onClickPick: (x, y, button) => handlePick(x, y, button),
+    onAttackMove: (x, y) => handleAttackMove(x, y),
     canUseGameKeys: () => !hud.isModalOpen() && chatInput.style.display !== 'block',
   }, keybinds);
   input.camYaw = world.player.facing;
@@ -658,6 +676,10 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       : null);
   }
 
+  function syncAttackMoveInput(): void {
+    input.setAttackMoveEnabled(settings.get('attackMove'));
+  }
+
   function applySetting(key: keyof GameSettings, value: number | boolean): void {
     if (key === 'mouseCamera') {
       const v = settings.set('mouseCamera', !!value);
@@ -671,6 +693,12 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     }
     if (key === 'filterProfanity') {
       settings.set('filterProfanity', !!value);
+      return;
+    }
+    if (key === 'attackMove') {
+      const v = settings.set('attackMove', !!value);
+      if (!v) input.clearClickMove();
+      syncAttackMoveInput();
       return;
     }
     const v = settings.set(key as keyof typeof SETTING_RANGES, value as number);
@@ -731,16 +759,29 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
   function attackNearest(): void {
     const p = world.player;
+    const activePvpOpponents = activePvpOpponentIds(world);
     let best: number | null = null;
     let bestD = 40;
     for (const e of world.entities.values()) {
-      if (e.kind !== 'mob' || e.dead || !e.hostile) continue;
+      if (!isAttackableEntity(e, world.playerId, activePvpOpponents)) continue;
       const d = dist2d(p.pos, e.pos);
       if (d < bestD) { best = e.id; bestD = d; }
     }
     if (best === null) { hud.showError(t('errors.noEnemyNearby')); return; }
     world.targetEntity(best);
     world.startAutoAttack();
+  }
+
+  function clickMovePathTo(target: { x: number; z: number }): { x: number; z: number }[] {
+    // ignoreFences: the player can hop fences, so route straight over them
+    // instead of around — resolveMove fires the jump as we reach the rail.
+    // swim: the player can swim, so let the route cross/enter water.
+    return findPlayerPath(world.cfg.seed, world.player.pos, target, undefined, true, true);
+  }
+
+  function resolvedClickMoveTarget(target: { x: number; z: number }): { x: number; z: number } {
+    // swim: keep a clicked water destination instead of snapping it to shore.
+    return resolvePlayerDestination(world.cfg.seed, target, true);
   }
 
   function handlePick(x: number, y: number, button: number): void {
@@ -754,7 +795,10 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       }
       if (isClickMoveButton) {
         const g = renderer.groundPoint(x, y, world.player.pos.y);
-        if (g) input.setClickMoveTarget(g, 0.5);
+        if (g) {
+          const target = resolvedClickMoveTarget(g);
+          input.setClickMoveTarget(target, 0.5, null, clickMovePathTo(target));
+        }
       }
       return;
     }
@@ -762,10 +806,113 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     // regular click handler still performs target/interact behavior.
     if (isClickMoveButton) {
       const e = world.entities.get(id);
-      if (e && e.id !== world.player.id) input.setClickMoveTarget({ x: e.pos.x, z: e.pos.z }, 3.5, e.id);
+      if (e && e.id !== world.player.id) {
+        const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
+        input.setClickMoveTarget(target, 3.5, e.id, clickMovePathTo(target));
+      }
     }
     handlePickedEntity(world, hud, id, button, x, y);
   }
+
+  // Attack Move (MOBA-style): the Attack Move key walks the player toward the
+  // cursor and auto-attacks. If a hostile mob is under the cursor we chase + hit
+  // it; otherwise we move to the ground point and pick up the nearest hostile met
+  // along the way (see attackMoveTick). Reuses the click-to-move travel pipeline.
+  function handleAttackMove(x: number, y: number): void {
+    if (world.player.dead) return;
+    const id = renderer.pick(x, y);
+    if (id !== null) {
+      const e = world.entities.get(id);
+      if (e && isAttackableEntity(e, world.playerId, activePvpOpponentIds(world))) {
+        world.targetEntity(id);
+        const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
+        input.setClickMoveTarget(target, ATTACK_MOVE_MELEE_STOP, e.id, clickMovePathTo(target), true);
+        return;
+      }
+    }
+    const g = renderer.groundPoint(x, y, world.player.pos.y);
+    if (g) {
+      const target = resolvedClickMoveTarget(g);
+      input.setClickMoveTarget(target, 0.5, null, clickMovePathTo(target), true);
+    }
+  }
+
+  // Per-tick attack-move driving: acquire a hostile near a ground attack-move, and
+  // start swinging once we're in melee of an attack-move target. Movement itself
+  // is handled by the shared click-to-move path in resolveMove.
+  let attackMoveEngagedId: number | null = null;
+  function attackMoveTick(): void {
+    if (!input.clickMoveAttack || world.player.dead) {
+      attackMoveEngagedId = null;
+      return;
+    }
+    // Ground attack-move: latch onto the nearest hostile within range, converting
+    // it into a chase (entityId set → resolveMove reroutes toward it each tick).
+    if (input.clickMoveEntityId === null) {
+      const p = world.player;
+      const activePvpOpponents = activePvpOpponentIds(world);
+      let best: number | null = null;
+      let bestD = ATTACK_MOVE_ACQUIRE_RANGE;
+      for (const e of world.entities.values()) {
+        if (!isAttackableEntity(e, world.playerId, activePvpOpponents)) continue;
+        const d = dist2d(p.pos, e.pos);
+        if (d < bestD) { best = e.id; bestD = d; }
+      }
+      if (best !== null) {
+        const e = world.entities.get(best)!;
+        world.targetEntity(best);
+        const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
+        input.setClickMoveTarget(target, ATTACK_MOVE_MELEE_STOP, best, clickMovePathTo(target), true);
+      }
+    }
+    // Chasing a target: once inside melee, start the auto-attack (once per target).
+    const chaseId = input.clickMoveEntityId;
+    if (chaseId !== null) {
+      const e = world.entities.get(chaseId);
+      if (e && isAttackableEntity(e, world.playerId, activePvpOpponentIds(world))
+          && dist2d(world.player.pos, e.pos) <= MELEE_RANGE) {
+        if (attackMoveEngagedId !== chaseId) {
+          world.targetEntity(chaseId);
+          world.startAutoAttack();
+          attackMoveEngagedId = chaseId;
+        }
+      } else if (attackMoveEngagedId !== chaseId) {
+        attackMoveEngagedId = null;
+      }
+    } else {
+      attackMoveEngagedId = null;
+    }
+  }
+
+  // The player can't move toward a click-to-move destination while rooted/stunned
+  // — surface that on the marker so the freeze reads as crowd control, not a bug.
+  function playerImmobilized(): boolean {
+    return world.player.auras.some((a) => IMMOBILE_AURA_KINDS.has(a.kind));
+  }
+
+  // Pop a "Can't move!" note over the player when a movement command lands while
+  // immobilized, so the freeze is legible. Throttled so it doesn't spam per tick.
+  let lastImmobileNoteAt = -Infinity;
+  function maybeShowImmobileNote(nowMs: number): void {
+    if (world.player.dead || !playerImmobilized()) return;
+    const mi = input.readMoveInput();
+    const tryingToMove = !!input.clickMoveTarget
+      || mi.forward || mi.back || mi.strafeLeft || mi.strafeRight || mi.turnLeft || mi.turnRight;
+    if (!tryingToMove || nowMs - lastImmobileNoteAt < IMMOBILE_NOTE_THROTTLE_MS) return;
+    lastImmobileNoteAt = nowMs;
+    hud.showSelfNote(t('hud.combat.cannotMove'));
+  }
+
+  // Stuck-detection for click-to-move: a path can route over a fence the player
+  // jumps, but some fences sit on banks too steep to climb. If the player stops
+  // physically moving for a while (hopping in place at the fence), reroute around
+  // the obstacle (fences as walls); if still stuck after that, give up instead of
+  // hopping forever. We track actual displacement, not distance-to-goal, so a
+  // legitimate long detour (e.g. around a building) isn't mistaken for stuck.
+  let clickMoveStuckPulse = -1;
+  let clickMoveAnchor = { x: 0, z: 0 };
+  let clickMoveStuckSince = 0;
+  let clickMoveReroutedAround = false;
 
   let lastClickMoveMarkerPulse = -1;
   let clickMoveMarkerHideAt = 0;
@@ -775,11 +922,11 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       lastClickMoveMarkerPulse = input.clickMovePulse;
       clickMoveMarkerHideAt = nowMs + 300;
     }
-    const target = input.clickMoveTarget ?? input.clickMovePulseTarget;
-    const show = !!target && settings.get('clickToMove') > 0 && !world.player.dead
+    const target = input.clickMoveGoal ?? input.clickMovePulseTarget;
+    const show = !!target && (settings.get('clickToMove') > 0 || settings.get('attackMove')) && !world.player.dead
       && (!!input.clickMoveTarget || nowMs < clickMoveMarkerHideAt);
     if (!show) {
-      clickMoveMarker.classList.remove('active', 'entity', 'pulse');
+      clickMoveMarker.classList.remove('active', 'entity', 'pulse', 'blocked');
       return;
     }
     const screen = renderer.worldToScreen(target.x, world.player.pos.y + 0.05, target.z);
@@ -787,11 +934,14 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       || screen.x < -80 || screen.x > window.innerWidth + 80
       || screen.y < -80 || screen.y > window.innerHeight + 80;
     if (offscreen) {
-      clickMoveMarker.classList.remove('active', 'pulse');
+      clickMoveMarker.classList.remove('active', 'pulse', 'blocked');
       return;
     }
     clickMoveMarker.style.transform = `translate(${screen.x.toFixed(0)}px, ${screen.y.toFixed(0)}px) translate(-50%, -50%)`;
     clickMoveMarker.classList.toggle('entity', input.clickMoveEntityId !== null);
+    // Only meaningful for a live destination you're still trying to reach (not the
+    // brief post-arrival fade), so gate on an active target.
+    clickMoveMarker.classList.toggle('blocked', !!input.clickMoveTarget && playerImmobilized());
     clickMoveMarker.classList.add('active');
     if (pulseChanged || clickMoveMarker.dataset.pulse !== String(input.clickMovePulse)) {
       clickMoveMarker.dataset.pulse = String(input.clickMovePulse);
@@ -803,6 +953,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
   let last = performance.now();
   let acc = 0;
+  let onlineInputEchoMs = 0;
 
   // Camera follow state: keyboard turning advances facing in 20Hz sim steps,
   // so the camera tracks the player's render-interpolated facing per frame
@@ -810,9 +961,17 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   // that's what killed the turn stutter. While running, the orbit offset
   // eases back to zero so the camera settles in behind the character.
   let lastInterpFacing: number | null = null;
+  let wasClickMoving = false;
   function updateCamera(frameDt: number, interpFacing: number): void {
     const mi = input.readMoveInput();
     const clickMoving = !!input.clickMoveTarget && !input.suspendMovement && !world.player.dead;
+    // When click-to-move ends, the player's facing snaps from the (camera-lagging)
+    // travel bearing to camYaw in the same frame. lastInterpFacing still holds the
+    // old travel bearing, so the rigid follow term would inject that whole stale
+    // delta and ring out as a camera shake. Resync it on the falling edge so the
+    // handoff stays smooth even in pure-follow (non-camera-driven) mode.
+    if (wasClickMoving && !clickMoving) lastInterpFacing = interpFacing;
+    wasClickMoving = clickMoving;
     const next = updateFollowCameraYaw({
       camYaw: input.camYaw,
       interpFacing,
@@ -821,6 +980,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       mouselook: input.isMouselookActive(),
       moving: mi.forward || mi.strafeLeft || mi.strafeRight || clickMoving,
       clickMoving,
+      cameraDriven: input.isMouseCameraMode() && cameraMoveActive(),
       orbiting: input.leftDown && input.isCameraDragActive(),
     });
     input.camYaw = next.camYaw;
@@ -831,8 +991,19 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   // the move flags plus an optional forced facing (mouselook angle, or the
   // bearing toward a click-to-move destination). Any manual movement, an open
   // modal, mouselook, death, or the option being switched off cancels click-to-move.
-  function resolveMove(mouselook: boolean, playerPos: { x: number; z: number }, playerFacing: number):
+  function clickMoveStopForCurrentWaypoint(latencyMs: number): number {
+    const cappedLatencyMs = Math.min(CLICK_MOVE_LATENCY_STOP_CAP_MS, Math.max(0, latencyMs));
+    return latencyAdjustedStopDistance(
+      input.isClickMoveFinalWaypoint() ? input.clickMoveStop : CLICK_MOVE_WAYPOINT_STOP,
+      cappedLatencyMs,
+      RUN_SPEED,
+      input.isClickMoveFinalWaypoint() ? CLICK_MOVE_LATENCY_STOP_MAX_EXTRA : CLICK_MOVE_LATENCY_WAYPOINT_MAX_EXTRA,
+    );
+  }
+
+  function resolveMove(mouselook: boolean, playerPos: { x: number; z: number }, playerFacing: number, latencyMs = 0):
     { mi: ReturnType<typeof input.readMoveInput>; facing: number | null } {
+    attackMoveTick();
     const mi = input.readMoveInput();
     let facing: number | null = mouselook ? input.camYaw : null;
     if (input.clickMoveTarget) {
@@ -840,7 +1011,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
         mouselook,
         movementSuspended: input.suspendMovement,
         playerDead: world.player.dead,
-        enabled: settings.get('clickToMove') > 0,
+        enabled: settings.get('clickToMove') > 0 || settings.get('attackMove'),
       })) {
         input.clearClickMove();
       } else {
@@ -850,17 +1021,74 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
             input.clearClickMove();
             return { mi, facing };
           }
-          input.clickMoveTarget = { x: e.pos.x, z: e.pos.z };
+          const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
+          if (!input.clickMoveGoal || distance2d(input.clickMoveGoal, target) > CLICK_MOVE_REROUTE_DISTANCE) {
+            input.rerouteClickMoveTarget(target, clickMovePathTo(target));
+          }
         }
-        const step = clickMoveStep(playerPos, input.clickMoveTarget, input.clickMoveStop);
+        let waypoint = input.clickMoveTarget;
+        if (!waypoint) return { mi, facing };
+        let step = clickMoveStep(
+          playerPos,
+          waypoint,
+          clickMoveStopForCurrentWaypoint(latencyMs),
+        );
+        while (step.arrived && input.advanceClickMoveWaypoint()) {
+          waypoint = input.clickMoveTarget;
+          if (!waypoint) break;
+          step = clickMoveStep(
+            playerPos,
+            waypoint,
+            clickMoveStopForCurrentWaypoint(latencyMs),
+          );
+        }
         if (step.arrived) {
-          input.clearClickMove();
+          if (!input.advanceClickMoveWaypoint()) input.clearClickMove();
         } else {
-          mi.forward = true;
           const fromFacing = input.clickMoveFacing ?? playerFacing;
           const smoothFacing = stepAngleToward(fromFacing, step.facing, CLICK_MOVE_TURN_RATE * DT);
           input.clickMoveFacing = smoothFacing;
           facing = smoothFacing;
+          // Walk only when aimed at the destination; otherwise turn in place so
+          // we don't orbit the target when the bearing swings faster than we
+          // can turn at close range.
+          mi.forward = clickMoveShouldWalk(smoothFacing, step.facing);
+          // The path can route over fences (the player jumps them), so hop when
+          // one is just ahead along our heading — the sim only jumps while
+          // grounded, so setting this every frame near a fence is safe. Once we
+          // give up on jumping and reroute around, stop auto-hopping.
+          if (mi.forward && !clickMoveReroutedAround) {
+            const ahead = {
+              x: playerPos.x + Math.sin(smoothFacing) * CLICK_MOVE_FENCE_JUMP_LOOKAHEAD,
+              z: playerPos.z + Math.cos(smoothFacing) * CLICK_MOVE_FENCE_JUMP_LOOKAHEAD,
+            };
+            if (pathCrossesFence(playerPos.x, playerPos.z, ahead.x, ahead.z)) mi.jump = true;
+          }
+        }
+        // Track displacement so a fence we can't actually clear doesn't trap us
+        // in an endless jump loop: if we stop moving, reroute around it, then give up.
+        const goal = input.clickMoveGoal;
+        if (goal && mi.forward && !playerImmobilized()) {
+          const now = performance.now();
+          if (input.clickMovePulse !== clickMoveStuckPulse) {
+            clickMoveStuckPulse = input.clickMovePulse;
+            clickMoveAnchor = { x: playerPos.x, z: playerPos.z };
+            clickMoveStuckSince = now;
+            clickMoveReroutedAround = false;
+          }
+          if (distance2d(playerPos, clickMoveAnchor) > CLICK_MOVE_PROGRESS_EPSILON) {
+            clickMoveAnchor = { x: playerPos.x, z: playerPos.z };
+            clickMoveStuckSince = now;
+          } else if (now - clickMoveStuckSince > CLICK_MOVE_STUCK_MS) {
+            if (!clickMoveReroutedAround) {
+              clickMoveReroutedAround = true;
+              clickMoveAnchor = { x: playerPos.x, z: playerPos.z };
+              clickMoveStuckSince = now;
+              input.rerouteClickMoveTarget(goal, findPlayerPath(world.cfg.seed, world.player.pos, goal, undefined, false, true));
+            } else {
+              input.clearClickMove();
+            }
+          }
         }
       }
     }
@@ -882,13 +1110,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     }
     const id = renderer.pick(input.hoverX, input.hoverY);
     const entity = id !== null ? world.entities.get(id) : undefined;
-    input.setHoverCursor(hoverCursorKind(entity, world.playerId, partyMemberIds()));
-  }
-
-  function cameraMoveActive(): boolean {
-    if (!input.isMouseCameraMode()) return false;
-    const mi = input.readMoveInput();
-    return !!(mi.forward || mi.back || mi.strafeLeft || mi.strafeRight) && !world.player.dead;
+    input.setHoverCursor(hoverCursorKind(entity, world.playerId, partyMemberIds(), activePvpOpponentIds(world)));
   }
 
   function renderFacingOverride(): number | null {
@@ -896,6 +1118,12 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       return cameraMoveActive() ? input.camYaw : null;
     }
     return input.isMouselookActive() && !world.player.dead ? input.camYaw : null;
+  }
+
+  function cameraMoveActive(): boolean {
+    if (!input.isMouseCameraMode()) return false;
+    const mi = input.readMoveInput();
+    return !!(mi.forward || mi.back || mi.strafeLeft || mi.strafeRight) && !world.player.dead;
   }
 
   function frame(now: number): void {
@@ -945,12 +1173,17 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
     // online: inputs stream on a timer inside ClientWorld; here we mirror state
     const net = online!;
-    const resolved = resolveMove(mouselook, world.player.pos, world.player.facing);
+    const resolved = resolveMove(mouselook, world.player.pos, world.player.facing, onlineInputEchoMs);
     const netFacing = movementFacing ?? resolved.facing;
     Object.assign(net.moveInput, resolved.mi);
     net.setMouselookFacing(netFacing);
     if (net.flushInput()) perf.markInputSent(performance.now());
-    for (const sample of net.consumeInputEchoSamples()) perf.markInputEcho(sample);
+    for (const sample of net.consumeInputEchoSamples()) {
+      if (Number.isFinite(sample) && sample >= 0) {
+        onlineInputEchoMs = onlineInputEchoMs === 0 ? sample : onlineInputEchoMs + 0.2 * (sample - onlineInputEchoMs);
+      }
+      perf.markInputEcho(sample);
+    }
     net.pendingFacingDelta = 0; // superseded by the interpolated follow below
     perf.time('events', () => hud.handleEvents(net.drainEvents()));
     if (net.consumeProfanityChanged()) hud.setProfanityWords(net.profanityWords);
@@ -970,8 +1203,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     renderer.camYaw = input.camYaw;
     renderer.camPitch = input.camPitch;
     renderer.camDist = input.camDist;
-    perf.time('renderer', () => renderer.sync(alpha, frameDt, movementFacing));
+    perf.time('renderer', () => renderer.sync(alpha, frameDt, movementFacing, ONLINE_SELF_RENDER_ALPHA_LEAD));
     updateClickMoveMarker();
+    maybeShowImmobileNote(now);
     perf.markInputVisible(performance.now());
     perf.time('hud', () => hud.update());
     perf.tick(now);
@@ -1022,31 +1256,78 @@ const api = new Api();
 let activeTransitionTimeout: number | null = null;
 let activeTransitionCleanup: (() => void) | null = null;
 let characterPreview: CharacterPreview | null = null;
+let authModeApply: ((mode: 'login' | 'register') => void) | null = null;
 let offlineSkin = 0; // chosen appearance skin for the offline quick-start character
 let onlineSkin = 0; // chosen appearance skin for new online characters
 
-/** Fill a skin-picker row with one swatch per available skin for the class. */
+/** Fill a skin-picker row with one option per available skin, each showing an
+ *  actual 2D portrait preview of the character in that chroma. */
 function renderSkinPicker(rowId: string, cls: PlayerClass, current: number, onPick: (i: number) => void): void {
   const row = $(rowId) as HTMLElement | null;
   if (!row) return;
   row.innerHTML = '';
   const count = skinCount(`player_${cls}`);
-  if (count <= 1) return; // only the default exists — nothing to pick
+  const picker = row.closest('.skin-picker') as HTMLElement | null;
+  if (count <= 1) { // only the default exists — nothing to pick
+    if (picker) picker.style.display = 'none';
+    return;
+  }
+  if (picker) picker.style.display = '';
+  row.style.setProperty('--class-color', '#' + CLASSES[cls].color.toString(16).padStart(6, '0'));
   for (let i = 0; i < count; i++) {
     const b = document.createElement('button');
     b.type = 'button';
-    b.className = 'skin-swatch' + (i === current ? ' sel' : '');
+    b.className = 'skin-swatch skin-swatch-portrait' + (i === current ? ' sel' : '');
     b.dataset.skin = String(i);
-    b.textContent = String(i + 1);
     b.setAttribute('role', 'listitem');
-    b.setAttribute('aria-label', `Skin ${i + 1}`);
+    b.setAttribute('aria-label', t('auth.chromaOption', { n: i + 1 }));
+    const url = playerPortraitDataUrl(cls, i);
+    if (url) {
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = '';
+      img.className = 'skin-swatch-img';
+      b.appendChild(img);
+    } else {
+      b.textContent = String(i + 1);
+    }
     b.addEventListener('click', () => {
       row.querySelectorAll('.skin-swatch').forEach((x) => x.classList.remove('sel'));
       b.classList.add('sel');
       onPick(i);
     });
+    // Live-preview the chroma on the right avatar while hovering; revert on leave.
+    b.addEventListener('mouseenter', () => characterPreview?.setSkin(i));
+    b.addEventListener('mouseleave', () => {
+      const sel = row.querySelector('.skin-swatch.sel') as HTMLElement | null;
+      characterPreview?.setSkin(sel ? Number(sel.dataset.skin ?? 0) || 0 : current);
+    });
     row.appendChild(b);
   }
+}
+
+/** Give each class button a small portrait preview of that class (run once
+ *  character assets are ready so portraits render synchronously). */
+function decorateClassChips(): void {
+  document.querySelectorAll<HTMLElement>('#charcreate-panel .mini-class, #offline-select .mini-class').forEach((li) => {
+    if (li.querySelector('.mini-class-portrait')) return;
+    const cls = li.dataset.class as PlayerClass;
+    const key = li.dataset.i18n;
+    const label = document.createElement('span');
+    label.className = 'mini-class-label';
+    if (key) label.dataset.i18n = key;
+    label.textContent = (li.textContent ?? '').trim();
+    li.removeAttribute('data-i18n'); // moved onto the label so i18n won't wipe the portrait
+    li.textContent = '';
+    const img = document.createElement('img');
+    img.className = 'mini-class-portrait';
+    img.alt = '';
+    const url = playerPortraitDataUrl(cls, 0);
+    if (url) img.src = url;
+    li.appendChild(img);
+    li.appendChild(label);
+    li.classList.add('has-portrait');
+  });
 }
 
 function selectedSkin(rowId: string, fallback: number): number {
@@ -1078,35 +1359,49 @@ function refreshOnlineSkins(cls: PlayerClass): void {
 
 function updatePreviewContainer(panelId: string): void {
   if (!characterPreview) return;
-  const containerId = panelId === '#charselect-panel' ? '#online-preview-container' : '#offline-preview-container';
+  const containerId =
+    panelId === '#charselect-panel' ? '#online-preview-container'
+    : panelId === '#charcreate-panel' ? '#charcreate-preview-container'
+    : '#offline-preview-container';
   const container = $(containerId);
-  if (container) {
-    characterPreview.setContainer(container);
-    
-    const selSelector = panelId === '#charselect-panel' 
-      ? '#charselect-panel .mini-class.sel' 
-      : '#offline-select .mini-class.sel';
-    const selEl = document.querySelector(selSelector) as HTMLElement | null;
-    if (selEl) {
-      const cls = selEl.dataset.class as PlayerClass;
-      characterPreview.setClass(cls);
-      if (panelId === '#charselect-panel') refreshOnlineSkins(cls);
-      else refreshOfflineSkins(cls);
-    }
+  if (!container) return;
+  characterPreview.setContainer(container);
+
+  if (panelId === '#charselect-panel') {
+    // The selected roster row drives the showcase (class + that character's chroma).
+    const row = document.querySelector('#char-list .char-row.sel') as HTMLElement | null;
+    const cls = (row?.dataset.class as PlayerClass) ?? 'warrior';
+    characterPreview.setClass(cls);
+    characterPreview.setSkin(Number(row?.dataset.skin ?? 0) || 0);
+    return;
+  }
+
+  const selSelector = panelId === '#charcreate-panel'
+    ? '#charcreate-panel .mini-class.sel'
+    : '#offline-select .mini-class.sel';
+  const selEl = document.querySelector(selSelector) as HTMLElement | null;
+  if (selEl) {
+    const cls = selEl.dataset.class as PlayerClass;
+    characterPreview.setClass(cls);
+    if (panelId === '#charcreate-panel') refreshOnlineSkins(cls);
+    else refreshOfflineSkins(cls);
   }
 }
 
 const currentlyRenderedClass: Record<string, PlayerClass | null> = {
   'offline-class-details': null,
-  'online-class-details': null
+  'charselect-class-details': null,
+  'charcreate-class-details': null
 };
 const revertTimeouts: Record<string, number | null> = {
   'offline-class-details': null,
-  'online-class-details': null
+  'charselect-class-details': null,
+  'charcreate-class-details': null
 };
 const hoverTimeouts: Record<string, number | null> = {
   'offline-class-details': null,
-  'online-class-details': null
+  'charselect-class-details': null,
+  'charcreate-class-details': null
 };
 
 function switchMainView(targetId: string): void {
@@ -1151,22 +1446,13 @@ function switchMainView(targetId: string): void {
       }
     });
 
-    // The cinematic trailer is for the Play page only; other views hide + pause it.
+    // The key-art backdrop is for the Play page only; hide it on other views.
     const onPlayPage = targetId === '#hero-view';
     const backdrop = document.getElementById('start-screen-backdrop');
     if (backdrop) backdrop.classList.toggle('trailer-off', !onPlayPage);
-    if (homepageTrailer) {
-      if (onPlayPage) {
-        if (!document.hidden && !document.body.classList.contains('game-active')) {
-          void homepageTrailer.play().catch(() => {});
-        }
-      } else {
-        homepageTrailer.pause();
-      }
-    }
 
     if (targetId === '#hero-view') {
-      const activePlayPanel = ['#charselect-panel', '#offline-select'].find(id => {
+      const activePlayPanel = ['#charselect-panel', '#charcreate-panel', '#offline-select'].find(id => {
         const el = $(id);
         return el && !el.hasAttribute('hidden');
       });
@@ -1205,11 +1491,11 @@ function show(el: string): void {
   switchMainView('#hero-view');
 
   // Mount the Turnstile widget the first time the login/register form appears.
-  if (el === '#login-panel') ensureTurnstile();
+  if (el === '#login-panel') { ensureTurnstile(); authModeApply?.('login'); }
 
   const logoImg = $('#title-logo');
   if (logoImg) {
-    const shouldHideLogo = el === '#charselect-panel' || el === '#offline-select';
+    const shouldHideLogo = el === '#charselect-panel' || el === '#charcreate-panel' || el === '#offline-select';
     logoImg.toggleAttribute('hidden', shouldHideLogo);
   }
 
@@ -1218,26 +1504,19 @@ function show(el: string): void {
   }
 
   // Reset currently rendered classes to force re-render/animation when opening a panel
-  currentlyRenderedClass['offline-class-details'] = null;
-  currentlyRenderedClass['online-class-details'] = null;
-  if (revertTimeouts['offline-class-details'] !== null) {
-    window.clearTimeout(revertTimeouts['offline-class-details']);
-    revertTimeouts['offline-class-details'] = null;
-  }
-  if (revertTimeouts['online-class-details'] !== null) {
-    window.clearTimeout(revertTimeouts['online-class-details']);
-    revertTimeouts['online-class-details'] = null;
-  }
-  if (hoverTimeouts['offline-class-details'] !== null) {
-    window.clearTimeout(hoverTimeouts['offline-class-details']);
-    hoverTimeouts['offline-class-details'] = null;
-  }
-  if (hoverTimeouts['online-class-details'] !== null) {
-    window.clearTimeout(hoverTimeouts['online-class-details']);
-    hoverTimeouts['online-class-details'] = null;
+  for (const key of ['offline-class-details', 'charselect-class-details', 'charcreate-class-details']) {
+    currentlyRenderedClass[key] = null;
+    if (revertTimeouts[key] !== null && revertTimeouts[key] !== undefined) {
+      window.clearTimeout(revertTimeouts[key]!);
+      revertTimeouts[key] = null;
+    }
+    if (hoverTimeouts[key] !== null && hoverTimeouts[key] !== undefined) {
+      window.clearTimeout(hoverTimeouts[key]!);
+      hoverTimeouts[key] = null;
+    }
   }
 
-  const panels = ['#mode-select', '#login-panel', '#realm-panel', '#charselect-panel', '#offline-select'];
+  const panels = ['#mode-select', '#login-panel', '#realm-panel', '#charselect-panel', '#charcreate-panel', '#offline-select'];
   document.body.dataset.startPanel = el.slice(1);
 
   // Find currently visible panel
@@ -1248,7 +1527,7 @@ function show(el: string): void {
     for (const id of panels) {
       $(id).toggleAttribute('hidden', id !== el);
     }
-    if (el === '#charselect-panel' || el === '#offline-select') {
+    if (el === '#charselect-panel' || el === '#charcreate-panel' || el === '#offline-select') {
       updatePreviewContainer(el);
     }
     return;
@@ -1271,7 +1550,7 @@ function show(el: string): void {
   if (isReducedMotion) {
     fromPanel.toggleAttribute('hidden', true);
     toPanel.toggleAttribute('hidden', false);
-    if (el === '#charselect-panel' || el === '#offline-select') {
+    if (el === '#charselect-panel' || el === '#charcreate-panel' || el === '#offline-select') {
       updatePreviewContainer(el);
     }
     return;
@@ -1295,7 +1574,7 @@ function show(el: string): void {
     // Set initial state for fade-in
     toPanel.classList.add('panel-transition', 'panel-fade-in-start');
     toPanel.toggleAttribute('hidden', false);
-    if (el === '#charselect-panel' || el === '#offline-select') {
+    if (el === '#charselect-panel' || el === '#charcreate-panel' || el === '#offline-select') {
       updatePreviewContainer(el);
     }
 
@@ -1417,6 +1696,72 @@ function selectRealm(entry: import('./net/online').RealmEntry): void {
   void refreshCharacters();
 }
 
+// --- Inline realm switcher (dropdown on the character-select screen) ----------
+const REALM_TYPE_KEYS = { 'Normal': 'realmTypes.normal', 'PvP': 'realmTypes.pvp', 'RP': 'realmTypes.rp', 'RP-PvP': 'realmTypes.rpPvp' } as const;
+let realmDropdownOpen = false;
+
+function closeRealmDropdown(): void {
+  const menu = document.getElementById('cs-realm-menu');
+  const btn = document.getElementById('btn-change-realm');
+  menu?.setAttribute('hidden', '');
+  btn?.setAttribute('aria-expanded', 'false');
+  realmDropdownOpen = false;
+}
+
+function toggleRealmDropdown(): void {
+  if (realmDropdownOpen) { closeRealmDropdown(); return; }
+  const menu = $('#cs-realm-menu');
+  const btn = $('#btn-change-realm');
+  menu.removeAttribute('hidden');
+  btn.setAttribute('aria-expanded', 'true');
+  realmDropdownOpen = true;
+  renderRealmDropdown();
+}
+
+function renderRealmDropdown(): void {
+  const menu = $('#cs-realm-menu');
+  menu.innerHTML = `<div class="realm-loading">${escapeHtml(t('realm.loading'))}</div>`;
+  void api.realms().then((d) => {
+    if (!realmDropdownOpen) return;
+    if (d.realms.length === 0) {
+      menu.innerHTML = `<div class="realm-loading">${escapeHtml(t('realm.noRealms'))}</div>`;
+      return;
+    }
+    menu.innerHTML = d.realms.map((r) => {
+      const sel = r.name === api.realm ? ' sel' : '';
+      return `<div class="realm-row cs-realm-row${sel}" role="option" aria-selected="${r.name === api.realm}" data-name="${escapeHtml(r.name)}" data-url="${escapeHtml(r.url)}">
+        <div class="realm-name">${escapeHtml(r.name)}</div>
+        <div class="realm-pop offline" data-pop>-</div>
+      </div>`;
+    }).join('');
+    menu.querySelectorAll('.realm-row').forEach((row) => row.addEventListener('click', () => {
+      const name = (row as HTMLElement).dataset.name!;
+      const entry = d.realms.find((r) => r.name === name);
+      if (entry) selectRealmInline(entry);
+    }));
+    void Promise.all(d.realms.map(async (r) => {
+      const st = await api.realmStatus(r.url || '');
+      const row = menu.querySelector(`.realm-row[data-name="${CSS.escape(r.name)}"]`) as HTMLElement | null;
+      if (!row) return;
+      const pop = realmPopulation(st.online, st.players);
+      const popEl = row.querySelector('[data-pop]') as HTMLElement;
+      popEl.textContent = t(pop.labelKey);
+      popEl.className = `realm-pop ${pop.cls}`;
+      row.classList.toggle('offline', !st.online);
+    }));
+  });
+}
+
+function selectRealmInline(entry: import('./net/online').RealmEntry): void {
+  closeRealmDropdown();
+  if (entry.name === api.realm) return;
+  api.setRealm(entry.url);
+  api.realm = entry.name;
+  localStorage.setItem(LAST_REALM_KEY, entry.name);
+  $('#charselect-realm').textContent = entry.name;
+  void refreshCharacters();
+}
+
 function setDeleteCharacterError(message: string): void {
   $('#delete-character-error').textContent = message;
 }
@@ -1453,21 +1798,18 @@ function openDeleteCharacterDialog(character: CharacterSummary): void {
 }
 
 async function refreshCharacters(): Promise<void> {
-  const panel = $('#charselect-panel');
-  panel.dataset.mobileTab = 'characters';
-  document.querySelectorAll<HTMLButtonElement>('#charselect-panel .mobile-char-tab').forEach((btn) => {
-    const on = btn.dataset.charTab === 'characters';
-    btn.classList.toggle('active', on);
-    btn.setAttribute('aria-selected', String(on));
-  });
+  if (api.realm) $('#charselect-realm').textContent = api.realm;
   const listEl = $('#char-list');
   listEl.innerHTML = `<li class="char-list-message">${escapeHtml(t('character.loading'))}</li>`;
   try {
     const chars = await api.characters();
-    if (api.realm) $('#charselect-realm').textContent = t('realm.selectedRealm', { name: api.realm });
+    if (api.realm) $('#charselect-realm').textContent = api.realm;
     listEl.innerHTML = '';
     if (chars.length === 0) {
+      // No characters on this realm — drop straight into the create screen.
       listEl.innerHTML = `<li class="char-list-message">${escapeHtml(t('character.noneYet'))}</li>`;
+      show('#charcreate-panel');
+      return;
     }
     for (const c of chars) {
       const row = document.createElement('li');
@@ -1476,10 +1818,14 @@ async function refreshCharacters(): Promise<void> {
       row.setAttribute('role', 'option');
       row.setAttribute('aria-selected', 'false');
       row.dataset.class = c.class;
+      row.dataset.skin = String(c.skin ?? 0);
       const className = classDisplayName(c.class);
       const statusText = c.online ? ` (${t('character.inWorld')})` : c.forceRename ? ` (${t('character.renameRequired')})` : '';
-      row.innerHTML = `<span class="char-name">${escapeHtml(c.name)}</span>
-        <span class="char-sub">${escapeHtml(t('character.levelClass', { level: c.level, className }))}${escapeHtml(statusText)}</span>
+      row.innerHTML = `${portraitChipHtml({ cls: c.class, skin: c.skin ?? 0, name: c.name, variant: 'sm' })}
+        <div class="char-id">
+          <span class="char-name">${escapeHtml(c.name)}</span>
+          <span class="char-sub">${escapeHtml(t('character.levelClass', { level: c.level, className }))}${escapeHtml(statusText)}</span>
+        </div>
         ${c.forceRename
           ? `<input class="rename-input" placeholder="${escapeHtml(t('character.newNamePlaceholder'))}" maxlength="16" /><span class="char-actions"><button class="btn btn-danger delete-char-btn" ${c.online ? 'disabled' : ''}>${escapeHtml(t('character.delete'))}</button><button class="btn rename-btn">${escapeHtml(t('character.rename'))}</button></span>`
           : `<span class="char-actions"><button class="btn btn-danger delete-char-btn" ${c.online ? 'disabled' : ''}>${escapeHtml(t('character.delete'))}</button><button class="btn enter-world-btn" ${c.online ? 'disabled' : ''}>${escapeHtml(t('auth.enterWorld'))}</button></span>`}`;
@@ -1514,19 +1860,11 @@ async function refreshCharacters(): Promise<void> {
           r.classList.remove('sel');
           r.setAttribute('aria-selected', 'false');
         });
-        
-        // Deselect class creator chips
-        document.querySelectorAll('#charselect-panel .mini-class').forEach((x) => {
-          x.classList.remove('sel');
-          x.setAttribute('aria-pressed', 'false');
-        });
-        
+
         row.classList.add('sel');
         row.setAttribute('aria-selected', 'true');
-        renderClassDetails('online-class-details', c.class);
+        renderClassDetails('charselect-class-details', c.class);
         characterPreview?.setSkin(c.skin ?? 0);
-        const skinRow = $('#online-skin-row') as HTMLElement | null;
-        if (skinRow) skinRow.innerHTML = '';
       };
 
       row.addEventListener('click', selectRow);
@@ -1540,10 +1878,14 @@ async function refreshCharacters(): Promise<void> {
       listEl.appendChild(row);
     }
 
-    // Select first character by default if present
+    hydratePortraits(listEl);
+
+    // Select first character by default if present, else show a default showcase.
     const firstRow = listEl.querySelector('.char-row') as HTMLElement | null;
     if (firstRow) {
       firstRow.click();
+    } else {
+      renderClassDetails('charselect-class-details', 'warrior');
     }
   } catch (err) {
     listEl.innerHTML = `<li class="char-list-message char-list-error">${escapeHtml(userFacingApiError(err))}</li>`;
@@ -1941,6 +2283,7 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
       '@context': 'https://schema.org',
       '@type': 'VideoGame',
       name: 'World of ClaudeCraft',
+      alternateName: 'World of Claudecraft',
       genre: t('seo.genre'),
       playMode: t('seo.playMode'),
       applicationCategory: t('seo.applicationCategory'),
@@ -1949,6 +2292,10 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
       image: 'https://worldofclaudecraft.com/woc_logo_square.webp',
       description: t('seo.description'),
       inLanguage: languageTag(lang),
+      sameAs: [
+        'https://github.com/levy-street/world-of-claudecraft',
+        'https://discord.gg/GjhnUsBtw',
+      ],
     }, null, 2);
   }
 }
@@ -2012,24 +2359,31 @@ function refreshLocalizedDynamicShell(): void {
     void refreshCharacters();
     return;
   }
+  if (activePanel === 'login-panel') {
+    const m = (document.getElementById('login-panel') as HTMLElement | null)?.dataset.authMode;
+    authModeApply?.(m === 'register' ? 'register' : 'login');
+    return;
+  }
+  if (activePanel === 'charcreate-panel') {
+    const sel = document.querySelector('#charcreate-panel .mini-class.sel') as HTMLElement | null;
+    if (sel) {
+      currentlyRenderedClass['charcreate-class-details'] = null;
+      renderClassDetails('charcreate-class-details', sel.dataset.class as PlayerClass);
+    }
+    return;
+  }
   const offlineSelected = document.querySelector('#offline-select .mini-class.sel') as HTMLElement | null;
   if (activePanel === 'offline-select' && offlineSelected) {
     currentlyRenderedClass['offline-class-details'] = null;
     renderClassDetails('offline-class-details', offlineSelected.dataset.class as PlayerClass);
-  }
-  const onlineSelected = document.querySelector('#charselect-panel .mini-class.sel, #char-list .char-row.sel') as HTMLElement | null;
-  if (onlineSelected) {
-    currentlyRenderedClass['online-class-details'] = null;
-    renderClassDetails('online-class-details', onlineSelected.dataset.class as PlayerClass);
   }
 }
 
 async function loadProjectStats(): Promise<void> {
   // Realm status now lives in the realm dropdown — both in the trigger sub-line
   // and inside the Online option — so update every instance by class.
-  const playerEls = document.querySelectorAll<HTMLElement>('.js-stat-players');
   const accountEls = document.querySelectorAll<HTMLElement>('.js-stat-accounts');
-  if (!playerEls.length || !accountEls.length) return;
+  if (!accountEls.length) return;
   const setAll = (els: NodeListOf<HTMLElement>, text: string): void => {
     els.forEach((el) => { el.textContent = text; });
   };
@@ -2047,7 +2401,6 @@ async function loadProjectStats(): Promise<void> {
 
   // If cache exists and is fresh (within TTL), use it and skip API request
   if (cached && (Date.now() - cached.timestamp < STATS_CACHE_TTL_MS)) {
-    setAll(playerEls, String(cached.players_online));
     setAll(accountEls, String(cached.accounts_created));
     return;
   }
@@ -2056,7 +2409,6 @@ async function loadProjectStats(): Promise<void> {
   try {
     const data = await api.projectStats();
 
-    setAll(playerEls, String(data.players_online));
     setAll(accountEls, String(data.accounts_created));
 
     // Save to cache with timestamp
@@ -2070,10 +2422,8 @@ async function loadProjectStats(): Promise<void> {
     console.error('Failed to fetch project stats:', err);
     // If API fails, fall back to cached data (even if expired)
     if (cached) {
-      setAll(playerEls, String(cached.players_online));
       setAll(accountEls, String(cached.accounts_created));
     } else {
-      setAll(playerEls, '–');
       setAll(accountEls, '–');
     }
   }
@@ -2656,11 +3006,25 @@ function wireStartScreens(): void {
     });
   });
 
+  // Standard login / create-account UX: one form that switches between two modes
+  // via a link. The mode drives the title, primary button, prompt, and submit.
+  const setAuthMode = (mode: 'login' | 'register') => {
+    loginForm.dataset.authMode = mode;
+    const isLogin = mode === 'login';
+    $('#auth-title').textContent = t(isLogin ? 'auth.enterRealm' : 'auth.createAccount');
+    $('#btn-login').textContent = t(isLogin ? 'auth.logIn' : 'auth.createAccount');
+    $('#auth-switch-prompt').textContent = t(isLogin ? 'auth.noAccountPrompt' : 'auth.haveAccountPrompt');
+    $('#btn-auth-toggle').textContent = t(isLogin ? 'auth.createAccount' : 'auth.logIn');
+    passInput.setAttribute('autocomplete', isLogin ? 'current-password' : 'new-password');
+    loginError('');
+  };
+  authModeApply = setAuthMode;
+
   // Prevent default submission and perform validation
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     if (validateForm(loginForm)) {
-      void doAuth('login');
+      void doAuth(loginForm.dataset.authMode === 'register' ? 'register' : 'login');
     }
   });
 
@@ -2672,16 +3036,11 @@ function wireStartScreens(): void {
     }
   });
 
-  // Legacy clicks of Login/Register buttons
-  $('#btn-login').addEventListener('click', (e) => {
-    // Let the form submit handle it if it was clicked, but prevent default click just in case
-  });
-
-  $('#btn-register').addEventListener('click', (e) => {
+  // The link toggles between the login and create-account forms.
+  $('#btn-auth-toggle').addEventListener('click', (e) => {
     e.preventDefault();
-    if (validateForm(loginForm)) {
-      void doAuth('register');
-    }
+    setAuthMode(loginForm.dataset.authMode === 'register' ? 'login' : 'register');
+    userInput.focus();
   });
 
   $('#btn-login-back').addEventListener('click', (e) => {
@@ -2697,32 +3056,36 @@ function wireStartScreens(): void {
     show('#mode-select');
   });
   $('#btn-realm-back').addEventListener('click', () => show('#mode-select'));
-  $('#btn-change-realm').addEventListener('click', () => showRealmList());
-  document.querySelectorAll<HTMLButtonElement>('#charselect-panel .mobile-char-tab').forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const panel = $('#charselect-panel');
-      const activeTab = tab.dataset.charTab === 'create' ? 'create' : 'characters';
-      panel.dataset.mobileTab = activeTab;
-      document.querySelectorAll<HTMLButtonElement>('#charselect-panel .mobile-char-tab').forEach((btn) => {
-        const on = btn.dataset.charTab === activeTab;
-        btn.classList.toggle('active', on);
-        btn.setAttribute('aria-selected', String(on));
-      });
-    });
+  // Change Realm is now an inline dropdown on the character-select screen.
+  $('#btn-change-realm').addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleRealmDropdown();
+  });
+  // New Character opens the dedicated create screen; create's Back returns here.
+  $('#btn-new-character').addEventListener('click', () => show('#charcreate-panel'));
+  $('#btn-charcreate-back').addEventListener('click', () => show('#charselect-panel'));
+  // Close the realm dropdown on outside click or Escape.
+  document.addEventListener('click', (e) => {
+    if (!realmDropdownOpen) return;
+    const sw = document.querySelector('.cs-realm-switch');
+    if (sw && !sw.contains(e.target as Node)) closeRealmDropdown();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (realmDropdownOpen && e.key === 'Escape') closeRealmDropdown();
   });
 
   // character creation
-  document.querySelectorAll('#charselect-panel .mini-class').forEach((el) => {
+  document.querySelectorAll('#charcreate-panel .mini-class').forEach((el) => {
     const handleMiniClassSelect = () => {
-      if (hoverTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(hoverTimeouts['online-class-details']);
-        hoverTimeouts['online-class-details'] = null;
+      if (hoverTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['charcreate-class-details']);
+        hoverTimeouts['charcreate-class-details'] = null;
       }
-      if (revertTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(revertTimeouts['online-class-details']);
-        revertTimeouts['online-class-details'] = null;
+      if (revertTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['charcreate-class-details']);
+        revertTimeouts['charcreate-class-details'] = null;
       }
-      document.querySelectorAll('#charselect-panel .mini-class').forEach((x) => {
+      document.querySelectorAll('#charcreate-panel .mini-class').forEach((x) => {
         x.classList.remove('sel');
         x.setAttribute('aria-pressed', 'false');
       });
@@ -2734,7 +3097,7 @@ function wireStartScreens(): void {
       el.setAttribute('aria-pressed', 'true');
       
       const cls = (el as HTMLElement).dataset.class as PlayerClass;
-      renderClassDetails('online-class-details', cls);
+      renderClassDetails('charcreate-class-details', cls);
       refreshOnlineSkins(cls);
     };
     el.addEventListener('click', handleMiniClassSelect);
@@ -2742,95 +3105,95 @@ function wireStartScreens(): void {
     
     // A11y focus updates details
     el.addEventListener('focus', () => {
-      if (revertTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(revertTimeouts['online-class-details']);
-        revertTimeouts['online-class-details'] = null;
+      if (revertTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['charcreate-class-details']);
+        revertTimeouts['charcreate-class-details'] = null;
       }
-      if (hoverTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(hoverTimeouts['online-class-details']);
-        hoverTimeouts['online-class-details'] = null;
+      if (hoverTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['charcreate-class-details']);
+        hoverTimeouts['charcreate-class-details'] = null;
       }
       document.querySelectorAll('#char-list .char-row').forEach((r) => {
         r.classList.remove('sel');
         r.setAttribute('aria-selected', 'false');
       });
       const cls = (el as HTMLElement).dataset.class as PlayerClass;
-      renderClassDetails('online-class-details', cls);
+      renderClassDetails('charcreate-class-details', cls);
     });
 
     // Hover updates details with 50ms debounce
     el.addEventListener('mouseenter', () => {
-      if (revertTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(revertTimeouts['online-class-details']);
-        revertTimeouts['online-class-details'] = null;
+      if (revertTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['charcreate-class-details']);
+        revertTimeouts['charcreate-class-details'] = null;
       }
-      if (hoverTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(hoverTimeouts['online-class-details']);
+      if (hoverTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['charcreate-class-details']);
       }
       const cls = (el as HTMLElement).dataset.class as PlayerClass;
-      hoverTimeouts['online-class-details'] = window.setTimeout(() => {
-        renderClassDetails('online-class-details', cls);
-        hoverTimeouts['online-class-details'] = null;
+      hoverTimeouts['charcreate-class-details'] = window.setTimeout(() => {
+        renderClassDetails('charcreate-class-details', cls);
+        hoverTimeouts['charcreate-class-details'] = null;
       }, 50);
     });
 
     // Mouseleave reverts to currently selected class details with a 100ms debounce
     el.addEventListener('mouseleave', () => {
-      if (hoverTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(hoverTimeouts['online-class-details']);
-        hoverTimeouts['online-class-details'] = null;
+      if (hoverTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['charcreate-class-details']);
+        hoverTimeouts['charcreate-class-details'] = null;
       }
-      if (revertTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(revertTimeouts['online-class-details']);
+      if (revertTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['charcreate-class-details']);
       }
-      revertTimeouts['online-class-details'] = window.setTimeout(() => {
-        const selEl = document.querySelector('#charselect-panel .mini-class.sel') as HTMLElement | null;
+      revertTimeouts['charcreate-class-details'] = window.setTimeout(() => {
+        const selEl = document.querySelector('#charcreate-panel .mini-class.sel') as HTMLElement | null;
         if (selEl) {
           const cls = selEl.dataset.class as PlayerClass;
-          renderClassDetails('online-class-details', cls);
+          renderClassDetails('charcreate-class-details', cls);
         } else {
           const selChar = document.querySelector('#char-list .char-row.sel') as HTMLElement | null;
           if (selChar) {
             const cls = selChar.dataset.class as PlayerClass;
-            renderClassDetails('online-class-details', cls);
+            renderClassDetails('charcreate-class-details', cls);
           }
         }
-        revertTimeouts['online-class-details'] = null;
+        revertTimeouts['charcreate-class-details'] = null;
       }, 100);
     });
 
     // Blur reverts to currently selected class details with a 100ms debounce (matches mouseleave)
     el.addEventListener('blur', () => {
-      if (hoverTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(hoverTimeouts['online-class-details']);
-        hoverTimeouts['online-class-details'] = null;
+      if (hoverTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(hoverTimeouts['charcreate-class-details']);
+        hoverTimeouts['charcreate-class-details'] = null;
       }
-      if (revertTimeouts['online-class-details'] !== null) {
-        window.clearTimeout(revertTimeouts['online-class-details']);
+      if (revertTimeouts['charcreate-class-details'] !== null) {
+        window.clearTimeout(revertTimeouts['charcreate-class-details']);
       }
-      revertTimeouts['online-class-details'] = window.setTimeout(() => {
-        const selEl = document.querySelector('#charselect-panel .mini-class.sel') as HTMLElement | null;
+      revertTimeouts['charcreate-class-details'] = window.setTimeout(() => {
+        const selEl = document.querySelector('#charcreate-panel .mini-class.sel') as HTMLElement | null;
         if (selEl) {
           const cls = selEl.dataset.class as PlayerClass;
-          renderClassDetails('online-class-details', cls);
+          renderClassDetails('charcreate-class-details', cls);
         } else {
           const selChar = document.querySelector('#char-list .char-row.sel') as HTMLElement | null;
           if (selChar) {
             const cls = selChar.dataset.class as PlayerClass;
-            renderClassDetails('online-class-details', cls);
+            renderClassDetails('charcreate-class-details', cls);
           }
         }
-        revertTimeouts['online-class-details'] = null;
+        revertTimeouts['charcreate-class-details'] = null;
       }, 100);
     });
   });
 
   // Default select warrior in online character creator
-  const defaultOnlineClass = document.querySelector('#charselect-panel .mini-class[data-class="warrior"]') as HTMLElement | null;
+  const defaultOnlineClass = document.querySelector('#charcreate-panel .mini-class[data-class="warrior"]') as HTMLElement | null;
   if (defaultOnlineClass) {
     defaultOnlineClass.classList.add('sel');
     defaultOnlineClass.setAttribute('aria-pressed', 'true');
-    renderClassDetails('online-class-details', 'warrior');
+    renderClassDetails('charcreate-class-details', 'warrior');
     refreshOnlineSkins('warrior');
   }
   const newCharNameInput = $('#new-char-name') as HTMLInputElement;
@@ -2861,7 +3224,7 @@ function wireStartScreens(): void {
 
   $('#btn-create-char').addEventListener('click', async () => {
     const name = newCharNameInput.value.trim();
-    const clsEl = document.querySelector('#charselect-panel .mini-class.sel') as HTMLElement | null;
+    const clsEl = document.querySelector('#charcreate-panel .mini-class.sel') as HTMLElement | null;
     loginError('');
     charselectError.textContent = '';
     
@@ -2888,6 +3251,8 @@ function wireStartScreens(): void {
       await api.createCharacter(name, clsEl.dataset.class as PlayerClass, selectedSkin('#online-skin-row', onlineSkin));
       newCharNameInput.value = '';
       charselectError.textContent = '';
+      // Return to the roster and show the freshly-created character.
+      show('#charselect-panel');
       await refreshCharacters();
     } catch (err) {
       charselectError.textContent = userFacingApiError(err);
@@ -3068,113 +3433,15 @@ function wireStartScreens(): void {
       characterPreview = new CharacterPreview(container, canvas);
       const selSelector = activePanelId === '#offline-select'
         ? '#offline-select .mini-class.sel'
-        : '#charselect-panel .mini-class.sel';
+        : '#charcreate-panel .mini-class.sel';
       const selEl = document.querySelector(selSelector) as HTMLElement | null;
       const cls = selEl ? (selEl.dataset.class as PlayerClass) : 'warrior';
       characterPreview.setClass(cls);
     }
+    decorateClassChips();
   });
 }
 
-// ---------------------------------------------------------------------------
-// Homepage cinematic backdrop
-// ---------------------------------------------------------------------------
-function initHomepageTrailer(): void {
-  const video = document.getElementById('bg-trailer') as HTMLVideoElement | null;
-  const backdrop = document.getElementById('start-screen-backdrop');
-  if (!video || !backdrop) return;
-  homepageTrailer = video;
-
-  const fade = backdrop.querySelector<HTMLElement>('.bg-trailer-fade');
-  // Fade FROM black (first play + just after each loop wrap).
-  const runFadeIn = (): void => {
-    if (!fade) return;
-    fade.classList.remove('is-fading', 'is-fading-out');
-    void fade.offsetWidth; // force reflow so the animation replays
-    fade.classList.add('is-fading');
-  };
-  // Dip TO black just before the clip ends, so the loop seam is hidden.
-  const runFadeOut = (): void => {
-    if (!fade) return;
-    fade.classList.remove('is-fading');
-    void fade.offsetWidth;
-    fade.classList.add('is-fading-out');
-  };
-
-  // Reveal the backdrop layer so the (cheap) poster always provides atmosphere,
-  // even when we choose not to play the clip.
-  const reveal = (): void => backdrop.classList.add('trailer-ready');
-
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const reducedData = window.matchMedia('(prefers-reduced-data: reduce)').matches;
-  const conn = (navigator as unknown as { connection?: { saveData?: boolean } }).connection;
-  const saveData = Boolean(conn && conn.saveData);
-
-  if (reducedMotion || reducedData || saveData) {
-    // Honour the user's preference: keep the static poster, don't fetch/play video.
-    video.preload = 'none';
-    if (fade) fade.classList.add('revealed'); // lift the black wipe without animating
-    reveal();
-    return;
-  }
-
-  video.addEventListener('playing', () => {
-    backdrop.classList.add('trailer-ready', 'trailer-playing');
-    runFadeIn();
-  }, { once: true });
-
-  // Hide the loop seam: dip to black ~0.35s before the end, then fade back in
-  // right after the wrap. The `loop` attribute restarts playback seamlessly
-  // (no 'ended' event), so watch the playhead instead.
-  const FADE_LEAD = 0.35;
-  let dipping = false;
-  let lastTime = 0;
-  const onPlayhead = (currentTime: number): void => {
-    const duration = video.duration;
-    if (duration > 0) {
-      if (currentTime + 0.2 < lastTime) {
-        // Wrapped back to the start — reveal from black.
-        dipping = false;
-        runFadeIn();
-      } else if (!dipping && currentTime >= duration - FADE_LEAD) {
-        dipping = true;
-        runFadeOut();
-      }
-    }
-    lastTime = currentTime;
-  };
-
-  const rvfc = (video as unknown as {
-    requestVideoFrameCallback?: (cb: (now: number, meta: { mediaTime: number }) => void) => void;
-  }).requestVideoFrameCallback;
-  if (typeof rvfc === 'function') {
-    const onFrame = (_now: number, meta: { mediaTime: number }): void => {
-      onPlayhead(meta.mediaTime);
-      rvfc.call(video, onFrame);
-    };
-    rvfc.call(video, onFrame);
-  } else {
-    video.addEventListener('timeupdate', () => onPlayhead(video.currentTime));
-  }
-
-  const tryPlay = (): void => {
-    const p = video.play();
-    if (p && typeof p.then === 'function') {
-      // Muted inline autoplay is broadly allowed; if it's still blocked, the
-      // poster stays as a graceful fallback.
-      p.catch(() => reveal());
-    }
-  };
-  if (video.readyState >= 2) tryPlay();
-  else video.addEventListener('loadeddata', tryPlay, { once: true });
-
-  // Don't burn cycles decoding while the tab is backgrounded or in-game.
-  document.addEventListener('visibilitychange', () => {
-    if (document.body.classList.contains('game-active')) return;
-    if (document.hidden) video.pause();
-    else void video.play().catch(() => {});
-  });
-}
 
 // Looping home-page theme. Browsers block audio autoplay until a user gesture,
 // so we try immediately and otherwise start on the first interaction. It keeps
@@ -3219,5 +3486,4 @@ function fadeOutHomepageMusic(durationMs = 1600): void {
 }
 
 wireStartScreens();
-initHomepageTrailer();
 initHomepageMusic();

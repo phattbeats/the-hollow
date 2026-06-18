@@ -6,8 +6,8 @@ import {
   zoneAt, ZONES,
 } from './data';
 import { ARENA_SPAWN_A, ARENA_SPAWN_B, ARENA_SPAWNS_A_2v2, ARENA_SPAWNS_B_2v2 } from './dungeon_layout';
-import { lineOfSightClear, resolvePosition } from './colliders';
-import { findPath } from './pathfind';
+import { lineOfSightClear, resolveMovement, resolvePosition } from './colliders';
+import { PLAYER_BODY_RADIUS, PLAYER_MAX_CLIMB_SLOPE, PLAYER_SWIM_DEPTH, findPlayerPath } from './pathfind';
 import { createGroundObject, createMob, createNpc, createPlayer, recalcPlayerStats, PlayerEquipment } from './entity';
 import {
   computeTalentModifiers, emptyAllocation, emptyModifiers, talentsFor, talentPointsAtLevel,
@@ -24,13 +24,14 @@ import { groundHeight, WATER_LEVEL } from './world';
 import type { LeaderboardEntry } from '../world_api';
 import {
   AbilityDef, AbilityEffect, Aura, AuraKind, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION,
+  DEFAULT_PARTY_LOOT_STRATEGIES,
   CONSUME_TICKS, CrowdControlDrCategory, DT, Entity, EquipSlot, FISHING_CAST_ID, FISHING_CAST_TIME, GCD,
-  INTERACT_RANGE, InvSlot, LootEntry, LootSlot, MELEE_RANGE, MAX_LEVEL, MobFamily, MobTemplate,
+  CurrencyLootStrategy, INTERACT_RANGE, InvSlot, ItemLootStrategy, LootEntry, LootSlot, LootStrategies, MELEE_RANGE, MAX_LEVEL, MobFamily, MobTemplate,
   MoveInput, OverheadEmoteId, PetMode, PlayerClass, QuestProgress, QuestState, RUN_SPEED, SimConfig, SimEvent, TURN_SPEED, Vec3,
   angleTo, armorReduction, dist2d, emptyMoveInput, isConsuming, meleeMissChance, mobXpValue, normAngle,
   rageFromDealing, rageFromTaking, spellHitChance, xpForLevel,
   MILESTONES, virtualLevel, xpToReachLevel, canPrestige,
-  ArenaFormat, ArenaCombatant,
+  ArenaFormat, ArenaStanding, ArenaCombatant,
 } from './types';
 
 const LEASH_DISTANCE = 45;
@@ -63,10 +64,19 @@ const FLEE_HELP_RADIUS = 8;
 // to the death. Elites, rares, and bosses never flee regardless of family.
 const FLEEING_FAMILIES: ReadonlySet<MobFamily> = new Set(['humanoid', 'kobold', 'murloc', 'troll']);
 const GRAVITY = 16;
-const JUMP_VELOCITY = 6;
+const JUMP_VELOCITY = 6; // apex = v^2/2g ≈ 1.125 yd
 const MELEE_ARC = 2.2; // radians half-arc within which melee swings connect
 const FALL_SAFE_DISTANCE = 12; // yards of free fall before damage
 const OBJECT_RESPAWN = 30;
+const NYTHRAXIS_RELIC_SUMMONS: Record<string, string> = {
+  captains_crest: 'fallen_captain_aldren',
+  priests_sigil: 'corrupted_priest_malric',
+  royal_seal: 'deathstalker_voss',
+};
+const NYTHRAXIS_CRYPT_QUESTS = new Set([
+  'q_nythraxis_sealed_crypt',
+  'q_nythraxis_bound_guardian',
+]);
 const PARTY_MAX = 5;
 const PARTY_XP_RANGE = 80; // yards: members this close share kill xp/credit
 const DUEL_COUNTDOWN = 3;
@@ -146,7 +156,7 @@ const MARKET_LISTING_DURATION = 48 * 3600; // sim-seconds an unsold listing ling
 const MARKET_WIRE_LIMIT = 120; // most listings shipped to one client at a time
 const VENDOR_BUYBACK_LIMIT = 12;
 const INSTANCE_EMPTY_TIMEOUT = 300; // seconds before an empty instance resets
-const MAX_CLIMB_SLOPE = 1.5; // rise/run above which a ground move is blocked (cliffs, world rim)
+const MAX_CLIMB_SLOPE = PLAYER_MAX_CLIMB_SLOPE; // rise/run above which a ground move is blocked (cliffs, world rim)
 
 // How far a mob pulls same-family neighbours into a fight ("social aggro").
 // Murlocs (the clustered water mobs players call "frogs") used to pull too much,
@@ -159,14 +169,16 @@ const SOCIAL_PULL_RADIUS: Partial<Record<MobFamily, number>> = {
 };
 const PACK_FRENZY_AURA_ID = 'pack_frenzy'; // attack-speed buff granted to surviving packmates
 const SWIM_SURFACE_Y = WATER_LEVEL - 0.75; // body bobs just below the water line
-const SWIM_DEPTH = 0.8; // ground this far under the water line = deep water
+const SWIM_DEPTH = PLAYER_SWIM_DEPTH; // ground this far under the water line = deep water
 const SWIM_SPEED_MULT = 0.65;
 const FISHING_SAMPLE_DISTANCES = [4, 8, 12, 16, 20, 24];
 const DEEPFEN_FISHING_SHORE_MARGIN = 10;
 const THE_CODFATHER_ITEM_ID = 'the_codfather';
 const THE_CODFATHER_QUEST_ID = 'q_the_codfather';
 const DOOR_TRIGGER_RADIUS = 2.0; // walking this close to a dungeon door teleports you
-const BODY_RADIUS = 0.5;
+const NYTHRAXIS_PARTY_INTERACT_RANGE = 30;
+const NYTHRAXIS_VISION_LINE_DELAY = 5;
+const BODY_RADIUS = PLAYER_BODY_RADIUS;
 const CHARGE_SPEED_MULT = 3; // warrior charge runs at 3x normal speed
 const CHARGE_MAX_DURATION = 3; // seconds before a blocked charge gives up
 const CHARGE_ARRIVE_RANGE = MELEE_RANGE - 1; // stop inside melee range
@@ -197,6 +209,7 @@ export interface Party {
   id: number;
   leader: number; // pid
   members: number[]; // pids
+  lootStrategies: LootStrategies;
 }
 
 export interface TradeSession {
@@ -219,7 +232,7 @@ export type { ArenaFormat } from './types';
 
 export interface ArenaQueueUnit {
   pids: number[]; // length 1 (solo) or 2 (premade)
-  rating: number; // avg member arenaRating
+  rating: number; // avg member rating for this queue's bracket
 }
 
 // A live arena bout. Combatants are teleported into a private arena instance
@@ -252,6 +265,7 @@ export interface InstanceSlot {
   slot: number;
   partyKey: string | null; // party id or 'solo:<pid>'
   mobIds: number[];
+  objectIds: number[];
   exitId: number | null;
   emptyFor: number;
 }
@@ -318,10 +332,14 @@ export interface PlayerMeta {
   // sim.time when this character entered the world; powers /played. Session-only
   // (sim.time resets to 0 each server boot), so it reports time this session.
   joinedAt: number;
-  // Ashen Coliseum standing — persisted in CharacterState
+  // Ashen Coliseum standings. Legacy arenaRating/Wins/Losses are the 1v1
+  // bracket; 2v2 is fully independent and persisted alongside them.
   arenaRating: number;
   arenaWins: number;
   arenaLosses: number;
+  arena2v2Rating: number;
+  arena2v2Wins: number;
+  arena2v2Losses: number;
   // Talents & Specializations. `talents` is the active allocation; `talentMods`
   // is its precomputed flat struct — resolved only on allocation/respec/loadout
   // change (recomputeTalents), never walked on the combat or stat hot path.
@@ -400,9 +418,17 @@ export interface CharacterState {
   vendorBuyback?: InvSlot[];
   questLog: { questId: string; counts: number[]; state: 'active' | 'ready' | 'done' }[];
   questsDone: string[];
+  // Legacy arenaRating/Wins/Losses are treated as 1v1 data. The explicit
+  // 1v1 fields are written by new saves, while old saves fall back cleanly.
   arenaRating?: number;
   arenaWins?: number;
   arenaLosses?: number;
+  arena1v1Rating?: number;
+  arena1v1Wins?: number;
+  arena1v1Losses?: number;
+  arena2v2Rating?: number;
+  arena2v2Wins?: number;
+  arena2v2Losses?: number;
   // Talents & Specializations (JSONB; no schema migration). All optional so
   // characters saved before talents existed load cleanly (default: no points spent).
   talents?: TalentAllocation;
@@ -510,6 +536,7 @@ export class Sim {
   primaryId = -1; // the local/RL player in single-player contexts
   nextId = 1;
   events: SimEvent[] = [];
+  private delayedEvents: { at: number; event: SimEvent }[] = [];
   // social systems
   parties = new Map<number, Party>();
   partyByPid = new Map<number, number>(); // pid -> party id
@@ -596,14 +623,15 @@ export class Sim {
 
     // Dungeon entrances + their private instance slots
     for (const dungeon of DUNGEON_LIST) {
-      const door = createGroundObject(this.nextId++, '', dungeon.name, this.groundPos(dungeon.doorPos.x, dungeon.doorPos.z));
+      const doorName = dungeon.id === 'nythraxis_crypt' ? 'Abandoned Crypt' : dungeon.name;
+      const door = createGroundObject(this.nextId++, '', doorName, this.groundPos(dungeon.doorPos.x, dungeon.doorPos.z));
       door.templateId = 'dungeon_door';
       door.dungeonId = dungeon.id;
       door.objectItemId = null;
       door.lootable = true; // interactable
       this.addEntity(door);
       for (let i = 0; i < INSTANCE_SLOT_COUNT; i++) {
-        this.instances.push({ dungeonId: dungeon.id, slot: i, partyKey: null, mobIds: [], exitId: null, emptyFor: 0 });
+        this.instances.push({ dungeonId: dungeon.id, slot: i, partyKey: null, mobIds: [], objectIds: [], exitId: null, emptyFor: 0 });
       }
     }
 
@@ -670,6 +698,16 @@ export class Sim {
     const startPos = savedPos
       ? this.groundPos(savedPos.x, savedPos.z)
       : this.groundPos(PLAYER_START.x, PLAYER_START.z);
+    const savedArena1v1: ArenaStanding = {
+      rating: opts?.state?.arena1v1Rating ?? opts?.state?.arenaRating ?? ARENA_BASE_RATING,
+      wins: opts?.state?.arena1v1Wins ?? opts?.state?.arenaWins ?? 0,
+      losses: opts?.state?.arena1v1Losses ?? opts?.state?.arenaLosses ?? 0,
+    };
+    const savedArena2v2: ArenaStanding = {
+      rating: opts?.state?.arena2v2Rating ?? ARENA_BASE_RATING,
+      wins: opts?.state?.arena2v2Wins ?? 0,
+      losses: opts?.state?.arena2v2Losses ?? 0,
+    };
     const player = createPlayer(this.nextId++, cls, startPos, name);
     this.addEntity(player);
     const classDef = CLASSES[cls];
@@ -693,9 +731,12 @@ export class Sim {
       counters: freshCounters(),
       autoEquip: opts?.autoEquip ?? false,
       joinedAt: this.time,
-      arenaRating: opts?.state?.arenaRating ?? ARENA_BASE_RATING,
-      arenaWins: opts?.state?.arenaWins ?? 0,
-      arenaLosses: opts?.state?.arenaLosses ?? 0,
+      arenaRating: savedArena1v1.rating,
+      arenaWins: savedArena1v1.wins,
+      arenaLosses: savedArena1v1.losses,
+      arena2v2Rating: savedArena2v2.rating,
+      arena2v2Wins: savedArena2v2.wins,
+      arena2v2Losses: savedArena2v2.losses,
       talents: emptyAllocation(),
       talentMods: emptyModifiers(),
       loadouts: [],
@@ -821,6 +862,12 @@ export class Sim {
       arenaRating: meta.arenaRating,
       arenaWins: meta.arenaWins,
       arenaLosses: meta.arenaLosses,
+      arena1v1Rating: meta.arenaRating,
+      arena1v1Wins: meta.arenaWins,
+      arena1v1Losses: meta.arenaLosses,
+      arena2v2Rating: meta.arena2v2Rating,
+      arena2v2Wins: meta.arena2v2Wins,
+      arena2v2Losses: meta.arena2v2Losses,
       talents: cloneAllocation(meta.talents),
       loadouts: meta.loadouts.map((l) => ({ name: l.name, alloc: cloneAllocation(l.alloc), bar: [...l.bar] })),
       activeLoadout: meta.activeLoadout,
@@ -1225,14 +1272,20 @@ export class Sim {
     this.tickCount++;
     this.updatePendingMobRespawns();
 
+    const despawnIds: number[] = [];
     for (const e of this.entities.values()) {
       copyPos(e.prevPos, e.pos);
       e.prevFacing = e.facing;
+      if (e.despawnTimer !== undefined) {
+        e.despawnTimer -= DT;
+        if (e.despawnTimer <= 0) despawnIds.push(e.id);
+      }
       if (e.overheadEmoteId && this.time >= e.overheadEmoteUntil) {
         e.overheadEmoteId = null;
         e.overheadEmoteUntil = 0;
       }
     }
+    for (const id of despawnIds) this.dropEntity(id);
 
     for (const meta of this.players.values()) {
       const p = this.entities.get(meta.entityId);
@@ -1289,6 +1342,7 @@ export class Sim {
     this.updateTradesAndInvites();
     this.updateInstances();
     this.updateMarket();
+    this.emitDueDelayedEvents();
 
     // movement re-bucketing: queries during the next tick and the server's
     // snapshot broadcast right after this one see fresh cells
@@ -1298,6 +1352,16 @@ export class Sim {
     const out = this.events;
     this.events = [];
     return out;
+  }
+
+  private emitDueDelayedEvents(): void {
+    if (this.delayedEvents.length === 0) return;
+    const pending: { at: number; event: SimEvent }[] = [];
+    for (const delayed of this.delayedEvents) {
+      if (delayed.at <= this.time) this.emit(delayed.event);
+      else pending.push(delayed);
+    }
+    this.delayedEvents = pending;
   }
 
   private *playerEntities(): Iterable<Entity> {
@@ -1342,9 +1406,30 @@ export class Sim {
   private isControlAura(kind: AuraKind): boolean {
     return kind === 'stun' || kind === 'root' || kind === 'incapacitate' || kind === 'polymorph';
   }
-  private itemRequiresGroupRoll(itemId: string): boolean {
+  private partyLootStrategiesForMob(mob: Entity): LootStrategies | null {
+    if (mob.tappedById === null) return null;
+    return this.partyOf(mob.tappedById)?.lootStrategies ?? null;
+  }
+  private partyLootCandidatesForMob(mob: Entity): PlayerMeta[] {
+    if (mob.tappedById === null) return [];
+    const party = this.partyOf(mob.tappedById);
+    if (!party || party.members.length <= 1) return [];
+    const candidates: PlayerMeta[] = [];
+    for (const pid of party.members) {
+      const candidate = this.players.get(pid);
+      const e = this.entities.get(pid);
+      if (candidate && e && !e.dead && dist2d(e.pos, mob.pos) <= PARTY_XP_RANGE) candidates.push(candidate);
+    }
+    return candidates;
+  }
+  private effectiveCurrencyLootStrategy(mob: Entity): CurrencyLootStrategy {
+    return this.partyLootStrategiesForMob(mob)?.currency ?? 'looter-takes-all';
+  }
+  private effectiveItemLootStrategy(itemId: string, mob: Entity): ItemLootStrategy {
     const q = ITEMS[itemId]?.quality ?? 'common';
-    return q === 'uncommon' || q === 'rare' || q === 'epic';
+    const strategies = this.partyLootStrategiesForMob(mob);
+    if (!strategies) return 'looter-takes-all';
+    return q === 'poor' || q === 'common' ? strategies.commonItems : strategies.premiumItems;
   }
   private moveSpeedMult(e: Entity): number {
     let slow = 1, speed = 1;
@@ -1441,12 +1526,7 @@ export class Sim {
   }
 
   private findChargePath(p: Entity, target: Entity): Vec3[] {
-    return findPath(p.pos, target.pos, {
-      seed: this.cfg.seed,
-      bodyRadius: BODY_RADIUS,
-      maxClimbSlope: MAX_CLIMB_SLOPE,
-      minGround: WATER_LEVEL - SWIM_DEPTH,
-    }).map((w) => ({ x: w.x, y: 0, z: w.z }));
+    return findPlayerPath(this.cfg.seed, p.pos, target.pos, 64).map((w) => ({ x: w.x, y: 0, z: w.z }));
   }
 
   // Charge in flight: forced movement toward the target along the pathfound
@@ -1480,7 +1560,7 @@ export class Sim {
     const h1 = groundHeight(nx, nz, this.cfg.seed);
     if (h1 < WATER_LEVEL - SWIM_DEPTH) return done(false);
     if (h1 > h0 && (h1 - h0) / step > MAX_CLIMB_SLOPE) return done(false);
-    const resolved = resolvePosition(this.cfg.seed, nx, nz, BODY_RADIUS);
+    const resolved = resolveMovement(this.cfg.seed, p.pos.x, p.pos.z, nx, nz, BODY_RADIUS);
     p.pos.x = resolved.x;
     p.pos.z = resolved.z;
     p.pos.y = groundHeight(resolved.x, resolved.z, this.cfg.seed);
@@ -1529,7 +1609,7 @@ export class Sim {
     const h1 = groundHeight(nx, nz, this.cfg.seed);
     if (h1 < WATER_LEVEL - SWIM_DEPTH) return true; // don't trail into deep water
     if (h1 > h0 && step > 1e-5 && (h1 - h0) / step > MAX_CLIMB_SLOPE) return true; // wall/cliff
-    const resolved = resolvePosition(this.cfg.seed, nx, nz, BODY_RADIUS);
+    const resolved = resolveMovement(this.cfg.seed, p.pos.x, p.pos.z, nx, nz, BODY_RADIUS);
     p.pos.x = resolved.x;
     p.pos.z = resolved.z;
     p.pos.y = groundHeight(resolved.x, resolved.z, this.cfg.seed);
@@ -1598,8 +1678,12 @@ export class Sim {
           if (!p.onGround) { p.vx = 0; p.vz = 0; }
         }
       }
-      // slide along buildings, trees, crypt walls
-      const resolved = resolvePosition(this.cfg.seed, nx, nz, BODY_RADIUS);
+      // Slide along buildings, trees, crypt walls — but while airborne from a
+      // jump, pass through fences for the whole arc. Keying off the jump itself
+      // (not a height threshold) makes this independent of slope: an uphill
+      // approach no longer flickers the clearance off right at the rail.
+      const clearFences = !p.onGround && p.jumping;
+      const resolved = resolveMovement(this.cfg.seed, p.pos.x, p.pos.z, nx, nz, BODY_RADIUS, clearFences);
       p.pos.x = resolved.x;
       p.pos.z = resolved.z;
       if (!p.onGround && (resolved.x !== nx || resolved.z !== nz)) {
@@ -1618,6 +1702,7 @@ export class Sim {
       p.vx = 0;
       p.vz = 0;
       p.onGround = true;
+      p.jumping = false;
       p.fallStartY = p.pos.y;
       if (inp.jump && !this.isRooted(p)) {
         // small hop to climb onto shores and docks
@@ -1625,6 +1710,7 @@ export class Sim {
         p.vx = wishX * wishSpeed;
         p.vz = wishZ * wishSpeed;
         p.onGround = false;
+        p.jumping = true;
       }
       return;
     }
@@ -1633,6 +1719,7 @@ export class Sim {
       p.vx = wishX * wishSpeed;
       p.vz = wishZ * wishSpeed;
       p.onGround = false;
+      p.jumping = true;
       p.fallStartY = p.pos.y;
     }
     if (!p.onGround) {
@@ -1646,6 +1733,7 @@ export class Sim {
         p.vx = 0;
         p.vz = 0;
         p.onGround = true;
+        p.jumping = false;
         p.fallStartY = p.pos.y;
         return;
       }
@@ -1655,6 +1743,7 @@ export class Sim {
         p.vx = 0;
         p.vz = 0;
         p.onGround = true;
+        p.jumping = false;
         const drop = p.fallStartY - ground;
         if (drop > FALL_SAFE_DISTANCE) {
           const dmg = Math.round(p.maxHp * (drop - FALL_SAFE_DISTANCE) * 0.07);
@@ -1664,7 +1753,9 @@ export class Sim {
       }
     } else {
       if (ground < p.pos.y - 0.4) {
+        // walked off a ledge — not a jump, so fences still block
         p.onGround = false;
+        p.jumping = false;
         p.vx = 0;
         p.vz = 0;
         p.vy = 0;
@@ -2168,7 +2259,7 @@ export class Sim {
       if (this.lineOfSightBlocked(p, target, ability)) { this.error(p.id, 'Line of sight.'); return; }
     } else if (ability.requiresTarget) {
       target = p.targetId !== null ? this.entities.get(p.targetId) ?? null : null;
-      if (!target || target.dead) { this.error(p.id, 'You have no target.'); return; }
+      if (!target || target.dead || !this.isHostileTo(p, target)) { this.error(p.id, 'You have no target.'); return; }
       const d = dist2d(p.pos, target.pos);
       const maxRange = ability.range > 0 ? ability.range : MELEE_RANGE;
       if (d > maxRange + 2) { this.error(p.id, 'Out of range.'); return; }
@@ -3643,16 +3734,46 @@ export class Sim {
     }
   }
 
-  private rollGroupLoot(itemId: string, mob: Entity, looter: PlayerMeta): boolean {
-    if (!this.itemRequiresGroupRoll(itemId) || mob.tappedById === null) return false;
-    const party = this.partyOf(mob.tappedById);
-    if (!party || party.members.length <= 1) return false;
-    const candidates: PlayerMeta[] = [];
-    for (const pid of party.members) {
-      const candidate = this.players.get(pid);
-      const e = this.entities.get(pid);
-      if (candidate && e && !e.dead && dist2d(e.pos, mob.pos) <= PARTY_XP_RANGE) candidates.push(candidate);
+  private grantLootCopper(meta: PlayerMeta, amount: number): void {
+    meta.copper += amount;
+    meta.counters.lootCopper += amount;
+    this.emit({ type: 'loot', text: `You loot ${formatMoney(amount)}.`, pid: meta.entityId });
+  }
+
+  private awardAllCopperToLooter(looter: PlayerMeta, copper: number): void {
+    this.grantLootCopper(looter, copper);
+  }
+
+  private tryAwardCopperByFairSplit(mob: Entity, copper: number): boolean {
+    if (this.effectiveCurrencyLootStrategy(mob) !== 'fair-split') return false;
+    const candidates = this.partyLootCandidatesForMob(mob);
+    if (candidates.length <= 1) return false;
+    const base = Math.floor(copper / candidates.length);
+    const remainder = copper % candidates.length;
+    const shares = new Map<PlayerMeta, number>(candidates.map((candidate) => [candidate, base]));
+    const order = [...candidates];
+    for (let i = 0; i < remainder; i++) {
+      const idx = this.rng.int(i, order.length - 1);
+      [order[i], order[idx]] = [order[idx], order[i]];
+      shares.set(order[i], (shares.get(order[i]) ?? 0) + 1);
     }
+    for (const candidate of candidates) {
+      const amount = shares.get(candidate) ?? 0;
+      if (amount > 0) this.grantLootCopper(candidate, amount);
+    }
+    return true;
+  }
+
+  private distributeLootCopper(mob: Entity, looter: PlayerMeta): void {
+    if (!mob.loot || mob.loot.copper <= 0) return;
+    const copper = mob.loot.copper;
+    if (!this.tryAwardCopperByFairSplit(mob, copper)) this.awardAllCopperToLooter(looter, copper);
+    mob.loot.copper = 0;
+  }
+
+  private tryAwardItemByRandomRoll(itemId: string, mob: Entity): boolean {
+    if (this.effectiveItemLootStrategy(itemId, mob) !== 'random') return false;
+    const candidates = this.partyLootCandidatesForMob(mob);
     if (candidates.length <= 1) return false;
     let winner = candidates[0];
     let bestRoll = -1;
@@ -3669,6 +3790,10 @@ export class Sim {
     }
     this.addItem(itemId, 1, winner.entityId);
     return true;
+  }
+
+  private awardSharedLootItem(itemId: string, mob: Entity, looter: PlayerMeta): void {
+    if (!this.tryAwardItemByRandomRoll(itemId, mob)) this.addItem(itemId, 1, looter.entityId);
   }
 
   private lootSlotVisibleTo(slot: LootSlot, pid: number): boolean {
@@ -3828,6 +3953,15 @@ export class Sim {
       return;
     }
 
+    if (mob.templateId.startsWith('vision_')) {
+      mob.hostile = false;
+      mob.aiState = 'idle';
+      mob.inCombat = false;
+      mob.aggroTargetId = null;
+      clearThreat(mob);
+      return;
+    }
+
     // Self-healing safety net (#113/#99): every mob spawns hostile and only
     // taming clears that (which always assigns an owner). A live, owner-less,
     // non-hostile mob is therefore a leak — exactly the "immortal, invalid
@@ -3900,6 +4034,7 @@ export class Sim {
           break;
         }
         if (this.maybeFlee(mob, target)) break;
+        const spell = MOBS[mob.templateId]?.petSpell;
         const leash = mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
         const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
         if (dist2d(mob.pos, leashAnchor) > leash) {
@@ -3910,6 +4045,11 @@ export class Sim {
           break;
         }
         const d = dist2d(mob.pos, target.pos);
+        if (spell && d <= spell.range) {
+          mob.aiState = 'attack';
+          mob.swingTimer = Math.min(mob.swingTimer, 0.4);
+          break;
+        }
         if (d <= MELEE_RANGE * 0.8) {
           mob.aiState = 'attack';
           mob.swingTimer = Math.min(mob.swingTimer, 0.4);
@@ -3925,6 +4065,12 @@ export class Sim {
         if (!target || target.dead) { this.retargetMob(mob); break; }
         if (this.maybeFlee(mob, target)) break;
         const d = dist2d(mob.pos, target.pos);
+        const spell = MOBS[mob.templateId]?.petSpell;
+        if (spell) {
+          if (d > spell.range) { mob.aiState = 'chase'; break; }
+          this.updateRangedPetAttack(mob, target, spell);
+          break;
+        }
         if (d > MELEE_RANGE) { mob.aiState = 'chase'; break; }
         mob.facing = angleTo(mob.pos, target.pos);
         mob.swingTimer -= DT;
@@ -4675,7 +4821,9 @@ export class Sim {
       const o = this.instanceOriginOf(i);
       return Math.abs(boss.pos.x - o.x) < 120 && Math.abs(boss.pos.z - o.z) < 250;
     });
-    const victim = boss.aggroTargetId !== null ? this.entities.get(boss.aggroTargetId) : null;
+    const [topThreatId] = threatEntries(boss, 1)[0] ?? [];
+    const victimId = boss.aggroTargetId ?? topThreatId ?? null;
+    const victim = victimId !== null ? this.entities.get(victimId) : null;
     for (let k = 0; k < count; k++) {
       const ang = (k / count) * Math.PI * 2 + 0.7;
       const pos = this.groundPos(boss.pos.x + Math.sin(ang) * 3.5, boss.pos.z + Math.cos(ang) * 3.5);
@@ -4704,7 +4852,7 @@ export class Sim {
     const e = this.entities.get(id);
     if (!e || (e.dead && !e.lootable)) return;
     p.targetId = id;
-    if (!e.hostile || e.dead) p.autoAttack = false;
+    if (!this.isHostileTo(p, e) || e.dead) p.autoAttack = false;
   }
 
   tabTarget(pid?: number): void {
@@ -5094,12 +5242,7 @@ export class Sim {
       return;
     }
     if (dist2d(p.pos, mob.pos) > INTERACT_RANGE) { this.error(meta.entityId, 'Too far away.'); return; }
-    if (hasSharedLootRights && mob.loot.copper > 0) {
-      meta.copper += mob.loot.copper;
-      meta.counters.lootCopper += mob.loot.copper;
-      this.emit({ type: 'loot', text: `You loot ${formatMoney(mob.loot.copper)}.`, pid: meta.entityId });
-      mob.loot.copper = 0;
-    }
+    if (hasSharedLootRights) this.distributeLootCopper(mob, meta);
     for (const s of [...mob.loot.items]) {
       if (!this.lootSlotVisibleTo(s, meta.entityId)) continue;
       if (s.personalFor) {
@@ -5109,7 +5252,7 @@ export class Sim {
       }
       if (!hasSharedLootRights) continue;
       for (let i = 0; i < s.count; i++) {
-        if (!this.rollGroupLoot(s.itemId, mob, meta)) this.addItem(s.itemId, 1, meta.entityId);
+        this.awardSharedLootItem(s.itemId, mob, meta);
       }
       s.count = 0;
     }
@@ -5124,6 +5267,8 @@ export class Sim {
     const obj = this.entities.get(objId);
     if (!obj || obj.kind !== 'object' || !obj.lootable || !obj.objectItemId) return;
     if (dist2d(p.pos, obj.pos) > INTERACT_RANGE) { this.error(meta.entityId, 'Too far away.'); return; }
+    if (this.activateNythraxisRelic(obj, meta)) return;
+    if (this.interactObjectForQuests(obj, meta)) return;
     const def = ITEMS[obj.objectItemId];
     if (def?.questId) {
       const qp = meta.questLog.get(def.questId);
@@ -5133,6 +5278,10 @@ export class Sim {
       }
       const quest = QUESTS[def.questId];
       const objIdx = quest.objectives.findIndex((o) => o.type === 'collect' && o.itemId === obj.objectItemId);
+      if (objIdx < 0) {
+        this.error(meta.entityId, def.pickupEnough ?? `${def.name} offers nothing more.`);
+        return;
+      }
       if (objIdx >= 0 && this.countItem(obj.objectItemId, meta.entityId) >= quest.objectives[objIdx].count) {
         this.error(meta.entityId, def.pickupEnough ?? 'You have enough of those.');
         return;
@@ -5143,10 +5292,199 @@ export class Sim {
     obj.respawnTimer = OBJECT_RESPAWN;
   }
 
+  private activateNythraxisRelic(obj: Entity, meta: PlayerMeta): boolean {
+    if (!obj.objectItemId) return false;
+    const mobId = NYTHRAXIS_RELIC_SUMMONS[obj.objectItemId];
+    if (!mobId) return false;
+    const qp = meta.questLog.get('q_nythraxis_sealed_crypt');
+    if (!qp || qp.state !== 'active') {
+      const def = ITEMS[obj.objectItemId];
+      this.error(meta.entityId, def?.pickupDeny ?? 'The relic is bound by the sealed crypt.');
+      return true;
+    }
+    const quest = QUESTS.q_nythraxis_sealed_crypt;
+    const objectiveIndex = quest.objectives.findIndex((o) => o.type === 'collect' && o.itemId === obj.objectItemId);
+    if (objectiveIndex >= 0 && this.countItem(obj.objectItemId, meta.entityId) >= quest.objectives[objectiveIndex].count) {
+      const def = ITEMS[obj.objectItemId];
+      this.error(meta.entityId, def?.pickupEnough ?? 'You have already recovered this relic.');
+      return true;
+    }
+    this.summonQuestMob(mobId, obj.pos, meta.entityId);
+    obj.lootable = false;
+    obj.respawnTimer = OBJECT_RESPAWN;
+    return true;
+  }
+
+  private interactObjectForQuests(obj: Entity, meta: PlayerMeta): boolean {
+    if (!obj.objectItemId) return false;
+    let handled = false;
+    for (const qp of meta.questLog.values()) {
+      if (qp.state !== 'active') continue;
+      const quest = QUESTS[qp.questId];
+      quest.objectives.forEach((objective, objectiveIndex) => {
+        if (objective.type !== 'interact' || objective.targetObjectItemId !== obj.objectItemId) return;
+        handled = true;
+        if (qp.counts[objectiveIndex] >= objective.count) return;
+        if (obj.objectItemId === 'crypt_ritual_circle' && !this.countItem('crypt_keystone', meta.entityId)) {
+          this.error(meta.entityId, 'The ritual circle is silent without the Crypt Keystone.');
+          return;
+        }
+        const shared = this.sharedNythraxisObjectParticipants(meta, obj, qp.questId, objectiveIndex);
+        for (const member of shared) {
+          const memberQp = member.questLog.get(qp.questId);
+          if (!memberQp || memberQp.state !== 'active') continue;
+          if (memberQp.counts[objectiveIndex] >= objective.count) continue;
+          memberQp.counts[objectiveIndex]++;
+          member.counters.questProgress++;
+          this.emit({
+            type: 'questProgress',
+            questId: memberQp.questId,
+            text: `${objective.label}: ${memberQp.counts[objectiveIndex]}/${objective.count}`,
+            pid: member.entityId,
+          });
+          this.checkQuestReady(memberQp, member);
+        }
+        const visionId = this.summonQuestVision(obj.objectItemId, obj.pos);
+        this.emitQuestObjectVision(obj.objectItemId, shared.map((m) => m.entityId), visionId);
+        if (obj.objectItemId === 'crypt_ritual_circle') this.summonQuestMob('bound_guardian', obj.pos, meta.entityId);
+      });
+    }
+    return handled;
+  }
+
+  private sharedNythraxisObjectParticipants(actor: PlayerMeta, obj: Entity, questId: string, objectiveIndex: number): PlayerMeta[] {
+    if (obj.objectItemId !== 'grave_sir_aldren'
+      && obj.objectItemId !== 'grave_high_priest_malric'
+      && obj.objectItemId !== 'grave_captain_voss'
+      && obj.objectItemId !== 'crypt_ritual_circle') {
+      return [actor];
+    }
+    const quest = QUESTS[questId];
+    const objective = quest.objectives[objectiveIndex];
+    const party = this.partyOf(actor.entityId);
+    const members = party ? party.members : [actor.entityId];
+    const eligible: PlayerMeta[] = [];
+    for (const pid of members) {
+      const member = this.players.get(pid);
+      const entity = this.entities.get(pid);
+      const memberQp = member?.questLog.get(questId);
+      if (!member || !entity || entity.dead || !memberQp || memberQp.state !== 'active') continue;
+      if (memberQp.counts[objectiveIndex] >= objective.count) continue;
+      if (dist2d(entity.pos, obj.pos) > NYTHRAXIS_PARTY_INTERACT_RANGE) continue;
+      eligible.push(member);
+    }
+    return eligible.some((member) => member.entityId === actor.entityId) ? eligible : [actor];
+  }
+
+  private emitQuestObjectVision(itemId: string, pids: number[], entityId?: number | null): void {
+    const lines = itemId === 'grave_sir_aldren'
+      ? [
+        'My king was a good man.',
+        'I swore my blade to him.',
+        'I would do so again.',
+      ]
+        : itemId === 'grave_high_priest_malric'
+          ? [
+            'There had to be another way.',
+            'I could not let him die.',
+            'I only wanted to save him.',
+          ]
+        : itemId === 'grave_captain_voss'
+          ? [
+            'The king was already dead.',
+            'Malric refused to accept it.',
+            'We should have let him rest.',
+            'If you find the crypt... end this.',
+          ]
+          : itemId === 'crypt_ritual_circle'
+            ? ['The Crypt Keystone turns cold as the seal breaks.']
+              : null;
+    if (!lines) return;
+    for (let i = 0; i < lines.length; i++) {
+      for (const pid of pids) {
+        const event: SimEvent = { type: 'log', text: lines[i], color: '#b8d7ff', pid, entityId: entityId ?? undefined };
+        if (i === 0) this.emit(event);
+        else this.delayedEvents.push({ at: this.time + i * NYTHRAXIS_VISION_LINE_DELAY, event });
+      }
+    }
+  }
+
+  private summonQuestVision(itemId: string, pos: Vec3): number | null {
+    const templateId = itemId === 'grave_sir_aldren'
+      ? 'vision_aldren_warrior'
+      : itemId === 'grave_high_priest_malric'
+        ? 'vision_malric_mage'
+        : itemId === 'grave_captain_voss'
+          ? 'vision_deathstalker_voss'
+          : null;
+    if (!templateId) return null;
+    const existing = [...this.entities.values()].find((e) => e.kind === 'mob' && e.templateId === templateId && !e.dead && dist2d(e.pos, pos) < 10);
+    if (existing) return existing.id;
+    const template = MOBS[templateId];
+    if (!template) return null;
+    const mob = createMob(this.nextId++, template, template.maxLevel, this.groundPos(pos.x + 2.4, pos.z + 2.4));
+    mob.hostile = false;
+    mob.aiState = 'idle';
+    mob.lootable = false;
+    mob.loot = null;
+    mob.despawnTimer = 22;
+    mob.facing = Math.PI;
+    mob.prevFacing = mob.facing;
+    mob.swingTimer = Infinity;
+    this.addEntity(mob);
+    return mob.id;
+  }
+
+  private summonQuestMob(templateId: string, pos: Vec3, ownerPid: number): void {
+    const existing = [...this.entities.values()].some((e) => e.kind === 'mob' && e.templateId === templateId && !e.dead && dist2d(e.pos, pos) < 18);
+    if (existing) return;
+    const template = MOBS[templateId];
+    if (!template) return;
+    const mob = createMob(this.nextId++, template, template.maxLevel, this.groundPos(pos.x, pos.z + 3));
+    mob.facing = Math.PI;
+    mob.prevFacing = mob.facing;
+    mob.tappedById = ownerPid;
+    this.addEntity(mob);
+    const owner = this.entities.get(ownerPid);
+    if (owner && owner.kind === 'player' && !owner.dead) this.aggroMob(mob, owner, false);
+    const inst = this.instances.find((i) => {
+      if (i.partyKey === null) return false;
+      const origin = this.instanceOriginOf(i);
+      return Math.abs(mob.pos.x - origin.x) < 120 && Math.abs(mob.pos.z - origin.z) < 250;
+    });
+    if (inst) inst.mobIds.push(mob.id);
+    this.emit({ type: 'log', text: `${template.name} awakens!`, color: '#ff6666' });
+    this.emitQuestMobDialogue(templateId, mob.id);
+  }
+
+  private emitQuestMobDialogue(templateId: string, entityId: number): void {
+    const text = templateId === 'fallen_captain_aldren'
+      ? 'Fallen Captain Aldren yells, "None shall disturb the king\'s rest! For Thornpeak!"'
+      : templateId === 'corrupted_priest_malric'
+        ? 'Corrupted Priest Malric yells, "Death shall never claim my king! The ritual must endure!"'
+        : templateId === 'deathstalker_voss'
+          ? 'Deathstalker Voss yells, "You will not reach him! The king must endure!"'
+          : null;
+    if (text) this.emit({ type: 'log', text, color: '#ff9999', entityId });
+  }
+
   interact(pid?: number): void {
     const r = this.resolve(pid);
     if (!r) return;
     const p = r.e;
+    if (p.targetId !== null) {
+      const target = this.entities.get(p.targetId);
+      if (target && dist2d(p.pos, target.pos) <= INTERACT_RANGE + 2) {
+        if (target.kind === 'mob' && target.lootable) { this.lootCorpse(target.id, p.id); return; }
+        if (target.kind === 'object' && target.lootable) {
+          if (target.templateId === 'dungeon_door' && target.dungeonId) { this.enterDungeon(target.dungeonId, p.id); return; }
+          if (target.templateId === 'dungeon_exit') { this.leaveDungeon(p.id); return; }
+          this.pickUpObject(target.id, p.id);
+          return;
+        }
+        if (target.kind === 'npc') { this.talkToNpc(target.id, p.id); return; }
+      }
+    }
     let bestCorpse: Entity | null = null;
     let bestCorpseD2 = INTERACT_RANGE * INTERACT_RANGE;
     let bestObj: Entity | null = null;
@@ -5178,6 +5516,7 @@ export class Sim {
     const { meta } = r;
     const npc = this.entities.get(npcId);
     if (!npc || npc.kind !== 'npc') return;
+    if (this.interactNpcForQuests(npc, meta)) return;
     for (const qid of npc.questIds) {
       if (QUESTS[qid].turnInNpcId === npc.templateId && meta.questLog.get(qid)?.state === 'ready') {
         this.turnInQuest(qid, meta.entityId);
@@ -5190,6 +5529,24 @@ export class Sim {
         return;
       }
     }
+  }
+
+  private interactNpcForQuests(npc: Entity, meta: PlayerMeta): boolean {
+    let progressed = false;
+    for (const qp of meta.questLog.values()) {
+      if (qp.state !== 'active') continue;
+      const quest = QUESTS[qp.questId];
+      quest.objectives.forEach((objective, objectiveIndex) => {
+        if (objective.type !== 'interact' || objective.targetNpcId !== npc.templateId) return;
+        if (qp.counts[objectiveIndex] >= objective.count) return;
+        qp.counts[objectiveIndex]++;
+        progressed = true;
+        meta.counters.questProgress++;
+        this.emit({ type: 'questProgress', questId: qp.questId, text: `${objective.label}: ${qp.counts[objectiveIndex]}/${objective.count}`, pid: meta.entityId });
+        this.checkQuestReady(qp, meta);
+      });
+    }
+    return progressed;
   }
 
   // -------------------------------------------------------------------------
@@ -5847,6 +6204,7 @@ export class Sim {
 
   isHostileTo(attacker: Entity, target: Entity): boolean {
     if (target.kind === 'mob') {
+      if (target.templateId.startsWith('vision_')) return false;
       if (target.ownerId !== null) {
         const owner = this.entities.get(target.ownerId);
         return !!owner && owner.kind === 'player' && this.isHostileTo(attacker, owner);
@@ -5933,7 +6291,12 @@ export class Sim {
     if (!leaderMeta) return;
     let party = this.partyOf(invite.fromPid);
     if (!party) {
-      party = { id: this.nextPartyId++, leader: invite.fromPid, members: [invite.fromPid] };
+      party = {
+        id: this.nextPartyId++,
+        leader: invite.fromPid,
+        members: [invite.fromPid],
+        lootStrategies: { ...DEFAULT_PARTY_LOOT_STRATEGIES },
+      };
       this.parties.set(party.id, party);
       this.partyByPid.set(invite.fromPid, party.id);
     }
@@ -6269,7 +6632,7 @@ export class Sim {
       if (this.trades.has(mPid)) { this.error(id, `${mMeta.name} must finish trading before queueing.`); return; }
       if (e.pos.x > DUNGEON_X_THRESHOLD) { this.error(id, `${mMeta.name} cannot queue from inside an instance.`); return; }
     }
-    const unit: ArenaQueueUnit = { pids: unitPids, rating: this.arenaTeamRating(unitPids) };
+    const unit: ArenaQueueUnit = { pids: unitPids, rating: this.arenaTeamRating(unitPids, '2v2') };
     this.arenaQueue2v2.push(unit);
     const position = this.arenaQueue2v2PlayerCount();
     for (const mPid of unitPids) {
@@ -6346,10 +6709,36 @@ export class Sim {
     return [...match.teamA, ...match.teamB];
   }
 
-  private arenaTeamRating(pids: number[]): number {
+  private arenaStanding(meta: PlayerMeta, format: ArenaFormat): ArenaStanding {
+    return format === '2v2'
+      ? { rating: meta.arena2v2Rating, wins: meta.arena2v2Wins, losses: meta.arena2v2Losses }
+      : { rating: meta.arenaRating, wins: meta.arenaWins, losses: meta.arenaLosses };
+  }
+
+  private arenaRatingForPid(pid: number, format: ArenaFormat): number {
+    const meta = this.players.get(pid);
+    return meta ? this.arenaStanding(meta, format).rating : ARENA_BASE_RATING;
+  }
+
+  private addArenaResult(meta: PlayerMeta, format: ArenaFormat, delta: number, won: boolean | null): { before: number; after: number } {
+    const before = this.arenaStanding(meta, format).rating;
+    const after = Math.max(ARENA_MIN_RATING, before + delta);
+    if (format === '2v2') {
+      meta.arena2v2Rating = after;
+      if (won === true) meta.arena2v2Wins++;
+      else if (won === false) meta.arena2v2Losses++;
+    } else {
+      meta.arenaRating = after;
+      if (won === true) meta.arenaWins++;
+      else if (won === false) meta.arenaLosses++;
+    }
+    return { before, after };
+  }
+
+  private arenaTeamRating(pids: number[], format: ArenaFormat): number {
     if (pids.length === 0) return ARENA_BASE_RATING;
     let sum = 0;
-    for (const pid of pids) sum += this.players.get(pid)?.arenaRating ?? ARENA_BASE_RATING;
+    for (const pid of pids) sum += this.arenaRatingForPid(pid, format);
     return sum / pids.length;
   }
 
@@ -6451,11 +6840,11 @@ export class Sim {
       });
       if (this.arenaQueue1v1.length < 2 || this.freeArenaSlot() === null) return;
       const aPid = this.arenaQueue1v1[0];
-      const aRating = this.players.get(aPid)?.arenaRating ?? ARENA_BASE_RATING;
+      const aRating = this.arenaRatingForPid(aPid, '1v1');
       let bPid = -1, bestGap = Infinity;
       for (let i = 1; i < this.arenaQueue1v1.length; i++) {
         const id = this.arenaQueue1v1[i];
-        const gap = Math.abs((this.players.get(id)?.arenaRating ?? ARENA_BASE_RATING) - aRating);
+        const gap = Math.abs(this.arenaRatingForPid(id, '1v1') - aRating);
         if (gap < bestGap) { bestGap = gap; bPid = id; }
       }
       if (bPid < 0) return;
@@ -6549,8 +6938,8 @@ export class Sim {
       } else {
         const okA = teamA.every((pid) => this.entities.get(pid) && !this.arenaMatches.has(pid));
         const okB = teamB.every((pid) => this.entities.get(pid) && !this.arenaMatches.has(pid));
-        if (okB) this.arenaQueue2v2.unshift({ pids: teamB, rating: this.arenaTeamRating(teamB) });
-        if (okA) this.arenaQueue2v2.unshift({ pids: teamA, rating: this.arenaTeamRating(teamA) });
+        if (okB) this.arenaQueue2v2.unshift({ pids: teamB, rating: this.arenaTeamRating(teamB, format) });
+        if (okA) this.arenaQueue2v2.unshift({ pids: teamA, rating: this.arenaTeamRating(teamA, format) });
       }
       return;
     }
@@ -6562,7 +6951,7 @@ export class Sim {
     }
     const match: ArenaMatch = {
       id: this.nextArenaMatchId++, format, teamA, teamB, slot, state: 'countdown', timer: ARENA_COUNTDOWN,
-      returns, ratingA: this.arenaTeamRating(teamA), ratingB: this.arenaTeamRating(teamB),
+      returns, ratingA: this.arenaTeamRating(teamA, format), ratingB: this.arenaTeamRating(teamB, format),
       defeated: new Set(),
     };
     for (const pid of allPids) this.arenaMatches.set(pid, match);
@@ -6674,14 +7063,11 @@ export class Sim {
       for (const pid of pids) {
         const meta = this.players.get(pid);
         if (!meta) continue;
-        const ratingBefore = meta.arenaRating;
-        meta.arenaRating = Math.max(ARENA_MIN_RATING, ratingBefore + delta);
-        if (won === true) meta.arenaWins++;
-        else if (won === false) meta.arenaLosses++;
+        const { before: ratingBefore, after: ratingAfter } = this.addArenaResult(meta, match.format, delta, won);
         this.emit({
           type: 'arenaEnd', pid, format: match.format,
           draw: winnerTeam === null, won: won === true,
-          oppName: enemyNames, ratingBefore, ratingAfter: meta.arenaRating,
+          oppName: enemyNames, ratingBefore, ratingAfter,
           allies: this.arenaCombatants(pids.filter((p) => p !== pid)),
           enemies: this.arenaCombatants(enemies),
         });
@@ -6734,12 +7120,13 @@ export class Sim {
   }
 
   // Live standings of rated players currently online, best first.
-  arenaLadder(): import('../world_api').ArenaLadderEntry[] {
+  arenaLadder(format: ArenaFormat = '1v1'): import('../world_api').ArenaLadderEntry[] {
     const rows: import('../world_api').ArenaLadderEntry[] = [];
     for (const meta of this.players.values()) {
       const e = this.entities.get(meta.entityId);
       if (!e) continue;
-      rows.push({ pid: meta.entityId, name: meta.name, cls: meta.cls, rating: meta.arenaRating, wins: meta.arenaWins, losses: meta.arenaLosses });
+      const standing = this.arenaStanding(meta, format);
+      rows.push({ pid: meta.entityId, name: meta.name, cls: meta.cls, rating: standing.rating, wins: standing.wins, losses: standing.losses });
     }
     rows.sort((x, y) => y.rating - x.rating || y.wins - x.wins);
     return rows.slice(0, ARENA_LADDER_SIZE);
@@ -6770,19 +7157,31 @@ export class Sim {
         }
       }
     }
+    const standings: Record<ArenaFormat, ArenaStanding> = {
+      '1v1': this.arenaStanding(meta, '1v1'),
+      '2v2': this.arenaStanding(meta, '2v2'),
+    };
+    const ladders: Record<ArenaFormat, import('../world_api').ArenaLadderEntry[]> = {
+      '1v1': this.arenaLadder('1v1'),
+      '2v2': this.arenaLadder('2v2'),
+    };
     const format = match?.format ?? queuedFmt;
+    const readoutFormat = format ?? '1v1';
+    const standing = standings[readoutFormat];
     const queueSize = format === '2v2' ? this.arenaQueue2v2PlayerCount()
       : format === '1v1' ? this.arenaQueue1v1.length
       : 0;
     return {
-      rating: meta.arenaRating,
-      wins: meta.arenaWins,
-      losses: meta.arenaLosses,
+      rating: standing.rating,
+      wins: standing.wins,
+      losses: standing.losses,
+      standings,
       format,
       queued: queuedFmt !== null,
       queueSize,
       match: matchInfo,
-      ladder: this.arenaLadder(),
+      ladder: ladders[readoutFormat],
+      ladders,
     };
   }
 
@@ -7217,6 +7616,10 @@ export class Sim {
     const r = this.resolve(pid);
     const dungeon = DUNGEONS[dungeonId];
     if (!r || !dungeon || r.e.dead) return;
+    if (dungeonId === 'nythraxis_crypt' && !this.canEnterNythraxisCrypt(r.meta)) {
+      this.error(r.meta.entityId, 'The crypt entrance is sealed to you.');
+      return;
+    }
     const key = this.instanceKeyFor(r.meta.entityId);
     let inst = this.instances.find((i) => i.dungeonId === dungeonId && i.partyKey === key);
     if (!inst) {
@@ -7238,6 +7641,15 @@ export class Sim {
     p.autoAttack = false;
     inst.emptyFor = 0;
     this.emit({ type: 'log', text: dungeon.enterText, color: '#b9f', pid: r.meta.entityId });
+  }
+
+  private canEnterNythraxisCrypt(meta: PlayerMeta): boolean {
+    for (const questId of NYTHRAXIS_CRYPT_QUESTS) {
+      const qp = meta.questLog.get(questId);
+      if (qp && (qp.state === 'active' || qp.state === 'ready')) return true;
+      if (meta.questsDone.has(questId)) return true;
+    }
+    return false;
   }
 
   leaveDungeon(pid?: number): void {
@@ -7279,6 +7691,11 @@ export class Sim {
       this.addEntity(mob);
       inst.mobIds.push(mob.id);
     }
+    for (const objDef of dungeon.objects ?? []) {
+      const obj = createGroundObject(this.nextId++, objDef.itemId, objDef.name, this.groundPos(origin.x + objDef.x, origin.z + objDef.z));
+      this.addEntity(obj);
+      inst.objectIds.push(obj.id);
+    }
     const exit = createGroundObject(this.nextId++, '', `${dungeon.name} Exit`, this.groundPos(origin.x + dungeon.exitOffset.x, origin.z + dungeon.exitOffset.z));
     exit.templateId = 'dungeon_exit';
     exit.dungeonId = dungeon.id;
@@ -7299,9 +7716,13 @@ export class Sim {
       }
       this.dropEntity(id);
     }
+    for (const id of inst.objectIds) {
+      if (this.entities.has(id)) this.dropEntity(id);
+    }
     if (inst.exitId !== null) this.dropEntity(inst.exitId);
     inst.partyKey = null;
     inst.mobIds = [];
+    inst.objectIds = [];
     inst.exitId = null;
     inst.emptyFor = 0;
   }
@@ -7451,11 +7872,13 @@ export class Sim {
   // persisted PlayerMeta arena fields (no new state). Draws count as neither a
   // win nor a loss (see resolveArena), so "matches played" is wins + losses.
   private arenaReadout(meta: PlayerMeta): string {
-    const { arenaRating: rating, arenaWins: wins, arenaLosses: losses } = meta;
-    const played = wins + losses;
-    if (played <= 0) return `Arena: Rating ${rating} — no matches played yet.`;
-    const pct = Math.round((wins / played) * 100);
-    return `Arena: Rating ${rating} — ${wins} wins, ${losses} losses (${pct}% win rate).`;
+    const part = (label: ArenaFormat, rating: number, wins: number, losses: number): string => {
+      const played = wins + losses;
+      if (played <= 0) return `${label} Rating ${rating} - no matches played yet`;
+      const pct = Math.round((wins / played) * 100);
+      return `${label} Rating ${rating} - ${wins} wins, ${losses} losses (${pct}% win rate)`;
+    };
+    return `Arena: ${part('1v1', meta.arenaRating, meta.arenaWins, meta.arenaLosses)}. ${part('2v2', meta.arena2v2Rating, meta.arena2v2Wins, meta.arena2v2Losses)}.`;
   }
   private buybackReadout(meta: PlayerMeta): string {
     const slots = meta.vendorBuyback.filter((s) => ITEMS[s.itemId] && s.count > 0);
@@ -7835,8 +8258,12 @@ export class Sim {
   private gearReadout(meta: PlayerMeta): string {
     const slots: [EquipSlot, string][] = [
       ['mainhand', 'Main Hand'],
+      ['helmet', 'Helmet'],
+      ['shoulder', 'Shoulder'],
       ['chest', 'Chest'],
+      ['waist', 'Waist'],
       ['legs', 'Legs'],
+      ['gloves', 'Gloves'],
       ['feet', 'Feet'],
     ];
     let worn = 0;

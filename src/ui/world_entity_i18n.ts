@@ -27,6 +27,9 @@ const MOB_IDS = [
   'tidebound_acolyte', 'drowned_thrall', 'knight_commander_olen', 'vael_the_mistcaller',
   'sanctum_boneguard', 'sanctum_drakonid', 'raised_bonewalker', 'korgath_the_bound',
   'grand_necromancer_velkhar', 'korzul_the_gravewyrm', 'bog_bloat',
+  'fallen_captain_aldren', 'corrupted_priest_malric', 'deathstalker_voss',
+  'vision_aldren_warrior', 'vision_malric_mage', 'vision_deathstalker_voss',
+  'bound_guardian',
 ] as const;
 
 const NPC_IDS = [
@@ -50,11 +53,12 @@ const QUEST_IDS = [
   'q_drogmar', 'q_elementals', 'q_shard_cores', 'q_kazzix', 'q_zealots', 'q_cult_orders',
   'q_necromancers', 'q_revenants', 'q_revenant_vanguard', 'q_wyrm_sigils',
   'q_breaking_the_seal', 'q_voice_below', 'q_sanctum_gate', 'q_korgath', 'q_velkhar',
-  'q_gravewyrm', 'q_the_codfather',
+  'q_gravewyrm', 'q_the_codfather', 'q_nythraxis_restless_dead', 'q_nythraxis_graves',
+  'q_nythraxis_sealed_crypt', 'q_nythraxis_bound_guardian',
 ] as const;
 
 const ZONE_IDS = ['eastbrook_vale', 'mirefen_marsh', 'thornpeak_heights'] as const;
-const DUNGEON_IDS = ['hollow_crypt', 'sunken_bastion', 'gravewyrm_sanctum'] as const;
+const DUNGEON_IDS = ['hollow_crypt', 'sunken_bastion', 'gravewyrm_sanctum', 'nythraxis_crypt'] as const;
 
 type MobId = typeof MOB_IDS[number];
 type NpcId = typeof NPC_IDS[number];
