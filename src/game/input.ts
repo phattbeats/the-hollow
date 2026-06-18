@@ -86,6 +86,8 @@ export class Input {
   private dragDistance = 0;
   private cameraDragActive = false;
   private clickMoveMouseButton: 0 | 2 | null = null;
+  // +1 normal, -1 inverts the vertical mouselook axis (settings: invertLookY).
+  private lookPitchSign = 1;
   private downButton = -1;
   private pointerLockRequestedForDrag = false;
   private downX = 0;
@@ -238,6 +240,12 @@ export class Input {
 
   setTouchLookSpeed(mult: number): void {
     this.touchLookSpeed = mult;
+  }
+
+  // Invert the vertical mouselook/touch-look axis. Applied to every pitch delta
+  // so the preference is consistent across mouse drag, pointer-lock, and touch.
+  setInvertLookY(on: boolean): void {
+    this.lookPitchSign = on ? -1 : 1;
   }
 
   setTouchMove(move: TouchMoveInput): void {
@@ -558,7 +566,7 @@ export class Input {
       this.canvas.requestPointerLock?.();
     }
     this.camYaw -= mx * this.lookSensitivity;
-    this.camPitch = Math.min(1.35, Math.max(-0.4, this.camPitch + my * this.lookSensitivity));
+    this.camPitch = Math.min(1.35, Math.max(-0.4, this.camPitch + my * this.lookSensitivity * this.lookPitchSign));
     if (mx !== 0 || my !== 0) this.noteIntent('look');
   }
 

@@ -6239,6 +6239,7 @@ export class Hud {
     const goto = (view: 'keybinds' | 'graphics' | 'audio' | 'interface') => { this.optionsView = view; this.keybindNote = ''; this.renderOptions(); };
     add(t('hud.options.keyBindings'), () => goto('keybinds'));
     add(t('hud.options.graphics'), () => goto('graphics'));
+    add(t('hud.options.interface'), () => goto('interface'));
     add(t('hud.options.audio'), () => goto('audio'));
     add(t('hud.options.interface'), () => goto('interface'));
     add(t('hud.options.logout'), () => this.optionsHooks?.logout());
@@ -6302,6 +6303,34 @@ export class Hud {
       audio.click();
       const next = hooks.settings.get(key) >= 0.5 ? 0 : 1;
       hooks.onSettingChange(key, next);
+      sync();
+    });
+    row.append(name, toggle);
+    parent.appendChild(row);
+  }
+
+  // Like settingToggle but for a true/false BOOL_SETTINGS key (Interface panel).
+  private settingBoolToggle(parent: HTMLElement, label: string, key: BoolSettingKey): void {
+    const hooks = this.optionsHooks;
+    if (!hooks) return;
+    const row = document.createElement('div');
+    row.className = 'set-row';
+    const name = document.createElement('span');
+    name.className = 'set-name';
+    name.textContent = label;
+    const toggle = document.createElement('button');
+    toggle.className = 'btn set-toggle';
+    const sync = () => {
+      const on = hooks.settings.get(key);
+      toggle.textContent = on ? t('hud.options.on') : t('hud.options.off');
+      toggle.classList.toggle('off', !on);
+      toggle.setAttribute('aria-pressed', String(on));
+      toggle.setAttribute('aria-label', label);
+    };
+    sync();
+    toggle.addEventListener('click', () => {
+      audio.click();
+      hooks.onSettingChange(key, hooks.settings.set(key, !hooks.settings.get(key)));
       sync();
     });
     row.append(name, toggle);
@@ -6493,11 +6522,23 @@ export class Hud {
     this.settingsViewFooter();
   }
 
-  // Interface options. Self-contained client-side toggles (persisted to
-  // localStorage, not the GameSettings store) — currently the classic "Show
-  // Timestamps" chat option plus its 12/24-hour clock format.
+  // Interface & Comfort panel: presentational HUD tuning + accessibility toggles
+  // (sliders/toggles persisted to the GameSettings store, applied via CSS in
+  // main.ts) plus the classic client-side "Show Timestamps" chat option. None of
+  // it touches the simulation.
   private renderInterface(): void {
     const body = this.settingsViewShell('Interface');
+    this.settingSlider(body, t('hud.options.hudOpacity'), 'hudOpacity');
+    this.settingSlider(body, t('hud.options.tooltipScale'), 'tooltipScale');
+    this.settingSlider(body, t('hud.options.fctScale'), 'fctScale');
+    this.settingSlider(body, t('hud.options.chatFontScale'), 'chatFontScale');
+    this.settingSlider(body, t('hud.options.chatOpacity'), 'chatOpacity');
+    this.settingBoolToggle(body, t('hud.options.compactChat'), 'compactChat');
+    this.settingBoolToggle(body, t('hud.options.frostedPanels'), 'frostedPanels');
+    this.settingBoolToggle(body, t('hud.options.highContrastText'), 'highContrastText');
+    this.settingBoolToggle(body, t('hud.options.reduceMotion'), 'reduceMotion');
+    this.settingBoolToggle(body, t('hud.options.showFps'), 'showFps');
+    this.settingBoolToggle(body, t('hud.options.invertLookY'), 'invertLookY');
 
     // On/off toggle for chat timestamps.
     const tsRow = document.createElement('div');
