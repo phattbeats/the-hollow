@@ -1333,6 +1333,14 @@ export class Sim {
   private isSilenced(e: Entity): boolean {
     return e.auras.some((a) => a.kind === 'silence');
   }
+
+  // Extra chance for the entity's own weapon swings to whiff while blinded.
+  // Returns the strongest active blind aura's value (0 when not blinded).
+  private blindMissBonus(e: Entity): number {
+    let bonus = 0;
+    for (const a of e.auras) if (a.kind === 'blind' && a.value > bonus) bonus = a.value;
+    return bonus;
+  }
   private mobCanSwim(template: { family?: string; canSwim?: boolean } | undefined): boolean {
     return !!template;
   }
@@ -3182,7 +3190,7 @@ export class Sim {
     const school = ranged.wand ? (ranged.school ?? 'arcane') : 'physical';
     const label = ranged.wand ? 'Wand' : 'Auto Shot';
     this.emit({ type: 'spellfx', sourceId: attacker.id, targetId: target.id, school, fx: 'projectile' });
-    const missChance = meleeMissChance(attacker.level, target.level);
+    const missChance = meleeMissChance(attacker.level, target.level) + this.blindMissBonus(attacker);
     if (this.rng.chance(missChance)) {
       this.emit({ type: 'damage', sourceId: attacker.id, targetId: target.id, amount: 0, crit: false, school, ability: label, kind: 'miss' });
       this.enterCombat(attacker, target);
@@ -3203,7 +3211,7 @@ export class Sim {
     attacker: Entity, target: Entity, bonus: number, abilityName: string | null,
     opts: { cannotBeDodged?: boolean; weaponMult?: number; threatFlat?: number; threatMult?: number },
   ): boolean {
-    const missChance = meleeMissChance(attacker.level, target.level);
+    const missChance = meleeMissChance(attacker.level, target.level) + this.blindMissBonus(attacker);
     const dodgeChance = opts.cannotBeDodged ? 0
       : (target.kind === 'player' ? target.dodgeChance : 0.05 + Math.max(0, target.level - attacker.level) * 0.005);
     const roll = this.rng.next();
@@ -4173,6 +4181,18 @@ export class Sim {
         id: `silence_${mob.templateId}`, name: silence.name, kind: 'silence',
         remaining: silence.duration, duration: silence.duration, value: 0,
         sourceId: mob.id, school: (silence.school ?? 'shadow') as Aura['school'],
+      });
+    }
+    // blinding powder: a thrown handful of grit can leave the victim's own
+    // weapon swings whiffing. Guarded on hostile + alive so a friendly pet
+    // (mobSwing's other caller) never blinds the party. Carries the added miss
+    // chance in the aura value, read back in melee/ranged swings via blindMissBonus.
+    const blind = MOBS[mob.templateId]?.blind;
+    if (blind && mob.hostile && !target.dead && this.rng.chance(blind.chance)) {
+      this.applyAura(target, {
+        id: `blind_${mob.templateId}`, name: blind.name, kind: 'blind',
+        remaining: blind.duration, duration: blind.duration, value: blind.miss,
+        sourceId: mob.id, school: (blind.school ?? 'physical') as Aura['school'],
       });
     }
     // thorns / lightning shield on the defender
