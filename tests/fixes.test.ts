@@ -380,17 +380,25 @@ describe('dungeon instance placement and targetability', () => {
   it('places every dungeon entry and mob spawn on unblocked instance ground', () => {
     for (const dungeon of DUNGEON_LIST) {
       const sim = makeSim();
+      if (dungeon.id === 'nythraxis_crypt') {
+        sim.questLog.set('q_nythraxis_sealed_crypt', { questId: 'q_nythraxis_sealed_crypt', counts: [0, 0, 0], state: 'active' });
+      }
       sim.enterDungeon(dungeon.id);
       const p = sim.player;
       expect(p.pos.x, `${dungeon.id} entry is not inside an instance`).toBeGreaterThan(DUNGEON_X_THRESHOLD);
       expect(isBlocked(SEED, p.pos.x, p.pos.z, 0.5), `${dungeon.id} entry spawned in geometry`).toBe(false);
 
       const mobs = [...sim.entities.values()].filter((e) => e.kind === 'mob' && e.spawnPos.x > DUNGEON_X_THRESHOLD);
-      expect(mobs.length, `${dungeon.id} spawned no instance mobs`).toBeGreaterThan(0);
+      const objects = [...sim.entities.values()].filter((e) => e.kind === 'object' && e.objectItemId && e.pos.x > DUNGEON_X_THRESHOLD);
+      expect(mobs.length + objects.length, `${dungeon.id} spawned no instance encounters`).toBeGreaterThan(0);
       for (const mob of mobs) {
         expect(mob.hostile, `${dungeon.id} ${mob.name} is not hostile`).toBe(true);
         expect(sim.isHostileTo(sim.player, mob), `${dungeon.id} ${mob.name} is not targetable`).toBe(true);
         expect(isBlocked(SEED, mob.pos.x, mob.pos.z, 0.5), `${dungeon.id} ${mob.name} spawned in geometry`).toBe(false);
+      }
+      for (const obj of objects) {
+        expect(obj.lootable, `${dungeon.id} ${obj.name} is not interactable`).toBe(true);
+        expect(isBlocked(SEED, obj.pos.x, obj.pos.z, 0.5), `${dungeon.id} ${obj.name} spawned in geometry`).toBe(false);
       }
     }
   });
@@ -669,6 +677,83 @@ describe('quest npc roles', () => {
     // offers several — keep talking until the muster order is taken
     for (let i = 0; i < 10 && sim.questState('q_fenbridge_muster') !== 'active'; i++) sim.talkToNpc(aldric.id);
     expect(sim.questState('q_fenbridge_muster')).toBe('active');
+  });
+
+  it('lets a completed NPC interaction objective fall through to quest turn-in', () => {
+    const sim = makeSim();
+    const quest = QUESTS.q_nythraxis_deathless_king;
+    const aldric = [...sim.entities.values()].find((e) => e.templateId === quest.turnInNpcId)!;
+    teleportTo(sim, aldric.pos.x + 2, aldric.pos.z);
+    sim.questLog.set(quest.id, { questId: quest.id, counts: [1, 0], state: 'active' });
+
+    sim.talkToNpc(aldric.id);
+    expect(sim.questLog.get(quest.id)?.counts).toEqual([1, 1]);
+    expect(sim.questState(quest.id)).toBe('ready');
+
+    sim.talkToNpc(aldric.id);
+    expect(sim.questState(quest.id)).toBe('done');
+  });
+
+  it('prefers the selected NPC over a nearer object when interacting', () => {
+    const sim = makeSim();
+    const quest = QUESTS.q_nythraxis_deathless_king;
+    const aldric = [...sim.entities.values()].find((e) => e.templateId === quest.turnInNpcId)!;
+    const crate = [...sim.entities.values()].find((e) => e.kind === 'object' && e.objectItemId === 'highwatch_summons')!;
+    teleportTo(sim, aldric.pos.x + 1.8, aldric.pos.z);
+    placeEntity(sim, crate, sim.player.pos.x + 0.5, sim.player.pos.z);
+    sim.questLog.set(quest.id, { questId: quest.id, counts: [1, 0], state: 'active' });
+
+    sim.targetEntity(aldric.id);
+    sim.interact();
+
+    expect(sim.questLog.get(quest.id)?.counts).toEqual([1, 1]);
+    expect(sim.countItem('highwatch_summons')).toBe(0);
+  });
+
+  it('gates the sealed crypt and grave visions behind Nythraxis quests', () => {
+    const sim = makeSim();
+    const crypt = DUNGEON_LIST.find((d) => d.id === 'nythraxis_crypt')!;
+
+    sim.enterDungeon(crypt.id);
+    expect(sim.player.pos.x).toBeLessThan(DUNGEON_X_THRESHOLD);
+
+    sim.questLog.set('q_nythraxis_sealed_crypt', { questId: 'q_nythraxis_sealed_crypt', counts: [0, 0, 0], state: 'active' });
+    sim.enterDungeon(crypt.id);
+    expect(sim.player.pos.x).toBeGreaterThan(DUNGEON_X_THRESHOLD);
+
+    teleportTo(sim, 0, 660);
+    sim.questLog.delete('q_nythraxis_sealed_crypt');
+    const grave = [...sim.entities.values()].find((e) => e.kind === 'object' && e.objectItemId === 'grave_sir_aldren')!;
+    teleportTo(sim, grave.pos.x, grave.pos.z);
+    sim.pickUpObject(grave.id);
+    expect([...sim.entities.values()].some((e) => e.templateId === 'vision_aldren_warrior')).toBe(false);
+
+    sim.questLog.set('q_nythraxis_graves', { questId: 'q_nythraxis_graves', counts: [0, 0, 0], state: 'active' });
+    sim.pickUpObject(grave.id);
+    expect(sim.questLog.get('q_nythraxis_graves')?.counts[0]).toBe(1);
+    const vision = [...sim.entities.values()].find((e) => e.templateId === 'vision_aldren_warrior');
+    expect(vision && !vision.hostile).toBe(true);
+    const logEvents = sim.events.filter((e) => e.type === 'log');
+    expect(logEvents).toContainEqual(expect.objectContaining({ entityId: vision?.id }));
+    sim.targetEntity(vision!.id);
+    sim.startAutoAttack();
+    expect(sim.player.autoAttack).toBe(false);
+    for (let i = 0; i < 180; i++) sim.tick();
+    expect([...sim.entities.values()].some((e) => e.id === vision!.id)).toBe(false);
+  });
+
+  it('immediately aggros Nythraxis quest summons on the summoning player', () => {
+    const sim = makeSim();
+    const ritual = [...sim.entities.values()].find((e) => e.kind === 'object' && e.objectItemId === 'crypt_ritual_circle')!;
+    teleportTo(sim, ritual.pos.x, ritual.pos.z);
+    sim.questLog.set('q_nythraxis_bound_guardian', { questId: 'q_nythraxis_bound_guardian', counts: [0, 0, 0], state: 'active' });
+    sim.addItem('crypt_keystone', 1);
+
+    sim.pickUpObject(ritual.id);
+
+    const guardian = [...sim.entities.values()].find((e) => e.templateId === 'bound_guardian');
+    expect(guardian).toBeTruthy();
+    expect(guardian).toMatchObject({ hostile: true, aiState: 'chase', aggroTargetId: sim.player.id });
   });
 
   it('cleanses hostile control auras from quest NPCs', () => {

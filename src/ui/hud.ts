@@ -2752,10 +2752,14 @@ export class Hud {
           audio.questAccept();
           this.refreshGossip();
           break;
-        case 'questProgress': this.log(this.localizeQuestProgressText(ev.questId, ev.text), '#dcd29f'); break;
+        case 'questProgress':
+          this.log(this.localizeQuestProgressText(ev.questId, ev.text), '#dcd29f');
+          this.refreshGossip();
+          break;
         case 'questReady': {
           this.showBanner(t('questUi.logs.ready', { name: questTitle(ev.questId), status: t('questUi.log.readyStatus') }));
           audio.questDone();
+          this.refreshGossip();
           break;
         }
         case 'questDone':
@@ -2885,7 +2889,14 @@ export class Hud {
           }
           break;
         }
-        case 'log': this.log(this.localizeSystemText(ev.text), ev.color ?? '#ccc'); break;
+        case 'log': {
+          const text = this.localizeSystemText(ev.text);
+          this.log(text, ev.color ?? '#ccc');
+          if (ev.entityId !== undefined && (ev.text.startsWith('Vision:') || ev.text.includes(' yells, "'))) {
+            this.renderer.showChatBubble(ev.entityId, text, ev.text.includes(' yells, "'));
+          }
+          break;
+        }
         case 'playerDeath': {
           this.log(t('hud.system.playerDeath'), '#ff4444');
           audio.death();
@@ -3291,6 +3302,14 @@ export class Hud {
       return (st === 'available' && QUESTS[q].giverNpcId === npc.templateId)
         || (st === 'ready' && QUESTS[q].turnInNpcId === npc.templateId);
     });
+    const discussionQuests = [...this.sim.questLog.values()]
+      .filter((qp) => qp.state === 'active' && npc.questIds.includes(qp.questId))
+      .filter((qp) => QUESTS[qp.questId].objectives.some((objective, objectiveIndex) =>
+        objective.type === 'interact'
+        && objective.targetNpcId === npc.templateId
+        && qp.counts[objectiveIndex] < objective.count,
+      ))
+      .map((qp) => qp.questId);
     el.setAttribute('role', 'dialog');
     el.setAttribute('aria-modal', 'false');
     el.setAttribute('aria-labelledby', 'quest-dialog-title');
@@ -3310,6 +3329,12 @@ export class Hud {
         html += `<button type="button" class="qd-list-item" data-quest="${esc(qid)}" aria-label="${esc(aria)}">${icon}${esc(title)}</button>`;
       }
     }
+    if (discussionQuests.length > 0) {
+      for (const qid of discussionQuests) {
+        const title = questTitle(qid);
+        html += `<button type="button" class="qd-list-item" data-discuss="${esc(qid)}" aria-label="${esc(t('questUi.dialog.discussQuestAria', { name: title }))}"><span class="gold">?</span> ${esc(t('questUi.dialog.discussQuest', { name: title }))}</button>`;
+      }
+    }
     if (npc.vendorItems.length > 0) {
       html += `<button type="button" class="qd-list-item" data-vendor="1" aria-label="${esc(t('questUi.dialog.browseGoodsAria', { name: npcName }))}"><span class="quest-complete">$</span> ${esc(t('questUi.dialog.browseGoods'))}</button>`;
     }
@@ -3319,6 +3344,13 @@ export class Hud {
     el.innerHTML = html;
     el.querySelectorAll('[data-quest]').forEach((item) => {
       item.addEventListener('click', () => this.renderQuestDetail(npc, (item as HTMLElement).dataset.quest!));
+    });
+    el.querySelectorAll('[data-discuss]').forEach((item) => {
+      item.addEventListener('click', () => {
+        this.sim.targetEntity(npc.id);
+        this.sim.interact();
+        (item as HTMLButtonElement).disabled = true;
+      });
     });
     el.querySelector('[data-vendor]')?.addEventListener('click', () => {
       this.closeQuestDialog(false);

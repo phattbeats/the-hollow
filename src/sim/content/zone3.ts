@@ -183,8 +183,83 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
     loot: [
       { copper: 100, chance: 1 },
       { itemId: 'bone_fragments', chance: 0.6 },
+      { itemId: 'runed_bone_shard', chance: 0.7, questId: 'q_nythraxis_restless_dead' },
     ],
     scale: 1.05, color: 0xcacfd2,
+  },
+  fallen_captain_aldren: {
+    id: 'fallen_captain_aldren', name: 'Fallen Captain Aldren', minLevel: 19, maxLevel: 19, family: 'undead',
+    elite: true, rare: true, canSwim: true, ccImmune: true, respawnMult: 4,
+    hpBase: 220, hpPerLevel: 38, dmgBase: 14, dmgPerLevel: 3.1, attackSpeed: 2.2,
+    armorPerLevel: 32, moveSpeed: 7.2, aggroRadius: 18,
+    cleave: { radius: 7, mult: 0.65, name: 'Grave-Cleaver' },
+    loot: [
+      { copper: 450, chance: 1 },
+      { itemId: 'captains_crest', chance: 1, questId: 'q_nythraxis_sealed_crypt' },
+      { itemId: 'bone_fragments', chance: 1 },
+    ],
+    scale: 1.15, color: 0xbfc7ca,
+  },
+  corrupted_priest_malric: {
+    id: 'corrupted_priest_malric', name: 'Corrupted Priest Malric', minLevel: 19, maxLevel: 19, family: 'undead',
+    elite: true, rare: true, canSwim: true, ccImmune: true, respawnMult: 4,
+    hpBase: 190, hpPerLevel: 34, dmgBase: 15, dmgPerLevel: 3.2, attackSpeed: 2.4,
+    armorPerLevel: 18, moveSpeed: 6.9, aggroRadius: 18,
+    manaBurn: { chance: 0.35, amount: 90, name: 'Withered Benediction', school: 'shadow' },
+    mendAlly: { healMin: 28, healMax: 42, radius: 12, every: 8, name: 'Profane Mending', school: 'shadow' },
+    aoePulse: { min: 22, max: 34, radius: 18, every: 6, name: 'Mind Blast', school: 'shadow', fx: 'projectile' },
+    loot: [
+      { copper: 450, chance: 1 },
+      { itemId: 'priests_sigil', chance: 1, questId: 'q_nythraxis_sealed_crypt' },
+      { itemId: 'frayed_prayer_beads', chance: 0.5 },
+    ],
+    scale: 1.05, color: 0xd5d0e8,
+  },
+  deathstalker_voss: {
+    id: 'deathstalker_voss', name: 'Deathstalker Voss', minLevel: 19, maxLevel: 19, family: 'undead',
+    elite: true, rare: true, canSwim: true, ccImmune: true, respawnMult: 4,
+    hpBase: 235, hpPerLevel: 40, dmgBase: 14, dmgPerLevel: 3.0, attackSpeed: 2.5,
+    armorPerLevel: 36, moveSpeed: 7.2, aggroRadius: 18,
+    cleave: { radius: 7, mult: 0.55, name: 'Deathstalker Cleave' },
+    mortalStrike: { chance: 0.35, healReduction: 0.5, duration: 8, name: 'Forgotten Wound', school: 'physical' },
+    loot: [
+      { copper: 450, chance: 1 },
+      { itemId: 'royal_seal', chance: 1, questId: 'q_nythraxis_sealed_crypt' },
+      { itemId: 'bone_fragments', chance: 1 },
+    ],
+    scale: 1.18, color: 0xc7c0b2,
+  },
+  vision_aldren_warrior: {
+    id: 'vision_aldren_warrior', name: 'Vision of Captain Aldren', minLevel: 20, maxLevel: 20, family: 'humanoid',
+    hpBase: 1, hpPerLevel: 0, dmgBase: 0, dmgPerLevel: 0, attackSpeed: 2,
+    armorPerLevel: 0, moveSpeed: 0, aggroRadius: 0,
+    loot: [], scale: 1.0, color: 0xb8d7ff,
+  },
+  vision_malric_mage: {
+    id: 'vision_malric_mage', name: 'Vision of High Priest Malric', minLevel: 20, maxLevel: 20, family: 'humanoid',
+    hpBase: 1, hpPerLevel: 0, dmgBase: 0, dmgPerLevel: 0, attackSpeed: 2,
+    armorPerLevel: 0, moveSpeed: 0, aggroRadius: 0,
+    loot: [], scale: 1.0, color: 0xc9b6ff,
+  },
+  vision_deathstalker_voss: {
+    id: 'vision_deathstalker_voss', name: 'Vision of Royal Assassin Voss', minLevel: 20, maxLevel: 20, family: 'humanoid',
+    hpBase: 1, hpPerLevel: 0, dmgBase: 0, dmgPerLevel: 0, attackSpeed: 2,
+    armorPerLevel: 0, moveSpeed: 0, aggroRadius: 0,
+    loot: [], scale: 1.0, color: 0xb8d7ff,
+  },
+  bound_guardian: {
+    id: 'bound_guardian', name: 'The Bound Guardian', minLevel: 20, maxLevel: 20, family: 'undead',
+    elite: true, boss: true, canSwim: true, ccImmune: true, respawnMult: 1000,
+    hpBase: 310, hpPerLevel: 48, dmgBase: 16, dmgPerLevel: 3.4, attackSpeed: 2.4,
+    armorPerLevel: 42, moveSpeed: 6.8, aggroRadius: 16,
+    aoePulse: { min: 30, max: 44, radius: 10, every: 10, name: 'Sealbreak Shockwave', school: 'shadow' },
+    summonAdds: { mobId: 'varkas_boneguard', count: 2, atHpPct: [0.50] },
+    enrage: { belowHpPct: 0.25, dmgMult: 1.45, hasteMult: 1.25 },
+    loot: [
+      { copper: 1200, chance: 1 },
+      { itemId: 'kings_signet', chance: 1, questId: 'q_nythraxis_bound_guardian' },
+    ],
+    scale: 1.35, color: 0xa8b0b8,
   },
   marrowlord_varkas: {
     id: 'marrowlord_varkas', name: 'Marrowlord Varkas', minLevel: 19, maxLevel: 19, family: 'undead', rare: true,
@@ -227,6 +302,8 @@ export const ZONE3_NPCS: Record<string, NpcDef> = {
     questIds: [
       'q_zealots', 'q_cult_orders', 'q_necromancers', 'q_wyrm_sigils', 'q_breaking_the_seal',
       'q_voice_below', 'q_sanctum_gate', 'q_velkhar', 'q_gravewyrm',
+      'q_nythraxis_restless_dead', 'q_nythraxis_graves', 'q_nythraxis_sealed_crypt',
+      'q_nythraxis_bound_guardian', 'q_nythraxis_deathless_king',
     ],
     greeting: 'From a chapel yard in the Vale to the roof of the world... the trail we have followed ends here. I can feel the mountain listening.',
   },
@@ -506,6 +583,68 @@ export const ZONE3_QUESTS: Record<string, QuestDef> = {
     itemRewards: { warrior: 'gravewyrm_scale_hauberk', mage: 'wyrmcult_grand_robe', rogue: 'wyrmscale_jerkin' },
     requiresQuest: 'q_velkhar', minLevel: 18, suggestedPlayers: 5,
   },
+  q_nythraxis_restless_dead: {
+    id: 'q_nythraxis_restless_dead', name: 'The Restless Dead',
+    giverNpcId: 'brother_aldric_highwatch', turnInNpcId: 'brother_aldric_highwatch',
+    text: 'Something has changed in Thornpeak Heights, $N. The dead no longer wander aimlessly. They gather, they march, and these runes carved into their bones point to a kingdom that stood here long before Eastbrook. Bring me ten Runed Bone Shards from the Boneclad Revenants in the northern reaches.',
+    completionText: 'The same mark appears on every shard... a crown. Thornpeak was not only a mountain. It was a kingdom.',
+    objectives: [{ type: 'collect', itemId: 'runed_bone_shard', count: 10, label: 'Runed Bone Shard' }],
+    xpReward: 4200, copperReward: 2000, itemRewards: {},
+    minLevel: 20,
+  },
+  q_nythraxis_graves: {
+    id: 'q_nythraxis_graves', name: 'Graves of the Forgotten',
+    giverNpcId: 'brother_aldric_highwatch', turnInNpcId: 'brother_aldric_highwatch',
+    text: 'The crown belongs to no line still named in Eastbrook records. Three old memorials stand near the northern battlefield: Captain Aldren, High Priest Malric, and Royal Assassin Voss. Touch each stone and listen, $N. The dead may remember what the living erased.',
+    completionText: 'Aldren remained loyal, Malric refused to accept death, and Voss saw the danger before anyone else. All three served King Nythraxis.',
+    objectives: [
+      { type: 'interact', targetObjectItemId: 'grave_sir_aldren', count: 1, label: 'Vision at the Grave of Captain Aldren' },
+      { type: 'interact', targetObjectItemId: 'grave_high_priest_malric', count: 1, label: 'Vision at the Grave of High Priest Malric' },
+      { type: 'interact', targetObjectItemId: 'grave_captain_voss', count: 1, label: 'Vision at the Grave of Royal Assassin Voss' },
+    ],
+    xpReward: 4300, copperReward: 2200, itemRewards: {},
+    requiresQuest: 'q_nythraxis_restless_dead', minLevel: 20,
+  },
+  q_nythraxis_sealed_crypt: {
+    id: 'q_nythraxis_sealed_crypt', name: 'The Abandoned Crypt',
+    giverNpcId: 'brother_aldric_highwatch', turnInNpcId: 'brother_aldric_highwatch',
+    text: 'The visions point to an abandoned crypt beneath the old ruins. If the records are true, Thornpeak sealed Nythraxis below after Malric\'s ritual twisted him into a deathless ruler. Recover the Captain\'s Crest, the Priest\'s Sigil, and the Royal Seal from the corrupted remains within.',
+    completionText: 'These relics are bound to the seal. Something beneath Eastbrook is beginning to wake.',
+    objectives: [
+      { type: 'collect', itemId: 'captains_crest', count: 1, label: "Captain's Crest" },
+      { type: 'collect', itemId: 'priests_sigil', count: 1, label: "Priest's Sigil" },
+      { type: 'collect', itemId: 'royal_seal', count: 1, label: 'Royal Seal' },
+    ],
+    xpReward: 4600, copperReward: 2500,
+    itemRewards: { warrior: 'crypt_keystone', mage: 'crypt_keystone', rogue: 'crypt_keystone' },
+    requiresQuest: 'q_nythraxis_graves', minLevel: 20,
+  },
+  q_nythraxis_bound_guardian: {
+    id: 'q_nythraxis_bound_guardian', name: 'The Bound Guardian',
+    giverNpcId: 'brother_aldric_highwatch', turnInNpcId: 'brother_aldric_highwatch',
+    text: 'The survivors of Thornpeak feared someone would try to break the seal, so they made a guardian from the bones of warriors who died in the kingdom\'s final days. Take the Crypt Keystone to the ritual circle above the abandoned crypt. Use it there, then stand fast.',
+    completionText: 'The signet proves it. The forgotten king beneath Eastbrook was Nythraxis.',
+    objectives: [
+      { type: 'interact', targetObjectItemId: 'crypt_ritual_circle', count: 1, label: 'Crypt Keystone used at the ritual circle' },
+      { type: 'kill', targetMobId: 'bound_guardian', count: 1, label: 'The Bound Guardian defeated' },
+      { type: 'collect', itemId: 'kings_signet', count: 1, label: "King's Signet" },
+    ],
+    xpReward: 5200, copperReward: 3500, itemRewards: {},
+    requiresQuest: 'q_nythraxis_sealed_crypt', minLevel: 20, suggestedPlayers: 5,
+  },
+  q_nythraxis_deathless_king: {
+    id: 'q_nythraxis_deathless_king', name: 'Nythraxis, Scourge of Eastbrook',
+    giverNpcId: 'brother_aldric_highwatch', turnInNpcId: 'brother_aldric_highwatch',
+    text: 'King Nythraxis was carried home from his final battle dying, but Malric would not let him rest. The ritual returned a tyrant bound to dark magic, and Thornpeak fell into chaos. Stand with me, $N. Look into the memory of the seal and learn what now stirs beneath Eastbrook.',
+    completionText: 'For centuries the seal held. Now it weakens. If Nythraxis rises again, Eastbrook will become a kingdom of the dead. You are now attuned to enter The Crypt of Nythraxis.',
+    objectives: [
+      { type: 'interact', targetObjectItemId: 'nythraxis_vision', count: 1, label: 'Vision of Nythraxis witnessed' },
+      { type: 'interact', targetNpcId: 'brother_aldric_highwatch', count: 1, label: 'Brother Aldric spoken to' },
+    ],
+    xpReward: 5200, copperReward: 5000,
+    itemRewards: { warrior: 'aldrics_seal', mage: 'aldrics_seal', rogue: 'aldrics_seal' },
+    requiresQuest: 'q_nythraxis_bound_guardian', minLevel: 20,
+  },
 };
 
 export const ZONE3_QUEST_ORDER = [
@@ -514,6 +653,8 @@ export const ZONE3_QUEST_ORDER = [
   'q_elementals', 'q_shard_cores', 'q_kazzix', 'q_zealots', 'q_cult_orders',
   'q_necromancers', 'q_revenants', 'q_revenant_vanguard', 'q_wyrm_sigils', 'q_breaking_the_seal',
   'q_voice_below', 'q_sanctum_gate', 'q_korgath', 'q_velkhar', 'q_gravewyrm',
+  'q_nythraxis_restless_dead', 'q_nythraxis_graves', 'q_nythraxis_sealed_crypt',
+  'q_nythraxis_bound_guardian', 'q_nythraxis_deathless_king',
 ];
 
 // ---------------------------------------------------------------------------
@@ -571,6 +712,31 @@ export const ZONE3_OBJECTS: GroundObjectDef[] = [
     name: 'Sanctum Key Shard',
     positions: [{ x: -6, z: 872 }, { x: -2, z: 876 }, { x: 2, z: 873 }, { x: 6, z: 878 }],
   },
+  {
+    itemId: 'grave_sir_aldren',
+    name: 'Grave of Captain Aldren',
+    positions: [{ x: 138, z: 838 }],
+  },
+  {
+    itemId: 'grave_high_priest_malric',
+    name: 'Grave of High Priest Malric',
+    positions: [{ x: 148, z: 706 }],
+  },
+  {
+    itemId: 'grave_captain_voss',
+    name: 'Grave of Royal Assassin Voss',
+    positions: [{ x: -146, z: 782 }],
+  },
+  {
+    itemId: 'crypt_ritual_circle',
+    name: 'Ritual Circle',
+    positions: [{ x: 80, z: 798 }],
+  },
+  {
+    itemId: 'nythraxis_vision',
+    name: 'Nythraxis Vision',
+    positions: [{ x: -12, z: 658 }],
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -590,6 +756,19 @@ export const ZONE3_ITEMS: Record<string, ItemDef> = {
   gravewyrm_sigil: { id: 'gravewyrm_sigil', name: 'Gravewyrm Sigil', kind: 'quest', sellValue: 0, questId: 'q_wyrm_sigils' },
   blessed_embers: { id: 'blessed_embers', name: 'Blessed Embers', kind: 'quest', sellValue: 0, questId: 'q_breaking_the_seal' },
   sanctum_key_shard: { id: 'sanctum_key_shard', name: 'Sanctum Key Shard', kind: 'quest', sellValue: 0, questId: 'q_sanctum_gate' },
+  runed_bone_shard: { id: 'runed_bone_shard', name: 'Runed Bone Shard', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_restless_dead' },
+  grave_sir_aldren: { id: 'grave_sir_aldren', name: 'Grave of Captain Aldren', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_graves' },
+  grave_high_priest_malric: { id: 'grave_high_priest_malric', name: 'Grave of High Priest Malric', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_graves' },
+  grave_captain_voss: { id: 'grave_captain_voss', name: 'Grave of Royal Assassin Voss', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_graves' },
+  ancient_crypt_door: { id: 'ancient_crypt_door', name: 'Ancient Crypt Door', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_sealed_crypt' },
+  captains_crest: { id: 'captains_crest', name: "Captain's Crest", kind: 'quest', sellValue: 0, questId: 'q_nythraxis_sealed_crypt' },
+  priests_sigil: { id: 'priests_sigil', name: "Priest's Sigil", kind: 'quest', sellValue: 0, questId: 'q_nythraxis_sealed_crypt' },
+  royal_seal: { id: 'royal_seal', name: 'Royal Seal', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_sealed_crypt' },
+  crypt_keystone: { id: 'crypt_keystone', name: 'Crypt Keystone', kind: 'quest', quality: 'uncommon', sellValue: 0, questId: 'q_nythraxis_bound_guardian' },
+  crypt_ritual_circle: { id: 'crypt_ritual_circle', name: 'Ritual Circle', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_bound_guardian' },
+  kings_signet: { id: 'kings_signet', name: "King's Signet", kind: 'quest', sellValue: 0, questId: 'q_nythraxis_bound_guardian' },
+  nythraxis_vision: { id: 'nythraxis_vision', name: 'Nythraxis Vision', kind: 'quest', sellValue: 0, questId: 'q_nythraxis_deathless_king' },
+  aldrics_seal: { id: 'aldrics_seal', name: "Aldric's Seal", kind: 'quest', quality: 'rare', sellValue: 0, questId: 'q_nythraxis_deathless_king' },
   // --- quest greens (uncommon) ---
   ridgestalker_treads: {
     id: 'ridgestalker_treads', name: 'Ridgestalker Treads', kind: 'armor', slot: 'feet', quality: 'uncommon',
@@ -832,7 +1011,10 @@ export const ZONE3_PROPS: ZonePropsDef = {
     { x: -7.5, z: 667, rot: Math.PI / 2, r: 1.7 },   // Quartermaster Bree
     { x: -4.5, z: 673.5, rot: -0.6, r: 1.7 },        // Armorer Hode
   ],
-  mines: [{ x: 88, z: 612, rot: -2.0 }],             // Deeprock Burrows
+  mines: [
+    { x: 88, z: 612, rot: -2.0 },                    // Deeprock Burrows
+    { x: -152, z: 610, rot: Math.PI / 2 },           // Abandoned crypt entrance
+  ],
   docks: [],
   tents: [
     // Drogmar's war-camp
@@ -850,6 +1032,10 @@ export const ZONE3_PROPS: ZonePropsDef = {
   mudHuts: [],
   ruinRings: [
     { x: -40, z: 830, ringR: 7, columns: 6 },        // Revenant Fields battlefield
+    { x: 80, z: 798, ringR: 10, columns: 8 },        // Nythraxis ritual grounds
+    { x: 148, z: 706, ringR: 7, columns: 6 },        // Malric grave ruins
+    { x: 138, z: 838, ringR: 7, columns: 6 },        // Aldren grave ruins
+    { x: -146, z: 782, ringR: 7, columns: 6 },       // Royal Assassin Voss grave ruins
     { x: -12, z: 862, ringR: 6, columns: 5 },        // Sanctum Approach ruins
     { x: 12, z: 858, ringR: 6, columns: 5 },
   ],
@@ -857,5 +1043,13 @@ export const ZONE3_PROPS: ZonePropsDef = {
     { x1: -14, z1: 649, x2: -4, z2: 647 },           // south gate, east run
     { x1: 4, z1: 647, x2: 14, z2: 649 },             // south gate, west run
   ],
-  graveyards: [{ x: 15, z: 645 }],
+  graveyards: [
+    { x: 15, z: 645 },
+    { x: 72, z: 790 },
+    { x: 90, z: 794 },
+    { x: 76, z: 808 },
+    { x: 148, z: 706 },
+    { x: 138, z: 838 },
+    { x: -146, z: 782 },
+  ],
 };
