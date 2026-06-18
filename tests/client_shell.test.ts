@@ -84,12 +84,18 @@ describe('client HTML shell', () => {
 
   it('closes mobile community and More trays when tapping outside', () => {
     expect(hudTs).toContain("const communityMenu = document.getElementById('community-menu') as HTMLDetailsElement | null;");
-    expect(hudTs).toContain('if (communityMenu?.open && !communityMenu.contains(target)) {\n        communityMenu.open = false;\n      }');
+    expect(hudTs).toContain("if (document.body.classList.contains('mobile-touch') && communityMenu?.open && !communityMenu.contains(target)) {\n        communityMenu.open = false;\n      }");
+    expect(hudTs).not.toContain('if (communityMenu?.open && !communityMenu.contains(target)) {\n        communityMenu.open = false;\n      }');
     expect(hudTs).toContain("if (document.body.classList.contains('mobile-more-open')) {");
     expect(hudTs).toContain("document.body.classList.remove('mobile-more-open');");
     expect(hudTs).toContain("document.getElementById('mobile-controls')?.classList.remove('expanded');");
     expect(hudTs).toContain("more?.classList.remove('active');");
     expect(hudTs).toContain("document.getElementById('mobile-more-close')?.addEventListener('click', () => {");
+  });
+
+  it('keeps desktop community links open after HUD clicks', () => {
+    expect(mainTs).toContain('communityMenu.open = !isPhoneTouchDevice();');
+    expect(hudTs).toContain("document.body.classList.contains('mobile-touch') && communityMenu?.open");
   });
 
   it('renders the mobile XP bar as a ring around the top-left class circle', () => {
