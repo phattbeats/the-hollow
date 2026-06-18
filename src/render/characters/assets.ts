@@ -406,6 +406,9 @@ export function prepareVisual(key: string): PreparedVisual {
 
   const clips = new Map<string, THREE.AnimationClip>();
   for (const clip of gltf.animations) clips.set(clip.name, clip);
+  for (const url of def.animUrls ?? []) {
+    for (const clip of resolvedGltf(url).animations) clips.set(clip.name, clip);
+  }
 
   // Pose a throwaway clone mid-idle, measure it, and bake the static mesh.
   const temp = assembleModel(def);

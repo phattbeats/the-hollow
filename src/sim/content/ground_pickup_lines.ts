@@ -61,6 +61,26 @@ export const GROUND_PICKUP_LINES: Record<string, GroundPickupLines> = {
     deny: 'The warding is not yours to copy until the watcher asks for it.',
     enough: 'You already have the warding rubbing.',
   },
+  grave_sir_aldren: {
+    deny: 'The grave is sealed against the living until the dead call you to it.',
+    enough: "You have already taken what Captain Aldren's grave will give.",
+  },
+  grave_high_priest_malric: {
+    deny: 'The grave is sealed against the living until the dead call you to it.',
+    enough: "You have already taken what High Priest Malric's grave will give.",
+  },
+  grave_captain_voss: {
+    deny: 'The grave is sealed against the living until the dead call you to it.',
+    enough: "You have already taken what Royal Assassin Voss's grave will give.",
+  },
+  crypt_ritual_circle: {
+    deny: 'The ritual circle lies cold and dormant.',
+    enough: 'The circle has nothing more to give you.',
+  },
+  nythraxis_vision: {
+    deny: 'The vision will not come to you unbidden.',
+    enough: 'The vision has already shown you all it holds.',
+  },
 };
 
 export function groundPickupDeny(itemId: string, itemName: string): string {

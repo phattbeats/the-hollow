@@ -25,9 +25,9 @@
     "ru_RU"
   ],
   "counts": {
-    "keys": 2374,
-    "rows": 30862,
-    "translated": 30771,
+    "keys": 2426,
+    "rows": 31538,
+    "translated": 31447,
     "pending": 48,
     "blocked": 43,
     "blockedSource": 106
@@ -32037,6 +32037,222 @@
         }
       }
     },
+    "main:entities.dungeons.nythraxis_crypt.enterText": {
+      "scope": "main",
+      "enHash": "292c1b3d249044b1",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "292c1b3d249044b1",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "292c1b3d249044b1",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "292c1b3d249044b1",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "292c1b3d249044b1",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "292c1b3d249044b1",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "292c1b3d249044b1",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "292c1b3d249044b1",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "292c1b3d249044b1",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "292c1b3d249044b1",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "292c1b3d249044b1",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "292c1b3d249044b1",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "292c1b3d249044b1",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "292c1b3d249044b1",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.dungeons.nythraxis_crypt.leaveText": {
+      "scope": "main",
+      "enHash": "24a77344a61fd505",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "24a77344a61fd505",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "24a77344a61fd505",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "24a77344a61fd505",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "24a77344a61fd505",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "24a77344a61fd505",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "24a77344a61fd505",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "24a77344a61fd505",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "24a77344a61fd505",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "24a77344a61fd505",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "24a77344a61fd505",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "24a77344a61fd505",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "24a77344a61fd505",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "24a77344a61fd505",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.dungeons.nythraxis_crypt.name": {
+      "scope": "main",
+      "enHash": "88549d45bd3e0646",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "88549d45bd3e0646",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "88549d45bd3e0646",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "88549d45bd3e0646",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "88549d45bd3e0646",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "88549d45bd3e0646",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "88549d45bd3e0646",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "88549d45bd3e0646",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "88549d45bd3e0646",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "88549d45bd3e0646",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "88549d45bd3e0646",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "88549d45bd3e0646",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "88549d45bd3e0646",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "88549d45bd3e0646",
+          "by": "human"
+        }
+      }
+    },
     "main:entities.dungeons.sunken_bastion.enterText": {
       "scope": "main",
       "enHash": "dd66af2d923fae87",
@@ -32249,6 +32465,150 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "94872149dfe016d1",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.aldrics_seal.name": {
+      "scope": "main",
+      "enHash": "b2e764f839986cd9",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "b2e764f839986cd9",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "b2e764f839986cd9",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "b2e764f839986cd9",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "b2e764f839986cd9",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "b2e764f839986cd9",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "b2e764f839986cd9",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "b2e764f839986cd9",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "b2e764f839986cd9",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "b2e764f839986cd9",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "b2e764f839986cd9",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "b2e764f839986cd9",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "b2e764f839986cd9",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "b2e764f839986cd9",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.ancient_crypt_door.name": {
+      "scope": "main",
+      "enHash": "5561f7ab75926059",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "5561f7ab75926059",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "5561f7ab75926059",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "5561f7ab75926059",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "5561f7ab75926059",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "5561f7ab75926059",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "5561f7ab75926059",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "5561f7ab75926059",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "5561f7ab75926059",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "5561f7ab75926059",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "5561f7ab75926059",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "5561f7ab75926059",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "5561f7ab75926059",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "5561f7ab75926059",
           "by": "human"
         }
       }
@@ -33693,6 +34053,78 @@
         }
       }
     },
+    "main:entities.items.captains_crest.name": {
+      "scope": "main",
+      "enHash": "7e1f49500c0b1789",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        }
+      }
+    },
     "main:entities.items.chipped_tusk.name": {
       "scope": "main",
       "enHash": "d0c7d134f0a16006",
@@ -34265,6 +34697,150 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "60e59e817f43f3fe",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.crypt_keystone.name": {
+      "scope": "main",
+      "enHash": "472a993c7ed33c27",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "472a993c7ed33c27",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "472a993c7ed33c27",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "472a993c7ed33c27",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "472a993c7ed33c27",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "472a993c7ed33c27",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "472a993c7ed33c27",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "472a993c7ed33c27",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "472a993c7ed33c27",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "472a993c7ed33c27",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "472a993c7ed33c27",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "472a993c7ed33c27",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "472a993c7ed33c27",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "472a993c7ed33c27",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.crypt_ritual_circle.name": {
+      "scope": "main",
+      "enHash": "72819ec9be68499b",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "72819ec9be68499b",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "72819ec9be68499b",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "72819ec9be68499b",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "72819ec9be68499b",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "72819ec9be68499b",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "72819ec9be68499b",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "72819ec9be68499b",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "72819ec9be68499b",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "72819ec9be68499b",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "72819ec9be68499b",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "72819ec9be68499b",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "72819ec9be68499b",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "72819ec9be68499b",
           "by": "human"
         }
       }
@@ -37509,6 +38085,222 @@
         }
       }
     },
+    "main:entities.items.grave_captain_voss.name": {
+      "scope": "main",
+      "enHash": "bc9ff9dd24b01110",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "bc9ff9dd24b01110",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "bc9ff9dd24b01110",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "bc9ff9dd24b01110",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "bc9ff9dd24b01110",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "bc9ff9dd24b01110",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "bc9ff9dd24b01110",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "bc9ff9dd24b01110",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "bc9ff9dd24b01110",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "bc9ff9dd24b01110",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "bc9ff9dd24b01110",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "bc9ff9dd24b01110",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "bc9ff9dd24b01110",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "bc9ff9dd24b01110",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.grave_high_priest_malric.name": {
+      "scope": "main",
+      "enHash": "16ae9aa39d24df4a",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "16ae9aa39d24df4a",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "16ae9aa39d24df4a",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "16ae9aa39d24df4a",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "16ae9aa39d24df4a",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "16ae9aa39d24df4a",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "16ae9aa39d24df4a",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "16ae9aa39d24df4a",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "16ae9aa39d24df4a",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "16ae9aa39d24df4a",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "16ae9aa39d24df4a",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "16ae9aa39d24df4a",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "16ae9aa39d24df4a",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "16ae9aa39d24df4a",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.grave_sir_aldren.name": {
+      "scope": "main",
+      "enHash": "cd5732d7ac57ab13",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "cd5732d7ac57ab13",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "cd5732d7ac57ab13",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "cd5732d7ac57ab13",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "cd5732d7ac57ab13",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "cd5732d7ac57ab13",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "cd5732d7ac57ab13",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "cd5732d7ac57ab13",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "cd5732d7ac57ab13",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "cd5732d7ac57ab13",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "cd5732d7ac57ab13",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "cd5732d7ac57ab13",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "cd5732d7ac57ab13",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "cd5732d7ac57ab13",
+          "by": "human"
+        }
+      }
+    },
     "main:entities.items.gravecaller_blade.name": {
       "scope": "main",
       "enHash": "c939bb28b2266dab",
@@ -39665,6 +40457,78 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "2c57a684b510d59c",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.kings_signet.name": {
+      "scope": "main",
+      "enHash": "ec3259ecede05e70",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
           "by": "human"
         }
       }
@@ -42549,6 +43413,78 @@
         }
       }
     },
+    "main:entities.items.nythraxis_vision.name": {
+      "scope": "main",
+      "enHash": "df7a2aed469693db",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "df7a2aed469693db",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "df7a2aed469693db",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "df7a2aed469693db",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "df7a2aed469693db",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "df7a2aed469693db",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "df7a2aed469693db",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "df7a2aed469693db",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "df7a2aed469693db",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "df7a2aed469693db",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "df7a2aed469693db",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "df7a2aed469693db",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "df7a2aed469693db",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "df7a2aed469693db",
+          "by": "human"
+        }
+      }
+    },
     "main:entities.items.ogre_bonecharm_staff.name": {
       "scope": "main",
       "enHash": "7561794919d47540",
@@ -43121,6 +44057,78 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "ff357b5baa2d3664",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.priests_sigil.name": {
+      "scope": "main",
+      "enHash": "b437beb6247dd04a",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
           "by": "human"
         }
       }
@@ -44057,6 +45065,150 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "2a3725a4ac72e702",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.royal_seal.name": {
+      "scope": "main",
+      "enHash": "b1b07d06b3239733",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.runed_bone_shard.name": {
+      "scope": "main",
+      "enHash": "221ac8cf0e05b8df",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
           "by": "human"
         }
       }
@@ -48741,6 +49893,78 @@
         }
       }
     },
+    "main:entities.mobs.bound_guardian.name": {
+      "scope": "main",
+      "enHash": "251077e77067810e",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        }
+      }
+    },
     "main:entities.mobs.choirmother_selthe.name": {
       "scope": "main",
       "enHash": "348a491c7df10a3c",
@@ -48809,6 +50033,78 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "348a491c7df10a3c",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.mobs.corrupted_priest_malric.name": {
+      "scope": "main",
+      "enHash": "45dd728a56174b5c",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "45dd728a56174b5c",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "45dd728a56174b5c",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "45dd728a56174b5c",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "45dd728a56174b5c",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "45dd728a56174b5c",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "45dd728a56174b5c",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "45dd728a56174b5c",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "45dd728a56174b5c",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "45dd728a56174b5c",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "45dd728a56174b5c",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "45dd728a56174b5c",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "45dd728a56174b5c",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "45dd728a56174b5c",
           "by": "human"
         }
       }
@@ -48953,6 +50249,78 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "fea46f0e69f656a1",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.mobs.deathstalker_voss.name": {
+      "scope": "main",
+      "enHash": "c91f6a46ec077dcd",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "c91f6a46ec077dcd",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "c91f6a46ec077dcd",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "c91f6a46ec077dcd",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "c91f6a46ec077dcd",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "c91f6a46ec077dcd",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "c91f6a46ec077dcd",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "c91f6a46ec077dcd",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "c91f6a46ec077dcd",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "c91f6a46ec077dcd",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "c91f6a46ec077dcd",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "c91f6a46ec077dcd",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "c91f6a46ec077dcd",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "c91f6a46ec077dcd",
           "by": "human"
         }
       }
@@ -49457,6 +50825,78 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "d30e166c34d9df1c",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.mobs.fallen_captain_aldren.name": {
+      "scope": "main",
+      "enHash": "37453375b25b7b03",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "37453375b25b7b03",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "37453375b25b7b03",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "37453375b25b7b03",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "37453375b25b7b03",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "37453375b25b7b03",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "37453375b25b7b03",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "37453375b25b7b03",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "37453375b25b7b03",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "37453375b25b7b03",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "37453375b25b7b03",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "37453375b25b7b03",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "37453375b25b7b03",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "37453375b25b7b03",
           "by": "human"
         }
       }
@@ -53129,6 +54569,222 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "c6d01c51cafb60fa",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.mobs.vision_aldren_warrior.name": {
+      "scope": "main",
+      "enHash": "1ecb59fb16fe242b",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "1ecb59fb16fe242b",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "1ecb59fb16fe242b",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "1ecb59fb16fe242b",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "1ecb59fb16fe242b",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "1ecb59fb16fe242b",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "1ecb59fb16fe242b",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "1ecb59fb16fe242b",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "1ecb59fb16fe242b",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "1ecb59fb16fe242b",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "1ecb59fb16fe242b",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "1ecb59fb16fe242b",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "1ecb59fb16fe242b",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "1ecb59fb16fe242b",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.mobs.vision_deathstalker_voss.name": {
+      "scope": "main",
+      "enHash": "e6267c81424c7c56",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "e6267c81424c7c56",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "e6267c81424c7c56",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "e6267c81424c7c56",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "e6267c81424c7c56",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "e6267c81424c7c56",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "e6267c81424c7c56",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "e6267c81424c7c56",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "e6267c81424c7c56",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "e6267c81424c7c56",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "e6267c81424c7c56",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "e6267c81424c7c56",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "e6267c81424c7c56",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "e6267c81424c7c56",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.mobs.vision_malric_mage.name": {
+      "scope": "main",
+      "enHash": "fae184c5a7c8ebed",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "fae184c5a7c8ebed",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "fae184c5a7c8ebed",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "fae184c5a7c8ebed",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "fae184c5a7c8ebed",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "fae184c5a7c8ebed",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "fae184c5a7c8ebed",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "fae184c5a7c8ebed",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "fae184c5a7c8ebed",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "fae184c5a7c8ebed",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "fae184c5a7c8ebed",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "fae184c5a7c8ebed",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "fae184c5a7c8ebed",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "fae184c5a7c8ebed",
           "by": "human"
         }
       }
@@ -69999,6 +71655,1956 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "602b046ce4b3fba0",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_bound_guardian.completion": {
+      "scope": "main",
+      "enHash": "216c8a33540f721f",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "216c8a33540f721f",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "216c8a33540f721f",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "216c8a33540f721f",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "216c8a33540f721f",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "216c8a33540f721f",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "216c8a33540f721f",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "216c8a33540f721f",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "216c8a33540f721f",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "216c8a33540f721f",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "216c8a33540f721f",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "216c8a33540f721f",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "216c8a33540f721f",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "216c8a33540f721f",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_bound_guardian.objectives.0.label": {
+      "scope": "main",
+      "enHash": "71dde6c162756239",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "71dde6c162756239",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "71dde6c162756239",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "71dde6c162756239",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "71dde6c162756239",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "71dde6c162756239",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "71dde6c162756239",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "71dde6c162756239",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "71dde6c162756239",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "71dde6c162756239",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "71dde6c162756239",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "71dde6c162756239",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "71dde6c162756239",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "71dde6c162756239",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_bound_guardian.objectives.1.label": {
+      "scope": "main",
+      "enHash": "935e74a97f62e3d9",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "935e74a97f62e3d9",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "935e74a97f62e3d9",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "935e74a97f62e3d9",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "935e74a97f62e3d9",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "935e74a97f62e3d9",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "935e74a97f62e3d9",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "935e74a97f62e3d9",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "935e74a97f62e3d9",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "935e74a97f62e3d9",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "935e74a97f62e3d9",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "935e74a97f62e3d9",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "935e74a97f62e3d9",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "935e74a97f62e3d9",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_bound_guardian.objectives.2.label": {
+      "scope": "main",
+      "enHash": "ec3259ecede05e70",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "ec3259ecede05e70",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_bound_guardian.text": {
+      "scope": "main",
+      "enHash": "48e8f0a56349a1e5",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "48e8f0a56349a1e5",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "48e8f0a56349a1e5",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "48e8f0a56349a1e5",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "48e8f0a56349a1e5",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "48e8f0a56349a1e5",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "48e8f0a56349a1e5",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "48e8f0a56349a1e5",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "48e8f0a56349a1e5",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "48e8f0a56349a1e5",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "48e8f0a56349a1e5",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "48e8f0a56349a1e5",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "48e8f0a56349a1e5",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "48e8f0a56349a1e5",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_bound_guardian.title": {
+      "scope": "main",
+      "enHash": "251077e77067810e",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "251077e77067810e",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_deathless_king.completion": {
+      "scope": "main",
+      "enHash": "fe6c8a110e13823b",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "fe6c8a110e13823b",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "fe6c8a110e13823b",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "fe6c8a110e13823b",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "fe6c8a110e13823b",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "fe6c8a110e13823b",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "fe6c8a110e13823b",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "fe6c8a110e13823b",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "fe6c8a110e13823b",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "fe6c8a110e13823b",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "fe6c8a110e13823b",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "fe6c8a110e13823b",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "fe6c8a110e13823b",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "fe6c8a110e13823b",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_deathless_king.objectives.0.label": {
+      "scope": "main",
+      "enHash": "e8ef1c768160e06f",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "e8ef1c768160e06f",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "e8ef1c768160e06f",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "e8ef1c768160e06f",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "e8ef1c768160e06f",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "e8ef1c768160e06f",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "e8ef1c768160e06f",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "e8ef1c768160e06f",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "e8ef1c768160e06f",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "e8ef1c768160e06f",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "e8ef1c768160e06f",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "e8ef1c768160e06f",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "e8ef1c768160e06f",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "e8ef1c768160e06f",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_deathless_king.objectives.1.label": {
+      "scope": "main",
+      "enHash": "cc84159e97c0d47b",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "cc84159e97c0d47b",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "cc84159e97c0d47b",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "cc84159e97c0d47b",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "cc84159e97c0d47b",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "cc84159e97c0d47b",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "cc84159e97c0d47b",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "cc84159e97c0d47b",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "cc84159e97c0d47b",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "cc84159e97c0d47b",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "cc84159e97c0d47b",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "cc84159e97c0d47b",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "cc84159e97c0d47b",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "cc84159e97c0d47b",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_deathless_king.text": {
+      "scope": "main",
+      "enHash": "587660132dbcf502",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "587660132dbcf502",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "587660132dbcf502",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "587660132dbcf502",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "587660132dbcf502",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "587660132dbcf502",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "587660132dbcf502",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "587660132dbcf502",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "587660132dbcf502",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "587660132dbcf502",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "587660132dbcf502",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "587660132dbcf502",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "587660132dbcf502",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "587660132dbcf502",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_deathless_king.title": {
+      "scope": "main",
+      "enHash": "afd21976f060cfd8",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "afd21976f060cfd8",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "afd21976f060cfd8",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "afd21976f060cfd8",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "afd21976f060cfd8",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "afd21976f060cfd8",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "afd21976f060cfd8",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "afd21976f060cfd8",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "afd21976f060cfd8",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "afd21976f060cfd8",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "afd21976f060cfd8",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "afd21976f060cfd8",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "afd21976f060cfd8",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "afd21976f060cfd8",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_graves.completion": {
+      "scope": "main",
+      "enHash": "b75dbbc63b941a07",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "b75dbbc63b941a07",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "b75dbbc63b941a07",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "b75dbbc63b941a07",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "b75dbbc63b941a07",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "b75dbbc63b941a07",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "b75dbbc63b941a07",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "b75dbbc63b941a07",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "b75dbbc63b941a07",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "b75dbbc63b941a07",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "b75dbbc63b941a07",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "b75dbbc63b941a07",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "b75dbbc63b941a07",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "b75dbbc63b941a07",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_graves.objectives.0.label": {
+      "scope": "main",
+      "enHash": "cc5904bb4258592a",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "cc5904bb4258592a",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "cc5904bb4258592a",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "cc5904bb4258592a",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "cc5904bb4258592a",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "cc5904bb4258592a",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "cc5904bb4258592a",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "cc5904bb4258592a",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "cc5904bb4258592a",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "cc5904bb4258592a",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "cc5904bb4258592a",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "cc5904bb4258592a",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "cc5904bb4258592a",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "cc5904bb4258592a",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_graves.objectives.1.label": {
+      "scope": "main",
+      "enHash": "7b91bae701959bcb",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "7b91bae701959bcb",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "7b91bae701959bcb",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "7b91bae701959bcb",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "7b91bae701959bcb",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "7b91bae701959bcb",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "7b91bae701959bcb",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "7b91bae701959bcb",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "7b91bae701959bcb",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "7b91bae701959bcb",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "7b91bae701959bcb",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "7b91bae701959bcb",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "7b91bae701959bcb",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "7b91bae701959bcb",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_graves.objectives.2.label": {
+      "scope": "main",
+      "enHash": "4cf1bc10d8c22a71",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "4cf1bc10d8c22a71",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "4cf1bc10d8c22a71",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "4cf1bc10d8c22a71",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "4cf1bc10d8c22a71",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "4cf1bc10d8c22a71",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "4cf1bc10d8c22a71",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "4cf1bc10d8c22a71",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "4cf1bc10d8c22a71",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "4cf1bc10d8c22a71",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "4cf1bc10d8c22a71",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "4cf1bc10d8c22a71",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "4cf1bc10d8c22a71",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "4cf1bc10d8c22a71",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_graves.text": {
+      "scope": "main",
+      "enHash": "fbdbc00fdae0a98f",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "fbdbc00fdae0a98f",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "fbdbc00fdae0a98f",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "fbdbc00fdae0a98f",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "fbdbc00fdae0a98f",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "fbdbc00fdae0a98f",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "fbdbc00fdae0a98f",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "fbdbc00fdae0a98f",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "fbdbc00fdae0a98f",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "fbdbc00fdae0a98f",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "fbdbc00fdae0a98f",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "fbdbc00fdae0a98f",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "fbdbc00fdae0a98f",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "fbdbc00fdae0a98f",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_graves.title": {
+      "scope": "main",
+      "enHash": "8f391464fc530d10",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "8f391464fc530d10",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "8f391464fc530d10",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "8f391464fc530d10",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "8f391464fc530d10",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "8f391464fc530d10",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "8f391464fc530d10",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "8f391464fc530d10",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "8f391464fc530d10",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "8f391464fc530d10",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "8f391464fc530d10",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "8f391464fc530d10",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "8f391464fc530d10",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "8f391464fc530d10",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_restless_dead.completion": {
+      "scope": "main",
+      "enHash": "618a99064b93f4f7",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "618a99064b93f4f7",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "618a99064b93f4f7",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "618a99064b93f4f7",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "618a99064b93f4f7",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "618a99064b93f4f7",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "618a99064b93f4f7",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "618a99064b93f4f7",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "618a99064b93f4f7",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "618a99064b93f4f7",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "618a99064b93f4f7",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "618a99064b93f4f7",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "618a99064b93f4f7",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "618a99064b93f4f7",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_restless_dead.objectives.0.label": {
+      "scope": "main",
+      "enHash": "221ac8cf0e05b8df",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "221ac8cf0e05b8df",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_restless_dead.text": {
+      "scope": "main",
+      "enHash": "7d298ef8b731fd96",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "7d298ef8b731fd96",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "7d298ef8b731fd96",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "7d298ef8b731fd96",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "7d298ef8b731fd96",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "7d298ef8b731fd96",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "7d298ef8b731fd96",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "7d298ef8b731fd96",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "7d298ef8b731fd96",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "7d298ef8b731fd96",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "7d298ef8b731fd96",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "7d298ef8b731fd96",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "7d298ef8b731fd96",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "7d298ef8b731fd96",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_restless_dead.title": {
+      "scope": "main",
+      "enHash": "764ab572c5a7d140",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "764ab572c5a7d140",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "764ab572c5a7d140",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "764ab572c5a7d140",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "764ab572c5a7d140",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "764ab572c5a7d140",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "764ab572c5a7d140",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "764ab572c5a7d140",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "764ab572c5a7d140",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "764ab572c5a7d140",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "764ab572c5a7d140",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "764ab572c5a7d140",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "764ab572c5a7d140",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "764ab572c5a7d140",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_sealed_crypt.completion": {
+      "scope": "main",
+      "enHash": "f6cab6a172a5a9aa",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "f6cab6a172a5a9aa",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "f6cab6a172a5a9aa",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "f6cab6a172a5a9aa",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "f6cab6a172a5a9aa",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "f6cab6a172a5a9aa",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "f6cab6a172a5a9aa",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "f6cab6a172a5a9aa",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "f6cab6a172a5a9aa",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "f6cab6a172a5a9aa",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "f6cab6a172a5a9aa",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "f6cab6a172a5a9aa",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "f6cab6a172a5a9aa",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "f6cab6a172a5a9aa",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_sealed_crypt.objectives.0.label": {
+      "scope": "main",
+      "enHash": "7e1f49500c0b1789",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "7e1f49500c0b1789",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_sealed_crypt.objectives.1.label": {
+      "scope": "main",
+      "enHash": "b437beb6247dd04a",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "b437beb6247dd04a",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_sealed_crypt.objectives.2.label": {
+      "scope": "main",
+      "enHash": "b1b07d06b3239733",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "b1b07d06b3239733",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_sealed_crypt.text": {
+      "scope": "main",
+      "enHash": "81def02edd14183e",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "81def02edd14183e",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "81def02edd14183e",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "81def02edd14183e",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "81def02edd14183e",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "81def02edd14183e",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "81def02edd14183e",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "81def02edd14183e",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "81def02edd14183e",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "81def02edd14183e",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "81def02edd14183e",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "81def02edd14183e",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "81def02edd14183e",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "81def02edd14183e",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_nythraxis_sealed_crypt.title": {
+      "scope": "main",
+      "enHash": "777ec766b54b6f1f",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "777ec766b54b6f1f",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "777ec766b54b6f1f",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "777ec766b54b6f1f",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "777ec766b54b6f1f",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "777ec766b54b6f1f",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "777ec766b54b6f1f",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "777ec766b54b6f1f",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "777ec766b54b6f1f",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "777ec766b54b6f1f",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "777ec766b54b6f1f",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "777ec766b54b6f1f",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "777ec766b54b6f1f",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "777ec766b54b6f1f",
           "by": "human"
         }
       }
@@ -137779,6 +141385,154 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "8dbabb8f62a36467",
+          "by": "human"
+        }
+      }
+    },
+    "main:questUi.dialog.discussQuest": {
+      "scope": "main",
+      "enHash": "53d2cd2a71660f74",
+      "placeholders": [
+        "name"
+      ],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "53d2cd2a71660f74",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "53d2cd2a71660f74",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "53d2cd2a71660f74",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "53d2cd2a71660f74",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "53d2cd2a71660f74",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "53d2cd2a71660f74",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "53d2cd2a71660f74",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "53d2cd2a71660f74",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "53d2cd2a71660f74",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "53d2cd2a71660f74",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "53d2cd2a71660f74",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "53d2cd2a71660f74",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "53d2cd2a71660f74",
+          "by": "human"
+        }
+      }
+    },
+    "main:questUi.dialog.discussQuestAria": {
+      "scope": "main",
+      "enHash": "3e31c77b07c48495",
+      "placeholders": [
+        "name"
+      ],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "3e31c77b07c48495",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "3e31c77b07c48495",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "3e31c77b07c48495",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "3e31c77b07c48495",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "3e31c77b07c48495",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "3e31c77b07c48495",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "3e31c77b07c48495",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "3e31c77b07c48495",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "3e31c77b07c48495",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "3e31c77b07c48495",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "3e31c77b07c48495",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "3e31c77b07c48495",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "3e31c77b07c48495",
           "by": "human"
         }
       }

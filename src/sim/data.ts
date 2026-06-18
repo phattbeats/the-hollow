@@ -188,8 +188,8 @@ export function dungeonAt(x: number): DungeonDef | null {
 // the band split below keeps arena positions from being read as a dungeon.
 // ---------------------------------------------------------------------------
 
-export const ARENA_X = 3000; // arena instances share this x; slots stack along z
-export const ARENA_X_MIN = 2800; // x at/after this = an arena instance, not a dungeon
+export const ARENA_X = 4200; // arena instances share this x; slots stack along z
+export const ARENA_X_MIN = 4000; // x at/after this = an arena instance, not a dungeon
 export const ARENA_SLOT_COUNT = 4; // concurrent 1v1 matches the world can host
 const ARENA_Z0 = -1250;
 const ARENA_SLOT_SPACING = 120; // > the pit footprint (~44yd) so slots never overlap

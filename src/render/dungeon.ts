@@ -411,7 +411,8 @@ export class DungeonInteriors {
     if (interior === 'sanctum') return 'sanctum';
     if (interior === 'temple') return 'temple';
     const bastionX = instanceOrigin(1, 0).x;
-    return ox >= (instanceOrigin(0, 0).x + bastionX) / 2 ? 'bastion' : 'crypt';
+    if (Math.abs(ox - bastionX) < 250) return 'bastion';
+    return 'crypt';
   }
 
   private material(pack: Pack): THREE.Material {

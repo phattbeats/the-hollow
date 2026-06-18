@@ -394,6 +394,13 @@ export interface DungeonSpawn {
   z: number;
 }
 
+export interface DungeonObjectSpawn {
+  itemId: string;
+  name: string;
+  x: number; // relative to instance origin
+  z: number;
+}
+
 export interface DungeonDef {
   id: string;
   name: string;
@@ -402,6 +409,7 @@ export interface DungeonDef {
   entry: { x: number; z: number }; // player arrival point (instance-local)
   exitOffset: { x: number; z: number }; // exit portal (instance-local)
   spawns: DungeonSpawn[];
+  objects?: DungeonObjectSpawn[];
   interior: 'crypt' | 'sanctum' | 'temple'; // renderer + collider interior builder key
   suggestedPlayers: number;
   enterText: string;
@@ -459,9 +467,11 @@ export function emptyZoneProps(): ZonePropsDef {
 }
 
 export interface QuestObjective {
-  type: 'kill' | 'collect';
+  type: 'kill' | 'collect' | 'interact';
   targetMobId?: string; // for kill
   itemId?: string; // for collect
+  targetObjectItemId?: string; // for interactable ground objects
+  targetNpcId?: string; // for interactable NPC objectives
   count: number;
   label: string;
 }
@@ -610,6 +620,7 @@ export interface Entity {
   gm?: boolean;
   respawnTimer: number;
   corpseTimer: number;
+  despawnTimer?: number;
   lootable: boolean;
   loot: CorpseLoot | null;
   xpValue: number;

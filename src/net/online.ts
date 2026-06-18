@@ -550,6 +550,7 @@ export class ClientWorld implements IWorld {
         e.scale = w.sc ?? 1;
         e.color = w.c ?? 0xffffff;
         e.dungeonId = w.dgn ?? null;
+        e.objectItemId = w.obj ?? null;
         if (e.kind === 'npc') {
           const def = NPCS[e.templateId];
           e.questIds = def ? [...def.questIds] : [];
