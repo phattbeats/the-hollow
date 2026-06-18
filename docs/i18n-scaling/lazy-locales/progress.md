@@ -7,7 +7,7 @@ Live status. Each phase session updates its own row + checklist in the SAME comm
 |-------|--------|---------|-----------|
 | 1 - Per-locale emit split | COMPLETE | 2026-06-17 | 2026-06-17 |
 | 1 QA | COMPLETE (WITH FOLLOWUPS) | 2026-06-18 | 2026-06-18 |
-| 2 - Async loader + bootstrap | NOT STARTED | | |
+| 2 - Async loader + bootstrap | COMPLETE | 2026-06-18 | 2026-06-18 |
 | 2 QA | NOT STARTED | | |
 | 3 - The lazy flip | NOT STARTED | | |
 | 3 QA | NOT STARTED | | |
@@ -36,16 +36,16 @@ Acceptance:
 
 ## Phase 2 - Async loader + bootstrap (Doc Step 2)
 Deliverables:
-- [ ] `src/ui/i18n.ts`: `resident` map (seeded `{ en }` + the current language synchronously), `inflight` map, `ensureLocaleLoaded(lang)` (idempotent, coalescing, English-instant, failure-soft, shape-tolerant read `mod.default ?? mod[lang]`), `isLocaleResident(lang)`, `reportLocaleLoadFailure`; `tableFor()` final line `resident[lang] ?? resident.en!`.
-- [ ] `setLanguage` stays synchronous and unchanged in signature (does NOT load); `supportedLanguages` derives from `SUPPORTED_LANGUAGES`.
-- [ ] `src/main.ts`: `await ensureLocaleLoaded(getLanguage())` before the first `t()` in `startGame` (behind the loading screen); `await ensureLocaleLoaded(selected)` in the picker handler before `setLanguage`.
-- [ ] 3 new `en` keys: `settings.languageLoadFailed`, `settings.languageLoadUnavailable`, `settings.languageLoading` (rendered via `t()`).
-- [ ] Admin mirror: `ensureAdminLocaleLoaded` before `localizeStatic()` (async surface only; no lazy flip).
-- [ ] Maintainer fills the 3 keys in the 10 base locales so the release-tier gate stays green (recommended within this phase).
+- [x] `src/ui/i18n.ts`: `resident` map (seeded `{ en }` + the boot language synchronously), `inflight` map, `ensureLocaleLoaded(lang)` (idempotent, coalescing, English-instant, failure-soft, shape-tolerant read `mod.default ?? mod[lang]`), `isLocaleResident(lang)`, `reportLocaleLoadFailure`; `tableFor()` gains the English fallback. **DEVIATION (intentional):** `tableFor()` is `resident[lang] ?? translations[lang] ?? resident.en!`, NOT the packet's literal `resident[lang] ?? resident.en!`. The `translations[lang]` middle term is the still-static backstop that keeps Phase 2 byte-for-byte unchanged: ~6 test files (`homepage_foundation`, `sim_item_i18n`, `quartermaster_gear`, `chat_context_menu`, `server_i18n`, `localization_coverage`, `localization_fixes`) call `setLanguage(non-en)` then `t()` synchronously without an await, and the packet schedules their await-fixes for Phase 3 - so without the backstop they would regress to English and `npm test` would go red THIS phase. resident[lang] when loaded == translations[lang] content (same generated module), so it is provably byte-identical. **Phase 3 removes the `translations[lang]` term** when it drops the static barrel import; that is the natural site of the change.
+- [x] `setLanguage` stays synchronous and unchanged in signature (does NOT load); `supportedLanguages` derives from `SUPPORTED_LANGUAGES` (`[...SUPPORTED_LANGUAGES]`, pinned equal to `Object.keys(translations)` by `i18n_emit_shape`).
+- [x] `src/main.ts`: `await ensureLocaleLoaded(getLanguage())` after the loading-screen paint, before `mountGameUi` in `startGame` (behind the loading screen); `await ensureLocaleLoaded(selected)` in the (now async) picker handler before `setLanguage`; homepage shell (`wireStartScreens`) awaits before its initial `translatePage` (`.then(translatePage, translatePage)` so the English fallback still renders and no rejection escapes).
+- [x] 3 new `en` keys: `settings.languageLoadFailed`, `settings.languageLoadUnavailable`, `settings.languageLoading` (TOP-LEVEL `settings` namespace, NOT `game.settings`; rendered via `t()` at the picker + a new `#lang-select-status` aria-live span in index.html).
+- [x] Admin mirror: `ensureAdminLocaleLoaded` (+ `isAdminLocaleResident`) awaited before `localizeStatic()` in `src/admin/main.ts` (async surface only; admin keeps every locale static, so the load body is unreachable - parity scaffolding, no lazy flip).
+- [x] Maintainer filled the 3 keys in the 10 base locales (es, fr_FR, it_IT, de_DE, zh_CN, zh_TW, ko_KR, ja_JP, pt_BR, ru_RU); es_ES/fr_CA inherit via DIALECT_BASE, en_CA stays English, en_XA pseudo-localized. Registry `pending=0` held; release-tier gate dry-run green.
 Acceptance:
-- [ ] `npm test` + a new test: `t()` is synchronous and correct for a non-en `currentLanguage` before AND after an awaited `ensureLocaleLoaded`.
-- [ ] `?lang=es` shows no flash / no console error; `i18n:hash --check` OK; `tsc --noEmit` green.
-- [ ] Bundle may tick up slightly (loaders + lazy chunks emitted alongside still-static statics) - do NOT advertise a bundle win yet.
+- [x] `npm test` green (224 files / 1962 passed / 9 skipped) + new `tests/i18n_lazy_loader.test.ts`: `t()` is synchronous and correct for a non-en `currentLanguage` before AND after an awaited `ensureLocaleLoaded` (pre-await via the static backstop, post-await via resident), plus English-instant, coalescing, and the 3 new keys.
+- [x] `i18n:hash --check` OK at the re-baselined SHA `3254ea95..` (was `9606d9cf..`; the move is exactly the 3-key fill - diff is purely additive, only the 3 keys across all 15 slices); `tsc --noEmit` green. (`?lang=es` no-flash is structurally guaranteed by the await sitting behind the painted loading screen; full browser confirmation belongs to Phase 2 QA / Phase 3.)
+- [x] Bundle ticked up slightly as expected (main gzip 1,264.62 kB vs the v0.10 Phase-1-QA baseline 1,263.10 kB, +1.52 kB: loader code + the 3 keys x locales in the still-static main chunk). NOT advertised as a win; the lazy win is Phase 3.
 
 ## Phase 3 - The lazy flip (Doc Step 3)
 Deliverables:
@@ -101,7 +101,7 @@ Acceptance:
   - **Admin-no-SHA asymmetry documented** (assessed NOT a gap - pre-existing): added a note at `scripts/i18n_resolved_hash.mjs` `BASELINE_PATH` that the admin table is intentionally gated by the `i18n_admin_catalog` reproducibility test, not a SHA baseline, so a later phase does not "restore" a file that never existed.
   - **Dead scratch removed**: `git rm fix_braces.mjs` (repo-root one-shot regex hack that mutated `src/sim/sim.ts`; no callers, not wired into npm, entered via merge-fixup `971fbd16` - out of the Phase 1 range but genuinely dead/hazardous).
   - Deferred (correctly out of scope): the `loaders.ts`/`SUPPORTED_LANGUAGES` "could drift later" note is now neutralized by the surface test asserting the two agree; a generalized `assertDeterministic` helper is already Phase 5's deliverable (this QA's scratch-dir determinism test is a narrower early instance - Phase 5 can fold it in).
-- Phase 2: _pending_
+- Phase 2: DONE 2026-06-18. Landed the async loader seam additively; nothing flipped to lazy. New symbols in `src/ui/i18n.ts`: `resident`/`inflight` maps, `ensureLocaleLoaded`, `isLocaleResident`, `reportLocaleLoadFailure`; `tableFor` English fallback (with the static backstop, see the deliverable note); `supportedLanguages` now from `SUPPORTED_LANGUAGES`. Awaited at three boundaries (startGame, picker, homepage shell) + admin mirror (`ensureAdminLocaleLoaded`). 3 new top-level `settings.*` keys filled across all locales (pending stayed 0). SHA re-baselined `9606d9cf..` -> `3254ea95..` (exactly the 3-key fill). Two review agents (qa-checklist COVERAGE + a correctness diff review) returned 0 BLOCKING / 0 SHOULD-FIX (verdicts PASS and SHIP); both independently confirmed the `tableFor` backstop deviation is correct and byte-for-byte preserving, the SHA move is only the 3 keys, and `t()` stays synchronous. The in-phase `.finally(() => translatePage())` on the homepage shell was changed to `.then(translatePage, translatePage)` per a QA nice-to-have (consume rejection so no unhandled rejection escapes once Phase 3 makes it a real fetch). **Phase 3 handoffs (not Phase 2 defects):** (a) drop the `translations[lang]` term in `tableFor` + the static barrel import when the lazy flip lands; (b) add a loader-rejection test (simulable only after the flip makes a 404 possible) -> English fallback, retry possible, picker shows `languageLoadFailed`; (c) the `startGame` bootstrap `await ensureLocaleLoaded(getLanguage())` rethrows on a real fetch reject (Phase 2 never rejects because the boot language is pre-seeded resident) - Phase 3 must wrap it so a failed first load still falls back to English. **NEXT: run `docs/i18n-scaling/lazy-locales/phase-02-qa.md` (Phase 2 QA) before Phase 3.**
 - Phase 3: _pending_ (record the 3a-vs-3b probe outcome here)
 - Phase 4: _pending_
 - Phase 5: _pending_
