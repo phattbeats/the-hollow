@@ -310,6 +310,7 @@ describe("i18n Localization Key Coverage", () => {
     dps: "7.4",
     duration: "15s",
     form: "Bear",
+    fps: 60,
     guild: "Night Watch",
     index: 2,
     item: "Rough Bracers",

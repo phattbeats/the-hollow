@@ -1256,6 +1256,47 @@
   @keyframes fct-rise { from { opacity: 1; margin-top: 0; } to { opacity: 0; margin-top: -76px; } }
   @keyframes fct-crit { 0% { opacity: 1; margin-top: 0; } 15% { transform: translate(-50%,-50%) scale(1.5); }
     100% { opacity: 0; margin-top: -86px; transform: translate(-50%,-50%) scale(1); } }
+  /* Combat-text size — Interface > Combat Text Size (--fct-scale, default 1). */
+  .fct { font-size: calc(17px * var(--fct-scale, 1)); }
+  .fct.crit { font-size: calc(26px * var(--fct-scale, 1)); }
+
+  /* ---------- Interface & Comfort settings ----------
+     Each rule is driven by a CSS custom property set on :root from main.ts, or by
+     a body class toggled there. Defaults reproduce the classic look exactly. */
+  /* Tooltip Text Size (--tooltip-scale). Children carry explicit px sizes, so each
+     is rescaled rather than relying on cascade. */
+  #tooltip { font-size: calc(12px * var(--tooltip-scale, 1)); }
+  #tooltip .tt-title { font-size: calc(13.5px * var(--tooltip-scale, 1)); }
+  #tooltip .tt-sub { font-size: calc(11px * var(--tooltip-scale, 1)); }
+  #tooltip .tt-desc, #tooltip .tt-stat, #tooltip .tt-green { font-size: calc(11.5px * var(--tooltip-scale, 1)); }
+  /* Chat Text Size (--chat-font-scale) + Chat Background Opacity (--chat-opacity). */
+  .chat-pane { font-size: calc(11px * var(--chat-font-scale, 1)); }
+  #chatlog-frame { background: linear-gradient(170deg,
+      rgba(21, 21, 31, var(--chat-opacity, 0.95)) 0%,
+      rgba(8, 8, 13, var(--chat-opacity, 0.95)) 100%); }
+  /* HUD Opacity (--hud-opacity) — fades frames/windows as a whole. */
+  .panel, .window { opacity: var(--hud-opacity, 1); }
+  /* Compact Chat — shorter chat frame for a smaller footprint. */
+  body.compact-chat #chatlog-frame { height: 120px; }
+  /* High-Contrast Text — thicker dark outline behind HUD labels. */
+  body.high-contrast-text .chat-pane div,
+  body.high-contrast-text .panel,
+  body.high-contrast-text .set-name,
+  body.high-contrast-text .tt-stat,
+  body.high-contrast-text .tt-desc { text-shadow: 0 0 2px #000, 1px 1px 2px #000, -1px -1px 2px #000; }
+  /* Reduce Motion — drop HUD animations/transitions (mirrors prefers-reduced-motion). */
+  body.reduce-motion .fct { animation-duration: 0.01ms !important; }
+  body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after {
+    animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  /* Frosted Panels — opt-in backdrop blur behind HUD panels & windows. */
+  body.frosted-panels .panel, body.frosted-panels .window {
+    backdrop-filter: blur(7px) saturate(1.05); -webkit-backdrop-filter: blur(7px) saturate(1.05); }
+  /* Show FPS — small readout, hidden until toggled on (main.ts flips display). */
+  #fps-overlay { position: absolute; top: 6px; right: 8px; display: none; z-index: 60;
+    font-family: var(--title-font); font-size: 12px; color: var(--gold); pointer-events: none;
+    text-shadow: 1px 1px 2px #000; background: rgba(8, 8, 13, 0.55); padding: 2px 7px;
+    border-radius: 4px; border: 1px solid #463a1c; }
 
   /* ---------- center messages ---------- */
   #error-msg { position: absolute; left: 50%; top: 21%; transform: translateX(-50%); color: #ff2020;
@@ -5786,6 +5827,7 @@
 
   <template id="game-ui-template">
   <div id="ui">
+    <div id="fps-overlay" aria-hidden="true"></div>
     <div id="click-move-marker" class="click-move-marker" aria-hidden="true">
       <span class="ctm-arrow ctm-n"></span>
       <span class="ctm-arrow ctm-e"></span>

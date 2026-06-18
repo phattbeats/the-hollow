@@ -86,6 +86,8 @@ export class Input {
   private dragDistance = 0;
   private cameraDragActive = false;
   private clickMoveMouseButton: 0 | 2 | null = null;
+  // +1 normal, -1 inverts the vertical mouselook axis (settings: invertLookY).
+  private lookPitchSign = 1;
   private downButton = -1;
   private pointerLockRequestedForDrag = false;
   private downX = 0;
@@ -238,6 +240,12 @@ export class Input {
     this.touchLookSpeed = mult;
   }
 
+  // Invert the vertical mouselook/touch-look axis. Applied to every pitch delta
+  // so the preference is consistent across mouse drag, pointer-lock, and touch.
+  setInvertLookY(on: boolean): void {
+    this.lookPitchSign = on ? -1 : 1;
+  }
+
   setTouchMove(move: TouchMoveInput): void {
     const changed = move.forward !== this.touchMove.forward || move.back !== this.touchMove.back
       || move.strafeLeft !== this.touchMove.strafeLeft || move.strafeRight !== this.touchMove.strafeRight;
@@ -278,14 +286,14 @@ export class Input {
 
   applyTouchLookDelta(dx: number, dy: number): void {
     this.camYaw -= dx * this.lookSensitivity;
-    this.camPitch = Math.min(1.35, Math.max(-0.4, this.camPitch + dy * this.lookSensitivity));
+    this.camPitch = Math.min(1.35, Math.max(-0.4, this.camPitch + dy * this.lookSensitivity * this.lookPitchSign));
     if (dx !== 0 || dy !== 0) this.noteIntent('look');
   }
 
   updateTouchLook(dt: number): void {
     if (!this.touchLookActive) return;
     this.camYaw -= this.touchLookVector.x * TOUCH_LOOK_YAW_RATE * this.touchLookSpeed * dt;
-    this.camPitch = Math.min(1.35, Math.max(-0.4, this.camPitch + this.touchLookVector.y * TOUCH_LOOK_PITCH_RATE * this.touchLookSpeed * dt));
+    this.camPitch = Math.min(1.35, Math.max(-0.4, this.camPitch + this.touchLookVector.y * TOUCH_LOOK_PITCH_RATE * this.touchLookSpeed * dt * this.lookPitchSign));
   }
 
   isMouselookActive(): boolean {
@@ -544,7 +552,7 @@ export class Input {
       this.canvas.requestPointerLock?.();
     }
     this.camYaw -= mx * this.lookSensitivity;
-    this.camPitch = Math.min(1.35, Math.max(-0.4, this.camPitch + my * this.lookSensitivity));
+    this.camPitch = Math.min(1.35, Math.max(-0.4, this.camPitch + my * this.lookSensitivity * this.lookPitchSign));
     if (mx !== 0 || my !== 0) this.noteIntent('look');
   }
 

@@ -134,6 +134,49 @@ describe('Settings', () => {
   });
 });
 
+describe('Interface & Comfort settings pack', () => {
+  it('defaults to the unchanged classic look (all scales 1.0, toggles off)', () => {
+    const s = new Settings();
+    expect(s.get('hudOpacity')).toBe(1);
+    expect(s.get('tooltipScale')).toBe(1);
+    expect(s.get('fctScale')).toBe(1);
+    expect(s.get('chatFontScale')).toBe(1);
+    expect(s.get('chatOpacity')).toBe(1);
+    expect(s.get('reduceMotion')).toBe(false);
+    expect(s.get('highContrastText')).toBe(false);
+    expect(s.get('frostedPanels')).toBe(false);
+    expect(s.get('compactChat')).toBe(false);
+    expect(s.get('showFps')).toBe(false);
+    expect(s.get('invertLookY')).toBe(false);
+  });
+
+  it('clamps the comfort sliders to their documented bounds', () => {
+    const s = new Settings();
+    expect(s.set('hudOpacity', 0)).toBe(SETTING_RANGES.hudOpacity.min);
+    expect(s.set('hudOpacity', 9)).toBe(SETTING_RANGES.hudOpacity.max);
+    expect(s.set('tooltipScale', 9)).toBe(SETTING_RANGES.tooltipScale.max);
+    expect(s.set('fctScale', 0)).toBe(SETTING_RANGES.fctScale.min);
+    expect(s.set('chatFontScale', 1.2)).toBe(1.2);
+    expect(s.set('chatOpacity', 0)).toBe(SETTING_RANGES.chatOpacity.min);
+  });
+
+  it('persists the comfort toggles across reloads and restores them on reset', () => {
+    const s = new Settings();
+    s.set('reduceMotion', true);
+    s.set('showFps', true);
+    s.set('invertLookY', true);
+    s.set('frostedPanels', true);
+    // a fresh instance reads the same backing store
+    expect(new Settings().get('reduceMotion')).toBe(true);
+    expect(new Settings().get('showFps')).toBe(true);
+    s.reset();
+    expect(s.get('reduceMotion')).toBe(false);
+    expect(s.get('showFps')).toBe(false);
+    expect(s.get('invertLookY')).toBe(false);
+    expect(s.get('frostedPanels')).toBe(false);
+  });
+});
+
 describe('click-to-move mouse button setting', () => {
   it('normalizes to left or right click labels', () => {
     expect(normalizeClickMoveButton(0)).toBe(0);
