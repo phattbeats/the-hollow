@@ -21,7 +21,7 @@ import { DT, INTERACT_RANGE, MELEE_RANGE, PlayerClass, RUN_SPEED, dist2d } from 
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
-import { formatDateTime, formatNumber, getLanguage, isSupportedLanguage, languageTag, setLanguage, t, type SupportedLanguage, type TranslationKey } from './ui/i18n';
+import { ensureLocaleLoaded, formatDateTime, formatNumber, getLanguage, isSupportedLanguage, languageTag, setLanguage, t, type SupportedLanguage, type TranslationKey } from './ui/i18n';
 import { tServer } from './ui/server_i18n';
 import { tEntity } from './ui/entity_i18n';
 import { hydrateIcons } from './ui/ui_icons';
@@ -538,6 +538,13 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   // Paint the loading screen before anything can block — assetsReady may resolve
   // immediately when assets are already cached, and the scene build is synchronous.
   await nextPaint();
+  // Phase 2 lazy-locales: ensure the active locale's table is resident before the HUD
+  // renders (mountGameUi -> translatePage fans out hundreds of t() calls). It sits
+  // behind the loading screen (already painted above), so there is no first-paint flash.
+  // A no-op this phase (the current language is pre-seeded resident + everything is still
+  // static-imported through the barrel); Phase 3's lazy flip makes this the real per-locale
+  // fetch.
+  await ensureLocaleLoaded(getLanguage());
   try {
     await assetsReady((done, total) => setLoadingProgress(done, total));
   } catch (err) {
@@ -2705,8 +2712,13 @@ function wireHomepageMusicToggle(): void {
 }
 
 function wireStartScreens(): void {
-  // Initial page translation and stats load
-  translatePage();
+  // Initial page translation and stats load. Phase 2 lazy-locales: make the active locale
+  // resident before the first localized paint. A no-op this phase (the current language is
+  // pre-seeded into the resident table and everything is still static-imported via the
+  // barrel); the seam is what Phase 3's lazy flip needs so a stored non-en locale never
+  // flashes English on first paint. translatePage runs on both resolve and reject (the
+  // English fallback still renders if a future lazy load fails).
+  void ensureLocaleLoaded(getLanguage()).then(() => translatePage(), () => translatePage());
   hydrateIcons();
   void loadProjectStats();
   wireContractAddressCopy();
@@ -3424,23 +3436,47 @@ function wireStartScreens(): void {
 
   // Language selection dropdown setup
   const langSelect = $('#lang-select') as HTMLSelectElement | null;
+  const langStatus = $('#lang-select-status') as HTMLElement | null;
   if (langSelect) {
     langSelect.value = getLanguage();
     langSelect.addEventListener('change', () => {
       const selected = langSelect.value;
-      if (!isSupportedLanguage(selected)) return;
-      setLanguage(selected);
-      
-      // Dynamically update the browser URL query parameter without page reload
-      if (typeof window !== 'undefined' && window.history) {
-        const url = new URL(window.location.href);
-        url.searchParams.set('lang', selected);
-        window.history.pushState({}, '', url.toString());
+      if (!isSupportedLanguage(selected)) {
+        // The static <option> set should never produce this, but the picker is the
+        // user-facing seam: surface it via t() and revert to the active locale.
+        if (langStatus) langStatus.textContent = t('settings.languageLoadUnavailable');
+        langSelect.value = getLanguage();
+        return;
       }
-      
-      translatePage();
-      refreshLocalizedDynamicShell();
-      document.dispatchEvent(new CustomEvent('woc:languagechange', { detail: { language: selected } }));
+      // Phase 2 lazy-locales: load the locale chunk BEFORE switching. This phase the
+      // module is still static-imported through the barrel, so the await resolves on a
+      // microtask with no network and the transient "loading" status never paints; the
+      // failure path is wired now so Phase 3's real lazy flip needs no call-site change.
+      void (async () => {
+        if (langStatus) langStatus.textContent = t('settings.languageLoading');
+        try {
+          await ensureLocaleLoaded(selected);
+        } catch {
+          // The locale chunk failed to load (a real risk once Phase 3 makes this a
+          // network fetch). Keep the already-resident locale and tell the user.
+          if (langStatus) langStatus.textContent = t('settings.languageLoadFailed');
+          langSelect.value = getLanguage();
+          return;
+        }
+        if (langStatus) langStatus.textContent = '';
+        setLanguage(selected);
+
+        // Dynamically update the browser URL query parameter without page reload
+        if (typeof window !== 'undefined' && window.history) {
+          const url = new URL(window.location.href);
+          url.searchParams.set('lang', selected);
+          window.history.pushState({}, '', url.toString());
+        }
+
+        translatePage();
+        refreshLocalizedDynamicShell();
+        document.dispatchEvent(new CustomEvent('woc:languagechange', { detail: { language: selected } }));
+      })();
     });
   }
 
