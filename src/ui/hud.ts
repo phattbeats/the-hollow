@@ -398,7 +398,7 @@ export class Hud {
       const target = ev.target as Node | null;
       if (!target) return;
       const communityMenu = document.getElementById('community-menu') as HTMLDetailsElement | null;
-      if (communityMenu?.open && !communityMenu.contains(target)) {
+      if (document.body.classList.contains('mobile-touch') && communityMenu?.open && !communityMenu.contains(target)) {
         communityMenu.open = false;
       }
       if (document.body.classList.contains('mobile-more-open')) {
