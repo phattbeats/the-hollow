@@ -573,6 +573,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   let renderer!: Renderer;
   let hud!: Hud;
   const perf = createPerfMonitor(null);
+  online?.setTraceSink((name, startMs, durationMs, detail) => perf.markTraceSpan(name, startMs, durationMs, detail));
   try {
     renderer = new Renderer(world, canvas, nameplates);
     renderer.setAudioSink(sfx);
@@ -821,13 +822,6 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       submitByName: (targetName, reason, details) => api.reportPlayerByName(online.characterId, targetName, reason, details),
     });
   }
-  startPerfReporter({
-    perf,
-    settings,
-    tokenProvider: () => api.token,
-    characterIdProvider: () => online?.characterId ?? null,
-  });
-
   function interactKey(): void {
     const p = world.player;
     let bestCorpse: number | null = null, bestCorpseD = INTERACT_RANGE;
@@ -1048,6 +1042,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   let last = performance.now();
   let acc = 0;
   let onlineInputEchoMs = 0;
+  let gameInputReady = false;
 
   // Camera follow state: keyboard turning advances facing in 20Hz sim steps,
   // so the camera tracks the player's render-interpolated facing per frame
@@ -1238,9 +1233,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
     // freeze movement while the game menu is up so WASD doesn't walk the
     // character behind it (other windows stay non-modal, as before)
-    input.suspendMovement = hud.isModalOpen();
-    input.updateTouchLook(frameDt);
-    updateHoverCursor();
+    input.suspendMovement = !gameInputReady || hud.isModalOpen();
+    perf.trace('input.updateTouchLook', () => input.updateTouchLook(frameDt), { frameDtMs: frameDt * 1000 });
+    perf.trace('input.hoverCursor', () => updateHoverCursor(), { active: input.hoverActive });
     perf.markInputFrame(performance.now());
 
     const mouselook = input.isMouselookActive() && !world.player.dead;
@@ -1257,20 +1252,30 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
         if (stepFacing !== null) offlineSim.player.facing = stepFacing;
         offlineSim.updateFiestaBots(); // dev: steer Fiesta practice bots (no-op unless active)
         perf.markInputSent(performance.now());
-        const events = perf.time('sim', () => offlineSim.tick());
-        perf.time('events', () => hud.handleEvents(events));
+        const events = perf.time('sim', () => perf.trace('sim.tick', () => offlineSim.tick(), { mode: 'offline' }));
+        perf.time('events', () => perf.trace('hud.handleEvents', () => hud.handleEvents(events), {
+          mode: 'offline',
+          events: events.length,
+        }));
         acc -= DT;
       }
       const pp = offlineSim.player;
-      updateCamera(frameDt, pp.prevFacing + wrapAngle(pp.facing - pp.prevFacing) * (acc / DT));
+      perf.trace('camera.follow', () => updateCamera(frameDt, pp.prevFacing + wrapAngle(pp.facing - pp.prevFacing) * (acc / DT)), {
+        mode: 'offline',
+        frameDtMs: frameDt * 1000,
+      });
       renderer.camYaw = input.camYaw;
       renderer.camPitch = input.camPitch;
       renderer.camDist = input.camDist;
       perf.setNetwork(null);
-      perf.time('renderer', () => renderer.sync(acc / DT, frameDt, movementFacing));
-      updateClickMoveMarker();
+      perf.time('renderer', () => perf.trace('renderer.sync', () => renderer.sync(acc / DT, frameDt, movementFacing), {
+        mode: 'offline',
+        views: renderer.views.size,
+        alpha: acc / DT,
+      }));
+      perf.trace('ui.clickMoveMarker', () => updateClickMoveMarker());
       perf.markInputVisible(performance.now());
-      perf.time('hud', () => hud.update());
+      perf.time('hud', () => perf.trace('hud.update', () => hud.update(), { mode: 'offline' }));
       perf.tick(now);
       return;
     }
@@ -1281,18 +1286,29 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     const netFacing = movementFacing ?? resolved.facing;
     Object.assign(net.moveInput, resolved.mi);
     net.setMouselookFacing(netFacing);
-    if (net.flushInput()) perf.markInputSent(performance.now());
-    for (const sample of net.consumeInputEchoSamples()) {
+    if (perf.trace('net.flushInput', () => net.flushInput(), { connected: net.connected })) perf.markInputSent(performance.now());
+    const echoSamples = perf.trace('net.consumeInputEcho', () => net.consumeInputEchoSamples());
+    for (const sample of echoSamples) {
       if (Number.isFinite(sample) && sample >= 0) {
         onlineInputEchoMs = onlineInputEchoMs === 0 ? sample : onlineInputEchoMs + 0.2 * (sample - onlineInputEchoMs);
       }
       perf.markInputEcho(sample);
     }
     net.pendingFacingDelta = 0; // superseded by the interpolated follow below
-    perf.time('events', () => hud.handleEvents(net.drainEvents()));
-    if (net.consumeProfanityChanged()) hud.setProfanityWords(net.profanityWords);
-    if (net.consumeInventoryChanged()) hud.onInventoryChanged();
-    if (net.consumeCosmeticsChanged()) hud.onCosmeticsChanged();
+    const drainedEvents = perf.trace('net.drainEvents', () => net.drainEvents());
+    perf.time('events', () => perf.trace('hud.handleEvents', () => hud.handleEvents(drainedEvents), {
+      mode: 'online',
+      events: drainedEvents.length,
+    }));
+    if (net.consumeProfanityChanged()) {
+      perf.trace('hud.setProfanityWords', () => hud.setProfanityWords(net.profanityWords), { words: net.profanityWords.length });
+    }
+    if (net.consumeInventoryChanged()) {
+      perf.trace('hud.onInventoryChanged', () => hud.onInventoryChanged());
+    }
+    if (net.consumeCosmeticsChanged()) {
+      perf.trace('hud.onCosmeticsChanged', () => hud.onCosmeticsChanged());
+    }
     const alpha = net.lastSnapAt > 0
       ? Math.min(1.25, (performance.now() - net.lastSnapAt) / Math.max(20, net.snapInterval))
       : 1;
@@ -1304,23 +1320,27 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     });
     const pe = world.player;
     // facing interp capped at 1 - extrapolating angles past the snapshot oscillates
-    updateCamera(frameDt, pe.prevFacing + wrapAngle(pe.facing - pe.prevFacing) * Math.min(1, alpha));
+    perf.trace('camera.follow', () => updateCamera(frameDt, pe.prevFacing + wrapAngle(pe.facing - pe.prevFacing) * Math.min(1, alpha)), {
+      mode: 'online',
+      alpha,
+      frameDtMs: frameDt * 1000,
+      lastSnapAge: net.lastSnapAt > 0 ? performance.now() - net.lastSnapAt : -1,
+    });
     renderer.camYaw = input.camYaw;
     renderer.camPitch = input.camPitch;
     renderer.camDist = input.camDist;
-    perf.time('renderer', () => renderer.sync(alpha, frameDt, movementFacing, ONLINE_SELF_RENDER_ALPHA_LEAD));
-    updateClickMoveMarker();
+    perf.time('renderer', () => perf.trace('renderer.sync', () => renderer.sync(alpha, frameDt, movementFacing, ONLINE_SELF_RENDER_ALPHA_LEAD), {
+      mode: 'online',
+      views: renderer.views.size,
+      alpha,
+      frameDtMs: frameDt * 1000,
+    }));
+    perf.trace('ui.clickMoveMarker', () => updateClickMoveMarker());
     maybeShowImmobileNote(now);
     perf.markInputVisible(performance.now());
-    perf.time('hud', () => hud.update());
+    perf.time('hud', () => perf.trace('hud.update', () => hud.update(), { mode: 'online' }));
     perf.tick(now);
   }
-  requestAnimationFrame(frame);
-  // cut to the game only once the first frame is actually on screen
-  requestAnimationFrame(() => requestAnimationFrame(() => hideLoadingScreen()));
-  // Now in-game: fade the home-page theme out (it kept playing through loading).
-  fadeOutHomepageMusic();
-
   const controller = {
     move(moveInput: unknown, facing?: unknown) {
       if (arguments.length > 1) input.setControllerMoveInput(moveInput, facing);
@@ -1329,7 +1349,33 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     face(facing: unknown) { input.setControllerFacing(facing); },
     stop() { input.clearControllerMoveInput(); },
   };
-  (window as any).__game = { sim: world, world, renderer, input, hud, online, controller, perf };
+  input.suspendMovement = true;
+  await nextPaint();
+  try {
+    await renderer.prewarmInitialScene();
+  } catch (err) {
+    console.warn('Renderer prewarm failed', err);
+  }
+  await nextPaint();
+  last = performance.now();
+  requestAnimationFrame(frame);
+  // cut to the game only once the first frame is actually on screen
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    hideLoadingScreen();
+    window.setTimeout(() => {
+      gameInputReady = true;
+      perf.reset();
+      startPerfReporter({
+        perf,
+        settings,
+        tokenProvider: () => api.token,
+        characterIdProvider: () => online?.characterId ?? null,
+      });
+      (window as any).__game = { sim: world, world, renderer, input, hud, online, controller, perf };
+    }, LOADING_FADE_MS);
+  }));
+  // Now in-game: fade the home-page theme out (it kept playing through loading).
+  fadeOutHomepageMusic();
 }
 
 // ---------------------------------------------------------------------------
