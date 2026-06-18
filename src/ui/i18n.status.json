@@ -25,10 +25,10 @@
     "ru_RU"
   ],
   "counts": {
-    "keys": 2349,
-    "rows": 30537,
-    "translated": 30446,
-    "pending": 48,
+    "keys": 2351,
+    "rows": 30563,
+    "translated": 30448,
+    "pending": 72,
     "blocked": 43,
     "blockedSource": 106
   },
@@ -14574,6 +14574,102 @@
           "state": "translated",
           "srcHash": "c32311571c85c937",
           "by": "human"
+        }
+      }
+    },
+    "main:entities.abilities.aspect_of_the_monkey.description": {
+      "scope": "main",
+      "enHash": "1fadbbf5f1f89415",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "1fadbbf5f1f89415",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.abilities.aspect_of_the_monkey.name": {
+      "scope": "main",
+      "enHash": "27ecc4514a40268f",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "27ecc4514a40268f",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
         }
       }
     },
