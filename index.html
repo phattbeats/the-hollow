@@ -400,6 +400,9 @@
   /* threat plate: this mob is aggroed on me — red bar + soft glow */
   .nameplate.np-threat .np-hpbar { border-color: #ff5a4a; box-shadow: 0 0 6px #ff3b2e99; }
   .nameplate.np-threat .np-hpfill { background: linear-gradient(#ff6b5e, #a01818); }
+  /* classic "dragon frame" cue: elite mobs get a golden bar frame, bosses a red one */
+  .np-hpbar.elite { border-color: #f2c84b; box-shadow: 0 0 5px 1px #f2c84baa, inset 0 0 2px #ffe9a0cc; }
+  .np-hpbar.boss { border-color: #ff5a3c; box-shadow: 0 0 7px 1px #ff5a3ccc, inset 0 0 2px #ffd2a0dd; }
   .np-marker { font-size: 24px; font-weight: bold; height: 26px; font-family: var(--title-font); }
   .np-marker.avail { color: var(--gold); text-shadow: 0 0 6px #ffd10088, 1px 1px 2px #000; }
   .np-marker.ready { color: var(--gold); text-shadow: 0 0 6px #ffd10088, 1px 1px 2px #000; }
