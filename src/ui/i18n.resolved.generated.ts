@@ -4667,12 +4667,12 @@ export const es: EnTranslations = {
     },
     "slots": {
       "mainhand": "Mano principal",
-      "helmet": "Helmet",
-      "shoulder": "Shoulder",
+      "helmet": "Cabeza",
+      "shoulder": "Hombros",
       "chest": "Pecho",
-      "waist": "Waist",
+      "waist": "Cintura",
       "legs": "Piernas",
-      "gloves": "Gloves",
+      "gloves": "Manos",
       "feet": "Pies"
     },
     "quality": {
@@ -8252,12 +8252,12 @@ export const es_ES: EnTranslations = {
     },
     "slots": {
       "mainhand": "Mano principal",
-      "helmet": "Helmet",
-      "shoulder": "Shoulder",
+      "helmet": "Cabeza",
+      "shoulder": "Hombros",
       "chest": "Pecho",
-      "waist": "Waist",
+      "waist": "Cintura",
       "legs": "Piernas",
-      "gloves": "Gloves",
+      "gloves": "Manos",
       "feet": "Pies"
     },
     "quality": {
@@ -11837,12 +11837,12 @@ export const fr_FR: EnTranslations = {
     },
     "slots": {
       "mainhand": "Main droite",
-      "helmet": "Helmet",
-      "shoulder": "Shoulder",
+      "helmet": "Tête",
+      "shoulder": "Épaules",
       "chest": "Torse",
-      "waist": "Waist",
+      "waist": "Taille",
       "legs": "Jambes",
-      "gloves": "Gloves",
+      "gloves": "Mains",
       "feet": "Pieds"
     },
     "quality": {
@@ -15422,12 +15422,12 @@ export const fr_CA: EnTranslations = {
     },
     "slots": {
       "mainhand": "Main droite",
-      "helmet": "Helmet",
-      "shoulder": "Shoulder",
+      "helmet": "Tête",
+      "shoulder": "Épaules",
       "chest": "Torse",
-      "waist": "Waist",
+      "waist": "Taille",
       "legs": "Jambes",
-      "gloves": "Gloves",
+      "gloves": "Mains",
       "feet": "Pieds"
     },
     "quality": {
@@ -22592,12 +22592,12 @@ export const it_IT: EnTranslations = {
     },
     "slots": {
       "mainhand": "Mano principale",
-      "helmet": "Helmet",
-      "shoulder": "Shoulder",
+      "helmet": "Testa",
+      "shoulder": "Spalle",
       "chest": "Torace",
-      "waist": "Waist",
+      "waist": "Vita",
       "legs": "Gambe",
-      "gloves": "Gloves",
+      "gloves": "Mani",
       "feet": "Piedi"
     },
     "quality": {
@@ -26177,12 +26177,12 @@ export const de_DE: EnTranslations = {
     },
     "slots": {
       "mainhand": "Waffenhand",
-      "helmet": "Helmet",
-      "shoulder": "Shoulder",
+      "helmet": "Kopf",
+      "shoulder": "Schultern",
       "chest": "Brust",
-      "waist": "Waist",
+      "waist": "Taille",
       "legs": "Beine",
-      "gloves": "Gloves",
+      "gloves": "Hände",
       "feet": "Füße"
     },
     "quality": {
@@ -29762,12 +29762,12 @@ export const zh_CN: EnTranslations = {
     },
     "slots": {
       "mainhand": "主手",
-      "helmet": "Helmet",
-      "shoulder": "Shoulder",
+      "helmet": "头部",
+      "shoulder": "肩部",
       "chest": "胸部",
-      "waist": "Waist",
+      "waist": "腰部",
       "legs": "腿部",
-      "gloves": "Gloves",
+      "gloves": "手部",
       "feet": "脚部"
     },
     "quality": {
@@ -33347,12 +33347,12 @@ export const zh_TW: EnTranslations = {
     },
     "slots": {
       "mainhand": "主手",
-      "helmet": "Helmet",
-      "shoulder": "Shoulder",
+      "helmet": "頭部",
+      "shoulder": "肩部",
       "chest": "胸部",
-      "waist": "Waist",
+      "waist": "腰部",
       "legs": "腿部",
-      "gloves": "Gloves",
+      "gloves": "手部",
       "feet": "腳部"
     },
     "quality": {
@@ -36932,12 +36932,12 @@ export const ko_KR: EnTranslations = {
     },
     "slots": {
       "mainhand": "주장비",
-      "helmet": "Helmet",
-      "shoulder": "Shoulder",
+      "helmet": "머리",
+      "shoulder": "어깨",
       "chest": "가슴",
-      "waist": "Waist",
+      "waist": "허리",
       "legs": "다리",
-      "gloves": "Gloves",
+      "gloves": "손",
       "feet": "발"
     },
     "quality": {
@@ -40517,12 +40517,12 @@ export const ja_JP: EnTranslations = {
     },
     "slots": {
       "mainhand": "メインハンド",
-      "helmet": "Helmet",
-      "shoulder": "Shoulder",
+      "helmet": "頭",
+      "shoulder": "肩",
       "chest": "胸",
-      "waist": "Waist",
+      "waist": "腰",
       "legs": "脚",
-      "gloves": "Gloves",
+      "gloves": "手",
       "feet": "足"
     },
     "quality": {
@@ -44102,12 +44102,12 @@ export const pt_BR: EnTranslations = {
     },
     "slots": {
       "mainhand": "Mão principal",
-      "helmet": "Helmet",
-      "shoulder": "Shoulder",
+      "helmet": "Cabeça",
+      "shoulder": "Ombros",
       "chest": "Peito",
-      "waist": "Waist",
+      "waist": "Cintura",
       "legs": "Pernas",
-      "gloves": "Gloves",
+      "gloves": "Mãos",
       "feet": "Pés"
     },
     "quality": {
@@ -47687,12 +47687,12 @@ export const ru_RU: EnTranslations = {
     },
     "slots": {
       "mainhand": "Правая рука",
-      "helmet": "Helmet",
-      "shoulder": "Shoulder",
+      "helmet": "Голова",
+      "shoulder": "Плечи",
       "chest": "Грудь",
-      "waist": "Waist",
+      "waist": "Пояс",
       "legs": "Ноги",
-      "gloves": "Gloves",
+      "gloves": "Кисти рук",
       "feet": "Ступни"
     },
     "quality": {
@@ -50217,79 +50217,19 @@ export const translations = {
 };
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [
-    "itemUi.slots.gloves",
-    "itemUi.slots.helmet",
-    "itemUi.slots.shoulder",
-    "itemUi.slots.waist"
-  ],
-  "es_ES": [
-    "itemUi.slots.gloves",
-    "itemUi.slots.helmet",
-    "itemUi.slots.shoulder",
-    "itemUi.slots.waist"
-  ],
-  "fr_FR": [
-    "itemUi.slots.gloves",
-    "itemUi.slots.helmet",
-    "itemUi.slots.shoulder",
-    "itemUi.slots.waist"
-  ],
-  "fr_CA": [
-    "itemUi.slots.gloves",
-    "itemUi.slots.helmet",
-    "itemUi.slots.shoulder",
-    "itemUi.slots.waist"
-  ],
+  "es": [],
+  "es_ES": [],
+  "fr_FR": [],
+  "fr_CA": [],
   "en_CA": [],
-  "it_IT": [
-    "itemUi.slots.gloves",
-    "itemUi.slots.helmet",
-    "itemUi.slots.shoulder",
-    "itemUi.slots.waist"
-  ],
-  "de_DE": [
-    "itemUi.slots.gloves",
-    "itemUi.slots.helmet",
-    "itemUi.slots.shoulder",
-    "itemUi.slots.waist"
-  ],
-  "zh_CN": [
-    "itemUi.slots.gloves",
-    "itemUi.slots.helmet",
-    "itemUi.slots.shoulder",
-    "itemUi.slots.waist"
-  ],
-  "zh_TW": [
-    "itemUi.slots.gloves",
-    "itemUi.slots.helmet",
-    "itemUi.slots.shoulder",
-    "itemUi.slots.waist"
-  ],
-  "ko_KR": [
-    "itemUi.slots.gloves",
-    "itemUi.slots.helmet",
-    "itemUi.slots.shoulder",
-    "itemUi.slots.waist"
-  ],
-  "ja_JP": [
-    "itemUi.slots.gloves",
-    "itemUi.slots.helmet",
-    "itemUi.slots.shoulder",
-    "itemUi.slots.waist"
-  ],
-  "pt_BR": [
-    "itemUi.slots.gloves",
-    "itemUi.slots.helmet",
-    "itemUi.slots.shoulder",
-    "itemUi.slots.waist"
-  ],
-  "ru_RU": [
-    "itemUi.slots.gloves",
-    "itemUi.slots.helmet",
-    "itemUi.slots.shoulder",
-    "itemUi.slots.waist"
-  ]
+  "it_IT": [],
+  "de_DE": [],
+  "zh_CN": [],
+  "zh_TW": [],
+  "ko_KR": [],
+  "ja_JP": [],
+  "pt_BR": [],
+  "ru_RU": []
 };
 
 export const en_XA: EnTranslations = {
