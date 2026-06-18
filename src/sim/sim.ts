@@ -145,11 +145,20 @@ const EMOTE_ALIASES: Record<string, string> = {
 // (buff_*, hot, absorb, imbue, stances, forms, stealth, thorns, attackspeed
 // haste) is treated as helpful/neutral. Used by /targetbuffs to tag each aura.
 const HARMFUL_AURA_KINDS: ReadonlySet<AuraKind> = new Set<AuraKind>([
-  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'sunder', 'spellvuln',
+  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'sunder', 'spellvuln', 'vulnerability', 'tongues', 'cost_tax', 'critvuln',
 ]);
 
 function isHarmfulAura(kind: AuraKind): boolean {
   return HARMFUL_AURA_KINDS.has(kind);
+}
+// A "Devour Magic"-strippable beneficial enhancement: a positive buff_* stat
+// buff, a heal-over-time, an absorb shield, or a weapon imbue. Stances, forms,
+// stealth, righteous fury, thorns and every debuff (incl. negative buff_* drains
+// like enfeeble/wither) are deliberately left alone — only an active "magic"
+// enhancement is eaten. Mirrors the inverse of the HUD's debuff test.
+function isDevourableAura(a: Aura): boolean {
+  return (a.kind.startsWith('buff_') && a.value > 0)
+    || a.kind === 'hot' || a.kind === 'absorb' || a.kind === 'imbue';
 }
 const NEARBY_RANGE = 40; // /nearby scan radius — wider than say, tighter than yell
 const NEARBY_MAX = 10; // cap the /nearby list so a crowded camp can't spam chat
@@ -208,7 +217,7 @@ const DEMON_HEAL_DURATION = 5;
 const DEMON_HEAL_TICK = 1;
 const TAMED_TARGET_RESPAWN_SECONDS = 60;
 const FRIENDLY_NPC_REJECTED_AURA_KINDS: ReadonlySet<AuraKind> = new Set([
-  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'attackspeed', 'sunder', 'spellvuln',
+  'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'attackspeed', 'sunder', 'spellvuln', 'vulnerability', 'tongues', 'cost_tax', 'critvuln',
 ]);
 
 function isRejectedFriendlyNpcAura(aura: Aura): boolean {
@@ -1249,7 +1258,23 @@ export class Sim {
   resolvedAbility(abilityId: string, pid?: number): ResolvedAbility | null {
     const r = this.resolve(pid);
     if (!r) return null;
-    return r.meta.known.find((k) => k.def.id === abilityId) ?? null;
+    const found = r.meta.known.find((k) => k.def.id === abilityId) ?? null;
+    if (!found) return null;
+    // A "draining curse" (cost_tax aura) inflates the resource cost of every
+    // ability the victim uses. Resolve it here, the single choke point all cost
+    // checks/spends read, so the affordability check and the spend stay in
+    // lockstep. Return a shallow copy so the cached known-list entry is never
+    // mutated.
+    const tax = this.costTaxMult(r.e);
+    if (tax > 1 && found.cost > 0) return { ...found, cost: Math.ceil(found.cost * tax) };
+    return found;
+  }
+
+  // Highest active cost_tax aura, expressed as a cost multiplier (1 = no tax).
+  private costTaxMult(e: Entity): number {
+    let pct = 0;
+    for (const a of e.auras) if (a.kind === 'cost_tax' && a.value > pct) pct = a.value;
+    return 1 + pct;
   }
 
   // -------------------------------------------------------------------------
@@ -1393,6 +1418,13 @@ export class Sim {
   // leaving every other school — and physical abilities — untouched.
   private isLockedOut(e: Entity, school: Aura['school']): boolean {
     return e.auras.some((a) => a.kind === 'lockout' && a.school === school);
+  // Curse of Tongues: returns the spell cast-time multiplier (>=1) imposed by any
+  // active `tongues` aura, or 1 when unafflicted. Non-stacking across sources — the
+  // strongest curse wins (refresh-by-id keeps a single source from compounding).
+  private tonguesMult(e: Entity): number {
+    let m = 1;
+    for (const a of e.auras) if (a.kind === 'tongues') m = Math.max(m, a.value);
+    return m;
   }
   private mobCanSwim(template: { family?: string; canSwim?: boolean } | undefined): boolean {
     return !!template;
@@ -2100,11 +2132,13 @@ export class Sim {
     }
 
     if (res.castTime > 0 && !togglingOff) {
+      // Curse of Tongues stretches the resolved (already haste-adjusted) cast time.
+      const castTime = res.castTime * this.tonguesMult(p);
       p.castingAbility = ability.id;
-      p.castTotal = res.castTime;
-      p.castRemaining = res.castTime;
+      p.castTotal = castTime;
+      p.castRemaining = castTime;
       p.gcdRemaining = Math.max(p.gcdRemaining, gcd);
-      this.emit({ type: 'castStart', entityId: p.id, ability: ability.id, time: res.castTime });
+      this.emit({ type: 'castStart', entityId: p.id, ability: ability.id, time: castTime });
       return;
     }
 
@@ -2197,10 +2231,53 @@ export class Sim {
     return mult < 0 ? 0 : mult;
   }
 
+  // Weakening Hex: while a `hex` aura rides the source, the damage AND healing it
+  // deals are scaled by (1 - value). Read by dealDamage (outgoing damage) and
+  // applyHeal (outgoing healing) so a hexed player's whole output is throttled.
+  private hexOutputMult(source: Entity | null): number {
+    if (!source) return 1;
+    let mult = 1;
+    for (const a of source.auras) {
+      if (a.kind === 'hex') mult *= 1 - a.value;
+    }
+    return mult < 0 ? 0 : mult;
+  }
+
+  // Consume the victim's Heal-Absorb shields (classic necrotic blight): each such
+  // aura holds a remaining budget of healing it devours. Drains `healed` against
+  // every active shield, decrementing their stored budget and dropping any that
+  // run dry. Returns the healing that survives (>= 0). A no-op when none are set.
+  private consumeHealAbsorb(target: Entity, healed: number): number {
+    if (healed <= 0) return healed;
+    let remaining = healed;
+    let depleted = false;
+    for (const a of target.auras) {
+      if (a.kind !== 'heal_absorb' || a.value <= 0) continue;
+      const eaten = Math.min(remaining, a.value);
+      a.value -= eaten;
+      remaining -= eaten;
+      if (a.value <= 0) depleted = true;
+      if (remaining <= 0) break;
+    }
+    if (depleted) target.auras = target.auras.filter((a) => !(a.kind === 'heal_absorb' && a.value <= 0));
+    return remaining;
+  }
+
+  // "Find Weakness" vulnerability: the largest active critvuln aura adds its
+  // fraction to the damage of CRITICAL hits the target takes (read in dealDamage).
+  private critVulnBonus(target: Entity): number {
+    let bonus = 0;
+    for (const a of target.auras) {
+      if (a.kind === 'critvuln' && a.value > bonus) bonus = a.value;
+    }
+    return bonus;
+  }
+
   private applyHeal(source: Entity, target: Entity, amount: number, ability: string): void {
     if (target.dead) return;
     const crit = this.rng.chance(this.spellCrit(source));
-    let healed = Math.round(amount * (crit ? 1.5 : 1) * this.healingTakenMult(target));
+    let healed = Math.round(amount * (crit ? 1.5 : 1) * this.hexOutputMult(source) * this.healingTakenMult(target));
+    healed = this.consumeHealAbsorb(target, healed);
     healed = Math.min(healed, target.maxHp - target.hp);
     target.hp += healed;
     this.emit({ type: 'heal2', sourceId: source.id, targetId: target.id, amount: healed, crit, ability });
@@ -3429,6 +3506,28 @@ export class Sim {
         if (a.kind === 'spellvuln') amp += a.value;
       }
       if (amp > 0) amount = Math.round(amount * (1 + amp));
+    // Curse of frailty: a cursed victim takes more damage from every source. The
+    // offensive mirror of Defensive Stance's cut above. Multiple curses stack
+    // additively (sum of amps) so layered curses can't multiply out of control.
+    if (amount > 0) {
+      let vuln = 0;
+      for (const a of target.auras) if (a.kind === 'vulnerability') vuln += a.value;
+      if (vuln > 0) amount = Math.round(amount * (1 + vuln));
+    }
+
+    // Weakening Hex: a hexed source deals less damage (mirrors the healing cut in
+    // applyHeal). Self-damage paths (source === target) are left untouched.
+    if (source && source.id !== target.id) {
+      const hexMult = this.hexOutputMult(source);
+      if (hexMult !== 1) amount = Math.round(amount * hexMult);
+    }
+
+    // "Find Weakness": a critvuln debuff makes the target's exposed flesh take
+    // extra damage from CRITICAL hits only (any attacker, any school). Applied
+    // after the defensive-stance reduction, before absorb shields soak it.
+    if (crit && amount > 0 && source && source.id !== target.id) {
+      const bonus = this.critVulnBonus(target);
+      if (bonus > 0) amount = Math.round(amount * (1 + bonus));
     }
 
     // absorb shields soak damage first
@@ -4375,6 +4474,7 @@ export class Sim {
     mob.wardTimer = MOBS[mob.templateId]?.wardAllies?.every ?? 0;
     mob.stoneskinTimer = MOBS[mob.templateId]?.stoneskin?.every ?? 0;
     mob.rallyTimer = MOBS[mob.templateId]?.rally?.every ?? 0;
+    mob.warcryTimer = MOBS[mob.templateId]?.warcry?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
   }
 
@@ -4562,6 +4662,27 @@ export class Sim {
         tickInterval: cinder.interval, tickTimer: cinder.interval,
         sourceId: mob.id, school: (cinder.school as Aura['school']) ?? 'fire',
       });
+    // arcane rot: a landed swing may brand the victim with a searing arcane rune
+    // that festers as a refreshing DoT. The arcane-school twin of venom; reuses
+    // the `dot` aura. Guarded on hostile + alive so a friendly pet (the other
+    // mobSwing caller) never debuffs an ally.
+    const arcaneRot = MOBS[mob.templateId]?.arcaneRot;
+    if (arcaneRot && mob.hostile && !target.dead && this.rng.chance(arcaneRot.chance)) {
+      this.applyAura(target, {
+        id: 'arcaneRot_' + mob.templateId, name: arcaneRot.name, kind: 'dot',
+        remaining: arcaneRot.duration, duration: arcaneRot.duration,
+        value: Math.max(1, Math.round(arcaneRot.perTick)),
+        tickInterval: arcaneRot.interval, tickTimer: arcaneRot.interval,
+        sourceId: mob.id, school: (arcaneRot.school as Aura['school']) ?? 'arcane',
+      });
+    }
+
+    // deadly poison: a landed swing may apply (or add a stack to) a ramping DoT.
+    // Guarded on hostile so a friendly pet (the other mobSwing caller) never
+    // poisons an ally. Per-tick damage scales with the stack count.
+    const stackPoison = MOBS[mob.templateId]?.stackPoison;
+    if (stackPoison && mob.hostile && !target.dead && this.rng.chance(stackPoison.chance)) {
+      this.applyStackPoison(mob, target, stackPoison);
     }
     // corrosive bite: a landed hit may shred the victim's armor (stacking sunder).
     // Guarded on hostile so a friendly pet (the other mobSwing caller) never debuffs an ally.
@@ -4611,6 +4732,28 @@ export class Sim {
         id: `lockout_${mob.templateId}`, name: lockout.name, kind: 'lockout',
         remaining: lockout.duration, duration: lockout.duration, value: 0,
         sourceId: mob.id, school: lockout.school,
+    // draining curse: a landed hit can leave a cost-tax debuff that inflates the
+    // victim's ability costs. Guarded on hostile + alive so a friendly pet (the
+    // other mobSwing caller) never debuffs the party.
+    const costTax = MOBS[mob.templateId]?.costTax;
+    if (costTax && mob.hostile && !target.dead && this.rng.chance(costTax.chance)) {
+      this.applyAura(target, {
+        id: `cost_tax_${mob.templateId}`, name: costTax.name, kind: 'cost_tax',
+        remaining: costTax.duration, duration: costTax.duration, value: costTax.pct,
+        sourceId: mob.id, school: (costTax.school ?? 'shadow') as Aura['school'],
+      });
+    }
+
+    // Find Weakness: a landed hit can leave the victim's flesh exposed, so the
+    // next critical hits against them bite deeper. Hostile + player-only, like the
+    // other on-hit debuffs, so a friendly pet (mobSwing's other caller) never marks
+    // the party.
+    const cv = MOBS[mob.templateId]?.critVuln;
+    if (cv && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(cv.chance)) {
+      this.applyAura(target, {
+        id: `critvuln_${mob.templateId}`, name: cv.name, kind: 'critvuln',
+        remaining: cv.duration, duration: cv.duration, value: cv.critDamage,
+        sourceId: mob.id, school: (cv.school ?? 'physical') as Aura['school'],
       });
     }
     // thorns / lightning shield on the defender
@@ -4671,6 +4814,22 @@ export class Sim {
         value: -stagger.dodgeReduction,
         sourceId: mob.id,
         school: 'physical',
+    // Heal-Absorb: a landed hit can brand the victim with a necrotic blight that
+    // devours the next chunk of incoming healing. The sibling of Mortal Strike —
+    // where Mortal Strike scales every heal down, this eats a fixed pool then
+    // fades. Guarded on `hostile` so a friendly pet (mobSwing's other caller)
+    // never blights an ally.
+    const ha = MOBS[mob.templateId]?.healAbsorb;
+    if (ha && mob.hostile && !target.dead && this.rng.chance(ha.chance)) {
+      this.applyAura(target, {
+        id: `heal_absorb_${mob.templateId}`,
+        name: ha.name,
+        kind: 'heal_absorb',
+        remaining: ha.duration,
+        duration: ha.duration,
+        value: ha.amount,
+        sourceId: mob.id,
+        school: (ha.school as Aura['school']) ?? 'shadow',
       });
     }
     // Ensnare: a landed hit may web the victim in place (root). Hostile mobs only
@@ -4721,6 +4880,23 @@ export class Sim {
         school: (slowStrike.school as Aura['school']) ?? 'physical',
       });
     }
+    // Curse of Tongues: a landed hit may garble the victim's incantations, stretching
+    // their spell cast times (`tonguesMult` reads this at cast-start). Refreshes by id
+    // and never stacks. Guarded on `hostile` so a friendly pet (mobSwing's other
+    // caller) never curses an ally; players only, since only players hard-cast here.
+    const tongues = MOBS[mob.templateId]?.tongues;
+    if (tongues && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(tongues.chance)) {
+      this.applyAura(target, {
+        id: `tongues_${mob.templateId}`,
+        name: tongues.name,
+        kind: 'tongues',
+        remaining: tongues.duration,
+        duration: tongues.duration,
+        value: tongues.mult,
+        sourceId: mob.id,
+        school: (tongues.school as Aura['school']) ?? 'shadow',
+      });
+    }
     // Mana Burn: a landed hit may sap a flat amount of mana from a mana-using
     // victim (casters). No effect on rage/energy users. Guarded on `hostile` so
     // a friendly pet (mobSwing's other caller) never drains an ally's mana. The
@@ -4729,6 +4905,17 @@ export class Sim {
     if (burn && mob.hostile && !target.dead && target.resourceType === 'mana' && target.resource > 0 && this.rng.chance(burn.chance)) {
       target.resource = Math.max(0, target.resource - burn.amount);
       this.emit({ type: 'aura', targetId: target.id, name: burn.name, gained: true });
+    }
+    // Sap Vigor: the melee-resource twin of manaBurn. A landed hit can drain a
+    // flat amount of rage or energy from a melee victim, starving their ability
+    // use. Mana users are unaffected (it does nothing to casters); hostile mobs
+    // only, so a friendly pet (mobSwing's other caller) never saps an ally. The
+    // resource bar visibly drops and the affix is surfaced via an `aura` log line.
+    const sap = MOBS[mob.templateId]?.sapVigor;
+    if (sap && mob.hostile && !target.dead && (target.resourceType === 'rage' || target.resourceType === 'energy')
+        && target.resource > 0 && this.rng.chance(sap.chance)) {
+      target.resource = Math.max(0, target.resource - sap.amount);
+      this.emit({ type: 'aura', targetId: target.id, name: sap.name, gained: true });
     }
     // Maddening curse: a landed hit can fog a caster's mind, draining Intellect
     // and thus shrinking their mana pool. Mana users only (it does nothing to
@@ -4764,6 +4951,62 @@ export class Sim {
         value: -Math.abs(enervate.sta),
         sourceId: mob.id,
         school: enervate.school ?? 'shadow',
+    // Plague: a landed hit can rot the victim's vitality, draining Stamina and
+    // thus shrinking their health pool (recalcPlayerStats folds the smaller
+    // Stamina through to a smaller maxHp; current HP scales down with it).
+    // Players only; hostile mobs only, so a friendly pet (mobSwing's other
+    // caller) never debuffs the party. Rides buff_sta with a negative value, so
+    // there is no new HP math. Refreshes by id and never stacks.
+    const plague = MOBS[mob.templateId]?.plague;
+    if (plague && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(plague.chance)) {
+      this.applyAura(target, {
+        id: `plague_${mob.templateId}`,
+        name: plague.name,
+        kind: 'buff_sta',
+        remaining: plague.duration,
+        duration: plague.duration,
+        value: -Math.abs(plague.sta),
+        sourceId: mob.id,
+        school: plague.school ?? 'nature',
+      });
+    }
+
+    // Withering curse: a landed hit can rot the victim's sinews, draining Agility
+    // and so thinning their armor (agi*2) and dodge at once. Hostile mobs only, so a
+    // friendly pet (mobSwing's other caller) never debuffs the party; player targets
+    // only (mobs derive no stats from auras). Rides buff_agi with a negative value, so
+    // recalcPlayerStats folds it through with no new stat math.
+    const wither = MOBS[mob.templateId]?.wither;
+    if (wither && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(wither.chance)) {
+      this.applyAura(target, {
+        id: `wither_${mob.templateId}`,
+        name: wither.name,
+        kind: 'buff_agi',
+        remaining: wither.duration,
+        duration: wither.duration,
+        value: -Math.abs(wither.agi),
+        sourceId: mob.id,
+        school: wither.school ?? 'nature',
+      });
+    }
+
+    // Spirit Siphon: a landed hit can drain a caster's Spirit, slowing their
+    // out-of-combat mana/health regen (updateRegen reads stats.spi). Mana users
+    // only (it does nothing to rage/energy users); hostile mobs only, so a
+    // friendly pet (mobSwing's other caller) never debuffs the party. Rides
+    // buff_spi with a negative value, so recalcPlayerStats folds it through with
+    // no new regen math; it expires like any buff* aura.
+    const siphon = MOBS[mob.templateId]?.siphonSpirit;
+    if (siphon && mob.hostile && !target.dead && target.resourceType === 'mana' && this.rng.chance(siphon.chance)) {
+      this.applyAura(target, {
+        id: `siphon_spirit_${mob.templateId}`,
+        name: siphon.name,
+        kind: 'buff_spi',
+        remaining: siphon.duration,
+        duration: siphon.duration,
+        value: -Math.abs(siphon.spi),
+        sourceId: mob.id,
+        school: siphon.school ?? 'shadow',
       });
     }
     // On-hit chill: frost-touched mobs numb the victim, slowing their movement.
@@ -4860,6 +5103,87 @@ export class Sim {
         value: expose.dmgIncrease,
         sourceId: mob.id,
         school: (expose.school as Aura['school']) ?? 'physical',
+    // Curse of frailty: a landed hit may curse the victim so they take more
+    // damage from every source (a `vulnerability` aura read in dealDamage).
+    // Players only, hostile mobs only, so a friendly pet (mobSwing's other
+    // caller) never softens an ally. Refreshes by id, never stacks past one.
+    const vuln = MOBS[mob.templateId]?.vulnerability;
+    if (vuln && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(vuln.chance)) {
+      this.applyAura(target, {
+        id: `vulnerability_${mob.templateId}`,
+        name: vuln.name,
+        kind: 'vulnerability',
+        remaining: vuln.duration,
+        duration: vuln.duration,
+        value: vuln.amp,
+        sourceId: mob.id,
+        school: vuln.school ?? 'shadow',
+      });
+    }
+
+    // Weakening Hex: a landed hit can curse the player victim, scaling the damage
+    // AND healing they deal by (1 - reductionPct) for a while. Guarded on
+    // `hostile` so a friendly pet (mobSwing's other caller) never hexes the party,
+    // and on a player target. Rides a dedicated `hex` aura read by hexOutputMult.
+    const hex = MOBS[mob.templateId]?.hex;
+    if (hex && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(hex.chance)) {
+      this.applyAura(target, {
+        id: `hex_${mob.templateId}`,
+        name: hex.name,
+        kind: 'hex',
+        remaining: hex.duration,
+        duration: hex.duration,
+        value: hex.reductionPct,
+        sourceId: mob.id,
+        school: hex.school ?? 'shadow',
+      });
+    }
+    // Devour Magic: a landed hit can strip one beneficial enhancement buff off
+    // the player victim (classic warlock/demon Devour Magic). Hostile mobs only
+    // (a friendly pet — mobSwing's other caller — must never purge its owner's
+    // party) and players only. No-op when the victim carries no devourable buff.
+    const purge = MOBS[mob.templateId]?.purgeOnHit;
+    if (purge && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(purge.chance)) {
+      this.devourBeneficialAura(target, purge.name);
+    }
+  }
+
+  // Strip one beneficial enhancement aura from a player victim. Removes the
+  // first devourable buff (auras are in application order, so this is
+  // deterministic), recalcs the player's derived stats so a stripped
+  // buff_armor/buff_ap/buff_int actually un-folds, and surfaces the proc via the
+  // standard `aura` event (the full aura array on the next snapshot reflects the
+  // removal to online clients). Returns whether anything was devoured.
+  private devourBeneficialAura(target: Entity, name: string): boolean {
+    const idx = target.auras.findIndex(isDevourableAura);
+    if (idx < 0) return false;
+    target.auras.splice(idx, 1);
+    const meta = this.players.get(target.id);
+    if (meta) recalcPlayerStats(target, meta.cls, meta.equipment, meta.talentMods);
+    this.emit({ type: 'aura', targetId: target.id, name, gained: true });
+    return true;
+  }
+
+  // Apply (or add a stack to) a ramping poison DoT on the victim. One shared
+  // `dot` slot found by id, its per-tick `value` recomputed as perTick*stacks
+  // (bumped up to `maxStacks`) and its timer fully refreshed each application —
+  // so the per-tick damage climbs the longer the creature keeps biting. The dot
+  // tick reads `value` directly, so storing perTick*stacks is what makes it ramp.
+  private applyStackPoison(mob: Entity, target: Entity, sp: NonNullable<MobTemplate['stackPoison']>): void {
+    const id = 'stackpoison_' + mob.templateId;
+    const existing = target.auras.find((a) => a.id === id && a.kind === 'dot');
+    if (existing) {
+      existing.stacks = Math.min(sp.maxStacks, (existing.stacks ?? 1) + 1);
+      existing.value = Math.max(1, Math.round(sp.perTick * existing.stacks));
+      existing.remaining = existing.duration;
+      this.emit({ type: 'aura', targetId: target.id, name: sp.name, gained: true });
+    } else {
+      this.applyAura(target, {
+        id, name: sp.name, kind: 'dot',
+        remaining: sp.duration, duration: sp.duration,
+        value: Math.max(1, Math.round(sp.perTick)),
+        tickInterval: sp.interval, tickTimer: sp.interval, stacks: 1,
+        sourceId: mob.id, school: (sp.school as Aura['school']) ?? 'nature',
       });
     }
   }
@@ -5098,6 +5422,7 @@ export class Sim {
     mob.wardTimer = MOBS[mob.templateId]?.wardAllies?.every ?? 0;
     mob.stoneskinTimer = MOBS[mob.templateId]?.stoneskin?.every ?? 0;
     mob.rallyTimer = MOBS[mob.templateId]?.rally?.every ?? 0;
+    mob.warcryTimer = MOBS[mob.templateId]?.warcry?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
     for (const meta of this.players.values()) {
       const e = this.entities.get(meta.entityId);
@@ -5191,7 +5516,7 @@ export class Sim {
   // and reset on evade/respawn.
   private updateBossMechanics(mob: Entity): void {
     const tmpl = MOBS[mob.templateId];
-    if (!tmpl || (!tmpl.summonAdds && !tmpl.enrage && !tmpl.desperateHeal && !tmpl.mendAlly && !tmpl.wardAllies && !tmpl.rally)) return;
+    if (!tmpl || (!tmpl.summonAdds && !tmpl.enrage && !tmpl.desperateHeal && !tmpl.mendAlly && !tmpl.wardAllies && !tmpl.rally && !tmpl.warcry)) return;
     const hpFrac = mob.hp / Math.max(1, mob.maxHp);
     if (tmpl.summonAdds) {
       const thresholds = tmpl.summonAdds.atHpPct;
@@ -5295,6 +5620,42 @@ export class Sim {
               sourceId: mob.id,
               school,
             });
+    // Support "War Cadence": periodically quicken every nearby friendly mob's
+    // swings (including the caster) by re-applying a refreshing buff_haste aura.
+    // Same telegraph as Mend; rides swingIntervalMult's existing buff_haste fold.
+    if (tmpl.warcry) {
+      mob.warcryTimer -= DT;
+      if (mob.warcryTimer <= 0) {
+        mob.warcryTimer = tmpl.warcry.every;
+        const allies: Entity[] = [];
+        for (const ally of this.entities.values()) {
+          if (ally.kind !== 'mob' || ally.dead || ally.ownerId !== null) continue; // skip players, pets, corpses
+          if (ally.hostile !== mob.hostile) continue; // same-faction only
+          if (dist2d(ally.pos, mob.pos) > tmpl.warcry.radius) continue;
+          allies.push(ally);
+        }
+        if (allies.length > 0) {
+          const school = tmpl.warcry.school ?? 'physical';
+          const auraId = `warcry_${mob.templateId}`;
+          this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
+          this.emit({ type: 'log', text: `${mob.name} channels ${tmpl.warcry.name}.`, color: '#ffd27f', entityId: mob.id });
+          for (const ally of allies) {
+            const existing = ally.auras.find((a) => a.id === auraId);
+            if (existing) {
+              existing.remaining = tmpl.warcry.duration; // refresh on each pulse; never stack
+              continue;
+            }
+            ally.auras.push({
+              id: auraId,
+              name: tmpl.warcry.name,
+              kind: 'buff_haste',
+              remaining: tmpl.warcry.duration,
+              duration: tmpl.warcry.duration,
+              value: tmpl.warcry.hasteMult,
+              sourceId: mob.id,
+              school,
+            });
+            this.emit({ type: 'aura', targetId: ally.id, name: tmpl.warcry.name, gained: true });
           }
         }
       }

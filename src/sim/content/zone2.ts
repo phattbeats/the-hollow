@@ -80,6 +80,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     scale: 0.85, color: 0x45b39d,
     // Acid Spit: a snapper's bite corrodes armor, stacking so a swarm shreds you fast.
     corrode: { chance: 0.35, armor: 20, maxStacks: 5, duration: 15, name: 'Acid Spit', school: 'nature' },
+    // Tide Cadence: a snapper drums up the school, quickening the whole pack's
+    // bites — the swarm's signature pressure when you pull more than one.
+    warcry: { radius: 12, every: 10, hasteMult: 1.25, duration: 6, name: 'Tide Cadence', school: 'frost' },
   },
   mirejaw_the_ravenous: {
     id: 'mirejaw_the_ravenous', name: 'Mirejaw the Ravenous', minLevel: 10, maxLevel: 10, family: 'murloc', rare: true,
@@ -87,6 +90,7 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     hpBase: 320, hpPerLevel: 58, dmgBase: 15, dmgPerLevel: 3.7, attackSpeed: 1.8,
     armorPerLevel: 26, moveSpeed: 8.2, aggroRadius: 14,
     aoePulse: { min: 18, max: 26, radius: 10, every: 9, name: 'Ravenous Frenzy', school: 'nature' },
+    sapVigor: { chance: 0.3, amount: 25, name: 'Sapping Bite' },
     summonAdds: { mobId: 'mirejaw_frenzy', count: 2, atHpPct: [0.55] },
     loot: [
       { copper: 260, chance: 1 },
@@ -109,6 +113,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     id: 'mire_widow', name: 'Mirefen Widow', minLevel: 8, maxLevel: 10, family: 'spider',
     hpBase: 48, hpPerLevel: 19, dmgBase: 8, dmgPerLevel: 2.2, attackSpeed: 1.8,
     armorPerLevel: 10, moveSpeed: 8, aggroRadius: 10,
+    // Find Weakness: the widow's bite leaves the flesh raw, so critical blows
+    // against the victim bite 50% deeper for a few seconds.
+    critVuln: { chance: 0.3, critDamage: 0.5, duration: 8, name: 'Exposed Wound' },
     loot: [
       { copper: 38, chance: 1 },
       { itemId: 'widow_venom_sac', chance: 0.65, questId: 'q_widows' },
@@ -120,6 +127,7 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     id: 'mirefen_broodmother', name: 'The Broodmother', minLevel: 10, maxLevel: 10, family: 'spider',
     hpBase: 150, hpPerLevel: 26, dmgBase: 9, dmgPerLevel: 2.4, attackSpeed: 1.8,
     armorPerLevel: 16, moveSpeed: 8, aggroRadius: 14, boss: true,
+    stackPoison: { chance: 0.35, perTick: 3, interval: 2, duration: 12, maxStacks: 5, name: 'Brood Venom', school: 'nature' },
     loot: [
       { copper: 300, chance: 1 },
       { itemId: 'marshstrider_boots', chance: 0.4 },
@@ -133,6 +141,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     hpBase: 52, hpPerLevel: 20, dmgBase: 8, dmgPerLevel: 2.3, attackSpeed: 2.3,
     armorPerLevel: 14, moveSpeed: 6.5, aggroRadius: 11,
     lifeleech: { healFrac: 0.5, chance: 0.35, name: 'Drowning Grasp' },
+    // A clammy, fevered touch that rots the living from within, wasting away
+    // their constitution (Stamina) and shrinking their health pool.
+    plague: { chance: 0.3, sta: 12, duration: 12, name: 'Bog Rot' },
     loot: [
       { copper: 42, chance: 1 },
       { itemId: 'bone_fragments', chance: 0.5 },
@@ -144,6 +155,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     id: 'fen_troll', name: 'Mirefen Troll', minLevel: 10, maxLevel: 12, family: 'troll',
     hpBase: 56, hpPerLevel: 21, dmgBase: 9, dmgPerLevel: 2.4, attackSpeed: 2.2,
     armorPerLevel: 18, moveSpeed: 7.5, aggroRadius: 11,
+    // Withering Rot: the troll's fetid claws rot a struck victim's sinews, draining
+    // Agility (thinning their armor and dodge) for a few seconds.
+    wither: { chance: 0.3, agi: 18, duration: 8, name: 'Withering Rot', school: 'nature' },
     loot: [
       { copper: 50, chance: 1 },
       { itemId: 'troll_fetish', chance: 0.6, questId: 'q_troll_fetishes' },
@@ -162,17 +176,24 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
       { itemId: 'grubjaw_tusk', chance: 1, questId: 'q_grubjaw' },
       { itemId: 'chipped_tusk', chance: 1 },
     ],
+    purgeOnHit: { chance: 0.3, name: 'Devour Magic' },
     scale: 1.3, color: 0x145a32,
   },
   gravecaller_cultist: {
     id: 'gravecaller_cultist', name: 'Gravecaller Cultist', minLevel: 10, maxLevel: 12, family: 'humanoid',
     hpBase: 50, hpPerLevel: 20, dmgBase: 9, dmgPerLevel: 2.4, attackSpeed: 2.0,
     armorPerLevel: 20, moveSpeed: 7, aggroRadius: 11,
+    // The cultist's hex leaves the victim taking more damage from everyone —
+    // a soft-up that rewards a group focusing the cursed player's target down.
+    vulnerability: { chance: 0.2, amp: 0.15, duration: 10, name: 'Curse of Frailty', school: 'shadow' },
     loot: [
       { copper: 55, chance: 1 },
       { itemId: 'linen_scrap', chance: 0.3 },
       { itemId: 'tallow_candle', chance: 0.3 },
     ],
+    // The cultist's muttered curse weakens its prey: a hexed victim deals less
+    // damage and heals for less until the hex fades.
+    hex: { chance: 0.3, reductionPct: 0.2, duration: 10, name: 'Weakening Hex', school: 'shadow' },
     scale: 1.0, color: 0x6c3483,
   },
   gravecaller_summoner: {
@@ -183,6 +204,11 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     // Low dread proc so this mob doesn't routinely stack two panic effects
     // (silence + fear) on one victim — keeps the encounter from feeling like a lockout.
     dread: { chance: 0.12, duration: 4, name: 'Wail of the Grave', school: 'shadow' },
+    // Grave Blight: a landed hit can sear undeath into the wound, devouring the
+    // next 120 healing the victim receives before it fades. A sustain-denial axis
+    // that complements (not compounds) the summoner's silence/fear lockout —
+    // healers must out-pace the blight or top off after it lapses.
+    healAbsorb: { chance: 0.25, amount: 120, duration: 10, name: 'Grave Blight', school: 'shadow' },
     loot: [
       { copper: 60, chance: 1 },
       { itemId: 'cult_cipher', chance: 0.6, questId: 'q_summoners' },
@@ -197,6 +223,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     // wounds shut on a slow cadence. Pull it away from the camp — or drop it
     // first — or the fight never ends.
     mendAlly: { healMin: 26, healMax: 38, radius: 14, every: 6, name: 'Grave Mending', school: 'shadow' },
+    // Draining Litany: the mender siphons the victim's vigour to fuel its grave
+    // prayers, inflating every ability the victim uses by 40% for 8s on a hit.
+    costTax: { chance: 0.3, pct: 0.4, duration: 8, name: 'Draining Litany', school: 'shadow' },
     loot: [
       { copper: 58, chance: 1 },
       { itemId: 'cult_cipher', chance: 0.4, questId: 'q_summoners' },
@@ -210,6 +239,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     hpBase: 330, hpPerLevel: 60, dmgBase: 16, dmgPerLevel: 3.8, attackSpeed: 2.0,
     armorPerLevel: 30, moveSpeed: 7, aggroRadius: 13,
     aoePulse: { min: 18, max: 26, radius: 11, every: 9, name: 'Dirge of Nhalia', school: 'shadow' },
+    // Spirit Siphon: the priestess's touch drains a caster's Spirit, choking
+    // their out-of-combat mana regen for the duration (see siphonSpirit affix).
+    siphonSpirit: { chance: 0.3, spi: 14, duration: 10, name: 'Spirit Siphon', school: 'shadow' },
     summonAdds: { mobId: 'nhalia_mourner', count: 2, atHpPct: [0.65, 0.35] },
     loot: [
       { copper: 350, chance: 1 },
@@ -223,6 +255,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     id: 'nhalia_mourner', name: 'Nhalia Mourner', minLevel: 11, maxLevel: 12, family: 'humanoid',
     hpBase: 46, hpPerLevel: 17, dmgBase: 8, dmgPerLevel: 2.3, attackSpeed: 2.0,
     armorPerLevel: 14, moveSpeed: 7, aggroRadius: 12,
+    // Curse of Tongues: the mourners' dirge garbles a caster's incantations, slowing
+    // their spell cast times by 30% for 10s on a landed hit (30% chance).
+    tongues: { chance: 0.3, mult: 1.3, duration: 10, name: 'Dirge of Tongues', school: 'shadow' },
     loot: [],
     scale: 0.95, color: 0x332044,
   },
@@ -231,6 +266,8 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
     hpBase: 200, hpPerLevel: 30, dmgBase: 11, dmgPerLevel: 2.5, attackSpeed: 2.4,
     armorPerLevel: 26, moveSpeed: 7, aggroRadius: 14, boss: true,
     aoePulse: { min: 10, max: 14, radius: 10, every: 12, name: 'Drowning Hymn' },
+    // The deacon brands the faithless with a searing arcane rune that festers.
+    arcaneRot: { chance: 0.3, perTick: 7, interval: 3, duration: 12, name: 'Profane Rune', school: 'arcane' },
     loot: [
       { copper: 600, chance: 1 },
       { itemId: 'tallow_candle', chance: 1 },

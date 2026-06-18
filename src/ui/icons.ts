@@ -1169,6 +1169,7 @@ const AURA_RECIPES: Record<string, IconRecipe> = {
   aura_incapacitate: r('storm', 'sky', ['eye']),
   aura_polymorph: r('arcane', 'pink', ['sheep_head']),
   aura_attackspeed: r('storm', 'ice', ['axe', { p: 'snowflake', ...BR }]),
+  aura_tongues: r('shadow', 'shadowPurple', ['skull'], ['motion']),
   aura_buff_sta: r('blood', 'blood', ['heart']),
   aura_buff_ap: r('fury', 'gold', ['fist']),
   aura_buff_armor: r('steel', 'steel', ['shield']),
@@ -1180,6 +1181,8 @@ const AURA_RECIPES: Record<string, IconRecipe> = {
   aura_imbue: r('holy', 'holyGold', ['sword', { p: 'sunburst', ...TL }]),
   aura_buff_allstats: r('arcane', 'arcanePink', ['gem']),
   aura_thorns: r('nature', 'leafGreen', ['leaf', { p: 'claw_slash', ...BR }]),
+  aura_cost_tax: r('shadow', 'shadowPurple', ['gem', { p: 'droplet', ...BR }], ['drips']),
+  aura_heal_absorb: r('shadow', 'shadowPurple', ['heart'], ['drips']),
   aura_form_bear: r('earth', 'earthBrown', ['paw']),
 };
 

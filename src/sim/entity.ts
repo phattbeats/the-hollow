@@ -20,7 +20,7 @@ function baseEntity(id: number, pos: Vec3): Entity {
     comboPoints: 0, comboTargetId: null, overpowerUntil: -1, potionCooldownUntil: -1, savedMana: 0,
     chargeTargetId: null, chargeTimeLeft: 0, chargePath: [], followTargetId: null,
     sitting: false, eating: null, drinking: null,
-    aiState: 'idle', tappedById: null, pulseTimer: 0, stompTimer: 0, stoneskinTimer: 0, detonateTimer: Infinity, mendTimer: 0, wardTimer: 0, rallyTimer: 0, firedSummons: 0, summonedIds: [], enraged: false, healedThisPull: false,
+    aiState: 'idle', tappedById: null, pulseTimer: 0, stompTimer: 0, stoneskinTimer: 0, detonateTimer: Infinity, mendTimer: 0, wardTimer: 0, rallyTimer: 0, warcryTimer: 0, firedSummons: 0, summonedIds: [], enraged: false, healedThisPull: false,
     threat: new Map(), forcedTargetId: null, forcedTargetTimer: 0, ownerId: null, petMode: 'defensive', petTauntTimer: 0,
     spawnPos: { ...pos }, leashAnchor: null, evadeStall: 0, fleeTimer: 0, hasFled: false, wanderTarget: null, wanderTimer: 0,
     aggroTargetId: null, respawnTimer: 0, corpseTimer: 0, lootable: false, loot: null,
@@ -93,6 +93,8 @@ export function recalcPlayerStats(e: Entity, cls: PlayerClass, equipment: Player
     if (a.kind === 'buff_ap') bonusAp += a.value;
     else if (a.kind === 'buff_armor') s.armor += a.value;
     else if (a.kind === 'buff_int') s.int += a.value;
+    else if (a.kind === 'buff_agi') s.agi += a.value;
+    else if (a.kind === 'buff_spi') s.spi += a.value;
     else if (a.kind === 'buff_sta') s.sta += a.value;
     else if (a.kind === 'buff_allstats') {
       s.str += a.value; s.agi += a.value; s.sta += a.value; s.int += a.value; s.spi += a.value;
@@ -110,6 +112,9 @@ export function recalcPlayerStats(e: Entity, cls: PlayerClass, equipment: Player
     bonusDodge += m.dodge;
     if (m.staPct) s.sta = Math.round(s.sta * (1 + m.staPct));
   }
+  // Floor Agility at 0 so a draining debuff (negative buff_agi) can never push the
+  // derived armor/dodge below what zero Agility would give.
+  s.agi = Math.max(0, s.agi);
   s.armor += s.agi * 2;
   if (bearForm) {
     s.armor = Math.round(s.armor * 1.65);
@@ -120,6 +125,9 @@ export function recalcPlayerStats(e: Entity, cls: PlayerClass, equipment: Player
     s.agi += Math.max(2, Math.floor(lvl / 2));
   }
   if (mods?.stats.armorPct) s.armor = Math.round(s.armor * (1 + mods.stats.armorPct));
+  // Floor Spirit at 0 so a Spirit-siphoning debuff (negative buff_spi) can never
+  // drive out-of-combat regen (updateRegen reads stats.spi) below zero.
+  s.spi = Math.max(0, s.spi);
 
   e.stats = s;
   const weapon = (equipment.mainhand && ITEMS[equipment.mainhand]?.weapon) || { min: 1, max: 2, speed: 2 };
@@ -199,6 +207,8 @@ export function createMob(id: number, template: MobTemplate, level: number, pos:
   if (template.stoneskin) e.stoneskinTimer = template.stoneskin.every;
   // Telegraph the first Rally the same way: one full interval after engage.
   if (template.rally) e.rallyTimer = template.rally.every;
+  // Telegraph the first War Cadence the same way: one full interval after engage.
+  if (template.warcry) e.warcryTimer = template.warcry.every;
   return e;
 }
 
