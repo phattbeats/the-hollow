@@ -5591,7 +5591,9 @@ export class Hud {
   }
 
   // A labelled slider bound to a numeric setting; live-applies via the hook.
-  private settingSlider(parent: HTMLElement, label: string, key: NumericSettingKey): void {
+  // opts.fmt renders the readout (default: a percentage); opts.step overrides the
+  // 0.05 increment for settings measured in whole units (e.g. FOV degrees).
+  private settingSlider(parent: HTMLElement, label: string, key: NumericSettingKey, opts?: { fmt?: (v: number) => string; step?: number }): void {
     const hooks = this.optionsHooks;
     if (!hooks) return;
     const r = SETTING_RANGES[key];
@@ -5605,16 +5607,17 @@ export class Hud {
     slider.className = 'set-slider';
     slider.min = String(r.min);
     slider.max = String(r.max);
-    slider.step = '0.05';
+    slider.step = String(opts?.step ?? 0.05);
     slider.value = String(hooks.settings.get(key));
     slider.setAttribute('aria-label', label);
     const val = document.createElement('span');
     val.className = 'set-val';
-    const pct = () => `${Math.round(hooks.settings.get(key) * 100)}%`;
-    val.textContent = pct();
+    const fmt = opts?.fmt ?? ((v: number) => `${Math.round(v * 100)}%`);
+    const readout = () => fmt(hooks.settings.get(key));
+    val.textContent = readout();
     slider.addEventListener('input', () => {
       hooks.onSettingChange(key, Number(slider.value));
-      val.textContent = pct();
+      val.textContent = readout();
     });
     row.append(name, slider, val);
     parent.appendChild(row);
@@ -5749,6 +5752,7 @@ export class Hud {
     // own rate, so phones get a dedicated sensitivity slider here.
     if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.touchLookSpeed'), 'touchLookSpeed');
     this.settingSlider(body, t('hud.options.brightness'), 'brightness');
+    this.settingSlider(body, t('hud.options.fieldOfView'), 'cameraFov', { fmt: (v) => `${Math.round(v)}°`, step: 1 });
     this.settingSlider(body, t('hud.options.renderQuality'), 'renderScale');
     this.settingToggle(body, t('hud.options.fullscreen'), 'fullscreen');
     this.settingToggle(body, t('game.settings.showOverflowXp'), 'showOverflowXp');

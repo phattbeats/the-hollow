@@ -527,6 +527,12 @@ export class Renderer {
     this.webgl.toneMappingExposure = this.baseExposure * mult;
   }
 
+  /** Vertical camera field of view in degrees (55..100, default 60). */
+  setCameraFov(deg: number): void {
+    this.camera.fov = Math.min(100, Math.max(55, deg));
+    this.camera.updateProjectionMatrix();
+  }
+
   /** Resolution multiplier on top of the device pixel ratio (0.5..1). */
   setRenderScale(scale: number): void {
     this.renderScale = Math.min(1, Math.max(0.5, scale));

@@ -680,6 +680,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       case 'sfxVolume': audio.setVolume(v); break;
       case 'musicVolume': music.setVolume(v); break;
       case 'brightness': renderer.setBrightness(v); break;
+      case 'cameraFov': renderer.setCameraFov(v); break;
       case 'renderScale': renderer.setRenderScale(v); break;
       case 'fullscreen': v >= 0.5 ? requestPreferredFullscreen() : exitBrowserFullscreen(); break;
       case 'clickToMove': if (v < 0.5) input.clearClickMove(); syncClickMoveInput(); break;
