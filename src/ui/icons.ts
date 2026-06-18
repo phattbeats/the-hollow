@@ -1437,6 +1437,84 @@ export const QUALITY_COLOR: Record<string, string> = {
   epic: '#a335ee',
 };
 
+// ---------------------------------------------------------------------------
+// Photographic weapon icons
+//
+// Obtainable weapons (loot / vendor / quest drops) use a rendered thumbnail of
+// the KayKit weapon model instead of a procedural recipe — see
+// scripts/render_weapon_icons.mjs, which writes public/ui/weapons/<model>.jpg.
+// Several items intentionally share a model (the pack has fewer meshes than we
+// have weapons); the flashier meshes are reserved for rare/epic items. The
+// model is purely cosmetic — rarity colour still comes from item.quality (the
+// CSS .q-* border), exactly like the procedural icons.
+// ---------------------------------------------------------------------------
+
+const WEAPON_ICON_DIR = '/ui/weapons';
+
+const ITEM_ICON_IMAGES: Record<string, string> = {
+  // swords
+  worn_sword: 'sword_a',
+  eastbrook_arming_sword: 'sword_b',
+  redbrook_blade: 'sword_d',
+  mistcallers_edge: 'sword_d',
+  zealotsbane_blade: 'sword_e',
+  highwatch_warblade: 'sword_e',
+  gravecaller_blade: 'sword_c',
+  valeborn_spellblade: 'sword_g', // crystalline — fits a spellblade
+  wyrmfang_greatblade: 'sword_f', // flaming — epic dragon blade
+  // daggers
+  rusty_dagger: 'dagger_a',
+  vale_carving_knife: 'dagger_a',
+  mirefen_skinner: 'dagger_a',
+  ironvein_pickblade: 'dagger_a',
+  icevein_dirk: 'dagger_b',
+  keen_dirk: 'dagger_b',
+  mistbinder_kris: 'dagger_b',
+  mirejaw_biteblade: 'dagger_b',
+  cultist_flayer: 'dagger_b',
+  moggers_shiv: 'dagger_c', // emerald blade — rare/epic daggers
+  widowfang_dirk: 'dagger_c',
+  nhalias_dirgeblade: 'dagger_c',
+  riptide_dirk: 'dagger_c',
+  gutripper_shiv: 'dagger_c',
+  fang_of_korzul: 'dagger_c',
+  // staves
+  gnarled_staff: 'staff_a',
+  hickory_shortstaff: 'staff_a',
+  fenreed_staff: 'staff_a',
+  craghorn_staff: 'staff_a',
+  apprentice_staff: 'staff_b',
+  staff_of_drowned_prayers: 'staff_b',
+  vaels_mist_staff: 'staff_b',
+  emberwood_staff: 'staff_d',
+  ironvein_lantern_staff: 'staff_d',
+  staff_of_velkhar: 'staff_d',
+  ogre_bonecharm_staff: 'staff_d',
+  gravecaller_staff: 'staff_c', // glowing gem — rare/epic staves
+  mirejaw_oracle_staff: 'staff_c',
+  staff_of_the_gravewyrm: 'staff_c',
+  // maces (KayKit "hammer" meshes)
+  training_mace: 'hammer_a',
+  bronzework_mace: 'hammer_a',
+  bogiron_mace: 'hammer_d',
+  bristleback_maul: 'hammer_d',
+  voss_sanctified_mace: 'hammer_c',
+  moggers_copper_cudgel: 'hammer_b',
+  // axes
+  rusty_hatchet: 'axe_a',
+  deacons_cleaver: 'axe_c',
+  drogmars_skullcleaver: 'axe_b',
+  gorraks_cruel_chopper: 'axe_d',
+  // polearm
+  fen_reaver_glaive: 'halberd',
+};
+
+/** Static URL of a weapon's rendered thumbnail, or null if it uses a recipe. */
+function weaponIconUrl(id: string): string | null {
+  const model = ITEM_ICON_IMAGES[id];
+  return model ? `${WEAPON_ICON_DIR}/${model}.jpg` : null;
+}
+
 const urlCache = new Map<string, string>();
 const warnedIds = new Set<string>();
 
@@ -1477,8 +1555,14 @@ export function iconCanvas(kind: IconKind, id: string, size: number = DEFAULT_IC
   return canvas;
 }
 
-// Returns a cached PNG data URL for the icon of the given ability/item/aura/crest id.
+// Returns the icon URL for an ability/item/aura/crest id — a static image URL
+// for weapons that have a rendered thumbnail, otherwise a cached procedural PNG
+// data URL. Both forms work as an <img src> or CSS background-image.
 export function iconDataUrl(kind: IconKind, id: string, size: number = DEFAULT_ICON_SIZE): string {
+  if (kind === 'item') {
+    const img = weaponIconUrl(id);
+    if (img) return img;
+  }
   const key = `${kind}|${id}|${size}`;
   const cached = urlCache.get(key);
   if (cached) return cached;
