@@ -129,9 +129,15 @@ describe('client HTML shell', () => {
     expect(html).toContain('-webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));');
     expect(html).toContain('body.mobile-touch #xpbar .fill,\n  body.mobile-touch #xpbar .ticks { display: none; }');
     expect(html).toContain('body.mobile-touch #player-frame::before {\n      left: -5px;\n      top: -5px;\n      width: 73px;\n      height: 73px;');
-    expect(html).toContain('body.mobile-touch #target-frame {\n    left: max(8px, env(safe-area-inset-left));\n    top: calc(max(8px, env(safe-area-inset-top)) + 90px);');
-    expect(html).toContain('body.mobile-touch #party-frames {\n    position: fixed;\n    left: max(8px, env(safe-area-inset-left));\n    top: calc(max(8px, env(safe-area-inset-top)) + 92px);');
-    expect(html).toContain('body.mobile-touch #party-frames.below-target {\n    top: calc(max(8px, env(safe-area-inset-top)) + 148px);');
+    expect(html).toContain('body.mobile-touch #target-frame {\n    left: max(8px, env(safe-area-inset-left));\n    top: calc(max(8px, env(safe-area-inset-top)) + 72px);');
+    expect(html).toContain('body.mobile-touch #party-frames {\n    position: fixed;\n    left: max(8px, env(safe-area-inset-left));\n    top: calc(max(8px, env(safe-area-inset-top)) + 74px);');
+    expect(html).toContain('body.mobile-touch #party-frames.below-target {\n    top: calc(max(8px, env(safe-area-inset-top)) + 130px);');
+    expect(html).toContain('body.mobile-touch #party-frames .party-frame {\n    width: 132px;\n    min-height: 30px;');
+    expect(html).toContain('body.mobile-touch #party-frames .party-frame:not(:first-child) {\n    margin-top: -1px;');
+    expect(html).toContain('body.mobile-touch #party-frames #party-leave {\n    width: 132px;\n    min-height: 32px;');
+    expect(html).toContain('body.mobile-touch #party-frames .party-frame {\n      width: 118px;\n      min-height: 25px;');
+    expect(html).toContain('body.mobile-touch #target-frame {\n      left: max(6px, env(safe-area-inset-left));\n      top: calc(max(6px, env(safe-area-inset-top)) + 56px);');
+    expect(html).toContain('body.mobile-touch #party-frames.below-target {\n      top: calc(max(6px, env(safe-area-inset-top)) + 100px);');
     expect(html).not.toContain('body.mobile-touch.mobile-left-handed #xpbar,');
     expect(hudTs).toContain("$('#xpbar').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));");
     expect(hudTs).toContain("$('#player-frame').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));");
