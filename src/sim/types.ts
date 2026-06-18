@@ -251,6 +251,11 @@ export interface MobTemplate {
   // mitigation); this raises magic damage taken. Holy is excluded so healing-
   // school spells stay unaffected.
   spellVuln?: { chance: number; amp: number; duration: number; name: string; school?: Aura['school'] };
+  // Melee mechanic: a landed swing has `chance` to knock the victim off-balance,
+  // cutting their dodge chance by `dodgeReduction` (a flat fraction, e.g. 0.05)
+  // for `duration` seconds — so the attacker (and everyone else) lands more hits.
+  // Rides the existing buff_dodge aura with a NEGATIVE value; no new aura kind.
+  staggerHit?: { chance: number; dodgeReduction: number; duration: number; name: string };
   // On-hit web mechanic: a landed melee swing has `chance` to ensnare the struck
   // player in place — a `root` aura for `duration`s (naga/spider snares). Rides the
   // existing root aura + crowd-control DR; no new aura kind. Players only; rooting a
