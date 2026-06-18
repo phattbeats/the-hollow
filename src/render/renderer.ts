@@ -194,7 +194,6 @@ function npcDisplayName(npcId: string): string {
 }
 
 function dungeonDisplayName(dungeonId: string): string {
-  if (dungeonId === 'nythraxis_crypt') return DUNGEON_LIST.find((d) => d.id === dungeonId)?.name ?? 'Abandoned Crypt';
   return tEntity({ kind: 'dungeon', id: dungeonId, field: 'name' });
 }
 

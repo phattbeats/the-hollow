@@ -12,7 +12,7 @@
 // every player-facing emit site, and fails if any is no longer recognized by a client
 // matcher — so a new unhandled sim string cannot ship silently.
 import { ITEMS, MOBS } from '../sim/data';
-import { getLanguage, supportedLanguages, t, formatNumber, type InterpolationValues, type SupportedLanguage } from './i18n';
+import { getLanguage, supportedLanguages, t, formatNumber, type InterpolationValues, type SupportedLanguage, type TranslationKey } from './i18n';
 import { tEntity } from './entity_i18n';
 
 const baseEnTable = {
@@ -2059,6 +2059,184 @@ function tQuestExtra(key: QuestExtraKey, params?: InterpolationValues): string {
   return interpolate(table[key] ?? QUEST_EXTRA.en[key], params);
 }
 
+// Item / equipment / world-object interaction strings emitted by src/sim: the
+// /gear self-readout frame plus the relic + quest-item pickup error toasts. Like
+// QUEST_EXTRA/ARENA_EXTRA these live here (not the DICT) and are matched by the
+// RULES below; the gear readout's per-slot LABELS reuse the already-translated
+// itemUi.slots.* keys via t(), so only the frame + "(empty)" marker are new here.
+type ItemExtraKey =
+  | 'gearReadout' | 'gearEmptySlot' | 'nothingEquipped'
+  | 'cannotTakeYet' | 'offersNothingMore'
+  | 'relicBound' | 'relicRecovered';
+
+const ITEM_EXTRA: Record<SupportedLanguage, Record<ItemExtraKey, string>> = {
+  en: {
+    gearReadout: 'Equipped ({worn}/{total}): {items}.',
+    gearEmptySlot: '(empty)',
+    nothingEquipped: 'You have nothing equipped.',
+    cannotTakeYet: 'You cannot take the {name} yet.',
+    offersNothingMore: '{name} offers nothing more.',
+    relicBound: 'The relic is bound by the sealed crypt.',
+    relicRecovered: 'You have already recovered this relic.',
+  },
+  en_CA: {
+    gearReadout: 'Equipped ({worn}/{total}): {items}.',
+    gearEmptySlot: '(empty)',
+    nothingEquipped: 'You have nothing equipped.',
+    cannotTakeYet: 'You cannot take the {name} yet.',
+    offersNothingMore: '{name} offers nothing more.',
+    relicBound: 'The relic is bound by the sealed crypt.',
+    relicRecovered: 'You have already recovered this relic.',
+  },
+  es: {
+    gearReadout: 'Equipado ({worn}/{total}): {items}.',
+    gearEmptySlot: '(vacío)',
+    nothingEquipped: 'No tienes nada equipado.',
+    cannotTakeYet: 'Aún no puedes tomar {name}.',
+    offersNothingMore: '{name} no ofrece nada más.',
+    relicBound: 'La reliquia está atada a la cripta sellada.',
+    relicRecovered: 'Ya has recuperado esta reliquia.',
+  },
+  es_ES: {
+    gearReadout: 'Equipado ({worn}/{total}): {items}.',
+    gearEmptySlot: '(vacío)',
+    nothingEquipped: 'No tienes nada equipado.',
+    cannotTakeYet: 'Aún no puedes tomar {name}.',
+    offersNothingMore: '{name} no ofrece nada más.',
+    relicBound: 'La reliquia está atada a la cripta sellada.',
+    relicRecovered: 'Ya has recuperado esta reliquia.',
+  },
+  fr_FR: {
+    gearReadout: 'Équipé ({worn}/{total}): {items}.',
+    gearEmptySlot: '(vide)',
+    nothingEquipped: "Vous n'avez rien d'équipé.",
+    cannotTakeYet: 'Vous ne pouvez pas encore prendre {name}.',
+    offersNothingMore: "{name} n'offre rien de plus.",
+    relicBound: 'La relique est liée à la crypte scellée.',
+    relicRecovered: 'Vous avez déjà récupéré cette relique.',
+  },
+  fr_CA: {
+    gearReadout: 'Équipé ({worn}/{total}): {items}.',
+    gearEmptySlot: '(vide)',
+    nothingEquipped: "Vous n'avez rien d'équipé.",
+    cannotTakeYet: 'Vous ne pouvez pas encore prendre {name}.',
+    offersNothingMore: "{name} n'offre rien de plus.",
+    relicBound: 'La relique est liée à la crypte scellée.',
+    relicRecovered: 'Vous avez déjà récupéré cette relique.',
+  },
+  it_IT: {
+    gearReadout: 'Equipaggiato ({worn}/{total}): {items}.',
+    gearEmptySlot: '(vuoto)',
+    nothingEquipped: 'Non hai nulla equipaggiato.',
+    cannotTakeYet: 'Non puoi ancora prendere {name}.',
+    offersNothingMore: "{name} non offre nient'altro.",
+    relicBound: 'La reliquia è vincolata alla cripta sigillata.',
+    relicRecovered: 'Hai già recuperato questa reliquia.',
+  },
+  de_DE: {
+    gearReadout: 'Ausgerüstet ({worn}/{total}): {items}.',
+    gearEmptySlot: '(leer)',
+    nothingEquipped: 'Ihr habt nichts ausgerüstet.',
+    cannotTakeYet: 'Ihr könnt {name} noch nicht nehmen.',
+    offersNothingMore: '{name} bietet nichts weiter.',
+    relicBound: 'Das Relikt ist an die versiegelte Krypta gebunden.',
+    relicRecovered: 'Ihr habt dieses Relikt bereits geborgen.',
+  },
+  zh_CN: {
+    gearReadout: '已装备（{worn}/{total}）：{items}。',
+    gearEmptySlot: '（空）',
+    nothingEquipped: '你没有装备任何物品。',
+    cannotTakeYet: '你还不能拿取{name}。',
+    offersNothingMore: '{name}没有更多可提供的了。',
+    relicBound: '圣物被封印的墓穴束缚着。',
+    relicRecovered: '你已经找回了这件圣物。',
+  },
+  zh_TW: {
+    gearReadout: '已裝備（{worn}/{total}）：{items}。',
+    gearEmptySlot: '（空）',
+    nothingEquipped: '你沒有裝備任何物品。',
+    cannotTakeYet: '你還不能拿取{name}。',
+    offersNothingMore: '{name}沒有更多可提供的了。',
+    relicBound: '聖物被封印的墓穴束縛著。',
+    relicRecovered: '你已經找回了這件聖物。',
+  },
+  ko_KR: {
+    gearReadout: '착용 중 ({worn}/{total}): {items}.',
+    gearEmptySlot: '(없음)',
+    nothingEquipped: '착용한 장비가 없습니다.',
+    cannotTakeYet: '아직 {name}을(를) 가져갈 수 없습니다.',
+    offersNothingMore: '{name}에게서 더 얻을 것이 없습니다.',
+    relicBound: '유물이 봉인된 묘실에 묶여 있습니다.',
+    relicRecovered: '이미 이 유물을 되찾았습니다.',
+  },
+  ja_JP: {
+    gearReadout: '装備中（{worn}/{total}）：{items}。',
+    gearEmptySlot: '（なし）',
+    nothingEquipped: '何も装備していません。',
+    cannotTakeYet: 'まだ{name}を取ることはできません。',
+    offersNothingMore: '{name}からはもう何も得られません。',
+    relicBound: '聖遺物は封印された墓所に縛られています。',
+    relicRecovered: 'この聖遺物はすでに回収しています。',
+  },
+  pt_BR: {
+    gearReadout: 'Equipado ({worn}/{total}): {items}.',
+    gearEmptySlot: '(vazio)',
+    nothingEquipped: 'Você não tem nada equipado.',
+    cannotTakeYet: 'Você ainda não pode pegar {name}.',
+    offersNothingMore: '{name} não oferece mais nada.',
+    relicBound: 'A relíquia está presa à cripta selada.',
+    relicRecovered: 'Você já recuperou esta relíquia.',
+  },
+  ru_RU: {
+    gearReadout: 'Экипировано ({worn}/{total}): {items}.',
+    gearEmptySlot: '(пусто)',
+    nothingEquipped: 'У вас ничего не экипировано.',
+    cannotTakeYet: 'Вы пока не можете взять {name}.',
+    offersNothingMore: '{name} больше ничего не предлагает.',
+    relicBound: 'Реликвия привязана к запечатанной крипте.',
+    relicRecovered: 'Вы уже нашли эту реликвию.',
+  },
+};
+
+function tItemExtra(key: ItemExtraKey, params?: InterpolationValues): string {
+  const table = ITEM_EXTRA[getLanguage()] ?? ITEM_EXTRA.en;
+  return interpolate(table[key] ?? ITEM_EXTRA.en[key], params);
+}
+
+// The /gear readout's English slot labels -> the already-translated itemUi.slots.*
+// keys the character-window paperdoll renders. Keep in sync with gearReadout() in
+// src/sim/sim.ts (the slot order/labels it emits).
+const GEAR_SLOT_KEYS: Record<string, TranslationKey> = {
+  'Main Hand': 'itemUi.slots.mainhand',
+  'Helmet': 'itemUi.slots.helmet',
+  'Shoulder': 'itemUi.slots.shoulder',
+  'Chest': 'itemUi.slots.chest',
+  'Waist': 'itemUi.slots.waist',
+  'Legs': 'itemUi.slots.legs',
+  'Gloves': 'itemUi.slots.gloves',
+  'Feet': 'itemUi.slots.feet',
+};
+
+// Rebuild the /gear readout in the active locale: localize each "Slot: value"
+// segment (slot label via itemUi.slots.*, item name via the entity dict, the
+// "(empty)" marker via ITEM_EXTRA) then re-frame via the gearReadout template.
+function locGearReadout(worn: string, total: string, body: string): string {
+  const items = body
+    .split(', ')
+    .map((seg) => {
+      const sep = seg.indexOf(': ');
+      if (sep < 0) return seg;
+      const label = seg.slice(0, sep);
+      const value = seg.slice(sep + 2);
+      const slotKey = GEAR_SLOT_KEYS[label];
+      const locLabel = slotKey ? t(slotKey) : label;
+      const locValue = value === '(empty)' ? tItemExtra('gearEmptySlot') : locItem(value);
+      return `${locLabel}: ${locValue}`;
+    })
+    .join(', ');
+  return tItemExtra('gearReadout', { worn, total, items });
+}
+
 // EXACT (no-placeholder) sim messages: English -> key (auto-built; throws on collision).
 const EXACT: Record<string, SimMessageKey> = {};
 for (const key of Object.keys(enTable) as SimMessageKey[]) {
@@ -2129,7 +2307,18 @@ const RULES: Rule[] = [
   { re: /^(.+) begins to swell — get clear!$/, build: (m) => tSim('log.deathThroesArm', { name: locMob(m[1]) }) },
   { re: /^(.+) bursts in a cloud of (.+)!$/, build: (m) => tSim('log.deathThroesBurst', { name: locMob(m[1]), effect: localizeSimAuraName(m[2]) ?? m[2] }) },
   { re: /^Discarded (.+?)( x\d+)?\.$/, build: (m) => tSim('log.discarded', { item: locItemStack(m[1], m[2]) }) },
-  { re: /^Equipped (.+)\.$/, build: (m) => tSim('log.equipped', { item: locItem(m[1]) }) },
+  // /gear self-readout (must precede the single-item Equipped rule below, which is
+  // anchored with (?!\() so it can never swallow this compound readout).
+  { re: /^Equipped \(([^/]+)\/([^)]+)\): (.+)\.$/, build: (m) => locGearReadout(m[1], m[2], m[3]) },
+  { re: /^You have nothing equipped\.$/, build: () => tItemExtra('nothingEquipped') },
+  // Quest-item + relic pickup error toasts (src/sim emits these as `?? 'English'`
+  // fallbacks, so the S3 drift guard's this.error regex cannot see them — covered
+  // explicitly by tests/sim_item_i18n.test.ts instead).
+  { re: /^You cannot take the (.+) yet\.$/, build: (m) => tItemExtra('cannotTakeYet', { name: locItem(m[1]) }) },
+  { re: /^(.+) offers nothing more\.$/, build: (m) => tItemExtra('offersNothingMore', { name: locItem(m[1]) }) },
+  { re: /^The relic is bound by the sealed crypt\.$/, build: () => tItemExtra('relicBound') },
+  { re: /^You have already recovered this relic\.$/, build: () => tItemExtra('relicRecovered') },
+  { re: /^Equipped (?!\()(.+)\.$/, build: (m) => tSim('log.equipped', { item: locItem(m[1]) }) },
   { re: /^You quaff (.+)\.$/, build: (m) => tSim('log.quaff', { item: locItem(m[1]) }) },
   { re: /^(.+) wins (.+) \((\d+)\)$/, build: (m) => tSim('loot.rollWin', { winner: m[1], item: locItem(m[2]), roll: m[3] }) },
   { re: /^(.+) leaves the party\.$/, build: (m) => tSim('log.partyLeaves', { name: m[1] }) },

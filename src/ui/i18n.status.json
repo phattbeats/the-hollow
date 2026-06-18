@@ -30,7 +30,7 @@
     "translated": 32883,
     "pending": 624,
     "blocked": 46,
-    "blockedSource": 105
+    "blockedSource": 104
   },
   "keys": {
     "main:a11y.characterActions": {
@@ -186038,11 +186038,6 @@
       "channel": "sim",
       "reason": "v0.7 in-game slash-command / diagnostic surface; ships English as a documented backstop pending a dedicated localization pass (follow-up).",
       "text": "You have not learned any abilities yet."
-    },
-    {
-      "channel": "sim",
-      "reason": "v0.7 in-game slash-command / diagnostic surface; ships English as a documented backstop pending a dedicated localization pass (follow-up).",
-      "text": "You have nothing equipped."
     },
     {
       "channel": "sim",
