@@ -59,6 +59,24 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
     ],
     scale: 0.95, color: 0x8c8270,
   },
+  // The apex of the southern ridge: a grizzled, scar-pelted old cat that has
+  // outlived three generations of its pack. A rare elite counterpart to the
+  // Ridge Stalkers, met first when climbing into Thornpeak. Reuses existing
+  // mechanics only — a rending pounce (aoePulse) and a wounded-beast enrage.
+  old_cragmaw: {
+    id: 'old_cragmaw', name: 'Old Cragmaw', minLevel: 14, maxLevel: 14, family: 'beast', rare: true,
+    elite: true, canSwim: true, ccImmune: true, respawnMult: 432,
+    hpBase: 320, hpPerLevel: 56, dmgBase: 16, dmgPerLevel: 4.0, attackSpeed: 1.7,
+    armorPerLevel: 24, moveSpeed: 8.6, aggroRadius: 13,
+    aoePulse: { min: 22, max: 30, radius: 8, every: 9, name: 'Savage Pounce', school: 'physical' },
+    enrage: { belowHpPct: 0.35, dmgMult: 1.4, hasteMult: 1.3 },
+    loot: [
+      { copper: 220, chance: 1 },
+      { itemId: 'ridge_stalker_pelt', chance: 1 },
+      { itemId: 'cragmaw_prowlboots', chance: 0.3 },
+    ],
+    scale: 1.3, color: 0x6e6453,
+  },
   deeprock_kobold: {
     id: 'deeprock_kobold', name: 'Deeprock Tunneler', minLevel: 14, maxLevel: 15, family: 'kobold',
     hpBase: 60, hpPerLevel: 22, dmgBase: 10, dmgPerLevel: 2.5, attackSpeed: 2.1,
@@ -145,6 +163,28 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
       { itemId: 'drogmars_skullcleaver', chance: 0.25 },
     ],
     scale: 1.5, color: 0x8c3b2e,
+  },
+  brutok_skullsmasher: {
+    // The ogre family's rare elite — a hulking two-fisted mauler that prowls
+    // the crags above the Crusher warbands. Slow, heavily armored and brutal:
+    // it slams the ground in a physical shockwave and goes berserk when low.
+    // Fills the ogre rare gap beside Ironvein Foreman (kobold), Shardlord
+    // Kazzix (elemental) and Marrowlord Varkas (undead).
+    id: 'brutok_skullsmasher', name: 'Brutok Skullsmasher', minLevel: 17, maxLevel: 17, family: 'ogre', rare: true,
+    elite: true, ccImmune: true, respawnMult: 432,
+    hpBase: 360, hpPerLevel: 60, dmgBase: 16, dmgPerLevel: 3.6, attackSpeed: 2.7,
+    armorPerLevel: 30, moveSpeed: 7, aggroRadius: 13,
+    aoePulse: { min: 22, max: 30, radius: 10, every: 10, name: 'Skull Smash', school: 'physical', fx: 'nova' },
+    enrage: { belowHpPct: 0.30, dmgMult: 1.5, hasteMult: 1.3 },
+    loot: [
+      { copper: 320, chance: 1 },
+      { itemId: 'cracked_ogre_tusk', chance: 1 },
+      { itemId: 'skullsmasher_warbelt', chance: 0.3 },
+      { itemId: 'brutoks_maul', chance: 0.25, rollGroup: 'brutok_chase' },
+      { itemId: 'crag_warden_cudgel', chance: 0.25, rollGroup: 'brutok_chase' },
+      { itemId: 'skullsplitter_dirk', chance: 0.25, rollGroup: 'brutok_chase' },
+    ],
+    scale: 1.45, color: 0x6e5235,
   },
   stormcrag_elemental: {
     id: 'stormcrag_elemental', name: 'Stormcrag Elemental', minLevel: 17, maxLevel: 18, family: 'elemental',
@@ -324,6 +364,26 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
     expose: { chance: 0.25, dmgIncrease: 0.18, duration: 8, name: 'Cracked Guard' },
     loot: [],
     scale: 1.0, color: 0xc9c2b5,
+  },
+  // Voskar the Emberwing — a young drake the Wyrmcult chained above the Sanctum
+  // and starved into a weapon. The only dragonkin rare on the peaks: it breathes
+  // fire in a wide cone, and its searing bite leaves wounds that refuse to close.
+  voskar_emberwing: {
+    id: 'voskar_emberwing', name: 'Voskar the Emberwing', minLevel: 19, maxLevel: 19, family: 'dragonkin', rare: true,
+    elite: true, canSwim: true, ccImmune: true, respawnMult: 864,
+    hpBase: 470, hpPerLevel: 78, dmgBase: 22, dmgPerLevel: 4.9, attackSpeed: 2.5,
+    armorPerLevel: 42, moveSpeed: 7, aggroRadius: 13,
+    aoePulse: { min: 30, max: 44, radius: 10, every: 9, name: 'Ember Breath', school: 'fire', fx: 'nova' },
+    // Searing Maw: the drake's molten bite cauterizes flesh shut, blunting healing.
+    mortalStrike: { chance: 0.35, healReduction: 0.5, duration: 8, name: 'Searing Maw', school: 'fire' },
+    enrage: { belowHpPct: 0.3, dmgMult: 1.5, hasteMult: 1.3 },
+    loot: [
+      { copper: 700, chance: 1 },
+      { itemId: 'emberwing_cinderscale', chance: 1 },
+      { itemId: 'emberwing_legguards', chance: 0.25, rollGroup: 'voskar_emberwing_chase' },
+      { itemId: 'emberfang_warblade', chance: 0.25, rollGroup: 'voskar_emberwing_chase' },
+    ],
+    scale: 1.3, color: 0xe8702a,
   },
 };
 
@@ -708,6 +768,7 @@ export const ZONE3_CAMPS: CampDef[] = [
   // Ridge stalkers: the ridge flanking the road from the pass
   { mobId: 'ridge_stalker', center: { x: -50, z: 590 }, radius: 22, count: 7 },
   { mobId: 'ridge_stalker', center: { x: 45, z: 600 }, radius: 20, count: 6 },
+  { mobId: 'old_cragmaw', center: { x: -82, z: 575 }, radius: 5, count: 1 },
   // Kobolds: Deeprock Burrows, west
   { mobId: 'deeprock_kobold', center: { x: 75, z: 625 }, radius: 18, count: 8 },
   { mobId: 'deeprock_kobold', center: { x: 105, z: 600 }, radius: 14, count: 6 },
@@ -717,6 +778,8 @@ export const ZONE3_CAMPS: CampDef[] = [
   { mobId: 'thornpeak_ogre', center: { x: -60, z: 730 }, radius: 18, count: 6 },
   { mobId: 'ogre_crusher', center: { x: -125, z: 740 }, radius: 18, count: 8 },
   { mobId: 'warlord_drogmar', center: { x: -132, z: 748 }, radius: 2, count: 1 },
+  // A lone rare ogre prowls the ridge north of the warband
+  { mobId: 'brutok_skullsmasher', center: { x: -45, z: 768 }, radius: 4, count: 1 },
   // Elementals: Stormcrag, far west
   { mobId: 'stormcrag_elemental', center: { x: 110, z: 760 }, radius: 20, count: 8 },
   { mobId: 'stormcrag_elemental', center: { x: 135, z: 795 }, radius: 16, count: 6 },
@@ -729,6 +792,10 @@ export const ZONE3_CAMPS: CampDef[] = [
   { mobId: 'boneclad_revenant', center: { x: -40, z: 830 }, radius: 20, count: 8 },
   { mobId: 'boneclad_revenant', center: { x: -15, z: 860 }, radius: 16, count: 6 },
   { mobId: 'marrowlord_varkas', center: { x: -34, z: 842 }, radius: 5, count: 1 },
+  // Voskar the Emberwing: perched on a scorched crag east of the Sanctum tents,
+  // with two zealot drakebinders posted to keep their captive on its chain.
+  { mobId: 'voskar_emberwing', center: { x: 80, z: 845 }, radius: 4, count: 1 },
+  { mobId: 'wyrmcult_zealot', center: { x: 80, z: 845 }, radius: 7, count: 2 },
 ];
 
 export const ZONE3_OBJECTS: GroundObjectDef[] = [
@@ -817,6 +884,12 @@ export const ZONE3_ITEMS: Record<string, ItemDef> = {
     id: 'ridgestalker_treads', name: 'Ridgestalker Treads', kind: 'armor', slot: 'feet', quality: 'uncommon',
     stats: { armor: 50, agi: 3, sta: 2 }, sellValue: 600,
   },
+  // Old Cragmaw's rare drop — a notch above the Ridgestalker Treads. Leather,
+  // so it stays unrestricted by class.
+  cragmaw_prowlboots: {
+    id: 'cragmaw_prowlboots', name: 'Cragmaw Prowlboots', kind: 'armor', slot: 'feet', quality: 'rare',
+    stats: { armor: 58, agi: 5, sta: 3 }, sellValue: 750,
+  },
   boneplate_vest: {
     id: 'boneplate_vest', name: 'Boneplate Vest', kind: 'armor', slot: 'chest', quality: 'uncommon',
     stats: { armor: 170, sta: 6, str: 3 }, sellValue: 800, requiredClass: ['warrior', 'paladin', 'shaman'],
@@ -857,7 +930,38 @@ export const ZONE3_ITEMS: Record<string, ItemDef> = {
     id: 'marrowlord_boneboots', name: 'Marrowlord Boneboots', kind: 'armor', slot: 'feet', quality: 'uncommon',
     stats: { armor: 90, sta: 5, str: 2 }, sellValue: 1050, requiredClass: ['warrior', 'paladin', 'shaman'],
   },
+  // Brutok Skullsmasher (rare ogre) — guaranteed trophy + warbelt
+  skullsmasher_warbelt: {
+    id: 'skullsmasher_warbelt', name: "Skullsmasher's Warbelt", kind: 'armor', slot: 'chest', quality: 'uncommon',
+    stats: { armor: 96, sta: 5, str: 3 }, sellValue: 1050,
+  },
+  // Voskar the Emberwing drops (rare elite dragonkin)
+  emberwing_cinderscale: {
+    id: 'emberwing_cinderscale', name: 'Emberwing Cinderscale', kind: 'junk', quality: 'common',
+    sellValue: 320,
+  },
+  emberwing_legguards: {
+    id: 'emberwing_legguards', name: 'Emberwing Legguards', kind: 'armor', slot: 'legs', quality: 'rare',
+    stats: { armor: 120, sta: 6, str: 4 }, sellValue: 2200, requiredClass: ['warrior', 'paladin', 'shaman'],
+  },
+  emberfang_warblade: {
+    id: 'emberfang_warblade', name: 'Emberfang Warblade', kind: 'weapon', slot: 'mainhand', quality: 'rare',
+    weapon: { min: 26, max: 41, speed: 2.5 }, stats: { str: 8, sta: 3 }, sellValue: 2400, requiredClass: ['warrior', 'paladin', 'shaman'],
+  },
   // --- quest & dungeon blues (rare) ---
+  // Brutok Skullsmasher chase weapons (mutually exclusive: brutok_chase)
+  brutoks_maul: {
+    id: 'brutoks_maul', name: "Brutok's Maul", kind: 'weapon', slot: 'mainhand', quality: 'rare',
+    weapon: { min: 24, max: 37, speed: 2.7 }, stats: { str: 8, sta: 3 }, sellValue: 2000, requiredClass: ['warrior', 'paladin', 'shaman'],
+  },
+  crag_warden_cudgel: {
+    id: 'crag_warden_cudgel', name: 'Crag Warden Cudgel', kind: 'weapon', slot: 'mainhand', quality: 'rare',
+    weapon: { min: 23, max: 36, speed: 3.0 }, stats: { int: 8, spi: 4 }, sellValue: 2000, requiredClass: ['mage', 'priest', 'warlock', 'druid'],
+  },
+  skullsplitter_dirk: {
+    id: 'skullsplitter_dirk', name: 'Skullsplitter Dirk', kind: 'weapon', slot: 'mainhand', quality: 'rare',
+    weapon: { min: 15, max: 23, speed: 1.7, dagger: true }, stats: { agi: 8, sta: 3 }, sellValue: 2000, requiredClass: ['rogue', 'hunter'],
+  },
   drogmars_skullcleaver: {
     id: 'drogmars_skullcleaver', name: "Drogmar's Skullcleaver", kind: 'weapon', slot: 'mainhand', quality: 'rare',
     weapon: { min: 22, max: 35, speed: 2.6 }, stats: { str: 7, sta: 4 }, sellValue: 2000, requiredClass: ['warrior', 'paladin', 'shaman'],
@@ -1031,6 +1135,7 @@ export const ZONE3_ITEMS: Record<string, ItemDef> = {
   },
   // --- junk (gray) ---
   ogre_toe_ring: { id: 'ogre_toe_ring', name: 'Ogre Toe Ring', kind: 'junk', quality: 'poor', sellValue: 25 },
+  cracked_ogre_tusk: { id: 'cracked_ogre_tusk', name: 'Cracked Ogre Tusk', kind: 'junk', quality: 'poor', sellValue: 42 },
   inert_storm_shard: { id: 'inert_storm_shard', name: 'Inert Storm Shard', kind: 'junk', quality: 'poor', sellValue: 28 },
   frayed_prayer_beads: { id: 'frayed_prayer_beads', name: 'Frayed Prayer Beads', kind: 'junk', quality: 'poor', sellValue: 30 },
   cracked_wyrm_scale: { id: 'cracked_wyrm_scale', name: 'Cracked Wyrm Scale', kind: 'junk', quality: 'poor', sellValue: 35 },

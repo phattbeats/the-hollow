@@ -12,7 +12,7 @@ import { BASE_ITEMS, FISHING_TABLES, FISHING_RARE_ID } from './content/items';
 export { FISHING_TABLES, FISHING_RARE_ID };
 export type { FishingEntry } from './content/items';
 import {
-  GRAVEYARD_POS, LAKE, TOWN_RADIUS, ZONE1_CAMPS, ZONE1_MOBS, ZONE1_NPCS, ZONE1_OBJECTS,
+  GRAVEYARD_POS, LAKE, TOWN_RADIUS, ZONE1_CAMPS, ZONE1_CHAPEL_CAMPS, ZONE1_MOBS, ZONE1_NPCS, ZONE1_OBJECTS,
   ZONE1_PROPS, ZONE1_QUESTS, ZONE1_QUEST_ORDER, ZONE1_ROADS, ZONE1_ZONE,
 } from './content/zone1';
 import {
@@ -72,10 +72,11 @@ export const QUEST_ORDER: string[] = [
 ];
 
 // Camps spawn in array order, each drawing world-gen RNG, so an entry inserted
-// before others shifts their spawn positions. The Eastbrook rare Grix is spawned
-// LAST here so every existing zone camp keeps its exact draw order (determinism).
+// before others shifts their spawn positions. New rare-elite camps
+// (ZONE1_CHAPEL_CAMPS) and the Eastbrook rare Grix are appended LAST so every
+// existing zone camp keeps its exact draw order (determinism).
 export const CAMPS: CampDef[] = [
-  ...ZONE1_CAMPS, ...ZONE2_CAMPS, ...ZONE3_CAMPS, ...TEMPLE_CAMPS,
+  ...ZONE1_CAMPS, ...ZONE2_CAMPS, ...ZONE3_CAMPS, ...TEMPLE_CAMPS, ...ZONE1_CHAPEL_CAMPS,
   { mobId: 'grix_the_tunnelking', center: { x: -95, z: -78 }, radius: 4, count: 1 },
 ];
 

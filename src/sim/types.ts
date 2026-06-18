@@ -260,6 +260,13 @@ export interface MobTemplate {
   // every `every` seconds, soaking up to `amount` damage for `duration` seconds.
   // Reuses the existing `absorb` aura (soaked first in dealDamage) — no new combat math.
   stoneskin?: { amount: number; every: number; duration: number; name: string; school?: string };
+  // Boss/elite mechanic ("Banshee's Wail"): a periodic, telegraphed scream that
+  // terrifies every nearby player into fleeing for `duration`s. Unlike the
+  // on-hit `dread`, this is a timed AoE — the room-clearing analogue of `stomp`,
+  // but it applies the same `fear_incap` aura the player-cast Fear uses (driven
+  // by `updateFearMovement`) instead of a stun. Telegraphed: the first wail only
+  // lands one full `every` interval after combat opens. No new aura kind.
+  terrify?: { radius: number; every: number; duration: number; name: string; school?: Aura['school'] };
   // Melee mechanic: each landed swing also splashes onto other players near the
   // primary target for `mult` of the (pre-armor) hit. Classic-WoW Cleave.
   cleave?: { radius: number; mult: number; name?: string };
@@ -835,6 +842,7 @@ export interface Entity {
   pulseTimer: number; // boss aoe pulse countdown
   stompTimer: number; // boss War Stomp stun-pulse countdown
   stoneskinTimer: number; // periodic self-absorb barrier countdown
+  terrifyTimer: number; // Banshee's Wail fear-pulse countdown
   detonateTimer: number; // Death Throes fuse on a volatile corpse; Infinity = no pending detonation
   mendTimer: number; // mendAlly support-heal cast countdown
   wardTimer: number; // wardAllies support-shield cast countdown
