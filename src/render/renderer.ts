@@ -4,9 +4,8 @@ import { OVERHEAD_EMOTES, type IWorld } from '../world_api';
 import { groundHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
 import {
   MOBS, ABILITIES, DUNGEON_X_THRESHOLD, DUNGEON_LIST, QUESTS,
-  instanceOrigin, INSTANCE_SLOT_COUNT, ARENA_SLOT_COUNT, arenaOrigin, arenaOriginAt, isArenaPos, dungeonAt,
+  instanceOrigin, INSTANCE_SLOT_COUNT, ARENA_SLOT_COUNT, arenaOrigin, isArenaPos, dungeonAt,
 } from '../sim/data';
-import { ARENA_LAYOUT, DUNGEON_WALL_X } from '../sim/dungeon_layout';
 import { cameraOcclusion } from '../sim/colliders';
 import type { BiomeId } from '../sim/types';
 import { AnimState, CharacterVisual, createCharacterVisual } from './characters';
@@ -888,6 +887,14 @@ export class Renderer {
     if (v) this.activeVisual(v)?.playHit();
   }
 
+  private isHostileSelectionTarget(target: Entity): boolean {
+    if (target.kind === 'mob') return target.hostile;
+    if (target.kind !== 'player' || target.dead || target.id === this.sim.playerId) return false;
+    if (this.sim.duelInfo?.state === 'active' && this.sim.duelInfo.otherPid === target.id) return true;
+    const match = this.sim.arenaInfo?.match;
+    return match?.state === 'active' && (match.oppPid === target.id || match.enemies.some((e) => e.pid === target.id));
+  }
+
   // -------------------------------------------------------------------------
   // Per-frame sync
   // -------------------------------------------------------------------------
@@ -1275,7 +1282,7 @@ export class Renderer {
         this.selectionRing.position.y += 0.08;
         this.selectionRing.scale.setScalar(target.scale);
         const ringMat = this.selectionRing.material as THREE.MeshBasicMaterial;
-        ringMat.color.setHex(target.hostile ? 0xcc2222 : 0xd4af37);
+        ringMat.color.setHex(this.isHostileSelectionTarget(target) ? 0xcc2222 : 0xd4af37);
         if (!this.lowGfx) ringMat.color.multiplyScalar(SELECTION_RING_BOOST); // subtle bloom edge
         this.selectionRing.visible = true;
       } else {
@@ -1332,6 +1339,10 @@ export class Renderer {
       this.camera.position.x, this.camera.position.y, this.camera.position.z,
       this.cameraLookAt.x, this.cameraLookAt.y, this.cameraLookAt.z,
       fogFar,
+    );
+    this.dungeons?.update(
+      this.camera.position.x, this.camera.position.y, this.camera.position.z,
+      this.cameraLookAt.x, this.cameraLookAt.y, this.cameraLookAt.z,
     );
     this.foliage.update(
       p.pos.x, p.pos.z,
@@ -1460,36 +1471,35 @@ export class Renderer {
     let cx = px - Math.sin(this.camYaw) * Math.cos(this.camPitch) * this.camDist;
     let cy = eyeY + Math.sin(this.camPitch) * this.camDist;
     let cz = pz - Math.cos(this.camYaw) * Math.cos(this.camPitch) * this.camDist;
-    // The Ashen Coliseum is a small enclosed pit and the combatants spawn only
-    // ~6yd from the end walls, so the 12yd chase cam would otherwise sit outside
-    // the walls looking in. Keep it inside the room's interior box.
     if (isArenaPos(p.pos.x)) {
-      const o = arenaOriginAt(p.pos.z);
-      const m = 2; // clearance from the wall faces
-      cx = Math.min(Math.max(cx, o.x - DUNGEON_WALL_X + m), o.x + DUNGEON_WALL_X - m);
-      cz = Math.min(Math.max(cz, o.z + ARENA_LAYOUT.zMin + m), o.z + ARENA_LAYOUT.zMax - m);
+      // Arena walls hide from the camera like buildings, so the chase camera
+      // stays at the player's requested zoom instead of clamping inside the pit.
+      this.camOcclusion.pullT = 1;
+      this.camOcclusion.lensT = 1;
+      this.camOcclusion.fov = CAMERA_BASE_FOV;
+    } else {
+      // Camera collision for non-hideable blockers. Camera-ghost props are left
+      // at the requested zoom and hidden in props.ts while keeping their shadows.
+      let hardT = cameraOcclusion(seed, px, eyeY, pz, cx, cy, cz, CAMERA_COLLIDER_PAD);
+      let softT = cameraOcclusion(seed, px, eyeY, pz, cx, cy, cz, CAMERA_SOFT_COLLIDER_PAD);
+      const segLen = Math.hypot(cx - px, cy - eyeY, cz - pz);
+      if (segLen > 1e-3) {
+        const minT = CAMERA_MIN_DIST / segLen;
+        hardT = Math.min(1, Math.max(hardT, minT));
+        softT = Math.min(1, Math.max(softT, minT));
+      }
+      stepCameraOcclusion(
+        this.camOcclusion,
+        hardT,
+        softT,
+        dt,
+        CAMERA_PULL_IN_RATE,
+        CAMERA_PULL_OUT_RATE,
+        CAMERA_SOFT_PULL_WEIGHT,
+        CAMERA_BASE_FOV,
+        CAMERA_MAX_COMP_FOV,
+      );
     }
-    // Camera collision for non-hideable blockers. Camera-ghost props are left
-    // at the requested zoom and hidden in props.ts while keeping their shadows.
-    let hardT = cameraOcclusion(seed, px, eyeY, pz, cx, cy, cz, CAMERA_COLLIDER_PAD);
-    let softT = cameraOcclusion(seed, px, eyeY, pz, cx, cy, cz, CAMERA_SOFT_COLLIDER_PAD);
-    const segLen = Math.hypot(cx - px, cy - eyeY, cz - pz);
-    if (segLen > 1e-3) {
-      const minT = CAMERA_MIN_DIST / segLen;
-      hardT = Math.min(1, Math.max(hardT, minT));
-      softT = Math.min(1, Math.max(softT, minT));
-    }
-    stepCameraOcclusion(
-      this.camOcclusion,
-      hardT,
-      softT,
-      dt,
-      CAMERA_PULL_IN_RATE,
-      CAMERA_PULL_OUT_RATE,
-      CAMERA_SOFT_PULL_WEIGHT,
-      CAMERA_BASE_FOV,
-      CAMERA_MAX_COMP_FOV,
-    );
     const ct = this.camOcclusion.pullT;
     cx = px + (cx - px) * ct;
     cy = eyeY + (cy - eyeY) * ct;

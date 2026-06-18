@@ -2246,7 +2246,7 @@ export class Sim {
       if (this.lineOfSightBlocked(p, target, ability)) { this.error(p.id, 'Line of sight.'); return; }
     } else if (ability.requiresTarget) {
       target = p.targetId !== null ? this.entities.get(p.targetId) ?? null : null;
-      if (!target || target.dead) { this.error(p.id, 'You have no target.'); return; }
+      if (!target || target.dead || !this.isHostileTo(p, target)) { this.error(p.id, 'You have no target.'); return; }
       const d = dist2d(p.pos, target.pos);
       const maxRange = ability.range > 0 ? ability.range : MELEE_RANGE;
       if (d > maxRange + 2) { this.error(p.id, 'Out of range.'); return; }
@@ -4825,7 +4825,7 @@ export class Sim {
     const e = this.entities.get(id);
     if (!e || (e.dead && !e.lootable)) return;
     p.targetId = id;
-    if (!e.hostile || e.dead) p.autoAttack = false;
+    if (!this.isHostileTo(p, e) || e.dead) p.autoAttack = false;
   }
 
   tabTarget(pid?: number): void {

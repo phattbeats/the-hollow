@@ -180,6 +180,30 @@ describe('arena: a full bout', () => {
     expect(sim.entities.get(a)!.targetId).toBe(b);
   });
 
+  it('does not cancel auto-attack when retargeting an active arena opponent', () => {
+    const { sim, a, b } = queueDuo();
+    startBout(sim);
+    const attacker = sim.entities.get(a)!;
+
+    sim.targetEntity(b, a);
+    sim.startAutoAttack(a);
+    expect(attacker.autoAttack).toBe(true);
+
+    sim.targetEntity(b, a);
+    expect(attacker.autoAttack).toBe(true);
+  });
+
+  it('still rejects auto-attack against arena opponents during the countdown', () => {
+    const { sim, a, b } = queueDuo();
+    const attacker = sim.entities.get(a)!;
+
+    sim.targetEntity(b, a);
+    sim.startAutoAttack(a);
+
+    expect(sim.arenaMatchFor(a)!.state).toBe('countdown');
+    expect(attacker.autoAttack).toBe(false);
+  });
+
   it('kills the loser at 0 health, scores at once, then a 5s aftermath returns both', () => {
     const { sim, a, b } = queueDuo();
     startBout(sim);
