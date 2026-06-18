@@ -23,7 +23,7 @@
 // locale ordering is fixed (the LOCALES list), and the hash is deterministic
 // (scripts/i18n_hash.mjs). Two runs on the same inputs are byte-identical, so the
 // committed registry is reproducibility-checked with `git diff --exit-code` just
-// like i18n.resolved.generated.ts and the media manifest.
+// like the i18n.resolved.generated/ directory and the media manifest.
 //
 // On staleness: because srcHash is recomputed from the current English each run,
 // it always equals the per-key enHash for now, so the translated/stale

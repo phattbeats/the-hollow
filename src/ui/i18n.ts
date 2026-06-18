@@ -6,8 +6,9 @@ import {
 } from './i18n.resolved.generated';
 import type { Leaves, TranslationKey, InterpolationValue, InterpolationValues, DeepPartial } from './i18n.en';
 
-// The translation table is the generated dense artifact
-// (src/ui/i18n.resolved.generated.ts), where every locale is overlaid onto `en`
+// The translation table is the generated dense artifact - the barrel (index.ts) of
+// the src/ui/i18n.resolved.generated/ directory (one dense slice per locale), where
+// every locale is overlaid onto `en`
 // and filled from English. Every read-path below (t, translationValue,
 // hasTranslation, tOptional) reads that dense table, never the raw per-locale
 // objects - those can go sparse, so a direct read of them would

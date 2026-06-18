@@ -3,7 +3,8 @@ import { translations, pending, en_XA } from './i18n.resolved.generated';
 // The admin dashboard's own i18n layer (overlay + registry + release-gate
 // model). Operators are users, so ALL rendered admin text routes through t().
 //
-// DICT is the dense resolved admin table (src/admin/i18n.resolved.generated.ts):
+// DICT is the dense resolved admin table (the barrel of the
+// src/admin/i18n.resolved.generated/ directory):
 // every locale overlaid onto the flat English admin base (src/admin/i18n.en.ts)
 // and filled from English, so every key always resolves. The SCANNER reads the
 // SPARSE source (i18n.en + i18n.locales/*) to decide which keys are `pending`;

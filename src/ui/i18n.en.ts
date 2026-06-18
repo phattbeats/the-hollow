@@ -11903,8 +11903,8 @@ export const en = {
 };
 
 // The authoritative en shape. The generated dense table
-// (src/ui/i18n.resolved.generated.ts) types every locale ": EnTranslations" so
-// tsc still red-fails any missing or renamed key.
+// (the per-locale slices under src/ui/i18n.resolved.generated/) types every locale
+// ": EnTranslations" so tsc still red-fails any missing or renamed key.
 export type EnTranslations = typeof en;
 
 // Depth 6 so the deepest real leaves (entities.quests.<id>.objectives.<n>.label,
