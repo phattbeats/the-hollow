@@ -5912,6 +5912,11 @@ const classAbilityNamesEn = {
       ["berserker_rage", "Berserker Rage", "Enter a berserker rage, generating 20 rage. (Warrior talent)"],
       ["summon_imp", "Summon Imp", "Summons an Imp under the command of the Warlock. The Imp hurls Firebolts at your enemies from afar. Summoning a new demon dismisses your current one. You may have one demon at a time."],
       ["summon_voidwalker", "Summon Voidwalker", "Summons a Voidwalker under the command of the Warlock. The Voidwalker is a sturdy demon that taunts your enemies and soaks up punishment. Summoning a new demon dismisses your current one. You may have one demon at a time."],
+      ["summon_succubus", "Summon Succubus", "Summons a Succubus under the command of the Warlock. The Succubus is a fragile demon that strikes quickly and hits hard in melee. Summoning a new demon dismisses your current one. You may have one demon at a time."],
+      ["summon_felhunter", "Summon Felhunter", "Summons a Felhunter under the command of the Warlock. The Felhunter harries enemies from range with Shadow Bite and excels at hunting spellcasters. Summoning a new demon dismisses your current one. You may have one demon at a time."],
+      ["summon_felguard", "Summon Felguard", "Summons a Felguard under the command of the Warlock. The Felguard is a durable melee demon that wades into battle and holds its own. Summoning a new demon dismisses your current one. You may have one demon at a time."],
+      ["summon_infernal", "Summon Infernal", "Binds an Infernal to your will — a hulking juggernaut with crushing melee and the deepest health and armor of any demon. A long cooldown gates its raw power. Summoning a new demon dismisses your current one. You may have one demon at a time."],
+      ["summon_doomguard", "Summon Doomguard", "Binds a Doomguard to your will — an elite demon that rains heavy Shadow damage from afar. A long cooldown gates its devastating power. Summoning a new demon dismisses your current one. You may have one demon at a time."],
     ]),
   },
 };
@@ -7525,6 +7530,7 @@ const MERGE_MOB_IDS = [
   'elder_bristleback', 'ironvein_foreman', 'ironvein_sapper', 'marrowlord_varkas', 'mirejaw_frenzy', 'mirejaw_the_ravenous',
   'mogger', 'mogger_lackey', 'nhalia_mourner', 'sableweb_hatchling', 'sableweb_matriarch', 'sister_nhalia', 'varkas_boneguard',
   'imp', 'voidwalker',
+  'succubus', 'felhunter', 'felguard', 'infernal', 'doomguard',
 ] as const;
 
 type MergeNameTranslations<TId extends string> = Record<TId, { name: string }>;
@@ -9386,6 +9392,7 @@ const mergeEntitiesEn = {
     "Elder Bristleback", "Ironvein Foreman", "Ironvein Sapper", "Marrowlord Varkas", "Mirejaw Frenzy", "Mirejaw the Ravenous",
     "Mogger", "Mogger Lackey", "Nhalia Mourner", "Sableweb Hatchling", "Sableweb Matriarch", "Sister Nhalia", "Varkas Boneguard",
     "Imp", "Voidwalker",
+      "Succubus", "Felhunter", "Felguard", "Infernal", "Doomguard",
   ], 'mob'),
   quests: {
     q_mogger_tracks: {
@@ -9421,7 +9428,8 @@ export const mergeEntities = {
       "Viejo Bristleback", "Capataz Vena de Hierro", "Zapador Vena de Hierro", "Señor de Médula Varkas", "Frenesí Mirejaw", "Mirejaw el Voraz",
       "Mogger", "Esbirro de Mogger", "Doliente de Nhalia", "Cría Sableweb", "Matriarca Sableweb", "Hermana Nhalia", "Guardahuesos de Varkas",
       "Diablillo", "Caminante del Vacío",
-    ], 'mob'),
+        "Súcubo", "Cazador vil", "Guardia vil", "Infernal", "Guardián del Terror",
+  ], 'mob'),
     quests: {
       q_mogger_tracks: {
         title: "El rastro de Mogger",
@@ -9454,7 +9462,8 @@ export const mergeEntities = {
       "Ancien Bristleback", "Contremaître Veinefer", "Sapeur Veinefer", "Seigneur de moelle Varkas", "Frénésie Mirejaw", "Mirejaw l'Affamé",
       "Mogger", "Laquais de Mogger", "Pleureuse de Nhalia", "Jeune Sableweb", "Matriarche Sableweb", "Soeur Nhalia", "Garde-os de Varkas",
       "Diablotin", "Marcheur du Vide",
-    ], 'mob'),
+        "Succube", "Limier corrompu", "Gangregarde", "Infernal", "Seigneur de l'effroi",
+  ], 'mob'),
     quests: {
       q_mogger_tracks: {
         title: "La piste de Mogger",
@@ -9488,7 +9497,8 @@ export const mergeEntities = {
       "Bristleback anziano", "Caposquadra Venaferrata", "Zappatore Venaferrata", "Signore del Midollo Varkas", "Furia Mirejaw", "Mirejaw il Famelico",
       "Mogger", "Lacchè di Mogger", "Piangente di Nhalia", "Piccolo Sableweb", "Matriarca Sableweb", "Sorella Nhalia", "Guardia d'ossa di Varkas",
       "Folletto", "Camminatore del Vuoto",
-    ], 'mob'),
+        "Succube", "Segugio vile", "Guardia vile", "Infernale", "Guardia del Terrore",
+  ], 'mob'),
     quests: {
       q_mogger_tracks: {
         title: "La traccia di Mogger",
@@ -9520,7 +9530,8 @@ export const mergeEntities = {
       "Alter Bristleback", "Eisenader-Vorarbeiter", "Eisenader-Pionier", "Marklord Varkas", "Mirejaw-Raserei", "Mirejaw der Gefräßige",
       "Mogger", "Moggers Lakai", "Nhalia-Trauernde", "Sableweb-Jungtier", "Sableweb-Matriarchin", "Schwester Nhalia", "Varkas' Knochenwache",
       "Wichtel", "Leerwandler",
-    ], 'mob'),
+        "Sukkubus", "Teufelsjäger", "Teufelswache", "Inferno", "Schreckenswache",
+  ], 'mob'),
     quests: {
       q_mogger_tracks: {
         title: "Moggers Spur",
@@ -9552,7 +9563,8 @@ export const mergeEntities = {
       "年长硬鬃", "铁脉工头", "铁脉爆破手", "髓王瓦尔卡斯", "泥颚狂鱼", "贪食者泥颚",
       "莫格", "莫格的爪牙", "娜莉娅哀悼者", "黑网幼蛛", "黑网主母", "娜莉娅修女", "瓦尔卡斯骨卫",
       "小鬼", "虚空行者",
-    ], 'mob'),
+        "魅魔", "地狱猎犬", "恶魔卫士", "地狱火", "末日守卫",
+  ], 'mob'),
     quests: {
       q_mogger_tracks: {
         title: "莫格的踪迹",
@@ -9584,7 +9596,8 @@ export const mergeEntities = {
       "年長硬鬃", "鐵脈工頭", "鐵脈爆破手", "髓王瓦爾卡斯", "泥顎狂魚", "貪食者泥顎",
       "莫格", "莫格的爪牙", "娜莉亞哀悼者", "黑網幼蛛", "黑網主母", "娜莉亞修女", "瓦爾卡斯骨衛",
       "小鬼", "虛空行者",
-    ], 'mob'),
+        "魅魔", "地獄獵犬", "惡魔守衛", "地獄火", "末日守衛",
+  ], 'mob'),
     quests: {
       q_mogger_tracks: {
         title: "莫格的蹤跡",
@@ -9616,7 +9629,8 @@ export const mergeEntities = {
       "늙은 뻣센등뼈", "철맥 감독관", "철맥 폭파병", "골수군주 바르카스", "마이어죠 광란어", "굶주린 마이어죠",
       "모거", "모거의 졸개", "날리아 애도자", "검은그물 새끼", "검은그물 우두머리", "자매 날리아", "바르카스 뼈수호병",
       "임프", "공허추적자",
-    ], 'mob'),
+        "서큐버스", "지옥사냥개", "지옥수호병", "지옥불정령", "파멸의 수호병",
+  ], 'mob'),
     quests: {
       q_mogger_tracks: {
         title: "모거의 흔적",
@@ -9648,7 +9662,8 @@ export const mergeEntities = {
       "老ブリストルバック", "鉄脈の現場監督", "鉄脈の爆破兵", "髄王ヴァーカス", "マイアジョーの狂魚", "貪るマイアジョー",
       "モガー", "モガーの手下", "ナリアの嘆き手", "セーブルウェブの幼体", "セーブルウェブの女家長", "シスター・ナリア", "ヴァーカスの骨衛兵",
       "インプ", "ヴォイドウォーカー",
-    ], 'mob'),
+        "サキュバス", "フェルハンター", "フェルガード", "インファーナル", "ドゥームガード",
+  ], 'mob'),
     quests: {
       q_mogger_tracks: {
         title: "モガーの足跡",
@@ -9680,7 +9695,8 @@ export const mergeEntities = {
       "Bristleback ancião", "Capataz Veio de Ferro", "Sapador Veio de Ferro", "Senhor da Medula Varkas", "Frenesi Mirejaw", "Mirejaw, o Voraz",
       "Mogger", "Lacaio de Mogger", "Pranteadora de Nhalia", "Filhote Sableweb", "Matriarca Sableweb", "Irmã Nhalia", "Guardião dos ossos de Varkas",
       "Diabrete", "Caminhante do Vazio",
-    ], 'mob'),
+        "Súcubo", "Caçador Vil", "Guarda Vil", "Infernal", "Guarda Sinistro",
+  ], 'mob'),
     quests: {
       q_mogger_tracks: {
         title: "A trilha de Mogger",
@@ -9712,7 +9728,8 @@ export const mergeEntities = {
       "Старый Щетиноспин", "Прораб Железной жилы", "Сапер Железной жилы", "Владыка костного мозга Варкас", "Бешенство Миреджо", "Миреджо Ненасытный",
       "Моггер", "Приспешник Моггера", "Плакальщица Налии", "Детеныш Сейблвеб", "Матриарх Сейблвеб", "Сестра Налия", "Костяной страж Варкаса",
       "Бес", "Страж Бездны",
-    ], 'mob'),
+        "Суккуб", "Охотник Скверны", "Страж Скверны", "Инфернал", "Страж Рока",
+  ], 'mob'),
     quests: {
       q_mogger_tracks: {
         title: "След Моггера",

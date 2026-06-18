@@ -1694,6 +1694,26 @@ export const en: EnTranslations = {
         "name": "Summon Voidwalker",
         "description": "Summons a Voidwalker under the command of the Warlock. The Voidwalker is a sturdy demon that taunts your enemies and soaks up punishment. Summoning a new demon dismisses your current one. You may have one demon at a time."
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a fragile demon that strikes quickly and hits hard in melee. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
+      "summon_felhunter": {
+        "name": "Summon Felhunter",
+        "description": "Summons a Felhunter under the command of the Warlock. The Felhunter harries enemies from range with Shadow Bite and excels at hunting spellcasters. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
+      "summon_felguard": {
+        "name": "Summon Felguard",
+        "description": "Summons a Felguard under the command of the Warlock. The Felguard is a durable melee demon that wades into battle and holds its own. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
+      "summon_infernal": {
+        "name": "Summon Infernal",
+        "description": "Binds an Infernal to your will — a hulking juggernaut with crushing melee and the deepest health and armor of any demon. A long cooldown gates its raw power. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
+      "summon_doomguard": {
+        "name": "Summon Doomguard",
+        "description": "Binds a Doomguard to your will — an elite demon that rains heavy Shadow damage from afar. A long cooldown gates its devastating power. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "Bear Charge",
         "description": "Charge an enemy, generating 9 rage and stunning it for 1 sec. 8-25 yd range. Bear Form only."
@@ -2638,6 +2658,21 @@ export const en: EnTranslations = {
       },
       "voidwalker": {
         "name": "Voidwalker"
+      },
+      "succubus": {
+        "name": "Succubus"
+      },
+      "felhunter": {
+        "name": "Felhunter"
+      },
+      "felguard": {
+        "name": "Felguard"
+      },
+      "infernal": {
+        "name": "Infernal"
+      },
+      "doomguard": {
+        "name": "Doomguard"
       },
       "choirmother_selthe": {
         "name": "Choirmother Selthe"
@@ -5417,6 +5452,26 @@ export const es: EnTranslations = {
         "name": "Invocar caminante del Vacío",
         "description": "Invoca a un Caminante del Vacío bajo el mando del brujo. El Caminante del Vacío es un demonio resistente que provoca a tus enemigos y encaja el castigo. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
       },
+      "summon_succubus": {
+        "name": "Invocar súcubo",
+        "description": "Invoca a una Súcubo bajo el mando del brujo. La Súcubo es un demonio frágil que golpea con rapidez y pega fuerte en el cuerpo a cuerpo. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
+      },
+      "summon_felhunter": {
+        "name": "Invocar cazador vil",
+        "description": "Invoca a un Cazador vil bajo el mando del brujo. El Cazador vil acosa a los enemigos desde la distancia con Mordedura de las Sombras y sobresale cazando lanzadores de hechizos. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
+      },
+      "summon_felguard": {
+        "name": "Invocar guardia vil",
+        "description": "Invoca a un Guardia vil bajo el mando del brujo. El Guardia vil es un demonio cuerpo a cuerpo resistente que se adentra en la batalla y aguanta por sí mismo. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
+      },
+      "summon_infernal": {
+        "name": "Invocar infernal",
+        "description": "Somete a un Infernal a tu voluntad: un coloso descomunal con un cuerpo a cuerpo demoledor y la mayor salud y armadura de todos los demonios. Un largo tiempo de reutilización refrena su poder bruto. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
+      },
+      "summon_doomguard": {
+        "name": "Invocar guardián del Terror",
+        "description": "Somete a un Guardián del Terror a tu voluntad: un demonio de élite que descarga un fuerte daño de las Sombras desde lejos. Un largo tiempo de reutilización refrena su poder devastador. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
+      },
       "bear_charge": {
         "name": "Embestida del oso",
         "description": "Embiste a un enemigo, generando 9 de furia y aturdiéndolo durante 1 s. Alcance de 7 a 23 m. Solo en Forma de oso."
@@ -6361,6 +6416,21 @@ export const es: EnTranslations = {
       },
       "voidwalker": {
         "name": "Caminante del Vacío"
+      },
+      "succubus": {
+        "name": "Súcubo"
+      },
+      "felhunter": {
+        "name": "Cazador vil"
+      },
+      "felguard": {
+        "name": "Guardia vil"
+      },
+      "infernal": {
+        "name": "Infernal"
+      },
+      "doomguard": {
+        "name": "Guardián del Terror"
       },
       "choirmother_selthe": {
         "name": "Selthe, madre del coro"
@@ -9140,6 +9210,26 @@ export const es_ES: EnTranslations = {
         "name": "Invocar caminante del Vacío",
         "description": "Invoca a un Caminante del Vacío bajo el mando del brujo. El Caminante del Vacío es un demonio resistente que provoca a tus enemigos y encaja el castigo. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
       },
+      "summon_succubus": {
+        "name": "Invocar súcubo",
+        "description": "Invoca a una Súcubo bajo el mando del brujo. La Súcubo es un demonio frágil que golpea con rapidez y pega fuerte en el cuerpo a cuerpo. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
+      },
+      "summon_felhunter": {
+        "name": "Invocar cazador vil",
+        "description": "Invoca a un Cazador vil bajo el mando del brujo. El Cazador vil acosa a los enemigos desde la distancia con Mordedura de las Sombras y sobresale cazando lanzadores de hechizos. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
+      },
+      "summon_felguard": {
+        "name": "Invocar guardia vil",
+        "description": "Invoca a un Guardia vil bajo el mando del brujo. El Guardia vil es un demonio cuerpo a cuerpo resistente que se adentra en la batalla y aguanta por sí mismo. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
+      },
+      "summon_infernal": {
+        "name": "Invocar infernal",
+        "description": "Somete a un Infernal a tu voluntad: un coloso descomunal con un cuerpo a cuerpo demoledor y la mayor salud y armadura de todos los demonios. Un largo tiempo de reutilización refrena su poder bruto. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
+      },
+      "summon_doomguard": {
+        "name": "Invocar guardián del Terror",
+        "description": "Somete a un Guardián del Terror a tu voluntad: un demonio de élite que descarga un fuerte daño de las Sombras desde lejos. Un largo tiempo de reutilización refrena su poder devastador. Invocar un nuevo demonio descarta el actual. Solo puedes tener un demonio a la vez."
+      },
       "bear_charge": {
         "name": "Embestida del oso",
         "description": "Embiste a un enemigo, generando 9 de furia y aturdiéndolo durante 1 s. Alcance de 7 a 23 m. Solo en Forma de oso."
@@ -10084,6 +10174,21 @@ export const es_ES: EnTranslations = {
       },
       "voidwalker": {
         "name": "Caminante del Vacío"
+      },
+      "succubus": {
+        "name": "Súcubo"
+      },
+      "felhunter": {
+        "name": "Cazador vil"
+      },
+      "felguard": {
+        "name": "Guardia vil"
+      },
+      "infernal": {
+        "name": "Infernal"
+      },
+      "doomguard": {
+        "name": "Guardián del Terror"
       },
       "choirmother_selthe": {
         "name": "Selthe, madre del coro"
@@ -12863,6 +12968,26 @@ export const fr_FR: EnTranslations = {
         "name": "Invoquer un marcheur du Vide",
         "description": "Invoque un Marcheur du Vide sous le commandement du démoniste. Le Marcheur du Vide est un démon robuste qui provoque vos ennemis et encaisse les coups. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
       },
+      "summon_succubus": {
+        "name": "Invoquer une succube",
+        "description": "Invoque une Succube sous le commandement du démoniste. La Succube est un démon fragile qui frappe vite et fort au corps à corps. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
+      },
+      "summon_felhunter": {
+        "name": "Invoquer un limier corrompu",
+        "description": "Invoque un Limier corrompu sous le commandement du démoniste. Le Limier corrompu harcèle les ennemis à distance avec sa Morsure des ombres et excelle dans la traque des lanceurs de sorts. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
+      },
+      "summon_felguard": {
+        "name": "Invoquer un gangregarde",
+        "description": "Invoque un Gangregarde sous le commandement du démoniste. Le Gangregarde est un démon de mêlée résistant qui se jette dans la bataille et tient bon. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
+      },
+      "summon_infernal": {
+        "name": "Invoquer un infernal",
+        "description": "Soumet un Infernal à votre volonté — un colosse implacable doté d'une puissance de mêlée écrasante et des points de vie et de l'armure les plus élevés de tous les démons. Un long temps de recharge bride sa puissance brute. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
+      },
+      "summon_doomguard": {
+        "name": "Invoquer un seigneur de l'effroi",
+        "description": "Soumet un Seigneur de l'effroi à votre volonté — un démon d'élite qui déverse de lourds dégâts d'Ombre à distance. Un long temps de recharge bride sa puissance dévastatrice. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
+      },
       "bear_charge": {
         "name": "Charge de l'ours",
         "description": "Charge un ennemi, génère 9 points de rage et l'étourdit pendant 1 sec. Portée de 7 à 23 mètres. Forme d'ours uniquement."
@@ -13807,6 +13932,21 @@ export const fr_FR: EnTranslations = {
       },
       "voidwalker": {
         "name": "Marcheur du Vide"
+      },
+      "succubus": {
+        "name": "Succube"
+      },
+      "felhunter": {
+        "name": "Limier corrompu"
+      },
+      "felguard": {
+        "name": "Gangregarde"
+      },
+      "infernal": {
+        "name": "Infernal"
+      },
+      "doomguard": {
+        "name": "Seigneur de l'effroi"
       },
       "choirmother_selthe": {
         "name": "Selthe, mère de chœur"
@@ -16586,6 +16726,26 @@ export const fr_CA: EnTranslations = {
         "name": "Invoquer un marcheur du Vide",
         "description": "Invoque un Marcheur du Vide sous le commandement du démoniste. Le Marcheur du Vide est un démon robuste qui provoque vos ennemis et encaisse les coups. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
       },
+      "summon_succubus": {
+        "name": "Invoquer une succube",
+        "description": "Invoque une Succube sous le commandement du démoniste. La Succube est un démon fragile qui frappe vite et fort au corps à corps. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
+      },
+      "summon_felhunter": {
+        "name": "Invoquer un limier corrompu",
+        "description": "Invoque un Limier corrompu sous le commandement du démoniste. Le Limier corrompu harcèle les ennemis à distance avec sa Morsure des ombres et excelle dans la traque des lanceurs de sorts. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
+      },
+      "summon_felguard": {
+        "name": "Invoquer un gangregarde",
+        "description": "Invoque un Gangregarde sous le commandement du démoniste. Le Gangregarde est un démon de mêlée résistant qui se jette dans la bataille et tient bon. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
+      },
+      "summon_infernal": {
+        "name": "Invoquer un infernal",
+        "description": "Soumet un Infernal à votre volonté — un colosse implacable doté d'une puissance de mêlée écrasante et des points de vie et de l'armure les plus élevés de tous les démons. Un long temps de recharge bride sa puissance brute. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
+      },
+      "summon_doomguard": {
+        "name": "Invoquer un seigneur de l'effroi",
+        "description": "Soumet un Seigneur de l'effroi à votre volonté — un démon d'élite qui déverse de lourds dégâts d'Ombre à distance. Un long temps de recharge bride sa puissance dévastatrice. Invoquer un nouveau démon renvoie celui que vous avez. Vous ne pouvez avoir qu'un démon à la fois."
+      },
       "bear_charge": {
         "name": "Charge de l'ours",
         "description": "Charge un ennemi, génère 9 points de rage et l'étourdit pendant 1 sec. Portée de 7 à 23 mètres. Forme d'ours uniquement."
@@ -17530,6 +17690,21 @@ export const fr_CA: EnTranslations = {
       },
       "voidwalker": {
         "name": "Marcheur du Vide"
+      },
+      "succubus": {
+        "name": "Succube"
+      },
+      "felhunter": {
+        "name": "Limier corrompu"
+      },
+      "felguard": {
+        "name": "Gangregarde"
+      },
+      "infernal": {
+        "name": "Infernal"
+      },
+      "doomguard": {
+        "name": "Seigneur de l'effroi"
       },
       "choirmother_selthe": {
         "name": "Selthe, mère de chœur"
@@ -20309,6 +20484,26 @@ export const en_CA: EnTranslations = {
         "name": "Summon Voidwalker",
         "description": "Summons a Voidwalker under the command of the Warlock. The Voidwalker is a sturdy demon that taunts your enemies and soaks up punishment. Summoning a new demon dismisses your current one. You may have one demon at a time."
       },
+      "summon_succubus": {
+        "name": "Summon Succubus",
+        "description": "Summons a Succubus under the command of the Warlock. The Succubus is a fragile demon that strikes quickly and hits hard in melee. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
+      "summon_felhunter": {
+        "name": "Summon Felhunter",
+        "description": "Summons a Felhunter under the command of the Warlock. The Felhunter harries enemies from range with Shadow Bite and excels at hunting spellcasters. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
+      "summon_felguard": {
+        "name": "Summon Felguard",
+        "description": "Summons a Felguard under the command of the Warlock. The Felguard is a durable melee demon that wades into battle and holds its own. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
+      "summon_infernal": {
+        "name": "Summon Infernal",
+        "description": "Binds an Infernal to your will — a hulking juggernaut with crushing melee and the deepest health and armor of any demon. A long cooldown gates its raw power. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
+      "summon_doomguard": {
+        "name": "Summon Doomguard",
+        "description": "Binds a Doomguard to your will — an elite demon that rains heavy Shadow damage from afar. A long cooldown gates its devastating power. Summoning a new demon dismisses your current one. You may have one demon at a time."
+      },
       "bear_charge": {
         "name": "Bear Charge",
         "description": "Charge an enemy, generating 9 rage and stunning it for 1 sec. 8-25 yd range. Bear Form only."
@@ -21253,6 +21448,21 @@ export const en_CA: EnTranslations = {
       },
       "voidwalker": {
         "name": "Voidwalker"
+      },
+      "succubus": {
+        "name": "Succubus"
+      },
+      "felhunter": {
+        "name": "Felhunter"
+      },
+      "felguard": {
+        "name": "Felguard"
+      },
+      "infernal": {
+        "name": "Infernal"
+      },
+      "doomguard": {
+        "name": "Doomguard"
       },
       "choirmother_selthe": {
         "name": "Choirmother Selthe"
@@ -24032,6 +24242,26 @@ export const it_IT: EnTranslations = {
         "name": "Evoca camminatore del Vuoto",
         "description": "Evoca un Camminatore del Vuoto al comando dello stregone. Il Camminatore del Vuoto è un demone robusto che provoca i tuoi nemici e assorbe i colpi. Evocare un nuovo demone congeda quello attuale. Puoi avere un solo demone alla volta."
       },
+      "summon_succubus": {
+        "name": "Evoca succube",
+        "description": "Evoca una Succube al comando dello stregone. La Succube è un demone fragile che colpisce rapidamente e infligge gravi danni in mischia. Evocare un nuovo demone congeda quello attuale. Puoi avere un solo demone alla volta."
+      },
+      "summon_felhunter": {
+        "name": "Evoca segugio vile",
+        "description": "Evoca un Segugio vile al comando dello stregone. Il Segugio vile tormenta i nemici a distanza con Morso d'ombra ed eccelle nel cacciare gli incantatori. Evocare un nuovo demone congeda quello attuale. Puoi avere un solo demone alla volta."
+      },
+      "summon_felguard": {
+        "name": "Evoca guardia vile",
+        "description": "Evoca una Guardia vile al comando dello stregone. La Guardia vile è un robusto demone da mischia che si getta nella battaglia e sa difendersi. Evocare un nuovo demone congeda quello attuale. Puoi avere un solo demone alla volta."
+      },
+      "summon_infernal": {
+        "name": "Evoca infernale",
+        "description": "Vincola un Infernale al tuo volere: un colosso possente con una mischia devastante e la salute e l'armatura più elevate di qualsiasi demone. Un lungo tempo di recupero ne limita la potenza bruta. Evocare un nuovo demone congeda quello attuale. Puoi avere un solo demone alla volta."
+      },
+      "summon_doomguard": {
+        "name": "Evoca guardia del Terrore",
+        "description": "Vincola una Guardia del Terrore al tuo volere: un demone d'élite che scaglia da lontano ingenti danni d'Ombra. Un lungo tempo di recupero ne limita la potenza devastante. Evocare un nuovo demone congeda quello attuale. Puoi avere un solo demone alla volta."
+      },
       "bear_charge": {
         "name": "Carica dell'Orso",
         "description": "Carica un nemico, generando 9 punti rabbia e stordendolo per 1 sec. Gittata di 7-23 metri. Solo in Forma dell'Orso."
@@ -24976,6 +25206,21 @@ export const it_IT: EnTranslations = {
       },
       "voidwalker": {
         "name": "Camminatore del Vuoto"
+      },
+      "succubus": {
+        "name": "Succube"
+      },
+      "felhunter": {
+        "name": "Segugio vile"
+      },
+      "felguard": {
+        "name": "Guardia vile"
+      },
+      "infernal": {
+        "name": "Infernale"
+      },
+      "doomguard": {
+        "name": "Guardia del Terrore"
       },
       "choirmother_selthe": {
         "name": "Selthe Madre del Coro"
@@ -27755,6 +28000,26 @@ export const de_DE: EnTranslations = {
         "name": "Leerwandler beschwören",
         "description": "Beschwört einen Leerwandler unter dem Befehl des Hexenmeisters. Der Leerwandler ist ein zäher Dämon, der Eure Feinde verhöhnt und Schaden einsteckt. Das Beschwören eines neuen Dämons entlässt Euren aktuellen. Ihr könnt nur einen Dämon zur Zeit haben."
       },
+      "summon_succubus": {
+        "name": "Sukkubus beschwören",
+        "description": "Beschwört einen Sukkubus unter dem Befehl des Hexenmeisters. Der Sukkubus ist ein zerbrechlicher Dämon, der schnell zuschlägt und im Nahkampf hart austeilt. Das Beschwören eines neuen Dämons entlässt Euren aktuellen. Ihr könnt nur einen Dämon zur Zeit haben."
+      },
+      "summon_felhunter": {
+        "name": "Teufelsjäger beschwören",
+        "description": "Beschwört einen Teufelsjäger unter dem Befehl des Hexenmeisters. Der Teufelsjäger setzt Feinden aus der Ferne mit Schattenbiss zu und ist hervorragend darin, Zauberwirker zu jagen. Das Beschwören eines neuen Dämons entlässt Euren aktuellen. Ihr könnt nur einen Dämon zur Zeit haben."
+      },
+      "summon_felguard": {
+        "name": "Teufelswache beschwören",
+        "description": "Beschwört eine Teufelswache unter dem Befehl des Hexenmeisters. Die Teufelswache ist ein widerstandsfähiger Nahkampfdämon, der sich in die Schlacht wirft und sich behauptet. Das Beschwören eines neuen Dämons entlässt Euren aktuellen. Ihr könnt nur einen Dämon zur Zeit haben."
+      },
+      "summon_infernal": {
+        "name": "Inferno beschwören",
+        "description": "Bindet ein Inferno an Euren Willen – einen wuchtigen Koloss mit zermalmendem Nahkampf und den höchsten Lebens- und Rüstungswerten aller Dämonen. Eine lange Abklingzeit zügelt seine rohe Kraft. Das Beschwören eines neuen Dämons entlässt Euren aktuellen. Ihr könnt nur einen Dämon zur Zeit haben."
+      },
+      "summon_doomguard": {
+        "name": "Schreckenswache beschwören",
+        "description": "Bindet eine Schreckenswache an Euren Willen – einen Elitedämon, der aus der Ferne schweren Schattenschaden niederregnen lässt. Eine lange Abklingzeit zügelt seine verheerende Kraft. Das Beschwören eines neuen Dämons entlässt Euren aktuellen. Ihr könnt nur einen Dämon zur Zeit haben."
+      },
       "bear_charge": {
         "name": "Bärensturm",
         "description": "Stürmt auf einen Gegner zu, erzeugt 9 Wut und betäubt ihn für 1 Sek. Reichweite 7-23 Meter. Nur in Bärengestalt."
@@ -28699,6 +28964,21 @@ export const de_DE: EnTranslations = {
       },
       "voidwalker": {
         "name": "Leerwandler"
+      },
+      "succubus": {
+        "name": "Sukkubus"
+      },
+      "felhunter": {
+        "name": "Teufelsjäger"
+      },
+      "felguard": {
+        "name": "Teufelswache"
+      },
+      "infernal": {
+        "name": "Inferno"
+      },
+      "doomguard": {
+        "name": "Schreckenswache"
       },
       "choirmother_selthe": {
         "name": "Chormutter Selthe"
@@ -31478,6 +31758,26 @@ export const zh_CN: EnTranslations = {
         "name": "召唤虚空行者",
         "description": "召唤一只听从术士命令的虚空行者。虚空行者是一种坚韧的恶魔，会嘲讽你的敌人并承受打击。召唤新的恶魔会驱散你当前的恶魔。你同时只能拥有一只恶魔。"
       },
+      "summon_succubus": {
+        "name": "召唤魅魔",
+        "description": "召唤一只听从术士命令的魅魔。魅魔是一种脆弱的恶魔，会快速出手并在近战中造成重创。召唤新的恶魔会驱散你当前的恶魔。你同时只能拥有一只恶魔。"
+      },
+      "summon_felhunter": {
+        "name": "召唤地狱猎犬",
+        "description": "召唤一只听从术士命令的地狱猎犬。地狱猎犬会用暗影撕咬从远处骚扰敌人，擅长猎杀施法者。召唤新的恶魔会驱散你当前的恶魔。你同时只能拥有一只恶魔。"
+      },
+      "summon_felguard": {
+        "name": "召唤恶魔卫士",
+        "description": "召唤一只听从术士命令的恶魔卫士。恶魔卫士是一种坚韧的近战恶魔，会冲入战斗并独当一面。召唤新的恶魔会驱散你当前的恶魔。你同时只能拥有一只恶魔。"
+      },
+      "summon_infernal": {
+        "name": "召唤地狱火",
+        "description": "将一只地狱火束缚于你的意志之下——这是一头庞大的破坏巨兽，拥有毁灭性的近战能力，以及所有恶魔中最深厚的生命与护甲。漫长的冷却时间限制了它的原始威力。召唤新的恶魔会驱散你当前的恶魔。你同时只能拥有一只恶魔。"
+      },
+      "summon_doomguard": {
+        "name": "召唤末日守卫",
+        "description": "将一只末日守卫束缚于你的意志之下——这是一种精英恶魔，会从远处倾泻沉重的暗影伤害。漫长的冷却时间限制了它的毁灭性威力。召唤新的恶魔会驱散你当前的恶魔。你同时只能拥有一只恶魔。"
+      },
       "bear_charge": {
         "name": "野熊冲锋",
         "description": "冲向一名敌人，生成9点怒气并将其昏迷1秒。射程8-25码。仅限熊形态使用。"
@@ -32422,6 +32722,21 @@ export const zh_CN: EnTranslations = {
       },
       "voidwalker": {
         "name": "虚空行者"
+      },
+      "succubus": {
+        "name": "魅魔"
+      },
+      "felhunter": {
+        "name": "地狱猎犬"
+      },
+      "felguard": {
+        "name": "恶魔卫士"
+      },
+      "infernal": {
+        "name": "地狱火"
+      },
+      "doomguard": {
+        "name": "末日守卫"
       },
       "choirmother_selthe": {
         "name": "唱诗母塞尔瑟"
@@ -35201,6 +35516,26 @@ export const zh_TW: EnTranslations = {
         "name": "召喚虛空行者",
         "description": "召喚一隻聽從術士命令的虛空行者。虛空行者是一種堅韌的惡魔，會嘲諷你的敵人並承受打擊。召喚新的惡魔會驅散你目前的惡魔。你同時只能擁有一隻惡魔。"
       },
+      "summon_succubus": {
+        "name": "召喚魅魔",
+        "description": "召喚一隻聽從術士命令的魅魔。魅魔是一種脆弱的惡魔，攻擊迅速且近戰傷害強勁。召喚新的惡魔會驅散你目前的惡魔。你同時只能擁有一隻惡魔。"
+      },
+      "summon_felhunter": {
+        "name": "召喚地獄獵犬",
+        "description": "召喚一隻聽從術士命令的地獄獵犬。地獄獵犬以暗影撕咬從遠處騷擾敵人，尤其擅長獵殺施法者。召喚新的惡魔會驅散你目前的惡魔。你同時只能擁有一隻惡魔。"
+      },
+      "summon_felguard": {
+        "name": "召喚惡魔守衛",
+        "description": "召喚一隻聽從術士命令的惡魔守衛。惡魔守衛是一種堅韌的近戰惡魔，會衝入戰鬥並獨當一面。召喚新的惡魔會驅散你目前的惡魔。你同時只能擁有一隻惡魔。"
+      },
+      "summon_infernal": {
+        "name": "召喚地獄火",
+        "description": "將一隻地獄火束縛於你的意志之下——這是一頭巨大的猛獸，擁有毀滅性的近戰攻擊，以及所有惡魔中最雄厚的生命值與護甲。漫長的冷卻時間限制了牠的原始力量。召喚新的惡魔會驅散你目前的惡魔。你同時只能擁有一隻惡魔。"
+      },
+      "summon_doomguard": {
+        "name": "召喚末日守衛",
+        "description": "將一隻末日守衛束縛於你的意志之下——這是一種精英惡魔，會從遠處降下沉重的暗影傷害。漫長的冷卻時間限制了牠的毀滅性力量。召喚新的惡魔會驅散你目前的惡魔。你同時只能擁有一隻惡魔。"
+      },
       "bear_charge": {
         "name": "猛熊衝鋒",
         "description": "向敵人衝鋒，產生 9 點怒氣並將其昏迷 1 秒。射程 8-25 公尺。僅限熊形態。"
@@ -36145,6 +36480,21 @@ export const zh_TW: EnTranslations = {
       },
       "voidwalker": {
         "name": "虛空行者"
+      },
+      "succubus": {
+        "name": "魅魔"
+      },
+      "felhunter": {
+        "name": "地獄獵犬"
+      },
+      "felguard": {
+        "name": "惡魔守衛"
+      },
+      "infernal": {
+        "name": "地獄火"
+      },
+      "doomguard": {
+        "name": "末日守衛"
       },
       "choirmother_selthe": {
         "name": "唱詩之母瑟爾瑟"
@@ -38924,6 +39274,26 @@ export const ko_KR: EnTranslations = {
         "name": "공허추적자 소환",
         "description": "흑마법사의 명령을 따르는 공허추적자를 소환합니다. 공허추적자는 적을 도발하고 피해를 견뎌내는 튼튼한 악마입니다. 새로운 악마를 소환하면 현재 악마는 사라집니다. 한 번에 하나의 악마만 부릴 수 있습니다."
       },
+      "summon_succubus": {
+        "name": "서큐버스 소환",
+        "description": "흑마법사의 명령을 따르는 서큐버스를 소환합니다. 서큐버스는 연약한 악마이지만 빠르게 공격하며 근접전에서 강력한 피해를 입힙니다. 새로운 악마를 소환하면 현재 악마는 사라집니다. 한 번에 하나의 악마만 부릴 수 있습니다."
+      },
+      "summon_felhunter": {
+        "name": "지옥사냥개 소환",
+        "description": "흑마법사의 명령을 따르는 지옥사냥개를 소환합니다. 지옥사냥개는 어둠의 이빨로 멀리서 적을 괴롭히며 시전자를 사냥하는 데 능합니다. 새로운 악마를 소환하면 현재 악마는 사라집니다. 한 번에 하나의 악마만 부릴 수 있습니다."
+      },
+      "summon_felguard": {
+        "name": "지옥수호병 소환",
+        "description": "흑마법사의 명령을 따르는 지옥수호병을 소환합니다. 지옥수호병은 전장에 뛰어들어 굳건히 버티는 튼튼한 근접 악마입니다. 새로운 악마를 소환하면 현재 악마는 사라집니다. 한 번에 하나의 악마만 부릴 수 있습니다."
+      },
+      "summon_infernal": {
+        "name": "지옥불정령 소환",
+        "description": "지옥불정령을 당신의 의지에 결속합니다. 지옥불정령은 모든 악마 중 가장 높은 생명력과 방어도를 지닌 거대한 파괴자로, 강력한 근접 공격을 가합니다. 긴 재사용 대기시간이 그 막강한 힘을 제한합니다. 새로운 악마를 소환하면 현재 악마는 사라집니다. 한 번에 하나의 악마만 부릴 수 있습니다."
+      },
+      "summon_doomguard": {
+        "name": "파멸의 수호병 소환",
+        "description": "파멸의 수호병을 당신의 의지에 결속합니다. 파멸의 수호병은 멀리서 강력한 암흑 피해를 퍼붓는 정예 악마입니다. 긴 재사용 대기시간이 그 파괴적인 힘을 제한합니다. 새로운 악마를 소환하면 현재 악마는 사라집니다. 한 번에 하나의 악마만 부릴 수 있습니다."
+      },
       "bear_charge": {
         "name": "곰 돌진",
         "description": "적에게 돌진하여 분노 9를 생성하고 1초 동안 기절시킵니다. 사거리 7~23미터. 곰 변신 상태에서만 사용 가능."
@@ -39868,6 +40238,21 @@ export const ko_KR: EnTranslations = {
       },
       "voidwalker": {
         "name": "공허추적자"
+      },
+      "succubus": {
+        "name": "서큐버스"
+      },
+      "felhunter": {
+        "name": "지옥사냥개"
+      },
+      "felguard": {
+        "name": "지옥수호병"
+      },
+      "infernal": {
+        "name": "지옥불정령"
+      },
+      "doomguard": {
+        "name": "파멸의 수호병"
       },
       "choirmother_selthe": {
         "name": "성가대모 셀세"
@@ -42647,6 +43032,26 @@ export const ja_JP: EnTranslations = {
         "name": "ヴォイドウォーカーの召喚",
         "description": "ウォーロックの命令に従うヴォイドウォーカーを召喚します。ヴォイドウォーカーは敵を挑発し攻撃を受け止める頑強な悪魔です。新たな悪魔を召喚すると現在の悪魔は解放されます。悪魔は一度に1体しか従えられません。"
       },
+      "summon_succubus": {
+        "name": "サキュバスの召喚",
+        "description": "ウォーロックの命令に従うサキュバスを召喚します。サキュバスは素早く攻撃し近接戦闘で大きなダメージを与える脆い悪魔です。新たな悪魔を召喚すると現在の悪魔は解放されます。悪魔は一度に1体しか従えられません。"
+      },
+      "summon_felhunter": {
+        "name": "フェルハンターの召喚",
+        "description": "ウォーロックの命令に従うフェルハンターを召喚します。フェルハンターはシャドウバイトで遠くから敵を悩ませ、呪文の使い手を狩るのに長けています。新たな悪魔を召喚すると現在の悪魔は解放されます。悪魔は一度に1体しか従えられません。"
+      },
+      "summon_felguard": {
+        "name": "フェルガードの召喚",
+        "description": "ウォーロックの命令に従うフェルガードを召喚します。フェルガードは戦場に踏み込んで持ちこたえる頑丈な近接悪魔です。新たな悪魔を召喚すると現在の悪魔は解放されます。悪魔は一度に1体しか従えられません。"
+      },
+      "summon_infernal": {
+        "name": "インファーナルの召喚",
+        "description": "インファーナルを意のままに束縛します。圧倒的な近接攻撃と、あらゆる悪魔の中で最も深い生命力と防御力を備えた巨大な破壊兵器です。長い再使用時間がその純然たる力を制限します。新たな悪魔を召喚すると現在の悪魔は解放されます。悪魔は一度に1体しか従えられません。"
+      },
+      "summon_doomguard": {
+        "name": "ドゥームガードの召喚",
+        "description": "ドゥームガードを意のままに束縛します。遠方から強力なシャドウダメージを降らせるエリート悪魔です。長い再使用時間がその破壊的な力を制限します。新たな悪魔を召喚すると現在の悪魔は解放されます。悪魔は一度に1体しか従えられません。"
+      },
       "bear_charge": {
         "name": "ベアチャージ",
         "description": "敵に突進して激怒を9獲得し、1秒間スタンさせる。射程7～23メートル。ベアフォーム時のみ使用可能。"
@@ -43591,6 +43996,21 @@ export const ja_JP: EnTranslations = {
       },
       "voidwalker": {
         "name": "ヴォイドウォーカー"
+      },
+      "succubus": {
+        "name": "サキュバス"
+      },
+      "felhunter": {
+        "name": "フェルハンター"
+      },
+      "felguard": {
+        "name": "フェルガード"
+      },
+      "infernal": {
+        "name": "インファーナル"
+      },
+      "doomguard": {
+        "name": "ドゥームガード"
       },
       "choirmother_selthe": {
         "name": "聖歌母セルセ"
@@ -46370,6 +46790,26 @@ export const pt_BR: EnTranslations = {
         "name": "Invocar caminhante do Vazio",
         "description": "Invoca um Caminhante do Vazio sob o comando do bruxo. O Caminhante do Vazio é um demônio resistente que provoca seus inimigos e absorve o castigo. Invocar um novo demônio dispensa o atual. Você só pode ter um demônio por vez."
       },
+      "summon_succubus": {
+        "name": "Invocar súcubo",
+        "description": "Invoca uma Súcubo sob o comando do bruxo. A Súcubo é um demônio frágil que ataca rapidamente e golpeia com força no corpo a corpo. Invocar um novo demônio dispensa o atual. Você só pode ter um demônio por vez."
+      },
+      "summon_felhunter": {
+        "name": "Invocar caçador vil",
+        "description": "Invoca um Caçador Vil sob o comando do bruxo. O Caçador Vil atormenta os inimigos à distância com a Mordida Sombria e se destaca na caça a conjuradores. Invocar um novo demônio dispensa o atual. Você só pode ter um demônio por vez."
+      },
+      "summon_felguard": {
+        "name": "Invocar guarda vil",
+        "description": "Invoca um Guarda Vil sob o comando do bruxo. O Guarda Vil é um demônio resistente de corpo a corpo que avança para a batalha e se mantém firme. Invocar um novo demônio dispensa o atual. Você só pode ter um demônio por vez."
+      },
+      "summon_infernal": {
+        "name": "Invocar infernal",
+        "description": "Vincula um Infernal à sua vontade — um colosso imponente com um corpo a corpo esmagador e a maior vida e armadura entre todos os demônios. Uma longa recarga limita seu poder bruto. Invocar um novo demônio dispensa o atual. Você só pode ter um demônio por vez."
+      },
+      "summon_doomguard": {
+        "name": "Invocar guarda sinistro",
+        "description": "Vincula um Guarda Sinistro à sua vontade — um demônio de elite que faz chover pesado dano Sombrio à distância. Uma longa recarga limita seu poder devastador. Invocar um novo demônio dispensa o atual. Você só pode ter um demônio por vez."
+      },
       "bear_charge": {
         "name": "Investida do Urso",
         "description": "Investe contra um inimigo, gerando 9 de fúria e o atordoando por 1 seg. Alcance de 7-23 metros. Apenas na Forma de Urso."
@@ -47314,6 +47754,21 @@ export const pt_BR: EnTranslations = {
       },
       "voidwalker": {
         "name": "Caminhante do Vazio"
+      },
+      "succubus": {
+        "name": "Súcubo"
+      },
+      "felhunter": {
+        "name": "Caçador Vil"
+      },
+      "felguard": {
+        "name": "Guarda Vil"
+      },
+      "infernal": {
+        "name": "Infernal"
+      },
+      "doomguard": {
+        "name": "Guarda Sinistro"
       },
       "choirmother_selthe": {
         "name": "Mãe-do-Coro Selthe"
@@ -50093,6 +50548,26 @@ export const ru_RU: EnTranslations = {
         "name": "Призыв стража Бездны",
         "description": "Призывает Стража Бездны под командование чернокнижника. Страж Бездны — крепкий демон, который провоцирует ваших врагов и принимает удары на себя. Призыв нового демона отпускает текущего. Одновременно у вас может быть только один демон."
       },
+      "summon_succubus": {
+        "name": "Призыв суккуба",
+        "description": "Призывает Суккуба под командование чернокнижника. Суккуб — хрупкий демон, который стремительно атакует и наносит тяжёлый урон в ближнем бою. Призыв нового демона отпускает текущего. Одновременно у вас может быть только один демон."
+      },
+      "summon_felhunter": {
+        "name": "Призыв охотника Скверны",
+        "description": "Призывает Охотника Скверны под командование чернокнижника. Охотник Скверны изводит врагов на расстоянии Укусом Тьмы и превосходно охотится на заклинателей. Призыв нового демона отпускает текущего. Одновременно у вас может быть только один демон."
+      },
+      "summon_felguard": {
+        "name": "Призыв стража Скверны",
+        "description": "Призывает Стража Скверны под командование чернокнижника. Страж Скверны — выносливый демон ближнего боя, который врывается в гущу битвы и стойко держится. Призыв нового демона отпускает текущего. Одновременно у вас может быть только один демон."
+      },
+      "summon_infernal": {
+        "name": "Призыв инфернала",
+        "description": "Подчиняет вашей воле Инфернала — громадного исполина с сокрушительным ближним боем и самым большим запасом здоровья и брони среди всех демонов. Долгое время восстановления сдерживает его необузданную мощь. Призыв нового демона отпускает текущего. Одновременно у вас может быть только один демон."
+      },
+      "summon_doomguard": {
+        "name": "Призыв стража Рока",
+        "description": "Подчиняет вашей воле Стража Рока — элитного демона, который издалека обрушивает тяжёлый урон от Тьмы. Долгое время восстановления сдерживает его разрушительную мощь. Призыв нового демона отпускает текущего. Одновременно у вас может быть только один демон."
+      },
       "bear_charge": {
         "name": "Натиск медведя",
         "description": "Бросок на врага, дающий 9 единиц ярости и оглушающий его на 1 сек. Дальность 7-23 метра. Только в облике медведя."
@@ -51037,6 +51512,21 @@ export const ru_RU: EnTranslations = {
       },
       "voidwalker": {
         "name": "Страж Бездны"
+      },
+      "succubus": {
+        "name": "Суккуб"
+      },
+      "felhunter": {
+        "name": "Охотник Скверны"
+      },
+      "felguard": {
+        "name": "Страж Скверны"
+      },
+      "infernal": {
+        "name": "Инфернал"
+      },
+      "doomguard": {
+        "name": "Страж Рока"
       },
       "choirmother_selthe": {
         "name": "Матерь хора Селте"
@@ -53849,6 +54339,26 @@ export const en_XA: EnTranslations = {
         "name": "[Šúɱɱóñ Ʋóíðŵáļķéŕ]",
         "description": "[Šúɱɱóñš á Ʋóíðŵáļķéŕ úñðéŕ ţĥé çóɱɱáñð óƒ ţĥé Ŵáŕļóçķ. Ţĥé Ʋóíðŵáļķéŕ íš á šţúŕðý ðéɱóñ ţĥáţ ţáúñţš ýóúŕ éñéɱíéš áñð šóáķš úþ þúñíšĥɱéñţ. Šúɱɱóñíñĝ á ñéŵ ðéɱóñ ðíšɱíššéš ýóúŕ çúŕŕéñţ óñé. Ýóú ɱáý ĥáʋé óñé ðéɱóñ áţ á ţíɱé.]"
       },
+      "summon_succubus": {
+        "name": "[Šúɱɱóñ Šúççúƀúš]",
+        "description": "[Šúɱɱóñš á Šúççúƀúš úñðéŕ ţĥé çóɱɱáñð óƒ ţĥé Ŵáŕļóçķ. Ţĥé Šúççúƀúš íš á ƒŕáĝíļé ðéɱóñ ţĥáţ šţŕíķéš ɋúíçķļý áñð ĥíţš ĥáŕð íñ ɱéļéé. Šúɱɱóñíñĝ á ñéŵ ðéɱóñ ðíšɱíššéš ýóúŕ çúŕŕéñţ óñé. Ýóú ɱáý ĥáʋé óñé ðéɱóñ áţ á ţíɱé.]"
+      },
+      "summon_felhunter": {
+        "name": "[Šúɱɱóñ Ƒéļĥúñţéŕ]",
+        "description": "[Šúɱɱóñš á Ƒéļĥúñţéŕ úñðéŕ ţĥé çóɱɱáñð óƒ ţĥé Ŵáŕļóçķ. Ţĥé Ƒéļĥúñţéŕ ĥáŕŕíéš éñéɱíéš ƒŕóɱ ŕáñĝé ŵíţĥ Šĥáðóŵ Ɓíţé áñð éẋçéļš áţ ĥúñţíñĝ šþéļļçášţéŕš. Šúɱɱóñíñĝ á ñéŵ ðéɱóñ ðíšɱíššéš ýóúŕ çúŕŕéñţ óñé. Ýóú ɱáý ĥáʋé óñé ðéɱóñ áţ á ţíɱé.]"
+      },
+      "summon_felguard": {
+        "name": "[Šúɱɱóñ Ƒéļĝúáŕð]",
+        "description": "[Šúɱɱóñš á Ƒéļĝúáŕð úñðéŕ ţĥé çóɱɱáñð óƒ ţĥé Ŵáŕļóçķ. Ţĥé Ƒéļĝúáŕð íš á ðúŕáƀļé ɱéļéé ðéɱóñ ţĥáţ ŵáðéš íñţó ƀáţţļé áñð ĥóļðš íţš óŵñ. Šúɱɱóñíñĝ á ñéŵ ðéɱóñ ðíšɱíššéš ýóúŕ çúŕŕéñţ óñé. Ýóú ɱáý ĥáʋé óñé ðéɱóñ áţ á ţíɱé.]"
+      },
+      "summon_infernal": {
+        "name": "[Šúɱɱóñ Íñƒéŕñáļ]",
+        "description": "[Ɓíñðš áñ Íñƒéŕñáļ ţó ýóúŕ ŵíļļ — á ĥúļķíñĝ ĵúĝĝéŕñáúţ ŵíţĥ çŕúšĥíñĝ ɱéļéé áñð ţĥé ðééþéšţ ĥéáļţĥ áñð áŕɱóŕ óƒ áñý ðéɱóñ. Á ļóñĝ çóóļðóŵñ ĝáţéš íţš ŕáŵ þóŵéŕ. Šúɱɱóñíñĝ á ñéŵ ðéɱóñ ðíšɱíššéš ýóúŕ çúŕŕéñţ óñé. Ýóú ɱáý ĥáʋé óñé ðéɱóñ áţ á ţíɱé.]"
+      },
+      "summon_doomguard": {
+        "name": "[Šúɱɱóñ Ðóóɱĝúáŕð]",
+        "description": "[Ɓíñðš á Ðóóɱĝúáŕð ţó ýóúŕ ŵíļļ — áñ éļíţé ðéɱóñ ţĥáţ ŕáíñš ĥéáʋý Šĥáðóŵ ðáɱáĝé ƒŕóɱ áƒáŕ. Á ļóñĝ çóóļðóŵñ ĝáţéš íţš ðéʋášţáţíñĝ þóŵéŕ. Šúɱɱóñíñĝ á ñéŵ ðéɱóñ ðíšɱíššéš ýóúŕ çúŕŕéñţ óñé. Ýóú ɱáý ĥáʋé óñé ðéɱóñ áţ á ţíɱé.]"
+      },
       "bear_charge": {
         "name": "[Ɓéáŕ Çĥáŕĝé]",
         "description": "[Çĥáŕĝé áñ éñéɱý, ĝéñéŕáţíñĝ 9 ŕáĝé áñð šţúññíñĝ íţ ƒóŕ 1 šéç. 8-25 ýð ŕáñĝé. Ɓéáŕ Ƒóŕɱ óñļý.]"
@@ -54793,6 +55303,21 @@ export const en_XA: EnTranslations = {
       },
       "voidwalker": {
         "name": "[Ʋóíðŵáļķéŕ]"
+      },
+      "succubus": {
+        "name": "[Šúççúƀúš]"
+      },
+      "felhunter": {
+        "name": "[Ƒéļĥúñţéŕ]"
+      },
+      "felguard": {
+        "name": "[Ƒéļĝúáŕð]"
+      },
+      "infernal": {
+        "name": "[Íñƒéŕñáļ]"
+      },
+      "doomguard": {
+        "name": "[Ðóóɱĝúáŕð]"
       },
       "choirmother_selthe": {
         "name": "[Çĥóíŕɱóţĥéŕ Šéļţĥé]"
