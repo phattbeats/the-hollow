@@ -4242,6 +4242,20 @@ export class Sim {
         sourceId: mob.id, school: (smolder.school as Aura['school']) ?? 'fire',
       });
     }
+
+    // cinder: the fire-school twin of venom — a landed swing may set a refreshing
+    // burning DoT (hostile mobs only, never a friendly pet — mobSwing is also the
+    // pet attack path). Reuses the same dot aura seam; school defaults 'fire'.
+    const cinder = MOBS[mob.templateId]?.cinder;
+    if (cinder && mob.hostile && !target.dead && this.rng.chance(cinder.chance)) {
+      this.applyAura(target, {
+        id: 'cinder_' + mob.templateId, name: cinder.name, kind: 'dot',
+        remaining: cinder.duration, duration: cinder.duration,
+        value: Math.max(1, Math.round(cinder.perTick)),
+        tickInterval: cinder.interval, tickTimer: cinder.interval,
+        sourceId: mob.id, school: (cinder.school as Aura['school']) ?? 'fire',
+      });
+    }
     // corrosive bite: a landed hit may shred the victim's armor (stacking sunder).
     // Guarded on hostile so a friendly pet (the other mobSwing caller) never debuffs an ally.
     const corrode = MOBS[mob.templateId]?.corrode;

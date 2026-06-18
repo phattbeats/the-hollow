@@ -96,6 +96,8 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
     hpBase: 58, hpPerLevel: 20, dmgBase: 11, dmgPerLevel: 2.6, attackSpeed: 2.0,
     armorPerLevel: 18, moveSpeed: 7.5, aggroRadius: 12,
     smolder: { chance: 0.25, perTick: 5, interval: 3, duration: 12, name: 'Smoldering Fuse' },
+    // The sapper's blasting powder clings and smolders: a struck foe catches fire.
+    cinder: { chance: 0.3, perTick: 5, interval: 3, duration: 12, name: 'Cinderburn', school: 'fire' },
     loot: [],
     scale: 0.85, color: 0x8f6b34,
   },

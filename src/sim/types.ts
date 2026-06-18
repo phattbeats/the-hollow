@@ -221,6 +221,10 @@ export interface MobTemplate {
   // Burning fuse: a landed swing may set a refreshing fire DoT (the fire-school
   // sibling of venom; sappers, ember-touched creatures). Defaults to the 'fire' school.
   smolder?: { chance: number; perTick: number; interval: number; duration: number; name: string; school?: string };
+  // On-hit debuff: the fire-school twin of `venom` — a chance per landed melee
+  // swing to set a stacking-refresh burning damage-over-time (cinder/ember mobs,
+  // demolitionists carrying blasting powder). Same DoT seam, school defaults 'fire'.
+  cinder?: { chance: number; perTick: number; interval: number; duration: number; name: string; school?: string };
   // On-death mechanic ("Death Throes"): a volatile creature does not detonate
   // the instant it dies. Its corpse destabilizes for `delay` seconds (a
   // telegraph players can run from), then bursts for min..max `school` damage
