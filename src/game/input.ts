@@ -13,6 +13,7 @@ import type { MoveInput } from '../sim/types';
 const BASE_LOOK_SENS = 0.0045;
 const TOUCH_LOOK_YAW_RATE = 3.2;
 const TOUCH_LOOK_PITCH_RATE = 2.2;
+const TOUCH_JUMP_LATCH_MS = 220;
 const CAMERA_DRAG_START_DISTANCE = 18;
 const CAMERA_DRAG_START_MS = 140;
 
@@ -101,7 +102,7 @@ export class Input {
   // was BASE_LOOK_SENS — setCameraSpeed scales it from the settings menu
   private lookSensitivity = BASE_LOOK_SENS;
   private touchMove: TouchMoveInput = { forward: false, back: false, strafeLeft: false, strafeRight: false };
-  private touchJump = false;
+  private touchJumpUntil = 0;
   private touchLookActive = false;
   private touchLookVector = { x: 0, y: 0 };
   // multiplier on the touch look (camera joystick) rate; setTouchLookSpeed
@@ -252,11 +253,11 @@ export class Input {
     if (changed) this.noteIntent('move');
   }
 
-  // A touch jump is momentary: the on-screen button arms this flag and the next
-  // readMoveInput() poll consumes it, yielding a single frame of jump=true (the
-  // sim only launches when grounded, so one frame is enough — same as a Space tap).
+  // A touch jump is momentary, but readMoveInput() is also used by camera/HUD
+  // helpers between sim ticks. Latch the tap briefly so those reads cannot eat
+  // the jump before the grounded movement tick sees it.
   triggerTouchJump(): void {
-    this.touchJump = true;
+    this.touchJumpUntil = Math.max(this.touchJumpUntil, performance.now() + TOUCH_JUMP_LATCH_MS);
   }
 
   // Touch-reachable autorun toggle (the keyboard path is the 'autorun' edge action).
@@ -567,8 +568,7 @@ export class Input {
     const forward = held('forward') || bothButtons || this.autorun || this.touchMove.forward;
     const back = held('back') || this.touchMove.back;
     // Jump is not a WASD key, so it keeps working in Attack Move mode.
-    const jump = this.keybinds.codesForAction('jump').some((c) => k.has(c)) || this.touchJump;
-    this.touchJump = false;
+    const jump = this.keybinds.codesForAction('jump').some((c) => k.has(c)) || performance.now() <= this.touchJumpUntil;
 
     if (this.mouseCameraEnabled) {
       return {
