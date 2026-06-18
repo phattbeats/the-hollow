@@ -519,6 +519,9 @@ describe("S3: every sim.ts emit is recognized (drift guard)", () => {
   // regression in the localized surface still fails here. Strings below are the guard's
   // concrete (placeholder-substituted) forms.
   const ALLOW_V07_SLASH = new Set<string>([
+    "Talents: Aki — Aki/Aki points spent (Aki).Aki",
+    "You have not unlocked talents yet — they begin at level 5.",
+    "Your class has no talent tree yet.",
     "Abilities on cooldown (5): Aki.",
     "Active effects (5): Aki.",
     "Aki attempts to flee!",
