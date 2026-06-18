@@ -44,6 +44,10 @@ export const SETTING_RANGES = {
   // larger or smaller thumbs can size the controls to taste (default 1.0x).
   // Surfaced in the Esc menu only on phone-touch devices.
   actionButtonScale: { min: 0.8, max: 1.3, def: 1 },
+  // touch-only: how far the move thumbstick must travel before it registers
+  // movement. Higher values resist accidental drift on a jittery thumb; lower
+  // values make the stick more responsive. Default matches the old fixed 0.22.
+  joystickDeadzone: { min: 0.1, max: 0.4, def: 0.22 },
 } as const;
 
 export const BOOL_SETTINGS = {

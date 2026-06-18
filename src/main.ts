@@ -689,6 +689,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
         document.getElementById('mobile-controls')?.style.setProperty('--joy-scale', String(v));
         break;
       case 'actionButtonScale': document.getElementById('mobile-controls')?.style.setProperty('--btn-scale', String(v)); break;
+      case 'joystickDeadzone': mobileControls.setMoveDeadzone(v); break;
     }
   }
   // apply persisted settings to the freshly-built subsystems

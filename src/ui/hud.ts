@@ -5758,6 +5758,9 @@ export class Hud {
     if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.joystickSize'), 'joystickScale');
     // Touch-only: lets phone players size the on-screen action buttons to taste.
     if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.buttonSize'), 'actionButtonScale');
+    // Touch-only: a larger deadzone resists accidental drift from a resting
+    // thumb on the move stick; only meaningful with on-screen controls.
+    if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.joystickDeadzone'), 'joystickDeadzone');
     const note = document.createElement('div');
     note.className = 'set-note';
     note.textContent = t('hud.options.graphicsNote');

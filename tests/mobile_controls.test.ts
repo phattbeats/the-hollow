@@ -30,6 +30,17 @@ describe('mapJoystickVector', () => {
     expect(mapJoystickVector(0.7, -0.7)).toEqual({ forward: true, back: false, strafeLeft: false, strafeRight: true });
     expect(mapJoystickVector(-0.7, 0.7)).toEqual({ forward: false, back: true, strafeLeft: true, strafeRight: false });
   });
+
+  it('honours a custom deadzone (Joystick Deadzone setting)', () => {
+    // a small push that moves at the default deadzone stays neutral with a larger one
+    const small = mapJoystickVector(0, -0.3);
+    expect(small.forward).toBe(true);
+    const wide = mapJoystickVector(0, -0.3, 0.4);
+    expect(wide).toEqual({ forward: false, back: false, strafeLeft: false, strafeRight: false });
+    // a tiny push that's neutral by default registers with a narrow deadzone
+    const narrow = mapJoystickVector(0, -0.15, 0.1);
+    expect(narrow.forward).toBe(true);
+  });
 });
 
 describe('isPhoneTouchDevice', () => {

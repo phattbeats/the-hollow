@@ -29,6 +29,13 @@ describe('Settings', () => {
     expect(s.get('clickToMove')).toBe(0);
     expect(s.get('clickToMoveButton')).toBe(0);
     expect(s.get('mouseCamera')).toBe(false);
+    expect(s.get('joystickDeadzone')).toBe(SETTING_RANGES.joystickDeadzone.def);
+  });
+
+  it('clamps the touch joystick deadzone to its bounds', () => {
+    const s = new Settings();
+    expect(s.set('joystickDeadzone', 99)).toBe(SETTING_RANGES.joystickDeadzone.max);
+    expect(s.set('joystickDeadzone', 0)).toBe(SETTING_RANGES.joystickDeadzone.min);
   });
 
   it('clamps out-of-range values to the slider bounds', () => {
