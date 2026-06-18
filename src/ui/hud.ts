@@ -17,6 +17,7 @@ import {
 } from '../sim/types';
 import { xpBarView, formatXp } from './xp_bar';
 import { lowHealthVignette } from './low_health';
+import { absorbBarView } from './absorb_bar';
 import { terrainHeight, WATER_LEVEL, roadDistance, generateDecorations } from '../sim/world';
 import type { Decoration } from '../sim/world';
 import { Meters } from './meters';
@@ -1594,6 +1595,7 @@ export class Hud {
     // player frame
     this.setText(this.pfLevelEl, String(p.level));
     this.setTransform(this.pfHpEl, `scaleX(${p.hp / Math.max(1, p.maxHp)})`);
+    this.updateAbsorb('#pf-absorb', p);
     this.setText(this.pfHpTextEl, `${p.hp} / ${p.maxHp}`);
     this.updateLowHealthVignette(p.hp, p.maxHp);
     const resFrac = p.resource / Math.max(1, p.maxResource);
@@ -1614,6 +1616,7 @@ export class Hud {
       this.setText(this.targetNameEl, entityDisplayName(target));
       this.setText(this.targetLevelEl, MOBS[target.templateId]?.boss ? '☠' : String(target.level));
       this.setTransform(this.targetHpEl, `scaleX(${target.hp / Math.max(1, target.maxHp)})`);
+      this.updateAbsorb('#tf-absorb', target.dead ? null : target);
       this.setText(this.targetHpTextEl, target.dead ? t('hud.core.dead') : `${target.hp} / ${target.maxHp}`);
       const targetNameColor = target.hostile ? 'var(--color-hostile)' : 'var(--color-friendly)';
       if (this.targetNameEl.style.color !== targetNameColor) this.targetNameEl.style.color = targetNameColor;
@@ -1849,6 +1852,15 @@ export class Hud {
       if (!this.nearbyMarketNpc()) this.closeMarket();
       else this.refreshMarket();
     }
+  }
+
+  // Overlay the absorb-shield segment on a unit-frame health bar. A null entity
+  // (no target / dead) hides it.
+  private updateAbsorb(sel: string, e: Entity | null): void {
+    const el = $(sel) as HTMLElement;
+    const v = e ? absorbBarView(e) : { fillFrac: 0, overshield: false, total: 0 };
+    el.style.transform = `scaleX(${v.fillFrac})`;
+    el.classList.toggle('overshield', v.overshield);
   }
 
   private renderAuras(el: HTMLElement, e: Entity, mode: 'all' | 'debuffs'): void {
