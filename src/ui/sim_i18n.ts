@@ -2068,8 +2068,27 @@ for (const key of Object.keys(enTable) as SimMessageKey[]) {
   EXACT[v] = key;
 }
 
+// /talents readout (src/sim/sim.ts talentsReadout): the sim assembles an English
+// summary; rebuild it here from t() keys. Spec names splice verbatim (English
+// content names) like player/build names. The breakdown sub-grammar is "Class N"
+// or "Class N, <spec> M"; the optional tail is " N unspent.".
+function locTalentBreakdown(s: string): string {
+  let m = /^Class (.+), (.+) (.+)$/.exec(s);
+  if (m) return t('game.talents.readout.breakdownSpec', { classPts: m[1], spec: m[2], specPts: m[3] });
+  m = /^Class (.+)$/.exec(s);
+  if (m) return t('game.talents.readout.breakdownClass', { classPts: m[1] });
+  return s;
+}
+function locTalentTail(s: string): string {
+  const m = /^ (.+) unspent\.$/.exec(s);
+  return m ? t('game.talents.readout.unspent', { count: m[1] }) : s;
+}
+
 type Rule = { re: RegExp; build: (m: RegExpExecArray) => string };
 const RULES: Rule[] = [
+  { re: /^Your class has no talent tree yet\.$/, build: () => t('game.talents.readout.noTree') },
+  { re: /^You have not unlocked talents yet — they begin at level (.+)\.$/, build: (m) => t('game.talents.readout.locked', { level: m[1] }) },
+  { re: /^Talents: (.+) — (.+)\/(.+) points spent \((.+)\)\.(.*)$/, build: (m) => t('game.talents.readout.summary', { head: m[1] === 'no specialization' ? t('game.talents.readout.noSpec') : m[1], spent: m[2], total: m[3], breakdown: locTalentBreakdown(m[4]) }) + (m[5] ? locTalentTail(m[5]) : '') },
   { re: /^The ritual circle is silent without the Crypt Keystone\.$/, build: () => tQuestExtra('ritualNeedsKey') },
   { re: /^My king was a good man\.$/, build: () => tQuestExtra('aldrenVision1') },
   { re: /^I swore my blade to him\.$/, build: () => tQuestExtra('aldrenVision2') },

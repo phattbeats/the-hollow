@@ -137,7 +137,16 @@ export const en: EnTranslations = {
       "noBuilds": "No saved builds",
       "save": "Save",
       "comingSoonTitle": "Talents coming soon",
-      "comingSoonBody": "This class does not have talent trees yet. You can keep playing normally; full trees will arrive in a future update."
+      "comingSoonBody": "This class does not have talent trees yet. You can keep playing normally; full trees will arrive in a future update.",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -4176,7 +4185,16 @@ export const es: EnTranslations = {
       "noBuilds": "Sin configuraciones guardadas",
       "save": "Guardar",
       "comingSoonTitle": "Talentos próximamente",
-      "comingSoonBody": "Esta clase aún no tiene árboles de talentos. Puedes seguir jugando normalmente; los árboles completos llegarán en una actualización futura."
+      "comingSoonBody": "Esta clase aún no tiene árboles de talentos. Puedes seguir jugando normalmente; los árboles completos llegarán en una actualización futura.",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -8215,7 +8233,16 @@ export const es_ES: EnTranslations = {
       "noBuilds": "Sin configuraciones guardadas",
       "save": "Guardar",
       "comingSoonTitle": "Talentos próximamente",
-      "comingSoonBody": "Esta clase aún no tiene árboles de talentos. Puedes seguir jugando normalmente; los árboles completos llegarán en una actualización futura."
+      "comingSoonBody": "Esta clase aún no tiene árboles de talentos. Puedes seguir jugando normalmente; los árboles completos llegarán en una actualización futura.",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -12254,7 +12281,16 @@ export const fr_FR: EnTranslations = {
       "noBuilds": "Aucune configuration sauvegardée",
       "save": "Sauvegarder",
       "comingSoonTitle": "Talents à venir",
-      "comingSoonBody": "Cette classe n'a pas encore d'arbres de talents. Vous pouvez continuer à jouer normalement; les arbres complets arriveront dans une future mise à jour."
+      "comingSoonBody": "Cette classe n'a pas encore d'arbres de talents. Vous pouvez continuer à jouer normalement; les arbres complets arriveront dans une future mise à jour.",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -16293,7 +16329,16 @@ export const fr_CA: EnTranslations = {
       "noBuilds": "Aucune configuration sauvegardée",
       "save": "Sauvegarder",
       "comingSoonTitle": "Talents à venir",
-      "comingSoonBody": "Cette classe n'a pas encore d'arbres de talents. Vous pouvez continuer à jouer normalement; les arbres complets arriveront dans une future mise à jour."
+      "comingSoonBody": "Cette classe n'a pas encore d'arbres de talents. Vous pouvez continuer à jouer normalement; les arbres complets arriveront dans une future mise à jour.",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -20332,7 +20377,16 @@ export const en_CA: EnTranslations = {
       "noBuilds": "No saved builds",
       "save": "Save",
       "comingSoonTitle": "Talents coming soon",
-      "comingSoonBody": "This class does not have talent trees yet. You can keep playing normally; full trees will arrive in a future update."
+      "comingSoonBody": "This class does not have talent trees yet. You can keep playing normally; full trees will arrive in a future update.",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -24371,7 +24425,16 @@ export const it_IT: EnTranslations = {
       "noBuilds": "Nessuna build salvata",
       "save": "Salva",
       "comingSoonTitle": "Talenti in arrivo",
-      "comingSoonBody": "Questa classe non ha ancora alberi dei talenti. Puoi continuare a giocare normalmente; gli alberi completi arriveranno in un futuro aggiornamento."
+      "comingSoonBody": "Questa classe non ha ancora alberi dei talenti. Puoi continuare a giocare normalmente; gli alberi completi arriveranno in un futuro aggiornamento.",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -28410,7 +28473,16 @@ export const de_DE: EnTranslations = {
       "noBuilds": "Keine gespeicherten Builds",
       "save": "Speichern",
       "comingSoonTitle": "Talente folgen bald",
-      "comingSoonBody": "Diese Klasse hat noch keine Talentbäume. Ihr könnt normal weiterspielen; vollständige Bäume kommen in einem zukünftigen Update."
+      "comingSoonBody": "Diese Klasse hat noch keine Talentbäume. Ihr könnt normal weiterspielen; vollständige Bäume kommen in einem zukünftigen Update.",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -32449,7 +32521,16 @@ export const zh_CN: EnTranslations = {
       "noBuilds": "没有已保存配置",
       "save": "保存",
       "comingSoonTitle": "天赋即将推出",
-      "comingSoonBody": "此职业还没有天赋树。你可以继续正常游玩；完整天赋树会在未来更新中到来。"
+      "comingSoonBody": "此职业还没有天赋树。你可以继续正常游玩；完整天赋树会在未来更新中到来。",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -36488,7 +36569,16 @@ export const zh_TW: EnTranslations = {
       "noBuilds": "沒有已儲存配置",
       "save": "儲存",
       "comingSoonTitle": "天賦即將推出",
-      "comingSoonBody": "此職業還沒有天賦樹。你可以繼續正常遊玩；完整天賦樹會在未來更新中到來。"
+      "comingSoonBody": "此職業還沒有天賦樹。你可以繼續正常遊玩；完整天賦樹會在未來更新中到來。",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -40527,7 +40617,16 @@ export const ko_KR: EnTranslations = {
       "noBuilds": "저장한 빌드 없음",
       "save": "저장",
       "comingSoonTitle": "특성 준비 중",
-      "comingSoonBody": "이 직업은 아직 특성 트리가 없습니다. 계속 정상적으로 플레이할 수 있으며 전체 트리는 향후 업데이트에 추가됩니다."
+      "comingSoonBody": "이 직업은 아직 특성 트리가 없습니다. 계속 정상적으로 플레이할 수 있으며 전체 트리는 향후 업데이트에 추가됩니다.",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -44566,7 +44665,16 @@ export const ja_JP: EnTranslations = {
       "noBuilds": "保存ビルドなし",
       "save": "保存",
       "comingSoonTitle": "タレント準備中",
-      "comingSoonBody": "このクラスにはまだタレントツリーがありません。通常通りプレイできます。完全なツリーは今後のアップデートで追加されます。"
+      "comingSoonBody": "このクラスにはまだタレントツリーがありません。通常通りプレイできます。完全なツリーは今後のアップデートで追加されます。",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -48605,7 +48713,16 @@ export const pt_BR: EnTranslations = {
       "noBuilds": "Nenhuma build salva",
       "save": "Salvar",
       "comingSoonTitle": "Talentos em breve",
-      "comingSoonBody": "Esta classe ainda não tem árvores de talentos. Você pode continuar jogando normalmente; as árvores completas chegarão em uma atualização futura."
+      "comingSoonBody": "Esta classe ainda não tem árvores de talentos. Você pode continuar jogando normalmente; as árvores completas chegarão em uma atualização futura.",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -52644,7 +52761,16 @@ export const ru_RU: EnTranslations = {
       "noBuilds": "Нет сохраненных билдов",
       "save": "Сохранить",
       "comingSoonTitle": "Таланты скоро появятся",
-      "comingSoonBody": "У этого класса еще нет деревьев талантов. Можно продолжать играть как обычно; полные деревья появятся в будущем обновлении."
+      "comingSoonBody": "У этого класса еще нет деревьев талантов. Можно продолжать играть как обычно; полные деревья появятся в будущем обновлении.",
+      "readout": {
+        "noTree": "Your class has no talent tree yet.",
+        "locked": "You have not unlocked talents yet — they begin at level {level}.",
+        "noSpec": "no specialization",
+        "summary": "Talents: {head} — {spent}/{total} points spent ({breakdown}).",
+        "breakdownClass": "Class {classPts}",
+        "breakdownSpec": "Class {classPts}, {spec} {specPts}",
+        "unspent": " {count} unspent."
+      }
     }
   },
   "nav": {
@@ -56601,6 +56727,13 @@ export const pending: Record<string, readonly string[]> = {
     "game.hud.lowEnergy",
     "game.hud.lowMana",
     "game.settings.weather",
+    "game.talents.readout.breakdownClass",
+    "game.talents.readout.breakdownSpec",
+    "game.talents.readout.locked",
+    "game.talents.readout.noSpec",
+    "game.talents.readout.noTree",
+    "game.talents.readout.summary",
+    "game.talents.readout.unspent",
     "game.xp.rested",
     "hud.core.xpFloatRested",
     "hud.core.xpGainRested",
@@ -56655,6 +56788,13 @@ export const pending: Record<string, readonly string[]> = {
     "game.hud.lowEnergy",
     "game.hud.lowMana",
     "game.settings.weather",
+    "game.talents.readout.breakdownClass",
+    "game.talents.readout.breakdownSpec",
+    "game.talents.readout.locked",
+    "game.talents.readout.noSpec",
+    "game.talents.readout.noTree",
+    "game.talents.readout.summary",
+    "game.talents.readout.unspent",
     "game.xp.rested",
     "hud.core.xpFloatRested",
     "hud.core.xpGainRested",
@@ -56709,6 +56849,13 @@ export const pending: Record<string, readonly string[]> = {
     "game.hud.lowEnergy",
     "game.hud.lowMana",
     "game.settings.weather",
+    "game.talents.readout.breakdownClass",
+    "game.talents.readout.breakdownSpec",
+    "game.talents.readout.locked",
+    "game.talents.readout.noSpec",
+    "game.talents.readout.noTree",
+    "game.talents.readout.summary",
+    "game.talents.readout.unspent",
     "game.xp.rested",
     "hud.core.xpFloatRested",
     "hud.core.xpGainRested",
@@ -56763,6 +56910,13 @@ export const pending: Record<string, readonly string[]> = {
     "game.hud.lowEnergy",
     "game.hud.lowMana",
     "game.settings.weather",
+    "game.talents.readout.breakdownClass",
+    "game.talents.readout.breakdownSpec",
+    "game.talents.readout.locked",
+    "game.talents.readout.noSpec",
+    "game.talents.readout.noTree",
+    "game.talents.readout.summary",
+    "game.talents.readout.unspent",
     "game.xp.rested",
     "hud.core.xpFloatRested",
     "hud.core.xpGainRested",
@@ -56818,6 +56972,13 @@ export const pending: Record<string, readonly string[]> = {
     "game.hud.lowEnergy",
     "game.hud.lowMana",
     "game.settings.weather",
+    "game.talents.readout.breakdownClass",
+    "game.talents.readout.breakdownSpec",
+    "game.talents.readout.locked",
+    "game.talents.readout.noSpec",
+    "game.talents.readout.noTree",
+    "game.talents.readout.summary",
+    "game.talents.readout.unspent",
     "game.xp.rested",
     "hud.core.xpFloatRested",
     "hud.core.xpGainRested",
@@ -56872,6 +57033,13 @@ export const pending: Record<string, readonly string[]> = {
     "game.hud.lowEnergy",
     "game.hud.lowMana",
     "game.settings.weather",
+    "game.talents.readout.breakdownClass",
+    "game.talents.readout.breakdownSpec",
+    "game.talents.readout.locked",
+    "game.talents.readout.noSpec",
+    "game.talents.readout.noTree",
+    "game.talents.readout.summary",
+    "game.talents.readout.unspent",
     "game.xp.rested",
     "hud.core.xpFloatRested",
     "hud.core.xpGainRested",
@@ -56926,6 +57094,13 @@ export const pending: Record<string, readonly string[]> = {
     "game.hud.lowEnergy",
     "game.hud.lowMana",
     "game.settings.weather",
+    "game.talents.readout.breakdownClass",
+    "game.talents.readout.breakdownSpec",
+    "game.talents.readout.locked",
+    "game.talents.readout.noSpec",
+    "game.talents.readout.noTree",
+    "game.talents.readout.summary",
+    "game.talents.readout.unspent",
     "game.xp.rested",
     "hud.core.xpFloatRested",
     "hud.core.xpGainRested",
@@ -56980,6 +57155,13 @@ export const pending: Record<string, readonly string[]> = {
     "game.hud.lowEnergy",
     "game.hud.lowMana",
     "game.settings.weather",
+    "game.talents.readout.breakdownClass",
+    "game.talents.readout.breakdownSpec",
+    "game.talents.readout.locked",
+    "game.talents.readout.noSpec",
+    "game.talents.readout.noTree",
+    "game.talents.readout.summary",
+    "game.talents.readout.unspent",
     "game.xp.rested",
     "hud.core.xpFloatRested",
     "hud.core.xpGainRested",
@@ -57034,6 +57216,13 @@ export const pending: Record<string, readonly string[]> = {
     "game.hud.lowEnergy",
     "game.hud.lowMana",
     "game.settings.weather",
+    "game.talents.readout.breakdownClass",
+    "game.talents.readout.breakdownSpec",
+    "game.talents.readout.locked",
+    "game.talents.readout.noSpec",
+    "game.talents.readout.noTree",
+    "game.talents.readout.summary",
+    "game.talents.readout.unspent",
     "game.xp.rested",
     "hud.core.xpFloatRested",
     "hud.core.xpGainRested",
@@ -57088,6 +57277,13 @@ export const pending: Record<string, readonly string[]> = {
     "game.hud.lowEnergy",
     "game.hud.lowMana",
     "game.settings.weather",
+    "game.talents.readout.breakdownClass",
+    "game.talents.readout.breakdownSpec",
+    "game.talents.readout.locked",
+    "game.talents.readout.noSpec",
+    "game.talents.readout.noTree",
+    "game.talents.readout.summary",
+    "game.talents.readout.unspent",
     "game.xp.rested",
     "hud.core.xpFloatRested",
     "hud.core.xpGainRested",
@@ -57142,6 +57338,13 @@ export const pending: Record<string, readonly string[]> = {
     "game.hud.lowEnergy",
     "game.hud.lowMana",
     "game.settings.weather",
+    "game.talents.readout.breakdownClass",
+    "game.talents.readout.breakdownSpec",
+    "game.talents.readout.locked",
+    "game.talents.readout.noSpec",
+    "game.talents.readout.noTree",
+    "game.talents.readout.summary",
+    "game.talents.readout.unspent",
     "game.xp.rested",
     "hud.core.xpFloatRested",
     "hud.core.xpGainRested",
@@ -57196,6 +57399,13 @@ export const pending: Record<string, readonly string[]> = {
     "game.hud.lowEnergy",
     "game.hud.lowMana",
     "game.settings.weather",
+    "game.talents.readout.breakdownClass",
+    "game.talents.readout.breakdownSpec",
+    "game.talents.readout.locked",
+    "game.talents.readout.noSpec",
+    "game.talents.readout.noTree",
+    "game.talents.readout.summary",
+    "game.talents.readout.unspent",
     "game.xp.rested",
     "hud.core.xpFloatRested",
     "hud.core.xpGainRested",
@@ -57352,7 +57562,16 @@ export const en_XA: EnTranslations = {
       "noBuilds": "[Ñó šáʋéð ƀúíļðš]",
       "save": "[Šáʋé]",
       "comingSoonTitle": "[Ţáļéñţš çóɱíñĝ šóóñ]",
-      "comingSoonBody": "[Ţĥíš çļášš ðóéš ñóţ ĥáʋé ţáļéñţ ţŕééš ýéţ. Ýóú çáñ ķééþ þļáýíñĝ ñóŕɱáļļý; ƒúļļ ţŕééš ŵíļļ áŕŕíʋé íñ á ƒúţúŕé úþðáţé.]"
+      "comingSoonBody": "[Ţĥíš çļášš ðóéš ñóţ ĥáʋé ţáļéñţ ţŕééš ýéţ. Ýóú çáñ ķééþ þļáýíñĝ ñóŕɱáļļý; ƒúļļ ţŕééš ŵíļļ áŕŕíʋé íñ á ƒúţúŕé úþðáţé.]",
+      "readout": {
+        "noTree": "[Ýóúŕ çļášš ĥáš ñó ţáļéñţ ţŕéé ýéţ.]",
+        "locked": "[Ýóú ĥáʋé ñóţ úñļóçķéð ţáļéñţš ýéţ — ţĥéý ƀéĝíñ áţ ļéʋéļ {level}.]",
+        "noSpec": "[ñó šþéçíáļížáţíóñ]",
+        "summary": "[Ţáļéñţš: {head} — {spent}/{total} þóíñţš šþéñţ ({breakdown}).]",
+        "breakdownClass": "[Çļášš {classPts}]",
+        "breakdownSpec": "[Çļášš {classPts}, {spec} {specPts}]",
+        "unspent": "[ {count} úñšþéñţ.]"
+      }
     }
   },
   "nav": {
