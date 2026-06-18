@@ -1408,6 +1408,8 @@ export class Sim {
     let bonus = 0;
     for (const a of e.auras) if (a.kind === 'blind' && a.value > bonus) bonus = a.value;
     return bonus;
+  }
+
   // Disarm suppresses weapon swings (auto-attack, melee and ranged) but leaves
   // movement, spells and instant abilities untouched — the inverse of silence.
   private isDisarmed(e: Entity): boolean {
@@ -1418,6 +1420,8 @@ export class Sim {
   // leaving every other school — and physical abilities — untouched.
   private isLockedOut(e: Entity, school: Aura['school']): boolean {
     return e.auras.some((a) => a.kind === 'lockout' && a.school === school);
+  }
+
   // Curse of Tongues: returns the spell cast-time multiplier (>=1) imposed by any
   // active `tongues` aura, or 1 when unafflicted. Non-stacking across sources — the
   // strongest curse wins (refresh-by-id keeps a single source from compounding).
@@ -3506,6 +3510,8 @@ export class Sim {
         if (a.kind === 'spellvuln') amp += a.value;
       }
       if (amp > 0) amount = Math.round(amount * (1 + amp));
+    }
+
     // Curse of frailty: a cursed victim takes more damage from every source. The
     // offensive mirror of Defensive Stance's cut above. Multiple curses stack
     // additively (sum of amps) so layered curses can't multiply out of control.
@@ -3684,6 +3690,8 @@ export class Sim {
     this.emit({ type: 'aura', targetId: target.id, name, gained: true });
     this.emit({ type: 'log', text: `${target.name} flies into a frenzy!`, color: '#ff8c00', entityId: target.id });
     this.emit({ type: 'spellfx', sourceId: target.id, targetId: target.id, school: 'physical', fx: 'nova' });
+  }
+
   /**
    * Innate "warded" mobs reflect flat damage onto a caster whose SPELL connects
    * — the magic-school twin of melee thorns (which only punishes melee swings).
@@ -4394,6 +4402,8 @@ export class Sim {
               remaining: stoneskin.duration, duration: stoneskin.duration, value: stoneskin.amount,
               sourceId: mob.id, school,
             });
+          }
+        }
         // Banshee's Wail: a periodic, telegraphed scream that terrifies nearby
         // players into fleeing. The fear analogue of War Stomp — same timed,
         // room-wide cadence — but it applies the `fear_incap` aura the on-hit
@@ -4635,6 +4645,8 @@ export class Sim {
         value: Math.max(1, Math.round(soulrot.perTick)),
         tickInterval: soulrot.interval, tickTimer: soulrot.interval,
         sourceId: mob.id, school: (soulrot.school as Aura['school']) ?? 'shadow',
+      });
+    }
     // bleed ("Rend"): a landed swing may open a refreshing PHYSICAL DoT wound.
     // Same on-hit DoT seam as venom, but physical-school — the predator/beast
     // flavour (raking claws, gore). Hostile mobs only (mobSwing is also the pet
@@ -4689,6 +4701,7 @@ export class Sim {
         tickInterval: cinder.interval, tickTimer: cinder.interval,
         sourceId: mob.id, school: (cinder.school as Aura['school']) ?? 'fire',
       });
+    }
     // arcane rot: a landed swing may brand the victim with a searing arcane rune
     // that festers as a refreshing DoT. The arcane-school twin of venom; reuses
     // the `dot` aura. Guarded on hostile + alive so a friendly pet (the other
@@ -4738,6 +4751,8 @@ export class Sim {
         id: `blind_${mob.templateId}`, name: blind.name, kind: 'blind',
         remaining: blind.duration, duration: blind.duration, value: blind.miss,
         sourceId: mob.id, school: (blind.school ?? 'physical') as Aura['school'],
+      });
+    }
     // disarm: a brutal swing can knock the weapon from a player's grip, suppressing
     // their auto-attack for a duration. Players only (only they run the primary-target
     // auto-attack path) and hostile only, so a friendly pet (mobSwing's other caller)
@@ -4759,6 +4774,8 @@ export class Sim {
         id: `lockout_${mob.templateId}`, name: lockout.name, kind: 'lockout',
         remaining: lockout.duration, duration: lockout.duration, value: 0,
         sourceId: mob.id, school: lockout.school,
+      });
+    }
     // draining curse: a landed hit can leave a cost-tax debuff that inflates the
     // victim's ability costs. Guarded on hostile + alive so a friendly pet (the
     // other mobSwing caller) never debuffs the party.
@@ -4841,6 +4858,9 @@ export class Sim {
         value: -stagger.dodgeReduction,
         sourceId: mob.id,
         school: 'physical',
+      });
+    }
+
     // Heal-Absorb: a landed hit can brand the victim with a necrotic blight that
     // devours the next chunk of incoming healing. The sibling of Mortal Strike —
     // where Mortal Strike scales every heal down, this eats a fixed pool then
@@ -4877,6 +4897,7 @@ export class Sim {
         remaining: stunOnHit.duration, duration: stunOnHit.duration, value: 0,
         sourceId: mob.id, school: stunOnHit.school ?? 'physical',
       });
+    }
     // Knockback: a landed hit can physically hurl the player victim straight back.
     // Hostile mobs only (a friendly pet shares this swing path) and players only —
     // shoving a fellow mob is meaningless. Pure positional displacement (no aura),
@@ -4978,6 +4999,9 @@ export class Sim {
         value: -Math.abs(enervate.sta),
         sourceId: mob.id,
         school: enervate.school ?? 'shadow',
+      });
+    }
+
     // Plague: a landed hit can rot the victim's vitality, draining Stamina and
     // thus shrinking their health pool (recalcPlayerStats folds the smaller
     // Stamina through to a smaller maxHp; current HP scales down with it).
@@ -5099,6 +5123,7 @@ export class Sim {
           sourceId: mob.id, school: hex.school ?? 'nature', breaksOnDamage: true,
         });
       }
+    }
     // Concussive Blow: a landed hit can briefly STUN the victim (single-target,
     // distinct from War Stomp's AoE slam). Hostile mobs only so a friendly pet
     // never stuns an ally; CC DR is PvP-only so a mob source always lands full.
@@ -5130,6 +5155,9 @@ export class Sim {
         value: expose.dmgIncrease,
         sourceId: mob.id,
         school: (expose.school as Aura['school']) ?? 'physical',
+      });
+    }
+
     // Curse of frailty: a landed hit may curse the victim so they take more
     // damage from every source (a `vulnerability` aura read in dealDamage).
     // Players only, hostile mobs only, so a friendly pet (mobSwing's other
@@ -5152,17 +5180,17 @@ export class Sim {
     // AND healing they deal by (1 - reductionPct) for a while. Guarded on
     // `hostile` so a friendly pet (mobSwing's other caller) never hexes the party,
     // and on a player target. Rides a dedicated `hex` aura read by hexOutputMult.
-    const hex = MOBS[mob.templateId]?.hex;
-    if (hex && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(hex.chance)) {
+    const weakHex = MOBS[mob.templateId]?.hex;
+    if (weakHex && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(weakHex.chance)) {
       this.applyAura(target, {
         id: `hex_${mob.templateId}`,
-        name: hex.name,
+        name: weakHex.name,
         kind: 'hex',
-        remaining: hex.duration,
-        duration: hex.duration,
-        value: hex.reductionPct,
+        remaining: weakHex.duration,
+        duration: weakHex.duration,
+        value: weakHex.reductionPct,
         sourceId: mob.id,
-        school: hex.school ?? 'shadow',
+        school: weakHex.school ?? 'shadow',
       });
     }
     // Devour Magic: a landed hit can strip one beneficial enhancement buff off
@@ -5618,6 +5646,12 @@ export class Sim {
               id: `ward_${mob.templateId}`, name: tmpl.wardAllies.name, kind: 'absorb',
               remaining: tmpl.wardAllies.duration, duration: tmpl.wardAllies.duration,
               value: tmpl.wardAllies.amount, sourceId: mob.id, school,
+            });
+          }
+        }
+      }
+    }
+
     // Commander "Rally": periodically empower every friendly mob in range
     // (including the caster) with a refreshing attack-power buff. The offensive
     // twin of mendAlly — same telegraphed timer, same same-faction ally scan —
@@ -5648,6 +5682,10 @@ export class Sim {
               sourceId: mob.id,
               school,
             });
+          }
+        }
+      }
+    }
     // Support "War Cadence": periodically quicken every nearby friendly mob's
     // swings (including the caster) by re-applying a refreshing buff_haste aura.
     // Same telegraph as Mend; rides swingIntervalMult's existing buff_haste fold.

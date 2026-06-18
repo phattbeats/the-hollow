@@ -2215,6 +2215,8 @@ export class Hud {
     const v = e ? absorbBarView(e) : { fillFrac: 0, overshield: false, total: 0 };
     el.style.transform = `scaleX(${v.fillFrac})`;
     el.classList.toggle('overshield', v.overshield);
+  }
+
   // Classic "low mana/energy" warning: pulse the player resource bar when power
   // runs low. Pure read of replicated state (resource/maxResource/type) so it
   // works offline and online alike. Touches the DOM only on state change.
@@ -6373,34 +6375,6 @@ export class Hud {
     row.append(name, wrap);
     parent.appendChild(row);
     sync();
-  }
-
-  // Graphics-panel toggle for a real boolean setting (vs settingToggle, which
-  // drives the numeric 0/1 settings). Persists through Settings.set(bool).
-  private settingBoolToggle(parent: HTMLElement, label: string, key: BoolSettingKey): void {
-    const hooks = this.optionsHooks;
-    if (!hooks) return;
-    const row = document.createElement('div');
-    row.className = 'set-row';
-    const name = document.createElement('span');
-    name.className = 'set-name';
-    name.textContent = label;
-    const toggle = document.createElement('button');
-    toggle.className = 'btn set-toggle';
-    const sync = () => {
-      const on = hooks.settings.get(key);
-      toggle.textContent = on ? 'On' : 'Off';
-      toggle.classList.toggle('off', !on);
-      toggle.setAttribute('aria-pressed', String(on));
-    };
-    sync();
-    toggle.addEventListener('click', () => {
-      audio.click();
-      hooks.onSettingChange(key, hooks.settings.set(key, !hooks.settings.get(key)));
-      sync();
-    });
-    row.append(name, toggle);
-    parent.appendChild(row);
   }
 
   private settingsViewShell(title: string): HTMLElement {
