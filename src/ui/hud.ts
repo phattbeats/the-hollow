@@ -5756,6 +5756,8 @@ export class Hud {
     if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.touchOpacity'), 'touchOpacity');
     // Touch-only: lets phone players size the on-screen joysticks to their hands.
     if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.joystickSize'), 'joystickScale');
+    // Touch-only: lets phone players size the on-screen action buttons to taste.
+    if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.buttonSize'), 'actionButtonScale');
     const note = document.createElement('div');
     note.className = 'set-note';
     note.textContent = t('hud.options.graphicsNote');

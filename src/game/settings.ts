@@ -40,6 +40,10 @@ export const SETTING_RANGES = {
   // touch-only: scales both on-screen joysticks from their anchored corner so
   // players can size the thumb pads to their hands (0.7x–1.3x). 1.0 = stock.
   joystickScale: { min: 0.7, max: 1.3, def: 1 },
+  // touch only: scale the on-screen action button cluster so players with
+  // larger or smaller thumbs can size the controls to taste (default 1.0x).
+  // Surfaced in the Esc menu only on phone-touch devices.
+  actionButtonScale: { min: 0.8, max: 1.3, def: 1 },
 } as const;
 
 export const BOOL_SETTINGS = {
