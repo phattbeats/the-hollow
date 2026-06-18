@@ -4249,6 +4249,25 @@ export class Sim {
         school: enfeeble.school ?? 'shadow',
       });
     }
+    // Plague: a landed hit can rot the victim's vitality, draining Stamina and
+    // thus shrinking their health pool (recalcPlayerStats folds the smaller
+    // Stamina through to a smaller maxHp; current HP scales down with it).
+    // Players only; hostile mobs only, so a friendly pet (mobSwing's other
+    // caller) never debuffs the party. Rides buff_sta with a negative value, so
+    // there is no new HP math. Refreshes by id and never stacks.
+    const plague = MOBS[mob.templateId]?.plague;
+    if (plague && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(plague.chance)) {
+      this.applyAura(target, {
+        id: `plague_${mob.templateId}`,
+        name: plague.name,
+        kind: 'buff_sta',
+        remaining: plague.duration,
+        duration: plague.duration,
+        value: -Math.abs(plague.sta),
+        sourceId: mob.id,
+        school: plague.school ?? 'nature',
+      });
+    }
     // On-hit chill: frost-touched mobs numb the victim, slowing their movement.
     const chill = MOBS[mob.templateId]?.chillOnHit;
     if (chill && !mob.dead && !target.dead && this.rng.chance(chill.chance)) {

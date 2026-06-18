@@ -251,6 +251,13 @@ export interface MobTemplate {
   // Rides the existing buff_int aura with a NEGATIVE value, so there is no new
   // resource math. Only meaningful on mana users — applied to them alone.
   enfeeble?: { chance: number; int: number; duration: number; name: string; school?: Aura['school'] };
+  // On-hit disease ("plague"): a landed melee swing has `chance` to rot the
+  // victim's vitality, draining `sta` Stamina for `duration`. recalcPlayerStats
+  // folds the smaller Stamina through to a smaller maxHp (and current HP scales
+  // down with the shrunken pool), so there is no new HP math. Rides the existing
+  // buff_sta aura with a NEGATIVE value. Unlike enfeeble (casters only) it
+  // afflicts everyone, since Stamina matters to every class.
+  plague?: { chance: number; sta: number; duration: number; name: string; school?: Aura['school'] };
   // Combat mechanic: a landed melee hit has `chance` to terrify the victim — a
   // fear that sends the struck player fleeing for `duration`s. Rides the existing
   // `fear_incap` incapacitate aura the player-cast Fear uses, so `updateFearMovement`
