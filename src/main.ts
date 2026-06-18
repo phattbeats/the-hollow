@@ -570,13 +570,17 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     recoverFromMobileKeyboard();
   };
   function openChat(): void {
+    // reflect the active chat-channel tab in the placeholder (e.g. "Message World")
+    chatInput.placeholder = hud.activeChatPlaceholder();
     chatInput.style.display = 'block';
     chatInput.focus();
   }
   chatInput.addEventListener('keydown', (e) => {
     e.stopPropagation();
     if (e.key === 'Enter') {
-      const text = chatInput.value.trim();
+      // the active channel tab supplies the send prefix, so plain text goes to
+      // that channel without the player retyping "/world" etc.
+      const text = hud.composeChatSend(chatInput.value);
       if (text) world.chat(text);
       closeChat();
     } else if (e.key === 'Escape') {

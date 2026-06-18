@@ -484,6 +484,22 @@ export const en: EnTranslations = {
       "chatTab": "Chat",
       "combatLogTab": "Combat Log",
       "chatPlaceholder": "Say something... (/w name whisper, /r reply, /p party, /gu guild, /o officer, /g general)",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "Community links",
       "mobileControls": "Mobile controls",
       "mobileMove": "Move",
@@ -4018,6 +4034,22 @@ export const es: EnTranslations = {
       "chatTab": "Chat",
       "combatLogTab": "Registro de combate",
       "chatPlaceholder": "Di algo... (/w nombre susurro, /r responder, /p grupo, /gu hermandad, /o oficiales, /g general)",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "Enlaces de comunidad",
       "mobileControls": "Controles móviles",
       "mobileMove": "Mover",
@@ -7552,6 +7584,22 @@ export const es_ES: EnTranslations = {
       "chatTab": "Chat",
       "combatLogTab": "Registro de combate",
       "chatPlaceholder": "Di algo... (/w nombre susurro, /r responder, /p grupo, /gu hermandad, /o oficiales, /g general)",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "Enlaces de comunidad",
       "mobileControls": "Controles móviles",
       "mobileMove": "Mover",
@@ -11086,6 +11134,22 @@ export const fr_FR: EnTranslations = {
       "chatTab": "Discussion",
       "combatLogTab": "Journal de combat",
       "chatPlaceholder": "Dites quelque chose... (/w nom chuchoter, /r répondre, /p groupe, /gu guilde, /o officiers, /g général)",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "Liens communautaires",
       "mobileControls": "Commandes mobiles",
       "mobileMove": "Déplacer",
@@ -14620,6 +14684,22 @@ export const fr_CA: EnTranslations = {
       "chatTab": "Discussion",
       "combatLogTab": "Journal de combat",
       "chatPlaceholder": "Dites quelque chose... (/w nom chuchoter, /r répondre, /p groupe, /gu guilde, /o officiers, /g général)",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "Liens communautaires",
       "mobileControls": "Commandes mobiles",
       "mobileMove": "Déplacer",
@@ -18154,6 +18234,22 @@ export const en_CA: EnTranslations = {
       "chatTab": "Chat",
       "combatLogTab": "Combat Log",
       "chatPlaceholder": "Say something... (/w name whisper, /r reply, /p party, /gu guild, /o officer, /g general)",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "Community links",
       "mobileControls": "Mobile controls",
       "mobileMove": "Move",
@@ -21688,6 +21784,22 @@ export const it_IT: EnTranslations = {
       "chatTab": "Chat",
       "combatLogTab": "Registro di combattimento",
       "chatPlaceholder": "Di' qualcosa... (/w nome sussurro, /r risposta, /p gruppo, /gu gilda, /o ufficiali, /g generale)",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "Link comunità",
       "mobileControls": "Comandi mobili",
       "mobileMove": "Muovi",
@@ -25222,6 +25334,22 @@ export const de_DE: EnTranslations = {
       "chatTab": "Chat",
       "combatLogTab": "Kampflog",
       "chatPlaceholder": "Etwas sagen... (/w Name flüstern, /r antworten, /p Gruppe, /gu Gilde, /o Offiziere, /g Allgemein)",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "Community-Links",
       "mobileControls": "Mobile Steuerung",
       "mobileMove": "Bewegen",
@@ -28756,6 +28884,22 @@ export const zh_CN: EnTranslations = {
       "chatTab": "聊天",
       "combatLogTab": "战斗记录",
       "chatPlaceholder": "说点什么...（/w 名字 密语，/r 回复，/p 队伍，/gu 公会，/o 官员，/g 综合）",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "社区链接",
       "mobileControls": "移动端控制",
       "mobileMove": "移动",
@@ -32290,6 +32434,22 @@ export const zh_TW: EnTranslations = {
       "chatTab": "聊天",
       "combatLogTab": "戰鬥紀錄",
       "chatPlaceholder": "說點什麼...（/w 名字 密語，/r 回覆，/p 隊伍，/gu 公會，/o 幹部，/g 綜合）",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "社群連結",
       "mobileControls": "行動控制",
       "mobileMove": "移動",
@@ -35824,6 +35984,22 @@ export const ko_KR: EnTranslations = {
       "chatTab": "채팅",
       "combatLogTab": "전투 기록",
       "chatPlaceholder": "메시지 입력... (/w 이름 귓속말, /r 답장, /p 파티, /gu 길드, /o 장교, /g 일반)",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "커뮤니티 링크",
       "mobileControls": "모바일 조작",
       "mobileMove": "이동",
@@ -39358,6 +39534,22 @@ export const ja_JP: EnTranslations = {
       "chatTab": "チャット",
       "combatLogTab": "戦闘ログ",
       "chatPlaceholder": "発言する... (/w 名前 ささやき、/r 返信、/p パーティ、/gu ギルド、/o オフィサー、/g 一般)",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "コミュニティリンク",
       "mobileControls": "モバイル操作",
       "mobileMove": "移動",
@@ -42892,6 +43084,22 @@ export const pt_BR: EnTranslations = {
       "chatTab": "Chat",
       "combatLogTab": "Registro de combate",
       "chatPlaceholder": "Diga algo... (/w nome sussurrar, /r responder, /p grupo, /gu guilda, /o oficiais, /g geral)",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "Links da comunidade",
       "mobileControls": "Controles móveis",
       "mobileMove": "Mover",
@@ -46426,6 +46634,22 @@ export const ru_RU: EnTranslations = {
       "chatTab": "Чат",
       "combatLogTab": "Журнал боя",
       "chatPlaceholder": "Напишите сообщение... (/w имя шепот, /r ответ, /p группа, /gu гильдия, /o офицеры, /g общий)",
+      "chatChannels": {
+        "add": "Add chat channel",
+        "addTitle": "Add channel",
+        "close": "Close {channel} tab",
+        "sendingTo": "Message {channel}",
+        "names": {
+          "say": "Say",
+          "yell": "Yell",
+          "party": "Party",
+          "general": "General",
+          "world": "World",
+          "lfg": "LFG",
+          "guild": "Guild",
+          "officer": "Officer"
+        }
+      },
       "communityLinks": "Ссылки сообщества",
       "mobileControls": "Мобильное управление",
       "mobileMove": "Движение",
@@ -49503,19 +49727,175 @@ export const translations = {
 };
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "hud.core.chatChannels.add",
+    "hud.core.chatChannels.addTitle",
+    "hud.core.chatChannels.close",
+    "hud.core.chatChannels.names.general",
+    "hud.core.chatChannels.names.guild",
+    "hud.core.chatChannels.names.lfg",
+    "hud.core.chatChannels.names.officer",
+    "hud.core.chatChannels.names.party",
+    "hud.core.chatChannels.names.say",
+    "hud.core.chatChannels.names.world",
+    "hud.core.chatChannels.names.yell",
+    "hud.core.chatChannels.sendingTo"
+  ],
+  "es_ES": [
+    "hud.core.chatChannels.add",
+    "hud.core.chatChannels.addTitle",
+    "hud.core.chatChannels.close",
+    "hud.core.chatChannels.names.general",
+    "hud.core.chatChannels.names.guild",
+    "hud.core.chatChannels.names.lfg",
+    "hud.core.chatChannels.names.officer",
+    "hud.core.chatChannels.names.party",
+    "hud.core.chatChannels.names.say",
+    "hud.core.chatChannels.names.world",
+    "hud.core.chatChannels.names.yell",
+    "hud.core.chatChannels.sendingTo"
+  ],
+  "fr_FR": [
+    "hud.core.chatChannels.add",
+    "hud.core.chatChannels.addTitle",
+    "hud.core.chatChannels.close",
+    "hud.core.chatChannels.names.general",
+    "hud.core.chatChannels.names.guild",
+    "hud.core.chatChannels.names.lfg",
+    "hud.core.chatChannels.names.officer",
+    "hud.core.chatChannels.names.party",
+    "hud.core.chatChannels.names.say",
+    "hud.core.chatChannels.names.world",
+    "hud.core.chatChannels.names.yell",
+    "hud.core.chatChannels.sendingTo"
+  ],
+  "fr_CA": [
+    "hud.core.chatChannels.add",
+    "hud.core.chatChannels.addTitle",
+    "hud.core.chatChannels.close",
+    "hud.core.chatChannels.names.general",
+    "hud.core.chatChannels.names.guild",
+    "hud.core.chatChannels.names.lfg",
+    "hud.core.chatChannels.names.officer",
+    "hud.core.chatChannels.names.party",
+    "hud.core.chatChannels.names.say",
+    "hud.core.chatChannels.names.world",
+    "hud.core.chatChannels.names.yell",
+    "hud.core.chatChannels.sendingTo"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
-  "zh_CN": [],
-  "zh_TW": [],
-  "ko_KR": [],
-  "ja_JP": [],
-  "pt_BR": [],
-  "ru_RU": []
+  "it_IT": [
+    "hud.core.chatChannels.add",
+    "hud.core.chatChannels.addTitle",
+    "hud.core.chatChannels.close",
+    "hud.core.chatChannels.names.general",
+    "hud.core.chatChannels.names.guild",
+    "hud.core.chatChannels.names.lfg",
+    "hud.core.chatChannels.names.officer",
+    "hud.core.chatChannels.names.party",
+    "hud.core.chatChannels.names.say",
+    "hud.core.chatChannels.names.world",
+    "hud.core.chatChannels.names.yell",
+    "hud.core.chatChannels.sendingTo"
+  ],
+  "de_DE": [
+    "hud.core.chatChannels.add",
+    "hud.core.chatChannels.addTitle",
+    "hud.core.chatChannels.close",
+    "hud.core.chatChannels.names.general",
+    "hud.core.chatChannels.names.guild",
+    "hud.core.chatChannels.names.lfg",
+    "hud.core.chatChannels.names.officer",
+    "hud.core.chatChannels.names.party",
+    "hud.core.chatChannels.names.say",
+    "hud.core.chatChannels.names.world",
+    "hud.core.chatChannels.names.yell",
+    "hud.core.chatChannels.sendingTo"
+  ],
+  "zh_CN": [
+    "hud.core.chatChannels.add",
+    "hud.core.chatChannels.addTitle",
+    "hud.core.chatChannels.close",
+    "hud.core.chatChannels.names.general",
+    "hud.core.chatChannels.names.guild",
+    "hud.core.chatChannels.names.lfg",
+    "hud.core.chatChannels.names.officer",
+    "hud.core.chatChannels.names.party",
+    "hud.core.chatChannels.names.say",
+    "hud.core.chatChannels.names.world",
+    "hud.core.chatChannels.names.yell",
+    "hud.core.chatChannels.sendingTo"
+  ],
+  "zh_TW": [
+    "hud.core.chatChannels.add",
+    "hud.core.chatChannels.addTitle",
+    "hud.core.chatChannels.close",
+    "hud.core.chatChannels.names.general",
+    "hud.core.chatChannels.names.guild",
+    "hud.core.chatChannels.names.lfg",
+    "hud.core.chatChannels.names.officer",
+    "hud.core.chatChannels.names.party",
+    "hud.core.chatChannels.names.say",
+    "hud.core.chatChannels.names.world",
+    "hud.core.chatChannels.names.yell",
+    "hud.core.chatChannels.sendingTo"
+  ],
+  "ko_KR": [
+    "hud.core.chatChannels.add",
+    "hud.core.chatChannels.addTitle",
+    "hud.core.chatChannels.close",
+    "hud.core.chatChannels.names.general",
+    "hud.core.chatChannels.names.guild",
+    "hud.core.chatChannels.names.lfg",
+    "hud.core.chatChannels.names.officer",
+    "hud.core.chatChannels.names.party",
+    "hud.core.chatChannels.names.say",
+    "hud.core.chatChannels.names.world",
+    "hud.core.chatChannels.names.yell",
+    "hud.core.chatChannels.sendingTo"
+  ],
+  "ja_JP": [
+    "hud.core.chatChannels.add",
+    "hud.core.chatChannels.addTitle",
+    "hud.core.chatChannels.close",
+    "hud.core.chatChannels.names.general",
+    "hud.core.chatChannels.names.guild",
+    "hud.core.chatChannels.names.lfg",
+    "hud.core.chatChannels.names.officer",
+    "hud.core.chatChannels.names.party",
+    "hud.core.chatChannels.names.say",
+    "hud.core.chatChannels.names.world",
+    "hud.core.chatChannels.names.yell",
+    "hud.core.chatChannels.sendingTo"
+  ],
+  "pt_BR": [
+    "hud.core.chatChannels.add",
+    "hud.core.chatChannels.addTitle",
+    "hud.core.chatChannels.close",
+    "hud.core.chatChannels.names.general",
+    "hud.core.chatChannels.names.guild",
+    "hud.core.chatChannels.names.lfg",
+    "hud.core.chatChannels.names.officer",
+    "hud.core.chatChannels.names.party",
+    "hud.core.chatChannels.names.say",
+    "hud.core.chatChannels.names.world",
+    "hud.core.chatChannels.names.yell",
+    "hud.core.chatChannels.sendingTo"
+  ],
+  "ru_RU": [
+    "hud.core.chatChannels.add",
+    "hud.core.chatChannels.addTitle",
+    "hud.core.chatChannels.close",
+    "hud.core.chatChannels.names.general",
+    "hud.core.chatChannels.names.guild",
+    "hud.core.chatChannels.names.lfg",
+    "hud.core.chatChannels.names.officer",
+    "hud.core.chatChannels.names.party",
+    "hud.core.chatChannels.names.say",
+    "hud.core.chatChannels.names.world",
+    "hud.core.chatChannels.names.yell",
+    "hud.core.chatChannels.sendingTo"
+  ]
 };
 
 export const en_XA: EnTranslations = {
@@ -49993,6 +50373,22 @@ export const en_XA: EnTranslations = {
       "chatTab": "[Çĥáţ]",
       "combatLogTab": "[Çóɱƀáţ Ļóĝ]",
       "chatPlaceholder": "[Šáý šóɱéţĥíñĝ... (/ŵ ñáɱé ŵĥíšþéŕ, /ŕ ŕéþļý, /þ þáŕţý, /ĝú ĝúíļð, /ó óƒƒíçéŕ, /ĝ ĝéñéŕáļ)]",
+      "chatChannels": {
+        "add": "[Áðð çĥáţ çĥáññéļ]",
+        "addTitle": "[Áðð çĥáññéļ]",
+        "close": "[Çļóšé {channel} ţáƀ]",
+        "sendingTo": "[Ɱéššáĝé {channel}]",
+        "names": {
+          "say": "[Šáý]",
+          "yell": "[Ýéļļ]",
+          "party": "[Þáŕţý]",
+          "general": "[Ĝéñéŕáļ]",
+          "world": "[Ŵóŕļð]",
+          "lfg": "[ĻƑĜ]",
+          "guild": "[Ĝúíļð]",
+          "officer": "[Óƒƒíçéŕ]"
+        }
+      },
       "communityLinks": "[Çóɱɱúñíţý ļíñķš]",
       "mobileControls": "[Ɱóƀíļé çóñţŕóļš]",
       "mobileMove": "[Ɱóʋé]",
