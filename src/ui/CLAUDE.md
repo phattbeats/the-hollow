@@ -68,7 +68,7 @@ entry; `onEvent` paths feed log/FCT/audio/banners (~L1651). Jump by banner:
 Toggle/open methods (`toggleBags`, `openVendor`, `openContextMenu`, …) are the
 public surface `main.ts`/input call.
 
-## i18n - IMPORTANT (sparse-overlay model; English-only PRs are legal)
+## i18n - IMPORTANT (sparse-overlay model; contributors add ENGLISH ONLY)
 The locale data is split across files. Touch the right one:
 - `i18n.en.ts` (nested) is the **authoritative English source** and drives
   `TranslationKey = Leaves<typeof en, 6>`, the dotted-path type every `t()` call uses.
@@ -87,9 +87,12 @@ key on **non-release builds only**, and **hard-fails a pending key on a release 
 (`isReleaseBuild()` = `I18N_RELEASE=1` or `import.meta.env.PROD`). The HUD is fully
 localized (~560 `t()` calls in hud.ts); prefer `t()` for new user-facing strings.
 
-**Contributor workflow (add a player-visible string):**
-1. Add the key to `en` (`i18n.en.ts`) and render it through `t()`. Do NOT edit the
-   13 overlays - the build fills them from English and the registry marks them `pending`.
+**Contributor workflow (add a player-visible string): add ENGLISH ONLY:**
+1. Add the key to `en` (`i18n.en.ts`) and render it through `t()`. **Never edit the 13
+   `i18n.locales/<lang>.ts` overlays, and never put English/`// TODO`/a placeholder
+   into one as a fake translation.** Leave the key omitted; the build English-fills it
+   and the registry marks it `pending`. (Translating 13 locales per PR would drain
+   small-plan token budgets; the maintainer batch-fills them at release.)
 2. If the string originates in `src/sim/` or `server/` (which stay language-agnostic),
    register a matcher RULE in the table matching the emit's ORIGIN (`sim_i18n.ts` for a
    `src/sim/` emit, `server_i18n.ts` for a `server/` emit; the two are parallel mirrors)
@@ -97,10 +100,14 @@ localized (~560 `t()` calls in hud.ts); prefer `t()` for new user-facing strings
    new emit is recognized by neither.
 3. Run `npm run i18n:scan` (and `npm run i18n:build`; if the resolved table changed,
    also `npm run i18n:hash -- --write`) and commit the regenerated files.
-4. Open the PR. It is green at the PR-tier gate, which does not require translations;
-   `tsc` still guarantees English completeness.
+4. Open the PR. It is green at the **PR-tier gate** (no `I18N_RELEASE_TIER`), which does
+   not require translations; `tsc` + the `t()` untracked-key throw still guarantee
+   English completeness.
 
-The maintainer fills the `pending` slice at release time from `npm run i18n:worklist`.
+The maintainer fills the `pending` slice at release time via `npm run i18n:worklist`,
+then ships from `release/**` where the **release-tier gate** (`I18N_RELEASE_TIER=1`)
+hard-fails on any `pending` row. Run `I18N_RELEASE_TIER=1 npm test` locally to dry-run
+that gate.
 Full contributor + maintainer flow and the locked-terms glossary:
 `docs/i18n-scaling/translation-workflow.md`.
 
