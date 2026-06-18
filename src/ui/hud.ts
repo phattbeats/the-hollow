@@ -179,6 +179,7 @@ const BIND_ACTION_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
   jump: 'hud.keybinds.actions.jump',
   autorun: 'hud.keybinds.actions.autorun',
   target: 'hud.keybinds.actions.target',
+  attackMove: 'hud.keybinds.actions.attackMove',
   interact: 'hud.keybinds.actions.interact',
   char: 'hud.keybinds.actions.char',
   spellbook: 'hud.keybinds.actions.spellbook',
@@ -3134,6 +3135,12 @@ export class Hud {
     if (wasNearBottom) el.scrollTop = el.scrollHeight;
   }
 
+  // A floating note over the local player (e.g. "Can't move!" when a movement
+  // command lands while rooted/stunned). Throttling is the caller's job.
+  showSelfNote(text: string, color = '#ff8c66'): void {
+    this.fct(this.sim.player, text, color, false);
+  }
+
   private fct(target: Entity, text: string, color: string, crit: boolean): void {
     const v = this.renderer.worldToScreen(target.pos.x, target.pos.y + 2.2 * target.scale, target.pos.z);
     if (v.behind) return;
@@ -5949,6 +5956,8 @@ export class Hud {
       if (key === 'clickToMove') hooks.onSettingChange(key, next ? 1 : 0);
       else hooks.onSettingChange(key, hooks.settings.set(key, next));
       sync();
+      // Attack Move reveals/hides its rebindable key row, so redraw the panel.
+      if (key === 'attackMove') this.renderKeybinds();
     });
     row.append(name, toggle);
     parent.appendChild(row);
@@ -5986,6 +5995,7 @@ export class Hud {
     this.settingToggleKeybind(el, t('hud.options.mouseCamera'), 'mouseCamera');
     this.settingToggleKeybind(el, t('hud.options.clickToMove'), 'clickToMove');
     this.clickMoveMouseButtonRow(el);
+    this.settingToggleKeybind(el, t('hud.keybinds.actions.attackMove'), 'attackMove');
     this.settingToggleKeybind(el, t('hud.options.leftHandedTouch'), 'leftHandedTouch');
     this.settingToggleKeybind(el, t('hud.options.filterProfanity'), 'filterProfanity');
     const note = document.createElement('div');
@@ -5994,12 +6004,17 @@ export class Hud {
     el.appendChild(note);
     const rows = document.createElement('div');
     rows.className = 'kb-rows';
+    // The Attack Move key is only meaningful (and only rebindable) while its mode
+    // is on; otherwise hide its row so it can't shadow Turn Left's A in the list.
+    const attackMoveOn = !!this.optionsHooks?.settings.get('attackMove');
     for (const category of BIND_CATEGORIES) {
+      const visible = BIND_ACTIONS.filter((a) => a.category === category && (a.id !== 'attackMove' || attackMoveOn));
+      if (visible.length === 0) continue;
       const header = document.createElement('div');
       header.className = 'kb-cat';
       header.textContent = BIND_CATEGORY_LABEL_KEYS[category] ? t(BIND_CATEGORY_LABEL_KEYS[category]) : category;
       rows.appendChild(header);
-      for (const action of BIND_ACTIONS.filter((a) => a.category === category)) {
+      for (const action of visible) {
         const row = document.createElement('div');
         row.className = 'kb-row';
         const name = document.createElement('span');

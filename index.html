@@ -249,6 +249,18 @@
     --ctm-core: #fff0a8;
     --ctm-edge: #6b4a10;
   }
+  /* Held in place (rooted/stunned): recolor the destination pip red and pulse it
+     so a frozen click-to-move reads as "can't move yet", not a stuck game. */
+  .click-move-marker.blocked {
+    --ctm-color: #ff5a4d;
+    --ctm-core: #ffd2cc;
+    --ctm-edge: #5f1a14;
+    animation: click-move-blocked 900ms ease-in-out infinite;
+  }
+  @keyframes click-move-blocked { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .click-move-marker.blocked { animation: none; opacity: 0.9; }
+  }
   .click-move-marker::before {
     content: "";
     position: absolute;
@@ -5872,8 +5884,10 @@
   <main id="start-screen">
     <!-- Keep the backdrop here at the top level so it spans the entire screen behind content -->
     <div id="start-screen-backdrop" aria-hidden="true">
-      <!-- Static key-art backdrop (replaces the looping cinematic). -->
-      <img id="bg-home" class="bg-trailer bg-home" src="/home-bg.png" alt="" decoding="async" fetchpriority="high" />
+      <!-- Looping cinematic background video; poster = static key-art for instant paint + fallback. -->
+      <video id="bg-home" class="bg-trailer bg-home" autoplay loop muted playsinline preload="auto" poster="/home-bg.png" aria-hidden="true">
+        <source src="/home-bg.mp4" type="video/mp4" />
+      </video>
       <div class="bg-trailer-scrim"></div>
       <div class="portal-ring"></div>
       <div class="portal-ring-reverse"></div>
@@ -5947,9 +5961,7 @@
                   <span class="server-select-value" id="server-select-value" data-i18n="mode.serverOnline">Online</span>
                   <span class="server-select-sub" id="server-select-sub">
                     <span class="server-realm-line" data-mode="online">
-                      <b class="stats-value js-stat-players">…</b> <span data-i18n="stats.playersOnline">Players Online</span>
-                      <span class="realm-status-sep" aria-hidden="true"></span>
-                      <b class="stats-value js-stat-accounts">…</b> <span data-i18n="stats.accountsCreated">Accounts Created</span>
+                      <b class="stats-value js-stat-accounts">…</b> <span data-i18n="stats.accountsCreated">Players</span>
                     </span>
                     <span class="server-sub-offline" data-mode="offline" data-i18n="mode.serverOfflineSub" hidden>Instant local world</span>
                   </span>
@@ -5963,9 +5975,7 @@
                     <span class="server-opt-name" data-i18n="mode.serverOnline">Online</span>
                     <span class="server-opt-desc" data-i18n="mode.onlineDesc">Log in to the realm. Your characters live on the server and you share the world with everyone else who's on.</span>
                     <span class="server-opt-stats">
-                      <b class="stats-value js-stat-players">…</b> <span data-i18n="stats.playersOnline">Players Online</span>
-                      <span class="realm-status-sep" aria-hidden="true"></span>
-                      <b class="stats-value js-stat-accounts">…</b> <span data-i18n="stats.accountsCreated">Accounts Created</span>
+                      <b class="stats-value js-stat-accounts">…</b> <span data-i18n="stats.accountsCreated">Players</span>
                     </span>
                   </span>
                   <svg class="server-opt-check" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>

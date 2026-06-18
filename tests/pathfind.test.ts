@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isBlocked, resolveMovement, resolvePosition } from '../src/sim/colliders';
+import { isBlocked, pathCrossesFence, resolveMovement, resolvePosition } from '../src/sim/colliders';
 import { Sim } from '../src/sim/sim';
 import { findPlayerPath, resolvePlayerDestination } from '../src/sim/pathfind';
 import { groundHeight } from '../src/sim/world';
@@ -40,6 +40,26 @@ describe('player pathfinding', () => {
     expect(path[path.length - 1]).toEqual(to);
   });
 
+  it('routes over a fence when the mover can jump it (click-to-move)', () => {
+    const seed = 20061;
+    const from = { x: 13, z: 7 };
+    const to = { x: 25, z: 13 };
+
+    const anySegmentCrossesFence = (path: { x: number; z: number }[]) => {
+      let prev = from;
+      for (const p of path) {
+        if (pathCrossesFence(prev.x, prev.z, p.x, p.z)) return true;
+        prev = p;
+      }
+      return false;
+    };
+
+    // ignoreFences off → must detour around the fence (no segment crosses it)
+    expect(anySegmentCrossesFence(findPlayerPath(seed, from, to, 128, false))).toBe(false);
+    // ignoreFences on (what click-to-move uses) → routes straight over it
+    expect(anySegmentCrossesFence(findPlayerPath(seed, from, to, 128, true))).toBe(true);
+  });
+
   it('blocks normal player movement through fences', () => {
     const sim = new Sim({ seed: 20061, playerClass: 'warrior' });
     const p = sim.player;
@@ -63,6 +83,34 @@ describe('player pathfinding', () => {
 
     const side = (p.pos.x - mx) * nx + (p.pos.z - mz) * nz;
     expect(side).toBeLessThan(-0.5);
+  });
+
+  it('lets a jumping player clear a fence', () => {
+    const sim = new Sim({ seed: 20061, playerClass: 'warrior' });
+    const p = sim.player;
+    const fence = { x1: 16, z1: 16, x2: 22, z2: 4 };
+    const mx = (fence.x1 + fence.x2) / 2;
+    const mz = (fence.z1 + fence.z2) / 2;
+    const dx = fence.x2 - fence.x1;
+    const dz = fence.z2 - fence.z1;
+    const len = Math.hypot(dx, dz);
+    const nx = -dz / len;
+    const nz = dx / len;
+
+    // jump from close to the fence: the jump's arc tops the rail, so forward
+    // momentum carries the player across even though they start below it
+    p.pos.x = mx - nx * 1.5;
+    p.pos.z = mz - nz * 1.5;
+    p.pos.y = groundHeight(p.pos.x, p.pos.z, sim.cfg.seed);
+    p.prevPos = { ...p.pos };
+    p.facing = Math.atan2(nx, nz);
+    sim.moveInput.forward = true;
+    sim.moveInput.jump = true;
+
+    for (let i = 0; i < 40; i++) sim.tick();
+
+    const side = (p.pos.x - mx) * nx + (p.pos.z - mz) * nz;
+    expect(side).toBeGreaterThan(0.5);
   });
 
   it('sweeps movement segments so a long step cannot tunnel through a fence', () => {

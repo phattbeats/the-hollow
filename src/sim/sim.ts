@@ -63,7 +63,7 @@ const FLEE_HELP_RADIUS = 8;
 // to the death. Elites, rares, and bosses never flee regardless of family.
 const FLEEING_FAMILIES: ReadonlySet<MobFamily> = new Set(['humanoid', 'kobold', 'murloc', 'troll']);
 const GRAVITY = 16;
-const JUMP_VELOCITY = 6;
+const JUMP_VELOCITY = 6; // apex = v^2/2g ≈ 1.125 yd
 const MELEE_ARC = 2.2; // radians half-arc within which melee swings connect
 const FALL_SAFE_DISTANCE = 12; // yards of free fall before damage
 const OBJECT_RESPAWN = 30;
@@ -1593,8 +1593,12 @@ export class Sim {
           if (!p.onGround) { p.vx = 0; p.vz = 0; }
         }
       }
-      // slide along buildings, trees, crypt walls
-      const resolved = resolveMovement(this.cfg.seed, p.pos.x, p.pos.z, nx, nz, BODY_RADIUS);
+      // Slide along buildings, trees, crypt walls — but while airborne from a
+      // jump, pass through fences for the whole arc. Keying off the jump itself
+      // (not a height threshold) makes this independent of slope: an uphill
+      // approach no longer flickers the clearance off right at the rail.
+      const clearFences = !p.onGround && p.jumping;
+      const resolved = resolveMovement(this.cfg.seed, p.pos.x, p.pos.z, nx, nz, BODY_RADIUS, clearFences);
       p.pos.x = resolved.x;
       p.pos.z = resolved.z;
       if (!p.onGround && (resolved.x !== nx || resolved.z !== nz)) {
@@ -1613,6 +1617,7 @@ export class Sim {
       p.vx = 0;
       p.vz = 0;
       p.onGround = true;
+      p.jumping = false;
       p.fallStartY = p.pos.y;
       if (inp.jump && !this.isRooted(p)) {
         // small hop to climb onto shores and docks
@@ -1620,6 +1625,7 @@ export class Sim {
         p.vx = wishX * wishSpeed;
         p.vz = wishZ * wishSpeed;
         p.onGround = false;
+        p.jumping = true;
       }
       return;
     }
@@ -1628,6 +1634,7 @@ export class Sim {
       p.vx = wishX * wishSpeed;
       p.vz = wishZ * wishSpeed;
       p.onGround = false;
+      p.jumping = true;
       p.fallStartY = p.pos.y;
     }
     if (!p.onGround) {
@@ -1641,6 +1648,7 @@ export class Sim {
         p.vx = 0;
         p.vz = 0;
         p.onGround = true;
+        p.jumping = false;
         p.fallStartY = p.pos.y;
         return;
       }
@@ -1650,6 +1658,7 @@ export class Sim {
         p.vx = 0;
         p.vz = 0;
         p.onGround = true;
+        p.jumping = false;
         const drop = p.fallStartY - ground;
         if (drop > FALL_SAFE_DISTANCE) {
           const dmg = Math.round(p.maxHp * (drop - FALL_SAFE_DISTANCE) * 0.07);
@@ -1659,7 +1668,9 @@ export class Sim {
       }
     } else {
       if (ground < p.pos.y - 0.4) {
+        // walked off a ledge — not a jump, so fences still block
         p.onGround = false;
+        p.jumping = false;
         p.vx = 0;
         p.vz = 0;
         p.vy = 0;

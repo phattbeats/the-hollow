@@ -13,6 +13,7 @@ export interface PathOpts {
   maxClimbSlope: number; // rise/run above which an uphill step is a wall
   minGround: number; // ground below this height is impassable (deep water)
   maxSpan?: number; // max searched cells per axis
+  ignoreFences?: boolean; // treat fences as passable (the mover can jump them)
 }
 
 const CELL = 1; // yards
@@ -59,7 +60,8 @@ export function findPath(
       // the start and goal cells are always traversable: the mover is already
       // standing on one, and the slide in resolvePosition owns the last yard
       const ok = i === startIdx || i === goalIdx
-        || (groundAt(i) >= o.minGround && !isBlocked(o.seed, cx(i % W), cz((i / W) | 0), o.bodyRadius));
+        || (groundAt(i) >= o.minGround
+          && !isBlocked(o.seed, cx(i % W), cz((i / W) | 0), o.bodyRadius, o.ignoreFences));
       walk[i] = ok ? 1 : -1;
     }
     return walk[i] === 1;
@@ -152,6 +154,7 @@ export function findPlayerPath(
   from: { x: number; z: number },
   to: { x: number; z: number },
   maxSpan = 128,
+  ignoreFences = false,
 ): { x: number; z: number }[] {
   return findPath(from, to, {
     seed,
@@ -159,6 +162,7 @@ export function findPlayerPath(
     maxClimbSlope: PLAYER_MAX_CLIMB_SLOPE,
     minGround: WATER_LEVEL - PLAYER_SWIM_DEPTH,
     maxSpan,
+    ignoreFences,
   });
 }
 

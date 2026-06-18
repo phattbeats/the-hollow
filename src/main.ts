@@ -12,11 +12,12 @@ import { cameraRelativeMoveFacing, clickMoveShouldCancel, clickMoveShouldWalk, c
 import { Api, ClientWorld, CharacterSummary, type ReleaseEntry } from './net/online';
 import type { IWorld, LeaderboardEntry } from './world_api';
 import { findPlayerPath, resolvePlayerDestination } from './sim/pathfind';
+import { pathCrossesFence } from './sim/colliders';
 import { formatXp } from './ui/xp_bar';
 import { assetsReady } from './render/assets/preload';
 import { CharacterPreview } from './render/characters';
 import { skinCount } from './render/characters/manifest';
-import { DT, INTERACT_RANGE, PlayerClass, dist2d } from './sim/types';
+import { DT, INTERACT_RANGE, MELEE_RANGE, PlayerClass, dist2d } from './sim/types';
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
@@ -34,6 +35,16 @@ const WORLD_SEED = 20061; // fixed: World of ClaudeCraft is a persistent place
 const CLICK_MOVE_TURN_RATE = 4.2; // rad/sec; responsive turning while the camera stays decoupled from click spam
 const CLICK_MOVE_WAYPOINT_STOP = 0.8; // yards; intermediate A* corners should roll through, not stutter-stop
 const CLICK_MOVE_REROUTE_DISTANCE = 4; // yards; live entity targets can move this far before we recompute the path
+const CLICK_MOVE_FENCE_JUMP_LOOKAHEAD = 2; // yards ahead; auto-jump when a click-move path is about to cross a fence
+const CLICK_MOVE_STUCK_MS = 1100; // ms of no forward progress before we reroute around (then give up)
+const CLICK_MOVE_PROGRESS_EPSILON = 1.5; // yards of travel that counts as progress (a walking player clears this fast; a player hopping in place at a fence never does)
+const ATTACK_MOVE_MELEE_STOP = 3.5; // yards; how close an attack-move approach stops from its target (inside melee)
+const ATTACK_MOVE_ACQUIRE_RANGE = 12; // yards; an attack-move toward open ground auto-targets a hostile this near
+// Aura kinds that stop the player from moving (mirrors the sim's isRooted/isStunned):
+// while one of these is up, click-to-move can't make progress, so the destination
+// marker shows a "held" state instead of looking like a stuck game.
+const IMMOBILE_AURA_KINDS = new Set(['stun', 'root', 'incapacitate', 'polymorph']);
+const IMMOBILE_NOTE_THROTTLE_MS = 1200; // min gap between "Can't move!" floats while held
 const HOMEPAGE_MUSIC_MUTED_KEY = 'woc_homepage_music_muted';
 const HOMEPAGE_MUSIC_VOLUME = 0.225;
 
@@ -620,6 +631,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     },
     onEmoteWheel: (open) => hud.setEmoteWheelOpen(open),
     onClickPick: (x, y, button) => handlePick(x, y, button),
+    onAttackMove: (x, y) => handleAttackMove(x, y),
     canUseGameKeys: () => !hud.isModalOpen() && chatInput.style.display !== 'block',
   }, keybinds);
   input.camYaw = world.player.facing;
@@ -660,6 +672,10 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       : null);
   }
 
+  function syncAttackMoveInput(): void {
+    input.setAttackMoveEnabled(settings.get('attackMove'));
+  }
+
   function applySetting(key: keyof GameSettings, value: number | boolean): void {
     if (key === 'mouseCamera') {
       const v = settings.set('mouseCamera', !!value);
@@ -673,6 +689,12 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     }
     if (key === 'filterProfanity') {
       settings.set('filterProfanity', !!value);
+      return;
+    }
+    if (key === 'attackMove') {
+      const v = settings.set('attackMove', !!value);
+      if (!v) input.clearClickMove();
+      syncAttackMoveInput();
       return;
     }
     const v = settings.set(key as keyof typeof SETTING_RANGES, value as number);
@@ -746,7 +768,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   }
 
   function clickMovePathTo(target: { x: number; z: number }): { x: number; z: number }[] {
-    return findPlayerPath(world.cfg.seed, world.player.pos, target);
+    // ignoreFences: the player can hop fences, so route straight over them
+    // instead of around — resolveMove fires the jump as we reach the rail.
+    return findPlayerPath(world.cfg.seed, world.player.pos, target, undefined, true);
   }
 
   function resolvedClickMoveTarget(target: { x: number; z: number }): { x: number; z: number } {
@@ -783,6 +807,105 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     handlePickedEntity(world, hud, id, button, x, y);
   }
 
+  // Attack Move (MOBA-style): the Attack Move key walks the player toward the
+  // cursor and auto-attacks. If a hostile mob is under the cursor we chase + hit
+  // it; otherwise we move to the ground point and pick up the nearest hostile met
+  // along the way (see attackMoveTick). Reuses the click-to-move travel pipeline.
+  function handleAttackMove(x: number, y: number): void {
+    if (world.player.dead) return;
+    const id = renderer.pick(x, y);
+    if (id !== null) {
+      const e = world.entities.get(id);
+      if (e && e.id !== world.player.id && e.kind === 'mob' && !e.dead && e.hostile) {
+        world.targetEntity(id);
+        const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
+        input.setClickMoveTarget(target, ATTACK_MOVE_MELEE_STOP, e.id, clickMovePathTo(target), true);
+        return;
+      }
+    }
+    const g = renderer.groundPoint(x, y, world.player.pos.y);
+    if (g) {
+      const target = resolvedClickMoveTarget(g);
+      input.setClickMoveTarget(target, 0.5, null, clickMovePathTo(target), true);
+    }
+  }
+
+  // Per-tick attack-move driving: acquire a hostile near a ground attack-move, and
+  // start swinging once we're in melee of an attack-move target. Movement itself
+  // is handled by the shared click-to-move path in resolveMove.
+  let attackMoveEngagedId: number | null = null;
+  function attackMoveTick(): void {
+    if (!input.clickMoveAttack || world.player.dead) {
+      attackMoveEngagedId = null;
+      return;
+    }
+    // Ground attack-move: latch onto the nearest hostile within range, converting
+    // it into a chase (entityId set → resolveMove reroutes toward it each tick).
+    if (input.clickMoveEntityId === null) {
+      const p = world.player;
+      let best: number | null = null;
+      let bestD = ATTACK_MOVE_ACQUIRE_RANGE;
+      for (const e of world.entities.values()) {
+        if (e.kind !== 'mob' || e.dead || !e.hostile || e.id === p.id) continue;
+        const d = dist2d(p.pos, e.pos);
+        if (d < bestD) { best = e.id; bestD = d; }
+      }
+      if (best !== null) {
+        const e = world.entities.get(best)!;
+        world.targetEntity(best);
+        const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
+        input.setClickMoveTarget(target, ATTACK_MOVE_MELEE_STOP, best, clickMovePathTo(target), true);
+      }
+    }
+    // Chasing a target: once inside melee, start the auto-attack (once per target).
+    const chaseId = input.clickMoveEntityId;
+    if (chaseId !== null) {
+      const e = world.entities.get(chaseId);
+      if (e && e.kind === 'mob' && !e.dead && e.hostile
+          && dist2d(world.player.pos, e.pos) <= MELEE_RANGE) {
+        if (attackMoveEngagedId !== chaseId) {
+          world.targetEntity(chaseId);
+          world.startAutoAttack();
+          attackMoveEngagedId = chaseId;
+        }
+      } else if (attackMoveEngagedId !== chaseId) {
+        attackMoveEngagedId = null;
+      }
+    } else {
+      attackMoveEngagedId = null;
+    }
+  }
+
+  // The player can't move toward a click-to-move destination while rooted/stunned
+  // — surface that on the marker so the freeze reads as crowd control, not a bug.
+  function playerImmobilized(): boolean {
+    return world.player.auras.some((a) => IMMOBILE_AURA_KINDS.has(a.kind));
+  }
+
+  // Pop a "Can't move!" note over the player when a movement command lands while
+  // immobilized, so the freeze is legible. Throttled so it doesn't spam per tick.
+  let lastImmobileNoteAt = -Infinity;
+  function maybeShowImmobileNote(nowMs: number): void {
+    if (world.player.dead || !playerImmobilized()) return;
+    const mi = input.readMoveInput();
+    const tryingToMove = !!input.clickMoveTarget
+      || mi.forward || mi.back || mi.strafeLeft || mi.strafeRight || mi.turnLeft || mi.turnRight;
+    if (!tryingToMove || nowMs - lastImmobileNoteAt < IMMOBILE_NOTE_THROTTLE_MS) return;
+    lastImmobileNoteAt = nowMs;
+    hud.showSelfNote(t('hud.combat.cannotMove'));
+  }
+
+  // Stuck-detection for click-to-move: a path can route over a fence the player
+  // jumps, but some fences sit on banks too steep to climb. If the player stops
+  // physically moving for a while (hopping in place at the fence), reroute around
+  // the obstacle (fences as walls); if still stuck after that, give up instead of
+  // hopping forever. We track actual displacement, not distance-to-goal, so a
+  // legitimate long detour (e.g. around a building) isn't mistaken for stuck.
+  let clickMoveStuckPulse = -1;
+  let clickMoveAnchor = { x: 0, z: 0 };
+  let clickMoveStuckSince = 0;
+  let clickMoveReroutedAround = false;
+
   let lastClickMoveMarkerPulse = -1;
   let clickMoveMarkerHideAt = 0;
   function updateClickMoveMarker(nowMs = performance.now()): void {
@@ -792,10 +915,10 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       clickMoveMarkerHideAt = nowMs + 300;
     }
     const target = input.clickMoveGoal ?? input.clickMovePulseTarget;
-    const show = !!target && settings.get('clickToMove') > 0 && !world.player.dead
+    const show = !!target && (settings.get('clickToMove') > 0 || settings.get('attackMove')) && !world.player.dead
       && (!!input.clickMoveTarget || nowMs < clickMoveMarkerHideAt);
     if (!show) {
-      clickMoveMarker.classList.remove('active', 'entity', 'pulse');
+      clickMoveMarker.classList.remove('active', 'entity', 'pulse', 'blocked');
       return;
     }
     const screen = renderer.worldToScreen(target.x, world.player.pos.y + 0.05, target.z);
@@ -803,11 +926,14 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       || screen.x < -80 || screen.x > window.innerWidth + 80
       || screen.y < -80 || screen.y > window.innerHeight + 80;
     if (offscreen) {
-      clickMoveMarker.classList.remove('active', 'pulse');
+      clickMoveMarker.classList.remove('active', 'pulse', 'blocked');
       return;
     }
     clickMoveMarker.style.transform = `translate(${screen.x.toFixed(0)}px, ${screen.y.toFixed(0)}px) translate(-50%, -50%)`;
     clickMoveMarker.classList.toggle('entity', input.clickMoveEntityId !== null);
+    // Only meaningful for a live destination you're still trying to reach (not the
+    // brief post-arrival fade), so gate on an active target.
+    clickMoveMarker.classList.toggle('blocked', !!input.clickMoveTarget && playerImmobilized());
     clickMoveMarker.classList.add('active');
     if (pulseChanged || clickMoveMarker.dataset.pulse !== String(input.clickMovePulse)) {
       clickMoveMarker.dataset.pulse = String(input.clickMovePulse);
@@ -875,6 +1001,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   // modal, mouselook, death, or the option being switched off cancels click-to-move.
   function resolveMove(mouselook: boolean, playerPos: { x: number; z: number }, playerFacing: number):
     { mi: ReturnType<typeof input.readMoveInput>; facing: number | null } {
+    attackMoveTick();
     const mi = input.readMoveInput();
     let facing: number | null = mouselook ? input.camYaw : null;
     if (input.clickMoveTarget) {
@@ -882,7 +1009,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
         mouselook,
         movementSuspended: input.suspendMovement,
         playerDead: world.player.dead,
-        enabled: settings.get('clickToMove') > 0,
+        enabled: settings.get('clickToMove') > 0 || settings.get('attackMove'),
       })) {
         input.clearClickMove();
       } else {
@@ -924,6 +1051,42 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
           // we don't orbit the target when the bearing swings faster than we
           // can turn at close range.
           mi.forward = clickMoveShouldWalk(smoothFacing, step.facing);
+          // The path can route over fences (the player jumps them), so hop when
+          // one is just ahead along our heading — the sim only jumps while
+          // grounded, so setting this every frame near a fence is safe. Once we
+          // give up on jumping and reroute around, stop auto-hopping.
+          if (mi.forward && !clickMoveReroutedAround) {
+            const ahead = {
+              x: playerPos.x + Math.sin(smoothFacing) * CLICK_MOVE_FENCE_JUMP_LOOKAHEAD,
+              z: playerPos.z + Math.cos(smoothFacing) * CLICK_MOVE_FENCE_JUMP_LOOKAHEAD,
+            };
+            if (pathCrossesFence(playerPos.x, playerPos.z, ahead.x, ahead.z)) mi.jump = true;
+          }
+        }
+        // Track displacement so a fence we can't actually clear doesn't trap us
+        // in an endless jump loop: if we stop moving, reroute around it, then give up.
+        const goal = input.clickMoveGoal;
+        if (goal && mi.forward && !playerImmobilized()) {
+          const now = performance.now();
+          if (input.clickMovePulse !== clickMoveStuckPulse) {
+            clickMoveStuckPulse = input.clickMovePulse;
+            clickMoveAnchor = { x: playerPos.x, z: playerPos.z };
+            clickMoveStuckSince = now;
+            clickMoveReroutedAround = false;
+          }
+          if (distance2d(playerPos, clickMoveAnchor) > CLICK_MOVE_PROGRESS_EPSILON) {
+            clickMoveAnchor = { x: playerPos.x, z: playerPos.z };
+            clickMoveStuckSince = now;
+          } else if (now - clickMoveStuckSince > CLICK_MOVE_STUCK_MS) {
+            if (!clickMoveReroutedAround) {
+              clickMoveReroutedAround = true;
+              clickMoveAnchor = { x: playerPos.x, z: playerPos.z };
+              clickMoveStuckSince = now;
+              input.rerouteClickMoveTarget(goal, findPlayerPath(world.cfg.seed, world.player.pos, goal, undefined, false));
+            } else {
+              input.clearClickMove();
+            }
+          }
         }
       }
     }
@@ -1073,6 +1236,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     const modelFacing = act ? actionFacing : movementFacing;
     perf.time('renderer', () => renderer.sync(alpha, frameDt, modelFacing));
     updateClickMoveMarker();
+    maybeShowImmobileNote(now);
     perf.markInputVisible(performance.now());
     perf.time('hud', () => hud.update());
     perf.tick(now);
@@ -2244,9 +2408,8 @@ function refreshLocalizedDynamicShell(): void {
 async function loadProjectStats(): Promise<void> {
   // Realm status now lives in the realm dropdown — both in the trigger sub-line
   // and inside the Online option — so update every instance by class.
-  const playerEls = document.querySelectorAll<HTMLElement>('.js-stat-players');
   const accountEls = document.querySelectorAll<HTMLElement>('.js-stat-accounts');
-  if (!playerEls.length || !accountEls.length) return;
+  if (!accountEls.length) return;
   const setAll = (els: NodeListOf<HTMLElement>, text: string): void => {
     els.forEach((el) => { el.textContent = text; });
   };
@@ -2264,7 +2427,6 @@ async function loadProjectStats(): Promise<void> {
 
   // If cache exists and is fresh (within TTL), use it and skip API request
   if (cached && (Date.now() - cached.timestamp < STATS_CACHE_TTL_MS)) {
-    setAll(playerEls, String(cached.players_online));
     setAll(accountEls, String(cached.accounts_created));
     return;
   }
@@ -2273,7 +2435,6 @@ async function loadProjectStats(): Promise<void> {
   try {
     const data = await api.projectStats();
 
-    setAll(playerEls, String(data.players_online));
     setAll(accountEls, String(data.accounts_created));
 
     // Save to cache with timestamp
@@ -2287,10 +2448,8 @@ async function loadProjectStats(): Promise<void> {
     console.error('Failed to fetch project stats:', err);
     // If API fails, fall back to cached data (even if expired)
     if (cached) {
-      setAll(playerEls, String(cached.players_online));
       setAll(accountEls, String(cached.accounts_created));
     } else {
-      setAll(playerEls, '–');
       setAll(accountEls, '–');
     }
   }

@@ -526,6 +526,9 @@ export interface Entity {
   vz: number; // horizontal air velocity (z, yards/sec)
   vy: number; // vertical velocity (jumping/falling)
   onGround: boolean;
+  // True while airborne from a deliberate jump (not from walking off a ledge).
+  // Lets a jump clear fences for the whole arc, independent of slope.
+  jumping: boolean;
   fallStartY: number;
   hp: number;
   maxHp: number;

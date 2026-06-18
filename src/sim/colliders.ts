@@ -35,6 +35,12 @@ export interface ObbCollider {
   cameraTopY?: number;
   /** See {@link CircleCollider.camGhost}. */
   camGhost?: boolean;
+  /**
+   * Low fence rail: a grounded mover collides normally, but a mover that is
+   * airborne above the rail (see `FENCE_RAIL_HEIGHT`) jumps clear of it. Set on
+   * the OBBs built from `PROPS.fences`.
+   */
+  isFence?: boolean;
 }
 
 export type Collider = CircleCollider | ObbCollider;
@@ -103,8 +109,9 @@ function staticWorldColliders(seed: number): Collider[] {
       hw: len / 2 + FENCE_END_PAD,
       hd: FENCE_HALF_DEPTH,
       rot: Math.atan2(-dz, dx),
-      cameraTopY: topY(seed, x, z, 2.8),
+      cameraTopY: topY(seed, x, z, FENCE_RAIL_HEIGHT),
       camGhost: true,
+      isFence: true,
     });
   }
 
@@ -144,6 +151,9 @@ const GRID_CELL = 16;
 const MAX_BODY_RADIUS = 0.8; // largest mover we resolve for
 const FENCE_HALF_DEPTH = 0.35;
 const FENCE_END_PAD = 0.35;
+/** Rail height of a fence (yards), used for camera occlusion. A jump passes
+ * through fences while airborne regardless (see sim `Entity.jumping`). */
+const FENCE_RAIL_HEIGHT = 2.8;
 
 interface ColliderGrid {
   cells: Map<string, Collider[]>;
@@ -207,11 +217,18 @@ function pushOut(c: Collider, x: number, z: number, r: number): { x: number; z: 
   return { x: c.x + world.x, z: c.z + world.z };
 }
 
-function resolveAgainst(list: Collider[], x: number, z: number, r: number): { x: number; z: number } {
+function resolveAgainst(
+  list: Collider[],
+  x: number,
+  z: number,
+  r: number,
+  ignoreFences = false,
+): { x: number; z: number } {
   let px = x, pz = z;
   for (let iter = 0; iter < 3; iter++) {
     let moved = false;
     for (const c of list) {
+      if (ignoreFences && c.type === 'obb' && c.isFence) continue;
       const res = pushOut(c, px, pz, r);
       if (res) {
         px = res.x;
@@ -239,23 +256,29 @@ function instanceLocal(x: number, z: number): { ox: number; oz: number; interior
 
 // Resolve a movement destination against all static geometry. Movers slide
 // along obstacles. `r` is the body radius.
-export function resolvePosition(seed: number, x: number, z: number, r = 0.5): { x: number; z: number } {
+export function resolvePosition(
+  seed: number,
+  x: number,
+  z: number,
+  r = 0.5,
+  ignoreFences = false,
+): { x: number; z: number } {
   if (isArenaPos(x)) {
     const o = arenaOriginAt(z);
-    const local = resolveAgainst(ARENA_COLLIDERS, x - o.x, z - o.z, r);
+    const local = resolveAgainst(ARENA_COLLIDERS, x - o.x, z - o.z, r, ignoreFences);
     return { x: local.x + o.x, z: local.z + o.z };
   }
   if (x > DUNGEON_X_THRESHOLD) {
     const { ox, oz, interior } = instanceLocal(x, z);
     const colliders = INTERIOR_COLLIDERS[interior] ?? CRYPT_COLLIDERS;
-    const local = resolveAgainst(colliders, x - ox, z - oz, r);
+    const local = resolveAgainst(colliders, x - ox, z - oz, r, ignoreFences);
     return { x: local.x + ox, z: local.z + oz };
   }
   const grid = gridFor(seed);
   const key = Math.floor(x / GRID_CELL) + ',' + Math.floor(z / GRID_CELL);
   const list = grid.cells.get(key);
   if (!list) return { x, z };
-  return resolveAgainst(list, x, z, r);
+  return resolveAgainst(list, x, z, r, ignoreFences);
 }
 
 function crossesFence(fromX: number, fromZ: number, toX: number, toZ: number, r: number): boolean {
@@ -289,19 +312,20 @@ export function resolveMovement(
   toX: number,
   toZ: number,
   r = 0.5,
+  ignoreFences = false,
 ): { x: number; z: number } {
   const dx = toX - fromX;
   const dz = toZ - fromZ;
   const d = Math.hypot(dx, dz);
-  if (d < 1e-6) return resolvePosition(seed, toX, toZ, r);
+  if (d < 1e-6) return resolvePosition(seed, toX, toZ, r, ignoreFences);
   const steps = Math.max(1, Math.ceil(d / 0.2));
   let x = fromX, z = fromZ;
   for (let i = 1; i <= steps; i++) {
     const t = i / steps;
     const nextX = fromX + dx * t;
     const nextZ = fromZ + dz * t;
-    if (crossesFence(x, z, nextX, nextZ, r)) break;
-    const resolved = resolvePosition(seed, nextX, nextZ, r);
+    if (!ignoreFences && crossesFence(x, z, nextX, nextZ, r)) break;
+    const resolved = resolvePosition(seed, nextX, nextZ, r, ignoreFences);
     x = resolved.x;
     z = resolved.z;
     if (Math.hypot(x - nextX, z - nextZ) > r * 0.25) {
@@ -315,9 +339,16 @@ export function resolveMovement(
   return { x, z };
 }
 
-export function isBlocked(seed: number, x: number, z: number, r = 0.5): boolean {
-  const res = resolvePosition(seed, x, z, r);
+export function isBlocked(seed: number, x: number, z: number, r = 0.5, ignoreFences = false): boolean {
+  const res = resolvePosition(seed, x, z, r, ignoreFences);
   return Math.abs(res.x - x) > 1e-4 || Math.abs(res.z - z) > 1e-4;
+}
+
+// Would a straight move from (fromX,fromZ) to (toX,toZ) cross a fence line?
+// Used by click-to-move to fire a jump just before reaching a fence it has
+// routed through, since the player can hop over fences but not walk through.
+export function pathCrossesFence(fromX: number, fromZ: number, toX: number, toZ: number, r = 0.5): boolean {
+  return crossesFence(fromX, fromZ, toX, toZ, r);
 }
 
 // ---------------------------------------------------------------------------
