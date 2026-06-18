@@ -31,6 +31,13 @@ describe('Settings', () => {
     expect(s.get('cameraFov')).toBe(SETTING_RANGES.cameraFov.def);
     expect(s.get('cameraFov')).toBe(60); // unchanged from the shipped look by default
     expect(s.get('mouseCamera')).toBe(false);
+    expect(s.get('joystickDeadzone')).toBe(SETTING_RANGES.joystickDeadzone.def);
+  });
+
+  it('clamps the touch joystick deadzone to its bounds', () => {
+    const s = new Settings();
+    expect(s.set('joystickDeadzone', 99)).toBe(SETTING_RANGES.joystickDeadzone.max);
+    expect(s.set('joystickDeadzone', 0)).toBe(SETTING_RANGES.joystickDeadzone.min);
   });
 
   it('clamps the camera FOV to its comfort range', () => {
@@ -59,6 +66,16 @@ describe('Settings', () => {
     expect(s.set('touchOpacity', 5)).toBe(SETTING_RANGES.touchOpacity.max);
     expect(s.set('touchOpacity', 0)).toBe(SETTING_RANGES.touchOpacity.min);
     expect(s.set('touchOpacity', 0.6)).toBe(0.6);
+  });
+
+  it('defaults the joystick size to stock and clamps to its 0.7–1.3 range', () => {
+    const s = new Settings();
+    expect(s.get('joystickScale')).toBe(1);
+    expect(s.set('joystickScale', 5)).toBe(SETTING_RANGES.joystickScale.max);
+    expect(s.set('joystickScale', 0)).toBe(SETTING_RANGES.joystickScale.min);
+    expect(s.set('joystickScale', 1.15)).toBe(1.15);
+    const reloaded = new Settings();
+    expect(reloaded.get('joystickScale')).toBe(1.15); // persisted
   });
 
   it('ignores non-finite input, keeping a valid value', () => {
@@ -133,6 +150,14 @@ describe('Settings', () => {
     expect(s.get('fullscreen')).toBe(SETTING_RANGES.fullscreen.def);
     expect(s.get('clickToMoveButton')).toBe(SETTING_RANGES.clickToMoveButton.def);
     expect(s.get('mouseCamera')).toBe(false);
+  });
+
+  it('action button scale defaults to 1.0 and clamps to its slider bounds', () => {
+    const s = new Settings();
+    expect(s.get('actionButtonScale')).toBe(1);
+    expect(s.set('actionButtonScale', 5)).toBe(SETTING_RANGES.actionButtonScale.max);
+    expect(s.set('actionButtonScale', 0)).toBe(SETTING_RANGES.actionButtonScale.min);
+    expect(s.set('actionButtonScale', 1.1)).toBe(1.1);
   });
 
   it('all() returns an independent snapshot', () => {

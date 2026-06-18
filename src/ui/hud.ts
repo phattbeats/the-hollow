@@ -6132,6 +6132,34 @@ export class Hud {
     sync();
   }
 
+  // Graphics-panel toggle for a real boolean setting (vs settingToggle, which
+  // drives the numeric 0/1 settings). Persists through Settings.set(bool).
+  private settingBoolToggle(parent: HTMLElement, label: string, key: BoolSettingKey): void {
+    const hooks = this.optionsHooks;
+    if (!hooks) return;
+    const row = document.createElement('div');
+    row.className = 'set-row';
+    const name = document.createElement('span');
+    name.className = 'set-name';
+    name.textContent = label;
+    const toggle = document.createElement('button');
+    toggle.className = 'btn set-toggle';
+    const sync = () => {
+      const on = hooks.settings.get(key);
+      toggle.textContent = on ? 'On' : 'Off';
+      toggle.classList.toggle('off', !on);
+      toggle.setAttribute('aria-pressed', String(on));
+    };
+    sync();
+    toggle.addEventListener('click', () => {
+      audio.click();
+      hooks.onSettingChange(key, hooks.settings.set(key, !hooks.settings.get(key)));
+      sync();
+    });
+    row.append(name, toggle);
+    parent.appendChild(row);
+  }
+
   private settingsViewShell(title: string): HTMLElement {
     const el = $('#options-menu');
     el.innerHTML = `<div class="panel-title"><span>${esc(title)}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
@@ -6202,6 +6230,15 @@ export class Hud {
     // Touch-only: lets phone players dim the on-screen joysticks + buttons.
     if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.touchOpacity'), 'touchOpacity');
     this.settingToggle(body, t('game.settings.weather'), 'weather');
+    // Touch-only: lets phone players size the on-screen joysticks to their hands.
+    if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.joystickSize'), 'joystickScale');
+    // Touch-only: lets phone players size the on-screen action buttons to taste.
+    if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.buttonSize'), 'actionButtonScale');
+    // Touch-only: a larger deadzone resists accidental drift from a resting
+    // thumb on the move stick; only meaningful with on-screen controls.
+    if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.joystickDeadzone'), 'joystickDeadzone');
+    // Touch-only: flips the vertical axis of the on-screen camera joystick + swipe-look.
+    if (isPhoneTouchDevice()) this.settingBoolToggle(body, t('hud.options.invertLook'), 'touchInvertLook');
     const note = document.createElement('div');
     note.className = 'set-note';
     note.textContent = t('hud.options.graphicsNote');

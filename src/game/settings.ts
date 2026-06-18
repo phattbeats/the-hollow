@@ -44,6 +44,17 @@ export const SETTING_RANGES = {
   // on by default: biome-driven ambient snow/rain. Stored 0/1 so it reuses the
   // existing settingToggle UI; players on weak machines can switch it off.
   weather: { min: 0, max: 1, def: 1 },
+  // touch-only: scales both on-screen joysticks from their anchored corner so
+  // players can size the thumb pads to their hands (0.7x–1.3x). 1.0 = stock.
+  joystickScale: { min: 0.7, max: 1.3, def: 1 },
+  // touch only: scale the on-screen action button cluster so players with
+  // larger or smaller thumbs can size the controls to taste (default 1.0x).
+  // Surfaced in the Esc menu only on phone-touch devices.
+  actionButtonScale: { min: 0.8, max: 1.3, def: 1 },
+  // touch-only: how far the move thumbstick must travel before it registers
+  // movement. Higher values resist accidental drift on a jittery thumb; lower
+  // values make the stick more responsive. Default matches the old fixed 0.22.
+  joystickDeadzone: { min: 0.1, max: 0.4, def: 0.22 },
 } as const;
 
 export const BOOL_SETTINGS = {
@@ -61,6 +72,10 @@ export const BOOL_SETTINGS = {
   // toward the cursor, auto-attacking the enemy under it or the nearest one met
   // along the way. Opt-in because it replaces the classic keyboard control scheme.
   attackMove: { def: false },
+  // off by default: invert the vertical axis of the touch camera joystick (and
+  // swipe-to-look) so pushing the stick up tilts the camera down — the classic
+  // flight-sim / console preference some touch players reach for (#323-adjacent)
+  touchInvertLook: { def: false },
 } as const;
 
 export type NumericSettingKey = keyof typeof SETTING_RANGES;

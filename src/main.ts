@@ -663,6 +663,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       music.setEnabled(!music.enabled);
       return music.enabled;
     },
+    onRecenterCamera: () => input.recenterCameraBehind(world.player.facing),
   });
   mobileControls.start();
   // reflect the current music state on the touch toggle (it may already be off
@@ -691,6 +692,10 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       document.body.classList.toggle('mobile-left-handed', v);
       return;
     }
+    if (key === 'touchInvertLook') {
+      input.setTouchInvertLook(settings.set('touchInvertLook', !!value));
+      return;
+    }
     if (key === 'filterProfanity') {
       settings.set('filterProfanity', !!value);
       return;
@@ -715,6 +720,11 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       case 'clickToMoveButton': syncClickMoveInput(); break;
       case 'touchOpacity': document.documentElement.style.setProperty('--touch-opacity', String(v)); break;
       case 'weather': renderer.setWeatherEnabled(v >= 0.5); break;
+      case 'joystickScale':
+        document.getElementById('mobile-controls')?.style.setProperty('--joy-scale', String(v));
+        break;
+      case 'actionButtonScale': document.getElementById('mobile-controls')?.style.setProperty('--btn-scale', String(v)); break;
+      case 'joystickDeadzone': mobileControls.setMoveDeadzone(v); break;
     }
   }
   // apply persisted settings to the freshly-built subsystems
