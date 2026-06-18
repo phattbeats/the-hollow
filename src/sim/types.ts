@@ -273,6 +273,11 @@ export interface MobTemplate {
   // flat `amount` of mana from a mana-using victim (casters). Rage/energy users
   // are unaffected. Drains only what mana the victim still has; no overkill.
   manaBurn?: { chance: number; amount: number; name: string; school?: Aura['school'] };
+  // On-hit mechanic ("Sap Vigor"): the melee-resource twin of manaBurn. A landed
+  // swing has `chance` to drain a flat `amount` of rage or energy from a melee
+  // victim (warriors, rogues, feral druids), starving their ability use. Mana
+  // users are unaffected. Drains only what the victim still has; no overkill.
+  sapVigor?: { chance: number; amount: number; name: string; school?: Aura['school'] };
   // On-hit curse: a landed melee swing has `chance` to fog the victim's mind,
   // draining `int` Intellect for `duration` and thus shrinking a caster's mana
   // pool (recalcPlayerStats clamps current mana down with the smaller ceiling).

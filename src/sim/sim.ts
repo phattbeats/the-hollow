@@ -4420,6 +4420,17 @@ export class Sim {
       target.resource = Math.max(0, target.resource - burn.amount);
       this.emit({ type: 'aura', targetId: target.id, name: burn.name, gained: true });
     }
+    // Sap Vigor: the melee-resource twin of manaBurn. A landed hit can drain a
+    // flat amount of rage or energy from a melee victim, starving their ability
+    // use. Mana users are unaffected (it does nothing to casters); hostile mobs
+    // only, so a friendly pet (mobSwing's other caller) never saps an ally. The
+    // resource bar visibly drops and the affix is surfaced via an `aura` log line.
+    const sap = MOBS[mob.templateId]?.sapVigor;
+    if (sap && mob.hostile && !target.dead && (target.resourceType === 'rage' || target.resourceType === 'energy')
+        && target.resource > 0 && this.rng.chance(sap.chance)) {
+      target.resource = Math.max(0, target.resource - sap.amount);
+      this.emit({ type: 'aura', targetId: target.id, name: sap.name, gained: true });
+    }
     // Maddening curse: a landed hit can fog a caster's mind, draining Intellect
     // and thus shrinking their mana pool. Mana users only (it does nothing to
     // rage/energy users); hostile mobs only, so a friendly pet (mobSwing's other
