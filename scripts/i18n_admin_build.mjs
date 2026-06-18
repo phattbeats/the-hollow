@@ -196,7 +196,9 @@ function computePending(enKeys, locales) {
 // and prune orphan *.ts. Mirrors scripts/i18n_build.mjs writeModuleDir: an atomic
 // same-dir replace keeps every slice path continuously present, so a concurrent reader
 // resolving './en_XA' through the barrel never sees it missing (a bare rmSync(dir)
-// would create that gap), and a removed locale leaves no orphan. Returns total bytes.
+// would create that gap), and a removed locale leaves no orphan. The sweep also
+// removes any stale *.ts.tmp left by a crashed run (it never ends in plain ".ts"),
+// so a crash leftover cannot be committed. Returns total bytes.
 function writeModuleDir(dir, modules) {
   mkdirSync(dir, { recursive: true });
   let totalBytes = 0;
@@ -209,7 +211,9 @@ function writeModuleDir(dir, modules) {
   }
   const keep = new Set(Object.keys(modules));
   for (const entry of readdirSync(dir)) {
-    if (entry.endsWith('.ts') && !keep.has(entry)) rmSync(path.join(dir, entry), { force: true });
+    if ((entry.endsWith('.ts') || entry.endsWith('.ts.tmp')) && !keep.has(entry)) {
+      rmSync(path.join(dir, entry), { force: true });
+    }
   }
   return totalBytes;
 }

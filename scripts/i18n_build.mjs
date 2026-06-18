@@ -272,7 +272,11 @@ function computePending(en, locales) {
 //     that gap fails with "Cannot find module" (the reproducibility tests regenerate
 //     this directory while other Vitest workers import it). It is also crash-safer:
 //     every expected path always holds valid (old or new) content.
-//   - delete any pre-existing *.ts not in the map, so a removed locale leaves no orphan.
+//   - delete any pre-existing *.ts not in the map (so a removed locale leaves no
+//     orphan) AND any stale *.ts.tmp left by a run that crashed between writeFileSync
+//     and renameSync (it never ends in plain ".ts", so it would otherwise survive and
+//     could be committed by accident). By emit time every live tmp has been renamed
+//     away, so this only sweeps leftovers, never an in-flight write.
 // Returns the total bytes written.
 function writeModuleDir(dir, modules) {
   mkdirSync(dir, { recursive: true });
@@ -286,7 +290,9 @@ function writeModuleDir(dir, modules) {
   }
   const keep = new Set(Object.keys(modules));
   for (const entry of readdirSync(dir)) {
-    if (entry.endsWith('.ts') && !keep.has(entry)) rmSync(path.join(dir, entry), { force: true });
+    if ((entry.endsWith('.ts') || entry.endsWith('.ts.tmp')) && !keep.has(entry)) {
+      rmSync(path.join(dir, entry), { force: true });
+    }
   }
   return totalBytes;
 }
