@@ -8201,6 +8201,15 @@ export class Sim {
       { itemId: 'oiled_boots', count: 1, price: 1900 },
       { itemId: 'quilted_trousers', count: 1, price: 2400 },
       { itemId: 'greyjaw_pelt_cloak', count: 1, price: 2900 },
+      // Quartermaster's Consignment — a standing line of practical travel gear.
+      { itemId: 'roadwardens_helm', count: 1, price: 2200 },
+      { itemId: 'wayfarers_hood', count: 1, price: 2000 },
+      { itemId: 'acolytes_circlet', count: 1, price: 2000 },
+      { itemId: 'reinforced_pauldrons', count: 1, price: 2400 },
+      { itemId: 'embroidered_mantle', count: 1, price: 1900 },
+      { itemId: 'sturdy_belt', count: 1, price: 1700 },
+      { itemId: 'silk_sash', count: 1, price: 1700 },
+      { itemId: 'roughspun_gloves', count: 1, price: 1500 },
     ];
     for (const s of stock) {
       if (!ITEMS[s.itemId]) continue;

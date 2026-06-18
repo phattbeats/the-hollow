@@ -402,6 +402,61 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
   spider_leg: { id: 'spider_leg', name: 'Twitching Spider Leg', kind: 'junk', quality: 'poor', sellValue: 4 },
   bone_fragments: { id: 'bone_fragments', name: 'Bone Fragments', kind: 'junk', quality: 'poor', sellValue: 7 },
   linen_scrap: { id: 'linen_scrap', name: 'Linen Scrap', kind: 'junk', quality: 'poor', sellValue: 3 },
+
+  // --- Quartermaster's Consignment ---------------------------------------
+  // A standing line of practical adventuring gear. The Merchant keeps eight
+  // pieces stocked on the World Market (see seedHouseListings); four more are
+  // looted from threats around the Vale. All uncommon, Eastbrook-tier (~L5-9),
+  // filling the helmet/shoulder/waist/gloves slots the early game leaves thin.
+  roadwardens_helm: {
+    id: 'roadwardens_helm', name: "Roadwarden's Helm", kind: 'armor', slot: 'helmet', quality: 'uncommon',
+    stats: { armor: 45, sta: 2 }, sellValue: 130, requiredClass: WAR,
+  },
+  wayfarers_hood: {
+    id: 'wayfarers_hood', name: "Wayfarer's Hood", kind: 'armor', slot: 'helmet', quality: 'uncommon',
+    stats: { armor: 30, agi: 2 }, sellValue: 120, requiredClass: ROG,
+  },
+  acolytes_circlet: {
+    id: 'acolytes_circlet', name: "Acolyte's Circlet", kind: 'armor', slot: 'helmet', quality: 'uncommon',
+    stats: { armor: 16, int: 2, spi: 1 }, sellValue: 120, requiredClass: MAG,
+  },
+  reinforced_pauldrons: {
+    id: 'reinforced_pauldrons', name: 'Reinforced Pauldrons', kind: 'armor', slot: 'shoulder', quality: 'uncommon',
+    stats: { armor: 50, str: 1, sta: 1 }, sellValue: 140, requiredClass: WAR,
+  },
+  embroidered_mantle: {
+    id: 'embroidered_mantle', name: 'Embroidered Mantle', kind: 'armor', slot: 'shoulder', quality: 'uncommon',
+    stats: { armor: 14, int: 2 }, sellValue: 110, requiredClass: MAG,
+  },
+  sturdy_belt: {
+    id: 'sturdy_belt', name: "Sturdy Traveler's Belt", kind: 'armor', slot: 'waist', quality: 'uncommon',
+    stats: { armor: 35, sta: 2 }, sellValue: 100,
+  },
+  silk_sash: {
+    id: 'silk_sash', name: 'Woven Silk Sash', kind: 'armor', slot: 'waist', quality: 'uncommon',
+    stats: { armor: 10, int: 2, spi: 1 }, sellValue: 100, requiredClass: MAG,
+  },
+  roughspun_gloves: {
+    id: 'roughspun_gloves', name: 'Roughspun Gloves', kind: 'armor', slot: 'gloves', quality: 'uncommon',
+    stats: { armor: 28, agi: 1, sta: 1 }, sellValue: 95,
+  },
+  // looted pieces
+  bristlehide_spaulders: {
+    id: 'bristlehide_spaulders', name: 'Bristlehide Spaulders', kind: 'armor', slot: 'shoulder', quality: 'uncommon',
+    stats: { armor: 40, agi: 1, sta: 2 }, sellValue: 150, requiredClass: ROG,
+  },
+  sableweb_cord: {
+    id: 'sableweb_cord', name: 'Sableweb Cord', kind: 'armor', slot: 'waist', quality: 'uncommon',
+    stats: { armor: 11, agi: 1, int: 2 }, sellValue: 150,
+  },
+  gorraks_cleaver: {
+    id: 'gorraks_cleaver', name: "Gorrak's Cleaver", kind: 'weapon', slot: 'mainhand', quality: 'uncommon',
+    weapon: { min: 8, max: 14, speed: 2.5 }, stats: { str: 3 }, sellValue: 180, requiredClass: WAR,
+  },
+  mossy_handwraps: {
+    id: 'mossy_handwraps', name: 'Mossgrown Handwraps', kind: 'armor', slot: 'gloves', quality: 'uncommon',
+    stats: { armor: 12, int: 1, spi: 2 }, sellValue: 140, requiredClass: MAG,
+  },
 };
 
 // --- Zone-aware fishing loot ----------------------------------------------

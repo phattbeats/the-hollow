@@ -2185,6 +2185,42 @@ export const en: EnTranslations = {
       "cracked_wyrm_scale": {
         "name": "Cracked Wyrm Scale"
       },
+      "roadwardens_helm": {
+        "name": "Roadwarden's Helm"
+      },
+      "wayfarers_hood": {
+        "name": "Wayfarer's Hood"
+      },
+      "acolytes_circlet": {
+        "name": "Acolyte's Circlet"
+      },
+      "reinforced_pauldrons": {
+        "name": "Reinforced Pauldrons"
+      },
+      "embroidered_mantle": {
+        "name": "Embroidered Mantle"
+      },
+      "sturdy_belt": {
+        "name": "Sturdy Traveler's Belt"
+      },
+      "silk_sash": {
+        "name": "Woven Silk Sash"
+      },
+      "roughspun_gloves": {
+        "name": "Roughspun Gloves"
+      },
+      "bristlehide_spaulders": {
+        "name": "Bristlehide Spaulders"
+      },
+      "sableweb_cord": {
+        "name": "Sableweb Cord"
+      },
+      "gorraks_cleaver": {
+        "name": "Gorrak's Cleaver"
+      },
+      "mossy_handwraps": {
+        "name": "Mossgrown Handwraps"
+      },
       "bristleback_maul": {
         "name": "Bristleback Maul"
       },
@@ -6016,6 +6052,42 @@ export const es: EnTranslations = {
       },
       "cracked_wyrm_scale": {
         "name": "Escama de wyrm agrietada"
+      },
+      "roadwardens_helm": {
+        "name": "Yelmo del guardián del camino"
+      },
+      "wayfarers_hood": {
+        "name": "Capucha del viajero"
+      },
+      "acolytes_circlet": {
+        "name": "Diadema del acólito"
+      },
+      "reinforced_pauldrons": {
+        "name": "Hombreras reforzadas"
+      },
+      "embroidered_mantle": {
+        "name": "Manto bordado"
+      },
+      "sturdy_belt": {
+        "name": "Cinturón resistente del viajero"
+      },
+      "silk_sash": {
+        "name": "Faja de seda tejida"
+      },
+      "roughspun_gloves": {
+        "name": "Guantes de tela basta"
+      },
+      "bristlehide_spaulders": {
+        "name": "Hombreras de piel de cerdas"
+      },
+      "sableweb_cord": {
+        "name": "Cordón de Sableweb"
+      },
+      "gorraks_cleaver": {
+        "name": "Hendedor de Gorrak"
+      },
+      "mossy_handwraps": {
+        "name": "Envolturas cubiertas de musgo"
       },
       "bristleback_maul": {
         "name": "Maza Bristleback"
@@ -9849,6 +9921,42 @@ export const es_ES: EnTranslations = {
       "cracked_wyrm_scale": {
         "name": "Escama de wyrm agrietada"
       },
+      "roadwardens_helm": {
+        "name": "Yelmo del guardián del camino"
+      },
+      "wayfarers_hood": {
+        "name": "Capucha del viajero"
+      },
+      "acolytes_circlet": {
+        "name": "Diadema del acólito"
+      },
+      "reinforced_pauldrons": {
+        "name": "Hombreras reforzadas"
+      },
+      "embroidered_mantle": {
+        "name": "Manto bordado"
+      },
+      "sturdy_belt": {
+        "name": "Cinturón resistente del viajero"
+      },
+      "silk_sash": {
+        "name": "Faja de seda tejida"
+      },
+      "roughspun_gloves": {
+        "name": "Guantes de tela basta"
+      },
+      "bristlehide_spaulders": {
+        "name": "Hombreras de piel de cerdas"
+      },
+      "sableweb_cord": {
+        "name": "Cordón de Sableweb"
+      },
+      "gorraks_cleaver": {
+        "name": "Hendedor de Gorrak"
+      },
+      "mossy_handwraps": {
+        "name": "Envolturas cubiertas de musgo"
+      },
       "bristleback_maul": {
         "name": "Maza Bristleback"
       },
@@ -13680,6 +13788,42 @@ export const fr_FR: EnTranslations = {
       },
       "cracked_wyrm_scale": {
         "name": "Écaille de wyrm fendue"
+      },
+      "roadwardens_helm": {
+        "name": "Heaume du gardien des routes"
+      },
+      "wayfarers_hood": {
+        "name": "Capuche du voyageur"
+      },
+      "acolytes_circlet": {
+        "name": "Diadème de l'acolyte"
+      },
+      "reinforced_pauldrons": {
+        "name": "Spallières renforcées"
+      },
+      "embroidered_mantle": {
+        "name": "Manteau brodé"
+      },
+      "sturdy_belt": {
+        "name": "Ceinture solide du voyageur"
+      },
+      "silk_sash": {
+        "name": "Écharpe de soie tissée"
+      },
+      "roughspun_gloves": {
+        "name": "Gants de toile grossière"
+      },
+      "bristlehide_spaulders": {
+        "name": "Spallières en cuir hérissé"
+      },
+      "sableweb_cord": {
+        "name": "Cordon de Sableweb"
+      },
+      "gorraks_cleaver": {
+        "name": "Fendoir de Gorrak"
+      },
+      "mossy_handwraps": {
+        "name": "Mitaines moussues"
       },
       "bristleback_maul": {
         "name": "Maillet Bristleback"
@@ -17513,6 +17657,42 @@ export const fr_CA: EnTranslations = {
       "cracked_wyrm_scale": {
         "name": "Écaille de wyrm fendue"
       },
+      "roadwardens_helm": {
+        "name": "Heaume du gardien des routes"
+      },
+      "wayfarers_hood": {
+        "name": "Capuche du voyageur"
+      },
+      "acolytes_circlet": {
+        "name": "Diadème de l'acolyte"
+      },
+      "reinforced_pauldrons": {
+        "name": "Spallières renforcées"
+      },
+      "embroidered_mantle": {
+        "name": "Manteau brodé"
+      },
+      "sturdy_belt": {
+        "name": "Ceinture solide du voyageur"
+      },
+      "silk_sash": {
+        "name": "Écharpe de soie tissée"
+      },
+      "roughspun_gloves": {
+        "name": "Gants de toile grossière"
+      },
+      "bristlehide_spaulders": {
+        "name": "Spallières en cuir hérissé"
+      },
+      "sableweb_cord": {
+        "name": "Cordon de Sableweb"
+      },
+      "gorraks_cleaver": {
+        "name": "Fendoir de Gorrak"
+      },
+      "mossy_handwraps": {
+        "name": "Mitaines moussues"
+      },
       "bristleback_maul": {
         "name": "Maillet Bristleback"
       },
@@ -21344,6 +21524,42 @@ export const en_CA: EnTranslations = {
       },
       "cracked_wyrm_scale": {
         "name": "Cracked Wyrm Scale"
+      },
+      "roadwardens_helm": {
+        "name": "Roadwarden's Helm"
+      },
+      "wayfarers_hood": {
+        "name": "Wayfarer's Hood"
+      },
+      "acolytes_circlet": {
+        "name": "Acolyte's Circlet"
+      },
+      "reinforced_pauldrons": {
+        "name": "Reinforced Pauldrons"
+      },
+      "embroidered_mantle": {
+        "name": "Embroidered Mantle"
+      },
+      "sturdy_belt": {
+        "name": "Sturdy Traveler's Belt"
+      },
+      "silk_sash": {
+        "name": "Woven Silk Sash"
+      },
+      "roughspun_gloves": {
+        "name": "Roughspun Gloves"
+      },
+      "bristlehide_spaulders": {
+        "name": "Bristlehide Spaulders"
+      },
+      "sableweb_cord": {
+        "name": "Sableweb Cord"
+      },
+      "gorraks_cleaver": {
+        "name": "Gorrak's Cleaver"
+      },
+      "mossy_handwraps": {
+        "name": "Mossgrown Handwraps"
       },
       "bristleback_maul": {
         "name": "Bristleback Maul"
@@ -25177,6 +25393,42 @@ export const it_IT: EnTranslations = {
       "cracked_wyrm_scale": {
         "name": "Scaglia di wyrm incrinata"
       },
+      "roadwardens_helm": {
+        "name": "Elmo del guardiano della strada"
+      },
+      "wayfarers_hood": {
+        "name": "Cappuccio del viandante"
+      },
+      "acolytes_circlet": {
+        "name": "Cerchietto dell'accolito"
+      },
+      "reinforced_pauldrons": {
+        "name": "Spallacci rinforzati"
+      },
+      "embroidered_mantle": {
+        "name": "Mantello ricamato"
+      },
+      "sturdy_belt": {
+        "name": "Cintura robusta del viandante"
+      },
+      "silk_sash": {
+        "name": "Fascia di seta intrecciata"
+      },
+      "roughspun_gloves": {
+        "name": "Guanti di tela grezza"
+      },
+      "bristlehide_spaulders": {
+        "name": "Spallacci di pelle setolosa"
+      },
+      "sableweb_cord": {
+        "name": "Cordone di Sableweb"
+      },
+      "gorraks_cleaver": {
+        "name": "Mannaia di Gorrak"
+      },
+      "mossy_handwraps": {
+        "name": "Manopole muschiose"
+      },
       "bristleback_maul": {
         "name": "Maglio Bristleback"
       },
@@ -29008,6 +29260,42 @@ export const de_DE: EnTranslations = {
       },
       "cracked_wyrm_scale": {
         "name": "Gesprungene Wyrmschuppe"
+      },
+      "roadwardens_helm": {
+        "name": "Helm des Wegwächters"
+      },
+      "wayfarers_hood": {
+        "name": "Kapuze des Wanderers"
+      },
+      "acolytes_circlet": {
+        "name": "Reif des Akolythen"
+      },
+      "reinforced_pauldrons": {
+        "name": "Verstärkte Schulterstücke"
+      },
+      "embroidered_mantle": {
+        "name": "Bestickter Schultermantel"
+      },
+      "sturdy_belt": {
+        "name": "Stabiler Reisegürtel"
+      },
+      "silk_sash": {
+        "name": "Gewebte Seidenschärpe"
+      },
+      "roughspun_gloves": {
+        "name": "Grobe Handschuhe"
+      },
+      "bristlehide_spaulders": {
+        "name": "Borstenhaut-Schulterstücke"
+      },
+      "sableweb_cord": {
+        "name": "Sableweb-Schnur"
+      },
+      "gorraks_cleaver": {
+        "name": "Gorraks Hackbeil"
+      },
+      "mossy_handwraps": {
+        "name": "Bemooste Handwickel"
       },
       "bristleback_maul": {
         "name": "Bristleback-Schlägel"
@@ -32841,6 +33129,42 @@ export const zh_CN: EnTranslations = {
       "cracked_wyrm_scale": {
         "name": "裂开的龙鳞"
       },
+      "roadwardens_helm": {
+        "name": "路卫头盔"
+      },
+      "wayfarers_hood": {
+        "name": "旅人兜帽"
+      },
+      "acolytes_circlet": {
+        "name": "见习者头环"
+      },
+      "reinforced_pauldrons": {
+        "name": "强化肩甲"
+      },
+      "embroidered_mantle": {
+        "name": "绣纹披肩"
+      },
+      "sturdy_belt": {
+        "name": "坚固旅行腰带"
+      },
+      "silk_sash": {
+        "name": "编织丝绸腰带"
+      },
+      "roughspun_gloves": {
+        "name": "粗纺手套"
+      },
+      "bristlehide_spaulders": {
+        "name": "鬃皮肩甲"
+      },
+      "sableweb_cord": {
+        "name": "黑网腰绳"
+      },
+      "gorraks_cleaver": {
+        "name": "戈拉克的劈刀"
+      },
+      "mossy_handwraps": {
+        "name": "苔藓护手"
+      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -36672,6 +36996,42 @@ export const zh_TW: EnTranslations = {
       },
       "cracked_wyrm_scale": {
         "name": "裂開的龍鱗"
+      },
+      "roadwardens_helm": {
+        "name": "路衛頭盔"
+      },
+      "wayfarers_hood": {
+        "name": "旅人兜帽"
+      },
+      "acolytes_circlet": {
+        "name": "見習者頭環"
+      },
+      "reinforced_pauldrons": {
+        "name": "強化肩甲"
+      },
+      "embroidered_mantle": {
+        "name": "繡紋披肩"
+      },
+      "sturdy_belt": {
+        "name": "堅固旅行腰帶"
+      },
+      "silk_sash": {
+        "name": "編織絲綢腰帶"
+      },
+      "roughspun_gloves": {
+        "name": "粗紡手套"
+      },
+      "bristlehide_spaulders": {
+        "name": "鬃皮肩甲"
+      },
+      "sableweb_cord": {
+        "name": "黑網腰繩"
+      },
+      "gorraks_cleaver": {
+        "name": "戈拉克的劈刀"
+      },
+      "mossy_handwraps": {
+        "name": "苔蘚護手"
       },
       "bristleback_maul": {
         "name": "硬鬃重槌"
@@ -40505,6 +40865,42 @@ export const ko_KR: EnTranslations = {
       "cracked_wyrm_scale": {
         "name": "갈라진 고룡 비늘"
       },
+      "roadwardens_helm": {
+        "name": "도로 수호자의 투구"
+      },
+      "wayfarers_hood": {
+        "name": "방랑자의 두건"
+      },
+      "acolytes_circlet": {
+        "name": "수습 사제의 머리띠"
+      },
+      "reinforced_pauldrons": {
+        "name": "강화된 어깨보호구"
+      },
+      "embroidered_mantle": {
+        "name": "자수 망토"
+      },
+      "sturdy_belt": {
+        "name": "튼튼한 여행자의 허리띠"
+      },
+      "silk_sash": {
+        "name": "직조 비단 띠"
+      },
+      "roughspun_gloves": {
+        "name": "거친 장갑"
+      },
+      "bristlehide_spaulders": {
+        "name": "뻣뻣한 가죽 어깨보호구"
+      },
+      "sableweb_cord": {
+        "name": "검은거미줄 끈"
+      },
+      "gorraks_cleaver": {
+        "name": "고라크의 고기칼"
+      },
+      "mossy_handwraps": {
+        "name": "이끼 낀 손싸개"
+      },
       "bristleback_maul": {
         "name": "뻣센등뼈 철퇴"
       },
@@ -44336,6 +44732,42 @@ export const ja_JP: EnTranslations = {
       },
       "cracked_wyrm_scale": {
         "name": "割れたワームの鱗"
+      },
+      "roadwardens_helm": {
+        "name": "道守りの兜"
+      },
+      "wayfarers_hood": {
+        "name": "旅人のフード"
+      },
+      "acolytes_circlet": {
+        "name": "見習いのサークレット"
+      },
+      "reinforced_pauldrons": {
+        "name": "強化された肩当て"
+      },
+      "embroidered_mantle": {
+        "name": "刺繍のマント"
+      },
+      "sturdy_belt": {
+        "name": "丈夫な旅人のベルト"
+      },
+      "silk_sash": {
+        "name": "織絹のサッシュ"
+      },
+      "roughspun_gloves": {
+        "name": "粗布の手袋"
+      },
+      "bristlehide_spaulders": {
+        "name": "剛毛革の肩当て"
+      },
+      "sableweb_cord": {
+        "name": "セーブルウェブの紐"
+      },
+      "gorraks_cleaver": {
+        "name": "ゴラクのクリーバー"
+      },
+      "mossy_handwraps": {
+        "name": "苔むした手甲"
       },
       "bristleback_maul": {
         "name": "ブリストルバックの大槌"
@@ -48169,6 +48601,42 @@ export const pt_BR: EnTranslations = {
       "cracked_wyrm_scale": {
         "name": "Escama de wyrm rachada"
       },
+      "roadwardens_helm": {
+        "name": "Elmo do guardião da estrada"
+      },
+      "wayfarers_hood": {
+        "name": "Capuz do viajante"
+      },
+      "acolytes_circlet": {
+        "name": "Diadema do acólito"
+      },
+      "reinforced_pauldrons": {
+        "name": "Ombreiras reforçadas"
+      },
+      "embroidered_mantle": {
+        "name": "Manto bordado"
+      },
+      "sturdy_belt": {
+        "name": "Cinto resistente do viajante"
+      },
+      "silk_sash": {
+        "name": "Faixa de seda tecida"
+      },
+      "roughspun_gloves": {
+        "name": "Luvas de tecido grosseiro"
+      },
+      "bristlehide_spaulders": {
+        "name": "Ombreiras de couro eriçado"
+      },
+      "sableweb_cord": {
+        "name": "Cordão de Sableweb"
+      },
+      "gorraks_cleaver": {
+        "name": "Cutelo de Gorrak"
+      },
+      "mossy_handwraps": {
+        "name": "Manoplas musgosas"
+      },
       "bristleback_maul": {
         "name": "Malho Bristleback"
       },
@@ -52000,6 +52468,42 @@ export const ru_RU: EnTranslations = {
       },
       "cracked_wyrm_scale": {
         "name": "Треснувшая чешуя вирма"
+      },
+      "roadwardens_helm": {
+        "name": "Шлем стража дорог"
+      },
+      "wayfarers_hood": {
+        "name": "Капюшон странника"
+      },
+      "acolytes_circlet": {
+        "name": "Венец послушника"
+      },
+      "reinforced_pauldrons": {
+        "name": "Укреплённые наплечники"
+      },
+      "embroidered_mantle": {
+        "name": "Расшитая мантия"
+      },
+      "sturdy_belt": {
+        "name": "Прочный пояс путника"
+      },
+      "silk_sash": {
+        "name": "Тканый шёлковый кушак"
+      },
+      "roughspun_gloves": {
+        "name": "Грубые перчатки"
+      },
+      "bristlehide_spaulders": {
+        "name": "Наплечники из щетинистой шкуры"
+      },
+      "sableweb_cord": {
+        "name": "Шнур Чёрной паутины"
+      },
+      "gorraks_cleaver": {
+        "name": "Тесак Горрака"
+      },
+      "mossy_handwraps": {
+        "name": "Замшелые обмотки"
       },
       "bristleback_maul": {
         "name": "Кувалда Щетиноспина"
@@ -55865,6 +56369,42 @@ export const en_XA: EnTranslations = {
       },
       "cracked_wyrm_scale": {
         "name": "[Çŕáçķéð Ŵýŕɱ Šçáļé]"
+      },
+      "roadwardens_helm": {
+        "name": "[Ŕóáðŵáŕðéñ'š Ĥéļɱ]"
+      },
+      "wayfarers_hood": {
+        "name": "[Ŵáýƒáŕéŕ'š Ĥóóð]"
+      },
+      "acolytes_circlet": {
+        "name": "[Áçóļýţé'š Çíŕçļéţ]"
+      },
+      "reinforced_pauldrons": {
+        "name": "[Ŕéíñƒóŕçéð Þáúļðŕóñš]"
+      },
+      "embroidered_mantle": {
+        "name": "[Éɱƀŕóíðéŕéð Ɱáñţļé]"
+      },
+      "sturdy_belt": {
+        "name": "[Šţúŕðý Ţŕáʋéļéŕ'š Ɓéļţ]"
+      },
+      "silk_sash": {
+        "name": "[Ŵóʋéñ Šíļķ Šášĥ]"
+      },
+      "roughspun_gloves": {
+        "name": "[Ŕóúĝĥšþúñ Ĝļóʋéš]"
+      },
+      "bristlehide_spaulders": {
+        "name": "[Ɓŕíšţļéĥíðé Šþáúļðéŕš]"
+      },
+      "sableweb_cord": {
+        "name": "[Šáƀļéŵéƀ Çóŕð]"
+      },
+      "gorraks_cleaver": {
+        "name": "[Ĝóŕŕáķ'š Çļéáʋéŕ]"
+      },
+      "mossy_handwraps": {
+        "name": "[Ɱóššĝŕóŵñ Ĥáñðŵŕáþš]"
       },
       "bristleback_maul": {
         "name": "[Ɓŕíšţļéƀáçķ Ɱáúļ]"
