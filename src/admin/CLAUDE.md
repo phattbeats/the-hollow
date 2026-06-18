@@ -18,7 +18,7 @@ framework — it builds HTML strings and assigns `innerHTML`.
 - `tables.ts` — pure `render*Table`/detail HTML-string functions.
 - `charts.ts` — hand-rolled SVG `barChart` + `chartPanel` (no chart lib).
 - `format.ts` — `escapeHtml`, `fmtDuration/Date/Relative/Copper/Bytes`.
-- `i18n.ts` — the dashboard's own `t()` layer (`classLabel`, `zoneLabel`, `reasonLabel`, `localizeAdminError`). Operators are users, so **all rendered admin text routes through it** (the root i18n invariant applies here too).
+- `i18n.ts` — the dashboard's own `t()` layer (`classLabel`, `zoneLabel`, `reasonLabel`, `localizeAdminError`). Operators are users, so **all rendered admin text routes through it** (the root i18n invariant applies here too). Admin has its OWN sparse-overlay set, independent of the game: author English in `i18n.en.ts` (flat dotted keys) and render via `t()`; **never edit the 13 `i18n.locales/<lang>.ts` admin overlays** (the maintainer fills them at release). Regenerate `i18n.resolved.generated` with `npm run i18n:admin`; the release-tier gate enforces no `pending` admin rows.
 
 ## Talks to server/admin.ts over `/admin/api`
 All responses use the `{ success, data, error }` envelope (unwrapped in `api.ts`).

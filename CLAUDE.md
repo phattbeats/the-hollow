@@ -67,16 +67,28 @@ See `README.md` for the full host/develop/play guide and the classic-fidelity ch
   XP curves — see `README.md` and `docs/design/`). Don't invent balance numbers.
 - **Don't hand-edit generated files** — e.g. `src/render/assets/manifest.generated.ts`
   (regenerate via the build).
-- **i18n: every player-visible string is a `t()` key, in every locale.** Each
+- **i18n: every player-visible string is a `t()` key.** (Translated in every locale
+  *by release*: see the contributor/maintainer split below; English-only PRs are
+  legal.) Each
   locale in `src/ui/i18n.ts` is `: typeof en`, so `tsc` fails on a missing/renamed
   key — but it **cannot** see a hard-coded literal that never became a key, nor a
   new English string emitted by `src/sim/`/`server/` and never registered in the
   client matcher. Both compile green and ship English to a translated player.
   Closing those two gaps is on you, not the compiler.
-  - **Add the key to `en` first, then a real translation to every locale** in
-    `translations` (`Object.keys(translations)`/`supportedLanguages` is the
-    authoritative set — never author against a printed list). No English copy,
-    placeholder, or `// TODO`; no "temporary English."
+  - **Contributors add ENGLISH only; the maintainer fills every locale before
+    release.** Add the key to `en` first (`src/ui/i18n.en.ts`) and render it via
+    `t()`. Do **not** edit the 13 `src/ui/i18n.locales/<lang>.ts` overlays: the build
+    English-fills any omitted key and the registry (`i18n.status.json`) marks it
+    `pending`. This is intentional: translating 13 locales per PR would drain
+    small-plan contributors' token budgets and bloat the diff; the maintainer
+    (Fernando) batch-fills all locales at release via `npm run i18n:worklist`.
+    Completeness is still mandatory, just enforced later: the **release-tier gate**
+    (push to `release/**`, `I18N_RELEASE_TIER=1`) hard-fails on any `pending` row,
+    and `t()` hard-fails a pending key in a release build. The **PR-tier gate**
+    (no env var) intentionally permits English-only. `supportedLanguages` is the
+    authoritative locale set; never author against a printed list. **Never put English
+    copy, a placeholder, or a `// TODO` into a non-English overlay** as a stand-in
+    translation. Full roles + glossary: `docs/i18n-scaling/translation-workflow.md`.
   - **The final rendered text — however assembled — comes from `t()`.** Not concat,
     template parts, `?? 'English'` fallbacks, default params, `const LABELS={…}`
     maps, or literals passed to `setAttribute('aria-label'|'title'|'placeholder'|'alt')`
