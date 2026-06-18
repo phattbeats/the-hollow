@@ -47,7 +47,7 @@ export type AuraKind =
   | 'dot' | 'slow' | 'stun' | 'root' | 'incapacitate' | 'polymorph'
   | 'attackspeed' | 'debuff_ap' | 'buff_ap' | 'buff_armor' | 'buff_int' | 'buff_dodge' | 'buff_speed' | 'buff_haste'
   | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_allstats' | 'thorns' | 'form_bear'
-  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence' | 'disarm' | 'expose' | 'spellvuln';
+  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence' | 'disarm' | 'expose' | 'spellvuln' | 'lockout';
 
 export interface Aura {
   id: string; // ability id that applied it
@@ -344,6 +344,10 @@ export interface MobTemplate {
   // instant abilities are untouched. Players only (only they auto-attack at the
   // primary-target swing path). Refreshes by id; never stacks.
   disarm?: { chance: number; duration: number; name: string; school?: Aura['school'] };
+  // On-hit mechanic: chance to lock out a SINGLE spell school (a school-specific
+  // counterspell) for a duration. Unlike `silence` (which blocks all non-physical
+  // casts), only casts whose `ability.school` matches `school` are denied/broken.
+  lockout?: { chance: number; duration: number; name: string; school: Aura['school'] };
   // On-hit chill: a landed melee swing has `chance` to slow the victim's
   // movement to `mult` of normal for `duration` seconds (frost school). Reuses
   // the standard `slow` aura, so it rides the same movement path as Frostbolt.

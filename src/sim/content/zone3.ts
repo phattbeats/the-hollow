@@ -190,6 +190,10 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
     // The zealot's fevered chanting claws at a caster's mind, draining Intellect
     // and shrinking their mana pool for a while.
     enfeeble: { chance: 0.3, int: 12, duration: 12, name: 'Maddening Whisper', school: 'shadow' },
+    // The Wyrmcult hoards their master's flame: a branding strike seals away the
+    // victim's fire magic so it can never rival the wyrm's, while leaving every
+    // other school free (a single-school counterspell, distinct from a full silence).
+    lockout: { chance: 0.25, duration: 6, name: 'Wyrmward Sigil', school: 'fire' },
     scale: 1.0, color: 0x76448a,
   },
   wyrmcult_necromancer: {

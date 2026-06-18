@@ -1338,6 +1338,12 @@ export class Sim {
   private isDisarmed(e: Entity): boolean {
     return e.auras.some((a) => a.kind === 'disarm');
   }
+
+  // A school lockout denies casts of one specific school only (a counterspell),
+  // leaving every other school — and physical abilities — untouched.
+  private isLockedOut(e: Entity, school: Aura['school']): boolean {
+    return e.auras.some((a) => a.kind === 'lockout' && a.school === school);
+  }
   private mobCanSwim(template: { family?: string; canSwim?: boolean } | undefined): boolean {
     return !!template;
   }
@@ -1810,6 +1816,11 @@ export class Sim {
       const cast = this.resolvedAbility(p.castingAbility, p.id);
       if (cast && cast.def.school !== 'physical') { this.cancelCast(p); return; }
     }
+    // a school lockout breaks an in-progress spell only when it matches the locked school.
+    if (p.castingAbility !== FISHING_CAST_ID) {
+      const cast = this.resolvedAbility(p.castingAbility, p.id);
+      if (cast && cast.def.school !== 'physical' && this.isLockedOut(p, cast.def.school)) { this.cancelCast(p); return; }
+    }
     p.castRemaining -= DT;
 
     if (p.channeling) {
@@ -1890,6 +1901,7 @@ export class Sim {
     const ability = res.def;
     if (this.isStunned(p)) { this.error(p.id, 'You are stunned!'); return; }
     if (ability.school !== 'physical' && this.isSilenced(p)) { this.error(p.id, 'You are silenced!'); return; }
+    if (ability.school !== 'physical' && this.isLockedOut(p, ability.school)) { this.error(p.id, 'You are silenced!'); return; }
     if (p.castingAbility) { this.error(p.id, 'You are busy.'); return; }
     if (!ability.offGcd && p.gcdRemaining > 0) return; // silent, classic spams this
     const togglingOff = isToggleBuff(ability) && p.auras.some((a) => a.id === ability.id);
@@ -4362,6 +4374,17 @@ export class Sim {
         id: `disarm_${mob.templateId}`, name: disarm.name, kind: 'disarm',
         remaining: disarm.duration, duration: disarm.duration, value: 0,
         sourceId: mob.id, school: (disarm.school ?? 'physical') as Aura['school'],
+      });
+    }
+
+    // school lockout: a counterspell-on-hit that seals a single spell school. Same
+    // hostile + alive guard as silence so a friendly pet never locks out the party.
+    const lockout = MOBS[mob.templateId]?.lockout;
+    if (lockout && mob.hostile && !target.dead && this.rng.chance(lockout.chance)) {
+      this.applyAura(target, {
+        id: `lockout_${mob.templateId}`, name: lockout.name, kind: 'lockout',
+        remaining: lockout.duration, duration: lockout.duration, value: 0,
+        sourceId: mob.id, school: lockout.school,
       });
     }
     // thorns / lightning shield on the defender
