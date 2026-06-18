@@ -1049,7 +1049,7 @@ export class GameServer {
       }
       case 'arena_leave': sim.arenaQueueLeave(pid); break;
 
-      // post-cap cosmetic prestige (Max-Level XP Overflow, Phase 4)
+      // post-cap cosmetic prestige (Max-Level XP Overflow)
       case 'prestige': sim.prestige(pid); break;
 
       // Talents & Specializations — every allocation re-validated in the Sim.
