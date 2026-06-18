@@ -6559,25 +6559,25 @@ export const es: EnTranslations = {
         "name": "Botines Sombravermis"
       },
       "glimmerfin_koi": {
-        "name": "Glimmerfin Koi"
+        "name": "Koi de aletas brillantes"
       },
       "raw_bog_eel": {
-        "name": "Raw Bog Eel"
+        "name": "Anguila de ciénaga cruda"
       },
       "raw_frostgill_trout": {
-        "name": "Raw Frostgill Trout"
+        "name": "Trucha de agallas gélidas cruda"
       },
       "raw_marsh_pike": {
-        "name": "Raw Marsh Pike"
+        "name": "Lucio de marisma crudo"
       },
       "raw_river_perch": {
-        "name": "Raw River Perch"
+        "name": "Perca de río cruda"
       },
       "raw_stonescale_carp": {
-        "name": "Raw Stonescale Carp"
+        "name": "Carpa de escamas pétreas cruda"
       },
       "soggy_boot": {
-        "name": "Soggy Boot"
+        "name": "Bota empapada"
       },
       "elixir_of_the_bear": {
         "name": "Elixir del Oso"
@@ -10607,25 +10607,25 @@ export const es_ES: EnTranslations = {
         "name": "Botines Sombravermis"
       },
       "glimmerfin_koi": {
-        "name": "Glimmerfin Koi"
+        "name": "Koi de aletas brillantes"
       },
       "raw_bog_eel": {
-        "name": "Raw Bog Eel"
+        "name": "Anguila de ciénaga cruda"
       },
       "raw_frostgill_trout": {
-        "name": "Raw Frostgill Trout"
+        "name": "Trucha de agallas gélidas cruda"
       },
       "raw_marsh_pike": {
-        "name": "Raw Marsh Pike"
+        "name": "Lucio de marisma crudo"
       },
       "raw_river_perch": {
-        "name": "Raw River Perch"
+        "name": "Perca de río cruda"
       },
       "raw_stonescale_carp": {
-        "name": "Raw Stonescale Carp"
+        "name": "Carpa de escamas pétreas cruda"
       },
       "soggy_boot": {
-        "name": "Soggy Boot"
+        "name": "Bota empapada"
       },
       "elixir_of_the_bear": {
         "name": "Elixir del Oso"
@@ -14655,25 +14655,25 @@ export const fr_FR: EnTranslations = {
         "name": "Bottines Ombrewyrm"
       },
       "glimmerfin_koi": {
-        "name": "Glimmerfin Koi"
+        "name": "Koï aux nageoires scintillantes"
       },
       "raw_bog_eel": {
-        "name": "Raw Bog Eel"
+        "name": "Anguille des marais crue"
       },
       "raw_frostgill_trout": {
-        "name": "Raw Frostgill Trout"
+        "name": "Truite aux ouïes givrées crue"
       },
       "raw_marsh_pike": {
-        "name": "Raw Marsh Pike"
+        "name": "Brochet des marais cru"
       },
       "raw_river_perch": {
-        "name": "Raw River Perch"
+        "name": "Perche de rivière crue"
       },
       "raw_stonescale_carp": {
-        "name": "Raw Stonescale Carp"
+        "name": "Carpe aux écailles de pierre crue"
       },
       "soggy_boot": {
-        "name": "Soggy Boot"
+        "name": "Botte détrempée"
       },
       "elixir_of_the_bear": {
         "name": "Élixir de l'Ours"
@@ -18703,25 +18703,25 @@ export const fr_CA: EnTranslations = {
         "name": "Bottines Ombrewyrm"
       },
       "glimmerfin_koi": {
-        "name": "Glimmerfin Koi"
+        "name": "Koï aux nageoires scintillantes"
       },
       "raw_bog_eel": {
-        "name": "Raw Bog Eel"
+        "name": "Anguille des marais crue"
       },
       "raw_frostgill_trout": {
-        "name": "Raw Frostgill Trout"
+        "name": "Truite aux ouïes givrées crue"
       },
       "raw_marsh_pike": {
-        "name": "Raw Marsh Pike"
+        "name": "Brochet des marais cru"
       },
       "raw_river_perch": {
-        "name": "Raw River Perch"
+        "name": "Perche de rivière crue"
       },
       "raw_stonescale_carp": {
-        "name": "Raw Stonescale Carp"
+        "name": "Carpe aux écailles de pierre crue"
       },
       "soggy_boot": {
-        "name": "Soggy Boot"
+        "name": "Botte détrempée"
       },
       "elixir_of_the_bear": {
         "name": "Élixir de l'Ours"
@@ -26799,25 +26799,25 @@ export const it_IT: EnTranslations = {
         "name": "Calzari Ombrawyrm"
       },
       "glimmerfin_koi": {
-        "name": "Glimmerfin Koi"
+        "name": "Koi dalle pinne scintillanti"
       },
       "raw_bog_eel": {
-        "name": "Raw Bog Eel"
+        "name": "Anguilla di palude cruda"
       },
       "raw_frostgill_trout": {
-        "name": "Raw Frostgill Trout"
+        "name": "Trota dalle branchie gelide cruda"
       },
       "raw_marsh_pike": {
-        "name": "Raw Marsh Pike"
+        "name": "Luccio di palude crudo"
       },
       "raw_river_perch": {
-        "name": "Raw River Perch"
+        "name": "Persico di fiume crudo"
       },
       "raw_stonescale_carp": {
-        "name": "Raw Stonescale Carp"
+        "name": "Carpa dalle scaglie di pietra cruda"
       },
       "soggy_boot": {
-        "name": "Soggy Boot"
+        "name": "Stivale fradicio"
       },
       "elixir_of_the_bear": {
         "name": "Elisir dell'Orso"
@@ -30847,25 +30847,25 @@ export const de_DE: EnTranslations = {
         "name": "Wyrmschattentreter"
       },
       "glimmerfin_koi": {
-        "name": "Glimmerfin Koi"
+        "name": "Schimmerflossen-Koi"
       },
       "raw_bog_eel": {
-        "name": "Raw Bog Eel"
+        "name": "Roher Mooraal"
       },
       "raw_frostgill_trout": {
-        "name": "Raw Frostgill Trout"
+        "name": "Rohe Frostkiemen-Forelle"
       },
       "raw_marsh_pike": {
-        "name": "Raw Marsh Pike"
+        "name": "Roher Sumpfhecht"
       },
       "raw_river_perch": {
-        "name": "Raw River Perch"
+        "name": "Roher Flussbarsch"
       },
       "raw_stonescale_carp": {
-        "name": "Raw Stonescale Carp"
+        "name": "Roher Steinschuppen-Karpfen"
       },
       "soggy_boot": {
-        "name": "Soggy Boot"
+        "name": "Durchnässter Stiefel"
       },
       "elixir_of_the_bear": {
         "name": "Elixier des Bären"
@@ -34895,25 +34895,25 @@ export const zh_CN: EnTranslations = {
         "name": "龙影足垫"
       },
       "glimmerfin_koi": {
-        "name": "Glimmerfin Koi"
+        "name": "微光鳍锦鲤"
       },
       "raw_bog_eel": {
-        "name": "Raw Bog Eel"
+        "name": "生沼泽鳗鱼"
       },
       "raw_frostgill_trout": {
-        "name": "Raw Frostgill Trout"
+        "name": "生霜鳃鳟鱼"
       },
       "raw_marsh_pike": {
-        "name": "Raw Marsh Pike"
+        "name": "生沼泽狗鱼"
       },
       "raw_river_perch": {
-        "name": "Raw River Perch"
+        "name": "生河鲈鱼"
       },
       "raw_stonescale_carp": {
-        "name": "Raw Stonescale Carp"
+        "name": "生石鳞鲤鱼"
       },
       "soggy_boot": {
-        "name": "Soggy Boot"
+        "name": "湿透的靴子"
       },
       "elixir_of_the_bear": {
         "name": "巨熊药剂"
@@ -38943,25 +38943,25 @@ export const zh_TW: EnTranslations = {
         "name": "龍影足墊"
       },
       "glimmerfin_koi": {
-        "name": "Glimmerfin Koi"
+        "name": "微光鰭錦鯉"
       },
       "raw_bog_eel": {
-        "name": "Raw Bog Eel"
+        "name": "生沼澤鰻魚"
       },
       "raw_frostgill_trout": {
-        "name": "Raw Frostgill Trout"
+        "name": "生霜鰓鱒魚"
       },
       "raw_marsh_pike": {
-        "name": "Raw Marsh Pike"
+        "name": "生沼澤狗魚"
       },
       "raw_river_perch": {
-        "name": "Raw River Perch"
+        "name": "生河鱸魚"
       },
       "raw_stonescale_carp": {
-        "name": "Raw Stonescale Carp"
+        "name": "生石鱗鯉魚"
       },
       "soggy_boot": {
-        "name": "Soggy Boot"
+        "name": "濕透的靴子"
       },
       "elixir_of_the_bear": {
         "name": "巨熊藥劑"
@@ -42991,25 +42991,25 @@ export const ko_KR: EnTranslations = {
         "name": "고룡그림자 발보호구"
       },
       "glimmerfin_koi": {
-        "name": "Glimmerfin Koi"
+        "name": "반짝이는 지느러미 코이"
       },
       "raw_bog_eel": {
-        "name": "Raw Bog Eel"
+        "name": "날 늪지 뱀장어"
       },
       "raw_frostgill_trout": {
-        "name": "Raw Frostgill Trout"
+        "name": "날 서리아가미 송어"
       },
       "raw_marsh_pike": {
-        "name": "Raw Marsh Pike"
+        "name": "날 늪지 강꼬치고기"
       },
       "raw_river_perch": {
-        "name": "Raw River Perch"
+        "name": "날 강농어"
       },
       "raw_stonescale_carp": {
-        "name": "Raw Stonescale Carp"
+        "name": "날 돌비늘 잉어"
       },
       "soggy_boot": {
-        "name": "Soggy Boot"
+        "name": "흠뻑 젖은 장화"
       },
       "elixir_of_the_bear": {
         "name": "곰의 비약"
@@ -47039,25 +47039,25 @@ export const ja_JP: EnTranslations = {
         "name": "ワーム影の足具"
       },
       "glimmerfin_koi": {
-        "name": "Glimmerfin Koi"
+        "name": "きらめきヒレの錦鯉"
       },
       "raw_bog_eel": {
-        "name": "Raw Bog Eel"
+        "name": "生の沼ウナギ"
       },
       "raw_frostgill_trout": {
-        "name": "Raw Frostgill Trout"
+        "name": "生の霜エラマス"
       },
       "raw_marsh_pike": {
-        "name": "Raw Marsh Pike"
+        "name": "生の沼カワカマス"
       },
       "raw_river_perch": {
-        "name": "Raw River Perch"
+        "name": "生の川スズキ"
       },
       "raw_stonescale_carp": {
-        "name": "Raw Stonescale Carp"
+        "name": "生の石鱗コイ"
       },
       "soggy_boot": {
-        "name": "Soggy Boot"
+        "name": "ずぶ濡れのブーツ"
       },
       "elixir_of_the_bear": {
         "name": "熊のエリクサー"
@@ -51087,25 +51087,25 @@ export const pt_BR: EnTranslations = {
         "name": "Pisantes Sombra de Wyrm"
       },
       "glimmerfin_koi": {
-        "name": "Glimmerfin Koi"
+        "name": "Koi de nadadeiras cintilantes"
       },
       "raw_bog_eel": {
-        "name": "Raw Bog Eel"
+        "name": "Enguia de brejo crua"
       },
       "raw_frostgill_trout": {
-        "name": "Raw Frostgill Trout"
+        "name": "Truta de guelras gélidas crua"
       },
       "raw_marsh_pike": {
-        "name": "Raw Marsh Pike"
+        "name": "Lúcio de pântano cru"
       },
       "raw_river_perch": {
-        "name": "Raw River Perch"
+        "name": "Perca de rio crua"
       },
       "raw_stonescale_carp": {
-        "name": "Raw Stonescale Carp"
+        "name": "Carpa de escamas de pedra crua"
       },
       "soggy_boot": {
-        "name": "Soggy Boot"
+        "name": "Bota encharcada"
       },
       "elixir_of_the_bear": {
         "name": "Elixir do Urso"
@@ -55135,25 +55135,25 @@ export const ru_RU: EnTranslations = {
         "name": "Ступни Тени вирма"
       },
       "glimmerfin_koi": {
-        "name": "Glimmerfin Koi"
+        "name": "Карп кои с мерцающими плавниками"
       },
       "raw_bog_eel": {
-        "name": "Raw Bog Eel"
+        "name": "Сырой болотный угорь"
       },
       "raw_frostgill_trout": {
-        "name": "Raw Frostgill Trout"
+        "name": "Сырая морозожаберная форель"
       },
       "raw_marsh_pike": {
-        "name": "Raw Marsh Pike"
+        "name": "Сырая болотная щука"
       },
       "raw_river_perch": {
-        "name": "Raw River Perch"
+        "name": "Сырой речной окунь"
       },
       "raw_stonescale_carp": {
-        "name": "Raw Stonescale Carp"
+        "name": "Сырой каменночешуйчатый карп"
       },
       "soggy_boot": {
-        "name": "Soggy Boot"
+        "name": "Промокший сапог"
       },
       "elixir_of_the_bear": {
         "name": "Эликсир медведя"
@@ -56716,13 +56716,6 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.pyroblast.name",
     "entities.abilities.retribution_aura.description",
     "entities.abilities.retribution_aura.name",
-    "entities.items.glimmerfin_koi.name",
-    "entities.items.raw_bog_eel.name",
-    "entities.items.raw_frostgill_trout.name",
-    "entities.items.raw_marsh_pike.name",
-    "entities.items.raw_river_perch.name",
-    "entities.items.raw_stonescale_carp.name",
-    "entities.items.soggy_boot.name",
     "entities.mobs.grix_the_tunnelking.name",
     "game.hud.lowEnergy",
     "game.hud.lowMana",
@@ -56777,13 +56770,6 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.pyroblast.name",
     "entities.abilities.retribution_aura.description",
     "entities.abilities.retribution_aura.name",
-    "entities.items.glimmerfin_koi.name",
-    "entities.items.raw_bog_eel.name",
-    "entities.items.raw_frostgill_trout.name",
-    "entities.items.raw_marsh_pike.name",
-    "entities.items.raw_river_perch.name",
-    "entities.items.raw_stonescale_carp.name",
-    "entities.items.soggy_boot.name",
     "entities.mobs.grix_the_tunnelking.name",
     "game.hud.lowEnergy",
     "game.hud.lowMana",
@@ -56838,13 +56824,6 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.pyroblast.name",
     "entities.abilities.retribution_aura.description",
     "entities.abilities.retribution_aura.name",
-    "entities.items.glimmerfin_koi.name",
-    "entities.items.raw_bog_eel.name",
-    "entities.items.raw_frostgill_trout.name",
-    "entities.items.raw_marsh_pike.name",
-    "entities.items.raw_river_perch.name",
-    "entities.items.raw_stonescale_carp.name",
-    "entities.items.soggy_boot.name",
     "entities.mobs.grix_the_tunnelking.name",
     "game.hud.lowEnergy",
     "game.hud.lowMana",
@@ -56899,13 +56878,6 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.pyroblast.name",
     "entities.abilities.retribution_aura.description",
     "entities.abilities.retribution_aura.name",
-    "entities.items.glimmerfin_koi.name",
-    "entities.items.raw_bog_eel.name",
-    "entities.items.raw_frostgill_trout.name",
-    "entities.items.raw_marsh_pike.name",
-    "entities.items.raw_river_perch.name",
-    "entities.items.raw_stonescale_carp.name",
-    "entities.items.soggy_boot.name",
     "entities.mobs.grix_the_tunnelking.name",
     "game.hud.lowEnergy",
     "game.hud.lowMana",
@@ -56961,13 +56933,6 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.pyroblast.name",
     "entities.abilities.retribution_aura.description",
     "entities.abilities.retribution_aura.name",
-    "entities.items.glimmerfin_koi.name",
-    "entities.items.raw_bog_eel.name",
-    "entities.items.raw_frostgill_trout.name",
-    "entities.items.raw_marsh_pike.name",
-    "entities.items.raw_river_perch.name",
-    "entities.items.raw_stonescale_carp.name",
-    "entities.items.soggy_boot.name",
     "entities.mobs.grix_the_tunnelking.name",
     "game.hud.lowEnergy",
     "game.hud.lowMana",
@@ -57022,13 +56987,6 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.pyroblast.name",
     "entities.abilities.retribution_aura.description",
     "entities.abilities.retribution_aura.name",
-    "entities.items.glimmerfin_koi.name",
-    "entities.items.raw_bog_eel.name",
-    "entities.items.raw_frostgill_trout.name",
-    "entities.items.raw_marsh_pike.name",
-    "entities.items.raw_river_perch.name",
-    "entities.items.raw_stonescale_carp.name",
-    "entities.items.soggy_boot.name",
     "entities.mobs.grix_the_tunnelking.name",
     "game.hud.lowEnergy",
     "game.hud.lowMana",
@@ -57083,13 +57041,6 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.pyroblast.name",
     "entities.abilities.retribution_aura.description",
     "entities.abilities.retribution_aura.name",
-    "entities.items.glimmerfin_koi.name",
-    "entities.items.raw_bog_eel.name",
-    "entities.items.raw_frostgill_trout.name",
-    "entities.items.raw_marsh_pike.name",
-    "entities.items.raw_river_perch.name",
-    "entities.items.raw_stonescale_carp.name",
-    "entities.items.soggy_boot.name",
     "entities.mobs.grix_the_tunnelking.name",
     "game.hud.lowEnergy",
     "game.hud.lowMana",
@@ -57144,13 +57095,6 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.pyroblast.name",
     "entities.abilities.retribution_aura.description",
     "entities.abilities.retribution_aura.name",
-    "entities.items.glimmerfin_koi.name",
-    "entities.items.raw_bog_eel.name",
-    "entities.items.raw_frostgill_trout.name",
-    "entities.items.raw_marsh_pike.name",
-    "entities.items.raw_river_perch.name",
-    "entities.items.raw_stonescale_carp.name",
-    "entities.items.soggy_boot.name",
     "entities.mobs.grix_the_tunnelking.name",
     "game.hud.lowEnergy",
     "game.hud.lowMana",
@@ -57205,13 +57149,6 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.pyroblast.name",
     "entities.abilities.retribution_aura.description",
     "entities.abilities.retribution_aura.name",
-    "entities.items.glimmerfin_koi.name",
-    "entities.items.raw_bog_eel.name",
-    "entities.items.raw_frostgill_trout.name",
-    "entities.items.raw_marsh_pike.name",
-    "entities.items.raw_river_perch.name",
-    "entities.items.raw_stonescale_carp.name",
-    "entities.items.soggy_boot.name",
     "entities.mobs.grix_the_tunnelking.name",
     "game.hud.lowEnergy",
     "game.hud.lowMana",
@@ -57266,13 +57203,6 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.pyroblast.name",
     "entities.abilities.retribution_aura.description",
     "entities.abilities.retribution_aura.name",
-    "entities.items.glimmerfin_koi.name",
-    "entities.items.raw_bog_eel.name",
-    "entities.items.raw_frostgill_trout.name",
-    "entities.items.raw_marsh_pike.name",
-    "entities.items.raw_river_perch.name",
-    "entities.items.raw_stonescale_carp.name",
-    "entities.items.soggy_boot.name",
     "entities.mobs.grix_the_tunnelking.name",
     "game.hud.lowEnergy",
     "game.hud.lowMana",
@@ -57327,13 +57257,6 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.pyroblast.name",
     "entities.abilities.retribution_aura.description",
     "entities.abilities.retribution_aura.name",
-    "entities.items.glimmerfin_koi.name",
-    "entities.items.raw_bog_eel.name",
-    "entities.items.raw_frostgill_trout.name",
-    "entities.items.raw_marsh_pike.name",
-    "entities.items.raw_river_perch.name",
-    "entities.items.raw_stonescale_carp.name",
-    "entities.items.soggy_boot.name",
     "entities.mobs.grix_the_tunnelking.name",
     "game.hud.lowEnergy",
     "game.hud.lowMana",
@@ -57388,13 +57311,6 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.pyroblast.name",
     "entities.abilities.retribution_aura.description",
     "entities.abilities.retribution_aura.name",
-    "entities.items.glimmerfin_koi.name",
-    "entities.items.raw_bog_eel.name",
-    "entities.items.raw_frostgill_trout.name",
-    "entities.items.raw_marsh_pike.name",
-    "entities.items.raw_river_perch.name",
-    "entities.items.raw_stonescale_carp.name",
-    "entities.items.soggy_boot.name",
     "entities.mobs.grix_the_tunnelking.name",
     "game.hud.lowEnergy",
     "game.hud.lowMana",

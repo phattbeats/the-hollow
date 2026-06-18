@@ -96,6 +96,13 @@ describe('mob bleed (on-hit physical DoT)', () => {
     player.maxHp = 5000;
     player.hp = 5000;
     const mob = spawnStalker(sim);
+    // Applying the bleed runs applyAura -> recalcPlayerStats, which resets the
+    // test's inflated maxHp back to the real (low) level-1 value. A normal stalker
+    // swing would then kill the player before the third swipe, and death clears
+    // the aura — masking the refresh-vs-stack behaviour under test. Neutralise the
+    // swing's damage (a 0-damage landed hit still rolls the hit table and opens the
+    // bleed) so the three swipes isolate the refresh.
+    mob.weapon = { ...mob.weapon, min: 0, max: 0, speed: 0 };
     const orig = MOBS.ridge_stalker.bleed!.chance;
     MOBS.ridge_stalker.bleed!.chance = 1;
     try {
