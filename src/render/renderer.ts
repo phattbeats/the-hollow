@@ -28,6 +28,7 @@ import { buildFoliage, FoliageView } from './foliage';
 import { buildFish, FishView } from './fish';
 import { buildCritters, CritterField } from './critters';
 import { buildMotes, MotesView } from './motes';
+import { buildBirds, BirdsView } from './birds';
 import { shouldRenderStealthGhost } from './stealth';
 import { t } from '../ui/i18n';
 import { tEntity } from '../ui/entity_i18n';
@@ -241,6 +242,7 @@ export class Renderer {
   private fish: FishView;
   private critters: CritterField;
   private motes: MotesView;
+  private birds: BirdsView;
   private fogScratch = new THREE.Color();
   private flames: THREE.Mesh[];
   private fireLights: THREE.PointLight[];
@@ -447,6 +449,8 @@ export class Renderer {
     this.scene.add(this.critters.group);
     this.motes = buildMotes(this.sim.cfg.seed);
     this.scene.add(this.motes.group);
+    this.birds = buildBirds(this.sim.cfg.seed);
+    this.scene.add(this.birds.group);
     const props = buildProps(this.sim.cfg.seed);
     this.scene.add(props.group);
     this.flames = props.flames;
@@ -1308,6 +1312,7 @@ export class Renderer {
     this.fish.update(p.pos.x, p.pos.z, dt);
     this.critters.update(p.pos.x, p.pos.z, dt);
     this.motes.update(p.pos.x, p.pos.z, dt);
+    this.birds.update(p.pos.x, p.pos.z, dt);
 
     this.vfx.update(dt);
 
