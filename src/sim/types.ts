@@ -47,7 +47,7 @@ export type AuraKind =
   | 'dot' | 'slow' | 'stun' | 'root' | 'incapacitate' | 'polymorph'
   | 'attackspeed' | 'debuff_ap' | 'buff_ap' | 'buff_armor' | 'buff_int' | 'buff_dodge' | 'buff_speed' | 'buff_haste'
   | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_allstats' | 'thorns' | 'form_bear'
-  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence';
+  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence' | 'disarm';
 
 export interface Aura {
   id: string; // ability id that applied it
@@ -275,6 +275,13 @@ export interface MobTemplate {
   petSpell?: { name: string; school: 'physical' | 'fire' | 'frost' | 'arcane' | 'shadow' | 'holy' | 'nature'; min: number; max: number; range: number; every: number };
   // On-hit mechanic: chance to silence the victim, locking out spell (non-physical) casts for a duration.
   silence?: { chance: number; duration: number; name: string; school?: string };
+  // On-hit mechanic ("Disarm"): a landed melee swing has `chance` to knock the
+  // victim's weapon from their grip — a `disarm` aura that suppresses their
+  // auto-attack (melee and ranged) for `duration` seconds. The inverse of silence:
+  // silence locks out spells, disarm locks out weapon swings; movement and
+  // instant abilities are untouched. Players only (only they auto-attack at the
+  // primary-target swing path). Refreshes by id; never stacks.
+  disarm?: { chance: number; duration: number; name: string; school?: Aura['school'] };
   // On-hit chill: a landed melee swing has `chance` to slow the victim's
   // movement to `mult` of normal for `duration` seconds (frost school). Reuses
   // the standard `slow` aura, so it rides the same movement path as Frostbolt.

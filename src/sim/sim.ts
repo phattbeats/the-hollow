@@ -1333,6 +1333,11 @@ export class Sim {
   private isSilenced(e: Entity): boolean {
     return e.auras.some((a) => a.kind === 'silence');
   }
+  // Disarm suppresses weapon swings (auto-attack, melee and ranged) but leaves
+  // movement, spells and instant abilities untouched — the inverse of silence.
+  private isDisarmed(e: Entity): boolean {
+    return e.auras.some((a) => a.kind === 'disarm');
+  }
   private mobCanSwim(template: { family?: string; canSwim?: boolean } | undefined): boolean {
     return !!template;
   }
@@ -3133,6 +3138,7 @@ export class Sim {
     if (!t || t.dead || !this.isHostileTo(p, t)) { p.autoAttack = false; return; }
     if (p.swingTimer > 0) return;
     if (this.isStunned(p)) return;
+    if (this.isDisarmed(p)) return; // weapon knocked away: no auto-attack swings
     const d = dist2d(p.pos, t.pos);
     const facingDiff = Math.abs(normAngle(angleTo(p.pos, t.pos) - p.facing));
     if (facingDiff > MELEE_ARC) return;
@@ -4173,6 +4179,18 @@ export class Sim {
         id: `silence_${mob.templateId}`, name: silence.name, kind: 'silence',
         remaining: silence.duration, duration: silence.duration, value: 0,
         sourceId: mob.id, school: (silence.school ?? 'shadow') as Aura['school'],
+      });
+    }
+    // disarm: a brutal swing can knock the weapon from a player's grip, suppressing
+    // their auto-attack for a duration. Players only (only they run the primary-target
+    // auto-attack path) and hostile only, so a friendly pet (mobSwing's other caller)
+    // never disarms the party. Refreshes by id; never stacks.
+    const disarm = MOBS[mob.templateId]?.disarm;
+    if (disarm && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(disarm.chance)) {
+      this.applyAura(target, {
+        id: `disarm_${mob.templateId}`, name: disarm.name, kind: 'disarm',
+        remaining: disarm.duration, duration: disarm.duration, value: 0,
+        sourceId: mob.id, school: (disarm.school ?? 'physical') as Aura['school'],
       });
     }
     // thorns / lightning shield on the defender

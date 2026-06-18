@@ -106,6 +106,10 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
     id: 'ogre_crusher', name: 'Thornpeak Crusher', minLevel: 16, maxLevel: 17, family: 'ogre', elite: true,
     hpBase: 64, hpPerLevel: 23, dmgBase: 11, dmgPerLevel: 2.6, attackSpeed: 2.6,
     armorPerLevel: 24, moveSpeed: 7, aggroRadius: 12,
+    // Disarming Smash: a war-camp crusher's two-handed blow can batter the weapon
+    // from your grip, cutting off auto-attack for a few seconds — a real threat to
+    // a tank holding the pack. The inverse of the Summoner's Silencing Shriek.
+    disarm: { chance: 0.25, duration: 6, name: 'Disarming Smash', school: 'physical' },
     loot: [
       { copper: 200, chance: 1 },
       { itemId: 'ogre_toe_ring', chance: 0.5 },
