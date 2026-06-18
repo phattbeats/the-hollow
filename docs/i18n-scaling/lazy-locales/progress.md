@@ -31,7 +31,7 @@ Deliverables:
 - [x] `scripts/i18n_scan.mjs` reads the new directory shape. **No edit needed:** the scanner reads the SPARSE SOURCE overlays (`i18n.en` + `i18n.locales/*` + the admin twin + sim/server DICTs), never the resolved table, so the dir split does not touch its inputs and `i18n:scan` produces a byte-identical `i18n.status.json` (verified clean `git diff`). The deliverable is satisfied by construction.
 Acceptance:
 - [x] `npm run i18n:build && npm run i18n:admin && npm run i18n:scan && git diff --exit-code` (regenerates identically; new dirs staged).
-- [x] `npm run i18n:hash -- --check` OK (SHA `d74aeb6..` unchanged - exact: `d74aeb631f37f3d8a4374ff9940e450e062aa4062c821ab3349ae7ada28b2e4d`).
+- [x] `npm run i18n:hash -- --check` OK (SHA `d74aeb6..` unchanged - exact: `d74aeb631f37f3d8a4374ff9940e450e062aa4062c821ab3349ae7ada28b2e4d`). NB: that was the Phase-1 SHA on the release/v0.9 baseline; the 2026-06-18 v0.10.0 merge (5e78a85) re-baselined the resolved table to `9606d9cf..` (now the value committed in `src/ui/i18n.resolved.sha256`).
 - [x] `npx tsc --noEmit` + `npm test` green (1542 passed / 9 skipped / 153 files); `npm run build` bundle-neutral: HEAD single-file main gzip 1,194.58 kB vs this dir-split 1,194.62 kB (+40 bytes). **NB: the doc's "1.13 MB" is stale; the real pre-existing size on this branch is 1.19 MB, unchanged by this phase.** `en_XA` + `loaders.ts` both tree-shaken out (0 pseudo glyphs, 0 `LOCALE_LOADERS` in dist main+admin).
 
 ## Phase 2 - Async loader + bootstrap (Doc Step 2)
@@ -55,7 +55,7 @@ Deliverables:
 - [ ] Fix `tests/i18n_t_behavior.test.ts`: re-point the pending-injection mock to the new seam (mock `LOCALE_LOADERS.es` / the per-locale `es` module or pre-seed `resident.es`, then `await ensureLocaleLoaded("es")`).
 - [ ] New tests: loader-rejection (simulated 404) -> English fallback, no crash; non-en current language renders translated after await; pending/release hard-fail still throws.
 Acceptance:
-- [ ] `dist/assets/`: `main-*.js` gzip ~590 KB (<= 0.62 MB); 13 + dialect content-hashed locale chunks (~42 KB gzip each); `en` not a separate chunk.
+- [ ] `dist/assets/`: `main-*.js` gzip materially smaller than the pre-flip baseline (pre-v0.10 estimate ~590 KB / <= 0.62 MB; re-measure); 13 + dialect content-hashed locale chunks (~42 KB gzip each, pre-v0.10 estimate); `en` not a separate chunk.
 - [ ] Default-English load network trace: ZERO `es-*.js`..`ru_RU-*.js` requests; no non-en locale data baked into `main-*.js`.
 - [ ] `i18n:hash --check` OK; `npm test` green with the canary edits; `tsc --noEmit` green.
 - [ ] `?lang=es` + one CJK locale render fully localized, no flash, no layout shift (first paint + in-session swap).
@@ -88,10 +88,11 @@ Deliverables:
 - [ ] Split `src/ui/i18n.en.ts` into `src/ui/i18n.en/` (`shell.ts`, `hud.ts`, `abilities.ts`, `quests.ts`, `items.ts`, `game.ts`, `_merge.ts`) + barrel `index.ts`; `i18n.en.ts` becomes a thin re-export (public surface unchanged).
 - [ ] Each module keeps its exact content; no value changes (this is a pure module reorg).
 Acceptance:
-- [ ] Resolved table byte-identical -> `i18n:hash --check` OK (SHA unchanged); `git diff --exit-code` on the regenerated dirs.
+- [ ] Resolved table byte-identical -> the resolved-table SHA must not move during the phase: `npm run i18n:hash -- --check` stays green against the baseline committed in `src/ui/i18n.resolved.sha256` at the start of the phase (currently `9606d9cf..` after the 2026-06-18 v0.10.0 merge, NOT the `d74aeb6..` recorded under Phase 1, which was the old release/v0.9 baseline); `git diff --exit-code` on the regenerated dirs. A move within the phase is a real bug (pure module reorg), never a re-baseline.
 - [ ] `npx tsc --noEmit` + `npm test` + `npm run build` green; public import surface from `i18n.en` unchanged.
 
 ## Notes (filled after completion)
+- 2026-06-18: merged release/v0.10.0 (merge 5e78a85); resolved-table baseline re-generated to `9606d9cf..` (was `d74aeb6..`); Phase 1 emit-split intact, Phases 2-6 still pending.
 - Phase 1: DONE 2026-06-17. The single `src/ui/i18n.resolved.generated.ts` (and admin twin) are now generated DIRECTORIES: `en.ts`..`ru_RU.ts` (14 dense `: EnTranslations` / `: AdminTranslations` slices) + `en_XA.ts` + `pending.ts` + `loaders.ts` + `index.ts` barrel. Directory-index import (`'./i18n.resolved.generated'` -> `index.ts`) resolves cleanly under moduleResolution "Bundler" (precedent: `src/render/characters/`); `src/ui/i18n.ts` + `src/admin/i18n.ts` needed ZERO change. SHA invariant because `scripts/i18n_resolved_hash.mjs` bundles `i18n.ts` EXPORTS, not file bytes. Two reality nuances vs the doc (see deliverables above): scanner needed no edit (reads source, not the resolved table); atomic emit uses temp+rename+sweep, not `rmSync` (the `rmSync` window broke concurrent barrel resolution in `npm test`). Tests touched: `tests/i18n_resolved_equivalence.test.ts` + `tests/i18n_admin_catalog.test.ts` repointed their reproducibility git-checks at the directory; the admin bundle-isolation check changed from a crude `startsWith("..")` to resolve-and-check-escape-from-`src/admin/` (the new in-dir `../i18n.en` type import is legitimate; a `../ui/...` game-table import is still caught). Nothing is lazy yet; all 14 locales still pulled through the static barrel. In-phase qa-checklist review run at completion (STEP 3); the dedicated Phase 1 QA session (`phase-01-qa.md`) is still NOT STARTED.
 - Phase 2: _pending_
 - Phase 3: _pending_ (record the 3a-vs-3b probe outcome here)

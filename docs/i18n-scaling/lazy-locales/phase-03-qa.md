@@ -40,9 +40,11 @@ not filtering - "report every issue including low-severity and uncertain ones"):
 
 Correctness agent:
 - Re-run `npm run build`, then the HARD tree-shake probe `gzip -c dist/assets/main-*.js | wc -c`:
-  is main-*.js gzip ~590 KB (<= ~0.62 MB)? A main still near 1.13 MB is a FAIL - the flip did not
-  tree-shake and the phase did not deliver its point.
-- `ls dist/assets/*-*.js`: are there 13 + dialect content-hashed locale chunks (~42 KB gzip each)?
+  did main-*.js gzip drop materially vs the pre-flip baseline (English-only i18n; the non-English
+  locales now in their own chunks)? A main essentially unchanged from the pre-flip size is a FAIL - the
+  flip did not tree-shake and the phase did not deliver its point. (Pre-v0.10 estimate, re-measure
+  against the actual pre-flip build: target ~590 KB / <= ~0.62 MB vs a ~1.13 MB unsplit main.)
+- `ls dist/assets/*-*.js`: are there 13 + dialect content-hashed locale chunks (pre-v0.10 estimate ~42 KB gzip each)?
   Is `en` NOT a separate chunk (English ships in main, eager)?
 - Run a default-English load network trace (a throttled-mobile scripts/*.mjs browser E2E): confirm
   ZERO `es-*.js`..`ru_RU-*.js` requests and that no non-en locale data is baked into main-*.js.
@@ -92,7 +94,7 @@ in commits SEPARATE from the QA verdict (EXPLICIT paths, no em dashes/emojis).
 STEP 4 - UPDATE DOCS + MEMORY:
 - progress.md: mark Phase 3 QA complete; confirm the recorded 3a-vs-3b probe outcome + the main-chunk
   gzip number; note any item deferred to a follow-up.
-- state.md: record any drift discovered (e.g. the real post-flip gzip vs the ~590 KB target).
+- state.md: record any drift discovered (e.g. the real post-flip gzip vs the target; the ~590 KB is a pre-v0.10 estimate to re-measure).
 - Memory: record anything surprising about the tree-shake behavior or the vitest dynamic-import shape.
 
 STEP 5 - PACKET TEARDOWN: skip (not the final phase).
@@ -103,8 +105,9 @@ counts of BLOCKING/SHOULD-FIX/NICE-TO-HAVE found and fixed, deferred items, and 
 for Phase 4 (modulepreload + first-paint perf).
 
 STOPPING RULES:
-- STOP and surface to the user if the tree-shake probe shows main-*.js still near 1.13 MB (the flip
-  did not deliver the byte win - the central deliverable failed).
+- STOP and surface to the user if the tree-shake probe shows main-*.js essentially unchanged from the
+  pre-flip baseline (the flip did not deliver the byte win - the central deliverable failed). (The
+  "~1.13 MB" figure is a pre-v0.10 estimate; compare against the actual pre-flip main-chunk size.)
 - STOP and surface if a default-English load still requests any non-en locale chunk (the
   zero-non-en-bytes guarantee is broken).
 - STOP and surface if the resolved-table SHA moved and cannot be restored without changing emitted

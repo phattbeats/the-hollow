@@ -63,7 +63,9 @@ Correctness agent:
   language is already resident.
 - SHA: `npm run i18n:hash -- --check`. If the 3-key fill was done, the SHA moved by EXACTLY those 3 keys
   (verify the new sha256 reflects only the added keys, nothing else). If the fill was deferred, the SHA
-  must be exactly the Phase 1 baseline d74aeb6.. - any other move is a real bug.
+  must be exactly the baseline committed in `src/ui/i18n.resolved.sha256` at the start of the phase
+  (currently 9606d9cf.. after the 2026-06-18 v0.10.0 merge; the old d74aeb6.. was the release/v0.9
+  baseline) - any other move is a real bug.
 - Manual: load `?lang=es` - NO flash of English, NO console error (the await sits behind the loading
   screen). Confirm the picker path awaits before setLanguage.
 - `npm run build` green; note the gzip (a slight tick-up is expected and must NOT be sold as a win).

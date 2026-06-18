@@ -20,8 +20,9 @@ unchanged. Nothing becomes lazy in this phase.
 STEP 0 - PRE-FLIGHT:
 - Verify `git status` is clean. If not, ask the user (a concurrent session may share this checkout).
 - Ensure you are on branch `feature/i18n-lazy-locales`. If it does not exist, create it off
-  the current `release/v0.9`: `git switch -c feature/i18n-lazy-locales`. If switching branches
-  would disrupt a concurrent session, ask first.
+  the active release line `release/v0.10.0`: `git switch -c feature/i18n-lazy-locales` (the
+  branch was originally cut off `release/v0.9`, now merged with `release/v0.10.0`, merge 5e78a85).
+  If switching branches would disrupt a concurrent session, ask first.
 - Memory scan: check your MEMORY.md index + the entries `i18n-resolved-baseline-and-assembly`,
   `i18n-phase3-lazy-locales-plan`, and `shared-worktree-commit-care`.
 
@@ -73,8 +74,10 @@ Scanner (scripts/i18n_scan.mjs): update it to read the new directory shape (impo
 or the per-locale modules) so `npm run i18n:scan` still produces an identical i18n.status.json.
 
 INVARIANTS THIS PHASE MUST KEEP:
-- The resolved-table SHA must NOT move: `npm run i18n:hash -- --check` stays green (baseline
-  d74aeb6..). A moved SHA here is a real bug, never a re-baseline.
+- The resolved-table SHA must NOT move DURING the phase: `npm run i18n:hash -- --check` stays
+  green against the baseline committed in `src/ui/i18n.resolved.sha256` at the start of the phase
+  (currently 9606d9cf.. after the 2026-06-18 v0.10.0 merge; the old d74aeb6.. was the release/v0.9
+  baseline). A moved SHA here is a real bug, never a re-baseline.
 - Determinism: the emit is a pure function of source; same input -> byte-identical output.
 - `t()` stays synchronous; the runtime still STATIC-imports everything via the barrel this phase.
 - No generated-file hand-edits: regenerate via the build; commit the regenerated directories.
@@ -91,7 +94,8 @@ STEP 3 - VALIDATION + REVIEW:
 - Run: `npm run i18n:build && npm run i18n:admin && npm run i18n:scan && git diff --exit-code`
   (must regenerate identically - commit the new dirs first so the diff is clean), then
   `npm run i18n:hash -- --check` (SHA unchanged), `npx tsc --noEmit`, `npm test`, and
-  `npm run build` (confirm main-chunk gzip is within noise of 1.13 MB - no bundle change).
+  `npm run build` (confirm main-chunk gzip is within noise of the pre-phase build - no bundle
+  change; the pre-v0.10 estimate was ~1.13 MB).
 - Review agents: this diff touches only build scripts + generated dirs + the i18n runtime import
   surface. Per the dispatch matrix, spawn `qa-checklist` at completion. Do NOT spawn
   privacy-security (no CI/secret/server change this phase), migration-safety, or cross-platform-sync.
@@ -114,8 +118,10 @@ STEP 5 - ACCEPTANCE CRITERIA (do not mark complete until all check):
 - [ ] loaders.ts exports LOCALE_LOADERS (per non-en, non-en_XA) + SUPPORTED_LANGUAGES.
 - [ ] I18N_OUT_DIR overrides the output dir; emit is atomic.
 - [ ] Admin mirror present (src/admin/i18n.resolved.generated/); scanner reads the new shape.
-- [ ] `git diff --exit-code` clean after regen; `i18n:hash --check` OK (SHA d74aeb6.. unchanged).
-- [ ] `npx tsc --noEmit` + `npm test` green; `npm run build` gzip within noise of 1.13 MB.
+- [ ] `git diff --exit-code` clean after regen; `i18n:hash --check` OK (SHA unchanged vs the
+      baseline in `src/ui/i18n.resolved.sha256`, currently 9606d9cf..; old v0.9 baseline d74aeb6..).
+- [ ] `npx tsc --noEmit` + `npm test` green; `npm run build` gzip within noise of the pre-phase
+      build (pre-v0.10 estimate ~1.13 MB).
 
 STEP 6 - DOC UPDATES + MEMORY:
 - Update docs/i18n-scaling/lazy-locales/progress.md (Phase 1 status + ticks; note any deferral).

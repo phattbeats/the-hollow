@@ -66,7 +66,9 @@ hit a line count, and do NOT change any string value - this is a pure move).
   the original top-level order.
 
 INVARIANTS THIS PHASE MUST KEEP:
-- The resolved-table SHA must NOT move: `npm run i18n:hash -- --check` stays green (baseline d74aeb6..).
+- The resolved-table SHA must NOT move DURING the phase: `npm run i18n:hash -- --check` stays green
+  against the baseline committed in `src/ui/i18n.resolved.sha256` at the start of the phase (currently
+  9606d9cf.. after the 2026-06-18 v0.10.0 merge; the old d74aeb6.. was the release/v0.9 baseline).
   A moved SHA here means a content block was DROPPED or REORDERED in the split - it is a real bug, NEVER
   a re-baseline. Fix the split, do not move the baseline.
 - NO value changes: this is a pure module reorg. No new keys, no edited strings, no renamed keys.
@@ -88,7 +90,8 @@ Out of scope (do NOT do in this phase):
 STEP 3 - VALIDATION + REVIEW:
 - Run: `npm run i18n:build && npm run i18n:admin && npm run i18n:scan && git diff --exit-code`
   (regen MUST be byte-identical - the source `en` object is unchanged in value + order).
-- `npm run i18n:hash -- --check` (SHA d74aeb6.. unchanged - a moved SHA means a dropped/reordered block).
+- `npm run i18n:hash -- --check` (stays green against the baseline in `src/ui/i18n.resolved.sha256` at
+  phase start, currently 9606d9cf..; a moved SHA means a dropped/reordered block, never a re-baseline).
 - `npx tsc --noEmit` (the `: EnTranslations` annotations + every importer still typecheck).
 - `npm test` (the registry/equivalence/behavior suites still pass against the identical resolved output).
 - `npm run build` (the client still builds; the public import surface from i18n.en is intact).
@@ -113,7 +116,8 @@ STEP 5 - ACCEPTANCE CRITERIA (do not mark complete until all check):
 - [ ] scripts/i18n_build.mjs and src/ui/i18n.ts import the SAME names from i18n.en as before.
 - [ ] NO string value changed; NO key added/renamed/dropped; key order preserved.
 - [ ] `npm run i18n:build && npm run i18n:admin && npm run i18n:scan && git diff --exit-code` clean.
-- [ ] `npm run i18n:hash -- --check` OK (SHA d74aeb6.. unchanged).
+- [ ] `npm run i18n:hash -- --check` OK (SHA unchanged vs the baseline in `src/ui/i18n.resolved.sha256`
+      at phase start, currently 9606d9cf..).
 - [ ] `npx tsc --noEmit` + `npm test` + `npm run build` green.
 
 STEP 6 - DOC UPDATES + MEMORY:

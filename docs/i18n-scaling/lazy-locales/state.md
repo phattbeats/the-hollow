@@ -3,12 +3,12 @@
 The single source of truth a fresh session reads before any phase. Record once, reference forever.
 
 ## Current status
-- **Active phase:** Phase 2 (Phase 1 COMPLETE 2026-06-17; the resolved table is now a generated DIRECTORY + barrel, SHA invariant, bundle-neutral)
-- **Branch:** all code work on `feature/i18n-lazy-locales` (cut off `release/v0.9`), PR'd back into `release/v0.9`. Planning docs were committed on `release/v0.9` directly.
+- **Active phase:** Phase 2 (Phase 1 COMPLETE 2026-06-17; the resolved table is now a generated DIRECTORY + barrel, SHA invariant, bundle-neutral). On 2026-06-18 the branch merged `release/v0.10.0` (merge 5e78a85) and baselines were re-measured against v0.10.
+- **Branch:** all code work on `feature/i18n-lazy-locales` (originally cut off `release/v0.9`, now merged with `release/v0.10.0` (merge 5e78a85)), PR'd back into `release/v0.10.0`. Planning docs were committed on `release/v0.9` directly (history).
 - **Canonical design:** `docs/i18n-scaling/phase-3-lazy-locales-and-contributor-workflow.md` (818 lines, audited 2026-06-17). This packet decomposes that doc's code Steps 1-4 into Phases 1-5; Phase 6 is the doc's open Q6 (the `i18n.en.ts` directory split), which the maintainer chose to include.
 
 ## What this feature is
-Ship English eagerly and lazy-load every non-English locale as its own content-hashed chunk. A default-English visitor downloads zero non-English locale bytes (~540 KB gzip dropped, main chunk 1.13 MB -> ~590 KB gzip). `t()` stays synchronous forever.
+Ship English eagerly and lazy-load every non-English locale as its own content-hashed chunk. A default-English visitor downloads zero non-English locale bytes (English-only main chunk; non-English locales lazy). The ~540 KB gzip dropped / 1.13 MB -> ~590 KB gzip figures are pre-v0.10 estimates and need re-measure (the v0.10 merge added many keys). `t()` stays synchronous forever.
 
 ## Scope boundary (READ THIS - it changes which reviewers run)
 This feature touches ONLY: `src/ui/i18n.ts` (runtime), `scripts/i18n_build.mjs` + `scripts/i18n_admin_build.mjs` + `scripts/i18n_scan.mjs` + `scripts/i18n_resolved_hash.mjs` (build), `src/main.ts` (bootstrap + picker), `src/admin/i18n.ts` + `src/admin/main.ts` (mirror), `index.html` (modulepreload), `.github/workflows/ci.yml` + `.gitignore` + `.gitattributes` + `package.json` (CI/hygiene), `tests/`, and (Phase 6) `src/ui/i18n.en.ts` -> `src/ui/i18n.en/`.
@@ -26,10 +26,10 @@ It does **NOT** touch `src/sim/`, `server/`, `src/net/`, `src/world_api.ts` (IWo
 4. **Admin gets the file split for parity but NOT lazy-loading.** `src/admin/i18n.ts` keeps its static import (admin is ~38 KB gzip; operators are not the mobile target). The async surface is mirrored structurally; the static->lazy flip is deferred for admin.
 5. **`en_XA` pseudo-locale:** re-exported by the barrel, absent from `LOCALE_LOADERS` / `translations` / `SUPPORTED_LANGUAGES`. Dev-only behind `!import.meta.env.PROD`, prod-tree-shaken. Do NOT route it through `LOCALE_LOADERS`.
 6. **Dialects (`es_ES`, `fr_CA`, `en_CA`) stay build-time dense / standalone.** Each emitted `<dialect>.ts` is fully resolved (does NOT `import` its base and spread). No import-time composition (breaks determinism / double-downloads the base).
-7. **Lazy flip = Option 3a, gated on a hard tree-shake probe.** Keep `i18n.ts` re-exporting the dense locale consts; verify Rollup drops them from the app chunk by measuring `dist/assets/main-*.js` gzip (~590 KB target). Fall to **Option 3b** (repoint const-importing tests + the hash harness at the generated `index.ts` directly) only if the probe fails. 3b is its own commit for bisect isolation.
+7. **Lazy flip = Option 3a, gated on a hard tree-shake probe.** Keep `i18n.ts` re-exporting the dense locale consts; verify Rollup drops them from the app chunk by measuring `dist/assets/main-*.js` gzip (drops materially vs the pre-flip baseline; ~590 KB is a pre-v0.10 target estimate to re-measure). Fall to **Option 3b** (repoint const-importing tests + the hash harness at the generated `index.ts` directly) only if the probe fails. 3b is its own commit for bisect isolation.
 8. **Ship BOTH** runtime prefetch AND an explicit `<link rel="modulepreload">` for the stored locale (Phase 4). The `<link>` is the only fix for the runtime-selected-locale request waterfall (Vite does not auto-hint dynamic, runtime-keyed imports).
-9. **Gitignore `src/ui/i18n.status.json`** (4.46 MB, build/test-only). Replace its freshness `git diff` gate with the `assertDeterministic` double-generation check. The committed resolved directories keep `git diff` freshness AND gain the determinism check.
-10. **Resolved-table SHA must NOT move.** The hash is invariant under the emit split (it hashes `i18n.ts` exports, not file bytes). Re-baselining to make a red gate green is forbidden. Current `release/v0.9` baseline: `d74aeb631f37f3d8a4374ff9940e450e062aa4062c821ab3349ae7ada28b2e4d` (`src/ui/i18n.resolved.sha256`).
+9. **Gitignore `src/ui/i18n.status.json`** (~4.74 MB / 4,743,971 bytes, build/test-only). Replace its freshness `git diff` gate with the `assertDeterministic` double-generation check. The committed resolved directories keep `git diff` freshness AND gain the determinism check.
+10. **Resolved-table SHA must NOT move during a phase.** The hash is invariant under the emit split (it hashes `i18n.ts` exports, not file bytes). Re-baselining to make a red gate green is forbidden; a move WITHIN a phase is a real bug. `npm run i18n:hash -- --check` stays green against the baseline committed in `src/ui/i18n.resolved.sha256` at the start of the phase (currently `9606d9cf8bfc17b59b6079a9cdc9a19ad114b336471ad6c5b79a6692e990fc7a` / `9606d9cf..` after the 2026-06-18 v0.10.0 merge; the old `d74aeb6..` was the release/v0.9 baseline). The one legitimate exception is Phase 2's 3-key fill, which moves the SHA when it lands.
 11. **`i18n.en.ts` directory split = Phase 6** (the doc's Q6, decided IN). Public surface unchanged; resolved table byte-identical; SHA unchanged.
 
 ## Non-negotiable constraints
@@ -43,9 +43,9 @@ It does **NOT** touch `src/sim/`, `server/`, `src/net/`, `src/world_api.ts` (IWo
 ## Validation matrix by change type
 | Change type | Commands |
 |---|---|
-| **build-script / emit** (Phase 1, 6) | `npm run i18n:build && npm run i18n:admin && npm run i18n:scan && git diff --exit-code` (byte-identical regen) + `npm run i18n:hash -- --check` (SHA unchanged) + `npx tsc --noEmit` + `npm test` + `npm run build` (gzip within noise of 1.13 MB until Phase 3) |
+| **build-script / emit** (Phase 1, 6) | `npm run i18n:build && npm run i18n:admin && npm run i18n:scan && git diff --exit-code` (byte-identical regen) + `npm run i18n:hash -- --check` (SHA unchanged) + `npx tsc --noEmit` + `npm test` + `npm run build` (gzip within noise of the pre-phase main-chunk gzip until Phase 3; the 1.13 MB figure is a pre-v0.10 estimate needing re-measure) |
 | **runtime i18n.ts** (Phase 2, 3) | `npx tsc --noEmit` + `npx vitest run tests/i18n_t_behavior.test.ts tests/homepage_foundation.test.ts tests/localization_fixes.test.ts tests/i18n_resolved_equivalence.test.ts` + `npm run i18n:hash -- --check` |
-| **lazy-flip probe** (Phase 3) | the runtime row PLUS `npm run build` then `gzip -c dist/assets/main-*.js | wc -c` (target <= ~0.62 MB) and `ls dist/assets/*-*.js` (13 + dialect locale chunks present; `en` not a separate chunk) and a default-load network trace (zero `es-*.js`..`ru_RU-*.js` requests) |
+| **lazy-flip probe** (Phase 3) | the runtime row PLUS `npm run build` then `gzip -c dist/assets/main-*.js | wc -c` (target <= ~0.62 MB, a pre-v0.10 estimate needing re-measure; reframe relatively as a drop from the pre-phase main-chunk gzip) and `ls dist/assets/*-*.js` (13 + dialect locale chunks present; `en` not a separate chunk) and a default-load network trace (zero `es-*.js`..`ru_RU-*.js` requests) |
 | **index.html / modulepreload** (Phase 4) | `npm run build` + no-double-fetch network check + correct hashed filename from `dist/.vite/manifest.json` + a mobile screenshot script + the throttled TTI probe (Slow-4G + 4x CPU, median of N, delta vs the `main` baseline) |
 | **CI / git hygiene** (Phase 5) | fresh-clone `npm ci && npm test` with `src/ui/i18n.status.json` ABSENT pre-build (proves `pretest` regenerates it) + `I18N_RELEASE_TIER=1 npm test` (green on a translated tree, red on a synthetic `pending` row) + `git status` clean after build with no megabyte files tracked |
 | **pre-merge full** (mirrors CI) | `npm test && npx tsc --noEmit && npm run build:env && npm run build:server && npm run build` |
@@ -58,7 +58,7 @@ It does **NOT** touch `src/sim/`, `server/`, `src/net/`, `src/world_api.ts` (IWo
 - `scripts/i18n_admin_build.mjs` (171 lines) - admin emit twin; `OUT_PATH` 30, emit 80-107.
 - `scripts/i18n_scan.mjs` - registry scanner -> `src/ui/i18n.status.json`.
 - `scripts/i18n_resolved_hash.mjs` (90 lines) - SHA gate; hashes `i18n.ts` exports (lines 38-64), `--write`/`--check` CLI.
-- `src/main.ts` (3522 lines) - `startGame` async at 525, first `t()` at 529; picker handler 3398-3412 (no `switchLanguage`, only `setLanguage`).
+- `src/main.ts` (3,553 lines) - `startGame` async ~529 (re-find), picker `setLanguage(selected)` ~3432 (re-find; no `switchLanguage`, only `setLanguage`).
 - `index.html` - head hreflang 26-40, `<html lang="en">`; no modulepreload, no inline boot script.
 - `.github/workflows/ci.yml` - `pr-gate` 35-66, `release-gate` 68-103; no i18n step.
 - `package.json` - `i18n:*` scripts lines 14-18; `pretest` line 12; `build` line 10.
@@ -86,14 +86,14 @@ It does **NOT** touch `src/sim/`, `server/`, `src/net/`, `src/world_api.ts` (IWo
 - **Determinism** (same input -> byte-identical output): `assertDeterministic({ script, outFiles, env? })` double-generates into temp dirs via `I18N_OUT_DIR`, perturbing `TZ`/`LC_ALL`/temp path between runs (Phase 5 installs the helper).
 - **Freshness** (committed artifact == current output): `git diff --exit-code` against the committed `i18n.resolved.generated/` dirs. Swapped for determinism ONLY for the gitignored `status.json`.
 - **Completeness** (every key exists in `en`): `tsc` over each locale's `: EnTranslations` annotation, per file.
-- **SHA invariance:** `npm run i18n:hash -- --check` at every step (acceptance gate 1). Baseline `d74aeb6..` must not move.
+- **SHA invariance:** `npm run i18n:hash -- --check` at every step (acceptance gate 1). The SHA must not move during the phase: it stays green against the baseline committed in `src/ui/i18n.resolved.sha256` at the start of the phase (currently `9606d9cf..`; the old `d74aeb6..` was the release/v0.9 baseline). Phase 2's 3-key fill is the one phase that legitimately moves it.
 
 ## OPEN items / gotchas
 - **Release-tier fill of the 3 Phase 2 keys** (above) - maintainer action; gates the release-tier merge, not the PR.
 - **Test-env dynamic import shape:** under vitest (node, no DOM) `import('./es')` resolves the SOURCE `.ts` with named exports, so `mod.default` is `undefined`. The loader read must be shape-tolerant: `resident[lang] = mod.default ?? mod[lang]`.
 - **`import.meta.env.PROD` is not statically replaced under raw vitest** - reuse the existing `isReleaseBuild()` try-catch pattern, not a bare `import.meta.env.PROD`.
 - **Torn directory write (RESOLVED in Phase 1, drift from the doc):** the emit computes every module in memory, then writes each via a temp file + `renameSync` + an orphan-sweep - NOT `rmSync(dir)` + recreate as the doc prescribed. `rmSync(dir)` makes every per-locale slice momentarily ABSENT, and a concurrent Vitest worker resolving `./en_XA` through the barrel (the two reproducibility tests regenerate the dir while other workers import it) then fails with "Cannot find module". Temp+rename keeps every module path continuously present and atomically replaced, still leaves no orphan, and is strictly crash-safer. Any future per-locale emit (Phase 6) must keep this pattern, not `rmSync`.
-- **Real bundle size on this branch is ~1.19 MB gzip, not the 1.13 MB printed in these docs** (the 1.13 figure predates merges into the `release/v0.9` lineage this branch was cut from). Phase 1 is bundle-neutral: HEAD single-file main gzip 1,194.58 kB vs the dir-split 1,194.62 kB. Phase 3's ~590 KB target is a *relative* drop from this ~1.19 MB, not from 1.13 MB.
+- **Bundle gzip figures are pre-v0.10 estimates needing re-measure** (the v0.10.0 merge added many keys, so the prior ~1.19 MB / 1.13 MB / ~590 KB numbers are stale and require a fresh production build to confirm). Phase 1 was bundle-neutral when measured: HEAD single-file main gzip 1,194.58 kB vs the dir-split 1,194.62 kB (pre-v0.10 estimate). Phase 3's ~590 KB target is a *relative* drop from the pre-phase main-chunk gzip, not an absolute byte count.
 - **Modulepreload manifest resolution (Phase 4):** read the hashed locale-chunk filename from Vite's post-build `manifest.json`; match `crossorigin` to the module request to avoid a double-fetch. Do NOT speculatively preload other locales.
 - **Stale-chunk window on deploy (R11):** a returning user mid-deploy may 404 an old chunk hash; the immutable `/assets/*` cache + `no-cache` index.html + the loader's English-fallback covers it. No `server/static_cache.ts` change needed.
 - **No `manualChunks` change in `vite.config.ts`** - Rollup auto-splits on the `loaders.ts` `import()` thunks.

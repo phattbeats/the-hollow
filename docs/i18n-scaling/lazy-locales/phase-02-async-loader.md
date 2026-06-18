@@ -24,7 +24,7 @@ NOT flip any import to lazy - that is Phase 3.
 STEP 0 - PRE-FLIGHT:
 - Verify `git status` is clean. If not, ask the user (a concurrent session may share this checkout).
 - Ensure you are on branch `feature/i18n-lazy-locales` (Phase 1 landed there). If it does not
-  exist, create it off the current `release/v0.9`: `git switch -c feature/i18n-lazy-locales`.
+  exist, create it off the current `release/v0.10.0`: `git switch -c feature/i18n-lazy-locales`.
   If switching branches would disrupt a concurrent session, ask first.
 - Memory scan: check your MEMORY.md index + the entries `i18n-resolved-baseline-and-assembly`,
   `i18n-phase3-lazy-locales-plan`, and `shared-worktree-commit-care`.
@@ -38,8 +38,9 @@ Spawn ONE Explore agent to read and summarize:
   `currentLanguage`/`getLanguage` state, the static import surface from the barrel, the en_XA dev
   branch + its `!import.meta.env.PROD` (or `isReleaseBuild()`) guard, and how `supportedLanguages`
   is currently derived.
-- src/main.ts - ONLY `startGame` (~520-550, async at 525, first t() at 529) and the picker change
-  handler (~3394-3412; there is NO `switchLanguage`, only `setLanguage`). Return the exact insertion
+- src/main.ts (~3,553 lines) - ONLY `startGame` (async ~529; re-find the first t()) and the picker
+  change handler (setLanguage(selected) ~3432; there is NO `switchLanguage`, only `setLanguage`;
+  re-find by symbol, anchors drift). Return the exact insertion
   points: where the loading screen is painted, where mountGameUi() is called, where the picker
   validates `selected` and where it calls `setLanguage`. Also locate the homepage-shell language path.
 - src/admin/i18n.ts + src/admin/main.ts - the `localizeStatic()` call site (where admin paints its
@@ -83,11 +84,12 @@ src/ui/i18n.ts (the async surface - this is the heart of the phase):
   from the generated `SUPPORTED_LANGUAGES` (barrel/loaders export).
 
 src/main.ts (bootstrap + picker wiring):
-- startGame (~525, async): insert `await ensureLocaleLoaded(getLanguage())` between the loading-screen
-  paint and `mountGameUi()`, i.e. BEFORE the first t() at ~529, so the await sits BEHIND the loading
+- startGame (async ~529): insert `await ensureLocaleLoaded(getLanguage())` between the loading-screen
+  paint and `mountGameUi()`, i.e. BEFORE the first t() (re-find it), so the await sits BEHIND the loading
   screen (no first-paint flash).
-- Picker change handler (~3398-3412): insert `await ensureLocaleLoaded(selected)` between the
-  validation (~3400) and `setLanguage` (~3401). There is NO `switchLanguage` - only `setLanguage`.
+- Picker change handler (setLanguage(selected) ~3432; re-find by symbol): insert
+  `await ensureLocaleLoaded(selected)` between the validation and `setLanguage`. There is NO
+  `switchLanguage` - only `setLanguage`.
 - Wire the homepage-shell language path the same way (await the load before it renders localized text).
 
 src/admin/i18n.ts + src/admin/main.ts (mirror - async SURFACE only, admin does NOT go lazy):
@@ -95,7 +97,8 @@ src/admin/i18n.ts + src/admin/main.ts (mirror - async SURFACE only, admin does N
 - In src/admin/main.ts, `await ensureAdminLocaleLoaded(<lang>)` BEFORE `localizeStatic()`.
 - Admin keeps its static import; this is the async seam for parity, not a flip.
 
-The 3 new player-visible keys (add to `en` FIRST, render via t()):
+The 3 new player-visible keys (add to `en` FIRST, render via t()) - none of these exist yet
+(registry pending=0 today); this phase is the change that lands them:
 - `settings.languageLoadFailed` (load errored - shown by the picker on a caught rethrow).
 - `settings.languageLoadUnavailable` (locale not available / not in SUPPORTED_LANGUAGES).
 - `settings.languageLoading` (transient state while a locale chunk is in flight).
@@ -114,9 +117,12 @@ filling now keeps the release-tier merge green without a maintainer follow-up.
 INVARIANTS THIS PHASE MUST KEEP:
 - `t()` stays SYNCHRONOUS. `ensureLocaleLoaded` is the ONLY async surface; never add `await` inside t()
   or setLanguage. (Locked decision 1 in state.md.)
-- The resolved-table SHA must NOT move: `npm run i18n:hash -- --check` stays green (baseline d74aeb6..,
-  re-baselined ONLY by the `--write` after the 3-key fill - and even then the hash gate is about the
-  resolved content, so confirm the new SHA reflects exactly the 3 added keys and nothing else).
+- The resolved-table SHA must NOT move except for this phase's 3-key fill: `npm run i18n:hash -- --check`
+  stays green against the baseline committed in `src/ui/i18n.resolved.sha256` at the start of the phase
+  (currently 9606d9cf.. after the 2026-06-18 v0.10.0 merge; the old d74aeb6.. was the release/v0.9
+  baseline). The SHA is re-baselined ONLY by the `--write` after the 3-key fill - and even then the hash
+  gate is about the resolved content, so confirm the new SHA reflects exactly the 3 added keys and nothing
+  else.
 - The 3 new keys go to `en` FIRST and render via t(); never a literal, never English in a non-en overlay.
 - Behavior is byte-for-byte unchanged because everything is still static-imported through the barrel.
 - No generated-file hand-edits: edit the source overlays, then regenerate; commit the regenerated dirs.
@@ -209,6 +215,7 @@ STOPPING RULES:
   await inside t()) - that breaks locked decision 1; surface it.
 - STOP if the bootstrap await introduces a first-paint flash that cannot be hidden behind the loading
   screen.
-- STOP if the resolved-table SHA moves for any reason OTHER than the intended 3-key fill (a move that
-  is not exactly those 3 keys is a real bug; do NOT re-baseline to make it green - surface it).
+- STOP if the resolved-table SHA moves from the phase-start baseline (currently 9606d9cf..) for any
+  reason OTHER than the intended 3-key fill (a move that is not exactly those 3 keys is a real bug; do
+  NOT re-baseline to make it green - surface it).
 ```

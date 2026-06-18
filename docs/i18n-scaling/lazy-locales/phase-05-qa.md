@@ -49,7 +49,9 @@ Correctness agent:
   `linguist-generated`.
 - src/ui/i18n.status.summary.json is committed and cross-checked by tests/i18n_status_registry.test.ts
   (counts match the full registry, per-locale rollup tallies, universeHash matches).
-- `npm run i18n:hash -- --check` - SHA still d74aeb6.. (did NOT move).
+- `npm run i18n:hash -- --check` - the resolved-table SHA must not move during the phase: it stays green
+  against the baseline committed in `src/ui/i18n.resolved.sha256` at the start of the phase (currently
+  9606d9cf.. after the 2026-06-18 v0.10.0 merge; the old d74aeb6.. was the release/v0.9 baseline).
 - `git status` is clean after a build, with NO megabyte file tracked (status.json out of the index).
 
 Test coverage agent:

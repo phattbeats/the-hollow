@@ -19,7 +19,7 @@ World of ClaudeCraft is six days old. Content is being added daily: new zones, d
 
 Two pressures are converging.
 
-**The shipping cliff (mobile / low-bandwidth players).** The client ships **every locale to every user, eagerly, in the main chunk.** `src/ui/i18n.ts` statically imports `translations` plus all 14 locale consts from `src/ui/i18n.resolved.generated.ts`, so all 14 locales land in the main client chunk regardless of which language the user selected. The numbers, measured against the current post-merge tree:
+**The shipping cliff (mobile / low-bandwidth players).** The client ships **every locale to every user, eagerly, in the main chunk.** `src/ui/i18n.ts` statically imports `translations` plus all 14 locale consts from the `src/ui/i18n.resolved.generated/` barrel (a static `index.ts`), so all 14 locales land in the main client chunk regardless of which language the user selected. The numbers, measured against the current post-merge tree (pre-v0.10 gzip estimates; re-measure against a v0.10.0 production build):
 
 - Main client chunk: **3.73 MB raw / 1.13 MB gzip.**
 - The resolved table alone is **2.1 MB raw / 583 KB gzip** of that chunk.
@@ -40,18 +40,18 @@ Both pressures resolve to the same architectural move: **ship only the data actu
 1. **Ship English eagerly and nothing else.** A non-English locale is downloaded only when a user actually selects or needs it, as its own content-hashed chunk, cached immutably after first fetch. Target a ~540 KB gzip reduction of the main chunk for the default English visitor.
 2. **Keep `t()` synchronous.** No caller of `t()` becomes `async`. English is the eager default and the universal synchronous fallback; a non-English locale's chunk is dynamic-`import()`ed and resolved before the first paint that needs it.
 3. **No layout shift, no language flash.** The active locale is resident before the first localized paint; live switches re-render once, in the final language, with no mixed-language intermediate frame.
-4. **Fix the IDE and repo-churn wounds.** Stop shipping a 55,888-line generated file and committing 6.5 MB of machine-generated diff per content PR.
+4. **Fix the IDE and repo-churn wounds.** Stop shipping the former ~55,888-line single generated file (already split into the per-locale directory in Step 1) and committing megabytes of machine-generated diff per content PR.
 5. **Ratify English-only PRs as the documented contributor contract** (ALREADY DONE: applied in commit a36a94c7), with the token-budget rationale, reconciling the root `CLAUDE.md` contradiction. The maintainer fills all locales before release. This goal is met in-tree; it remains listed for completeness.
 6. **Preserve every existing guarantee at equal-or-greater strength:** determinism (byte-reproducible resolved output, the SHA baseline), the two-tier gate (PR English-legal, release `pending=0`), tsc key-completeness per locale, and the sim/server S3 matcher guard.
 7. **Admin parity in mental model.** The admin dashboard's i18n stays structurally identical to the game's, even where its small size makes some optimizations optional.
 
 ### Non-goals
 
-- **Per-domain (sub-locale) lazy loading.** Splitting a single locale into shell / hud / quest sub-chunks loaded on panel-open is out of scope; it is noted as a future possibility but blocks on panel-open hooks and buys little against the per-locale win at today's sizes. Revisit only on an explicit tripwire: a per-locale chunk exceeding roughly 60 to 75 KB gzip, or the shell/HUD becoming independently route-loaded. At 2,426 keys per locale the catalog is already past i18next's rough 300-segment editorial heuristic for splitting namespaces, so this is a when-not-if for the largest locales as content grows, not a never.
+- **Per-domain (sub-locale) lazy loading.** Splitting a single locale into shell / hud / quest sub-chunks loaded on panel-open is out of scope; it is noted as a future possibility but blocks on panel-open hooks and buys little against the per-locale win at today's sizes. Revisit only on an explicit tripwire: a per-locale chunk exceeding roughly 60 to 75 KB gzip, or the shell/HUD becoming independently route-loaded. At 2,581 keys per locale the catalog is already past i18next's rough 300-segment editorial heuristic for splitting namespaces, so this is a when-not-if for the largest locales as content grows, not a never.
 - **Changing `t()`'s signature or inner loop, the overlay model, or the resolve/merge/pending build logic.** Only emit shape, storage, runtime table-source, and the bootstrap gate change.
 - **Service worker / offline app shell.** Out of scope; HTTP immutable caching already does what Phase 3 needs.
 - **Refactoring the matchers (`talent_i18n.ts` procedural builders).** Noted as a separate concern for a later phase; not part of Phase 3.
-- **Re-baselining the resolved SHA.** Phase 3 is behavior-preserving for resolved output; the hash must not move.
+- **Re-baselining the resolved SHA.** Phase 3 is behavior-preserving for resolved output; the resolved-table SHA must not move during a phase. `npm run i18n:hash -- --check` stays green against the baseline committed in `src/ui/i18n.resolved.sha256` at the start of that phase (currently `9606d9cf..` after the 2026-06-18 v0.10.0 merge; the old `d74aeb6..` was the release/v0.9 baseline). A move within a phase is a real bug, never grounds to re-baseline; the one legitimate exception is Phase 2's three-key fill (Section 4.1.4), which intentionally advances the baseline.
 
 ---
 
@@ -59,7 +59,7 @@ Both pressures resolve to the same architectural move: **ship only the data actu
 
 ### 3.1 Runtime and the sync-t() constraint
 
-`src/ui/i18n.ts` is a 275-line thin runtime. `t()`, `tOptional()`, `hasTranslation()`, `translationValue()`, and the `formatNumber` / `formatDateTime` / `formatMoney` / `moneyParts` formatters are all synchronous. `t()` is called **600-plus times in `hud.ts`** alone (a `\bt\(` scan of the current file counts 633 occurrences across 545 lines), on hot paths inside the render loop and event handlers, plus dozens more across the homepage shell. The exact number is not load-bearing; the argument holds at any count above a handful.
+`src/ui/i18n.ts` is a 275-line thin runtime. `t()`, `tOptional()`, `hasTranslation()`, `translationValue()`, and the `formatNumber` / `formatDateTime` / `formatMoney` / `moneyParts` formatters are all synchronous. `t()` is called **600-plus times in `hud.ts`** alone (a `\bt\(` scan of the current 7,133-line file counts ~663 occurrences across 574 matching lines), on hot paths inside the render loop and event handlers, plus dozens more across the homepage shell. The exact number is not load-bearing; the argument holds at any count above a handful.
 
 The load-bearing constraint that shapes the entire design:
 
@@ -69,28 +69,28 @@ Language detection runs synchronously at module import (`?lang=` URL param, then
 
 ### 3.2 Shipping shape
 
-`src/ui/i18n.resolved.generated.ts` is **2.23 MB / 55,888 lines**. Each locale is a separate top-level `export const <lang>: EnTranslations = { ... }`, followed by a `translations` map referencing all 14, a `pending` map, and the dev-only `en_XA`. `src/ui/i18n.ts` statically imports the names, so Rollup keeps all 14 locales in the main chunk; there is no dynamic import anywhere in the codebase today.
+Migration Step 1 (per-locale emit split) is DONE. `src/ui/i18n.resolved.generated/` is now a generated **directory** (**2,565,789 B / ~2.57 MB**): one dense `export const <lang>: EnTranslations = { ... }` module per locale (`en.ts` + the 13 locale slices + `en_XA.ts`), a `pending.ts`, a static barrel `index.ts` that assembles `translations`, and a dormant `loaders.ts` exporting `LOCALE_LOADERS` dynamic `import()`s plus `SUPPORTED_LANGUAGES`. The old monolithic `src/ui/i18n.resolved.generated.ts` is gone. `src/ui/i18n.ts` still statically imports the barrel, so Rollup keeps all 14 locales in the main chunk; the barrel is static and `loaders.ts` is unused, so there is no runtime dynamic import yet (the lazy flip is Step 3).
 
-The admin app is a separate Vite entry (`admin.html` -> `src/admin/main.ts`) with its own `src/admin/i18n.resolved.generated.ts` (**162,914 B / 3,374 lines**, flat keys), mirroring the game's structure.
+The admin app is a separate Vite entry (`admin.html` -> `src/admin/main.ts`) with its own `src/admin/i18n.resolved.generated/` directory (**177,290 B**, 219 keys, flat keys), mirroring the game's structure (per-locale slices + barrel + dormant loaders + pending).
 
 ### 3.3 Committed artifacts
 
 | Artifact | Size | Lines | Shipped to client | Committed today |
 |---|---|---|---|---|
-| `src/ui/i18n.resolved.generated.ts` | 2.23 MB | 55,888 | Yes (main chunk) | Yes |
-| `src/admin/i18n.resolved.generated.ts` | 162,914 B | 3,374 | Yes (admin chunk) | Yes |
-| `src/ui/i18n.status.json` | 4.25 MB | 176,186 | No (build/test only) | Yes |
+| `src/ui/i18n.resolved.generated/` (per-locale dir) | 2.57 MB | n/a (directory) | Yes (main chunk) | Yes |
+| `src/admin/i18n.resolved.generated/` (per-locale dir) | 177,290 B | n/a (directory) | Yes (admin chunk) | Yes |
+| `src/ui/i18n.status.json` | 4.74 MB | 187,366 | No (build/test only) | Yes |
 | `src/ui/i18n.resolved.sha256` | 65 B | 1 | No | Yes |
 
-Human-edited sources stay small and are the real review surface: `src/ui/i18n.en.ts` (889 KB / 11,209 lines, authoritative nested English, drives `TranslationKey`), each full game overlay `src/ui/i18n.locales/<lang>.ts` (~150 KB / ~2,051 lines, flat sparse `Partial<Record<TranslationKey,string>>`; the three dialect overlays `es_ES`/`fr_CA`/`en_CA` are far smaller), and the small admin overlays `src/admin/i18n.locales/<lang>.ts` (~8-11 KB).
+Human-edited sources stay small and are the real review surface: `src/ui/i18n.en.ts` (still a single ~11,922-line file, authoritative nested English, drives `TranslationKey`), each full game overlay `src/ui/i18n.locales/<lang>.ts` (flat sparse `Partial<Record<TranslationKey,string>>`; the three dialect overlays `es_ES`/`fr_CA`/`en_CA` are far smaller), and the small admin overlays `src/admin/i18n.locales/<lang>.ts`.
 
 ### 3.4 Totals, dialects, and the build pipeline
 
-There are **2,426 keys** and **31,538 non-English rows** across 14 shipped locales: `en, es, es_ES, fr_FR, fr_CA, en_CA, it_IT, de_DE, zh_CN, zh_TW, ko_KR, ja_JP, pt_BR, ru_RU`, plus a dev-only `en_XA` pseudo-locale that is already tree-shaken out of production via an `import.meta.env.PROD` guard in `tableFor()`. Dialects resolve at build time via `DIALECT_BASE` (`es_ES` -> `es`, `fr_CA` -> `fr_FR`, `en_CA` -> `en`); the resolved table is dense, so each emitted locale (including each dialect) is a standalone full table with no import-time composition.
+There are **2,581 keys** and **~33,553 non-English rows** (translated 33,507; blocked 46; pending 0) across 14 shipped locales: `en, es, es_ES, fr_FR, fr_CA, en_CA, it_IT, de_DE, zh_CN, zh_TW, ko_KR, ja_JP, pt_BR, ru_RU`, plus a dev-only `en_XA` pseudo-locale that is already tree-shaken out of production via an `import.meta.env.PROD` guard in `tableFor()`. Dialects resolve at build time via `DIALECT_BASE` (`es_ES` -> `es`, `fr_CA` -> `fr_FR`, `en_CA` -> `en`); the resolved table is dense, so each emitted locale (including each dialect) is a standalone full table with no import-time composition.
 
 The build scripts:
-- `scripts/i18n_build.mjs` emits the dense game table (per-locale consts, then a `translations` map).
-- `scripts/i18n_admin_build.mjs` emits the admin table.
+- `scripts/i18n_build.mjs` emits the dense game table as the per-locale directory (one dense module per locale plus the barrel that assembles the `translations` map; Step 1 done).
+- `scripts/i18n_admin_build.mjs` emits the admin table (same per-locale directory shape).
 - `scripts/i18n_scan.mjs` emits `i18n.status.json`.
 - `scripts/i18n_resolved_hash.mjs` emits/checks the committed `src/ui/i18n.resolved.sha256` baseline.
 
@@ -351,7 +351,7 @@ Each locale module is the const that exists today, lifted verbatim with its `: E
 
 > Do not confuse this with the existing `scripts/i18n_admin_split.mjs`. That script was the one-time **source-shape** migration that split the monolithic admin DICT into the overlay model (`src/admin/i18n.en.ts` + `src/admin/i18n.locales/<lang>.ts`); it is unrelated to Phase 3. Phase 3's admin change lives in `scripts/i18n_admin_build.mjs`'s emit stage (the resolved-table directory split), not in `i18n_admin_split.mjs`, which is not touched.
 
-**IDE-health math.** Today one 55,888-line file. After the split, 14 locale files of roughly 3,500-4,000 lines each, a ~20-line `index.ts`, a ~50-line `pending.ts`, a small `loaders.ts`, and a ~3,500-line `en_XA.ts`. No generated file exceeds ~4,000 lines, comfortably within instant-open territory. Git diffs become per-locale: a `de_DE`-only translation pass diffs only `de_DE.ts`, eliminating the cross-locale merge-conflict surface of the monolith.
+**IDE-health math.** Formerly one ~55,888-line file. After the split (done in Step 1), 14 locale files of roughly 3,500-4,000 lines each, a ~20-line `index.ts`, a ~50-line `pending.ts`, a small `loaders.ts`, and a ~3,500-line `en_XA.ts`. No generated file exceeds ~4,000 lines, comfortably within instant-open territory. Git diffs become per-locale: a `de_DE`-only translation pass diffs only `de_DE.ts`, eliminating the cross-locale merge-conflict surface of the monolith.
 
 ### 4.4 File-splitting policy (generated and human-edited)
 
@@ -370,7 +370,7 @@ The generated resolved table is split per locale because the split (a) fixes a s
 >
 > Do **not** split: a flat (non-nested-typed) file; a file under ~1,500 lines; a build-only data layer; or to make line counts look nicer.
 
-The thresholds (~3,000 lines for nested-typed, ~1,500 floor, no flat files) are deliberately higher than a generic linter would pick, to honor the project's large-module norm. The trigger is the interaction of size and nested-`Leaves` typing, which is why `i18n.en.ts` (11,209 lines, nested, depth-6) hurts and `server_i18n.ts` (197 lines, flat) does not.
+The thresholds (~3,000 lines for nested-typed, ~1,500 floor, no flat files) are deliberately higher than a generic linter would pick, to honor the project's large-module norm. The trigger is the interaction of size and nested-`Leaves` typing, which is why `i18n.en.ts` (11,922 lines, nested, depth-6) hurts and `server_i18n.ts` (197 lines, flat) does not.
 
 #### 4.4.3 `src/ui/i18n.en.ts`: split now, by existing domain seams
 
@@ -407,12 +407,12 @@ The decision is driven by a per-artifact test: is the committed copy doing revie
 
 | Artifact | Decision | Reason |
 |---|---|---|
-| `src/ui/i18n.status.json` (4.25 MB, build/test-only, never shipped to the client, but CURRENTLY GIT-TRACKED) | **Gitignore** (via `git rm --cached`, Step 4) | Pure churn; a human never reads its 176k-line diff; nothing depends on its committed state. It is committed today, so Step 4 must `git rm --cached` it, not merely add a gitignore rule. |
-| `src/ui/i18n.resolved.generated/` (game, ~2.23 MB) | **Keep committed** (split per file) | Language changes should be reviewable in the PR; the per-locale split fixes the IDE choke and makes diffs reviewable. Determinism is anchored by the SHA baseline plus tsc. |
-| `src/admin/i18n.resolved.generated/` (~163 KB) | **Keep committed** | Small, reviewable, low churn; no IDE pain. |
+| `src/ui/i18n.status.json` (4.74 MB, build/test-only, never shipped to the client, but CURRENTLY GIT-TRACKED) | **Gitignore** (via `git rm --cached`, Step 4) | Pure churn; a human never reads its 187k-line diff; nothing depends on its committed state. It is committed today, so Step 4 must `git rm --cached` it, not merely add a gitignore rule. |
+| `src/ui/i18n.resolved.generated/` (game, ~2.57 MB) | **Keep committed** (split per file, DONE in Step 1) | Language changes should be reviewable in the PR; the per-locale split fixes the IDE choke and makes diffs reviewable. Determinism is anchored by the SHA baseline plus tsc. |
+| `src/admin/i18n.resolved.generated/` (~177 KB) | **Keep committed** | Small, reviewable, low churn; no IDE pain. |
 | `src/ui/i18n.resolved.sha256` (65 B) | **Keep committed** | It is the determinism anchor; non-negotiable. |
 
-**Resolution of a cross-proposal disagreement.** One investigation argued for gitignoring the game resolved table as well (its correctness is double-anchored by the SHA baseline and tsc, so committing it adds no correctness and costs ~2.23 MB churn). The decisive counter-priorities are the maintainer's stated requirement that language changes stay **reviewable in PRs** and the audience for those reviews (native-speaker contributors checking a locale's diff). **Resolution: keep the game resolved table committed, but split per file.** The per-locale split is what makes "committed" tolerable: the IDE no longer chokes (no 53k-line file), and a single-locale change diffs one ~3,800-line file instead of rehashing a 2.23 MB blob. The churn that remains (an English edit touches `en.ts` and the 13 English-filled rows in other locale files) is the price of reviewability, paid in per-file diffs a reviewer can actually read. Only `i18n.status.json` is gitignored, because its diff has zero review value and it is never shipped.
+**Resolution of a cross-proposal disagreement.** One investigation argued for gitignoring the game resolved table as well (its correctness is double-anchored by the SHA baseline and tsc, so committing it adds no correctness and costs ~2.57 MB churn). The decisive counter-priorities are the maintainer's stated requirement that language changes stay **reviewable in PRs** and the audience for those reviews (native-speaker contributors checking a locale's diff). **Resolution: keep the game resolved table committed, but split per file (DONE in Step 1).** The per-locale split is what makes "committed" tolerable: the IDE no longer chokes on a single dense file, and a single-locale change diffs one per-locale file instead of rehashing a ~2.57 MB blob. The churn that remains (an English edit touches `en.ts` and the 13 English-filled rows in other locale files) is the price of reviewability, paid in per-file diffs a reviewer can actually read. Only `i18n.status.json` is gitignored, because its diff has zero review value and it is never shipped.
 
 **Reproducibility-gate redesign.** Today, reproducibility is proven by "regenerate, then `git diff --exit-code` against the committed copy," which is only meaningful for a committed file. For the gitignored `i18n.status.json` we replace it with a direct determinism check: generate twice into temp dirs (via the `I18N_OUT_DIR` override) and assert byte-identical output. A shared helper `tests/helpers/i18n_determinism.ts` provides `assertDeterministic({ script, outFiles })`. The committed artifacts keep their existing `git diff --exit-code` gate, now pointed at directories.
 
@@ -620,9 +620,9 @@ The maintainer section uses the real script names: `npm run i18n:worklist` (mapp
 
 Each step is independently shippable and leaves `npm test` and `npm run build` green. The ordering principle: change the producer before the consumer; keep a back-compat surface until the consumer is migrated; flip the consumer last; do CI/git/docs last so a revert of the risky middle steps never strands the gate.
 
-### Step 1: Split the build emit into per-locale modules plus a back-compat barrel (producer only)
+### Step 1: Split the build emit into per-locale modules plus a back-compat barrel (producer only) - DONE
 
-`scripts/i18n_build.mjs` writes `src/ui/i18n.resolved.generated/` (per-locale modules, `pending.ts`, `loaders.ts`, `en_XA.ts`, and the barrel `index.ts` that re-exports everything incl. `en_XA` and `pending`). The directory resolves the same `'./i18n.resolved.generated'` specifier via `index.ts`, so `src/ui/i18n.ts` does not change. Mirror to `scripts/i18n_admin_build.mjs`.
+DONE: the per-locale emit split has landed. `scripts/i18n_build.mjs` writes `src/ui/i18n.resolved.generated/` (per-locale modules, `pending.ts`, `loaders.ts`, `en_XA.ts`, and the barrel `index.ts` that re-exports everything incl. `en_XA` and `pending`). The directory resolves the same `'./i18n.resolved.generated'` specifier via `index.ts`, so `src/ui/i18n.ts` does not change. Mirror to `scripts/i18n_admin_build.mjs`.
 
 - **Verify:** `npm run i18n:build && git diff --exit-code` regenerates identically; `npm run i18n:hash -- --check` still prints OK against the unchanged baseline; `npm test`; `npm run build` records a gzip within noise of 1.13 MB (no bundle change expected, all 14 still pulled through the static barrel import).
 - **Watch:** the barrel must re-export `en_XA` and `pending` or tests importing those by name go red; write all files atomically to avoid a torn directory.
@@ -767,29 +767,31 @@ Set the absolute TTI baseline by running the throttled probe on `main` before St
 
 ## 11. Appendix: measured numbers and file inventory
 
-### 11.1 Measured numbers (current post-merge tree; pending=0)
+### 11.1 Measured numbers (pending=0)
 
-- Main client chunk: 3.73 MB raw / 1.13 MB gzip.
-- Resolved table within the main chunk: 2.1 MB raw / 583 KB gzip.
-- Non-English locale data a default user never needs: ~540 KB gzip (13 of 14 locales).
+Bundle/gzip figures below are pre-v0.10 estimates that need a production build to re-confirm; the key/row/line/byte counts are verified against the current post-v0.10.0-merge tree.
+
+- Main client chunk: 3.73 MB raw / 1.13 MB gzip (pre-v0.10 estimate).
+- Resolved table within the main chunk: 2.1 MB raw / 583 KB gzip (pre-v0.10 estimate).
+- Non-English locale data a default user never needs: ~540 KB gzip (13 of 14 locales; pre-v0.10 estimate).
 - Per-locale share: ~42 KB gzip average. Measured per-locale source-gzip band (sliced from the generated file): Latin 37-38 KB, CJK 39-40 KB, Russian ~44 KB (the largest); minified shipped chunks run somewhat below these.
-- Totals: 2,426 keys; 31,538 non-English rows; 14 shipped locales + dev-only `en_XA`.
+- Totals: 2,581 keys; ~33,553 non-English rows (translated 33,507; blocked 46; pending 0); 14 shipped locales + dev-only `en_XA`.
 - Dialects: `es_ES` -> `es`, `fr_CA` -> `fr_FR`, `en_CA` -> `en` (resolved at build time via `DIALECT_BASE`).
-- `t()` call sites in `hud.ts`: 633 occurrences across 545 lines by a `\bt\(` scan (the round "~560" cited elsewhere is the CLAUDE.md figure and undercounts; both make the same point). Synchronous, hot-path.
+- `t()` call sites in `hud.ts`: ~663 occurrences across 574 matching lines (in a 7,133-line file) by a `\bt\(` scan (the round "~560" cited elsewhere is the CLAUDE.md figure and undercounts; both make the same point). Synchronous, hot-path.
 
 ### 11.2 File inventory
 
 | File | Size | Lines | Kind | IDE risk today | Phase 3 disposition |
 |---|---|---|---|---|---|
 | `src/ui/i18n.ts` | 11.5 KB | 275 | runtime | none | Add `resident`/`inflight`, `ensureLocaleLoaded`, `isLocaleResident`; eager-en + loaders imports; `tableFor` English fallback. `t()` loop unchanged. |
-| `src/ui/i18n.en.ts` | 889 KB | 11,209 | source (nested) | high | Split into `src/ui/i18n.en/` by existing domain seams (Section 4.4.3). |
-| `src/ui/i18n.resolved.generated.ts` | 2.23 MB | 55,888 | generated | severe | Split into `src/ui/i18n.resolved.generated/` per locale + barrel + loaders (Section 4.3). Stays committed. |
-| `src/ui/i18n.status.json` | 4.25 MB | 176,186 | generated (build/test-only) | severe | Gitignore; regenerated by `pretest` `i18n:scan`; optional committed summary. |
+| `src/ui/i18n.en.ts` | ~920 KB | 11,922 | source (nested) | high | Not yet split (still one file); Step 5/3.5 splits into `src/ui/i18n.en/` by existing domain seams (Section 4.4.3). |
+| `src/ui/i18n.resolved.generated/` (per-locale dir) | 2.57 MB | n/a (directory) | generated | resolved | DONE (Step 1): per locale + barrel + dormant loaders (Section 4.3). Stays committed. |
+| `src/ui/i18n.status.json` | 4.74 MB | 187,366 | generated (build/test-only) | severe | Gitignore; regenerated by `pretest` `i18n:scan`; optional committed summary. |
 | `src/ui/i18n.resolved.sha256` | 65 B | 1 | generated baseline | none | Keep committed; the determinism anchor. |
 | `src/ui/i18n.locales/<lang>.ts` (13) | ~150 KB avg | ~2,051 (full); dialects far smaller | source (flat sparse) | none | No split (flat); revisit at ~4,000 lines. |
 | `src/admin/i18n.ts` | 7.8 KB | 161 | runtime | none | Mirror runtime changes; admin lazy-loading deferred (R7). |
 | `src/admin/i18n.en.ts` | 10.6 KB | 237 | source (flat) | none | No change. |
-| `src/admin/i18n.resolved.generated.ts` | 162,914 B | 3,374 | generated | none | Per-locale file split for parity; stays committed; static import retained. |
+| `src/admin/i18n.resolved.generated/` (per-locale dir) | 177,290 B | n/a (directory; 219 keys) | generated | none | DONE (Step 1): per-locale file split for parity; stays committed; static import retained. |
 | `src/admin/i18n.locales/<lang>.ts` (13) | ~8-11 KB | ~210 avg | source (flat) | none | No change. |
 | `src/ui/sim_i18n.ts` | 112 KB | 2,020 | matcher | borderline | No change this phase. |
 | `src/ui/talent_i18n.ts` | 188 KB | 4,359 | matcher | high (procedural inference) | Out of scope; later phase (cut by effect-builder family). |

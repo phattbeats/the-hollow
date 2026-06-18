@@ -3,7 +3,7 @@
 Verified once at packet completion (final QA phase), in addition to each phase's own QA. Mirrors the design doc's 8 acceptance gates + the three determinism properties.
 
 ## Bundle / payload (the point of the feature)
-- [ ] Main client chunk gzip <= ~0.62 MB (from 1.13 MB): `gzip -c dist/assets/main-*.js | wc -c`.
+- [ ] Main client chunk gzip materially smaller than the pre-phase main-chunk gzip (English-only i18n; non-English locales lazy): `gzip -c dist/assets/main-*.js | wc -c`. The ~0.62 MB target (from ~1.13 MB) is a pre-v0.10 estimate; re-measure against a fresh production build before treating it as the gate.
 - [ ] i18n share of the main chunk gzip <= ~45 KB (en only), via bundle analysis.
 - [ ] 13 + dialect content-hashed locale chunks exist: `ls dist/assets/*-*.js`; each ~37-44 KB gzip (`gzip -c dist/assets/<lang>-*.js | wc -c`).
 - [ ] `en` is NOT a separate locale chunk (it is eager, in main).
@@ -20,7 +20,7 @@ Verified once at packet completion (final QA phase), in addition to each phase's
 - [ ] **Determinism:** `assertDeterministic` double-generation is byte-identical (perturbed `TZ`/`LC_ALL`/temp path) for both game + admin generators.
 - [ ] **Freshness:** `git diff --exit-code` clean against the committed `i18n.resolved.generated/` dirs after `npm run i18n:gen`.
 - [ ] **Completeness:** `npx tsc --noEmit` green (every locale module `: EnTranslations`, per file).
-- [ ] **SHA invariance:** `npm run i18n:hash -- --check` OK; baseline `d74aeb6..` did NOT move across the whole packet.
+- [ ] **SHA invariance:** `npm run i18n:hash -- --check` OK; the resolved-table SHA did NOT move across the whole packet, staying green against the baseline committed in `src/ui/i18n.resolved.sha256` at the start (currently 9606d9cf.. after the 2026-06-18 v0.10.0 merge; the old d74aeb6.. was the release/v0.9 baseline). A move within the packet is a real bug, not a re-baseline; the sole sanctioned move is Phase 2 landing its 3 new keys.
 
 ## i18n completeness / two-tier gate
 - [ ] The 3 new keys (`settings.languageLoadFailed`, `languageLoadUnavailable`, `languageLoading`) exist in `en` and are filled in the 10 base locales; `es_ES`/`fr_CA` inherit, `en_CA` English.

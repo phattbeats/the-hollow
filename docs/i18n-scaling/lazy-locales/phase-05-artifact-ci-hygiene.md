@@ -1,6 +1,6 @@
 # Phase 5 - Artifact / CI / determinism hygiene (Doc Step 4 CI/git)
 
-Final storage + CI hygiene. Gitignore the 4.46 MB build-only registry, install the determinism gate that replaces its committed-bytes freshness check, mark the generated directories as `linguist-generated`, and add one i18n generation step to both CI jobs. Pure hygiene: zero runtime change, zero bundle change, resolved table byte-identical, SHA unchanged. This is sequenced AFTER Phase 3 (the lazy flip) has soaked clean on a preview deploy for a release cycle. Do NOT bundle it with the Phase 3 runtime flip.
+Final storage + CI hygiene. Gitignore the ~4.74 MB build-only registry, install the determinism gate that replaces its committed-bytes freshness check, mark the generated directories as `linguist-generated`, and add one i18n generation step to both CI jobs. Pure hygiene: zero runtime change, zero bundle change, resolved table byte-identical, SHA unchanged. This is sequenced AFTER Phase 3 (the lazy flip) has soaked clean on a preview deploy for a release cycle. Do NOT bundle it with the Phase 3 runtime flip.
 
 Copy the block below into a fresh Opus 4.8 session.
 
@@ -13,7 +13,7 @@ ULTRACODE: NOT needed. This is gitignore + .gitattributes + two CI step inserts 
 helper + repointing two reproducibility sub-suites. Direct edits + a small fan-out at most. Do
 NOT spin up a Workflow.
 
-Goal: gitignore the build-only src/ui/i18n.status.json (4.46 MB, never shipped); install the
+Goal: gitignore the build-only src/ui/i18n.status.json (~4.74 MB, never shipped); install the
 `assertDeterministic` double-generation gate and swap it in for the status.json committed-bytes
 freshness check; mark the generated resolved directories `linguist-generated`; add an i18n:gen
 aggregate script and a `Generate i18n artifacts` step to BOTH CI jobs; and ship a small committed
@@ -41,7 +41,8 @@ Spawn ONE Explore agent to read and summarize:
 - package.json (the scripts block, esp. `pretest` line 12, `build` line 10, the `i18n:*` scripts 14-18)
 - .gitignore (current i18n entries ~lines 15-16) and confirm whether .gitattributes exists / is EMPTY
 - scripts/i18n_scan.mjs (how it writes src/ui/i18n.status.json; whether it can also emit a summary;
-  whether I18N_OUT_DIR is already honored from Phase 1)
+  whether I18N_OUT_DIR is honored - NOTE: as of the v0.10.0 merge it is NOT, the scanner writes a
+  hardcoded OUT_PATH ~L49 while only i18n_build.mjs / i18n_admin_build.mjs honor I18N_OUT_DIR)
 - tests/i18n_status_registry.test.ts (which sub-suite asserts reproducibility via a committed-bytes
   `git diff`, and which sub-suites VALIDATE the registry - the release-tier `pending===0` assertion
   and the gate-teeth synthetic-pending check MUST be kept)
@@ -54,9 +55,16 @@ and exactly what the two reproducibility sub-suites assert today.
 
 STEP 2 - EXECUTE (direct edits; an Agent for the test-helper work if you want parallelism):
 
+(pre) Add an I18N_OUT_DIR override to scripts/i18n_scan.mjs (mirroring i18n_build.mjs) BEFORE the
+determinism double-generate check can exercise the scanner. As of the v0.10.0 merge the scanner
+writes a hardcoded OUT_PATH (`src/ui/i18n.status.json`, ~L49) and ignores I18N_OUT_DIR; only
+i18n_build.mjs / i18n_admin_build.mjs honor it. Resolve OUT_PATH from I18N_OUT_DIR when set so Step
+2d's `assertDeterministic` can emit status.json into two separate temp dirs. Keep the default path
+unchanged when the env var is absent.
+
 (a) Gitignore the build-only registry:
-- `git rm --cached src/ui/i18n.status.json` (it is 4.46 MB, build/test-only, never shipped; its
-  176k-line diff has zero review value - `pretest` and the CI i18n:gen step regenerate it before any
+- `git rm --cached src/ui/i18n.status.json` (it is ~4.74 MB, build/test-only, never shipped; its
+  187k-line diff has zero review value - `pretest` and the CI i18n:gen step regenerate it before any
   test reads it).
 - Add `src/ui/i18n.status.json` to .gitignore (next to the existing i18n entries).
 - FIRST find the test that reads its committed bytes and fix that read before the rm lands a red
@@ -75,8 +83,9 @@ STEP 2 - EXECUTE (direct edits; an Agent for the test-helper work if you want pa
 
 (d) tests/helpers/i18n_determinism.ts (NEW):
 - `export function assertDeterministic({ script, outFiles, env? })` that generates TWICE into two
-  separate temp dirs via the `I18N_OUT_DIR` override (added in Phase 1) and asserts the named
-  outFiles are byte-identical across the two runs.
+  separate temp dirs via the `I18N_OUT_DIR` override (honored by i18n_build.mjs / i18n_admin_build.mjs
+  from Phase 1, and by i18n_scan.mjs from Step 2(pre) above) and asserts the named outFiles are
+  byte-identical across the two runs.
 - Harden it against same-machine blind spots: pin the Node version + lockfile context (the generators
   bundle TS with esbuild from this tree), and PERTURB `TZ`, `LC_ALL`, and the temp-dir path between the
   two generations so a hidden locale/timezone/path dependency in the emit would surface as a diff.
@@ -111,7 +120,9 @@ STEP 2 - EXECUTE (direct edits; an Agent for the test-helper work if you want pa
 INVARIANTS THIS PHASE MUST KEEP:
 - Determinism: `assertDeterministic` must produce byte-identical output across the two perturbed-env
   generations. A diff is a real bug.
-- The resolved-table SHA must NOT move: `npm run i18n:hash -- --check` stays green (baseline d74aeb6..).
+- The resolved-table SHA must NOT move DURING the phase: `npm run i18n:hash -- --check` stays green
+  against the baseline committed in `src/ui/i18n.resolved.sha256` at the start of the phase (currently
+  9606d9cf.. after the 2026-06-18 v0.10.0 merge; the old d74aeb6.. was the release/v0.9 baseline).
   This phase touches no emitted resolved content - a moved SHA here is a real bug, never a re-baseline.
 - The release-tier gate must still BITE: a synthetic `pending` row throws under I18N_RELEASE_TIER=1.
 - The two-tier CI structure (job split by git ref, I18N_RELEASE_TIER=1 on the release job) is UNTOUCHED.
@@ -131,7 +142,8 @@ STEP 3 - VALIDATION + REVIEW:
   ABSENT (it is now gitignored), run `npm ci && npm test` - green proves `pretest` regenerates it.
 - `I18N_RELEASE_TIER=1 npm test` - green on the translated tree, and RED on a synthetic pending row
   (confirm the gate teeth still bite; restore the tree after).
-- `npm run i18n:hash -- --check` - SHA unchanged (d74aeb6..).
+- `npm run i18n:hash -- --check` - SHA unchanged against the start-of-phase baseline in
+  `src/ui/i18n.resolved.sha256` (currently 9606d9cf..).
 - `git status` is clean after a build with NO megabyte file tracked (status.json gone from the index).
 - Confirm the `Generate i18n artifacts` step is present in BOTH CI jobs, AFTER `npm ci`, BEFORE the
   typecheck/build steps, in both `pr-gate` and `release-gate`.
@@ -170,7 +182,8 @@ STEP 5 - ACCEPTANCE CRITERIA (do not mark complete until all check):
 - [ ] src/ui/i18n.status.summary.json is committed (counts + per-locale rollup + universeHash, no bodies)
       and cross-checked by the registry test.
 - [ ] `I18N_RELEASE_TIER=1 npm test` green on the translated tree; RED on a synthetic pending row.
-- [ ] `npm run i18n:hash -- --check` OK (SHA d74aeb6.. unchanged); `git status` clean after build with no
+- [ ] `npm run i18n:hash -- --check` OK (SHA unchanged against the start-of-phase baseline in
+      `src/ui/i18n.resolved.sha256`, currently 9606d9cf..); `git status` clean after build with no
       megabyte file tracked.
 
 STEP 6 - DOC UPDATES + MEMORY:

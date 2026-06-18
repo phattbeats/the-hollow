@@ -33,14 +33,18 @@ COVERAGE not filtering - "report every issue including low-severity and uncertai
 Correctness agent:
 - Re-run `npm run i18n:build && npm run i18n:admin && npm run i18n:scan && git diff --exit-code`
   from a clean tree - is the regen byte-identical?
-- `npm run i18n:hash -- --check` - is the SHA still d74aeb6.. (did NOT move)?
+- `npm run i18n:hash -- --check` - does the SHA stay equal to the baseline committed in
+  `src/ui/i18n.resolved.sha256` (currently 9606d9cf.. after the 2026-06-18 v0.10.0 merge; the old
+  d74aeb6.. was the release/v0.9 baseline), i.e. did NOT move?
 - Verify the barrel index.ts re-exports EVERY locale + en_XA + pending + the translations map,
   and that loaders.ts has a thunk for every non-en/non-en_XA locale and SUPPORTED_LANGUAGES
   matches the prior supportedLanguages set exactly.
 - Verify dialects (es_ES, fr_CA, en_CA) are emitted STANDALONE DENSE (no `import {base}` + spread).
 - Verify the emit is atomic (compute-then-write / rmSync+recreate) and a deleted locale leaves no orphan.
 - Verify en_XA is re-exported by the barrel but ABSENT from LOCALE_LOADERS / translations / SUPPORTED_LANGUAGES.
-- `npm run build` - is the main-chunk gzip within noise of 1.13 MB (no bundle change)?
+- `npm run build` - is the main-chunk gzip within noise of the pre-phase main-chunk gzip (no bundle
+  change)? (the 1.13 MB figure is a pre-v0.10 estimate; Phase 1's barrel is static so all 14 locales
+  still ship in the main chunk.)
 - Confirm the directory-index import resolves under the project's moduleResolution.
 
 Test coverage agent:

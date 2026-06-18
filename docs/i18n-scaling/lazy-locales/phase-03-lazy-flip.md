@@ -1,6 +1,6 @@
 # Phase 3 - The lazy flip (Doc Step 3)
 
-The payload win. Flip `src/ui/i18n.ts` so it imports only `en` + `pending` + `LOCALE_LOADERS` + `SUPPORTED_LANGUAGES` (plus the dev-only `en_XA` behind the PROD guard); the 13 non-en statics stop being eagerly imported. This is what actually drops ~540 KB gzip from the app chunk (main 1.13 MB -> ~590 KB). The async machinery to load a non-en locale landed in Phase 2; this phase makes it load-bearing. This is HIGH RISK: the same change that wins the bytes also breaks two canary tests, so their fixes ship IN THE SAME COMMIT.
+The payload win. Flip `src/ui/i18n.ts` so it imports only `en` + `pending` + `LOCALE_LOADERS` + `SUPPORTED_LANGUAGES` (plus the dev-only `en_XA` behind the PROD guard); the 13 non-en statics stop being eagerly imported. This is what actually drops ~540 KB gzip from the app chunk (main 1.13 MB -> ~590 KB, a pre-v0.10 estimate; re-measure against the current main chunk). The async machinery to load a non-en locale landed in Phase 2; this phase makes it load-bearing. This is HIGH RISK: the same change that wins the bytes also breaks two canary tests, so their fixes ship IN THE SAME COMMIT.
 
 Copy the block below into a fresh Opus 4.8 session.
 
@@ -16,13 +16,15 @@ Goal: Flip src/ui/i18n.ts to STATIC-import only `en` + `pending` + `LOCALE_LOADE
 `SUPPORTED_LANGUAGES` from the generated barrel (plus the dev-only `en_XA` behind the
 existing !import.meta.env.PROD guard). The 13 non-en static locale imports go away, so
 Rollup tree-shakes them out of the app chunk and a default-English visitor downloads
-ZERO non-en locale bytes. Target: main-*.js gzip ~590 KB (down from 1.13 MB), with 13 +
+ZERO non-en locale bytes. Target: main-*.js gzip ~590 KB (down from 1.13 MB) - a pre-v0.10
+estimate; re-measure and accept relative to the pre-flip main chunk - with 13 +
 dialect content-hashed locale chunks emitted separately and `en` NOT a separate chunk.
 t() STAYS SYNCHRONOUS. The resolved-table SHA must NOT move.
 
 STEP 0 - PRE-FLIGHT:
 - Verify `git status` is clean. If not, ask the user (a concurrent session may share this checkout).
-- Ensure you are on branch `feature/i18n-lazy-locales` (Phase 1 + Phase 2 already landed there).
+- Ensure you are on branch `feature/i18n-lazy-locales` (Phase 1 done there; Phase 2 is a
+  hard prerequisite NOT yet met - see the STEP 0 confirmation below).
   If switching branches would disrupt a concurrent session, ask first.
 - Confirm Phase 2 is in: `ensureLocaleLoaded`, `isLocaleResident`, the `resident`/`inflight`
   maps, and the `resident[lang] ?? resident.en!` line in tableFor() all exist in
@@ -54,12 +56,14 @@ STEP 2 - THE DECISION GATE (Option 3a vs 3b - mechanical, not a judgment call):
   may still re-export them; Rollup tree-shakes a re-export that the app never references.
 - VERIFY 3a with a HARD build-size tree-shake probe (this is an acceptance gate, not a
   vibe check): `npm run build`, then `gzip -c dist/assets/main-*.js | wc -c`. PASS if
-  ~590 KB (<= ~0.62 MB) - the 13 statics were dropped from the app chunk. The probe is
+  ~590 KB (<= ~0.62 MB - a pre-v0.10 estimate; equivalently, PASS if the 13 statics
+  dropped out of the app chunk versus the pre-flip main chunk) - the 13 statics were
+  dropped from the app chunk. The probe is
   finicky precisely because the existing `gameStrings = en.game` indirection (i18n.ts
   ~19-24) was added to stop a re-export pulling i18n.en's ~1 MB base into the client - the
   SAME hazard class. If a re-export silently re-anchors the statics into main, the probe
   catches it.
-- FALL to Option 3b ONLY if the 3a probe FAILS (main stays ~1.13 MB): repoint the
+- FALL to Option 3b ONLY if the 3a probe FAILS (main essentially unchanged from the pre-flip baseline; the ~1.13 MB figure is a pre-v0.10 estimate): repoint the
   const-importing tests + scripts/i18n_resolved_hash.mjs to import the locale consts from
   the generated index.ts directly (`../src/ui/i18n.resolved.generated`) instead of from
   `../src/ui/i18n`, so i18n.ts need not re-export the dense statics and tree-shaking is
@@ -126,10 +130,11 @@ not hide, STOP and surface it.
 INVARIANTS THIS PHASE MUST KEEP:
 - t() STAYS SYNCHRONOUS. The only async surface is ensureLocaleLoaded at the bootstrap +
   picker boundaries (Phase 2). Never make t()/setLanguage async.
-- The resolved-table SHA must NOT move: `npm run i18n:hash -- --check` stays green
-  (baseline d74aeb6.. or whatever Phase 1/2 left it - do NOT re-baseline). Under 3b the hash
-  VALUE is identical because the same translations are hashed; if it moves, that is a real
-  bug, surface it.
+- The resolved-table SHA must NOT move DURING this phase: `npm run i18n:hash -- --check` stays
+  green against the baseline committed in `src/ui/i18n.resolved.sha256` at the start of the phase
+  (currently 9606d9cf.. after the 2026-06-18 v0.10.0 merge; the old d74aeb6.. was the release/v0.9
+  baseline) - do NOT re-baseline. Under 3b the hash VALUE is identical because the same translations
+  are hashed; if it moves WITHIN the phase, that is a real bug, surface it.
 - The tree-shake probe is a HARD acceptance gate: a default-English visitor downloads ZERO
   non-en bytes. If neither 3a nor 3b drops the bytes, STOP - the bundle win is the whole point.
 - Shared worktree: stage EXPLICIT paths, never `git add -A`. No em dashes / emojis.
@@ -146,7 +151,8 @@ STEP 7 - VALIDATION:
   tests/localization_fixes.test.ts tests/i18n_resolved_equivalence.test.ts` then `npm test`.
 - `npm run i18n:hash -- --check` (SHA unchanged).
 - The tree-shake probe: `npm run build`, then `gzip -c dist/assets/main-*.js | wc -c`
-  (target <= ~0.62 MB) and `ls dist/assets/*-*.js` (13 + dialect locale chunks present;
+  (target <= ~0.62 MB, a pre-v0.10 estimate; equivalently within noise of the pre-phase
+  main-chunk gzip minus the 13 statics) and `ls dist/assets/*-*.js` (13 + dialect locale chunks present;
   `en` not a separate chunk). Record whether 3a held or you fell to 3b.
 - A default-English load network trace (a throttled-mobile run via a scripts/*.mjs browser
   E2E): ZERO `es-*.js`..`ru_RU-*.js` requests; no non-en locale data baked into main-*.js.
@@ -173,7 +179,8 @@ Order note: land #1 first so #2 (the flip) never leaves the tree red between com
 STEP 10 - ACCEPTANCE CRITERIA (do not mark complete until all check):
 - [ ] src/ui/i18n.ts imports only en + pending + LOCALE_LOADERS + SUPPORTED_LANGUAGES
       (plus dev-only en_XA behind the PROD guard); the 13 non-en statics are not eagerly imported for use.
-- [ ] dist/assets/: main-*.js gzip ~590 KB (<= 0.62 MB); 13 + dialect content-hashed locale
+- [ ] dist/assets/: main-*.js gzip ~590 KB (<= 0.62 MB, a pre-v0.10 estimate; equivalently
+      English-only main chunk, non-English locales lazy); 13 + dialect content-hashed locale
       chunks (~42 KB gzip each); `en` NOT a separate chunk.
 - [ ] A default-English load network trace shows ZERO es-*.js..ru_RU-*.js requests; no non-en
       locale data inside main-*.js.
@@ -201,7 +208,7 @@ restores all-14-in-main. This is exactly why the back-compat barrel is retained 
 
 STOPPING RULES:
 - STOP if the 3a tree-shake probe FAILS and Option 3b ALSO fails to drop the bytes (surface it -
-  the bundle win is the entire point of this phase; do not declare done on a 1.13 MB main).
+  the bundle win is the entire point of this phase; do not declare done on an unshrunk main near the pre-flip baseline (the ~1.13 MB figure is a pre-v0.10 estimate)).
 - STOP if t() cannot stay synchronous.
 - STOP if a first-paint flash appears that the loading-screen gate does not hide.
 - STOP and do NOT re-baseline if the resolved-table SHA moves (a moved SHA = a real bug here).

@@ -40,8 +40,10 @@ filtering - "report every issue including low-severity and uncertain ones"):
 Correctness agent:
 - Re-run `npm run i18n:build && npm run i18n:admin && npm run i18n:scan && git diff --exit-code` from a
   clean tree - is the regen byte-identical (the source `en` object unchanged in value AND order)?
-- `npm run i18n:hash -- --check` - is the SHA still d74aeb6.. (did NOT move)? A moved SHA means a content
-  block was dropped or reordered in the split.
+- `npm run i18n:hash -- --check` - did the resolved-table SHA NOT move during the phase? It stays green
+  against the baseline committed in `src/ui/i18n.resolved.sha256` at the start of the phase (currently
+  9606d9cf.. after the 2026-06-18 v0.10.0 merge; the old d74aeb6.. was the release/v0.9 baseline). A moved
+  SHA means a content block was dropped or reordered in the split.
 - Public surface: scripts/i18n_build.mjs and src/ui/i18n.ts import the SAME names from './i18n.en' as
   before; the thin re-export resolves them all.
 - No string-value drift: spot-check that the assembled `en` object from i18n.en/ is value-equal and
@@ -79,8 +81,10 @@ STEP 4 - WHOLE-FEATURE QA + UPDATE DOCS + MEMORY:
 - Walk docs/i18n-scaling/lazy-locales/qa-checklist.md end to end now that all six phases are landed (this
   packet has its own whole-feature checklist the FINAL QA must clear before teardown). Confirm the headline
   outcomes hold on the merged feature: English-only default load drops the non-English locale bytes
-  (~540 KB gzip), main chunk ~590 KB gzip, `t()` still synchronous, the SHA never moved across all six
-  phases, the release-tier gate still bites, and a fresh clone goes green.
+  (English-only main chunk, non-English locales lazy; the ~540 KB / ~590 KB gzip figures are pre-v0.10
+  estimates that need a production build to confirm - accept relative to the pre-phase main-chunk gzip),
+  `t()` still synchronous, the SHA never moved across all six phases, the release-tier gate still bites
+  (now the release/v0.10.0 line), and a fresh clone goes green.
 - progress.md: mark Phase 6 + Phase 6 QA complete; mark the whole packet complete.
 - state.md: record any final drift.
 - Memory: record the final i18n.en/ domain layout + the end-state of the lazy-locales feature.
@@ -89,7 +93,8 @@ STEP 5 - PACKET TEARDOWN (final phase only):
 Once EVERYTHING is green and the whole-feature qa-checklist.md is cleared:
 - SURFACE deferred follow-ups FIRST, explicitly, before asking to delete anything. In particular:
   (a) the release-tier fill of the 3 Phase 2 keys (settings.languageLoadFailed / languageLoadUnavailable /
-      languageLoading) in the 10 base locales, if not yet done - this gates the release-tier merge, not the PR;
+      languageLoading) in the 10 base locales, if not yet done - this gates the release-tier merge, not the PR
+      (registry pending=0 today, since Phase 2 has not landed these keys yet);
   (b) the recorded 3a-vs-3b probe outcome from Phase 3 (which lazy-flip option held, captured in progress.md).
   List any other open item from state.md's OPEN items section.
 - Then ask the user EXPLICITLY: "All phases are complete and green. OK to delete
