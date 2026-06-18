@@ -55,6 +55,24 @@ export const ZONE3_MOBS: Record<string, MobTemplate> = {
     ],
     scale: 0.95, color: 0x8c8270,
   },
+  // The apex of the southern ridge: a grizzled, scar-pelted old cat that has
+  // outlived three generations of its pack. A rare elite counterpart to the
+  // Ridge Stalkers, met first when climbing into Thornpeak. Reuses existing
+  // mechanics only — a rending pounce (aoePulse) and a wounded-beast enrage.
+  old_cragmaw: {
+    id: 'old_cragmaw', name: 'Old Cragmaw', minLevel: 14, maxLevel: 14, family: 'beast', rare: true,
+    elite: true, canSwim: true, ccImmune: true, respawnMult: 432,
+    hpBase: 320, hpPerLevel: 56, dmgBase: 16, dmgPerLevel: 4.0, attackSpeed: 1.7,
+    armorPerLevel: 24, moveSpeed: 8.6, aggroRadius: 13,
+    aoePulse: { min: 22, max: 30, radius: 8, every: 9, name: 'Savage Pounce', school: 'physical' },
+    enrage: { belowHpPct: 0.35, dmgMult: 1.4, hasteMult: 1.3 },
+    loot: [
+      { copper: 220, chance: 1 },
+      { itemId: 'ridge_stalker_pelt', chance: 1 },
+      { itemId: 'cragmaw_prowlboots', chance: 0.3 },
+    ],
+    scale: 1.3, color: 0x6e6453,
+  },
   deeprock_kobold: {
     id: 'deeprock_kobold', name: 'Deeprock Tunneler', minLevel: 14, maxLevel: 15, family: 'kobold',
     hpBase: 60, hpPerLevel: 22, dmgBase: 10, dmgPerLevel: 2.5, attackSpeed: 2.1,
@@ -546,6 +564,7 @@ export const ZONE3_CAMPS: CampDef[] = [
   // Ridge stalkers: the ridge flanking the road from the pass
   { mobId: 'ridge_stalker', center: { x: -50, z: 590 }, radius: 22, count: 7 },
   { mobId: 'ridge_stalker', center: { x: 45, z: 600 }, radius: 20, count: 6 },
+  { mobId: 'old_cragmaw', center: { x: -82, z: 575 }, radius: 5, count: 1 },
   // Kobolds: Deeprock Burrows, west
   { mobId: 'deeprock_kobold', center: { x: 75, z: 625 }, radius: 18, count: 8 },
   { mobId: 'deeprock_kobold', center: { x: 105, z: 600 }, radius: 14, count: 6 },
@@ -618,6 +637,12 @@ export const ZONE3_ITEMS: Record<string, ItemDef> = {
   ridgestalker_treads: {
     id: 'ridgestalker_treads', name: 'Ridgestalker Treads', kind: 'armor', slot: 'feet', quality: 'uncommon',
     stats: { armor: 50, agi: 3, sta: 2 }, sellValue: 600,
+  },
+  // Old Cragmaw's rare drop — a notch above the Ridgestalker Treads. Leather,
+  // so it stays unrestricted by class.
+  cragmaw_prowlboots: {
+    id: 'cragmaw_prowlboots', name: 'Cragmaw Prowlboots', kind: 'armor', slot: 'feet', quality: 'rare',
+    stats: { armor: 58, agi: 5, sta: 3 }, sellValue: 750,
   },
   boneplate_vest: {
     id: 'boneplate_vest', name: 'Boneplate Vest', kind: 'armor', slot: 'chest', quality: 'uncommon',
