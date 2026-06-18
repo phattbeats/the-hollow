@@ -28,6 +28,17 @@ const CLICK_MOVE_BIG_TURN_FLOOR = 0.18;
 const CLICK_MOVE_SMALL_TURN = 0.35;
 const MAX_AUTO_YAW_SPEED = 3.6; // rad/sec; caps all non-manual camera follow motion
 
+// The follow/settle system below must be bypassed whenever the camera is under
+// the player's direct manual control: classic right-mouse mouselook OR the
+// always-on Mouse Camera mode. Both lock the character's facing to camYaw, so
+// letting auto-follow run makes it chase a facing that IS the camera yaw and it
+// fights the drag (~45° of drift). Mouse Camera mode reports mouselook=false on
+// desktop (no touch-look, no pointer-lock), so it must be folded in here
+// explicitly — otherwise it never takes the same smooth path right-mouse uses.
+export function cameraIsManual(mouselookActive: boolean, mouseCameraMode: boolean): boolean {
+  return mouselookActive || mouseCameraMode;
+}
+
 export function wrapAngle(d: number): number {
   while (d > Math.PI) d -= 2 * Math.PI;
   while (d < -Math.PI) d += 2 * Math.PI;

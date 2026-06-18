@@ -28,7 +28,7 @@ import { hydrateIcons } from './ui/ui_icons';
 import { portraitChipHtml, hydratePortraits } from './ui/portrait_chip';
 import { playerPortraitDataUrl } from './render/characters/portrait';
 import { createPerfMonitor } from './game/perf';
-import { updateFollowCameraYaw, wrapAngle } from './game/camera_follow';
+import { cameraIsManual, updateFollowCameraYaw, wrapAngle } from './game/camera_follow';
 
 
 const WORLD_SEED = 20061; // fixed: World of ClaudeCraft is a persistent place
@@ -985,7 +985,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       interpFacing,
       frameDt,
       lastInterpFacing,
-      mouselook: input.isMouselookActive(),
+      // Mouse Camera mode is camera-authoritative just like right-mouse mouselook,
+      // so the follow system must be bypassed (it reports mouselook=false on desktop).
+      mouselook: cameraIsManual(input.isMouselookActive(), input.isMouseCameraMode()),
       moving: mi.forward || mi.strafeLeft || mi.strafeRight || clickMoving,
       clickMoving,
       cameraDriven,
