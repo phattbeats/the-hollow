@@ -30,7 +30,7 @@
     "translated": 32857,
     "pending": 624,
     "blocked": 46,
-    "blockedSource": 106
+    "blockedSource": 105
   },
   "keys": {
     "main:a11y.characterActions": {
@@ -185480,12 +185480,7 @@
     {
       "channel": "sim",
       "reason": "v0.7 in-game slash-command / diagnostic surface; ships English as a documented backstop pending a dedicated localization pass (follow-up).",
-      "text": "Arena: Rating Aki — Aki wins, Aki losses (Aki% win rate)."
-    },
-    {
-      "channel": "sim",
-      "reason": "v0.7 in-game slash-command / diagnostic surface; ships English as a documented backstop pending a dedicated localization pass (follow-up).",
-      "text": "Arena: Rating Aki — no matches played yet."
+      "text": "Arena: Aki. Aki."
     },
     {
       "channel": "sim",

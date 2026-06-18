@@ -454,12 +454,18 @@ describe('touch jump', () => {
     expect(input.readMoveInput().jump).toBe(false);
   });
 
-  it('triggerTouchJump yields exactly one frame of jump', () => {
+  it('triggerTouchJump latches briefly so non-sim movement reads cannot consume it', () => {
     const { input } = makeInput();
+    const now = vi.spyOn(performance, 'now');
+    now.mockReturnValue(1000);
     input.triggerTouchJump();
     expect(input.readMoveInput().jump).toBe(true);
-    // momentary: a single poll consumes it so it cannot stick on like a held key
+    expect(input.readMoveInput().jump).toBe(true);
+    now.mockReturnValue(1219);
+    expect(input.readMoveInput().jump).toBe(true);
+    now.mockReturnValue(1221);
     expect(input.readMoveInput().jump).toBe(false);
+    now.mockRestore();
   });
 });
 

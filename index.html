@@ -4467,18 +4467,72 @@
   }
   body.mobile-touch #target-frame {
     left: max(8px, env(safe-area-inset-left));
-    top: calc(max(8px, env(safe-area-inset-top)) + 90px);
+    top: calc(max(8px, env(safe-area-inset-top)) + 72px);
     transform: scale(0.82);
     transform-origin: left top;
   }
   body.mobile-touch #party-frames {
     position: fixed;
     left: max(8px, env(safe-area-inset-left));
-    top: calc(max(8px, env(safe-area-inset-top)) + 92px);
+    top: calc(max(8px, env(safe-area-inset-top)) + 74px);
+    gap: 0;
     z-index: 5;
   }
   body.mobile-touch #party-frames.below-target {
-    top: calc(max(8px, env(safe-area-inset-top)) + 148px);
+    top: calc(max(8px, env(safe-area-inset-top)) + 130px);
+  }
+  body.mobile-touch #party-frames .party-frame {
+    width: 132px;
+    min-height: 30px;
+    padding: 3px 6px;
+    border-radius: 0;
+    border-bottom-width: 1px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.55);
+  }
+  body.mobile-touch #party-frames .party-frame:first-child {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  body.mobile-touch #party-frames .party-frame:not(:first-child) {
+    margin-top: -1px;
+  }
+  body.mobile-touch #party-frames .party-frame .pfm-name {
+    min-height: 14px;
+    gap: 3px;
+    font-size: 10px;
+    line-height: 1.1;
+  }
+  body.mobile-touch #party-frames .party-frame .pfm-id {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+  body.mobile-touch #party-frames .pfm-crest {
+    width: 12px;
+    height: 12px;
+    margin-right: 2px;
+    border-radius: 2px;
+    flex: 0 0 auto;
+  }
+  body.mobile-touch #party-frames .party-frame .pfm-meta {
+    gap: 2px;
+  }
+  body.mobile-touch #party-frames .party-frame .pfm-name .lead,
+  body.mobile-touch #party-frames .party-frame .pf-badge {
+    font-size: 9px;
+  }
+  body.mobile-touch #party-frames .party-frame .bar {
+    height: 5px;
+    margin-top: 1px;
+  }
+  body.mobile-touch #party-frames #party-leave {
+    width: 132px;
+    min-height: 32px;
+    margin: -1px 0 0;
+    padding: 4px 6px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    font-size: 10px;
   }
   body.mobile-touch #buff-bar { right: max(10px, env(safe-area-inset-right)); top: max(140px, env(safe-area-inset-top)); max-width: 180px; }
   body.mobile-touch #minimap-wrap { right: max(8px, env(safe-area-inset-right)); top: max(8px, env(safe-area-inset-top)); transform: scale(0.72); transform-origin: right top; }
@@ -5078,15 +5132,36 @@
     }
     body.mobile-touch #target-frame {
       left: max(6px, env(safe-area-inset-left));
-      top: calc(max(6px, env(safe-area-inset-top)) + 68px);
+      top: calc(max(6px, env(safe-area-inset-top)) + 56px);
       transform: scale(0.6);
     }
     body.mobile-touch #party-frames {
       left: max(6px, env(safe-area-inset-left));
-      top: calc(max(6px, env(safe-area-inset-top)) + 70px);
+      top: calc(max(6px, env(safe-area-inset-top)) + 58px);
     }
     body.mobile-touch #party-frames.below-target {
-      top: calc(max(6px, env(safe-area-inset-top)) + 112px);
+      top: calc(max(6px, env(safe-area-inset-top)) + 100px);
+    }
+    body.mobile-touch #party-frames .party-frame {
+      width: 118px;
+      min-height: 25px;
+      padding: 2px 5px;
+    }
+    body.mobile-touch #party-frames .party-frame .pfm-name {
+      min-height: 12px;
+      font-size: 9px;
+    }
+    body.mobile-touch #party-frames .pfm-crest {
+      width: 10px;
+      height: 10px;
+    }
+    body.mobile-touch #party-frames .party-frame .bar {
+      height: 4px;
+    }
+    body.mobile-touch #party-frames #party-leave {
+      width: 118px;
+      min-height: 28px;
+      font-size: 9px;
     }
     body.mobile-touch #buff-bar { right: calc(98px + env(safe-area-inset-right)); top: max(8px, env(safe-area-inset-top)); max-width: 160px; transform: scale(0.85); transform-origin: right top; }
     body.mobile-touch #minimap-wrap { right: max(6px, env(safe-area-inset-right)); top: max(6px, env(safe-area-inset-top)); transform: scale(0.46); }

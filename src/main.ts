@@ -7,7 +7,7 @@ import { MobileControls, PHONE_TOUCH_QUERY, isPhoneTouchDevice } from './game/mo
 import { Hud } from './ui/hud';
 import { audio } from './game/audio';
 import { music } from './game/music';
-import { handlePickedEntity, hoverCursorKind } from './game/interactions';
+import { activePvpOpponentIds, handlePickedEntity, hoverCursorKind, isAttackableEntity } from './game/interactions';
 import { clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, distance2d, latencyAdjustedStopDistance, stepAngleToward } from './game/click_move';
 import { Api, ClientWorld, CharacterSummary, type ReleaseEntry } from './net/online';
 import type { IWorld, LeaderboardEntry } from './world_api';
@@ -814,10 +814,11 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
   function attackNearest(): void {
     const p = world.player;
+    const activePvpOpponents = activePvpOpponentIds(world);
     let best: number | null = null;
     let bestD = 40;
     for (const e of world.entities.values()) {
-      if (e.kind !== 'mob' || e.dead || !e.hostile) continue;
+      if (!isAttackableEntity(e, world.playerId, activePvpOpponents)) continue;
       const d = dist2d(p.pos, e.pos);
       if (d < bestD) { best = e.id; bestD = d; }
     }
@@ -829,11 +830,13 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   function clickMovePathTo(target: { x: number; z: number }): { x: number; z: number }[] {
     // ignoreFences: the player can hop fences, so route straight over them
     // instead of around — resolveMove fires the jump as we reach the rail.
-    return findPlayerPath(world.cfg.seed, world.player.pos, target, undefined, true);
+    // swim: the player can swim, so let the route cross/enter water.
+    return findPlayerPath(world.cfg.seed, world.player.pos, target, undefined, true, true);
   }
 
   function resolvedClickMoveTarget(target: { x: number; z: number }): { x: number; z: number } {
-    return resolvePlayerDestination(world.cfg.seed, target);
+    // swim: keep a clicked water destination instead of snapping it to shore.
+    return resolvePlayerDestination(world.cfg.seed, target, true);
   }
 
   function handlePick(x: number, y: number, button: number): void {
@@ -875,7 +878,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     const id = renderer.pick(x, y);
     if (id !== null) {
       const e = world.entities.get(id);
-      if (e && e.id !== world.player.id && e.kind === 'mob' && !e.dead && e.hostile) {
+      if (e && isAttackableEntity(e, world.playerId, activePvpOpponentIds(world))) {
         world.targetEntity(id);
         const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
         input.setClickMoveTarget(target, ATTACK_MOVE_MELEE_STOP, e.id, clickMovePathTo(target), true);
@@ -902,10 +905,11 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     // it into a chase (entityId set → resolveMove reroutes toward it each tick).
     if (input.clickMoveEntityId === null) {
       const p = world.player;
+      const activePvpOpponents = activePvpOpponentIds(world);
       let best: number | null = null;
       let bestD = ATTACK_MOVE_ACQUIRE_RANGE;
       for (const e of world.entities.values()) {
-        if (e.kind !== 'mob' || e.dead || !e.hostile || e.id === p.id) continue;
+        if (!isAttackableEntity(e, world.playerId, activePvpOpponents)) continue;
         const d = dist2d(p.pos, e.pos);
         if (d < bestD) { best = e.id; bestD = d; }
       }
@@ -920,7 +924,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     const chaseId = input.clickMoveEntityId;
     if (chaseId !== null) {
       const e = world.entities.get(chaseId);
-      if (e && e.kind === 'mob' && !e.dead && e.hostile
+      if (e && isAttackableEntity(e, world.playerId, activePvpOpponentIds(world))
           && dist2d(world.player.pos, e.pos) <= MELEE_RANGE) {
         if (attackMoveEngagedId !== chaseId) {
           world.targetEntity(chaseId);
@@ -1135,7 +1139,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
               clickMoveReroutedAround = true;
               clickMoveAnchor = { x: playerPos.x, z: playerPos.z };
               clickMoveStuckSince = now;
-              input.rerouteClickMoveTarget(goal, findPlayerPath(world.cfg.seed, world.player.pos, goal, undefined, false));
+              input.rerouteClickMoveTarget(goal, findPlayerPath(world.cfg.seed, world.player.pos, goal, undefined, false, true));
             } else {
               input.clearClickMove();
             }
@@ -1161,7 +1165,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     }
     const id = renderer.pick(input.hoverX, input.hoverY);
     const entity = id !== null ? world.entities.get(id) : undefined;
-    input.setHoverCursor(hoverCursorKind(entity, world.playerId, partyMemberIds()));
+    input.setHoverCursor(hoverCursorKind(entity, world.playerId, partyMemberIds(), activePvpOpponentIds(world)));
   }
 
   function renderFacingOverride(): number | null {

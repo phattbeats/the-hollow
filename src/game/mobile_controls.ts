@@ -265,7 +265,7 @@ export class MobileControls {
     });
 
     this.bindButton('mobile-attack-nearest', () => this.callbacks.onAttackNearest());
-    this.bindButton('mobile-jump', () => this.callbacks.onJump());
+    this.bindButton('mobile-jump', () => this.callbacks.onJump(), { pressFirst: true });
     this.bindButton('mobile-target', () => this.callbacks.onTarget());
     this.bindButton('mobile-interact', () => this.callbacks.onInteract());
     this.bindChatButton('mobile-chat');
@@ -326,9 +326,10 @@ export class MobileControls {
     }
   }
 
-  private bindButton(id: string, cb: () => void): void {
+  private bindButton(id: string, cb: () => void, opts: { pressFirst?: boolean } = {}): void {
     const button = document.getElementById(id);
-    button?.addEventListener('click', (e) => {
+    if (!button) return;
+    const run = (e: Event) => {
       if (!this.active) return;
       e.preventDefault();
       triggerHaptic(HAPTIC_TAP, this.hapticsOn);
@@ -336,7 +337,25 @@ export class MobileControls {
         this.closeMoreModal();
       }
       cb();
-    });
+    };
+    if (opts.pressFirst) {
+      let suppressNextClick = false;
+      button.addEventListener('pointerdown', (e) => {
+        suppressNextClick = true;
+        globalThis.setTimeout(() => { suppressNextClick = false; }, 700);
+        run(e);
+      });
+      button.addEventListener('click', (e) => {
+        if (suppressNextClick) {
+          suppressNextClick = false;
+          e.preventDefault();
+          return;
+        }
+        run(e);
+      });
+      return;
+    }
+    button.addEventListener('click', run);
   }
 
   private closeMoreModal(): void {
