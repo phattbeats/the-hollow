@@ -775,11 +775,13 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   function clickMovePathTo(target: { x: number; z: number }): { x: number; z: number }[] {
     // ignoreFences: the player can hop fences, so route straight over them
     // instead of around — resolveMove fires the jump as we reach the rail.
-    return findPlayerPath(world.cfg.seed, world.player.pos, target, undefined, true);
+    // swim: the player can swim, so let the route cross/enter water.
+    return findPlayerPath(world.cfg.seed, world.player.pos, target, undefined, true, true);
   }
 
   function resolvedClickMoveTarget(target: { x: number; z: number }): { x: number; z: number } {
-    return resolvePlayerDestination(world.cfg.seed, target);
+    // swim: keep a clicked water destination instead of snapping it to shore.
+    return resolvePlayerDestination(world.cfg.seed, target, true);
   }
 
   function handlePick(x: number, y: number, button: number): void {
@@ -1082,7 +1084,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
               clickMoveReroutedAround = true;
               clickMoveAnchor = { x: playerPos.x, z: playerPos.z };
               clickMoveStuckSince = now;
-              input.rerouteClickMoveTarget(goal, findPlayerPath(world.cfg.seed, world.player.pos, goal, undefined, false));
+              input.rerouteClickMoveTarget(goal, findPlayerPath(world.cfg.seed, world.player.pos, goal, undefined, false, true));
             } else {
               input.clearClickMove();
             }
