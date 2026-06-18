@@ -78,6 +78,8 @@ const CAMERA_PULL_OUT_RATE = 6;
 const CAMERA_SOFT_PULL_WEIGHT = 0.45;
 const CAMERA_BASE_FOV = 60;
 const CAMERA_MAX_COMP_FOV = 98;
+const SELF_RENDER_SMOOTH_RATE = 30;
+const SELF_RENDER_SNAP_DIST_SQ = 6 * 6;
 const SUN_HALO_OPACITY = 0.35; // bloom now supplies most of the halo
 // lighting rig (high/ultra) — IBL supplies ambient, sun carries the key
 const HEMI_INTENSITY = 0.45;
@@ -97,6 +99,10 @@ const RENDERER_PHASE_SAMPLE_LIMIT = 720;
 
 type RendererPhase = 'setup' | 'entities' | 'world' | 'nameplates' | 'submit' | 'total';
 type RendererPhaseStats = Record<RendererPhase, { count: number; avg: number; p95: number; max: number }>;
+
+function selfSnapshotAlpha(alpha: number, lead: number): number {
+  return Math.min(1.25, alpha + Math.max(0, lead));
+}
 
 interface EntityView {
   group: THREE.Group;
@@ -222,6 +228,8 @@ export class Renderer {
   private tmpV = new THREE.Vector3();
   private viewCandidates: { e: Entity; d2: number }[] = [];
   private tmpV2 = new THREE.Vector3();
+  private selfRenderPosition = new THREE.Vector3();
+  private selfRenderPositionReady = false;
   private cameraLookAt = new THREE.Vector3();
   // floating /say-/yell bubbles, keyed by speaker entity id
   private chatBubbles = new Map<number, { el: HTMLDivElement; until: number }>();
@@ -1036,7 +1044,7 @@ export class Renderer {
     this.views.delete(id);
   }
 
-  sync(alpha: number, dt: number, renderFacingOverride: number | null): void {
+  sync(alpha: number, dt: number, renderFacingOverride: number | null, selfAlphaLead = 0): void {
     const totalStart = performance.now();
     let phaseStart = totalStart;
     const markPhase = (phase: RendererPhase): void => {
@@ -1059,6 +1067,7 @@ export class Renderer {
     const sim = this.sim;
     const p = sim.player;
     const now = performance.now();
+    const selfPos = this.updateSelfRenderPosition(alpha, dt, selfAlphaLead);
     markPhase('setup');
 
     // dynamic worlds: create nearby views lazily and drop views for leavers or
@@ -1135,12 +1144,13 @@ export class Renderer {
       // each interpolates on its own clock so they move smoothly instead of
       // freezing and dashing once per update (self keeps the global alpha
       // the camera follow uses)
+      const isSelf = e.id === p.id;
       const ea = e.id !== p.id && e.netUpdatedAt !== undefined && e.netInterval !== undefined
         ? Math.min(1.25, (now - e.netUpdatedAt) / Math.max(20, e.netInterval))
-        : alpha;
-      const x = e.prevPos.x + (e.pos.x - e.prevPos.x) * ea;
-      const y = e.prevPos.y + (e.pos.y - e.prevPos.y) * ea;
-      const z = e.prevPos.z + (e.pos.z - e.prevPos.z) * ea;
+        : isSelf ? selfSnapshotAlpha(alpha, selfAlphaLead) : alpha;
+      const x = isSelf ? selfPos.x : e.prevPos.x + (e.pos.x - e.prevPos.x) * ea;
+      const y = isSelf ? selfPos.y : e.prevPos.y + (e.pos.y - e.prevPos.y) * ea;
+      const z = isSelf ? selfPos.z : e.prevPos.z + (e.pos.z - e.prevPos.z) * ea;
       v.group.position.set(x, y, z);
       let facing = e.prevFacing + shortestAngle(e.prevFacing, e.facing) * ea;
       if (id === p.id && renderFacingOverride !== null) facing = renderFacingOverride;
@@ -1313,7 +1323,7 @@ export class Renderer {
     this.waterView.update(this.time);
     this.vfx.update(dt);
 
-    this.updateCamera(alpha, dt);
+    this.updateCamera(selfPos, dt);
     // Fully-fogged terrain chunks / tree buckets are dropped before the
     // frustum; camera-ghost props hide against the current eye-to-camera ray.
     const fogFar = (this.scene.fog as THREE.Fog).far;
@@ -1414,12 +1424,38 @@ export class Renderer {
     }
   }
 
-  private updateCamera(alpha: number, dt: number): void {
+  private updateSelfRenderPosition(alpha: number, dt: number, selfAlphaLead: number): THREE.Vector3 {
+    const p = this.sim.player;
+    const playerAlpha = selfSnapshotAlpha(alpha, selfAlphaLead);
+    const px = p.prevPos.x + (p.pos.x - p.prevPos.x) * playerAlpha;
+    const py = p.prevPos.y + (p.pos.y - p.prevPos.y) * playerAlpha;
+    const pz = p.prevPos.z + (p.pos.z - p.prevPos.z) * playerAlpha;
+    if (selfAlphaLead > 0) {
+      const dx = px - this.selfRenderPosition.x;
+      const dy = py - this.selfRenderPosition.y;
+      const dz = pz - this.selfRenderPosition.z;
+      if (!this.selfRenderPositionReady || dx * dx + dy * dy + dz * dz > SELF_RENDER_SNAP_DIST_SQ) {
+        this.selfRenderPosition.set(px, py, pz);
+        this.selfRenderPositionReady = true;
+      } else {
+        const t = 1 - Math.exp(-SELF_RENDER_SMOOTH_RATE * Math.max(0, dt));
+        this.selfRenderPosition.x += dx * t;
+        this.selfRenderPosition.y += dy * t;
+        this.selfRenderPosition.z += dz * t;
+      }
+    } else {
+      this.selfRenderPosition.set(px, py, pz);
+      this.selfRenderPositionReady = true;
+    }
+    return this.selfRenderPosition;
+  }
+
+  private updateCamera(selfPos: THREE.Vector3, dt: number): void {
     const p = this.sim.player;
     const seed = this.sim.cfg.seed;
-    const px = p.prevPos.x + (p.pos.x - p.prevPos.x) * alpha;
-    const py = p.prevPos.y + (p.pos.y - p.prevPos.y) * alpha;
-    const pz = p.prevPos.z + (p.pos.z - p.prevPos.z) * alpha;
+    const px = selfPos.x;
+    const py = selfPos.y;
+    const pz = selfPos.z;
     const eyeY = py + 2.0;
     let cx = px - Math.sin(this.camYaw) * Math.cos(this.camPitch) * this.camDist;
     let cy = eyeY + Math.sin(this.camPitch) * this.camDist;

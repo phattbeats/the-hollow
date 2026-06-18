@@ -1,30 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { CLICK_MOVE_FORWARD_CONE, angleDelta, cameraRelativeMoveFacing, clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, facingToward, manualMovementOverrides, stepAngleToward } from '../src/game/click_move';
+import { CLICK_MOVE_FORWARD_CONE, angleDelta, clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, facingToward, latencyAdjustedStopDistance, manualMovementOverrides, stepAngleToward } from '../src/game/click_move';
 
 const NO_INPUT = { forward: false, back: false, turnLeft: false, turnRight: false, strafeLeft: false, strafeRight: false, jump: false };
-
-describe('action-camera steering (cameraRelativeMoveFacing)', () => {
-  const wrap = (a: number) => angleDelta(0, a); // normalize to (-pi, pi]
-  it('forward runs straight along the camera heading', () => {
-    expect(cameraRelativeMoveFacing({ ...NO_INPUT, forward: true }, 1.3)).toBeCloseTo(1.3);
-  });
-  it('strafe-right rotates the body 90° clockwise (toward screen-right)', () => {
-    expect(wrap(cameraRelativeMoveFacing({ ...NO_INPUT, strafeRight: true }, 0)!)).toBeCloseTo(-Math.PI / 2);
-  });
-  it('strafe-left rotates the body 90° counter-clockwise', () => {
-    expect(wrap(cameraRelativeMoveFacing({ ...NO_INPUT, strafeLeft: true }, 0)!)).toBeCloseTo(Math.PI / 2);
-  });
-  it('back turns the body around to run away from the camera', () => {
-    expect(Math.abs(wrap(cameraRelativeMoveFacing({ ...NO_INPUT, back: true }, 0)!))).toBeCloseTo(Math.PI);
-  });
-  it('forward+right runs along the 45° diagonal', () => {
-    expect(wrap(cameraRelativeMoveFacing({ ...NO_INPUT, forward: true, strafeRight: true }, 0)!)).toBeCloseTo(-Math.PI / 4);
-  });
-  it('returns null when there is no directional input (offset stays untouched)', () => {
-    expect(cameraRelativeMoveFacing({ ...NO_INPUT, jump: true }, 2.0)).toBeNull();
-    expect(cameraRelativeMoveFacing({ ...NO_INPUT, forward: true, back: true, strafeLeft: true, strafeRight: true }, 2.0)).toBeNull();
-  });
-});
 
 describe('click-to-move math (#95)', () => {
   it('walks forward and faces the destination while far away', () => {
@@ -38,6 +15,13 @@ describe('click-to-move math (#95)', () => {
     const step = clickMoveStep({ x: 0, z: 0 }, { x: 0, z: 4 }, 5);
     expect(step.forward).toBe(false);
     expect(step.arrived).toBe(true);
+  });
+
+  it('expands the online stop distance by capped input echo latency', () => {
+    expect(latencyAdjustedStopDistance(0.5, 0, 7, 1.6)).toBeCloseTo(0.5);
+    expect(latencyAdjustedStopDistance(0.5, 100, 7, 1.6)).toBeCloseTo(1.2);
+    expect(latencyAdjustedStopDistance(0.5, 1000, 7, 1.6)).toBeCloseTo(2.1);
+    expect(latencyAdjustedStopDistance(0.5, -20, 7, 1.6)).toBeCloseTo(0.5);
   });
 
   it('faces +z and +x correctly (sim atan2(dx, dz) convention)', () => {

@@ -8,7 +8,7 @@ import { Hud } from './ui/hud';
 import { audio } from './game/audio';
 import { music } from './game/music';
 import { handlePickedEntity, hoverCursorKind } from './game/interactions';
-import { cameraRelativeMoveFacing, clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, distance2d, stepAngleToward } from './game/click_move';
+import { clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, distance2d, latencyAdjustedStopDistance, stepAngleToward } from './game/click_move';
 import { Api, ClientWorld, CharacterSummary, type ReleaseEntry } from './net/online';
 import type { IWorld, LeaderboardEntry } from './world_api';
 import { findPlayerPath, resolvePlayerDestination } from './sim/pathfind';
@@ -17,7 +17,7 @@ import { formatXp } from './ui/xp_bar';
 import { assetsReady } from './render/assets/preload';
 import { CharacterPreview } from './render/characters';
 import { skinCount } from './render/characters/manifest';
-import { DT, INTERACT_RANGE, MELEE_RANGE, PlayerClass, dist2d } from './sim/types';
+import { DT, INTERACT_RANGE, MELEE_RANGE, PlayerClass, RUN_SPEED, dist2d } from './sim/types';
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
@@ -28,7 +28,7 @@ import { hydrateIcons } from './ui/ui_icons';
 import { portraitChipHtml, hydratePortraits } from './ui/portrait_chip';
 import { playerPortraitDataUrl } from './render/characters/portrait';
 import { createPerfMonitor } from './game/perf';
-import { cameraIsManual, updateFollowCameraYaw, wrapAngle } from './game/camera_follow';
+import { updateFollowCameraYaw, wrapAngle } from './game/camera_follow';
 
 
 const WORLD_SEED = 20061; // fixed: World of ClaudeCraft is a persistent place
@@ -38,6 +38,10 @@ const CLICK_MOVE_REROUTE_DISTANCE = 4; // yards; live entity targets can move th
 const CLICK_MOVE_FENCE_JUMP_LOOKAHEAD = 2; // yards ahead; auto-jump when a click-move path is about to cross a fence
 const CLICK_MOVE_STUCK_MS = 1100; // ms of no forward progress before we reroute around (then give up)
 const CLICK_MOVE_PROGRESS_EPSILON = 1.5; // yards of travel that counts as progress (a walking player clears this fast; a player hopping in place at a fence never does)
+const CLICK_MOVE_LATENCY_STOP_CAP_MS = 240; // avoid overshooting hosted click-move targets while preserving offline precision
+const CLICK_MOVE_LATENCY_STOP_MAX_EXTRA = 1.6; // yards; cap high-latency stop padding so clicks do not end obviously short
+const CLICK_MOVE_LATENCY_WAYPOINT_MAX_EXTRA = 0.8; // yards; helps online A* corners roll through despite input echo delay
+const ONLINE_SELF_RENDER_ALPHA_LEAD = 0.65; // fraction of a snapshot interval to reduce local-player visual delay online
 const ATTACK_MOVE_MELEE_STOP = 3.5; // yards; how close an attack-move approach stops from its target (inside melee)
 const ATTACK_MOVE_ACQUIRE_RANGE = 12; // yards; an attack-move toward open ground auto-targets a hostile this near
 // Aura kinds that stop the player from moving (mirrors the sim's isRooted/isStunned):
@@ -945,6 +949,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
   let last = performance.now();
   let acc = 0;
+  let onlineInputEchoMs = 0;
 
   // Camera follow state: keyboard turning advances facing in 20Hz sim steps,
   // so the camera tracks the player's render-interpolated facing per frame
@@ -953,26 +958,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   // eases back to zero so the camera settles in behind the character.
   let lastInterpFacing: number | null = null;
   let wasClickMoving = false;
-  // Smoothly-eased body heading while action-steering (mouse-camera move, or
-  // classic-mode Q/E strafe). Persists across ticks/frames so the turn animates
-  // toward the target instead of snapping. null when not action-steering.
-  let actionFacing: number | null = null;
-  function stepActionFacing(target: number, bodyFacing: number, dt: number): number {
-    const from = actionFacing ?? bodyFacing;
-    actionFacing = stepAngleToward(from, target, CLICK_MOVE_TURN_RATE * Math.max(0, dt));
-    return actionFacing;
-  }
   function updateCamera(frameDt: number, interpFacing: number): void {
     const mi = input.readMoveInput();
     const clickMoving = !!input.clickMoveTarget && !input.suspendMovement && !world.player.dead;
-    // The camera must not auto-follow the body whenever the mouse owns the heading
-    // (mouselook / mouse-camera mode) or while action-steering is turning the body
-    // (classic-mode Q/E strafe). Following then would chase a heading the mouse just
-    // set — that wobbled the click-to-move -> WASD handoff — or, with the body
-    // rotating under a following camera, spin. Hold the camera and let the body turn
-    // beneath it; the follower re-centers gently once steering ends.
-    const cameraDriven = input.isMouselookActive() || input.isMouseCameraMode()
-      || actionMove(mi) !== null;
     // When click-to-move ends, the player's facing snaps from the (camera-lagging)
     // travel bearing to camYaw in the same frame. lastInterpFacing still holds the
     // old travel bearing, so the rigid follow term would inject that whole stale
@@ -985,12 +973,10 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       interpFacing,
       frameDt,
       lastInterpFacing,
-      // Mouse Camera mode is camera-authoritative just like right-mouse mouselook,
-      // so the follow system must be bypassed (it reports mouselook=false on desktop).
-      mouselook: cameraIsManual(input.isMouselookActive(), input.isMouseCameraMode()),
+      mouselook: input.isMouselookActive(),
       moving: mi.forward || mi.strafeLeft || mi.strafeRight || clickMoving,
       clickMoving,
-      cameraDriven,
+      cameraDriven: input.isMouseCameraMode() && cameraMoveActive(),
       orbiting: input.leftDown && input.isCameraDragActive(),
     });
     input.camYaw = next.camYaw;
@@ -1001,7 +987,17 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   // the move flags plus an optional forced facing (mouselook angle, or the
   // bearing toward a click-to-move destination). Any manual movement, an open
   // modal, mouselook, death, or the option being switched off cancels click-to-move.
-  function resolveMove(mouselook: boolean, playerPos: { x: number; z: number }, playerFacing: number):
+  function clickMoveStopForCurrentWaypoint(latencyMs: number): number {
+    const cappedLatencyMs = Math.min(CLICK_MOVE_LATENCY_STOP_CAP_MS, Math.max(0, latencyMs));
+    return latencyAdjustedStopDistance(
+      input.isClickMoveFinalWaypoint() ? input.clickMoveStop : CLICK_MOVE_WAYPOINT_STOP,
+      cappedLatencyMs,
+      RUN_SPEED,
+      input.isClickMoveFinalWaypoint() ? CLICK_MOVE_LATENCY_STOP_MAX_EXTRA : CLICK_MOVE_LATENCY_WAYPOINT_MAX_EXTRA,
+    );
+  }
+
+  function resolveMove(mouselook: boolean, playerPos: { x: number; z: number }, playerFacing: number, latencyMs = 0):
     { mi: ReturnType<typeof input.readMoveInput>; facing: number | null } {
     attackMoveTick();
     const mi = input.readMoveInput();
@@ -1031,7 +1027,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
         let step = clickMoveStep(
           playerPos,
           waypoint,
-          input.isClickMoveFinalWaypoint() ? input.clickMoveStop : CLICK_MOVE_WAYPOINT_STOP,
+          clickMoveStopForCurrentWaypoint(latencyMs),
         );
         while (step.arrived && input.advanceClickMoveWaypoint()) {
           waypoint = input.clickMoveTarget;
@@ -1039,7 +1035,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
           step = clickMoveStep(
             playerPos,
             waypoint,
-            input.isClickMoveFinalWaypoint() ? input.clickMoveStop : CLICK_MOVE_WAYPOINT_STOP,
+            clickMoveStopForCurrentWaypoint(latencyMs),
           );
         }
         if (step.arrived) {
@@ -1114,31 +1110,16 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   }
 
   function renderFacingOverride(): number | null {
-    // Mouse-camera mode steers the body via actionMove, so it owns facing there —
-    // don't force camYaw (that snapped the body when keys netted to no direction,
-    // e.g. holding A then also D). Mouselook still aims the body at the camera.
-    if (input.isMouseCameraMode()) return null;
+    if (input.isMouseCameraMode()) {
+      return cameraMoveActive() ? input.camYaw : null;
+    }
     return input.isMouselookActive() && !world.player.dead ? input.camYaw : null;
   }
 
-  // Steer like click-to-move: rotate the character toward the camera-relative
-  // movement direction and run forward, instead of strafing/backpedalling. This
-  // applies for ALL movement in mouse-camera mode, and for the strafe keys (Q/E)
-  // in classic mode — there pressing strafe should turn the body and run, not
-  // slide sideways. Returns forward-only move flags + the *target* world heading
-  // (the caller eases the body toward it so the turn animates), or null when it
-  // doesn't apply (dead, mid click-to-move, or no qualifying directional key).
-  function actionMove(mi: ReturnType<typeof input.readMoveInput>):
-    { mi: ReturnType<typeof input.readMoveInput>; facing: number } | null {
-    if (world.player.dead || input.clickMoveTarget) return null;
-    const strafing = mi.strafeLeft || mi.strafeRight;
-    if (!input.isMouseCameraMode() && !strafing) return null;
-    const facing = cameraRelativeMoveFacing(mi, input.camYaw);
-    if (facing === null) return null;
-    return {
-      mi: { forward: true, back: false, turnLeft: false, turnRight: false, strafeLeft: false, strafeRight: false, jump: mi.jump },
-      facing,
-    };
+  function cameraMoveActive(): boolean {
+    if (!input.isMouseCameraMode()) return false;
+    const mi = input.readMoveInput();
+    return !!(mi.forward || mi.back || mi.strafeLeft || mi.strafeRight) && !world.player.dead;
   }
 
   function frame(now: number): void {
@@ -1164,17 +1145,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       acc += frameDt;
       while (acc >= DT) {
         const { mi, facing } = resolveMove(mouselook, offlineSim.player.pos, offlineSim.player.facing);
-        const act = actionMove(mi);
-        if (act) {
-          Object.assign(offlineSim.moveInput, act.mi);
-          // ease the body toward the steer heading so the turn animates
-          offlineSim.player.facing = stepActionFacing(act.facing, offlineSim.player.facing, DT);
-        } else {
-          actionFacing = null;
-          Object.assign(offlineSim.moveInput, mi);
-          const stepFacing = movementFacing ?? facing;
-          if (stepFacing !== null) offlineSim.player.facing = stepFacing;
-        }
+        Object.assign(offlineSim.moveInput, mi);
+        const stepFacing = movementFacing ?? facing;
+        if (stepFacing !== null) offlineSim.player.facing = stepFacing;
         perf.markInputSent(performance.now());
         const events = perf.time('sim', () => offlineSim.tick());
         perf.time('events', () => hud.handleEvents(events));
@@ -1186,10 +1159,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       renderer.camPitch = input.camPitch;
       renderer.camDist = input.camDist;
       perf.setNetwork(null);
-      // while action-steering the body facing IS the eased value; the renderer
-      // interpolates it across ticks, so no instant-snap override is needed.
-      const modelFacing = actionFacing !== null ? null : movementFacing;
-      perf.time('renderer', () => renderer.sync(acc / DT, frameDt, modelFacing));
+      perf.time('renderer', () => renderer.sync(acc / DT, frameDt, movementFacing));
       updateClickMoveMarker();
       perf.markInputVisible(performance.now());
       perf.time('hud', () => hud.update());
@@ -1199,21 +1169,17 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
     // online: inputs stream on a timer inside ClientWorld; here we mirror state
     const net = online!;
-    const resolved = resolveMove(mouselook, world.player.pos, world.player.facing);
-    const act = actionMove(resolved.mi);
-    let netFacing: number | null;
-    if (act) {
-      Object.assign(net.moveInput, act.mi);
-      // ease the body toward the steer heading so the turn animates
-      netFacing = stepActionFacing(act.facing, world.player.facing, frameDt);
-    } else {
-      actionFacing = null;
-      Object.assign(net.moveInput, resolved.mi);
-      netFacing = movementFacing ?? resolved.facing;
-    }
+    const resolved = resolveMove(mouselook, world.player.pos, world.player.facing, onlineInputEchoMs);
+    const netFacing = movementFacing ?? resolved.facing;
+    Object.assign(net.moveInput, resolved.mi);
     net.setMouselookFacing(netFacing);
     if (net.flushInput()) perf.markInputSent(performance.now());
-    for (const sample of net.consumeInputEchoSamples()) perf.markInputEcho(sample);
+    for (const sample of net.consumeInputEchoSamples()) {
+      if (Number.isFinite(sample) && sample >= 0) {
+        onlineInputEchoMs = onlineInputEchoMs === 0 ? sample : onlineInputEchoMs + 0.2 * (sample - onlineInputEchoMs);
+      }
+      perf.markInputEcho(sample);
+    }
     net.pendingFacingDelta = 0; // superseded by the interpolated follow below
     perf.time('events', () => hud.handleEvents(net.drainEvents()));
     if (net.consumeProfanityChanged()) hud.setProfanityWords(net.profanityWords);
@@ -1233,10 +1199,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     renderer.camYaw = input.camYaw;
     renderer.camPitch = input.camPitch;
     renderer.camDist = input.camDist;
-    // online server facing lags the input round-trip, so while action-steering
-    // show the locally-eased heading directly; otherwise the usual override.
-    const modelFacing = act ? actionFacing : movementFacing;
-    perf.time('renderer', () => renderer.sync(alpha, frameDt, modelFacing));
+    perf.time('renderer', () => renderer.sync(alpha, frameDt, movementFacing, ONLINE_SELF_RENDER_ALPHA_LEAD));
     updateClickMoveMarker();
     maybeShowImmobileNote(now);
     perf.markInputVisible(performance.now());

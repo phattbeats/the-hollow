@@ -50,6 +50,19 @@ export function clickMoveStep(player: Point2, target: Point2, stopDistance: numb
   return { facing: facingToward(player, target), forward: true, arrived: false };
 }
 
+export function latencyAdjustedStopDistance(
+  stopDistance: number,
+  latencyMs: number,
+  speedYardsPerSecond: number,
+  maxExtraDistance: number,
+): number {
+  if (!Number.isFinite(latencyMs) || !Number.isFinite(speedYardsPerSecond) || !Number.isFinite(maxExtraDistance)) {
+    return stopDistance;
+  }
+  const extra = Math.min(Math.max(0, maxExtraDistance), Math.max(0, speedYardsPerSecond) * Math.max(0, latencyMs) / 1000);
+  return stopDistance + extra;
+}
+
 // Only walk forward while roughly aimed at the destination. Movement is
 // applied along the player's (smoothed) facing at full speed, but facing turns
 // at a capped rate. Close to the target the bearing swings faster than we can
@@ -61,30 +74,6 @@ export const CLICK_MOVE_FORWARD_CONE = Math.PI / 3; // 60° either side of the b
 
 export function clickMoveShouldWalk(facing: number, bearing: number, cone = CLICK_MOVE_FORWARD_CONE): boolean {
   return Math.abs(angleDelta(facing, bearing)) <= cone;
-}
-
-// Action-camera steering: in mouse-camera mode the camera owns the heading, so
-// WASD should rotate the character toward the camera-relative movement direction
-// and run forward — like click-to-move — instead of strafing/backpedalling while
-// always facing the camera (which plays a forward run while sliding sideways).
-// Returns the world facing to run toward, or null when there is no directional
-// input (so the caller can leave facing/animation untouched).
-//
-// Sim convention: facing f points along (sin f, cos f); world-right is
-// (-cos f, sin f). With local intent mx = strafe-right, mz = forward, the heading
-// that runs straight along (mx, mz) is camYaw + atan2(-mx, mz).
-export function cameraRelativeMoveFacing(
-  mi: { forward: boolean; back: boolean; strafeLeft: boolean; strafeRight: boolean;
-        turnLeft?: boolean; turnRight?: boolean; jump?: boolean },
-  camYaw: number,
-): number | null {
-  let mx = 0, mz = 0;
-  if (mi.forward) mz += 1;
-  if (mi.back) mz -= 1;
-  if (mi.strafeLeft) mx -= 1;
-  if (mi.strafeRight) mx += 1;
-  if (mx === 0 && mz === 0) return null;
-  return camYaw + Math.atan2(-mx, mz);
 }
 
 // Any deliberate *directional* movement key cancels click-to-move, like every
