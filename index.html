@@ -4208,6 +4208,12 @@
   body.mobile-touch .community-link.donate { display: inline-flex; width: 100%; padding: 0 9px; font-size: 12px; }
   body.mobile-touch #chatlog-wrap { left: max(10px, env(safe-area-inset-left)); bottom: calc(160px + env(safe-area-inset-bottom)); width: min(340px, calc(100vw - 20px)); display: none; z-index: 24; }
   body.mobile-touch.mobile-chat-open #chatlog-wrap { display: block; }
+  /* Long-pressing the Chat button toggles a read-only peek at the log without
+     raising the keyboard composer. It must not eat taps meant for the world. */
+  body.mobile-touch.mobile-chatlog-peek #chatlog-wrap { display: block; pointer-events: none; }
+  body.mobile-touch.mobile-chatlog-peek #mobile-chat {
+    border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold), 0 0 10px #c9a84d66;
+  }
   body.mobile-touch #chatlog-frame { height: 126px; }
   body.mobile-touch #chatlog-tabs { transform: scale(0.92); transform-origin: left bottom; }
   body.mobile-touch #chat-input {
