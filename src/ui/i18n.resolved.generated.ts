@@ -2363,6 +2363,66 @@ export const en: EnTranslations = {
       "mossy_handwraps": {
         "name": "Mossgrown Handwraps"
       },
+      "crossroads_saber": {
+        "name": "Crossroads Saber"
+      },
+      "tradesman_hatchet": {
+        "name": "Tradesman's Hatchet"
+      },
+      "drovers_staff": {
+        "name": "Drover's Staff"
+      },
+      "caravan_warden_dirk": {
+        "name": "Caravan Warden Dirk"
+      },
+      "outrider_brigandine": {
+        "name": "Outrider Brigandine"
+      },
+      "caravan_quilted_vest": {
+        "name": "Caravan Quilted Vest"
+      },
+      "wanderers_chestguard": {
+        "name": "Wanderer's Chestguard"
+      },
+      "outrider_legguards": {
+        "name": "Outrider Legguards"
+      },
+      "trail_leggings": {
+        "name": "Trailworn Leggings"
+      },
+      "pilgrims_leggings": {
+        "name": "Pilgrim's Leggings"
+      },
+      "outrider_sabatons": {
+        "name": "Outrider Sabatons"
+      },
+      "milepost_boots": {
+        "name": "Milepost Boots"
+      },
+      "glade_pelt": {
+        "name": "Glade Pelt"
+      },
+      "soft_down": {
+        "name": "Soft Down Tuft"
+      },
+      "amber_hide": {
+        "name": "Amber Hide"
+      },
+      "stag_antler": {
+        "name": "Branching Antler"
+      },
+      "brightwood_venison": {
+        "name": "Brightwood Venison"
+      },
+      "bramblehide_jerkin": {
+        "name": "Bramblehide Jerkin"
+      },
+      "monarch_crown_helm": {
+        "name": "Monarch's Crown"
+      },
+      "monarch_heart": {
+        "name": "The Monarch's Heart"
+      },
       "bristleback_maul": {
         "name": "Bristleback Maul"
       },
@@ -2896,6 +2956,39 @@ export const en: EnTranslations = {
       "bound_guardian": {
         "name": "The Bound Guardian"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "Elder Bristleback"
       },
@@ -3109,6 +3202,11 @@ export const en: EnTranslations = {
         "name": "Loremaster Caddis",
         "title": "Loremaster",
         "greeting": "Mind the loose shale, {className}. The mountain has been... restless of late. I intend to learn why."
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -3839,6 +3937,135 @@ export const en: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "Mogger's Trail",
         "text": "Before you take the road north, Eastbrook has one last thorn in its side: Mogger. The brute has been trampling the lower meadow and driving the boars mad. Clear the meadow around his trail so we can see where he lairs.",
@@ -3951,6 +4178,9 @@ export const en: EnTranslations = {
           },
           "7": {
             "label": "Fallen Chapel"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -6411,6 +6641,66 @@ export const es: EnTranslations = {
       "mossy_handwraps": {
         "name": "Envolturas cubiertas de musgo"
       },
+      "crossroads_saber": {
+        "name": "Sable de la Encrucijada"
+      },
+      "tradesman_hatchet": {
+        "name": "Hachuela del mercader"
+      },
+      "drovers_staff": {
+        "name": "Bastón del arriero"
+      },
+      "caravan_warden_dirk": {
+        "name": "Daga del guardián de caravana"
+      },
+      "outrider_brigandine": {
+        "name": "Brigantina del jinete de avanzada"
+      },
+      "caravan_quilted_vest": {
+        "name": "Chaleco acolchado de caravana"
+      },
+      "wanderers_chestguard": {
+        "name": "Peto del vagabundo"
+      },
+      "outrider_legguards": {
+        "name": "Quijotes del jinete de avanzada"
+      },
+      "trail_leggings": {
+        "name": "Leotardos gastados del camino"
+      },
+      "pilgrims_leggings": {
+        "name": "Leotardos del peregrino"
+      },
+      "outrider_sabatons": {
+        "name": "Escarpes del jinete de avanzada"
+      },
+      "milepost_boots": {
+        "name": "Botas de hito"
+      },
+      "glade_pelt": {
+        "name": "Piel del claro"
+      },
+      "soft_down": {
+        "name": "Mechón de plumón suave"
+      },
+      "amber_hide": {
+        "name": "Piel ambarina"
+      },
+      "stag_antler": {
+        "name": "Asta ramificada"
+      },
+      "brightwood_venison": {
+        "name": "Venado de Brightwood"
+      },
+      "bramblehide_jerkin": {
+        "name": "Jubón de piel de zarza"
+      },
+      "monarch_crown_helm": {
+        "name": "Corona del Monarca"
+      },
+      "monarch_heart": {
+        "name": "El Corazón del Monarca"
+      },
       "bristleback_maul": {
         "name": "Maza Bristleback"
       },
@@ -6944,6 +7234,39 @@ export const es: EnTranslations = {
       "bound_guardian": {
         "name": "Guardián Vinculado"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "Viejo Bristleback"
       },
@@ -7157,6 +7480,11 @@ export const es: EnTranslations = {
         "name": "Maestro de saber Caddis",
         "title": "Maestro de saber",
         "greeting": "Cuida la pizarra suelta, {className}. La montaña está inquieta últimamente y quiero saber por qué."
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -7887,6 +8215,135 @@ export const es: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "El rastro de Mogger",
         "text": "Antes de tomar el camino al norte, Eastbrook tiene una última espina clavada: Mogger. La bestia pisotea el prado bajo y enloquece a los jabalíes. Limpia la zona de su rastro para que veamos dónde se esconde.",
@@ -7999,6 +8456,9 @@ export const es: EnTranslations = {
           },
           "7": {
             "label": "Capilla caída"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -10459,6 +10919,66 @@ export const es_ES: EnTranslations = {
       "mossy_handwraps": {
         "name": "Envolturas cubiertas de musgo"
       },
+      "crossroads_saber": {
+        "name": "Sable de la Encrucijada"
+      },
+      "tradesman_hatchet": {
+        "name": "Hachuela del mercader"
+      },
+      "drovers_staff": {
+        "name": "Bastón del arriero"
+      },
+      "caravan_warden_dirk": {
+        "name": "Daga del guardián de caravana"
+      },
+      "outrider_brigandine": {
+        "name": "Brigantina del jinete de avanzada"
+      },
+      "caravan_quilted_vest": {
+        "name": "Chaleco acolchado de caravana"
+      },
+      "wanderers_chestguard": {
+        "name": "Peto del vagabundo"
+      },
+      "outrider_legguards": {
+        "name": "Quijotes del jinete de avanzada"
+      },
+      "trail_leggings": {
+        "name": "Leotardos gastados del camino"
+      },
+      "pilgrims_leggings": {
+        "name": "Leotardos del peregrino"
+      },
+      "outrider_sabatons": {
+        "name": "Escarpes del jinete de avanzada"
+      },
+      "milepost_boots": {
+        "name": "Botas de hito"
+      },
+      "glade_pelt": {
+        "name": "Piel del claro"
+      },
+      "soft_down": {
+        "name": "Mechón de plumón suave"
+      },
+      "amber_hide": {
+        "name": "Piel ambarina"
+      },
+      "stag_antler": {
+        "name": "Asta ramificada"
+      },
+      "brightwood_venison": {
+        "name": "Venado de Brightwood"
+      },
+      "bramblehide_jerkin": {
+        "name": "Jubón de piel de zarza"
+      },
+      "monarch_crown_helm": {
+        "name": "Corona del Monarca"
+      },
+      "monarch_heart": {
+        "name": "El Corazón del Monarca"
+      },
       "bristleback_maul": {
         "name": "Maza Bristleback"
       },
@@ -10992,6 +11512,39 @@ export const es_ES: EnTranslations = {
       "bound_guardian": {
         "name": "Guardián Vinculado"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "Viejo Bristleback"
       },
@@ -11205,6 +11758,11 @@ export const es_ES: EnTranslations = {
         "name": "Maestro de saber Caddis",
         "title": "Maestro de saber",
         "greeting": "Cuida la pizarra suelta, {className}. La montaña está inquieta últimamente y quiero saber por qué."
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -11935,6 +12493,135 @@ export const es_ES: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "El rastro de Mogger",
         "text": "Antes de tomar el camino al norte, Eastbrook tiene una última espina clavada: Mogger. La bestia pisotea el prado bajo y enloquece a los jabalíes. Limpia la zona de su rastro para que veamos dónde se esconde.",
@@ -12047,6 +12734,9 @@ export const es_ES: EnTranslations = {
           },
           "7": {
             "label": "Capilla caída"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -14507,6 +15197,66 @@ export const fr_FR: EnTranslations = {
       "mossy_handwraps": {
         "name": "Mitaines moussues"
       },
+      "crossroads_saber": {
+        "name": "Sabre du carrefour"
+      },
+      "tradesman_hatchet": {
+        "name": "Hachette du marchand"
+      },
+      "drovers_staff": {
+        "name": "Bâton du bouvier"
+      },
+      "caravan_warden_dirk": {
+        "name": "Dague du gardien de caravane"
+      },
+      "outrider_brigandine": {
+        "name": "Brigandine de l'éclaireur"
+      },
+      "caravan_quilted_vest": {
+        "name": "Veste matelassée de caravane"
+      },
+      "wanderers_chestguard": {
+        "name": "Plastron du vagabond"
+      },
+      "outrider_legguards": {
+        "name": "Jambières de l'éclaireur"
+      },
+      "trail_leggings": {
+        "name": "Jambières usées par la route"
+      },
+      "pilgrims_leggings": {
+        "name": "Jambières du pèlerin"
+      },
+      "outrider_sabatons": {
+        "name": "Solerets de l'éclaireur"
+      },
+      "milepost_boots": {
+        "name": "Bottes de borne"
+      },
+      "glade_pelt": {
+        "name": "Fourrure de clairière"
+      },
+      "soft_down": {
+        "name": "Touffe de duvet doux"
+      },
+      "amber_hide": {
+        "name": "Peau d'ambre"
+      },
+      "stag_antler": {
+        "name": "Andouiller ramifié"
+      },
+      "brightwood_venison": {
+        "name": "Venaison de Brightwood"
+      },
+      "bramblehide_jerkin": {
+        "name": "Justaucorps en peau de ronces"
+      },
+      "monarch_crown_helm": {
+        "name": "Couronne du Monarque"
+      },
+      "monarch_heart": {
+        "name": "Le Cœur du Monarque"
+      },
       "bristleback_maul": {
         "name": "Maillet Bristleback"
       },
@@ -15040,6 +15790,39 @@ export const fr_FR: EnTranslations = {
       "bound_guardian": {
         "name": "Gardien lié"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "Ancien Bristleback"
       },
@@ -15253,6 +16036,11 @@ export const fr_FR: EnTranslations = {
         "name": "Maître du savoir Caddis",
         "title": "Maître du savoir",
         "greeting": "Méfiez-vous des schistes instables, {className}. La montagne est agitée ces temps-ci, et je veux savoir pourquoi."
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -15983,6 +16771,135 @@ export const fr_FR: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "La piste de Mogger",
         "text": "Avant de prendre la route du nord, Eastbrook a une dernière épine dans le pied : Mogger. La brute piétine le pré bas et rend les sangliers fous. Nettoyez le pré autour de sa piste pour que nous voyions où il se terre.",
@@ -16095,6 +17012,9 @@ export const fr_FR: EnTranslations = {
           },
           "7": {
             "label": "Chapelle tombée"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -18555,6 +19475,66 @@ export const fr_CA: EnTranslations = {
       "mossy_handwraps": {
         "name": "Mitaines moussues"
       },
+      "crossroads_saber": {
+        "name": "Sabre du carrefour"
+      },
+      "tradesman_hatchet": {
+        "name": "Hachette du marchand"
+      },
+      "drovers_staff": {
+        "name": "Bâton du bouvier"
+      },
+      "caravan_warden_dirk": {
+        "name": "Dague du gardien de caravane"
+      },
+      "outrider_brigandine": {
+        "name": "Brigandine de l'éclaireur"
+      },
+      "caravan_quilted_vest": {
+        "name": "Veste matelassée de caravane"
+      },
+      "wanderers_chestguard": {
+        "name": "Plastron du vagabond"
+      },
+      "outrider_legguards": {
+        "name": "Jambières de l'éclaireur"
+      },
+      "trail_leggings": {
+        "name": "Jambières usées par la route"
+      },
+      "pilgrims_leggings": {
+        "name": "Jambières du pèlerin"
+      },
+      "outrider_sabatons": {
+        "name": "Solerets de l'éclaireur"
+      },
+      "milepost_boots": {
+        "name": "Bottes de borne"
+      },
+      "glade_pelt": {
+        "name": "Fourrure de clairière"
+      },
+      "soft_down": {
+        "name": "Touffe de duvet doux"
+      },
+      "amber_hide": {
+        "name": "Peau d'ambre"
+      },
+      "stag_antler": {
+        "name": "Andouiller ramifié"
+      },
+      "brightwood_venison": {
+        "name": "Venaison de Brightwood"
+      },
+      "bramblehide_jerkin": {
+        "name": "Justaucorps en peau de ronces"
+      },
+      "monarch_crown_helm": {
+        "name": "Couronne du Monarque"
+      },
+      "monarch_heart": {
+        "name": "Le Cœur du Monarque"
+      },
       "bristleback_maul": {
         "name": "Maillet Bristleback"
       },
@@ -19088,6 +20068,39 @@ export const fr_CA: EnTranslations = {
       "bound_guardian": {
         "name": "Gardien lié"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "Ancien Bristleback"
       },
@@ -19301,6 +20314,11 @@ export const fr_CA: EnTranslations = {
         "name": "Maître du savoir Caddis",
         "title": "Maître du savoir",
         "greeting": "Méfiez-vous des schistes instables, {className}. La montagne est agitée ces temps-ci, et je veux savoir pourquoi."
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -20031,6 +21049,135 @@ export const fr_CA: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "La piste de Mogger",
         "text": "Avant de prendre la route du nord, Eastbrook a une dernière épine dans le pied : Mogger. La brute piétine le pré bas et rend les sangliers fous. Nettoyez le pré autour de sa piste pour que nous voyions où il se terre.",
@@ -20143,6 +21290,9 @@ export const fr_CA: EnTranslations = {
           },
           "7": {
             "label": "Chapelle tombée"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -22603,6 +23753,66 @@ export const en_CA: EnTranslations = {
       "mossy_handwraps": {
         "name": "Mossgrown Handwraps"
       },
+      "crossroads_saber": {
+        "name": "Crossroads Saber"
+      },
+      "tradesman_hatchet": {
+        "name": "Tradesman's Hatchet"
+      },
+      "drovers_staff": {
+        "name": "Drover's Staff"
+      },
+      "caravan_warden_dirk": {
+        "name": "Caravan Warden Dirk"
+      },
+      "outrider_brigandine": {
+        "name": "Outrider Brigandine"
+      },
+      "caravan_quilted_vest": {
+        "name": "Caravan Quilted Vest"
+      },
+      "wanderers_chestguard": {
+        "name": "Wanderer's Chestguard"
+      },
+      "outrider_legguards": {
+        "name": "Outrider Legguards"
+      },
+      "trail_leggings": {
+        "name": "Trailworn Leggings"
+      },
+      "pilgrims_leggings": {
+        "name": "Pilgrim's Leggings"
+      },
+      "outrider_sabatons": {
+        "name": "Outrider Sabatons"
+      },
+      "milepost_boots": {
+        "name": "Milepost Boots"
+      },
+      "glade_pelt": {
+        "name": "Glade Pelt"
+      },
+      "soft_down": {
+        "name": "Soft Down Tuft"
+      },
+      "amber_hide": {
+        "name": "Amber Hide"
+      },
+      "stag_antler": {
+        "name": "Branching Antler"
+      },
+      "brightwood_venison": {
+        "name": "Brightwood Venison"
+      },
+      "bramblehide_jerkin": {
+        "name": "Bramblehide Jerkin"
+      },
+      "monarch_crown_helm": {
+        "name": "Monarch's Crown"
+      },
+      "monarch_heart": {
+        "name": "The Monarch's Heart"
+      },
       "bristleback_maul": {
         "name": "Bristleback Maul"
       },
@@ -23136,6 +24346,39 @@ export const en_CA: EnTranslations = {
       "bound_guardian": {
         "name": "The Bound Guardian"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "Elder Bristleback"
       },
@@ -23349,6 +24592,11 @@ export const en_CA: EnTranslations = {
         "name": "Loremaster Caddis",
         "title": "Loremaster",
         "greeting": "Mind the loose shale, {className}. The mountain has been... restless of late. I intend to learn why."
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -24079,6 +25327,135 @@ export const en_CA: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "Mogger's Trail",
         "text": "Before you take the road north, Eastbrook has one last thorn in its side: Mogger. The brute has been trampling the lower meadow and driving the boars mad. Clear the meadow around his trail so we can see where he lairs.",
@@ -24191,6 +25568,9 @@ export const en_CA: EnTranslations = {
           },
           "7": {
             "label": "Fallen Chapel"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -26651,6 +28031,66 @@ export const it_IT: EnTranslations = {
       "mossy_handwraps": {
         "name": "Manopole muschiose"
       },
+      "crossroads_saber": {
+        "name": "Sciabola del crocevia"
+      },
+      "tradesman_hatchet": {
+        "name": "Accetta del mercante"
+      },
+      "drovers_staff": {
+        "name": "Bastone del mandriano"
+      },
+      "caravan_warden_dirk": {
+        "name": "Pugnale del guardiano della carovana"
+      },
+      "outrider_brigandine": {
+        "name": "Brigantina dell'esploratore"
+      },
+      "caravan_quilted_vest": {
+        "name": "Farsetto trapuntato da carovana"
+      },
+      "wanderers_chestguard": {
+        "name": "Corazza del viandante"
+      },
+      "outrider_legguards": {
+        "name": "Gambali dell'esploratore"
+      },
+      "trail_leggings": {
+        "name": "Gambali logori del cammino"
+      },
+      "pilgrims_leggings": {
+        "name": "Gambali del pellegrino"
+      },
+      "outrider_sabatons": {
+        "name": "Scarpe d'arme dell'esploratore"
+      },
+      "milepost_boots": {
+        "name": "Stivali della pietra miliare"
+      },
+      "glade_pelt": {
+        "name": "Pelliccia della radura"
+      },
+      "soft_down": {
+        "name": "Ciuffo di piumino morbido"
+      },
+      "amber_hide": {
+        "name": "Pelle d'ambra"
+      },
+      "stag_antler": {
+        "name": "Corno ramificato"
+      },
+      "brightwood_venison": {
+        "name": "Selvaggina di Brightwood"
+      },
+      "bramblehide_jerkin": {
+        "name": "Giubbotto di pelle di rovo"
+      },
+      "monarch_crown_helm": {
+        "name": "Corona del Monarca"
+      },
+      "monarch_heart": {
+        "name": "Il Cuore del Monarca"
+      },
       "bristleback_maul": {
         "name": "Maglio Bristleback"
       },
@@ -27184,6 +28624,39 @@ export const it_IT: EnTranslations = {
       "bound_guardian": {
         "name": "Guardiano Vincolato"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "Bristleback anziano"
       },
@@ -27397,6 +28870,11 @@ export const it_IT: EnTranslations = {
         "name": "Maestro del sapere Caddis",
         "title": "Maestro del sapere",
         "greeting": "Fai attenzione allo scisto instabile, {className}. La montagna è inquieta da qualche tempo, e voglio sapere perché."
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -28127,6 +29605,135 @@ export const it_IT: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "La traccia di Mogger",
         "text": "Prima di prendere la strada a nord, Eastbrook ha un'ultima spina nel fianco: Mogger. Il bruto calpesta il prato basso e fa impazzire i cinghiali. Ripulisci il prato attorno alla sua traccia per scoprire dove si tana.",
@@ -28239,6 +29846,9 @@ export const it_IT: EnTranslations = {
           },
           "7": {
             "label": "Cappella caduta"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -30699,6 +32309,66 @@ export const de_DE: EnTranslations = {
       "mossy_handwraps": {
         "name": "Bemooste Handwickel"
       },
+      "crossroads_saber": {
+        "name": "Kreuzweg-Säbel"
+      },
+      "tradesman_hatchet": {
+        "name": "Beil des Händlers"
+      },
+      "drovers_staff": {
+        "name": "Stab des Viehtreibers"
+      },
+      "caravan_warden_dirk": {
+        "name": "Karawanenwächter-Dolch"
+      },
+      "outrider_brigandine": {
+        "name": "Vorreiter-Brigantine"
+      },
+      "caravan_quilted_vest": {
+        "name": "Gesteppte Karawanenweste"
+      },
+      "wanderers_chestguard": {
+        "name": "Wanderer-Brustschutz"
+      },
+      "outrider_legguards": {
+        "name": "Vorreiter-Beinschienen"
+      },
+      "trail_leggings": {
+        "name": "Abgewetzte Wegbeinlinge"
+      },
+      "pilgrims_leggings": {
+        "name": "Pilgerbeinlinge"
+      },
+      "outrider_sabatons": {
+        "name": "Vorreiter-Panzerstiefel"
+      },
+      "milepost_boots": {
+        "name": "Meilenstein-Stiefel"
+      },
+      "glade_pelt": {
+        "name": "Lichtungsfell"
+      },
+      "soft_down": {
+        "name": "Weicher Daunenbüschel"
+      },
+      "amber_hide": {
+        "name": "Bernsteinhaut"
+      },
+      "stag_antler": {
+        "name": "Verzweigtes Geweih"
+      },
+      "brightwood_venison": {
+        "name": "Hellholz-Wildbret"
+      },
+      "bramblehide_jerkin": {
+        "name": "Dornhaut-Wams"
+      },
+      "monarch_crown_helm": {
+        "name": "Krone des Monarchen"
+      },
+      "monarch_heart": {
+        "name": "Das Herz des Monarchen"
+      },
       "bristleback_maul": {
         "name": "Bristleback-Schlägel"
       },
@@ -31232,6 +32902,39 @@ export const de_DE: EnTranslations = {
       "bound_guardian": {
         "name": "Gebundener Wächter"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "Alter Bristleback"
       },
@@ -31445,6 +33148,11 @@ export const de_DE: EnTranslations = {
         "name": "Lehrmeister Caddis",
         "title": "Lehrmeister",
         "greeting": "Achte auf lockeren Schiefer, {className}. Der Berg ist unruhig geworden, und ich will wissen warum."
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -32175,6 +33883,135 @@ export const de_DE: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "Moggers Spur",
         "text": "Bevor du die Straße nach Norden nimmst, hat Eastbrook noch einen letzten Dorn im Fleisch: Mogger. Der Grobian zertrampelt die untere Wiese und treibt die Eber in den Wahnsinn. Säubere die Wiese um seine Spur, damit wir sehen, wo er haust.",
@@ -32287,6 +34124,9 @@ export const de_DE: EnTranslations = {
           },
           "7": {
             "label": "Gefallene Kapelle"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -34747,6 +36587,66 @@ export const zh_CN: EnTranslations = {
       "mossy_handwraps": {
         "name": "苔藓护手"
       },
+      "crossroads_saber": {
+        "name": "十字路口军刀"
+      },
+      "tradesman_hatchet": {
+        "name": "商贩短斧"
+      },
+      "drovers_staff": {
+        "name": "赶牲人之杖"
+      },
+      "caravan_warden_dirk": {
+        "name": "商队守卫匕首"
+      },
+      "outrider_brigandine": {
+        "name": "哨骑镶钉甲"
+      },
+      "caravan_quilted_vest": {
+        "name": "商队衬垫背心"
+      },
+      "wanderers_chestguard": {
+        "name": "漫游者护胸"
+      },
+      "outrider_legguards": {
+        "name": "哨骑护腿"
+      },
+      "trail_leggings": {
+        "name": "磨损的旅途护腿"
+      },
+      "pilgrims_leggings": {
+        "name": "朝圣者护腿"
+      },
+      "outrider_sabatons": {
+        "name": "哨骑战靴"
+      },
+      "milepost_boots": {
+        "name": "里程靴"
+      },
+      "glade_pelt": {
+        "name": "林间兽皮"
+      },
+      "soft_down": {
+        "name": "柔软绒毛"
+      },
+      "amber_hide": {
+        "name": "琥珀兽皮"
+      },
+      "stag_antler": {
+        "name": "分叉鹿角"
+      },
+      "brightwood_venison": {
+        "name": "明木鹿肉"
+      },
+      "bramblehide_jerkin": {
+        "name": "棘皮皮衣"
+      },
+      "monarch_crown_helm": {
+        "name": "君主之冠"
+      },
+      "monarch_heart": {
+        "name": "君主之心"
+      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -35280,6 +37180,39 @@ export const zh_CN: EnTranslations = {
       "bound_guardian": {
         "name": "受缚守卫者"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "年长硬鬃"
       },
@@ -35493,6 +37426,11 @@ export const zh_CN: EnTranslations = {
         "name": "凯迪斯博学者",
         "title": "博学者",
         "greeting": "小心松动的页岩，{className}。这座山近来不安，我想知道原因。"
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "翁德雷尔·凡恩",
@@ -36223,6 +38161,135 @@ export const zh_CN: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "莫格的踪迹",
         "text": "在你踏上北路前，东溪还有最后一根刺：莫格。那蛮兽践踏下方草地，把野猪都逼疯了。清理它踪迹周围的草地，我们才能看出它藏在哪里。",
@@ -36335,6 +38402,9 @@ export const zh_CN: EnTranslations = {
           },
           "7": {
             "label": "倒塌礼拜堂"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -38795,6 +40865,66 @@ export const zh_TW: EnTranslations = {
       "mossy_handwraps": {
         "name": "苔蘚護手"
       },
+      "crossroads_saber": {
+        "name": "十字路口軍刀"
+      },
+      "tradesman_hatchet": {
+        "name": "商販短斧"
+      },
+      "drovers_staff": {
+        "name": "趕牲人之杖"
+      },
+      "caravan_warden_dirk": {
+        "name": "商隊守衛匕首"
+      },
+      "outrider_brigandine": {
+        "name": "哨騎鑲釘甲"
+      },
+      "caravan_quilted_vest": {
+        "name": "商隊襯墊背心"
+      },
+      "wanderers_chestguard": {
+        "name": "漫遊者護胸"
+      },
+      "outrider_legguards": {
+        "name": "哨騎護腿"
+      },
+      "trail_leggings": {
+        "name": "磨損的旅途護腿"
+      },
+      "pilgrims_leggings": {
+        "name": "朝聖者護腿"
+      },
+      "outrider_sabatons": {
+        "name": "哨騎戰靴"
+      },
+      "milepost_boots": {
+        "name": "里程靴"
+      },
+      "glade_pelt": {
+        "name": "林間獸皮"
+      },
+      "soft_down": {
+        "name": "柔軟絨毛"
+      },
+      "amber_hide": {
+        "name": "琥珀獸皮"
+      },
+      "stag_antler": {
+        "name": "分岔鹿角"
+      },
+      "brightwood_venison": {
+        "name": "明木鹿肉"
+      },
+      "bramblehide_jerkin": {
+        "name": "棘皮皮衣"
+      },
+      "monarch_crown_helm": {
+        "name": "君主之冠"
+      },
+      "monarch_heart": {
+        "name": "君主之心"
+      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -39328,6 +41458,39 @@ export const zh_TW: EnTranslations = {
       "bound_guardian": {
         "name": "受縛守衛者"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "年長硬鬃"
       },
@@ -39541,6 +41704,11 @@ export const zh_TW: EnTranslations = {
         "name": "凱迪斯博學者",
         "title": "博學者",
         "greeting": "小心鬆動的頁岩，{className}。這座山近來不安，我想知道原因。"
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "翁德瑞爾·韋恩",
@@ -40271,6 +42439,135 @@ export const zh_TW: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "莫格的蹤跡",
         "text": "在你踏上北路前，東溪還有最後一根刺：莫格。那蠻獸踐踏下方草地，把野豬都逼瘋了。清理牠蹤跡周圍的草地，我們才能看出牠藏在哪裡。",
@@ -40383,6 +42680,9 @@ export const zh_TW: EnTranslations = {
           },
           "7": {
             "label": "倒塌禮拜堂"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -42843,6 +45143,66 @@ export const ko_KR: EnTranslations = {
       "mossy_handwraps": {
         "name": "이끼 낀 손싸개"
       },
+      "crossroads_saber": {
+        "name": "갈림길 세이버"
+      },
+      "tradesman_hatchet": {
+        "name": "상인의 손도끼"
+      },
+      "drovers_staff": {
+        "name": "목동의 지팡이"
+      },
+      "caravan_warden_dirk": {
+        "name": "대상 경비병 단검"
+      },
+      "outrider_brigandine": {
+        "name": "척후병 브리간딘"
+      },
+      "caravan_quilted_vest": {
+        "name": "대상 누비 조끼"
+      },
+      "wanderers_chestguard": {
+        "name": "방랑자의 가슴 보호구"
+      },
+      "outrider_legguards": {
+        "name": "척후병 다리 보호구"
+      },
+      "trail_leggings": {
+        "name": "닳아버린 여정 각반"
+      },
+      "pilgrims_leggings": {
+        "name": "순례자의 각반"
+      },
+      "outrider_sabatons": {
+        "name": "척후병 사바톤"
+      },
+      "milepost_boots": {
+        "name": "이정표 장화"
+      },
+      "glade_pelt": {
+        "name": "숲속 가죽"
+      },
+      "soft_down": {
+        "name": "부드러운 솜털 뭉치"
+      },
+      "amber_hide": {
+        "name": "호박색 가죽"
+      },
+      "stag_antler": {
+        "name": "가지진 사슴뿔"
+      },
+      "brightwood_venison": {
+        "name": "브라이트우드 사슴고기"
+      },
+      "bramblehide_jerkin": {
+        "name": "가시가죽 저킨"
+      },
+      "monarch_crown_helm": {
+        "name": "군주의 왕관"
+      },
+      "monarch_heart": {
+        "name": "군주의 심장"
+      },
       "bristleback_maul": {
         "name": "뻣센등뼈 철퇴"
       },
@@ -43376,6 +45736,39 @@ export const ko_KR: EnTranslations = {
       "bound_guardian": {
         "name": "속박된 수호자"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "늙은 뻣센등뼈"
       },
@@ -43589,6 +45982,11 @@ export const ko_KR: EnTranslations = {
         "name": "현자 캐디스",
         "title": "현자",
         "greeting": "느슨한 혈암을 조심하십시오, {className}. 산이 요즘 불안정해졌고, 나는 그 이유를 알고 싶습니다."
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "온드렐 베인",
@@ -44319,6 +46717,135 @@ export const ko_KR: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "모거의 흔적",
         "text": "북쪽 길을 떠나기 전에 이스트브룩에는 마지막 골칫거리, 모거가 남았습니다. 그 짐승은 아래 초원을 짓밟고 멧돼지를 미치게 합니다. 흔적 주변의 초원을 정리해 은신처를 찾아내십시오.",
@@ -44431,6 +46958,9 @@ export const ko_KR: EnTranslations = {
           },
           "7": {
             "label": "무너진 예배당"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -46891,6 +49421,66 @@ export const ja_JP: EnTranslations = {
       "mossy_handwraps": {
         "name": "苔むした手甲"
       },
+      "crossroads_saber": {
+        "name": "十字路のサーベル"
+      },
+      "tradesman_hatchet": {
+        "name": "商人のハチェット"
+      },
+      "drovers_staff": {
+        "name": "牛追いの杖"
+      },
+      "caravan_warden_dirk": {
+        "name": "隊商衛兵のダーク"
+      },
+      "outrider_brigandine": {
+        "name": "斥候騎兵のブリガンダイン"
+      },
+      "caravan_quilted_vest": {
+        "name": "隊商のキルトベスト"
+      },
+      "wanderers_chestguard": {
+        "name": "放浪者の胸当て"
+      },
+      "outrider_legguards": {
+        "name": "斥候騎兵の脚当て"
+      },
+      "trail_leggings": {
+        "name": "履き古した旅の脚甲"
+      },
+      "pilgrims_leggings": {
+        "name": "巡礼者の脚甲"
+      },
+      "outrider_sabatons": {
+        "name": "斥候騎兵のサバトン"
+      },
+      "milepost_boots": {
+        "name": "道標のブーツ"
+      },
+      "glade_pelt": {
+        "name": "林間の毛皮"
+      },
+      "soft_down": {
+        "name": "柔らかな綿毛"
+      },
+      "amber_hide": {
+        "name": "琥珀色の革"
+      },
+      "stag_antler": {
+        "name": "枝分かれした角"
+      },
+      "brightwood_venison": {
+        "name": "ブライトウッドの鹿肉"
+      },
+      "bramblehide_jerkin": {
+        "name": "茨革のジャーキン"
+      },
+      "monarch_crown_helm": {
+        "name": "君主の王冠"
+      },
+      "monarch_heart": {
+        "name": "君主の心臓"
+      },
       "bristleback_maul": {
         "name": "ブリストルバックの大槌"
       },
@@ -47424,6 +50014,39 @@ export const ja_JP: EnTranslations = {
       "bound_guardian": {
         "name": "縛られし守護者"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "老ブリストルバック"
       },
@@ -47637,6 +50260,11 @@ export const ja_JP: EnTranslations = {
         "name": "博識者キャディス",
         "title": "博識者",
         "greeting": "崩れやすい頁岩に気をつけてください、{className}。山は近ごろ落ち着きがなく、その理由を知りたいのです。"
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "オンドレル・ヴェイン",
@@ -48367,6 +50995,135 @@ export const ja_JP: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "モガーの足跡",
         "text": "北への道を進む前に、イーストブルックには最後の厄介者がいます。モガーです。あの巨獣は低い草地を踏み荒らし、猪を狂わせています。足跡の周囲を片付け、巣を見つけられるようにしてください。",
@@ -48479,6 +51236,9 @@ export const ja_JP: EnTranslations = {
           },
           "7": {
             "label": "倒れた礼拝堂"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -50939,6 +53699,66 @@ export const pt_BR: EnTranslations = {
       "mossy_handwraps": {
         "name": "Manoplas musgosas"
       },
+      "crossroads_saber": {
+        "name": "Sabre da Encruzilhada"
+      },
+      "tradesman_hatchet": {
+        "name": "Machadinha do Mercador"
+      },
+      "drovers_staff": {
+        "name": "Cajado do Boiadeiro"
+      },
+      "caravan_warden_dirk": {
+        "name": "Adaga do Guarda de Caravana"
+      },
+      "outrider_brigandine": {
+        "name": "Brigantina do Batedor"
+      },
+      "caravan_quilted_vest": {
+        "name": "Colete Acolchoado de Caravana"
+      },
+      "wanderers_chestguard": {
+        "name": "Peitoral do Andarilho"
+      },
+      "outrider_legguards": {
+        "name": "Perneiras do Batedor"
+      },
+      "trail_leggings": {
+        "name": "Perneiras Gastas da Estrada"
+      },
+      "pilgrims_leggings": {
+        "name": "Perneiras do Peregrino"
+      },
+      "outrider_sabatons": {
+        "name": "Soleretes do Batedor"
+      },
+      "milepost_boots": {
+        "name": "Botas de Marco"
+      },
+      "glade_pelt": {
+        "name": "Pele da clareira"
+      },
+      "soft_down": {
+        "name": "Tufo de penugem macia"
+      },
+      "amber_hide": {
+        "name": "Couro âmbar"
+      },
+      "stag_antler": {
+        "name": "Galhada ramificada"
+      },
+      "brightwood_venison": {
+        "name": "Carne de veado de Brightwood"
+      },
+      "bramblehide_jerkin": {
+        "name": "Gibão de couro de sarça"
+      },
+      "monarch_crown_helm": {
+        "name": "Coroa do Monarca"
+      },
+      "monarch_heart": {
+        "name": "O Coração do Monarca"
+      },
       "bristleback_maul": {
         "name": "Malho Bristleback"
       },
@@ -51472,6 +54292,39 @@ export const pt_BR: EnTranslations = {
       "bound_guardian": {
         "name": "Guardião Vinculado"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "Bristleback ancião"
       },
@@ -51685,6 +54538,11 @@ export const pt_BR: EnTranslations = {
         "name": "Mestre do saber Caddis",
         "title": "Mestre do saber",
         "greeting": "Cuidado com a ardósia solta, {className}. A montanha anda inquieta, e quero saber por quê."
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -52415,6 +55273,135 @@ export const pt_BR: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "A trilha de Mogger",
         "text": "Antes de pegar a estrada ao norte, Eastbrook tem um último espinho: Mogger. A fera pisoteia o prado baixo e enlouquece os javalis. Limpe o prado ao redor da trilha para descobrirmos onde ele se esconde.",
@@ -52527,6 +55514,9 @@ export const pt_BR: EnTranslations = {
           },
           "7": {
             "label": "Capela caída"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -54987,6 +57977,66 @@ export const ru_RU: EnTranslations = {
       "mossy_handwraps": {
         "name": "Замшелые обмотки"
       },
+      "crossroads_saber": {
+        "name": "Сабля перепутья"
+      },
+      "tradesman_hatchet": {
+        "name": "Топорик торговца"
+      },
+      "drovers_staff": {
+        "name": "Посох погонщика"
+      },
+      "caravan_warden_dirk": {
+        "name": "Кинжал караванного стража"
+      },
+      "outrider_brigandine": {
+        "name": "Бригантина дозорного"
+      },
+      "caravan_quilted_vest": {
+        "name": "Стёганый караванный жилет"
+      },
+      "wanderers_chestguard": {
+        "name": "Нагрудник скитальца"
+      },
+      "outrider_legguards": {
+        "name": "Поножи дозорного"
+      },
+      "trail_leggings": {
+        "name": "Истёртые дорожные поножи"
+      },
+      "pilgrims_leggings": {
+        "name": "Поножи пилигрима"
+      },
+      "outrider_sabatons": {
+        "name": "Сабатоны дозорного"
+      },
+      "milepost_boots": {
+        "name": "Сапоги вехи"
+      },
+      "glade_pelt": {
+        "name": "Шкура поляны"
+      },
+      "soft_down": {
+        "name": "Пучок мягкого пуха"
+      },
+      "amber_hide": {
+        "name": "Янтарная шкура"
+      },
+      "stag_antler": {
+        "name": "Ветвистый рог"
+      },
+      "brightwood_venison": {
+        "name": "Оленина Брайтвуда"
+      },
+      "bramblehide_jerkin": {
+        "name": "Колет из терновой шкуры"
+      },
+      "monarch_crown_helm": {
+        "name": "Корона Монарха"
+      },
+      "monarch_heart": {
+        "name": "Сердце Монарха"
+      },
       "bristleback_maul": {
         "name": "Кувалда Щетиноспина"
       },
@@ -55520,6 +58570,39 @@ export const ru_RU: EnTranslations = {
       "bound_guardian": {
         "name": "Связанный страж"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
       "elder_bristleback": {
         "name": "Старый Щетиноспин"
       },
@@ -55733,6 +58816,11 @@ export const ru_RU: EnTranslations = {
         "name": "Хранитель знаний Каддис",
         "title": "Хранитель знаний",
         "greeting": "Осторожнее с рыхлым сланцем, {className}. Гора стала беспокойной, и я намерен узнать почему."
+      },
+      "ranger_elwyn": {
+        "name": "Ranger Elwyn",
+        "title": "Glade Warden",
+        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "tidewatcher_ondrel": {
         "name": "Ондрел Вейн",
@@ -56463,6 +59551,135 @@ export const ru_RU: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "Thinning the Glade",
+        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
+        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "objectives": {
+          "0": {
+            "label": "Bramble Lynx slain"
+          },
+          "1": {
+            "label": "Glade Pelt"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "The Brightwood Monarch",
+        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
+        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "The Monarch's Heart"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "A Warden's First Duty",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
+        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar culled"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "Teeth in the Dark",
+        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
+        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "Reedwater Patrol",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
+        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "objectives": {
+          "0": {
+            "label": "Mudfin Skulker slain"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "Silk and Venom",
+        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
+        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "objectives": {
+          "0": {
+            "label": "Webwood Lurker slain"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "The Spawning Dark",
+        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
+        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "objectives": {
+          "0": {
+            "label": "Sableweb Hatchling crushed"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "Vermin in the Deep",
+        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
+        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Tunnel Rat Digger slain"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "The Highwaymen's Toll",
+        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
+        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit brought to justice"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "Vigil at the Chapel",
+        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
+        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "objectives": {
+          "0": {
+            "label": "Restless Bones laid to rest"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "The Great Bristleback",
+        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
+        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "objectives": {
+          "0": {
+            "label": "Elder Bristleback slain"
+          },
+          "1": {
+            "label": "Wild Boar of the herd slain"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "The Outlaw Captain",
+        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
+        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "objectives": {
+          "0": {
+            "label": "Vale Bandit cut down"
+          },
+          "1": {
+            "label": "Captain Verlan slain"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "След Моггера",
         "text": "Прежде чем идти на северную дорогу, у Истврука осталась последняя заноза: Моггер. Зверь топчет нижний луг и сводит кабанов с ума. Очистите луг вокруг его следа, чтобы мы поняли, где он прячется.",
@@ -56575,6 +59792,9 @@ export const ru_RU: EnTranslations = {
           },
           "7": {
             "label": "Павшая часовня"
+          },
+          "8": {
+            "label": "Brightwood Glade"
           }
         }
       },
@@ -56699,19 +59919,823 @@ export const translations = {
 };
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "entities.mobs.bramble_lynx.name",
+    "entities.mobs.brightwood_hare.name",
+    "entities.mobs.brightwood_monarch.name",
+    "entities.mobs.brightwood_stag.name",
+    "entities.mobs.dawnmane_doe.name",
+    "entities.mobs.glade_fox.name",
+    "entities.mobs.grovetusk_boar.name",
+    "entities.mobs.meadow_crane.name",
+    "entities.mobs.spotted_fawn.name",
+    "entities.mobs.sunhide_bear.name",
+    "entities.mobs.thornpelt_badger.name",
+    "entities.npcs.ranger_elwyn.greeting",
+    "entities.npcs.ranger_elwyn.name",
+    "entities.npcs.ranger_elwyn.title",
+    "entities.quests.q_brightwood_monarch.completion",
+    "entities.quests.q_brightwood_monarch.objectives.0.label",
+    "entities.quests.q_brightwood_monarch.text",
+    "entities.quests.q_brightwood_monarch.title",
+    "entities.quests.q_brightwood_thinning.completion",
+    "entities.quests.q_brightwood_thinning.objectives.0.label",
+    "entities.quests.q_brightwood_thinning.objectives.1.label",
+    "entities.quests.q_brightwood_thinning.text",
+    "entities.quests.q_brightwood_thinning.title",
+    "entities.quests.q_ledger_brood.completion",
+    "entities.quests.q_ledger_brood.objectives.0.label",
+    "entities.quests.q_ledger_brood.text",
+    "entities.quests.q_ledger_brood.title",
+    "entities.quests.q_ledger_deepvermin.completion",
+    "entities.quests.q_ledger_deepvermin.objectives.0.label",
+    "entities.quests.q_ledger_deepvermin.text",
+    "entities.quests.q_ledger_deepvermin.title",
+    "entities.quests.q_ledger_first_duty.completion",
+    "entities.quests.q_ledger_first_duty.objectives.0.label",
+    "entities.quests.q_ledger_first_duty.text",
+    "entities.quests.q_ledger_first_duty.title",
+    "entities.quests.q_ledger_great_boar.completion",
+    "entities.quests.q_ledger_great_boar.objectives.0.label",
+    "entities.quests.q_ledger_great_boar.objectives.1.label",
+    "entities.quests.q_ledger_great_boar.text",
+    "entities.quests.q_ledger_great_boar.title",
+    "entities.quests.q_ledger_outlaw_captain.completion",
+    "entities.quests.q_ledger_outlaw_captain.objectives.0.label",
+    "entities.quests.q_ledger_outlaw_captain.objectives.1.label",
+    "entities.quests.q_ledger_outlaw_captain.text",
+    "entities.quests.q_ledger_outlaw_captain.title",
+    "entities.quests.q_ledger_reedwater.completion",
+    "entities.quests.q_ledger_reedwater.objectives.0.label",
+    "entities.quests.q_ledger_reedwater.text",
+    "entities.quests.q_ledger_reedwater.title",
+    "entities.quests.q_ledger_silk.completion",
+    "entities.quests.q_ledger_silk.objectives.0.label",
+    "entities.quests.q_ledger_silk.text",
+    "entities.quests.q_ledger_silk.title",
+    "entities.quests.q_ledger_teeth.completion",
+    "entities.quests.q_ledger_teeth.objectives.0.label",
+    "entities.quests.q_ledger_teeth.text",
+    "entities.quests.q_ledger_teeth.title",
+    "entities.quests.q_ledger_toll.completion",
+    "entities.quests.q_ledger_toll.objectives.0.label",
+    "entities.quests.q_ledger_toll.text",
+    "entities.quests.q_ledger_toll.title",
+    "entities.quests.q_ledger_vigil.completion",
+    "entities.quests.q_ledger_vigil.objectives.0.label",
+    "entities.quests.q_ledger_vigil.text",
+    "entities.quests.q_ledger_vigil.title",
+    "entities.zones.eastbrook_vale.pois.8.label"
+  ],
+  "es_ES": [
+    "entities.mobs.bramble_lynx.name",
+    "entities.mobs.brightwood_hare.name",
+    "entities.mobs.brightwood_monarch.name",
+    "entities.mobs.brightwood_stag.name",
+    "entities.mobs.dawnmane_doe.name",
+    "entities.mobs.glade_fox.name",
+    "entities.mobs.grovetusk_boar.name",
+    "entities.mobs.meadow_crane.name",
+    "entities.mobs.spotted_fawn.name",
+    "entities.mobs.sunhide_bear.name",
+    "entities.mobs.thornpelt_badger.name",
+    "entities.npcs.ranger_elwyn.greeting",
+    "entities.npcs.ranger_elwyn.name",
+    "entities.npcs.ranger_elwyn.title",
+    "entities.quests.q_brightwood_monarch.completion",
+    "entities.quests.q_brightwood_monarch.objectives.0.label",
+    "entities.quests.q_brightwood_monarch.text",
+    "entities.quests.q_brightwood_monarch.title",
+    "entities.quests.q_brightwood_thinning.completion",
+    "entities.quests.q_brightwood_thinning.objectives.0.label",
+    "entities.quests.q_brightwood_thinning.objectives.1.label",
+    "entities.quests.q_brightwood_thinning.text",
+    "entities.quests.q_brightwood_thinning.title",
+    "entities.quests.q_ledger_brood.completion",
+    "entities.quests.q_ledger_brood.objectives.0.label",
+    "entities.quests.q_ledger_brood.text",
+    "entities.quests.q_ledger_brood.title",
+    "entities.quests.q_ledger_deepvermin.completion",
+    "entities.quests.q_ledger_deepvermin.objectives.0.label",
+    "entities.quests.q_ledger_deepvermin.text",
+    "entities.quests.q_ledger_deepvermin.title",
+    "entities.quests.q_ledger_first_duty.completion",
+    "entities.quests.q_ledger_first_duty.objectives.0.label",
+    "entities.quests.q_ledger_first_duty.text",
+    "entities.quests.q_ledger_first_duty.title",
+    "entities.quests.q_ledger_great_boar.completion",
+    "entities.quests.q_ledger_great_boar.objectives.0.label",
+    "entities.quests.q_ledger_great_boar.objectives.1.label",
+    "entities.quests.q_ledger_great_boar.text",
+    "entities.quests.q_ledger_great_boar.title",
+    "entities.quests.q_ledger_outlaw_captain.completion",
+    "entities.quests.q_ledger_outlaw_captain.objectives.0.label",
+    "entities.quests.q_ledger_outlaw_captain.objectives.1.label",
+    "entities.quests.q_ledger_outlaw_captain.text",
+    "entities.quests.q_ledger_outlaw_captain.title",
+    "entities.quests.q_ledger_reedwater.completion",
+    "entities.quests.q_ledger_reedwater.objectives.0.label",
+    "entities.quests.q_ledger_reedwater.text",
+    "entities.quests.q_ledger_reedwater.title",
+    "entities.quests.q_ledger_silk.completion",
+    "entities.quests.q_ledger_silk.objectives.0.label",
+    "entities.quests.q_ledger_silk.text",
+    "entities.quests.q_ledger_silk.title",
+    "entities.quests.q_ledger_teeth.completion",
+    "entities.quests.q_ledger_teeth.objectives.0.label",
+    "entities.quests.q_ledger_teeth.text",
+    "entities.quests.q_ledger_teeth.title",
+    "entities.quests.q_ledger_toll.completion",
+    "entities.quests.q_ledger_toll.objectives.0.label",
+    "entities.quests.q_ledger_toll.text",
+    "entities.quests.q_ledger_toll.title",
+    "entities.quests.q_ledger_vigil.completion",
+    "entities.quests.q_ledger_vigil.objectives.0.label",
+    "entities.quests.q_ledger_vigil.text",
+    "entities.quests.q_ledger_vigil.title",
+    "entities.zones.eastbrook_vale.pois.8.label"
+  ],
+  "fr_FR": [
+    "entities.mobs.bramble_lynx.name",
+    "entities.mobs.brightwood_hare.name",
+    "entities.mobs.brightwood_monarch.name",
+    "entities.mobs.brightwood_stag.name",
+    "entities.mobs.dawnmane_doe.name",
+    "entities.mobs.glade_fox.name",
+    "entities.mobs.grovetusk_boar.name",
+    "entities.mobs.meadow_crane.name",
+    "entities.mobs.spotted_fawn.name",
+    "entities.mobs.sunhide_bear.name",
+    "entities.mobs.thornpelt_badger.name",
+    "entities.npcs.ranger_elwyn.greeting",
+    "entities.npcs.ranger_elwyn.name",
+    "entities.npcs.ranger_elwyn.title",
+    "entities.quests.q_brightwood_monarch.completion",
+    "entities.quests.q_brightwood_monarch.objectives.0.label",
+    "entities.quests.q_brightwood_monarch.text",
+    "entities.quests.q_brightwood_monarch.title",
+    "entities.quests.q_brightwood_thinning.completion",
+    "entities.quests.q_brightwood_thinning.objectives.0.label",
+    "entities.quests.q_brightwood_thinning.objectives.1.label",
+    "entities.quests.q_brightwood_thinning.text",
+    "entities.quests.q_brightwood_thinning.title",
+    "entities.quests.q_ledger_brood.completion",
+    "entities.quests.q_ledger_brood.objectives.0.label",
+    "entities.quests.q_ledger_brood.text",
+    "entities.quests.q_ledger_brood.title",
+    "entities.quests.q_ledger_deepvermin.completion",
+    "entities.quests.q_ledger_deepvermin.objectives.0.label",
+    "entities.quests.q_ledger_deepvermin.text",
+    "entities.quests.q_ledger_deepvermin.title",
+    "entities.quests.q_ledger_first_duty.completion",
+    "entities.quests.q_ledger_first_duty.objectives.0.label",
+    "entities.quests.q_ledger_first_duty.text",
+    "entities.quests.q_ledger_first_duty.title",
+    "entities.quests.q_ledger_great_boar.completion",
+    "entities.quests.q_ledger_great_boar.objectives.0.label",
+    "entities.quests.q_ledger_great_boar.objectives.1.label",
+    "entities.quests.q_ledger_great_boar.text",
+    "entities.quests.q_ledger_great_boar.title",
+    "entities.quests.q_ledger_outlaw_captain.completion",
+    "entities.quests.q_ledger_outlaw_captain.objectives.0.label",
+    "entities.quests.q_ledger_outlaw_captain.objectives.1.label",
+    "entities.quests.q_ledger_outlaw_captain.text",
+    "entities.quests.q_ledger_outlaw_captain.title",
+    "entities.quests.q_ledger_reedwater.completion",
+    "entities.quests.q_ledger_reedwater.objectives.0.label",
+    "entities.quests.q_ledger_reedwater.text",
+    "entities.quests.q_ledger_reedwater.title",
+    "entities.quests.q_ledger_silk.completion",
+    "entities.quests.q_ledger_silk.objectives.0.label",
+    "entities.quests.q_ledger_silk.text",
+    "entities.quests.q_ledger_silk.title",
+    "entities.quests.q_ledger_teeth.completion",
+    "entities.quests.q_ledger_teeth.objectives.0.label",
+    "entities.quests.q_ledger_teeth.text",
+    "entities.quests.q_ledger_teeth.title",
+    "entities.quests.q_ledger_toll.completion",
+    "entities.quests.q_ledger_toll.objectives.0.label",
+    "entities.quests.q_ledger_toll.text",
+    "entities.quests.q_ledger_toll.title",
+    "entities.quests.q_ledger_vigil.completion",
+    "entities.quests.q_ledger_vigil.objectives.0.label",
+    "entities.quests.q_ledger_vigil.text",
+    "entities.quests.q_ledger_vigil.title",
+    "entities.zones.eastbrook_vale.pois.8.label"
+  ],
+  "fr_CA": [
+    "entities.mobs.bramble_lynx.name",
+    "entities.mobs.brightwood_hare.name",
+    "entities.mobs.brightwood_monarch.name",
+    "entities.mobs.brightwood_stag.name",
+    "entities.mobs.dawnmane_doe.name",
+    "entities.mobs.glade_fox.name",
+    "entities.mobs.grovetusk_boar.name",
+    "entities.mobs.meadow_crane.name",
+    "entities.mobs.spotted_fawn.name",
+    "entities.mobs.sunhide_bear.name",
+    "entities.mobs.thornpelt_badger.name",
+    "entities.npcs.ranger_elwyn.greeting",
+    "entities.npcs.ranger_elwyn.name",
+    "entities.npcs.ranger_elwyn.title",
+    "entities.quests.q_brightwood_monarch.completion",
+    "entities.quests.q_brightwood_monarch.objectives.0.label",
+    "entities.quests.q_brightwood_monarch.text",
+    "entities.quests.q_brightwood_monarch.title",
+    "entities.quests.q_brightwood_thinning.completion",
+    "entities.quests.q_brightwood_thinning.objectives.0.label",
+    "entities.quests.q_brightwood_thinning.objectives.1.label",
+    "entities.quests.q_brightwood_thinning.text",
+    "entities.quests.q_brightwood_thinning.title",
+    "entities.quests.q_ledger_brood.completion",
+    "entities.quests.q_ledger_brood.objectives.0.label",
+    "entities.quests.q_ledger_brood.text",
+    "entities.quests.q_ledger_brood.title",
+    "entities.quests.q_ledger_deepvermin.completion",
+    "entities.quests.q_ledger_deepvermin.objectives.0.label",
+    "entities.quests.q_ledger_deepvermin.text",
+    "entities.quests.q_ledger_deepvermin.title",
+    "entities.quests.q_ledger_first_duty.completion",
+    "entities.quests.q_ledger_first_duty.objectives.0.label",
+    "entities.quests.q_ledger_first_duty.text",
+    "entities.quests.q_ledger_first_duty.title",
+    "entities.quests.q_ledger_great_boar.completion",
+    "entities.quests.q_ledger_great_boar.objectives.0.label",
+    "entities.quests.q_ledger_great_boar.objectives.1.label",
+    "entities.quests.q_ledger_great_boar.text",
+    "entities.quests.q_ledger_great_boar.title",
+    "entities.quests.q_ledger_outlaw_captain.completion",
+    "entities.quests.q_ledger_outlaw_captain.objectives.0.label",
+    "entities.quests.q_ledger_outlaw_captain.objectives.1.label",
+    "entities.quests.q_ledger_outlaw_captain.text",
+    "entities.quests.q_ledger_outlaw_captain.title",
+    "entities.quests.q_ledger_reedwater.completion",
+    "entities.quests.q_ledger_reedwater.objectives.0.label",
+    "entities.quests.q_ledger_reedwater.text",
+    "entities.quests.q_ledger_reedwater.title",
+    "entities.quests.q_ledger_silk.completion",
+    "entities.quests.q_ledger_silk.objectives.0.label",
+    "entities.quests.q_ledger_silk.text",
+    "entities.quests.q_ledger_silk.title",
+    "entities.quests.q_ledger_teeth.completion",
+    "entities.quests.q_ledger_teeth.objectives.0.label",
+    "entities.quests.q_ledger_teeth.text",
+    "entities.quests.q_ledger_teeth.title",
+    "entities.quests.q_ledger_toll.completion",
+    "entities.quests.q_ledger_toll.objectives.0.label",
+    "entities.quests.q_ledger_toll.text",
+    "entities.quests.q_ledger_toll.title",
+    "entities.quests.q_ledger_vigil.completion",
+    "entities.quests.q_ledger_vigil.objectives.0.label",
+    "entities.quests.q_ledger_vigil.text",
+    "entities.quests.q_ledger_vigil.title",
+    "entities.zones.eastbrook_vale.pois.8.label"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
-  "zh_CN": [],
-  "zh_TW": [],
-  "ko_KR": [],
-  "ja_JP": [],
-  "pt_BR": [],
-  "ru_RU": []
+  "it_IT": [
+    "entities.mobs.bramble_lynx.name",
+    "entities.mobs.brightwood_hare.name",
+    "entities.mobs.brightwood_monarch.name",
+    "entities.mobs.brightwood_stag.name",
+    "entities.mobs.dawnmane_doe.name",
+    "entities.mobs.glade_fox.name",
+    "entities.mobs.grovetusk_boar.name",
+    "entities.mobs.meadow_crane.name",
+    "entities.mobs.spotted_fawn.name",
+    "entities.mobs.sunhide_bear.name",
+    "entities.mobs.thornpelt_badger.name",
+    "entities.npcs.ranger_elwyn.greeting",
+    "entities.npcs.ranger_elwyn.name",
+    "entities.npcs.ranger_elwyn.title",
+    "entities.quests.q_brightwood_monarch.completion",
+    "entities.quests.q_brightwood_monarch.objectives.0.label",
+    "entities.quests.q_brightwood_monarch.text",
+    "entities.quests.q_brightwood_monarch.title",
+    "entities.quests.q_brightwood_thinning.completion",
+    "entities.quests.q_brightwood_thinning.objectives.0.label",
+    "entities.quests.q_brightwood_thinning.objectives.1.label",
+    "entities.quests.q_brightwood_thinning.text",
+    "entities.quests.q_brightwood_thinning.title",
+    "entities.quests.q_ledger_brood.completion",
+    "entities.quests.q_ledger_brood.objectives.0.label",
+    "entities.quests.q_ledger_brood.text",
+    "entities.quests.q_ledger_brood.title",
+    "entities.quests.q_ledger_deepvermin.completion",
+    "entities.quests.q_ledger_deepvermin.objectives.0.label",
+    "entities.quests.q_ledger_deepvermin.text",
+    "entities.quests.q_ledger_deepvermin.title",
+    "entities.quests.q_ledger_first_duty.completion",
+    "entities.quests.q_ledger_first_duty.objectives.0.label",
+    "entities.quests.q_ledger_first_duty.text",
+    "entities.quests.q_ledger_first_duty.title",
+    "entities.quests.q_ledger_great_boar.completion",
+    "entities.quests.q_ledger_great_boar.objectives.0.label",
+    "entities.quests.q_ledger_great_boar.objectives.1.label",
+    "entities.quests.q_ledger_great_boar.text",
+    "entities.quests.q_ledger_great_boar.title",
+    "entities.quests.q_ledger_outlaw_captain.completion",
+    "entities.quests.q_ledger_outlaw_captain.objectives.0.label",
+    "entities.quests.q_ledger_outlaw_captain.objectives.1.label",
+    "entities.quests.q_ledger_outlaw_captain.text",
+    "entities.quests.q_ledger_outlaw_captain.title",
+    "entities.quests.q_ledger_reedwater.completion",
+    "entities.quests.q_ledger_reedwater.objectives.0.label",
+    "entities.quests.q_ledger_reedwater.text",
+    "entities.quests.q_ledger_reedwater.title",
+    "entities.quests.q_ledger_silk.completion",
+    "entities.quests.q_ledger_silk.objectives.0.label",
+    "entities.quests.q_ledger_silk.text",
+    "entities.quests.q_ledger_silk.title",
+    "entities.quests.q_ledger_teeth.completion",
+    "entities.quests.q_ledger_teeth.objectives.0.label",
+    "entities.quests.q_ledger_teeth.text",
+    "entities.quests.q_ledger_teeth.title",
+    "entities.quests.q_ledger_toll.completion",
+    "entities.quests.q_ledger_toll.objectives.0.label",
+    "entities.quests.q_ledger_toll.text",
+    "entities.quests.q_ledger_toll.title",
+    "entities.quests.q_ledger_vigil.completion",
+    "entities.quests.q_ledger_vigil.objectives.0.label",
+    "entities.quests.q_ledger_vigil.text",
+    "entities.quests.q_ledger_vigil.title",
+    "entities.zones.eastbrook_vale.pois.8.label"
+  ],
+  "de_DE": [
+    "entities.mobs.bramble_lynx.name",
+    "entities.mobs.brightwood_hare.name",
+    "entities.mobs.brightwood_monarch.name",
+    "entities.mobs.brightwood_stag.name",
+    "entities.mobs.dawnmane_doe.name",
+    "entities.mobs.glade_fox.name",
+    "entities.mobs.grovetusk_boar.name",
+    "entities.mobs.meadow_crane.name",
+    "entities.mobs.spotted_fawn.name",
+    "entities.mobs.sunhide_bear.name",
+    "entities.mobs.thornpelt_badger.name",
+    "entities.npcs.ranger_elwyn.greeting",
+    "entities.npcs.ranger_elwyn.name",
+    "entities.npcs.ranger_elwyn.title",
+    "entities.quests.q_brightwood_monarch.completion",
+    "entities.quests.q_brightwood_monarch.objectives.0.label",
+    "entities.quests.q_brightwood_monarch.text",
+    "entities.quests.q_brightwood_monarch.title",
+    "entities.quests.q_brightwood_thinning.completion",
+    "entities.quests.q_brightwood_thinning.objectives.0.label",
+    "entities.quests.q_brightwood_thinning.objectives.1.label",
+    "entities.quests.q_brightwood_thinning.text",
+    "entities.quests.q_brightwood_thinning.title",
+    "entities.quests.q_ledger_brood.completion",
+    "entities.quests.q_ledger_brood.objectives.0.label",
+    "entities.quests.q_ledger_brood.text",
+    "entities.quests.q_ledger_brood.title",
+    "entities.quests.q_ledger_deepvermin.completion",
+    "entities.quests.q_ledger_deepvermin.objectives.0.label",
+    "entities.quests.q_ledger_deepvermin.text",
+    "entities.quests.q_ledger_deepvermin.title",
+    "entities.quests.q_ledger_first_duty.completion",
+    "entities.quests.q_ledger_first_duty.objectives.0.label",
+    "entities.quests.q_ledger_first_duty.text",
+    "entities.quests.q_ledger_first_duty.title",
+    "entities.quests.q_ledger_great_boar.completion",
+    "entities.quests.q_ledger_great_boar.objectives.0.label",
+    "entities.quests.q_ledger_great_boar.objectives.1.label",
+    "entities.quests.q_ledger_great_boar.text",
+    "entities.quests.q_ledger_great_boar.title",
+    "entities.quests.q_ledger_outlaw_captain.completion",
+    "entities.quests.q_ledger_outlaw_captain.objectives.0.label",
+    "entities.quests.q_ledger_outlaw_captain.objectives.1.label",
+    "entities.quests.q_ledger_outlaw_captain.text",
+    "entities.quests.q_ledger_outlaw_captain.title",
+    "entities.quests.q_ledger_reedwater.completion",
+    "entities.quests.q_ledger_reedwater.objectives.0.label",
+    "entities.quests.q_ledger_reedwater.text",
+    "entities.quests.q_ledger_reedwater.title",
+    "entities.quests.q_ledger_silk.completion",
+    "entities.quests.q_ledger_silk.objectives.0.label",
+    "entities.quests.q_ledger_silk.text",
+    "entities.quests.q_ledger_silk.title",
+    "entities.quests.q_ledger_teeth.completion",
+    "entities.quests.q_ledger_teeth.objectives.0.label",
+    "entities.quests.q_ledger_teeth.text",
+    "entities.quests.q_ledger_teeth.title",
+    "entities.quests.q_ledger_toll.completion",
+    "entities.quests.q_ledger_toll.objectives.0.label",
+    "entities.quests.q_ledger_toll.text",
+    "entities.quests.q_ledger_toll.title",
+    "entities.quests.q_ledger_vigil.completion",
+    "entities.quests.q_ledger_vigil.objectives.0.label",
+    "entities.quests.q_ledger_vigil.text",
+    "entities.quests.q_ledger_vigil.title",
+    "entities.zones.eastbrook_vale.pois.8.label"
+  ],
+  "zh_CN": [
+    "entities.mobs.bramble_lynx.name",
+    "entities.mobs.brightwood_hare.name",
+    "entities.mobs.brightwood_monarch.name",
+    "entities.mobs.brightwood_stag.name",
+    "entities.mobs.dawnmane_doe.name",
+    "entities.mobs.glade_fox.name",
+    "entities.mobs.grovetusk_boar.name",
+    "entities.mobs.meadow_crane.name",
+    "entities.mobs.spotted_fawn.name",
+    "entities.mobs.sunhide_bear.name",
+    "entities.mobs.thornpelt_badger.name",
+    "entities.npcs.ranger_elwyn.greeting",
+    "entities.npcs.ranger_elwyn.name",
+    "entities.npcs.ranger_elwyn.title",
+    "entities.quests.q_brightwood_monarch.completion",
+    "entities.quests.q_brightwood_monarch.objectives.0.label",
+    "entities.quests.q_brightwood_monarch.text",
+    "entities.quests.q_brightwood_monarch.title",
+    "entities.quests.q_brightwood_thinning.completion",
+    "entities.quests.q_brightwood_thinning.objectives.0.label",
+    "entities.quests.q_brightwood_thinning.objectives.1.label",
+    "entities.quests.q_brightwood_thinning.text",
+    "entities.quests.q_brightwood_thinning.title",
+    "entities.quests.q_ledger_brood.completion",
+    "entities.quests.q_ledger_brood.objectives.0.label",
+    "entities.quests.q_ledger_brood.text",
+    "entities.quests.q_ledger_brood.title",
+    "entities.quests.q_ledger_deepvermin.completion",
+    "entities.quests.q_ledger_deepvermin.objectives.0.label",
+    "entities.quests.q_ledger_deepvermin.text",
+    "entities.quests.q_ledger_deepvermin.title",
+    "entities.quests.q_ledger_first_duty.completion",
+    "entities.quests.q_ledger_first_duty.objectives.0.label",
+    "entities.quests.q_ledger_first_duty.text",
+    "entities.quests.q_ledger_first_duty.title",
+    "entities.quests.q_ledger_great_boar.completion",
+    "entities.quests.q_ledger_great_boar.objectives.0.label",
+    "entities.quests.q_ledger_great_boar.objectives.1.label",
+    "entities.quests.q_ledger_great_boar.text",
+    "entities.quests.q_ledger_great_boar.title",
+    "entities.quests.q_ledger_outlaw_captain.completion",
+    "entities.quests.q_ledger_outlaw_captain.objectives.0.label",
+    "entities.quests.q_ledger_outlaw_captain.objectives.1.label",
+    "entities.quests.q_ledger_outlaw_captain.text",
+    "entities.quests.q_ledger_outlaw_captain.title",
+    "entities.quests.q_ledger_reedwater.completion",
+    "entities.quests.q_ledger_reedwater.objectives.0.label",
+    "entities.quests.q_ledger_reedwater.text",
+    "entities.quests.q_ledger_reedwater.title",
+    "entities.quests.q_ledger_silk.completion",
+    "entities.quests.q_ledger_silk.objectives.0.label",
+    "entities.quests.q_ledger_silk.text",
+    "entities.quests.q_ledger_silk.title",
+    "entities.quests.q_ledger_teeth.completion",
+    "entities.quests.q_ledger_teeth.objectives.0.label",
+    "entities.quests.q_ledger_teeth.text",
+    "entities.quests.q_ledger_teeth.title",
+    "entities.quests.q_ledger_toll.completion",
+    "entities.quests.q_ledger_toll.objectives.0.label",
+    "entities.quests.q_ledger_toll.text",
+    "entities.quests.q_ledger_toll.title",
+    "entities.quests.q_ledger_vigil.completion",
+    "entities.quests.q_ledger_vigil.objectives.0.label",
+    "entities.quests.q_ledger_vigil.text",
+    "entities.quests.q_ledger_vigil.title",
+    "entities.zones.eastbrook_vale.pois.8.label"
+  ],
+  "zh_TW": [
+    "entities.mobs.bramble_lynx.name",
+    "entities.mobs.brightwood_hare.name",
+    "entities.mobs.brightwood_monarch.name",
+    "entities.mobs.brightwood_stag.name",
+    "entities.mobs.dawnmane_doe.name",
+    "entities.mobs.glade_fox.name",
+    "entities.mobs.grovetusk_boar.name",
+    "entities.mobs.meadow_crane.name",
+    "entities.mobs.spotted_fawn.name",
+    "entities.mobs.sunhide_bear.name",
+    "entities.mobs.thornpelt_badger.name",
+    "entities.npcs.ranger_elwyn.greeting",
+    "entities.npcs.ranger_elwyn.name",
+    "entities.npcs.ranger_elwyn.title",
+    "entities.quests.q_brightwood_monarch.completion",
+    "entities.quests.q_brightwood_monarch.objectives.0.label",
+    "entities.quests.q_brightwood_monarch.text",
+    "entities.quests.q_brightwood_monarch.title",
+    "entities.quests.q_brightwood_thinning.completion",
+    "entities.quests.q_brightwood_thinning.objectives.0.label",
+    "entities.quests.q_brightwood_thinning.objectives.1.label",
+    "entities.quests.q_brightwood_thinning.text",
+    "entities.quests.q_brightwood_thinning.title",
+    "entities.quests.q_ledger_brood.completion",
+    "entities.quests.q_ledger_brood.objectives.0.label",
+    "entities.quests.q_ledger_brood.text",
+    "entities.quests.q_ledger_brood.title",
+    "entities.quests.q_ledger_deepvermin.completion",
+    "entities.quests.q_ledger_deepvermin.objectives.0.label",
+    "entities.quests.q_ledger_deepvermin.text",
+    "entities.quests.q_ledger_deepvermin.title",
+    "entities.quests.q_ledger_first_duty.completion",
+    "entities.quests.q_ledger_first_duty.objectives.0.label",
+    "entities.quests.q_ledger_first_duty.text",
+    "entities.quests.q_ledger_first_duty.title",
+    "entities.quests.q_ledger_great_boar.completion",
+    "entities.quests.q_ledger_great_boar.objectives.0.label",
+    "entities.quests.q_ledger_great_boar.objectives.1.label",
+    "entities.quests.q_ledger_great_boar.text",
+    "entities.quests.q_ledger_great_boar.title",
+    "entities.quests.q_ledger_outlaw_captain.completion",
+    "entities.quests.q_ledger_outlaw_captain.objectives.0.label",
+    "entities.quests.q_ledger_outlaw_captain.objectives.1.label",
+    "entities.quests.q_ledger_outlaw_captain.text",
+    "entities.quests.q_ledger_outlaw_captain.title",
+    "entities.quests.q_ledger_reedwater.completion",
+    "entities.quests.q_ledger_reedwater.objectives.0.label",
+    "entities.quests.q_ledger_reedwater.text",
+    "entities.quests.q_ledger_reedwater.title",
+    "entities.quests.q_ledger_silk.completion",
+    "entities.quests.q_ledger_silk.objectives.0.label",
+    "entities.quests.q_ledger_silk.text",
+    "entities.quests.q_ledger_silk.title",
+    "entities.quests.q_ledger_teeth.completion",
+    "entities.quests.q_ledger_teeth.objectives.0.label",
+    "entities.quests.q_ledger_teeth.text",
+    "entities.quests.q_ledger_teeth.title",
+    "entities.quests.q_ledger_toll.completion",
+    "entities.quests.q_ledger_toll.objectives.0.label",
+    "entities.quests.q_ledger_toll.text",
+    "entities.quests.q_ledger_toll.title",
+    "entities.quests.q_ledger_vigil.completion",
+    "entities.quests.q_ledger_vigil.objectives.0.label",
+    "entities.quests.q_ledger_vigil.text",
+    "entities.quests.q_ledger_vigil.title",
+    "entities.zones.eastbrook_vale.pois.8.label"
+  ],
+  "ko_KR": [
+    "entities.mobs.bramble_lynx.name",
+    "entities.mobs.brightwood_hare.name",
+    "entities.mobs.brightwood_monarch.name",
+    "entities.mobs.brightwood_stag.name",
+    "entities.mobs.dawnmane_doe.name",
+    "entities.mobs.glade_fox.name",
+    "entities.mobs.grovetusk_boar.name",
+    "entities.mobs.meadow_crane.name",
+    "entities.mobs.spotted_fawn.name",
+    "entities.mobs.sunhide_bear.name",
+    "entities.mobs.thornpelt_badger.name",
+    "entities.npcs.ranger_elwyn.greeting",
+    "entities.npcs.ranger_elwyn.name",
+    "entities.npcs.ranger_elwyn.title",
+    "entities.quests.q_brightwood_monarch.completion",
+    "entities.quests.q_brightwood_monarch.objectives.0.label",
+    "entities.quests.q_brightwood_monarch.text",
+    "entities.quests.q_brightwood_monarch.title",
+    "entities.quests.q_brightwood_thinning.completion",
+    "entities.quests.q_brightwood_thinning.objectives.0.label",
+    "entities.quests.q_brightwood_thinning.objectives.1.label",
+    "entities.quests.q_brightwood_thinning.text",
+    "entities.quests.q_brightwood_thinning.title",
+    "entities.quests.q_ledger_brood.completion",
+    "entities.quests.q_ledger_brood.objectives.0.label",
+    "entities.quests.q_ledger_brood.text",
+    "entities.quests.q_ledger_brood.title",
+    "entities.quests.q_ledger_deepvermin.completion",
+    "entities.quests.q_ledger_deepvermin.objectives.0.label",
+    "entities.quests.q_ledger_deepvermin.text",
+    "entities.quests.q_ledger_deepvermin.title",
+    "entities.quests.q_ledger_first_duty.completion",
+    "entities.quests.q_ledger_first_duty.objectives.0.label",
+    "entities.quests.q_ledger_first_duty.text",
+    "entities.quests.q_ledger_first_duty.title",
+    "entities.quests.q_ledger_great_boar.completion",
+    "entities.quests.q_ledger_great_boar.objectives.0.label",
+    "entities.quests.q_ledger_great_boar.objectives.1.label",
+    "entities.quests.q_ledger_great_boar.text",
+    "entities.quests.q_ledger_great_boar.title",
+    "entities.quests.q_ledger_outlaw_captain.completion",
+    "entities.quests.q_ledger_outlaw_captain.objectives.0.label",
+    "entities.quests.q_ledger_outlaw_captain.objectives.1.label",
+    "entities.quests.q_ledger_outlaw_captain.text",
+    "entities.quests.q_ledger_outlaw_captain.title",
+    "entities.quests.q_ledger_reedwater.completion",
+    "entities.quests.q_ledger_reedwater.objectives.0.label",
+    "entities.quests.q_ledger_reedwater.text",
+    "entities.quests.q_ledger_reedwater.title",
+    "entities.quests.q_ledger_silk.completion",
+    "entities.quests.q_ledger_silk.objectives.0.label",
+    "entities.quests.q_ledger_silk.text",
+    "entities.quests.q_ledger_silk.title",
+    "entities.quests.q_ledger_teeth.completion",
+    "entities.quests.q_ledger_teeth.objectives.0.label",
+    "entities.quests.q_ledger_teeth.text",
+    "entities.quests.q_ledger_teeth.title",
+    "entities.quests.q_ledger_toll.completion",
+    "entities.quests.q_ledger_toll.objectives.0.label",
+    "entities.quests.q_ledger_toll.text",
+    "entities.quests.q_ledger_toll.title",
+    "entities.quests.q_ledger_vigil.completion",
+    "entities.quests.q_ledger_vigil.objectives.0.label",
+    "entities.quests.q_ledger_vigil.text",
+    "entities.quests.q_ledger_vigil.title",
+    "entities.zones.eastbrook_vale.pois.8.label"
+  ],
+  "ja_JP": [
+    "entities.mobs.bramble_lynx.name",
+    "entities.mobs.brightwood_hare.name",
+    "entities.mobs.brightwood_monarch.name",
+    "entities.mobs.brightwood_stag.name",
+    "entities.mobs.dawnmane_doe.name",
+    "entities.mobs.glade_fox.name",
+    "entities.mobs.grovetusk_boar.name",
+    "entities.mobs.meadow_crane.name",
+    "entities.mobs.spotted_fawn.name",
+    "entities.mobs.sunhide_bear.name",
+    "entities.mobs.thornpelt_badger.name",
+    "entities.npcs.ranger_elwyn.greeting",
+    "entities.npcs.ranger_elwyn.name",
+    "entities.npcs.ranger_elwyn.title",
+    "entities.quests.q_brightwood_monarch.completion",
+    "entities.quests.q_brightwood_monarch.objectives.0.label",
+    "entities.quests.q_brightwood_monarch.text",
+    "entities.quests.q_brightwood_monarch.title",
+    "entities.quests.q_brightwood_thinning.completion",
+    "entities.quests.q_brightwood_thinning.objectives.0.label",
+    "entities.quests.q_brightwood_thinning.objectives.1.label",
+    "entities.quests.q_brightwood_thinning.text",
+    "entities.quests.q_brightwood_thinning.title",
+    "entities.quests.q_ledger_brood.completion",
+    "entities.quests.q_ledger_brood.objectives.0.label",
+    "entities.quests.q_ledger_brood.text",
+    "entities.quests.q_ledger_brood.title",
+    "entities.quests.q_ledger_deepvermin.completion",
+    "entities.quests.q_ledger_deepvermin.objectives.0.label",
+    "entities.quests.q_ledger_deepvermin.text",
+    "entities.quests.q_ledger_deepvermin.title",
+    "entities.quests.q_ledger_first_duty.completion",
+    "entities.quests.q_ledger_first_duty.objectives.0.label",
+    "entities.quests.q_ledger_first_duty.text",
+    "entities.quests.q_ledger_first_duty.title",
+    "entities.quests.q_ledger_great_boar.completion",
+    "entities.quests.q_ledger_great_boar.objectives.0.label",
+    "entities.quests.q_ledger_great_boar.objectives.1.label",
+    "entities.quests.q_ledger_great_boar.text",
+    "entities.quests.q_ledger_great_boar.title",
+    "entities.quests.q_ledger_outlaw_captain.completion",
+    "entities.quests.q_ledger_outlaw_captain.objectives.0.label",
+    "entities.quests.q_ledger_outlaw_captain.objectives.1.label",
+    "entities.quests.q_ledger_outlaw_captain.text",
+    "entities.quests.q_ledger_outlaw_captain.title",
+    "entities.quests.q_ledger_reedwater.completion",
+    "entities.quests.q_ledger_reedwater.objectives.0.label",
+    "entities.quests.q_ledger_reedwater.text",
+    "entities.quests.q_ledger_reedwater.title",
+    "entities.quests.q_ledger_silk.completion",
+    "entities.quests.q_ledger_silk.objectives.0.label",
+    "entities.quests.q_ledger_silk.text",
+    "entities.quests.q_ledger_silk.title",
+    "entities.quests.q_ledger_teeth.completion",
+    "entities.quests.q_ledger_teeth.objectives.0.label",
+    "entities.quests.q_ledger_teeth.text",
+    "entities.quests.q_ledger_teeth.title",
+    "entities.quests.q_ledger_toll.completion",
+    "entities.quests.q_ledger_toll.objectives.0.label",
+    "entities.quests.q_ledger_toll.text",
+    "entities.quests.q_ledger_toll.title",
+    "entities.quests.q_ledger_vigil.completion",
+    "entities.quests.q_ledger_vigil.objectives.0.label",
+    "entities.quests.q_ledger_vigil.text",
+    "entities.quests.q_ledger_vigil.title",
+    "entities.zones.eastbrook_vale.pois.8.label"
+  ],
+  "pt_BR": [
+    "entities.mobs.bramble_lynx.name",
+    "entities.mobs.brightwood_hare.name",
+    "entities.mobs.brightwood_monarch.name",
+    "entities.mobs.brightwood_stag.name",
+    "entities.mobs.dawnmane_doe.name",
+    "entities.mobs.glade_fox.name",
+    "entities.mobs.grovetusk_boar.name",
+    "entities.mobs.meadow_crane.name",
+    "entities.mobs.spotted_fawn.name",
+    "entities.mobs.sunhide_bear.name",
+    "entities.mobs.thornpelt_badger.name",
+    "entities.npcs.ranger_elwyn.greeting",
+    "entities.npcs.ranger_elwyn.name",
+    "entities.npcs.ranger_elwyn.title",
+    "entities.quests.q_brightwood_monarch.completion",
+    "entities.quests.q_brightwood_monarch.objectives.0.label",
+    "entities.quests.q_brightwood_monarch.text",
+    "entities.quests.q_brightwood_monarch.title",
+    "entities.quests.q_brightwood_thinning.completion",
+    "entities.quests.q_brightwood_thinning.objectives.0.label",
+    "entities.quests.q_brightwood_thinning.objectives.1.label",
+    "entities.quests.q_brightwood_thinning.text",
+    "entities.quests.q_brightwood_thinning.title",
+    "entities.quests.q_ledger_brood.completion",
+    "entities.quests.q_ledger_brood.objectives.0.label",
+    "entities.quests.q_ledger_brood.text",
+    "entities.quests.q_ledger_brood.title",
+    "entities.quests.q_ledger_deepvermin.completion",
+    "entities.quests.q_ledger_deepvermin.objectives.0.label",
+    "entities.quests.q_ledger_deepvermin.text",
+    "entities.quests.q_ledger_deepvermin.title",
+    "entities.quests.q_ledger_first_duty.completion",
+    "entities.quests.q_ledger_first_duty.objectives.0.label",
+    "entities.quests.q_ledger_first_duty.text",
+    "entities.quests.q_ledger_first_duty.title",
+    "entities.quests.q_ledger_great_boar.completion",
+    "entities.quests.q_ledger_great_boar.objectives.0.label",
+    "entities.quests.q_ledger_great_boar.objectives.1.label",
+    "entities.quests.q_ledger_great_boar.text",
+    "entities.quests.q_ledger_great_boar.title",
+    "entities.quests.q_ledger_outlaw_captain.completion",
+    "entities.quests.q_ledger_outlaw_captain.objectives.0.label",
+    "entities.quests.q_ledger_outlaw_captain.objectives.1.label",
+    "entities.quests.q_ledger_outlaw_captain.text",
+    "entities.quests.q_ledger_outlaw_captain.title",
+    "entities.quests.q_ledger_reedwater.completion",
+    "entities.quests.q_ledger_reedwater.objectives.0.label",
+    "entities.quests.q_ledger_reedwater.text",
+    "entities.quests.q_ledger_reedwater.title",
+    "entities.quests.q_ledger_silk.completion",
+    "entities.quests.q_ledger_silk.objectives.0.label",
+    "entities.quests.q_ledger_silk.text",
+    "entities.quests.q_ledger_silk.title",
+    "entities.quests.q_ledger_teeth.completion",
+    "entities.quests.q_ledger_teeth.objectives.0.label",
+    "entities.quests.q_ledger_teeth.text",
+    "entities.quests.q_ledger_teeth.title",
+    "entities.quests.q_ledger_toll.completion",
+    "entities.quests.q_ledger_toll.objectives.0.label",
+    "entities.quests.q_ledger_toll.text",
+    "entities.quests.q_ledger_toll.title",
+    "entities.quests.q_ledger_vigil.completion",
+    "entities.quests.q_ledger_vigil.objectives.0.label",
+    "entities.quests.q_ledger_vigil.text",
+    "entities.quests.q_ledger_vigil.title",
+    "entities.zones.eastbrook_vale.pois.8.label"
+  ],
+  "ru_RU": [
+    "entities.mobs.bramble_lynx.name",
+    "entities.mobs.brightwood_hare.name",
+    "entities.mobs.brightwood_monarch.name",
+    "entities.mobs.brightwood_stag.name",
+    "entities.mobs.dawnmane_doe.name",
+    "entities.mobs.glade_fox.name",
+    "entities.mobs.grovetusk_boar.name",
+    "entities.mobs.meadow_crane.name",
+    "entities.mobs.spotted_fawn.name",
+    "entities.mobs.sunhide_bear.name",
+    "entities.mobs.thornpelt_badger.name",
+    "entities.npcs.ranger_elwyn.greeting",
+    "entities.npcs.ranger_elwyn.name",
+    "entities.npcs.ranger_elwyn.title",
+    "entities.quests.q_brightwood_monarch.completion",
+    "entities.quests.q_brightwood_monarch.objectives.0.label",
+    "entities.quests.q_brightwood_monarch.text",
+    "entities.quests.q_brightwood_monarch.title",
+    "entities.quests.q_brightwood_thinning.completion",
+    "entities.quests.q_brightwood_thinning.objectives.0.label",
+    "entities.quests.q_brightwood_thinning.objectives.1.label",
+    "entities.quests.q_brightwood_thinning.text",
+    "entities.quests.q_brightwood_thinning.title",
+    "entities.quests.q_ledger_brood.completion",
+    "entities.quests.q_ledger_brood.objectives.0.label",
+    "entities.quests.q_ledger_brood.text",
+    "entities.quests.q_ledger_brood.title",
+    "entities.quests.q_ledger_deepvermin.completion",
+    "entities.quests.q_ledger_deepvermin.objectives.0.label",
+    "entities.quests.q_ledger_deepvermin.text",
+    "entities.quests.q_ledger_deepvermin.title",
+    "entities.quests.q_ledger_first_duty.completion",
+    "entities.quests.q_ledger_first_duty.objectives.0.label",
+    "entities.quests.q_ledger_first_duty.text",
+    "entities.quests.q_ledger_first_duty.title",
+    "entities.quests.q_ledger_great_boar.completion",
+    "entities.quests.q_ledger_great_boar.objectives.0.label",
+    "entities.quests.q_ledger_great_boar.objectives.1.label",
+    "entities.quests.q_ledger_great_boar.text",
+    "entities.quests.q_ledger_great_boar.title",
+    "entities.quests.q_ledger_outlaw_captain.completion",
+    "entities.quests.q_ledger_outlaw_captain.objectives.0.label",
+    "entities.quests.q_ledger_outlaw_captain.objectives.1.label",
+    "entities.quests.q_ledger_outlaw_captain.text",
+    "entities.quests.q_ledger_outlaw_captain.title",
+    "entities.quests.q_ledger_reedwater.completion",
+    "entities.quests.q_ledger_reedwater.objectives.0.label",
+    "entities.quests.q_ledger_reedwater.text",
+    "entities.quests.q_ledger_reedwater.title",
+    "entities.quests.q_ledger_silk.completion",
+    "entities.quests.q_ledger_silk.objectives.0.label",
+    "entities.quests.q_ledger_silk.text",
+    "entities.quests.q_ledger_silk.title",
+    "entities.quests.q_ledger_teeth.completion",
+    "entities.quests.q_ledger_teeth.objectives.0.label",
+    "entities.quests.q_ledger_teeth.text",
+    "entities.quests.q_ledger_teeth.title",
+    "entities.quests.q_ledger_toll.completion",
+    "entities.quests.q_ledger_toll.objectives.0.label",
+    "entities.quests.q_ledger_toll.text",
+    "entities.quests.q_ledger_toll.title",
+    "entities.quests.q_ledger_vigil.completion",
+    "entities.quests.q_ledger_vigil.objectives.0.label",
+    "entities.quests.q_ledger_vigil.text",
+    "entities.quests.q_ledger_vigil.title",
+    "entities.zones.eastbrook_vale.pois.8.label"
+  ]
 };
 
 export const en_XA: EnTranslations = {
@@ -59068,6 +63092,66 @@ export const en_XA: EnTranslations = {
       "mossy_handwraps": {
         "name": "[Ɱóššĝŕóŵñ Ĥáñðŵŕáþš]"
       },
+      "crossroads_saber": {
+        "name": "[Çŕóššŕóáðš Šáƀéŕ]"
+      },
+      "tradesman_hatchet": {
+        "name": "[Ţŕáðéšɱáñ'š Ĥáţçĥéţ]"
+      },
+      "drovers_staff": {
+        "name": "[Ðŕóʋéŕ'š Šţáƒƒ]"
+      },
+      "caravan_warden_dirk": {
+        "name": "[Çáŕáʋáñ Ŵáŕðéñ Ðíŕķ]"
+      },
+      "outrider_brigandine": {
+        "name": "[Óúţŕíðéŕ Ɓŕíĝáñðíñé]"
+      },
+      "caravan_quilted_vest": {
+        "name": "[Çáŕáʋáñ Ɋúíļţéð Ʋéšţ]"
+      },
+      "wanderers_chestguard": {
+        "name": "[Ŵáñðéŕéŕ'š Çĥéšţĝúáŕð]"
+      },
+      "outrider_legguards": {
+        "name": "[Óúţŕíðéŕ Ļéĝĝúáŕðš]"
+      },
+      "trail_leggings": {
+        "name": "[Ţŕáíļŵóŕñ Ļéĝĝíñĝš]"
+      },
+      "pilgrims_leggings": {
+        "name": "[Þíļĝŕíɱ'š Ļéĝĝíñĝš]"
+      },
+      "outrider_sabatons": {
+        "name": "[Óúţŕíðéŕ Šáƀáţóñš]"
+      },
+      "milepost_boots": {
+        "name": "[Ɱíļéþóšţ Ɓóóţš]"
+      },
+      "glade_pelt": {
+        "name": "[Ĝļáðé Þéļţ]"
+      },
+      "soft_down": {
+        "name": "[Šóƒţ Ðóŵñ Ţúƒţ]"
+      },
+      "amber_hide": {
+        "name": "[Áɱƀéŕ Ĥíðé]"
+      },
+      "stag_antler": {
+        "name": "[Ɓŕáñçĥíñĝ Áñţļéŕ]"
+      },
+      "brightwood_venison": {
+        "name": "[Ɓŕíĝĥţŵóóð Ʋéñíšóñ]"
+      },
+      "bramblehide_jerkin": {
+        "name": "[Ɓŕáɱƀļéĥíðé Ĵéŕķíñ]"
+      },
+      "monarch_crown_helm": {
+        "name": "[Ɱóñáŕçĥ'š Çŕóŵñ]"
+      },
+      "monarch_heart": {
+        "name": "[Ţĥé Ɱóñáŕçĥ'š Ĥéáŕţ]"
+      },
       "bristleback_maul": {
         "name": "[Ɓŕíšţļéƀáçķ Ɱáúļ]"
       },
@@ -59601,6 +63685,39 @@ export const en_XA: EnTranslations = {
       "bound_guardian": {
         "name": "[Ţĥé Ɓóúñð Ĝúáŕðíáñ]"
       },
+      "brightwood_hare": {
+        "name": "[Ɓŕíĝĥţŵóóð Ĥáŕé]"
+      },
+      "glade_fox": {
+        "name": "[Ĝļáðé Ƒóẋ]"
+      },
+      "spotted_fawn": {
+        "name": "[Šþóţţéð Ƒáŵñ]"
+      },
+      "meadow_crane": {
+        "name": "[Ɱéáðóŵ Çŕáñé]"
+      },
+      "thornpelt_badger": {
+        "name": "[Ţĥóŕñþéļţ Ɓáðĝéŕ]"
+      },
+      "dawnmane_doe": {
+        "name": "[Ðáŵñɱáñé Ðóé]"
+      },
+      "bramble_lynx": {
+        "name": "[Ɓŕáɱƀļé Ļýñẋ]"
+      },
+      "brightwood_stag": {
+        "name": "[Ɓŕíĝĥţŵóóð Šţáĝ]"
+      },
+      "grovetusk_boar": {
+        "name": "[Ĝŕóʋéţúšķ Ɓóáŕ]"
+      },
+      "sunhide_bear": {
+        "name": "[Šúñĥíðé Ɓéáŕ]"
+      },
+      "brightwood_monarch": {
+        "name": "[Ţĥé Ɓŕíĝĥţŵóóð Ɱóñáŕçĥ]"
+      },
       "elder_bristleback": {
         "name": "[Éļðéŕ Ɓŕíšţļéƀáçķ]"
       },
@@ -59814,6 +63931,11 @@ export const en_XA: EnTranslations = {
         "name": "[Ļóŕéɱášţéŕ Çáððíš]",
         "title": "[Ļóŕéɱášţéŕ]",
         "greeting": "[Ɱíñð ţĥé ļóóšé šĥáļé, {className}. Ţĥé ɱóúñţáíñ ĥáš ƀééñ... ŕéšţļéšš óƒ ļáţé. Í íñţéñð ţó ļéáŕñ ŵĥý.]"
+      },
+      "ranger_elwyn": {
+        "name": "[Ŕáñĝéŕ Éļŵýñ]",
+        "title": "[Ĝļáðé Ŵáŕðéñ]",
+        "greeting": "[Ɋúíéţ, {className} - ţĥé ĝļáðé íš çáļɱ ţóðáý, áñð Í ɱéáñ ţó ķééþ íţ ţĥáţ ŵáý.]"
       },
       "tidewatcher_ondrel": {
         "name": "[Óñðŕéļ Ʋáñé]",
@@ -60544,6 +64666,135 @@ export const en_XA: EnTranslations = {
           }
         }
       },
+      "q_brightwood_thinning": {
+        "title": "[Ţĥíññíñĝ ţĥé Ĝļáðé]",
+        "text": "[Ɓŕíĝĥţŵóóð Ĝļáðé íš óʋéŕŕúñ, {playerName}. Ţĥé ƀŕáɱƀļé ļýñẋ ƀŕééð ƒášţéŕ ţĥáñ Í çáñ çúļļ ţĥéɱ, áñð ţĥé ĥéŕðš ţŕáɱþļé ŵĥáţ ļíţţļé ĝŕážíñĝ íš ļéƒţ. Šļáý 8 Ɓŕáɱƀļé Ļýñẋ áñð ƀŕíñĝ ɱé 6 Ĝļáðé Þéļţš šó Í çáñ ĵúðĝé ţĥé ĥéáļţĥ óƒ ţĥé ŕéšţ.]",
+        "completion": "[Ĝóóð. Ţĥé þŕíðé íš ţĥíññéð áñð ţĥéšé þéļţš áŕé šóúñð - ţĥé ĝļáðé ŵíļļ ĥóļð áñóţĥéŕ šéášóñ.]",
+        "objectives": {
+          "0": {
+            "label": "[Ɓŕáɱƀļé Ļýñẋ šļáíñ]"
+          },
+          "1": {
+            "label": "[Ĝļáðé Þéļţ]"
+          }
+        }
+      },
+      "q_brightwood_monarch": {
+        "title": "[Ţĥé Ɓŕíĝĥţŵóóð Ɱóñáŕçĥ]",
+        "text": "[Ţĥéŕé íš óñé ƀéášţ Í ŵíļļ ñóţ ļóóšé áñ áŕŕóŵ áţ áļóñé: ţĥé Ɓŕíĝĥţŵóóð Ɱóñáŕçĥ, ţĥé ĝŕéáţ šţáĝ ţĥáţ ŕúļéš ţĥé ðééþ ĝļáðé. Ĥé ĥáš ĝŕóŵñ óļð áñð šáʋáĝé, ĝóŕíñĝ áñý ŵĥó ñéáŕ ĥíš ĥóļļóŵ. Ĥé íš ɱóŕé ţĥáñ á ɱáţçĥ ƒóŕ óñé ĥúñţéŕ - ƀŕíñĝ á ƒŕíéñð óŕ ţŵó. Ļáý ĥíɱ ţó ŕéšţ áñð ƀŕíñĝ ɱé ĥíš ĥéáŕţ, {playerName}.]",
+        "completion": "[Šó ţĥé óļð ķíñĝ ĥáš ƒáļļéñ. Á ĥéáʋý ţĥíñĝ, ţĥíš - ƀúţ á ķíñðéŕ éñð ţĥáñ ţĥé ŵóļʋéš ŵóúļð ĥáʋé ĝíʋéñ ĥíɱ. Ŵéáŕ ţĥíš çŕóŵñ óƒ ĥíš áñţļéŕš ŵíţĥ ŕéšþéçţ, {playerName}.]",
+        "objectives": {
+          "0": {
+            "label": "[Ţĥé Ɱóñáŕçĥ'š Ĥéáŕţ]"
+          }
+        }
+      },
+      "q_ledger_first_duty": {
+        "title": "[Á Ŵáŕðéñ'š Ƒíŕšţ Ðúţý]",
+        "text": "[Ýóú ŵáñţ ţó éáŕñ ýóúŕ ķééþ íñ Éášţƀŕóóķ, {playerName}? Ţĥéñ šţáŕţ ŵĥéŕé éʋéŕý ŵáŕðéñ šţáŕţš. Ţĥé ƀóáŕš íñ ţĥé ŵéšţ ɱéáðóŵ ĥáʋé ĝŕóŵñ ƒáţ áñð ƒéáŕļéšš, ŕóóţíñĝ úþ ţĥé šþŕíñĝ þļáñţíñĝ. Çúļļ 8 Ŵíļð Ɓóáŕ áñð ţĥé ļéðĝéŕ ŵíļļ ŕéɱéɱƀéŕ ýóúŕ ñáɱé.]",
+        "completion": "[Éíĝĥţ ƀóáŕš áñð ţĥé þļáñţíñĝ šáʋéð. Ĝóóð. Éʋéŕý ñáɱé íñ ţĥíš ļéðĝéŕ šţáŕţéð ĵúšţ ŵĥéŕé ýóú áŕé šţáñðíñĝ.]",
+        "objectives": {
+          "0": {
+            "label": "[Ŵíļð Ɓóáŕ çúļļéð]"
+          }
+        }
+      },
+      "q_ledger_teeth": {
+        "title": "[Ţééţĥ íñ ţĥé Ðáŕķ]",
+        "text": "[Ţĥé ŵóļƒ þáçķš ĥáʋé ļéáŕñéð ţĥé þáţŕóļ ŕóúţéš - ţĥéý ĥíţ áţ ðúšķ, ŵĥéñ ţĥé ļíĝĥţ íš ţĥíñ áñð á ļóñé ţŕáʋéļéŕ íš éášý ɱéáţ. Ɓŕéáķ ţĥéɱ, {playerName}. Šļáý 10 Ƒóŕéšţ Ŵóļʋéš áñð ļéţ ţĥé þáçķš ļéáŕñ á ñéŵ ļéššóñ.]",
+        "completion": "[Ţéñ ŵóļʋéš, áñð ţĥé ðúšķ ŕóáð íš óúŕš áĝáíñ. Ţĥé ļéðĝéŕ ĝŕóŵš ķíñðéŕ ţó ýóú.]",
+        "objectives": {
+          "0": {
+            "label": "[Ƒóŕéšţ Ŵóļƒ šļáíñ]"
+          }
+        }
+      },
+      "q_ledger_reedwater": {
+        "title": "[Ŕééðŵáţéŕ Þáţŕóļ]",
+        "text": "[Ŕéðƀŕóóķ šéñţ ýóú? Ĝóóð - ţĥéšé óļð ƀóñéš çáññóţ ŵáðé ţĥé šĥáļļóŵš áñýɱóŕé. Ţĥé Ɱúðƒíñ ĥáʋé çŕéþţ ƀáçķ ţó ţĥé ŕééðŵáţéŕ áñð ţĥéý áŕé ƀóļðéŕ ţĥáñ éʋéŕ. Ţĥíñ ţĥéɱ: 8 Ɱúðƒíñ Šķúļķéŕš, áñð ɱíñð ţĥé ðééþ ŵáţéŕ.]",
+        "completion": "[Ţĥáţ ŵíļļ ķééþ ţĥé ĝúŕĝļíñĝ ðéʋíļš óƒƒ ɱý ñéţš ƒóŕ á šéášóñ. Ţéļļ ţĥé Ɱáŕšĥáļ ţĥé ļáķé íš ɋúíéţ áĝáíñ.]",
+        "objectives": {
+          "0": {
+            "label": "[Ɱúðƒíñ Šķúļķéŕ šļáíñ]"
+          }
+        }
+      },
+      "q_ledger_silk": {
+        "title": "[Šíļķ áñð Ʋéñóɱ]",
+        "text": "[Ţĥé ļéðĝéŕ ɱáŕķš ţĥé éášţéŕñ ŵóóðš áš ŵáŕðéñ ĝŕóúñð ţóó. Ţĥé Ŵéƀŵóóð ļúŕķéŕš šþíñ ţĥíçķéŕ éʋéŕý ŵééķ - á çĥíļð ŵáñðéŕéð ţóó çļóšé ļášţ ɱáŕķéţ ðáý áñð ŵé çúţ ĥéŕ ƒŕéé ƀáŕéļý ƀŕéáţĥíñĝ. Ķíļļ 8 Ŵéƀŵóóð Ļúŕķéŕš ƀéƒóŕé ţĥéý ţáķé ţĥé ŵóóð éñţíŕéļý.]",
+        "completion": "[Éíĝĥţ ƒéŵéŕ šþíññéŕš íñ ţĥé ðáŕķ. Ţĥé ŵóóð ƀŕéáţĥéš éášíéŕ, áñð šó ðó Í.]",
+        "objectives": {
+          "0": {
+            "label": "[Ŵéƀŵóóð Ļúŕķéŕ šļáíñ]"
+          }
+        }
+      },
+      "q_ledger_brood": {
+        "title": "[Ţĥé Šþáŵñíñĝ Ðáŕķ]",
+        "text": "[Ķíļļíñĝ ţĥé ļúŕķéŕš óñļý ɱáðé ŕóóɱ ƒóŕ ţĥé ƀŕóóð. Ţĥé Šáƀļéŵéƀ ĥáţçĥļíñĝš áŕé þóúŕíñĝ óúţ óƒ ţĥé ðééþ ñéšţ, áñð á ĥúñðŕéð šɱáļļ ƒáñĝš ķíļļ á ţŕáʋéļéŕ áš šúŕéļý áš óñé ĝŕéáţ óñé. Çŕúšĥ 8 Šáƀļéŵéƀ Ĥáţçĥļíñĝš ƀéƒóŕé ţĥéý ĝŕóŵ.]",
+        "completion": "[Á ĝŕíɱ ŵóŕķ, ðŕóŵñíñĝ á ñéšţ. Ɓúţ ɱéŕçý ñóŵ íš á ĥúñðŕéð ƒúñéŕáļš šþáŕéð ļáţéŕ. Ţĥé ļéðĝéŕ íš šɋúáŕé.]",
+        "objectives": {
+          "0": {
+            "label": "[Šáƀļéŵéƀ Ĥáţçĥļíñĝ çŕúšĥéð]"
+          }
+        }
+      },
+      "q_ledger_deepvermin": {
+        "title": "[Ʋéŕɱíñ íñ ţĥé Ðééþ]",
+        "text": "[Ţĥé Ɱáŕšĥáļ'š ļéðĝéŕ šáýš ýóú çļéáŕ þéšţš. Ŵéļļ, ɱý ðíĝ ĥáš ţĥé ŵóŕšţ óƒ ţĥéɱ. Ţĥé ţúññéļ ŕáţš ƀŕééð ƒášţéŕ ţĥáñ ɱý çŕéŵ çáñ šŵíñĝ á þíçķ - þúţ ðóŵñ 12 Ţúññéļ Ŕáţ Ðíĝĝéŕš áñð ɱáýƀé ŵé šţŕíķé çóþþéŕ ƀéƒóŕé ŵíñţéŕ.]",
+        "completion": "[Ţŵéļʋé óƒ ţĥé çáñðļé-ĥéáðéð ʋéŕɱíñ, ĝóñé! Ŕíĝĥţ, ļáðš - ƀáçķ ðóŵñ ţĥé šĥáƒţ. Ýóú ĥáʋé éáŕñéð ţĥé Ɱáŕšĥáļ á ĝóóð ŵóŕð, {playerName}.]",
+        "objectives": {
+          "0": {
+            "label": "[Ţúññéļ Ŕáţ Ðíĝĝéŕ šļáíñ]"
+          }
+        }
+      },
+      "q_ledger_toll": {
+        "title": "[Ţĥé Ĥíĝĥŵáýɱéñ'š Ţóļļ]",
+        "text": "[Ţĥé šóúţĥéášţ ĥíļļš ĥáʋé ƀéçóɱé á ƀáñðíţ'š ţóļļ ŕóáð - ţĥéý ŕóƀ áñýóñé ƒóóļ éñóúĝĥ ţó ţŕáʋéļ ļíĝĥţ. Ţĥé ļéðĝéŕ ĥáš á þŕíçé óñ éʋéŕý óñé óƒ ţĥéɱ. Ɓŕíñĝ Éášţƀŕóóķ ĵúšţíçé ţó 8 Ʋáļé Ɓáñðíţš.]",
+        "completion": "[Éíĝĥţ ƀáñðíţš áñšŵéŕéð ƒóŕ. Ŵóŕð íš áļŕéáðý šþŕéáðíñĝ ţĥáţ ţĥé ţóļļ ŕóáð ĥáš á ñéŵ ķééþéŕ - áñð ĥé ðóéš ñóţ ţáķé çóíñ, ĥé ţáķéš ĥéáðš.]",
+        "objectives": {
+          "0": {
+            "label": "[Ʋáļé Ɓáñðíţ ƀŕóúĝĥţ ţó ĵúšţíçé]"
+          }
+        }
+      },
+      "q_ledger_vigil": {
+        "title": "[Ʋíĝíļ áţ ţĥé Çĥáþéļ]",
+        "text": "[Ţĥé Ɱáŕšĥáļ šéñðš ĥíš ŵáŕðéñš ţó ɱé ŵĥéñ ţĥé ţŕóúƀļé íš þášţ ţĥé ŕéáçĥ óƒ šŵóŕðš áļóñé. Ţĥé çĥáþéļ ðéáð ŵíļļ ñóţ ļíé šţíļļ, áñð Í áɱ ţóó óļð ţó šţáñð ţĥé ñíĝĥţ ʋíĝíļ. Ķééþ íţ ƒóŕ ɱé, {playerName} - ļáý 10 Ŕéšţļéšš Ɓóñéš ƀáçķ ţó ţĥéíŕ ŕéšţ.]",
+        "completion": "[Ţéñ šóúļš ŕéţúŕñéð ţó ţĥé éáŕţĥ, áñð á ñíĝĥţ óƒ þéáçé ƀóúĝĥţ ƒóŕ ţĥé çĥáþéļ. Ţĥé Ļíĝĥţ ŕéɱéɱƀéŕš šúçĥ ʋíĝíļš, éʋéñ ŵĥéñ ţĥé ļéðĝéŕ ƒóŕĝéţš.]",
+        "objectives": {
+          "0": {
+            "label": "[Ŕéšţļéšš Ɓóñéš ļáíð ţó ŕéšţ]"
+          }
+        }
+      },
+      "q_ledger_great_boar": {
+        "title": "[Ţĥé Ĝŕéáţ Ɓŕíšţļéƀáçķ]",
+        "text": "[Ţĥéŕé íš áñ óļð ƀúļļ ƀóáŕ íñ ţĥé ŵéšţéŕñ ţĥíçķéţš - ţĥé Éļðéŕ Ɓŕíšţļéƀáçķ, ĥíðé ļíķé ƀáŕķ áñð á ţéɱþéŕ ţó ɱáţçĥ. Ĥé ĥáš ĝóŕéð ţŵó óƒ ɱý ĥíðé-ŕúññéŕš. Ɓŕíñĝ ĥíɱ ðóŵñ áñð çļéáŕ 6 óƒ ţĥé ļéššéŕ Ŵíļð Ɓóáŕ ţĥáţ šĥéļţéŕ ƀéĥíñð ĥíɱ, áñð Í ŵíļļ šéé ýóúŕ ñáɱé šéţ ĥíĝĥ íñ ţĥé ļéðĝéŕ.]",
+        "completion": "[Ţĥé Éļðéŕ Ɓŕíšţļéƀáçķ, ðéáð ƀý ýóúŕ ĥáñð! Ţĥáţ ĥíðé áļóñé íš ŵóŕţĥ á šéášóñ óƒ ţŕáðé. Ýóú ĥáʋé ɱáðé ţĥé ļéðĝéŕ þŕóúð, {playerName}.]",
+        "objectives": {
+          "0": {
+            "label": "[Éļðéŕ Ɓŕíšţļéƀáçķ šļáíñ]"
+          },
+          "1": {
+            "label": "[Ŵíļð Ɓóáŕ óƒ ţĥé ĥéŕð šļáíñ]"
+          }
+        }
+      },
+      "q_ledger_outlaw_captain": {
+        "title": "[Ţĥé Óúţļáŵ Çáþţáíñ]",
+        "text": "[Ţĥé ļášţ ñáɱé íñ ţĥé ļéðĝéŕ íš ţĥé óñé Í ĥáʋé ŵáñţéð çŕóššéð óúţ ƒóŕ á ýéáŕ: Çáþţáíñ Ʋéŕļáñ, ŵĥó ţúŕñéð ĥáļƒ ţĥé Ʋáļé ţó ƀáñðíţŕý. Ĥé šĥéļţéŕš ƀéĥíñð ĥíš ļíéúţéñáñţš íñ ţĥé šóúţĥéášţ çáɱþ. Çúţ ðóŵñ 6 Ʋáļé Ɓáñðíţš ţó ŕéáçĥ ĥíɱ, ţĥéñ éñð Ʋéŕļáñ ĥíɱšéļƒ. Ðó ñóţ ĝó áļóñé.]",
+        "completion": "[Çáþţáíñ Ʋéŕļáñ, ðéáð, áñð ĥíš çóáţ ƀŕóúĝĥţ ţó ɱý ðóóŕ. Ţĥé ļéðĝéŕ íš çļóšéð, {playerName} - áñð ţĥé Ʋáļé ŵíļļ ţéļļ ŵáŕðéñš-ţó-çóɱé ţĥé ñáɱé óƒ ţĥé óñé ŵĥó çļóšéð íţ.]",
+        "objectives": {
+          "0": {
+            "label": "[Ʋáļé Ɓáñðíţ çúţ ðóŵñ]"
+          },
+          "1": {
+            "label": "[Çáþţáíñ Ʋéŕļáñ šļáíñ]"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "[Ɱóĝĝéŕ'š Ţŕáíļ]",
         "text": "[Ɓéƒóŕé ýóú ţáķé ţĥé ŕóáð ñóŕţĥ, Éášţƀŕóóķ ĥáš óñé ļášţ ţĥóŕñ íñ íţš šíðé: Ɱóĝĝéŕ. Ţĥé ƀŕúţé ĥáš ƀééñ ţŕáɱþļíñĝ ţĥé ļóŵéŕ ɱéáðóŵ áñð ðŕíʋíñĝ ţĥé ƀóáŕš ɱáð. Çļéáŕ ţĥé ɱéáðóŵ áŕóúñð ĥíš ţŕáíļ šó ŵé çáñ šéé ŵĥéŕé ĥé ļáíŕš.]",
@@ -60656,6 +64907,9 @@ export const en_XA: EnTranslations = {
           },
           "7": {
             "label": "[Ƒáļļéñ Çĥáþéļ]"
+          },
+          "8": {
+            "label": "[Ɓŕíĝĥţŵóóð Ĝļáðé]"
           }
         }
       },
