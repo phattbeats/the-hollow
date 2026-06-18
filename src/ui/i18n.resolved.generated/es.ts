@@ -176,6 +176,11 @@ export const es: EnTranslations = {
     "privacy": "Política de Privacidad",
     "discordLabel": "Únete al Discord"
   },
+  "settings": {
+    "languageLoading": "Cargando idioma...",
+    "languageLoadFailed": "No se pudo cargar ese idioma. Se mantendrá tu idioma actual.",
+    "languageLoadUnavailable": "Ese idioma no está disponible."
+  },
   "highscores": {
     "title": "Clasificaciones de Puntuación",
     "desc": "Sigue a los campeones más grandes del reino y compara tu progreso."

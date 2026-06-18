@@ -176,6 +176,11 @@ export const ru_RU: EnTranslations = {
     "privacy": "Политика конфиденциальности",
     "discordLabel": "Присоединиться к Discord"
   },
+  "settings": {
+    "languageLoading": "Загрузка языка...",
+    "languageLoadFailed": "Не удалось загрузить этот язык. Текущий язык будет сохранён.",
+    "languageLoadUnavailable": "Этот язык недоступен."
+  },
   "highscores": {
     "title": "Таблица рекордов",
     "desc": "Отслеживайте величайших чемпионов игрового мира и сравнивайте свои успехи."

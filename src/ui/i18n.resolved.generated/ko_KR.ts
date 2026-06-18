@@ -176,6 +176,11 @@ export const ko_KR: EnTranslations = {
     "privacy": "개인정보 처리방침",
     "discordLabel": "Discord 참여하기"
   },
+  "settings": {
+    "languageLoading": "언어를 불러오는 중...",
+    "languageLoadFailed": "해당 언어를 불러오지 못했습니다. 현재 언어를 유지합니다.",
+    "languageLoadUnavailable": "해당 언어를 사용할 수 없습니다."
+  },
   "highscores": {
     "title": "최고 점수 순위표",
     "desc": "렐름의 가장 위대한 챔피언들을 확인하고 당신의 진행 상태를 비교해 보세요."

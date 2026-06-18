@@ -176,6 +176,11 @@ export const en_XA: EnTranslations = {
     "privacy": "[Þŕíʋáçý Þóļíçý]",
     "discordLabel": "[Ĵóíñ ţĥé Ðíšçóŕð]"
   },
+  "settings": {
+    "languageLoading": "[Ļóáðíñĝ ļáñĝúáĝé...]",
+    "languageLoadFailed": "[Çóúļð ñóţ ļóáð ţĥáţ ļáñĝúáĝé. Ķééþíñĝ ýóúŕ çúŕŕéñţ ļáñĝúáĝé.]",
+    "languageLoadUnavailable": "[Ţĥáţ ļáñĝúáĝé íš ñóţ áʋáíļáƀļé.]"
+  },
   "highscores": {
     "title": "[Ĥíĝĥ Šçóŕéš Ļéáðéŕƀóáŕð]",
     "desc": "[Ţŕáçķ ţĥé ŕéáļɱ'š ĝŕéáţéšţ çĥáɱþíóñš áñð çóɱþáŕé ýóúŕ þŕóĝŕéšš.]"

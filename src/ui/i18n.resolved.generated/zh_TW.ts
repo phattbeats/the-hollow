@@ -176,6 +176,11 @@ export const zh_TW: EnTranslations = {
     "privacy": "隱私權政策",
     "discordLabel": "加入Discord社區"
   },
+  "settings": {
+    "languageLoading": "正在載入語言...",
+    "languageLoadFailed": "無法載入該語言。將保留目前的語言。",
+    "languageLoadUnavailable": "該語言無法使用。"
+  },
   "highscores": {
     "title": "高分排行榜",
     "desc": "追蹤伺服器中最偉大的英雄，並對比你的遊戲進度。"

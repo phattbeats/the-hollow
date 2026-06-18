@@ -176,6 +176,11 @@ export const ja_JP: EnTranslations = {
     "privacy": "プライバシーポリシー",
     "discordLabel": "Discordに参加する"
   },
+  "settings": {
+    "languageLoading": "言語を読み込んでいます...",
+    "languageLoadFailed": "その言語を読み込めませんでした。現在の言語を維持します。",
+    "languageLoadUnavailable": "その言語は利用できません。"
+  },
   "highscores": {
     "title": "ハイスコアリーダーボード",
     "desc": "レルムの偉大なチャンピオンたちを確認し、あなたの進行度と比較しましょう。"

@@ -176,6 +176,11 @@ export const de_DE: EnTranslations = {
     "privacy": "Datenschutzerklärung",
     "discordLabel": "Tritt dem Discord bei"
   },
+  "settings": {
+    "languageLoading": "Sprache wird geladen...",
+    "languageLoadFailed": "Diese Sprache konnte nicht geladen werden. Deine aktuelle Sprache bleibt erhalten.",
+    "languageLoadUnavailable": "Diese Sprache ist nicht verfügbar."
+  },
   "highscores": {
     "title": "Bestenliste",
     "desc": "Verfolge die größten Champions des Realms und vergleiche deinen Fortschritt."

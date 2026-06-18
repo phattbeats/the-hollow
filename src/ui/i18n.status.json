@@ -25,9 +25,9 @@
     "ru_RU"
   ],
   "counts": {
-    "keys": 2581,
-    "rows": 33553,
-    "translated": 33507,
+    "keys": 2584,
+    "rows": 33592,
+    "translated": 33546,
     "pending": 0,
     "blocked": 46,
     "blockedSource": 104
@@ -157390,6 +157390,222 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "d732ca9f938cfbc1",
+          "by": "human"
+        }
+      }
+    },
+    "main:settings.languageLoadFailed": {
+      "scope": "main",
+      "enHash": "7e0b26021cebab6a",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "7e0b26021cebab6a",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "7e0b26021cebab6a",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "7e0b26021cebab6a",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "7e0b26021cebab6a",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "7e0b26021cebab6a",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "7e0b26021cebab6a",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "7e0b26021cebab6a",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "7e0b26021cebab6a",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "7e0b26021cebab6a",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "7e0b26021cebab6a",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "7e0b26021cebab6a",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "7e0b26021cebab6a",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "7e0b26021cebab6a",
+          "by": "human"
+        }
+      }
+    },
+    "main:settings.languageLoadUnavailable": {
+      "scope": "main",
+      "enHash": "b852d64637f9b150",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "b852d64637f9b150",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "b852d64637f9b150",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "b852d64637f9b150",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "b852d64637f9b150",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "b852d64637f9b150",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "b852d64637f9b150",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "b852d64637f9b150",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "b852d64637f9b150",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "b852d64637f9b150",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "b852d64637f9b150",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "b852d64637f9b150",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "b852d64637f9b150",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "b852d64637f9b150",
+          "by": "human"
+        }
+      }
+    },
+    "main:settings.languageLoading": {
+      "scope": "main",
+      "enHash": "74439f1e27465856",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "74439f1e27465856",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "74439f1e27465856",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "74439f1e27465856",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "74439f1e27465856",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "74439f1e27465856",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "74439f1e27465856",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "74439f1e27465856",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "74439f1e27465856",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "74439f1e27465856",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "74439f1e27465856",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "74439f1e27465856",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "74439f1e27465856",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "74439f1e27465856",
           "by": "human"
         }
       }

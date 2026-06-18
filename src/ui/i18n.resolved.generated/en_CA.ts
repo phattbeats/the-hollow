@@ -176,6 +176,11 @@ export const en_CA: EnTranslations = {
     "privacy": "Privacy Policy",
     "discordLabel": "Join the Discord"
   },
+  "settings": {
+    "languageLoading": "Loading language...",
+    "languageLoadFailed": "Could not load that language. Keeping your current language.",
+    "languageLoadUnavailable": "That language is not available."
+  },
   "highscores": {
     "title": "High Scores Leaderboard",
     "desc": "Track the realm's greatest champions and compare your progress."

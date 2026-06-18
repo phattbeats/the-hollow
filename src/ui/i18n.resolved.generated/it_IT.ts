@@ -176,6 +176,11 @@ export const it_IT: EnTranslations = {
     "privacy": "Informativa sulla privacy",
     "discordLabel": "Entra nel Discord"
   },
+  "settings": {
+    "languageLoading": "Caricamento della lingua...",
+    "languageLoadFailed": "Impossibile caricare questa lingua. La lingua attuale verrà mantenuta.",
+    "languageLoadUnavailable": "Questa lingua non è disponibile."
+  },
   "highscores": {
     "title": "Classifica dei punteggi più alti",
     "desc": "Segui i più grandi campioni del reame e confronta i tuoi progressi."
