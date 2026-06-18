@@ -25,10 +25,10 @@
     "ru_RU"
   ],
   "counts": {
-    "keys": 2581,
-    "rows": 33553,
-    "translated": 33507,
-    "pending": 0,
+    "keys": 2667,
+    "rows": 34671,
+    "translated": 33833,
+    "pending": 792,
     "blocked": 46,
     "blockedSource": 104
   },
@@ -37303,6 +37303,78 @@
         }
       }
     },
+    "main:entities.items.amber_hide.name": {
+      "scope": "main",
+      "enHash": "c2478b9d6374e90f",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "c2478b9d6374e90f",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "c2478b9d6374e90f",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "c2478b9d6374e90f",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "c2478b9d6374e90f",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "c2478b9d6374e90f",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "c2478b9d6374e90f",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "c2478b9d6374e90f",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "c2478b9d6374e90f",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "c2478b9d6374e90f",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "c2478b9d6374e90f",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "c2478b9d6374e90f",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "c2478b9d6374e90f",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "c2478b9d6374e90f",
+          "by": "human"
+        }
+      }
+    },
     "main:entities.items.ancient_crypt_door.name": {
       "scope": "main",
       "enHash": "5561f7ab75926059",
@@ -38527,6 +38599,150 @@
         }
       }
     },
+    "main:entities.items.bramblehide_jerkin.name": {
+      "scope": "main",
+      "enHash": "eaf717164fb1d1b0",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "eaf717164fb1d1b0",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "eaf717164fb1d1b0",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "eaf717164fb1d1b0",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "eaf717164fb1d1b0",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "eaf717164fb1d1b0",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "eaf717164fb1d1b0",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "eaf717164fb1d1b0",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "eaf717164fb1d1b0",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "eaf717164fb1d1b0",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "eaf717164fb1d1b0",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "eaf717164fb1d1b0",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "eaf717164fb1d1b0",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "eaf717164fb1d1b0",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.brightwood_venison.name": {
+      "scope": "main",
+      "enHash": "340ffc132ddc4721",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "340ffc132ddc4721",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "340ffc132ddc4721",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "340ffc132ddc4721",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "340ffc132ddc4721",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "340ffc132ddc4721",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "340ffc132ddc4721",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "340ffc132ddc4721",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "340ffc132ddc4721",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "340ffc132ddc4721",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "340ffc132ddc4721",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "340ffc132ddc4721",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "340ffc132ddc4721",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "340ffc132ddc4721",
+          "by": "human"
+        }
+      }
+    },
     "main:entities.items.briny_idol.name": {
       "scope": "main",
       "enHash": "08af118627aa21d3",
@@ -39027,6 +39243,150 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "52f248231d11aa30",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.caravan_quilted_vest.name": {
+      "scope": "main",
+      "enHash": "26e812253f51949f",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "26e812253f51949f",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "26e812253f51949f",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "26e812253f51949f",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "26e812253f51949f",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "26e812253f51949f",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "26e812253f51949f",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "26e812253f51949f",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "26e812253f51949f",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "26e812253f51949f",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "26e812253f51949f",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "26e812253f51949f",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "26e812253f51949f",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "26e812253f51949f",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.caravan_warden_dirk.name": {
+      "scope": "main",
+      "enHash": "66a6b62a954dc871",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "66a6b62a954dc871",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "66a6b62a954dc871",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "66a6b62a954dc871",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "66a6b62a954dc871",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "66a6b62a954dc871",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "66a6b62a954dc871",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "66a6b62a954dc871",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "66a6b62a954dc871",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "66a6b62a954dc871",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "66a6b62a954dc871",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "66a6b62a954dc871",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "66a6b62a954dc871",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "66a6b62a954dc871",
           "by": "human"
         }
       }
@@ -40035,6 +40395,78 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "60e59e817f43f3fe",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.crossroads_saber.name": {
+      "scope": "main",
+      "enHash": "55109277c8045dd0",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "55109277c8045dd0",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "55109277c8045dd0",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "55109277c8045dd0",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "55109277c8045dd0",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "55109277c8045dd0",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "55109277c8045dd0",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "55109277c8045dd0",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "55109277c8045dd0",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "55109277c8045dd0",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "55109277c8045dd0",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "55109277c8045dd0",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "55109277c8045dd0",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "55109277c8045dd0",
           "by": "human"
         }
       }
@@ -41187,6 +41619,78 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "71f8194f4b4a8d17",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.drovers_staff.name": {
+      "scope": "main",
+      "enHash": "6aea8e1042e4514a",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "6aea8e1042e4514a",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "6aea8e1042e4514a",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "6aea8e1042e4514a",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "6aea8e1042e4514a",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "6aea8e1042e4514a",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "6aea8e1042e4514a",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "6aea8e1042e4514a",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "6aea8e1042e4514a",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "6aea8e1042e4514a",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "6aea8e1042e4514a",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "6aea8e1042e4514a",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "6aea8e1042e4514a",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "6aea8e1042e4514a",
           "by": "human"
         }
       }
@@ -43635,6 +44139,78 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "c14e8268c8bd27fa",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.glade_pelt.name": {
+      "scope": "main",
+      "enHash": "0ce48b6e1d4786a1",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
           "by": "human"
         }
       }
@@ -47671,6 +48247,78 @@
         }
       }
     },
+    "main:entities.items.milepost_boots.name": {
+      "scope": "main",
+      "enHash": "c61ee23d062bd12d",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "c61ee23d062bd12d",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "c61ee23d062bd12d",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "c61ee23d062bd12d",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "c61ee23d062bd12d",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "c61ee23d062bd12d",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "c61ee23d062bd12d",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "c61ee23d062bd12d",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "c61ee23d062bd12d",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "c61ee23d062bd12d",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "c61ee23d062bd12d",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "c61ee23d062bd12d",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "c61ee23d062bd12d",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "c61ee23d062bd12d",
+          "by": "human"
+        }
+      }
+    },
     "main:entities.items.militia_vest.name": {
       "scope": "main",
       "enHash": "b4d56a4366a22564",
@@ -48747,6 +49395,150 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "8bb54069cdbd5b15",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.monarch_crown_helm.name": {
+      "scope": "main",
+      "enHash": "e02cd28ad1a00e36",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "e02cd28ad1a00e36",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "e02cd28ad1a00e36",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "e02cd28ad1a00e36",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "e02cd28ad1a00e36",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "e02cd28ad1a00e36",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "e02cd28ad1a00e36",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "e02cd28ad1a00e36",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "e02cd28ad1a00e36",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "e02cd28ad1a00e36",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "e02cd28ad1a00e36",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "e02cd28ad1a00e36",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "e02cd28ad1a00e36",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "e02cd28ad1a00e36",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.monarch_heart.name": {
+      "scope": "main",
+      "enHash": "ae81975073bf1afa",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
           "by": "human"
         }
       }
@@ -50263,6 +51055,222 @@
         }
       }
     },
+    "main:entities.items.outrider_brigandine.name": {
+      "scope": "main",
+      "enHash": "00c5f20245825b49",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "00c5f20245825b49",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "00c5f20245825b49",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "00c5f20245825b49",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "00c5f20245825b49",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "00c5f20245825b49",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "00c5f20245825b49",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "00c5f20245825b49",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "00c5f20245825b49",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "00c5f20245825b49",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "00c5f20245825b49",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "00c5f20245825b49",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "00c5f20245825b49",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "00c5f20245825b49",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.outrider_legguards.name": {
+      "scope": "main",
+      "enHash": "34f8364e22b1b07e",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "34f8364e22b1b07e",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "34f8364e22b1b07e",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "34f8364e22b1b07e",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "34f8364e22b1b07e",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "34f8364e22b1b07e",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "34f8364e22b1b07e",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "34f8364e22b1b07e",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "34f8364e22b1b07e",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "34f8364e22b1b07e",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "34f8364e22b1b07e",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "34f8364e22b1b07e",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "34f8364e22b1b07e",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "34f8364e22b1b07e",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.outrider_sabatons.name": {
+      "scope": "main",
+      "enHash": "8a43cf9f4990235b",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "8a43cf9f4990235b",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "8a43cf9f4990235b",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "8a43cf9f4990235b",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "8a43cf9f4990235b",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "8a43cf9f4990235b",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "8a43cf9f4990235b",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "8a43cf9f4990235b",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "8a43cf9f4990235b",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "8a43cf9f4990235b",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "8a43cf9f4990235b",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "8a43cf9f4990235b",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "8a43cf9f4990235b",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "8a43cf9f4990235b",
+          "by": "human"
+        }
+      }
+    },
     "main:entities.items.pale_pearl.name": {
       "scope": "main",
       "enHash": "e75bc0ce952ed861",
@@ -50547,6 +51555,78 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "ff357b5baa2d3664",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.pilgrims_leggings.name": {
+      "scope": "main",
+      "enHash": "e54eeeb8222e7d78",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "e54eeeb8222e7d78",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "e54eeeb8222e7d78",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "e54eeeb8222e7d78",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "e54eeeb8222e7d78",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "e54eeeb8222e7d78",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "e54eeeb8222e7d78",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "e54eeeb8222e7d78",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "e54eeeb8222e7d78",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "e54eeeb8222e7d78",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "e54eeeb8222e7d78",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "e54eeeb8222e7d78",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "e54eeeb8222e7d78",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "e54eeeb8222e7d78",
           "by": "human"
         }
       }
@@ -53503,6 +54583,78 @@
         }
       }
     },
+    "main:entities.items.soft_down.name": {
+      "scope": "main",
+      "enHash": "a8afe937fefa805d",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "a8afe937fefa805d",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "a8afe937fefa805d",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "a8afe937fefa805d",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "a8afe937fefa805d",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "a8afe937fefa805d",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "a8afe937fefa805d",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "a8afe937fefa805d",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "a8afe937fefa805d",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "a8afe937fefa805d",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "a8afe937fefa805d",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "a8afe937fefa805d",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "a8afe937fefa805d",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "a8afe937fefa805d",
+          "by": "human"
+        }
+      }
+    },
     "main:entities.items.soggy_boot.name": {
       "scope": "main",
       "enHash": "1fee9229accc96a3",
@@ -54003,6 +55155,78 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "cc021a698e240c08",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.stag_antler.name": {
+      "scope": "main",
+      "enHash": "ebdc9ef08ae10f1e",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "ebdc9ef08ae10f1e",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "ebdc9ef08ae10f1e",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "ebdc9ef08ae10f1e",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "ebdc9ef08ae10f1e",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "ebdc9ef08ae10f1e",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "ebdc9ef08ae10f1e",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "ebdc9ef08ae10f1e",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "ebdc9ef08ae10f1e",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "ebdc9ef08ae10f1e",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "ebdc9ef08ae10f1e",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "ebdc9ef08ae10f1e",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "ebdc9ef08ae10f1e",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "ebdc9ef08ae10f1e",
           "by": "human"
         }
       }
@@ -55159,6 +56383,78 @@
         }
       }
     },
+    "main:entities.items.tradesman_hatchet.name": {
+      "scope": "main",
+      "enHash": "d0154e86b0a082c6",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "d0154e86b0a082c6",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "d0154e86b0a082c6",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "d0154e86b0a082c6",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "d0154e86b0a082c6",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "d0154e86b0a082c6",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "d0154e86b0a082c6",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "d0154e86b0a082c6",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "d0154e86b0a082c6",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "d0154e86b0a082c6",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "d0154e86b0a082c6",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "d0154e86b0a082c6",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "d0154e86b0a082c6",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "d0154e86b0a082c6",
+          "by": "human"
+        }
+      }
+    },
     "main:entities.items.trail_hardtack.name": {
       "scope": "main",
       "enHash": "38647b130cc41be4",
@@ -55227,6 +56523,78 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "38647b130cc41be4",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.trail_leggings.name": {
+      "scope": "main",
+      "enHash": "dbd45ac74a2109ba",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "dbd45ac74a2109ba",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "dbd45ac74a2109ba",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "dbd45ac74a2109ba",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "dbd45ac74a2109ba",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "dbd45ac74a2109ba",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "dbd45ac74a2109ba",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "dbd45ac74a2109ba",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "dbd45ac74a2109ba",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "dbd45ac74a2109ba",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "dbd45ac74a2109ba",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "dbd45ac74a2109ba",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "dbd45ac74a2109ba",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "dbd45ac74a2109ba",
           "by": "human"
         }
       }
@@ -55947,6 +57315,78 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "a38b6a7ed840174b",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.wanderers_chestguard.name": {
+      "scope": "main",
+      "enHash": "ec42be698d36c9f7",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "ec42be698d36c9f7",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "ec42be698d36c9f7",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "ec42be698d36c9f7",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "ec42be698d36c9f7",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "ec42be698d36c9f7",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "ec42be698d36c9f7",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "ec42be698d36c9f7",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "ec42be698d36c9f7",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "ec42be698d36c9f7",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "ec42be698d36c9f7",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "ec42be698d36c9f7",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "ec42be698d36c9f7",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "ec42be698d36c9f7",
           "by": "human"
         }
       }
@@ -57823,6 +59263,198 @@
         }
       }
     },
+    "main:entities.mobs.bramble_lynx.name": {
+      "scope": "main",
+      "enHash": "ddba3edc16c416bb",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "ddba3edc16c416bb",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.mobs.brightwood_hare.name": {
+      "scope": "main",
+      "enHash": "aed077754d606a76",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "aed077754d606a76",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.mobs.brightwood_monarch.name": {
+      "scope": "main",
+      "enHash": "0dc837c571182445",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "0dc837c571182445",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.mobs.brightwood_stag.name": {
+      "scope": "main",
+      "enHash": "25cc25030bd9ac46",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "25cc25030bd9ac46",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
     "main:entities.mobs.brutok_skullsmasher.name": {
       "scope": "main",
       "enHash": "252d915ae15e31a1",
@@ -58180,6 +59812,54 @@
           "state": "translated",
           "srcHash": "bd30142fdf4e684a",
           "by": "human"
+        }
+      }
+    },
+    "main:entities.mobs.dawnmane_doe.name": {
+      "scope": "main",
+      "enHash": "09025d4efa90f072",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "09025d4efa90f072",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
         }
       }
     },
@@ -59263,6 +60943,54 @@
         }
       }
     },
+    "main:entities.mobs.glade_fox.name": {
+      "scope": "main",
+      "enHash": "ed4815955005b170",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "ed4815955005b170",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
     "main:entities.mobs.glimmermere_wader.name": {
       "scope": "main",
       "enHash": "a912e189a942475d",
@@ -59836,6 +61564,54 @@
           "state": "translated",
           "srcHash": "1b7ee339f5c34d4a",
           "by": "human"
+        }
+      }
+    },
+    "main:entities.mobs.grovetusk_boar.name": {
+      "scope": "main",
+      "enHash": "62b56f0e00d27be9",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "62b56f0e00d27be9",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
         }
       }
     },
@@ -60556,6 +62332,54 @@
           "state": "translated",
           "srcHash": "b76e1287f10f59ce",
           "by": "human"
+        }
+      }
+    },
+    "main:entities.mobs.meadow_crane.name": {
+      "scope": "main",
+      "enHash": "85b9d4f17e595da7",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "85b9d4f17e595da7",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
         }
       }
     },
@@ -62575,6 +64399,54 @@
         }
       }
     },
+    "main:entities.mobs.spotted_fawn.name": {
+      "scope": "main",
+      "enHash": "f9ad11a6e87f4bf7",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "f9ad11a6e87f4bf7",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
     "main:entities.mobs.stormcrag_elemental.name": {
       "scope": "main",
       "enHash": "353bb3a653f98925",
@@ -62719,6 +64591,54 @@
         }
       }
     },
+    "main:entities.mobs.sunhide_bear.name": {
+      "scope": "main",
+      "enHash": "00349c4ddd860095",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "00349c4ddd860095",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
     "main:entities.mobs.thornpeak_ogre.name": {
       "scope": "main",
       "enHash": "fb3309b067826d7a",
@@ -62788,6 +64708,54 @@
           "state": "translated",
           "srcHash": "fb3309b067826d7a",
           "by": "human"
+        }
+      }
+    },
+    "main:entities.mobs.thornpelt_badger.name": {
+      "scope": "main",
+      "enHash": "1ffa3fe2613fe188",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "1ffa3fe2613fe188",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
         }
       }
     },
@@ -66975,6 +68943,152 @@
         }
       }
     },
+    "main:entities.npcs.ranger_elwyn.greeting": {
+      "scope": "main",
+      "enHash": "332504f6099d7079",
+      "placeholders": [
+        "className"
+      ],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "332504f6099d7079",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.npcs.ranger_elwyn.name": {
+      "scope": "main",
+      "enHash": "7e83d381359bcc54",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "7e83d381359bcc54",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.npcs.ranger_elwyn.title": {
+      "scope": "main",
+      "enHash": "822c5d2cec1e1bc4",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "822c5d2cec1e1bc4",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
     "main:entities.npcs.scout_maren.greeting": {
       "scope": "main",
       "enHash": "717cb4fa4cb13e0d",
@@ -69940,6 +72054,444 @@
           "state": "translated",
           "srcHash": "df798dd0ba97d6fc",
           "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_brightwood_monarch.completion": {
+      "scope": "main",
+      "enHash": "46ed8051e90d7e53",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "46ed8051e90d7e53",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_brightwood_monarch.objectives.0.label": {
+      "scope": "main",
+      "enHash": "ae81975073bf1afa",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "ae81975073bf1afa",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_brightwood_monarch.text": {
+      "scope": "main",
+      "enHash": "0e517c0ebfa244b6",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "0e517c0ebfa244b6",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_brightwood_monarch.title": {
+      "scope": "main",
+      "enHash": "0dc837c571182445",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "0dc837c571182445",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_brightwood_thinning.completion": {
+      "scope": "main",
+      "enHash": "754096d9d1a6a388",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "754096d9d1a6a388",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_brightwood_thinning.objectives.0.label": {
+      "scope": "main",
+      "enHash": "1bf6b45292d4dbb9",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "1bf6b45292d4dbb9",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_brightwood_thinning.objectives.1.label": {
+      "scope": "main",
+      "enHash": "0ce48b6e1d4786a1",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "0ce48b6e1d4786a1",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_brightwood_thinning.text": {
+      "scope": "main",
+      "enHash": "8ce5d13825b8164f",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "8ce5d13825b8164f",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_brightwood_thinning.title": {
+      "scope": "main",
+      "enHash": "1545f8c3e89ab3b9",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "1545f8c3e89ab3b9",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
         }
       }
     },
@@ -77990,6 +80542,2034 @@
           "state": "translated",
           "srcHash": "251077e77067810e",
           "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_brood.completion": {
+      "scope": "main",
+      "enHash": "be1a5131d43b63a1",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "be1a5131d43b63a1",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_brood.objectives.0.label": {
+      "scope": "main",
+      "enHash": "760379c97a097eb1",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "760379c97a097eb1",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_brood.text": {
+      "scope": "main",
+      "enHash": "14dcc18fcd0688a5",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "14dcc18fcd0688a5",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_brood.title": {
+      "scope": "main",
+      "enHash": "411c9016e31ee991",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "411c9016e31ee991",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_deepvermin.completion": {
+      "scope": "main",
+      "enHash": "7d609a6c5b15a11a",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "7d609a6c5b15a11a",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_deepvermin.objectives.0.label": {
+      "scope": "main",
+      "enHash": "0032c704bf184a88",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "0032c704bf184a88",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_deepvermin.text": {
+      "scope": "main",
+      "enHash": "a9dde3e0dc664c31",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "a9dde3e0dc664c31",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_deepvermin.title": {
+      "scope": "main",
+      "enHash": "d42e0b8e61152276",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "d42e0b8e61152276",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_first_duty.completion": {
+      "scope": "main",
+      "enHash": "2703c46053904f23",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "2703c46053904f23",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_first_duty.objectives.0.label": {
+      "scope": "main",
+      "enHash": "251bf0aa6aa2ef48",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "251bf0aa6aa2ef48",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_first_duty.text": {
+      "scope": "main",
+      "enHash": "ab27275f4bb5f760",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "ab27275f4bb5f760",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_first_duty.title": {
+      "scope": "main",
+      "enHash": "dee112f0eaf1e182",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "dee112f0eaf1e182",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_great_boar.completion": {
+      "scope": "main",
+      "enHash": "426f89eed406a485",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "426f89eed406a485",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_great_boar.objectives.0.label": {
+      "scope": "main",
+      "enHash": "98916efaab4342aa",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "98916efaab4342aa",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_great_boar.objectives.1.label": {
+      "scope": "main",
+      "enHash": "5c8a8af44bfbf743",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "5c8a8af44bfbf743",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_great_boar.text": {
+      "scope": "main",
+      "enHash": "f32274964a0f7b2c",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "f32274964a0f7b2c",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_great_boar.title": {
+      "scope": "main",
+      "enHash": "2392bfcdc83bfc7c",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "2392bfcdc83bfc7c",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_outlaw_captain.completion": {
+      "scope": "main",
+      "enHash": "e83d47dab0456e36",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "e83d47dab0456e36",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_outlaw_captain.objectives.0.label": {
+      "scope": "main",
+      "enHash": "c9986ff34af9fd34",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "c9986ff34af9fd34",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_outlaw_captain.objectives.1.label": {
+      "scope": "main",
+      "enHash": "b15990e0c55aff49",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "b15990e0c55aff49",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_outlaw_captain.text": {
+      "scope": "main",
+      "enHash": "be84df85a3a5ff3c",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "be84df85a3a5ff3c",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_outlaw_captain.title": {
+      "scope": "main",
+      "enHash": "57bf667fb4f63610",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "57bf667fb4f63610",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_reedwater.completion": {
+      "scope": "main",
+      "enHash": "31ba5b1d647e7a7c",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "31ba5b1d647e7a7c",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_reedwater.objectives.0.label": {
+      "scope": "main",
+      "enHash": "3aebc5f2c57c5d21",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "3aebc5f2c57c5d21",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_reedwater.text": {
+      "scope": "main",
+      "enHash": "3f46f9d86575d0b7",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "3f46f9d86575d0b7",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_reedwater.title": {
+      "scope": "main",
+      "enHash": "d1d37d38bc43e46d",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "d1d37d38bc43e46d",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_silk.completion": {
+      "scope": "main",
+      "enHash": "7d0f467fc731cacb",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "7d0f467fc731cacb",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_silk.objectives.0.label": {
+      "scope": "main",
+      "enHash": "8df8c69c6fb58f63",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "8df8c69c6fb58f63",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_silk.text": {
+      "scope": "main",
+      "enHash": "022417d18fe342ee",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "022417d18fe342ee",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_silk.title": {
+      "scope": "main",
+      "enHash": "21bd18e9730ab4c3",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "21bd18e9730ab4c3",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_teeth.completion": {
+      "scope": "main",
+      "enHash": "84ad1d4acbcf35f3",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "84ad1d4acbcf35f3",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_teeth.objectives.0.label": {
+      "scope": "main",
+      "enHash": "6c4b5d00ba9ae9c4",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "6c4b5d00ba9ae9c4",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_teeth.text": {
+      "scope": "main",
+      "enHash": "45ecd36ba7f33282",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "45ecd36ba7f33282",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_teeth.title": {
+      "scope": "main",
+      "enHash": "619e0bdfb744a8a2",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "619e0bdfb744a8a2",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_toll.completion": {
+      "scope": "main",
+      "enHash": "0c5a6b9134a56cd3",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "0c5a6b9134a56cd3",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_toll.objectives.0.label": {
+      "scope": "main",
+      "enHash": "61eac034cacccf0c",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "61eac034cacccf0c",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_toll.text": {
+      "scope": "main",
+      "enHash": "832aefb870921f75",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "832aefb870921f75",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_toll.title": {
+      "scope": "main",
+      "enHash": "329717453a77def7",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "329717453a77def7",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_vigil.completion": {
+      "scope": "main",
+      "enHash": "176d257056721a9c",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "176d257056721a9c",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_vigil.objectives.0.label": {
+      "scope": "main",
+      "enHash": "319ca66736aa9e6e",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "319ca66736aa9e6e",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_vigil.text": {
+      "scope": "main",
+      "enHash": "1299179c86faf442",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "1299179c86faf442",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.quests.q_ledger_vigil.title": {
+      "scope": "main",
+      "enHash": "9d1b3589343bcad2",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "9d1b3589343bcad2",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
         }
       }
     },
@@ -92270,6 +96850,54 @@
           "state": "translated",
           "srcHash": "b5dbe50907a4146d",
           "by": "human"
+        }
+      }
+    },
+    "main:entities.zones.eastbrook_vale.pois.8.label": {
+      "scope": "main",
+      "enHash": "4b85b687ab5f6691",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "4b85b687ab5f6691",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
         }
       }
     },
