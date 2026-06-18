@@ -59,6 +59,10 @@ export const CHAT_LONG_PRESS_MS = 420;
 export function isChatLongPress(heldMs: number, threshold = CHAT_LONG_PRESS_MS): boolean {
   return heldMs >= threshold;
 }
+// A quick second tap on the camera joystick (within this window, without
+// dragging it into a look) snaps the camera back behind the character.
+export const RECENTER_DOUBLE_TAP_MS = 300;
+const RECENTER_TAP_MOVE_PX = 12;
 
 export interface MobileControlCallbacks {
   onAttackNearest(): void;
@@ -82,6 +86,22 @@ export interface MobileControlCallbacks {
   onNameplates(): boolean;
   /** Toggle background music; returns whether music is now enabled. */
   onMusic(): boolean;
+  /** Double-tap the camera joystick: snap the camera back behind the character. */
+  onRecenterCamera(): void;
+}
+
+/**
+ * True when a camera-joystick tap should count as the second half of a
+ * recenter double-tap: the press was a quick, near-stationary tap (not a
+ * look-drag) and it landed within the double-tap window of the previous tap.
+ */
+export function isRecenterDoubleTap(
+  prevTapAt: number,
+  now: number,
+  moved: boolean,
+  threshold = RECENTER_DOUBLE_TAP_MS,
+): boolean {
+  return !moved && prevTapAt > 0 && now - prevTapAt <= threshold;
 }
 
 export function isPhoneTouchDevice(win: Pick<Window, 'matchMedia'> = window): boolean {
@@ -122,6 +142,12 @@ export class MobileControls {
   private lookPointer: number | null = null;
   private mq: MediaQueryList | null = null;
   private moveDeadzone = DEADZONE;
+  // recenter double-tap bookkeeping for the camera joystick
+  private lastCameraTapAt = 0;
+  private cameraDownAt = 0;
+  private cameraDownX = 0;
+  private cameraDownY = 0;
+  private cameraMoved = false;
 
   private moveOriginX = 0;
   private moveOriginY = 0;
@@ -464,6 +490,10 @@ export class MobileControls {
     e.preventDefault();
     this.lookPointer = e.pointerId;
     this.cameraJoystick?.classList.add('active');
+    this.cameraDownAt = this.now();
+    this.cameraDownX = e.clientX;
+    this.cameraDownY = e.clientY;
+    this.cameraMoved = false;
     this.input.setTouchLook(true);
     triggerHaptic(HAPTIC_JOYSTICK, this.hapticsOn);
     try { this.cameraJoystick?.setPointerCapture(e.pointerId); } catch { /* synthetic test event */ }
@@ -473,6 +503,9 @@ export class MobileControls {
   private onCameraMove(e: PointerEvent): void {
     if (!this.active || e.pointerId !== this.lookPointer || !this.cameraJoystick || !this.cameraStick) return;
     e.preventDefault();
+    if (Math.hypot(e.clientX - this.cameraDownX, e.clientY - this.cameraDownY) > RECENTER_TAP_MOVE_PX) {
+      this.cameraMoved = true;
+    }
     const r = this.cameraJoystick.getBoundingClientRect();
     const radius = Math.max(1, r.width / 2);
     const rawX = (e.clientX - (r.left + radius)) / radius;
@@ -487,7 +520,21 @@ export class MobileControls {
   private onCameraEnd(e: PointerEvent): void {
     if (e.pointerId !== this.lookPointer) return;
     e.preventDefault();
+    const now = this.now();
+    const quickTap = !this.cameraMoved && now - this.cameraDownAt <= RECENTER_DOUBLE_TAP_MS;
+    if (quickTap && isRecenterDoubleTap(this.lastCameraTapAt, now, this.cameraMoved)) {
+      this.callbacks.onRecenterCamera();
+      this.cameraJoystick?.classList.add('recentering');
+      window.setTimeout(() => this.cameraJoystick?.classList.remove('recentering'), 220);
+      this.lastCameraTapAt = 0;
+    } else {
+      this.lastCameraTapAt = quickTap ? now : 0;
+    }
     this.releaseCamera();
+  }
+
+  private now(): number {
+    return typeof performance !== 'undefined' ? performance.now() : Date.now();
   }
 
   private releaseCamera(): void {

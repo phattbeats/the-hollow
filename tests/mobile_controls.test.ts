@@ -5,11 +5,13 @@ import {
   HAPTICS_STORE_KEY,
   isChatLongPress,
   isPhoneTouchDevice,
+  isRecenterDoubleTap,
   loadHapticsEnabled,
   mapJoystickVector,
   mapLookVector,
   MobileControls,
   pinchZoomDelta,
+  RECENTER_DOUBLE_TAP_MS,
   saveHapticsEnabled,
   triggerHaptic,
 } from '../src/game/mobile_controls';
@@ -70,6 +72,24 @@ describe('isChatLongPress', () => {
   it('treats presses at or beyond the threshold as a long press (peek the log)', () => {
     expect(isChatLongPress(CHAT_LONG_PRESS_MS)).toBe(true);
     expect(isChatLongPress(CHAT_LONG_PRESS_MS + 500)).toBe(true);
+  });
+});
+
+describe('isRecenterDoubleTap', () => {
+  it('fires for a quick, stationary second tap', () => {
+    expect(isRecenterDoubleTap(1000, 1000 + RECENTER_DOUBLE_TAP_MS - 50, false)).toBe(true);
+  });
+
+  it('ignores a tap that dragged the camera (a look, not a tap)', () => {
+    expect(isRecenterDoubleTap(1000, 1100, true)).toBe(false);
+  });
+
+  it('ignores a slow second tap outside the double-tap window', () => {
+    expect(isRecenterDoubleTap(1000, 1000 + RECENTER_DOUBLE_TAP_MS + 1, false)).toBe(false);
+  });
+
+  it('ignores the very first tap (no prior tap recorded)', () => {
+    expect(isRecenterDoubleTap(0, 120, false)).toBe(false);
   });
 });
 
@@ -319,6 +339,7 @@ function mobileCallbacks() {
     onLeaderboard: noop,
     onNameplates: () => false,
     onMusic: () => true,
+    onRecenterCamera: noop,
   };
 }
 

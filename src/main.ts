@@ -645,6 +645,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       music.setEnabled(!music.enabled);
       return music.enabled;
     },
+    onRecenterCamera: () => input.recenterCameraBehind(world.player.facing),
   });
   mobileControls.start();
   // reflect the current music state on the touch toggle (it may already be off
