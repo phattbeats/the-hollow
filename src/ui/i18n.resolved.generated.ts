@@ -2291,6 +2291,24 @@ export const en: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Wyrmshadow Treads"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "Briny Idol"
       },
@@ -2577,6 +2595,9 @@ export const en: EnTranslations = {
       },
       "voidwalker": {
         "name": "Voidwalker"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "Choirmother Selthe"
@@ -5877,6 +5898,24 @@ export const es: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Botines Sombravermis"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "Ídolo salobre"
       },
@@ -6163,6 +6202,9 @@ export const es: EnTranslations = {
       },
       "voidwalker": {
         "name": "Caminante del Vacío"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "Selthe, madre del coro"
@@ -9463,6 +9505,24 @@ export const es_ES: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Botines Sombravermis"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "Ídolo salobre"
       },
@@ -9749,6 +9809,9 @@ export const es_ES: EnTranslations = {
       },
       "voidwalker": {
         "name": "Caminante del Vacío"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "Selthe, madre del coro"
@@ -13049,6 +13112,24 @@ export const fr_FR: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Bottines Ombrewyrm"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "Idole saumâtre"
       },
@@ -13335,6 +13416,9 @@ export const fr_FR: EnTranslations = {
       },
       "voidwalker": {
         "name": "Marcheur du Vide"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "Selthe, mère de chœur"
@@ -16635,6 +16719,24 @@ export const fr_CA: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Bottines Ombrewyrm"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "Idole saumâtre"
       },
@@ -16921,6 +17023,9 @@ export const fr_CA: EnTranslations = {
       },
       "voidwalker": {
         "name": "Marcheur du Vide"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "Selthe, mère de chœur"
@@ -20221,6 +20326,24 @@ export const en_CA: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Wyrmshadow Treads"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "Briny Idol"
       },
@@ -20507,6 +20630,9 @@ export const en_CA: EnTranslations = {
       },
       "voidwalker": {
         "name": "Voidwalker"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "Choirmother Selthe"
@@ -23807,6 +23933,24 @@ export const it_IT: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Calzari Ombrawyrm"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "Idolo Salmastro"
       },
@@ -24093,6 +24237,9 @@ export const it_IT: EnTranslations = {
       },
       "voidwalker": {
         "name": "Camminatore del Vuoto"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "Selthe Madre del Coro"
@@ -27393,6 +27540,24 @@ export const de_DE: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Wyrmschattentreter"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "Salzlaken-Götze"
       },
@@ -27679,6 +27844,9 @@ export const de_DE: EnTranslations = {
       },
       "voidwalker": {
         "name": "Leerwandler"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "Chormutter Selthe"
@@ -30979,6 +31147,24 @@ export const zh_CN: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "龙影足垫"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "咸海神像"
       },
@@ -31265,6 +31451,9 @@ export const zh_CN: EnTranslations = {
       },
       "voidwalker": {
         "name": "虚空行者"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "唱诗母塞尔瑟"
@@ -34565,6 +34754,24 @@ export const zh_TW: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "龍影足墊"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "鹹海神像"
       },
@@ -34851,6 +35058,9 @@ export const zh_TW: EnTranslations = {
       },
       "voidwalker": {
         "name": "虛空行者"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "唱詩之母瑟爾瑟"
@@ -38151,6 +38361,24 @@ export const ko_KR: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "고룡그림자 발보호구"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "소금기 어린 우상"
       },
@@ -38437,6 +38665,9 @@ export const ko_KR: EnTranslations = {
       },
       "voidwalker": {
         "name": "공허추적자"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "성가대모 셀세"
@@ -41737,6 +41968,24 @@ export const ja_JP: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "ワーム影の足具"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "潮辛の偶像"
       },
@@ -42023,6 +42272,9 @@ export const ja_JP: EnTranslations = {
       },
       "voidwalker": {
         "name": "ヴォイドウォーカー"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "聖歌母セルセ"
@@ -45323,6 +45575,24 @@ export const pt_BR: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Pisantes Sombra de Wyrm"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "Ídolo Salobro"
       },
@@ -45609,6 +45879,9 @@ export const pt_BR: EnTranslations = {
       },
       "voidwalker": {
         "name": "Caminhante do Vazio"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "Mãe-do-Coro Selthe"
@@ -48909,6 +49182,24 @@ export const ru_RU: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "Ступни Тени вирма"
       },
+      "elixir_of_the_bear": {
+        "name": "Elixir of the Bear"
+      },
+      "lesser_healing_potion": {
+        "name": "Lesser Healing Potion"
+      },
+      "lesser_mana_potion": {
+        "name": "Lesser Mana Potion"
+      },
+      "healing_potion": {
+        "name": "Healing Potion"
+      },
+      "mana_potion": {
+        "name": "Mana Potion"
+      },
+      "tunnelkings_spade": {
+        "name": "Tunnelking's Spade"
+      },
       "briny_idol": {
         "name": "Просоленный идол"
       },
@@ -49195,6 +49486,9 @@ export const ru_RU: EnTranslations = {
       },
       "voidwalker": {
         "name": "Страж Бездны"
+      },
+      "grix_the_tunnelking": {
+        "name": "Grix the Tunnelking"
       },
       "choirmother_selthe": {
         "name": "Матерь хора Селте"
@@ -50232,6 +50526,13 @@ export const translations = {
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
+    "entities.items.elixir_of_the_bear.name",
+    "entities.items.healing_potion.name",
+    "entities.items.lesser_healing_potion.name",
+    "entities.items.lesser_mana_potion.name",
+    "entities.items.mana_potion.name",
+    "entities.items.tunnelkings_spade.name",
+    "entities.mobs.grix_the_tunnelking.name",
     "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
@@ -50239,6 +50540,13 @@ export const pending: Record<string, readonly string[]> = {
     "itemUi.slots.waist"
   ],
   "es_ES": [
+    "entities.items.elixir_of_the_bear.name",
+    "entities.items.healing_potion.name",
+    "entities.items.lesser_healing_potion.name",
+    "entities.items.lesser_mana_potion.name",
+    "entities.items.mana_potion.name",
+    "entities.items.tunnelkings_spade.name",
+    "entities.mobs.grix_the_tunnelking.name",
     "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
@@ -50246,6 +50554,13 @@ export const pending: Record<string, readonly string[]> = {
     "itemUi.slots.waist"
   ],
   "fr_FR": [
+    "entities.items.elixir_of_the_bear.name",
+    "entities.items.healing_potion.name",
+    "entities.items.lesser_healing_potion.name",
+    "entities.items.lesser_mana_potion.name",
+    "entities.items.mana_potion.name",
+    "entities.items.tunnelkings_spade.name",
+    "entities.mobs.grix_the_tunnelking.name",
     "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
@@ -50253,6 +50568,13 @@ export const pending: Record<string, readonly string[]> = {
     "itemUi.slots.waist"
   ],
   "fr_CA": [
+    "entities.items.elixir_of_the_bear.name",
+    "entities.items.healing_potion.name",
+    "entities.items.lesser_healing_potion.name",
+    "entities.items.lesser_mana_potion.name",
+    "entities.items.mana_potion.name",
+    "entities.items.tunnelkings_spade.name",
+    "entities.mobs.grix_the_tunnelking.name",
     "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
@@ -50261,6 +50583,13 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "en_CA": [],
   "it_IT": [
+    "entities.items.elixir_of_the_bear.name",
+    "entities.items.healing_potion.name",
+    "entities.items.lesser_healing_potion.name",
+    "entities.items.lesser_mana_potion.name",
+    "entities.items.mana_potion.name",
+    "entities.items.tunnelkings_spade.name",
+    "entities.mobs.grix_the_tunnelking.name",
     "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
@@ -50268,6 +50597,13 @@ export const pending: Record<string, readonly string[]> = {
     "itemUi.slots.waist"
   ],
   "de_DE": [
+    "entities.items.elixir_of_the_bear.name",
+    "entities.items.healing_potion.name",
+    "entities.items.lesser_healing_potion.name",
+    "entities.items.lesser_mana_potion.name",
+    "entities.items.mana_potion.name",
+    "entities.items.tunnelkings_spade.name",
+    "entities.mobs.grix_the_tunnelking.name",
     "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
@@ -50275,6 +50611,13 @@ export const pending: Record<string, readonly string[]> = {
     "itemUi.slots.waist"
   ],
   "zh_CN": [
+    "entities.items.elixir_of_the_bear.name",
+    "entities.items.healing_potion.name",
+    "entities.items.lesser_healing_potion.name",
+    "entities.items.lesser_mana_potion.name",
+    "entities.items.mana_potion.name",
+    "entities.items.tunnelkings_spade.name",
+    "entities.mobs.grix_the_tunnelking.name",
     "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
@@ -50282,6 +50625,13 @@ export const pending: Record<string, readonly string[]> = {
     "itemUi.slots.waist"
   ],
   "zh_TW": [
+    "entities.items.elixir_of_the_bear.name",
+    "entities.items.healing_potion.name",
+    "entities.items.lesser_healing_potion.name",
+    "entities.items.lesser_mana_potion.name",
+    "entities.items.mana_potion.name",
+    "entities.items.tunnelkings_spade.name",
+    "entities.mobs.grix_the_tunnelking.name",
     "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
@@ -50289,6 +50639,13 @@ export const pending: Record<string, readonly string[]> = {
     "itemUi.slots.waist"
   ],
   "ko_KR": [
+    "entities.items.elixir_of_the_bear.name",
+    "entities.items.healing_potion.name",
+    "entities.items.lesser_healing_potion.name",
+    "entities.items.lesser_mana_potion.name",
+    "entities.items.mana_potion.name",
+    "entities.items.tunnelkings_spade.name",
+    "entities.mobs.grix_the_tunnelking.name",
     "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
@@ -50296,6 +50653,13 @@ export const pending: Record<string, readonly string[]> = {
     "itemUi.slots.waist"
   ],
   "ja_JP": [
+    "entities.items.elixir_of_the_bear.name",
+    "entities.items.healing_potion.name",
+    "entities.items.lesser_healing_potion.name",
+    "entities.items.lesser_mana_potion.name",
+    "entities.items.mana_potion.name",
+    "entities.items.tunnelkings_spade.name",
+    "entities.mobs.grix_the_tunnelking.name",
     "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
@@ -50303,6 +50667,13 @@ export const pending: Record<string, readonly string[]> = {
     "itemUi.slots.waist"
   ],
   "pt_BR": [
+    "entities.items.elixir_of_the_bear.name",
+    "entities.items.healing_potion.name",
+    "entities.items.lesser_healing_potion.name",
+    "entities.items.lesser_mana_potion.name",
+    "entities.items.mana_potion.name",
+    "entities.items.tunnelkings_spade.name",
+    "entities.mobs.grix_the_tunnelking.name",
     "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
@@ -50310,6 +50681,13 @@ export const pending: Record<string, readonly string[]> = {
     "itemUi.slots.waist"
   ],
   "ru_RU": [
+    "entities.items.elixir_of_the_bear.name",
+    "entities.items.healing_potion.name",
+    "entities.items.lesser_healing_potion.name",
+    "entities.items.lesser_mana_potion.name",
+    "entities.items.mana_potion.name",
+    "entities.items.tunnelkings_spade.name",
+    "entities.mobs.grix_the_tunnelking.name",
     "itemUi.kind.elixir",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
@@ -52600,6 +52978,24 @@ export const en_XA: EnTranslations = {
       "wyrmshadow_treads": {
         "name": "[Ŵýŕɱšĥáðóŵ Ţŕéáðš]"
       },
+      "elixir_of_the_bear": {
+        "name": "[Éļíẋíŕ óƒ ţĥé Ɓéáŕ]"
+      },
+      "lesser_healing_potion": {
+        "name": "[Ļéššéŕ Ĥéáļíñĝ Þóţíóñ]"
+      },
+      "lesser_mana_potion": {
+        "name": "[Ļéššéŕ Ɱáñá Þóţíóñ]"
+      },
+      "healing_potion": {
+        "name": "[Ĥéáļíñĝ Þóţíóñ]"
+      },
+      "mana_potion": {
+        "name": "[Ɱáñá Þóţíóñ]"
+      },
+      "tunnelkings_spade": {
+        "name": "[Ţúññéļķíñĝ'š Šþáðé]"
+      },
       "briny_idol": {
         "name": "[Ɓŕíñý Íðóļ]"
       },
@@ -52886,6 +53282,9 @@ export const en_XA: EnTranslations = {
       },
       "voidwalker": {
         "name": "[Ʋóíðŵáļķéŕ]"
+      },
+      "grix_the_tunnelking": {
+        "name": "[Ĝŕíẋ ţĥé Ţúññéļķíñĝ]"
       },
       "choirmother_selthe": {
         "name": "[Çĥóíŕɱóţĥéŕ Šéļţĥé]"

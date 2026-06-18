@@ -97,6 +97,10 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     id: 'gorraks_cruel_chopper', name: "Gorrak's Cruel Chopper", kind: 'weapon', slot: 'mainhand', quality: 'uncommon',
     weapon: { min: 8, max: 13, speed: 2.4 }, stats: { str: 2, sta: 1 }, sellValue: 180, requiredClass: WAR,
   },
+  tunnelkings_spade: {
+    id: 'tunnelkings_spade', name: "Tunnelking's Spade", kind: 'weapon', slot: 'mainhand', quality: 'uncommon',
+    weapon: { min: 9, max: 15, speed: 2.7 }, stats: { str: 3, sta: 2 }, sellValue: 190, requiredClass: WAR,
+  },
   moggers_stomper_boots: {
     id: 'moggers_stomper_boots', name: "Mogger's Stomper Boots", kind: 'armor', slot: 'feet', quality: 'uncommon',
     stats: { armor: 32, agi: 2, sta: 1 }, sellValue: 180, requiredClass: ROG,
@@ -197,6 +201,25 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     id: 'elixir_of_the_bear', name: 'Elixir of the Bear', kind: 'elixir', quality: 'uncommon',
     elixir: { aura: 'Might of the Bear', kind: 'buff_sta', value: 12, duration: 900 },
     sellValue: 20, buyValue: 100,
+  },
+  // Higher tiers of the combat-potion ladder, keeping pace with the zone-2/3
+  // level bands (classic Minor -> Lesser -> standard progression). Same instant,
+  // in-combat, 60s-shared-cooldown rules as the Minor tier above.
+  lesser_healing_potion: {
+    id: 'lesser_healing_potion', name: 'Lesser Healing Potion', kind: 'potion', quality: 'common',
+    potionHp: 150, sellValue: 16, buyValue: 85,
+  },
+  lesser_mana_potion: {
+    id: 'lesser_mana_potion', name: 'Lesser Mana Potion', kind: 'potion', quality: 'common',
+    potionMana: 200, sellValue: 16, buyValue: 85,
+  },
+  healing_potion: {
+    id: 'healing_potion', name: 'Healing Potion', kind: 'potion', quality: 'common',
+    potionHp: 280, sellValue: 32, buyValue: 170,
+  },
+  mana_potion: {
+    id: 'mana_potion', name: 'Mana Potion', kind: 'potion', quality: 'common',
+    potionMana: 360, sellValue: 32, buyValue: 170,
   },
   conjured_water: {
     id: 'conjured_water', name: 'Conjured Spring Water', kind: 'drink', quality: 'common',
