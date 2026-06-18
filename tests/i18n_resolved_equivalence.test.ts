@@ -18,7 +18,10 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const scriptPath = path.join(root, "scripts/i18n_resolved_hash.mjs");
 const baselinePath = path.join(root, "src/ui/i18n.resolved.sha256");
 const buildScript = path.join(root, "scripts/i18n_build.mjs");
-const generatedPath = "src/ui/i18n.resolved.generated.ts";
+// The resolved table is a generated DIRECTORY of per-locale modules + a barrel
+// (lazy-locales Phase 1), not a single file. A directory pathspec makes both
+// `git ls-files --error-unmatch` and `git diff --exit-code` cover every slice.
+const generatedPath = "src/ui/i18n.resolved.generated";
 
 describe("i18n resolved-table byte equivalence", () => {
   it("matches the committed baseline hash", () => {
@@ -45,6 +48,7 @@ describe("i18n resolved-artifact reproducibility", () => {
     // `git diff --exit-code` silently ignores an untracked path, so the
     // reproducibility assertion below is only meaningful once the artifact is
     // committed. Fail loudly if someone regenerates but forgets to commit it.
+    // A directory pathspec errors only if NO file under it is tracked.
     expect(() =>
       execFileSync("git", ["ls-files", "--error-unmatch", "--", generatedPath], {
         cwd: root,
@@ -53,10 +57,12 @@ describe("i18n resolved-artifact reproducibility", () => {
     ).not.toThrow();
   });
 
-  it("regenerating src/ui/i18n.resolved.generated.ts leaves the committed file unchanged", () => {
+  it("regenerating src/ui/i18n.resolved.generated/ leaves the committed directory unchanged", () => {
     // The dense generated artifact is the tsc safety net and is committed. Like
     // the media manifest, it must regenerate byte-identically: a drift here means
-    // the generator is non-deterministic or the committed file is stale.
+    // the generator is non-deterministic or the committed directory is stale. The
+    // generator replaces the directory atomically, so a removed locale would also
+    // surface as a deletion in the diff.
     execFileSync("node", [buildScript], { cwd: root, encoding: "utf8" });
     expect(() =>
       execFileSync("git", ["diff", "--exit-code", "--", generatedPath], {
