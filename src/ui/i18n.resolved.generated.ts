@@ -1386,6 +1386,46 @@ export const en: EnTranslations = {
         "name": "Adrenaline Rush",
         "description": "Your blood runs hot, instantly restoring 60 energy."
       },
+      "garrote": {
+        "name": "Garrote",
+        "description": "Garrote the enemy, causing damage now and bleeding it for {damage} over 18 sec. Must be stealthed. Awards 1 combo point."
+      },
+      "cheap_shot": {
+        "name": "Cheap Shot",
+        "description": "Strike the target, stunning it for 4 sec. Must be stealthed. Awards 2 combo points."
+      },
+      "sap": {
+        "name": "Sap",
+        "description": "Incapacitates the target for 8 sec. Must be stealthed and out of combat. Any damage breaks the effect."
+      },
+      "crippling_poison": {
+        "name": "Crippling Poison",
+        "description": "Strikes the target with a crippling poison, dealing {damage} Nature damage and slowing its movement speed by 50% for 12 sec."
+      },
+      "expose_armor": {
+        "name": "Expose Armor",
+        "description": "Finishing move that exposes the target, reducing its armor. More combo points spent build into a deeper cut."
+      },
+      "rupture": {
+        "name": "Rupture",
+        "description": "Finishing move that wounds the target, causing it to bleed for {damage} over 16 sec."
+      },
+      "vanish": {
+        "name": "Vanish",
+        "description": "Vanish from sight, entering Stealth even in combat. You move 30% slower while hidden. Lasts up to 10 sec."
+      },
+      "instant_poison": {
+        "name": "Instant Poison",
+        "description": "Coats your weapon for 30 min, causing each of your melee swings to deal 8 additional Nature damage."
+      },
+      "deadly_poison": {
+        "name": "Deadly Poison",
+        "description": "Coats your weapon for 30 min, causing each of your melee swings to deal 14 additional Nature damage."
+      },
+      "blind": {
+        "name": "Blind",
+        "description": "Blinds the target, causing it to wander disoriented for 8 sec. Any damage breaks the effect."
+      },
       "seal_of_righteousness": {
         "name": "Seal of Righteousness",
         "description": "Fills you with Holy power for 30 sec, causing each of your melee swings to deal 4 additional Holy damage. Unleash with Judgement."
@@ -5253,6 +5293,46 @@ export const es: EnTranslations = {
       "adrenaline_rush": {
         "name": "Subidón de adrenalina",
         "description": "Tu sangre se enciende y restaura al instante 60 de energía."
+      },
+      "garrote": {
+        "name": "Garrote",
+        "description": "Estrangula al enemigo con un garrote, infligiendo daño de inmediato y haciéndolo sangrar {damage} durante 18 s. Debes estar en sigilo. Otorga 1 punto de combo."
+      },
+      "cheap_shot": {
+        "name": "Ataque artero",
+        "description": "Golpea al objetivo, aturdiéndolo durante 4 s. Debes estar en sigilo. Otorga 2 puntos de combo."
+      },
+      "sap": {
+        "name": "Pasmar",
+        "description": "Incapacita al objetivo durante 8 s. Debes estar en sigilo y fuera de combate. Cualquier daño rompe el efecto."
+      },
+      "crippling_poison": {
+        "name": "Veneno tullidor",
+        "description": "Golpea al objetivo con un veneno tullidor, infligiendo {damage} de daño de Naturaleza y reduciendo su velocidad de movimiento un 50% durante 12 s."
+      },
+      "expose_armor": {
+        "name": "Exponer armadura",
+        "description": "Movimiento final que deja al descubierto al objetivo, reduciendo su armadura. Cuantos más puntos de combo se gasten, más profundo es el corte."
+      },
+      "rupture": {
+        "name": "Descoyuntar",
+        "description": "Movimiento final que hiere al objetivo, haciéndolo sangrar {damage} durante 16 s."
+      },
+      "vanish": {
+        "name": "Esfumarse",
+        "description": "Desaparece de la vista, entrando en Sigilo incluso en combate. Te mueves un 30% más lento mientras estás oculto. Dura hasta 10 s."
+      },
+      "instant_poison": {
+        "name": "Veneno instantáneo",
+        "description": "Recubre tu arma durante 30 min, haciendo que cada uno de tus golpes cuerpo a cuerpo inflija 8 de daño de Naturaleza adicional."
+      },
+      "deadly_poison": {
+        "name": "Veneno mortal",
+        "description": "Recubre tu arma durante 30 min, haciendo que cada uno de tus golpes cuerpo a cuerpo inflija 14 de daño de Naturaleza adicional."
+      },
+      "blind": {
+        "name": "Cegar",
+        "description": "Ciega al objetivo, haciéndolo deambular desorientado durante 8 s. Cualquier daño rompe el efecto."
       },
       "seal_of_righteousness": {
         "name": "Sello de rectitud",
@@ -9122,6 +9202,46 @@ export const es_ES: EnTranslations = {
         "name": "Subidón de adrenalina",
         "description": "Tu sangre se enciende y restaura al instante 60 de energía."
       },
+      "garrote": {
+        "name": "Garrote",
+        "description": "Estrangula al enemigo con un garrote, infligiendo daño de inmediato y haciéndolo sangrar {damage} durante 18 s. Debes estar en sigilo. Otorga 1 punto de combo."
+      },
+      "cheap_shot": {
+        "name": "Ataque artero",
+        "description": "Golpea al objetivo, aturdiéndolo durante 4 s. Debes estar en sigilo. Otorga 2 puntos de combo."
+      },
+      "sap": {
+        "name": "Pasmar",
+        "description": "Incapacita al objetivo durante 8 s. Debes estar en sigilo y fuera de combate. Cualquier daño rompe el efecto."
+      },
+      "crippling_poison": {
+        "name": "Veneno tullidor",
+        "description": "Golpea al objetivo con un veneno tullidor, infligiendo {damage} de daño de Naturaleza y reduciendo su velocidad de movimiento un 50% durante 12 s."
+      },
+      "expose_armor": {
+        "name": "Exponer armadura",
+        "description": "Movimiento final que deja al descubierto al objetivo, reduciendo su armadura. Cuantos más puntos de combo se gasten, más profundo es el corte."
+      },
+      "rupture": {
+        "name": "Descoyuntar",
+        "description": "Movimiento final que hiere al objetivo, haciéndolo sangrar {damage} durante 16 s."
+      },
+      "vanish": {
+        "name": "Esfumarse",
+        "description": "Desaparece de la vista, entrando en Sigilo incluso en combate. Te mueves un 30% más lento mientras estás oculto. Dura hasta 10 s."
+      },
+      "instant_poison": {
+        "name": "Veneno instantáneo",
+        "description": "Recubre tu arma durante 30 min, haciendo que cada uno de tus golpes cuerpo a cuerpo inflija 8 de daño de Naturaleza adicional."
+      },
+      "deadly_poison": {
+        "name": "Veneno mortal",
+        "description": "Recubre tu arma durante 30 min, haciendo que cada uno de tus golpes cuerpo a cuerpo inflija 14 de daño de Naturaleza adicional."
+      },
+      "blind": {
+        "name": "Cegar",
+        "description": "Ciega al objetivo, haciéndolo deambular desorientado durante 8 s. Cualquier daño rompe el efecto."
+      },
       "seal_of_righteousness": {
         "name": "Sello de rectitud",
         "description": "Te llena de poder Sagrado durante 30 s, haciendo que cada golpe cuerpo a cuerpo inflija 4 de daño Sagrado adicional. Desátalo con Sentencia."
@@ -12989,6 +13109,46 @@ export const fr_FR: EnTranslations = {
       "adrenaline_rush": {
         "name": "Poussée d'adrénaline",
         "description": "Votre sang s'embrase et restaure instantanément 60 énergie."
+      },
+      "garrote": {
+        "name": "Garrot",
+        "description": "Garrotte l'ennemi, infligeant des dégâts immédiats et le faisant saigner de {damage} pendant 18 s. Vous devez être camouflé. Confère 1 point de combo."
+      },
+      "cheap_shot": {
+        "name": "Coup bas",
+        "description": "Frappe la cible, l'étourdissant pendant 4 s. Vous devez être camouflé. Confère 2 points de combo."
+      },
+      "sap": {
+        "name": "Assommer",
+        "description": "Neutralise la cible pendant 8 s. Vous devez être camouflé et hors combat. Le moindre dégât rompt l'effet."
+      },
+      "crippling_poison": {
+        "name": "Poison affaiblissant",
+        "description": "Frappe la cible avec un poison affaiblissant, infligeant {damage} dégâts de Nature et réduisant sa vitesse de déplacement de 50% pendant 12 s."
+      },
+      "expose_armor": {
+        "name": "Exposer l'armure",
+        "description": "Coup de grâce qui expose la cible, réduisant son armure. Plus vous dépensez de points de combo, plus l'entaille est profonde."
+      },
+      "rupture": {
+        "name": "Rupture",
+        "description": "Coup de grâce qui blesse la cible, la faisant saigner de {damage} pendant 16 s."
+      },
+      "vanish": {
+        "name": "Disparition",
+        "description": "Vous disparaissez et entrez en Camouflage, même en plein combat. Vous vous déplacez 30% plus lentement tant que vous êtes dissimulé. Dure jusqu'à 10 s."
+      },
+      "instant_poison": {
+        "name": "Poison instantané",
+        "description": "Enduit votre arme pendant 30 min, chacune de vos attaques en mêlée infligeant 8 dégâts de Nature supplémentaires."
+      },
+      "deadly_poison": {
+        "name": "Poison mortel",
+        "description": "Enduit votre arme pendant 30 min, chacune de vos attaques en mêlée infligeant 14 dégâts de Nature supplémentaires."
+      },
+      "blind": {
+        "name": "Cécité",
+        "description": "Aveugle la cible, la faisant errer désorientée pendant 8 s. Le moindre dégât rompt l'effet."
       },
       "seal_of_righteousness": {
         "name": "Sceau de piété",
@@ -16858,6 +17018,46 @@ export const fr_CA: EnTranslations = {
         "name": "Poussée d'adrénaline",
         "description": "Votre sang s'embrase et restaure instantanément 60 énergie."
       },
+      "garrote": {
+        "name": "Garrot",
+        "description": "Garrotte l'ennemi, infligeant des dégâts immédiats et le faisant saigner de {damage} pendant 18 s. Vous devez être camouflé. Confère 1 point de combo."
+      },
+      "cheap_shot": {
+        "name": "Coup bas",
+        "description": "Frappe la cible, l'étourdissant pendant 4 s. Vous devez être camouflé. Confère 2 points de combo."
+      },
+      "sap": {
+        "name": "Assommer",
+        "description": "Neutralise la cible pendant 8 s. Vous devez être camouflé et hors combat. Le moindre dégât rompt l'effet."
+      },
+      "crippling_poison": {
+        "name": "Poison affaiblissant",
+        "description": "Frappe la cible avec un poison affaiblissant, infligeant {damage} dégâts de Nature et réduisant sa vitesse de déplacement de 50% pendant 12 s."
+      },
+      "expose_armor": {
+        "name": "Exposer l'armure",
+        "description": "Coup de grâce qui expose la cible, réduisant son armure. Plus vous dépensez de points de combo, plus l'entaille est profonde."
+      },
+      "rupture": {
+        "name": "Rupture",
+        "description": "Coup de grâce qui blesse la cible, la faisant saigner de {damage} pendant 16 s."
+      },
+      "vanish": {
+        "name": "Disparition",
+        "description": "Vous disparaissez et entrez en Camouflage, même en plein combat. Vous vous déplacez 30% plus lentement tant que vous êtes dissimulé. Dure jusqu'à 10 s."
+      },
+      "instant_poison": {
+        "name": "Poison instantané",
+        "description": "Enduit votre arme pendant 30 min, chacune de vos attaques en mêlée infligeant 8 dégâts de Nature supplémentaires."
+      },
+      "deadly_poison": {
+        "name": "Poison mortel",
+        "description": "Enduit votre arme pendant 30 min, chacune de vos attaques en mêlée infligeant 14 dégâts de Nature supplémentaires."
+      },
+      "blind": {
+        "name": "Cécité",
+        "description": "Aveugle la cible, la faisant errer désorientée pendant 8 s. Le moindre dégât rompt l'effet."
+      },
       "seal_of_righteousness": {
         "name": "Sceau de piété",
         "description": "Vous remplit de puissance Sacrée pendant 30 s, faisant infliger 4 points de dégâts Sacrés supplémentaires à chacune de vos frappes de mêlée. Libérez-le avec Jugement."
@@ -20725,6 +20925,46 @@ export const en_CA: EnTranslations = {
       "adrenaline_rush": {
         "name": "Adrenaline Rush",
         "description": "Your blood runs hot, instantly restoring 60 energy."
+      },
+      "garrote": {
+        "name": "Garrote",
+        "description": "Garrote the enemy, causing damage now and bleeding it for {damage} over 18 sec. Must be stealthed. Awards 1 combo point."
+      },
+      "cheap_shot": {
+        "name": "Cheap Shot",
+        "description": "Strike the target, stunning it for 4 sec. Must be stealthed. Awards 2 combo points."
+      },
+      "sap": {
+        "name": "Sap",
+        "description": "Incapacitates the target for 8 sec. Must be stealthed and out of combat. Any damage breaks the effect."
+      },
+      "crippling_poison": {
+        "name": "Crippling Poison",
+        "description": "Strikes the target with a crippling poison, dealing {damage} Nature damage and slowing its movement speed by 50% for 12 sec."
+      },
+      "expose_armor": {
+        "name": "Expose Armor",
+        "description": "Finishing move that exposes the target, reducing its armor. More combo points spent build into a deeper cut."
+      },
+      "rupture": {
+        "name": "Rupture",
+        "description": "Finishing move that wounds the target, causing it to bleed for {damage} over 16 sec."
+      },
+      "vanish": {
+        "name": "Vanish",
+        "description": "Vanish from sight, entering Stealth even in combat. You move 30% slower while hidden. Lasts up to 10 sec."
+      },
+      "instant_poison": {
+        "name": "Instant Poison",
+        "description": "Coats your weapon for 30 min, causing each of your melee swings to deal 8 additional Nature damage."
+      },
+      "deadly_poison": {
+        "name": "Deadly Poison",
+        "description": "Coats your weapon for 30 min, causing each of your melee swings to deal 14 additional Nature damage."
+      },
+      "blind": {
+        "name": "Blind",
+        "description": "Blinds the target, causing it to wander disoriented for 8 sec. Any damage breaks the effect."
       },
       "seal_of_righteousness": {
         "name": "Seal of Righteousness",
@@ -24594,6 +24834,46 @@ export const it_IT: EnTranslations = {
         "name": "Scarica di Adrenalina",
         "description": "Il sangue ti ribolle e ripristina istantaneamente 60 energia."
       },
+      "garrote": {
+        "name": "Garrota",
+        "description": "Garrota il nemico, infliggendo danni immediati e provocando sanguinamento per {damage} in 18 sec. Devi essere furtivo. Conferisce 1 punto combo."
+      },
+      "cheap_shot": {
+        "name": "Colpo Furtivo",
+        "description": "Colpisce il bersaglio, stordendolo per 4 sec. Devi essere furtivo. Conferisce 2 punti combo."
+      },
+      "sap": {
+        "name": "Tramortimento",
+        "description": "Incapacita il bersaglio per 8 sec. Devi essere furtivo e fuori dal combattimento. Qualsiasi danno interrompe l'effetto."
+      },
+      "crippling_poison": {
+        "name": "Veleno Immobilizzante",
+        "description": "Colpisce il bersaglio con un veleno immobilizzante, infliggendo {damage} danni della Natura e rallentando la sua velocità di movimento del 50% per 12 sec."
+      },
+      "expose_armor": {
+        "name": "Esposizione Corazza",
+        "description": "Mossa finale che espone il bersaglio, riducendone la corazza. Più punti combo spesi approfondiscono il taglio."
+      },
+      "rupture": {
+        "name": "Lacerazione",
+        "description": "Mossa finale che ferisce il bersaglio, provocando sanguinamento per {damage} in 16 sec."
+      },
+      "vanish": {
+        "name": "Eclissarsi",
+        "description": "Scompari dalla vista, entrando in Furtività anche in combattimento. Ti muovi il 30% più lentamente mentre sei nascosto. Dura fino a 10 sec."
+      },
+      "instant_poison": {
+        "name": "Veleno Istantaneo",
+        "description": "Ricopre la tua arma per 30 min, facendo sì che ognuno dei tuoi attacchi in mischia infligga 8 danni della Natura aggiuntivi."
+      },
+      "deadly_poison": {
+        "name": "Veleno Letale",
+        "description": "Ricopre la tua arma per 30 min, facendo sì che ognuno dei tuoi attacchi in mischia infligga 14 danni della Natura aggiuntivi."
+      },
+      "blind": {
+        "name": "Accecamento",
+        "description": "Acceca il bersaglio, facendolo vagare disorientato per 8 sec. Qualsiasi danno interrompe l'effetto."
+      },
       "seal_of_righteousness": {
         "name": "Sigillo della Rettitudine",
         "description": "Ti riempie di potere Sacro per 30 s, facendo infliggere 4 danni Sacri aggiuntivi a ogni tuo colpo in mischia. Scatenalo con Giudizio."
@@ -28461,6 +28741,46 @@ export const de_DE: EnTranslations = {
       "adrenaline_rush": {
         "name": "Adrenalinrausch",
         "description": "Euer Blut kocht und stellt sofort 60 Energie wieder her."
+      },
+      "garrote": {
+        "name": "Erwürgen",
+        "description": "Erwürgt den Gegner, verursacht sofort Schaden und lässt ihn 18 Sek. lang um {damage} bluten. Erfordert Verstohlenheit. Gewährt 1 Combopunkt."
+      },
+      "cheap_shot": {
+        "name": "Wilder Hieb",
+        "description": "Trifft das Ziel und betäubt es 4 Sek. lang. Erfordert Verstohlenheit. Gewährt 2 Combopunkte."
+      },
+      "sap": {
+        "name": "Kopfnuss",
+        "description": "Macht das Ziel 8 Sek. lang handlungsunfähig. Erfordert Verstohlenheit und außerhalb des Kampfes zu sein. Jeder Schaden bricht den Effekt."
+      },
+      "crippling_poison": {
+        "name": "Lähmendes Gift",
+        "description": "Trifft das Ziel mit einem lähmenden Gift, verursacht {damage} Naturschaden und verringert sein Bewegungstempo 12 Sek. lang um 50%."
+      },
+      "expose_armor": {
+        "name": "Rüstung zerreißen",
+        "description": "Finishing-Move, der das Ziel entblößt und seine Rüstung verringert. Mehr eingesetzte Combopunkte führen zu einem tieferen Schnitt."
+      },
+      "rupture": {
+        "name": "Rupturieren",
+        "description": "Finishing-Move, der das Ziel verwundet und es 16 Sek. lang um {damage} bluten lässt."
+      },
+      "vanish": {
+        "name": "Verschwinden",
+        "description": "Verschwindet aus dem Blickfeld und tretet selbst im Kampf in Verstohlenheit. Ihr bewegt euch 30% langsamer, solange ihr verborgen seid. Hält bis zu 10 Sek. an."
+      },
+      "instant_poison": {
+        "name": "Sofortgift",
+        "description": "Überzieht eure Waffe 30 Min. lang, sodass jeder eurer Nahkampfschwünge 8 zusätzlichen Naturschaden verursacht."
+      },
+      "deadly_poison": {
+        "name": "Tödliches Gift",
+        "description": "Überzieht eure Waffe 30 Min. lang, sodass jeder eurer Nahkampfschwünge 14 zusätzlichen Naturschaden verursacht."
+      },
+      "blind": {
+        "name": "Blenden",
+        "description": "Blendet das Ziel, sodass es 8 Sek. lang desorientiert umherirrt. Jeder Schaden bricht den Effekt."
       },
       "seal_of_righteousness": {
         "name": "Siegel der Rechtschaffenheit",
@@ -32330,6 +32650,46 @@ export const zh_CN: EnTranslations = {
         "name": "冲动",
         "description": "热血沸腾，立即恢复 60 点能量。"
       },
+      "garrote": {
+        "name": "锁喉",
+        "description": "勒住敌人的喉咙，立即造成伤害，并使其流血，在 18 秒内受到 {damage} 点伤害。必须处于潜行状态。奖励 1 个连击点。"
+      },
+      "cheap_shot": {
+        "name": "偷袭",
+        "description": "攻击目标，使其昏迷 4 秒。必须处于潜行状态。奖励 2 个连击点。"
+      },
+      "sap": {
+        "name": "闷棍",
+        "description": "使目标无法行动，持续 8 秒。必须处于潜行状态且不在战斗中。任何伤害都会打破效果。"
+      },
+      "crippling_poison": {
+        "name": "致残毒药",
+        "description": "以致残毒药攻击目标，造成 {damage} 点自然伤害，并使其移动速度降低 50%，持续 12 秒。"
+      },
+      "expose_armor": {
+        "name": "破甲",
+        "description": "终结技，使目标护甲值降低。消耗的连击点越多，削减得越深。"
+      },
+      "rupture": {
+        "name": "割裂",
+        "description": "终结技，撕裂目标，使其流血，在 16 秒内受到 {damage} 点伤害。"
+      },
+      "vanish": {
+        "name": "消失",
+        "description": "从视野中消失，即使在战斗中也能进入潜行状态。隐身时你的移动速度降低 30%。持续最多 10 秒。"
+      },
+      "instant_poison": {
+        "name": "速效毒药",
+        "description": "为你的武器淬毒，持续 30 分钟，使你的每次近战攻击额外造成 8 点自然伤害。"
+      },
+      "deadly_poison": {
+        "name": "致命毒药",
+        "description": "为你的武器淬毒，持续 30 分钟，使你的每次近战攻击额外造成 14 点自然伤害。"
+      },
+      "blind": {
+        "name": "致盲",
+        "description": "使目标失明，导致其神志不清地四处游荡，持续 8 秒。任何伤害都会打破效果。"
+      },
       "seal_of_righteousness": {
         "name": "正义圣印",
         "description": "使你充满神圣能量，持续 30 秒，使每次近战挥击造成 4 点额外神圣伤害。可用审判释放。"
@@ -36197,6 +36557,46 @@ export const zh_TW: EnTranslations = {
       "adrenaline_rush": {
         "name": "衝動",
         "description": "熱血沸騰，立即恢復 60 點能量。"
+      },
+      "garrote": {
+        "name": "鎖喉",
+        "description": "勒住敵人的咽喉，立即造成傷害，並使其在 18 秒內流血損失 {damage} 點生命。必須處於潛行狀態。獎勵 1 個連擊點。"
+      },
+      "cheap_shot": {
+        "name": "偷襲",
+        "description": "攻擊目標，使其昏迷 4 秒。必須處於潛行狀態。獎勵 2 個連擊點。"
+      },
+      "sap": {
+        "name": "悶棍",
+        "description": "使目標無法行動，持續 8 秒。必須處於潛行狀態且脫離戰鬥。任何傷害都會破除此效果。"
+      },
+      "crippling_poison": {
+        "name": "致殘毒藥",
+        "description": "以致殘毒藥攻擊目標，造成 {damage} 點自然傷害，並使其移動速度降低 50%，持續 12 秒。"
+      },
+      "expose_armor": {
+        "name": "破甲",
+        "description": "終結技，使目標破綻盡露，降低其護甲。消耗越多連擊點，撕裂得越深。"
+      },
+      "rupture": {
+        "name": "割裂",
+        "description": "終結技，撕裂目標的傷口，使其在 16 秒內流血損失 {damage} 點生命。"
+      },
+      "vanish": {
+        "name": "消失",
+        "description": "從視野中消失，即使在戰鬥中也能進入潛行狀態。隱身時你的移動速度降低 30%。最多持續 10 秒。"
+      },
+      "instant_poison": {
+        "name": "速效毒藥",
+        "description": "在你的武器上塗抹毒藥，持續 30 分鐘，使你的每次近戰揮擊額外造成 8 點自然傷害。"
+      },
+      "deadly_poison": {
+        "name": "致命毒藥",
+        "description": "在你的武器上塗抹毒藥，持續 30 分鐘，使你的每次近戰揮擊額外造成 14 點自然傷害。"
+      },
+      "blind": {
+        "name": "致盲",
+        "description": "使目標目盲，迷茫地四處遊蕩，持續 8 秒。任何傷害都會破除此效果。"
       },
       "seal_of_righteousness": {
         "name": "正義聖印",
@@ -40066,6 +40466,46 @@ export const ko_KR: EnTranslations = {
         "name": "아드레날린 촉진",
         "description": "피가 끓어올라 즉시 기력 60을 회복합니다."
       },
+      "garrote": {
+        "name": "목조르기",
+        "description": "적의 목을 졸라 즉시 피해를 입히고 18초에 걸쳐 {damage}의 출혈 피해를 입힙니다. 은신 상태여야 합니다. 연계 점수 1점을 얻습니다."
+      },
+      "cheap_shot": {
+        "name": "비열한 습격",
+        "description": "대상을 가격해 4초 동안 기절시킵니다. 은신 상태여야 합니다. 연계 점수 2점을 얻습니다."
+      },
+      "sap": {
+        "name": "관자놀이 가격",
+        "description": "대상을 8초 동안 무력화합니다. 은신 상태이며 전투 중이 아니어야 합니다. 피해를 받으면 효과가 해제됩니다."
+      },
+      "crippling_poison": {
+        "name": "무력화 독",
+        "description": "대상을 무력화 독으로 가격해 {damage}의 자연 피해를 입히고 12초 동안 이동 속도를 50%만큼 감소시킵니다."
+      },
+      "expose_armor": {
+        "name": "방어구 노출",
+        "description": "대상의 약점을 드러내 방어도를 감소시키는 결정타입니다. 연계 점수를 많이 소모할수록 더 깊게 베어 들어갑니다."
+      },
+      "rupture": {
+        "name": "파열",
+        "description": "대상에게 상처를 입혀 16초에 걸쳐 {damage}의 출혈 피해를 입히는 결정타입니다."
+      },
+      "vanish": {
+        "name": "소멸",
+        "description": "시야에서 사라져 전투 중에도 은신 상태가 됩니다. 숨어 있는 동안 이동 속도가 30% 감소합니다. 최대 10초 동안 지속됩니다."
+      },
+      "instant_poison": {
+        "name": "속효성 독",
+        "description": "30분 동안 무기에 독을 발라 근접 공격마다 8의 추가 자연 피해를 입힙니다."
+      },
+      "deadly_poison": {
+        "name": "맹독",
+        "description": "30분 동안 무기에 독을 발라 근접 공격마다 14의 추가 자연 피해를 입힙니다."
+      },
+      "blind": {
+        "name": "실명",
+        "description": "대상의 눈을 멀게 해 8초 동안 방향을 잃고 헤매게 만듭니다. 피해를 받으면 효과가 해제됩니다."
+      },
       "seal_of_righteousness": {
         "name": "정의의 문장",
         "description": "30초 동안 신성한 힘으로 가득 차 근접 공격마다 4의 추가 신성 피해를 입힙니다. 심판으로 해방할 수 있습니다."
@@ -43933,6 +44373,46 @@ export const ja_JP: EnTranslations = {
       "adrenaline_rush": {
         "name": "アドレナリンラッシュ",
         "description": "血が熱くなり、即座にエネルギーを60回復します。"
+      },
+      "garrote": {
+        "name": "ガロット",
+        "description": "敵を絞め、即座にダメージを与えるとともに、18秒かけて{damage}の出血ダメージを与えます。ステルス状態でなければなりません。コンボポイントを1獲得します。"
+      },
+      "cheap_shot": {
+        "name": "チープショット",
+        "description": "対象を打って4秒間スタンさせます。ステルス状態でなければなりません。コンボポイントを2獲得します。"
+      },
+      "sap": {
+        "name": "サップ",
+        "description": "対象を8秒間行動不能にします。ステルス状態かつ戦闘外でなければなりません。ダメージを受けると効果が切れます。"
+      },
+      "crippling_poison": {
+        "name": "クリップリング・ポイズン",
+        "description": "対象をクリップリング・ポイズンで攻撃し、{damage}の自然ダメージを与えるとともに、移動速度を12秒間50%低下させます。"
+      },
+      "expose_armor": {
+        "name": "エクスポーズ・アーマー",
+        "description": "対象の防御を崩し、アーマーを低下させるフィニッシュムーブです。消費したコンボポイントが多いほど、より深く切り込みます。"
+      },
+      "rupture": {
+        "name": "ラプチャー",
+        "description": "対象に傷を負わせ、16秒かけて{damage}の出血ダメージを与えるフィニッシュムーブです。"
+      },
+      "vanish": {
+        "name": "ヴァニッシュ",
+        "description": "視界から消え、戦闘中でもステルス状態に入ります。隠れている間は移動速度が30%低下します。最大10秒間持続します。"
+      },
+      "instant_poison": {
+        "name": "インスタント・ポイズン",
+        "description": "武器に30分間毒を塗り、近接攻撃ごとに8の追加自然ダメージを与えます。"
+      },
+      "deadly_poison": {
+        "name": "デッドリー・ポイズン",
+        "description": "武器に30分間毒を塗り、近接攻撃ごとに14の追加自然ダメージを与えます。"
+      },
+      "blind": {
+        "name": "ブラインド",
+        "description": "対象を盲目にし、8秒間混乱してさまよわせます。ダメージを受けると効果が切れます。"
       },
       "seal_of_righteousness": {
         "name": "正義のシール",
@@ -47802,6 +48282,46 @@ export const pt_BR: EnTranslations = {
         "name": "Descarga de Adrenalina",
         "description": "Seu sangue ferve, restaurando 60 de energia instantaneamente."
       },
+      "garrote": {
+        "name": "Garrote",
+        "description": "Garroteia o inimigo, causando dano imediato e fazendo-o sangrar por {damage} ao longo de 18 s. Requer modo furtivo. Concede 1 ponto de combo."
+      },
+      "cheap_shot": {
+        "name": "Golpe Baixo",
+        "description": "Atinge o alvo, atordoando-o por 4 s. Requer modo furtivo. Concede 2 pontos de combo."
+      },
+      "sap": {
+        "name": "Nocaute",
+        "description": "Incapacita o alvo por 8 s. Requer modo furtivo e estar fora de combate. Qualquer dano quebra o efeito."
+      },
+      "crippling_poison": {
+        "name": "Veneno Aleijante",
+        "description": "Atinge o alvo com um veneno aleijante, causando {damage} de dano da Natureza e reduzindo sua velocidade de movimento em 50% por 12 s."
+      },
+      "expose_armor": {
+        "name": "Expor Armadura",
+        "description": "Golpe final que expõe o alvo, reduzindo sua armadura. Mais pontos de combo gastos aprofundam o corte."
+      },
+      "rupture": {
+        "name": "Ruptura",
+        "description": "Golpe final que fere o alvo, fazendo-o sangrar por {damage} ao longo de 16 s."
+      },
+      "vanish": {
+        "name": "Desaparecer",
+        "description": "Some de vista, entrando em modo furtivo mesmo em combate. Você se move 30% mais devagar enquanto escondido. Dura até 10 s."
+      },
+      "instant_poison": {
+        "name": "Veneno Instantâneo",
+        "description": "Reveste sua arma por 30 min, fazendo cada um de seus golpes corpo a corpo causar 8 de dano adicional da Natureza."
+      },
+      "deadly_poison": {
+        "name": "Veneno Mortal",
+        "description": "Reveste sua arma por 30 min, fazendo cada um de seus golpes corpo a corpo causar 14 de dano adicional da Natureza."
+      },
+      "blind": {
+        "name": "Cegar",
+        "description": "Cega o alvo, fazendo-o vagar desorientado por 8 s. Qualquer dano quebra o efeito."
+      },
       "seal_of_righteousness": {
         "name": "Selo da Retidão",
         "description": "Enche você de poder Sagrado por 30 s, fazendo cada golpe corpo a corpo causar 4 de dano Sagrado adicional. Libere com Julgamento."
@@ -51669,6 +52189,46 @@ export const ru_RU: EnTranslations = {
       "adrenaline_rush": {
         "name": "Выброс адреналина",
         "description": "Кровь закипает, мгновенно восстанавливая 60 энергии."
+      },
+      "garrote": {
+        "name": "Гаррота",
+        "description": "Душит врага гарротой, нанося урон сразу и {damage} от кровотечения в течение 18 сек. Требуется незаметность. Дает 1 очко серии."
+      },
+      "cheap_shot": {
+        "name": "Удар исподтишка",
+        "description": "Бьет цель, оглушая ее на 4 сек. Требуется незаметность. Дает 2 очка серии."
+      },
+      "sap": {
+        "name": "Ошеломление",
+        "description": "Выводит цель из строя на 8 сек. Требуется незаметность и нахождение вне боя. Любой урон прерывает эффект."
+      },
+      "crippling_poison": {
+        "name": "Калечащий яд",
+        "description": "Поражает цель калечащим ядом, нанося {damage} ед. урона от сил природы и замедляя ее скорость передвижения на 50% в течение 12 сек."
+      },
+      "expose_armor": {
+        "name": "Вскрытие брони",
+        "description": "Завершающий прием, который оголяет цель, снижая ее броню. Чем больше затрачено очков серии, тем глубже разрез."
+      },
+      "rupture": {
+        "name": "Кровопускание",
+        "description": "Завершающий прием, который ранит цель, вызывая кровотечение на {damage} в течение 16 сек."
+      },
+      "vanish": {
+        "name": "Исчезновение",
+        "description": "Исчезает из виду, входя в незаметность даже в бою. Пока вы скрыты, вы двигаетесь на 30% медленнее. Длится до 10 сек."
+      },
+      "instant_poison": {
+        "name": "Быстродействующий яд",
+        "description": "Покрывает ваше оружие ядом на 30 мин, заставляя каждый ваш удар в ближнем бою наносить 8 дополнительных ед. урона от сил природы."
+      },
+      "deadly_poison": {
+        "name": "Смертельный яд",
+        "description": "Покрывает ваше оружие ядом на 30 мин, заставляя каждый ваш удар в ближнем бою наносить 14 дополнительных ед. урона от сил природы."
+      },
+      "blind": {
+        "name": "Ослепление",
+        "description": "Ослепляет цель, заставляя ее дезориентированно бродить в течение 8 сек. Любой урон прерывает эффект."
       },
       "seal_of_righteousness": {
         "name": "Печать праведности",
@@ -55570,6 +56130,46 @@ export const en_XA: EnTranslations = {
       "adrenaline_rush": {
         "name": "[Áðŕéñáļíñé Ŕúšĥ]",
         "description": "[Ýóúŕ ƀļóóð ŕúñš ĥóţ, íñšţáñţļý ŕéšţóŕíñĝ 60 éñéŕĝý.]"
+      },
+      "garrote": {
+        "name": "[Ĝáŕŕóţé]",
+        "description": "[Ĝáŕŕóţé ţĥé éñéɱý, çáúšíñĝ ðáɱáĝé ñóŵ áñð ƀļééðíñĝ íţ ƒóŕ {damage} óʋéŕ 18 šéç. Ɱúšţ ƀé šţéáļţĥéð. Áŵáŕðš 1 çóɱƀó þóíñţ.]"
+      },
+      "cheap_shot": {
+        "name": "[Çĥéáþ Šĥóţ]",
+        "description": "[Šţŕíķé ţĥé ţáŕĝéţ, šţúññíñĝ íţ ƒóŕ 4 šéç. Ɱúšţ ƀé šţéáļţĥéð. Áŵáŕðš 2 çóɱƀó þóíñţš.]"
+      },
+      "sap": {
+        "name": "[Šáþ]",
+        "description": "[Íñçáþáçíţáţéš ţĥé ţáŕĝéţ ƒóŕ 8 šéç. Ɱúšţ ƀé šţéáļţĥéð áñð óúţ óƒ çóɱƀáţ. Áñý ðáɱáĝé ƀŕéáķš ţĥé éƒƒéçţ.]"
+      },
+      "crippling_poison": {
+        "name": "[Çŕíþþļíñĝ Þóíšóñ]",
+        "description": "[Šţŕíķéš ţĥé ţáŕĝéţ ŵíţĥ á çŕíþþļíñĝ þóíšóñ, ðéáļíñĝ {damage} Ñáţúŕé ðáɱáĝé áñð šļóŵíñĝ íţš ɱóʋéɱéñţ šþééð ƀý 50% ƒóŕ 12 šéç.]"
+      },
+      "expose_armor": {
+        "name": "[Éẋþóšé Áŕɱóŕ]",
+        "description": "[Ƒíñíšĥíñĝ ɱóʋé ţĥáţ éẋþóšéš ţĥé ţáŕĝéţ, ŕéðúçíñĝ íţš áŕɱóŕ. Ɱóŕé çóɱƀó þóíñţš šþéñţ ƀúíļð íñţó á ðééþéŕ çúţ.]"
+      },
+      "rupture": {
+        "name": "[Ŕúþţúŕé]",
+        "description": "[Ƒíñíšĥíñĝ ɱóʋé ţĥáţ ŵóúñðš ţĥé ţáŕĝéţ, çáúšíñĝ íţ ţó ƀļééð ƒóŕ {damage} óʋéŕ 16 šéç.]"
+      },
+      "vanish": {
+        "name": "[Ʋáñíšĥ]",
+        "description": "[Ʋáñíšĥ ƒŕóɱ šíĝĥţ, éñţéŕíñĝ Šţéáļţĥ éʋéñ íñ çóɱƀáţ. Ýóú ɱóʋé 30% šļóŵéŕ ŵĥíļé ĥíððéñ. Ļášţš úþ ţó 10 šéç.]"
+      },
+      "instant_poison": {
+        "name": "[Íñšţáñţ Þóíšóñ]",
+        "description": "[Çóáţš ýóúŕ ŵéáþóñ ƒóŕ 30 ɱíñ, çáúšíñĝ éáçĥ óƒ ýóúŕ ɱéļéé šŵíñĝš ţó ðéáļ 8 áððíţíóñáļ Ñáţúŕé ðáɱáĝé.]"
+      },
+      "deadly_poison": {
+        "name": "[Ðéáðļý Þóíšóñ]",
+        "description": "[Çóáţš ýóúŕ ŵéáþóñ ƒóŕ 30 ɱíñ, çáúšíñĝ éáçĥ óƒ ýóúŕ ɱéļéé šŵíñĝš ţó ðéáļ 14 áððíţíóñáļ Ñáţúŕé ðáɱáĝé.]"
+      },
+      "blind": {
+        "name": "[Ɓļíñð]",
+        "description": "[Ɓļíñðš ţĥé ţáŕĝéţ, çáúšíñĝ íţ ţó ŵáñðéŕ ðíšóŕíéñţéð ƒóŕ 8 šéç. Áñý ðáɱáĝé ƀŕéáķš ţĥé éƒƒéçţ.]"
       },
       "seal_of_righteousness": {
         "name": "[Šéáļ óƒ Ŕíĝĥţéóúšñéšš]",
