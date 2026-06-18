@@ -71,6 +71,9 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
     id: 'old_greyjaw', name: 'Old Greyjaw', minLevel: 4, maxLevel: 4, family: 'beast', rare: true,
     hpBase: 110, hpPerLevel: 20, dmgBase: 5, dmgPerLevel: 2.0, attackSpeed: 1.8,
     armorPerLevel: 16, moveSpeed: 8.5, aggroRadius: 12,
+    // The old wolf turns savage as the fight wears on: each wound it takes can
+    // send it into a blood frenzy, swinging 30% faster for 8s.
+    frenzyOnHit: { chance: 0.25, hasteMult: 1.3, duration: 8, name: 'Blood Frenzy' },
     loot: [
       { copper: 60, chance: 1 },
       { itemId: 'greyjaw_fang', chance: 1, questId: 'q_greyjaw' },
@@ -155,6 +158,7 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
     aoePulse: { min: 14, max: 20, radius: 8, every: 10, name: 'Ground Pound', school: 'physical' },
     summonAdds: { mobId: 'mogger_lackey', count: 2, atHpPct: [0.70] },
     enrage: { belowHpPct: 0.30, dmgMult: 1.6, hasteMult: 1.3 },
+    wardAllies: { radius: 12, every: 12, amount: 70, duration: 8, name: 'Bracing Order', school: 'physical' },
     loot: [
       { copper: 180, chance: 1 },
       { itemId: 'linen_scrap', chance: 1 },
@@ -168,6 +172,7 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
     id: 'mogger_lackey', name: 'Mogger Lackey', minLevel: 5, maxLevel: 6, family: 'humanoid',
     hpBase: 44, hpPerLevel: 18, dmgBase: 6, dmgPerLevel: 2.0, attackSpeed: 2.0,
     armorPerLevel: 18, moveSpeed: 7.5, aggroRadius: 12,
+    stunOnHit: { chance: 0.12, duration: 1, name: 'Skullthump', school: 'physical' },
     loot: [],
     scale: 0.95, color: 0x7b4b2b,
   },
@@ -181,6 +186,11 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
       { itemId: 'linen_scrap', chance: 0.2 },
     ],
     scale: 0.8, color: 0x52be80,
+    // Mudfin Hex: the skulker's oracle-chant briefly turns a foe into a critter.
+    // Low chance and it breaks the instant the victim takes damage (the murloc's
+    // own next bite ends it), so it's a brief flavor incap — but a murloc pack
+    // can chain it just long enough to make a careless pull dangerous.
+    polymorphHex: { chance: 0.12, duration: 4, name: 'Mudfin Hex', school: 'nature' },
   },
   tunnel_rat: {
     id: 'tunnel_rat', name: 'Tunnel Rat Digger', minLevel: 4, maxLevel: 6, family: 'kobold',
@@ -204,6 +214,8 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
       { itemId: 'linen_scrap', chance: 0.3 },
     ],
     scale: 1.0, color: 0x943126,
+    // A practiced thug flings a handful of road grit to foul your aim.
+    blind: { chance: 0.25, miss: 0.3, duration: 5, name: 'Blinding Powder', school: 'physical' },
   },
   restless_bones: {
     id: 'restless_bones', name: 'Restless Bones', minLevel: 5, maxLevel: 7, family: 'undead',
@@ -217,6 +229,8 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
     scale: 1.0, color: 0xd5dbdb,
     // A grave-cold wail saps the strength from the living it strikes.
     demoralize: { ap: 20, duration: 8, name: 'Withering Wail' },
+    // Grave-touch: a clawing swing may fester a creeping necrotic rot (shadow DoT).
+    soulrot: { chance: 0.25, perTick: 4, interval: 3, duration: 12, name: 'Soulrot' },
   },
   gorrak: {
     id: 'gorrak', name: 'Gorrak the Ruthless', minLevel: 6, maxLevel: 6, family: 'humanoid',

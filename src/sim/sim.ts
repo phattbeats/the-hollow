@@ -169,6 +169,7 @@ const SOCIAL_PULL_RADIUS: Partial<Record<MobFamily, number>> = {
   murloc: 8,
 };
 const PACK_FRENZY_AURA_ID = 'pack_frenzy'; // attack-speed buff granted to surviving packmates
+const BLOOD_FRENZY_AURA_ID = 'blood_frenzy'; // self attack-speed buff a wounded frenzyOnHit mob gains
 const SWIM_SURFACE_Y = WATER_LEVEL - 0.75; // body bobs just below the water line
 const SWIM_DEPTH = PLAYER_SWIM_DEPTH; // ground this far under the water line = deep water
 const SWIM_SPEED_MULT = 0.65;
@@ -1352,6 +1353,14 @@ export class Sim {
   // movement and melee untouched — unlike a stun, which freezes everything.
   private isSilenced(e: Entity): boolean {
     return e.auras.some((a) => a.kind === 'silence');
+  }
+
+  // Extra chance for the entity's own weapon swings to whiff while blinded.
+  // Returns the strongest active blind aura's value (0 when not blinded).
+  private blindMissBonus(e: Entity): number {
+    let bonus = 0;
+    for (const a of e.auras) if (a.kind === 'blind' && a.value > bonus) bonus = a.value;
+    return bonus;
   }
   private mobCanSwim(template: { family?: string; canSwim?: boolean } | undefined): boolean {
     return !!template;
@@ -3223,7 +3232,7 @@ export class Sim {
     const school = ranged.wand ? (ranged.school ?? 'arcane') : 'physical';
     const label = ranged.wand ? 'Wand' : 'Auto Shot';
     this.emit({ type: 'spellfx', sourceId: attacker.id, targetId: target.id, school, fx: 'projectile' });
-    const missChance = meleeMissChance(attacker.level, target.level);
+    const missChance = meleeMissChance(attacker.level, target.level) + this.blindMissBonus(attacker);
     if (this.rng.chance(missChance)) {
       this.emit({ type: 'damage', sourceId: attacker.id, targetId: target.id, amount: 0, crit: false, school, ability: label, kind: 'miss' });
       this.enterCombat(attacker, target);
@@ -3244,7 +3253,7 @@ export class Sim {
     attacker: Entity, target: Entity, bonus: number, abilityName: string | null,
     opts: { cannotBeDodged?: boolean; weaponMult?: number; threatFlat?: number; threatMult?: number },
   ): boolean {
-    const missChance = meleeMissChance(attacker.level, target.level);
+    const missChance = meleeMissChance(attacker.level, target.level) + this.blindMissBonus(attacker);
     const dodgeChance = opts.cannotBeDodged ? 0
       : (target.kind === 'player' ? target.dodgeChance : 0.05 + Math.max(0, target.level - attacker.level) * 0.005);
     const roll = this.rng.next();
@@ -3426,9 +3435,51 @@ export class Sim {
       }
     }
 
+    // Reactive "Frenzy": a wounded mob carrying frenzyOnHit may lash out faster.
+    // Rolls only for mobs that actually carry the trait (the helper bails before
+    // touching rng otherwise), so existing fixed-seed combat stays byte-identical.
+    if (kind === 'hit' && amount > 0 && !target.dead && target.hp > 0) {
+      this.maybeFrenzyOnHit(target, source);
+    }
+
     if (target.hp <= 0) {
       this.handleDeath(target, source);
     }
+  }
+
+  // Reactive beast "Frenzy": when a mob with the frenzyOnHit trait is struck by a
+  // player (or their pet), it has a chance to fly into a blood frenzy and swing
+  // faster for a few seconds. Modelled as a refreshable buff_haste self-aura — the
+  // same primitive packFrenzy uses — so it rides the normal aura tick and snapshot
+  // wire with no new Entity field. The struck mob buffs ITSELF, so there is no
+  // recursion risk (the buff is not damage) and no player-facing debuff string.
+  private maybeFrenzyOnHit(target: Entity, source: Entity | null): void {
+    const fr = MOBS[target.templateId]?.frenzyOnHit;
+    if (!fr) return; // non-carriers never reach rng — keeps determinism neutral
+    if (target.kind !== 'mob' || !target.hostile || target.ownerId !== null) return;
+    if (!source || source.id === target.id) return;
+    const fromPlayer = source.kind === 'player' || source.ownerId !== null;
+    if (!fromPlayer) return;
+    if (!this.rng.chance(fr.chance)) return;
+    const name = fr.name ?? 'Blood Frenzy';
+    const existing = target.auras.find((a) => a.id === BLOOD_FRENZY_AURA_ID);
+    if (existing) {
+      existing.remaining = fr.duration; // refresh on each further wound; don't stack
+      return;
+    }
+    target.auras.push({
+      id: BLOOD_FRENZY_AURA_ID,
+      name,
+      kind: 'buff_haste',
+      remaining: fr.duration,
+      duration: fr.duration,
+      value: fr.hasteMult,
+      sourceId: target.id,
+      school: 'physical',
+    });
+    this.emit({ type: 'aura', targetId: target.id, name, gained: true });
+    this.emit({ type: 'log', text: `${target.name} flies into a frenzy!`, color: '#ff8c00', entityId: target.id });
+    this.emit({ type: 'spellfx', sourceId: target.id, targetId: target.id, school: 'physical', fx: 'nova' });
   }
 
   private enterCombat(a: Entity, b: Entity): void {
@@ -4142,6 +4193,7 @@ export class Sim {
     mob.healedThisPull = false;
     mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
     mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
+    mob.wardTimer = MOBS[mob.templateId]?.wardAllies?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
   }
 
@@ -4242,6 +4294,20 @@ export class Sim {
         sourceId: mob.id, school: (venom.school as Aura['school']) ?? 'nature',
       });
     }
+    // soulrot ("Soulrot"): a landed swing may fester a refreshing SHADOW DoT.
+    // Same on-hit DoT seam as venom, but shadow-school — the undead/necrotic
+    // flavour. Hostile mobs only (mobSwing is also the pet attack path, so a
+    // friendly pet must never rot the party).
+    const soulrot = MOBS[mob.templateId]?.soulrot;
+    if (soulrot && mob.hostile && !target.dead && this.rng.chance(soulrot.chance)) {
+      this.applyAura(target, {
+        id: 'soulrot_' + mob.templateId, name: soulrot.name, kind: 'dot',
+        remaining: soulrot.duration, duration: soulrot.duration,
+        value: Math.max(1, Math.round(soulrot.perTick)),
+        tickInterval: soulrot.interval, tickTimer: soulrot.interval,
+        sourceId: mob.id, school: (soulrot.school as Aura['school']) ?? 'shadow',
+      });
+    }
     // corrosive bite: a landed hit may shred the victim's armor (stacking sunder).
     // Guarded on hostile so a friendly pet (the other mobSwing caller) never debuffs an ally.
     const corrode = MOBS[mob.templateId]?.corrode;
@@ -4257,6 +4323,18 @@ export class Sim {
         id: `silence_${mob.templateId}`, name: silence.name, kind: 'silence',
         remaining: silence.duration, duration: silence.duration, value: 0,
         sourceId: mob.id, school: (silence.school ?? 'shadow') as Aura['school'],
+      });
+    }
+    // blinding powder: a thrown handful of grit can leave the victim's own
+    // weapon swings whiffing. Guarded on hostile + alive so a friendly pet
+    // (mobSwing's other caller) never blinds the party. Carries the added miss
+    // chance in the aura value, read back in melee/ranged swings via blindMissBonus.
+    const blind = MOBS[mob.templateId]?.blind;
+    if (blind && mob.hostile && !target.dead && this.rng.chance(blind.chance)) {
+      this.applyAura(target, {
+        id: `blind_${mob.templateId}`, name: blind.name, kind: 'blind',
+        remaining: blind.duration, duration: blind.duration, value: blind.miss,
+        sourceId: mob.id, school: (blind.school ?? 'physical') as Aura['school'],
       });
     }
     // thorns / lightning shield on the defender
@@ -4288,6 +4366,18 @@ export class Sim {
     const ensnare = MOBS[mob.templateId]?.ensnare;
     if (ensnare && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(ensnare.chance)) {
       this.applyRootAura(mob, target, ensnare.name, `ensnare_${mob.templateId}`, ensnare.duration, ensnare.school ?? 'nature');
+    }
+    // stunOnHit: a landed crushing blow may briefly stun the victim. Hostile mobs
+    // only (a friendly pet shares this swing path) and only stuns players. Reuses
+    // the `stun` aura the AoE stomp already applies, so isStunned()/the HUD handle
+    // it with no new wiring. Kept low-chance/short so it threatens without locking.
+    const stunOnHit = MOBS[mob.templateId]?.stunOnHit;
+    if (stunOnHit && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(stunOnHit.chance)) {
+      this.applyAura(target, {
+        id: `stun_${mob.templateId}`, name: stunOnHit.name, kind: 'stun',
+        remaining: stunOnHit.duration, duration: stunOnHit.duration, value: 0,
+        sourceId: mob.id, school: stunOnHit.school ?? 'physical',
+      });
     }
     // slowStrike: a landed hit may mire the victim, slowing their attack speed.
     // Rides the existing `attackspeed` aura (swingIntervalMult: value > 1 = slower);
@@ -4373,6 +4463,27 @@ export class Sim {
           remaining, duration: remaining,
           value: this.rng.range(-Math.PI, Math.PI),
           sourceId: mob.id, school: dread.school ?? 'shadow', breaksOnDamage: true,
+        });
+      }
+    }
+    // Polymorph hex: a landed hit can briefly turn the victim into a critter,
+    // applying the same `polymorph` aura the mage's Polymorph uses — `isStunned`
+    // locks out every action and the aura is stripped the instant the victim
+    // takes damage (the caster's own next hit ends it), so it's a brief flavor
+    // incap, not a hard lock. Unlike the player-cast version we deliberately do
+    // NOT heal the victim to full on apply (a monster shouldn't restore its prey),
+    // but keep the aura's inherent regen tick. Guarded on `hostile` + a player
+    // target; `diminishedCrowdControlDuration` returns the full duration for a
+    // mob source (DR is PvP-only).
+    const hex = MOBS[mob.templateId]?.polymorphHex;
+    if (hex && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(hex.chance)) {
+      const remaining = this.diminishedCrowdControlDuration(mob, target, 'polymorph', hex.duration);
+      if (remaining !== null) {
+        this.applyAura(target, {
+          id: `hex_${mob.templateId}`, name: hex.name, kind: 'polymorph',
+          remaining, duration: remaining, value: 0,
+          tickInterval: 1, tickTimer: 1,
+          sourceId: mob.id, school: hex.school ?? 'nature', breaksOnDamage: true,
         });
       }
     }
@@ -4609,6 +4720,7 @@ export class Sim {
     mob.healedThisPull = false;
     mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
     mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
+    mob.wardTimer = MOBS[mob.templateId]?.wardAllies?.every ?? 0;
     mob.wanderTimer = this.rng.range(2, 8);
     for (const meta of this.players.values()) {
       const e = this.entities.get(meta.entityId);
@@ -4702,7 +4814,7 @@ export class Sim {
   // and reset on evade/respawn.
   private updateBossMechanics(mob: Entity): void {
     const tmpl = MOBS[mob.templateId];
-    if (!tmpl || (!tmpl.summonAdds && !tmpl.enrage && !tmpl.desperateHeal && !tmpl.mendAlly)) return;
+    if (!tmpl || (!tmpl.summonAdds && !tmpl.enrage && !tmpl.desperateHeal && !tmpl.mendAlly && !tmpl.wardAllies)) return;
     const hpFrac = mob.hp / Math.max(1, mob.maxHp);
     if (tmpl.summonAdds) {
       const thresholds = tmpl.summonAdds.atHpPct;
@@ -4748,6 +4860,35 @@ export class Sim {
           for (const ally of wounded) {
             const amount = Math.round(this.rng.range(tmpl.mendAlly.healMin, tmpl.mendAlly.healMax));
             this.applyHeal(mob, ally, amount, tmpl.mendAlly.name);
+          }
+        }
+      }
+    }
+    // Support "Ward": the defensive twin of Mend. Periodically wrap every living
+    // friendly mob in range (including the caster) in an absorb shield. Unlike
+    // Mend it targets healthy allies too — a barrier pre-empts the next blows.
+    // Refreshes each interval, replacing any partially-soaked ward (same aura id).
+    if (tmpl.wardAllies) {
+      mob.wardTimer -= DT;
+      if (mob.wardTimer <= 0) {
+        mob.wardTimer = tmpl.wardAllies.every;
+        const allies: Entity[] = [];
+        for (const ally of this.entities.values()) {
+          if (ally.kind !== 'mob' || ally.dead || ally.ownerId !== null) continue; // skip players, pets, corpses
+          if (ally.hostile !== mob.hostile) continue; // same-faction mobs only
+          if (dist2d(ally.pos, mob.pos) > tmpl.wardAllies.radius) continue;
+          allies.push(ally);
+        }
+        if (allies.length > 0) {
+          const school = tmpl.wardAllies.school ?? 'holy';
+          this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
+          this.emit({ type: 'log', text: `${mob.name} channels ${tmpl.wardAllies.name}.`, color: '#aad4ff', entityId: mob.id });
+          for (const ally of allies) {
+            this.applyAura(ally, {
+              id: `ward_${mob.templateId}`, name: tmpl.wardAllies.name, kind: 'absorb',
+              remaining: tmpl.wardAllies.duration, duration: tmpl.wardAllies.duration,
+              value: tmpl.wardAllies.amount, sourceId: mob.id, school,
+            });
           }
         }
       }
