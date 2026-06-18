@@ -994,6 +994,8 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   // warrior
   heroic_strike: r('fury', 'steel', ['sword'], ['glow']),
   battle_shout: r('fury', 'gold', ['fist'], ['arcs']),
+  commanding_shout: r('fury', 'earthBrown', ['shield'], ['arcs']),
+  demoralizing_shout: r('shadow', 'steel', ['fist'], ['arcs']),
   charge: r('fury', 'steel', ['boot', { p: 'sword', ...BR }], ['motion']),
   rend: r('blood', 'blood', ['claw_slash'], ['drips']),
   thunder_clap: r('storm', 'sky', ['lightning'], ['arcs']),
@@ -1002,6 +1004,7 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   overpower: r('fury', 'gold', ['sword', { p: 'sunburst', ...TL }]),
   // mage
   fireball: r('fire', 'ember', ['bolt', { p: 'flame', ...BR }], ['glow']),
+  pyroblast: r('fire', 'ember', [{ p: 'sunburst', ...BIG }, { p: 'flame', s: 0.9 }], ['glow']),
   frost_armor: r('frost', 'ice', ['chestplate', { p: 'snowflake', ...TR }]),
   arcane_intellect: r('arcane', 'arcanePink', ['eye'], ['sparkle']),
   frostbolt: r('frost', 'ice', ['bolt', { p: 'snowflake', ...BR }], ['motion']),
@@ -1034,6 +1037,7 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   // hunter
   raptor_strike: r('earth', 'blood', ['claw_slash']),
   aspect_of_the_hawk: r('storm', 'sky', ['wing'], ['glow']),
+  aspect_of_the_monkey: r('nature', 'leafGreen', ['paw'], ['motion']),
   serpent_sting: r('nature', 'venom', ['fang'], ['drips']),
   arcane_shot: r('arcane', 'arcanePink', ['arrow'], ['glow', 'sparkle']),
   concussive_shot: r('storm', 'sky', ['arrow'], ['arcs']),
@@ -1054,6 +1058,8 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   earth_shock: r('earth', 'earthBrown', [{ p: 'lightning', pal: 'earthBrown' }], ['crack']),
   lightning_shield: r('storm', 'sky', ['shield', { p: 'lightning', s: 0.6 }], ['glow']),
   flame_shock: r('fire', 'ember', ['flame'], ['arcs']),
+  flametongue_weapon: r('fire', 'ember', ['sword', { p: 'flame', s: 0.6 }], ['glow']),
+  frostbrand_weapon: r('frost', 'ice', ['sword', { p: 'snowflake', s: 0.6 }], ['glow']),
   // warlock
   shadow_bolt: r('shadow', 'shadowPurple', ['bolt'], ['glow']),
   demon_skin: r('shadow', 'venom', [{ p: 'chestplate', pal: 'venom' }]),

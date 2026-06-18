@@ -82,4 +82,7 @@ export const es_ES: Partial<Record<TranslationKey, string>> = {
   "mobilePreflight.androidInstallDetail": "Para pantalla completa en Android, instala esta página o añádela a la pantalla de inicio primero.",
   "mobilePreflight.androidInstallStep": "En Chrome, toca el menú y luego Instalar app o Añadir a pantalla de inicio.",
   "mobilePreflight.otherInstallDetail": "Instala o añade esta página a la pantalla de inicio para la mejor experiencia móvil a pantalla completa.",
+  "entities.items.conjured_bread.name": "Pan invocado",
+  "entities.items.conjured_bread2.name": "Pan negro invocado",
+  "entities.items.conjured_bread3.name": "Bollo dulce invocado",
 };

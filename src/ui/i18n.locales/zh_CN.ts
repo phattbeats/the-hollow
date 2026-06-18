@@ -2048,4 +2048,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   "auth.noAccountPrompt": "初来乍到？",
   "auth.haveAccountPrompt": "已有账号？",
 
+  "entities.items.conjured_bread.name": "魔法面包",
+  "entities.items.conjured_bread2.name": "魔法黑麦面包",
+  "entities.items.conjured_bread3.name": "魔法甜面包",
 };

@@ -22,6 +22,8 @@
 | battle_shout | 1 | 1 | 10 | inst | buff_ap +20, 120s |
 | | **2** | **12** | 10 | inst | buff_ap **+35**, 120s |
 | | **3** | **20** | 10 | inst | buff_ap **+50**, 120s |
+| demoralizing_shout | 1 | 14 | 10 | inst | aoeAttackPower −30, 30s, r10 |
+| | **2** | **20** | 10 | inst | aoeAttackPower **−45**, 30s, r10 |
 | rend | 1 | 4 | 10 | inst | dot 15 / 9s (3×5) |
 | | 2 | 10 | 10 | inst | dot 21 / 9s *(exists)* |
 | | **3** | **16** | 10 | inst | dot **36 / 12s** (4×9) |
@@ -84,6 +86,7 @@
 | `arcane_explosion` | 14 | 60 | inst | aoeDamage 26–31, radius 10 (caster-centered) |
 | `scorch` | 16 | 35 | 1.5s | directDamage 32–40 (fast fire filler) |
 | `ice_barrier` | 20 | 90 | inst, 30cd | absorb 130, 60s (self) |
+| `pyroblast` | 20 | 125 | 6.0s cast | directDamage 75–100 + dot 24/12s (6×4) — big nuke + burn |
 
 **Sanity** — L14: Fireball R3 avg 42 (+6 dot) ≈ 48/cast → 292 hp ≈ 6.1 casts ✓. L20: FB R4 avg 68 (+12) = 80 → 400 hp = 5 casts (+Fire Blast R3 trims one) ✓.
 
@@ -181,6 +184,7 @@
 
 | Ability | Learn | Cost | Cast/CD | Effects |
 |---|---|---|---|---|
+| `aspect_of_the_monkey` | 10 | 20 | inst | selfBuff buff_dodge +0.08, 30min |
 | `aspect_of_the_cheetah` | 14 | 20 | inst | selfBuff buff_speed 1.3, 30min (replaces Hawk while active; daze rider omitted) |
 | `aimed_shot` | 16 | 50 | 3.0s cast, 6cd, 8–35yd | directDamage 50–62 |
 | `rapid_fire` | 20 | 0 | inst, 300cd, offGcd | selfBuff buff_haste 1.4, 15s |
@@ -256,6 +260,7 @@
 
 | Ability | Learn | Cost | Cast/CD | Effects |
 |---|---|---|---|---|
+| `flametongue_weapon` | 10 | 25 | inst | imbue +8/swing (Fire), 5min; R2 L18 +13 |
 | `frost_shock` | 14 | 50 | inst, 6cd, 20yd | directDamage 36–42 + slow 0.5/8s |
 | `ghost_wolf` | 16 | 35 | 2.0s cast | selfBuff buff_speed 1.4, 10min |
 | `stormstrike` | 20 | 40 | inst, 12cd | weaponStrike +26 |
@@ -349,12 +354,12 @@
 | Class | New abilities (id @ level) | New sim work |
 |---|---|---|
 | Warrior | execute@14, slam@16, cleave@18 | wire existing `requiresTargetHpBelow` |
-| Mage | arcane_explosion@14, scorch@16, ice_barrier@20 | none |
+| Mage | arcane_explosion@14, scorch@16, ice_barrier@20, pyroblast@20 | none |
 | Rogue | kidney_shot@14, ambush@16, adrenaline_rush@20 | **finisherStun effect (the only new effect type)** |
 | Paladin | flash_of_light@12, exorcism@14, consecration@18 | none |
 | Hunter | aspect_of_the_cheetah@14, aimed_shot@16, rapid_fire@20 | none |
 | Priest | heal@14 (R2@20), mind_flay@16, flash_heal@20 | none (drainTick healFrac 0) |
-| Shaman | frost_shock@14, ghost_wolf@16, stormstrike@20 | none |
+| Shaman | frost_shock@14, ghost_wolf@16, stormstrike@20, frostbrand_weapon@12 (R2@20) | none (imbue reuse) |
 | Warlock | fear@14, searing_pain@16, shadowburn@20 | none (incapacitate reuse) |
 | Druid | regrowth@14, barkskin@16, starfire@18 | none |
 

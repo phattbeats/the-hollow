@@ -2228,6 +2228,13 @@ export class Sim {
       this.addItem(res.rank > 1 && ITEMS[tiered] ? tiered : 'conjured_water', 2, p.id);
       return;
     }
+    if (ability.id === 'conjure_food') {
+      this.spendResource(p, res.cost);
+      // higher ranks conjure heartier fare (falls back if the item isn't defined)
+      const tiered = `conjured_bread${res.rank}`;
+      this.addItem(res.rank > 1 && ITEMS[tiered] ? tiered : 'conjured_bread', 2, p.id);
+      return;
+    }
     if (ability.id === 'revive_pet') {
       const pet = this.petOf(p.id, true);
       if (!pet) { this.error(p.id, 'You have no pet.'); return; }

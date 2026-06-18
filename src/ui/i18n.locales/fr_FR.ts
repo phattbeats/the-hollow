@@ -2048,4 +2048,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   "auth.noAccountPrompt": "Nouveau dans le royaume ?",
   "auth.haveAccountPrompt": "Vous avez déjà un compte ?",
 
+  "entities.items.conjured_bread.name": "Pain conjuré",
+  "entities.items.conjured_bread2.name": "Pain noir conjuré",
+  "entities.items.conjured_bread3.name": "Brioche conjurée",
 };

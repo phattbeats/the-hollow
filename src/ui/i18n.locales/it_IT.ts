@@ -2048,4 +2048,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   "auth.noAccountPrompt": "Nuovo nel reame?",
   "auth.haveAccountPrompt": "Hai già un account?",
 
+  "entities.items.conjured_bread.name": "Pane evocato",
+  "entities.items.conjured_bread2.name": "Pane nero evocato",
+  "entities.items.conjured_bread3.name": "Panino dolce evocato",
 };

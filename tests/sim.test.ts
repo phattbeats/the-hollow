@@ -717,6 +717,30 @@ describe('food, drink, vendor', () => {
     expect(sim.player.resource).toBeGreaterThan(before);
   });
 
+  it('mage conjures food and eating restores health', () => {
+    const sim = makeSim('mage');
+    sim.setPlayerLevel(6);
+    sim.castAbility('conjure_food');
+    for (let i = 0; i < 20 * 4; i++) sim.tick();
+    expect(sim.countItem('conjured_bread')).toBe(2);
+    sim.player.hp = 10;
+    sim.player.combatTimer = 99;
+    sim.player.inCombat = false;
+    sim.tick();
+    sim.useItem('conjured_bread');
+    const before = sim.player.hp;
+    for (let i = 0; i < 20 * 6; i++) sim.tick();
+    expect(sim.player.hp).toBeGreaterThan(before);
+  });
+
+  it('higher conjure food rank yields the heartier tier', () => {
+    const sim = makeSim('mage');
+    sim.setPlayerLevel(18);
+    sim.castAbility('conjure_food');
+    for (let i = 0; i < 20 * 4; i++) sim.tick();
+    expect(sim.countItem('conjured_bread3')).toBe(2);
+  });
+
   it('vendor buys and sells', () => {
     const sim = makeSim('warrior');
     const wilkes = [...sim.entities.values()].find((e) => e.templateId === 'trader_wilkes')!;
