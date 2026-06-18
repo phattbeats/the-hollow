@@ -18,6 +18,7 @@ import {
 import { xpBarView, formatXp } from './xp_bar';
 import { itemStatDeltas } from './item_compare';
 import { formatClockTime } from './clock';
+import { formatMinimapCoords } from './coords';
 import { terrainHeight, WATER_LEVEL, roadDistance, generateDecorations } from '../sim/world';
 import type { Decoration } from '../sim/world';
 import { Meters } from './meters';
@@ -277,6 +278,7 @@ export class Hud {
   private clockEl: HTMLElement | null = null;
   private clock24 = false;          // 24-hour vs 12-hour AM/PM display
   private lastClockText = '';       // avoid redundant DOM writes each frame
+  private lastCoordsText = ''; // cache so we only touch the DOM when coords change
   private mapBg: HTMLCanvasElement | null = null;
   private openLootMobId: number | null = null;
   private openVendorNpcId: number | null = null;
@@ -1858,8 +1860,7 @@ export class Hud {
       $('#arena-window').style.display = 'none';
     }
     this.arenaMatchSeen = inArenaMatch;
-    if (fastHud) this.updateMinimap();
-    if (fastHud) this.updateClock();
+    if (fastHud) { this.updateMinimap(); this.updateClock(); this.updateMinimapCoords(); }
     if (slowHud && $('#social-window').classList.contains('open')) {
       const struct = this.socialStructSig();
       if (struct !== this.lastSocialStruct) {
@@ -1981,6 +1982,18 @@ export class Hud {
       this.lastClockText = text;
       this.clockEl.textContent = text;
     }
+  }
+
+  // Classic-style coordinate readout pinned under the minimap. Reads only the
+  // player position (already mirrored online), and diffs against the last text
+  // so the DOM node is touched at most once per whole-yard step.
+  private updateMinimapCoords(): void {
+    const p = this.sim.player;
+    const text = formatMinimapCoords(p.pos.x, p.pos.z);
+    if (text === this.lastCoordsText) return;
+    this.lastCoordsText = text;
+    const el = $('#minimap-coords');
+    if (el) el.textContent = text;
   }
 
   private updateMinimap(): void {

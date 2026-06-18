@@ -668,6 +668,8 @@
     background: radial-gradient(circle at 50% 30%, #2c2c3a, #14141d);
     border: 2px solid var(--border); border-radius: 8px; box-shadow: 0 2px 4px #0009, inset 0 1px 0 #ffffff14; }
   #minimap-clock:hover { color: #fff; border-color: #c9a86a; }
+  #minimap-coords { margin-top: 4px; display: inline-block; padding: 1px 8px; font-size: 11px; font-variant-numeric: tabular-nums;
+    color: #e8d9b0; background: #0008; border: 1px solid var(--border); border-radius: 9px; text-shadow: 1px 1px 2px #000; letter-spacing: 0.3px; }
 
   /* ---------- community HUD ---------- */
   /* Discord/GitHub: bottom-right, directly below the micro-menu, right-aligned with it. */
@@ -5321,6 +5323,7 @@
       <div id="zone-label" data-i18n="entities.zones.eastbrook_vale.name">Eastbrook Vale</div>
       <canvas id="minimap" width="162" height="162"></canvas>
       <div id="minimap-clock" title="Local time — click to toggle 12/24-hour">--:--</div>
+      <div id="minimap-coords" title="Your current world coordinates" aria-label="Coordinates">0, 0</div>
     </div>
 
     <div id="community-hud" data-i18n-aria="hud.core.communityLinks" aria-label="Community links">
