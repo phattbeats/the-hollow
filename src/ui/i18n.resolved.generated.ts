@@ -1336,6 +1336,10 @@ export const en: EnTranslations = {
         "name": "Scorch",
         "description": "Scorches the enemy for {damage} Fire damage. Quick to cast."
       },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
+      },
       "ice_barrier": {
         "name": "Ice Barrier",
         "description": "Shields you in ice, absorbing 130 damage for 60 sec."
@@ -4920,6 +4924,10 @@ export const es: EnTranslations = {
       "scorch": {
         "name": "Agostar",
         "description": "Agosta al enemigo por {damage} de daño de Fuego. Lanzamiento rápido."
+      },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
       },
       "ice_barrier": {
         "name": "Barrera de Hielo",
@@ -8506,6 +8514,10 @@ export const es_ES: EnTranslations = {
         "name": "Agostar",
         "description": "Agosta al enemigo por {damage} de daño de Fuego. Lanzamiento rápido."
       },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
+      },
       "ice_barrier": {
         "name": "Barrera de Hielo",
         "description": "Te protege con hielo y absorbe 130 de daño durante 60 s."
@@ -12090,6 +12102,10 @@ export const fr_FR: EnTranslations = {
       "scorch": {
         "name": "Brûlure",
         "description": "Brûle l'ennemi pour {damage} points de dégâts de Feu. Incantation rapide."
+      },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
       },
       "ice_barrier": {
         "name": "Barrière de glace",
@@ -15676,6 +15692,10 @@ export const fr_CA: EnTranslations = {
         "name": "Brûlure",
         "description": "Brûle l'ennemi pour {damage} points de dégâts de Feu. Incantation rapide."
       },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
+      },
       "ice_barrier": {
         "name": "Barrière de glace",
         "description": "Vous protège dans la glace et absorbe 130 points de dégâts pendant 60 s."
@@ -19260,6 +19280,10 @@ export const en_CA: EnTranslations = {
       "scorch": {
         "name": "Scorch",
         "description": "Scorches the enemy for {damage} Fire damage. Quick to cast."
+      },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
       },
       "ice_barrier": {
         "name": "Ice Barrier",
@@ -22846,6 +22870,10 @@ export const it_IT: EnTranslations = {
         "name": "Bruciatura",
         "description": "Brucia il nemico per {damage} danni da Fuoco. Lancio rapido."
       },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
+      },
       "ice_barrier": {
         "name": "Barriera di Ghiaccio",
         "description": "Ti protegge nel ghiaccio, assorbendo 130 danni per 60 s."
@@ -26430,6 +26458,10 @@ export const de_DE: EnTranslations = {
       "scorch": {
         "name": "Versengen",
         "description": "Versengt den Gegner für {damage} Feuerschaden. Schnell zu wirken."
+      },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
       },
       "ice_barrier": {
         "name": "Eisbarriere",
@@ -30016,6 +30048,10 @@ export const zh_CN: EnTranslations = {
         "name": "灼烧",
         "description": "灼烧敌人，造成 {damage} 点火焰伤害。施法迅速。"
       },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
+      },
       "ice_barrier": {
         "name": "寒冰护体",
         "description": "以冰霜护盾保护你，吸收 130 点伤害，持续 60 秒。"
@@ -33600,6 +33636,10 @@ export const zh_TW: EnTranslations = {
       "scorch": {
         "name": "灼燒",
         "description": "灼燒敵人，造成 {damage} 點火焰傷害。施法迅速。"
+      },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
       },
       "ice_barrier": {
         "name": "寒冰護體",
@@ -37186,6 +37226,10 @@ export const ko_KR: EnTranslations = {
         "name": "불태우기",
         "description": "적을 불태워 {damage}의 화염 피해를 입힙니다. 빠르게 시전합니다."
       },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
+      },
       "ice_barrier": {
         "name": "얼음 보호막",
         "description": "얼음으로 자신을 보호해 60초 동안 130의 피해를 흡수합니다."
@@ -40770,6 +40814,10 @@ export const ja_JP: EnTranslations = {
       "scorch": {
         "name": "スコーチ",
         "description": "敵を焼き、{damage} の火炎ダメージを与えます。詠唱が速い呪文です。"
+      },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
       },
       "ice_barrier": {
         "name": "アイスバリア",
@@ -44356,6 +44404,10 @@ export const pt_BR: EnTranslations = {
         "name": "Chamuscar",
         "description": "Chamusca o inimigo com {damage} de dano de Fogo. Lançamento rápido."
       },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
+      },
       "ice_barrier": {
         "name": "Barreira de Gelo",
         "description": "Protege você em gelo, absorvendo 130 de dano por 60 s."
@@ -47941,6 +47993,10 @@ export const ru_RU: EnTranslations = {
         "name": "Ожог",
         "description": "Обжигает врага, нанося {damage} ед. урона от огня. Быстрое заклинание."
       },
+      "pyroblast": {
+        "name": "Pyroblast",
+        "description": "Hurls an immense fiery boulder that causes {damage} Fire damage plus additional damage over time."
+      },
       "ice_barrier": {
         "name": "Ледяная преграда",
         "description": "Защищает вас льдом, поглощая 130 ед. урона в течение 60 сек."
@@ -50218,24 +50274,32 @@ export const translations = {
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
+    "entities.abilities.pyroblast.description",
+    "entities.abilities.pyroblast.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "es_ES": [
+    "entities.abilities.pyroblast.description",
+    "entities.abilities.pyroblast.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "fr_FR": [
+    "entities.abilities.pyroblast.description",
+    "entities.abilities.pyroblast.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "fr_CA": [
+    "entities.abilities.pyroblast.description",
+    "entities.abilities.pyroblast.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -50243,48 +50307,64 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "en_CA": [],
   "it_IT": [
+    "entities.abilities.pyroblast.description",
+    "entities.abilities.pyroblast.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "de_DE": [
+    "entities.abilities.pyroblast.description",
+    "entities.abilities.pyroblast.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "zh_CN": [
+    "entities.abilities.pyroblast.description",
+    "entities.abilities.pyroblast.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "zh_TW": [
+    "entities.abilities.pyroblast.description",
+    "entities.abilities.pyroblast.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "ko_KR": [
+    "entities.abilities.pyroblast.description",
+    "entities.abilities.pyroblast.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "ja_JP": [
+    "entities.abilities.pyroblast.description",
+    "entities.abilities.pyroblast.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "pt_BR": [
+    "entities.abilities.pyroblast.description",
+    "entities.abilities.pyroblast.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
     "itemUi.slots.waist"
   ],
   "ru_RU": [
+    "entities.abilities.pyroblast.description",
+    "entities.abilities.pyroblast.name",
     "itemUi.slots.gloves",
     "itemUi.slots.helmet",
     "itemUi.slots.shoulder",
@@ -51618,6 +51698,10 @@ export const en_XA: EnTranslations = {
       "scorch": {
         "name": "[Šçóŕçĥ]",
         "description": "[Šçóŕçĥéš ţĥé éñéɱý ƒóŕ {damage} Ƒíŕé ðáɱáĝé. Ɋúíçķ ţó çášţ.]"
+      },
+      "pyroblast": {
+        "name": "[Þýŕóƀļášţ]",
+        "description": "[Ĥúŕļš áñ íɱɱéñšé ƒíéŕý ƀóúļðéŕ ţĥáţ çáúšéš {damage} Ƒíŕé ðáɱáĝé þļúš áððíţíóñáļ ðáɱáĝé óʋéŕ ţíɱé.]"
       },
       "ice_barrier": {
         "name": "[Íçé Ɓáŕŕíéŕ]",
