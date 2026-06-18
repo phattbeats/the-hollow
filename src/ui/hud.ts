@@ -2070,6 +2070,7 @@ export class Hud {
       // power, or an Intellect-draining curse) is a debuff even though it reuses a buff_* kind.
       const isDebuff = ['dot', 'slow', 'root', 'stun', 'incapacitate', 'polymorph', 'attackspeed', 'debuff_ap', 'vulnerability', 'hex', 'tongues'].includes(a.kind)
       const isDebuff = ['dot', 'slow', 'root', 'stun', 'incapacitate', 'polymorph', 'attackspeed', 'debuff_ap', 'cost_tax'].includes(a.kind)
+      const isDebuff = ['dot', 'slow', 'root', 'stun', 'incapacitate', 'polymorph', 'attackspeed', 'debuff_ap', 'heal_absorb'].includes(a.kind)
         || (a.kind.startsWith('buff_') && a.value < 0);
       if (mode === 'debuffs' && !isDebuff) continue;
       const d = document.createElement('div');
