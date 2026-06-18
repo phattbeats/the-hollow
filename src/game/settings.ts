@@ -60,6 +60,10 @@ export const BOOL_SETTINGS = {
   // local display choice; the server sends raw text and each client decides.
   // (Slurs are blocked server-side regardless and never reach here.)
   filterProfanity: { def: true },
+  // off by default: invert the vertical axis of the touch camera joystick (and
+  // swipe-to-look) so pushing the stick up tilts the camera down — the classic
+  // flight-sim / console preference some touch players reach for (#323-adjacent)
+  touchInvertLook: { def: false },
 } as const;
 
 export type NumericSettingKey = keyof typeof SETTING_RANGES;
