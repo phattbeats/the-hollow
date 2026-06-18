@@ -25,10 +25,10 @@
     "ru_RU"
   ],
   "counts": {
-    "keys": 2376,
-    "rows": 30888,
-    "translated": 30773,
-    "pending": 72,
+    "keys": 2389,
+    "rows": 31057,
+    "translated": 30786,
+    "pending": 228,
     "blocked": 43,
     "blockedSource": 106
   },
@@ -15445,6 +15445,102 @@
         }
       }
     },
+    "main:entities.abilities.aspect_of_the_monkey.description": {
+      "scope": "main",
+      "enHash": "1fadbbf5f1f89415",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "1fadbbf5f1f89415",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.abilities.aspect_of_the_monkey.name": {
+      "scope": "main",
+      "enHash": "27ecc4514a40268f",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "27ecc4514a40268f",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
     "main:entities.abilities.backstab.description": {
       "scope": "main",
       "enHash": "c887580a03e8475e",
@@ -17325,6 +17421,102 @@
         }
       }
     },
+    "main:entities.abilities.commanding_shout.description": {
+      "scope": "main",
+      "enHash": "ec033c19b4e65d0d",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "ec033c19b4e65d0d",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.abilities.commanding_shout.name": {
+      "scope": "main",
+      "enHash": "3083c6d51ca38e9e",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "3083c6d51ca38e9e",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
     "main:entities.abilities.concussive_shot.description": {
       "scope": "main",
       "enHash": "fb06070617bca9e1",
@@ -17466,6 +17658,102 @@
           "state": "translated",
           "srcHash": "4b8609a8c83e079c",
           "by": "human"
+        }
+      }
+    },
+    "main:entities.abilities.conjure_food.description": {
+      "scope": "main",
+      "enHash": "119a67778a4ef49d",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "119a67778a4ef49d",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.abilities.conjure_food.name": {
+      "scope": "main",
+      "enHash": "32ffeda40ec60086",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "32ffeda40ec60086",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
         }
       }
     },
@@ -20652,6 +20940,102 @@
           "state": "translated",
           "srcHash": "02d18b9246a8d896",
           "by": "human"
+        }
+      }
+    },
+    "main:entities.abilities.flametongue_weapon.description": {
+      "scope": "main",
+      "enHash": "1027ec2791350402",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "1027ec2791350402",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.abilities.flametongue_weapon.name": {
+      "scope": "main",
+      "enHash": "caa646d90982baed",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "caa646d90982baed",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
         }
       }
     },
@@ -33956,6 +34340,150 @@
           "state": "translated",
           "srcHash": "d0c7d134f0a16006",
           "by": "human"
+        }
+      }
+    },
+    "main:entities.items.conjured_bread.name": {
+      "scope": "main",
+      "enHash": "a39509754c856072",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "a39509754c856072",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.items.conjured_bread2.name": {
+      "scope": "main",
+      "enHash": "8f9c1fd9c6557629",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "8f9c1fd9c6557629",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:entities.items.conjured_bread3.name": {
+      "scope": "main",
+      "enHash": "7b60596f80818796",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "7b60596f80818796",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
         }
       }
     },
