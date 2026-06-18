@@ -513,6 +513,71 @@ describe('boss loot and encounter resets', () => {
     }
   });
 
+  it('fair-splits corpse copper among nearby living party members', () => {
+    const sim = makeSim();
+    const a = sim.playerId;
+    const b = sim.addPlayer('mage', 'Bert');
+    const c = sim.addPlayer('rogue', 'Cyra');
+    const d = sim.addPlayer('priest', 'Dara');
+    sim.partyInvite(b, a);
+    sim.partyAccept(b);
+    sim.partyInvite(c, a);
+    sim.partyAccept(c);
+    sim.partyInvite(d, a);
+    sim.partyAccept(d);
+    teleportTo(sim, 20, 20, a);
+    teleportTo(sim, 21, 20, b);
+    teleportTo(sim, 20, 21, c);
+    teleportTo(sim, 160, 160, d);
+    sim.entities.get(c)!.dead = true;
+    const mob = createMob(990099, MOBS.forest_wolf, 2, { x: 20, y: 0, z: 22 });
+    mob.dead = true;
+    mob.lootable = true;
+    mob.tappedById = a;
+    mob.loot = { copper: 11, items: [] };
+    sim.entities.set(mob.id, mob);
+
+    sim.lootCorpse(mob.id, b);
+
+    const gains = [a, b, c, d].map((pid) => sim.meta(pid)!.copper);
+    expect(gains[0] + gains[1]).toBe(11);
+    expect(Math.abs(gains[0] - gains[1])).toBeLessThanOrEqual(1);
+    expect(gains[2]).toBe(0);
+    expect(gains[3]).toBe(0);
+    expect(mob.loot).toBeNull();
+  });
+
+  it('poor and common corpse drops are randomly awarded among nearby party members', () => {
+    const sim = makeSim();
+    const a = sim.playerId;
+    const b = sim.addPlayer('mage', 'Bert');
+    sim.partyInvite(b, a);
+    sim.partyAccept(b);
+    teleportTo(sim, 20, 20, a);
+    teleportTo(sim, 21, 20, b);
+    const mob = createMob(990098, MOBS.forest_wolf, 2, { x: 20, y: 0, z: 22 });
+    mob.dead = true;
+    mob.lootable = true;
+    mob.tappedById = a;
+    mob.loot = { copper: 0, items: [{ itemId: 'wolf_fang', count: 1 }, { itemId: 'raw_mirror_trout', count: 1 }] };
+    sim.entities.set(mob.id, mob);
+
+    sim.events.length = 0;
+    sim.lootCorpse(mob.id, a);
+
+    const poorTotal =
+      sim.countItem('wolf_fang', a) +
+      sim.countItem('wolf_fang', b);
+    const commonTotal =
+      sim.countItem('raw_mirror_trout', a) +
+      sim.countItem('raw_mirror_trout', b);
+    expect(poorTotal).toBe(1);
+    expect(commonTotal).toBe(1);
+    expect(sim.events.some((e) => e.type === 'loot' && e.text.includes('wins Cracked Wolf Fang'))).toBe(true);
+    expect(sim.events.some((e) => e.type === 'loot' && e.text.includes('wins Raw Mirror Trout'))).toBe(true);
+    expect(mob.loot).toBeNull();
+  });
+
   it('uncommon and better corpse drops are rolled among nearby party members', () => {
     const sim = makeSim();
     const a = sim.playerId;

@@ -142,6 +142,21 @@ export interface CorpseLoot {
   items: LootSlot[];
 }
 
+export type CurrencyLootStrategy = 'looter-takes-all' | 'fair-split';
+export type ItemLootStrategy = 'looter-takes-all' | 'random';
+
+export interface LootStrategies {
+  currency: CurrencyLootStrategy;
+  commonItems: ItemLootStrategy;
+  premiumItems: ItemLootStrategy;
+}
+
+export const DEFAULT_PARTY_LOOT_STRATEGIES: LootStrategies = {
+  currency: 'fair-split',
+  commonItems: 'random',
+  premiumItems: 'random',
+};
+
 export interface LootEntry {
   itemId?: string;
   copper?: number;

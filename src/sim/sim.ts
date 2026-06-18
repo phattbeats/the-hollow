@@ -24,8 +24,9 @@ import { groundHeight, WATER_LEVEL } from './world';
 import type { LeaderboardEntry } from '../world_api';
 import {
   AbilityDef, AbilityEffect, Aura, AuraKind, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION,
+  DEFAULT_PARTY_LOOT_STRATEGIES,
   CONSUME_TICKS, CrowdControlDrCategory, DT, Entity, EquipSlot, FISHING_CAST_ID, FISHING_CAST_TIME, GCD,
-  INTERACT_RANGE, InvSlot, LootEntry, LootSlot, MELEE_RANGE, MAX_LEVEL, MobFamily, MobTemplate,
+  CurrencyLootStrategy, INTERACT_RANGE, InvSlot, ItemLootStrategy, LootEntry, LootSlot, LootStrategies, MELEE_RANGE, MAX_LEVEL, MobFamily, MobTemplate,
   MoveInput, OverheadEmoteId, PetMode, PlayerClass, QuestProgress, QuestState, RUN_SPEED, SimConfig, SimEvent, TURN_SPEED, Vec3,
   angleTo, armorReduction, dist2d, emptyMoveInput, isConsuming, meleeMissChance, mobXpValue, normAngle,
   rageFromDealing, rageFromTaking, spellHitChance, xpForLevel,
@@ -207,6 +208,7 @@ export interface Party {
   id: number;
   leader: number; // pid
   members: number[]; // pids
+  lootStrategies: LootStrategies;
 }
 
 export interface TradeSession {
@@ -1360,9 +1362,30 @@ export class Sim {
   private isControlAura(kind: AuraKind): boolean {
     return kind === 'stun' || kind === 'root' || kind === 'incapacitate' || kind === 'polymorph';
   }
-  private itemRequiresGroupRoll(itemId: string): boolean {
+  private partyLootStrategiesForMob(mob: Entity): LootStrategies | null {
+    if (mob.tappedById === null) return null;
+    return this.partyOf(mob.tappedById)?.lootStrategies ?? null;
+  }
+  private partyLootCandidatesForMob(mob: Entity): PlayerMeta[] {
+    if (mob.tappedById === null) return [];
+    const party = this.partyOf(mob.tappedById);
+    if (!party || party.members.length <= 1) return [];
+    const candidates: PlayerMeta[] = [];
+    for (const pid of party.members) {
+      const candidate = this.players.get(pid);
+      const e = this.entities.get(pid);
+      if (candidate && e && !e.dead && dist2d(e.pos, mob.pos) <= PARTY_XP_RANGE) candidates.push(candidate);
+    }
+    return candidates;
+  }
+  private effectiveCurrencyLootStrategy(mob: Entity): CurrencyLootStrategy {
+    return this.partyLootStrategiesForMob(mob)?.currency ?? 'looter-takes-all';
+  }
+  private effectiveItemLootStrategy(itemId: string, mob: Entity): ItemLootStrategy {
     const q = ITEMS[itemId]?.quality ?? 'common';
-    return q === 'uncommon' || q === 'rare' || q === 'epic';
+    const strategies = this.partyLootStrategiesForMob(mob);
+    if (!strategies) return 'looter-takes-all';
+    return q === 'poor' || q === 'common' ? strategies.commonItems : strategies.premiumItems;
   }
   private moveSpeedMult(e: Entity): number {
     let slow = 1, speed = 1;
@@ -3667,16 +3690,46 @@ export class Sim {
     }
   }
 
-  private rollGroupLoot(itemId: string, mob: Entity, looter: PlayerMeta): boolean {
-    if (!this.itemRequiresGroupRoll(itemId) || mob.tappedById === null) return false;
-    const party = this.partyOf(mob.tappedById);
-    if (!party || party.members.length <= 1) return false;
-    const candidates: PlayerMeta[] = [];
-    for (const pid of party.members) {
-      const candidate = this.players.get(pid);
-      const e = this.entities.get(pid);
-      if (candidate && e && !e.dead && dist2d(e.pos, mob.pos) <= PARTY_XP_RANGE) candidates.push(candidate);
+  private grantLootCopper(meta: PlayerMeta, amount: number): void {
+    meta.copper += amount;
+    meta.counters.lootCopper += amount;
+    this.emit({ type: 'loot', text: `You loot ${formatMoney(amount)}.`, pid: meta.entityId });
+  }
+
+  private awardAllCopperToLooter(looter: PlayerMeta, copper: number): void {
+    this.grantLootCopper(looter, copper);
+  }
+
+  private tryAwardCopperByFairSplit(mob: Entity, copper: number): boolean {
+    if (this.effectiveCurrencyLootStrategy(mob) !== 'fair-split') return false;
+    const candidates = this.partyLootCandidatesForMob(mob);
+    if (candidates.length <= 1) return false;
+    const base = Math.floor(copper / candidates.length);
+    const remainder = copper % candidates.length;
+    const shares = new Map<PlayerMeta, number>(candidates.map((candidate) => [candidate, base]));
+    const order = [...candidates];
+    for (let i = 0; i < remainder; i++) {
+      const idx = this.rng.int(i, order.length - 1);
+      [order[i], order[idx]] = [order[idx], order[i]];
+      shares.set(order[i], (shares.get(order[i]) ?? 0) + 1);
     }
+    for (const candidate of candidates) {
+      const amount = shares.get(candidate) ?? 0;
+      if (amount > 0) this.grantLootCopper(candidate, amount);
+    }
+    return true;
+  }
+
+  private distributeLootCopper(mob: Entity, looter: PlayerMeta): void {
+    if (!mob.loot || mob.loot.copper <= 0) return;
+    const copper = mob.loot.copper;
+    if (!this.tryAwardCopperByFairSplit(mob, copper)) this.awardAllCopperToLooter(looter, copper);
+    mob.loot.copper = 0;
+  }
+
+  private tryAwardItemByRandomRoll(itemId: string, mob: Entity): boolean {
+    if (this.effectiveItemLootStrategy(itemId, mob) !== 'random') return false;
+    const candidates = this.partyLootCandidatesForMob(mob);
     if (candidates.length <= 1) return false;
     let winner = candidates[0];
     let bestRoll = -1;
@@ -3693,6 +3746,10 @@ export class Sim {
     }
     this.addItem(itemId, 1, winner.entityId);
     return true;
+  }
+
+  private awardSharedLootItem(itemId: string, mob: Entity, looter: PlayerMeta): void {
+    if (!this.tryAwardItemByRandomRoll(itemId, mob)) this.addItem(itemId, 1, looter.entityId);
   }
 
   private lootSlotVisibleTo(slot: LootSlot, pid: number): boolean {
@@ -5127,12 +5184,7 @@ export class Sim {
       return;
     }
     if (dist2d(p.pos, mob.pos) > INTERACT_RANGE) { this.error(meta.entityId, 'Too far away.'); return; }
-    if (hasSharedLootRights && mob.loot.copper > 0) {
-      meta.copper += mob.loot.copper;
-      meta.counters.lootCopper += mob.loot.copper;
-      this.emit({ type: 'loot', text: `You loot ${formatMoney(mob.loot.copper)}.`, pid: meta.entityId });
-      mob.loot.copper = 0;
-    }
+    if (hasSharedLootRights) this.distributeLootCopper(mob, meta);
     for (const s of [...mob.loot.items]) {
       if (!this.lootSlotVisibleTo(s, meta.entityId)) continue;
       if (s.personalFor) {
@@ -5142,7 +5194,7 @@ export class Sim {
       }
       if (!hasSharedLootRights) continue;
       for (let i = 0; i < s.count; i++) {
-        if (!this.rollGroupLoot(s.itemId, mob, meta)) this.addItem(s.itemId, 1, meta.entityId);
+        this.awardSharedLootItem(s.itemId, mob, meta);
       }
       s.count = 0;
     }
@@ -6128,7 +6180,12 @@ export class Sim {
     if (!leaderMeta) return;
     let party = this.partyOf(invite.fromPid);
     if (!party) {
-      party = { id: this.nextPartyId++, leader: invite.fromPid, members: [invite.fromPid] };
+      party = {
+        id: this.nextPartyId++,
+        leader: invite.fromPid,
+        members: [invite.fromPid],
+        lootStrategies: { ...DEFAULT_PARTY_LOOT_STRATEGIES },
+      };
       this.parties.set(party.id, party);
       this.partyByPid.set(invite.fromPid, party.id);
     }
