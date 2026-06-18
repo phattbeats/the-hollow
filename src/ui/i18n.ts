@@ -4,7 +4,13 @@ import {
   en_XA,
   en, es, es_ES, fr_FR, fr_CA, en_CA, it_IT, de_DE, zh_CN, zh_TW, ko_KR, ja_JP, pt_BR, ru_RU,
 } from './i18n.resolved.generated';
-import type { Leaves, TranslationKey, InterpolationValue, InterpolationValues, DeepPartial } from './i18n.en';
+// Per-locale dynamic-import thunks + the authoritative ordered locale set. Imported
+// directly from the generated loaders module (the barrel does not re-export them). This
+// phase the dynamic imports resolve already-bundled modules (the barrel above still
+// static-imports every slice), so they perform no network I/O; Phase 3's lazy flip drops
+// the static imports and these become the real per-locale chunk fetches.
+import { LOCALE_LOADERS, SUPPORTED_LANGUAGES } from './i18n.resolved.generated/loaders';
+import type { Leaves, TranslationKey, InterpolationValue, InterpolationValues, DeepPartial, EnTranslations } from './i18n.en';
 
 // The translation table is the generated dense artifact - the barrel (index.ts) of
 // the src/ui/i18n.resolved.generated/ directory (one dense slice per locale), where
@@ -27,7 +33,11 @@ export type { Leaves, TranslationKey, InterpolationValue, InterpolationValues, D
 
 export type SupportedLanguage = keyof typeof translations;
 
-export const supportedLanguages = Object.keys(translations) as SupportedLanguage[];
+// Derived from the generated SUPPORTED_LANGUAGES (the loaders surface) rather than
+// Object.keys(translations) so it survives Phase 3's lazy flip, where the full
+// `translations` map is no longer eagerly imported. The two are pinned equal by
+// tests/i18n_emit_shape.test.ts, so this is the same 14-locale set in the same order.
+export const supportedLanguages = [...SUPPORTED_LANGUAGES] as SupportedLanguage[];
 
 let currentLanguage: SupportedLanguage = "en";
 
@@ -113,6 +123,67 @@ export function setLanguage(lang: SupportedLanguage): void {
   setStoredLanguage(lang);
 }
 
+// --- lazy-locale async loader surface (Phase 2) ----------------------------------
+//
+// ensureLocaleLoaded is the ONLY async surface in this module. t() and setLanguage stay
+// synchronous forever (locked decision: making t() async would force `await` through 600+
+// call sites and is a determinism/timing hazard). Callers await ensureLocaleLoaded BEFORE
+// setLanguage so the locale's dense table is resident before the next synchronous render.
+//
+// `resident` holds the dense table for every loaded locale. English is always resident
+// (eager static default + universal sync fallback in tableFor). The boot language is
+// pre-seeded just below from the still-static `translations` map, so the bootstrap await
+// is a guaranteed no-op this phase. PHASE 2 keeps every locale static-imported through the
+// barrel, so the dynamic import inside ensureLocaleLoaded resolves an already-bundled
+// module (no network) and every await is a no-op; Phase 3's lazy flip removes the static
+// imports and this becomes the real per-locale fetch.
+const resident: Partial<Record<SupportedLanguage, EnTranslations>> = { en };
+// Pre-seed the boot language so ensureLocaleLoaded(getLanguage()) at the bootstrap is a
+// guaranteed no-op this phase (the current language is resident before any await runs).
+resident[currentLanguage] = translations[currentLanguage];
+// One in-flight load promise per locale so concurrent callers coalesce onto a single
+// import instead of racing N of them.
+const inflight = new Map<SupportedLanguage, Promise<void>>();
+
+export function isLocaleResident(lang: SupportedLanguage): boolean {
+  return lang === "en" || resident[lang] !== undefined;
+}
+
+// Soft failure hook for a locale chunk that failed to load (a real risk once Phase 3
+// makes this a network fetch). Dev-channel only - an English console.warn, never player
+// text (the caller renders settings.languageLoadFailed via t()). A production telemetry
+// sink can be wired here later; it is intentionally silent on a release build today.
+function reportLocaleLoadFailure(lang: SupportedLanguage, err: unknown): void {
+  if (!isReleaseBuild()) {
+    console.warn(`i18n: failed to load locale "${lang}"`, err);
+  }
+}
+
+export async function ensureLocaleLoaded(lang: SupportedLanguage): Promise<void> {
+  if (lang === "en" || isLocaleResident(lang)) return; // English-instant / already loaded
+  const existing = inflight.get(lang);
+  if (existing) return existing; // coalesce onto the in-flight import
+  const loader = LOCALE_LOADERS[lang as keyof typeof LOCALE_LOADERS];
+  if (!loader) return; // no chunk for this code (en / unknown): treat as a resident no-op
+  const task = loader()
+    .then((mod) => {
+      // Shape-tolerant read: a Vite production chunk exposes the locale as the module
+      // default OR the named export, but under raw vitest (node, no DOM) import('./es')
+      // resolves the SOURCE .ts with NAMED exports only, so mod.default is undefined -
+      // fall back to the export keyed by the locale code.
+      resident[lang] = (mod as { default?: EnTranslations }).default
+        ?? (mod as Record<string, EnTranslations>)[lang];
+      inflight.delete(lang);
+    })
+    .catch((err) => {
+      inflight.delete(lang); // clear so a retry can start a fresh import
+      reportLocaleLoadFailure(lang, err);
+      throw err; // the caller decides the UI (the picker shows settings.languageLoadFailed)
+    });
+  inflight.set(lang, task);
+  return task;
+}
+
 function interpolate(template: string, values?: InterpolationValues): string {
   if (!values) return template;
   return template.replace(/\{([A-Za-z0-9_]+)\}/g, (match, name: string) => {
@@ -183,7 +254,12 @@ function tableFor(lang: SupportedLanguage): ResolvedTable {
   if (!import.meta.env.PROD && pseudoActive && lang === currentLanguage) {
     return en_XA;
   }
-  return translations[lang];
+  // resident is the lazy-load target (English + the boot language + anything
+  // ensureLocaleLoaded has resolved). translations[lang] is the still-static backstop
+  // that keeps Phase 2 byte-for-byte unchanged for any locale not yet resident; resident.en
+  // is the universal English fallback. Phase 3 removes the static `translations` import,
+  // after which the resident table + English fallback carry every read.
+  return resident[lang] ?? translations[lang] ?? resident.en!;
 }
 
 export function t(key: TranslationKey, values?: InterpolationValues): string {
