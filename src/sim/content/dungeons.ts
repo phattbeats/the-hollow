@@ -314,4 +314,22 @@ export const DUNGEON_DEFS: Record<string, DungeonDef> = {
     enterText: 'The air goes cold. Something vast breathes below...',
     leaveText: 'You stagger back into the mountain wind.',
   },
+  nythraxis_crypt: {
+    id: 'nythraxis_crypt',
+    name: 'Abandoned Crypt',
+    index: 4,
+    doorPos: { x: -152, z: 610 },
+    entry: { x: 0, z: 4 },
+    exitOffset: { x: 0, z: -6 },
+    spawns: [],
+    objects: [
+      { itemId: 'captains_crest', name: "Captain's Crest", x: -7, z: 28 },
+      { itemId: 'priests_sigil', name: "Priest's Sigil", x: 0, z: 52 },
+      { itemId: 'royal_seal', name: 'Royal Seal', x: 7, z: 76 },
+    ],
+    interior: 'crypt',
+    suggestedPlayers: 1,
+    enterText: 'You descend into the abandoned crypt beneath the forgotten ruins of Thornpeak.',
+    leaveText: 'You climb back out of the abandoned crypt into the mountain wind.',
+  },
 };

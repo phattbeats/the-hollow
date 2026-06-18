@@ -614,6 +614,7 @@ export function buildProps(seed: number): PropsResult {
   // ---- mine entrances: timber portal, rock mound, ore cart, lantern --------
   for (const m of PROPS.mines) {
     const g = new THREE.Group();
+    const abandonedCrypt = m.x < -140 && m.z > 590 && m.z < 630;
     for (const sx of [-1.45, 1.45]) {
       addParts(g, 'timberPillar', { x: sx, scale: [3.4, 3.5, 3.4] });
     }
@@ -627,11 +628,18 @@ export function buildProps(seed: number): PropsResult {
     // boulder mound swallowing the portal (same mound the collider blocks):
     // pairs of mid-sized granite rocks per anchor read as a rubble pile where
     // one giant scaled rock would read as a box
-    const mound: [number, number, number, number][] = [
-      [0, 1.4, -3.0, 2.6], [-2.7, 0.3, -2.0, 1.9], [2.7, 0.35, -2.2, 2.0],
-      [-1.6, 0.1, -1.0, 1.2], [1.8, 0.1, -0.9, 1.1], [0.3, 3.0, -4.2, 2.3],
-      [-1.4, 1.6, -3.4, 1.8], [1.5, 1.7, -3.2, 1.7], [0, 0.2, -1.6, 1.4],
-    ];
+    const mound: [number, number, number, number][] = abandonedCrypt
+      ? [
+        [0.2, 1.35, -3.2, 2.35], [-2.8, 0.25, -2.35, 1.75], [2.65, 0.3, -2.3, 1.75],
+        [-1.7, 0.1, -1.25, 1.15], [1.75, 0.1, -1.2, 1.1], [0.2, 2.8, -4.15, 2.0],
+        [-1.35, 1.45, -3.45, 1.55], [1.45, 1.5, -3.35, 1.5], [0, 0.15, -1.85, 1.2],
+        [-3.45, 0.6, -3.5, 1.15], [3.35, 0.65, -3.45, 1.1], [0.1, 3.35, -2.85, 1.25],
+      ]
+      : [
+        [0, 1.4, -3.0, 2.6], [-2.7, 0.3, -2.0, 1.9], [2.7, 0.35, -2.2, 2.0],
+        [-1.6, 0.1, -1.0, 1.2], [1.8, 0.1, -0.9, 1.1], [0.3, 3.0, -4.2, 2.3],
+        [-1.4, 1.6, -3.4, 1.8], [1.5, 1.7, -3.2, 1.7], [0, 0.2, -1.6, 1.4],
+      ];
     const rockKinds: PropKey[] = lowProps ? ['rockLargeD'] : ['rockTallA', 'rockLargeD', 'rockTallH', 'rockLargeF'];
     for (let i = 0; i < mound.length; i++) {
       const [rx, ry, rz, rr] = mound[i];
@@ -647,9 +655,11 @@ export function buildProps(seed: number): PropsResult {
       });
     }
     // ore cart (market awning stripped) + raw copper ore in the bed
-    addParts(g, 'cart', { x: 2.8, z: 1.6, rot: 0.5, scale: 1.9 });
-    addParts(g, 'oreRocks', { x: 2.75, y: 0.78, z: 1.55, rot: 0.9, scale: 2.6 });
-    addParts(g, 'oreRocks', { x: 3.4, z: 0.4, rot: 2.2, scale: 1.8 });
+    if (!abandonedCrypt) {
+      addParts(g, 'cart', { x: 2.8, z: 1.6, rot: 0.5, scale: 1.9 });
+      addParts(g, 'oreRocks', { x: 2.75, y: 0.78, z: 1.55, rot: 0.9, scale: 2.6 });
+      addParts(g, 'oreRocks', { x: 3.4, z: 0.4, rot: 2.2, scale: 1.8 });
+    }
     if (!lowProps) {
       // hanging lantern on the right post
       addParts(g, 'lanternWall', { x: 1.45, y: 2.0, z: 0.28, scale: 1.25 });

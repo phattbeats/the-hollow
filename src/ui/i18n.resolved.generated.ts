@@ -1034,6 +1034,8 @@ export const en: EnTranslations = {
       "greetingFallback": "Greetings.",
       "availableQuestAria": "Available quest: {name}",
       "readyQuestAria": "Quest ready to turn in: {name}",
+      "discussQuest": "Discuss {name}.",
+      "discussQuestAria": "Discuss quest: {name}",
       "browseGoods": "Let me browse your goods.",
       "browseGoodsAria": "Browse goods from {name}",
       "worldMarket": "Show me the World Market.",
@@ -2388,6 +2390,45 @@ export const en: EnTranslations = {
       },
       "the_codfather": {
         "name": "The Codfather"
+      },
+      "runed_bone_shard": {
+        "name": "Runed Bone Shard"
+      },
+      "grave_sir_aldren": {
+        "name": "Grave of Captain Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Grave of High Priest Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Grave of Royal Assassin Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Ancient Crypt Door"
+      },
+      "captains_crest": {
+        "name": "Captain's Crest"
+      },
+      "priests_sigil": {
+        "name": "Priest's Sigil"
+      },
+      "royal_seal": {
+        "name": "Royal Seal"
+      },
+      "crypt_keystone": {
+        "name": "Crypt Keystone"
+      },
+      "crypt_ritual_circle": {
+        "name": "Ritual Circle"
+      },
+      "kings_signet": {
+        "name": "King's Signet"
+      },
+      "nythraxis_vision": {
+        "name": "Nythraxis Vision"
+      },
+      "aldrics_seal": {
+        "name": "Aldric's Seal"
       }
     },
     "mobs": {
@@ -2531,6 +2572,27 @@ export const en: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Bog Bloat"
+      },
+      "fallen_captain_aldren": {
+        "name": "Fallen Captain Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Corrupted Priest Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Deathstalker Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Vision of Captain Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Vision of High Priest Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Vision of Royal Assassin Voss"
+      },
+      "bound_guardian": {
+        "name": "The Bound Guardian"
       },
       "elder_bristleback": {
         "name": "Elder Bristleback"
@@ -3381,6 +3443,77 @@ export const en: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "The Restless Dead",
+        "text": "Something has changed in Thornpeak Heights, {playerName}. The dead no longer wander aimlessly. They gather, they march, and these runes carved into their bones point to a kingdom that stood here long before Eastbrook. Bring me ten Runed Bone Shards from the Boneclad Revenants in the northern reaches.",
+        "completion": "The same mark appears on every shard... a crown. Thornpeak was not only a mountain. It was a kingdom.",
+        "objectives": {
+          "0": {
+            "label": "Runed Bone Shard"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Graves of the Forgotten",
+        "text": "The crown belongs to no line still named in Eastbrook records. Three old memorials stand near the northern battlefield: Captain Aldren, High Priest Malric, and Royal Assassin Voss. Touch each stone and listen, {playerName}. The dead may remember what the living erased.",
+        "completion": "Aldren remained loyal, Malric refused to accept death, and Voss saw the danger before anyone else. All three served King Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Vision at the Grave of Captain Aldren"
+          },
+          "1": {
+            "label": "Vision at the Grave of High Priest Malric"
+          },
+          "2": {
+            "label": "Vision at the Grave of Royal Assassin Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "The Abandoned Crypt",
+        "text": "The visions point to an abandoned crypt beneath the old ruins. If the records are true, Thornpeak sealed Nythraxis below after Malric's ritual twisted him into a deathless ruler. Recover the Captain's Crest, the Priest's Sigil, and the Royal Seal from the corrupted remains within.",
+        "completion": "These relics are bound to the seal. Something beneath Eastbrook is beginning to wake.",
+        "objectives": {
+          "0": {
+            "label": "Captain's Crest"
+          },
+          "1": {
+            "label": "Priest's Sigil"
+          },
+          "2": {
+            "label": "Royal Seal"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "The Bound Guardian",
+        "text": "The survivors of Thornpeak feared someone would try to break the seal, so they made a guardian from the bones of warriors who died in the kingdom's final days. Take the Crypt Keystone to the ritual circle above the abandoned crypt. Use it there, then stand fast.",
+        "completion": "The signet proves it. The forgotten king beneath Eastbrook was Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Crypt Keystone used at the ritual circle"
+          },
+          "1": {
+            "label": "The Bound Guardian defeated"
+          },
+          "2": {
+            "label": "King's Signet"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "Nythraxis, Scourge of Eastbrook",
+        "text": "King Nythraxis was carried home from his final battle dying, but Malric would not let him rest. The ritual returned a tyrant bound to dark magic, and Thornpeak fell into chaos. Stand with me, {playerName}. Look into the memory of the seal and learn what now stirs beneath Eastbrook.",
+        "completion": "For centuries the seal held. Now it weakens. If Nythraxis rises again, Eastbrook will become a kingdom of the dead. You are now attuned to enter The Crypt of Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Vision of Nythraxis witnessed"
+          },
+          "1": {
+            "label": "Brother Aldric spoken to"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "Mogger's Trail",
         "text": "Before you take the road north, Eastbrook has one last thorn in its side: Mogger. The brute has been trampling the lower meadow and driving the boars mad. Clear the meadow around his trail so we can see where he lairs.",
@@ -3578,6 +3711,11 @@ export const en: EnTranslations = {
         "name": "Gravewyrm Sanctum",
         "enterText": "The air goes cold. Something vast breathes below...",
         "leaveText": "You stagger back into the mountain wind."
+      },
+      "nythraxis_crypt": {
+        "name": "Abandoned Crypt",
+        "enterText": "You descend into the abandoned crypt beneath the forgotten ruins of Thornpeak.",
+        "leaveText": "You climb back out of the abandoned crypt into the mountain wind."
       },
       "drowned_temple": {
         "name": "The Drowned Temple",
@@ -4619,6 +4757,8 @@ export const es: EnTranslations = {
       "greetingFallback": "Saludos.",
       "availableQuestAria": "Misión disponible: {name}",
       "readyQuestAria": "Misión lista para entregar: {name}",
+      "discussQuest": "Hablar sobre {name}.",
+      "discussQuestAria": "Hablar sobre la misión: {name}",
       "browseGoods": "Déjame ver tus mercancías.",
       "browseGoodsAria": "Ver mercancías de {name}",
       "worldMarket": "Muéstrame el Mercado Mundial.",
@@ -5973,6 +6113,45 @@ export const es: EnTranslations = {
       },
       "the_codfather": {
         "name": "El Bacaladrino"
+      },
+      "runed_bone_shard": {
+        "name": "Fragmento óseo rúnico"
+      },
+      "grave_sir_aldren": {
+        "name": "Tumba del capitán Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Tumba del sumo sacerdote Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Tumba del asesino real Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Puerta antigua de la cripta"
+      },
+      "captains_crest": {
+        "name": "Emblema del capitán"
+      },
+      "priests_sigil": {
+        "name": "Sigilo del sacerdote"
+      },
+      "royal_seal": {
+        "name": "Sello real"
+      },
+      "crypt_keystone": {
+        "name": "Piedra clave de la cripta"
+      },
+      "crypt_ritual_circle": {
+        "name": "Círculo ritual"
+      },
+      "kings_signet": {
+        "name": "Anillo del rey"
+      },
+      "nythraxis_vision": {
+        "name": "Visión de Nythraxis"
+      },
+      "aldrics_seal": {
+        "name": "Sello de Aldric"
       }
     },
     "mobs": {
@@ -6116,6 +6295,27 @@ export const es: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Hinchado del pantano"
+      },
+      "fallen_captain_aldren": {
+        "name": "Capitán caído Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Sacerdote corrupto Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Acechamuerte Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Visión del capitán Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Visión del sumo sacerdote Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Visión del asesino real Voss"
+      },
+      "bound_guardian": {
+        "name": "Guardián Vinculado"
       },
       "elder_bristleback": {
         "name": "Viejo Bristleback"
@@ -6966,6 +7166,77 @@ export const es: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Los muertos inquietos",
+        "text": "Los no muertos de Thornpeak llevan runas que no reconozco, {playerName}. Tráeme diez fragmentos óseos rúnicos para que pueda leer lo que los despierta.",
+        "completion": "El mismo símbolo aparece en cada fragmento: una corona. No pertenece a ningún linaje de Eastbrook.",
+        "objectives": {
+          "0": {
+            "label": "Fragmento óseo rúnico"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Tumbas de los olvidados",
+        "text": "La corona no pertenece a ningún linaje que aún figure en los registros de Eastbrook. Tres memoriales antiguos se alzan cerca del campo de batalla del norte: el capitán Aldren, el sumo sacerdote Malric y el asesino real Voss. Toca cada piedra y escucha, {playerName}.",
+        "completion": "Aldren siguió siendo leal, Malric se negó a aceptar la muerte y Voss vio el peligro antes que nadie. Los tres sirvieron al rey Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Visión en la tumba del capitán Aldren"
+          },
+          "1": {
+            "label": "Visión en la tumba del sumo sacerdote Malric"
+          },
+          "2": {
+            "label": "Visión en la tumba del asesino real Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "La cripta abandonada",
+        "text": "Las visiones señalan una cripta abandonada bajo las ruinas antiguas. Recupera el Emblema del capitán, el Sigilo del sacerdote y el Sello real de los restos corruptos que yacen dentro.",
+        "completion": "Estas reliquias pertenecieron a quienes estuvieron más cerca de Nythraxis. Aún llevan el peso de su caída.",
+        "objectives": {
+          "0": {
+            "label": "Emblema del capitán"
+          },
+          "1": {
+            "label": "Sigilo del sacerdote"
+          },
+          "2": {
+            "label": "Sello real"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "El Guardián Vinculado",
+        "text": "Los supervivientes de Thornpeak crearon un guardián de hueso para proteger el sello. Lleva la piedra clave al círculo ritual, úsala allí y resiste.",
+        "completion": "El anillo lo prueba. El rey olvidado bajo Eastbrook era Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Piedra clave usada en el círculo ritual"
+          },
+          "1": {
+            "label": "Guardián Vinculado derrotado"
+          },
+          "2": {
+            "label": "Anillo del rey"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "Nythraxis, Azote de Eastbrook",
+        "text": "El rey Nythraxis fue llevado a casa moribundo, pero Malric no quiso dejarlo descansar. Quédate conmigo, {playerName}, y mira el recuerdo del sello.",
+        "completion": "Durante siglos el sello resistió. Ahora se debilita. Si Nythraxis vuelve a alzarse, Eastbrook será un reino de muertos. Ahora estás armonizado para entrar en La Cripta de Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Visión de Nythraxis presenciada"
+          },
+          "1": {
+            "label": "Hermano Aldric consultado"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "El rastro de Mogger",
         "text": "Antes de tomar el camino al norte, Eastbrook tiene una última espina clavada: Mogger. La bestia pisotea el prado bajo y enloquece a los jabalíes. Limpia la zona de su rastro para que veamos dónde se esconde.",
@@ -7163,6 +7434,11 @@ export const es: EnTranslations = {
         "name": "Santuario del Gravewyrm",
         "enterText": "El aire se vuelve frío. Algo inmenso respira abajo...",
         "leaveText": "Sales tambaleándote al viento de la montaña."
+      },
+      "nythraxis_crypt": {
+        "name": "Cripta abandonada",
+        "enterText": "Cruzas el umbral de la cripta abandonada.",
+        "leaveText": "Vuelves a salir al aire frío de Thornpeak."
       },
       "drowned_temple": {
         "name": "El Templo Ahogado",
@@ -8204,6 +8480,8 @@ export const es_ES: EnTranslations = {
       "greetingFallback": "Saludos.",
       "availableQuestAria": "Misión disponible: {name}",
       "readyQuestAria": "Misión lista para entregar: {name}",
+      "discussQuest": "Hablar sobre {name}.",
+      "discussQuestAria": "Hablar sobre la misión: {name}",
       "browseGoods": "Déjame ver tus mercancías.",
       "browseGoodsAria": "Ver mercancías de {name}",
       "worldMarket": "Muéstrame el Mercado Mundial.",
@@ -9558,6 +9836,45 @@ export const es_ES: EnTranslations = {
       },
       "the_codfather": {
         "name": "El Bacaladrino"
+      },
+      "runed_bone_shard": {
+        "name": "Fragmento óseo rúnico"
+      },
+      "grave_sir_aldren": {
+        "name": "Tumba del capitán Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Tumba del sumo sacerdote Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Tumba del asesino real Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Puerta antigua de la cripta"
+      },
+      "captains_crest": {
+        "name": "Emblema del capitán"
+      },
+      "priests_sigil": {
+        "name": "Sigilo del sacerdote"
+      },
+      "royal_seal": {
+        "name": "Sello real"
+      },
+      "crypt_keystone": {
+        "name": "Piedra clave de la cripta"
+      },
+      "crypt_ritual_circle": {
+        "name": "Círculo ritual"
+      },
+      "kings_signet": {
+        "name": "Anillo del rey"
+      },
+      "nythraxis_vision": {
+        "name": "Visión de Nythraxis"
+      },
+      "aldrics_seal": {
+        "name": "Sello de Aldric"
       }
     },
     "mobs": {
@@ -9701,6 +10018,27 @@ export const es_ES: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Hinchado del pantano"
+      },
+      "fallen_captain_aldren": {
+        "name": "Capitán caído Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Sacerdote corrupto Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Acechamuerte Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Visión del capitán Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Visión del sumo sacerdote Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Visión del asesino real Voss"
+      },
+      "bound_guardian": {
+        "name": "Guardián Vinculado"
       },
       "elder_bristleback": {
         "name": "Viejo Bristleback"
@@ -10551,6 +10889,77 @@ export const es_ES: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Los muertos inquietos",
+        "text": "Los no muertos de Thornpeak llevan runas que no reconozco, {playerName}. Tráeme diez fragmentos óseos rúnicos para que pueda leer lo que los despierta.",
+        "completion": "El mismo símbolo aparece en cada fragmento: una corona. No pertenece a ningún linaje de Eastbrook.",
+        "objectives": {
+          "0": {
+            "label": "Fragmento óseo rúnico"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Tumbas de los olvidados",
+        "text": "La corona no pertenece a ningún linaje que aún figure en los registros de Eastbrook. Tres memoriales antiguos se alzan cerca del campo de batalla del norte: el capitán Aldren, el sumo sacerdote Malric y el asesino real Voss. Toca cada piedra y escucha, {playerName}.",
+        "completion": "Aldren siguió siendo leal, Malric se negó a aceptar la muerte y Voss vio el peligro antes que nadie. Los tres sirvieron al rey Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Visión en la tumba del capitán Aldren"
+          },
+          "1": {
+            "label": "Visión en la tumba del sumo sacerdote Malric"
+          },
+          "2": {
+            "label": "Visión en la tumba del asesino real Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "La cripta abandonada",
+        "text": "Las visiones señalan una cripta abandonada bajo las ruinas antiguas. Recupera el Emblema del capitán, el Sigilo del sacerdote y el Sello real de los restos corruptos que yacen dentro.",
+        "completion": "Estas reliquias pertenecieron a quienes estuvieron más cerca de Nythraxis. Aún llevan el peso de su caída.",
+        "objectives": {
+          "0": {
+            "label": "Emblema del capitán"
+          },
+          "1": {
+            "label": "Sigilo del sacerdote"
+          },
+          "2": {
+            "label": "Sello real"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "El Guardián Vinculado",
+        "text": "Los supervivientes de Thornpeak crearon un guardián de hueso para proteger el sello. Lleva la piedra clave al círculo ritual, úsala allí y resiste.",
+        "completion": "El anillo lo prueba. El rey olvidado bajo Eastbrook era Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Piedra clave usada en el círculo ritual"
+          },
+          "1": {
+            "label": "Guardián Vinculado derrotado"
+          },
+          "2": {
+            "label": "Anillo del rey"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "Nythraxis, Azote de Eastbrook",
+        "text": "El rey Nythraxis fue llevado a casa moribundo, pero Malric no quiso dejarlo descansar. Quédate conmigo, {playerName}, y mira el recuerdo del sello.",
+        "completion": "Durante siglos el sello resistió. Ahora se debilita. Si Nythraxis vuelve a alzarse, Eastbrook será un reino de muertos. Ahora estás armonizado para entrar en La Cripta de Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Visión de Nythraxis presenciada"
+          },
+          "1": {
+            "label": "Hermano Aldric consultado"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "El rastro de Mogger",
         "text": "Antes de tomar el camino al norte, Eastbrook tiene una última espina clavada: Mogger. La bestia pisotea el prado bajo y enloquece a los jabalíes. Limpia la zona de su rastro para que veamos dónde se esconde.",
@@ -10748,6 +11157,11 @@ export const es_ES: EnTranslations = {
         "name": "Santuario del Gravewyrm",
         "enterText": "El aire se vuelve frío. Algo inmenso respira abajo...",
         "leaveText": "Sales tambaleándote al viento de la montaña."
+      },
+      "nythraxis_crypt": {
+        "name": "Cripta abandonada",
+        "enterText": "Cruzas el umbral de la cripta abandonada.",
+        "leaveText": "Vuelves a salir al aire frío de Thornpeak."
       },
       "drowned_temple": {
         "name": "El Templo Ahogado",
@@ -11789,6 +12203,8 @@ export const fr_FR: EnTranslations = {
       "greetingFallback": "Salutations.",
       "availableQuestAria": "Quête disponible : {name}",
       "readyQuestAria": "Quête prête à rendre : {name}",
+      "discussQuest": "Discuter de {name}.",
+      "discussQuestAria": "Discuter de la quête : {name}",
       "browseGoods": "Laissez-moi voir vos marchandises.",
       "browseGoodsAria": "Voir les marchandises de {name}",
       "worldMarket": "Montrez-moi le marché mondial.",
@@ -13143,6 +13559,45 @@ export const fr_FR: EnTranslations = {
       },
       "the_codfather": {
         "name": "Capitaine brochet"
+      },
+      "runed_bone_shard": {
+        "name": "Fragment d'os runique"
+      },
+      "grave_sir_aldren": {
+        "name": "Tombe du capitaine Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Tombe du grand prêtre Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Tombe de l'assassin royal Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Porte antique de la crypte"
+      },
+      "captains_crest": {
+        "name": "Cimier du capitaine"
+      },
+      "priests_sigil": {
+        "name": "Sceau du prêtre"
+      },
+      "royal_seal": {
+        "name": "Sceau royal"
+      },
+      "crypt_keystone": {
+        "name": "Clef de la crypte"
+      },
+      "crypt_ritual_circle": {
+        "name": "Cercle rituel"
+      },
+      "kings_signet": {
+        "name": "Chevalière du roi"
+      },
+      "nythraxis_vision": {
+        "name": "Vision de Nythraxis"
+      },
+      "aldrics_seal": {
+        "name": "Sceau d'Aldric"
       }
     },
     "mobs": {
@@ -13286,6 +13741,27 @@ export const fr_FR: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Boursouflé du bourbier"
+      },
+      "fallen_captain_aldren": {
+        "name": "Capitaine déchu Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Prêtre corrompu Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Traquemort Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Vision du capitaine Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Vision du grand prêtre Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Vision de l'assassin royal Voss"
+      },
+      "bound_guardian": {
+        "name": "Gardien lié"
       },
       "elder_bristleback": {
         "name": "Ancien Bristleback"
@@ -14136,6 +14612,77 @@ export const fr_FR: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Les morts agités",
+        "text": "Les morts-vivants de Thornpeak portent des runes que je ne reconnais pas, {playerName}. Rapportez-moi dix fragments d'os runiques afin que je lise ce qui les réveille.",
+        "completion": "Le même symbole apparaît sur chaque fragment : une couronne. Elle n'appartient à aucune lignée d'Eastbrook.",
+        "objectives": {
+          "0": {
+            "label": "Fragment d'os runique"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Tombes des oubliés",
+        "text": "La couronne n'appartient à aucune lignée encore nommée dans les archives d'Eastbrook. Trois anciens mémoriaux se dressent près du champ de bataille du nord : le capitaine Aldren, le grand prêtre Malric et l'assassin royal Voss. Touchez chaque pierre et écoutez, {playerName}.",
+        "completion": "Aldren resta loyal, Malric refusa la mort, et Voss vit le danger avant tous les autres. Tous trois servaient le roi Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Vision à la tombe du capitaine Aldren"
+          },
+          "1": {
+            "label": "Vision à la tombe du grand prêtre Malric"
+          },
+          "2": {
+            "label": "Vision à la tombe de l'assassin royal Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "La crypte abandonnée",
+        "text": "Les visions indiquent une crypte abandonnée sous les vieilles ruines. Récupérez le Cimier du capitaine, le Sceau du prêtre et le Sceau royal sur les restes corrompus qu'elle renferme.",
+        "completion": "Ces reliques appartenaient aux plus proches de Nythraxis. Elles portent encore le poids de sa chute.",
+        "objectives": {
+          "0": {
+            "label": "Cimier du capitaine"
+          },
+          "1": {
+            "label": "Sceau du prêtre"
+          },
+          "2": {
+            "label": "Sceau royal"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "Le Gardien lié",
+        "text": "Les survivants de Thornpeak créèrent un gardien d'os pour protéger le sceau. Portez la clef au cercle rituel, utilisez-la, puis tenez bon.",
+        "completion": "La chevalière le prouve. Le roi oublié sous Eastbrook était Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Clef utilisée au cercle rituel"
+          },
+          "1": {
+            "label": "Gardien lié vaincu"
+          },
+          "2": {
+            "label": "Chevalière du roi"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "Nythraxis, Fléau d'Eastbrook",
+        "text": "Le roi Nythraxis fut ramené mourant, mais Malric refusa de le laisser reposer. Restez avec moi, {playerName}, et contemplez la mémoire du sceau.",
+        "completion": "Pendant des siècles, le sceau a tenu. Il faiblit maintenant. Si Nythraxis se relève, Eastbrook deviendra un royaume de morts. Vous êtes désormais harmonisé pour entrer dans la Crypte de Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Vision de Nythraxis observée"
+          },
+          "1": {
+            "label": "Frère Aldric consulté"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "La piste de Mogger",
         "text": "Avant de prendre la route du nord, Eastbrook a une dernière épine dans le pied : Mogger. La brute piétine le pré bas et rend les sangliers fous. Nettoyez le pré autour de sa piste pour que nous voyions où il se terre.",
@@ -14333,6 +14880,11 @@ export const fr_FR: EnTranslations = {
         "name": "Sanctuaire du Gravewyrm",
         "enterText": "L'air devient froid. Quelque chose d'immense respire en bas...",
         "leaveText": "Vous titubez dans le vent de la montagne."
+      },
+      "nythraxis_crypt": {
+        "name": "Crypte abandonnée",
+        "enterText": "Vous franchissez le seuil de la crypte abandonnée.",
+        "leaveText": "Vous ressortez dans l'air froid de Thornpeak."
       },
       "drowned_temple": {
         "name": "Le Temple noyé",
@@ -15374,6 +15926,8 @@ export const fr_CA: EnTranslations = {
       "greetingFallback": "Salutations.",
       "availableQuestAria": "Quête disponible : {name}",
       "readyQuestAria": "Quête prête à rendre : {name}",
+      "discussQuest": "Discuter de {name}.",
+      "discussQuestAria": "Discuter de la quête : {name}",
       "browseGoods": "Laissez-moi voir vos marchandises.",
       "browseGoodsAria": "Voir les marchandises de {name}",
       "worldMarket": "Montrez-moi le marché mondial.",
@@ -16728,6 +17282,45 @@ export const fr_CA: EnTranslations = {
       },
       "the_codfather": {
         "name": "Capitaine brochet"
+      },
+      "runed_bone_shard": {
+        "name": "Fragment d'os runique"
+      },
+      "grave_sir_aldren": {
+        "name": "Tombe du capitaine Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Tombe du grand prêtre Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Tombe de l'assassin royal Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Porte antique de la crypte"
+      },
+      "captains_crest": {
+        "name": "Cimier du capitaine"
+      },
+      "priests_sigil": {
+        "name": "Sceau du prêtre"
+      },
+      "royal_seal": {
+        "name": "Sceau royal"
+      },
+      "crypt_keystone": {
+        "name": "Clef de la crypte"
+      },
+      "crypt_ritual_circle": {
+        "name": "Cercle rituel"
+      },
+      "kings_signet": {
+        "name": "Chevalière du roi"
+      },
+      "nythraxis_vision": {
+        "name": "Vision de Nythraxis"
+      },
+      "aldrics_seal": {
+        "name": "Sceau d'Aldric"
       }
     },
     "mobs": {
@@ -16871,6 +17464,27 @@ export const fr_CA: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Boursouflé du bourbier"
+      },
+      "fallen_captain_aldren": {
+        "name": "Capitaine déchu Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Prêtre corrompu Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Traquemort Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Vision du capitaine Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Vision du grand prêtre Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Vision de l'assassin royal Voss"
+      },
+      "bound_guardian": {
+        "name": "Gardien lié"
       },
       "elder_bristleback": {
         "name": "Ancien Bristleback"
@@ -17721,6 +18335,77 @@ export const fr_CA: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Les morts agités",
+        "text": "Les morts-vivants de Thornpeak portent des runes que je ne reconnais pas, {playerName}. Rapportez-moi dix fragments d'os runiques afin que je lise ce qui les réveille.",
+        "completion": "Le même symbole apparaît sur chaque fragment : une couronne. Elle n'appartient à aucune lignée d'Eastbrook.",
+        "objectives": {
+          "0": {
+            "label": "Fragment d'os runique"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Tombes des oubliés",
+        "text": "La couronne n'appartient à aucune lignée encore nommée dans les archives d'Eastbrook. Trois anciens mémoriaux se dressent près du champ de bataille du nord : le capitaine Aldren, le grand prêtre Malric et l'assassin royal Voss. Touchez chaque pierre et écoutez, {playerName}.",
+        "completion": "Aldren resta loyal, Malric refusa la mort, et Voss vit le danger avant tous les autres. Tous trois servaient le roi Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Vision à la tombe du capitaine Aldren"
+          },
+          "1": {
+            "label": "Vision à la tombe du grand prêtre Malric"
+          },
+          "2": {
+            "label": "Vision à la tombe de l'assassin royal Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "La crypte abandonnée",
+        "text": "Les visions indiquent une crypte abandonnée sous les vieilles ruines. Récupérez le Cimier du capitaine, le Sceau du prêtre et le Sceau royal sur les restes corrompus qu'elle renferme.",
+        "completion": "Ces reliques appartenaient aux plus proches de Nythraxis. Elles portent encore le poids de sa chute.",
+        "objectives": {
+          "0": {
+            "label": "Cimier du capitaine"
+          },
+          "1": {
+            "label": "Sceau du prêtre"
+          },
+          "2": {
+            "label": "Sceau royal"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "Le Gardien lié",
+        "text": "Les survivants de Thornpeak créèrent un gardien d'os pour protéger le sceau. Portez la clef au cercle rituel, utilisez-la, puis tenez bon.",
+        "completion": "La chevalière le prouve. Le roi oublié sous Eastbrook était Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Clef utilisée au cercle rituel"
+          },
+          "1": {
+            "label": "Gardien lié vaincu"
+          },
+          "2": {
+            "label": "Chevalière du roi"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "Nythraxis, Fléau d'Eastbrook",
+        "text": "Le roi Nythraxis fut ramené mourant, mais Malric refusa de le laisser reposer. Restez avec moi, {playerName}, et contemplez la mémoire du sceau.",
+        "completion": "Pendant des siècles, le sceau a tenu. Il faiblit maintenant. Si Nythraxis se relève, Eastbrook deviendra un royaume de morts. Vous êtes désormais harmonisé pour entrer dans la Crypte de Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Vision de Nythraxis observée"
+          },
+          "1": {
+            "label": "Frère Aldric consulté"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "La piste de Mogger",
         "text": "Avant de prendre la route du nord, Eastbrook a une dernière épine dans le pied : Mogger. La brute piétine le pré bas et rend les sangliers fous. Nettoyez le pré autour de sa piste pour que nous voyions où il se terre.",
@@ -17918,6 +18603,11 @@ export const fr_CA: EnTranslations = {
         "name": "Sanctuaire du Gravewyrm",
         "enterText": "L'air devient froid. Quelque chose d'immense respire en bas...",
         "leaveText": "Vous titubez dans le vent de la montagne."
+      },
+      "nythraxis_crypt": {
+        "name": "Crypte abandonnée",
+        "enterText": "Vous franchissez le seuil de la crypte abandonnée.",
+        "leaveText": "Vous ressortez dans l'air froid de Thornpeak."
       },
       "drowned_temple": {
         "name": "Le Temple noyé",
@@ -18959,6 +19649,8 @@ export const en_CA: EnTranslations = {
       "greetingFallback": "Greetings.",
       "availableQuestAria": "Available quest: {name}",
       "readyQuestAria": "Quest ready to turn in: {name}",
+      "discussQuest": "Discuss {name}.",
+      "discussQuestAria": "Discuss quest: {name}",
       "browseGoods": "Let me browse your goods.",
       "browseGoodsAria": "Browse goods from {name}",
       "worldMarket": "Show me the World Market.",
@@ -20313,6 +21005,45 @@ export const en_CA: EnTranslations = {
       },
       "the_codfather": {
         "name": "The Codfather"
+      },
+      "runed_bone_shard": {
+        "name": "Runed Bone Shard"
+      },
+      "grave_sir_aldren": {
+        "name": "Grave of Captain Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Grave of High Priest Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Grave of Royal Assassin Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Ancient Crypt Door"
+      },
+      "captains_crest": {
+        "name": "Captain's Crest"
+      },
+      "priests_sigil": {
+        "name": "Priest's Sigil"
+      },
+      "royal_seal": {
+        "name": "Royal Seal"
+      },
+      "crypt_keystone": {
+        "name": "Crypt Keystone"
+      },
+      "crypt_ritual_circle": {
+        "name": "Ritual Circle"
+      },
+      "kings_signet": {
+        "name": "King's Signet"
+      },
+      "nythraxis_vision": {
+        "name": "Nythraxis Vision"
+      },
+      "aldrics_seal": {
+        "name": "Aldric's Seal"
       }
     },
     "mobs": {
@@ -20456,6 +21187,27 @@ export const en_CA: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Bog Bloat"
+      },
+      "fallen_captain_aldren": {
+        "name": "Fallen Captain Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Corrupted Priest Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Deathstalker Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Vision of Captain Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Vision of High Priest Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Vision of Royal Assassin Voss"
+      },
+      "bound_guardian": {
+        "name": "The Bound Guardian"
       },
       "elder_bristleback": {
         "name": "Elder Bristleback"
@@ -21306,6 +22058,77 @@ export const en_CA: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "The Restless Dead",
+        "text": "Something has changed in Thornpeak Heights, {playerName}. The dead no longer wander aimlessly. They gather, they march, and these runes carved into their bones point to a kingdom that stood here long before Eastbrook. Bring me ten Runed Bone Shards from the Boneclad Revenants in the northern reaches.",
+        "completion": "The same mark appears on every shard... a crown. Thornpeak was not only a mountain. It was a kingdom.",
+        "objectives": {
+          "0": {
+            "label": "Runed Bone Shard"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Graves of the Forgotten",
+        "text": "The crown belongs to no line still named in Eastbrook records. Three old memorials stand near the northern battlefield: Captain Aldren, High Priest Malric, and Royal Assassin Voss. Touch each stone and listen, {playerName}. The dead may remember what the living erased.",
+        "completion": "Aldren remained loyal, Malric refused to accept death, and Voss saw the danger before anyone else. All three served King Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Vision at the Grave of Captain Aldren"
+          },
+          "1": {
+            "label": "Vision at the Grave of High Priest Malric"
+          },
+          "2": {
+            "label": "Vision at the Grave of Royal Assassin Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "The Abandoned Crypt",
+        "text": "The visions point to an abandoned crypt beneath the old ruins. If the records are true, Thornpeak sealed Nythraxis below after Malric's ritual twisted him into a deathless ruler. Recover the Captain's Crest, the Priest's Sigil, and the Royal Seal from the corrupted remains within.",
+        "completion": "These relics are bound to the seal. Something beneath Eastbrook is beginning to wake.",
+        "objectives": {
+          "0": {
+            "label": "Captain's Crest"
+          },
+          "1": {
+            "label": "Priest's Sigil"
+          },
+          "2": {
+            "label": "Royal Seal"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "The Bound Guardian",
+        "text": "The survivors of Thornpeak feared someone would try to break the seal, so they made a guardian from the bones of warriors who died in the kingdom's final days. Take the Crypt Keystone to the ritual circle above the abandoned crypt. Use it there, then stand fast.",
+        "completion": "The signet proves it. The forgotten king beneath Eastbrook was Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Crypt Keystone used at the ritual circle"
+          },
+          "1": {
+            "label": "The Bound Guardian defeated"
+          },
+          "2": {
+            "label": "King's Signet"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "Nythraxis, Scourge of Eastbrook",
+        "text": "King Nythraxis was carried home from his final battle dying, but Malric would not let him rest. The ritual returned a tyrant bound to dark magic, and Thornpeak fell into chaos. Stand with me, {playerName}. Look into the memory of the seal and learn what now stirs beneath Eastbrook.",
+        "completion": "For centuries the seal held. Now it weakens. If Nythraxis rises again, Eastbrook will become a kingdom of the dead. You are now attuned to enter The Crypt of Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Vision of Nythraxis witnessed"
+          },
+          "1": {
+            "label": "Brother Aldric spoken to"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "Mogger's Trail",
         "text": "Before you take the road north, Eastbrook has one last thorn in its side: Mogger. The brute has been trampling the lower meadow and driving the boars mad. Clear the meadow around his trail so we can see where he lairs.",
@@ -21503,6 +22326,11 @@ export const en_CA: EnTranslations = {
         "name": "Gravewyrm Sanctum",
         "enterText": "The air goes cold. Something vast breathes below...",
         "leaveText": "You stagger back into the mountain wind."
+      },
+      "nythraxis_crypt": {
+        "name": "Abandoned Crypt",
+        "enterText": "You descend into the abandoned crypt beneath the forgotten ruins of Thornpeak.",
+        "leaveText": "You climb back out of the abandoned crypt into the mountain wind."
       },
       "drowned_temple": {
         "name": "The Drowned Temple",
@@ -22544,6 +23372,8 @@ export const it_IT: EnTranslations = {
       "greetingFallback": "Salute.",
       "availableQuestAria": "Missione disponibile: {name}",
       "readyQuestAria": "Missione pronta da consegnare: {name}",
+      "discussQuest": "Discuti {name}.",
+      "discussQuestAria": "Discuti missione: {name}",
       "browseGoods": "Fammi vedere la tua merce.",
       "browseGoodsAria": "Vedi la merce di {name}",
       "worldMarket": "Mostrami il Mercato Mondiale.",
@@ -23898,6 +24728,45 @@ export const it_IT: EnTranslations = {
       },
       "the_codfather": {
         "name": "Il Pescadrino"
+      },
+      "runed_bone_shard": {
+        "name": "Frammento d'osso runico"
+      },
+      "grave_sir_aldren": {
+        "name": "Tomba del capitano Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Tomba dell'alto sacerdote Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Tomba dell'assassino reale Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Porta antica della cripta"
+      },
+      "captains_crest": {
+        "name": "Cimiero del capitano"
+      },
+      "priests_sigil": {
+        "name": "Sigillo del sacerdote"
+      },
+      "royal_seal": {
+        "name": "Sigillo reale"
+      },
+      "crypt_keystone": {
+        "name": "Chiave di volta della cripta"
+      },
+      "crypt_ritual_circle": {
+        "name": "Cerchio rituale"
+      },
+      "kings_signet": {
+        "name": "Anello con sigillo del re"
+      },
+      "nythraxis_vision": {
+        "name": "Visione di Nythraxis"
+      },
+      "aldrics_seal": {
+        "name": "Sigillo di Aldric"
       }
     },
     "mobs": {
@@ -24041,6 +24910,27 @@ export const it_IT: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Gonfione del pantano"
+      },
+      "fallen_captain_aldren": {
+        "name": "Capitano caduto Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Sacerdote corrotto Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Predamorte Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Visione del capitano Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Visione dell'alto sacerdote Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Visione dell'assassino reale Voss"
+      },
+      "bound_guardian": {
+        "name": "Guardiano Vincolato"
       },
       "elder_bristleback": {
         "name": "Bristleback anziano"
@@ -24891,6 +25781,77 @@ export const it_IT: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "I morti inquieti",
+        "text": "I non morti di Thornpeak portano rune che non riconosco, {playerName}. Portami dieci frammenti d'osso runico perché possa leggere ciò che li risveglia.",
+        "completion": "Lo stesso simbolo appare su ogni frammento: una corona. Non appartiene a nessuna stirpe di Eastbrook.",
+        "objectives": {
+          "0": {
+            "label": "Frammento d'osso runico"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Tombe dei dimenticati",
+        "text": "La corona non appartiene a nessuna stirpe ancora citata nei registri di Eastbrook. Tre antichi memoriali sorgono vicino al campo di battaglia settentrionale: il capitano Aldren, l'alto sacerdote Malric e l'assassino reale Voss. Tocca ogni pietra e ascolta, {playerName}.",
+        "completion": "Aldren rimase leale, Malric rifiutò la morte e Voss vide il pericolo prima di tutti. Tutti e tre servirono re Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Visione alla tomba del capitano Aldren"
+          },
+          "1": {
+            "label": "Visione alla tomba dell'alto sacerdote Malric"
+          },
+          "2": {
+            "label": "Visione alla tomba dell'assassino reale Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "La cripta abbandonata",
+        "text": "Le visioni indicano una cripta abbandonata sotto le vecchie rovine. Recupera il Cimiero del capitano, il Sigillo del sacerdote e il Sigillo reale dai resti corrotti al suo interno.",
+        "completion": "Queste reliquie appartennero a chi era più vicino a Nythraxis. Portano ancora il peso della sua caduta.",
+        "objectives": {
+          "0": {
+            "label": "Cimiero del capitano"
+          },
+          "1": {
+            "label": "Sigillo del sacerdote"
+          },
+          "2": {
+            "label": "Sigillo reale"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "Il Guardiano Vincolato",
+        "text": "I sopravvissuti di Thornpeak crearono un guardiano d'ossa per proteggere il sigillo. Porta la chiave di volta al cerchio rituale, usala lì e resisti.",
+        "completion": "L'anello lo prova. Il re dimenticato sotto Eastbrook era Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Chiave di volta usata al cerchio rituale"
+          },
+          "1": {
+            "label": "Guardiano Vincolato sconfitto"
+          },
+          "2": {
+            "label": "Anello con sigillo del re"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "Nythraxis, Flagello di Eastbrook",
+        "text": "Re Nythraxis fu riportato a casa morente, ma Malric non volle lasciarlo riposare. Resta con me, {playerName}, e osserva la memoria del sigillo.",
+        "completion": "Per secoli il sigillo ha retto. Ora si indebolisce. Se Nythraxis risorgerà, Eastbrook diventerà un regno dei morti. Ora sei armonizzato per entrare nella Cripta di Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Visione di Nythraxis osservata"
+          },
+          "1": {
+            "label": "Fratello Aldric consultato"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "La traccia di Mogger",
         "text": "Prima di prendere la strada a nord, Eastbrook ha un'ultima spina nel fianco: Mogger. Il bruto calpesta il prato basso e fa impazzire i cinghiali. Ripulisci il prato attorno alla sua traccia per scoprire dove si tana.",
@@ -25088,6 +26049,11 @@ export const it_IT: EnTranslations = {
         "name": "Santuario del Gravewyrm",
         "enterText": "L aria si fa fredda. Qualcosa di immenso respira sotto...",
         "leaveText": "Barcolli di nuovo nel vento di montagna."
+      },
+      "nythraxis_crypt": {
+        "name": "Cripta abbandonata",
+        "enterText": "Attraversi la soglia della cripta abbandonata.",
+        "leaveText": "Riemergi nell'aria fredda di Thornpeak."
       },
       "drowned_temple": {
         "name": "Il Tempio Annegato",
@@ -26129,6 +27095,8 @@ export const de_DE: EnTranslations = {
       "greetingFallback": "Seid gegrüßt.",
       "availableQuestAria": "Verfügbare Quest: {name}",
       "readyQuestAria": "Quest bereit zur Abgabe: {name}",
+      "discussQuest": "{name} besprechen.",
+      "discussQuestAria": "Quest besprechen: {name}",
       "browseGoods": "Lasst mich Eure Waren ansehen.",
       "browseGoodsAria": "Waren von {name} ansehen",
       "worldMarket": "Zeigt mir den Weltmarkt.",
@@ -27483,6 +28451,45 @@ export const de_DE: EnTranslations = {
       },
       "the_codfather": {
         "name": "Der Kabeljaupate"
+      },
+      "runed_bone_shard": {
+        "name": "Runen-Knochensplitter"
+      },
+      "grave_sir_aldren": {
+        "name": "Grab von Hauptmann Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Grab von Hohepriester Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Grab des königlichen Assassinen Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Alte Kryptentür"
+      },
+      "captains_crest": {
+        "name": "Wappen des Hauptmanns"
+      },
+      "priests_sigil": {
+        "name": "Siegel des Priesters"
+      },
+      "royal_seal": {
+        "name": "Königliches Siegel"
+      },
+      "crypt_keystone": {
+        "name": "Krypten-Schlüsselstein"
+      },
+      "crypt_ritual_circle": {
+        "name": "Ritualkreis"
+      },
+      "kings_signet": {
+        "name": "Siegelring des Königs"
+      },
+      "nythraxis_vision": {
+        "name": "Vision von Nythraxis"
+      },
+      "aldrics_seal": {
+        "name": "Aldrics Siegel"
       }
     },
     "mobs": {
@@ -27626,6 +28633,27 @@ export const de_DE: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Moor-Aufgedunsener"
+      },
+      "fallen_captain_aldren": {
+        "name": "Gefallener Hauptmann Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Verderbter Priester Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Todespirscher Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Vision von Hauptmann Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Vision von Hohepriester Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Vision des königlichen Assassinen Voss"
+      },
+      "bound_guardian": {
+        "name": "Gebundener Wächter"
       },
       "elder_bristleback": {
         "name": "Alter Bristleback"
@@ -28476,6 +29504,77 @@ export const de_DE: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Die ruhelosen Toten",
+        "text": "Die Untoten von Thornpeak tragen Runen, die ich nicht erkenne, {playerName}. Bring mir zehn Runen-Knochensplitter, damit ich lesen kann, was sie weckt.",
+        "completion": "Auf jedem Splitter erscheint dasselbe Zeichen: eine Krone. Sie gehört keiner Linie Eastbrooks.",
+        "objectives": {
+          "0": {
+            "label": "Runen-Knochensplitter"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Gräber der Vergessenen",
+        "text": "Die Krone gehört keiner Linie, die noch in Eastbrooks Aufzeichnungen steht. Drei alte Denkmäler stehen nahe dem nördlichen Schlachtfeld: Hauptmann Aldren, Hohepriester Malric und der königliche Assassine Voss. Berühre jeden Stein und lausche, {playerName}.",
+        "completion": "Aldren blieb loyal, Malric verweigerte den Tod, und Voss erkannte die Gefahr vor allen anderen. Alle drei dienten König Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Vision am Grab von Hauptmann Aldren"
+          },
+          "1": {
+            "label": "Vision am Grab von Hohepriester Malric"
+          },
+          "2": {
+            "label": "Vision am Grab des königlichen Assassinen Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "Die verlassene Krypta",
+        "text": "Die Visionen weisen auf eine verlassene Krypta unter den alten Ruinen. Hole das Wappen des Hauptmanns, das Siegel des Priesters und das Königliche Siegel aus den verderbten Überresten darin.",
+        "completion": "Diese Relikte gehörten denen, die Nythraxis am nächsten standen. Sie tragen noch immer das Gewicht seines Falls.",
+        "objectives": {
+          "0": {
+            "label": "Wappen des Hauptmanns"
+          },
+          "1": {
+            "label": "Siegel des Priesters"
+          },
+          "2": {
+            "label": "Königliches Siegel"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "Der Gebundene Wächter",
+        "text": "Die Überlebenden von Thornpeak erschufen einen Knochenwächter, um das Siegel zu schützen. Bring den Schlüsselstein zum Ritualkreis, benutze ihn dort und halte stand.",
+        "completion": "Der Siegelring beweist es. Der vergessene König unter Eastbrook war Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Schlüsselstein am Ritualkreis benutzt"
+          },
+          "1": {
+            "label": "Gebundener Wächter besiegt"
+          },
+          "2": {
+            "label": "Siegelring des Königs"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "Nythraxis, Geißel von Eastbrook",
+        "text": "König Nythraxis wurde sterbend heimgetragen, doch Malric wollte ihn nicht ruhen lassen. Bleib bei mir, {playerName}, und blicke in die Erinnerung des Siegels.",
+        "completion": "Jahrhundertelang hielt das Siegel. Nun wird es schwächer. Wenn Nythraxis erneut aufsteigt, wird Eastbrook ein Reich der Toten. Du bist nun auf die Krypta von Nythraxis eingestimmt.",
+        "objectives": {
+          "0": {
+            "label": "Vision von Nythraxis erlebt"
+          },
+          "1": {
+            "label": "Mit Bruder Aldric gesprochen"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "Moggers Spur",
         "text": "Bevor du die Straße nach Norden nimmst, hat Eastbrook noch einen letzten Dorn im Fleisch: Mogger. Der Grobian zertrampelt die untere Wiese und treibt die Eber in den Wahnsinn. Säubere die Wiese um seine Spur, damit wir sehen, wo er haust.",
@@ -28673,6 +29772,11 @@ export const de_DE: EnTranslations = {
         "name": "Gravewyrm-Heiligtum",
         "enterText": "Die Luft wird kalt. Etwas Gewaltiges atmet in der Tiefe...",
         "leaveText": "Du taumelst zurück in den Bergwind."
+      },
+      "nythraxis_crypt": {
+        "name": "Verlassene Krypta",
+        "enterText": "Du überschreitest die Schwelle der verlassenen Krypta.",
+        "leaveText": "Du trittst wieder in die kalte Luft von Thornpeak."
       },
       "drowned_temple": {
         "name": "Der Ertränkte Tempel",
@@ -29714,6 +30818,8 @@ export const zh_CN: EnTranslations = {
       "greetingFallback": "你好。",
       "availableQuestAria": "可接任务：{name}",
       "readyQuestAria": "可交付任务：{name}",
+      "discussQuest": "谈论{name}。",
+      "discussQuestAria": "谈论任务：{name}",
       "browseGoods": "让我看看你的货物。",
       "browseGoodsAria": "查看 {name} 的货物",
       "worldMarket": "让我看看世界市场。",
@@ -31068,6 +32174,45 @@ export const zh_CN: EnTranslations = {
       },
       "the_codfather": {
         "name": "鳕鱼教父"
+      },
+      "runed_bone_shard": {
+        "name": "符文骨片"
+      },
+      "grave_sir_aldren": {
+        "name": "奥德伦队长之墓"
+      },
+      "grave_high_priest_malric": {
+        "name": "大祭司马尔里克之墓"
+      },
+      "grave_captain_voss": {
+        "name": "皇家刺客沃斯之墓"
+      },
+      "ancient_crypt_door": {
+        "name": "古老墓穴之门"
+      },
+      "captains_crest": {
+        "name": "队长纹章"
+      },
+      "priests_sigil": {
+        "name": "祭司印记"
+      },
+      "royal_seal": {
+        "name": "皇家徽印"
+      },
+      "crypt_keystone": {
+        "name": "墓穴钥石"
+      },
+      "crypt_ritual_circle": {
+        "name": "仪式法阵"
+      },
+      "kings_signet": {
+        "name": "国王印戒"
+      },
+      "nythraxis_vision": {
+        "name": "尼思拉克西斯幻象"
+      },
+      "aldrics_seal": {
+        "name": "奥德里克的徽印"
       }
     },
     "mobs": {
@@ -31211,6 +32356,27 @@ export const zh_CN: EnTranslations = {
       },
       "bog_bloat": {
         "name": "沼泽臃肿兽"
+      },
+      "fallen_captain_aldren": {
+        "name": "堕落队长奥德伦"
+      },
+      "corrupted_priest_malric": {
+        "name": "腐化祭司马尔里克"
+      },
+      "deathstalker_voss": {
+        "name": "死亡潜猎者沃斯"
+      },
+      "vision_aldren_warrior": {
+        "name": "奥德伦队长的幻象"
+      },
+      "vision_malric_mage": {
+        "name": "大祭司马尔里克的幻象"
+      },
+      "vision_deathstalker_voss": {
+        "name": "皇家刺客沃斯的幻象"
+      },
+      "bound_guardian": {
+        "name": "受缚守卫者"
       },
       "elder_bristleback": {
         "name": "年长硬鬃"
@@ -32061,6 +33227,77 @@ export const zh_CN: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "躁动的亡者",
+        "text": "Thornpeak 的亡者身上刻着我不认识的符文，{playerName}。带回十块符文骨片，让我看清是什么唤醒了他们。",
+        "completion": "每块碎片上都有同一个标记：一顶王冠。它不属于 Eastbrook 的任何血脉。",
+        "objectives": {
+          "0": {
+            "label": "符文骨片"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "被遗忘者的坟墓",
+        "text": "这顶王冠不属于 Eastbrook 记录中仍被记载的任何血脉。北方战场附近立着三座古老纪念碑：奥德伦队长、大祭司马尔里克和皇家刺客沃斯。触碰每一块石碑并聆听，{playerName}。",
+        "completion": "奥德伦依旧忠诚，马尔里克拒绝接受死亡，而沃斯比任何人都更早看见危险。他们三人都曾侍奉尼思拉克西斯王。",
+        "objectives": {
+          "0": {
+            "label": "奥德伦队长之墓的幻象"
+          },
+          "1": {
+            "label": "大祭司马尔里克之墓的幻象"
+          },
+          "2": {
+            "label": "皇家刺客沃斯之墓的幻象"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "废弃墓穴",
+        "text": "幻象指向旧废墟下的一座废弃墓穴。从其中被腐化的遗骸上取回队长纹章、祭司印记和皇家徽印。",
+        "completion": "这些遗物曾属于尼思拉克西斯最亲近的人。它们仍承载着他陨落的重量。",
+        "objectives": {
+          "0": {
+            "label": "队长纹章"
+          },
+          "1": {
+            "label": "祭司印记"
+          },
+          "2": {
+            "label": "皇家徽印"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "受缚守卫者",
+        "text": "Thornpeak 的幸存者创造了一个骨之守卫来保护封印。把墓穴钥石带到仪式法阵，在那里使用它，然后坚持住。",
+        "completion": "这枚印戒证明了一切。Eastbrook 地底被遗忘的国王就是尼思拉克西斯。",
+        "objectives": {
+          "0": {
+            "label": "在仪式法阵使用墓穴钥石"
+          },
+          "1": {
+            "label": "击败受缚守卫者"
+          },
+          "2": {
+            "label": "国王印戒"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "尼思拉克西斯，Eastbrook 的灾厄",
+        "text": "尼思拉克西斯王濒死时被带回家，但马尔里克不肯让他安息。留在我身边，{playerName}，注视封印的记忆。",
+        "completion": "数百年来封印一直稳固。现在它正在减弱。如果尼思拉克西斯再次崛起，Eastbrook 将成为亡者之国。你现在已调谐，可以进入尼思拉克西斯墓穴。",
+        "objectives": {
+          "0": {
+            "label": "见证尼思拉克西斯的幻象"
+          },
+          "1": {
+            "label": "已与奥德里克修士交谈"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "莫格的踪迹",
         "text": "在你踏上北路前，东溪还有最后一根刺：莫格。那蛮兽践踏下方草地，把野猪都逼疯了。清理它踪迹周围的草地，我们才能看出它藏在哪里。",
@@ -32258,6 +33495,11 @@ export const zh_CN: EnTranslations = {
         "name": "墓龙圣所",
         "enterText": "空气变得冰冷。下方有庞然之物在呼吸...",
         "leaveText": "你踉跄回到山风之中。"
+      },
+      "nythraxis_crypt": {
+        "name": "废弃墓穴",
+        "enterText": "你跨过废弃墓穴的门槛。",
+        "leaveText": "你回到 Thornpeak 的寒冷空气中。"
       },
       "drowned_temple": {
         "name": "溺亡神殿",
@@ -33299,6 +34541,8 @@ export const zh_TW: EnTranslations = {
       "greetingFallback": "你好。",
       "availableQuestAria": "可接任務：{name}",
       "readyQuestAria": "可交付任務：{name}",
+      "discussQuest": "談論{name}。",
+      "discussQuestAria": "談論任務：{name}",
       "browseGoods": "讓我看看你的貨物。",
       "browseGoodsAria": "查看 {name} 的貨物",
       "worldMarket": "讓我看看世界市場。",
@@ -34653,6 +35897,45 @@ export const zh_TW: EnTranslations = {
       },
       "the_codfather": {
         "name": "鱈魚教父"
+      },
+      "runed_bone_shard": {
+        "name": "符文骨片"
+      },
+      "grave_sir_aldren": {
+        "name": "奧德倫隊長之墓"
+      },
+      "grave_high_priest_malric": {
+        "name": "大祭司馬爾里克之墓"
+      },
+      "grave_captain_voss": {
+        "name": "皇家刺客沃斯之墓"
+      },
+      "ancient_crypt_door": {
+        "name": "古老墓穴之門"
+      },
+      "captains_crest": {
+        "name": "隊長紋章"
+      },
+      "priests_sigil": {
+        "name": "祭司印記"
+      },
+      "royal_seal": {
+        "name": "皇家徽印"
+      },
+      "crypt_keystone": {
+        "name": "墓穴鑰石"
+      },
+      "crypt_ritual_circle": {
+        "name": "儀式法陣"
+      },
+      "kings_signet": {
+        "name": "國王印戒"
+      },
+      "nythraxis_vision": {
+        "name": "尼思拉克西斯幻象"
+      },
+      "aldrics_seal": {
+        "name": "奧德里克的徽印"
       }
     },
     "mobs": {
@@ -34796,6 +36079,27 @@ export const zh_TW: EnTranslations = {
       },
       "bog_bloat": {
         "name": "沼澤腫脹獸"
+      },
+      "fallen_captain_aldren": {
+        "name": "墮落隊長奧德倫"
+      },
+      "corrupted_priest_malric": {
+        "name": "腐化祭司馬爾里克"
+      },
+      "deathstalker_voss": {
+        "name": "死亡潛獵者沃斯"
+      },
+      "vision_aldren_warrior": {
+        "name": "奧德倫隊長的幻象"
+      },
+      "vision_malric_mage": {
+        "name": "大祭司馬爾里克的幻象"
+      },
+      "vision_deathstalker_voss": {
+        "name": "皇家刺客沃斯的幻象"
+      },
+      "bound_guardian": {
+        "name": "受縛守衛者"
       },
       "elder_bristleback": {
         "name": "年長硬鬃"
@@ -35646,6 +36950,77 @@ export const zh_TW: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "躁動的亡者",
+        "text": "Thornpeak 的亡者身上刻著我不認識的符文，{playerName}。帶回十塊符文骨片，讓我看清是什麼喚醒了他們。",
+        "completion": "每塊碎片上都有同一個標記：一頂王冠。它不屬於 Eastbrook 的任何血脈。",
+        "objectives": {
+          "0": {
+            "label": "符文骨片"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "被遺忘者的墳墓",
+        "text": "這頂王冠不屬於 Eastbrook 紀錄中仍被記載的任何血脈。北方戰場附近立著三座古老紀念碑：奧德倫隊長、大祭司馬爾里克和皇家刺客沃斯。觸碰每一塊石碑並聆聽，{playerName}。",
+        "completion": "奧德倫依舊忠誠，馬爾里克拒絕接受死亡，而沃斯比任何人都更早看見危險。他們三人都曾侍奉尼思拉克西斯王。",
+        "objectives": {
+          "0": {
+            "label": "奧德倫隊長之墓的幻象"
+          },
+          "1": {
+            "label": "大祭司馬爾里克之墓的幻象"
+          },
+          "2": {
+            "label": "皇家刺客沃斯之墓的幻象"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "廢棄墓穴",
+        "text": "幻象指向舊廢墟下的一座廢棄墓穴。從其中被腐化的遺骸上取回隊長紋章、祭司印記和皇家徽印。",
+        "completion": "這些遺物曾屬於尼思拉克西斯最親近的人。它們仍承載著他殞落的重量。",
+        "objectives": {
+          "0": {
+            "label": "隊長紋章"
+          },
+          "1": {
+            "label": "祭司印記"
+          },
+          "2": {
+            "label": "皇家徽印"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "受縛守衛者",
+        "text": "Thornpeak 的倖存者創造了一個骨之守衛來保護封印。把墓穴鑰石帶到儀式法陣，在那裡使用它，然後堅持住。",
+        "completion": "這枚印戒證明了一切。Eastbrook 地底被遺忘的國王就是尼思拉克西斯。",
+        "objectives": {
+          "0": {
+            "label": "在儀式法陣使用墓穴鑰石"
+          },
+          "1": {
+            "label": "擊敗受縛守衛者"
+          },
+          "2": {
+            "label": "國王印戒"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "尼思拉克西斯，Eastbrook 的災厄",
+        "text": "尼思拉克西斯王瀕死時被帶回家，但馬爾里克不肯讓他安息。留在我身邊，{playerName}，注視封印的記憶。",
+        "completion": "數百年來封印一直穩固。現在它正在減弱。如果尼思拉克西斯再次崛起，Eastbrook 將成為亡者之國。你現在已調諧，可以進入尼思拉克西斯墓穴。",
+        "objectives": {
+          "0": {
+            "label": "見證尼思拉克西斯的幻象"
+          },
+          "1": {
+            "label": "已與奧德里克修士交談"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "莫格的蹤跡",
         "text": "在你踏上北路前，東溪還有最後一根刺：莫格。那蠻獸踐踏下方草地，把野豬都逼瘋了。清理牠蹤跡周圍的草地，我們才能看出牠藏在哪裡。",
@@ -35843,6 +37218,11 @@ export const zh_TW: EnTranslations = {
         "name": "墓龍聖所",
         "enterText": "空氣變得冰冷。下方有龐然之物在呼吸...",
         "leaveText": "你踉蹌回到山風之中。"
+      },
+      "nythraxis_crypt": {
+        "name": "廢棄墓穴",
+        "enterText": "你跨過廢棄墓穴的門檻。",
+        "leaveText": "你回到 Thornpeak 的寒冷空氣中。"
       },
       "drowned_temple": {
         "name": "溺亡神殿",
@@ -36884,6 +38264,8 @@ export const ko_KR: EnTranslations = {
       "greetingFallback": "안녕하세요.",
       "availableQuestAria": "받을 수 있는 퀘스트: {name}",
       "readyQuestAria": "완료 보고 가능한 퀘스트: {name}",
+      "discussQuest": "{name}에 대해 이야기합니다.",
+      "discussQuestAria": "퀘스트 논의: {name}",
       "browseGoods": "물건을 보여 주세요.",
       "browseGoodsAria": "{name}의 물건 보기",
       "worldMarket": "세계 시장을 보여 주세요.",
@@ -38238,6 +39620,45 @@ export const ko_KR: EnTranslations = {
       },
       "the_codfather": {
         "name": "대구 대부"
+      },
+      "runed_bone_shard": {
+        "name": "룬 새긴 뼈 조각"
+      },
+      "grave_sir_aldren": {
+        "name": "대장 알드렌의 무덤"
+      },
+      "grave_high_priest_malric": {
+        "name": "대사제 말릭의 무덤"
+      },
+      "grave_captain_voss": {
+        "name": "왕실 암살자 보스의 무덤"
+      },
+      "ancient_crypt_door": {
+        "name": "고대 납골당 문"
+      },
+      "captains_crest": {
+        "name": "대장의 문장"
+      },
+      "priests_sigil": {
+        "name": "사제의 인장"
+      },
+      "royal_seal": {
+        "name": "왕실 인장"
+      },
+      "crypt_keystone": {
+        "name": "납골당 쐐기돌"
+      },
+      "crypt_ritual_circle": {
+        "name": "의식 원"
+      },
+      "kings_signet": {
+        "name": "왕의 인장 반지"
+      },
+      "nythraxis_vision": {
+        "name": "니트락시스 환영"
+      },
+      "aldrics_seal": {
+        "name": "알드릭의 인장"
       }
     },
     "mobs": {
@@ -38381,6 +39802,27 @@ export const ko_KR: EnTranslations = {
       },
       "bog_bloat": {
         "name": "늪 부푸리"
+      },
+      "fallen_captain_aldren": {
+        "name": "타락한 대장 알드렌"
+      },
+      "corrupted_priest_malric": {
+        "name": "타락한 사제 말릭"
+      },
+      "deathstalker_voss": {
+        "name": "죽음추적자 보스"
+      },
+      "vision_aldren_warrior": {
+        "name": "대장 알드렌의 환영"
+      },
+      "vision_malric_mage": {
+        "name": "대사제 말릭의 환영"
+      },
+      "vision_deathstalker_voss": {
+        "name": "왕실 암살자 보스의 환영"
+      },
+      "bound_guardian": {
+        "name": "속박된 수호자"
       },
       "elder_bristleback": {
         "name": "늙은 뻣센등뼈"
@@ -39231,6 +40673,77 @@ export const ko_KR: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "불안한 망자",
+        "text": "Thornpeak의 언데드에게 내가 알아보지 못하는 룬이 새겨져 있습니다, {playerName}. 그들을 깨우는 것이 무엇인지 읽을 수 있도록 룬 새긴 뼈 조각 열 개를 가져오십시오.",
+        "completion": "모든 조각에 같은 표식이 있습니다. 왕관입니다. Eastbrook의 어떤 혈통에도 속하지 않습니다.",
+        "objectives": {
+          "0": {
+            "label": "룬 새긴 뼈 조각"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "잊힌 자들의 무덤",
+        "text": "그 왕관은 Eastbrook 기록에 남은 어떤 혈통의 것도 아닙니다. 북쪽 전장 근처에는 대장 알드렌, 대사제 말릭, 왕실 암살자 보스의 오래된 기념비 세 개가 서 있습니다. 각각의 돌을 만지고 귀 기울이십시오, {playerName}.",
+        "completion": "알드렌은 충성을 지켰고, 말릭은 죽음을 받아들이지 않았으며, 보스는 누구보다 먼저 위험을 보았습니다. 세 사람 모두 니트락시스 왕을 섬겼습니다.",
+        "objectives": {
+          "0": {
+            "label": "대장 알드렌의 무덤에서 본 환영"
+          },
+          "1": {
+            "label": "대사제 말릭의 무덤에서 본 환영"
+          },
+          "2": {
+            "label": "왕실 암살자 보스의 무덤에서 본 환영"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "버려진 납골당",
+        "text": "환영은 오래된 폐허 아래 버려진 납골당을 가리킵니다. 그 안의 타락한 유해에서 대장의 문장, 사제의 인장, 왕실 인장을 되찾으십시오.",
+        "completion": "이 유물들은 니트락시스와 가장 가까웠던 자들의 것입니다. 아직도 그의 몰락의 무게를 품고 있습니다.",
+        "objectives": {
+          "0": {
+            "label": "대장의 문장"
+          },
+          "1": {
+            "label": "사제의 인장"
+          },
+          "2": {
+            "label": "왕실 인장"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "속박된 수호자",
+        "text": "Thornpeak의 생존자들은 봉인을 지키기 위해 뼈의 수호자를 만들었습니다. 납골당 쐐기돌을 의식 원으로 가져가 그곳에서 사용하고 버티십시오.",
+        "completion": "그 인장 반지가 증거입니다. Eastbrook 아래 잊힌 왕은 니트락시스였습니다.",
+        "objectives": {
+          "0": {
+            "label": "의식 원에서 납골당 쐐기돌 사용"
+          },
+          "1": {
+            "label": "속박된 수호자 처치"
+          },
+          "2": {
+            "label": "왕의 인장 반지"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "니트락시스, Eastbrook의 재앙",
+        "text": "니트락시스 왕은 죽어 가며 고향으로 옮겨졌지만, 말릭은 그를 쉬게 두지 않았습니다. 내 곁에 머무르십시오, {playerName}. 봉인의 기억을 들여다보십시오.",
+        "completion": "수백 년 동안 봉인은 버텼습니다. 이제 약해지고 있습니다. 니트락시스가 다시 일어나면 Eastbrook은 죽은 자들의 왕국이 될 것입니다. 이제 당신은 니트락시스의 납골당에 들어갈 조율을 마쳤습니다.",
+        "objectives": {
+          "0": {
+            "label": "니트락시스의 환영 목격"
+          },
+          "1": {
+            "label": "알드릭 수사와 대화함"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "모거의 흔적",
         "text": "북쪽 길을 떠나기 전에 이스트브룩에는 마지막 골칫거리, 모거가 남았습니다. 그 짐승은 아래 초원을 짓밟고 멧돼지를 미치게 합니다. 흔적 주변의 초원을 정리해 은신처를 찾아내십시오.",
@@ -39428,6 +40941,11 @@ export const ko_KR: EnTranslations = {
         "name": "무덤고룡 성소",
         "enterText": "공기가 차가워집니다. 아래에서 거대한 무언가가 숨 쉽니다...",
         "leaveText": "산바람 속으로 비틀거리며 돌아옵니다."
+      },
+      "nythraxis_crypt": {
+        "name": "버려진 납골당",
+        "enterText": "버려진 납골당의 문턱을 넘습니다.",
+        "leaveText": "Thornpeak의 차가운 공기 속으로 돌아옵니다."
       },
       "drowned_temple": {
         "name": "익사한 신전",
@@ -40469,6 +41987,8 @@ export const ja_JP: EnTranslations = {
       "greetingFallback": "こんにちは。",
       "availableQuestAria": "受諾可能なクエスト: {name}",
       "readyQuestAria": "報告可能なクエスト: {name}",
+      "discussQuest": "{name}について話す。",
+      "discussQuestAria": "クエストについて話す: {name}",
       "browseGoods": "品物を見せてください。",
       "browseGoodsAria": "{name}の品物を見る",
       "worldMarket": "ワールドマーケットを見せてください。",
@@ -41823,6 +43343,45 @@ export const ja_JP: EnTranslations = {
       },
       "the_codfather": {
         "name": "タラのゴッドファーザー"
+      },
+      "runed_bone_shard": {
+        "name": "ルーン刻みの骨片"
+      },
+      "grave_sir_aldren": {
+        "name": "オルドレン隊長の墓"
+      },
+      "grave_high_priest_malric": {
+        "name": "大祭司マルリックの墓"
+      },
+      "grave_captain_voss": {
+        "name": "王家の暗殺者ヴォスの墓"
+      },
+      "ancient_crypt_door": {
+        "name": "古代の地下墓所の扉"
+      },
+      "captains_crest": {
+        "name": "隊長の紋章"
+      },
+      "priests_sigil": {
+        "name": "司祭の印章"
+      },
+      "royal_seal": {
+        "name": "王家の印章"
+      },
+      "crypt_keystone": {
+        "name": "地下墓所の要石"
+      },
+      "crypt_ritual_circle": {
+        "name": "儀式の円"
+      },
+      "kings_signet": {
+        "name": "王の印章指輪"
+      },
+      "nythraxis_vision": {
+        "name": "ニスラクシスの幻視"
+      },
+      "aldrics_seal": {
+        "name": "アルドリックの印章"
       }
     },
     "mobs": {
@@ -41966,6 +43525,27 @@ export const ja_JP: EnTranslations = {
       },
       "bog_bloat": {
         "name": "沼の膨れ者"
+      },
+      "fallen_captain_aldren": {
+        "name": "堕ちた隊長オルドレン"
+      },
+      "corrupted_priest_malric": {
+        "name": "腐敗した司祭マルリック"
+      },
+      "deathstalker_voss": {
+        "name": "デスストーカー・ヴォス"
+      },
+      "vision_aldren_warrior": {
+        "name": "隊長オルドレンの幻視"
+      },
+      "vision_malric_mage": {
+        "name": "大祭司マルリックの幻視"
+      },
+      "vision_deathstalker_voss": {
+        "name": "王家の暗殺者ヴォスの幻視"
+      },
+      "bound_guardian": {
+        "name": "縛られし守護者"
       },
       "elder_bristleback": {
         "name": "老ブリストルバック"
@@ -42816,6 +44396,77 @@ export const ja_JP: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "安らがぬ死者",
+        "text": "Thornpeakのアンデッドには、私の知らぬルーンが刻まれています、{playerName}。何が彼らを目覚めさせているのか読むため、ルーン刻みの骨片を十個持ってきてください。",
+        "completion": "どの欠片にも同じ印がある。王冠です。Eastbrookのどの血筋にも属しません。",
+        "objectives": {
+          "0": {
+            "label": "ルーン刻みの骨片"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "忘れられし者の墓",
+        "text": "その王冠は、Eastbrookの記録に今も名を残すどの血筋のものでもありません。北の戦場近くに、隊長オルドレン、大祭司マルリック、王家の暗殺者ヴォスの古い記念碑が三つ立っています。それぞれの石に触れ、耳を澄ませてください、{playerName}。",
+        "completion": "オルドレンは忠誠を保ち、マルリックは死を受け入れず、ヴォスは誰よりも先に危険を見抜きました。三人ともニスラクシス王に仕えていました。",
+        "objectives": {
+          "0": {
+            "label": "隊長オルドレンの墓での幻視"
+          },
+          "1": {
+            "label": "大祭司マルリックの墓での幻視"
+          },
+          "2": {
+            "label": "王家の暗殺者ヴォスの墓での幻視"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "放棄された地下墓所",
+        "text": "幻視は古い廃墟の下にある放棄された地下墓所を指しています。中の腐敗した遺骸から隊長の紋章、司祭の印章、王家の印章を回収してください。",
+        "completion": "これらの遺物は、ニスラクシスに最も近かった者たちのものです。今も彼の転落の重みを宿しています。",
+        "objectives": {
+          "0": {
+            "label": "隊長の紋章"
+          },
+          "1": {
+            "label": "司祭の印章"
+          },
+          "2": {
+            "label": "王家の印章"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "縛られし守護者",
+        "text": "Thornpeakの生存者たちは封印を守るため、骨の守護者を作りました。地下墓所の要石を儀式の円へ運び、そこで使い、踏みとどまってください。",
+        "completion": "その印章指輪が証です。Eastbrookの下に眠る忘れられた王はニスラクシスでした。",
+        "objectives": {
+          "0": {
+            "label": "儀式の円で地下墓所の要石を使用"
+          },
+          "1": {
+            "label": "縛られし守護者を撃破"
+          },
+          "2": {
+            "label": "王の印章指輪"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "ニスラクシス、Eastbrookの災厄",
+        "text": "ニスラクシス王は瀕死で故郷へ運ばれましたが、マルリックは彼を眠らせようとしませんでした。私のそばにいてください、{playerName}。封印の記憶を見届けるのです。",
+        "completion": "何世紀もの間、封印は保たれていました。今、それは弱まっています。ニスラクシスが再び立ち上がれば、Eastbrookは死者の王国となるでしょう。あなたは今、ニスラクシスの地下墓所へ入るための調律を終えました。",
+        "objectives": {
+          "0": {
+            "label": "ニスラクシスの幻視を目撃"
+          },
+          "1": {
+            "label": "ブラザー・アルドリックと話した"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "モガーの足跡",
         "text": "北への道を進む前に、イーストブルックには最後の厄介者がいます。モガーです。あの巨獣は低い草地を踏み荒らし、猪を狂わせています。足跡の周囲を片付け、巣を見つけられるようにしてください。",
@@ -43013,6 +44664,11 @@ export const ja_JP: EnTranslations = {
         "name": "墓ワームの聖所",
         "enterText": "空気が冷たくなります。下で巨大な何かが息をしています...",
         "leaveText": "山風の中へよろめき戻ります。"
+      },
+      "nythraxis_crypt": {
+        "name": "放棄された地下墓所",
+        "enterText": "放棄された地下墓所の敷居を越えます。",
+        "leaveText": "Thornpeakの冷たい空気へ戻ります。"
       },
       "drowned_temple": {
         "name": "溺れし神殿",
@@ -44054,6 +45710,8 @@ export const pt_BR: EnTranslations = {
       "greetingFallback": "Saudações.",
       "availableQuestAria": "Missão disponível: {name}",
       "readyQuestAria": "Missão pronta para entrega: {name}",
+      "discussQuest": "Discutir {name}.",
+      "discussQuestAria": "Discutir missão: {name}",
       "browseGoods": "Deixe-me ver suas mercadorias.",
       "browseGoodsAria": "Ver mercadorias de {name}",
       "worldMarket": "Mostre-me o Mercado Mundial.",
@@ -45408,6 +47066,45 @@ export const pt_BR: EnTranslations = {
       },
       "the_codfather": {
         "name": "O Bacalhau-Padrinho"
+      },
+      "runed_bone_shard": {
+        "name": "Estilhaço de osso rúnico"
+      },
+      "grave_sir_aldren": {
+        "name": "Túmulo do capitão Aldren"
+      },
+      "grave_high_priest_malric": {
+        "name": "Túmulo do sumo sacerdote Malric"
+      },
+      "grave_captain_voss": {
+        "name": "Túmulo do assassino real Voss"
+      },
+      "ancient_crypt_door": {
+        "name": "Porta antiga da cripta"
+      },
+      "captains_crest": {
+        "name": "Brasão do capitão"
+      },
+      "priests_sigil": {
+        "name": "Sigilo do sacerdote"
+      },
+      "royal_seal": {
+        "name": "Selo real"
+      },
+      "crypt_keystone": {
+        "name": "Pedra-chave da cripta"
+      },
+      "crypt_ritual_circle": {
+        "name": "Círculo ritual"
+      },
+      "kings_signet": {
+        "name": "Anel-sinete do rei"
+      },
+      "nythraxis_vision": {
+        "name": "Visão de Nythraxis"
+      },
+      "aldrics_seal": {
+        "name": "Selo de Aldric"
       }
     },
     "mobs": {
@@ -45551,6 +47248,27 @@ export const pt_BR: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Inchaço do brejo"
+      },
+      "fallen_captain_aldren": {
+        "name": "Capitão caído Aldren"
+      },
+      "corrupted_priest_malric": {
+        "name": "Sacerdote corrompido Malric"
+      },
+      "deathstalker_voss": {
+        "name": "Espreitador da Morte Voss"
+      },
+      "vision_aldren_warrior": {
+        "name": "Visão do capitão Aldren"
+      },
+      "vision_malric_mage": {
+        "name": "Visão do sumo sacerdote Malric"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Visão do assassino real Voss"
+      },
+      "bound_guardian": {
+        "name": "Guardião Vinculado"
       },
       "elder_bristleback": {
         "name": "Bristleback ancião"
@@ -46401,6 +48119,77 @@ export const pt_BR: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Os mortos inquietos",
+        "text": "Os mortos-vivos de Thornpeak carregam runas que eu não reconheço, {playerName}. Traga-me dez estilhaços de osso rúnico para que eu leia o que os desperta.",
+        "completion": "O mesmo símbolo aparece em cada estilhaço: uma coroa. Ela não pertence a nenhuma linhagem de Eastbrook.",
+        "objectives": {
+          "0": {
+            "label": "Estilhaço de osso rúnico"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Túmulos dos esquecidos",
+        "text": "A coroa não pertence a nenhuma linhagem ainda registrada em Eastbrook. Três antigos memoriais ficam perto do campo de batalha do norte: capitão Aldren, sumo sacerdote Malric e assassino real Voss. Toque cada pedra e escute, {playerName}.",
+        "completion": "Aldren permaneceu leal, Malric recusou a morte, e Voss viu o perigo antes de todos. Os três serviram ao rei Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Visão no túmulo do capitão Aldren"
+          },
+          "1": {
+            "label": "Visão no túmulo do sumo sacerdote Malric"
+          },
+          "2": {
+            "label": "Visão no túmulo do assassino real Voss"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "A cripta abandonada",
+        "text": "As visões apontam para uma cripta abandonada sob as ruínas antigas. Recupere o Brasão do capitão, o Sigilo do sacerdote e o Selo real dos restos corrompidos lá dentro.",
+        "completion": "Essas relíquias pertenceram aos mais próximos de Nythraxis. Ainda carregam o peso de sua queda.",
+        "objectives": {
+          "0": {
+            "label": "Brasão do capitão"
+          },
+          "1": {
+            "label": "Sigilo do sacerdote"
+          },
+          "2": {
+            "label": "Selo real"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "O Guardião Vinculado",
+        "text": "Os sobreviventes de Thornpeak criaram um guardião de ossos para proteger o selo. Leve a pedra-chave ao círculo ritual, use-a ali e resista.",
+        "completion": "O anel-sinete prova. O rei esquecido sob Eastbrook era Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Pedra-chave usada no círculo ritual"
+          },
+          "1": {
+            "label": "Guardião Vinculado derrotado"
+          },
+          "2": {
+            "label": "Anel-sinete do rei"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "Nythraxis, Flagelo de Eastbrook",
+        "text": "O rei Nythraxis foi levado para casa à beira da morte, mas Malric não quis deixá-lo descansar. Fique comigo, {playerName}, e contemple a memória do selo.",
+        "completion": "Por séculos o selo resistiu. Agora ele enfraquece. Se Nythraxis se erguer outra vez, Eastbrook se tornará um reino dos mortos. Agora você está sintonizado para entrar na Cripta de Nythraxis.",
+        "objectives": {
+          "0": {
+            "label": "Visão de Nythraxis testemunhada"
+          },
+          "1": {
+            "label": "Irmão Aldric consultado"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "A trilha de Mogger",
         "text": "Antes de pegar a estrada ao norte, Eastbrook tem um último espinho: Mogger. A fera pisoteia o prado baixo e enlouquece os javalis. Limpe o prado ao redor da trilha para descobrirmos onde ele se esconde.",
@@ -46598,6 +48387,11 @@ export const pt_BR: EnTranslations = {
         "name": "Santuário do Gravewyrm",
         "enterText": "O ar fica frio. Algo imenso respira abaixo...",
         "leaveText": "Você cambaleia de volta ao vento da montanha."
+      },
+      "nythraxis_crypt": {
+        "name": "Cripta abandonada",
+        "enterText": "Você cruza o limiar da cripta abandonada.",
+        "leaveText": "Você retorna ao ar frio de Thornpeak."
       },
       "drowned_temple": {
         "name": "O Templo Afogado",
@@ -47639,6 +49433,8 @@ export const ru_RU: EnTranslations = {
       "greetingFallback": "Приветствую.",
       "availableQuestAria": "Доступное задание: {name}",
       "readyQuestAria": "Задание готово к сдаче: {name}",
+      "discussQuest": "Обсудить {name}.",
+      "discussQuestAria": "Обсудить задание: {name}",
       "browseGoods": "Покажите ваши товары.",
       "browseGoodsAria": "Посмотреть товары у {name}",
       "worldMarket": "Покажите мне мировой рынок.",
@@ -48993,6 +50789,45 @@ export const ru_RU: EnTranslations = {
       },
       "the_codfather": {
         "name": "Крестная треска"
+      },
+      "runed_bone_shard": {
+        "name": "Рунный костяной осколок"
+      },
+      "grave_sir_aldren": {
+        "name": "Могила капитана Алдрена"
+      },
+      "grave_high_priest_malric": {
+        "name": "Могила верховного жреца Малрика"
+      },
+      "grave_captain_voss": {
+        "name": "Могила королевского убийцы Восса"
+      },
+      "ancient_crypt_door": {
+        "name": "Древняя дверь склепа"
+      },
+      "captains_crest": {
+        "name": "Герб капитана"
+      },
+      "priests_sigil": {
+        "name": "Печать жреца"
+      },
+      "royal_seal": {
+        "name": "Королевская печать"
+      },
+      "crypt_keystone": {
+        "name": "Ключ-камень склепа"
+      },
+      "crypt_ritual_circle": {
+        "name": "Ритуальный круг"
+      },
+      "kings_signet": {
+        "name": "Перстень короля"
+      },
+      "nythraxis_vision": {
+        "name": "Видение Нитраксиса"
+      },
+      "aldrics_seal": {
+        "name": "Печать Алдрика"
       }
     },
     "mobs": {
@@ -49136,6 +50971,27 @@ export const ru_RU: EnTranslations = {
       },
       "bog_bloat": {
         "name": "Болотный раздутень"
+      },
+      "fallen_captain_aldren": {
+        "name": "Павший капитан Алдрен"
+      },
+      "corrupted_priest_malric": {
+        "name": "Оскверненный жрец Малрик"
+      },
+      "deathstalker_voss": {
+        "name": "Смертолаз Восс"
+      },
+      "vision_aldren_warrior": {
+        "name": "Видение капитана Алдрена"
+      },
+      "vision_malric_mage": {
+        "name": "Видение верховного жреца Малрика"
+      },
+      "vision_deathstalker_voss": {
+        "name": "Видение королевского убийцы Восса"
+      },
+      "bound_guardian": {
+        "name": "Связанный страж"
       },
       "elder_bristleback": {
         "name": "Старый Щетиноспин"
@@ -49986,6 +51842,77 @@ export const ru_RU: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "Беспокойные мертвецы",
+        "text": "На нежити Thornpeak вырезаны руны, которых я не узнаю, {playerName}. Принесите мне десять рунных костяных осколков, чтобы я понял, что их пробуждает.",
+        "completion": "На каждом осколке один и тот же знак: корона. Она не принадлежит ни одному роду Eastbrook.",
+        "objectives": {
+          "0": {
+            "label": "Рунный костяной осколок"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "Могилы забытых",
+        "text": "Корона не принадлежит ни одному роду, который еще упомянут в записях Eastbrook. У северного поля битвы стоят три старых мемориала: капитан Алдрен, верховный жрец Малрик и королевский убийца Восс. Коснитесь каждого камня и слушайте, {playerName}.",
+        "completion": "Алдрен остался верен, Малрик отказался принять смерть, а Восс увидел опасность раньше всех. Все трое служили королю Нитраксису.",
+        "objectives": {
+          "0": {
+            "label": "Видение у могилы капитана Алдрена"
+          },
+          "1": {
+            "label": "Видение у могилы верховного жреца Малрика"
+          },
+          "2": {
+            "label": "Видение у могилы королевского убийцы Восса"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "Заброшенный склеп",
+        "text": "Видения указывают на заброшенный склеп под древними руинами. Верните Герб капитана, Печать жреца и Королевскую печать с оскверненных останков внутри.",
+        "completion": "Эти реликвии принадлежали тем, кто был ближе всех к Нитраксису. Они все еще несут тяжесть его падения.",
+        "objectives": {
+          "0": {
+            "label": "Герб капитана"
+          },
+          "1": {
+            "label": "Печать жреца"
+          },
+          "2": {
+            "label": "Королевская печать"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "Связанный страж",
+        "text": "Выжившие Thornpeak создали костяного стража, чтобы защитить печать. Отнесите ключ-камень к ритуальному кругу, используйте его там и выстойте.",
+        "completion": "Перстень доказывает это. Забытым королем под Eastbrook был Нитраксис.",
+        "objectives": {
+          "0": {
+            "label": "Ключ-камень использован у ритуального круга"
+          },
+          "1": {
+            "label": "Связанный страж побежден"
+          },
+          "2": {
+            "label": "Перстень короля"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "Нитраксис, Бич Eastbrook",
+        "text": "Короля Нитраксиса принесли домой умирающим, но Малрик не позволил ему упокоиться. Останьтесь со мной, {playerName}, и взгляните в память печати.",
+        "completion": "Столетиями печать держалась. Теперь она слабеет. Если Нитраксис восстанет снова, Eastbrook станет царством мертвых. Теперь вы настроены для входа в Склеп Нитраксиса.",
+        "objectives": {
+          "0": {
+            "label": "Видение Нитраксиса увидено"
+          },
+          "1": {
+            "label": "Брат Алдрик выслушан"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "След Моггера",
         "text": "Прежде чем идти на северную дорогу, у Истврука осталась последняя заноза: Моггер. Зверь топчет нижний луг и сводит кабанов с ума. Очистите луг вокруг его следа, чтобы мы поняли, где он прячется.",
@@ -50183,6 +52110,11 @@ export const ru_RU: EnTranslations = {
         "name": "Святилище Могильного Вирма",
         "enterText": "Воздух холодеет. Внизу дышит нечто огромное...",
         "leaveText": "Вы пошатываясь выходите на горный ветер."
+      },
+      "nythraxis_crypt": {
+        "name": "Заброшенный склеп",
+        "enterText": "Вы переступаете порог заброшенного склепа.",
+        "leaveText": "Вы возвращаетесь в холодный воздух Thornpeak."
       },
       "drowned_temple": {
         "name": "Утонувший храм",
@@ -51257,6 +53189,8 @@ export const en_XA: EnTranslations = {
       "greetingFallback": "[Ĝŕééţíñĝš.]",
       "availableQuestAria": "[Áʋáíļáƀļé ɋúéšţ: {name}]",
       "readyQuestAria": "[Ɋúéšţ ŕéáðý ţó ţúŕñ íñ: {name}]",
+      "discussQuest": "[Ðíšçúšš {name}.]",
+      "discussQuestAria": "[Ðíšçúšš ɋúéšţ: {name}]",
       "browseGoods": "[Ļéţ ɱé ƀŕóŵšé ýóúŕ ĝóóðš.]",
       "browseGoodsAria": "[Ɓŕóŵšé ĝóóðš ƒŕóɱ {name}]",
       "worldMarket": "[Šĥóŵ ɱé ţĥé Ŵóŕļð Ɱáŕķéţ.]",
@@ -52611,6 +54545,45 @@ export const en_XA: EnTranslations = {
       },
       "the_codfather": {
         "name": "[Ţĥé Çóðƒáţĥéŕ]"
+      },
+      "runed_bone_shard": {
+        "name": "[Ŕúñéð Ɓóñé Šĥáŕð]"
+      },
+      "grave_sir_aldren": {
+        "name": "[Ĝŕáʋé óƒ Çáþţáíñ Áļðŕéñ]"
+      },
+      "grave_high_priest_malric": {
+        "name": "[Ĝŕáʋé óƒ Ĥíĝĥ Þŕíéšţ Ɱáļŕíç]"
+      },
+      "grave_captain_voss": {
+        "name": "[Ĝŕáʋé óƒ Ŕóýáļ Áššáššíñ Ʋóšš]"
+      },
+      "ancient_crypt_door": {
+        "name": "[Áñçíéñţ Çŕýþţ Ðóóŕ]"
+      },
+      "captains_crest": {
+        "name": "[Çáþţáíñ'š Çŕéšţ]"
+      },
+      "priests_sigil": {
+        "name": "[Þŕíéšţ'š Šíĝíļ]"
+      },
+      "royal_seal": {
+        "name": "[Ŕóýáļ Šéáļ]"
+      },
+      "crypt_keystone": {
+        "name": "[Çŕýþţ Ķéýšţóñé]"
+      },
+      "crypt_ritual_circle": {
+        "name": "[Ŕíţúáļ Çíŕçļé]"
+      },
+      "kings_signet": {
+        "name": "[Ķíñĝ'š Šíĝñéţ]"
+      },
+      "nythraxis_vision": {
+        "name": "[Ñýţĥŕáẋíš Ʋíšíóñ]"
+      },
+      "aldrics_seal": {
+        "name": "[Áļðŕíç'š Šéáļ]"
       }
     },
     "mobs": {
@@ -52754,6 +54727,27 @@ export const en_XA: EnTranslations = {
       },
       "bog_bloat": {
         "name": "[Ɓóĝ Ɓļóáţ]"
+      },
+      "fallen_captain_aldren": {
+        "name": "[Ƒáļļéñ Çáþţáíñ Áļðŕéñ]"
+      },
+      "corrupted_priest_malric": {
+        "name": "[Çóŕŕúþţéð Þŕíéšţ Ɱáļŕíç]"
+      },
+      "deathstalker_voss": {
+        "name": "[Ðéáţĥšţáļķéŕ Ʋóšš]"
+      },
+      "vision_aldren_warrior": {
+        "name": "[Ʋíšíóñ óƒ Çáþţáíñ Áļðŕéñ]"
+      },
+      "vision_malric_mage": {
+        "name": "[Ʋíšíóñ óƒ Ĥíĝĥ Þŕíéšţ Ɱáļŕíç]"
+      },
+      "vision_deathstalker_voss": {
+        "name": "[Ʋíšíóñ óƒ Ŕóýáļ Áššáššíñ Ʋóšš]"
+      },
+      "bound_guardian": {
+        "name": "[Ţĥé Ɓóúñð Ĝúáŕðíáñ]"
       },
       "elder_bristleback": {
         "name": "[Éļðéŕ Ɓŕíšţļéƀáçķ]"
@@ -53604,6 +55598,77 @@ export const en_XA: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_restless_dead": {
+        "title": "[Ţĥé Ŕéšţļéšš Ðéáð]",
+        "text": "[Šóɱéţĥíñĝ ĥáš çĥáñĝéð íñ Ţĥóŕñþéáķ Ĥéíĝĥţš, {playerName}. Ţĥé ðéáð ñó ļóñĝéŕ ŵáñðéŕ áíɱļéššļý. Ţĥéý ĝáţĥéŕ, ţĥéý ɱáŕçĥ, áñð ţĥéšé ŕúñéš çáŕʋéð íñţó ţĥéíŕ ƀóñéš þóíñţ ţó á ķíñĝðóɱ ţĥáţ šţóóð ĥéŕé ļóñĝ ƀéƒóŕé Éášţƀŕóóķ. Ɓŕíñĝ ɱé ţéñ Ŕúñéð Ɓóñé Šĥáŕðš ƒŕóɱ ţĥé Ɓóñéçļáð Ŕéʋéñáñţš íñ ţĥé ñóŕţĥéŕñ ŕéáçĥéš.]",
+        "completion": "[Ţĥé šáɱé ɱáŕķ áþþéáŕš óñ éʋéŕý šĥáŕð... á çŕóŵñ. Ţĥóŕñþéáķ ŵáš ñóţ óñļý á ɱóúñţáíñ. Íţ ŵáš á ķíñĝðóɱ.]",
+        "objectives": {
+          "0": {
+            "label": "[Ŕúñéð Ɓóñé Šĥáŕð]"
+          }
+        }
+      },
+      "q_nythraxis_graves": {
+        "title": "[Ĝŕáʋéš óƒ ţĥé Ƒóŕĝóţţéñ]",
+        "text": "[Ţĥé çŕóŵñ ƀéļóñĝš ţó ñó ļíñé šţíļļ ñáɱéð íñ Éášţƀŕóóķ ŕéçóŕðš. Ţĥŕéé óļð ɱéɱóŕíáļš šţáñð ñéáŕ ţĥé ñóŕţĥéŕñ ƀáţţļéƒíéļð: Çáþţáíñ Áļðŕéñ, Ĥíĝĥ Þŕíéšţ Ɱáļŕíç, áñð Ŕóýáļ Áššáššíñ Ʋóšš. Ţóúçĥ éáçĥ šţóñé áñð ļíšţéñ, {playerName}. Ţĥé ðéáð ɱáý ŕéɱéɱƀéŕ ŵĥáţ ţĥé ļíʋíñĝ éŕášéð.]",
+        "completion": "[Áļðŕéñ ŕéɱáíñéð ļóýáļ, Ɱáļŕíç ŕéƒúšéð ţó áççéþţ ðéáţĥ, áñð Ʋóšš šáŵ ţĥé ðáñĝéŕ ƀéƒóŕé áñýóñé éļšé. Áļļ ţĥŕéé šéŕʋéð Ķíñĝ Ñýţĥŕáẋíš.]",
+        "objectives": {
+          "0": {
+            "label": "[Ʋíšíóñ áţ ţĥé Ĝŕáʋé óƒ Çáþţáíñ Áļðŕéñ]"
+          },
+          "1": {
+            "label": "[Ʋíšíóñ áţ ţĥé Ĝŕáʋé óƒ Ĥíĝĥ Þŕíéšţ Ɱáļŕíç]"
+          },
+          "2": {
+            "label": "[Ʋíšíóñ áţ ţĥé Ĝŕáʋé óƒ Ŕóýáļ Áššáššíñ Ʋóšš]"
+          }
+        }
+      },
+      "q_nythraxis_sealed_crypt": {
+        "title": "[Ţĥé Áƀáñðóñéð Çŕýþţ]",
+        "text": "[Ţĥé ʋíšíóñš þóíñţ ţó áñ áƀáñðóñéð çŕýþţ ƀéñéáţĥ ţĥé óļð ŕúíñš. Íƒ ţĥé ŕéçóŕðš áŕé ţŕúé, Ţĥóŕñþéáķ šéáļéð Ñýţĥŕáẋíš ƀéļóŵ áƒţéŕ Ɱáļŕíç'š ŕíţúáļ ţŵíšţéð ĥíɱ íñţó á ðéáţĥļéšš ŕúļéŕ. Ŕéçóʋéŕ ţĥé Çáþţáíñ'š Çŕéšţ, ţĥé Þŕíéšţ'š Šíĝíļ, áñð ţĥé Ŕóýáļ Šéáļ ƒŕóɱ ţĥé çóŕŕúþţéð ŕéɱáíñš ŵíţĥíñ.]",
+        "completion": "[Ţĥéšé ŕéļíçš áŕé ƀóúñð ţó ţĥé šéáļ. Šóɱéţĥíñĝ ƀéñéáţĥ Éášţƀŕóóķ íš ƀéĝíññíñĝ ţó ŵáķé.]",
+        "objectives": {
+          "0": {
+            "label": "[Çáþţáíñ'š Çŕéšţ]"
+          },
+          "1": {
+            "label": "[Þŕíéšţ'š Šíĝíļ]"
+          },
+          "2": {
+            "label": "[Ŕóýáļ Šéáļ]"
+          }
+        }
+      },
+      "q_nythraxis_bound_guardian": {
+        "title": "[Ţĥé Ɓóúñð Ĝúáŕðíáñ]",
+        "text": "[Ţĥé šúŕʋíʋóŕš óƒ Ţĥóŕñþéáķ ƒéáŕéð šóɱéóñé ŵóúļð ţŕý ţó ƀŕéáķ ţĥé šéáļ, šó ţĥéý ɱáðé á ĝúáŕðíáñ ƒŕóɱ ţĥé ƀóñéš óƒ ŵáŕŕíóŕš ŵĥó ðíéð íñ ţĥé ķíñĝðóɱ'š ƒíñáļ ðáýš. Ţáķé ţĥé Çŕýþţ Ķéýšţóñé ţó ţĥé ŕíţúáļ çíŕçļé áƀóʋé ţĥé áƀáñðóñéð çŕýþţ. Úšé íţ ţĥéŕé, ţĥéñ šţáñð ƒášţ.]",
+        "completion": "[Ţĥé šíĝñéţ þŕóʋéš íţ. Ţĥé ƒóŕĝóţţéñ ķíñĝ ƀéñéáţĥ Éášţƀŕóóķ ŵáš Ñýţĥŕáẋíš.]",
+        "objectives": {
+          "0": {
+            "label": "[Çŕýþţ Ķéýšţóñé úšéð áţ ţĥé ŕíţúáļ çíŕçļé]"
+          },
+          "1": {
+            "label": "[Ţĥé Ɓóúñð Ĝúáŕðíáñ ðéƒéáţéð]"
+          },
+          "2": {
+            "label": "[Ķíñĝ'š Šíĝñéţ]"
+          }
+        }
+      },
+      "q_nythraxis_deathless_king": {
+        "title": "[Ñýţĥŕáẋíš, Šçóúŕĝé óƒ Éášţƀŕóóķ]",
+        "text": "[Ķíñĝ Ñýţĥŕáẋíš ŵáš çáŕŕíéð ĥóɱé ƒŕóɱ ĥíš ƒíñáļ ƀáţţļé ðýíñĝ, ƀúţ Ɱáļŕíç ŵóúļð ñóţ ļéţ ĥíɱ ŕéšţ. Ţĥé ŕíţúáļ ŕéţúŕñéð á ţýŕáñţ ƀóúñð ţó ðáŕķ ɱáĝíç, áñð Ţĥóŕñþéáķ ƒéļļ íñţó çĥáóš. Šţáñð ŵíţĥ ɱé, {playerName}. Ļóóķ íñţó ţĥé ɱéɱóŕý óƒ ţĥé šéáļ áñð ļéáŕñ ŵĥáţ ñóŵ šţíŕš ƀéñéáţĥ Éášţƀŕóóķ.]",
+        "completion": "[Ƒóŕ çéñţúŕíéš ţĥé šéáļ ĥéļð. Ñóŵ íţ ŵéáķéñš. Íƒ Ñýţĥŕáẋíš ŕíšéš áĝáíñ, Éášţƀŕóóķ ŵíļļ ƀéçóɱé á ķíñĝðóɱ óƒ ţĥé ðéáð. Ýóú áŕé ñóŵ áţţúñéð ţó éñţéŕ Ţĥé Çŕýþţ óƒ Ñýţĥŕáẋíš.]",
+        "objectives": {
+          "0": {
+            "label": "[Ʋíšíóñ óƒ Ñýţĥŕáẋíš ŵíţñéššéð]"
+          },
+          "1": {
+            "label": "[Ɓŕóţĥéŕ Áļðŕíç šþóķéñ ţó]"
+          }
+        }
+      },
       "q_mogger_tracks": {
         "title": "[Ɱóĝĝéŕ'š Ţŕáíļ]",
         "text": "[Ɓéƒóŕé ýóú ţáķé ţĥé ŕóáð ñóŕţĥ, Éášţƀŕóóķ ĥáš óñé ļášţ ţĥóŕñ íñ íţš šíðé: Ɱóĝĝéŕ. Ţĥé ƀŕúţé ĥáš ƀééñ ţŕáɱþļíñĝ ţĥé ļóŵéŕ ɱéáðóŵ áñð ðŕíʋíñĝ ţĥé ƀóáŕš ɱáð. Çļéáŕ ţĥé ɱéáðóŵ áŕóúñð ĥíš ţŕáíļ šó ŵé çáñ šéé ŵĥéŕé ĥé ļáíŕš.]",
@@ -53801,6 +55866,11 @@ export const en_XA: EnTranslations = {
         "name": "[Ĝŕáʋéŵýŕɱ Šáñçţúɱ]",
         "enterText": "[Ţĥé áíŕ ĝóéš çóļð. Šóɱéţĥíñĝ ʋášţ ƀŕéáţĥéš ƀéļóŵ...]",
         "leaveText": "[Ýóú šţáĝĝéŕ ƀáçķ íñţó ţĥé ɱóúñţáíñ ŵíñð.]"
+      },
+      "nythraxis_crypt": {
+        "name": "[Áƀáñðóñéð Çŕýþţ]",
+        "enterText": "[Ýóú ðéšçéñð íñţó ţĥé áƀáñðóñéð çŕýþţ ƀéñéáţĥ ţĥé ƒóŕĝóţţéñ ŕúíñš óƒ Ţĥóŕñþéáķ.]",
+        "leaveText": "[Ýóú çļíɱƀ ƀáçķ óúţ óƒ ţĥé áƀáñðóñéð çŕýþţ íñţó ţĥé ɱóúñţáíñ ŵíñð.]"
       },
       "drowned_temple": {
         "name": "[Ţĥé Ðŕóŵñéð Ţéɱþļé]",

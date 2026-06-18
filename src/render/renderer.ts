@@ -179,6 +179,7 @@ function npcDisplayName(npcId: string): string {
 }
 
 function dungeonDisplayName(dungeonId: string): string {
+  if (dungeonId === 'nythraxis_crypt') return DUNGEON_LIST.find((d) => d.id === dungeonId)?.name ?? 'Abandoned Crypt';
   return tEntity({ kind: 'dungeon', id: dungeonId, field: 'name' });
 }
 
@@ -690,6 +691,10 @@ export class Renderer {
   // Shared object-view resources: views must not own materials/textures, or
   // interest churn leaks them (removeView only disposes per-view geometry).
   private doorStoneMat: THREE.Material | null = null;
+  private doorMineRockMat: THREE.Material | null = null;
+  private doorMineWoodMat: THREE.Material | null = null;
+  private doorMineDarkMat: THREE.Material | null = null;
+  private doorLanternMat: THREE.Material | null = null;
   private sparkleMat: THREE.SpriteMaterial | null = null;
 
   private createView(e: Entity): void {
@@ -699,6 +704,7 @@ export class Renderer {
     let height = 1.2;
     let sparkle: THREE.Sprite | undefined;
     let objectMesh: THREE.Object3D | undefined;
+    const isQuestVision = e.kind === 'mob' && e.templateId.startsWith('vision_');
 
     let portal: THREE.Mesh | undefined;
     if (e.kind === 'object' && (e.templateId === 'dungeon_door' || e.templateId === 'dungeon_exit')) {
@@ -709,52 +715,61 @@ export class Renderer {
       height = 4.6;
       this.doorStoneMat ??= new THREE.MeshLambertMaterial({ color: 0x6a6a72 });
       const stone = this.doorStoneMat;
-      // carved stone arch: pointed outer/inner outline + keystone + plinths
-      // (no raw pillar-and-lintel boxes)
-      const outer = new THREE.Shape();
-      outer.moveTo(-2.1, 0);
-      outer.lineTo(-2.1, 3.1);
-      outer.quadraticCurveTo(-2.1, 4.85, 0, 5.05);
-      outer.quadraticCurveTo(2.1, 4.85, 2.1, 3.1);
-      outer.lineTo(2.1, 0);
-      outer.closePath();
-      const inner = new THREE.Path();
-      inner.moveTo(-1.3, -0.5);
-      inner.lineTo(-1.3, 2.9);
-      inner.quadraticCurveTo(-1.3, 4.05, 0, 4.22);
-      inner.quadraticCurveTo(1.3, 4.05, 1.3, 2.9);
-      inner.lineTo(1.3, -0.5);
-      inner.closePath();
-      outer.holes.push(inner);
-      const archGeo = new THREE.ExtrudeGeometry(outer, {
-        depth: 0.7, bevelEnabled: true, bevelThickness: 0.07, bevelSize: 0.07, bevelSegments: 1,
-      });
-      archGeo.translate(0, 0, -0.35);
-      const arch = new THREE.Mesh(archGeo, stone);
-      arch.castShadow = true;
-      body!.add(arch);
-      const keystone = new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.0, 0.95), stone);
-      keystone.position.set(0, 4.75, 0);
-      keystone.castShadow = true;
-      body!.add(keystone);
-      for (const sx of [-1.7, 1.7]) {
-        const plinth = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.7, 1.15), stone);
-        plinth.position.set(sx, 0.35, 0);
-        plinth.castShadow = true;
-        body!.add(plinth);
+      if (entering && e.dungeonId === 'nythraxis_crypt') {
+        const clickMat = new THREE.MeshBasicMaterial({
+          color: 0x000000, transparent: true, opacity: 0.001, depthWrite: false,
+        });
+        const clickBox = new THREE.Mesh(new THREE.BoxGeometry(4.6, 4.2, 2.4), clickMat);
+        clickBox.position.y = 2.1;
+        body!.add(clickBox);
+      } else {
+        // carved stone arch: pointed outer/inner outline + keystone + plinths
+        // (no raw pillar-and-lintel boxes)
+        const outer = new THREE.Shape();
+        outer.moveTo(-2.1, 0);
+        outer.lineTo(-2.1, 3.1);
+        outer.quadraticCurveTo(-2.1, 4.85, 0, 5.05);
+        outer.quadraticCurveTo(2.1, 4.85, 2.1, 3.1);
+        outer.lineTo(2.1, 0);
+        outer.closePath();
+        const inner = new THREE.Path();
+        inner.moveTo(-1.3, -0.5);
+        inner.lineTo(-1.3, 2.9);
+        inner.quadraticCurveTo(-1.3, 4.05, 0, 4.22);
+        inner.quadraticCurveTo(1.3, 4.05, 1.3, 2.9);
+        inner.lineTo(1.3, -0.5);
+        inner.closePath();
+        outer.holes.push(inner);
+        const archGeo = new THREE.ExtrudeGeometry(outer, {
+          depth: 0.7, bevelEnabled: true, bevelThickness: 0.07, bevelSize: 0.07, bevelSegments: 1,
+        });
+        archGeo.translate(0, 0, -0.35);
+        const arch = new THREE.Mesh(archGeo, stone);
+        arch.castShadow = true;
+        body!.add(arch);
+        const keystone = new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.0, 0.95), stone);
+        keystone.position.set(0, 4.75, 0);
+        keystone.castShadow = true;
+        body!.add(keystone);
+        for (const sx of [-1.7, 1.7]) {
+          const plinth = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.7, 1.15), stone);
+          plinth.position.set(sx, 0.35, 0);
+          plinth.castShadow = true;
+          body!.add(plinth);
+        }
+        const portalMat = new THREE.MeshBasicMaterial({
+          color: tint, transparent: true, opacity: 0.55, side: THREE.DoubleSide,
+          blending: THREE.AdditiveBlending, depthWrite: false,
+        });
+        if (!this.lowGfx) portalMat.color.multiplyScalar(PORTAL_BOOST); // HDR swirl -> bloom
+        portal = new THREE.Mesh(new THREE.CircleGeometry(1.55, 24), portalMat);
+        portal.position.y = 2.15;
+        portal.scale.set(1, 1.35, 1);
+        body!.add(portal);
+        const glow = new THREE.PointLight(tint, 9, 15, 2);
+        glow.position.y = 2.4;
+        body!.add(glow);
       }
-      const portalMat = new THREE.MeshBasicMaterial({
-        color: tint, transparent: true, opacity: 0.55, side: THREE.DoubleSide,
-        blending: THREE.AdditiveBlending, depthWrite: false,
-      });
-      if (!this.lowGfx) portalMat.color.multiplyScalar(PORTAL_BOOST); // HDR swirl -> bloom
-      portal = new THREE.Mesh(new THREE.CircleGeometry(1.55, 24), portalMat);
-      portal.position.y = 2.15;
-      portal.scale.set(1, 1.35, 1);
-      body!.add(portal);
-      const glow = new THREE.PointLight(tint, 9, 15, 2);
-      glow.position.y = 2.4;
-      body!.add(glow);
       objectMesh = body!;
     } else if (e.kind === 'object') {
       const built = buildGroundQuestObject(e.objectItemId ?? '', e.id);
@@ -780,7 +795,7 @@ export class Renderer {
     if (visual) {
       // raycasting skinned meshes is expensive — pick against the invisible
       // capsule proxy instead (three's raycaster ignores `visible`)
-      visual.clickProxy.userData.entityId = e.id;
+      if (!isQuestVision) visual.clickProxy.userData.entityId = e.id;
       clickTarget = visual.clickProxy;
     } else {
       body!.scale.multiplyScalar(e.scale);
@@ -791,7 +806,7 @@ export class Renderer {
     group.position.set(e.pos.x, e.pos.y, e.pos.z);
     group.userData.entityId = e.id;
     this.scene.add(group);
-    this.clickTargets.push(clickTarget);
+    if (!isQuestVision) this.clickTargets.push(clickTarget);
 
     // nameplate
     const np = document.createElement('div');
@@ -825,7 +840,7 @@ export class Renderer {
     marker.className = 'np-marker';
     const nameEl = document.createElement('div');
     nameEl.className = 'np-name';
-    nameEl.textContent = e.name;
+    nameEl.textContent = e.kind === 'object' ? objectDisplayName(e) : e.name;
     const hpBar = document.createElement('div');
     hpBar.className = 'np-hpbar';
     const hpFill = document.createElement('div');
@@ -1180,7 +1195,7 @@ export class Renderer {
       const active = polyed && v.sheepVisual ? v.sheepVisual
         : bear && v.bearVisual ? v.bearVisual
           : cat && v.catVisual ? v.catVisual : v.visual;
-      const ghost = ghostWolf || shouldRenderStealthGhost(this.sim.playerId, e);
+      const ghost = ghostWolf || shouldRenderStealthGhost(this.sim.playerId, e) || e.templateId.startsWith('vision_');
       active.setGhost(ghost);
       v.visual.root.visible = active === v.visual;
       // distant rigs swap to the single-draw baked idle-pose mesh

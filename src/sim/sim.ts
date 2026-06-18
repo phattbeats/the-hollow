@@ -67,6 +67,16 @@ const JUMP_VELOCITY = 6; // apex = v^2/2g ≈ 1.125 yd
 const MELEE_ARC = 2.2; // radians half-arc within which melee swings connect
 const FALL_SAFE_DISTANCE = 12; // yards of free fall before damage
 const OBJECT_RESPAWN = 30;
+const NYTHRAXIS_RELIC_SUMMONS: Record<string, string> = {
+  captains_crest: 'fallen_captain_aldren',
+  priests_sigil: 'corrupted_priest_malric',
+  royal_seal: 'deathstalker_voss',
+};
+const NYTHRAXIS_CRYPT_QUESTS = new Set([
+  'q_nythraxis_sealed_crypt',
+  'q_nythraxis_bound_guardian',
+  'q_nythraxis_deathless_king',
+]);
 const PARTY_MAX = 5;
 const PARTY_XP_RANGE = 80; // yards: members this close share kill xp/credit
 const DUEL_COUNTDOWN = 3;
@@ -252,6 +262,7 @@ export interface InstanceSlot {
   slot: number;
   partyKey: string | null; // party id or 'solo:<pid>'
   mobIds: number[];
+  objectIds: number[];
   exitId: number | null;
   emptyFor: number;
 }
@@ -596,14 +607,15 @@ export class Sim {
 
     // Dungeon entrances + their private instance slots
     for (const dungeon of DUNGEON_LIST) {
-      const door = createGroundObject(this.nextId++, '', dungeon.name, this.groundPos(dungeon.doorPos.x, dungeon.doorPos.z));
+      const doorName = dungeon.id === 'nythraxis_crypt' ? 'Abandoned Crypt' : dungeon.name;
+      const door = createGroundObject(this.nextId++, '', doorName, this.groundPos(dungeon.doorPos.x, dungeon.doorPos.z));
       door.templateId = 'dungeon_door';
       door.dungeonId = dungeon.id;
       door.objectItemId = null;
       door.lootable = true; // interactable
       this.addEntity(door);
       for (let i = 0; i < INSTANCE_SLOT_COUNT; i++) {
-        this.instances.push({ dungeonId: dungeon.id, slot: i, partyKey: null, mobIds: [], exitId: null, emptyFor: 0 });
+        this.instances.push({ dungeonId: dungeon.id, slot: i, partyKey: null, mobIds: [], objectIds: [], exitId: null, emptyFor: 0 });
       }
     }
 
@@ -1225,14 +1237,20 @@ export class Sim {
     this.tickCount++;
     this.updatePendingMobRespawns();
 
+    const despawnIds: number[] = [];
     for (const e of this.entities.values()) {
       copyPos(e.prevPos, e.pos);
       e.prevFacing = e.facing;
+      if (e.despawnTimer !== undefined) {
+        e.despawnTimer -= DT;
+        if (e.despawnTimer <= 0) despawnIds.push(e.id);
+      }
       if (e.overheadEmoteId && this.time >= e.overheadEmoteUntil) {
         e.overheadEmoteId = null;
         e.overheadEmoteUntil = 0;
       }
     }
+    for (const id of despawnIds) this.dropEntity(id);
 
     for (const meta of this.players.values()) {
       const p = this.entities.get(meta.entityId);
@@ -3834,6 +3852,15 @@ export class Sim {
       return;
     }
 
+    if (mob.templateId.startsWith('vision_')) {
+      mob.hostile = false;
+      mob.aiState = 'idle';
+      mob.inCombat = false;
+      mob.aggroTargetId = null;
+      clearThreat(mob);
+      return;
+    }
+
     // Self-healing safety net (#113/#99): every mob spawns hostile and only
     // taming clears that (which always assigns an owner). A live, owner-less,
     // non-hostile mob is therefore a leak — exactly the "immortal, invalid
@@ -5130,6 +5157,8 @@ export class Sim {
     const obj = this.entities.get(objId);
     if (!obj || obj.kind !== 'object' || !obj.lootable || !obj.objectItemId) return;
     if (dist2d(p.pos, obj.pos) > INTERACT_RANGE) { this.error(meta.entityId, 'Too far away.'); return; }
+    if (this.activateNythraxisRelic(obj, meta)) return;
+    if (this.interactObjectForQuests(obj, meta)) return;
     const def = ITEMS[obj.objectItemId];
     if (def?.questId) {
       const qp = meta.questLog.get(def.questId);
@@ -5139,6 +5168,10 @@ export class Sim {
       }
       const quest = QUESTS[def.questId];
       const objIdx = quest.objectives.findIndex((o) => o.type === 'collect' && o.itemId === obj.objectItemId);
+      if (objIdx < 0) {
+        this.error(meta.entityId, def.pickupEnough ?? `${def.name} offers nothing more.`);
+        return;
+      }
       if (objIdx >= 0 && this.countItem(obj.objectItemId, meta.entityId) >= quest.objectives[objIdx].count) {
         this.error(meta.entityId, def.pickupEnough ?? 'You have enough of those.');
         return;
@@ -5149,10 +5182,146 @@ export class Sim {
     obj.respawnTimer = OBJECT_RESPAWN;
   }
 
+  private activateNythraxisRelic(obj: Entity, meta: PlayerMeta): boolean {
+    if (!obj.objectItemId) return false;
+    const mobId = NYTHRAXIS_RELIC_SUMMONS[obj.objectItemId];
+    if (!mobId) return false;
+    const qp = meta.questLog.get('q_nythraxis_sealed_crypt');
+    if (!qp || qp.state !== 'active') {
+      const def = ITEMS[obj.objectItemId];
+      this.error(meta.entityId, def?.pickupDeny ?? 'The relic is bound by the sealed crypt.');
+      return true;
+    }
+    const quest = QUESTS.q_nythraxis_sealed_crypt;
+    const objectiveIndex = quest.objectives.findIndex((o) => o.type === 'collect' && o.itemId === obj.objectItemId);
+    if (objectiveIndex >= 0 && this.countItem(obj.objectItemId, meta.entityId) >= quest.objectives[objectiveIndex].count) {
+      const def = ITEMS[obj.objectItemId];
+      this.error(meta.entityId, def?.pickupEnough ?? 'You have already recovered this relic.');
+      return true;
+    }
+    this.summonQuestMob(mobId, obj.pos, meta.entityId);
+    obj.lootable = false;
+    obj.respawnTimer = OBJECT_RESPAWN;
+    return true;
+  }
+
+  private interactObjectForQuests(obj: Entity, meta: PlayerMeta): boolean {
+    if (!obj.objectItemId) return false;
+    let handled = false;
+    for (const qp of meta.questLog.values()) {
+      if (qp.state !== 'active') continue;
+      const quest = QUESTS[qp.questId];
+      quest.objectives.forEach((objective, objectiveIndex) => {
+        if (objective.type !== 'interact' || objective.targetObjectItemId !== obj.objectItemId) return;
+        handled = true;
+        if (qp.counts[objectiveIndex] >= objective.count) return;
+        if (obj.objectItemId === 'crypt_ritual_circle' && !this.countItem('crypt_keystone', meta.entityId)) {
+          this.error(meta.entityId, 'The ritual circle is silent without the Crypt Keystone.');
+          return;
+        }
+        qp.counts[objectiveIndex]++;
+        meta.counters.questProgress++;
+        this.emit({ type: 'questProgress', questId: qp.questId, text: `${objective.label}: ${qp.counts[objectiveIndex]}/${objective.count}`, pid: meta.entityId });
+        const visionId = this.summonQuestVision(obj.objectItemId, obj.pos);
+        this.emitQuestObjectVision(obj.objectItemId, meta.entityId, visionId);
+        if (obj.objectItemId === 'crypt_ritual_circle') this.summonQuestMob('bound_guardian', obj.pos, meta.entityId);
+        this.checkQuestReady(qp, meta);
+      });
+    }
+    return handled;
+  }
+
+  private emitQuestObjectVision(itemId: string, pid: number, entityId?: number | null): void {
+    const text = itemId === 'grave_sir_aldren'
+      ? 'Vision: Captain Aldren says, "My king was a good man. I swore my blade to him. I would do so again."'
+        : itemId === 'grave_high_priest_malric'
+          ? 'Vision: High Priest Malric says, "There had to be another way. I could not let him die. I only wanted to save him."'
+        : itemId === 'grave_captain_voss'
+          ? 'Vision: Royal Assassin Voss says, "The king was already dead. Malric refused to accept it. We should have let him rest. If you find the crypt... end this."'
+          : itemId === 'crypt_ritual_circle'
+            ? 'The Crypt Keystone turns cold as the seal breaks.'
+            : itemId === 'nythraxis_vision'
+              ? 'Vision: Thornpeak collapses as Nythraxis rises deathless, and survivors seal him beneath the kingdom.'
+              : null;
+    if (text) this.emit({ type: 'log', text, color: '#b8d7ff', pid, entityId: entityId ?? undefined });
+  }
+
+  private summonQuestVision(itemId: string, pos: Vec3): number | null {
+    const templateId = itemId === 'grave_sir_aldren'
+      ? 'vision_aldren_warrior'
+      : itemId === 'grave_high_priest_malric'
+        ? 'vision_malric_mage'
+        : itemId === 'grave_captain_voss'
+          ? 'vision_deathstalker_voss'
+          : null;
+    if (!templateId) return null;
+    const existing = [...this.entities.values()].find((e) => e.kind === 'mob' && e.templateId === templateId && !e.dead && dist2d(e.pos, pos) < 10);
+    if (existing) return existing.id;
+    const template = MOBS[templateId];
+    if (!template) return null;
+    const mob = createMob(this.nextId++, template, template.maxLevel, this.groundPos(pos.x, pos.z + 2.5));
+    mob.hostile = false;
+    mob.aiState = 'idle';
+    mob.lootable = false;
+    mob.loot = null;
+    mob.despawnTimer = 8;
+    mob.facing = Math.PI;
+    mob.prevFacing = mob.facing;
+    mob.swingTimer = Infinity;
+    this.addEntity(mob);
+    return mob.id;
+  }
+
+  private summonQuestMob(templateId: string, pos: Vec3, ownerPid: number): void {
+    const existing = [...this.entities.values()].some((e) => e.kind === 'mob' && e.templateId === templateId && !e.dead && dist2d(e.pos, pos) < 18);
+    if (existing) return;
+    const template = MOBS[templateId];
+    if (!template) return;
+    const mob = createMob(this.nextId++, template, template.maxLevel, this.groundPos(pos.x, pos.z + 3));
+    mob.facing = Math.PI;
+    mob.prevFacing = mob.facing;
+    mob.tappedById = ownerPid;
+    this.addEntity(mob);
+    const owner = this.entities.get(ownerPid);
+    if (owner && owner.kind === 'player' && !owner.dead) this.aggroMob(mob, owner, false);
+    const inst = this.instances.find((i) => {
+      if (i.partyKey === null) return false;
+      const origin = this.instanceOriginOf(i);
+      return Math.abs(mob.pos.x - origin.x) < 120 && Math.abs(mob.pos.z - origin.z) < 250;
+    });
+    if (inst) inst.mobIds.push(mob.id);
+    this.emit({ type: 'log', text: `${template.name} awakens!`, color: '#ff6666' });
+    this.emitQuestMobDialogue(templateId, mob.id);
+  }
+
+  private emitQuestMobDialogue(templateId: string, entityId: number): void {
+    const text = templateId === 'fallen_captain_aldren'
+      ? 'Fallen Captain Aldren yells, "None shall disturb the king\'s rest! For Thornpeak!"'
+      : templateId === 'corrupted_priest_malric'
+        ? 'Corrupted Priest Malric yells, "Death shall never claim my king! The ritual must endure!"'
+        : templateId === 'deathstalker_voss'
+          ? 'Deathstalker Voss yells, "You will not reach him! The king must endure!"'
+          : null;
+    if (text) this.emit({ type: 'log', text, color: '#ff9999', entityId });
+  }
+
   interact(pid?: number): void {
     const r = this.resolve(pid);
     if (!r) return;
     const p = r.e;
+    if (p.targetId !== null) {
+      const target = this.entities.get(p.targetId);
+      if (target && dist2d(p.pos, target.pos) <= INTERACT_RANGE + 2) {
+        if (target.kind === 'mob' && target.lootable) { this.lootCorpse(target.id, p.id); return; }
+        if (target.kind === 'object' && target.lootable) {
+          if (target.templateId === 'dungeon_door' && target.dungeonId) { this.enterDungeon(target.dungeonId, p.id); return; }
+          if (target.templateId === 'dungeon_exit') { this.leaveDungeon(p.id); return; }
+          this.pickUpObject(target.id, p.id);
+          return;
+        }
+        if (target.kind === 'npc') { this.talkToNpc(target.id, p.id); return; }
+      }
+    }
     let bestCorpse: Entity | null = null;
     let bestCorpseD2 = INTERACT_RANGE * INTERACT_RANGE;
     let bestObj: Entity | null = null;
@@ -5184,6 +5353,7 @@ export class Sim {
     const { meta } = r;
     const npc = this.entities.get(npcId);
     if (!npc || npc.kind !== 'npc') return;
+    if (this.interactNpcForQuests(npc, meta)) return;
     for (const qid of npc.questIds) {
       if (QUESTS[qid].turnInNpcId === npc.templateId && meta.questLog.get(qid)?.state === 'ready') {
         this.turnInQuest(qid, meta.entityId);
@@ -5196,6 +5366,24 @@ export class Sim {
         return;
       }
     }
+  }
+
+  private interactNpcForQuests(npc: Entity, meta: PlayerMeta): boolean {
+    let progressed = false;
+    for (const qp of meta.questLog.values()) {
+      if (qp.state !== 'active') continue;
+      const quest = QUESTS[qp.questId];
+      quest.objectives.forEach((objective, objectiveIndex) => {
+        if (objective.type !== 'interact' || objective.targetNpcId !== npc.templateId) return;
+        if (qp.counts[objectiveIndex] >= objective.count) return;
+        qp.counts[objectiveIndex]++;
+        progressed = true;
+        meta.counters.questProgress++;
+        this.emit({ type: 'questProgress', questId: qp.questId, text: `${objective.label}: ${qp.counts[objectiveIndex]}/${objective.count}`, pid: meta.entityId });
+        this.checkQuestReady(qp, meta);
+      });
+    }
+    return progressed;
   }
 
   // -------------------------------------------------------------------------
@@ -5853,6 +6041,7 @@ export class Sim {
 
   isHostileTo(attacker: Entity, target: Entity): boolean {
     if (target.kind === 'mob') {
+      if (target.templateId.startsWith('vision_')) return false;
       if (target.ownerId !== null) {
         const owner = this.entities.get(target.ownerId);
         return !!owner && owner.kind === 'player' && this.isHostileTo(attacker, owner);
@@ -7223,6 +7412,10 @@ export class Sim {
     const r = this.resolve(pid);
     const dungeon = DUNGEONS[dungeonId];
     if (!r || !dungeon || r.e.dead) return;
+    if (dungeonId === 'nythraxis_crypt' && !this.canEnterNythraxisCrypt(r.meta)) {
+      this.error(r.meta.entityId, 'The crypt entrance is sealed to you.');
+      return;
+    }
     const key = this.instanceKeyFor(r.meta.entityId);
     let inst = this.instances.find((i) => i.dungeonId === dungeonId && i.partyKey === key);
     if (!inst) {
@@ -7244,6 +7437,15 @@ export class Sim {
     p.autoAttack = false;
     inst.emptyFor = 0;
     this.emit({ type: 'log', text: dungeon.enterText, color: '#b9f', pid: r.meta.entityId });
+  }
+
+  private canEnterNythraxisCrypt(meta: PlayerMeta): boolean {
+    for (const questId of NYTHRAXIS_CRYPT_QUESTS) {
+      const qp = meta.questLog.get(questId);
+      if (qp && (qp.state === 'active' || qp.state === 'ready')) return true;
+      if (meta.questsDone.has(questId)) return true;
+    }
+    return false;
   }
 
   leaveDungeon(pid?: number): void {
@@ -7285,6 +7487,11 @@ export class Sim {
       this.addEntity(mob);
       inst.mobIds.push(mob.id);
     }
+    for (const objDef of dungeon.objects ?? []) {
+      const obj = createGroundObject(this.nextId++, objDef.itemId, objDef.name, this.groundPos(origin.x + objDef.x, origin.z + objDef.z));
+      this.addEntity(obj);
+      inst.objectIds.push(obj.id);
+    }
     const exit = createGroundObject(this.nextId++, '', `${dungeon.name} Exit`, this.groundPos(origin.x + dungeon.exitOffset.x, origin.z + dungeon.exitOffset.z));
     exit.templateId = 'dungeon_exit';
     exit.dungeonId = dungeon.id;
@@ -7305,9 +7512,13 @@ export class Sim {
       }
       this.dropEntity(id);
     }
+    for (const id of inst.objectIds) {
+      if (this.entities.has(id)) this.dropEntity(id);
+    }
     if (inst.exitId !== null) this.dropEntity(inst.exitId);
     inst.partyKey = null;
     inst.mobIds = [];
+    inst.objectIds = [];
     inst.exitId = null;
     inst.emptyFor = 0;
   }
