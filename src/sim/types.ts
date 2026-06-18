@@ -218,6 +218,9 @@ export interface MobTemplate {
   // damage-over-time frost burn on the struck target — the frost twin of venom
   // (chilling/elemental creatures). Reuses the 'dot' aura; school defaults to 'frost'.
   frostbite?: { chance: number; perTick: number; interval: number; duration: number; name: string; school?: string };
+  // Burning fuse: a landed swing may set a refreshing fire DoT (the fire-school
+  // sibling of venom; sappers, ember-touched creatures). Defaults to the 'fire' school.
+  smolder?: { chance: number; perTick: number; interval: number; duration: number; name: string; school?: string };
   // On-death mechanic ("Death Throes"): a volatile creature does not detonate
   // the instant it dies. Its corpse destabilizes for `delay` seconds (a
   // telegraph players can run from), then bursts for min..max `school` damage
