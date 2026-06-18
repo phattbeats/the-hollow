@@ -185,6 +185,11 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
       { itemId: 'linen_scrap', chance: 0.2 },
     ],
     scale: 0.8, color: 0x52be80,
+    // Mudfin Hex: the skulker's oracle-chant briefly turns a foe into a critter.
+    // Low chance and it breaks the instant the victim takes damage (the murloc's
+    // own next bite ends it), so it's a brief flavor incap — but a murloc pack
+    // can chain it just long enough to make a careless pull dangerous.
+    polymorphHex: { chance: 0.12, duration: 4, name: 'Mudfin Hex', school: 'nature' },
   },
   tunnel_rat: {
     id: 'tunnel_rat', name: 'Tunnel Rat Digger', minLevel: 4, maxLevel: 6, family: 'kobold',

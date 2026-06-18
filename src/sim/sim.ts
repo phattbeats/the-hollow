@@ -4381,6 +4381,27 @@ export class Sim {
         });
       }
     }
+    // Polymorph hex: a landed hit can briefly turn the victim into a critter,
+    // applying the same `polymorph` aura the mage's Polymorph uses — `isStunned`
+    // locks out every action and the aura is stripped the instant the victim
+    // takes damage (the caster's own next hit ends it), so it's a brief flavor
+    // incap, not a hard lock. Unlike the player-cast version we deliberately do
+    // NOT heal the victim to full on apply (a monster shouldn't restore its prey),
+    // but keep the aura's inherent regen tick. Guarded on `hostile` + a player
+    // target; `diminishedCrowdControlDuration` returns the full duration for a
+    // mob source (DR is PvP-only).
+    const hex = MOBS[mob.templateId]?.polymorphHex;
+    if (hex && mob.hostile && target.kind === 'player' && !target.dead && this.rng.chance(hex.chance)) {
+      const remaining = this.diminishedCrowdControlDuration(mob, target, 'polymorph', hex.duration);
+      if (remaining !== null) {
+        this.applyAura(target, {
+          id: `hex_${mob.templateId}`, name: hex.name, kind: 'polymorph',
+          remaining, duration: remaining, value: 0,
+          tickInterval: 1, tickTimer: 1,
+          sourceId: mob.id, school: hex.school ?? 'nature', breaksOnDamage: true,
+        });
+      }
+    }
   }
 
   // Apply (or refresh + stack) a corrosive armor-shred debuff on the victim.

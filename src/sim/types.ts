@@ -266,6 +266,11 @@ export interface MobTemplate {
   // `fear_incap` incapacitate aura the player-cast Fear uses, so `updateFearMovement`
   // drives the panicked run with no new aura kind or movement hook.
   dread?: { chance: number; duration: number; name: string; school?: Aura['school'] };
+  // Polymorph-on-hit (murloc oracle's hex): a landed hit can briefly turn the
+  // victim into a harmless critter. Reuses the exact `polymorph` aura the mage's
+  // Polymorph applies — `isStunned` locks out all actions and the aura breaks the
+  // instant the victim takes damage — so no new aura kind, gating, or UI.
+  polymorphHex?: { chance: number; duration: number; name: string; school?: Aura['school'] };
   // Pet mechanic: this creature is a ranged caster (warlock Imp) — instead of
   // closing to melee, it stays at `range` and hurls bolts of `school` damage.
   // updatePet reads this; the bolt damage comes from the mob's weapon range.
