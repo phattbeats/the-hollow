@@ -506,6 +506,9 @@
   #xpbar { width: 612px; height: 10px; background: #14101e; border: 1px solid #000; outline: 1px solid #3a3148;
     margin: 0 auto 4px; position: relative; border-radius: 2px; overflow: hidden; }
   #xpbar .fill { height: 100%; width: 0%; background: linear-gradient(#b85eff, #6a1bb0); transition: background .3s; }
+  /* Rested XP overlay (classic inn-rested bonus): a blue segment ahead of the fill. */
+  #xpbar .rested { position: absolute; top: 0; height: 100%; left: 0; width: 0%; background: linear-gradient(#5fb0ff, #2b6fd0); opacity: 0.5; }
+  #xpbar.rested { outline-color: #2b6fd0; box-shadow: 0 0 6px #4a9eff55; }
   #xpbar .ticks { position: absolute; inset: 0; display: flex; }
   #xpbar .ticks i { flex: 1; border-right: 1px solid #00000055; }
   #xpbar .label { position: absolute; inset: 0; font-size: 9px; color: #fff; text-align: center; line-height: 10px; text-shadow: 1px 1px 1px #000; opacity: 0; transition: opacity .15s; }
@@ -5348,7 +5351,7 @@
             </div>
           </div>
           <div id="petbar" class="panel"></div>
-          <div id="xpbar"><div class="fill"></div><div class="ticks"></div><div class="label"></div></div>
+          <div id="xpbar"><div class="fill"></div><div class="rested"></div><div class="ticks"></div><div class="label"></div></div>
           <div id="actionbar" class="panel"></div>
         </div>
         <div id="meters-window" class="panel">

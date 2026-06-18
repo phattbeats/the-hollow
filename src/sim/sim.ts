@@ -1,7 +1,7 @@
 import {
   ABILITIES, ARENA_SLOT_COUNT, CAMPS, CLASSES, DUNGEONS, DUNGEON_LIST, DungeonDef, arenaOrigin, dungeonAt,
   DUNGEON_X_THRESHOLD, GROUND_OBJECTS, GROUP_XP_BONUS, INSTANCE_SLOT_COUNT, isArenaPos,
-  ITEMS, MOBS, NPCS, PLAYER_START, QUESTS, questRewardItemId, abilitiesKnownAt, instanceOrigin,
+  ITEMS, MOBS, NPCS, PLAYER_START, PROPS, QUESTS, questRewardItemId, abilitiesKnownAt, instanceOrigin,
   DEEPFEN_SHALLOWS_LAKE,
   zoneAt, ZONES,
 } from './data';
@@ -69,6 +69,16 @@ const FALL_SAFE_DISTANCE = 12; // yards of free fall before damage
 const OBJECT_RESPAWN = 30;
 const PARTY_MAX = 5;
 const PARTY_XP_RANGE = 80; // yards: members this close share kill xp/credit
+// Rested XP (classic inn-rested bonus). Resting inside an inn footprint accrues a
+// pool that doubles KILL xp (200%) until spent — vanilla's signature casual-pacing
+// lever. Vanilla rate is 5% of a level per 8 in-game hours, capped at 1.5 levels.
+// The sim has no day/night clock, so "in-game hours" map to a fixed sim-seconds
+// constant (determinism: accrual is keyed off sim time via DT, never wall-clock).
+const RESTED_SECONDS_PER_GAME_HOUR = 60; // 1 in-game hour = 60 sim seconds
+const RESTED_FILL_FRACTION = 0.05; // a full "bubble" = 5% of the level's XP-to-level
+const RESTED_FILL_HOURS = 8; // accrued per this many in-game hours of resting
+const RESTED_CAP_LEVELS = 1.5; // pool clamps to 1.5 levels of XP, as in vanilla
+const RESTED_INN_PADDING = 2; // yards of slack around the inn footprint that still counts as resting
 const DUEL_COUNTDOWN = 3;
 // Ashen Coliseum 1v1 arena
 const ARENA_COUNTDOWN = 5; // gates pre-fight: heal up, no swings land yet
@@ -310,6 +320,9 @@ export interface PlayerMeta {
   lifetimeXp: number;
   prestigeRank: number;
   unlockedMilestones: Set<string>;
+  // Classic Rested XP pool (copper-less XP units). Accrues while resting in an
+  // inn, spent to double kill XP. Persisted in CharacterState.
+  restedXp: number;
   known: ResolvedAbility[];
   questLog: Map<string, QuestProgress>;
   questsDone: Set<string>;
@@ -390,6 +403,8 @@ export interface CharacterState {
   lifetimeXp?: number;
   prestigeRank?: number;
   unlockedMilestones?: string[];
+  // Rested XP pool. Optional so pre-rested-XP saves load cleanly (defaults to 0).
+  restedXp?: number;
   copper: number;
   hp: number;
   resource: number;
@@ -687,6 +702,7 @@ export class Sim {
       lifetimeXp: 0,
       prestigeRank: 0,
       unlockedMilestones: new Set(),
+      restedXp: 0,
       known: [],
       questLog: new Map(),
       questsDone: new Set(),
@@ -717,6 +733,7 @@ export class Sim {
       // existing characters from day one.
       meta.lifetimeXp = s.lifetimeXp ?? (xpToReachLevel(player.level) + Math.max(0, s.xp));
       meta.prestigeRank = s.prestigeRank ?? 0;
+      meta.restedXp = Math.max(0, s.restedXp ?? 0);
       if (s.unlockedMilestones) for (const id of s.unlockedMilestones) meta.unlockedMilestones.add(id);
       meta.copper = s.copper;
       meta.equipment = { ...s.equipment };
@@ -808,6 +825,7 @@ export class Sim {
       lifetimeXp: meta.lifetimeXp,
       prestigeRank: meta.prestigeRank,
       unlockedMilestones: [...meta.unlockedMilestones],
+      restedXp: meta.restedXp,
       copper: meta.copper,
       hp: e.hp,
       resource: e.resource,
@@ -886,6 +904,9 @@ export class Sim {
   }
   get lifetimeXp(): number {
     return this.primary.lifetimeXp;
+  }
+  get restedXp(): number {
+    return this.primary.restedXp;
   }
   get prestigeRank(): number {
     return this.primary.prestigeRank;
@@ -1243,6 +1264,7 @@ export class Sim {
         this.updateCasting(p, meta);
         this.updatePlayerAutoAttack(p, meta);
         this.updateRegen(p, meta);
+        this.updateRested(p, meta);
       }
       this.updateTimers(p);
       this.updateAuras(p);
@@ -3499,7 +3521,7 @@ export class Sim {
           // routes the award to lifetimeXp even at the cap, so the party gate no
           // longer blocks max-level members — it just forwards every positive award.
           const xpGain = Math.round((mobXpValue(e.level, mE.level) * eliteMult * bonus) / eligible.length);
-          if (xpGain > 0) this.grantXp(xpGain, member);
+          if (xpGain > 0) this.grantXp(xpGain, member, { fromKill: true });
           this.onMobKilledForQuests(e, member);
         }
         this.rollLoot(e, meta, eligible);
@@ -3507,9 +3529,52 @@ export class Sim {
     }
   }
 
-  grantXp(amount: number, meta: PlayerMeta = this.primary): void {
+  // True while the player is standing in (or just beside) an inn footprint and
+  // out of combat — the classic "resting" state that accrues rested XP.
+  private isResting(p: Entity): boolean {
+    if (p.inCombat) return false;
+    for (const b of PROPS.buildings) {
+      if (b.kind !== 'inn') continue;
+      // Point-in-rotated-rect: bring the player into the inn's local frame.
+      const dx = p.pos.x - b.x;
+      const dz = p.pos.z - b.z;
+      const cos = Math.cos(-b.rot);
+      const sin = Math.sin(-b.rot);
+      const lx = dx * cos - dz * sin;
+      const lz = dx * sin + dz * cos;
+      if (Math.abs(lx) <= b.w / 2 + RESTED_INN_PADDING && Math.abs(lz) <= b.d / 2 + RESTED_INN_PADDING) return true;
+    }
+    return false;
+  }
+
+  // Accrue rested XP while resting in an inn. Vanilla: 5% of the level's
+  // XP-to-level per 8 in-game hours, clamped to 1.5 levels. Deterministic —
+  // paced off DT, never wall-clock. No accrual at the cap (no level bar).
+  private updateRested(p: Entity, meta: PlayerMeta): void {
+    if (p.level >= MAX_LEVEL) return;
+    const cap = RESTED_CAP_LEVELS * xpForLevel(p.level);
+    if (meta.restedXp >= cap) {
+      meta.restedXp = cap;
+      return;
+    }
+    if (!this.isResting(p)) return;
+    const fillSeconds = RESTED_FILL_HOURS * RESTED_SECONDS_PER_GAME_HOUR;
+    const perSecond = (RESTED_FILL_FRACTION * xpForLevel(p.level)) / fillSeconds;
+    meta.restedXp = Math.min(cap, meta.restedXp + perSecond * DT);
+  }
+
+  grantXp(amount: number, meta: PlayerMeta = this.primary, opts?: { fromKill?: boolean }): void {
     const p = this.entities.get(meta.entityId);
     if (!p || amount <= 0) return;
+    // Rested XP bonus: classic vanilla only doubles KILL xp (not quests), and
+    // never past the cap (no level bar to advance). The bonus equals the rested
+    // amount drawn down, so the effective award is up to 2x while the pool lasts.
+    let restedBonus = 0;
+    if (opts?.fromKill && p.level < MAX_LEVEL && meta.restedXp > 0) {
+      restedBonus = Math.min(meta.restedXp, amount);
+      meta.restedXp -= restedBonus;
+      amount += restedBonus;
+    }
     // Lifetime XP accrues for EVERY award, including at the cap — this is what
     // makes post-cap progression work. It feeds the virtual level, the
     // leaderboard, and cosmetic milestones. The level bar below only advances
@@ -3517,7 +3582,7 @@ export class Sim {
     // rather than being discarded to gold/zero (FR-1.4).
     this.accrueLifetimeXp(amount, meta, p);
     meta.counters.xpGained += amount;
-    this.emit({ type: 'xp', amount, pid: p.id });
+    this.emit({ type: 'xp', amount, pid: p.id, ...(restedBonus > 0 ? { rested: restedBonus } : {}) });
 
     if (p.level >= MAX_LEVEL) return; // bar frozen at cap; lifetimeXp already credited
 

@@ -263,6 +263,8 @@ export class ClientWorld implements IWorld {
   // Post-cap progression (Max-Level XP Overflow), mirrored from snapshot self.
   lifetimeXp = 0;
   prestigeRank = 0;
+  // Rested XP pool, mirrored from snapshot self.
+  restedXp = 0;
   unlockedMilestones: string[] = [];
   known: ResolvedAbility[] = [];
   // Talents & Specializations, mirrored from snapshot self (display + staging).
@@ -680,6 +682,7 @@ export class ClientWorld implements IWorld {
         : null;
       this.xp = s.xp ?? 0;
       this.lifetimeXp = s.lxp ?? 0;
+      this.restedXp = s.rxp ?? 0;
       this.prestigeRank = s.prk ?? 0;
       if (s.milestones !== undefined) this.unlockedMilestones = s.milestones;
       this.copper = s.copper ?? 0;

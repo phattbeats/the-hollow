@@ -1743,12 +1743,17 @@ export class Hud {
     // xp bar — pre-cap shows the level bar; post-cap fills toward the next
     // virtual level (Max-Level XP Overflow), with distinct prestige/gold styling.
     const showOverflow = (this.optionsHooks?.settings.get('showOverflowXp') ?? 1) >= 0.5;
-    const bar = xpBarView({ level: p.level, xp: sim.xp, lifetimeXp: sim.lifetimeXp, showOverflow });
+    const bar = xpBarView({ level: p.level, xp: sim.xp, lifetimeXp: sim.lifetimeXp, restedXp: sim.restedXp, showOverflow });
     this.setWidth(this.xpFillEl, `${(bar.fillFrac * 100).toFixed(1)}%`);
     $('#xpbar').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));
     $('#player-frame').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));
+    // Rested overlay sits ahead of the fill (classic inn-rested bonus preview).
+    const restedEl = $('#xpbar .rested') as HTMLElement;
+    restedEl.style.left = `${(bar.fillFrac * 100).toFixed(1)}%`;
+    restedEl.style.width = `${(bar.restedFrac * 100).toFixed(1)}%`;
     this.setText(this.xpLabelEl, bar.label);
     $('#xpbar').classList.toggle('overflow', bar.postCap);
+    $('#xpbar').classList.toggle('rested', bar.restedFrac > 0);
 
     const deadInArena = p.dead && !!this.sim.arenaInfo?.match;
     this.setDisplay(this.deathOverlayEl, p.dead ? 'flex' : 'none');
@@ -2538,7 +2543,12 @@ export class Hud {
         }
         case 'xp': {
           this.fct(sim.player, t('hud.core.xpFloat', { amount: ev.amount }), '#b974ff', false);
-          this.log(t('hud.core.xpGain', { amount: ev.amount }), '#a980d8');
+          if (ev.rested && ev.rested > 0) {
+            this.fct(sim.player, t('hud.core.xpFloatRested', { amount: ev.rested }), '#4a9eff', false);
+            this.log(t('hud.core.xpGainRested', { amount: ev.amount, rested: ev.rested }), '#a980d8');
+          } else {
+            this.log(t('hud.core.xpGain', { amount: ev.amount }), '#a980d8');
+          }
           break;
         }
         case 'levelup': {

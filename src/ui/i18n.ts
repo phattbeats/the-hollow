@@ -2612,6 +2612,8 @@ const hudStringsEn = {
       levelLog: "You have reached level {level}!",
       xpGain: "You gain {amount} experience.",
       xpFloat: "+{amount} XP",
+      xpFloatRested: "+{amount} rested",
+      xpGainRested: "You gain {amount} experience ({rested} bonus from resting).",
       deathTitle: "You have died.",
       releaseSpirit: "Release Spirit",
       chatTab: "Chat",
@@ -2953,6 +2955,8 @@ const hudStrings = {
         levelLog: "Has alcanzado el nivel {level}.",
         xpGain: "Ganas {amount} de experiencia.",
         xpFloat: "+{amount} XP",
+        xpFloatRested: "+{amount} descansado",
+        xpGainRested: "Ganas {amount} de experiencia ({rested} de bonificación por descansar).",
         deathTitle: "Has muerto.",
         releaseSpirit: "Liberar espíritu",
         chatTab: "Chat",
@@ -3075,6 +3079,8 @@ const hudStrings = {
         levelLog: "Vous avez atteint le niveau {level} !",
         xpGain: "Vous gagnez {amount} points d'expérience.",
         xpFloat: "+{amount} XP",
+        xpFloatRested: "+{amount} repos",
+        xpGainRested: "Vous gagnez {amount} points d'expérience ({rested} bonus de repos).",
         deathTitle: "Vous êtes mort.",
         releaseSpirit: "Libérer l'esprit",
         chatTab: "Discussion",
@@ -3198,6 +3204,8 @@ const hudStrings = {
         levelLog: "Hai raggiunto il livello {level}!",
         xpGain: "Guadagni {amount} esperienza.",
         xpFloat: "+{amount} PE",
+        xpFloatRested: "+{amount} riposo",
+        xpGainRested: "Guadagni {amount} esperienza ({rested} bonus dal riposo).",
         deathTitle: "Sei morto.",
         releaseSpirit: "Libera spirito",
         chatTab: "Chat",
@@ -3319,6 +3327,8 @@ const hudStrings = {
         levelLog: "Ihr habt Stufe {level} erreicht!",
         xpGain: "Ihr erhaltet {amount} Erfahrung.",
         xpFloat: "+{amount} EP",
+        xpFloatRested: "+{amount} ausgeruht",
+        xpGainRested: "Ihr erhaltet {amount} Erfahrung ({rested} Bonus durch Ausruhen).",
         deathTitle: "Ihr seid gestorben.",
         releaseSpirit: "Geist freigeben",
         chatTab: "Chat",
@@ -3440,6 +3450,8 @@ const hudStrings = {
         levelLog: "你已达到 {level} 级！",
         xpGain: "你获得 {amount} 点经验。",
         xpFloat: "+{amount} 经验",
+        xpFloatRested: "+{amount} 休息",
+        xpGainRested: "你获得 {amount} 点经验（休息奖励 {rested} 点）。",
         deathTitle: "你已经死亡。",
         releaseSpirit: "释放灵魂",
         chatTab: "聊天",
@@ -3561,6 +3573,8 @@ const hudStrings = {
         levelLog: "你已達到 {level} 級！",
         xpGain: "你獲得 {amount} 點經驗值。",
         xpFloat: "+{amount} 經驗值",
+        xpFloatRested: "+{amount} 休息",
+        xpGainRested: "你獲得 {amount} 點經驗值（休息獎勵 {rested} 點）。",
         deathTitle: "你已經死亡。",
         releaseSpirit: "釋放靈魂",
         chatTab: "聊天",
@@ -3682,6 +3696,8 @@ const hudStrings = {
         levelLog: "{level} 레벨이 되었습니다!",
         xpGain: "경험치 {amount}을 획득했습니다.",
         xpFloat: "+{amount} 경험치",
+        xpFloatRested: "+{amount} 휴식",
+        xpGainRested: "경험치 {amount}을 획득했습니다 (휴식 보너스 {rested}).",
         deathTitle: "사망했습니다.",
         releaseSpirit: "영혼 풀어주기",
         chatTab: "채팅",
@@ -3803,6 +3819,8 @@ const hudStrings = {
         levelLog: "レベル {level}になりました！",
         xpGain: "{amount}の経験値を獲得しました。",
         xpFloat: "+{amount} 経験値",
+        xpFloatRested: "+{amount} 休息",
+        xpGainRested: "{amount}の経験値を獲得しました（休息ボーナス {rested}）。",
         deathTitle: "死亡しました。",
         releaseSpirit: "霊魂を解放",
         chatTab: "チャット",
@@ -3924,6 +3942,8 @@ const hudStrings = {
         levelLog: "Você alcançou o nível {level}!",
         xpGain: "Você ganha {amount} de experiência.",
         xpFloat: "+{amount} XP",
+        xpFloatRested: "+{amount} descanso",
+        xpGainRested: "Você ganha {amount} de experiência ({rested} de bônus por descanso).",
         deathTitle: "Você morreu.",
         releaseSpirit: "Liberar espírito",
         chatTab: "Chat",
@@ -4045,6 +4065,8 @@ const hudStrings = {
         levelLog: "Вы достигли уровня {level}!",
         xpGain: "Вы получаете {amount} опыта.",
         xpFloat: "+{amount} опыта",
+        xpFloatRested: "+{amount} отдых",
+        xpGainRested: "Вы получаете {amount} опыта ({rested} бонус за отдых).",
         deathTitle: "Вы погибли.",
         releaseSpirit: "Освободить дух",
         chatTab: "Чат",
@@ -10484,6 +10506,7 @@ export const gameStrings = {
     totalXp: "total XP",
     lv: "Lv",
     toNext: "to next",
+    rested: "Rested",
   },
   progression: {
     heading: "Progression",
@@ -10605,7 +10628,7 @@ const gameStringsEnCA: typeof gameStrings = {
 };
 
 const gameStringsEs: typeof gameStrings = {
-  xp: { suffix: "EXP", maxLevel: "NIVEL MÁX.", totalXp: "EXP total", lv: "Nv", toNext: "para el siguiente" },
+  xp: { suffix: "EXP", maxLevel: "NIVEL MÁX.", totalXp: "EXP total", lv: "Nv", toNext: "para el siguiente", rested: "Descansado" },
   progression: {
     heading: "Progreso",
     totalXp: "EXP total",
@@ -10715,7 +10738,7 @@ const gameStringsEs: typeof gameStrings = {
 const gameStringsEsES: typeof gameStrings = gameStringsEs;
 
 const gameStringsFrFR: typeof gameStrings = {
-  xp: { suffix: "EXP", maxLevel: "NIVEAU MAX.", totalXp: "EXP totale", lv: "Niv.", toNext: "avant le suivant" },
+  xp: { suffix: "EXP", maxLevel: "NIVEAU MAX.", totalXp: "EXP totale", lv: "Niv.", toNext: "avant le suivant", rested: "Reposé" },
   progression: {
     heading: "Progression",
     totalXp: "EXP totale",
@@ -10825,7 +10848,7 @@ const gameStringsFrFR: typeof gameStrings = {
 const gameStringsFrCA: typeof gameStrings = gameStringsFrFR;
 
 const gameStringsItIT: typeof gameStrings = {
-  xp: { suffix: "PE", maxLevel: "LIVELLO MAX", totalXp: "PE totali", lv: "Liv", toNext: "al prossimo" },
+  xp: { suffix: "PE", maxLevel: "LIVELLO MAX", totalXp: "PE totali", lv: "Liv", toNext: "al prossimo", rested: "Riposato" },
   progression: { heading: "Progressione", totalXp: "PE totali", virtualLevel: "Livello virtuale", prestigeRank: "Rango prestigio", milestones: "Traguardi", none: "Ancora nessuno", virtualLevelUp: "Livello virtuale" },
   leaderboard: { title: "Classifica", subtitle: "PE totali", rank: "Posizione", name: "Nome", realmCol: "Reame", level: "Liv", vlevel: "Liv.V", lifetimeXp: "PE totali", yourRank: "La tua posizione", empty: "Non ci sono ancora campioni: lascia il primo segno.", loading: "Caricamento classifica...", unranked: "Non classificato", you: "Tu", globalSubtitle: "Migliori campioni di tutti i reami", retry: "Impossibile caricare la classifica. Riprova." },
   milestone: { unlocked: "Traguardo sbloccato", veteran: "Veterano", champion: "Campione", paragon: "Esemplare", mythic: "Mitico", eternal: "Eterno" },
@@ -10837,7 +10860,7 @@ const gameStringsItIT: typeof gameStrings = {
 };
 
 const gameStringsDeDE: typeof gameStrings = {
-  xp: { suffix: "EP", maxLevel: "MAX. STUFE", totalXp: "EP gesamt", lv: "St.", toNext: "bis zur nächsten" },
+  xp: { suffix: "EP", maxLevel: "MAX. STUFE", totalXp: "EP gesamt", lv: "St.", toNext: "bis zur nächsten", rested: "Ausgeruht" },
   progression: { heading: "Fortschritt", totalXp: "EP gesamt", virtualLevel: "Virtuelle Stufe", prestigeRank: "Prestigerang", milestones: "Meilensteine", none: "Noch keine", virtualLevelUp: "Virtuelle Stufe" },
   leaderboard: { title: "Rangliste", subtitle: "Lebenszeit-EP", rank: "Rang", name: "Name", realmCol: "Realm", level: "St.", vlevel: "V.St.", lifetimeXp: "Lebenszeit-EP", yourRank: "Euer Rang", empty: "Noch keine Champions; setzt als Erste ein Zeichen.", loading: "Rangliste wird geladen...", unranked: "Ohne Rang", you: "Ihr", globalSubtitle: "Beste Champions aller Realms", retry: "Rangliste konnte nicht geladen werden. Versucht es erneut." },
   milestone: { unlocked: "Meilenstein freigeschaltet", veteran: "Veteran", champion: "Champion", paragon: "Paragon", mythic: "Mythisch", eternal: "Ewig" },
@@ -10849,7 +10872,7 @@ const gameStringsDeDE: typeof gameStrings = {
 };
 
 const gameStringsZhCN: typeof gameStrings = {
-  xp: { suffix: "经验", maxLevel: "满级", totalXp: "总经验", lv: "等级", toNext: "到下一级" },
+  xp: { suffix: "经验", maxLevel: "满级", totalXp: "总经验", lv: "等级", toNext: "到下一级", rested: "充分休息" },
   progression: { heading: "进度", totalXp: "总经验", virtualLevel: "虚拟等级", prestigeRank: "声望阶级", milestones: "里程碑", none: "尚无", virtualLevelUp: "虚拟等级" },
   leaderboard: { title: "排行榜", subtitle: "终身经验", rank: "名次", name: "名称", realmCol: "服务器", level: "等级", vlevel: "虚等", lifetimeXp: "终身经验", yourRank: "你的排名", empty: "还没有冠军；成为第一个留下传说的人。", loading: "正在加载排名...", unranked: "未上榜", you: "你", globalSubtitle: "所有服务器的顶尖冠军", retry: "无法加载排行榜。请重试。" },
   milestone: { unlocked: "里程碑解锁", veteran: "老兵", champion: "冠军", paragon: "典范", mythic: "神话", eternal: "永恒" },
@@ -10861,7 +10884,7 @@ const gameStringsZhCN: typeof gameStrings = {
 };
 
 const gameStringsZhTW: typeof gameStrings = {
-  xp: { suffix: "經驗", maxLevel: "滿級", totalXp: "總經驗", lv: "等級", toNext: "到下一級" },
+  xp: { suffix: "經驗", maxLevel: "滿級", totalXp: "總經驗", lv: "等級", toNext: "到下一級", rested: "充分休息" },
   progression: { heading: "進度", totalXp: "總經驗", virtualLevel: "虛擬等級", prestigeRank: "威望階級", milestones: "里程碑", none: "尚無", virtualLevelUp: "虛擬等級" },
   leaderboard: { title: "排行榜", subtitle: "終身經驗", rank: "名次", name: "名稱", realmCol: "伺服器", level: "等級", vlevel: "虛等", lifetimeXp: "終身經驗", yourRank: "你的排名", empty: "還沒有冠軍；成為第一個留下傳說的人。", loading: "正在載入排名...", unranked: "未上榜", you: "你", globalSubtitle: "所有伺服器的頂尖冠軍", retry: "無法載入排行榜。請再試一次。" },
   milestone: { unlocked: "里程碑解鎖", veteran: "老兵", champion: "冠軍", paragon: "典範", mythic: "神話", eternal: "永恆" },
@@ -10929,7 +10952,7 @@ const gameStringsZhTW: typeof gameStrings = {
 };
 
 const gameStringsKoKR: typeof gameStrings = {
-  xp: { suffix: "경험치", maxLevel: "최대 레벨", totalXp: "총 경험치", lv: "레벨", toNext: "다음까지" },
+  xp: { suffix: "경험치", maxLevel: "최대 레벨", totalXp: "총 경험치", lv: "레벨", toNext: "다음까지", rested: "휴식" },
   progression: { heading: "진행도", totalXp: "총 경험치", virtualLevel: "가상 레벨", prestigeRank: "명예 등급", milestones: "이정표", none: "아직 없음", virtualLevelUp: "가상 레벨" },
   leaderboard: { title: "순위표", subtitle: "누적 경험치", rank: "순위", name: "이름", realmCol: "서버", level: "레벨", vlevel: "가상", lifetimeXp: "누적 경험치", yourRank: "내 순위", empty: "아직 영웅이 없습니다. 첫 흔적을 남겨 보세요.", loading: "순위 불러오는 중...", unranked: "순위 없음", you: "나", globalSubtitle: "모든 서버의 최고 영웅", retry: "순위표를 불러오지 못했습니다. 다시 시도하세요." },
   milestone: { unlocked: "이정표 해제", veteran: "베테랑", champion: "용사", paragon: "귀감", mythic: "신화", eternal: "영원" },
@@ -10939,7 +10962,7 @@ const gameStringsKoKR: typeof gameStrings = {
 };
 
 const gameStringsJaJP: typeof gameStrings = {
-  xp: { suffix: "経験値", maxLevel: "最大レベル", totalXp: "総経験値", lv: "Lv", toNext: "次まで" },
+  xp: { suffix: "経験値", maxLevel: "最大レベル", totalXp: "総経験値", lv: "Lv", toNext: "次まで", rested: "休息" },
   progression: { heading: "進行", totalXp: "総経験値", virtualLevel: "仮想レベル", prestigeRank: "威信ランク", milestones: "到達点", none: "まだなし", virtualLevelUp: "仮想レベル" },
   leaderboard: { title: "ランキング", subtitle: "累計経験値", rank: "順位", name: "名前", realmCol: "レルム", level: "Lv", vlevel: "仮Lv", lifetimeXp: "累計経験値", yourRank: "あなたの順位", empty: "まだ英雄はいません。最初の名を刻みましょう。", loading: "ランキングを読み込み中...", unranked: "順位なし", you: "あなた", globalSubtitle: "全レルムの上位英雄", retry: "ランキングを読み込めませんでした。もう一度お試しください。" },
   milestone: { unlocked: "到達点解除", veteran: "古参", champion: "勇者", paragon: "範士", mythic: "神話", eternal: "永遠" },
@@ -10949,7 +10972,7 @@ const gameStringsJaJP: typeof gameStrings = {
 };
 
 const gameStringsPtBR: typeof gameStrings = {
-  xp: { suffix: "EXP", maxLevel: "NÍVEL MAX.", totalXp: "EXP total", lv: "Nv", toNext: "para o próximo" },
+  xp: { suffix: "EXP", maxLevel: "NÍVEL MAX.", totalXp: "EXP total", lv: "Nv", toNext: "para o próximo", rested: "Descansado" },
   progression: { heading: "Progressão", totalXp: "EXP total", virtualLevel: "Nível virtual", prestigeRank: "Grau de prestígio", milestones: "Marcos", none: "Nenhum ainda", virtualLevelUp: "Nível virtual" },
   leaderboard: { title: "Classificação", subtitle: "EXP vitalícia", rank: "Posição", name: "Nome", realmCol: "Reino", level: "Nv", vlevel: "Nv.V", lifetimeXp: "EXP vitalícia", yourRank: "Sua posição", empty: "Ainda não há campeões; seja o primeiro a deixar sua marca.", loading: "Carregando classificação...", unranked: "Sem ranking", you: "Você", globalSubtitle: "Maiores campeões de todos os reinos", retry: "Não foi possível carregar a classificação. Tente novamente." },
   milestone: { unlocked: "Marco desbloqueado", veteran: "Veterano", champion: "Campeão", paragon: "Paragão", mythic: "Mítico", eternal: "Eterno" },
@@ -11017,7 +11040,7 @@ const gameStringsPtBR: typeof gameStrings = {
 };
 
 const gameStringsRuRU: typeof gameStrings = {
-  xp: { suffix: "опыт", maxLevel: "МАКС. УРОВЕНЬ", totalXp: "всего опыта", lv: "Ур.", toNext: "до следующего" },
+  xp: { suffix: "опыт", maxLevel: "МАКС. УРОВЕНЬ", totalXp: "всего опыта", lv: "Ур.", toNext: "до следующего", rested: "Отдохнувший" },
   progression: { heading: "Прогресс", totalXp: "Всего опыта", virtualLevel: "Виртуальный уровень", prestigeRank: "Ранг престижа", milestones: "Вехи", none: "Пока нет", virtualLevelUp: "Виртуальный уровень" },
   leaderboard: { title: "Рейтинг", subtitle: "Опыт за все время", rank: "Место", name: "Имя", realmCol: "Мир", level: "Ур.", vlevel: "Вирт.", lifetimeXp: "Опыт за все время", yourRank: "Ваше место", empty: "Чемпионов пока нет; станьте первым.", loading: "Загрузка рейтинга...", unranked: "Без места", you: "Вы", globalSubtitle: "Лучшие чемпионы всех миров", retry: "Не удалось загрузить рейтинг. Попробуйте еще раз." },
   milestone: { unlocked: "Веха открыта", veteran: "Ветеран", champion: "Чемпион", paragon: "Образец", mythic: "Мифический", eternal: "Вечный" },
