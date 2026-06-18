@@ -339,6 +339,14 @@ export interface MobTemplate {
   // funnel (crit-only). Distinct from a flat-damage vuln (expose/spellvuln) — this
   // sharpens only the rare crits, the way a predator's bite finds the soft spot.
   critVuln?: { chance: number; critDamage: number; duration: number; name: string; school?: Aura['school'] };
+  // On-hit purge ("Devour Magic"): a landed melee swing has `chance` to strip
+  // one beneficial enhancement aura off the player victim — a positive buff_*
+  // stat buff, a heal-over-time, an absorb shield, or a weapon imbue. Forms,
+  // stances, stealth, and every debuff are left untouched. Removes nothing if
+  // the victim carries no such buff. Players only; offensive against a fellow
+  // mob is meaningless and a friendly pet (mobSwing's other caller) must never
+  // strip its owner's party. Rides the existing aura system — no new aura kind.
+  purgeOnHit?: { chance: number; name: string };
 }
 
 export type AbilityEffect =
