@@ -52,6 +52,16 @@ describe('Settings', () => {
     expect(s.set('touchOpacity', 0.6)).toBe(0.6);
   });
 
+  it('defaults the joystick size to stock and clamps to its 0.7–1.3 range', () => {
+    const s = new Settings();
+    expect(s.get('joystickScale')).toBe(1);
+    expect(s.set('joystickScale', 5)).toBe(SETTING_RANGES.joystickScale.max);
+    expect(s.set('joystickScale', 0)).toBe(SETTING_RANGES.joystickScale.min);
+    expect(s.set('joystickScale', 1.15)).toBe(1.15);
+    const reloaded = new Settings();
+    expect(reloaded.get('joystickScale')).toBe(1.15); // persisted
+  });
+
   it('ignores non-finite input, keeping a valid value', () => {
     const s = new Settings();
     s.set('brightness', NaN);
