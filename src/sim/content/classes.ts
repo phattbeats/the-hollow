@@ -39,7 +39,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
     resourceType: 'rage',
     startWeapon: 'worn_sword',
     startChest: 'recruit_tunic',
-    abilities: ['heroic_strike', 'battle_shout', 'charge', 'rend', 'thunder_clap', 'hamstring', 'bloodrage', 'overpower', 'execute', 'slam', 'cleave', 'defensive_stance', 'sunder_armor', 'taunt'],
+    abilities: ['heroic_strike', 'battle_shout', 'commanding_shout', 'charge', 'rend', 'thunder_clap', 'hamstring', 'bloodrage', 'overpower', 'execute', 'slam', 'cleave', 'defensive_stance', 'sunder_armor', 'taunt'],
     color: 0xc79c6e,
   },
   mage: {
@@ -197,6 +197,16 @@ export const ABILITIES: Record<string, AbilityDef> = {
       { rank: 3, level: 20, cost: 10, effects: [{ type: 'selfBuff', kind: 'buff_ap', value: 50, duration: 120 }] },
     ],
     description: 'Increases your attack power by 20 for 2 min.',
+  },
+  commanding_shout: {
+    id: 'commanding_shout', name: 'Commanding Shout', class: 'warrior', learnLevel: 14,
+    cost: 10, castTime: 0, cooldown: 0, range: 0, school: 'physical',
+    requiresTarget: false,
+    effects: [{ type: 'selfBuff', kind: 'buff_sta', value: 6, duration: 120 }],
+    ranks: [
+      { rank: 2, level: 24, cost: 10, effects: [{ type: 'selfBuff', kind: 'buff_sta', value: 11, duration: 120 }] },
+    ],
+    description: 'Increases your Stamina by 6 for 2 min.',
   },
   charge: {
     id: 'charge', name: 'Charge', class: 'warrior', learnLevel: 4,
