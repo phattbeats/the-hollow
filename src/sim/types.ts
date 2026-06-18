@@ -47,7 +47,7 @@ export type AuraKind =
   | 'dot' | 'slow' | 'stun' | 'root' | 'incapacitate' | 'polymorph'
   | 'attackspeed' | 'debuff_ap' | 'buff_ap' | 'buff_armor' | 'buff_int' | 'buff_dodge' | 'buff_speed' | 'buff_haste'
   | 'hot' | 'absorb' | 'imbue' | 'buff_sta' | 'buff_allstats' | 'thorns' | 'form_bear'
-  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence' | 'vulnerability';
+  | 'form_cat' | 'stealth' | 'defensive_stance' | 'righteous_fury' | 'sunder' | 'mortal_wound' | 'silence' | 'vulnerability' | 'hex';
 
 export interface Aura {
   id: string; // ability id that applied it
@@ -290,6 +290,14 @@ export interface MobTemplate {
   // Innate "spiked hide" trait: melee attackers take flat damage back on every
   // connecting swing — the mob-side equivalent of the druid Thorns aura.
   thorns?: { value: number; school?: Aura['school']; name?: string };
+  // On-hit affix ("Weakening Hex"): a landed melee swing has `chance` to curse
+  // the player victim, scaling BOTH the damage and the healing *they* deal by
+  // (1 - reductionPct) for `duration` seconds. Distinct from `demoralize` (flat
+  // attack-power cut, physical only) and `mortal_wound` (healing *received*):
+  // this throttles the victim's whole offensive/support output — classic witch-
+  // doctor / curse-of-weakness flavour. Rides a dedicated `hex` aura kind read in
+  // dealDamage (outgoing) and applyHeal (outgoing).
+  hex?: { chance: number; reductionPct: number; duration: number; name: string; school?: Aura['school'] };
 }
 
 export type AbilityEffect =

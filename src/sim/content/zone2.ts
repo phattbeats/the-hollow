@@ -177,6 +177,9 @@ export const ZONE2_MOBS: Record<string, MobTemplate> = {
       { itemId: 'linen_scrap', chance: 0.3 },
       { itemId: 'tallow_candle', chance: 0.3 },
     ],
+    // The cultist's muttered curse weakens its prey: a hexed victim deals less
+    // damage and heals for less until the hex fades.
+    hex: { chance: 0.3, reductionPct: 0.2, duration: 10, name: 'Weakening Hex', school: 'shadow' },
     scale: 1.0, color: 0x6c3483,
   },
   gravecaller_summoner: {
