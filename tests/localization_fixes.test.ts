@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { beforeAll, describe, it, expect } from "vitest";
 import * as fs from "fs";
 import * as path from "path";
 import { localizeServerText, tServer, DICT as serverDICT } from "../src/ui/server_i18n";
@@ -6,11 +6,20 @@ import { localizeSimText, localizeSimAuraName, DICT as simDICT } from "../src/ui
 import { DICT as adminDICT, classLabel, setAdminLanguage } from "../src/admin/i18n";
 import { resolveReportTarget } from "../server/report_target";
 import {
-  setLanguage, supportedLanguages,
+  ensureLocaleLoaded, setLanguage, supportedLanguages,
   en, es, es_ES, fr_FR, fr_CA, en_CA, it_IT, de_DE, zh_CN, zh_TW, ko_KR, ja_JP, pt_BR, ru_RU,
 } from "../src/ui/i18n";
 import { talentTranslationManifest, renderTalentManifestEntry, hasTalentTitleOverride } from "../src/ui/talent_i18n";
 import { ABILITIES } from "../src/sim/data";
+
+// Phase 3 lazy flip: the non-en game locales are no longer statically resident. Every
+// describe below setLanguage(non-en)s and reads synchronously through t() / localizeSimText /
+// renderTalentManifestEntry. Make every supported game locale resident once for the whole
+// file - the test-harness mirror of the bootstrap await-before-paint - so those reads resolve
+// the localized table rather than the English fallback. (Admin stays static; no admin preload.)
+beforeAll(async () => {
+  await Promise.all(supportedLanguages.map((lang) => ensureLocaleLoaded(lang)));
+});
 
 const locales: Record<string, any> = { en, es, es_ES, fr_FR, fr_CA, en_CA, it_IT, de_DE, zh_CN, zh_TW, ko_KR, ja_JP, pt_BR, ru_RU };
 const ph = (s: string) => [...String(s).matchAll(/\{([A-Za-z0-9_]+)\}/g)].map((m) => m[1]).sort().join(",");
