@@ -815,14 +815,34 @@ export class Hud {
     this.syncChatPlaceholder();
   }
 
-  private addChatTab(channel: ChatTabChannel): void {
+  // Add a channel tab if not already present. Does NOT switch the active send
+  // channel — the player stays on their current tab (All/Say is the catch-all
+  // home that shows every channel and sends Say), so opening a channel never
+  // hijacks where typed text goes. `join` auto-joins opt-in global channels;
+  // skip it when the caller already sent the /join (e.g. a typed command).
+  // `select` focuses the new tab — reserved for a deliberate tab click.
+  private addChatTab(channel: ChatTabChannel, opts: { join?: boolean; select?: boolean } = {}): void {
+    const { join = true, select = false } = opts;
     if (!this.chatTabs.includes(channel)) {
       this.chatTabs.push(channel);
-      // opt-in global channels must be /join-ed before messages are delivered
-      if (channelNeedsJoin(channel)) this.sim.chat(`/join ${channel}`);
+      if (join && channelNeedsJoin(channel)) this.sim.chat(`/join ${channel}`);
       this.renderChatTabs();
+      this.persistChatTabs();
     }
-    this.selectChatTab(channel, true);
+    if (select) this.selectChatTab(channel, true);
+  }
+
+  // Mirror a typed "/join|/leave <world|lfg>" into the tab bar so the command
+  // line and the "+" menu stay in sync: /join opens the channel's tab and
+  // /leave closes it. We never re-issue the command — main.ts already sent it,
+  // and creating the tab leaves the active send channel untouched.
+  syncChatTabsForInput(typed: string): void {
+    const m = /^\/(join|leave)\b\s*(\S*)/i.exec(typed.trim());
+    if (!m) return;
+    const channel = m[2].toLowerCase();
+    if (!isChatTabChannel(channel) || !channelNeedsJoin(channel)) return;
+    if (m[1].toLowerCase() === 'join') this.addChatTab(channel, { join: false });
+    else if (this.chatTabs.includes(channel)) this.removeChatTab(channel);
   }
 
   private removeChatTab(channel: ChatTabChannel): void {

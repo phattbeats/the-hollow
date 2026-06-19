@@ -597,8 +597,12 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     if (e.key === 'Enter') {
       // the active channel tab supplies the send prefix, so plain text goes to
       // that channel without the player retyping "/world" etc.
-      const text = hud.composeChatSend(chatInput.value);
+      const raw = chatInput.value;
+      const text = hud.composeChatSend(raw);
       if (text) world.chat(text);
+      // a typed "/join world"/"/leave lfg" opens or closes its channel tab too,
+      // mirroring the "+" menu (without hijacking the active send channel)
+      hud.syncChatTabsForInput(raw);
       closeChat();
     } else if (e.key === 'Escape') {
       closeChat();

@@ -495,7 +495,7 @@ export const en: EnTranslations = {
       "releaseSpirit": "Release Spirit",
       "chatTab": "Chat",
       "combatLogTab": "Combat Log",
-      "chatPlaceholder": "Say something... (/w name whisper, /r reply, /p party, /gu guild, /o officer, /g general)",
+      "chatPlaceholder": "Say something... (/s say, /w name whisper, /r reply, /p party, /gu guild, /o officer, /general general, /help)",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
@@ -19105,7 +19105,7 @@ export const en_CA: EnTranslations = {
       "releaseSpirit": "Release Spirit",
       "chatTab": "Chat",
       "combatLogTab": "Combat Log",
-      "chatPlaceholder": "Say something... (/w name whisper, /r reply, /p party, /gu guild, /o officer, /g general)",
+      "chatPlaceholder": "Say something... (/s say, /w name whisper, /r reply, /p party, /gu guild, /o officer, /general general, /help)",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
@@ -52792,7 +52792,7 @@ export const en_XA: EnTranslations = {
       "releaseSpirit": "[Ŕéļéášé Šþíŕíţ]",
       "chatTab": "[Çĥáţ]",
       "combatLogTab": "[Çóɱƀáţ Ļóĝ]",
-      "chatPlaceholder": "[Šáý šóɱéţĥíñĝ... (/ŵ ñáɱé ŵĥíšþéŕ, /ŕ ŕéþļý, /þ þáŕţý, /ĝú ĝúíļð, /ó óƒƒíçéŕ, /ĝ ĝéñéŕáļ)]",
+      "chatPlaceholder": "[Šáý šóɱéţĥíñĝ... (/š šáý, /ŵ ñáɱé ŵĥíšþéŕ, /ŕ ŕéþļý, /þ þáŕţý, /ĝú ĝúíļð, /ó óƒƒíçéŕ, /ĝéñéŕáļ ĝéñéŕáļ, /ĥéļþ)]",
       "chatChannels": {
         "add": "[Áðð çĥáţ çĥáññéļ]",
         "addTitle": "[Áðð çĥáññéļ]",

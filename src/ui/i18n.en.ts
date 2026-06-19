@@ -2624,7 +2624,7 @@ const hudStringsEn = {
       releaseSpirit: "Release Spirit",
       chatTab: "Chat",
       combatLogTab: "Combat Log",
-      chatPlaceholder: "Say something... (/w name whisper, /r reply, /p party, /gu guild, /o officer, /g general)",
+      chatPlaceholder: "Say something... (/s say, /w name whisper, /r reply, /p party, /gu guild, /o officer, /general general, /help)",
       chatChannels: {
         add: "Add chat channel",
         addTitle: "Add channel",

@@ -100154,72 +100154,72 @@
     },
     "main:hud.core.chatPlaceholder": {
       "scope": "main",
-      "enHash": "6b42261c0c744b07",
+      "enHash": "27a62eaec95da658",
       "placeholders": [],
       "locales": {
         "es": {
           "state": "translated",
-          "srcHash": "6b42261c0c744b07",
+          "srcHash": "27a62eaec95da658",
           "by": "human"
         },
         "es_ES": {
           "state": "translated",
-          "srcHash": "6b42261c0c744b07",
+          "srcHash": "27a62eaec95da658",
           "by": "human"
         },
         "fr_FR": {
           "state": "translated",
-          "srcHash": "6b42261c0c744b07",
+          "srcHash": "27a62eaec95da658",
           "by": "human"
         },
         "fr_CA": {
           "state": "translated",
-          "srcHash": "6b42261c0c744b07",
+          "srcHash": "27a62eaec95da658",
           "by": "human"
         },
         "en_CA": {
           "state": "translated",
-          "srcHash": "6b42261c0c744b07",
+          "srcHash": "27a62eaec95da658",
           "by": "human"
         },
         "it_IT": {
           "state": "translated",
-          "srcHash": "6b42261c0c744b07",
+          "srcHash": "27a62eaec95da658",
           "by": "human"
         },
         "de_DE": {
           "state": "translated",
-          "srcHash": "6b42261c0c744b07",
+          "srcHash": "27a62eaec95da658",
           "by": "human"
         },
         "zh_CN": {
           "state": "translated",
-          "srcHash": "6b42261c0c744b07",
+          "srcHash": "27a62eaec95da658",
           "by": "human"
         },
         "zh_TW": {
           "state": "translated",
-          "srcHash": "6b42261c0c744b07",
+          "srcHash": "27a62eaec95da658",
           "by": "human"
         },
         "ko_KR": {
           "state": "translated",
-          "srcHash": "6b42261c0c744b07",
+          "srcHash": "27a62eaec95da658",
           "by": "human"
         },
         "ja_JP": {
           "state": "translated",
-          "srcHash": "6b42261c0c744b07",
+          "srcHash": "27a62eaec95da658",
           "by": "human"
         },
         "pt_BR": {
           "state": "translated",
-          "srcHash": "6b42261c0c744b07",
+          "srcHash": "27a62eaec95da658",
           "by": "human"
         },
         "ru_RU": {
           "state": "translated",
-          "srcHash": "6b42261c0c744b07",
+          "srcHash": "27a62eaec95da658",
           "by": "human"
         }
       }
