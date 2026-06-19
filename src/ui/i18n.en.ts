@@ -11958,6 +11958,8 @@ export const en = {
       crypt_ritual_circle: { name: "Ritual Circle" },
       kings_signet: { name: "King's Signet" },
       event_skin_token: { name: "Mysterious Cosmetic Cache" },
+      unknown_alien_weaponry: { name: "Unknown Alien Weaponry" },
+      alien_armor_plate: { name: "Alien Armor Plate" },
     },
     mobs: { ...worldNames.en.entities.mobs, ...mergeEntities.en.mobs, ...mergeExtra.en.mobs },
     npcs: { ...worldNames.en.entities.npcs, ...mergeExtra.en.npcs },

@@ -2827,6 +2827,12 @@ export const en: EnTranslations = {
       },
       "event_skin_token": {
         "name": "Mysterious Cosmetic Cache"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Unknown Alien Weaponry"
+      },
+      "alien_armor_plate": {
+        "name": "Alien Armor Plate"
       }
     },
     "mobs": {
@@ -3484,6 +3490,16 @@ export const en: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Waterlogged Idol"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "Aldric's Fallen Star",
+        "text": "I saw a rock fall out of the western sky, {playerName}. It struck the marsh wall and burst like a forge, far beyond the widow thicket. Go west, find what survived the explosion, and bring me anything that does not belong to this world.",
+        "completion": "This is no weapon I know. Look at how the plates fold. It may be a rare piece of armor, if it can be worn at all. Take it and try it on, {playerName}, but be careful.",
+        "objectives": {
+          "0": {
+            "label": "Unknown Alien Weaponry"
           }
         }
       },
@@ -7141,6 +7157,12 @@ export const es: EnTranslations = {
       },
       "event_skin_token": {
         "name": "Alijo cosmético misterioso"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Armamento alienígena desconocido"
+      },
+      "alien_armor_plate": {
+        "name": "Placa de armadura alienígena"
       }
     },
     "mobs": {
@@ -7798,6 +7820,16 @@ export const es: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Ídolo empapado"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "La estrella caída de Aldric",
+        "text": "Vi una roca caer del cielo occidental, {playerName}. Golpeó el muro del pantano y estalló como una fragua, mucho más allá de la espesura de viudas. Ve al oeste, encuentra lo que sobrevivió a la explosión y tráeme cualquier cosa que no pertenezca a este mundo.",
+        "completion": "No conozco ningún arma así. Mira cómo se pliegan estas placas. Puede ser una rara pieza de armadura, si es que puede llevarse. Tómala y pruébatela, {playerName}, pero ten cuidado.",
+        "objectives": {
+          "0": {
+            "label": "Armamento alienígena desconocido"
           }
         }
       },
@@ -11455,6 +11487,12 @@ export const es_ES: EnTranslations = {
       },
       "event_skin_token": {
         "name": "Alijo cosmético misterioso"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Armamento alienígena desconocido"
+      },
+      "alien_armor_plate": {
+        "name": "Placa de armadura alienígena"
       }
     },
     "mobs": {
@@ -12112,6 +12150,16 @@ export const es_ES: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Ídolo empapado"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "La estrella caída de Aldric",
+        "text": "Vi una roca caer del cielo occidental, {playerName}. Golpeó el muro del pantano y estalló como una fragua, mucho más allá de la espesura de viudas. Ve al oeste, encuentra lo que sobrevivió a la explosión y tráeme cualquier cosa que no pertenezca a este mundo.",
+        "completion": "No conozco ningún arma así. Mira cómo se pliegan estas placas. Puede ser una rara pieza de armadura, si es que puede llevarse. Tómala y pruébatela, {playerName}, pero ten cuidado.",
+        "objectives": {
+          "0": {
+            "label": "Armamento alienígena desconocido"
           }
         }
       },
@@ -15769,6 +15817,12 @@ export const fr_FR: EnTranslations = {
       },
       "event_skin_token": {
         "name": "Cache cosmétique mystérieuse"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Armement alien inconnu"
+      },
+      "alien_armor_plate": {
+        "name": "Plaque d'armure alien"
       }
     },
     "mobs": {
@@ -16426,6 +16480,16 @@ export const fr_FR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Idole détrempée"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "L'étoile tombée d'Aldric",
+        "text": "J'ai vu une roche tomber du ciel à l'ouest, {playerName}. Elle a frappé la muraille du marais et a éclaté comme une forge, loin au-delà du bosquet des veuves. Allez vers l'ouest, trouvez ce qui a survécu à l'explosion et rapportez-moi tout ce qui n'appartient pas à ce monde.",
+        "completion": "Ce n'est aucune arme que je connaisse. Regardez comme ces plaques se replient. Ce pourrait être une rare pièce d'armure, si tant est qu'on puisse la porter. Prenez-la et essayez-la, {playerName}, mais soyez prudent.",
+        "objectives": {
+          "0": {
+            "label": "Armement alien inconnu"
           }
         }
       },
@@ -20083,6 +20147,12 @@ export const fr_CA: EnTranslations = {
       },
       "event_skin_token": {
         "name": "Cache cosmétique mystérieuse"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Armement alien inconnu"
+      },
+      "alien_armor_plate": {
+        "name": "Plaque d'armure alien"
       }
     },
     "mobs": {
@@ -20740,6 +20810,16 @@ export const fr_CA: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Idole détrempée"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "L'étoile tombée d'Aldric",
+        "text": "J'ai vu une roche tomber du ciel à l'ouest, {playerName}. Elle a frappé la muraille du marais et a éclaté comme une forge, loin au-delà du bosquet des veuves. Allez vers l'ouest, trouvez ce qui a survécu à l'explosion et rapportez-moi tout ce qui n'appartient pas à ce monde.",
+        "completion": "Ce n'est aucune arme que je connaisse. Regardez comme ces plaques se replient. Ce pourrait être une rare pièce d'armure, si tant est qu'on puisse la porter. Prenez-la et essayez-la, {playerName}, mais soyez prudent.",
+        "objectives": {
+          "0": {
+            "label": "Armement alien inconnu"
           }
         }
       },
@@ -24397,6 +24477,12 @@ export const en_CA: EnTranslations = {
       },
       "event_skin_token": {
         "name": "Mysterious Cosmetic Cache"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Unknown Alien Weaponry"
+      },
+      "alien_armor_plate": {
+        "name": "Alien Armor Plate"
       }
     },
     "mobs": {
@@ -25054,6 +25140,16 @@ export const en_CA: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Waterlogged Idol"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "Aldric's Fallen Star",
+        "text": "I saw a rock fall out of the western sky, {playerName}. It struck the marsh wall and burst like a forge, far beyond the widow thicket. Go west, find what survived the explosion, and bring me anything that does not belong to this world.",
+        "completion": "This is no weapon I know. Look at how the plates fold. It may be a rare piece of armor, if it can be worn at all. Take it and try it on, {playerName}, but be careful.",
+        "objectives": {
+          "0": {
+            "label": "Unknown Alien Weaponry"
           }
         }
       },
@@ -28711,6 +28807,12 @@ export const it_IT: EnTranslations = {
       },
       "event_skin_token": {
         "name": "Scrigno cosmetico misterioso"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Armamento alieno sconosciuto"
+      },
+      "alien_armor_plate": {
+        "name": "Piastra d'armatura aliena"
       }
     },
     "mobs": {
@@ -29368,6 +29470,16 @@ export const it_IT: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Idolo fradicio"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "La stella caduta di Aldric",
+        "text": "Ho visto una roccia cadere dal cielo occidentale, {playerName}. Ha colpito il muro della palude ed è esplosa come una forgia, ben oltre il boschetto delle vedove. Vai a ovest, trova ciò che è sopravvissuto all'esplosione e portami qualsiasi cosa non appartenga a questo mondo.",
+        "completion": "Non è un'arma che conosca. Guarda come si piegano le piastre. Potrebbe essere un raro pezzo d'armatura, se si può indossare. Prendilo e provalo, {playerName}, ma fai attenzione.",
+        "objectives": {
+          "0": {
+            "label": "Armamento alieno sconosciuto"
           }
         }
       },
@@ -33025,6 +33137,12 @@ export const de_DE: EnTranslations = {
       },
       "event_skin_token": {
         "name": "Geheimnisvolle Kosmetiktruhe"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Unbekannte Alien-Waffen"
+      },
+      "alien_armor_plate": {
+        "name": "Alien-Rüstungsplatte"
       }
     },
     "mobs": {
@@ -33682,6 +33800,16 @@ export const de_DE: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Durchnässtes Götzenbild"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "Aldrics gefallener Stern",
+        "text": "Ich sah einen Felsen aus dem westlichen Himmel fallen, {playerName}. Er traf die Moorwand und barst wie eine Schmiede, weit hinter dem Witwendickicht. Geh nach Westen, finde, was die Explosion überstanden hat, und bring mir alles, was nicht in diese Welt gehört.",
+        "completion": "Das ist keine Waffe, die ich kenne. Sieh dir an, wie sich die Platten falten. Es könnte ein seltenes Rüstungsteil sein, falls man es überhaupt tragen kann. Nimm es und probiere es an, {playerName}, aber sei vorsichtig.",
+        "objectives": {
+          "0": {
+            "label": "Unbekannte Alien-Waffen"
           }
         }
       },
@@ -37339,6 +37467,12 @@ export const zh_CN: EnTranslations = {
       },
       "event_skin_token": {
         "name": "神秘外观宝箱"
+      },
+      "unknown_alien_weaponry": {
+        "name": "未知异星武器"
+      },
+      "alien_armor_plate": {
+        "name": "异星护甲板"
       }
     },
     "mobs": {
@@ -37996,6 +38130,16 @@ export const zh_CN: EnTranslations = {
         "objectives": {
           "0": {
             "label": "浸水神像"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "奥德里克的坠星",
+        "text": "我看见一块岩石从西方天空坠落，{playerName}。它撞上沼泽墙，像熔炉一样爆开，远在寡妇林之外。往西去，找出爆炸后留下的东西，把不属于这个世界的物件带回来。",
+        "completion": "这不是我认识的武器。看这些板片折叠的方式。若能穿戴，它也许是一件稀有护甲。带上它试试看，{playerName}，但要小心。",
+        "objectives": {
+          "0": {
+            "label": "未知异星武器"
           }
         }
       },
@@ -41653,6 +41797,12 @@ export const zh_TW: EnTranslations = {
       },
       "event_skin_token": {
         "name": "神秘外觀寶箱"
+      },
+      "unknown_alien_weaponry": {
+        "name": "未知異星武器"
+      },
+      "alien_armor_plate": {
+        "name": "異星護甲板"
       }
     },
     "mobs": {
@@ -42310,6 +42460,16 @@ export const zh_TW: EnTranslations = {
         "objectives": {
           "0": {
             "label": "浸水神像"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "奧德里克的墜星",
+        "text": "我看見一塊岩石從西方天空墜落，{playerName}。它撞上沼澤牆，像熔爐一樣爆開，遠在寡婦林之外。往西去，找出爆炸後留下的東西，把不屬於這個世界的物件帶回來。",
+        "completion": "這不是我認識的武器。看這些板片折疊的方式。若能穿戴，它也許是一件稀有護甲。帶上它試試看，{playerName}，但要小心。",
+        "objectives": {
+          "0": {
+            "label": "未知異星武器"
           }
         }
       },
@@ -45967,6 +46127,12 @@ export const ko_KR: EnTranslations = {
       },
       "event_skin_token": {
         "name": "신비한 외형 상자"
+      },
+      "unknown_alien_weaponry": {
+        "name": "알 수 없는 외계 무기"
+      },
+      "alien_armor_plate": {
+        "name": "외계 갑옷 판"
       }
     },
     "mobs": {
@@ -46624,6 +46790,16 @@ export const ko_KR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "물먹은 우상"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "알드릭의 떨어진 별",
+        "text": "저는 서쪽 하늘에서 바위가 떨어지는 것을 보았습니다, {playerName}. 그것은 습지의 벽을 치고 대장간처럼 폭발했으며, 과부 숲 너머 먼 곳이었습니다. 서쪽으로 가서 폭발 뒤에 남은 것을 찾고, 이 세계의 것이 아닌 것은 무엇이든 가져오십시오.",
+        "completion": "제가 아는 무기는 아닙니다. 판들이 접히는 모양을 보십시오. 착용할 수 있다면 드문 갑옷 조각일지도 모릅니다. 가져가서 입어 보십시오, {playerName}. 다만 조심하십시오.",
+        "objectives": {
+          "0": {
+            "label": "알 수 없는 외계 무기"
           }
         }
       },
@@ -50281,6 +50457,12 @@ export const ja_JP: EnTranslations = {
       },
       "event_skin_token": {
         "name": "謎めいた装いの宝箱"
+      },
+      "unknown_alien_weaponry": {
+        "name": "未知の異星武装"
+      },
+      "alien_armor_plate": {
+        "name": "異星の装甲板"
       }
     },
     "mobs": {
@@ -50938,6 +51120,16 @@ export const ja_JP: EnTranslations = {
         "objectives": {
           "0": {
             "label": "水浸しの偶像"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "アルドリックの落ちた星",
+        "text": "西の空から岩が落ちるのを見ました、{playerName}。それは沼の壁にぶつかり、炉のように爆ぜました。ウィドウの茂みのさらに向こうです。西へ向かい、爆発に耐えて残ったものを探し、この世界のものではない何かを持ち帰ってください。",
+        "completion": "これは私の知る武器ではありません。板が折り重なる様子を見てください。身に着けられるなら、希少な鎧の一部かもしれません。持って行って試してみてください、{playerName}。ただし気をつけて。",
+        "objectives": {
+          "0": {
+            "label": "未知の異星武装"
           }
         }
       },
@@ -54595,6 +54787,12 @@ export const pt_BR: EnTranslations = {
       },
       "event_skin_token": {
         "name": "Baú cosmético misterioso"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Armamento alienígena desconhecido"
+      },
+      "alien_armor_plate": {
+        "name": "Placa de armadura alienígena"
       }
     },
     "mobs": {
@@ -55252,6 +55450,16 @@ export const pt_BR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Ídolo encharcado"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "A estrela caída de Aldric",
+        "text": "Vi uma rocha cair do céu a oeste, {playerName}. Ela atingiu a muralha do pântano e explodiu como uma forja, muito além do bosque das viúvas. Vá para oeste, descubra o que sobreviveu à explosão e traga-me qualquer coisa que não pertença a este mundo.",
+        "completion": "Isto não é uma arma que eu conheça. Veja como as placas se dobram. Pode ser uma peça rara de armadura, se puder ser usada. Leve-a e experimente-a, {playerName}, mas tenha cuidado.",
+        "objectives": {
+          "0": {
+            "label": "Armamento alienígena desconhecido"
           }
         }
       },
@@ -58909,6 +59117,12 @@ export const ru_RU: EnTranslations = {
       },
       "event_skin_token": {
         "name": "Загадочный косметический тайник"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Неизвестное инопланетное вооружение"
+      },
+      "alien_armor_plate": {
+        "name": "Пластина инопланетной брони"
       }
     },
     "mobs": {
@@ -59566,6 +59780,16 @@ export const ru_RU: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Размокший идол"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "Падшая звезда Алдрика",
+        "text": "Я видел, как камень упал с западного неба, {playerName}. Он ударил в стену болота и вспыхнул, словно кузня, далеко за чащей вдов. Идите на запад, найдите то, что пережило взрыв, и принесите мне все, что не принадлежит этому миру.",
+        "completion": "Это не оружие, какое я знаю. Посмотрите, как складываются пластины. Возможно, это редкая часть брони, если ее вообще можно носить. Возьмите ее и примерьте, {playerName}, но будьте осторожны.",
+        "objectives": {
+          "0": {
+            "label": "Неизвестное инопланетное вооружение"
           }
         }
       },
@@ -64408,6 +64632,12 @@ export const en_XA: EnTranslations = {
       },
       "event_skin_token": {
         "name": "[Ɱýšţéŕíóúš Çóšɱéţíç Çáçĥé]"
+      },
+      "unknown_alien_weaponry": {
+        "name": "[Úñķñóŵñ Áļíéñ Ŵéáþóñŕý]"
+      },
+      "alien_armor_plate": {
+        "name": "[Áļíéñ Áŕɱóŕ Þļáţé]"
       }
     },
     "mobs": {
@@ -65065,6 +65295,16 @@ export const en_XA: EnTranslations = {
         "objectives": {
           "0": {
             "label": "[Ŵáţéŕļóĝĝéð Íðóļ]"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "[Áļðŕíç'š Ƒáļļéñ Šţáŕ]",
+        "text": "[Í šáŵ á ŕóçķ ƒáļļ óúţ óƒ ţĥé ŵéšţéŕñ šķý, {playerName}. Íţ šţŕúçķ ţĥé ɱáŕšĥ ŵáļļ áñð ƀúŕšţ ļíķé á ƒóŕĝé, ƒáŕ ƀéýóñð ţĥé ŵíðóŵ ţĥíçķéţ. Ĝó ŵéšţ, ƒíñð ŵĥáţ šúŕʋíʋéð ţĥé éẋþļóšíóñ, áñð ƀŕíñĝ ɱé áñýţĥíñĝ ţĥáţ ðóéš ñóţ ƀéļóñĝ ţó ţĥíš ŵóŕļð.]",
+        "completion": "[Ţĥíš íš ñó ŵéáþóñ Í ķñóŵ. Ļóóķ áţ ĥóŵ ţĥé þļáţéš ƒóļð. Íţ ɱáý ƀé á ŕáŕé þíéçé óƒ áŕɱóŕ, íƒ íţ çáñ ƀé ŵóŕñ áţ áļļ. Ţáķé íţ áñð ţŕý íţ óñ, {playerName}, ƀúţ ƀé çáŕéƒúļ.]",
+        "objectives": {
+          "0": {
+            "label": "[Úñķñóŵñ Áļíéñ Ŵéáþóñŕý]"
           }
         }
       },

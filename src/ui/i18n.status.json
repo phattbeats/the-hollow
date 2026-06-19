@@ -25,9 +25,9 @@
     "ru_RU"
   ],
   "counts": {
-    "keys": 2697,
-    "rows": 35061,
-    "translated": 33875,
+    "keys": 2703,
+    "rows": 35139,
+    "translated": 33953,
     "pending": 1140,
     "blocked": 46,
     "blockedSource": 104
@@ -37303,6 +37303,78 @@
         }
       }
     },
+    "main:entities.items.alien_armor_plate.name": {
+      "scope": "main",
+      "enHash": "36be713dd523501d",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        }
+      }
+    },
     "main:entities.items.amber_hide.name": {
       "scope": "main",
       "enHash": "c2478b9d6374e90f",
@@ -56959,6 +57031,78 @@
         }
       }
     },
+    "main:entities.items.unknown_alien_weaponry.name": {
+      "scope": "main",
+      "enHash": "01f1a9c2ae16c83a",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        }
+      }
+    },
     "main:entities.items.vaels_mist_staff.name": {
       "scope": "main",
       "enHash": "7353ecaa93eb59eb",
@@ -70679,6 +70823,298 @@
         "ru_RU": {
           "state": "translated",
           "srcHash": "9154e5fed15c5e40",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_aldrics_fallen_star.completion": {
+      "scope": "main",
+      "enHash": "bde7fd7b0e434d39",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "bde7fd7b0e434d39",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "bde7fd7b0e434d39",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "bde7fd7b0e434d39",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "bde7fd7b0e434d39",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "bde7fd7b0e434d39",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "bde7fd7b0e434d39",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "bde7fd7b0e434d39",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "bde7fd7b0e434d39",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "bde7fd7b0e434d39",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "bde7fd7b0e434d39",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "bde7fd7b0e434d39",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "bde7fd7b0e434d39",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "bde7fd7b0e434d39",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_aldrics_fallen_star.objectives.0.label": {
+      "scope": "main",
+      "enHash": "01f1a9c2ae16c83a",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "01f1a9c2ae16c83a",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_aldrics_fallen_star.text": {
+      "scope": "main",
+      "enHash": "6fbd3081e15b11aa",
+      "placeholders": [
+        "playerName"
+      ],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "6fbd3081e15b11aa",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "6fbd3081e15b11aa",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "6fbd3081e15b11aa",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "6fbd3081e15b11aa",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "6fbd3081e15b11aa",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "6fbd3081e15b11aa",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "6fbd3081e15b11aa",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "6fbd3081e15b11aa",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "6fbd3081e15b11aa",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "6fbd3081e15b11aa",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "6fbd3081e15b11aa",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "6fbd3081e15b11aa",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "6fbd3081e15b11aa",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.quests.q_aldrics_fallen_star.title": {
+      "scope": "main",
+      "enHash": "55598c94dc886f19",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "55598c94dc886f19",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "55598c94dc886f19",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "55598c94dc886f19",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "55598c94dc886f19",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "55598c94dc886f19",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "55598c94dc886f19",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "55598c94dc886f19",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "55598c94dc886f19",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "55598c94dc886f19",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "55598c94dc886f19",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "55598c94dc886f19",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "55598c94dc886f19",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "55598c94dc886f19",
           "by": "human"
         }
       }
