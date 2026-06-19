@@ -31,6 +31,7 @@ const itemStringsEn = {
       uncommon: "Uncommon",
       rare: "Rare",
       epic: "Epic",
+      legendary: "Legendary",
     },
     kind: {
       weapon: "Weapon",
