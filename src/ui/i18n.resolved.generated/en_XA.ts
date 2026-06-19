@@ -1316,7 +1316,8 @@ export const en_XA: EnTranslations = {
       "rewards": "[Ŕéŵáŕðš]",
       "xpReward": "[{xp} éẋþéŕíéñçé]",
       "itemReward": "[Íţéɱ ŕéŵáŕð:]",
-      "objectiveProgress": "[{label}: {current}/{total}]"
+      "objectiveProgress": "[{label}: {current}/{total}]",
+      "requiresLevel": "[Ŕéɋúíŕéš Ļéʋéļ {level}]"
     },
     "logs": {
       "accepted": "[Ɋúéšţ áççéþţéð: {name}]",

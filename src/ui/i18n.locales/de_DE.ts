@@ -909,6 +909,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   "questUi.detail.xpReward": "{xp} Erfahrung",
   "questUi.detail.itemReward": "Gegenstandsbelohnung:",
   "questUi.detail.objectiveProgress": "{label}: {current}/{total}",
+  "questUi.detail.requiresLevel": "Benötigt Stufe {level}",
   "questUi.logs.accepted": "Quest angenommen: {name}",
   "questUi.logs.abandoned": "Quest aufgegeben: {name}",
   "questUi.logs.completed": "Quest abgeschlossen: {name}",

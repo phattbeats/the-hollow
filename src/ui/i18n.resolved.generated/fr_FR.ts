@@ -1316,7 +1316,8 @@ export const fr_FR: EnTranslations = {
       "rewards": "Récompenses",
       "xpReward": "{xp} points d'expérience",
       "itemReward": "Récompense d'objet :",
-      "objectiveProgress": "{label} : {current}/{total}"
+      "objectiveProgress": "{label} : {current}/{total}",
+      "requiresLevel": "Niveau {level} requis"
     },
     "logs": {
       "accepted": "Quête acceptée : {name}",

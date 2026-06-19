@@ -1316,7 +1316,8 @@ export const ko_KR: EnTranslations = {
       "rewards": "보상",
       "xpReward": "경험치 {xp}",
       "itemReward": "아이템 보상:",
-      "objectiveProgress": "{label}: {current}/{total}"
+      "objectiveProgress": "{label}: {current}/{total}",
+      "requiresLevel": "{level}레벨 필요"
     },
     "logs": {
       "accepted": "퀘스트 수락: {name}",

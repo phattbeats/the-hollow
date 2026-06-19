@@ -909,6 +909,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   "questUi.detail.xpReward": "{xp} 點經驗",
   "questUi.detail.itemReward": "物品獎勵：",
   "questUi.detail.objectiveProgress": "{label}：{current}/{total}",
+  "questUi.detail.requiresLevel": "需要等級 {level}",
   "questUi.logs.accepted": "已接受任務：{name}",
   "questUi.logs.abandoned": "已放棄任務：{name}",
   "questUi.logs.completed": "已完成任務：{name}",

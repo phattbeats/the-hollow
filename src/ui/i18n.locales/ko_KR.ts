@@ -909,6 +909,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   "questUi.detail.xpReward": "경험치 {xp}",
   "questUi.detail.itemReward": "아이템 보상:",
   "questUi.detail.objectiveProgress": "{label}: {current}/{total}",
+  "questUi.detail.requiresLevel": "{level}레벨 필요",
   "questUi.logs.accepted": "퀘스트 수락: {name}",
   "questUi.logs.abandoned": "퀘스트 포기: {name}",
   "questUi.logs.completed": "퀘스트 완료: {name}",

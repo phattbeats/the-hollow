@@ -1316,7 +1316,8 @@ export const ru_RU: EnTranslations = {
       "rewards": "Награды",
       "xpReward": "{xp} опыта",
       "itemReward": "Предметная награда:",
-      "objectiveProgress": "{label}: {current}/{total}"
+      "objectiveProgress": "{label}: {current}/{total}",
+      "requiresLevel": "Требуется уровень {level}"
     },
     "logs": {
       "accepted": "Задание принято: {name}",
