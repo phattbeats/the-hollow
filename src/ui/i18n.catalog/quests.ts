@@ -52,6 +52,7 @@ const questStringsEn = {
       xpReward: "{xp} experience",
       itemReward: "Item reward:",
       objectiveProgress: "{label}: {current}/{total}",
+      requiresLevel: "Requires Level {level}",
     },
     logs: {
       accepted: "Quest accepted: {name}",
@@ -123,6 +124,7 @@ export const questStrings = {
         xpReward: "{xp} de experiencia",
         itemReward: "Recompensa de objeto:",
         objectiveProgress: "{label}: {current}/{total}",
+        requiresLevel: "Requiere nivel {level}",
       },
       logs: {
         accepted: "Misión aceptada: {name}",
@@ -191,6 +193,7 @@ export const questStrings = {
         xpReward: "{xp} points d'expérience",
         itemReward: "Récompense d'objet :",
         objectiveProgress: "{label} : {current}/{total}",
+        requiresLevel: "Niveau {level} requis",
       },
       logs: {
         accepted: "Quête acceptée : {name}",
@@ -260,6 +263,7 @@ export const questStrings = {
         xpReward: "{xp} esperienza",
         itemReward: "Ricompensa oggetto:",
         objectiveProgress: "{label}: {current}/{total}",
+        requiresLevel: "Richiede livello {level}",
       },
       logs: {
         accepted: "Missione accettata: {name}",
@@ -327,6 +331,7 @@ export const questStrings = {
         xpReward: "{xp} Erfahrung",
         itemReward: "Gegenstandsbelohnung:",
         objectiveProgress: "{label}: {current}/{total}",
+        requiresLevel: "Benötigt Stufe {level}",
       },
       logs: {
         accepted: "Quest angenommen: {name}",
@@ -394,6 +399,7 @@ export const questStrings = {
         xpReward: "{xp} 点经验",
         itemReward: "物品奖励：",
         objectiveProgress: "{label}：{current}/{total}",
+        requiresLevel: "需要等级 {level}",
       },
       logs: {
         accepted: "已接受任务：{name}",
@@ -461,6 +467,7 @@ export const questStrings = {
         xpReward: "{xp} 點經驗",
         itemReward: "物品獎勵：",
         objectiveProgress: "{label}：{current}/{total}",
+        requiresLevel: "需要等級 {level}",
       },
       logs: {
         accepted: "已接受任務：{name}",
@@ -528,6 +535,7 @@ export const questStrings = {
         xpReward: "경험치 {xp}",
         itemReward: "아이템 보상:",
         objectiveProgress: "{label}: {current}/{total}",
+        requiresLevel: "{level}레벨 필요",
       },
       logs: {
         accepted: "퀘스트 수락: {name}",
@@ -595,6 +603,7 @@ export const questStrings = {
         xpReward: "経験値 {xp}",
         itemReward: "アイテム報酬:",
         objectiveProgress: "{label}: {current}/{total}",
+        requiresLevel: "レベル{level}が必要",
       },
       logs: {
         accepted: "クエスト受諾: {name}",
@@ -662,6 +671,7 @@ export const questStrings = {
         xpReward: "{xp} de experiência",
         itemReward: "Recompensa de item:",
         objectiveProgress: "{label}: {current}/{total}",
+        requiresLevel: "Requer nível {level}",
       },
       logs: {
         accepted: "Missão aceita: {name}",
@@ -729,6 +739,7 @@ export const questStrings = {
         xpReward: "{xp} опыта",
         itemReward: "Предметная награда:",
         objectiveProgress: "{label}: {current}/{total}",
+        requiresLevel: "Требуется уровень {level}",
       },
       logs: {
         accepted: "Задание принято: {name}",

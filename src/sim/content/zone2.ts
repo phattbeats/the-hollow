@@ -433,7 +433,7 @@ export const ZONE2_QUESTS: Record<string, QuestDef> = {
     objectives: [{ type: 'collect', itemId: 'unknown_alien_weaponry', count: 1, label: 'Unknown Alien Weaponry' }],
     xpReward: 900, copperReward: 300,
     itemRewards: { warrior: 'alien_armor_plate', mage: 'alien_armor_plate', rogue: 'alien_armor_plate' },
-    minLevel: 6,
+    minLevel: 5,
   },
   q_deepfen_purge: {
     id: 'q_deepfen_purge', name: 'Back to the Shallows',

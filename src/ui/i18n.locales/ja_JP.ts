@@ -909,6 +909,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "questUi.detail.xpReward": "経験値 {xp}",
   "questUi.detail.itemReward": "アイテム報酬:",
   "questUi.detail.objectiveProgress": "{label}: {current}/{total}",
+  "questUi.detail.requiresLevel": "レベル{level}が必要",
   "questUi.logs.accepted": "クエスト受諾: {name}",
   "questUi.logs.abandoned": "クエスト破棄: {name}",
   "questUi.logs.completed": "クエスト完了: {name}",

@@ -1316,7 +1316,8 @@ export const zh_TW: EnTranslations = {
       "rewards": "獎勵",
       "xpReward": "{xp} 點經驗",
       "itemReward": "物品獎勵：",
-      "objectiveProgress": "{label}：{current}/{total}"
+      "objectiveProgress": "{label}：{current}/{total}",
+      "requiresLevel": "需要等級 {level}"
     },
     "logs": {
       "accepted": "已接受任務：{name}",
