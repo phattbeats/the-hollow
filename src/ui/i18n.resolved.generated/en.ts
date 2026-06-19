@@ -4207,41 +4207,41 @@ export const en: EnTranslations = {
       },
       "q_ledger_first_duty": {
         "title": "A Warden's First Duty",
-        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
-        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The thornpelt badgers have dug their setts clean through the west meadow, and the spring planting is collapsing into their burrows. Cull 8 Thornpelt Badgers and the ledger will remember your name.",
+        "completion": "Eight setts emptied and the planting saved. Good. Every name in this ledger started just where you are standing.",
         "objectives": {
           "0": {
-            "label": "Wild Boar culled"
+            "label": "Thornpelt Badger culled"
           }
         }
       },
       "q_ledger_teeth": {
         "title": "Teeth in the Dark",
-        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
-        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "text": "The glade foxes have grown bold as wolves - they slip the henhouses at dusk and are gone before a lantern is lit, and a hungry vixen will take a lamb as soon as a hen. Thin them, {playerName}. Slay 10 Glade Foxes and let the rest learn to fear the light again.",
+        "completion": "Ten foxes, and the henhouses are quiet at dusk again. The ledger grows kinder to you.",
         "objectives": {
           "0": {
-            "label": "Forest Wolf slain"
+            "label": "Glade Fox slain"
           }
         }
       },
       "q_ledger_reedwater": {
         "title": "Reedwater Patrol",
-        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
-        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The meadow cranes have found my nets, and they spear more of my catch than the Mudfin ever did. Thin them: 8 Meadow Cranes, and mind the deep water.",
+        "completion": "That will keep the long-legged thieves off my nets for a season. Tell the Marshal the shallows are mine again.",
         "objectives": {
           "0": {
-            "label": "Mudfin Skulker slain"
+            "label": "Meadow Crane driven off"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "Silk and Venom",
-        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
-        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "title": "Browse and Bramble",
+        "text": "The ledger marks the eastern woods as warden ground too - and my physic-beds are part of it. The spotted fawns have stripped my silverleaf and bloodthistle to the root, and without those simples half of Eastbrook goes without medicine. I take no joy in it, but cull 8 Spotted Fawns before the autumn herbs are lost entirely.",
+        "completion": "The beds may yet recover, thanks to you. A hard mercy - but a child burning with fever needs the simples more than the wood needs the deer. The ledger is square.",
         "objectives": {
           "0": {
-            "label": "Webwood Lurker slain"
+            "label": "Spotted Fawn culled"
           }
         }
       },
@@ -4266,12 +4266,12 @@ export const en: EnTranslations = {
         }
       },
       "q_ledger_toll": {
-        "title": "The Highwaymen's Toll",
-        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
-        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "title": "The Tusked Road",
+        "text": "The grovetusk boars have come down out of the Brightwood and onto the southeast trade road - great tusked brutes that gore the draft oxen and overturn carts for the spilled grain. The ledger has a price on every one. Reopen the road: put down 8 Grovetusk Boars.",
+        "completion": "Eight brutes off the road, and the carts are rolling again. Word is already spreading that the trade road has a new keeper. The ledger climbs in your favor.",
         "objectives": {
           "0": {
-            "label": "Vale Bandit brought to justice"
+            "label": "Grovetusk Boar slain"
           }
         }
       },
