@@ -688,11 +688,16 @@
   /* width shrinks on narrower screens so the chat never overlaps the centred
      bottom bar (≈612px wide); caps at 370px when there's room. */
   #chatlog-wrap { position: absolute; left: 12px; bottom: 8px; width: min(370px, calc(50vw - 330px)); }
-  #chatlog-tabs { display: flex; gap: 2px; margin-left: 6px; margin-bottom: -1px; position: relative; z-index: 2; }
+  #chatlog-tabs { display: flex; flex-wrap: wrap; gap: 2px; margin-left: 6px; margin-bottom: -1px; position: relative; z-index: 2; }
   .chat-tab { height: 22px; padding: 0 12px; border: 1px solid #3a321d; border-bottom: none;
     border-radius: 6px 6px 0 0; background: linear-gradient(#1c1824, #0d0b13); color: #95886a;
     cursor: var(--cursor-point); font-family: var(--title-font); font-size: 12px; text-shadow: 1px 1px 1px #000; }
   .chat-tab.active { color: var(--gold); border-color: #6f5a2a; background: linear-gradient(#2a2436, #161220); }
+  /* "add channel" (+) tab: square, icon-only, slightly de-emphasised */
+  .chat-tab-add { padding: 0; width: 26px; font-size: 15px; line-height: 1; color: #b6a472; }
+  .chat-tab-add:hover { color: var(--gold); }
+  /* a channel tab filters the shared chat pane to its own messages */
+  .chat-pane .chat-hidden { display: none; }
   #chatlog-frame { height: 184px; padding: 0; overflow: hidden; border-radius: 0 6px 6px 6px; }
   .chat-pane { display: none; height: 100%; overflow-y: auto; overflow-x: hidden; padding: 7px 10px;
     font-size: 11px; line-height: 1.45; }
@@ -6340,10 +6345,9 @@
     </div>
 
     <div id="chatlog-wrap">
-      <div id="chatlog-tabs">
-        <button class="chat-tab active" data-log-tab="chat" data-i18n="hud.core.chatTab">Chat</button>
-        <button class="chat-tab" data-log-tab="combat" data-i18n="hud.core.combatLogTab">Combat Log</button>
-      </div>
+      <!-- Tabs (built-in Chat/Combat + player-added channel tabs + "add") are
+           rendered by the HUD (hud.ts initChatTabs); this stays empty. -->
+      <div id="chatlog-tabs" role="tablist"></div>
       <div id="chatlog-frame" class="panel">
         <div id="chatlog" class="chat-pane active"></div>
         <div id="combatlog" class="chat-pane"></div>

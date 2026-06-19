@@ -40,6 +40,11 @@ import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } fro
 import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES, clickMoveButtonLabel, normalizeClickMoveButton } from '../game/settings';
 import { isPhoneTouchDevice } from '../game/mobile_controls';
 import { chatPlayerContextActions } from './player_context_menu';
+import {
+  CHAT_TAB_CHANNELS, CHANNEL_LABEL_KEYS, channelNeedsJoin, composeChatLine,
+  parseChatTabs, serializeChatTabs, isChatTabChannel,
+  type ChatTabChannel, type ChatTabId,
+} from './chat_channels';
 import { TouchPeekGuard, TOOLTIP_PEEK_MS } from './touch_peek';
 import { maskProfanity } from './profanity';
 import { formatMoney as formatLocalizedMoney, formatNumber, moneyParts, t, tOptional, type TranslationKey } from './i18n';
@@ -177,6 +182,11 @@ const DEFAULT_EMOTE_WHEEL: OverheadEmoteId[] = ['wave', 'laugh', 'question', 'ch
 // yards past a zone boundary before the crossing banner/welcome commits
 const ZONE_BANNER_DEADBAND = 5;
 const IGNORED_CHAT_NAMES_KEY = 'woc_ignored_chat_names';
+// WoW-style chat tabs: the ordered channel tabs the player has opened, and the
+// tab that was active last session. The built-in `all`/`combat` views are
+// implicit and never stored.
+const CHAT_TABS_KEY = 'woc_chat_tabs';
+const CHAT_ACTIVE_TAB_KEY = 'woc_chat_active_tab';
 const BIND_CATEGORY_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
   Movement: 'hud.keybinds.categories.movement',
   Targeting: 'hud.keybinds.categories.targeting',
@@ -271,6 +281,11 @@ export class Hud {
   private chatTimestamps = localStorage.getItem('chatTimestamps') === '1';
   private chatClock: ChatClock = clampChatClock(localStorage.getItem('chatClock'));
   private combatLogEl = $('#combatlog');
+  // WoW-style chat tabs. `chatTabs` are the player-added channel tabs (the
+  // built-in `all`/`combat` views are implicit); `activeChatTab` is the one
+  // currently shown, and drives both the log filter and the send channel.
+  private chatTabs: ChatTabChannel[] = [];
+  private activeChatTab: ChatTabId = 'all';
   private errorEl = $('#error-msg');
   private bannerEl = $('#banner');
   private subzoneEl = $('#subzone-banner');
@@ -403,7 +418,7 @@ export class Hud {
   constructor(private sim: IWorld, private renderer: Renderer, private keybinds: Keybinds) {
     this.ignoredChatNames = this.loadIgnoredChatNames();
     this.meters = new Meters(sim);
-    this.bindLogTabs();
+    this.initChatTabs();
     this.initWindowManagement();
     this.emoteWheelSlots = this.loadEmoteWheelSlots();
     this.loadSlotMap();
@@ -772,16 +787,197 @@ export class Hud {
     this.syncAnyWindowOpenState();
   }
 
-  private bindLogTabs(): void {
-    const tabs = document.querySelectorAll<HTMLButtonElement>('.chat-tab');
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const which = tab.dataset.logTab;
-        tabs.forEach((t) => t.classList.toggle('active', t === tab));
-        $('#chatlog').classList.toggle('active', which === 'chat');
-        $('#combatlog').classList.toggle('active', which === 'combat');
-      });
+  // -------------------------------------------------------------------------
+  // Chat tabs (WoW-style): the built-in "Chat" (all) and "Combat Log" views,
+  // plus player-added per-channel tabs. The active tab drives BOTH the log
+  // filter (which messages show) and the send channel (what plain text targets),
+  // so a player can chat in World/LFG/Party/etc. without retyping the command.
+  // -------------------------------------------------------------------------
+
+  private initChatTabs(): void {
+    let savedTabs: string | null = null;
+    let savedActive: string | null = null;
+    try {
+      savedTabs = localStorage.getItem(CHAT_TABS_KEY);
+      savedActive = localStorage.getItem(CHAT_ACTIVE_TAB_KEY);
+    } catch { /* storage unavailable */ }
+    this.chatTabs = parseChatTabs(savedTabs);
+    this.activeChatTab = (savedActive === 'all' || savedActive === 'combat'
+      || (isChatTabChannel(savedActive) && this.chatTabs.includes(savedActive)))
+      ? (savedActive as ChatTabId) : 'all';
+    // re-join any opt-in global channels whose tabs were restored, so messages
+    // typed there are delivered this session too
+    for (const ch of this.chatTabs) if (channelNeedsJoin(ch)) this.sim.chat(`/join ${ch}`);
+    this.renderChatTabs();
+    this.selectChatTab(this.activeChatTab, false);
+  }
+
+  private persistChatTabs(): void {
+    try {
+      localStorage.setItem(CHAT_TABS_KEY, serializeChatTabs(this.chatTabs));
+      localStorage.setItem(CHAT_ACTIVE_TAB_KEY, this.activeChatTab);
+    } catch { /* storage unavailable */ }
+  }
+
+  private renderChatTabs(): void {
+    const bar = $('#chatlog-tabs');
+    bar.innerHTML = '';
+    bar.setAttribute('role', 'tablist');
+    const makeTab = (id: ChatTabId, label: string): HTMLButtonElement => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'chat-tab';
+      btn.dataset.tab = id;
+      btn.setAttribute('role', 'tab');
+      btn.textContent = label;
+      btn.addEventListener('click', () => this.selectChatTab(id, true));
+      return btn;
+    };
+    bar.append(makeTab('all', t('hud.core.chatTab')), makeTab('combat', t('hud.core.combatLogTab')));
+    for (const ch of this.chatTabs) {
+      const label = t(CHANNEL_LABEL_KEYS[ch]);
+      const btn = makeTab(ch, label);
+      btn.title = t('hud.core.chatChannels.close', { channel: label });
+      // right-click / long-press a channel tab to close it (the + menu also toggles)
+      btn.addEventListener('contextmenu', (ev) => { ev.preventDefault(); this.removeChatTab(ch); });
+      bar.append(btn);
+    }
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'chat-tab chat-tab-add';
+    add.textContent = '+';
+    add.setAttribute('aria-label', t('hud.core.chatChannels.add'));
+    add.title = t('hud.core.chatChannels.add');
+    add.addEventListener('click', () => {
+      const r = add.getBoundingClientRect();
+      this.openChatChannelMenu(r.left, r.bottom);
     });
+    bar.append(add);
+    this.updateActiveTabStyles();
+  }
+
+  private updateActiveTabStyles(): void {
+    $('#chatlog-tabs').querySelectorAll<HTMLButtonElement>('.chat-tab').forEach((btn) => {
+      if (btn.classList.contains('chat-tab-add')) return;
+      const active = btn.dataset.tab === this.activeChatTab;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+      btn.tabIndex = active ? 0 : -1;
+    });
+  }
+
+  private selectChatTab(tab: ChatTabId, persist = true): void {
+    this.activeChatTab = tab;
+    const showCombat = tab === 'combat';
+    this.chatLogEl.classList.toggle('active', !showCombat);
+    this.combatLogEl.classList.toggle('active', showCombat);
+    if (!showCombat) this.applyChatFilter();
+    this.updateActiveTabStyles();
+    if (persist) this.persistChatTabs();
+    this.syncChatPlaceholder();
+  }
+
+  // Add a channel tab if not already present. Does NOT switch the active send
+  // channel — the player stays on their current tab (All/Say is the catch-all
+  // home that shows every channel and sends Say), so opening a channel never
+  // hijacks where typed text goes. `join` auto-joins opt-in global channels;
+  // skip it when the caller already sent the /join (e.g. a typed command).
+  // `select` focuses the new tab — reserved for a deliberate tab click.
+  private addChatTab(channel: ChatTabChannel, opts: { join?: boolean; select?: boolean } = {}): void {
+    const { join = true, select = false } = opts;
+    if (!this.chatTabs.includes(channel)) {
+      this.chatTabs.push(channel);
+      if (join && channelNeedsJoin(channel)) this.sim.chat(`/join ${channel}`);
+      this.renderChatTabs();
+      this.persistChatTabs();
+    }
+    if (select) this.selectChatTab(channel, true);
+  }
+
+  // Mirror a typed "/join|/leave <world|lfg>" into the tab bar so the command
+  // line and the "+" menu stay in sync: /join opens the channel's tab and
+  // /leave closes it. We never re-issue the command — main.ts already sent it,
+  // and creating the tab leaves the active send channel untouched.
+  syncChatTabsForInput(typed: string): void {
+    const m = /^\/(join|leave)\b\s*(\S*)/i.exec(typed.trim());
+    if (!m) return;
+    const channel = m[2].toLowerCase();
+    if (!isChatTabChannel(channel) || !channelNeedsJoin(channel)) return;
+    if (m[1].toLowerCase() === 'join') this.addChatTab(channel, { join: false });
+    else if (this.chatTabs.includes(channel)) this.removeChatTab(channel);
+  }
+
+  private removeChatTab(channel: ChatTabChannel): void {
+    const i = this.chatTabs.indexOf(channel);
+    if (i < 0) return;
+    this.chatTabs.splice(i, 1);
+    // closing a tab does not /leave the channel (you stay subscribed, as in WoW)
+    if (this.activeChatTab === channel) this.activeChatTab = 'all';
+    this.renderChatTabs();
+    this.selectChatTab(this.activeChatTab, true);
+  }
+
+  // The "+" menu: a toggle list of every bindable channel. Open channels show a
+  // check and toggle off; the rest add a tab. Reuses the shared #ctx-menu, so
+  // it inherits its outside-click / Escape close behaviour.
+  private openChatChannelMenu(x: number, y: number): void {
+    const el = $('#ctx-menu');
+    let html = `<div class="ctx-title">${esc(t('hud.core.chatChannels.addTitle'))}</div>`;
+    for (const ch of CHAT_TAB_CHANNELS) {
+      const open = this.chatTabs.includes(ch);
+      html += `<div class="ctx-item" data-act="${ch}">${esc(t(CHANNEL_LABEL_KEYS[ch]))}${open ? ' ✓' : ''}</div>`;
+    }
+    html += `<div class="ctx-item" data-act="close">${esc(t('hud.chat.context.cancel'))}</div>`;
+    el.innerHTML = html;
+    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
+    el.style.top = `${Math.max(8, Math.min(window.innerHeight - 320, y))}px`;
+    el.style.display = 'block';
+    this.bindContextMenuActions((act) => {
+      if (!isChatTabChannel(act)) return;
+      if (this.chatTabs.includes(act)) this.removeChatTab(act);
+      else this.addChatTab(act);
+    });
+  }
+
+  // null when the all/combat views are active (no filter, no send prefix);
+  // otherwise the channel the active tab is bound to.
+  private chatFilterChannel(): ChatTabChannel | null {
+    return (this.activeChatTab === 'all' || this.activeChatTab === 'combat') ? null : this.activeChatTab;
+  }
+
+  private applyChatFilter(): void {
+    const filter = this.chatFilterChannel();
+    for (const child of Array.from(this.chatLogEl.children)) {
+      const chan = (child as HTMLElement).dataset.chan;
+      (child as HTMLElement).classList.toggle('chat-hidden', filter !== null && chan !== filter);
+    }
+    this.chatLogEl.scrollTop = this.chatLogEl.scrollHeight;
+  }
+
+  private hideIfFiltered(div: HTMLElement, chan: string): void {
+    const filter = this.chatFilterChannel();
+    if (filter !== null && chan !== filter) div.classList.add('chat-hidden');
+  }
+
+  private syncChatPlaceholder(): void {
+    const input = document.getElementById('chat-input') as HTMLInputElement | null;
+    if (input) input.placeholder = this.activeChatPlaceholder();
+  }
+
+  // The line actually sent for what the player typed, honoring the active
+  // channel tab. main.ts calls this on Enter so a channel tab works without
+  // retyping the slash command; an explicit "/..." the player typed still wins.
+  composeChatSend(typed: string): string {
+    const ch = this.chatFilterChannel();
+    return ch ? composeChatLine(ch, typed) : typed.trim();
+  }
+
+  // Placeholder for the chat input reflecting the active channel tab.
+  activeChatPlaceholder(): string {
+    const ch = this.chatFilterChannel();
+    return ch
+      ? t('hud.core.chatChannels.sendingTo', { channel: t(CHANNEL_LABEL_KEYS[ch]) })
+      : t('hud.core.chatPlaceholder');
   }
 
   // -------------------------------------------------------------------------
@@ -3153,20 +3349,20 @@ export class Hud {
         case 'chat': {
           if (this.isChatIgnored(ev.from)) break;
           switch (ev.channel) {
-            case 'party': this.chatLogFrom(ev.from, ev.text, '#7fd4ff', CHAT_TEMPLATE_KEYS.party); break;
-            case 'yell': this.chatLogFrom(ev.from, ev.text, '#ff5040', CHAT_TEMPLATE_KEYS.yell); break;
+            case 'party': this.chatLogFrom(ev.from, ev.text, '#7fd4ff', CHAT_TEMPLATE_KEYS.party, 'party'); break;
+            case 'yell': this.chatLogFrom(ev.from, ev.text, '#ff5040', CHAT_TEMPLATE_KEYS.yell, 'yell'); break;
             case 'whisper':
-              if (ev.to) this.chatLogFrom(ev.to, ev.text, '#ff80ff', CHAT_TEMPLATE_KEYS.toWhisper);
-              else { this.chatLogFrom(ev.from, ev.text, '#ff80ff', CHAT_TEMPLATE_KEYS.whisper); audio.whisper(); }
+              if (ev.to) this.chatLogFrom(ev.to, ev.text, '#ff80ff', CHAT_TEMPLATE_KEYS.toWhisper, 'whisper');
+              else { this.chatLogFrom(ev.from, ev.text, '#ff80ff', CHAT_TEMPLATE_KEYS.whisper, 'whisper'); audio.whisper(); }
               break;
-            case 'general': this.chatLogFrom(ev.from, ev.text, '#ffc864', CHAT_TEMPLATE_KEYS.general); break;
-            case 'world': this.chatLogFrom(ev.from, ev.text, '#ff9d5c', CHAT_TEMPLATE_KEYS.world); break;
-            case 'lfg': this.chatLogFrom(ev.from, ev.text, '#5cd6a0', CHAT_TEMPLATE_KEYS.lfg); break;
-            case 'guild': this.chatLogFrom(ev.from, ev.text, '#40d264', CHAT_TEMPLATE_KEYS.guild); break;
-            case 'officer': this.chatLogFrom(ev.from, ev.text, '#4ce0c0', CHAT_TEMPLATE_KEYS.officer); break;
-            case 'emote': this.chatLogFrom(ev.from, ev.text, '#ff8040', CHAT_TEMPLATE_KEYS.emote); break;
-            case 'roll': this.chatLogFrom(ev.from, ev.text, '#ffd100', CHAT_TEMPLATE_KEYS.roll); break;
-            default: this.chatLogFrom(ev.from, ev.text, '#f0ead8', CHAT_TEMPLATE_KEYS.say); break;
+            case 'general': this.chatLogFrom(ev.from, ev.text, '#ffc864', CHAT_TEMPLATE_KEYS.general, 'general'); break;
+            case 'world': this.chatLogFrom(ev.from, ev.text, '#ff9d5c', CHAT_TEMPLATE_KEYS.world, 'world'); break;
+            case 'lfg': this.chatLogFrom(ev.from, ev.text, '#5cd6a0', CHAT_TEMPLATE_KEYS.lfg, 'lfg'); break;
+            case 'guild': this.chatLogFrom(ev.from, ev.text, '#40d264', CHAT_TEMPLATE_KEYS.guild, 'guild'); break;
+            case 'officer': this.chatLogFrom(ev.from, ev.text, '#4ce0c0', CHAT_TEMPLATE_KEYS.officer, 'officer'); break;
+            case 'emote': this.chatLogFrom(ev.from, ev.text, '#ff8040', CHAT_TEMPLATE_KEYS.emote, 'emote'); break;
+            case 'roll': this.chatLogFrom(ev.from, ev.text, '#ffd100', CHAT_TEMPLATE_KEYS.roll, 'roll'); break;
+            default: this.chatLogFrom(ev.from, ev.text, '#f0ead8', CHAT_TEMPLATE_KEYS.say, 'say'); break;
           }
           if ((ev.channel === 'say' || ev.channel === 'yell' || ev.channel === 'emote') && ev.entityId !== undefined) {
             const masked = this.maskChat(ev.text);
@@ -3375,7 +3571,7 @@ export class Hud {
   }
 
   log(text: string, color = '#ccc'): void {
-    this.appendLog(this.chatLogEl, text, color, true);
+    this.appendLog(this.chatLogEl, text, color, true, 'system');
   }
 
   // Prepend a dim bracketed wall-clock prefix to a chat line when the "Show
@@ -3394,10 +3590,12 @@ export class Hud {
     this.log(zoneWelcome(zone.id), '#ffd100');
   }
 
-  private chatLogFrom(name: string, text: string, color: string, templateKey: TranslationKey): void {
+  private chatLogFrom(name: string, text: string, color: string, templateKey: TranslationKey, chan: string): void {
     const wasNearBottom = this.chatLogEl.scrollHeight - this.chatLogEl.scrollTop - this.chatLogEl.clientHeight < 24;
     const div = document.createElement('div');
     div.style.color = color;
+    div.dataset.chan = chan;
+    this.hideIfFiltered(div, chan);
     this.prependTimestamp(div);
     const sender = document.createElement('span');
     sender.className = 'chat-player-name';
@@ -3700,11 +3898,13 @@ export class Hud {
     this.appendLog(this.combatLogEl, text, color);
   }
 
-  private appendLog(el: HTMLElement, text: string, color: string, timestamp = false): void {
+  private appendLog(el: HTMLElement, text: string, color: string, timestamp = false, chan = 'system'): void {
     const wasNearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
     const div = document.createElement('div');
     div.style.color = color;
     if (timestamp) this.prependTimestamp(div);
+    // tag + filter only the chat pane; the combat pane is a separate view
+    if (el === this.chatLogEl) { div.dataset.chan = chan; this.hideIfFiltered(div, chan); }
     div.append(document.createTextNode(text));
     el.appendChild(div);
     while (el.children.length > 200) el.removeChild(el.firstChild!);
