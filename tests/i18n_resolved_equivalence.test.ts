@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { assertDeterministic } from "./helpers/i18n_determinism";
 
 // Byte-equivalence safety net for the i18n scaling refactor. Every
 // behavior-preserving change must leave the resolved 14-locale table
@@ -70,5 +71,14 @@ describe("i18n resolved-artifact reproducibility", () => {
         encoding: "utf8",
       }),
     ).not.toThrow();
+  });
+
+  it("regenerates byte-identically across two perturbed-env runs (determinism)", () => {
+    // The committed directory keeps the freshness check above; this ADDS the stronger
+    // determinism guarantee - double-generate into two throwaway temp dirs under
+    // perturbed TZ / LC_ALL / temp-path and assert every emitted slice is byte-identical
+    // across the runs (a hidden locale/timezone/path dependency would surface as a diff).
+    // outFiles omitted => the whole emitted tree (all per-locale slices + barrel) is compared.
+    expect(() => assertDeterministic({ script: buildScript })).not.toThrow();
   });
 });
