@@ -51,7 +51,7 @@ import {
 } from './chat_channels';
 import { TouchPeekGuard, TOOLTIP_PEEK_MS } from './touch_peek';
 import { maskProfanity } from './profanity';
-import { formatMoney as formatLocalizedMoney, formatNumber, moneyParts, t, tOptional, type TranslationKey } from './i18n';
+import { formatMoney as formatLocalizedMoney, formatNumber, moneyParts, t, tOptional, tPlural, type TranslationKey } from './i18n';
 import { tEntity } from './entity_i18n';
 import { localizeServerText, localizeZone } from './server_i18n';
 import { localizeSimText, localizeSimAuraName } from './sim_i18n';
@@ -2544,7 +2544,7 @@ export class Hud {
       dur.textContent = a.remaining < 99 ? `${Math.ceil(a.remaining)}s` : '';
       d.appendChild(dur);
       const auraName = ABILITIES[a.id] ? abilityDisplayName(ABILITIES[a.id]) : auraDisplayNameFromSource(a.name);
-      this.attachTooltip(d, () => `<div class="tt-title">${esc(auraName)}</div><div class="tt-sub">${esc(t('hud.core.secondsRemaining', { seconds: Math.ceil(a.remaining) }))}</div>`);
+      this.attachTooltip(d, () => `<div class="tt-title">${esc(auraName)}</div><div class="tt-sub">${esc(tPlural('hudChrome.plurals.secondsRemaining', Math.ceil(a.remaining)))}</div>`);
       el.appendChild(d);
     }
   }
@@ -7018,9 +7018,9 @@ export class Hud {
     const guild = this.sim.socialInfo?.guild ?? null;
     if (!guild) return `<div class="soc-empty">${esc(t('hud.social.noGuild'))}</div>`;
     const me = guild.rank;
-    const guildHeadKey = guild.members.length === 1 ? 'hud.social.guildHeadOne' : 'hud.social.guildHeadMany';
-    const guildCount = formatNumber(guild.members.length, { maximumFractionDigits: 0 });
-    const head = `<div class="soc-guild-head">&lt;${esc(guild.name)}&gt; <span class="gm">${esc(t(guildHeadKey, { rank: rankLabel(me), count: guildCount }))}</span></div>`;
+    const memberCount = guild.members.length;
+    const guildCount = formatNumber(memberCount, { maximumFractionDigits: 0 });
+    const head = `<div class="soc-guild-head">&lt;${esc(guild.name)}&gt; <span class="gm">${esc(tPlural('hudChrome.plurals.guildMembers', memberCount, { rank: rankLabel(me), count: guildCount }))}</span></div>`;
     const rows = guild.members.map((m) => {
       const dot = m.online ? (m.status ?? 'online') : 'off';
       const meta = m.online

@@ -234,6 +234,32 @@ export const ru_RU: EnTranslations = {
     },
     "tips": {
       "joinChannels": "Совет: введите /join world или /join lfg, чтобы общаться с игроками по всему миру."
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "вы {rank}, {count} участник",
+        "few": "вы {rank}, {count} участника",
+        "many": "вы {rank}, {count} участников",
+        "other": "вы {rank}, {count} участника"
+      },
+      "characterCount": {
+        "one": "{count} персонаж",
+        "few": "{count} персонажа",
+        "many": "{count} персонажей",
+        "other": "{count} персонажа"
+      },
+      "secondsRemaining": {
+        "one": "Осталось {count} сек.",
+        "few": "Осталось {count} сек.",
+        "many": "Осталось {count} сек.",
+        "other": "Осталось {count} сек."
+      },
+      "playersOnline": {
+        "one": "Список игроков: на {realm} в сети {count} игрок.",
+        "few": "Список игроков: на {realm} в сети {count} игрока.",
+        "many": "Список игроков: на {realm} в сети {count} игроков.",
+        "other": "Список игроков: на {realm} в сети {count} игрока."
+      }
     }
   },
   "skinEvent": {

@@ -234,6 +234,32 @@ export const ko_KR: EnTranslations = {
     },
     "tips": {
       "joinChannels": "팁: /join world 또는 /join lfg를 입력하면 서버 전역의 플레이어와 대화할 수 있습니다."
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "당신은 {rank}, {count}명 회원",
+        "few": "당신은 {rank}, {count}명 회원",
+        "many": "당신은 {rank}, {count}명 회원",
+        "other": "당신은 {rank}, {count}명 회원"
+      },
+      "characterCount": {
+        "one": "캐릭터 {count}개",
+        "few": "캐릭터 {count}개",
+        "many": "캐릭터 {count}개",
+        "other": "캐릭터 {count}개"
+      },
+      "secondsRemaining": {
+        "one": "{count}초 남음",
+        "few": "{count}초 남음",
+        "many": "{count}초 남음",
+        "other": "{count}초 남음"
+      },
+      "playersOnline": {
+        "one": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다.",
+        "few": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다.",
+        "many": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다.",
+        "other": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다."
+      }
     }
   },
   "skinEvent": {

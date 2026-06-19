@@ -234,6 +234,32 @@ export const ja_JP: EnTranslations = {
     },
     "tips": {
       "joinChannels": "ヒント：/join world または /join lfg と入力すると、レルム全体のプレイヤーとチャットできます。"
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "あなたは{rank}、{count}人のメンバー",
+        "few": "あなたは{rank}、{count}人のメンバー",
+        "many": "あなたは{rank}、{count}人のメンバー",
+        "other": "あなたは{rank}、{count}人のメンバー"
+      },
+      "characterCount": {
+        "one": "{count}キャラクター",
+        "few": "{count}キャラクター",
+        "many": "{count}キャラクター",
+        "other": "{count}キャラクター"
+      },
+      "secondsRemaining": {
+        "one": "残り {count} 秒",
+        "few": "残り {count} 秒",
+        "many": "残り {count} 秒",
+        "other": "残り {count} 秒"
+      },
+      "playersOnline": {
+        "one": "Who：{realm}に{count}人のプレイヤーがオンラインです。",
+        "few": "Who：{realm}に{count}人のプレイヤーがオンラインです。",
+        "many": "Who：{realm}に{count}人のプレイヤーがオンラインです。",
+        "other": "Who：{realm}に{count}人のプレイヤーがオンラインです。"
+      }
     }
   },
   "skinEvent": {

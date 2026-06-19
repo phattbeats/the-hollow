@@ -234,6 +234,32 @@ export const zh_CN: EnTranslations = {
     },
     "tips": {
       "joinChannels": "提示：输入 /join world 或 /join lfg，与全服玩家聊天。"
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "你是{rank}，{count}名成员",
+        "few": "你是{rank}，{count}名成员",
+        "many": "你是{rank}，{count}名成员",
+        "other": "你是{rank}，{count}名成员"
+      },
+      "characterCount": {
+        "one": "{count} 个角色",
+        "few": "{count} 个角色",
+        "many": "{count} 个角色",
+        "other": "{count} 个角色"
+      },
+      "secondsRemaining": {
+        "one": "剩余 {count} 秒",
+        "few": "剩余 {count} 秒",
+        "many": "剩余 {count} 秒",
+        "other": "剩余 {count} 秒"
+      },
+      "playersOnline": {
+        "one": "查询：{realm}上有{count}名玩家在线。",
+        "few": "查询：{realm}上有{count}名玩家在线。",
+        "many": "查询：{realm}上有{count}名玩家在线。",
+        "other": "查询：{realm}上有{count}名玩家在线。"
+      }
     }
   },
   "skinEvent": {

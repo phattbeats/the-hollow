@@ -110,4 +110,37 @@ export const hudChromeStrings = {
   tips: {
     joinChannels: "Tip: type /join world or /join lfg to chat with players across the realm.",
   },
+  // CLDR-categorized count strings resolved through tPlural(base, count) in
+  // src/ui/i18n.ts: it selects the active locale's cardinal category (one / few /
+  // many / other) via Intl.PluralRules and looks up the matching leaf, so e.g.
+  // Russian renders the correct 1 / 2-4 / 5+ form instead of a binary one/other.
+  // English only ever selects `one`/`other`; `few`/`many` mirror `other` here and
+  // carry the real distinct forms only in the locales that need them (ru_RU). The
+  // count is auto-supplied as {count}. Keep all four categories present per base.
+  plurals: {
+    guildMembers: {
+      one: "you are {rank}, {count} member",
+      few: "you are {rank}, {count} members",
+      many: "you are {rank}, {count} members",
+      other: "you are {rank}, {count} members",
+    },
+    characterCount: {
+      one: "{count} character",
+      few: "{count} characters",
+      many: "{count} characters",
+      other: "{count} characters",
+    },
+    secondsRemaining: {
+      one: "{count} second remaining",
+      few: "{count} seconds remaining",
+      many: "{count} seconds remaining",
+      other: "{count} seconds remaining",
+    },
+    playersOnline: {
+      one: "Who: {count} player online on {realm}.",
+      few: "Who: {count} players online on {realm}.",
+      many: "Who: {count} players online on {realm}.",
+      other: "Who: {count} players online on {realm}.",
+    },
+  },
 };

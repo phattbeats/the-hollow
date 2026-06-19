@@ -234,6 +234,32 @@ export const en_XA: EnTranslations = {
     },
     "tips": {
       "joinChannels": "[Ţíþ: ţýþé /ĵóíñ ŵóŕļð óŕ /ĵóíñ ļƒĝ ţó çĥáţ ŵíţĥ þļáýéŕš áçŕóšš ţĥé ŕéáļɱ.]"
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "[ýóú áŕé {rank}, {count} ɱéɱƀéŕ]",
+        "few": "[ýóú áŕé {rank}, {count} ɱéɱƀéŕš]",
+        "many": "[ýóú áŕé {rank}, {count} ɱéɱƀéŕš]",
+        "other": "[ýóú áŕé {rank}, {count} ɱéɱƀéŕš]"
+      },
+      "characterCount": {
+        "one": "[{count} çĥáŕáçţéŕ]",
+        "few": "[{count} çĥáŕáçţéŕš]",
+        "many": "[{count} çĥáŕáçţéŕš]",
+        "other": "[{count} çĥáŕáçţéŕš]"
+      },
+      "secondsRemaining": {
+        "one": "[{count} šéçóñð ŕéɱáíñíñĝ]",
+        "few": "[{count} šéçóñðš ŕéɱáíñíñĝ]",
+        "many": "[{count} šéçóñðš ŕéɱáíñíñĝ]",
+        "other": "[{count} šéçóñðš ŕéɱáíñíñĝ]"
+      },
+      "playersOnline": {
+        "one": "[Ŵĥó: {count} þļáýéŕ óñļíñé óñ {realm}.]",
+        "few": "[Ŵĥó: {count} þļáýéŕš óñļíñé óñ {realm}.]",
+        "many": "[Ŵĥó: {count} þļáýéŕš óñļíñé óñ {realm}.]",
+        "other": "[Ŵĥó: {count} þļáýéŕš óñļíñé óñ {realm}.]"
+      }
     }
   },
   "skinEvent": {

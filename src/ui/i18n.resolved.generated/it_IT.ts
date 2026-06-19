@@ -234,6 +234,32 @@ export const it_IT: EnTranslations = {
     },
     "tips": {
       "joinChannels": "Suggerimento: digita /join world o /join lfg per chattare con i giocatori di tutto il reame."
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "sei {rank}, {count} membro",
+        "few": "sei {rank}, {count} membri",
+        "many": "sei {rank}, {count} membri",
+        "other": "sei {rank}, {count} membri"
+      },
+      "characterCount": {
+        "one": "{count} personaggio",
+        "few": "{count} personaggi",
+        "many": "{count} personaggi",
+        "other": "{count} personaggi"
+      },
+      "secondsRemaining": {
+        "one": "{count} secondo rimanente",
+        "few": "{count} secondi rimanenti",
+        "many": "{count} secondi rimanenti",
+        "other": "{count} secondi rimanenti"
+      },
+      "playersOnline": {
+        "one": "Chi: {count} giocatore online su {realm}.",
+        "few": "Chi: {count} giocatori online su {realm}.",
+        "many": "Chi: {count} giocatori online su {realm}.",
+        "other": "Chi: {count} giocatori online su {realm}."
+      }
     }
   },
   "skinEvent": {

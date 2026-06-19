@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { localizeServerText, tServer } from "../src/ui/server_i18n";
-import { setLanguage, supportedLanguages } from "../src/ui/i18n";
+import { ensureLocaleLoaded, setLanguage, supportedLanguages } from "../src/ui/i18n";
 
 // Messages the authoritative server emits as plain English; the client must
 // re-render them in the active locale (friends/guild/world/who/moderation).
@@ -29,8 +29,12 @@ describe("server-sent message localization", () => {
     "Server restarting now.",
   ];
 
-  it("recognizes and localizes every sample in every non-English locale", () => {
+  it("recognizes and localizes every sample in every non-English locale", async () => {
     for (const lang of supportedLanguages) {
+      // The /who header now resolves through the main catalog's CLDR plural keys
+      // (tPlural), so its locale slice must be resident - exactly as the app does
+      // (the HUD bootstrap awaits ensureLocaleLoaded before any server text paints).
+      await ensureLocaleLoaded(lang);
       setLanguage(lang);
       for (const s of samples) {
         const out = localizeServerText(s);
