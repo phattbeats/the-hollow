@@ -39,6 +39,26 @@ Entity roster (add/remove/teleport) · Players join/leave/persistence · **Back-
 - Output is the **`SimEvent`** union (`types.ts`). Code calls `this.emit(ev)`; `tick()` returns the drained `SimEvent[]`. An event with `pid` is personal (delivered only to that player's owner); without `pid` it's world-visible.
 - Stepping: callers run `sim.tick()` per frame (`server/game.ts`; `headless/env_server.ts` loops it `frameSkip` times). The sim never self-schedules.
 
+## Player-facing text is English here (localized at the client)
+- The sim carries **no `t()`/DOM/i18n imports**. Player-visible strings are emitted as
+  English literals/templates on `SimEvent`s via `this.emit`, `this.error(pid, text)`
+  (`type:'error'` toast), `this.notice(pid, text)` (`type:'log'` line), and
+  `stopFollow(p, msg)` (routes `msg` through `this.error`). Translation happens only at
+  the client boundary, in `src/ui/sim_i18n.ts` (`localizeSimText`): an `EXACT` map of
+  placeholder-free strings plus ordered `RULES` regexes that re-render each emit through
+  `t()`/`tSim()`.
+- **Changing or adding a player string is a two-file change:** edit the literal in
+  `sim.ts` AND add/update the matching `EXACT` value or `RULE` (plus its `BASE_DICT` /
+  EXTRA-table key) in `sim_i18n.ts`, in the same change. Broad multi-capture `RULES`
+  (e.g. `unleashes`) stay LAST, after the specific `{name} {verb}!` rules.
+- The **S3 drift guard** (`tests/localization_fixes.test.ts`) parses `sim.ts` at test
+  time and fails CI on any emit no client matcher recognizes. It only sees string
+  **literals** at the emit site: variable-routed emits (e.g. `helpLines()` looped through
+  `this.error(id, line)`) and `?? 'English'` fallbacks are invisible. Strings that ship
+  English on purpose (the v0.7 slash-command readouts) are tracked in the status registry
+  (`blockedSource` / `ALLOW_V07_SLASH`); prefer a literal at the emit site so the guard
+  keeps working.
+
 ## Adding a mechanic here
 1. Add state to `Entity` (`types.ts`) and/or `PlayerMeta`; init it in `entity.ts` `baseEntity` / `createPlayer`.
 2. Implement in the right `tick()` region; new randomness through `this.rng`; new output via `emit` (add a `SimEvent` variant if needed).

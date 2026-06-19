@@ -61,6 +61,25 @@ persists to Postgres, and serves the built client. esbuild-bundled for Node via
    reads, surface it via `selfWireJson` (use `maybe(...)` for heavy fields that
    ride only on change). 3. Mirror the wire shape in `src/net/online.ts`. 4. Add a Vitest.
 
+## i18n: player-facing text is English at the source
+- Like the sim, `server/` is **language-agnostic** (no `t()`, no DOM). `game.ts` emits
+  English literals in `type:'log'|'error'` events (and forwards the sim's `'loot'`
+  events), via `sendChatNotice(session, text)`, and via `broadcastSystem(text)`. The
+  client re-localizes at the boundary: most
+  strings through `src/ui/server_i18n.ts` (`localizeServerText`: an `EXACT` map + ordered
+  `RULES` + a `RESTART_MESSAGES` table), a few (chat-rate limit, etc.) through the hud's
+  own `localizeErrorText`/`localizeSystemText` arms. Durations re-localize via
+  `localizeServerDuration`, which maps `formatDuration` output (`"5 minutes"`, `"1 hour"`,
+  ...) onto the `time.*` keys. **Add the matcher entry in the same change** as a new emit.
+- The **S3 guard** (`tests/localization_fixes.test.ts`) scans `game.ts` emit literals
+  (`type/text`, ternary `text:`, `sendChatNotice`). It is **blind** to variable-routed
+  emits (`broadcastSystem(step.text)` for the `RESTART_COUNTDOWN_STEPS`, the
+  `chatMuteMessage()` return) and to `?? 'literal'` fallbacks, so localize those
+  deliberately and back them with a dedicated test.
+- `server_i18n.ts`'s `DICT` carries **explicit per-dialect entries** (`es_ES`, `fr_CA`,
+  `en_CA`) as first-class keys, resolved at runtime by `getLanguage()` with no
+  base-collapse: a new key needs a value in every locale block (`en_CA` stays English).
+
 ## Never do this here
 - Never resolve gameplay (damage, drops, gold, XP) on the server outside the `Sim`.
 - Never widen WS `maxPayload` (16 KiB) or skip field validation — one socket must not be able to crash the loop or OOM the process.

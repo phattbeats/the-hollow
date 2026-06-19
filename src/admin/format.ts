@@ -1,5 +1,5 @@
 // Small display formatters shared across the admin dashboard.
-import { t, adminLanguage } from './i18n';
+import { t, adminLanguageTag } from './i18n';
 
 export function escapeHtml(value: unknown): string {
   return String(value ?? '')
@@ -31,7 +31,7 @@ export function fmtDate(iso: string | null): string {
   if (!iso) return '—';
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return '—';
-  return new Intl.DateTimeFormat(adminLanguage(), {
+  return new Intl.DateTimeFormat(adminLanguageTag(), {
     year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
   }).format(d);
 }
@@ -71,7 +71,7 @@ export function fmtBytes(bytes: number): string {
   // Digits route through Intl (mirrors fmtDate's locale-aware formatting) and the
   // unit/order comes from a t() key. useGrouping:false keeps the en output
   // byte-identical to the historical toFixed(2)/Math.round form.
-  const num = (n: number, opts: Intl.NumberFormatOptions) => new Intl.NumberFormat(adminLanguage(), { useGrouping: false, ...opts }).format(n);
+  const num = (n: number, opts: Intl.NumberFormatOptions) => new Intl.NumberFormat(adminLanguageTag(), { useGrouping: false, ...opts }).format(n);
   if (bytes >= 1024 * 1024 * 1024) return t('bytes.gigabytes', { n: num(bytes / (1024 * 1024 * 1024), { minimumFractionDigits: 2, maximumFractionDigits: 2 }) });
   if (bytes >= 1024 * 1024) return t('bytes.megabytes', { n: num(Math.round(bytes / (1024 * 1024)), { maximumFractionDigits: 0 }) });
   return t('bytes.kilobytes', { n: num(Math.round(bytes / 1024), { maximumFractionDigits: 0 }) });

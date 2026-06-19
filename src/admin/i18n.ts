@@ -47,6 +47,11 @@ function detect(): string {
 current = detect();
 
 export function adminLanguage(): string { return current; }
+// BCP-47 tag for the Intl APIs. The locale codes carry an underscore region
+// (de_DE, zh_CN, ...), which Intl rejects with a RangeError, so normalize the
+// separator to a hyphen (mirrors the game's languageTag in src/ui/i18n.ts).
+// adminLanguage() still returns the raw code for DICT/t() lookups.
+export function adminLanguageTag(): string { return current.replace("_", "-"); }
 export function setAdminLanguage(lang: string): void { if (SUPPORTED.includes(lang)) { pseudoActive = false; current = lang; } }
 
 // --- async locale-load seam (parity with the game's ensureLocaleLoaded) ----------
