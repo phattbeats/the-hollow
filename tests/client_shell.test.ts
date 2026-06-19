@@ -153,6 +153,8 @@ describe('client HTML shell', () => {
     expect(html).toContain('padding-top: calc(var(--spacing-sm) + env(safe-area-inset-top));');
     expect(html).toContain('padding-right: max(var(--spacing-md), env(safe-area-inset-right));');
     expect(html).toContain('body.mobile-touch #homepage-views-container {\n    padding-top: var(--spacing-lg);\n    padding-right: max(var(--spacing-md), env(safe-area-inset-right));');
+    expect(html).toContain('body.mobile-touch .header-actions {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    align-items: center;');
+    expect(html).toContain('body.mobile-touch .footer-lang-row {\n    width: 100%;\n    flex-direction: column;\n    align-items: center;');
     expect(html).not.toContain('body.mobile-touch .homepage-header {\n    display: flex;\n    position: relative;');
     expect(mainTs).not.toContain("visualViewport?.addEventListener('scroll', syncAppViewport)");
   });
