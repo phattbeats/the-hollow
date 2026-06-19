@@ -1,7 +1,7 @@
 // Visual manifest: maps every sim identity (player class, mob template/family,
 // NPC id, druid/polymorph form) onto a rigged glTF asset + clip names + kit.
 // Pure data + dispatch — no three.js imports, no loading.
-import type { Entity } from '../../sim/types';
+import type { Entity, SkinRank } from '../../sim/types';
 import { MOBS } from '../../sim/data';
 import type { OverheadEmoteId } from '../../world_api';
 
@@ -68,6 +68,10 @@ export interface VisualDef {
   runRef?: number;
   attackTimeScale?: number;
   deathTimeScale?: number;
+  /** Skip the boot preload sweep (manifestUrls); the asset is fetched on demand
+   *  instead — e.g. the cosmetic-only Combat Mech, loaded via preloadMechAssets()
+   *  when the skin-select preview opens, so it never bloats every client's boot. */
+  lazyPreload?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -172,6 +176,51 @@ const HUMANOID_H = 2.6;
 
 const SKINS_DIR = 'textures/skins';
 
+// ---------------------------------------------------------------------------
+// Combat Mech — a class-agnostic cosmetic body. Unlike the per-class skins
+// below (which swap a body atlas onto an existing class rig), the mech is a
+// SEPARATE model with its own visual key (`player_mech`) and a set of chroma
+// textures grouped across the three skin-event rarity tiers. Epics additionally
+// ship an emissive glow map. Cosmetic preview only for now — lazy-loaded via
+// preloadMechAssets() so it never bloats every client's boot.
+// ---------------------------------------------------------------------------
+const MECH_DIR = `${PLAYERS}/Mech/textures`;
+
+export interface MechChroma {
+  /** stable id, unique across all tiers; also the i18n name-key leaf */
+  id: string;
+  rank: SkinRank;
+}
+
+// Order defines the skin index into SKINS.player_mech / SKIN_EMISSIVE.player_mech
+// (0-based: the 8 uncommon, then 3 rare, then 4 epic). Keep them in lockstep.
+export const MECH_CHROMAS: readonly MechChroma[] = [
+  { id: 'amber_crimson', rank: 'uncommon' },
+  { id: 'crimson_amber', rank: 'uncommon' },
+  { id: 'cyan_magenta', rank: 'uncommon' },
+  { id: 'magenta_cyan', rank: 'uncommon' },
+  { id: 'orange_steel', rank: 'uncommon' },
+  { id: 'steel_orange', rank: 'uncommon' },
+  { id: 'forest_pink', rank: 'uncommon' },
+  { id: 'pink_forest', rank: 'uncommon' },
+  { id: 'amethyst_silver', rank: 'rare' },
+  { id: 'ivory_copper', rank: 'rare' },
+  { id: 'onyx_gold', rank: 'rare' },
+  { id: 'imperial_crimson', rank: 'epic' },
+  { id: 'imperial_gold', rank: 'epic' },
+  { id: 'vanguard_azure', rank: 'epic' },
+  { id: 'vanguard_chrome', rank: 'epic' },
+] as const;
+
+function mechChromaUrl(c: MechChroma): string {
+  if (c.rank === 'uncommon') return `${MECH_DIR}/uncommon/combatmech_${c.id}.png`;
+  if (c.rank === 'rare') return `${MECH_DIR}/rares/combatmech_rare_${c.id}.png`;
+  return `${MECH_DIR}/epics/combatmech_epic_${c.id}.png`;
+}
+function mechEmissiveUrl(c: MechChroma): string | null {
+  return c.rank === 'epic' ? `${MECH_DIR}/epics/combatmech_epic_${c.id}_emis.png` : null;
+}
+
 // Per-class alternate body textures ("skins"). Index 0 = null = the model's
 // embedded default texture (no swap). Index >0 = a full-atlas alternate applied
 // to the body material's .map (same UVs). Classes sharing a model share its skin
@@ -186,6 +235,15 @@ export const SKINS: Record<string, (string | null)[]> = {
   player_warlock: [null, `${SKINS_DIR}/mage/alt_a.png`, `${SKINS_DIR}/mage/alt_b.png`, `${SKINS_DIR}/mage/alt_c.png`],
   player_shaman: [null, `${SKINS_DIR}/barbarian/alt_a.png`, `${SKINS_DIR}/barbarian/alt_b.png`, `${SKINS_DIR}/barbarian/alt_c.png`],
   player_druid: [null, `${SKINS_DIR}/druid/alt_a.png`, `${SKINS_DIR}/druid/alt_b.png`, `${SKINS_DIR}/druid/alt_c.png`],
+  // Combat Mech chromas — every index is a real full-model texture (no null
+  // default; the embedded base texture is not one of the rewards).
+  player_mech: MECH_CHROMAS.map(mechChromaUrl),
+};
+
+// Emissive (glow) maps keyed exactly like SKINS, applied to .emissiveMap when a
+// skin index has one. Only the Combat Mech epics glow; null entries mean no glow.
+export const SKIN_EMISSIVE: Record<string, (string | null)[]> = {
+  player_mech: MECH_CHROMAS.map(mechEmissiveUrl),
 };
 
 /** Number of skins (including the default) available for a visual key — min 1. */
@@ -275,6 +333,16 @@ export const VISUALS: Record<string, VisualDef> = {
     clips: kaykit(['2H_Melee_Attack_Chop']),
     // dedicated druid model (own texture, ships a Backpack mesh)
     attach: [{ url: `${WEAPONS}/staff.glb`, bone: 'handslot.r' }],
+  },
+
+  // -- cosmetic-only bodies (never a live entity; rendered in the skin preview) -
+  player_mech: {
+    url: `${PLAYERS}/Mech/characters/CombatMech.glb`, height: HUMANOID_H,
+    // The mech GLB ships no animation clips and one shared material, so these
+    // clip names simply don't resolve (graceful no-op) — it previews as a static
+    // hero pose on the turntable. Lazy-loaded; see preloadMechAssets().
+    clips: kaykit(['1H_Melee_Attack_Chop']),
+    lazyPreload: true,
   },
 
   // -- forms ---------------------------------------------------------------
@@ -555,6 +623,7 @@ export function visualKeyFor(e: Entity): string {
 export function manifestUrls(): string[] {
   const urls = new Set<string>();
   for (const def of Object.values(VISUALS)) {
+    if (def.lazyPreload) continue; // fetched on demand, not at boot
     urls.add(def.url);
     for (const url of def.animUrls ?? []) urls.add(url);
     for (const a of def.attach ?? []) urls.add(a.url);
