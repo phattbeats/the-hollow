@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   Keybinds, BIND_ACTIONS, BIND_CATEGORIES, actionKind, actionAllowsShared, isReservedCode, keyLabel,
+  makeCombo, comboCode, comboMods, isModifierCode,
 } from '../src/game/keybinds';
 
 // minimal localStorage stub (the test env is plain node, no DOM)
@@ -360,5 +361,90 @@ describe('per-character scope', () => {
     expect(new Keybinds('char:alice').actionForCode('KeyZ')).toBe(null);
     // ...and reset never wrote the legacy key.
     expect(JSON.parse(localStorage.getItem('woc_keybinds')!).jump).toEqual(['KeyJ', null]);
+  });
+});
+
+describe('modifier combos', () => {
+  it('builds a canonical combo string in fixed Ctrl/Alt/Shift order', () => {
+    expect(makeCombo('Digit1', { ctrl: false, alt: false, shift: false })).toBe('Digit1');
+    expect(makeCombo('Digit1', { ctrl: false, alt: false, shift: true })).toBe('Shift+Digit1');
+    expect(makeCombo('KeyA', { ctrl: true, alt: true, shift: true })).toBe('Ctrl+Alt+Shift+KeyA');
+    // order is fixed regardless of which flags are set
+    expect(makeCombo('KeyF', { ctrl: true, alt: false, shift: true })).toBe('Ctrl+Shift+KeyF');
+  });
+
+  it('splits a combo back into its code and modifiers', () => {
+    expect(comboCode('Shift+Digit1')).toBe('Digit1');
+    expect(comboCode('Ctrl+Alt+Shift+KeyA')).toBe('KeyA');
+    expect(comboCode('Minus')).toBe('Minus'); // bare code, no '+'
+    expect(comboMods('Ctrl+Shift+KeyF')).toEqual({ ctrl: true, alt: false, shift: true });
+    expect(comboMods('Digit1')).toEqual({ ctrl: false, alt: false, shift: false });
+  });
+
+  it('identifies the bare modifier keys', () => {
+    for (const c of ['ShiftLeft', 'ShiftRight', 'ControlLeft', 'AltRight', 'MetaLeft']) {
+      expect(isModifierCode(c), c).toBe(true);
+    }
+    for (const c of ['KeyW', 'Digit1', 'Space']) expect(isModifierCode(c), c).toBe(false);
+  });
+
+  it('labels a combo with its modifier prefix', () => {
+    expect(keyLabel('Shift+Digit1')).toBe('Shift+1');
+    expect(keyLabel('Ctrl+Alt+KeyA')).toBe('Ctrl+Alt+A');
+    expect(keyLabel('Ctrl+Minus')).toBe('Ctrl+-');
+  });
+
+  it('reserves Escape under any modifier', () => {
+    expect(isReservedCode('Shift+Escape')).toBe(true);
+    expect(isReservedCode('Ctrl+Escape')).toBe(true);
+    expect(isReservedCode('Shift+Digit1')).toBe(false);
+  });
+});
+
+describe('modifier binding (edge actions)', () => {
+  it('binds Shift+1 as an edge action distinct from bare 1', () => {
+    const kb = new Keybinds();
+    expect(kb.bind('slot1', 0, 'Shift+Digit1')).toBe(true);
+    expect(kb.edgeActionForCombo('Shift+Digit1')).toBe('slot1');
+    expect(kb.codeAt('slot1', 0)).toBe('Shift+Digit1');
+    // bare Digit1 (Attack/slot0) is untouched — the modified chord did not evict it
+    expect(kb.edgeActionForCombo('Digit1')).toBe('slot0');
+    expect(kb.primaryLabel('slot1')).toBe('Shift+1');
+  });
+
+  it('lets the same physical key carry several distinct chords', () => {
+    const kb = new Keybinds();
+    kb.bind('slot1', 0, 'Shift+Digit1');
+    kb.bind('slot2', 0, 'Ctrl+Digit1');
+    expect(kb.edgeActionForCombo('Digit1')).toBe('slot0');
+    expect(kb.edgeActionForCombo('Shift+Digit1')).toBe('slot1');
+    expect(kb.edgeActionForCombo('Ctrl+Digit1')).toBe('slot2');
+  });
+
+  it('round-trips a modified binding across instances', () => {
+    const a = new Keybinds();
+    a.bind('slot1', 0, 'Shift+Digit1');
+    const b = new Keybinds();
+    expect(b.edgeActionForCombo('Shift+Digit1')).toBe('slot1');
+    expect(b.codeAt('slot1', 0)).toBe('Shift+Digit1');
+  });
+});
+
+describe('modifiers and held (movement) actions', () => {
+  it('strips modifiers when binding a held action so the per-frame poll still matches', () => {
+    const kb = new Keybinds();
+    // try to bind Shift+W to a movement action: the modifier is dropped
+    expect(kb.bind('forward', 0, 'Shift+KeyW')).toBe(true);
+    expect(kb.codeAt('forward', 0)).toBe('KeyW');
+    expect(kb.heldActionForCode('KeyW')).toBe('forward');
+  });
+
+  it('matches held actions by physical key, ignoring any held modifier', () => {
+    const kb = new Keybinds();
+    // default forward = KeyW; the held lookup is modifier-agnostic
+    expect(kb.heldActionForCode('KeyW')).toBe('forward');
+    expect(kb.heldActionForCode('Space')).toBe('jump');
+    // edge keys are not held
+    expect(kb.heldActionForCode('Digit1')).toBe(null);
   });
 });

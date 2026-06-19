@@ -4,7 +4,7 @@
 // mouse drag rotates the orbit (no pointer lock), no keyboard turn.
 // Shared: space jump, wheel zoom, Tab target, rebindable action bar, R autorun.
 
-import { Keybinds, actionKind } from './keybinds';
+import { Keybinds, makeCombo, isModifierCode, comboCode } from './keybinds';
 import { cursorForHover, type HoverCursorKind } from './cursors';
 import { DEFAULT_CLICK_PICK_MAX_MS, clickPickFromMouseGesture } from './pointer_pick';
 import { sanitizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
@@ -265,7 +265,7 @@ export class Input {
         turnRight: this.heldAction('turnRight'),
         strafeLeft: this.heldAction('strafeLeft'),
         strafeRight: this.heldAction('strafeRight'),
-        jump: this.keybinds.codesForAction('jump').some((c) => this.keys.has(c)),
+        jump: this.keybinds.codesForAction('jump').some((c) => this.keys.has(comboCode(c))),
       },
       leftDown: this.leftDown,
       rightDown: this.rightDown,
@@ -512,9 +512,14 @@ export class Input {
     if (e.repeat) return;
     if (this.captureCb) {
       e.preventDefault();
+      // Escape cancels the capture. A lone modifier keypress is ignored so the
+      // player can hold Shift/Ctrl/Alt and THEN press the real key to bind the
+      // whole chord (e.g. Shift+1); the chord is captured on that final key.
+      if (e.code === 'Escape') { const cb = this.captureCb; this.captureCb = null; cb(null); return; }
+      if (isModifierCode(e.code)) return;
       const cb = this.captureCb;
       this.captureCb = null;
-      cb(e.code === 'Escape' ? null : e.code);
+      cb(makeCombo(e.code, { ctrl: e.ctrlKey, alt: e.altKey, shift: e.shiftKey }));
       return;
     }
     const tag = (document.activeElement?.tagName ?? '').toLowerCase();
@@ -523,29 +528,35 @@ export class Input {
     if (this.cb.canUseGameKeys && !this.cb.canUseGameKeys()) return;
     if (e.code === 'Tab') e.preventDefault();
     if (e.code === 'Space') e.preventDefault?.();
-    // Attack Move mode: the bound key (default A) issues an attack-move toward the
-    // cursor and wins over whatever movement action shares that code (Turn Left).
-    if (this.attackMoveEnabled && this.hoverActive
-        && this.keybinds.codesForAction('attackMove').includes(e.code)) {
+    // The full modifier chord for this press (null if it is itself a bare
+    // modifier key, which never triggers an action on its own).
+    const combo = isModifierCode(e.code)
+      ? null
+      : makeCombo(e.code, { ctrl: e.ctrlKey, alt: e.altKey, shift: e.shiftKey });
+    // Attack Move mode: the bound chord (default A) issues an attack-move toward
+    // the cursor and wins over whatever movement action shares that key.
+    if (this.attackMoveEnabled && this.hoverActive && combo
+        && this.keybinds.codesForAction('attackMove').includes(combo)) {
       e.preventDefault();
       this.cb.onAttackMove?.(this.hoverX, this.hoverY);
       return;
     }
-    const action = this.keybinds.actionForCode(e.code);
-    if (action === null) return;
-    if (actionKind(action) === 'held') {
-      if (action === 'emoteWheel') {
-        this.emoteWheelHeldCodes.add(e.code);
-        this.cb.onEmoteWheel(true);
-        e.preventDefault();
-        return;
-      }
+    // Held (movement) actions match the physical key only, so a held modifier
+    // never stops movement (Shift+W still walks). Edge actions match the full
+    // chord, so Shift+1 is distinct from 1. Both may fire on one press — that is
+    // intentional (move while casting).
+    const held = this.keybinds.heldActionForCode(e.code);
+    if (held === 'emoteWheel') {
+      this.emoteWheelHeldCodes.add(e.code);
+      this.cb.onEmoteWheel(true);
+      e.preventDefault();
+    } else if (held !== null) {
       this.keys.add(e.code);
-      if (action === 'forward' || action === 'back') this.autorun = false;
+      if (held === 'forward' || held === 'back') this.autorun = false;
       this.noteIntent('move');
-      return;
     }
-    this.dispatchEdge(action);
+    const edge = combo ? this.keybinds.edgeActionForCombo(combo) : null;
+    if (edge !== null) this.dispatchEdge(edge);
   }
 
   private onKeyUp(e: KeyboardEvent): void {
@@ -664,7 +675,10 @@ export class Input {
   }
 
   private heldAction(id: string): boolean {
-    return this.keybinds.codesForAction(id).some((c) => this.keys.has(c) && !this.isAttackMoveReservedCode(c));
+    // Held movement matches the physical key only: strip any modifier prefix so the
+    // bare e.code stored in `this.keys` still matches even if storage holds a stray
+    // modifier combo for a held action (a held modifier never blocks movement).
+    return this.keybinds.codesForAction(id).some((c) => this.keys.has(comboCode(c)) && !this.isAttackMoveReservedCode(c));
   }
 
   readMoveInput(): MoveInput {
@@ -677,7 +691,7 @@ export class Input {
     const forward = held('forward') || bothButtons || this.autorun || this.touchMove.forward || this.gamepadMove.forward;
     const back = held('back') || this.touchMove.back || this.gamepadMove.back;
     // Jump is not a WASD key, so it keeps working in Attack Move mode.
-    const jump = this.keybinds.codesForAction('jump').some((c) => this.keys.has(c)) || performance.now() <= this.touchJumpUntil;
+    const jump = this.keybinds.codesForAction('jump').some((c) => this.keys.has(comboCode(c))) || performance.now() <= this.touchJumpUntil;
 
     if (this.mouseCameraEnabled) {
       return {

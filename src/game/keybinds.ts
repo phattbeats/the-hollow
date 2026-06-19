@@ -93,13 +93,54 @@ export function actionAllowsShared(id: string): boolean {
   return ACTION_BY_ID.get(id)?.allowShared === true;
 }
 
-export function isReservedCode(code: string): boolean {
-  return code === 'Escape'; // the game-menu key is never rebindable
+// --- modifier-aware bindings ---------------------------------------------
+// A binding is serialized as a single "combo" string: the bare KeyboardEvent
+// .code, optionally prefixed by held modifiers in a fixed canonical order,
+// joined by '+'. Examples: "Digit1" (no modifiers), "Shift+Digit1",
+// "Ctrl+Alt+KeyA". A modifier-free combo is byte-identical to a bare code, so
+// every binding saved before modifier support loads unchanged (back-compat).
+export interface KeyMods { ctrl: boolean; alt: boolean; shift: boolean; }
+
+// e.code values for the modifier keys themselves — never bindable on their own.
+const MODIFIER_CODES = new Set([
+  'ShiftLeft', 'ShiftRight', 'ControlLeft', 'ControlRight',
+  'AltLeft', 'AltRight', 'MetaLeft', 'MetaRight',
+]);
+
+export function isModifierCode(code: string): boolean {
+  return MODIFIER_CODES.has(code);
 }
 
-// e.code -> short on-screen label (matches the keycap shown on the action bar)
-export function keyLabel(code: string | null): string {
-  if (!code) return '';
+// Build the canonical combo string. No e.code contains '+', so '+' is a safe
+// separator. Order is fixed (Ctrl, Alt, Shift) so capture and dispatch always
+// produce the same string for the same physical chord.
+export function makeCombo(code: string, mods: KeyMods): string {
+  const parts: string[] = [];
+  if (mods.ctrl) parts.push('Ctrl');
+  if (mods.alt) parts.push('Alt');
+  if (mods.shift) parts.push('Shift');
+  parts.push(code);
+  return parts.join('+');
+}
+
+// The bare e.code at the tail of a combo (drops any modifier prefix).
+export function comboCode(combo: string): string {
+  const i = combo.lastIndexOf('+');
+  return i === -1 ? combo : combo.slice(i + 1);
+}
+
+export function comboMods(combo: string): KeyMods {
+  const head = combo.slice(0, Math.max(0, combo.lastIndexOf('+')));
+  const parts = head ? head.split('+') : [];
+  return { ctrl: parts.includes('Ctrl'), alt: parts.includes('Alt'), shift: parts.includes('Shift') };
+}
+
+export function isReservedCode(combo: string): boolean {
+  return comboCode(combo) === 'Escape'; // the game-menu key is never rebindable
+}
+
+// short on-screen label for a single e.code (the keycap glyph)
+function codeLabel(code: string): string {
   if (/^Digit\d$/.test(code)) return code.slice(5);
   if (/^Key[A-Z]$/.test(code)) return code.slice(3);
   if (/^F\d{1,2}$/.test(code)) return code;
@@ -125,6 +166,15 @@ function readBindingsBlob(key: string): Record<string, unknown> | null {
   try { parsed = JSON.parse(localStorage.getItem(key) ?? 'null'); } catch { /* corrupt */ }
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
   return parsed as Record<string, unknown>;
+}
+
+// combo -> short on-screen label (matches the keycap shown on the action bar),
+// e.g. "Shift+Digit1" -> "Shift+1", "Digit1" -> "1".
+export function keyLabel(combo: string | null): string {
+  if (!combo) return '';
+  const code = comboCode(combo);
+  const head = combo.slice(0, combo.length - code.length); // "Shift+" or ""
+  return head + codeLabel(code);
 }
 
 export class Keybinds {
@@ -202,10 +252,34 @@ export class Keybinds {
     try { localStorage.setItem(this.storeKey, JSON.stringify(obj)); } catch { /* storage unavailable */ }
   }
 
-  /** The action a keypress should trigger, or null if the code is unbound. */
-  actionForCode(code: string): string | null {
+  /** The action whose binding exactly equals this combo (any kind), or null. */
+  actionForCode(combo: string): string | null {
     for (const [id, codes] of this.map) {
-      if (codes.includes(code)) return id;
+      if (codes.includes(combo)) return id;
+    }
+    return null;
+  }
+
+  /**
+   * The EDGE action bound to this exact modifier combo, or null. Edge actions
+   * (ability slots, window toggles) match the full chord, so "Shift+Digit1" is
+   * distinct from "Digit1".
+   */
+  edgeActionForCombo(combo: string): string | null {
+    for (const [id, codes] of this.map) {
+      if (actionKind(id) === 'edge' && codes.includes(combo)) return id;
+    }
+    return null;
+  }
+
+  /**
+   * The HELD (movement) action driven by this physical key, ignoring modifiers
+   * so movement survives a held Shift/Ctrl/Alt. Compares the bare code only.
+   */
+  heldActionForCode(code: string): string | null {
+    for (const [id, codes] of this.map) {
+      if (actionKind(id) !== 'held') continue;
+      if (codes.some((c) => c !== null && comboCode(c) === code)) return id;
     }
     return null;
   }
@@ -234,21 +308,28 @@ export class Keybinds {
    * The code is first removed from wherever else it lives so it is never on
    * two actions at once (classic-MMO-style).
    */
-  bind(id: string, index: number, code: string): boolean {
+  bind(id: string, index: number, combo: string): boolean {
     const codes = this.map.get(id);
     if (!codes || index < 0 || index >= SLOTS_PER_ACTION) return false;
-    if (isReservedCode(code)) return false;
+    // Held (movement) actions are polled per-frame against the physical e.code
+    // and deliberately ignore modifiers (so e.g. Shift+W still walks). Store
+    // them bare so the poll keeps matching; only edge actions keep the full
+    // modifier combo.
+    const value = actionKind(id) === 'held' ? comboCode(combo) : combo;
+    if (isReservedCode(value)) return false;
     // A shared action (or rebinding one) is allowed to overlap, so skip the
-    // mutual-eviction sweep whenever either side opts into sharing.
+    // mutual-eviction sweep whenever either side opts into sharing. The sweep
+    // compares the full combo string, so "Shift+Digit1" and "Digit1" are
+    // distinct bindings and never evict each other.
     if (!actionAllowsShared(id)) {
       for (const [otherId, otherCodes] of this.map) {
         if (actionAllowsShared(otherId)) continue;
         for (let i = 0; i < otherCodes.length; i++) {
-          if (otherCodes[i] === code && !(otherId === id && i === index)) otherCodes[i] = null;
+          if (otherCodes[i] === value && !(otherId === id && i === index)) otherCodes[i] = null;
         }
       }
     }
-    codes[index] = code;
+    codes[index] = value;
     this.save();
     return true;
   }

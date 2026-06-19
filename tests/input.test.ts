@@ -531,6 +531,55 @@ describe('Input emote wheel hold', () => {
   });
 });
 
+describe('Input modifier combos', () => {
+  it('fires the bare action-bar slot, but not when a modifier is held', () => {
+    const { windowListeners, cb } = makeInput();
+    windowListeners.get('keydown')!({ code: 'Digit1', repeat: false }); // slot0 = Attack
+    expect(cb.onAbility).toHaveBeenLastCalledWith(0);
+    cb.onAbility.mockClear();
+    // Shift+1 is a distinct, unbound chord — it must NOT fire bare slot 0.
+    windowListeners.get('keydown')!({ code: 'Digit1', repeat: false, shiftKey: true });
+    expect(cb.onAbility).not.toHaveBeenCalled();
+  });
+
+  it('dispatches a slot bound to Shift+1 only on the Shift chord', () => {
+    // persist a Shift+1 binding, then build the Input so its Keybinds loads it
+    const kb = new Keybinds();
+    expect(kb.bind('slot5', 0, 'Shift+Digit1')).toBe(true);
+    const { windowListeners, cb } = makeInput();
+    windowListeners.get('keydown')!({ code: 'Digit1', repeat: false, shiftKey: true });
+    expect(cb.onAbility).toHaveBeenLastCalledWith(5);
+    cb.onAbility.mockClear();
+    // bare 1 still drives its own slot, unaffected by the modified binding
+    windowListeners.get('keydown')!({ code: 'Digit1', repeat: false });
+    expect(cb.onAbility).toHaveBeenLastCalledWith(0);
+  });
+
+  it('keeps movement working while a modifier is held (Shift+W still walks)', () => {
+    const { input, windowListeners } = makeInput();
+    windowListeners.get('keydown')!({ code: 'KeyW', repeat: false, shiftKey: true });
+    expect(input.readMoveInput().forward).toBe(true);
+  });
+
+  it('ignores a lone modifier keypress', () => {
+    const { input, cb, windowListeners } = makeInput();
+    windowListeners.get('keydown')!({ code: 'ShiftLeft', repeat: false });
+    expect(cb.onAbility).not.toHaveBeenCalled();
+    expect(cb.onUiKey).not.toHaveBeenCalled();
+    expect(input.readMoveInput().forward).toBe(false);
+  });
+
+  it('still polls a movement key even if storage holds a stray modifier combo for it', () => {
+    // Defensive: bind() strips modifiers from held actions, but hand-edited or
+    // corrupt storage could carry one. The per-frame poll must still match the
+    // bare physical key so movement cannot silently wedge.
+    localStorage.setItem('woc_keybinds', JSON.stringify({ forward: ['Shift+KeyW', null] }));
+    const { input, windowListeners } = makeInput();
+    windowListeners.get('keydown')!({ code: 'KeyW', repeat: false });
+    expect(input.readMoveInput().forward).toBe(true);
+  });
+});
+
 describe('Input touch invert-look', () => {
   it('reverses the touch joystick pitch when inverted, leaving yaw alone', () => {
     const { input } = makeInput();
