@@ -572,6 +572,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     return;
   }
 
+  // Offline only: expose the dev "2v2 Fiesta vs Bots" practice toggle to the HUD.
+  if (offlineSim) hud.setFiestaPracticeHook(() => offlineSim.startFiestaPractice());
+
   const chatInput = $('#chat-input') as unknown as HTMLInputElement;
   const clickMoveMarker = $('#click-move-marker') as HTMLDivElement;
   const recoverFromMobileKeyboard = (): void => {
@@ -1222,6 +1225,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
         Object.assign(offlineSim.moveInput, mi);
         const stepFacing = movementFacing ?? facing;
         if (stepFacing !== null) offlineSim.player.facing = stepFacing;
+        offlineSim.updateFiestaBots(); // dev: steer Fiesta practice bots (no-op unless active)
         perf.markInputSent(performance.now());
         const events = perf.time('sim', () => offlineSim.tick());
         perf.time('events', () => hud.handleEvents(events));

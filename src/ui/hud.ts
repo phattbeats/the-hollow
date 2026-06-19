@@ -42,7 +42,7 @@ import { isPhoneTouchDevice } from '../game/mobile_controls';
 import { chatPlayerContextActions } from './player_context_menu';
 import { TouchPeekGuard, TOOLTIP_PEEK_MS } from './touch_peek';
 import { maskProfanity } from './profanity';
-import { formatMoney as formatLocalizedMoney, formatNumber, moneyParts, t, type TranslationKey } from './i18n';
+import { formatMoney as formatLocalizedMoney, formatNumber, moneyParts, t, tOptional, type TranslationKey } from './i18n';
 import { tEntity } from './entity_i18n';
 import { localizeServerText, localizeZone } from './server_i18n';
 import { localizeSimText, localizeSimAuraName } from './sim_i18n';
@@ -54,6 +54,7 @@ import {
   type TalentAllocation, type TalentNode, type SpecDef, type Role,
 } from '../sim/content/talents';
 import { talentChoiceIconDataUrl, talentNodeIconDataUrl } from './talent_icons';
+import { augmentCategory, type AugmentCategory } from '../sim/content/augments';
 import {
   clearHotbarSlot, encodeHotbarAction, HOTBAR_ACTION_MIME, HotbarAction, parseHotbarAction, parseHotbarActions,
   placeAbilityOnSlot, placeItemOnSlot, swapHotbarSlots, syncHotbarActions,
@@ -345,6 +346,14 @@ export class Hud {
   private lastArenaStatusSig = '';
   private arenaMatchSeen = false; // closes the queue panel once a bout starts
   private arenaBracket: ArenaFormat = '1v1';
+  // 2v2 Fiesta UI state (all transient)
+  private fiestaScoreSeen = { a: -1, b: -1 }; // last rendered tally (for score-ping)
+  private fiestaOfferKey = ''; // identity of the currently-shown augment offer
+  private fiestaActiveSeen = false; // were we in a fiesta bout last frame
+  private fiestaWasDown = false; // were we benched last frame (for the revive cue)
+  // Offline only: dev toggle that spins up a 2v2 Fiesta vs bots. Wired by main.ts
+  // (left null online, which hides the button).
+  private fiestaPracticeHook: (() => void) | null = null;
   // World Market (the Merchant's auction house)
   private marketOpen = false;
   private marketTab: 'browse' | 'sell' | 'collect' = 'browse';
@@ -2173,6 +2182,7 @@ export class Hud {
       this.updatePartyFrames();
       this.updateTradeWindow();
       this.updateArenaStatus();
+      this.updateFiestaHud();
       if ($('#map-window').style.display === 'block') this.updateMapWindow();
       if ($('#arena-window').style.display === 'block') this.renderArenaWindow();
       if (this.openLootMobId !== null) {
@@ -2626,15 +2636,18 @@ export class Hud {
         + `<span class="lr-wl">${esc(formatNumber(r.wins, { maximumFractionDigits: 0 }))}-${esc(formatNumber(r.losses, { maximumFractionDigits: 0 }))}</span></div>`;
     }).join('') || `<div class="ladder-empty">${esc(t('hud.arena.noChallengers'))}</div>`;
 
+    const bracketLabel = (fmt: ArenaFormat) => fmt === 'fiesta' ? t('fiesta.bracket') : fmt;
     const bracketBtn = (fmt: ArenaFormat) => {
       const active = bracket === fmt;
       const locked = !canSwitchBracket && !active;
-      return `<button class="arena-bracket${active ? ' active' : ''}${locked ? ' locked' : ''}" data-bracket="${fmt}" aria-pressed="${active ? 'true' : 'false'}"${locked ? ' disabled' : ''}>${esc(fmt)}</button>`;
+      const fiestaCls = fmt === 'fiesta' ? ' fiesta' : '';
+      return `<button class="arena-bracket${fiestaCls}${active ? ' active' : ''}${locked ? ' locked' : ''}" data-bracket="${fmt}" aria-pressed="${active ? 'true' : 'false'}"${locked ? ' disabled' : ''}>${esc(bracketLabel(fmt))}</button>`;
     };
-    const bracketTabs = `<div class="arena-brackets">${bracketBtn('1v1')}${bracketBtn('2v2')}</div>`;
+    const bracketTabs = `<div class="arena-brackets">${bracketBtn('1v1')}${bracketBtn('2v2')}${bracketBtn('fiesta')}</div>`;
+    const isTeamBracket = bracket === '2v2' || bracket === 'fiesta';
 
     let partySection = '';
-    if (bracket === '2v2' && !inMatch && !a.queued) {
+    if (isTeamBracket && !inMatch && !a.queued) {
       if (party && partySize === 2) {
         const rows = party.members.map((m) => {
           const cls = CLASSES[m.cls] ? classDisplayName(m.cls) : m.cls;
@@ -2659,17 +2672,24 @@ export class Hud {
         + `<div class="arena-queue-status">${esc(t('hud.arena.searching', { count: formatNumber(a.queueSize, { maximumFractionDigits: 0 }) }))}</div>`;
     } else {
       let queueDisabled = false;
-      if (bracket === '2v2' && party && partySize === 2 && !isLeader) {
+      if (isTeamBracket && party && partySize === 2 && !isLeader) {
         queueDisabled = true;
-      } else if (bracket === '2v2' && party && partySize > 2) {
+      } else if (isTeamBracket && party && partySize > 2) {
         queueDisabled = true;
       } else if (bracket === '1v1' && party && partySize > 1) {
         queueDisabled = true;
       }
       const btnCls = queueDisabled ? 'btn disabled' : 'btn';
-      const queueLabel = t('hud.arena.enterQueue');
+      const queueLabel = bracket === 'fiesta' ? t('fiesta.enterQueue') : t('hud.arena.enterQueue');
       action = `<button class="${btnCls}" data-act="queue"${queueDisabled ? ' disabled' : ''}>${esc(queueLabel)}</button>`
         + `<div class="arena-note">${esc(t('hud.arena.queueNote'))}</div>`;
+    }
+
+    // Offline dev affordance: practice Fiesta against bots (hidden online).
+    let practiceSection = '';
+    if (bracket === 'fiesta' && this.fiestaPracticeHook && !inMatch) {
+      practiceSection = `<button class="btn fiesta-practice" data-act="practice">${esc(t('fiesta.practice'))}</button>`
+        + `<div class="arena-note">${esc(t('fiesta.practiceNote'))}</div>`;
     }
 
     this.fetchArenaLeaderboard(bracket);
@@ -2695,7 +2715,7 @@ export class Hud {
     if (sig === this.lastArenaSig) return;
     this.lastArenaSig = sig;
 
-    el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.arena.title'))} <span class="arena-bracket-tag">${esc(bracket)}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.arena.close'))}">${svgIcon('close')}</button></div>`
+    el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.arena.title'))} <span class="arena-bracket-tag${bracket === 'fiesta' ? ' fiesta' : ''}">${esc(bracketLabel(bracket))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.arena.close'))}">${svgIcon('close')}</button></div>`
       + bracketTabs
       + `<div class="arena-rank"><span class="rating">${esc(formatNumber(standing.rating, { maximumFractionDigits: 0 }))}</span>`
       + `<span class="wl">${esc(t('hud.arena.ratingSummary', {
@@ -2704,6 +2724,7 @@ export class Hud {
       }))}</span></div>`
       + partySection
       + action
+      + practiceSection
       + `<div class="arena-sub">${esc(t('hud.arena.ladderOnline'))}</div>`
       + ladder
       + allTimeSection;
@@ -2722,6 +2743,11 @@ export class Hud {
       audio.click();
     });
     el.querySelector('[data-act="leave"]')?.addEventListener('click', () => { this.sim.arenaQueueLeave(); audio.click(); });
+    el.querySelector('[data-act="practice"]')?.addEventListener('click', () => {
+      this.fiestaPracticeHook?.();
+      this.lastArenaSig = '';
+      audio.click();
+    });
   }
 
   // The pinned in-match banner: opponent name + countdown / live match timer.
@@ -3005,6 +3031,11 @@ export class Hud {
           if (isPlayerSource || isPlayerTarget) this.lastCombatEventAt = performance.now();
           if (ev.kind === 'miss' || ev.kind === 'dodge') {
             this.fct(tgt, ev.kind === 'miss' ? t('hud.combat.floatingMiss') : t('hud.combat.floatingDodge'), isPlayerTarget ? '#bbb' : '#fff', false);
+            // Fiesta: a dodge is a moment — pop a big exaggerated word for it.
+            if (ev.kind === 'dodge' && (isPlayerSource || isPlayerTarget) && this.inFiesta()) {
+              this.fiestaWordPop(t('fiesta.word.dodge'), '#7fd4ff', 1);
+              this.renderer.addShake(0.15);
+            }
             if (isPlayerSource) {
               this.combatLog(t(ev.kind === 'miss' ? 'hud.combat.miss' : 'hud.combat.dodged', {
                 ability: combatAbilityName(ev.ability),
@@ -3026,6 +3057,8 @@ export class Hud {
             else if (ev.school === 'frost') audio.frost();
             else if (ev.school === 'arcane') audio.arcane();
             else audio.meleeHit(ev.crit);
+            // Fiesta: every blow you land kicks the camera (bigger on a crit).
+            if (this.inFiesta()) this.renderer.addShake(ev.crit ? 0.3 : 0.12);
           } else if (isPlayerTarget) {
             this.fct(tgt, `-${ev.amount}`, '#ff5544', ev.crit);
             this.combatLog(t(ev.crit ? 'hud.combat.damageTakenCrit' : 'hud.combat.damageTaken', {
@@ -3033,6 +3066,7 @@ export class Hud {
               amount: ev.amount,
             }), '#ff8877');
             audio.hitTaken();
+            if (this.inFiesta()) this.renderer.addShake(ev.crit ? 0.34 : 0.14);
           }
           break;
         }
@@ -3221,6 +3255,12 @@ export class Hud {
           audio.duelStart();
           break;
         case 'arenaEnd': {
+          if (ev.format === 'fiesta') {
+            if (ev.draw) { this.showBanner(t('fiesta.end.draw')); this.combatLog(t('fiesta.end.draw'), '#fa6'); }
+            else if (ev.won) { this.showBanner(t('fiesta.end.win')); this.combatLog(t('fiesta.end.win'), '#7fdc4f'); audio.fiestaWave(); }
+            else { this.showBanner(t('fiesta.end.loss')); this.combatLog(t('fiesta.end.loss'), '#ff7a6a'); audio.death(); }
+            break;
+          }
           const delta = ev.ratingAfter - ev.ratingBefore;
           const sign = delta >= 0 ? '+' : '';
           const ratingDelta = `${sign}${formatNumber(delta, { maximumFractionDigits: 0 })}`;
@@ -3236,6 +3276,52 @@ export class Hud {
             this.showBanner(t('hud.system.arenaDefeatBanner', { name: ev.oppName, rating: ratingAfter, delta: ratingDelta }));
             this.combatLog(t('hud.system.arenaDefeatLog', { name: ev.oppName, rating: ratingAfter, delta: ratingDelta }), '#ff7a6a');
             audio.death();
+          }
+          break;
+        }
+        case 'fiestaWord': {
+          const { text, tier, color } = this.fiestaWordParts(ev.flavor, ev.n);
+          this.fiestaWordPop(text, color, tier);
+          this.renderer.addShake(0.35 + tier * 0.2);
+          audio.fiestaWord(tier);
+          break;
+        }
+        case 'fiestaWave': {
+          this.showBanner(t('fiesta.banner.wave', {
+            wave: formatNumber(ev.wave, { maximumFractionDigits: 0 }),
+            total: formatNumber(ev.totalWaves, { maximumFractionDigits: 0 }),
+          }));
+          this.fiestaWordPop(t('fiesta.word.wave'), '#ffd24a', 2);
+          this.renderer.addShake(0.4);
+          audio.fiestaWave();
+          break;
+        }
+        case 'fiestaScore': break; // the score HUD + ping are driven by the snapshot
+        case 'fiestaDown': {
+          audio.fiestaDown();
+          break;
+        }
+        case 'augmentOffer': break; // the pick modal is driven by the snapshot
+        case 'augmentChosen': {
+          const name = this.augmentName(ev.augmentId);
+          if (ev.mine) {
+            this.renderer.fiestaAugmentBurst(this.sim.playerId);
+            audio.fiestaAugment();
+            this.showBanner(t('fiesta.banner.augmentGained', { name }));
+            this.log(t('fiesta.log.augmentGained', { name }), '#ff3df0');
+          } else {
+            this.log(t('fiesta.log.allyAugment', { player: ev.byName, name }), '#c98bff');
+          }
+          break;
+        }
+        case 'fiestaPowerup': {
+          const name = tOptional(`fiesta.powerup.${ev.defId}.name`) ?? ev.defId;
+          const who = sim.entities.get(ev.entityId)?.name ?? '?';
+          this.log(t('fiesta.log.powerup', { player: who, name }), '#ffd24a');
+          if (ev.entityId === sim.playerId) {
+            audio.fiestaAugment();
+            this.showBanner(t('fiesta.banner.powerup', { name }));
+            this.fiestaWordPop(name.toUpperCase(), '#32e0ff', 2);
           }
           break;
         }
@@ -3664,6 +3750,243 @@ export class Hud {
     this.subzoneEl.style.opacity = '1';
     clearTimeout(this.subzoneTimer);
     this.subzoneTimer = window.setTimeout(() => { this.subzoneEl.style.opacity = '0'; }, 2600);
+  }
+
+  // -------------------------------------------------------------------------
+  // 2v2 Fiesta HUD — live score, respawn timer, augment picks, word pops.
+  // Everything here is driven by the per-frame snapshot (arenaInfo.match.fiesta)
+  // so it self-heals on reconnect; one-shot juice (word pops, shake, audio)
+  // rides the SimEvents handled in handleEvents().
+  // -------------------------------------------------------------------------
+
+  setFiestaPracticeHook(fn: (() => void) | null): void {
+    this.fiestaPracticeHook = fn;
+  }
+
+  private inFiesta(): boolean {
+    const match = this.sim.arenaInfo?.match;
+    return !!match?.fiesta && match.state === 'active';
+  }
+
+  private updateFiestaHud(): void {
+    const match = this.sim.arenaInfo?.match;
+    const f = match?.fiesta;
+    const active = !!f && match?.state === 'active';
+    if (!f || !active) {
+      if (this.fiestaActiveSeen) this.teardownFiestaHud();
+      this.fiestaActiveSeen = false;
+      return;
+    }
+    this.fiestaActiveSeen = true;
+    this.renderFiestaScore(f);
+    this.renderFiestaRespawn(f);
+    this.renderFiestaOffer(f);
+    this.renderFiestaPending(f);
+  }
+
+  // "Augment pending" indicator: a banked offer waiting for the player's next
+  // death (so it never interrupts a live fight). Hidden once it's on offer.
+  private renderFiestaPending(f: import('../world_api').FiestaMatchInfo): void {
+    const el = this.getFiestaEl('fiesta-pending', 'fiesta-pending');
+    const show = f.augmentPending > 0 && !f.offer && !f.down;
+    if (!show) { el.style.display = 'none'; el.dataset.sig = ''; return; }
+    el.style.display = 'flex';
+    const sig = `${f.augmentPending}`;
+    if (el.dataset.sig !== sig) {
+      el.dataset.sig = sig;
+      el.innerHTML = `<span class="fpend-gem">${this.augmentCategorySvg('utility')}</span>`
+        + `<span class="fpend-text">${esc(t('fiesta.pending.label'))}</span>`;
+    }
+  }
+
+  private getFiestaEl(id: string, cls: string): HTMLElement {
+    let el = document.getElementById(id);
+    if (!el) {
+      el = document.createElement('div');
+      el.id = id;
+      el.className = cls;
+      document.getElementById('ui')!.appendChild(el);
+    }
+    return el;
+  }
+
+  private renderFiestaScore(f: import('../world_api').FiestaMatchInfo): void {
+    const el = this.getFiestaEl('fiesta-score', 'fiesta-score');
+    const num = (n: number) => formatNumber(n, { maximumFractionDigits: 0 });
+    const dots = Array.from({ length: f.totalWaves }, (_, i) =>
+      `<span class="fw-dot${i < f.wave ? ' on' : ''}"></span>`).join('');
+    const myTeam = f.team === 'A' ? f.teamA : f.teamB;
+    const enemyTeam = f.team === 'A' ? f.teamB : f.teamA;
+    const faces = (players: import('../world_api').FiestaScoreboardPlayer[]) => players.map((p) =>
+      `<div class="fp${p.me ? ' me' : ''}${p.down ? ' down' : ''}" title="${esc(p.name)}">`
+      + `<img class="fp-face" src="${iconDataUrl('crest', p.cls)}" alt="" draggable="false">`
+      + `<span class="fp-kills">${num(p.kills)}</span></div>`).join('');
+    const teamSig = (ps: import('../world_api').FiestaScoreboardPlayer[]) => ps.map((p) => `${p.kills}${p.down ? 'd' : ''}`).join(',');
+    const sig = `${f.myScore}|${f.theirScore}|${f.scoreLimit}|${f.wave}|${teamSig(myTeam)}|${teamSig(enemyTeam)}`;
+    if (el.dataset.sig === sig) return;
+    const scored = this.fiestaScoreSeen.a >= 0 && (this.fiestaScoreSeen.a !== f.scoreA || this.fiestaScoreSeen.b !== f.scoreB);
+    const myPrev = f.team === 'A' ? this.fiestaScoreSeen.a : this.fiestaScoreSeen.b;
+    const theirPrev = f.team === 'A' ? this.fiestaScoreSeen.b : this.fiestaScoreSeen.a;
+    el.dataset.sig = sig;
+    el.innerHTML = `
+      <div class="fs-team mine" aria-hidden="true">${faces(myTeam)}</div>
+      <div class="fs-core">
+        <span class="fs-num mine">${num(f.myScore)}</span>
+        <div class="fs-mid">
+          <div class="fs-title">${esc(t('fiesta.score.title'))}</div>
+          <div class="fs-waves">${dots}</div>
+          <div class="fs-limit">${esc(t('fiesta.score.toWin', { n: num(f.scoreLimit) }))}</div>
+        </div>
+        <span class="fs-num theirs">${num(f.theirScore)}</span>
+      </div>
+      <div class="fs-team theirs" aria-hidden="true">${faces(enemyTeam)}</div>`;
+    el.setAttribute('aria-label', t('fiesta.score.aria', { mine: num(f.myScore), theirs: num(f.theirScore), limit: num(f.scoreLimit) }));
+    if (scored) {
+      const mineScored = f.myScore > myPrev;
+      audio.fiestaScorePing(mineScored);
+      el.classList.remove('flash-mine', 'flash-theirs');
+      void el.offsetWidth; // restart the CSS flash
+      el.classList.add(mineScored ? 'flash-mine' : 'flash-theirs');
+      // Confetti rains in the killing team's colour (from this viewer's POV).
+      if (f.myScore > myPrev) this.fiestaConfetti('#1b9fff');
+      if (f.theirScore > theirPrev) this.fiestaConfetti('#ff2d66');
+    }
+    this.fiestaScoreSeen = { a: f.scoreA, b: f.scoreB };
+  }
+
+  // A burst of CSS confetti raining down the screen in a team colour.
+  private fiestaConfetti(color: string): void {
+    const ui = document.getElementById('ui')!;
+    const layer = document.createElement('div');
+    layer.className = 'fiesta-confetti';
+    const tints = [color, '#ffffff', '#ffd24a'];
+    for (let i = 0; i < 36; i++) {
+      const bit = document.createElement('i');
+      bit.style.left = `${Math.random() * 100}%`;
+      bit.style.background = tints[i % tints.length];
+      bit.style.animationDelay = `${Math.random() * 0.5}s`;
+      bit.style.animationDuration = `${1.4 + Math.random() * 1.1}s`;
+      bit.style.transform = `rotate(${Math.random() * 360}deg)`;
+      layer.appendChild(bit);
+    }
+    ui.appendChild(layer);
+    setTimeout(() => layer.remove(), 2800);
+  }
+
+  private renderFiestaRespawn(f: import('../world_api').FiestaMatchInfo): void {
+    const el = this.getFiestaEl('fiesta-respawn', 'fiesta-respawn');
+    if (f.down && f.respawnIn > 0) {
+      el.style.display = 'flex';
+      const sig = `${f.respawnIn}`;
+      if (el.dataset.sig !== sig) {
+        el.dataset.sig = sig;
+        el.innerHTML = `
+          <div class="fr-title">${esc(t('fiesta.respawn.title'))}</div>
+          <div class="fr-count">${esc(formatNumber(f.respawnIn, { maximumFractionDigits: 0 }))}</div>
+          <div class="fr-sub">${esc(t('fiesta.respawn.sub'))}</div>`;
+      }
+      this.fiestaWasDown = true;
+    } else {
+      if (this.fiestaWasDown) audio.fiestaRevive();
+      this.fiestaWasDown = false;
+      el.style.display = 'none';
+      el.dataset.sig = '';
+    }
+  }
+
+  private renderFiestaOffer(f: import('../world_api').FiestaMatchInfo): void {
+    const offer = f.offer;
+    const key = offer ? `${offer.wave}:${offer.choices.join(',')}` : '';
+    if (key === this.fiestaOfferKey) return;
+    this.fiestaOfferKey = key;
+    if (offer) this.renderFiestaAugments(offer);
+    else this.closeFiestaAugments();
+  }
+
+  private renderFiestaAugments(offer: import('../world_api').FiestaAugmentOffer): void {
+    const el = this.getFiestaEl('fiesta-augments', 'fiesta-augments');
+    el.style.display = 'flex';
+    const tierLabel = esc(t(`fiesta.tier.${offer.tier}` as TranslationKey));
+    el.innerHTML = `<div class="fa-head">${esc(t('fiesta.augment.choose'))} <span class="fa-tier ${offer.tier}">${tierLabel}</span></div>
+      <div class="fa-cards"></div>`;
+    const cards = el.querySelector('.fa-cards')!;
+    for (const id of offer.choices) {
+      const cat = augmentCategory(id);
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = `fa-card ${offer.tier}`;
+      card.innerHTML = `<span class="fa-icon cat-${cat}">${this.augmentCategorySvg(cat)}</span>`
+        + `<span class="fa-name">${esc(this.augmentName(id))}</span>`
+        + `<span class="fa-desc">${esc(this.augmentDesc(id))}</span>`
+        + `<span class="fa-cat cat-${cat}">${esc(t(`fiesta.category.${cat}` as TranslationKey))}</span>`;
+      card.setAttribute('aria-label', `${this.augmentName(id)} (${t(`fiesta.category.${cat}` as TranslationKey)}) — ${this.augmentDesc(id)}`);
+      card.addEventListener('click', () => {
+        audio.click();
+        this.sim.arenaAugmentPick(id);
+        this.closeFiestaAugments();
+      });
+      cards.appendChild(card);
+    }
+  }
+
+  private closeFiestaAugments(): void {
+    const el = document.getElementById('fiesta-augments');
+    if (el) { el.style.display = 'none'; el.innerHTML = ''; }
+  }
+
+  // A small inline-SVG glyph per augment category (offense/defense/sustain/
+  // mobility/utility). currentColor is set by the .cat-* CSS class.
+  private augmentCategorySvg(cat: AugmentCategory): string {
+    const p: Record<AugmentCategory, string> = {
+      offense: '<path d="M3 21l6-6m0 0l9-9 2 2-9 9m-2-2l-2 2 2 2 2-2m-2-2l2 2"/>', // sword
+      defense: '<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>', // shield
+      sustain: '<path d="M12 21s-7-4.6-9.2-9C1.3 8.7 3 5 6.5 5c2 0 3.5 1.5 5.5 4 2-2.5 3.5-4 5.5-4C21 5 22.7 8.7 21.2 12 19 16.4 12 21 12 21z"/>', // heart
+      mobility: '<path d="M5 18l6-6-6-6m7 12l6-6-6-6"/>', // chevrons
+      utility: '<path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.8 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/>', // star
+    };
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">${p[cat]}</svg>`;
+  }
+
+  private teardownFiestaHud(): void {
+    for (const id of ['fiesta-score', 'fiesta-respawn', 'fiesta-augments', 'fiesta-pending']) {
+      const el = document.getElementById(id);
+      if (el) { el.style.display = 'none'; el.innerHTML = ''; el.dataset.sig = ''; }
+    }
+    this.fiestaScoreSeen = { a: -1, b: -1 };
+    this.fiestaOfferKey = '';
+    this.fiestaWasDown = false;
+  }
+
+  private augmentName(id: string): string {
+    return tOptional(`fiesta.augment.${id}.name`) ?? id;
+  }
+
+  private augmentDesc(id: string): string {
+    return tOptional(`fiesta.augment.${id}.desc`) ?? '';
+  }
+
+  // Map a sim word-pop flavor to its localized text, dopamine tier (0..3), and
+  // accent colour.
+  private fiestaWordParts(flavor: string, n?: number): { text: string; tier: number; color: string } {
+    switch (flavor) {
+      case 'firstblood': return { text: t('fiesta.word.firstblood'), tier: 3, color: '#ff3df0' };
+      case 'doublekill': return { text: t('fiesta.word.doublekill'), tier: 3, color: '#ffae00' };
+      case 'shutdown': return { text: t('fiesta.word.shutdown'), tier: 3, color: '#00e5ff' };
+      case 'spree': return { text: t('fiesta.word.spree', { n: formatNumber(n ?? 3, { maximumFractionDigits: 0 }) }), tier: 2, color: '#ff7a1a' };
+      case 'revived': return { text: t('fiesta.word.revived'), tier: 0, color: '#7fdc4f' };
+      case 'ringclose': return { text: t('fiesta.word.ringclose'), tier: 1, color: '#ff3df0' };
+      default: return { text: t('fiesta.word.kill'), tier: 1, color: '#ffd24a' };
+    }
+  }
+
+  // A big exaggerated word that punches in at screen-centre and fades out.
+  private fiestaWordPop(text: string, color: string, tier: number): void {
+    const el = document.createElement('div');
+    el.className = `fiesta-word tier${tier}`;
+    el.textContent = text;
+    el.style.setProperty('--fw-color', color);
+    document.getElementById('ui')!.appendChild(el);
+    setTimeout(() => el.remove(), 1400);
   }
 
   // -------------------------------------------------------------------------
