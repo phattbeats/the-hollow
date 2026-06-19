@@ -590,6 +590,8 @@ export const en: EnTranslations = {
       "interfaceNote": "These options change only your own view and are saved on this device.",
       "soundEffects": "Sound Effects",
       "musicVolume": "Music Volume",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Music",
       "keybindHelp": "Click a key cell, then press a key to bind it. Esc cancels. Each action has a primary and an alternate key.",
       "keybindCapture": "Press a key for \"{action}\"...",
@@ -4868,6 +4870,8 @@ export const es: EnTranslations = {
       "interfaceNote": "Estas opciones solo cambian tu propia vista y se guardan en este dispositivo.",
       "soundEffects": "Efectos de sonido",
       "musicVolume": "Volumen de música",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Música",
       "keybindHelp": "Haz clic en una celda y luego presiona una tecla para asignarla. Esc cancela. Cada acción tiene una tecla principal y una alternativa.",
       "keybindCapture": "Presiona una tecla para \"{action}\"...",
@@ -9146,6 +9150,8 @@ export const es_ES: EnTranslations = {
       "interfaceNote": "Estas opciones solo cambian tu propia vista y se guardan en este dispositivo.",
       "soundEffects": "Efectos de sonido",
       "musicVolume": "Volumen de música",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Música",
       "keybindHelp": "Haz clic en una celda y luego presiona una tecla para asignarla. Esc cancela. Cada acción tiene una tecla principal y una alternativa.",
       "keybindCapture": "Presiona una tecla para \"{action}\"...",
@@ -13424,6 +13430,8 @@ export const fr_FR: EnTranslations = {
       "interfaceNote": "Ces options ne changent que votre propre vue et sont enregistrées sur cet appareil.",
       "soundEffects": "Effets sonores",
       "musicVolume": "Volume de la musique",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Musique",
       "keybindHelp": "Cliquez sur une case, puis appuyez sur une touche pour l'assigner. Échap annule. Chaque action possède une touche principale et une alternative.",
       "keybindCapture": "Appuyez sur une touche pour \"{action}\"...",
@@ -17702,6 +17710,8 @@ export const fr_CA: EnTranslations = {
       "interfaceNote": "Ces options ne changent que votre propre vue et sont enregistrées sur cet appareil.",
       "soundEffects": "Effets sonores",
       "musicVolume": "Volume de la musique",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Musique",
       "keybindHelp": "Cliquez sur une case, puis appuyez sur une touche pour l'assigner. Échap annule. Chaque action possède une touche principale et une alternative.",
       "keybindCapture": "Appuyez sur une touche pour \"{action}\"...",
@@ -21980,6 +21990,8 @@ export const en_CA: EnTranslations = {
       "interfaceNote": "These options change only your own view and are saved on this device.",
       "soundEffects": "Sound Effects",
       "musicVolume": "Music Volume",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Music",
       "keybindHelp": "Click a key cell, then press a key to bind it. Esc cancels. Each action has a primary and an alternate key.",
       "keybindCapture": "Press a key for \"{action}\"...",
@@ -26258,6 +26270,8 @@ export const it_IT: EnTranslations = {
       "interfaceNote": "Queste opzioni cambiano solo la tua visuale e vengono salvate su questo dispositivo.",
       "soundEffects": "Effetti sonori",
       "musicVolume": "Volume musica",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Musica",
       "keybindHelp": "Fai clic su una cella e premi un tasto per assegnarlo. Esc annulla. Ogni azione ha un tasto principale e uno alternativo.",
       "keybindCapture": "Premi un tasto per \"{action}\"...",
@@ -30536,6 +30550,8 @@ export const de_DE: EnTranslations = {
       "interfaceNote": "Diese Optionen ändern nur Eure eigene Ansicht und werden auf diesem Gerät gespeichert.",
       "soundEffects": "Soundeffekte",
       "musicVolume": "Musiklautstärke",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Musik",
       "keybindHelp": "Klickt auf ein Tastenfeld und drückt dann eine Taste zum Binden. Esc bricht ab. Jede Aktion hat eine Haupttaste und eine Alternativtaste.",
       "keybindCapture": "Drückt eine Taste für \"{action}\"...",
@@ -34814,6 +34830,8 @@ export const zh_CN: EnTranslations = {
       "interfaceNote": "这些选项仅改变你自己的视图，并保存在此设备上。",
       "soundEffects": "音效",
       "musicVolume": "音乐音量",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "音乐",
       "keybindHelp": "点击一个按键格，然后按下要绑定的键。Esc 取消。每个动作都有主键和备用键。",
       "keybindCapture": "按下用于“{action}”的按键...",
@@ -39092,6 +39110,8 @@ export const zh_TW: EnTranslations = {
       "interfaceNote": "這些選項只會改變你自己的畫面，並儲存在此裝置上。",
       "soundEffects": "音效",
       "musicVolume": "音樂音量",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "音樂",
       "keybindHelp": "點擊一個按鍵格，然後按下要綁定的按鍵。Esc 取消。每個動作都有主鍵與備用鍵。",
       "keybindCapture": "按下用於「{action}」的按鍵...",
@@ -43370,6 +43390,8 @@ export const ko_KR: EnTranslations = {
       "interfaceNote": "이 옵션은 자신의 화면에만 적용되며 이 기기에 저장됩니다.",
       "soundEffects": "효과음",
       "musicVolume": "음악 음량",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "음악",
       "keybindHelp": "키 칸을 클릭한 뒤 지정할 키를 누르세요. Esc는 취소입니다. 각 행동에는 기본 키와 보조 키가 있습니다.",
       "keybindCapture": "\"{action}\"에 사용할 키를 누르세요...",
@@ -47648,6 +47670,8 @@ export const ja_JP: EnTranslations = {
       "interfaceNote": "これらのオプションは自分の表示のみを変更し、この端末に保存されます。",
       "soundEffects": "効果音",
       "musicVolume": "音楽音量",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "音楽",
       "keybindHelp": "キー欄をクリックしてから割り当てるキーを押してください。Escでキャンセルします。各アクションにはメインキーと代替キーがあります。",
       "keybindCapture": "「{action}」に使うキーを押してください...",
@@ -51926,6 +51950,8 @@ export const pt_BR: EnTranslations = {
       "interfaceNote": "Estas opções mudam apenas a sua própria visão e são salvas neste dispositivo.",
       "soundEffects": "Efeitos sonoros",
       "musicVolume": "Volume da música",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Música",
       "keybindHelp": "Clique em uma célula de tecla e pressione uma tecla para atribuí-la. Esc cancela. Cada ação tem uma tecla principal e uma alternativa.",
       "keybindCapture": "Pressione uma tecla para \"{action}\"...",
@@ -56204,6 +56230,8 @@ export const ru_RU: EnTranslations = {
       "interfaceNote": "Эти настройки меняют только ваш собственный вид и сохраняются на этом устройстве.",
       "soundEffects": "Звуковые эффекты",
       "musicVolume": "Громкость музыки",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Музыка",
       "keybindHelp": "Щелкните ячейку клавиши, затем нажмите клавишу для назначения. Esc отменяет. У каждого действия есть основная и запасная клавиша.",
       "keybindCapture": "Нажмите клавишу для \"{action}\"...",
@@ -59985,7 +60013,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume"
   ],
   "es_ES": [
     "entities.mobs.bramble_lynx.name",
@@ -60053,7 +60083,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume"
   ],
   "fr_FR": [
     "entities.mobs.bramble_lynx.name",
@@ -60121,7 +60153,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume"
   ],
   "fr_CA": [
     "entities.mobs.bramble_lynx.name",
@@ -60189,7 +60223,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume"
   ],
   "en_CA": [],
   "it_IT": [
@@ -60258,7 +60294,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume"
   ],
   "de_DE": [
     "entities.mobs.bramble_lynx.name",
@@ -60326,7 +60364,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume"
   ],
   "zh_CN": [
     "entities.mobs.bramble_lynx.name",
@@ -60394,7 +60434,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume"
   ],
   "zh_TW": [
     "entities.mobs.bramble_lynx.name",
@@ -60462,7 +60504,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume"
   ],
   "ko_KR": [
     "entities.mobs.bramble_lynx.name",
@@ -60530,7 +60574,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume"
   ],
   "ja_JP": [
     "entities.mobs.bramble_lynx.name",
@@ -60598,7 +60644,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume"
   ],
   "pt_BR": [
     "entities.mobs.bramble_lynx.name",
@@ -60666,7 +60714,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume"
   ],
   "ru_RU": [
     "entities.mobs.bramble_lynx.name",
@@ -60734,7 +60784,9 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume"
   ]
 };
 
@@ -61319,6 +61371,8 @@ export const en_XA: EnTranslations = {
       "interfaceNote": "[Ţĥéšé óþţíóñš çĥáñĝé óñļý ýóúŕ óŵñ ʋíéŵ áñð áŕé šáʋéð óñ ţĥíš ðéʋíçé.]",
       "soundEffects": "[Šóúñð Éƒƒéçţš]",
       "musicVolume": "[Ɱúšíç Ʋóļúɱé]",
+      "voiceVolume": "[Ʋóíçé Ʋóļúɱé]",
+      "npcVoices": "[ÑÞÇ Ʋóíçéš]",
       "music": "[Ɱúšíç]",
       "keybindHelp": "[Çļíçķ á ķéý çéļļ, ţĥéñ þŕéšš á ķéý ţó ƀíñð íţ. Éšç çáñçéļš. Éáçĥ áçţíóñ ĥáš á þŕíɱáŕý áñð áñ áļţéŕñáţé ķéý.]",
       "keybindCapture": "[Þŕéšš á ķéý ƒóŕ \"{action}\"...]",

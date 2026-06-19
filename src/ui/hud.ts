@@ -32,6 +32,7 @@ import { terrainHeight, WATER_LEVEL, roadDistance, generateDecorations } from '.
 import type { Decoration } from '../sim/world';
 import { Meters } from './meters';
 import { audio } from '../game/audio';
+import { voice } from '../game/voice';
 import { music, musicZoneForLocation } from '../game/music';
 import { iconDataUrl, iconCanvas, QUALITY_COLOR, raidMarkerDataUrl, RAID_MARKER_NAMES } from './icons';
 import { svgIcon } from './ui_icons';
@@ -3674,6 +3675,10 @@ export class Hud {
     if (!npc || npc.kind !== 'npc') return;
     if ($('#quest-dialog').style.display !== 'block') this.questDialogReturnFocus = this.currentFocusableElement();
     this.closeOtherWindows('#quest-dialog');
+    // Voice the greeting only on the initial open — renderGossip also runs when
+    // navigating back from a quest detail or after accept/turn-in, where a
+    // re-greeting would be noise.
+    voice.play(`greeting__${npc.templateId}`);
     this.renderGossip(npc);
   }
 
@@ -3759,6 +3764,7 @@ export class Hud {
     this.openQuestDetailId = questId;
     const state = this.sim.questState(questId);
     const text = questNarrative(questId, state === 'ready' ? 'completion' : 'text', this.sim.player.name);
+    voice.play(state === 'ready' ? `quest__${questId}__complete` : `quest__${questId}__offer`);
     el.setAttribute('role', 'dialog');
     el.setAttribute('aria-modal', 'false');
     el.setAttribute('aria-labelledby', 'quest-dialog-title');
@@ -6531,6 +6537,7 @@ export class Hud {
     const body = this.settingsViewShell(t('hud.options.audio'));
     this.settingSlider(body, t('hud.options.soundEffects'), 'sfxVolume');
     this.settingSlider(body, t('hud.options.musicVolume'), 'musicVolume');
+    this.settingSlider(body, t('hud.options.voiceVolume'), 'voiceVolume');
     const row = document.createElement('div');
     row.className = 'set-row';
     const name = document.createElement('span');
@@ -6548,6 +6555,7 @@ export class Hud {
     toggle.addEventListener('click', () => { audio.click(); music.setEnabled(!music.enabled); sync(); });
     row.append(name, toggle);
     body.appendChild(row);
+    this.settingBoolToggle(body, t('hud.options.npcVoices'), 'voiceEnabled');
     this.settingsViewFooter();
   }
 
