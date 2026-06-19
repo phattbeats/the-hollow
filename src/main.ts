@@ -2549,23 +2549,29 @@ async function loadHighscores(): Promise<void> {
     return;
   }
   const esc = (s: string): string => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+  const rankLabel = t('game.leaderboard.rank');
+  const nameLabel = t('game.leaderboard.name');
+  const realmLabel = t('game.leaderboard.realmCol');
+  const levelLabel = t('game.leaderboard.level');
+  const virtualLevelLabel = t('game.leaderboard.vlevel');
+  const lifetimeXpLabel = t('game.leaderboard.lifetimeXp');
   const head = `<div class="hs-row hs-head">`
-    + `<span class="hs-rank">${t('game.leaderboard.rank')}</span>`
-    + `<span class="hs-name">${t('game.leaderboard.name')}</span>`
-    + `<span class="hs-realm">${t('game.leaderboard.realmCol')}</span>`
-    + `<span class="hs-lvl">${t('game.leaderboard.level')}</span>`
-    + `<span class="hs-vlvl">${t('game.leaderboard.vlevel')}</span>`
-    + `<span class="hs-xp">${t('game.leaderboard.lifetimeXp')}</span></div>`;
+    + `<span class="hs-rank">${rankLabel}</span>`
+    + `<span class="hs-name">${nameLabel}</span>`
+    + `<span class="hs-realm">${realmLabel}</span>`
+    + `<span class="hs-lvl">${levelLabel}</span>`
+    + `<span class="hs-vlvl">${virtualLevelLabel}</span>`
+    + `<span class="hs-xp">${lifetimeXpLabel}</span></div>`;
   const body = rows.map((r) => {
     const cls = CLASSES[r.cls];
     const star = r.prestigeRank > 0 ? `<span class="hs-prestige" title="${t('game.prestige.rank')} ${r.prestigeRank}">★${r.prestigeRank}</span>` : '';
     return `<div class="hs-row${r.rank <= 3 ? ' hs-top' : ''}">`
       + `<span class="hs-rank">${r.rank}</span>`
       + `<span class="hs-name"${cls ? ` title="${esc(classDisplayName(r.cls))}"` : ''}>${star}${esc(r.name)}</span>`
-      + `<span class="hs-realm">${esc(r.realm ?? '')}</span>`
-      + `<span class="hs-lvl">${r.level}</span>`
-      + `<span class="hs-vlvl">${r.virtualLevel}</span>`
-      + `<span class="hs-xp">${formatXp(r.lifetimeXp)}</span></div>`;
+      + `<span class="hs-realm" data-label="${esc(realmLabel)}">${esc(r.realm ?? '')}</span>`
+      + `<span class="hs-lvl" data-label="${esc(levelLabel)}">${r.level}</span>`
+      + `<span class="hs-vlvl" data-label="${esc(virtualLevelLabel)}">${r.virtualLevel}</span>`
+      + `<span class="hs-xp" data-label="${esc(lifetimeXpLabel)}">${formatXp(r.lifetimeXp)}</span></div>`;
   }).join('');
   host.innerHTML = head + body;
 }

@@ -2247,6 +2247,129 @@
   .hs-lvl, .hs-vlvl { text-align: center; }
   .hs-xp { text-align: right; color: #ffe27a; font-variant-numeric: tabular-nums; }
   .hs-prestige { color: #ffd100; font-size: 11px; margin-right: 4px; }
+  body.mobile-touch .hs-panel {
+    width: 100%;
+    max-width: 560px;
+    padding: var(--spacing-md);
+  }
+  body.mobile-touch .hs-leaderboard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+  body.mobile-touch .hs-head {
+    display: none;
+  }
+  body.mobile-touch .hs-row {
+    grid-template-columns: 38px minmax(0, 1fr);
+    grid-template-areas:
+      "rank name"
+      "rank realm"
+      "rank lvl"
+      "rank vlvl"
+      "rank xp";
+    align-items: start;
+    gap: 4px 10px;
+    padding: 10px 12px;
+    border: 1px solid rgba(78, 61, 29, 0.35);
+    background: rgba(255, 255, 255, 0.025);
+  }
+  body.mobile-touch .hs-rank { grid-area: rank; align-self: center; }
+  body.mobile-touch .hs-name {
+    grid-area: name;
+    min-width: 0;
+  }
+  body.mobile-touch .hs-realm { grid-area: realm; }
+  body.mobile-touch .hs-lvl { grid-area: lvl; }
+  body.mobile-touch .hs-vlvl { grid-area: vlvl; }
+  body.mobile-touch .hs-xp { grid-area: xp; }
+  body.mobile-touch .hs-realm,
+  body.mobile-touch .hs-lvl,
+  body.mobile-touch .hs-vlvl,
+  body.mobile-touch .hs-xp {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    min-width: 0;
+    text-align: right;
+  }
+  body.mobile-touch .hs-realm::before,
+  body.mobile-touch .hs-lvl::before,
+  body.mobile-touch .hs-vlvl::before,
+  body.mobile-touch .hs-xp::before {
+    content: attr(data-label);
+    color: var(--color-primary-dim);
+    font-family: var(--font-heading);
+    font-size: 10px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 680px) {
+    .hs-panel {
+      width: 100%;
+      max-width: 560px;
+      padding: var(--spacing-md);
+    }
+    .hs-leaderboard {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+      overflow-x: hidden;
+    }
+    .hs-head {
+      display: none;
+    }
+    .hs-row {
+      grid-template-columns: 38px minmax(0, 1fr);
+      grid-template-areas:
+        "rank name"
+        "rank realm"
+        "rank lvl"
+        "rank vlvl"
+        "rank xp";
+      align-items: start;
+      gap: 4px 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(78, 61, 29, 0.35);
+      background: rgba(255, 255, 255, 0.025);
+    }
+    .hs-rank { grid-area: rank; align-self: center; }
+    .hs-name {
+      grid-area: name;
+      min-width: 0;
+    }
+    .hs-realm { grid-area: realm; }
+    .hs-lvl { grid-area: lvl; }
+    .hs-vlvl { grid-area: vlvl; }
+    .hs-xp { grid-area: xp; }
+    .hs-realm,
+    .hs-lvl,
+    .hs-vlvl,
+    .hs-xp {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--spacing-sm);
+      min-width: 0;
+      text-align: right;
+    }
+    .hs-realm::before,
+    .hs-lvl::before,
+    .hs-vlvl::before,
+    .hs-xp::before {
+      content: attr(data-label);
+      color: var(--color-primary-dim);
+      font-family: var(--font-heading);
+      font-size: 10px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+  }
 
   /* News & Updates view (mirrored from GitHub Releases) */
   .news-panel {

@@ -174,6 +174,15 @@ describe('client HTML shell', () => {
     expect(html).toContain('body.mobile-touch .news-body ul {\n    list-style: none;\n    padding-left: 0;');
   });
 
+  it('renders the high scores leaderboard responsively on mobile', () => {
+    expect(mainTs).toContain('<span class="hs-realm" data-label="${esc(realmLabel)}">${esc(r.realm ?? \'\')}</span>');
+    expect(mainTs).toContain('<span class="hs-xp" data-label="${esc(lifetimeXpLabel)}">${formatXp(r.lifetimeXp)}</span>');
+    expect(html).toContain('body.mobile-touch .hs-head {\n    display: none;');
+    expect(html).toContain('body.mobile-touch .hs-row {\n    grid-template-columns: 38px minmax(0, 1fr);');
+    expect(html).toContain('grid-template-areas:\n      "rank name"\n      "rank realm"\n      "rank lvl"\n      "rank vlvl"\n      "rank xp";');
+    expect(html).toContain('body.mobile-touch .hs-realm::before,\n  body.mobile-touch .hs-lvl::before,\n  body.mobile-touch .hs-vlvl::before,\n  body.mobile-touch .hs-xp::before {\n    content: attr(data-label);');
+  });
+
   it('stacks selected character details on mobile', () => {
     expect(html).toContain('id="charselect-class-details"');
     expect(html).toContain('body.mobile-touch #charselect-panel #charselect-class-details .class-details-grid,\n  body.mobile-touch #charselect-panel #online-class-details .class-details-grid {\n    display: flex;\n    flex-direction: column;');
