@@ -149,6 +149,19 @@ export const en: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "Home",
     "play": "Play",
@@ -590,6 +603,8 @@ export const en: EnTranslations = {
       "interfaceNote": "These options change only your own view and are saved on this device.",
       "soundEffects": "Sound Effects",
       "musicVolume": "Music Volume",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Music",
       "keybindHelp": "Click a key cell, then press a key to bind it. Esc cancels. Each action has a primary and an alternate key.",
       "keybindCapture": "Press a key for \"{action}\"...",
@@ -2791,6 +2806,9 @@ export const en: EnTranslations = {
       },
       "kings_signet": {
         "name": "King's Signet"
+      },
+      "event_skin_token": {
+        "name": "Mysterious Cosmetic Cache"
       }
     },
     "mobs": {
@@ -4427,6 +4445,19 @@ export const es: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "Inicio",
     "play": "Jugar",
@@ -4868,6 +4899,8 @@ export const es: EnTranslations = {
       "interfaceNote": "Estas opciones solo cambian tu propia vista y se guardan en este dispositivo.",
       "soundEffects": "Efectos de sonido",
       "musicVolume": "Volumen de música",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Música",
       "keybindHelp": "Haz clic en una celda y luego presiona una tecla para asignarla. Esc cancela. Cada acción tiene una tecla principal y una alternativa.",
       "keybindCapture": "Presiona una tecla para \"{action}\"...",
@@ -7069,6 +7102,9 @@ export const es: EnTranslations = {
       },
       "kings_signet": {
         "name": "Anillo del rey"
+      },
+      "event_skin_token": {
+        "name": "Alijo cosmético misterioso"
       }
     },
     "mobs": {
@@ -8705,6 +8741,19 @@ export const es_ES: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "Inicio",
     "play": "Jugar",
@@ -9146,6 +9195,8 @@ export const es_ES: EnTranslations = {
       "interfaceNote": "Estas opciones solo cambian tu propia vista y se guardan en este dispositivo.",
       "soundEffects": "Efectos de sonido",
       "musicVolume": "Volumen de música",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Música",
       "keybindHelp": "Haz clic en una celda y luego presiona una tecla para asignarla. Esc cancela. Cada acción tiene una tecla principal y una alternativa.",
       "keybindCapture": "Presiona una tecla para \"{action}\"...",
@@ -11347,6 +11398,9 @@ export const es_ES: EnTranslations = {
       },
       "kings_signet": {
         "name": "Anillo del rey"
+      },
+      "event_skin_token": {
+        "name": "Alijo cosmético misterioso"
       }
     },
     "mobs": {
@@ -12983,6 +13037,19 @@ export const fr_FR: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "Accueil",
     "play": "Jouer",
@@ -13424,6 +13491,8 @@ export const fr_FR: EnTranslations = {
       "interfaceNote": "Ces options ne changent que votre propre vue et sont enregistrées sur cet appareil.",
       "soundEffects": "Effets sonores",
       "musicVolume": "Volume de la musique",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Musique",
       "keybindHelp": "Cliquez sur une case, puis appuyez sur une touche pour l'assigner. Échap annule. Chaque action possède une touche principale et une alternative.",
       "keybindCapture": "Appuyez sur une touche pour \"{action}\"...",
@@ -15625,6 +15694,9 @@ export const fr_FR: EnTranslations = {
       },
       "kings_signet": {
         "name": "Chevalière du roi"
+      },
+      "event_skin_token": {
+        "name": "Cache cosmétique mystérieuse"
       }
     },
     "mobs": {
@@ -17261,6 +17333,19 @@ export const fr_CA: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "Accueil",
     "play": "Jouer",
@@ -17702,6 +17787,8 @@ export const fr_CA: EnTranslations = {
       "interfaceNote": "Ces options ne changent que votre propre vue et sont enregistrées sur cet appareil.",
       "soundEffects": "Effets sonores",
       "musicVolume": "Volume de la musique",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Musique",
       "keybindHelp": "Cliquez sur une case, puis appuyez sur une touche pour l'assigner. Échap annule. Chaque action possède une touche principale et une alternative.",
       "keybindCapture": "Appuyez sur une touche pour \"{action}\"...",
@@ -19903,6 +19990,9 @@ export const fr_CA: EnTranslations = {
       },
       "kings_signet": {
         "name": "Chevalière du roi"
+      },
+      "event_skin_token": {
+        "name": "Cache cosmétique mystérieuse"
       }
     },
     "mobs": {
@@ -21539,6 +21629,19 @@ export const en_CA: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "Home",
     "play": "Play",
@@ -21980,6 +22083,8 @@ export const en_CA: EnTranslations = {
       "interfaceNote": "These options change only your own view and are saved on this device.",
       "soundEffects": "Sound Effects",
       "musicVolume": "Music Volume",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Music",
       "keybindHelp": "Click a key cell, then press a key to bind it. Esc cancels. Each action has a primary and an alternate key.",
       "keybindCapture": "Press a key for \"{action}\"...",
@@ -24181,6 +24286,9 @@ export const en_CA: EnTranslations = {
       },
       "kings_signet": {
         "name": "King's Signet"
+      },
+      "event_skin_token": {
+        "name": "Mysterious Cosmetic Cache"
       }
     },
     "mobs": {
@@ -25817,6 +25925,19 @@ export const it_IT: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "Pagina principale",
     "play": "Gioca",
@@ -26258,6 +26379,8 @@ export const it_IT: EnTranslations = {
       "interfaceNote": "Queste opzioni cambiano solo la tua visuale e vengono salvate su questo dispositivo.",
       "soundEffects": "Effetti sonori",
       "musicVolume": "Volume musica",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Musica",
       "keybindHelp": "Fai clic su una cella e premi un tasto per assegnarlo. Esc annulla. Ogni azione ha un tasto principale e uno alternativo.",
       "keybindCapture": "Premi un tasto per \"{action}\"...",
@@ -28459,6 +28582,9 @@ export const it_IT: EnTranslations = {
       },
       "kings_signet": {
         "name": "Anello con sigillo del re"
+      },
+      "event_skin_token": {
+        "name": "Scrigno cosmetico misterioso"
       }
     },
     "mobs": {
@@ -30095,6 +30221,19 @@ export const de_DE: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "Startseite",
     "play": "Spielen",
@@ -30536,6 +30675,8 @@ export const de_DE: EnTranslations = {
       "interfaceNote": "Diese Optionen ändern nur Eure eigene Ansicht und werden auf diesem Gerät gespeichert.",
       "soundEffects": "Soundeffekte",
       "musicVolume": "Musiklautstärke",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Musik",
       "keybindHelp": "Klickt auf ein Tastenfeld und drückt dann eine Taste zum Binden. Esc bricht ab. Jede Aktion hat eine Haupttaste und eine Alternativtaste.",
       "keybindCapture": "Drückt eine Taste für \"{action}\"...",
@@ -32737,6 +32878,9 @@ export const de_DE: EnTranslations = {
       },
       "kings_signet": {
         "name": "Siegelring des Königs"
+      },
+      "event_skin_token": {
+        "name": "Geheimnisvolle Kosmetiktruhe"
       }
     },
     "mobs": {
@@ -34373,6 +34517,19 @@ export const zh_CN: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "首页",
     "play": "开始游戏",
@@ -34814,6 +34971,8 @@ export const zh_CN: EnTranslations = {
       "interfaceNote": "这些选项仅改变你自己的视图，并保存在此设备上。",
       "soundEffects": "音效",
       "musicVolume": "音乐音量",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "音乐",
       "keybindHelp": "点击一个按键格，然后按下要绑定的键。Esc 取消。每个动作都有主键和备用键。",
       "keybindCapture": "按下用于“{action}”的按键...",
@@ -37015,6 +37174,9 @@ export const zh_CN: EnTranslations = {
       },
       "kings_signet": {
         "name": "国王印戒"
+      },
+      "event_skin_token": {
+        "name": "神秘外观宝箱"
       }
     },
     "mobs": {
@@ -38651,6 +38813,19 @@ export const zh_TW: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "首頁",
     "play": "開始遊戲",
@@ -39092,6 +39267,8 @@ export const zh_TW: EnTranslations = {
       "interfaceNote": "這些選項只會改變你自己的畫面，並儲存在此裝置上。",
       "soundEffects": "音效",
       "musicVolume": "音樂音量",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "音樂",
       "keybindHelp": "點擊一個按鍵格，然後按下要綁定的按鍵。Esc 取消。每個動作都有主鍵與備用鍵。",
       "keybindCapture": "按下用於「{action}」的按鍵...",
@@ -41293,6 +41470,9 @@ export const zh_TW: EnTranslations = {
       },
       "kings_signet": {
         "name": "國王印戒"
+      },
+      "event_skin_token": {
+        "name": "神秘外觀寶箱"
       }
     },
     "mobs": {
@@ -42929,6 +43109,19 @@ export const ko_KR: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "홈",
     "play": "플레이",
@@ -43370,6 +43563,8 @@ export const ko_KR: EnTranslations = {
       "interfaceNote": "이 옵션은 자신의 화면에만 적용되며 이 기기에 저장됩니다.",
       "soundEffects": "효과음",
       "musicVolume": "음악 음량",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "음악",
       "keybindHelp": "키 칸을 클릭한 뒤 지정할 키를 누르세요. Esc는 취소입니다. 각 행동에는 기본 키와 보조 키가 있습니다.",
       "keybindCapture": "\"{action}\"에 사용할 키를 누르세요...",
@@ -45571,6 +45766,9 @@ export const ko_KR: EnTranslations = {
       },
       "kings_signet": {
         "name": "왕의 인장 반지"
+      },
+      "event_skin_token": {
+        "name": "신비한 외형 상자"
       }
     },
     "mobs": {
@@ -47207,6 +47405,19 @@ export const ja_JP: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "ホーム",
     "play": "プレイ",
@@ -47648,6 +47859,8 @@ export const ja_JP: EnTranslations = {
       "interfaceNote": "これらのオプションは自分の表示のみを変更し、この端末に保存されます。",
       "soundEffects": "効果音",
       "musicVolume": "音楽音量",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "音楽",
       "keybindHelp": "キー欄をクリックしてから割り当てるキーを押してください。Escでキャンセルします。各アクションにはメインキーと代替キーがあります。",
       "keybindCapture": "「{action}」に使うキーを押してください...",
@@ -49849,6 +50062,9 @@ export const ja_JP: EnTranslations = {
       },
       "kings_signet": {
         "name": "王の印章指輪"
+      },
+      "event_skin_token": {
+        "name": "謎めいた装いの宝箱"
       }
     },
     "mobs": {
@@ -51485,6 +51701,19 @@ export const pt_BR: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "Início",
     "play": "Jogar",
@@ -51926,6 +52155,8 @@ export const pt_BR: EnTranslations = {
       "interfaceNote": "Estas opções mudam apenas a sua própria visão e são salvas neste dispositivo.",
       "soundEffects": "Efeitos sonoros",
       "musicVolume": "Volume da música",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Música",
       "keybindHelp": "Clique em uma célula de tecla e pressione uma tecla para atribuí-la. Esc cancela. Cada ação tem uma tecla principal e uma alternativa.",
       "keybindCapture": "Pressione uma tecla para \"{action}\"...",
@@ -54127,6 +54358,9 @@ export const pt_BR: EnTranslations = {
       },
       "kings_signet": {
         "name": "Anel-sinete do rei"
+      },
+      "event_skin_token": {
+        "name": "Baú cosmético misterioso"
       }
     },
     "mobs": {
@@ -55763,6 +55997,19 @@ export const ru_RU: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!"
+  },
   "nav": {
     "home": "Главная",
     "play": "Играть",
@@ -56204,6 +56451,8 @@ export const ru_RU: EnTranslations = {
       "interfaceNote": "Эти настройки меняют только ваш собственный вид и сохраняются на этом устройстве.",
       "soundEffects": "Звуковые эффекты",
       "musicVolume": "Громкость музыки",
+      "voiceVolume": "Voice Volume",
+      "npcVoices": "NPC Voices",
       "music": "Музыка",
       "keybindHelp": "Щелкните ячейку клавиши, затем нажмите клавишу для назначения. Esc отменяет. У каждого действия есть основная и запасная клавиша.",
       "keybindCapture": "Нажмите клавишу для \"{action}\"...",
@@ -58405,6 +58654,9 @@ export const ru_RU: EnTranslations = {
       },
       "kings_signet": {
         "name": "Перстень короля"
+      },
+      "event_skin_token": {
+        "name": "Загадочный косметический тайник"
       }
     },
     "mobs": {
@@ -59985,7 +60237,20 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unlocked"
   ],
   "es_ES": [
     "entities.mobs.bramble_lynx.name",
@@ -60053,7 +60318,20 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unlocked"
   ],
   "fr_FR": [
     "entities.mobs.bramble_lynx.name",
@@ -60121,7 +60399,20 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unlocked"
   ],
   "fr_CA": [
     "entities.mobs.bramble_lynx.name",
@@ -60189,7 +60480,20 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unlocked"
   ],
   "en_CA": [],
   "it_IT": [
@@ -60258,7 +60562,20 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unlocked"
   ],
   "de_DE": [
     "entities.mobs.bramble_lynx.name",
@@ -60326,7 +60643,20 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unlocked"
   ],
   "zh_CN": [
     "entities.mobs.bramble_lynx.name",
@@ -60394,7 +60724,20 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unlocked"
   ],
   "zh_TW": [
     "entities.mobs.bramble_lynx.name",
@@ -60462,7 +60805,20 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unlocked"
   ],
   "ko_KR": [
     "entities.mobs.bramble_lynx.name",
@@ -60530,7 +60886,20 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unlocked"
   ],
   "ja_JP": [
     "entities.mobs.bramble_lynx.name",
@@ -60598,7 +60967,20 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unlocked"
   ],
   "pt_BR": [
     "entities.mobs.bramble_lynx.name",
@@ -60666,7 +61048,20 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unlocked"
   ],
   "ru_RU": [
     "entities.mobs.bramble_lynx.name",
@@ -60734,7 +61129,20 @@ export const pending: Record<string, readonly string[]> = {
     "entities.quests.q_ledger_vigil.objectives.0.label",
     "entities.quests.q_ledger_vigil.text",
     "entities.quests.q_ledger_vigil.title",
-    "entities.zones.eastbrook_vale.pois.8.label"
+    "entities.zones.eastbrook_vale.pois.8.label",
+    "hud.options.npcVoices",
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unlocked"
   ]
 };
 
@@ -60877,6 +61285,19 @@ export const en_XA: EnTranslations = {
         "unspent": "[ {count} úñšþéñţ.]"
       }
     }
+  },
+  "skinEvent": {
+    "title": "[Çóšɱéţíç Çáçĥé]",
+    "subtitle": "[Ýóú úñļóçķéð á {rank} ŕéŵáŕð — çĥóóšé áñý šķíñ áţ óŕ ƀéļóŵ íţ.]",
+    "optionAria": "[{rank} šķíñ {index}]",
+    "locked": "[Ļóçķéð]",
+    "lockedHint": "[Ŕéɋúíŕéš á {rank} ŕóļļ]",
+    "unavailable": "[Çóɱíñĝ šóóñ]",
+    "rolled": "[Ýóú ŕóļļéð {rank}]",
+    "previewHint": "[Ðŕáĝ ţó ŕóţáţé]",
+    "lockIn": "[Ļóçķ Íñ]",
+    "close": "[Çļóšé]",
+    "unlocked": "[Çóšɱéţíç úñļóçķéð!]"
   },
   "nav": {
     "home": "[Ĥóɱé]",
@@ -61319,6 +61740,8 @@ export const en_XA: EnTranslations = {
       "interfaceNote": "[Ţĥéšé óþţíóñš çĥáñĝé óñļý ýóúŕ óŵñ ʋíéŵ áñð áŕé šáʋéð óñ ţĥíš ðéʋíçé.]",
       "soundEffects": "[Šóúñð Éƒƒéçţš]",
       "musicVolume": "[Ɱúšíç Ʋóļúɱé]",
+      "voiceVolume": "[Ʋóíçé Ʋóļúɱé]",
+      "npcVoices": "[ÑÞÇ Ʋóíçéš]",
       "music": "[Ɱúšíç]",
       "keybindHelp": "[Çļíçķ á ķéý çéļļ, ţĥéñ þŕéšš á ķéý ţó ƀíñð íţ. Éšç çáñçéļš. Éáçĥ áçţíóñ ĥáš á þŕíɱáŕý áñð áñ áļţéŕñáţé ķéý.]",
       "keybindCapture": "[Þŕéšš á ķéý ƒóŕ \"{action}\"...]",
@@ -63520,6 +63943,9 @@ export const en_XA: EnTranslations = {
       },
       "kings_signet": {
         "name": "[Ķíñĝ'š Šíĝñéţ]"
+      },
+      "event_skin_token": {
+        "name": "[Ɱýšţéŕíóúš Çóšɱéţíç Çáçĥé]"
       }
     },
     "mobs": {
