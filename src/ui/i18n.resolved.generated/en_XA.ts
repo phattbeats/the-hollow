@@ -759,6 +759,7 @@ export const en_XA: EnTranslations = {
       "graphics": "[Ĝŕáþĥíçš]",
       "audio": "[Áúðíó]",
       "interface": "[Íñţéŕƒáçé]",
+      "language": "[Ļáñĝúáĝé]",
       "logout": "[Ļóĝóúţ]",
       "returnToGame": "[Ŕéţúŕñ ţó Ĝáɱé]",
       "resetToDefaults": "[Ŕéšéţ ţó Ðéƒáúļţš]",

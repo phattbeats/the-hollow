@@ -759,6 +759,7 @@ export const zh_TW: EnTranslations = {
       "graphics": "圖形",
       "audio": "音訊",
       "interface": "介面",
+      "language": "Language",
       "logout": "登出",
       "returnToGame": "返回遊戲",
       "resetToDefaults": "恢復預設",

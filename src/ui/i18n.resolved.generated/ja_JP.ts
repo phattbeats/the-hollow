@@ -759,6 +759,7 @@ export const ja_JP: EnTranslations = {
       "graphics": "グラフィック",
       "audio": "オーディオ",
       "interface": "インターフェース",
+      "language": "Language",
       "logout": "ログアウト",
       "returnToGame": "ゲームに戻る",
       "resetToDefaults": "初期設定に戻す",

@@ -759,6 +759,7 @@ export const zh_CN: EnTranslations = {
       "graphics": "图形",
       "audio": "音频",
       "interface": "界面",
+      "language": "Language",
       "logout": "退出登录",
       "returnToGame": "返回游戏",
       "resetToDefaults": "恢复默认",

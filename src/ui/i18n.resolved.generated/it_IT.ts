@@ -759,6 +759,7 @@ export const it_IT: EnTranslations = {
       "graphics": "Grafica",
       "audio": "Audio",
       "interface": "Interfaccia",
+      "language": "Language",
       "logout": "Esci",
       "returnToGame": "Torna al gioco",
       "resetToDefaults": "Ripristina predefiniti",
