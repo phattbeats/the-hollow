@@ -8,6 +8,7 @@ import { Hud } from './ui/hud';
 import { audio } from './game/audio';
 import { music } from './game/music';
 import { voice } from './game/voice';
+import { sfx } from './game/sfx';
 import { activePvpOpponentIds, handlePickedEntity, hoverCursorKind, isAttackableEntity } from './game/interactions';
 import { clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, distance2d, latencyAdjustedStopDistance, stepAngleToward } from './game/click_move';
 import { Api, ClientWorld, CharacterSummary, type ReleaseEntry } from './net/online';
@@ -561,6 +562,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   const perf = createPerfMonitor(null);
   try {
     renderer = new Renderer(world, canvas, nameplates);
+    renderer.setAudioSink(sfx);
     perf.setRenderer(renderer);
     hud = new Hud(world, renderer, keybinds);
     perf.setHud(hud);
@@ -762,7 +764,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     switch (key) {
       case 'cameraSpeed': input.setCameraSpeed(v); break;
       case 'touchLookSpeed': input.setTouchLookSpeed(v); break;
-      case 'sfxVolume': audio.setVolume(v); break;
+      case 'sfxVolume': audio.setVolume(v); sfx.setVolume(v); break;
       case 'musicVolume': music.setVolume(v); break;
       case 'voiceVolume': voice.setVolume(v); break;
       case 'brightness': renderer.setBrightness(v); break;
@@ -2000,6 +2002,7 @@ async function enterWorld(c: CharacterSummary, button?: HTMLButtonElement): Prom
     if (!(await prepareWorldEntry())) return;
     audio.init();
     music.init();
+    sfx.init();
     enterLoadingState(t('loading.connectingRealm'));
   } finally {
     if (!hasBegunWorldEntry && button) {
@@ -2762,6 +2765,7 @@ function wireStartScreens(): void {
 
     audio.init();
     music.init();
+    sfx.init();
     const name = sanitizeOfflineName(rawName);
     void startOffline(cls, name, selectedSkin('#offline-skin-row', offlineSkin));
   };

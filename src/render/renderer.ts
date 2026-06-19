@@ -11,6 +11,7 @@ import type { BiomeId } from '../sim/types';
 import { AnimState, CharacterVisual, createCharacterVisual } from './characters';
 import { isVisuallyDead } from './anim_state';
 import { LocoTrack, newLocoTrack, updateLocomotion } from './locomotion';
+import type { SpatialAudioSink, Surface } from './audio_sink';
 import { buildProps } from './props';
 import { plankTexture, sparkleTexture } from './textures';
 import { DungeonInteriors, ensureDungeonAssets } from './dungeon';
@@ -65,6 +66,14 @@ const ENTITY_LOD_RANGE_SQ = 50 * 50;
 // it but a jump (apex ~1.1u) does. Needed because online snapshots don't carry
 // `onGround`, so the flag alone never fires the jump clip for the mirrored world.
 const AIRBORNE_EPS = 0.4;
+// Beyond this (squared) an entity's footsteps/movement are inaudible, so we skip
+// the surface sample + dispatch entirely. Kept under the engine's own cutoff (46u).
+const SFX_MOVE_RANGE_SQ = 42 * 42;
+// Stride length (world units travelled) between footfalls — longer at a run.
+const FOOT_STRIDE_WALK = 0.95;
+const FOOT_STRIDE_RUN = 1.55;
+const SWIM_STRIDE = 2.4;
+const FOOT_RUN_SPEED = 4.5; // u/s — matches the run threshold in characters/anim_state.ts
 // fire/torch point lights beyond this never shine (their falloff range is
 // shorter anyway); the nearest GFX.maxPointLights within it win the budget
 const LIGHT_BUDGET_RANGE_SQ = 55 * 55;
@@ -156,6 +165,11 @@ interface EntityView {
   // locomotion-state hysteresis so a one-frame speed dip can't reset the
   // walk clip (see locomotion.ts)
   loco: LocoTrack;
+  // spatial-audio state: distance travelled since the last footfall, and edge
+  // latches for jump/land/water-entry detection.
+  stepAccum: number;
+  wasAirborne: boolean;
+  wasSwimming: boolean;
 }
 
 function collectCasters(root: THREE.Object3D, into: THREE.Object3D[]): void {
@@ -278,6 +292,8 @@ export class Renderer {
   private frameIdx = 0;
   vfx: Vfx;
   private weather: Weather;
+  private weatherOn = true;
+  private audioSink: SpatialAudioSink | null = null;
 
   // 2v2 Fiesta juice: trauma-based screen shake (decays each frame) and the
   // hazard-ring wall (built lazily the first time a Fiesta bout asks for it).
@@ -589,6 +605,22 @@ export class Renderer {
   /** Toggle biome-driven ambient precipitation (snow/rain). */
   setWeatherEnabled(on: boolean): void {
     this.weather.setEnabled(on);
+    this.weatherOn = on;
+  }
+
+  /** main.ts injects the spatial sound engine here (render never imports game/). */
+  setAudioSink(sink: SpatialAudioSink | null): void {
+    this.audioSink = sink;
+  }
+
+  // Surface under (x,z) for footstep timbre. Sampled only at a footfall (cheap).
+  private surfaceAt(x: number, z: number, y: number): Surface {
+    if (x > DUNGEON_X_THRESHOLD) return 'stone'; // dungeon interiors are stone halls
+    if (groundHeight(x, z, this.sim.cfg.seed) < WATER_LEVEL && y <= WATER_LEVEL + 0.3) return 'water';
+    const biome = zoneBiomeAt(z);
+    if (biome === 'vale') return 'grass';
+    if (biome === 'marsh') return 'dirt';
+    return this.weatherOn ? 'snow' : 'stone'; // peaks: snowy when weather is on
   }
 
   /** Vertical camera field of view in degrees (55..100, default 60). */
@@ -1033,6 +1065,7 @@ export class Renderer {
       objectCasters, shadowOn: true, isFar: false, lastOverheadEmoteKey: null,
       lastX: e.pos.x, lastZ: e.pos.z, skin: e.skin, liveScale: e.scale,
       loco: newLocoTrack(),
+      stepAccum: 0, wasAirborne: false, wasSwimming: false,
     });
   }
 
@@ -1423,6 +1456,35 @@ export class Renderer {
         swimming,
         sitting: e.kind === 'player' && (e.sitting || e.eating !== null || e.drinking !== null),
       };
+      // --- spatial movement audio (self + others) --------------------------
+      // All gated by audibility (squared distance) so far entities cost nothing.
+      const sink = this.audioSink;
+      if (sink && d2 < SFX_MOVE_RANGE_SQ) {
+        // jump / land / water-entry edges
+        if (airborne && !v.wasAirborne && !visuallyDead) sink.movement('jump', ax, ay, az, isSelf);
+        else if (!airborne && v.wasAirborne && !visuallyDead) sink.movement('land', ax, ay, az, isSelf);
+        if (swimming && !v.wasSwimming && !visuallyDead) sink.movement('splash', ax, ay, az, isSelf);
+        // footfalls / swim strokes via a distance accumulator (no timers)
+        if (visuallyDead || st.sitting) {
+          v.stepAccum = 0;
+        } else if (swimming) {
+          v.stepAccum += loco.speed * dt;
+          if (v.stepAccum >= SWIM_STRIDE) { v.stepAccum = 0; sink.movement('swim', ax, ay, az, isSelf); }
+        } else if (moving && !airborne) {
+          v.stepAccum += loco.speed * dt;
+          const stride = loco.speed >= FOOT_RUN_SPEED ? FOOT_STRIDE_RUN : FOOT_STRIDE_WALK;
+          if (v.stepAccum >= stride) {
+            v.stepAccum = 0;
+            sink.footstep(ax, ay, az, this.surfaceAt(ax, az, ay), loco.speed >= FOOT_RUN_SPEED, isSelf);
+          }
+        } else {
+          // standing still — prime the accumulator so the first step after moving
+          // lands promptly rather than after a full stride of travel.
+          v.stepAccum = FOOT_STRIDE_WALK * 0.6;
+        }
+      }
+      v.wasAirborne = airborne;
+      v.wasSwimming = swimming;
       // distance-tiered mixer updates: near = every frame, mid = every 2nd,
       // far (static LOD mesh visible) = every 6th; edges latch regardless
       let animate = true;
@@ -1717,6 +1779,22 @@ export class Renderer {
     this.cameraLookAt.set(px, eyeY, pz);
     this.camera.lookAt(this.cameraLookAt);
     this.camera.updateMatrixWorld();
+
+    // Spatial-audio listener (at the camera, facing the player) + ambience state.
+    const sink = this.audioSink;
+    if (sink) {
+      const cpx = this.camera.position.x, cpy = this.camera.position.y, cpz = this.camera.position.z;
+      let fx = px - cpx, fy = eyeY - cpy, fz = pz - cpz;
+      const fl = Math.hypot(fx, fy, fz) || 1;
+      sink.setListener(cpx, cpy, cpz, fx / fl, fy / fl, fz / fl);
+      const inDungeon = px > DUNGEON_X_THRESHOLD;
+      const biome = zoneBiomeAt(pz);
+      const precip = !this.weatherOn || inDungeon ? null : biome === 'peaks' ? 'snow' : biome === 'marsh' ? 'rain' : null;
+      // Only at the water's edge / in it — sampled at the player, so a loose
+      // threshold made the loop bleed across the low marsh from far off.
+      const nearWater = !inDungeon && groundHeight(px, pz, seed) < WATER_LEVEL + 0.4;
+      sink.ambience(biome, inDungeon, precip, nearWater);
+    }
   }
 
   private updateNameplates(fullPass: boolean): void {
