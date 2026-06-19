@@ -105,7 +105,7 @@ const V07_SLASH_REASON =
   'v0.7 in-game slash-command / diagnostic surface; ships English as a documented backstop pending a dedicated localization pass (follow-up).';
 
 function sourceModule(lang) {
-  return lang === 'en' ? './src/ui/i18n.en' : `./src/ui/i18n.locales/${lang}`;
+  return lang === 'en' ? './src/ui/i18n.catalog' : `./src/ui/i18n.locales/${lang}`;
 }
 
 // Bundle the source locale objects + the matcher DICTs + the admin source via a

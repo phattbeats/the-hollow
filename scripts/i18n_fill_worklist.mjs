@@ -326,7 +326,7 @@ export function buildWorklistOutputs({ registry, enFlat, dictEn, overlays, gloss
 // Source loading (mirrors scripts/i18n_scan.mjs loadSources; esbuild -> data URL).
 // ---------------------------------------------------------------------------
 function sourceModule(lang) {
-  return lang === 'en' ? './src/ui/i18n.en' : `./src/ui/i18n.locales/${lang}`;
+  return lang === 'en' ? './src/ui/i18n.catalog' : `./src/ui/i18n.locales/${lang}`;
 }
 
 async function loadSources(nonEn) {

@@ -14,7 +14,7 @@ import { en } from './i18n.resolved.generated/en';
 import { en_XA } from './i18n.resolved.generated/en_XA';
 import { pending } from './i18n.resolved.generated/pending';
 import { LOCALE_LOADERS, SUPPORTED_LANGUAGES } from './i18n.resolved.generated/loaders';
-import type { Leaves, TranslationKey, InterpolationValue, InterpolationValues, DeepPartial, EnTranslations } from './i18n.en';
+import type { Leaves, TranslationKey, InterpolationValue, InterpolationValues, DeepPartial, EnTranslations } from './i18n.catalog';
 
 // Re-export the dense per-locale objects so const-importers of './i18n' keep an unchanged
 // surface: the S3 guard (tests/localization_fixes.test.ts) and the SHA harness
@@ -28,7 +28,7 @@ import type { Leaves, TranslationKey, InterpolationValue, InterpolationValues, D
 export { en, es, es_ES, fr_FR, fr_CA, en_CA, it_IT, de_DE, zh_CN, zh_TW, ko_KR, ja_JP, pt_BR, ru_RU } from './i18n.resolved.generated';
 // gameStrings is the post-cap/XP/leaderboard layer, which the table carries under the
 // `game` key. Source it from the eager generated dense `en` rather than re-exporting from
-// i18n.en, so importing './i18n' does not pull the full i18n.en base (en + shared content
+// i18n.catalog, so importing './i18n' does not pull the full i18n.catalog base (en + shared content
 // layers, ~1 MB) into the client bundle - that module now exists only to feed the
 // generator. Same content, same export name.
 export const gameStrings = en.game;

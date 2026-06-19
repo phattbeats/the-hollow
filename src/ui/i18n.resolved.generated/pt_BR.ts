@@ -8,7 +8,7 @@
 // `npm run i18n:build` (also wired into `npm run build` and `pretest`).
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
-import type { EnTranslations } from '../i18n.en';
+import type { EnTranslations } from '../i18n.catalog';
 
 export const pt_BR: EnTranslations = {
   "meta": {

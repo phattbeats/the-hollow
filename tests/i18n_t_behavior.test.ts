@@ -14,7 +14,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { en } from "../src/ui/i18n.en";
+import { en } from "../src/ui/i18n.catalog";
 import { pending as realPending } from "../src/ui/i18n.resolved.generated";
 import { t, setLanguage, type TranslationKey } from "../src/ui/i18n";
 

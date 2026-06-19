@@ -70,8 +70,12 @@ public surface `main.ts`/input call.
 
 ## i18n - IMPORTANT (sparse-overlay model; contributors add ENGLISH ONLY)
 The locale data is split across files. Touch the right one:
-- `i18n.en.ts` (nested) is the **authoritative English source** and drives
+- `i18n.catalog/` (nested) is the **authoritative source catalog** and drives
   `TranslationKey = Leaves<typeof en, 6>`, the dotted-path type every `t()` call uses.
+  It is a directory of English-valued domain modules (`shell.ts`, `hud.ts`,
+  `abilities.ts`, `quests.ts`, `items.ts`, `game.ts`, `merge.ts`) plus `index.ts`,
+  the barrel that assembles + exports `en`. Add a new English string in the matching
+  domain module (was the single `i18n.en.ts` before the Phase 6 split).
 - `i18n.locales/<lang>.ts` are the 13 non-English **flat sparse overlays**
   (`Partial<Record<TranslationKey,string>>`), the ONLY files a translator edits. An
   omitted key is filled from English by the build and marked `pending` in the registry.
@@ -89,7 +93,8 @@ key on **non-release builds only**, and **hard-fails a pending key on a release 
 localized (~560 `t()` calls in hud.ts); prefer `t()` for new user-facing strings.
 
 **Contributor workflow (add a player-visible string): add ENGLISH ONLY:**
-1. Add the key to `en` (`i18n.en.ts`) and render it through `t()`. **Never edit the 13
+1. Add the key to `en` (the matching `i18n.catalog/<domain>.ts` module) and render it
+   through `t()`. **Never edit the 13
    `i18n.locales/<lang>.ts` overlays, and never put English/`// TODO`/a placeholder
    into one as a fake translation.** Leave the key omitted; the build English-fills it
    and the registry marks it `pending`. (Translating 13 locales per PR would drain

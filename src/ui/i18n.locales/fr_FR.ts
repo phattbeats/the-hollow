@@ -1,6 +1,6 @@
 // Flat dotted-key translation overlay for "fr_FR".
 //
-// One key per leaf of the authoritative nested `en` (src/ui/i18n.en.ts), keys
+// One key per leaf of the authoritative nested `en` (src/ui/i18n.catalog), keys
 // in `en`'s leaf order. This is the translator-edited source: edit a value to
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
@@ -11,7 +11,7 @@
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
-import type { TranslationKey } from '../i18n.en';
+import type { TranslationKey } from '../i18n.catalog';
 
 export const fr_FR: Partial<Record<TranslationKey, string>> = {
   "meta.builtOn": "Compilé le {date}",

@@ -9,7 +9,7 @@
 // src/ui/i18n.ts EXPORTS via scripts/i18n_resolved_hash.mjs, not file bytes).
 //
 // This is the load-bearing tsc safety net for the i18n scaling refactor. `en`
-// (src/ui/i18n.en.ts) is the authoritative NESTED base; the 13 non-English
+// (src/ui/i18n.catalog) is the authoritative NESTED base; the 13 non-English
 // locales are FLAT dotted-key overlays (`Record<string, string>`). Each
 // overlay is unflattened back to a nested object and overlaid onto a deep copy of
 // `en`, with any missing leaf filled from the English value, so every emitted
@@ -81,7 +81,7 @@ const DIALECT_BASE = {
 };
 
 function sourceModule(lang) {
-  return lang === 'en' ? './src/ui/i18n.en' : `./src/ui/i18n.locales/${lang}`;
+  return lang === 'en' ? './src/ui/i18n.catalog' : `./src/ui/i18n.locales/${lang}`;
 }
 
 // Bundle the source locale objects via a tiny stub and import the result. We pull
@@ -148,14 +148,14 @@ function fileBanner() {
 }
 
 // One dense locale slice. Typed `: EnTranslations` (= typeof en) so tsc red-fails a
-// missing or renamed key PER FILE. The type import reaches up one level to i18n.en;
+// missing or renamed key PER FILE. The type import reaches up one level to i18n.catalog;
 // it is `import type`, so it is erased at build time and adds no runtime dependency
 // to the client bundle (exactly as the single-file table did).
 function emitLocaleModule(lang, table) {
   return [
     fileBanner(),
     '',
-    "import type { EnTranslations } from '../i18n.en';",
+    "import type { EnTranslations } from '../i18n.catalog';",
     '',
     `export const ${lang}: EnTranslations = ${JSON.stringify(table, null, 2)};`,
     '',
@@ -174,7 +174,7 @@ function emitEnXaModule(enXA) {
   return [
     fileBanner(),
     '',
-    "import type { EnTranslations } from '../i18n.en';",
+    "import type { EnTranslations } from '../i18n.catalog';",
     '',
     `export const en_XA: EnTranslations = ${JSON.stringify(enXA, null, 2)};`,
     '',
