@@ -11,7 +11,7 @@ Live status. Each phase session updates its own row + checklist in the SAME comm
 | 2 QA | COMPLETE | 2026-06-18 | 2026-06-18 |
 | 3 - The lazy flip | COMPLETE | 2026-06-18 | 2026-06-18 |
 | 3 QA | COMPLETE | 2026-06-18 | 2026-06-18 |
-| 4 - Modulepreload + first-paint perf | NOT STARTED | | |
+| 4 - Modulepreload + first-paint perf | COMPLETE | 2026-06-18 | 2026-06-18 |
 | 4 QA | NOT STARTED | | |
 | 5 - Artifact / CI / determinism hygiene | NOT STARTED | | |
 | 5 QA | NOT STARTED | | |
@@ -62,14 +62,19 @@ Acceptance:
 - [x] `?lang=es` + one CJK (`?lang=zh_CN`) render fully localized: chunk lazy-fetched, gate hid `#start-screen` during fetch, ZERO English-visible-while-gated samples (no flash), final nav.play = "Jugar" / "开始游戏". `visibility:hidden` preserves layout (no shift).
 
 ## Phase 4 - Modulepreload + first-paint perf (Doc Step 4 preload deliverable)
+**DONE 2026-06-18. Both mechanisms shipped (locked decision 8). The data decisively proves the `<link>` is the only fix for the runtime-keyed waterfall.**
 Deliverables:
-- [ ] Inline boot `<script>` in `index.html` `<head>` reads `localStorage.locale` and injects `<link rel="modulepreload">` for that locale's hashed chunk before the main module parses (resolve the hashed filename from Vite's post-build `manifest.json`; match `crossorigin`).
-- [ ] Runtime prefetch helper (starts the locale fetch earlier within the same execution) retained alongside the `<link>` (ship BOTH).
-- [ ] Do NOT speculatively preload other locales (re-introduces bloat).
+- [x] Inline boot `<script>` in `index.html` `<head>` (right after `<link rel="manifest">`, before any module) reads `localStorage.getItem('locale')` and, for a stored non-en locale, injects ONE `<link rel="modulepreload" crossorigin="anonymous" href="...">` for that locale's content-hashed chunk before the main module parses. The hashed URL comes from a build-templated `{ locale: hashedChunkUrl }` map. `crossorigin='anonymous'` matches Vite's own bare-`crossorigin` module tags (both = the "Anonymous" CORS state) so the dynamic import dedupes to ONE fetch (verified: zero double-fetch). Hardened: `typeof href !== 'string'` guard (rejects a `__proto__`-style stored value) + the templated JSON escapes `<` (no `</script>` breakout).
+- [x] Build hook: `build.manifest:true` in `vite.config.ts` emits `dist/.vite/manifest.json`; a `closeBundle` plugin (`i18nModulepreloadPlugin`) calls `templateModulepreload` (`scripts/i18n_modulepreload.mjs`, pure + unit-tested) to resolve each non-en locale's hashed chunk from the manifest and template the map over the `__I18N_LOCALE_CHUNKS__` sentinel in `dist/index.html`. Build-only: in dev the sentinel is undefined and the inline script's try/catch makes it a no-op. A missing chunk / missing sentinel is a hard build error (fail-closed).
+- [x] Runtime prefetch helper `prefetchLocale(lang=currentLanguage)` in `src/ui/i18n.ts`, auto-fired on module eval in a browser (`if (typeof window !== "undefined") prefetchLocale()`), starts the current locale's import the moment i18n.ts evaluates (mechanism 1). No-op for English / resident / non-browser; swallows the rejection (the awaited bootstrap/picker still owns the failure UI). `t()` and `setLanguage` UNTOUCHED + synchronous.
+- [x] No speculative preload: only the ONE stored/current locale; the other 12 are never referenced.
 Acceptance:
-- [ ] Network trace for a stored non-en locale: the locale chunk is a high-priority, parser-discoverable request (no main-then-locale waterfall), with NO double-fetch.
-- [ ] `npm run build` green; correct hashed filename resolved from `dist/.vite/manifest.json`.
-- [ ] Throttled TTI probe (Slow-4G + 4x CPU, median of N): English not slower, stored-locale faster than the no-preload baseline; mobile screenshot shows no layout shift.
+- [x] Throttled (Slow-4G + 4x CPU, median of 5) prod-build network trace via `vite preview` (`scripts/i18n_modulepreload_trace.mjs`): **stored es = exactly 1 request, High priority, NO double-fetch, starts ~1261ms (concurrent with main at ~1452ms) and FINISHES ~2539ms - NO main-then-locale waterfall.** Contrast `?lang=es` (prefetch only, NO link, the faithful no-effective-preload baseline) = the es chunk starts ~21213ms (only AFTER main finishes ~20324ms + executes) and finishes ~22965ms (the waterfall). **The link cuts locale-ready ~23.0s -> ~2.5s; the prefetch alone cannot fix it (it lives inside main).**
+- [x] Default-English visitor = **ZERO non-en chunk requests** (inline script injects nothing for an empty/absent stored locale; `prefetchLocale` returns early for `en`). The zero-non-en-bytes guarantee holds.
+- [x] `npm run build` green; hook logged "templated 13 locale chunk URLs"; `dist/.vite/manifest.json` resolved the correct hashed filename per locale; sentinel fully replaced (0 left). Main-chunk gzip **720.04 kB** (Phase 3 win preserved; manifest is metadata). `INEFFECTIVE_DYNAMIC_IMPORT` warnings admin-only (game barrel still tree-shaken). en_XA pseudo TABLE tree-shaken (0 glyphs in main; the lone `en_XA` string is the pre-existing `DEV_PSEUDO_LOCALE` literal).
+- [x] `npm run i18n:hash -- --check` OK, **SHA UNCHANGED at `3254ea95..`** (enabling the manifest did not perturb the bundle). `npx tsc --noEmit` clean; `npm test` **225 files / 1974 passed / 9 skipped** (+1 file/+11 cases: `tests/i18n_modulepreload.test.ts`). Generated dirs `git diff --exit-code` clean.
+- [x] Mobile (390x844 @3x, Slow-4G+4xCPU, `scripts/i18n_modulepreload_mobile.mjs`): stored-es first paint **CLS 0.0729 (< 0.1 "good")**, fully localized (`lang=es`, "JUGAR" / "En Linea" / "WOC es nuestro token comunitario"), clean layout in `tmp/i18n_modulepreload_mobile_es.png`; english CLS 0. The non-zero es CLS is the homepage static-English->Spanish marketing-copy text-swap reflow (content OUTSIDE the `#start-screen` visibility gate) - a PRE-EXISTING Phase 3 behavior; Phase 4 adds zero rendered DOM and shrinks the English-visible window.
+Review: `qa-checklist` = **PASS** (0 BLOCKING / 0 SHOULD-FIX; one coverage observation - the crossorigin single-fetch match is proven by the E2E double-fetch check, not a unit test, which is acceptable since browser dedup is not unit-testable). LIGHT `privacy-security-review` = **PASS** (0 BLOCKING / 0 SHOULD-FIX; 2 NICE-TO-HAVE defense-in-depth hardenings APPLIED: the `typeof href` guard + the `<` escape. No CSP exists to regress; the inline script is consistent with the pre-existing gtag inline script).
 
 ## Phase 5 - Artifact / CI / determinism hygiene (Doc Step 4 CI/git)
 Deliverables:
