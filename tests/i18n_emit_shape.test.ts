@@ -137,7 +137,7 @@ describe("i18n emit determinism + orphan-sweep (I18N_OUT_DIR override)", () => {
   ].sort();
 
   function runBuild(scriptRel: string, outDir: string) {
-    execFileSync("node", [path.join(root, scriptRel)], {
+    execFileSync(process.execPath, [path.join(root, scriptRel)], {
       cwd: root,
       encoding: "utf8",
       env: { ...process.env, I18N_OUT_DIR: outDir },

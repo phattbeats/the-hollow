@@ -16,6 +16,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { assertDeterministic } from "./helpers/i18n_determinism";
 import { en as adminEn } from "../src/admin/i18n.en";
 import { es } from "../src/admin/i18n.locales/es";
 import { es_ES } from "../src/admin/i18n.locales/es_ES";
@@ -178,9 +179,21 @@ describe("admin resolved table reproducibility", () => {
   });
 
   it("regenerating src/admin/i18n.resolved.generated/ leaves the committed directory byte-identical", () => {
-    execFileSync("node", [path.join(root, "scripts/i18n_admin_build.mjs")], { cwd: root, encoding: "utf8" });
+    execFileSync(process.execPath, [path.join(root, "scripts/i18n_admin_build.mjs")], { cwd: root, encoding: "utf8" });
     expect(() =>
       execFileSync("git", ["diff", "--exit-code", "--", generatedRel], { cwd: root, encoding: "utf8" }),
+    ).not.toThrow();
+  });
+
+  it("regenerates byte-identically across two perturbed-env runs (determinism)", () => {
+    // Parity with the game generator's determinism gate (tests/i18n_resolved_equivalence.test.ts).
+    // The committed-dir `git diff` above only surfaces a hidden TZ / locale / output-path dependency
+    // if it happens to manifest on the CI host's own env; this double-generates the whole emitted
+    // tree into two throwaway temp dirs under PERTURBED TZ / LC_ALL / temp-path and asserts byte
+    // identity, so an intrinsic non-determinism in the admin generator surfaces regardless of CI env.
+    // outFiles omitted => the whole emitted tree (every per-locale slice + barrel) is compared.
+    expect(() =>
+      assertDeterministic({ script: path.join(root, "scripts/i18n_admin_build.mjs") }),
     ).not.toThrow();
   });
 });

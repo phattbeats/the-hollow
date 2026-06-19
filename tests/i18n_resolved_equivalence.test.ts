@@ -26,7 +26,7 @@ const generatedPath = "src/ui/i18n.resolved.generated";
 
 describe("i18n resolved-table byte equivalence", () => {
   it("matches the committed baseline hash", () => {
-    const out = execFileSync("node", [scriptPath], { cwd: root, encoding: "utf8" });
+    const out = execFileSync(process.execPath, [scriptPath], { cwd: root, encoding: "utf8" });
     const match = out.match(/locales=(\d+) bytes=(\d+) sha256=([0-9a-f]{64})/);
     expect(match, `unexpected hash script output: ${out}`).toBeTruthy();
     const [, locales, , sha256] = match!;
@@ -39,7 +39,7 @@ describe("i18n resolved-table byte equivalence", () => {
   it("the --check gate passes against the committed baseline", () => {
     // execFileSync throws on a non-zero exit, which fails the test.
     expect(() =>
-      execFileSync("node", [scriptPath, "--check"], { cwd: root, encoding: "utf8" }),
+      execFileSync(process.execPath, [scriptPath, "--check"], { cwd: root, encoding: "utf8" }),
     ).not.toThrow();
   });
 });
@@ -64,7 +64,7 @@ describe("i18n resolved-artifact reproducibility", () => {
     // the generator is non-deterministic or the committed directory is stale. The
     // generator replaces the directory atomically, so a removed locale would also
     // surface as a deletion in the diff.
-    execFileSync("node", [buildScript], { cwd: root, encoding: "utf8" });
+    execFileSync(process.execPath, [buildScript], { cwd: root, encoding: "utf8" });
     expect(() =>
       execFileSync("git", ["diff", "--exit-code", "--", generatedPath], {
         cwd: root,

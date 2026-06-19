@@ -113,6 +113,34 @@ describe("i18n status registry: states", () => {
     expect(pending).toBe(0);
   });
 
+  // Teeth for the release-tier gate above. That gate reads the real, dense registry
+  // (pending=0 today), so on its own it cannot prove the assertion is non-vacuous.
+  // Mirror the manual injection as a COMMITTED check: flip one translated row to
+  // pending in a clone and confirm BOTH quantities the gate measures (counts.pending
+  // and a fresh re-tally of pending rows) become non-zero - i.e. a pending key WOULD
+  // trip the gate. Runs at both tiers so the teeth can never silently rot.
+  it("the pending===0 gate is non-vacuous (a synthetic pending row trips both measured quantities)", () => {
+    const clone = JSON.parse(JSON.stringify(registry));
+    let flipped = false;
+    for (const entry of Object.values<any>(clone.keys)) {
+      for (const row of Object.values<any>(entry.locales))
+        if (row.state === "translated") {
+          row.state = "pending";
+          flipped = true;
+          break;
+        }
+      if (flipped) break;
+    }
+    expect(flipped, "fixture sanity: at least one translated row must exist to flip").toBe(true);
+    clone.counts.pending += 1;
+    // Both conditions the release-tier gate asserts to be 0 are now non-zero:
+    expect(clone.counts.pending).not.toBe(0);
+    let pending = 0;
+    for (const entry of Object.values<any>(clone.keys))
+      for (const row of Object.values<any>(entry.locales)) if (row.state === "pending") pending++;
+    expect(pending).toBeGreaterThan(0);
+  });
+
   it("counts are internally consistent and match a fresh re-tally", () => {
     const { keys, rows, translated, pending, blocked, blockedSource } = registry.counts;
     expect(rows).toBe(keys * NON_EN.length);
@@ -216,7 +244,7 @@ describe("i18n status summary: committed audit rollup cross-checks the full regi
     ).not.toThrow();
     // Regenerates both artifacts; only the committed summary is diffed (status.json is
     // gitignored, so a `git diff` on it would silently pass regardless).
-    execFileSync("node", [path.join(root, "scripts/i18n_scan.mjs")], { cwd: root, encoding: "utf8" });
+    execFileSync(process.execPath, [path.join(root, "scripts/i18n_scan.mjs")], { cwd: root, encoding: "utf8" });
     expect(() =>
       execFileSync("git", ["diff", "--exit-code", "--", summaryRel], { cwd: root, encoding: "utf8" }),
     ).not.toThrow();
