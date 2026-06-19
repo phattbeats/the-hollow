@@ -151,35 +151,35 @@ export const ja_JP: EnTranslations = {
     }
   },
   "skinEvent": {
-    "title": "Cosmetic Cache",
-    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
-    "optionAria": "{rank} skin {index}",
-    "locked": "Locked",
-    "lockedHint": "Requires a {rank} roll",
-    "unavailable": "Coming soon",
-    "rolled": "You rolled {rank}",
-    "previewHint": "Drag to rotate",
-    "lockIn": "Lock In",
-    "close": "Close",
-    "unlocked": "Cosmetic unlocked!",
-    "unequip": "Unequip",
-    "previewOnly": "Preview only — full unlock coming soon",
+    "title": "装いの宝箱",
+    "subtitle": "{rank}の報酬を解除しました — それ以下のスキンを自由に選べます。",
+    "optionAria": "{rank}スキン {index}",
+    "locked": "ロック中",
+    "lockedHint": "{rank}の抽選が必要",
+    "unavailable": "近日公開",
+    "rolled": "{rank}を引き当てました",
+    "previewHint": "ドラッグで回転",
+    "lockIn": "決定",
+    "close": "閉じる",
+    "unlocked": "装いを解除しました！",
+    "unequip": "外す",
+    "previewOnly": "プレビューのみ — 完全解除は近日公開",
     "mech": {
-      "amber_crimson": "Amber Crimson",
-      "crimson_amber": "Crimson Amber",
-      "cyan_magenta": "Cyan Magenta",
-      "magenta_cyan": "Magenta Cyan",
-      "orange_steel": "Orange Steel",
-      "steel_orange": "Steel Orange",
-      "forest_pink": "Forest Pink",
-      "pink_forest": "Pink Forest",
-      "amethyst_silver": "Amethyst Silver",
-      "ivory_copper": "Ivory Copper",
-      "onyx_gold": "Onyx Gold",
-      "imperial_crimson": "Imperial Crimson",
-      "imperial_gold": "Imperial Gold",
-      "vanguard_azure": "Vanguard Azure",
-      "vanguard_chrome": "Vanguard Chrome"
+      "amber_crimson": "アンバークリムゾン",
+      "crimson_amber": "クリムゾンアンバー",
+      "cyan_magenta": "シアンマゼンタ",
+      "magenta_cyan": "マゼンタシアン",
+      "orange_steel": "オレンジスチール",
+      "steel_orange": "スチールオレンジ",
+      "forest_pink": "フォレストピンク",
+      "pink_forest": "ピンクフォレスト",
+      "amethyst_silver": "アメジストシルバー",
+      "ivory_copper": "アイボリーカッパー",
+      "onyx_gold": "オニキスゴールド",
+      "imperial_crimson": "インペリアルクリムゾン",
+      "imperial_gold": "インペリアルゴールド",
+      "vanguard_azure": "ヴァンガードアズール",
+      "vanguard_chrome": "ヴァンガードクローム"
     }
   },
   "nav": {
@@ -342,169 +342,169 @@ export const ja_JP: EnTranslations = {
   },
   "fiesta": {
     "bracket": "Fiesta",
-    "enterQueue": "Join the Fiesta!",
-    "practice": "🎉 Practice vs Bots",
-    "practiceNote": "Offline practice: spawns 3 AI bots and queues you for a 2v2 Fiesta. Click again to stop.",
+    "enterQueue": "Fiestaに参加！",
+    "practice": "🎉 ボットとの練習",
+    "practiceNote": "オフライン練習：AIボットを3体出現させ、2v2 Fiestaのキューに登録します。もう一度クリックで停止。",
     "banner": {
-      "wave": "WAVE {wave}/{total} — CHOOSE AN AUGMENT!",
-      "augmentGained": "Augment gained: {name}!",
-      "powerup": "{name}!"
+      "wave": "ウェーブ {wave}/{total} — オーグメントを選べ！",
+      "augmentGained": "オーグメント獲得：{name}！",
+      "powerup": "{name}！"
     },
     "log": {
-      "augmentGained": "You gain the {name} augment!",
-      "allyAugment": "{player} chose the {name} augment.",
-      "welcome": "Welcome to the 2v2 FIESTA! Score takedowns, grab augments, survive the ring!",
-      "go": "FIESTA — GO!",
-      "over": "FIESTA OVER! What a party. Returning to the world…",
-      "powerup": "{player} grabbed {name}!"
+      "augmentGained": "オーグメント「{name}」を獲得しました！",
+      "allyAugment": "{player}がオーグメント「{name}」を選びました。",
+      "welcome": "2v2 Fiestaへようこそ！テイクダウンを稼ぎ、オーグメントを掴み、リングを生き残れ！",
+      "go": "Fiesta — スタート！",
+      "over": "Fiesta終了！最高のパーティだった。世界へ戻ります…",
+      "powerup": "{player}が{name}を手に入れた！"
     },
     "category": {
-      "offense": "Offense",
-      "defense": "Defense",
-      "sustain": "Sustain",
-      "mobility": "Mobility",
-      "utility": "Utility"
+      "offense": "攻撃",
+      "defense": "防御",
+      "sustain": "持続",
+      "mobility": "機動",
+      "utility": "汎用"
     },
     "pending": {
-      "label": "Augment ready — pick it on your next death!"
+      "label": "オーグメント準備完了 — 次の死亡時に選択！"
     },
     "powerup": {
       "pow_speed_demon": {
-        "name": "Speed Demon"
+        "name": "スピードデーモン"
       },
       "pow_colossus": {
-        "name": "Colossus"
+        "name": "巨像"
       },
       "pow_moon_boots": {
-        "name": "Moon Boots"
+        "name": "ムーンブーツ"
       },
       "pow_berserker": {
-        "name": "Berserker"
+        "name": "バーサーカー"
       }
     },
     "queue": {
-      "join": "You join the 2v2 Fiesta queue. Get ready to PARTY…",
-      "leave": "You leave the 2v2 Fiesta queue.",
-      "teamLeave": "Your team leaves the 2v2 Fiesta queue."
+      "join": "2v2 Fiestaのキューに参加しました。パーティの準備を…",
+      "leave": "2v2 Fiestaのキューを離れました。",
+      "teamLeave": "あなたのチームは2v2 Fiestaのキューを離れました。"
     },
     "error": {
-      "leaderOnly": "Only the party leader may queue your team for {label}.",
-      "premadeTwo": "A {label} premade requires a party of exactly two.",
-      "noAugment": "You have no augment to choose right now.",
-      "notOnOffer": "That augment is not on offer."
+      "leaderOnly": "{label}にチームをキュー登録できるのはパーティリーダーだけです。",
+      "premadeTwo": "{label}の事前編成にはちょうど2人のパーティが必要です。",
+      "noAugment": "今は選べるオーグメントがありません。",
+      "notOnOffer": "そのオーグメントは提示されていません。"
     },
     "score": {
       "title": "FIESTA",
-      "toWin": "First to {n}",
-      "aria": "Fiesta score: your team {mine}, enemy team {theirs}, first to {limit} wins."
+      "toWin": "先取{n}",
+      "aria": "Fiestaスコア：自チーム{mine}、敵チーム{theirs}、先に{limit}点で勝利。"
     },
     "respawn": {
-      "title": "DOWNED!",
-      "sub": "Back in the fight in…"
+      "title": "ダウン！",
+      "sub": "戦線復帰まで…"
     },
     "end": {
-      "win": "FIESTA WON! 🎉 What a party!",
-      "loss": "FIESTA LOST! Run it back!",
-      "draw": "FIESTA DRAW! Too close to call!"
+      "win": "Fiesta勝利！🎉 最高のパーティだ！",
+      "loss": "Fiesta敗北！もう一戦だ！",
+      "draw": "Fiesta引き分け！僅差で決着つかず！"
     },
     "augment": {
-      "choose": "Choose an Augment",
+      "choose": "オーグメントを選択",
       "aug_brutality": {
-        "name": "Brutality",
-        "desc": "Your physical strikes hit 15% harder."
+        "name": "蛮勇",
+        "desc": "物理攻撃の威力が15%上昇する。"
       },
       "aug_spellfire": {
-        "name": "Spellfire",
-        "desc": "Your spells deal 15% more damage."
+        "name": "呪炎",
+        "desc": "あなたの呪文が15%多くダメージを与える。"
       },
       "aug_toughness": {
-        "name": "Toughness",
-        "desc": "Gain 12% maximum health."
+        "name": "頑健",
+        "desc": "最大体力を12%得る。"
       },
       "aug_keen_eye": {
-        "name": "Keen Eye",
-        "desc": "Gain 8% critical strike chance."
+        "name": "鋭眼",
+        "desc": "クリティカル発生率を8%得る。"
       },
       "aug_fleetfoot": {
-        "name": "Fleetfoot",
-        "desc": "Move 15% faster. Run them down — or run away."
+        "name": "俊足",
+        "desc": "移動速度が15%上昇。追い詰めろ — もしくは逃げ切れ。"
       },
       "aug_ironhide": {
-        "name": "Ironhide",
-        "desc": "Gain 250 armor and 5% dodge."
+        "name": "鉄皮",
+        "desc": "アーマー250と回避5%を得る。"
       },
       "aug_mending": {
-        "name": "Mending",
-        "desc": "Your healing is 20% more potent."
+        "name": "治癒",
+        "desc": "あなたの回復が20%強力になる。"
       },
       "aug_warlords_might": {
-        "name": "Warlord's Might",
-        "desc": "+25% physical damage and +10% crit. Become the threat."
+        "name": "武将の威",
+        "desc": "物理ダメージ+25%、クリティカル+10%。脅威となれ。"
       },
       "aug_arcane_surge": {
-        "name": "Arcane Surge",
-        "desc": "+25% spell damage and +10% crit. Light them up."
+        "name": "秘術の高まり",
+        "desc": "呪文ダメージ+25%、クリティカル+10%。火をつけろ。"
       },
       "aug_vampirism": {
-        "name": "Vampirism",
-        "desc": "Heal for 15% of all damage you deal. Sustain through chaos."
+        "name": "吸血",
+        "desc": "与えた全ダメージの15%を回復。混沌の中で持ちこたえろ。"
       },
       "aug_juggernaut": {
-        "name": "Juggernaut",
-        "desc": "+20% maximum health and +400 armor. Immovable."
+        "name": "ジャガーノート",
+        "desc": "最大体力+20%、アーマー+400。不動。"
       },
       "aug_bloodhunter": {
-        "name": "Bloodhunter",
-        "desc": "+18% damage of all kinds and +12% move speed."
+        "name": "ブラッドハンター",
+        "desc": "あらゆるダメージ+18%、移動速度+12%。"
       },
       "aug_lightwell": {
-        "name": "Lightwell",
-        "desc": "+30% healing and +15% maximum health. Anchor your team."
+        "name": "ライトウェル",
+        "desc": "回復量+30%、最大体力+15%。チームの要となれ。"
       },
       "aug_bounty_hunter": {
-        "name": "Bounty Hunter",
-        "desc": "Your kills are worth +1 bonus team point. Close the gap fast."
+        "name": "賞金稼ぎ",
+        "desc": "あなたのキルがチームに+1ボーナスポイントをもたらす。一気に距離を詰めろ。"
       },
       "aug_apex_predator": {
-        "name": "Apex Predator",
-        "desc": "+40% physical damage, +15% crit, heal for 12% of damage dealt."
+        "name": "頂点捕食者",
+        "desc": "物理ダメージ+40%、クリティカル+15%、与えたダメージの12%を回復。"
       },
       "aug_archmage": {
-        "name": "Archmage",
-        "desc": "+45% spell damage, +15% crit, +15% maximum health."
+        "name": "大魔道士",
+        "desc": "呪文ダメージ+45%、クリティカル+15%、最大体力+15%。"
       },
       "aug_unkillable": {
-        "name": "Unkillable",
-        "desc": "+40% maximum health, +600 armor, heal for 10% of damage dealt."
+        "name": "不死身",
+        "desc": "最大体力+40%、アーマー+600、与えたダメージの10%を回復。"
       },
       "aug_overdrive": {
-        "name": "Overdrive",
-        "desc": "+30% all damage, +20% crit, +20% move speed. FIESTA!"
+        "name": "オーバードライブ",
+        "desc": "全ダメージ+30%、クリティカル+20%、移動速度+20%。FIESTA!"
       },
       "aug_avatar": {
-        "name": "Avatar of War",
-        "desc": "+25% all damage, +25% maximum health, +300 armor. Walk it down."
+        "name": "戦の化身",
+        "desc": "全ダメージ+25%、最大体力+25%、アーマー+300。歩いて押し切れ。"
       },
       "aug_ascendant": {
-        "name": "Ascendant",
-        "desc": "+45% healing, +25% spell damage, +20% maximum health."
+        "name": "超越者",
+        "desc": "回復量+45%、呪文ダメージ+25%、最大体力+20%。"
       }
     },
     "tier": {
-      "silver": "Silver",
-      "gold": "Gold",
-      "prismatic": "Prismatic"
+      "silver": "シルバー",
+      "gold": "ゴールド",
+      "prismatic": "プリズマティック"
     },
     "word": {
-      "kill": "TAKEDOWN!",
-      "firstblood": "FIRST BLOOD!",
-      "doublekill": "DOUBLE KILL!",
-      "shutdown": "SHUTDOWN!",
-      "spree": "{n}× SPREE!",
-      "revived": "BACK IN!",
-      "ringclose": "RING CLOSING!",
-      "wave": "AUGMENTS!",
-      "dodge": "DODGE!"
+      "kill": "テイクダウン！",
+      "firstblood": "ファーストブラッド！",
+      "doublekill": "ダブルキル！",
+      "shutdown": "シャットダウン！",
+      "spree": "{n}連続キル！",
+      "revived": "復帰！",
+      "ringclose": "リング収縮中！",
+      "wave": "オーグメント！",
+      "dodge": "回避！"
     }
   },
   "seo": {
@@ -719,19 +719,19 @@ export const ja_JP: EnTranslations = {
       "combatLogTab": "戦闘ログ",
       "chatPlaceholder": "発言する... (/w 名前 ささやき、/r 返信、/p パーティ、/gu ギルド、/o オフィサー、/general 一般)",
       "chatChannels": {
-        "add": "Add chat channel",
-        "addTitle": "Add channel",
-        "close": "Close {channel} tab",
-        "sendingTo": "Message {channel}",
+        "add": "チャットチャンネルを追加",
+        "addTitle": "チャンネルを追加",
+        "close": "{channel}タブを閉じる",
+        "sendingTo": "{channel}に送信",
         "names": {
-          "say": "Say",
-          "yell": "Yell",
-          "party": "Party",
-          "general": "General",
-          "world": "World",
-          "lfg": "LFG",
-          "guild": "Guild",
-          "officer": "Officer"
+          "say": "発言",
+          "yell": "叫び",
+          "party": "パーティ",
+          "general": "一般",
+          "world": "ワールド",
+          "lfg": "仲間募集",
+          "guild": "ギルド",
+          "officer": "オフィサー"
         }
       },
       "communityLinks": "コミュニティリンク",
@@ -811,8 +811,8 @@ export const ja_JP: EnTranslations = {
       "interfaceNote": "これらのオプションは自分の表示のみを変更し、この端末に保存されます。",
       "soundEffects": "効果音",
       "musicVolume": "音楽音量",
-      "voiceVolume": "Voice Volume",
-      "npcVoices": "NPC Voices",
+      "voiceVolume": "ボイス音量",
+      "npcVoices": "NPCボイス",
       "music": "音楽",
       "keybindHelp": "キー欄をクリックしてから割り当てるキーを押してください。Escでキャンセルします。各アクションにはメインキーと代替キーがあります。",
       "keybindCapture": "「{action}」に使うキーを押してください...",
@@ -3192,37 +3192,37 @@ export const ja_JP: EnTranslations = {
         "name": "縛られし守護者"
       },
       "brightwood_hare": {
-        "name": "Brightwood Hare"
+        "name": "ブライトウッドの野ウサギ"
       },
       "glade_fox": {
-        "name": "Glade Fox"
+        "name": "林間のキツネ"
       },
       "spotted_fawn": {
-        "name": "Spotted Fawn"
+        "name": "斑模様の子鹿"
       },
       "meadow_crane": {
-        "name": "Meadow Crane"
+        "name": "草原のツル"
       },
       "thornpelt_badger": {
-        "name": "Thornpelt Badger"
+        "name": "茨毛のアナグマ"
       },
       "dawnmane_doe": {
-        "name": "Dawnmane Doe"
+        "name": "暁のたてがみの雌鹿"
       },
       "bramble_lynx": {
-        "name": "Bramble Lynx"
+        "name": "茨のオオヤマネコ"
       },
       "brightwood_stag": {
-        "name": "Brightwood Stag"
+        "name": "ブライトウッドの牡鹿"
       },
       "grovetusk_boar": {
-        "name": "Grovetusk Boar"
+        "name": "木立牙の猪"
       },
       "sunhide_bear": {
-        "name": "Sunhide Bear"
+        "name": "陽光皮の熊"
       },
       "brightwood_monarch": {
-        "name": "The Brightwood Monarch"
+        "name": "ブライトウッドの君主"
       },
       "elder_bristleback": {
         "name": "老ブリストルバック"
@@ -3439,9 +3439,9 @@ export const ja_JP: EnTranslations = {
         "greeting": "崩れやすい頁岩に気をつけてください、{className}。山は近ごろ落ち着きがなく、その理由を知りたいのです。"
       },
       "ranger_elwyn": {
-        "name": "Ranger Elwyn",
-        "title": "Glade Warden",
-        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
+        "name": "レンジャー・エルウィン",
+        "title": "林間の守り手",
+        "greeting": "静かに、{className}。今日の林間は穏やかだ。私はこのまま保つつもりでね。"
       },
       "tidewatcher_ondrel": {
         "name": "オンドレル・ヴェイン",
@@ -4183,131 +4183,131 @@ export const ja_JP: EnTranslations = {
         }
       },
       "q_brightwood_thinning": {
-        "title": "Thinning the Glade",
-        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
-        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "title": "林間を間引く",
+        "text": "ブライトウッドの林間はあふれかえっている、{playerName}。茨のオオヤマネコは私が間引くよりも速く増え、群れはわずかに残った牧草地を踏み荒らす。茨のオオヤマネコを8体倒し、林間の毛皮を6枚持ってきてくれ。残りの健康状態を見極められるように。",
+        "completion": "よし。群れは間引かれ、これらの毛皮も上等だ。林間はもう一季節もちこたえるだろう。",
         "objectives": {
           "0": {
-            "label": "Bramble Lynx slain"
+            "label": "茨のオオヤマネコを討伐"
           },
           "1": {
-            "label": "Glade Pelt"
+            "label": "林間の毛皮"
           }
         }
       },
       "q_brightwood_monarch": {
-        "title": "The Brightwood Monarch",
-        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
-        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "title": "ブライトウッドの君主",
+        "text": "ひとりでは矢を放たぬ獣が一頭いる。ブライトウッドの君主、深い林間を治める大牡鹿だ。年老いて獰猛になり、その隠れ家に近づく者は誰彼かまわず角で突く。ハンターひとりの手には余る。仲間を一人か二人連れていけ。あれを安らかに眠らせ、その心臓を持ち帰ってくれ、{playerName}。",
+        "completion": "では老いた王は倒れたか。重いことだ。だが狼に殺されるよりは安らかな最期だった。その角の王冠を敬意とともに身につけてくれ、{playerName}。",
         "objectives": {
           "0": {
-            "label": "The Monarch's Heart"
+            "label": "君主の心臓"
           }
         }
       },
       "q_ledger_first_duty": {
-        "title": "A Warden's First Duty",
-        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
-        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "title": "番人の初仕事",
+        "text": "イーストブルックで一人前になりたいか、{playerName}？ならばどの番人も始める場所から始めよ。西の草地の猪は太って恐れを知らなくなり、春の植え付けを掘り返している。野生の猪を8頭間引けば、記録はお前の名を覚えるだろう。",
+        "completion": "猪が八頭、そして植え付けも守られた。よし。この記録のどの名前も、まさにお前が今立っているところから始まったのだ。",
         "objectives": {
           "0": {
-            "label": "Wild Boar culled"
+            "label": "野生の猪を間引く"
           }
         }
       },
       "q_ledger_teeth": {
-        "title": "Teeth in the Dark",
-        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
-        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "title": "闇の中の牙",
+        "text": "狼の群れは巡回路を覚えてしまった。光が薄れ、ひとり旅の者が格好の餌食となる黄昏どきに襲ってくる。あれを打ち砕いてくれ、{playerName}。森の狼を10頭倒し、群れに新たな教訓を学ばせよ。",
+        "completion": "狼が十頭、そして黄昏の道はまた我らのものだ。記録はお前に優しくなっていく。",
         "objectives": {
           "0": {
-            "label": "Forest Wolf slain"
+            "label": "森の狼を討伐"
           }
         }
       },
       "q_ledger_reedwater": {
-        "title": "Reedwater Patrol",
-        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
-        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "title": "葦の水辺の巡回",
+        "text": "レッドブルックが寄こしたのか？よし。この老骨ではもう浅瀬を渡れぬ。泥ひれが葦の水辺に這い戻り、かつてないほど大胆になっている。間引いてくれ。泥ひれの潜伏者を8体、それと深みには気をつけろ。",
+        "completion": "これでひと季節は、あのごぼごぼ鳴く悪魔どもを私の網から遠ざけておける。元帥に、湖はまた静かになったと伝えてくれ。",
         "objectives": {
           "0": {
-            "label": "Mudfin Skulker slain"
+            "label": "泥ひれの潜伏者を討伐"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "Silk and Venom",
-        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
-        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "title": "絹と毒",
+        "text": "記録は東の森も番人の領分と記している。ウェブウッドの潜伏者は週ごとに巣を厚くしていく。先の市の日には子供が近づきすぎてしまい、かろうじて息のあるうちに切り出した。森を丸ごと奪われる前に、ウェブウッドの潜伏者を8体倒してくれ。",
+        "completion": "闇の中の紡ぎ手が八体減った。森は息がしやすくなり、私もだ。",
         "objectives": {
           "0": {
-            "label": "Webwood Lurker slain"
+            "label": "ウェブウッドの潜伏者を討伐"
           }
         }
       },
       "q_ledger_brood": {
-        "title": "The Spawning Dark",
-        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
-        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "title": "湧き出す闇",
+        "text": "潜伏者を殺したことが、かえって幼体に場所を空けてしまった。セーブルウェブの幼体が深い巣からあふれ出ている。小さな牙が百本あれば、大きな一本と同じく確実に旅人を殺す。育つ前にセーブルウェブの幼体を8体粉砕してくれ。",
+        "completion": "巣を水に沈めるとは陰惨な仕事だ。だが今の慈悲は、後に避けられる百の葬式だ。帳尻は合った。",
         "objectives": {
           "0": {
-            "label": "Sableweb Hatchling crushed"
+            "label": "セーブルウェブの幼体を粉砕"
           }
         }
       },
       "q_ledger_deepvermin": {
-        "title": "Vermin in the Deep",
-        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
-        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "title": "深部の害獣",
+        "text": "元帥の記録には、お前が害獣を始末すると書いてある。さて、わしの採掘場のは中でも最悪だ。トンネルラットは掘り子がつるはしを振るうより速く増える。トンネルラット掘りを12体始末してくれ。そうすれば冬までに銅を掘り当てられるかもしれん。",
+        "completion": "ろうそく頭の害獣が十二匹も片付いた！よし、お前たち、坑道へ戻るぞ。元帥にお前のことを良く言っておくぞ、{playerName}。",
         "objectives": {
           "0": {
-            "label": "Tunnel Rat Digger slain"
+            "label": "トンネルラット掘りを討伐"
           }
         }
       },
       "q_ledger_toll": {
-        "title": "The Highwaymen's Toll",
-        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
-        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "title": "追いはぎの通行料",
+        "text": "南東の丘は盗賊の通行料の道と化した。軽装で旅をする愚か者なら誰でも襲う。記録にはひとり残らず賞金がかかっている。谷の盗賊を8人、イーストブルックの裁きにかけてくれ。",
+        "completion": "盗賊が八人、報いを受けた。通行路に新しい番人がついたという噂はもう広まっている。しかもその番人は金を取らぬ。首を取るのだ。",
         "objectives": {
           "0": {
-            "label": "Vale Bandit brought to justice"
+            "label": "谷の盗賊を成敗"
           }
         }
       },
       "q_ledger_vigil": {
-        "title": "Vigil at the Chapel",
-        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
-        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "title": "礼拝堂の夜伽",
+        "text": "元帥は、剣だけでは手に余る厄介事のとき、番人を私のもとへ寄こす。礼拝堂の死者たちはじっと横たわってくれず、私は夜伽を続けるには年を取りすぎた。私に代わって守ってくれ、{playerName}。安らがぬ骨を10体、ふたたび安らぎへと戻してくれ。",
+        "completion": "十の魂が大地に還り、礼拝堂に一夜の安らぎが買われた。たとえ記録が忘れても、聖なる光はこのような夜伽を覚えている。",
         "objectives": {
           "0": {
-            "label": "Restless Bones laid to rest"
+            "label": "安らがぬ骨を安らかに眠らせる"
           }
         }
       },
       "q_ledger_great_boar": {
-        "title": "The Great Bristleback",
-        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
-        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "title": "大いなるブリストルバック",
+        "text": "西の茂みに老いた牡の猪がいる。老ブリストルバックだ。樹皮のような皮と、それに見合う気性をしている。あれは私の皮運びを二人も角で突いた。あれを倒し、その後ろに身を寄せる下級の野生の猪を6頭片付けてくれ。そうすればお前の名を記録の上位に記そう。",
+        "completion": "老ブリストルバック、お前の手で討たれたか！あの皮一枚で一季節分の交易に値する。お前は記録の誇りとなった、{playerName}。",
         "objectives": {
           "0": {
-            "label": "Elder Bristleback slain"
+            "label": "老ブリストルバックを討伐"
           },
           "1": {
-            "label": "Wild Boar of the herd slain"
+            "label": "群れの野生の猪を討伐"
           }
         }
       },
       "q_ledger_outlaw_captain": {
-        "title": "The Outlaw Captain",
-        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
-        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "title": "無法者の隊長",
+        "text": "記録の最後の名は、一年も消したいと思っていた者だ。ヴァーラン隊長、谷の半分を盗賊稼業に堕とした男だ。南東の野営地で副官たちの陰に身を潜めている。あれに辿り着くまでに谷の盗賊を6人斬り倒し、それからヴァーラン本人を始末せよ。ひとりで行くな。",
+        "completion": "ヴァーラン隊長は死に、その外套は私の戸口に届けられた。記録は閉じられた、{playerName}。そして谷は、来たるべき番人たちに、それを閉じた者の名を語り継ぐだろう。",
         "objectives": {
           "0": {
-            "label": "Vale Bandit cut down"
+            "label": "谷の盗賊を斬り倒す"
           },
           "1": {
-            "label": "Captain Verlan slain"
+            "label": "ヴァーラン隊長を討伐"
           }
         }
       },
@@ -4425,7 +4425,7 @@ export const ja_JP: EnTranslations = {
             "label": "倒れた礼拝堂"
           },
           "8": {
-            "label": "Brightwood Glade"
+            "label": "ブライトウッドの林間"
           }
         }
       },

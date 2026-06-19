@@ -151,35 +151,35 @@ export const de_DE: EnTranslations = {
     }
   },
   "skinEvent": {
-    "title": "Cosmetic Cache",
-    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
-    "optionAria": "{rank} skin {index}",
-    "locked": "Locked",
-    "lockedHint": "Requires a {rank} roll",
-    "unavailable": "Coming soon",
-    "rolled": "You rolled {rank}",
-    "previewHint": "Drag to rotate",
-    "lockIn": "Lock In",
-    "close": "Close",
-    "unlocked": "Cosmetic unlocked!",
-    "unequip": "Unequip",
-    "previewOnly": "Preview only — full unlock coming soon",
+    "title": "Kosmetik-Hort",
+    "subtitle": "Ihr habt eine {rank}-Belohnung freigeschaltet — wählt einen beliebigen Skin auf dieser Stufe oder darunter.",
+    "optionAria": "{rank}-Skin {index}",
+    "locked": "Gesperrt",
+    "lockedHint": "Erfordert einen {rank}-Wurf",
+    "unavailable": "Demnächst verfügbar",
+    "rolled": "Ihr habt {rank} erwürfelt",
+    "previewHint": "Zum Drehen ziehen",
+    "lockIn": "Festlegen",
+    "close": "Schließen",
+    "unlocked": "Kosmetik freigeschaltet!",
+    "unequip": "Ablegen",
+    "previewOnly": "Nur Vorschau — vollständige Freischaltung folgt in Kürze",
     "mech": {
-      "amber_crimson": "Amber Crimson",
-      "crimson_amber": "Crimson Amber",
-      "cyan_magenta": "Cyan Magenta",
-      "magenta_cyan": "Magenta Cyan",
-      "orange_steel": "Orange Steel",
-      "steel_orange": "Steel Orange",
-      "forest_pink": "Forest Pink",
-      "pink_forest": "Pink Forest",
-      "amethyst_silver": "Amethyst Silver",
-      "ivory_copper": "Ivory Copper",
-      "onyx_gold": "Onyx Gold",
-      "imperial_crimson": "Imperial Crimson",
-      "imperial_gold": "Imperial Gold",
-      "vanguard_azure": "Vanguard Azure",
-      "vanguard_chrome": "Vanguard Chrome"
+      "amber_crimson": "Bernstein-Karmesin",
+      "crimson_amber": "Karmesin-Bernstein",
+      "cyan_magenta": "Cyan-Magenta",
+      "magenta_cyan": "Magenta-Cyan",
+      "orange_steel": "Orange-Stahl",
+      "steel_orange": "Stahl-Orange",
+      "forest_pink": "Waldgrün-Rosa",
+      "pink_forest": "Rosa-Waldgrün",
+      "amethyst_silver": "Amethyst-Silber",
+      "ivory_copper": "Elfenbein-Kupfer",
+      "onyx_gold": "Onyx-Gold",
+      "imperial_crimson": "Imperiales Karmesin",
+      "imperial_gold": "Imperiales Gold",
+      "vanguard_azure": "Vorhut-Azur",
+      "vanguard_chrome": "Vorhut-Chrom"
     }
   },
   "nav": {
@@ -342,169 +342,169 @@ export const de_DE: EnTranslations = {
   },
   "fiesta": {
     "bracket": "Fiesta",
-    "enterQueue": "Join the Fiesta!",
-    "practice": "🎉 Practice vs Bots",
-    "practiceNote": "Offline practice: spawns 3 AI bots and queues you for a 2v2 Fiesta. Click again to stop.",
+    "enterQueue": "Tretet der Fiesta bei!",
+    "practice": "🎉 Übung gegen Bots",
+    "practiceNote": "Offline-Übung: erzeugt 3 KI-Bots und meldet Euch für eine 2-gegen-2-Fiesta an. Klickt erneut zum Beenden.",
     "banner": {
-      "wave": "WAVE {wave}/{total} — CHOOSE AN AUGMENT!",
-      "augmentGained": "Augment gained: {name}!",
+      "wave": "WELLE {wave}/{total} — WÄHLT EINE AUGMENTIERUNG!",
+      "augmentGained": "Augmentierung erhalten: {name}!",
       "powerup": "{name}!"
     },
     "log": {
-      "augmentGained": "You gain the {name} augment!",
-      "allyAugment": "{player} chose the {name} augment.",
-      "welcome": "Welcome to the 2v2 FIESTA! Score takedowns, grab augments, survive the ring!",
-      "go": "FIESTA — GO!",
-      "over": "FIESTA OVER! What a party. Returning to the world…",
-      "powerup": "{player} grabbed {name}!"
+      "augmentGained": "Ihr erhaltet die Augmentierung {name}!",
+      "allyAugment": "{player} wählte die Augmentierung {name}.",
+      "welcome": "Willkommen zur 2-gegen-2-FIESTA! Erzielt Erledigungen, schnappt Euch Augmentierungen, überlebt den Ring!",
+      "go": "FIESTA — LOS!",
+      "over": "FIESTA VORBEI! Was für ein Fest. Rückkehr in die Welt…",
+      "powerup": "{player} schnappte sich {name}!"
     },
     "category": {
-      "offense": "Offense",
-      "defense": "Defense",
-      "sustain": "Sustain",
-      "mobility": "Mobility",
-      "utility": "Utility"
+      "offense": "Angriff",
+      "defense": "Verteidigung",
+      "sustain": "Beständigkeit",
+      "mobility": "Mobilität",
+      "utility": "Hilfsmittel"
     },
     "pending": {
-      "label": "Augment ready — pick it on your next death!"
+      "label": "Augmentierung bereit — wählt sie bei Eurem nächsten Tod!"
     },
     "powerup": {
       "pow_speed_demon": {
-        "name": "Speed Demon"
+        "name": "Geschwindigkeitsdämon"
       },
       "pow_colossus": {
-        "name": "Colossus"
+        "name": "Koloss"
       },
       "pow_moon_boots": {
-        "name": "Moon Boots"
+        "name": "Mondstiefel"
       },
       "pow_berserker": {
         "name": "Berserker"
       }
     },
     "queue": {
-      "join": "You join the 2v2 Fiesta queue. Get ready to PARTY…",
-      "leave": "You leave the 2v2 Fiesta queue.",
-      "teamLeave": "Your team leaves the 2v2 Fiesta queue."
+      "join": "Ihr tretet der Warteschlange für die 2-gegen-2-Fiesta bei. Macht Euch bereit zum FEIERN…",
+      "leave": "Ihr verlasst die Warteschlange für die 2-gegen-2-Fiesta.",
+      "teamLeave": "Euer Team verlässt die Warteschlange für die 2-gegen-2-Fiesta."
     },
     "error": {
-      "leaderOnly": "Only the party leader may queue your team for {label}.",
-      "premadeTwo": "A {label} premade requires a party of exactly two.",
-      "noAugment": "You have no augment to choose right now.",
-      "notOnOffer": "That augment is not on offer."
+      "leaderOnly": "Nur der Gruppenleiter darf Euer Team für {label} anmelden.",
+      "premadeTwo": "Eine Stammgruppe für {label} erfordert eine Gruppe von genau zwei.",
+      "noAugment": "Ihr habt im Moment keine Augmentierung zur Wahl.",
+      "notOnOffer": "Diese Augmentierung wird nicht angeboten."
     },
     "score": {
       "title": "FIESTA",
-      "toWin": "First to {n}",
-      "aria": "Fiesta score: your team {mine}, enemy team {theirs}, first to {limit} wins."
+      "toWin": "Erster bei {n}",
+      "aria": "Fiesta-Punktestand: Euer Team {mine}, gegnerisches Team {theirs}, der Erste mit {limit} gewinnt."
     },
     "respawn": {
-      "title": "DOWNED!",
-      "sub": "Back in the fight in…"
+      "title": "NIEDERGESTRECKT!",
+      "sub": "Zurück im Kampf in…"
     },
     "end": {
-      "win": "FIESTA WON! 🎉 What a party!",
-      "loss": "FIESTA LOST! Run it back!",
-      "draw": "FIESTA DRAW! Too close to call!"
+      "win": "FIESTA GEWONNEN! 🎉 Was für ein Fest!",
+      "loss": "FIESTA VERLOREN! Versucht es erneut!",
+      "draw": "FIESTA-UNENTSCHIEDEN! Zu knapp, um zu entscheiden!"
     },
     "augment": {
-      "choose": "Choose an Augment",
+      "choose": "Wählt eine Augmentierung",
       "aug_brutality": {
-        "name": "Brutality",
-        "desc": "Your physical strikes hit 15% harder."
+        "name": "Brutalität",
+        "desc": "Eure physischen Schläge treffen 15% härter."
       },
       "aug_spellfire": {
-        "name": "Spellfire",
-        "desc": "Your spells deal 15% more damage."
+        "name": "Zauberfeuer",
+        "desc": "Eure Zauber verursachen 15% mehr Schaden."
       },
       "aug_toughness": {
-        "name": "Toughness",
-        "desc": "Gain 12% maximum health."
+        "name": "Zähigkeit",
+        "desc": "Erhaltet 12% maximale Gesundheit."
       },
       "aug_keen_eye": {
-        "name": "Keen Eye",
-        "desc": "Gain 8% critical strike chance."
+        "name": "Scharfes Auge",
+        "desc": "Erhaltet 8% kritische Trefferchance."
       },
       "aug_fleetfoot": {
-        "name": "Fleetfoot",
-        "desc": "Move 15% faster. Run them down — or run away."
+        "name": "Flinkfuß",
+        "desc": "Bewegt Euch 15% schneller. Jagt sie nieder — oder lauft davon."
       },
       "aug_ironhide": {
-        "name": "Ironhide",
-        "desc": "Gain 250 armor and 5% dodge."
+        "name": "Eisenhaut",
+        "desc": "Erhaltet 250 Rüstung und 5% Ausweichen."
       },
       "aug_mending": {
-        "name": "Mending",
-        "desc": "Your healing is 20% more potent."
+        "name": "Genesung",
+        "desc": "Eure Heilung ist 20% wirksamer."
       },
       "aug_warlords_might": {
-        "name": "Warlord's Might",
-        "desc": "+25% physical damage and +10% crit. Become the threat."
+        "name": "Macht des Kriegsfürsten",
+        "desc": "+25% physischer Schaden und +10% krit. Trefferchance. Werdet zur Bedrohung."
       },
       "aug_arcane_surge": {
-        "name": "Arcane Surge",
-        "desc": "+25% spell damage and +10% crit. Light them up."
+        "name": "Arkane Woge",
+        "desc": "+25% Zauberschaden und +10% krit. Trefferchance. Steckt sie in Brand."
       },
       "aug_vampirism": {
-        "name": "Vampirism",
-        "desc": "Heal for 15% of all damage you deal. Sustain through chaos."
+        "name": "Vampirismus",
+        "desc": "Heilt Euch um 15% allen Schadens, den Ihr zufügt. Überdauert das Chaos."
       },
       "aug_juggernaut": {
         "name": "Juggernaut",
-        "desc": "+20% maximum health and +400 armor. Immovable."
+        "desc": "+20% maximale Gesundheit und +400 Rüstung. Unverrückbar."
       },
       "aug_bloodhunter": {
-        "name": "Bloodhunter",
-        "desc": "+18% damage of all kinds and +12% move speed."
+        "name": "Blutjäger",
+        "desc": "+18% Schaden aller Art und +12% Tempo."
       },
       "aug_lightwell": {
-        "name": "Lightwell",
-        "desc": "+30% healing and +15% maximum health. Anchor your team."
+        "name": "Lichtbrunnen",
+        "desc": "+30% Heilung und +15% maximale Gesundheit. Verankert Euer Team."
       },
       "aug_bounty_hunter": {
-        "name": "Bounty Hunter",
-        "desc": "Your kills are worth +1 bonus team point. Close the gap fast."
+        "name": "Kopfgeldjäger",
+        "desc": "Eure Tötungen sind +1 Bonuspunkt für das Team wert. Schließt die Lücke schnell."
       },
       "aug_apex_predator": {
-        "name": "Apex Predator",
-        "desc": "+40% physical damage, +15% crit, heal for 12% of damage dealt."
+        "name": "Spitzenräuber",
+        "desc": "+40% physischer Schaden, +15% krit. Trefferchance, Heilung um 12% des zugefügten Schadens."
       },
       "aug_archmage": {
-        "name": "Archmage",
-        "desc": "+45% spell damage, +15% crit, +15% maximum health."
+        "name": "Erzmagier",
+        "desc": "+45% Zauberschaden, +15% krit. Trefferchance, +15% maximale Gesundheit."
       },
       "aug_unkillable": {
-        "name": "Unkillable",
-        "desc": "+40% maximum health, +600 armor, heal for 10% of damage dealt."
+        "name": "Untötbar",
+        "desc": "+40% maximale Gesundheit, +600 Rüstung, Heilung um 10% des zugefügten Schadens."
       },
       "aug_overdrive": {
-        "name": "Overdrive",
-        "desc": "+30% all damage, +20% crit, +20% move speed. FIESTA!"
+        "name": "Vollgas",
+        "desc": "+30% gesamter Schaden, +20% krit. Trefferchance, +20% Tempo. FIESTA!"
       },
       "aug_avatar": {
-        "name": "Avatar of War",
-        "desc": "+25% all damage, +25% maximum health, +300 armor. Walk it down."
+        "name": "Avatar des Krieges",
+        "desc": "+25% gesamter Schaden, +25% maximale Gesundheit, +300 Rüstung. Walzt sie nieder."
       },
       "aug_ascendant": {
-        "name": "Ascendant",
-        "desc": "+45% healing, +25% spell damage, +20% maximum health."
+        "name": "Aufgestiegener",
+        "desc": "+45% Heilung, +25% Zauberschaden, +20% maximale Gesundheit."
       }
     },
     "tier": {
-      "silver": "Silver",
+      "silver": "Silber",
       "gold": "Gold",
-      "prismatic": "Prismatic"
+      "prismatic": "Prismatisch"
     },
     "word": {
-      "kill": "TAKEDOWN!",
-      "firstblood": "FIRST BLOOD!",
-      "doublekill": "DOUBLE KILL!",
-      "shutdown": "SHUTDOWN!",
-      "spree": "{n}× SPREE!",
-      "revived": "BACK IN!",
-      "ringclose": "RING CLOSING!",
-      "wave": "AUGMENTS!",
-      "dodge": "DODGE!"
+      "kill": "ERLEDIGUNG!",
+      "firstblood": "ERSTES BLUT!",
+      "doublekill": "DOPPELTÖTUNG!",
+      "shutdown": "AUSGESCHALTET!",
+      "spree": "{n}× AMOKLAUF!",
+      "revived": "ZURÜCK IM SPIEL!",
+      "ringclose": "RING SCHLIESST SICH!",
+      "wave": "AUGMENTIERUNGEN!",
+      "dodge": "AUSGEWICHEN!"
     }
   },
   "seo": {
@@ -719,19 +719,19 @@ export const de_DE: EnTranslations = {
       "combatLogTab": "Kampflog",
       "chatPlaceholder": "Etwas sagen... (/w Name flüstern, /r antworten, /p Gruppe, /gu Gilde, /o Offiziere, /general Allgemein)",
       "chatChannels": {
-        "add": "Add chat channel",
-        "addTitle": "Add channel",
-        "close": "Close {channel} tab",
-        "sendingTo": "Message {channel}",
+        "add": "Chatkanal hinzufügen",
+        "addTitle": "Kanal hinzufügen",
+        "close": "Reiter {channel} schließen",
+        "sendingTo": "Nachricht an {channel}",
         "names": {
-          "say": "Say",
-          "yell": "Yell",
-          "party": "Party",
-          "general": "General",
-          "world": "World",
+          "say": "Sagen",
+          "yell": "Rufen",
+          "party": "Gruppe",
+          "general": "Allgemein",
+          "world": "Welt",
           "lfg": "LFG",
-          "guild": "Guild",
-          "officer": "Officer"
+          "guild": "Gilde",
+          "officer": "Offizier"
         }
       },
       "communityLinks": "Community-Links",
@@ -811,8 +811,8 @@ export const de_DE: EnTranslations = {
       "interfaceNote": "Diese Optionen ändern nur Eure eigene Ansicht und werden auf diesem Gerät gespeichert.",
       "soundEffects": "Soundeffekte",
       "musicVolume": "Musiklautstärke",
-      "voiceVolume": "Voice Volume",
-      "npcVoices": "NPC Voices",
+      "voiceVolume": "Stimmlautstärke",
+      "npcVoices": "NSC-Stimmen",
       "music": "Musik",
       "keybindHelp": "Klickt auf ein Tastenfeld und drückt dann eine Taste zum Binden. Esc bricht ab. Jede Aktion hat eine Haupttaste und eine Alternativtaste.",
       "keybindCapture": "Drückt eine Taste für \"{action}\"...",
@@ -3192,37 +3192,37 @@ export const de_DE: EnTranslations = {
         "name": "Gebundener Wächter"
       },
       "brightwood_hare": {
-        "name": "Brightwood Hare"
+        "name": "Hellholz-Hase"
       },
       "glade_fox": {
-        "name": "Glade Fox"
+        "name": "Lichtungsfuchs"
       },
       "spotted_fawn": {
-        "name": "Spotted Fawn"
+        "name": "Geflecktes Hirschkalb"
       },
       "meadow_crane": {
-        "name": "Meadow Crane"
+        "name": "Wiesenkranich"
       },
       "thornpelt_badger": {
-        "name": "Thornpelt Badger"
+        "name": "Dornpelz-Dachs"
       },
       "dawnmane_doe": {
-        "name": "Dawnmane Doe"
+        "name": "Morgenmähnen-Hirschkuh"
       },
       "bramble_lynx": {
-        "name": "Bramble Lynx"
+        "name": "Dornenluchs"
       },
       "brightwood_stag": {
-        "name": "Brightwood Stag"
+        "name": "Hellholz-Hirsch"
       },
       "grovetusk_boar": {
-        "name": "Grovetusk Boar"
+        "name": "Hainhauer-Keiler"
       },
       "sunhide_bear": {
-        "name": "Sunhide Bear"
+        "name": "Sonnenfell-Bär"
       },
       "brightwood_monarch": {
-        "name": "The Brightwood Monarch"
+        "name": "Der Hellholz-Monarch"
       },
       "elder_bristleback": {
         "name": "Alter Bristleback"
@@ -3439,9 +3439,9 @@ export const de_DE: EnTranslations = {
         "greeting": "Achte auf lockeren Schiefer, {className}. Der Berg ist unruhig geworden, und ich will wissen warum."
       },
       "ranger_elwyn": {
-        "name": "Ranger Elwyn",
-        "title": "Glade Warden",
-        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
+        "name": "Waldläufer Elwyn",
+        "title": "Hüter der Lichtung",
+        "greeting": "Ruhig, {className} - die Lichtung ist heute friedlich, und das gedenke ich so zu erhalten."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -4183,131 +4183,131 @@ export const de_DE: EnTranslations = {
         }
       },
       "q_brightwood_thinning": {
-        "title": "Thinning the Glade",
-        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
-        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "title": "Die Lichtung ausdünnen",
+        "text": "Die Hellholz-Lichtung ist überlaufen, {playerName}. Die Dornenluchse vermehren sich schneller, als ich sie ausmerzen kann, und die Herden zertrampeln das wenige Weideland, das noch bleibt. Erlegt 8 Dornenluchse und bringt mir 6 Lichtungsfelle, damit ich über das Wohl der übrigen urteilen kann.",
+        "completion": "Gut. Das Rudel ist ausgedünnt und diese Felle sind heil - die Lichtung wird eine weitere Jahreszeit überstehen.",
         "objectives": {
           "0": {
-            "label": "Bramble Lynx slain"
+            "label": "Dornenluchse erlegt"
           },
           "1": {
-            "label": "Glade Pelt"
+            "label": "Lichtungsfell"
           }
         }
       },
       "q_brightwood_monarch": {
-        "title": "The Brightwood Monarch",
-        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
-        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "title": "Der Hellholz-Monarch",
+        "text": "Es gibt eine Bestie, auf die ich allein keinen Pfeil löse: den Hellholz-Monarchen, den großen Hirsch, der über die tiefe Lichtung herrscht. Er ist alt und wild geworden und spießt jeden auf, der seinem Bau zu nahe kommt. Er ist mehr, als ein einzelner Jäger gewachsen ist - bringt einen Freund oder zwei mit. Bettet ihn zur Ruhe und bringt mir sein Herz, {playerName}.",
+        "completion": "So ist der alte König also gefallen. Eine schwere Sache, dies - doch ein gnädigeres Ende, als die Wölfe ihm beschert hätten. Tragt diese Krone aus seinem Geweih mit Achtung, {playerName}.",
         "objectives": {
           "0": {
-            "label": "The Monarch's Heart"
+            "label": "Das Herz des Monarchen"
           }
         }
       },
       "q_ledger_first_duty": {
-        "title": "A Warden's First Duty",
-        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
-        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "title": "Eines Hüters erste Pflicht",
+        "text": "Ihr wollt Euch in Eastbrook Euren Unterhalt verdienen, {playerName}? Dann fangt dort an, wo jeder Hüter anfängt. Die Keiler auf der Westwiese sind fett und furchtlos geworden und wühlen die Frühjahrssaat aus. Erlegt 8 Wildschweine, und das Verzeichnis wird sich Eures Namens entsinnen.",
+        "completion": "Acht Keiler und die Aussaat gerettet. Gut. Jeder Name in diesem Verzeichnis hat genau dort begonnen, wo Ihr jetzt steht.",
         "objectives": {
           "0": {
-            "label": "Wild Boar culled"
+            "label": "Wildschweine erlegt"
           }
         }
       },
       "q_ledger_teeth": {
-        "title": "Teeth in the Dark",
-        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
-        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "title": "Zähne in der Dunkelheit",
+        "text": "Die Wolfsrudel haben die Patrouillenwege gelernt - sie schlagen in der Dämmerung zu, wenn das Licht dünn ist und ein einsamer Reisender leichte Beute. Brecht sie, {playerName}. Erlegt 10 Waldwölfe und lasst die Rudel eine neue Lektion lernen.",
+        "completion": "Zehn Wölfe, und die Dämmerstraße gehört wieder uns. Das Verzeichnis wird Euch gnädiger.",
         "objectives": {
           "0": {
-            "label": "Forest Wolf slain"
+            "label": "Waldwölfe erlegt"
           }
         }
       },
       "q_ledger_reedwater": {
-        "title": "Reedwater Patrol",
-        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
-        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "title": "Schilfwasser-Patrouille",
+        "text": "Redbrook hat Euch geschickt? Gut - diese alten Knochen können nicht mehr durch die Untiefen waten. Die Schlammflossen haben sich ins Schilfwasser zurückgeschlichen und sind dreister denn je. Dünnt sie aus: 8 Schlammflossen-Schleicher, und hütet Euch vor dem tiefen Wasser.",
+        "completion": "Das hält die gurgelnden Teufel eine Jahreszeit lang von meinen Netzen fern. Sagt dem Marschall, der See sei wieder still.",
         "objectives": {
           "0": {
-            "label": "Mudfin Skulker slain"
+            "label": "Schlammflossen-Schleicher erlegt"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "Silk and Venom",
-        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
-        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "title": "Seide und Gift",
+        "text": "Das Verzeichnis weist auch die östlichen Wälder als Hüterland aus. Die Netzwald-Lauerer spinnen Woche um Woche dichter - vergangenen Markttag verirrte sich ein Kind zu nah, und wir schnitten es kaum noch atmend frei. Tötet 8 Netzwald-Lauerer, ehe sie den Wald ganz für sich nehmen.",
+        "completion": "Acht Spinnen weniger in der Dunkelheit. Der Wald atmet leichter, und ich auch.",
         "objectives": {
           "0": {
-            "label": "Webwood Lurker slain"
+            "label": "Netzwald-Lauerer erlegt"
           }
         }
       },
       "q_ledger_brood": {
-        "title": "The Spawning Dark",
-        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
-        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "title": "Die laichende Finsternis",
+        "text": "Die Lauerer zu töten machte nur der Brut Platz. Die Schwarzweber-Brütlinge strömen aus dem tiefen Nest, und hundert kleine Fänge töten einen Reisenden ebenso sicher wie ein großer. Zermalmt 8 Schwarzweber-Brütlinge, ehe sie heranwachsen.",
+        "completion": "Ein grimmiges Werk, ein Nest zu ertränken. Doch Gnade jetzt erspart hundert Begräbnisse später. Die Schuld ist beglichen.",
         "objectives": {
           "0": {
-            "label": "Sableweb Hatchling crushed"
+            "label": "Schwarzweber-Brütlinge zermalmt"
           }
         }
       },
       "q_ledger_deepvermin": {
-        "title": "Vermin in the Deep",
-        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
-        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "title": "Ungeziefer in der Tiefe",
+        "text": "Im Verzeichnis des Marschalls steht, Ihr räumt mit Schädlingen auf. Nun, mein Stollen hat die schlimmsten von ihnen. Die Tunnelratten vermehren sich schneller, als meine Mannschaft die Spitzhacke schwingen kann - legt 12 Tunnelratten-Gräber um, und vielleicht stoßen wir vor dem Winter auf Kupfer.",
+        "completion": "Zwölf des kerzenköpfigen Ungeziefers, dahin! Recht so, Burschen - zurück in den Schacht. Ihr habt Euch ein gutes Wort beim Marschall verdient, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Tunnel Rat Digger slain"
+            "label": "Tunnelratten-Gräber erlegt"
           }
         }
       },
       "q_ledger_toll": {
-        "title": "The Highwaymen's Toll",
-        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
-        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "title": "Die Maut der Wegelagerer",
+        "text": "Die südöstlichen Hügel sind zur Mautstraße eines Banditen geworden - sie berauben jeden, der närrisch genug ist, mit leichtem Gepäck zu reisen. Das Verzeichnis hat auf jeden von ihnen einen Preis gesetzt. Bringt 8 Talbanditen die Gerechtigkeit von Eastbrook.",
+        "completion": "Acht Banditen, zur Rechenschaft gezogen. Es spricht sich schon herum, dass die Mautstraße einen neuen Hüter hat - und der nimmt keine Münze, der nimmt Köpfe.",
         "objectives": {
           "0": {
-            "label": "Vale Bandit brought to justice"
+            "label": "Talbanditen vor Gericht gebracht"
           }
         }
       },
       "q_ledger_vigil": {
-        "title": "Vigil at the Chapel",
-        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
-        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "title": "Wache an der Kapelle",
+        "text": "Der Marschall schickt seine Hüter zu mir, wenn die Not über die Reichweite von Schwertern allein hinausgeht. Die Toten der Kapelle wollen nicht stillliegen, und ich bin zu alt, um die Nachtwache zu halten. Haltet sie für mich, {playerName} - bettet 10 Ruhelose Gebeine zurück zu ihrer Ruhe.",
+        "completion": "Zehn Seelen der Erde zurückgegeben und eine Nacht des Friedens für die Kapelle erkauft. Das Licht entsinnt sich solcher Wachen, selbst wenn das Verzeichnis sie vergisst.",
         "objectives": {
           "0": {
-            "label": "Restless Bones laid to rest"
+            "label": "Ruhelose Gebeine zur Ruhe gebettet"
           }
         }
       },
       "q_ledger_great_boar": {
-        "title": "The Great Bristleback",
-        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
-        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "title": "Der Große Borstenrücken",
+        "text": "In den westlichen Dickichten haust ein alter Eberbulle - der Alte Borstenrücken, mit einer Haut wie Borke und einem Gemüt, das dazu passt. Er hat zwei meiner Fellläufer aufgespießt. Bringt ihn zur Strecke und räumt 6 der geringeren Wildschweine fort, die sich hinter ihm verbergen, und ich werde Euren Namen hoch oben im Verzeichnis eintragen.",
+        "completion": "Der Alte Borstenrücken, von Eurer Hand erschlagen! Allein dieses Fell ist eine Handelssaison wert. Ihr habt das Verzeichnis stolz gemacht, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Elder Bristleback slain"
+            "label": "Alter Borstenrücken erlegt"
           },
           "1": {
-            "label": "Wild Boar of the herd slain"
+            "label": "Wildschweine der Rotte erlegt"
           }
         }
       },
       "q_ledger_outlaw_captain": {
-        "title": "The Outlaw Captain",
-        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
-        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "title": "Der Räuberhauptmann",
+        "text": "Der letzte Name im Verzeichnis ist der, den ich seit einem Jahr gestrichen sehen will: Hauptmann Verlan, der das halbe Tal in die Räuberei trieb. Er verschanzt sich hinter seinen Leutnants im südöstlichen Lager. Streckt 6 Talbanditen nieder, um zu ihm vorzudringen, und macht dann Verlan selbst ein Ende. Geht nicht allein.",
+        "completion": "Hauptmann Verlan, tot, und sein Mantel vor meiner Tür. Das Verzeichnis ist geschlossen, {playerName} - und das Tal wird den Hütern, die nach Euch kommen, den Namen dessen nennen, der es geschlossen hat.",
         "objectives": {
           "0": {
-            "label": "Vale Bandit cut down"
+            "label": "Talbanditen niedergestreckt"
           },
           "1": {
-            "label": "Captain Verlan slain"
+            "label": "Hauptmann Verlan erlegt"
           }
         }
       },
@@ -4425,7 +4425,7 @@ export const de_DE: EnTranslations = {
             "label": "Gefallene Kapelle"
           },
           "8": {
-            "label": "Brightwood Glade"
+            "label": "Hellholz-Lichtung"
           }
         }
       },

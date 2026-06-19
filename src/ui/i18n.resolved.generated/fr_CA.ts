@@ -151,35 +151,35 @@ export const fr_CA: EnTranslations = {
     }
   },
   "skinEvent": {
-    "title": "Cosmetic Cache",
-    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
-    "optionAria": "{rank} skin {index}",
-    "locked": "Locked",
-    "lockedHint": "Requires a {rank} roll",
-    "unavailable": "Coming soon",
-    "rolled": "You rolled {rank}",
-    "previewHint": "Drag to rotate",
-    "lockIn": "Lock In",
-    "close": "Close",
-    "unlocked": "Cosmetic unlocked!",
-    "unequip": "Unequip",
-    "previewOnly": "Preview only — full unlock coming soon",
+    "title": "Cache cosmétique",
+    "subtitle": "Vous avez débloqué une récompense {rank} — choisissez n'importe quelle apparence de ce rang ou inférieur.",
+    "optionAria": "Apparence {rank} {index}",
+    "locked": "Verrouillé",
+    "lockedHint": "Nécessite un tirage {rank}",
+    "unavailable": "Bientôt disponible",
+    "rolled": "Vous avez obtenu {rank}",
+    "previewHint": "Faites glisser pour pivoter",
+    "lockIn": "Valider",
+    "close": "Fermer",
+    "unlocked": "Cosmétique débloqué !",
+    "unequip": "Retirer",
+    "previewOnly": "Aperçu uniquement — déblocage complet bientôt disponible",
     "mech": {
-      "amber_crimson": "Amber Crimson",
-      "crimson_amber": "Crimson Amber",
-      "cyan_magenta": "Cyan Magenta",
-      "magenta_cyan": "Magenta Cyan",
-      "orange_steel": "Orange Steel",
-      "steel_orange": "Steel Orange",
-      "forest_pink": "Forest Pink",
-      "pink_forest": "Pink Forest",
-      "amethyst_silver": "Amethyst Silver",
-      "ivory_copper": "Ivory Copper",
-      "onyx_gold": "Onyx Gold",
-      "imperial_crimson": "Imperial Crimson",
-      "imperial_gold": "Imperial Gold",
-      "vanguard_azure": "Vanguard Azure",
-      "vanguard_chrome": "Vanguard Chrome"
+      "amber_crimson": "Ambre carmin",
+      "crimson_amber": "Carmin ambre",
+      "cyan_magenta": "Cyan magenta",
+      "magenta_cyan": "Magenta cyan",
+      "orange_steel": "Orange acier",
+      "steel_orange": "Acier orange",
+      "forest_pink": "Forêt rose",
+      "pink_forest": "Rose forêt",
+      "amethyst_silver": "Améthyste argent",
+      "ivory_copper": "Ivoire cuivre",
+      "onyx_gold": "Onyx or",
+      "imperial_crimson": "Carmin impérial",
+      "imperial_gold": "Or impérial",
+      "vanguard_azure": "Avant-garde azur",
+      "vanguard_chrome": "Avant-garde chrome"
     }
   },
   "nav": {
@@ -342,169 +342,169 @@ export const fr_CA: EnTranslations = {
   },
   "fiesta": {
     "bracket": "Fiesta",
-    "enterQueue": "Join the Fiesta!",
-    "practice": "🎉 Practice vs Bots",
-    "practiceNote": "Offline practice: spawns 3 AI bots and queues you for a 2v2 Fiesta. Click again to stop.",
+    "enterQueue": "Rejoignez la Fiesta !",
+    "practice": "🎉 Entraînement contre des bots",
+    "practiceNote": "Entraînement hors ligne : fait apparaître 3 bots IA et vous inscrit pour une Fiesta 2c2. Cliquez à nouveau pour arrêter.",
     "banner": {
-      "wave": "WAVE {wave}/{total} — CHOOSE AN AUGMENT!",
-      "augmentGained": "Augment gained: {name}!",
-      "powerup": "{name}!"
+      "wave": "VAGUE {wave}/{total} — CHOISISSEZ UNE AUGMENTATION !",
+      "augmentGained": "Augmentation obtenue : {name} !",
+      "powerup": "{name} !"
     },
     "log": {
-      "augmentGained": "You gain the {name} augment!",
-      "allyAugment": "{player} chose the {name} augment.",
-      "welcome": "Welcome to the 2v2 FIESTA! Score takedowns, grab augments, survive the ring!",
-      "go": "FIESTA — GO!",
-      "over": "FIESTA OVER! What a party. Returning to the world…",
-      "powerup": "{player} grabbed {name}!"
+      "augmentGained": "Vous gagnez l'augmentation {name} !",
+      "allyAugment": "{player} a choisi l'augmentation {name}.",
+      "welcome": "Bienvenue dans la FIESTA 2c2 ! Marquez des éliminations, attrapez des augmentations, survivez à l'arène !",
+      "go": "FIESTA — C'EST PARTI !",
+      "over": "FIESTA TERMINÉE ! Quelle fête. Retour dans le monde…",
+      "powerup": "{player} a attrapé {name} !"
     },
     "category": {
-      "offense": "Offense",
-      "defense": "Defense",
-      "sustain": "Sustain",
-      "mobility": "Mobility",
-      "utility": "Utility"
+      "offense": "Attaque",
+      "defense": "Défense",
+      "sustain": "Endurance",
+      "mobility": "Mobilité",
+      "utility": "Utilitaire"
     },
     "pending": {
-      "label": "Augment ready — pick it on your next death!"
+      "label": "Augmentation prête — choisissez-la à votre prochaine mort !"
     },
     "powerup": {
       "pow_speed_demon": {
-        "name": "Speed Demon"
+        "name": "Démon de vitesse"
       },
       "pow_colossus": {
-        "name": "Colossus"
+        "name": "Colosse"
       },
       "pow_moon_boots": {
-        "name": "Moon Boots"
+        "name": "Bottes lunaires"
       },
       "pow_berserker": {
         "name": "Berserker"
       }
     },
     "queue": {
-      "join": "You join the 2v2 Fiesta queue. Get ready to PARTY…",
-      "leave": "You leave the 2v2 Fiesta queue.",
-      "teamLeave": "Your team leaves the 2v2 Fiesta queue."
+      "join": "Vous rejoignez la file d'attente de la Fiesta 2c2. Préparez-vous à FAIRE LA FÊTE…",
+      "leave": "Vous quittez la file d'attente de la Fiesta 2c2.",
+      "teamLeave": "Votre équipe quitte la file d'attente de la Fiesta 2c2."
     },
     "error": {
-      "leaderOnly": "Only the party leader may queue your team for {label}.",
-      "premadeTwo": "A {label} premade requires a party of exactly two.",
-      "noAugment": "You have no augment to choose right now.",
-      "notOnOffer": "That augment is not on offer."
+      "leaderOnly": "Seul le chef de groupe peut inscrire votre équipe pour {label}.",
+      "premadeTwo": "Une équipe préformée de {label} requiert un groupe d'exactement deux joueurs.",
+      "noAugment": "Vous n'avez aucune augmentation à choisir pour le moment.",
+      "notOnOffer": "Cette augmentation n'est pas proposée."
     },
     "score": {
       "title": "FIESTA",
-      "toWin": "First to {n}",
-      "aria": "Fiesta score: your team {mine}, enemy team {theirs}, first to {limit} wins."
+      "toWin": "Premier à {n}",
+      "aria": "Score de la Fiesta : votre équipe {mine}, équipe ennemie {theirs}, le premier à {limit} l'emporte."
     },
     "respawn": {
-      "title": "DOWNED!",
-      "sub": "Back in the fight in…"
+      "title": "À TERRE !",
+      "sub": "De retour dans la mêlée dans…"
     },
     "end": {
-      "win": "FIESTA WON! 🎉 What a party!",
-      "loss": "FIESTA LOST! Run it back!",
-      "draw": "FIESTA DRAW! Too close to call!"
+      "win": "FIESTA GAGNÉE ! 🎉 Quelle fête !",
+      "loss": "FIESTA PERDUE ! On remet ça !",
+      "draw": "FIESTA À ÉGALITÉ ! Trop serré pour départager !"
     },
     "augment": {
-      "choose": "Choose an Augment",
+      "choose": "Choisissez une augmentation",
       "aug_brutality": {
-        "name": "Brutality",
-        "desc": "Your physical strikes hit 15% harder."
+        "name": "Brutalité",
+        "desc": "Vos frappes physiques cognent 15% plus fort."
       },
       "aug_spellfire": {
-        "name": "Spellfire",
-        "desc": "Your spells deal 15% more damage."
+        "name": "Feu magique",
+        "desc": "Vos sorts infligent 15% de dégâts en plus."
       },
       "aug_toughness": {
-        "name": "Toughness",
-        "desc": "Gain 12% maximum health."
+        "name": "Robustesse",
+        "desc": "Gagnez 12% de points de vie maximum."
       },
       "aug_keen_eye": {
-        "name": "Keen Eye",
-        "desc": "Gain 8% critical strike chance."
+        "name": "Œil perçant",
+        "desc": "Gagnez 8% de chances de coup critique."
       },
       "aug_fleetfoot": {
-        "name": "Fleetfoot",
-        "desc": "Move 15% faster. Run them down — or run away."
+        "name": "Pied léger",
+        "desc": "Déplacez-vous 15% plus vite. Coursez-les — ou prenez la fuite."
       },
       "aug_ironhide": {
-        "name": "Ironhide",
-        "desc": "Gain 250 armor and 5% dodge."
+        "name": "Peau de fer",
+        "desc": "Gagnez 250 d'armure et 5% d'esquive."
       },
       "aug_mending": {
-        "name": "Mending",
-        "desc": "Your healing is 20% more potent."
+        "name": "Guérison",
+        "desc": "Vos soins sont 20% plus puissants."
       },
       "aug_warlords_might": {
-        "name": "Warlord's Might",
-        "desc": "+25% physical damage and +10% crit. Become the threat."
+        "name": "Puissance du seigneur de guerre",
+        "desc": "+25% de dégâts physiques et +10% de critique. Devenez la menace."
       },
       "aug_arcane_surge": {
-        "name": "Arcane Surge",
-        "desc": "+25% spell damage and +10% crit. Light them up."
+        "name": "Déferlante des Arcanes",
+        "desc": "+25% de dégâts des sorts et +10% de critique. Faites-les flamber."
       },
       "aug_vampirism": {
-        "name": "Vampirism",
-        "desc": "Heal for 15% of all damage you deal. Sustain through chaos."
+        "name": "Vampirisme",
+        "desc": "Vous soigne de 15% de tous les dégâts que vous infligez. Tenez bon dans le chaos."
       },
       "aug_juggernaut": {
-        "name": "Juggernaut",
-        "desc": "+20% maximum health and +400 armor. Immovable."
+        "name": "Mastodonte",
+        "desc": "+20% de points de vie maximum et +400 d'armure. Inébranlable."
       },
       "aug_bloodhunter": {
-        "name": "Bloodhunter",
-        "desc": "+18% damage of all kinds and +12% move speed."
+        "name": "Chasseur de sang",
+        "desc": "+18% à tous les types de dégâts et +12% de vitesse de déplacement."
       },
       "aug_lightwell": {
-        "name": "Lightwell",
-        "desc": "+30% healing and +15% maximum health. Anchor your team."
+        "name": "Puits de lumière",
+        "desc": "+30% de soins et +15% de points de vie maximum. Ancrez votre équipe."
       },
       "aug_bounty_hunter": {
-        "name": "Bounty Hunter",
-        "desc": "Your kills are worth +1 bonus team point. Close the gap fast."
+        "name": "Chasseur de primes",
+        "desc": "Vos victimes valent +1 point d'équipe bonus. Comblez l'écart vite."
       },
       "aug_apex_predator": {
-        "name": "Apex Predator",
-        "desc": "+40% physical damage, +15% crit, heal for 12% of damage dealt."
+        "name": "Prédateur suprême",
+        "desc": "+40% de dégâts physiques, +15% de critique, vous soigne de 12% des dégâts infligés."
       },
       "aug_archmage": {
-        "name": "Archmage",
-        "desc": "+45% spell damage, +15% crit, +15% maximum health."
+        "name": "Archimage",
+        "desc": "+45% de dégâts des sorts, +15% de critique, +15% de points de vie maximum."
       },
       "aug_unkillable": {
-        "name": "Unkillable",
-        "desc": "+40% maximum health, +600 armor, heal for 10% of damage dealt."
+        "name": "Increvable",
+        "desc": "+40% de points de vie maximum, +600 d'armure, vous soigne de 10% des dégâts infligés."
       },
       "aug_overdrive": {
-        "name": "Overdrive",
-        "desc": "+30% all damage, +20% crit, +20% move speed. FIESTA!"
+        "name": "Surrégime",
+        "desc": "+30% à tous les dégâts, +20% de critique, +20% de vitesse de déplacement. FIESTA !"
       },
       "aug_avatar": {
-        "name": "Avatar of War",
-        "desc": "+25% all damage, +25% maximum health, +300 armor. Walk it down."
+        "name": "Avatar de la guerre",
+        "desc": "+25% à tous les dégâts, +25% de points de vie maximum, +300 d'armure. Avancez sans faiblir."
       },
       "aug_ascendant": {
         "name": "Ascendant",
-        "desc": "+45% healing, +25% spell damage, +20% maximum health."
+        "desc": "+45% de soins, +25% de dégâts des sorts, +20% de points de vie maximum."
       }
     },
     "tier": {
-      "silver": "Silver",
-      "gold": "Gold",
-      "prismatic": "Prismatic"
+      "silver": "Argent",
+      "gold": "Or",
+      "prismatic": "Prismatique"
     },
     "word": {
-      "kill": "TAKEDOWN!",
-      "firstblood": "FIRST BLOOD!",
-      "doublekill": "DOUBLE KILL!",
-      "shutdown": "SHUTDOWN!",
-      "spree": "{n}× SPREE!",
-      "revived": "BACK IN!",
-      "ringclose": "RING CLOSING!",
-      "wave": "AUGMENTS!",
-      "dodge": "DODGE!"
+      "kill": "ÉLIMINATION !",
+      "firstblood": "PREMIER SANG !",
+      "doublekill": "DOUBLE ÉLIMINATION !",
+      "shutdown": "STOPPÉ NET !",
+      "spree": "SÉRIE DE {n} !",
+      "revived": "DE RETOUR !",
+      "ringclose": "L'ARÈNE SE REFERME !",
+      "wave": "AUGMENTATIONS !",
+      "dodge": "ESQUIVE !"
     }
   },
   "seo": {
@@ -719,19 +719,19 @@ export const fr_CA: EnTranslations = {
       "combatLogTab": "Journal de combat",
       "chatPlaceholder": "Dites quelque chose... (/w nom chuchoter, /r répondre, /p groupe, /gu guilde, /o officiers, /general général)",
       "chatChannels": {
-        "add": "Add chat channel",
-        "addTitle": "Add channel",
-        "close": "Close {channel} tab",
-        "sendingTo": "Message {channel}",
+        "add": "Ajouter un canal de discussion",
+        "addTitle": "Ajouter un canal",
+        "close": "Fermer l'onglet {channel}",
+        "sendingTo": "Message vers {channel}",
         "names": {
-          "say": "Say",
-          "yell": "Yell",
-          "party": "Party",
-          "general": "General",
-          "world": "World",
-          "lfg": "LFG",
-          "guild": "Guild",
-          "officer": "Officer"
+          "say": "Dire",
+          "yell": "Crier",
+          "party": "Groupe",
+          "general": "Général",
+          "world": "Monde",
+          "lfg": "RG",
+          "guild": "Guilde",
+          "officer": "Officier"
         }
       },
       "communityLinks": "Liens communautaires",
@@ -811,8 +811,8 @@ export const fr_CA: EnTranslations = {
       "interfaceNote": "Ces options ne changent que votre propre vue et sont enregistrées sur cet appareil.",
       "soundEffects": "Effets sonores",
       "musicVolume": "Volume de la musique",
-      "voiceVolume": "Voice Volume",
-      "npcVoices": "NPC Voices",
+      "voiceVolume": "Volume des voix",
+      "npcVoices": "Voix des PNJ",
       "music": "Musique",
       "keybindHelp": "Cliquez sur une case, puis appuyez sur une touche pour l'assigner. Échap annule. Chaque action possède une touche principale et une alternative.",
       "keybindCapture": "Appuyez sur une touche pour \"{action}\"...",
@@ -3192,37 +3192,37 @@ export const fr_CA: EnTranslations = {
         "name": "Gardien lié"
       },
       "brightwood_hare": {
-        "name": "Brightwood Hare"
+        "name": "Lièvre de Brightwood"
       },
       "glade_fox": {
-        "name": "Glade Fox"
+        "name": "Renard des clairières"
       },
       "spotted_fawn": {
-        "name": "Spotted Fawn"
+        "name": "Faon tacheté"
       },
       "meadow_crane": {
-        "name": "Meadow Crane"
+        "name": "Grue des prés"
       },
       "thornpelt_badger": {
-        "name": "Thornpelt Badger"
+        "name": "Blaireau Pelage-d'épines"
       },
       "dawnmane_doe": {
-        "name": "Dawnmane Doe"
+        "name": "Biche Crinaube"
       },
       "bramble_lynx": {
-        "name": "Bramble Lynx"
+        "name": "Lynx des ronces"
       },
       "brightwood_stag": {
-        "name": "Brightwood Stag"
+        "name": "Cerf de Brightwood"
       },
       "grovetusk_boar": {
-        "name": "Grovetusk Boar"
+        "name": "Sanglier Défense-des-bois"
       },
       "sunhide_bear": {
-        "name": "Sunhide Bear"
+        "name": "Ours Peau-de-soleil"
       },
       "brightwood_monarch": {
-        "name": "The Brightwood Monarch"
+        "name": "Le Monarque de Brightwood"
       },
       "elder_bristleback": {
         "name": "Ancien Bristleback"
@@ -3439,9 +3439,9 @@ export const fr_CA: EnTranslations = {
         "greeting": "Méfiez-vous des schistes instables, {className}. La montagne est agitée ces temps-ci, et je veux savoir pourquoi."
       },
       "ranger_elwyn": {
-        "name": "Ranger Elwyn",
-        "title": "Glade Warden",
-        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
+        "name": "Rôdeuse Elwyn",
+        "title": "Garde de la clairière",
+        "greeting": "Silence, {className} - la clairière est calme aujourd'hui, et j'entends bien qu'elle le reste."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -4183,131 +4183,131 @@ export const fr_CA: EnTranslations = {
         }
       },
       "q_brightwood_thinning": {
-        "title": "Thinning the Glade",
-        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
-        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "title": "Éclaircir la clairière",
+        "text": "La clairière de Brightwood est envahie, {playerName}. Les lynx des ronces se reproduisent plus vite que je ne peux les abattre, et les hardes piétinent le peu de pâture qu'il reste. Tuez 8 lynx des ronces et rapportez-moi 6 fourrures de clairière, que je juge de la santé du reste.",
+        "completion": "Bien. La harde est éclaircie et ces fourrures sont saines - la clairière tiendra une saison de plus.",
         "objectives": {
           "0": {
-            "label": "Bramble Lynx slain"
+            "label": "Lynx des ronces tué"
           },
           "1": {
-            "label": "Glade Pelt"
+            "label": "Fourrure de clairière"
           }
         }
       },
       "q_brightwood_monarch": {
-        "title": "The Brightwood Monarch",
-        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
-        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "title": "Le Monarque de Brightwood",
+        "text": "Il est une bête sur laquelle je ne décocherai pas une flèche seule : le Monarque de Brightwood, le grand cerf qui règne sur la clairière profonde. Il a vieilli et est devenu sauvage, encornant quiconque approche de son creux. Il est bien trop fort pour un seul chasseur - amenez un ami ou deux. Faites-le reposer en paix et rapportez-moi son cœur, {playerName}.",
+        "completion": "Ainsi le vieux roi est tombé. Une chose lourde à porter - mais une fin plus douce que celle que les loups lui auraient réservée. Portez cette couronne taillée dans ses andouillers avec respect, {playerName}.",
         "objectives": {
           "0": {
-            "label": "The Monarch's Heart"
+            "label": "Le Cœur du Monarque"
           }
         }
       },
       "q_ledger_first_duty": {
-        "title": "A Warden's First Duty",
-        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
-        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "title": "Le premier devoir d'un gardien",
+        "text": "Vous voulez gagner votre place à Eastbrook, {playerName} ? Alors commencez là où commence tout gardien. Les sangliers du pré ouest sont devenus gras et sans crainte, retournant les semailles du printemps. Abattez 8 sangliers sauvages et le registre retiendra votre nom.",
+        "completion": "Huit sangliers et les semailles sauvées. Bien. Chaque nom de ce registre a commencé là où vous vous tenez.",
         "objectives": {
           "0": {
-            "label": "Wild Boar culled"
+            "label": "Sanglier sauvage abattu"
           }
         }
       },
       "q_ledger_teeth": {
-        "title": "Teeth in the Dark",
-        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
-        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "title": "Des crocs dans l'obscurité",
+        "text": "Les meutes de loups ont appris les routes de patrouille - elles frappent au crépuscule, quand la lumière est ténue et qu'un voyageur isolé est une proie facile. Brisez-les, {playerName}. Tuez 10 loups des bois et que les meutes apprennent une nouvelle leçon.",
+        "completion": "Dix loups, et la route du crépuscule est de nouveau nôtre. Le registre se fait plus clément envers vous.",
         "objectives": {
           "0": {
-            "label": "Forest Wolf slain"
+            "label": "Loup des bois tué"
           }
         }
       },
       "q_ledger_reedwater": {
-        "title": "Reedwater Patrol",
-        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
-        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "title": "Patrouille des roselières",
+        "text": "Redbrook vous envoie ? Bien - ces vieux os ne peuvent plus patauger dans les bas-fonds. Les Aileron-de-boue se sont glissés à nouveau dans les roselières et ils sont plus hardis que jamais. Éclaircissez-les : 8 rôdeurs Aileron-de-boue, et prenez garde à l'eau profonde.",
+        "completion": "Voilà qui éloignera ces diables gargouillants de mes filets pour une saison. Dites au maréchal que le lac est de nouveau tranquille.",
         "objectives": {
           "0": {
-            "label": "Mudfin Skulker slain"
+            "label": "Rôdeur Aileron-de-boue tué"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "Silk and Venom",
-        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
-        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "title": "Soie et venin",
+        "text": "Le registre marque les bois de l'est comme terre de gardien, eux aussi. Les rôdeurs de Webwood filent une toile plus dense chaque semaine - une enfant s'est trop approchée le dernier jour de marché et nous l'avons libérée respirant à peine. Tuez 8 rôdeurs de Webwood avant qu'ils ne prennent le bois tout entier.",
+        "completion": "Huit fileuses de moins dans l'obscurité. Le bois respire mieux, et moi aussi.",
         "objectives": {
           "0": {
-            "label": "Webwood Lurker slain"
+            "label": "Rôdeur de Webwood tué"
           }
         }
       },
       "q_ledger_brood": {
-        "title": "The Spawning Dark",
-        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
-        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "title": "Les ténèbres qui essaiment",
+        "text": "Tuer les rôdeurs n'a fait que laisser la place à la couvée. Les jeunes Sableweb se déversent du nid profond, et cent petits crocs tuent un voyageur aussi sûrement qu'un seul énorme. Écrasez 8 jeunes Sableweb avant qu'ils ne grandissent.",
+        "completion": "Une sombre besogne, que de noyer un nid. Mais la clémence aujourd'hui, c'est une centaine d'enterrements épargnés plus tard. Le registre est en règle.",
         "objectives": {
           "0": {
-            "label": "Sableweb Hatchling crushed"
+            "label": "Jeune Sableweb écrasé"
           }
         }
       },
       "q_ledger_deepvermin": {
-        "title": "Vermin in the Deep",
-        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
-        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "title": "Vermine des profondeurs",
+        "text": "Le registre du maréchal dit que vous débarrassez des nuisibles. Eh bien, ma galerie en a les pires. Les rats des tunnels se reproduisent plus vite que mon équipe ne manie la pioche - abattez 12 Terrassiers Rat des tunnels et peut-être trouverons-nous le cuivre avant l'hiver.",
+        "completion": "Douze de ces vermines à tête de chandelle, disparues ! Bien, les gars - on redescend dans le puits. Vous avez mérité un bon mot auprès du maréchal, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Tunnel Rat Digger slain"
+            "label": "Terrassier Rat des tunnels tué"
           }
         }
       },
       "q_ledger_toll": {
-        "title": "The Highwaymen's Toll",
-        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
-        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "title": "Le péage des détrousseurs",
+        "text": "Les collines du sud-est sont devenues la route à péage d'un bandit - il dévalise quiconque est assez fou pour voyager léger. Le registre met un prix sur la tête de chacun d'eux. Rendez la justice d'Eastbrook à 8 bandits du Val.",
+        "completion": "Huit bandits qui ont payé leur dû. Le bruit court déjà que la route à péage a un nouveau gardien - et qu'il ne prend pas de pièces, il prend des têtes.",
         "objectives": {
           "0": {
-            "label": "Vale Bandit brought to justice"
+            "label": "Bandit du Val traduit en justice"
           }
         }
       },
       "q_ledger_vigil": {
-        "title": "Vigil at the Chapel",
-        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
-        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "title": "Veille à la chapelle",
+        "text": "Le maréchal m'envoie ses gardiens quand le trouble dépasse la portée des seules épées. Les morts de la chapelle ne veulent pas reposer en paix, et je suis trop vieux pour tenir la veille de nuit. Tenez-la pour moi, {playerName} - remettez 10 ossements agités au repos.",
+        "completion": "Dix âmes rendues à la terre, et une nuit de paix achetée pour la chapelle. La Lumière se souvient de telles veilles, même quand le registre les oublie.",
         "objectives": {
           "0": {
-            "label": "Restless Bones laid to rest"
+            "label": "Ossements agités remis au repos"
           }
         }
       },
       "q_ledger_great_boar": {
-        "title": "The Great Bristleback",
-        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
-        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "title": "Le grand Bristleback",
+        "text": "Il y a un vieux sanglier mâle dans les fourrés de l'ouest - l'Ancien Bristleback, une peau dure comme l'écorce et un tempérament à l'avenant. Il a encorné deux de mes écorcheurs. Abattez-le et éliminez 6 des sangliers sauvages moindres qui s'abritent derrière lui, et je ferai inscrire votre nom au plus haut du registre.",
+        "completion": "L'Ancien Bristleback, mort de votre main ! Cette peau à elle seule vaut une saison de commerce. Vous avez fait la fierté du registre, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Elder Bristleback slain"
+            "label": "Ancien Bristleback tué"
           },
           "1": {
-            "label": "Wild Boar of the herd slain"
+            "label": "Sanglier sauvage de la harde tué"
           }
         }
       },
       "q_ledger_outlaw_captain": {
-        "title": "The Outlaw Captain",
-        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
-        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "title": "Le capitaine hors-la-loi",
+        "text": "Le dernier nom du registre est celui que je veux rayé depuis un an : le capitaine Verlan, qui a fait basculer la moitié du Val dans le banditisme. Il se terre derrière ses lieutenants dans le camp du sud-est. Abattez 6 bandits du Val pour l'atteindre, puis achevez Verlan lui-même. N'y allez pas seul.",
+        "completion": "Le capitaine Verlan, mort, et son manteau apporté à ma porte. Le registre est clos, {playerName} - et le Val dira aux gardiens à venir le nom de celui qui l'a clos.",
         "objectives": {
           "0": {
-            "label": "Vale Bandit cut down"
+            "label": "Bandit du Val abattu"
           },
           "1": {
-            "label": "Captain Verlan slain"
+            "label": "Capitaine Verlan tué"
           }
         }
       },
@@ -4425,7 +4425,7 @@ export const fr_CA: EnTranslations = {
             "label": "Chapelle tombée"
           },
           "8": {
-            "label": "Brightwood Glade"
+            "label": "Clairière de Brightwood"
           }
         }
       },

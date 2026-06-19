@@ -151,35 +151,35 @@ export const ru_RU: EnTranslations = {
     }
   },
   "skinEvent": {
-    "title": "Cosmetic Cache",
-    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
-    "optionAria": "{rank} skin {index}",
-    "locked": "Locked",
-    "lockedHint": "Requires a {rank} roll",
-    "unavailable": "Coming soon",
-    "rolled": "You rolled {rank}",
-    "previewHint": "Drag to rotate",
-    "lockIn": "Lock In",
-    "close": "Close",
-    "unlocked": "Cosmetic unlocked!",
-    "unequip": "Unequip",
-    "previewOnly": "Preview only — full unlock coming soon",
+    "title": "Косметический тайник",
+    "subtitle": "Вы открыли награду уровня {rank} — выберите любой облик этого уровня или ниже.",
+    "optionAria": "Облик {rank} {index}",
+    "locked": "Заблокировано",
+    "lockedHint": "Требуется выпадение {rank}",
+    "unavailable": "Скоро",
+    "rolled": "Вам выпало: {rank}",
+    "previewHint": "Тяните, чтобы повернуть",
+    "lockIn": "Закрепить",
+    "close": "Закрыть",
+    "unlocked": "Косметика разблокирована!",
+    "unequip": "Снять",
+    "previewOnly": "Только предпросмотр — полная разблокировка скоро",
     "mech": {
-      "amber_crimson": "Amber Crimson",
-      "crimson_amber": "Crimson Amber",
-      "cyan_magenta": "Cyan Magenta",
-      "magenta_cyan": "Magenta Cyan",
-      "orange_steel": "Orange Steel",
-      "steel_orange": "Steel Orange",
-      "forest_pink": "Forest Pink",
-      "pink_forest": "Pink Forest",
-      "amethyst_silver": "Amethyst Silver",
-      "ivory_copper": "Ivory Copper",
-      "onyx_gold": "Onyx Gold",
-      "imperial_crimson": "Imperial Crimson",
-      "imperial_gold": "Imperial Gold",
-      "vanguard_azure": "Vanguard Azure",
-      "vanguard_chrome": "Vanguard Chrome"
+      "amber_crimson": "Янтарно-багровый",
+      "crimson_amber": "Багрово-янтарный",
+      "cyan_magenta": "Лазурно-пурпурный",
+      "magenta_cyan": "Пурпурно-лазурный",
+      "orange_steel": "Оранжево-стальной",
+      "steel_orange": "Стально-оранжевый",
+      "forest_pink": "Лесно-розовый",
+      "pink_forest": "Розово-лесной",
+      "amethyst_silver": "Аметистово-серебряный",
+      "ivory_copper": "Слоново-медный",
+      "onyx_gold": "Ониксово-золотой",
+      "imperial_crimson": "Имперский багровый",
+      "imperial_gold": "Имперский золотой",
+      "vanguard_azure": "Лазурный авангард",
+      "vanguard_chrome": "Хромированный авангард"
     }
   },
   "nav": {
@@ -342,169 +342,169 @@ export const ru_RU: EnTranslations = {
   },
   "fiesta": {
     "bracket": "Fiesta",
-    "enterQueue": "Join the Fiesta!",
-    "practice": "🎉 Practice vs Bots",
-    "practiceNote": "Offline practice: spawns 3 AI bots and queues you for a 2v2 Fiesta. Click again to stop.",
+    "enterQueue": "Присоединиться к Fiesta!",
+    "practice": "🎉 Тренировка с ботами",
+    "practiceNote": "Тренировка офлайн: создаёт 3 ботов с ИИ и записывает вас на Fiesta 2 на 2. Нажмите снова, чтобы остановить.",
     "banner": {
-      "wave": "WAVE {wave}/{total} — CHOOSE AN AUGMENT!",
-      "augmentGained": "Augment gained: {name}!",
+      "wave": "ВОЛНА {wave}/{total} — ВЫБЕРИТЕ УСИЛЕНИЕ!",
+      "augmentGained": "Получено усиление: {name}!",
       "powerup": "{name}!"
     },
     "log": {
-      "augmentGained": "You gain the {name} augment!",
-      "allyAugment": "{player} chose the {name} augment.",
-      "welcome": "Welcome to the 2v2 FIESTA! Score takedowns, grab augments, survive the ring!",
-      "go": "FIESTA — GO!",
-      "over": "FIESTA OVER! What a party. Returning to the world…",
-      "powerup": "{player} grabbed {name}!"
+      "augmentGained": "Вы получаете усиление {name}!",
+      "allyAugment": "{player} выбирает усиление {name}.",
+      "welcome": "Добро пожаловать на FIESTA 2 на 2! Зарабатывай убийства, хватай усиления, выживай в кольце!",
+      "go": "FIESTA — ВПЕРЁД!",
+      "over": "FIESTA ОКОНЧЕНА! Вот это праздник. Возвращаемся в мир…",
+      "powerup": "{player} хватает {name}!"
     },
     "category": {
-      "offense": "Offense",
-      "defense": "Defense",
-      "sustain": "Sustain",
-      "mobility": "Mobility",
-      "utility": "Utility"
+      "offense": "Атака",
+      "defense": "Защита",
+      "sustain": "Поддержка",
+      "mobility": "Подвижность",
+      "utility": "Польза"
     },
     "pending": {
-      "label": "Augment ready — pick it on your next death!"
+      "label": "Усиление готово — выберите его при следующей гибели!"
     },
     "powerup": {
       "pow_speed_demon": {
-        "name": "Speed Demon"
+        "name": "Демон скорости"
       },
       "pow_colossus": {
-        "name": "Colossus"
+        "name": "Колосс"
       },
       "pow_moon_boots": {
-        "name": "Moon Boots"
+        "name": "Лунные сапоги"
       },
       "pow_berserker": {
-        "name": "Berserker"
+        "name": "Берсерк"
       }
     },
     "queue": {
-      "join": "You join the 2v2 Fiesta queue. Get ready to PARTY…",
-      "leave": "You leave the 2v2 Fiesta queue.",
-      "teamLeave": "Your team leaves the 2v2 Fiesta queue."
+      "join": "Вы встаёте в очередь Fiesta 2 на 2. Готовьтесь ЗАЖИГАТЬ…",
+      "leave": "Вы покидаете очередь Fiesta 2 на 2.",
+      "teamLeave": "Ваша команда покидает очередь Fiesta 2 на 2."
     },
     "error": {
-      "leaderOnly": "Only the party leader may queue your team for {label}.",
-      "premadeTwo": "A {label} premade requires a party of exactly two.",
-      "noAugment": "You have no augment to choose right now.",
-      "notOnOffer": "That augment is not on offer."
+      "leaderOnly": "Только лидер группы может записать вашу команду на {label}.",
+      "premadeTwo": "Для готовой команды {label} нужна группа ровно из двух человек.",
+      "noAugment": "Сейчас вам нечего выбирать из усилений.",
+      "notOnOffer": "Это усиление не предлагается."
     },
     "score": {
       "title": "FIESTA",
-      "toWin": "First to {n}",
-      "aria": "Fiesta score: your team {mine}, enemy team {theirs}, first to {limit} wins."
+      "toWin": "До {n} побед",
+      "aria": "Счёт Fiesta: ваша команда {mine}, вражеская команда {theirs}, побеждает первый набравший {limit}."
     },
     "respawn": {
-      "title": "DOWNED!",
-      "sub": "Back in the fight in…"
+      "title": "ПОВЕРЖЕН!",
+      "sub": "Снова в бою через…"
     },
     "end": {
-      "win": "FIESTA WON! 🎉 What a party!",
-      "loss": "FIESTA LOST! Run it back!",
-      "draw": "FIESTA DRAW! Too close to call!"
+      "win": "FIESTA ВЫИГРАНА! 🎉 Вот это праздник!",
+      "loss": "FIESTA ПРОИГРАНА! Отыграйся!",
+      "draw": "НИЧЬЯ В FIESTA! Слишком близко, не разобрать!"
     },
     "augment": {
-      "choose": "Choose an Augment",
+      "choose": "Выберите усиление",
       "aug_brutality": {
-        "name": "Brutality",
-        "desc": "Your physical strikes hit 15% harder."
+        "name": "Жестокость",
+        "desc": "Твои физические удары бьют на 15% сильнее."
       },
       "aug_spellfire": {
-        "name": "Spellfire",
-        "desc": "Your spells deal 15% more damage."
+        "name": "Магический огонь",
+        "desc": "Твои заклинания наносят на 15% больше урона."
       },
       "aug_toughness": {
-        "name": "Toughness",
-        "desc": "Gain 12% maximum health."
+        "name": "Выносливость",
+        "desc": "Получи 12% к максимальному здоровью."
       },
       "aug_keen_eye": {
-        "name": "Keen Eye",
-        "desc": "Gain 8% critical strike chance."
+        "name": "Зоркий глаз",
+        "desc": "Получи 8% к шансу критического удара."
       },
       "aug_fleetfoot": {
-        "name": "Fleetfoot",
-        "desc": "Move 15% faster. Run them down — or run away."
+        "name": "Быстроногий",
+        "desc": "Передвигайся на 15% быстрее. Догони их — или убеги."
       },
       "aug_ironhide": {
-        "name": "Ironhide",
-        "desc": "Gain 250 armor and 5% dodge."
+        "name": "Железная шкура",
+        "desc": "Получи 250 брони и 5% уклонения."
       },
       "aug_mending": {
-        "name": "Mending",
-        "desc": "Your healing is 20% more potent."
+        "name": "Врачевание",
+        "desc": "Твоё исцеление на 20% действеннее."
       },
       "aug_warlords_might": {
-        "name": "Warlord's Might",
-        "desc": "+25% physical damage and +10% crit. Become the threat."
+        "name": "Мощь полководца",
+        "desc": "+25% к физическому урону и +10% к крит. удару. Стань угрозой."
       },
       "aug_arcane_surge": {
-        "name": "Arcane Surge",
-        "desc": "+25% spell damage and +10% crit. Light them up."
+        "name": "Чародейский всплеск",
+        "desc": "+25% к урону заклинаний и +10% к крит. удару. Подожги их."
       },
       "aug_vampirism": {
-        "name": "Vampirism",
-        "desc": "Heal for 15% of all damage you deal. Sustain through chaos."
+        "name": "Вампиризм",
+        "desc": "Исцеляйся на 15% от всего урона, что наносишь. Держись в хаосе."
       },
       "aug_juggernaut": {
-        "name": "Juggernaut",
-        "desc": "+20% maximum health and +400 armor. Immovable."
+        "name": "Джаггернаут",
+        "desc": "+20% к максимальному здоровью и +400 брони. Несокрушимый."
       },
       "aug_bloodhunter": {
-        "name": "Bloodhunter",
-        "desc": "+18% damage of all kinds and +12% move speed."
+        "name": "Кровавый охотник",
+        "desc": "+18% к урону любого вида и +12% к скорости передвижения."
       },
       "aug_lightwell": {
-        "name": "Lightwell",
-        "desc": "+30% healing and +15% maximum health. Anchor your team."
+        "name": "Колодец света",
+        "desc": "+30% к исцелению и +15% к максимальному здоровью. Стань опорой команды."
       },
       "aug_bounty_hunter": {
-        "name": "Bounty Hunter",
-        "desc": "Your kills are worth +1 bonus team point. Close the gap fast."
+        "name": "Охотник за головами",
+        "desc": "Твои убийства приносят +1 дополнительное очко команде. Сокращай дистанцию быстро."
       },
       "aug_apex_predator": {
-        "name": "Apex Predator",
-        "desc": "+40% physical damage, +15% crit, heal for 12% of damage dealt."
+        "name": "Высший хищник",
+        "desc": "+40% к физическому урону, +15% к крит. удару, исцеление на 12% от нанесённого урона."
       },
       "aug_archmage": {
-        "name": "Archmage",
-        "desc": "+45% spell damage, +15% crit, +15% maximum health."
+        "name": "Верховный маг",
+        "desc": "+45% к урону заклинаний, +15% к крит. удару, +15% к максимальному здоровью."
       },
       "aug_unkillable": {
-        "name": "Unkillable",
-        "desc": "+40% maximum health, +600 armor, heal for 10% of damage dealt."
+        "name": "Неубиваемый",
+        "desc": "+40% к максимальному здоровью, +600 брони, исцеление на 10% от нанесённого урона."
       },
       "aug_overdrive": {
-        "name": "Overdrive",
-        "desc": "+30% all damage, +20% crit, +20% move speed. FIESTA!"
+        "name": "Форсаж",
+        "desc": "+30% ко всему урону, +20% к крит. удару, +20% к скорости передвижения. ФИЕСТА!"
       },
       "aug_avatar": {
-        "name": "Avatar of War",
-        "desc": "+25% all damage, +25% maximum health, +300 armor. Walk it down."
+        "name": "Аватар войны",
+        "desc": "+25% ко всему урону, +25% к максимальному здоровью, +300 брони. Шагай напролом."
       },
       "aug_ascendant": {
-        "name": "Ascendant",
-        "desc": "+45% healing, +25% spell damage, +20% maximum health."
+        "name": "Возвышенный",
+        "desc": "+45% к исцелению, +25% к урону заклинаний, +20% к максимальному здоровью."
       }
     },
     "tier": {
-      "silver": "Silver",
-      "gold": "Gold",
-      "prismatic": "Prismatic"
+      "silver": "Серебро",
+      "gold": "Золото",
+      "prismatic": "Призма"
     },
     "word": {
-      "kill": "TAKEDOWN!",
-      "firstblood": "FIRST BLOOD!",
-      "doublekill": "DOUBLE KILL!",
-      "shutdown": "SHUTDOWN!",
-      "spree": "{n}× SPREE!",
-      "revived": "BACK IN!",
-      "ringclose": "RING CLOSING!",
-      "wave": "AUGMENTS!",
-      "dodge": "DODGE!"
+      "kill": "ПОВЕРЖЕН!",
+      "firstblood": "ПЕРВАЯ КРОВЬ!",
+      "doublekill": "ДВОЙНОЕ УБИЙСТВО!",
+      "shutdown": "ОБЛОМ!",
+      "spree": "{n}× СЕРИЯ!",
+      "revived": "СНОВА В СТРОЮ!",
+      "ringclose": "КОЛЬЦО СЖИМАЕТСЯ!",
+      "wave": "УСИЛЕНИЯ!",
+      "dodge": "УКЛОНЕНИЕ!"
     }
   },
   "seo": {
@@ -719,19 +719,19 @@ export const ru_RU: EnTranslations = {
       "combatLogTab": "Журнал боя",
       "chatPlaceholder": "Напишите сообщение... (/w имя шепот, /r ответ, /p группа, /gu гильдия, /o офицеры, /general общий)",
       "chatChannels": {
-        "add": "Add chat channel",
-        "addTitle": "Add channel",
-        "close": "Close {channel} tab",
-        "sendingTo": "Message {channel}",
+        "add": "Добавить канал чата",
+        "addTitle": "Добавить канал",
+        "close": "Закрыть вкладку {channel}",
+        "sendingTo": "Сообщение в {channel}",
         "names": {
-          "say": "Say",
-          "yell": "Yell",
-          "party": "Party",
-          "general": "General",
-          "world": "World",
-          "lfg": "LFG",
-          "guild": "Guild",
-          "officer": "Officer"
+          "say": "Сказать",
+          "yell": "Крик",
+          "party": "Группа",
+          "general": "Общий",
+          "world": "Мир",
+          "lfg": "Поиск группы",
+          "guild": "Гильдия",
+          "officer": "Офицеры"
         }
       },
       "communityLinks": "Ссылки сообщества",
@@ -811,8 +811,8 @@ export const ru_RU: EnTranslations = {
       "interfaceNote": "Эти настройки меняют только ваш собственный вид и сохраняются на этом устройстве.",
       "soundEffects": "Звуковые эффекты",
       "musicVolume": "Громкость музыки",
-      "voiceVolume": "Voice Volume",
-      "npcVoices": "NPC Voices",
+      "voiceVolume": "Громкость голоса",
+      "npcVoices": "Голоса НИП",
       "music": "Музыка",
       "keybindHelp": "Щелкните ячейку клавиши, затем нажмите клавишу для назначения. Esc отменяет. У каждого действия есть основная и запасная клавиша.",
       "keybindCapture": "Нажмите клавишу для \"{action}\"...",
@@ -3192,37 +3192,37 @@ export const ru_RU: EnTranslations = {
         "name": "Связанный страж"
       },
       "brightwood_hare": {
-        "name": "Brightwood Hare"
+        "name": "Заяц Брайтвуда"
       },
       "glade_fox": {
-        "name": "Glade Fox"
+        "name": "Лисица поляны"
       },
       "spotted_fawn": {
-        "name": "Spotted Fawn"
+        "name": "Пятнистый оленёнок"
       },
       "meadow_crane": {
-        "name": "Meadow Crane"
+        "name": "Луговой журавль"
       },
       "thornpelt_badger": {
-        "name": "Thornpelt Badger"
+        "name": "Терношкурый барсук"
       },
       "dawnmane_doe": {
-        "name": "Dawnmane Doe"
+        "name": "Зарегривая лань"
       },
       "bramble_lynx": {
-        "name": "Bramble Lynx"
+        "name": "Терновая рысь"
       },
       "brightwood_stag": {
-        "name": "Brightwood Stag"
+        "name": "Олень Брайтвуда"
       },
       "grovetusk_boar": {
-        "name": "Grovetusk Boar"
+        "name": "Рощеклыкий кабан"
       },
       "sunhide_bear": {
-        "name": "Sunhide Bear"
+        "name": "Солнцешкурый медведь"
       },
       "brightwood_monarch": {
-        "name": "The Brightwood Monarch"
+        "name": "Монарх Брайтвуда"
       },
       "elder_bristleback": {
         "name": "Старый Щетиноспин"
@@ -3439,9 +3439,9 @@ export const ru_RU: EnTranslations = {
         "greeting": "Осторожнее с рыхлым сланцем, {className}. Гора стала беспокойной, и я намерен узнать почему."
       },
       "ranger_elwyn": {
-        "name": "Ranger Elwyn",
-        "title": "Glade Warden",
-        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
+        "name": "Следопыт Элвин",
+        "title": "Хранитель поляны",
+        "greeting": "Тише, {className} - поляна сегодня спокойна, и я намерен такой её сохранить."
       },
       "tidewatcher_ondrel": {
         "name": "Ондрел Вейн",
@@ -4183,131 +4183,131 @@ export const ru_RU: EnTranslations = {
         }
       },
       "q_brightwood_thinning": {
-        "title": "Thinning the Glade",
-        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
-        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "title": "Поредение поляны",
+        "text": "Поляна Брайтвуда заполонена, {playerName}. Терновые рыси плодятся быстрее, чем я успеваю их выбивать, а стада вытаптывают то немногое, что осталось на выпас. Убей 8 терновых рысей и принеси мне 6 шкур поляны, чтобы я мог судить о здоровье остальных.",
+        "completion": "Хорошо. Стая поредела, а шкуры эти добротны - поляна продержится ещё сезон.",
         "objectives": {
           "0": {
-            "label": "Bramble Lynx slain"
+            "label": "Терновая рысь: убито"
           },
           "1": {
-            "label": "Glade Pelt"
+            "label": "Шкура поляны"
           }
         }
       },
       "q_brightwood_monarch": {
-        "title": "The Brightwood Monarch",
-        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
-        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "title": "Монарх Брайтвуда",
+        "text": "Есть один зверь, в которого я не пущу стрелу в одиночку: Монарх Брайтвуда, великий олень, что правит глубокой поляной. Он состарился и одичал, насмерть бодая всякого, кто приблизится к его логову. Одному охотнику его не одолеть - приведи друга или двух. Упокой его и принеси мне его сердце, {playerName}.",
+        "completion": "Значит, старый король пал. Тяжкое дело это - но конец добрее того, что уготовили бы ему волки. Носи эту корону из его рогов с уважением, {playerName}.",
         "objectives": {
           "0": {
-            "label": "The Monarch's Heart"
+            "label": "Сердце Монарха"
           }
         }
       },
       "q_ledger_first_duty": {
-        "title": "A Warden's First Duty",
-        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
-        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "title": "Первый долг стража",
+        "text": "Хочешь заслужить место в Иствруке, {playerName}? Тогда начни там, откуда начинает каждый страж. Кабаны на западном лугу разжирели и обнаглели, разрывая весенние посевы. Выбей 8 диких кабанов, и реестр запомнит твоё имя.",
+        "completion": "Восемь кабанов, и посевы спасены. Хорошо. Каждое имя в этом реестре начиналось ровно там, где ты сейчас стоишь.",
         "objectives": {
           "0": {
-            "label": "Wild Boar culled"
+            "label": "Дикий кабан: выбито"
           }
         }
       },
       "q_ledger_teeth": {
-        "title": "Teeth in the Dark",
-        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
-        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "title": "Зубы во тьме",
+        "text": "Волчьи стаи выучили маршруты дозоров - они нападают в сумерках, когда свет скуден, а одинокий путник - лёгкая добыча. Сломи их, {playerName}. Убей 10 лесных волков и преподай стаям новый урок.",
+        "completion": "Десять волков, и сумеречная дорога снова наша. Реестр становится к тебе добрее.",
         "objectives": {
           "0": {
-            "label": "Forest Wolf slain"
+            "label": "Лесной волк: убито"
           }
         }
       },
       "q_ledger_reedwater": {
-        "title": "Reedwater Patrol",
-        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
-        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "title": "Дозор на камышовой воде",
+        "text": "Тебя прислал Редбрук? Хорошо - эти старые кости уже не могут бродить по отмелям. Илогривые вернулись на камышовую воду и обнаглели как никогда. Проредь их: 8 илогривых скрытней, и берегись глубокой воды.",
+        "completion": "Этого хватит, чтобы булькающие черти не лезли в мои сети целый сезон. Передай Маршалу, что на озере снова тихо.",
         "objectives": {
           "0": {
-            "label": "Mudfin Skulker slain"
+            "label": "Илогривый скрытень: убито"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "Silk and Venom",
-        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
-        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "title": "Шёлк и яд",
+        "text": "Реестр отмечает восточные леса тоже как землю стража. Скрытни Вебвуда плетут паутину всё гуще каждую неделю - в последний базарный день дитя забрело слишком близко, и мы вырезали её едва живой. Убей 8 скрытней Вебвуда, пока они не захватили лес целиком.",
+        "completion": "Восемью прядильщиками меньше во тьме. Лес дышит легче, и я вместе с ним.",
         "objectives": {
           "0": {
-            "label": "Webwood Lurker slain"
+            "label": "Скрытень Вебвуда: убито"
           }
         }
       },
       "q_ledger_brood": {
-        "title": "The Spawning Dark",
-        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
-        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "title": "Нарождающаяся тьма",
+        "text": "Истребление скрытней лишь освободило место для выводка. Детеныши Сейблвеб выползают из глубокого гнезда, а сотня малых клыков убивает путника так же верно, как один большой. Раздави 8 детенышей Сейблвеб, пока они не выросли.",
+        "completion": "Мрачное дело - топить гнездо. Но милосердие сейчас - это сотня похорон, предотвращённых после. Реестр сведён.",
         "objectives": {
           "0": {
-            "label": "Sableweb Hatchling crushed"
+            "label": "Детеныш Сейблвеб: раздавлено"
           }
         }
       },
       "q_ledger_deepvermin": {
-        "title": "Vermin in the Deep",
-        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
-        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "title": "Вредители в глубине",
+        "text": "В реестре Маршала записано, что ты вычищаешь вредителей. Что ж, в моём забое они самые худшие. Туннельные крысы плодятся быстрее, чем моя бригада успевает махать киркой - положи 12 копающих туннельных крыс, и, может, мы доберёмся до меди до зимы.",
+        "completion": "Двенадцать свечеголовых тварей долой! Так, ребята - назад в шахту. Ты заслужил доброе слово у Маршала, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Tunnel Rat Digger slain"
+            "label": "Копающая туннельная крыса: убито"
           }
         }
       },
       "q_ledger_toll": {
-        "title": "The Highwaymen's Toll",
-        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
-        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "title": "Пошлина разбойников",
+        "text": "Юго-восточные холмы превратились в бандитскую заставу - они грабят всякого, кто настолько глуп, чтобы ехать налегке. В реестре назначена цена за каждого из них. Принеси истврукское правосудие 8 бандитам долины.",
+        "completion": "Восемь бандитов получили по заслугам. Уже разносится слух, что у дорожной пошлины новый хозяин - и берёт он не монетой, а головами.",
         "objectives": {
           "0": {
-            "label": "Vale Bandit brought to justice"
+            "label": "Бандит долины: предан правосудию"
           }
         }
       },
       "q_ledger_vigil": {
-        "title": "Vigil at the Chapel",
-        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
-        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "title": "Бдение у часовни",
+        "text": "Маршал шлёт ко мне своих стражей, когда беда уже не по плечу одним мечам. Мертвецы у часовни не желают лежать смирно, а я слишком стар, чтобы выстоять ночное бдение. Сослужи его за меня, {playerName} - упокой 10 беспокойных костей.",
+        "completion": "Десять душ возвращены земле, и ночь покоя куплена для часовни. Свет помнит такие бдения, даже когда реестр их забывает.",
         "objectives": {
           "0": {
-            "label": "Restless Bones laid to rest"
+            "label": "Беспокойные кости: упокоено"
           }
         }
       },
       "q_ledger_great_boar": {
-        "title": "The Great Bristleback",
-        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
-        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "title": "Великий Щетиноспин",
+        "text": "В западных чащах живёт старый кабан-вожак - Старый Щетиноспин, шкура как кора, а нрав ей под стать. Он забодал двух моих скорняков. Свали его и расчисти 6 диких кабанов помельче, что прячутся за ним, и я впишу твоё имя высоко в реестр.",
+        "completion": "Старый Щетиноспин, убитый твоей рукой! Одна эта шкура стоит сезона торговли. Ты заставил реестр гордиться, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Elder Bristleback slain"
+            "label": "Старый Щетиноспин: убито"
           },
           "1": {
-            "label": "Wild Boar of the herd slain"
+            "label": "Дикий кабан из стада: убито"
           }
         }
       },
       "q_ledger_outlaw_captain": {
-        "title": "The Outlaw Captain",
-        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
-        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "title": "Капитан разбойников",
+        "text": "Последнее имя в реестре - то, что я мечтал вычеркнуть целый год: капитан Верлан, обративший половину долины в разбой. Он укрывается за своими лейтенантами в юго-восточном лагере. Заруби 6 бандитов долины, чтобы добраться до него, а затем покончи с самим Верланом. Не ходи в одиночку.",
+        "completion": "Капитан Верлан мёртв, и его плащ доставлен к моей двери. Реестр закрыт, {playerName} - и долина расскажет будущим стражам имя того, кто его закрыл.",
         "objectives": {
           "0": {
-            "label": "Vale Bandit cut down"
+            "label": "Бандит долины: зарублено"
           },
           "1": {
-            "label": "Captain Verlan slain"
+            "label": "Капитан Верлан: убито"
           }
         }
       },
@@ -4425,7 +4425,7 @@ export const ru_RU: EnTranslations = {
             "label": "Павшая часовня"
           },
           "8": {
-            "label": "Brightwood Glade"
+            "label": "Поляна Брайтвуда"
           }
         }
       },

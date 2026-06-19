@@ -151,35 +151,35 @@ export const zh_TW: EnTranslations = {
     }
   },
   "skinEvent": {
-    "title": "Cosmetic Cache",
-    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
-    "optionAria": "{rank} skin {index}",
-    "locked": "Locked",
-    "lockedHint": "Requires a {rank} roll",
-    "unavailable": "Coming soon",
-    "rolled": "You rolled {rank}",
-    "previewHint": "Drag to rotate",
-    "lockIn": "Lock In",
-    "close": "Close",
-    "unlocked": "Cosmetic unlocked!",
-    "unequip": "Unequip",
-    "previewOnly": "Preview only — full unlock coming soon",
+    "title": "外觀寶箱",
+    "subtitle": "你解鎖了一份{rank}級獎勵 — 可任選不高於該等級的造型。",
+    "optionAria": "{rank}級造型{index}",
+    "locked": "已鎖住",
+    "lockedHint": "需要{rank}級的擲骰",
+    "unavailable": "即將推出",
+    "rolled": "你擲出了{rank}",
+    "previewHint": "拖曳以旋轉",
+    "lockIn": "鎖定",
+    "close": "關閉",
+    "unlocked": "外觀已解鎖！",
+    "unequip": "卸下",
+    "previewOnly": "僅供預覽 — 完整解鎖即將推出",
     "mech": {
-      "amber_crimson": "Amber Crimson",
-      "crimson_amber": "Crimson Amber",
-      "cyan_magenta": "Cyan Magenta",
-      "magenta_cyan": "Magenta Cyan",
-      "orange_steel": "Orange Steel",
-      "steel_orange": "Steel Orange",
-      "forest_pink": "Forest Pink",
-      "pink_forest": "Pink Forest",
-      "amethyst_silver": "Amethyst Silver",
-      "ivory_copper": "Ivory Copper",
-      "onyx_gold": "Onyx Gold",
-      "imperial_crimson": "Imperial Crimson",
-      "imperial_gold": "Imperial Gold",
-      "vanguard_azure": "Vanguard Azure",
-      "vanguard_chrome": "Vanguard Chrome"
+      "amber_crimson": "琥珀緋紅",
+      "crimson_amber": "緋紅琥珀",
+      "cyan_magenta": "青藍洋紅",
+      "magenta_cyan": "洋紅青藍",
+      "orange_steel": "橙橘鋼鐵",
+      "steel_orange": "鋼鐵橙橘",
+      "forest_pink": "森綠粉紅",
+      "pink_forest": "粉紅森綠",
+      "amethyst_silver": "紫晶銀白",
+      "ivory_copper": "象牙紫銅",
+      "onyx_gold": "黑曜金黃",
+      "imperial_crimson": "帝王緋紅",
+      "imperial_gold": "帝王金黃",
+      "vanguard_azure": "先鋒蔚藍",
+      "vanguard_chrome": "先鋒鉻銀"
     }
   },
   "nav": {
@@ -342,169 +342,169 @@ export const zh_TW: EnTranslations = {
   },
   "fiesta": {
     "bracket": "Fiesta",
-    "enterQueue": "Join the Fiesta!",
-    "practice": "🎉 Practice vs Bots",
-    "practiceNote": "Offline practice: spawns 3 AI bots and queues you for a 2v2 Fiesta. Click again to stop.",
+    "enterQueue": "加入Fiesta！",
+    "practice": "🎉 對戰機器人練習",
+    "practiceNote": "離線練習：生成3個AI機器人並將你排入2v2 Fiesta佇列。再次點擊即可停止。",
     "banner": {
-      "wave": "WAVE {wave}/{total} — CHOOSE AN AUGMENT!",
-      "augmentGained": "Augment gained: {name}!",
-      "powerup": "{name}!"
+      "wave": "第{wave}/{total}波 — 選擇一項強化！",
+      "augmentGained": "獲得強化：{name}！",
+      "powerup": "{name}！"
     },
     "log": {
-      "augmentGained": "You gain the {name} augment!",
-      "allyAugment": "{player} chose the {name} augment.",
-      "welcome": "Welcome to the 2v2 FIESTA! Score takedowns, grab augments, survive the ring!",
-      "go": "FIESTA — GO!",
-      "over": "FIESTA OVER! What a party. Returning to the world…",
-      "powerup": "{player} grabbed {name}!"
+      "augmentGained": "你獲得了{name}強化！",
+      "allyAugment": "{player}選擇了{name}強化。",
+      "welcome": "歡迎來到2v2 Fiesta！痛擊對手、奪取強化、在環場中存活！",
+      "go": "Fiesta — 開始！",
+      "over": "Fiesta結束！多麼盡興的派對。正在返回世界…",
+      "powerup": "{player}搶到了{name}！"
     },
     "category": {
-      "offense": "Offense",
-      "defense": "Defense",
-      "sustain": "Sustain",
-      "mobility": "Mobility",
-      "utility": "Utility"
+      "offense": "攻擊",
+      "defense": "防禦",
+      "sustain": "續戰",
+      "mobility": "機動",
+      "utility": "輔助"
     },
     "pending": {
-      "label": "Augment ready — pick it on your next death!"
+      "label": "強化已就緒 — 在你下次陣亡時挑選！"
     },
     "powerup": {
       "pow_speed_demon": {
-        "name": "Speed Demon"
+        "name": "極速狂魔"
       },
       "pow_colossus": {
-        "name": "Colossus"
+        "name": "巨像"
       },
       "pow_moon_boots": {
-        "name": "Moon Boots"
+        "name": "月靴"
       },
       "pow_berserker": {
-        "name": "Berserker"
+        "name": "狂戰士"
       }
     },
     "queue": {
-      "join": "You join the 2v2 Fiesta queue. Get ready to PARTY…",
-      "leave": "You leave the 2v2 Fiesta queue.",
-      "teamLeave": "Your team leaves the 2v2 Fiesta queue."
+      "join": "你加入了2v2 Fiesta佇列。準備好狂歡吧…",
+      "leave": "你離開了2v2 Fiesta佇列。",
+      "teamLeave": "你的隊伍離開了2v2 Fiesta佇列。"
     },
     "error": {
-      "leaderOnly": "Only the party leader may queue your team for {label}.",
-      "premadeTwo": "A {label} premade requires a party of exactly two.",
-      "noAugment": "You have no augment to choose right now.",
-      "notOnOffer": "That augment is not on offer."
+      "leaderOnly": "只有隊長能為你的隊伍排入{label}佇列。",
+      "premadeTwo": "{label}的預組隊伍恰好需要兩名成員。",
+      "noAugment": "你目前沒有可供選擇的強化。",
+      "notOnOffer": "那項強化未在提供之列。"
     },
     "score": {
       "title": "FIESTA",
-      "toWin": "First to {n}",
-      "aria": "Fiesta score: your team {mine}, enemy team {theirs}, first to {limit} wins."
+      "toWin": "先達{n}分",
+      "aria": "Fiesta比分：你的隊伍{mine}分，敵隊{theirs}分，先達{limit}分者獲勝。"
     },
     "respawn": {
-      "title": "DOWNED!",
-      "sub": "Back in the fight in…"
+      "title": "倒下了！",
+      "sub": "即將重返戰鬥…"
     },
     "end": {
-      "win": "FIESTA WON! 🎉 What a party!",
-      "loss": "FIESTA LOST! Run it back!",
-      "draw": "FIESTA DRAW! Too close to call!"
+      "win": "Fiesta獲勝！🎉 多麼盡興的派對！",
+      "loss": "Fiesta落敗！再來一場！",
+      "draw": "Fiesta平手！難分高下！"
     },
     "augment": {
-      "choose": "Choose an Augment",
+      "choose": "選擇一項強化",
       "aug_brutality": {
-        "name": "Brutality",
-        "desc": "Your physical strikes hit 15% harder."
+        "name": "殘暴",
+        "desc": "你的物理打擊造成的傷害提高15%。"
       },
       "aug_spellfire": {
-        "name": "Spellfire",
-        "desc": "Your spells deal 15% more damage."
+        "name": "法術烈焰",
+        "desc": "你的法術造成的傷害提高15%。"
       },
       "aug_toughness": {
-        "name": "Toughness",
-        "desc": "Gain 12% maximum health."
+        "name": "強韌",
+        "desc": "獲得12%最大生命值。"
       },
       "aug_keen_eye": {
-        "name": "Keen Eye",
-        "desc": "Gain 8% critical strike chance."
+        "name": "銳眼",
+        "desc": "獲得8%致命一擊機率。"
       },
       "aug_fleetfoot": {
-        "name": "Fleetfoot",
-        "desc": "Move 15% faster. Run them down — or run away."
+        "name": "迅捷之足",
+        "desc": "移動速度提高15%。把他們追下來 — 或是逃之夭夭。"
       },
       "aug_ironhide": {
-        "name": "Ironhide",
-        "desc": "Gain 250 armor and 5% dodge."
+        "name": "鐵皮",
+        "desc": "獲得250護甲以及5%閃躲。"
       },
       "aug_mending": {
-        "name": "Mending",
-        "desc": "Your healing is 20% more potent."
+        "name": "癒合",
+        "desc": "你的治療效果增強20%。"
       },
       "aug_warlords_might": {
-        "name": "Warlord's Might",
-        "desc": "+25% physical damage and +10% crit. Become the threat."
+        "name": "軍閥之力",
+        "desc": "+25%物理傷害以及+10%暴擊。成為那道威脅。"
       },
       "aug_arcane_surge": {
-        "name": "Arcane Surge",
-        "desc": "+25% spell damage and +10% crit. Light them up."
+        "name": "秘法湧動",
+        "desc": "+25%法術傷害以及+10%暴擊。把他們點燃吧。"
       },
       "aug_vampirism": {
-        "name": "Vampirism",
-        "desc": "Heal for 15% of all damage you deal. Sustain through chaos."
+        "name": "吸血",
+        "desc": "回復你所造成全部傷害的15%生命值。在混亂中持續續戰。"
       },
       "aug_juggernaut": {
-        "name": "Juggernaut",
-        "desc": "+20% maximum health and +400 armor. Immovable."
+        "name": "巨獸",
+        "desc": "+20%最大生命值以及+400護甲。堅不可摧。"
       },
       "aug_bloodhunter": {
-        "name": "Bloodhunter",
-        "desc": "+18% damage of all kinds and +12% move speed."
+        "name": "血獵者",
+        "desc": "各類傷害+18%以及+12%移動速度。"
       },
       "aug_lightwell": {
-        "name": "Lightwell",
-        "desc": "+30% healing and +15% maximum health. Anchor your team."
+        "name": "聖光之泉",
+        "desc": "+30%治療效果以及+15%最大生命值。撐起你的隊伍。"
       },
       "aug_bounty_hunter": {
-        "name": "Bounty Hunter",
-        "desc": "Your kills are worth +1 bonus team point. Close the gap fast."
+        "name": "賞金獵人",
+        "desc": "你的擊殺可為隊伍多得+1分。迅速縮短距離。"
       },
       "aug_apex_predator": {
-        "name": "Apex Predator",
-        "desc": "+40% physical damage, +15% crit, heal for 12% of damage dealt."
+        "name": "頂級掠食者",
+        "desc": "+40%物理傷害，+15%暴擊，並回復所造成傷害的12%生命值。"
       },
       "aug_archmage": {
-        "name": "Archmage",
-        "desc": "+45% spell damage, +15% crit, +15% maximum health."
+        "name": "大法師",
+        "desc": "+45%法術傷害，+15%暴擊，+15%最大生命值。"
       },
       "aug_unkillable": {
-        "name": "Unkillable",
-        "desc": "+40% maximum health, +600 armor, heal for 10% of damage dealt."
+        "name": "不死之身",
+        "desc": "+40%最大生命值，+600護甲，並回復所造成傷害的10%生命值。"
       },
       "aug_overdrive": {
-        "name": "Overdrive",
-        "desc": "+30% all damage, +20% crit, +20% move speed. FIESTA!"
+        "name": "全速運轉",
+        "desc": "+30%所有傷害，+20%暴擊，+20%移動速度。FIESTA！"
       },
       "aug_avatar": {
-        "name": "Avatar of War",
-        "desc": "+25% all damage, +25% maximum health, +300 armor. Walk it down."
+        "name": "戰爭化身",
+        "desc": "+25%所有傷害，+25%最大生命值，+300護甲。一路輾壓過去。"
       },
       "aug_ascendant": {
-        "name": "Ascendant",
-        "desc": "+45% healing, +25% spell damage, +20% maximum health."
+        "name": "登神者",
+        "desc": "+45%治療效果，+25%法術傷害，+20%最大生命值。"
       }
     },
     "tier": {
-      "silver": "Silver",
-      "gold": "Gold",
-      "prismatic": "Prismatic"
+      "silver": "白銀",
+      "gold": "黃金",
+      "prismatic": "虹彩"
     },
     "word": {
-      "kill": "TAKEDOWN!",
-      "firstblood": "FIRST BLOOD!",
-      "doublekill": "DOUBLE KILL!",
-      "shutdown": "SHUTDOWN!",
-      "spree": "{n}× SPREE!",
-      "revived": "BACK IN!",
-      "ringclose": "RING CLOSING!",
-      "wave": "AUGMENTS!",
-      "dodge": "DODGE!"
+      "kill": "擊倒！",
+      "firstblood": "首殺！",
+      "doublekill": "雙殺！",
+      "shutdown": "終結連殺！",
+      "spree": "{n}× 連殺！",
+      "revived": "重返戰場！",
+      "ringclose": "環場收縮！",
+      "wave": "強化登場！",
+      "dodge": "閃躲！"
     }
   },
   "seo": {
@@ -719,19 +719,19 @@ export const zh_TW: EnTranslations = {
       "combatLogTab": "戰鬥紀錄",
       "chatPlaceholder": "說點什麼...（/w 名字 密語，/r 回覆，/p 隊伍，/gu 公會，/o 幹部，/general 綜合）",
       "chatChannels": {
-        "add": "Add chat channel",
-        "addTitle": "Add channel",
-        "close": "Close {channel} tab",
-        "sendingTo": "Message {channel}",
+        "add": "新增聊天頻道",
+        "addTitle": "新增頻道",
+        "close": "關閉{channel}分頁",
+        "sendingTo": "傳訊至{channel}",
         "names": {
-          "say": "Say",
-          "yell": "Yell",
-          "party": "Party",
-          "general": "General",
-          "world": "World",
-          "lfg": "LFG",
-          "guild": "Guild",
-          "officer": "Officer"
+          "say": "說話",
+          "yell": "大喊",
+          "party": "隊伍",
+          "general": "綜合",
+          "world": "世界",
+          "lfg": "尋求組隊",
+          "guild": "公會",
+          "officer": "幹部"
         }
       },
       "communityLinks": "社群連結",
@@ -811,8 +811,8 @@ export const zh_TW: EnTranslations = {
       "interfaceNote": "這些選項只會改變你自己的畫面，並儲存在此裝置上。",
       "soundEffects": "音效",
       "musicVolume": "音樂音量",
-      "voiceVolume": "Voice Volume",
-      "npcVoices": "NPC Voices",
+      "voiceVolume": "語音音量",
+      "npcVoices": "NPC語音",
       "music": "音樂",
       "keybindHelp": "點擊一個按鍵格，然後按下要綁定的按鍵。Esc 取消。每個動作都有主鍵與備用鍵。",
       "keybindCapture": "按下用於「{action}」的按鍵...",
@@ -3192,37 +3192,37 @@ export const zh_TW: EnTranslations = {
         "name": "受縛守衛者"
       },
       "brightwood_hare": {
-        "name": "Brightwood Hare"
+        "name": "明木野兔"
       },
       "glade_fox": {
-        "name": "Glade Fox"
+        "name": "林間狐狸"
       },
       "spotted_fawn": {
-        "name": "Spotted Fawn"
+        "name": "斑點幼鹿"
       },
       "meadow_crane": {
-        "name": "Meadow Crane"
+        "name": "草甸鶴"
       },
       "thornpelt_badger": {
-        "name": "Thornpelt Badger"
+        "name": "棘毛獾"
       },
       "dawnmane_doe": {
-        "name": "Dawnmane Doe"
+        "name": "曦鬃母鹿"
       },
       "bramble_lynx": {
-        "name": "Bramble Lynx"
+        "name": "棘叢猞猁"
       },
       "brightwood_stag": {
-        "name": "Brightwood Stag"
+        "name": "明木雄鹿"
       },
       "grovetusk_boar": {
-        "name": "Grovetusk Boar"
+        "name": "林牙野豬"
       },
       "sunhide_bear": {
-        "name": "Sunhide Bear"
+        "name": "陽皮熊"
       },
       "brightwood_monarch": {
-        "name": "The Brightwood Monarch"
+        "name": "明木君主"
       },
       "elder_bristleback": {
         "name": "年長硬鬃"
@@ -3439,9 +3439,9 @@ export const zh_TW: EnTranslations = {
         "greeting": "小心鬆動的頁岩，{className}。這座山近來不安，我想知道原因。"
       },
       "ranger_elwyn": {
-        "name": "Ranger Elwyn",
-        "title": "Glade Warden",
-        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
+        "name": "巡林員艾爾溫",
+        "title": "林地守護",
+        "greeting": "安靜點，{className}，今天林地很平靜，我打算讓它一直這樣。"
       },
       "tidewatcher_ondrel": {
         "name": "翁德瑞爾·韋恩",
@@ -4183,131 +4183,131 @@ export const zh_TW: EnTranslations = {
         }
       },
       "q_brightwood_thinning": {
-        "title": "Thinning the Glade",
-        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
-        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "title": "疏減林地",
+        "text": "明木林地已經氾濫成災了，{playerName}。棘叢猞猁繁衍的速度比我能撲滅牠們的還快，獸群又踐踏了所剩無幾的牧草。擊殺8隻棘叢猞猁，並帶6張林間獸皮回來，好讓我判斷其餘獸群的健康狀況。",
+        "completion": "很好。獸群被疏減了，這些獸皮也很完好，林地還能再撐過一季。",
         "objectives": {
           "0": {
-            "label": "Bramble Lynx slain"
+            "label": "棘叢猞猁已擊殺"
           },
           "1": {
-            "label": "Glade Pelt"
+            "label": "林間獸皮"
           }
         }
       },
       "q_brightwood_monarch": {
-        "title": "The Brightwood Monarch",
-        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
-        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "title": "明木君主",
+        "text": "有一頭野獸我不會獨自向牠放箭：明木君主，那頭統御深邃林地的巨鹿。牠已經變得老邁而兇殘，凡是接近牠巢穴的都會被牠的鹿角刺穿。牠遠非一名獵人所能匹敵，帶上一兩位夥伴吧。讓牠安息，並把牠的心臟帶來給我，{playerName}。",
+        "completion": "這麼說，老王已經倒下了。沉重的一刻啊，但這比讓野狼了結牠要仁慈得多。帶著敬意戴上這頂以牠鹿角製成的王冠吧，{playerName}。",
         "objectives": {
           "0": {
-            "label": "The Monarch's Heart"
+            "label": "君主之心"
           }
         }
       },
       "q_ledger_first_duty": {
-        "title": "A Warden's First Duty",
-        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
-        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "title": "守護的首要職責",
+        "text": "你想在東溪掙口飯吃嗎，{playerName}？那就從每位守護都起步的地方開始。西邊草地的野豬已經養得肥滿又無所畏懼，把春耕的種植地都拱翻了。剔除8頭野豬，名冊就會記住你的名字。",
+        "completion": "八頭野豬，種植地也保住了。很好。這本名冊上的每個名字，都是從你現在站的地方開始的。",
         "objectives": {
           "0": {
-            "label": "Wild Boar culled"
+            "label": "野豬已剔除"
           }
         }
       },
       "q_ledger_teeth": {
-        "title": "Teeth in the Dark",
-        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
-        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "title": "黑暗中的尖牙",
+        "text": "狼群已經摸清了巡邏路線，牠們在黃昏時出擊，那時光線昏暗，落單的旅人就是易得的獵物。打散牠們，{playerName}。擊殺10頭森林狼，讓狼群學個新教訓。",
+        "completion": "十頭狼，黃昏的道路又屬於我們了。名冊對你更友善了。",
         "objectives": {
           "0": {
-            "label": "Forest Wolf slain"
+            "label": "森林狼已擊殺"
           }
         }
       },
       "q_ledger_reedwater": {
-        "title": "Reedwater Patrol",
-        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
-        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "title": "蘆葦水域巡邏",
+        "text": "赤溪派你來的？很好，我這把老骨頭再也涉不過淺灘了。泥鰭已經悄悄爬回了蘆葦水域，而且比以往更加大膽。把牠們疏減一下：8隻泥鰭潛伏者，還有，當心深水。",
+        "completion": "這樣能讓那些咕嚕作響的惡魔離我的漁網一季了。告訴元帥，湖面又恢復寧靜了。",
         "objectives": {
           "0": {
-            "label": "Mudfin Skulker slain"
+            "label": "泥鰭潛伏者已擊殺"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "Silk and Venom",
-        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
-        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "title": "蛛絲與毒液",
+        "text": "名冊也把東邊的樹林劃為守護的轄地。網木潛伏者每週都吐得更密了，上個趕集日有個孩子走得太近，我們把她割下來時她已經奄奄一息。趁牠們完全佔據樹林之前，擊殺8隻網木潛伏者。",
+        "completion": "黑暗中少了八隻吐絲的傢伙。樹林呼吸得更順暢了，我也是。",
         "objectives": {
           "0": {
-            "label": "Webwood Lurker slain"
+            "label": "網木潛伏者已擊殺"
           }
         }
       },
       "q_ledger_brood": {
-        "title": "The Spawning Dark",
-        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
-        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "title": "繁生的黑暗",
+        "text": "殺光潛伏者只是給蛛群騰出了地方。黑網幼蛛正從深處的巢穴中傾巢而出，上百根小尖牙殺死旅人的本事，和一根巨牙一樣有效。趁牠們長大之前，碾碎8隻黑網幼蛛。",
+        "completion": "淹掉一窩巢穴是樁殘酷的活兒。但此刻的慈悲能省去日後上百場葬禮。這筆帳結清了。",
         "objectives": {
           "0": {
-            "label": "Sableweb Hatchling crushed"
+            "label": "黑網幼蛛已碾碎"
           }
         }
       },
       "q_ledger_deepvermin": {
-        "title": "Vermin in the Deep",
-        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
-        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "title": "深處的害蟲",
+        "text": "元帥的名冊上說你會清除害蟲。嗯，我這座礦坑裡的是最糟的一批。地道鼠繁衍的速度比我的工班揮鎬還快，宰掉12隻地道鼠掘地者，也許我們入冬前就能挖到銅礦。",
+        "completion": "十二隻頂著燭光腦袋的害蟲，沒了！好，弟兄們，回礦井去。你替自己在元帥那兒掙了句好話，{playerName}。",
         "objectives": {
           "0": {
-            "label": "Tunnel Rat Digger slain"
+            "label": "地道鼠掘地者已擊殺"
           }
         }
       },
       "q_ledger_toll": {
-        "title": "The Highwaymen's Toll",
-        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
-        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "title": "攔路強盜的買路錢",
+        "text": "東南的丘陵成了盜匪的收費路，他們搶劫任何輕裝出行的傻子。名冊上對他們每一個都標了賞金。對8名谷地強盜執行東溪的正義。",
+        "completion": "八名盜匪受到了懲處。風聲已經傳開了，這條收費路有了新的看守者，而他不收銀錢，他取人頭。",
         "objectives": {
           "0": {
-            "label": "Vale Bandit brought to justice"
+            "label": "谷地強盜已伏法"
           }
         }
       },
       "q_ledger_vigil": {
-        "title": "Vigil at the Chapel",
-        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
-        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "title": "禮拜堂的守夜",
+        "text": "當麻煩超出刀劍所能及的範圍時，元帥便會把他的守護派來找我。禮拜堂的亡者不肯安歇，而我太老了，撐不住整夜的守夜。替我守住吧，{playerName}，讓10具不寧骸骨重歸安息。",
+        "completion": "十個亡魂歸於塵土，也為禮拜堂買來了一夜的安寧。聖光記得這樣的守夜，即便名冊已然遺忘。",
         "objectives": {
           "0": {
-            "label": "Restless Bones laid to rest"
+            "label": "不寧骸骨已安息"
           }
         }
       },
       "q_ledger_great_boar": {
-        "title": "The Great Bristleback",
-        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
-        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "title": "巨大的硬鬃",
+        "text": "西邊的灌木叢裡有一頭老公野豬，年長硬鬃，皮厚如樹皮，脾氣也一樣硬。牠已經頂傷了我兩名剝皮工。把牠放倒，再清掉躲在牠身後的6頭較弱的野豬，我就讓你的名字在名冊上高高掛起。",
+        "completion": "年長硬鬃，死於你手！光是那張獸皮就值上一季的交易。你讓名冊與有榮焉，{playerName}。",
         "objectives": {
           "0": {
-            "label": "Elder Bristleback slain"
+            "label": "年長硬鬃已擊殺"
           },
           "1": {
-            "label": "Wild Boar of the herd slain"
+            "label": "豬群的野豬已擊殺"
           }
         }
       },
       "q_ledger_outlaw_captain": {
-        "title": "The Outlaw Captain",
-        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
-        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "title": "亡命隊長",
+        "text": "名冊上最後一個名字，是我這一年來最想劃掉的：維爾蘭隊長，他把半個山谷的人都帶成了盜匪。他躲在東南營地裡，由他的副手們護著。砍倒6名谷地強盜殺到他面前，然後了結維爾蘭本人。別獨自前往。",
+        "completion": "維爾蘭隊長，死了，他的外套也送到了我門前。這筆帳結清了，{playerName}，而山谷會把結清它的那人之名，傳頌給後來的守護們。",
         "objectives": {
           "0": {
-            "label": "Vale Bandit cut down"
+            "label": "谷地強盜已砍倒"
           },
           "1": {
-            "label": "Captain Verlan slain"
+            "label": "維爾蘭隊長已擊殺"
           }
         }
       },
@@ -4425,7 +4425,7 @@ export const zh_TW: EnTranslations = {
             "label": "倒塌禮拜堂"
           },
           "8": {
-            "label": "Brightwood Glade"
+            "label": "明木林地"
           }
         }
       },

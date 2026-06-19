@@ -151,35 +151,35 @@ export const ko_KR: EnTranslations = {
     }
   },
   "skinEvent": {
-    "title": "Cosmetic Cache",
-    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
-    "optionAria": "{rank} skin {index}",
-    "locked": "Locked",
-    "lockedHint": "Requires a {rank} roll",
-    "unavailable": "Coming soon",
-    "rolled": "You rolled {rank}",
-    "previewHint": "Drag to rotate",
-    "lockIn": "Lock In",
-    "close": "Close",
-    "unlocked": "Cosmetic unlocked!",
-    "unequip": "Unequip",
-    "previewOnly": "Preview only — full unlock coming soon",
+    "title": "장식 상자",
+    "subtitle": "{rank} 등급 보상을 잠금 해제했습니다 — 그 이하의 스킨을 자유롭게 고르세요.",
+    "optionAria": "{rank} 등급 스킨 {index}",
+    "locked": "잠김",
+    "lockedHint": "{rank} 등급 뽑기가 필요합니다",
+    "unavailable": "곧 출시",
+    "rolled": "{rank} 등급이 나왔습니다",
+    "previewHint": "드래그하여 회전",
+    "lockIn": "확정",
+    "close": "닫기",
+    "unlocked": "장식이 잠금 해제되었습니다!",
+    "unequip": "장착 해제",
+    "previewOnly": "미리 보기만 가능 — 전체 잠금 해제 곧 출시",
     "mech": {
-      "amber_crimson": "Amber Crimson",
-      "crimson_amber": "Crimson Amber",
-      "cyan_magenta": "Cyan Magenta",
-      "magenta_cyan": "Magenta Cyan",
-      "orange_steel": "Orange Steel",
-      "steel_orange": "Steel Orange",
-      "forest_pink": "Forest Pink",
-      "pink_forest": "Pink Forest",
-      "amethyst_silver": "Amethyst Silver",
-      "ivory_copper": "Ivory Copper",
-      "onyx_gold": "Onyx Gold",
-      "imperial_crimson": "Imperial Crimson",
-      "imperial_gold": "Imperial Gold",
-      "vanguard_azure": "Vanguard Azure",
-      "vanguard_chrome": "Vanguard Chrome"
+      "amber_crimson": "호박빛 진홍",
+      "crimson_amber": "진홍 호박빛",
+      "cyan_magenta": "청록 자홍",
+      "magenta_cyan": "자홍 청록",
+      "orange_steel": "주황 강철",
+      "steel_orange": "강철 주황",
+      "forest_pink": "숲빛 분홍",
+      "pink_forest": "분홍 숲빛",
+      "amethyst_silver": "자수정 은빛",
+      "ivory_copper": "상아 구릿빛",
+      "onyx_gold": "흑요석 황금",
+      "imperial_crimson": "황실 진홍",
+      "imperial_gold": "황실 황금",
+      "vanguard_azure": "선봉대 하늘빛",
+      "vanguard_chrome": "선봉대 크롬"
     }
   },
   "nav": {
@@ -342,169 +342,169 @@ export const ko_KR: EnTranslations = {
   },
   "fiesta": {
     "bracket": "Fiesta",
-    "enterQueue": "Join the Fiesta!",
-    "practice": "🎉 Practice vs Bots",
-    "practiceNote": "Offline practice: spawns 3 AI bots and queues you for a 2v2 Fiesta. Click again to stop.",
+    "enterQueue": "Fiesta에 참가하세요!",
+    "practice": "🎉 봇 상대 연습",
+    "practiceNote": "오프라인 연습: AI 봇 3기를 소환하고 2대2 Fiesta 대기열에 등록합니다. 다시 클릭하면 중지합니다.",
     "banner": {
-      "wave": "WAVE {wave}/{total} — CHOOSE AN AUGMENT!",
-      "augmentGained": "Augment gained: {name}!",
+      "wave": "{wave}/{total} 물결 — 증강을 선택하세요!",
+      "augmentGained": "증강 획득: {name}!",
       "powerup": "{name}!"
     },
     "log": {
-      "augmentGained": "You gain the {name} augment!",
-      "allyAugment": "{player} chose the {name} augment.",
-      "welcome": "Welcome to the 2v2 FIESTA! Score takedowns, grab augments, survive the ring!",
-      "go": "FIESTA — GO!",
-      "over": "FIESTA OVER! What a party. Returning to the world…",
-      "powerup": "{player} grabbed {name}!"
+      "augmentGained": "{name} 증강을 획득했습니다!",
+      "allyAugment": "{player}님이 {name} 증강을 선택했습니다.",
+      "welcome": "2대2 Fiesta에 오신 것을 환영합니다! 처치 점수를 올리고, 증강을 차지하고, 원형 안에서 살아남으세요!",
+      "go": "Fiesta — 시작!",
+      "over": "Fiesta 종료! 멋진 축제였습니다. 세계로 돌아갑니다…",
+      "powerup": "{player}님이 {name}을(를) 차지했습니다!"
     },
     "category": {
-      "offense": "Offense",
-      "defense": "Defense",
-      "sustain": "Sustain",
-      "mobility": "Mobility",
-      "utility": "Utility"
+      "offense": "공격",
+      "defense": "방어",
+      "sustain": "지속력",
+      "mobility": "기동성",
+      "utility": "효용"
     },
     "pending": {
-      "label": "Augment ready — pick it on your next death!"
+      "label": "증강 준비 완료 — 다음 죽음에서 선택하세요!"
     },
     "powerup": {
       "pow_speed_demon": {
-        "name": "Speed Demon"
+        "name": "질주의 악마"
       },
       "pow_colossus": {
-        "name": "Colossus"
+        "name": "거인"
       },
       "pow_moon_boots": {
-        "name": "Moon Boots"
+        "name": "달빛 장화"
       },
       "pow_berserker": {
-        "name": "Berserker"
+        "name": "광전사"
       }
     },
     "queue": {
-      "join": "You join the 2v2 Fiesta queue. Get ready to PARTY…",
-      "leave": "You leave the 2v2 Fiesta queue.",
-      "teamLeave": "Your team leaves the 2v2 Fiesta queue."
+      "join": "2대2 Fiesta 대기열에 들어갑니다. 축제를 준비하세요…",
+      "leave": "2대2 Fiesta 대기열에서 나갑니다.",
+      "teamLeave": "당신의 팀이 2대2 Fiesta 대기열에서 나갑니다."
     },
     "error": {
-      "leaderOnly": "Only the party leader may queue your team for {label}.",
-      "premadeTwo": "A {label} premade requires a party of exactly two.",
-      "noAugment": "You have no augment to choose right now.",
-      "notOnOffer": "That augment is not on offer."
+      "leaderOnly": "{label} 대기열에는 파티장만 팀을 등록할 수 있습니다.",
+      "premadeTwo": "{label} 사전 구성 팀은 정확히 두 명의 파티가 필요합니다.",
+      "noAugment": "지금 선택할 수 있는 증강이 없습니다.",
+      "notOnOffer": "그 증강은 제공되지 않습니다."
     },
     "score": {
       "title": "FIESTA",
-      "toWin": "First to {n}",
-      "aria": "Fiesta score: your team {mine}, enemy team {theirs}, first to {limit} wins."
+      "toWin": "{n}점 선취",
+      "aria": "Fiesta 점수: 우리 팀 {mine}, 적 팀 {theirs}, 먼저 {limit}점에 도달하면 승리합니다."
     },
     "respawn": {
-      "title": "DOWNED!",
-      "sub": "Back in the fight in…"
+      "title": "쓰러짐!",
+      "sub": "전투 복귀까지…"
     },
     "end": {
-      "win": "FIESTA WON! 🎉 What a party!",
-      "loss": "FIESTA LOST! Run it back!",
-      "draw": "FIESTA DRAW! Too close to call!"
+      "win": "Fiesta 승리! 🎉 멋진 축제였습니다!",
+      "loss": "Fiesta 패배! 다시 도전하세요!",
+      "draw": "Fiesta 무승부! 우열을 가릴 수 없습니다!"
     },
     "augment": {
-      "choose": "Choose an Augment",
+      "choose": "증강 선택",
       "aug_brutality": {
-        "name": "Brutality",
-        "desc": "Your physical strikes hit 15% harder."
+        "name": "잔혹함",
+        "desc": "당신의 물리 공격이 15% 더 강하게 적중합니다."
       },
       "aug_spellfire": {
-        "name": "Spellfire",
-        "desc": "Your spells deal 15% more damage."
+        "name": "주문 화염",
+        "desc": "당신의 주문이 15% 더 많은 피해를 입힙니다."
       },
       "aug_toughness": {
-        "name": "Toughness",
-        "desc": "Gain 12% maximum health."
+        "name": "강인함",
+        "desc": "최대 생명력 12%를 얻습니다."
       },
       "aug_keen_eye": {
-        "name": "Keen Eye",
-        "desc": "Gain 8% critical strike chance."
+        "name": "예리한 눈",
+        "desc": "치명타 확률 8%를 얻습니다."
       },
       "aug_fleetfoot": {
-        "name": "Fleetfoot",
-        "desc": "Move 15% faster. Run them down — or run away."
+        "name": "날랜 발",
+        "desc": "이동 속도 15% 증가. 적을 쫓거나 — 도망치세요."
       },
       "aug_ironhide": {
-        "name": "Ironhide",
-        "desc": "Gain 250 armor and 5% dodge."
+        "name": "강철 가죽",
+        "desc": "방어도 250과 회피 5%를 얻습니다."
       },
       "aug_mending": {
-        "name": "Mending",
-        "desc": "Your healing is 20% more potent."
+        "name": "치유의 손길",
+        "desc": "당신의 치유가 20% 더 강력해집니다."
       },
       "aug_warlords_might": {
-        "name": "Warlord's Might",
-        "desc": "+25% physical damage and +10% crit. Become the threat."
+        "name": "장군의 위세",
+        "desc": "물리 피해 +25%, 치명타 +10%. 위협 그 자체가 되세요."
       },
       "aug_arcane_surge": {
-        "name": "Arcane Surge",
-        "desc": "+25% spell damage and +10% crit. Light them up."
+        "name": "비전의 쇄도",
+        "desc": "주문 피해 +25%, 치명타 +10%. 적을 불태우세요."
       },
       "aug_vampirism": {
-        "name": "Vampirism",
-        "desc": "Heal for 15% of all damage you deal. Sustain through chaos."
+        "name": "흡혈",
+        "desc": "입힌 모든 피해의 15%만큼 회복합니다. 혼돈 속에서 버티세요."
       },
       "aug_juggernaut": {
-        "name": "Juggernaut",
-        "desc": "+20% maximum health and +400 armor. Immovable."
+        "name": "파괴 전차",
+        "desc": "최대 생명력 +20%, 방어도 +400. 흔들리지 않습니다."
       },
       "aug_bloodhunter": {
-        "name": "Bloodhunter",
-        "desc": "+18% damage of all kinds and +12% move speed."
+        "name": "피의 사냥꾼",
+        "desc": "모든 종류의 피해 +18%, 이동 속도 +12%."
       },
       "aug_lightwell": {
-        "name": "Lightwell",
-        "desc": "+30% healing and +15% maximum health. Anchor your team."
+        "name": "빛의 샘",
+        "desc": "치유량 +30%, 최대 생명력 +15%. 팀의 중심이 되세요."
       },
       "aug_bounty_hunter": {
-        "name": "Bounty Hunter",
-        "desc": "Your kills are worth +1 bonus team point. Close the gap fast."
+        "name": "현상금 사냥꾼",
+        "desc": "당신의 처치는 추가 팀 점수 +1점의 가치가 있습니다. 빠르게 거리를 좁히세요."
       },
       "aug_apex_predator": {
-        "name": "Apex Predator",
-        "desc": "+40% physical damage, +15% crit, heal for 12% of damage dealt."
+        "name": "최상위 포식자",
+        "desc": "물리 피해 +40%, 치명타 +15%, 입힌 피해의 12%만큼 회복합니다."
       },
       "aug_archmage": {
-        "name": "Archmage",
-        "desc": "+45% spell damage, +15% crit, +15% maximum health."
+        "name": "대마법사",
+        "desc": "주문 피해 +45%, 치명타 +15%, 최대 생명력 +15%."
       },
       "aug_unkillable": {
-        "name": "Unkillable",
-        "desc": "+40% maximum health, +600 armor, heal for 10% of damage dealt."
+        "name": "불사신",
+        "desc": "최대 생명력 +40%, 방어도 +600, 입힌 피해의 10%만큼 회복합니다."
       },
       "aug_overdrive": {
-        "name": "Overdrive",
-        "desc": "+30% all damage, +20% crit, +20% move speed. FIESTA!"
+        "name": "과부하",
+        "desc": "모든 피해 +30%, 치명타 +20%, 이동 속도 +20%. Fiesta!"
       },
       "aug_avatar": {
-        "name": "Avatar of War",
-        "desc": "+25% all damage, +25% maximum health, +300 armor. Walk it down."
+        "name": "전쟁의 화신",
+        "desc": "모든 피해 +25%, 최대 생명력 +25%, 방어도 +300. 짓밟고 나아가세요."
       },
       "aug_ascendant": {
-        "name": "Ascendant",
-        "desc": "+45% healing, +25% spell damage, +20% maximum health."
+        "name": "초월자",
+        "desc": "치유량 +45%, 주문 피해 +25%, 최대 생명력 +20%."
       }
     },
     "tier": {
-      "silver": "Silver",
-      "gold": "Gold",
-      "prismatic": "Prismatic"
+      "silver": "은",
+      "gold": "금",
+      "prismatic": "프리즘"
     },
     "word": {
-      "kill": "TAKEDOWN!",
-      "firstblood": "FIRST BLOOD!",
-      "doublekill": "DOUBLE KILL!",
-      "shutdown": "SHUTDOWN!",
-      "spree": "{n}× SPREE!",
-      "revived": "BACK IN!",
-      "ringclose": "RING CLOSING!",
-      "wave": "AUGMENTS!",
-      "dodge": "DODGE!"
+      "kill": "처치!",
+      "firstblood": "첫 처치!",
+      "doublekill": "더블 킬!",
+      "shutdown": "연승 저지!",
+      "spree": "{n}연속 처치!",
+      "revived": "복귀!",
+      "ringclose": "원형 축소 중!",
+      "wave": "증강!",
+      "dodge": "회피!"
     }
   },
   "seo": {
@@ -719,19 +719,19 @@ export const ko_KR: EnTranslations = {
       "combatLogTab": "전투 기록",
       "chatPlaceholder": "메시지 입력... (/w 이름 귓속말, /r 답장, /p 파티, /gu 길드, /o 장교, /general 일반)",
       "chatChannels": {
-        "add": "Add chat channel",
-        "addTitle": "Add channel",
-        "close": "Close {channel} tab",
-        "sendingTo": "Message {channel}",
+        "add": "채팅 채널 추가",
+        "addTitle": "채널 추가",
+        "close": "{channel} 탭 닫기",
+        "sendingTo": "{channel} 채널에 보내기",
         "names": {
-          "say": "Say",
-          "yell": "Yell",
-          "party": "Party",
-          "general": "General",
-          "world": "World",
-          "lfg": "LFG",
-          "guild": "Guild",
-          "officer": "Officer"
+          "say": "말하기",
+          "yell": "외치기",
+          "party": "파티",
+          "general": "일반",
+          "world": "전체",
+          "lfg": "파티 찾기",
+          "guild": "길드",
+          "officer": "장교"
         }
       },
       "communityLinks": "커뮤니티 링크",
@@ -811,8 +811,8 @@ export const ko_KR: EnTranslations = {
       "interfaceNote": "이 옵션은 자신의 화면에만 적용되며 이 기기에 저장됩니다.",
       "soundEffects": "효과음",
       "musicVolume": "음악 음량",
-      "voiceVolume": "Voice Volume",
-      "npcVoices": "NPC Voices",
+      "voiceVolume": "음성 음량",
+      "npcVoices": "NPC 음성",
       "music": "음악",
       "keybindHelp": "키 칸을 클릭한 뒤 지정할 키를 누르세요. Esc는 취소입니다. 각 행동에는 기본 키와 보조 키가 있습니다.",
       "keybindCapture": "\"{action}\"에 사용할 키를 누르세요...",
@@ -3192,37 +3192,37 @@ export const ko_KR: EnTranslations = {
         "name": "속박된 수호자"
       },
       "brightwood_hare": {
-        "name": "Brightwood Hare"
+        "name": "브라이트우드 산토끼"
       },
       "glade_fox": {
-        "name": "Glade Fox"
+        "name": "숲속 여우"
       },
       "spotted_fawn": {
-        "name": "Spotted Fawn"
+        "name": "얼룩 새끼사슴"
       },
       "meadow_crane": {
-        "name": "Meadow Crane"
+        "name": "초원 두루미"
       },
       "thornpelt_badger": {
-        "name": "Thornpelt Badger"
+        "name": "가시털 오소리"
       },
       "dawnmane_doe": {
-        "name": "Dawnmane Doe"
+        "name": "여명갈기 암사슴"
       },
       "bramble_lynx": {
-        "name": "Bramble Lynx"
+        "name": "가시덤불 살쾡이"
       },
       "brightwood_stag": {
-        "name": "Brightwood Stag"
+        "name": "브라이트우드 수사슴"
       },
       "grovetusk_boar": {
-        "name": "Grovetusk Boar"
+        "name": "숲엄니 멧돼지"
       },
       "sunhide_bear": {
-        "name": "Sunhide Bear"
+        "name": "햇살가죽 곰"
       },
       "brightwood_monarch": {
-        "name": "The Brightwood Monarch"
+        "name": "브라이트우드의 군주"
       },
       "elder_bristleback": {
         "name": "늙은 뻣센등뼈"
@@ -3439,9 +3439,9 @@ export const ko_KR: EnTranslations = {
         "greeting": "느슨한 혈암을 조심하십시오, {className}. 산이 요즘 불안정해졌고, 나는 그 이유를 알고 싶습니다."
       },
       "ranger_elwyn": {
-        "name": "Ranger Elwyn",
-        "title": "Glade Warden",
-        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
+        "name": "순찰병 엘윈",
+        "title": "숲의 수호인",
+        "greeting": "조용히 하게, {className} - 오늘 숲은 고요하고, 나는 그대로 지킬 생각이네."
       },
       "tidewatcher_ondrel": {
         "name": "온드렐 베인",
@@ -4183,131 +4183,131 @@ export const ko_KR: EnTranslations = {
         }
       },
       "q_brightwood_thinning": {
-        "title": "Thinning the Glade",
-        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
-        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
+        "title": "숲 솎아내기",
+        "text": "브라이트우드 숲이 들끓고 있네, {playerName}. 가시덤불 살쾡이는 내가 솎아내는 속도보다 빨리 번식하고, 무리는 얼마 남지 않은 풀밭마저 짓밟고 있어. 가시덤불 살쾡이 8마리를 처치하고 숲속 가죽 6장을 가져오게. 나머지 무리의 상태를 가늠해 보겠네.",
+        "completion": "좋아. 무리가 솎아졌고 이 가죽들도 멀쩡하군 - 숲은 한 철 더 버틸 걸세.",
         "objectives": {
           "0": {
-            "label": "Bramble Lynx slain"
+            "label": "처치한 가시덤불 살쾡이"
           },
           "1": {
-            "label": "Glade Pelt"
+            "label": "숲속 가죽"
           }
         }
       },
       "q_brightwood_monarch": {
-        "title": "The Brightwood Monarch",
-        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
-        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
+        "title": "브라이트우드의 군주",
+        "text": "나 홀로 화살을 겨누지 않을 짐승이 하나 있네. 바로 브라이트우드의 군주, 깊은 숲을 다스리는 거대한 수사슴이지. 그는 늙고 사나워져, 자기 둥지에 다가오는 자는 누구든 뿔로 들이받는다네. 사냥꾼 하나로는 감당하기 벅차니 - 친구를 한둘 데려가게. 그를 잠재우고 심장을 가져오게, {playerName}.",
+        "completion": "그래, 늙은 왕이 쓰러졌군. 무거운 일이지 - 허나 늑대들의 손에 죽는 것보다는 자비로운 최후였네. 그의 뿔로 만든 이 왕관을 경의를 담아 쓰게, {playerName}.",
         "objectives": {
           "0": {
-            "label": "The Monarch's Heart"
+            "label": "군주의 심장"
           }
         }
       },
       "q_ledger_first_duty": {
-        "title": "A Warden's First Duty",
-        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The boars in the west meadow have grown fat and fearless, rooting up the spring planting. Cull 8 Wild Boar and the ledger will remember your name.",
-        "completion": "Eight boars and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "title": "수호인의 첫 임무",
+        "text": "이스트브룩에서 밥값을 하고 싶은가, {playerName}? 그렇다면 모든 수호인이 시작하는 곳에서 시작하게. 서쪽 풀밭의 멧돼지들이 살찌고 겁이 없어져, 봄 파종을 파헤치고 있네. 야생 멧돼지 8마리를 솎아내면 장부가 자네의 이름을 기억할 걸세.",
+        "completion": "멧돼지 여덟 마리에 파종도 지켜냈군. 좋아. 이 장부에 적힌 모든 이름이 바로 지금 자네가 선 자리에서 시작했다네.",
         "objectives": {
           "0": {
-            "label": "Wild Boar culled"
+            "label": "솎아낸 야생 멧돼지"
           }
         }
       },
       "q_ledger_teeth": {
-        "title": "Teeth in the Dark",
-        "text": "The wolf packs have learned the patrol routes - they hit at dusk, when the light is thin and a lone traveler is easy meat. Break them, {playerName}. Slay 10 Forest Wolves and let the packs learn a new lesson.",
-        "completion": "Ten wolves, and the dusk road is ours again. The ledger grows kinder to you.",
+        "title": "어둠 속의 송곳니",
+        "text": "늑대 무리가 순찰로를 익혀버렸네 - 빛이 옅어지고 외로운 여행자가 손쉬운 먹잇감이 되는 황혼에 들이닥치지. 그놈들을 무너뜨리게, {playerName}. 숲늑대 10마리를 처치해 무리가 새로운 교훈을 배우게 하게.",
+        "completion": "늑대 열 마리, 그리고 황혼의 길이 다시 우리 것이 됐군. 장부가 자네에게 더 너그러워지네.",
         "objectives": {
           "0": {
-            "label": "Forest Wolf slain"
+            "label": "처치한 숲늑대"
           }
         }
       },
       "q_ledger_reedwater": {
-        "title": "Reedwater Patrol",
-        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The Mudfin have crept back to the reedwater and they are bolder than ever. Thin them: 8 Mudfin Skulkers, and mind the deep water.",
-        "completion": "That will keep the gurgling devils off my nets for a season. Tell the Marshal the lake is quiet again.",
+        "title": "갈대 물가 순찰",
+        "text": "레드브룩이 자네를 보냈나? 좋아 - 이 늙은 뼈로는 더 이상 얕은 물을 헤칠 수가 없네. 진흙지느러미들이 갈대 물가로 다시 기어들었고, 그 어느 때보다 대담해졌어. 그놈들을 솎아내게. 진흙지느러미 잠복자 8마리를, 그리고 깊은 물을 조심하게.",
+        "completion": "그 정도면 한 철은 그 꾸르륵대는 악마들을 내 그물에서 떼어놓겠지. 보안관께 호수가 다시 잠잠해졌다고 전하게.",
         "objectives": {
           "0": {
-            "label": "Mudfin Skulker slain"
+            "label": "처치한 진흙지느러미 잠복자"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "Silk and Venom",
-        "text": "The ledger marks the eastern woods as warden ground too. The Webwood lurkers spin thicker every week - a child wandered too close last market day and we cut her free barely breathing. Kill 8 Webwood Lurkers before they take the wood entirely.",
-        "completion": "Eight fewer spinners in the dark. The wood breathes easier, and so do I.",
+        "title": "비단과 독",
+        "text": "장부는 동쪽 숲도 수호인의 땅으로 표시해 두었네. 그물나무 잠복자들이 매주 더 두껍게 거미줄을 친다네 - 지난 장날에 한 아이가 너무 가까이 갔다가, 우리가 겨우 숨이 붙은 채로 잘라냈어. 그놈들이 숲을 완전히 차지하기 전에 그물나무 잠복자 8마리를 처치하게.",
+        "completion": "어둠 속 거미가 여덟이 줄었군. 숲이 한결 편히 숨 쉬고, 나도 그렇다네.",
         "objectives": {
           "0": {
-            "label": "Webwood Lurker slain"
+            "label": "처치한 그물나무 잠복자"
           }
         }
       },
       "q_ledger_brood": {
-        "title": "The Spawning Dark",
-        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
-        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
+        "title": "들끓는 어둠",
+        "text": "잠복자들을 처치한 것이 오히려 새끼들에게 자리를 내주었군. 검은그물 새끼들이 깊은 둥지에서 쏟아져 나오고 있어, 작은 송곳니 백 개도 큰 것 하나만큼이나 여행자의 목숨을 앗아간다네. 검은그물 새끼 8마리를 다 자라기 전에 짓밟게.",
+        "completion": "둥지를 물에 잠기게 하는 건 참혹한 일이지. 허나 지금의 자비가 훗날 백 번의 장례를 면하게 하네. 장부는 청산되었네.",
         "objectives": {
           "0": {
-            "label": "Sableweb Hatchling crushed"
+            "label": "짓밟은 검은그물 새끼"
           }
         }
       },
       "q_ledger_deepvermin": {
-        "title": "Vermin in the Deep",
-        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
-        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
+        "title": "깊은 곳의 해충",
+        "text": "보안관 장부에 자네가 해충을 처리한다고 적혀 있더군. 그래, 내 갱도에 가장 지독한 놈들이 있네. 굴쥐들이 내 인부들이 곡괭이를 휘두르는 속도보다 빨리 번식하니 - 굴쥐 채굴꾼 12마리를 잡아주게. 그러면 겨울이 오기 전에 구리를 캘 수 있을지도 모르지.",
+        "completion": "촛불머리 해충 열두 마리가 사라졌군! 좋아, 친구들 - 갱도로 돌아가지. 자네가 보안관께 좋은 평을 얻게 했네, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Tunnel Rat Digger slain"
+            "label": "처치한 굴쥐 채굴꾼"
           }
         }
       },
       "q_ledger_toll": {
-        "title": "The Highwaymen's Toll",
-        "text": "The southeast hills have become a bandit's toll road - they rob anyone fool enough to travel light. The ledger has a price on every one of them. Bring Eastbrook justice to 8 Vale Bandits.",
-        "completion": "Eight bandits answered for. Word is already spreading that the toll road has a new keeper - and he does not take coin, he takes heads.",
+        "title": "노상강도의 통행세",
+        "text": "남동쪽 언덕이 산적들의 통행로가 되어버렸네 - 가볍게 길을 나서는 어리석은 자라면 누구든 털어가지. 장부에는 그들 하나하나에 현상금이 걸려 있네. 계곡 도적 8명에게 이스트브룩의 심판을 내리게.",
+        "completion": "산적 여덟 명이 죗값을 치렀군. 통행로에 새 파수꾼이 생겼다는 소문이 벌써 퍼지고 있네 - 그자는 돈이 아니라 목을 받는다는 소문이.",
         "objectives": {
           "0": {
-            "label": "Vale Bandit brought to justice"
+            "label": "심판받은 계곡 도적"
           }
         }
       },
       "q_ledger_vigil": {
-        "title": "Vigil at the Chapel",
-        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
-        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
+        "title": "예배당의 불침번",
+        "text": "보안관은 칼만으로는 닿지 못하는 곤경이 생기면 수호인들을 내게 보내네. 예배당의 죽은 자들이 가만히 누워 있지 않는데, 나는 너무 늙어 밤샘 불침번을 설 수가 없어. 나를 위해 그것을 지켜주게, {playerName} - 불안한 뼈무더기 10구를 다시 안식으로 돌려보내게.",
+        "completion": "열 영혼이 대지로 돌아가고, 예배당에 하룻밤의 평안을 사들였군. 장부가 잊더라도, 빛은 이런 불침번을 기억한다네.",
         "objectives": {
           "0": {
-            "label": "Restless Bones laid to rest"
+            "label": "잠재운 불안한 뼈무더기"
           }
         }
       },
       "q_ledger_great_boar": {
-        "title": "The Great Bristleback",
-        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
-        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
+        "title": "거대한 뻣센등뼈",
+        "text": "서쪽 덤불에 늙은 황소 멧돼지가 한 마리 있네 - 늙은 뻣센등뼈라고, 가죽은 나무껍질 같고 성질도 그에 못지않지. 내 가죽 사냥꾼 둘을 뿔로 들이받았네. 그놈을 쓰러뜨리고 그 뒤에 숨은 하급 야생 멧돼지 6마리를 처리하면, 자네 이름을 장부 높은 곳에 새겨주겠네.",
+        "completion": "늙은 뻣센등뼈가 자네 손에 죽다니! 그 가죽 하나만으로도 한 철 장사 거리는 되지. 자네는 장부를 자랑스럽게 했네, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Elder Bristleback slain"
+            "label": "처치한 늙은 뻣센등뼈"
           },
           "1": {
-            "label": "Wild Boar of the herd slain"
+            "label": "처치한 무리의 야생 멧돼지"
           }
         }
       },
       "q_ledger_outlaw_captain": {
-        "title": "The Outlaw Captain",
-        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
-        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
+        "title": "무법자 대장",
+        "text": "장부의 마지막 이름은 내가 일 년 동안 지우고 싶었던 자라네. 골짜기의 절반을 산적질로 몰아넣은 베를란 대장이지. 그는 남동쪽 야영지에서 부관들 뒤에 숨어 있네. 계곡 도적 6명을 베고 그에게 다가가, 베를란을 끝장내게. 혼자 가지는 말게.",
+        "completion": "베를란 대장이 죽고, 그의 외투가 내 문 앞에 당도했군. 장부가 닫혔네, {playerName} - 그리고 골짜기는 그것을 닫은 자의 이름을 앞으로 올 수호인들에게 전할 걸세.",
         "objectives": {
           "0": {
-            "label": "Vale Bandit cut down"
+            "label": "처치한 계곡 도적"
           },
           "1": {
-            "label": "Captain Verlan slain"
+            "label": "처치한 베를란 대장"
           }
         }
       },
@@ -4425,7 +4425,7 @@ export const ko_KR: EnTranslations = {
             "label": "무너진 예배당"
           },
           "8": {
-            "label": "Brightwood Glade"
+            "label": "브라이트우드 숲"
           }
         }
       },
