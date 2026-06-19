@@ -144,8 +144,8 @@ export const GFX_BUDGETS: Record<GfxTier, GfxRuntimeBudget> = {
     dropStep: 0.1,
     urgentDropStep: 0.15,
     recoverStep: 0.05,
-    recoverStableSeconds: 7,
-    cooldownSeconds: 1.35,
+    recoverStableSeconds: 3,
+    cooldownSeconds: 0.85,
   },
   ultra: {
     targetFps: 60,
@@ -158,8 +158,8 @@ export const GFX_BUDGETS: Record<GfxTier, GfxRuntimeBudget> = {
     dropStep: 0.08,
     urgentDropStep: 0.12,
     recoverStep: 0.04,
-    recoverStableSeconds: 9,
-    cooldownSeconds: 1.5,
+    recoverStableSeconds: 3,
+    cooldownSeconds: 0.85,
   },
 };
 
@@ -256,6 +256,7 @@ export function shouldUseAutoGovernor(hints?: Pick<GfxRuntimeHints, 'search' | '
   const override = params.get('governor') ?? params.get('autoGovernor');
   if (override === '1' || override === 'true' || override === 'on') return true;
   if (override === '0' || override === 'false' || override === 'off') return false;
+  if (forcedTierFromSearch(hints.search) === 'ultra') return false;
   return graphicsPresetLabel(hints.graphicsPreset) !== 'ultra';
 }
 

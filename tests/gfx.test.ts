@@ -65,8 +65,10 @@ describe('graphics tier resolution', () => {
     expect(shouldUseAutoGovernor({ search: '', graphicsPreset: 5 })).toBe(true);
     expect(shouldUseAutoGovernor({ search: '?gfx=low', graphicsPreset: 0 })).toBe(true);
     expect(shouldUseAutoGovernor({ search: '?gfx=high', graphicsPreset: 0 })).toBe(true);
+    expect(shouldUseAutoGovernor({ search: '?gfx=ultra', graphicsPreset: 0 })).toBe(false);
     expect(shouldUseAutoGovernor({ search: '?gfx=ultra', graphicsPreset: 4 })).toBe(false);
     expect(shouldUseAutoGovernor({ search: '?governor=0', graphicsPreset: 1 })).toBe(false);
+    expect(shouldUseAutoGovernor({ search: '?gfx=ultra&governor=1', graphicsPreset: 0 })).toBe(true);
   });
 
   it('keeps every quality tier bounded by explicit runtime budgets', () => {

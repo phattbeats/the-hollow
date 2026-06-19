@@ -122,6 +122,59 @@ describe('render budget governor', () => {
     expect(state.levels).toEqual({ grass: 0.9, foliage: 0.9, vfx: 1, lighting: 1, resolution: 1 });
   });
 
+  it('keeps high quality stable when fast frames carry premium foliage density', () => {
+    const governor = new RenderBudgetGovernor({ tier: 'high', budget: GFX_BUDGETS.high, enabled: true });
+    governor.reset(1, 0.7, 1);
+    governor.update(sample({ dt: 0.6 }));
+
+    const state = governor.update(sample({
+      frameMs: 8.4,
+      totalMs: 8.4,
+      submitMs: 2.8,
+      calls: 215,
+      triangles: 3_950_000,
+      grassVisibleTufts: 2_200,
+    }));
+
+    expect(state.mode).toBe('stable');
+    expect(state.levels).toEqual({ grass: 0.88, foliage: 0.9, vfx: 0.92, lighting: 0.9, resolution: 1 });
+  });
+
+  it('recovers high buckets toward their baselines before overfilling one bucket', () => {
+    const governor = new RenderBudgetGovernor({ tier: 'high', budget: GFX_BUDGETS.high, enabled: true });
+    governor.reset(1, 0.7, 1);
+    governor.update(sample({ dt: 0.6 }));
+
+    let state = governor.update(sample({
+      frameMs: 16,
+      totalMs: 16,
+      submitMs: 145,
+      calls: 215,
+      triangles: 3_950_000,
+      grassVisibleTufts: 2_200,
+    }));
+
+    expect(state.reason).toBe('submit-stall');
+    expect(state.levels.grass).toBeLessThan(0.88);
+
+    for (let i = 0; i < 40; i++) {
+      state = governor.update(sample({
+        dt: 1,
+        frameMs: 8.4,
+        totalMs: 8.4,
+        submitMs: 2.8,
+        calls: 215,
+        triangles: 3_950_000,
+        grassVisibleTufts: 2_200,
+      }));
+    }
+
+    expect(state.levels.grass).toBeGreaterThanOrEqual(0.88);
+    expect(state.levels.vfx).toBeGreaterThanOrEqual(0.92);
+    expect(state.levels.lighting).toBeGreaterThanOrEqual(0.9);
+    expect(state.levels.foliage).toBeGreaterThanOrEqual(0.9);
+  });
+
   it('holds a separate submit-stall budget even when steady draw pressure is low', () => {
     const governor = new RenderBudgetGovernor({ tier: 'low', budget: GFX_BUDGETS.low, enabled: true });
     governor.reset(1, 0.65, 1);

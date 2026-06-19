@@ -76,36 +76,36 @@ const CAPS_BY_TIER: Record<GfxTier, RenderBudgetCaps> = {
     minLightingLevel: 0.78,
   },
   medium: {
-    targetCalls: 260,
-    urgentCalls: 400,
-    targetTriangles: 850_000,
-    urgentTriangles: 1_350_000,
-    targetGrassTufts: 2_000,
-    urgentGrassTufts: 3_200,
+    targetCalls: 420,
+    urgentCalls: 620,
+    targetTriangles: 1_800_000,
+    urgentTriangles: 2_600_000,
+    targetGrassTufts: 3_800,
+    urgentGrassTufts: 5_500,
     minGrassLevel: 0.5,
     minFoliageLevel: 0.5,
     minVfxLevel: 0.58,
     minLightingLevel: 0.45,
   },
   high: {
-    targetCalls: 330,
-    urgentCalls: 500,
-    targetTriangles: 1_100_000,
-    urgentTriangles: 1_750_000,
-    targetGrassTufts: 2_850,
-    urgentGrassTufts: 4_500,
+    targetCalls: 620,
+    urgentCalls: 860,
+    targetTriangles: 4_500_000,
+    urgentTriangles: 6_500_000,
+    targetGrassTufts: 6_000,
+    urgentGrassTufts: 8_500,
     minGrassLevel: 0.6,
     minFoliageLevel: 0.6,
     minVfxLevel: 0.68,
     minLightingLevel: 0.62,
   },
   ultra: {
-    targetCalls: 460,
-    urgentCalls: 680,
-    targetTriangles: 1_800_000,
-    urgentTriangles: 2_700_000,
-    targetGrassTufts: 4_500,
-    urgentGrassTufts: 6_800,
+    targetCalls: 820,
+    urgentCalls: 1_100,
+    targetTriangles: 6_500_000,
+    urgentTriangles: 9_000_000,
+    targetGrassTufts: 8_000,
+    urgentGrassTufts: 11_000,
     minGrassLevel: 0.78,
     minFoliageLevel: 0.78,
     minVfxLevel: 0.86,
@@ -138,11 +138,12 @@ function copyCaps(caps: RenderBudgetCaps): RenderBudgetCaps {
 
 const SUBMIT_STALL_MS = 120;
 const SUBMIT_STALL_URGENT_MS = 250;
-const SUBMIT_STALL_HOLD_SECONDS = 18;
-const SUBMIT_STALL_URGENT_HOLD_SECONDS = 30;
+const SUBMIT_STALL_HOLD_SECONDS: Record<GfxTier, number> = { low: 18, medium: 14, high: 8, ultra: 6 };
+const SUBMIT_STALL_URGENT_HOLD_SECONDS: Record<GfxTier, number> = { low: 30, medium: 24, high: 14, ultra: 12 };
 const SUBMIT_STALL_RECOVERY_CEILING_MS = 42;
 
 export class RenderBudgetGovernor {
+  private readonly tier: GfxTier;
   private readonly budget: GfxRuntimeBudget;
   private readonly enabled: boolean;
   private readonly caps: RenderBudgetCaps;
@@ -161,6 +162,7 @@ export class RenderBudgetGovernor {
   private levels: RenderBudgetLevels = { grass: 1, foliage: 1, vfx: 1, lighting: 1, resolution: 1 };
 
   constructor(options: RenderBudgetGovernorOptions) {
+    this.tier = options.tier;
     this.budget = options.budget;
     this.enabled = options.enabled;
     this.caps = CAPS_BY_TIER[options.tier];
@@ -263,7 +265,9 @@ export class RenderBudgetGovernor {
       this.lastSubmitStallMs = rawSubmitMs;
       this.stallHoldSeconds = Math.max(
         this.stallHoldSeconds,
-        rawSubmitMs >= SUBMIT_STALL_URGENT_MS ? SUBMIT_STALL_URGENT_HOLD_SECONDS : SUBMIT_STALL_HOLD_SECONDS,
+        rawSubmitMs >= SUBMIT_STALL_URGENT_MS
+          ? SUBMIT_STALL_URGENT_HOLD_SECONDS[this.tier]
+          : SUBMIT_STALL_HOLD_SECONDS[this.tier],
       );
     } else if (this.stallHoldSeconds <= 0 && this.recentSubmitStalls > 0) {
       this.recentSubmitStalls = Math.max(0, this.recentSubmitStalls - sample.dt / 12);
@@ -402,6 +406,10 @@ export class RenderBudgetGovernor {
   }
 
   private recover(maxRenderScale: number): boolean {
+    if (this.raiseLevel('grass', this.bands.grass.baseline, 0.08)) return true;
+    if (this.raiseLevel('lighting', this.bands.lighting.baseline, 0.08)) return true;
+    if (this.raiseLevel('vfx', this.bands.vfx.baseline, 0.08)) return true;
+    if (this.raiseLevel('foliage', this.bands.foliage.baseline, 0.08)) return true;
     if (this.raiseLevel('foliage', this.bands.foliage.max, 0.08)) return true;
     if (this.raiseLevel('vfx', this.bands.vfx.max, 0.08)) return true;
     if (this.raiseLevel('grass', this.bands.grass.max, 0.06)) return true;
