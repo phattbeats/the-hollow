@@ -58,6 +58,12 @@ describe('client HTML shell', () => {
     expect(html).toContain('aria-label="Quest Log"');
   });
 
+  it('keeps the game menu free of duplicate and dev-only entries', () => {
+    const interfaceEntries = hudTs.match(/add\(t\('hud\.options\.interface'\), \(\) => goto\('interface'\)\);/g) ?? [];
+    expect(interfaceEntries).toHaveLength(1);
+    expect(hudTs).not.toContain('Skin Select (dev)');
+  });
+
   it('only displays mobile touch controls after the game is active', () => {
     expect(html).toContain('body.mobile-touch.game-active #mobile-controls');
     expect(html).not.toContain('body.mobile-touch #mobile-controls { position: absolute; inset: 0; display: block;');
