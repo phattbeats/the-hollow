@@ -694,6 +694,9 @@ describe("S3 scanner enumerates each hardened emit form (regression)", () => {
     "this.stopFollow(p, 'SYNTH_STOPFOLLOW');",                       // nr (stopFollow)
     "this.error(p.id, flag ? 'SYNTH_ERR_TERN_A' : 'SYNTH_ERR_TERN_B');", // ert
     "return 'Synth returns a sentence here.';",                      // rr
+    // nr anti-bleed: a single-arg stopFollow() must stop its first-arg scan at ')'
+    // (the [^,()\\n]+ class) and NOT span into a following call's literal.
+    "this.stopFollow(p); track(metric, 'BLEED_SENTINEL_should_not_capture');",
   ].join("\n");
   const synthServer = [
     "this.send({ type: 'error', text: 'SYNTH_SERVER_INLINE' });",                     // s1
@@ -724,6 +727,11 @@ describe("S3 scanner enumerates each hardened emit form (regression)", () => {
     const set = new Set(cands.map((c) => `${c.type}|${c.tmpl}`));
     const missing = expected.filter(([, type, tmpl]) => !set.has(`${type}|${tmpl}`));
     expect(missing.map(([label]) => label), "emit forms the scanner failed to enumerate").toEqual([]);
+    // Negative: the single-arg stopFollow's scan must NOT bleed past ')' into the
+    // following track(...) call's literal (would regress if the nr first-arg class
+    // ever stopped excluding ')').
+    const bled = cands.some((c) => c.tmpl === "BLEED_SENTINEL_should_not_capture");
+    expect(bled, "nr first-arg class must stop at ')' (no cross-call bleed)").toBe(false);
   });
 });
 
