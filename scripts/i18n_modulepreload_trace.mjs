@@ -79,8 +79,9 @@ async function measure(browser, { path, preseedLocale, expectLocale }) {
     if (r) r.finish = e.timestamp;
   });
 
-  // Fire navigation but DO NOT wait for `load` (under Slow-4G the full page with media never
-  // settles). Poll the captured requests until the target chunk finishes downloading.
+  // Kick off navigation (waitUntil:"load" with a catch - under Slow-4G the full page with media
+  // may never reach `load`, so we do NOT depend on it). The request-finish poll below, not the
+  // load event, is what actually gates the measurement: it waits until the target chunk downloads.
   page.goto(`${BASE}${path}`, { waitUntil: "load", timeout: 150000 }).catch(() => {});
   const finishedMain = () => { const m = [...reqs.values()].find((r) => MAIN_RE.test(r.url)); return m && m.finish != null; };
   const finishedLocale = () => [...reqs.values()].some((r) => LOCALE_RE.test(r.url) && r.finish != null);

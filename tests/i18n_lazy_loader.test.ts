@@ -9,7 +9,7 @@
 // and a retry possible.
 
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { t, setLanguage, ensureLocaleLoaded, isLocaleResident, en, es, de_DE, fr_FR } from "../src/ui/i18n";
+import { t, setLanguage, ensureLocaleLoaded, isLocaleResident, prefetchLocale, en, es, de_DE, fr_FR } from "../src/ui/i18n";
 import { LOCALE_LOADERS } from "../src/ui/i18n.resolved.generated/loaders";
 
 describe("lazy-locale loader: t() stays synchronous around ensureLocaleLoaded", () => {
@@ -114,5 +114,59 @@ describe("lazy-locale loader: t() stays synchronous around ensureLocaleLoaded", 
     expect(t("settings.languageLoading")).toBe(en.settings.languageLoading);
     expect(t("settings.languageLoadFailed")).toBe(en.settings.languageLoadFailed);
     expect(t("settings.languageLoadUnavailable")).toBe(en.settings.languageLoadUnavailable);
+  });
+});
+
+describe("prefetchLocale (Phase 4 runtime prefetch, mechanism 1 of locked decision 8)", () => {
+  afterEach(() => setLanguage("en"));
+
+  it("fires the loader exactly once for a non-en, non-resident locale", async () => {
+    setLanguage("en");
+    expect(isLocaleResident("ko_KR")).toBe(false);
+    const spy = vi.spyOn(LOCALE_LOADERS, "ko_KR");
+    try {
+      // ensureLocaleLoaded sets inflight (and invokes the thunk) synchronously, so a single
+      // fire-and-forget prefetch issues exactly one import; the await coalesces onto it.
+      prefetchLocale("ko_KR");
+      expect(spy).toHaveBeenCalledTimes(1);
+      await ensureLocaleLoaded("ko_KR");
+    } finally {
+      spy.mockRestore();
+    }
+    expect(isLocaleResident("ko_KR")).toBe(true);
+  });
+
+  it("is a no-op for English (preserves the zero-non-en-bytes guarantee)", () => {
+    setLanguage("en");
+    // English has no LOCALE_LOADERS entry; prefetchLocale must return early without firing.
+    expect(() => prefetchLocale("en")).not.toThrow();
+    expect(isLocaleResident("en")).toBe(true);
+  });
+
+  it("is a no-op for an already-resident locale (never re-fetches)", async () => {
+    await ensureLocaleLoaded("de_DE");
+    expect(isLocaleResident("de_DE")).toBe(true);
+    const spy = vi.spyOn(LOCALE_LOADERS, "de_DE");
+    try {
+      prefetchLocale("de_DE");
+      expect(spy).not.toHaveBeenCalled();
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("swallows a rejected prefetch (no unhandled rejection; a retry still succeeds)", async () => {
+    setLanguage("en");
+    expect(isLocaleResident("it_IT")).toBe(false);
+    const failSpy = vi.spyOn(LOCALE_LOADERS, "it_IT").mockRejectedValueOnce(new Error("simulated 404"));
+    // prefetchLocale returns void and swallows the rejection; if it did not, the rejected
+    // microtask would surface as an unhandledRejection and fail the run.
+    prefetchLocale("it_IT");
+    await new Promise((r) => setTimeout(r, 0));
+    failSpy.mockRestore();
+    expect(isLocaleResident("it_IT")).toBe(false);
+    // The failed load cleared inflight, so a fresh real load still succeeds.
+    await ensureLocaleLoaded("it_IT");
+    expect(isLocaleResident("it_IT")).toBe(true);
   });
 });
