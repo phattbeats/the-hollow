@@ -1,7 +1,10 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ClientWorld } from '../src/net/online';
 import { Sim } from '../src/sim/sim';
 import type { IWorld } from '../src/world_api';
+
+const characterAssetsSource = readFileSync(new URL('../src/render/characters/assets.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 
 describe('appearance skin selection', () => {
   it('updates offline player skin through the world contract', () => {
@@ -51,5 +54,14 @@ describe('appearance skin selection', () => {
     expect(client.player.skinCatalog).toBe('class');
     expect(client.inventory).toEqual([{ itemId: 'amber_crimson_armor_plate', count: 1 }]);
     expect(sent).toEqual([{ t: 'cmd', cmd: 'unequip_mech_chroma', chroma: 'amber_crimson' }]);
+  });
+
+  it('loads alternate skin atlases on low graphics so previews keep distinct colours', () => {
+    expect(characterAssetsSource).toContain('These load on every tier so skin');
+    expect(characterAssetsSource).toContain('for (const url of bootSkinUrls) registerPreload(loadSkinTexInto(url, skinTexByUrl));');
+    expect(characterAssetsSource).toContain('for (const url of SKINS.player_mech ?? []) if (url) jobs.push(loadSkinTexInto(url, skinTexByUrl));');
+    expect(characterAssetsSource).toContain('if (!GFX.standardMaterials) return skinsReady;');
+    expect(characterAssetsSource).not.toContain('Standard tier only — low tier aliases');
+    expect(characterAssetsSource).not.toContain('if (GFX.standardMaterials) {\n  // Boot sweep skips lazyPreload keys');
   });
 });
