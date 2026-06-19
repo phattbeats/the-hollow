@@ -22,6 +22,8 @@ export const VOICE_LINES: Record<string, string> =
   "greeting__tidewatcher_ondrel": "/audio/voice/tidewatcher_ondrel/greeting__tidewatcher_ondrel.mp3",
   "greeting__trader_wilkes": "/audio/voice/trader_wilkes/greeting__trader_wilkes.mp3",
   "greeting__warden_fenwick": "/audio/voice/warden_fenwick/greeting__warden_fenwick.mp3",
+  "quest__q_aldrics_fallen_star__complete": "/audio/voice/brother_aldric/quest__q_aldrics_fallen_star__complete.mp3",
+  "quest__q_aldrics_fallen_star__offer": "/audio/voice/brother_aldric/quest__q_aldrics_fallen_star__offer.mp3",
   "quest__q_bandits__complete": "/audio/voice/marshal_redbrook/quest__q_bandits__complete.mp3",
   "quest__q_bandits__offer": "/audio/voice/marshal_redbrook/quest__q_bandits__offer.mp3",
   "quest__q_bastion_door__complete": "/audio/voice/brother_aldric/quest__q_bastion_door__complete.mp3",

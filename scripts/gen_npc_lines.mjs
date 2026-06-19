@@ -29,6 +29,11 @@ const voiceDir = path.join(root, 'public/audio/voice');
 const manifestPath = path.join(root, 'src/game/voice_manifest.generated.ts');
 
 const force = process.argv.includes('--force');
+// Optional `--only <substr>`: synthesize only lines whose key contains <substr>
+// (e.g. a single new quest id). The manifest still rebuilds from every clip on
+// disk, so this scopes API calls without dropping existing lines.
+const onlyIdx = process.argv.indexOf('--only');
+const only = onlyIdx >= 0 ? process.argv[onlyIdx + 1] : null;
 
 try { process.loadEnvFile(); } catch { /* no .env — rely on the ambient env */ }
 const KEY = process.env.ELEVENLABS_API_KEY;
@@ -119,6 +124,7 @@ let chars = 0;
 const missingVoice = new Set();
 
 for (const line of lines) {
+  if (only && !line.key.includes(only)) continue;
   const voiceId = ids[line.voiceNpc];
   if (!voiceId) {
     missingVoice.add(line.voiceNpc);
