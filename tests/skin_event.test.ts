@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { Sim } from '../src/sim/sim';
 import {
-  EVENT_SKIN_TIERS, EVENT_SKIN_TOKEN_ID, MECH_CHROMAS, SKIN_COUNTS, SKIN_RANKS, rankAllowsSkin,
+  EVENT_SKIN_TIERS, EVENT_SKIN_TOKEN_ID, MECH_CHROMAS, SKIN_COUNTS, SKIN_RANK_ROLL_WEIGHTS, SKIN_RANKS, rankAllowsSkin, rollSkinRank,
 } from '../src/sim/content/skins';
 import { SKINS } from '../src/render/characters/manifest';
 import type { PlayerClass, SimEvent, SkinRank } from '../src/sim/types';
@@ -50,6 +50,16 @@ describe('cosmetic skin-select event', () => {
 
   it('is deterministic: the same seed rolls the same rank', () => {
     expect(rollRank(123).rank).toBe(rollRank(123).rank);
+  });
+
+  it('uses 70/25/5 rarity roll weights', () => {
+    expect(SKIN_RANK_ROLL_WEIGHTS).toEqual({ uncommon: 70, rare: 25, epic: 5 });
+    expect(rollSkinRank(0)).toBe('uncommon');
+    expect(rollSkinRank(0.69999)).toBe('uncommon');
+    expect(rollSkinRank(0.7)).toBe('rare');
+    expect(rollSkinRank(0.94999)).toBe('rare');
+    expect(rollSkinRank(0.95)).toBe('epic');
+    expect(rollSkinRank(0.99999)).toBe('epic');
   });
 
   it('locks in an in-rank skin: applies it, consumes the token, clears the pending rank', () => {

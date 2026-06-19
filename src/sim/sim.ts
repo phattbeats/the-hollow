@@ -38,8 +38,8 @@ import {
   ArenaFormat, ArenaStanding, ArenaCombatant, SkinCatalog, SkinRank,
 } from './types';
 import {
-  EVENT_SKIN_TOKEN_ID, MECH_CHROMAS, SKIN_RANKS, classHasSkin, mechChromaItemId, mechChromaSkinIndex,
-  rankAllowsMechChroma, rankAllowsSkin,
+  EVENT_SKIN_TOKEN_ID, MECH_CHROMAS, classHasSkin, mechChromaItemId, mechChromaSkinIndex,
+  rankAllowsMechChroma, rankAllowsSkin, rollSkinRank,
 } from './content/skins';
 
 const LEASH_DISTANCE = 45;
@@ -1059,9 +1059,7 @@ export class Sim {
    *  The token is consumed on claim (claimEventSkin), not here. */
   private openSkinSelect(meta: PlayerMeta, catalog: SkinCatalog, itemId: string): void {
     if (meta.pendingSkinRank === null) {
-      // Equal-weight roll through the deterministic Rng (vanilla determinism:
-      // never Math.random). int() is inclusive on both ends.
-      meta.pendingSkinRank = SKIN_RANKS[this.rng.int(0, SKIN_RANKS.length - 1)];
+      meta.pendingSkinRank = rollSkinRank(this.rng.next());
       meta.pendingSkinCatalog = catalog;
       meta.pendingSkinItemId = itemId;
     } else {
