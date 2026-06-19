@@ -34,6 +34,7 @@ import { activeCharacterAppearancePreview, characterAppearanceOptions } from './
 import { terrainHeight, WATER_LEVEL, roadDistance, generateDecorations } from '../sim/world';
 import type { Decoration } from '../sim/world';
 import { Meters } from './meters';
+import { TutorialOverlay } from './tutorial';
 import { audio } from '../game/audio';
 import { sfx } from '../game/sfx';
 import { voice } from '../game/voice';
@@ -540,6 +541,7 @@ export class Hud {
   private socialSuggest: { field: string; items: { name: string; cls: string; level: number }[]; index: number } = { field: '', items: [], index: -1 };
 
   private meters: Meters;
+  private tutorial = new TutorialOverlay();
   private lastPetBarSig = '';
   private pendingPetFeed = false;
   private petModeMenuOpen = false;
@@ -2198,6 +2200,7 @@ export class Hud {
     if (slowHud) this.lastHudSlowAt = now;
 
     this.meters.update();
+    this.tutorial.update(sim, this.renderer, this.keybinds);
     this.syncActiveHotbarForm();
     this.syncSlotMap(); // picks up newly learned abilities mid-session
 
