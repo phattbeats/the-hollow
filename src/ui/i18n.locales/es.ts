@@ -2295,7 +2295,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   "entities.quests.q_ledger_deepvermin.title": "Alimañas en lo profundo",
   "entities.quests.q_ledger_first_duty.completion": "Ocho madrigueras vaciadas y el suelo de la arboleda asentado. Bien. Cada nombre de este libro mayor empezó justo donde tú estás parado.",
   "entities.quests.q_ledger_first_duty.objectives.0.label": "Tejón pielespina sacrificado",
-  "entities.quests.q_ledger_first_duty.text": "¿Quieres ganarte el sustento en Eastbrook, {playerName}? Pues empieza donde empieza cada guardián. Los tejones pielespina han excavado sus madrigueras por todo el Claro de Brightwood, en el extremo norte pasada la Senda de lobos, y el suelo de la arboleda se está hundiendo en sus túneles. Sacrifica 8 Tejones pielespina y el libro mayor recordará tu nombre.",
+  "entities.quests.q_ledger_first_duty.text": "¿Quieres ganarte el sustento en Eastbrook, {playerName}? Pues empieza donde empieza cada guardián. Los tejones pielespina han excavado sus madrigueras a lo largo del Claro de Brightwood, en el extremo norte pasada la Senda de lobos, y el suelo de la arboleda se está hundiendo en sus túneles. Sacrifica 8 Tejones pielespina y el libro mayor recordará tu nombre.",
   "entities.quests.q_ledger_first_duty.title": "El primer deber de un guardián",
   "entities.quests.q_ledger_great_boar.completion": "¡El Viejo Bristleback, muerto por tu mano! Ese cuero por sí solo vale una estación de comercio. Has hecho que el libro mayor se enorgullezca, {playerName}.",
   "entities.quests.q_ledger_great_boar.objectives.0.label": "Viejo Bristleback abatido",
