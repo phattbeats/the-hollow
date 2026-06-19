@@ -14,6 +14,13 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const fr_FR: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.keybinds.emoteWheel": "Roue des emotes",
+  "hudChrome.keybinds.targetFriendly": "Cibler l'allié le plus proche",
+  "hudChrome.keybinds.targetFriendlyNext": "Changer de cible alliée",
+  "hudChrome.options.clickMoveLeft": "Clic gauche",
+  "hudChrome.options.clickMoveRight": "Clic droit",
+  "hudChrome.talents.defaultBuildName": "Configuration {n}",
+  "hudChrome.tips.joinChannels": "Conseil : tapez /join world ou /join lfg pour discuter avec les joueurs de tout le royaume.",
   "meta.builtOn": "Compilé le {date}",
   "realmTypes.normal": "Normal",
   "realmTypes.pvp": "JcJ",

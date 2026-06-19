@@ -154,7 +154,7 @@ export const ja_JP: EnTranslations = {
     "emotes": {
       "wave": "手を振る",
       "laugh": "大笑い",
-      "question": "やあ",
+      "question": "なに？",
       "cheer": "応援",
       "dance": "踊る",
       "point": "指さす",
@@ -219,6 +219,21 @@ export const ja_JP: EnTranslations = {
       "perSecondRow": "{total}（{rate}）",
       "minutesSeconds": "{m}分{s}秒",
       "seconds": "{s}秒"
+    },
+    "keybinds": {
+      "emoteWheel": "エモートホイール",
+      "targetFriendly": "最も近い味方をターゲット",
+      "targetFriendlyNext": "味方ターゲットを順に切り替え"
+    },
+    "options": {
+      "clickMoveLeft": "左クリック",
+      "clickMoveRight": "右クリック"
+    },
+    "talents": {
+      "defaultBuildName": "ビルド {n}"
+    },
+    "tips": {
+      "joinChannels": "ヒント：/join world または /join lfg と入力すると、レルム全体のプレイヤーとチャットできます。"
     }
   },
   "skinEvent": {

@@ -123,6 +123,30 @@ that gate.
 Full contributor + maintainer flow and the locked-terms glossary:
 `docs/i18n-scaling/translation-workflow.md`.
 
+**Where to put a new client key (catalog-domain gotcha).** The domains `hud`,
+`game`, `quests`, `items`, `abilities` carry tsc-ENFORCED inline per-locale blocks
+(via `merge.ts` cross-refs and `: typeof ...` consts), so adding a key to one of
+their `en` blocks red-fails `tsc` (TS2719) until you fill every inline non-en block
+too. For new HUD chrome, **add the key to `i18n.catalog/hud_chrome.ts` instead**
+(namespace `hudChrome.*`): it has no per-locale blocks, so an English-only add
+compiles and the translations live solely in the overlays. `shell.ts` is the other
+English-only domain. **Never add `as const` to a catalog-domain object** — it
+narrows the literal types and breaks the `en_XA` pseudo-locale.
+
+**Formatters, not hand-built numbers.** Every user-visible number/date/percent/
+coordinate/duration goes through `formatNumber` / `formatDateTime` / `formatMoney`
+(this dir's `i18n.ts`). To keep English byte-identical to a historical hand-rolled
+form, pass `useGrouping: false` + matching fraction-digit options (see `coords.ts`,
+`meters.ts`, `xp_bar.ts`, `clock.ts`); units that reorder per locale go in a `t()`
+key with the digits spliced as a `{placeholder}` (e.g. `hudChrome.meters.*`).
+
+**Three client-side matchers re-localize `src/sim`/`server` English** (these stay
+language-agnostic): the hud-local arms `localizeErrorText`/`localizeSystemText`/
+`localizeLootText` (→ `t()` keys), `sim_i18n.ts` (`localizeSimText`), and
+`server_i18n.ts` (`localizeServerText`). They run in that order; the S3 drift guard
+(`tests/localization_fixes.test.ts`) accepts recognition by any of the three. Dev-
+channel text (`console.*`, thrown errors) stays English and is NOT matched.
+
 ## icons.ts (~1510) — procedural, no image files
 Icons are composed on a canvas at runtime and cached as PNG data URLs — there are
 **no icon image assets**. Public API: `iconDataUrl(kind, id, size)` where `kind`

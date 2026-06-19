@@ -14,6 +14,13 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const de_DE: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.keybinds.emoteWheel": "Emote-Rad",
+  "hudChrome.keybinds.targetFriendly": "Nächsten Verbündeten anvisieren",
+  "hudChrome.keybinds.targetFriendlyNext": "Freundliches Ziel wechseln",
+  "hudChrome.options.clickMoveLeft": "Linksklick",
+  "hudChrome.options.clickMoveRight": "Rechtsklick",
+  "hudChrome.talents.defaultBuildName": "Build {n}",
+  "hudChrome.tips.joinChannels": "Tipp: Gebt /join world oder /join lfg ein, um mit Spielern im ganzen Realm zu chatten.",
   "meta.builtOn": "Erstellt am {date}",
   "realmTypes.normal": "Normal",
   "realmTypes.pvp": "PvP",
@@ -2489,8 +2496,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   "hudChrome.mobile.leaderboard": "Rangliste",
   "hudChrome.mobile.nameplates": "Namen",
   "hudChrome.mobile.toggleHaptics": "Haptik umschalten",
-  "hudChrome.rest.resting": "Ausgeruht",
-  "hudChrome.swing.ready": "Angriff",
+  "hudChrome.rest.resting": "Erholung",
+  "hudChrome.swing.ready": "Schwung",
   "hudChrome.swing.seconds": "{seconds}s",
   "hudChrome.widgets.clockTitle": "Ortszeit - klicken, um zwischen 12-/24-Stunden zu wechseln",
   "hudChrome.widgets.coordinates": "Koordinaten",

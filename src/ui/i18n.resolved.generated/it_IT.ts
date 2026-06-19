@@ -219,6 +219,21 @@ export const it_IT: EnTranslations = {
       "perSecondRow": "{total} ({rate})",
       "minutesSeconds": "{m}m {s}s",
       "seconds": "{s}s"
+    },
+    "keybinds": {
+      "emoteWheel": "Ruota emote",
+      "targetFriendly": "Bersaglia l'amico più vicino",
+      "targetFriendlyNext": "Scorri i bersagli amici"
+    },
+    "options": {
+      "clickMoveLeft": "Clic sinistro",
+      "clickMoveRight": "Clic destro"
+    },
+    "talents": {
+      "defaultBuildName": "Build {n}"
+    },
+    "tips": {
+      "joinChannels": "Suggerimento: digita /join world o /join lfg per chattare con i giocatori di tutto il reame."
     }
   },
   "skinEvent": {

@@ -154,7 +154,7 @@ export const ko_KR: EnTranslations = {
     "emotes": {
       "wave": "손인사",
       "laugh": "ㅋㅋ",
-      "question": "안녕?",
+      "question": "야?",
       "cheer": "환호",
       "dance": "춤",
       "point": "가리키기",
@@ -205,20 +205,35 @@ export const ko_KR: EnTranslations = {
       "minimapZoom": "미니맵 확대/축소"
     },
     "compass": {
-      "N": "N",
-      "NE": "NE",
-      "E": "E",
-      "SE": "SE",
-      "S": "S",
-      "SW": "SW",
-      "W": "W",
-      "NW": "NW"
+      "N": "북",
+      "NE": "북동",
+      "E": "동",
+      "SE": "남동",
+      "S": "남",
+      "SW": "남서",
+      "W": "서",
+      "NW": "북서"
     },
     "meters": {
       "perSecond": "{value}/초",
       "perSecondRow": "{total} ({rate})",
       "minutesSeconds": "{m}분 {s}초",
       "seconds": "{s}초"
+    },
+    "keybinds": {
+      "emoteWheel": "감정 표현 휠",
+      "targetFriendly": "가장 가까운 아군 대상 지정",
+      "targetFriendlyNext": "아군 대상 순환"
+    },
+    "options": {
+      "clickMoveLeft": "왼쪽 클릭",
+      "clickMoveRight": "오른쪽 클릭"
+    },
+    "talents": {
+      "defaultBuildName": "빌드 {n}"
+    },
+    "tips": {
+      "joinChannels": "팁: /join world 또는 /join lfg를 입력하면 서버 전역의 플레이어와 대화할 수 있습니다."
     }
   },
   "skinEvent": {

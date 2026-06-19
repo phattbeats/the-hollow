@@ -219,6 +219,21 @@ export const zh_CN: EnTranslations = {
       "perSecondRow": "{total}（{rate}）",
       "minutesSeconds": "{m}分{s}秒",
       "seconds": "{s}秒"
+    },
+    "keybinds": {
+      "emoteWheel": "表情轮盘",
+      "targetFriendly": "选中最近友方",
+      "targetFriendlyNext": "切换友方目标"
+    },
+    "options": {
+      "clickMoveLeft": "左键",
+      "clickMoveRight": "右键"
+    },
+    "talents": {
+      "defaultBuildName": "配置 {n}"
+    },
+    "tips": {
+      "joinChannels": "提示：输入 /join world 或 /join lfg，与全服玩家聊天。"
     }
   },
   "skinEvent": {

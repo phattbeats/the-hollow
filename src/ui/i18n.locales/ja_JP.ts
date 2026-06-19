@@ -14,6 +14,13 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const ja_JP: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.keybinds.emoteWheel": "エモートホイール",
+  "hudChrome.keybinds.targetFriendly": "最も近い味方をターゲット",
+  "hudChrome.keybinds.targetFriendlyNext": "味方ターゲットを順に切り替え",
+  "hudChrome.options.clickMoveLeft": "左クリック",
+  "hudChrome.options.clickMoveRight": "右クリック",
+  "hudChrome.talents.defaultBuildName": "ビルド {n}",
+  "hudChrome.tips.joinChannels": "ヒント：/join world または /join lfg と入力すると、レルム全体のプレイヤーとチャットできます。",
   "meta.builtOn": "ビルド日：{date}",
   "realmTypes.normal": "ノーマル",
   "realmTypes.pvp": "PvP",
@@ -2472,7 +2479,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "hudChrome.emotes.kneel": "ひざまずく",
   "hudChrome.emotes.laugh": "大笑い",
   "hudChrome.emotes.point": "指さす",
-  "hudChrome.emotes.question": "やあ",
+  "hudChrome.emotes.question": "なに？",
   "hudChrome.emotes.roar": "雄叫び",
   "hudChrome.emotes.salute": "敬礼",
   "hudChrome.emotes.wave": "手を振る",

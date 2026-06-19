@@ -167,6 +167,7 @@ const ADMIN_ERROR_KEYS: Record<string, string> = {
   "account not found": "error.accountNotFound",
   "moderation action failed": "error.moderationFailed",
   "force rename failed": "error.forceRenameFailed",
+  "chat mute failed": "error.chatMuteFailed",
   "moderation reason is required": "error.moderationReasonRequired",
   "suspension expiry must be in the future": "error.moderationExpiryFuture",
   "character not found": "error.characterNotFound",

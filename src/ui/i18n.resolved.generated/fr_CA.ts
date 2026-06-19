@@ -219,6 +219,21 @@ export const fr_CA: EnTranslations = {
       "perSecondRow": "{total} ({rate})",
       "minutesSeconds": "{m} min {s} s",
       "seconds": "{s} s"
+    },
+    "keybinds": {
+      "emoteWheel": "Roue des emotes",
+      "targetFriendly": "Cibler l'allié le plus proche",
+      "targetFriendlyNext": "Changer de cible alliée"
+    },
+    "options": {
+      "clickMoveLeft": "Clic gauche",
+      "clickMoveRight": "Clic droit"
+    },
+    "talents": {
+      "defaultBuildName": "Configuration {n}"
+    },
+    "tips": {
+      "joinChannels": "Conseil : tapez /join world ou /join lfg pour discuter avec les joueurs de tout le royaume."
     }
   },
   "skinEvent": {

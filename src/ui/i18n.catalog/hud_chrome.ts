@@ -87,4 +87,27 @@ export const hudChromeStrings = {
     minutesSeconds: "{m}m {s}s",
     seconds: "{s}s",
   },
+  // Key Bindings panel action labels that the in-file BIND_ACTION_LABEL_KEYS map
+  // (hud.ts) routes through t(). Kept here (not the constrained `hud` catalog
+  // domain) so they are an English-only add.
+  keybinds: {
+    emoteWheel: "Emote Wheel",
+    targetFriendly: "Target Nearest Friendly",
+    targetFriendlyNext: "Cycle Friendly Target",
+  },
+  // Click-to-move mouse-button toggle labels (Key Bindings panel). The button id
+  // 0/2 maps to these at the HUD render boundary.
+  options: {
+    clickMoveLeft: "Left Click",
+    clickMoveRight: "Right Click",
+  },
+  // Default name pre-filled into the Save-Build-As dialog, e.g. "Build 3".
+  talents: {
+    defaultBuildName: "Build {n}",
+  },
+  // One-off chat-log tips shown at HUD bootstrap. The /join command tokens stay
+  // literal (they are commands); the surrounding prose localizes.
+  tips: {
+    joinChannels: "Tip: type /join world or /join lfg to chat with players across the realm.",
+  },
 };

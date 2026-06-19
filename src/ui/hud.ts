@@ -41,7 +41,7 @@ import { music, musicZoneForLocation } from '../game/music';
 import { iconDataUrl, iconCanvas, QUALITY_COLOR, raidMarkerDataUrl, RAID_MARKER_NAMES } from './icons';
 import { svgIcon } from './ui_icons';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
-import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES, clickMoveButtonLabel, normalizeClickMoveButton } from '../game/settings';
+import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES, normalizeClickMoveButton } from '../game/settings';
 import { isPhoneTouchDevice } from '../game/mobile_controls';
 import { chatPlayerContextActions } from './player_context_menu';
 import {
@@ -219,6 +219,11 @@ const BIND_ACTION_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
   social: 'hud.keybinds.actions.social',
   arena: 'hud.keybinds.actions.arena',
   chat: 'hud.keybinds.actions.chat',
+  // Combat/social target + emote-wheel actions. English-only chrome keys (the
+  // `hud` catalog domain is tsc-locked to inline per-locale blocks).
+  emoteWheel: 'hudChrome.keybinds.emoteWheel',
+  targetFriendly: 'hudChrome.keybinds.targetFriendly',
+  targetFriendlyNext: 'hudChrome.keybinds.targetFriendlyNext',
   // Reuse the existing window/feature names so these labels localize everywhere
   // without duplicating strings (these two ids were previously absent from the
   // map and fell back to the raw English BIND_ACTIONS labels).
@@ -640,7 +645,7 @@ export class Hud {
     this.showBanner(startZoneName);
     this.log(t('hud.core.welcomeZone', { zone: startZoneName }), '#ffd100');
     this.logZoneWelcome(startZone);
-    this.log('Tip: type /join world or /join lfg to chat with players across the realm.', '#7fd4ff');
+    this.log(t('hudChrome.tips.joinChannels'), '#7fd4ff');
   }
 
   private setText(el: HTMLElement, text: string): void {
@@ -6354,7 +6359,7 @@ export class Hud {
     const promptNewBuild = (): void => {
       this.inputDialog({
         title: t('game.talents.saveBuildAs'), label: t('game.talents.namePrompt'),
-        value: `Build ${this.sim.loadouts.length + 1}`, okText: t('game.talents.save'),
+        value: t('hudChrome.talents.defaultBuildName', { n: this.sim.loadouts.length + 1 }), okText: t('game.talents.save'),
         selectText: true,
         onOk: saveStagedBuild,
       });
@@ -7450,7 +7455,7 @@ export class Hud {
     slider.setAttribute('aria-label', label);
     const val = document.createElement('span');
     val.className = 'set-val';
-    const fmt = opts?.fmt ?? ((v: number) => `${Math.round(v * 100)}%`);
+    const fmt = opts?.fmt ?? ((v: number) => formatNumber(v, { style: 'percent', maximumFractionDigits: 0 }));
     const readout = () => fmt(hooks.settings.get(key));
     val.textContent = readout();
     slider.addEventListener('input', () => {
@@ -7618,7 +7623,7 @@ export class Hud {
     // own rate, so phones get a dedicated sensitivity slider here.
     if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.touchLookSpeed'), 'touchLookSpeed');
     this.settingSlider(body, t('hud.options.brightness'), 'brightness');
-    this.settingSlider(body, t('hud.options.fieldOfView'), 'cameraFov', { fmt: (v) => `${Math.round(v)}°`, step: 1 });
+    this.settingSlider(body, t('hud.options.fieldOfView'), 'cameraFov', { fmt: (v) => `${formatNumber(Math.round(v), { maximumFractionDigits: 0 })}°`, step: 1 });
     this.settingSlider(body, t('hud.options.renderQuality'), 'renderScale');
     this.settingToggle(body, t('hud.options.fullscreen'), 'fullscreen');
     this.settingToggle(body, t('game.settings.showOverflowXp'), 'showOverflowXp');
@@ -7825,7 +7830,7 @@ export class Hud {
     toggle.type = 'button';
     toggle.className = 'btn kb-key kb-toggle kb-mouse-toggle';
     const sync = () => {
-      toggle.textContent = clickMoveButtonLabel(hooks.settings.get('clickToMoveButton'));
+      toggle.textContent = t(normalizeClickMoveButton(hooks.settings.get('clickToMoveButton')) === 2 ? 'hudChrome.options.clickMoveRight' : 'hudChrome.options.clickMoveLeft');
       toggle.setAttribute('aria-label', `${t('hud.options.clickMoveButton')}: ${toggle.textContent}`);
     };
     sync();

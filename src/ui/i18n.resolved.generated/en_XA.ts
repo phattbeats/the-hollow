@@ -219,6 +219,21 @@ export const en_XA: EnTranslations = {
       "perSecondRow": "[{total} ({rate})]",
       "minutesSeconds": "[{m}ɱ {s}š]",
       "seconds": "[{s}š]"
+    },
+    "keybinds": {
+      "emoteWheel": "[Éɱóţé Ŵĥééļ]",
+      "targetFriendly": "[Ţáŕĝéţ Ñéáŕéšţ Ƒŕíéñðļý]",
+      "targetFriendlyNext": "[Çýçļé Ƒŕíéñðļý Ţáŕĝéţ]"
+    },
+    "options": {
+      "clickMoveLeft": "[Ļéƒţ Çļíçķ]",
+      "clickMoveRight": "[Ŕíĝĥţ Çļíçķ]"
+    },
+    "talents": {
+      "defaultBuildName": "[Ɓúíļð {n}]"
+    },
+    "tips": {
+      "joinChannels": "[Ţíþ: ţýþé /ĵóíñ ŵóŕļð óŕ /ĵóíñ ļƒĝ ţó çĥáţ ŵíţĥ þļáýéŕš áçŕóšš ţĥé ŕéáļɱ.]"
     }
   },
   "skinEvent": {

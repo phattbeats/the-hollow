@@ -182,11 +182,11 @@ export const de_DE: EnTranslations = {
       "note": "Stellt jeder neuen Chatzeile die Uhrzeit ihres Eintreffens voran, z. B. [14:32]. Betrifft nur Nachrichten, die bei aktivierter Option empfangen werden."
     },
     "swing": {
-      "ready": "Angriff",
+      "ready": "Schwung",
       "seconds": "{seconds}s"
     },
     "rest": {
-      "resting": "Ausgeruht"
+      "resting": "Erholung"
     },
     "mobile": {
       "autorun": "Auto-Laufen",
@@ -219,6 +219,21 @@ export const de_DE: EnTranslations = {
       "perSecondRow": "{total} ({rate})",
       "minutesSeconds": "{m} Min. {s} Sek.",
       "seconds": "{s} Sek."
+    },
+    "keybinds": {
+      "emoteWheel": "Emote-Rad",
+      "targetFriendly": "Nächsten Verbündeten anvisieren",
+      "targetFriendlyNext": "Freundliches Ziel wechseln"
+    },
+    "options": {
+      "clickMoveLeft": "Linksklick",
+      "clickMoveRight": "Rechtsklick"
+    },
+    "talents": {
+      "defaultBuildName": "Build {n}"
+    },
+    "tips": {
+      "joinChannels": "Tipp: Gebt /join world oder /join lfg ein, um mit Spielern im ganzen Realm zu chatten."
     }
   },
   "skinEvent": {

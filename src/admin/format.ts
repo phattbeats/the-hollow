@@ -68,7 +68,11 @@ export function fmtCopper(copper: number): string {
 }
 
 export function fmtBytes(bytes: number): string {
-  if (bytes >= 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
-  if (bytes >= 1024 * 1024) return `${Math.round(bytes / (1024 * 1024))} MB`;
-  return `${Math.round(bytes / 1024)} KB`;
+  // Digits route through Intl (mirrors fmtDate's locale-aware formatting) and the
+  // unit/order comes from a t() key. useGrouping:false keeps the en output
+  // byte-identical to the historical toFixed(2)/Math.round form.
+  const num = (n: number, opts: Intl.NumberFormatOptions) => new Intl.NumberFormat(adminLanguage(), { useGrouping: false, ...opts }).format(n);
+  if (bytes >= 1024 * 1024 * 1024) return t('bytes.gigabytes', { n: num(bytes / (1024 * 1024 * 1024), { minimumFractionDigits: 2, maximumFractionDigits: 2 }) });
+  if (bytes >= 1024 * 1024) return t('bytes.megabytes', { n: num(Math.round(bytes / (1024 * 1024)), { maximumFractionDigits: 0 }) });
+  return t('bytes.kilobytes', { n: num(Math.round(bytes / 1024), { maximumFractionDigits: 0 }) });
 }

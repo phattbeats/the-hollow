@@ -154,7 +154,7 @@ export const es_ES: EnTranslations = {
     "emotes": {
       "wave": "Saludar",
       "laugh": "Reír",
-      "question": "¿Qué onda?",
+      "question": "¿Tío?",
       "cheer": "Vitorear",
       "dance": "Bailar",
       "point": "Señalar",
@@ -219,6 +219,21 @@ export const es_ES: EnTranslations = {
       "perSecondRow": "{total} ({rate})",
       "minutesSeconds": "{m} min {s} s",
       "seconds": "{s} s"
+    },
+    "keybinds": {
+      "emoteWheel": "Rueda de gestos",
+      "targetFriendly": "Objetivo amistoso más cercano",
+      "targetFriendlyNext": "Objetivo amistoso siguiente"
+    },
+    "options": {
+      "clickMoveLeft": "Clic izquierdo",
+      "clickMoveRight": "Clic derecho"
+    },
+    "talents": {
+      "defaultBuildName": "Configuración {n}"
+    },
+    "tips": {
+      "joinChannels": "Consejo: escribe /join world o /join lfg para chatear con jugadores de todas partes del reino."
     }
   },
   "skinEvent": {

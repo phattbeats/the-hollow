@@ -154,7 +154,7 @@ export const ru_RU: EnTranslations = {
     "emotes": {
       "wave": "Помахать",
       "laugh": "Смех",
-      "question": "Йо",
+      "question": "Чё?",
       "cheer": "Ликование",
       "dance": "Танец",
       "point": "Указать",
@@ -183,7 +183,7 @@ export const ru_RU: EnTranslations = {
     },
     "swing": {
       "ready": "Замах",
-      "seconds": "{seconds} с"
+      "seconds": "{seconds} сек."
     },
     "rest": {
       "resting": "Отдых"
@@ -217,8 +217,23 @@ export const ru_RU: EnTranslations = {
     "meters": {
       "perSecond": "{value}/с",
       "perSecondRow": "{total} ({rate})",
-      "minutesSeconds": "{m} мин {s} с",
-      "seconds": "{s} с"
+      "minutesSeconds": "{m} мин {s} сек.",
+      "seconds": "{s} сек."
+    },
+    "keybinds": {
+      "emoteWheel": "Колесо эмоций",
+      "targetFriendly": "Ближайший союзник",
+      "targetFriendlyNext": "Следующий союзник"
+    },
+    "options": {
+      "clickMoveLeft": "Левая кнопка",
+      "clickMoveRight": "Правая кнопка"
+    },
+    "talents": {
+      "defaultBuildName": "Билд {n}"
+    },
+    "tips": {
+      "joinChannels": "Совет: введите /join world или /join lfg, чтобы общаться с игроками по всему миру."
     }
   },
   "skinEvent": {

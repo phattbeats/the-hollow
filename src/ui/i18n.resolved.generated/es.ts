@@ -219,6 +219,21 @@ export const es: EnTranslations = {
       "perSecondRow": "{total} ({rate})",
       "minutesSeconds": "{m} min {s} s",
       "seconds": "{s} s"
+    },
+    "keybinds": {
+      "emoteWheel": "Rueda de gestos",
+      "targetFriendly": "Objetivo amistoso más cercano",
+      "targetFriendlyNext": "Objetivo amistoso siguiente"
+    },
+    "options": {
+      "clickMoveLeft": "Clic izquierdo",
+      "clickMoveRight": "Clic derecho"
+    },
+    "talents": {
+      "defaultBuildName": "Configuración {n}"
+    },
+    "tips": {
+      "joinChannels": "Consejo: escribe /join world o /join lfg para chatear con jugadores de todas partes del reino."
     }
   },
   "skinEvent": {
