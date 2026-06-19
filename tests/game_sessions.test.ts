@@ -5,6 +5,7 @@ const openPlaySession = vi.fn(async () => 1);
 const closePlaySession = vi.fn(async () => {});
 const markAccountQuestComplete = vi.fn(async (_accountId: number, questId: string) => ({ completedQuestIds: [questId], mechChromaIds: [] }));
 const grantAccountMechChroma = vi.fn(async (_accountId: number, chromaId: string) => ({ completedQuestIds: [], mechChromaIds: [chromaId] }));
+const revokeAccountMechChroma = vi.fn(async (_accountId: number, _chromaId: string) => ({ completedQuestIds: [], mechChromaIds: [] }));
 
 vi.mock('../server/db', () => ({
   pool: { query: vi.fn(async () => ({ rows: [] })) },
@@ -14,6 +15,7 @@ vi.mock('../server/db', () => ({
   insertChatLogs: vi.fn(async () => {}),
   markAccountQuestComplete: (...args: unknown[]) => markAccountQuestComplete(...(args as [number, string])),
   grantAccountMechChroma: (...args: unknown[]) => grantAccountMechChroma(...(args as [number, string])),
+  revokeAccountMechChroma: (...args: unknown[]) => revokeAccountMechChroma(...(args as [number, string])),
 }));
 
 import { GameServer, type ClientSession } from '../server/game';
@@ -72,19 +74,20 @@ describe('GameServer sessions', () => {
     expect(server.sim.meta(session.pid)?.questsDone.has('q_aldrics_fallen_star')).toBe(true);
   });
 
-  it('stores the selected mech chroma on the account after a successful claim', () => {
+  it('stores the mech chroma on the account after using the cosmetic item', () => {
     grantAccountMechChroma.mockClear();
     const server = new GameServer();
     const session = expectJoined(server.join(fakeWs(), 11, 101, 'Mechclaim', 'mage', null));
-    const choice = MECH_CHROMAS.findIndex((chroma) => chroma.rank === 'uncommon');
+    const choice = MECH_CHROMAS.findIndex((chroma) => chroma.id === 'amber_crimson');
     expect(choice).toBeGreaterThanOrEqual(0);
     server.sim.addItem('alien_armor_plate', 1, session.pid);
 
     server.handleMessage(session, JSON.stringify({ t: 'cmd', cmd: 'use', item: 'alien_armor_plate' }));
-    server.handleMessage(session, JSON.stringify({ t: 'cmd', cmd: 'claim_event_skin', skin: choice }));
 
     expect(grantAccountMechChroma).toHaveBeenCalledWith(11, MECH_CHROMAS[choice].id);
     expect(session.accountCosmetics.mechChromaIds).toContain(MECH_CHROMAS[choice].id);
+    expect(server.sim.countItem('alien_armor_plate', session.pid)).toBe(0);
+    expect(server.sim.entities.get(session.pid)?.skinCatalog).toBe('mech');
   });
 
   it('equips a live mech appearance only when the account owns the chroma', () => {
@@ -99,6 +102,26 @@ describe('GameServer sessions', () => {
 
     expect(server.sim.entities.get(allowed.pid)?.skinCatalog).toBe('mech');
     expect(server.sim.entities.get(blocked.pid)?.skinCatalog).not.toBe('mech');
+  });
+
+  it('unequips a mech chroma from every live character on the account and returns its item', () => {
+    revokeAccountMechChroma.mockClear();
+    const server = new GameServer();
+    const cosmetics = { completedQuestIds: [], mechChromaIds: ['amber_crimson'] };
+    const first = expectJoined(server.join(fakeWs(), 11, 101, 'Mechone', 'shaman', null, false, { accountCosmetics: cosmetics }));
+    const second = expectJoined(server.join(fakeWs(), 11, 102, 'Mechtwo', 'mage', null, false, { accountCosmetics: cosmetics }));
+
+    server.handleMessage(first, JSON.stringify({ t: 'cmd', cmd: 'change_skin', skin: 0, catalog: 'mech' }));
+    server.handleMessage(second, JSON.stringify({ t: 'cmd', cmd: 'change_skin', skin: 0, catalog: 'mech' }));
+    server.handleMessage(first, JSON.stringify({ t: 'cmd', cmd: 'unequip_mech_chroma', chroma: 'amber_crimson' }));
+
+    expect(revokeAccountMechChroma).toHaveBeenCalledWith(11, 'amber_crimson');
+    expect(first.accountCosmetics.mechChromaIds).not.toContain('amber_crimson');
+    expect(second.accountCosmetics.mechChromaIds).not.toContain('amber_crimson');
+    expect(server.sim.entities.get(first.pid)?.skinCatalog).toBe('class');
+    expect(server.sim.entities.get(second.pid)?.skinCatalog).toBe('class');
+    expect(server.sim.countItem('alien_armor_plate', first.pid)).toBe(1);
+    expect(server.sim.countItem('alien_armor_plate', second.pid)).toBe(0);
   });
 
   it('keeps the character-id session index coherent across join, duplicate join, leave, and rejoin', async () => {

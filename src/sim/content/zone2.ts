@@ -698,8 +698,9 @@ export const ZONE2_ITEMS: Record<string, ItemDef> = {
   unknown_alien_weaponry: { id: 'unknown_alien_weaponry', name: 'Unknown Alien Weaponry', kind: 'quest', quality: 'rare', sellValue: 0, questId: 'q_aldrics_fallen_star' },
   // --- quest reward gear (uncommon) ---
   alien_armor_plate: {
-    id: 'alien_armor_plate', name: 'Alien Armor Plate', kind: 'tool', quality: 'epic',
-    use: { type: 'skinSelect', catalog: 'mech' }, sellValue: 0, noVendorSell: true, noDiscard: true,
+    id: 'alien_armor_plate', name: 'Amber Crimson', kind: 'tool', quality: 'uncommon',
+    use: { type: 'mechChroma', chromaId: 'amber_crimson' },
+    sellValue: 0, noVendorSell: true, noDiscard: true, noMarketList: true,
   },
   deacons_cleaver: {
     id: 'deacons_cleaver', name: "Deacon's Cleaver", kind: 'weapon', slot: 'mainhand', quality: 'uncommon',

@@ -161,6 +161,7 @@ export const en: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -2832,7 +2833,7 @@ export const en: EnTranslations = {
         "name": "Unknown Alien Weaponry"
       },
       "alien_armor_plate": {
-        "name": "Alien Armor Plate"
+        "name": "Amber Crimson"
       }
     },
     "mobs": {
@@ -4491,6 +4492,7 @@ export const es: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -8821,6 +8823,7 @@ export const es_ES: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -13151,6 +13154,7 @@ export const fr_FR: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -17481,6 +17485,7 @@ export const fr_CA: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -21811,6 +21816,7 @@ export const en_CA: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -24482,7 +24488,7 @@ export const en_CA: EnTranslations = {
         "name": "Unknown Alien Weaponry"
       },
       "alien_armor_plate": {
-        "name": "Alien Armor Plate"
+        "name": "Amber Crimson"
       }
     },
     "mobs": {
@@ -26141,6 +26147,7 @@ export const it_IT: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -30471,6 +30478,7 @@ export const de_DE: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -34801,6 +34809,7 @@ export const zh_CN: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -39131,6 +39140,7 @@ export const zh_TW: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -43461,6 +43471,7 @@ export const ko_KR: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -47791,6 +47802,7 @@ export const ja_JP: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -52121,6 +52133,7 @@ export const pt_BR: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -56451,6 +56464,7 @@ export const ru_RU: EnTranslations = {
     "lockIn": "Lock In",
     "close": "Close",
     "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
     "previewOnly": "Preview only — full unlock coming soon",
     "mech": {
       "amber_crimson": "Amber Crimson",
@@ -60742,6 +60756,7 @@ export const pending: Record<string, readonly string[]> = {
     "skinEvent.subtitle",
     "skinEvent.title",
     "skinEvent.unavailable",
+    "skinEvent.unequip",
     "skinEvent.unlocked"
   ],
   "es_ES": [
@@ -60839,6 +60854,7 @@ export const pending: Record<string, readonly string[]> = {
     "skinEvent.subtitle",
     "skinEvent.title",
     "skinEvent.unavailable",
+    "skinEvent.unequip",
     "skinEvent.unlocked"
   ],
   "fr_FR": [
@@ -60936,6 +60952,7 @@ export const pending: Record<string, readonly string[]> = {
     "skinEvent.subtitle",
     "skinEvent.title",
     "skinEvent.unavailable",
+    "skinEvent.unequip",
     "skinEvent.unlocked"
   ],
   "fr_CA": [
@@ -61033,6 +61050,7 @@ export const pending: Record<string, readonly string[]> = {
     "skinEvent.subtitle",
     "skinEvent.title",
     "skinEvent.unavailable",
+    "skinEvent.unequip",
     "skinEvent.unlocked"
   ],
   "en_CA": [],
@@ -61131,6 +61149,7 @@ export const pending: Record<string, readonly string[]> = {
     "skinEvent.subtitle",
     "skinEvent.title",
     "skinEvent.unavailable",
+    "skinEvent.unequip",
     "skinEvent.unlocked"
   ],
   "de_DE": [
@@ -61228,6 +61247,7 @@ export const pending: Record<string, readonly string[]> = {
     "skinEvent.subtitle",
     "skinEvent.title",
     "skinEvent.unavailable",
+    "skinEvent.unequip",
     "skinEvent.unlocked"
   ],
   "zh_CN": [
@@ -61325,6 +61345,7 @@ export const pending: Record<string, readonly string[]> = {
     "skinEvent.subtitle",
     "skinEvent.title",
     "skinEvent.unavailable",
+    "skinEvent.unequip",
     "skinEvent.unlocked"
   ],
   "zh_TW": [
@@ -61422,6 +61443,7 @@ export const pending: Record<string, readonly string[]> = {
     "skinEvent.subtitle",
     "skinEvent.title",
     "skinEvent.unavailable",
+    "skinEvent.unequip",
     "skinEvent.unlocked"
   ],
   "ko_KR": [
@@ -61519,6 +61541,7 @@ export const pending: Record<string, readonly string[]> = {
     "skinEvent.subtitle",
     "skinEvent.title",
     "skinEvent.unavailable",
+    "skinEvent.unequip",
     "skinEvent.unlocked"
   ],
   "ja_JP": [
@@ -61616,6 +61639,7 @@ export const pending: Record<string, readonly string[]> = {
     "skinEvent.subtitle",
     "skinEvent.title",
     "skinEvent.unavailable",
+    "skinEvent.unequip",
     "skinEvent.unlocked"
   ],
   "pt_BR": [
@@ -61713,6 +61737,7 @@ export const pending: Record<string, readonly string[]> = {
     "skinEvent.subtitle",
     "skinEvent.title",
     "skinEvent.unavailable",
+    "skinEvent.unequip",
     "skinEvent.unlocked"
   ],
   "ru_RU": [
@@ -61810,6 +61835,7 @@ export const pending: Record<string, readonly string[]> = {
     "skinEvent.subtitle",
     "skinEvent.title",
     "skinEvent.unavailable",
+    "skinEvent.unequip",
     "skinEvent.unlocked"
   ]
 };
@@ -61966,6 +61992,7 @@ export const en_XA: EnTranslations = {
     "lockIn": "[Ļóçķ Íñ]",
     "close": "[Çļóšé]",
     "unlocked": "[Çóšɱéţíç úñļóçķéð!]",
+    "unequip": "[Úñéɋúíþ]",
     "previewOnly": "[Þŕéʋíéŵ óñļý — ƒúļļ úñļóçķ çóɱíñĝ šóóñ]",
     "mech": {
       "amber_crimson": "[Áɱƀéŕ Çŕíɱšóñ]",
@@ -64637,7 +64664,7 @@ export const en_XA: EnTranslations = {
         "name": "[Úñķñóŵñ Áļíéñ Ŵéáþóñŕý]"
       },
       "alien_armor_plate": {
-        "name": "[Áļíéñ Áŕɱóŕ Þļáţé]"
+        "name": "[Áɱƀéŕ Çŕíɱšóñ]"
       }
     },
     "mobs": {

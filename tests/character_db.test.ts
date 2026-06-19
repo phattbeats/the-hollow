@@ -14,7 +14,7 @@ vi.mock('pg', () => ({
 
 import {
   createAccount, createCharacterCapped, deleteCharacter, grantAccountMechChroma, loadAccountCosmetics,
-  markAccountQuestComplete, openPlaySession, touchLogin,
+  markAccountQuestComplete, openPlaySession, revokeAccountMechChroma, touchLogin,
 } from '../server/db';
 import { REALM } from '../server/realm';
 
@@ -132,6 +132,21 @@ describe('account cosmetics', () => {
       completedQuestIds: ['q_aldrics_fallen_star'],
       mechChromaIds: ['amber_crimson'],
     });
+  });
+
+  it('persists mech chroma removal without replacing account quest lockouts', async () => {
+    dbMock.query
+      .mockResolvedValueOnce({ rows: [{ cosmetics: { completedQuestIds: ['q_aldrics_fallen_star'], mechChromaIds: ['amber_crimson', 'onyx_gold'] } }] } as any)
+      .mockResolvedValueOnce({ rows: [{ cosmetics: { completedQuestIds: ['q_aldrics_fallen_star'], mechChromaIds: ['onyx_gold'] } }] } as any);
+
+    await expect(revokeAccountMechChroma(7, 'amber_crimson')).resolves.toEqual({
+      completedQuestIds: ['q_aldrics_fallen_star'],
+      mechChromaIds: ['onyx_gold'],
+    });
+
+    const [sql, params] = dbMock.query.mock.calls[1];
+    expect(sql).toMatch(/UPDATE accounts/);
+    expect(params[1]).toEqual({ completedQuestIds: ['q_aldrics_fallen_star'], mechChromaIds: ['onyx_gold'] });
   });
 });
 

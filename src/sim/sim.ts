@@ -21,7 +21,7 @@ import {
   TAUNT_FORCE_SECONDS, addThreat, clearThreat, stealthDetectionRadius, threatEntries, threatModifier, topThreatValue,
 } from './threat';
 import { groundHeight, WATER_LEVEL } from './world';
-import type { LeaderboardEntry } from '../world_api';
+import type { AccountCosmetics, LeaderboardEntry } from '../world_api';
 import {
   AbilityDef, AbilityEffect, Aura, AuraKind, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION,
   DEFAULT_PARTY_LOOT_STRATEGIES,
@@ -34,7 +34,8 @@ import {
   ArenaFormat, ArenaStanding, ArenaCombatant, SkinCatalog, SkinRank,
 } from './types';
 import {
-  EVENT_SKIN_TOKEN_ID, MECH_CHROMAS, SKIN_RANKS, classHasSkin, rankAllowsMechChroma, rankAllowsSkin,
+  EVENT_SKIN_TOKEN_ID, MECH_CHROMAS, SKIN_RANKS, classHasSkin, mechChromaItemId, mechChromaSkinIndex,
+  rankAllowsMechChroma, rankAllowsSkin,
 } from './content/skins';
 
 const LEASH_DISTANCE = 45;
@@ -328,6 +329,11 @@ export interface SkinClaimResult {
   chromaId?: string;
 }
 
+export interface ItemUseResult {
+  type: 'mechChroma';
+  chromaId: string;
+}
+
 // Opt-in global chat channels a player can /join and /leave. `general` is
 // always-on (everyone hears /general), so it is intentionally not joinable here.
 export const JOINABLE_CHANNELS = ['world', 'lfg'] as const;
@@ -585,7 +591,7 @@ export class Sim {
   private delayedEvents: { at: number; event: SimEvent }[] = [];
   // social systems
   parties = new Map<number, Party>();
-  accountCosmetics = { completedQuestIds: [], mechChromaIds: [] };
+  accountCosmetics: AccountCosmetics = { completedQuestIds: [], mechChromaIds: [] };
   partyByPid = new Map<number, number>(); // pid -> party id
   partyInvites = new Map<number, { fromPid: number; expires: number }>(); // invitee pid -> invite
   nextPartyId = 1;
@@ -1010,6 +1016,39 @@ export class Sim {
     meta.pendingSkinCatalog = null;
     meta.pendingSkinItemId = null;
     return { catalog: 'class', skin };
+  }
+
+  private unlockMechChromaFromItem(meta: PlayerMeta, itemId: string, chromaId: string): ItemUseResult | undefined {
+    const skin = mechChromaSkinIndex(chromaId);
+    if (skin < 0) return undefined;
+    if (this.countItem(itemId, meta.entityId) <= 0) return undefined;
+    this.removeItem(itemId, 1, meta.entityId);
+    const mechChromaIds = this.accountCosmetics.mechChromaIds.includes(chromaId)
+      ? this.accountCosmetics.mechChromaIds
+      : [...this.accountCosmetics.mechChromaIds, chromaId];
+    this.accountCosmetics = { ...this.accountCosmetics, mechChromaIds };
+    this.setPlayerSkin(meta.entityId, skin, 'mech');
+    return { type: 'mechChroma', chromaId };
+  }
+
+  unequipMechChroma(chromaId: string, pid?: number): boolean {
+    const r = this.resolve(pid);
+    if (!r) return false;
+    const skin = mechChromaSkinIndex(chromaId);
+    const itemId = mechChromaItemId(chromaId);
+    if (skin < 0 || !itemId) return false;
+    if (!this.accountCosmetics.mechChromaIds.includes(chromaId)) return false;
+    this.accountCosmetics = {
+      ...this.accountCosmetics,
+      mechChromaIds: this.accountCosmetics.mechChromaIds.filter((id) => id !== chromaId),
+    };
+    for (const meta of this.players.values()) {
+      if (meta.skinCatalog === 'mech' && meta.skin === skin) {
+        this.setPlayerSkin(meta.entityId, 0, 'class');
+      }
+    }
+    this.addItem(itemId, 1, r.meta.entityId);
+    return true;
   }
 
   // -------------------------------------------------------------------------
@@ -6148,7 +6187,7 @@ export class Sim {
     this.addItem(caught, 1, meta.entityId);
   }
 
-  useItem(itemId: string, pid?: number): void {
+  useItem(itemId: string, pid?: number): ItemUseResult | void {
     const r = this.resolve(pid);
     if (!r) return;
     const { meta, e: p } = r;
@@ -6158,6 +6197,9 @@ export class Sim {
     if (def.use?.type === 'fishing') {
       this.startFishing(p, meta);
       return;
+    }
+    if (def.use?.type === 'mechChroma') {
+      return this.unlockMechChromaFromItem(meta, itemId, def.use.chromaId);
     }
     if (def.use?.type === 'skinSelect') {
       this.openSkinSelect(meta, def.use.catalog ?? 'class', itemId);
@@ -8522,6 +8564,7 @@ export class Sim {
     const def = ITEMS[itemId];
     if (!def) return;
     if (def.kind === 'quest') { this.error(meta.entityId, 'The Merchant will not broker quest items.'); return; }
+    if (def.noMarketList) { this.error(meta.entityId, 'That item cannot be listed on the World Market.'); return; }
     if (!Number.isFinite(count)) { this.error(meta.entityId, 'Name how many you wish to sell.'); return; }
     const want = Math.max(1, Math.floor(count));
     if (this.countItem(itemId, meta.entityId) < want) { this.error(meta.entityId, 'You do not have that many to sell.'); return; }

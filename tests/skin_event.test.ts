@@ -64,21 +64,37 @@ describe('cosmetic skin-select event', () => {
     expect(sim.serializeCharacter(sim.playerId)?.pendingSkinRank ?? null).toBeNull();
   });
 
-  it('locks in a mech chroma from a mech token without equipping it as class armor', () => {
+  it('uses a specific mech cosmetic item as an account-wide unlock', () => {
     const sim = new Sim({ seed: 1, playerClass: 'mage', playerName: 'Mech' });
     sim.addItem('alien_armor_plate', 1);
+
     sim.useItem('alien_armor_plate');
-    const ev = drainSkinEvent(sim);
-    expect(ev?.catalog).toBe('mech');
-    const choice = MECH_CHROMAS.findIndex((chroma) => chroma.rank === 'uncommon');
-    expect(choice).toBeGreaterThanOrEqual(0);
 
-    const claim = sim.claimEventSkin(choice);
-
-    expect(claim).toEqual({ catalog: 'mech', skin: choice, chromaId: MECH_CHROMAS[choice].id });
+    expect(drainSkinEvent(sim)).toBeUndefined();
+    expect(sim.accountCosmetics.mechChromaIds).toEqual(['amber_crimson']);
     expect(sim.player.skin).toBe(0);
+    expect(sim.player.skinCatalog).toBe('mech');
     expect(sim.countItem('alien_armor_plate')).toBe(0);
-    expect(sim.serializeCharacter(sim.playerId)?.pendingSkinRank ?? null).toBeNull();
+  });
+
+  it('unequips a mech cosmetic account-wide and returns the specific item', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'shaman', playerName: 'Mechwearer' });
+    sim.addItem('alien_armor_plate', 1);
+    sim.useItem('alien_armor_plate');
+
+    expect((sim as any).unequipMechChroma('amber_crimson')).toBe(true);
+
+    expect(sim.accountCosmetics.mechChromaIds).toEqual([]);
+    expect(sim.player.skin).toBe(0);
+    expect(sim.player.skinCatalog).toBe('class');
+    expect(sim.countItem('alien_armor_plate')).toBe(1);
+
+    sim.useItem('alien_armor_plate');
+
+    expect(sim.accountCosmetics.mechChromaIds).toEqual(['amber_crimson']);
+    expect(sim.player.skin).toBe(0);
+    expect(sim.player.skinCatalog).toBe('mech');
+    expect(sim.countItem('alien_armor_plate')).toBe(0);
   });
 
   it('can equip a mech cosmetic as the active live appearance catalog', () => {

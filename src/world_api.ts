@@ -239,6 +239,7 @@ export interface IWorld {
   // re-validates the choice against the rank it rolled (skinEvent) and consumes
   // the event token; the offline Sim resolves it directly.
   claimEventSkin(skin: number): void;
+  unequipMechChroma(chromaId: string): void;
   releaseSpirit(): void;
   chat(text: string): void;
   playEmote(emoteId: OverheadEmoteId): void;

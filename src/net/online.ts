@@ -863,6 +863,9 @@ export class ClientWorld implements IWorld {
     const idx = Math.max(0, Math.floor(skin));
     this.cmd({ cmd: 'claim_event_skin', skin: idx });
   }
+  unequipMechChroma(chromaId: string): void {
+    this.cmd({ cmd: 'unequip_mech_chroma', chroma: chromaId });
+  }
   releaseSpirit(): void {
     this.cmd({ cmd: 'release' });
   }

@@ -59,6 +59,9 @@ export const MECH_CHROMAS: readonly MechChroma[] = [
   { id: 'vanguard_chrome', rank: 'epic' },
 ] as const;
 
+export const ALDRIC_MECH_CHROMA_ID = 'amber_crimson';
+export const ALDRIC_MECH_CHROMA_ITEM_ID = 'alien_armor_plate';
+
 /** Ordinal of a rank (0 = lowest). Higher unlocks everything at or below it. */
 export function skinRankOrder(rank: SkinRank): number {
   return SKIN_RANKS.indexOf(rank);
@@ -80,6 +83,14 @@ export function rankAllowsSkin(granted: SkinRank, skin: number): boolean {
 
 export function mechChromaForSkin(skin: number): MechChroma | null {
   return Number.isInteger(skin) ? MECH_CHROMAS[skin] ?? null : null;
+}
+
+export function mechChromaSkinIndex(chromaId: string): number {
+  return MECH_CHROMAS.findIndex((chroma) => chroma.id === chromaId);
+}
+
+export function mechChromaItemId(chromaId: string): string | null {
+  return chromaId === ALDRIC_MECH_CHROMA_ID ? ALDRIC_MECH_CHROMA_ITEM_ID : null;
 }
 
 export function rankAllowsMechChroma(granted: SkinRank, skin: number): boolean {

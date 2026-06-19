@@ -1,9 +1,14 @@
-import type { PlayerClass } from '../sim/types';
+import type { PlayerClass, SkinCatalog } from '../sim/types';
 import { MECH_CHROMAS, SKIN_COUNTS } from '../sim/content/skins';
 
 export type CharacterAppearanceOption =
   | { kind: 'class'; label: number; skin: number }
   | { kind: 'mech'; label: number; skin: number; chromaId: string };
+
+export interface ActiveCharacterAppearancePreview {
+  skin: number;
+  visualKey: string;
+}
 
 export function characterAppearanceOptions(
   cls: PlayerClass,
@@ -27,4 +32,15 @@ export function characterAppearanceOptions(
     }));
 
   return [...classOptions, ...mechOptions];
+}
+
+export function activeCharacterAppearancePreview(
+  cls: PlayerClass,
+  skin: number,
+  catalog: SkinCatalog,
+): ActiveCharacterAppearancePreview {
+  return {
+    skin: Math.max(0, Math.floor(skin)),
+    visualKey: catalog === 'mech' ? 'player_mech' : `player_${cls}`,
+  };
 }

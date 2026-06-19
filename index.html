@@ -2899,6 +2899,28 @@
     color: #fff;
     box-shadow: 0 0 9px var(--class-color, #69ccf0);
   }
+  .skin-unequip-btn {
+    min-height: 34px;
+    min-width: 40px;
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 2px solid rgba(202, 164, 114, 0.48);
+    background: rgba(60, 38, 28, 0.42);
+    color: var(--color-text-secondary, #d6c1a0);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: var(--cursor-point);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.12s, box-shadow 0.12s, color 0.12s;
+  }
+  .skin-unequip-btn:hover,
+  .skin-unequip-btn:focus-visible {
+    border-color: rgba(255, 218, 160, 0.8);
+    color: #fff;
+    box-shadow: 0 0 8px rgba(202, 164, 114, 0.45);
+  }
 
   /* ---------- Premium Accessible Login Form styling ---------- */
   .auth-panel-premium {

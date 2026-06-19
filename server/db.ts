@@ -272,6 +272,12 @@ export async function grantAccountMechChroma(accountId: number, chromaId: string
   return saveAccountCosmetics(accountId, { ...cosmetics, mechChromaIds });
 }
 
+export async function revokeAccountMechChroma(accountId: number, chromaId: string): Promise<AccountCosmetics> {
+  const cosmetics = await loadAccountCosmetics(accountId);
+  const mechChromaIds = cosmetics.mechChromaIds.filter((id) => id !== chromaId);
+  return saveAccountCosmetics(accountId, { ...cosmetics, mechChromaIds });
+}
+
 function cleanMetadataText(value: string | null | undefined, max: number): string | null {
   const text = typeof value === 'string' ? value.trim() : '';
   return text ? text.slice(0, max) : null;

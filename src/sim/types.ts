@@ -110,6 +110,7 @@ export type SkinCatalog = 'class' | 'mech';
 
 export type ItemUse =
   | { type: 'fishing' }
+  | { type: 'mechChroma'; chromaId: string }
   // Opens the client-side event skin-select overlay. The server rolls a rank on
   // use (see Sim.openSkinSelect) and the player locks one in via claimEventSkin.
   | { type: 'skinSelect'; catalog?: SkinCatalog };
@@ -131,6 +132,7 @@ export interface ItemDef {
   questId?: string;
   noVendorSell?: boolean;
   noDiscard?: boolean;
+  noMarketList?: boolean;
   /** Shown when interacting with a ground quest object before the quest is active. */
   pickupDeny?: string;
   /** Shown when the quest is active but the collect count is already met. */

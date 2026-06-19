@@ -30,7 +30,7 @@ import { clampMinimapZoom, nextMinimapZoom, isMinMinimapZoom, isMaxMinimapZoom, 
 import { restView } from './rest_indicator';
 import { nearestSubzone } from './subzone';
 import { lowResourceView } from './low_resource';
-import { characterAppearanceOptions } from './character_appearance';
+import { activeCharacterAppearancePreview, characterAppearanceOptions } from './character_appearance';
 import { terrainHeight, WATER_LEVEL, roadDistance, generateDecorations } from '../sim/world';
 import type { Decoration } from '../sim/world';
 import { Meters } from './meters';
@@ -4191,6 +4191,13 @@ export class Hud {
       body.appendChild(pick);
       return;
     }
+    if (item.kind === 'quest' || item.noMarketList) {
+      this.marketSellItem = null;
+      pick.className = 'mkt-sell-pick empty';
+      pick.textContent = t('itemUi.tooltip.cannotMarket');
+      body.appendChild(pick);
+      return;
+    }
     const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
     pick.className = 'mkt-sell-pick';
     pick.innerHTML = `${this.itemIcon(item)}<span class="ps-name" style="color:${qColor}">${esc(itemDisplayName(item))}</span>`;
@@ -4333,6 +4340,7 @@ export class Hud {
           this.addItemToTrade(s.itemId);
         } else if (this.marketOpen && this.marketTab === 'sell') {
           if (item.kind === 'quest') { this.showError(t('itemUi.errors.noQuestItems')); return; }
+          if (item.noMarketList) { this.showError(t('itemUi.tooltip.cannotMarket')); return; }
           this.marketSellItem = s.itemId;
           this.renderMarket();
         } else if (this.vendorOpen) {
@@ -4373,7 +4381,7 @@ export class Hud {
       this.attachTooltip(row, () => {
         let extra = '';
         if (this.tradeOpen) extra = `<div class="tt-sub">${esc(t('itemUi.tooltip.clickTradeOffer'))}</div>`;
-        else if (this.marketOpen && this.marketTab === 'sell') extra = item.kind === 'quest' ? `<div class="tt-sub">${esc(t('itemUi.tooltip.cannotMarket'))}</div>` : `<div class="tt-sub">${esc(t('itemUi.tooltip.clickMarketList'))}</div>`;
+        else if (this.marketOpen && this.marketTab === 'sell') extra = item.kind === 'quest' || item.noMarketList ? `<div class="tt-sub">${esc(t('itemUi.tooltip.cannotMarket'))}</div>` : `<div class="tt-sub">${esc(t('itemUi.tooltip.clickMarketList'))}</div>`;
         else if (this.vendorOpen) extra = item.kind === 'quest' ? `<div class="tt-sub">${esc(t('itemUi.tooltip.cannotVendor'))}</div>` : `<div class="tt-sub">${esc(t('itemUi.tooltip.clickSell'))}</div>`;
         else if (item.kind === 'quest') extra = `<div class="tt-sub">${esc(t('itemUi.tooltip.clickDestroy'))}</div>`;
         else if (item.kind === 'weapon' || item.kind === 'armor') extra = `<div class="tt-sub">${esc(t('itemUi.tooltip.clickEquip'))}</div>`;
@@ -4576,7 +4584,28 @@ export class Hud {
   private renderCharPreview(): void {
     const container = $('#char-model-preview') as HTMLElement | null;
     if (!container) return;
-    this.mountCharPreview(container, this.sim.cfg.playerClass, this.sim.player.skin ?? 0);
+    const preview = activeCharacterAppearancePreview(
+      this.sim.cfg.playerClass,
+      this.sim.player.skin ?? 0,
+      this.sim.player.skinCatalog ?? 'class',
+    );
+    if (preview.visualKey !== 'player_mech') {
+      this.mountCharPreview(container, this.sim.cfg.playerClass, preview.skin, preview.visualKey);
+      return;
+    }
+    const mechAssets = this.mechAssetsPromise ?? (this.mechAssetsPromise = preloadMechAssets());
+    void mechAssets.then(() => {
+      const charWindow = $('#char-window') as HTMLElement | null;
+      if (charWindow?.style.display !== 'block') return;
+      const currentPreview = activeCharacterAppearancePreview(
+        this.sim.cfg.playerClass,
+        this.sim.player.skin ?? 0,
+        this.sim.player.skinCatalog ?? 'class',
+      );
+      if (currentPreview.visualKey === 'player_mech') {
+        this.mountCharPreview(container, this.sim.cfg.playerClass, currentPreview.skin, currentPreview.visualKey);
+      }
+    }).catch((err) => console.error('failed to load mech cosmetic preview:', err));
   }
 
   /** Mount the shared character turntable into `container` showing `cls`/`skin`.
@@ -4623,14 +4652,16 @@ export class Hud {
         b.classList.add('sel');
         if (option.kind === 'class') {
           this.sim.changeSkin(option.skin, 'class');
-          this.mountCharPreview($('#char-model-preview'), this.sim.cfg.playerClass, option.skin);
+          const preview = activeCharacterAppearancePreview(this.sim.cfg.playerClass, option.skin, 'class');
+          this.mountCharPreview($('#char-model-preview'), this.sim.cfg.playerClass, preview.skin, preview.visualKey);
           return;
         }
         this.sim.changeSkin(option.skin, 'mech');
         const mechAssets = this.mechAssetsPromise ?? (this.mechAssetsPromise = preloadMechAssets());
         void mechAssets.then(() => {
           if (($('#char-window') as HTMLElement).style.display === 'block' && b.classList.contains('sel')) {
-            this.mountCharPreview($('#char-model-preview'), this.sim.cfg.playerClass, option.skin, 'player_mech');
+            const preview = activeCharacterAppearancePreview(this.sim.cfg.playerClass, option.skin, 'mech');
+            this.mountCharPreview($('#char-model-preview'), this.sim.cfg.playerClass, preview.skin, preview.visualKey);
           }
         }).catch((err) => console.error('failed to load mech cosmetic preview:', err));
         audio.click();
@@ -4639,6 +4670,22 @@ export class Hud {
         this.attachTooltip(b, () => `<div class="tt-name">${esc(this.mechChromaName(option.chromaId))}</div><div class="tt-sub">${esc(t('skinEvent.unlocked'))}</div>`);
       }
       row.appendChild(b);
+    }
+    const currentChroma = currentCatalog === 'mech' ? MECH_CHROMAS[current] : null;
+    if (currentChroma && this.sim.accountCosmetics.mechChromaIds.includes(currentChroma.id)) {
+      const unequip = document.createElement('button');
+      unequip.type = 'button';
+      unequip.className = 'skin-unequip-btn';
+      unequip.textContent = t('skinEvent.unequip');
+      unequip.setAttribute('aria-label', t('skinEvent.unequip'));
+      unequip.addEventListener('click', () => {
+        this.sim.unequipMechChroma(currentChroma.id);
+        audio.click();
+        this.renderBags();
+        this.renderCharIfOpen();
+      });
+      this.attachTooltip(unequip, () => `<div class="tt-name">${esc(this.mechChromaName(currentChroma.id))}</div><div class="tt-sub">${esc(t('skinEvent.unequip'))}</div>`);
+      row.appendChild(unequip);
     }
   }
 

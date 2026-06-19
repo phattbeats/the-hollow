@@ -5,9 +5,9 @@ import { DT, Entity, SimEvent, dist2d, emptyMoveInput } from '../src/sim/types';
 import { parseMoveInputFrame } from '../src/sim/move_input';
 import { stealthDetectionRadius, threatEntries } from '../src/sim/threat';
 import { zoneAt, DUNGEONS } from '../src/sim/data';
-import { MECH_CHROMAS } from '../src/sim/content/skins';
+import { MECH_CHROMAS, mechChromaItemId, mechChromaSkinIndex } from '../src/sim/content/skins';
 import {
-  grantAccountMechChroma, markAccountQuestComplete, saveCharacterState, openPlaySession, closePlaySession,
+  grantAccountMechChroma, markAccountQuestComplete, revokeAccountMechChroma, saveCharacterState, openPlaySession, closePlaySession,
   insertChatLogs, pool, loadMarketState, saveMarketState,
 } from './db';
 import type { AccountChatMuteStatus, AccountCosmetics, RequestMetadata } from './db';
@@ -576,6 +576,20 @@ export class GameServer {
     }
   }
 
+  private replaceLiveAccountCosmetics(accountId: number, cosmetics: AccountCosmetics): void {
+    const exact = {
+      completedQuestIds: [...new Set(cosmetics.completedQuestIds)],
+      mechChromaIds: [...new Set(cosmetics.mechChromaIds)],
+    };
+    this.accountCosmeticsByAccount.set(accountId, exact);
+    for (const live of this.clients.values()) {
+      if (live.accountId !== accountId) continue;
+      live.accountCosmetics = exact;
+      this.applyAccountQuestLockouts(live.pid, exact);
+      this.resyncQuests(live);
+    }
+  }
+
   private noteAccountQuestComplete(session: ClientSession, questId: string): void {
     const current = session.accountCosmetics;
     const completedQuestIds = current.completedQuestIds.includes(questId)
@@ -596,6 +610,28 @@ export class GameServer {
     void grantAccountMechChroma(session.accountId, chromaId)
       .then((cosmetics) => this.updateLiveAccountCosmetics(session.accountId, cosmetics))
       .catch((err) => console.error('failed to save account mech chroma:', err));
+  }
+
+  private unequipAccountMechChroma(session: ClientSession, chromaId: string): void {
+    const skin = mechChromaSkinIndex(chromaId);
+    const itemId = mechChromaItemId(chromaId);
+    if (skin < 0 || !itemId || !session.accountCosmetics.mechChromaIds.includes(chromaId)) return;
+    const nextCosmetics = {
+      ...session.accountCosmetics,
+      mechChromaIds: session.accountCosmetics.mechChromaIds.filter((id) => id !== chromaId),
+    };
+    this.replaceLiveAccountCosmetics(session.accountId, nextCosmetics);
+    for (const live of this.clients.values()) {
+      if (live.accountId !== session.accountId) continue;
+      const e = this.sim.entities.get(live.pid);
+      if (e?.skinCatalog === 'mech' && e.skin === skin) {
+        this.sim.setPlayerSkin(live.pid, 0, 'class');
+      }
+    }
+    this.sim.addItem(itemId, 1, session.pid);
+    void revokeAccountMechChroma(session.accountId, chromaId)
+      .then((cosmetics) => this.replaceLiveAccountCosmetics(session.accountId, cosmetics))
+      .catch((err) => console.error('failed to remove account mech chroma:', err));
   }
 
   join(
@@ -1019,7 +1055,12 @@ export class GameServer {
         break;
       case 'abandon': if (typeof msg.quest === 'string') { sim.abandonQuest(msg.quest, pid); this.resyncQuests(session); } break;
       case 'equip': if (typeof msg.item === 'string') sim.equipItem(msg.item, pid); break;
-      case 'use': if (typeof msg.item === 'string') sim.useItem(msg.item, pid); break;
+      case 'use':
+        if (typeof msg.item === 'string') {
+          const result = sim.useItem(msg.item, pid);
+          if (result?.type === 'mechChroma') this.noteAccountMechChroma(session, result.chromaId);
+        }
+        break;
       case 'discard':
         if (typeof msg.item === 'string') {
           sim.discardItem(msg.item, typeof msg.count === 'number' ? msg.count : undefined, pid);
@@ -1044,6 +1085,9 @@ export class GameServer {
             sim.setPlayerSkin(pid, msg.skin, 'class');
           }
         }
+        break;
+      case 'unequip_mech_chroma':
+        if (typeof msg.chroma === 'string') this.unequipAccountMechChroma(session, msg.chroma);
         break;
       // Skin-select event lock-in. The Sim re-validates the skin against the
       // rank it rolled and consumes the event token; a forged claim no-ops.

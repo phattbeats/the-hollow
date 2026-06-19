@@ -25,10 +25,10 @@
     "ru_RU"
   ],
   "counts": {
-    "keys": 2703,
-    "rows": 35139,
-    "translated": 33953,
-    "pending": 1140,
+    "keys": 2704,
+    "rows": 35152,
+    "translated": 33954,
+    "pending": 1152,
     "blocked": 46,
     "blockedSource": 104
   },
@@ -37305,72 +37305,72 @@
     },
     "main:entities.items.alien_armor_plate.name": {
       "scope": "main",
-      "enHash": "36be713dd523501d",
+      "enHash": "605933513d6a84f4",
       "placeholders": [],
       "locales": {
         "es": {
           "state": "translated",
-          "srcHash": "36be713dd523501d",
+          "srcHash": "605933513d6a84f4",
           "by": "human"
         },
         "es_ES": {
           "state": "translated",
-          "srcHash": "36be713dd523501d",
+          "srcHash": "605933513d6a84f4",
           "by": "human"
         },
         "fr_FR": {
           "state": "translated",
-          "srcHash": "36be713dd523501d",
+          "srcHash": "605933513d6a84f4",
           "by": "human"
         },
         "fr_CA": {
           "state": "translated",
-          "srcHash": "36be713dd523501d",
+          "srcHash": "605933513d6a84f4",
           "by": "human"
         },
         "en_CA": {
           "state": "translated",
-          "srcHash": "36be713dd523501d",
+          "srcHash": "605933513d6a84f4",
           "by": "human"
         },
         "it_IT": {
           "state": "translated",
-          "srcHash": "36be713dd523501d",
+          "srcHash": "605933513d6a84f4",
           "by": "human"
         },
         "de_DE": {
           "state": "translated",
-          "srcHash": "36be713dd523501d",
+          "srcHash": "605933513d6a84f4",
           "by": "human"
         },
         "zh_CN": {
           "state": "translated",
-          "srcHash": "36be713dd523501d",
+          "srcHash": "605933513d6a84f4",
           "by": "human"
         },
         "zh_TW": {
           "state": "translated",
-          "srcHash": "36be713dd523501d",
+          "srcHash": "605933513d6a84f4",
           "by": "human"
         },
         "ko_KR": {
           "state": "translated",
-          "srcHash": "36be713dd523501d",
+          "srcHash": "605933513d6a84f4",
           "by": "human"
         },
         "ja_JP": {
           "state": "translated",
-          "srcHash": "36be713dd523501d",
+          "srcHash": "605933513d6a84f4",
           "by": "human"
         },
         "pt_BR": {
           "state": "translated",
-          "srcHash": "36be713dd523501d",
+          "srcHash": "605933513d6a84f4",
           "by": "human"
         },
         "ru_RU": {
           "state": "translated",
-          "srcHash": "36be713dd523501d",
+          "srcHash": "605933513d6a84f4",
           "by": "human"
         }
       }
@@ -163855,6 +163855,54 @@
         "en_CA": {
           "state": "translated",
           "srcHash": "0146002e1ecaab62",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "pending"
+        },
+        "de_DE": {
+          "state": "pending"
+        },
+        "zh_CN": {
+          "state": "pending"
+        },
+        "zh_TW": {
+          "state": "pending"
+        },
+        "ko_KR": {
+          "state": "pending"
+        },
+        "ja_JP": {
+          "state": "pending"
+        },
+        "pt_BR": {
+          "state": "pending"
+        },
+        "ru_RU": {
+          "state": "pending"
+        }
+      }
+    },
+    "main:skinEvent.unequip": {
+      "scope": "main",
+      "enHash": "49552e3c9ea37d8a",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "pending"
+        },
+        "es_ES": {
+          "state": "pending"
+        },
+        "fr_FR": {
+          "state": "pending"
+        },
+        "fr_CA": {
+          "state": "pending"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "49552e3c9ea37d8a",
           "by": "human"
         },
         "it_IT": {

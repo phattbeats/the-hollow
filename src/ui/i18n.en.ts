@@ -11755,6 +11755,7 @@ export const en = {
     lockIn: "Lock In",
     close: "Close",
     unlocked: "Cosmetic unlocked!",
+    unequip: "Unequip",
     previewOnly: "Preview only — full unlock coming soon",
     // Combat Mech chroma names (skin-select preview).
     mech: {
@@ -11959,7 +11960,7 @@ export const en = {
       kings_signet: { name: "King's Signet" },
       event_skin_token: { name: "Mysterious Cosmetic Cache" },
       unknown_alien_weaponry: { name: "Unknown Alien Weaponry" },
-      alien_armor_plate: { name: "Alien Armor Plate" },
+      alien_armor_plate: { name: "Amber Crimson" },
     },
     mobs: { ...worldNames.en.entities.mobs, ...mergeEntities.en.mobs, ...mergeExtra.en.mobs },
     npcs: { ...worldNames.en.entities.npcs, ...mergeExtra.en.npcs },
