@@ -339,6 +339,7 @@ export class GameServer {
   private saveTimer = 0;
   private socialPosTimer = 0;
   private saveAllInFlight: Promise<void> | null = null;
+  private readonly characterSaveQueues = new Map<number, Promise<void>>();
   private restartCountdownStartedAt: number | null = null;
   private readonly restartCountdownTimers: NodeJS.Timeout[] = [];
   private readonly startedAt = Date.now();
@@ -742,10 +743,9 @@ export class GameServer {
   }
 
   async leave(session: ClientSession, reason: string): Promise<void> {
-    if (!this.clients.has(session.pid)) return;
+    if (session.left || !this.clients.has(session.pid)) return;
     session.left = true;
     this.clients.delete(session.pid);
-    this.sessionsByCharacterId.delete(session.characterId);
     if (session.ip) {
       const prev = this.ipSessionCounts.get(session.ip) ?? 1;
       if (prev <= 1) this.ipSessionCounts.delete(session.ip);
@@ -760,20 +760,32 @@ export class GameServer {
       void closePlaySession(session.dbSessionId).catch((err) => console.error('failed to close play session:', err));
     }
     await this.saveCharacter(session).catch((err) => console.error('save on leave failed:', err));
+    this.sessionsByCharacterId.delete(session.characterId);
     this.sim.removePlayer(session.pid);
     // Departures are no longer broadcast to the realm — the leaving player has
     // already disconnected, so there is no one to show their own notice to.
   }
 
   async saveCharacter(session: ClientSession): Promise<void> {
-    const state = this.sim.serializeCharacter(session.pid);
-    const e = this.sim.entities.get(session.pid);
-    if (state && e) {
-      // Use the SERIALIZED level (not e.level): during a 2v2 Fiesta bout e.level
-      // is temporarily 20, but serializeCharacter reports the real level — so the
-      // character-list/leaderboard `level` column never reflects the temp state.
-      await saveCharacterState(session.characterId, state.level, state);
-      session.lastSave = Date.now();
+    const previous = this.characterSaveQueues.get(session.characterId);
+    const run = (previous ? previous.catch(() => {}) : Promise.resolve()).then(async () => {
+      const state = this.sim.serializeCharacter(session.pid);
+      const e = this.sim.entities.get(session.pid);
+      if (state && e) {
+        // Use the SERIALIZED level (not e.level): during a 2v2 Fiesta bout e.level
+        // is temporarily 20, but serializeCharacter reports the real level — so the
+        // character-list/leaderboard `level` column never reflects the temp state.
+        await saveCharacterState(session.characterId, state.level, state);
+        session.lastSave = Date.now();
+      }
+    });
+    this.characterSaveQueues.set(session.characterId, run);
+    try {
+      await run;
+    } finally {
+      if (this.characterSaveQueues.get(session.characterId) === run) {
+        this.characterSaveQueues.delete(session.characterId);
+      }
     }
   }
 
