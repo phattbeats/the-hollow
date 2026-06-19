@@ -704,7 +704,7 @@ export const ja_JP: EnTranslations = {
     "labels": {
       "strength": "筋力",
       "agility": "敏捷性",
-      "stamina": "耐久力",
+      "stamina": "スタミナ",
       "intellect": "知力",
       "spirit": "精神力",
       "resource": "リソース",
@@ -751,7 +751,7 @@ export const ja_JP: EnTranslations = {
       "warlock": "ウォーロックは悪魔を召喚し、呪いと継続ダメージ魔法をかけ、生命力を吸収して耐えます。",
       "druid": "ドルイドは自然の力を導き、傷を癒やし、敵を絡め取り、動物形態に変身して守りまたは攻めます。"
     },
-    "aria": "{className}のクラス詳細: 役割 {role}。開始ステータス: 筋力 {str}、敏捷性 {agi}、耐久力 {sta}、知力 {int}、精神力 {spi}。",
+    "aria": "{className}のクラス詳細: 役割 {role}。開始ステータス: 筋力 {str}、敏捷性 {agi}、スタミナ {sta}、知力 {int}、精神力 {spi}。",
     "statBarAria": "{stat}: {value}/25"
   },
   "mobilePreflight": {
@@ -1089,7 +1089,7 @@ export const ja_JP: EnTranslations = {
       "requiresCombo": "その能力にはコンボポイントが必要です。",
       "requiresForm": "{form}フォームである必要があります。",
       "bear": "熊",
-      "cat": "猫",
+      "cat": "狼",
       "shapeshifted": "変身中は実行できません。",
       "stealthed": "ステルス状態である必要があります。",
       "inCombat": "戦闘中は実行できません。",
@@ -1349,7 +1349,7 @@ export const ja_JP: EnTranslations = {
     },
     "forms": {
       "bear": "熊",
-      "cat": "猫"
+      "cat": "狼"
     },
     "cast": {
       "fishing": "釣り",
@@ -2063,16 +2063,16 @@ export const ja_JP: EnTranslations = {
         "description": "対象に唸ります。あなたの脅威が対象の最も憎む敵と同じ値まで上がり、3秒間あなたを攻撃させます。ベアフォーム専用。"
       },
       "cat_form": {
-        "name": "キャットフォーム",
-        "description": "猫に変身します。攻撃力はレベルに応じて上昇し、攻撃はエネルギーとコンボポイントを使い、脅威生成が29%低下します。再度使用すると術者形態に戻ります。"
+        "name": "ウルフフォーム",
+        "description": "狼に変身します。攻撃力はレベルに応じて上昇し、攻撃はエネルギーとコンボポイントを使い、脅威生成が29%低下します。再度使用すると術者形態に戻ります。"
       },
       "claw": {
         "name": "クロー",
-        "description": "敵を引っかき、武器ダメージに {damage} を加えたダメージを与えます。コンボポイントを1獲得します。キャットフォーム専用。"
+        "description": "敵を引っかき、武器ダメージに {damage} を加えたダメージを与えます。コンボポイントを1獲得します。ウルフフォーム専用。"
       },
       "ferocious_bite": {
         "name": "獰猛な噛みつき",
-        "description": "コンボポイントに応じてダメージを与えるフィニッシュムーブです。キャットフォーム専用。"
+        "description": "コンボポイントに応じてダメージを与えるフィニッシュムーブです。ウルフフォーム専用。"
       },
       "swipe": {
         "name": "スワイプ",
@@ -2112,11 +2112,11 @@ export const ja_JP: EnTranslations = {
       },
       "dash": {
         "name": "ダッシュ",
-        "description": "前方へ駆け出し、移動速度を15秒間50%上昇させます。キャットフォーム専用。"
+        "description": "前方へ駆け出し、移動速度を15秒間50%上昇させます。ウルフフォーム専用。"
       },
       "pounce": {
         "name": "パウンス",
-        "description": "隠密状態から放つ先制攻撃で、対象を2秒間スタンさせます。コンボポイントを1獲得します。キャットフォーム専用。"
+        "description": "隠密状態から放つ先制攻撃で、対象を2秒間スタンさせます。コンボポイントを1獲得します。ウルフフォーム専用。"
       },
       "insect_swarm": {
         "name": "インセクトスウォーム",
@@ -2124,11 +2124,11 @@ export const ja_JP: EnTranslations = {
       },
       "tigers_fury": {
         "name": "タイガーフューリー",
-        "description": "攻撃力を6秒間40上昇させます。キャットフォーム専用。"
+        "description": "攻撃力を6秒間40上昇させます。ウルフフォーム専用。"
       },
       "rip": {
         "name": "リップ",
-        "description": "12秒かけて出血ダメージを与えるフィニッシュムーブです。コンボポイントを消費します。キャットフォーム専用。"
+        "description": "12秒かけて出血ダメージを与えるフィニッシュムーブです。コンボポイントを消費します。ウルフフォーム専用。"
       },
       "mortal_strike": {
         "name": "致死打撃",

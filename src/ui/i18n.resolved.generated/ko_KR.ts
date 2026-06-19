@@ -1089,7 +1089,7 @@ export const ko_KR: EnTranslations = {
       "requiresCombo": "그 능력은 연계 점수가 필요합니다.",
       "requiresForm": "{form} 변신 상태여야 합니다.",
       "bear": "곰",
-      "cat": "표범",
+      "cat": "늑대",
       "shapeshifted": "변신 중에는 할 수 없습니다.",
       "stealthed": "은신 상태여야 합니다.",
       "inCombat": "전투 중에는 할 수 없습니다.",
@@ -1349,7 +1349,7 @@ export const ko_KR: EnTranslations = {
     },
     "forms": {
       "bear": "곰",
-      "cat": "표범"
+      "cat": "늑대"
     },
     "cast": {
       "fishing": "낚시",
@@ -1663,7 +1663,7 @@ export const ko_KR: EnTranslations = {
         "description": "자신을 냉기로 감싸 30분 동안 방어도를 30만큼 증가시킵니다."
       },
       "arcane_intellect": {
-        "name": "신비한 지능",
+        "name": "비전 지능",
         "description": "30분 동안 지능이 2만큼 증가합니다."
       },
       "frostbolt": {
@@ -1683,8 +1683,8 @@ export const ko_KR: EnTranslations = {
         "description": "적에게 {damage}의 화염 피해를 입힙니다. 즉시 시전됩니다."
       },
       "arcane_missiles": {
-        "name": "신비한 화살",
-        "description": "적에게 신비한 화살을 발사하여 3초 동안 매초 8의 비전 피해를 입힙니다."
+        "name": "비전 화살",
+        "description": "적에게 비전 화살을 발사하여 3초 동안 매초 8의 비전 피해를 입힙니다."
       },
       "polymorph": {
         "name": "변이",
@@ -1695,7 +1695,7 @@ export const ko_KR: EnTranslations = {
         "description": "주위 모든 적을 최대 8초 동안 제자리에 얼리고 {damage}의 냉기 피해를 입힙니다."
       },
       "arcane_explosion": {
-        "name": "신비한 폭발",
+        "name": "비전 폭발",
         "description": "비전 에너지 폭발이 주위 모든 적에게 {damage}의 비전 피해를 입힙니다."
       },
       "scorch": {
@@ -1867,7 +1867,7 @@ export const ko_KR: EnTranslations = {
         "description": "대상을 쏘아 15초에 걸쳐 {damage}의 자연 피해를 입힙니다."
       },
       "arcane_shot": {
-        "name": "신비한 사격",
+        "name": "비전 사격",
         "description": "즉시 사격하여 {damage}의 비전 피해를 입힙니다."
       },
       "concussive_shot": {
@@ -2063,16 +2063,16 @@ export const ko_KR: EnTranslations = {
         "description": "대상에게 으르렁거립니다. 자신의 위협 수준이 대상이 가장 증오하는 적과 같아지며, 3초 동안 자신을 공격하게 만듭니다. 곰 변신 전용."
       },
       "cat_form": {
-        "name": "표범 변신",
-        "description": "표범으로 변신합니다. 전투력이 레벨에 따라 증가하고 공격이 기력과 연계 점수를 사용하며 위협 수준 생성량이 29% 감소합니다. 다시 시전하면 시전자 형태로 돌아갑니다."
+        "name": "늑대 변신",
+        "description": "늑대로 변신합니다. 전투력이 레벨에 따라 증가하고 공격이 기력과 연계 점수를 사용하며 위협 수준 생성량이 29% 감소합니다. 다시 시전하면 시전자 형태로 돌아갑니다."
       },
       "claw": {
         "name": "할퀴기",
-        "description": "적을 할퀴어 무기 피해에 {damage}를 더한 피해를 입힙니다. 연계 점수 1점을 얻습니다. 표범 변신 전용."
+        "description": "적을 할퀴어 무기 피해에 {damage}를 더한 피해를 입힙니다. 연계 점수 1점을 얻습니다. 늑대 변신 전용."
       },
       "ferocious_bite": {
         "name": "흉포한 이빨",
-        "description": "연계 점수당 피해를 입히는 결정타입니다. 표범 변신 전용."
+        "description": "연계 점수당 피해를 입히는 결정타입니다. 늑대 변신 전용."
       },
       "swipe": {
         "name": "휘둘러치기",
@@ -2112,11 +2112,11 @@ export const ko_KR: EnTranslations = {
       },
       "dash": {
         "name": "질주",
-        "description": "앞으로 돌진하여 이동 속도를 15초 동안 50% 증가시킵니다. 표범 변신 전용."
+        "description": "앞으로 돌진하여 이동 속도를 15초 동안 50% 증가시킵니다. 늑대 변신 전용."
       },
       "pounce": {
         "name": "덮치기",
-        "description": "은신 상태에서 사용하는 시작 공격으로 대상을 2초 동안 기절시킵니다. 연계 점수 1점을 얻습니다. 표범 변신 전용."
+        "description": "은신 상태에서 사용하는 시작 공격으로 대상을 2초 동안 기절시킵니다. 연계 점수 1점을 얻습니다. 늑대 변신 전용."
       },
       "insect_swarm": {
         "name": "곤충 떼",
@@ -2124,11 +2124,11 @@ export const ko_KR: EnTranslations = {
       },
       "tigers_fury": {
         "name": "호랑이의 분노",
-        "description": "공격력을 6초 동안 40만큼 증가시킵니다. 표범 변신 전용."
+        "description": "전투력을 6초 동안 40만큼 증가시킵니다. 늑대 변신 전용."
       },
       "rip": {
         "name": "찢기",
-        "description": "12초에 걸쳐 출혈 피해를 입히는 결정타입니다. 연계 점수를 소모합니다. 표범 변신 전용."
+        "description": "12초에 걸쳐 출혈 피해를 입히는 결정타입니다. 연계 점수를 소모합니다. 늑대 변신 전용."
       },
       "mortal_strike": {
         "name": "죽음의 일격",
@@ -2184,7 +2184,7 @@ export const ko_KR: EnTranslations = {
       },
       "demoralizing_roar": {
         "name": "사기 저하의 포효",
-        "description": "주변의 적들을 위축시켜 20초 동안 그들의 공격력을 20만큼 감소시킵니다. 곰 변신 상태에서만 사용 가능."
+        "description": "주변의 적들을 위축시켜 20초 동안 그들의 전투력을 20만큼 감소시킵니다. 곰 변신 상태에서만 사용 가능."
       },
       "prowl": {
         "name": "은신 보행",

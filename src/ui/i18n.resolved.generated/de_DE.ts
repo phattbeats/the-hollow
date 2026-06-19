@@ -1089,7 +1089,7 @@ export const de_DE: EnTranslations = {
       "requiresCombo": "Diese Fähigkeit benötigt Combopunkte.",
       "requiresForm": "Ihr müsst in {form}form sein.",
       "bear": "Bären",
-      "cat": "Katzen",
+      "cat": "Wolfs",
       "shapeshifted": "Das könnt Ihr in Gestaltwandlung nicht tun.",
       "stealthed": "Ihr müsst verstohlen sein.",
       "inCombat": "Das könnt Ihr im Kampf nicht tun.",
@@ -1349,7 +1349,7 @@ export const de_DE: EnTranslations = {
     },
     "forms": {
       "bear": "Bären",
-      "cat": "Katzen"
+      "cat": "Wolfs"
     },
     "cast": {
       "fishing": "Angeln",
@@ -1382,7 +1382,7 @@ export const de_DE: EnTranslations = {
       "readyQuestAria": "Quest bereit zur Abgabe: {name}",
       "discussQuest": "{name} besprechen.",
       "discussQuestAria": "Quest besprechen: {name}",
-      "nythraxisDeathlessKingWarning": "Die drei Relikte erzahlen dieselbe Geschichte: Aldren kampfte, um seinen Konig zu verteidigen, Malric durchbrach die Grenze des Todes, und Voss versuchte aufzuhalten, was danach kam. Das Siegel wird schwacher, und die verlassene Krypta ist der Weg hinab.",
+      "nythraxisDeathlessKingWarning": "Die drei Relikte erzählen dieselbe Geschichte: Aldren kämpfte, um seinen König zu verteidigen, Malric durchbrach die Grenze des Todes, und Voss versuchte aufzuhalten, was danach kam. Das Siegel wird schwächer, und die verlassene Krypta ist der Weg hinab.",
       "browseGoods": "Lasst mich Eure Waren ansehen.",
       "browseGoodsAria": "Waren von {name} ansehen",
       "worldMarket": "Zeigt mir den Weltmarkt.",
@@ -2063,16 +2063,16 @@ export const de_DE: EnTranslations = {
         "description": "Knurrt das Ziel an: Eure Bedrohung steigt auf die seines meistgehassten Gegners und es wird 3 Sek. lang gezwungen, euch anzugreifen. Nur in Bärengestalt."
       },
       "cat_form": {
-        "name": "Katzengestalt",
-        "description": "Verwandelt euch in eine Katze: Angriffskraft steigt mit eurer Stufe, eure Angriffe nutzen Energie und Combopunkte, und ihr erzeugt 29% weniger Bedrohung. Erneut wirken, um zur Zauberergestalt zurückzukehren."
+        "name": "Wolfsgestalt",
+        "description": "Verwandelt euch in einen Wolf: Angriffskraft steigt mit eurer Stufe, eure Angriffe nutzen Energie und Combopunkte, und ihr erzeugt 29% weniger Bedrohung. Erneut wirken, um zur Zauberergestalt zurückzukehren."
       },
       "claw": {
         "name": "Klaue",
-        "description": "Kratzt den Gegner für Waffenschaden plus {damage}. Gewährt 1 Combopunkt. Nur in Katzengestalt."
+        "description": "Kratzt den Gegner für Waffenschaden plus {damage}. Gewährt 1 Combopunkt. Nur in Wolfsgestalt."
       },
       "ferocious_bite": {
         "name": "Wilder Biss",
-        "description": "Finishing-Move, der Schaden pro Combopunkt verursacht. Nur in Katzengestalt."
+        "description": "Finishing-Move, der Schaden pro Combopunkt verursacht. Nur in Wolfsgestalt."
       },
       "swipe": {
         "name": "Prankenhieb",
@@ -2112,11 +2112,11 @@ export const de_DE: EnTranslations = {
       },
       "dash": {
         "name": "Sprint",
-        "description": "Sprintet vorwärts und erhöht das Lauftempo 15 Sek. lang um 50%. Nur in Katzengestalt."
+        "description": "Sprintet vorwärts und erhöht das Lauftempo 15 Sek. lang um 50%. Nur in Wolfsgestalt."
       },
       "pounce": {
         "name": "Anspringen",
-        "description": "Ein Eröffnungsangriff aus der Verstohlenheit, der das Ziel 2 Sek. lang betäubt. Gewährt 1 Combopunkt. Nur in Katzengestalt."
+        "description": "Ein Eröffnungsangriff aus der Verstohlenheit, der das Ziel 2 Sek. lang betäubt. Gewährt 1 Combopunkt. Nur in Wolfsgestalt."
       },
       "insect_swarm": {
         "name": "Insektenschwarm",
@@ -2124,11 +2124,11 @@ export const de_DE: EnTranslations = {
       },
       "tigers_fury": {
         "name": "Zorn des Tigers",
-        "description": "Erhöht die Angriffskraft 6 Sek. lang um 40. Nur in Katzengestalt."
+        "description": "Erhöht die Angriffskraft 6 Sek. lang um 40. Nur in Wolfsgestalt."
       },
       "rip": {
         "name": "Zerfetzen",
-        "description": "Finishing-Move, der über 12 Sek. Blutungsschaden verursacht. Verbraucht Combopunkte. Nur in Katzengestalt."
+        "description": "Finishing-Move, der über 12 Sek. Blutungsschaden verursacht. Verbraucht Combopunkte. Nur in Wolfsgestalt."
       },
       "mortal_strike": {
         "name": "Tödlicher Stoß",
@@ -4256,8 +4256,8 @@ export const de_DE: EnTranslations = {
       },
       "q_nythraxis_restless_dead": {
         "title": "Unruhe in den Knochenfeldern",
-        "text": "Etwas hat sich in den Thornpeak-Hohen verandert, {playerName}. Die Toten wandern nicht mehr ziellos umher. Sie sammeln sich und marschieren durch die nordlichen Knochenfelder jenseits von Highwatch, wo das alte Schlachtfeld auf die Klippenstrasse trifft. Geh dorthin, untersuche die Unruhe unter den Knochengepanzerten Wiedergangern und bring jeden Beweis zuruck, der zeigt, was sie antreibt.",
-        "completion": "Dasselbe Zeichen erscheint auf jedem Splitter... eine Krone. Ich habe es schon einmal gesehen, eingeritzt in alte Graber, an die sich keine Aufzeichnung Eastbrooks erinnert.",
+        "text": "Etwas hat sich in den Thornpeak-Höhen verändert, {playerName}. Die Toten wandern nicht mehr ziellos umher. Sie sammeln sich und marschieren durch die nördlichen Knochenfelder jenseits von Highwatch, wo das alte Schlachtfeld auf die Klippenstraße trifft. Geh dorthin, untersuche die Unruhe unter den Knochengepanzerten Wiedergängern und bring jeden Beweis zurück, der zeigt, was sie antreibt.",
+        "completion": "Dasselbe Zeichen erscheint auf jedem Splitter... eine Krone. Ich habe es schon einmal gesehen, eingeritzt in alte Gräber, an die sich keine Aufzeichnung Eastbrooks erinnert.",
         "objectives": {
           "0": {
             "label": "Runen-Knochensplitter"
@@ -4266,8 +4266,8 @@ export const de_DE: EnTranslations = {
       },
       "q_nythraxis_graves": {
         "title": "Gräber der Vergessenen",
-        "text": "Ich habe diese Zeichen schon gesehen, auf drei alten Grabern rund um das nordliche Schlachtfeld. Hauptmann Aldren liegt auf der ostlichen Anhohe, Hohepriester Malric nahe der zerbrochenen mittleren Strasse und der konigliche Assassine Voss an der westlichen Klippe. Beruhre jedes Grab und lausche, {playerName}. Die Toten erinnern sich vielleicht an das, was die Lebenden vergessen haben.",
-        "completion": "Aldren blieb treu, Malric weigerte sich, den Tod zu akzeptieren, und Voss erkannte die Gefahr vor allen anderen. Alle drei dienten demselben vergessenen Konig.",
+        "text": "Ich habe diese Zeichen schon gesehen, auf drei alten Gräbern rund um das nördliche Schlachtfeld. Hauptmann Aldren liegt auf der östlichen Anhöhe, Hohepriester Malric nahe der zerbrochenen mittleren Straße und der königliche Assassine Voss an der westlichen Klippe. Berühre jedes Grab und lausche, {playerName}. Die Toten erinnern sich vielleicht an das, was die Lebenden vergessen haben.",
+        "completion": "Aldren blieb treu, Malric weigerte sich, den Tod zu akzeptieren, und Voss erkannte die Gefahr vor allen anderen. Alle drei dienten demselben vergessenen König.",
         "objectives": {
           "0": {
             "label": "Vision am Grab von Hauptmann Aldren"
@@ -4282,14 +4282,14 @@ export const de_DE: EnTranslations = {
       },
       "q_nythraxis_sealed_crypt": {
         "title": "Die verlassene Krypta",
-        "text": "Die Visionen weisen auf die verlassene Krypta in der westlichen Klippe. Eine alte Legende sagt, die Krypta habe einen Konig beherbergt. Vielleicht versiegelte Thornpeak ihn dort unten, nachdem Malrics Ritual ihn zu etwas Todeslosem verzerrt hatte. Betritt die Krypta und sieh nach, was darin geblieben ist.",
-        "completion": "Die beiden Schlusselhalften passen zusammen, und Voss Tagebuch nennt, was sie versiegelten: den Siegelring von Konig Nythraxis. Wenn das Tagebuch wahr ist, ist dieser Ring der Schlussel zu seinem Grab.",
+        "text": "Die Visionen weisen auf die verlassene Krypta in der westlichen Klippe. Eine alte Legende sagt, die Krypta habe einen König beherbergt. Vielleicht versiegelte Thornpeak ihn dort unten, nachdem Malrics Ritual ihn zu etwas Todeslosem verzerrt hatte. Betritt die Krypta und sieh nach, was darin geblieben ist.",
+        "completion": "Die beiden Schlüsselhälften passen zusammen, und Voss Tagebuch nennt, was sie versiegelten: den Siegelring von König Nythraxis. Wenn das Tagebuch wahr ist, ist dieser Ring der Schlüssel zu seinem Grab.",
         "objectives": {
           "0": {
-            "label": "Oberteil des Kryptenschlussels"
+            "label": "Oberteil des Kryptenschlüssels"
           },
           "1": {
-            "label": "Unterteil des Kryptenschlussels"
+            "label": "Unterteil des Kryptenschlüssels"
           },
           "2": {
             "label": "Altes Tagebuch"
@@ -4298,8 +4298,8 @@ export const de_DE: EnTranslations = {
       },
       "q_nythraxis_bound_guardian": {
         "title": "Der Gebundene Wächter",
-        "text": "Voss schrieb, dass die Uberlebenden den Siegelring des Konigs hinter einem uralten Wachter versiegelten, damit niemand Nythraxis Grab durch Zufall oder Ehrgeiz erreicht. Bring den Kryptenschlussel zum Ritualkreis auf dem flachen Boden ostlich der verlassenen Krypta und sudostlich des westlichen Grabes. Benutze ihn dort, brich den Wachter und bring den Ring zuruck.",
-        "completion": "Die drei Relikte erzahlen dieselbe Geschichte: Aldren kampfte, um seinen Konig zu verteidigen, Malric durchbrach die Grenze des Todes, und Voss versuchte aufzuhalten, was folgte. Das Siegel wird schwacher, und dieser Ring ist der Schlussel zu Nythraxis Grab. Du bist nun eingestimmt, die Krypta von Nythraxis zu betreten.",
+        "text": "Voss schrieb, dass die Überlebenden den Siegelring des Königs hinter einem uralten Wächter versiegelten, damit niemand Nythraxis Grab durch Zufall oder Ehrgeiz erreicht. Bring den Kryptenschlüssel zum Ritualkreis auf dem flachen Boden östlich der verlassenen Krypta und südöstlich des westlichen Grabes. Benutze ihn dort, brich den Wächter und bring den Ring zurück.",
+        "completion": "Die drei Relikte erzählen dieselbe Geschichte: Aldren kämpfte, um seinen König zu verteidigen, Malric durchbrach die Grenze des Todes, und Voss versuchte aufzuhalten, was folgte. Das Siegel wird schwächer, und dieser Ring ist der Schlüssel zu Nythraxis Grab. Du bist nun eingestimmt, die Krypta von Nythraxis zu betreten.",
         "objectives": {
           "0": {
             "label": "Schlüsselstein am Ritualkreis benutzt"
@@ -4308,7 +4308,7 @@ export const de_DE: EnTranslations = {
             "label": "Gebundener Wächter besiegt"
           },
           "2": {
-            "label": "Siegelring des Konigs"
+            "label": "Siegelring des Königs"
           }
         }
       },

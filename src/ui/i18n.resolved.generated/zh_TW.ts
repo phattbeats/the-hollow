@@ -1089,7 +1089,7 @@ export const zh_TW: EnTranslations = {
       "requiresCombo": "該技能需要連擊點。",
       "requiresForm": "你必須處於{form}形態。",
       "bear": "熊",
-      "cat": "獵豹",
+      "cat": "狼",
       "shapeshifted": "變形狀態下不能這樣做。",
       "stealthed": "你必須處於潛行狀態。",
       "inCombat": "戰鬥中不能這樣做。",
@@ -1349,7 +1349,7 @@ export const zh_TW: EnTranslations = {
     },
     "forms": {
       "bear": "熊",
-      "cat": "獵豹"
+      "cat": "狼"
     },
     "cast": {
       "fishing": "釣魚",
@@ -2063,16 +2063,16 @@ export const zh_TW: EnTranslations = {
         "description": "對目標低吼：你的威脅值提高到其最仇恨敵人的水平，並強迫其攻擊你 3 秒。僅限熊形態。"
       },
       "cat_form": {
-        "name": "獵豹形態",
-        "description": "變形為獵豹：攻擊強度隨等級提高，攻擊使用能量和連擊點，產生的威脅值降低 29%。再次施放可返回施法者形態。"
+        "name": "狼形態",
+        "description": "變形為狼：攻擊強度隨等級提高，攻擊使用能量和連擊點，產生的威脅值降低 29%。再次施放可返回施法者形態。"
       },
       "claw": {
         "name": "爪擊",
-        "description": "用利爪攻擊敵人，造成武器傷害加 {damage}。獎勵 1 個連擊點。僅限獵豹形態。"
+        "description": "用利爪攻擊敵人，造成武器傷害加 {damage}。獎勵 1 個連擊點。僅限狼形態。"
       },
       "ferocious_bite": {
         "name": "兇猛撕咬",
-        "description": "終結技，根據連擊點數造成傷害。僅限獵豹形態。"
+        "description": "終結技，根據連擊點數造成傷害。僅限狼形態。"
       },
       "swipe": {
         "name": "橫掃",
@@ -2112,11 +2112,11 @@ export const zh_TW: EnTranslations = {
       },
       "dash": {
         "name": "急奔",
-        "description": "向前衝刺，使移動速度提高 50%，持續 15 秒。僅限獵豹形態。"
+        "description": "向前衝刺，使移動速度提高 50%，持續 15 秒。僅限狼形態。"
       },
       "pounce": {
         "name": "撲擊",
-        "description": "一個潛行開場技，昏迷目標 2 秒。獎勵 1 個連擊點。僅限獵豹形態。"
+        "description": "一個潛行開場技，昏迷目標 2 秒。獎勵 1 個連擊點。僅限狼形態。"
       },
       "insect_swarm": {
         "name": "蟲群",
@@ -2124,11 +2124,11 @@ export const zh_TW: EnTranslations = {
       },
       "tigers_fury": {
         "name": "猛虎之怒",
-        "description": "使攻擊強度提高 40，持續 6 秒。僅限獵豹形態。"
+        "description": "使攻擊強度提高 40，持續 6 秒。僅限狼形態。"
       },
       "rip": {
         "name": "割裂",
-        "description": "終結技，在 12 秒內造成流血傷害。消耗連擊點。僅限獵豹形態。"
+        "description": "終結技，在 12 秒內造成流血傷害。消耗連擊點。僅限狼形態。"
       },
       "mortal_strike": {
         "name": "致死打擊",

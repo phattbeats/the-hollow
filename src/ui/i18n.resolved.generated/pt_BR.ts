@@ -1089,7 +1089,7 @@ export const pt_BR: EnTranslations = {
       "requiresCombo": "Essa habilidade requer pontos de combo.",
       "requiresForm": "Você precisa estar na Forma de {form}.",
       "bear": "Urso",
-      "cat": "Felino",
+      "cat": "Lobo",
       "shapeshifted": "Você não pode fazer isso transformado.",
       "stealthed": "Você precisa estar furtivo.",
       "inCombat": "Você não pode fazer isso em combate.",
@@ -1349,7 +1349,7 @@ export const pt_BR: EnTranslations = {
     },
     "forms": {
       "bear": "urso",
-      "cat": "felino"
+      "cat": "lobo"
     },
     "cast": {
       "fishing": "Pesca",
@@ -2063,16 +2063,16 @@ export const pt_BR: EnTranslations = {
         "description": "Rosna para o alvo: sua ameaça sobe para igualar a do inimigo mais odiado por ele, que é forçado a atacar você por 3 s. Apenas Forma de Urso."
       },
       "cat_form": {
-        "name": "Forma Felina",
-        "description": "Assume a forma felina: o poder de ataque sobe com seu nível, seus ataques usam energia e pontos de combo, e você gera 29% menos ameaça. Lance de novo para voltar à forma de conjurador."
+        "name": "Forma de Lobo",
+        "description": "Assume a forma de lobo: o poder de ataque sobe com seu nível, seus ataques usam energia e pontos de combo, e você gera 29% menos ameaça. Lance de novo para voltar à forma de conjurador."
       },
       "claw": {
         "name": "Garra",
-        "description": "Arranha o inimigo com dano de arma mais {damage}. Concede 1 ponto de combo. Apenas Forma Felina."
+        "description": "Arranha o inimigo com dano de arma mais {damage}. Concede 1 ponto de combo. Apenas Forma de Lobo."
       },
       "ferocious_bite": {
         "name": "Mordida Feroz",
-        "description": "Golpe final que causa dano por ponto de combo. Apenas Forma Felina."
+        "description": "Golpe final que causa dano por ponto de combo. Apenas Forma de Lobo."
       },
       "swipe": {
         "name": "Patada",
@@ -2112,11 +2112,11 @@ export const pt_BR: EnTranslations = {
       },
       "dash": {
         "name": "Corrida",
-        "description": "Dispara para a frente, aumentando a velocidade de movimento em 50% por 15 s. Apenas Forma Felina."
+        "description": "Dispara para a frente, aumentando a velocidade de movimento em 50% por 15 s. Apenas Forma de Lobo."
       },
       "pounce": {
         "name": "Bote",
-        "description": "Abertura furtiva que atordoa o alvo por 2 s. Concede 1 ponto de combo. Apenas Forma Felina."
+        "description": "Abertura furtiva que atordoa o alvo por 2 s. Concede 1 ponto de combo. Apenas Forma de Lobo."
       },
       "insect_swarm": {
         "name": "Enxame de Insetos",
@@ -2124,11 +2124,11 @@ export const pt_BR: EnTranslations = {
       },
       "tigers_fury": {
         "name": "Fúria do Tigre",
-        "description": "Aumenta o poder de ataque em 40 por 6 s. Apenas Forma Felina."
+        "description": "Aumenta o poder de ataque em 40 por 6 s. Apenas Forma de Lobo."
       },
       "rip": {
         "name": "Rasgar",
-        "description": "Golpe final que causa dano de sangramento ao longo de 12 s. Consome pontos de combo. Apenas Forma Felina."
+        "description": "Golpe final que causa dano de sangramento ao longo de 12 s. Consome pontos de combo. Apenas Forma de Lobo."
       },
       "mortal_strike": {
         "name": "Golpe Mortal",
@@ -4255,9 +4255,9 @@ export const pt_BR: EnTranslations = {
         }
       },
       "q_nythraxis_restless_dead": {
-        "title": "Agitacao nos Campos de Ossos",
-        "text": "Algo mudou em Thornpeak Heights, {playerName}. Os mortos nao vagam mais sem rumo. Eles se juntam e marcham pelos campos de ossos ao norte de Highwatch, onde o antigo campo de batalha encontra a estrada do penhasco. Va ate la, investigue a agitacao entre os Revenants Revestidos de Ossos e traga qualquer prova do que os esta movendo.",
-        "completion": "O mesmo simbolo aparece em cada fragmento... uma coroa. Ja vi isso antes, entalhado em tumulos antigos que nenhum registro de Eastbrook lembra.",
+        "title": "Agitação nos Campos de Ossos",
+        "text": "Algo mudou em Thornpeak Heights, {playerName}. Os mortos não vagam mais sem rumo. Eles se juntam e marcham pelos campos de ossos ao norte de Highwatch, onde o antigo campo de batalha encontra a estrada do penhasco. Vá até lá, investigue a agitação entre os Revenants Revestidos de Ossos e traga qualquer prova do que os está movendo.",
+        "completion": "O mesmo símbolo aparece em cada fragmento... uma coroa. Já vi isso antes, entalhado em túmulos antigos que nenhum registro de Eastbrook lembra.",
         "objectives": {
           "0": {
             "label": "Estilhaço de osso rúnico"
@@ -4266,8 +4266,8 @@ export const pt_BR: EnTranslations = {
       },
       "q_nythraxis_graves": {
         "title": "Túmulos dos esquecidos",
-        "text": "Ja vi estas marcas antes, em tres tumulos antigos ao redor do campo de batalha ao norte. O capitao Aldren jaz na elevacao leste, o sumo sacerdote Malric perto da estrada central quebrada, e o assassino real Voss junto ao penhasco oeste. Toque cada tumulo e escute, {playerName}. Os mortos podem lembrar o que os vivos esqueceram.",
-        "completion": "Aldren permaneceu leal, Malric se recusou a aceitar a morte e Voss viu o perigo antes de todos. Os tres serviram ao mesmo rei esquecido.",
+        "text": "Já vi estas marcas antes, em três túmulos antigos ao redor do campo de batalha ao norte. O capitão Aldren jaz na elevação leste, o sumo sacerdote Malric perto da estrada central quebrada, e o assassino real Voss junto ao penhasco oeste. Toque cada túmulo e escute, {playerName}. Os mortos podem lembrar o que os vivos esqueceram.",
+        "completion": "Aldren permaneceu leal, Malric se recusou a aceitar a morte e Voss viu o perigo antes de todos. Os três serviram ao mesmo rei esquecido.",
         "objectives": {
           "0": {
             "label": "Visão no túmulo do capitão Aldren"
@@ -4282,8 +4282,8 @@ export const pt_BR: EnTranslations = {
       },
       "q_nythraxis_sealed_crypt": {
         "title": "A cripta abandonada",
-        "text": "As visoes apontam para a cripta abandonada no penhasco oeste. Ha uma velha lenda de que a cripta abrigava um rei. Talvez Thornpeak o tenha selado la embaixo depois que o ritual de Malric o transformou em algo imortal. Entre na cripta e veja o que restou la dentro.",
-        "completion": "As metades da pedra-chave se encaixam, e o diario de Voss nomeia o que elas selaram: o anel-sinete do rei Nythraxis. Se o diario for verdadeiro, esse anel e a chave para sua tumba.",
+        "text": "As visões apontam para a cripta abandonada no penhasco oeste. Há uma velha lenda de que a cripta abrigava um rei. Talvez Thornpeak o tenha selado lá embaixo depois que o ritual de Malric o transformou em algo imortal. Entre na cripta e veja o que restou lá dentro.",
+        "completion": "As metades da pedra-chave se encaixam, e o diário de Voss nomeia o que elas selaram: o anel-sinete do rei Nythraxis. Se o diário for verdadeiro, esse anel é a chave para sua tumba.",
         "objectives": {
           "0": {
             "label": "Parte superior da pedra-chave"
@@ -4292,14 +4292,14 @@ export const pt_BR: EnTranslations = {
             "label": "Parte inferior da pedra-chave"
           },
           "2": {
-            "label": "Diario antigo"
+            "label": "Diário antigo"
           }
         }
       },
       "q_nythraxis_bound_guardian": {
         "title": "O Guardião Vinculado",
-        "text": "Voss escreveu que os sobreviventes selaram o Anel-sinete do rei atras de um guardiao antigo, para que ninguem chegasse a tumba de Nythraxis por acidente ou ambicao. Leve a Pedra-chave da cripta ao circulo ritual no terreno plano a leste da cripta abandonada e a sudeste da tumba oeste. Use-a ali, quebre o guardiao e traga o anel.",
-        "completion": "As tres reliquias contam a mesma historia: Aldren lutou para defender seu rei, Malric rompeu a fronteira da morte e Voss tentou impedir o que veio depois. O selo esta enfraquecendo, e este anel e a chave da tumba de Nythraxis. Agora voce esta sintonizado para entrar na Cripta de Nythraxis.",
+        "text": "Voss escreveu que os sobreviventes selaram o Anel-sinete do rei atrás de um guardião antigo, para que ninguém chegasse à tumba de Nythraxis por acidente ou ambição. Leve a Pedra-chave da cripta ao círculo ritual no terreno plano a leste da cripta abandonada e a sudeste da tumba oeste. Use-a ali, quebre o guardião e traga o anel.",
+        "completion": "As três relíquias contam a mesma história: Aldren lutou para defender seu rei, Malric rompeu a fronteira da morte e Voss tentou impedir o que veio depois. O selo está enfraquecendo, e este anel é a chave da tumba de Nythraxis. Agora você está sintonizado para entrar na Cripta de Nythraxis.",
         "objectives": {
           "0": {
             "label": "Pedra-chave usada no círculo ritual"

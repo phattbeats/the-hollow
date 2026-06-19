@@ -1089,7 +1089,7 @@ export const fr_CA: EnTranslations = {
       "requiresCombo": "Cette technique requiert des points de combo.",
       "requiresForm": "Vous devez être en forme de {form}.",
       "bear": "ours",
-      "cat": "félin",
+      "cat": "loup",
       "shapeshifted": "Vous ne pouvez pas faire cela en forme changeante.",
       "stealthed": "Vous devez être camouflé.",
       "inCombat": "Vous ne pouvez pas faire cela en combat.",
@@ -1349,7 +1349,7 @@ export const fr_CA: EnTranslations = {
     },
     "forms": {
       "bear": "ours",
-      "cat": "félin"
+      "cat": "loup"
     },
     "cast": {
       "fishing": "Pêche",
@@ -1382,7 +1382,7 @@ export const fr_CA: EnTranslations = {
       "readyQuestAria": "Quête prête à rendre : {name}",
       "discussQuest": "Discuter de {name}.",
       "discussQuestAria": "Discuter de la quête : {name}",
-      "nythraxisDeathlessKingWarning": "Les trois reliques racontent la meme histoire: Aldren combattit pour defendre son roi, Malric franchit la frontiere de la mort, et Voss tenta d arreter ce qui suivit. Le sceau faiblit, et la crypte abandonnee est le chemin vers les profondeurs.",
+      "nythraxisDeathlessKingWarning": "Les trois reliques racontent la même histoire : Aldren combattit pour défendre son roi, Malric franchit la frontière de la mort, et Voss tenta d'arrêter ce qui suivit. Le sceau faiblit, et la crypte abandonnée est le chemin vers les profondeurs.",
       "browseGoods": "Laissez-moi voir vos marchandises.",
       "browseGoodsAria": "Voir les marchandises de {name}",
       "worldMarket": "Montrez-moi le marché mondial.",
@@ -2063,16 +2063,16 @@ export const fr_CA: EnTranslations = {
         "description": "Gronde la cible: votre menace rejoint celle de son ennemi le plus haï et elle est forcée de vous attaquer pendant 3 s. Forme d'ours uniquement."
       },
       "cat_form": {
-        "name": "Forme de félin",
-        "description": "Vous change en félin: la puissance d'attaque augmente avec votre niveau, vos attaques utilisent énergie et points de combo, et vous générez 29% de menace en moins. Relancez pour reprendre votre forme de lanceur."
+        "name": "Forme de loup",
+        "description": "Vous change en loup: la puissance d'attaque augmente avec votre niveau, vos attaques utilisent énergie et points de combo, et vous générez 29% de menace en moins. Relancez pour reprendre votre forme de lanceur."
       },
       "claw": {
         "name": "Griffe",
-        "description": "Griffe l'ennemi pour les dégâts de l'arme plus {damage}. Confère 1 point de combo. Forme de félin uniquement."
+        "description": "Griffe l'ennemi pour les dégâts de l'arme plus {damage}. Confère 1 point de combo. Forme de loup uniquement."
       },
       "ferocious_bite": {
         "name": "Morsure féroce",
-        "description": "Coup de grâce qui inflige des dégâts par point de combo. Forme de félin uniquement."
+        "description": "Coup de grâce qui inflige des dégâts par point de combo. Forme de loup uniquement."
       },
       "swipe": {
         "name": "Balayage",
@@ -2112,11 +2112,11 @@ export const fr_CA: EnTranslations = {
       },
       "dash": {
         "name": "Sprint",
-        "description": "Bondit en avant, augmentant la vitesse de déplacement de 50% pendant 15 s. Forme de félin uniquement."
+        "description": "Bondit en avant, augmentant la vitesse de déplacement de 50% pendant 15 s. Forme de loup uniquement."
       },
       "pounce": {
         "name": "Bondir",
-        "description": "Ouverture furtive qui étourdit la cible pendant 2 s. Confère 1 point de combo. Forme de félin uniquement."
+        "description": "Ouverture furtive qui étourdit la cible pendant 2 s. Confère 1 point de combo. Forme de loup uniquement."
       },
       "insect_swarm": {
         "name": "Nuée d'insectes",
@@ -2124,11 +2124,11 @@ export const fr_CA: EnTranslations = {
       },
       "tigers_fury": {
         "name": "Furie du tigre",
-        "description": "Augmente la puissance d'attaque de 40 pendant 6 s. Forme de félin uniquement."
+        "description": "Augmente la puissance d'attaque de 40 pendant 6 s. Forme de loup uniquement."
       },
       "rip": {
         "name": "Lacération",
-        "description": "Coup de grâce qui inflige des dégâts de saignement sur 12 s. Consomme les points de combo. Forme de félin uniquement."
+        "description": "Coup de grâce qui inflige des dégâts de saignement sur 12 s. Consomme les points de combo. Forme de loup uniquement."
       },
       "mortal_strike": {
         "name": "Frappe mortelle",
@@ -3086,10 +3086,10 @@ export const fr_CA: EnTranslations = {
         "name": "Porte antique de la crypte"
       },
       "captains_crest": {
-        "name": "Partie superieure de la clef"
+        "name": "Partie supérieure de la clef"
       },
       "priests_sigil": {
-        "name": "Partie inferieure de la clef"
+        "name": "Partie inférieure de la clef"
       },
       "royal_seal": {
         "name": "Journal ancien"
@@ -4255,9 +4255,9 @@ export const fr_CA: EnTranslations = {
         }
       },
       "q_nythraxis_restless_dead": {
-        "title": "Agitation dans les champs d os",
-        "text": "Quelque chose a change dans les hauteurs de Thornpeak, {playerName}. Les morts ne vagabondent plus sans but. Ils se rassemblent et marchent dans les champs d os du nord, au-dela de Highwatch, la ou l ancien champ de bataille rejoint la route de la falaise. Allez-y, enquetez sur cette agitation parmi les revenants cuirasses d os, et rapportez toute preuve de ce qui les pousse.",
-        "completion": "Le meme symbole apparait sur chaque fragment... une couronne. Je l ai deja vu, grave sur de vieilles tombes qu aucun registre d Eastbrook ne mentionne.",
+        "title": "Agitation dans les champs d'os",
+        "text": "Quelque chose a changé dans les hauteurs de Thornpeak, {playerName}. Les morts ne vagabondent plus sans but. Ils se rassemblent et marchent dans les champs d'os du nord, au-delà de Highwatch, là où l'ancien champ de bataille rejoint la route de la falaise. Allez-y, enquêtez sur cette agitation parmi les revenants cuirassés d'os, et rapportez toute preuve de ce qui les pousse.",
+        "completion": "Le même symbole apparaît sur chaque fragment... une couronne. Je l'ai déjà vu, gravé sur de vieilles tombes qu'aucun registre d'Eastbrook ne mentionne.",
         "objectives": {
           "0": {
             "label": "Fragment d'os runique"
@@ -4266,8 +4266,8 @@ export const fr_CA: EnTranslations = {
       },
       "q_nythraxis_graves": {
         "title": "Tombes des oubliés",
-        "text": "J ai deja vu ces marques, sur trois vieilles tombes autour du champ de bataille du nord. Le capitaine Aldren repose sur la hauteur orientale, le grand pretre Malric pres de la route centrale brisee, et l assassin royal Voss pres de la falaise occidentale. Touchez chaque tombe et ecoutez, {playerName}. Les morts peuvent se souvenir de ce que les vivants ont oublie.",
-        "completion": "Aldren resta loyal, Malric refusa d accepter la mort, et Voss vit le danger avant tous les autres. Tous trois servaient le meme roi oublie.",
+        "text": "J'ai déjà vu ces marques, sur trois vieilles tombes autour du champ de bataille du nord. Le capitaine Aldren repose sur la hauteur orientale, le grand prêtre Malric près de la route centrale brisée, et l'assassin royal Voss près de la falaise occidentale. Touchez chaque tombe et écoutez, {playerName}. Les morts peuvent se souvenir de ce que les vivants ont oublié.",
+        "completion": "Aldren resta loyal, Malric refusa d'accepter la mort, et Voss vit le danger avant tous les autres. Tous trois servaient le même roi oublié.",
         "objectives": {
           "0": {
             "label": "Vision à la tombe du capitaine Aldren"
@@ -4282,14 +4282,14 @@ export const fr_CA: EnTranslations = {
       },
       "q_nythraxis_sealed_crypt": {
         "title": "La crypte abandonnée",
-        "text": "Les visions indiquent la crypte abandonnee dans la falaise occidentale. Une vieille legende dit que la crypte abritait un roi. Peut-etre Thornpeak l a-t-il scelle la-dessous apres que le rituel de Malric l eut tordu en quelque chose d immortel. Entrez dans la crypte et voyez ce qu il reste a l interieur.",
-        "completion": "Les deux moities de la clef s assemblent, et le journal de Voss nomme ce qu elles ont scelle: la chevaliere du roi Nythraxis. Si le journal dit vrai, cette chevaliere est la clef de sa tombe.",
+        "text": "Les visions indiquent la crypte abandonnée dans la falaise occidentale. Une vieille légende dit que la crypte abritait un roi. Peut-être Thornpeak l'a-t-il scellé là-dessous après que le rituel de Malric l'eut tordu en quelque chose d'immortel. Entrez dans la crypte et voyez ce qu'il reste à l'intérieur.",
+        "completion": "Les deux moitiés de la clef s'assemblent, et le journal de Voss nomme ce qu'elles ont scellé : la chevalière du roi Nythraxis. Si le journal dit vrai, cette chevalière est la clef de sa tombe.",
         "objectives": {
           "0": {
-            "label": "Partie superieure de la clef"
+            "label": "Partie supérieure de la clef"
           },
           "1": {
-            "label": "Partie inferieure de la clef"
+            "label": "Partie inférieure de la clef"
           },
           "2": {
             "label": "Journal ancien"
@@ -4298,8 +4298,8 @@ export const fr_CA: EnTranslations = {
       },
       "q_nythraxis_bound_guardian": {
         "title": "Le Gardien lié",
-        "text": "Voss ecrivit que les survivants scellerent la Chevaliere du roi derriere un gardien ancien, afin que nul n atteigne la tombe de Nythraxis par accident ou par ambition. Portez la Clef de la crypte au cercle rituel sur le terrain plat a l est de la crypte abandonnee et au sud-est de la tombe occidentale. Utilisez-la la-bas, brisez le gardien et rapportez la chevaliere.",
-        "completion": "Les trois reliques racontent la meme histoire: Aldren combattit pour defendre son roi, Malric franchit la frontiere de la mort, et Voss tenta d arreter ce qui suivit. Le sceau faiblit, et cette chevaliere est la clef de la tombe de Nythraxis. Vous etes maintenant harmonise pour entrer dans la Crypte de Nythraxis.",
+        "text": "Voss écrivit que les survivants scellèrent la Chevalière du roi derrière un gardien ancien, afin que nul n'atteigne la tombe de Nythraxis par accident ou par ambition. Portez la Clef de la crypte au cercle rituel sur le terrain plat à l'est de la crypte abandonnée et au sud-est de la tombe occidentale. Utilisez-la là-bas, brisez le gardien et rapportez la chevalière.",
+        "completion": "Les trois reliques racontent la même histoire : Aldren combattit pour défendre son roi, Malric franchit la frontière de la mort, et Voss tenta d'arrêter ce qui suivit. Le sceau faiblit, et cette chevalière est la clef de la tombe de Nythraxis. Vous êtes maintenant harmonisé pour entrer dans la Crypte de Nythraxis.",
         "objectives": {
           "0": {
             "label": "Clef utilisée au cercle rituel"
@@ -4308,7 +4308,7 @@ export const fr_CA: EnTranslations = {
             "label": "Gardien lié vaincu"
           },
           "2": {
-            "label": "Chevaliere du roi"
+            "label": "Chevalière du roi"
           }
         }
       },

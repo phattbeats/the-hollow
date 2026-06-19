@@ -1089,7 +1089,7 @@ export const it_IT: EnTranslations = {
       "requiresCombo": "Quell'abilità richiede punti combo.",
       "requiresForm": "Devi essere in Forma di {form}.",
       "bear": "Orso",
-      "cat": "Felino",
+      "cat": "Lupo",
       "shapeshifted": "Non puoi farlo mentre sei trasformato.",
       "stealthed": "Devi essere furtivo.",
       "inCombat": "Non puoi farlo in combattimento.",
@@ -1349,7 +1349,7 @@ export const it_IT: EnTranslations = {
     },
     "forms": {
       "bear": "orso",
-      "cat": "felino"
+      "cat": "lupo"
     },
     "cast": {
       "fishing": "Pesca",
@@ -1382,7 +1382,7 @@ export const it_IT: EnTranslations = {
       "readyQuestAria": "Missione pronta da consegnare: {name}",
       "discussQuest": "Discuti {name}.",
       "discussQuestAria": "Discuti missione: {name}",
-      "nythraxisDeathlessKingWarning": "Le tre reliquie raccontano la stessa storia: Aldren combatte per difendere il suo re, Malric spezzo il confine della morte e Voss tento di fermare cio che segui. Il sigillo si indebolisce, e la cripta abbandonata e la via verso il basso.",
+      "nythraxisDeathlessKingWarning": "Le tre reliquie raccontano la stessa storia: Aldren combatté per difendere il suo re, Malric spezzò il confine della morte e Voss tentò di fermare ciò che seguì. Il sigillo si indebolisce, e la cripta abbandonata è la via verso il basso.",
       "browseGoods": "Fammi vedere la tua merce.",
       "browseGoodsAria": "Vedi la merce di {name}",
       "worldMarket": "Mostrami il Mercato Mondiale.",
@@ -2063,16 +2063,16 @@ export const it_IT: EnTranslations = {
         "description": "Ringhia al bersaglio: la tua minaccia sale fino a eguagliare quella del suo nemico più odiato e lo costringe ad attaccarti per 3 s. Solo Forma d'Orso."
       },
       "cat_form": {
-        "name": "Forma Felina",
-        "description": "Mutamenti in felino: la potenza d'attacco cresce con il livello, gli attacchi usano energia e punti combo, e generi il 29% di minaccia in meno. Lanciala di nuovo per tornare alla forma da incantatore."
+        "name": "Forma del Lupo",
+        "description": "Mutamenti in lupo: la potenza d'attacco cresce con il livello, gli attacchi usano energia e punti combo, e generi il 29% di minaccia in meno. Lanciala di nuovo per tornare alla forma da incantatore."
       },
       "claw": {
         "name": "Artigliata",
-        "description": "Artiglia il nemico per danni dell'arma più {damage}. Conferisce 1 punto combo. Solo Forma Felina."
+        "description": "Artiglia il nemico per danni dell'arma più {damage}. Conferisce 1 punto combo. Solo Forma del Lupo."
       },
       "ferocious_bite": {
         "name": "Morso Feroce",
-        "description": "Mossa finale che infligge danni per punto combo. Solo Forma Felina."
+        "description": "Mossa finale che infligge danni per punto combo. Solo Forma del Lupo."
       },
       "swipe": {
         "name": "Falciata",
@@ -2112,11 +2112,11 @@ export const it_IT: EnTranslations = {
       },
       "dash": {
         "name": "Scatto",
-        "description": "Scatta in avanti, aumentando la velocità di movimento del 50% per 15 sec. Solo Forma Felina."
+        "description": "Scatta in avanti, aumentando la velocità di movimento del 50% per 15 sec. Solo Forma del Lupo."
       },
       "pounce": {
         "name": "Balzo",
-        "description": "Apertura furtiva che stordisce il bersaglio per 2 sec. Conferisce 1 punto combo. Solo Forma Felina."
+        "description": "Apertura furtiva che stordisce il bersaglio per 2 sec. Conferisce 1 punto combo. Solo Forma del Lupo."
       },
       "insect_swarm": {
         "name": "Sciame d'Insetti",
@@ -2124,11 +2124,11 @@ export const it_IT: EnTranslations = {
       },
       "tigers_fury": {
         "name": "Furia della Tigre",
-        "description": "Aumenta la potenza d'attacco di 40 per 6 sec. Solo Forma Felina."
+        "description": "Aumenta la potenza d'attacco di 40 per 6 sec. Solo Forma del Lupo."
       },
       "rip": {
         "name": "Squartare",
-        "description": "Mossa finale che infligge danni da sanguinamento in 12 sec. Consuma i punti combo. Solo Forma Felina."
+        "description": "Mossa finale che infligge danni da sanguinamento in 12 sec. Consuma i punti combo. Solo Forma del Lupo."
       },
       "mortal_strike": {
         "name": "Colpo Mortale",
@@ -4255,9 +4255,9 @@ export const it_IT: EnTranslations = {
         }
       },
       "q_nythraxis_restless_dead": {
-        "title": "Disordine nei campi d ossa",
-        "text": "Qualcosa e cambiato nelle Alture di Thornpeak, {playerName}. I morti non vagano piu senza meta. Si radunano e marciano nei campi d ossa a nord di Highwatch, dove il vecchio campo di battaglia incontra la strada della scogliera. Vai li, indaga sul disordine tra i revenant corazzati d ossa e porta qualsiasi prova di cio che li spinge.",
-        "completion": "Lo stesso simbolo appare su ogni frammento... una corona. L ho gia visto, inciso su vecchie tombe che nessun registro di Eastbrook ricorda.",
+        "title": "Disordine nei campi d'ossa",
+        "text": "Qualcosa è cambiato nelle Alture di Thornpeak, {playerName}. I morti non vagano più senza meta. Si radunano e marciano nei campi d'ossa a nord di Highwatch, dove il vecchio campo di battaglia incontra la strada della scogliera. Vai lì, indaga sul disordine tra i revenant corazzati d'ossa e porta qualsiasi prova di ciò che li spinge.",
+        "completion": "Lo stesso simbolo appare su ogni frammento... una corona. L'ho già visto, inciso su vecchie tombe che nessun registro di Eastbrook ricorda.",
         "objectives": {
           "0": {
             "label": "Frammento d'osso runico"
@@ -4266,8 +4266,8 @@ export const it_IT: EnTranslations = {
       },
       "q_nythraxis_graves": {
         "title": "Tombe dei dimenticati",
-        "text": "Ho gia visto questi segni, su tre vecchie tombe attorno al campo di battaglia settentrionale. Il capitano Aldren giace sull altura orientale, l alto sacerdote Malric vicino alla strada centrale spezzata e l assassino reale Voss presso la scogliera occidentale. Tocca ogni tomba e ascolta, {playerName}. I morti possono ricordare cio che i vivi hanno dimenticato.",
-        "completion": "Aldren rimase leale, Malric rifiuto di accettare la morte e Voss vide il pericolo prima di chiunque altro. Tutti e tre servirono lo stesso re dimenticato.",
+        "text": "Ho già visto questi segni, su tre vecchie tombe attorno al campo di battaglia settentrionale. Il capitano Aldren giace sull'altura orientale, l'alto sacerdote Malric vicino alla strada centrale spezzata e l'assassino reale Voss presso la scogliera occidentale. Tocca ogni tomba e ascolta, {playerName}. I morti possono ricordare ciò che i vivi hanno dimenticato.",
+        "completion": "Aldren rimase leale, Malric rifiutò di accettare la morte e Voss vide il pericolo prima di chiunque altro. Tutti e tre servirono lo stesso re dimenticato.",
         "objectives": {
           "0": {
             "label": "Visione alla tomba del capitano Aldren"
@@ -4282,8 +4282,8 @@ export const it_IT: EnTranslations = {
       },
       "q_nythraxis_sealed_crypt": {
         "title": "La cripta abbandonata",
-        "text": "Le visioni indicano la cripta abbandonata nella scogliera occidentale. Una vecchia leggenda dice che la cripta ospitasse un re. Forse Thornpeak lo sigillo li sotto dopo che il rituale di Malric lo trasformo in qualcosa di immortale. Entra nella cripta e guarda cosa resta dentro.",
-        "completion": "Le due meta della chiave combaciano, e il diario di Voss nomina cio che sigillarono: l anello del re Nythraxis. Se il diario dice il vero, quell anello e la chiave della sua tomba.",
+        "text": "Le visioni indicano la cripta abbandonata nella scogliera occidentale. Una vecchia leggenda dice che la cripta ospitasse un re. Forse Thornpeak lo sigillò lì sotto dopo che il rituale di Malric lo trasformò in qualcosa di immortale. Entra nella cripta e guarda cosa resta dentro.",
+        "completion": "Le due metà della chiave combaciano, e il diario di Voss nomina ciò che sigillarono: l'anello del re Nythraxis. Se il diario dice il vero, quell'anello è la chiave della sua tomba.",
         "objectives": {
           "0": {
             "label": "Parte superiore della chiave"
@@ -4298,8 +4298,8 @@ export const it_IT: EnTranslations = {
       },
       "q_nythraxis_bound_guardian": {
         "title": "Il Guardiano Vincolato",
-        "text": "Voss scrisse che i sopravvissuti sigillarono l Anello del re dietro un antico guardiano, cosi che nessuno potesse raggiungere la tomba di Nythraxis per caso o ambizione. Porta la Chiave della cripta al cerchio rituale sul terreno piano a est della cripta abbandonata e a sud-est della tomba occidentale. Usala li, spezza il guardiano e riporta l anello.",
-        "completion": "Le tre reliquie raccontano la stessa storia: Aldren combatte per difendere il suo re, Malric spezzo il confine della morte e Voss tento di fermare cio che segui. Il sigillo si indebolisce, e questo anello e la chiave della tomba di Nythraxis. Ora sei armonizzato per entrare nella Cripta di Nythraxis.",
+        "text": "Voss scrisse che i sopravvissuti sigillarono l'Anello del re dietro un antico guardiano, così che nessuno potesse raggiungere la tomba di Nythraxis per caso o ambizione. Porta la Chiave della cripta al cerchio rituale sul terreno piano a est della cripta abbandonata e a sud-est della tomba occidentale. Usala lì, spezza il guardiano e riporta l'anello.",
+        "completion": "Le tre reliquie raccontano la stessa storia: Aldren combatté per difendere il suo re, Malric spezzò il confine della morte e Voss tentò di fermare ciò che seguì. Il sigillo si indebolisce, e questo anello è la chiave della tomba di Nythraxis. Ora sei armonizzato per entrare nella Cripta di Nythraxis.",
         "objectives": {
           "0": {
             "label": "Chiave di volta usata al cerchio rituale"
