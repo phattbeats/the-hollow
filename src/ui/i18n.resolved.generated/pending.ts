@@ -9,17 +9,77 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "itemUi.market.emptySearch",
+    "itemUi.market.searchAria",
+    "itemUi.market.searchPlaceholder",
+    "itemUi.market.truncated"
+  ],
+  "es_ES": [
+    "itemUi.market.emptySearch",
+    "itemUi.market.searchAria",
+    "itemUi.market.searchPlaceholder",
+    "itemUi.market.truncated"
+  ],
+  "fr_FR": [
+    "itemUi.market.emptySearch",
+    "itemUi.market.searchAria",
+    "itemUi.market.searchPlaceholder",
+    "itemUi.market.truncated"
+  ],
+  "fr_CA": [
+    "itemUi.market.emptySearch",
+    "itemUi.market.searchAria",
+    "itemUi.market.searchPlaceholder",
+    "itemUi.market.truncated"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
-  "zh_CN": [],
-  "zh_TW": [],
-  "ko_KR": [],
-  "ja_JP": [],
-  "pt_BR": [],
-  "ru_RU": []
+  "it_IT": [
+    "itemUi.market.emptySearch",
+    "itemUi.market.searchAria",
+    "itemUi.market.searchPlaceholder",
+    "itemUi.market.truncated"
+  ],
+  "de_DE": [
+    "itemUi.market.emptySearch",
+    "itemUi.market.searchAria",
+    "itemUi.market.searchPlaceholder",
+    "itemUi.market.truncated"
+  ],
+  "zh_CN": [
+    "itemUi.market.emptySearch",
+    "itemUi.market.searchAria",
+    "itemUi.market.searchPlaceholder",
+    "itemUi.market.truncated"
+  ],
+  "zh_TW": [
+    "itemUi.market.emptySearch",
+    "itemUi.market.searchAria",
+    "itemUi.market.searchPlaceholder",
+    "itemUi.market.truncated"
+  ],
+  "ko_KR": [
+    "itemUi.market.emptySearch",
+    "itemUi.market.searchAria",
+    "itemUi.market.searchPlaceholder",
+    "itemUi.market.truncated"
+  ],
+  "ja_JP": [
+    "itemUi.market.emptySearch",
+    "itemUi.market.searchAria",
+    "itemUi.market.searchPlaceholder",
+    "itemUi.market.truncated"
+  ],
+  "pt_BR": [
+    "itemUi.market.emptySearch",
+    "itemUi.market.searchAria",
+    "itemUi.market.searchPlaceholder",
+    "itemUi.market.truncated"
+  ],
+  "ru_RU": [
+    "itemUi.market.emptySearch",
+    "itemUi.market.searchAria",
+    "itemUi.market.searchPlaceholder",
+    "itemUi.market.truncated"
+  ]
 };
