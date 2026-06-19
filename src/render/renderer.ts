@@ -29,6 +29,7 @@ import { buildFish, FishView } from './fish';
 import { buildCritters, CritterField } from './critters';
 import { buildMotes, MotesView } from './motes';
 import { buildBirds, BirdsView } from './birds';
+import { buildImpactSite, type ImpactSiteView } from './impact_site';
 import { shouldRenderStealthGhost } from './stealth';
 import { t } from '../ui/i18n';
 import { tEntity } from '../ui/entity_i18n';
@@ -256,6 +257,7 @@ export class Renderer {
   private critters: CritterField;
   private motes: MotesView;
   private birds: BirdsView;
+  private impactSite: ImpactSiteView;
   private fogScratch = new THREE.Color();
   private flames: THREE.Mesh[];
   private fireLights: THREE.PointLight[];
@@ -471,6 +473,8 @@ export class Renderer {
     this.scene.add(this.motes.group);
     this.birds = buildBirds(this.sim.cfg.seed);
     this.scene.add(this.birds.group);
+    this.impactSite = buildImpactSite(this.sim.cfg.seed);
+    this.scene.add(this.impactSite.group);
     const props = buildProps(this.sim.cfg.seed);
     this.scene.add(props.group);
     this.flames = props.flames;
@@ -1420,6 +1424,7 @@ export class Renderer {
     this.critters.update(p.pos.x, p.pos.z, dt);
     this.motes.update(p.pos.x, p.pos.z, dt);
     this.birds.update(p.pos.x, p.pos.z, dt);
+    this.impactSite.update(p.pos.x, p.pos.z, dt);
 
     this.updateAmbience(p.pos.x, this.camera.position.y, dt);
     // shadow frustum follows the player
