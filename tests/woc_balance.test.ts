@@ -1,5 +1,22 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { fetchWocBalance, holderInfoForPubkey } from '../server/woc_balance';
+import bs58 from 'bs58';
+import { fetchWocBalance, holderInfoForPubkey, cachedWocBalance, handleWocBalance } from '../server/woc_balance';
+
+// A real 32-byte base58 Solana address (passes isSolanaAddress).
+const VALID_ADDR = bs58.encode(Uint8Array.from({ length: 32 }, (_, i) => i + 1));
+
+function makeRes(): any {
+  return {
+    statusCode: 0, body: '',
+    writeHead(s: number) { this.statusCode = s; return this; },
+    end(d: string) { this.body = d ?? ''; return this; },
+  };
+}
+const callBalance = async (owner: string) => {
+  const res = makeRes();
+  await handleWocBalance(res, owner);
+  return { status: res.statusCode, data: res.body ? JSON.parse(res.body) : {} };
+};
 
 // holderInfoForPubkey returns { tier, balance }; these cases assert the tier.
 const holderTierForPubkey = async (pubkey: string) => (await holderInfoForPubkey(pubkey)).tier;
@@ -170,5 +187,67 @@ describe('holderInfoForPubkey (tier + exact balance)', () => {
     vi.advanceTimersByTime(5 * 60 * 1000 + 1);
     vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('rpc down'); }));
     expect(await holderInfoForPubkey('infoKeepLast')).toEqual({ tier: 5, balance: 12_345 });
+  });
+});
+
+describe('cachedWocBalance', () => {
+  it('returns the freshly fetched balance', async () => {
+    vi.stubGlobal('fetch', mockRpc([10_000]));
+    expect(await cachedWocBalance('cacheFresh')).toBe(10_000);
+  });
+
+  it('serves the cached balance within the TTL (one RPC per wallet)', async () => {
+    const f = mockRpc([2_500]);
+    vi.stubGlobal('fetch', f);
+    expect(await cachedWocBalance('cacheHit')).toBe(2_500);
+    expect(await cachedWocBalance('cacheHit')).toBe(2_500);
+    expect(f).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the last known balance when a refresh fails after the TTL', async () => {
+    vi.useFakeTimers();
+    vi.stubGlobal('fetch', mockRpc([777]));
+    expect(await cachedWocBalance('cacheKeep')).toBe(777);
+    vi.advanceTimersByTime(5 * 60 * 1000 + 1);
+    vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('rpc down'); }));
+    expect(await cachedWocBalance('cacheKeep')).toBe(777); // last known, not null
+  });
+
+  it('returns null for a never-seen wallet when the RPC fails', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('rpc down'); }));
+    expect(await cachedWocBalance('cacheUnseen')).toBeNull();
+  });
+});
+
+describe('handleWocBalance (GET /api/woc/balance proxy)', () => {
+  it('rejects an invalid Solana address with 400 and never hits the RPC', async () => {
+    const f = vi.fn();
+    vi.stubGlobal('fetch', f);
+    const { status, data } = await callBalance('not-a-real-address');
+    expect(status).toBe(400);
+    expect(data.error).toMatch(/invalid Solana/i);
+    expect(f).not.toHaveBeenCalled();
+  });
+
+  it('rejects an empty owner with 400', async () => {
+    const f = vi.fn();
+    vi.stubGlobal('fetch', f);
+    expect((await callBalance('')).status).toBe(400);
+    expect(f).not.toHaveBeenCalled();
+  });
+
+  it('returns 200 with the exact balance for a valid address', async () => {
+    vi.stubGlobal('fetch', mockRpc([1_000, 234.5]));
+    const { status, data } = await callBalance(VALID_ADDR);
+    expect(status).toBe(200);
+    expect(data).toEqual({ balance: 1_234.5 });
+  });
+
+  it('returns 200 with balance:null when the RPC fails for an unseen wallet (UI omits it)', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('rpc down'); }));
+    const other = bs58.encode(Uint8Array.from({ length: 32 }, (_, i) => i + 40));
+    const { status, data } = await callBalance(other);
+    expect(status).toBe(200);
+    expect(data).toEqual({ balance: null });
   });
 });

@@ -9,7 +9,6 @@ import './wallet-polyfill';
 import { createAppKit } from '@reown/appkit';
 import { solana, solanaDevnet } from '@reown/appkit/networks';
 import { SolanaAdapter } from '@reown/appkit-adapter-solana';
-import { Connection, PublicKey } from '@solana/web3.js';
 import bs58 from 'bs58';
 
 export interface WalletState {
@@ -84,35 +83,16 @@ export async function signMessageBase58(message: string): Promise<string> {
 }
 
 // ── $WOC balance ────────────────────────────────────────────────────────────
-// The $WOC SPL mint and the RPC endpoint used to read balances. $WOC lives on
-// mainnet, so balances are read there regardless of which network the wallet is
-// on. Both overridable via env; the mint defaults to the published contract.
-const WOC_MINT = String(import.meta.env.VITE_WOC_MINT ?? '3WjLscH2JsXLEFJZRA9z8ti8yRGxWGKbqymPd7UicRth').trim();
-const SOLANA_RPC = String(import.meta.env.VITE_SOLANA_RPC_URL ?? 'https://api.mainnet-beta.solana.com').trim();
-
-let connection: Connection | null = null;
-function getConnection(): Connection {
-  if (!connection) connection = new Connection(SOLANA_RPC, 'confirmed');
-  return connection;
-}
-
-/**
- * Read the connected wallet's $WOC balance (uiAmount, summed across token
- * accounts for the mint). Returns 0 when the wallet holds none, or null if the
- * RPC read fails (network/rate-limit) so the UI can simply omit the balance.
- */
+// Read through the server proxy (GET /api/woc/balance). The Solana RPC endpoint —
+// and any API key embedded in it — lives ONLY on the server (see
+// server/woc_balance.ts), so nothing secret is inlined into this bundle. The
+// request is same-origin: the server that served this page holds the key.
 export async function fetchWocBalance(owner: string): Promise<number | null> {
   try {
-    const res = await getConnection().getParsedTokenAccountsByOwner(
-      new PublicKey(owner),
-      { mint: new PublicKey(WOC_MINT) },
-    );
-    let total = 0;
-    for (const { account } of res.value) {
-      const amount = account.data.parsed?.info?.tokenAmount?.uiAmount;
-      if (typeof amount === 'number') total += amount;
-    }
-    return total;
+    const res = await fetch(`/api/woc/balance?owner=${encodeURIComponent(owner)}`);
+    if (!res.ok) return null;
+    const data = (await res.json()) as { balance?: number | null };
+    return typeof data.balance === 'number' ? data.balance : null;
   } catch (err) {
     console.error('[wallet] $WOC balance read failed', err);
     return null;
