@@ -4217,7 +4217,7 @@ export const es: EnTranslations = {
       "releaseSpirit": "Liberar espíritu",
       "chatTab": "Chat",
       "combatLogTab": "Registro de combate",
-      "chatPlaceholder": "Di algo... (/w nombre susurro, /r responder, /p grupo, /gu hermandad, /o oficiales, /g general)",
+      "chatPlaceholder": "Di algo... (/w nombre susurro, /r responder, /p grupo, /gu hermandad, /o oficiales, /general general)",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
@@ -7939,7 +7939,7 @@ export const es_ES: EnTranslations = {
       "releaseSpirit": "Liberar espíritu",
       "chatTab": "Chat",
       "combatLogTab": "Registro de combate",
-      "chatPlaceholder": "Di algo... (/w nombre susurro, /r responder, /p grupo, /gu hermandad, /o oficiales, /g general)",
+      "chatPlaceholder": "Di algo... (/w nombre susurro, /r responder, /p grupo, /gu hermandad, /o oficiales, /general general)",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
@@ -11661,7 +11661,7 @@ export const fr_FR: EnTranslations = {
       "releaseSpirit": "Libérer l'esprit",
       "chatTab": "Discussion",
       "combatLogTab": "Journal de combat",
-      "chatPlaceholder": "Dites quelque chose... (/w nom chuchoter, /r répondre, /p groupe, /gu guilde, /o officiers, /g général)",
+      "chatPlaceholder": "Dites quelque chose... (/w nom chuchoter, /r répondre, /p groupe, /gu guilde, /o officiers, /general général)",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
@@ -15383,7 +15383,7 @@ export const fr_CA: EnTranslations = {
       "releaseSpirit": "Libérer l'esprit",
       "chatTab": "Discussion",
       "combatLogTab": "Journal de combat",
-      "chatPlaceholder": "Dites quelque chose... (/w nom chuchoter, /r répondre, /p groupe, /gu guilde, /o officiers, /g général)",
+      "chatPlaceholder": "Dites quelque chose... (/w nom chuchoter, /r répondre, /p groupe, /gu guilde, /o officiers, /general général)",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
@@ -22827,7 +22827,7 @@ export const it_IT: EnTranslations = {
       "releaseSpirit": "Libera spirito",
       "chatTab": "Chat",
       "combatLogTab": "Registro di combattimento",
-      "chatPlaceholder": "Di' qualcosa... (/w nome sussurro, /r risposta, /p gruppo, /gu gilda, /o ufficiali, /g generale)",
+      "chatPlaceholder": "Di' qualcosa... (/w nome sussurro, /r risposta, /p gruppo, /gu gilda, /o ufficiali, /general generale)",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
@@ -26549,7 +26549,7 @@ export const de_DE: EnTranslations = {
       "releaseSpirit": "Geist freigeben",
       "chatTab": "Chat",
       "combatLogTab": "Kampflog",
-      "chatPlaceholder": "Etwas sagen... (/w Name flüstern, /r antworten, /p Gruppe, /gu Gilde, /o Offiziere, /g Allgemein)",
+      "chatPlaceholder": "Etwas sagen... (/w Name flüstern, /r antworten, /p Gruppe, /gu Gilde, /o Offiziere, /general Allgemein)",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
@@ -30271,7 +30271,7 @@ export const zh_CN: EnTranslations = {
       "releaseSpirit": "释放灵魂",
       "chatTab": "聊天",
       "combatLogTab": "战斗记录",
-      "chatPlaceholder": "说点什么...（/w 名字 密语，/r 回复，/p 队伍，/gu 公会，/o 官员，/g 综合）",
+      "chatPlaceholder": "说点什么...（/w 名字 密语，/r 回复，/p 队伍，/gu 公会，/o 官员，/general 综合）",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
@@ -33993,7 +33993,7 @@ export const zh_TW: EnTranslations = {
       "releaseSpirit": "釋放靈魂",
       "chatTab": "聊天",
       "combatLogTab": "戰鬥紀錄",
-      "chatPlaceholder": "說點什麼...（/w 名字 密語，/r 回覆，/p 隊伍，/gu 公會，/o 幹部，/g 綜合）",
+      "chatPlaceholder": "說點什麼...（/w 名字 密語，/r 回覆，/p 隊伍，/gu 公會，/o 幹部，/general 綜合）",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
@@ -37715,7 +37715,7 @@ export const ko_KR: EnTranslations = {
       "releaseSpirit": "영혼 풀어주기",
       "chatTab": "채팅",
       "combatLogTab": "전투 기록",
-      "chatPlaceholder": "메시지 입력... (/w 이름 귓속말, /r 답장, /p 파티, /gu 길드, /o 장교, /g 일반)",
+      "chatPlaceholder": "메시지 입력... (/w 이름 귓속말, /r 답장, /p 파티, /gu 길드, /o 장교, /general 일반)",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
@@ -41437,7 +41437,7 @@ export const ja_JP: EnTranslations = {
       "releaseSpirit": "霊魂を解放",
       "chatTab": "チャット",
       "combatLogTab": "戦闘ログ",
-      "chatPlaceholder": "発言する... (/w 名前 ささやき、/r 返信、/p パーティ、/gu ギルド、/o オフィサー、/g 一般)",
+      "chatPlaceholder": "発言する... (/w 名前 ささやき、/r 返信、/p パーティ、/gu ギルド、/o オフィサー、/general 一般)",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
@@ -45159,7 +45159,7 @@ export const pt_BR: EnTranslations = {
       "releaseSpirit": "Liberar espírito",
       "chatTab": "Chat",
       "combatLogTab": "Registro de combate",
-      "chatPlaceholder": "Diga algo... (/w nome sussurrar, /r responder, /p grupo, /gu guilda, /o oficiais, /g geral)",
+      "chatPlaceholder": "Diga algo... (/w nome sussurrar, /r responder, /p grupo, /gu guilda, /o oficiais, /general geral)",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
@@ -48881,7 +48881,7 @@ export const ru_RU: EnTranslations = {
       "releaseSpirit": "Освободить дух",
       "chatTab": "Чат",
       "combatLogTab": "Журнал боя",
-      "chatPlaceholder": "Напишите сообщение... (/w имя шепот, /r ответ, /p группа, /gu гильдия, /o офицеры, /g общий)",
+      "chatPlaceholder": "Напишите сообщение... (/w имя шепот, /r ответ, /p группа, /gu гильдия, /o офицеры, /general общий)",
       "chatChannels": {
         "add": "Add chat channel",
         "addTitle": "Add channel",
