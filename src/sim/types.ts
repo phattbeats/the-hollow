@@ -112,8 +112,18 @@ export type EquipSlot =
   | 'gloves'
   | 'feet';
 
+export type SkinCatalog = 'class' | 'mech';
+
 export type ItemUse =
-  | { type: 'fishing' };
+  | { type: 'fishing' }
+  | { type: 'mechChroma'; chromaId: string }
+  // Opens the client-side event skin-select overlay. The server rolls a rank on
+  // use (see Sim.openSkinSelect) and the player locks one in via claimEventSkin.
+  | { type: 'skinSelect'; catalog?: SkinCatalog };
+
+// Rarity ranks for the cosmetic skin-select event, ordered low → high. A rolled
+// rank unlocks its own tier and every tier below it (epic unlocks rare+uncommon).
+export type SkinRank = 'uncommon' | 'rare' | 'epic';
 
 export interface ItemDef {
   id: string;
@@ -126,6 +136,9 @@ export interface ItemDef {
   sellValue: number; // copper (vendor buys at this)
   buyValue?: number; // copper (vendor sells at this)
   questId?: string;
+  noVendorSell?: boolean;
+  noDiscard?: boolean;
+  noMarketList?: boolean;
   /** Shown when interacting with a ground quest object before the quest is active. */
   pickupDeny?: string;
   /** Shown when the quest is active but the collect count is already met. */
@@ -891,6 +904,7 @@ export interface Entity {
   dead: boolean;
   scale: number;
   color: number;
+  skinCatalog: SkinCatalog; // player appearance catalog: class texture set or cosmetic body.
   skin: number; // player appearance: index into SKINS[visualKey]; 0 = default. synced in identity fields.
 }
 
@@ -963,6 +977,10 @@ export type SimEvent = { pid?: number } & (
   // entityId (when set) anchors the log to that entity so the server only
   // delivers it to nearby players; anchorless logs broadcast server-wide
   | { type: 'log'; text: string; color?: string; entityId?: number }
+  // personal cue (carries `pid`) to open the cosmetic skin-select overlay with
+  // the server-rolled rank. Text-free on purpose — the client renders its own
+  // localized copy, so no sim/server i18n matcher rule is needed.
+  | { type: 'skinEvent'; rank: SkinRank; catalog?: SkinCatalog }
 );
 
 export interface MoveInput {

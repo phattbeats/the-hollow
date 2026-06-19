@@ -149,6 +149,38 @@ export const en: EnTranslations = {
       }
     }
   },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
+    }
+  },
   "nav": {
     "home": "Home",
     "play": "Play",
@@ -2976,6 +3008,18 @@ export const en: EnTranslations = {
       },
       "kings_signet": {
         "name": "King's Signet"
+      },
+      "event_skin_token": {
+        "name": "Mysterious Cosmetic Cache"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Unknown Alien Weaponry"
+      },
+      "alien_armor_plate": {
+        "name": "Alien Armor Plate"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Amber Crimson"
       }
     },
     "mobs": {
@@ -3633,6 +3677,16 @@ export const en: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Waterlogged Idol"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "Aldric's Fallen Star",
+        "text": "I saw a rock fall out of the western sky, {playerName}. It struck the marsh wall and burst like a forge, far beyond the widow thicket. Go west, find what survived the explosion, and bring me anything that does not belong to this world.",
+        "completion": "This is no weapon I know. Look at how the plates fold. It may be a rare piece of armor, if it can be worn at all. Take it and try it on, {playerName}, but be careful.",
+        "objectives": {
+          "0": {
+            "label": "Unknown Alien Weaponry"
           }
         }
       },
@@ -4610,6 +4664,38 @@ export const es: EnTranslations = {
         "breakdownSpec": "Clase {classPts}, {spec} {specPts}",
         "unspent": " {count} sin gastar."
       }
+    }
+  },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
     }
   },
   "nav": {
@@ -7439,6 +7525,18 @@ export const es: EnTranslations = {
       },
       "kings_signet": {
         "name": "Anillo del rey"
+      },
+      "event_skin_token": {
+        "name": "Alijo cosmético misterioso"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Armamento alienígena desconocido"
+      },
+      "alien_armor_plate": {
+        "name": "Placa de armadura alienígena"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Ámbar carmesí"
       }
     },
     "mobs": {
@@ -8096,6 +8194,16 @@ export const es: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Ídolo empapado"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "La estrella caída de Aldric",
+        "text": "Vi una roca caer del cielo occidental, {playerName}. Golpeó el muro del pantano y estalló como una fragua, mucho más allá de la espesura de viudas. Ve al oeste, encuentra lo que sobrevivió a la explosión y tráeme cualquier cosa que no pertenezca a este mundo.",
+        "completion": "No conozco ningún arma así. Mira cómo se pliegan estas placas. Puede ser una rara pieza de armadura, si es que puede llevarse. Tómala y pruébatela, {playerName}, pero ten cuidado.",
+        "objectives": {
+          "0": {
+            "label": "Armamento alienígena desconocido"
           }
         }
       },
@@ -9073,6 +9181,38 @@ export const es_ES: EnTranslations = {
         "breakdownSpec": "Clase {classPts}, {spec} {specPts}",
         "unspent": " {count} sin gastar."
       }
+    }
+  },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
     }
   },
   "nav": {
@@ -11902,6 +12042,18 @@ export const es_ES: EnTranslations = {
       },
       "kings_signet": {
         "name": "Anillo del rey"
+      },
+      "event_skin_token": {
+        "name": "Alijo cosmético misterioso"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Armamento alienígena desconocido"
+      },
+      "alien_armor_plate": {
+        "name": "Placa de armadura alienígena"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Ámbar carmesí"
       }
     },
     "mobs": {
@@ -12559,6 +12711,16 @@ export const es_ES: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Ídolo empapado"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "La estrella caída de Aldric",
+        "text": "Vi una roca caer del cielo occidental, {playerName}. Golpeó el muro del pantano y estalló como una fragua, mucho más allá de la espesura de viudas. Ve al oeste, encuentra lo que sobrevivió a la explosión y tráeme cualquier cosa que no pertenezca a este mundo.",
+        "completion": "No conozco ningún arma así. Mira cómo se pliegan estas placas. Puede ser una rara pieza de armadura, si es que puede llevarse. Tómala y pruébatela, {playerName}, pero ten cuidado.",
+        "objectives": {
+          "0": {
+            "label": "Armamento alienígena desconocido"
           }
         }
       },
@@ -13536,6 +13698,38 @@ export const fr_FR: EnTranslations = {
         "breakdownSpec": "Classe {classPts}, {spec} {specPts}",
         "unspent": " {count} non dépensés."
       }
+    }
+  },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
     }
   },
   "nav": {
@@ -16365,6 +16559,18 @@ export const fr_FR: EnTranslations = {
       },
       "kings_signet": {
         "name": "Chevalière du roi"
+      },
+      "event_skin_token": {
+        "name": "Cache cosmétique mystérieuse"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Armement alien inconnu"
+      },
+      "alien_armor_plate": {
+        "name": "Plaque d'armure alien"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Ambre cramoisi"
       }
     },
     "mobs": {
@@ -17022,6 +17228,16 @@ export const fr_FR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Idole détrempée"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "L'étoile tombée d'Aldric",
+        "text": "J'ai vu une roche tomber du ciel à l'ouest, {playerName}. Elle a frappé la muraille du marais et a éclaté comme une forge, loin au-delà du bosquet des veuves. Allez vers l'ouest, trouvez ce qui a survécu à l'explosion et rapportez-moi tout ce qui n'appartient pas à ce monde.",
+        "completion": "Ce n'est aucune arme que je connaisse. Regardez comme ces plaques se replient. Ce pourrait être une rare pièce d'armure, si tant est qu'on puisse la porter. Prenez-la et essayez-la, {playerName}, mais soyez prudent.",
+        "objectives": {
+          "0": {
+            "label": "Armement alien inconnu"
           }
         }
       },
@@ -17999,6 +18215,38 @@ export const fr_CA: EnTranslations = {
         "breakdownSpec": "Classe {classPts}, {spec} {specPts}",
         "unspent": " {count} non dépensés."
       }
+    }
+  },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
     }
   },
   "nav": {
@@ -20828,6 +21076,18 @@ export const fr_CA: EnTranslations = {
       },
       "kings_signet": {
         "name": "Chevalière du roi"
+      },
+      "event_skin_token": {
+        "name": "Cache cosmétique mystérieuse"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Armement alien inconnu"
+      },
+      "alien_armor_plate": {
+        "name": "Plaque d'armure alien"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Ambre cramoisi"
       }
     },
     "mobs": {
@@ -21485,6 +21745,16 @@ export const fr_CA: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Idole détrempée"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "L'étoile tombée d'Aldric",
+        "text": "J'ai vu une roche tomber du ciel à l'ouest, {playerName}. Elle a frappé la muraille du marais et a éclaté comme une forge, loin au-delà du bosquet des veuves. Allez vers l'ouest, trouvez ce qui a survécu à l'explosion et rapportez-moi tout ce qui n'appartient pas à ce monde.",
+        "completion": "Ce n'est aucune arme que je connaisse. Regardez comme ces plaques se replient. Ce pourrait être une rare pièce d'armure, si tant est qu'on puisse la porter. Prenez-la et essayez-la, {playerName}, mais soyez prudent.",
+        "objectives": {
+          "0": {
+            "label": "Armement alien inconnu"
           }
         }
       },
@@ -22462,6 +22732,38 @@ export const en_CA: EnTranslations = {
         "breakdownSpec": "Class {classPts}, {spec} {specPts}",
         "unspent": " {count} unspent."
       }
+    }
+  },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
     }
   },
   "nav": {
@@ -25291,6 +25593,18 @@ export const en_CA: EnTranslations = {
       },
       "kings_signet": {
         "name": "King's Signet"
+      },
+      "event_skin_token": {
+        "name": "Mysterious Cosmetic Cache"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Unknown Alien Weaponry"
+      },
+      "alien_armor_plate": {
+        "name": "Alien Armor Plate"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Amber Crimson"
       }
     },
     "mobs": {
@@ -25948,6 +26262,16 @@ export const en_CA: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Waterlogged Idol"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "Aldric's Fallen Star",
+        "text": "I saw a rock fall out of the western sky, {playerName}. It struck the marsh wall and burst like a forge, far beyond the widow thicket. Go west, find what survived the explosion, and bring me anything that does not belong to this world.",
+        "completion": "This is no weapon I know. Look at how the plates fold. It may be a rare piece of armor, if it can be worn at all. Take it and try it on, {playerName}, but be careful.",
+        "objectives": {
+          "0": {
+            "label": "Unknown Alien Weaponry"
           }
         }
       },
@@ -26925,6 +27249,38 @@ export const it_IT: EnTranslations = {
         "breakdownSpec": "Classe {classPts}, {spec} {specPts}",
         "unspent": " {count} non spesi."
       }
+    }
+  },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
     }
   },
   "nav": {
@@ -29754,6 +30110,18 @@ export const it_IT: EnTranslations = {
       },
       "kings_signet": {
         "name": "Anello con sigillo del re"
+      },
+      "event_skin_token": {
+        "name": "Scrigno cosmetico misterioso"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Armamento alieno sconosciuto"
+      },
+      "alien_armor_plate": {
+        "name": "Piastra d'armatura aliena"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Ambra cremisi"
       }
     },
     "mobs": {
@@ -30411,6 +30779,16 @@ export const it_IT: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Idolo fradicio"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "La stella caduta di Aldric",
+        "text": "Ho visto una roccia cadere dal cielo occidentale, {playerName}. Ha colpito il muro della palude ed è esplosa come una forgia, ben oltre il boschetto delle vedove. Vai a ovest, trova ciò che è sopravvissuto all'esplosione e portami qualsiasi cosa non appartenga a questo mondo.",
+        "completion": "Non è un'arma che conosca. Guarda come si piegano le piastre. Potrebbe essere un raro pezzo d'armatura, se si può indossare. Prendilo e provalo, {playerName}, ma fai attenzione.",
+        "objectives": {
+          "0": {
+            "label": "Armamento alieno sconosciuto"
           }
         }
       },
@@ -31388,6 +31766,38 @@ export const de_DE: EnTranslations = {
         "breakdownSpec": "Klasse {classPts}, {spec} {specPts}",
         "unspent": " {count} nicht ausgegeben."
       }
+    }
+  },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
     }
   },
   "nav": {
@@ -34217,6 +34627,18 @@ export const de_DE: EnTranslations = {
       },
       "kings_signet": {
         "name": "Siegelring des Königs"
+      },
+      "event_skin_token": {
+        "name": "Geheimnisvolle Kosmetiktruhe"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Unbekannte Alien-Waffen"
+      },
+      "alien_armor_plate": {
+        "name": "Alien-Rüstungsplatte"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Bernstein-Karmesin"
       }
     },
     "mobs": {
@@ -34874,6 +35296,16 @@ export const de_DE: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Durchnässtes Götzenbild"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "Aldrics gefallener Stern",
+        "text": "Ich sah einen Felsen aus dem westlichen Himmel fallen, {playerName}. Er traf die Moorwand und barst wie eine Schmiede, weit hinter dem Witwendickicht. Geh nach Westen, finde, was die Explosion überstanden hat, und bring mir alles, was nicht in diese Welt gehört.",
+        "completion": "Das ist keine Waffe, die ich kenne. Sieh dir an, wie sich die Platten falten. Es könnte ein seltenes Rüstungsteil sein, falls man es überhaupt tragen kann. Nimm es und probiere es an, {playerName}, aber sei vorsichtig.",
+        "objectives": {
+          "0": {
+            "label": "Unbekannte Alien-Waffen"
           }
         }
       },
@@ -35851,6 +36283,38 @@ export const zh_CN: EnTranslations = {
         "breakdownSpec": "职业 {classPts}，{spec} {specPts}",
         "unspent": " 剩余 {count} 点未用。"
       }
+    }
+  },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
     }
   },
   "nav": {
@@ -38680,6 +39144,18 @@ export const zh_CN: EnTranslations = {
       },
       "kings_signet": {
         "name": "国王印戒"
+      },
+      "event_skin_token": {
+        "name": "神秘外观宝箱"
+      },
+      "unknown_alien_weaponry": {
+        "name": "未知异星武器"
+      },
+      "alien_armor_plate": {
+        "name": "异星护甲板"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "琥珀绯红"
       }
     },
     "mobs": {
@@ -39337,6 +39813,16 @@ export const zh_CN: EnTranslations = {
         "objectives": {
           "0": {
             "label": "浸水神像"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "奥德里克的坠星",
+        "text": "我看见一块岩石从西方天空坠落，{playerName}。它撞上沼泽墙，像熔炉一样爆开，远在寡妇林之外。往西去，找出爆炸后留下的东西，把不属于这个世界的物件带回来。",
+        "completion": "这不是我认识的武器。看这些板片折叠的方式。若能穿戴，它也许是一件稀有护甲。带上它试试看，{playerName}，但要小心。",
+        "objectives": {
+          "0": {
+            "label": "未知异星武器"
           }
         }
       },
@@ -40314,6 +40800,38 @@ export const zh_TW: EnTranslations = {
         "breakdownSpec": "職業 {classPts}，{spec} {specPts}",
         "unspent": " 剩餘 {count} 點未用。"
       }
+    }
+  },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
     }
   },
   "nav": {
@@ -43143,6 +43661,18 @@ export const zh_TW: EnTranslations = {
       },
       "kings_signet": {
         "name": "國王印戒"
+      },
+      "event_skin_token": {
+        "name": "神秘外觀寶箱"
+      },
+      "unknown_alien_weaponry": {
+        "name": "未知異星武器"
+      },
+      "alien_armor_plate": {
+        "name": "異星護甲板"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "琥珀緋紅"
       }
     },
     "mobs": {
@@ -43800,6 +44330,16 @@ export const zh_TW: EnTranslations = {
         "objectives": {
           "0": {
             "label": "浸水神像"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "奧德里克的墜星",
+        "text": "我看見一塊岩石從西方天空墜落，{playerName}。它撞上沼澤牆，像熔爐一樣爆開，遠在寡婦林之外。往西去，找出爆炸後留下的東西，把不屬於這個世界的物件帶回來。",
+        "completion": "這不是我認識的武器。看這些板片折疊的方式。若能穿戴，它也許是一件稀有護甲。帶上它試試看，{playerName}，但要小心。",
+        "objectives": {
+          "0": {
+            "label": "未知異星武器"
           }
         }
       },
@@ -44777,6 +45317,38 @@ export const ko_KR: EnTranslations = {
         "breakdownSpec": "직업 {classPts}, {spec} {specPts}",
         "unspent": " {count}점 미사용."
       }
+    }
+  },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
     }
   },
   "nav": {
@@ -47606,6 +48178,18 @@ export const ko_KR: EnTranslations = {
       },
       "kings_signet": {
         "name": "왕의 인장 반지"
+      },
+      "event_skin_token": {
+        "name": "신비한 외형 상자"
+      },
+      "unknown_alien_weaponry": {
+        "name": "알 수 없는 외계 무기"
+      },
+      "alien_armor_plate": {
+        "name": "외계 갑옷 판"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "호박 진홍"
       }
     },
     "mobs": {
@@ -48263,6 +48847,16 @@ export const ko_KR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "물먹은 우상"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "알드릭의 떨어진 별",
+        "text": "저는 서쪽 하늘에서 바위가 떨어지는 것을 보았습니다, {playerName}. 그것은 습지의 벽을 치고 대장간처럼 폭발했으며, 과부 숲 너머 먼 곳이었습니다. 서쪽으로 가서 폭발 뒤에 남은 것을 찾고, 이 세계의 것이 아닌 것은 무엇이든 가져오십시오.",
+        "completion": "제가 아는 무기는 아닙니다. 판들이 접히는 모양을 보십시오. 착용할 수 있다면 드문 갑옷 조각일지도 모릅니다. 가져가서 입어 보십시오, {playerName}. 다만 조심하십시오.",
+        "objectives": {
+          "0": {
+            "label": "알 수 없는 외계 무기"
           }
         }
       },
@@ -49240,6 +49834,38 @@ export const ja_JP: EnTranslations = {
         "breakdownSpec": "クラス {classPts}、{spec} {specPts}",
         "unspent": " 未使用 {count}。"
       }
+    }
+  },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
     }
   },
   "nav": {
@@ -52069,6 +52695,18 @@ export const ja_JP: EnTranslations = {
       },
       "kings_signet": {
         "name": "王の印章指輪"
+      },
+      "event_skin_token": {
+        "name": "謎めいた装いの宝箱"
+      },
+      "unknown_alien_weaponry": {
+        "name": "未知の異星武装"
+      },
+      "alien_armor_plate": {
+        "name": "異星の装甲板"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "琥珀の深紅"
       }
     },
     "mobs": {
@@ -52726,6 +53364,16 @@ export const ja_JP: EnTranslations = {
         "objectives": {
           "0": {
             "label": "水浸しの偶像"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "アルドリックの落ちた星",
+        "text": "西の空から岩が落ちるのを見ました、{playerName}。それは沼の壁にぶつかり、炉のように爆ぜました。ウィドウの茂みのさらに向こうです。西へ向かい、爆発に耐えて残ったものを探し、この世界のものではない何かを持ち帰ってください。",
+        "completion": "これは私の知る武器ではありません。板が折り重なる様子を見てください。身に着けられるなら、希少な鎧の一部かもしれません。持って行って試してみてください、{playerName}。ただし気をつけて。",
+        "objectives": {
+          "0": {
+            "label": "未知の異星武装"
           }
         }
       },
@@ -53703,6 +54351,38 @@ export const pt_BR: EnTranslations = {
         "breakdownSpec": "Classe {classPts}, {spec} {specPts}",
         "unspent": " {count} sem gastar."
       }
+    }
+  },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
     }
   },
   "nav": {
@@ -56532,6 +57212,18 @@ export const pt_BR: EnTranslations = {
       },
       "kings_signet": {
         "name": "Anel-sinete do rei"
+      },
+      "event_skin_token": {
+        "name": "Baú cosmético misterioso"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Armamento alienígena desconhecido"
+      },
+      "alien_armor_plate": {
+        "name": "Placa de armadura alienígena"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Âmbar carmesim"
       }
     },
     "mobs": {
@@ -57189,6 +57881,16 @@ export const pt_BR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Ídolo encharcado"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "A estrela caída de Aldric",
+        "text": "Vi uma rocha cair do céu a oeste, {playerName}. Ela atingiu a muralha do pântano e explodiu como uma forja, muito além do bosque das viúvas. Vá para oeste, descubra o que sobreviveu à explosão e traga-me qualquer coisa que não pertença a este mundo.",
+        "completion": "Isto não é uma arma que eu conheça. Veja como as placas se dobram. Pode ser uma peça rara de armadura, se puder ser usada. Leve-a e experimente-a, {playerName}, mas tenha cuidado.",
+        "objectives": {
+          "0": {
+            "label": "Armamento alienígena desconhecido"
           }
         }
       },
@@ -58166,6 +58868,38 @@ export const ru_RU: EnTranslations = {
         "breakdownSpec": "Класс {classPts}, {spec} {specPts}",
         "unspent": " не вложено: {count}."
       }
+    }
+  },
+  "skinEvent": {
+    "title": "Cosmetic Cache",
+    "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
+    "optionAria": "{rank} skin {index}",
+    "locked": "Locked",
+    "lockedHint": "Requires a {rank} roll",
+    "unavailable": "Coming soon",
+    "rolled": "You rolled {rank}",
+    "previewHint": "Drag to rotate",
+    "lockIn": "Lock In",
+    "close": "Close",
+    "unlocked": "Cosmetic unlocked!",
+    "unequip": "Unequip",
+    "previewOnly": "Preview only — full unlock coming soon",
+    "mech": {
+      "amber_crimson": "Amber Crimson",
+      "crimson_amber": "Crimson Amber",
+      "cyan_magenta": "Cyan Magenta",
+      "magenta_cyan": "Magenta Cyan",
+      "orange_steel": "Orange Steel",
+      "steel_orange": "Steel Orange",
+      "forest_pink": "Forest Pink",
+      "pink_forest": "Pink Forest",
+      "amethyst_silver": "Amethyst Silver",
+      "ivory_copper": "Ivory Copper",
+      "onyx_gold": "Onyx Gold",
+      "imperial_crimson": "Imperial Crimson",
+      "imperial_gold": "Imperial Gold",
+      "vanguard_azure": "Vanguard Azure",
+      "vanguard_chrome": "Vanguard Chrome"
     }
   },
   "nav": {
@@ -60995,6 +61729,18 @@ export const ru_RU: EnTranslations = {
       },
       "kings_signet": {
         "name": "Перстень короля"
+      },
+      "event_skin_token": {
+        "name": "Загадочный косметический тайник"
+      },
+      "unknown_alien_weaponry": {
+        "name": "Неизвестное инопланетное вооружение"
+      },
+      "alien_armor_plate": {
+        "name": "Пластина инопланетной брони"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Янтарно-багровый"
       }
     },
     "mobs": {
@@ -61652,6 +62398,16 @@ export const ru_RU: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Размокший идол"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "Падшая звезда Алдрика",
+        "text": "Я видел, как камень упал с западного неба, {playerName}. Он ударил в стену болота и вспыхнул, словно кузня, далеко за чащей вдов. Идите на запад, найдите то, что пережило взрыв, и принесите мне все, что не принадлежит этому миру.",
+        "completion": "Это не оружие, какое я знаю. Посмотрите, как складываются пластины. Возможно, это редкая часть брони, если ее вообще можно носить. Возьмите ее и примерьте, {playerName}, но будьте осторожны.",
+        "objectives": {
+          "0": {
+            "label": "Неизвестное инопланетное вооружение"
           }
         }
       },
@@ -62680,7 +63436,35 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.chatChannels.names.yell",
     "hud.core.chatChannels.sendingTo",
     "hud.options.npcVoices",
-    "hud.options.voiceVolume"
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.mech.amber_crimson",
+    "skinEvent.mech.amethyst_silver",
+    "skinEvent.mech.crimson_amber",
+    "skinEvent.mech.cyan_magenta",
+    "skinEvent.mech.forest_pink",
+    "skinEvent.mech.imperial_crimson",
+    "skinEvent.mech.imperial_gold",
+    "skinEvent.mech.ivory_copper",
+    "skinEvent.mech.magenta_cyan",
+    "skinEvent.mech.onyx_gold",
+    "skinEvent.mech.orange_steel",
+    "skinEvent.mech.pink_forest",
+    "skinEvent.mech.steel_orange",
+    "skinEvent.mech.vanguard_azure",
+    "skinEvent.mech.vanguard_chrome",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.previewOnly",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unequip",
+    "skinEvent.unlocked"
   ],
   "es_ES": [
     "entities.mobs.bramble_lynx.name",
@@ -62853,7 +63637,35 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.chatChannels.names.yell",
     "hud.core.chatChannels.sendingTo",
     "hud.options.npcVoices",
-    "hud.options.voiceVolume"
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.mech.amber_crimson",
+    "skinEvent.mech.amethyst_silver",
+    "skinEvent.mech.crimson_amber",
+    "skinEvent.mech.cyan_magenta",
+    "skinEvent.mech.forest_pink",
+    "skinEvent.mech.imperial_crimson",
+    "skinEvent.mech.imperial_gold",
+    "skinEvent.mech.ivory_copper",
+    "skinEvent.mech.magenta_cyan",
+    "skinEvent.mech.onyx_gold",
+    "skinEvent.mech.orange_steel",
+    "skinEvent.mech.pink_forest",
+    "skinEvent.mech.steel_orange",
+    "skinEvent.mech.vanguard_azure",
+    "skinEvent.mech.vanguard_chrome",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.previewOnly",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unequip",
+    "skinEvent.unlocked"
   ],
   "fr_FR": [
     "entities.mobs.bramble_lynx.name",
@@ -63026,7 +63838,35 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.chatChannels.names.yell",
     "hud.core.chatChannels.sendingTo",
     "hud.options.npcVoices",
-    "hud.options.voiceVolume"
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.mech.amber_crimson",
+    "skinEvent.mech.amethyst_silver",
+    "skinEvent.mech.crimson_amber",
+    "skinEvent.mech.cyan_magenta",
+    "skinEvent.mech.forest_pink",
+    "skinEvent.mech.imperial_crimson",
+    "skinEvent.mech.imperial_gold",
+    "skinEvent.mech.ivory_copper",
+    "skinEvent.mech.magenta_cyan",
+    "skinEvent.mech.onyx_gold",
+    "skinEvent.mech.orange_steel",
+    "skinEvent.mech.pink_forest",
+    "skinEvent.mech.steel_orange",
+    "skinEvent.mech.vanguard_azure",
+    "skinEvent.mech.vanguard_chrome",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.previewOnly",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unequip",
+    "skinEvent.unlocked"
   ],
   "fr_CA": [
     "entities.mobs.bramble_lynx.name",
@@ -63199,7 +64039,35 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.chatChannels.names.yell",
     "hud.core.chatChannels.sendingTo",
     "hud.options.npcVoices",
-    "hud.options.voiceVolume"
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.mech.amber_crimson",
+    "skinEvent.mech.amethyst_silver",
+    "skinEvent.mech.crimson_amber",
+    "skinEvent.mech.cyan_magenta",
+    "skinEvent.mech.forest_pink",
+    "skinEvent.mech.imperial_crimson",
+    "skinEvent.mech.imperial_gold",
+    "skinEvent.mech.ivory_copper",
+    "skinEvent.mech.magenta_cyan",
+    "skinEvent.mech.onyx_gold",
+    "skinEvent.mech.orange_steel",
+    "skinEvent.mech.pink_forest",
+    "skinEvent.mech.steel_orange",
+    "skinEvent.mech.vanguard_azure",
+    "skinEvent.mech.vanguard_chrome",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.previewOnly",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unequip",
+    "skinEvent.unlocked"
   ],
   "en_CA": [],
   "it_IT": [
@@ -63373,7 +64241,35 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.chatChannels.names.yell",
     "hud.core.chatChannels.sendingTo",
     "hud.options.npcVoices",
-    "hud.options.voiceVolume"
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.mech.amber_crimson",
+    "skinEvent.mech.amethyst_silver",
+    "skinEvent.mech.crimson_amber",
+    "skinEvent.mech.cyan_magenta",
+    "skinEvent.mech.forest_pink",
+    "skinEvent.mech.imperial_crimson",
+    "skinEvent.mech.imperial_gold",
+    "skinEvent.mech.ivory_copper",
+    "skinEvent.mech.magenta_cyan",
+    "skinEvent.mech.onyx_gold",
+    "skinEvent.mech.orange_steel",
+    "skinEvent.mech.pink_forest",
+    "skinEvent.mech.steel_orange",
+    "skinEvent.mech.vanguard_azure",
+    "skinEvent.mech.vanguard_chrome",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.previewOnly",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unequip",
+    "skinEvent.unlocked"
   ],
   "de_DE": [
     "entities.mobs.bramble_lynx.name",
@@ -63546,7 +64442,35 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.chatChannels.names.yell",
     "hud.core.chatChannels.sendingTo",
     "hud.options.npcVoices",
-    "hud.options.voiceVolume"
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.mech.amber_crimson",
+    "skinEvent.mech.amethyst_silver",
+    "skinEvent.mech.crimson_amber",
+    "skinEvent.mech.cyan_magenta",
+    "skinEvent.mech.forest_pink",
+    "skinEvent.mech.imperial_crimson",
+    "skinEvent.mech.imperial_gold",
+    "skinEvent.mech.ivory_copper",
+    "skinEvent.mech.magenta_cyan",
+    "skinEvent.mech.onyx_gold",
+    "skinEvent.mech.orange_steel",
+    "skinEvent.mech.pink_forest",
+    "skinEvent.mech.steel_orange",
+    "skinEvent.mech.vanguard_azure",
+    "skinEvent.mech.vanguard_chrome",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.previewOnly",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unequip",
+    "skinEvent.unlocked"
   ],
   "zh_CN": [
     "entities.mobs.bramble_lynx.name",
@@ -63719,7 +64643,35 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.chatChannels.names.yell",
     "hud.core.chatChannels.sendingTo",
     "hud.options.npcVoices",
-    "hud.options.voiceVolume"
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.mech.amber_crimson",
+    "skinEvent.mech.amethyst_silver",
+    "skinEvent.mech.crimson_amber",
+    "skinEvent.mech.cyan_magenta",
+    "skinEvent.mech.forest_pink",
+    "skinEvent.mech.imperial_crimson",
+    "skinEvent.mech.imperial_gold",
+    "skinEvent.mech.ivory_copper",
+    "skinEvent.mech.magenta_cyan",
+    "skinEvent.mech.onyx_gold",
+    "skinEvent.mech.orange_steel",
+    "skinEvent.mech.pink_forest",
+    "skinEvent.mech.steel_orange",
+    "skinEvent.mech.vanguard_azure",
+    "skinEvent.mech.vanguard_chrome",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.previewOnly",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unequip",
+    "skinEvent.unlocked"
   ],
   "zh_TW": [
     "entities.mobs.bramble_lynx.name",
@@ -63892,7 +64844,35 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.chatChannels.names.yell",
     "hud.core.chatChannels.sendingTo",
     "hud.options.npcVoices",
-    "hud.options.voiceVolume"
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.mech.amber_crimson",
+    "skinEvent.mech.amethyst_silver",
+    "skinEvent.mech.crimson_amber",
+    "skinEvent.mech.cyan_magenta",
+    "skinEvent.mech.forest_pink",
+    "skinEvent.mech.imperial_crimson",
+    "skinEvent.mech.imperial_gold",
+    "skinEvent.mech.ivory_copper",
+    "skinEvent.mech.magenta_cyan",
+    "skinEvent.mech.onyx_gold",
+    "skinEvent.mech.orange_steel",
+    "skinEvent.mech.pink_forest",
+    "skinEvent.mech.steel_orange",
+    "skinEvent.mech.vanguard_azure",
+    "skinEvent.mech.vanguard_chrome",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.previewOnly",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unequip",
+    "skinEvent.unlocked"
   ],
   "ko_KR": [
     "entities.mobs.bramble_lynx.name",
@@ -64065,7 +65045,35 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.chatChannels.names.yell",
     "hud.core.chatChannels.sendingTo",
     "hud.options.npcVoices",
-    "hud.options.voiceVolume"
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.mech.amber_crimson",
+    "skinEvent.mech.amethyst_silver",
+    "skinEvent.mech.crimson_amber",
+    "skinEvent.mech.cyan_magenta",
+    "skinEvent.mech.forest_pink",
+    "skinEvent.mech.imperial_crimson",
+    "skinEvent.mech.imperial_gold",
+    "skinEvent.mech.ivory_copper",
+    "skinEvent.mech.magenta_cyan",
+    "skinEvent.mech.onyx_gold",
+    "skinEvent.mech.orange_steel",
+    "skinEvent.mech.pink_forest",
+    "skinEvent.mech.steel_orange",
+    "skinEvent.mech.vanguard_azure",
+    "skinEvent.mech.vanguard_chrome",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.previewOnly",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unequip",
+    "skinEvent.unlocked"
   ],
   "ja_JP": [
     "entities.mobs.bramble_lynx.name",
@@ -64238,7 +65246,35 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.chatChannels.names.yell",
     "hud.core.chatChannels.sendingTo",
     "hud.options.npcVoices",
-    "hud.options.voiceVolume"
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.mech.amber_crimson",
+    "skinEvent.mech.amethyst_silver",
+    "skinEvent.mech.crimson_amber",
+    "skinEvent.mech.cyan_magenta",
+    "skinEvent.mech.forest_pink",
+    "skinEvent.mech.imperial_crimson",
+    "skinEvent.mech.imperial_gold",
+    "skinEvent.mech.ivory_copper",
+    "skinEvent.mech.magenta_cyan",
+    "skinEvent.mech.onyx_gold",
+    "skinEvent.mech.orange_steel",
+    "skinEvent.mech.pink_forest",
+    "skinEvent.mech.steel_orange",
+    "skinEvent.mech.vanguard_azure",
+    "skinEvent.mech.vanguard_chrome",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.previewOnly",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unequip",
+    "skinEvent.unlocked"
   ],
   "pt_BR": [
     "entities.mobs.bramble_lynx.name",
@@ -64411,7 +65447,35 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.chatChannels.names.yell",
     "hud.core.chatChannels.sendingTo",
     "hud.options.npcVoices",
-    "hud.options.voiceVolume"
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.mech.amber_crimson",
+    "skinEvent.mech.amethyst_silver",
+    "skinEvent.mech.crimson_amber",
+    "skinEvent.mech.cyan_magenta",
+    "skinEvent.mech.forest_pink",
+    "skinEvent.mech.imperial_crimson",
+    "skinEvent.mech.imperial_gold",
+    "skinEvent.mech.ivory_copper",
+    "skinEvent.mech.magenta_cyan",
+    "skinEvent.mech.onyx_gold",
+    "skinEvent.mech.orange_steel",
+    "skinEvent.mech.pink_forest",
+    "skinEvent.mech.steel_orange",
+    "skinEvent.mech.vanguard_azure",
+    "skinEvent.mech.vanguard_chrome",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.previewOnly",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unequip",
+    "skinEvent.unlocked"
   ],
   "ru_RU": [
     "entities.mobs.bramble_lynx.name",
@@ -64584,7 +65648,35 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.chatChannels.names.yell",
     "hud.core.chatChannels.sendingTo",
     "hud.options.npcVoices",
-    "hud.options.voiceVolume"
+    "hud.options.voiceVolume",
+    "skinEvent.close",
+    "skinEvent.lockIn",
+    "skinEvent.locked",
+    "skinEvent.lockedHint",
+    "skinEvent.mech.amber_crimson",
+    "skinEvent.mech.amethyst_silver",
+    "skinEvent.mech.crimson_amber",
+    "skinEvent.mech.cyan_magenta",
+    "skinEvent.mech.forest_pink",
+    "skinEvent.mech.imperial_crimson",
+    "skinEvent.mech.imperial_gold",
+    "skinEvent.mech.ivory_copper",
+    "skinEvent.mech.magenta_cyan",
+    "skinEvent.mech.onyx_gold",
+    "skinEvent.mech.orange_steel",
+    "skinEvent.mech.pink_forest",
+    "skinEvent.mech.steel_orange",
+    "skinEvent.mech.vanguard_azure",
+    "skinEvent.mech.vanguard_chrome",
+    "skinEvent.optionAria",
+    "skinEvent.previewHint",
+    "skinEvent.previewOnly",
+    "skinEvent.rolled",
+    "skinEvent.subtitle",
+    "skinEvent.title",
+    "skinEvent.unavailable",
+    "skinEvent.unequip",
+    "skinEvent.unlocked"
   ]
 };
 
@@ -64726,6 +65818,38 @@ export const en_XA: EnTranslations = {
         "breakdownSpec": "[Çļášš {classPts}, {spec} {specPts}]",
         "unspent": "[ {count} úñšþéñţ.]"
       }
+    }
+  },
+  "skinEvent": {
+    "title": "[Çóšɱéţíç Çáçĥé]",
+    "subtitle": "[Ýóú úñļóçķéð á {rank} ŕéŵáŕð — çĥóóšé áñý šķíñ áţ óŕ ƀéļóŵ íţ.]",
+    "optionAria": "[{rank} šķíñ {index}]",
+    "locked": "[Ļóçķéð]",
+    "lockedHint": "[Ŕéɋúíŕéš á {rank} ŕóļļ]",
+    "unavailable": "[Çóɱíñĝ šóóñ]",
+    "rolled": "[Ýóú ŕóļļéð {rank}]",
+    "previewHint": "[Ðŕáĝ ţó ŕóţáţé]",
+    "lockIn": "[Ļóçķ Íñ]",
+    "close": "[Çļóšé]",
+    "unlocked": "[Çóšɱéţíç úñļóçķéð!]",
+    "unequip": "[Úñéɋúíþ]",
+    "previewOnly": "[Þŕéʋíéŵ óñļý — ƒúļļ úñļóçķ çóɱíñĝ šóóñ]",
+    "mech": {
+      "amber_crimson": "[Áɱƀéŕ Çŕíɱšóñ]",
+      "crimson_amber": "[Çŕíɱšóñ Áɱƀéŕ]",
+      "cyan_magenta": "[Çýáñ Ɱáĝéñţá]",
+      "magenta_cyan": "[Ɱáĝéñţá Çýáñ]",
+      "orange_steel": "[Óŕáñĝé Šţééļ]",
+      "steel_orange": "[Šţééļ Óŕáñĝé]",
+      "forest_pink": "[Ƒóŕéšţ Þíñķ]",
+      "pink_forest": "[Þíñķ Ƒóŕéšţ]",
+      "amethyst_silver": "[Áɱéţĥýšţ Šíļʋéŕ]",
+      "ivory_copper": "[Íʋóŕý Çóþþéŕ]",
+      "onyx_gold": "[Óñýẋ Ĝóļð]",
+      "imperial_crimson": "[Íɱþéŕíáļ Çŕíɱšóñ]",
+      "imperial_gold": "[Íɱþéŕíáļ Ĝóļð]",
+      "vanguard_azure": "[Ʋáñĝúáŕð Ážúŕé]",
+      "vanguard_chrome": "[Ʋáñĝúáŕð Çĥŕóɱé]"
     }
   },
   "nav": {
@@ -67555,6 +68679,18 @@ export const en_XA: EnTranslations = {
       },
       "kings_signet": {
         "name": "[Ķíñĝ'š Šíĝñéţ]"
+      },
+      "event_skin_token": {
+        "name": "[Ɱýšţéŕíóúš Çóšɱéţíç Çáçĥé]"
+      },
+      "unknown_alien_weaponry": {
+        "name": "[Úñķñóŵñ Áļíéñ Ŵéáþóñŕý]"
+      },
+      "alien_armor_plate": {
+        "name": "[Áļíéñ Áŕɱóŕ Þļáţé]"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "[Áɱƀéŕ Çŕíɱšóñ]"
       }
     },
     "mobs": {
@@ -68212,6 +69348,16 @@ export const en_XA: EnTranslations = {
         "objectives": {
           "0": {
             "label": "[Ŵáţéŕļóĝĝéð Íðóļ]"
+          }
+        }
+      },
+      "q_aldrics_fallen_star": {
+        "title": "[Áļðŕíç'š Ƒáļļéñ Šţáŕ]",
+        "text": "[Í šáŵ á ŕóçķ ƒáļļ óúţ óƒ ţĥé ŵéšţéŕñ šķý, {playerName}. Íţ šţŕúçķ ţĥé ɱáŕšĥ ŵáļļ áñð ƀúŕšţ ļíķé á ƒóŕĝé, ƒáŕ ƀéýóñð ţĥé ŵíðóŵ ţĥíçķéţ. Ĝó ŵéšţ, ƒíñð ŵĥáţ šúŕʋíʋéð ţĥé éẋþļóšíóñ, áñð ƀŕíñĝ ɱé áñýţĥíñĝ ţĥáţ ðóéš ñóţ ƀéļóñĝ ţó ţĥíš ŵóŕļð.]",
+        "completion": "[Ţĥíš íš ñó ŵéáþóñ Í ķñóŵ. Ļóóķ áţ ĥóŵ ţĥé þļáţéš ƒóļð. Íţ ɱáý ƀé á ŕáŕé þíéçé óƒ áŕɱóŕ, íƒ íţ çáñ ƀé ŵóŕñ áţ áļļ. Ţáķé íţ áñð ţŕý íţ óñ, {playerName}, ƀúţ ƀé çáŕéƒúļ.]",
+        "objectives": {
+          "0": {
+            "label": "[Úñķñóŵñ Áļíéñ Ŵéáþóñŕý]"
           }
         }
       },

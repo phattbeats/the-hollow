@@ -9,6 +9,8 @@ import {
 import { cameraOcclusion } from '../sim/colliders';
 import type { BiomeId } from '../sim/types';
 import { AnimState, CharacterVisual, createCharacterVisual } from './characters';
+import { visualKeyFor } from './characters/manifest';
+import { mechAssetsReady, preloadMechAssets } from './characters/assets';
 import { isVisuallyDead } from './anim_state';
 import { LocoTrack, newLocoTrack, updateLocomotion } from './locomotion';
 import type { SpatialAudioSink, Surface } from './audio_sink';
@@ -30,6 +32,7 @@ import { buildFish, FishView } from './fish';
 import { buildCritters, CritterField } from './critters';
 import { buildMotes, MotesView } from './motes';
 import { buildBirds, BirdsView } from './birds';
+import { buildImpactSite, type ImpactSiteView } from './impact_site';
 import { shouldRenderStealthGhost } from './stealth';
 import { t } from '../ui/i18n';
 import { tEntity } from '../ui/entity_i18n';
@@ -123,6 +126,7 @@ interface EntityView {
   group: THREE.Group;
   /** rigged glTF visual for characters; null for object views (doors/crates) */
   visual: CharacterVisual | null;
+  visualKey: string | null;
   sheepVisual: CharacterVisual | null; // polymorph form, built lazily
   bearVisual: CharacterVisual | null; // druid bear form, built lazily
   catVisual: CharacterVisual | null; // druid cat form, built lazily
@@ -272,6 +276,7 @@ export class Renderer {
   private critters: CritterField;
   private motes: MotesView;
   private birds: BirdsView;
+  private impactSite: ImpactSiteView;
   private fogScratch = new THREE.Color();
   private flames: THREE.Mesh[];
   private fireLights: THREE.PointLight[];
@@ -498,6 +503,8 @@ export class Renderer {
     this.scene.add(this.motes.group);
     this.birds = buildBirds(this.sim.cfg.seed);
     this.scene.add(this.birds.group);
+    this.impactSite = buildImpactSite(this.sim.cfg.seed);
+    this.scene.add(this.impactSite.group);
     const props = buildProps(this.sim.cfg.seed);
     this.scene.add(props.group);
     this.flames = props.flames;
@@ -981,6 +988,11 @@ export class Renderer {
       sparkle.position.y = 1.35;
       group.add(sparkle);
     } else {
+      const visualKey = visualKeyFor(e);
+      if (visualKey === 'player_mech' && !mechAssetsReady()) {
+        void preloadMechAssets().catch((err) => console.error('Failed to preload live mech cosmetic:', err));
+        return;
+      }
       visual = createCharacterVisual(e);
       // entity scale is applied to the whole group below, so it can update live
       // (Fiesta size buffs) and also scale lazily-built form visuals for free.
@@ -1059,7 +1071,7 @@ export class Renderer {
     const objectCasters: THREE.Object3D[] = [];
     if (!visual) collectCasters(group, objectCasters);
     this.views.set(e.id, {
-      group, visual, sheepVisual: null, bearVisual: null, catVisual: null, height, clickTarget,
+      group, visual, visualKey: visual ? visualKeyFor(e) : null, sheepVisual: null, bearVisual: null, catVisual: null, height, clickTarget,
       nameplate: np, nameEl, hpBar, hpFill, emoteEl, emoteIconEl, emoteLabelEl, markerEl: marker, raidMarkEl: raidMark, comboRow, comboPips, castBar, castFill, castLabel, sparkle, objectMesh, portal,
       nameplateDisplay: 'none', nameplateTransform: '', nameplateSig: '', nameplateHpWidth: '', comboSig: '',
       objectCasters, shadowOn: true, isFar: false, lastOverheadEmoteKey: null,
@@ -1075,6 +1087,33 @@ export class Renderer {
     if (v.bearVisual?.root.visible) return v.bearVisual;
     if (v.catVisual?.root.visible) return v.catVisual;
     return v.visual;
+  }
+
+  private updateBaseVisual(e: Entity, v: EntityView): void {
+    if (!v.visual) return;
+    const nextKey = visualKeyFor(e);
+    if (nextKey === v.visualKey) return;
+    if (nextKey === 'player_mech' && !mechAssetsReady()) {
+      void preloadMechAssets().catch((err) => console.error('Failed to preload live mech cosmetic:', err));
+      return;
+    }
+    const next = createCharacterVisual(e);
+    next.root.scale.multiplyScalar(e.scale);
+    next.setShadow(v.shadowOn);
+    next.setFar(v.isFar);
+    next.root.visible = v.visual.root.visible;
+    const oldClickTarget = v.clickTarget;
+    const idx = this.clickTargets.indexOf(oldClickTarget);
+    v.visual.dispose();
+    v.group.remove(v.visual.root);
+    if (!e.templateId.startsWith('vision_')) next.clickProxy.userData.entityId = e.id;
+    if (idx >= 0) this.clickTargets[idx] = next.clickProxy;
+    v.visual = next;
+    v.visualKey = nextKey;
+    v.clickTarget = next.clickProxy;
+    v.height = next.height;
+    v.skin = e.skin;
+    v.group.add(next.root);
   }
 
   triggerAttack(entityId: number): void {
@@ -1382,6 +1421,9 @@ export class Renderer {
       }
       if (!v.visual) continue;
 
+      this.updateBaseVisual(e, v);
+      if (!v.visual) continue;
+
       // live skin swap — appearance changed (in-game changer or a multiplayer peer)
       if (e.skin !== v.skin) { v.skin = e.skin; v.visual.setSkin(e.skin); }
 
@@ -1598,6 +1640,7 @@ export class Renderer {
     this.critters.update(p.pos.x, p.pos.z, dt);
     this.motes.update(p.pos.x, p.pos.z, dt);
     this.birds.update(p.pos.x, p.pos.z, dt);
+    this.impactSite.update(p.pos.x, p.pos.z, dt);
 
     this.updateAmbience(p.pos.x, this.camera.position.y, dt);
     // shadow frustum follows the player

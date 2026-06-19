@@ -233,6 +233,11 @@ export interface MarketInfo {
   myListingCount: number; // how many active listings the viewer already has
 }
 
+export interface AccountCosmetics {
+  completedQuestIds: string[];
+  mechChromaIds: string[];
+}
+
 // The surface the renderer + HUD need from a game world. The offline `Sim`
 // satisfies this structurally; the online `ClientWorld` implements it by
 // mirroring server snapshots and sending commands over the socket.
@@ -245,6 +250,7 @@ export interface IWorld {
   inventory: InvSlot[];
   vendorBuyback: InvSlot[];
   equipment: Partial<Record<EquipSlot, string>>;
+  accountCosmetics: AccountCosmetics;
   copper: number;
   xp: number;
   // Post-cap progression (Max-Level XP Overflow). All server-authoritative;
@@ -278,7 +284,12 @@ export interface IWorld {
   buyItem(npcId: number, itemId: string): void;
   sellItem(itemId: string, count?: number): void;
   buyBackItem(itemId: string): void;
-  changeSkin(skin: number): void;
+  changeSkin(skin: number, catalog?: 'class' | 'mech'): void;
+  // Lock in a skin from the cosmetic skin-select event overlay. The server
+  // re-validates the choice against the rank it rolled (skinEvent) and consumes
+  // the event token; the offline Sim resolves it directly.
+  claimEventSkin(skin: number): void;
+  unequipMechChroma(chromaId: string): void;
   releaseSpirit(): void;
   chat(text: string): void;
   playEmote(emoteId: OverheadEmoteId): void;
