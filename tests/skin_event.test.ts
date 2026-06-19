@@ -64,37 +64,58 @@ describe('cosmetic skin-select event', () => {
     expect(sim.serializeCharacter(sim.playerId)?.pendingSkinRank ?? null).toBeNull();
   });
 
-  it('uses a specific mech cosmetic item as an account-wide unlock', () => {
+  it('uses the Aldric reward item as a mech cosmetic spinner token', () => {
     const sim = new Sim({ seed: 1, playerClass: 'mage', playerName: 'Mech' });
     sim.addItem('alien_armor_plate', 1);
 
     sim.useItem('alien_armor_plate');
 
-    expect(drainSkinEvent(sim)).toBeUndefined();
+    const roll = drainSkinEvent(sim);
+    expect(roll?.catalog).toBe('mech');
+    expect(sim.accountCosmetics.mechChromaIds).toEqual([]);
+    expect(sim.player.skinCatalog).toBe('class');
+    expect(sim.countItem('alien_armor_plate')).toBe(1);
+
+    const claim = sim.claimEventSkin(0);
+
+    expect(claim).toEqual({ catalog: 'mech', skin: 0, chromaId: 'amber_crimson' });
     expect(sim.accountCosmetics.mechChromaIds).toEqual(['amber_crimson']);
     expect(sim.player.skin).toBe(0);
     expect(sim.player.skinCatalog).toBe('mech');
     expect(sim.countItem('alien_armor_plate')).toBe(0);
   });
 
+  it('uses a returned specific mech cosmetic item as an account-wide unlock', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'mage', playerName: 'Mech' });
+    sim.addItem('amber_crimson_armor_plate', 1);
+
+    sim.useItem('amber_crimson_armor_plate');
+
+    expect(drainSkinEvent(sim)).toBeUndefined();
+    expect(sim.accountCosmetics.mechChromaIds).toEqual(['amber_crimson']);
+    expect(sim.player.skin).toBe(0);
+    expect(sim.player.skinCatalog).toBe('mech');
+    expect(sim.countItem('amber_crimson_armor_plate')).toBe(0);
+  });
+
   it('unequips a mech cosmetic account-wide and returns the specific item', () => {
     const sim = new Sim({ seed: 1, playerClass: 'shaman', playerName: 'Mechwearer' });
-    sim.addItem('alien_armor_plate', 1);
-    sim.useItem('alien_armor_plate');
+    sim.addItem('amber_crimson_armor_plate', 1);
+    sim.useItem('amber_crimson_armor_plate');
 
     expect((sim as any).unequipMechChroma('amber_crimson')).toBe(true);
 
     expect(sim.accountCosmetics.mechChromaIds).toEqual([]);
     expect(sim.player.skin).toBe(0);
     expect(sim.player.skinCatalog).toBe('class');
-    expect(sim.countItem('alien_armor_plate')).toBe(1);
+    expect(sim.countItem('amber_crimson_armor_plate')).toBe(1);
 
-    sim.useItem('alien_armor_plate');
+    sim.useItem('amber_crimson_armor_plate');
 
     expect(sim.accountCosmetics.mechChromaIds).toEqual(['amber_crimson']);
     expect(sim.player.skin).toBe(0);
     expect(sim.player.skinCatalog).toBe('mech');
-    expect(sim.countItem('alien_armor_plate')).toBe(0);
+    expect(sim.countItem('amber_crimson_armor_plate')).toBe(0);
   });
 
   it('can equip a mech cosmetic as the active live appearance catalog', () => {

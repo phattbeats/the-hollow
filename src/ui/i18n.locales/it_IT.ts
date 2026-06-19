@@ -1450,6 +1450,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   "entities.items.bastion_ward_stone.name": "Pietra di guardia del Bastione",
   "entities.items.unknown_alien_weaponry.name": "Armamento alieno sconosciuto",
   "entities.items.alien_armor_plate.name": "Piastra d'armatura aliena",
+  "entities.items.amber_crimson_armor_plate.name": "Ambra cremisi",
   "entities.items.deacons_cleaver.name": "Mannaia del diacono",
   "entities.items.staff_of_drowned_prayers.name": "Bastone delle preghiere annegate",
   "entities.items.mistbinder_kris.name": "Kris Leganebbia",

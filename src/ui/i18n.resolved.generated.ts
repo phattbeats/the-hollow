@@ -3016,6 +3016,9 @@ export const en: EnTranslations = {
         "name": "Unknown Alien Weaponry"
       },
       "alien_armor_plate": {
+        "name": "Alien Armor Plate"
+      },
+      "amber_crimson_armor_plate": {
         "name": "Amber Crimson"
       }
     },
@@ -7531,6 +7534,9 @@ export const es: EnTranslations = {
       },
       "alien_armor_plate": {
         "name": "Placa de armadura alienígena"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Ámbar carmesí"
       }
     },
     "mobs": {
@@ -12045,6 +12051,9 @@ export const es_ES: EnTranslations = {
       },
       "alien_armor_plate": {
         "name": "Placa de armadura alienígena"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Ámbar carmesí"
       }
     },
     "mobs": {
@@ -16559,6 +16568,9 @@ export const fr_FR: EnTranslations = {
       },
       "alien_armor_plate": {
         "name": "Plaque d'armure alien"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Ambre cramoisi"
       }
     },
     "mobs": {
@@ -21073,6 +21085,9 @@ export const fr_CA: EnTranslations = {
       },
       "alien_armor_plate": {
         "name": "Plaque d'armure alien"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Ambre cramoisi"
       }
     },
     "mobs": {
@@ -25586,6 +25601,9 @@ export const en_CA: EnTranslations = {
         "name": "Unknown Alien Weaponry"
       },
       "alien_armor_plate": {
+        "name": "Alien Armor Plate"
+      },
+      "amber_crimson_armor_plate": {
         "name": "Amber Crimson"
       }
     },
@@ -30101,6 +30119,9 @@ export const it_IT: EnTranslations = {
       },
       "alien_armor_plate": {
         "name": "Piastra d'armatura aliena"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Ambra cremisi"
       }
     },
     "mobs": {
@@ -34615,6 +34636,9 @@ export const de_DE: EnTranslations = {
       },
       "alien_armor_plate": {
         "name": "Alien-Rüstungsplatte"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Bernstein-Karmesin"
       }
     },
     "mobs": {
@@ -39129,6 +39153,9 @@ export const zh_CN: EnTranslations = {
       },
       "alien_armor_plate": {
         "name": "异星护甲板"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "琥珀绯红"
       }
     },
     "mobs": {
@@ -43643,6 +43670,9 @@ export const zh_TW: EnTranslations = {
       },
       "alien_armor_plate": {
         "name": "異星護甲板"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "琥珀緋紅"
       }
     },
     "mobs": {
@@ -48157,6 +48187,9 @@ export const ko_KR: EnTranslations = {
       },
       "alien_armor_plate": {
         "name": "외계 갑옷 판"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "호박 진홍"
       }
     },
     "mobs": {
@@ -52671,6 +52704,9 @@ export const ja_JP: EnTranslations = {
       },
       "alien_armor_plate": {
         "name": "異星の装甲板"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "琥珀の深紅"
       }
     },
     "mobs": {
@@ -57185,6 +57221,9 @@ export const pt_BR: EnTranslations = {
       },
       "alien_armor_plate": {
         "name": "Placa de armadura alienígena"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Âmbar carmesim"
       }
     },
     "mobs": {
@@ -61699,6 +61738,9 @@ export const ru_RU: EnTranslations = {
       },
       "alien_armor_plate": {
         "name": "Пластина инопланетной брони"
+      },
+      "amber_crimson_armor_plate": {
+        "name": "Янтарно-багровый"
       }
     },
     "mobs": {
@@ -68645,6 +68687,9 @@ export const en_XA: EnTranslations = {
         "name": "[Úñķñóŵñ Áļíéñ Ŵéáþóñŕý]"
       },
       "alien_armor_plate": {
+        "name": "[Áļíéñ Áŕɱóŕ Þļáţé]"
+      },
+      "amber_crimson_armor_plate": {
         "name": "[Áɱƀéŕ Çŕíɱšóñ]"
       }
     },

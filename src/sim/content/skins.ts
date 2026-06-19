@@ -60,7 +60,7 @@ export const MECH_CHROMAS: readonly MechChroma[] = [
 ] as const;
 
 export const ALDRIC_MECH_CHROMA_ID = 'amber_crimson';
-export const ALDRIC_MECH_CHROMA_ITEM_ID = 'alien_armor_plate';
+export const ALDRIC_MECH_CHROMA_ITEM_ID = 'amber_crimson_armor_plate';
 
 /** Ordinal of a rank (0 = lowest). Higher unlocks everything at or below it. */
 export function skinRankOrder(rank: SkinRank): number {

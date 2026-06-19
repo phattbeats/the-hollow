@@ -1453,6 +1453,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   "entities.items.bastion_ward_stone.name": "Pierre de garde du Bastion",
   "entities.items.unknown_alien_weaponry.name": "Armement alien inconnu",
   "entities.items.alien_armor_plate.name": "Plaque d'armure alien",
+  "entities.items.amber_crimson_armor_plate.name": "Ambre cramoisi",
   "entities.items.deacons_cleaver.name": "Fendoir du diacre",
   "entities.items.staff_of_drowned_prayers.name": "Bâton des prières noyées",
   "entities.items.mistbinder_kris.name": "Kris Lie-brume",

@@ -1453,6 +1453,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   "entities.items.bastion_ward_stone.name": "Piedra de guarda del Bastión",
   "entities.items.unknown_alien_weaponry.name": "Armamento alienígena desconocido",
   "entities.items.alien_armor_plate.name": "Placa de armadura alienígena",
+  "entities.items.amber_crimson_armor_plate.name": "Ámbar carmesí",
   "entities.items.deacons_cleaver.name": "Cuchilla del diácono",
   "entities.items.staff_of_drowned_prayers.name": "Bastón de plegarias ahogadas",
   "entities.items.mistbinder_kris.name": "Cris atanieblas",

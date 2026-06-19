@@ -1098,6 +1098,11 @@ export class Sim {
       meta.pendingSkinRank = null;
       meta.pendingSkinCatalog = null;
       meta.pendingSkinItemId = null;
+      const mechChromaIds = this.accountCosmetics.mechChromaIds.includes(chroma.id)
+        ? this.accountCosmetics.mechChromaIds
+        : [...this.accountCosmetics.mechChromaIds, chroma.id];
+      this.accountCosmetics = { ...this.accountCosmetics, mechChromaIds };
+      this.setPlayerSkin(meta.entityId, skin, 'mech');
       return { catalog: 'mech', skin, chromaId: chroma.id };
     }
     if (!rankAllowsSkin(granted, skin)) return null; // tier above the rolled rank

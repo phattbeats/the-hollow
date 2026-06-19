@@ -74,7 +74,7 @@ describe('GameServer sessions', () => {
     expect(server.sim.meta(session.pid)?.questsDone.has('q_aldrics_fallen_star')).toBe(true);
   });
 
-  it('stores the mech chroma on the account after using the cosmetic item', () => {
+  it('stores the mech chroma on the account after claiming from the Aldric spinner item', () => {
     grantAccountMechChroma.mockClear();
     const server = new GameServer();
     const session = expectJoined(server.join(fakeWs(), 11, 101, 'Mechclaim', 'mage', null));
@@ -83,6 +83,13 @@ describe('GameServer sessions', () => {
     server.sim.addItem('alien_armor_plate', 1, session.pid);
 
     server.handleMessage(session, JSON.stringify({ t: 'cmd', cmd: 'use', item: 'alien_armor_plate' }));
+
+    expect(grantAccountMechChroma).not.toHaveBeenCalled();
+    expect(session.accountCosmetics.mechChromaIds).not.toContain(MECH_CHROMAS[choice].id);
+    expect(server.sim.countItem('alien_armor_plate', session.pid)).toBe(1);
+    expect(server.sim.entities.get(session.pid)?.skinCatalog).not.toBe('mech');
+
+    server.handleMessage(session, JSON.stringify({ t: 'cmd', cmd: 'claim_event_skin', skin: choice }));
 
     expect(grantAccountMechChroma).toHaveBeenCalledWith(11, MECH_CHROMAS[choice].id);
     expect(session.accountCosmetics.mechChromaIds).toContain(MECH_CHROMAS[choice].id);
@@ -120,8 +127,8 @@ describe('GameServer sessions', () => {
     expect(second.accountCosmetics.mechChromaIds).not.toContain('amber_crimson');
     expect(server.sim.entities.get(first.pid)?.skinCatalog).toBe('class');
     expect(server.sim.entities.get(second.pid)?.skinCatalog).toBe('class');
-    expect(server.sim.countItem('alien_armor_plate', first.pid)).toBe(1);
-    expect(server.sim.countItem('alien_armor_plate', second.pid)).toBe(0);
+    expect(server.sim.countItem('amber_crimson_armor_plate', first.pid)).toBe(1);
+    expect(server.sim.countItem('amber_crimson_armor_plate', second.pid)).toBe(0);
   });
 
   it('keeps the character-id session index coherent across join, duplicate join, leave, and rejoin', async () => {

@@ -1450,6 +1450,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   "entities.items.bastion_ward_stone.name": "Bastion-Wachstein",
   "entities.items.unknown_alien_weaponry.name": "Unbekannte Alien-Waffen",
   "entities.items.alien_armor_plate.name": "Alien-Rüstungsplatte",
+  "entities.items.amber_crimson_armor_plate.name": "Bernstein-Karmesin",
   "entities.items.deacons_cleaver.name": "Beil des Diakons",
   "entities.items.staff_of_drowned_prayers.name": "Stab ertrunkener Gebete",
   "entities.items.mistbinder_kris.name": "Nebelbinder-Kris",

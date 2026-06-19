@@ -25,9 +25,9 @@
     "ru_RU"
   ],
   "counts": {
-    "keys": 2807,
-    "rows": 36491,
-    "translated": 34057,
+    "keys": 2808,
+    "rows": 36504,
+    "translated": 34070,
     "pending": 2388,
     "blocked": 46,
     "blockedSource": 104
@@ -37304,6 +37304,78 @@
       }
     },
     "main:entities.items.alien_armor_plate.name": {
+      "scope": "main",
+      "enHash": "36be713dd523501d",
+      "placeholders": [],
+      "locales": {
+        "es": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "es_ES": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "fr_FR": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "fr_CA": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "en_CA": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "it_IT": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "de_DE": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "zh_CN": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "zh_TW": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "ko_KR": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "ja_JP": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "pt_BR": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        },
+        "ru_RU": {
+          "state": "translated",
+          "srcHash": "36be713dd523501d",
+          "by": "human"
+        }
+      }
+    },
+    "main:entities.items.amber_crimson_armor_plate.name": {
       "scope": "main",
       "enHash": "605933513d6a84f4",
       "placeholders": [],

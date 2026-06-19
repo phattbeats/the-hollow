@@ -1450,6 +1450,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   "entities.items.bastion_ward_stone.name": "요새 수호석",
   "entities.items.unknown_alien_weaponry.name": "알 수 없는 외계 무기",
   "entities.items.alien_armor_plate.name": "외계 갑옷 판",
+  "entities.items.amber_crimson_armor_plate.name": "호박 진홍",
   "entities.items.deacons_cleaver.name": "부제의 도끼",
   "entities.items.staff_of_drowned_prayers.name": "익사한 기도의 지팡이",
   "entities.items.mistbinder_kris.name": "안개결속 크리스",

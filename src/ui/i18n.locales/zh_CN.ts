@@ -1450,6 +1450,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   "entities.items.bastion_ward_stone.name": "堡垒护符石",
   "entities.items.unknown_alien_weaponry.name": "未知异星武器",
   "entities.items.alien_armor_plate.name": "异星护甲板",
+  "entities.items.amber_crimson_armor_plate.name": "琥珀绯红",
   "entities.items.deacons_cleaver.name": "执事劈刀",
   "entities.items.staff_of_drowned_prayers.name": "溺亡祈祷法杖",
   "entities.items.mistbinder_kris.name": "缚雾短剑",

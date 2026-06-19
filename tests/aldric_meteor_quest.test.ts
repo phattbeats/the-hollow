@@ -1,11 +1,18 @@
 import { describe, expect, it } from 'vitest';
 import { GROUND_OBJECTS, ITEMS, NPCS, QUESTS, questRewardItemId } from '../src/sim/data';
 import { Sim } from '../src/sim/sim';
-import type { Entity } from '../src/sim/types';
+import type { Entity, SimEvent } from '../src/sim/types';
 
 const QUEST_ID = 'q_aldrics_fallen_star';
 const METEOR_ITEM_ID = 'unknown_alien_weaponry';
 const REWARD_ITEM_ID = 'alien_armor_plate';
+const RETURNED_CHROMA_ITEM_ID = 'amber_crimson_armor_plate';
+
+type SkinEvent = Extract<SimEvent, { type: 'skinEvent' }>;
+
+function drainSkinEvent(sim: Sim): SkinEvent | undefined {
+  return sim.tick().find((e): e is SkinEvent => e.type === 'skinEvent');
+}
 
 function teleportTo(sim: Sim, x: number, z: number): void {
   const pos = sim.groundPos(x, z);
@@ -20,7 +27,7 @@ function standAtMerchant(sim: Sim): void {
 }
 
 describe('Brother Aldric fallen star quest', () => {
-  it('is offered by Mirefen Aldric and rewards the account cosmetic cache through the meteor pickup', () => {
+  it('is offered by Mirefen Aldric and rewards a mech cosmetic roll through the meteor pickup', () => {
     const quest = QUESTS[QUEST_ID];
     expect(quest).toBeTruthy();
     expect(quest.giverNpcId).toBe('brother_aldric_fen');
@@ -31,12 +38,15 @@ describe('Brother Aldric fallen star quest', () => {
     expect(NPCS.brother_aldric_fen.questIds).toContain(QUEST_ID);
     expect(ITEMS[METEOR_ITEM_ID]?.questId).toBe(QUEST_ID);
     expect(ITEMS[REWARD_ITEM_ID]?.kind).toBe('tool');
-    expect(ITEMS[REWARD_ITEM_ID]?.name).toBe('Amber Crimson');
-    expect(ITEMS[REWARD_ITEM_ID]?.quality).toBe('uncommon');
-    expect(ITEMS[REWARD_ITEM_ID]?.use).toEqual({ type: 'mechChroma', chromaId: 'amber_crimson' });
+    expect(ITEMS[REWARD_ITEM_ID]?.name).toBe('Alien Armor Plate');
+    expect(ITEMS[REWARD_ITEM_ID]?.quality).toBe('rare');
+    expect(ITEMS[REWARD_ITEM_ID]?.use).toEqual({ type: 'skinSelect', catalog: 'mech' });
     expect(ITEMS[REWARD_ITEM_ID]?.noVendorSell).toBe(true);
     expect(ITEMS[REWARD_ITEM_ID]?.noDiscard).toBe(true);
     expect(ITEMS[REWARD_ITEM_ID]?.noMarketList).toBe(true);
+    expect(ITEMS[RETURNED_CHROMA_ITEM_ID]?.name).toBe('Amber Crimson');
+    expect(ITEMS[RETURNED_CHROMA_ITEM_ID]?.quality).toBe('uncommon');
+    expect(ITEMS[RETURNED_CHROMA_ITEM_ID]?.use).toEqual({ type: 'mechChroma', chromaId: 'amber_crimson' });
     expect(questRewardItemId(quest, 'warrior')).toBe(REWARD_ITEM_ID);
 
     const meteorObjectDef = GROUND_OBJECTS.find((obj) => obj.itemId === METEOR_ITEM_ID);
@@ -70,8 +80,17 @@ describe('Brother Aldric fallen star quest', () => {
     expect(sim.countItem(REWARD_ITEM_ID)).toBe(1);
 
     sim.useItem(REWARD_ITEM_ID);
+    const roll = drainSkinEvent(sim);
+    expect(roll?.catalog).toBe('mech');
+    expect(sim.countItem(REWARD_ITEM_ID)).toBe(1);
+    expect(sim.accountCosmetics.mechChromaIds).not.toContain('amber_crimson');
+    expect(sim.player.skinCatalog).not.toBe('mech');
+
+    const claim = sim.claimEventSkin(0);
+    expect(claim).toEqual({ catalog: 'mech', skin: 0, chromaId: 'amber_crimson' });
     expect(sim.accountCosmetics.mechChromaIds).toContain('amber_crimson');
     expect(sim.player.skinCatalog).toBe('mech');
+    expect(sim.countItem(REWARD_ITEM_ID)).toBe(0);
     expect(sim.equipment.chest).not.toBe(REWARD_ITEM_ID);
   });
 

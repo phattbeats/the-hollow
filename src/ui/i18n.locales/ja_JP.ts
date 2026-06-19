@@ -1450,6 +1450,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "entities.items.bastion_ward_stone.name": "砦の護り石",
   "entities.items.unknown_alien_weaponry.name": "未知の異星武装",
   "entities.items.alien_armor_plate.name": "異星の装甲板",
+  "entities.items.amber_crimson_armor_plate.name": "琥珀の深紅",
   "entities.items.deacons_cleaver.name": "助祭の肉切り",
   "entities.items.staff_of_drowned_prayers.name": "溺れた祈りの杖",
   "entities.items.mistbinder_kris.name": "霧縛りのクリス",

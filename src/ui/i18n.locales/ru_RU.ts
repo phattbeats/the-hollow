@@ -1450,6 +1450,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   "entities.items.bastion_ward_stone.name": "Обереговый камень бастиона",
   "entities.items.unknown_alien_weaponry.name": "Неизвестное инопланетное вооружение",
   "entities.items.alien_armor_plate.name": "Пластина инопланетной брони",
+  "entities.items.amber_crimson_armor_plate.name": "Янтарно-багровый",
   "entities.items.deacons_cleaver.name": "Тесак дьякона",
   "entities.items.staff_of_drowned_prayers.name": "Посох утонувших молитв",
   "entities.items.mistbinder_kris.name": "Крис Туманной Связи",
