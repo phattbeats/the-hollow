@@ -127,4 +127,19 @@ describe('druid spell pack — casting applies effects', () => {
     sim.tick();
     expect(e.auras.some((au) => au.kind === 'form_travel'), 'travel_form should shift even in combat').toBe(true);
   });
+
+  it('Dash grants +50% movement speed in cat form', () => {
+    const sim = makeWorld();
+    const a = sim.addPlayer('druid', 'Dasher');
+    const e = sim.entities.get(a)!;
+    sim.setPlayerLevel(20, a);
+    giveForm(sim, a, 'form_cat', 'Wolf Form');
+    e.resource = 100;
+    sim.castAbility('dash', a);
+    sim.tick();
+    const buff = e.auras.find((au) => au.kind === 'buff_speed');
+    expect(buff, 'dash should apply a buff_speed aura').toBeTruthy();
+    expect(buff!.value).toBeCloseTo(1.5);
+    expect((sim as any).moveSpeedMult(e)).toBeCloseTo(1.5);
+  });
 });
