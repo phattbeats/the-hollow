@@ -179,10 +179,10 @@ export async function fetchWocBalance(pubkey: string): Promise<number | null> {
  * read successfully (so callers can omit the figure). One per-wallet cache backs
  * both the holder-tier broadcast and the client balance proxy.
  */
-export async function cachedWocBalance(pubkey: string): Promise<number | null> {
+export async function cachedWocBalance(pubkey: string, fresh = false): Promise<number | null> {
   const now = Date.now();
   const hit = cache.get(pubkey);
-  if (hit && now - hit.at < CACHE_TTL_MS) {
+  if (!fresh && hit && now - hit.at < CACHE_TTL_MS) {
     recordUsageCacheEvent('woc.balance', 'hit');
     rememberCacheEntry(pubkey, hit);
     return hit.balance;
@@ -212,16 +212,18 @@ export async function holderInfoForPubkey(pubkey: string): Promise<{ tier: numbe
 }
 
 /**
- * GET /api/woc/balance?owner=<pubkey> → { balance: number | null }
+ * GET /api/woc/balance?owner=<pubkey>[&fresh=1] → { balance: number | null }
  *
  * Public proxy that keeps the RPC endpoint server-side. On-chain balances are
  * public, and this is narrow (only the $WOC mint, for one owner); the address is
  * validated before any RPC, the per-wallet cache plus the route's IP rate-limit
- * bound load, so it can't be abused as a general RPC passthrough.
+ * bound load, so it can't be abused as a general RPC passthrough. `fresh` skips
+ * the per-wallet TTL (used when the player opens a balance surface so a token
+ * change shows up) — still behind the route's IP rate-limit.
  */
-export async function handleWocBalance(res: http.ServerResponse, owner: string): Promise<void> {
+export async function handleWocBalance(res: http.ServerResponse, owner: string, fresh = false): Promise<void> {
   recordUsageMetric('woc.balance.api');
   if (!isSolanaAddress(owner)) return json(res, 400, { error: 'invalid Solana wallet address' });
-  const balance = await cachedWocBalance(owner);
+  const balance = await cachedWocBalance(owner, fresh);
   return json(res, 200, { balance });
 }

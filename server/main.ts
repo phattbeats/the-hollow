@@ -591,8 +591,11 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
         recordUsageMetric('woc.balance.rate_limited');
         return json(res, 429, { error: 'rate limited' });
       }
-      const owner = new URLSearchParams((req.url ?? '').split('?')[1] ?? '').get('owner') ?? '';
-      return handleWocBalance(res, owner);
+      // `fresh=1` is checked AFTER the IP rate-limit, so it can't be used to hammer the RPC.
+      const params = new URLSearchParams((req.url ?? '').split('?')[1] ?? '');
+      const owner = params.get('owner') ?? '';
+      const fresh = params.get('fresh') === '1';
+      return handleWocBalance(res, owner, fresh);
     }
     // Shareable player card: publish (PNG body) + referral stats for the card.
     if (req.method === 'POST' && url === '/api/card') {

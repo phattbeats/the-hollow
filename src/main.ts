@@ -840,6 +840,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     settings,
     onSettingChange: (key, value) => applySetting(key, value),
     changeLanguage: (lang, onStatus) => changeLanguage(lang, onStatus),
+    refreshWocBalance: () => refreshWocBalanceOnDemand(),
   });
   if (online) {
     hud.attachReporting({
@@ -3277,16 +3278,31 @@ async function disconnectUnverifiedWalletIfIdle(): Promise<void> {
 
 // Read the connected wallet's $WOC balance and re-render. Ignores a stale
 // response if the connected wallet changed while the RPC call was in flight.
-async function refreshWocBalance(address: string): Promise<void> {
-  connectedWocBalance = null;
-  updateWalletButton();
+// `fresh` bypasses the server's per-wallet cache (used when the player opens a
+// surface that shows the balance, so an on-chain token change shows up); an
+// initial (non-fresh) read clears the prior value first to show a loading state.
+async function refreshWocBalance(address: string, fresh = false): Promise<void> {
+  if (!fresh) {
+    connectedWocBalance = null;
+    updateWalletButton();
+  }
   const wallet = await loadWallet();
-  const balance = await wallet.fetchWocBalance(address);
-  if (wallet.currentWallet().address === address) {
+  const balance = await wallet.fetchWocBalance(address, fresh);
+  if (wallet.currentWallet().address === address || linkedWalletPubkey === address) {
     connectedWocBalance = balance;
     if (linkedWalletPubkey === address) linkedWocBalance = balance;
     updateWalletButton();
   }
+}
+
+// Re-fetch the connected/linked wallet's balance on demand (server cache
+// bypassed) so surfaces that display it — the bag footer and the player card —
+// reflect on-chain changes. No-op when the wallet feature is off or nothing is
+// connected/linked. Safe to call repeatedly; the IP rate-limit bounds RPC load.
+function refreshWocBalanceOnDemand(): void {
+  if (!WALLET_ENABLED) return;
+  const address = walletMod?.currentWallet().address ?? linkedWalletPubkey;
+  if (address) void refreshWocBalance(address, true);
 }
 
 function flashWalletError(message: string): void {

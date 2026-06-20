@@ -255,8 +255,12 @@ export class CharacterPreview {
     this.renderer.setPixelRatio(1);
     this.renderer.setSize(width, height, false);
     this.camera.aspect = width / height;
-    this.camera.position.set(-0.1, 1.32, 3.15);
-    this.camera.lookAt(new THREE.Vector3(-0.1, 1.12, 0));
+    // Pulled back (z 3.15→4.0) and aimed higher (y 1.12→1.40, eye 1.32→1.45) so
+    // the whole figure — including raised-weapon/arm poses above the 2.6 head top —
+    // sits centered and unclipped in the 540×720 capture (BUG: card character was
+    // out of bounds). The card's drawCharacter() fit math then frames it correctly.
+    this.camera.position.set(-0.1, 1.45, 4.0);
+    this.camera.lookAt(new THREE.Vector3(-0.1, 1.40, 0));
     this.camera.updateProjectionMatrix();
     this.characterGroup.rotation.y = angle;
     this.renderer.render(this.scene, this.camera);

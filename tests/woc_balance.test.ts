@@ -21,9 +21,9 @@ function makeRes(): any {
     end(d: string) { this.body = d ?? ''; return this; },
   };
 }
-const callBalance = async (owner: string) => {
+const callBalance = async (owner: string, fresh = false) => {
   const res = makeRes();
-  await handleWocBalance(res, owner);
+  await handleWocBalance(res, owner, fresh);
   return { status: res.statusCode, data: res.body ? JSON.parse(res.body) : {} };
 };
 
@@ -270,6 +270,22 @@ describe('cachedWocBalance', () => {
     expect(f).toHaveBeenCalledTimes(1);
   });
 
+  it('with fresh=true bypasses the TTL cache, re-fetches, and repopulates it', async () => {
+    const first = mockRpc([1_000]);
+    vi.stubGlobal('fetch', first);
+    expect(await cachedWocBalance('cacheFreshArg')).toBe(1_000); // primes the cache
+    expect(await cachedWocBalance('cacheFreshArg')).toBe(1_000); // served from cache
+    expect(first).toHaveBeenCalledTimes(1);
+    // The on-chain balance changed; a fresh read must reflect it within the TTL.
+    const second = mockRpc([4_200]);
+    vi.stubGlobal('fetch', second);
+    expect(await cachedWocBalance('cacheFreshArg', true)).toBe(4_200);
+    expect(second).toHaveBeenCalledTimes(1);
+    // The fresh read repopulated the cache, so a later normal call sees the new value.
+    expect(await cachedWocBalance('cacheFreshArg')).toBe(4_200);
+    expect(second).toHaveBeenCalledTimes(1);
+  });
+
   it('tracks cache hits, misses, stores and current cache size', async () => {
     const f = mockRpc([2_500]);
     vi.stubGlobal('fetch', f);
@@ -341,6 +357,16 @@ describe('handleWocBalance (GET /api/woc/balance proxy)', () => {
     const { status, data } = await callBalance(VALID_ADDR);
     expect(status).toBe(200);
     expect(data).toEqual({ balance: 1_234.5 });
+  });
+
+  it('forwards fresh=true to bypass the cache so a token change is reflected', async () => {
+    vi.stubGlobal('fetch', mockRpc([500]));
+    expect((await callBalance(VALID_ADDR)).data).toEqual({ balance: 500 }); // primes the cache
+    // Without fresh, the cached value is returned even though the chain changed.
+    vi.stubGlobal('fetch', mockRpc([900]));
+    expect((await callBalance(VALID_ADDR)).data).toEqual({ balance: 500 });
+    // With fresh, the proxy re-reads and returns the new balance.
+    expect((await callBalance(VALID_ADDR, true)).data).toEqual({ balance: 900 });
   });
 
   it('returns 200 with balance:null when the RPC fails for an unseen wallet (UI omits it)', async () => {
