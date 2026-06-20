@@ -30,7 +30,7 @@ await page.evaluate(() => {
 });
 await tap('#offline-select .mini-class[data-class="warrior"]');
 await tap('#btn-start-offline');
-await wait(3000);
+await wait(14000);
 
 const shot = async (name) => {
   await wait(600); // let the HUD frame loop repaint the panel + arrow

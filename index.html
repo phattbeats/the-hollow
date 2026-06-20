@@ -526,7 +526,7 @@
   .chat-bubble.yell { font-weight: bold; color: #7a1408; border-color: #c43a2a; }
 
   /* ---------- new-adventurer tutorial ---------- */
-  .tut-card { position: absolute; left: 50%; bottom: 132px; transform: translateX(-50%);
+  .tut-card { position: absolute; left: 50%; top: 16px; transform: translateX(-50%);
     width: 100%; max-width: 420px; box-sizing: border-box; pointer-events: auto;
     background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px;
     box-shadow: 0 6px 24px #000a, inset 0 0 0 1px #ffffff10; padding: 14px 16px 12px;
@@ -547,7 +547,7 @@
   .tut-arrow { position: absolute; left: 0; top: 0; display: none; pointer-events: none;
     font-size: 30px; line-height: 1; color: var(--gold); text-shadow: 0 0 8px #000, 0 1px 2px #000;
     z-index: 21; will-change: transform; animation: tut-pulse 1100ms ease-in-out infinite; }
-  @keyframes tut-in { from { transform: translateX(-50%) translateY(14px); opacity: 0; }
+  @keyframes tut-in { from { transform: translateX(-50%) translateY(-14px); opacity: 0; }
     to { transform: translateX(-50%); opacity: 1; } }
   @keyframes tut-pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
   @media (prefers-reduced-motion: reduce) {
