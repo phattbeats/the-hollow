@@ -10,22 +10,52 @@
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.footstepSounds"
   ],
   "es_ES": [
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.footstepSounds"
   ],
   "fr_FR": [
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.footstepSounds"
   ],
   "fr_CA": [
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.footstepSounds"
   ],
   "en_CA": [],
   "it_IT": [
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.footstepSounds"
   ],
   "de_DE": [
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.footstepSounds"
   ],
   "zh_CN": [],
@@ -33,6 +63,11 @@ export const pending: Record<string, readonly string[]> = {
   "ko_KR": [],
   "ja_JP": [],
   "pt_BR": [
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.footstepSounds"
   ],
   "ru_RU": []
