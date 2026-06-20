@@ -33,14 +33,14 @@ describe('percentile-tier ladder', () => {
 });
 
 describe('percentileRarityStyle', () => {
-  it('makes only legendary + epic pulse, and only the rarer grades glow', () => {
-    expect(percentileRarityStyle('legendary').pulseMs).toBeTruthy();
+  it('glows only for the rarer grades, with the sunburst reserved for the legendary apex', () => {
+    expect(percentileRarityStyle('legendary').halo).toBeGreaterThan(0);
     expect(percentileRarityStyle('legendary').rays).toBe(true);
-    expect(percentileRarityStyle('epic').pulseMs).toBeTruthy();
+    expect(percentileRarityStyle('epic').halo).toBeGreaterThan(0);
     expect(percentileRarityStyle('epic').rays).toBe(false);
-    // Rare glows but does not pulse; uncommon/common are plain medals.
-    expect(percentileRarityStyle('rare').pulseMs).toBeNull();
     expect(percentileRarityStyle('rare').halo).toBeGreaterThan(0);
+    expect(percentileRarityStyle('rare').rays).toBe(false);
+    // Uncommon/common are plain medals — no halo, no rays.
     expect(percentileRarityStyle('uncommon').halo).toBe(0);
     expect(percentileRarityStyle('common').halo).toBe(0);
   });
@@ -113,32 +113,28 @@ describe('percentileTierBadgeDataUrl', () => {
     expect(new Set(ids).size).toBe(PERCENTILE_TIERS.length);
   });
 
-  it('embeds a pulsing halo for legendary/epic and leaves common medals plain', () => {
+  it('embeds a static halo + apex sunburst for legendary, halo-only for epic, plain for common', () => {
     const svgFor = (p: number) => decodeURIComponent(
       percentileTierBadgeDataUrl(PERCENTILE_TIERS.find((t) => t.percent === p)!),
     );
     const legendary = svgFor(1);
-    expect(legendary).toContain('<animate'); // it pulses on a live DOM surface
     expect(legendary).toContain('id="htop1"'); // halo gradient present
     expect((legendary.match(/<rect/g) ?? []).length).toBeGreaterThanOrEqual(12); // sunburst rays
 
     const epic = svgFor(2);
-    expect(epic).toContain('<animate');
-    expect(epic).toContain('id="htop2"');
-    expect(epic).not.toContain('<rect'); // epic glows + pulses but has no sunburst
+    expect(epic).toContain('id="htop2"'); // epic glows
+    expect(epic).not.toContain('<rect'); // but has no sunburst
 
     const common = svgFor(10);
-    expect(common).not.toContain('<animate'); // common is a plain static medal
-    expect(common).not.toContain('id="htop10"'); // no halo gradient
+    expect(common).not.toContain('id="htop10"'); // common is a plain static medal — no halo
+    expect(common).not.toContain('<rect');
   });
 
-  it('starts the pulse at peak opacity so a canvas (the static card) grabs the bright frame', () => {
-    const legendary = decodeURIComponent(percentileTierBadgeDataUrl(PERCENTILE_TIERS[0]));
-    const values = legendary.match(/values="([^"]+)"/)?.[1].split(';').map(Number);
-    expect(values).toBeTruthy();
-    // First keyframe is the brightest of the three (peak -> dip -> peak).
-    expect(values![0]).toBeGreaterThan(values![1]);
-    expect(values![0]).toBe(Math.max(...values!));
+  it('emits no SMIL animation — the medal is only ever drawn onto the static card canvas', () => {
+    for (const tier of PERCENTILE_TIERS) {
+      const svg = decodeURIComponent(percentileTierBadgeDataUrl(tier));
+      expect(svg).not.toContain('<animate');
+    }
   });
 
   it('honours the requested pixel size while keeping the 0 0 64 64 viewBox', () => {

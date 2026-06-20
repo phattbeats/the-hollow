@@ -9,13 +9,12 @@
 // shows a plain "Top N%" chip instead).
 //
 // Each rung carries an MMO-style RARITY (legendary at the apex → common), which
-// drives a radiant glow baked into the medal SVG and — for epic/legendary — a
-// SMIL pulse. The pulse animates when the medal is inlined into the DOM (the tier
-// showcase); drawn onto a canvas (the shared card PNG) it captures a single bright
-// frame, since a PNG can't animate.
+// drives a rarity-graded radiant glow (and an apex sunburst) baked into the medal
+// SVG — brightest at the top, plain at the bottom. The medal is only ever drawn
+// onto the card canvas, so it renders as one static glowing frame.
 //
 // DOM/Three/network-free: plain data + an SVG data-URL builder, unit-testable in
-// Node and drawable on a canvas or in an <img>.
+// Node and drawable onto a canvas.
 
 /** Highest percentile bucket that earns a tier medal (Top 1%…Top 10%). */
 export const PERCENTILE_TIER_MAX = 10;
@@ -32,14 +31,15 @@ export interface PercentileTier {
   ring: string;
   /** Outer glow colour (hex). */
   glow: string;
-  /** Item-quality grade — sets the medal's radiance + whether it pulses. */
+  /** Item-quality grade — sets the medal's radiance (halo + apex sunburst). */
   rarity: PercentileRarity;
 }
 
 // Gold → silver → bronze → copper prestige gradient, brightest at the apex. Each
 // rung is a distinct shade so the ten medals never read as the same colour. The
 // rarity grade escalates the visual treatment toward the top: only the rarest
-// ranks (legendary/epic) earn a pulsing glow, the way only epic/legendary loot does.
+// ranks earn a halo glow (and the legendary apex a sunburst), the way only
+// epic/legendary loot glows.
 export const PERCENTILE_TIERS: readonly PercentileTier[] = [
   { percent: 1, key: 'top1', ring: '#ffe27a', glow: '#ffaa00', rarity: 'legendary' },
   { percent: 2, key: 'top2', ring: '#ffd24a', glow: '#e0a52a', rarity: 'epic' },
@@ -54,23 +54,21 @@ export const PERCENTILE_TIERS: readonly PercentileTier[] = [
 ] as const;
 
 export interface RarityStyle {
-  /** Peak opacity of the outer halo bloom (0 = no halo). */
+  /** Opacity of the outer halo bloom (0 = no halo). */
   halo: number;
   /** Whether to draw a sunburst of rays behind the disc (apex only). */
   rays: boolean;
-  /** Pulse period in ms for the halo, or null for a static glow. */
-  pulseMs: number | null;
 }
 
 const RARITY_STYLE: Record<PercentileRarity, RarityStyle> = {
-  legendary: { halo: 0.95, rays: true, pulseMs: 1300 },
-  epic: { halo: 0.7, rays: false, pulseMs: 1700 },
-  rare: { halo: 0.4, rays: false, pulseMs: null },
-  uncommon: { halo: 0, rays: false, pulseMs: null },
-  common: { halo: 0, rays: false, pulseMs: null },
+  legendary: { halo: 0.95, rays: true },
+  epic: { halo: 0.7, rays: false },
+  rare: { halo: 0.4, rays: false },
+  uncommon: { halo: 0, rays: false },
+  common: { halo: 0, rays: false },
 };
 
-/** The glow/pulse treatment for a rarity grade (halo opacity, rays, pulse period). */
+/** The glow treatment for a rarity grade (halo opacity + apex sunburst rays). */
 export function percentileRarityStyle(rarity: PercentileRarity): RarityStyle {
   return RARITY_STYLE[rarity];
 }
@@ -105,28 +103,24 @@ export function percentileTierForPercent(pct: number | null): PercentileTier | n
   return PERCENTILE_TIERS[bucket - 1] ?? null;
 }
 
-// A 12-spoke sunburst behind the disc (apex legendary only). Thin rays near the
-// rim, in the ring colour, slowly rotating (the halo carries the opacity pulse).
-function sunburstRays(color: string, pulseMs: number | null): string {
+// A 12-spoke sunburst behind the disc (apex legendary only): thin static rays
+// near the rim, in the ring colour, behind the halo.
+function sunburstRays(color: string): string {
   let spokes = '';
   for (let i = 0; i < 12; i++) {
     spokes += `<rect x="31.2" y="0.5" width="1.6" height="5" rx="0.8" fill="${color}" transform="rotate(${i * 30} 32 32)"/>`;
   }
-  const anim = pulseMs
-    ? `<animateTransform attributeName="transform" type="rotate" from="0 32 32" to="30 32 32" dur="${pulseMs * 6}ms" repeatCount="indefinite"/>`
-    : '';
-  return `<g opacity="0.55">${spokes}${anim}</g>`;
+  return `<g opacity="0.55">${spokes}</g>`;
 }
 
 /**
  * A standalone SVG data URL for a tier's medal: a ring→glow radial disc with the
- * laurel-and-star glyph, plus a rarity-graded outer glow (and, for epic/legendary,
- * a SMIL pulse + apex sunburst). Inlined into the DOM the pulse animates; drawn
- * onto a canvas (the static card) it captures one bright frame (a PNG can't
- * animate). The viewBox is always `0 0 64 64`; `px` sets the rasterised pixel box.
+ * laurel-and-star glyph, plus a rarity-graded outer halo (and, for the legendary
+ * apex, a sunburst). Drawn onto the card canvas it renders one static glowing
+ * frame. The viewBox is always `0 0 64 64`; `px` sets the rasterised pixel box.
  */
 export function percentileTierBadgeDataUrl(tier: PercentileTier, px = 128): string {
-  const gid = `g${tier.key}`; // per-tier ids so several inlined medals never collide
+  const gid = `g${tier.key}`; // per-tier ids so two medals in one document never collide
   const hid = `h${tier.key}`;
   const style = RARITY_STYLE[tier.rarity];
 
@@ -143,16 +137,10 @@ export function percentileTierBadgeDataUrl(tier: PercentileTier, px = 128): stri
         `</radialGradient>`
       : '');
 
-  let glow = '';
-  if (style.halo > 0) {
-    // Start at peak so a canvas rasterisation (the static card) grabs the bright
-    // frame; the live pulse then dips to half and back.
-    const pulse = style.pulseMs
-      ? `<animate attributeName="opacity" values="${style.halo.toFixed(2)};${(style.halo * 0.5).toFixed(2)};${style.halo.toFixed(2)}" dur="${style.pulseMs}ms" repeatCount="indefinite"/>`
-      : '';
-    glow = `<circle cx="32" cy="32" r="31.5" fill="url(#${hid})" opacity="${style.halo}">${pulse}</circle>`;
-  }
-  const rays = style.rays ? sunburstRays(tier.ring, style.pulseMs) : '';
+  const glow = style.halo > 0
+    ? `<circle cx="32" cy="32" r="31.5" fill="url(#${hid})" opacity="${style.halo}"/>`
+    : '';
+  const rays = style.rays ? sunburstRays(tier.ring) : '';
 
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 64 64">` +

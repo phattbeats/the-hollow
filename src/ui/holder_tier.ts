@@ -51,8 +51,8 @@ function supplyTierGlyph(percent: number): string {
   const cx = 32, cy = 33, r = 19, spanDeg = percent <= 1 ? 0 : Math.min(132, percent * 16);
   let pips = '';
   for (let i = 0; i < percent; i++) {
-    const t = percent === 1 ? 0.5 : i / (percent - 1);
-    const rad = ((t - 0.5) * spanDeg - 90) * (Math.PI / 180); // centred on top (−90°)
+    const frac = percent === 1 ? 0.5 : i / (percent - 1);
+    const rad = ((frac - 0.5) * spanDeg - 90) * (Math.PI / 180); // centred on top (−90°)
     const px = cx + r * Math.cos(rad);
     const py = cy + r * Math.sin(rad);
     pips += `<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="2.3" fill="${GLYPH_FILL}"/>`;
@@ -224,7 +224,7 @@ export function holderTierForBalance(balance: number | null): HolderTier | null 
   return shared ? holderTierByIndex(shared.index) ?? null : null;
 }
 
-/** The rung at a 1-based index (1-10), or undefined for 0/out-of-range. */
+/** The rung at a 1-based index (1-18), or undefined for 0/out-of-range. */
 export function holderTierByIndex(index: number): HolderTier | undefined {
   const shared = sharedHolderTierByIndex(index);
   return shared ? HOLDER_TIERS[shared.index - 1] : undefined;

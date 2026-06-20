@@ -233,37 +233,46 @@ function drawHeader(ctx: CanvasRenderingContext2D, data: PlayerCardData, pctBadg
   fillTextClamped(ctx, data.name, x, 96, 540);
   ctx.restore();
 
-  ctx.fillStyle = COL.cream;
-  ctx.font = `600 24px ${BODY_FONT}`;
   const sub = t('playerCard.levelClass', {
     level: formatNumber(data.level, { maximumFractionDigits: 0 }),
     className: data.className,
   });
-  ctx.fillText(sub, x, 130);
-  const subW = ctx.measureText(sub).width;
 
-  // A "TOP N%" flex beside the subtitle (only shown when it's a flex). Top 1-10%
-  // earns a rarity-graded tier medal + a tier-coloured tile; a worse-than-10%
-  // percentile keeps a plain gold chip.
-  if (data.topPercent !== null) {
-    const label = formatTopPercent(data.topPercent);
-    ctx.font = `700 16px ${BODY_FONT}`;
-    const tw = ctx.measureText(label).width;
-    const padX = 12;
-    const chipY = 109;
-    const chipH = 26;
+  // A "TOP N%" flex sits beside the subtitle (only shown when it's a flex). Top
+  // 1-10% earns a rarity-graded tier medal + a tier-coloured tile; a worse-than-10%
+  // percentile keeps a plain gold chip. Measure it first so we can reserve room and
+  // clamp the subtitle — otherwise a wordy localized "Level N Class" could push the
+  // medal + chip off the right edge.
+  const RIGHT_EDGE = 1018; // keep the flex left of the brand mark (matches the name's clamp)
+  const padX = 12;
+  const chipY = 109;
+  const chipH = 26;
+  const hasFlex = data.topPercent !== null;
+  const label = hasFlex ? formatTopPercent(data.topPercent as number) : '';
+  ctx.font = `700 16px ${BODY_FONT}`;
+  const tw = hasFlex ? ctx.measureText(label).width : 0;
+  const medalW = hasFlex && pctTier && pctBadge ? chipH + 14 : 0;
+  const reserved = hasFlex ? 16 + medalW + tw + padX * 2 : 0;
+
+  ctx.fillStyle = COL.cream;
+  ctx.font = `600 24px ${BODY_FONT}`;
+  const maxSubW = RIGHT_EDGE - x - reserved;
+  fillTextClamped(ctx, sub, x, 130, maxSubW);
+  const subW = Math.min(ctx.measureText(sub).width, maxSubW);
+
+  if (hasFlex) {
     let cursorX = x + subW + 16;
     // The tier medal sits just left of the tile, against the dark card so its
     // ring→glow + laurel read clearly.
-    if (pctTier && pctBadge) {
-      const d = chipH + 14; // a touch larger so the disc + any rarity halo read
-      ctx.drawImage(pctBadge, cursorX, chipY + chipH / 2 - d / 2, d, d);
-      cursorX += d; // the medal box's transparent margin spaces it from the tile
+    if (medalW) {
+      ctx.drawImage(pctBadge as HTMLImageElement, cursorX, chipY + chipH / 2 - medalW / 2, medalW, medalW);
+      cursorX += medalW; // the medal box's transparent margin spaces it from the tile
     }
     ctx.fillStyle = pctTier ? pctTier.ring : COL.gold;
     roundRect(ctx, cursorX, chipY, tw + padX * 2, chipH, 13);
     ctx.fill();
     ctx.fillStyle = '#1c1407';
+    ctx.font = `700 16px ${BODY_FONT}`;
     ctx.fillText(label, cursorX + padX, chipY + 18);
   }
 

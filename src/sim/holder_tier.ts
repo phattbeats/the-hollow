@@ -62,7 +62,7 @@ export function holderTierIndexForBalance(balance: number | null): number {
   return holderTierForBalance(balance)?.index ?? 0;
 }
 
-/** The rung at a 1-based index (1-10), or undefined for 0/out-of-range. */
+/** The rung at a 1-based index (1-18), or undefined for 0/out-of-range. */
 export function holderTierByIndex(index: number): HolderTierCore | undefined {
   return Number.isInteger(index) && index >= 1 && index <= HOLDER_TIER_DEFS.length
     ? HOLDER_TIER_DEFS[index - 1]
