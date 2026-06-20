@@ -255,6 +255,12 @@ export const hudChromeStrings = {
     saveEmail: "Save Email",
     emailSaved: "Email saved.",
     errEmailInvalid: "Enter a valid email address.",
+    // Server-side (REST) failures, re-localized via main.ts userFacingApiError.
+    errCurrentPassword: "Your current password is incorrect.",
+    errUsernameMatch: "That username does not match your account.",
+    errPasswordIncorrect: "Your password is incorrect.",
+    errCharactersOnline: "Log out all of your characters before deactivating.",
+    deactivatedLocked: "This account has been deactivated. Contact an admin to restore it.",
     // Characters
     charactersSummary: "Manage your characters and enter the world.",
     goToCharacters: "View Characters",

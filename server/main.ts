@@ -615,6 +615,10 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     if (req.method === 'POST' && url === '/api/account/password') {
       const accountId = await bearerActiveAccount(req, res);
       if (accountId === null) return;
+      // Resolve the caller's own token once so the revoke below can never
+      // accidentally fall back to null (which would nuke this session too).
+      const callerToken = bearerToken(req);
+      if (!callerToken) return json(res, 401, { error: 'not authenticated' });
       const body = await readBody(req);
       const acct = await accountById(accountId);
       if (!acct) return json(res, 404, { error: 'account not found' });
@@ -623,7 +627,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       }
       if (!validPassword(body.next)) return json(res, 400, { error: 'password must be at least 6 chars' });
       await updatePasswordHash(accountId, await hashPassword(body.next));
-      await revokeTokensExcept(accountId, bearerToken(req));
+      await revokeTokensExcept(accountId, callerToken);
       return json(res, 200, { ok: true });
     }
     // Optional account email — settings-only, lenient, no sending. Empty clears.

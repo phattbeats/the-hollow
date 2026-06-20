@@ -502,8 +502,8 @@ export async function setAccountEmail(accountId: number, email: string | null): 
 
 export async function setAccountDeactivated(accountId: number, deactivated: boolean): Promise<void> {
   await pool.query(
-    `UPDATE accounts SET deactivated_at = ${deactivated ? 'now()' : 'NULL'} WHERE id = $1`,
-    [accountId],
+    `UPDATE accounts SET deactivated_at = CASE WHEN $2 THEN now() ELSE NULL END WHERE id = $1`,
+    [accountId, deactivated],
   );
 }
 

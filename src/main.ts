@@ -164,6 +164,14 @@ function userFacingApiError(err: unknown): string {
   if (normalized === 'character already in world') return t('errors.api.alreadyInWorld');
   if (normalized === 'this character must be renamed before entering the world.') return t('errors.api.renameBeforeEntering');
   if (normalized === 'logins are only allowed from the game client') return t('errors.api.webLoginOnly');
+  // Account portal REST errors (server/main.ts /api/account/*). English-source,
+  // re-localized here onto the English-only hudChrome.account.* keys.
+  if (normalized === 'current password is incorrect') return t('hudChrome.account.errCurrentPassword');
+  if (normalized === 'enter a valid email address') return t('hudChrome.account.errEmailInvalid');
+  if (normalized === 'username does not match') return t('hudChrome.account.errUsernameMatch');
+  if (normalized === 'password is incorrect') return t('hudChrome.account.errPasswordIncorrect');
+  if (normalized === 'log out all characters before deactivating') return t('hudChrome.account.errCharactersOnline');
+  if (normalized === 'this account has been deactivated.') return t('hudChrome.account.deactivatedLocked');
   // Cloudflare Turnstile rejection on login/register (server/main.ts passesTurnstile).
   if (normalized === 'verification failed, please try again') return t('errors.api.verificationFailed');
   // WebSocket disconnect reasons surfaced through the fatal overlay (net/online.ts).
