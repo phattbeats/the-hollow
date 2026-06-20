@@ -1485,14 +1485,24 @@ export class Renderer {
     const p = this.sim.player;
     this.time += dt;
     sharedUniforms.uTime.value = this.time;
-    this.updateCamera(1, dt);
+    this.tmpV.set(p.pos.x, p.pos.y, p.pos.z);
+    this.updateCamera(this.tmpV, dt);
     this.updateAmbience(p.pos.x, this.camera.position.y, dt);
     this.budgetFireLights(p.pos.x, p.pos.z);
     this.waterView.update(this.time);
     const fogFar = (this.scene.fog as THREE.Fog).far;
     this.terrainView.update(this.camera.position.x, this.camera.position.z, fogFar);
-    this.propsView.update(this.camera.position.x, this.camera.position.y, this.camera.position.z, fogFar);
-    this.foliage.update(p.pos.x, p.pos.z, this.camera.position.x, this.camera.position.z, fogFar);
+    this.propsView.update(
+      this.camera.position.x, this.camera.position.y, this.camera.position.z,
+      this.cameraLookAt.x, this.cameraLookAt.y, this.cameraLookAt.z,
+      fogFar,
+    );
+    this.foliage.update(
+      p.pos.x, p.pos.z,
+      this.camera.position.x, this.camera.position.y, this.camera.position.z,
+      this.cameraLookAt.x, this.cameraLookAt.y, this.cameraLookAt.z,
+      fogFar,
+    );
     this.fish.update(p.pos.x, p.pos.z, dt);
     this.vfx.update(dt);
     const pv = this.views.get(p.id);

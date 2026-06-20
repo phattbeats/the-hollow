@@ -450,7 +450,7 @@ describe('perf reporter payload', () => {
     const rawSummary = body.rawSummary as {
       devTrace: {
         frames: Array<{ renderer: { calls: number } }>;
-        spans: Array<{ name: string; detail?: { ents?: number } }>;
+        spans: Array<{ name: string; detail?: { views?: number } }>;
         longTasks: Array<{ nearestFrameMs?: number }>;
       };
     };
