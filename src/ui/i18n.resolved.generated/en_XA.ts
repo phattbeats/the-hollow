@@ -227,7 +227,8 @@ export const en_XA: EnTranslations = {
     },
     "options": {
       "clickMoveLeft": "[Ļéƒţ Çļíçķ]",
-      "clickMoveRight": "[Ŕíĝĥţ Çļíçķ]"
+      "clickMoveRight": "[Ŕíĝĥţ Çļíçķ]",
+      "footstepSounds": "[Ƒóóţšţéþ Šóúñðš]"
     },
     "talents": {
       "defaultBuildName": "[Ɓúíļð {n}]"

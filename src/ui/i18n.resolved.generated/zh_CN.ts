@@ -227,7 +227,8 @@ export const zh_CN: EnTranslations = {
     },
     "options": {
       "clickMoveLeft": "左键",
-      "clickMoveRight": "右键"
+      "clickMoveRight": "右键",
+      "footstepSounds": "脚步声"
     },
     "talents": {
       "defaultBuildName": "配置 {n}"

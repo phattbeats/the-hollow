@@ -8286,6 +8286,7 @@ export class Hud {
     row.append(name, toggle);
     body.appendChild(row);
     this.settingBoolToggle(body, t('hud.options.npcVoices'), 'voiceEnabled');
+    this.settingBoolToggle(body, t('hudChrome.options.footstepSounds'), 'footstepSfx');
     this.settingsViewFooter();
   }
 

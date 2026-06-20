@@ -227,7 +227,8 @@ export const zh_TW: EnTranslations = {
     },
     "options": {
       "clickMoveLeft": "左鍵",
-      "clickMoveRight": "右鍵"
+      "clickMoveRight": "右鍵",
+      "footstepSounds": "腳步聲"
     },
     "talents": {
       "defaultBuildName": "配置 {n}"
