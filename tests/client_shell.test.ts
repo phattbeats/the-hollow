@@ -64,6 +64,24 @@ describe('client HTML shell', () => {
     expect(hudTs).not.toContain('Skin Select (dev)');
   });
 
+  it('wires player card pose clicks before loading card metadata', () => {
+    const methodStart = hudTs.indexOf('private async openPlayerCard');
+    const listener = hudTs.indexOf("poseButtons.forEach((b, i) => b.addEventListener('click'", methodStart);
+    const metadataAwait = hudTs.indexOf('[referral, standing] = await Promise.all([fetchReferralInfo(), fetchStanding()]);', methodStart);
+    const actionWiring = hudTs.indexOf('this.wireCardActions(back, state, setStatus);', methodStart);
+
+    expect(methodStart).toBeGreaterThanOrEqual(0);
+    expect(listener).toBeGreaterThan(methodStart);
+    expect(metadataAwait).toBeGreaterThan(listener);
+    expect(actionWiring).toBeGreaterThan(metadataAwait);
+
+    const listenerBlock = hudTs.slice(listener, metadataAwait);
+    expect(listenerBlock).toContain('if (!metadataReady) {');
+    expect(listenerBlock).toContain('selectPose(i);');
+    expect(listenerBlock).toContain('return;');
+    expect(hudTs.slice(metadataAwait, actionWiring)).toContain('await compose(requestedPoseIndex);');
+  });
+
   it('only displays mobile touch controls after the game is active', () => {
     expect(html).toContain('body.mobile-touch.game-active #mobile-controls');
     expect(html).not.toContain('body.mobile-touch #mobile-controls { position: absolute; inset: 0; display: block;');
@@ -253,6 +271,24 @@ describe('client HTML shell', () => {
   it('omits Meters from the mobile More tray while keeping the desktop window', () => {
     expect(html).toContain('id="meters-window"');
     expect(html).not.toContain('id="mobile-meters"');
+  });
+
+  it('keeps the World Market to one scroll container with browse filters below the tabs', () => {
+    expect(html).toContain('#market-window { width: 470px; height: min(640px, calc(85vh - 24px)); display: none; flex-direction: column; overflow: hidden;');
+    expect(html).toContain('#market-body { overflow-y: auto; flex: 1; min-height: 0;');
+    expect(html).toContain('.mkt-page { display: flex; align-items: center; justify-content: space-between;');
+    expect(html).toContain('body.mobile-touch #market-window {\n    max-height: calc(58vh - 20px);\n    overflow: hidden;');
+    expect(hudTs).toContain('MARKET_PAGE_SIZE');
+    expect(hudTs).toContain('this.marketBrowsePage');
+    expect(hudTs).toContain('data-market-page="prev"');
+    expect(hudTs).toContain('data-market-page="next"');
+    expect(hudTs).toContain('itemUi.market.pageRange');
+    expect(hudTs).toContain('class="mkt-filters${hasSubtype ? \' has-subtype\' : \'\'}"');
+    expect(hudTs).toContain('data-market-filter-menu="${menu}"');
+    expect(hudTs).toContain("this.renderMarketFilterMenu('itemType'");
+    expect(hudTs).toContain("this.renderMarketFilterMenu('subtype'");
+    expect(hudTs).toContain("this.renderMarketFilterMenu('rarity'");
+    expect(hudTs).not.toContain('<select data-market-filter=');
   });
 
   it('keeps the mobile More and Autorun buttons in the combat row', () => {

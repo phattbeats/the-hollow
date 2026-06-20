@@ -150,6 +150,124 @@ export const es: EnTranslations = {
       }
     }
   },
+  "hudChrome": {
+    "emotes": {
+      "wave": "Saludar",
+      "laugh": "Reír",
+      "question": "¿Qué onda?",
+      "cheer": "Vitorear",
+      "dance": "Bailar",
+      "point": "Señalar",
+      "flex": "Presumir",
+      "salute": "Saludo militar",
+      "cry": "Llorar",
+      "bow": "Reverencia",
+      "clap": "Aplaudir",
+      "roar": "Rugir",
+      "kneel": "Arrodillarse"
+    },
+    "emoteWheel": {
+      "edit": "Editar",
+      "label": "Emotes"
+    },
+    "emoteEditor": {
+      "title": "Emotes",
+      "done": "Listo"
+    },
+    "chatTimestamps": {
+      "show": "Mostrar hora en el chat",
+      "format": "Formato de hora",
+      "clock12h": "12 horas",
+      "clock24h": "24 horas",
+      "note": "Antepone a cada nueva línea de chat la hora en que llegó, p. ej. [14:32]. Solo afecta a los mensajes recibidos mientras la opción está activada."
+    },
+    "swing": {
+      "ready": "Golpe",
+      "seconds": "{seconds} s"
+    },
+    "rest": {
+      "resting": "Descansando"
+    },
+    "mobile": {
+      "autorun": "Carrera automática",
+      "jump": "Saltar",
+      "leaderboard": "Clasificación",
+      "nameplates": "Nombres",
+      "haptics": "Vibración",
+      "hapticsOff": "Vibración desactivada",
+      "toggleHaptics": "Alternar vibración"
+    },
+    "widgets": {
+      "clockTitle": "Hora local: haz clic para alternar 12/24 horas",
+      "worldCoordinates": "Coordenadas del mundo",
+      "coordinates": "Coordenadas",
+      "heading": "Rumbo",
+      "minimapZoom": "Zoom del minimapa"
+    },
+    "compass": {
+      "N": "N",
+      "NE": "NE",
+      "E": "E",
+      "SE": "SE",
+      "S": "S",
+      "SW": "SO",
+      "W": "O",
+      "NW": "NO"
+    },
+    "meters": {
+      "perSecond": "{value}/s",
+      "perSecondRow": "{total} ({rate})",
+      "minutesSeconds": "{m} min {s} s",
+      "seconds": "{s} s"
+    },
+    "keybinds": {
+      "emoteWheel": "Rueda de gestos",
+      "targetFriendly": "Objetivo amistoso más cercano",
+      "targetFriendlyNext": "Objetivo amistoso siguiente"
+    },
+    "options": {
+      "clickMoveLeft": "Clic izquierdo",
+      "clickMoveRight": "Clic derecho",
+      "footstepSounds": "Sonidos de pasos",
+      "showWalletOnCharacterScreen": "Mostrar cartera en la pantalla de personajes",
+      "showWalletOnPlayerCard": "Mostrar cartera en la tarjeta de jugador"
+    },
+    "playerCard": {
+      "showWalletBadge": "Mostrar insignia de cartera"
+    },
+    "talents": {
+      "defaultBuildName": "Configuración {n}"
+    },
+    "tips": {
+      "joinChannels": "Consejo: escribe /join world o /join lfg para chatear con jugadores de todas partes del reino."
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "eres {rank}, {count} miembro",
+        "few": "eres {rank}, {count} miembros",
+        "many": "eres {rank}, {count} miembros",
+        "other": "eres {rank}, {count} miembros"
+      },
+      "characterCount": {
+        "one": "{count} personaje",
+        "few": "{count} personajes",
+        "many": "{count} personajes",
+        "other": "{count} personajes"
+      },
+      "secondsRemaining": {
+        "one": "Queda {count} segundo",
+        "few": "Quedan {count} segundos",
+        "many": "Quedan {count} segundos",
+        "other": "Quedan {count} segundos"
+      },
+      "playersOnline": {
+        "one": "Quién: {count} jugador conectado en {realm}.",
+        "few": "Quién: {count} jugadores conectados en {realm}.",
+        "many": "Quién: {count} jugadores conectados en {realm}.",
+        "other": "Quién: {count} jugadores conectados en {realm}."
+      }
+    }
+  },
   "skinEvent": {
     "title": "Alijo cosmético",
     "subtitle": "Has desbloqueado una recompensa de {rank} — elige cualquier aspecto de ese nivel o inferior.",
@@ -290,6 +408,150 @@ export const es: EnTranslations = {
     "enterWorld": "Entrar al Mundo",
     "offlineCharacter": "Personaje en Solitario",
     "create": "Crear"
+  },
+  "wallet": {
+    "label": "Cartera $WOC",
+    "connect": "Verificar cartera",
+    "connectTitle": "Verifica tu cartera de Solana",
+    "connectAria": "Verifica tu cartera de Solana",
+    "verify": "Verificar cartera",
+    "verifyNew": "Verificar nueva cartera",
+    "verifyTitle": "Elige una cartera y firma una vez para verificar que eres su propietario.",
+    "verifyAria": "Elige una cartera y firma una vez para verificar que eres su propietario",
+    "verifyAddressAria": "Firma para verificar la cartera {address} en tu cuenta",
+    "appConnected": "App conectada",
+    "connectApp": "Conectar app",
+    "connectAppTitle": "Conecta la app de cartera en este navegador",
+    "connectAppAria": "Conecta la app de cartera en este navegador",
+    "verifying": "Verificando...",
+    "verifyingTitle": "La verificación de cartera está en curso.",
+    "switch": "Cambiar",
+    "switchTitle": "Verificar otra cartera",
+    "switchAria": "Verificar otra cartera",
+    "unlink": "Desvincular",
+    "unlinkTitle": "Eliminar la verificación de cartera de esta cuenta",
+    "unlinkAria": "Eliminar la verificación de cartera de esta cuenta",
+    "signOut": "Desconectar",
+    "signOutTitle": "Desconectar la app de cartera en este navegador",
+    "signOutAria": "Desconectar la app de cartera en este navegador",
+    "hide": "Ocultar",
+    "hideTitle": "Ocultar la fila de cartera en esta pantalla",
+    "hideAria": "Ocultar la fila de cartera en esta pantalla",
+    "hiddenNotice": "Fila de cartera oculta. Vuelve a activarla dentro del juego desde Opciones > Interfaz.",
+    "linkedTitle": "Cartera verificada para tu cuenta. Haz clic para gestionar la app de cartera.",
+    "linkedDisconnectedTitle": "La cartera sigue verificada para tu cuenta. Vuelve a conectar para gestionar la app de cartera.",
+    "linkedDisconnectedAria": "La cartera sigue verificada para tu cuenta. Vuelve a conectar para gestionar la app de cartera.",
+    "linkTitle": "Haz clic para firmar y vincular esta cartera a tu cuenta.",
+    "connectedTitle": "Conectada. Inicia sesión para vincular esta cartera a tu cuenta.",
+    "balanceTitle": "Saldo de $WOC de la cartera de Solana verificada",
+    "balanceAria": "Saldo de la cartera de Solana verificada: {balance}",
+    "balancePreviewTitle": "Vista previa del saldo de $WOC de la cartera conectada",
+    "balancePreviewAria": "Vista previa del saldo de la cartera conectada: {balance}. Vincula la cartera para verificar el distintivo de titular.",
+    "balanceAmount": "{amount} $WOC",
+    "connected": "Conectada: {address}",
+    "connectedWithBalance": "Conectada: {balance} - {address}",
+    "connectedLinked": "Verificada: {address}",
+    "connectedLinkedWithBalance": "Verificada: {balance} - {address}",
+    "helpDisconnected": "Verifica una cartera de Solana para activar el distintivo de titular y las insignias de tarjeta de jugador. No requiere transacción ni SOL.",
+    "helpLoginToLink": "{address} conectada. Inicia sesión para vincularla a tu cuenta.",
+    "helpLoginToLinkWithBalance": "{address} conectada con {balance}. Inicia sesión para vincularla a tu cuenta.",
+    "helpReadyToLink": "Cartera seleccionada: {address}. Firma una vez para verificar el distintivo de titular y las tarjetas de jugador.",
+    "helpReadyToLinkWithBalance": "Cartera seleccionada: {address} con {balance}. Firma una vez para verificar el distintivo de titular y las tarjetas de jugador.",
+    "helpLinked": "Las ventajas de titular están activas. La app de cartera está conectada en este navegador.",
+    "helpLinkedWithBalance": "Las ventajas de titular están activas. La app de cartera está conectada en este navegador.",
+    "helpLinkedDisconnected": "Las ventajas de titular están activas. Conecta la app cuando necesites firmar o gastar.",
+    "helpLinkedDisconnectedWithBalance": "Las ventajas de titular están activas. Conecta la app cuando necesites firmar o gastar.",
+    "flowConnect": "Elige una cartera. La verificación continúa automáticamente.",
+    "flowSign": "Firma el mensaje de verificación en tu app de cartera. No requiere transacción ni SOL.",
+    "flowVerify": "Verificando la propiedad de la cartera...",
+    "linkFailed": "La verificación de cartera falló.",
+    "verifyFailed": "La verificación de cartera falló.",
+    "unlinkFailed": "No se pudo desvincular la cartera.",
+    "holder": "Titular de $WOC",
+    "holderTierTitle": "Titular de $WOC de nivel {tier}",
+    "holderTiers": {
+      "ember": {
+        "name": "Ascua",
+        "flavor": "La chispa está encendida."
+      },
+      "coinbearer": {
+        "name": "Portamonedas",
+        "flavor": "La primera moneda en el cofre de guerra."
+      },
+      "coppercrest": {
+        "name": "Cresta de cobre",
+        "flavor": "Cobre sobre cobre, tu nombre empieza a sonar."
+      },
+      "silverbound": {
+        "name": "Ligado a la plata",
+        "flavor": "Ligado en plata, la bolsa crece."
+      },
+      "gilded": {
+        "name": "Dorado",
+        "flavor": "Dorado y sonriente."
+      },
+      "vaultwarden": {
+        "name": "Guardián de la bóveda",
+        "flavor": "Ahora custodias una bóveda real: el 0,01 % del suministro de $WOC."
+      },
+      "whale": {
+        "name": "Ballena",
+        "flavor": "Entras en aguas profundas: el 0,1 % del suministro."
+      },
+      "leviathan": {
+        "name": "Leviatán",
+        "flavor": "Los mercados sienten cada movimiento tuyo: el 1 % del suministro."
+      },
+      "worldbearer": {
+        "name": "Portamundos",
+        "flavor": "Cargas con una parte del mundo: el 10 % del suministro."
+      },
+      "sovereign": {
+        "name": "Soberano",
+        "flavor": "El reino hinca la rodilla: el suministro completo."
+      }
+    }
+  },
+  "playerCard": {
+    "shareButton": "Compartir tarjeta de jugador",
+    "title": "Tarjeta de jugador",
+    "close": "Cerrar tarjeta de jugador",
+    "loading": "Forjando tu tarjeta...",
+    "poseGroup": "Postura",
+    "poseHero": "Héroe",
+    "poseBattle": "Combate",
+    "poseVictory": "Victoria",
+    "referralLinkLabel": "Tu enlace de invitación. Cualquiera que se una a través de él queda acreditado a tu nombre:",
+    "referralLinkAria": "Tu enlace de invitación",
+    "renderFailed": "No se pudo renderizar tu tarjeta. Prueba con otra postura.",
+    "renderFailedStatus": "Falló el renderizado de la tarjeta.",
+    "levelClass": "Nivel {level} - {className}",
+    "topPercent": "TOP {percent}%",
+    "realmSubtitle": "Reino {realm}",
+    "defaultRealm": "Mundo de ClaudeCraft",
+    "brandWordmark": "WORLD OF CLAUDECRAFT",
+    "recruited": "{count} reclutados",
+    "footerHandle": "@{handle}",
+    "footerHandleWithRecruits": "@{handle} - {recruited}",
+    "footerCta": "Forja tu leyenda: {siteUrl}",
+    "arenaStat": "Arena",
+    "shareTierBit": ", titular de $WOC de rango {tier}",
+    "shareText": "Estoy forjando mi leyenda en World of ClaudeCraft: nivel {level} {className}{tierBit}. Únete a mi reino:",
+    "nativeShareTitle": "Mundo de ClaudeCraft",
+    "fileNameFallback": "jugador",
+    "actionShareX": "Compartir en X",
+    "actionCopyReferral": "Copiar enlace de invitación",
+    "actionDownload": "Descargar",
+    "actionShareNative": "Compartir...",
+    "statusGenericError": "Algo salió mal.",
+    "statusStillRendering": "La tarjeta aún se está renderizando.",
+    "statusPublishing": "Publicando tarjeta...",
+    "statusPublished": "Tarjeta publicada. Comparte tu enlace de invitación abajo.",
+    "statusOpenedXWithImage": "X se abrió. Pega la imagen de la tarjeta en la publicación.",
+    "statusOpenedXWithLink": "X se abrió con tu enlace. La imagen de la tarjeta aparece después de publicar desde un dominio público.",
+    "statusReferralCopied": "Enlace de invitación copiado. Compártelo donde quieras.",
+    "statusDownloaded": "Tarjeta descargada.",
+    "statusShareUnsupported": "Este dispositivo no admite compartir."
   },
   "classes": {
     "warrior": "Guerrero",
@@ -562,6 +824,7 @@ export const es: EnTranslations = {
       "deleteConfirm": "Escribe el nombre del personaje para confirmar la eliminación.",
       "notAuthenticated": "No autenticado.",
       "accountBanned": "Esta cuenta ha sido expulsada.",
+      "webLoginOnly": "El inicio de sesión solo se permite desde el cliente del juego.",
       "accountSuspended": "Esta cuenta está suspendida hasta {date}.",
       "alreadyInWorld": "El personaje ya está en el mundo.",
       "renameBeforeEntering": "Este personaje debe cambiar de nombre antes de entrar al mundo."
@@ -759,6 +1022,7 @@ export const es: EnTranslations = {
       "graphics": "Gráficos",
       "audio": "Audio",
       "interface": "Interfaz",
+      "language": "Idioma",
       "logout": "Cerrar sesión",
       "returnToGame": "Volver al juego",
       "resetToDefaults": "Restablecer valores",
@@ -1001,8 +1265,10 @@ export const es: EnTranslations = {
       "targetMustDodge": "Tu objetivo debe esquivar primero.",
       "requiresCombo": "Esa habilidad requiere puntos de combo.",
       "requiresForm": "Debes estar en forma de {form}.",
+      "cantInForm": "No puedes hacer eso en forma de {form}.",
       "bear": "oso",
-      "cat": "felino",
+      "cat": "lobo",
+      "travel": "viaje",
       "shapeshifted": "No puedes hacer eso transformado.",
       "stealthed": "Debes estar en sigilo.",
       "inCombat": "No puedes hacer eso en combate.",
@@ -1262,7 +1528,7 @@ export const es: EnTranslations = {
     },
     "forms": {
       "bear": "oso",
-      "cat": "felino"
+      "cat": "lobo"
     },
     "cast": {
       "fishing": "Pesca",
@@ -1295,7 +1561,7 @@ export const es: EnTranslations = {
       "readyQuestAria": "Misión lista para entregar: {name}",
       "discussQuest": "Hablar sobre {name}.",
       "discussQuestAria": "Hablar sobre la misión: {name}",
-      "nythraxisDeathlessKingWarning": "Las tres reliquias cuentan la misma historia: Aldren lucho para defender a su rey, Malric rompio el limite de la muerte y Voss intento detener lo que vino despues. El sello se debilita, y la cripta abandonada es el camino hacia abajo.",
+      "nythraxisDeathlessKingWarning": "Las tres reliquias cuentan la misma historia: Aldren luchó para defender a su rey, Malric rompió el límite de la muerte y Voss intentó detener lo que vino después. El sello se debilita, y la cripta abandonada es el camino hacia abajo.",
       "browseGoods": "Déjame ver tus mercancías.",
       "browseGoodsAria": "Ver mercancías de {name}",
       "worldMarket": "Muéstrame el Mercado Mundial.",
@@ -1452,6 +1718,43 @@ export const es: EnTranslations = {
       "noMerchant": "Acércate al Mercader para comerciar.",
       "emptyBrowse": "El mercado está tranquilo. Sé el primero en publicar algo en la pestaña Vender.",
       "browseNote": "Mercancías publicadas por aventureros del reino entero. Elige Comprar para adquirir un montón al instante.",
+      "searchPlaceholder": "Buscar en el mercado...",
+      "searchAria": "Buscar en el Mercado Mundial por nombre de objeto",
+      "emptySearch": "Ningún artículo coincide con tu búsqueda. Prueba con otro nombre.",
+      "truncated": "Mostrando {shown} de {total} coincidencias. Refina tu búsqueda para ver el resto.",
+      "emptyFiltered": "Ninguna publicación coincide con esos filtros.",
+      "pageRange": "Mostrando {shown} de {total} publicaciones.",
+      "pagePrev": "Ant.",
+      "pageNext": "Sig.",
+      "pagePrevAria": "Página anterior del mercado",
+      "pageNextAria": "Página siguiente del mercado",
+      "pageStatus": "Página {current} de {total}",
+      "filters": "Filtros del mercado",
+      "filterType": "Tipo",
+      "filterTypeAll": "Todos los tipos",
+      "filterTypeWeapon": "Armas",
+      "filterTypeArmor": "Armadura",
+      "filterTypeConsumable": "Consumibles",
+      "filterTypeMaterial": "Materiales",
+      "filterTypeCosmetic": "Cosméticos",
+      "filterTypeOther": "Otros",
+      "filterArmorType": "Tipo de armadura",
+      "filterArmorAll": "Toda la armadura",
+      "filterWeaponType": "Tipo de arma",
+      "filterWeaponAll": "Todas las armas",
+      "filterRarity": "Rareza",
+      "filterRarityAll": "Todas las rarezas",
+      "weaponSword": "Espadas",
+      "weaponDagger": "Dagas",
+      "weaponStaff": "Bastones",
+      "weaponMace": "Mazas",
+      "weaponAxe": "Hachas",
+      "weaponOther": "Otras armas",
+      "rarityPoor": "Pobre",
+      "rarityCommon": "Común",
+      "rarityUncommon": "Poco común",
+      "rarityRare": "Raro",
+      "rarityEpic": "Épico",
       "merchantStock": "Existencias del Mercader",
       "stackCount": "x{count}",
       "each": "{money} cada uno",
@@ -1821,7 +2124,7 @@ export const es: EnTranslations = {
       },
       "power_word_fortitude": {
         "name": "Palabra de poder: entereza",
-        "description": "Aumenta la Aguante del objetivo en 3 durante 30 min."
+        "description": "Aumenta el Aguante del objetivo en 3 durante 30 min."
       },
       "shadow_word_pain": {
         "name": "Palabra de las Sombras: dolor",
@@ -1976,16 +2279,16 @@ export const es: EnTranslations = {
         "description": "Gruñe al objetivo: tu amenaza sube hasta igualar la de su enemigo más odiado y queda obligado a atacarte durante 3 s. Solo forma de oso."
       },
       "cat_form": {
-        "name": "Forma felina",
-        "description": "Cambias a forma felina: el poder de ataque aumenta con tu nivel, tus ataques usan energía y puntos de combo, y generas un 29% menos de amenaza. Lánzala de nuevo para volver a forma de taumaturgo."
+        "name": "Forma de lobo",
+        "description": "Cambias a forma de lobo: el poder de ataque aumenta con tu nivel, tus ataques usan energía y puntos de combo, y generas un 29% menos de amenaza. Lánzala de nuevo para volver a forma de taumaturgo."
       },
       "claw": {
         "name": "Zarpa",
-        "description": "Araña al enemigo por daño de arma más {damage}. Otorga 1 punto de combo. Solo forma felina."
+        "description": "Araña al enemigo por daño de arma más {damage}. Otorga 1 punto de combo. Solo en Forma de lobo."
       },
       "ferocious_bite": {
         "name": "Mordedura feroz",
-        "description": "Remate que causa daño por punto de combo. Solo forma felina."
+        "description": "Remate que causa daño por punto de combo. Solo en Forma de lobo."
       },
       "swipe": {
         "name": "Flagelo",
@@ -2025,11 +2328,11 @@ export const es: EnTranslations = {
       },
       "dash": {
         "name": "Carrera",
-        "description": "Esprinta hacia delante, aumentando la velocidad de movimiento un 50% durante 15 s. Solo forma felina."
+        "description": "Esprinta hacia delante, aumentando la velocidad de movimiento un 50% durante 15 s. Solo en Forma de lobo."
       },
       "pounce": {
         "name": "Abalanzarse",
-        "description": "Apertura desde el sigilo que aturde al objetivo durante 2 s. Otorga 1 punto de combo. Solo forma felina."
+        "description": "Apertura desde el sigilo que aturde al objetivo durante 2 s. Otorga 1 punto de combo. Solo en Forma de lobo."
       },
       "insect_swarm": {
         "name": "Enjambre de insectos",
@@ -2037,11 +2340,11 @@ export const es: EnTranslations = {
       },
       "tigers_fury": {
         "name": "Furia del tigre",
-        "description": "Aumenta el poder de ataque en 40 durante 6 s. Solo forma felina."
+        "description": "Aumenta el poder de ataque en 40 durante 6 s. Solo en Forma de lobo."
       },
       "rip": {
         "name": "Desgarrar",
-        "description": "Remate que causa daño de sangrado durante 12 s. Consume puntos de combo. Solo forma felina."
+        "description": "Remate que causa daño de sangrado durante 12 s. Consume puntos de combo. Solo en Forma de lobo."
       },
       "mortal_strike": {
         "name": "Golpe mortal",
@@ -4169,8 +4472,8 @@ export const es: EnTranslations = {
       },
       "q_nythraxis_restless_dead": {
         "title": "Inquietud en los campos de huesos",
-        "text": "Algo ha cambiado en Thornpeak Heights, {playerName}. Los muertos ya no vagan sin rumbo. Se reunen y marchan por los campos de huesos del norte, mas alla de Highwatch, donde el viejo campo de batalla llega al camino del acantilado. Ve alli, investiga la inquietud entre los Revenants de Hueso, y trae cualquier prueba de lo que los impulsa.",
-        "completion": "El mismo simbolo aparece en cada fragmento... una corona. Ya lo he visto antes, tallado en viejas tumbas que ningun registro de Eastbrook recuerda.",
+        "text": "Algo ha cambiado en Thornpeak Heights, {playerName}. Los muertos ya no vagan sin rumbo. Se reúnen y marchan por los campos de huesos del norte, más allá de Highwatch, donde el viejo campo de batalla llega al camino del acantilado. Ve allí, investiga la inquietud entre los Revenants de Hueso, y trae cualquier prueba de lo que los impulsa.",
+        "completion": "El mismo símbolo aparece en cada fragmento... una corona. Ya lo he visto antes, tallado en viejas tumbas que ningún registro de Eastbrook recuerda.",
         "objectives": {
           "0": {
             "label": "Fragmento óseo rúnico"
@@ -4179,8 +4482,8 @@ export const es: EnTranslations = {
       },
       "q_nythraxis_graves": {
         "title": "Tumbas de los olvidados",
-        "text": "He visto estas marcas antes, en tres viejas tumbas alrededor del campo de batalla del norte. El capitan Aldren yace en la elevacion oriental, el sumo sacerdote Malric cerca del camino central roto, y el asesino real Voss junto al acantilado occidental. Toca cada tumba y escucha, {playerName}. Los muertos pueden recordar lo que los vivos olvidaron.",
-        "completion": "Aldren siguio siendo leal, Malric se nego a aceptar la muerte y Voss vio el peligro antes que nadie. Los tres sirvieron al mismo rey olvidado.",
+        "text": "He visto estas marcas antes, en tres viejas tumbas alrededor del campo de batalla del norte. El capitán Aldren yace en la elevación oriental, el sumo sacerdote Malric cerca del camino central roto, y el asesino real Voss junto al acantilado occidental. Toca cada tumba y escucha, {playerName}. Los muertos pueden recordar lo que los vivos olvidaron.",
+        "completion": "Aldren siguió siendo leal, Malric se negó a aceptar la muerte y Voss vio el peligro antes que nadie. Los tres sirvieron al mismo rey olvidado.",
         "objectives": {
           "0": {
             "label": "Visión en la tumba del capitán Aldren"
@@ -4195,7 +4498,7 @@ export const es: EnTranslations = {
       },
       "q_nythraxis_sealed_crypt": {
         "title": "La cripta abandonada",
-        "text": "Las visiones senalan la cripta abandonada en el acantilado occidental. Hay una vieja leyenda que dice que la cripta albergaba a un rey. Tal vez Thornpeak lo sello abajo despues de que el ritual de Malric lo torciera en algo inmortal. Entra en la cripta y mira que queda dentro.",
+        "text": "Las visiones señalan la cripta abandonada en el acantilado occidental. Hay una vieja leyenda que dice que la cripta albergaba a un rey. Tal vez Thornpeak lo selló abajo después de que el ritual de Malric lo torciera en algo inmortal. Entra en la cripta y mira qué queda dentro.",
         "completion": "Las mitades de la piedra clave encajan, y el diario de Voss nombra lo que sellaron: el anillo del rey Nythraxis. Si el diario dice la verdad, ese anillo es la llave de su tumba.",
         "objectives": {
           "0": {
@@ -4211,8 +4514,8 @@ export const es: EnTranslations = {
       },
       "q_nythraxis_bound_guardian": {
         "title": "El Guardián Vinculado",
-        "text": "Voss escribio que los supervivientes sellaron el Anillo del rey tras un guardian antiguo, para que nadie pudiera alcanzar la tumba de Nythraxis por accidente o ambicion. Lleva la Piedra clave de la cripta al circulo ritual en el terreno llano al este de la cripta abandonada y al sureste de la tumba occidental. Usala alli, rompe al guardian y trae el anillo.",
-        "completion": "Las tres reliquias cuentan la misma historia: Aldren lucho para defender a su rey, Malric rompio el limite de la muerte y Voss intento detener lo que vino despues. El sello se debilita, y este anillo es la llave de la tumba de Nythraxis. Ahora estas armonizado para entrar en La Cripta de Nythraxis.",
+        "text": "Voss escribió que los supervivientes sellaron el Anillo del rey tras un guardián antiguo, para que nadie pudiera alcanzar la tumba de Nythraxis por accidente o ambición. Lleva la Piedra clave de la cripta al círculo ritual en el terreno llano al este de la cripta abandonada y al sureste de la tumba occidental. Úsala allí, rompe al guardián y trae el anillo.",
+        "completion": "Las tres reliquias cuentan la misma historia: Aldren luchó para defender a su rey, Malric rompió el límite de la muerte y Voss intentó detener lo que vino después. El sello se debilita, y este anillo es la llave de la tumba de Nythraxis. Ahora estás armonizado para entrar en La Cripta de Nythraxis.",
         "objectives": {
           "0": {
             "label": "Piedra clave usada en el círculo ritual"
@@ -4260,31 +4563,31 @@ export const es: EnTranslations = {
       },
       "q_ledger_teeth": {
         "title": "Colmillos en la oscuridad",
-        "text": "Las manadas de lobos han aprendido las rutas de patrulla: atacan al anochecer, cuando la luz es escasa y un viajero solitario es presa fácil. Quiébralas, {playerName}. Abate a 10 Lobos del bosque y haz que las manadas aprendan una nueva lección.",
-        "completion": "Diez lobos, y el camino del crepúsculo vuelve a ser nuestro. El libro mayor se vuelve más amable contigo.",
+        "text": "Los zorros de la cañada se han vuelto tan audaces como lobos: se cuelan en los gallineros al anochecer y desaparecen antes de que se encienda un farol, y una zorra hambrienta se llevará un cordero con la misma facilidad que una gallina. Diézmalos, {playerName}. Abate a 10 Zorros de la cañada y haz que el resto vuelva a temer a la luz.",
+        "completion": "Diez zorros, y los gallineros vuelven a estar tranquilos al anochecer. El libro mayor se vuelve más amable contigo.",
         "objectives": {
           "0": {
-            "label": "Lobos del bosque abatidos"
+            "label": "Zorros de la cañada abatidos"
           }
         }
       },
       "q_ledger_reedwater": {
         "title": "Patrulla del juncal",
-        "text": "¿Te envía Redbrook? Bien, estos viejos huesos ya no pueden vadear los bajíos. Los Aletabarro se han colado de nuevo en el juncal y están más atrevidos que nunca. Diézmalos: 8 Acechadores Aletabarro, y cuidado con el agua profunda.",
-        "completion": "Eso mantendrá a esos demonios borboteantes lejos de mis redes una estación. Dile al Mariscal que el lago vuelve a estar tranquilo.",
+        "text": "¿Te envía Redbrook? Bien, estos viejos huesos ya no pueden vadear los bajíos. Las grullas de la pradera han dado con mis redes, y arponean más de mi captura de lo que jamás hizo el Aletabarro. Diézmalas: 8 Grullas de la pradera, y cuidado con el agua profunda.",
+        "completion": "Eso mantendrá a esas ladronas zancudas lejos de mis redes una estación. Dile al Mariscal que los bajíos vuelven a ser míos.",
         "objectives": {
           "0": {
-            "label": "Acechadores Aletabarro abatidos"
+            "label": "Grullas de la pradera ahuyentadas"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "Seda y veneno",
-        "text": "El libro mayor marca también los bosques del este como tierra de guardianes. Los acechadores de Webwood tejen más espeso cada semana: una niña se acercó demasiado el último día de mercado y la cortamos libre apenas respirando. Mata 8 Acechadores de Webwood antes de que se adueñen del bosque por completo.",
-        "completion": "Ocho tejedoras menos en la oscuridad. El bosque respira más tranquilo, y yo también.",
+        "title": "Ramoneo y zarza",
+        "text": "El libro mayor marca también los bosques del este como tierra de guardianes, y mis huertos de hierbas medicinales forman parte de ellos. Los cervatos moteados han arrasado mi hoja de plata y mi cardosangre hasta la raíz, y sin esos remedios la mitad de Eastbrook se queda sin medicina. No me complace, pero sacrifica a 8 Cervatos moteados antes de que se pierdan por completo las hierbas de otoño.",
+        "completion": "Los huertos aún podrían recuperarse, gracias a ti. Una piedad dura, pero un niño ardiendo de fiebre necesita los remedios más de lo que el bosque necesita a los ciervos. El libro mayor queda saldado.",
         "objectives": {
           "0": {
-            "label": "Acechadores de Webwood abatidos"
+            "label": "Cervatos moteados sacrificados"
           }
         }
       },
@@ -4309,12 +4612,12 @@ export const es: EnTranslations = {
         }
       },
       "q_ledger_toll": {
-        "title": "El peaje de los salteadores",
-        "text": "Las colinas del sureste se han vuelto el camino de peaje de un bandido: roban a cualquiera lo bastante necio para viajar ligero. El libro mayor pone precio a cada uno de ellos. Lleva la justicia de Eastbrook a 8 Bandidos del Valle.",
-        "completion": "Ocho bandidos que rinden cuentas. Ya corre la voz de que el camino de peaje tiene un nuevo guardián, y no cobra monedas, cobra cabezas.",
+        "title": "El camino de los colmillos",
+        "text": "Los jabalíes colmillobosque han bajado de Brightwood al camino comercial del sureste: grandes bestias colmilludas que cornean a los bueyes de tiro y vuelcan los carros por el grano derramado. El libro mayor pone precio a cada uno de ellos. Reabre el camino: abate a 8 Jabalíes colmillobosque.",
+        "completion": "Ocho bestias menos en el camino, y los carros vuelven a rodar. Ya corre la voz de que el camino comercial tiene un nuevo guardián. El libro mayor sube a tu favor.",
         "objectives": {
           "0": {
-            "label": "Bandidos del Valle llevados ante la justicia"
+            "label": "Jabalíes colmillobosque abatidos"
           }
         }
       },

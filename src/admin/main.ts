@@ -1,10 +1,10 @@
 import { apiGet, apiLogin, apiPost, clearSession, getAdminName, getToken, ApiError } from './api';
 import { barChart, chartPanel } from './charts';
-import { escapeHtml, fmtBytes, fmtDuration } from './format';
+import { escapeHtml, fmtBytes, fmtDate, fmtDuration } from './format';
 import { classLabel, t, localizeAdminError, ensureAdminLocaleLoaded, adminLanguage } from './i18n';
 import {
   renderAccountDetail, renderAccountsTable, renderCharactersTable, renderChatFilter,
-  renderModerationDetail, renderModerationQueue, renderOnlineTable, renderPager,
+  renderModerationDetail, renderModerationQueue, renderOnlineTable, renderPager, renderProviderUsage,
 } from './tables';
 import type {
   AccountDetail, AccountRow, Activity, CharacterRow, ChatFilterData, LivePlayer,
@@ -32,7 +32,7 @@ const accountsState: TableState = { page: 1, search: '', sort: 'id', dir: 'desc'
 const charactersState: TableState = { page: 1, search: '', sort: 'level', dir: 'desc' };
 let liveTimer: number | null = null;
 let activityTimer: number | null = null;
-type AdminPage = 'overview' | 'moderation' | 'chat-filter';
+type AdminPage = 'overview' | 'usage' | 'moderation' | 'chat-filter';
 let activePage: AdminPage = 'overview';
 let pendingModerationAction: { endpoint: string; body: unknown; accountId: number; source: 'account' | 'moderation' } | null = null;
 
@@ -124,6 +124,7 @@ async function refreshLive(): Promise<void> {
       statCard(`${s.tickMsAvg} ms`, t('stats.avgTick')),
       statCard(fmtBytes(s.rssBytes), t('stats.serverRss')),
     ].join('');
+    $('usage').innerHTML = renderProviderUsage(overview.usage);
     $('online').innerHTML = renderOnlineTable(online.players);
   } catch (err) {
     if (!handleAuthFailure(err)) console.error('live refresh failed:', err);
@@ -340,7 +341,7 @@ function handleModerationActionClick(e: Event, source: 'account' | 'moderation')
         { label: t('dialog.account'), value: `#${accountId}` },
         { label: t('dialog.action'), value: t('dialog.actionSuspend') },
         { label: t('dialog.length'), value: t('detail.lengthHours', { count: hours }) },
-        { label: t('dialog.until'), value: new Date(expiresAt).toLocaleString() },
+        { label: t('dialog.until'), value: fmtDate(expiresAt) },
         { label: t('dialog.reason'), value: note },
       ],
       endpoint: `/admin/api/moderation/accounts/${accountId}/suspend`,
@@ -369,7 +370,7 @@ function handleModerationActionClick(e: Event, source: 'account' | 'moderation')
       rows: [
         { label: t('dialog.account'), value: `#${accountId}` },
         { label: t('dialog.action'), value: t('dialog.actionSuspend') },
-        { label: t('dialog.until'), value: expiry.toLocaleString() },
+        { label: t('dialog.until'), value: fmtDate(expiry.toISOString()) },
         { label: t('dialog.reason'), value: note },
       ],
       endpoint: `/admin/api/moderation/accounts/${accountId}/suspend`,
@@ -391,7 +392,7 @@ function handleModerationActionClick(e: Event, source: 'account' | 'moderation')
         { label: t('dialog.account'), value: `#${accountId}` },
         { label: t('dialog.action'), value: t('dialog.actionChatMute') },
         { label: t('dialog.length'), value: t('detail.lengthHours', { count: hours }) },
-        { label: t('dialog.until'), value: new Date(expiresAt).toLocaleString() },
+        { label: t('dialog.until'), value: fmtDate(expiresAt) },
         { label: t('dialog.reason'), value: note },
       ],
       endpoint: `/admin/api/moderation/accounts/${accountId}/chat-mute`,
@@ -416,7 +417,7 @@ function handleModerationActionClick(e: Event, source: 'account' | 'moderation')
       rows: [
         { label: t('dialog.account'), value: `#${accountId}` },
         { label: t('dialog.action'), value: t('dialog.actionChatMute') },
-        { label: t('dialog.until'), value: expiry.toLocaleString() },
+        { label: t('dialog.until'), value: fmtDate(expiry.toISOString()) },
         { label: t('dialog.reason'), value: note },
       ],
       endpoint: `/admin/api/moderation/accounts/${accountId}/chat-mute`,
@@ -489,7 +490,7 @@ function wireEvents(): void {
   $('admin-tabs').addEventListener('click', (e) => {
     const tab = (e.target as HTMLElement).closest<HTMLButtonElement>('.admin-tab');
     const page = tab?.dataset.adminPage;
-    if (page === 'overview' || page === 'moderation' || page === 'chat-filter') showPage(page);
+    if (page === 'overview' || page === 'usage' || page === 'moderation' || page === 'chat-filter') showPage(page);
   });
 
   wireChatFilterEvents();

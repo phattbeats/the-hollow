@@ -150,6 +150,124 @@ export const ja_JP: EnTranslations = {
       }
     }
   },
+  "hudChrome": {
+    "emotes": {
+      "wave": "手を振る",
+      "laugh": "大笑い",
+      "question": "なに？",
+      "cheer": "応援",
+      "dance": "踊る",
+      "point": "指さす",
+      "flex": "力こぶ",
+      "salute": "敬礼",
+      "cry": "泣く",
+      "bow": "お辞儀",
+      "clap": "拍手",
+      "roar": "雄叫び",
+      "kneel": "ひざまずく"
+    },
+    "emoteWheel": {
+      "edit": "編集",
+      "label": "エモート"
+    },
+    "emoteEditor": {
+      "title": "エモート",
+      "done": "完了"
+    },
+    "chatTimestamps": {
+      "show": "チャットに時刻を表示",
+      "format": "時刻の表記形式",
+      "clock12h": "12時間表記",
+      "clock24h": "24時間表記",
+      "note": "新しいチャット行の先頭に受信時刻を付けます（例：[14:32]）。この設定がオンの間に受信したメッセージにのみ適用されます。"
+    },
+    "swing": {
+      "ready": "攻撃",
+      "seconds": "{seconds}秒"
+    },
+    "rest": {
+      "resting": "休息中"
+    },
+    "mobile": {
+      "autorun": "オートラン",
+      "jump": "ジャンプ",
+      "leaderboard": "ランキング",
+      "nameplates": "ネームプレート",
+      "haptics": "振動",
+      "hapticsOff": "振動オフ",
+      "toggleHaptics": "振動を切り替え"
+    },
+    "widgets": {
+      "clockTitle": "現地時刻 - クリックで12/24時間表記を切り替え",
+      "worldCoordinates": "ワールド座標",
+      "coordinates": "座標",
+      "heading": "方角",
+      "minimapZoom": "ミニマップのズーム"
+    },
+    "compass": {
+      "N": "北",
+      "NE": "北東",
+      "E": "東",
+      "SE": "南東",
+      "S": "南",
+      "SW": "南西",
+      "W": "西",
+      "NW": "北西"
+    },
+    "meters": {
+      "perSecond": "{value}/秒",
+      "perSecondRow": "{total}（{rate}）",
+      "minutesSeconds": "{m}分{s}秒",
+      "seconds": "{s}秒"
+    },
+    "keybinds": {
+      "emoteWheel": "エモートホイール",
+      "targetFriendly": "最も近い味方をターゲット",
+      "targetFriendlyNext": "味方ターゲットを順に切り替え"
+    },
+    "options": {
+      "clickMoveLeft": "左クリック",
+      "clickMoveRight": "右クリック",
+      "footstepSounds": "足音",
+      "showWalletOnCharacterScreen": "キャラクター画面にウォレットを表示",
+      "showWalletOnPlayerCard": "プレイヤーカードにウォレットを表示"
+    },
+    "playerCard": {
+      "showWalletBadge": "ウォレットバッジを表示"
+    },
+    "talents": {
+      "defaultBuildName": "ビルド {n}"
+    },
+    "tips": {
+      "joinChannels": "ヒント：/join world または /join lfg と入力すると、レルム全体のプレイヤーとチャットできます。"
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "あなたは{rank}、{count}人のメンバー",
+        "few": "あなたは{rank}、{count}人のメンバー",
+        "many": "あなたは{rank}、{count}人のメンバー",
+        "other": "あなたは{rank}、{count}人のメンバー"
+      },
+      "characterCount": {
+        "one": "{count}キャラクター",
+        "few": "{count}キャラクター",
+        "many": "{count}キャラクター",
+        "other": "{count}キャラクター"
+      },
+      "secondsRemaining": {
+        "one": "残り {count} 秒",
+        "few": "残り {count} 秒",
+        "many": "残り {count} 秒",
+        "other": "残り {count} 秒"
+      },
+      "playersOnline": {
+        "one": "Who：{realm}に{count}人のプレイヤーがオンラインです。",
+        "few": "Who：{realm}に{count}人のプレイヤーがオンラインです。",
+        "many": "Who：{realm}に{count}人のプレイヤーがオンラインです。",
+        "other": "Who：{realm}に{count}人のプレイヤーがオンラインです。"
+      }
+    }
+  },
   "skinEvent": {
     "title": "装いの宝箱",
     "subtitle": "{rank}の報酬を解除しました — それ以下のスキンを自由に選べます。",
@@ -290,6 +408,150 @@ export const ja_JP: EnTranslations = {
     "enterWorld": "世界に入る",
     "offlineCharacter": "オフラインキャラクター",
     "create": "作成"
+  },
+  "wallet": {
+    "label": "$WOC ウォレット",
+    "connect": "ウォレット認証",
+    "connectTitle": "Solanaウォレットを認証",
+    "connectAria": "Solanaウォレットを認証",
+    "verify": "ウォレット認証",
+    "verifyNew": "新しいウォレットを認証",
+    "verifyTitle": "ウォレットを選択し、一度署名して所有権を認証します。",
+    "verifyAria": "ウォレットを選択し、一度署名して所有権を認証",
+    "verifyAddressAria": "アカウントのウォレット {address} を認証するために署名",
+    "appConnected": "アプリ接続済み",
+    "connectApp": "アプリを接続",
+    "connectAppTitle": "このブラウザでウォレットアプリを接続",
+    "connectAppAria": "このブラウザでウォレットアプリを接続",
+    "verifying": "認証中...",
+    "verifyingTitle": "ウォレット認証を実行中です。",
+    "switch": "切替",
+    "switchTitle": "別のウォレットを認証",
+    "switchAria": "別のウォレットを認証",
+    "unlink": "連携解除",
+    "unlinkTitle": "このアカウントからウォレット認証を削除",
+    "unlinkAria": "このアカウントからウォレット認証を削除",
+    "signOut": "接続解除",
+    "signOutTitle": "このブラウザでウォレットアプリの接続を解除",
+    "signOutAria": "このブラウザでウォレットアプリの接続を解除",
+    "hide": "非表示",
+    "hideTitle": "この画面でウォレット行を非表示にする",
+    "hideAria": "この画面でウォレット行を非表示にする",
+    "hiddenNotice": "ウォレット行を非表示にしました。ゲーム内のオプション > インターフェイスから再度有効にできます。",
+    "linkedTitle": "ウォレットはアカウントで認証済みです。クリックしてウォレットアプリを管理します。",
+    "linkedDisconnectedTitle": "ウォレットはアカウントで認証されたままです。ウォレットアプリを管理するには再接続してください。",
+    "linkedDisconnectedAria": "ウォレットはアカウントで認証されたままです。ウォレットアプリを管理するには再接続してください。",
+    "linkTitle": "クリックして署名し、このウォレットをアカウントに連携します。",
+    "connectedTitle": "接続済みです。ログインすると、このウォレットをアカウントに連携できます。",
+    "balanceTitle": "認証済みSolanaウォレットの$WOC残高",
+    "balanceAria": "認証済みSolanaウォレット残高: {balance}",
+    "balancePreviewTitle": "接続中ウォレットの$WOC残高プレビュー",
+    "balancePreviewAria": "接続中ウォレット残高プレビュー: {balance}。ウォレットを連携するとホルダー表示を認証できます。",
+    "balanceAmount": "{amount} $WOC",
+    "connected": "接続済み: {address}",
+    "connectedWithBalance": "接続済み: {balance} - {address}",
+    "connectedLinked": "認証済み: {address}",
+    "connectedLinkedWithBalance": "認証済み: {balance} - {address}",
+    "helpDisconnected": "Solanaウォレットを認証して、ホルダー表示とプレイヤーカードのバッジを有効にします。トランザクションや SOL は不要です。",
+    "helpLoginToLink": "{address} に接続済みです。ログインするとアカウントに連携できます。",
+    "helpLoginToLinkWithBalance": "{address} に接続済み、残高は {balance} です。ログインするとアカウントに連携できます。",
+    "helpReadyToLink": "選択中のウォレット: {address}。一度署名すると、ホルダー表示とプレイヤーカードを認証できます。",
+    "helpReadyToLinkWithBalance": "選択中のウォレット: {address}、残高は {balance} です。一度署名すると、ホルダー表示とプレイヤーカードを認証できます。",
+    "helpLinked": "ホルダー特典が有効です。このブラウザでウォレットアプリが接続されています。",
+    "helpLinkedWithBalance": "ホルダー特典が有効です。このブラウザでウォレットアプリが接続されています。",
+    "helpLinkedDisconnected": "ホルダー特典が有効です。署名や支払いが必要なときはアプリを接続してください。",
+    "helpLinkedDisconnectedWithBalance": "ホルダー特典が有効です。署名や支払いが必要なときはアプリを接続してください。",
+    "flowConnect": "ウォレットを選択してください。認証は自動的に続行されます。",
+    "flowSign": "ウォレットアプリで認証メッセージに署名してください。トランザクションや SOL は不要です。",
+    "flowVerify": "ウォレット所有権を認証中...",
+    "linkFailed": "ウォレット認証に失敗しました。",
+    "verifyFailed": "ウォレット認証に失敗しました。",
+    "unlinkFailed": "ウォレット連携を解除できませんでした。",
+    "holder": "$WOCホルダー",
+    "holderTierTitle": "{tier} $WOCホルダー",
+    "holderTiers": {
+      "ember": {
+        "name": "残り火",
+        "flavor": "火花が灯りました。"
+      },
+      "coinbearer": {
+        "name": "コインベアラー",
+        "flavor": "軍資金庫に最初の一枚。"
+      },
+      "coppercrest": {
+        "name": "銅の紋章",
+        "flavor": "銅貨は積み上がり、あなたの名が語られます。"
+      },
+      "silverbound": {
+        "name": "銀の誓約",
+        "flavor": "銀に結ばれ、資産を築いています。"
+      },
+      "gilded": {
+        "name": "黄金",
+        "flavor": "黄金に輝き、笑みを浮かべています。"
+      },
+      "vaultwarden": {
+        "name": "宝物庫の番人",
+        "flavor": "今や本物の金庫を守っています: $WOC 全体の 0.01%。"
+      },
+      "whale": {
+        "name": "クジラ",
+        "flavor": "泳げば深みが割れます: 供給量の 0.1%。"
+      },
+      "leviathan": {
+        "name": "リヴァイアサン",
+        "flavor": "あなたが動けば市場が感じ取ります: 供給量の 1%。"
+      },
+      "worldbearer": {
+        "name": "世界を担う者",
+        "flavor": "あなたは世界の一片を背負っています: 供給量の 10%。"
+      },
+      "sovereign": {
+        "name": "君主",
+        "flavor": "レルムが膝をつきます: 供給量のすべて。"
+      }
+    }
+  },
+  "playerCard": {
+    "shareButton": "プレイヤーカードを共有",
+    "title": "プレイヤーカード",
+    "close": "プレイヤーカードを閉じる",
+    "loading": "カードを鍛造中...",
+    "poseGroup": "ポーズ",
+    "poseHero": "英雄",
+    "poseBattle": "戦闘",
+    "poseVictory": "勝利",
+    "referralLinkLabel": "あなたの紹介リンクです。このリンクから参加した人はあなたの紹介として記録されます:",
+    "referralLinkAria": "あなたの紹介リンク",
+    "renderFailed": "カードをレンダリングできませんでした。別のポーズをお試しください。",
+    "renderFailedStatus": "カードのレンダリングに失敗しました。",
+    "levelClass": "レベル{level} - {className}",
+    "topPercent": "上位 {percent}%",
+    "realmSubtitle": "{realm} レルム",
+    "defaultRealm": "ClaudeCraftの世界",
+    "brandWordmark": "WORLD OF CLAUDECRAFT",
+    "recruited": "招待 {count}人",
+    "footerHandle": "@{handle}",
+    "footerHandleWithRecruits": "@{handle} - {recruited}",
+    "footerCta": "あなたの伝説を鍛えよう: {siteUrl}",
+    "arenaStat": "アリーナ",
+    "shareTierBit": ", {tier}ランクの$WOCホルダー",
+    "shareText": "World of ClaudeCraftで伝説を鍛えています: レベル{level} {className}{tierBit}。私のレルムに参加してください:",
+    "nativeShareTitle": "ClaudeCraftの世界",
+    "fileNameFallback": "プレイヤー",
+    "actionShareX": "Xで共有",
+    "actionCopyReferral": "紹介リンクをコピー",
+    "actionDownload": "ダウンロード",
+    "actionShareNative": "共有...",
+    "statusGenericError": "問題が発生しました。",
+    "statusStillRendering": "カードはまだレンダリング中です。",
+    "statusPublishing": "カードを公開中...",
+    "statusPublished": "カードを公開しました。下の紹介リンクを共有してください。",
+    "statusOpenedXWithImage": "Xを開きました。投稿にカード画像を貼り付けてください。",
+    "statusOpenedXWithLink": "リンク付きでXを開きました。公開ドメインから投稿すると、カード画像が表示されます。",
+    "statusReferralCopied": "紹介リンクをコピーしました。どこにでも共有できます。",
+    "statusDownloaded": "カードをダウンロードしました。",
+    "statusShareUnsupported": "このデバイスでは共有に対応していません。"
   },
   "classes": {
     "warrior": "戦士",
@@ -562,6 +824,7 @@ export const ja_JP: EnTranslations = {
       "deleteConfirm": "削除を確認するにはキャラクター名を入力してください。",
       "notAuthenticated": "認証されていません。",
       "accountBanned": "このアカウントは利用停止されています。",
+      "webLoginOnly": "ログインはゲームクライアントからのみ可能です。",
       "accountSuspended": "このアカウントは {date} まで停止されています。",
       "alreadyInWorld": "キャラクターは既に世界にいます。",
       "renameBeforeEntering": "このキャラクターは世界に入る前に名前変更が必要です。"
@@ -617,7 +880,7 @@ export const ja_JP: EnTranslations = {
     "labels": {
       "strength": "筋力",
       "agility": "敏捷性",
-      "stamina": "耐久力",
+      "stamina": "スタミナ",
       "intellect": "知力",
       "spirit": "精神力",
       "resource": "リソース",
@@ -664,7 +927,7 @@ export const ja_JP: EnTranslations = {
       "warlock": "ウォーロックは悪魔を召喚し、呪いと継続ダメージ魔法をかけ、生命力を吸収して耐えます。",
       "druid": "ドルイドは自然の力を導き、傷を癒やし、敵を絡め取り、動物形態に変身して守りまたは攻めます。"
     },
-    "aria": "{className}のクラス詳細: 役割 {role}。開始ステータス: 筋力 {str}、敏捷性 {agi}、耐久力 {sta}、知力 {int}、精神力 {spi}。",
+    "aria": "{className}のクラス詳細: 役割 {role}。開始ステータス: 筋力 {str}、敏捷性 {agi}、スタミナ {sta}、知力 {int}、精神力 {spi}。",
     "statBarAria": "{stat}: {value}/25"
   },
   "mobilePreflight": {
@@ -717,7 +980,7 @@ export const ja_JP: EnTranslations = {
       "releaseSpirit": "霊魂を解放",
       "chatTab": "チャット",
       "combatLogTab": "戦闘ログ",
-      "chatPlaceholder": "発言する... (/w 名前 ささやき、/r 返信、/p パーティ、/gu ギルド、/o オフィサー、/general 一般)",
+      "chatPlaceholder": "発言する... (/s 発言、/w 名前 ささやき、/r 返信、/p パーティ、/gu ギルド、/o オフィサー、/general 一般、/help)",
       "chatChannels": {
         "add": "チャットチャンネルを追加",
         "addTitle": "チャンネルを追加",
@@ -759,6 +1022,7 @@ export const ja_JP: EnTranslations = {
       "graphics": "グラフィック",
       "audio": "オーディオ",
       "interface": "インターフェース",
+      "language": "言語",
       "logout": "ログアウト",
       "returnToGame": "ゲームに戻る",
       "resetToDefaults": "初期設定に戻す",
@@ -1001,8 +1265,10 @@ export const ja_JP: EnTranslations = {
       "targetMustDodge": "対象が先に回避する必要があります。",
       "requiresCombo": "その能力にはコンボポイントが必要です。",
       "requiresForm": "{form}フォームである必要があります。",
+      "cantInForm": "{form}フォーム中は実行できません。",
       "bear": "熊",
-      "cat": "猫",
+      "cat": "狼",
+      "travel": "トラベル",
       "shapeshifted": "変身中は実行できません。",
       "stealthed": "ステルス状態である必要があります。",
       "inCombat": "戦闘中は実行できません。",
@@ -1262,7 +1528,7 @@ export const ja_JP: EnTranslations = {
     },
     "forms": {
       "bear": "熊",
-      "cat": "猫"
+      "cat": "狼"
     },
     "cast": {
       "fishing": "釣り",
@@ -1295,7 +1561,7 @@ export const ja_JP: EnTranslations = {
       "readyQuestAria": "報告可能なクエスト: {name}",
       "discussQuest": "{name}について話す。",
       "discussQuestAria": "クエストについて話す: {name}",
-      "nythraxisDeathlessKingWarning": "三つの遺物は同じ物語を語っています。アルドレンは王を守るために戦い、マルリックは死の境界を破り、ヴォスはその後に起きたことを止めようとしました。封印は弱まり、廃棄された墓所こそ地下への道です。",
+      "nythraxisDeathlessKingWarning": "三つの遺物は同じ物語を語っています。オルドレンは王を守るために戦い、マルリックは死の境界を破り、ヴォスはその後に起きたことを止めようとしました。封印は弱まり、廃棄された墓所こそ地下への道です。",
       "browseGoods": "品物を見せてください。",
       "browseGoodsAria": "{name}の品物を見る",
       "worldMarket": "ワールドマーケットを見せてください。",
@@ -1452,6 +1718,43 @@ export const ja_JP: EnTranslations = {
       "noMerchant": "取引するには商人に近づいてください。",
       "emptyBrowse": "市場は静かです。売却タブで最初に何かを出品しましょう。",
       "browseNote": "王国中の冒険者が出品した品です。購入を選ぶとスタックを即時購入します。",
+      "searchPlaceholder": "市場を検索...",
+      "searchAria": "アイテム名でワールドマーケットを検索",
+      "emptySearch": "検索に一致する商品がありません。別の名前をお試しください。",
+      "truncated": "{total}件中{shown}件を表示。検索を絞り込んで残りを表示してください。",
+      "emptyFiltered": "これらのフィルターに一致する出品はありません。",
+      "pageRange": "{total}件中{shown}件を表示。",
+      "pagePrev": "前へ",
+      "pageNext": "次へ",
+      "pagePrevAria": "マーケットの前のページ",
+      "pageNextAria": "マーケットの次のページ",
+      "pageStatus": "{total} ページ中 {current} ページ",
+      "filters": "市場フィルター",
+      "filterType": "種類",
+      "filterTypeAll": "すべての種類",
+      "filterTypeWeapon": "武器",
+      "filterTypeArmor": "防具",
+      "filterTypeConsumable": "消耗品",
+      "filterTypeMaterial": "素材",
+      "filterTypeCosmetic": "外見",
+      "filterTypeOther": "その他",
+      "filterArmorType": "防具の種類",
+      "filterArmorAll": "すべての防具",
+      "filterWeaponType": "武器の種類",
+      "filterWeaponAll": "すべての武器",
+      "filterRarity": "レア度",
+      "filterRarityAll": "すべてのレア度",
+      "weaponSword": "剣",
+      "weaponDagger": "短剣",
+      "weaponStaff": "杖",
+      "weaponMace": "メイス",
+      "weaponAxe": "斧",
+      "weaponOther": "その他の武器",
+      "rarityPoor": "粗悪",
+      "rarityCommon": "普通",
+      "rarityUncommon": "高品質",
+      "rarityRare": "レア",
+      "rarityEpic": "エピック",
       "merchantStock": "商人の在庫",
       "stackCount": "x{count}",
       "each": "各 {money}",
@@ -1976,16 +2279,16 @@ export const ja_JP: EnTranslations = {
         "description": "対象に唸ります。あなたの脅威が対象の最も憎む敵と同じ値まで上がり、3秒間あなたを攻撃させます。ベアフォーム専用。"
       },
       "cat_form": {
-        "name": "キャットフォーム",
-        "description": "猫に変身します。攻撃力はレベルに応じて上昇し、攻撃はエネルギーとコンボポイントを使い、脅威生成が29%低下します。再度使用すると術者形態に戻ります。"
+        "name": "ウルフフォーム",
+        "description": "狼に変身します。攻撃力はレベルに応じて上昇し、攻撃はエネルギーとコンボポイントを使い、脅威生成が29%低下します。再度使用すると術者形態に戻ります。"
       },
       "claw": {
         "name": "クロー",
-        "description": "敵を引っかき、武器ダメージに {damage} を加えたダメージを与えます。コンボポイントを1獲得します。キャットフォーム専用。"
+        "description": "敵を引っかき、武器ダメージに {damage} を加えたダメージを与えます。コンボポイントを1獲得します。ウルフフォーム専用。"
       },
       "ferocious_bite": {
         "name": "獰猛な噛みつき",
-        "description": "コンボポイントに応じてダメージを与えるフィニッシュムーブです。キャットフォーム専用。"
+        "description": "コンボポイントに応じてダメージを与えるフィニッシュムーブです。ウルフフォーム専用。"
       },
       "swipe": {
         "name": "スワイプ",
@@ -2025,11 +2328,11 @@ export const ja_JP: EnTranslations = {
       },
       "dash": {
         "name": "ダッシュ",
-        "description": "前方へ駆け出し、移動速度を15秒間50%上昇させます。キャットフォーム専用。"
+        "description": "前方へ駆け出し、移動速度を15秒間50%上昇させます。ウルフフォーム専用。"
       },
       "pounce": {
         "name": "パウンス",
-        "description": "隠密状態から放つ先制攻撃で、対象を2秒間スタンさせます。コンボポイントを1獲得します。キャットフォーム専用。"
+        "description": "隠密状態から放つ先制攻撃で、対象を2秒間スタンさせます。コンボポイントを1獲得します。ウルフフォーム専用。"
       },
       "insect_swarm": {
         "name": "インセクトスウォーム",
@@ -2037,11 +2340,11 @@ export const ja_JP: EnTranslations = {
       },
       "tigers_fury": {
         "name": "タイガーフューリー",
-        "description": "攻撃力を6秒間40上昇させます。キャットフォーム専用。"
+        "description": "攻撃力を6秒間40上昇させます。ウルフフォーム専用。"
       },
       "rip": {
         "name": "リップ",
-        "description": "12秒かけて出血ダメージを与えるフィニッシュムーブです。コンボポイントを消費します。キャットフォーム専用。"
+        "description": "12秒かけて出血ダメージを与えるフィニッシュムーブです。コンボポイントを消費します。ウルフフォーム専用。"
       },
       "mortal_strike": {
         "name": "致死打撃",
@@ -2696,10 +2999,10 @@ export const ja_JP: EnTranslations = {
         "name": "墓織りの衣"
       },
       "gravewyrm_sabatons": {
-        "name": "グレイブワームのサバトン"
+        "name": "墓ワームのサバトン"
       },
       "gravewyrm_stalkers_treads": {
-        "name": "グレイブワーム追跡者の足具"
+        "name": "墓ワーム追跡者の足具"
       },
       "greyjaw_hide_boots": {
         "name": "グレイジョーの皮ブーツ"
@@ -4169,8 +4472,8 @@ export const ja_JP: EnTranslations = {
       },
       "q_nythraxis_restless_dead": {
         "title": "骨原の異変",
-        "text": "Thornpeak Heightsで何かが変わりました、{playerName}。死者たちはもはや当てもなくさまよっていません。Highwatchの北、古い戦場と崖道が交わる骨原で集まり、行軍しています。そこへ向かい、骨鎧の亡者たちの異変を調べ、彼らを動かしているものの証拠を持ち帰ってください。",
-        "completion": "すべての欠片に同じ印があります... 王冠です。Eastbrookの記録には残っていない古い墓に刻まれているのを見たことがあります。",
+        "text": "ソーンピーク高地で何かが変わりました、{playerName}。死者たちはもはや当てもなくさまよっていません。ハイウォッチの北、古い戦場と崖道が交わる骨原で集まり、行軍しています。そこへ向かい、骨鎧の亡者たちの異変を調べ、彼らを動かしているものの証拠を持ち帰ってください。",
+        "completion": "すべての欠片に同じ印があります... 王冠です。イーストブルックの記録には残っていない古い墓に刻まれているのを見たことがあります。",
         "objectives": {
           "0": {
             "label": "ルーン刻みの骨片"
@@ -4180,7 +4483,7 @@ export const ja_JP: EnTranslations = {
       "q_nythraxis_graves": {
         "title": "忘れられし者の墓",
         "text": "この印を以前にも見ました。北の戦場を囲む三つの古い墓です。アルドレン隊長は東の高台に、大神官マルリックは中央の壊れた道の近くに、王家の暗殺者ヴォスは西の崖のそばに眠っています。それぞれの墓に触れて耳を澄ませてください、{playerName}。死者は生者が忘れたことを覚えているかもしれません。",
-        "completion": "アルドレンは忠義を守り、マルリックは死を受け入れず、ヴォスは誰よりも早く危険を見抜きました。三人は同じ忘れられた王に仕えていました。",
+        "completion": "オルドレンは忠義を守り、マルリックは死を受け入れず、ヴォスは誰よりも早く危険を見抜きました。三人は同じ忘れられた王に仕えていました。",
         "objectives": {
           "0": {
             "label": "隊長オルドレンの墓での幻視"
@@ -4195,7 +4498,7 @@ export const ja_JP: EnTranslations = {
       },
       "q_nythraxis_sealed_crypt": {
         "title": "放棄された地下墓所",
-        "text": "幻視は、西の崖にある廃棄された墓所を示しています。その墓所には王がいたという古い伝説があります。マルリックの儀式が王を死なぬものへ歪めた後、Thornpeakが彼を地下に封じたのかもしれません。墓所へ入り、中に何が残っているか確かめてください。",
+        "text": "幻視は、西の崖にある廃棄された墓所を示しています。その墓所には王がいたという古い伝説があります。マルリックの儀式が王を死なぬものへ歪めた後、ソーンピークが彼を地下に封じたのかもしれません。墓所へ入り、中に何が残っているか確かめてください。",
         "completion": "要石の二つの半分が合わさり、ヴォスの日誌はそれらが封じたものの名を示しています。ニスラクシス王の印章指輪です。日誌が真実なら、その指輪こそ彼の墓への鍵です。",
         "objectives": {
           "0": {
@@ -4212,7 +4515,7 @@ export const ja_JP: EnTranslations = {
       "q_nythraxis_bound_guardian": {
         "title": "縛られし守護者",
         "text": "ヴォスは、生存者たちが偶然や野心でニスラクシスの墓に辿り着く者を防ぐため、王の印章指輪を古代の守護者の奥に封じたと記しています。墓所の要石を、廃棄された墓所の東、西の墓の南東にある平地の儀式陣へ持っていってください。そこで使い、守護者を破り、指輪を持ち帰ってください。",
-        "completion": "三つの遺物は同じ物語を語っています。アルドレンは王を守るために戦い、マルリックは死の境界を破り、ヴォスはその後に起きたことを止めようとしました。封印は弱まり、この指輪こそニスラクシスの墓への鍵です。あなたは今、ニスラクシスの墓所へ入るための調律を終えました。",
+        "completion": "三つの遺物は同じ物語を語っています。オルドレンは王を守るために戦い、マルリックは死の境界を破り、ヴォスはその後に起きたことを止めようとしました。封印は弱まり、この指輪こそニスラクシスの墓への鍵です。あなたは今、ニスラクシスの墓所へ入るための調律を終えました。",
         "objectives": {
           "0": {
             "label": "儀式の円で地下墓所の要石を使用"
@@ -4260,31 +4563,31 @@ export const ja_JP: EnTranslations = {
       },
       "q_ledger_teeth": {
         "title": "闇の中の牙",
-        "text": "狼の群れは巡回路を覚えてしまった。光が薄れ、ひとり旅の者が格好の餌食となる黄昏どきに襲ってくる。あれを打ち砕いてくれ、{playerName}。森の狼を10頭倒し、群れに新たな教訓を学ばせよ。",
-        "completion": "狼が十頭、そして黄昏の道はまた我らのものだ。記録はお前に優しくなっていく。",
+        "text": "林間のキツネどもが狼のように図太くなってな。黄昏どきに鶏小屋へ忍び込み、ランタンに火が灯る前には姿を消す。腹を空かせた牝ギツネは、鶏と同じくらい気軽に子羊もさらっていく。あれを間引いてくれ、{playerName}。林間のキツネを10匹仕留め、残りに再び光を恐れることを覚えさせるのだ。",
+        "completion": "キツネが十匹、そして鶏小屋は黄昏どきにもまた静かになった。記録はお前に優しくなっていく。",
         "objectives": {
           "0": {
-            "label": "森の狼を討伐"
+            "label": "林間のキツネを討伐"
           }
         }
       },
       "q_ledger_reedwater": {
         "title": "葦の水辺の巡回",
-        "text": "レッドブルックが寄こしたのか？よし。この老骨ではもう浅瀬を渡れぬ。泥ひれが葦の水辺に這い戻り、かつてないほど大胆になっている。間引いてくれ。泥ひれの潜伏者を8体、それと深みには気をつけろ。",
-        "completion": "これでひと季節は、あのごぼごぼ鳴く悪魔どもを私の網から遠ざけておける。元帥に、湖はまた静かになったと伝えてくれ。",
+        "text": "レッドブルックが寄こしたのか？よし。この老骨ではもう浅瀬を渡れぬ。草原のツルどもが私の網を見つけてな、泥ひれの連中などよりずっと多くの獲物をその嘴で突き刺していく。間引いてくれ。草原のツルを8羽、それと深みには気をつけろ。",
+        "completion": "これでひと季節は、あの脚長の盗っ人どもを私の網から遠ざけておける。元帥に、浅瀬はまた私のものになったと伝えてくれ。",
         "objectives": {
           "0": {
-            "label": "泥ひれの潜伏者を討伐"
+            "label": "草原のツルを追い払う"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "絹と毒",
-        "text": "記録は東の森も番人の領分と記している。ウェブウッドの潜伏者は週ごとに巣を厚くしていく。先の市の日には子供が近づきすぎてしまい、かろうじて息のあるうちに切り出した。森を丸ごと奪われる前に、ウェブウッドの潜伏者を8体倒してくれ。",
-        "completion": "闇の中の紡ぎ手が八体減った。森は息がしやすくなり、私もだ。",
+        "title": "若葉と茨",
+        "text": "記録は東の森も番人の領分と記している。私の薬草畑もその一部だ。まだらの子鹿どもが私のシルバーリーフとブラッドシスルを根こそぎ食い尽くしてしまい、あの薬草がなければイーストブルックの半数が薬にありつけぬ。気は進まぬが、秋の薬草が完全に失われる前に、まだらの子鹿を8頭間引いてくれ。",
+        "completion": "お前のおかげで、畑はまだ立ち直れるかもしれぬ。つらい慈悲だ。だが熱に焼かれる子供には、森が鹿を必要とする以上に薬草が要る。記録は清算された。",
         "objectives": {
           "0": {
-            "label": "ウェブウッドの潜伏者を討伐"
+            "label": "まだらの子鹿を間引く"
           }
         }
       },
@@ -4309,12 +4612,12 @@ export const ja_JP: EnTranslations = {
         }
       },
       "q_ledger_toll": {
-        "title": "追いはぎの通行料",
-        "text": "南東の丘は盗賊の通行料の道と化した。軽装で旅をする愚か者なら誰でも襲う。記録にはひとり残らず賞金がかかっている。谷の盗賊を8人、イーストブルックの裁きにかけてくれ。",
-        "completion": "盗賊が八人、報いを受けた。通行路に新しい番人がついたという噂はもう広まっている。しかもその番人は金を取らぬ。首を取るのだ。",
+        "title": "牙の道",
+        "text": "牙森の猪どもがブライトウッドから下りてきて、南東の交易路に居ついてしまった。荷役の牛を牙で突き、こぼれた穀物欲しさに荷車をひっくり返す、大きな牙を持つ獰猛な獣どもだ。記録にはその一頭ごとに賞金がかかっている。道を再び開け。牙森の猪を8頭始末してくれ。",
+        "completion": "獣が八頭、道から消え、荷車はまた動き出した。交易路に新しい番人がついたという噂はもう広まっている。記録はお前に有利に傾いていく。",
         "objectives": {
           "0": {
-            "label": "谷の盗賊を成敗"
+            "label": "牙森の猪を討伐"
           }
         }
       },
@@ -4558,7 +4861,7 @@ export const ja_JP: EnTranslations = {
       "nythraxis_crypt": {
         "name": "放棄された地下墓所",
         "enterText": "放棄された地下墓所の敷居を越えます。",
-        "leaveText": "Thornpeakの冷たい空気へ戻ります。"
+        "leaveText": "ソーンピークの冷たい空気へ戻ります。"
       },
       "drowned_temple": {
         "name": "溺れし神殿",

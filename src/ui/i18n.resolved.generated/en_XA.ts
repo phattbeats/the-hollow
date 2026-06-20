@@ -150,6 +150,124 @@ export const en_XA: EnTranslations = {
       }
     }
   },
+  "hudChrome": {
+    "emotes": {
+      "wave": "[Ŵáʋé]",
+      "laugh": "[ĻÓĻ]",
+      "question": "[Ɓŕó?]",
+      "cheer": "[Çĥééŕ]",
+      "dance": "[Ðáñçé]",
+      "point": "[Þóíñţ]",
+      "flex": "[Ƒļéẋ]",
+      "salute": "[Šáļúţé]",
+      "cry": "[Çŕý]",
+      "bow": "[Ɓóŵ]",
+      "clap": "[Çļáþ]",
+      "roar": "[Ŕóáŕ]",
+      "kneel": "[Ķñééļ]"
+    },
+    "emoteWheel": {
+      "edit": "[Éðíţ]",
+      "label": "[Éɱóţéš]"
+    },
+    "emoteEditor": {
+      "title": "[Éɱóţéš]",
+      "done": "[Ðóñé]"
+    },
+    "chatTimestamps": {
+      "show": "[Šĥóŵ Çĥáţ Ţíɱéšţáɱþš]",
+      "format": "[Ţíɱéšţáɱþ Ƒóŕɱáţ]",
+      "clock12h": "[12-ĥóúŕ]",
+      "clock24h": "[24-ĥóúŕ]",
+      "note": "[Þŕéƒíẋéš éáçĥ ñéŵ çĥáţ ļíñé ŵíţĥ ţĥé ţíɱé íţ áŕŕíʋéð, é.ĝ. [14:32]. Óñļý áƒƒéçţš ɱéššáĝéš ŕéçéíʋéð ŵĥíļé ţĥé óþţíóñ íš óñ.]"
+    },
+    "swing": {
+      "ready": "[Šŵíñĝ]",
+      "seconds": "[{seconds}š]"
+    },
+    "rest": {
+      "resting": "[Ŕéšţíñĝ]"
+    },
+    "mobile": {
+      "autorun": "[Áúţóŕúñ]",
+      "jump": "[Ĵúɱþ]",
+      "leaderboard": "[Ŕáñķš]",
+      "nameplates": "[Ñáɱéš]",
+      "haptics": "[Ĥáþţíçš]",
+      "hapticsOff": "[Ĥáþţíçš Óƒƒ]",
+      "toggleHaptics": "[Ţóĝĝļé ĥáþţíçš]"
+    },
+    "widgets": {
+      "clockTitle": "[Ļóçáļ ţíɱé - çļíçķ ţó ţóĝĝļé 12/24-ĥóúŕ]",
+      "worldCoordinates": "[Ŵóŕļð çóóŕðíñáţéš]",
+      "coordinates": "[Çóóŕðíñáţéš]",
+      "heading": "[Ĥéáðíñĝ]",
+      "minimapZoom": "[Ɱíñíɱáþ žóóɱ]"
+    },
+    "compass": {
+      "N": "[Ñ]",
+      "NE": "[ÑÉ]",
+      "E": "[É]",
+      "SE": "[ŠÉ]",
+      "S": "[Š]",
+      "SW": "[ŠŴ]",
+      "W": "[Ŵ]",
+      "NW": "[ÑŴ]"
+    },
+    "meters": {
+      "perSecond": "[{value}/š]",
+      "perSecondRow": "[{total} ({rate})]",
+      "minutesSeconds": "[{m}ɱ {s}š]",
+      "seconds": "[{s}š]"
+    },
+    "keybinds": {
+      "emoteWheel": "[Éɱóţé Ŵĥééļ]",
+      "targetFriendly": "[Ţáŕĝéţ Ñéáŕéšţ Ƒŕíéñðļý]",
+      "targetFriendlyNext": "[Çýçļé Ƒŕíéñðļý Ţáŕĝéţ]"
+    },
+    "options": {
+      "clickMoveLeft": "[Ļéƒţ Çļíçķ]",
+      "clickMoveRight": "[Ŕíĝĥţ Çļíçķ]",
+      "footstepSounds": "[Ƒóóţšţéþ Šóúñðš]",
+      "showWalletOnCharacterScreen": "[Šĥóŵ Ŵáļļéţ óñ Çĥáŕáçţéŕ Šçŕééñ]",
+      "showWalletOnPlayerCard": "[Šĥóŵ Ŵáļļéţ óñ Þļáýéŕ Çáŕð]"
+    },
+    "playerCard": {
+      "showWalletBadge": "[Šĥóŵ ŵáļļéţ ƀáðĝé]"
+    },
+    "talents": {
+      "defaultBuildName": "[Ɓúíļð {n}]"
+    },
+    "tips": {
+      "joinChannels": "[Ţíþ: ţýþé /ĵóíñ ŵóŕļð óŕ /ĵóíñ ļƒĝ ţó çĥáţ ŵíţĥ þļáýéŕš áçŕóšš ţĥé ŕéáļɱ.]"
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "[ýóú áŕé {rank}, {count} ɱéɱƀéŕ]",
+        "few": "[ýóú áŕé {rank}, {count} ɱéɱƀéŕš]",
+        "many": "[ýóú áŕé {rank}, {count} ɱéɱƀéŕš]",
+        "other": "[ýóú áŕé {rank}, {count} ɱéɱƀéŕš]"
+      },
+      "characterCount": {
+        "one": "[{count} çĥáŕáçţéŕ]",
+        "few": "[{count} çĥáŕáçţéŕš]",
+        "many": "[{count} çĥáŕáçţéŕš]",
+        "other": "[{count} çĥáŕáçţéŕš]"
+      },
+      "secondsRemaining": {
+        "one": "[{count} šéçóñð ŕéɱáíñíñĝ]",
+        "few": "[{count} šéçóñðš ŕéɱáíñíñĝ]",
+        "many": "[{count} šéçóñðš ŕéɱáíñíñĝ]",
+        "other": "[{count} šéçóñðš ŕéɱáíñíñĝ]"
+      },
+      "playersOnline": {
+        "one": "[Ŵĥó: {count} þļáýéŕ óñļíñé óñ {realm}.]",
+        "few": "[Ŵĥó: {count} þļáýéŕš óñļíñé óñ {realm}.]",
+        "many": "[Ŵĥó: {count} þļáýéŕš óñļíñé óñ {realm}.]",
+        "other": "[Ŵĥó: {count} þļáýéŕš óñļíñé óñ {realm}.]"
+      }
+    }
+  },
   "skinEvent": {
     "title": "[Çóšɱéţíç Çáçĥé]",
     "subtitle": "[Ýóú úñļóçķéð á {rank} ŕéŵáŕð — çĥóóšé áñý šķíñ áţ óŕ ƀéļóŵ íţ.]",
@@ -290,6 +408,150 @@ export const en_XA: EnTranslations = {
     "enterWorld": "[Éñţéŕ Ŵóŕļð]",
     "offlineCharacter": "[Óƒƒļíñé Çĥáŕáçţéŕ]",
     "create": "[Çŕéáţé]"
+  },
+  "wallet": {
+    "label": "[$ŴÓÇ Ŵáļļéţ]",
+    "connect": "[Ʋéŕíƒý Ŵáļļéţ]",
+    "connectTitle": "[Ʋéŕíƒý ýóúŕ Šóļáñá ŵáļļéţ]",
+    "connectAria": "[Ʋéŕíƒý ýóúŕ Šóļáñá ŵáļļéţ]",
+    "verify": "[Ʋéŕíƒý Ŵáļļéţ]",
+    "verifyNew": "[Ʋéŕíƒý Ñéŵ Ŵáļļéţ]",
+    "verifyTitle": "[Çĥóóšé á ŵáļļéţ áñð šíĝñ óñçé ţó ʋéŕíƒý óŵñéŕšĥíþ.]",
+    "verifyAria": "[Çĥóóšé á ŵáļļéţ áñð šíĝñ óñçé ţó ʋéŕíƒý óŵñéŕšĥíþ]",
+    "verifyAddressAria": "[Šíĝñ ţó ʋéŕíƒý ŵáļļéţ {address} ƒóŕ ýóúŕ áççóúñţ]",
+    "appConnected": "[Áþþ Çóññéçţéð]",
+    "connectApp": "[Çóññéçţ Áþþ]",
+    "connectAppTitle": "[Çóññéçţ ţĥé ŵáļļéţ áþþ óñ ţĥíš ƀŕóŵšéŕ]",
+    "connectAppAria": "[Çóññéçţ ţĥé ŵáļļéţ áþþ óñ ţĥíš ƀŕóŵšéŕ]",
+    "verifying": "[Ʋéŕíƒýíñĝ...]",
+    "verifyingTitle": "[Ŵáļļéţ ʋéŕíƒíçáţíóñ íš íñ þŕóĝŕéšš.]",
+    "switch": "[Šŵíţçĥ]",
+    "switchTitle": "[Ʋéŕíƒý á ðíƒƒéŕéñţ ŵáļļéţ]",
+    "switchAria": "[Ʋéŕíƒý á ðíƒƒéŕéñţ ŵáļļéţ]",
+    "unlink": "[Úñļíñķ]",
+    "unlinkTitle": "[Ŕéɱóʋé ŵáļļéţ ʋéŕíƒíçáţíóñ ƒŕóɱ ţĥíš áççóúñţ]",
+    "unlinkAria": "[Ŕéɱóʋé ŵáļļéţ ʋéŕíƒíçáţíóñ ƒŕóɱ ţĥíš áççóúñţ]",
+    "signOut": "[Ðíšçóññéçţ]",
+    "signOutTitle": "[Ðíšçóññéçţ ţĥé ŵáļļéţ áþþ óñ ţĥíš ƀŕóŵšéŕ]",
+    "signOutAria": "[Ðíšçóññéçţ ţĥé ŵáļļéţ áþþ óñ ţĥíš ƀŕóŵšéŕ]",
+    "hide": "[Ĥíðé]",
+    "hideTitle": "[Ĥíðé ŵáļļéţ ŕóŵ óñ ţĥíš šçŕééñ]",
+    "hideAria": "[Ĥíðé ŵáļļéţ ŕóŵ óñ ţĥíš šçŕééñ]",
+    "hiddenNotice": "[Ŵáļļéţ ŕóŵ ĥíððéñ. Ŕé-éñáƀļé íţ íñ-ĝáɱé ƒŕóɱ Óþţíóñš > Íñţéŕƒáçé.]",
+    "linkedTitle": "[Ŵáļļéţ ʋéŕíƒíéð ƒóŕ ýóúŕ áççóúñţ. Çļíçķ ţó ɱáñáĝé ţĥé ŵáļļéţ áþþ.]",
+    "linkedDisconnectedTitle": "[Ŵáļļéţ ŕéɱáíñš ʋéŕíƒíéð ƒóŕ ýóúŕ áççóúñţ. Ŕéçóññéçţ ţó ɱáñáĝé ţĥé ŵáļļéţ áþþ.]",
+    "linkedDisconnectedAria": "[Ŵáļļéţ ŕéɱáíñš ʋéŕíƒíéð ƒóŕ ýóúŕ áççóúñţ. Ŕéçóññéçţ ţó ɱáñáĝé ţĥé ŵáļļéţ áþþ.]",
+    "linkTitle": "[Çļíçķ ţó šíĝñ áñð ļíñķ ţĥíš ŵáļļéţ ţó ýóúŕ áççóúñţ.]",
+    "connectedTitle": "[Çóññéçţéð. Ļóĝ íñ ţó ļíñķ ţĥíš ŵáļļéţ ţó ýóúŕ áççóúñţ.]",
+    "balanceTitle": "[Ʋéŕíƒíéð Šóļáñá ŵáļļéţ $ŴÓÇ ƀáļáñçé]",
+    "balanceAria": "[Ʋéŕíƒíéð Šóļáñá ŵáļļéţ ƀáļáñçé: {balance}]",
+    "balancePreviewTitle": "[Çóññéçţéð ŵáļļéţ $ŴÓÇ ƀáļáñçé þŕéʋíéŵ]",
+    "balancePreviewAria": "[Çóññéçţéð ŵáļļéţ ƀáļáñçé þŕéʋíéŵ: {balance}. Ļíñķ ţĥé ŵáļļéţ ţó ʋéŕíƒý ĥóļðéŕ ƒļáíŕ.]",
+    "balanceAmount": "[{amount} $ŴÓÇ]",
+    "connected": "[Çóññéçţéð: {address}]",
+    "connectedWithBalance": "[Çóññéçţéð: {balance} - {address}]",
+    "connectedLinked": "[Ʋéŕíƒíéð: {address}]",
+    "connectedLinkedWithBalance": "[Ʋéŕíƒíéð: {balance} - {address}]",
+    "helpDisconnected": "[Ʋéŕíƒý á Šóļáñá ŵáļļéţ ţó éñáƀļé ĥóļðéŕ ƒļáíŕ áñð þļáýéŕ-çáŕð ƀáðĝéš. Ñó ţŕáñšáçţíóñ óŕ ŠÓĻ ŕéɋúíŕéð.]",
+    "helpLoginToLink": "[Çóññéçţéð {address}. Ļóĝ íñ ţó ļíñķ íţ ţó ýóúŕ áççóúñţ.]",
+    "helpLoginToLinkWithBalance": "[Çóññéçţéð {address} ŵíţĥ {balance}. Ļóĝ íñ ţó ļíñķ íţ ţó ýóúŕ áççóúñţ.]",
+    "helpReadyToLink": "[Ŵáļļéţ šéļéçţéð: {address}. Šíĝñ óñçé ţó ʋéŕíƒý ĥóļðéŕ ƒļáíŕ áñð þļáýéŕ çáŕðš.]",
+    "helpReadyToLinkWithBalance": "[Ŵáļļéţ šéļéçţéð: {address} ŵíţĥ {balance}. Šíĝñ óñçé ţó ʋéŕíƒý ĥóļðéŕ ƒļáíŕ áñð þļáýéŕ çáŕðš.]",
+    "helpLinked": "[Ĥóļðéŕ þéŕķš áŕé áçţíʋé. Ŵáļļéţ áþþ çóññéçţéð óñ ţĥíš ƀŕóŵšéŕ.]",
+    "helpLinkedWithBalance": "[Ĥóļðéŕ þéŕķš áŕé áçţíʋé. Ŵáļļéţ áþþ çóññéçţéð óñ ţĥíš ƀŕóŵšéŕ.]",
+    "helpLinkedDisconnected": "[Ĥóļðéŕ þéŕķš áŕé áçţíʋé. Çóññéçţ ţĥé áþþ ŵĥéñ ýóú ñééð ţó šíĝñ óŕ šþéñð.]",
+    "helpLinkedDisconnectedWithBalance": "[Ĥóļðéŕ þéŕķš áŕé áçţíʋé. Çóññéçţ ţĥé áþþ ŵĥéñ ýóú ñééð ţó šíĝñ óŕ šþéñð.]",
+    "flowConnect": "[Çĥóóšé á ŵáļļéţ. Ʋéŕíƒíçáţíóñ çóñţíñúéš áúţóɱáţíçáļļý.]",
+    "flowSign": "[Šíĝñ ţĥé ʋéŕíƒíçáţíóñ ɱéššáĝé íñ ýóúŕ ŵáļļéţ áþþ. Ñó ţŕáñšáçţíóñ óŕ ŠÓĻ ŕéɋúíŕéð.]",
+    "flowVerify": "[Ʋéŕíƒýíñĝ ŵáļļéţ óŵñéŕšĥíþ...]",
+    "linkFailed": "[Ŵáļļéţ ʋéŕíƒíçáţíóñ ƒáíļéð.]",
+    "verifyFailed": "[Ŵáļļéţ ʋéŕíƒíçáţíóñ ƒáíļéð.]",
+    "unlinkFailed": "[Çóúļð ñóţ úñļíñķ ŵáļļéţ.]",
+    "holder": "[$ŴÓÇ ĥóļðéŕ]",
+    "holderTierTitle": "[{tier} $ŴÓÇ ĥóļðéŕ]",
+    "holderTiers": {
+      "ember": {
+        "name": "[Éɱƀéŕ]",
+        "flavor": "[Ţĥé šþáŕķ íš ļíţ.]"
+      },
+      "coinbearer": {
+        "name": "[Çóíñƀéáŕéŕ]",
+        "flavor": "[Ƒíŕšţ çóíñ íñ ţĥé ŵáŕ çĥéšţ.]"
+      },
+      "coppercrest": {
+        "name": "[Çóþþéŕçŕéšţ]",
+        "flavor": "[Çóþþéŕš šţáçķéð, ýóúŕ ñáɱé šþóķéñ.]"
+      },
+      "silverbound": {
+        "name": "[Šíļʋéŕƀóúñð]",
+        "flavor": "[Ɓóúñð íñ šíļʋéŕ, ƀúíļðíñĝ ţĥé ƀáĝ.]"
+      },
+      "gilded": {
+        "name": "[Ĝíļðéð]",
+        "flavor": "[Ĝíļðéð áñð ĝŕíññíñĝ.]"
+      },
+      "vaultwarden": {
+        "name": "[Ʋáúļţŵáŕðéñ]",
+        "flavor": "[Ĝúáŕðíñĝ á ŕéáļ ʋáúļţ ñóŵ: 0.01% óƒ áļļ $ŴÓÇ.]"
+      },
+      "whale": {
+        "name": "[Ŵĥáļé]",
+        "flavor": "[Ţĥé ðééþ þáŕţš ŵĥéñ ýóú šŵíɱ: 0.1% óƒ šúþþļý.]"
+      },
+      "leviathan": {
+        "name": "[Ļéʋíáţĥáñ]",
+        "flavor": "[Ɱáŕķéţš ƒééļ ýóú ɱóʋé: 1% óƒ šúþþļý.]"
+      },
+      "worldbearer": {
+        "name": "[Ŵóŕļðƀéáŕéŕ]",
+        "flavor": "[Ýóú çáŕŕý á þíéçé óƒ ţĥé ŵóŕļð: 10% óƒ šúþþļý.]"
+      },
+      "sovereign": {
+        "name": "[Šóʋéŕéíĝñ]",
+        "flavor": "[Ţĥé ŕéáļɱ ƀéñðš ţĥé ķñéé: ţĥé éñţíŕé šúþþļý.]"
+      }
+    }
+  },
+  "playerCard": {
+    "shareButton": "[Šĥáŕé Þļáýéŕ Çáŕð]",
+    "title": "[Þļáýéŕ Çáŕð]",
+    "close": "[Çļóšé þļáýéŕ çáŕð]",
+    "loading": "[Ƒóŕĝíñĝ ýóúŕ çáŕð...]",
+    "poseGroup": "[Þóšé]",
+    "poseHero": "[Ĥéŕó]",
+    "poseBattle": "[Ɓáţţļé]",
+    "poseVictory": "[Ʋíçţóŕý]",
+    "referralLinkLabel": "[Ýóúŕ ŕéƒéŕŕáļ ļíñķ. Áñýóñé ŵĥó ĵóíñš ţĥŕóúĝĥ íţ íš çŕéðíţéð ţó ýóú:]",
+    "referralLinkAria": "[Ýóúŕ ŕéƒéŕŕáļ ļíñķ]",
+    "renderFailed": "[Çóúļð ñóţ ŕéñðéŕ ýóúŕ çáŕð. Ţŕý á ðíƒƒéŕéñţ þóšé.]",
+    "renderFailedStatus": "[Çáŕð ŕéñðéŕ ƒáíļéð.]",
+    "levelClass": "[Ļéʋéļ {level} - {className}]",
+    "topPercent": "[ŢÓÞ {percent}%]",
+    "realmSubtitle": "[{realm} Ŕéáļɱ]",
+    "defaultRealm": "[Ŵóŕļð óƒ ÇļáúðéÇŕáƒţ]",
+    "brandWordmark": "[ŴÓŔĻÐ ÓƑ ÇĻÁÚÐÉÇŔÁƑŢ]",
+    "recruited": "[{count} ŕéçŕúíţéð]",
+    "footerHandle": "[@{handle}]",
+    "footerHandleWithRecruits": "[@{handle} - {recruited}]",
+    "footerCta": "[Ƒóŕĝé ýóúŕ ļéĝéñð: {siteUrl}]",
+    "arenaStat": "[Áŕéñá]",
+    "shareTierBit": "[, {tier}-ŕáñķ $ŴÓÇ ĥóļðéŕ]",
+    "shareText": "[Í'ɱ ƒóŕĝíñĝ ɱý ļéĝéñð íñ Ŵóŕļð óƒ ÇļáúðéÇŕáƒţ: Ļéʋéļ {level} {className}{tierBit}. Ĵóíñ ɱý ŕéáļɱ:]",
+    "nativeShareTitle": "[Ŵóŕļð óƒ ÇļáúðéÇŕáƒţ]",
+    "fileNameFallback": "[þļáýéŕ]",
+    "actionShareX": "[Šĥáŕé ţó Ẋ]",
+    "actionCopyReferral": "[Çóþý Ŕéƒéŕŕáļ Ļíñķ]",
+    "actionDownload": "[Ðóŵñļóáð]",
+    "actionShareNative": "[Šĥáŕé...]",
+    "statusGenericError": "[Šóɱéţĥíñĝ ŵéñţ ŵŕóñĝ.]",
+    "statusStillRendering": "[Çáŕð íš šţíļļ ŕéñðéŕíñĝ.]",
+    "statusPublishing": "[Þúƀļíšĥíñĝ çáŕð...]",
+    "statusPublished": "[Çáŕð þúƀļíšĥéð. Šĥáŕé ýóúŕ ŕéƒéŕŕáļ ļíñķ ƀéļóŵ.]",
+    "statusOpenedXWithImage": "[Óþéñéð Ẋ. Þášţé ţĥé çáŕð íɱáĝé íñţó ţĥé þóšţ.]",
+    "statusOpenedXWithLink": "[Óþéñéð Ẋ ŵíţĥ ýóúŕ ļíñķ. Ţĥé çáŕð íɱáĝé áþþéáŕš áƒţéŕ þóšţíñĝ ƒŕóɱ á þúƀļíç ðóɱáíñ.]",
+    "statusReferralCopied": "[Ŕéƒéŕŕáļ ļíñķ çóþíéð. Šĥáŕé íţ áñýŵĥéŕé.]",
+    "statusDownloaded": "[Çáŕð ðóŵñļóáðéð.]",
+    "statusShareUnsupported": "[Šĥáŕíñĝ íš ñóţ šúþþóŕţéð óñ ţĥíš ðéʋíçé.]"
   },
   "classes": {
     "warrior": "[Ŵáŕŕíóŕ]",
@@ -562,6 +824,7 @@ export const en_XA: EnTranslations = {
       "deleteConfirm": "[Ţýþé ţĥé çĥáŕáçţéŕ ñáɱé ţó çóñƒíŕɱ ðéļéţíóñ.]",
       "notAuthenticated": "[Ñóţ áúţĥéñţíçáţéð.]",
       "accountBanned": "[Ţĥíš áççóúñţ ĥáš ƀééñ ƀáññéð.]",
+      "webLoginOnly": "[Ļóĝíñš áŕé óñļý áļļóŵéð ƒŕóɱ ţĥé ĝáɱé çļíéñţ.]",
       "accountSuspended": "[Ţĥíš áççóúñţ íš šúšþéñðéð úñţíļ {date}.]",
       "alreadyInWorld": "[Çĥáŕáçţéŕ íš áļŕéáðý íñ ŵóŕļð.]",
       "renameBeforeEntering": "[Ţĥíš çĥáŕáçţéŕ ɱúšţ ƀé ŕéñáɱéð ƀéƒóŕé éñţéŕíñĝ ţĥé ŵóŕļð.]"
@@ -759,6 +1022,7 @@ export const en_XA: EnTranslations = {
       "graphics": "[Ĝŕáþĥíçš]",
       "audio": "[Áúðíó]",
       "interface": "[Íñţéŕƒáçé]",
+      "language": "[Ļáñĝúáĝé]",
       "logout": "[Ļóĝóúţ]",
       "returnToGame": "[Ŕéţúŕñ ţó Ĝáɱé]",
       "resetToDefaults": "[Ŕéšéţ ţó Ðéƒáúļţš]",
@@ -1001,8 +1265,10 @@ export const en_XA: EnTranslations = {
       "targetMustDodge": "[Ýóúŕ ţáŕĝéţ ɱúšţ ðóðĝé ƒíŕšţ.]",
       "requiresCombo": "[Ţĥáţ áƀíļíţý ŕéɋúíŕéš çóɱƀó þóíñţš.]",
       "requiresForm": "[Ýóú ɱúšţ ƀé íñ {form} Ƒóŕɱ.]",
+      "cantInForm": "[Ýóú çáñ'ţ ðó ţĥáţ íñ {form} Ƒóŕɱ.]",
       "bear": "[Ɓéáŕ]",
       "cat": "[Ŵóļƒ]",
+      "travel": "[Ţŕáʋéļ]",
       "shapeshifted": "[Ýóú çáññóţ ðó ţĥáţ ŵĥíļé šĥáþéšĥíƒţéð.]",
       "stealthed": "[Ýóú ɱúšţ ƀé šţéáļţĥéð.]",
       "inCombat": "[Ýóú çáññóţ ðó ţĥáţ ŵĥíļé íñ çóɱƀáţ.]",
@@ -1452,6 +1718,43 @@ export const en_XA: EnTranslations = {
       "noMerchant": "[Šţéþ úþ ţó ţĥé Ɱéŕçĥáñţ ţó ðéáļ.]",
       "emptyBrowse": "[Ţĥé ɱáŕķéţ íš ɋúíéţ. Ɓé ţĥé ƒíŕšţ ţó ļíšţ šóɱéţĥíñĝ óñ ţĥé Šéļļ ţáƀ.]",
       "browseNote": "[Ĝóóðš ļíšţéð ƀý áðʋéñţúŕéŕš áçŕóšš ţĥé ŕéáļɱ. Çĥóóšé Ɓúý ţó þúŕçĥášé á šţáçķ óúţŕíĝĥţ.]",
+      "searchPlaceholder": "[Šéáŕçĥ ɱáŕķéţ...]",
+      "searchAria": "[Šéáŕçĥ ţĥé Ŵóŕļð Ɱáŕķéţ ƀý íţéɱ ñáɱé]",
+      "emptySearch": "[Ñó ĝóóðš ɱáţçĥ ýóúŕ šéáŕçĥ. Ţŕý áñóţĥéŕ ñáɱé.]",
+      "truncated": "[Šĥóŵíñĝ {shown} óƒ {total} ɱáţçĥéš. Ŕéƒíñé ýóúŕ šéáŕçĥ ţó šéé ţĥé ŕéšţ.]",
+      "emptyFiltered": "[Ñó ļíšţíñĝš ɱáţçĥ ţĥóšé ƒíļţéŕš.]",
+      "pageRange": "[Šĥóŵíñĝ {shown} óƒ {total} ļíšţíñĝš.]",
+      "pagePrev": "[Þŕéʋ]",
+      "pageNext": "[Ñéẋţ]",
+      "pagePrevAria": "[Þŕéʋíóúš ɱáŕķéţ þáĝé]",
+      "pageNextAria": "[Ñéẋţ ɱáŕķéţ þáĝé]",
+      "pageStatus": "[Þáĝé {current} óƒ {total}]",
+      "filters": "[Ɱáŕķéţ ƒíļţéŕš]",
+      "filterType": "[Ţýþé]",
+      "filterTypeAll": "[Áļļ ţýþéš]",
+      "filterTypeWeapon": "[Ŵéáþóñš]",
+      "filterTypeArmor": "[Áŕɱóŕ]",
+      "filterTypeConsumable": "[Çóñšúɱáƀļéš]",
+      "filterTypeMaterial": "[Ɱáţéŕíáļš]",
+      "filterTypeCosmetic": "[Çóšɱéţíçš]",
+      "filterTypeOther": "[Óţĥéŕ]",
+      "filterArmorType": "[Áŕɱóŕ ţýþé]",
+      "filterArmorAll": "[Áļļ áŕɱóŕ]",
+      "filterWeaponType": "[Ŵéáþóñ ţýþé]",
+      "filterWeaponAll": "[Áļļ ŵéáþóñš]",
+      "filterRarity": "[Ŕáŕíţý]",
+      "filterRarityAll": "[Áļļ ŕáŕíţíéš]",
+      "weaponSword": "[Šŵóŕðš]",
+      "weaponDagger": "[Ðáĝĝéŕš]",
+      "weaponStaff": "[Šţáʋéš]",
+      "weaponMace": "[Ɱáçéš]",
+      "weaponAxe": "[Áẋéš]",
+      "weaponOther": "[Óţĥéŕ ŵéáþóñš]",
+      "rarityPoor": "[Þóóŕ]",
+      "rarityCommon": "[Çóɱɱóñ]",
+      "rarityUncommon": "[Úñçóɱɱóñ]",
+      "rarityRare": "[Ŕáŕé]",
+      "rarityEpic": "[Éþíç]",
       "merchantStock": "[Ɱéŕçĥáñţ šţóçķ]",
       "stackCount": "[ẋ{count}]",
       "each": "[{money} éáçĥ]",
@@ -2005,7 +2308,7 @@ export const en_XA: EnTranslations = {
       },
       "travel_form": {
         "name": "[Ţŕáʋéļ Ƒóŕɱ]",
-        "description": "[Ţáķé óñ á šŵíƒţ ţŕáʋéļ ƒóŕɱ, íñçŕéášíñĝ ɱóʋéɱéñţ šþééð ƀý 40%. Çáññóţ ƀé úšéð íñ çóɱƀáţ.]"
+        "description": "[Íñšţáñţļý šĥíƒţ íñţó á šŵíƒţ ţŕáʋéļ ƒóŕɱ, íñçŕéášíñĝ ɱóʋéɱéñţ šþééð ƀý 40%. Ýóú çáññóţ úšé óţĥéŕ áƀíļíţíéš ŵĥíļé šĥíƒţéð, ƀúţ çáñ šĥíƒţ íñ óŕ óúţ óƒ çóɱƀáţ — íðéáļ ƒóŕ éšçáþíñĝ.]"
       },
       "enrage": {
         "name": "[Éñŕáĝé]",

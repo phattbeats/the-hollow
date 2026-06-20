@@ -40,7 +40,8 @@ describe('druid spell pack — definitions', () => {
     expect(ABILITIES.pounce.requiresStealth).toBe(true);
     expect(ABILITIES.pounce.awardsCombo).toBe(1);
     expect(ABILITIES.rip.spendsCombo).toBe(true);
-    expect(ABILITIES.travel_form.requiresOutOfCombat).toBe(true);
+    expect(ABILITIES.travel_form.requiresOutOfCombat).toBeFalsy();
+    expect(ABILITIES.travel_form.castTime).toBe(0);
   });
 });
 
@@ -85,7 +86,7 @@ describe('druid spell pack — casting applies effects', () => {
     expect(e.resource).toBeGreaterThan(0);
   });
 
-  it('Travel Form grants a movement-speed buff out of combat', () => {
+  it('Travel Form shapeshifts and grants +40% movement speed out of combat', () => {
     const sim = makeWorld();
     const a = sim.addPlayer('druid', 'Walker');
     const e = sim.entities.get(a)!;
@@ -93,7 +94,52 @@ describe('druid spell pack — casting applies effects', () => {
     e.resource = 100;
     sim.castAbility('travel_form', a);
     sim.tick();
+    const form = e.auras.find((au) => au.kind === 'form_travel');
+    expect(form, 'travel_form should apply a form_travel aura').toBeTruthy();
+    expect(form!.value).toBeCloseTo(1.4);
+    expect((sim as any).moveSpeedMult(e)).toBeCloseTo(1.4);
+  });
+
+  it('Travel Form toggles off cleanly, removing the form and the speed', () => {
+    const sim = makeWorld();
+    const a = sim.addPlayer('druid', 'Walker');
+    const e = sim.entities.get(a)!;
+    sim.setPlayerLevel(20, a);
+    e.resource = 100;
+    sim.castAbility('travel_form', a);
+    sim.tick();
+    expect(e.auras.some((au) => au.kind === 'form_travel')).toBe(true);
+    for (let i = 0; i < 40; i++) sim.tick(); // wait out the GCD (forms are on-GCD)
+    sim.castAbility('travel_form', a); // recast = shift out
+    sim.tick();
+    expect(e.auras.some((au) => au.kind === 'form_travel')).toBe(false);
+    expect((sim as any).moveSpeedMult(e)).toBeCloseTo(1);
+  });
+
+  it('Travel Form can be cast in combat (escape tool)', () => {
+    const sim = makeWorld();
+    const a = sim.addPlayer('druid', 'Runner');
+    const e = sim.entities.get(a)!;
+    sim.setPlayerLevel(20, a);
+    e.resource = 100;
+    e.inCombat = true; // mid-fight
+    sim.castAbility('travel_form', a);
+    sim.tick();
+    expect(e.auras.some((au) => au.kind === 'form_travel'), 'travel_form should shift even in combat').toBe(true);
+  });
+
+  it('Dash grants +50% movement speed in cat form', () => {
+    const sim = makeWorld();
+    const a = sim.addPlayer('druid', 'Dasher');
+    const e = sim.entities.get(a)!;
+    sim.setPlayerLevel(20, a);
+    giveForm(sim, a, 'form_cat', 'Wolf Form');
+    e.resource = 100;
+    sim.castAbility('dash', a);
+    sim.tick();
     const buff = e.auras.find((au) => au.kind === 'buff_speed');
-    expect(buff, 'travel_form should apply a buff_speed aura').toBeTruthy();
+    expect(buff, 'dash should apply a buff_speed aura').toBeTruthy();
+    expect(buff!.value).toBeCloseTo(1.5);
+    expect((sim as any).moveSpeedMult(e)).toBeCloseTo(1.5);
   });
 });

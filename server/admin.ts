@@ -5,7 +5,7 @@ import { findAccount, touchLogin, saveToken, accountForToken, isAdminAccount } f
 import { verifyPassword, newToken } from './auth';
 import {
   overviewCounts, registrationsByDay, sessionsByDay, classDistribution, levelDistribution,
-  listAccounts, listCharacters, accountDetail,
+  listAccounts, listCharacters, accountDetail, clientPerfSummary, clientPerfRaw,
 } from './admin_db';
 import {
   forceCharacterRename, ignoreReport, moderateAccount, muteAccountChat, moderationQueue, moderationReportsForAccount,
@@ -15,6 +15,7 @@ import {
   listFilterWords, removeFilterWord, resetChatStrikes, updateFilterConfig, type WordTier,
 } from './chat_filter_db';
 import type { GameServer } from './game';
+import { providerUsageSnapshot } from './provider_usage';
 
 // Admin API: everything under /admin/api/*. Auth is a bearer token whose
 // account has is_admin = TRUE — the admin.* hostname is routing, not security.
@@ -216,7 +217,7 @@ export async function handleAdminApi(
 
     if (path === '/admin/api/overview') {
       const counts = await overviewCounts();
-      return ok(res, { ...counts, server: game.adminStats() });
+      return ok(res, { ...counts, server: game.adminStats(), usage: providerUsageSnapshot() });
     }
     if (path === '/admin/api/online') {
       return ok(res, { players: game.liveSessions() });
@@ -229,6 +230,22 @@ export async function handleAdminApi(
         levelDistribution(),
       ]);
       return ok(res, { days: ACTIVITY_WINDOW_DAYS, registrations, sessions, classes, levels });
+    }
+    if (path === '/admin/api/perf/summary') {
+      const hours = Number(url.searchParams.get('hours') ?? '24');
+      return ok(res, await clientPerfSummary(hours));
+    }
+    if (path === '/admin/api/perf/raw') {
+      const hours = Number(url.searchParams.get('hours') ?? '24');
+      const limit = Number(url.searchParams.get('limit') ?? '100');
+      const beforeIdParam = url.searchParams.get('beforeId');
+      const beforeId = beforeIdParam === null ? undefined : Number(beforeIdParam);
+      const rows = await clientPerfRaw(hours, limit, beforeId);
+      return ok(res, {
+        rows,
+        nextBeforeId: rows.length > 0 ? rows[rows.length - 1].id : null,
+        hasMore: rows.length >= Math.min(1000, Math.max(1, Math.floor(Number.isFinite(limit) ? limit : 100))),
+      });
     }
     if (path === '/admin/api/accounts') {
       const { page, limit } = parsePageParams(url.searchParams);

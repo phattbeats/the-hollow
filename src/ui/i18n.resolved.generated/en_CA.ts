@@ -150,6 +150,124 @@ export const en_CA: EnTranslations = {
       }
     }
   },
+  "hudChrome": {
+    "emotes": {
+      "wave": "Wave",
+      "laugh": "LOL",
+      "question": "Bro?",
+      "cheer": "Cheer",
+      "dance": "Dance",
+      "point": "Point",
+      "flex": "Flex",
+      "salute": "Salute",
+      "cry": "Cry",
+      "bow": "Bow",
+      "clap": "Clap",
+      "roar": "Roar",
+      "kneel": "Kneel"
+    },
+    "emoteWheel": {
+      "edit": "Edit",
+      "label": "Emotes"
+    },
+    "emoteEditor": {
+      "title": "Emotes",
+      "done": "Done"
+    },
+    "chatTimestamps": {
+      "show": "Show Chat Timestamps",
+      "format": "Timestamp Format",
+      "clock12h": "12-hour",
+      "clock24h": "24-hour",
+      "note": "Prefixes each new chat line with the time it arrived, e.g. [14:32]. Only affects messages received while the option is on."
+    },
+    "swing": {
+      "ready": "Swing",
+      "seconds": "{seconds}s"
+    },
+    "rest": {
+      "resting": "Resting"
+    },
+    "mobile": {
+      "autorun": "Autorun",
+      "jump": "Jump",
+      "leaderboard": "Ranks",
+      "nameplates": "Names",
+      "haptics": "Haptics",
+      "hapticsOff": "Haptics Off",
+      "toggleHaptics": "Toggle haptics"
+    },
+    "widgets": {
+      "clockTitle": "Local time - click to toggle 12/24-hour",
+      "worldCoordinates": "World coordinates",
+      "coordinates": "Coordinates",
+      "heading": "Heading",
+      "minimapZoom": "Minimap zoom"
+    },
+    "compass": {
+      "N": "N",
+      "NE": "NE",
+      "E": "E",
+      "SE": "SE",
+      "S": "S",
+      "SW": "SW",
+      "W": "W",
+      "NW": "NW"
+    },
+    "meters": {
+      "perSecond": "{value}/s",
+      "perSecondRow": "{total} ({rate})",
+      "minutesSeconds": "{m}m {s}s",
+      "seconds": "{s}s"
+    },
+    "keybinds": {
+      "emoteWheel": "Emote Wheel",
+      "targetFriendly": "Target Nearest Friendly",
+      "targetFriendlyNext": "Cycle Friendly Target"
+    },
+    "options": {
+      "clickMoveLeft": "Left Click",
+      "clickMoveRight": "Right Click",
+      "footstepSounds": "Footstep Sounds",
+      "showWalletOnCharacterScreen": "Show Wallet on Character Screen",
+      "showWalletOnPlayerCard": "Show Wallet on Player Card"
+    },
+    "playerCard": {
+      "showWalletBadge": "Show wallet badge"
+    },
+    "talents": {
+      "defaultBuildName": "Build {n}"
+    },
+    "tips": {
+      "joinChannels": "Tip: type /join world or /join lfg to chat with players across the realm."
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "you are {rank}, {count} member",
+        "few": "you are {rank}, {count} members",
+        "many": "you are {rank}, {count} members",
+        "other": "you are {rank}, {count} members"
+      },
+      "characterCount": {
+        "one": "{count} character",
+        "few": "{count} characters",
+        "many": "{count} characters",
+        "other": "{count} characters"
+      },
+      "secondsRemaining": {
+        "one": "{count} second remaining",
+        "few": "{count} seconds remaining",
+        "many": "{count} seconds remaining",
+        "other": "{count} seconds remaining"
+      },
+      "playersOnline": {
+        "one": "Who: {count} player online on {realm}.",
+        "few": "Who: {count} players online on {realm}.",
+        "many": "Who: {count} players online on {realm}.",
+        "other": "Who: {count} players online on {realm}."
+      }
+    }
+  },
   "skinEvent": {
     "title": "Cosmetic Cache",
     "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
@@ -291,6 +409,150 @@ export const en_CA: EnTranslations = {
     "offlineCharacter": "Offline Character",
     "create": "Create"
   },
+  "wallet": {
+    "label": "$WOC Wallet",
+    "connect": "Verify Wallet",
+    "connectTitle": "Verify your Solana wallet",
+    "connectAria": "Verify your Solana wallet",
+    "verify": "Verify Wallet",
+    "verifyNew": "Verify New Wallet",
+    "verifyTitle": "Choose a wallet and sign once to verify ownership.",
+    "verifyAria": "Choose a wallet and sign once to verify ownership",
+    "verifyAddressAria": "Sign to verify wallet {address} for your account",
+    "appConnected": "App Connected",
+    "connectApp": "Connect App",
+    "connectAppTitle": "Connect the wallet app on this browser",
+    "connectAppAria": "Connect the wallet app on this browser",
+    "verifying": "Verifying...",
+    "verifyingTitle": "Wallet verification is in progress.",
+    "switch": "Switch",
+    "switchTitle": "Verify a different wallet",
+    "switchAria": "Verify a different wallet",
+    "unlink": "Unlink",
+    "unlinkTitle": "Remove wallet verification from this account",
+    "unlinkAria": "Remove wallet verification from this account",
+    "signOut": "Disconnect",
+    "signOutTitle": "Disconnect the wallet app on this browser",
+    "signOutAria": "Disconnect the wallet app on this browser",
+    "hide": "Hide",
+    "hideTitle": "Hide wallet row on this screen",
+    "hideAria": "Hide wallet row on this screen",
+    "hiddenNotice": "Wallet row hidden. Re-enable it in-game from Options > Interface.",
+    "linkedTitle": "Wallet verified for your account. Click to manage the wallet app.",
+    "linkedDisconnectedTitle": "Wallet remains verified for your account. Reconnect to manage the wallet app.",
+    "linkedDisconnectedAria": "Wallet remains verified for your account. Reconnect to manage the wallet app.",
+    "linkTitle": "Click to sign and link this wallet to your account.",
+    "connectedTitle": "Connected. Log in to link this wallet to your account.",
+    "balanceTitle": "Verified Solana wallet $WOC balance",
+    "balanceAria": "Verified Solana wallet balance: {balance}",
+    "balancePreviewTitle": "Connected wallet $WOC balance preview",
+    "balancePreviewAria": "Connected wallet balance preview: {balance}. Link the wallet to verify holder flair.",
+    "balanceAmount": "{amount} $WOC",
+    "connected": "Connected: {address}",
+    "connectedWithBalance": "Connected: {balance} - {address}",
+    "connectedLinked": "Verified: {address}",
+    "connectedLinkedWithBalance": "Verified: {balance} - {address}",
+    "helpDisconnected": "Verify a Solana wallet to enable holder flair and player-card badges. No transaction or SOL required.",
+    "helpLoginToLink": "Connected {address}. Log in to link it to your account.",
+    "helpLoginToLinkWithBalance": "Connected {address} with {balance}. Log in to link it to your account.",
+    "helpReadyToLink": "Wallet selected: {address}. Sign once to verify holder flair and player cards.",
+    "helpReadyToLinkWithBalance": "Wallet selected: {address} with {balance}. Sign once to verify holder flair and player cards.",
+    "helpLinked": "Holder perks are active. Wallet app connected on this browser.",
+    "helpLinkedWithBalance": "Holder perks are active. Wallet app connected on this browser.",
+    "helpLinkedDisconnected": "Holder perks are active. Connect the app when you need to sign or spend.",
+    "helpLinkedDisconnectedWithBalance": "Holder perks are active. Connect the app when you need to sign or spend.",
+    "flowConnect": "Choose a wallet. Verification continues automatically.",
+    "flowSign": "Sign the verification message in your wallet app. No transaction or SOL required.",
+    "flowVerify": "Verifying wallet ownership...",
+    "linkFailed": "Wallet verification failed.",
+    "verifyFailed": "Wallet verification failed.",
+    "unlinkFailed": "Could not unlink wallet.",
+    "holder": "$WOC holder",
+    "holderTierTitle": "{tier} $WOC holder",
+    "holderTiers": {
+      "ember": {
+        "name": "Ember",
+        "flavor": "The spark is lit."
+      },
+      "coinbearer": {
+        "name": "Coinbearer",
+        "flavor": "First coin in the war chest."
+      },
+      "coppercrest": {
+        "name": "Coppercrest",
+        "flavor": "Coppers stacked, your name spoken."
+      },
+      "silverbound": {
+        "name": "Silverbound",
+        "flavor": "Bound in silver, building the bag."
+      },
+      "gilded": {
+        "name": "Gilded",
+        "flavor": "Gilded and grinning."
+      },
+      "vaultwarden": {
+        "name": "Vaultwarden",
+        "flavor": "Guarding a real vault now: 0.01% of all $WOC."
+      },
+      "whale": {
+        "name": "Whale",
+        "flavor": "The deep parts when you swim: 0.1% of supply."
+      },
+      "leviathan": {
+        "name": "Leviathan",
+        "flavor": "Markets feel you move: 1% of supply."
+      },
+      "worldbearer": {
+        "name": "Worldbearer",
+        "flavor": "You carry a piece of the world: 10% of supply."
+      },
+      "sovereign": {
+        "name": "Sovereign",
+        "flavor": "The realm bends the knee: the entire supply."
+      }
+    }
+  },
+  "playerCard": {
+    "shareButton": "Share Player Card",
+    "title": "Player Card",
+    "close": "Close player card",
+    "loading": "Forging your card...",
+    "poseGroup": "Pose",
+    "poseHero": "Hero",
+    "poseBattle": "Battle",
+    "poseVictory": "Victory",
+    "referralLinkLabel": "Your referral link. Anyone who joins through it is credited to you:",
+    "referralLinkAria": "Your referral link",
+    "renderFailed": "Could not render your card. Try a different pose.",
+    "renderFailedStatus": "Card render failed.",
+    "levelClass": "Level {level} - {className}",
+    "topPercent": "TOP {percent}%",
+    "realmSubtitle": "{realm} Realm",
+    "defaultRealm": "World of ClaudeCraft",
+    "brandWordmark": "WORLD OF CLAUDECRAFT",
+    "recruited": "{count} recruited",
+    "footerHandle": "@{handle}",
+    "footerHandleWithRecruits": "@{handle} - {recruited}",
+    "footerCta": "Forge your legend: {siteUrl}",
+    "arenaStat": "Arena",
+    "shareTierBit": ", {tier}-rank $WOC holder",
+    "shareText": "I'm forging my legend in World of ClaudeCraft: Level {level} {className}{tierBit}. Join my realm:",
+    "nativeShareTitle": "World of ClaudeCraft",
+    "fileNameFallback": "player",
+    "actionShareX": "Share to X",
+    "actionCopyReferral": "Copy Referral Link",
+    "actionDownload": "Download",
+    "actionShareNative": "Share...",
+    "statusGenericError": "Something went wrong.",
+    "statusStillRendering": "Card is still rendering.",
+    "statusPublishing": "Publishing card...",
+    "statusPublished": "Card published. Share your referral link below.",
+    "statusOpenedXWithImage": "Opened X. Paste the card image into the post.",
+    "statusOpenedXWithLink": "Opened X with your link. The card image appears after posting from a public domain.",
+    "statusReferralCopied": "Referral link copied. Share it anywhere.",
+    "statusDownloaded": "Card downloaded.",
+    "statusShareUnsupported": "Sharing is not supported on this device."
+  },
   "classes": {
     "warrior": "Warrior",
     "paladin": "Paladin",
@@ -359,8 +621,8 @@ export const en_CA: EnTranslations = {
       "powerup": "{player} grabbed {name}!"
     },
     "category": {
-      "offense": "Offense",
-      "defense": "Defense",
+      "offense": "Offence",
+      "defense": "Defence",
       "sustain": "Sustain",
       "mobility": "Mobility",
       "utility": "Utility"
@@ -562,6 +824,7 @@ export const en_CA: EnTranslations = {
       "deleteConfirm": "Type the character name to confirm deletion.",
       "notAuthenticated": "Not authenticated.",
       "accountBanned": "This account has been banned.",
+      "webLoginOnly": "Logins are only allowed from the game client.",
       "accountSuspended": "This account is suspended until {date}.",
       "alreadyInWorld": "Character is already in world.",
       "renameBeforeEntering": "This character must be renamed before entering the world."
@@ -759,6 +1022,7 @@ export const en_CA: EnTranslations = {
       "graphics": "Graphics",
       "audio": "Audio",
       "interface": "Interface",
+      "language": "Language",
       "logout": "Logout",
       "returnToGame": "Return to Game",
       "resetToDefaults": "Reset to Defaults",
@@ -1001,8 +1265,10 @@ export const en_CA: EnTranslations = {
       "targetMustDodge": "Your target must dodge first.",
       "requiresCombo": "That ability requires combo points.",
       "requiresForm": "You must be in {form} Form.",
+      "cantInForm": "You can't do that in {form} Form.",
       "bear": "Bear",
       "cat": "Wolf",
+      "travel": "Travel",
       "shapeshifted": "You cannot do that while shapeshifted.",
       "stealthed": "You must be stealthed.",
       "inCombat": "You cannot do that while in combat.",
@@ -1363,7 +1629,7 @@ export const en_CA: EnTranslations = {
     },
     "kind": {
       "weapon": "Weapon",
-      "armor": "Armor",
+      "armor": "Armour",
       "quest": "Quest Item",
       "junk": "Junk",
       "food": "Food",
@@ -1373,7 +1639,7 @@ export const en_CA: EnTranslations = {
       "elixir": "Elixir"
     },
     "stats": {
-      "armor": "Armor",
+      "armor": "Armour",
       "str": "Strength",
       "agi": "Agility",
       "sta": "Stamina",
@@ -1391,7 +1657,7 @@ export const en_CA: EnTranslations = {
       "damageSpeed": "{min} - {max} Damage Speed {speed}",
       "dps": "({dps} damage per second)",
       "dagger": "Dagger",
-      "armorStat": "{value} Armor",
+      "armorStat": "{value} Armour",
       "stat": "+{value} {stat}",
       "useFood": "Use: Restores {amount} health over {seconds} sec. Must remain seated while eating.",
       "useDrink": "Use: Restores {amount} mana over {seconds} sec. Must remain seated while drinking.",
@@ -1452,6 +1718,43 @@ export const en_CA: EnTranslations = {
       "noMerchant": "Step up to the Merchant to deal.",
       "emptyBrowse": "The market is quiet. Be the first to list something on the Sell tab.",
       "browseNote": "Goods listed by adventurers across the realm. Choose Buy to purchase a stack outright.",
+      "searchPlaceholder": "Search market...",
+      "searchAria": "Search the World Market by item name",
+      "emptySearch": "No goods match your search. Try another name.",
+      "truncated": "Showing {shown} of {total} matches. Refine your search to see the rest.",
+      "emptyFiltered": "No listings match those filters.",
+      "pageRange": "Showing {shown} of {total} listings.",
+      "pagePrev": "Prev",
+      "pageNext": "Next",
+      "pagePrevAria": "Previous market page",
+      "pageNextAria": "Next market page",
+      "pageStatus": "Page {current} of {total}",
+      "filters": "Market filters",
+      "filterType": "Type",
+      "filterTypeAll": "All types",
+      "filterTypeWeapon": "Weapons",
+      "filterTypeArmor": "Armor",
+      "filterTypeConsumable": "Consumables",
+      "filterTypeMaterial": "Materials",
+      "filterTypeCosmetic": "Cosmetics",
+      "filterTypeOther": "Other",
+      "filterArmorType": "Armor type",
+      "filterArmorAll": "All armor",
+      "filterWeaponType": "Weapon type",
+      "filterWeaponAll": "All weapons",
+      "filterRarity": "Rarity",
+      "filterRarityAll": "All rarities",
+      "weaponSword": "Swords",
+      "weaponDagger": "Daggers",
+      "weaponStaff": "Staves",
+      "weaponMace": "Maces",
+      "weaponAxe": "Axes",
+      "weaponOther": "Other weapons",
+      "rarityPoor": "Poor",
+      "rarityCommon": "Common",
+      "rarityUncommon": "Uncommon",
+      "rarityRare": "Rare",
+      "rarityEpic": "Epic",
       "merchantStock": "Merchant stock",
       "stackCount": "x{count}",
       "each": "{money} each",
@@ -2005,7 +2308,7 @@ export const en_CA: EnTranslations = {
       },
       "travel_form": {
         "name": "Travel Form",
-        "description": "Take on a swift travel form, increasing movement speed by 40%. Cannot be used in combat."
+        "description": "Instantly shift into a swift travel form, increasing movement speed by 40%. You cannot use other abilities while shifted, but can shift in or out of combat — ideal for escaping."
       },
       "enrage": {
         "name": "Enrage",

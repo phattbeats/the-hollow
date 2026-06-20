@@ -12,6 +12,12 @@ import { sfx } from './game/sfx';
 import { activePvpOpponentIds, handlePickedEntity, hoverCursorKind, isAttackableEntity } from './game/interactions';
 import { clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, distance2d, latencyAdjustedStopDistance, stepAngleToward } from './game/click_move';
 import { Api, ClientWorld, CharacterSummary, type ReleaseEntry } from './net/online';
+import { setWalletDisplayAvailable, setWocBalance, setWalletUiEnabled } from './ui/wallet_balance';
+import { absolutePublishedCardUrl, setCardUploader, setReferralProvider, setStandingProvider } from './ui/player_card_share';
+// The wallet module is loaded lazily via dynamic import() in the wallet
+// controller below, so it stays out of the main entry chunk and only loads when
+// the feature is enabled + used.
+import type { WalletOption } from './net/wallet';
 import type { IWorld, LeaderboardEntry } from './world_api';
 import { findPlayerPath, resolvePlayerDestination } from './sim/pathfind';
 import { pathCrossesFence } from './sim/colliders';
@@ -23,13 +29,14 @@ import { DT, INTERACT_RANGE, MELEE_RANGE, PlayerClass, RUN_SPEED, dist2d } from 
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
-import { ensureLocaleLoaded, formatDateTime, formatNumber, getLanguage, isLocaleResident, isSupportedLanguage, languageTag, setLanguage, t, type SupportedLanguage, type TranslationKey } from './ui/i18n';
+import { ensureLocaleLoaded, formatDateTime, formatNumber, getLanguage, isLocaleResident, isSupportedLanguage, languageTag, setLanguage, t, tPlural, type SupportedLanguage, type TranslationKey } from './ui/i18n';
 import { tServer } from './ui/server_i18n';
 import { tEntity } from './ui/entity_i18n';
 import { hydrateIcons } from './ui/ui_icons';
 import { portraitChipHtml, hydratePortraits } from './ui/portrait_chip';
 import { playerPortraitDataUrl } from './render/characters/portrait';
 import { createPerfMonitor } from './game/perf';
+import { startPerfReporter } from './game/perf_reporter';
 import { updateFollowCameraYaw, wrapAngle } from './game/camera_follow';
 
 
@@ -148,6 +155,7 @@ function userFacingApiError(err: unknown): string {
   if (normalized === 'this account has been banned.') return t('errors.api.accountBanned');
   if (normalized === 'character already in world') return t('errors.api.alreadyInWorld');
   if (normalized === 'this character must be renamed before entering the world.') return t('errors.api.renameBeforeEntering');
+  if (normalized === 'logins are only allowed from the game client') return t('errors.api.webLoginOnly');
   // Cloudflare Turnstile rejection on login/register (server/main.ts passesTurnstile).
   if (normalized === 'verification failed, please try again') return t('errors.api.verificationFailed');
   // WebSocket disconnect reasons surfaced through the fatal overlay (net/online.ts).
@@ -664,6 +672,13 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     canUseGameKeys: () => !hud.isModalOpen() && chatInput.style.display !== 'block',
   }, keybinds);
   input.camYaw = world.player.facing;
+  perf.setInputDebugProvider(() => ({
+    ...input.debugState(),
+    canUseGameKeys: !hud.isModalOpen() && chatInput.style.display !== 'block',
+    modalOpen: hud.isModalOpen(),
+    chatOpen: chatInput.style.display === 'block',
+    gameInputReady,
+  }));
 
   const mobileControls = new MobileControls(input, {
     onAttackNearest: () => attackNearest(),
@@ -763,12 +778,25 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       fpsOverlay.style.display = fpsEnabled ? 'block' : 'none';
       return;
     }
+    if (key === 'showWalletOnCharacterScreen') {
+      settings.set('showWalletOnCharacterScreen', !!value);
+      syncWalletCharacterScreenVisibility();
+      return;
+    }
+    if (key === 'showWalletOnPlayerCard') {
+      settings.set('showWalletOnPlayerCard', !!value);
+      return;
+    }
     if (key === 'invertLookY') {
       input.setInvertLookY(settings.set('invertLookY', !!value));
       return;
     }
     if (key === 'voiceEnabled') {
       voice.setEnabled(settings.set('voiceEnabled', !!value));
+      return;
+    }
+    if (key === 'footstepSfx') {
+      sfx.setFootstepsEnabled(settings.set('footstepSfx', !!value));
       return;
     }
     const v = settings.set(key as keyof typeof SETTING_RANGES, value as number);
@@ -811,6 +839,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     captureKey: (cb) => input.captureNextKey(cb),
     settings,
     onSettingChange: (key, value) => applySetting(key, value),
+    changeLanguage: (lang, onStatus) => changeLanguage(lang, onStatus),
   });
   if (online) {
     hud.attachReporting({
@@ -818,7 +847,6 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       submitByName: (targetName, reason, details) => api.reportPlayerByName(online.characterId, targetName, reason, details),
     });
   }
-
   function interactKey(): void {
     const p = world.player;
     let bestCorpse: number | null = null, bestCorpseD = INTERACT_RANGE;
@@ -1039,6 +1067,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   let last = performance.now();
   let acc = 0;
   let onlineInputEchoMs = 0;
+  let gameInputReady = false;
 
   // Camera follow state: keyboard turning advances facing in 20Hz sim steps,
   // so the camera tracks the player's render-interpolated facing per frame
@@ -1229,9 +1258,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
     // freeze movement while the game menu is up so WASD doesn't walk the
     // character behind it (other windows stay non-modal, as before)
-    input.suspendMovement = hud.isModalOpen();
-    input.updateTouchLook(frameDt);
-    updateHoverCursor();
+    input.suspendMovement = !gameInputReady || hud.isModalOpen();
+    perf.trace('input.updateTouchLook', () => input.updateTouchLook(frameDt), { frameDtMs: frameDt * 1000 });
+    perf.trace('input.hoverCursor', () => updateHoverCursor(), { active: input.hoverActive });
     perf.markInputFrame(performance.now());
 
     const mouselook = input.isMouselookActive() && !world.player.dead;
@@ -1248,20 +1277,30 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
         if (stepFacing !== null) offlineSim.player.facing = stepFacing;
         offlineSim.updateFiestaBots(); // dev: steer Fiesta practice bots (no-op unless active)
         perf.markInputSent(performance.now());
-        const events = perf.time('sim', () => offlineSim.tick());
-        perf.time('events', () => hud.handleEvents(events));
+        const events = perf.time('sim', () => perf.trace('sim.tick', () => offlineSim.tick(), { mode: 'offline' }));
+        perf.time('events', () => perf.trace('hud.handleEvents', () => hud.handleEvents(events), {
+          mode: 'offline',
+          events: events.length,
+        }));
         acc -= DT;
       }
       const pp = offlineSim.player;
-      updateCamera(frameDt, pp.prevFacing + wrapAngle(pp.facing - pp.prevFacing) * (acc / DT));
+      perf.trace('camera.follow', () => updateCamera(frameDt, pp.prevFacing + wrapAngle(pp.facing - pp.prevFacing) * (acc / DT)), {
+        mode: 'offline',
+        frameDtMs: frameDt * 1000,
+      });
       renderer.camYaw = input.camYaw;
       renderer.camPitch = input.camPitch;
       renderer.camDist = input.camDist;
       perf.setNetwork(null);
-      perf.time('renderer', () => renderer.sync(acc / DT, frameDt, movementFacing));
-      updateClickMoveMarker();
+      perf.time('renderer', () => perf.trace('renderer.sync', () => renderer.sync(acc / DT, frameDt, movementFacing), {
+        mode: 'offline',
+        views: renderer.views.size,
+        alpha: acc / DT,
+      }));
+      perf.trace('ui.clickMoveMarker', () => updateClickMoveMarker());
       perf.markInputVisible(performance.now());
-      perf.time('hud', () => hud.update());
+      perf.time('hud', () => perf.trace('hud.update', () => hud.update(), { mode: 'offline' }));
       perf.tick(now);
       return;
     }
@@ -1273,17 +1312,28 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     Object.assign(net.moveInput, resolved.mi);
     net.setMouselookFacing(netFacing);
     if (net.flushInput()) perf.markInputSent(performance.now());
-    for (const sample of net.consumeInputEchoSamples()) {
+    const echoSamples = net.consumeInputEchoSamples();
+    for (const sample of echoSamples) {
       if (Number.isFinite(sample) && sample >= 0) {
         onlineInputEchoMs = onlineInputEchoMs === 0 ? sample : onlineInputEchoMs + 0.2 * (sample - onlineInputEchoMs);
       }
       perf.markInputEcho(sample);
     }
     net.pendingFacingDelta = 0; // superseded by the interpolated follow below
-    perf.time('events', () => hud.handleEvents(net.drainEvents()));
-    if (net.consumeProfanityChanged()) hud.setProfanityWords(net.profanityWords);
-    if (net.consumeInventoryChanged()) hud.onInventoryChanged();
-    if (net.consumeCosmeticsChanged()) hud.onCosmeticsChanged();
+    const drainedEvents = net.drainEvents();
+    perf.time('events', () => perf.trace('hud.handleEvents', () => hud.handleEvents(drainedEvents), {
+      mode: 'online',
+      events: drainedEvents.length,
+    }));
+    if (net.consumeProfanityChanged()) {
+      perf.trace('hud.setProfanityWords', () => hud.setProfanityWords(net.profanityWords), { words: net.profanityWords.length });
+    }
+    if (net.consumeInventoryChanged()) {
+      perf.trace('hud.onInventoryChanged', () => hud.onInventoryChanged());
+    }
+    if (net.consumeCosmeticsChanged()) {
+      perf.trace('hud.onCosmeticsChanged', () => hud.onCosmeticsChanged());
+    }
     const alpha = net.lastSnapAt > 0
       ? Math.min(1.25, (performance.now() - net.lastSnapAt) / Math.max(20, net.snapInterval))
       : 1;
@@ -1295,23 +1345,27 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     });
     const pe = world.player;
     // facing interp capped at 1 - extrapolating angles past the snapshot oscillates
-    updateCamera(frameDt, pe.prevFacing + wrapAngle(pe.facing - pe.prevFacing) * Math.min(1, alpha));
+    perf.trace('camera.follow', () => updateCamera(frameDt, pe.prevFacing + wrapAngle(pe.facing - pe.prevFacing) * Math.min(1, alpha)), {
+      mode: 'online',
+      alpha,
+      frameDtMs: frameDt * 1000,
+      lastSnapAge: net.lastSnapAt > 0 ? performance.now() - net.lastSnapAt : -1,
+    });
     renderer.camYaw = input.camYaw;
     renderer.camPitch = input.camPitch;
     renderer.camDist = input.camDist;
-    perf.time('renderer', () => renderer.sync(alpha, frameDt, movementFacing, ONLINE_SELF_RENDER_ALPHA_LEAD));
-    updateClickMoveMarker();
+    perf.time('renderer', () => perf.trace('renderer.sync', () => renderer.sync(alpha, frameDt, movementFacing, ONLINE_SELF_RENDER_ALPHA_LEAD), {
+      mode: 'online',
+      views: renderer.views.size,
+      alpha,
+      frameDtMs: frameDt * 1000,
+    }));
+    perf.trace('ui.clickMoveMarker', () => updateClickMoveMarker());
     maybeShowImmobileNote(now);
     perf.markInputVisible(performance.now());
-    perf.time('hud', () => hud.update());
+    perf.time('hud', () => perf.trace('hud.update', () => hud.update(), { mode: 'online' }));
     perf.tick(now);
   }
-  requestAnimationFrame(frame);
-  // cut to the game only once the first frame is actually on screen
-  requestAnimationFrame(() => requestAnimationFrame(() => hideLoadingScreen()));
-  // Now in-game: fade the home-page theme out (it kept playing through loading).
-  fadeOutHomepageMusic();
-
   const controller = {
     move(moveInput: unknown, facing?: unknown) {
       if (arguments.length > 1) input.setControllerMoveInput(moveInput, facing);
@@ -1320,7 +1374,33 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     face(facing: unknown) { input.setControllerFacing(facing); },
     stop() { input.clearControllerMoveInput(); },
   };
-  (window as any).__game = { sim: world, world, renderer, input, hud, online, controller, perf };
+  input.suspendMovement = true;
+  await nextPaint();
+  try {
+    await renderer.prewarmInitialScene();
+  } catch (err) {
+    console.warn('Renderer prewarm failed', err);
+  }
+  await nextPaint();
+  last = performance.now();
+  requestAnimationFrame(frame);
+  // cut to the game only once the first frame is actually on screen
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    hideLoadingScreen();
+    window.setTimeout(() => {
+      gameInputReady = true;
+      perf.reset();
+      startPerfReporter({
+        perf,
+        settings,
+        tokenProvider: () => api.token,
+        characterIdProvider: () => online?.characterId ?? null,
+      });
+      (window as any).__game = { sim: world, world, renderer, input, hud, online, controller, perf };
+    }, LOADING_FADE_MS);
+  }));
+  // Now in-game: fade the home-page theme out (it kept playing through loading).
+  fadeOutHomepageMusic();
 }
 
 // ---------------------------------------------------------------------------
@@ -1348,6 +1428,15 @@ async function startOffline(playerClass: PlayerClass, name: string, skin = 0): P
 // ---------------------------------------------------------------------------
 
 const api = new Api();
+
+// Referral capture: a visitor who arrives from a shared player card link
+// (?ref=<slug>) carries the referrer's slug into registration. Read it once at
+// load and sanitise it to the server's slug shape so a junk param is dropped.
+const REFERRAL_SLUG = (() => {
+  const raw = new URLSearchParams(location.search).get('ref') ?? '';
+  const slug = raw.trim().toLowerCase();
+  return /^[a-z0-9][a-z0-9-]{0,63}$/.test(slug) ? slug : '';
+})();
 
 let activeTransitionTimeout: number | null = null;
 let activeTransitionCleanup: (() => void) | null = null;
@@ -1739,7 +1828,7 @@ function showRealmList(dir?: import('./net/online').RealmDirectory): void {
     listEl.innerHTML = d.realms.map((r) => {
       const chars = d.characters[r.name] ?? 0;
       const charTag = chars > 0
-        ? `<span class="rn-chars">${escapeHtml(t(chars === 1 ? 'realm.characterCountOne' : 'realm.characterCountOther', { count: chars }))}</span>`
+        ? `<span class="rn-chars">${escapeHtml(tPlural('hudChrome.plurals.characterCount', chars))}</span>`
         : '';
       const typeKey = realmTypeKeys[r.type as keyof typeof realmTypeKeys];
       const typeLabel = typeKey ? t(typeKey) : r.type;
@@ -2023,6 +2112,19 @@ async function enterWorld(c: CharacterSummary, button?: HTMLButtonElement): Prom
     }
   }
   const world = new ClientWorld(api.token!, c.id, c.class, api.base);
+  // Wire shareable player cards for this online session: publishing uploads the
+  // composited PNG to this realm and returns an absolute public page URL, and
+  // the referral provider feeds the card footer. Both are cleared on disconnect.
+  setCardUploader(async (png) => {
+    const r = await api.uploadCard(c.id, png, getLanguage());
+    return { url: absolutePublishedCardUrl(r.url, api.base, location.origin) };
+  });
+  setReferralProvider(() => api.referralStats());
+  setStandingProvider(() => api.characterStanding(c.id));
+  // One place to drop the session's card wiring, so the entry-timeout and the
+  // disconnect paths can't drift (a lingering provider would hold a stale
+  // character closure after we leave the world).
+  const clearCardProviders = () => { setCardUploader(null); setReferralProvider(null); setStandingProvider(null); };
   // wait for hello + first snapshot so the world starts populated
   const waitStart = Date.now();
   const poll = setInterval(() => {
@@ -2032,6 +2134,7 @@ async function enterWorld(c: CharacterSummary, button?: HTMLButtonElement): Prom
     } else if (Date.now() - waitStart > 10000) {
       clearInterval(poll);
       world.close();
+      clearCardProviders();
       fatalOverlay(t('loading.enterTimeout'));
     }
   }, 50);
@@ -2039,6 +2142,7 @@ async function enterWorld(c: CharacterSummary, button?: HTMLButtonElement): Prom
   // mask the real reason (e.g. "character already in world")
   world.onDisconnect = (reason) => {
     clearInterval(poll);
+    clearCardProviders();
     fatalOverlay(userFacingApiError(reason));
   };
 }
@@ -2447,6 +2551,7 @@ function translatePage(): void {
 }
 
 function refreshLocalizedDynamicShell(): void {
+  updateWalletButton();
   const activePanel = document.body.dataset.startPanel;
   if (activePanel === 'realm-panel') {
     showRealmList();
@@ -2474,6 +2579,38 @@ function refreshLocalizedDynamicShell(): void {
     currentlyRenderedClass['offline-class-details'] = null;
     renderClassDetails('offline-class-details', offlineSelected.dataset.class as PlayerClass);
   }
+}
+
+// Single source of truth for switching the active locale at runtime. Used by BOTH the
+// homepage footer picker and the in-game Options > Interface picker (via OptionsHooks).
+// Loads the locale chunk first (the async loader), then flips the language, re-localizes
+// the static shell, and fans the change out to every live listener through
+// `woc:languagechange` (the HUD relocalizes its dynamic UI on that event). onStatus, when
+// given, receives a localized progress/error message for an aria-live status element.
+// Returns true on success, false if the locale chunk failed to load (active locale kept).
+async function changeLanguage(selected: SupportedLanguage, onStatus?: (msg: string) => void): Promise<boolean> {
+  onStatus?.(t('settings.languageLoading'));
+  try {
+    await ensureLocaleLoaded(selected);
+  } catch {
+    // The locale chunk failed to load. Keep the already-resident locale and tell the user.
+    onStatus?.(t('settings.languageLoadFailed'));
+    return false;
+  }
+  onStatus?.('');
+  setLanguage(selected);
+
+  // Dynamically update the browser URL query parameter without page reload
+  if (typeof window !== 'undefined' && window.history) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', selected);
+    window.history.pushState({}, '', url.toString());
+  }
+
+  translatePage();
+  refreshLocalizedDynamicShell();
+  document.dispatchEvent(new CustomEvent('woc:languagechange', { detail: { language: selected } }));
+  return true;
 }
 
 async function loadProjectStats(): Promise<void> {
@@ -2743,6 +2880,598 @@ function wireHomepageMusicToggle(): void {
   });
 }
 
+// ── Non-custodial Solana wallet linking ─────────────────────────────────────
+// The character-select wallet row connects a Wallet Standard Solana wallet and,
+// once the player is logged in, binds it to their account by signing a
+// server-issued challenge. The account↔wallet link is the durable,
+// server-verified artifact.
+let linkedWalletPubkey: string | null = null;
+let linkedWocBalance: number | null = null;
+let connectedWocBalance: number | null = null;
+let walletVerifyPending = false;
+let walletVerifyInProgress = false;
+let walletVerifyTimeout: number | null = null;
+let walletVerifyModalUnsubscribe: (() => void) | null = null;
+let walletFlowStatus: 'connect' | 'sign' | 'verify' | null = null;
+let walletHiddenNoticeTimeout: number | null = null;
+
+// Feature flag: Wallet Standard support needs no project id. Keep an escape
+// hatch for deploys that want to hide the wallet UI entirely.
+const WALLET_ENABLED = String(import.meta.env.VITE_WALLET_DISABLED ?? '').trim() !== '1';
+
+function walletCharacterScreenVisible(): boolean {
+  try {
+    return new Settings().get('showWalletOnCharacterScreen');
+  } catch {
+    return true;
+  }
+}
+
+function syncWalletCharacterScreenVisibility(): void {
+  const walletRow = document.querySelector<HTMLElement>('.cs-wallet');
+  if (!walletRow) return;
+  walletRow.hidden = !walletCharacterScreenVisible();
+}
+
+function showWalletHiddenNotice(): void {
+  const note = document.getElementById('wallet-hidden-note');
+  if (!note) return;
+  if (walletHiddenNoticeTimeout !== null) {
+    window.clearTimeout(walletHiddenNoticeTimeout);
+    walletHiddenNoticeTimeout = null;
+  }
+  note.textContent = t('wallet.hiddenNotice');
+  note.hidden = false;
+  walletHiddenNoticeTimeout = window.setTimeout(() => {
+    note.hidden = true;
+    note.textContent = '';
+    walletHiddenNoticeTimeout = null;
+  }, 8000);
+}
+
+function hideWalletCharacterScreenRow(): void {
+  new Settings().set('showWalletOnCharacterScreen', false);
+  syncWalletCharacterScreenVisibility();
+  showWalletHiddenNotice();
+}
+
+// Lazily load the heavy wallet module the first time it's needed, then cache it.
+let walletMod: typeof import('./net/wallet') | null = null;
+function loadWallet(): Promise<typeof import('./net/wallet')> {
+  return walletMod ? Promise.resolve(walletMod) : import('./net/wallet').then((m) => {
+    walletMod = m;
+    walletMod.setWalletPicker(showWalletPicker);
+    return walletMod;
+  });
+}
+
+const shortenAddress = (a: string): string => `${a.slice(0, 4)}…${a.slice(-4)}`;
+const formatWoc = (n: number): string => formatNumber(n, { maximumFractionDigits: 2 });
+const walletBalanceText = (n: number): string => t('wallet.balanceAmount', { amount: formatWoc(n) });
+let walletPickerModal: HTMLDivElement | null = null;
+let walletPickerResolve: ((id: string | null) => void) | null = null;
+let walletPickerReturnFocus: HTMLElement | null = null;
+
+function walletPickerFocusable(root: HTMLElement): HTMLElement[] {
+  return Array.from(root.querySelectorAll<HTMLElement>('button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+    .filter((el) => !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden') && (el.offsetParent !== null || el === document.activeElement));
+}
+
+function closeWalletPicker(id: string | null): void {
+  const modal = walletPickerModal;
+  const resolve = walletPickerResolve;
+  walletPickerModal = null;
+  walletPickerResolve = null;
+  if (modal) modal.remove();
+  const returnFocus = walletPickerReturnFocus;
+  walletPickerReturnFocus = null;
+  if (returnFocus?.isConnected) returnFocus.focus();
+  if (resolve) resolve(id);
+}
+
+function showWalletPicker(wallets: readonly WalletOption[], selectedId: string | null): Promise<string | null> {
+  if (walletPickerResolve) closeWalletPicker(null);
+  return new Promise((resolve) => {
+    walletPickerResolve = resolve;
+    walletPickerReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+    const back = document.createElement('div');
+    back.className = 'modal-backdrop wallet-picker-backdrop';
+    back.id = 'wallet-picker-modal';
+
+    const panel = document.createElement('div');
+    panel.className = 'panel wallet-picker-modal';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
+    panel.setAttribute('aria-labelledby', 'wallet-picker-title');
+    panel.setAttribute('aria-describedby', 'wallet-picker-help');
+
+    const titleRow = document.createElement('div');
+    titleRow.className = 'panel-title';
+    const title = document.createElement('span');
+    title.id = 'wallet-picker-title';
+    title.textContent = t('wallet.connectTitle');
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'x-btn wallet-picker-close';
+    closeBtn.setAttribute('aria-label', t('skinEvent.close'));
+    closeBtn.textContent = '×';
+    titleRow.append(title, closeBtn);
+
+    const help = document.createElement('p');
+    help.className = 'wallet-picker-help';
+    help.id = 'wallet-picker-help';
+    help.textContent = t('wallet.flowConnect');
+
+    const list = document.createElement('div');
+    list.className = 'wallet-picker-list';
+
+    if (wallets.length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'wallet-picker-empty';
+      empty.textContent = t('wallet.helpDisconnected');
+      list.appendChild(empty);
+    } else {
+      for (const option of wallets) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'wallet-picker-option';
+        button.classList.toggle('selected', option.id === selectedId);
+        button.setAttribute('aria-label', option.name);
+        button.addEventListener('click', () => closeWalletPicker(option.id));
+
+        const icon = document.createElement('img');
+        icon.className = 'wallet-picker-icon';
+        icon.src = option.icon;
+        icon.alt = '';
+        icon.decoding = 'async';
+
+        const text = document.createElement('span');
+        text.className = 'wallet-picker-name';
+        text.textContent = option.name;
+
+        button.append(icon, text);
+        if (option.connected) {
+          const badge = document.createElement('span');
+          badge.className = 'wallet-picker-badge';
+          badge.textContent = t('wallet.appConnected');
+          button.appendChild(badge);
+        }
+        list.appendChild(button);
+      }
+    }
+
+    panel.append(titleRow, help, list);
+    back.appendChild(panel);
+    document.body.appendChild(back);
+    walletPickerModal = back;
+
+    const close = () => closeWalletPicker(null);
+    closeBtn.addEventListener('click', close);
+    back.addEventListener('click', (e) => {
+      if (e.target === back) close();
+    });
+    back.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        close();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const focusable = walletPickerFocusable(back);
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    const initialFocus = back.querySelector<HTMLElement>('.wallet-picker-option.selected')
+      ?? back.querySelector<HTMLElement>('.wallet-picker-option')
+      ?? closeBtn;
+    initialFocus.focus();
+  });
+}
+
+function walletAddressLabel(address: string, linked: boolean, balance: number | null): string {
+  const short = shortenAddress(address);
+  if (balance !== null) {
+    const balanceText = walletBalanceText(balance);
+    return linked
+      ? t('wallet.connectedLinkedWithBalance', { balance: balanceText, address: short })
+      : t('wallet.connectedWithBalance', { balance: balanceText, address: short });
+  }
+  return linked
+    ? t('wallet.connectedLinked', { address: short })
+    : t('wallet.connected', { address: short });
+}
+
+function walletHelpText(address: string, linked: boolean, balance: number | null): string {
+  const short = shortenAddress(address);
+  if (linked) {
+    return balance !== null
+      ? t('wallet.helpLinkedWithBalance', { balance: walletBalanceText(balance), address: short })
+      : t('wallet.helpLinked', { address: short });
+  }
+  if (!api.token) {
+    return balance !== null
+      ? t('wallet.helpLoginToLinkWithBalance', { balance: walletBalanceText(balance), address: short })
+      : t('wallet.helpLoginToLink', { address: short });
+  }
+  return balance !== null
+    ? t('wallet.helpReadyToLinkWithBalance', { balance: walletBalanceText(balance), address: short })
+    : t('wallet.helpReadyToLink', { address: short });
+}
+
+function walletLinkedDisconnectedHelpText(address: string, balance: number | null): string {
+  const short = shortenAddress(address);
+  return balance !== null
+    ? t('wallet.helpLinkedDisconnectedWithBalance', { balance: walletBalanceText(balance), address: short })
+    : t('wallet.helpLinkedDisconnected', { address: short });
+}
+
+function setWalletStatus(text: string | null): void {
+  const status = document.getElementById('wallet-status');
+  if (!status) return;
+  if (!text) {
+    status.hidden = true;
+    status.textContent = '';
+    status.removeAttribute('title');
+    status.removeAttribute('aria-label');
+    return;
+  }
+  status.hidden = false;
+  status.textContent = text;
+  status.title = text;
+  status.setAttribute('aria-label', text);
+}
+
+function walletFlowHelpText(): string {
+  switch (walletFlowStatus) {
+    case 'connect':
+      return t('wallet.flowConnect');
+    case 'sign':
+      return t('wallet.flowSign');
+    case 'verify':
+      return t('wallet.flowVerify');
+    default:
+      return t('wallet.helpDisconnected');
+  }
+}
+
+function setWalletHelp(text: string, state: 'default' | 'attention' | 'verified'): void {
+  const help = document.getElementById('wallet-help');
+  if (!help) return;
+  help.textContent = text;
+  help.classList.toggle('is-attention', state === 'attention');
+  help.classList.toggle('is-verified', state === 'verified');
+}
+
+function setWalletFlowStatus(status: typeof walletFlowStatus): void {
+  walletFlowStatus = status;
+  updateWalletButton();
+}
+
+function updateWalletButton(): void {
+  syncWalletCharacterScreenVisibility();
+  // currentWallet is sync; before the module loads, treat as disconnected.
+  const { address, isConnected } = walletMod ? walletMod.currentWallet() : { address: null, isConnected: false };
+  const connected = isConnected && !!address;
+  const linked = connected && linkedWalletPubkey === address;
+  const verifiedBalance = linkedWalletPubkey
+    ? (linkedWocBalance ?? (linked ? connectedWocBalance : null))
+    : null;
+  const previewBalance = connected && !linkedWalletPubkey ? connectedWocBalance : null;
+  // Mirror the balance into the HUD store so the bag footer stays in sync. Only
+  // a balance for the linked wallet may drive verified holder claims.
+  setWocBalance(verifiedBalance ?? previewBalance, verifiedBalance !== null);
+  setWalletDisplayAvailable(connected || linkedWalletPubkey !== null);
+  const btn = document.getElementById('btn-wallet');
+  const label = document.getElementById('wallet-label');
+  if (!btn || !label) return;
+  // Switch / Unlink are account-link actions; Disconnect is only meaningful for
+  // the browser wallet-app session.
+  const switchBtn = document.getElementById('btn-wallet-switch');
+  const unlinkBtn = document.getElementById('btn-wallet-unlink');
+  const signoutBtn = document.getElementById('btn-wallet-signout');
+  if (switchBtn) switchBtn.hidden = !(api.token && linkedWalletPubkey);
+  if (unlinkBtn) unlinkBtn.hidden = !(api.token && linkedWalletPubkey);
+  if (signoutBtn) signoutBtn.hidden = !connected;
+  btn.classList.remove('is-connected', 'is-linked', 'needs-link', 'connect-app');
+  btn.classList.toggle('busy', walletFlowStatus !== null);
+  if (walletFlowStatus) {
+    label.textContent = t('wallet.verifying');
+    btn.title = t('wallet.verifyingTitle');
+    btn.setAttribute('aria-label', t('wallet.verifyingTitle'));
+    setWalletStatus(null);
+    setWalletHelp(walletFlowHelpText(), 'attention');
+    return;
+  }
+  if (!connected) {
+    if (api.token && linkedWalletPubkey) {
+      btn.classList.add('connect-app');
+      label.textContent = t('wallet.connectApp');
+      btn.title = t('wallet.connectAppTitle');
+      btn.setAttribute('aria-label', t('wallet.connectAppAria'));
+      setWalletStatus(walletAddressLabel(linkedWalletPubkey, true, linkedWocBalance));
+      setWalletHelp(walletLinkedDisconnectedHelpText(linkedWalletPubkey, linkedWocBalance), 'verified');
+      return;
+    }
+    btn.classList.add('needs-link');
+    label.textContent = t('wallet.verify');
+    btn.title = t('wallet.verifyTitle');
+    btn.setAttribute('aria-label', t('wallet.verifyAria'));
+    setWalletStatus(null);
+    setWalletHelp(t('wallet.helpDisconnected'), 'default');
+    return;
+  }
+  // $WOC balance sits to the left of the address once it has loaded.
+  if (linked) {
+    btn.classList.add('is-linked');
+    label.textContent = t('wallet.appConnected');
+    btn.title = t('wallet.linkedTitle');
+    btn.setAttribute('aria-label', t('wallet.linkedTitle'));
+    setWalletStatus(walletAddressLabel(address, true, verifiedBalance));
+    setWalletHelp(walletHelpText(address, true, verifiedBalance), 'verified');
+  } else if (api.token) {
+    btn.classList.add('needs-link');
+    label.textContent = linkedWalletPubkey ? t('wallet.verifyNew') : t('wallet.verify');
+    btn.title = t('wallet.verifyTitle');
+    btn.setAttribute('aria-label', t('wallet.verifyAddressAria', { address: shortenAddress(address) }));
+    setWalletStatus(null);
+    setWalletHelp(walletHelpText(address, false, connectedWocBalance), 'attention');
+  } else {
+    btn.classList.add('is-connected');
+    label.textContent = walletAddressLabel(address, false, connectedWocBalance);
+    btn.title = t('wallet.connectedTitle');
+    btn.setAttribute('aria-label', t('wallet.connectedTitle'));
+    setWalletStatus(null);
+    setWalletHelp(walletHelpText(address, false, connectedWocBalance), 'default');
+  }
+}
+
+function clearWalletVerifyTimeout(): void {
+  if (walletVerifyTimeout !== null) {
+    window.clearTimeout(walletVerifyTimeout);
+    walletVerifyTimeout = null;
+  }
+}
+
+function clearWalletVerifyModalWatcher(): void {
+  if (!walletVerifyModalUnsubscribe) return;
+  walletVerifyModalUnsubscribe();
+  walletVerifyModalUnsubscribe = null;
+}
+
+function cancelWalletVerifyPending(): void {
+  walletVerifyPending = false;
+  clearWalletVerifyTimeout();
+  clearWalletVerifyModalWatcher();
+  setWalletFlowStatus(null);
+}
+
+async function disconnectUnverifiedWallet(): Promise<void> {
+  if (!walletMod) return;
+  const { address } = walletMod.currentWallet();
+  if (!address || address === linkedWalletPubkey) return;
+  try {
+    await walletMod.disconnectWallet();
+  } catch (err) {
+    console.error('[wallet] disconnect unverified wallet failed', err);
+  } finally {
+    connectedWocBalance = null;
+    updateWalletButton();
+  }
+}
+
+async function disconnectUnverifiedWalletIfIdle(): Promise<void> {
+  if (walletVerifyPending || walletVerifyInProgress) return;
+  await disconnectUnverifiedWallet();
+}
+
+// Read the connected wallet's $WOC balance and re-render. Ignores a stale
+// response if the connected wallet changed while the RPC call was in flight.
+async function refreshWocBalance(address: string): Promise<void> {
+  connectedWocBalance = null;
+  updateWalletButton();
+  const wallet = await loadWallet();
+  const balance = await wallet.fetchWocBalance(address);
+  if (wallet.currentWallet().address === address) {
+    connectedWocBalance = balance;
+    if (linkedWalletPubkey === address) linkedWocBalance = balance;
+    updateWalletButton();
+  }
+}
+
+function flashWalletError(message: string): void {
+  const btn = document.getElementById('btn-wallet');
+  const label = document.getElementById('wallet-label');
+  if (!btn || !label) return;
+  const previous = label.textContent;
+  label.textContent = message;
+  btn.title = message;
+  btn.setAttribute('aria-label', message);
+  window.setTimeout(() => {
+    if (label.textContent === message) label.textContent = previous;
+    updateWalletButton();
+  }, 4000);
+}
+
+// Refreshed after login: ask the server which wallet (if any) this account has
+// linked, so the button can show the verified ✓ state.
+async function refreshWalletLinkStatus(): Promise<void> {
+  if (!api.token) {
+    linkedWalletPubkey = null;
+    linkedWocBalance = null;
+    updateWalletButton();
+    return;
+  }
+  try {
+    const wallet = await api.linkedWallet();
+    linkedWalletPubkey = wallet?.pubkey ?? null;
+    linkedWocBalance = null;
+  } catch (err) {
+    console.error('[wallet] could not load link status', err);
+    linkedWalletPubkey = null;
+    linkedWocBalance = null;
+  }
+  updateWalletButton();
+  const pubkey = linkedWalletPubkey;
+  if (pubkey && WALLET_ENABLED) {
+    try {
+      const wallet = await loadWallet();
+      const balance = await wallet.fetchWocBalance(pubkey);
+      if (linkedWalletPubkey === pubkey) {
+        linkedWocBalance = balance;
+        updateWalletButton();
+      }
+    } catch (err) {
+      console.error('[wallet] could not load linked balance', err);
+    }
+  }
+  await disconnectUnverifiedWalletIfIdle();
+}
+
+// challenge → sign → link, with a verified mirror written server-side.
+async function completeWalletVerifyFlow(address: string): Promise<void> {
+  if (!api.token || walletVerifyInProgress) return;
+  clearWalletVerifyTimeout();
+  clearWalletVerifyModalWatcher();
+  walletVerifyPending = false;
+  walletVerifyInProgress = true;
+  let verificationFailed = false;
+  try {
+    const wallet = await loadWallet();
+    setWalletFlowStatus('sign');
+    const { message, nonce } = await api.walletLinkChallenge(address);
+    const signature = await wallet.signMessageBase58(message);
+    setWalletFlowStatus('verify');
+    const result = await api.linkWallet(address, signature, nonce);
+    linkedWalletPubkey = result.pubkey;
+    linkedWocBalance = connectedWocBalance;
+    if (linkedWocBalance === null) linkedWocBalance = await wallet.fetchWocBalance(address);
+    updateWalletButton();
+  } catch (err: unknown) {
+    console.error('[wallet] verification failed', err);
+    verificationFailed = true;
+    await disconnectUnverifiedWallet();
+  } finally {
+    walletVerifyPending = false;
+    walletVerifyInProgress = false;
+    setWalletFlowStatus(null);
+    if (verificationFailed) flashWalletError(t('wallet.verifyFailed'));
+  }
+}
+
+async function startWalletVerifyFlow(forcePicker = false): Promise<void> {
+  if (!api.token || walletVerifyPending || walletVerifyInProgress) return;
+  const wallet = await loadWallet();
+  if (forcePicker) {
+    await wallet.disconnectWallet();
+    connectedWocBalance = null;
+  }
+  const current = wallet.currentWallet();
+  if (current.address) {
+    await completeWalletVerifyFlow(current.address);
+    return;
+  }
+  walletVerifyPending = true;
+  setWalletFlowStatus('connect');
+  clearWalletVerifyTimeout();
+  clearWalletVerifyModalWatcher();
+  walletVerifyTimeout = window.setTimeout(() => {
+    if (!walletVerifyPending) return;
+    cancelWalletVerifyPending();
+  }, 120_000);
+  try {
+    await wallet.openWalletModal();
+    const connected = wallet.currentWallet();
+    if (walletVerifyPending && connected.address) await completeWalletVerifyFlow(connected.address);
+  } catch (err) {
+    cancelWalletVerifyPending();
+    if (wallet.isWalletSelectionCancelled(err)) return;
+    console.error('[wallet] open modal failed', err);
+    flashWalletError(t('wallet.verifyFailed'));
+  }
+}
+
+async function onWalletButtonClick(): Promise<void> {
+  const wallet = await loadWallet();
+  const { address, isConnected } = wallet.currentWallet();
+  if (linkedWalletPubkey && (!isConnected || linkedWalletPubkey === address)) {
+    await wallet.openWalletModal(); // linked wallet → manage / reconnect
+    return;
+  }
+  await startWalletVerifyFlow(false);
+}
+
+// Disconnect the browser wallet-app session. The account↔wallet link persists
+// server-side, so reconnecting the same wallet re-shows the verified state.
+async function signOutWallet(): Promise<void> {
+  const wallet = await loadWallet();
+  await wallet.disconnectWallet();
+}
+
+async function unlinkVerifiedWallet(): Promise<void> {
+  if (!api.token || !linkedWalletPubkey) return;
+  try {
+    await api.unlinkWallet();
+    linkedWalletPubkey = null;
+    linkedWocBalance = null;
+    await disconnectUnverifiedWallet();
+    updateWalletButton();
+  } catch (err) {
+    console.error('[wallet] unlink failed', err);
+    flashWalletError(t('wallet.unlinkFailed'));
+  }
+}
+
+// Switch: disconnect, then reopen the picker to connect a different wallet.
+async function switchWallet(): Promise<void> {
+  await startWalletVerifyFlow(true);
+}
+
+function wireWallet(): void {
+  setWalletUiEnabled(WALLET_ENABLED);
+  syncWalletCharacterScreenVisibility();
+  const btn = document.getElementById('btn-wallet');
+  if (!btn) return;
+  // Feature-gate: when explicitly disabled, remove the wallet row entirely and
+  // never download the wallet chunk.
+  if (!WALLET_ENABLED) {
+    document.querySelector('.cs-wallet')?.remove();
+    return;
+  }
+  // These async actions are fire-and-forget from the click, so attach a .catch:
+  // a wallet connect/disconnect rejection must surface, not vanish silently.
+  const onErr = (what: string) => (e: unknown) => console.error(`[wallet] ${what} failed`, e);
+  btn.addEventListener('click', () => { onWalletButtonClick().catch(onErr('action')); });
+  document.getElementById('btn-wallet-switch')?.addEventListener('click', () => { switchWallet().catch(onErr('switch')); });
+  document.getElementById('btn-wallet-unlink')?.addEventListener('click', () => { unlinkVerifiedWallet().catch(onErr('unlink')); });
+  document.getElementById('btn-wallet-signout')?.addEventListener('click', () => { signOutWallet().catch(onErr('disconnect')); });
+  document.getElementById('btn-wallet-hide')?.addEventListener('click', () => { hideWalletCharacterScreenRow(); });
+  // Load the wallet chunk (separate async bundle), then subscribe to changes and
+  // init so a persisted connection is reflected on the character screen.
+  loadWallet().then((wallet) => {
+    wallet.onWalletChange((state) => {
+      if (state.address) void refreshWocBalance(state.address);
+      else connectedWocBalance = null;
+      if (state.address && walletVerifyPending) void completeWalletVerifyFlow(state.address);
+      else if (state.address) void disconnectUnverifiedWalletIfIdle();
+      updateWalletButton();
+    });
+    wallet.initWallet();
+    updateWalletButton();
+  }).catch((e) => console.error('[wallet] load failed', e));
+  updateWalletButton();
+}
+
 function wireStartScreens(): void {
   // Initial page translation and stats load. Lazy locale flip: a stored non-en locale is now
   // a real chunk fetch, and the homepage IS the first paint (there is no loading screen to sit
@@ -2771,6 +3500,7 @@ function wireStartScreens(): void {
   void loadProjectStats();
   wireContractAddressCopy();
   wireHomepageMusicToggle();
+  wireWallet();
 
   // mode select
   const onlineBtn = $('#btn-online');
@@ -3081,7 +3811,7 @@ function wireStartScreens(): void {
     }
     try {
       if (mode === 'login') await api.login(username, password, token);
-      else await api.register(username, password, token);
+      else await api.register(username, password, token, REFERRAL_SLUG);
     } catch (err) {
       // Auth itself failed (bad credentials, taken username, Turnstile reject…).
       // The token is single-use, so refresh the widget for the next attempt.
@@ -3093,6 +3823,9 @@ function wireStartScreens(): void {
     // so don't reset the widget or let the user re-submit the (now duplicate) auth.
     try {
       $('#charselect-user').textContent = api.username ?? '';
+      // bind-on-login: surface the account's linked wallet (and flip a
+      // connected-but-unlinked button into a "Link" call-to-action).
+      void refreshWalletLinkStatus();
       await enterRealmFlow();
     } catch (err) {
       loginError(userFacingApiError(err));
@@ -3501,31 +4234,8 @@ function wireStartScreens(): void {
       // module is still static-imported through the barrel, so the await resolves on a
       // microtask with no network and the transient "loading" status never paints; the
       // failure path is wired now so the lazy locale flip's real fetch needs no call-site change.
-      void (async () => {
-        if (langStatus) langStatus.textContent = t('settings.languageLoading');
-        try {
-          await ensureLocaleLoaded(selected);
-        } catch {
-          // The locale chunk failed to load (a real risk once the lazy locale flip makes this a
-          // network fetch). Keep the already-resident locale and tell the user.
-          if (langStatus) langStatus.textContent = t('settings.languageLoadFailed');
-          langSelect.value = getLanguage();
-          return;
-        }
-        if (langStatus) langStatus.textContent = '';
-        setLanguage(selected);
-
-        // Dynamically update the browser URL query parameter without page reload
-        if (typeof window !== 'undefined' && window.history) {
-          const url = new URL(window.location.href);
-          url.searchParams.set('lang', selected);
-          window.history.pushState({}, '', url.toString());
-        }
-
-        translatePage();
-        refreshLocalizedDynamicShell();
-        document.dispatchEvent(new CustomEvent('woc:languagechange', { detail: { language: selected } }));
-      })();
+      void changeLanguage(selected, (msg) => { if (langStatus) langStatus.textContent = msg; })
+        .then((ok) => { if (!ok) langSelect.value = getLanguage(); });
     });
   }
 

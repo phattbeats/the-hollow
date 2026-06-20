@@ -154,8 +154,8 @@ export class Api {
     return data;
   }
 
-  async register(username: string, password: string, turnstileToken = ''): Promise<void> {
-    const data = await this.post('/api/register', { username, password, turnstileToken });
+  async register(username: string, password: string, turnstileToken = '', ref = ''): Promise<void> {
+    const data = await this.post('/api/register', { username, password, turnstileToken, ref });
     this.token = data.token;
     this.username = data.username;
   }
@@ -218,6 +218,70 @@ export class Api {
       return [];
     }
   }
+
+  // ── Non-custodial Solana wallet linking ───────────────────────────────────
+  // Step 1: ask the server for the exact message to sign for this address.
+  async walletLinkChallenge(address: string): Promise<{ nonce: string; message: string }> {
+    return this.post('/api/wallet/link/challenge', { address });
+  }
+
+  // Step 2: submit the wallet's signature; server verifies + persists the link.
+  async linkWallet(address: string, signature: string, nonce: string): Promise<{ pubkey: string }> {
+    return this.post('/api/wallet/link', { address, signature, nonce });
+  }
+
+  // Current account's linked wallet (null when none).
+  async linkedWallet(): Promise<{ pubkey: string; linkedAt: string } | null> {
+    const data = await this.get('/api/wallet');
+    return data.wallet ?? null;
+  }
+
+  async unlinkWallet(): Promise<void> {
+    await this.delete('/api/wallet/link', {});
+  }
+
+  // ── Shareable player card + referrals ──────────────────────────────────────
+  // Publish (or replace) this character's card PNG. The server may return a
+  // realm-relative public page path; main.ts normalizes it to an absolute URL
+  // before injecting it into the share UI.
+  // The body is the raw PNG, so this bypasses the JSON `post` helper.
+  async uploadCard(characterId: number, png: Blob, lang = 'en'): Promise<{ url: string }> {
+    const params = new URLSearchParams({ character: String(characterId), lang });
+    const res = await fetch(`${this.base}/api/card?${params.toString()}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'image/png',
+        ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
+      },
+      body: png,
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error ?? `card upload failed (${res.status})`);
+    return { url: data.url };
+  }
+
+  // The account's referral count + published-card slug (null before first
+  // publish). Best-effort: returns zeros rather than throwing on error.
+  async referralStats(): Promise<{ count: number; slug: string | null }> {
+    try {
+      const data = await this.get('/api/referrals');
+      return { count: data.count ?? 0, slug: data.slug ?? null };
+    } catch {
+      return { count: 0, slug: null };
+    }
+  }
+
+  // A character's realm standing by lifetime XP (rank 1 = highest), for the
+  // card's "Top N%" flex. Best-effort: null on error so the card still renders.
+  async characterStanding(characterId: number): Promise<{ rank: number; total: number } | null> {
+    try {
+      const data = await this.get(`/api/characters/${characterId}/standing`);
+      if (typeof data.rank === 'number' && typeof data.total === 'number') return { rank: data.rank, total: data.total };
+      return null;
+    } catch {
+      return null;
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -261,7 +325,7 @@ function blankEntity(id: number): Entity {
     sitting: false, eating: null, drinking: null,
     aiState: 'idle', tappedById: null, pulseTimer: 0, stompTimer: 0, stoneskinTimer: 0, terrifyTimer: 0, detonateTimer: Infinity, firedSummons: 0, summonedIds: [], enraged: false, healedThisPull: false,
     threat: new Map(), forcedTargetId: null, forcedTargetTimer: 0, ownerId: null, petMode: 'defensive', petTauntTimer: 0,
-    spawnPos: { x: 0, y: 0, z: 0 }, leashAnchor: null, evadeStall: 0, fleeTimer: 0, hasFled: false, wanderTarget: null, wanderTimer: 0,
+    spawnPos: { x: 0, y: 0, z: 0 }, leashAnchor: null, evadeStall: 0, fleeTimer: 0, fleeReturnTimer: 0, hasFled: false, wanderTarget: null, wanderTimer: 0,
     aggroTargetId: null, respawnTimer: 0, corpseTimer: 0, lootable: false, loot: null,
     xpValue: 0, questIds: [], vendorItems: [], objectItemId: null, dungeonId: null,
     dead: false, scale: 1, color: 0xffffff, skinCatalog: 'class', skin: 0,
@@ -570,6 +634,8 @@ export class ClientWorld implements IWorld {
         e.level = w.lv;
         e.skin = w.sk ?? 0;
         e.skinCatalog = w.cat === 'mech' ? 'mech' : 'class';
+        e.holderTier = w.ht ?? 0; // $WOC holder-tier flair (cosmetic, server-set)
+        e.holderBalance = typeof w.hb === 'number' ? w.hb : undefined; // exact $WOC, for inspect
         e.scale = w.sc ?? 1;
         e.color = w.c ?? 0xffffff;
         e.dungeonId = w.dgn ?? null;
@@ -1010,6 +1076,9 @@ export class ClientWorld implements IWorld {
   }
   arenaAugmentPick(augmentId: string): void {
     this.cmd({ cmd: 'arena_augment', augment: augmentId });
+  }
+  marketSearch(query: string): void {
+    this.cmd({ cmd: 'market_search', q: query });
   }
   marketList(itemId: string, count: number, price: number): void {
     this.cmd({ cmd: 'market_list', item: itemId, count, price });

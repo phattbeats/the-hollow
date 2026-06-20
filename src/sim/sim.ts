@@ -67,6 +67,8 @@ const BACKPEDAL_MULT = 0.65;
 const FLEE_HP_THRESHOLD = 0.2;
 const FLEE_DURATION = 5;
 const FLEE_SPEED_MULT = 1.4;
+const FLEE_MAX_SPEED = RUN_SPEED;
+const FLEE_RETURN_GRACE = 8;
 const FLEE_HELP_RADIUS = 8;
 // Only sentient, cowardly families flee; beasts/undead/elementals/dragonkin fight
 // to the death. Elites, rares, and bosses never flee regardless of family.
@@ -481,6 +483,11 @@ export interface PlayerMeta {
   // Session-only: name of the last player who whispered us, for "/r" replies.
   // Never persisted — a fresh login starts with no reply target.
   lastWhisperFrom?: string;
+  // Session-only World Market browse filter. The market is capped at
+  // MARKET_WIRE_LIMIT listings per snapshot to bound wire cost, so this
+  // server-side substring filter (matched against item names) is how a player
+  // reaches goods past the cap. Never persisted — resets on login.
+  marketFilter: string;
 }
 
 // Away-from-keyboard / do-not-disturb presence. `afk` still delivers whispers
@@ -607,6 +614,7 @@ export function computeQuestState(
   if (!quest) return 'unavailable';
   if (quest.requiresQuest && !questsDone.has(quest.requiresQuest)) return 'unavailable';
   if (quest.minLevel && playerLevel < quest.minLevel) return 'unavailable';
+  if (quest.retired) return 'unavailable';
   return 'available';
 }
 
@@ -625,7 +633,8 @@ function freshCounters(): RewardCounters {
 
 // Shapeshifts stay castable while shapeshifted (that's how you shift out).
 function isFormToggle(ability: AbilityDef): boolean {
-  return ability.effects.some((e) => e.type === 'selfBuff' && (e.kind === 'form_bear' || e.kind === 'form_cat'));
+  return ability.effects.some((e) => e.type === 'selfBuff'
+    && (e.kind === 'form_bear' || e.kind === 'form_cat' || e.kind === 'form_travel'));
 }
 
 // Forms, stances and stealth are toggles: re-casting cancels the aura, and
@@ -633,7 +642,7 @@ function isFormToggle(ability: AbilityDef): boolean {
 function isToggleBuff(ability: AbilityDef): boolean {
   if (ability.id === 'ghost_wolf') return true;
   return ability.effects.some((e) => e.type === 'selfBuff'
-    && (e.kind === 'form_bear' || e.kind === 'form_cat' || e.kind === 'defensive_stance' || e.kind === 'stealth'));
+    && (e.kind === 'form_bear' || e.kind === 'form_cat' || e.kind === 'form_travel' || e.kind === 'defensive_stance' || e.kind === 'stealth'));
 }
 
 function isStealthToggle(ability: AbilityDef): boolean {
@@ -888,6 +897,7 @@ export class Sim {
       loadouts: [],
       activeLoadout: -1,
       away: null,
+      marketFilter: '',
     };
     this.players.set(player.id, meta);
     player.skinCatalog = meta.skinCatalog;
@@ -1662,7 +1672,7 @@ export class Sim {
     if (!aura || e.auras.some((a) => a.kind === 'root')) return false;
     const angle = Number.isFinite(aura.value) ? aura.value : e.facing;
     const dest = this.groundPos(e.pos.x + Math.sin(angle) * 10, e.pos.z + Math.cos(angle) * 10);
-    this.moveToward(e, dest, e.moveSpeed * FLEE_SPEED_MULT * this.moveSpeedMult(e));
+    this.moveToward(e, dest, this.fleeMoveSpeed(e));
     return true;
   }
   // Silence locks out spell (non-physical) casts but leaves physical abilities,
@@ -1737,7 +1747,8 @@ export class Sim {
     let slow = 1, speed = 1;
     for (const a of e.auras) {
       if (a.kind === 'slow' || a.kind === 'stealth') slow = Math.min(slow, a.value);
-      if (a.kind === 'buff_speed') speed = Math.max(speed, a.value);
+      // buff_speed and form_travel both carry a 1+fraction multiplier (1.4 = +40%).
+      if (a.kind === 'buff_speed' || a.kind === 'form_travel') speed = Math.max(speed, a.value);
     }
     // Fiesta move-speed augments (only ever non-zero inside a Fiesta bout).
     if (e.kind === 'player') {
@@ -1745,6 +1756,16 @@ export class Sim {
       if (ms) speed += ms;
     }
     return slow * speed;
+  }
+
+  private fleeMoveSpeed(e: Entity): number {
+    return Math.min(e.moveSpeed * FLEE_SPEED_MULT, FLEE_MAX_SPEED) * this.moveSpeedMult(e);
+  }
+
+  private recoverFromFlee(mob: Entity, target: Entity, leash: number, leashAnchor: Vec3): void {
+    mob.aiState = dist2d(mob.pos, target.pos) > MELEE_RANGE ? 'chase' : 'attack';
+    mob.fleeTimer = 0;
+    if (dist2d(mob.pos, leashAnchor) >= leash - 1) mob.fleeReturnTimer = FLEE_RETURN_GRACE;
   }
 
   // Fiesta "Moon Boots" power-up: a buff_jump aura multiplies jump height.
@@ -1908,7 +1929,7 @@ export class Sim {
       this.stopFollow(p, 'There is no one to follow.');
       return false;
     }
-    if (p.inCombat) { this.stopFollow(p, 'You stop following — you are in combat.'); return false; }
+    if (p.inCombat) { this.stopFollow(p, 'You stop following - you are in combat.'); return false; }
     const d = dist2d(p.pos, t.pos);
     if (d > FOLLOW_MAX_RANGE) { this.stopFollow(p, `${t.name} is too far away to follow.`); return false; }
     // always turn to face the leader, even while held in place
@@ -2066,7 +2087,15 @@ export class Sim {
         p.fallStartY = ground;
       }
     } else {
-      if (ground < p.pos.y - 0.4) {
+      // Distinguish a walkable downhill slope from a genuine cliff/ledge. The
+      // drop the ground can take in one tick scales with how far we moved: a
+      // slope no steeper than MAX_CLIMB_SLOPE (the same gate that blocks uphill
+      // climbs) is walkable, so we snap down to follow it instead of falling.
+      // Only a steeper-than-walkable drop counts as walking off a ledge. The
+      // 0.4 base keeps a near-stationary player snapped over tiny terrain noise.
+      const run = Math.hypot(p.pos.x - p.prevPos.x, p.pos.z - p.prevPos.z);
+      const maxStepDown = 0.4 + run * MAX_CLIMB_SLOPE;
+      if (ground < p.pos.y - maxStepDown) {
         // walked off a ledge — not a jump, so fences still block
         p.onGround = false;
         p.jumping = false;
@@ -2158,7 +2187,7 @@ export class Sim {
       a.remaining -= DT;
       if (a.tickInterval) {
         a.tickTimer = (a.tickTimer ?? a.tickInterval) - DT;
-        if (a.tickTimer <= 0) {
+        if (a.tickTimer <= CAST_COMPLETE_EPS) {
           a.tickTimer += a.tickInterval;
           if (a.kind === 'dot') {
             this.emit({ type: 'spellfx', sourceId: a.sourceId, targetId: e.id, school: a.school, fx: 'tick' });
@@ -2178,7 +2207,7 @@ export class Sim {
           }
         }
       }
-      if (a.remaining <= 0) {
+      if (a.remaining <= CAST_COMPLETE_EPS) {
         e.auras.splice(i, 1);
         this.applyNonPlayerStatAura(e, a, -1);
         this.emit({ type: 'aura', targetId: e.id, name: a.name, gained: false });
@@ -2315,7 +2344,7 @@ export class Sim {
     }
     // druid forms gate their kit both ways: form abilities need the form, and
     // everything else (the caster kit) is locked while shapeshifted
-    const form = p.auras.find((a) => a.kind === 'form_bear' || a.kind === 'form_cat');
+    const form = p.auras.find((a) => a.kind === 'form_bear' || a.kind === 'form_cat' || a.kind === 'form_travel');
     if (ability.requiresForm) {
       const need = ability.requiresForm === 'bear' ? 'form_bear' : 'form_cat';
       if (!form || form.kind !== need) {
@@ -2441,7 +2470,7 @@ export class Sim {
   private formShiftKind(p: Entity, ability: AbilityDef): 'off' | 'cross' | null {
     if (!isFormToggle(ability)) return null;
     if (p.auras.some((a) => a.id === ability.id)) return 'off';
-    if (p.auras.some((a) => a.kind === 'form_bear' || a.kind === 'form_cat')) return 'cross';
+    if (p.auras.some((a) => a.kind === 'form_bear' || a.kind === 'form_cat' || a.kind === 'form_travel')) return 'cross';
     return null;
   }
 
@@ -2921,7 +2950,8 @@ export class Sim {
         }
         case 'selfBuff': {
           // forms, stances and stealth are toggles: casting again cancels
-          const isToggle = eff.kind === 'form_bear' || eff.kind === 'form_cat'
+          const isFormKind = eff.kind === 'form_bear' || eff.kind === 'form_cat' || eff.kind === 'form_travel';
+          const isToggle = isFormKind
             || eff.kind === 'defensive_stance' || eff.kind === 'stealth'
             || ability.id === 'ghost_wolf';
           if (isToggle) {
@@ -2933,11 +2963,11 @@ export class Sim {
               break;
             }
           }
-          // shapeshifting out of one form into the other
-          if (eff.kind === 'form_bear' || eff.kind === 'form_cat') {
+          // shapeshifting out of one form into another (bear/cat/travel are exclusive)
+          if (isFormKind) {
             for (let i = p.auras.length - 1; i >= 0; i--) {
               const a = p.auras[i];
-              if ((a.kind === 'form_bear' || a.kind === 'form_cat') && a.kind !== eff.kind) {
+              if ((a.kind === 'form_bear' || a.kind === 'form_cat' || a.kind === 'form_travel') && a.kind !== eff.kind) {
                 p.auras.splice(i, 1);
                 this.emit({ type: 'aura', targetId: p.id, name: a.name, gained: false });
               }
@@ -3177,7 +3207,7 @@ export class Sim {
     mob.forcedTargetTimer = TAUNT_FORCE_SECONDS;
     if (mob.aiState === 'idle') this.aggroMob(mob, p, false);
     else if (mob.aiState === 'chase' || mob.aiState === 'attack') mob.aggroTargetId = p.id;
-    else if (mob.aiState === 'flee') { mob.aggroTargetId = p.id; mob.aiState = 'attack'; mob.fleeTimer = 0; }
+    else if (mob.aiState === 'flee') { mob.aggroTargetId = p.id; mob.aiState = 'attack'; mob.fleeTimer = 0; mob.fleeReturnTimer = 0; }
     this.enterCombat(p, mob);
   }
 
@@ -4622,7 +4652,11 @@ export class Sim {
         const spell = MOBS[mob.templateId]?.petSpell;
         const leash = mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
         const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
-        if (dist2d(mob.pos, leashAnchor) > leash) {
+        if (mob.fleeReturnTimer > 0) {
+          mob.fleeReturnTimer = Math.max(0, mob.fleeReturnTimer - DT);
+          if (dist2d(mob.pos, leashAnchor) <= leash - 1) mob.fleeReturnTimer = 0;
+        }
+        if (dist2d(mob.pos, leashAnchor) > leash && mob.fleeReturnTimer <= 0) {
           mob.aiState = 'evade';
           mob.aggroTargetId = null;
           clearThreat(mob);
@@ -4760,20 +4794,20 @@ export class Sim {
       case 'flee': {
         const target = mob.aggroTargetId !== null ? this.entities.get(mob.aggroTargetId) : null;
         if (!target || target.dead) { this.retargetMob(mob); break; }
-        // Outran the leash while panicking: drop the pull and reset home.
+        const fleeSpeed = this.fleeMoveSpeed(mob);
+        // A panic flee should not be the thing that breaks leash and full-heals
+        // the mob. If it reaches the leash edge, it recovers and re-engages;
+        // normal chase/attack leash checks still handle genuine dragged pulls.
         const leash = mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
         const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
-        if (dist2d(mob.pos, leashAnchor) > leash) {
-          mob.aiState = 'evade';
-          mob.aggroTargetId = null;
-          clearThreat(mob);
-          mob.leashAnchor = null;
+        if (dist2d(mob.pos, leashAnchor) >= leash - fleeSpeed * DT) {
+          this.recoverFromFlee(mob, target, leash, leashAnchor);
           break;
         }
         mob.fleeTimer -= DT;
         if (mob.fleeTimer <= 0) {
           // Recover nerve and turn to fight again; hasFled keeps it from re-fleeing.
-          mob.aiState = 'attack';
+          this.recoverFromFlee(mob, target, leash, leashAnchor);
           mob.swingTimer = Math.min(mob.swingTimer, 0.4);
           break;
         }
@@ -4783,7 +4817,7 @@ export class Sim {
         mob.facing = away;
         if (!this.isRooted(mob)) {
           const fleePos = this.groundPos(mob.pos.x + Math.sin(away) * 10, mob.pos.z + Math.cos(away) * 10);
-          this.moveToward(mob, fleePos, mob.moveSpeed * FLEE_SPEED_MULT * this.moveSpeedMult(mob));
+          this.moveToward(mob, fleePos, fleeSpeed);
         }
         break;
       }
@@ -4822,6 +4856,7 @@ export class Sim {
     mob.leashAnchor = null;
     mob.evadeStall = 0;
     mob.fleeTimer = 0;
+    mob.fleeReturnTimer = 0;
     mob.hasFled = false;
     clearThreat(mob);
     this.despawnSummonedAdds(mob);
@@ -5790,6 +5825,9 @@ export class Sim {
     mob.inCombat = false;
     mob.leashAnchor = null;
     mob.evadeStall = 0;
+    mob.fleeTimer = 0;
+    mob.fleeReturnTimer = 0;
+    mob.hasFled = false;
     clearThreat(mob);
     this.despawnSummonedAdds(mob);
     mob.firedSummons = 0;
@@ -9344,6 +9382,15 @@ export class Sim {
 
   // List a stack from your bags for sale. The goods are escrowed (pulled from
   // your bags immediately) and held by the Merchant until bought or reclaimed.
+  // Set the player's session-only World Market browse filter. Purely a
+  // display/query narrowing — no gameplay effect — so it needs no proximity or
+  // liveness gate; the next marketInfoFor snapshot reflects it.
+  marketSearch(query: string, pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    r.meta.marketFilter = (query ?? '').slice(0, 40);
+  }
+
   marketList(itemId: string, count: number, price: number, pid?: number): void {
     const r = this.resolve(pid);
     if (!r) return;
@@ -9458,7 +9505,16 @@ export class Sim {
     // the World Market is a place you visit — only stream it while standing by
     // the Merchant, which also bounds the per-snapshot wire cost
     if (!this.nearMerchant(e)) return null;
-    const sorted = [...this.marketListings].sort((a, b) => {
+    // Server-side browse filter: a substring match on item name (and id) lets a
+    // player reach goods past MARKET_WIRE_LIMIT without lifting the wire cap.
+    const filter = meta.marketFilter.trim().toLowerCase();
+    const matched = filter
+      ? this.marketListings.filter((l) => {
+          const name = (ITEMS[l.itemId]?.name ?? l.itemId).toLowerCase();
+          return name.includes(filter) || l.itemId.toLowerCase().includes(filter);
+        })
+      : this.marketListings;
+    const sorted = [...matched].sort((a, b) => {
       const na = ITEMS[a.itemId]?.name ?? a.itemId;
       const nb = ITEMS[b.itemId]?.name ?? b.itemId;
       return na.localeCompare(nb) || a.price - b.price;
@@ -9471,6 +9527,8 @@ export class Sim {
     const myListingCount = this.marketListings.reduce((n, l) => n + (!l.house && l.sellerKey === meta.name ? 1 : 0), 0);
     return {
       listings,
+      totalCount: matched.length,
+      filter: meta.marketFilter,
       collectionCopper: col?.copper ?? 0,
       collectionItems: col ? col.items.map((s) => ({ ...s })) : [],
       cutPct: Math.round(MARKET_CUT * 100),
@@ -10000,7 +10058,7 @@ export class Sim {
   // only one is ever active, so the first match is the answer.
   private formReadout(e: Entity): string {
     const form = e.auras.find((a) =>
-      a.kind === 'form_bear' || a.kind === 'form_cat'
+      a.kind === 'form_bear' || a.kind === 'form_cat' || a.kind === 'form_travel'
       || a.kind === 'defensive_stance' || a.kind === 'stealth');
     if (!form) return 'You are not in any form or stance.';
     if (form.kind === 'stealth') return 'You are stealthed.';
