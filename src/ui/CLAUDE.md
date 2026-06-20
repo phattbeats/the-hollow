@@ -57,7 +57,7 @@ entry; `onEvent` paths feed log/FCT/audio/banners (~L3412). Jump by banner:
 |---|---|
 | Fields / constructor / `OptionsHooks`,`ReportHooks` | 303–630 |
 | Chat tabs / emote wheel | 859 / 1052 |
-| Portraits, icons, tooltips, money | 1280 |
+| Portraits (canvas paint lives in `unit_portrait*`), icons, tooltips, money | 1280 |
 | Action bar (`slotMap`, `BAR_ABILITY_SLOTS`, click/keybind dispatch) | 1570 |
 | Frame update (unit/target/combat state) | 2129 |
 | Minimap & world map (`toggleMap`, zone band) | 2567 |
@@ -182,6 +182,20 @@ keywords), so every id always renders.
   ~100×100 space, r≤36, light top-left).
 
 ## Small modules
+These are the **pure-core + thin-consumer** split the root CLAUDE.md Conventions
+ask for: presentation/domain logic lifted out of `hud.ts` into a small,
+host-agnostic module a Vitest test imports directly, with the DOM/canvas side kept
+thin. Follow this shape for new/updated features whose logic is worth reusing or
+unit-testing.
+- **unit_portrait.ts** (~54) / **unit_portrait_painter.ts** (~86): the circular
+  player/target-frame portrait. The pure core (`unit_portrait.ts`, DOM-free,
+  unit-tested in `tests/unit_portrait.test.ts`) holds the geometry + crest-id
+  resolution: HiDPI backing-store sizing (`portraitBackingPx`), crest
+  overscan-to-fill the disc (`overscanRect`/`CREST_OVERSCAN`), and family/NPC
+  crest ids (`crestIdForEntity`). The painter (`UnitPortraitPainter`) is the thin
+  consumer: DPR-aware canvas backing store, crest/headshot blit, decoded-image
+  cache. Player and target frames share one implementation; `hud.ts` only routes
+  the framed unit to it. Screenshot harness: `scripts/target_frame_visual.mjs`.
 - **xp_bar.ts** (~83) — pure `xpBarView()`, no DOM (snapshot-tested). Shows the
   post-cap **virtual level** `Lv 20 (+N)` + lifetime total when overflow is on;
   classic "MAX LEVEL" when off. See `virtualLevelProgress` in `sim/types`.

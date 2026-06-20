@@ -121,6 +121,15 @@ See `README.md` for the full host/develop/play guide and the classic-fidelity ch
   ~5k+ lines). Follow the existing in-file structure; **don't split a module just to hit
   a line count.** (This overrides any generic "files < N lines" rule from a
   higher-level CLAUDE.md.)
+- **Do extract reusable, testable logic into focused modules.** The rule above
+  bars splitting for *line count*, not for *design*. When a new or updated feature
+  has pure presentation/domain logic (geometry, formatting, id/state resolution)
+  tangled inside a big DOM/render/sim module, lift it into a small host-agnostic
+  module a Vitest unit test imports directly, and keep the DOM/canvas/render side a
+  thin consumer. Prefer this **pure-core + thin-consumer** split for anything worth
+  reusing across call sites or worth testing in isolation (reference example: the
+  unit-frame portrait `src/ui/unit_portrait.ts` pure core + `unit_portrait_painter.ts`
+  painter, shared by the player and target frames).
 - **Keep the dependency set tiny.** Don't add packages without a clear need.
 - **Commits:** Conventional Commits with a scope — `feat(talents): …`, `fix(net): …`,
   `test(sim): …`. Branches: `feature/<slug>`, `fix/<slug>`.
