@@ -2,7 +2,7 @@ import { ITEMS } from '../sim/data';
 import type { ItemDef } from '../sim/types';
 import type { MarketListingView } from '../world_api';
 
-export const MARKET_ITEM_TYPE_FILTERS = ['all', 'weapon', 'armor', 'consumable', 'material', 'other'] as const;
+export const MARKET_ITEM_TYPE_FILTERS = ['all', 'weapon', 'armor', 'consumable', 'material', 'cosmetic', 'other'] as const;
 export const MARKET_ARMOR_TYPE_FILTERS = ['all', 'helmet', 'shoulder', 'chest', 'waist', 'legs', 'gloves', 'feet'] as const;
 export const MARKET_WEAPON_TYPE_FILTERS = ['all', 'sword', 'dagger', 'staff', 'mace', 'axe', 'other'] as const;
 export const MARKET_RARITY_FILTERS = ['all', 'poor', 'common', 'uncommon', 'rare', 'epic'] as const;
@@ -20,12 +20,17 @@ export interface MarketFilters {
   rarity: MarketRarityFilter;
 }
 
+function isCosmeticItem(item: ItemDef): boolean {
+  return item.use?.type === 'mechChroma' || item.use?.type === 'skinSelect';
+}
+
 function itemMatchesType(item: ItemDef, filter: MarketItemTypeFilter): boolean {
   if (filter === 'all') return true;
   if (filter === 'weapon') return item.kind === 'weapon' && item.slot === 'mainhand';
   if (filter === 'armor') return item.kind === 'armor' && item.slot !== undefined;
   if (filter === 'consumable') return item.kind === 'food' || item.kind === 'drink' || item.kind === 'potion' || item.kind === 'elixir';
-  if (filter === 'material') return item.kind === 'junk' || item.kind === 'tool';
+  if (filter === 'material') return !isCosmeticItem(item) && (item.kind === 'junk' || item.kind === 'tool');
+  if (filter === 'cosmetic') return isCosmeticItem(item);
   return item.kind === 'quest';
 }
 

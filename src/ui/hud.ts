@@ -4817,6 +4817,7 @@ export class Hud {
     if (filter === 'armor') return 'itemUi.market.filterTypeArmor';
     if (filter === 'consumable') return 'itemUi.market.filterTypeConsumable';
     if (filter === 'material') return 'itemUi.market.filterTypeMaterial';
+    if (filter === 'cosmetic') return 'itemUi.market.filterTypeCosmetic';
     if (filter === 'other') return 'itemUi.market.filterTypeOther';
     return 'itemUi.market.filterTypeAll';
   }
@@ -5042,15 +5043,6 @@ export class Hud {
       list.appendChild(empty);
       return;
     }
-    const note = document.createElement('div');
-    note.className = 'mkt-note';
-    note.textContent = info.totalCount > info.listings.length
-      ? t('itemUi.market.truncated', {
-          shown: formatNumber(info.listings.length, { maximumFractionDigits: 0 }),
-          total: formatNumber(info.totalCount, { maximumFractionDigits: 0 }),
-        })
-      : t('itemUi.market.browseNote');
-    list.appendChild(note);
     const listings = filterMarketListings(info.listings, {
       itemType: this.marketItemTypeFilter,
       subtype: this.marketSubtypeFilter,
@@ -5066,6 +5058,13 @@ export class Hud {
     }
     const page = paginateMarketListings(listings, this.marketBrowsePage, MARKET_PAGE_SIZE);
     this.marketBrowsePage = page.page;
+    const note = document.createElement('div');
+    note.className = 'mkt-note';
+    const start = formatNumber(page.start + 1, { maximumFractionDigits: 0 });
+    const end = formatNumber(page.end, { maximumFractionDigits: 0 });
+    const total = formatNumber(page.total, { maximumFractionDigits: 0 });
+    note.textContent = t('itemUi.market.pageRange', { start, end, total });
+    list.appendChild(note);
     for (const l of page.items) {
       const item = ITEMS[l.itemId];
       if (!item) continue;

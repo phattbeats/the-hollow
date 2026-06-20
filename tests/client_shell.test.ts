@@ -264,6 +264,7 @@ describe('client HTML shell', () => {
     expect(hudTs).toContain('this.marketBrowsePage');
     expect(hudTs).toContain('data-market-page="prev"');
     expect(hudTs).toContain('data-market-page="next"');
+    expect(hudTs).toContain('itemUi.market.pageRange');
     expect(hudTs).toContain('class="mkt-filters${hasSubtype ? \' has-subtype\' : \'\'}"');
     expect(hudTs).toContain('data-market-filter-menu="${menu}"');
     expect(hudTs).toContain("this.renderMarketFilterMenu('itemType'");

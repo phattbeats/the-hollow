@@ -33,7 +33,7 @@ describe('World Market filters', () => {
   ];
 
   it('exposes stable item type and rarity filter options for the browse UI', () => {
-    expect(MARKET_ITEM_TYPE_FILTERS).toEqual(['all', 'weapon', 'armor', 'consumable', 'material', 'other']);
+    expect(MARKET_ITEM_TYPE_FILTERS).toEqual(['all', 'weapon', 'armor', 'consumable', 'material', 'cosmetic', 'other']);
     expect(MARKET_ARMOR_TYPE_FILTERS).toEqual(['all', 'helmet', 'shoulder', 'chest', 'waist', 'legs', 'gloves', 'feet']);
     expect(MARKET_WEAPON_TYPE_FILTERS).toEqual(['all', 'sword', 'dagger', 'staff', 'mace', 'axe', 'other']);
     expect(MARKET_RARITY_FILTERS).toEqual(['all', 'poor', 'common', 'uncommon', 'rare', 'epic']);
@@ -46,6 +46,20 @@ describe('World Market filters', () => {
       .toEqual(['keen_dirk']);
     expect(filterMarketListings(listings, { itemType: 'consumable', rarity: 'all' }).map((l) => l.itemId))
       .toEqual(['roasted_boar', 'minor_healing_potion', 'elixir_of_the_bear']);
+  });
+
+  it('groups mech cosmetics separately from ordinary materials', () => {
+    const mixed = [
+      listing('amber_crimson_armor_plate'),
+      listing('alien_armor_plate'),
+      listing('simple_fishing_pole'),
+      listing('bone_fragments'),
+    ];
+
+    expect(filterMarketListings(mixed, { itemType: 'cosmetic', rarity: 'all' }).map((l) => l.itemId))
+      .toEqual(['amber_crimson_armor_plate', 'alien_armor_plate']);
+    expect(filterMarketListings(mixed, { itemType: 'material', rarity: 'all' }).map((l) => l.itemId))
+      .toEqual(['simple_fishing_pole', 'bone_fragments']);
   });
 
   it('matches rarities by the game quality names', () => {
