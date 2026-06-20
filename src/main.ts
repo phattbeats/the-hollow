@@ -23,7 +23,7 @@ import { DT, INTERACT_RANGE, MELEE_RANGE, PlayerClass, RUN_SPEED, dist2d } from 
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
-import { ensureLocaleLoaded, formatDateTime, formatNumber, getLanguage, isLocaleResident, isSupportedLanguage, languageTag, setLanguage, t, type SupportedLanguage, type TranslationKey } from './ui/i18n';
+import { ensureLocaleLoaded, formatDateTime, formatNumber, getLanguage, isLocaleResident, isSupportedLanguage, languageTag, setLanguage, t, tPlural, type SupportedLanguage, type TranslationKey } from './ui/i18n';
 import { tServer } from './ui/server_i18n';
 import { tEntity } from './ui/entity_i18n';
 import { hydrateIcons } from './ui/ui_icons';
@@ -148,6 +148,7 @@ function userFacingApiError(err: unknown): string {
   if (normalized === 'this account has been banned.') return t('errors.api.accountBanned');
   if (normalized === 'character already in world') return t('errors.api.alreadyInWorld');
   if (normalized === 'this character must be renamed before entering the world.') return t('errors.api.renameBeforeEntering');
+  if (normalized === 'logins are only allowed from the game client') return t('errors.api.webLoginOnly');
   // Cloudflare Turnstile rejection on login/register (server/main.ts passesTurnstile).
   if (normalized === 'verification failed, please try again') return t('errors.api.verificationFailed');
   // WebSocket disconnect reasons surfaced through the fatal overlay (net/online.ts).
@@ -811,6 +812,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     captureKey: (cb) => input.captureNextKey(cb),
     settings,
     onSettingChange: (key, value) => applySetting(key, value),
+    changeLanguage: (lang, onStatus) => changeLanguage(lang, onStatus),
   });
   if (online) {
     hud.attachReporting({
@@ -1739,7 +1741,7 @@ function showRealmList(dir?: import('./net/online').RealmDirectory): void {
     listEl.innerHTML = d.realms.map((r) => {
       const chars = d.characters[r.name] ?? 0;
       const charTag = chars > 0
-        ? `<span class="rn-chars">${escapeHtml(t(chars === 1 ? 'realm.characterCountOne' : 'realm.characterCountOther', { count: chars }))}</span>`
+        ? `<span class="rn-chars">${escapeHtml(tPlural('hudChrome.plurals.characterCount', chars))}</span>`
         : '';
       const typeKey = realmTypeKeys[r.type as keyof typeof realmTypeKeys];
       const typeLabel = typeKey ? t(typeKey) : r.type;
@@ -2474,6 +2476,38 @@ function refreshLocalizedDynamicShell(): void {
     currentlyRenderedClass['offline-class-details'] = null;
     renderClassDetails('offline-class-details', offlineSelected.dataset.class as PlayerClass);
   }
+}
+
+// Single source of truth for switching the active locale at runtime. Used by BOTH the
+// homepage footer picker and the in-game Options > Interface picker (via OptionsHooks).
+// Loads the locale chunk first (the async loader), then flips the language, re-localizes
+// the static shell, and fans the change out to every live listener through
+// `woc:languagechange` (the HUD relocalizes its dynamic UI on that event). onStatus, when
+// given, receives a localized progress/error message for an aria-live status element.
+// Returns true on success, false if the locale chunk failed to load (active locale kept).
+async function changeLanguage(selected: SupportedLanguage, onStatus?: (msg: string) => void): Promise<boolean> {
+  onStatus?.(t('settings.languageLoading'));
+  try {
+    await ensureLocaleLoaded(selected);
+  } catch {
+    // The locale chunk failed to load. Keep the already-resident locale and tell the user.
+    onStatus?.(t('settings.languageLoadFailed'));
+    return false;
+  }
+  onStatus?.('');
+  setLanguage(selected);
+
+  // Dynamically update the browser URL query parameter without page reload
+  if (typeof window !== 'undefined' && window.history) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', selected);
+    window.history.pushState({}, '', url.toString());
+  }
+
+  translatePage();
+  refreshLocalizedDynamicShell();
+  document.dispatchEvent(new CustomEvent('woc:languagechange', { detail: { language: selected } }));
+  return true;
 }
 
 async function loadProjectStats(): Promise<void> {
@@ -3501,31 +3535,8 @@ function wireStartScreens(): void {
       // module is still static-imported through the barrel, so the await resolves on a
       // microtask with no network and the transient "loading" status never paints; the
       // failure path is wired now so the lazy locale flip's real fetch needs no call-site change.
-      void (async () => {
-        if (langStatus) langStatus.textContent = t('settings.languageLoading');
-        try {
-          await ensureLocaleLoaded(selected);
-        } catch {
-          // The locale chunk failed to load (a real risk once the lazy locale flip makes this a
-          // network fetch). Keep the already-resident locale and tell the user.
-          if (langStatus) langStatus.textContent = t('settings.languageLoadFailed');
-          langSelect.value = getLanguage();
-          return;
-        }
-        if (langStatus) langStatus.textContent = '';
-        setLanguage(selected);
-
-        // Dynamically update the browser URL query parameter without page reload
-        if (typeof window !== 'undefined' && window.history) {
-          const url = new URL(window.location.href);
-          url.searchParams.set('lang', selected);
-          window.history.pushState({}, '', url.toString());
-        }
-
-        translatePage();
-        refreshLocalizedDynamicShell();
-        document.dispatchEvent(new CustomEvent('woc:languagechange', { detail: { language: selected } }));
-      })();
+      void changeLanguage(selected, (msg) => { if (langStatus) langStatus.textContent = msg; })
+        .then((ok) => { if (!ok) langSelect.value = getLanguage(); });
     });
   }
 

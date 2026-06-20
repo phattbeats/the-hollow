@@ -150,6 +150,118 @@ export const en_XA: EnTranslations = {
       }
     }
   },
+  "hudChrome": {
+    "emotes": {
+      "wave": "[Ŵáʋé]",
+      "laugh": "[ĻÓĻ]",
+      "question": "[Ɓŕó?]",
+      "cheer": "[Çĥééŕ]",
+      "dance": "[Ðáñçé]",
+      "point": "[Þóíñţ]",
+      "flex": "[Ƒļéẋ]",
+      "salute": "[Šáļúţé]",
+      "cry": "[Çŕý]",
+      "bow": "[Ɓóŵ]",
+      "clap": "[Çļáþ]",
+      "roar": "[Ŕóáŕ]",
+      "kneel": "[Ķñééļ]"
+    },
+    "emoteWheel": {
+      "edit": "[Éðíţ]",
+      "label": "[Éɱóţéš]"
+    },
+    "emoteEditor": {
+      "title": "[Éɱóţéš]",
+      "done": "[Ðóñé]"
+    },
+    "chatTimestamps": {
+      "show": "[Šĥóŵ Çĥáţ Ţíɱéšţáɱþš]",
+      "format": "[Ţíɱéšţáɱþ Ƒóŕɱáţ]",
+      "clock12h": "[12-ĥóúŕ]",
+      "clock24h": "[24-ĥóúŕ]",
+      "note": "[Þŕéƒíẋéš éáçĥ ñéŵ çĥáţ ļíñé ŵíţĥ ţĥé ţíɱé íţ áŕŕíʋéð, é.ĝ. [14:32]. Óñļý áƒƒéçţš ɱéššáĝéš ŕéçéíʋéð ŵĥíļé ţĥé óþţíóñ íš óñ.]"
+    },
+    "swing": {
+      "ready": "[Šŵíñĝ]",
+      "seconds": "[{seconds}š]"
+    },
+    "rest": {
+      "resting": "[Ŕéšţíñĝ]"
+    },
+    "mobile": {
+      "autorun": "[Áúţóŕúñ]",
+      "jump": "[Ĵúɱþ]",
+      "leaderboard": "[Ŕáñķš]",
+      "nameplates": "[Ñáɱéš]",
+      "haptics": "[Ĥáþţíçš]",
+      "hapticsOff": "[Ĥáþţíçš Óƒƒ]",
+      "toggleHaptics": "[Ţóĝĝļé ĥáþţíçš]"
+    },
+    "widgets": {
+      "clockTitle": "[Ļóçáļ ţíɱé - çļíçķ ţó ţóĝĝļé 12/24-ĥóúŕ]",
+      "worldCoordinates": "[Ŵóŕļð çóóŕðíñáţéš]",
+      "coordinates": "[Çóóŕðíñáţéš]",
+      "heading": "[Ĥéáðíñĝ]",
+      "minimapZoom": "[Ɱíñíɱáþ žóóɱ]"
+    },
+    "compass": {
+      "N": "[Ñ]",
+      "NE": "[ÑÉ]",
+      "E": "[É]",
+      "SE": "[ŠÉ]",
+      "S": "[Š]",
+      "SW": "[ŠŴ]",
+      "W": "[Ŵ]",
+      "NW": "[ÑŴ]"
+    },
+    "meters": {
+      "perSecond": "[{value}/š]",
+      "perSecondRow": "[{total} ({rate})]",
+      "minutesSeconds": "[{m}ɱ {s}š]",
+      "seconds": "[{s}š]"
+    },
+    "keybinds": {
+      "emoteWheel": "[Éɱóţé Ŵĥééļ]",
+      "targetFriendly": "[Ţáŕĝéţ Ñéáŕéšţ Ƒŕíéñðļý]",
+      "targetFriendlyNext": "[Çýçļé Ƒŕíéñðļý Ţáŕĝéţ]"
+    },
+    "options": {
+      "clickMoveLeft": "[Ļéƒţ Çļíçķ]",
+      "clickMoveRight": "[Ŕíĝĥţ Çļíçķ]"
+    },
+    "talents": {
+      "defaultBuildName": "[Ɓúíļð {n}]"
+    },
+    "tips": {
+      "joinChannels": "[Ţíþ: ţýþé /ĵóíñ ŵóŕļð óŕ /ĵóíñ ļƒĝ ţó çĥáţ ŵíţĥ þļáýéŕš áçŕóšš ţĥé ŕéáļɱ.]"
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "[ýóú áŕé {rank}, {count} ɱéɱƀéŕ]",
+        "few": "[ýóú áŕé {rank}, {count} ɱéɱƀéŕš]",
+        "many": "[ýóú áŕé {rank}, {count} ɱéɱƀéŕš]",
+        "other": "[ýóú áŕé {rank}, {count} ɱéɱƀéŕš]"
+      },
+      "characterCount": {
+        "one": "[{count} çĥáŕáçţéŕ]",
+        "few": "[{count} çĥáŕáçţéŕš]",
+        "many": "[{count} çĥáŕáçţéŕš]",
+        "other": "[{count} çĥáŕáçţéŕš]"
+      },
+      "secondsRemaining": {
+        "one": "[{count} šéçóñð ŕéɱáíñíñĝ]",
+        "few": "[{count} šéçóñðš ŕéɱáíñíñĝ]",
+        "many": "[{count} šéçóñðš ŕéɱáíñíñĝ]",
+        "other": "[{count} šéçóñðš ŕéɱáíñíñĝ]"
+      },
+      "playersOnline": {
+        "one": "[Ŵĥó: {count} þļáýéŕ óñļíñé óñ {realm}.]",
+        "few": "[Ŵĥó: {count} þļáýéŕš óñļíñé óñ {realm}.]",
+        "many": "[Ŵĥó: {count} þļáýéŕš óñļíñé óñ {realm}.]",
+        "other": "[Ŵĥó: {count} þļáýéŕš óñļíñé óñ {realm}.]"
+      }
+    }
+  },
   "skinEvent": {
     "title": "[Çóšɱéţíç Çáçĥé]",
     "subtitle": "[Ýóú úñļóçķéð á {rank} ŕéŵáŕð — çĥóóšé áñý šķíñ áţ óŕ ƀéļóŵ íţ.]",
@@ -562,6 +674,7 @@ export const en_XA: EnTranslations = {
       "deleteConfirm": "[Ţýþé ţĥé çĥáŕáçţéŕ ñáɱé ţó çóñƒíŕɱ ðéļéţíóñ.]",
       "notAuthenticated": "[Ñóţ áúţĥéñţíçáţéð.]",
       "accountBanned": "[Ţĥíš áççóúñţ ĥáš ƀééñ ƀáññéð.]",
+      "webLoginOnly": "[Ļóĝíñš áŕé óñļý áļļóŵéð ƒŕóɱ ţĥé ĝáɱé çļíéñţ.]",
       "accountSuspended": "[Ţĥíš áççóúñţ íš šúšþéñðéð úñţíļ {date}.]",
       "alreadyInWorld": "[Çĥáŕáçţéŕ íš áļŕéáðý íñ ŵóŕļð.]",
       "renameBeforeEntering": "[Ţĥíš çĥáŕáçţéŕ ɱúšţ ƀé ŕéñáɱéð ƀéƒóŕé éñţéŕíñĝ ţĥé ŵóŕļð.]"
@@ -759,6 +872,7 @@ export const en_XA: EnTranslations = {
       "graphics": "[Ĝŕáþĥíçš]",
       "audio": "[Áúðíó]",
       "interface": "[Íñţéŕƒáçé]",
+      "language": "[Ļáñĝúáĝé]",
       "logout": "[Ļóĝóúţ]",
       "returnToGame": "[Ŕéţúŕñ ţó Ĝáɱé]",
       "resetToDefaults": "[Ŕéšéţ ţó Ðéƒáúļţš]",
@@ -1316,7 +1430,8 @@ export const en_XA: EnTranslations = {
       "rewards": "[Ŕéŵáŕðš]",
       "xpReward": "[{xp} éẋþéŕíéñçé]",
       "itemReward": "[Íţéɱ ŕéŵáŕð:]",
-      "objectiveProgress": "[{label}: {current}/{total}]"
+      "objectiveProgress": "[{label}: {current}/{total}]",
+      "requiresLevel": "[Ŕéɋúíŕéš Ļéʋéļ {level}]"
     },
     "logs": {
       "accepted": "[Ɋúéšţ áççéþţéð: {name}]",
@@ -1451,10 +1566,10 @@ export const en_XA: EnTranslations = {
       "noMerchant": "[Šţéþ úþ ţó ţĥé Ɱéŕçĥáñţ ţó ðéáļ.]",
       "emptyBrowse": "[Ţĥé ɱáŕķéţ íš ɋúíéţ. Ɓé ţĥé ƒíŕšţ ţó ļíšţ šóɱéţĥíñĝ óñ ţĥé Šéļļ ţáƀ.]",
       "browseNote": "[Ĝóóðš ļíšţéð ƀý áðʋéñţúŕéŕš áçŕóšš ţĥé ŕéáļɱ. Çĥóóšé Ɓúý ţó þúŕçĥášé á šţáçķ óúţŕíĝĥţ.]",
-      "searchPlaceholder": "[Šéáŕçĥ ţĥé ɱáŕķéţ…]",
+      "searchPlaceholder": "[Šéáŕçĥ ɱáŕķéţ...]",
       "searchAria": "[Šéáŕçĥ ţĥé Ŵóŕļð Ɱáŕķéţ ƀý íţéɱ ñáɱé]",
-      "emptySearch": "[Ñó ĝóóðš ɱáţçĥ ýóúŕ šéáŕçĥ. Ţŕý á ðíƒƒéŕéñţ ñáɱé.]",
-      "truncated": "[Šĥóŵíñĝ {shown} óƒ {total} ɱáţçĥéš — ŕéƒíñé ýóúŕ šéáŕçĥ ţó šéé ţĥé ŕéšţ.]",
+      "emptySearch": "[Ñó ĝóóðš ɱáţçĥ ýóúŕ šéáŕçĥ. Ţŕý áñóţĥéŕ ñáɱé.]",
+      "truncated": "[Šĥóŵíñĝ {shown} óƒ {total} ɱáţçĥéš. Ŕéƒíñé ýóúŕ šéáŕçĥ ţó šéé ţĥé ŕéšţ.]",
       "merchantStock": "[Ɱéŕçĥáñţ šţóçķ]",
       "stackCount": "[ẋ{count}]",
       "each": "[{money} éáçĥ]",
@@ -3030,6 +3145,48 @@ export const en_XA: EnTranslations = {
       },
       "amber_crimson_armor_plate": {
         "name": "[Áɱƀéŕ Çŕíɱšóñ]"
+      },
+      "crimson_amber_armor_plate": {
+        "name": "[Çŕíɱšóñ Áɱƀéŕ]"
+      },
+      "cyan_magenta_armor_plate": {
+        "name": "[Çýáñ Ɱáĝéñţá]"
+      },
+      "magenta_cyan_armor_plate": {
+        "name": "[Ɱáĝéñţá Çýáñ]"
+      },
+      "orange_steel_armor_plate": {
+        "name": "[Óŕáñĝé Šţééļ]"
+      },
+      "steel_orange_armor_plate": {
+        "name": "[Šţééļ Óŕáñĝé]"
+      },
+      "forest_pink_armor_plate": {
+        "name": "[Ƒóŕéšţ Þíñķ]"
+      },
+      "pink_forest_armor_plate": {
+        "name": "[Þíñķ Ƒóŕéšţ]"
+      },
+      "amethyst_silver_armor_plate": {
+        "name": "[Áɱéţĥýšţ Šíļʋéŕ]"
+      },
+      "ivory_copper_armor_plate": {
+        "name": "[Íʋóŕý Çóþþéŕ]"
+      },
+      "onyx_gold_armor_plate": {
+        "name": "[Óñýẋ Ĝóļð]"
+      },
+      "imperial_crimson_armor_plate": {
+        "name": "[Íɱþéŕíáļ Çŕíɱšóñ]"
+      },
+      "imperial_gold_armor_plate": {
+        "name": "[Íɱþéŕíáļ Ĝóļð]"
+      },
+      "vanguard_azure_armor_plate": {
+        "name": "[Ʋáñĝúáŕð Ážúŕé]"
+      },
+      "vanguard_chrome_armor_plate": {
+        "name": "[Ʋáñĝúáŕð Çĥŕóɱé]"
       }
     },
     "mobs": {
@@ -4211,8 +4368,8 @@ export const en_XA: EnTranslations = {
       },
       "q_ledger_first_duty": {
         "title": "[Á Ŵáŕðéñ'š Ƒíŕšţ Ðúţý]",
-        "text": "[Ýóú ŵáñţ ţó éáŕñ ýóúŕ ķééþ íñ Éášţƀŕóóķ, {playerName}? Ţĥéñ šţáŕţ ŵĥéŕé éʋéŕý ŵáŕðéñ šţáŕţš. Ţĥé ţĥóŕñþéļţ ƀáðĝéŕš ĥáʋé ðúĝ ţĥéíŕ šéţţš çļéáñ ţĥŕóúĝĥ ţĥé ŵéšţ ɱéáðóŵ, áñð ţĥé šþŕíñĝ þļáñţíñĝ íš çóļļáþšíñĝ íñţó ţĥéíŕ ƀúŕŕóŵš. Çúļļ 8 Ţĥóŕñþéļţ Ɓáðĝéŕš áñð ţĥé ļéðĝéŕ ŵíļļ ŕéɱéɱƀéŕ ýóúŕ ñáɱé.]",
-        "completion": "[Éíĝĥţ šéţţš éɱþţíéð áñð ţĥé þļáñţíñĝ šáʋéð. Ĝóóð. Éʋéŕý ñáɱé íñ ţĥíš ļéðĝéŕ šţáŕţéð ĵúšţ ŵĥéŕé ýóú áŕé šţáñðíñĝ.]",
+        "text": "[Ýóú ŵáñţ ţó éáŕñ ýóúŕ ķééþ íñ Éášţƀŕóóķ, {playerName}? Ţĥéñ šţáŕţ ŵĥéŕé éʋéŕý ŵáŕðéñ šţáŕţš. Ţĥé ţĥóŕñþéļţ ƀáðĝéŕš ĥáʋé ðúĝ ţĥéíŕ šéţţš çļéáñ ţĥŕóúĝĥ ţĥé Ɓŕíĝĥţŵóóð Ĝļáðé, íñ ţĥé ƒáŕ ñóŕţĥ þášţ Ŵóļƒ Ŕúñ, áñð ţĥé ĝŕóʋé ƒļóóŕ íš çáʋíñĝ íñţó ţĥéíŕ ƀúŕŕóŵš. Çúļļ 8 Ţĥóŕñþéļţ Ɓáðĝéŕš áñð ţĥé ļéðĝéŕ ŵíļļ ŕéɱéɱƀéŕ ýóúŕ ñáɱé.]",
+        "completion": "[Éíĝĥţ šéţţš éɱþţíéð áñð ţĥé ĝŕóʋé ƒļóóŕ šéţţļéð. Ĝóóð. Éʋéŕý ñáɱé íñ ţĥíš ļéðĝéŕ šţáŕţéð ĵúšţ ŵĥéŕé ýóú áŕé šţáñðíñĝ.]",
         "objectives": {
           "0": {
             "label": "[Ţĥóŕñþéļţ Ɓáðĝéŕ çúļļéð]"

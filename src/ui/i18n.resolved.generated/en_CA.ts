@@ -150,6 +150,118 @@ export const en_CA: EnTranslations = {
       }
     }
   },
+  "hudChrome": {
+    "emotes": {
+      "wave": "Wave",
+      "laugh": "LOL",
+      "question": "Bro?",
+      "cheer": "Cheer",
+      "dance": "Dance",
+      "point": "Point",
+      "flex": "Flex",
+      "salute": "Salute",
+      "cry": "Cry",
+      "bow": "Bow",
+      "clap": "Clap",
+      "roar": "Roar",
+      "kneel": "Kneel"
+    },
+    "emoteWheel": {
+      "edit": "Edit",
+      "label": "Emotes"
+    },
+    "emoteEditor": {
+      "title": "Emotes",
+      "done": "Done"
+    },
+    "chatTimestamps": {
+      "show": "Show Chat Timestamps",
+      "format": "Timestamp Format",
+      "clock12h": "12-hour",
+      "clock24h": "24-hour",
+      "note": "Prefixes each new chat line with the time it arrived, e.g. [14:32]. Only affects messages received while the option is on."
+    },
+    "swing": {
+      "ready": "Swing",
+      "seconds": "{seconds}s"
+    },
+    "rest": {
+      "resting": "Resting"
+    },
+    "mobile": {
+      "autorun": "Autorun",
+      "jump": "Jump",
+      "leaderboard": "Ranks",
+      "nameplates": "Names",
+      "haptics": "Haptics",
+      "hapticsOff": "Haptics Off",
+      "toggleHaptics": "Toggle haptics"
+    },
+    "widgets": {
+      "clockTitle": "Local time - click to toggle 12/24-hour",
+      "worldCoordinates": "World coordinates",
+      "coordinates": "Coordinates",
+      "heading": "Heading",
+      "minimapZoom": "Minimap zoom"
+    },
+    "compass": {
+      "N": "N",
+      "NE": "NE",
+      "E": "E",
+      "SE": "SE",
+      "S": "S",
+      "SW": "SW",
+      "W": "W",
+      "NW": "NW"
+    },
+    "meters": {
+      "perSecond": "{value}/s",
+      "perSecondRow": "{total} ({rate})",
+      "minutesSeconds": "{m}m {s}s",
+      "seconds": "{s}s"
+    },
+    "keybinds": {
+      "emoteWheel": "Emote Wheel",
+      "targetFriendly": "Target Nearest Friendly",
+      "targetFriendlyNext": "Cycle Friendly Target"
+    },
+    "options": {
+      "clickMoveLeft": "Left Click",
+      "clickMoveRight": "Right Click"
+    },
+    "talents": {
+      "defaultBuildName": "Build {n}"
+    },
+    "tips": {
+      "joinChannels": "Tip: type /join world or /join lfg to chat with players across the realm."
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "you are {rank}, {count} member",
+        "few": "you are {rank}, {count} members",
+        "many": "you are {rank}, {count} members",
+        "other": "you are {rank}, {count} members"
+      },
+      "characterCount": {
+        "one": "{count} character",
+        "few": "{count} characters",
+        "many": "{count} characters",
+        "other": "{count} characters"
+      },
+      "secondsRemaining": {
+        "one": "{count} second remaining",
+        "few": "{count} seconds remaining",
+        "many": "{count} seconds remaining",
+        "other": "{count} seconds remaining"
+      },
+      "playersOnline": {
+        "one": "Who: {count} player online on {realm}.",
+        "few": "Who: {count} players online on {realm}.",
+        "many": "Who: {count} players online on {realm}.",
+        "other": "Who: {count} players online on {realm}."
+      }
+    }
+  },
   "skinEvent": {
     "title": "Cosmetic Cache",
     "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
@@ -359,8 +471,8 @@ export const en_CA: EnTranslations = {
       "powerup": "{player} grabbed {name}!"
     },
     "category": {
-      "offense": "Offense",
-      "defense": "Defense",
+      "offense": "Offence",
+      "defense": "Defence",
       "sustain": "Sustain",
       "mobility": "Mobility",
       "utility": "Utility"
@@ -562,6 +674,7 @@ export const en_CA: EnTranslations = {
       "deleteConfirm": "Type the character name to confirm deletion.",
       "notAuthenticated": "Not authenticated.",
       "accountBanned": "This account has been banned.",
+      "webLoginOnly": "Logins are only allowed from the game client.",
       "accountSuspended": "This account is suspended until {date}.",
       "alreadyInWorld": "Character is already in world.",
       "renameBeforeEntering": "This character must be renamed before entering the world."
@@ -759,6 +872,7 @@ export const en_CA: EnTranslations = {
       "graphics": "Graphics",
       "audio": "Audio",
       "interface": "Interface",
+      "language": "Language",
       "logout": "Logout",
       "returnToGame": "Return to Game",
       "resetToDefaults": "Reset to Defaults",
@@ -1316,7 +1430,8 @@ export const en_CA: EnTranslations = {
       "rewards": "Rewards",
       "xpReward": "{xp} experience",
       "itemReward": "Item reward:",
-      "objectiveProgress": "{label}: {current}/{total}"
+      "objectiveProgress": "{label}: {current}/{total}",
+      "requiresLevel": "Requires Level {level}"
     },
     "logs": {
       "accepted": "Quest accepted: {name}",
@@ -1362,7 +1477,7 @@ export const en_CA: EnTranslations = {
     },
     "kind": {
       "weapon": "Weapon",
-      "armor": "Armor",
+      "armor": "Armour",
       "quest": "Quest Item",
       "junk": "Junk",
       "food": "Food",
@@ -1372,7 +1487,7 @@ export const en_CA: EnTranslations = {
       "elixir": "Elixir"
     },
     "stats": {
-      "armor": "Armor",
+      "armor": "Armour",
       "str": "Strength",
       "agi": "Agility",
       "sta": "Stamina",
@@ -1390,7 +1505,7 @@ export const en_CA: EnTranslations = {
       "damageSpeed": "{min} - {max} Damage Speed {speed}",
       "dps": "({dps} damage per second)",
       "dagger": "Dagger",
-      "armorStat": "{value} Armor",
+      "armorStat": "{value} Armour",
       "stat": "+{value} {stat}",
       "useFood": "Use: Restores {amount} health over {seconds} sec. Must remain seated while eating.",
       "useDrink": "Use: Restores {amount} mana over {seconds} sec. Must remain seated while drinking.",
@@ -1451,10 +1566,10 @@ export const en_CA: EnTranslations = {
       "noMerchant": "Step up to the Merchant to deal.",
       "emptyBrowse": "The market is quiet. Be the first to list something on the Sell tab.",
       "browseNote": "Goods listed by adventurers across the realm. Choose Buy to purchase a stack outright.",
-      "searchPlaceholder": "Search the market…",
+      "searchPlaceholder": "Search market...",
       "searchAria": "Search the World Market by item name",
-      "emptySearch": "No goods match your search. Try a different name.",
-      "truncated": "Showing {shown} of {total} matches — refine your search to see the rest.",
+      "emptySearch": "No goods match your search. Try another name.",
+      "truncated": "Showing {shown} of {total} matches. Refine your search to see the rest.",
       "merchantStock": "Merchant stock",
       "stackCount": "x{count}",
       "each": "{money} each",
@@ -3030,6 +3145,48 @@ export const en_CA: EnTranslations = {
       },
       "amber_crimson_armor_plate": {
         "name": "Amber Crimson"
+      },
+      "crimson_amber_armor_plate": {
+        "name": "Crimson Amber"
+      },
+      "cyan_magenta_armor_plate": {
+        "name": "Cyan Magenta"
+      },
+      "magenta_cyan_armor_plate": {
+        "name": "Magenta Cyan"
+      },
+      "orange_steel_armor_plate": {
+        "name": "Orange Steel"
+      },
+      "steel_orange_armor_plate": {
+        "name": "Steel Orange"
+      },
+      "forest_pink_armor_plate": {
+        "name": "Forest Pink"
+      },
+      "pink_forest_armor_plate": {
+        "name": "Pink Forest"
+      },
+      "amethyst_silver_armor_plate": {
+        "name": "Amethyst Silver"
+      },
+      "ivory_copper_armor_plate": {
+        "name": "Ivory Copper"
+      },
+      "onyx_gold_armor_plate": {
+        "name": "Onyx Gold"
+      },
+      "imperial_crimson_armor_plate": {
+        "name": "Imperial Crimson"
+      },
+      "imperial_gold_armor_plate": {
+        "name": "Imperial Gold"
+      },
+      "vanguard_azure_armor_plate": {
+        "name": "Vanguard Azure"
+      },
+      "vanguard_chrome_armor_plate": {
+        "name": "Vanguard Chrome"
       }
     },
     "mobs": {
@@ -4211,8 +4368,8 @@ export const en_CA: EnTranslations = {
       },
       "q_ledger_first_duty": {
         "title": "A Warden's First Duty",
-        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The thornpelt badgers have dug their setts clean through the west meadow, and the spring planting is collapsing into their burrows. Cull 8 Thornpelt Badgers and the ledger will remember your name.",
-        "completion": "Eight setts emptied and the planting saved. Good. Every name in this ledger started just where you are standing.",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The thornpelt badgers have dug their setts clean through the Brightwood Glade, in the far north past Wolf Run, and the grove floor is caving into their burrows. Cull 8 Thornpelt Badgers and the ledger will remember your name.",
+        "completion": "Eight setts emptied and the grove floor settled. Good. Every name in this ledger started just where you are standing.",
         "objectives": {
           "0": {
             "label": "Thornpelt Badger culled"

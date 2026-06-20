@@ -11,6 +11,7 @@ import { questStrings } from './quests';
 import { itemStrings, itemNames } from './items';
 import { mergeStrings, mergeEntities, mergeExtra } from './merge';
 import { gameStrings } from './game';
+import { hudChromeStrings } from './hud_chrome';
 
 // Re-export the catalog public surface (every name the old i18n.en.ts exported).
 export { shellStrings } from './shell';
@@ -19,6 +20,7 @@ export { abilityStrings, classAbilityNames } from './abilities';
 export { questStrings } from './quests';
 export { itemStrings, itemNames } from './items';
 export { mergeStrings, mergeEntities, mergeExtra } from './merge';
+export { hudChromeStrings } from './hud_chrome';
 export {
   gameStrings, gameStringsEnCA, gameStringsEs, gameStringsEsES, gameStringsFrFR,
   gameStringsFrCA, gameStringsItIT, gameStringsDeDE, gameStringsZhCN, gameStringsZhTW,
@@ -42,6 +44,7 @@ export const en = {
   meta: { builtOn: "Built {date}" },
   realmTypes: { normal: "Normal", pvp: "PvP", rp: "RP", rpPvp: "RP-PvP" },
   game: gameStrings,
+  hudChrome: hudChromeStrings,
   // Cosmetic skin-select event overlay. Rarity names reuse itemUi.quality.*.
   skinEvent: {
     title: "Cosmetic Cache",
@@ -366,6 +369,20 @@ export const en = {
       unknown_alien_weaponry: { name: "Unknown Alien Weaponry" },
       alien_armor_plate: { name: "Alien Armor Plate" },
       amber_crimson_armor_plate: { name: "Amber Crimson" },
+      crimson_amber_armor_plate: { name: "Crimson Amber" },
+      cyan_magenta_armor_plate: { name: "Cyan Magenta" },
+      magenta_cyan_armor_plate: { name: "Magenta Cyan" },
+      orange_steel_armor_plate: { name: "Orange Steel" },
+      steel_orange_armor_plate: { name: "Steel Orange" },
+      forest_pink_armor_plate: { name: "Forest Pink" },
+      pink_forest_armor_plate: { name: "Pink Forest" },
+      amethyst_silver_armor_plate: { name: "Amethyst Silver" },
+      ivory_copper_armor_plate: { name: "Ivory Copper" },
+      onyx_gold_armor_plate: { name: "Onyx Gold" },
+      imperial_crimson_armor_plate: { name: "Imperial Crimson" },
+      imperial_gold_armor_plate: { name: "Imperial Gold" },
+      vanguard_azure_armor_plate: { name: "Vanguard Azure" },
+      vanguard_chrome_armor_plate: { name: "Vanguard Chrome" },
     },
     mobs: { ...worldNames.en.entities.mobs, ...mergeEntities.en.mobs, ...mergeExtra.en.mobs },
     npcs: { ...worldNames.en.entities.npcs, ...mergeExtra.en.npcs },
