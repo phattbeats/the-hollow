@@ -256,6 +256,12 @@ export const en: EnTranslations = {
       "presetMinimal": "Minimal",
       "presetStandard": "Standard",
       "presetEverything": "Everything",
+      "groups": {
+        "frame": "Frame & Timing",
+        "network": "Network",
+        "renderer": "Renderer",
+        "system": "System"
+      },
       "labels": {
         "fps": "FPS",
         "frameTime": "Frame Time",
