@@ -227,7 +227,13 @@ export const zh_TW: EnTranslations = {
     },
     "options": {
       "clickMoveLeft": "左鍵",
-      "clickMoveRight": "右鍵"
+      "clickMoveRight": "右鍵",
+      "browserEffects": "瀏覽器特效",
+      "browserEffectsAuto": "自動",
+      "browserEffectsFull": "完整",
+      "browserEffectsReduced": "精簡",
+      "browserEffectsMinimal": "最低",
+      "browserEffectsNote": "自動模式會根據你的瀏覽器與裝置調低高負擔的 CSS 特效（模糊、光暈、背景動畫）。若介面感覺卡頓，可手動降低。"
     },
     "talents": {
       "defaultBuildName": "配置 {n}"

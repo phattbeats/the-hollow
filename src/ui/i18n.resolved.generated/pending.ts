@@ -9,17 +9,66 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "hudChrome.options.browserEffects",
+    "hudChrome.options.browserEffectsAuto",
+    "hudChrome.options.browserEffectsFull",
+    "hudChrome.options.browserEffectsMinimal",
+    "hudChrome.options.browserEffectsNote",
+    "hudChrome.options.browserEffectsReduced"
+  ],
+  "es_ES": [
+    "hudChrome.options.browserEffects",
+    "hudChrome.options.browserEffectsAuto",
+    "hudChrome.options.browserEffectsFull",
+    "hudChrome.options.browserEffectsMinimal",
+    "hudChrome.options.browserEffectsNote",
+    "hudChrome.options.browserEffectsReduced"
+  ],
+  "fr_FR": [
+    "hudChrome.options.browserEffects",
+    "hudChrome.options.browserEffectsAuto",
+    "hudChrome.options.browserEffectsFull",
+    "hudChrome.options.browserEffectsMinimal",
+    "hudChrome.options.browserEffectsNote",
+    "hudChrome.options.browserEffectsReduced"
+  ],
+  "fr_CA": [
+    "hudChrome.options.browserEffects",
+    "hudChrome.options.browserEffectsAuto",
+    "hudChrome.options.browserEffectsFull",
+    "hudChrome.options.browserEffectsMinimal",
+    "hudChrome.options.browserEffectsNote",
+    "hudChrome.options.browserEffectsReduced"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
+  "it_IT": [
+    "hudChrome.options.browserEffects",
+    "hudChrome.options.browserEffectsAuto",
+    "hudChrome.options.browserEffectsFull",
+    "hudChrome.options.browserEffectsMinimal",
+    "hudChrome.options.browserEffectsNote",
+    "hudChrome.options.browserEffectsReduced"
+  ],
+  "de_DE": [
+    "hudChrome.options.browserEffects",
+    "hudChrome.options.browserEffectsAuto",
+    "hudChrome.options.browserEffectsFull",
+    "hudChrome.options.browserEffectsMinimal",
+    "hudChrome.options.browserEffectsNote",
+    "hudChrome.options.browserEffectsReduced"
+  ],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
-  "pt_BR": [],
+  "pt_BR": [
+    "hudChrome.options.browserEffects",
+    "hudChrome.options.browserEffectsAuto",
+    "hudChrome.options.browserEffectsFull",
+    "hudChrome.options.browserEffectsMinimal",
+    "hudChrome.options.browserEffectsNote",
+    "hudChrome.options.browserEffectsReduced"
+  ],
   "ru_RU": []
 };

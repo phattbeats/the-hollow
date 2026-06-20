@@ -4,6 +4,8 @@ import { Input } from './game/input';
 import { Keybinds } from './game/keybinds';
 import { Settings, GameSettings, SETTING_RANGES, normalizeClickMoveButton } from './game/settings';
 import { MobileControls, PHONE_TOUCH_QUERY, isPhoneTouchDevice } from './game/mobile_controls';
+import { readBrowserEnv, cssEffectsTier, browserBodyClasses } from './game/browser_env';
+import { GFX } from './render/gfx';
 import { Hud } from './ui/hud';
 import { audio } from './game/audio';
 import { music } from './game/music';
@@ -729,6 +731,25 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     input.setAttackMoveEnabled(settings.get('attackMove'));
   }
 
+  // Engine/version/device are fixed for the session; the renderer's GPU tier is
+  // resolved by now (initGfxTier ran during renderer construction). Re-stamp all
+  // classes on every call so a manual Esc-menu override repaints cleanly.
+  const browserEnv = readBrowserEnv();
+  const FX_CLASSES = ['fx-full', 'fx-reduced', 'fx-minimal'];
+  const ENGINE_CLASSES = ['engine-chromium', 'engine-webkit', 'engine-gecko', 'engine-unknown'];
+  function applyBrowserEffects(override: number): void {
+    const tier = cssEffectsTier({
+      engine: browserEnv.engine,
+      version: browserEnv.engineVersion,
+      mobile: browserEnv.mobile,
+      renderTier: GFX.tier,
+      override,
+    });
+    const body = document.body.classList;
+    body.remove(...FX_CLASSES, ...ENGINE_CLASSES, 'is-mobile', 'is-desktop');
+    body.add(...browserBodyClasses(browserEnv, tier));
+  }
+
   function applySetting(key: keyof GameSettings, value: number | boolean): void {
     if (key === 'mouseCamera') {
       const v = settings.set('mouseCamera', !!value);
@@ -770,6 +791,10 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     }
     if (key === 'compactChat') {
       document.body.classList.toggle('compact-chat', settings.set('compactChat', !!value));
+      return;
+    }
+    if (key === 'browserEffects') {
+      applyBrowserEffects(settings.set('browserEffects', value as number));
       return;
     }
     if (key === 'showFps') {

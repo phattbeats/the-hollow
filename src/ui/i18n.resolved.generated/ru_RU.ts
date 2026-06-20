@@ -227,7 +227,13 @@ export const ru_RU: EnTranslations = {
     },
     "options": {
       "clickMoveLeft": "Левая кнопка",
-      "clickMoveRight": "Правая кнопка"
+      "clickMoveRight": "Правая кнопка",
+      "browserEffects": "Эффекты браузера",
+      "browserEffectsAuto": "Авто",
+      "browserEffectsFull": "Полные",
+      "browserEffectsReduced": "Сниженные",
+      "browserEffectsMinimal": "Минимальные",
+      "browserEffectsNote": "Авто снижает тяжёлые CSS-эффекты (размытие, свечение, движение фона) в зависимости от браузера и устройства. Если интерфейс тормозит, понизьте вручную."
     },
     "talents": {
       "defaultBuildName": "Билд {n}"

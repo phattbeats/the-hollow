@@ -227,7 +227,13 @@ export const it_IT: EnTranslations = {
     },
     "options": {
       "clickMoveLeft": "Clic sinistro",
-      "clickMoveRight": "Clic destro"
+      "clickMoveRight": "Clic destro",
+      "browserEffects": "Browser Effects",
+      "browserEffectsAuto": "Auto",
+      "browserEffectsFull": "Full",
+      "browserEffectsReduced": "Reduced",
+      "browserEffectsMinimal": "Minimal",
+      "browserEffectsNote": "Auto tones down heavy CSS effects (blur, glow, background motion) based on your browser and device. Lower it manually if the interface feels sluggish."
     },
     "talents": {
       "defaultBuildName": "Build {n}"
