@@ -28,7 +28,7 @@ describe('character-select class details parity', () => {
         expect(new Set(picks).size).toBe(3); // no duplicates
       });
 
-      for (const id of SIGNATURE_ABILITIES[cls]) {
+      for (const id of picks) {
         it(`"${id}" is a real ability that ${cls} can learn`, () => {
           const ability = ABILITIES[id];
           expect(ability, `ability "${id}" does not exist`).toBeTruthy();
