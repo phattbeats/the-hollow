@@ -1,0 +1,329 @@
+// Thin DOM consumer for the performance overlay.
+//
+// All metric math + row selection lives in the pure core (perf_overlay_model.ts);
+// this file only paints: it builds the #perf-overlay element's children, resolves
+// label keys through t(), formats values through formatNumber, draws the
+// frame-time sparkline to a small canvas, applies the user's colors/opacity/text
+// size, and handles free drag-to-move while the options panel's placement mode is
+// on. It mutates nothing in the world and is decorative (pointer-events:none)
+// during normal play.
+
+import { formatNumber, t } from './i18n';
+import type { PerfOverlayConfig } from './perf_overlay_config';
+import {
+  overlayFractionFromPixel, overlayPixelPosition, PERF_OVERLAY_MARGIN,
+  type PerfMetricKey, type PerfOverlayView, type PerfValue,
+} from './perf_overlay_model';
+
+interface RowEls {
+  row: HTMLDivElement;
+  label: HTMLSpanElement;
+  value: HTMLSpanElement;
+}
+
+interface Rect { left: number; top: number; width: number; height: number }
+
+export class PerfOverlay {
+  private readonly el: HTMLDivElement;
+  private readonly badgesEl: HTMLDivElement;
+  private readonly rowsEl: HTMLDivElement;
+  private readonly canvas: HTMLCanvasElement;
+  private readonly rowEls = new Map<PerfMetricKey, RowEls>();
+
+  private cfg: PerfOverlayConfig | null = null;
+  private enabled = false;
+  private placement = false;
+  private dragging = false;
+  private grabDX = 0;
+  private grabDY = 0;
+  private lastPx = { left: 0, top: 0 };
+
+  /** Fired when a drag settles, with the new normalized 0..1 position. */
+  onPositionChange: ((x: number, y: number) => void) | null = null;
+
+  constructor(host: HTMLDivElement) {
+    this.el = host;
+    this.el.classList.add('perf-overlay');
+    this.el.setAttribute('aria-hidden', 'true');
+    this.el.replaceChildren();
+
+    this.badgesEl = document.createElement('div');
+    this.badgesEl.className = 'perf-badges';
+    this.rowsEl = document.createElement('div');
+    this.rowsEl.className = 'perf-rows';
+    this.canvas = document.createElement('canvas');
+    this.canvas.className = 'perf-graph';
+    this.el.append(this.badgesEl, this.rowsEl, this.canvas);
+
+    // Drag-to-move (only active in placement mode). Pointer events cover mouse +
+    // touch + pen consistently across Chromium/Firefox/Safari.
+    this.el.addEventListener('pointerdown', (e) => this.onPointerDown(e));
+    window.addEventListener('pointermove', (e) => this.onPointerMove(e));
+    window.addEventListener('pointerup', (e) => this.onPointerUp(e));
+    window.addEventListener('resize', () => this.reposition());
+  }
+
+  setEnabled(on: boolean): void {
+    this.enabled = on;
+    this.el.style.display = on ? 'block' : 'none';
+    if (on) this.reposition();
+    else this.setPlacementMode(false);
+  }
+
+  isEnabled(): boolean {
+    return this.enabled;
+  }
+
+  /** Apply persisted appearance + position. Cheap; safe to call on every change. */
+  applyConfig(cfg: PerfOverlayConfig): void {
+    this.cfg = cfg;
+    const s = this.el.style;
+    s.setProperty('--perf-fg', cfg.textColor);
+    s.setProperty('--perf-bg', rgba(cfg.bgColor, cfg.solidBg ? 1 : cfg.opacity));
+    s.setProperty('--perf-scale', String(cfg.fontScale));
+    this.reposition();
+  }
+
+  /** Enter/leave reposition mode: the overlay becomes interactive + draggable and
+   *  floats above the options window so it can be dragged anywhere. */
+  setPlacementMode(on: boolean): void {
+    this.placement = on && this.enabled;
+    this.el.classList.toggle('placing', this.placement);
+    if (!this.placement) {
+      this.dragging = false;
+      this.el.classList.remove('dragging');
+    }
+  }
+
+  render(view: PerfOverlayView): void {
+    if (!this.enabled) return;
+    this.renderRows(view);
+    this.renderBadges(view);
+    this.renderGraph(view);
+    if (!this.dragging) this.reposition();
+  }
+
+  // -------------------------------------------------------------------------
+  // Rows / badges / graph
+  // -------------------------------------------------------------------------
+
+  private renderRows(view: PerfOverlayView): void {
+    const seen = new Set<PerfMetricKey>();
+    for (const row of view.rows) {
+      seen.add(row.key);
+      let els = this.rowEls.get(row.key);
+      if (!els) {
+        const rowEl = document.createElement('div');
+        rowEl.className = 'perf-row';
+        const label = document.createElement('span');
+        label.className = 'perf-label';
+        const value = document.createElement('span');
+        value.className = 'perf-value';
+        rowEl.append(label, value);
+        els = { row: rowEl, label, value };
+        this.rowEls.set(row.key, els);
+      }
+      els.label.textContent = t(row.labelKey);
+      const text = formatValue(row.value);
+      if (els.value.textContent !== text) els.value.textContent = text;
+      els.row.dataset.sev = row.severity;
+      // (re)append in the configured order; moving an existing node is cheap.
+      this.rowsEl.appendChild(els.row);
+    }
+    for (const [key, els] of this.rowEls) {
+      if (!seen.has(key)) {
+        els.row.remove();
+        this.rowEls.delete(key);
+      }
+    }
+  }
+
+  private renderBadges(view: PerfOverlayView): void {
+    if (view.badges.length === 0) {
+      if (this.badgesEl.childElementCount) this.badgesEl.replaceChildren();
+      return;
+    }
+    this.badgesEl.replaceChildren();
+    for (const badge of view.badges) {
+      const chip = document.createElement('span');
+      chip.className = `perf-badge perf-badge-${badge}`;
+      chip.textContent = badge === 'offline'
+        ? t('hudChrome.perf.badges.offline')
+        : t('hudChrome.perf.badges.backgrounded');
+      this.badgesEl.appendChild(chip);
+    }
+  }
+
+  private renderGraph(view: PerfOverlayView): void {
+    if (!view.graph || view.graph.samples.length < 2) {
+      this.canvas.style.display = 'none';
+      return;
+    }
+    this.canvas.style.display = 'block';
+    const cssW = Math.max(60, this.rowsEl.clientWidth || this.el.clientWidth || 120);
+    const cssH = 26;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const pxW = Math.max(1, Math.round(cssW * dpr));
+    const pxH = Math.max(1, Math.round(cssH * dpr));
+    if (this.canvas.width !== pxW) this.canvas.width = pxW;
+    if (this.canvas.height !== pxH) this.canvas.height = pxH;
+    this.canvas.style.width = `${cssW}px`;
+    this.canvas.style.height = `${cssH}px`;
+
+    const ctx = this.canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, cssW, cssH);
+
+    const samples = view.graph.samples;
+    const n = samples.length;
+    let maxMs = view.graph.targetMs * 2;
+    for (const ms of samples) if (ms > maxMs) maxMs = ms;
+    maxMs = Math.min(maxMs, 100); // clamp wild stalls so normal variance stays legible
+    const fg = (this.cfg?.textColor ?? '#ffd76a');
+    const yOf = (ms: number) => cssH - 1 - (Math.min(ms, maxMs) / maxMs) * (cssH - 2);
+    const xOf = (i: number) => (i / (n - 1)) * cssW;
+
+    // Target (60fps) baseline.
+    const ty = yOf(view.graph.targetMs);
+    ctx.strokeStyle = withAlpha(fg, 0.28);
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.moveTo(0, ty);
+    ctx.lineTo(cssW, ty);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Filled area under the frame-time line.
+    ctx.beginPath();
+    ctx.moveTo(0, cssH);
+    for (let i = 0; i < n; i++) ctx.lineTo(xOf(i), yOf(samples[i]));
+    ctx.lineTo(cssW, cssH);
+    ctx.closePath();
+    ctx.fillStyle = withAlpha(fg, 0.14);
+    ctx.fill();
+
+    // The frame-time line itself.
+    ctx.beginPath();
+    for (let i = 0; i < n; i++) {
+      const x = xOf(i);
+      const y = yOf(samples[i]);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = withAlpha(fg, 0.85);
+    ctx.lineWidth = 1.25;
+    ctx.stroke();
+  }
+
+  // -------------------------------------------------------------------------
+  // Positioning + drag
+  // -------------------------------------------------------------------------
+
+  private parentRect(): Rect {
+    const parent = this.el.offsetParent as HTMLElement | null;
+    if (parent) {
+      const r = parent.getBoundingClientRect();
+      return { left: r.left, top: r.top, width: r.width, height: r.height };
+    }
+    return { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
+  }
+
+  /** Place the overlay from its normalized position, clamped fully on-screen. */
+  reposition(): void {
+    if (!this.enabled || !this.cfg) return;
+    const parent = this.parentRect();
+    const ow = this.el.offsetWidth || 120;
+    const oh = this.el.offsetHeight || 40;
+    const { left, top } = overlayPixelPosition(this.cfg.posX, this.cfg.posY, parent.width, parent.height, ow, oh);
+    this.lastPx = { left, top };
+    this.el.style.left = `${left}px`;
+    this.el.style.top = `${top}px`;
+  }
+
+  private onPointerDown(e: PointerEvent): void {
+    if (!this.placement) return;
+    e.preventDefault();
+    this.dragging = true;
+    const rect = this.el.getBoundingClientRect();
+    this.grabDX = e.clientX - rect.left;
+    this.grabDY = e.clientY - rect.top;
+    // Capture so a fast drag that leaves the element keeps delivering events.
+    try { this.el.setPointerCapture(e.pointerId); } catch { /* not supported */ }
+    this.el.classList.add('dragging');
+  }
+
+  private onPointerMove(e: PointerEvent): void {
+    if (!this.dragging) return;
+    const parent = this.parentRect();
+    const ow = this.el.offsetWidth;
+    const oh = this.el.offsetHeight;
+    const maxL = Math.max(PERF_OVERLAY_MARGIN, parent.width - ow - PERF_OVERLAY_MARGIN);
+    const maxT = Math.max(PERF_OVERLAY_MARGIN, parent.height - oh - PERF_OVERLAY_MARGIN);
+    const left = Math.min(maxL, Math.max(PERF_OVERLAY_MARGIN, e.clientX - parent.left - this.grabDX));
+    const top = Math.min(maxT, Math.max(PERF_OVERLAY_MARGIN, e.clientY - parent.top - this.grabDY));
+    this.lastPx = { left, top };
+    this.el.style.left = `${left}px`;
+    this.el.style.top = `${top}px`;
+  }
+
+  private onPointerUp(e: PointerEvent): void {
+    if (!this.dragging) return;
+    this.dragging = false;
+    try { this.el.releasePointerCapture(e.pointerId); } catch { /* not captured */ }
+    this.el.classList.remove('dragging');
+    const parent = this.parentRect();
+    const ow = this.el.offsetWidth;
+    const oh = this.el.offsetHeight;
+    const frac = overlayFractionFromPixel(this.lastPx.left, this.lastPx.top, parent.width, parent.height, ow, oh);
+    this.onPositionChange?.(frac.x, frac.y);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Value formatting (locale-aware) + color helpers
+// ---------------------------------------------------------------------------
+
+function formatValue(v: PerfValue): string {
+  switch (v.kind) {
+    case 'fps':
+      return formatNumber(Math.round(v.v));
+    case 'int':
+      return formatNumber(Math.round(v.v));
+    case 'compact':
+      return formatNumber(v.v, { notation: 'compact', maximumFractionDigits: 1 });
+    case 'percent':
+      return formatNumber(v.v, { style: 'percent', maximumFractionDigits: 0 });
+    case 'ms':
+      return t('hudChrome.perf.units.ms', {
+        value: formatNumber(v.v, { minimumFractionDigits: v.digits, maximumFractionDigits: v.digits }),
+      });
+    case 'hz':
+      return t('hudChrome.perf.units.hz', { value: formatNumber(Math.round(v.v)) });
+    case 'memPair':
+      return v.limitMb != null
+        ? t('hudChrome.perf.units.memPair', {
+          used: formatNumber(Math.round(v.usedMb)),
+          limit: formatNumber(Math.round(v.limitMb)),
+        })
+        : t('hudChrome.perf.units.mb', { value: formatNumber(Math.round(v.usedMb)) });
+    case 'text':
+      return v.text;
+  }
+}
+
+function hexToRgb(hex: string): [number, number, number] {
+  const m = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex);
+  if (!m) return [8, 8, 13];
+  return [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)];
+}
+
+function rgba(hex: string, alpha: number): string {
+  const [r, g, b] = hexToRgb(hex);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+function withAlpha(hex: string, alpha: number): string {
+  return rgba(hex, alpha);
+}
