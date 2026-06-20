@@ -754,6 +754,7 @@ export interface QuestDef {
   itemRewards: Partial<Record<PlayerClass, string>>;
   requiresQuest?: string; // prerequisite quest id (must be turned in)
   minLevel?: number;
+  retired?: boolean; // remains finishable if already accepted, but cannot be newly accepted
   suggestedPlayers?: number; // group quests ("Suggested players: 5")
 }
 

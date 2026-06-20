@@ -614,6 +614,7 @@ export function computeQuestState(
   if (!quest) return 'unavailable';
   if (quest.requiresQuest && !questsDone.has(quest.requiresQuest)) return 'unavailable';
   if (quest.minLevel && playerLevel < quest.minLevel) return 'unavailable';
+  if (quest.retired) return 'unavailable';
   return 'available';
 }
 
