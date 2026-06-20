@@ -2459,6 +2459,8 @@ export const ru_RU: EnTranslations = {
       "lootReceiveMoney": "Вы получаете {money}.",
       "lootMoney": "Вы добываете {money}.",
       "soldItem": "Вы продали {item} за {money}.",
+      "soldJunkOne": "Вы продали {count} серый предмет за {money}.",
+      "soldJunkMany": "Вы продали серые предметы ({count}) за {money}.",
       "friendOnline": "{name} вошел в игру.",
       "friendOffline": "{name} вышел из игры."
     },
@@ -2862,7 +2864,10 @@ export const ru_RU: EnTranslations = {
       "sellQuantityTitle": "Продать {item}",
       "sellQuantityInput": "Количество для продажи",
       "sellQuantityConfirm": "Продать",
-      "sellQuantityCancel": "Отмена"
+      "sellQuantityCancel": "Отмена",
+      "sellJunk": "Продать хлам",
+      "sellJunkAria": "Продать весь хлам за {price}",
+      "sellJunkHint": "Продает все серые предметы в сумках, кроме предметов заданий."
     },
     "market": {
       "title": "Мировой рынок",
