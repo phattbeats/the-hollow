@@ -5,17 +5,26 @@
 //
 // A character's raw percentile (rank/total × 100, e.g. 3.2) buckets to the
 // ceiling whole percent — 3.2 → "Top 4%", 0.6 → "Top 1%" — so each of Top 1%
-// through Top 9% has its own tier medal (gold at the apex, fading to bronze).
-// Above 9% there is no tier (the card shows a plain "Top N%" chip instead).
+// through Top 10% has its own tier medal. Above 10% there is no tier (the card
+// shows a plain "Top N%" chip instead).
+//
+// Each rung carries an MMO-style RARITY (legendary at the apex → common), which
+// drives a radiant glow baked into the medal SVG and — for epic/legendary — a
+// SMIL pulse. The pulse animates when the medal is inlined into the DOM (the tier
+// showcase); drawn onto a canvas (the shared card PNG) it captures a single bright
+// frame, since a PNG can't animate.
 //
 // DOM/Three/network-free: plain data + an SVG data-URL builder, unit-testable in
 // Node and drawable on a canvas or in an <img>.
 
-/** Highest percentile bucket that earns a tier medal (Top 1%…Top 9%). */
-export const PERCENTILE_TIER_MAX = 9;
+/** Highest percentile bucket that earns a tier medal (Top 1%…Top 10%). */
+export const PERCENTILE_TIER_MAX = 10;
+
+/** MMO item-quality grades, apex to floor, driving glow + pulse intensity. */
+export type PercentileRarity = 'legendary' | 'epic' | 'rare' | 'uncommon' | 'common';
 
 export interface PercentileTier {
-  /** Whole-percent bucket and 1-based rung: 1 = Top 1% (apex) … 9 = Top 9%. */
+  /** Whole-percent bucket and 1-based rung: 1 = Top 1% (apex) … 10 = Top 10%. */
   percent: number;
   /** Stable machine key (CSS hooks / analytics). */
   key: string;
@@ -23,25 +32,52 @@ export interface PercentileTier {
   ring: string;
   /** Outer glow colour (hex). */
   glow: string;
+  /** Item-quality grade — sets the medal's radiance + whether it pulses. */
+  rarity: PercentileRarity;
 }
 
-// Gold → silver → bronze prestige gradient, brightest at the apex. Each rung is a
-// distinct shade so the nine medals never read as the same colour at a glance.
+// Gold → silver → bronze → copper prestige gradient, brightest at the apex. Each
+// rung is a distinct shade so the ten medals never read as the same colour. The
+// rarity grade escalates the visual treatment toward the top: only the rarest
+// ranks (legendary/epic) earn a pulsing glow, the way only epic/legendary loot does.
 export const PERCENTILE_TIERS: readonly PercentileTier[] = [
-  { percent: 1, key: 'top1', ring: '#ffe27a', glow: '#ffaa00' },
-  { percent: 2, key: 'top2', ring: '#ffd24a', glow: '#e0a52a' },
-  { percent: 3, key: 'top3', ring: '#f0c674', glow: '#c99a3e' },
-  { percent: 4, key: 'top4', ring: '#e6dab4', glow: '#bfb083' },
-  { percent: 5, key: 'top5', ring: '#dfe7f0', glow: '#aebccd' },
-  { percent: 6, key: 'top6', ring: '#c6d0dc', glow: '#93a3b6' },
-  { percent: 7, key: 'top7', ring: '#e0a45a', glow: '#b9792e' },
-  { percent: 8, key: 'top8', ring: '#d18f4a', glow: '#a8551f' },
-  { percent: 9, key: 'top9', ring: '#c07f44', glow: '#8a4f24' },
+  { percent: 1, key: 'top1', ring: '#ffe27a', glow: '#ffaa00', rarity: 'legendary' },
+  { percent: 2, key: 'top2', ring: '#ffd24a', glow: '#e0a52a', rarity: 'epic' },
+  { percent: 3, key: 'top3', ring: '#f0c674', glow: '#c99a3e', rarity: 'epic' },
+  { percent: 4, key: 'top4', ring: '#e6dab4', glow: '#bfb083', rarity: 'rare' },
+  { percent: 5, key: 'top5', ring: '#dfe7f0', glow: '#aebccd', rarity: 'rare' },
+  { percent: 6, key: 'top6', ring: '#c6d0dc', glow: '#93a3b6', rarity: 'rare' },
+  { percent: 7, key: 'top7', ring: '#e0a45a', glow: '#b9792e', rarity: 'uncommon' },
+  { percent: 8, key: 'top8', ring: '#d18f4a', glow: '#a8551f', rarity: 'uncommon' },
+  { percent: 9, key: 'top9', ring: '#c07f44', glow: '#8a4f24', rarity: 'common' },
+  { percent: 10, key: 'top10', ring: '#a86b3a', glow: '#6e3d1c', rarity: 'common' },
 ] as const;
+
+export interface RarityStyle {
+  /** Peak opacity of the outer halo bloom (0 = no halo). */
+  halo: number;
+  /** Whether to draw a sunburst of rays behind the disc (apex only). */
+  rays: boolean;
+  /** Pulse period in ms for the halo, or null for a static glow. */
+  pulseMs: number | null;
+}
+
+const RARITY_STYLE: Record<PercentileRarity, RarityStyle> = {
+  legendary: { halo: 0.95, rays: true, pulseMs: 1300 },
+  epic: { halo: 0.7, rays: false, pulseMs: 1700 },
+  rare: { halo: 0.4, rays: false, pulseMs: null },
+  uncommon: { halo: 0, rays: false, pulseMs: null },
+  common: { halo: 0, rays: false, pulseMs: null },
+};
+
+/** The glow/pulse treatment for a rarity grade (halo opacity, rays, pulse period). */
+export function percentileRarityStyle(rarity: PercentileRarity): RarityStyle {
+  return RARITY_STYLE[rarity];
+}
 
 // A laurel wreath framing a five-point star — the universal "top rank" motif,
 // filled in the cream tone so it reads on every ring colour. Shared by all rungs;
-// the ring colour is what distinguishes them.
+// the ring colour + rarity glow are what distinguish them.
 const GLYPH_FILL = '#fff6df';
 const LAUREL_STAR =
   `<path d="M32 17.5l2.7 6 6.5.6-4.9 4.4 1.4 6.4-5.7-3.3-5.7 3.3 1.4-6.4-4.9-4.4 6.5-.6z" fill="${GLYPH_FILL}"/>` +
@@ -69,27 +105,63 @@ export function percentileTierForPercent(pct: number | null): PercentileTier | n
   return PERCENTILE_TIERS[bucket - 1] ?? null;
 }
 
+// A 12-spoke sunburst behind the disc (apex legendary only). Thin rays near the
+// rim, in the ring colour, slowly rotating (the halo carries the opacity pulse).
+function sunburstRays(color: string, pulseMs: number | null): string {
+  let spokes = '';
+  for (let i = 0; i < 12; i++) {
+    spokes += `<rect x="31.2" y="0.5" width="1.6" height="5" rx="0.8" fill="${color}" transform="rotate(${i * 30} 32 32)"/>`;
+  }
+  const anim = pulseMs
+    ? `<animateTransform attributeName="transform" type="rotate" from="0 32 32" to="30 32 32" dur="${pulseMs * 6}ms" repeatCount="indefinite"/>`
+    : '';
+  return `<g opacity="0.55">${spokes}${anim}</g>`;
+}
+
 /**
  * A standalone SVG data URL for a tier's medal: a ring→glow radial disc with the
- * laurel-and-star glyph centred. Suitable for an `<img>` src or for drawing onto a
- * canvas; the viewBox is always `0 0 64 64`, so it scales crisply. `px` sets the
- * rasterised pixel box.
+ * laurel-and-star glyph, plus a rarity-graded outer glow (and, for epic/legendary,
+ * a SMIL pulse + apex sunburst). Inlined into the DOM the pulse animates; drawn
+ * onto a canvas (the static card) it captures one bright frame (a PNG can't
+ * animate). The viewBox is always `0 0 64 64`; `px` sets the rasterised pixel box.
  */
 export function percentileTierBadgeDataUrl(tier: PercentileTier, px = 128): string {
-  // Per-tier gradient id so several medals can be inlined into one document (a
-  // tier-ladder panel) without their `url(#…)` references colliding.
-  const gid = `g${tier.key}`;
-  const svg =
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 64 64">` +
-    `<defs>` +
+  const gid = `g${tier.key}`; // per-tier ids so several inlined medals never collide
+  const hid = `h${tier.key}`;
+  const style = RARITY_STYLE[tier.rarity];
+
+  const defs =
     `<radialGradient id="${gid}" cx="38%" cy="32%" r="72%">` +
     `<stop offset="0%" stop-color="${tier.ring}"/>` +
     `<stop offset="100%" stop-color="${tier.glow}"/>` +
     `</radialGradient>` +
-    `</defs>` +
-    `<circle cx="32" cy="32" r="30" fill="url(#${gid})"/>` +
-    `<circle cx="32" cy="32" r="30" fill="none" stroke="#1c140a" stroke-width="2"/>` +
-    `<circle cx="32" cy="32" r="26" fill="none" stroke="#fff6df" stroke-opacity="0.35" stroke-width="1.5"/>` +
+    (style.halo > 0
+      ? `<radialGradient id="${hid}" cx="50%" cy="50%" r="50%">` +
+        `<stop offset="74%" stop-color="${tier.ring}" stop-opacity="0"/>` +
+        `<stop offset="88%" stop-color="${tier.ring}" stop-opacity="0.7"/>` +
+        `<stop offset="100%" stop-color="${tier.ring}" stop-opacity="0"/>` +
+        `</radialGradient>`
+      : '');
+
+  let glow = '';
+  if (style.halo > 0) {
+    // Start at peak so a canvas rasterisation (the static card) grabs the bright
+    // frame; the live pulse then dips to half and back.
+    const pulse = style.pulseMs
+      ? `<animate attributeName="opacity" values="${style.halo.toFixed(2)};${(style.halo * 0.5).toFixed(2)};${style.halo.toFixed(2)}" dur="${style.pulseMs}ms" repeatCount="indefinite"/>`
+      : '';
+    glow = `<circle cx="32" cy="32" r="31.5" fill="url(#${hid})" opacity="${style.halo}">${pulse}</circle>`;
+  }
+  const rays = style.rays ? sunburstRays(tier.ring, style.pulseMs) : '';
+
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 64 64">` +
+    `<defs>${defs}</defs>` +
+    glow +
+    rays +
+    `<circle cx="32" cy="32" r="27" fill="url(#${gid})"/>` +
+    `<circle cx="32" cy="32" r="27" fill="none" stroke="#1c140a" stroke-width="2"/>` +
+    `<circle cx="32" cy="32" r="23.5" fill="none" stroke="#fff6df" stroke-opacity="0.35" stroke-width="1.5"/>` +
     LAUREL_STAR +
     `</svg>`;
   return `data:image/svg+xml,${encodeURIComponent(svg)}`;

@@ -242,9 +242,9 @@ function drawHeader(ctx: CanvasRenderingContext2D, data: PlayerCardData, pctBadg
   ctx.fillText(sub, x, 130);
   const subW = ctx.measureText(sub).width;
 
-  // A "TOP N%" flex beside the subtitle (only shown when it's a flex). Top 1-9%
-  // earns a tier medal + a tier-coloured tile; a worse-than-9% percentile keeps a
-  // plain gold chip.
+  // A "TOP N%" flex beside the subtitle (only shown when it's a flex). Top 1-10%
+  // earns a rarity-graded tier medal + a tier-coloured tile; a worse-than-10%
+  // percentile keeps a plain gold chip.
   if (data.topPercent !== null) {
     const label = formatTopPercent(data.topPercent);
     ctx.font = `700 16px ${BODY_FONT}`;
@@ -257,9 +257,9 @@ function drawHeader(ctx: CanvasRenderingContext2D, data: PlayerCardData, pctBadg
     // The tier medal sits just left of the tile, against the dark card so its
     // ring→glow + laurel read clearly.
     if (pctTier && pctBadge) {
-      const d = chipH + 6;
+      const d = chipH + 14; // a touch larger so the disc + any rarity halo read
       ctx.drawImage(pctBadge, cursorX, chipY + chipH / 2 - d / 2, d, d);
-      cursorX += d + 6;
+      cursorX += d; // the medal box's transparent margin spaces it from the tile
     }
     ctx.fillStyle = pctTier ? pctTier.ring : COL.gold;
     roundRect(ctx, cursorX, chipY, tw + padX * 2, chipH, 13);

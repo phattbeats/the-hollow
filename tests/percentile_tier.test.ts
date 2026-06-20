@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import {
-  PERCENTILE_TIERS, PERCENTILE_TIER_MAX, percentileTierForPercent, percentileTierBadgeDataUrl,
+  PERCENTILE_TIERS, PERCENTILE_TIER_MAX, percentileTierForPercent,
+  percentileTierBadgeDataUrl, percentileRarityStyle,
 } from '../src/ui/percentile_tier';
 
 describe('percentile-tier ladder', () => {
-  it('has one rung per whole percent from Top 1% to Top 9%', () => {
-    expect(PERCENTILE_TIERS).toHaveLength(9);
-    expect(PERCENTILE_TIER_MAX).toBe(9);
+  it('has one rung per whole percent from Top 1% to Top 10%', () => {
+    expect(PERCENTILE_TIERS).toHaveLength(10);
+    expect(PERCENTILE_TIER_MAX).toBe(10);
     PERCENTILE_TIERS.forEach((tier, i) => {
       expect(tier.percent).toBe(i + 1);
       expect(tier.key).toBe(`top${i + 1}`);
@@ -15,9 +16,33 @@ describe('percentile-tier ladder', () => {
     });
   });
 
-  it('gives every rung a distinct key and ring colour (nine readable medals)', () => {
-    expect(new Set(PERCENTILE_TIERS.map((t) => t.key)).size).toBe(9);
-    expect(new Set(PERCENTILE_TIERS.map((t) => t.ring)).size).toBe(9);
+  it('gives every rung a distinct key and ring colour (ten readable medals)', () => {
+    expect(new Set(PERCENTILE_TIERS.map((t) => t.key)).size).toBe(10);
+    expect(new Set(PERCENTILE_TIERS.map((t) => t.ring)).size).toBe(10);
+  });
+
+  it('grades rarity from legendary at the apex down to common at the floor', () => {
+    const byPercent = (p: number) => PERCENTILE_TIERS.find((t) => t.percent === p)!.rarity;
+    expect(byPercent(1)).toBe('legendary');
+    expect(byPercent(2)).toBe('epic');
+    expect(byPercent(3)).toBe('epic');
+    expect([4, 5, 6].map(byPercent)).toEqual(['rare', 'rare', 'rare']);
+    expect([7, 8].map(byPercent)).toEqual(['uncommon', 'uncommon']);
+    expect([9, 10].map(byPercent)).toEqual(['common', 'common']);
+  });
+});
+
+describe('percentileRarityStyle', () => {
+  it('makes only legendary + epic pulse, and only the rarer grades glow', () => {
+    expect(percentileRarityStyle('legendary').pulseMs).toBeTruthy();
+    expect(percentileRarityStyle('legendary').rays).toBe(true);
+    expect(percentileRarityStyle('epic').pulseMs).toBeTruthy();
+    expect(percentileRarityStyle('epic').rays).toBe(false);
+    // Rare glows but does not pulse; uncommon/common are plain medals.
+    expect(percentileRarityStyle('rare').pulseMs).toBeNull();
+    expect(percentileRarityStyle('rare').halo).toBeGreaterThan(0);
+    expect(percentileRarityStyle('uncommon').halo).toBe(0);
+    expect(percentileRarityStyle('common').halo).toBe(0);
   });
 });
 
@@ -35,6 +60,7 @@ describe('percentileTierForPercent', () => {
     expect(percentileTierForPercent(3.2)?.percent).toBe(4);
     expect(percentileTierForPercent(2)?.percent).toBe(2);
     expect(percentileTierForPercent(5.99)?.percent).toBe(6);
+    expect(percentileTierForPercent(9.01)?.percent).toBe(10); // now within range — Top 10%
   });
 
   it('maps a sub-1% rank to the apex Top 1% rung', () => {
@@ -43,19 +69,19 @@ describe('percentileTierForPercent', () => {
     expect(percentileTierForPercent(1)?.percent).toBe(1);
   });
 
-  it('returns each whole-percent rung 1..9 for its exact value', () => {
-    for (let p = 1; p <= 9; p++) {
+  it('returns each whole-percent rung 1..10 for its exact value', () => {
+    for (let p = 1; p <= 10; p++) {
       const tier = percentileTierForPercent(p);
       expect(tier?.percent).toBe(p);
       expect(tier?.key).toBe(`top${p}`);
     }
   });
 
-  it('pins the inclusive Top 9% edge — 9 earns top9, 9.01 falls off', () => {
-    expect(percentileTierForPercent(9)?.percent).toBe(9);
-    expect(percentileTierForPercent(9)?.key).toBe('top9');
-    expect(percentileTierForPercent(9.01)).toBeNull();
-    expect(percentileTierForPercent(10)).toBeNull();
+  it('pins the inclusive Top 10% edge — 10 earns top10, 10.01 falls off', () => {
+    expect(percentileTierForPercent(10)?.percent).toBe(10);
+    expect(percentileTierForPercent(10)?.key).toBe('top10');
+    expect(percentileTierForPercent(10.01)).toBeNull();
+    expect(percentileTierForPercent(11)).toBeNull();
     expect(percentileTierForPercent(42)).toBeNull();
   });
 });
@@ -70,7 +96,7 @@ describe('percentileTierBadgeDataUrl', () => {
       expect(svg).toContain(tier.ring);
       expect(svg).toContain(tier.glow);
       expect(svg).toContain('radialGradient');
-      // The gradient must be both defined and actually referenced by a disc fill,
+      // The disc gradient must be both defined and actually referenced by the fill,
       // or the medal renders as an unfilled/black circle while the test stays green.
       // The id is per-tier so inlined medals don't collide.
       expect(svg).toContain(`id="g${tier.key}"`);
@@ -85,6 +111,34 @@ describe('percentileTierBadgeDataUrl', () => {
       return svg.match(/id="(g[^"]+)"/)?.[1];
     });
     expect(new Set(ids).size).toBe(PERCENTILE_TIERS.length);
+  });
+
+  it('embeds a pulsing halo for legendary/epic and leaves common medals plain', () => {
+    const svgFor = (p: number) => decodeURIComponent(
+      percentileTierBadgeDataUrl(PERCENTILE_TIERS.find((t) => t.percent === p)!),
+    );
+    const legendary = svgFor(1);
+    expect(legendary).toContain('<animate'); // it pulses on a live DOM surface
+    expect(legendary).toContain('id="htop1"'); // halo gradient present
+    expect((legendary.match(/<rect/g) ?? []).length).toBeGreaterThanOrEqual(12); // sunburst rays
+
+    const epic = svgFor(2);
+    expect(epic).toContain('<animate');
+    expect(epic).toContain('id="htop2"');
+    expect(epic).not.toContain('<rect'); // epic glows + pulses but has no sunburst
+
+    const common = svgFor(10);
+    expect(common).not.toContain('<animate'); // common is a plain static medal
+    expect(common).not.toContain('id="htop10"'); // no halo gradient
+  });
+
+  it('starts the pulse at peak opacity so a canvas (the static card) grabs the bright frame', () => {
+    const legendary = decodeURIComponent(percentileTierBadgeDataUrl(PERCENTILE_TIERS[0]));
+    const values = legendary.match(/values="([^"]+)"/)?.[1].split(';').map(Number);
+    expect(values).toBeTruthy();
+    // First keyframe is the brightest of the three (peak -> dip -> peak).
+    expect(values![0]).toBeGreaterThan(values![1]);
+    expect(values![0]).toBe(Math.max(...values!));
   });
 
   it('honours the requested pixel size while keeping the 0 0 64 64 viewBox', () => {
