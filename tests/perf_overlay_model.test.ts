@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   buildPerfOverlayView, defaultMetricsMap, FrameMeter, METRIC_REGISTRY, metricsPreset,
-  overlayFractionFromPixel, overlayPixelPosition, PERF_METRIC_KEYS,
+  overlayFractionFromPixel, overlayPixelPosition, PERF_METRIC_GROUPS, PERF_METRIC_KEYS,
+  perfMetricGroups,
   type MetricsSample, type PerfMetricKey, type PerfOverlayViewConfig,
 } from '../src/ui/perf_overlay_model';
 
@@ -43,6 +44,32 @@ describe('perf overlay metric registry', () => {
     expect(minimal.fps).toBe(true);
     expect(minimal.frameTime).toBe(false);
     expect(Object.values(allMetrics()).every(Boolean)).toBe(true);
+  });
+});
+
+describe('perf metric grouping', () => {
+  it('buckets every registry metric into exactly one group, losing none', () => {
+    const grouped = perfMetricGroups();
+    const groupedKeys = grouped.flatMap((g) => g.chips.map((c) => c.key));
+    // every metric appears exactly once across all groups
+    expect(groupedKeys.slice().sort()).toEqual(PERF_METRIC_KEYS.slice().sort());
+    expect(new Set(groupedKeys).size).toBe(groupedKeys.length);
+  });
+
+  it('emits groups in PERF_METRIC_GROUPS order with the expected membership', () => {
+    const grouped = perfMetricGroups();
+    expect(grouped.map((g) => g.group.id)).toEqual(PERF_METRIC_GROUPS.map((g) => g.id));
+    const byId = Object.fromEntries(grouped.map((g) => [g.group.id, g.chips.map((c) => c.key)]));
+    expect(byId.frame).toEqual(['fps', 'frameTime', 'fps1Low', 'fps01Low', 'hitches']);
+    expect(byId.network).toEqual(['ping', 'jitter', 'snapshot', 'connection']);
+    expect(byId.renderer).toEqual(['drawCalls', 'triangles', 'geometries', 'textures', 'programs', 'renderScale', 'gpu']);
+    expect(byId.system).toEqual(['memory', 'entities']);
+  });
+
+  it('preserves the label key for each chip from the registry', () => {
+    const grouped = perfMetricGroups();
+    const fps = grouped.flatMap((g) => g.chips).find((c) => c.key === 'fps')!;
+    expect(fps.labelKey).toBe(METRIC_REGISTRY.find((d) => d.key === 'fps')!.labelKey);
   });
 });
 
@@ -164,5 +191,30 @@ describe('free positioning math', () => {
     const frac = overlayFractionFromPixel(px.left, px.top, 1000, 800, 120, 60);
     expect(frac.x).toBeCloseTo(0.5, 2);
     expect(frac.y).toBeCloseTo(0.5, 2);
+  });
+
+  // Drag-settle path (main.ts onPositionChange): a dropped pixel is converted to a
+  // fraction, persisted, then re-projected to a pixel by reposition(). The two must
+  // agree within rounding so the overlay never visibly snaps on drop.
+  it('drag-settle does not visibly jump: fraction->pixel re-projects to the drop', () => {
+    const vw = 1280, vh = 720, ow = 140, oh = 72;
+    for (const [left, top] of [[8, 8], [600, 300], [1132, 640], [400, 8], [8, 640]] as const) {
+      const frac = overlayFractionFromPixel(left, top, vw, vh, ow, oh);
+      const px = overlayPixelPosition(frac.x, frac.y, vw, vh, ow, oh);
+      expect(Math.abs(px.left - left)).toBeLessThanOrEqual(1);
+      expect(Math.abs(px.top - top)).toBeLessThanOrEqual(1);
+    }
+  });
+
+  it('drag-settle round-trip is stable across a window resize', () => {
+    // Drop at 70%/40% on a large viewport, then re-project on a smaller one.
+    const drop = overlayPixelPosition(0.7, 0.4, 1600, 900, 150, 70);
+    const frac = overlayFractionFromPixel(drop.left, drop.top, 1600, 900, 150, 70);
+    const resized = overlayPixelPosition(frac.x, frac.y, 1000, 600, 150, 70);
+    // Still fully on-screen after the resize (clamped within margins).
+    expect(resized.left).toBeGreaterThanOrEqual(8);
+    expect(resized.left).toBeLessThanOrEqual(1000 - 150 - 8);
+    expect(resized.top).toBeGreaterThanOrEqual(8);
+    expect(resized.top).toBeLessThanOrEqual(600 - 70 - 8);
   });
 });

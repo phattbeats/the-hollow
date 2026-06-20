@@ -205,6 +205,9 @@ function lowerBetter(v: number, good: number, warn: number): PerfSeverity {
 interface MetricDef {
   key: PerfMetricKey;
   labelKey: TranslationKey;
+  /** Which category subhead the metric's toggle chip sits under in the panel, and
+   *  the band it renders in within the overlay (registry order = render order). */
+  group: PerfMetricGroup;
   defaultOn: boolean;
   /** Read the display value, or null when the source is unavailable (row hidden). */
   read(s: MetricsSample): PerfValue | null;
@@ -213,83 +216,92 @@ interface MetricDef {
 }
 
 export const METRIC_REGISTRY: readonly MetricDef[] = [
+  // --- Frame & timing ---
   {
-    key: 'fps', labelKey: 'hudChrome.perf.labels.fps', defaultOn: true,
+    key: 'fps', labelKey: 'hudChrome.perf.labels.fps', group: 'frame', defaultOn: true,
     read: (s) => ({ kind: 'fps', v: s.fps }),
     severity: (s) => higherBetter(s.fps, 55, 30),
   },
   {
-    key: 'frameTime', labelKey: 'hudChrome.perf.labels.frameTime', defaultOn: true,
+    key: 'frameTime', labelKey: 'hudChrome.perf.labels.frameTime', group: 'frame', defaultOn: true,
     read: (s) => ({ kind: 'ms', v: s.frameTimeMs, digits: 1 }),
     severity: (s) => lowerBetter(s.frameTimeMs, 18, 33),
   },
   {
-    key: 'fps1Low', labelKey: 'hudChrome.perf.labels.fps1Low', defaultOn: false,
+    key: 'fps1Low', labelKey: 'hudChrome.perf.labels.fps1Low', group: 'frame', defaultOn: false,
     read: (s) => (s.fps1Low == null ? null : { kind: 'fps', v: s.fps1Low }),
     severity: (s) => (s.fps1Low == null ? NONE : higherBetter(s.fps1Low, 50, 25)),
   },
   {
-    key: 'fps01Low', labelKey: 'hudChrome.perf.labels.fps01Low', defaultOn: false,
+    key: 'fps01Low', labelKey: 'hudChrome.perf.labels.fps01Low', group: 'frame', defaultOn: false,
     read: (s) => (s.fps01Low == null ? null : { kind: 'fps', v: s.fps01Low }),
     severity: (s) => (s.fps01Low == null ? NONE : higherBetter(s.fps01Low, 45, 20)),
   },
   {
-    key: 'ping', labelKey: 'hudChrome.perf.labels.ping', defaultOn: true,
+    key: 'hitches', labelKey: 'hudChrome.perf.labels.hitches', group: 'frame', defaultOn: false,
+    read: (s) => (s.hitches == null ? null : { kind: 'int', v: s.hitches }),
+    severity: (s) => (s.hitches == null ? NONE : lowerBetter(s.hitches, 0, 2)),
+  },
+  // --- Network (online client only) ---
+  {
+    key: 'ping', labelKey: 'hudChrome.perf.labels.ping', group: 'network', defaultOn: true,
     read: (s) => (s.online && s.pingMs != null ? { kind: 'ms', v: s.pingMs, digits: 0 } : null),
     severity: (s) => (s.online && s.pingMs != null ? lowerBetter(s.pingMs, 60, 120) : NONE),
   },
   {
-    key: 'jitter', labelKey: 'hudChrome.perf.labels.jitter', defaultOn: false,
+    key: 'jitter', labelKey: 'hudChrome.perf.labels.jitter', group: 'network', defaultOn: false,
     read: (s) => (s.online && s.jitterMs != null ? { kind: 'ms', v: s.jitterMs, digits: 0 } : null),
     severity: (s) => (s.online && s.jitterMs != null ? lowerBetter(s.jitterMs, 8, 20) : NONE),
   },
   {
-    key: 'snapshot', labelKey: 'hudChrome.perf.labels.snapshot', defaultOn: false,
+    key: 'snapshot', labelKey: 'hudChrome.perf.labels.snapshot', group: 'network', defaultOn: false,
     read: (s) => (s.online && s.snapshotHz != null ? { kind: 'hz', v: s.snapshotHz } : null),
     severity: () => NONE,
   },
   {
-    key: 'connection', labelKey: 'hudChrome.perf.labels.connection', defaultOn: false,
+    key: 'connection', labelKey: 'hudChrome.perf.labels.connection', group: 'network', defaultOn: false,
     read: (s) => (s.connectionType ? { kind: 'text', text: s.connectionType.toUpperCase() } : null),
     severity: () => NONE,
   },
+  // --- Renderer ---
   {
-    key: 'drawCalls', labelKey: 'hudChrome.perf.labels.drawCalls', defaultOn: false,
+    key: 'drawCalls', labelKey: 'hudChrome.perf.labels.drawCalls', group: 'renderer', defaultOn: false,
     read: (s) => (s.drawCalls == null ? null : { kind: 'int', v: s.drawCalls }),
     severity: () => NONE,
   },
   {
-    key: 'triangles', labelKey: 'hudChrome.perf.labels.triangles', defaultOn: false,
+    key: 'triangles', labelKey: 'hudChrome.perf.labels.triangles', group: 'renderer', defaultOn: false,
     read: (s) => (s.triangles == null ? null : { kind: 'compact', v: s.triangles }),
     severity: () => NONE,
   },
   {
-    key: 'geometries', labelKey: 'hudChrome.perf.labels.geometries', defaultOn: false,
+    key: 'geometries', labelKey: 'hudChrome.perf.labels.geometries', group: 'renderer', defaultOn: false,
     read: (s) => (s.geometries == null ? null : { kind: 'int', v: s.geometries }),
     severity: () => NONE,
   },
   {
-    key: 'textures', labelKey: 'hudChrome.perf.labels.textures', defaultOn: false,
+    key: 'textures', labelKey: 'hudChrome.perf.labels.textures', group: 'renderer', defaultOn: false,
     read: (s) => (s.textures == null ? null : { kind: 'int', v: s.textures }),
     severity: () => NONE,
   },
   {
-    key: 'programs', labelKey: 'hudChrome.perf.labels.programs', defaultOn: false,
+    key: 'programs', labelKey: 'hudChrome.perf.labels.programs', group: 'renderer', defaultOn: false,
     read: (s) => (s.programs == null ? null : { kind: 'int', v: s.programs }),
     severity: () => NONE,
   },
   {
-    key: 'renderScale', labelKey: 'hudChrome.perf.labels.renderScale', defaultOn: false,
+    key: 'renderScale', labelKey: 'hudChrome.perf.labels.renderScale', group: 'renderer', defaultOn: false,
     read: (s) => (s.renderScale == null ? null : { kind: 'percent', v: s.renderScale }),
     severity: () => NONE,
   },
   {
-    key: 'gpu', labelKey: 'hudChrome.perf.labels.gpu', defaultOn: false,
+    key: 'gpu', labelKey: 'hudChrome.perf.labels.gpu', group: 'renderer', defaultOn: false,
     read: (s) => (s.gpu ? { kind: 'text', text: s.gpu } : null),
     severity: () => NONE,
   },
+  // --- System ---
   {
-    key: 'memory', labelKey: 'hudChrome.perf.labels.memory', defaultOn: false,
+    key: 'memory', labelKey: 'hudChrome.perf.labels.memory', group: 'system', defaultOn: false,
     read: (s) => (s.memoryUsedMb == null ? null : { kind: 'memPair', usedMb: s.memoryUsedMb, limitMb: s.memoryLimitMb }),
     severity: (s) => {
       if (s.memoryUsedMb == null || s.memoryLimitMb == null || s.memoryLimitMb <= 0) return NONE;
@@ -297,18 +309,55 @@ export const METRIC_REGISTRY: readonly MetricDef[] = [
     },
   },
   {
-    key: 'hitches', labelKey: 'hudChrome.perf.labels.hitches', defaultOn: false,
-    read: (s) => (s.hitches == null ? null : { kind: 'int', v: s.hitches }),
-    severity: (s) => (s.hitches == null ? NONE : lowerBetter(s.hitches, 0, 2)),
-  },
-  {
-    key: 'entities', labelKey: 'hudChrome.perf.labels.entities', defaultOn: false,
+    key: 'entities', labelKey: 'hudChrome.perf.labels.entities', group: 'system', defaultOn: false,
     read: (s) => (s.entities == null ? null : { kind: 'int', v: s.entities }),
     severity: () => NONE,
   },
 ];
 
 export const PERF_METRIC_KEYS: readonly PerfMetricKey[] = METRIC_REGISTRY.map((d) => d.key);
+
+// ---------------------------------------------------------------------------
+// Metric groups (categorize the Stats toggles + the overlay's render bands)
+// ---------------------------------------------------------------------------
+
+export type PerfMetricGroup = 'frame' | 'network' | 'renderer' | 'system';
+
+export interface PerfMetricGroupDef {
+  id: PerfMetricGroup;
+  labelKey: TranslationKey;
+}
+
+/** Ordered category headers; the settings panel renders the metric chips grouped
+ *  under these, and the order mirrors the overlay's registry render order. */
+export const PERF_METRIC_GROUPS: readonly PerfMetricGroupDef[] = [
+  { id: 'frame', labelKey: 'hudChrome.perf.groups.frame' },
+  { id: 'network', labelKey: 'hudChrome.perf.groups.network' },
+  { id: 'renderer', labelKey: 'hudChrome.perf.groups.renderer' },
+  { id: 'system', labelKey: 'hudChrome.perf.groups.system' },
+];
+
+/** A single metric's toggle-chip descriptor (key + its short label key). */
+export interface PerfMetricChip {
+  key: PerfMetricKey;
+  labelKey: TranslationKey;
+}
+
+export interface PerfMetricGroupView {
+  group: PerfMetricGroupDef;
+  chips: PerfMetricChip[];
+}
+
+/** The metric chips bucketed by category, in group + registry order. A group with
+ *  no metrics is omitted (none today, but keeps the consumer defensive). */
+export function perfMetricGroups(): PerfMetricGroupView[] {
+  return PERF_METRIC_GROUPS
+    .map((group) => ({
+      group,
+      chips: METRIC_REGISTRY.filter((d) => d.group === group.id).map((d) => ({ key: d.key, labelKey: d.labelKey })),
+    }))
+    .filter((g) => g.chips.length > 0);
+}
 
 /** The factory-default per-metric visibility map (FPS + frame time + ping on). */
 export function defaultMetricsMap(): Record<PerfMetricKey, boolean> {
