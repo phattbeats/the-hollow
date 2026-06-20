@@ -9,17 +9,59 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
+  ],
+  "es_ES": [
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
+  ],
+  "fr_FR": [
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
+  ],
+  "fr_CA": [
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
+  "it_IT": [
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
+  ],
+  "de_DE": [
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
+  ],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
-  "pt_BR": [],
+  "pt_BR": [
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
+  ],
   "ru_RU": []
 };
