@@ -6656,6 +6656,48 @@
     .cs-list-col, .cs-detail-col, .cs-create-col { height: 100%; }
   }
 
+  /* ---------- Online character-select: showcase claims the header band ----------
+     Now that the panel is wide, raise the right-hand showcase so its top edge
+     lines up with the realm/wallet header row instead of starting below the
+     whole header. The panel becomes a 2-col grid: the title spans the top, the
+     realm + $WOC wallet line and roster stack in the left lane, and the
+     showcase spans from the wallet line down to the panel bottom — giving room
+     for a noticeably larger character and more prominent stats/abilities. */
+  @media (min-width: 900px) {
+    #charselect-panel {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      grid-template-rows: auto auto minmax(0, 1fr);
+      column-gap: 28px;
+      row-gap: 0;
+    }
+    /* Unwrap the header + body wrappers so their children join the panel grid. */
+    #charselect-panel .cs-head,
+    #charselect-panel .cs-body { display: contents; }
+    #charselect-panel .cs-title { grid-column: 1 / -1; grid-row: 1; margin-bottom: var(--spacing-sm); }
+    #charselect-panel .cs-head-row { grid-column: 1; grid-row: 2; margin-bottom: 16px; }
+    #charselect-panel .cs-list-col { grid-column: 1; grid-row: 3; min-height: 0; }
+    #charselect-panel .cs-detail-col { grid-column: 2; grid-row: 2 / -1; min-height: 0; height: auto; }
+
+    /* Bigger character portrait — the reclaimed band makes the room. */
+    #charselect-panel .cs-detail-col .cs-preview {
+      height: clamp(264px, 34vh, 360px);
+      min-height: 264px;
+    }
+
+    /* More prominent stats + signature abilities in the (now taller) showcase. */
+    .cs-detail-col .details-section-title { font-size: 13px; }
+    .cs-detail-col .details-stat-bar-row { font-size: 12px; margin-bottom: 8px; }
+    .cs-detail-col .details-stat-label { width: 68px; }
+    .cs-detail-col .details-stat-bar-track { height: 11px; }
+    .cs-detail-col .details-stat-val { width: 22px; font-size: 12px; }
+    .cs-detail-col .details-gear-row { font-size: 12px; margin-bottom: 10px; }
+    .cs-detail-col .badge { font-size: 11px; padding: 3px 8px; }
+    .cs-detail-col .details-spell-item { font-size: 12px; padding: 10px 14px; gap: 12px; }
+    .cs-detail-col .details-spell-icon-img { width: 40px; height: 40px; }
+    .cs-detail-col .details-spell-text strong { font-size: 13px; }
+  }
+
   body.mobile-touch .charselect-screen { max-width: none; }
   body.mobile-touch .cs-body { flex: 1 1 auto; min-height: 0; }
   body.mobile-touch .cs-detail-col .cs-preview { min-height: 200px; }
