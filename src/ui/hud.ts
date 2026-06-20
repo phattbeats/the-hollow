@@ -7743,12 +7743,24 @@ export class Hud {
       select.disabled = true;
       void hooks.changeLanguage(selected, (msg) => { status.textContent = msg; })
         .then((ok) => {
-          select.disabled = false;
-          // On success the panel is rebuilt in the new language; on failure restore the
-          // picker to the locale that stayed active.
-          if (!ok) select.value = getLanguage();
-          else if (this.optionsOpen && this.optionsView === 'interface') this.renderInterface();
-        });
+          if (!ok) {
+            // The locale chunk failed to load — restore the picker to the locale that stayed active.
+            select.value = getLanguage();
+          } else if (this.optionsOpen && this.optionsView === 'interface') {
+            // Rebuild the panel in the new language, then return keyboard focus to the
+            // fresh picker (the control the user just operated) so it isn't lost to <body>.
+            // The refocus also lets screen readers announce the switch via the select's value.
+            this.renderInterface();
+            this.focusFirstInteractive($('#options-menu'), '.set-lang-select');
+          }
+        })
+        .catch(() => {
+          // A relocalization step threw after the locale loaded; keep the picker usable and
+          // surface the failure rather than leaving the control stuck disabled.
+          select.value = getLanguage();
+          status.textContent = t('settings.languageLoadFailed');
+        })
+        .finally(() => { select.disabled = false; });
     });
     row.append(name, select);
     parent.append(row, status);
