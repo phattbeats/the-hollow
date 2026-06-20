@@ -2172,7 +2172,7 @@ export class Sim {
       a.remaining -= DT;
       if (a.tickInterval) {
         a.tickTimer = (a.tickTimer ?? a.tickInterval) - DT;
-        if (a.tickTimer <= 0) {
+        if (a.tickTimer <= CAST_COMPLETE_EPS) {
           a.tickTimer += a.tickInterval;
           if (a.kind === 'dot') {
             this.emit({ type: 'spellfx', sourceId: a.sourceId, targetId: e.id, school: a.school, fx: 'tick' });
@@ -2192,7 +2192,7 @@ export class Sim {
           }
         }
       }
-      if (a.remaining <= 0) {
+      if (a.remaining <= CAST_COMPLETE_EPS) {
         e.auras.splice(i, 1);
         this.applyNonPlayerStatAura(e, a, -1);
         this.emit({ type: 'aura', targetId: e.id, name: a.name, gained: false });
