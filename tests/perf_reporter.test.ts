@@ -36,7 +36,7 @@ function renderDiagnostics() {
 
 function qualityBuckets(): NonNullable<PerfSnapshot['renderer']>['qualityBuckets'] {
   return {
-    version: 11,
+    version: 12,
     bands: {
       resolution: { min: 0.6, baseline: 1, max: 1, roi: 0.88, cost: 'gpu', governable: true },
       grass: { min: 0.6, baseline: 0.88, max: 1, roi: 0.86, cost: 'gpu', governable: true },
@@ -83,6 +83,7 @@ function qualityBuckets(): NonNullable<PerfSnapshot['renderer']>['qualityBuckets
       composer: true,
       ao: true,
       standardMaterials: true,
+      leanFoliage: false,
       terrainSplat: true,
       windSway: true,
       maxPointLights: 6,
@@ -192,7 +193,7 @@ function snapshot(): PerfSnapshot {
     },
     mainMs: { renderer: { count: 1, avg: 5, p95: 5, max: 5 } },
     renderer: {
-      graphicsConfigVersion: 11,
+      graphicsConfigVersion: 12,
       tier: 'high',
       qualityBuckets: qualityBuckets(),
       autoGovernor: true,
@@ -219,6 +220,7 @@ function snapshot(): PerfSnapshot {
         pressure: 0.4,
         frameMsEma: 16.7,
         submitMsEma: 1,
+        externalFrameCap: false,
         stallPressure: 0,
         recentSubmitStalls: 0,
         lastSubmitStallMs: 0,
@@ -323,7 +325,7 @@ describe('perf reporter payload', () => {
     expect(body.releaseVersion).toBe('0.9.0');
     expect(body.buildId).toBe('testbuild');
     expect(body.graphicsPreset).toBe('auto');
-    expect(body.graphicsConfigVersion).toBe(11);
+    expect(body.graphicsConfigVersion).toBe(12);
     expect(body.gfxTier).toBe('high');
     expect(body.autoGovernor).toBe(true);
     expect(body.effectiveRenderScale).toBe(0.9);
@@ -333,7 +335,7 @@ describe('perf reporter payload', () => {
     expect(body.source).toBe('benchmark');
     expect(body.zoneOrScenario).toBe('bench_dense_foliage');
     expect(JSON.stringify(body.rawSummary)).not.toContain('Safari/605');
-    expect((body.rawSummary as { graphicsConfigVersion?: number }).graphicsConfigVersion).toBe(11);
+    expect((body.rawSummary as { graphicsConfigVersion?: number }).graphicsConfigVersion).toBe(12);
     expect((body.rawSummary as { rendererQualityBuckets?: { levels?: { foliage?: number } } }).rendererQualityBuckets?.levels?.foliage).toBe(1);
     expect((body.rawSummary as { rendererQualityBuckets?: { levels?: { weapons?: number } } }).rendererQualityBuckets?.levels?.weapons).toBe(1);
     expect((body.rawSummary as { rendererPrewarmSummary?: { manifestPlanned?: number } }).rendererPrewarmSummary?.manifestPlanned).toBe(14);
@@ -370,6 +372,7 @@ describe('perf reporter payload', () => {
             pressure: 0.4,
             frameMsEma: 16.7,
             submitMsEma: 1,
+            externalFrameCap: false,
             stallPressure: 0,
             recentSubmitStalls: 0,
             lastSubmitStallMs: 0,

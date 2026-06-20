@@ -116,14 +116,22 @@ describe('graphics tier resolution', () => {
   it('keeps medium as a middle tier while high and ultra retain the premium pipeline', () => {
     const low = gfxInternalsForTest.settingsFor('low');
     const medium = gfxInternalsForTest.settingsFor('medium');
+    const mediumIris = gfxInternalsForTest.settingsFor('medium', {
+      search: '?gfx=medium',
+      gpuRenderer: 'ANGLE (Intel, ANGLE Metal Renderer: Intel(R) Iris(TM) Plus Graphics 655)',
+    });
     const high = gfxInternalsForTest.settingsFor('high');
     const ultra = gfxInternalsForTest.settingsFor('ultra');
 
     expect(low.standardMaterials).toBe(false);
+    expect(low.leanFoliage).toBe(true);
     expect(low.composer).toBe(false);
     expect(low.ao).toBe(false);
 
     expect(medium.standardMaterials).toBe(true);
+    expect(medium.leanFoliage).toBe(false);
+    expect(mediumIris.standardMaterials).toBe(true);
+    expect(mediumIris.leanFoliage).toBe(true);
     expect(medium.terrainSplat).toBe(true);
     expect(medium.composer).toBe(false);
     expect(medium.ao).toBe(false);

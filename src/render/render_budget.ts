@@ -1,7 +1,7 @@
 import { GFX_BUCKET_BANDS, type GfxBucketBands, type GfxRuntimeBudget, type GfxTier } from './gfx';
 
 export type RenderBudgetMode = 'disabled' | 'stable' | 'degrading' | 'recovering';
-export type RenderBudgetReason = 'disabled' | 'startup' | 'stable' | 'frame' | 'submit' | 'submit-stall' | 'draw' | 'grass' | 'recover';
+export type RenderBudgetReason = 'disabled' | 'startup' | 'stable' | 'frame' | 'frame-cap' | 'submit' | 'submit-stall' | 'draw' | 'grass' | 'recover';
 
 export interface RenderBudgetLevels {
   grass: number;
@@ -31,6 +31,7 @@ export interface RenderBudgetState {
   pressure: number;
   frameMsEma: number;
   submitMsEma: number;
+  externalFrameCap: boolean;
   stallPressure: number;
   recentSubmitStalls: number;
   lastSubmitStallMs: number;
@@ -141,6 +142,8 @@ const SUBMIT_STALL_URGENT_MS = 250;
 const SUBMIT_STALL_HOLD_SECONDS: Record<GfxTier, number> = { low: 18, medium: 14, high: 8, ultra: 6 };
 const SUBMIT_STALL_URGENT_HOLD_SECONDS: Record<GfxTier, number> = { low: 30, medium: 24, high: 14, ultra: 12 };
 const SUBMIT_STALL_RECOVERY_CEILING_MS = 42;
+const EXTERNAL_FRAME_CAP_MIN_MS = 28;
+const EXTERNAL_FRAME_CAP_MAX_MS = 48;
 
 export class RenderBudgetGovernor {
   private readonly tier: GfxTier;
@@ -153,6 +156,7 @@ export class RenderBudgetGovernor {
   private pressure = 0;
   private frameMsEma = 16.7;
   private submitMsEma = 0;
+  private externalFrameCap = false;
   private stallPressure = 0;
   private recentSubmitStalls = 0;
   private lastSubmitStallMs = 0;
@@ -184,6 +188,7 @@ export class RenderBudgetGovernor {
       : { grass: 1, foliage: 1, vfx: 1, lighting: 1, resolution: round2(scale) };
     this.frameMsEma = 16.7;
     this.submitMsEma = 0;
+    this.externalFrameCap = false;
     this.stallPressure = 0;
     this.recentSubmitStalls = 0;
     this.lastSubmitStallMs = 0;
@@ -204,6 +209,7 @@ export class RenderBudgetGovernor {
       pressure: round2(this.pressure),
       frameMsEma: round2(this.frameMsEma),
       submitMsEma: round2(this.submitMsEma),
+      externalFrameCap: this.externalFrameCap,
       stallPressure: round2(this.stallPressure),
       recentSubmitStalls: round2(this.recentSubmitStalls),
       lastSubmitStallMs: round2(this.lastSubmitStallMs),
@@ -230,6 +236,7 @@ export class RenderBudgetGovernor {
       this.mode = 'disabled';
       this.reason = 'disabled';
       this.pressure = 0;
+      this.externalFrameCap = false;
       return this.state();
     }
 
@@ -244,7 +251,7 @@ export class RenderBudgetGovernor {
       this.stallHoldSeconds = Math.max(0, this.stallHoldSeconds - sample.dt);
     }
 
-    const framePressure = Math.max(
+    const rawFramePressure = Math.max(
       positiveRatio(this.frameMsEma, this.budget.dropFrameMs),
       positiveRatio(totalMs, this.budget.dropFrameMs),
     );
@@ -257,6 +264,19 @@ export class RenderBudgetGovernor {
       positiveRatio(sample.triangles, this.caps.targetTriangles),
     );
     const grassPressure = positiveRatio(sample.grassVisibleTufts, this.caps.targetGrassTufts);
+    const cadenceMs = Math.max(frameMs, this.frameMsEma);
+    const renderWorkHasHeadroom = totalMs <= this.budget.recoverFrameMs
+      && submitMs <= Math.max(8, this.budget.recoverFrameMs * 0.7)
+      && this.submitMsEma <= Math.max(8, this.budget.dropFrameMs * 0.58)
+      && rawSubmitMs <= SUBMIT_STALL_RECOVERY_CEILING_MS
+      && this.stallPressure < 0.5
+      && drawPressure < 1
+      && grassPressure < 1;
+    this.externalFrameCap = rawFramePressure >= 1
+      && cadenceMs >= EXTERNAL_FRAME_CAP_MIN_MS
+      && cadenceMs <= EXTERNAL_FRAME_CAP_MAX_MS
+      && renderWorkHasHeadroom;
+    const framePressure = this.externalFrameCap ? 0 : rawFramePressure;
     this.pressure = Math.max(framePressure, submitPressure, drawPressure, grassPressure, this.stallPressure);
 
     const submitStall = rawSubmitMs >= SUBMIT_STALL_MS;
@@ -274,14 +294,14 @@ export class RenderBudgetGovernor {
     }
 
     const urgent = submitStall
-      || frameMs >= this.budget.urgentFrameMs
+      || (!this.externalFrameCap && frameMs >= this.budget.urgentFrameMs)
       || totalMs >= this.budget.urgentFrameMs
       || submitMs >= Math.max(12, this.budget.urgentFrameMs * 0.58)
       || sample.calls >= this.caps.urgentCalls
       || sample.triangles >= this.caps.urgentTriangles
       || sample.grassVisibleTufts >= this.caps.urgentGrassTufts;
     const overBudget = this.pressure >= 1
-      || this.frameMsEma >= this.budget.dropFrameMs
+      || (!this.externalFrameCap && this.frameMsEma >= this.budget.dropFrameMs)
       || totalMs >= this.budget.dropFrameMs
       || submitMs >= Math.max(8, this.budget.dropFrameMs * 0.58);
 
@@ -318,7 +338,7 @@ export class RenderBudgetGovernor {
       return this.state();
     }
 
-    const canRecover = this.frameMsEma <= this.budget.recoverFrameMs
+    const canRecover = (this.externalFrameCap || this.frameMsEma <= this.budget.recoverFrameMs)
       && totalMs <= this.budget.recoverFrameMs
       && submitMs <= Math.max(8, this.budget.recoverFrameMs * 0.7)
       && rawSubmitMs <= SUBMIT_STALL_RECOVERY_CEILING_MS
@@ -344,7 +364,7 @@ export class RenderBudgetGovernor {
     }
 
     this.mode = 'stable';
-    this.reason = 'stable';
+    this.reason = this.externalFrameCap ? 'frame-cap' : 'stable';
     return this.state();
   }
 

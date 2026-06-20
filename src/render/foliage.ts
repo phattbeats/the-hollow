@@ -82,7 +82,7 @@ const FOLIAGE_MODEL_URLS_LOW = {
   fern: [`${MODEL_DIR}fern.glb`],
   mushroom: [`${MODEL_DIR}mushroom.glb`],
 };
-const MODEL_URLS = GFX.standardMaterials ? FOLIAGE_MODEL_URLS_HIGH : FOLIAGE_MODEL_URLS_LOW;
+const MODEL_URLS = GFX.leanFoliage ? FOLIAGE_MODEL_URLS_LOW : FOLIAGE_MODEL_URLS_HIGH;
 
 // kick off fetches at import; buildFoliage assumes the cache is populated
 const loadedModels = new Map<string, GLTF>();
@@ -233,7 +233,7 @@ const LOD_HIGH: LodDists = { barkFar: 330, treeDetailFar: 300, dressFar: 200, ro
 // bucket boundaries — the windows test bucket centres, not instances
 const LOD_LOW: LodDists = { barkFar: 170, treeDetailFar: 250, dressFar: 185, rockFar: 190, treeFillFar: 245 };
 function lodDists(): LodDists {
-  return GFX.standardMaterials ? LOD_HIGH : LOD_LOW;
+  return GFX.leanFoliage ? LOD_LOW : LOD_HIGH;
 }
 
 // Wind sway injection for foliage materials (canopies, bushes, grass cards).
@@ -556,7 +556,7 @@ function placeSpecies(
     const { treeDetailFar, treeFillFar } = lodDists();
     const coreItems: Decoration[] = [];
     const nearFillItems: Decoration[] = [];
-    const coreRatio = GFX.standardMaterials ? 0.5 : 0.42;
+    const coreRatio = GFX.leanFoliage ? 0.42 : 0.5;
     for (const d of list) {
       if (list.length < 4 || hashAt(d.x, d.z, spec.salt + 91) < coreRatio) coreItems.push(d);
       else nearFillItems.push(d);
@@ -636,7 +636,7 @@ function placeSpecies(
           ? Math.min(detailMaxDist, barkFar)
           : detailMaxDist;
         register(im, group.lod, undefined, maxDist === Infinity ? undefined : maxDist);
-        if (GFX.standardMaterials && castsShadow) {
+        if (GFX.standardMaterials && !GFX.leanFoliage && castsShadow) {
           const shadow = cloneInstancedTo(im, part.geometry, makeShadowOnlyMaterial(part.material));
           shadow.castShadow = true;
           shadow.receiveShadow = false;
@@ -665,10 +665,12 @@ function placeSpecies(
 
 function buildTrees(parent: THREE.Group, seed: number, registry: BucketMesh[], hideRegistry: TreeHideable[]): void {
   const decos = generateDecorations(seed);
-  const sourceDecos = GFX.standardMaterials
+  const sourceDecos = !GFX.leanFoliage
     ? decos
     : decos.filter((d) => {
-      const keep = d.kind === 'rock' ? 0.55 : 0.46;
+      const keep = GFX.standardMaterials
+        ? d.kind === 'rock' ? 0.74 : 0.68
+        : d.kind === 'rock' ? 0.55 : 0.46;
       return hashAt(d.x, d.z, 83) < keep;
     });
   const buckets = new Map<string, Bucket>();
@@ -686,7 +688,7 @@ function buildTrees(parent: THREE.Group, seed: number, registry: BucketMesh[], h
 
   // low tier: one variant per species per bucket — it ran one procedural
   // shape per species before, and software GL pays per triangle
-  const treeVariants = GFX.standardMaterials ? 2 : 1;
+  const treeVariants = GFX.leanFoliage ? 1 : 2;
   const pineSpec: SpeciesSpec = {
     sets: MODEL_URLS.pine.map(extractParts),
     perBucket: treeVariants, salt: 51, baseScale: 1.1, sink: 0.05,
@@ -843,7 +845,7 @@ const DRESS_LOW_SCALE_BOOST = 1.08;
 const DRESS_TINT_SOFTEN_LOW = 0.56;
 
 function dressStep(): number {
-  return GFX.standardMaterials ? DRESS_STEP_HIGH : DRESS_STEP_LOW;
+  return GFX.leanFoliage ? DRESS_STEP_LOW : DRESS_STEP_HIGH;
 }
 
 function dressKindFor(biome: BiomeId, r: number): DressKind {
@@ -875,12 +877,12 @@ function generateDressing(seed: number): DressingSpot[] {
   const out: DressingSpot[] = [];
   const xHalf = WORLD_MAX_X - 16;
   const step = dressStep();
-  const scaleBoost = GFX.standardMaterials ? 1 : DRESS_LOW_SCALE_BOOST;
+  const scaleBoost = GFX.leanFoliage ? DRESS_LOW_SCALE_BOOST : 1;
   for (let gx = -xHalf; gx < xHalf; gx += step) {
     for (let gz = WORLD_MIN_Z + 16; gz < WORLD_MAX_Z - 16; gz += step) {
       const r = hashAt(gx, gz, 41);
       const biome = zoneBiomeAt(gz);
-      const density = DRESS_DENSITY[biome] * (GFX.standardMaterials ? 1 : DRESS_DENSITY_LOW_SCALE);
+      const density = DRESS_DENSITY[biome] * (GFX.leanFoliage ? DRESS_DENSITY_LOW_SCALE : 1);
       if (r > density) continue;
       const x = gx + (hashAt(gx, gz, 42) - 0.5) * step;
       const z = gz + (hashAt(gx, gz, 43) - 0.5) * step;
@@ -960,7 +962,7 @@ function buildDressing(parent: THREE.Group, seed: number, registry: BucketMesh[]
               s.z,
               DRESS_TINT[zoneBiomeAt(s.z)],
               c,
-              GFX.standardMaterials ? DRESS_TINT_SOFTEN : DRESS_TINT_SOFTEN_LOW,
+              GFX.leanFoliage ? DRESS_TINT_SOFTEN_LOW : DRESS_TINT_SOFTEN,
             ));
           }
         });
@@ -1087,11 +1089,11 @@ function buildGrassRing(parent: THREE.Group, seed: number): GrassRing {
   const maxChunkCount = Math.ceil(chunkCells * chunkCells * 0.5);
   const chunkHalfDiag = Math.SQRT2 * GRASS_CHUNK_SIZE * 0.5;
   const buildBudgetMs = GRASS_CHUNK_BUILD_BUDGET_MS;
-  const cacheLimit = GFX.standardMaterials ? GRASS_CHUNK_CACHE_LIMIT_HIGH : GRASS_CHUNK_CACHE_LIMIT_LOW;
+  const cacheLimit = GFX.leanFoliage ? GRASS_CHUNK_CACHE_LIMIT_LOW : GRASS_CHUNK_CACHE_LIMIT_HIGH;
 
   // high tier reads as a lush meadow: wider tufts with more blades; low keeps
   // the legacy sprite size
-  const lush = GFX.standardMaterials;
+  const lush = !GFX.leanFoliage;
   const quad = new THREE.PlaneGeometry(lush ? 1.45 : 1.1, lush ? 0.9 : 0.7);
   quad.translate(0, lush ? 0.42 : 0.35, 0);
   const quad2 = quad.clone().rotateY(Math.PI / 2);
@@ -1422,7 +1424,7 @@ export function buildFoliage(seed: number): FoliageView {
       // buckets fully behind the fog wall are pure overdraw; the optional
       // [minDist, maxDist) window uses the bucket-CENTER distance so a bark
       // mesh and its far-trunk proxy are never drawn together
-      const distanceScale = GFX.standardMaterials
+      const distanceScale = !GFX.leanFoliage
         ? 0.72 + 0.28 * modelQuality
         : 0.56 + 0.44 * modelQuality;
       const fogLimit = fogFar * (0.78 + 0.22 * modelQuality);
@@ -1435,7 +1437,7 @@ export function buildFoliage(seed: number): FoliageView {
       for (const b of bucketMeshes) {
         const d = Math.hypot(b.x - camX, b.z - camZ);
         const minDist = (b.minDist ?? 0) * distanceScale;
-        const revealScale = !GFX.standardMaterials && (b.lod === 'core' || b.lod === 'near-fill')
+        const revealScale = GFX.leanFoliage && (b.lod === 'core' || b.lod === 'near-fill')
           ? 0.94 + hashAt(b.x, b.z, 109) * 0.06
           : 1;
         const maxDist = b.maxDist === undefined ? Infinity : b.maxDist * distanceScale * revealScale;

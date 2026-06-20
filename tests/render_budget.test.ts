@@ -122,6 +122,62 @@ describe('render budget governor', () => {
     expect(state.levels).toEqual({ grass: 0.9, foliage: 0.9, vfx: 1, lighting: 1, resolution: 1 });
   });
 
+  it('does not degrade when frame cadence is capped but render work is cheap', () => {
+    const governor = new RenderBudgetGovernor({ tier: 'low', budget: GFX_BUDGETS.low, enabled: true });
+    governor.reset(1, 0.65, 1);
+    governor.update(sample({ dt: 0.6 }));
+
+    let state = governor.state();
+    for (let i = 0; i < 24; i++) {
+      state = governor.update(sample({
+        dt: 1 / 30,
+        frameMs: 33.4,
+        totalMs: 8.3,
+        submitMs: 4.6,
+        calls: 232,
+        triangles: 882_236,
+        grassVisibleTufts: 2_922,
+      }));
+    }
+
+    expect(state.externalFrameCap).toBe(true);
+    expect(state.mode).toBe('stable');
+    expect(state.reason).toBe('frame-cap');
+    expect(state.pressure).toBeLessThan(1);
+    expect(state.levels).toEqual({ grass: 0.9, foliage: 0.9, vfx: 1, lighting: 1, resolution: 1 });
+  });
+
+  it('recovers quality under capped frame cadence when render work has headroom', () => {
+    const governor = new RenderBudgetGovernor({ tier: 'low', budget: GFX_BUDGETS.low, enabled: true });
+    governor.reset(1, 0.65, 1);
+    governor.update(sample({ dt: 0.6 }));
+
+    let state = governor.update(sample({
+      frameMs: 80,
+      totalMs: 80,
+      submitMs: 55,
+      calls: 600,
+      triangles: 1_500_000,
+      grassVisibleTufts: 4_000,
+    }));
+    const degradedGrass = state.levels.grass;
+
+    for (let i = 0; i < 260; i++) {
+      state = governor.update(sample({
+        dt: 1 / 30,
+        frameMs: 33.4,
+        totalMs: 8.3,
+        submitMs: 4.6,
+        calls: 232,
+        triangles: 882_236,
+        grassVisibleTufts: 2_922,
+      }));
+    }
+
+    expect(state.externalFrameCap).toBe(true);
+    expect(state.levels.grass).toBeGreaterThan(degradedGrass);
+  });
+
   it('keeps high quality stable when fast frames carry premium foliage density', () => {
     const governor = new RenderBudgetGovernor({ tier: 'high', budget: GFX_BUDGETS.high, enabled: true });
     governor.reset(1, 0.7, 1);

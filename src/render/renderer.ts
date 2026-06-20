@@ -1104,6 +1104,7 @@ export class Renderer {
         composer: boolean;
         ao: boolean;
         standardMaterials: boolean;
+        leanFoliage: boolean;
         terrainSplat: boolean;
         windSway: boolean;
         maxPointLights: number;
@@ -1148,6 +1149,7 @@ export class Renderer {
           composer: GFX.composer,
           ao: GFX.ao,
           standardMaterials: GFX.standardMaterials,
+          leanFoliage: GFX.leanFoliage,
           terrainSplat: GFX.terrainSplat,
           windSway: GFX.windSway,
           maxPointLights: GFX.maxPointLights,

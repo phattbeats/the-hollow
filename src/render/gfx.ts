@@ -11,7 +11,7 @@ import * as THREE from 'three';
 //   4. otherwise: software GL (SwiftShader/llvmpipe) -> low, real GPUs -> high
 
 export type GfxTier = 'low' | 'medium' | 'high' | 'ultra';
-export const GFX_CONFIG_VERSION = 11;
+export const GFX_CONFIG_VERSION = 12;
 
 export const GFX_BUCKET_IDS = [
   'resolution',
@@ -75,6 +75,8 @@ export interface GfxSettings {
   readonly shadowMap: number;
   /** PBR MeshStandardMaterial; low keeps Lambert */
   readonly standardMaterials: boolean;
+  /** Use the cheaper low-foliage density/LOD policy while keeping the rest of the tier. */
+  readonly leanFoliage: boolean;
   readonly grassRadius: number;
   readonly grassStep: number;
   readonly terrainSplat: boolean;
@@ -272,9 +274,10 @@ export function configureMaskedDoubleSidedVegetationMaterial<T extends THREE.Mat
 
 function settingsFor(
   tier: GfxTier,
-  hints?: Pick<GfxRuntimeHints, 'search' | 'graphicsPreset' | 'terrainDetail' | 'foliageDensity' | 'effectsQuality' | 'shadowQuality'>,
+  hints?: Pick<GfxRuntimeHints, 'search' | 'graphicsPreset' | 'terrainDetail' | 'foliageDensity' | 'effectsQuality' | 'shadowQuality' | 'gpuRenderer'>,
 ): GfxSettings {
   const bucketBands = GFX_BUCKET_BANDS[tier];
+  const weakIntegratedGpu = isWeakIntegratedGpu(hints?.gpuRenderer);
   let settings: GfxSettings = {
     graphicsConfigVersion: GFX_CONFIG_VERSION,
     tier,
@@ -290,6 +293,7 @@ function settingsFor(
     pixelRatioCap: tier === 'low' ? 1.48 : tier === 'medium' ? 1.48 : tier === 'high' ? 1.75 : 2.5,
     shadowMap: tier === 'low' ? 2048 : tier === 'medium' ? 2560 : 4096,
     standardMaterials: tier === 'medium' || tier === 'high' || tier === 'ultra',
+    leanFoliage: tier === 'low' || (tier === 'medium' && weakIntegratedGpu),
     grassRadius: tier === 'low' ? 86 : tier === 'medium' ? 76 : 82, // low spends spare budget on nearby meadow density
     grassStep: tier === 'low' ? 1.85 : tier === 'medium' ? 2.0 : 1.8,
     terrainSplat: tier === 'medium' || tier === 'high' || tier === 'ultra',
