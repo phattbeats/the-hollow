@@ -255,6 +255,15 @@ describe('client HTML shell', () => {
     expect(html).not.toContain('id="mobile-meters"');
   });
 
+  it('keeps the World Market to one scroll container with browse filters below the tabs', () => {
+    expect(html).toContain('#market-window { width: 470px; display: none; flex-direction: column; overflow: hidden;');
+    expect(html).toContain('#market-body { overflow-y: auto; flex: 1; min-height: 0;');
+    expect(html).toContain('body.mobile-touch #market-window {\n    max-height: calc(58vh - 20px);\n    overflow: hidden;');
+    expect(hudTs).toContain('class="mkt-filters"');
+    expect(hudTs).toContain('data-market-filter="itemType"');
+    expect(hudTs).toContain('data-market-filter="rarity"');
+  });
+
   it('keeps the mobile More and Autorun buttons in the combat row', () => {
     const combatControls = html.slice(html.indexOf('<div id="mobile-combat-controls">'), html.indexOf('<div id="mobile-extra-controls"'));
     const primaryButtons = [...combatControls.matchAll(/<button class="mobile-btn"/g)];
