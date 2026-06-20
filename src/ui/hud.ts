@@ -85,6 +85,7 @@ import {
   type TalentAllocation, type TalentNode, type SpecDef, type Role,
 } from '../sim/content/talents';
 import { talentChoiceIconDataUrl, talentNodeIconDataUrl } from './talent_icons';
+import { dropdownKeyNav } from './dropdown_nav';
 import { augmentCategory, type AugmentCategory } from '../sim/content/augments';
 import {
   clearHotbarSlot, encodeHotbarAction, HOTBAR_ACTION_MIME, HotbarAction, parseHotbarAction, parseHotbarActions,
@@ -356,6 +357,7 @@ function weaponSwingKey(cls: string): string {
 
 export class Hud {
   private static readonly BAR_ABILITY_SLOTS = 11; // bar slots 1..11; slot 0 is the fixed Attack toggle
+  private static ddSeq = 0; // monotonic id source for buildDropdown listbox/option ARIA wiring
   private abilityButtons: { btn: HTMLButtonElement; label: HTMLSpanElement; countEl: HTMLSpanElement; keybindEl: HTMLSpanElement; cdOverlay: HTMLDivElement; cdText: HTMLDivElement; lastIcon: string }[] = [];
   private hotbarActions: HotbarAction[] = []; // index = barSlot-1
   private loadedSlotMapFromStorage = false;
@@ -6477,30 +6479,73 @@ export class Hud {
 
   // Generic in-app dropdown (replaces native <select>). The selected value lives
   // in root.dataset.value; pass onChange to react live. Closes on click-away.
+  // Implements the WAI-ARIA listbox pattern so it keeps the keyboard + screen
+  // reader semantics a native <select> has: the trigger is aria-haspopup, the
+  // menu is role="listbox" with aria-selected options, and Enter/Space/Arrows/
+  // Home/End/Esc are all handled (see dropdown_nav.ts for the pure key math).
   private buildDropdown(options: { value: string; label: string }[], current: string, onChange?: (value: string) => void, placeholder?: string): HTMLElement {
+    const uid = `ui-dd-${++Hud.ddSeq}`;
     const root = document.createElement('div');
     root.className = 'ui-dd';
     root.dataset.value = current;
     const labelOf = (v: string) => options.find((o) => o.value === v)?.label ?? placeholder ?? '';
-    root.innerHTML = `<button type="button" class="btn ui-dd-btn"><span class="ui-dd-label">${esc(labelOf(current))}</span><span class="ui-dd-caret">▾</span></button>`
-      + `<div class="ui-dd-menu" hidden>${options.map((o) => `<div class="ui-dd-item${o.value === current ? ' sel' : ''}" data-val="${esc(o.value)}">${esc(o.label)}</div>`).join('')}</div>`;
+    root.innerHTML = `<button type="button" class="btn ui-dd-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="${uid}"><span class="ui-dd-label">${esc(labelOf(current))}</span><span class="ui-dd-caret" aria-hidden="true">▾</span></button>`
+      + `<div class="ui-dd-menu" id="${uid}" role="listbox" hidden>${options.map((o, i) => `<div class="ui-dd-item${o.value === current ? ' sel' : ''}" id="${uid}-o${i}" role="option" aria-selected="${o.value === current ? 'true' : 'false'}" data-val="${esc(o.value)}">${esc(o.label)}</div>`).join('')}</div>`;
+    const btn = root.querySelector('.ui-dd-btn') as HTMLButtonElement;
     const menu = root.querySelector('.ui-dd-menu') as HTMLElement;
     const labelEl = root.querySelector('.ui-dd-label') as HTMLElement;
-    root.querySelector('.ui-dd-btn')!.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (menu.hasAttribute('hidden')) {
-        menu.removeAttribute('hidden');
-        setTimeout(() => document.addEventListener('click', () => menu.setAttribute('hidden', ''), { once: true }), 0);
-      } else menu.setAttribute('hidden', '');
-    });
-    root.querySelectorAll('.ui-dd-item').forEach((item) => item.addEventListener('click', () => {
+    const items = [...root.querySelectorAll<HTMLElement>('.ui-dd-item')];
+    const isOpen = () => !menu.hasAttribute('hidden');
+    const focusedIndex = () => items.findIndex((it) => it === document.activeElement);
+
+    const open = (focusIndex: number) => {
+      menu.removeAttribute('hidden');
+      btn.setAttribute('aria-expanded', 'true');
+      items[focusIndex]?.focus();
+      setTimeout(() => document.addEventListener('click', onAway, { once: true }), 0);
+    };
+    const close = (returnFocus = true) => {
+      if (!isOpen()) return;
+      menu.setAttribute('hidden', '');
+      btn.setAttribute('aria-expanded', 'false');
+      document.removeEventListener('click', onAway);
+      if (returnFocus) btn.focus();
+    };
+    const onAway = () => close(false);
+    const commit = (item: HTMLElement) => {
       const v = item.getAttribute('data-val') ?? '';
       root.dataset.value = v;
       labelEl.textContent = labelOf(v);
-      root.querySelectorAll('.ui-dd-item').forEach((x) => x.classList.toggle('sel', x === item));
-      menu.setAttribute('hidden', '');
+      items.forEach((x) => {
+        const sel = x === item;
+        x.classList.toggle('sel', sel);
+        x.setAttribute('aria-selected', sel ? 'true' : 'false');
+      });
+      close();
       onChange?.(v);
-    }));
+    };
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isOpen()) close(false);
+      else open(Math.max(0, items.findIndex((it) => it.classList.contains('sel'))));
+    });
+    // tabindex=-1 keeps options out of the Tab order but programmatically focusable.
+    items.forEach((item) => {
+      item.tabIndex = -1;
+      item.addEventListener('click', () => commit(item));
+    });
+    root.addEventListener('keydown', (e) => {
+      const action = dropdownKeyNav(e.key, isOpen(), focusedIndex(), items.length);
+      if (action.kind === 'none') return;
+      e.preventDefault();
+      switch (action.kind) {
+        case 'open': open(action.index); break;
+        case 'move': items[action.index]?.focus(); break;
+        case 'select': { const cur = items[focusedIndex()]; if (cur) commit(cur); break; }
+        case 'close': close(); break;
+      }
+    });
     return root;
   }
 
@@ -8349,48 +8394,40 @@ export class Hud {
     const name = document.createElement('span');
     name.className = 'set-name';
     name.textContent = t('hud.options.language');
-    const select = document.createElement('select');
-    select.className = 'lang-select-dropdown set-lang-select';
-    select.setAttribute('aria-label', t('hud.options.language'));
-    for (const lang of supportedLanguages) {
-      const opt = document.createElement('option');
-      opt.value = lang;
-      opt.textContent = LANGUAGE_ENDONYMS[lang];
-      select.appendChild(opt);
-    }
-    select.value = getLanguage();
+    // Custom gold-themed dropdown (.ui-dd) rather than a native <select>, so the
+    // open option list matches the MMO theme; buildDropdown carries the listbox
+    // ARIA + keyboard semantics a native <select> would have.
+    const options = supportedLanguages.map((lang) => ({ value: lang, label: LANGUAGE_ENDONYMS[lang] }));
     // aria-live status for the async locale load (loading / load-failed).
     const status = document.createElement('span');
     status.className = 'visually-hidden';
     status.setAttribute('role', 'status');
     status.setAttribute('aria-live', 'polite');
-    select.addEventListener('change', () => {
-      const selected = select.value;
-      if (!isSupportedLanguage(selected) || selected === getLanguage()) return;
+    let busy = false;
+    const dropdown = this.buildDropdown(options, getLanguage(), (selected) => {
+      if (busy || !isSupportedLanguage(selected) || selected === getLanguage()) return;
       audio.click();
-      select.disabled = true;
+      busy = true;
       void hooks.changeLanguage(selected, (msg) => { status.textContent = msg; })
         .then((ok) => {
-          if (!ok) {
-            // The locale chunk failed to load — restore the picker to the locale that stayed active.
-            select.value = getLanguage();
-          } else if (this.optionsOpen && this.optionsView === 'interface') {
-            // Rebuild the panel in the new language, then return keyboard focus to the
-            // fresh picker (the control the user just operated) so it isn't lost to <body>.
-            // The refocus also lets screen readers announce the switch via the select's value.
+          // On success rebuild the panel in the new language (which re-creates this
+          // picker at the now-active locale); on failure the rebuild — or the early
+          // return below — leaves it showing the locale that stayed active.
+          if (ok && this.optionsOpen && this.optionsView === 'interface') {
             this.renderInterface();
-            this.focusFirstInteractive($('#options-menu'), '.set-lang-select');
+            // Return keyboard focus to the fresh picker trigger so it isn't lost to <body>.
+            this.focusFirstInteractive($('#options-menu'), '.set-lang-select .ui-dd-btn');
           }
         })
         .catch(() => {
-          // A relocalization step threw after the locale loaded; keep the picker usable and
-          // surface the failure rather than leaving the control stuck disabled.
-          select.value = getLanguage();
           status.textContent = t('settings.languageLoadFailed');
+          if (this.optionsOpen && this.optionsView === 'interface') this.renderInterface();
         })
-        .finally(() => { select.disabled = false; });
+        .finally(() => { busy = false; });
     });
-    row.append(name, select);
+    dropdown.classList.add('set-lang-select');
+    dropdown.querySelector<HTMLElement>('.ui-dd-btn')?.setAttribute('aria-label', t('hud.options.language'));
+    row.append(name, dropdown);
     parent.append(row, status);
   }
 
