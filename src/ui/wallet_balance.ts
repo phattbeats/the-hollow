@@ -12,7 +12,7 @@ let balance: number | null = null;
 let verified = false;
 let listener: (() => void) | null = null;
 
-/** Whether the wallet feature is configured (VITE_REOWN_PROJECT_ID set). */
+/** Whether the wallet feature is enabled in this client build. */
 export function walletUiEnabled(): boolean {
   return enabled;
 }

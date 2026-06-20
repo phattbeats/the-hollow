@@ -1,14 +1,9 @@
-// Non-custodial Solana wallet connection via Reown AppKit (formerly
-// WalletConnect). This module owns the AppKit instance and the browser-side
-// connection; the account↔wallet *link* is performed by the server after the
+// Non-custodial Solana wallet connection via an injected browser wallet
+// provider. The account↔wallet *link* is performed by the server after the
 // wallet signs a challenge (see src/net/online.ts + server/wallet.ts).
 //
 // Lives in src/net/ and is never imported by src/sim/: the deterministic core
 // stays free of network/wallet dependencies.
-import './wallet-polyfill';
-import { createAppKit } from '@reown/appkit';
-import { solana, solanaDevnet } from '@reown/appkit/networks';
-import { SolanaAdapter } from '@reown/appkit-adapter-solana';
 import bs58 from 'bs58';
 
 export interface WalletState {
@@ -16,39 +11,91 @@ export interface WalletState {
   isConnected: boolean;
 }
 
-// The Solana provider AppKit hands back exposes raw message signing.
-interface SolanaSignProvider {
-  signMessage(message: Uint8Array): Promise<Uint8Array>;
+interface SolanaPublicKey {
+  toString(): string;
 }
 
-const PROJECT_ID = String(import.meta.env.VITE_REOWN_PROJECT_ID ?? '').trim();
+interface SolanaProvider {
+  publicKey?: SolanaPublicKey | null;
+  isConnected?: boolean;
+  connect(opts?: { onlyIfTrusted?: boolean }): Promise<{ publicKey?: SolanaPublicKey } | void>;
+  disconnect?(): Promise<void>;
+  signMessage(message: Uint8Array, encoding?: 'utf8'): Promise<Uint8Array | { signature?: Uint8Array }>;
+  on?(event: 'connect' | 'disconnect' | 'accountChanged', cb: (value?: SolanaPublicKey | null) => void): void;
+  off?(event: 'connect' | 'disconnect' | 'accountChanged', cb: (value?: SolanaPublicKey | null) => void): void;
+}
 
-type AppKitInstance = ReturnType<typeof createAppKit>;
-let appkit: AppKitInstance | null = null;
+type WalletWindow = Window & {
+  solana?: SolanaProvider;
+  phantom?: { solana?: SolanaProvider };
+};
+
 const listeners = new Set<(state: WalletState) => void>();
+let provider: SolanaProvider | null = null;
+let initialized = false;
+let connectedAddress: string | null = null;
+let trustedReconnectAttempted = false;
+let eventsAttached = false;
 
-export function initWallet(): AppKitInstance {
-  if (appkit) return appkit;
-  if (!PROJECT_ID) {
-    console.warn('[wallet] VITE_REOWN_PROJECT_ID is not set: add it to .env.local to enable wallet connect.');
-  }
-  appkit = createAppKit({
-    adapters: [new SolanaAdapter()],
-    networks: [solana, solanaDevnet],
-    projectId: PROJECT_ID || 'MISSING_VITE_REOWN_PROJECT_ID',
-    metadata: {
-      name: 'World of ClaudeCraft',
-      description: 'Link your Solana wallet to your World of ClaudeCraft account.',
-      url: window.location.origin,
-      icons: [`${window.location.origin}/worldofclaudecraft-logo.png`],
-    },
-    features: { analytics: false, email: false, socials: false },
+function walletWindow(): WalletWindow | null {
+  return typeof window === 'undefined' ? null : window as WalletWindow;
+}
+
+function injectedProvider(): SolanaProvider | null {
+  const w = walletWindow();
+  return w?.phantom?.solana ?? w?.solana ?? null;
+}
+
+function addressFromProvider(p: SolanaProvider | null): string | null {
+  const address = p?.publicKey?.toString() ?? null;
+  return address && address.length > 0 ? address : null;
+}
+
+function emitWalletState(): void {
+  const state = currentWallet();
+  for (const cb of listeners) cb(state);
+}
+
+function setConnectedAddress(address: string | null): void {
+  if (connectedAddress === address) return;
+  connectedAddress = address;
+  emitWalletState();
+}
+
+function attachProviderEvents(p: SolanaProvider): void {
+  p.on?.('connect', () => setConnectedAddress(addressFromProvider(p)));
+  p.on?.('disconnect', () => setConnectedAddress(null));
+  p.on?.('accountChanged', (key) => {
+    const address = key?.toString() ?? addressFromProvider(p);
+    setConnectedAddress(address && address.length > 0 ? address : null);
   });
-  appkit.subscribeAccount((acct) => {
-    const address = acct.address ?? null;
-    for (const cb of listeners) cb({ address, isConnected: address !== null });
-  }, 'solana');
-  return appkit;
+}
+
+export function initWallet(): SolanaProvider | null {
+  if (initialized && provider) return provider;
+  initialized = true;
+  provider = injectedProvider();
+  if (!provider) {
+    setConnectedAddress(null);
+    return null;
+  }
+  if (!eventsAttached) {
+    attachProviderEvents(provider);
+    eventsAttached = true;
+  }
+  setConnectedAddress(addressFromProvider(provider));
+  if (!connectedAddress && !trustedReconnectAttempted) {
+    trustedReconnectAttempted = true;
+    provider.connect({ onlyIfTrusted: true })
+      .then((result) => {
+        const address = result && 'publicKey' in result
+          ? result.publicKey?.toString() ?? addressFromProvider(provider)
+          : addressFromProvider(provider);
+        setConnectedAddress(address && address.length > 0 ? address : null);
+      })
+      .catch(() => undefined);
+  }
+  return provider;
 }
 
 /** Subscribe to connection changes. Fires on connect/disconnect/account switch. */
@@ -57,28 +104,38 @@ export function onWalletChange(cb: (state: WalletState) => void): () => void {
   return () => listeners.delete(cb);
 }
 
-/** Subscribe to AppKit modal open/close state. */
+/** Injected wallets use their own browser popup; there is no app-owned modal. */
 export function onWalletModalChange(cb: (open: boolean) => void): () => void {
-  return initWallet().subscribeState((state) => cb(state.open));
+  cb(false);
+  return () => undefined;
 }
 
 export function isWalletModalOpen(): boolean {
-  return appkit?.isOpen() ?? false;
+  return false;
 }
 
 export function currentWallet(): WalletState {
-  if (!appkit) return { address: null, isConnected: false };
-  const address = appkit.getAddress('solana') ?? null;
+  if (!initialized) provider = injectedProvider();
+  const address = connectedAddress ?? addressFromProvider(provider);
   return { address, isConnected: address !== null };
 }
 
-/** Open the Reown modal (connect, or the account view when already connected). */
+/** Ask the injected wallet to connect. */
 export async function openWalletModal(): Promise<void> {
-  await initWallet().open();
+  const p = initWallet();
+  if (!p) throw new Error('connect a Solana browser wallet first');
+  const result = await p.connect();
+  const address = result && 'publicKey' in result
+    ? result.publicKey?.toString() ?? addressFromProvider(p)
+    : addressFromProvider(p);
+  setConnectedAddress(address && address.length > 0 ? address : null);
 }
 
 export async function disconnectWallet(): Promise<void> {
-  if (appkit) await appkit.disconnect('solana');
+  const p = initWallet();
+  if (!p) return;
+  await p.disconnect?.();
+  setConnectedAddress(null);
 }
 
 /**
@@ -86,9 +143,11 @@ export async function disconnectWallet(): Promise<void> {
  * base58-encoded (the encoding the server's verifier expects).
  */
 export async function signMessageBase58(message: string): Promise<string> {
-  const provider = initWallet().getProvider<SolanaSignProvider>('solana');
-  if (!provider) throw new Error('connect a wallet first');
-  const signature = await provider.signMessage(new TextEncoder().encode(message));
+  const p = initWallet();
+  if (!p || !currentWallet().address) throw new Error('connect a wallet first');
+  const result = await p.signMessage(new TextEncoder().encode(message), 'utf8');
+  const signature = result instanceof Uint8Array ? result : result.signature;
+  if (!(signature instanceof Uint8Array)) throw new Error('wallet returned an invalid signature');
   return bs58.encode(signature);
 }
 

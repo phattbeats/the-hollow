@@ -14,9 +14,9 @@ import { clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, distance2d, 
 import { Api, ClientWorld, CharacterSummary, type ReleaseEntry } from './net/online';
 import { setWocBalance, setWalletUiEnabled } from './ui/wallet_balance';
 import { absolutePublishedCardUrl, setCardUploader, setReferralProvider, setStandingProvider } from './ui/player_card_share';
-// The wallet module (Reown AppKit + @solana/web3.js, ~1MB) is loaded lazily via
-// dynamic import() in the wallet controller below, so it stays out of the main
-// entry chunk and only loads when the feature is enabled + used.
+// The wallet module is loaded lazily via dynamic import() in the wallet
+// controller below, so it stays out of the main entry chunk and only loads when
+// the feature is enabled + used.
 import type { IWorld, LeaderboardEntry } from './world_api';
 import { findPlayerPath, resolvePlayerDestination } from './sim/pathfind';
 import { pathCrossesFence } from './sim/colliders';
@@ -2870,11 +2870,10 @@ function wireHomepageMusicToggle(): void {
   });
 }
 
-// ── Non-custodial Solana wallet linking (Reown) ─────────────────────────────
-// The header button connects a wallet (AppKit) and, once the player is logged
-// in, binds it to their account by signing a server-issued challenge. Wallet
-// connection persists in the browser (AppKit/localStorage); the account↔wallet
-// link is the durable, server-verified artifact.
+// ── Non-custodial Solana wallet linking ─────────────────────────────────────
+// The header button connects an injected Solana wallet and, once the player is
+// logged in, binds it to their account by signing a server-issued challenge.
+// The account↔wallet link is the durable, server-verified artifact.
 let linkedWalletPubkey: string | null = null;
 let linkedWocBalance: number | null = null;
 let connectedWocBalance: number | null = null;
@@ -2884,10 +2883,9 @@ let walletVerifyTimeout: number | null = null;
 let walletVerifyModalUnsubscribe: (() => void) | null = null;
 let walletFlowStatus: 'connect' | 'sign' | 'verify' | null = null;
 
-// Feature flag: the wallet UI is shown only when a Reown project id is set.
-// Read straight from env here (no module load) so an unconfigured deploy never
-// shows a dead button and never downloads the wallet chunk.
-const WALLET_ENABLED = String(import.meta.env.VITE_REOWN_PROJECT_ID ?? '').trim().length > 0;
+// Feature flag: injected-wallet support needs no project id. Keep an escape
+// hatch for deploys that want to hide the wallet UI entirely.
+const WALLET_ENABLED = String(import.meta.env.VITE_WALLET_DISABLED ?? '').trim() !== '1';
 
 // Lazily load the heavy wallet module the first time it's needed, then cache it.
 let walletMod: typeof import('./net/wallet') | null = null;
@@ -3263,14 +3261,14 @@ function wireWallet(): void {
   setWalletUiEnabled(WALLET_ENABLED);
   const btn = document.getElementById('btn-wallet');
   if (!btn) return;
-  // Feature-gate: with no project id configured, remove the wallet row entirely
-  // (no dead button) and never download the wallet chunk.
+  // Feature-gate: when explicitly disabled, remove the wallet row entirely and
+  // never download the wallet chunk.
   if (!WALLET_ENABLED) {
     document.querySelector('.cs-wallet')?.remove();
     return;
   }
   // These async actions are fire-and-forget from the click, so attach a .catch:
-  // an AppKit open/disconnect rejection must surface, not vanish silently.
+  // a wallet connect/disconnect rejection must surface, not vanish silently.
   const onErr = (what: string) => (e: unknown) => console.error(`[wallet] ${what} failed`, e);
   btn.addEventListener('click', () => { onWalletButtonClick().catch(onErr('action')); });
   document.getElementById('btn-wallet-switch')?.addEventListener('click', () => { switchWallet().catch(onErr('switch')); });
