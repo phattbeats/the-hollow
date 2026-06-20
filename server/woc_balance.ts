@@ -10,9 +10,9 @@
 // accepted only as a local-dev fallback (server/db.ts loads .env.local); no client
 // code references them, so nothing secret is inlined at build time.
 import type http from 'node:http';
+import { holderTierIndexForBalance } from '../src/sim/holder_tier';
 import { json } from './http_util';
 import { isSolanaAddress } from './wallet_link';
-import { holderTierForBalance } from '../src/ui/holder_tier';
 
 const WOC_MINT = (process.env.WOC_MINT ?? process.env.VITE_WOC_MINT ?? '3WjLscH2JsXLEFJZRA9z8ti8yRGxWGKbqymPd7UicRth').trim();
 const SOLANA_RPC_URL = (process.env.SOLANA_RPC_URL ?? process.env.VITE_SOLANA_RPC_URL ?? 'https://api.mainnet-beta.solana.com').trim();
@@ -23,10 +23,79 @@ const CACHE_TTL_MS = 5 * 60 * 1000;
 interface CacheEntry { balance: number; at: number; }
 const cache = new Map<string, CacheEntry>();
 
+interface RpcTokenAmount {
+  uiAmount?: unknown;
+  uiAmountString?: unknown;
+  amount?: unknown;
+  decimals?: unknown;
+}
+
+interface RpcTokenAccount {
+  account?: {
+    data?: {
+      parsed?: {
+        info?: {
+          tokenAmount?: unknown;
+        };
+      };
+    };
+  };
+}
+
+interface RpcTokenAccountsResponse {
+  result?: {
+    value?: RpcTokenAccount[];
+  };
+}
+
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === 'object' ? value as Record<string, unknown> : null;
+}
+
+function parseDecimalAmount(value: string): number | null {
+  const trimmed = value.trim();
+  if (!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(trimmed)) return null;
+  const parsed = Number(trimmed);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
+}
+
+function decimalStringFromRawAmount(rawAmount: string, decimals: number): string | null {
+  const raw = rawAmount.trim();
+  if (!/^\d+$/.test(raw) || !Number.isInteger(decimals) || decimals < 0 || decimals > 255) return null;
+  const digits = raw.replace(/^0+/, '') || '0';
+  if (decimals === 0) return digits;
+
+  const integerDigits = digits.length > decimals ? digits.slice(0, -decimals) : '0';
+  const fractionalDigits = digits.length > decimals
+    ? digits.slice(-decimals)
+    : digits.padStart(decimals, '0');
+  const trimmedFraction = fractionalDigits.replace(/0+$/, '');
+  return trimmedFraction ? `${integerDigits}.${trimmedFraction}` : integerDigits;
+}
+
+function parseRawAmount(rawAmount: unknown, decimals: unknown): number | null {
+  if (typeof rawAmount !== 'string' || typeof decimals !== 'number') return null;
+  const decimal = decimalStringFromRawAmount(rawAmount, decimals);
+  return decimal === null ? null : parseDecimalAmount(decimal);
+}
+
+function parseTokenBalance(tokenAmount: unknown): number | null {
+  const record = asRecord(tokenAmount);
+  if (!record) return null;
+  const amountRecord: RpcTokenAmount = record;
+  const { uiAmount, uiAmountString, amount, decimals } = amountRecord;
+  if (typeof uiAmount === 'number' && Number.isFinite(uiAmount) && uiAmount >= 0) return uiAmount;
+  if (typeof uiAmountString === 'string') {
+    const parsed = parseDecimalAmount(uiAmountString);
+    if (parsed !== null) return parsed;
+  }
+  return parseRawAmount(amount, decimals);
+}
+
 /**
  * The owner's total $WOC across all their token accounts for the mint, in
- * human-readable units (the RPC's uiAmount already applies decimals). Returns
- * null on any RPC/parse failure so callers can keep the last known value.
+ * human-readable units. Returns null on any RPC/parse failure so callers can
+ * keep the last known value.
  */
 export async function fetchWocBalance(pubkey: string): Promise<number | null> {
   try {
@@ -42,15 +111,14 @@ export async function fetchWocBalance(pubkey: string): Promise<number | null> {
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return null;
-    const data = (await res.json()) as {
-      result?: { value?: Array<{ account?: { data?: { parsed?: { info?: { tokenAmount?: { uiAmount?: number } } } } } }> };
-    };
+    const data = (await res.json()) as RpcTokenAccountsResponse;
     const accounts = data?.result?.value;
     if (!Array.isArray(accounts)) return null;
     let total = 0;
     for (const a of accounts) {
-      const ui = a?.account?.data?.parsed?.info?.tokenAmount?.uiAmount;
-      if (typeof ui === 'number') total += ui;
+      const info = asRecord(a?.account?.data?.parsed?.info);
+      const balance = parseTokenBalance(info?.tokenAmount);
+      if (balance !== null) total += balance;
     }
     return total;
   } catch (err) {
@@ -60,10 +128,10 @@ export async function fetchWocBalance(pubkey: string): Promise<number | null> {
 }
 
 /**
- * Cached $WOC balance (uiAmount) for a wallet. Re-fetches at most once per TTL;
- * on a failed refresh keeps the last known balance, or null when the wallet has
- * never been read successfully (so callers can omit the figure). One per-wallet
- * cache backs both the holder-tier broadcast and the client balance proxy.
+ * Cached $WOC balance for a wallet. Re-fetches at most once per TTL; on a failed
+ * refresh keeps the last known balance, or null when the wallet has never been
+ * read successfully (so callers can omit the figure). One per-wallet cache backs
+ * both the holder-tier broadcast and the client balance proxy.
  */
 export async function cachedWocBalance(pubkey: string): Promise<number | null> {
   const now = Date.now();
@@ -83,7 +151,7 @@ export async function cachedWocBalance(pubkey: string): Promise<number | null> {
 export async function holderInfoForPubkey(pubkey: string): Promise<{ tier: number; balance: number }> {
   const balance = await cachedWocBalance(pubkey);
   if (balance === null) return { tier: 0, balance: 0 };
-  return { tier: holderTierForBalance(balance)?.index ?? 0, balance };
+  return { tier: holderTierIndexForBalance(balance), balance };
 }
 
 /**

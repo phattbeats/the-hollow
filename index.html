@@ -1179,6 +1179,8 @@
   /* coins stay right-aligned whether or not the $WOC chip is present */
   #bags .money .money-inline { margin-left: auto; }
   .woc-balance { display: inline-flex; align-items: center; gap: 5px; color: var(--gold-dim); font-weight: 600; white-space: nowrap; }
+  .woc-balance.is-preview { color: #b8a66f; }
+  .woc-balance.is-verified { color: var(--color-text-success); }
   .woc-coin { display: inline-block; width: 11px; height: 11px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #c9a3ff, #6b3fa0); box-shadow: 0 0 4px rgba(150, 90, 230, 0.5); }
   .bag-grid { display: flex; flex-direction: column; gap: 2px; }
   .bag-item { display: flex; gap: 8px; align-items: center; width: 100%; font-size: 12px; padding: 3px 4px; border: 0; border-radius: 3px; cursor: var(--cursor-point); background: transparent; color: inherit; font-family: var(--ui-font); text-align: left; }
@@ -2015,13 +2017,14 @@
   }
   .donate-cta svg { width: 16px; height: 16px; display: block; }
 
-  /* Connect-wallet CTA — outlined gold to sit beside (not compete with) the
-     filled Donate button. Turns blue when a wallet is connected and green once
-     the wallet is verified-linked to the account. */
+  /* Wallet verification CTA. It is a gold action until the account has a
+     server-verified wallet, then settles into a green verified state. */
   .wallet-cta {
     display: inline-flex;
     align-items: center;
     gap: 7px;
+    min-height: 40px;
+    box-sizing: border-box;
     padding: 7px 14px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--gold-dim);
@@ -2045,12 +2048,43 @@
   }
   .wallet-cta svg { width: 16px; height: 16px; display: block; }
   .wallet-cta.is-connected { color: var(--color-text-light); border-color: var(--color-mana); }
+  .wallet-cta.needs-link {
+    color: #1a1304;
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #ffd86b, #c99423);
+    box-shadow: 0 0 12px rgba(255, 209, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.38);
+  }
+  .wallet-cta.needs-link:hover,
+  .wallet-cta.needs-link:focus-visible {
+    border-color: #ffe38a;
+    box-shadow: 0 0 16px rgba(255, 209, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  }
   .wallet-cta.is-linked { color: var(--color-text-success); border-color: var(--color-text-success); }
-  .wallet-cta.is-connected #wallet-label,
-  .wallet-cta.is-linked #wallet-label {
+  .wallet-cta.connect-app {
+    color: #07150b;
+    border-color: var(--color-text-success);
+    background: linear-gradient(180deg, #a7e8b0, #54aa67);
+    box-shadow: 0 0 12px rgba(88, 203, 112, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.34);
+  }
+  .wallet-cta.connect-app:hover,
+  .wallet-cta.connect-app:focus-visible {
+    border-color: #c7f2cf;
+    box-shadow: 0 0 16px rgba(88, 203, 112, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.44);
+  }
+  .wallet-cta.is-connected #wallet-label {
     font-family: 'SFMono-Regular', ui-monospace, 'Courier New', monospace;
     font-size: 12px;
     letter-spacing: 0;
+  }
+  .wallet-cta.is-linked #wallet-label {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    letter-spacing: 0.4px;
+  }
+  .wallet-cta.connect-app #wallet-label {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    letter-spacing: 0.4px;
   }
   .wallet-cta.busy { opacity: 0.6; pointer-events: none; }
 
@@ -2072,12 +2106,57 @@
     letter-spacing: 0.4px;
     white-space: nowrap;
   }
+  .cs-wallet-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    min-width: 0;
+  }
   .cs-wallet-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-  /* Secondary wallet controls (Switch / Sign out) — only shown when connected. */
+  .wallet-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 32px;
+    box-sizing: border-box;
+    padding: 5px 9px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(92, 214, 126, 0.42);
+    background: rgba(20, 56, 28, 0.38);
+    color: var(--color-text-success);
+    font-family: 'SFMono-Regular', ui-monospace, 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.15;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .wallet-status::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 8px rgba(92, 214, 126, 0.5);
+    flex: 0 0 auto;
+  }
+  .wallet-status[hidden] { display: none; }
+  .cs-wallet-help {
+    max-width: min(390px, 48vw);
+    color: var(--color-text-muted);
+    font-size: 11px;
+    line-height: 1.35;
+    text-align: right;
+  }
+  .cs-wallet-help.is-attention { color: var(--gold); }
+  .cs-wallet-help.is-verified { color: var(--color-text-success); }
+  /* Secondary wallet controls for account verification and wallet-app session state. */
   .wallet-mini {
     display: inline-flex;
     align-items: center;
     gap: 5px;
+    min-height: 40px;
+    box-sizing: border-box;
     padding: 6px 10px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--color-border-default);
@@ -2094,9 +2173,18 @@
   .wallet-mini svg { width: 14px; height: 14px; display: block; }
   .wallet-mini:hover,
   .wallet-mini:focus-visible { color: var(--color-text-light); border-color: var(--gold-dim); outline: none; }
+  #btn-wallet-unlink:hover,
+  #btn-wallet-unlink:focus-visible,
   #btn-wallet-signout:hover,
   #btn-wallet-signout:focus-visible { color: var(--color-text-error); border-color: var(--color-text-error); }
   .wallet-mini[hidden] { display: none; }
+
+  @media (max-width: 720px) {
+    .cs-wallet { align-items: flex-start; flex-direction: column; }
+    .cs-wallet-main { align-items: flex-start; width: 100%; }
+    .cs-wallet-actions { justify-content: flex-start; }
+    .cs-wallet-help { max-width: 100%; text-align: left; }
+  }
 
   /* Footer donate link keeps the social-link shape but warms up on hover. */
   .footer-lang-row { display: flex; justify-content: center; }
@@ -7306,20 +7394,28 @@
                 <div id="cs-realm-menu" class="cs-realm-menu" role="listbox" data-i18n-aria="auth.realmList" aria-label="Realm List" hidden></div>
               </div>
               <div class="cs-wallet cs-wallet-group">
-                <span class="cs-wallet-label">$WOC Wallet</span>
-                <div class="cs-wallet-actions">
-                  <button type="button" class="wallet-cta" id="btn-wallet" title="Link your Solana wallet" aria-label="Connect your Solana wallet">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v2"></path><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-3"></path><path d="M21 11h-4a2 2 0 0 0 0 4h4a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1Z"></path></svg>
-                    <span id="wallet-label">Connect Wallet</span>
-                  </button>
-                  <button type="button" class="wallet-mini" id="btn-wallet-switch" title="Connect a different wallet" hidden>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
-                    <span>Switch</span>
-                  </button>
-                  <button type="button" class="wallet-mini" id="btn-wallet-signout" title="Disconnect this wallet" hidden>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                    <span>Sign out</span>
-                  </button>
+                <span class="cs-wallet-label" data-i18n="wallet.label">$WOC Wallet</span>
+                <div class="cs-wallet-main">
+                  <div class="cs-wallet-actions">
+                    <button type="button" class="wallet-cta" id="btn-wallet" data-i18n-title="wallet.connectTitle" data-i18n-aria="wallet.connectAria" title="Verify your Solana wallet" aria-label="Verify your Solana wallet">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v2"></path><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-3"></path><path d="M21 11h-4a2 2 0 0 0 0 4h4a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1Z"></path></svg>
+                      <span id="wallet-label" data-i18n="wallet.connect">Verify Wallet</span>
+                    </button>
+                    <span class="wallet-status" id="wallet-status" aria-live="polite" hidden></span>
+                    <button type="button" class="wallet-mini" id="btn-wallet-switch" data-i18n-title="wallet.switchTitle" data-i18n-aria="wallet.switchAria" title="Verify a different wallet" aria-label="Verify a different wallet" hidden>
+                      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+                      <span data-i18n="wallet.switch">Switch</span>
+                    </button>
+                    <button type="button" class="wallet-mini" id="btn-wallet-unlink" data-i18n-title="wallet.unlinkTitle" data-i18n-aria="wallet.unlinkAria" title="Remove wallet verification from this account" aria-label="Remove wallet verification from this account" hidden>
+                      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L11 4.93"></path><path d="M14 11a5 5 0 0 0-7.07 0L4.81 13.12a5 5 0 0 0 7.07 7.07L13 19.07"></path><path d="M3 3l18 18"></path></svg>
+                      <span data-i18n="wallet.unlink">Unlink</span>
+                    </button>
+                    <button type="button" class="wallet-mini" id="btn-wallet-signout" data-i18n-title="wallet.signOutTitle" data-i18n-aria="wallet.signOutAria" title="Disconnect the wallet app on this browser" aria-label="Disconnect the wallet app on this browser" hidden>
+                      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                      <span data-i18n="wallet.signOut">Disconnect</span>
+                    </button>
+                  </div>
+                  <div class="cs-wallet-help" id="wallet-help" data-i18n="wallet.helpDisconnected">Verify a Solana wallet to enable holder flair and player-card badges. No transaction or SOL required.</div>
                 </div>
               </div>
             </div>

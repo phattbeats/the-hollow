@@ -30,6 +30,7 @@ export const DATABASE_URL =
 export const pool = new Pool({ connectionString: DATABASE_URL, max: 10 });
 
 const REALM_SQL_DEFAULT = REALM.replace(/'/g, "''");
+const LIFETIME_XP_EXPR = "((state->>'lifetimeXp')::bigint)";
 
 export const SCHEMA = `
 CREATE TABLE IF NOT EXISTS accounts (
@@ -63,9 +64,9 @@ ALTER TABLE characters ADD COLUMN IF NOT EXISTS realm TEXT NOT NULL DEFAULT '${R
 -- index serves the realm-scoped in-game panel; the second serves the global
 -- (cross-realm) home-page board.
 CREATE INDEX IF NOT EXISTS characters_lifetime_xp
-  ON characters (realm, ((state->>'lifetimeXp')::bigint) DESC);
+  ON characters (realm, ${LIFETIME_XP_EXPR} DESC);
 CREATE INDEX IF NOT EXISTS characters_lifetime_xp_global
-  ON characters (((state->>'lifetimeXp')::bigint) DESC);
+  ON characters (${LIFETIME_XP_EXPR} DESC);
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS is_admin BOOLEAN NOT NULL DEFAULT FALSE;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS suspended_until TIMESTAMPTZ;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS banned_at TIMESTAMPTZ;
@@ -619,15 +620,15 @@ export async function lifetimeXpStanding(
   accountId: number,
   characterId: number,
 ): Promise<{ rank: number; total: number } | null> {
-  // One round-trip: the `own` subquery yields this character's lifetime XP (and
-  // gates ownership/realm — no rows ⇒ not the caller's ⇒ null). The count-ahead
-  // is bounded by the characters_lifetime_xp index (realm, lifetimeXp DESC).
+  // One round-trip: the `own` subquery yields this character's lifetime XP and
+  // gates ownership/realm. The count-ahead predicate uses the same expression
+  // as characters_lifetime_xp so PostgreSQL can use that expression index.
   const res = await pool.query(
     `SELECT
        (SELECT count(*) FROM characters
-         WHERE realm = $1 AND COALESCE((state->>'lifetimeXp')::bigint, 0) > own.xp)::int AS ahead,
+         WHERE realm = $1 AND ${LIFETIME_XP_EXPR} > own.xp)::int AS ahead,
        (SELECT count(*) FROM characters WHERE realm = $1)::int AS total
-     FROM (SELECT COALESCE((state->>'lifetimeXp')::bigint, 0) AS xp
+     FROM (SELECT COALESCE(${LIFETIME_XP_EXPR}, 0) AS xp
              FROM characters WHERE id = $2 AND account_id = $3 AND realm = $1) own`,
     [REALM, characterId, accountId],
   );

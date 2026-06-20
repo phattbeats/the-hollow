@@ -7,11 +7,24 @@
 // play, or before world entry) the HUD falls back to download / native share
 // only, with no hosted link.
 
+declare const absoluteUrlBrand: unique symbol;
+export type AbsoluteUrl = string & { readonly [absoluteUrlBrand]: true };
+
+/**
+ * Normalize the raw upload response before it crosses into the share UI.
+ * The server currently returns realm-relative paths such as `/p/<slug>`;
+ * PublishedCard.url must always be absolute so native/share-link consumers do
+ * not need to know which realm produced the card.
+ */
+export function absolutePublishedCardUrl(url: string, realmOrigin: string, pageOrigin: string): AbsoluteUrl {
+  return new URL(url, realmOrigin || pageOrigin).href as AbsoluteUrl;
+}
+
 /** Result of publishing a card. The card page itself embeds the `?ref=` CTA
  *  server-side, so clients share this URL directly. */
 export interface PublishedCard {
   /** Absolute URL of the public card page. */
-  url: string;
+  url: AbsoluteUrl;
 }
 
 export type CardUploader = (png: Blob) => Promise<PublishedCard>;

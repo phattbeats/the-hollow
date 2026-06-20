@@ -20,11 +20,11 @@ import {
   hashPassword, verifyPassword, newToken, validUsernameShape, offensiveName, validPassword, normalizeCharName,
 } from './auth';
 import { json, readBody, isUniqueViolation } from './http_util';
-import { requestIp, rateLimited, authThrottled, recordAuthFailure, clearAuthFailures } from './ratelimit';
+import { requestIp, rateLimited, authThrottled, recordAuthFailure, clearAuthFailures, cardUploadRateLimited } from './ratelimit';
 import { verifyTurnstile } from './turnstile';
 import { handleWalletChallenge, handleWalletLink, handleWalletGet, handleWalletUnlink } from './wallet';
 import { handleWocBalance } from './woc_balance';
-import { handleCardUpload, handleCardRoutes, captureReferral } from './player_card';
+import { handleCardUpload, handleCardRoutes, captureReferral, cardUploadContentLengthTooLarge } from './player_card';
 import { handleAdminApi } from './admin';
 import { handleInternalApi } from './internal';
 import { handlePerfReport } from './perf_report';
@@ -577,8 +577,14 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     }
     // Shareable player card: publish (PNG body) + referral stats for the card.
     if (req.method === 'POST' && url === '/api/card') {
+      if (cardUploadContentLengthTooLarge(req)) {
+        res.shouldKeepAlive = false;
+        res.setHeader('Connection', 'close');
+        return json(res, 413, { error: 'image too large' });
+      }
       const accountId = await bearerActiveAccount(req, res);
       if (accountId === null) return;
+      if (cardUploadRateLimited(req, accountId)) return json(res, 429, { error: 'rate limited' });
       return handleCardUpload(req, res, accountId);
     }
     if (req.method === 'GET' && url === '/api/referrals') {

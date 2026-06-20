@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import bs58 from 'bs58';
 import { fetchWocBalance, holderInfoForPubkey, cachedWocBalance, handleWocBalance } from '../server/woc_balance';
@@ -31,6 +32,26 @@ function mockRpc(uiAmounts: number[]) {
   }));
 }
 
+type MockTokenAmount = {
+  uiAmount?: unknown;
+  uiAmountString?: unknown;
+  amount?: unknown;
+  decimals?: unknown;
+};
+
+function mockTokenAmountRpc(tokenAmounts: MockTokenAmount[]) {
+  return vi.fn(async () => ({
+    ok: true,
+    json: async () => ({
+      result: {
+        value: tokenAmounts.map((tokenAmount) => ({
+          account: { data: { parsed: { info: { tokenAmount } } } },
+        })),
+      },
+    }),
+  }));
+}
+
 // Mock the RPC with an arbitrary, possibly-malformed, parsed JSON body. Used to
 // drive the defensive parsing paths in fetchWocBalance (missing/typeless fields).
 function mockRawRpc(body: unknown) {
@@ -39,10 +60,41 @@ function mockRawRpc(body: unknown) {
 
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
 
+describe('server import boundary', () => {
+  it('keeps holder tier math out of src/ui imports', () => {
+    const source = readFileSync(new URL('../server/woc_balance.ts', import.meta.url), 'utf8');
+    expect(source).not.toMatch(/src\/ui\/holder_tier|ui\/holder_tier/);
+    expect(source).toContain('../src/sim/holder_tier');
+  });
+});
+
 describe('fetchWocBalance', () => {
   it('sums uiAmount across all of the owner’s token accounts', async () => {
     vi.stubGlobal('fetch', mockRpc([1000, 250.5]));
     expect(await fetchWocBalance('AAA')).toBe(1250.5);
+  });
+
+  it('uses uiAmountString when uiAmount is null', async () => {
+    vi.stubGlobal('fetch', mockTokenAmountRpc([
+      { uiAmount: null, uiAmountString: '1000.25' },
+      { uiAmount: null, uiAmountString: '0.75' },
+    ]));
+    expect(await fetchWocBalance('AA2')).toBe(1001);
+  });
+
+  it('uses raw amount and decimals when uiAmount is null and uiAmountString is unavailable', async () => {
+    vi.stubGlobal('fetch', mockTokenAmountRpc([
+      { uiAmount: null, amount: '123456789', decimals: 6 },
+      { uiAmount: null, amount: '1000000000000000000', decimals: 9 },
+    ]));
+    expect(await fetchWocBalance('AA3')).toBeCloseTo(1_000_000_123.456789, 6);
+  });
+
+  it('falls back from an invalid uiAmountString to raw amount and decimals', async () => {
+    vi.stubGlobal('fetch', mockTokenAmountRpc([
+      { uiAmount: null, uiAmountString: 'not-a-number', amount: '2500000', decimals: 6 },
+    ]));
+    expect(await fetchWocBalance('AA4')).toBe(2.5);
   });
 
   it('returns null on a non-ok RPC response', async () => {
@@ -83,13 +135,15 @@ describe('fetchWocBalance', () => {
     expect(await fetchWocBalance('GGG')).toBe(42);
   });
 
-  it('skips a uiAmount of the wrong type (string or null), summing only numbers', async () => {
+  it('skips malformed token amount fields, summing only parseable balances', async () => {
     vi.stubGlobal('fetch', mockRawRpc({
       result: {
         value: [
-          { account: { data: { parsed: { info: { tokenAmount: { uiAmount: '500' } } } } } }, // string → skipped
-          { account: { data: { parsed: { info: { tokenAmount: { uiAmount: null } } } } } },  // null → skipped
-          { account: { data: { parsed: { info: { tokenAmount: { uiAmount: 7.5 } } } } } },    // number → counted
+          { account: { data: { parsed: { info: { tokenAmount: { uiAmount: '500' } } } } } },
+          { account: { data: { parsed: { info: { tokenAmount: { uiAmount: null } } } } } },
+          { account: { data: { parsed: { info: { tokenAmount: { uiAmountString: '1e9' } } } } } },
+          { account: { data: { parsed: { info: { tokenAmount: { amount: '2500000.5', decimals: 6 } } } } } },
+          { account: { data: { parsed: { info: { tokenAmount: { uiAmount: 7.5 } } } } } },
         ],
       },
     }));

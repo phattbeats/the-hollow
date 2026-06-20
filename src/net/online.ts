@@ -241,7 +241,9 @@ export class Api {
   }
 
   // ── Shareable player card + referrals ──────────────────────────────────────
-  // Publish (or replace) this character's card PNG; returns the public page path
+  // Publish (or replace) this character's card PNG. The server may return a
+  // realm-relative public page path; main.ts normalizes it to an absolute URL
+  // before injecting it into the share UI.
   // The body is the raw PNG, so this bypasses the JSON `post` helper.
   async uploadCard(characterId: number, png: Blob): Promise<{ url: string }> {
     const res = await fetch(`${this.base}/api/card?character=${characterId}`, {

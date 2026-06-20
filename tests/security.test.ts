@@ -6,7 +6,20 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildWebSocketAuthMessage, buildWebSocketUrl } from '../src/net/online';
 import { Sim } from '../src/sim/sim';
 import { normalizeCharName, offensiveName, offensiveUsername, validCharName, validUsername } from '../server/auth';
-import { rateLimited, requestIp, authThrottled, recordAuthFailure, clearAuthFailures, authFailureCount, resetAuthFailures, trackedIpCount, resetRateLimits } from '../server/ratelimit';
+import {
+  rateLimited,
+  requestIp,
+  authThrottled,
+  recordAuthFailure,
+  clearAuthFailures,
+  authFailureCount,
+  resetAuthFailures,
+  trackedIpCount,
+  resetRateLimits,
+  cardUploadRateLimited,
+  CARD_UPLOAD_MAX_PER_MINUTE,
+  resetCardUploadRateLimits,
+} from '../server/ratelimit';
 
 function fakeReq(headers: Record<string, string>, remoteAddress: string) {
   const req: any = new EventEmitter();
@@ -52,7 +65,10 @@ describe('websocket authentication', () => {
 describe('rate-limit client IP selection', () => {
   // The attempts map is module-level shared state; reset it so the flood tests
   // below (and any future ordering changes) can't leak entries between cases.
-  beforeEach(() => resetRateLimits());
+  beforeEach(() => {
+    resetRateLimits();
+    resetCardUploadRateLimits();
+  });
 
   it('ignores spoofed x-forwarded-for from untrusted direct clients', () => {
     const req = fakeReq({ 'x-forwarded-for': '203.0.113.55' }, '198.51.100.10');
@@ -113,6 +129,22 @@ describe('rate-limit client IP selection', () => {
     expect(aliceLimited).toBe(true);
     // ...while another player behind the same proxy is unaffected
     expect(rateLimited(fakeReq({ 'x-forwarded-for': '198.51.100.201' }, '172.18.0.1'))).toBe(false);
+  });
+
+  it('rate-limits card uploads by account across client IPs', () => {
+    const accountId = 77;
+    for (let i = 0; i < CARD_UPLOAD_MAX_PER_MINUTE; i++) {
+      expect(cardUploadRateLimited(fakeReq({ 'x-forwarded-for': `203.0.113.${i + 1}` }, '172.18.0.1'), accountId)).toBe(false);
+    }
+    expect(cardUploadRateLimited(fakeReq({ 'x-forwarded-for': '203.0.113.250' }, '172.18.0.1'), accountId)).toBe(true);
+  });
+
+  it('rate-limits card uploads by client IP across accounts', () => {
+    const ip = '203.0.113.220';
+    for (let i = 0; i < CARD_UPLOAD_MAX_PER_MINUTE; i++) {
+      expect(cardUploadRateLimited(fakeReq({ 'x-forwarded-for': ip }, '172.18.0.1'), 1000 + i)).toBe(false);
+    }
+    expect(cardUploadRateLimited(fakeReq({ 'x-forwarded-for': ip }, '172.18.0.1'), 2000)).toBe(true);
   });
 
   it('keeps limiting a persistent attacker after the memory backstop evicts', () => {

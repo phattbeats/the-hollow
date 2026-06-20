@@ -40,7 +40,7 @@ import { RenderBudgetGovernor, type RenderBudgetState } from './render_budget';
 import { t } from '../ui/i18n';
 import { tEntity } from '../ui/entity_i18n';
 import { raidMarkerDataUrl } from '../ui/icons';
-import { holderTierByIndex, holderTierBadgeDataUrl } from '../ui/holder_tier';
+import { holderTierByIndex, holderTierBadgeDataUrl, holderTierDisplayName } from '../ui/holder_tier';
 import { isProjectedNameplateAnchorVisible, nameplateScreenTransform } from './nameplate_projection';
 import { comboPipsFor, COMBO_PIP_MAX } from './nameplate_combo';
 import { stepCameraOcclusion, type CameraOcclusionState } from './camera_collision';
@@ -3499,7 +3499,7 @@ export class Renderer {
     const def = holderTierByIndex(tier);
     if (def) {
       v.tierEl.src = holderTierBadgeDataUrl(def, 32);
-      v.tierEl.title = `${def.name} — $WOC holder`;
+      v.tierEl.title = t('wallet.holderTierTitle', { tier: holderTierDisplayName(def) });
       v.tierEl.style.display = '';
     } else {
       v.tierEl.removeAttribute('src');

@@ -52,8 +52,18 @@ export function initWallet(): AppKitInstance {
 }
 
 /** Subscribe to connection changes. Fires on connect/disconnect/account switch. */
-export function onWalletChange(cb: (state: WalletState) => void): void {
+export function onWalletChange(cb: (state: WalletState) => void): () => void {
   listeners.add(cb);
+  return () => listeners.delete(cb);
+}
+
+/** Subscribe to AppKit modal open/close state. */
+export function onWalletModalChange(cb: (open: boolean) => void): () => void {
+  return initWallet().subscribeState((state) => cb(state.open));
+}
+
+export function isWalletModalOpen(): boolean {
+  return appkit?.isOpen() ?? false;
 }
 
 export function currentWallet(): WalletState {

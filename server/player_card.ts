@@ -11,7 +11,7 @@
 // shared link resolves no matter which realm serves the request. Referral
 // capture only records the relationship; reward payout is out of scope.
 import type http from 'node:http';
-import { json, readBinaryBody, isPng, isUniqueViolation } from './http_util';
+import { json, readBinaryBody, parsePngInfo, isUniqueViolation } from './http_util';
 import {
   getCharacter,
   slugAvailable,
@@ -21,10 +21,18 @@ import {
   accountForSlug,
   recordReferral,
 } from './db';
+import { REALM_PUBLIC_ORIGIN } from './realm';
 
 // A composited card is ~1200×630 @2× PNG — comfortably under this bound, which
 // is generous enough to never reject a legitimate upload yet caps memory.
-const MAX_CARD_BYTES = 4 * 1024 * 1024;
+export const MAX_CARD_BYTES = 4 * 1024 * 1024;
+const CARD_PNG_DIMENSIONS = [
+  { width: 1200, height: 630 },
+  { width: 2400, height: 1260 },
+] as const;
+const MAX_CARD_DECODED_BYTES = (2400 * 4 + 1) * 1260;
+const MAX_SLUG_LENGTH = 64;
+const MAX_SLUG_ATTEMPTS = 25;
 
 const CLASS_DISPLAY: Record<string, string> = {
   warrior: 'Warrior', paladin: 'Paladin', hunter: 'Hunter', rogue: 'Rogue',
@@ -54,6 +62,18 @@ export function isValidSlug(slug: string): boolean {
   return /^[a-z0-9][a-z0-9-]{0,63}$/.test(slug);
 }
 
+function slugWithSuffix(base: string, suffix: string): string {
+  const maxBaseLength = Math.max(1, MAX_SLUG_LENGTH - suffix.length);
+  const prefix = base.slice(0, maxBaseLength).replace(/-+$/g, '') || 'player';
+  return `${prefix}${suffix}`.slice(0, MAX_SLUG_LENGTH);
+}
+
+function cardSlugCandidate(base: string, characterId: number, attempt: number): string {
+  if (attempt === 0) return base.slice(0, MAX_SLUG_LENGTH);
+  const suffix = attempt === 1 ? `-${characterId}` : `-${characterId}-${attempt}`;
+  return slugWithSuffix(base, suffix);
+}
+
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, '&amp;')
@@ -64,10 +84,20 @@ function escapeHtml(s: string): string {
 }
 
 function requestOrigin(req: http.IncomingMessage): string {
+  if (REALM_PUBLIC_ORIGIN) return REALM_PUBLIC_ORIGIN;
   const fwd = String(req.headers['x-forwarded-proto'] ?? '').split(',')[0].trim();
   const proto = fwd || ((req.socket as { encrypted?: boolean }).encrypted ? 'https' : 'http');
   const host = req.headers.host ?? 'localhost';
   return `${proto}://${host}`;
+}
+
+export function cardUploadContentLengthTooLarge(req: http.IncomingMessage): boolean {
+  const raw = req.headers['content-length'];
+  const value = Array.isArray(raw) ? raw[0] : raw;
+  if (typeof value !== 'string') return false;
+  const trimmed = value.trim();
+  if (!/^\d+$/.test(trimmed)) return false;
+  return Number(trimmed) > MAX_CARD_BYTES;
 }
 
 // POST /api/card?character=<id>  (body: image/png)  → { url, ref }
@@ -81,6 +111,7 @@ export async function handleCardUpload(
   if (!Number.isInteger(characterId) || characterId <= 0) {
     return json(res, 400, { error: 'character id is required' });
   }
+  if (cardUploadContentLengthTooLarge(req)) return json(res, 413, { error: 'image too large' });
   const character = await getCharacter(accountId, characterId);
   if (!character) return json(res, 404, { error: 'character not found' });
 
@@ -91,27 +122,30 @@ export async function handleCardUpload(
     const tooLarge = err instanceof Error && err.message === 'body too large';
     return json(res, tooLarge ? 413 : 400, { error: tooLarge ? 'image too large' : 'could not read image' });
   }
-  if (!isPng(png)) return json(res, 400, { error: 'expected a PNG image' });
+  if (!parsePngInfo(png, { allowedDimensions: CARD_PNG_DIMENSIONS, maxDecodedBytes: MAX_CARD_DECODED_BYTES })) {
+    return json(res, 400, { error: 'expected a PNG image' });
+  }
 
   const base = slugify(character.name) || `player-${characterId}`;
   const title = `${character.name} — Level ${character.level} ${classDisplay(character.class)}`;
   const description = `${character.name} is forging a legend in World of Claudecraft. Join the realm.`;
 
-  // Prefer the clean name slug; fall back to a character-id-suffixed slug when
-  // the name slug is taken by a different character. Retry once under a unique
-  // violation in case the slug is claimed between the check and the upsert.
-  let slug = (await slugAvailable(base, characterId)) ? base : `${base}-${characterId}`.slice(0, 64);
-  try {
-    await upsertPlayerCard({ characterId, accountId, slug, png, title, description });
-  } catch (err) {
-    // The only recoverable collision is the clean base slug racing another
-    // character between the check and the upsert; retry once with the
-    // character-id-suffixed slug (globally unique — it embeds this char's id).
-    // An already-suffixed slug can't legitimately collide, so surface it.
-    if (!isUniqueViolation(err) || slug !== base) throw err;
-    slug = `${base}-${characterId}`.slice(0, 64);
-    await upsertPlayerCard({ characterId, accountId, slug, png, title, description });
+  // Prefer the clean name slug, then the historical character-id suffix. If
+  // those are already taken, keep walking deterministic suffixes so a clean
+  // name like "sir-test-5" cannot strand character 5 on a 500.
+  let slug = '';
+  for (let attempt = 0; attempt < MAX_SLUG_ATTEMPTS; attempt++) {
+    const candidate = cardSlugCandidate(base, characterId, attempt);
+    if (!(await slugAvailable(candidate, characterId))) continue;
+    try {
+      await upsertPlayerCard({ characterId, accountId, slug: candidate, png, title, description });
+      slug = candidate;
+      break;
+    } catch (err) {
+      if (!isUniqueViolation(err)) throw err;
+    }
   }
+  if (!slug) throw new Error('could not allocate player card slug');
   return json(res, 200, { url: `/p/${slug}`, ref: slug });
 }
 

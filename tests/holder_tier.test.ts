@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
+  HOLDER_TIER_DEFS, holderTierByIndex as sharedHolderTierByIndex,
+  holderTierIndexForBalance,
+} from '../src/sim/holder_tier';
+import {
   HOLDER_TIERS, WOC_MAX_SUPPLY, holderTierForBalance, holderTierByIndex,
   tierSupplyShare, holderTierBadgeDataUrl,
 } from '../src/ui/holder_tier';
@@ -14,6 +18,10 @@ describe('holder-tier ladder', () => {
     }
     expect(HOLDER_TIERS[0].threshold).toBe(1);
     expect(HOLDER_TIERS[9].threshold).toBe(WOC_MAX_SUPPLY);
+  });
+
+  it('keeps UI presentation rungs aligned with the shared pure tier definitions', () => {
+    expect(HOLDER_TIERS.map(({ index, key, threshold }) => ({ index, key, threshold }))).toEqual(HOLDER_TIER_DEFS);
   });
 
   it('returns null with no wallet or a sub-threshold balance', () => {
@@ -56,6 +64,13 @@ describe('holder-tier ladder', () => {
 
   it('clamps balances above max supply to the top rung', () => {
     expect(holderTierForBalance(5_000_000_000)!.name).toBe('Sovereign');
+  });
+
+  it('exposes a server-safe numeric tier lookup from the shared pure module', () => {
+    expect(holderTierIndexForBalance(null)).toBe(0);
+    expect(holderTierIndexForBalance(0.99)).toBe(0);
+    expect(holderTierIndexForBalance(10_000)).toBe(5);
+    expect(holderTierIndexForBalance(5_000_000_000)).toBe(10);
   });
 
   it('reports supply share', () => {
@@ -116,6 +131,8 @@ describe('holder-tier ladder', () => {
     // 1.5 sits inside the inclusive bounds but addresses no rung.
     expect(holderTierByIndex(1.5)).toBeUndefined();
     expect(holderTierByIndex(9.5)).toBeUndefined();
+    expect(sharedHolderTierByIndex(1.5)).toBeUndefined();
+    expect(sharedHolderTierByIndex(9.5)).toBeUndefined();
   });
 
   it('round-trips every rung through holderTierByIndex by its own index', () => {

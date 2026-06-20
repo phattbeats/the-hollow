@@ -1,11 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Readable } from 'node:stream';
+import { deflateSync } from 'node:zlib';
 
 // Same DB-test pattern as wallet_server.test.ts: stub DATABASE_URL + mock pg so
 // db.ts loads and every pool.query is a spy we route by SQL. Drives the REAL
 // card/referral handlers through every branch with no live database.
 const dbMock = vi.hoisted(() => {
   process.env.DATABASE_URL ??= 'postgres://test/test';
+  delete process.env.PUBLIC_ORIGIN;
+  delete process.env.REALMS;
+  delete process.env.REALM_NAME;
   return { query: vi.fn() };
 });
 vi.mock('pg', () => ({
@@ -13,12 +17,52 @@ vi.mock('pg', () => ({
 }));
 
 import {
-  handleCardUpload, handleCardRoutes, captureReferral, slugify, isValidSlug,
+  handleCardUpload, handleCardRoutes, captureReferral, slugify, isValidSlug, MAX_CARD_BYTES,
 } from '../server/player_card';
 import { lifetimeXpStanding } from '../server/db';
+import { publicOriginForRealm, resolvePublicOrigin } from '../server/realm';
 
 const PNG_MAGIC = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
-const fakePng = Buffer.concat([PNG_MAGIC, Buffer.from('IDATfake-pixels')]);
+const fakeMagicHeaderPng = Buffer.concat([PNG_MAGIC, Buffer.from('IDATfake-pixels')]);
+
+const TEST_CRC32_TABLE = (() => {
+  const table = new Uint32Array(256);
+  for (let n = 0; n < table.length; n++) {
+    let c = n;
+    for (let k = 0; k < 8; k++) c = (c & 1) ? (0xedb88320 ^ (c >>> 1)) : (c >>> 1);
+    table[n] = c >>> 0;
+  }
+  return table;
+})();
+
+function testCrc32(buf: Buffer, start: number, end: number): number {
+  let c = 0xffffffff;
+  for (let i = start; i < end; i++) c = TEST_CRC32_TABLE[(c ^ buf[i]) & 0xff] ^ (c >>> 8);
+  return (c ^ 0xffffffff) >>> 0;
+}
+
+function pngChunk(type: string, data = Buffer.alloc(0)): Buffer {
+  const chunk = Buffer.alloc(12 + data.length);
+  chunk.writeUInt32BE(data.length, 0);
+  chunk.write(type, 4, 4, 'ascii');
+  data.copy(chunk, 8);
+  chunk.writeUInt32BE(testCrc32(chunk, 4, 8 + data.length), 8 + data.length);
+  return chunk;
+}
+
+function makePng(width: number, height: number): Buffer {
+  const ihdr = Buffer.alloc(13);
+  ihdr.writeUInt32BE(width, 0);
+  ihdr.writeUInt32BE(height, 4);
+  ihdr[8] = 8; // bit depth
+  ihdr[9] = 6; // truecolor with alpha
+  ihdr[10] = 0; // deflate compression
+  ihdr[11] = 0; // adaptive filtering
+  ihdr[12] = 0; // no interlace
+  const raw = Buffer.alloc((width * 4 + 1) * height);
+  return Buffer.concat([PNG_MAGIC, pngChunk('IHDR', ihdr), pngChunk('IDAT', deflateSync(raw)), pngChunk('IEND')]);
+}
+const validCardPng = makePng(2400, 1260);
 
 // ── http fakes ──────────────────────────────────────────────────────────────
 function makeBinaryReq(url: string, body: Buffer): any {
@@ -27,6 +71,19 @@ function makeBinaryReq(url: string, body: Buffer): any {
   req.headers = { host: 'realm.example' };
   req.socket = {};
   return req;
+}
+function makeUnreadableBinaryReq(url: string, headers: Record<string, string> = {}): { req: any; wasRead: () => boolean } {
+  let read = false;
+  const req: any = new Readable({
+    read() {
+      read = true;
+      this.destroy(new Error('body should not be read'));
+    },
+  });
+  req.url = url;
+  req.headers = { host: 'realm.example', ...headers };
+  req.socket = {};
+  return { req, wasRead: () => read };
 }
 function makeGetReq(url: string, opts: { headers?: Record<string, unknown>; socket?: unknown } = {}): any {
   const req: any = Readable.from([]);
@@ -57,7 +114,7 @@ function makeRes(): any {
 
 // per-test DB state, routed by SQL
 let characterRows: any[] = [];
-let slugRows: any[] = [];          // SELECT character_id FROM player_cards WHERE slug
+let slugRows: any[] | ((slug: string) => any[]) = []; // SELECT character_id FROM player_cards WHERE slug
 let cardRows: any[] = [];          // getPlayerCardBySlug
 let accountForSlugRows: any[] = [];
 let upsertThrows: Error | null = null;
@@ -69,11 +126,15 @@ beforeEach(() => {
   characterRows = []; slugRows = []; cardRows = []; accountForSlugRows = []; upsertThrows = null;
   standingCountRows = [];
   dbMock.query.mockReset();
-  dbMock.query.mockImplementation((sql: string) => {
+  dbMock.query.mockImplementation((sql: string, params?: unknown[]) => {
     const s = String(sql).replace(/\s+/g, ' ').trim();
     if (s.includes('AS ahead')) return Promise.resolve({ rows: standingCountRows, rowCount: standingCountRows.length });
     if (s.includes('SELECT id, account_id, name, class, level, state')) return Promise.resolve({ rows: characterRows });
-    if (s.includes('SELECT character_id FROM player_cards WHERE slug')) return Promise.resolve({ rows: slugRows });
+    if (s.includes('SELECT character_id FROM player_cards WHERE slug')) {
+      const slug = String(params?.[0] ?? '');
+      const rows = typeof slugRows === 'function' ? slugRows(slug) : slugRows;
+      return Promise.resolve({ rows });
+    }
     if (s.includes('INSERT INTO player_cards')) {
       if (upsertThrows) return Promise.reject(upsertThrows);
       return Promise.resolve({ rows: [] });
@@ -90,6 +151,34 @@ async function callUpload(url: string, body: Buffer, accountId = 1) {
   const res = makeRes();
   await handleCardUpload(makeBinaryReq(url, body), res, accountId);
   return { status: res.statusCode, data: res.body ? JSON.parse(String(res.body)) : {} };
+}
+
+type CardOriginEnvKey = 'PUBLIC_ORIGIN' | 'REALM_NAME' | 'REALMS';
+
+async function withReloadedCardRoutes(
+  env: Partial<Record<CardOriginEnvKey, string | undefined>>,
+  run: (routes: typeof handleCardRoutes) => Promise<void>,
+): Promise<void> {
+  const keys: readonly CardOriginEnvKey[] = ['PUBLIC_ORIGIN', 'REALM_NAME', 'REALMS'];
+  const previous = new Map<CardOriginEnvKey, string | undefined>();
+  for (const key of keys) {
+    previous.set(key, process.env[key]);
+    const value = env[key];
+    if (value === undefined) delete process.env[key];
+    else process.env[key] = value;
+  }
+  vi.resetModules();
+  const mod = await import('../server/player_card');
+  try {
+    await run(mod.handleCardRoutes);
+  } finally {
+    for (const key of keys) {
+      const value = previous.get(key);
+      if (value === undefined) delete process.env[key];
+      else process.env[key] = value;
+    }
+    vi.resetModules();
+  }
 }
 
 describe('slugify / isValidSlug', () => {
@@ -112,26 +201,63 @@ describe('slugify / isValidSlug', () => {
   });
 });
 
+describe('public card origin config', () => {
+  it('normalizes bare public origins and rejects URL shapes that are not origins', () => {
+    expect(resolvePublicOrigin(' https://cards.example.com/// ')).toBe('https://cards.example.com');
+    expect(resolvePublicOrigin('http://localhost:8787')).toBe('http://localhost:8787');
+    expect(resolvePublicOrigin('javascript://cards.example.com')).toBe('');
+    expect(resolvePublicOrigin('https://cards.example.com/path')).toBe('');
+    expect(resolvePublicOrigin('https://user:pass@cards.example.com')).toBe('');
+    expect(resolvePublicOrigin('https://cards.example.com?x=1')).toBe('');
+  });
+
+  it('selects the matching trusted realm origin', () => {
+    expect(publicOriginForRealm('Ironforge', [
+      { name: 'Claudemoon', url: 'https://claudemoon.example.com', type: 'Normal' },
+      { name: 'Ironforge', url: 'https://ironforge.example.com', type: 'PvP' },
+    ])).toBe('https://ironforge.example.com');
+    expect(publicOriginForRealm('Missing', [
+      { name: 'Claudemoon', url: 'https://claudemoon.example.com', type: 'Normal' },
+    ])).toBe('');
+  });
+});
+
 describe('POST /api/card', () => {
   it('stores the PNG and returns the name slug + url', async () => {
     characterRows = [{ id: 5, account_id: 1, name: 'Sir Test', class: 'paladin', level: 12 }];
     slugRows = []; // slug free
-    const { status, data } = await callUpload('/api/card?character=5', fakePng);
+    const { status, data } = await callUpload('/api/card?character=5', validCardPng);
     expect(status).toBe(200);
     expect(data).toEqual({ url: '/p/sir-test', ref: 'sir-test' });
     const insert = dbMock.query.mock.calls.find((c) => String(c[0]).includes('INSERT INTO player_cards'));
     expect(insert?.[1][0]).toBe(5);        // character_id
     expect(insert?.[1][2]).toBe('sir-test'); // slug
-    expect(Buffer.isBuffer(insert?.[1][3])).toBe(true); // png bytes
+    const storedPng = insert?.[1][3];
+    expect(Buffer.isBuffer(storedPng)).toBe(true); // png bytes
+    expect(Buffer.isBuffer(storedPng) && storedPng.equals(validCardPng)).toBe(true);
     expect(insert?.[1][4]).toBe('Sir Test — Level 12 Paladin'); // title
   });
 
   it('falls back to a character-id-suffixed slug when the name slug is taken', async () => {
     characterRows = [{ id: 5, account_id: 1, name: 'Sir Test', class: 'paladin', level: 12 }];
-    slugRows = [{ character_id: 999 }]; // taken by a different character
-    const { status, data } = await callUpload('/api/card?character=5', fakePng);
+    slugRows = (slug) => slug === 'sir-test' ? [{ character_id: 999 }] : [];
+    const { status, data } = await callUpload('/api/card?character=5', validCardPng);
     expect(status).toBe(200);
     expect(data.ref).toBe('sir-test-5');
+  });
+
+  it('falls back past a colliding character-id-suffixed slug', async () => {
+    characterRows = [{ id: 5, account_id: 1, name: 'Sir Test', class: 'paladin', level: 12 }];
+    slugRows = (slug) => {
+      if (slug === 'sir-test') return [{ character_id: 999 }];
+      if (slug === 'sir-test-5') return [{ character_id: 1000 }];
+      return [];
+    };
+    const { status, data } = await callUpload('/api/card?character=5', validCardPng);
+    expect(status).toBe(200);
+    expect(data).toEqual({ url: '/p/sir-test-5-2', ref: 'sir-test-5-2' });
+    const insert = dbMock.query.mock.calls.find((c) => String(c[0]).includes('INSERT INTO player_cards'));
+    expect(insert?.[1][2]).toBe('sir-test-5-2');
   });
 
   it('retries with a suffixed slug on a unique violation', async () => {
@@ -148,26 +274,52 @@ describe('POST /api/card', () => {
       }
       return Promise.resolve({ rows: [] });
     });
-    const { status, data } = await callUpload('/api/card?character=5', fakePng);
+    const { status, data } = await callUpload('/api/card?character=5', validCardPng);
     expect(status).toBe(200);
     expect(data.ref).toBe('sir-test-5');
+  });
+
+  it('keeps retrying deterministic suffixes after repeated unique violations', async () => {
+    characterRows = [{ id: 5, account_id: 1, name: 'Sir Test', class: 'paladin', level: 12 }];
+    slugRows = []; // every candidate appears free, but the first two inserts race 23505
+    let failuresLeft = 2;
+    dbMock.query.mockImplementation((sql: string) => {
+      const s = String(sql).replace(/\s+/g, ' ').trim();
+      if (s.includes('SELECT id, account_id, name, class, level, state')) return Promise.resolve({ rows: characterRows });
+      if (s.includes('SELECT character_id FROM player_cards WHERE slug')) return Promise.resolve({ rows: [] });
+      if (s.includes('INSERT INTO player_cards')) {
+        if (failuresLeft > 0) {
+          failuresLeft--;
+          return Promise.reject(Object.assign(new Error('dup'), { code: '23505' }));
+        }
+        return Promise.resolve({ rows: [] });
+      }
+      return Promise.resolve({ rows: [] });
+    });
+    const { status, data } = await callUpload('/api/card?character=5', validCardPng);
+    expect(status).toBe(200);
+    expect(data).toEqual({ url: '/p/sir-test-5-2', ref: 'sir-test-5-2' });
+    const insertedSlugs = dbMock.query.mock.calls
+      .filter((c) => String(c[0]).includes('INSERT INTO player_cards'))
+      .map((c) => c[1][2]);
+    expect(insertedSlugs).toEqual(['sir-test', 'sir-test-5', 'sir-test-5-2']);
   });
 
   it('uses a player-<id> slug for an all-symbol name', async () => {
     characterRows = [{ id: 7, account_id: 1, name: '✦✦✦', class: 'mage', level: 3 }];
     slugRows = [];
-    const { data } = await callUpload('/api/card?character=7', fakePng);
+    const { data } = await callUpload('/api/card?character=7', validCardPng);
     expect(data.ref).toBe('player-7');
   });
 
   it('rejects a missing character id with 400', async () => {
-    const { status } = await callUpload('/api/card', fakePng);
+    const { status } = await callUpload('/api/card', validCardPng);
     expect(status).toBe(400);
   });
 
   it('returns 404 when the character is not the caller’s', async () => {
     characterRows = []; // getCharacter finds nothing
-    const { status } = await callUpload('/api/card?character=5', fakePng);
+    const { status } = await callUpload('/api/card?character=5', validCardPng);
     expect(status).toBe(404);
   });
 
@@ -178,12 +330,38 @@ describe('POST /api/card', () => {
     expect(dbMock.query.mock.calls.some((c) => String(c[0]).includes('INSERT INTO player_cards'))).toBe(false);
   });
 
+  it('rejects a fake magic-header PNG with 400', async () => {
+    characterRows = [{ id: 5, account_id: 1, name: 'Sir Test', class: 'paladin', level: 12 }];
+    const { status, data } = await callUpload('/api/card?character=5', fakeMagicHeaderPng);
+    expect(status).toBe(400);
+    expect(data.error).toBe('expected a PNG image');
+    expect(dbMock.query.mock.calls.some((c) => String(c[0]).includes('INSERT INTO player_cards'))).toBe(false);
+  });
+
+  it('rejects a structurally valid PNG with unexpected dimensions', async () => {
+    characterRows = [{ id: 5, account_id: 1, name: 'Sir Test', class: 'paladin', level: 12 }];
+    const { status } = await callUpload('/api/card?character=5', makePng(32, 32));
+    expect(status).toBe(400);
+    expect(dbMock.query.mock.calls.some((c) => String(c[0]).includes('INSERT INTO player_cards'))).toBe(false);
+  });
+
   it('rejects an oversized body with 413 and stores nothing', async () => {
     characterRows = [{ id: 5, account_id: 1, name: 'Sir Test', class: 'paladin', level: 12 }];
     const huge = Buffer.concat([PNG_MAGIC, Buffer.alloc(4 * 1024 * 1024 + 1)]); // > MAX_CARD_BYTES (4 MB)
     const { status } = await callUpload('/api/card?character=5', huge);
     expect(status).toBe(413);
     expect(dbMock.query.mock.calls.some((c) => String(c[0]).includes('INSERT INTO player_cards'))).toBe(false);
+  });
+
+  it('rejects an oversized Content-Length before reading the body or looking up a character', async () => {
+    const { req, wasRead } = makeUnreadableBinaryReq('/api/card?character=5', {
+      'content-length': String(MAX_CARD_BYTES + 1),
+    });
+    const res = makeRes();
+    await handleCardUpload(req, res, 1);
+    expect(res.statusCode).toBe(413);
+    expect(wasRead()).toBe(false);
+    expect(dbMock.query).not.toHaveBeenCalled();
   });
 
   it('returns 400 when the body read fails with a non-size error', async () => {
@@ -197,7 +375,7 @@ describe('POST /api/card', () => {
   it('rejects a non-integer / non-positive character id with 400 and no lookup', async () => {
     for (const url of ['/api/card?character=abc', '/api/card?character=0', '/api/card?character=-5', '/api/card?character=1.5']) {
       dbMock.query.mockClear();
-      const { status } = await callUpload(url, fakePng);
+      const { status } = await callUpload(url, validCardPng);
       expect(status).toBe(400);
       expect(dbMock.query.mock.calls.some((c) => String(c[0]).includes('SELECT id, account_id, name, class, level, state'))).toBe(false);
     }
@@ -206,7 +384,7 @@ describe('POST /api/card', () => {
 
 describe('GET /p/<slug>', () => {
   it('serves an OG page with escaped meta + the og:image', async () => {
-    cardRows = [{ character_id: 5, account_id: 1, png: fakePng, title: 'A "Quote" <b>', description: 'desc & more' }];
+    cardRows = [{ character_id: 5, account_id: 1, png: validCardPng, title: 'A "Quote" <b>', description: 'desc & more' }];
     const res = makeRes();
     await handleCardRoutes(makeGetReq('/p/sir-test'), res);
     expect(res.statusCode).toBe(200);
@@ -223,7 +401,7 @@ describe('GET /p/<slug>', () => {
   });
 
   it('HTML-escapes an apostrophe in the title', async () => {
-    cardRows = [{ character_id: 5, account_id: 1, png: fakePng, title: "D'Argath the Bold", description: 'd' }];
+    cardRows = [{ character_id: 5, account_id: 1, png: validCardPng, title: "D'Argath the Bold", description: 'd' }];
     const res = makeRes();
     await handleCardRoutes(makeGetReq('/p/sir-test'), res);
     const html = String(res.body);
@@ -232,7 +410,7 @@ describe('GET /p/<slug>', () => {
   });
 
   it('builds an https origin from x-forwarded-proto (Caddy/proxy)', async () => {
-    cardRows = [{ character_id: 5, account_id: 1, png: fakePng, title: 't', description: 'd' }];
+    cardRows = [{ character_id: 5, account_id: 1, png: validCardPng, title: 't', description: 'd' }];
     const res = makeRes();
     await handleCardRoutes(makeGetReq('/p/sir-test', { headers: { 'x-forwarded-proto': 'https' } }), res);
     const html = String(res.body);
@@ -241,14 +419,50 @@ describe('GET /p/<slug>', () => {
   });
 
   it('builds an https origin from an encrypted socket', async () => {
-    cardRows = [{ character_id: 5, account_id: 1, png: fakePng, title: 't', description: 'd' }];
+    cardRows = [{ character_id: 5, account_id: 1, png: validCardPng, title: 't', description: 'd' }];
     const res = makeRes();
     await handleCardRoutes(makeGetReq('/p/sir-test', { socket: { encrypted: true } }), res);
     expect(String(res.body)).toContain('property="og:url" content="https://realm.example/p/sir-test"');
   });
 
+  it('uses PUBLIC_ORIGIN for canonical URLs instead of hostile Host and forwarded proto', async () => {
+    await withReloadedCardRoutes({ PUBLIC_ORIGIN: 'https://cards.example.com/' }, async (routes) => {
+      cardRows = [{ character_id: 5, account_id: 1, png: validCardPng, title: 't', description: 'd' }];
+      const res = makeRes();
+      await routes(makeGetReq('/p/sir-test', {
+        headers: { host: 'evil.example', 'x-forwarded-proto': 'javascript' },
+      }), res);
+      const html = String(res.body);
+      expect(res.statusCode).toBe(200);
+      expect(html).toContain('property="og:url" content="https://cards.example.com/p/sir-test"');
+      expect(html).toContain('property="og:image" content="https://cards.example.com/p/sir-test/card.png"');
+      expect(html).toContain('href="https://cards.example.com/?ref=sir-test"');
+      expect(html).not.toContain('evil.example');
+      expect(html).not.toContain('javascript://');
+    });
+  });
+
+  it('uses the matching REALMS origin for canonical URLs instead of hostile headers', async () => {
+    await withReloadedCardRoutes({
+      REALM_NAME: 'Ironforge',
+      REALMS: 'Claudemoon=https://claudemoon.example.com=Normal,Ironforge=https://ironforge.example.com=PvP',
+    }, async (routes) => {
+      cardRows = [{ character_id: 5, account_id: 1, png: validCardPng, title: 't', description: 'd' }];
+      const res = makeRes();
+      await routes(makeGetReq('/p/sir-test', {
+        headers: { host: 'evil.example', 'x-forwarded-proto': 'http' },
+      }), res);
+      const html = String(res.body);
+      expect(res.statusCode).toBe(200);
+      expect(html).toContain('property="og:url" content="https://ironforge.example.com/p/sir-test"');
+      expect(html).toContain('property="og:image" content="https://ironforge.example.com/p/sir-test/card.png"');
+      expect(html).toContain('href="https://ironforge.example.com/?ref=sir-test"');
+      expect(html).not.toContain('evil.example');
+    });
+  });
+
   it('serves the OG page with a trailing slash', async () => {
-    cardRows = [{ character_id: 5, account_id: 1, png: fakePng, title: 't', description: 'd' }];
+    cardRows = [{ character_id: 5, account_id: 1, png: validCardPng, title: 't', description: 'd' }];
     const res = makeRes();
     await handleCardRoutes(makeGetReq('/p/sir-test/'), res);
     expect(res.statusCode).toBe(200);
@@ -267,15 +481,15 @@ describe('GET /p/<slug>', () => {
   });
 
   it('serves the PNG bytes with image/png', async () => {
-    cardRows = [{ character_id: 5, account_id: 1, png: fakePng, title: 't', description: 'd' }];
+    cardRows = [{ character_id: 5, account_id: 1, png: validCardPng, title: 't', description: 'd' }];
     const res = makeRes();
     await handleCardRoutes(makeGetReq('/p/sir-test/card.png'), res);
     expect(res.statusCode).toBe(200);
     expect(res.headers['Content-Type']).toBe('image/png');
-    expect(res.headers['Content-Length']).toBe(fakePng.length);
+    expect(res.headers['Content-Length']).toBe(validCardPng.length);
     expect(res.headers['Cache-Control']).toBe('public, max-age=300');
     expect(Buffer.isBuffer(res.body)).toBe(true);
-    expect((res.body as Buffer).equals(fakePng)).toBe(true);
+    expect((res.body as Buffer).equals(validCardPng)).toBe(true);
   });
 
   it('404s an unknown slug', async () => {
@@ -323,6 +537,16 @@ describe('GET /p/<slug>', () => {
 });
 
 describe('lifetimeXpStanding', () => {
+  it('uses the lifetime XP expression index shape for the count-ahead predicate', async () => {
+    standingCountRows = [{ ahead: 2, total: 4 }];
+    await lifetimeXpStanding(1, 42);
+
+    const sql = String(dbMock.query.mock.calls[0]?.[0]).replace(/\s+/g, ' ').trim();
+    expect(sql).toContain("WHERE realm = $1 AND ((state->>'lifetimeXp')::bigint) > own.xp");
+    expect(sql).toContain("FROM (SELECT COALESCE(((state->>'lifetimeXp')::bigint), 0) AS xp");
+    expect(sql).not.toContain("WHERE realm = $1 AND COALESCE((state->>'lifetimeXp')::bigint, 0) > own.xp");
+  });
+
   it('returns 1-based rank + realm total for an owned character', async () => {
     standingCountRows = [{ ahead: 9, total: 500 }];
     const s = await lifetimeXpStanding(1, 42);

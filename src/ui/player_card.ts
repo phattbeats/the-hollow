@@ -1,13 +1,17 @@
 // Player card compositor.
 //
 // Paints a shareable 1200×630 (Open-Graph aspect) card from the player's live
-// stats, equipped gear, a captured close-up of their character, and — when a
-// wallet is connected — their $WOC holder-tier badge. Pure Canvas-2D + the
+// stats, equipped gear, a captured close-up of their character, and - when a
+// wallet is linked and verified - their $WOC holder-tier badge. Pure Canvas-2D + the
 // holder-tier data; no network, no game state beyond what the caller passes in.
 //
 // The caller (the HUD) assembles PlayerCardData from IWorld; this module only
 // knows how to draw it.
-import { holderTierForBalance, holderTierBadgeDataUrl, type HolderTier } from './holder_tier';
+import {
+  holderTierForBalance, holderTierBadgeDataUrl, holderTierDisplayName,
+  holderTierFlavorText, type HolderTier,
+} from './holder_tier';
+import { formatNumber, getLanguage, languageTag, t, type TranslationKey } from './i18n';
 
 export interface PlayerCardStat {
   label: string;
@@ -38,7 +42,7 @@ export interface PlayerCardData {
   gear: PlayerCardGear[];
   /** Realm percentile by lifetime XP (e.g. 3 = top 3%), or null to hide it. */
   topPercent: number | null;
-  /** Connected wallet's $WOC balance (null when no wallet). Drives the badge. */
+  /** Verified linked wallet's $WOC balance (null when unlinked). Drives the badge. */
   balance: number | null;
   /** Handle shown in the footer referral line (the card slug, or the name). */
   referralHandle: string;
@@ -70,24 +74,23 @@ const COL = {
  *  point in the clip (0..1) to freeze. Verified to read well across all classes. */
 export interface CardPose {
   id: string;
-  label: string;
+  labelKey: TranslationKey;
   clips: readonly string[];
   fraction: number;
 }
 
 export const CARD_POSES: readonly CardPose[] = [
   // Heroic raised weapon — epic across warrior/mage/hunter/etc. The default.
-  { id: 'hero', label: 'Hero', clips: ['Spellcast_Raise', 'Spellcasting', 'Idle'], fraction: 0.5 },
+  { id: 'hero', labelKey: 'playerCard.poseHero', clips: ['Spellcast_Raise', 'Spellcasting', 'Idle'], fraction: 0.5 },
   // Class-appropriate combat action (melee swing / drawn bow / cast).
-  { id: 'battle', label: 'Battle', clips: ['2H_Melee_Attack_Chop', '1H_Melee_Attack_Chop', '1H_Melee_Attack_Slice_Diagonal', 'Dualwield_Melee_Attack_Chop', '2H_Ranged_Shoot', 'Spellcast_Shoot', 'Idle'], fraction: 0.4 },
+  { id: 'battle', labelKey: 'playerCard.poseBattle', clips: ['2H_Melee_Attack_Chop', '1H_Melee_Attack_Chop', '1H_Melee_Attack_Slice_Diagonal', 'Dualwield_Melee_Attack_Chop', '2H_Ranged_Shoot', 'Spellcast_Shoot', 'Idle'], fraction: 0.4 },
   // Arm-up celebration.
-  { id: 'victory', label: 'Victory', clips: ['Cheer', 'Jump_Idle', 'Idle'], fraction: 0.5 },
+  { id: 'victory', labelKey: 'playerCard.poseVictory', clips: ['Cheer', 'Jump_Idle', 'Idle'], fraction: 0.5 },
 ];
 
-/** Human-readable $WOC amount: whole tokens with thousands separators. The card
- *  is an English-branded share image, so it formats in en-US regardless of locale. */
+/** Human-readable $WOC amount in the player's current locale. */
 function formatWoc(n: number): string {
-  return n.toLocaleString('en-US', { maximumFractionDigits: n >= 1 ? 0 : 2 });
+  return formatNumber(n, { maximumFractionDigits: n >= 1 ? 0 : 2 });
 }
 
 function loadImage(src: string): Promise<HTMLImageElement> {
@@ -130,9 +133,12 @@ const BODY_FONT = '"Alegreya Sans", "Segoe UI", system-ui, sans-serif';
 // rather than failing the whole card.
 const LOGO_URL = '/woc-logo-hero.webp';
 
-/** Format a realm percentile as a card chip label, e.g. 3 → "TOP 3%". */
+/** Format a realm percentile as a card chip label. */
 function formatTopPercent(pct: number): string {
-  return pct < 1 ? `TOP ${pct.toFixed(1)}%` : `TOP ${Math.ceil(pct)}%`;
+  const percent = pct < 1
+    ? formatNumber(pct, { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+    : formatNumber(Math.ceil(pct), { maximumFractionDigits: 0 });
+  return t('playerCard.topPercent', { percent });
 }
 
 /**
@@ -226,7 +232,10 @@ function drawHeader(ctx: CanvasRenderingContext2D, data: PlayerCardData): void {
 
   ctx.fillStyle = COL.cream;
   ctx.font = `600 24px ${BODY_FONT}`;
-  const sub = `Level ${data.level} · ${data.className}`;
+  const sub = t('playerCard.levelClass', {
+    level: formatNumber(data.level, { maximumFractionDigits: 0 }),
+    className: data.className,
+  });
   ctx.fillText(sub, x, 130);
   const subW = ctx.measureText(sub).width;
 
@@ -248,7 +257,7 @@ function drawHeader(ctx: CanvasRenderingContext2D, data: PlayerCardData): void {
 
   ctx.fillStyle = COL.muted;
   ctx.font = `400 19px ${BODY_FONT}`;
-  ctx.fillText(data.realm ? `${data.realm} Realm` : 'World of Claudecraft', x, 158);
+  ctx.fillText(data.realm ? t('playerCard.realmSubtitle', { realm: data.realm }) : t('playerCard.defaultRealm'), x, 158);
 }
 
 function drawBadge(ctx: CanvasRenderingContext2D, tier: HolderTier, badge: HTMLImageElement, balance: number | null): void {
@@ -270,17 +279,17 @@ function drawBadge(ctx: CanvasRenderingContext2D, tier: HolderTier, badge: HTMLI
   // Tier name.
   ctx.fillStyle = tier.ring;
   ctx.font = `700 18px ${TITLE_FONT}`;
-  ctx.fillText(tier.name.toUpperCase(), left, cy - 13);
+  ctx.fillText(holderTierDisplayName(tier).toLocaleUpperCase(languageTag(getLanguage())), left, cy - 13);
   // The actual on-chain bag — the flex.
   if (balance !== null) {
     ctx.fillStyle = COL.gold;
     ctx.font = `700 20px ${BODY_FONT}`;
-    fillTextClamped(ctx, `${formatWoc(balance)} $WOC`, left, cy + 10, 210);
+    fillTextClamped(ctx, t('wallet.balanceAmount', { amount: formatWoc(balance) }), left, cy + 10, 210);
   }
   // Flavour line.
   ctx.fillStyle = COL.muted;
   ctx.font = `400 12px ${BODY_FONT}`;
-  fillTextClamped(ctx, tier.flavor, left, cy + 28, 220);
+  fillTextClamped(ctx, holderTierFlavorText(tier), left, cy + 28, 220);
 }
 
 function drawStats(ctx: CanvasRenderingContext2D, data: PlayerCardData): void {
@@ -360,7 +369,7 @@ function drawFooter(ctx: CanvasRenderingContext2D, data: PlayerCardData, logo: H
     ctx.textAlign = 'right';
     ctx.fillStyle = COL.gold;
     ctx.font = `700 34px ${TITLE_FONT}`;
-    ctx.fillText('WORLD OF CLAUDECRAFT', 1156, 100);
+    ctx.fillText(t('playerCard.brandWordmark'), 1156, 100);
     ctx.textAlign = 'left';
   }
 
@@ -369,11 +378,16 @@ function drawFooter(ctx: CanvasRenderingContext2D, data: PlayerCardData, logo: H
   ctx.textAlign = 'right';
   ctx.fillStyle = COL.cream;
   ctx.font = `600 19px ${BODY_FONT}`;
-  const recruited = data.referralCount ? `  ·  ${data.referralCount} recruited` : '';
-  ctx.fillText(`@${data.referralHandle}${recruited}`, 1168, y - 22);
+  const referralLine = data.referralCount
+    ? t('playerCard.footerHandleWithRecruits', {
+      handle: data.referralHandle,
+      recruited: t('playerCard.recruited', { count: formatNumber(data.referralCount, { maximumFractionDigits: 0 }) }),
+    })
+    : t('playerCard.footerHandle', { handle: data.referralHandle });
+  ctx.fillText(referralLine, 1168, y - 22);
   ctx.fillStyle = COL.goldDim;
   ctx.font = `400 16px ${BODY_FONT}`;
-  fillTextClamped(ctx, `Forge your legend → ${data.siteUrl}`, 1168, y, 360);
+  fillTextClamped(ctx, t('playerCard.footerCta', { siteUrl: data.siteUrl }), 1168, y, 360);
   ctx.textAlign = 'left';
 }
 

@@ -42,10 +42,13 @@ import { iconDataUrl, QUALITY_COLOR, raidMarkerDataUrl, RAID_MARKER_NAMES } from
 import { UnitPortraitPainter } from './unit_portrait_painter';
 import { crestIdForEntity } from './unit_portrait';
 import { svgIcon } from './ui_icons';
-import { walletUiEnabled, wocBalance, onWalletUiChange } from './wallet_balance';
-import { renderPlayerCardCanvas, cardCanvasToBlob, CARD_POSES, type PlayerCardData, type PlayerCardStat } from './player_card';
+import { walletUiEnabled, wocBalance, wocBalanceVerified, verifiedWocBalance, onWalletUiChange } from './wallet_balance';
+import {
+  renderPlayerCardCanvas, cardCanvasToBlob, CARD_POSES,
+  type PlayerCardData, type PlayerCardStat,
+} from './player_card';
 import { cardHostingAvailable, publishCard, fetchReferralInfo, fetchStanding, type PublishedCard, type CharacterStanding } from './player_card_share';
-import { holderTierForBalance, holderTierByIndex, holderTierBadgeDataUrl } from './holder_tier';
+import { holderTierForBalance, holderTierByIndex, holderTierBadgeDataUrl, holderTierDisplayName } from './holder_tier';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
 import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES, normalizeClickMoveButton } from '../game/settings';
 import { isPhoneTouchDevice } from '../game/mobile_controls';
@@ -1360,13 +1363,18 @@ export class Hud {
   }
 
   // The connected wallet's $WOC balance, shown left of the coins in the bag.
-  // Empty unless the feature is enabled AND a wallet is connected (balance set).
+  // Unlinked balances are a local preview; verified balances belong to the
+  // account-linked wallet and may drive public holder claims elsewhere.
   private wocBalanceHtml(): string {
     if (!walletUiEnabled()) return '';
     const bal = wocBalance();
     if (bal === null) return '';
     const amount = formatNumber(bal, { maximumFractionDigits: 2 });
-    return `<span class="woc-balance" title="Linked Solana wallet $WOC balance"><span class="woc-coin" aria-hidden="true"></span>${esc(amount)} $WOC</span>`;
+    const balance = t('wallet.balanceAmount', { amount });
+    const verified = wocBalanceVerified();
+    const title = verified ? t('wallet.balanceTitle') : t('wallet.balancePreviewTitle');
+    const aria = verified ? t('wallet.balanceAria', { balance }) : t('wallet.balancePreviewAria', { balance });
+    return `<span class="woc-balance ${verified ? 'is-verified' : 'is-preview'}" title="${esc(title)}" aria-label="${esc(aria)}"><span class="woc-coin" aria-hidden="true"></span>${esc(balance)}</span>`;
   }
 
   attachTooltip(el: HTMLElement, html: () => string): void {
@@ -5460,7 +5468,7 @@ export class Hud {
     html += this.talentSummaryHtml();
     html += this.progressionHtml(p.level);
     const shareGlyph = `<svg class="pc-share-ico" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M18 16.1a3 3 0 0 0-2.3 1.1l-6.7-3.9a3 3 0 0 0 0-2.6l6.7-3.9A3 3 0 1 0 15 4l-6.7 3.9a3 3 0 1 0 0 8.2L15 20a3 3 0 1 0 3-3.9z"/></svg>`;
-    html += `<div class="pc-share-row"><button type="button" class="btn pc-share-btn" data-act="share-card">${shareGlyph}<span>Share Player Card</span></button></div>`;
+    html += `<div class="pc-share-row"><button type="button" class="btn pc-share-btn" data-act="share-card">${shareGlyph}<span>${esc(t('playerCard.shareButton'))}</span></button></div>`;
     el.innerHTML = html;
     hydratePortraits(el);
     el.querySelector('[data-act="prestige"]')?.addEventListener('click', () => this.openPrestigeDialog());
@@ -5961,14 +5969,14 @@ export class Hud {
     back.className = 'modal-backdrop';
     back.id = 'player-card-modal';
     const poseBtns = CARD_POSES.map((p, i) =>
-      `<button type="button" class="btn pc-pose${i === 0 ? ' sel' : ''}" data-pose="${i}">${esc(p.label)}</button>`).join('');
+      `<button type="button" class="btn pc-pose${i === 0 ? ' sel' : ''}" data-pose="${i}">${esc(t(p.labelKey))}</button>`).join('');
     back.innerHTML = `<div class="window panel pc-modal">`
-      + `<div class="panel-title"><span>Player Card</span><span class="x-btn" data-close>${svgIcon('close')}</span></div>`
-      + `<div class="pc-preview pc-loading">Forging your card…</div>`
-      + `<div class="pc-poses" role="group" aria-label="Pose">${poseBtns}</div>`
+      + `<div class="panel-title"><span>${esc(t('playerCard.title'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('playerCard.close'))}">${svgIcon('close')}</button></div>`
+      + `<div class="pc-preview pc-loading">${esc(t('playerCard.loading'))}</div>`
+      + `<div class="pc-poses" role="group" aria-label="${esc(t('playerCard.poseGroup'))}">${poseBtns}</div>`
       + `<div class="pc-actions"></div>`
-      + `<div class="pc-link" hidden><span class="pc-link-label">Your referral link — anyone who joins through it is credited to you:</span>`
-      + `<input class="pc-link-input" type="text" readonly aria-label="Your referral link"></div>`
+      + `<div class="pc-link" hidden><span class="pc-link-label">${esc(t('playerCard.referralLinkLabel'))}</span>`
+      + `<input class="pc-link-input" type="text" readonly aria-label="${esc(t('playerCard.referralLinkAria'))}"></div>`
       + `<div class="pc-status" aria-live="polite"></div>`
       + `</div>`;
     document.body.appendChild(back);
@@ -6016,12 +6024,12 @@ export class Hud {
         state.published = null;
         linkRow.hidden = true;
         setStatus('');
-      } catch (err) {
+      } catch {
         // A failed capture/composite must not leave the modal stuck on "Forging…".
         if (this.cardModalEl !== back || seq !== composeSeq) return;
         previewBox.classList.remove('pc-loading');
-        previewBox.textContent = 'Could not render your card — try a different pose.';
-        setStatus(err instanceof Error ? err.message : 'Card render failed.');
+        previewBox.textContent = t('playerCard.renderFailed');
+        setStatus(t('playerCard.renderFailedStatus'));
       }
     };
 
@@ -6044,7 +6052,7 @@ export class Hud {
     const actions = back.querySelector('.pc-actions') as HTMLElement;
     const linkRow = back.querySelector('.pc-link') as HTMLElement;
     const linkInput = back.querySelector('.pc-link-input') as HTMLInputElement;
-    const fileName = () => `${(state.data?.referralHandle || 'player').replace(/[^a-z0-9-]/g, '')}-woc-card.png`;
+    const fileName = () => `${(state.data?.referralHandle || t('playerCard.fileNameFallback')).replace(/[^a-z0-9-]/g, '')}-woc-card.png`;
     const mkBtn = (label: string, cls = ''): HTMLButtonElement => {
       const b = document.createElement('button');
       b.type = 'button';
@@ -6053,25 +6061,25 @@ export class Hud {
       actions.appendChild(b);
       return b;
     };
-    const errMsg = (err: unknown) => (err instanceof Error ? err.message : 'Something went wrong.');
+    const errMsg = () => t('playerCard.statusGenericError');
 
     // Publish-once per pose: hosting a public card is needed for X / copy-link.
     // The result is cached on `state` and cleared whenever the pose changes, so
     // switching pose after publishing re-uploads the new image on next share.
     const publishOnce = async (): Promise<PublishedCard> => {
       if (state.published) return state.published;
-      if (!state.canvas) throw new Error('card is still rendering');
-      setStatus('Publishing card…');
+      if (!state.canvas) throw new Error(t('playerCard.statusStillRendering'));
+      setStatus(t('playerCard.statusPublishing'));
       const pub = await publishCard(await cardCanvasToBlob(state.canvas));
       state.published = pub;
       linkInput.value = pub.url;
       linkRow.hidden = false;
-      setStatus('Card published — share your referral link below.');
+      setStatus(t('playerCard.statusPublished'));
       return pub;
     };
 
     if (cardHostingAvailable()) {
-      const xb = mkBtn('Share to X', 'cd-ok');
+      const xb = mkBtn(t('playerCard.actionShareX'), 'cd-ok');
       xb.addEventListener('click', async () => {
         audio.click();
         xb.disabled = true;
@@ -6089,20 +6097,20 @@ export class Hud {
             } catch { copied = false; /* clipboard blocked → fall back to link-only */ }
           }
           const pub = await publishOnce();
-          const text = state.data ? this.cardShareText(state.data) : 'World of Claudecraft';
+          const text = state.data ? this.cardShareText(state.data) : t('playerCard.nativeShareTitle');
           const intent = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(pub.url)}`;
           window.open(intent, '_blank', 'noopener,noreferrer');
           setStatus(copied
-            ? 'Opened X — press ⌘V / Ctrl+V in the post to attach your card image.'
-            : 'Opened X with your link — it shows the card image when posted from a public domain.');
-        } catch (err) {
-          setStatus(errMsg(err));
+            ? t('playerCard.statusOpenedXWithImage')
+            : t('playerCard.statusOpenedXWithLink'));
+        } catch {
+          setStatus(errMsg());
         } finally {
           xb.disabled = false;
         }
       });
 
-      const cb = mkBtn('Copy Referral Link');
+      const cb = mkBtn(t('playerCard.actionCopyReferral'));
       cb.addEventListener('click', async () => {
         audio.click();
         cb.disabled = true;
@@ -6110,16 +6118,16 @@ export class Hud {
           const pub = await publishOnce();
           await navigator.clipboard.writeText(pub.url);
           linkInput.select();
-          setStatus('Referral link copied — share it anywhere.');
-        } catch (err) {
-          setStatus(errMsg(err));
+          setStatus(t('playerCard.statusReferralCopied'));
+        } catch {
+          setStatus(errMsg());
         } finally {
           cb.disabled = false;
         }
       });
     }
 
-    const dl = mkBtn('Download');
+    const dl = mkBtn(t('playerCard.actionDownload'));
     dl.addEventListener('click', async () => {
       audio.click();
       if (!state.canvas) return;
@@ -6132,21 +6140,25 @@ export class Hud {
       a.click();
       a.remove();
       setTimeout(() => URL.revokeObjectURL(href), 4000);
-      setStatus('Card downloaded.');
+      setStatus(t('playerCard.statusDownloaded'));
     });
 
     // Native share (mobile): share the PNG file, plus the hosted link when one
     // is available. navigator.canShare with files is the capability gate.
     const nav = navigator as Navigator & { canShare?: (d?: ShareData) => boolean };
     if (typeof nav.canShare === 'function') {
-      const sb = mkBtn('Share…');
+      const sb = mkBtn(t('playerCard.actionShareNative'));
       sb.addEventListener('click', async () => {
         audio.click();
         if (!state.canvas) return;
         sb.disabled = true;
         try {
           const file = new File([await cardCanvasToBlob(state.canvas)], fileName(), { type: 'image/png' });
-          const payload: ShareData = { files: [file], title: 'World of Claudecraft', text: state.data ? this.cardShareText(state.data) : 'World of Claudecraft' };
+          const payload: ShareData = {
+            files: [file],
+            title: t('playerCard.nativeShareTitle'),
+            text: state.data ? this.cardShareText(state.data) : t('playerCard.nativeShareTitle'),
+          };
           // Attach the hosted link when hosting is available; if publishing
           // fails, fall back to sharing just the image file.
           if (cardHostingAvailable()) {
@@ -6154,9 +6166,9 @@ export class Hud {
           }
           if (nav.canShare!(payload)) await nav.share!(payload);
           else if (nav.canShare!({ files: [file] })) await nav.share!({ files: [file] });
-          else setStatus('Sharing is not supported on this device.');
+          else setStatus(t('playerCard.statusShareUnsupported'));
         } catch (err) {
-          if (!(err instanceof Error && err.name === 'AbortError')) setStatus(errMsg(err));
+          if (!(err instanceof Error && err.name === 'AbortError')) setStatus(errMsg());
         } finally {
           sb.disabled = false;
         }
@@ -6166,10 +6178,14 @@ export class Hud {
 
   private cardShareText(data: PlayerCardData): string {
     const tier = holderTierForBalance(data.balance);
-    const tierBit = tier ? `, ${tier.name}-rank $WOC holder` : '';
+    const tierBit = tier ? t('playerCard.shareTierBit', { tier: holderTierDisplayName(tier) }) : '';
     // The URL X appends to this text is the player's card page — it unfurls the
     // card image and credits the referral when a recruit joins through it.
-    return `I'm forging my legend in World of Claudecraft — Level ${data.level} ${data.className}${tierBit}. Join my realm:`;
+    return t('playerCard.shareText', {
+      level: formatNumber(data.level, { maximumFractionDigits: 0 }),
+      className: data.className,
+      tierBit,
+    });
   }
 
   private buildPlayerCardData(
@@ -6214,8 +6230,8 @@ export class Hud {
       { label: t('itemUi.stats.dodge'), value: pct(p.dodgeChance) },
     ];
     const rating = sim.arenaInfo?.rating ?? null;
-    if (rating !== null) combatStats.push({ label: 'Arena', value: num(rating) });
-    if (sim.prestigeRank > 0) combatStats.push({ label: 'Prestige', value: num(sim.prestigeRank) });
+    if (rating !== null) combatStats.push({ label: t('playerCard.arenaStat'), value: num(rating) });
+    if (sim.prestigeRank > 0) combatStats.push({ label: t('game.prestige.rank'), value: num(sim.prestigeRank) });
 
     const slots: EquipSlot[] = ['mainhand', 'chest', 'legs', 'feet'];
     const gear = slots.map((slot) => {
@@ -6239,7 +6255,7 @@ export class Hud {
       combatStats,
       gear,
       topPercent,
-      balance: wocBalance(),
+      balance: verifiedWocBalance(),
       referralHandle: referral?.slug ?? this.cardSlug(p.name),
       referralCount: referral?.count ?? null,
       siteUrl: 'worldofclaudecraft.com',
@@ -7197,8 +7213,8 @@ export class Hud {
       ? `<div class="inspect-holder">` +
         `<img class="inspect-holder-badge" src="${holderTierBadgeDataUrl(tierDef)}" alt="" draggable="false">` +
         `<div class="inspect-holder-text">` +
-        `<div class="inspect-holder-name">${esc(tierDef.name)}</div>` +
-        `<div class="inspect-holder-sub">${e.holderBalance ? `${esc(formatNumber(e.holderBalance, { maximumFractionDigits: 0 }))} $WOC` : '$WOC holder'}</div>` +
+        `<div class="inspect-holder-name">${esc(holderTierDisplayName(tierDef))}</div>` +
+        `<div class="inspect-holder-sub">${e.holderBalance ? esc(t('wallet.balanceAmount', { amount: formatNumber(e.holderBalance, { maximumFractionDigits: 0 }) })) : esc(t('wallet.holder'))}</div>` +
         `</div></div>`
       : '';
     el.innerHTML =
