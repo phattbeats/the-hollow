@@ -256,6 +256,12 @@ export const en_XA: EnTranslations = {
       "presetMinimal": "[Ɱíñíɱáļ]",
       "presetStandard": "[Šţáñðáŕð]",
       "presetEverything": "[Éʋéŕýţĥíñĝ]",
+      "groups": {
+        "frame": "[Ƒŕáɱé & Ţíɱíñĝ]",
+        "network": "[Ñéţŵóŕķ]",
+        "renderer": "[Ŕéñðéŕéŕ]",
+        "system": "[Šýšţéɱ]"
+      },
       "labels": {
         "fps": "[ƑÞŠ]",
         "frameTime": "[Ƒŕáɱé Ţíɱé]",

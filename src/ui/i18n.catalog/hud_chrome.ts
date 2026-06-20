@@ -133,6 +133,14 @@ export const hudChromeStrings = {
     presetMinimal: "Minimal",
     presetStandard: "Standard",
     presetEverything: "Everything",
+    // Category subheads the Stats toggles are grouped under (mirrors the metric
+    // registry's groups: frame/timing, network, renderer, system).
+    groups: {
+      frame: "Frame & Timing",
+      network: "Network",
+      renderer: "Renderer",
+      system: "System",
+    },
     // Short metric labels shown in the overlay's left column and the Stats toggles.
     labels: {
       fps: "FPS",
