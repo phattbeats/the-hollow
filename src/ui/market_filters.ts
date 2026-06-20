@@ -3,13 +3,19 @@ import type { ItemDef } from '../sim/types';
 import type { MarketListingView } from '../world_api';
 
 export const MARKET_ITEM_TYPE_FILTERS = ['all', 'weapon', 'armor', 'consumable', 'material', 'other'] as const;
+export const MARKET_ARMOR_TYPE_FILTERS = ['all', 'helmet', 'shoulder', 'chest', 'waist', 'legs', 'gloves', 'feet'] as const;
+export const MARKET_WEAPON_TYPE_FILTERS = ['all', 'sword', 'dagger', 'staff', 'mace', 'axe', 'other'] as const;
 export const MARKET_RARITY_FILTERS = ['all', 'poor', 'common', 'uncommon', 'rare', 'epic'] as const;
 
 export type MarketItemTypeFilter = typeof MARKET_ITEM_TYPE_FILTERS[number];
+export type MarketArmorTypeFilter = typeof MARKET_ARMOR_TYPE_FILTERS[number];
+export type MarketWeaponTypeFilter = typeof MARKET_WEAPON_TYPE_FILTERS[number];
+export type MarketSubtypeFilter = MarketArmorTypeFilter | MarketWeaponTypeFilter;
 export type MarketRarityFilter = typeof MARKET_RARITY_FILTERS[number];
 
 export interface MarketFilters {
   itemType: MarketItemTypeFilter;
+  subtype?: MarketSubtypeFilter;
   rarity: MarketRarityFilter;
 }
 
@@ -22,6 +28,24 @@ function itemMatchesType(item: ItemDef, filter: MarketItemTypeFilter): boolean {
   return item.kind === 'quest';
 }
 
+function weaponFamily(item: ItemDef): MarketWeaponTypeFilter {
+  const haystack = `${item.id} ${item.name}`.toLowerCase();
+  if (item.weapon?.dagger || /dagger|dirk|shiv|knife/.test(haystack)) return 'dagger';
+  if (/staff|shortstaff/.test(haystack)) return 'staff';
+  if (/mace|maul|cudgel|hammer/.test(haystack)) return 'mace';
+  if (/axe|hatchet|cleaver|chopper/.test(haystack)) return 'axe';
+  if (/sword|blade|saber|sabre/.test(haystack)) return 'sword';
+  return 'other';
+}
+
+function itemMatchesSubtype(item: ItemDef, filters: MarketFilters): boolean {
+  const subtype = filters.subtype ?? 'all';
+  if (subtype === 'all') return true;
+  if (filters.itemType === 'armor') return item.kind === 'armor' && item.slot === subtype;
+  if (filters.itemType === 'weapon') return item.kind === 'weapon' && weaponFamily(item) === subtype;
+  return true;
+}
+
 function itemMatchesRarity(item: ItemDef, filter: MarketRarityFilter): boolean {
   if (filter === 'all') return true;
   return (item.quality ?? 'common') === filter;
@@ -31,6 +55,6 @@ export function filterMarketListings(listings: readonly MarketListingView[], fil
   return listings.filter((listing) => {
     const item = ITEMS[listing.itemId];
     if (!item) return false;
-    return itemMatchesType(item, filters.itemType) && itemMatchesRarity(item, filters.rarity);
+    return itemMatchesType(item, filters.itemType) && itemMatchesSubtype(item, filters) && itemMatchesRarity(item, filters.rarity);
   });
 }

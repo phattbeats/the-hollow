@@ -45,11 +45,14 @@ import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANG
 import { isPhoneTouchDevice } from '../game/mobile_controls';
 import { chatPlayerContextActions } from './player_context_menu';
 import {
+  MARKET_ARMOR_TYPE_FILTERS,
   MARKET_ITEM_TYPE_FILTERS,
   MARKET_RARITY_FILTERS,
+  MARKET_WEAPON_TYPE_FILTERS,
   filterMarketListings,
   type MarketItemTypeFilter,
   type MarketRarityFilter,
+  type MarketSubtypeFilter,
 } from './market_filters';
 import {
   CHAT_TAB_CHANNELS, CHANNEL_LABEL_KEYS, channelNeedsJoin, composeChatLine,
@@ -452,6 +455,7 @@ export class Hud {
   private marketOpen = false;
   private marketTab: 'browse' | 'sell' | 'collect' = 'browse';
   private marketItemTypeFilter: MarketItemTypeFilter = 'all';
+  private marketSubtypeFilter: MarketSubtypeFilter = 'all';
   private marketRarityFilter: MarketRarityFilter = 'all';
   private marketSellItem: string | null = null; // bag item staged for listing
   private marketSearchQuery = ''; // active browse search term (sent to the server)
@@ -4765,6 +4769,7 @@ export class Hud {
     this.marketOpen = true;
     this.marketTab = 'browse';
     this.marketItemTypeFilter = 'all';
+    this.marketSubtypeFilter = 'all';
     this.marketRarityFilter = 'all';
     this.marketSellItem = null;
     this.marketSearchQuery = '';
@@ -4821,17 +4826,54 @@ export class Hud {
     return 'itemUi.market.filterRarityAll';
   }
 
+  private marketSubtypeOptions(): readonly MarketSubtypeFilter[] {
+    if (this.marketItemTypeFilter === 'armor') return MARKET_ARMOR_TYPE_FILTERS;
+    if (this.marketItemTypeFilter === 'weapon') return MARKET_WEAPON_TYPE_FILTERS;
+    return ['all'];
+  }
+
+  private marketSubtypeLabel(): string {
+    return t(this.marketItemTypeFilter === 'armor' ? 'itemUi.market.filterArmorType' : 'itemUi.market.filterWeaponType');
+  }
+
+  private marketSubtypeOptionLabel(filter: MarketSubtypeFilter): string {
+    if (filter === 'all') return t(this.marketItemTypeFilter === 'armor' ? 'itemUi.market.filterArmorAll' : 'itemUi.market.filterWeaponAll');
+    if (this.marketItemTypeFilter === 'armor') return itemSlotName(filter as EquipSlot);
+    if (filter === 'sword') return t('itemUi.market.weaponSword');
+    if (filter === 'dagger') return t('itemUi.market.weaponDagger');
+    if (filter === 'staff') return t('itemUi.market.weaponStaff');
+    if (filter === 'mace') return t('itemUi.market.weaponMace');
+    if (filter === 'axe') return t('itemUi.market.weaponAxe');
+    return t('itemUi.market.weaponOther');
+  }
+
+  private renderMarketFilterMenu(
+    menu: 'itemType' | 'subtype' | 'rarity',
+    label: string,
+    value: string,
+    options: readonly string[],
+    optionLabel: (option: string) => string,
+  ): string {
+    const current = optionLabel(value);
+    const optionHtml = options.map((option) => {
+      const selected = option === value;
+      return `<button type="button" class="mkt-select-option${selected ? ' sel' : ''}" role="option" aria-selected="${selected ? 'true' : 'false'}" data-market-filter-option="${option}">${esc(optionLabel(option))}</button>`;
+    }).join('');
+    return `<div class="mkt-filter"><span>${esc(label)}</span><div class="mkt-select" data-market-filter-menu="${menu}">`
+      + `<button type="button" class="mkt-select-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="${esc(`${label}: ${current}`)}"><span>${esc(current)}</span><span class="mkt-select-chevron" aria-hidden="true"></span></button>`
+      + `<div class="mkt-select-menu" role="listbox" hidden>${optionHtml}</div>`
+      + `</div></div>`;
+  }
+
   private renderMarketFilters(): string {
     if (this.marketTab !== 'browse') return '';
-    const typeOptions = MARKET_ITEM_TYPE_FILTERS.map((filter) =>
-      `<option value="${filter}"${this.marketItemTypeFilter === filter ? ' selected' : ''}>${esc(t(this.marketItemTypeLabelKey(filter)))}</option>`
-    ).join('');
-    const rarityOptions = MARKET_RARITY_FILTERS.map((filter) =>
-      `<option value="${filter}"${this.marketRarityFilter === filter ? ' selected' : ''}>${esc(t(this.marketRarityLabelKey(filter)))}</option>`
-    ).join('');
-    return `<div class="mkt-filters" role="group" aria-label="${esc(t('itemUi.market.filters'))}">`
-      + `<label class="mkt-filter"><span>${esc(t('itemUi.market.filterType'))}</span><select data-market-filter="itemType">${typeOptions}</select></label>`
-      + `<label class="mkt-filter"><span>${esc(t('itemUi.market.filterRarity'))}</span><select data-market-filter="rarity">${rarityOptions}</select></label>`
+    const hasSubtype = this.marketItemTypeFilter === 'armor' || this.marketItemTypeFilter === 'weapon';
+    return `<div class="mkt-filters${hasSubtype ? ' has-subtype' : ''}" role="group" aria-label="${esc(t('itemUi.market.filters'))}">`
+      + this.renderMarketFilterMenu('itemType', t('itemUi.market.filterType'), this.marketItemTypeFilter, MARKET_ITEM_TYPE_FILTERS, (filter) => t(this.marketItemTypeLabelKey(filter as MarketItemTypeFilter)))
+      + (hasSubtype
+        ? this.renderMarketFilterMenu('subtype', this.marketSubtypeLabel(), this.marketSubtypeFilter, this.marketSubtypeOptions(), (filter) => this.marketSubtypeOptionLabel(filter as MarketSubtypeFilter))
+        : '')
+      + this.renderMarketFilterMenu('rarity', t('itemUi.market.filterRarity'), this.marketRarityFilter, MARKET_RARITY_FILTERS, (filter) => t(this.marketRarityLabelKey(filter as MarketRarityFilter)))
       + `</div>`;
   }
 
@@ -4869,15 +4911,51 @@ export class Hud {
         this.renderMarket();
       });
     });
-    el.querySelectorAll<HTMLSelectElement>('[data-market-filter]').forEach((select) => {
-      select.addEventListener('change', () => {
-        if (select.dataset.marketFilter === 'itemType') this.marketItemTypeFilter = select.value as MarketItemTypeFilter;
-        else this.marketRarityFilter = select.value as MarketRarityFilter;
-        this.lastMarketSig = '';
-        audio.click();
-        this.renderMarketContent(info);
+    const closeFilterMenus = () => {
+      el.querySelectorAll<HTMLElement>('.mkt-select.open').forEach((menu) => {
+        menu.classList.remove('open');
+        menu.querySelector<HTMLButtonElement>('.mkt-select-btn')?.setAttribute('aria-expanded', 'false');
+        const list = menu.querySelector<HTMLElement>('.mkt-select-menu');
+        if (list) list.hidden = true;
+      });
+    };
+    el.querySelectorAll<HTMLButtonElement>('.mkt-select-btn').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const menu = button.closest<HTMLElement>('.mkt-select');
+        if (!menu) return;
+        const open = !menu.classList.contains('open');
+        closeFilterMenus();
+        menu.classList.toggle('open', open);
+        button.setAttribute('aria-expanded', open ? 'true' : 'false');
+        const list = menu.querySelector<HTMLElement>('.mkt-select-menu');
+        if (list) list.hidden = !open;
       });
     });
+    el.querySelectorAll<HTMLButtonElement>('[data-market-filter-option]').forEach((option) => {
+      option.addEventListener('click', () => {
+        const menu = option.closest<HTMLElement>('[data-market-filter-menu]');
+        const key = menu?.dataset.marketFilterMenu;
+        const value = option.dataset.marketFilterOption ?? 'all';
+        if (key === 'itemType') {
+          const next = value as MarketItemTypeFilter;
+          if (next !== this.marketItemTypeFilter) {
+            this.marketItemTypeFilter = next;
+            this.marketSubtypeFilter = 'all';
+          }
+        } else if (key === 'subtype') {
+          this.marketSubtypeFilter = value as MarketSubtypeFilter;
+        } else if (key === 'rarity') {
+          this.marketRarityFilter = value as MarketRarityFilter;
+        } else {
+          return;
+        }
+        this.lastMarketSig = '';
+        audio.click();
+        this.renderMarket();
+      });
+    });
+    el.addEventListener('click', closeFilterMenus);
     this.renderMarketContent(info);
   }
 
@@ -4890,6 +4968,7 @@ export class Hud {
     const sig = JSON.stringify([
       this.marketTab,
       this.marketItemTypeFilter,
+      this.marketSubtypeFilter,
       this.marketRarityFilter,
       info?.listings,
       info?.totalCount,
@@ -4964,6 +5043,7 @@ export class Hud {
     list.appendChild(note);
     const listings = filterMarketListings(info.listings, {
       itemType: this.marketItemTypeFilter,
+      subtype: this.marketSubtypeFilter,
       rarity: this.marketRarityFilter,
     });
     if (listings.length === 0) {

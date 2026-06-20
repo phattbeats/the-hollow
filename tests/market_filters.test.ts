@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import type { MarketListingView } from '../src/world_api';
 import {
+  MARKET_ARMOR_TYPE_FILTERS,
   MARKET_ITEM_TYPE_FILTERS,
   MARKET_RARITY_FILTERS,
+  MARKET_WEAPON_TYPE_FILTERS,
   filterMarketListings,
 } from '../src/ui/market_filters';
 
@@ -31,6 +33,8 @@ describe('World Market filters', () => {
 
   it('exposes stable item type and rarity filter options for the browse UI', () => {
     expect(MARKET_ITEM_TYPE_FILTERS).toEqual(['all', 'weapon', 'armor', 'consumable', 'material', 'other']);
+    expect(MARKET_ARMOR_TYPE_FILTERS).toEqual(['all', 'helmet', 'shoulder', 'chest', 'waist', 'legs', 'gloves', 'feet']);
+    expect(MARKET_WEAPON_TYPE_FILTERS).toEqual(['all', 'sword', 'dagger', 'staff', 'mace', 'axe', 'other']);
     expect(MARKET_RARITY_FILTERS).toEqual(['all', 'poor', 'common', 'uncommon', 'rare', 'epic']);
   });
 
@@ -56,5 +60,41 @@ describe('World Market filters', () => {
     expect(filterMarketListings(listings, { itemType: 'armor', rarity: 'uncommon' }).map((l) => l.itemId))
       .toEqual(['greyjaw_pelt_cloak']);
     expect(filterMarketListings(listings, { itemType: 'armor', rarity: 'common' })).toEqual([]);
+  });
+
+  it('narrows armor filters by wearable slot', () => {
+    const armor = [
+      listing('acolytes_circlet'),
+      listing('greyjaw_pelt_cloak'),
+      listing('recruit_tunic'),
+    ];
+
+    expect(filterMarketListings(armor, { itemType: 'armor', subtype: 'helmet', rarity: 'all' }).map((l) => l.itemId))
+      .toEqual(['acolytes_circlet']);
+    expect(filterMarketListings(armor, { itemType: 'armor', subtype: 'legs', rarity: 'all' }).map((l) => l.itemId))
+      .toEqual(['greyjaw_pelt_cloak']);
+    expect(filterMarketListings(armor, { itemType: 'armor', subtype: 'chest', rarity: 'all' }).map((l) => l.itemId))
+      .toEqual(['recruit_tunic']);
+  });
+
+  it('narrows weapon filters by weapon family', () => {
+    const weapons = [
+      listing('worn_sword'),
+      listing('keen_dirk'),
+      listing('gnarled_staff'),
+      listing('training_mace'),
+      listing('rusty_hatchet'),
+    ];
+
+    expect(filterMarketListings(weapons, { itemType: 'weapon', subtype: 'sword', rarity: 'all' }).map((l) => l.itemId))
+      .toEqual(['worn_sword']);
+    expect(filterMarketListings(weapons, { itemType: 'weapon', subtype: 'dagger', rarity: 'all' }).map((l) => l.itemId))
+      .toEqual(['keen_dirk']);
+    expect(filterMarketListings(weapons, { itemType: 'weapon', subtype: 'staff', rarity: 'all' }).map((l) => l.itemId))
+      .toEqual(['gnarled_staff']);
+    expect(filterMarketListings(weapons, { itemType: 'weapon', subtype: 'mace', rarity: 'all' }).map((l) => l.itemId))
+      .toEqual(['training_mace']);
+    expect(filterMarketListings(weapons, { itemType: 'weapon', subtype: 'axe', rarity: 'all' }).map((l) => l.itemId))
+      .toEqual(['rusty_hatchet']);
   });
 });

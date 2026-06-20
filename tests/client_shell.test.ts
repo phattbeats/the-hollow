@@ -259,9 +259,12 @@ describe('client HTML shell', () => {
     expect(html).toContain('#market-window { width: 470px; display: none; flex-direction: column; overflow: hidden;');
     expect(html).toContain('#market-body { overflow-y: auto; flex: 1; min-height: 0;');
     expect(html).toContain('body.mobile-touch #market-window {\n    max-height: calc(58vh - 20px);\n    overflow: hidden;');
-    expect(hudTs).toContain('class="mkt-filters"');
-    expect(hudTs).toContain('data-market-filter="itemType"');
-    expect(hudTs).toContain('data-market-filter="rarity"');
+    expect(hudTs).toContain('class="mkt-filters${hasSubtype ? \' has-subtype\' : \'\'}"');
+    expect(hudTs).toContain('data-market-filter-menu="${menu}"');
+    expect(hudTs).toContain("this.renderMarketFilterMenu('itemType'");
+    expect(hudTs).toContain("this.renderMarketFilterMenu('subtype'");
+    expect(hudTs).toContain("this.renderMarketFilterMenu('rarity'");
+    expect(hudTs).not.toContain('<select data-market-filter=');
   });
 
   it('keeps the mobile More and Autorun buttons in the combat row', () => {
