@@ -150,6 +150,118 @@ export const en: EnTranslations = {
       }
     }
   },
+  "hudChrome": {
+    "emotes": {
+      "wave": "Wave",
+      "laugh": "LOL",
+      "question": "Bro?",
+      "cheer": "Cheer",
+      "dance": "Dance",
+      "point": "Point",
+      "flex": "Flex",
+      "salute": "Salute",
+      "cry": "Cry",
+      "bow": "Bow",
+      "clap": "Clap",
+      "roar": "Roar",
+      "kneel": "Kneel"
+    },
+    "emoteWheel": {
+      "edit": "Edit",
+      "label": "Emotes"
+    },
+    "emoteEditor": {
+      "title": "Emotes",
+      "done": "Done"
+    },
+    "chatTimestamps": {
+      "show": "Show Chat Timestamps",
+      "format": "Timestamp Format",
+      "clock12h": "12-hour",
+      "clock24h": "24-hour",
+      "note": "Prefixes each new chat line with the time it arrived, e.g. [14:32]. Only affects messages received while the option is on."
+    },
+    "swing": {
+      "ready": "Swing",
+      "seconds": "{seconds}s"
+    },
+    "rest": {
+      "resting": "Resting"
+    },
+    "mobile": {
+      "autorun": "Autorun",
+      "jump": "Jump",
+      "leaderboard": "Ranks",
+      "nameplates": "Names",
+      "haptics": "Haptics",
+      "hapticsOff": "Haptics Off",
+      "toggleHaptics": "Toggle haptics"
+    },
+    "widgets": {
+      "clockTitle": "Local time - click to toggle 12/24-hour",
+      "worldCoordinates": "World coordinates",
+      "coordinates": "Coordinates",
+      "heading": "Heading",
+      "minimapZoom": "Minimap zoom"
+    },
+    "compass": {
+      "N": "N",
+      "NE": "NE",
+      "E": "E",
+      "SE": "SE",
+      "S": "S",
+      "SW": "SW",
+      "W": "W",
+      "NW": "NW"
+    },
+    "meters": {
+      "perSecond": "{value}/s",
+      "perSecondRow": "{total} ({rate})",
+      "minutesSeconds": "{m}m {s}s",
+      "seconds": "{s}s"
+    },
+    "keybinds": {
+      "emoteWheel": "Emote Wheel",
+      "targetFriendly": "Target Nearest Friendly",
+      "targetFriendlyNext": "Cycle Friendly Target"
+    },
+    "options": {
+      "clickMoveLeft": "Left Click",
+      "clickMoveRight": "Right Click"
+    },
+    "talents": {
+      "defaultBuildName": "Build {n}"
+    },
+    "tips": {
+      "joinChannels": "Tip: type /join world or /join lfg to chat with players across the realm."
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "you are {rank}, {count} member",
+        "few": "you are {rank}, {count} members",
+        "many": "you are {rank}, {count} members",
+        "other": "you are {rank}, {count} members"
+      },
+      "characterCount": {
+        "one": "{count} character",
+        "few": "{count} characters",
+        "many": "{count} characters",
+        "other": "{count} characters"
+      },
+      "secondsRemaining": {
+        "one": "{count} second remaining",
+        "few": "{count} seconds remaining",
+        "many": "{count} seconds remaining",
+        "other": "{count} seconds remaining"
+      },
+      "playersOnline": {
+        "one": "Who: {count} player online on {realm}.",
+        "few": "Who: {count} players online on {realm}.",
+        "many": "Who: {count} players online on {realm}.",
+        "other": "Who: {count} players online on {realm}."
+      }
+    }
+  },
   "skinEvent": {
     "title": "Cosmetic Cache",
     "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
@@ -562,6 +674,7 @@ export const en: EnTranslations = {
       "deleteConfirm": "Type the character name to confirm deletion.",
       "notAuthenticated": "Not authenticated.",
       "accountBanned": "This account has been banned.",
+      "webLoginOnly": "Logins are only allowed from the game client.",
       "accountSuspended": "This account is suspended until {date}.",
       "alreadyInWorld": "Character is already in world.",
       "renameBeforeEntering": "This character must be renamed before entering the world."
