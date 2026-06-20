@@ -6,6 +6,7 @@ export const MARKET_ITEM_TYPE_FILTERS = ['all', 'weapon', 'armor', 'consumable',
 export const MARKET_ARMOR_TYPE_FILTERS = ['all', 'helmet', 'shoulder', 'chest', 'waist', 'legs', 'gloves', 'feet'] as const;
 export const MARKET_WEAPON_TYPE_FILTERS = ['all', 'sword', 'dagger', 'staff', 'mace', 'axe', 'other'] as const;
 export const MARKET_RARITY_FILTERS = ['all', 'poor', 'common', 'uncommon', 'rare', 'epic'] as const;
+export const MARKET_PAGE_SIZE = 50;
 
 export type MarketItemTypeFilter = typeof MARKET_ITEM_TYPE_FILTERS[number];
 export type MarketArmorTypeFilter = typeof MARKET_ARMOR_TYPE_FILTERS[number];
@@ -57,4 +58,35 @@ export function filterMarketListings(listings: readonly MarketListingView[], fil
     if (!item) return false;
     return itemMatchesType(item, filters.itemType) && itemMatchesSubtype(item, filters) && itemMatchesRarity(item, filters.rarity);
   });
+}
+
+export interface MarketListingPage<T extends MarketListingView = MarketListingView> {
+  items: T[];
+  page: number;
+  pageCount: number;
+  total: number;
+  start: number;
+  end: number;
+}
+
+export function paginateMarketListings<T extends MarketListingView>(
+  listings: readonly T[],
+  requestedPage: number,
+  pageSize = MARKET_PAGE_SIZE,
+): MarketListingPage<T> {
+  const total = listings.length;
+  const safePageSize = Number.isFinite(pageSize) ? Math.max(1, Math.floor(pageSize)) : MARKET_PAGE_SIZE;
+  const pageCount = Math.max(1, Math.ceil(total / safePageSize));
+  const requested = Number.isFinite(requestedPage) ? Math.floor(requestedPage) : 0;
+  const page = Math.max(0, Math.min(pageCount - 1, requested));
+  const start = page * safePageSize;
+  const end = Math.min(total, start + safePageSize);
+  return {
+    items: listings.slice(start, end),
+    page,
+    pageCount,
+    total,
+    start,
+    end,
+  };
 }

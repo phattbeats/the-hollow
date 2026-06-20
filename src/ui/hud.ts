@@ -47,9 +47,11 @@ import { chatPlayerContextActions } from './player_context_menu';
 import {
   MARKET_ARMOR_TYPE_FILTERS,
   MARKET_ITEM_TYPE_FILTERS,
+  MARKET_PAGE_SIZE,
   MARKET_RARITY_FILTERS,
   MARKET_WEAPON_TYPE_FILTERS,
   filterMarketListings,
+  paginateMarketListings,
   type MarketItemTypeFilter,
   type MarketRarityFilter,
   type MarketSubtypeFilter,
@@ -457,6 +459,7 @@ export class Hud {
   private marketItemTypeFilter: MarketItemTypeFilter = 'all';
   private marketSubtypeFilter: MarketSubtypeFilter = 'all';
   private marketRarityFilter: MarketRarityFilter = 'all';
+  private marketBrowsePage = 0;
   private marketSellItem: string | null = null; // bag item staged for listing
   private marketSearchQuery = ''; // active browse search term (sent to the server)
   private lastMarketSig = '';
@@ -4771,6 +4774,7 @@ export class Hud {
     this.marketItemTypeFilter = 'all';
     this.marketSubtypeFilter = 'all';
     this.marketRarityFilter = 'all';
+    this.marketBrowsePage = 0;
     this.marketSellItem = null;
     this.marketSearchQuery = '';
     this.sim.marketSearch('');
@@ -4906,6 +4910,7 @@ export class Hud {
         const next = (t as HTMLElement).dataset.tab as typeof this.marketTab;
         if (next === this.marketTab) return;
         this.marketTab = next;
+        this.marketBrowsePage = 0;
         this.lastMarketSig = '';
         audio.click();
         this.renderMarket();
@@ -4942,11 +4947,14 @@ export class Hud {
           if (next !== this.marketItemTypeFilter) {
             this.marketItemTypeFilter = next;
             this.marketSubtypeFilter = 'all';
+            this.marketBrowsePage = 0;
           }
         } else if (key === 'subtype') {
           this.marketSubtypeFilter = value as MarketSubtypeFilter;
+          this.marketBrowsePage = 0;
         } else if (key === 'rarity') {
           this.marketRarityFilter = value as MarketRarityFilter;
+          this.marketBrowsePage = 0;
         } else {
           return;
         }
@@ -4970,6 +4978,7 @@ export class Hud {
       this.marketItemTypeFilter,
       this.marketSubtypeFilter,
       this.marketRarityFilter,
+      this.marketBrowsePage,
       info?.listings,
       info?.totalCount,
       info?.filter,
@@ -5011,6 +5020,7 @@ export class Hud {
       search.value = this.marketSearchQuery;
       search.addEventListener('input', () => {
         this.marketSearchQuery = search!.value;
+        this.marketBrowsePage = 0;
         this.sim.marketSearch(search!.value);
       });
       body.appendChild(search);
@@ -5047,13 +5057,16 @@ export class Hud {
       rarity: this.marketRarityFilter,
     });
     if (listings.length === 0) {
+      this.marketBrowsePage = 0;
       const empty = document.createElement('div');
       empty.className = 'mkt-empty';
       empty.textContent = t('itemUi.market.emptyFiltered');
       list.appendChild(empty);
       return;
     }
-    for (const l of listings) {
+    const page = paginateMarketListings(listings, this.marketBrowsePage, MARKET_PAGE_SIZE);
+    this.marketBrowsePage = page.page;
+    for (const l of page.items) {
       const item = ITEMS[l.itemId];
       if (!item) continue;
       const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
@@ -5082,6 +5095,27 @@ export class Hud {
       row.appendChild(btn);
       this.attachTooltip(row, () => this.itemTooltip(item));
       list.appendChild(row);
+    }
+    if (page.pageCount > 1) {
+      const pager = document.createElement('div');
+      pager.className = 'mkt-page';
+      const pageNumber = formatNumber(page.page + 1, { maximumFractionDigits: 0 });
+      const pageCount = formatNumber(page.pageCount, { maximumFractionDigits: 0 });
+      pager.innerHTML =
+        `<button type="button" class="mkt-page-btn" data-market-page="prev"${page.page <= 0 ? ' disabled' : ''} aria-label="${esc(t('itemUi.market.pagePrevAria'))}">${esc(t('itemUi.market.pagePrev'))}</button>`
+        + `<span class="mkt-page-info">${esc(t('itemUi.market.pageStatus', { page: pageNumber, pages: pageCount }))}</span>`
+        + `<button type="button" class="mkt-page-btn" data-market-page="next"${page.page >= page.pageCount - 1 ? ' disabled' : ''} aria-label="${esc(t('itemUi.market.pageNextAria'))}">${esc(t('itemUi.market.pageNext'))}</button>`;
+      pager.querySelectorAll<HTMLButtonElement>('[data-market-page]').forEach((button) => {
+        button.addEventListener('click', () => {
+          if (button.disabled) return;
+          this.marketBrowsePage += button.dataset.marketPage === 'next' ? 1 : -1;
+          this.lastMarketSig = '';
+          audio.click();
+          this.renderMarketContent(info);
+          body.scrollTop = 0;
+        });
+      });
+      list.appendChild(pager);
     }
   }
 

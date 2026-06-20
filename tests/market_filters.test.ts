@@ -6,6 +6,7 @@ import {
   MARKET_RARITY_FILTERS,
   MARKET_WEAPON_TYPE_FILTERS,
   filterMarketListings,
+  paginateMarketListings,
 } from '../src/ui/market_filters';
 
 function listing(itemId: string): MarketListingView {
@@ -96,5 +97,27 @@ describe('World Market filters', () => {
       .toEqual(['training_mace']);
     expect(filterMarketListings(weapons, { itemType: 'weapon', subtype: 'axe', rarity: 'all' }).map((l) => l.itemId))
       .toEqual(['rusty_hatchet']);
+  });
+
+  it('paginates filtered listings at 50 items per market page', () => {
+    const manyListings = Array.from({ length: 121 }, (_, index) => ({
+      ...listing('wolf_fang'),
+      id: index + 1,
+    }));
+
+    expect(paginateMarketListings(manyListings, 0)).toMatchObject({
+      page: 0,
+      pageCount: 3,
+      total: 121,
+      start: 0,
+      end: 50,
+    });
+    expect(paginateMarketListings(manyListings, 0).items).toHaveLength(50);
+    expect(paginateMarketListings(manyListings, 1).items[0].id).toBe(51);
+    expect(paginateMarketListings(manyListings, 99)).toMatchObject({
+      page: 2,
+      start: 100,
+      end: 121,
+    });
   });
 });
