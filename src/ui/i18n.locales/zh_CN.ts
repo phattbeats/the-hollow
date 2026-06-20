@@ -19,6 +19,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   "hudChrome.keybinds.targetFriendlyNext": "切换友方目标",
   "hudChrome.options.clickMoveLeft": "左键",
   "hudChrome.options.clickMoveRight": "右键",
+  "hudChrome.options.footstepSounds": "脚步声",
   "hudChrome.talents.defaultBuildName": "配置 {n}",
   "hudChrome.tips.joinChannels": "提示：输入 /join world 或 /join lfg，与全服玩家聊天。",
   "meta.builtOn": "构建于 {date}",

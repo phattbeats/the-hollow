@@ -785,6 +785,10 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       voice.setEnabled(settings.set('voiceEnabled', !!value));
       return;
     }
+    if (key === 'footstepSfx') {
+      sfx.setFootstepsEnabled(settings.set('footstepSfx', !!value));
+      return;
+    }
     const v = settings.set(key as keyof typeof SETTING_RANGES, value as number);
     switch (key) {
       case 'cameraSpeed': input.setCameraSpeed(v); break;

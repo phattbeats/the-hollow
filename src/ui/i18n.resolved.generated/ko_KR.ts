@@ -227,7 +227,8 @@ export const ko_KR: EnTranslations = {
     },
     "options": {
       "clickMoveLeft": "왼쪽 클릭",
-      "clickMoveRight": "오른쪽 클릭"
+      "clickMoveRight": "오른쪽 클릭",
+      "footstepSounds": "발소리"
     },
     "talents": {
       "defaultBuildName": "빌드 {n}"

@@ -110,6 +110,14 @@ describe('Settings', () => {
     expect(b.get('leftHandedTouch')).toBe(true);
   });
 
+  it('defaults footstep sounds off and persists re-enabling across instances', () => {
+    const a = new Settings();
+    expect(a.get('footstepSfx')).toBe(false);
+    a.set('footstepSfx', true);
+    const b = new Settings();
+    expect(b.get('footstepSfx')).toBe(true);
+  });
+
   it('defaults touch look speed to 1x, clamps, and persists', () => {
     const a = new Settings();
     expect(a.get('touchLookSpeed')).toBe(SETTING_RANGES.touchLookSpeed.def);

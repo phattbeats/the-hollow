@@ -19,6 +19,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "hudChrome.keybinds.targetFriendlyNext": "味方ターゲットを順に切り替え",
   "hudChrome.options.clickMoveLeft": "左クリック",
   "hudChrome.options.clickMoveRight": "右クリック",
+  "hudChrome.options.footstepSounds": "足音",
   "hudChrome.talents.defaultBuildName": "ビルド {n}",
   "hudChrome.tips.joinChannels": "ヒント：/join world または /join lfg と入力すると、レルム全体のプレイヤーとチャットできます。",
   "meta.builtOn": "ビルド日：{date}",

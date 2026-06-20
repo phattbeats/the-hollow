@@ -227,7 +227,8 @@ export const ru_RU: EnTranslations = {
     },
     "options": {
       "clickMoveLeft": "Левая кнопка",
-      "clickMoveRight": "Правая кнопка"
+      "clickMoveRight": "Правая кнопка",
+      "footstepSounds": "Звуки шагов"
     },
     "talents": {
       "defaultBuildName": "Билд {n}"

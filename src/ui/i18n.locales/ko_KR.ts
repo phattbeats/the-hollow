@@ -19,6 +19,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   "hudChrome.keybinds.targetFriendlyNext": "아군 대상 순환",
   "hudChrome.options.clickMoveLeft": "왼쪽 클릭",
   "hudChrome.options.clickMoveRight": "오른쪽 클릭",
+  "hudChrome.options.footstepSounds": "발소리",
   "hudChrome.talents.defaultBuildName": "빌드 {n}",
   "hudChrome.tips.joinChannels": "팁: /join world 또는 /join lfg를 입력하면 서버 전역의 플레이어와 대화할 수 있습니다.",
   "meta.builtOn": "{date} 빌드",
