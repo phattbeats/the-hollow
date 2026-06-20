@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { CLASSES } from '../src/sim/content/classes';
 import {
-  buildDefaultFormBar, clearHotbarSlot, hotbarActionsEqual, parseHotbarActions,
+  buildDefaultFormBar, classHasFormBars, clearHotbarSlot, hotbarActionsEqual, parseHotbarActions,
   placeAbilityOnSlot, placeItemOnSlot, shouldSeedFormBar, syncHotbarActions,
 } from '../src/ui/hotbar';
 
@@ -231,6 +231,24 @@ describe('hotbar actions equality', () => {
     expect(hotbarActionsEqual(base, [{ type: 'ability' as const, id: 'maul' }, { type: 'ability' as const, id: 'growl' }])).toBe(false);
     expect(hotbarActionsEqual(base, [{ type: 'ability' as const, id: 'maul' }])).toBe(false);
     expect(hotbarActionsEqual([null, null], [null, null])).toBe(true);
+  });
+});
+
+describe('classes with per-form action bars', () => {
+  it('only the druid has form bars — every other class is single-bar', () => {
+    const classIds = Object.keys(CLASSES);
+    // sanity: the full roster is present so this stays exhaustive as classes are added
+    expect(classIds.length).toBeGreaterThanOrEqual(9);
+    expect(classIds).toContain('druid');
+
+    expect(classHasFormBars('druid')).toBe(true);
+    for (const id of classIds) {
+      expect(classHasFormBars(id)).toBe(id === 'druid');
+    }
+    // the form-bar-only "Reset bar" button must never leak onto these
+    for (const id of ['warrior', 'mage', 'rogue', 'priest', 'hunter', 'paladin', 'shaman', 'warlock']) {
+      expect(classHasFormBars(id)).toBe(false);
+    }
   });
 });
 

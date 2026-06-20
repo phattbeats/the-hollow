@@ -319,12 +319,14 @@ describe('client HTML shell', () => {
     expect(hudTs).toContain('if (formToggle && knownAbilityIds.includes(formToggle)) autoPlaceAbilityIds.add(formToggle);');
   });
 
-  it('offers a reset-to-default action bar button in the spellbook', () => {
+  it('offers a reset-to-default action bar button in the spellbook, only for classes with form bars', () => {
     expect(hudTs).toContain('data-reset-bar');
     expect(hudTs).toContain('this.resetActiveFormBarToDefault()');
     expect(hudTs).toContain("t('abilityUi.spellbook.resetBar')");
     expect(html).toContain('.spellbook-reset {');
     expect(html).toContain('body.mobile-touch #spellbook .spellbook-reset {');
+    expect(hudTs).toContain('const resetBtnHtml = this.classHasFormBars()');
+    expect(hudTs).toContain('return classHasFormBars(this.sim.cfg.playerClass);');
   });
 
   it('shows mobile spellbook add and remove controls for the spell bar', () => {

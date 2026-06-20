@@ -65,7 +65,7 @@ import {
 import { talentChoiceIconDataUrl, talentNodeIconDataUrl } from './talent_icons';
 import { augmentCategory, type AugmentCategory } from '../sim/content/augments';
 import {
-  buildDefaultFormBar, clearHotbarSlot, encodeHotbarAction, HOTBAR_ACTION_MIME, HotbarAction,
+  buildDefaultFormBar, classHasFormBars, clearHotbarSlot, encodeHotbarAction, HOTBAR_ACTION_MIME, HotbarAction,
   parseHotbarAction, parseHotbarActions,
   placeAbilityOnSlot, placeItemOnSlot, shouldSeedFormBar, swapHotbarSlots, syncHotbarActions,
 } from './hotbar';
@@ -1610,6 +1610,12 @@ export class Hud {
   // bar legitimately mirrors the normal layout.
   private isFormKitBar(form: HotbarForm = this.activeHotbarForm): boolean {
     return this.sim.cfg.playerClass === 'druid' && (form === 'bear' || form === 'cat');
+  }
+
+  // Gates form-bar-only UI (e.g. the spellbook "Reset bar" button) so it never
+  // shows for single-bar classes. Delegates to the pure, unit-tested helper.
+  private classHasFormBars(): boolean {
+    return classHasFormBars(this.sim.cfg.playerClass);
   }
 
   // Per-form one-time marker so the migration of pre-existing form bars (empty or
@@ -6073,7 +6079,12 @@ export class Hud {
     const cls = CLASSES[sim.cfg.playerClass];
     const className = classDisplayName(cls.id);
     el.setAttribute('aria-label', t('abilityUi.spellbook.title'));
-    el.innerHTML = `<div class="panel-title"><span>${esc(t('abilityUi.spellbook.title'))} <span class="spellbook-class">${esc(t('abilityUi.spellbook.classSubtitle', { className }))}</span></span><div class="panel-title-actions"><button type="button" class="x-btn spellbook-reset" data-reset-bar aria-label="${esc(t('abilityUi.spellbook.resetBarAria'))}">${esc(t('abilityUi.spellbook.resetBar'))}</button><button type="button" class="x-btn" data-close aria-label="${esc(t('abilityUi.spellbook.close'))}">${svgIcon('close')}</button></div></div>`;
+    // "Reset bar" only applies to classes with per-form bars (druid); other
+    // classes have a single bar, so the button is omitted for them.
+    const resetBtnHtml = this.classHasFormBars()
+      ? `<button type="button" class="x-btn spellbook-reset" data-reset-bar aria-label="${esc(t('abilityUi.spellbook.resetBarAria'))}">${esc(t('abilityUi.spellbook.resetBar'))}</button>`
+      : '';
+    el.innerHTML = `<div class="panel-title"><span>${esc(t('abilityUi.spellbook.title'))} <span class="spellbook-class">${esc(t('abilityUi.spellbook.classSubtitle', { className }))}</span></span><div class="panel-title-actions">${resetBtnHtml}<button type="button" class="x-btn" data-close aria-label="${esc(t('abilityUi.spellbook.close'))}">${svgIcon('close')}</button></div></div>`;
     const list = document.createElement('div');
     list.className = 'spell-list';
     list.setAttribute('role', 'list');
