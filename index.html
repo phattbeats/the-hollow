@@ -1499,6 +1499,34 @@
   .perf-swatch.sel { outline: 2px solid var(--gold); outline-offset: 1px; box-shadow: 0 0 8px #ffd10055; }
   body.mobile-touch .set-color { height: 40px; min-height: 40px; }
   body.mobile-touch .perf-swatch { width: 40px; height: 40px; min-height: 40px; line-height: 38px; }
+  /* Performance panel: wide, categorized card layout (mirrors how kb-wide widens
+     the keybind view). Two columns on desktop; collapses to one on narrow/touch. */
+  #options-menu.perf-wide { width: min(760px, calc(100vw - 32px)); }
+  .perf-panel { display: flex; flex-direction: column; gap: 12px; }
+  .perf-master { background: #ffffff08; border: 1px solid #ffffff14; border-radius: 8px; padding: 9px 14px 11px; }
+  .perf-master .set-note { margin: 6px 0 0; }
+  /* Master toggle: label takes the row (stays one line); the button is compact and
+     pinned to the far right rather than stretching across the row. */
+  .perf-master .set-row { display: flex; align-items: center; gap: 12px; padding: 2px 0; }
+  .perf-master .set-name { flex: 1 1 auto; font-size: 13px; }
+  .perf-master .set-toggle { flex: 0 0 auto; min-width: 96px; text-align: center; }
+  .perf-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+  .perf-col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .perf-card { background: #ffffff08; border: 1px solid #ffffff14; border-radius: 8px; padding: 7px 13px 13px; min-width: 0; }
+  .perf-card-title { font-family: var(--title-font); font-size: 13px; color: var(--gold); letter-spacing: 0.6px;
+    text-transform: uppercase; margin: 4px 0 8px; padding-bottom: 5px; border-bottom: 1px solid #ffffff1f; }
+  /* Generous separation between metric categories (Frame & Timing / Network / ...). */
+  .perf-group-head { font-size: 10.5px; color: #c8b98a; letter-spacing: 0.6px; text-transform: uppercase;
+    margin: 16px 1px 6px; opacity: 0.92; }
+  .perf-card .perf-group-head:first-of-type { margin-top: 3px; }
+  /* Rows align to the card's own padding (drop the row's horizontal inset). */
+  .perf-card .set-row { grid-template-columns: 104px 1fr 46px; gap: 8px; padding: 5px 0; }
+  .perf-card .perf-chips { margin: 1px 0 4px; }
+  .perf-footer { display: flex; gap: 12px; margin-top: 6px; }
+  .perf-footer .btn { flex: 1; margin: 0; }
+  /* Single column on narrow viewports + any touch device (landscape phones too). */
+  @media (max-width: 720px) { #options-menu.perf-wide .perf-cols { grid-template-columns: 1fr; } }
+  body.mobile-touch #options-menu.perf-wide .perf-cols { grid-template-columns: 1fr; }
 
   /* ---------- emote wheel ---------- */
   #emote-wheel { position: absolute; left: 50%; top: 50%; width: 330px; height: 330px;
@@ -5541,7 +5569,8 @@
   }
   body.mobile-touch #spellbook,
   body.mobile-touch #options-menu,
-  body.mobile-touch #options-menu.kb-wide {
+  body.mobile-touch #options-menu.kb-wide,
+  body.mobile-touch #options-menu.perf-wide {
     left: 50%;
     right: auto;
     top: 12px;
@@ -5552,6 +5581,29 @@
   /* On touch, stack the categories back into a single column so the large
      touch targets keep their full width. */
   body.mobile-touch .kb-cols { grid-template-columns: 1fr; gap: 0 0; }
+  /* Performance panel on touch: a roomier width than the cramped default, then
+     stacked rows (label on its own line, control full-width below) so every
+     control is a comfortable, uncluttered touch target. Single column already. */
+  body.mobile-touch #options-menu.perf-wide { width: min(640px, calc(100vw - 24px)); }
+  body.mobile-touch .perf-card { padding: 9px 12px 13px; }
+  body.mobile-touch .perf-master .set-row,
+  body.mobile-touch .perf-card .set-row {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 7px 10px; padding: 9px 0;
+  }
+  /* Cancel the desktop grid-column placements so children flow in the flex row. */
+  body.mobile-touch .perf-master .set-row > *,
+  body.mobile-touch .perf-card .set-row > * { grid-column: auto; }
+  body.mobile-touch .perf-master .set-name,
+  body.mobile-touch .perf-card .set-name { flex: 1 1 100%; font-size: 13.5px; }
+  body.mobile-touch .perf-card .set-slider { flex: 1 1 auto; min-width: 0; }
+  body.mobile-touch .perf-card .set-val { flex: 0 0 auto; min-width: 46px; }
+  /* Toggle/color sit on their own line, pinned right; choice/swatch rows go full width. */
+  body.mobile-touch .perf-master .set-toggle,
+  body.mobile-touch .perf-card .set-toggle,
+  body.mobile-touch .perf-card .set-color { margin-left: auto; }
+  body.mobile-touch .perf-card .set-choice,
+  body.mobile-touch .perf-card .perf-swatches { flex: 1 1 100%; }
+  body.mobile-touch .perf-footer { flex-direction: column; gap: 10px; }
   body.mobile-touch #talents-window {
     position: fixed;
     left: 50%;

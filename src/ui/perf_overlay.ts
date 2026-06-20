@@ -10,6 +10,7 @@
 
 import { formatNumber, t } from './i18n';
 import type { PerfOverlayConfig } from './perf_overlay_config';
+import { paintFrameTimeGraph } from './perf_graph_painter';
 import {
   overlayFractionFromPixel, overlayPixelPosition, PERF_OVERLAY_MARGIN,
   type PerfMetricKey, type PerfOverlayView, type PerfValue,
@@ -173,48 +174,13 @@ export class PerfOverlay {
     const ctx = this.canvas.getContext('2d');
     if (!ctx) return;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, cssW, cssH);
-
-    const samples = view.graph.samples;
-    const n = samples.length;
-    let maxMs = view.graph.targetMs * 2;
-    for (const ms of samples) if (ms > maxMs) maxMs = ms;
-    maxMs = Math.min(maxMs, 100); // clamp wild stalls so normal variance stays legible
-    const fg = (this.cfg?.textColor ?? '#ffd76a');
-    const yOf = (ms: number) => cssH - 1 - (Math.min(ms, maxMs) / maxMs) * (cssH - 2);
-    const xOf = (i: number) => (i / (n - 1)) * cssW;
-
-    // Target (60fps) baseline.
-    const ty = yOf(view.graph.targetMs);
-    ctx.strokeStyle = withAlpha(fg, 0.28);
-    ctx.lineWidth = 1;
-    ctx.setLineDash([3, 3]);
-    ctx.beginPath();
-    ctx.moveTo(0, ty);
-    ctx.lineTo(cssW, ty);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // Filled area under the frame-time line.
-    ctx.beginPath();
-    ctx.moveTo(0, cssH);
-    for (let i = 0; i < n; i++) ctx.lineTo(xOf(i), yOf(samples[i]));
-    ctx.lineTo(cssW, cssH);
-    ctx.closePath();
-    ctx.fillStyle = withAlpha(fg, 0.14);
-    ctx.fill();
-
-    // The frame-time line itself.
-    ctx.beginPath();
-    for (let i = 0; i < n; i++) {
-      const x = xOf(i);
-      const y = yOf(samples[i]);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.strokeStyle = withAlpha(fg, 0.85);
-    ctx.lineWidth = 1.25;
-    ctx.stroke();
+    paintFrameTimeGraph(ctx, {
+      samples: view.graph.samples,
+      targetMs: view.graph.targetMs,
+      cssW,
+      cssH,
+      color: this.cfg?.textColor ?? '#ffd76a',
+    });
   }
 
   // -------------------------------------------------------------------------
@@ -322,8 +288,4 @@ function hexToRgb(hex: string): [number, number, number] {
 function rgba(hex: string, alpha: number): string {
   const [r, g, b] = hexToRgb(hex);
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
-function withAlpha(hex: string, alpha: number): string {
-  return rgba(hex, alpha);
 }

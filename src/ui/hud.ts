@@ -51,9 +51,7 @@ import { cardHostingAvailable, publishCard, fetchReferralInfo, fetchStanding, ty
 import { holderTierForBalance, holderTierByIndex, holderTierBadgeDataUrl, holderTierDisplayName } from './holder_tier';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
 import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES, normalizeClickMoveButton } from '../game/settings';
-import type { PerfOverlayConfig, PerfOverlayPatch } from './perf_overlay_config';
-import { FONT_SCALE_MIN, FONT_SCALE_MAX } from './perf_overlay_config';
-import { METRIC_REGISTRY, PERF_COLOR_THEMES, metricsPreset, type PerfMetricKey } from './perf_overlay_model';
+import { PerfOverlaySettingsPanel, type PerfOverlayHooks, type PerfSettingsHost } from './perf_overlay_settings';
 import { isPhoneTouchDevice } from '../game/mobile_controls';
 import { chatPlayerContextActions } from './player_context_menu';
 import {
@@ -94,20 +92,9 @@ import {
 } from './hotbar';
 
 // hooks main wires after Input exists (the options menu drives input, audio,
-// graphics, and logout, all of which live outside the HUD)
-// Drives the customizable performance overlay from the Options > Performance
-// sub-view. The overlay's master on/off rides on GameSettings (`showFps`); this
-// covers its richer appearance/layout/metrics config (own localStorage key) plus
-// the drag-to-reposition placement mode. main.ts wires the implementation.
-export interface PerfOverlayHooks {
-  get(): PerfOverlayConfig;
-  patch(p: PerfOverlayPatch): void;
-  setMetric(key: PerfMetricKey, on: boolean): void;
-  reset(): void;
-  resetPosition(): void;
-  setPlacement(on: boolean): void;
-}
-
+// graphics, and logout, all of which live outside the HUD). PerfOverlayHooks
+// (the customizable performance overlay's config seam) lives in
+// perf_overlay_settings.ts alongside the panel that consumes it.
 export interface OptionsHooks {
   logout(): void;
   captureKey(cb: (code: string | null) => void): void;
@@ -382,6 +369,9 @@ export class Hud {
   // player's "Filter Profanity" setting is on. Fed by main.ts from ClientWorld.
   private profanityWords: string[] = [];
   private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' | 'interface' | 'performance' = 'main';
+  // The Options > Performance panel, lazily built and reused (it caches the live
+  // position-slider handles so a drag-to-move can update them in place).
+  private perfSettings: PerfOverlaySettingsPanel | null = null;
   private capturingKey: { action: string; index: number } | null = null; // binding awaiting a key
   private keybindNote = '';
   private emoteWheelOpen = false;
@@ -8083,9 +8073,10 @@ export class Hud {
   }
 
   private renderOptions(): void {
-    // The wide multi-column layout belongs to the keybinds view only; clear it
-    // so the other sub-views (and the main menu) keep their default width.
+    // The wide multi-column layouts belong to their own sub-views; clear each when
+    // leaving it so the other sub-views (and the main menu) keep their default width.
     if (this.optionsView !== 'keybinds') $('#options-menu').classList.remove('kb-wide');
+    if (this.optionsView !== 'performance') $('#options-menu').classList.remove('perf-wide');
     // The overlay is draggable only while the Performance sub-view is open.
     this.optionsHooks?.perfOverlay.setPlacement(this.optionsView === 'performance');
     if (this.optionsView === 'keybinds') { this.renderKeybinds(); return; }
@@ -8513,223 +8504,34 @@ export class Hud {
 
   // ---- Performance overlay panel -----------------------------------------
   // Customizable in-game stats overlay (FPS, frame time, ping, draw calls, …).
-  // The master on/off rides on GameSettings (`showFps`); everything else patches
-  // the overlay's own config store through optionsHooks.perfOverlay, applied live.
+  // The wide, categorized panel lives in perf_overlay_settings.ts (the pure
+  // consumer of the overlay's config store); the HUD only owns this thin delegate
+  // + the master on/off wiring (showFps rides on GameSettings).
 
   private renderPerformance(): void {
     const hooks = this.optionsHooks;
     if (!hooks) return;
-    const perf = hooks.perfOverlay;
-    // (Re-)assert placement mode for this view — no-op while the overlay is off.
-    perf.setPlacement(true);
-    const cfg = () => perf.get();
-
-    const body = this.settingsViewShell(t('hudChrome.perf.title'));
-
-    // Master toggle (showFps). Re-render so placement + control states refresh.
-    this.cfgToggle(body, t('hudChrome.perf.enable'),
-      () => hooks.settings.get('showFps'),
-      (v) => { hooks.onSettingChange('showFps', v); this.renderPerformance(); });
-
-    const desc = document.createElement('div');
-    desc.className = 'set-note';
-    desc.textContent = t('hudChrome.perf.description');
-    body.appendChild(desc);
-
-    // --- Stats (which metrics appear) ---
-    this.perfSubhead(body, t('hudChrome.perf.sectionStats'));
-    this.perfPresetRow(body, perf);
-    this.perfMetricChips(body, perf);
-
-    // --- Appearance ---
-    this.perfSubhead(body, t('hudChrome.perf.sectionAppearance'));
-    this.perfThemeRow(body, perf);
-    this.cfgColor(body, t('hudChrome.perf.textColor'), () => cfg().textColor, (v) => perf.patch({ textColor: v }));
-    this.cfgColor(body, t('hudChrome.perf.bgColor'), () => cfg().bgColor, (v) => perf.patch({ bgColor: v }));
-    this.cfgSlider(body, t('hudChrome.perf.opacity'), () => cfg().opacity, (v) => perf.patch({ opacity: v }), { min: 0, max: 1, step: 0.05 });
-    this.cfgToggle(body, t('hudChrome.perf.solidBg'), () => cfg().solidBg, (v) => perf.patch({ solidBg: v }));
-    this.cfgSlider(body, t('hudChrome.perf.fontScale'), () => cfg().fontScale, (v) => perf.patch({ fontScale: v }), { min: FONT_SCALE_MIN, max: FONT_SCALE_MAX, step: 0.05 });
-    this.cfgToggle(body, t('hudChrome.perf.graph'), () => cfg().graph, (v) => perf.patch({ graph: v }));
-    this.cfgToggle(body, t('hudChrome.perf.thresholds'), () => cfg().thresholds, (v) => perf.patch({ thresholds: v }));
-
-    // --- Position (drag-to-move + precise X/Y sliders) ---
-    this.perfSubhead(body, t('hudChrome.perf.sectionPosition'));
-    const hint = document.createElement('div');
-    hint.className = 'set-note';
-    hint.textContent = t('hudChrome.perf.dragHint');
-    body.appendChild(hint);
-    this.cfgSlider(body, t('hudChrome.perf.positionX'), () => cfg().posX, (v) => perf.patch({ posX: v }), { min: 0, max: 1, step: 0.01 });
-    this.cfgSlider(body, t('hudChrome.perf.positionY'), () => cfg().posY, (v) => perf.patch({ posY: v }), { min: 0, max: 1, step: 0.01 });
-    const resetPos = document.createElement('button');
-    resetPos.className = 'btn';
-    resetPos.textContent = t('hudChrome.perf.resetPosition');
-    resetPos.addEventListener('click', () => { audio.click(); perf.resetPosition(); this.renderPerformance(); });
-    body.appendChild(resetPos);
-
-    // Footer: reset overlay config (not the master toggle) + back.
-    const reset = document.createElement('button');
-    reset.className = 'btn';
-    reset.textContent = t('hud.options.resetToDefaults');
-    reset.addEventListener('click', () => { audio.click(); perf.reset(); this.renderPerformance(); });
-    const back = document.createElement('button');
-    back.className = 'btn';
-    back.textContent = t('hud.options.back');
-    back.addEventListener('click', () => { audio.click(); this.optionsView = 'main'; this.renderOptions(); });
-    $('#options-menu').append(reset, back);
-    $('#options-menu').querySelector('[data-close]')?.addEventListener('click', () => this.closeOptions());
+    this.perfSettings ??= new PerfOverlaySettingsPanel(this.perfSettingsHost(hooks));
+    this.perfSettings.render($('#options-menu'));
   }
 
-  private perfSubhead(parent: HTMLElement, title: string): void {
-    const h = document.createElement('div');
-    h.className = 'set-subhead';
-    h.textContent = title;
-    parent.appendChild(h);
-  }
-
-  // Quick presets that bulk-set the per-metric visibility map.
-  private perfPresetRow(parent: HTMLElement, perf: PerfOverlayHooks): void {
-    const row = document.createElement('div');
-    row.className = 'set-row';
-    const name = document.createElement('span');
-    name.className = 'set-name';
-    name.textContent = t('hudChrome.perf.presetsLabel');
-    const wrap = document.createElement('div');
-    wrap.className = 'set-choice';
-    const presets: { kind: 'minimal' | 'standard' | 'everything'; label: string }[] = [
-      { kind: 'minimal', label: t('hudChrome.perf.presetMinimal') },
-      { kind: 'standard', label: t('hudChrome.perf.presetStandard') },
-      { kind: 'everything', label: t('hudChrome.perf.presetEverything') },
-    ];
-    for (const p of presets) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'btn set-choice-btn';
-      btn.textContent = p.label;
-      btn.setAttribute('aria-label', p.label);
-      btn.addEventListener('click', () => { audio.click(); perf.patch({ metrics: metricsPreset(p.kind) }); this.renderPerformance(); });
-      wrap.appendChild(btn);
-    }
-    row.append(name, wrap);
-    parent.appendChild(row);
-  }
-
-  // A wrap of toggle chips, one per metric in the registry order.
-  private perfMetricChips(parent: HTMLElement, perf: PerfOverlayHooks): void {
-    const wrap = document.createElement('div');
-    wrap.className = 'perf-chips';
-    for (const def of METRIC_REGISTRY) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'btn set-choice-btn';
-      const label = t(def.labelKey);
-      btn.textContent = label;
-      const isOn = () => perf.get().metrics[def.key as PerfMetricKey];
-      const sync = () => {
-        const on = isOn();
-        btn.classList.toggle('sel', on);
-        btn.setAttribute('aria-pressed', String(on));
-        btn.setAttribute('aria-label', label);
-      };
-      sync();
-      btn.addEventListener('click', () => { audio.click(); perf.setMetric(def.key as PerfMetricKey, !isOn()); sync(); });
-      wrap.appendChild(btn);
-    }
-    parent.appendChild(wrap);
-  }
-
-  // On-brand color-theme swatches that set both text + background colors at once.
-  private perfThemeRow(parent: HTMLElement, perf: PerfOverlayHooks): void {
-    const row = document.createElement('div');
-    row.className = 'set-row';
-    const name = document.createElement('span');
-    name.className = 'set-name';
-    name.textContent = t('hudChrome.perf.colorTheme');
-    const wrap = document.createElement('div');
-    wrap.className = 'perf-swatches';
-    for (const theme of PERF_COLOR_THEMES) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'perf-swatch';
-      btn.style.background = theme.bg;
-      btn.style.color = theme.fg;
-      btn.textContent = 'A';
-      const label = t(theme.labelKey);
-      btn.title = label;
-      btn.setAttribute('aria-label', label);
-      const cur = perf.get();
-      const selected = cur.textColor === theme.fg && cur.bgColor === theme.bg;
-      btn.classList.toggle('sel', selected);
-      btn.setAttribute('aria-pressed', String(selected));
-      btn.addEventListener('click', () => { audio.click(); perf.patch({ textColor: theme.fg, bgColor: theme.bg }); this.renderPerformance(); });
-      wrap.appendChild(btn);
-    }
-    row.append(name, wrap);
-    parent.appendChild(row);
-  }
-
-  // ---- Generic config-bound control rows (reused by the performance panel) ----
-  // These mirror the settingSlider/settingBoolToggle visuals but bind to plain
-  // get/set callbacks, so they drive the overlay's own config store rather than
-  // GameSettings.
-
-  private cfgToggle(parent: HTMLElement, label: string, get: () => boolean, set: (v: boolean) => void): void {
-    const row = document.createElement('div');
-    row.className = 'set-row';
-    const name = document.createElement('span');
-    name.className = 'set-name';
-    name.textContent = label;
-    const toggle = document.createElement('button');
-    toggle.className = 'btn set-toggle';
-    const sync = () => {
-      const on = get();
-      toggle.textContent = on ? t('hud.options.on') : t('hud.options.off');
-      toggle.classList.toggle('off', !on);
-      toggle.setAttribute('aria-pressed', String(on));
-      toggle.setAttribute('aria-label', label);
+  private perfSettingsHost(hooks: OptionsHooks): PerfSettingsHost {
+    return {
+      perf: hooks.perfOverlay,
+      getShowFps: () => hooks.settings.get('showFps'),
+      setShowFps: (on) => hooks.onSettingChange('showFps', on),
+      click: () => audio.click(),
+      onClose: () => this.closeOptions(),
+      onBack: () => { this.optionsView = 'main'; this.renderOptions(); },
+      closeIconHtml: svgIcon('close'),
     };
-    sync();
-    toggle.addEventListener('click', () => { audio.click(); set(!get()); sync(); });
-    row.append(name, toggle);
-    parent.appendChild(row);
   }
 
-  private cfgSlider(parent: HTMLElement, label: string, get: () => number, set: (v: number) => void, o: { min: number; max: number; step: number }): void {
-    const row = document.createElement('div');
-    row.className = 'set-row';
-    const name = document.createElement('span');
-    name.className = 'set-name';
-    name.textContent = label;
-    const slider = document.createElement('input');
-    slider.type = 'range';
-    slider.className = 'set-slider';
-    slider.min = String(o.min);
-    slider.max = String(o.max);
-    slider.step = String(o.step);
-    slider.value = String(get());
-    slider.setAttribute('aria-label', label);
-    const val = document.createElement('span');
-    val.className = 'set-val';
-    const readout = () => formatNumber(get(), { style: 'percent', maximumFractionDigits: 0 });
-    val.textContent = readout();
-    slider.addEventListener('input', () => { set(Number(slider.value)); val.textContent = readout(); });
-    row.append(name, slider, val);
-    parent.appendChild(row);
-  }
-
-  private cfgColor(parent: HTMLElement, label: string, get: () => string, set: (v: string) => void): void {
-    const row = document.createElement('div');
-    row.className = 'set-row';
-    const name = document.createElement('span');
-    name.className = 'set-name';
-    name.textContent = label;
-    const picker = document.createElement('input');
-    picker.type = 'color';
-    picker.className = 'set-color';
-    picker.value = get();
-    picker.setAttribute('aria-label', label);
-    picker.addEventListener('input', () => set(picker.value));
-    row.append(name, picker);
-    parent.appendChild(row);
+  /** Called by main.ts when a drag settles on the live overlay: push the dropped
+   *  normalized position into the open panel's Horizontal/Vertical sliders so they
+   *  do not lag behind the drag. No-op when the panel is not on screen. */
+  onPerfOverlayMoved(x: number, y: number): void {
+    this.perfSettings?.syncPosition(x, y);
   }
 
   // Display name for an action row. Action-bar slots show the shortcut that

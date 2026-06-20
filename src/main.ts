@@ -7,7 +7,8 @@ import { MobileControls, PHONE_TOUCH_QUERY, isPhoneTouchDevice } from './game/mo
 import { Hud } from './ui/hud';
 import { PerfOverlay } from './ui/perf_overlay';
 import { PerfOverlayConfigStore, type PerfOverlayConfig } from './ui/perf_overlay_config';
-import { FrameMeter, buildPerfOverlayView, type MetricsSample } from './ui/perf_overlay_model';
+import { FrameMeter, buildPerfOverlayView } from './ui/perf_overlay_model';
+import { createMetricsSampler } from './ui/perf_metrics_sampler';
 import { audio } from './game/audio';
 import { music } from './game/music';
 import { voice } from './game/voice';
@@ -732,8 +733,14 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     perfOverlay.applyConfig(c);
     perfViewCfg = toPerfViewCfg(c);
   }
-  // Persist a drag-to-move from the overlay back into its config.
-  perfOverlay.onPositionChange = (x, y) => { perfConfig.patch({ posX: x, posY: y }); };
+  // Settle a drag-to-move from the overlay: persist the dropped position, refresh
+  // the overlay's live cfg (so reposition() does not snap it back on the next
+  // render), and push the new X/Y into the open Performance panel's sliders.
+  perfOverlay.onPositionChange = (x, y) => {
+    perfConfig.patch({ posX: x, posY: y });
+    applyPerfOverlayConfig();
+    hud.onPerfOverlayMoved(x, y);
+  };
   applyPerfOverlayConfig();
 
   // apply a setting to its live subsystem (also used to apply all on startup)
@@ -1274,44 +1281,22 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   function syncPerfOverlay(frameDt: number, nowMs: number): void {
     const repaint = perfMeter.step(frameDt, nowMs);
     if (!perfOverlay.isEnabled() || !repaint) return;
-    perfOverlay.render(buildPerfOverlayView(collectMetricsSample(), perfViewCfg));
+    perfOverlay.render(buildPerfOverlayView(sampleMetrics(), perfViewCfg));
   }
 
   // Gather the raw, nullable signals the overlay can surface. Renderer/browser
   // fields reflect the last rendered frame (fine at 4 Hz); network fields are
   // online-only and null offline; Chromium-only sources (heap, connection) report
-  // null elsewhere so their rows simply hide.
-  function collectMetricsSample(): MetricsSample {
-    const r = renderer.perfStats();
-    const mem = (performance as unknown as { memory?: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
-    const conn = (navigator as unknown as { connection?: { effectiveType?: string } }).connection;
-    const isOnline = !!online;
-    return {
-      fps: perfMeter.fps(),
-      frameTimeMs: perfMeter.frameTimeMs(),
-      fps1Low: perfMeter.lowFps(1),
-      fps01Low: perfMeter.lowFps(0.1),
-      frameSamples: perfMeter.graphSamples(),
-      online: isOnline,
-      connected: isOnline ? !!online!.connected : true,
-      pingMs: isOnline && onlineInputEchoMs > 0 ? onlineInputEchoMs : null,
-      jitterMs: isOnline && onlineInputEchoMs > 0 ? onlineJitterMs : null,
-      snapshotHz: isOnline && online!.snapInterval > 0 ? 1000 / online!.snapInterval : null,
-      connectionType: typeof conn?.effectiveType === 'string' ? conn.effectiveType : null,
-      drawCalls: r.calls,
-      triangles: r.triangles,
-      geometries: r.geometries,
-      textures: r.textures,
-      programs: r.programs,
-      renderScale: typeof r.effectiveRenderScale === 'number' ? r.effectiveRenderScale : null,
-      gpu: r.glRenderer || null,
-      memoryUsedMb: mem ? mem.usedJSHeapSize / 1048576 : null,
-      memoryLimitMb: mem ? mem.jsHeapSizeLimit / 1048576 : null,
-      hitches: perfMeter.hitches(),
-      entities: world.entities.size,
-      backgrounded: document.hidden,
-    };
-  }
+  // null elsewhere so their rows simply hide. The pure assembly lives in
+  // perf_metrics_sampler.ts; here we inject the live sources.
+  const sampleMetrics = createMetricsSampler({
+    renderer,
+    meter: perfMeter,
+    getOnline: () => online,
+    getEntityCount: () => world.entities.size,
+    getEchoMs: () => onlineInputEchoMs,
+    getJitterMs: () => onlineJitterMs,
+  });
 
   function frame(now: number): void {
     requestAnimationFrame(frame);
