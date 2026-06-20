@@ -174,8 +174,8 @@ for (const url of preloadUrls) {
 }
 
 // Skin textures: player alternate body atlases, loaded sRGB + flipY=false so
-// they line up with the glTF-embedded UVs. Low may alias a few character GLBs,
-// but player-selected skins still need to load and apply on every tier.
+// they line up with the glTF-embedded UVs. These load on every tier so skin
+// selection previews and cosmetics keep distinct colours even on low graphics.
 const skinTexByUrl = new Map<string, THREE.Texture>();
 const skinEmisTexByUrl = new Map<string, THREE.Texture>();
 
