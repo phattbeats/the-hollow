@@ -67,6 +67,8 @@ const BACKPEDAL_MULT = 0.65;
 const FLEE_HP_THRESHOLD = 0.2;
 const FLEE_DURATION = 5;
 const FLEE_SPEED_MULT = 1.4;
+const FLEE_MAX_SPEED = RUN_SPEED;
+const FLEE_RETURN_GRACE = 8;
 const FLEE_HELP_RADIUS = 8;
 // Only sentient, cowardly families flee; beasts/undead/elementals/dragonkin fight
 // to the death. Elites, rares, and bosses never flee regardless of family.
@@ -1668,7 +1670,7 @@ export class Sim {
     if (!aura || e.auras.some((a) => a.kind === 'root')) return false;
     const angle = Number.isFinite(aura.value) ? aura.value : e.facing;
     const dest = this.groundPos(e.pos.x + Math.sin(angle) * 10, e.pos.z + Math.cos(angle) * 10);
-    this.moveToward(e, dest, e.moveSpeed * FLEE_SPEED_MULT * this.moveSpeedMult(e));
+    this.moveToward(e, dest, this.fleeMoveSpeed(e));
     return true;
   }
   // Silence locks out spell (non-physical) casts but leaves physical abilities,
@@ -1751,6 +1753,16 @@ export class Sim {
       if (ms) speed += ms;
     }
     return slow * speed;
+  }
+
+  private fleeMoveSpeed(e: Entity): number {
+    return Math.min(e.moveSpeed * FLEE_SPEED_MULT, FLEE_MAX_SPEED) * this.moveSpeedMult(e);
+  }
+
+  private recoverFromFlee(mob: Entity, target: Entity, leash: number, leashAnchor: Vec3): void {
+    mob.aiState = dist2d(mob.pos, target.pos) > MELEE_RANGE ? 'chase' : 'attack';
+    mob.fleeTimer = 0;
+    if (dist2d(mob.pos, leashAnchor) >= leash - 1) mob.fleeReturnTimer = FLEE_RETURN_GRACE;
   }
 
   // Fiesta "Moon Boots" power-up: a buff_jump aura multiplies jump height.
@@ -3191,7 +3203,7 @@ export class Sim {
     mob.forcedTargetTimer = TAUNT_FORCE_SECONDS;
     if (mob.aiState === 'idle') this.aggroMob(mob, p, false);
     else if (mob.aiState === 'chase' || mob.aiState === 'attack') mob.aggroTargetId = p.id;
-    else if (mob.aiState === 'flee') { mob.aggroTargetId = p.id; mob.aiState = 'attack'; mob.fleeTimer = 0; }
+    else if (mob.aiState === 'flee') { mob.aggroTargetId = p.id; mob.aiState = 'attack'; mob.fleeTimer = 0; mob.fleeReturnTimer = 0; }
     this.enterCombat(p, mob);
   }
 
@@ -4636,7 +4648,11 @@ export class Sim {
         const spell = MOBS[mob.templateId]?.petSpell;
         const leash = mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
         const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
-        if (dist2d(mob.pos, leashAnchor) > leash) {
+        if (mob.fleeReturnTimer > 0) {
+          mob.fleeReturnTimer = Math.max(0, mob.fleeReturnTimer - DT);
+          if (dist2d(mob.pos, leashAnchor) <= leash - 1) mob.fleeReturnTimer = 0;
+        }
+        if (dist2d(mob.pos, leashAnchor) > leash && mob.fleeReturnTimer <= 0) {
           mob.aiState = 'evade';
           mob.aggroTargetId = null;
           clearThreat(mob);
@@ -4774,20 +4790,20 @@ export class Sim {
       case 'flee': {
         const target = mob.aggroTargetId !== null ? this.entities.get(mob.aggroTargetId) : null;
         if (!target || target.dead) { this.retargetMob(mob); break; }
-        // Outran the leash while panicking: drop the pull and reset home.
+        const fleeSpeed = this.fleeMoveSpeed(mob);
+        // A panic flee should not be the thing that breaks leash and full-heals
+        // the mob. If it reaches the leash edge, it recovers and re-engages;
+        // normal chase/attack leash checks still handle genuine dragged pulls.
         const leash = mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
         const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
-        if (dist2d(mob.pos, leashAnchor) > leash) {
-          mob.aiState = 'evade';
-          mob.aggroTargetId = null;
-          clearThreat(mob);
-          mob.leashAnchor = null;
+        if (dist2d(mob.pos, leashAnchor) >= leash - fleeSpeed * DT) {
+          this.recoverFromFlee(mob, target, leash, leashAnchor);
           break;
         }
         mob.fleeTimer -= DT;
         if (mob.fleeTimer <= 0) {
           // Recover nerve and turn to fight again; hasFled keeps it from re-fleeing.
-          mob.aiState = 'attack';
+          this.recoverFromFlee(mob, target, leash, leashAnchor);
           mob.swingTimer = Math.min(mob.swingTimer, 0.4);
           break;
         }
@@ -4797,7 +4813,7 @@ export class Sim {
         mob.facing = away;
         if (!this.isRooted(mob)) {
           const fleePos = this.groundPos(mob.pos.x + Math.sin(away) * 10, mob.pos.z + Math.cos(away) * 10);
-          this.moveToward(mob, fleePos, mob.moveSpeed * FLEE_SPEED_MULT * this.moveSpeedMult(mob));
+          this.moveToward(mob, fleePos, fleeSpeed);
         }
         break;
       }
@@ -4836,6 +4852,7 @@ export class Sim {
     mob.leashAnchor = null;
     mob.evadeStall = 0;
     mob.fleeTimer = 0;
+    mob.fleeReturnTimer = 0;
     mob.hasFled = false;
     clearThreat(mob);
     this.despawnSummonedAdds(mob);
@@ -5804,6 +5821,9 @@ export class Sim {
     mob.inCombat = false;
     mob.leashAnchor = null;
     mob.evadeStall = 0;
+    mob.fleeTimer = 0;
+    mob.fleeReturnTimer = 0;
+    mob.hasFled = false;
     clearThreat(mob);
     this.despawnSummonedAdds(mob);
     mob.firedSummons = 0;
