@@ -135,7 +135,6 @@ interface DevPerfTraceFrame {
     longTaskLastAgeMs: number;
     memoryUsedMb: number | null;
   };
-  network: PerfSnapshot['network'];
   stallAttribution?: DevRenderStallAttribution;
 }
 
@@ -435,10 +434,6 @@ export class PerfMonitor {
     }
   }
 
-  markTraceSpan(name: string, startMs: number, durationMs: number, detail?: Record<string, unknown>): void {
-    this.recordDevTraceSpan(name, startMs, durationMs, 'external', detail);
-  }
-
   setNetwork(stats: PerfSnapshot['network']): void {
     if (!this.enabled) return;
     this.network = stats;
@@ -637,7 +632,6 @@ export class PerfMonitor {
         longTaskLastAgeMs: this.lastLongTaskAt > 0 ? round(now - this.lastLongTaskAt) : -1,
         memoryUsedMb: memory?.usedMB ?? null,
       },
-      network: this.network,
       ...(stallAttribution ? { stallAttribution } : {}),
     };
     this.devTraceFrames.push(frame);

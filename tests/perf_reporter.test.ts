@@ -419,7 +419,6 @@ describe('perf reporter payload', () => {
           lastFrame: null,
         },
         browser: { longTaskCount: 1, longTaskTotalMs: 70, longTaskLastAgeMs: 15, memoryUsedMb: 100 },
-        network: null,
       }],
       spans: [{
         atMs: 1190,
