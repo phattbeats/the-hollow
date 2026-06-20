@@ -227,7 +227,8 @@ export const ja_JP: EnTranslations = {
     },
     "options": {
       "clickMoveLeft": "左クリック",
-      "clickMoveRight": "右クリック"
+      "clickMoveRight": "右クリック",
+      "footstepSounds": "足音"
     },
     "talents": {
       "defaultBuildName": "ビルド {n}"

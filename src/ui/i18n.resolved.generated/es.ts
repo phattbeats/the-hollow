@@ -227,7 +227,8 @@ export const es: EnTranslations = {
     },
     "options": {
       "clickMoveLeft": "Clic izquierdo",
-      "clickMoveRight": "Clic derecho"
+      "clickMoveRight": "Clic derecho",
+      "footstepSounds": "Footstep Sounds"
     },
     "talents": {
       "defaultBuildName": "Configuración {n}"

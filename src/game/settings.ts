@@ -122,6 +122,11 @@ export const BOOL_SETTINGS = {
   // on by default: play an NPC's voiced line when its dialogue / quest detail
   // opens. Off mutes voice-over entirely (independent of the SFX/music toggles).
   voiceEnabled: { def: true },
+  // off by default: the per-footfall step clips (self + other entities) tend to
+  // read as repetitive over a long session, so they're silenced out of the box;
+  // players who want them back can re-enable. Independent of the SFX volume
+  // slider — jump/land/splash/swim and combat one-shots are unaffected.
+  footstepSfx: { def: false },
 } as const;
 
 export type NumericSettingKey = keyof typeof SETTING_RANGES;

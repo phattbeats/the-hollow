@@ -19,6 +19,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   "hudChrome.keybinds.targetFriendlyNext": "Следующий союзник",
   "hudChrome.options.clickMoveLeft": "Левая кнопка",
   "hudChrome.options.clickMoveRight": "Правая кнопка",
+  "hudChrome.options.footstepSounds": "Звуки шагов",
   "hudChrome.talents.defaultBuildName": "Билд {n}",
   "hudChrome.tips.joinChannels": "Совет: введите /join world или /join lfg, чтобы общаться с игроками по всему миру.",
   "meta.builtOn": "Сборка от {date}",
