@@ -70,13 +70,16 @@ See `README.md` for the full host/develop/play guide and the classic-fidelity ch
 - **i18n: every player-visible string is a `t()` key.** (Translated in every locale
   *by release*: see the contributor/maintainer split below; English-only PRs are
   legal.) Each
-  locale in `src/ui/i18n.ts` is `: typeof en`, so `tsc` fails on a missing/renamed
+  generated locale slice in `src/ui/i18n.resolved.generated/` is typed `: typeof en`,
+  so `tsc` fails on a missing/renamed
   key — but it **cannot** see a hard-coded literal that never became a key, nor a
   new English string emitted by `src/sim/`/`server/` and never registered in the
   client matcher. Both compile green and ship English to a translated player.
   Closing those two gaps is on you, not the compiler.
   - **Contributors add ENGLISH only; the maintainer fills every locale before
-    release.** Add the key to `en` first (`src/ui/i18n.en.ts`) and render it via
+    release.** Add the key to `en` first (in the matching `src/ui/i18n.catalog/<domain>.ts`
+    module; new HUD chrome goes in the English-only `i18n.catalog/hud_chrome.ts`, which has
+    no per-locale blocks) and render it via
     `t()`. Do **not** edit the 13 `src/ui/i18n.locales/<lang>.ts` overlays: the build
     English-fills any omitted key and the registry (`i18n.status.json`) marks it
     `pending`. This is intentional: translating 13 locales per PR would drain
@@ -103,7 +106,8 @@ See `README.md` for the full host/develop/play guide and the classic-fidelity ch
   - **`src/sim/` and `server/` stay language-agnostic** (no `t()`, no DOM) but their
     player text is still in scope: emit a stable key + values, **or** English that is
     re-localized via the client matcher (`src/ui/sim_i18n.ts` + `server_i18n.ts`
-    mirror) **in the same change** — the S3 guard (`tests/localization_fixes.test.ts`)
+    mirror, plus the hud-local `localizeErrorText`/`localizeSystemText`/`localizeLootText`
+    arms in `hud.ts`) **in the same change** — the S3 guard (`tests/localization_fixes.test.ts`)
     enforces it. Translation resolves only at the client boundary.
   - **Emojis/symbols** need no entry and may appear inline or stand alone, but never
     replace a required translation (the aria name behind an emoji is still a `t()`
@@ -117,6 +121,15 @@ See `README.md` for the full host/develop/play guide and the classic-fidelity ch
   ~5k+ lines). Follow the existing in-file structure; **don't split a module just to hit
   a line count.** (This overrides any generic "files < N lines" rule from a
   higher-level CLAUDE.md.)
+- **Do extract reusable, testable logic into focused modules.** The rule above
+  bars splitting for *line count*, not for *design*. When a new or updated feature
+  has pure presentation/domain logic (geometry, formatting, id/state resolution)
+  tangled inside a big DOM/render/sim module, lift it into a small host-agnostic
+  module a Vitest unit test imports directly, and keep the DOM/canvas/render side a
+  thin consumer. Prefer this **pure-core + thin-consumer** split for anything worth
+  reusing across call sites or worth testing in isolation (reference example: the
+  unit-frame portrait `src/ui/unit_portrait.ts` pure core + `unit_portrait_painter.ts`
+  painter, shared by the player and target frames).
 - **Keep the dependency set tiny.** Don't add packages without a clear need.
 - **Commits:** Conventional Commits with a scope — `feat(talents): …`, `fix(net): …`,
   `test(sim): …`. Branches: `feature/<slug>`, `fix/<slug>`.

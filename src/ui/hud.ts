@@ -25,8 +25,8 @@ import { absorbBarView } from './absorb_bar';
 import { itemStatDeltas } from './item_compare';
 import { formatClockTime } from './clock';
 import { formatMinimapCoords } from './coords';
-import { compassView } from './compass';
-import { clampMinimapZoom, nextMinimapZoom, isMinMinimapZoom, isMaxMinimapZoom, formatMinimapZoom, MINIMAP_ZOOM_DEFAULT } from './minimap_zoom';
+import { compassView, type CardinalId } from './compass';
+import { clampMinimapZoom, nextMinimapZoom, isMinMinimapZoom, isMaxMinimapZoom, minimapZoomValue, MINIMAP_ZOOM_DEFAULT } from './minimap_zoom';
 import { restView } from './rest_indicator';
 import { nearestSubzone } from './subzone';
 import { lowResourceView } from './low_resource';
@@ -38,12 +38,26 @@ import { audio } from '../game/audio';
 import { sfx } from '../game/sfx';
 import { voice } from '../game/voice';
 import { music, musicZoneForLocation } from '../game/music';
-import { iconDataUrl, iconCanvas, QUALITY_COLOR, raidMarkerDataUrl, RAID_MARKER_NAMES } from './icons';
+import { iconDataUrl, QUALITY_COLOR, raidMarkerDataUrl, RAID_MARKER_NAMES } from './icons';
+import { UnitPortraitPainter } from './unit_portrait_painter';
+import { crestIdForEntity } from './unit_portrait';
 import { svgIcon } from './ui_icons';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
-import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES, clickMoveButtonLabel, normalizeClickMoveButton } from '../game/settings';
+import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES, normalizeClickMoveButton } from '../game/settings';
 import { isPhoneTouchDevice } from '../game/mobile_controls';
 import { chatPlayerContextActions } from './player_context_menu';
+import {
+  MARKET_ARMOR_TYPE_FILTERS,
+  MARKET_ITEM_TYPE_FILTERS,
+  MARKET_PAGE_SIZE,
+  MARKET_RARITY_FILTERS,
+  MARKET_WEAPON_TYPE_FILTERS,
+  filterMarketListings,
+  paginateMarketListings,
+  type MarketItemTypeFilter,
+  type MarketRarityFilter,
+  type MarketSubtypeFilter,
+} from './market_filters';
 import {
   CHAT_TAB_CHANNELS, CHANNEL_LABEL_KEYS, channelNeedsJoin, composeChatLine,
   parseChatTabs, serializeChatTabs, isChatTabChannel,
@@ -51,7 +65,7 @@ import {
 } from './chat_channels';
 import { TouchPeekGuard, TOOLTIP_PEEK_MS } from './touch_peek';
 import { maskProfanity } from './profanity';
-import { formatMoney as formatLocalizedMoney, formatNumber, moneyParts, t, tOptional, type TranslationKey } from './i18n';
+import { formatMoney as formatLocalizedMoney, formatNumber, getLanguage, isSupportedLanguage, moneyParts, supportedLanguages, t, tOptional, tPlural, type SupportedLanguage, type TranslationKey } from './i18n';
 import { tEntity } from './entity_i18n';
 import { localizeServerText, localizeZone } from './server_i18n';
 import { localizeSimText, localizeSimAuraName } from './sim_i18n';
@@ -77,6 +91,10 @@ export interface OptionsHooks {
   captureKey(cb: (code: string | null) => void): void;
   settings: Settings;
   onSettingChange(key: keyof GameSettings, value: GameSettings[keyof GameSettings]): void;
+  // Switch the active locale at runtime (loads the locale chunk, relocalizes the page,
+  // fans out woc:languagechange). onStatus receives localized progress/error text for an
+  // aria-live element. Resolves false if the locale failed to load (active locale kept).
+  changeLanguage(lang: SupportedLanguage, onStatus?: (msg: string) => void): Promise<boolean>;
 }
 
 export interface ReportHooks {
@@ -105,6 +123,26 @@ const FAMILY_GLYPH: Record<string, string> = {
 const CLASS_GLYPH: Record<string, string> = {
   warrior: '⚔️', paladin: '🔨', hunter: '🏹', rogue: '🗡️', priest: '✝️',
   shaman: '🌩️', mage: '🔮', warlock: '🕯️', druid: '🐻',
+};
+// Language picker labels. Endonyms (each language's name in its own script) are NOT
+// translated — they render identically in every locale, matching the homepage footer
+// picker (index.html) and standard i18n practice. Keyed by SupportedLanguage; the picker
+// iterates `supportedLanguages`, so a new locale appears once its label is added here.
+const LANGUAGE_ENDONYMS: Record<SupportedLanguage, string> = {
+  en: 'English (US)',
+  es: 'Español (LatAm)',
+  es_ES: 'Español (España)',
+  fr_FR: 'Français (France)',
+  fr_CA: 'Français (Canada)',
+  en_CA: 'English (Canada)',
+  it_IT: 'Italiano',
+  de_DE: 'Deutsch',
+  zh_CN: '简体中文',
+  zh_TW: '繁體中文',
+  ko_KR: '한국어',
+  ja_JP: '日本語',
+  pt_BR: 'Português (Brasil)',
+  ru_RU: 'Русский',
 };
 const RESOURCE_LABEL_KEYS: Record<ResourceType, TranslationKey> = {
   mana: 'abilityUi.resources.mana',
@@ -220,6 +258,11 @@ const BIND_ACTION_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
   social: 'hud.keybinds.actions.social',
   arena: 'hud.keybinds.actions.arena',
   chat: 'hud.keybinds.actions.chat',
+  // Combat/social target + emote-wheel actions. English-only chrome keys (the
+  // `hud` catalog domain is tsc-locked to inline per-locale blocks).
+  emoteWheel: 'hudChrome.keybinds.emoteWheel',
+  targetFriendly: 'hudChrome.keybinds.targetFriendly',
+  targetFriendlyNext: 'hudChrome.keybinds.targetFriendlyNext',
   // Reuse the existing window/feature names so these labels localize everywhere
   // without duplicating strings (these two ids were previously absent from the
   // map and fell back to the raw English BIND_ACTIONS labels).
@@ -417,7 +460,12 @@ export class Hud {
   // World Market (the Merchant's auction house)
   private marketOpen = false;
   private marketTab: 'browse' | 'sell' | 'collect' = 'browse';
+  private marketItemTypeFilter: MarketItemTypeFilter = 'all';
+  private marketSubtypeFilter: MarketSubtypeFilter = 'all';
+  private marketRarityFilter: MarketRarityFilter = 'all';
+  private marketBrowsePage = 0;
   private marketSellItem: string | null = null; // bag item staged for listing
+  private marketSearchQuery = ''; // active browse search term (sent to the server)
   private lastMarketSig = '';
   // all-time ladder, fetched best-effort from the server (online only)
   private arenaAllTime: Partial<Record<ArenaFormat, { name: string; class: string; level: number; rating: number; wins: number; losses: number }[]>> = {};
@@ -642,7 +690,7 @@ export class Hud {
     this.showBanner(startZoneName);
     this.log(t('hud.core.welcomeZone', { zone: startZoneName }), '#ffd100');
     this.logZoneWelcome(startZone);
-    this.log('Tip: type /join world or /join lfg to chat with players across the realm.', '#7fd4ff');
+    this.log(t('hudChrome.tips.joinChannels'), '#7fd4ff');
   }
 
   private setText(el: HTMLElement, text: string): void {
@@ -1083,7 +1131,7 @@ export class Hud {
   }
 
   private emoteLabel(id: OverheadEmoteId): string {
-    return OVERHEAD_EMOTES.find((e) => e.id === id)?.label ?? id;
+    return t(`hudChrome.emotes.${id}` as TranslationKey);
   }
 
   private emoteWheelKeyLabel(): string {
@@ -1141,7 +1189,7 @@ export class Hud {
       this.emoteWheelEl = el;
     }
     const slots = this.emoteWheelSlots.filter(isOverheadEmoteId).slice(0, EMOTE_WHEEL_LIMIT);
-    el.innerHTML = `<div class="emote-wheel-ring"></div><button class="emote-wheel-edit" data-edit>Edit</button>`;
+    el.innerHTML = `<div class="emote-wheel-ring"></div><button class="emote-wheel-edit" data-edit>${esc(t('hudChrome.emoteWheel.edit'))}</button>`;
     slots.forEach((id, i) => {
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -1221,7 +1269,7 @@ export class Hud {
 
   private renderEmoteEditor(): void {
     const el = $('#emote-editor');
-    el.innerHTML = `<div class="panel-title"><span>Emotes</span><span class="x-btn" data-close>${svgIcon('close')}</span></div>`;
+    el.innerHTML = `<div class="panel-title"><span>${esc(t('hudChrome.emoteEditor.title'))}</span><span class="x-btn" data-close>${svgIcon('close')}</span></div>`;
     const count = document.createElement('div');
     count.className = 'emote-editor-count';
     const grid = document.createElement('div');
@@ -1247,7 +1295,7 @@ export class Hud {
       icon.src = emoteIconUrl(def.id);
       icon.alt = '';
       const label = document.createElement('span');
-      label.textContent = def.label;
+      label.textContent = this.emoteLabel(def.id);
       btn.append(icon, label);
       btn.addEventListener('click', () => {
         audio.click();
@@ -1266,7 +1314,7 @@ export class Hud {
     footer.className = 'emote-editor-footer';
     const done = document.createElement('button');
     done.className = 'btn';
-    done.textContent = 'Done';
+    done.textContent = t('hudChrome.emoteEditor.done');
     done.addEventListener('click', () => this.closeEmoteEditor());
     footer.append(count, done);
     el.append(grid, footer);
@@ -1277,53 +1325,13 @@ export class Hud {
   // Portraits, icons, tooltips, money
   // -------------------------------------------------------------------------
 
-  // Portrait = the procedural crest for a class (`class_<id>`), mob family
-  // (`family_<id>`) or status (`status_npc`), painted by icons.ts and blitted in.
-  private drawPortrait(canvas: HTMLCanvasElement, crestId: string): void {
-    // Crest fallback — also invalidates any pending headshot image-load for this
-    // canvas (see drawPortraitImage) so a late decode can't paint over the crest.
-    canvas.dataset.portrait = '';
-    const ctx = canvas.getContext('2d')!;
-    const s = canvas.width;
-    ctx.clearRect(0, 0, s, s);
-    ctx.drawImage(iconCanvas('crest', crestId, s), 0, 0, s, s);
-  }
-
-  // Decoded headshot images, keyed by their portrait data URL.
-  private portraitImgCache = new Map<string, HTMLImageElement>();
-
-  /** Paint a 3D-headshot data URL into a unit-frame portrait canvas. The decode
-   *  is async even for a data URL, so we tag the canvas with the desired URL and
-   *  only draw if it still matches on load (the target may have changed). */
-  private drawPortraitImage(canvas: HTMLCanvasElement, url: string): void {
-    canvas.dataset.portrait = url;
-    const draw = (img: HTMLImageElement) => {
-      if (canvas.dataset.portrait !== url) return; // target changed mid-decode
-      const ctx = canvas.getContext('2d')!;
-      const s = canvas.width;
-      ctx.clearRect(0, 0, s, s);
-      ctx.drawImage(img, 0, 0, s, s);
-    };
-    const cached = this.portraitImgCache.get(url);
-    if (cached?.complete && cached.naturalWidth) { draw(cached); return; }
-    const img = cached ?? new Image();
-    img.addEventListener('load', () => draw(img), { once: true });
-    if (!cached) {
-      this.portraitImgCache.set(url, img);
-      img.src = url;
-    }
-  }
-
-  /** Draw a (class, skin) headshot into a unit-frame portrait, falling back to
-   *  the class crest until the 3D portraits have finished loading. */
-  private drawClassPortrait(canvas: HTMLCanvasElement, cls: PlayerClass, skin: number): void {
-    const url = playerPortraitDataUrl(cls, skin);
-    if (url) this.drawPortraitImage(canvas, url);
-    else this.drawPortrait(canvas, `class_${cls}`);
-  }
+  // Player- and target-frame circular portraits. The DPI-aware backing store +
+  // crest overscan live in UnitPortraitPainter (unit_portrait_painter.ts); the
+  // HUD just routes the framed unit (class headshot vs mob/NPC crest) to it.
+  private readonly portraits = new UnitPortraitPainter();
 
   private drawPlayerFramePortrait(): void {
-    this.drawClassPortrait(
+    this.portraits.drawClass(
       $('#pf-portrait') as unknown as HTMLCanvasElement,
       this.sim.cfg.playerClass,
       this.sim.player.skin ?? 0,
@@ -1460,7 +1468,8 @@ export class Hud {
       .map((d) => {
         const cls = d.delta > 0 ? 'tt-green' : 'tt-red';
         const sign = d.delta > 0 ? '+' : '−'; // proper minus sign
-        return `<div class="${cls}">${sign}${Math.abs(d.delta).toFixed(d.decimals)} ${esc(t(`itemUi.stats.${d.stat}` as TranslationKey))}</div>`;
+        const magnitude = formatNumber(Math.abs(d.delta), { minimumFractionDigits: d.decimals, maximumFractionDigits: d.decimals });
+        return `<div class="${cls}">${sign}${magnitude} ${esc(t(`itemUi.stats.${d.stat}` as TranslationKey))}</div>`;
       })
       .join('');
     let html = `<div class="tt-cmp"><div class="tt-cmp-head">${esc(t('itemUi.tooltip.currentlyEquipped'))}</div>`;
@@ -1511,6 +1520,7 @@ export class Hud {
   }
 
   private refreshLocalizedDynamicUi(): void {
+    this.refreshKeybindLabels();
     this.updateQuestTracker();
     const log = $('#quest-log-window');
     if (log.style.display === 'block') this.renderQuestLog();
@@ -2095,22 +2105,23 @@ export class Hud {
     for (let i = 0; i < this.abilityButtons.length; i++) {
       this.abilityButtons[i].keybindEl.textContent = this.keybinds.primaryLabel(`slot${i}`);
     }
-    const sideButtons: [selector: string, action: string, label: string][] = [
-      ['#mm-char', 'char', 'Character'],
-      ['#mm-spell', 'spellbook', 'Spellbook'],
-      ['#mm-talents', 'talents', 'Talents'],
-      ['#mm-quest', 'questlog', 'Quest Log'],
-      ['#mm-map', 'map', 'Map'],
-      ['#mm-bag', 'bags', 'Bags'],
-      ['#mm-arena', 'arena', 'Arena'],
-      ['#mm-leaderboard', 'leaderboard', 'Leaderboard'],
-      ['#mm-emote', 'emoteWheel', 'Emotes'],
-      ['#mm-social', 'social', 'Friends'],
+    const sideButtons: [selector: string, action: string, labelKey: TranslationKey][] = [
+      ['#mm-char', 'char', 'hud.keybinds.actions.char'],
+      ['#mm-spell', 'spellbook', 'abilityUi.spellbook.title'],
+      ['#mm-talents', 'talents', 'game.talents.title'],
+      ['#mm-quest', 'questlog', 'questUi.log.title'],
+      ['#mm-map', 'map', 'hud.core.mobileMap'],
+      ['#mm-bag', 'bags', 'itemUi.bags.title'],
+      ['#mm-arena', 'arena', 'hud.core.mobileArena'],
+      ['#mm-leaderboard', 'leaderboard', 'game.leaderboard.title'],
+      ['#mm-emote', 'emoteWheel', 'hudChrome.emoteWheel.label'],
+      ['#mm-social', 'social', 'hud.social.friendsTab'],
     ];
-    for (const [selector, action, label] of sideButtons) {
+    for (const [selector, action, labelKey] of sideButtons) {
       const btn = document.querySelector<HTMLElement>(selector);
       if (!btn) continue;
       const key = this.keybinds.primaryLabel(action);
+      const label = t(labelKey);
       const keyEl = btn.querySelector<HTMLElement>('.keybind');
       if (keyEl) keyEl.textContent = key.toLowerCase();
       btn.setAttribute('aria-label', key ? `${label} (${key})` : label);
@@ -2295,12 +2306,9 @@ export class Hud {
         if (target.kind === 'player') {
           // Other players: their real 3D headshot, rendered locally from the
           // class (templateId) + skin in their synced identity fields.
-          this.drawClassPortrait(this.targetPortraitEl, target.templateId as PlayerClass, target.skin ?? 0);
+          this.portraits.drawClass(this.targetPortraitEl, target.templateId as PlayerClass, target.skin ?? 0);
         } else {
-          const crestId = target.kind === 'npc'
-            ? 'status_npc'
-            : `family_${MOBS[target.templateId]?.family ?? 'humanoid'}`;
-          this.drawPortrait(this.targetPortraitEl, crestId);
+          this.portraits.drawCrest(this.targetPortraitEl, crestIdForEntity(target.kind, MOBS[target.templateId]?.family));
         }
       }
       this.renderAuras(this.targetDebuffsEl, target, 'debuffs');
@@ -2368,7 +2376,9 @@ export class Hud {
       (sw.querySelector('.fill') as HTMLElement).style.width = `${(frac * 100).toFixed(1)}%`;
       sw.classList.toggle('ready', p.swingTimer <= 0);
       (sw.querySelector('.label') as HTMLElement).textContent =
-        p.swingTimer <= 0 ? 'Swing' : `${p.swingTimer.toFixed(1)}s`;
+        p.swingTimer <= 0
+          ? t('hudChrome.swing.ready')
+          : t('hudChrome.swing.seconds', { seconds: formatNumber(p.swingTimer, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) });
     } else {
       sw.style.display = 'none';
       this.lastSwingTimer = 0;
@@ -2508,7 +2518,10 @@ export class Hud {
         : nearestSubzone(p.pos.x, p.pos.z, currentZone.pois, this.lastSubzone);
       if (subzone !== this.lastSubzone) {
         this.lastSubzone = subzone;
-        if (subzone) this.showSubzone(subzone);
+        if (subzone) {
+          const poiIndex = currentZone.pois.findIndex((q) => q.label === subzone);
+          this.showSubzone(poiIndex >= 0 ? zonePoiLabel(currentZone.id, poiIndex) : subzone);
+        }
       }
 
       // soundtrack: pick the zone theme and layer in combat percussion.
@@ -2537,7 +2550,7 @@ export class Hud {
         this.lastResting = rest.resting;
         const restEl = $('#pf-rest');
         restEl.classList.toggle('on', rest.resting);
-        restEl.title = rest.label;
+        restEl.title = rest.labelKey ? t(rest.labelKey) : '';
       }
 
       this.updateQuestTracker();
@@ -2634,7 +2647,7 @@ export class Hud {
       dur.textContent = a.remaining < 99 ? `${Math.ceil(a.remaining)}s` : '';
       d.appendChild(dur);
       const auraName = ABILITIES[a.id] ? abilityDisplayName(ABILITIES[a.id]) : auraDisplayNameFromSource(a.name);
-      this.attachTooltip(d, () => `<div class="tt-title">${esc(auraName)}</div><div class="tt-sub">${esc(t('hud.core.secondsRemaining', { seconds: Math.ceil(a.remaining) }))}</div>`);
+      this.attachTooltip(d, () => `<div class="tt-title">${esc(auraName)}</div><div class="tt-sub">${esc(tPlural('hudChrome.plurals.secondsRemaining', Math.ceil(a.remaining)))}</div>`);
       el.appendChild(d);
     }
   }
@@ -2737,12 +2750,13 @@ export class Hud {
   private initCompass(): void {
     const track = $('#compass-track');
     if (!track) return;
-    for (const label of ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']) {
+    const ids: CardinalId[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+    for (const id of ids) {
       const el = document.createElement('span');
-      el.className = 'compass-mark' + (label.length === 1 ? ' major' : '');
-      el.textContent = label;
+      el.className = 'compass-mark' + (id.length === 1 ? ' major' : '');
+      el.textContent = t(`hudChrome.compass.${id}`);
       track.appendChild(el);
-      this.compassMarks.set(label, el);
+      this.compassMarks.set(id, el);
     }
     this.compassHeadingEl = $('#compass-heading');
   }
@@ -2765,7 +2779,7 @@ export class Hud {
     }
     if (this.compassHeadingEl && view.heading !== this.lastCompassHeading) {
       this.lastCompassHeading = view.heading;
-      this.compassHeadingEl.textContent = view.heading;
+      this.compassHeadingEl.textContent = t(`hudChrome.compass.${view.heading}`);
     }
   }
 
@@ -2799,7 +2813,7 @@ export class Hud {
   // Reflect the current zoom in the readout and disable the +/- buttons at the
   // ends so the control communicates its own limits.
   private syncMinimapZoomUi(): void {
-    if (this.minimapZoomLabel) this.minimapZoomLabel.textContent = formatMinimapZoom(this.minimapZoom);
+    if (this.minimapZoomLabel) this.minimapZoomLabel.textContent = `${formatNumber(minimapZoomValue(this.minimapZoom), { maximumFractionDigits: 1 })}×`;
     const inBtn = document.querySelector('#minimap-zoom-in') as HTMLButtonElement | null;
     const outBtn = document.querySelector('#minimap-zoom-out') as HTMLButtonElement | null;
     if (inBtn) inBtn.disabled = isMaxMinimapZoom(this.minimapZoom);
@@ -4819,7 +4833,13 @@ export class Hud {
     this.closeOtherWindows('#market-window');
     this.marketOpen = true;
     this.marketTab = 'browse';
+    this.marketItemTypeFilter = 'all';
+    this.marketSubtypeFilter = 'all';
+    this.marketRarityFilter = 'all';
+    this.marketBrowsePage = 0;
     this.marketSellItem = null;
+    this.marketSearchQuery = '';
+    this.sim.marketSearch('');
     this.lastMarketSig = '';
     this.renderMarket();
     $('#market-window').style.display = 'flex';
@@ -4854,6 +4874,76 @@ export class Hud {
     return this.sim.inventory.filter((s) => s.itemId === itemId).reduce((n, s) => n + s.count, 0);
   }
 
+  private marketItemTypeLabelKey(filter: MarketItemTypeFilter): TranslationKey {
+    if (filter === 'weapon') return 'itemUi.market.filterTypeWeapon';
+    if (filter === 'armor') return 'itemUi.market.filterTypeArmor';
+    if (filter === 'consumable') return 'itemUi.market.filterTypeConsumable';
+    if (filter === 'material') return 'itemUi.market.filterTypeMaterial';
+    if (filter === 'cosmetic') return 'itemUi.market.filterTypeCosmetic';
+    if (filter === 'other') return 'itemUi.market.filterTypeOther';
+    return 'itemUi.market.filterTypeAll';
+  }
+
+  private marketRarityLabelKey(filter: MarketRarityFilter): TranslationKey {
+    if (filter === 'poor') return 'itemUi.market.rarityPoor';
+    if (filter === 'common') return 'itemUi.market.rarityCommon';
+    if (filter === 'uncommon') return 'itemUi.market.rarityUncommon';
+    if (filter === 'rare') return 'itemUi.market.rarityRare';
+    if (filter === 'epic') return 'itemUi.market.rarityEpic';
+    return 'itemUi.market.filterRarityAll';
+  }
+
+  private marketSubtypeOptions(): readonly MarketSubtypeFilter[] {
+    if (this.marketItemTypeFilter === 'armor') return MARKET_ARMOR_TYPE_FILTERS;
+    if (this.marketItemTypeFilter === 'weapon') return MARKET_WEAPON_TYPE_FILTERS;
+    return ['all'];
+  }
+
+  private marketSubtypeLabel(): string {
+    return t(this.marketItemTypeFilter === 'armor' ? 'itemUi.market.filterArmorType' : 'itemUi.market.filterWeaponType');
+  }
+
+  private marketSubtypeOptionLabel(filter: MarketSubtypeFilter): string {
+    if (filter === 'all') return t(this.marketItemTypeFilter === 'armor' ? 'itemUi.market.filterArmorAll' : 'itemUi.market.filterWeaponAll');
+    if (this.marketItemTypeFilter === 'armor') return itemSlotName(filter as EquipSlot);
+    if (filter === 'sword') return t('itemUi.market.weaponSword');
+    if (filter === 'dagger') return t('itemUi.market.weaponDagger');
+    if (filter === 'staff') return t('itemUi.market.weaponStaff');
+    if (filter === 'mace') return t('itemUi.market.weaponMace');
+    if (filter === 'axe') return t('itemUi.market.weaponAxe');
+    return t('itemUi.market.weaponOther');
+  }
+
+  private renderMarketFilterMenu(
+    menu: 'itemType' | 'subtype' | 'rarity',
+    label: string,
+    value: string,
+    options: readonly string[],
+    optionLabel: (option: string) => string,
+  ): string {
+    const current = optionLabel(value);
+    const optionHtml = options.map((option) => {
+      const selected = option === value;
+      return `<button type="button" class="mkt-select-option${selected ? ' sel' : ''}" role="option" aria-selected="${selected ? 'true' : 'false'}" data-market-filter-option="${option}">${esc(optionLabel(option))}</button>`;
+    }).join('');
+    return `<div class="mkt-filter"><span>${esc(label)}</span><div class="mkt-select" data-market-filter-menu="${menu}">`
+      + `<button type="button" class="mkt-select-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="${esc(`${label}: ${current}`)}"><span>${esc(current)}</span><span class="mkt-select-chevron" aria-hidden="true"></span></button>`
+      + `<div class="mkt-select-menu" role="listbox" hidden>${optionHtml}</div>`
+      + `</div></div>`;
+  }
+
+  private renderMarketFilters(): string {
+    if (this.marketTab !== 'browse') return '';
+    const hasSubtype = this.marketItemTypeFilter === 'armor' || this.marketItemTypeFilter === 'weapon';
+    return `<div class="mkt-filters${hasSubtype ? ' has-subtype' : ''}" role="group" aria-label="${esc(t('itemUi.market.filters'))}">`
+      + this.renderMarketFilterMenu('itemType', t('itemUi.market.filterType'), this.marketItemTypeFilter, MARKET_ITEM_TYPE_FILTERS, (filter) => t(this.marketItemTypeLabelKey(filter as MarketItemTypeFilter)))
+      + (hasSubtype
+        ? this.renderMarketFilterMenu('subtype', this.marketSubtypeLabel(), this.marketSubtypeFilter, this.marketSubtypeOptions(), (filter) => this.marketSubtypeOptionLabel(filter as MarketSubtypeFilter))
+        : '')
+      + this.renderMarketFilterMenu('rarity', t('itemUi.market.filterRarity'), this.marketRarityFilter, MARKET_RARITY_FILTERS, (filter) => t(this.marketRarityLabelKey(filter as MarketRarityFilter)))
+      + `</div>`;
+  }
+
   private renderMarket(): void {
     const el = $('#market-window');
     this.hideTooltip();
@@ -4875,6 +4965,7 @@ export class Hud {
       + tab('sell')
       + tab('collect')
       + `</div>`
+      + this.renderMarketFilters()
       + `<div id="market-body"></div>`;
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeMarket());
     el.querySelectorAll('[data-tab]').forEach((t) => {
@@ -4882,11 +4973,60 @@ export class Hud {
         const next = (t as HTMLElement).dataset.tab as typeof this.marketTab;
         if (next === this.marketTab) return;
         this.marketTab = next;
+        this.marketBrowsePage = 0;
         this.lastMarketSig = '';
         audio.click();
         this.renderMarket();
       });
     });
+    const closeFilterMenus = () => {
+      el.querySelectorAll<HTMLElement>('.mkt-select.open').forEach((menu) => {
+        menu.classList.remove('open');
+        menu.querySelector<HTMLButtonElement>('.mkt-select-btn')?.setAttribute('aria-expanded', 'false');
+        const list = menu.querySelector<HTMLElement>('.mkt-select-menu');
+        if (list) list.hidden = true;
+      });
+    };
+    el.querySelectorAll<HTMLButtonElement>('.mkt-select-btn').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const menu = button.closest<HTMLElement>('.mkt-select');
+        if (!menu) return;
+        const open = !menu.classList.contains('open');
+        closeFilterMenus();
+        menu.classList.toggle('open', open);
+        button.setAttribute('aria-expanded', open ? 'true' : 'false');
+        const list = menu.querySelector<HTMLElement>('.mkt-select-menu');
+        if (list) list.hidden = !open;
+      });
+    });
+    el.querySelectorAll<HTMLButtonElement>('[data-market-filter-option]').forEach((option) => {
+      option.addEventListener('click', () => {
+        const menu = option.closest<HTMLElement>('[data-market-filter-menu]');
+        const key = menu?.dataset.marketFilterMenu;
+        const value = option.dataset.marketFilterOption ?? 'all';
+        if (key === 'itemType') {
+          const next = value as MarketItemTypeFilter;
+          if (next !== this.marketItemTypeFilter) {
+            this.marketItemTypeFilter = next;
+            this.marketSubtypeFilter = 'all';
+            this.marketBrowsePage = 0;
+          }
+        } else if (key === 'subtype') {
+          this.marketSubtypeFilter = value as MarketSubtypeFilter;
+          this.marketBrowsePage = 0;
+        } else if (key === 'rarity') {
+          this.marketRarityFilter = value as MarketRarityFilter;
+          this.marketBrowsePage = 0;
+        } else {
+          return;
+        }
+        this.lastMarketSig = '';
+        audio.click();
+        this.renderMarket();
+      });
+    });
+    el.addEventListener('click', closeFilterMenus);
     this.renderMarketContent(info);
   }
 
@@ -4896,7 +5036,18 @@ export class Hud {
     if (!this.marketOpen || this.marketTab === 'sell') return;
     const info = this.sim.marketInfo;
     const collectN = info ? (info.collectionCopper > 0 ? 1 : 0) + info.collectionItems.length : 0;
-    const sig = JSON.stringify([this.marketTab, info?.listings, info?.collectionCopper, info?.collectionItems]);
+    const sig = JSON.stringify([
+      this.marketTab,
+      this.marketItemTypeFilter,
+      this.marketSubtypeFilter,
+      this.marketRarityFilter,
+      this.marketBrowsePage,
+      info?.listings,
+      info?.totalCount,
+      info?.filter,
+      info?.collectionCopper,
+      info?.collectionItems,
+    ]);
     if (sig === this.lastMarketSig) return;
     this.lastMarketSig = sig;
     const collectTab = $('#market-window').querySelector('[data-tab="collect"]');
@@ -4918,12 +5069,64 @@ export class Hud {
   }
 
   private renderMarketBrowse(body: HTMLElement, info: MarketInfo): void {
+    // Reuse the search field and list container across refreshes so typing in
+    // the box never loses focus when the server streams back filtered results.
+    let search = body.querySelector('.mkt-search') as HTMLInputElement | null;
+    let list = body.querySelector('.mkt-list') as HTMLElement | null;
+    if (!search || !list) {
+      body.innerHTML = '';
+      search = document.createElement('input');
+      search.type = 'search';
+      search.className = 'mkt-search';
+      search.placeholder = t('itemUi.market.searchPlaceholder');
+      search.setAttribute('aria-label', t('itemUi.market.searchAria'));
+      search.value = this.marketSearchQuery;
+      search.addEventListener('input', () => {
+        this.marketSearchQuery = search!.value;
+        this.marketBrowsePage = 0;
+        this.sim.marketSearch(search!.value);
+      });
+      body.appendChild(search);
+      list = document.createElement('div');
+      list.className = 'mkt-list';
+      body.appendChild(list);
+    }
+    // Keep the field in sync on external resets, but never clobber active typing.
+    if (document.activeElement !== search && search.value !== this.marketSearchQuery) {
+      search.value = this.marketSearchQuery;
+    }
+    list.innerHTML = '';
     if (info.listings.length === 0) {
-      body.innerHTML = `<div class="mkt-empty">${esc(t('itemUi.market.emptyBrowse'))}</div>`;
+      const empty = document.createElement('div');
+      empty.className = 'mkt-empty';
+      empty.textContent = info.filter.trim()
+        ? t('itemUi.market.emptySearch')
+        : t('itemUi.market.emptyBrowse');
+      list.appendChild(empty);
       return;
     }
-    body.innerHTML = `<div class="mkt-note">${esc(t('itemUi.market.browseNote'))}</div>`;
-    for (const l of info.listings) {
+    const listings = filterMarketListings(info.listings, {
+      itemType: this.marketItemTypeFilter,
+      subtype: this.marketSubtypeFilter,
+      rarity: this.marketRarityFilter,
+    });
+    if (listings.length === 0) {
+      this.marketBrowsePage = 0;
+      const empty = document.createElement('div');
+      empty.className = 'mkt-empty';
+      empty.textContent = t('itemUi.market.emptyFiltered');
+      list.appendChild(empty);
+      return;
+    }
+    const page = paginateMarketListings(listings, this.marketBrowsePage, MARKET_PAGE_SIZE);
+    this.marketBrowsePage = page.page;
+    const note = document.createElement('div');
+    note.className = 'mkt-note';
+    const shown = `${formatNumber(page.start + 1, { maximumFractionDigits: 0 })}-${formatNumber(page.end, { maximumFractionDigits: 0 })}`;
+    const total = formatNumber(page.total, { maximumFractionDigits: 0 });
+    note.textContent = t('itemUi.market.pageRange', { shown, total });
+    list.appendChild(note);
+    for (const l of page.items) {
       const item = ITEMS[l.itemId];
       if (!item) continue;
       const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
@@ -4951,7 +5154,28 @@ export class Hud {
       });
       row.appendChild(btn);
       this.attachTooltip(row, () => this.itemTooltip(item));
-      body.appendChild(row);
+      list.appendChild(row);
+    }
+    if (page.pageCount > 1) {
+      const pager = document.createElement('div');
+      pager.className = 'mkt-page';
+      const pageNumber = formatNumber(page.page + 1, { maximumFractionDigits: 0 });
+      const pageCount = formatNumber(page.pageCount, { maximumFractionDigits: 0 });
+      pager.innerHTML =
+        `<button type="button" class="mkt-page-btn" data-market-page="prev"${page.page <= 0 ? ' disabled' : ''} aria-label="${esc(t('itemUi.market.pagePrevAria'))}">${esc(t('itemUi.market.pagePrev'))}</button>`
+        + `<span class="mkt-page-info">${esc(t('itemUi.market.pageStatus', { current: pageNumber, total: pageCount }))}</span>`
+        + `<button type="button" class="mkt-page-btn" data-market-page="next"${page.page >= page.pageCount - 1 ? ' disabled' : ''} aria-label="${esc(t('itemUi.market.pageNextAria'))}">${esc(t('itemUi.market.pageNext'))}</button>`;
+      pager.querySelectorAll<HTMLButtonElement>('[data-market-page]').forEach((button) => {
+        button.addEventListener('click', () => {
+          if (button.disabled) return;
+          this.marketBrowsePage += button.dataset.marketPage === 'next' ? 1 : -1;
+          this.lastMarketSig = '';
+          audio.click();
+          this.renderMarketContent(info);
+          body.scrollTop = 0;
+        });
+      });
+      list.appendChild(pager);
     }
   }
 
@@ -6461,7 +6685,7 @@ export class Hud {
     const promptNewBuild = (): void => {
       this.inputDialog({
         title: t('game.talents.saveBuildAs'), label: t('game.talents.namePrompt'),
-        value: `Build ${this.sim.loadouts.length + 1}`, okText: t('game.talents.save'),
+        value: t('hudChrome.talents.defaultBuildName', { n: this.sim.loadouts.length + 1 }), okText: t('game.talents.save'),
         selectText: true,
         onOk: saveStagedBuild,
       });
@@ -7120,9 +7344,9 @@ export class Hud {
     const guild = this.sim.socialInfo?.guild ?? null;
     if (!guild) return `<div class="soc-empty">${esc(t('hud.social.noGuild'))}</div>`;
     const me = guild.rank;
-    const guildHeadKey = guild.members.length === 1 ? 'hud.social.guildHeadOne' : 'hud.social.guildHeadMany';
-    const guildCount = formatNumber(guild.members.length, { maximumFractionDigits: 0 });
-    const head = `<div class="soc-guild-head">&lt;${esc(guild.name)}&gt; <span class="gm">${esc(t(guildHeadKey, { rank: rankLabel(me), count: guildCount }))}</span></div>`;
+    const memberCount = guild.members.length;
+    const guildCount = formatNumber(memberCount, { maximumFractionDigits: 0 });
+    const head = `<div class="soc-guild-head">&lt;${esc(guild.name)}&gt; <span class="gm">${esc(tPlural('hudChrome.plurals.guildMembers', memberCount, { rank: rankLabel(me), count: guildCount }))}</span></div>`;
     const rows = guild.members.map((m) => {
       const dot = m.online ? (m.status ?? 'online') : 'off';
       const meta = m.online
@@ -7509,6 +7733,9 @@ export class Hud {
   }
 
   private renderOptions(): void {
+    // The wide multi-column layout belongs to the keybinds view only; clear it
+    // so the other sub-views (and the main menu) keep their default width.
+    if (this.optionsView !== 'keybinds') $('#options-menu').classList.remove('kb-wide');
     if (this.optionsView === 'keybinds') { this.renderKeybinds(); return; }
     if (this.optionsView === 'graphics') { this.renderGraphics(); return; }
     if (this.optionsView === 'audio') { this.renderAudio(); return; }
@@ -7557,7 +7784,7 @@ export class Hud {
     slider.setAttribute('aria-label', label);
     const val = document.createElement('span');
     val.className = 'set-val';
-    const fmt = opts?.fmt ?? ((v: number) => `${Math.round(v * 100)}%`);
+    const fmt = opts?.fmt ?? ((v: number) => formatNumber(v, { style: 'percent', maximumFractionDigits: 0 }));
     const readout = () => fmt(hooks.settings.get(key));
     val.textContent = readout();
     slider.addEventListener('input', () => {
@@ -7695,7 +7922,6 @@ export class Hud {
   private renderGraphics(): void {
     const body = this.settingsViewShell(t('hud.options.graphics'));
     this.settingChoice(body, t('hud.options.graphicsQuality'), 'graphicsPreset', [
-      { value: 0, label: t('hud.options.graphicsPresetAuto') },
       { value: 1, label: t('hud.options.graphicsPresetLow') },
       { value: 2, label: t('hud.options.graphicsPresetMedium') },
       { value: 3, label: t('hud.options.graphicsPresetHigh') },
@@ -7725,7 +7951,7 @@ export class Hud {
     // own rate, so phones get a dedicated sensitivity slider here.
     if (isPhoneTouchDevice()) this.settingSlider(body, t('hud.options.touchLookSpeed'), 'touchLookSpeed');
     this.settingSlider(body, t('hud.options.brightness'), 'brightness');
-    this.settingSlider(body, t('hud.options.fieldOfView'), 'cameraFov', { fmt: (v) => `${Math.round(v)}°`, step: 1 });
+    this.settingSlider(body, t('hud.options.fieldOfView'), 'cameraFov', { fmt: (v) => `${formatNumber(Math.round(v), { maximumFractionDigits: 0 })}°`, step: 1 });
     this.settingSlider(body, t('hud.options.renderQuality'), 'renderScale');
     this.settingToggle(body, t('hud.options.fullscreen'), 'fullscreen');
     this.settingToggle(body, t('game.settings.showOverflowXp'), 'showOverflowXp');
@@ -7787,8 +8013,66 @@ export class Hud {
   // (sliders/toggles persisted to the GameSettings store, applied via CSS in
   // main.ts) plus the classic client-side "Show Timestamps" chat option. None of
   // it touches the simulation.
+  // In-game language picker (Options > Interface). Mirrors the homepage footer picker so a
+  // player can switch locales without leaving the world. Switching is delegated to the
+  // OptionsHooks.changeLanguage seam (main.ts owns the locale load + page relocalization);
+  // the HUD itself relocalizes its dynamic UI off the woc:languagechange event (see ctor).
+  private languageSelect(parent: HTMLElement): void {
+    const hooks = this.optionsHooks;
+    if (!hooks) return;
+    const row = document.createElement('div');
+    row.className = 'set-row';
+    const name = document.createElement('span');
+    name.className = 'set-name';
+    name.textContent = t('hud.options.language');
+    const select = document.createElement('select');
+    select.className = 'lang-select-dropdown set-lang-select';
+    select.setAttribute('aria-label', t('hud.options.language'));
+    for (const lang of supportedLanguages) {
+      const opt = document.createElement('option');
+      opt.value = lang;
+      opt.textContent = LANGUAGE_ENDONYMS[lang];
+      select.appendChild(opt);
+    }
+    select.value = getLanguage();
+    // aria-live status for the async locale load (loading / load-failed).
+    const status = document.createElement('span');
+    status.className = 'visually-hidden';
+    status.setAttribute('role', 'status');
+    status.setAttribute('aria-live', 'polite');
+    select.addEventListener('change', () => {
+      const selected = select.value;
+      if (!isSupportedLanguage(selected) || selected === getLanguage()) return;
+      audio.click();
+      select.disabled = true;
+      void hooks.changeLanguage(selected, (msg) => { status.textContent = msg; })
+        .then((ok) => {
+          if (!ok) {
+            // The locale chunk failed to load — restore the picker to the locale that stayed active.
+            select.value = getLanguage();
+          } else if (this.optionsOpen && this.optionsView === 'interface') {
+            // Rebuild the panel in the new language, then return keyboard focus to the
+            // fresh picker (the control the user just operated) so it isn't lost to <body>.
+            // The refocus also lets screen readers announce the switch via the select's value.
+            this.renderInterface();
+            this.focusFirstInteractive($('#options-menu'), '.set-lang-select');
+          }
+        })
+        .catch(() => {
+          // A relocalization step threw after the locale loaded; keep the picker usable and
+          // surface the failure rather than leaving the control stuck disabled.
+          select.value = getLanguage();
+          status.textContent = t('settings.languageLoadFailed');
+        })
+        .finally(() => { select.disabled = false; });
+    });
+    row.append(name, select);
+    parent.append(row, status);
+  }
+
   private renderInterface(): void {
-    const body = this.settingsViewShell('Interface');
+    const body = this.settingsViewShell(t('hud.options.interface'));
+    this.languageSelect(body);
     this.settingSlider(body, t('hud.options.hudOpacity'), 'hudOpacity');
     this.settingSlider(body, t('hud.options.tooltipScale'), 'tooltipScale');
     this.settingSlider(body, t('hud.options.fctScale'), 'fctScale');
@@ -7806,7 +8090,7 @@ export class Hud {
     tsRow.className = 'set-row';
     const tsName = document.createElement('span');
     tsName.className = 'set-name';
-    tsName.textContent = 'Show Chat Timestamps';
+    tsName.textContent = t('hudChrome.chatTimestamps.show');
     const tsToggle = document.createElement('button');
     tsToggle.className = 'btn set-toggle';
 
@@ -7815,20 +8099,20 @@ export class Hud {
     fmtRow.className = 'set-row';
     const fmtName = document.createElement('span');
     fmtName.className = 'set-name';
-    fmtName.textContent = 'Timestamp Format';
+    fmtName.textContent = t('hudChrome.chatTimestamps.format');
     const seg = document.createElement('div');
     seg.className = 'set-seg';
     const btn12 = document.createElement('button');
     btn12.className = 'btn set-seg-btn';
-    btn12.textContent = '12-hour';
+    btn12.textContent = t('hudChrome.chatTimestamps.clock12h');
     const btn24 = document.createElement('button');
     btn24.className = 'btn set-seg-btn';
-    btn24.textContent = '24-hour';
+    btn24.textContent = t('hudChrome.chatTimestamps.clock24h');
     seg.append(btn12, btn24);
     fmtRow.append(fmtName, seg);
 
     const sync = () => {
-      tsToggle.textContent = this.chatTimestamps ? 'On' : 'Off';
+      tsToggle.textContent = this.chatTimestamps ? t('hud.options.on') : t('hud.options.off');
       tsToggle.classList.toggle('off', !this.chatTimestamps);
       tsToggle.setAttribute('aria-pressed', String(this.chatTimestamps));
       btn12.classList.toggle('active', this.chatClock === '12h');
@@ -7860,12 +8144,12 @@ export class Hud {
 
     const note = document.createElement('div');
     note.className = 'set-note';
-    note.textContent = 'Prefixes each new chat line with the time it arrived, e.g. [14:32]. Only affects messages received while the option is on.';
+    note.textContent = t('hudChrome.chatTimestamps.note');
     $('#options-menu').appendChild(note);
 
     const back = document.createElement('button');
     back.className = 'btn';
-    back.textContent = 'Back';
+    back.textContent = t('hud.options.back');
     back.addEventListener('click', () => { audio.click(); this.optionsView = 'main'; this.renderOptions(); });
     $('#options-menu').appendChild(back);
     $('#options-menu').querySelector('[data-close]')?.addEventListener('click', () => this.closeOptions());
@@ -7932,7 +8216,7 @@ export class Hud {
     toggle.type = 'button';
     toggle.className = 'btn kb-key kb-toggle kb-mouse-toggle';
     const sync = () => {
-      toggle.textContent = clickMoveButtonLabel(hooks.settings.get('clickToMoveButton'));
+      toggle.textContent = t(normalizeClickMoveButton(hooks.settings.get('clickToMoveButton')) === 2 ? 'hudChrome.options.clickMoveRight' : 'hudChrome.options.clickMoveLeft');
       toggle.setAttribute('aria-label', `${t('hud.options.clickMoveButton')}: ${toggle.textContent}`);
     };
     sync();
@@ -7948,6 +8232,9 @@ export class Hud {
 
   private renderKeybinds(): void {
     const el = $('#options-menu');
+    // Wide, multi-column layout for the key-binding view only; other options
+    // sub-views (graphics/audio/interface) keep the default 420px width.
+    el.classList.add('kb-wide');
     el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.keyBindings'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
     this.settingToggleKeybind(el, t('hud.options.mouseCamera'), 'mouseCamera');
     this.settingToggleKeybind(el, t('hud.options.clickToMove'), 'clickToMove');
@@ -7959,18 +8246,24 @@ export class Hud {
     note.className = 'kb-note';
     note.textContent = this.keybindNote || t('hud.options.keybindHelpMouseCamera');
     el.appendChild(note);
-    const rows = document.createElement('div');
-    rows.className = 'kb-rows';
+    const cols = document.createElement('div');
+    cols.className = 'kb-cols';
     // The Attack Move key is only meaningful (and only rebindable) while its mode
     // is on; otherwise hide its row so it can't shadow Turn Left's A in the list.
     const attackMoveOn = !!this.optionsHooks?.settings.get('attackMove');
     for (const category of BIND_CATEGORIES) {
       const visible = BIND_ACTIONS.filter((a) => a.category === category && (a.id !== 'attackMove' || attackMoveOn));
       if (visible.length === 0) continue;
+      // Each category is its own column block (header + its rows) so the wide
+      // grid can flow categories side by side; on mobile they stack to one column.
+      const col = document.createElement('div');
+      col.className = 'kb-col';
       const header = document.createElement('div');
       header.className = 'kb-cat';
       header.textContent = BIND_CATEGORY_LABEL_KEYS[category] ? t(BIND_CATEGORY_LABEL_KEYS[category]) : category;
-      rows.appendChild(header);
+      col.appendChild(header);
+      const rows = document.createElement('div');
+      rows.className = 'kb-rows';
       for (const action of visible) {
         const row = document.createElement('div');
         row.className = 'kb-row';
@@ -7997,8 +8290,10 @@ export class Hud {
         }
         rows.appendChild(row);
       }
+      col.appendChild(rows);
+      cols.appendChild(col);
     }
-    el.appendChild(rows);
+    el.appendChild(cols);
     const reset = document.createElement('button');
     reset.className = 'btn';
     reset.textContent = t('hud.options.resetToDefaults');
@@ -8170,7 +8465,10 @@ function entityDisplayName(entity: Entity): string {
 
 function abilityDisplayNameFromSource(name: string): string {
   const ability = Object.values(ABILITIES).find((candidate) => candidate.name === name);
-  return ability ? abilityDisplayName(ability) : name;
+  if (ability) return abilityDisplayName(ability);
+  // Boss/mob mechanic names (War Stomp, etc.) surface as a damage-log ability label but
+  // are not in ABILITIES; route them through the shared sim aura/mechanic localizer.
+  return localizeSimAuraName(name) ?? name;
 }
 
 // Localize an aura/buff name that surfaces by its raw English name (buff frame tooltip,
