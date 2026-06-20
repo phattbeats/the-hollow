@@ -114,6 +114,17 @@ The locale data is split across files. Touch the right one:
   surface). `setLanguage` is synchronous and does NOT load — `main.ts` awaits
   `ensureLocaleLoaded` before localized paint and before each picker switch.
 
+**Merge conflicts in the committed generated artifacts** (`i18n.status.summary.json`
+is the usual one; also `i18n.resolved.sha256` and any `i18n.resolved.generated/` slice)
+are **never hand-resolved**. Take either side to clear the markers, then run
+`npm run i18n:gen` (build + admin + scan) to regenerate every committed artifact from
+the merged source-of-truth (the `i18n.catalog/` modules + `i18n.locales/` overlays) and
+`git add` the result. The output is deterministic, so a second `npm run i18n:gen` must
+leave the tree clean — that idempotency is your proof the resolution is right (and the CI
+i18n:gen freshness step checks the same thing). A rising `pending` count after merging a
+`release/**` branch into a feature branch is expected (its new content is not yet
+translated) and is fine at the PR-tier gate.
+
 `t(key)` **throws on an untracked key in dev/test**, renders English for a `pending`
 key on **non-release builds only**, and **hard-fails a pending key on a release build**
 (`isReleaseBuild()` = `I18N_RELEASE=1` or `import.meta.env.PROD`). The HUD is fully
