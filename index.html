@@ -1335,6 +1335,14 @@
   .opt-list { display: flex; flex-direction: column; gap: 8px; align-items: stretch; padding: 4px 0; }
   .opt-btn { margin: 0; text-align: center; }
   .kb-rows { display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; }
+  /* Wide, multi-column key-binding layout (desktop). Categories flow into as many
+     columns as fit, so the tall Action Bar list no longer forces a long scroll. */
+  #options-menu.kb-wide { width: min(880px, calc(100vw - 32px)); }
+  .kb-cols { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 4px 18px; align-items: start; margin-bottom: 8px; }
+  .kb-col { min-width: 0; }
+  .kb-col .kb-rows { margin-bottom: 0; }
+  .kb-col .kb-cat { margin-top: 0; }
   .kb-cat { font-family: var(--title-font); color: var(--gold); font-size: 12px; letter-spacing: 0.5px;
     text-transform: uppercase; margin: 8px 0 2px; border-bottom: 1px solid #463a1c; padding-bottom: 2px; }
   .kb-row { display: grid; grid-template-columns: 1fr 78px 78px; align-items: center;
@@ -5107,7 +5115,8 @@
     display: none;
   }
   body.mobile-touch #spellbook,
-  body.mobile-touch #options-menu {
+  body.mobile-touch #options-menu,
+  body.mobile-touch #options-menu.kb-wide {
     left: 50%;
     right: auto;
     top: 12px;
@@ -5115,6 +5124,9 @@
     max-height: calc(100vh - 92px);
     transform: translateX(-50%);
   }
+  /* On touch, stack the categories back into a single column so the large
+     touch targets keep their full width. */
+  body.mobile-touch .kb-cols { grid-template-columns: 1fr; gap: 0 0; }
   body.mobile-touch #talents-window {
     position: fixed;
     left: 50%;
