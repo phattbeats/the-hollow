@@ -48,11 +48,13 @@ describe('dropdownKeyNav', () => {
       expect(dropdownKeyNav('End', true, 1, 5)).toEqual({ kind: 'move', index: 4 });
     });
 
-    it('selects on Enter/Space and closes on Escape/Tab', () => {
+    it('selects on Enter/Space and closes on Escape', () => {
       expect(dropdownKeyNav('Enter', true, 2, 5)).toEqual({ kind: 'select' });
       expect(dropdownKeyNav(' ', true, 2, 5)).toEqual({ kind: 'select' });
       expect(dropdownKeyNav('Escape', true, 2, 5)).toEqual({ kind: 'close' });
-      expect(dropdownKeyNav('Tab', true, 2, 5)).toEqual({ kind: 'close' });
+    });
+    it('closes on Tab via a distinct action so native focus traversal continues', () => {
+      expect(dropdownKeyNav('Tab', true, 2, 5)).toEqual({ kind: 'tab' });
     });
   });
 });

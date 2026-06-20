@@ -282,7 +282,11 @@
     height: 6px;
     border-radius: 3px;
     border: 1px solid var(--scrollbar-border);
-    background: linear-gradient(180deg, #15110a 0%, #0b0b10 100%);
+    /* gold fill up to --range-fill (set per-slider in JS), dark groove beneath */
+    background:
+      linear-gradient(180deg, #ffef9e 0%, var(--gold) 100%) no-repeat,
+      linear-gradient(180deg, #15110a 0%, #0b0b10 100%);
+    background-size: var(--range-fill, 0%) 100%, 100% 100%;
     box-shadow: inset 0 1px 2px #000a;
   }
   input[type="range"]::-moz-range-track {
@@ -295,7 +299,8 @@
   input[type="range"]::-moz-range-progress {
     height: 6px;
     border-radius: 3px;
-    background: linear-gradient(180deg, var(--scrollbar-thumb-hover) 0%, var(--scrollbar-thumb) 100%);
+    /* gold to match the webkit fill (was the brown scrollbar palette) */
+    background: linear-gradient(180deg, #ffef9e 0%, var(--gold) 100%);
   }
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -1197,6 +1202,9 @@
   /* Touch: option rows are role="option" tap targets — meet the 40px / 16px floor. */
   @media (pointer: coarse) {
     .ui-dd-item { min-height: 40px; display: flex; align-items: center; font-size: 16px; }
+    /* The custom trigger replaces a native <select>; keep its ≥40px tap target
+       (the global coarse floor only covers input/textarea/select). */
+    .ui-dd-btn { min-height: 40px; }
   }
   /* report dialog: dropdown drops downward (dialog sits high), full width */
   #report-window .ui-dd { display: block; }

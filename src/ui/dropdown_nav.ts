@@ -8,6 +8,7 @@ export type DropdownNavAction =
   | { kind: 'move'; index: number } // move focus to this option index
   | { kind: 'select' } // commit the currently focused option
   | { kind: 'close' } // close without committing, return focus to the trigger
+  | { kind: 'tab' } // close but let Tab traverse natively (do not preventDefault)
   | { kind: 'none' }; // key not handled — let the browser have it
 
 // Resolve a keydown into an action. `open` is whether the menu is currently
@@ -53,8 +54,12 @@ export function dropdownKeyNav(
     case ' ':
       return { kind: 'select' };
     case 'Escape':
-    case 'Tab':
       return { kind: 'close' };
+    case 'Tab':
+      // Close, but signal the consumer to leave the default Tab behavior intact
+      // so focus advances to the next control (a native <select> traverses too,
+      // rather than bouncing back to the trigger).
+      return { kind: 'tab' };
     default:
       return { kind: 'none' };
   }

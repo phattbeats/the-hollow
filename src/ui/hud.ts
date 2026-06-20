@@ -6538,6 +6538,9 @@ export class Hud {
     root.addEventListener('keydown', (e) => {
       const action = dropdownKeyNav(e.key, isOpen(), focusedIndex(), items.length);
       if (action.kind === 'none') return;
+      // Tab closes the menu but must NOT preventDefault, so focus traverses to
+      // the next control natively instead of bouncing back to the trigger.
+      if (action.kind === 'tab') { close(false); return; }
       e.preventDefault();
       switch (action.kind) {
         case 'open': open(action.index); break;
@@ -6547,6 +6550,24 @@ export class Hud {
       }
     });
     return root;
+  }
+
+  // Reset a buildDropdown's visible label + dataset.value + aria-selected to a
+  // value in place, WITHOUT firing onChange or rebuilding the node. Used to
+  // revert the language picker after a failed locale switch so the trigger never
+  // advertises a language that never loaded (and so the adjacent aria-live status
+  // node survives to announce the failure). Mirrors commit()'s DOM writes.
+  private setDropdownValue(root: HTMLElement, value: string): void {
+    const items = [...root.querySelectorAll<HTMLElement>('.ui-dd-item')];
+    const match = items.find((x) => x.getAttribute('data-val') === value) ?? null;
+    root.dataset.value = value;
+    const labelEl = root.querySelector('.ui-dd-label');
+    if (labelEl && match) labelEl.textContent = match.textContent;
+    items.forEach((x) => {
+      const sel = x === match;
+      x.classList.toggle('sel', sel);
+      x.setAttribute('aria-selected', sel ? 'true' : 'false');
+    });
   }
 
   // classic-MMO-style choice-node picker: clicking an octagon node opens a flyout of its
@@ -8155,9 +8176,19 @@ export class Hud {
     const fmt = opts?.fmt ?? ((v: number) => formatNumber(v, { style: 'percent', maximumFractionDigits: 0 }));
     const readout = () => fmt(hooks.settings.get(key));
     val.textContent = readout();
+    // Paint a gold fill up to the current value on every engine (CSS alone can't
+    // read the value; --range-fill drives the webkit track gradient and Firefox's
+    // native progress is recolored to match). Set initially + on every input.
+    const paintFill = () => {
+      const min = Number(slider.min), max = Number(slider.max), v = Number(slider.value);
+      const pct = max > min ? ((v - min) / (max - min)) * 100 : 0;
+      slider.style.setProperty('--range-fill', `${Math.max(0, Math.min(100, pct))}%`);
+    };
+    paintFill();
     slider.addEventListener('input', () => {
       hooks.onSettingChange(key, Number(slider.value));
       val.textContent = readout();
+      paintFill();
     });
     row.append(name, slider, val);
     parent.appendChild(row);
@@ -8410,18 +8441,28 @@ export class Hud {
       busy = true;
       void hooks.changeLanguage(selected, (msg) => { status.textContent = msg; })
         .then((ok) => {
-          // On success rebuild the panel in the new language (which re-creates this
-          // picker at the now-active locale); on failure the rebuild — or the early
-          // return below — leaves it showing the locale that stayed active.
-          if (ok && this.optionsOpen && this.optionsView === 'interface') {
-            this.renderInterface();
-            // Return keyboard focus to the fresh picker trigger so it isn't lost to <body>.
-            this.focusFirstInteractive($('#options-menu'), '.set-lang-select .ui-dd-btn');
+          if (ok) {
+            // Success: rebuild the panel in the new language (re-creates this picker
+            // at the now-active locale).
+            if (this.optionsOpen && this.optionsView === 'interface') {
+              this.renderInterface();
+              // Return keyboard focus to the fresh picker trigger so it isn't lost to <body>.
+              this.focusFirstInteractive($('#options-menu'), '.set-lang-select .ui-dd-btn');
+            }
+          } else {
+            // Graceful failure (the locale chunk failed to load): the active locale
+            // is unchanged. Revert the trigger IN PLACE — don't renderInterface(),
+            // which would rebuild and wipe the aria-live `status` node that
+            // changeLanguage just wrote the failure message into.
+            this.setDropdownValue(dropdown, getLanguage());
           }
         })
         .catch(() => {
+          // Defensive: changeLanguage swallows load errors and resolves false, so
+          // this is unreachable today — but if it ever throws, keep the same
+          // in-place revert + intact live region rather than rebuilding.
           status.textContent = t('settings.languageLoadFailed');
-          if (this.optionsOpen && this.optionsView === 'interface') this.renderInterface();
+          this.setDropdownValue(dropdown, getLanguage());
         })
         .finally(() => { busy = false; });
     });
