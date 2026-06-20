@@ -150,6 +150,118 @@ export const fr_FR: EnTranslations = {
       }
     }
   },
+  "hudChrome": {
+    "emotes": {
+      "wave": "Saluer de la main",
+      "laugh": "MDR",
+      "question": "Coucou ?",
+      "cheer": "Acclamer",
+      "dance": "Danser",
+      "point": "Montrer du doigt",
+      "flex": "Frimer",
+      "salute": "Saluer",
+      "cry": "Pleurer",
+      "bow": "S'incliner",
+      "clap": "Applaudir",
+      "roar": "Rugir",
+      "kneel": "S'agenouiller"
+    },
+    "emoteWheel": {
+      "edit": "Modifier",
+      "label": "Emotes"
+    },
+    "emoteEditor": {
+      "title": "Emotes",
+      "done": "Terminé"
+    },
+    "chatTimestamps": {
+      "show": "Afficher l'horodatage de la discussion",
+      "format": "Format de l'horodatage",
+      "clock12h": "12 heures",
+      "clock24h": "24 heures",
+      "note": "Préfixe chaque nouvelle ligne de discussion avec l'heure de réception, par ex. [14:32]. N'affecte que les messages reçus quand l'option est activée."
+    },
+    "swing": {
+      "ready": "Coup",
+      "seconds": "{seconds} s"
+    },
+    "rest": {
+      "resting": "Au repos"
+    },
+    "mobile": {
+      "autorun": "Course automatique",
+      "jump": "Sauter",
+      "leaderboard": "Classement",
+      "nameplates": "Noms",
+      "haptics": "Vibrations",
+      "hapticsOff": "Vibrations désactivées",
+      "toggleHaptics": "Activer/désactiver les vibrations"
+    },
+    "widgets": {
+      "clockTitle": "Heure locale - cliquez pour basculer 12/24 heures",
+      "worldCoordinates": "Coordonnées du monde",
+      "coordinates": "Coordonnées",
+      "heading": "Cap",
+      "minimapZoom": "Zoom de la minicarte"
+    },
+    "compass": {
+      "N": "N",
+      "NE": "NE",
+      "E": "E",
+      "SE": "SE",
+      "S": "S",
+      "SW": "SO",
+      "W": "O",
+      "NW": "NO"
+    },
+    "meters": {
+      "perSecond": "{value}/s",
+      "perSecondRow": "{total} ({rate})",
+      "minutesSeconds": "{m} min {s} s",
+      "seconds": "{s} s"
+    },
+    "keybinds": {
+      "emoteWheel": "Roue des emotes",
+      "targetFriendly": "Cibler l'allié le plus proche",
+      "targetFriendlyNext": "Changer de cible alliée"
+    },
+    "options": {
+      "clickMoveLeft": "Clic gauche",
+      "clickMoveRight": "Clic droit"
+    },
+    "talents": {
+      "defaultBuildName": "Configuration {n}"
+    },
+    "tips": {
+      "joinChannels": "Conseil : tapez /join world ou /join lfg pour discuter avec les joueurs de tout le royaume."
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "vous êtes {rank}, {count} membre",
+        "few": "vous êtes {rank}, {count} membres",
+        "many": "vous êtes {rank}, {count} membres",
+        "other": "vous êtes {rank}, {count} membres"
+      },
+      "characterCount": {
+        "one": "{count} personnage",
+        "few": "{count} personnages",
+        "many": "{count} personnages",
+        "other": "{count} personnages"
+      },
+      "secondsRemaining": {
+        "one": "{count} seconde restante",
+        "few": "{count} secondes restantes",
+        "many": "{count} secondes restantes",
+        "other": "{count} secondes restantes"
+      },
+      "playersOnline": {
+        "one": "Qui : {count} joueur en ligne sur {realm}.",
+        "few": "Qui : {count} joueurs en ligne sur {realm}.",
+        "many": "Qui : {count} joueurs en ligne sur {realm}.",
+        "other": "Qui : {count} joueurs en ligne sur {realm}."
+      }
+    }
+  },
   "skinEvent": {
     "title": "Cache cosmétique",
     "subtitle": "Vous avez débloqué une récompense {rank} — choisissez n'importe quelle apparence de ce rang ou inférieur.",
@@ -562,6 +674,7 @@ export const fr_FR: EnTranslations = {
       "deleteConfirm": "Saisissez le nom du personnage pour confirmer la suppression.",
       "notAuthenticated": "Non authentifié.",
       "accountBanned": "Ce compte a été banni.",
+      "webLoginOnly": "Les connexions ne sont autorisées que depuis le client du jeu.",
       "accountSuspended": "Ce compte est suspendu jusqu'au {date}.",
       "alreadyInWorld": "Le personnage est déjà dans le monde.",
       "renameBeforeEntering": "Ce personnage doit être renommé avant d'entrer dans le monde."
@@ -759,7 +872,7 @@ export const fr_FR: EnTranslations = {
       "graphics": "Graphismes",
       "audio": "Audio",
       "interface": "Interface",
-      "language": "Language",
+      "language": "Langue",
       "logout": "Déconnexion",
       "returnToGame": "Retour au jeu",
       "resetToDefaults": "Réinitialiser",
@@ -1003,7 +1116,7 @@ export const fr_FR: EnTranslations = {
       "requiresCombo": "Cette technique requiert des points de combo.",
       "requiresForm": "Vous devez être en forme de {form}.",
       "bear": "ours",
-      "cat": "félin",
+      "cat": "loup",
       "shapeshifted": "Vous ne pouvez pas faire cela en forme changeante.",
       "stealthed": "Vous devez être camouflé.",
       "inCombat": "Vous ne pouvez pas faire cela en combat.",
@@ -1263,7 +1376,7 @@ export const fr_FR: EnTranslations = {
     },
     "forms": {
       "bear": "ours",
-      "cat": "félin"
+      "cat": "loup"
     },
     "cast": {
       "fishing": "Pêche",
@@ -1296,7 +1409,7 @@ export const fr_FR: EnTranslations = {
       "readyQuestAria": "Quête prête à rendre : {name}",
       "discussQuest": "Discuter de {name}.",
       "discussQuestAria": "Discuter de la quête : {name}",
-      "nythraxisDeathlessKingWarning": "Les trois reliques racontent la meme histoire: Aldren combattit pour defendre son roi, Malric franchit la frontiere de la mort, et Voss tenta d arreter ce qui suivit. Le sceau faiblit, et la crypte abandonnee est le chemin vers les profondeurs.",
+      "nythraxisDeathlessKingWarning": "Les trois reliques racontent la même histoire : Aldren combattit pour défendre son roi, Malric franchit la frontière de la mort, et Voss tenta d'arrêter ce qui suivit. Le sceau faiblit, et la crypte abandonnée est le chemin vers les profondeurs.",
       "browseGoods": "Laissez-moi voir vos marchandises.",
       "browseGoodsAria": "Voir les marchandises de {name}",
       "worldMarket": "Montrez-moi le marché mondial.",
@@ -1977,16 +2090,16 @@ export const fr_FR: EnTranslations = {
         "description": "Gronde la cible: votre menace rejoint celle de son ennemi le plus haï et elle est forcée de vous attaquer pendant 3 s. Forme d'ours uniquement."
       },
       "cat_form": {
-        "name": "Forme de félin",
-        "description": "Vous change en félin: la puissance d'attaque augmente avec votre niveau, vos attaques utilisent énergie et points de combo, et vous générez 29% de menace en moins. Relancez pour reprendre votre forme de lanceur."
+        "name": "Forme de loup",
+        "description": "Vous change en loup: la puissance d'attaque augmente avec votre niveau, vos attaques utilisent énergie et points de combo, et vous générez 29% de menace en moins. Relancez pour reprendre votre forme de lanceur."
       },
       "claw": {
         "name": "Griffe",
-        "description": "Griffe l'ennemi pour les dégâts de l'arme plus {damage}. Confère 1 point de combo. Forme de félin uniquement."
+        "description": "Griffe l'ennemi pour les dégâts de l'arme plus {damage}. Confère 1 point de combo. Forme de loup uniquement."
       },
       "ferocious_bite": {
         "name": "Morsure féroce",
-        "description": "Coup de grâce qui inflige des dégâts par point de combo. Forme de félin uniquement."
+        "description": "Coup de grâce qui inflige des dégâts par point de combo. Forme de loup uniquement."
       },
       "swipe": {
         "name": "Balayage",
@@ -2026,11 +2139,11 @@ export const fr_FR: EnTranslations = {
       },
       "dash": {
         "name": "Sprint",
-        "description": "Bondit en avant, augmentant la vitesse de déplacement de 50% pendant 15 s. Forme de félin uniquement."
+        "description": "Bondit en avant, augmentant la vitesse de déplacement de 50% pendant 15 s. Forme de loup uniquement."
       },
       "pounce": {
         "name": "Bondir",
-        "description": "Ouverture furtive qui étourdit la cible pendant 2 s. Confère 1 point de combo. Forme de félin uniquement."
+        "description": "Ouverture furtive qui étourdit la cible pendant 2 s. Confère 1 point de combo. Forme de loup uniquement."
       },
       "insect_swarm": {
         "name": "Nuée d'insectes",
@@ -2038,11 +2151,11 @@ export const fr_FR: EnTranslations = {
       },
       "tigers_fury": {
         "name": "Furie du tigre",
-        "description": "Augmente la puissance d'attaque de 40 pendant 6 s. Forme de félin uniquement."
+        "description": "Augmente la puissance d'attaque de 40 pendant 6 s. Forme de loup uniquement."
       },
       "rip": {
         "name": "Lacération",
-        "description": "Coup de grâce qui inflige des dégâts de saignement sur 12 s. Consomme les points de combo. Forme de félin uniquement."
+        "description": "Coup de grâce qui inflige des dégâts de saignement sur 12 s. Consomme les points de combo. Forme de loup uniquement."
       },
       "mortal_strike": {
         "name": "Frappe mortelle",
@@ -2094,7 +2207,7 @@ export const fr_FR: EnTranslations = {
       },
       "bear_charge": {
         "name": "Charge de l'ours",
-        "description": "Charge un ennemi, génère 9 points de rage et l'étourdit pendant 1 sec. Portée de 7 à 23 mètres. Forme d'ours uniquement."
+        "description": "Charge un ennemi, génère 9 points de rage et l'étourdit pendant 1 s. Portée de 8-25 m. Forme d'ours uniquement."
       },
       "demoralizing_roar": {
         "name": "Rugissement démoralisant",
@@ -2415,7 +2528,7 @@ export const fr_FR: EnTranslations = {
         "name": "Noyau de tempête"
       },
       "kazzix_heartshard": {
-        "name": "Éclat de coeur de Kazzix"
+        "name": "Éclat de cœur de Kazzix"
       },
       "wyrmcult_orders": {
         "name": "Ordres du Culte du Wyrm"
@@ -3000,10 +3113,10 @@ export const fr_FR: EnTranslations = {
         "name": "Porte antique de la crypte"
       },
       "captains_crest": {
-        "name": "Partie superieure de la clef"
+        "name": "Partie supérieure de la clef"
       },
       "priests_sigil": {
-        "name": "Partie inferieure de la clef"
+        "name": "Partie inférieure de la clef"
       },
       "royal_seal": {
         "name": "Journal ancien"
@@ -3302,7 +3415,7 @@ export const fr_FR: EnTranslations = {
         "name": "Matriarche Sableweb"
       },
       "sister_nhalia": {
-        "name": "Soeur Nhalia"
+        "name": "Sœur Nhalia"
       },
       "varkas_boneguard": {
         "name": "Garde-os de Varkas"
@@ -3599,7 +3712,7 @@ export const fr_FR: EnTranslations = {
       },
       "q_silence_the_call": {
         "title": "Faire taire l'appel",
-        "text": "Chaque nom du registre est une âme que Morthen veut tirer de terre. Faites taire 12 ossements, {playerName}, avant que le murmure devienne choeur.",
+        "text": "Chaque nom du registre est une âme que Morthen veut tirer de terre. Faites taire 12 ossements, {playerName}, avant que le murmure devienne chœur.",
         "completion": "Le cimetière se calme, mais l'appel monte maintenant de la crypte, {playerName}.",
         "objectives": {
           "0": {
@@ -3723,7 +3836,7 @@ export const fr_FR: EnTranslations = {
       "q_idols": {
         "title": "Idoles des profondeurs",
         "text": "Les hommes-poissons serrent des idoles remontées du fond comme des reliques. Prenez-en 5 aux happeurs.",
-        "completion": "Oeuvre de Gravecaller, plus ancienne que Morthen. La secte a commencé ici, {playerName}.",
+        "completion": "Œuvre de Gravecaller, plus ancienne que Morthen. La secte a commencé ici, {playerName}.",
         "objectives": {
           "0": {
             "label": "Idole détrempée"
@@ -3756,7 +3869,7 @@ export const fr_FR: EnTranslations = {
         "completion": "Chaque sac est intact. Vous avez la main plus sûre que la moitié des chirurgiens du sud, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Veuve de Mirefen tué"
+            "label": "Veuve de Mirefen tuée"
           },
           "1": {
             "label": "Sac à venin de veuve"
@@ -3769,10 +3882,10 @@ export const fr_FR: EnTranslations = {
         "completion": "Vraiment morte? Alors le fourré redevient seulement des arbres. Que la Lumière bénisse ta lame, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Veuve de Mirefen tué"
+            "label": "Veuve de Mirefen tuée"
           },
           "1": {
-            "label": "La Mère des couvées tué"
+            "label": "La Mère des couvées tuée"
           }
         }
       },
@@ -3941,7 +4054,7 @@ export const fr_FR: EnTranslations = {
       },
       "q_glowing_wax": {
         "title": "Cire étrange",
-        "text": "La cire de ces tunneliers luit, {playerName}, et reste chaude comme un coeur. Rapportez 6 morceaux pour l'étude de Caddis.",
+        "text": "La cire de ces tunneliers luit, {playerName}, et reste chaude comme un cœur. Rapportez 6 morceaux pour l'étude de Caddis.",
         "completion": "Encore chaude. Cette lueur ne ressemble à aucune flamme connue du maître.",
         "objectives": {
           "0": {
@@ -4010,22 +4123,22 @@ export const fr_FR: EnTranslations = {
         }
       },
       "q_shard_cores": {
-        "title": "Coeurs de la tempête",
-        "text": "Chaque élémentaire porte un coeur de tempête. Six côte à côte révéleront le centre du trouble, {playerName}, même si je le redoute.",
+        "title": "Cœurs de la tempête",
+        "text": "Chaque élémentaire porte un cœur de tempête. Six côte à côte révéleront le centre du trouble, {playerName}, même si je le redoute.",
         "completion": "Tous pointent au sud comme de la limaille vers un aimant. Vers le Sanctuaire, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Coeur de tempête"
+            "label": "Cœur de tempête"
           }
         }
       },
       "q_kazzix": {
         "title": "Le seigneur des éclats",
-        "text": "Kazzix brûle plus fort que les autres, une tempête avec des épaules. Arrachez son éclat de coeur dans les lointains rochers.",
+        "text": "Kazzix brûle plus fort que les autres, une tempête avec des épaules. Arrachez son éclat de cœur dans les lointains rochers.",
         "completion": "L'éclat crépite encore! Magnifique. Prenez ces jambières pour la peine.",
         "objectives": {
           "0": {
-            "label": "Éclat de coeur de Kazzix"
+            "label": "Éclat de cœur de Kazzix"
           }
         }
       },
@@ -4108,7 +4221,7 @@ export const fr_FR: EnTranslations = {
       "q_voice_below": {
         "title": "La voix d'en bas",
         "text": "Hier, tout le camp s'est agenouillé face au Sanctuaire, {playerName}. Tuez 10 zélotes et 6 nécromanciens avant que cette voix ait assez de mains.",
-        "completion": "L'agenouillement a cessé. Nous n'avons pas réduit la voix au silence, {playerName}; seulement son choeur.",
+        "completion": "L'agenouillement a cessé. Nous n'avons pas réduit la voix au silence, {playerName}; seulement son chœur.",
         "objectives": {
           "0": {
             "label": "Zélote du Culte du Wyrm tué"
@@ -4169,9 +4282,9 @@ export const fr_FR: EnTranslations = {
         }
       },
       "q_nythraxis_restless_dead": {
-        "title": "Agitation dans les champs d os",
-        "text": "Quelque chose a change dans les hauteurs de Thornpeak, {playerName}. Les morts ne vagabondent plus sans but. Ils se rassemblent et marchent dans les champs d os du nord, au-dela de Highwatch, la ou l ancien champ de bataille rejoint la route de la falaise. Allez-y, enquetez sur cette agitation parmi les revenants cuirasses d os, et rapportez toute preuve de ce qui les pousse.",
-        "completion": "Le meme symbole apparait sur chaque fragment... une couronne. Je l ai deja vu, grave sur de vieilles tombes qu aucun registre d Eastbrook ne mentionne.",
+        "title": "Agitation dans les champs d'os",
+        "text": "Quelque chose a changé dans les hauteurs de Thornpeak, {playerName}. Les morts ne vagabondent plus sans but. Ils se rassemblent et marchent dans les champs d'os du nord, au-delà de Highwatch, là où l'ancien champ de bataille rejoint la route de la falaise. Allez-y, enquêtez sur cette agitation parmi les revenants cuirassés d'os, et rapportez toute preuve de ce qui les pousse.",
+        "completion": "Le même symbole apparaît sur chaque fragment... une couronne. Je l'ai déjà vu, gravé sur de vieilles tombes qu'aucun registre d'Eastbrook ne mentionne.",
         "objectives": {
           "0": {
             "label": "Fragment d'os runique"
@@ -4180,8 +4293,8 @@ export const fr_FR: EnTranslations = {
       },
       "q_nythraxis_graves": {
         "title": "Tombes des oubliés",
-        "text": "J ai deja vu ces marques, sur trois vieilles tombes autour du champ de bataille du nord. Le capitaine Aldren repose sur la hauteur orientale, le grand pretre Malric pres de la route centrale brisee, et l assassin royal Voss pres de la falaise occidentale. Touchez chaque tombe et ecoutez, {playerName}. Les morts peuvent se souvenir de ce que les vivants ont oublie.",
-        "completion": "Aldren resta loyal, Malric refusa d accepter la mort, et Voss vit le danger avant tous les autres. Tous trois servaient le meme roi oublie.",
+        "text": "J'ai déjà vu ces marques, sur trois vieilles tombes autour du champ de bataille du nord. Le capitaine Aldren repose sur la hauteur orientale, le grand prêtre Malric près de la route centrale brisée, et l'assassin royal Voss près de la falaise occidentale. Touchez chaque tombe et écoutez, {playerName}. Les morts peuvent se souvenir de ce que les vivants ont oublié.",
+        "completion": "Aldren resta loyal, Malric refusa d'accepter la mort, et Voss vit le danger avant tous les autres. Tous trois servaient le même roi oublié.",
         "objectives": {
           "0": {
             "label": "Vision à la tombe du capitaine Aldren"
@@ -4196,14 +4309,14 @@ export const fr_FR: EnTranslations = {
       },
       "q_nythraxis_sealed_crypt": {
         "title": "La crypte abandonnée",
-        "text": "Les visions indiquent la crypte abandonnee dans la falaise occidentale. Une vieille legende dit que la crypte abritait un roi. Peut-etre Thornpeak l a-t-il scelle la-dessous apres que le rituel de Malric l eut tordu en quelque chose d immortel. Entrez dans la crypte et voyez ce qu il reste a l interieur.",
-        "completion": "Les deux moities de la clef s assemblent, et le journal de Voss nomme ce qu elles ont scelle: la chevaliere du roi Nythraxis. Si le journal dit vrai, cette chevaliere est la clef de sa tombe.",
+        "text": "Les visions indiquent la crypte abandonnée dans la falaise occidentale. Une vieille légende dit que la crypte abritait un roi. Peut-être Thornpeak l'a-t-il scellé là-dessous après que le rituel de Malric l'eut tordu en quelque chose d'immortel. Entrez dans la crypte et voyez ce qu'il reste à l'intérieur.",
+        "completion": "Les deux moitiés de la clef s'assemblent, et le journal de Voss nomme ce qu'elles ont scellé : la chevalière du roi Nythraxis. Si le journal dit vrai, cette chevalière est la clef de sa tombe.",
         "objectives": {
           "0": {
-            "label": "Partie superieure de la clef"
+            "label": "Partie supérieure de la clef"
           },
           "1": {
-            "label": "Partie inferieure de la clef"
+            "label": "Partie inférieure de la clef"
           },
           "2": {
             "label": "Journal ancien"
@@ -4212,8 +4325,8 @@ export const fr_FR: EnTranslations = {
       },
       "q_nythraxis_bound_guardian": {
         "title": "Le Gardien lié",
-        "text": "Voss ecrivit que les survivants scellerent la Chevaliere du roi derriere un gardien ancien, afin que nul n atteigne la tombe de Nythraxis par accident ou par ambition. Portez la Clef de la crypte au cercle rituel sur le terrain plat a l est de la crypte abandonnee et au sud-est de la tombe occidentale. Utilisez-la la-bas, brisez le gardien et rapportez la chevaliere.",
-        "completion": "Les trois reliques racontent la meme histoire: Aldren combattit pour defendre son roi, Malric franchit la frontiere de la mort, et Voss tenta d arreter ce qui suivit. Le sceau faiblit, et cette chevaliere est la clef de la tombe de Nythraxis. Vous etes maintenant harmonise pour entrer dans la Crypte de Nythraxis.",
+        "text": "Voss écrivit que les survivants scellèrent la Chevalière du roi derrière un gardien ancien, afin que nul n'atteigne la tombe de Nythraxis par accident ou par ambition. Portez la Clef de la crypte au cercle rituel sur le terrain plat à l'est de la crypte abandonnée et au sud-est de la tombe occidentale. Utilisez-la là-bas, brisez le gardien et rapportez la chevalière.",
+        "completion": "Les trois reliques racontent la même histoire : Aldren combattit pour défendre son roi, Malric franchit la frontière de la mort, et Voss tenta d'arrêter ce qui suivit. Le sceau faiblit, et cette chevalière est la clef de la tombe de Nythraxis. Vous êtes maintenant harmonisé pour entrer dans la Crypte de Nythraxis.",
         "objectives": {
           "0": {
             "label": "Clef utilisée au cercle rituel"
@@ -4222,7 +4335,7 @@ export const fr_FR: EnTranslations = {
             "label": "Gardien lié vaincu"
           },
           "2": {
-            "label": "Chevaliere du roi"
+            "label": "Chevalière du roi"
           }
         }
       },
@@ -4261,31 +4374,31 @@ export const fr_FR: EnTranslations = {
       },
       "q_ledger_teeth": {
         "title": "Des crocs dans l'obscurité",
-        "text": "Les meutes de loups ont appris les routes de patrouille - elles frappent au crépuscule, quand la lumière est ténue et qu'un voyageur isolé est une proie facile. Brisez-les, {playerName}. Tuez 10 loups des bois et que les meutes apprennent une nouvelle leçon.",
-        "completion": "Dix loups, et la route du crépuscule est de nouveau nôtre. Le registre se fait plus clément envers vous.",
+        "text": "Les renards des clairières sont devenus hardis comme des loups - ils se faufilent dans les poulaillers au crépuscule et disparaissent avant qu'on n'allume une lanterne, et une renarde affamée emportera un agneau aussi volontiers qu'une poule. Éclaircissez leurs rangs, {playerName}. Tuez 10 renards des clairières et que les autres réapprennent à craindre la lumière.",
+        "completion": "Dix renards, et les poulaillers sont enfin paisibles au crépuscule. Le registre se fait plus clément envers vous.",
         "objectives": {
           "0": {
-            "label": "Loup des bois tué"
+            "label": "Renard des clairières tué"
           }
         }
       },
       "q_ledger_reedwater": {
         "title": "Patrouille des roselières",
-        "text": "Redbrook vous envoie ? Bien - ces vieux os ne peuvent plus patauger dans les bas-fonds. Les Aileron-de-boue se sont glissés à nouveau dans les roselières et ils sont plus hardis que jamais. Éclaircissez-les : 8 rôdeurs Aileron-de-boue, et prenez garde à l'eau profonde.",
-        "completion": "Voilà qui éloignera ces diables gargouillants de mes filets pour une saison. Dites au maréchal que le lac est de nouveau tranquille.",
+        "text": "Redbrook vous envoie ? Bien - ces vieux os ne peuvent plus patauger dans les bas-fonds. Les grues des prairies ont trouvé mes filets, et elles harponnent davantage de mes prises que les Aileron-de-boue ne l'ont jamais fait. Éclaircissez leurs rangs : 8 grues des prairies, et prenez garde à l'eau profonde.",
+        "completion": "Voilà qui tiendra ces voleuses à longues pattes loin de mes filets pour une saison. Dites au maréchal que les bas-fonds sont de nouveau à moi.",
         "objectives": {
           "0": {
-            "label": "Rôdeur Aileron-de-boue tué"
+            "label": "Grue des prairies chassée"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "Soie et venin",
-        "text": "Le registre marque les bois de l'est comme terre de gardien, eux aussi. Les rôdeurs de Webwood filent une toile plus dense chaque semaine - une enfant s'est trop approchée le dernier jour de marché et nous l'avons libérée respirant à peine. Tuez 8 rôdeurs de Webwood avant qu'ils ne prennent le bois tout entier.",
-        "completion": "Huit fileuses de moins dans l'obscurité. Le bois respire mieux, et moi aussi.",
+        "title": "Brout et broussailles",
+        "text": "Le registre marque aussi les bois de l'est comme terre de gardien - et mes plates-bandes médicinales en font partie. Les faons tachetés ont ravagé jusqu'à la racine ma feuille d'argent et mon sang-chardon, et sans ces simples la moitié d'Eastbrook se retrouve sans remèdes. Je n'y prends nulle joie, mais abattez 8 faons tachetés avant que les herbes d'automne ne soient perdues à jamais.",
+        "completion": "Les plates-bandes pourront peut-être se rétablir, grâce à vous. Une clémence cruelle - mais un enfant brûlant de fièvre a plus besoin des simples que le bois n'a besoin des cerfs. Le registre est en règle.",
         "objectives": {
           "0": {
-            "label": "Rôdeur de Webwood tué"
+            "label": "Faon tacheté abattu"
           }
         }
       },
@@ -4310,12 +4423,12 @@ export const fr_FR: EnTranslations = {
         }
       },
       "q_ledger_toll": {
-        "title": "Le péage des détrousseurs",
-        "text": "Les collines du sud-est sont devenues la route à péage d'un bandit - il dévalise quiconque est assez fou pour voyager léger. Le registre met un prix sur la tête de chacun d'eux. Rendez la justice d'Eastbrook à 8 bandits du Val.",
-        "completion": "Huit bandits qui ont payé leur dû. Le bruit court déjà que la route à péage a un nouveau gardien - et qu'il ne prend pas de pièces, il prend des têtes.",
+        "title": "La route aux défenses",
+        "text": "Les sangliers grandcroc sont descendus de Bois-clair sur la route commerciale du sud-est - de grandes brutes à défenses qui encornent les bœufs de trait et renversent les chariots pour le grain répandu. Le registre met un prix sur la tête de chacun. Rouvrez la route : abattez 8 sangliers grandcroc.",
+        "completion": "Huit brutes débarrassées de la route, et les chariots roulent de nouveau. Le bruit court déjà que la route commerciale a un nouveau gardien. Le registre grimpe en votre faveur.",
         "objectives": {
           "0": {
-            "label": "Bandit du Val traduit en justice"
+            "label": "Sanglier grandcroc tué"
           }
         }
       },

@@ -11,6 +11,7 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const es_ES: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.emotes.question": "¿Tío?",
   "nav.loginRegister": "Iniciar sesión/Registrarse",
   "stats.playersOnline": "Jugadores en línea",
   "stats.realmName": "Nombre del reino",

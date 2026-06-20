@@ -150,6 +150,118 @@ export const pt_BR: EnTranslations = {
       }
     }
   },
+  "hudChrome": {
+    "emotes": {
+      "wave": "Acenar",
+      "laugh": "Rir",
+      "question": "E aí?",
+      "cheer": "Comemorar",
+      "dance": "Dançar",
+      "point": "Apontar",
+      "flex": "Flexionar",
+      "salute": "Saudar",
+      "cry": "Chorar",
+      "bow": "Reverência",
+      "clap": "Aplaudir",
+      "roar": "Rugir",
+      "kneel": "Ajoelhar"
+    },
+    "emoteWheel": {
+      "edit": "Editar",
+      "label": "Emotes"
+    },
+    "emoteEditor": {
+      "title": "Emotes",
+      "done": "Concluído"
+    },
+    "chatTimestamps": {
+      "show": "Mostrar horário no chat",
+      "format": "Formato do horário",
+      "clock12h": "12 horas",
+      "clock24h": "24 horas",
+      "note": "Adiciona a cada nova linha do chat o horário em que ela chegou, ex.: [14:32]. Afeta apenas as mensagens recebidas enquanto a opção estiver ativada."
+    },
+    "swing": {
+      "ready": "Golpe",
+      "seconds": "{seconds}s"
+    },
+    "rest": {
+      "resting": "Descansando"
+    },
+    "mobile": {
+      "autorun": "Corrida automática",
+      "jump": "Pular",
+      "leaderboard": "Classificação",
+      "nameplates": "Nomes",
+      "haptics": "Vibração",
+      "hapticsOff": "Vibração desligada",
+      "toggleHaptics": "Alternar vibração"
+    },
+    "widgets": {
+      "clockTitle": "Horário local - clique para alternar entre 12/24 horas",
+      "worldCoordinates": "Coordenadas do mundo",
+      "coordinates": "Coordenadas",
+      "heading": "Direção",
+      "minimapZoom": "Zoom do minimapa"
+    },
+    "compass": {
+      "N": "N",
+      "NE": "NE",
+      "E": "L",
+      "SE": "SE",
+      "S": "S",
+      "SW": "SO",
+      "W": "O",
+      "NW": "NO"
+    },
+    "meters": {
+      "perSecond": "{value}/s",
+      "perSecondRow": "{total} ({rate})",
+      "minutesSeconds": "{m}min {s}s",
+      "seconds": "{s}s"
+    },
+    "keybinds": {
+      "emoteWheel": "Roda de emotes",
+      "targetFriendly": "Selecionar aliado mais próximo",
+      "targetFriendlyNext": "Alternar alvo aliado"
+    },
+    "options": {
+      "clickMoveLeft": "Clique esquerdo",
+      "clickMoveRight": "Clique direito"
+    },
+    "talents": {
+      "defaultBuildName": "Build {n}"
+    },
+    "tips": {
+      "joinChannels": "Dica: digite /join world ou /join lfg para conversar com jogadores do reino inteiro."
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "você é {rank}, {count} membro",
+        "few": "você é {rank}, {count} membros",
+        "many": "você é {rank}, {count} membros",
+        "other": "você é {rank}, {count} membros"
+      },
+      "characterCount": {
+        "one": "{count} personagem",
+        "few": "{count} personagens",
+        "many": "{count} personagens",
+        "other": "{count} personagens"
+      },
+      "secondsRemaining": {
+        "one": "{count} segundo restante",
+        "few": "{count} segundos restantes",
+        "many": "{count} segundos restantes",
+        "other": "{count} segundos restantes"
+      },
+      "playersOnline": {
+        "one": "Quem: {count} jogador online em {realm}.",
+        "few": "Quem: {count} jogadores online em {realm}.",
+        "many": "Quem: {count} jogadores online em {realm}.",
+        "other": "Quem: {count} jogadores online em {realm}."
+      }
+    }
+  },
   "skinEvent": {
     "title": "Cache Cosmético",
     "subtitle": "Você desbloqueou uma recompensa {rank} — escolha qualquer visual igual ou inferior a ela.",
@@ -562,6 +674,7 @@ export const pt_BR: EnTranslations = {
       "deleteConfirm": "Digite o nome do personagem para confirmar a exclusão.",
       "notAuthenticated": "Não autenticado.",
       "accountBanned": "Esta conta foi banida.",
+      "webLoginOnly": "O login só é permitido pelo cliente do jogo.",
       "accountSuspended": "Esta conta está suspensa até {date}.",
       "alreadyInWorld": "O personagem já está no mundo.",
       "renameBeforeEntering": "Este personagem precisa ser renomeado antes de entrar no mundo."
@@ -759,7 +872,7 @@ export const pt_BR: EnTranslations = {
       "graphics": "Gráficos",
       "audio": "Áudio",
       "interface": "Interface",
-      "language": "Language",
+      "language": "Idioma",
       "logout": "Sair",
       "returnToGame": "Voltar ao jogo",
       "resetToDefaults": "Restaurar padrões",
@@ -1003,7 +1116,7 @@ export const pt_BR: EnTranslations = {
       "requiresCombo": "Essa habilidade requer pontos de combo.",
       "requiresForm": "Você precisa estar na Forma de {form}.",
       "bear": "Urso",
-      "cat": "Felino",
+      "cat": "Lobo",
       "shapeshifted": "Você não pode fazer isso transformado.",
       "stealthed": "Você precisa estar furtivo.",
       "inCombat": "Você não pode fazer isso em combate.",
@@ -1263,7 +1376,7 @@ export const pt_BR: EnTranslations = {
     },
     "forms": {
       "bear": "urso",
-      "cat": "felino"
+      "cat": "lobo"
     },
     "cast": {
       "fishing": "Pesca",
@@ -1977,16 +2090,16 @@ export const pt_BR: EnTranslations = {
         "description": "Rosna para o alvo: sua ameaça sobe para igualar a do inimigo mais odiado por ele, que é forçado a atacar você por 3 s. Apenas Forma de Urso."
       },
       "cat_form": {
-        "name": "Forma Felina",
-        "description": "Assume a forma felina: o poder de ataque sobe com seu nível, seus ataques usam energia e pontos de combo, e você gera 29% menos ameaça. Lance de novo para voltar à forma de conjurador."
+        "name": "Forma de Lobo",
+        "description": "Assume a forma de lobo: o poder de ataque sobe com seu nível, seus ataques usam energia e pontos de combo, e você gera 29% menos ameaça. Lance de novo para voltar à forma de conjurador."
       },
       "claw": {
         "name": "Garra",
-        "description": "Arranha o inimigo com dano de arma mais {damage}. Concede 1 ponto de combo. Apenas Forma Felina."
+        "description": "Arranha o inimigo com dano de arma mais {damage}. Concede 1 ponto de combo. Apenas Forma de Lobo."
       },
       "ferocious_bite": {
         "name": "Mordida Feroz",
-        "description": "Golpe final que causa dano por ponto de combo. Apenas Forma Felina."
+        "description": "Golpe final que causa dano por ponto de combo. Apenas Forma de Lobo."
       },
       "swipe": {
         "name": "Patada",
@@ -2026,11 +2139,11 @@ export const pt_BR: EnTranslations = {
       },
       "dash": {
         "name": "Corrida",
-        "description": "Dispara para a frente, aumentando a velocidade de movimento em 50% por 15 s. Apenas Forma Felina."
+        "description": "Dispara para a frente, aumentando a velocidade de movimento em 50% por 15 s. Apenas Forma de Lobo."
       },
       "pounce": {
         "name": "Bote",
-        "description": "Abertura furtiva que atordoa o alvo por 2 s. Concede 1 ponto de combo. Apenas Forma Felina."
+        "description": "Abertura furtiva que atordoa o alvo por 2 s. Concede 1 ponto de combo. Apenas Forma de Lobo."
       },
       "insect_swarm": {
         "name": "Enxame de Insetos",
@@ -2038,11 +2151,11 @@ export const pt_BR: EnTranslations = {
       },
       "tigers_fury": {
         "name": "Fúria do Tigre",
-        "description": "Aumenta o poder de ataque em 40 por 6 s. Apenas Forma Felina."
+        "description": "Aumenta o poder de ataque em 40 por 6 s. Apenas Forma de Lobo."
       },
       "rip": {
         "name": "Rasgar",
-        "description": "Golpe final que causa dano de sangramento ao longo de 12 s. Consome pontos de combo. Apenas Forma Felina."
+        "description": "Golpe final que causa dano de sangramento ao longo de 12 s. Consome pontos de combo. Apenas Forma de Lobo."
       },
       "mortal_strike": {
         "name": "Golpe Mortal",
@@ -2094,11 +2207,11 @@ export const pt_BR: EnTranslations = {
       },
       "bear_charge": {
         "name": "Investida do Urso",
-        "description": "Investe contra um inimigo, gerando 9 de fúria e o atordoando por 1 seg. Alcance de 7-23 metros. Apenas na Forma de Urso."
+        "description": "Investe contra um inimigo, gera 9 de raiva e o atordoa por 1 s. Alcance de 8-25 m. Apenas Forma de Urso."
       },
       "demoralizing_roar": {
         "name": "Rugido Desmoralizante",
-        "description": "Desmoraliza os inimigos próximos, reduzindo seu poder de ataque em 20 por 20 seg. Apenas na Forma de Urso."
+        "description": "Desmoraliza os inimigos próximos, reduzindo seu poder de ataque em 20 por 20 s. Apenas Forma de Urso."
       },
       "prowl": {
         "name": "Espreitar",
@@ -2106,7 +2219,7 @@ export const pt_BR: EnTranslations = {
       },
       "rake": {
         "name": "Dilacerar",
-        "description": "Um golpe de abertura furtivo que dilacera o inimigo causando dano de arma mais {damage} e provoca sangramento ao longo de 9 seg. Concede 1 ponto de combo. Apenas na Forma de Lobo."
+        "description": "Um golpe de abertura furtivo que dilacera o inimigo causando dano de arma mais {damage} e provoca sangramento ao longo de 9 s. Concede 1 ponto de combo. Apenas Forma de Lobo."
       },
       "revive_pet": {
         "name": "Reviver Mascote",
@@ -3006,7 +3119,7 @@ export const pt_BR: EnTranslations = {
         "name": "Parte inferior da pedra-chave"
       },
       "royal_seal": {
-        "name": "Diario antigo"
+        "name": "Diário antigo"
       },
       "crypt_keystone": {
         "name": "Pedra-chave da cripta"
@@ -4169,9 +4282,9 @@ export const pt_BR: EnTranslations = {
         }
       },
       "q_nythraxis_restless_dead": {
-        "title": "Agitacao nos Campos de Ossos",
-        "text": "Algo mudou em Thornpeak Heights, {playerName}. Os mortos nao vagam mais sem rumo. Eles se juntam e marcham pelos campos de ossos ao norte de Highwatch, onde o antigo campo de batalha encontra a estrada do penhasco. Va ate la, investigue a agitacao entre os Revenants Revestidos de Ossos e traga qualquer prova do que os esta movendo.",
-        "completion": "O mesmo simbolo aparece em cada fragmento... uma coroa. Ja vi isso antes, entalhado em tumulos antigos que nenhum registro de Eastbrook lembra.",
+        "title": "Agitação nos Campos de Ossos",
+        "text": "Algo mudou em Thornpeak Heights, {playerName}. Os mortos não vagam mais sem rumo. Eles se juntam e marcham pelos campos de ossos ao norte de Highwatch, onde o antigo campo de batalha encontra a estrada do penhasco. Vá até lá, investigue a agitação entre os Revenants Revestidos de Ossos e traga qualquer prova do que os está movendo.",
+        "completion": "O mesmo símbolo aparece em cada fragmento... uma coroa. Já vi isso antes, entalhado em túmulos antigos que nenhum registro de Eastbrook lembra.",
         "objectives": {
           "0": {
             "label": "Estilhaço de osso rúnico"
@@ -4180,8 +4293,8 @@ export const pt_BR: EnTranslations = {
       },
       "q_nythraxis_graves": {
         "title": "Túmulos dos esquecidos",
-        "text": "Ja vi estas marcas antes, em tres tumulos antigos ao redor do campo de batalha ao norte. O capitao Aldren jaz na elevacao leste, o sumo sacerdote Malric perto da estrada central quebrada, e o assassino real Voss junto ao penhasco oeste. Toque cada tumulo e escute, {playerName}. Os mortos podem lembrar o que os vivos esqueceram.",
-        "completion": "Aldren permaneceu leal, Malric se recusou a aceitar a morte e Voss viu o perigo antes de todos. Os tres serviram ao mesmo rei esquecido.",
+        "text": "Já vi estas marcas antes, em três túmulos antigos ao redor do campo de batalha ao norte. O capitão Aldren jaz na elevação leste, o sumo sacerdote Malric perto da estrada central quebrada, e o assassino real Voss junto ao penhasco oeste. Toque cada túmulo e escute, {playerName}. Os mortos podem lembrar o que os vivos esqueceram.",
+        "completion": "Aldren permaneceu leal, Malric se recusou a aceitar a morte e Voss viu o perigo antes de todos. Os três serviram ao mesmo rei esquecido.",
         "objectives": {
           "0": {
             "label": "Visão no túmulo do capitão Aldren"
@@ -4196,8 +4309,8 @@ export const pt_BR: EnTranslations = {
       },
       "q_nythraxis_sealed_crypt": {
         "title": "A cripta abandonada",
-        "text": "As visoes apontam para a cripta abandonada no penhasco oeste. Ha uma velha lenda de que a cripta abrigava um rei. Talvez Thornpeak o tenha selado la embaixo depois que o ritual de Malric o transformou em algo imortal. Entre na cripta e veja o que restou la dentro.",
-        "completion": "As metades da pedra-chave se encaixam, e o diario de Voss nomeia o que elas selaram: o anel-sinete do rei Nythraxis. Se o diario for verdadeiro, esse anel e a chave para sua tumba.",
+        "text": "As visões apontam para a cripta abandonada no penhasco oeste. Há uma velha lenda de que a cripta abrigava um rei. Talvez Thornpeak o tenha selado lá embaixo depois que o ritual de Malric o transformou em algo imortal. Entre na cripta e veja o que restou lá dentro.",
+        "completion": "As metades da pedra-chave se encaixam, e o diário de Voss nomeia o que elas selaram: o anel-sinete do rei Nythraxis. Se o diário for verdadeiro, esse anel é a chave para sua tumba.",
         "objectives": {
           "0": {
             "label": "Parte superior da pedra-chave"
@@ -4206,14 +4319,14 @@ export const pt_BR: EnTranslations = {
             "label": "Parte inferior da pedra-chave"
           },
           "2": {
-            "label": "Diario antigo"
+            "label": "Diário antigo"
           }
         }
       },
       "q_nythraxis_bound_guardian": {
         "title": "O Guardião Vinculado",
-        "text": "Voss escreveu que os sobreviventes selaram o Anel-sinete do rei atras de um guardiao antigo, para que ninguem chegasse a tumba de Nythraxis por acidente ou ambicao. Leve a Pedra-chave da cripta ao circulo ritual no terreno plano a leste da cripta abandonada e a sudeste da tumba oeste. Use-a ali, quebre o guardiao e traga o anel.",
-        "completion": "As tres reliquias contam a mesma historia: Aldren lutou para defender seu rei, Malric rompeu a fronteira da morte e Voss tentou impedir o que veio depois. O selo esta enfraquecendo, e este anel e a chave da tumba de Nythraxis. Agora voce esta sintonizado para entrar na Cripta de Nythraxis.",
+        "text": "Voss escreveu que os sobreviventes selaram o Anel-sinete do rei atrás de um guardião antigo, para que ninguém chegasse à tumba de Nythraxis por acidente ou ambição. Leve a Pedra-chave da cripta ao círculo ritual no terreno plano a leste da cripta abandonada e a sudeste da tumba oeste. Use-a ali, quebre o guardião e traga o anel.",
+        "completion": "As três relíquias contam a mesma história: Aldren lutou para defender seu rei, Malric rompeu a fronteira da morte e Voss tentou impedir o que veio depois. O selo está enfraquecendo, e este anel é a chave da tumba de Nythraxis. Agora você está sintonizado para entrar na Cripta de Nythraxis.",
         "objectives": {
           "0": {
             "label": "Pedra-chave usada no círculo ritual"
@@ -4261,31 +4374,31 @@ export const pt_BR: EnTranslations = {
       },
       "q_ledger_teeth": {
         "title": "Dentes na Escuridão",
-        "text": "As alcateias de lobos aprenderam as rotas de patrulha - elas atacam ao anoitecer, quando a luz é fraca e um viajante solitário é presa fácil. Quebre-as, {playerName}. Abata 10 Lobos da floresta e que as alcateias aprendam uma nova lição.",
-        "completion": "Dez lobos, e a estrada do crepúsculo é nossa de novo. O livro-razão fica mais brando com você.",
+        "text": "As raposas do bosque ficaram ousadas como lobos - elas se esgueiram nos galinheiros ao anoitecer e somem antes que uma lanterna se acenda, e uma raposa faminta leva um cordeiro com a mesma facilidade que uma galinha. Reduza-as, {playerName}. Abata 10 Raposas do Bosque e que as demais voltem a temer a luz.",
+        "completion": "Dez raposas, e os galinheiros voltaram a ficar tranquilos ao anoitecer. O livro-razão fica mais brando com você.",
         "objectives": {
           "0": {
-            "label": "Lobo da floresta abatido"
+            "label": "Raposa do Bosque abatida"
           }
         }
       },
       "q_ledger_reedwater": {
         "title": "Patrulha das Águas dos Juncos",
-        "text": "Redbrook mandou você? Bom - estes ossos velhos não conseguem mais vadear os baixios. Os Barbatana-de-lodo voltaram a se esgueirar pelas águas dos juncos e estão mais ousados do que nunca. Reduza-os: 8 Espreitadores Barbatana-de-lodo, e cuidado com as águas fundas.",
-        "completion": "Isso manterá aqueles demônios borbulhantes longe das minhas redes por uma estação. Diga ao Marechal que o lago está quieto de novo.",
+        "text": "Redbrook mandou você? Bom - estes ossos velhos não conseguem mais vadear os baixios. As garças do prado descobriram minhas redes e fisgam mais da minha pesca do que os Barbatana-de-lodo jamais fizeram. Reduza-as: 8 Garças do Prado, e cuidado com as águas fundas.",
+        "completion": "Isso manterá aquelas ladras pernaltas longe das minhas redes por uma estação. Diga ao Marechal que os baixios voltaram a ser meus.",
         "objectives": {
           "0": {
-            "label": "Espreitador Barbatana-de-lodo abatido"
+            "label": "Garça do Prado expulsa"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "Seda e Veneno",
-        "text": "O livro-razão marca os bosques orientais como terra de guardião também. Os espreitadores de Webwood tecem teias mais densas a cada semana - uma criança se aproximou demais no último dia de feira e a cortamos da teia mal respirando. Mate 8 Espreitadores de Webwood antes que tomem o bosque por completo.",
-        "completion": "Oito tecedoras a menos na escuridão. O bosque respira aliviado, e eu também.",
+        "title": "Pasto e Espinheiro",
+        "text": "O livro-razão marca os bosques orientais como terra de guardião também - e meus canteiros de ervas medicinais fazem parte deles. Os cervos malhados devoraram minha folha-de-prata e meu sangue-de-cardo até a raiz, e sem esses simples metade de Eastbrook fica sem remédios. Não me alegra fazê-lo, mas abata 8 Cervos Malhados antes que as ervas do outono se percam por completo.",
+        "completion": "Os canteiros ainda podem se recuperar, graças a você. Uma misericórdia dura - mas uma criança ardendo em febre precisa mais dos simples do que o bosque precisa dos cervos. O livro-razão está acertado.",
         "objectives": {
           "0": {
-            "label": "Espreitador de Webwood abatido"
+            "label": "Cervo Malhado abatido"
           }
         }
       },
@@ -4310,12 +4423,12 @@ export const pt_BR: EnTranslations = {
         }
       },
       "q_ledger_toll": {
-        "title": "O Pedágio dos Salteadores",
-        "text": "As colinas a sudeste viraram estrada de pedágio de bandidos - eles roubam qualquer um tolo o bastante para viajar despreocupado. O livro-razão tem um preço sobre a cabeça de cada um deles. Leve a justiça de Eastbrook a 8 Bandidos do Vale.",
-        "completion": "Oito bandidos prestaram contas. Já corre a voz de que a estrada do pedágio tem um novo guardião - e ele não aceita moedas, ele toma cabeças.",
+        "title": "A Estrada das Presas",
+        "text": "Os javalis presa-do-bosque desceram da Mata Clara para a estrada de comércio do sudeste - feras enormes e presadas que escornam os bois de carga e viram as carroças atrás do grão derramado. O livro-razão tem um preço pela cabeça de cada um. Reabra a estrada: abata 8 Javalis Presa-do-Bosque.",
+        "completion": "Oito feras a menos na estrada, e as carroças voltaram a rodar. Já corre a voz de que a estrada de comércio tem um novo guardião. O livro-razão sobe a seu favor.",
         "objectives": {
           "0": {
-            "label": "Bandido do Vale levado à justiça"
+            "label": "Javali Presa-do-Bosque abatido"
           }
         }
       },

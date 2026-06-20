@@ -9,41 +9,17 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [
-    "hud.options.language"
-  ],
-  "es_ES": [
-    "hud.options.language"
-  ],
-  "fr_FR": [
-    "hud.options.language"
-  ],
-  "fr_CA": [
-    "hud.options.language"
-  ],
+  "es": [],
+  "es_ES": [],
+  "fr_FR": [],
+  "fr_CA": [],
   "en_CA": [],
-  "it_IT": [
-    "hud.options.language"
-  ],
-  "de_DE": [
-    "hud.options.language"
-  ],
-  "zh_CN": [
-    "hud.options.language"
-  ],
-  "zh_TW": [
-    "hud.options.language"
-  ],
-  "ko_KR": [
-    "hud.options.language"
-  ],
-  "ja_JP": [
-    "hud.options.language"
-  ],
-  "pt_BR": [
-    "hud.options.language"
-  ],
-  "ru_RU": [
-    "hud.options.language"
-  ]
+  "it_IT": [],
+  "de_DE": [],
+  "zh_CN": [],
+  "zh_TW": [],
+  "ko_KR": [],
+  "ja_JP": [],
+  "pt_BR": [],
+  "ru_RU": []
 };

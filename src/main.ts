@@ -23,7 +23,7 @@ import { DT, INTERACT_RANGE, MELEE_RANGE, PlayerClass, RUN_SPEED, dist2d } from 
 import { togglePasswordVisibility, syncInputAriaState, validateForm, handleKeyboardActivation, validateCharacterName } from './ui/auth_utils';
 import { CLASSES, ABILITIES } from './sim/content/classes';
 import { iconDataUrl } from './ui/icons';
-import { ensureLocaleLoaded, formatDateTime, formatNumber, getLanguage, isLocaleResident, isSupportedLanguage, languageTag, setLanguage, t, type SupportedLanguage, type TranslationKey } from './ui/i18n';
+import { ensureLocaleLoaded, formatDateTime, formatNumber, getLanguage, isLocaleResident, isSupportedLanguage, languageTag, setLanguage, t, tPlural, type SupportedLanguage, type TranslationKey } from './ui/i18n';
 import { tServer } from './ui/server_i18n';
 import { tEntity } from './ui/entity_i18n';
 import { hydrateIcons } from './ui/ui_icons';
@@ -148,6 +148,7 @@ function userFacingApiError(err: unknown): string {
   if (normalized === 'this account has been banned.') return t('errors.api.accountBanned');
   if (normalized === 'character already in world') return t('errors.api.alreadyInWorld');
   if (normalized === 'this character must be renamed before entering the world.') return t('errors.api.renameBeforeEntering');
+  if (normalized === 'logins are only allowed from the game client') return t('errors.api.webLoginOnly');
   // Cloudflare Turnstile rejection on login/register (server/main.ts passesTurnstile).
   if (normalized === 'verification failed, please try again') return t('errors.api.verificationFailed');
   // WebSocket disconnect reasons surfaced through the fatal overlay (net/online.ts).
@@ -1740,7 +1741,7 @@ function showRealmList(dir?: import('./net/online').RealmDirectory): void {
     listEl.innerHTML = d.realms.map((r) => {
       const chars = d.characters[r.name] ?? 0;
       const charTag = chars > 0
-        ? `<span class="rn-chars">${escapeHtml(t(chars === 1 ? 'realm.characterCountOne' : 'realm.characterCountOther', { count: chars }))}</span>`
+        ? `<span class="rn-chars">${escapeHtml(tPlural('hudChrome.plurals.characterCount', chars))}</span>`
         : '';
       const typeKey = realmTypeKeys[r.type as keyof typeof realmTypeKeys];
       const typeLabel = typeKey ? t(typeKey) : r.type;

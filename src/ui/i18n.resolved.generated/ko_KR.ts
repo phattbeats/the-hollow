@@ -150,6 +150,118 @@ export const ko_KR: EnTranslations = {
       }
     }
   },
+  "hudChrome": {
+    "emotes": {
+      "wave": "손인사",
+      "laugh": "ㅋㅋ",
+      "question": "야?",
+      "cheer": "환호",
+      "dance": "춤",
+      "point": "가리키기",
+      "flex": "근육 자랑",
+      "salute": "경례",
+      "cry": "엉엉",
+      "bow": "절",
+      "clap": "박수",
+      "roar": "포효",
+      "kneel": "무릎 꿇기"
+    },
+    "emoteWheel": {
+      "edit": "편집",
+      "label": "감정 표현"
+    },
+    "emoteEditor": {
+      "title": "감정 표현",
+      "done": "완료"
+    },
+    "chatTimestamps": {
+      "show": "채팅 시각 표시",
+      "format": "시각 표시 형식",
+      "clock12h": "12시간제",
+      "clock24h": "24시간제",
+      "note": "새 채팅 줄마다 수신된 시각을 앞에 붙입니다(예: [14:32]). 이 옵션이 켜져 있는 동안 받은 메시지에만 적용됩니다."
+    },
+    "swing": {
+      "ready": "공격",
+      "seconds": "{seconds}초"
+    },
+    "rest": {
+      "resting": "휴식 중"
+    },
+    "mobile": {
+      "autorun": "자동 달리기",
+      "jump": "점프",
+      "leaderboard": "순위",
+      "nameplates": "이름표",
+      "haptics": "진동",
+      "hapticsOff": "진동 꺼짐",
+      "toggleHaptics": "진동 전환"
+    },
+    "widgets": {
+      "clockTitle": "현지 시각 - 클릭하면 12/24시간제 전환",
+      "worldCoordinates": "세계 좌표",
+      "coordinates": "좌표",
+      "heading": "방향",
+      "minimapZoom": "미니맵 확대/축소"
+    },
+    "compass": {
+      "N": "북",
+      "NE": "북동",
+      "E": "동",
+      "SE": "남동",
+      "S": "남",
+      "SW": "남서",
+      "W": "서",
+      "NW": "북서"
+    },
+    "meters": {
+      "perSecond": "{value}/초",
+      "perSecondRow": "{total} ({rate})",
+      "minutesSeconds": "{m}분 {s}초",
+      "seconds": "{s}초"
+    },
+    "keybinds": {
+      "emoteWheel": "감정 표현 휠",
+      "targetFriendly": "가장 가까운 아군 대상 지정",
+      "targetFriendlyNext": "아군 대상 순환"
+    },
+    "options": {
+      "clickMoveLeft": "왼쪽 클릭",
+      "clickMoveRight": "오른쪽 클릭"
+    },
+    "talents": {
+      "defaultBuildName": "빌드 {n}"
+    },
+    "tips": {
+      "joinChannels": "팁: /join world 또는 /join lfg를 입력하면 서버 전역의 플레이어와 대화할 수 있습니다."
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "당신은 {rank}, {count}명 회원",
+        "few": "당신은 {rank}, {count}명 회원",
+        "many": "당신은 {rank}, {count}명 회원",
+        "other": "당신은 {rank}, {count}명 회원"
+      },
+      "characterCount": {
+        "one": "캐릭터 {count}개",
+        "few": "캐릭터 {count}개",
+        "many": "캐릭터 {count}개",
+        "other": "캐릭터 {count}개"
+      },
+      "secondsRemaining": {
+        "one": "{count}초 남음",
+        "few": "{count}초 남음",
+        "many": "{count}초 남음",
+        "other": "{count}초 남음"
+      },
+      "playersOnline": {
+        "one": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다.",
+        "few": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다.",
+        "many": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다.",
+        "other": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다."
+      }
+    }
+  },
   "skinEvent": {
     "title": "장식 상자",
     "subtitle": "{rank} 등급 보상을 잠금 해제했습니다 — 그 이하의 스킨을 자유롭게 고르세요.",
@@ -562,6 +674,7 @@ export const ko_KR: EnTranslations = {
       "deleteConfirm": "삭제를 확인하려면 캐릭터 이름을 입력하세요.",
       "notAuthenticated": "인증되지 않았습니다.",
       "accountBanned": "이 계정은 이용 정지되었습니다.",
+      "webLoginOnly": "로그인은 게임 클라이언트에서만 허용됩니다.",
       "accountSuspended": "이 계정은 {date}까지 정지되었습니다.",
       "alreadyInWorld": "캐릭터가 이미 세계에 있습니다.",
       "renameBeforeEntering": "이 캐릭터는 세계에 들어가기 전에 이름을 변경해야 합니다."
@@ -759,7 +872,7 @@ export const ko_KR: EnTranslations = {
       "graphics": "그래픽",
       "audio": "오디오",
       "interface": "인터페이스",
-      "language": "Language",
+      "language": "언어",
       "logout": "로그아웃",
       "returnToGame": "게임으로 돌아가기",
       "resetToDefaults": "기본값 복원",
@@ -1003,7 +1116,7 @@ export const ko_KR: EnTranslations = {
       "requiresCombo": "그 능력은 연계 점수가 필요합니다.",
       "requiresForm": "{form} 변신 상태여야 합니다.",
       "bear": "곰",
-      "cat": "표범",
+      "cat": "늑대",
       "shapeshifted": "변신 중에는 할 수 없습니다.",
       "stealthed": "은신 상태여야 합니다.",
       "inCombat": "전투 중에는 할 수 없습니다.",
@@ -1263,7 +1376,7 @@ export const ko_KR: EnTranslations = {
     },
     "forms": {
       "bear": "곰",
-      "cat": "표범"
+      "cat": "늑대"
     },
     "cast": {
       "fishing": "낚시",
@@ -1577,7 +1690,7 @@ export const ko_KR: EnTranslations = {
         "description": "자신을 냉기로 감싸 30분 동안 방어도를 30만큼 증가시킵니다."
       },
       "arcane_intellect": {
-        "name": "신비한 지능",
+        "name": "비전 지능",
         "description": "30분 동안 지능이 2만큼 증가합니다."
       },
       "frostbolt": {
@@ -1597,8 +1710,8 @@ export const ko_KR: EnTranslations = {
         "description": "적에게 {damage}의 화염 피해를 입힙니다. 즉시 시전됩니다."
       },
       "arcane_missiles": {
-        "name": "신비한 화살",
-        "description": "적에게 신비한 화살을 발사하여 3초 동안 매초 8의 비전 피해를 입힙니다."
+        "name": "비전 화살",
+        "description": "적에게 비전 화살을 발사하여 3초 동안 매초 8의 비전 피해를 입힙니다."
       },
       "polymorph": {
         "name": "변이",
@@ -1609,7 +1722,7 @@ export const ko_KR: EnTranslations = {
         "description": "주위 모든 적을 최대 8초 동안 제자리에 얼리고 {damage}의 냉기 피해를 입힙니다."
       },
       "arcane_explosion": {
-        "name": "신비한 폭발",
+        "name": "비전 폭발",
         "description": "비전 에너지 폭발이 주위 모든 적에게 {damage}의 비전 피해를 입힙니다."
       },
       "scorch": {
@@ -1781,7 +1894,7 @@ export const ko_KR: EnTranslations = {
         "description": "대상을 쏘아 15초에 걸쳐 {damage}의 자연 피해를 입힙니다."
       },
       "arcane_shot": {
-        "name": "신비한 사격",
+        "name": "비전 사격",
         "description": "즉시 사격하여 {damage}의 비전 피해를 입힙니다."
       },
       "concussive_shot": {
@@ -1977,16 +2090,16 @@ export const ko_KR: EnTranslations = {
         "description": "대상에게 으르렁거립니다. 자신의 위협 수준이 대상이 가장 증오하는 적과 같아지며, 3초 동안 자신을 공격하게 만듭니다. 곰 변신 전용."
       },
       "cat_form": {
-        "name": "표범 변신",
-        "description": "표범으로 변신합니다. 전투력이 레벨에 따라 증가하고 공격이 기력과 연계 점수를 사용하며 위협 수준 생성량이 29% 감소합니다. 다시 시전하면 시전자 형태로 돌아갑니다."
+        "name": "늑대 변신",
+        "description": "늑대로 변신합니다. 전투력이 레벨에 따라 증가하고 공격이 기력과 연계 점수를 사용하며 위협 수준 생성량이 29% 감소합니다. 다시 시전하면 시전자 형태로 돌아갑니다."
       },
       "claw": {
         "name": "할퀴기",
-        "description": "적을 할퀴어 무기 피해에 {damage}를 더한 피해를 입힙니다. 연계 점수 1점을 얻습니다. 표범 변신 전용."
+        "description": "적을 할퀴어 무기 피해에 {damage}를 더한 피해를 입힙니다. 연계 점수 1점을 얻습니다. 늑대 변신 전용."
       },
       "ferocious_bite": {
         "name": "흉포한 이빨",
-        "description": "연계 점수당 피해를 입히는 결정타입니다. 표범 변신 전용."
+        "description": "연계 점수당 피해를 입히는 결정타입니다. 늑대 변신 전용."
       },
       "swipe": {
         "name": "휘둘러치기",
@@ -2026,11 +2139,11 @@ export const ko_KR: EnTranslations = {
       },
       "dash": {
         "name": "질주",
-        "description": "앞으로 돌진하여 이동 속도를 15초 동안 50% 증가시킵니다. 표범 변신 전용."
+        "description": "앞으로 돌진하여 이동 속도를 15초 동안 50% 증가시킵니다. 늑대 변신 전용."
       },
       "pounce": {
         "name": "덮치기",
-        "description": "은신 상태에서 사용하는 시작 공격으로 대상을 2초 동안 기절시킵니다. 연계 점수 1점을 얻습니다. 표범 변신 전용."
+        "description": "은신 상태에서 사용하는 시작 공격으로 대상을 2초 동안 기절시킵니다. 연계 점수 1점을 얻습니다. 늑대 변신 전용."
       },
       "insect_swarm": {
         "name": "곤충 떼",
@@ -2038,11 +2151,11 @@ export const ko_KR: EnTranslations = {
       },
       "tigers_fury": {
         "name": "호랑이의 분노",
-        "description": "공격력을 6초 동안 40만큼 증가시킵니다. 표범 변신 전용."
+        "description": "전투력을 6초 동안 40만큼 증가시킵니다. 늑대 변신 전용."
       },
       "rip": {
         "name": "찢기",
-        "description": "12초에 걸쳐 출혈 피해를 입히는 결정타입니다. 연계 점수를 소모합니다. 표범 변신 전용."
+        "description": "12초에 걸쳐 출혈 피해를 입히는 결정타입니다. 연계 점수를 소모합니다. 늑대 변신 전용."
       },
       "mortal_strike": {
         "name": "죽음의 일격",
@@ -2094,11 +2207,11 @@ export const ko_KR: EnTranslations = {
       },
       "bear_charge": {
         "name": "곰 돌진",
-        "description": "적에게 돌진하여 분노 9를 생성하고 1초 동안 기절시킵니다. 사거리 7~23미터. 곰 변신 상태에서만 사용 가능."
+        "description": "적에게 돌진하여 분노 9를 생성하고 1초 동안 기절시킵니다. 사거리 8-25yd. 곰 변신 상태에서만 사용 가능."
       },
       "demoralizing_roar": {
         "name": "사기 저하의 포효",
-        "description": "주변의 적들을 위축시켜 20초 동안 그들의 공격력을 20만큼 감소시킵니다. 곰 변신 상태에서만 사용 가능."
+        "description": "주변의 적들을 위축시켜 20초 동안 그들의 전투력을 20만큼 감소시킵니다. 곰 변신 상태에서만 사용 가능."
       },
       "prowl": {
         "name": "은신 보행",
@@ -4261,31 +4374,31 @@ export const ko_KR: EnTranslations = {
       },
       "q_ledger_teeth": {
         "title": "어둠 속의 송곳니",
-        "text": "늑대 무리가 순찰로를 익혀버렸네 - 빛이 옅어지고 외로운 여행자가 손쉬운 먹잇감이 되는 황혼에 들이닥치지. 그놈들을 무너뜨리게, {playerName}. 숲늑대 10마리를 처치해 무리가 새로운 교훈을 배우게 하게.",
-        "completion": "늑대 열 마리, 그리고 황혼의 길이 다시 우리 것이 됐군. 장부가 자네에게 더 너그러워지네.",
+        "text": "숲속 빈터의 여우들이 늑대만큼이나 대담해졌네 - 황혼이면 닭장에 슬그머니 들어왔다가 등불을 켜기도 전에 사라지지. 굶주린 암여우는 닭은 물론이고 새끼 양까지 물어간다네. 그놈들의 수를 줄여주게, {playerName}. 숲속 빈터 여우 10마리를 처치해 나머지가 다시 빛을 두려워하도록 만들게.",
+        "completion": "여우 열 마리라, 황혼이 와도 닭장이 다시 조용하군. 장부가 자네에게 더 너그러워지네.",
         "objectives": {
           "0": {
-            "label": "처치한 숲늑대"
+            "label": "처치한 숲속 빈터 여우"
           }
         }
       },
       "q_ledger_reedwater": {
         "title": "갈대 물가 순찰",
-        "text": "레드브룩이 자네를 보냈나? 좋아 - 이 늙은 뼈로는 더 이상 얕은 물을 헤칠 수가 없네. 진흙지느러미들이 갈대 물가로 다시 기어들었고, 그 어느 때보다 대담해졌어. 그놈들을 솎아내게. 진흙지느러미 잠복자 8마리를, 그리고 깊은 물을 조심하게.",
-        "completion": "그 정도면 한 철은 그 꾸르륵대는 악마들을 내 그물에서 떼어놓겠지. 보안관께 호수가 다시 잠잠해졌다고 전하게.",
+        "text": "레드브룩이 자네를 보냈나? 좋아 - 이 늙은 뼈로는 더 이상 얕은 물을 헤칠 수가 없네. 초원 두루미들이 내 그물을 발견하고는, 진흙지느러미가 그랬던 것보다도 더 많이 내 어획물을 부리로 꿰어가고 있어. 그놈들의 수를 줄여주게. 초원 두루미 8마리를, 그리고 깊은 물을 조심하게.",
+        "completion": "그 정도면 한 철은 그 긴 다리 도둑들을 내 그물에서 떼어놓겠지. 보안관께 얕은 물이 다시 내 것이 됐다고 전하게.",
         "objectives": {
           "0": {
-            "label": "처치한 진흙지느러미 잠복자"
+            "label": "쫓아낸 초원 두루미"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "비단과 독",
-        "text": "장부는 동쪽 숲도 수호인의 땅으로 표시해 두었네. 그물나무 잠복자들이 매주 더 두껍게 거미줄을 친다네 - 지난 장날에 한 아이가 너무 가까이 갔다가, 우리가 겨우 숨이 붙은 채로 잘라냈어. 그놈들이 숲을 완전히 차지하기 전에 그물나무 잠복자 8마리를 처치하게.",
-        "completion": "어둠 속 거미가 여덟이 줄었군. 숲이 한결 편히 숨 쉬고, 나도 그렇다네.",
+        "title": "풀과 가시덤불",
+        "text": "장부는 동쪽 숲도 수호인의 땅으로 표시해 두었네 - 내 약초밭도 그 일부지. 점박이 새끼사슴들이 내 은빛잎과 핏빛엉겅퀴를 뿌리째 뜯어먹어버렸어. 그 약초들이 없으면 이스트브룩 절반이 약을 구하지 못한다네. 마음이 편치는 않지만, 가을 약초를 완전히 잃기 전에 점박이 새끼사슴 8마리를 솎아내게.",
+        "completion": "자네 덕분에 밭이 아직은 회복할 수 있겠군. 모진 자비지 - 허나 열에 시달리는 아이에게는 사슴이 숲을 필요로 하는 것보다 약초가 더 절실하다네. 장부가 정리됐네.",
         "objectives": {
           "0": {
-            "label": "처치한 그물나무 잠복자"
+            "label": "솎아낸 점박이 새끼사슴"
           }
         }
       },
@@ -4310,12 +4423,12 @@ export const ko_KR: EnTranslations = {
         }
       },
       "q_ledger_toll": {
-        "title": "노상강도의 통행세",
-        "text": "남동쪽 언덕이 산적들의 통행로가 되어버렸네 - 가볍게 길을 나서는 어리석은 자라면 누구든 털어가지. 장부에는 그들 하나하나에 현상금이 걸려 있네. 계곡 도적 8명에게 이스트브룩의 심판을 내리게.",
-        "completion": "산적 여덟 명이 죗값을 치렀군. 통행로에 새 파수꾼이 생겼다는 소문이 벌써 퍼지고 있네 - 그자는 돈이 아니라 목을 받는다는 소문이.",
+        "title": "엄니의 길",
+        "text": "숲엄니 멧돼지들이 빛숲에서 내려와 남동쪽 교역로로 몰려들었네 - 엄니로 짐 끄는 황소를 들이받고, 쏟아진 곡식을 노리고 수레를 뒤엎는 거대한 짐승들이지. 장부에는 그놈들 하나하나에 현상금이 걸려 있네. 길을 다시 여게. 숲엄니 멧돼지 8마리를 쓰러뜨리게.",
+        "completion": "짐승 여덟이 길에서 사라지니 수레가 다시 굴러가는군. 교역로에 새 파수꾼이 생겼다는 소문이 벌써 퍼지고 있네. 장부가 자네에게 유리하게 올라가는군.",
         "objectives": {
           "0": {
-            "label": "심판받은 계곡 도적"
+            "label": "처치한 숲엄니 멧돼지"
           }
         }
       },

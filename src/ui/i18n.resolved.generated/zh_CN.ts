@@ -150,6 +150,118 @@ export const zh_CN: EnTranslations = {
       }
     }
   },
+  "hudChrome": {
+    "emotes": {
+      "wave": "挥手",
+      "laugh": "大笑",
+      "question": "嘿？",
+      "cheer": "欢呼",
+      "dance": "跳舞",
+      "point": "指向",
+      "flex": "秀肌肉",
+      "salute": "敬礼",
+      "cry": "哭泣",
+      "bow": "鞠躬",
+      "clap": "鼓掌",
+      "roar": "咆哮",
+      "kneel": "下跪"
+    },
+    "emoteWheel": {
+      "edit": "编辑",
+      "label": "表情"
+    },
+    "emoteEditor": {
+      "title": "表情",
+      "done": "完成"
+    },
+    "chatTimestamps": {
+      "show": "显示聊天时间戳",
+      "format": "时间戳格式",
+      "clock12h": "12小时制",
+      "clock24h": "24小时制",
+      "note": "在每条新聊天消息前加上其到达时间，例如 [14:32]。仅对开启此选项后收到的消息生效。"
+    },
+    "swing": {
+      "ready": "挥击",
+      "seconds": "{seconds}秒"
+    },
+    "rest": {
+      "resting": "休息中"
+    },
+    "mobile": {
+      "autorun": "自动奔跑",
+      "jump": "跳跃",
+      "leaderboard": "排行榜",
+      "nameplates": "姓名板",
+      "haptics": "震动反馈",
+      "hapticsOff": "震动反馈：关",
+      "toggleHaptics": "切换震动反馈"
+    },
+    "widgets": {
+      "clockTitle": "本地时间 - 点击切换 12/24 小时制",
+      "worldCoordinates": "世界坐标",
+      "coordinates": "坐标",
+      "heading": "朝向",
+      "minimapZoom": "小地图缩放"
+    },
+    "compass": {
+      "N": "北",
+      "NE": "东北",
+      "E": "东",
+      "SE": "东南",
+      "S": "南",
+      "SW": "西南",
+      "W": "西",
+      "NW": "西北"
+    },
+    "meters": {
+      "perSecond": "{value}/秒",
+      "perSecondRow": "{total}（{rate}）",
+      "minutesSeconds": "{m}分{s}秒",
+      "seconds": "{s}秒"
+    },
+    "keybinds": {
+      "emoteWheel": "表情轮盘",
+      "targetFriendly": "选中最近友方",
+      "targetFriendlyNext": "切换友方目标"
+    },
+    "options": {
+      "clickMoveLeft": "左键",
+      "clickMoveRight": "右键"
+    },
+    "talents": {
+      "defaultBuildName": "配置 {n}"
+    },
+    "tips": {
+      "joinChannels": "提示：输入 /join world 或 /join lfg，与全服玩家聊天。"
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "你是{rank}，{count}名成员",
+        "few": "你是{rank}，{count}名成员",
+        "many": "你是{rank}，{count}名成员",
+        "other": "你是{rank}，{count}名成员"
+      },
+      "characterCount": {
+        "one": "{count} 个角色",
+        "few": "{count} 个角色",
+        "many": "{count} 个角色",
+        "other": "{count} 个角色"
+      },
+      "secondsRemaining": {
+        "one": "剩余 {count} 秒",
+        "few": "剩余 {count} 秒",
+        "many": "剩余 {count} 秒",
+        "other": "剩余 {count} 秒"
+      },
+      "playersOnline": {
+        "one": "查询：{realm}上有{count}名玩家在线。",
+        "few": "查询：{realm}上有{count}名玩家在线。",
+        "many": "查询：{realm}上有{count}名玩家在线。",
+        "other": "查询：{realm}上有{count}名玩家在线。"
+      }
+    }
+  },
   "skinEvent": {
     "title": "外观宝箱",
     "subtitle": "你解锁了一份{rank}级奖励——可选择不高于该等级的任意皮肤。",
@@ -562,6 +674,7 @@ export const zh_CN: EnTranslations = {
       "deleteConfirm": "输入角色名称以确认删除。",
       "notAuthenticated": "尚未认证。",
       "accountBanned": "此账号已被封禁。",
+      "webLoginOnly": "只能从游戏客户端登录。",
       "accountSuspended": "此账号被停用至 {date}。",
       "alreadyInWorld": "角色已在世界中。",
       "renameBeforeEntering": "此角色必须先改名才能进入世界。"
@@ -717,7 +830,7 @@ export const zh_CN: EnTranslations = {
       "releaseSpirit": "释放灵魂",
       "chatTab": "聊天",
       "combatLogTab": "战斗记录",
-      "chatPlaceholder": "说点什么...（/w 名字 密语，/r 回复，/p 队伍，/gu 公会，/o 官员，/general 综合）",
+      "chatPlaceholder": "说点什么...（/s 说话，/w 名字 密语，/r 回复，/p 队伍，/gu 公会，/o 官员，/general 综合）",
       "chatChannels": {
         "add": "添加聊天频道",
         "addTitle": "添加频道",
@@ -759,7 +872,7 @@ export const zh_CN: EnTranslations = {
       "graphics": "图形",
       "audio": "音频",
       "interface": "界面",
-      "language": "Language",
+      "language": "语言",
       "logout": "退出登录",
       "returnToGame": "返回游戏",
       "resetToDefaults": "恢复默认",
@@ -1003,7 +1116,7 @@ export const zh_CN: EnTranslations = {
       "requiresCombo": "该技能需要连击点。",
       "requiresForm": "你必须处于{form}形态。",
       "bear": "熊",
-      "cat": "猎豹",
+      "cat": "狼",
       "shapeshifted": "变形状态下不能这样做。",
       "stealthed": "你必须处于潜行状态。",
       "inCombat": "战斗中不能这样做。",
@@ -1263,7 +1376,7 @@ export const zh_CN: EnTranslations = {
     },
     "forms": {
       "bear": "熊",
-      "cat": "猎豹"
+      "cat": "狼"
     },
     "cast": {
       "fishing": "钓鱼",
@@ -1977,16 +2090,16 @@ export const zh_CN: EnTranslations = {
         "description": "对目标低吼：你的威胁值提高到其最仇恨敌人的水平，并强迫其攻击你 3 秒。仅限熊形态。"
       },
       "cat_form": {
-        "name": "猎豹形态",
-        "description": "变形为猎豹：攻击强度随等级提高，攻击使用能量和连击点，产生的威胁值降低 29%。再次施放可返回施法者形态。"
+        "name": "狼形态",
+        "description": "变形为狼：攻击强度随等级提高，攻击使用能量和连击点，产生的威胁值降低 29%。再次施放可返回施法者形态。"
       },
       "claw": {
         "name": "爪击",
-        "description": "用利爪攻击敌人，造成武器伤害加 {damage}。奖励 1 个连击点。仅限猎豹形态。"
+        "description": "用利爪攻击敌人，造成武器伤害加 {damage}。奖励 1 个连击点。仅限狼形态。"
       },
       "ferocious_bite": {
         "name": "凶猛撕咬",
-        "description": "终结技，根据连击点数造成伤害。仅限猎豹形态。"
+        "description": "终结技，根据连击点数造成伤害。仅限狼形态。"
       },
       "swipe": {
         "name": "横扫",
@@ -2026,11 +2139,11 @@ export const zh_CN: EnTranslations = {
       },
       "dash": {
         "name": "急奔",
-        "description": "向前冲刺，使移动速度提高 50%，持续 15 秒。仅限猎豹形态。"
+        "description": "向前冲刺，使移动速度提高 50%，持续 15 秒。仅限狼形态。"
       },
       "pounce": {
         "name": "扑击",
-        "description": "一个潜行开场技，昏迷目标 2 秒。奖励 1 个连击点。仅限猎豹形态。"
+        "description": "一个潜行开场技，昏迷目标 2 秒。奖励 1 个连击点。仅限狼形态。"
       },
       "insect_swarm": {
         "name": "虫群",
@@ -2038,11 +2151,11 @@ export const zh_CN: EnTranslations = {
       },
       "tigers_fury": {
         "name": "猛虎之怒",
-        "description": "使攻击强度提高 40，持续 6 秒。仅限猎豹形态。"
+        "description": "使攻击强度提高 40，持续 6 秒。仅限狼形态。"
       },
       "rip": {
         "name": "割裂",
-        "description": "终结技，在 12 秒内造成流血伤害。消耗连击点。仅限猎豹形态。"
+        "description": "终结技，在 12 秒内造成流血伤害。消耗连击点。仅限狼形态。"
       },
       "mortal_strike": {
         "name": "致死打击",
@@ -4170,8 +4283,8 @@ export const zh_CN: EnTranslations = {
       },
       "q_nythraxis_restless_dead": {
         "title": "骨原的异动",
-        "text": "Thornpeak Heights 出事了，{playerName}。亡者不再漫无目的地游荡。他们在 Highwatch 以北的骨原集结并行军，那里是旧战场与峭壁道路交汇之处。去那里调查骨甲亡魂的异动，并带回任何能说明是什么驱使它们的证据。",
-        "completion": "每块碎片上都有同一个标记……一顶王冠。我以前见过它，刻在一些 Eastbrook 记录中早已遗忘的旧坟上。",
+        "text": "荆峰高地出事了，{playerName}。亡者不再漫无目的地游荡。他们在高望以北的骨原集结并行军，那里是旧战场与峭壁道路交汇之处。去那里调查骨甲亡魂的异动，并带回任何能说明是什么驱使它们的证据。",
+        "completion": "每块碎片上都有同一个标记……一顶王冠。我以前见过它，刻在一些东溪记录中早已遗忘的旧坟上。",
         "objectives": {
           "0": {
             "label": "符文骨片"
@@ -4196,7 +4309,7 @@ export const zh_CN: EnTranslations = {
       },
       "q_nythraxis_sealed_crypt": {
         "title": "废弃墓穴",
-        "text": "幻象指向西侧峭壁中的废弃墓穴。古老传说称，那座墓穴曾安置一位国王。也许在马尔里克的仪式把他扭曲成不死之物后，Thornpeak 将他封在了下面。进入墓穴，看看里面还剩下什么。",
+        "text": "幻象指向西侧峭壁中的废弃墓穴。古老传说称，那座墓穴曾安置一位国王。也许在马尔里克的仪式把他扭曲成不死之物后，荆峰将他封在了下面。进入墓穴，看看里面还剩下什么。",
         "completion": "钥石的两半合在了一起，而沃斯的日记写明了它们封印之物：尼思拉克西斯国王的印戒。如果日记属实，那枚印戒就是通往他陵墓的钥匙。",
         "objectives": {
           "0": {
@@ -4261,31 +4374,31 @@ export const zh_CN: EnTranslations = {
       },
       "q_ledger_teeth": {
         "title": "黑暗中的尖牙",
-        "text": "狼群已经摸清了巡逻路线，它们在黄昏时分动手，那时光线昏暗，落单的旅人便成了好下口的猎物。粉碎它们，{playerName}。击杀10只森林狼，让狼群重新学会教训。",
-        "completion": "十只狼，黄昏的道路又归我们所有了。这本名录对你越发宽厚了。",
+        "text": "林地狐变得像狼一样大胆了——它们在黄昏时分溜进鸡舍，没等点亮提灯便消失得无影无踪，一只饿急的母狐叼走羊羔和叼走母鸡一样利落。削减它们的数目，{playerName}。击杀10只林地狐，让剩下的重新学会害怕光亮。",
+        "completion": "十只狐狸，鸡舍在黄昏时分又安静了下来。这本名录对你越发宽厚了。",
         "objectives": {
           "0": {
-            "label": "击杀森林狼"
+            "label": "击杀林地狐"
           }
         }
       },
       "q_ledger_reedwater": {
         "title": "芦苇水域巡逻",
-        "text": "红溪派你来的？很好，这把老骨头再也蹚不动浅滩了。泥鳍又悄悄爬回了芦苇水域，而且比以往更加大胆。削减它们：8只泥鳍潜伏者，当心深水。",
-        "completion": "这能让那些咕噜作响的恶鬼一季都不来碰我的渔网了。告诉元帅，湖面又恢复宁静了。",
+        "text": "红溪派你来的？很好，这把老骨头再也蹚不动浅滩了。草原鹤盯上了我的渔网，它们叼走的鱼比泥鳍当年偷的还多。削减它们：8只草原鹤，当心深水。",
+        "completion": "这能让那些长腿的窃贼一整季都不来碰我的渔网了。告诉元帅，浅滩又归我所有了。",
         "objectives": {
           "0": {
-            "label": "击杀泥鳍潜伏者"
+            "label": "驱逐草原鹤"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "丝与毒",
-        "text": "名录把东边的林子也划为守望者的领地。网木潜伏者每周织的网都更密，上个集市日，有个孩子误闯太近，我们把她割下来时几乎已经断了气。趁它们彻底占据这片林子之前，击杀8只网木潜伏者。",
-        "completion": "黑暗中的织网者又少了八只。林子呼吸得轻松些了，我也是。",
+        "title": "啃食与荆棘",
+        "text": "名录也把东边的林子划为守望者的领地——我的药圃也在其中。斑点幼鹿把我的银叶草和血蓟啃到了根上，没了这些草药，东溪镇有一半人将无药可医。我并不以此为乐，但在秋季的草药彻底毁掉之前，宰杀8只斑点幼鹿。",
+        "completion": "多亏了你，药圃或许还能恢复。这是无奈的慈悲——但一个高烧不退的孩子比林子更需要这些草药。名录上的账已经两清了。",
         "objectives": {
           "0": {
-            "label": "击杀网木潜伏者"
+            "label": "宰杀斑点幼鹿"
           }
         }
       },
@@ -4310,12 +4423,12 @@ export const zh_CN: EnTranslations = {
         }
       },
       "q_ledger_toll": {
-        "title": "拦路贼的过路费",
-        "text": "东南的山丘成了强盗收费的关路，他们抢劫任何蠢到轻装上路的人。名录上为他们每一个都标了价。把东溪的公道带给8名谷地强盗。",
-        "completion": "八名强盗都得到了报应。已经有风声传开，说这条收费路有了新的看守人，而他不收银钱，他取人头。",
+        "title": "獠牙之路",
+        "text": "林牙野猪从明木林里下来，闯上了东南方的贸易要道——那是些长着大獠牙的凶兽，用獠牙顶伤拉车的耕牛，掀翻货车好抢散落的谷粮。名录上为它们每一头都标了赏金。重新打通这条路：放倒8只林牙野猪。",
+        "completion": "八头凶兽从路上清除了，货车又重新滚动起来。已经有风声传开，说这条贸易要道有了新的看守人。名录正朝着对你有利的方向攀升。",
         "objectives": {
           "0": {
-            "label": "将谷地强盗绳之以法"
+            "label": "击杀林牙野猪"
           }
         }
       },
@@ -4558,8 +4671,8 @@ export const zh_CN: EnTranslations = {
       },
       "nythraxis_crypt": {
         "name": "废弃墓穴",
-        "enterText": "你跨过废弃墓穴的门槛。",
-        "leaveText": "你回到 Thornpeak 的寒冷空气中。"
+        "enterText": "你走下荆峰被遗忘废墟之下的废弃墓穴。",
+        "leaveText": "你爬出废弃墓穴，回到荆峰的山风之中。"
       },
       "drowned_temple": {
         "name": "溺亡神殿",

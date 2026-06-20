@@ -150,6 +150,118 @@ export const zh_TW: EnTranslations = {
       }
     }
   },
+  "hudChrome": {
+    "emotes": {
+      "wave": "揮手",
+      "laugh": "大笑",
+      "question": "喲？",
+      "cheer": "歡呼",
+      "dance": "跳舞",
+      "point": "指向",
+      "flex": "秀肌肉",
+      "salute": "敬禮",
+      "cry": "哭泣",
+      "bow": "鞠躬",
+      "clap": "鼓掌",
+      "roar": "咆哮",
+      "kneel": "跪下"
+    },
+    "emoteWheel": {
+      "edit": "編輯",
+      "label": "表情"
+    },
+    "emoteEditor": {
+      "title": "表情",
+      "done": "完成"
+    },
+    "chatTimestamps": {
+      "show": "顯示聊天時間戳記",
+      "format": "時間戳記格式",
+      "clock12h": "12 小時制",
+      "clock24h": "24 小時制",
+      "note": "在每一行新的聊天訊息前加上收到的時間，例如 [14:32]。只會影響開啟此選項後收到的訊息。"
+    },
+    "swing": {
+      "ready": "揮砍",
+      "seconds": "{seconds}秒"
+    },
+    "rest": {
+      "resting": "休息中"
+    },
+    "mobile": {
+      "autorun": "自動奔跑",
+      "jump": "跳躍",
+      "leaderboard": "排行榜",
+      "nameplates": "名條",
+      "haptics": "觸覺回饋",
+      "hapticsOff": "觸覺回饋已關閉",
+      "toggleHaptics": "切換觸覺回饋"
+    },
+    "widgets": {
+      "clockTitle": "本地時間 - 點擊切換 12／24 小時制",
+      "worldCoordinates": "世界座標",
+      "coordinates": "座標",
+      "heading": "方位",
+      "minimapZoom": "小地圖縮放"
+    },
+    "compass": {
+      "N": "北",
+      "NE": "東北",
+      "E": "東",
+      "SE": "東南",
+      "S": "南",
+      "SW": "西南",
+      "W": "西",
+      "NW": "西北"
+    },
+    "meters": {
+      "perSecond": "{value}/秒",
+      "perSecondRow": "{total}（{rate}）",
+      "minutesSeconds": "{m}分{s}秒",
+      "seconds": "{s}秒"
+    },
+    "keybinds": {
+      "emoteWheel": "表情輪盤",
+      "targetFriendly": "選取最近友方",
+      "targetFriendlyNext": "切換友方目標"
+    },
+    "options": {
+      "clickMoveLeft": "左鍵",
+      "clickMoveRight": "右鍵"
+    },
+    "talents": {
+      "defaultBuildName": "配置 {n}"
+    },
+    "tips": {
+      "joinChannels": "提示：輸入 /join world 或 /join lfg 可與全伺服器的玩家聊天。"
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "你是{rank}，{count}名成員",
+        "few": "你是{rank}，{count}名成員",
+        "many": "你是{rank}，{count}名成員",
+        "other": "你是{rank}，{count}名成員"
+      },
+      "characterCount": {
+        "one": "{count} 個角色",
+        "few": "{count} 個角色",
+        "many": "{count} 個角色",
+        "other": "{count} 個角色"
+      },
+      "secondsRemaining": {
+        "one": "剩餘 {count} 秒",
+        "few": "剩餘 {count} 秒",
+        "many": "剩餘 {count} 秒",
+        "other": "剩餘 {count} 秒"
+      },
+      "playersOnline": {
+        "one": "查詢：{realm} 上有 {count} 名玩家在線上。",
+        "few": "查詢：{realm} 上有 {count} 名玩家在線上。",
+        "many": "查詢：{realm} 上有 {count} 名玩家在線上。",
+        "other": "查詢：{realm} 上有 {count} 名玩家在線上。"
+      }
+    }
+  },
   "skinEvent": {
     "title": "外觀寶箱",
     "subtitle": "你解鎖了一份{rank}級獎勵 — 可任選不高於該等級的造型。",
@@ -295,7 +407,7 @@ export const zh_TW: EnTranslations = {
     "warrior": "戰士",
     "paladin": "聖騎士",
     "hunter": "獵人",
-    "rogue": "潛行者",
+    "rogue": "盜賊",
     "priest": "牧師",
     "shaman": "薩滿",
     "mage": "法師",
@@ -304,7 +416,7 @@ export const zh_TW: EnTranslations = {
     "warriorAria": "戰士職業",
     "paladinAria": "聖騎士職業",
     "hunterAria": "獵人職業",
-    "rogueAria": "潛行者職業",
+    "rogueAria": "盜賊職業",
     "priestAria": "牧師職業",
     "shamanAria": "薩滿職業",
     "mageAria": "法師職業",
@@ -562,6 +674,7 @@ export const zh_TW: EnTranslations = {
       "deleteConfirm": "輸入角色名稱以確認刪除。",
       "notAuthenticated": "尚未驗證。",
       "accountBanned": "此帳號已被封鎖。",
+      "webLoginOnly": "只能從遊戲客戶端登入。",
       "accountSuspended": "此帳號停權至 {date}。",
       "alreadyInWorld": "角色已在世界中。",
       "renameBeforeEntering": "此角色必須先更名才能進入世界。"
@@ -759,7 +872,7 @@ export const zh_TW: EnTranslations = {
       "graphics": "圖形",
       "audio": "音訊",
       "interface": "介面",
-      "language": "Language",
+      "language": "語言",
       "logout": "登出",
       "returnToGame": "返回遊戲",
       "resetToDefaults": "恢復預設",
@@ -1003,7 +1116,7 @@ export const zh_TW: EnTranslations = {
       "requiresCombo": "該技能需要連擊點。",
       "requiresForm": "你必須處於{form}形態。",
       "bear": "熊",
-      "cat": "獵豹",
+      "cat": "狼",
       "shapeshifted": "變形狀態下不能這樣做。",
       "stealthed": "你必須處於潛行狀態。",
       "inCombat": "戰鬥中不能這樣做。",
@@ -1263,7 +1376,7 @@ export const zh_TW: EnTranslations = {
     },
     "forms": {
       "bear": "熊",
-      "cat": "獵豹"
+      "cat": "狼"
     },
     "cast": {
       "fishing": "釣魚",
@@ -1382,7 +1495,7 @@ export const zh_TW: EnTranslations = {
       "spi": "精神",
       "attackPower": "攻擊強度",
       "dps": "每秒傷害",
-      "critChance": "爆擊機率",
+      "critChance": "暴擊機率",
       "dodge": "閃躲"
     },
     "tooltip": {
@@ -1977,16 +2090,16 @@ export const zh_TW: EnTranslations = {
         "description": "對目標低吼：你的威脅值提高到其最仇恨敵人的水平，並強迫其攻擊你 3 秒。僅限熊形態。"
       },
       "cat_form": {
-        "name": "獵豹形態",
-        "description": "變形為獵豹：攻擊強度隨等級提高，攻擊使用能量和連擊點，產生的威脅值降低 29%。再次施放可返回施法者形態。"
+        "name": "狼形態",
+        "description": "變形為狼：攻擊強度隨等級提高，攻擊使用能量和連擊點，產生的威脅值降低 29%。再次施放可返回施法者形態。"
       },
       "claw": {
         "name": "爪擊",
-        "description": "用利爪攻擊敵人，造成武器傷害加 {damage}。獎勵 1 個連擊點。僅限獵豹形態。"
+        "description": "用利爪攻擊敵人，造成武器傷害加 {damage}。獎勵 1 個連擊點。僅限狼形態。"
       },
       "ferocious_bite": {
         "name": "兇猛撕咬",
-        "description": "終結技，根據連擊點數造成傷害。僅限獵豹形態。"
+        "description": "終結技，根據連擊點數造成傷害。僅限狼形態。"
       },
       "swipe": {
         "name": "橫掃",
@@ -2026,11 +2139,11 @@ export const zh_TW: EnTranslations = {
       },
       "dash": {
         "name": "急奔",
-        "description": "向前衝刺，使移動速度提高 50%，持續 15 秒。僅限獵豹形態。"
+        "description": "向前衝刺，使移動速度提高 50%，持續 15 秒。僅限狼形態。"
       },
       "pounce": {
         "name": "撲擊",
-        "description": "一個潛行開場技，昏迷目標 2 秒。獎勵 1 個連擊點。僅限獵豹形態。"
+        "description": "一個潛行開場技，昏迷目標 2 秒。獎勵 1 個連擊點。僅限狼形態。"
       },
       "insect_swarm": {
         "name": "蟲群",
@@ -2038,11 +2151,11 @@ export const zh_TW: EnTranslations = {
       },
       "tigers_fury": {
         "name": "猛虎之怒",
-        "description": "使攻擊強度提高 40，持續 6 秒。僅限獵豹形態。"
+        "description": "使攻擊強度提高 40，持續 6 秒。僅限狼形態。"
       },
       "rip": {
         "name": "割裂",
-        "description": "終結技，在 12 秒內造成流血傷害。消耗連擊點。僅限獵豹形態。"
+        "description": "終結技，在 12 秒內造成流血傷害。消耗連擊點。僅限狼形態。"
       },
       "mortal_strike": {
         "name": "致死打擊",
@@ -2409,7 +2522,7 @@ export const zh_TW: EnTranslations = {
         "name": "發光蠟塊"
       },
       "ogre_war_totem": {
-        "name": "巨魔戰爭圖騰"
+        "name": "食人魔戰爭圖騰"
       },
       "storm_core": {
         "name": "風暴核心"
@@ -2457,7 +2570,7 @@ export const zh_TW: EnTranslations = {
         "name": "德羅格瑪的碎顱斧"
       },
       "ogre_bonecharm_staff": {
-        "name": "巨魔骨符法杖"
+        "name": "食人魔骨符法杖"
       },
       "gutripper_shiv": {
         "name": "開膛短刀"
@@ -2532,7 +2645,7 @@ export const zh_TW: EnTranslations = {
         "name": "風衛護腿"
       },
       "ogre_toe_ring": {
-        "name": "巨魔趾環"
+        "name": "食人魔趾環"
       },
       "inert_storm_shard": {
         "name": "惰性風暴碎片"
@@ -4180,7 +4293,7 @@ export const zh_TW: EnTranslations = {
       },
       "q_nythraxis_graves": {
         "title": "被遺忘者的墳墓",
-        "text": "我以前見過這些標記，就在北方戰場周圍的三座舊墳上。阿爾德倫隊長葬在東側高地，馬爾里克大祭司在中央破路旁，皇家刺客沃斯則在西側峭壁邊。觸碰每座墳墓並傾聽，{playerName}。死者或許記得生者遺忘的事。",
+        "text": "我以前見過這些標記，就在北方戰場周圍的三座舊墳上。奧德倫隊長葬在東側高地，馬爾里克大祭司在中央破路旁，皇家刺客沃斯則在西側峭壁邊。觸碰每座墳墓並傾聽，{playerName}。死者或許記得生者遺忘的事。",
         "completion": "阿爾德倫依舊忠誠，馬爾里克拒絕接受死亡，而沃斯比任何人都更早看見危險。他們三人都侍奉同一位被遺忘的國王。",
         "objectives": {
           "0": {
@@ -4261,31 +4374,31 @@ export const zh_TW: EnTranslations = {
       },
       "q_ledger_teeth": {
         "title": "黑暗中的尖牙",
-        "text": "狼群已經摸清了巡邏路線，牠們在黃昏時出擊，那時光線昏暗，落單的旅人就是易得的獵物。打散牠們，{playerName}。擊殺10頭森林狼，讓狼群學個新教訓。",
-        "completion": "十頭狼，黃昏的道路又屬於我們了。名冊對你更友善了。",
+        "text": "這些林地狐變得跟野狼一樣膽大，牠們在黃昏潛入雞舍，趁人點燈之前就溜得無影無蹤；一隻餓壞的母狐叼走羔羊跟叼走母雞一樣乾脆。把牠們的數量壓下去，{playerName}。擊殺10隻林地狐，讓剩下的重新學會畏懼亮光。",
+        "completion": "十隻狐狸，黃昏的雞舍又恢復了安寧。名冊對你更友善了。",
         "objectives": {
           "0": {
-            "label": "森林狼已擊殺"
+            "label": "林地狐已擊殺"
           }
         }
       },
       "q_ledger_reedwater": {
         "title": "蘆葦水域巡邏",
-        "text": "赤溪派你來的？很好，我這把老骨頭再也涉不過淺灘了。泥鰭已經悄悄爬回了蘆葦水域，而且比以往更加大膽。把牠們疏減一下：8隻泥鰭潛伏者，還有，當心深水。",
-        "completion": "這樣能讓那些咕嚕作響的惡魔離我的漁網一季了。告訴元帥，湖面又恢復寧靜了。",
+        "text": "赤溪派你來的？很好，我這把老骨頭再也涉不過淺灘了。那些草地鶴盯上了我的漁網，牠們叼走的漁獲比泥鰭一族當年還多。把牠們疏減一下：8隻草地鶴，還有，當心深水。",
+        "completion": "這樣能讓那些長腿賊子離我的漁網一季了。告訴元帥，淺灘又屬於我了。",
         "objectives": {
           "0": {
-            "label": "泥鰭潛伏者已擊殺"
+            "label": "草地鶴已驅離"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "蛛絲與毒液",
-        "text": "名冊也把東邊的樹林劃為守護的轄地。網木潛伏者每週都吐得更密了，上個趕集日有個孩子走得太近，我們把她割下來時她已經奄奄一息。趁牠們完全佔據樹林之前，擊殺8隻網木潛伏者。",
-        "completion": "黑暗中少了八隻吐絲的傢伙。樹林呼吸得更順暢了，我也是。",
+        "title": "啃食與荊棘",
+        "text": "名冊也把東邊的樹林劃為守護的轄地，我的藥圃也在其中。那些斑點幼鹿把我的銀葉草和血薊啃得連根都不剩，少了這些草藥，半個東溪鎮都會無藥可用。我並不樂見如此，但在秋季的藥草徹底絕收之前，必須剔除8隻斑點幼鹿。",
+        "completion": "多虧了你，藥圃或許還能恢復。這是不得已的仁慈，但對一個高燒不退的孩子而言，這些草藥遠比樹林裡的鹿群更要緊。名冊兩清了。",
         "objectives": {
           "0": {
-            "label": "網木潛伏者已擊殺"
+            "label": "斑點幼鹿已剔除"
           }
         }
       },
@@ -4310,12 +4423,12 @@ export const zh_TW: EnTranslations = {
         }
       },
       "q_ledger_toll": {
-        "title": "攔路強盜的買路錢",
-        "text": "東南的丘陵成了盜匪的收費路，他們搶劫任何輕裝出行的傻子。名冊上對他們每一個都標了賞金。對8名谷地強盜執行東溪的正義。",
-        "completion": "八名盜匪受到了懲處。風聲已經傳開了，這條收費路有了新的看守者，而他不收銀錢，他取人頭。",
+        "title": "獠牙之路",
+        "text": "那些林牙野豬從輝光林下來，闖上了東南方的商道，那是一群長著獠牙的猛獸，牠們頂傷拉車的耕牛，掀翻馬車只為了散落的穀物。名冊上對每一隻都標了賞金。重新打通這條路：撂倒8隻林牙野豬。",
+        "completion": "八隻猛獸清出了道路，馬車又開始通行了。商道有了新守護者的消息已經傳開。名冊愈發向著你了。",
         "objectives": {
           "0": {
-            "label": "谷地強盜已伏法"
+            "label": "林牙野豬已擊殺"
           }
         }
       },
@@ -4559,7 +4672,7 @@ export const zh_TW: EnTranslations = {
       "nythraxis_crypt": {
         "name": "廢棄墓穴",
         "enterText": "你跨過廢棄墓穴的門檻。",
-        "leaveText": "你回到 Thornpeak 的寒冷空氣中。"
+        "leaveText": "你回到荊峰的寒冷空氣中。"
       },
       "drowned_temple": {
         "name": "溺亡神殿",

@@ -1908,7 +1908,7 @@ export class Sim {
       this.stopFollow(p, 'There is no one to follow.');
       return false;
     }
-    if (p.inCombat) { this.stopFollow(p, 'You stop following — you are in combat.'); return false; }
+    if (p.inCombat) { this.stopFollow(p, 'You stop following - you are in combat.'); return false; }
     const d = dist2d(p.pos, t.pos);
     if (d > FOLLOW_MAX_RANGE) { this.stopFollow(p, `${t.name} is too far away to follow.`); return false; }
     // always turn to face the leader, even while held in place
@@ -2066,7 +2066,15 @@ export class Sim {
         p.fallStartY = ground;
       }
     } else {
-      if (ground < p.pos.y - 0.4) {
+      // Distinguish a walkable downhill slope from a genuine cliff/ledge. The
+      // drop the ground can take in one tick scales with how far we moved: a
+      // slope no steeper than MAX_CLIMB_SLOPE (the same gate that blocks uphill
+      // climbs) is walkable, so we snap down to follow it instead of falling.
+      // Only a steeper-than-walkable drop counts as walking off a ledge. The
+      // 0.4 base keeps a near-stationary player snapped over tiny terrain noise.
+      const run = Math.hypot(p.pos.x - p.prevPos.x, p.pos.z - p.prevPos.z);
+      const maxStepDown = 0.4 + run * MAX_CLIMB_SLOPE;
+      if (ground < p.pos.y - maxStepDown) {
         // walked off a ledge — not a jump, so fences still block
         p.onGround = false;
         p.jumping = false;

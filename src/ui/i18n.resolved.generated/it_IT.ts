@@ -150,6 +150,118 @@ export const it_IT: EnTranslations = {
       }
     }
   },
+  "hudChrome": {
+    "emotes": {
+      "wave": "Saluta",
+      "laugh": "Ridi",
+      "question": "Ehi!",
+      "cheer": "Esulta",
+      "dance": "Balla",
+      "point": "Indica",
+      "flex": "Flettiti",
+      "salute": "Saluto",
+      "cry": "Piangi",
+      "bow": "Inchino",
+      "clap": "Applaudi",
+      "roar": "Ruggisci",
+      "kneel": "Inginocchiati"
+    },
+    "emoteWheel": {
+      "edit": "Modifica",
+      "label": "Emote"
+    },
+    "emoteEditor": {
+      "title": "Emote",
+      "done": "Fine"
+    },
+    "chatTimestamps": {
+      "show": "Mostra orari della chat",
+      "format": "Formato orario",
+      "clock12h": "12 ore",
+      "clock24h": "24 ore",
+      "note": "Antepone a ogni nuova riga di chat l'ora di arrivo, ad es. [14:32]. Influisce solo sui messaggi ricevuti mentre l'opzione è attiva."
+    },
+    "swing": {
+      "ready": "Attacco",
+      "seconds": "{seconds}s"
+    },
+    "rest": {
+      "resting": "A riposo"
+    },
+    "mobile": {
+      "autorun": "Corsa automatica",
+      "jump": "Salta",
+      "leaderboard": "Classifica",
+      "nameplates": "Nomi",
+      "haptics": "Vibrazione",
+      "hapticsOff": "Vibrazione disattivata",
+      "toggleHaptics": "Attiva/disattiva vibrazione"
+    },
+    "widgets": {
+      "clockTitle": "Ora locale - clicca per alternare 12/24 ore",
+      "worldCoordinates": "Coordinate del mondo",
+      "coordinates": "Coordinate",
+      "heading": "Direzione",
+      "minimapZoom": "Zoom minimappa"
+    },
+    "compass": {
+      "N": "N",
+      "NE": "NE",
+      "E": "E",
+      "SE": "SE",
+      "S": "S",
+      "SW": "SO",
+      "W": "O",
+      "NW": "NO"
+    },
+    "meters": {
+      "perSecond": "{value}/s",
+      "perSecondRow": "{total} ({rate})",
+      "minutesSeconds": "{m}m {s}s",
+      "seconds": "{s}s"
+    },
+    "keybinds": {
+      "emoteWheel": "Ruota emote",
+      "targetFriendly": "Bersaglia l'amico più vicino",
+      "targetFriendlyNext": "Scorri i bersagli amici"
+    },
+    "options": {
+      "clickMoveLeft": "Clic sinistro",
+      "clickMoveRight": "Clic destro"
+    },
+    "talents": {
+      "defaultBuildName": "Build {n}"
+    },
+    "tips": {
+      "joinChannels": "Suggerimento: digita /join world o /join lfg per chattare con i giocatori di tutto il reame."
+    },
+    "plurals": {
+      "guildMembers": {
+        "one": "sei {rank}, {count} membro",
+        "few": "sei {rank}, {count} membri",
+        "many": "sei {rank}, {count} membri",
+        "other": "sei {rank}, {count} membri"
+      },
+      "characterCount": {
+        "one": "{count} personaggio",
+        "few": "{count} personaggi",
+        "many": "{count} personaggi",
+        "other": "{count} personaggi"
+      },
+      "secondsRemaining": {
+        "one": "{count} secondo rimanente",
+        "few": "{count} secondi rimanenti",
+        "many": "{count} secondi rimanenti",
+        "other": "{count} secondi rimanenti"
+      },
+      "playersOnline": {
+        "one": "Chi: {count} giocatore online su {realm}.",
+        "few": "Chi: {count} giocatori online su {realm}.",
+        "many": "Chi: {count} giocatori online su {realm}.",
+        "other": "Chi: {count} giocatori online su {realm}."
+      }
+    }
+  },
   "skinEvent": {
     "title": "Scrigno cosmetico",
     "subtitle": "Hai sbloccato una ricompensa {rank} — scegli un aspetto pari o inferiore.",
@@ -562,6 +674,7 @@ export const it_IT: EnTranslations = {
       "deleteConfirm": "Digita il nome del personaggio per confermare l'eliminazione.",
       "notAuthenticated": "Non autenticato.",
       "accountBanned": "Questo account è stato bannato.",
+      "webLoginOnly": "L'accesso è consentito solo dal client di gioco.",
       "accountSuspended": "Questo account è sospeso fino al {date}.",
       "alreadyInWorld": "Il personaggio è già nel mondo.",
       "renameBeforeEntering": "Questo personaggio deve essere rinominato prima di entrare nel mondo."
@@ -759,7 +872,7 @@ export const it_IT: EnTranslations = {
       "graphics": "Grafica",
       "audio": "Audio",
       "interface": "Interfaccia",
-      "language": "Language",
+      "language": "Lingua",
       "logout": "Esci",
       "returnToGame": "Torna al gioco",
       "resetToDefaults": "Ripristina predefiniti",
@@ -1003,7 +1116,7 @@ export const it_IT: EnTranslations = {
       "requiresCombo": "Quell'abilità richiede punti combo.",
       "requiresForm": "Devi essere in Forma di {form}.",
       "bear": "Orso",
-      "cat": "Felino",
+      "cat": "Lupo",
       "shapeshifted": "Non puoi farlo mentre sei trasformato.",
       "stealthed": "Devi essere furtivo.",
       "inCombat": "Non puoi farlo in combattimento.",
@@ -1263,7 +1376,7 @@ export const it_IT: EnTranslations = {
     },
     "forms": {
       "bear": "orso",
-      "cat": "felino"
+      "cat": "lupo"
     },
     "cast": {
       "fishing": "Pesca",
@@ -1296,7 +1409,7 @@ export const it_IT: EnTranslations = {
       "readyQuestAria": "Missione pronta da consegnare: {name}",
       "discussQuest": "Discuti {name}.",
       "discussQuestAria": "Discuti missione: {name}",
-      "nythraxisDeathlessKingWarning": "Le tre reliquie raccontano la stessa storia: Aldren combatte per difendere il suo re, Malric spezzo il confine della morte e Voss tento di fermare cio che segui. Il sigillo si indebolisce, e la cripta abbandonata e la via verso il basso.",
+      "nythraxisDeathlessKingWarning": "Le tre reliquie raccontano la stessa storia: Aldren combatté per difendere il suo re, Malric spezzò il confine della morte e Voss tentò di fermare ciò che seguì. Il sigillo si indebolisce, e la cripta abbandonata è la via verso il basso.",
       "browseGoods": "Fammi vedere la tua merce.",
       "browseGoodsAria": "Vedi la merce di {name}",
       "worldMarket": "Mostrami il Mercato Mondiale.",
@@ -1977,16 +2090,16 @@ export const it_IT: EnTranslations = {
         "description": "Ringhia al bersaglio: la tua minaccia sale fino a eguagliare quella del suo nemico più odiato e lo costringe ad attaccarti per 3 s. Solo Forma d'Orso."
       },
       "cat_form": {
-        "name": "Forma Felina",
-        "description": "Mutamenti in felino: la potenza d'attacco cresce con il livello, gli attacchi usano energia e punti combo, e generi il 29% di minaccia in meno. Lanciala di nuovo per tornare alla forma da incantatore."
+        "name": "Forma del Lupo",
+        "description": "Mutamenti in lupo: la potenza d'attacco cresce con il livello, gli attacchi usano energia e punti combo, e generi il 29% di minaccia in meno. Lanciala di nuovo per tornare alla forma da incantatore."
       },
       "claw": {
         "name": "Artigliata",
-        "description": "Artiglia il nemico per danni dell'arma più {damage}. Conferisce 1 punto combo. Solo Forma Felina."
+        "description": "Artiglia il nemico per danni dell'arma più {damage}. Conferisce 1 punto combo. Solo Forma del Lupo."
       },
       "ferocious_bite": {
         "name": "Morso Feroce",
-        "description": "Mossa finale che infligge danni per punto combo. Solo Forma Felina."
+        "description": "Mossa finale che infligge danni per punto combo. Solo Forma del Lupo."
       },
       "swipe": {
         "name": "Falciata",
@@ -2026,11 +2139,11 @@ export const it_IT: EnTranslations = {
       },
       "dash": {
         "name": "Scatto",
-        "description": "Scatta in avanti, aumentando la velocità di movimento del 50% per 15 sec. Solo Forma Felina."
+        "description": "Scatta in avanti, aumentando la velocità di movimento del 50% per 15 sec. Solo Forma del Lupo."
       },
       "pounce": {
         "name": "Balzo",
-        "description": "Apertura furtiva che stordisce il bersaglio per 2 sec. Conferisce 1 punto combo. Solo Forma Felina."
+        "description": "Apertura furtiva che stordisce il bersaglio per 2 sec. Conferisce 1 punto combo. Solo Forma del Lupo."
       },
       "insect_swarm": {
         "name": "Sciame d'Insetti",
@@ -2038,11 +2151,11 @@ export const it_IT: EnTranslations = {
       },
       "tigers_fury": {
         "name": "Furia della Tigre",
-        "description": "Aumenta la potenza d'attacco di 40 per 6 sec. Solo Forma Felina."
+        "description": "Aumenta la potenza d'attacco di 40 per 6 sec. Solo Forma del Lupo."
       },
       "rip": {
         "name": "Squartare",
-        "description": "Mossa finale che infligge danni da sanguinamento in 12 sec. Consuma i punti combo. Solo Forma Felina."
+        "description": "Mossa finale che infligge danni da sanguinamento in 12 sec. Consuma i punti combo. Solo Forma del Lupo."
       },
       "mortal_strike": {
         "name": "Colpo Mortale",
@@ -3435,7 +3548,7 @@ export const it_IT: EnTranslations = {
       "brother_aldric_fen": {
         "name": "Fratello Aldric",
         "title": "Sacerdote della Valle",
-        "greeting": "Che la Luce ti mantenga fuori dall acqua, {playerName}. I morti di questa palude non dormono: guadano."
+        "greeting": "Che la Luce ti mantenga fuori dall'acqua, {playerName}. I morti di questa palude non dormono: guadano."
       },
       "provisioner_hale": {
         "name": "Provveditore Hale",
@@ -3563,7 +3676,7 @@ export const it_IT: EnTranslations = {
         "completion": "Che riposino, e che la Luce perdoni chi li ha svegliati.",
         "objectives": {
           "0": {
-            "label": "Ossa irrequiete restituito al riposo"
+            "label": "Ossa irrequiete restituite al riposo"
           }
         }
       },
@@ -3603,7 +3716,7 @@ export const it_IT: EnTranslations = {
         "completion": "Il cimitero è più quieto, ma il richiamo ora sale dalla cripta, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Ossa irrequiete messo a tacere"
+            "label": "Ossa irrequiete messe a tacere"
           }
         }
       },
@@ -3756,7 +3869,7 @@ export const it_IT: EnTranslations = {
         "completion": "Sacche tutte integre. Hai mani più ferme di metà dei chirurghi del sud, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Vedova di Mirefen ucciso"
+            "label": "Vedova di Mirefen uccisa"
           },
           "1": {
             "label": "Sacca velenifera di vedova"
@@ -3769,10 +3882,10 @@ export const it_IT: EnTranslations = {
         "completion": "Davvero morta? Allora il folto torna a essere solo alberi. Che la Luce benedica la tua lama, {playerName}.",
         "objectives": {
           "0": {
-            "label": "Vedova di Mirefen ucciso"
+            "label": "Vedova di Mirefen uccisa"
           },
           "1": {
-            "label": "Madre della covata ucciso"
+            "label": "Madre della covata uccisa"
           }
         }
       },
@@ -4169,9 +4282,9 @@ export const it_IT: EnTranslations = {
         }
       },
       "q_nythraxis_restless_dead": {
-        "title": "Disordine nei campi d ossa",
-        "text": "Qualcosa e cambiato nelle Alture di Thornpeak, {playerName}. I morti non vagano piu senza meta. Si radunano e marciano nei campi d ossa a nord di Highwatch, dove il vecchio campo di battaglia incontra la strada della scogliera. Vai li, indaga sul disordine tra i revenant corazzati d ossa e porta qualsiasi prova di cio che li spinge.",
-        "completion": "Lo stesso simbolo appare su ogni frammento... una corona. L ho gia visto, inciso su vecchie tombe che nessun registro di Eastbrook ricorda.",
+        "title": "Disordine nei campi d'ossa",
+        "text": "Qualcosa è cambiato nelle Alture di Thornpeak, {playerName}. I morti non vagano più senza meta. Si radunano e marciano nei campi d'ossa a nord di Highwatch, dove il vecchio campo di battaglia incontra la strada della scogliera. Vai lì, indaga sul disordine tra i revenant corazzati d'ossa e porta qualsiasi prova di ciò che li spinge.",
+        "completion": "Lo stesso simbolo appare su ogni frammento... una corona. L'ho già visto, inciso su vecchie tombe che nessun registro di Eastbrook ricorda.",
         "objectives": {
           "0": {
             "label": "Frammento d'osso runico"
@@ -4180,8 +4293,8 @@ export const it_IT: EnTranslations = {
       },
       "q_nythraxis_graves": {
         "title": "Tombe dei dimenticati",
-        "text": "Ho gia visto questi segni, su tre vecchie tombe attorno al campo di battaglia settentrionale. Il capitano Aldren giace sull altura orientale, l alto sacerdote Malric vicino alla strada centrale spezzata e l assassino reale Voss presso la scogliera occidentale. Tocca ogni tomba e ascolta, {playerName}. I morti possono ricordare cio che i vivi hanno dimenticato.",
-        "completion": "Aldren rimase leale, Malric rifiuto di accettare la morte e Voss vide il pericolo prima di chiunque altro. Tutti e tre servirono lo stesso re dimenticato.",
+        "text": "Ho già visto questi segni, su tre vecchie tombe attorno al campo di battaglia settentrionale. Il capitano Aldren giace sull'altura orientale, l'alto sacerdote Malric vicino alla strada centrale spezzata e l'assassino reale Voss presso la scogliera occidentale. Tocca ogni tomba e ascolta, {playerName}. I morti possono ricordare ciò che i vivi hanno dimenticato.",
+        "completion": "Aldren rimase leale, Malric rifiutò di accettare la morte e Voss vide il pericolo prima di chiunque altro. Tutti e tre servirono lo stesso re dimenticato.",
         "objectives": {
           "0": {
             "label": "Visione alla tomba del capitano Aldren"
@@ -4196,8 +4309,8 @@ export const it_IT: EnTranslations = {
       },
       "q_nythraxis_sealed_crypt": {
         "title": "La cripta abbandonata",
-        "text": "Le visioni indicano la cripta abbandonata nella scogliera occidentale. Una vecchia leggenda dice che la cripta ospitasse un re. Forse Thornpeak lo sigillo li sotto dopo che il rituale di Malric lo trasformo in qualcosa di immortale. Entra nella cripta e guarda cosa resta dentro.",
-        "completion": "Le due meta della chiave combaciano, e il diario di Voss nomina cio che sigillarono: l anello del re Nythraxis. Se il diario dice il vero, quell anello e la chiave della sua tomba.",
+        "text": "Le visioni indicano la cripta abbandonata nella scogliera occidentale. Una vecchia leggenda dice che la cripta ospitasse un re. Forse Thornpeak lo sigillò lì sotto dopo che il rituale di Malric lo trasformò in qualcosa di immortale. Entra nella cripta e guarda cosa resta dentro.",
+        "completion": "Le due metà della chiave combaciano, e il diario di Voss nomina ciò che sigillarono: l'anello del re Nythraxis. Se il diario dice il vero, quell'anello è la chiave della sua tomba.",
         "objectives": {
           "0": {
             "label": "Parte superiore della chiave"
@@ -4212,8 +4325,8 @@ export const it_IT: EnTranslations = {
       },
       "q_nythraxis_bound_guardian": {
         "title": "Il Guardiano Vincolato",
-        "text": "Voss scrisse che i sopravvissuti sigillarono l Anello del re dietro un antico guardiano, cosi che nessuno potesse raggiungere la tomba di Nythraxis per caso o ambizione. Porta la Chiave della cripta al cerchio rituale sul terreno piano a est della cripta abbandonata e a sud-est della tomba occidentale. Usala li, spezza il guardiano e riporta l anello.",
-        "completion": "Le tre reliquie raccontano la stessa storia: Aldren combatte per difendere il suo re, Malric spezzo il confine della morte e Voss tento di fermare cio che segui. Il sigillo si indebolisce, e questo anello e la chiave della tomba di Nythraxis. Ora sei armonizzato per entrare nella Cripta di Nythraxis.",
+        "text": "Voss scrisse che i sopravvissuti sigillarono l'Anello del re dietro un antico guardiano, così che nessuno potesse raggiungere la tomba di Nythraxis per caso o ambizione. Porta la Chiave della cripta al cerchio rituale sul terreno piano a est della cripta abbandonata e a sud-est della tomba occidentale. Usala lì, spezza il guardiano e riporta l'anello.",
+        "completion": "Le tre reliquie raccontano la stessa storia: Aldren combatté per difendere il suo re, Malric spezzò il confine della morte e Voss tentò di fermare ciò che seguì. Il sigillo si indebolisce, e questo anello è la chiave della tomba di Nythraxis. Ora sei armonizzato per entrare nella Cripta di Nythraxis.",
         "objectives": {
           "0": {
             "label": "Chiave di volta usata al cerchio rituale"
@@ -4261,31 +4374,31 @@ export const it_IT: EnTranslations = {
       },
       "q_ledger_teeth": {
         "title": "Zanne nel buio",
-        "text": "I branchi di lupi hanno imparato le rotte di pattuglia: colpiscono al crepuscolo, quando la luce è scarsa e un viandante solitario è preda facile. Spezzali, {playerName}. Uccidi 10 Lupi della foresta e fa' che i branchi imparino una nuova lezione.",
-        "completion": "Dieci lupi, e la strada del crepuscolo è di nuovo nostra. Il registro diventa più gentile con te.",
+        "text": "Le volpi della radura sono diventate audaci come lupi: si intrufolano nei pollai al crepuscolo e spariscono prima che si accenda una lanterna, e una volpe affamata prenderà un agnello tanto quanto una gallina. Diradale, {playerName}. Uccidi 10 Volpi della radura e fa' che le altre tornino a temere la luce.",
+        "completion": "Dieci volpi, e al crepuscolo i pollai sono di nuovo tranquilli. Il registro diventa più gentile con te.",
         "objectives": {
           "0": {
-            "label": "Lupo della foresta ucciso"
+            "label": "Volpe della radura uccisa"
           }
         }
       },
       "q_ledger_reedwater": {
         "title": "Pattuglia tra le canne",
-        "text": "Ti manda Redbrook? Bene: queste vecchie ossa non riescono più a guadare le secche. I Pinnalimo sono tornati strisciando tra le canne e sono più audaci che mai. Diradali: 8 Acquattati Pinnalimo, e attento all'acqua profonda.",
-        "completion": "Questo terrà quei demoni gorgoglianti lontani dalle mie reti per una stagione. Di' al Maresciallo che il lago è di nuovo tranquillo.",
+        "text": "Ti manda Redbrook? Bene: queste vecchie ossa non riescono più a guadare le secche. Le gru della prateria hanno scoperto le mie reti e mi infilzano più pesci di quanti ne abbiano mai presi i Pinnalimo. Diradale: 8 Gru della prateria, e attento all'acqua profonda.",
+        "completion": "Questo terrà quelle ladre dalle lunghe zampe lontane dalle mie reti per una stagione. Di' al Maresciallo che le secche sono di nuovo mie.",
         "objectives": {
           "0": {
-            "label": "Acquattato Pinnalimo ucciso"
+            "label": "Gru della prateria scacciata"
           }
         }
       },
       "q_ledger_silk": {
-        "title": "Seta e veleno",
-        "text": "Il registro segna anche i boschi orientali come terra di guardiani. Gli acquattati di Webwood tessono più fitto ogni settimana: l'ultimo giorno di mercato una bambina si è spinta troppo vicino e l'abbiamo liberata che respirava a malapena. Uccidi 8 Acquattati di Webwood prima che si prendano del tutto il bosco.",
-        "completion": "Otto filatori in meno nel buio. Il bosco respira più leggero, e così faccio io.",
+        "title": "Pascolo e rovi",
+        "text": "Il registro segna anche i boschi orientali come terra di guardiani, e i miei orti officinali ne fanno parte. I cerbiatti maculati hanno spogliato fino alla radice la mia foglia d'argento e il cardo sanguigno, e senza quei semplici metà di Eastbrook resta senza medicine. Non ci trovo alcun piacere, ma abbatti 8 Cerbiatti maculati prima che le erbe d'autunno vadano perdute del tutto.",
+        "completion": "Gli orti potrebbero ancora riprendersi, grazie a te. Una dura misericordia, ma un bambino divorato dalla febbre ha più bisogno dei semplici di quanto il bosco abbia bisogno dei cervi. Il registro è in pari.",
         "objectives": {
           "0": {
-            "label": "Acquattato di Webwood ucciso"
+            "label": "Cerbiatto maculato abbattuto"
           }
         }
       },
@@ -4310,12 +4423,12 @@ export const it_IT: EnTranslations = {
         }
       },
       "q_ledger_toll": {
-        "title": "Il pedaggio dei briganti",
-        "text": "Le colline a sud-est sono diventate la strada del pedaggio di un bandito: rapinano chiunque sia tanto folle da viaggiare leggero. Il registro ha una taglia su ognuno di loro. Porta la giustizia di Eastbrook a 8 Banditi della Valle.",
-        "completion": "Otto banditi che hanno reso conto. Si sparge già la voce che la strada del pedaggio ha un nuovo guardiano, e non prende monete: prende teste.",
+        "title": "La strada delle zanne",
+        "text": "I cinghiali zannaboschiva sono scesi dal Boscochiaro fino alla strada commerciale di sud-est: bestioni dalle grandi zanne che incornano i buoi da tiro e rovesciano i carri per il grano sparso. Il registro ha una taglia su ognuno di loro. Riapri la strada: abbatti 8 Cinghiali zannaboschiva.",
+        "completion": "Otto bestioni in meno sulla strada, e i carri tornano a viaggiare. Si sparge già la voce che la strada commerciale ha un nuovo guardiano. Il registro sale a tuo favore.",
         "objectives": {
           "0": {
-            "label": "Bandito della Valle assicurato alla giustizia"
+            "label": "Cinghiale zannaboschiva ucciso"
           }
         }
       },
@@ -4549,11 +4662,11 @@ export const it_IT: EnTranslations = {
       "sunken_bastion": {
         "name": "Il Bastione Sommerso",
         "enterText": "Guadi nelle profondità del Bastione Sommerso...",
-        "leaveText": "Esci dall oscurità annegata."
+        "leaveText": "Esci dall'oscurità annegata."
       },
       "gravewyrm_sanctum": {
         "name": "Santuario del Gravewyrm",
-        "enterText": "L aria si fa fredda. Qualcosa di immenso respira sotto...",
+        "enterText": "L'aria si fa fredda. Qualcosa di immenso respira sotto...",
         "leaveText": "Barcolli di nuovo nel vento di montagna."
       },
       "nythraxis_crypt": {
