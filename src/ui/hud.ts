@@ -7473,6 +7473,9 @@ export class Hud {
   }
 
   private renderOptions(): void {
+    // The wide multi-column layout belongs to the keybinds view only; clear it
+    // so the other sub-views (and the main menu) keep their default width.
+    if (this.optionsView !== 'keybinds') $('#options-menu').classList.remove('kb-wide');
     if (this.optionsView === 'keybinds') { this.renderKeybinds(); return; }
     if (this.optionsView === 'graphics') { this.renderGraphics(); return; }
     if (this.optionsView === 'audio') { this.renderAudio(); return; }
@@ -7969,6 +7972,9 @@ export class Hud {
 
   private renderKeybinds(): void {
     const el = $('#options-menu');
+    // Wide, multi-column layout for the key-binding view only; other options
+    // sub-views (graphics/audio/interface) keep the default 420px width.
+    el.classList.add('kb-wide');
     el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.keyBindings'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
     this.settingToggleKeybind(el, t('hud.options.mouseCamera'), 'mouseCamera');
     this.settingToggleKeybind(el, t('hud.options.clickToMove'), 'clickToMove');
@@ -7980,18 +7986,24 @@ export class Hud {
     note.className = 'kb-note';
     note.textContent = this.keybindNote || t('hud.options.keybindHelpMouseCamera');
     el.appendChild(note);
-    const rows = document.createElement('div');
-    rows.className = 'kb-rows';
+    const cols = document.createElement('div');
+    cols.className = 'kb-cols';
     // The Attack Move key is only meaningful (and only rebindable) while its mode
     // is on; otherwise hide its row so it can't shadow Turn Left's A in the list.
     const attackMoveOn = !!this.optionsHooks?.settings.get('attackMove');
     for (const category of BIND_CATEGORIES) {
       const visible = BIND_ACTIONS.filter((a) => a.category === category && (a.id !== 'attackMove' || attackMoveOn));
       if (visible.length === 0) continue;
+      // Each category is its own column block (header + its rows) so the wide
+      // grid can flow categories side by side; on mobile they stack to one column.
+      const col = document.createElement('div');
+      col.className = 'kb-col';
       const header = document.createElement('div');
       header.className = 'kb-cat';
       header.textContent = BIND_CATEGORY_LABEL_KEYS[category] ? t(BIND_CATEGORY_LABEL_KEYS[category]) : category;
-      rows.appendChild(header);
+      col.appendChild(header);
+      const rows = document.createElement('div');
+      rows.className = 'kb-rows';
       for (const action of visible) {
         const row = document.createElement('div');
         row.className = 'kb-row';
@@ -8018,8 +8030,10 @@ export class Hud {
         }
         rows.appendChild(row);
       }
+      col.appendChild(rows);
+      cols.appendChild(col);
     }
-    el.appendChild(rows);
+    el.appendChild(cols);
     const reset = document.createElement('button');
     reset.className = 'btn';
     reset.textContent = t('hud.options.resetToDefaults');
