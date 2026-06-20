@@ -15,18 +15,20 @@
 import type { IWorld } from '../world_api';
 import type { Renderer } from '../render/renderer';
 import type { Keybinds } from '../game/keybinds';
-import { dist2d } from '../sim/types';
-import { QUESTS } from '../sim/data';
-import { t } from './i18n';
+import { dist2d, INTERACT_RANGE } from '../sim/types';
+import { QUESTS, ZONES, PLAYER_START } from '../sim/data';
+import { t, formatNumber } from './i18n';
 
-// Starter content the onboarding guides the player toward. These are stable
-// shipped ids; the slay count is read live from the quest def so it can't drift.
-const GIVER_NPC = 'marshal_redbrook';
-const STARTER_QUEST = 'q_wolves';
-const STARTER_MOB = 'forest_wolf';
-const SPAWN = { x: 2, y: 0, z: -2 };
+// Starter content the onboarding guides the player toward — all derived from the
+// shipped sim sources so a content rename or a moved spawn can't silently desync
+// onboarding (a resolve test pins that the derivation still finds a giver+mob).
+const STARTER_QUEST = ZONES[0]?.welcomeQuestId ?? 'q_wolves';
+const STARTER_DEF = QUESTS[STARTER_QUEST];
+const GIVER_NPC = STARTER_DEF?.giverNpcId ?? 'marshal_redbrook';
+const STARTER_MOB = STARTER_DEF?.objectives?.find((o) => o.type === 'kill')?.targetMobId ?? 'forest_wolf';
+const SPAWN = { x: PLAYER_START.x, y: 0, z: PLAYER_START.z }; // dist2d ignores y
 const MOVE_THRESHOLD = 3; // yards from spawn before "find your footing" is satisfied
-const GIVER_RANGE = 7; // matches the sim's accept-quest reach (INTERACT_RANGE + 2)
+const GIVER_RANGE = INTERACT_RANGE + 2; // matches the sim's accept-quest reach
 const STORAGE_KEY = 'woc.tutorial.v1';
 const DONE_LINGER_MS = 9000; // auto-dismiss the closing card after this long
 
@@ -40,6 +42,22 @@ export interface TutorialSnapshot {
   questActive: boolean; // starter quest is in the quest log
   questReady: boolean; // all objectives met, ready to turn in
   questDone: boolean; // starter quest has been turned in
+}
+
+// Should the overlay engage for this character? Only a genuinely fresh one:
+// level 1 with no quests at all. The id guard rejects the online pre-snapshot
+// window — after `hello`, ClientWorld.playerId is a real id while `player`
+// is still the blankEntity(-1) placeholder (level 1, empty logs), which would
+// otherwise latch the tutorial for a returning veteran (and, if they had
+// already finished the starter quest, permanently write the done-flag). Both
+// clauses are load-bearing: post-hello the id-match catches the placeholder
+// window; pre-hello both ids are -1, so `playerId >= 0` rejects it. Offline the
+// player id equals playerId from the first frame, so this is a no-op there.
+export function isFreshCharacter(world: IWorld): boolean {
+  const p = world.player;
+  if (!p) return false;
+  if (world.playerId < 0 || p.id !== world.playerId) return false;
+  return p.level === 1 && world.questsDone.size === 0 && world.questLog.size === 0;
 }
 
 // Pure state machine — unit-tested. Resolves the highest step the player has
@@ -77,10 +95,10 @@ export class TutorialOverlay {
     const p = world.player;
     if (!p) return;
 
-    // Engage only for a genuinely fresh character: level 1, no quests at all.
+    // Engage only for a genuinely fresh character (id-guarded against the online
+    // pre-snapshot placeholder — see isFreshCharacter).
     if (!this.engaged) {
-      const fresh = p.level === 1 && world.questsDone.size === 0 && world.questLog.size === 0;
-      if (!fresh) return;
+      if (!isFreshCharacter(world)) return;
       this.engaged = true;
     }
 
@@ -138,7 +156,7 @@ export class TutorialOverlay {
     const def = QUESTS[STARTER_QUEST];
     const needed = def?.objectives?.[0]?.count ?? 0;
     const current = world.questLog.get(STARTER_QUEST)?.counts?.[0] ?? 0;
-    return t('hud.tutorial.slayProgress', { current: String(Math.min(current, needed)), needed: String(needed) });
+    return t('hud.tutorial.slayProgress', { current: formatNumber(Math.min(current, needed)), needed: formatNumber(needed) });
   }
 
   private ensureDom(): void {
@@ -148,7 +166,9 @@ export class TutorialOverlay {
 
     const root = document.createElement('div');
     root.className = 'tut-card';
-    root.setAttribute('role', 'dialog');
+    // A self-updating, never-focused coachmark — role="status" (implicit polite
+    // live region) fits better than a dialog it never traps focus in.
+    root.setAttribute('role', 'status');
     root.setAttribute('aria-live', 'polite');
     root.setAttribute('aria-labelledby', 'tut-title');
 
@@ -190,8 +210,10 @@ export class TutorialOverlay {
 
     const moveKeys = ['forward', 'turnLeft', 'back', 'turnRight']
       .map((id) => keybinds.primaryLabel(id)).filter(Boolean).join('/');
-    const interactKey = keybinds.primaryLabel('interact');
-    const questKey = keybinds.primaryLabel('questlog');
+    // Fall back to the translated "Unbound" label so a cleared bind never leaves
+    // a literal blank gap in "press  to speak" (mirrors the HUD keybind list).
+    const interactKey = keybinds.primaryLabel('interact') || t('hud.options.unbound');
+    const questKey = keybinds.primaryLabel('questlog') || t('hud.options.unbound');
     const name = world.player.name || t('hud.core.you');
 
     const copy: Record<TutorialStep, { title: string; body: string }> = {
@@ -209,7 +231,7 @@ export class TutorialOverlay {
 
     const idx = STEP_ORDER.indexOf(this.step!);
     this.stepEl.textContent = idx >= 0
-      ? t('hud.tutorial.stepLabel', { current: String(idx + 1), total: String(STEP_ORDER.length) })
+      ? t('hud.tutorial.stepLabel', { current: formatNumber(idx + 1), total: formatNumber(STEP_ORDER.length) })
       : '';
 
     if (this.step === 'slay') {
