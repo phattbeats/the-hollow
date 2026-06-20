@@ -7,11 +7,10 @@ import * as THREE from 'three';
 //   1. '?lowgfx' (legacy flag) or '?gfx=low'  -> low
 //   2. '?gfx=medium' / '?gfx=high' / '?gfx=ultra' -> that tier, EVEN on software GL
 //      (headless screenshot verification: stills render slowly but correctly)
-//   3. otherwise: phone-class / low-memory browsers -> low
-//   4. otherwise: software GL (SwiftShader/llvmpipe) -> low, real GPUs -> high
+//   3. otherwise: persisted graphics preset, with missing/legacy values -> low
 
 export type GfxTier = 'low' | 'medium' | 'high' | 'ultra';
-export const GFX_CONFIG_VERSION = 12;
+export const GFX_CONFIG_VERSION = 14;
 
 export const GFX_BUCKET_IDS = [
   'resolution',
@@ -75,6 +74,8 @@ export interface GfxSettings {
   readonly shadowMap: number;
   /** PBR MeshStandardMaterial; low keeps Lambert */
   readonly standardMaterials: boolean;
+  /** Art-directed low-cost profile: richer cheap-path visuals without PBR/splat shaders. */
+  readonly lowPlus: boolean;
   /** Use the cheaper low-foliage density/LOD policy while keeping the rest of the tier. */
   readonly leanFoliage: boolean;
   readonly grassRadius: number;
@@ -99,7 +100,6 @@ export interface GfxRuntimeBudget {
   readonly cooldownSeconds: number;
 }
 
-const PRESET_AUTO = 0;
 const PRESET_LOW = 1;
 const PRESET_MEDIUM = 2;
 const PRESET_HIGH = 3;
@@ -241,14 +241,14 @@ function bucketBaselines(bands: GfxBucketBands): GfxBucketLevels {
   };
 }
 
-export function graphicsPresetLabel(value: number | undefined): 'auto' | 'low' | 'medium' | 'high' | 'ultra' | 'advanced' {
-  switch (Math.round(value ?? PRESET_AUTO)) {
+export function graphicsPresetLabel(value: number | undefined): 'low' | 'medium' | 'high' | 'ultra' | 'advanced' {
+  switch (Math.round(value ?? PRESET_LOW)) {
     case PRESET_LOW: return 'low';
     case PRESET_MEDIUM: return 'medium';
     case PRESET_HIGH: return 'high';
     case PRESET_ULTRA: return 'ultra';
     case PRESET_ADVANCED: return 'advanced';
-    default: return 'auto';
+    default: return 'low';
   }
 }
 
@@ -293,9 +293,10 @@ function settingsFor(
     pixelRatioCap: tier === 'low' ? 1.48 : tier === 'medium' ? 1.48 : tier === 'high' ? 1.75 : 2.5,
     shadowMap: tier === 'low' ? 2048 : tier === 'medium' ? 2560 : 4096,
     standardMaterials: tier === 'medium' || tier === 'high' || tier === 'ultra',
+    lowPlus: tier === 'low',
     leanFoliage: tier === 'low' || (tier === 'medium' && weakIntegratedGpu),
-    grassRadius: tier === 'low' ? 86 : tier === 'medium' ? 76 : 82, // low spends spare budget on nearby meadow density
-    grassStep: tier === 'low' ? 1.85 : tier === 'medium' ? 2.0 : 1.8,
+    grassRadius: tier === 'low' ? 80 : tier === 'medium' ? 76 : 82,
+    grassStep: tier === 'low' ? 2.05 : tier === 'medium' ? 2.0 : 1.8,
     terrainSplat: tier === 'medium' || tier === 'high' || tier === 'ultra',
     windSway: true,
     maxPointLights: 6,
@@ -375,14 +376,14 @@ export function isConstrainedBrowser(hints: GfxRuntimeHints): boolean {
 export function tierFromHints(hints: GfxRuntimeHints, softwareGl: boolean): GfxTier {
   const forced = forcedTierFromSearch(hints.search);
   if (forced) return forced;
-  switch (Math.round(hints.graphicsPreset ?? PRESET_AUTO)) {
+  switch (Math.round(hints.graphicsPreset ?? PRESET_LOW)) {
     case PRESET_LOW: return 'low';
     case PRESET_MEDIUM: return 'medium';
     case PRESET_HIGH: return 'high';
     case PRESET_ULTRA: return 'ultra';
     case PRESET_ADVANCED: return 'high';
   }
-  return softwareGl || isConstrainedBrowser(hints) || isWeakIntegratedGpu(hints.gpuRenderer) ? 'low' : 'high';
+  return 'low';
 }
 
 // Software GL (SwiftShader/llvmpipe — headless test runners, VMs) can't take

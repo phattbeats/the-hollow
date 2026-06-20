@@ -50,6 +50,8 @@ import { registerPreload } from './assets/preload';
 const GRASS_CHUNK_SIZE = 48;
 const GRASS_CHUNK_BUILD_BUDGET_MS = 2.2;
 const GRASS_CHUNK_MAX_BUILDS_PER_FRAME = 1;
+const GRASS_DENSITY_LOW = 0.38;
+const GRASS_DENSITY_HIGH = 0.5;
 const GRASS_CHUNK_CACHE_LIMIT_LOW = 96;
 const GRASS_CHUNK_CACHE_LIMIT_HIGH = 128;
 const TREE_WIND_STRENGTH = 0.06;
@@ -577,7 +579,7 @@ function placeSpecies(
       hideRegistry.push(...handles);
       return { ...g, handles };
     });
-    if (GFX.standardMaterials) {
+    if (GFX.standardMaterials && !GFX.leanFoliage) {
       for (const group of handlesByLod) {
         if (group.maxDist !== undefined && group.maxDist <= treeDetailFar) continue;
         const proxy = new THREE.InstancedMesh(
@@ -1094,8 +1096,9 @@ function buildGrassRing(parent: THREE.Group, seed: number): GrassRing {
   // high tier reads as a lush meadow: wider tufts with more blades; low keeps
   // the legacy sprite size
   const lush = !GFX.leanFoliage;
-  const quad = new THREE.PlaneGeometry(lush ? 1.45 : 1.1, lush ? 0.9 : 0.7);
-  quad.translate(0, lush ? 0.42 : 0.35, 0);
+  const lowPlusGrassScale = GFX.lowPlus ? 1.08 : 1;
+  const quad = new THREE.PlaneGeometry(lush ? 1.45 : 1.1 * lowPlusGrassScale, lush ? 0.9 : 0.7 * lowPlusGrassScale);
+  quad.translate(0, lush ? 0.42 : 0.35 * lowPlusGrassScale, 0);
   const quad2 = quad.clone().rotateY(Math.PI / 2);
   const geo = mergeGeometries([quad, quad2]);
 
@@ -1168,7 +1171,7 @@ function buildGrassRing(parent: THREE.Group, seed: number): GrassRing {
     for (let i = i0; i <= i1 && n < maxChunkCount; i++) {
       for (let j = j0; j <= j1 && n < maxChunkCount; j++) {
         const r = hashAt(i, j, 0);
-        if (r > 0.5) continue; // ~half the cells grow a tuft
+        if (r > (lush ? GRASS_DENSITY_HIGH : GRASS_DENSITY_LOW)) continue;
         const x = i * step + (hashAt(i, j, 1) - 0.5) * step * 1.4;
         const z = j * step + (hashAt(i, j, 2) - 0.5) * step * 1.4;
         if (x < minX || x >= maxX || z < minZ || z >= maxZ) continue;

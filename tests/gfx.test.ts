@@ -32,8 +32,9 @@ describe('graphics tier resolution', () => {
     expect(isConstrainedBrowser(desktop)).toBe(false);
   });
 
-  it('drops automatic constrained and software sessions to low while preserving forced high', () => {
-    expect(tierFromHints(desktop, false)).toBe('high');
+  it('defaults missing or legacy presets to low while preserving forced high', () => {
+    expect(tierFromHints(desktop, false)).toBe('low');
+    expect(tierFromHints({ ...desktop, graphicsPreset: 0 }, false)).toBe('low');
     expect(tierFromHints(desktop, true)).toBe('low');
     expect(tierFromHints({ ...desktop, maxTouchPoints: 1, coarsePointer: true }, false)).toBe('low');
     expect(tierFromHints({ ...desktop, search: '?gfx=high', maxTouchPoints: 1, coarsePointer: true }, false)).toBe('high');
@@ -50,7 +51,8 @@ describe('graphics tier resolution', () => {
   });
 
   it('labels presets and runs the budget governor unless Ultra or URL-forced', () => {
-    expect(graphicsPresetLabel(undefined)).toBe('auto');
+    expect(graphicsPresetLabel(undefined)).toBe('low');
+    expect(graphicsPresetLabel(0)).toBe('low');
     expect(graphicsPresetLabel(1)).toBe('low');
     expect(graphicsPresetLabel(2)).toBe('medium');
     expect(graphicsPresetLabel(3)).toBe('high');
@@ -125,13 +127,16 @@ describe('graphics tier resolution', () => {
 
     expect(low.standardMaterials).toBe(false);
     expect(low.leanFoliage).toBe(true);
+    expect(low.lowPlus).toBe(true);
     expect(low.composer).toBe(false);
     expect(low.ao).toBe(false);
 
     expect(medium.standardMaterials).toBe(true);
     expect(medium.leanFoliage).toBe(false);
+    expect(medium.lowPlus).toBe(false);
     expect(mediumIris.standardMaterials).toBe(true);
     expect(mediumIris.leanFoliage).toBe(true);
+    expect(mediumIris.lowPlus).toBe(false);
     expect(medium.terrainSplat).toBe(true);
     expect(medium.composer).toBe(false);
     expect(medium.ao).toBe(false);
