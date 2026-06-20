@@ -26,7 +26,8 @@ no procedural-rig path here anymore. Reads the world; never mutates the sim.
 - `portrait.ts` — offscreen-WebGL headshot factory: renders a (class/visual-key,
   skin) head-and-shoulders PNG from the real model, caches the data URL.
   `playerPortraitDataUrl`/`visualPortraitDataUrl` + `onPortraitsReady`. Consumed
-  by `src/main.ts`, `src/ui/hud.ts`, `src/ui/portrait_chip.ts`.
+  by `src/main.ts`, `src/ui/unit_portrait_painter.ts` (player/target frames),
+  `src/ui/hud.ts` (skin select), `src/ui/portrait_chip.ts`.
 - `index.ts` — public exports + `createCharacterVisual(e, formKey?)` factory.
 
 ## Families & keys
