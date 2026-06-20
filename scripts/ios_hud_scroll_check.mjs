@@ -7,8 +7,10 @@
 // an overflowing Bag + Market list under the mobile HUD skin.
 //
 // Boots the offline game on a desktop viewport (the headless mobile-emulated
-// boot hangs on asset init), then activates `body.mobile-touch` + a phone-sized
-// viewport so the real mobile CSS applies. Needs `npm run dev`. Writes PNGs to tmp/.
+// boot hangs on asset init), then activates `body.mobile-touch` + a landscape
+// phone viewport (the only in-world orientation; portrait is blocked by the
+// #rotate-device nudge) so the real mobile CSS applies. Needs `npm run dev`.
+// Writes PNGs to tmp/.
 import puppeteer from 'puppeteer-core';
 import fs from 'node:fs';
 import { BROWSER_PATH } from './browser_path.mjs';
@@ -70,14 +72,11 @@ await page.evaluate(() => {
   } catch {}
 });
 
-// Switch to the mobile HUD skin + a portrait phone viewport (tall windows show
-// the scrollable lists best). Hide the orientation nudge so it doesn't overlay.
-await page.setViewport({ width: 390, height: 740 });
-await page.evaluate(() => {
-  document.body.classList.add('mobile-touch');
-  const nudge = document.querySelector('#rotate-device');
-  if (nudge) nudge.style.setProperty('display', 'none', 'important');
-});
+// Switch to the mobile HUD skin + a LANDSCAPE phone viewport. In-world play is
+// landscape-only (portrait shows the full-screen #rotate-device nudge), so this
+// is the real orientation a player opens the Market / Bag in.
+await page.setViewport({ width: 844, height: 390 });
+await page.evaluate(() => document.body.classList.add('mobile-touch'));
 await wait(200);
 
 const touchActionOf = (sel) => page.evaluate((s) => {
