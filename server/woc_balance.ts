@@ -29,7 +29,7 @@ const SOLANA_RPC_URL = (process.env.SOLANA_RPC_URL ?? process.env.VITE_SOLANA_RP
 // through this cache); the player's own card/bag bypass it with `fresh=1` on
 // open. 2 min keeps token changes visible within a couple minutes while staying
 // well under public-RPC rate limits (≈ online-players / 2 min in RPC reads).
-const CACHE_TTL_MS = 2 * 60 * 1000;
+export const CACHE_TTL_MS = 2 * 60 * 1000;
 export const WOC_BALANCE_CACHE_MAX_ENTRIES = 1024;
 
 interface CacheEntry { balance: number; at: number; }
@@ -190,7 +190,11 @@ export async function cachedWocBalance(pubkey: string, fresh = false): Promise<n
     rememberCacheEntry(pubkey, hit);
     return hit.balance;
   }
-  recordUsageCacheEvent('woc.balance', hit ? 'stale' : 'miss');
+  // Genuine staleness only. A fresh=1 bypass of a still-in-TTL entry reaches here
+  // too, but it's a deliberate skip — not a stale refresh — so it records neither
+  // 'stale' nor 'miss' (the ensuing fetch still records 'store'/'failure').
+  if (!hit) recordUsageCacheEvent('woc.balance', 'miss');
+  else if (now - hit.at >= CACHE_TTL_MS) recordUsageCacheEvent('woc.balance', 'stale');
   const balance = await fetchWocBalance(pubkey);
   if (balance === null) {
     recordUsageCacheEvent('woc.balance', 'failure');
@@ -212,6 +216,19 @@ export async function holderInfoForPubkey(pubkey: string): Promise<{ tier: numbe
   const balance = await cachedWocBalance(pubkey);
   if (balance === null) return { tier: 0, balance: 0 };
   return { tier: holderTierIndexForBalance(balance), balance };
+}
+
+/**
+ * Parse the /api/woc/balance query string into its `{ owner, fresh }` inputs.
+ * `fresh` is true ONLY for the exact `fresh=1` opt-in — any other value, or its
+ * absence, is a normal cached read, so a stray `fresh=true`/`fresh=0` can't be
+ * used to force an RPC. `owner` defaults to '' so the handler's address
+ * validation rejects a missing owner with a 400. Pure + import-safe (unlike the
+ * route in main.ts, which self-runs the server on import), so it's unit-tested.
+ */
+export function parseWocBalanceQuery(rawUrl: string): { owner: string; fresh: boolean } {
+  const params = new URLSearchParams(rawUrl.split('?')[1] ?? '');
+  return { owner: params.get('owner') ?? '', fresh: params.get('fresh') === '1' };
 }
 
 /**

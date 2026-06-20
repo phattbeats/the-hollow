@@ -6100,6 +6100,14 @@ export class Hud {
       if (metadataReady) void compose(requestedPoseIndex);
     });
 
+    // Re-composite the card with the current pose whenever the wallet balance
+    // (or availability) changes while this modal is open — e.g. the fresh read
+    // kicked at open lands, or tokens move during the session. Registered BEFORE
+    // the awaits below so a balance landing during that window isn't dropped; it
+    // no-ops until metadataReady, and the first compose picks up the fresh store
+    // value anyway.
+    this.recomposeOpenCard = () => { if (this.cardModalEl === back && metadataReady) void compose(requestedPoseIndex); };
+
     // Referral info + realm standing are online-only (null offline). Fetch once
     // and reuse across pose re-renders. Pose clicks before this resolves update
     // requestedPoseIndex, so the latest visible choice renders when ready.
@@ -6110,10 +6118,6 @@ export class Hud {
     await compose(requestedPoseIndex);
     if (this.cardModalEl !== back) return;
     this.wireCardActions(back, state, setStatus);
-    // Re-composite the card with the current pose whenever the wallet balance
-    // (or availability) changes while this modal is open — e.g. the fresh read
-    // kicked above lands, or tokens move during the session.
-    this.recomposeOpenCard = () => { if (this.cardModalEl === back && metadataReady) void compose(requestedPoseIndex); };
   }
 
   private closePlayerCardModal(restoreFocus = true): void {

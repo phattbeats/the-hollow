@@ -12,7 +12,7 @@ import { sfx } from './game/sfx';
 import { activePvpOpponentIds, handlePickedEntity, hoverCursorKind, isAttackableEntity } from './game/interactions';
 import { clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, distance2d, latencyAdjustedStopDistance, stepAngleToward } from './game/click_move';
 import { Api, ClientWorld, CharacterSummary, type ReleaseEntry } from './net/online';
-import { setWalletDisplayAvailable, setWocBalance, setWalletUiEnabled } from './ui/wallet_balance';
+import { setWalletDisplayAvailable, setWocBalance, setWalletUiEnabled, resolveWocBalanceUpdate } from './ui/wallet_balance';
 import { absolutePublishedCardUrl, setCardUploader, setReferralProvider, setStandingProvider } from './ui/player_card_share';
 // The wallet module is loaded lazily via dynamic import() in the wallet
 // controller below, so it stays out of the main entry chunk and only loads when
@@ -3288,11 +3288,17 @@ async function refreshWocBalance(address: string, fresh = false): Promise<void> 
   }
   const wallet = await loadWallet();
   const balance = await wallet.fetchWocBalance(address, fresh);
-  if (wallet.currentWallet().address === address || linkedWalletPubkey === address) {
-    connectedWocBalance = balance;
-    if (linkedWalletPubkey === address) linkedWocBalance = balance;
-    updateWalletButton();
-  }
+  // Skip stale results (wallet switched mid-flight) and fresh-read transport blips
+  // that would wipe a shown balance — see resolveWocBalanceUpdate.
+  const { apply, setLinked } = resolveWocBalanceUpdate({
+    address, fresh, balance,
+    currentAddress: wallet.currentWallet().address,
+    linkedAddress: linkedWalletPubkey,
+  });
+  if (!apply) return;
+  connectedWocBalance = balance;
+  if (setLinked) linkedWocBalance = balance;
+  updateWalletButton();
 }
 
 // Re-fetch the connected/linked wallet's balance on demand (server cache

@@ -11,6 +11,7 @@ import {
   holderTierForBalance, holderTierBadgeDataUrl, holderTierDisplayName,
   holderTierFlavorText, type HolderTier,
 } from './holder_tier';
+import { percentileTierForPercent, percentileTierBadgeDataUrl } from './percentile_tier';
 import { formatNumber, getLanguage, languageTag, t, type TranslationKey } from './i18n';
 
 export interface PlayerCardStat {
@@ -158,10 +159,12 @@ export async function renderPlayerCardCanvas(data: PlayerCardData): Promise<HTML
   }
 
   const tier = holderTierForBalance(data.balance);
-  const [charImg, badgeImg, logoImg] = await Promise.all([
+  const pctTier = percentileTierForPercent(data.topPercent);
+  const [charImg, badgeImg, logoImg, pctBadgeImg] = await Promise.all([
     loadImage(data.characterImage),
     tier ? loadImage(holderTierBadgeDataUrl(tier, 256)) : Promise.resolve(null),
     loadImage(LOGO_URL).catch(() => null), // best-effort brand mark
+    pctTier ? loadImage(percentileTierBadgeDataUrl(pctTier, 128)).catch(() => null) : Promise.resolve(null), // best-effort; drawHeader falls back to the plain chip
   ]);
 
   const canvas = document.createElement('canvas');
@@ -173,7 +176,7 @@ export async function renderPlayerCardCanvas(data: PlayerCardData): Promise<HTML
 
   drawBackdrop(ctx, data.classColor);
   drawCharacter(ctx, charImg);
-  drawHeader(ctx, data);
+  drawHeader(ctx, data, pctBadgeImg);
   if (tier && badgeImg) drawBadge(ctx, tier, badgeImg, data.balance);
   drawStats(ctx, data);
   drawGear(ctx, data);
@@ -220,7 +223,7 @@ function drawCharacter(ctx: CanvasRenderingContext2D, img: HTMLImageElement): vo
   ctx.drawImage(img, x, y, w, h);
 }
 
-function drawHeader(ctx: CanvasRenderingContext2D, data: PlayerCardData): void {
+function drawHeader(ctx: CanvasRenderingContext2D, data: PlayerCardData, pctBadge: HTMLImageElement | null): void {
   const x = 478;
   ctx.save();
   ctx.shadowColor = 'rgba(0,0,0,0.6)';
@@ -239,20 +242,30 @@ function drawHeader(ctx: CanvasRenderingContext2D, data: PlayerCardData): void {
   ctx.fillText(sub, x, 130);
   const subW = ctx.measureText(sub).width;
 
-  // A "TOP N%" flex chip beside the subtitle (only shown when it's a flex).
+  // A "TOP N%" flex beside the subtitle (only shown when it's a flex). Top 1-9%
+  // earns a tier medal + a tier-coloured tile; a worse-than-9% percentile keeps a
+  // plain gold chip.
   if (data.topPercent !== null) {
     const label = formatTopPercent(data.topPercent);
     ctx.font = `700 16px ${BODY_FONT}`;
     const tw = ctx.measureText(label).width;
     const padX = 12;
-    const chipX = x + subW + 16;
     const chipY = 109;
     const chipH = 26;
-    ctx.fillStyle = COL.gold;
-    roundRect(ctx, chipX, chipY, tw + padX * 2, chipH, 13);
+    const pctTier = percentileTierForPercent(data.topPercent);
+    let cursorX = x + subW + 16;
+    // The tier medal sits just left of the tile, against the dark card so its
+    // ring→glow + laurel read clearly.
+    if (pctTier && pctBadge) {
+      const d = chipH + 6;
+      ctx.drawImage(pctBadge, cursorX, chipY + chipH / 2 - d / 2, d, d);
+      cursorX += d + 6;
+    }
+    ctx.fillStyle = pctTier ? pctTier.ring : COL.gold;
+    roundRect(ctx, cursorX, chipY, tw + padX * 2, chipH, 13);
     ctx.fill();
     ctx.fillStyle = '#1c1407';
-    ctx.fillText(label, chipX + padX, chipY + 18);
+    ctx.fillText(label, cursorX + padX, chipY + 18);
   }
 
   ctx.fillStyle = COL.muted;
