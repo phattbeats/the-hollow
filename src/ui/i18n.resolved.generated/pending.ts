@@ -10,37 +10,37 @@
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
-    "hudChrome.paperdoll.unequip",
-    "hudChrome.paperdoll.unequipAria"
+    "hudChrome.paperdoll.unequipAria",
+    "hudChrome.paperdoll.unequipHint"
   ],
   "es_ES": [
-    "hudChrome.paperdoll.unequip",
-    "hudChrome.paperdoll.unequipAria"
+    "hudChrome.paperdoll.unequipAria",
+    "hudChrome.paperdoll.unequipHint"
   ],
   "fr_FR": [
-    "hudChrome.paperdoll.unequip",
-    "hudChrome.paperdoll.unequipAria"
+    "hudChrome.paperdoll.unequipAria",
+    "hudChrome.paperdoll.unequipHint"
   ],
   "fr_CA": [
-    "hudChrome.paperdoll.unequip",
-    "hudChrome.paperdoll.unequipAria"
+    "hudChrome.paperdoll.unequipAria",
+    "hudChrome.paperdoll.unequipHint"
   ],
   "en_CA": [],
   "it_IT": [
-    "hudChrome.paperdoll.unequip",
-    "hudChrome.paperdoll.unequipAria"
+    "hudChrome.paperdoll.unequipAria",
+    "hudChrome.paperdoll.unequipHint"
   ],
   "de_DE": [
-    "hudChrome.paperdoll.unequip",
-    "hudChrome.paperdoll.unequipAria"
+    "hudChrome.paperdoll.unequipAria",
+    "hudChrome.paperdoll.unequipHint"
   ],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
   "pt_BR": [
-    "hudChrome.paperdoll.unequip",
-    "hudChrome.paperdoll.unequipAria"
+    "hudChrome.paperdoll.unequipAria",
+    "hudChrome.paperdoll.unequipHint"
   ],
   "ru_RU": []
 };

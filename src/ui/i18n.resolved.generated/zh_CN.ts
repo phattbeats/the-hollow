@@ -336,8 +336,8 @@ export const zh_CN: EnTranslations = {
       }
     },
     "paperdoll": {
-      "unequip": "卸下",
-      "unequipAria": "卸下 {item}"
+      "unequipAria": "卸下 {item}",
+      "unequipHint": "右键点击或拖到背包以卸下"
     }
   },
   "skinEvent": {

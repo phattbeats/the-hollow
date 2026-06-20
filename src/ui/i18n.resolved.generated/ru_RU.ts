@@ -336,8 +336,8 @@ export const ru_RU: EnTranslations = {
       }
     },
     "paperdoll": {
-      "unequip": "Снять",
-      "unequipAria": "Снять {item}"
+      "unequipAria": "Снять {item}",
+      "unequipHint": "ПКМ или перетащите в сумку, чтобы снять"
     }
   },
   "skinEvent": {

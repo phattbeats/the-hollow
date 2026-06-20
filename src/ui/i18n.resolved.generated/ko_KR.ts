@@ -336,8 +336,8 @@ export const ko_KR: EnTranslations = {
       }
     },
     "paperdoll": {
-      "unequip": "장착 해제",
-      "unequipAria": "{item} 장착 해제"
+      "unequipAria": "{item} 장착 해제",
+      "unequipHint": "우클릭하거나 가방으로 드래그하여 장착 해제"
     }
   },
   "skinEvent": {
