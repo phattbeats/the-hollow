@@ -139,18 +139,23 @@ export class PerfOverlaySettingsPanel {
     const perf = this.host.perf;
     const card = settingsCard(parent, t('hudChrome.perf.sectionStats'));
 
-    // Quick presets that bulk-set the per-metric visibility map.
+    // Quick presets that bulk-set the per-metric visibility map: an equal 3-up row
+    // under its own subhead, prominent and easy to tap.
     const presets: { kind: 'minimal' | 'standard' | 'everything'; label: string }[] = [
       { kind: 'minimal', label: t('hudChrome.perf.presetMinimal') },
       { kind: 'standard', label: t('hudChrome.perf.presetStandard') },
       { kind: 'everything', label: t('hudChrome.perf.presetEverything') },
     ];
-    const { row } = settingRow(t('hudChrome.perf.presetsLabel'));
-    const presetWrap = div('set-choice');
+    const presetsLabel = t('hudChrome.perf.presetsLabel');
+    subhead(card, presetsLabel);
+    const presetWrap = div('perf-presets');
+    // Tie the preset cluster to its label for assistive tech.
+    presetWrap.setAttribute('role', 'group');
+    presetWrap.setAttribute('aria-label', presetsLabel);
     for (const p of presets) {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'btn set-choice-btn';
+      btn.className = 'btn perf-preset-btn';
       btn.textContent = p.label;
       btn.setAttribute('aria-label', p.label);
       btn.addEventListener('click', () => {
@@ -160,8 +165,7 @@ export class PerfOverlaySettingsPanel {
       });
       presetWrap.appendChild(btn);
     }
-    row.appendChild(presetWrap);
-    card.appendChild(row);
+    card.appendChild(presetWrap);
 
     // Metric toggle chips, grouped under category subheads.
     for (const { group, chips } of perfMetricGroups()) {
