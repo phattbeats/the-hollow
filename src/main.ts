@@ -812,6 +812,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     captureKey: (cb) => input.captureNextKey(cb),
     settings,
     onSettingChange: (key, value) => applySetting(key, value),
+    changeLanguage: (lang, onStatus) => changeLanguage(lang, onStatus),
   });
   if (online) {
     hud.attachReporting({
@@ -2477,6 +2478,38 @@ function refreshLocalizedDynamicShell(): void {
   }
 }
 
+// Single source of truth for switching the active locale at runtime. Used by BOTH the
+// homepage footer picker and the in-game Options > Interface picker (via OptionsHooks).
+// Loads the locale chunk first (the async loader), then flips the language, re-localizes
+// the static shell, and fans the change out to every live listener through
+// `woc:languagechange` (the HUD relocalizes its dynamic UI on that event). onStatus, when
+// given, receives a localized progress/error message for an aria-live status element.
+// Returns true on success, false if the locale chunk failed to load (active locale kept).
+async function changeLanguage(selected: SupportedLanguage, onStatus?: (msg: string) => void): Promise<boolean> {
+  onStatus?.(t('settings.languageLoading'));
+  try {
+    await ensureLocaleLoaded(selected);
+  } catch {
+    // The locale chunk failed to load. Keep the already-resident locale and tell the user.
+    onStatus?.(t('settings.languageLoadFailed'));
+    return false;
+  }
+  onStatus?.('');
+  setLanguage(selected);
+
+  // Dynamically update the browser URL query parameter without page reload
+  if (typeof window !== 'undefined' && window.history) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', selected);
+    window.history.pushState({}, '', url.toString());
+  }
+
+  translatePage();
+  refreshLocalizedDynamicShell();
+  document.dispatchEvent(new CustomEvent('woc:languagechange', { detail: { language: selected } }));
+  return true;
+}
+
 async function loadProjectStats(): Promise<void> {
   // Realm status now lives in the realm dropdown — both in the trigger sub-line
   // and inside the Online option — so update every instance by class.
@@ -3502,31 +3535,8 @@ function wireStartScreens(): void {
       // module is still static-imported through the barrel, so the await resolves on a
       // microtask with no network and the transient "loading" status never paints; the
       // failure path is wired now so the lazy locale flip's real fetch needs no call-site change.
-      void (async () => {
-        if (langStatus) langStatus.textContent = t('settings.languageLoading');
-        try {
-          await ensureLocaleLoaded(selected);
-        } catch {
-          // The locale chunk failed to load (a real risk once the lazy locale flip makes this a
-          // network fetch). Keep the already-resident locale and tell the user.
-          if (langStatus) langStatus.textContent = t('settings.languageLoadFailed');
-          langSelect.value = getLanguage();
-          return;
-        }
-        if (langStatus) langStatus.textContent = '';
-        setLanguage(selected);
-
-        // Dynamically update the browser URL query parameter without page reload
-        if (typeof window !== 'undefined' && window.history) {
-          const url = new URL(window.location.href);
-          url.searchParams.set('lang', selected);
-          window.history.pushState({}, '', url.toString());
-        }
-
-        translatePage();
-        refreshLocalizedDynamicShell();
-        document.dispatchEvent(new CustomEvent('woc:languagechange', { detail: { language: selected } }));
-      })();
+      void changeLanguage(selected, (msg) => { if (langStatus) langStatus.textContent = msg; })
+        .then((ok) => { if (!ok) langSelect.value = getLanguage(); });
     });
   }
 

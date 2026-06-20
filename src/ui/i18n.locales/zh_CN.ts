@@ -436,6 +436,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   "hud.options.graphics": "图形",
   "hud.options.audio": "音频",
   "hud.options.interface": "界面",
+  "hud.options.language": "语言",
   "hud.options.logout": "退出登录",
   "hud.options.returnToGame": "返回游戏",
   "hud.options.resetToDefaults": "恢复默认",

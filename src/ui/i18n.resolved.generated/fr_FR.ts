@@ -872,6 +872,7 @@ export const fr_FR: EnTranslations = {
       "graphics": "Graphismes",
       "audio": "Audio",
       "interface": "Interface",
+      "language": "Langue",
       "logout": "Déconnexion",
       "returnToGame": "Retour au jeu",
       "resetToDefaults": "Réinitialiser",

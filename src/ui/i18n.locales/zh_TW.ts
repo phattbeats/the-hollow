@@ -436,6 +436,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   "hud.options.graphics": "圖形",
   "hud.options.audio": "音訊",
   "hud.options.interface": "介面",
+  "hud.options.language": "語言",
   "hud.options.logout": "登出",
   "hud.options.returnToGame": "返回遊戲",
   "hud.options.resetToDefaults": "恢復預設",

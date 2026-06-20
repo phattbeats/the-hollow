@@ -51,7 +51,7 @@ import {
 } from './chat_channels';
 import { TouchPeekGuard, TOOLTIP_PEEK_MS } from './touch_peek';
 import { maskProfanity } from './profanity';
-import { formatMoney as formatLocalizedMoney, formatNumber, moneyParts, t, tOptional, tPlural, type TranslationKey } from './i18n';
+import { formatMoney as formatLocalizedMoney, formatNumber, getLanguage, isSupportedLanguage, moneyParts, supportedLanguages, t, tOptional, tPlural, type SupportedLanguage, type TranslationKey } from './i18n';
 import { tEntity } from './entity_i18n';
 import { localizeServerText, localizeZone } from './server_i18n';
 import { localizeSimText, localizeSimAuraName } from './sim_i18n';
@@ -76,6 +76,10 @@ export interface OptionsHooks {
   captureKey(cb: (code: string | null) => void): void;
   settings: Settings;
   onSettingChange(key: keyof GameSettings, value: GameSettings[keyof GameSettings]): void;
+  // Switch the active locale at runtime (loads the locale chunk, relocalizes the page,
+  // fans out woc:languagechange). onStatus receives localized progress/error text for an
+  // aria-live element. Resolves false if the locale failed to load (active locale kept).
+  changeLanguage(lang: SupportedLanguage, onStatus?: (msg: string) => void): Promise<boolean>;
 }
 
 export interface ReportHooks {
@@ -104,6 +108,26 @@ const FAMILY_GLYPH: Record<string, string> = {
 const CLASS_GLYPH: Record<string, string> = {
   warrior: '⚔️', paladin: '🔨', hunter: '🏹', rogue: '🗡️', priest: '✝️',
   shaman: '🌩️', mage: '🔮', warlock: '🕯️', druid: '🐻',
+};
+// Language picker labels. Endonyms (each language's name in its own script) are NOT
+// translated — they render identically in every locale, matching the homepage footer
+// picker (index.html) and standard i18n practice. Keyed by SupportedLanguage; the picker
+// iterates `supportedLanguages`, so a new locale appears once its label is added here.
+const LANGUAGE_ENDONYMS: Record<SupportedLanguage, string> = {
+  en: 'English (US)',
+  es: 'Español (LatAm)',
+  es_ES: 'Español (España)',
+  fr_FR: 'Français (France)',
+  fr_CA: 'Français (Canada)',
+  en_CA: 'English (Canada)',
+  it_IT: 'Italiano',
+  de_DE: 'Deutsch',
+  zh_CN: '简体中文',
+  zh_TW: '繁體中文',
+  ko_KR: '한국어',
+  ja_JP: '日本語',
+  pt_BR: 'Português (Brasil)',
+  ru_RU: 'Русский',
 };
 const RESOURCE_LABEL_KEYS: Record<ResourceType, TranslationKey> = {
   mana: 'abilityUi.resources.mana',
@@ -7685,8 +7709,66 @@ export class Hud {
   // (sliders/toggles persisted to the GameSettings store, applied via CSS in
   // main.ts) plus the classic client-side "Show Timestamps" chat option. None of
   // it touches the simulation.
+  // In-game language picker (Options > Interface). Mirrors the homepage footer picker so a
+  // player can switch locales without leaving the world. Switching is delegated to the
+  // OptionsHooks.changeLanguage seam (main.ts owns the locale load + page relocalization);
+  // the HUD itself relocalizes its dynamic UI off the woc:languagechange event (see ctor).
+  private languageSelect(parent: HTMLElement): void {
+    const hooks = this.optionsHooks;
+    if (!hooks) return;
+    const row = document.createElement('div');
+    row.className = 'set-row';
+    const name = document.createElement('span');
+    name.className = 'set-name';
+    name.textContent = t('hud.options.language');
+    const select = document.createElement('select');
+    select.className = 'lang-select-dropdown set-lang-select';
+    select.setAttribute('aria-label', t('hud.options.language'));
+    for (const lang of supportedLanguages) {
+      const opt = document.createElement('option');
+      opt.value = lang;
+      opt.textContent = LANGUAGE_ENDONYMS[lang];
+      select.appendChild(opt);
+    }
+    select.value = getLanguage();
+    // aria-live status for the async locale load (loading / load-failed).
+    const status = document.createElement('span');
+    status.className = 'visually-hidden';
+    status.setAttribute('role', 'status');
+    status.setAttribute('aria-live', 'polite');
+    select.addEventListener('change', () => {
+      const selected = select.value;
+      if (!isSupportedLanguage(selected) || selected === getLanguage()) return;
+      audio.click();
+      select.disabled = true;
+      void hooks.changeLanguage(selected, (msg) => { status.textContent = msg; })
+        .then((ok) => {
+          if (!ok) {
+            // The locale chunk failed to load — restore the picker to the locale that stayed active.
+            select.value = getLanguage();
+          } else if (this.optionsOpen && this.optionsView === 'interface') {
+            // Rebuild the panel in the new language, then return keyboard focus to the
+            // fresh picker (the control the user just operated) so it isn't lost to <body>.
+            // The refocus also lets screen readers announce the switch via the select's value.
+            this.renderInterface();
+            this.focusFirstInteractive($('#options-menu'), '.set-lang-select');
+          }
+        })
+        .catch(() => {
+          // A relocalization step threw after the locale loaded; keep the picker usable and
+          // surface the failure rather than leaving the control stuck disabled.
+          select.value = getLanguage();
+          status.textContent = t('settings.languageLoadFailed');
+        })
+        .finally(() => { select.disabled = false; });
+    });
+    row.append(name, select);
+    parent.append(row, status);
+  }
+
   private renderInterface(): void {
     const body = this.settingsViewShell(t('hud.options.interface'));
+    this.languageSelect(body);
     this.settingSlider(body, t('hud.options.hudOpacity'), 'hudOpacity');
     this.settingSlider(body, t('hud.options.tooltipScale'), 'tooltipScale');
     this.settingSlider(body, t('hud.options.fctScale'), 'fctScale');

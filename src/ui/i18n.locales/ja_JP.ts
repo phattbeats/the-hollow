@@ -436,6 +436,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "hud.options.graphics": "グラフィック",
   "hud.options.audio": "オーディオ",
   "hud.options.interface": "インターフェース",
+  "hud.options.language": "言語",
   "hud.options.logout": "ログアウト",
   "hud.options.returnToGame": "ゲームに戻る",
   "hud.options.resetToDefaults": "初期設定に戻す",

@@ -872,6 +872,7 @@ export const ko_KR: EnTranslations = {
       "graphics": "그래픽",
       "audio": "오디오",
       "interface": "인터페이스",
+      "language": "언어",
       "logout": "로그아웃",
       "returnToGame": "게임으로 돌아가기",
       "resetToDefaults": "기본값 복원",

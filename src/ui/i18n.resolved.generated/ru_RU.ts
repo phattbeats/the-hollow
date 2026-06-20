@@ -872,6 +872,7 @@ export const ru_RU: EnTranslations = {
       "graphics": "Графика",
       "audio": "Звук",
       "interface": "Интерфейс",
+      "language": "Язык",
       "logout": "Выйти",
       "returnToGame": "Вернуться в игру",
       "resetToDefaults": "Сбросить настройки",

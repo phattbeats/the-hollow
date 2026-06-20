@@ -436,6 +436,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   "hud.options.graphics": "그래픽",
   "hud.options.audio": "오디오",
   "hud.options.interface": "인터페이스",
+  "hud.options.language": "언어",
   "hud.options.logout": "로그아웃",
   "hud.options.returnToGame": "게임으로 돌아가기",
   "hud.options.resetToDefaults": "기본값 복원",

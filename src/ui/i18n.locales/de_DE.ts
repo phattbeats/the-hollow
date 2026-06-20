@@ -436,6 +436,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   "hud.options.graphics": "Grafik",
   "hud.options.audio": "Audio",
   "hud.options.interface": "Benutzeroberfläche",
+  "hud.options.language": "Sprache",
   "hud.options.logout": "Ausloggen",
   "hud.options.returnToGame": "Zurück zum Spiel",
   "hud.options.resetToDefaults": "Standardwerte",
