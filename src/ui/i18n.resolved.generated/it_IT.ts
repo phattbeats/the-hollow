@@ -368,6 +368,49 @@ export const it_IT: EnTranslations = {
         "many": "Chi: {count} giocatori online su {realm}.",
         "other": "Chi: {count} giocatori online su {realm}."
       }
+    },
+    "account": {
+      "title": "Account",
+      "loggedOutPrompt": "Log in to manage your account.",
+      "memberSince": "Member since {date}",
+      "sectionSettings": "Account Settings",
+      "sectionWallet": "$WOC Wallet",
+      "sectionCharacters": "Characters",
+      "sectionDanger": "Danger Zone",
+      "changePassword": "Change Password",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmNewPassword": "Conferma la nuova password",
+      "savePassword": "Update Password",
+      "passwordChanged": "Password updated. Other devices have been signed out.",
+      "errCurrentRequired": "Enter your current password.",
+      "errPasswordShort": "New password must be at least 6 characters.",
+      "errPasswordLong": "New password must be at most 128 characters.",
+      "errPasswordUnchanged": "New password must be different from the current one.",
+      "errPasswordConfirm": "Le nuove password non corrispondono.",
+      "emailLabel": "Email (optional)",
+      "emailHint": "Used only for account recovery. We never send marketing email.",
+      "saveEmail": "Save Email",
+      "emailSaved": "Email saved.",
+      "errEmailInvalid": "Enter a valid email address.",
+      "errCurrentPassword": "Your current password is incorrect.",
+      "errUsernameMatch": "That username does not match your account.",
+      "errPasswordIncorrect": "Your password is incorrect.",
+      "errCharactersOnline": "Log out all of your characters before deactivating.",
+      "deactivatedLocked": "This account has been deactivated. Contact an admin to restore it.",
+      "charactersSummary": "Manage your characters and enter the world.",
+      "charactersCount": "Characters: {count}",
+      "goToCharacters": "View Characters",
+      "walletSummary": "Verify a Solana wallet to show holder flair on your player card.",
+      "manageWallet": "Manage Wallet",
+      "deactivate": "Deactivate Account",
+      "deactivateWarning": "Deactivation locks your account and signs you out everywhere. Contact an admin to restore it. Confirm by re-entering your username and password.",
+      "confirmUsername": "Type your username to confirm",
+      "confirmPassword": "Password",
+      "deactivateConfirm": "Deactivate My Account",
+      "deactivated": "Your account has been deactivated.",
+      "logOut": "Log Out",
+      "logOutSummary": "Sign out of this device."
     }
   },
   "skinEvent": {
@@ -412,6 +455,8 @@ export const it_IT: EnTranslations = {
     "news": "Novità",
     "download": "Scarica",
     "loginRegister": "Accedi/Registrati",
+    "account": "Account",
+    "logout": "Esci",
     "donate": "Dona"
   },
   "stats": {
@@ -603,6 +648,38 @@ export const it_IT: EnTranslations = {
       "leviathan": {
         "name": "Leviatano",
         "flavor": "I mercati sentono ogni tuo movimento: l'1% dell'offerta."
+      },
+      "tidelord": {
+        "name": "Signore delle maree",
+        "flavor": "La marea risponde al tuo richiamo: il 2% dell'offerta."
+      },
+      "stormcaller": {
+        "name": "Evocatore di tempeste",
+        "flavor": "Le tempeste si radunano nel tuo nome: il 3% dell'offerta."
+      },
+      "krakencrown": {
+        "name": "Corona del kraken",
+        "flavor": "Incoronato dagli abissi: il 4% dell'offerta."
+      },
+      "titanforged": {
+        "name": "Forgiato tra i titani",
+        "flavor": "Forgiato tra i titani: il 5% dell'offerta."
+      },
+      "starhoard": {
+        "name": "Tesoro stellare",
+        "flavor": "Un tesoro che piega la luce delle stelle: il 6% dell'offerta."
+      },
+      "voidwarden": {
+        "name": "Guardiano del vuoto",
+        "flavor": "Custode sull'orlo del vuoto: il 7% dell'offerta."
+      },
+      "realmshaper": {
+        "name": "Plasmatore del reame",
+        "flavor": "Ridai forma al reame: l'8% dell'offerta."
+      },
+      "worldforger": {
+        "name": "Forgiatore di mondi",
+        "flavor": "Forgi un mondo tutto tuo: il 9% dell'offerta."
       },
       "worldbearer": {
         "name": "Portamondi",
@@ -1592,6 +1669,8 @@ export const it_IT: EnTranslations = {
       "title": "Libro degli incantesimi",
       "classSubtitle": "Abilità di {className}",
       "close": "Chiudi libro degli incantesimi",
+      "resetBar": "Ripristina barra",
+      "resetBarAria": "Ripristina la barra azioni attuale alle abilità predefinite",
       "trainableAtLevel": "Addestrabile al livello {level}",
       "learnAtLevel": "Lo imparerai al livello {level}.",
       "knownAbilityAria": "{name}, grado {rank}. {summary}",
@@ -1904,6 +1983,16 @@ export const it_IT: EnTranslations = {
     "loot": {
       "takeAll": "Prendi tutto",
       "close": "Chiudi bottino"
+    },
+    "lootRoll": {
+      "title": "Tiro per bottino",
+      "need": "Bisogno",
+      "greed": "Brama",
+      "pass": "Passa",
+      "needAria": "Bisogno per {item}",
+      "greedAria": "Brama per {item}",
+      "passAria": "Passa su {item}",
+      "everyonePassed": "Tutti hanno passato su {item}."
     }
   },
   "entities": {

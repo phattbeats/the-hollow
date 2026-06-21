@@ -368,6 +368,49 @@ export const en_CA: EnTranslations = {
         "many": "Who: {count} players online on {realm}.",
         "other": "Who: {count} players online on {realm}."
       }
+    },
+    "account": {
+      "title": "Account",
+      "loggedOutPrompt": "Log in to manage your account.",
+      "memberSince": "Member since {date}",
+      "sectionSettings": "Account Settings",
+      "sectionWallet": "$WOC Wallet",
+      "sectionCharacters": "Characters",
+      "sectionDanger": "Danger Zone",
+      "changePassword": "Change Password",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmNewPassword": "Confirm new password",
+      "savePassword": "Update Password",
+      "passwordChanged": "Password updated. Other devices have been signed out.",
+      "errCurrentRequired": "Enter your current password.",
+      "errPasswordShort": "New password must be at least 6 characters.",
+      "errPasswordLong": "New password must be at most 128 characters.",
+      "errPasswordUnchanged": "New password must be different from the current one.",
+      "errPasswordConfirm": "New passwords do not match.",
+      "emailLabel": "Email (optional)",
+      "emailHint": "Used only for account recovery. We never send marketing email.",
+      "saveEmail": "Save Email",
+      "emailSaved": "Email saved.",
+      "errEmailInvalid": "Enter a valid email address.",
+      "errCurrentPassword": "Your current password is incorrect.",
+      "errUsernameMatch": "That username does not match your account.",
+      "errPasswordIncorrect": "Your password is incorrect.",
+      "errCharactersOnline": "Log out all of your characters before deactivating.",
+      "deactivatedLocked": "This account has been deactivated. Contact an admin to restore it.",
+      "charactersSummary": "Manage your characters and enter the world.",
+      "charactersCount": "Characters: {count}",
+      "goToCharacters": "View Characters",
+      "walletSummary": "Verify a Solana wallet to show holder flair on your player card.",
+      "manageWallet": "Manage Wallet",
+      "deactivate": "Deactivate Account",
+      "deactivateWarning": "Deactivation locks your account and signs you out everywhere. Contact an admin to restore it. Confirm by re-entering your username and password.",
+      "confirmUsername": "Type your username to confirm",
+      "confirmPassword": "Password",
+      "deactivateConfirm": "Deactivate My Account",
+      "deactivated": "Your account has been deactivated.",
+      "logOut": "Log Out",
+      "logOutSummary": "Sign out of this device."
     }
   },
   "skinEvent": {
@@ -412,6 +455,8 @@ export const en_CA: EnTranslations = {
     "news": "News",
     "download": "Download",
     "loginRegister": "Login/Register",
+    "account": "Account",
+    "logout": "Logout",
     "donate": "Donate"
   },
   "stats": {
@@ -603,6 +648,38 @@ export const en_CA: EnTranslations = {
       "leviathan": {
         "name": "Leviathan",
         "flavor": "Markets feel you move: 1% of supply."
+      },
+      "tidelord": {
+        "name": "Tidelord",
+        "flavor": "The tide answers your call: 2% of supply."
+      },
+      "stormcaller": {
+        "name": "Stormcaller",
+        "flavor": "Storms gather at your name: 3% of supply."
+      },
+      "krakencrown": {
+        "name": "Krakencrown",
+        "flavor": "Crowned by the deep: 4% of supply."
+      },
+      "titanforged": {
+        "name": "Titanforged",
+        "flavor": "Forged among titans: 5% of supply."
+      },
+      "starhoard": {
+        "name": "Starhoard",
+        "flavor": "A hoard that bends starlight: 6% of supply."
+      },
+      "voidwarden": {
+        "name": "Voidwarden",
+        "flavor": "Keeper at the void's edge: 7% of supply."
+      },
+      "realmshaper": {
+        "name": "Realmshaper",
+        "flavor": "You reshape the realm: 8% of supply."
+      },
+      "worldforger": {
+        "name": "Worldforger",
+        "flavor": "Forging a world of your own: 9% of supply."
       },
       "worldbearer": {
         "name": "Worldbearer",
@@ -1592,6 +1669,8 @@ export const en_CA: EnTranslations = {
       "title": "Spellbook",
       "classSubtitle": "{className} abilities",
       "close": "Close spellbook",
+      "resetBar": "Reset bar",
+      "resetBarAria": "Reset the current action bar to its default abilities",
       "trainableAtLevel": "Trainable at level {level}",
       "learnAtLevel": "You will learn this at level {level}.",
       "knownAbilityAria": "{name}, rank {rank}. {summary}",
@@ -1904,6 +1983,16 @@ export const en_CA: EnTranslations = {
     "loot": {
       "takeAll": "Take All",
       "close": "Close loot"
+    },
+    "lootRoll": {
+      "title": "Roll for loot",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "needAria": "Need for {item}",
+      "greedAria": "Greed for {item}",
+      "passAria": "Pass on {item}",
+      "everyonePassed": "Everyone passed on {item}."
     }
   },
   "entities": {

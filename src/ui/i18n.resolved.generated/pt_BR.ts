@@ -368,6 +368,49 @@ export const pt_BR: EnTranslations = {
         "many": "Quem: {count} jogadores online em {realm}.",
         "other": "Quem: {count} jogadores online em {realm}."
       }
+    },
+    "account": {
+      "title": "Account",
+      "loggedOutPrompt": "Log in to manage your account.",
+      "memberSince": "Member since {date}",
+      "sectionSettings": "Account Settings",
+      "sectionWallet": "$WOC Wallet",
+      "sectionCharacters": "Characters",
+      "sectionDanger": "Danger Zone",
+      "changePassword": "Change Password",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmNewPassword": "Confirmar nova senha",
+      "savePassword": "Update Password",
+      "passwordChanged": "Password updated. Other devices have been signed out.",
+      "errCurrentRequired": "Enter your current password.",
+      "errPasswordShort": "New password must be at least 6 characters.",
+      "errPasswordLong": "New password must be at most 128 characters.",
+      "errPasswordUnchanged": "New password must be different from the current one.",
+      "errPasswordConfirm": "As novas senhas não coincidem.",
+      "emailLabel": "Email (optional)",
+      "emailHint": "Used only for account recovery. We never send marketing email.",
+      "saveEmail": "Save Email",
+      "emailSaved": "Email saved.",
+      "errEmailInvalid": "Enter a valid email address.",
+      "errCurrentPassword": "Your current password is incorrect.",
+      "errUsernameMatch": "That username does not match your account.",
+      "errPasswordIncorrect": "Your password is incorrect.",
+      "errCharactersOnline": "Log out all of your characters before deactivating.",
+      "deactivatedLocked": "This account has been deactivated. Contact an admin to restore it.",
+      "charactersSummary": "Manage your characters and enter the world.",
+      "charactersCount": "Characters: {count}",
+      "goToCharacters": "View Characters",
+      "walletSummary": "Verify a Solana wallet to show holder flair on your player card.",
+      "manageWallet": "Manage Wallet",
+      "deactivate": "Deactivate Account",
+      "deactivateWarning": "Deactivation locks your account and signs you out everywhere. Contact an admin to restore it. Confirm by re-entering your username and password.",
+      "confirmUsername": "Type your username to confirm",
+      "confirmPassword": "Password",
+      "deactivateConfirm": "Deactivate My Account",
+      "deactivated": "Your account has been deactivated.",
+      "logOut": "Log Out",
+      "logOutSummary": "Sign out of this device."
     }
   },
   "skinEvent": {
@@ -412,6 +455,8 @@ export const pt_BR: EnTranslations = {
     "news": "Notícias",
     "download": "Baixar",
     "loginRegister": "Entrar/Registrar",
+    "account": "Account",
+    "logout": "Sair",
     "donate": "Doar"
   },
   "stats": {
@@ -603,6 +648,38 @@ export const pt_BR: EnTranslations = {
       "leviathan": {
         "name": "Leviatã",
         "flavor": "Os mercados sentem seus movimentos: 1% do suprimento."
+      },
+      "tidelord": {
+        "name": "Senhor das marés",
+        "flavor": "A maré responde ao seu chamado: 2% do suprimento."
+      },
+      "stormcaller": {
+        "name": "Conjurador de tempestades",
+        "flavor": "As tempestades se reúnem ao seu nome: 3% do suprimento."
+      },
+      "krakencrown": {
+        "name": "Coroa do kraken",
+        "flavor": "Coroado pelas profundezas: 4% do suprimento."
+      },
+      "titanforged": {
+        "name": "Forjado entre titãs",
+        "flavor": "Forjado entre titãs: 5% do suprimento."
+      },
+      "starhoard": {
+        "name": "Tesouro estelar",
+        "flavor": "Um tesouro que entorta a luz das estrelas: 6% do suprimento."
+      },
+      "voidwarden": {
+        "name": "Guardião do vazio",
+        "flavor": "Vigia à beira do vazio: 7% do suprimento."
+      },
+      "realmshaper": {
+        "name": "Moldador do reino",
+        "flavor": "Você remodela o reino: 8% do suprimento."
+      },
+      "worldforger": {
+        "name": "Forjador de mundos",
+        "flavor": "Você forja um mundo só seu: 9% do suprimento."
       },
       "worldbearer": {
         "name": "Portador do mundo",
@@ -1592,6 +1669,8 @@ export const pt_BR: EnTranslations = {
       "title": "Livro de feitiços",
       "classSubtitle": "Habilidades de {className}",
       "close": "Fechar livro de feitiços",
+      "resetBar": "Redefinir barra",
+      "resetBarAria": "Redefinir a barra de ação atual para suas habilidades padrão",
       "trainableAtLevel": "Treinável no nível {level}",
       "learnAtLevel": "Você aprenderá isto no nível {level}.",
       "knownAbilityAria": "{name}, grau {rank}. {summary}",
@@ -1904,6 +1983,16 @@ export const pt_BR: EnTranslations = {
     "loot": {
       "takeAll": "Pegar tudo",
       "close": "Fechar saque"
+    },
+    "lootRoll": {
+      "title": "Rolagem de saque",
+      "need": "Necessidade",
+      "greed": "Ganância",
+      "pass": "Passar",
+      "needAria": "Necessidade por {item}",
+      "greedAria": "Ganância por {item}",
+      "passAria": "Passar em {item}",
+      "everyonePassed": "Todos passaram em {item}."
     }
   },
   "entities": {
