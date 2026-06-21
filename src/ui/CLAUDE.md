@@ -229,13 +229,13 @@ unit-testing.
 - **stat_tooltip.ts** / **stat_tooltip_view.ts**: the character-screen (C panel)
   stat hover tooltips. The pure **core** (`stat_tooltip.ts`, DOM/i18n-free,
   reconciled against `recalcPlayerStats` in `tests/stat_tooltip.test.ts`) builds the
-  structured `StatTooltipModel` — which class-aware effect lines a stat contributes
-  and their live values — and exposes `weaponDps`. The pure **view**
+  structured `StatTooltipModel` (which class-aware effect lines a stat contributes
+  and their live values) and exposes `weaponDps`. The pure **view**
   (`stat_tooltip_view.ts`, unit-tested in `tests/stat_tooltip_view.test.ts`) turns a
   model into the floating tooltip HTML, the visually-hidden aria breakdown, and the
   focusable `statCellHtml` markup, taking i18n + `formatNumber` as an injected
   `StatTooltipI18n` so it never imports the runtime. `hud.ts` is the thin consumer:
   `statModel()` bridges the live sim to the core, then it hands the model to the view.
-- **esc.ts** — the one canonical HTML escaper (`esc`) for innerHTML / attribute
+- **esc.ts**: the one canonical HTML escaper (`esc`) for innerHTML / attribute
   interpolation, shared by `hud.ts`, `portrait_chip.ts`, and the small view modules
   (the src/ui rule "all HTML interpolation goes through `esc()`"); escapes `& < > " '`.

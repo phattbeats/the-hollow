@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { StatTooltipModel } from '../src/ui/stat_tooltip';
+import type { StatEffect, StatTooltipModel } from '../src/ui/stat_tooltip';
 import {
   statBreakdownHeader,
   statCellHtml,
@@ -111,6 +111,30 @@ describe('statTooltipHtml', () => {
     const html = statTooltipHtml(model({ stat: 'agi', effects: [{ kind: 'armor', value: 1 }] }), xss);
     expect(html).not.toContain('<i>x</i>');
     expect(html).toContain('&lt;i&gt;x&lt;/i&gt;&amp;&#39;&quot;');
+  });
+
+  it('colors every effect kind tt-green iff it is a gain, tt-stat otherwise (full 12-kind partition)', () => {
+    // The class decision (GAIN_KINDS) is the one piece of logic the view adds over
+    // the model, so pin it for ALL kinds, not just a sample. EXPECTED_GREEN states the
+    // contract independently of the source set, so moving any kind across the partition
+    // (or mis-rendering the two-placeholder damageReduction line) fails here.
+    const ALL_KINDS: StatEffect['kind'][] = [
+      'attackPower', 'rangedAttackPower', 'critPct', 'dodgePct', 'armor', 'maxHealth',
+      'maxMana', 'spellCritPct', 'healthRegen', 'manaRegen', 'damageReduction', 'dpsFromAp',
+    ];
+    const EXPECTED_GREEN = new Set<StatEffect['kind']>([
+      'attackPower', 'rangedAttackPower', 'critPct', 'dodgePct', 'armor', 'maxHealth', 'maxMana', 'spellCritPct',
+    ]);
+    for (const kind of ALL_KINDS) {
+      const e: StatEffect = kind === 'damageReduction' ? { kind, value: 12.5, level: 20 } : { kind, value: 7 };
+      const html = statTooltipHtml(model({ stat: 'agi', effects: [e] }), deps);
+      const cls = EXPECTED_GREEN.has(kind) ? 'tt-green' : 'tt-stat';
+      expect(html, kind).toContain(`<div class="${cls}">hudChrome.statInfo.effects.${kind}(`);
+    }
+    // The two-placeholder line renders through the html and aria integration paths.
+    const drModel = model({ stat: 'armor', isPrimary: false, effects: [{ kind: 'damageReduction', value: 12.5, level: 20 }] });
+    expect(statTooltipHtml(drModel, deps)).toContain('<div class="tt-stat">hudChrome.statInfo.effects.damageReduction(level=20,value=12.5)</div>');
+    expect(statTooltipAria(drModel, deps)).toContain('hudChrome.statInfo.effects.damageReduction(level=20,value=12.5)');
   });
 });
 
