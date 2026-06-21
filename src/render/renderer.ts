@@ -46,6 +46,7 @@ import { comboPipsFor, COMBO_PIP_MAX } from './nameplate_combo';
 import { stepCameraOcclusion, type CameraOcclusionState } from './camera_collision';
 import { castBarState } from './cast_bar';
 import { isMobThreateningViewer } from './nameplate_threat';
+import { characterSoulRendActive } from './character_effects';
 
 const NAMEPLATE_RANGE = 55;
 const NAMEPLATE_RANGE_SQ = NAMEPLATE_RANGE * NAMEPLATE_RANGE;
@@ -2867,7 +2868,9 @@ export class Renderer {
           v.sparkle.scale.set(pulse, pulse, 1);
           v.sparkle.material.rotation = this.time * 0.8;
         }
-        if (vis && e.objectItemId === 'bastion_ward_stone' && e.auras.some((a) => a.id === 'nythraxis_wardstone_lit')) {
+        if (vis
+          && (e.objectItemId === 'bastion_ward_stone' || e.objectItemId === 'soulshard_pillar')
+          && e.auras.some((a) => a.id === 'nythraxis_wardstone_lit')) {
           this.vfx.castSparkle(e.id, 'arcane', dt * 2.6);
         }
         if (v.portal && vis) {
@@ -2920,6 +2923,7 @@ export class Renderer {
             : travel && v.travelVisual ? v.travelVisual : v.visual;
       const ghost = ghostWolf || shouldRenderStealthGhost(this.sim.playerId, e) || e.templateId.startsWith('vision_');
       active.setGhost(ghost);
+      active.setSoulRend(characterSoulRendActive(e));
       v.visual.root.visible = active === v.visual;
       // distant rigs swap to the single-draw baked idle-pose mesh
       v.visual.setFar(v.isFar && active === v.visual);

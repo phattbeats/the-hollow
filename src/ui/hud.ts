@@ -43,6 +43,8 @@ import { iconDataUrl, QUALITY_COLOR, raidMarkerDataUrl, RAID_MARKER_NAMES } from
 import { UnitPortraitPainter } from './unit_portrait_painter';
 import { crestIdForEntity } from './unit_portrait';
 import { svgIcon } from './ui_icons';
+import { shouldPlayCritSfxForTarget } from './combat_sfx';
+import { nextVoicedYell, voicedYellGain, type VoicedYellState } from './voice_events';
 import { walletDisplayAvailable, walletUiEnabled, wocBalance, wocBalanceVerified, verifiedWocBalance, onWalletUiChange } from './wallet_balance';
 import {
   renderPlayerCardCanvas, cardCanvasToBlob, cardCanvasToUploadBlob, CARD_POSES,
@@ -383,6 +385,7 @@ export class Hud {
   private emoteWheelEl: HTMLDivElement | null = null;
   private emoteWheelPinned = false;
   private chatLogEl = $('#chatlog');
+  private lastVoicedYell: VoicedYellState | null = null;
   // Classic "Show Timestamps" interface option — off by default, persisted to
   // localStorage. New chat lines get a bracketed wall-clock prefix when on.
   private chatTimestamps = localStorage.getItem('chatTimestamps') === '1';
@@ -3402,11 +3405,11 @@ export class Hud {
         if (tgt.kind === 'mob') this.ensureMobEngaged(tgt);
         const physical = !ev.school || ev.school === 'physical';
         this.combat(physical ? materialImpactKey(tgt) : `impact_${ev.school}`, tp.x, tp.y, tp.z, 0.75, { cooldown: 0.05 });
-        if (ev.crit) this.combat('combat_crit', tp.x, tp.y, tp.z, 0.7);
+        if (ev.crit && shouldPlayCritSfxForTarget(tgt)) this.combat('combat_crit', tp.x, tp.y, tp.z, 0.7);
         // pain vocalization only on a crit — never on ordinary hits.
         if (ev.crit && ev.targetId === sim.playerId) {
           this.combat('player_hurt', tp.x, tp.y, tp.z, 0.55, { cooldown: 0.3 });
-        } else if (ev.crit && tgt.kind === 'mob') {
+        } else if (ev.crit && tgt.kind === 'mob' && shouldPlayCritSfxForTarget(tgt)) {
           const fam = mobVoiceFamily(tgt.templateId);
           if (fam) this.combat(`mob_${fam}_attack`, tp.x, tp.y, tp.z, 0.6, { rate: 1.25, cooldown: 0.1 });
         }
@@ -3651,7 +3654,11 @@ export class Hud {
           }
           // Voiced encounter dialogue (boss/NPC yells) — no-op unless a clip was
           // generated for this exact line (scripts/voices/extra_lines.mjs).
-          if (ev.channel === 'yell') voice.play(yellVoiceKey(ev.text));
+          if (ev.channel === 'yell') {
+            const voiced = nextVoicedYell(this.lastVoicedYell, yellVoiceKey(ev.text), performance.now());
+            this.lastVoicedYell = voiced.state;
+            if (voiced.play) voice.play(voiced.state.key, { gain: voicedYellGain(ev.from) });
+          }
           break;
         }
         case 'tradeDone':

@@ -1,0 +1,6 @@
+import { MOBS } from '../sim/data';
+import type { Entity } from '../sim/types';
+
+export function shouldPlayCritSfxForTarget(target: Entity): boolean {
+  return target.kind !== 'mob' || !MOBS[target.templateId]?.boss;
+}
