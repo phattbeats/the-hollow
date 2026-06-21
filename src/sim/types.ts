@@ -165,6 +165,8 @@ export interface InvSlot {
 export interface LootSlot extends InvSlot {
   // Quest corpse loot can be personal: each listed player can take one copy.
   personalFor?: number[];
+  // Need/greed loot that everyone passed on becomes free-for-all corpse loot.
+  openToAll?: boolean;
 }
 
 export interface CorpseLoot {

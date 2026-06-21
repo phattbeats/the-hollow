@@ -271,6 +271,7 @@ export interface Party {
 
 interface PendingLootRoll {
   id: number;
+  mobId: number;
   itemId: string;
   itemName: string;
   quality: ItemDef['quality'];
@@ -4417,6 +4418,7 @@ export class Sim {
     const itemName = def?.name ?? itemId;
     const roll: PendingLootRoll = {
       id: this.nextLootRollId++,
+      mobId: mob.id,
       itemId,
       itemName,
       quality: def?.quality,
@@ -4425,6 +4427,7 @@ export class Sim {
       expiresAt: this.time + LOOT_ROLL_TIMEOUT,
     };
     this.pendingLootRolls.set(roll.id, roll);
+    mob.corpseTimer = Math.max(mob.corpseTimer, LOOT_ROLL_TIMEOUT + 2);
     for (const candidate of candidates) {
       this.emit({ type: 'lootRoll', rollId: roll.id, itemId, itemName, quality: roll.quality, expiresAt: roll.expiresAt, pid: candidate.entityId });
     }
@@ -4455,6 +4458,7 @@ export class Sim {
     const needers = entries.filter((entry) => entry.result.choice === 'need');
     const contenders = needers.length > 0 ? needers : entries.filter((entry) => entry.result.choice === 'greed');
     if (contenders.length === 0) {
+      this.returnLootRollItemToCorpse(roll);
       for (const pid of roll.candidates) this.emit({ type: 'loot', text: `Everyone passed on ${roll.itemName}.`, pid });
       return;
     }
@@ -4470,14 +4474,34 @@ export class Sim {
     this.addItem(roll.itemId, 1, winner.pid);
   }
 
+  private returnLootRollItemToCorpse(roll: PendingLootRoll): void {
+    const mob = this.entities.get(roll.mobId);
+    if (!mob || !mob.dead) return;
+    if (!mob.loot) mob.loot = { copper: 0, items: [] };
+    const existing = mob.loot.items.find((slot) => slot.openToAll && slot.itemId === roll.itemId && !slot.personalFor);
+    if (existing) existing.count += 1;
+    else mob.loot.items.push({ itemId: roll.itemId, count: 1, openToAll: true });
+    mob.lootable = true;
+  }
+
   private lootSlotVisibleTo(slot: LootSlot, pid: number): boolean {
-    return !slot.personalFor || slot.personalFor.includes(pid);
+    return slot.openToAll || !slot.personalFor || slot.personalFor.includes(pid);
+  }
+
+  private hasPendingLootRollForMob(mobId: number): boolean {
+    return [...this.pendingLootRolls.values()].some((roll) => roll.mobId === mobId);
   }
 
   private pruneCorpseLoot(mob: Entity): void {
     if (!mob.loot) return;
     mob.loot.items = mob.loot.items.filter((s) => s.count > 0 && (!s.personalFor || s.personalFor.length > 0));
     if (mob.loot.copper <= 0 && mob.loot.items.length === 0) {
+      if (this.hasPendingLootRollForMob(mob.id)) {
+        mob.loot = null;
+        mob.lootable = true;
+        mob.corpseTimer = Math.max(mob.corpseTimer, LOOT_ROLL_TIMEOUT + 2);
+        return;
+      }
       mob.loot = null;
       mob.lootable = false;
       mob.corpseTimer = Math.min(mob.corpseTimer, 4);
@@ -6607,7 +6631,8 @@ export class Sim {
       || mob.tappedById === meta.entityId
       || !!tapperParty?.members.includes(meta.entityId);
     const hasPersonalLoot = mob.loot.items.some((s) => s.personalFor?.includes(meta.entityId));
-    if (!hasSharedLootRights && !hasPersonalLoot) {
+    const hasOpenLoot = mob.loot.items.some((s) => s.openToAll && s.count > 0);
+    if (!hasSharedLootRights && !hasPersonalLoot && !hasOpenLoot) {
       this.error(meta.entityId, "You don't have permission to loot that.");
       return;
     }
@@ -6615,6 +6640,11 @@ export class Sim {
     if (hasSharedLootRights) this.distributeLootCopper(mob, meta);
     for (const s of [...mob.loot.items]) {
       if (!this.lootSlotVisibleTo(s, meta.entityId)) continue;
+      if (s.openToAll) {
+        for (let i = 0; i < s.count; i++) this.addItem(s.itemId, 1, meta.entityId);
+        s.count = 0;
+        continue;
+      }
       if (s.personalFor) {
         this.addItem(s.itemId, 1, meta.entityId);
         s.personalFor = s.personalFor.filter((id) => id !== meta.entityId);
