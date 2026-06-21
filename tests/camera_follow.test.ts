@@ -88,7 +88,6 @@ describe('camera follow', () => {
       strafeRight: false,
       turnLeft: true,
       turnRight: false,
-      jump: false,
     }, false)).toBe(true);
   });
 

@@ -19,7 +19,7 @@ function target(kind: Entity['kind'], templateId: string): Entity {
     resource: 0,
     maxResource: 0,
     resourceType: null,
-    stats: { str: 0, agi: 0, sta: 0, int: 0, spi: 0, armor: 0, ap: 0, critPct: 0, spellPower: 0 },
+    stats: { str: 0, agi: 0, sta: 0, int: 0, spi: 0, armor: 0 },
     weapon: { min: 1, max: 2, speed: 2 },
     auras: [],
     targetId: null,
@@ -36,7 +36,7 @@ function target(kind: Entity['kind'], templateId: string): Entity {
     scale: 1,
     color: 0xffffff,
     ownerId: null,
-    petMode: 'assist',
+    petMode: 'defensive',
     petTargetId: null,
     petAttackTargetId: null,
     petReturnTarget: null,
@@ -50,7 +50,7 @@ function target(kind: Entity['kind'], templateId: string): Entity {
     threat: new Map(),
     tappedById: null,
     lootable: false,
-    loot: [],
+    loot: null,
     questIds: [],
     patrol: null,
     patrolIndex: 0,
@@ -67,7 +67,7 @@ function target(kind: Entity['kind'], templateId: string): Entity {
     overheadEmoteId: null,
     overheadEmoteSeq: 0,
     overheadEmoteUntil: 0,
-  };
+  } as unknown as Entity;
 }
 
 describe('combat SFX policy', () => {

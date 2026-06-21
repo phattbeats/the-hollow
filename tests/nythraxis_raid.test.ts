@@ -8,6 +8,29 @@ import { NYTHRAXIS_LAYOUT } from '../src/sim/dungeon_layout';
 import { visualKeyFor } from '../src/render/characters/manifest';
 import { dungeonDaisHasRaisedPlatform } from '../src/render/dungeon';
 
+type TickEvent = ReturnType<Sim['tick']>[number];
+type TimedEvent = { at: number; event: TickEvent };
+type TimedChatEvent = { at: number; event: Extract<TickEvent, { type: 'chat' }> };
+type TimedDamageEvent = { at: number; event: Extract<TickEvent, { type: 'damage' }> };
+type TimedSpellFxEvent = { at: number; event: Extract<TickEvent, { type: 'spellfx' }> };
+type DamageEvent = Extract<TickEvent, { type: 'damage' }>;
+
+function isTimedChatEvent(row: TimedEvent): row is TimedChatEvent {
+  return row.event.type === 'chat';
+}
+
+function isTimedDamageEvent(row: TimedEvent): row is TimedDamageEvent {
+  return row.event.type === 'damage';
+}
+
+function isTimedSpellFxEvent(row: TimedEvent): row is TimedSpellFxEvent {
+  return row.event.type === 'spellfx';
+}
+
+function isDamageEvent(event: TickEvent): event is DamageEvent {
+  return event.type === 'damage';
+}
+
 function makeWorld(lockoutNowMs?: () => number) {
   return new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true, lockoutNowMs });
 }
@@ -85,8 +108,8 @@ function summonImp(sim: Sim, pid: number): Entity {
   return pet;
 }
 
-function collectEventsForSeconds(sim: Sim, seconds: number) {
-  const rows: { at: number; event: ReturnType<Sim['tick']>[number] }[] = [];
+function collectEventsForSeconds(sim: Sim, seconds: number): TimedEvent[] {
+  const rows: TimedEvent[] = [];
   for (let i = 0; i < seconds * 20; i++) {
     const events = sim.tick();
     const at = (sim as unknown as { time: number }).time;
@@ -296,9 +319,8 @@ describe('Nythraxis raid encounter', () => {
     engage(boss, tank);
 
     const events = collectEventsForSeconds(sim, 6);
-    const openingYells = events.filter((row) =>
-      row.event.type === 'chat'
-      && row.event.from === boss.name
+    const openingYells = events.filter(isTimedChatEvent).filter((row) =>
+      row.event.from === boss.name
       && row.event.channel === 'yell'
       && (row.event.text === 'Another kingdom comes to challenge me' || row.event.text === 'You will join the rest'));
 
@@ -323,17 +345,15 @@ describe('Nythraxis raid encounter', () => {
     engage(boss, tank);
 
     const events = collectEventsForSeconds(sim, 12);
-    const bossYells = events.filter((row) =>
-      row.event.type === 'chat'
-      && row.event.from === boss.name
+    const bossYells = events.filter(isTimedChatEvent).filter((row) =>
+      row.event.from === boss.name
       && row.event.channel === 'yell');
     const openingYells = bossYells.filter((row) =>
       row.event.text === 'Another kingdom comes to challenge me'
       || row.event.text === 'You will join the rest');
     const kneelYells = bossYells.filter((row) => row.event.text === 'Kneel before your king');
-    const gravebreakerFx = events.filter((row) =>
-      row.event.type === 'spellfx'
-      && row.event.sourceId === boss.id
+    const gravebreakerFx = events.filter(isTimedSpellFxEvent).filter((row) =>
+      row.event.sourceId === boss.id
       && row.event.fx === 'nova'
       && row.event.school === 'physical');
 
@@ -385,14 +405,12 @@ describe('Nythraxis raid encounter', () => {
     };
 
     const events = collectEventsForSeconds(sim, 66);
-    const gravebreakerFx = events.filter((row) =>
-      row.event.type === 'spellfx'
-      && row.event.sourceId === boss.id
+    const gravebreakerFx = events.filter(isTimedSpellFxEvent).filter((row) =>
+      row.event.sourceId === boss.id
       && row.event.fx === 'nova'
       && row.event.school === 'physical');
-    const kneelYells = events.filter((row) =>
-      row.event.type === 'chat'
-      && row.event.text === 'Kneel before your king'
+    const kneelYells = events.filter(isTimedChatEvent).filter((row) =>
+      row.event.text === 'Kneel before your king'
       && row.event.from === boss.name);
 
     expect(gravebreakerFx).toHaveLength(6);
@@ -446,9 +464,8 @@ describe('Nythraxis raid encounter', () => {
     };
 
     const events = sim.tick();
-    const gravebreakerHits = events.filter((ev) =>
-      ev.type === 'damage'
-      && ev.sourceId === boss.id
+    const gravebreakerHits = events.filter(isDamageEvent).filter((ev) =>
+      ev.sourceId === boss.id
       && ev.ability === 'Gravebreaker'
       && ev.kind === 'hit');
     const tankHit = gravebreakerHits.find((ev) => ev.targetId === tank.id);
@@ -505,9 +522,8 @@ describe('Nythraxis raid encounter', () => {
     };
 
     const events = sim.tick();
-    const gravebreakerHits = events.filter((ev) =>
-      ev.type === 'damage'
-      && ev.sourceId === boss.id
+    const gravebreakerHits = events.filter(isDamageEvent).filter((ev) =>
+      ev.sourceId === boss.id
       && ev.ability === 'Gravebreaker'
       && ev.kind === 'hit');
     const tankHit = gravebreakerHits.find((ev) => ev.targetId === tank.id);
@@ -575,9 +591,8 @@ describe('Nythraxis raid encounter', () => {
     };
 
     const events = sim.tick();
-    const gravebreakerHits = events.filter((ev) =>
-      ev.type === 'damage'
-      && ev.sourceId === boss.id
+    const gravebreakerHits = events.filter(isDamageEvent).filter((ev) =>
+      ev.sourceId === boss.id
       && ev.ability === 'Gravebreaker'
       && ev.kind === 'hit');
 
@@ -1468,9 +1483,8 @@ describe('Nythraxis raid encounter', () => {
     const transitionEvents = collectEventsForSeconds(sim, 20);
 
     expect(adds.every((add) => add.auras.some((a) => a.id === 'nythraxis_transition_stun'))).toBe(true);
-    expect(transitionEvents.some((row) =>
-      row.event.type === 'damage'
-      && adds.some((add) => add.id === row.event.sourceId)
+    expect(transitionEvents.filter(isTimedDamageEvent).some((row) =>
+      adds.some((add) => add.id === row.event.sourceId)
       && row.event.targetId === tank.id)).toBe(false);
     expect(tank.hp).toBe(transitionHp);
     expect(boss.nythraxis?.phase).toBe('transition');
@@ -1492,7 +1506,6 @@ describe('Nythraxis raid encounter', () => {
     pet.inCombat = true;
     pet.aggroTargetId = boss.id;
     pet.targetId = boss.id;
-    pet.petAttackTargetId = boss.id;
     pet.swingTimer = 0;
 
     boss.hp = Math.floor(boss.maxHp * 0.69);
@@ -1501,9 +1514,8 @@ describe('Nythraxis raid encounter', () => {
     const transitionEvents = collectEventsForSeconds(sim, 20);
 
     expect(pet.auras.some((a) => a.id === 'nythraxis_transition_stun')).toBe(true);
-    expect(transitionEvents.some((row) =>
-      row.event.type === 'damage'
-      && row.event.sourceId === pet.id
+    expect(transitionEvents.filter(isTimedDamageEvent).some((row) =>
+      row.event.sourceId === pet.id
       && row.event.targetId === boss.id)).toBe(false);
     expect(boss.hp).toBe(transitionBossHp);
   });
@@ -1547,9 +1559,8 @@ describe('Nythraxis raid encounter', () => {
 
     sim.tick();
     const transitionEvents = collectEventsForSeconds(sim, 27);
-    const aldricYells = transitionEvents.filter((row) =>
-      row.event.type === 'chat'
-      && row.event.from === 'Brother Aldric'
+    const aldricYells = transitionEvents.filter(isTimedChatEvent).filter((row) =>
+      row.event.from === 'Brother Aldric'
       && row.event.channel === 'yell');
     const uniqueAldricYells = aldricYells.filter((row, i) => i === 0 || row.event.text !== aldricYells[i - 1].event.text);
     expect(uniqueAldricYells.map((row) => row.event.text)).toEqual([
@@ -1567,14 +1578,14 @@ describe('Nythraxis raid encounter', () => {
     expect(boss.nythraxis?.soulRendMarks).toHaveLength(0);
 
     const settleEvents = collectEventsForSeconds(sim, 4);
-    expect(settleEvents.some((row) =>
-      row.event.type === 'chat' && row.event.text === 'Your spirit belongs to me')).toBe(false);
+    expect(settleEvents.filter(isTimedChatEvent).some((row) =>
+      row.event.text === 'Your spirit belongs to me')).toBe(false);
     expect(boss.nythraxis?.phase).toBe(2);
     expect(boss.nythraxis?.soulRendMarks).toHaveLength(0);
 
     const openerEvents = collectEventsForSeconds(sim, 2);
-    const soulRendYell = openerEvents.find((row) =>
-      row.event.type === 'chat' && row.event.text === 'Your spirit belongs to me');
+    const soulRendYell = openerEvents.filter(isTimedChatEvent).find((row) =>
+      row.event.text === 'Your spirit belongs to me');
     expect(soulRendYell).toBeDefined();
     expect(soulRendYell!.at).toBeGreaterThan(uniqueAldricYells.at(-1)!.at);
     expect(boss.nythraxis?.soulRendMarks.length).toBeGreaterThan(0);
