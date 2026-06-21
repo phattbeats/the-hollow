@@ -1590,6 +1590,8 @@ export const es: EnTranslations = {
       "title": "Libro de hechizos",
       "classSubtitle": "Habilidades de {className}",
       "close": "Cerrar libro de hechizos",
+      "resetBar": "Restablecer barra",
+      "resetBarAria": "Restablece la barra de acción actual a sus habilidades predeterminadas",
       "trainableAtLevel": "Entrenable al nivel {level}",
       "learnAtLevel": "Aprenderás esto al nivel {level}.",
       "knownAbilityAria": "{name}, rango {rank}. {summary}",
