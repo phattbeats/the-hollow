@@ -865,8 +865,17 @@ describe('despawn grace (anti-flicker)', () => {
     (c as any).applySnapshot(snap(self(), [fullWire(2, 95, 0)]));
     expect(c.entities.has(2)).toBe(true);
 
-    // A distance-tier-throttled entity is omitted from `ents` but listed in
-    // `keep`, so it counts as seen — retained, and its grace timer stays clear.
+    // First a genuine omission so the grace timer is actually armed — without
+    // this the `missingSince.has(2)` assertion below would be trivially false
+    // and never exercise the keep-clears-timer path.
+    clock += 50;
+    (c as any).applySnapshot(snap(self(), []));
+    expect(c.entities.has(2)).toBe(true);
+    expect((c as any).missingSince.has(2)).toBe(true);
+
+    // Now a distance-tier-throttled snapshot omits it from `ents` but lists it
+    // in `keep`, so it counts as seen — retained, and the armed grace timer is
+    // cleared.
     clock += 50;
     (c as any).applySnapshot(snap(self(), [], [2]));
     expect(c.entities.has(2)).toBe(true);
