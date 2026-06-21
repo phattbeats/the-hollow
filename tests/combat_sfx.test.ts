@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { shouldPlayCritSfxForTarget } from '../src/ui/combat_sfx';
+import { shouldPlayCritSfxForTarget, shouldPlayMobVoiceSfxForEntity } from '../src/ui/combat_sfx';
 import type { Entity } from '../src/sim/types';
 
 function target(kind: Entity['kind'], templateId: string): Entity {
@@ -75,5 +75,11 @@ describe('combat SFX policy', () => {
     expect(shouldPlayCritSfxForTarget(target('mob', 'nythraxis_scourge_of_thornpeak'))).toBe(false);
     expect(shouldPlayCritSfxForTarget(target('mob', 'nythraxis_skeleton_warrior'))).toBe(true);
     expect(shouldPlayCritSfxForTarget(target('player', 'warrior'))).toBe(true);
+  });
+
+  it('suppresses Nythraxis add voice barks without muting ordinary undead', () => {
+    expect(shouldPlayMobVoiceSfxForEntity(target('mob', 'nythraxis_skeleton_warrior'))).toBe(false);
+    expect(shouldPlayMobVoiceSfxForEntity(target('mob', 'crypt_shambler'))).toBe(true);
+    expect(shouldPlayMobVoiceSfxForEntity(target('player', 'warrior'))).toBe(false);
   });
 });
