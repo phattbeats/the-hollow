@@ -242,3 +242,57 @@ describe('persistence', () => {
     expect(kb.codeAt('jump', 0)).toBe(null);
   });
 });
+
+describe('per-character scope', () => {
+  it('keeps two character scopes independent', () => {
+    const alice = new Keybinds('char:alice');
+    alice.bind('jump', 0, 'KeyZ'); // KeyZ is unbound by default
+    const bob = new Keybinds('char:bob');
+    // Bob never inherits Alice's change; he starts from defaults.
+    expect(bob.actionForCode('KeyZ')).toBe(null);
+    expect(bob.codeAt('jump', 0)).toBe('Space');
+    bob.bind('jump', 0, 'KeyU'); // also unbound by default
+    // Reloading each scope reads back only its own profile.
+    expect(new Keybinds('char:alice').actionForCode('KeyZ')).toBe('jump');
+    expect(new Keybinds('char:bob').actionForCode('KeyU')).toBe('jump');
+    expect(new Keybinds('char:bob').actionForCode('KeyZ')).toBe(null);
+  });
+
+  it('writes to a namespaced key, not the legacy global key', () => {
+    const kb = new Keybinds('char:alice');
+    kb.bind('jump', 0, 'KeyJ');
+    expect(localStorage.getItem('woc_keybinds:char:alice')).not.toBeNull();
+    expect(localStorage.getItem('woc_keybinds')).toBeNull();
+  });
+
+  it('seeds a fresh character from the legacy account-wide blob', () => {
+    // An existing player has account-wide binds under the bare key.
+    localStorage.setItem('woc_keybinds', JSON.stringify({
+      jump: ['KeyJ', null],
+      slot0: ['KeyR', null],
+    }));
+    // A character with no profile yet inherits them as a one-time seed.
+    const fresh = new Keybinds('char:alice');
+    expect(fresh.actionForCode('KeyJ')).toBe('jump');
+    expect(fresh.actionForCode('KeyR')).toBe('slot0');
+  });
+
+  it('diverges from the legacy seed without overwriting it', () => {
+    localStorage.setItem('woc_keybinds', JSON.stringify({ jump: ['KeyJ', null] }));
+    const alice = new Keybinds('char:alice');
+    alice.bind('jump', 0, 'KeyK'); // diverge: persists Alice's scoped profile
+    // Legacy blob is untouched, so another fresh character still seeds from it.
+    expect(JSON.parse(localStorage.getItem('woc_keybinds')!).jump).toEqual(['KeyJ', null]);
+    expect(new Keybinds('char:bob').actionForCode('KeyJ')).toBe('jump');
+    // Alice now reads her own diverged profile, not the seed.
+    expect(new Keybinds('char:alice').actionForCode('KeyK')).toBe('jump');
+    expect(new Keybinds('char:alice').actionForCode('KeyJ')).toBe(null);
+  });
+
+  it('an empty scope keeps using the legacy global key', () => {
+    const kb = new Keybinds('');
+    kb.bind('jump', 0, 'KeyJ');
+    expect(localStorage.getItem('woc_keybinds')).not.toBeNull();
+    expect(new Keybinds().actionForCode('KeyJ')).toBe('jump');
+  });
+});
