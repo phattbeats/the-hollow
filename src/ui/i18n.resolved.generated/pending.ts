@@ -9,17 +9,52 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver"
+  ],
+  "es_ES": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver"
+  ],
+  "fr_FR": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver"
+  ],
+  "fr_CA": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
+  "it_IT": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver"
+  ],
+  "de_DE": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver"
+  ],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
-  "pt_BR": [],
+  "pt_BR": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver"
+  ],
   "ru_RU": []
 };

@@ -895,6 +895,7 @@ export const ru_RU: EnTranslations = {
       "webLoginOnly": "Вход разрешён только из игрового клиента.",
       "accountSuspended": "Эта учетная запись заблокирована до {date}.",
       "alreadyInWorld": "Персонаж уже находится в мире.",
+      "takenOver": "Вашего персонажа перехватила другая сессия.",
       "renameBeforeEntering": "Перед входом в мир этому персонажу нужно сменить имя."
     }
   },
@@ -921,6 +922,9 @@ export const ru_RU: EnTranslations = {
     "noneYet": "Персонажей пока нет. Создайте одного ниже.",
     "levelClass": "{className}, уровень {level}",
     "inWorld": "в мире",
+    "takeOver": "Перехватить",
+    "inWorldHint": "Уже в мире. Выйдите в другом месте или перехватите сессию.",
+    "takeOverConfirm": "Это отключит персонажа от другой сессии и перенесёт его сюда. Продолжить?",
     "renameRequired": "требуется переименование",
     "delete": "Удалить",
     "rename": "Переименовать",
