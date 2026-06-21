@@ -902,6 +902,8 @@ describe('quest npc roles', () => {
     expect(guardian).toBeTruthy();
     expect(guardian).toMatchObject({ hostile: true, aiState: 'chase', aggroTargetId: sim.player.id });
 
+    sim.player.maxHp = 100000;
+    sim.player.hp = sim.player.maxHp;
     guardian!.hp = Math.floor(guardian!.maxHp * 0.49);
     sim.tick();
 
@@ -1298,6 +1300,46 @@ describe('spell visuals', () => {
 
     expect(events.some((e) => e.type === 'spellfx' && e.targetId === mob.id)).toBe(false);
     expect(events.some((e) => e.type === 'damage' && e.ability === 'Auto Shot')).toBe(false);
+  });
+});
+
+describe('mob auto attacks against moving targets', () => {
+  function damageTimesFrom(events: SimEvent[], sourceId: number, targetId: number): boolean {
+    return events.some((e) => e.type === 'damage' && e.sourceId === sourceId && e.targetId === targetId);
+  }
+
+  it('continues landing melee swings after the target moves around melee range', () => {
+    const sim = makeSim();
+    const p = sim.player;
+    p.maxHp = 1_000_000;
+    p.hp = p.maxHp;
+    const wolf = [...sim.entities.values()].find((e) => e.kind === 'mob' && e.templateId === 'forest_wolf' && !e.dead)!;
+    wolf.maxHp = 1_000_000;
+    wolf.hp = wolf.maxHp;
+    teleportTo(sim, wolf.pos.x, wolf.pos.z + 2.5);
+    wolf.aiState = 'attack';
+    wolf.aggroTargetId = p.id;
+    wolf.inCombat = true;
+    wolf.swingTimer = 0;
+    wolf.threat.set(p.id, 1000);
+
+    const hitTimes: number[] = [];
+    for (let i = 0; i < 20 * 20; i++) {
+      const t = i / 20;
+      if (t > 2) {
+        const oldPos = { ...p.pos };
+        const angle = (t - 2) * 1.6;
+        p.pos.x = wolf.spawnPos.x + Math.sin(angle) * 8;
+        p.pos.z = wolf.spawnPos.z + Math.cos(angle) * 8;
+        p.pos.y = groundHeight(p.pos.x, p.pos.z, sim.cfg.seed);
+        p.prevPos = oldPos;
+      }
+      const events = sim.tick();
+      if (damageTimesFrom(events, wolf.id, p.id)) hitTimes.push(i / 20);
+    }
+
+    expect(hitTimes.length).toBeGreaterThanOrEqual(6);
+    expect(hitTimes.at(-1)).toBeGreaterThan(15);
   });
 });
 

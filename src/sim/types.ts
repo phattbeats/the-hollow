@@ -949,7 +949,10 @@ export interface NythraxisEncounterState {
   transitionTimer: number;
   transitionCues: NythraxisDialogueCue[];
   transitionReleased: boolean;
+  dialogueBusyUntil?: number;
+  dialogueToken?: number;
   gravebreakerTimer: number;
+  gravebreakerCasts?: number;
   raiseFallenTimer: number;
   soulRendTimer: number;
   soulRendMarks: NythraxisSoulRendMark[];

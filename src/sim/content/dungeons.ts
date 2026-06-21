@@ -213,9 +213,9 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
   // ---- Abandoned Crypt raid encounter (10-player, Nythraxis) ----
   nythraxis_skeleton_warrior: {
     id: 'nythraxis_skeleton_warrior', name: 'Risen Royal Guard', minLevel: 20, maxLevel: 20, family: 'undead',
-    elite: true,
+    elite: true, ccImmune: true,
     hpBase: 150, hpPerLevel: 28, dmgBase: 13, dmgPerLevel: 2.8, attackSpeed: 2.2,
-    armorPerLevel: 24, moveSpeed: 7, aggroRadius: 14,
+    armorPerLevel: 24, moveSpeed: 10, aggroRadius: 14,
     loot: [],
     scale: 1.25, color: 0xc7c0b2,
   },
@@ -415,9 +415,7 @@ export const DUNGEON_DEFS: Record<string, DungeonDef> = {
       // raiders must split to channel them. Kept within the encounter's
       // wardstone search radius (see nythraxisWardstones in sim.ts).
       { itemId: 'bastion_ward_stone', name: 'Left Wardstone', x: -40, z: 74 },
-      { itemId: 'soulshard_pillar', name: 'Left Soulshard Pillar', x: -20, z: 66 },
       { itemId: 'bastion_ward_stone', name: 'Right Wardstone', x: 40, z: 74 },
-      { itemId: 'soulshard_pillar', name: 'Right Soulshard Pillar', x: 20, z: 66 },
       { itemId: 'bastion_ward_stone', name: 'Threshold Wardstone', x: 0, z: 58 },
     ],
     interior: 'nythraxis',

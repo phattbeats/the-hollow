@@ -92,7 +92,6 @@ const NYTHRAXIS_BOSS_ID = 'nythraxis_scourge_of_thornpeak';
 const NYTHRAXIS_ADD_ID = 'nythraxis_skeleton_warrior';
 const NYTHRAXIS_ALDRIC_ID = 'brother_aldric_raid';
 const NYTHRAXIS_WARDSTONE_ITEM_ID = 'bastion_ward_stone';
-const NYTHRAXIS_SOULSHARD_PILLAR_ITEM_ID = 'soulshard_pillar';
 // How far a wardstone may sit from the boss spawn and still belong to this
 // encounter. The three arena wards form a wide forward triangle (~54yd out), so
 // this must comfortably exceed that; far above any cross-instance false match.
@@ -100,6 +99,8 @@ const NYTHRAXIS_WARDSTONE_RANGE = 100;
 const NYTHRAXIS_GRAVEBREAKER_EVERY = 12;
 const NYTHRAXIS_GRAVEBREAKER_RANGE = 11;
 const NYTHRAXIS_GRAVEBREAKER_HALF_ARC = 0.75;
+const NYTHRAXIS_OPENER_SECOND_YELL_DELAY = 4;
+const NYTHRAXIS_DIALOGUE_LINE_SECONDS = 2.6;
 const NYTHRAXIS_RAISE_FALLEN_EVERY = 30;
 const NYTHRAXIS_PHASE_TWO_HP = 0.7;
 const NYTHRAXIS_SOUL_REND_EVERY = 30;
@@ -736,7 +737,7 @@ export class Sim {
   primaryId = -1; // the local/RL player in single-player contexts
   nextId = 1;
   events: SimEvent[] = [];
-  private delayedEvents: { at: number; event: SimEvent }[] = [];
+  private delayedEvents: { at: number; event: SimEvent; guard?: () => boolean }[] = [];
   // social systems
   parties = new Map<number, Party>();
   accountCosmetics: AccountCosmetics = { completedQuestIds: [], mechChromaIds: [] };
@@ -1722,9 +1723,11 @@ export class Sim {
 
   private emitDueDelayedEvents(): void {
     if (this.delayedEvents.length === 0) return;
-    const pending: { at: number; event: SimEvent }[] = [];
+    const pending: { at: number; event: SimEvent; guard?: () => boolean }[] = [];
     for (const delayed of this.delayedEvents) {
-      if (delayed.at <= this.time) this.emit(delayed.event);
+      if (delayed.at <= this.time) {
+        if (!delayed.guard || delayed.guard()) this.emit(delayed.event);
+      }
       else pending.push(delayed);
     }
     this.delayedEvents = pending;
@@ -1800,6 +1803,13 @@ export class Sim {
   }
   private isControlAura(kind: AuraKind): boolean {
     return kind === 'stun' || kind === 'root' || kind === 'incapacitate' || kind === 'polymorph';
+  }
+  private isNythraxisControlAura(kind: AuraKind): boolean {
+    return kind === 'slow' || this.isControlAura(kind);
+  }
+  private isNythraxisRaidEnemy(target: Entity): boolean {
+    return target.kind === 'mob'
+      && (target.templateId === NYTHRAXIS_BOSS_ID || target.templateId === NYTHRAXIS_ADD_ID);
   }
   private partyLootStrategiesForMob(mob: Entity): LootStrategies | null {
     if (mob.tappedById === null) return null;
@@ -3197,6 +3207,7 @@ export class Sim {
 
   private applyAura(target: Entity, aura: Aura): void {
     if (target.kind === 'npc' && isRejectedFriendlyNpcAura(aura)) return;
+    if (this.isNythraxisRaidEnemy(target) && this.isNythraxisControlAura(aura.kind) && aura.sourceId !== target.id) return;
     if (target.kind === 'mob' && MOBS[target.templateId]?.ccImmune && this.isControlAura(aura.kind) && aura.sourceId !== target.id) return;
     const existing = target.auras.findIndex((a) => a.id === aura.id && a.sourceId === aura.sourceId);
     if (existing >= 0) {
@@ -4597,10 +4608,49 @@ export class Sim {
       mob.aggroTargetId = next.id;
       mob.aiState = 'chase';
       mob.inCombat = true;
+      mob.despawnTimer = undefined;
       return;
     }
+    const nythraxisFallback = this.nythraxisAddFallbackTarget(mob);
+    if (nythraxisFallback) {
+      mob.aggroTargetId = nythraxisFallback.id;
+      mob.aiState = 'chase';
+      mob.inCombat = true;
+      mob.despawnTimer = undefined;
+      addThreat(mob, nythraxisFallback.id, 1);
+      return;
+    }
+    if (this.scheduleNythraxisAddDespawnIfBossReset(mob)) return;
     mob.aggroTargetId = null;
     mob.aiState = 'evade';
+  }
+
+  private findNythraxisBossForAdd(add: Entity): Entity | null {
+    if (add.kind !== 'mob' || add.templateId !== NYTHRAXIS_ADD_ID) return null;
+    for (const e of this.entities.values()) {
+      if (e.kind !== 'mob' || e.templateId !== NYTHRAXIS_BOSS_ID || e.dead) continue;
+      if (e.summonedIds.includes(add.id) || dist2d(e.spawnPos, add.spawnPos) < 1) return e;
+    }
+    return null;
+  }
+
+  private nythraxisAddFallbackTarget(add: Entity): Entity | null {
+    const boss = this.findNythraxisBossForAdd(add);
+    if (!boss || !boss.inCombat || boss.aiState === 'idle' || boss.aiState === 'evade') return null;
+    const target = boss.aggroTargetId !== null ? this.entities.get(boss.aggroTargetId) : null;
+    return target && !target.dead && target.kind === 'player' ? target : null;
+  }
+
+  private scheduleNythraxisAddDespawnIfBossReset(add: Entity): boolean {
+    const boss = this.findNythraxisBossForAdd(add);
+    if (!boss || (boss.inCombat && boss.aiState !== 'idle' && boss.aiState !== 'evade')) return false;
+    add.aggroTargetId = null;
+    add.aiState = 'idle';
+    add.inCombat = false;
+    add.hostile = false;
+    add.despawnTimer = add.despawnTimer ?? 10;
+    clearThreat(add);
+    return true;
   }
 
   /** Highest-threat living attacker on the table; prunes stale entries. */
@@ -4653,7 +4703,27 @@ export class Sim {
   // can never close to the flat MELEE_RANGE and barely swings. Scale reach with
   // size so big mobs connect from where the player actually stands (their feet).
   private mobMeleeRange(mob: Entity): number {
+    if (mob.templateId === NYTHRAXIS_BOSS_ID) return 8;
     return MELEE_RANGE + Math.max(0, mob.scale - 1) * 3;
+  }
+
+  private mobEffectiveMeleeRange(mob: Entity, target: Entity): number {
+    const base = this.mobMeleeRange(mob);
+    const targetMoved = dist2d(target.pos, target.prevPos) > 0.05;
+    const mobMoved = dist2d(mob.pos, mob.prevPos) > 0.05;
+    if (!targetMoved && !mobMoved) return base;
+    return base + 3;
+  }
+
+  private tryMobMeleeSwingInRange(mob: Entity, target: Entity): boolean {
+    if (dist2d(mob.pos, target.pos) > this.mobEffectiveMeleeRange(mob, target)) return false;
+    mob.aiState = 'attack';
+    mob.facing = angleTo(mob.pos, target.pos);
+    if (mob.swingTimer <= 0) {
+      this.mobSwing(mob, target);
+      mob.swingTimer = mob.weapon.speed * this.swingIntervalMult(mob);
+    }
+    return true;
   }
 
   private aggroMob(mob: Entity, target: Entity, social: boolean): void {
@@ -4701,8 +4771,10 @@ export class Sim {
       if (mob.templateId === NYTHRAXIS_BOSS_ID && mob.nythraxis && !mob.nythraxis.deathSpoken) {
         mob.nythraxis.deathSpoken = true;
         mob.nythraxis.phase = 'dead';
-        this.nythraxisSay(mob, 'nythraxis', 'Malric...');
-        this.nythraxisSay(mob, 'nythraxis', 'What have you done');
+        this.nythraxisDialogueSet(mob, [
+          { speaker: 'nythraxis', text: 'Malric...', delay: 0 },
+          { speaker: 'nythraxis', text: 'What have you done', delay: NYTHRAXIS_DIALOGUE_LINE_SECONDS },
+        ]);
       }
       if (mob.ownerId !== null && MOBS[mob.templateId]?.family !== 'demon') return;
       mob.corpseTimer -= DT;
@@ -4755,6 +4827,13 @@ export class Sim {
       mob.inCombat = false;
       mob.aggroTargetId = null;
       clearThreat(mob);
+      return;
+    }
+    if (mob.templateId === NYTHRAXIS_ADD_ID && mob.despawnTimer !== undefined) {
+      mob.hostile = false;
+      mob.aiState = 'idle';
+      mob.inCombat = false;
+      mob.aggroTargetId = null;
       return;
     }
 
@@ -4867,13 +4946,11 @@ export class Sim {
           mob.swingTimer = Math.min(mob.swingTimer, 0.4);
           break;
         }
-        if (d <= this.mobMeleeRange(mob) * 0.8) {
-          mob.aiState = 'attack';
-          mob.swingTimer = Math.min(mob.swingTimer, 0.4);
-          break;
-        }
+        mob.swingTimer = Math.max(0, mob.swingTimer - DT);
+        if (this.tryMobMeleeSwingInRange(mob, target)) break;
         if (!this.isRooted(mob)) this.moveToward(mob, target.pos, mob.moveSpeed * this.moveSpeedMult(mob));
         else mob.facing = angleTo(mob.pos, target.pos);
+        if (this.tryMobMeleeSwingInRange(mob, target)) break;
         break;
       }
       case 'attack': {
@@ -4888,7 +4965,7 @@ export class Sim {
           this.updateRangedPetAttack(mob, target, spell);
           break;
         }
-        if (d > this.mobMeleeRange(mob)) { mob.aiState = 'chase'; break; }
+        if (d > this.mobEffectiveMeleeRange(mob, target)) { mob.aiState = 'chase'; break; }
         mob.facing = angleTo(mob.pos, target.pos);
         mob.swingTimer -= DT;
         if (mob.swingTimer <= 0) {
@@ -6302,7 +6379,10 @@ export class Sim {
         transitionTimer: 0,
         transitionCues: [],
         transitionReleased: false,
+        dialogueBusyUntil: 0,
+        dialogueToken: 0,
         gravebreakerTimer: 1.5,
+        gravebreakerCasts: 0,
         raiseFallenTimer: NYTHRAXIS_RAISE_FALLEN_EVERY,
         soulRendTimer: NYTHRAXIS_SOUL_REND_EVERY,
         soulRendMarks: [],
@@ -6349,11 +6429,10 @@ export class Sim {
     const st = this.initNythraxisEncounter(boss);
     if (!st.introSpoken) {
       st.introSpoken = true;
-      this.nythraxisSay(boss, 'nythraxis', 'Another kingdom comes to challenge me');
-      this.delayedEvents.push({
-        at: this.time + 3,
-        event: { type: 'chat', fromPid: boss.id, from: boss.name, text: 'You will join the rest', channel: 'yell', entityId: boss.id },
-      });
+      this.nythraxisDialogueSet(boss, [
+        { speaker: 'nythraxis', text: 'Another kingdom comes to challenge me', delay: 0 },
+        { speaker: 'nythraxis', text: 'You will join the rest', delay: NYTHRAXIS_OPENER_SECOND_YELL_DELAY },
+      ]);
     }
 
     // Wipe-or-kill is the only reset: if every player in the arena is dead the
@@ -6392,8 +6471,10 @@ export class Sim {
     if (st.phase === 2 && !st.finalStand && hpFrac <= NYTHRAXIS_FINAL_STAND_HP) {
       st.finalStand = true;
       boss.enraged = true;
-      this.nythraxisSay(boss, 'nythraxis', 'I built a kingdom');
-      this.nythraxisSay(boss, 'nythraxis', 'I will not lose it again');
+      this.nythraxisDialogueSet(boss, [
+        { speaker: 'nythraxis', text: 'I built a kingdom', delay: 0 },
+        { speaker: 'nythraxis', text: 'I will not lose it again', delay: NYTHRAXIS_DIALOGUE_LINE_SECONDS },
+      ]);
       this.applyAura(boss, {
         id: 'nythraxis_final_stand', name: 'Final Stand', kind: 'buff_haste',
         remaining: 600, duration: 600, value: 1.45, sourceId: boss.id, school: 'shadow',
@@ -6426,14 +6507,70 @@ export class Sim {
     }
   }
 
-  private nythraxisSay(boss: Entity, speaker: 'nythraxis' | 'aldric', text: string): void {
+  private reserveNythraxisDialogue(
+    boss: Entity,
+    duration: number,
+    critical = false,
+    queue = false,
+  ): { st: NonNullable<Entity['nythraxis']>; token: number } | null {
+    const st = this.initNythraxisEncounter(boss);
+    const busyUntil = st.dialogueBusyUntil ?? 0;
+    if (!critical && busyUntil > this.time && !queue) return null;
+    const delay = !critical && queue && busyUntil > this.time ? busyUntil - this.time : 0;
+    const token = (st.dialogueToken ?? 0) + 1;
+    st.dialogueToken = token;
+    st.dialogueBusyUntil = this.time + delay + duration;
+    return { st, token };
+  }
+
+  private nythraxisDialogueSet(
+    boss: Entity,
+    lines: { speaker: 'nythraxis' | 'aldric'; text: string; delay: number }[],
+    critical = false,
+    queue = false,
+  ): boolean {
+    if (lines.length === 0) return true;
+    const duration = Math.max(...lines.map((line) => line.delay)) + NYTHRAXIS_DIALOGUE_LINE_SECONDS;
+    const busyUntil = boss.nythraxis?.dialogueBusyUntil ?? 0;
+    const startDelay = !critical && queue && busyUntil > this.time ? busyUntil - this.time : 0;
+    const reservation = this.reserveNythraxisDialogue(boss, duration, critical, queue);
+    if (!reservation) return false;
+    const { st, token } = reservation;
+    for (const line of lines) {
+      const delay = startDelay + line.delay;
+      if (delay <= 0) {
+        this.emitNythraxisYell(boss, line.speaker, line.text);
+        continue;
+      }
+      this.delayedEvents.push({
+        at: this.time + delay,
+        event: this.nythraxisYellEvent(boss, line.speaker, line.text),
+        guard: () => critical || st.dialogueToken === token,
+      });
+    }
+    return true;
+  }
+
+  private nythraxisSay(boss: Entity, speaker: 'nythraxis' | 'aldric', text: string, critical = false): boolean {
+    const reservation = this.reserveNythraxisDialogue(boss, NYTHRAXIS_DIALOGUE_LINE_SECONDS, critical);
+    if (!reservation) return false;
+    this.emitNythraxisYell(boss, speaker, text);
+    return true;
+  }
+
+  private nythraxisYellEvent(boss: Entity, speaker: 'nythraxis' | 'aldric', text: string): SimEvent {
     const actor = speaker === 'aldric' ? this.findNythraxisAldric(boss) : boss;
     const from = actor?.name ?? (speaker === 'aldric' ? 'Brother Aldric' : boss.name);
     const fromPid = actor?.id ?? boss.id;
+    return { type: 'chat', fromPid, from, text, channel: 'yell', entityId: actor?.id ?? boss.id };
+  }
+
+  private emitNythraxisYell(boss: Entity, speaker: 'nythraxis' | 'aldric', text: string): void {
+    const event = this.nythraxisYellEvent(boss, speaker, text);
     for (const meta of this.players.values()) {
       const p = this.entities.get(meta.entityId);
       if (!p || dist2d(p.pos, boss.pos) > YELL_RANGE) continue;
-      this.emit({ type: 'chat', fromPid, from, text, channel: 'yell', entityId: actor?.id ?? boss.id, pid: meta.entityId });
+      this.emit({ ...event, pid: meta.entityId });
     }
   }
 
@@ -6475,7 +6612,8 @@ export class Sim {
     st.gravebreakerTimer -= DT;
     if (st.gravebreakerTimer > 0) return;
     st.gravebreakerTimer = NYTHRAXIS_GRAVEBREAKER_EVERY;
-    this.nythraxisSay(boss, 'nythraxis', 'Kneel before your king');
+    st.gravebreakerCasts = (st.gravebreakerCasts ?? 0) + 1;
+    if (st.gravebreakerCasts % 3 === 0) this.nythraxisSay(boss, 'nythraxis', 'Kneel before your king');
     this.emit({ type: 'spellfx', sourceId: boss.id, targetId: boss.id, school: 'physical', fx: 'nova' });
     for (const p of this.playersInNythraxisRoom(boss)) {
       const d = dist2d(p.pos, boss.pos);
@@ -6491,8 +6629,10 @@ export class Sim {
     st.raiseFallenTimer -= DT;
     if (st.raiseFallenTimer > 0) return;
     st.raiseFallenTimer = NYTHRAXIS_RAISE_FALLEN_EVERY;
-    this.nythraxisSay(boss, 'nythraxis', 'Rise once more');
-    this.nythraxisSay(boss, 'nythraxis', 'Your king commands it');
+    this.nythraxisDialogueSet(boss, [
+      { speaker: 'nythraxis', text: 'Rise once more', delay: 0 },
+      { speaker: 'nythraxis', text: 'Your king commands it', delay: NYTHRAXIS_DIALOGUE_LINE_SECONDS },
+    ]);
     this.spawnNythraxisAdds(boss);
   }
 
@@ -6524,14 +6664,23 @@ export class Sim {
   private startNythraxisTransition(boss: Entity, st: NonNullable<Entity['nythraxis']>): void {
     st.phase = 'transition';
     st.transitionStarted = true;
-    st.transitionTimer = NYTHRAXIS_TRANSITION_DURATION;
+    const queuedDialogueDelay = Math.max(0, (st.dialogueBusyUntil ?? 0) - this.time);
+    st.transitionTimer = NYTHRAXIS_TRANSITION_DURATION + queuedDialogueDelay;
     st.transitionReleased = false;
     st.soulRendMarks = [];
     st.deathlessCastRemaining = 0;
     boss.castingAbility = null;
     boss.castRemaining = 0;
     boss.castTotal = 0;
-    this.nythraxisSay(boss, 'nythraxis', 'Another priest...');
+    const transitionLines = [
+      { speaker: 'nythraxis' as const, text: 'Another priest...', delay: 0 },
+      { speaker: 'aldric' as const, text: 'Your kingdom is gone, Nythraxis', delay: 3.0 },
+      { speaker: 'aldric' as const, text: 'Yet you still cling to it', delay: 5.7 },
+      { speaker: 'aldric' as const, text: 'Champions, listen carefully!', delay: 8.4 },
+      { speaker: 'aldric' as const, text: 'The wardstones still bind his soul.', delay: 11.2 },
+      { speaker: 'aldric' as const, text: 'When the time comes, do not ignore them.', delay: 14.1 },
+      { speaker: 'aldric' as const, text: 'Fail and we all perish', delay: 17.1 },
+    ];
     this.emit({ type: 'spellfx', sourceId: boss.id, targetId: boss.id, school: 'physical', fx: 'nova' });
     for (const e of this.entities.values()) {
       if (e.dead || dist2d(e.pos, boss.spawnPos) > NYTHRAXIS_ROOM_RADIUS) continue;
@@ -6549,14 +6698,8 @@ export class Sim {
     });
     this.spawnNythraxisAldric(boss);
     this.lightNythraxisWardstones(boss);
-    st.transitionCues = [
-      { at: 3.0, speaker: 'aldric', text: 'Your kingdom is gone, Nythraxis' },
-      { at: 5.7, speaker: 'aldric', text: 'Yet you still cling to it' },
-      { at: 8.4, speaker: 'aldric', text: 'Champions, listen carefully!' },
-      { at: 11.2, speaker: 'aldric', text: 'The wardstones still bind his soul.' },
-      { at: 14.1, speaker: 'aldric', text: 'When the time comes, do not ignore them.' },
-      { at: 17.1, speaker: 'aldric', text: 'Fail and we all perish' },
-    ];
+    this.nythraxisDialogueSet(boss, transitionLines, false, true);
+    st.transitionCues = [];
   }
 
   private spawnNythraxisAldric(boss: Entity): void {
@@ -6575,14 +6718,6 @@ export class Sim {
   }
 
   private updateNythraxisTransition(boss: Entity, st: NonNullable<Entity['nythraxis']>): void {
-    const elapsed = NYTHRAXIS_TRANSITION_DURATION - st.transitionTimer;
-    for (let i = st.transitionCues.length - 1; i >= 0; i--) {
-      const cue = st.transitionCues[i];
-      if (elapsed >= cue.at) {
-        this.nythraxisSay(boss, cue.speaker, cue.text);
-        st.transitionCues.splice(i, 1);
-      }
-    }
     const aldric = this.findNythraxisAldric(boss);
     if (aldric) {
       const dest = this.groundPos(boss.spawnPos.x, boss.spawnPos.z - NYTHRAXIS_ALDRIC_WALK_DIST);
@@ -6628,7 +6763,7 @@ export class Sim {
     }
     st.soulRendMarks = picked.map((p) => ({ playerId: p.id, remaining: NYTHRAXIS_SOUL_REND_DURATION }));
     st.soulRendTimer = NYTHRAXIS_SOUL_REND_EVERY;
-    this.nythraxisSay(boss, 'nythraxis', 'Your spirit belongs to me');
+    this.nythraxisSay(boss, 'nythraxis', 'Your spirit belongs to me', true);
     for (const p of picked) {
       this.applyAura(p, {
         id: 'nythraxis_soul_rend', name: 'Soul Rend', kind: 'vulnerability',
@@ -6645,7 +6780,7 @@ export class Sim {
     if (st.soulRendMarks.some((m) => m.remaining > 0)) return;
     const marked = st.soulRendMarks
       .map((m) => this.entities.get(m.playerId))
-      .filter((e): e is Entity => !!e && !e.dead);
+      .filter((e): e is Entity => !!e && e.kind === 'player' && !e.dead);
     for (const p of marked) {
       const stacked = marked.filter((other) => dist2d(other.pos, p.pos) <= NYTHRAXIS_SOUL_REND_STACK_RANGE).length;
       const share = Math.max(1, stacked);
@@ -6670,7 +6805,7 @@ export class Sim {
     boss.castTotal = NYTHRAXIS_DEATHLESS_CAST;
     boss.castRemaining = NYTHRAXIS_DEATHLESS_CAST;
     boss.channeling = false;
-    this.nythraxisSay(boss, 'nythraxis', 'Witness true eternity!');
+    this.nythraxisSay(boss, 'nythraxis', 'Witness true eternity!', true);
     this.emit({ type: 'spellfx', sourceId: boss.id, targetId: boss.id, school: 'shadow', fx: 'nova' });
   }
 
@@ -6698,7 +6833,7 @@ export class Sim {
     boss.castingAbility = null;
     boss.castRemaining = 0;
     boss.castTotal = 0;
-    this.nythraxisSay(boss, 'nythraxis', 'You cannot stop what was promised..');
+    this.nythraxisSay(boss, 'nythraxis', 'You cannot stop what was promised..', true);
     this.emit({ type: 'spellfx', sourceId: boss.id, targetId: boss.id, school: 'shadow', fx: 'nova' });
     for (const p of this.playersInNythraxisRoom(boss)) {
       this.dealDamage(boss, p, Math.ceil(p.maxHp * 0.82), false, 'shadow', 'Deathless Rage', 'hit', true);
@@ -6753,16 +6888,11 @@ export class Sim {
   }
 
   private nythraxisDeathlessChannelObjects(boss: Entity): Entity[] {
-    const wards = [...this.entities.values()].filter((e) =>
-      e.kind === 'object'
-      && (e.objectItemId === NYTHRAXIS_WARDSTONE_ITEM_ID || e.objectItemId === NYTHRAXIS_SOULSHARD_PILLAR_ITEM_ID)
-      && dist2d(e.pos, boss.spawnPos) < NYTHRAXIS_WARDSTONE_RANGE);
-    wards.sort((a, b) => a.id - b.id);
-    return wards;
+    return this.nythraxisWardstones(boss);
   }
 
   private tryStartNythraxisWardChannel(ward: Entity, player: Entity): boolean {
-    if (ward.objectItemId !== NYTHRAXIS_WARDSTONE_ITEM_ID && ward.objectItemId !== NYTHRAXIS_SOULSHARD_PILLAR_ITEM_ID) return false;
+    if (ward.objectItemId !== NYTHRAXIS_WARDSTONE_ITEM_ID) return false;
     const boss = [...this.entities.values()].find((e) =>
       e.kind === 'mob'
       && e.templateId === NYTHRAXIS_BOSS_ID
@@ -6807,7 +6937,12 @@ export class Sim {
       this.addEntity(add);
       boss.summonedIds.push(add.id);
       inst?.mobIds.push(add.id);
-      if (victim && !victim.dead && victim.kind === 'player') this.aggroMob(add, victim, false);
+      if (victim && !victim.dead && victim.kind === 'player') {
+        add.aggroTargetId = victim.id;
+        add.inCombat = true;
+        add.aiState = dist2d(add.pos, victim.pos) > this.mobMeleeRange(add) ? 'chase' : 'attack';
+        addThreat(add, victim.id, 1);
+      }
     }
   }
 
