@@ -632,13 +632,11 @@ function runGroup(groupSpecs: Spec[], key: string): Result {
       }
     }
     if (boss.nythraxis?.deathlessCastRemaining && boss.nythraxis.deathlessCastRemaining > 0) {
-      const pillars = [...sim.entities.values()].filter((e) => e.kind === 'object' && e.objectItemId === 'soulshard_pillar' && dist2d(e.pos, boss.spawnPos) < 140).sort((a, b) => a.id - b.id);
       const wards = [...sim.entities.values()].filter((e) => e.kind === 'object' && e.objectItemId === 'bastion_ward_stone' && dist2d(e.pos, boss.spawnPos) < 140).sort((a, b) => a.id - b.id);
       const livingHealers = healerPids.filter((pid) => !sim.entities.get(pid)!.dead);
       const livingDps = pids.filter((pid, i) => !sim.entities.get(pid)!.dead && groupSpecs[i].role === 'dps');
       for (const { obj, pid } of [
-        ...pillars.map((obj, i) => ({ obj, pid: livingHealers[i] })),
-        ...wards.map((obj, i) => ({ obj, pid: livingDps[i] })),
+        ...wards.map((obj, i) => ({ obj, pid: livingHealers[i] ?? livingDps[i] })),
       ]) {
         if (pid === undefined) continue;
         const p = sim.entities.get(pid)!;
