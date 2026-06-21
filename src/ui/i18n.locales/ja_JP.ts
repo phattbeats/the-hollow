@@ -2451,7 +2451,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "entities.quests.q_nythraxis_bound_guardian.objectives.1.label": "縛られし守護者を撃破",
   "entities.quests.q_nythraxis_bound_guardian.objectives.2.label": "王の印章指輪",
   "entities.quests.q_nythraxis_scourges_end.title": "災厄の終わり",
-  "entities.quests.q_nythraxis_scourges_end.text": "印章指輪が道を開きました、$N。しかし開かれた墓は勝利ではありません。ニスラクシスはかつて王であり、ソーンピークの地下の廃墟はいまも彼の意志に縛られています。信頼できる仲間とともに墓所へ入り、不死の王冠の命令が上の戦場へ届く前に打ち砕いてください。",
+  "entities.quests.q_nythraxis_scourges_end.text": "印章指輪が道を開きました、{playerName}。しかし開かれた墓は勝利ではありません。ニスラクシスはかつて王であり、ソーンピークの地下の廃墟はいまも彼の意志に縛られています。信頼できる仲間とともに墓所へ入り、不死の王冠の命令が上の戦場へ届く前に打ち砕いてください。",
   "entities.quests.q_nythraxis_scourges_end.completion": "これで王冠はついに沈黙しました。ソーンピークはなお死者を抱えるでしょうが、山の下の王が彼らを再び戦へ呼ぶことはありません。あなたは、アルドレン、マルリック、そしてヴォスが封じることしかできなかったものを終わらせました。",
   "entities.quests.q_nythraxis_scourges_end.objectives.0.label": "ニスラクシスを撃破",
   "hud.errors.silenced": "沈黙状態です！",

@@ -4770,7 +4770,7 @@ export const fr_CA: EnTranslations = {
       },
       "q_nythraxis_scourges_end": {
         "title": "La fin du Fléau",
-        "text": "La chevaliere a ouvert la voie, $N, mais une tombe ouverte n'est pas une victoire. Nythraxis fut roi autrefois, et la ruine sous Thornpeak reste liee a sa volonte. Entrez dans la crypte avec des allies de confiance. Brisez la couronne immortelle avant que son ordre n'atteigne le champ de bataille au-dessus.",
+        "text": "La chevaliere a ouvert la voie, {playerName}, mais une tombe ouverte n'est pas une victoire. Nythraxis fut roi autrefois, et la ruine sous Thornpeak reste liee a sa volonte. Entrez dans la crypte avec des allies de confiance. Brisez la couronne immortelle avant que son ordre n'atteigne le champ de bataille au-dessus.",
         "completion": "Alors la couronne se tait enfin. Thornpeak portera toujours ses morts, mais aucun roi sous la montagne ne les appellera plus a la guerre. Vous avez acheve ce qu'Aldren, Malric et Voss n'avaient pu que contenir.",
         "objectives": {
           "0": {

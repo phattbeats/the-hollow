@@ -4770,7 +4770,7 @@ export const pt_BR: EnTranslations = {
       },
       "q_nythraxis_scourges_end": {
         "title": "O fim do Flagelo",
-        "text": "O anel-sinete abriu o caminho, $N, mas uma tumba aberta nao e uma vitoria. Nythraxis ja foi rei, e a ruina sob Thornpeak ainda esta presa a vontade dele. Entre na cripta com aliados em quem confia. Quebre a coroa imortal antes que sua ordem alcance o campo de batalha acima.",
+        "text": "O anel-sinete abriu o caminho, {playerName}, mas uma tumba aberta nao e uma vitoria. Nythraxis ja foi rei, e a ruina sob Thornpeak ainda esta presa a vontade dele. Entre na cripta com aliados em quem confia. Quebre a coroa imortal antes que sua ordem alcance o campo de batalha acima.",
         "completion": "Entao a coroa finalmente se cala. Thornpeak ainda carregara seus mortos, mas nenhum rei sob a montanha voltara a chama-los para a guerra. Voce terminou aquilo que Aldren, Malric e Voss so conseguiram conter.",
         "objectives": {
           "0": {

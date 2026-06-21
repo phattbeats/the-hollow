@@ -4770,7 +4770,7 @@ export const es: EnTranslations = {
       },
       "q_nythraxis_scourges_end": {
         "title": "El fin del Azote",
-        "text": "El sello ha abierto el camino, $N, pero una tumba abierta no es una victoria. Nythraxis fue rey una vez, y la ruina bajo Thornpeak sigue ligada a su voluntad. Entra en la cripta con aliados de confianza. Rompe la corona inmortal antes de que su mandato alcance el campo de batalla de arriba.",
+        "text": "El sello ha abierto el camino, {playerName}, pero una tumba abierta no es una victoria. Nythraxis fue rey una vez, y la ruina bajo Thornpeak sigue ligada a su voluntad. Entra en la cripta con aliados de confianza. Rompe la corona inmortal antes de que su mandato alcance el campo de batalla de arriba.",
         "completion": "Entonces la corona calla al fin. Thornpeak seguira cargando con sus muertos, pero ningun rey bajo la montana volvera a llamarlos a la guerra. Has terminado lo que Aldren, Malric y Voss solo pudieron contener.",
         "objectives": {
           "0": {
