@@ -571,36 +571,36 @@ export const ru_RU: EnTranslations = {
         "flavor": "Рынок чувствует ваше движение: 1% предложения."
       },
       "tidelord": {
-        "name": "Tidelord",
-        "flavor": "The tide answers your call: 2% of supply."
+        "name": "Повелитель приливов",
+        "flavor": "Прилив отвечает на ваш зов: 2% предложения."
       },
       "stormcaller": {
-        "name": "Stormcaller",
-        "flavor": "Storms gather at your name: 3% of supply."
+        "name": "Призыватель бурь",
+        "flavor": "Бури собираются на ваше имя: 3% предложения."
       },
       "krakencrown": {
-        "name": "Krakencrown",
-        "flavor": "Crowned by the deep: 4% of supply."
+        "name": "Корона кракена",
+        "flavor": "Глубины венчают вас: 4% предложения."
       },
       "titanforged": {
-        "name": "Titanforged",
-        "flavor": "Forged among titans: 5% of supply."
+        "name": "Титанокованый",
+        "flavor": "Выкован среди титанов: 5% предложения."
       },
       "starhoard": {
-        "name": "Starhoard",
-        "flavor": "A hoard that bends starlight: 6% of supply."
+        "name": "Звездная сокровищница",
+        "flavor": "Сокровище, искривляющее звездный свет: 6% предложения."
       },
       "voidwarden": {
-        "name": "Voidwarden",
-        "flavor": "Keeper at the void's edge: 7% of supply."
+        "name": "Страж бездны",
+        "flavor": "Хранитель у края бездны: 7% предложения."
       },
       "realmshaper": {
-        "name": "Realmshaper",
-        "flavor": "You reshape the realm: 8% of supply."
+        "name": "Ваятель мира",
+        "flavor": "Вы меняете форму мира: 8% предложения."
       },
       "worldforger": {
-        "name": "Worldforger",
-        "flavor": "Forging a world of your own: 9% of supply."
+        "name": "Кователь миров",
+        "flavor": "Куете собственный мир: 9% предложения."
       },
       "worldbearer": {
         "name": "Носитель мира",
@@ -1910,7 +1910,9 @@ export const ru_RU: EnTranslations = {
       "need": "Нужно",
       "greed": "Жадность",
       "pass": "Пас",
-      "choiceAria": "{choice}: {item}",
+      "needAria": "Нужно: {item}",
+      "greedAria": "Жадность: {item}",
+      "passAria": "Пас: {item}",
       "everyonePassed": "Все отказались от {item}."
     }
   },

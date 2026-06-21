@@ -4838,7 +4838,7 @@ export class Hud {
       if (item) this.attachTooltip(row.querySelector('.loot-roll-item') as HTMLElement, () => this.itemTooltip(item));
       row.querySelectorAll<HTMLButtonElement>('[data-choice]').forEach((btn) => {
         const choice = btn.dataset.choice as LootRollChoice;
-        btn.setAttribute('aria-label', t('itemUi.lootRoll.choiceAria', { choice: t(`itemUi.lootRoll.${choice}`), item: itemName }));
+        btn.setAttribute('aria-label', t(`itemUi.lootRoll.${choice}Aria`, { item: itemName }));
         btn.addEventListener('click', () => this.submitLootRoll(rollId, choice));
       });
       root.appendChild(row);

@@ -571,36 +571,36 @@ export const ja_JP: EnTranslations = {
         "flavor": "あなたが動けば市場が感じ取ります: 供給量の 1%。"
       },
       "tidelord": {
-        "name": "Tidelord",
-        "flavor": "The tide answers your call: 2% of supply."
+        "name": "潮の支配者",
+        "flavor": "潮があなたの呼び声に応えます: 供給量の 2%。"
       },
       "stormcaller": {
-        "name": "Stormcaller",
-        "flavor": "Storms gather at your name: 3% of supply."
+        "name": "嵐呼び",
+        "flavor": "あなたの名に嵐が集います: 供給量の 3%。"
       },
       "krakencrown": {
-        "name": "Krakencrown",
-        "flavor": "Crowned by the deep: 4% of supply."
+        "name": "クラーケンの冠",
+        "flavor": "深海に戴冠されました: 供給量の 4%。"
       },
       "titanforged": {
-        "name": "Titanforged",
-        "flavor": "Forged among titans: 5% of supply."
+        "name": "タイタン鍛造",
+        "flavor": "タイタンの間で鍛えられました: 供給量の 5%。"
       },
       "starhoard": {
-        "name": "Starhoard",
-        "flavor": "A hoard that bends starlight: 6% of supply."
+        "name": "星の財宝",
+        "flavor": "星光さえ曲げる財宝: 供給量の 6%。"
       },
       "voidwarden": {
-        "name": "Voidwarden",
-        "flavor": "Keeper at the void's edge: 7% of supply."
+        "name": "虚空の番人",
+        "flavor": "虚空の縁を守っています: 供給量の 7%。"
       },
       "realmshaper": {
-        "name": "Realmshaper",
-        "flavor": "You reshape the realm: 8% of supply."
+        "name": "領域を形作る者",
+        "flavor": "あなたはレルムを作り替えます: 供給量の 8%。"
       },
       "worldforger": {
-        "name": "Worldforger",
-        "flavor": "Forging a world of your own: 9% of supply."
+        "name": "世界鍛造者",
+        "flavor": "自らの世界を鍛えています: 供給量の 9%。"
       },
       "worldbearer": {
         "name": "世界を担う者",
@@ -1910,7 +1910,9 @@ export const ja_JP: EnTranslations = {
       "need": "必要",
       "greed": "強欲",
       "pass": "パス",
-      "choiceAria": "{item}に{choice}",
+      "needAria": "{item}を必要",
+      "greedAria": "{item}を強欲",
+      "passAria": "{item}をパス",
       "everyonePassed": "全員が{item}をパスしました。"
     }
   },

@@ -571,36 +571,36 @@ export const zh_TW: EnTranslations = {
         "flavor": "市場會感到你的動作：供應量的 1%。"
       },
       "tidelord": {
-        "name": "Tidelord",
-        "flavor": "The tide answers your call: 2% of supply."
+        "name": "潮汐領主",
+        "flavor": "潮水回應你的號令：供應量的 2%。"
       },
       "stormcaller": {
-        "name": "Stormcaller",
-        "flavor": "Storms gather at your name: 3% of supply."
+        "name": "喚雷者",
+        "flavor": "風暴因你的名字聚集：供應量的 3%。"
       },
       "krakencrown": {
-        "name": "Krakencrown",
-        "flavor": "Crowned by the deep: 4% of supply."
+        "name": "海怪王冠",
+        "flavor": "深海為你加冕：供應量的 4%。"
       },
       "titanforged": {
-        "name": "Titanforged",
-        "flavor": "Forged among titans: 5% of supply."
+        "name": "泰坦鑄成",
+        "flavor": "於泰坦之間鍛成：供應量的 5%。"
       },
       "starhoard": {
-        "name": "Starhoard",
-        "flavor": "A hoard that bends starlight: 6% of supply."
+        "name": "星藏者",
+        "flavor": "寶藏連星光也為之彎折：供應量的 6%。"
       },
       "voidwarden": {
-        "name": "Voidwarden",
-        "flavor": "Keeper at the void's edge: 7% of supply."
+        "name": "虛空守望者",
+        "flavor": "守在虛空邊緣：供應量的 7%。"
       },
       "realmshaper": {
-        "name": "Realmshaper",
-        "flavor": "You reshape the realm: 8% of supply."
+        "name": "塑界者",
+        "flavor": "你重塑這個領域：供應量的 8%。"
       },
       "worldforger": {
-        "name": "Worldforger",
-        "flavor": "Forging a world of your own: 9% of supply."
+        "name": "鑄世者",
+        "flavor": "鍛造屬於你的世界：供應量的 9%。"
       },
       "worldbearer": {
         "name": "承世者",
@@ -1910,7 +1910,9 @@ export const zh_TW: EnTranslations = {
       "need": "需求",
       "greed": "貪婪",
       "pass": "放棄",
-      "choiceAria": "為 {item} 選擇{choice}",
+      "needAria": "需求 {item}",
+      "greedAria": "貪婪 {item}",
+      "passAria": "放棄 {item}",
       "everyonePassed": "所有人都放棄了 {item}。"
     }
   },

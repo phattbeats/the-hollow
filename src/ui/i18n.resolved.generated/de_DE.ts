@@ -1910,7 +1910,9 @@ export const de_DE: EnTranslations = {
       "need": "Bedarf",
       "greed": "Gier",
       "pass": "Passen",
-      "choiceAria": "{choice} für {item}",
+      "needAria": "Bedarf für {item}",
+      "greedAria": "Gier für {item}",
+      "passAria": "Bei {item} passen",
       "everyonePassed": "Alle passen bei {item}."
     }
   },

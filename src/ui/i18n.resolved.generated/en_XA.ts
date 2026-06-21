@@ -1910,7 +1910,9 @@ export const en_XA: EnTranslations = {
       "need": "[Ñééð]",
       "greed": "[Ĝŕééð]",
       "pass": "[Þášš]",
-      "choiceAria": "[{choice} ƒóŕ {item}]",
+      "needAria": "[Ñééð ƒóŕ {item}]",
+      "greedAria": "[Ĝŕééð ƒóŕ {item}]",
+      "passAria": "[Þášš óñ {item}]",
       "everyonePassed": "[Éʋéŕýóñé þáššéð óñ {item}.]"
     }
   },
