@@ -304,7 +304,7 @@ export const fr_FR: EnTranslations = {
       "showWalletBadge": "Afficher l’insigne de portefeuille"
     },
     "statInfo": {
-      "fromYour": "Grâce à vos {value} de {stat} :",
+      "fromYour": "Grâce à vos {value} en {stat} :",
       "desc": {
         "str": "Augmente votre puissance d'attaque, vos coups d'arme frappent donc plus fort.",
         "agi": "Aiguise vos réflexes et votre précision, ce qui améliore plusieurs de vos statistiques de combat.",

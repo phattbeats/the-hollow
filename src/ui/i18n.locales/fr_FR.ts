@@ -15,7 +15,7 @@ import type { TranslationKey } from '../i18n.catalog';
 
 export const fr_FR: Partial<Record<TranslationKey, string>> = {
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
-  "hudChrome.statInfo.fromYour": "Grâce à vos {value} de {stat} :",
+  "hudChrome.statInfo.fromYour": "Grâce à vos {value} en {stat} :",
   "hudChrome.statInfo.desc.str": "Augmente votre puissance d'attaque, vos coups d'arme frappent donc plus fort.",
   "hudChrome.statInfo.desc.agi": "Aiguise vos réflexes et votre précision, ce qui améliore plusieurs de vos statistiques de combat.",
   "hudChrome.statInfo.desc.sta": "Endurcit votre corps, augmente vos points de vie maximum et la vitesse à laquelle vous récupérez des points de vie au repos.",

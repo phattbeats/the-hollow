@@ -306,15 +306,15 @@ export const es_ES: EnTranslations = {
     "statInfo": {
       "fromYour": "De tu {value} de {stat}:",
       "desc": {
-        "str": "Aumenta tu poder de ataque, por lo que tus golpes con arma impactan con más fuerza.",
+        "str": "Aumenta tu poder de ataque, así que tus golpes con el arma impactan con más fuerza.",
         "agi": "Agudiza tus reflejos y tu puntería, mejorando varias de tus estadísticas de combate.",
-        "sta": "Endurece tu cuerpo, aumentando tu salud máxima y la rapidez con la que recuperas salud al descansar.",
-        "int": "Amplía la reserva de maná de un lanzador de conjuros y mejora su probabilidad de asestar un golpe crítico con conjuros.",
-        "spi": "Acelera la rapidez con la que regresa el maná de un lanzador de conjuros mientras descansa, fuera de combate.",
-        "armor": "Amortigua los golpes físicos entrantes. La reducción es mayor contra atacantes de nivel inferior y tiene un límite del 75%.",
-        "attackPower": "Potencia tus ataques con arma. Cada 14 de poder de ataque añade 1 de daño por segundo.",
-        "dps": "Tu daño por segundo estimado con arma, combinando el daño y la velocidad de tu arma con tu poder de ataque.",
-        "critChance": "Tu probabilidad de que un ataque impacte de forma crítica, infligiendo el doble de daño.",
+        "sta": "Endurece tu cuerpo, elevando tu salud máxima y la rapidez con la que recuperas salud al descansar.",
+        "int": "Amplía la reserva de maná de un lanzador de hechizos y mejora su probabilidad de asestar un golpe crítico con hechizos.",
+        "spi": "Acelera la rapidez con la que regresa el maná de un lanzador de hechizos al descansar, fuera de combate.",
+        "armor": "Amortigua los golpes físicos que recibes. La reducción es mayor contra atacantes de menor nivel y tiene un tope del 75%.",
+        "attackPower": "Potencia tus ataques con el arma. Cada 14 de poder de ataque añade 1 de daño por segundo.",
+        "dps": "El daño por segundo estimado de tu arma, combinando el daño y la velocidad de tu arma con tu poder de ataque.",
+        "critChance": "Tu probabilidad de que un ataque aseste un golpe crítico, infligiendo el doble de daño.",
         "dodge": "Tu probabilidad de evitar por completo un ataque cuerpo a cuerpo entrante, sin recibir daño."
       },
       "effects": {
@@ -325,7 +325,7 @@ export const es_ES: EnTranslations = {
         "armor": "+{value} de armadura",
         "maxHealth": "+{value} de salud máxima",
         "maxMana": "+{value} de maná máximo",
-        "spellCritPct": "+{value}% de golpe crítico con conjuros",
+        "spellCritPct": "+{value}% de golpe crítico con hechizos",
         "healthRegen": "Unos {value} de salud cada 5 seg mientras descansas",
         "manaRegen": "Unos {value} de maná cada 5 seg mientras descansas",
         "damageReduction": "Reducción de daño contra un atacante de nivel {level}: {value}%",
@@ -333,8 +333,8 @@ export const es_ES: EnTranslations = {
       },
       "notes": {
         "minorForClass": "De poco beneficio para tu clase.",
-        "baseChance": "Incluye una probabilidad base del 5% compartida por todos los aventureros.",
-        "dpsApprox": "Es una estimación, excluye los golpes críticos y el daño de habilidades."
+        "baseChance": "Incluye un 5% de probabilidad base que comparten todos los aventureros.",
+        "dpsApprox": "Es una estimación, no incluye los golpes críticos ni el daño de habilidades."
       }
     },
     "talents": {

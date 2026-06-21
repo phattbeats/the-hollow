@@ -32,7 +32,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   "hudChrome.statInfo.effects.dodgePct": "+{value}% de Esquiva",
   "hudChrome.statInfo.effects.armor": "+{value} de Armadura",
   "hudChrome.statInfo.effects.maxHealth": "+{value} de Vida máxima",
-  "hudChrome.statInfo.effects.maxMana": "+{value} de Mana máximo",
+  "hudChrome.statInfo.effects.maxMana": "+{value} de Mana máxima",
   "hudChrome.statInfo.effects.spellCritPct": "+{value}% de Acerto crítico com magias",
   "hudChrome.statInfo.effects.healthRegen": "Cerca de {value} de vida a cada 5 seg ao descansar",
   "hudChrome.statInfo.effects.manaRegen": "Cerca de {value} de mana a cada 5 seg ao descansar",

@@ -324,7 +324,7 @@ export const pt_BR: EnTranslations = {
         "dodgePct": "+{value}% de Esquiva",
         "armor": "+{value} de Armadura",
         "maxHealth": "+{value} de Vida máxima",
-        "maxMana": "+{value} de Mana máximo",
+        "maxMana": "+{value} de Mana máxima",
         "spellCritPct": "+{value}% de Acerto crítico com magias",
         "healthRegen": "Cerca de {value} de vida a cada 5 seg ao descansar",
         "manaRegen": "Cerca de {value} de mana a cada 5 seg ao descansar",
