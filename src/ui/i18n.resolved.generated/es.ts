@@ -1517,6 +1517,25 @@ export const es: EnTranslations = {
       "friendOnline": "{name} se ha conectado.",
       "friendOffline": "{name} se ha desconectado."
     },
+    "tutorial": {
+      "title": "Nuevo Aventurero",
+      "stepLabel": "Paso {current} de {total}",
+      "skip": "Saltar tutorial",
+      "dismiss": "Descartar",
+      "doneTitle": "Listo para la aventura",
+      "doneBody": "Ya dominas lo básico, {name}. El Valle es tuyo para explorar: pulsa {questKey} en cualquier momento para revisar tus misiones. ¡Buena caza!",
+      "moveTitle": "Da tus primeros pasos",
+      "moveBody": "Usa {moveKeys} para moverte y el ratón para mirar alrededor. Da unos pasos para empezar.",
+      "seekTitle": "Busca al Mariscal",
+      "seekBody": "El mariscal Redbrook espera en el pueblo y tiene trabajo para una nueva espada. Sigue la marca para llegar a él.",
+      "talkTitle": "Acepta la tarea",
+      "talkBody": "Acércate al mariscal Redbrook y pulsa {interactKey} para hablar; luego acepta su tarea.",
+      "slayTitle": "Lobos a las puertas",
+      "slayBody": "Caza a los lobos del bosque en el camino del norte. Selecciona uno y atácalo para diezmar la manada.",
+      "slayProgress": "Lobos del bosque abatidos: {current} / {needed}",
+      "returnTitle": "Reclama tu recompensa",
+      "returnBody": "Tu tarea está hecha. Vuelve con el mariscal Redbrook y pulsa {interactKey} para entregarla."
+    },
     "markers": {
       "names": {
         "star": "Estrella",

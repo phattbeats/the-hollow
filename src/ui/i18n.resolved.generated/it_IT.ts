@@ -1517,6 +1517,25 @@ export const it_IT: EnTranslations = {
       "friendOnline": "{name} è entrato online.",
       "friendOffline": "{name} è uscito offline."
     },
+    "tutorial": {
+      "title": "Nuovo avventuriero",
+      "stepLabel": "Passo {current} di {total}",
+      "skip": "Salta il tutorial",
+      "dismiss": "Chiudi",
+      "doneTitle": "Pronto all'avventura",
+      "doneBody": "Hai imparato le basi, {name}. La Valle è tutta da esplorare: premi {questKey} in qualsiasi momento per rivedere le tue missioni. Buona caccia!",
+      "moveTitle": "Trova l'equilibrio",
+      "moveBody": "Usa {moveKeys} per muoverti e il mouse per guardarti intorno. Fai qualche passo per iniziare.",
+      "seekTitle": "Cerca il Maresciallo",
+      "seekBody": "Il maresciallo Redbrook attende in città e ha del lavoro per una nuova lama. Segui il segnale per raggiungerlo.",
+      "talkTitle": "Accetta l'incarico",
+      "talkBody": "Avvicinati al maresciallo Redbrook e premi {interactKey} per parlargli, poi accetta il suo incarico.",
+      "slayTitle": "Lupi alle porte",
+      "slayBody": "Dai la caccia ai lupi della foresta sulla strada a nord. Seleziona un bersaglio e attacca per ridurre il branco.",
+      "slayProgress": "Lupi della foresta uccisi: {current} / {needed}",
+      "returnTitle": "Reclama la ricompensa",
+      "returnBody": "Il tuo incarico è compiuto. Torna dal maresciallo Redbrook e premi {interactKey} per consegnarlo."
+    },
     "markers": {
       "names": {
         "star": "Stella",

@@ -1517,6 +1517,25 @@ export const pt_BR: EnTranslations = {
       "friendOnline": "{name} ficou online.",
       "friendOffline": "{name} ficou offline."
     },
+    "tutorial": {
+      "title": "Novo Aventureiro",
+      "stepLabel": "Passo {current} de {total}",
+      "skip": "Pular tutorial",
+      "dismiss": "Dispensar",
+      "doneTitle": "Pronto para a aventura",
+      "doneBody": "Você já domina o básico, {name}. O Vale é seu para explorar. Pressione {questKey} a qualquer momento para ver suas missões. Boa caçada!",
+      "moveTitle": "Dê os primeiros passos",
+      "moveBody": "Use {moveKeys} para se mover e o mouse para olhar ao redor. Dê alguns passos para começar.",
+      "seekTitle": "Procure o Marechal",
+      "seekBody": "O marechal Redbrook espera na cidade e tem trabalho para uma nova lâmina. Siga o marcador para chegar até ele.",
+      "talkTitle": "Aceite a tarefa",
+      "talkBody": "Aproxime-se do marechal Redbrook e pressione {interactKey} para falar, então aceite a tarefa dele.",
+      "slayTitle": "Lobos à porta",
+      "slayBody": "Cace os lobos da floresta na estrada do norte. Selecione um e ataque para reduzir a matilha.",
+      "slayProgress": "Lobos da floresta abatidos: {current} / {needed}",
+      "returnTitle": "Reivindique sua recompensa",
+      "returnBody": "Sua tarefa está concluída. Volte ao marechal Redbrook e pressione {interactKey} para entregá-la."
+    },
     "markers": {
       "names": {
         "star": "Estrela",

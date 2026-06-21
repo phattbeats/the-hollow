@@ -1517,6 +1517,25 @@ export const de_DE: EnTranslations = {
       "friendOnline": "{name} ist online gekommen.",
       "friendOffline": "{name} ist offline gegangen."
     },
+    "tutorial": {
+      "title": "Neuer Abenteurer",
+      "stepLabel": "Schritt {current} von {total}",
+      "skip": "Tutorial überspringen",
+      "dismiss": "Schließen",
+      "doneTitle": "Bereit für das Abenteuer",
+      "doneBody": "Du beherrschst die Grundlagen, {name}. Das Eastbrook-Tal liegt bereit, von dir erkundet zu werden. Drücke jederzeit {questKey}, um deine Quests einzusehen. Gute Jagd.",
+      "moveTitle": "Erste Schritte",
+      "moveBody": "Nutze {moveKeys} zum Bewegen und die Maus zum Umsehen. Mach ein paar Schritte, um zu beginnen.",
+      "seekTitle": "Suche den Marschall",
+      "seekBody": "Marschall Redbrook wartet in der Stadt und hat Arbeit für einen frischen Recken. Folge der Markierung zu ihm.",
+      "talkTitle": "Nimm die Aufgabe an",
+      "talkBody": "Stell dich nah an Marschall Redbrook und drücke {interactKey}, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.",
+      "slayTitle": "Wölfe vor der Tür",
+      "slayBody": "Jage die Waldwölfe an der Nordstraße. Visiere einen an und greife ihn an, um das Rudel zu lichten.",
+      "slayProgress": "Erlegte Waldwölfe: {current} / {needed}",
+      "returnTitle": "Hol dir deine Belohnung",
+      "returnBody": "Deine Aufgabe ist erledigt. Kehre zu Marschall Redbrook zurück und drücke {interactKey}, um sie abzugeben."
+    },
     "markers": {
       "names": {
         "star": "Stern",

@@ -1517,6 +1517,25 @@ export const zh_CN: EnTranslations = {
       "friendOnline": "{name} 上线了。",
       "friendOffline": "{name} 下线了。"
     },
+    "tutorial": {
+      "title": "新冒险者",
+      "stepLabel": "第 {current} 步，共 {total} 步",
+      "skip": "跳过教程",
+      "dismiss": "关闭",
+      "doneTitle": "准备好冒险了",
+      "doneBody": "你已掌握基础，{name}。东溪谷任你探索。随时按 {questKey} 查看任务。祝你狩猎顺利。",
+      "moveTitle": "迈出第一步",
+      "moveBody": "使用 {moveKeys} 移动，用鼠标环顾四周。先走几步开始吧。",
+      "seekTitle": "寻找元帅",
+      "seekBody": "雷德布鲁克元帅在镇上等候，他有任务交给新人。跟随指引前往找他。",
+      "talkTitle": "接受任务",
+      "talkBody": "靠近雷德布鲁克元帅并按 {interactKey} 与他交谈，然后接受他的任务。",
+      "slayTitle": "狼群来袭",
+      "slayBody": "前往北边的道路猎杀森林狼。选中一只发起攻击，削减狼群数量。",
+      "slayProgress": "已击杀森林狼：{current} / {needed}",
+      "returnTitle": "领取奖励",
+      "returnBody": "任务已完成。返回雷德布鲁克元帅处并按 {interactKey} 交付任务。"
+    },
     "markers": {
       "names": {
         "star": "星形",
