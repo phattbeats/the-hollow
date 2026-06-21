@@ -337,7 +337,7 @@ export const fr_FR: EnTranslations = {
     },
     "paperdoll": {
       "unequipAria": "Unequip {item}",
-      "unequipHint": "Right-click or drag to bags to unequip"
+      "unequipHint": "Click ×, right-click, or drag to bags to unequip"
     }
   },
   "skinEvent": {

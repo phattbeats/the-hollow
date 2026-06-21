@@ -60,6 +60,7 @@ export class CharacterVisual {
   private key: string;
   private entityColor: number;
   private skinIndex: number;
+  private disposed = false;
   private ghosted = false;
   private mixer: THREE.AnimationMixer;
   private actions = new Map<string, THREE.AnimationAction>();
@@ -357,7 +358,10 @@ export class CharacterVisual {
     const pending = ensureSkinTexture(this.key, skinIndex);
     if (pending) {
       void pending.then(() => {
-        if (this.skinIndex === skinIndex) this.applySkinMaterials(skinIndex);
+        // Bail if the model was disposed while the atlas was loading — applying
+        // materials to a torn-down model is wasted work (and re-snapshots a stale
+        // material map). Also guard that this is still the requested skin.
+        if (!this.disposed && this.skinIndex === skinIndex) this.applySkinMaterials(skinIndex);
       }).catch((err) => console.error('failed to load skin atlas:', err));
     }
   }
@@ -374,6 +378,7 @@ export class CharacterVisual {
   }
 
   dispose(): void {
+    this.disposed = true;
     this.mixer.stopAllAction();
     this.mixer.uncacheRoot(this.model);
     this.root.removeFromParent();

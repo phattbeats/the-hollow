@@ -5537,6 +5537,10 @@ export class Hud {
       const item = itemId ? ITEMS[itemId] : null;
       const row = document.createElement('div');
       row.className = 'equip-slot';
+      // Stable id + programmatic focusability so the corner-× rebuild can hand
+      // focus back to this slot (the rebuilt row may be empty, with no × to focus).
+      row.id = `equip-slot-${slot.key}`;
+      row.tabIndex = -1;
       const qColor = !item ? '#666' : QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
       row.innerHTML = `${item ? this.itemIcon(item) : `<img class="item-icon" style="border-color:#444" src="${iconDataUrl('item', 'slot_empty')}" alt="" draggable="false">`}
         <div><div class="slot-name">${esc(slot.name)}</div><div class="slot-item" style="color:${qColor}">${item ? esc(itemDisplayName(item)) : esc(t('itemUi.equipment.empty'))}</div></div>`;
@@ -5545,12 +5549,20 @@ export class Hud {
         // ever swaps in a replacement — this is the way to fully unequip). Three
         // affordances all route through here: the corner ×, right-click, and
         // dragging the piece out onto the bags window.
-        const doUnequip = () => {
+        // `keepFocus` rebuilds the paperdoll (renderChar replaces the subtree via
+        // innerHTML, which otherwise drops focus to <body>) and hands focus back to
+        // the now-empty slot row — the keyboard/touch × path needs this; right-click
+        // and drag are mouse-only and don't.
+        const doUnequip = (keepFocus = false) => {
           this.sim.unequipItem(slot.key);
           audio.click();
           this.hideTooltip();
           this.renderBags();
           this.renderCharIfOpen();
+          if (keepFocus) {
+            const rebuilt = document.getElementById(`equip-slot-${slot.key}`);
+            this.restoreFocus(rebuilt instanceof HTMLElement ? rebuilt : null);
+          }
         };
         this.attachTooltip(row, () => `${this.itemTooltip(item)}<div class="tt-sub">${esc(t('hudChrome.paperdoll.unequipHint'))}</div>`);
         // Corner ×: a styled glyph control (not an in-game icon), revealed on
@@ -5562,7 +5574,7 @@ export class Hud {
         unequip.setAttribute('aria-label', t('hudChrome.paperdoll.unequipAria', { item: itemDisplayName(item) }));
         unequip.addEventListener('click', (ev) => {
           ev.stopPropagation();
-          doUnequip();
+          doUnequip(true);
         });
         row.appendChild(unequip);
         // Right-click the slot (classic-MMO muscle memory; matches the bags grid).
@@ -5576,11 +5588,22 @@ export class Hud {
           this.dragUnequipSlot = slot.key;
           e.dataTransfer!.effectAllowed = 'move';
           this.hideTooltip();
+          // Open the bags window if it's closed so there's a visible drop target —
+          // otherwise the drag silently snaps back with no feedback.
+          const bags = $('#bags');
+          if (bags.style.display !== 'block') {
+            bags.style.display = 'block';
+            this.renderBags();
+          }
         });
         row.addEventListener('dragend', () => {
           this.dragUnequipSlot = null;
           $('#bags').classList.remove('drop-target');
         });
+      } else {
+        // Empty slot: still swallow the native browser menu so right-click feels
+        // consistent across the paperdoll (an empty slot has nothing to unequip).
+        row.addEventListener('contextmenu', (ev) => ev.preventDefault());
       }
       return row;
     };

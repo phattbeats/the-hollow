@@ -6316,6 +6316,9 @@ export class Sim {
     const itemId = meta.equipment[slot];
     if (!itemId) return false;
     delete meta.equipment[slot];
+    // addItemSilent (not addItem): returning a piece you already owned to bags is
+    // not a fresh acquisition, so it must not fire collect-quest credit. No quest
+    // today keys on an unequip, so there is nothing to award here regardless.
     this.addItemSilent(itemId, 1, meta);
     recalcPlayerStats(p, meta.cls, meta.equipment, this.playerMods(meta));
     const def = ITEMS[itemId];

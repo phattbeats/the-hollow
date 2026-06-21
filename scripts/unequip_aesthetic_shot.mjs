@@ -71,7 +71,7 @@ if (helmBox) { await page.mouse.move(helmBox.x, helmBox.y); await wait(300); }
 await page.screenshot({ path: 'tmp/pr_unequip_before.png', clip: await charClip() });
 
 // ACTION: unequip the first filled slot via the corner × button.
-const armorBefore = await page.evaluate(() => window.__game.sim.derivedStats?.armor ?? null);
+const armorBefore = await page.evaluate(() => window.__game.sim.player.stats.armor ?? null);
 await page.evaluate(() => {
   const slots = [...document.querySelectorAll('#char-window .equip-slot')];
   const filled = slots.find((s) => s.querySelector('.slot-item')?.textContent?.trim());
@@ -81,7 +81,7 @@ await wait(400);
 await page.mouse.move(640, 60); // move cursor off the slot
 await wait(200);
 await page.screenshot({ path: 'tmp/pr_unequip_after.png', clip: await charClip() });
-const armorAfter = await page.evaluate(() => window.__game.sim.derivedStats?.armor ?? null);
+const armorAfter = await page.evaluate(() => window.__game.sim.player.stats.armor ?? null);
 
 console.log('armor before/after unequip:', armorBefore, '->', armorAfter);
 if (errors.length) console.log('PAGE ERRORS:\n' + errors.join('\n'));

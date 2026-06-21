@@ -337,7 +337,7 @@ export const ja_JP: EnTranslations = {
     },
     "paperdoll": {
       "unequipAria": "{item}を外す",
-      "unequipHint": "右クリックまたはバッグへドラッグで外す"
+      "unequipHint": "× をクリック、右クリック、またはバッグへドラッグで外す"
     }
   },
   "skinEvent": {

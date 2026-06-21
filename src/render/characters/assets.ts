@@ -210,9 +210,16 @@ export function skinTexture(key: string, skinIndex: number): THREE.Texture | nul
  *  (embedded default) or it is already loaded. Hardens live skin swaps against a
  *  not-yet-loaded atlas (otherwise the body shows the default until a relog). */
 export function ensureSkinTexture(key: string, skinIndex: number): Promise<void> | null {
-  const url = SKINS[key]?.[skinIndex] ?? null;
-  if (!url || skinTexByUrl.has(url)) return null;
-  return loadSkinTexInto(url, skinTexByUrl);
+  // applySkinMaterials consumes BOTH the base atlas and (when the skin has one)
+  // the emissive atlas — warm whichever of the two is missing so a glow skin
+  // doesn't re-apply with a not-yet-loaded emissive map.
+  const baseUrl = SKINS[key]?.[skinIndex] ?? null;
+  const emisUrl = SKIN_EMISSIVE[key]?.[skinIndex] ?? null;
+  const pending: Promise<void>[] = [];
+  if (baseUrl && !skinTexByUrl.has(baseUrl)) pending.push(loadSkinTexInto(baseUrl, skinTexByUrl));
+  if (emisUrl && !skinEmisTexByUrl.has(emisUrl)) pending.push(loadSkinTexInto(emisUrl, skinEmisTexByUrl));
+  if (pending.length === 0) return null;
+  return Promise.all(pending).then(() => undefined);
 }
 
 /** Resolved emissive (glow) map for a visual key + skin index, or null when the

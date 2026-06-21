@@ -2672,7 +2672,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   "skinEvent.unavailable": "곧 출시",
   "skinEvent.unequip": "장착 해제",
   "hudChrome.paperdoll.unequipAria": "{item} 장착 해제",
-  "hudChrome.paperdoll.unequipHint": "우클릭하거나 가방으로 드래그하여 장착 해제",
+  "hudChrome.paperdoll.unequipHint": "× 클릭, 우클릭 또는 가방으로 드래그하여 장착 해제",
   "skinEvent.unlocked": "장식이 잠금 해제되었습니다!",
   "errors.api.webLoginOnly": "로그인은 게임 클라이언트에서만 허용됩니다.",
   "hudChrome.chatTimestamps.clock12h": "12시간제",

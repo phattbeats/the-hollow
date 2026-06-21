@@ -337,7 +337,7 @@ export const en_XA: EnTranslations = {
     },
     "paperdoll": {
       "unequipAria": "[Úñéɋúíþ {item}]",
-      "unequipHint": "[Ŕíĝĥţ-çļíçķ óŕ ðŕáĝ ţó ƀáĝš ţó úñéɋúíþ]"
+      "unequipHint": "[Çļíçķ ×, ŕíĝĥţ-çļíçķ, óŕ ðŕáĝ ţó ƀáĝš ţó úñéɋúíþ]"
     }
   },
   "skinEvent": {
