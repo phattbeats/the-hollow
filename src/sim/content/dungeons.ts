@@ -229,7 +229,7 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
   nythraxis_scourge_of_thornpeak: {
     id: 'nythraxis_scourge_of_thornpeak', name: 'Nythraxis, Scourge of Thornpeak', minLevel: 20, maxLevel: 20, family: 'undead',
     elite: true, boss: true, ccImmune: true,
-    hpBase: 1450, hpPerLevel: 110, dmgBase: 18, dmgPerLevel: 3.8, attackSpeed: 2.6,
+    hpBase: 21739, hpPerLevel: 0, dmgBase: 27, dmgPerLevel: 5.7, attackSpeed: 2.6,
     armorPerLevel: 42, moveSpeed: 10.5, aggroRadius: 22,
     loot: [
       { copper: 150000, chance: 1 },
@@ -415,7 +415,9 @@ export const DUNGEON_DEFS: Record<string, DungeonDef> = {
       // raiders must split to channel them. Kept within the encounter's
       // wardstone search radius (see nythraxisWardstones in sim.ts).
       { itemId: 'bastion_ward_stone', name: 'Left Wardstone', x: -40, z: 74 },
+      { itemId: 'soulshard_pillar', name: 'Left Soulshard Pillar', x: -20, z: 66 },
       { itemId: 'bastion_ward_stone', name: 'Right Wardstone', x: 40, z: 74 },
+      { itemId: 'soulshard_pillar', name: 'Right Soulshard Pillar', x: 20, z: 66 },
       { itemId: 'bastion_ward_stone', name: 'Threshold Wardstone', x: 0, z: 58 },
     ],
     interior: 'nythraxis',

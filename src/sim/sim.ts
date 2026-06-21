@@ -92,6 +92,7 @@ const NYTHRAXIS_BOSS_ID = 'nythraxis_scourge_of_thornpeak';
 const NYTHRAXIS_ADD_ID = 'nythraxis_skeleton_warrior';
 const NYTHRAXIS_ALDRIC_ID = 'brother_aldric_raid';
 const NYTHRAXIS_WARDSTONE_ITEM_ID = 'bastion_ward_stone';
+const NYTHRAXIS_SOULSHARD_PILLAR_ITEM_ID = 'soulshard_pillar';
 // How far a wardstone may sit from the boss spawn and still belong to this
 // encounter. The three arena wards form a wide forward triangle (~54yd out), so
 // this must comfortably exceed that; far above any cross-instance false match.
@@ -100,17 +101,18 @@ const NYTHRAXIS_GRAVEBREAKER_EVERY = 12;
 const NYTHRAXIS_GRAVEBREAKER_RANGE = 11;
 const NYTHRAXIS_GRAVEBREAKER_HALF_ARC = 0.75;
 const NYTHRAXIS_RAISE_FALLEN_EVERY = 30;
-const NYTHRAXIS_SOUL_REND_EVERY = 24;
+const NYTHRAXIS_PHASE_TWO_HP = 0.7;
+const NYTHRAXIS_SOUL_REND_EVERY = 30;
 const NYTHRAXIS_SOUL_REND_DURATION = 8;
-const NYTHRAXIS_SOUL_REND_STACK_RANGE = 2;
+const NYTHRAXIS_SOUL_REND_STACK_RANGE = 5;
 const NYTHRAXIS_DEATHLESS_EVERY = 45;
 const NYTHRAXIS_DEATHLESS_CAST = 10;
 const NYTHRAXIS_DEATHLESS_CHANNEL = 5;
 const NYTHRAXIS_DEATHLESS_STUN = 5;
 const NYTHRAXIS_DEATHLESS_SOUL_REND_LOCKOUT = 15;
 const NYTHRAXIS_LOCKOUT_MS = 24 * 60 * 60 * 1000;
-const NYTHRAXIS_TRANSITION_DURATION = 15;
-const NYTHRAXIS_TRANSITION_STUN = 15.5;
+const NYTHRAXIS_TRANSITION_DURATION = 21;
+const NYTHRAXIS_TRANSITION_STUN = 21.5;
 const NYTHRAXIS_FINAL_STAND_HP = 0.05;
 const NYTHRAXIS_ROOM_RADIUS = 260;
 // Brother Aldric enters on the door side of the arena (the raid's side, lower z
@@ -6248,7 +6250,7 @@ export class Sim {
     }
     const aldric = this.findNythraxisAldric(boss);
     if (aldric) this.dropEntity(aldric.id);
-    for (const ward of this.nythraxisWardstones(boss)) {
+    for (const ward of this.nythraxisDeathlessChannelObjects(boss)) {
       ward.auras = ward.auras.filter((a) => a.id !== 'nythraxis_wardstone_lit');
     }
     boss.nythraxis = undefined;
@@ -6307,7 +6309,7 @@ export class Sim {
     if (st.phase === 'dead') return;
 
     const hpFrac = boss.hp / Math.max(1, boss.maxHp);
-    if (st.phase === 1 && hpFrac <= 0.5) {
+    if (st.phase === 1 && hpFrac <= NYTHRAXIS_PHASE_TWO_HP) {
       this.startNythraxisTransition(boss, st);
       return;
     }
@@ -6336,15 +6338,15 @@ export class Sim {
     this.updateNythraxisGravebreaker(boss, st);
     if (st.phase === 1) this.updateNythraxisRaiseFallen(boss, st);
     if (st.phase === 2) {
-      st.deathlessTimer -= DT;
-      if (st.deathlessTimer <= 0) {
-        if (st.soulRendMarks.length === 0 && st.soulRendLockout <= 0) this.startNythraxisDeathlessRage(boss, st);
-        else st.deathlessTimer = 1;
-      }
       st.soulRendTimer -= DT;
       if (st.soulRendTimer <= 0) {
         if (this.canCastNythraxisSoulRend(st)) this.castNythraxisSoulRend(boss, st);
         else st.soulRendTimer = 1;
+      }
+      st.deathlessTimer -= DT;
+      if (st.deathlessTimer <= 0) {
+        if (st.soulRendMarks.length === 0 && st.soulRendLockout <= 0) this.startNythraxisDeathlessRage(boss, st);
+        else st.deathlessTimer = 1;
       }
     }
   }
@@ -6473,12 +6475,12 @@ export class Sim {
     this.spawnNythraxisAldric(boss);
     this.lightNythraxisWardstones(boss);
     st.transitionCues = [
-      { at: 2.5, speaker: 'aldric', text: 'Your kingdom is gone, Nythraxis' },
-      { at: 5.2, speaker: 'aldric', text: 'Yet you still cling to it' },
-      { at: 7.3, speaker: 'aldric', text: 'Champions, listen carefully!' },
-      { at: 9.0, speaker: 'aldric', text: 'The wardstones still bind his soul.' },
-      { at: 11.0, speaker: 'aldric', text: 'When the time comes, do not ignore them.' },
-      { at: 13.2, speaker: 'aldric', text: 'Fail and we all perish' },
+      { at: 3.0, speaker: 'aldric', text: 'Your kingdom is gone, Nythraxis' },
+      { at: 5.7, speaker: 'aldric', text: 'Yet you still cling to it' },
+      { at: 8.4, speaker: 'aldric', text: 'Champions, listen carefully!' },
+      { at: 11.2, speaker: 'aldric', text: 'The wardstones still bind his soul.' },
+      { at: 14.1, speaker: 'aldric', text: 'When the time comes, do not ignore them.' },
+      { at: 17.1, speaker: 'aldric', text: 'Fail and we all perish' },
     ];
   }
 
@@ -6516,8 +6518,8 @@ export class Sim {
     st.phase = 2;
     st.transitionReleased = true;
     st.gravebreakerTimer = 3;
-    st.soulRendTimer = 12;
-    st.deathlessTimer = 26;
+    st.soulRendTimer = 0;
+    st.deathlessTimer = 15;
     boss.auras = boss.auras.filter((a) => a.id !== 'nythraxis_transition_pause');
     for (const p of this.playersInNythraxisRoom(boss)) {
       p.auras = p.auras.filter((a) => a.id !== 'nythraxis_transition_stun');
@@ -6525,7 +6527,7 @@ export class Sim {
   }
 
   private lightNythraxisWardstones(boss: Entity): void {
-    for (const ward of this.nythraxisWardstones(boss)) {
+    for (const ward of this.nythraxisDeathlessChannelObjects(boss)) {
       this.applyAura(ward, {
         id: 'nythraxis_wardstone_lit', name: 'Soul Ward', kind: 'absorb',
         remaining: 600, duration: 600, value: 1, sourceId: boss.id, school: 'arcane',
@@ -6535,7 +6537,7 @@ export class Sim {
   }
 
   private canCastNythraxisSoulRend(st: NonNullable<Entity['nythraxis']>): boolean {
-    return st.deathlessCastRemaining <= 0 && st.deathlessStunRemaining <= 0 && st.deathlessTimer > NYTHRAXIS_DEATHLESS_SOUL_REND_LOCKOUT;
+    return st.deathlessCastRemaining <= 0 && st.deathlessStunRemaining <= 0 && st.deathlessTimer >= NYTHRAXIS_DEATHLESS_SOUL_REND_LOCKOUT;
   }
 
   private castNythraxisSoulRend(boss: Entity, st: NonNullable<Entity['nythraxis']>): void {
@@ -6583,7 +6585,7 @@ export class Sim {
     st.deathlessTimer = NYTHRAXIS_DEATHLESS_EVERY;
     st.deathlessCastRemaining = NYTHRAXIS_DEATHLESS_CAST;
     st.soulRendLockout = NYTHRAXIS_DEATHLESS_SOUL_REND_LOCKOUT;
-    st.wardChannels = this.nythraxisWardstones(boss).map((ward) => ({
+    st.wardChannels = this.nythraxisDeathlessChannelObjects(boss).map((ward) => ({
       objectId: ward.id,
       playerId: null,
       remaining: NYTHRAXIS_DEATHLESS_CHANNEL,
@@ -6629,8 +6631,8 @@ export class Sim {
   }
 
   private nythraxisWardstoneInterruptReady(st: NonNullable<Entity['nythraxis']>): boolean {
-    if (st.wardChannels.length !== 3 || !st.wardChannels.every((c) => c.complete && c.playerId !== null)) return false;
-    return new Set(st.wardChannels.map((c) => c.playerId)).size === 3;
+    if (st.wardChannels.length === 0 || !st.wardChannels.every((c) => c.complete && c.playerId !== null)) return false;
+    return new Set(st.wardChannels.map((c) => c.playerId)).size === st.wardChannels.length;
   }
 
   private updateNythraxisWardChannels(boss: Entity, st: NonNullable<Entity['nythraxis']>): void {
@@ -6675,8 +6677,17 @@ export class Sim {
     return wards;
   }
 
+  private nythraxisDeathlessChannelObjects(boss: Entity): Entity[] {
+    const wards = [...this.entities.values()].filter((e) =>
+      e.kind === 'object'
+      && (e.objectItemId === NYTHRAXIS_WARDSTONE_ITEM_ID || e.objectItemId === NYTHRAXIS_SOULSHARD_PILLAR_ITEM_ID)
+      && dist2d(e.pos, boss.spawnPos) < NYTHRAXIS_WARDSTONE_RANGE);
+    wards.sort((a, b) => a.id - b.id);
+    return wards;
+  }
+
   private tryStartNythraxisWardChannel(ward: Entity, player: Entity): boolean {
-    if (ward.objectItemId !== NYTHRAXIS_WARDSTONE_ITEM_ID) return false;
+    if (ward.objectItemId !== NYTHRAXIS_WARDSTONE_ITEM_ID && ward.objectItemId !== NYTHRAXIS_SOULSHARD_PILLAR_ITEM_ID) return false;
     const boss = [...this.entities.values()].find((e) =>
       e.kind === 'mob'
       && e.templateId === NYTHRAXIS_BOSS_ID
