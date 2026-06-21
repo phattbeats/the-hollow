@@ -229,6 +229,7 @@ export const zh_CN: EnTranslations = {
       "clickMoveLeft": "左键",
       "clickMoveRight": "右键",
       "footstepSounds": "脚步声",
+      "clickFeedback": "点击标记",
       "showWalletOnCharacterScreen": "在角色界面显示钱包",
       "showWalletOnPlayerCard": "在玩家卡片显示钱包"
     },

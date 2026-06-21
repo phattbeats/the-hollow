@@ -134,6 +134,11 @@ export const BOOL_SETTINGS = {
   // players who want them back can re-enable. Independent of the SFX volume
   // slider — jump/land/splash/swim and combat one-shots are unaffected.
   footstepSfx: { def: false },
+  // on by default: a brief OSRS-style ground marker (an expanding ring plus a
+  // crossed "X") where you left-click in the world, gold for a normal click and
+  // red when the click lands on a hostile. Purely a local presentation cue; it
+  // never touches sim state. Off removes the marker entirely.
+  clickFeedback: { def: true },
 } as const;
 
 export type NumericSettingKey = keyof typeof SETTING_RANGES;

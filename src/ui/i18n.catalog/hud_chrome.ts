@@ -102,6 +102,8 @@ export const hudChromeStrings = {
     clickMoveRight: "Right Click",
     // Audio panel toggle for the per-footfall step clips (off by default).
     footstepSounds: "Footstep Sounds",
+    // Toggle for the OSRS-style ground click marker (on by default).
+    clickFeedback: "Click Marker",
     showWalletOnCharacterScreen: "Show Wallet on Character Screen",
     showWalletOnPlayerCard: "Show Wallet on Player Card",
   },

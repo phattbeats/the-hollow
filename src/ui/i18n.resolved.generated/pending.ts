@@ -9,17 +9,31 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "hudChrome.options.clickFeedback"
+  ],
+  "es_ES": [
+    "hudChrome.options.clickFeedback"
+  ],
+  "fr_FR": [
+    "hudChrome.options.clickFeedback"
+  ],
+  "fr_CA": [
+    "hudChrome.options.clickFeedback"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
+  "it_IT": [
+    "hudChrome.options.clickFeedback"
+  ],
+  "de_DE": [
+    "hudChrome.options.clickFeedback"
+  ],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
-  "pt_BR": [],
+  "pt_BR": [
+    "hudChrome.options.clickFeedback"
+  ],
   "ru_RU": []
 };

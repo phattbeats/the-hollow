@@ -229,6 +229,7 @@ export const it_IT: EnTranslations = {
       "clickMoveLeft": "Clic sinistro",
       "clickMoveRight": "Clic destro",
       "footstepSounds": "Suoni dei passi",
+      "clickFeedback": "Click Marker",
       "showWalletOnCharacterScreen": "Mostra portafoglio nella schermata personaggi",
       "showWalletOnPlayerCard": "Mostra portafoglio nella scheda giocatore"
     },

@@ -930,6 +930,21 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
   function handlePick(x: number, y: number, button: number): void {
     const id = renderer.pick(x, y);
+    // OSRS-style click feedback: drop a ground marker wherever a left-click lands
+    // in the world, gold normally and red when it is on a hostile. Pure cosmetic,
+    // independent of the click-to-move setting; gated by its own toggle.
+    if (button === 0 && settings.get('clickFeedback') && !world.player.dead) {
+      if (id !== null) {
+        const e = world.entities.get(id);
+        if (e && e.id !== world.player.id) {
+          const hostile = isAttackableEntity(e, world.playerId, activePvpOpponentIds(world));
+          renderer.spawnClickMarker(e.pos.x, e.pos.z, hostile);
+        }
+      } else {
+        const g = renderer.groundPoint(x, y, world.player.pos.y);
+        if (g) renderer.spawnClickMarker(g.x, g.z, false);
+      }
+    }
     const clickToMove = settings.get('clickToMove') > 0 && !world.player.dead;
     const clickToMoveButton = normalizeClickMoveButton(settings.get('clickToMoveButton'));
     const isClickMoveButton = clickToMove && button === clickToMoveButton;

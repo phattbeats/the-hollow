@@ -76,6 +76,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   "hudChrome.options.clickMoveLeft": "왼쪽 클릭",
   "hudChrome.options.clickMoveRight": "오른쪽 클릭",
   "hudChrome.options.footstepSounds": "발소리",
+  "hudChrome.options.clickFeedback": "클릭 표시",
   "hudChrome.options.showWalletOnCharacterScreen": "캐릭터 화면에 지갑 표시",
   "hudChrome.options.showWalletOnPlayerCard": "플레이어 카드에 지갑 표시",
   "hudChrome.playerCard.showWalletBadge": "지갑 배지 표시",
