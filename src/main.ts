@@ -2060,16 +2060,21 @@ async function refreshCharacters(): Promise<void> {
       row.dataset.class = c.class;
       row.dataset.skin = String(c.skin ?? 0);
       const className = classDisplayName(c.class);
-      const statusText = c.online ? ` (${t('character.inWorld')})` : c.forceRename ? ` (${t('character.renameRequired')})` : '';
+      // Online characters explain themselves on their own hint line (below the
+      // class) instead of the terse "(in world)" suffix, so the reason for the
+      // Take Over button is unmissable.
+      const statusText = c.online ? '' : c.forceRename ? ` (${t('character.renameRequired')})` : '';
+      const inWorldHint = c.online ? `<span class="char-inworld-hint">${escapeHtml(t('character.inWorldHint'))}</span>` : '';
       row.innerHTML = `${portraitChipHtml({ cls: c.class, skin: c.skin ?? 0, name: c.name, variant: 'sm' })}
         <div class="char-id">
           <span class="char-name">${escapeHtml(c.name)}</span>
           <span class="char-sub">${escapeHtml(t('character.levelClass', { level: c.level, className }))}${escapeHtml(statusText)}</span>
+          ${inWorldHint}
         </div>
         ${c.forceRename
           ? `<input class="rename-input" placeholder="${escapeHtml(t('character.newNamePlaceholder'))}" maxlength="16" /><span class="char-actions"><button class="btn btn-danger delete-char-btn" ${c.online ? 'disabled' : ''}>${escapeHtml(t('character.delete'))}</button><button class="btn rename-btn">${escapeHtml(t('character.rename'))}</button></span>`
           : c.online
-            ? `<span class="char-inworld-hint">${escapeHtml(t('character.inWorldHint'))}</span><span class="char-actions"><button class="btn btn-danger delete-char-btn" disabled title="${escapeHtml(t('character.inWorldHint'))}">${escapeHtml(t('character.delete'))}</button><button class="btn take-over-btn" title="${escapeHtml(t('character.takeOverConfirm'))}" aria-label="${escapeHtml(t('character.takeOverConfirm'))}">${escapeHtml(t('character.takeOver'))}</button></span>`
+            ? `<span class="char-actions"><button class="btn btn-danger delete-char-btn" disabled title="${escapeHtml(t('character.inWorldHint'))}">${escapeHtml(t('character.delete'))}</button><button class="btn take-over-btn" title="${escapeHtml(t('character.takeOverConfirm'))}" aria-label="${escapeHtml(t('character.takeOverConfirm'))}">${escapeHtml(t('character.takeOver'))}</button></span>`
             : `<span class="char-actions"><button class="btn btn-danger delete-char-btn">${escapeHtml(t('character.delete'))}</button><button class="btn enter-world-btn">${escapeHtml(t('auth.enterWorld'))}</button></span>`}`;
 
       row.querySelector('.delete-char-btn')!.addEventListener('click', (e) => {
