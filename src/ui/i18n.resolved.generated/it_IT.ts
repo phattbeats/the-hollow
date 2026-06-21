@@ -232,6 +232,74 @@ export const it_IT: EnTranslations = {
       "showWalletOnCharacterScreen": "Mostra portafoglio nella schermata personaggi",
       "showWalletOnPlayerCard": "Mostra portafoglio nella scheda giocatore"
     },
+    "perf": {
+      "title": "Pannello prestazioni",
+      "enable": "Mostra pannello prestazioni",
+      "description": "Scegli quali statistiche mostrare, dove posizionare il pannello e il suo aspetto.",
+      "sectionPosition": "Posizione",
+      "sectionAppearance": "Aspetto",
+      "sectionStats": "Statistiche",
+      "positionX": "Orizzontale",
+      "positionY": "Verticale",
+      "resetPosition": "Ripristina posizione",
+      "dragHint": "Trascina il pannello per spostarlo, oppure usa i cursori qui sotto.",
+      "opacity": "Opacità dello sfondo",
+      "solidBg": "Sfondo opaco",
+      "fontScale": "Dimensione del testo",
+      "textColor": "Colore del testo",
+      "bgColor": "Colore dello sfondo",
+      "colorTheme": "Tema cromatico",
+      "graph": "Grafico tempi di frame",
+      "thresholds": "Avvisi cromatici",
+      "presetsLabel": "Preimpostazioni rapide",
+      "presetMinimal": "Minimo",
+      "presetStandard": "Standard",
+      "presetEverything": "Tutto",
+      "groups": {
+        "frame": "Frame e tempi",
+        "network": "Rete",
+        "renderer": "Renderer",
+        "system": "Sistema"
+      },
+      "labels": {
+        "fps": "FPS",
+        "frameTime": "Tempo di frame",
+        "fps1Low": "Minimi 1%",
+        "fps01Low": "Minimi 0,1%",
+        "ping": "Ping",
+        "jitter": "Jitter",
+        "snapshot": "Frequenza snapshot",
+        "connection": "Connessione",
+        "drawCalls": "Chiamate di disegno",
+        "triangles": "Triangoli",
+        "geometries": "Geometrie",
+        "textures": "Texture",
+        "programs": "Shader",
+        "renderScale": "Scala di rendering",
+        "gpu": "GPU",
+        "memory": "Memoria",
+        "hitches": "Scatti",
+        "entities": "Entità"
+      },
+      "themes": {
+        "gold": "Oro",
+        "frost": "Gelo",
+        "ember": "Brace",
+        "jade": "Giada",
+        "crimson": "Cremisi",
+        "mono": "Mono"
+      },
+      "units": {
+        "ms": "{value} ms",
+        "mb": "{value} MB",
+        "memPair": "{used} / {limit} MB",
+        "hz": "{value} Hz"
+      },
+      "badges": {
+        "backgrounded": "In secondo piano",
+        "offline": "Offline"
+      }
+    },
     "playerCard": {
       "showWalletBadge": "Mostra distintivo portafoglio"
     },
@@ -501,6 +569,38 @@ export const it_IT: EnTranslations = {
       "leviathan": {
         "name": "Leviatano",
         "flavor": "I mercati sentono ogni tuo movimento: l'1% dell'offerta."
+      },
+      "tidelord": {
+        "name": "Tidelord",
+        "flavor": "The tide answers your call: 2% of supply."
+      },
+      "stormcaller": {
+        "name": "Stormcaller",
+        "flavor": "Storms gather at your name: 3% of supply."
+      },
+      "krakencrown": {
+        "name": "Krakencrown",
+        "flavor": "Crowned by the deep: 4% of supply."
+      },
+      "titanforged": {
+        "name": "Titanforged",
+        "flavor": "Forged among titans: 5% of supply."
+      },
+      "starhoard": {
+        "name": "Starhoard",
+        "flavor": "A hoard that bends starlight: 6% of supply."
+      },
+      "voidwarden": {
+        "name": "Voidwarden",
+        "flavor": "Keeper at the void's edge: 7% of supply."
+      },
+      "realmshaper": {
+        "name": "Realmshaper",
+        "flavor": "You reshape the realm: 8% of supply."
+      },
+      "worldforger": {
+        "name": "Worldforger",
+        "flavor": "Forging a world of your own: 9% of supply."
       },
       "worldbearer": {
         "name": "Portamondi",

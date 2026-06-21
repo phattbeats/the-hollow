@@ -232,6 +232,74 @@ export const ja_JP: EnTranslations = {
       "showWalletOnCharacterScreen": "キャラクター画面にウォレットを表示",
       "showWalletOnPlayerCard": "プレイヤーカードにウォレットを表示"
     },
+    "perf": {
+      "title": "パフォーマンスオーバーレイ",
+      "enable": "パフォーマンスオーバーレイを表示",
+      "description": "表示する統計、オーバーレイの位置、外観を設定します。",
+      "sectionPosition": "位置",
+      "sectionAppearance": "外観",
+      "sectionStats": "統計",
+      "positionX": "横位置",
+      "positionY": "縦位置",
+      "resetPosition": "位置をリセット",
+      "dragHint": "オーバーレイをドラッグするか、下のスライダーで移動します。",
+      "opacity": "背景の不透明度",
+      "solidBg": "不透明な背景",
+      "fontScale": "文字サイズ",
+      "textColor": "文字色",
+      "bgColor": "背景色",
+      "colorTheme": "カラーテーマ",
+      "graph": "フレームタイムグラフ",
+      "thresholds": "警告の色分け表示",
+      "presetsLabel": "クイックプリセット",
+      "presetMinimal": "最小限",
+      "presetStandard": "標準",
+      "presetEverything": "すべて",
+      "groups": {
+        "frame": "フレームとタイミング",
+        "network": "ネットワーク",
+        "renderer": "レンダラー",
+        "system": "システム"
+      },
+      "labels": {
+        "fps": "FPS",
+        "frameTime": "フレームタイム",
+        "fps1Low": "下位1%",
+        "fps01Low": "下位0.1%",
+        "ping": "Ping",
+        "jitter": "ジッター",
+        "snapshot": "スナップショットレート",
+        "connection": "接続",
+        "drawCalls": "ドローコール",
+        "triangles": "三角形",
+        "geometries": "ジオメトリ",
+        "textures": "テクスチャ",
+        "programs": "シェーダー",
+        "renderScale": "レンダースケール",
+        "gpu": "GPU",
+        "memory": "メモリ",
+        "hitches": "カクつき",
+        "entities": "エンティティ"
+      },
+      "themes": {
+        "gold": "ゴールド",
+        "frost": "フロスト",
+        "ember": "エンバー",
+        "jade": "ジェイド",
+        "crimson": "クリムゾン",
+        "mono": "モノクロ"
+      },
+      "units": {
+        "ms": "{value} ms",
+        "mb": "{value} MB",
+        "memPair": "{used} / {limit} MB",
+        "hz": "{value} Hz"
+      },
+      "badges": {
+        "backgrounded": "バックグラウンド",
+        "offline": "オフライン"
+      }
+    },
     "playerCard": {
       "showWalletBadge": "ウォレットバッジを表示"
     },
@@ -501,6 +569,38 @@ export const ja_JP: EnTranslations = {
       "leviathan": {
         "name": "リヴァイアサン",
         "flavor": "あなたが動けば市場が感じ取ります: 供給量の 1%。"
+      },
+      "tidelord": {
+        "name": "Tidelord",
+        "flavor": "The tide answers your call: 2% of supply."
+      },
+      "stormcaller": {
+        "name": "Stormcaller",
+        "flavor": "Storms gather at your name: 3% of supply."
+      },
+      "krakencrown": {
+        "name": "Krakencrown",
+        "flavor": "Crowned by the deep: 4% of supply."
+      },
+      "titanforged": {
+        "name": "Titanforged",
+        "flavor": "Forged among titans: 5% of supply."
+      },
+      "starhoard": {
+        "name": "Starhoard",
+        "flavor": "A hoard that bends starlight: 6% of supply."
+      },
+      "voidwarden": {
+        "name": "Voidwarden",
+        "flavor": "Keeper at the void's edge: 7% of supply."
+      },
+      "realmshaper": {
+        "name": "Realmshaper",
+        "flavor": "You reshape the realm: 8% of supply."
+      },
+      "worldforger": {
+        "name": "Worldforger",
+        "flavor": "Forging a world of your own: 9% of supply."
       },
       "worldbearer": {
         "name": "世界を担う者",

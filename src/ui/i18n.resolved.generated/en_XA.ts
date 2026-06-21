@@ -232,6 +232,74 @@ export const en_XA: EnTranslations = {
       "showWalletOnCharacterScreen": "[Šĥóŵ Ŵáļļéţ óñ Çĥáŕáçţéŕ Šçŕééñ]",
       "showWalletOnPlayerCard": "[Šĥóŵ Ŵáļļéţ óñ Þļáýéŕ Çáŕð]"
     },
+    "perf": {
+      "title": "[Þéŕƒóŕɱáñçé Óʋéŕļáý]",
+      "enable": "[Šĥóŵ Þéŕƒóŕɱáñçé Óʋéŕļáý]",
+      "description": "[Çĥóóšé ŵĥíçĥ šţáţš ţó šĥóŵ, ŵĥéŕé ţĥé óʋéŕļáý šíţš, áñð ĥóŵ íţ ļóóķš.]",
+      "sectionPosition": "[Þóšíţíóñ]",
+      "sectionAppearance": "[Áþþéáŕáñçé]",
+      "sectionStats": "[Šţáţš]",
+      "positionX": "[Ĥóŕížóñţáļ]",
+      "positionY": "[Ʋéŕţíçáļ]",
+      "resetPosition": "[Ŕéšéţ Þóšíţíóñ]",
+      "dragHint": "[Ðŕáĝ ţĥé óʋéŕļáý ţó ɱóʋé íţ, óŕ úšé ţĥé šļíðéŕš ƀéļóŵ.]",
+      "opacity": "[Ɓáçķĝŕóúñð Óþáçíţý]",
+      "solidBg": "[Šóļíð Ɓáçķĝŕóúñð]",
+      "fontScale": "[Ţéẋţ Šížé]",
+      "textColor": "[Ţéẋţ Çóļóŕ]",
+      "bgColor": "[Ɓáçķĝŕóúñð Çóļóŕ]",
+      "colorTheme": "[Çóļóŕ Ţĥéɱé]",
+      "graph": "[Ƒŕáɱé-Ţíɱé Ĝŕáþĥ]",
+      "thresholds": "[Çóļóŕ-Çóðéð Ŵáŕñíñĝš]",
+      "presetsLabel": "[Ɋúíçķ Þŕéšéţš]",
+      "presetMinimal": "[Ɱíñíɱáļ]",
+      "presetStandard": "[Šţáñðáŕð]",
+      "presetEverything": "[Éʋéŕýţĥíñĝ]",
+      "groups": {
+        "frame": "[Ƒŕáɱé & Ţíɱíñĝ]",
+        "network": "[Ñéţŵóŕķ]",
+        "renderer": "[Ŕéñðéŕéŕ]",
+        "system": "[Šýšţéɱ]"
+      },
+      "labels": {
+        "fps": "[ƑÞŠ]",
+        "frameTime": "[Ƒŕáɱé Ţíɱé]",
+        "fps1Low": "[1% Ļóŵ]",
+        "fps01Low": "[0.1% Ļóŵ]",
+        "ping": "[Þíñĝ]",
+        "jitter": "[Ĵíţţéŕ]",
+        "snapshot": "[Šñáþšĥóţ Ŕáţé]",
+        "connection": "[Çóññéçţíóñ]",
+        "drawCalls": "[Ðŕáŵ Çáļļš]",
+        "triangles": "[Ţŕíáñĝļéš]",
+        "geometries": "[Ĝéóɱéţŕíéš]",
+        "textures": "[Ţéẋţúŕéš]",
+        "programs": "[Šĥáðéŕš]",
+        "renderScale": "[Ŕéñðéŕ Šçáļé]",
+        "gpu": "[ĜÞÚ]",
+        "memory": "[Ɱéɱóŕý]",
+        "hitches": "[Ĥíţçĥéš]",
+        "entities": "[Éñţíţíéš]"
+      },
+      "themes": {
+        "gold": "[Ĝóļð]",
+        "frost": "[Ƒŕóšţ]",
+        "ember": "[Éɱƀéŕ]",
+        "jade": "[Ĵáðé]",
+        "crimson": "[Çŕíɱšóñ]",
+        "mono": "[Ɱóñó]"
+      },
+      "units": {
+        "ms": "[{value} ɱš]",
+        "mb": "[{value} ⱮƁ]",
+        "memPair": "[{used} / {limit} ⱮƁ]",
+        "hz": "[{value} Ĥž]"
+      },
+      "badges": {
+        "backgrounded": "[Ɓáçķĝŕóúñðéð]",
+        "offline": "[Óƒƒļíñé]"
+      }
+    },
     "playerCard": {
       "showWalletBadge": "[Šĥóŵ ŵáļļéţ ƀáðĝé]"
     },
@@ -501,6 +569,38 @@ export const en_XA: EnTranslations = {
       "leviathan": {
         "name": "[Ļéʋíáţĥáñ]",
         "flavor": "[Ɱáŕķéţš ƒééļ ýóú ɱóʋé: 1% óƒ šúþþļý.]"
+      },
+      "tidelord": {
+        "name": "[Ţíðéļóŕð]",
+        "flavor": "[Ţĥé ţíðé áñšŵéŕš ýóúŕ çáļļ: 2% óƒ šúþþļý.]"
+      },
+      "stormcaller": {
+        "name": "[Šţóŕɱçáļļéŕ]",
+        "flavor": "[Šţóŕɱš ĝáţĥéŕ áţ ýóúŕ ñáɱé: 3% óƒ šúþþļý.]"
+      },
+      "krakencrown": {
+        "name": "[Ķŕáķéñçŕóŵñ]",
+        "flavor": "[Çŕóŵñéð ƀý ţĥé ðééþ: 4% óƒ šúþþļý.]"
+      },
+      "titanforged": {
+        "name": "[Ţíţáñƒóŕĝéð]",
+        "flavor": "[Ƒóŕĝéð áɱóñĝ ţíţáñš: 5% óƒ šúþþļý.]"
+      },
+      "starhoard": {
+        "name": "[Šţáŕĥóáŕð]",
+        "flavor": "[Á ĥóáŕð ţĥáţ ƀéñðš šţáŕļíĝĥţ: 6% óƒ šúþþļý.]"
+      },
+      "voidwarden": {
+        "name": "[Ʋóíðŵáŕðéñ]",
+        "flavor": "[Ķééþéŕ áţ ţĥé ʋóíð'š éðĝé: 7% óƒ šúþþļý.]"
+      },
+      "realmshaper": {
+        "name": "[Ŕéáļɱšĥáþéŕ]",
+        "flavor": "[Ýóú ŕéšĥáþé ţĥé ŕéáļɱ: 8% óƒ šúþþļý.]"
+      },
+      "worldforger": {
+        "name": "[Ŵóŕļðƒóŕĝéŕ]",
+        "flavor": "[Ƒóŕĝíñĝ á ŵóŕļð óƒ ýóúŕ óŵñ: 9% óƒ šúþþļý.]"
       },
       "worldbearer": {
         "name": "[Ŵóŕļðƀéáŕéŕ]",

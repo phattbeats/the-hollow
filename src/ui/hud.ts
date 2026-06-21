@@ -51,6 +51,7 @@ import { cardHostingAvailable, publishCard, fetchReferralInfo, fetchStanding, ty
 import { holderTierForBalance, holderTierByIndex, holderTierBadgeDataUrl, holderTierDisplayName } from './holder_tier';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
 import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES, normalizeClickMoveButton } from '../game/settings';
+import { PerfOverlaySettingsPanel, type PerfOverlayHooks, type PerfSettingsHost } from './perf_overlay_settings';
 import { isPhoneTouchDevice } from '../game/mobile_controls';
 import { chatPlayerContextActions } from './player_context_menu';
 import {
@@ -92,7 +93,9 @@ import {
 } from './hotbar';
 
 // hooks main wires after Input exists (the options menu drives input, audio,
-// graphics, and logout, all of which live outside the HUD)
+// graphics, and logout, all of which live outside the HUD). PerfOverlayHooks
+// (the customizable performance overlay's config seam) lives in
+// perf_overlay_settings.ts alongside the panel that consumes it.
 export interface OptionsHooks {
   logout(): void;
   captureKey(cb: (code: string | null) => void): void;
@@ -102,6 +105,11 @@ export interface OptionsHooks {
   // fans out woc:languagechange). onStatus receives localized progress/error text for an
   // aria-live element. Resolves false if the locale failed to load (active locale kept).
   changeLanguage(lang: SupportedLanguage, onStatus?: (msg: string) => void): Promise<boolean>;
+  // Re-fetch the connected/linked wallet's $WOC balance (server cache-bypassed) so the
+  // bag footer and player card reflect on-chain token changes. No-op when the wallet
+  // feature is off or no wallet is connected/linked.
+  refreshWocBalance(): void;
+  perfOverlay: PerfOverlayHooks;
 }
 
 export interface ReportHooks {
@@ -116,6 +124,11 @@ const esc = (value: unknown): string => String(value ?? '')
   .replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;')
   .replace(/'/g, '&#39;');
+const trackMetaPixel = (eventName: string, data?: Record<string, unknown>): void => {
+  const fbq = (window as Window & { fbq?: (...args: unknown[]) => void }).fbq;
+  if (typeof fbq !== 'function') return;
+  fbq('trackCustom', eventName, data ?? {});
+};
 const castDisplayName = (id: string): string => {
   if (id === FISHING_CAST_ID) return t('abilityUi.cast.fishing');
   if (id === 'demon_heal') return t('abilityUi.cast.demonHeal');
@@ -362,7 +375,10 @@ export class Hud {
   // Soft swear terms from the server (online only), masked in chat when the
   // player's "Filter Profanity" setting is on. Fed by main.ts from ClientWorld.
   private profanityWords: string[] = [];
-  private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' | 'interface' = 'main';
+  private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' | 'interface' | 'performance' = 'main';
+  // The Options > Performance panel, lazily built and reused (it caches the live
+  // position-slider handles so a drag-to-move can update them in place).
+  private perfSettings: PerfOverlaySettingsPanel | null = null;
   private capturingKey: { action: string; index: number } | null = null; // binding awaiting a key
   private keybindNote = '';
   private emoteWheelOpen = false;
@@ -525,6 +541,10 @@ export class Hud {
   private mechAssetsPromise: Promise<void> | null = null;
   private cardModalEl: HTMLElement | null = null;
   private cardModalReturnFocus: HTMLElement | null = null;
+  // Set while the player-card modal is open: re-composites the card with the
+  // current pose so a $WOC balance change (the bag-footer path can't reach the
+  // card's canvas) is reflected. Cleared when the modal closes.
+  private recomposeOpenCard: (() => void) | null = null;
   // current typeahead state: which input, its results, and the keyboard-
   // highlighted row (-1 = none), so Enter/Arrow keys can pick a suggestion
   private socialSuggest: { field: string; items: { name: string; cls: string; level: number }[]; index: number } = { field: '', items: [], index: -1 };
@@ -548,8 +568,12 @@ export class Hud {
     this.refreshKeybindLabels();
     this.buildXpTicks();
     document.addEventListener('woc:languagechange', () => this.refreshLocalizedDynamicUi());
-    // re-render the bag footer when the connected wallet's $WOC balance changes
-    onWalletUiChange(() => { if ($('#bags').style.display === 'block') this.renderBags(); });
+    // re-render the bag footer (and re-composite an open player card) when the
+    // connected wallet's $WOC balance changes
+    onWalletUiChange(() => {
+      if ($('#bags').style.display === 'block') this.renderBags();
+      this.recomposeOpenCard?.();
+    });
     $('#pf-name').textContent = sim.player.name;
     this.drawPlayerFramePortrait();
     // Character GLBs preload after the HUD mounts; once the real 3D portraits are
@@ -3611,6 +3635,7 @@ export class Hud {
           this.showBanner(t('hud.core.levelBanner', { level: ev.level }));
           this.log(t('hud.core.levelLog', { level: ev.level }), '#ffd100');
           audio.levelUp();
+          if (ev.level === 5) trackMetaPixel('ReachedLevel5', { level: ev.level });
           // First talent point (and spec) unlock — nudge the player to the panel.
           if (ev.level === FIRST_TALENT_LEVEL && talentsFor(this.sim.cfg.playerClass)) {
             this.showBanner(t('game.talents.unlockBanner'));
@@ -5326,6 +5351,9 @@ export class Hud {
     this.renderBags();
     el.style.display = 'flex';
     audio.bagOpen();
+    // Pull a fresh on-chain $WOC balance for the footer; the async result
+    // re-renders the bag via the onWalletUiChange listener wired in the ctor.
+    this.optionsHooks?.refreshWocBalance();
   }
 
   // Called when an authoritative inventory delta lands (online snapshots
@@ -6071,6 +6099,10 @@ export class Hud {
     if (!preview) return;
 
     this.closePlayerCardModal(false);
+    // Pull a fresh on-chain $WOC balance so the holder badge isn't stale. The
+    // async result lands via onWalletUiChange → recomposeOpenCard (below), which
+    // re-composites the card with the current pose once the new value arrives.
+    this.optionsHooks?.refreshWocBalance();
     this.cardModalReturnFocus = this.currentFocusableElement();
     const back = document.createElement('div');
     back.className = 'modal-backdrop';
@@ -6184,6 +6216,14 @@ export class Hud {
       if (metadataReady) void compose(requestedPoseIndex);
     });
 
+    // Re-composite the card with the current pose whenever the wallet balance
+    // (or availability) changes while this modal is open — e.g. the fresh read
+    // kicked at open lands, or tokens move during the session. Registered BEFORE
+    // the awaits below so a balance landing during that window isn't dropped; it
+    // no-ops until metadataReady, and the first compose picks up the fresh store
+    // value anyway.
+    this.recomposeOpenCard = () => { if (this.cardModalEl === back && metadataReady) void compose(requestedPoseIndex); };
+
     // Referral info + realm standing are online-only (null offline). Fetch once
     // and reuse across pose re-renders. Pose clicks before this resolves update
     // requestedPoseIndex, so the latest visible choice renders when ready.
@@ -6201,6 +6241,7 @@ export class Hud {
     if (!back) return;
     back.remove();
     if (this.cardModalEl === back) this.cardModalEl = null;
+    this.recomposeOpenCard = null;
     const target = this.cardModalReturnFocus;
     this.cardModalReturnFocus = null;
     if (restoreFocus) this.restoreFocus(target);
@@ -8148,18 +8189,23 @@ export class Hud {
   closeOptions(): void {
     $('#options-menu').style.display = 'none';
     this.capturingKey = null;
+    this.optionsHooks?.perfOverlay.setPlacement(false);
     this.hideTooltip();
     music.resumeFromMenu();
   }
 
   private renderOptions(): void {
-    // The wide multi-column layout belongs to the keybinds view only; clear it
-    // so the other sub-views (and the main menu) keep their default width.
+    // The wide multi-column layouts belong to their own sub-views; clear each when
+    // leaving it so the other sub-views (and the main menu) keep their default width.
     if (this.optionsView !== 'keybinds') $('#options-menu').classList.remove('kb-wide');
+    if (this.optionsView !== 'performance') $('#options-menu').classList.remove('perf-wide');
+    // The overlay is draggable only while the Performance sub-view is open.
+    this.optionsHooks?.perfOverlay.setPlacement(this.optionsView === 'performance');
     if (this.optionsView === 'keybinds') { this.renderKeybinds(); return; }
     if (this.optionsView === 'graphics') { this.renderGraphics(); return; }
     if (this.optionsView === 'audio') { this.renderAudio(); return; }
     if (this.optionsView === 'interface') { this.renderInterface(); return; }
+    if (this.optionsView === 'performance') { this.renderPerformance(); return; }
     const el = $('#options-menu');
     el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.gameMenu'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
     const list = document.createElement('div');
@@ -8171,11 +8217,12 @@ export class Hud {
       b.addEventListener('click', () => { audio.click(); onClick(); });
       list.appendChild(b);
     };
-    const goto = (view: 'keybinds' | 'graphics' | 'audio' | 'interface') => { this.optionsView = view; this.keybindNote = ''; this.renderOptions(); };
+    const goto = (view: 'keybinds' | 'graphics' | 'audio' | 'interface' | 'performance') => { this.optionsView = view; this.keybindNote = ''; this.renderOptions(); };
     add(t('hud.options.keyBindings'), () => goto('keybinds'));
     add(t('hud.options.graphics'), () => goto('graphics'));
     add(t('hud.options.interface'), () => goto('interface'));
     add(t('hud.options.audio'), () => goto('audio'));
+    add(t('hudChrome.perf.title'), () => goto('performance'));
     add(t('hud.options.logout'), () => this.optionsHooks?.logout());
     add(t('hud.options.returnToGame'), () => this.closeOptions());
     el.appendChild(list);
@@ -8503,7 +8550,6 @@ export class Hud {
     this.settingBoolToggle(body, t('hud.options.frostedPanels'), 'frostedPanels');
     this.settingBoolToggle(body, t('hud.options.highContrastText'), 'highContrastText');
     this.settingBoolToggle(body, t('hud.options.reduceMotion'), 'reduceMotion');
-    this.settingBoolToggle(body, t('hud.options.showFps'), 'showFps');
     this.settingBoolToggle(body, t('hudChrome.options.showWalletOnCharacterScreen'), 'showWalletOnCharacterScreen');
     this.settingBoolToggle(body, t('hudChrome.options.showWalletOnPlayerCard'), 'showWalletOnPlayerCard');
     this.settingBoolToggle(body, t('hud.options.invertLookY'), 'invertLookY');
@@ -8576,6 +8622,38 @@ export class Hud {
     back.addEventListener('click', () => { audio.click(); this.optionsView = 'main'; this.renderOptions(); });
     $('#options-menu').appendChild(back);
     $('#options-menu').querySelector('[data-close]')?.addEventListener('click', () => this.closeOptions());
+  }
+
+  // ---- Performance overlay panel -----------------------------------------
+  // Customizable in-game stats overlay (FPS, frame time, ping, draw calls, …).
+  // The wide, categorized panel lives in perf_overlay_settings.ts (the pure
+  // consumer of the overlay's config store); the HUD only owns this thin delegate
+  // + the master on/off wiring (showFps rides on GameSettings).
+
+  private renderPerformance(): void {
+    const hooks = this.optionsHooks;
+    if (!hooks) return;
+    this.perfSettings ??= new PerfOverlaySettingsPanel(this.perfSettingsHost(hooks));
+    this.perfSettings.render($('#options-menu'));
+  }
+
+  private perfSettingsHost(hooks: OptionsHooks): PerfSettingsHost {
+    return {
+      perf: hooks.perfOverlay,
+      getShowFps: () => hooks.settings.get('showFps'),
+      setShowFps: (on) => hooks.onSettingChange('showFps', on),
+      click: () => audio.click(),
+      onClose: () => this.closeOptions(),
+      onBack: () => { this.optionsView = 'main'; this.renderOptions(); },
+      closeIconHtml: svgIcon('close'),
+    };
+  }
+
+  /** Called by main.ts when a drag settles on the live overlay: push the dropped
+   *  normalized position into the open panel's Horizontal/Vertical sliders so they
+   *  do not lag behind the drag. No-op when the panel is not on screen. */
+  onPerfOverlayMoved(x: number, y: number): void {
+    this.perfSettings?.syncPosition(x, y);
   }
 
   // Display name for an action row. Action-bar slots show the shortcut that

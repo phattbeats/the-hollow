@@ -7,7 +7,7 @@ import {
   listCharacters, getCharacter, createCharacterCapped, deleteCharacter, closeOrphanSessions,
   pruneChatLogs, pruneClientPerfReports, searchCharacters, characterCountsByRealm, moderationStatusForAccount, renameCharacter,
   findCharacterReportTargetByName, topArenaRatings, topLifetimeXp, chatMuteStatusForAccount, loadAccountCosmetics,
-  referralCountForAccount, primarySlugForAccount, lifetimeXpStanding,
+  referralCountForAccount, primarySlugForAccount, lifetimeXpStanding, isAdminAccount,
 } from './db';
 import { virtualLevel } from '../src/sim/types';
 import { Sim } from '../src/sim/sim';
@@ -20,12 +20,14 @@ import {
   hashPassword, verifyPassword, newToken, validUsernameShape, offensiveName, validPassword, normalizeCharName,
 } from './auth';
 import { json, readBody, isUniqueViolation } from './http_util';
-import { requestIp, rateLimited, authThrottled, recordAuthFailure, clearAuthFailures, cardUploadRateLimited } from './ratelimit';
+import { requestIp, rateLimited, authThrottled, recordAuthFailure, clearAuthFailures, cardUploadRateLimited, wocBalanceRateLimited } from './ratelimit';
 import { verifyTurnstile } from './turnstile';
 import { handleWalletChallenge, handleWalletLink, handleWalletGet, handleWalletUnlink } from './wallet';
-import { handleWocBalance } from './woc_balance';
+import { handleWocBalance, parseWocBalanceQuery } from './woc_balance';
 import { handleCardUpload, handleCardRoutes, captureReferral, cardUploadContentLengthTooLarge } from './player_card';
 import { handleAdminApi } from './admin';
+import { pruneExpiredBlockedIps } from './ip_block_db';
+import { isConnectionRefused } from './ip_block';
 import { handleInternalApi } from './internal';
 import { handlePerfReport } from './perf_report';
 import { GameServer } from './game';
@@ -37,9 +39,20 @@ import { recordUsageCacheEvent, recordUsageMetric, setUsageCacheSize } from './p
 const PORT = Number(process.env.PORT ?? 8787);
 const STATIC_DIR = path.join(__dirname, '..', 'dist');
 const WIKI_URL = process.env.WIKI_URL ?? 'http://localhost:8080/wiki/index.php/Main_Page';
-// Pretty URLs that all serve the standalone "official channels" / link-tree page.
-const LINKS_ALIASES = new Set([
-  '/links', '/links/', '/social', '/social/', '/social-media-links', '/social-media-links/',
+// Pretty URLs that serve standalone static HTML pages.
+const STATIC_PAGE_ALIASES = new Map([
+  ['/links', '/links.html'],
+  ['/links/', '/links.html'],
+  ['/social', '/links.html'],
+  ['/social/', '/links.html'],
+  ['/social-media-links', '/links.html'],
+  ['/social-media-links/', '/links.html'],
+  ['/play', '/play.html'],
+  ['/play/', '/play.html'],
+  ['/privacy', '/privacy.html'],
+  ['/privacy/', '/privacy.html'],
+  ['/terms', '/terms.html'],
+  ['/terms/', '/terms.html'],
 ]);
 // How long chat logs are kept (0 = forever); pruned at boot and daily.
 const CHAT_LOG_RETENTION_DAYS = Number(process.env.CHAT_LOG_RETENTION_DAYS ?? 90);
@@ -51,6 +64,9 @@ const PERF_REPORT_RETENTION_DAYS = Number(process.env.PERF_REPORT_RETENTION_DAYS
 const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET ?? '';
 // Hard WS connection limit per IP. Soft threshold (adds bot evidence) is in game.ts.
 const MAX_WS_PER_IP_HARD = Number(process.env.MAX_WS_PER_IP_HARD ?? '20');
+// Each realm re-reads the blocklist on this interval so edits on another realm
+// process propagate and expired blocks fall out.
+const BLOCKED_IP_REFRESH_MS = 60_000;
 
 const game = new GameServer();
 
@@ -250,8 +266,8 @@ function serveStatic(req: http.IncomingMessage, res: http.ServerResponse): void 
     res.end();
     return;
   }
-  // Pretty-URL aliases for the standalone official-channels page (public/ -> dist/links.html).
-  if (LINKS_ALIASES.has(urlPath)) urlPath = '/links.html';
+  // Pretty-URL aliases for standalone static pages.
+  urlPath = STATIC_PAGE_ALIASES.get(urlPath) ?? urlPath;
   if (urlPath === '/' || urlPath === '/admin' || urlPath === '/admin/') urlPath = `/${shell}`;
   // normalize once and reuse for BOTH file resolution and cache policy —
   // otherwise /assets/../x would serve a mutable file with immutable caching
@@ -334,6 +350,12 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     if (req.method === 'POST' && (url === '/api/register' || url === '/api/login') && rateLimited(req)) {
       return json(res, 429, { error: 'too many attempts — wait a minute and try again' });
     }
+    // Reuse the rate-limit message so a blocked client gets no signal that the
+    // block exists. Login is gated separately below, after the account is known,
+    // so admins can bypass; registration has no account to check.
+    if (req.method === 'POST' && url === '/api/register' && game.isIpBlocked(requestIp(req))) {
+      return json(res, 429, { error: 'too many attempts — wait a minute and try again' });
+    }
     if (req.method === 'POST' && url === '/api/register') {
       const body = await readBody(req);
       if (!(await passesTurnstile(req, body))) return json(res, 403, { error: 'verification failed, please try again' });
@@ -380,6 +402,13 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       }
       const status = await moderationStatusForAccount(account.id);
       if (status.locked) return json(res, 403, { error: status.message });
+      // Checked only now that the account is known, so admins (verified after the
+      // password) are never locked out. This does mean a blocked IP gets 429 on a
+      // correct password vs 401 on a wrong one — a small credential-validity tell
+      // we accept, since moving the check before the password would lock admins out.
+      if (game.isIpBlocked(requestIp(req)) && !(await isAdminAccount(account.id))) {
+        return json(res, 429, { error: 'too many attempts — wait a minute and try again' });
+      }
       clearAuthFailures(username); // correct password: forgive earlier typos
       await touchLogin(account.id, requestMetadata(req));
       const token = newToken();
@@ -587,12 +616,13 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     // server-side so it never ships in the client bundle. Public (on-chain
     // balances are public) but narrow + IP rate-limited + per-wallet cached.
     if (req.method === 'GET' && url === '/api/woc/balance') {
-      if (rateLimited(req)) {
+      if (wocBalanceRateLimited(req)) {
         recordUsageMetric('woc.balance.rate_limited');
         return json(res, 429, { error: 'rate limited' });
       }
-      const owner = new URLSearchParams((req.url ?? '').split('?')[1] ?? '').get('owner') ?? '';
-      return handleWocBalance(res, owner);
+      // `fresh=1` is parsed AFTER the IP rate-limit above, so it can't be used to hammer the RPC.
+      const { owner, fresh } = parseWocBalanceQuery(req.url ?? '');
+      return handleWocBalance(res, owner, fresh);
     }
     // Shareable player card: publish (PNG body) + referral stats for the card.
     if (req.method === 'POST' && url === '/api/card') {
@@ -652,10 +682,17 @@ async function main(): Promise<void> {
   if (prunedPerfReports > 0) console.log(`pruned ${prunedPerfReports} client perf report row(s) older than ${PERF_REPORT_RETENTION_DAYS} days`);
   await game.loadMarket();
   await game.loadChatFilter();
+  await game.loadBlockedIps();
   setInterval(() => {
     void pruneChatLogs(CHAT_LOG_RETENTION_DAYS).catch((err) => console.error('chat log prune failed:', err));
     void pruneClientPerfReports(PERF_REPORT_RETENTION_DAYS).catch((err) => console.error('perf report prune failed:', err));
   }, 24 * 3600 * 1000).unref();
+  setInterval(() => {
+    void pruneExpiredBlockedIps().catch((err) => console.error('blocked IP prune failed:', err));
+    void game.reloadBlockedIps()
+      .then(() => game.disconnectBlockedSessions('Connection to the server was lost.'))
+      .catch((err) => console.error('blocked IP refresh failed:', err));
+  }, BLOCKED_IP_REFRESH_MS).unref();
   // keep both leaderboard caches warm so the first viewer never waits on the
   // query and it never recomputes per request (PR-3)
   const warmLeaderboards = () => {
@@ -738,7 +775,8 @@ async function main(): Promise<void> {
     // is handled inside game.join(); this guard blocks egregious bot farms before
     // they consume a session slot.
     const ip = requestMetadata(req).ip;
-    if (game.countIpSessions(ip) >= MAX_WS_PER_IP_HARD) {
+    const isAdmin = await isAdminAccount(accountId);
+    if (isConnectionRefused({ blocked: game.isIpBlocked(ip), isAdmin, ipSessions: game.countIpSessions(ip), hardLimit: MAX_WS_PER_IP_HARD })) {
       ws.close(1008, 'Too many connections from your network');
       return;
     }
@@ -757,6 +795,7 @@ async function main(): Promise<void> {
         reason: chatMute.reason,
         chatStrikes: status.chatStrikes,
         accountCosmetics,
+        isAdmin,
       },
     );
     if ('error' in result) {
