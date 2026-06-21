@@ -73,6 +73,18 @@ function tickSeconds(sim: Sim, seconds: number) {
   for (let i = 0; i < seconds * 20; i++) sim.tick();
 }
 
+function summonImp(sim: Sim, pid: number): Entity {
+  sim.setPlayerLevel(20, pid);
+  const owner = sim.entities.get(pid)!;
+  const pet = (
+    sim as unknown as {
+      createDemonPet(owner: Entity, mobId: string, emit?: boolean): Entity | null;
+    }
+  ).createDemonPet(owner, 'imp', false);
+  if (!pet) throw new Error('expected warlock imp');
+  return pet;
+}
+
 function collectEventsForSeconds(sim: Sim, seconds: number) {
   const rows: { at: number; event: ReturnType<Sim['tick']>[number] }[] = [];
   for (let i = 0; i < seconds * 20; i++) {
@@ -1466,7 +1478,7 @@ describe('Nythraxis raid encounter', () => {
     const tank = sim.entities.get(tankPid)!;
     const warlockPid = sim.addPlayer('warlock', 'Warlock');
     teleport(sim, warlockPid, origin.x, origin.z + 82);
-    const pet = sim.petOf(warlockPid)!;
+    const pet = summonImp(sim, warlockPid);
     teleport(sim, pet.id, origin.x + 2, origin.z + 82);
     const boss = mob(sim, 'nythraxis_scourge_of_thornpeak');
     teleport(sim, tankPid, origin.x, origin.z + 82);
@@ -1774,7 +1786,7 @@ describe('Nythraxis raid encounter', () => {
     deadPlayer.hp = 0;
     const warlockPid = sim.addPlayer('warlock', 'PetOwner');
     teleport(sim, warlockPid, origin.x + 12, origin.z + 82);
-    const pet = sim.petOf(warlockPid)!;
+    const pet = summonImp(sim, warlockPid);
     teleport(sim, pet.id, origin.x + 14, origin.z + 82);
     boss.nythraxis = {
       phase: 2,
@@ -1823,7 +1835,7 @@ describe('Nythraxis raid encounter', () => {
     deadPlayer.dead = true;
     deadPlayer.hp = 0;
     const warlockPid = sim.addPlayer('warlock', 'PetOwner');
-    const pet = sim.petOf(warlockPid)!;
+    const pet = summonImp(sim, warlockPid);
     teleport(sim, pet.id, origin.x + 4, origin.z + 82);
     pet.hp = pet.maxHp;
     boss.nythraxis = {

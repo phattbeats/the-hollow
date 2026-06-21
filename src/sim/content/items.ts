@@ -28,9 +28,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     id: 'training_mace', name: 'Training Mace', kind: 'weapon', slot: 'mainhand', quality: 'common',
     weapon: { min: 2, max: 5, speed: 2.6 }, sellValue: 10,
   },
-  soulshard_pillar: {
-    id: 'soulshard_pillar', name: 'Soulshard Pillar', kind: 'quest', sellValue: 0, noDiscard: true, noVendorSell: true,
-  },
   rusty_hatchet: {
     id: 'rusty_hatchet', name: 'Rusty Hatchet', kind: 'weapon', slot: 'mainhand', quality: 'common',
     weapon: { min: 2, max: 5, speed: 2.2 }, sellValue: 10,

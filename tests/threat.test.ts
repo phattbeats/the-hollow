@@ -18,6 +18,15 @@ function simClass(cls: 'warrior' | 'mage' | 'rogue' | 'druid' | 'hunter' | 'prie
   return cls;
 }
 
+function summonImp(sim: Sim): Entity {
+  sim.player.resource = sim.player.maxResource;
+  sim.castAbility('summon_imp');
+  for (let i = 0; i < 20 * 6; i++) sim.tick();
+  const imp = sim.petOf(sim.playerId);
+  if (!imp) throw new Error('expected summoned imp');
+  return imp;
+}
+
 function nearestMob(sim: Sim, templateId?: string, from?: Entity): Entity {
   const p = from ?? sim.player;
   let best: Entity | null = null;
@@ -1405,32 +1414,31 @@ describe('warlock demon summons', () => {
   it('Summon Imp creates a ranged demon that casts Firebolt', () => {
     const sim = makeSim('warlock');
 
-    const imp = sim.petOf(sim.playerId);
-    expect(imp).toBeTruthy();
-    expect(imp!.templateId).toBe('imp');
-    expect(imp!.name).toBe('Imp');
-    expect(imp!.ownerId).toBe(sim.playerId);
-    expect(imp!.hostile).toBe(false);
+    const imp = summonImp(sim);
+    expect(imp.templateId).toBe('imp');
+    expect(imp.name).toBe('Imp');
+    expect(imp.ownerId).toBe(sim.playerId);
+    expect(imp.hostile).toBe(false);
 
     const wolf = nearestMob(sim, 'forest_wolf');
     beefUp(wolf);
     teleport(sim, sim.player, wolf.pos.x + 14, wolf.pos.z);
-    teleport(sim, imp!, wolf.pos.x + 12, wolf.pos.z);
+    teleport(sim, imp, wolf.pos.x + 12, wolf.pos.z);
     sim.targetEntity(wolf.id);
     sim.petAttack();
 
     let firebolt = false;
     for (let i = 0; i < 20 * 4 && !firebolt; i++) {
       const events = sim.tick();
-      firebolt = events.some((e) => e.type === 'damage' && (e as any).sourceId === imp!.id && (e as any).school === 'fire' && (e as any).amount > 0);
+      firebolt = events.some((e) => e.type === 'damage' && (e as any).sourceId === imp.id && (e as any).school === 'fire' && (e as any).amount > 0);
     }
     expect(firebolt).toBe(true);
-    expect(wolf.threat.has(imp!.id)).toBe(true);
+    expect(wolf.threat.has(imp.id)).toBe(true);
   });
 
   it('warlocks heal demons with mana instead of food and cannot abandon them', () => {
     const sim = makeSim('warlock');
-    const demon = sim.petOf(sim.playerId)!;
+    const demon = summonImp(sim);
     demon.hp = Math.max(1, demon.maxHp - 50);
     sim.addItem('baked_bread', 1);
 
@@ -1458,7 +1466,7 @@ describe('warlock demon summons', () => {
   it('Summon Voidwalker replaces the imp with a tank demon that Growls', () => {
     const sim = makeSim('warlock');
     sim.setPlayerLevel(10);
-    const imp = sim.petOf(sim.playerId)!;
+    const imp = summonImp(sim);
 
     sim.player.resource = sim.player.maxResource;
     sim.castAbility('summon_voidwalker');
@@ -1485,7 +1493,7 @@ describe('warlock demon summons', () => {
 
   it('recasting the same demon unsummons it', () => {
     const sim = makeSim('warlock');
-    const demon = sim.petOf(sim.playerId)!;
+    const demon = summonImp(sim);
     expect(demon.templateId).toBe('imp');
 
     sim.player.resource = sim.player.maxResource;
@@ -1498,7 +1506,7 @@ describe('warlock demon summons', () => {
 
   it('recasting a dead demon resummons it instead of dismissing', () => {
     const sim = makeSim('warlock');
-    const deadDemon = sim.petOf(sim.playerId)!;
+    const deadDemon = summonImp(sim);
     deadDemon.dead = true;
     deadDemon.hp = 0;
     deadDemon.aiState = 'dead';

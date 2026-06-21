@@ -1026,7 +1026,6 @@ export class Sim {
     }
     player.swingTimer = 0;
     if (opts?.state?.pet) this.restorePet(player, opts.state.pet);
-    else if (cls === 'warlock') this.createDemonPet(player, 'imp');
     return player.id;
   }
 

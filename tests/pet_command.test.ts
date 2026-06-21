@@ -30,18 +30,14 @@ function givePet(sim: Sim, ownerPid: number): Entity {
 }
 
 describe('/pet command', () => {
-  it('spawns new warlocks with an imp by default', () => {
+  it('does not spawn new warlocks with a demon by default', () => {
     const sim = makeClassWorld('warlock');
     const pid = sim.addPlayer('warlock', 'Wick');
-    const pet = sim.petOf(pid);
 
-    expect(pet?.templateId).toBe('imp');
-    expect(pet?.ownerId).toBe(pid);
-    expect(pet?.hostile).toBe(false);
-    expect(pet?.dead).toBe(false);
+    expect(sim.petOf(pid)).toBeNull();
   });
 
-  it('does not replace a saved warlock demon with the default imp', () => {
+  it('restores a saved warlock demon without spawning a default imp', () => {
     const first = makeClassWorld('warlock');
     const pid = first.addPlayer('warlock', 'Wick');
     first.setPlayerLevel(20, pid);

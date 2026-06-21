@@ -320,6 +320,12 @@ function setupHunterPet(sim: Sim, pid: number) {
   for (let i = 0; i < 20 * 7; i++) sim.tick();
 }
 
+function setupWarlockImp(sim: Sim, pid: number) {
+  if (sim.petOf(pid)) return;
+  sim.castAbility('summon_imp', pid);
+  for (let i = 0; i < 20 * 12 && sim.entities.get(pid)?.castingAbility; i++) sim.tick();
+}
+
 type Result = {
   key: string;
   killed: boolean;
@@ -448,7 +454,10 @@ function runGroup(groupSpecs: Spec[], key: string): Result {
     ensureTalents(sim, pids[i], groupSpecs[i]);
     equipBest(sim, pids[i], groupSpecs[i]);
   }
-  for (let i = 0; i < pids.length; i++) if (groupSpecs[i].cls === 'hunter') setupHunterPet(sim, pids[i]);
+  for (let i = 0; i < pids.length; i++) {
+    if (groupSpecs[i].cls === 'hunter') setupHunterPet(sim, pids[i]);
+    if (groupSpecs[i].cls === 'warlock') setupWarlockImp(sim, pids[i]);
+  }
   for (const pid of pids.slice(1)) {
     sim.partyInvite(pid, pids[0]);
     sim.partyAccept(pid);
