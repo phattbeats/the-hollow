@@ -616,36 +616,36 @@ export const fr_FR: EnTranslations = {
         "flavor": "Les marchés sentent chacun de vos mouvements: 1 % de l'offre."
       },
       "tidelord": {
-        "name": "Tidelord",
-        "flavor": "The tide answers your call: 2% of supply."
+        "name": "Seigneur des marées",
+        "flavor": "La marée répond à votre appel: 2 % de l'offre."
       },
       "stormcaller": {
-        "name": "Stormcaller",
-        "flavor": "Storms gather at your name: 3% of supply."
+        "name": "Invocateur de tempêtes",
+        "flavor": "Les tempêtes se rassemblent à votre nom: 3 % de l'offre."
       },
       "krakencrown": {
-        "name": "Krakencrown",
-        "flavor": "Crowned by the deep: 4% of supply."
+        "name": "Couronne du kraken",
+        "flavor": "Couronné par les profondeurs: 4 % de l'offre."
       },
       "titanforged": {
-        "name": "Titanforged",
-        "flavor": "Forged among titans: 5% of supply."
+        "name": "Forgé parmi les titans",
+        "flavor": "Forgé parmi les titans: 5 % de l'offre."
       },
       "starhoard": {
-        "name": "Starhoard",
-        "flavor": "A hoard that bends starlight: 6% of supply."
+        "name": "Trésor d'étoiles",
+        "flavor": "Un trésor qui courbe la lumière des étoiles: 6 % de l'offre."
       },
       "voidwarden": {
-        "name": "Voidwarden",
-        "flavor": "Keeper at the void's edge: 7% of supply."
+        "name": "Gardien du vide",
+        "flavor": "Gardien au bord du vide: 7 % de l'offre."
       },
       "realmshaper": {
-        "name": "Realmshaper",
-        "flavor": "You reshape the realm: 8% of supply."
+        "name": "Façonneur de royaume",
+        "flavor": "Vous remodelez le royaume: 8 % de l'offre."
       },
       "worldforger": {
-        "name": "Worldforger",
-        "flavor": "Forging a world of your own: 9% of supply."
+        "name": "Forgeur de monde",
+        "flavor": "Vous forgez votre propre monde: 9 % de l'offre."
       },
       "worldbearer": {
         "name": "Porte-monde",

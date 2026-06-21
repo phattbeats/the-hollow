@@ -616,36 +616,36 @@ export const ko_KR: EnTranslations = {
         "flavor": "당신이 움직이면 시장이 느낍니다: 공급량의 1%."
       },
       "tidelord": {
-        "name": "Tidelord",
-        "flavor": "The tide answers your call: 2% of supply."
+        "name": "조수의 군주",
+        "flavor": "조수가 당신의 부름에 응답합니다: 공급량의 2%."
       },
       "stormcaller": {
-        "name": "Stormcaller",
-        "flavor": "Storms gather at your name: 3% of supply."
+        "name": "폭풍을 부르는 자",
+        "flavor": "당신의 이름에 폭풍이 모여듭니다: 공급량의 3%."
       },
       "krakencrown": {
-        "name": "Krakencrown",
-        "flavor": "Crowned by the deep: 4% of supply."
+        "name": "심해의 왕관",
+        "flavor": "심연이 당신에게 왕관을 씌웁니다: 공급량의 4%."
       },
       "titanforged": {
-        "name": "Titanforged",
-        "flavor": "Forged among titans: 5% of supply."
+        "name": "거신이 벼려낸 자",
+        "flavor": "거신들 사이에서 벼려졌습니다: 공급량의 5%."
       },
       "starhoard": {
-        "name": "Starhoard",
-        "flavor": "A hoard that bends starlight: 6% of supply."
+        "name": "별의 보고",
+        "flavor": "별빛마저 휘게 하는 보물: 공급량의 6%."
       },
       "voidwarden": {
-        "name": "Voidwarden",
-        "flavor": "Keeper at the void's edge: 7% of supply."
+        "name": "공허의 수호자",
+        "flavor": "공허의 가장자리를 지킵니다: 공급량의 7%."
       },
       "realmshaper": {
-        "name": "Realmshaper",
-        "flavor": "You reshape the realm: 8% of supply."
+        "name": "세계를 빚는 자",
+        "flavor": "당신이 세계를 다시 빚습니다: 공급량의 8%."
       },
       "worldforger": {
-        "name": "Worldforger",
-        "flavor": "Forging a world of your own: 9% of supply."
+        "name": "세계를 벼리는 자",
+        "flavor": "당신만의 세계를 벼려냅니다: 공급량의 9%."
       },
       "worldbearer": {
         "name": "세계 운반자",

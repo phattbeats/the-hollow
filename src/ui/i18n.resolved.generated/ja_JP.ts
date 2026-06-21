@@ -616,36 +616,36 @@ export const ja_JP: EnTranslations = {
         "flavor": "あなたが動けば市場が感じ取ります: 供給量の 1%。"
       },
       "tidelord": {
-        "name": "Tidelord",
-        "flavor": "The tide answers your call: 2% of supply."
+        "name": "潮の王",
+        "flavor": "潮があなたの呼び声に応えます: 供給量の 2%。"
       },
       "stormcaller": {
-        "name": "Stormcaller",
-        "flavor": "Storms gather at your name: 3% of supply."
+        "name": "嵐を呼ぶ者",
+        "flavor": "あなたの名に嵐が集います: 供給量の 3%。"
       },
       "krakencrown": {
-        "name": "Krakencrown",
-        "flavor": "Crowned by the deep: 4% of supply."
+        "name": "深海の王冠",
+        "flavor": "深淵に戴冠されし者: 供給量の 4%。"
       },
       "titanforged": {
-        "name": "Titanforged",
-        "flavor": "Forged among titans: 5% of supply."
+        "name": "巨神に鍛えられし者",
+        "flavor": "巨神たちの間で鍛えられし者: 供給量の 5%。"
       },
       "starhoard": {
-        "name": "Starhoard",
-        "flavor": "A hoard that bends starlight: 6% of supply."
+        "name": "星の財宝",
+        "flavor": "星明かりをも歪める財宝: 供給量の 6%。"
       },
       "voidwarden": {
-        "name": "Voidwarden",
-        "flavor": "Keeper at the void's edge: 7% of supply."
+        "name": "虚空の守人",
+        "flavor": "虚空の縁を守る者: 供給量の 7%。"
       },
       "realmshaper": {
-        "name": "Realmshaper",
-        "flavor": "You reshape the realm: 8% of supply."
+        "name": "領界を形づくる者",
+        "flavor": "あなたは領界を造り変えます: 供給量の 8%。"
       },
       "worldforger": {
-        "name": "Worldforger",
-        "flavor": "Forging a world of your own: 9% of supply."
+        "name": "世界を鍛える者",
+        "flavor": "自らの世界を鍛え上げます: 供給量の 9%。"
       },
       "worldbearer": {
         "name": "世界を担う者",

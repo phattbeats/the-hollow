@@ -616,36 +616,36 @@ export const it_IT: EnTranslations = {
         "flavor": "I mercati sentono ogni tuo movimento: l'1% dell'offerta."
       },
       "tidelord": {
-        "name": "Tidelord",
-        "flavor": "The tide answers your call: 2% of supply."
+        "name": "Signore delle maree",
+        "flavor": "La marea risponde al tuo richiamo: il 2% dell'offerta."
       },
       "stormcaller": {
-        "name": "Stormcaller",
-        "flavor": "Storms gather at your name: 3% of supply."
+        "name": "Evocatore di tempeste",
+        "flavor": "Le tempeste si radunano nel tuo nome: il 3% dell'offerta."
       },
       "krakencrown": {
-        "name": "Krakencrown",
-        "flavor": "Crowned by the deep: 4% of supply."
+        "name": "Corona del kraken",
+        "flavor": "Incoronato dagli abissi: il 4% dell'offerta."
       },
       "titanforged": {
-        "name": "Titanforged",
-        "flavor": "Forged among titans: 5% of supply."
+        "name": "Forgiato tra i titani",
+        "flavor": "Forgiato tra i titani: il 5% dell'offerta."
       },
       "starhoard": {
-        "name": "Starhoard",
-        "flavor": "A hoard that bends starlight: 6% of supply."
+        "name": "Tesoro stellare",
+        "flavor": "Un tesoro che piega la luce delle stelle: il 6% dell'offerta."
       },
       "voidwarden": {
-        "name": "Voidwarden",
-        "flavor": "Keeper at the void's edge: 7% of supply."
+        "name": "Guardiano del vuoto",
+        "flavor": "Custode sull'orlo del vuoto: il 7% dell'offerta."
       },
       "realmshaper": {
-        "name": "Realmshaper",
-        "flavor": "You reshape the realm: 8% of supply."
+        "name": "Plasmatore del reame",
+        "flavor": "Ridai forma al reame: l'8% dell'offerta."
       },
       "worldforger": {
-        "name": "Worldforger",
-        "flavor": "Forging a world of your own: 9% of supply."
+        "name": "Forgiatore di mondi",
+        "flavor": "Forgi un mondo tutto tuo: il 9% dell'offerta."
       },
       "worldbearer": {
         "name": "Portamondi",

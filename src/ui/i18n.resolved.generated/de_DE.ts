@@ -616,36 +616,36 @@ export const de_DE: EnTranslations = {
         "flavor": "Die Märkte spüren Eure Bewegungen: 1 % des Angebots."
       },
       "tidelord": {
-        "name": "Tidelord",
-        "flavor": "The tide answers your call: 2% of supply."
+        "name": "Gezeitenfürst",
+        "flavor": "Die Gezeit folgt Eurem Ruf: 2 % des Angebots."
       },
       "stormcaller": {
-        "name": "Stormcaller",
-        "flavor": "Storms gather at your name: 3% of supply."
+        "name": "Sturmrufer",
+        "flavor": "Stürme sammeln sich bei Eurem Namen: 3 % des Angebots."
       },
       "krakencrown": {
-        "name": "Krakencrown",
-        "flavor": "Crowned by the deep: 4% of supply."
+        "name": "Krakenkrone",
+        "flavor": "Von der Tiefe gekrönt: 4 % des Angebots."
       },
       "titanforged": {
-        "name": "Titanforged",
-        "flavor": "Forged among titans: 5% of supply."
+        "name": "Titangeschmiedet",
+        "flavor": "Unter Titanen geschmiedet: 5 % des Angebots."
       },
       "starhoard": {
-        "name": "Starhoard",
-        "flavor": "A hoard that bends starlight: 6% of supply."
+        "name": "Sternenhort",
+        "flavor": "Ein Hort, der das Sternenlicht beugt: 6 % des Angebots."
       },
       "voidwarden": {
-        "name": "Voidwarden",
-        "flavor": "Keeper at the void's edge: 7% of supply."
+        "name": "Leerenwächter",
+        "flavor": "Wächter am Rand der Leere: 7 % des Angebots."
       },
       "realmshaper": {
-        "name": "Realmshaper",
-        "flavor": "You reshape the realm: 8% of supply."
+        "name": "Reichsformer",
+        "flavor": "Ihr formt das Reich neu: 8 % des Angebots."
       },
       "worldforger": {
-        "name": "Worldforger",
-        "flavor": "Forging a world of your own: 9% of supply."
+        "name": "Weltenschmied",
+        "flavor": "Ihr schmiedet Eure eigene Welt: 9 % des Angebots."
       },
       "worldbearer": {
         "name": "Weltensträger",

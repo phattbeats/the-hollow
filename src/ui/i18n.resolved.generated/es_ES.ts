@@ -616,36 +616,36 @@ export const es_ES: EnTranslations = {
         "flavor": "Los mercados sienten cada movimiento tuyo: el 1 % del suministro."
       },
       "tidelord": {
-        "name": "Tidelord",
-        "flavor": "The tide answers your call: 2% of supply."
+        "name": "Señor de las mareas",
+        "flavor": "La marea responde a tu llamada: el 2 % del suministro."
       },
       "stormcaller": {
-        "name": "Stormcaller",
-        "flavor": "Storms gather at your name: 3% of supply."
+        "name": "Invocador de tormentas",
+        "flavor": "Las tormentas se reúnen ante tu nombre: el 3 % del suministro."
       },
       "krakencrown": {
-        "name": "Krakencrown",
-        "flavor": "Crowned by the deep: 4% of supply."
+        "name": "Corona del kraken",
+        "flavor": "Coronado por las profundidades: el 4 % del suministro."
       },
       "titanforged": {
-        "name": "Titanforged",
-        "flavor": "Forged among titans: 5% of supply."
+        "name": "Forjado entre titanes",
+        "flavor": "Forjado entre titanes: el 5 % del suministro."
       },
       "starhoard": {
-        "name": "Starhoard",
-        "flavor": "A hoard that bends starlight: 6% of supply."
+        "name": "Tesoro estelar",
+        "flavor": "Un tesoro que dobla la luz de las estrellas: el 6 % del suministro."
       },
       "voidwarden": {
-        "name": "Voidwarden",
-        "flavor": "Keeper at the void's edge: 7% of supply."
+        "name": "Guardián del vacío",
+        "flavor": "Vigía al borde del vacío: el 7 % del suministro."
       },
       "realmshaper": {
-        "name": "Realmshaper",
-        "flavor": "You reshape the realm: 8% of supply."
+        "name": "Modelador del reino",
+        "flavor": "Remodelas el reino: el 8 % del suministro."
       },
       "worldforger": {
-        "name": "Worldforger",
-        "flavor": "Forging a world of your own: 9% of supply."
+        "name": "Forjador de mundos",
+        "flavor": "Forjas un mundo propio: el 9 % del suministro."
       },
       "worldbearer": {
         "name": "Portamundos",
