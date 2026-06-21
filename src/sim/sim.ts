@@ -9,6 +9,7 @@ import { ARENA_SPAWN_A, ARENA_SPAWN_B, ARENA_SPAWNS_A_2v2, ARENA_SPAWNS_B_2v2 } 
 import { lineOfSightClear, resolveMovement, resolvePosition } from './colliders';
 import { PLAYER_BODY_RADIUS, PLAYER_MAX_CLIMB_SLOPE, PLAYER_SWIM_DEPTH, findPlayerPath } from './pathfind';
 import { createGroundObject, createMob, createNpc, createPlayer, recalcPlayerStats, PlayerEquipment } from './entity';
+import { canEquipItem } from './equipment_rules';
 import {
   computeTalentModifiers, emptyAllocation, emptyModifiers, talentsFor, talentPointsAtLevel,
   validateAllocation, cloneAllocation, pointsSpent, defaultBuild, FIRST_TALENT_LEVEL, MAX_LOADOUTS,
@@ -6897,7 +6898,7 @@ export class Sim {
     const def = ITEMS[itemId];
     if (!def || !def.slot || (def.kind !== 'weapon' && def.kind !== 'armor')) return;
     if (this.countItem(itemId, meta.entityId) <= 0) return;
-    if (def.requiredClass && !def.requiredClass.includes(meta.cls)) {
+    if (!canEquipItem(meta.cls, def)) {
       this.error(meta.entityId, 'You cannot equip that.');
       return;
     }
@@ -7129,7 +7130,7 @@ export class Sim {
   private maybeAutoEquip(itemId: string, meta: PlayerMeta): void {
     const def = ITEMS[itemId];
     if (!def?.slot) return;
-    if (def.requiredClass && !def.requiredClass.includes(meta.cls)) return;
+    if (!canEquipItem(meta.cls, def)) return;
     if (def.kind === 'weapon') {
       const cur = meta.equipment.mainhand ? ITEMS[meta.equipment.mainhand]?.weapon : null;
       const next = def.weapon;
