@@ -334,6 +334,49 @@ export const ko_KR: EnTranslations = {
         "many": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다.",
         "other": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다."
       }
+    },
+    "account": {
+      "title": "계정",
+      "loggedOutPrompt": "계정을 관리하려면 로그인하세요.",
+      "memberSince": "가입일: {date}",
+      "sectionSettings": "계정 설정",
+      "sectionWallet": "$WOC 지갑",
+      "sectionCharacters": "캐릭터",
+      "sectionDanger": "위험 구역",
+      "changePassword": "비밀번호 변경",
+      "currentPassword": "현재 비밀번호",
+      "newPassword": "새 비밀번호",
+      "confirmNewPassword": "새 비밀번호 확인",
+      "savePassword": "비밀번호 업데이트",
+      "passwordChanged": "비밀번호가 업데이트되었습니다. 다른 기기에서 로그아웃되었습니다.",
+      "errCurrentRequired": "현재 비밀번호를 입력하세요.",
+      "errPasswordShort": "새 비밀번호는 6자 이상이어야 합니다.",
+      "errPasswordLong": "새 비밀번호는 128자 이하여야 합니다.",
+      "errPasswordUnchanged": "새 비밀번호는 현재 비밀번호와 달라야 합니다.",
+      "errPasswordConfirm": "새 비밀번호가 서로 일치하지 않습니다.",
+      "emailLabel": "이메일(선택 사항)",
+      "emailHint": "계정 복구에만 사용됩니다. 마케팅 이메일은 보내지 않습니다.",
+      "saveEmail": "이메일 저장",
+      "emailSaved": "이메일이 저장되었습니다.",
+      "errEmailInvalid": "유효한 이메일 주소를 입력하세요.",
+      "errCurrentPassword": "현재 비밀번호가 올바르지 않습니다.",
+      "errUsernameMatch": "해당 사용자 이름이 계정과 일치하지 않습니다.",
+      "errPasswordIncorrect": "비밀번호가 올바르지 않습니다.",
+      "errCharactersOnline": "비활성화하기 전에 모든 캐릭터에서 로그아웃하세요.",
+      "deactivatedLocked": "이 계정은 비활성화되었습니다. 복원하려면 관리자에게 문의하세요.",
+      "charactersSummary": "캐릭터를 관리하고 월드에 입장하세요.",
+      "charactersCount": "캐릭터: {count}",
+      "goToCharacters": "캐릭터 보기",
+      "walletSummary": "Solana 지갑을 인증하여 플레이어 카드에 보유자 표식을 표시하세요.",
+      "manageWallet": "지갑 관리",
+      "deactivate": "계정 비활성화",
+      "deactivateWarning": "비활성화하면 계정이 잠기고 모든 기기에서 로그아웃됩니다. 복원하려면 관리자에게 문의하세요. 사용자 이름과 비밀번호를 다시 입력하여 확인하세요.",
+      "confirmUsername": "확인을 위해 사용자 이름을 입력하세요",
+      "confirmPassword": "비밀번호",
+      "deactivateConfirm": "내 계정 비활성화",
+      "deactivated": "계정이 비활성화되었습니다.",
+      "logOut": "로그아웃",
+      "logOutSummary": "이 기기에서 로그아웃합니다."
     }
   },
   "skinEvent": {
@@ -378,6 +421,8 @@ export const ko_KR: EnTranslations = {
     "news": "새소식",
     "download": "다운로드",
     "loginRegister": "로그인/회원가입",
+    "account": "계정",
+    "logout": "로그아웃",
     "donate": "후원"
   },
   "stats": {
@@ -571,35 +616,35 @@ export const ko_KR: EnTranslations = {
         "flavor": "당신이 움직이면 시장이 느낍니다: 공급량의 1%."
       },
       "tidelord": {
-        "name": "해일 군주",
-        "flavor": "조수가 당신의 부름에 응답합니다: 공급량의 2%."
+        "name": "파도 군주",
+        "flavor": "파도가 당신의 부름에 응답합니다: 공급량의 2%."
       },
       "stormcaller": {
-        "name": "폭풍소환사",
+        "name": "폭풍소환자",
         "flavor": "당신의 이름에 폭풍이 모입니다: 공급량의 3%."
       },
       "krakencrown": {
         "name": "크라켄 왕관",
-        "flavor": "심해가 씌워 준 왕관입니다: 공급량의 4%."
+        "flavor": "심연이 당신에게 관을 씌웁니다: 공급량의 4%."
       },
       "titanforged": {
         "name": "티탄벼림",
         "flavor": "티탄들 사이에서 벼려졌습니다: 공급량의 5%."
       },
       "starhoard": {
-        "name": "별무더기 보관자",
-        "flavor": "별빛마저 휘게 하는 보물 더미입니다: 공급량의 6%."
+        "name": "별 보물고",
+        "flavor": "별빛을 휘게 하는 보물고입니다: 공급량의 6%."
       },
       "voidwarden": {
         "name": "공허 파수꾼",
-        "flavor": "공허의 끝을 지키는 자입니다: 공급량의 7%."
+        "flavor": "공허의 끝을 지킵니다: 공급량의 7%."
       },
       "realmshaper": {
         "name": "영역 조형자",
         "flavor": "당신은 영역을 다시 빚습니다: 공급량의 8%."
       },
       "worldforger": {
-        "name": "세계 제련자",
+        "name": "세계 대장장이",
         "flavor": "당신만의 세계를 벼립니다: 공급량의 9%."
       },
       "worldbearer": {
@@ -1597,6 +1642,8 @@ export const ko_KR: EnTranslations = {
       "title": "마법책",
       "classSubtitle": "{className} 능력",
       "close": "마법책 닫기",
+      "resetBar": "단축바 초기화",
+      "resetBarAria": "현재 행동 단축바를 기본 능력으로 초기화",
       "trainableAtLevel": "{level}레벨에 훈련 가능",
       "learnAtLevel": "{level}레벨에 배웁니다.",
       "knownAbilityAria": "{name}, {rank} 등급. {summary}",
@@ -1910,6 +1957,16 @@ export const ko_KR: EnTranslations = {
     "loot": {
       "takeAll": "모두 가져가기",
       "close": "전리품 닫기"
+    },
+    "lootRoll": {
+      "title": "전리품 주사위",
+      "need": "필요",
+      "greed": "탐욕",
+      "pass": "포기",
+      "needAria": "{item} 필요",
+      "greedAria": "{item} 탐욕",
+      "passAria": "{item} 포기",
+      "everyonePassed": "모두 {item}을(를) 포기했습니다."
     }
   },
   "entities": {

@@ -334,6 +334,49 @@ export const ja_JP: EnTranslations = {
         "many": "Who：{realm}に{count}人のプレイヤーがオンラインです。",
         "other": "Who：{realm}に{count}人のプレイヤーがオンラインです。"
       }
+    },
+    "account": {
+      "title": "アカウント",
+      "loggedOutPrompt": "アカウントを管理するにはログインしてください。",
+      "memberSince": "登録日：{date}",
+      "sectionSettings": "アカウント設定",
+      "sectionWallet": "$WOC ウォレット",
+      "sectionCharacters": "キャラクター",
+      "sectionDanger": "危険な操作",
+      "changePassword": "パスワードの変更",
+      "currentPassword": "現在のパスワード",
+      "newPassword": "新しいパスワード",
+      "confirmNewPassword": "新しいパスワードを確認",
+      "savePassword": "パスワードを更新",
+      "passwordChanged": "パスワードを更新しました。他のデバイスからログアウトされました。",
+      "errCurrentRequired": "現在のパスワードを入力してください。",
+      "errPasswordShort": "新しいパスワードは6文字以上にしてください。",
+      "errPasswordLong": "新しいパスワードは128文字以内にしてください。",
+      "errPasswordUnchanged": "新しいパスワードは現在のものと異なる必要があります。",
+      "errPasswordConfirm": "新しいパスワードが一致しません。",
+      "emailLabel": "メールアドレス（任意）",
+      "emailHint": "アカウント復旧にのみ使用します。宣伝メールは一切送信しません。",
+      "saveEmail": "メールを保存",
+      "emailSaved": "メールを保存しました。",
+      "errEmailInvalid": "有効なメールアドレスを入力してください。",
+      "errCurrentPassword": "現在のパスワードが正しくありません。",
+      "errUsernameMatch": "そのユーザー名はアカウントと一致しません。",
+      "errPasswordIncorrect": "パスワードが正しくありません。",
+      "errCharactersOnline": "無効化する前にすべてのキャラクターからログアウトしてください。",
+      "deactivatedLocked": "このアカウントは無効化されています。復元するには管理者に連絡してください。",
+      "charactersSummary": "キャラクターを管理してワールドに入りましょう。",
+      "charactersCount": "キャラクター：{count}",
+      "goToCharacters": "キャラクターを表示",
+      "walletSummary": "Solana ウォレットを認証してプレイヤーカードに保有者バッジを表示します。",
+      "manageWallet": "ウォレットを管理",
+      "deactivate": "アカウントを無効化",
+      "deactivateWarning": "無効化するとアカウントがロックされ、すべてのデバイスからログアウトされます。復元するには管理者に連絡してください。ユーザー名とパスワードを再入力して確認してください。",
+      "confirmUsername": "確認のためユーザー名を入力",
+      "confirmPassword": "パスワード",
+      "deactivateConfirm": "アカウントを無効化する",
+      "deactivated": "アカウントが無効化されました。",
+      "logOut": "ログアウト",
+      "logOutSummary": "このデバイスからログアウトします。"
     }
   },
   "skinEvent": {
@@ -378,6 +421,8 @@ export const ja_JP: EnTranslations = {
     "news": "ニュース",
     "download": "ダウンロード",
     "loginRegister": "ログイン/登録",
+    "account": "アカウント",
+    "logout": "ログアウト",
     "donate": "寄付"
   },
   "stats": {
@@ -571,35 +616,35 @@ export const ja_JP: EnTranslations = {
         "flavor": "あなたが動けば市場が感じ取ります: 供給量の 1%。"
       },
       "tidelord": {
-        "name": "潮の王",
+        "name": "潮の君主",
         "flavor": "潮があなたの呼び声に応えます: 供給量の 2%。"
       },
       "stormcaller": {
         "name": "嵐呼び",
-        "flavor": "あなたの名に嵐が集まります: 供給量の 3%。"
+        "flavor": "あなたの名に嵐が集います: 供給量の 3%。"
       },
       "krakencrown": {
         "name": "クラーケンの冠",
-        "flavor": "深海に戴冠されました: 供給量の 4%。"
+        "flavor": "深海に冠を授けられています: 供給量の 4%。"
       },
       "titanforged": {
         "name": "タイタン鍛造",
-        "flavor": "タイタンの間で鍛えられました: 供給量の 5%。"
+        "flavor": "タイタンたちの間で鍛えられました: 供給量の 5%。"
       },
       "starhoard": {
-        "name": "星の宝蔵",
-        "flavor": "星明かりさえ曲げる財宝: 供給量の 6%。"
+        "name": "星の秘蔵",
+        "flavor": "星光を曲げるほどの宝庫です: 供給量の 6%。"
       },
       "voidwarden": {
         "name": "虚空の番人",
-        "flavor": "虚空の縁を守る者: 供給量の 7%。"
+        "flavor": "虚空の縁を守っています: 供給量の 7%。"
       },
       "realmshaper": {
-        "name": "レルムを形作る者",
-        "flavor": "あなたはレルムを作り替えます: 供給量の 8%。"
+        "name": "領域形成者",
+        "flavor": "あなたは領域を作り変えます: 供給量の 8%。"
       },
       "worldforger": {
-        "name": "世界を鍛える者",
+        "name": "世界鍛造者",
         "flavor": "自分だけの世界を鍛えています: 供給量の 9%。"
       },
       "worldbearer": {
@@ -1597,6 +1642,8 @@ export const ja_JP: EnTranslations = {
       "title": "魔法書",
       "classSubtitle": "{className}の能力",
       "close": "魔法書を閉じる",
+      "resetBar": "バーをリセット",
+      "resetBarAria": "現在のアクションバーを初期の能力にリセット",
       "trainableAtLevel": "レベル{level}で習得可能",
       "learnAtLevel": "レベル{level}で習得します。",
       "knownAbilityAria": "{name}、ランク{rank}。{summary}",
@@ -1910,6 +1957,16 @@ export const ja_JP: EnTranslations = {
     "loot": {
       "takeAll": "すべて取る",
       "close": "戦利品を閉じる"
+    },
+    "lootRoll": {
+      "title": "戦利品ロール",
+      "need": "必要",
+      "greed": "強欲",
+      "pass": "パス",
+      "needAria": "{item}を必要",
+      "greedAria": "{item}を強欲",
+      "passAria": "{item}をパス",
+      "everyonePassed": "全員が{item}をパスしました。"
     }
   },
   "entities": {

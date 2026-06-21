@@ -487,6 +487,7 @@ const itemNamesEn = {
   itemUi: {
     ...itemStrings.en.itemUi,
     loot: { takeAll: "Take All", close: "Close loot" },
+    lootRoll: { title: "Roll for loot", need: "Need", greed: "Greed", pass: "Pass", needAria: "Need for {item}", greedAria: "Greed for {item}", passAria: "Pass on {item}", everyonePassed: "Everyone passed on {item}." },
   },
   entities: {
     ...classAbilityNamesEn.entities,
@@ -525,6 +526,7 @@ export const itemNames = {
     itemUi: {
       ...itemStrings.es.itemUi,
       loot: { takeAll: "Recoger botín", close: "Cerrar botín" },
+      lootRoll: { title: "Tirar por botín", need: "Necesidad", greed: "Codicia", pass: "Pasar", needAria: "Necesidad por {item}", greedAria: "Codicia por {item}", passAria: "Pasar por {item}", everyonePassed: "Todos pasaron por {item}." },
     },
     entities: {
       ...classAbilityNames.es.entities,
@@ -560,6 +562,7 @@ export const itemNames = {
     itemUi: {
       ...itemStrings.fr_FR.itemUi,
       loot: { takeAll: "Tout prendre", close: "Fermer le butin" },
+      lootRoll: { title: "Jet de butin", need: "Besoin", greed: "Cupidité", pass: "Passer", needAria: "Besoin pour {item}", greedAria: "Cupidité pour {item}", passAria: "Passer pour {item}", everyonePassed: "Tout le monde a passé pour {item}." },
     },
     entities: {
       ...classAbilityNames.fr_FR.entities,
@@ -596,6 +599,7 @@ export const itemNames = {
     itemUi: {
       ...itemStrings.it_IT.itemUi,
       loot: { takeAll: "Prendi tutto", close: "Chiudi bottino" },
+      lootRoll: { title: "Tiro per bottino", need: "Bisogno", greed: "Brama", pass: "Passa", needAria: "Bisogno per {item}", greedAria: "Brama per {item}", passAria: "Passa su {item}", everyonePassed: "Tutti hanno passato su {item}." },
     },
     entities: {
       ...classAbilityNames.it_IT.entities,
@@ -630,6 +634,7 @@ export const itemNames = {
     itemUi: {
       ...itemStrings.de_DE.itemUi,
       loot: { takeAll: "Alles nehmen", close: "Beute schließen" },
+      lootRoll: { title: "Um Beute würfeln", need: "Bedarf", greed: "Gier", pass: "Passen", needAria: "Bedarf für {item}", greedAria: "Gier für {item}", passAria: "Bei {item} passen", everyonePassed: "Alle passen bei {item}." },
     },
     entities: {
       ...classAbilityNames.de_DE.entities,
@@ -664,6 +669,7 @@ export const itemNames = {
     itemUi: {
       ...itemStrings.zh_CN.itemUi,
       loot: { takeAll: "全部拾取", close: "关闭战利品" },
+      lootRoll: { title: "为战利品掷骰", need: "需求", greed: "贪婪", pass: "放弃", needAria: "需求 {item}", greedAria: "贪婪 {item}", passAria: "放弃 {item}", everyonePassed: "所有人都放弃了 {item}。" },
     },
     entities: {
       ...classAbilityNames.zh_CN.entities,
@@ -698,6 +704,7 @@ export const itemNames = {
     itemUi: {
       ...itemStrings.zh_TW.itemUi,
       loot: { takeAll: "全部拾取", close: "關閉戰利品" },
+      lootRoll: { title: "為戰利品擲骰", need: "需求", greed: "貪婪", pass: "放棄", needAria: "需求 {item}", greedAria: "貪婪 {item}", passAria: "放棄 {item}", everyonePassed: "所有人都放棄了 {item}。" },
     },
     entities: {
       ...classAbilityNames.zh_TW.entities,
@@ -732,6 +739,7 @@ export const itemNames = {
     itemUi: {
       ...itemStrings.ko_KR.itemUi,
       loot: { takeAll: "모두 가져가기", close: "전리품 닫기" },
+      lootRoll: { title: "전리품 주사위", need: "필요", greed: "탐욕", pass: "포기", needAria: "{item} 필요", greedAria: "{item} 탐욕", passAria: "{item} 포기", everyonePassed: "모두 {item}을(를) 포기했습니다." },
     },
     entities: {
       ...classAbilityNames.ko_KR.entities,
@@ -766,6 +774,7 @@ export const itemNames = {
     itemUi: {
       ...itemStrings.ja_JP.itemUi,
       loot: { takeAll: "すべて取る", close: "戦利品を閉じる" },
+      lootRoll: { title: "戦利品ロール", need: "必要", greed: "強欲", pass: "パス", needAria: "{item}を必要", greedAria: "{item}を強欲", passAria: "{item}をパス", everyonePassed: "全員が{item}をパスしました。" },
     },
     entities: {
       ...classAbilityNames.ja_JP.entities,
@@ -800,6 +809,7 @@ export const itemNames = {
     itemUi: {
       ...itemStrings.pt_BR.itemUi,
       loot: { takeAll: "Pegar tudo", close: "Fechar saque" },
+      lootRoll: { title: "Rolagem de saque", need: "Necessidade", greed: "Ganância", pass: "Passar", needAria: "Necessidade por {item}", greedAria: "Ganância por {item}", passAria: "Passar em {item}", everyonePassed: "Todos passaram em {item}." },
     },
     entities: {
       ...classAbilityNames.pt_BR.entities,
@@ -834,6 +844,7 @@ export const itemNames = {
     itemUi: {
       ...itemStrings.ru_RU.itemUi,
       loot: { takeAll: "Взять все", close: "Закрыть добычу" },
+      lootRoll: { title: "Бросок за добычу", need: "Нужно", greed: "Жадность", pass: "Пас", needAria: "Нужно: {item}", greedAria: "Жадность: {item}", passAria: "Пас: {item}", everyonePassed: "Все отказались от {item}." },
     },
     entities: {
       ...classAbilityNames.ru_RU.entities,
