@@ -572,23 +572,23 @@ export const zh_TW: EnTranslations = {
       },
       "tidelord": {
         "name": "潮汐領主",
-        "flavor": "潮水回應你的號令：供應量的 2%。"
+        "flavor": "潮汐回應你的召喚：供應量的 2%。"
       },
       "stormcaller": {
         "name": "喚雷者",
-        "flavor": "風暴因你的名字聚集：供應量的 3%。"
+        "flavor": "風暴因你的名字而聚集：供應量的 3%。"
       },
       "krakencrown": {
-        "name": "海怪王冠",
+        "name": "海淵冠冕",
         "flavor": "深海為你加冕：供應量的 4%。"
       },
       "titanforged": {
         "name": "泰坦鑄成",
-        "flavor": "於泰坦之間鍛成：供應量的 5%。"
+        "flavor": "在泰坦之間鍛造而成：供應量的 5%。"
       },
       "starhoard": {
         "name": "星藏者",
-        "flavor": "寶藏連星光也為之彎折：供應量的 6%。"
+        "flavor": "能彎折星光的寶藏：供應量的 6%。"
       },
       "voidwarden": {
         "name": "虛空守望者",
@@ -596,7 +596,7 @@ export const zh_TW: EnTranslations = {
       },
       "realmshaper": {
         "name": "塑界者",
-        "flavor": "你重塑這個領域：供應量的 8%。"
+        "flavor": "你重塑著領域：供應量的 8%。"
       },
       "worldforger": {
         "name": "鑄世者",

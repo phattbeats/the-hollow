@@ -571,7 +571,7 @@ export const ja_JP: EnTranslations = {
         "flavor": "あなたが動けば市場が感じ取ります: 供給量の 1%。"
       },
       "tidelord": {
-        "name": "潮の支配者",
+        "name": "潮の君主",
         "flavor": "潮があなたの呼び声に応えます: 供給量の 2%。"
       },
       "stormcaller": {
@@ -580,27 +580,27 @@ export const ja_JP: EnTranslations = {
       },
       "krakencrown": {
         "name": "クラーケンの冠",
-        "flavor": "深海に戴冠されました: 供給量の 4%。"
+        "flavor": "深海に冠を授けられています: 供給量の 4%。"
       },
       "titanforged": {
         "name": "タイタン鍛造",
-        "flavor": "タイタンの間で鍛えられました: 供給量の 5%。"
+        "flavor": "タイタンたちの間で鍛えられました: 供給量の 5%。"
       },
       "starhoard": {
-        "name": "星の財宝",
-        "flavor": "星光さえ曲げる財宝: 供給量の 6%。"
+        "name": "星の秘蔵",
+        "flavor": "星光を曲げるほどの宝庫です: 供給量の 6%。"
       },
       "voidwarden": {
         "name": "虚空の番人",
         "flavor": "虚空の縁を守っています: 供給量の 7%。"
       },
       "realmshaper": {
-        "name": "領域を形作る者",
-        "flavor": "あなたはレルムを作り替えます: 供給量の 8%。"
+        "name": "領域形成者",
+        "flavor": "あなたは領域を作り変えます: 供給量の 8%。"
       },
       "worldforger": {
         "name": "世界鍛造者",
-        "flavor": "自らの世界を鍛えています: 供給量の 9%。"
+        "flavor": "自分だけの世界を鍛えています: 供給量の 9%。"
       },
       "worldbearer": {
         "name": "世界を担う者",
