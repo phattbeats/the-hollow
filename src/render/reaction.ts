@@ -38,7 +38,7 @@ export function isFriendlyPet(
 // The classic level-difference ("con") color for a wild mob's nameplate, with a
 // friendly-pet override so an owned pet reads as friendly green rather than a
 // scary red. Kept here (pure) so the exact color thresholds are unit-tested.
-const FRIENDLY = '#9fdc7f';
+export const FRIENDLY = '#9fdc7f';
 export function mobNameColor(levelDiff: number, dead: boolean, friendly: boolean): string {
   if (dead) return '#999';
   if (friendly) return FRIENDLY;

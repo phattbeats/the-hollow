@@ -50,7 +50,18 @@ describe('mobNameColor', () => {
     expect(mobNameColor(-3, false, false)).toBe('#7fdc4f');
     expect(mobNameColor(-9, false, false)).toBe('#9d9d9d');
   });
+  it('pins the exact con-bucket boundaries', () => {
+    // >=3 red; >=1 orange; >=-2 yellow; >=-5 green; below grey.
+    expect(mobNameColor(3, false, false)).toBe('#ff4444');
+    expect(mobNameColor(1, false, false)).toBe('#ffaa33');
+    expect(mobNameColor(-2, false, false)).toBe('#ffe97a');
+    expect(mobNameColor(-5, false, false)).toBe('#7fdc4f');
+    expect(mobNameColor(-6, false, false)).toBe('#9d9d9d');
+  });
   it('a corpse is grey even for a friendly pet', () => {
     expect(mobNameColor(5, true, true)).toBe('#999');
+  });
+  it('dead wins over the con color for a wild mob too', () => {
+    expect(mobNameColor(5, true, false)).toBe('#999');
   });
 });

@@ -42,7 +42,7 @@ import { comboPipsFor, COMBO_PIP_MAX } from './nameplate_combo';
 import { stepCameraOcclusion, type CameraOcclusionState } from './camera_collision';
 import { castBarState } from './cast_bar';
 import { isMobThreateningViewer } from './nameplate_threat';
-import { isFriendlyPet, isOwnedPetHostile, mobNameColor } from './reaction';
+import { FRIENDLY, isFriendlyPet, isOwnedPetHostile, mobNameColor } from './reaction';
 
 const NAMEPLATE_RANGE = 55;
 const NAMEPLATE_RANGE_SQ = NAMEPLATE_RANGE * NAMEPLATE_RANGE;
@@ -1958,7 +1958,7 @@ export class Renderer {
           else if (st === 'active' && quest.turnInNpcId === e.templateId && !marker) { marker = '?'; cls = 'active'; }
         }
         const markerClass = cls ? `np-marker ${cls}` : 'np-marker';
-        this.setNameplateStatic(v, `npc|${npcName}|${marker}|${markerClass}`, npcName, '#9fdc7f', 'none', marker, markerClass, '1');
+        this.setNameplateStatic(v, `npc|${npcName}|${marker}|${markerClass}`, npcName, FRIENDLY, 'none', marker, markerClass, '1');
       } else {
         const diff = e.level - p.level;
         const template = MOBS[e.templateId];
