@@ -346,12 +346,14 @@ export const en_XA: EnTranslations = {
       "changePassword": "[Çĥáñĝé Þáššŵóŕð]",
       "currentPassword": "[Çúŕŕéñţ þáššŵóŕð]",
       "newPassword": "[Ñéŵ þáššŵóŕð]",
+      "confirmNewPassword": "[Çóñƒíŕɱ ñéŵ þáššŵóŕð]",
       "savePassword": "[Úþðáţé Þáššŵóŕð]",
       "passwordChanged": "[Þáššŵóŕð úþðáţéð. Óţĥéŕ ðéʋíçéš ĥáʋé ƀééñ šíĝñéð óúţ.]",
       "errCurrentRequired": "[Éñţéŕ ýóúŕ çúŕŕéñţ þáššŵóŕð.]",
       "errPasswordShort": "[Ñéŵ þáššŵóŕð ɱúšţ ƀé áţ ļéášţ 6 çĥáŕáçţéŕš.]",
       "errPasswordLong": "[Ñéŵ þáššŵóŕð ɱúšţ ƀé áţ ɱóšţ 128 çĥáŕáçţéŕš.]",
       "errPasswordUnchanged": "[Ñéŵ þáššŵóŕð ɱúšţ ƀé ðíƒƒéŕéñţ ƒŕóɱ ţĥé çúŕŕéñţ óñé.]",
+      "errPasswordConfirm": "[Ñéŵ þáššŵóŕðš ðó ñóţ ɱáţçĥ.]",
       "emailLabel": "[Éɱáíļ (óþţíóñáļ)]",
       "emailHint": "[Úšéð óñļý ƒóŕ áççóúñţ ŕéçóʋéŕý. Ŵé ñéʋéŕ šéñð ɱáŕķéţíñĝ éɱáíļ.]",
       "saveEmail": "[Šáʋé Éɱáíļ]",
@@ -420,6 +422,7 @@ export const en_XA: EnTranslations = {
     "download": "[Ðóŵñļóáð]",
     "loginRegister": "[Ļóĝíñ/Ŕéĝíšţéŕ]",
     "account": "[Áççóúñţ]",
+    "logout": "[Ļóĝóúţ]",
     "donate": "[Ðóñáţé]"
   },
   "stats": {

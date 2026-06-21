@@ -346,12 +346,14 @@ export const zh_CN: EnTranslations = {
       "changePassword": "修改密码",
       "currentPassword": "当前密码",
       "newPassword": "新密码",
+      "confirmNewPassword": "确认新密码",
       "savePassword": "更新密码",
       "passwordChanged": "密码已更新。其他设备已登出。",
       "errCurrentRequired": "请输入当前密码。",
       "errPasswordShort": "新密码至少需要 6 个字符。",
       "errPasswordLong": "新密码最多只能包含 128 个字符。",
       "errPasswordUnchanged": "新密码必须与当前密码不同。",
+      "errPasswordConfirm": "两次输入的新密码不一致。",
       "emailLabel": "邮箱（可选）",
       "emailHint": "仅用于账户找回。我们绝不发送营销邮件。",
       "saveEmail": "保存邮箱",
@@ -420,6 +422,7 @@ export const zh_CN: EnTranslations = {
     "download": "下载客户端",
     "loginRegister": "登录/注册",
     "account": "账户",
+    "logout": "退出登录",
     "donate": "捐赠"
   },
   "stats": {

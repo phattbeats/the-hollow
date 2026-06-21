@@ -346,12 +346,14 @@ export const ja_JP: EnTranslations = {
       "changePassword": "パスワードの変更",
       "currentPassword": "現在のパスワード",
       "newPassword": "新しいパスワード",
+      "confirmNewPassword": "新しいパスワードを確認",
       "savePassword": "パスワードを更新",
       "passwordChanged": "パスワードを更新しました。他のデバイスからログアウトされました。",
       "errCurrentRequired": "現在のパスワードを入力してください。",
       "errPasswordShort": "新しいパスワードは6文字以上にしてください。",
       "errPasswordLong": "新しいパスワードは128文字以内にしてください。",
       "errPasswordUnchanged": "新しいパスワードは現在のものと異なる必要があります。",
+      "errPasswordConfirm": "新しいパスワードが一致しません。",
       "emailLabel": "メールアドレス（任意）",
       "emailHint": "アカウント復旧にのみ使用します。宣伝メールは一切送信しません。",
       "saveEmail": "メールを保存",
@@ -420,6 +422,7 @@ export const ja_JP: EnTranslations = {
     "download": "ダウンロード",
     "loginRegister": "ログイン/登録",
     "account": "アカウント",
+    "logout": "ログアウト",
     "donate": "寄付"
   },
   "stats": {

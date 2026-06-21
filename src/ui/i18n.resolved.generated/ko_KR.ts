@@ -346,12 +346,14 @@ export const ko_KR: EnTranslations = {
       "changePassword": "비밀번호 변경",
       "currentPassword": "현재 비밀번호",
       "newPassword": "새 비밀번호",
+      "confirmNewPassword": "새 비밀번호 확인",
       "savePassword": "비밀번호 업데이트",
       "passwordChanged": "비밀번호가 업데이트되었습니다. 다른 기기에서 로그아웃되었습니다.",
       "errCurrentRequired": "현재 비밀번호를 입력하세요.",
       "errPasswordShort": "새 비밀번호는 6자 이상이어야 합니다.",
       "errPasswordLong": "새 비밀번호는 128자 이하여야 합니다.",
       "errPasswordUnchanged": "새 비밀번호는 현재 비밀번호와 달라야 합니다.",
+      "errPasswordConfirm": "새 비밀번호가 서로 일치하지 않습니다.",
       "emailLabel": "이메일(선택 사항)",
       "emailHint": "계정 복구에만 사용됩니다. 마케팅 이메일은 보내지 않습니다.",
       "saveEmail": "이메일 저장",
@@ -420,6 +422,7 @@ export const ko_KR: EnTranslations = {
     "download": "다운로드",
     "loginRegister": "로그인/회원가입",
     "account": "계정",
+    "logout": "로그아웃",
     "donate": "후원"
   },
   "stats": {

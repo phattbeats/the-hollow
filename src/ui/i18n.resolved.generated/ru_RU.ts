@@ -346,12 +346,14 @@ export const ru_RU: EnTranslations = {
       "changePassword": "Сменить пароль",
       "currentPassword": "Текущий пароль",
       "newPassword": "Новый пароль",
+      "confirmNewPassword": "Подтвердите новый пароль",
       "savePassword": "Обновить пароль",
       "passwordChanged": "Пароль обновлён. На других устройствах выполнен выход.",
       "errCurrentRequired": "Введите текущий пароль.",
       "errPasswordShort": "Новый пароль должен содержать не менее 6 символов.",
       "errPasswordLong": "Новый пароль должен содержать не более 128 символов.",
       "errPasswordUnchanged": "Новый пароль должен отличаться от текущего.",
+      "errPasswordConfirm": "Новые пароли не совпадают.",
       "emailLabel": "Эл. почта (необязательно)",
       "emailHint": "Используется только для восстановления аккаунта. Мы не рассылаем рекламные письма.",
       "saveEmail": "Сохранить почту",
@@ -420,6 +422,7 @@ export const ru_RU: EnTranslations = {
     "download": "Скачать",
     "loginRegister": "Войти / Зарегистрироваться",
     "account": "Аккаунт",
+    "logout": "Выйти",
     "donate": "Пожертвовать"
   },
   "stats": {

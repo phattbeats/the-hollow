@@ -346,12 +346,14 @@ export const pt_BR: EnTranslations = {
       "changePassword": "Change Password",
       "currentPassword": "Current password",
       "newPassword": "New password",
+      "confirmNewPassword": "Confirmar nova senha",
       "savePassword": "Update Password",
       "passwordChanged": "Password updated. Other devices have been signed out.",
       "errCurrentRequired": "Enter your current password.",
       "errPasswordShort": "New password must be at least 6 characters.",
       "errPasswordLong": "New password must be at most 128 characters.",
       "errPasswordUnchanged": "New password must be different from the current one.",
+      "errPasswordConfirm": "As novas senhas não coincidem.",
       "emailLabel": "Email (optional)",
       "emailHint": "Used only for account recovery. We never send marketing email.",
       "saveEmail": "Save Email",
@@ -420,6 +422,7 @@ export const pt_BR: EnTranslations = {
     "download": "Baixar",
     "loginRegister": "Entrar/Registrar",
     "account": "Account",
+    "logout": "Sair",
     "donate": "Doar"
   },
   "stats": {

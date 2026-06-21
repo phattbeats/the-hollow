@@ -90,6 +90,7 @@ export const en = {
     download: "Download",
     loginRegister: "Login/Register",
     account: "Account",
+    logout: "Logout",
     donate: "Donate",
   },
   stats: {

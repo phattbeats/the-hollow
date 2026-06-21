@@ -58,7 +58,7 @@ function normalizeIso(value: string): string {
   return Number.isNaN(t) ? '' : new Date(t).toISOString();
 }
 
-export type PasswordError = 'empty-current' | 'too-short' | 'too-long' | 'unchanged';
+export type PasswordError = 'empty-current' | 'too-short' | 'too-long' | 'unchanged' | 'confirm-mismatch';
 
 /**
  * Validate a password-change form. Returns null when the input is acceptable to
@@ -72,6 +72,13 @@ export function validateNewPassword(current: string, next: string): PasswordErro
   if (next.length < MIN_PASSWORD_LENGTH) return 'too-short';
   if (next.length > MAX_PASSWORD_LENGTH) return 'too-long';
   if (next === current) return 'unchanged';
+  return null;
+}
+
+export function validatePasswordChange(current: string, next: string, confirm: string): PasswordError | null {
+  const baseError = validateNewPassword(current, next);
+  if (baseError) return baseError;
+  if (next !== confirm) return 'confirm-mismatch';
   return null;
 }
 

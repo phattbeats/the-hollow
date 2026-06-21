@@ -346,12 +346,14 @@ export const it_IT: EnTranslations = {
       "changePassword": "Change Password",
       "currentPassword": "Current password",
       "newPassword": "New password",
+      "confirmNewPassword": "Conferma la nuova password",
       "savePassword": "Update Password",
       "passwordChanged": "Password updated. Other devices have been signed out.",
       "errCurrentRequired": "Enter your current password.",
       "errPasswordShort": "New password must be at least 6 characters.",
       "errPasswordLong": "New password must be at most 128 characters.",
       "errPasswordUnchanged": "New password must be different from the current one.",
+      "errPasswordConfirm": "Le nuove password non corrispondono.",
       "emailLabel": "Email (optional)",
       "emailHint": "Used only for account recovery. We never send marketing email.",
       "saveEmail": "Save Email",
@@ -420,6 +422,7 @@ export const it_IT: EnTranslations = {
     "download": "Scarica",
     "loginRegister": "Accedi/Registrati",
     "account": "Account",
+    "logout": "Esci",
     "donate": "Dona"
   },
   "stats": {

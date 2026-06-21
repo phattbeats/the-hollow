@@ -18,7 +18,7 @@ import { clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, distance2d, 
 import { Api, isAuthError, ClientWorld, CharacterSummary, type ReleaseEntry } from './net/online';
 import { setWalletDisplayAvailable, setWocBalance, setWalletUiEnabled, resolveWocBalanceUpdate } from './ui/wallet_balance';
 import {
-  accountPortalModel, validateNewPassword, validateEmailShape, deactivateConfirmReady,
+  accountPortalModel, validatePasswordChange, validateEmailShape, deactivateConfirmReady,
 } from './ui/account_portal';
 import { absolutePublishedCardUrl, setCardUploader, setReferralProvider, setStandingProvider } from './ui/player_card_share';
 // The wallet module is loaded lazily via dynamic import() in the wallet
@@ -1893,16 +1893,23 @@ function loginNavItem(): HTMLElement | null {
   return ($('#nav-btn-login') as HTMLElement).closest('.nav-item') as HTMLElement | null;
 }
 
+const loggedInNavItems = ['#nav-item-account', '#nav-item-logout'];
+
 function enterLoggedInChrome(): void {
-  ($('#nav-item-account') as HTMLElement).hidden = false;
+  loggedInNavItems.forEach((sel) => { ($(sel) as HTMLElement).hidden = false; });
   const li = loginNavItem();
   if (li) li.hidden = true;
 }
 
 function enterLoggedOutChrome(): void {
-  ($('#nav-item-account') as HTMLElement).hidden = true;
+  loggedInNavItems.forEach((sel) => { ($(sel) as HTMLElement).hidden = true; });
   const li = loginNavItem();
   if (li) li.hidden = false;
+}
+
+function logoutAccount(): void {
+  api.clearSession();
+  location.reload();
 }
 
 function setAccountFieldMsg(sel: string, text: string, ok: boolean): void {
@@ -2000,11 +2007,13 @@ function setupAccountPortal(): void {
     e.preventDefault();
     const current = ($('#account-current-pass') as HTMLInputElement).value;
     const next = ($('#account-new-pass') as HTMLInputElement).value;
-    const err = validateNewPassword(current, next);
+    const confirm = ($('#account-confirm-pass') as HTMLInputElement).value;
+    const err = validatePasswordChange(current, next, confirm);
     if (err) {
       const key = err === 'empty-current' ? 'errCurrentRequired'
         : err === 'too-short' ? 'errPasswordShort'
         : err === 'too-long' ? 'errPasswordLong'
+        : err === 'confirm-mismatch' ? 'errPasswordConfirm'
         : 'errPasswordUnchanged';
       setAccountFieldMsg('#account-password-msg', t(`hudChrome.account.${key}` as TranslationKey), false);
       return;
@@ -2014,6 +2023,7 @@ function setupAccountPortal(): void {
       setAccountFieldMsg('#account-password-msg', t('hudChrome.account.passwordChanged'), true);
       ($('#account-current-pass') as HTMLInputElement).value = '';
       ($('#account-new-pass') as HTMLInputElement).value = '';
+      ($('#account-confirm-pass') as HTMLInputElement).value = '';
     } catch (e2) {
       setAccountFieldMsg('#account-password-msg', userFacingApiError(e2), false);
     }
@@ -2055,7 +2065,7 @@ function setupAccountPortal(): void {
 
   ($('#account-manage-wallet') as HTMLElement).addEventListener('click', () => accountGoToCharacters(true));
   ($('#account-go-characters') as HTMLElement).addEventListener('click', () => accountGoToCharacters(false));
-  ($('#account-logout') as HTMLElement).addEventListener('click', () => { api.clearSession(); location.reload(); });
+  ($('#account-logout') as HTMLElement).addEventListener('click', logoutAccount);
 }
 
 function showRealmList(dir?: import('./net/online').RealmDirectory): void {
@@ -3700,7 +3710,34 @@ function wireStartScreens(): void {
   const offlineNameInput = $('#char-name') as HTMLInputElement;
   const offlineError = $('#offline-error');
   
-  const handleOnlineSelect = () => show('#login-panel');
+  const goToLoggedInPlay = () => {
+    void enterRealmFlow().catch((err) => {
+      if (isAuthError(err)) {
+        api.clearSession();
+        enterLoggedOutChrome();
+      } else {
+        loginError(userFacingApiError(err));
+      }
+      show('#login-panel');
+    });
+  };
+
+  const enterOnlinePlayFlow = () => {
+    switchMainView('#hero-view');
+    if (api.token) {
+      goToLoggedInPlay();
+      return;
+    }
+    show('#mode-select');
+  };
+
+  const handleOnlineSelect = () => {
+    if (api.token) {
+      goToLoggedInPlay();
+      return;
+    }
+    show('#login-panel');
+  };
 
   const handleOfflineStart = (cls: PlayerClass) => {
     const rawName = offlineNameInput.value.trim();
@@ -4385,10 +4422,7 @@ function wireStartScreens(): void {
     });
   };
 
-  setupNavBtn(navBtnPlay, '#hero-view', () => {
-    switchMainView('#hero-view');
-    show('#mode-select');
-  });
+  setupNavBtn(navBtnPlay, '#hero-view', enterOnlinePlayFlow);
 
   setupNavBtn(navBtnHighscores, '#highscores-view', () => {
     switchMainView('#highscores-view');
@@ -4407,12 +4441,15 @@ function wireStartScreens(): void {
     switchMainView('#account-view');
     void renderAccountPortal();
   });
+  setupNavBtn($('#nav-btn-logout'), '#hero-view', logoutAccount);
   setupAccountPortal();
   // Restore a persisted session: show the Account tab immediately, then confirm
   // the stored token is still valid against the server (clearing it if not).
   if (api.restoreSession()) {
     enterLoggedInChrome();
     void revalidateAccountSession();
+  } else {
+    enterLoggedOutChrome();
   }
 
   // Header Logo click listener to return to homepage

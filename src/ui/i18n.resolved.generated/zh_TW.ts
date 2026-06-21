@@ -346,12 +346,14 @@ export const zh_TW: EnTranslations = {
       "changePassword": "變更密碼",
       "currentPassword": "目前密碼",
       "newPassword": "新密碼",
+      "confirmNewPassword": "確認新密碼",
       "savePassword": "更新密碼",
       "passwordChanged": "密碼已更新。其他裝置已登出。",
       "errCurrentRequired": "請輸入目前密碼。",
       "errPasswordShort": "新密碼至少需要 6 個字元。",
       "errPasswordLong": "新密碼最多只能包含 128 個字元。",
       "errPasswordUnchanged": "新密碼必須與目前密碼不同。",
+      "errPasswordConfirm": "兩次輸入的新密碼不一致。",
       "emailLabel": "電子郵件（選填）",
       "emailHint": "僅用於帳號復原。我們絕不寄送行銷郵件。",
       "saveEmail": "儲存電子郵件",
@@ -420,6 +422,7 @@ export const zh_TW: EnTranslations = {
     "download": "下載客戶端",
     "loginRegister": "登入/註冊",
     "account": "帳號",
+    "logout": "登出",
     "donate": "捐贈"
   },
   "stats": {

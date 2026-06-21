@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   accountPortalModel,
   validateNewPassword,
+  validatePasswordChange,
   validateEmailShape,
   deactivateConfirmReady,
   MIN_PASSWORD_LENGTH,
@@ -62,6 +63,16 @@ describe('validateNewPassword', () => {
   });
   it('accepts a valid change', () => {
     expect(validateNewPassword('oldpass', 'brandnew')).toBeNull();
+  });
+});
+
+describe('validatePasswordChange', () => {
+  it('rejects a confirmation mismatch before submit', () => {
+    expect(validatePasswordChange('oldpass', 'brandnew', 'brandnew2')).toBe('confirm-mismatch');
+  });
+
+  it('accepts a valid confirmed password change', () => {
+    expect(validatePasswordChange('oldpass', 'brandnew', 'brandnew')).toBeNull();
   });
 });
 
