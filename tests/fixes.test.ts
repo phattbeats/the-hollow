@@ -615,6 +615,88 @@ describe('boss loot and encounter resets', () => {
     expect(mob.loot).toBeNull();
   });
 
+  it('opens a need-greed roll instead of auto-awarding grouped item drops', () => {
+    const sim = makeSim();
+    const a = sim.playerId;
+    const b = sim.addPlayer('mage', 'Bert');
+    sim.partyInvite(b, a);
+    sim.partyAccept(b);
+    teleportTo(sim, 20, 20, a);
+    teleportTo(sim, 21, 20, b);
+    const mob = createMob(990102, MOBS.forest_wolf, 2, { x: 20, y: 0, z: 22 });
+    mob.dead = true;
+    mob.lootable = true;
+    mob.tappedById = a;
+    mob.loot = { copper: 0, items: [{ itemId: 'greyjaw_hide_boots', count: 1 }] };
+    sim.entities.set(mob.id, mob);
+
+    sim.events.length = 0;
+    sim.lootCorpse(mob.id, a);
+
+    expect(sim.countItem('greyjaw_hide_boots', a)).toBe(0);
+    expect(sim.countItem('greyjaw_hide_boots', b)).toBe(0);
+    const prompts = sim.events.filter((e) => e.type === 'lootRoll');
+    expect(prompts).toHaveLength(2);
+    expect(prompts.every((e) => e.itemId === 'greyjaw_hide_boots')).toBe(true);
+    expect(mob.loot).toBeNull();
+  });
+
+  it('awards need over greed regardless of the greed roll number', () => {
+    const sim = makeSim();
+    const a = sim.playerId;
+    const b = sim.addPlayer('mage', 'Bert');
+    sim.partyInvite(b, a);
+    sim.partyAccept(b);
+    teleportTo(sim, 20, 20, a);
+    teleportTo(sim, 21, 20, b);
+    const mob = createMob(990103, MOBS.forest_wolf, 2, { x: 20, y: 0, z: 22 });
+    mob.dead = true;
+    mob.lootable = true;
+    mob.tappedById = a;
+    mob.loot = { copper: 0, items: [{ itemId: 'greyjaw_hide_boots', count: 1 }] };
+    sim.entities.set(mob.id, mob);
+
+    const rng = (sim as any).rng;
+    const realInt = rng.int.bind(rng);
+    const rolls = [1, 100];
+    rng.int = (min: number, max: number) => (min === 1 && max === 100 ? rolls.shift()! : realInt(min, max));
+
+    sim.events.length = 0;
+    sim.lootCorpse(mob.id, a);
+    const rollId = sim.events.find((e) => e.type === 'lootRoll')!.rollId;
+    sim.submitLootRoll(rollId, 'need', a);
+    sim.submitLootRoll(rollId, 'greed', b);
+
+    expect(sim.countItem('greyjaw_hide_boots', a)).toBe(1);
+    expect(sim.countItem('greyjaw_hide_boots', b)).toBe(0);
+    expect(sim.events.some((e) => e.type === 'loot' && e.text.includes('wins Greyjaw Hide Boots'))).toBe(true);
+  });
+
+  it('excludes players who pass on a need-greed roll', () => {
+    const sim = makeSim();
+    const a = sim.playerId;
+    const b = sim.addPlayer('mage', 'Bert');
+    sim.partyInvite(b, a);
+    sim.partyAccept(b);
+    teleportTo(sim, 20, 20, a);
+    teleportTo(sim, 21, 20, b);
+    const mob = createMob(990104, MOBS.forest_wolf, 2, { x: 20, y: 0, z: 22 });
+    mob.dead = true;
+    mob.lootable = true;
+    mob.tappedById = a;
+    mob.loot = { copper: 0, items: [{ itemId: 'greyjaw_hide_boots', count: 1 }] };
+    sim.entities.set(mob.id, mob);
+
+    sim.events.length = 0;
+    sim.lootCorpse(mob.id, a);
+    const rollId = sim.events.find((e) => e.type === 'lootRoll')!.rollId;
+    sim.submitLootRoll(rollId, 'pass', a);
+    sim.submitLootRoll(rollId, 'greed', b);
+
+    expect(sim.countItem('greyjaw_hide_boots', a)).toBe(0);
+    expect(sim.countItem('greyjaw_hide_boots', b)).toBe(1);
+  });
+
   it('quest drops stay on the corpse as personal loot for every eligible nearby party member', () => {
     const sim = makeSim();
     const a = sim.playerId;
