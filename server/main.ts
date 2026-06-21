@@ -5,8 +5,9 @@ import { WebSocketServer, WebSocket } from 'ws';
 import {
   ensureSchema, pool, createAccount, findAccount, getAccountsCount, touchLogin, saveToken, accountForToken,
   listCharacters, getCharacter, createCharacterCapped, deleteCharacter, closeOrphanSessions,
-  pruneChatLogs, searchCharacters, characterCountsByRealm, moderationStatusForAccount, renameCharacter,
+  pruneChatLogs, pruneClientPerfReports, searchCharacters, characterCountsByRealm, moderationStatusForAccount, renameCharacter,
   findCharacterReportTargetByName, topArenaRatings, topLifetimeXp, chatMuteStatusForAccount, loadAccountCosmetics,
+  referralCountForAccount, primarySlugForAccount, lifetimeXpStanding, isAdminAccount,
 } from './db';
 import { virtualLevel } from '../src/sim/types';
 import { Sim } from '../src/sim/sim';
@@ -19,29 +20,53 @@ import {
   hashPassword, verifyPassword, newToken, validUsernameShape, offensiveName, validPassword, normalizeCharName,
 } from './auth';
 import { json, readBody, isUniqueViolation } from './http_util';
-import { requestIp, rateLimited, authThrottled, recordAuthFailure, clearAuthFailures } from './ratelimit';
+import { requestIp, rateLimited, authThrottled, recordAuthFailure, clearAuthFailures, cardUploadRateLimited } from './ratelimit';
 import { verifyTurnstile } from './turnstile';
+import { handleWalletChallenge, handleWalletLink, handleWalletGet, handleWalletUnlink } from './wallet';
+import { handleWocBalance } from './woc_balance';
+import { handleCardUpload, handleCardRoutes, captureReferral, cardUploadContentLengthTooLarge } from './player_card';
 import { handleAdminApi } from './admin';
+import { pruneExpiredBlockedIps } from './ip_block_db';
+import { isConnectionRefused } from './ip_block';
 import { handleInternalApi } from './internal';
+import { handlePerfReport } from './perf_report';
 import { GameServer } from './game';
 import { REALM, REALM_DIRECTORY, REALM_ORIGINS } from './realm';
 import { webLoginEnforced, isWebClientRequest } from './web_login_guard';
 import { cacheControlFor, etagFor, isNotModified } from './static_cache';
+import { recordUsageCacheEvent, recordUsageMetric, setUsageCacheSize } from './provider_usage';
 
 const PORT = Number(process.env.PORT ?? 8787);
 const STATIC_DIR = path.join(__dirname, '..', 'dist');
 const WIKI_URL = process.env.WIKI_URL ?? 'http://localhost:8080/wiki/index.php/Main_Page';
-// Pretty URLs that all serve the standalone "official channels" / link-tree page.
-const LINKS_ALIASES = new Set([
-  '/links', '/links/', '/social', '/social/', '/social-media-links', '/social-media-links/',
+// Pretty URLs that serve standalone static HTML pages.
+const STATIC_PAGE_ALIASES = new Map([
+  ['/links', '/links.html'],
+  ['/links/', '/links.html'],
+  ['/social', '/links.html'],
+  ['/social/', '/links.html'],
+  ['/social-media-links', '/links.html'],
+  ['/social-media-links/', '/links.html'],
+  ['/play', '/play.html'],
+  ['/play/', '/play.html'],
+  ['/privacy', '/privacy.html'],
+  ['/privacy/', '/privacy.html'],
+  ['/terms', '/terms.html'],
+  ['/terms/', '/terms.html'],
 ]);
 // How long chat logs are kept (0 = forever); pruned at boot and daily.
 const CHAT_LOG_RETENTION_DAYS = Number(process.env.CHAT_LOG_RETENTION_DAYS ?? 90);
+// Client performance reports are operational telemetry, not permanent records.
+// Keep enough history for tuning runs while bounding table growth.
+const PERF_REPORT_RETENTION_DAYS = Number(process.env.PERF_REPORT_RETENTION_DAYS ?? 14);
 // Cloudflare Turnstile secret. When unset (local dev / tests) registration and
 // login skip human verification entirely — see requireTurnstile below.
 const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET ?? '';
 // Hard WS connection limit per IP. Soft threshold (adds bot evidence) is in game.ts.
 const MAX_WS_PER_IP_HARD = Number(process.env.MAX_WS_PER_IP_HARD ?? '20');
+// Each realm re-reads the blocklist on this interval so edits on another realm
+// process propagate and expired blocks fall out.
+const BLOCKED_IP_REFRESH_MS = 60_000;
 
 const game = new GameServer();
 
@@ -120,42 +145,56 @@ export interface ReleaseEntry {
 }
 
 let releasesCache: { at: number; entries: ReleaseEntry[] } | null = null;
+setUsageCacheSize('github.releases', 0, RELEASES_SIZE);
 
 async function refreshReleases(): Promise<ReleaseEntry[]> {
-  const res = await fetch(
-    `https://api.github.com/repos/${GITHUB_REPO}/releases?per_page=${RELEASES_SIZE}`,
-    {
-      headers: {
-        Accept: 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'world-of-claudecraft-server',
-        ...(GITHUB_TOKEN ? { Authorization: `Bearer ${GITHUB_TOKEN}` } : {}),
+  recordUsageMetric('github.releases.fetch');
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${GITHUB_REPO}/releases?per_page=${RELEASES_SIZE}`,
+      {
+        headers: {
+          Accept: 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28',
+          'User-Agent': 'world-of-claudecraft-server',
+          ...(GITHUB_TOKEN ? { Authorization: `Bearer ${GITHUB_TOKEN}` } : {}),
+        },
+        signal: AbortSignal.timeout(8000),
       },
-      signal: AbortSignal.timeout(8000),
-    },
-  );
-  if (!res.ok) throw new Error(`github releases ${res.status}`);
-  const raw = (await res.json()) as any[];
-  const entries: ReleaseEntry[] = (Array.isArray(raw) ? raw : [])
-    .filter((r) => r && !r.draft) // skip unpublished drafts
-    .map((r) => ({
-      id: Number(r.id),
-      tag: String(r.tag_name ?? ''),
-      name: String(r.name || r.tag_name || ''),
-      body: String(r.body ?? '').slice(0, RELEASE_BODY_MAX),
-      url: String(r.html_url ?? ''),
-      prerelease: Boolean(r.prerelease),
-      publishedAt: String(r.published_at ?? r.created_at ?? ''),
-    }));
-  releasesCache = { at: Date.now(), entries };
-  return entries;
+    );
+    if (!res.ok) throw new Error(`github releases ${res.status}`);
+    const raw = (await res.json()) as any[];
+    const entries: ReleaseEntry[] = (Array.isArray(raw) ? raw : [])
+      .filter((r) => r && !r.draft) // skip unpublished drafts
+      .map((r) => ({
+        id: Number(r.id),
+        tag: String(r.tag_name ?? ''),
+        name: String(r.name || r.tag_name || ''),
+        body: String(r.body ?? '').slice(0, RELEASE_BODY_MAX),
+        url: String(r.html_url ?? ''),
+        prerelease: Boolean(r.prerelease),
+        publishedAt: String(r.published_at ?? r.created_at ?? ''),
+      }));
+    releasesCache = { at: Date.now(), entries };
+    recordUsageCacheEvent('github.releases', 'store');
+    setUsageCacheSize('github.releases', entries.length, RELEASES_SIZE);
+    return entries;
+  } catch (err) {
+    recordUsageMetric('github.releases.fetch.failure');
+    throw err;
+  }
 }
 
 async function getReleases(): Promise<ReleaseEntry[]> {
-  if (releasesCache && Date.now() - releasesCache.at < RELEASES_TTL_MS) return releasesCache.entries;
+  if (releasesCache && Date.now() - releasesCache.at < RELEASES_TTL_MS) {
+    recordUsageCacheEvent('github.releases', 'hit');
+    return releasesCache.entries;
+  }
+  recordUsageCacheEvent('github.releases', releasesCache ? 'stale' : 'miss');
   try {
     return await refreshReleases();
   } catch (err) {
+    recordUsageCacheEvent('github.releases', 'failure');
     console.error('github releases refresh failed:', err);
     return releasesCache?.entries ?? [];
   }
@@ -227,8 +266,8 @@ function serveStatic(req: http.IncomingMessage, res: http.ServerResponse): void 
     res.end();
     return;
   }
-  // Pretty-URL aliases for the standalone official-channels page (public/ -> dist/links.html).
-  if (LINKS_ALIASES.has(urlPath)) urlPath = '/links.html';
+  // Pretty-URL aliases for standalone static pages.
+  urlPath = STATIC_PAGE_ALIASES.get(urlPath) ?? urlPath;
   if (urlPath === '/' || urlPath === '/admin' || urlPath === '/admin/') urlPath = `/${shell}`;
   // normalize once and reuse for BOTH file resolution and cache policy —
   // otherwise /assets/../x would serve a mutable file with immutable caching
@@ -311,6 +350,12 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     if (req.method === 'POST' && (url === '/api/register' || url === '/api/login') && rateLimited(req)) {
       return json(res, 429, { error: 'too many attempts — wait a minute and try again' });
     }
+    // Reuse the rate-limit message so a blocked client gets no signal that the
+    // block exists. Login is gated separately below, after the account is known,
+    // so admins can bypass; registration has no account to check.
+    if (req.method === 'POST' && url === '/api/register' && game.isIpBlocked(requestIp(req))) {
+      return json(res, 429, { error: 'too many attempts — wait a minute and try again' });
+    }
     if (req.method === 'POST' && url === '/api/register') {
       const body = await readBody(req);
       if (!(await passesTurnstile(req, body))) return json(res, 403, { error: 'verification failed, please try again' });
@@ -336,6 +381,9 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
         username: account.username,
         ...requestMetadata(req),
       }).catch((err) => console.error('suspicious registration report failed:', err));
+      // Capture the referral when this account signed up via a card link
+      // (?ref=<slug>). Best-effort: never block or fail registration on it.
+      void captureReferral(account.id, body.ref).catch((err) => console.error('referral capture failed:', err));
       return json(res, 200, { token, username: account.username });
     }
     if (req.method === 'POST' && url === '/api/login') {
@@ -354,6 +402,13 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       }
       const status = await moderationStatusForAccount(account.id);
       if (status.locked) return json(res, 403, { error: status.message });
+      // Checked only now that the account is known, so admins (verified after the
+      // password) are never locked out. This does mean a blocked IP gets 429 on a
+      // correct password vs 401 on a wrong one — a small credential-validity tell
+      // we accept, since moving the check before the password would lock admins out.
+      if (game.isIpBlocked(requestIp(req)) && !(await isAdminAccount(account.id))) {
+        return json(res, 429, { error: 'too many attempts — wait a minute and try again' });
+      }
       clearAuthFailures(username); // correct password: forgive earlier typos
       await touchLogin(account.id, requestMetadata(req));
       const token = newToken();
@@ -397,6 +452,14 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     }
     const delMatch = /^\/api\/characters\/(\d+)$/.exec(url);
     const renameMatch = /^\/api\/characters\/(\d+)\/rename$/.exec(url);
+    const standingMatch = /^\/api\/characters\/(\d+)\/standing$/.exec(url);
+    if (req.method === 'GET' && standingMatch) {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      const standing = await lifetimeXpStanding(accountId, Number(standingMatch[1]));
+      if (!standing) return json(res, 404, { error: 'character not found' });
+      return json(res, 200, standing);
+    }
     if (req.method === 'POST' && renameMatch) {
       const accountId = await bearerActiveAccount(req, res);
       if (accountId === null) return;
@@ -483,6 +546,9 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
         return json(res, 400, { error: err instanceof Error ? err.message : 'could not submit report' });
       }
     }
+    if (req.method === 'POST' && url === '/api/perf-report') {
+      return await handlePerfReport(req, res);
+    }
     if (req.method === 'GET' && url === '/api/project-stats') {
       const accountsCount = await getAccountsCount();
       return json(res, 200, {
@@ -518,6 +584,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       return json(res, 200, { realm: REALM, scope, metric: 'lifetimeXp', leaders: entries.slice(0, limit) });
     }
     if (req.method === 'GET' && url === '/api/releases') {
+      recordUsageMetric('github.releases.api');
       // public News & Updates feed, mirrored from GitHub Releases and served
       // from the in-memory cache (refreshed at most every RELEASES_TTL_MS).
       // Optional ?limit=N (1..RELEASES_SIZE).
@@ -525,6 +592,64 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       const limit = Math.max(1, Math.min(RELEASES_SIZE, Number(params.get('limit')) || RELEASES_SIZE));
       const entries = await getReleases();
       return json(res, 200, { repo: GITHUB_REPO, releases: entries.slice(0, limit) });
+    }
+    // Non-custodial Solana wallet linking — all account-scoped.
+    if (req.method === 'POST' && url === '/api/wallet/link/challenge') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleWalletChallenge(req, res, accountId);
+    }
+    if (req.method === 'POST' && url === '/api/wallet/link') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleWalletLink(req, res, accountId);
+    }
+    if (req.method === 'DELETE' && url === '/api/wallet/link') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleWalletUnlink(req, res, accountId);
+    }
+    if (req.method === 'GET' && url === '/api/wallet') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleWalletGet(req, res, accountId);
+    }
+    // $WOC balance proxy — keeps the Solana RPC endpoint (and any key in it)
+    // server-side so it never ships in the client bundle. Public (on-chain
+    // balances are public) but narrow + IP rate-limited + per-wallet cached.
+    if (req.method === 'GET' && url === '/api/woc/balance') {
+      if (rateLimited(req)) {
+        recordUsageMetric('woc.balance.rate_limited');
+        return json(res, 429, { error: 'rate limited' });
+      }
+      const owner = new URLSearchParams((req.url ?? '').split('?')[1] ?? '').get('owner') ?? '';
+      return handleWocBalance(res, owner);
+    }
+    // Shareable player card: publish (PNG body) + referral stats for the card.
+    if (req.method === 'POST' && url === '/api/card') {
+      recordUsageMetric('card.publish.request');
+      if (cardUploadContentLengthTooLarge(req)) {
+        recordUsageMetric('card.publish.rejected');
+        res.shouldKeepAlive = false;
+        res.setHeader('Connection', 'close');
+        return json(res, 413, { error: 'image too large' });
+      }
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      if (cardUploadRateLimited(req, accountId)) {
+        recordUsageMetric('card.publish.rate_limited');
+        return json(res, 429, { error: 'rate limited' });
+      }
+      return handleCardUpload(req, res, accountId);
+    }
+    if (req.method === 'GET' && url === '/api/referrals') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      const [count, slug] = await Promise.all([
+        referralCountForAccount(accountId),
+        primarySlugForAccount(accountId),
+      ]);
+      return json(res, 200, { count, slug });
     }
     json(res, 404, { error: 'unknown endpoint' });
   } catch (err: any) {
@@ -554,11 +679,21 @@ async function main(): Promise<void> {
   if (orphans > 0) console.log(`closed ${orphans} orphaned play session(s) from a previous run`);
   const pruned = await pruneChatLogs(CHAT_LOG_RETENTION_DAYS);
   if (pruned > 0) console.log(`pruned ${pruned} chat log row(s) older than ${CHAT_LOG_RETENTION_DAYS} days`);
+  const prunedPerfReports = await pruneClientPerfReports(PERF_REPORT_RETENTION_DAYS);
+  if (prunedPerfReports > 0) console.log(`pruned ${prunedPerfReports} client perf report row(s) older than ${PERF_REPORT_RETENTION_DAYS} days`);
   await game.loadMarket();
   await game.loadChatFilter();
+  await game.loadBlockedIps();
   setInterval(() => {
     void pruneChatLogs(CHAT_LOG_RETENTION_DAYS).catch((err) => console.error('chat log prune failed:', err));
+    void pruneClientPerfReports(PERF_REPORT_RETENTION_DAYS).catch((err) => console.error('perf report prune failed:', err));
   }, 24 * 3600 * 1000).unref();
+  setInterval(() => {
+    void pruneExpiredBlockedIps().catch((err) => console.error('blocked IP prune failed:', err));
+    void game.reloadBlockedIps()
+      .then(() => game.disconnectBlockedSessions('Connection to the server was lost.'))
+      .catch((err) => console.error('blocked IP refresh failed:', err));
+  }, BLOCKED_IP_REFRESH_MS).unref();
   // keep both leaderboard caches warm so the first viewer never waits on the
   // query and it never recomputes per request (PR-3)
   const warmLeaderboards = () => {
@@ -577,6 +712,7 @@ async function main(): Promise<void> {
     if (url.startsWith('/internal/')) void handleInternalApi(req, res, game);
     else if (url.startsWith('/admin/api/')) void handleAdminApi(req, res, game);
     else if (url.startsWith('/api/')) void handleApi(req, res);
+    else if (req.method === 'GET' && url.startsWith('/p/')) void handleCardRoutes(req, res);
     else serveStatic(req, res);
   });
 
@@ -640,7 +776,8 @@ async function main(): Promise<void> {
     // is handled inside game.join(); this guard blocks egregious bot farms before
     // they consume a session slot.
     const ip = requestMetadata(req).ip;
-    if (game.countIpSessions(ip) >= MAX_WS_PER_IP_HARD) {
+    const isAdmin = await isAdminAccount(accountId);
+    if (isConnectionRefused({ blocked: game.isIpBlocked(ip), isAdmin, ipSessions: game.countIpSessions(ip), hardLimit: MAX_WS_PER_IP_HARD })) {
       ws.close(1008, 'Too many connections from your network');
       return;
     }
@@ -659,6 +796,7 @@ async function main(): Promise<void> {
         reason: chatMute.reason,
         chatStrikes: status.chatStrikes,
         accountCosmetics,
+        isAdmin,
       },
     );
     if ('error' in result) {

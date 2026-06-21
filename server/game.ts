@@ -8,11 +8,14 @@ import { zoneAt, DUNGEONS } from '../src/sim/data';
 import { MECH_CHROMAS, mechChromaItemId, mechChromaSkinIndex } from '../src/sim/content/skins';
 import {
   grantAccountMechChroma, markAccountQuestComplete, revokeAccountMechChroma, saveCharacterState, openPlaySession, closePlaySession,
-  insertChatLogs, pool, loadMarketState, saveMarketState,
+  insertChatLogs, pool, loadMarketState, saveMarketState, walletForAccount,
 } from './db';
+import { holderInfoForPubkey } from './woc_balance';
 import type { AccountChatMuteStatus, AccountCosmetics, RequestMetadata } from './db';
 import { ChatFilter } from './chat_filter';
 import { loadChatFilterState, applyChatStrike, recordChatViolation } from './chat_filter_db';
+import { IpBlockList } from './ip_block';
+import { loadActiveBlockedIps } from './ip_block_db';
 import { offensiveName } from './auth';
 import { ChatLogger } from './chat_log';
 import { SocialService } from './social';
@@ -20,8 +23,8 @@ import type { Presence, PresenceStatus, SocialActor, SocialEvent, SocialTranspor
 import { PgSocialDb } from './social_db';
 import { REALM } from './realm';
 import { isOverheadEmoteId } from '../src/world_api';
-import * as antibot from './antibot';
-import type { BotTracker } from './antibot';
+import { createBotDetector } from '#bot-detector';
+import type { BotDetector, BotTrackingContext } from './bot_detector/contract';
 
 const WORLD_SEED = 20061;
 const ALDRIC_METEOR_QUEST_ID = 'q_aldrics_fallen_star';
@@ -69,9 +72,6 @@ const RESTART_COUNTDOWN_STEPS = [
   { atSeconds: 590, text: 'Server restart in 10 seconds.' },
   { atSeconds: 600, text: 'Server restarting now.' },
 ] as const;
-const MAX_WS_PER_IP_SOFT = Number(process.env.MAX_WS_PER_IP_SOFT ?? '5');
-// Antibot enforcement (shadow-throttle + auto-kick), off by default: detection runs
-// report-only until the signals are mature and the false-positive rate is measured.
 const ANTIBOT_ENFORCE = process.env.ANTIBOT_ENFORCE === '1';
 // Clients stream movement intent every 50ms. If that stream goes silent while
 // the last packet held a key down, stop applying it instead of turning/running
@@ -79,6 +79,11 @@ const ANTIBOT_ENFORCE = process.env.ANTIBOT_ENFORCE === '1';
 const STALE_INPUT_SECONDS = 0.75;
 // Exponential moving average weight for the per-tick duration stat.
 const TICK_EMA_ALPHA = 0.05;
+
+// How often to refresh online players' $WOC holder-tier flair from chain. Each
+// wallet read is additionally cached for minutes in woc_balance.ts, so this is
+// the upper bound on how stale an in-world badge can be.
+const HOLDER_TIER_REFRESH_MS = 120_000;
 
 export interface ClientSession {
   ws: WebSocket;
@@ -126,8 +131,9 @@ export interface ClientSession {
   socialTrackedIds?: number[];
   // IP address at join time (from requestMetadata); used for per-IP session counting.
   ip: string;
+  isAdmin: boolean;
   // Behavioral bot-detection state. Ephemeral — reset on every join.
-  bot: BotTracker;
+  botTrackingContext: BotTrackingContext;
 }
 
 interface SentEntityVersions {
@@ -202,6 +208,8 @@ function identityFields(e: Entity): Record<string, unknown> {
   const out: Record<string, unknown> = { k: e.kind, tid: e.templateId, nm: e.name, lv: e.level };
   if (e.skinCatalog === 'mech') out.cat = 'mech';
   if (e.skin) out.sk = e.skin;
+  if (e.holderTier) out.ht = e.holderTier; // $WOC holder-tier flair (cosmetic)
+  if (e.holderBalance) out.hb = Math.round(e.holderBalance); // exact $WOC, for inspect
   if (e.dungeonId) out.dgn = e.dungeonId;
   if (e.objectItemId) out.obj = e.objectItemId;
   if (e.scale !== 1) out.sc = e.scale;
@@ -334,15 +342,22 @@ export class GameServer {
   clients = new Map<number, ClientSession>(); // by pid
   private readonly sessionsByCharacterId = new Map<number, ClientSession>();
   private readonly accountCosmeticsByAccount = new Map<number, AccountCosmetics>();
+  private readonly botDetector: BotDetector = createBotDetector();
   readonly chatLog = new ChatLogger(insertChatLogs);
   // Admin-managed soft/hard word lists + escalation config. Loaded from the DB
   // at boot (loadChatFilter) and refreshed whenever an admin edits the lists.
   readonly chatFilter = new ChatFilter();
+  private readonly ipBlockList = new IpBlockList();
   private readonly socialDb = new PgSocialDb(pool);
   readonly social: SocialService;
   private wireCache = new Map<number, EntityWireCache>();
   private lastWireSweepTick = 0;
   private interval: NodeJS.Timeout | null = null;
+  private holderTierInterval: NodeJS.Timeout | null = null;
+  private holderTierRefreshing = false; // overlap guard for the refresh cycle
+  // pids whose holder tier was forced via the dev /woctier command — the chain
+  // refresh leaves them alone so the override sticks during testing (dev only).
+  private devTierPids = new Set<number>();
   private saveTimer = 0;
   private socialPosTimer = 0;
   private saveAllInFlight: Promise<void> | null = null;
@@ -368,25 +383,6 @@ export class GameServer {
   // Called by main.ts before join() for the hard-reject check.
   countIpSessions(ip: string): number {
     return this.ipSessionCounts.get(ip) ?? 0;
-  }
-
-  // Reconcile multi_ip evidence for every session on `ip` against the live session
-  // count. Called on join/leave (the only events that change the count), so the
-  // signal marks all sessions on a crowded IP and clears once it thins out.
-  private refreshMultiIpEvidence(ip: string): void {
-    if (!ip) return;
-    const count = this.countIpSessions(ip);
-    const crowded = count > MAX_WS_PER_IP_SOFT;
-
-    const clientsWithSameIp = [...this.clients.values()].filter(s => s.ip === ip);
-    clientsWithSameIp.forEach(s => {
-      if (crowded) {
-        antibot.addEvidence(s.bot, { kind: 'multi_ip', weight: 0.4, expiresAt: Infinity,
-          detail: `${count} sessions from ${ip}` });
-      } else {
-        antibot.removeEvidence(s.bot, 'multi_ip');
-      }
-    });
   }
 
   // -------------------------------------------------------------------------
@@ -515,10 +511,43 @@ export class GameServer {
         void this.saveMarket();
       }
     }, 50);
+    // Refresh every online player's $WOC holder-tier flair off the 20 Hz loop:
+    // an RPC call per wallet (cached for minutes inside holderInfoForPubkey) has
+    // no place in the tick. Catches mid-session balance changes.
+    this.holderTierInterval = setInterval(() => { void this.refreshAllHolderTiers(); }, HOLDER_TIER_REFRESH_MS);
   }
 
   stop(): void {
     if (this.interval) clearInterval(this.interval);
+    if (this.holderTierInterval) clearInterval(this.holderTierInterval);
+  }
+
+  // Update one player's holder-tier flair from their linked wallet's $WOC
+  // balance. Best-effort and guarded against the player leaving mid-fetch.
+  private async refreshHolderTier(session: ClientSession): Promise<void> {
+    if (this.devTierPids.has(session.pid)) return; // dev override pinned this pid
+    const wallet = await walletForAccount(session.accountId);
+    const { tier, balance } = wallet ? await holderInfoForPubkey(wallet.pubkey) : { tier: 0, balance: 0 };
+    // The player may have left during the await; only apply if still the live
+    // session for this pid.
+    if (this.clients.get(session.pid) !== session) return;
+    const e = this.sim.entities.get(session.pid);
+    if (e && ((e.holderTier ?? 0) !== tier || (e.holderBalance ?? 0) !== balance)) {
+      e.holderTier = tier; // identity diff re-broadcasts it to nearby players
+      e.holderBalance = balance;
+      console.log(`[woc] ${session.name} holder tier → ${tier} (${balance} $WOC)`);
+    }
+  }
+
+  private async refreshAllHolderTiers(): Promise<void> {
+    if (this.holderTierRefreshing) return; // a slow cycle (RPC) must not pile up
+    this.holderTierRefreshing = true;
+    try {
+      await Promise.all([...this.clients.values()].map((session) =>
+        this.refreshHolderTier(session).catch((err) => console.error('holder-tier refresh failed:', err))));
+    } finally {
+      this.holderTierRefreshing = false;
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -526,10 +555,7 @@ export class GameServer {
   private runAntibotTick(): void {
     const now = Date.now();
     for (const session of this.clients.values()) {
-      // Skip sessions with no evidence and no active escalation timers (CPU budget).
-      const t = session.bot;
-      if (t.evidence.length === 0 && t.aboveLogSince === null && t.aboveThrottleSince === null && t.aboveKickSince === null) continue;
-      const action = antibot.onSimTick(t, session, now, ANTIBOT_ENFORCE);
+      const action = this.botDetector.handleTick(session.botTrackingContext, now, ANTIBOT_ENFORCE);
       if (action === 'kick') {
         void this.leave(session, 'disconnected');
       }
@@ -650,7 +676,7 @@ export class GameServer {
     cls: import('../src/sim/types').PlayerClass,
     state: import('../src/sim/sim').CharacterState | null,
     isGm = false,
-    meta: RequestMetadata & Partial<AccountChatMuteStatus> & { accountCosmetics?: AccountCosmetics; chatStrikes?: number } = {},
+    meta: RequestMetadata & Partial<AccountChatMuteStatus> & { accountCosmetics?: AccountCosmetics; chatStrikes?: number; isAdmin?: boolean } = {},
   ): ClientSession | { error: string } {
     if (this.sessionsByCharacterId.has(characterId)) return { error: 'character already in world' };
     // Anti-bot: cap simultaneous online characters per account. Accounts can
@@ -679,6 +705,7 @@ export class GameServer {
     );
     this.applyAccountQuestLockouts(pid, accountCosmetics);
     const sessionIp = meta.ip ?? '';
+    const botTrackingContext = this.botDetector.createTrackingContext({ accountId, characterId, name, ip: sessionIp });
     const session: ClientSession = {
       ws, accountId, accountCosmetics, characterId, pid, name,
       lastSave: Date.now(), alive: true, joinedAt: Date.now(), dbSessionId: null, left: false,
@@ -696,12 +723,12 @@ export class GameServer {
       lastSent: {},
       sentEnts: new Map(),
       ip: sessionIp,
-      bot: antibot.createTracker(),
+      isAdmin: meta.isAdmin ?? false,
+      botTrackingContext,
     };
     this.ipSessionCounts.set(sessionIp, (this.ipSessionCounts.get(sessionIp) ?? 0) + 1);
     this.clients.set(pid, session);
     this.sessionsByCharacterId.set(characterId, session);
-    this.refreshMultiIpEvidence(sessionIp);
     this.peakOnline = Math.max(this.peakOnline, this.clients.size);
     openPlaySession(accountId, characterId, name, meta)
       .then((id) => {
@@ -732,6 +759,9 @@ export class GameServer {
     // broadcast it to everyone (and likewise don't broadcast departures below).
     this.send(session, { t: 'events', list: [{ type: 'log', text: `${name} has entered World of ClaudeCraft.`, color: '#ffd100' }] });
     void this.initSocial(session);
+    // Stamp the $WOC holder-tier flair (best-effort: a balance read must never
+    // affect joining the world).
+    void this.refreshHolderTier(session).catch((err) => console.error('holder-tier refresh failed:', err));
     return session;
   }
 
@@ -753,12 +783,13 @@ export class GameServer {
     if (session.left || !this.clients.has(session.pid)) return;
     session.left = true;
     this.clients.delete(session.pid);
+    this.botDetector.releaseTrackingContext(session.botTrackingContext);
     if (session.ip) {
       const prev = this.ipSessionCounts.get(session.ip) ?? 1;
       if (prev <= 1) this.ipSessionCounts.delete(session.ip);
       else this.ipSessionCounts.set(session.ip, prev - 1);
-      this.refreshMultiIpEvidence(session.ip);
     }
+    this.devTierPids.delete(session.pid);
     this.social.forget(session.characterId);
     // delete from clients first so friends see them as offline in the notice
     void this.social.announcePresence({ characterId: session.characterId, name: session.name }, false)
@@ -1010,6 +1041,45 @@ export class GameServer {
     }
   }
 
+  // -------------------------------------------------------------------------
+  // IP blocklist
+  // -------------------------------------------------------------------------
+
+  async loadBlockedIps(): Promise<void> {
+    try {
+      this.ipBlockList.setEntries(await loadActiveBlockedIps());
+    } catch (err) {
+      console.error('failed to load blocked IPs:', err);
+    }
+  }
+
+  async reloadBlockedIps(): Promise<void> {
+    await this.loadBlockedIps();
+  }
+
+  isIpBlocked(ip: string): boolean {
+    return this.ipBlockList.isBlocked(ip, Date.now());
+  }
+
+  disconnectByIp(ip: string, reason: string): void {
+    for (const session of [...this.clients.values()]) {
+      if (session.ip !== ip || session.isAdmin) continue;
+      this.send(session, { t: 'error', error: reason });
+      try { session.ws.close(); } catch { /* connection already closing */ }
+      void this.leave(session, 'moderation action');
+    }
+  }
+
+  disconnectBlockedSessions(reason: string): void {
+    const now = Date.now();
+    for (const session of [...this.clients.values()]) {
+      if (session.isAdmin || !this.ipBlockList.isBlocked(session.ip, now)) continue;
+      this.send(session, { t: 'error', error: reason });
+      try { session.ws.close(); } catch { /* connection already closing */ }
+      void this.leave(session, 'moderation action');
+    }
+  }
+
   /** Reflect an admin "lift mute" on any live sessions so chat unlocks at once. */
   liftChatMuteLive(accountId: number): void {
     for (const session of this.clients.values()) {
@@ -1032,44 +1102,53 @@ export class GameServer {
   // -------------------------------------------------------------------------
 
   handleMessage(session: ClientSession, raw: string): void {
+    const receivedAtMs = Date.now();
     let msg: any;
     try {
       msg = JSON.parse(raw);
     } catch {
+      this.botDetector.observeProtocolAnomaly(session.botTrackingContext, 'invalid_json', raw, receivedAtMs);
       return;
     }
     // a malformed payload must never take down the server for everyone
     try {
-      this.dispatchMessage(session, msg);
+      this.dispatchMessage(session, msg, raw, receivedAtMs);
     } catch (err) {
       console.error(`bad message from ${session.name} (cmd: ${String(msg?.cmd ?? msg?.t)}):`, err);
     }
   }
 
-  private dispatchMessage(session: ClientSession, msg: any): void {
+  private dispatchMessage(session: ClientSession, msg: any, raw: string, receivedAtMs: number): void {
     // JSON.parse returns null / numbers / strings / arrays for valid JSON that
     // isn't an object — `null` in particular threw on `msg.t`. Drop anything
     // that isn't a plain object before touching its fields.
-    if (typeof msg !== 'object' || msg === null || Array.isArray(msg)) return;
+    if (typeof msg !== 'object' || msg === null || Array.isArray(msg)) {
+      this.botDetector.observeProtocolAnomaly(session.botTrackingContext, 'non_object', raw, receivedAtMs);
+      return;
+    }
     const sim = this.sim;
     const pid = session.pid;
     if (msg.t === 'input') {
       const meta = sim.meta(pid);
       const e = sim.entities.get(pid);
       if (!meta || !e) return;
-      const { moveInput, facing } = parseMoveInputFrame(msg);
-      Object.assign(meta.moveInput, moveInput);
+      const frame = parseMoveInputFrame(msg);
+      Object.assign(meta.moveInput, frame.moveInput);
       session.lastInputAt = sim.time;
       if (typeof msg.seq === 'number' && Number.isFinite(msg.seq) && msg.seq > 0) {
         session.lastInputSeq = Math.max(session.lastInputSeq, Math.floor(msg.seq));
       }
-      if (facing !== null && !e.dead) {
-        e.facing = facing;
+      if (frame.facing !== null && !e.dead) {
+        e.facing = frame.facing;
       }
+      this.botDetector.observeInput(session.botTrackingContext, frame, receivedAtMs);
       return;
     }
-    if (msg.t !== 'cmd') return;
-    antibot.observeAction(session.bot, String(msg.cmd ?? ''), Date.now());
+    if (msg.t !== 'cmd') {
+      this.botDetector.observeProtocolAnomaly(session.botTrackingContext, 'unknown_type', raw, receivedAtMs);
+      return;
+    }
+    this.botDetector.observeCommand(session.botTrackingContext, String(msg.cmd ?? ''), receivedAtMs);
     switch (msg.cmd) {
       case 'castSlot': sim.castAbilityBySlot(msg.slot | 0, pid); break;
       case 'cast': if (typeof msg.ability === 'string') sim.castAbility(msg.ability, pid); break;
@@ -1219,8 +1298,12 @@ export class GameServer {
         if (msg.mode === 'passive' || msg.mode === 'defensive' || msg.mode === 'aggressive') sim.setPetMode(msg.mode, pid);
         break;
       // trade
-      case 'trade_req': if (typeof msg.id === 'number') sim.tradeRequest(msg.id, pid); break;
-      case 'trade_accept': sim.tradeAccept(pid); break;
+      case 'trade_req':
+        if (typeof msg.id === 'number') sim.tradeRequest(msg.id, pid);
+        break;
+      case 'trade_accept':
+        sim.tradeAccept(pid);
+        break;
       case 'trade_offer':
         if (Array.isArray(msg.items)) sim.tradeSetOffer(msg.items, Number(msg.copper) || 0, pid);
         break;
@@ -1290,6 +1373,7 @@ export class GameServer {
       case 'switchLoadout': if (typeof msg.index === 'number') sim.switchLoadout(msg.index | 0, pid); break;
       case 'deleteLoadout': if (typeof msg.index === 'number') sim.deleteLoadout(msg.index | 0, pid); break;
       // World Market (the Merchant's auction house)
+      case 'market_search': if (typeof msg.q === 'string') sim.marketSearch(msg.q, pid); break;
       case 'market_list':
         if (typeof msg.item === 'string' && Number.isFinite(msg.count) && Number.isFinite(msg.price)) {
           sim.marketList(msg.item, msg.count, msg.price, pid);
@@ -1342,6 +1426,8 @@ export class GameServer {
         if (exit) sim.leaveDungeon(pid);
         break;
       }
+      default:
+        this.botDetector.observeProtocolAnomaly(session.botTrackingContext, 'unknown_command', raw, receivedAtMs);
     }
   }
 
@@ -1574,6 +1660,7 @@ export class GameServer {
 
   private routeEvents(events: SimEvent[]): void {
     if (events.length === 0 || this.clients.size === 0) return;
+    const eventTime = Date.now();
     for (const session of this.clients.values()) {
       const p = this.sim.entities.get(session.pid);
       if (!p) continue;
@@ -1590,6 +1677,7 @@ export class GameServer {
             if (ev.type === 'chat' && ev.channel === 'whisper' && ev.to === undefined && ev.fromPid !== session.pid) {
               session.lastWhisperFrom = ev.from;
             }
+            this.botDetector.observeEvent(session.botTrackingContext, ev, eventTime);
           }
           continue;
         }
@@ -1623,6 +1711,22 @@ export class GameServer {
   private routeRememberedChat(session: ClientSession, rawText: string, pid: number): import('../src/sim/sim').SentChat | null {
     const text = rawText.trim();
     if (!text) return null;
+    // Dev-only: force this character's $WOC holder-tier flair so the in-world
+    // nameplate badge can be exercised without a funded linked wallet. Gated by
+    // ALLOW_DEV_COMMANDS (never set in production). Reset on the next balance
+    // refresh or rejoin.
+    if (process.env.ALLOW_DEV_COMMANDS === '1' && /^\/woctier\b/.test(text)) {
+      const n = Math.max(0, Math.min(10, parseInt(text.split(/\s+/)[1] ?? '', 10) || 0));
+      const e = this.sim.entities.get(pid);
+      if (e) {
+        e.holderTier = n;
+        // Demo balance so the inspect readout shows a plausible amount for the tier.
+        e.holderBalance = n > 0 ? 10 ** (n - 1) : 0;
+      }
+      this.devTierPids.add(pid); // keep the chain refresh from clobbering it
+      this.broadcastSystem(`[dev] ${session.name} $WOC holder tier → ${n}`);
+      return null;
+    }
     if (!text.startsWith('/')) {
       const body = text;
       if (!body.trim()) return null;

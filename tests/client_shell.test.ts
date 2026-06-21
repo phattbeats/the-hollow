@@ -2,6 +2,11 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+const playHtml = readFileSync(new URL('../play.html', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+const privacyHtml = readFileSync(new URL('../public/privacy.html', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+const termsHtml = readFileSync(new URL('../public/terms.html', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+const viteConfig = readFileSync(new URL('../vite.config.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+const serverMain = readFileSync(new URL('../server/main.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 const mainTs = readFileSync(new URL('../src/main.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 const hudTs = readFileSync(new URL('../src/ui/hud.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 const mobileControlsTs = readFileSync(new URL('../src/game/mobile_controls.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
@@ -50,6 +55,32 @@ describe('client HTML shell', () => {
     expect(robotsTxt).toContain('Sitemap: https://worldofclaudecraft.com/sitemap.xml');
     expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/</loc>');
     expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/links</loc>');
+    expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/play</loc>');
+    expect(playHtml).toContain('<link rel="canonical" href="https://worldofclaudecraft.com/play" />');
+    expect(playHtml).toContain('<meta property="og:url" content="https://worldofclaudecraft.com/play" />');
+    expect(playHtml).toContain('"url": "https://worldofclaudecraft.com/play"');
+    expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/privacy</loc>');
+    expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/terms</loc>');
+    expect(privacyHtml).toContain('<link rel="canonical" href="https://worldofclaudecraft.com/privacy" />');
+    expect(privacyHtml).toContain('<h1>Privacy Policy</h1>');
+    expect(termsHtml).toContain('<link rel="canonical" href="https://worldofclaudecraft.com/terms" />');
+    expect(termsHtml).toContain('<h1>Terms and Conditions</h1>');
+    expect(html).toContain('href="/terms" class="footer-link" data-i18n="footer.terms"');
+    expect(html).toContain('href="/privacy" class="footer-link" data-i18n="footer.privacy"');
+    expect(viteConfig).toContain("['/privacy', '/privacy.html']");
+    expect(viteConfig).toContain("['/terms', '/terms.html']");
+    expect(serverMain).toContain("['/privacy', '/privacy.html']");
+    expect(serverMain).toContain("['/terms', '/terms.html']");
+  });
+
+  it('loads Meta Pixel outside local development and tracks level 5', () => {
+    expect(html).toContain('https://connect.facebook.net/en_US/fbevents.js');
+    expect(html).toContain("fbq('init', '1692101265042180');");
+    expect(html).toContain("fbq('track', 'PageView');");
+    expect(html).toContain('https://www.facebook.com/tr?id=1692101265042180&ev=PageView&noscript=1');
+    expect(html).toContain("if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) {");
+    expect(hudTs).toContain("fbq('trackCustom', eventName, data ?? {});");
+    expect(hudTs).toContain("if (ev.level === 5) trackMetaPixel('ReachedLevel5', { level: ev.level });");
   });
 
   it('offers the quest log in the mobile controls drawer', () => {
@@ -62,6 +93,24 @@ describe('client HTML shell', () => {
     const interfaceEntries = hudTs.match(/add\(t\('hud\.options\.interface'\), \(\) => goto\('interface'\)\);/g) ?? [];
     expect(interfaceEntries).toHaveLength(1);
     expect(hudTs).not.toContain('Skin Select (dev)');
+  });
+
+  it('wires player card pose clicks before loading card metadata', () => {
+    const methodStart = hudTs.indexOf('private async openPlayerCard');
+    const listener = hudTs.indexOf("poseButtons.forEach((b, i) => b.addEventListener('click'", methodStart);
+    const metadataAwait = hudTs.indexOf('[referral, standing] = await Promise.all([fetchReferralInfo(), fetchStanding()]);', methodStart);
+    const actionWiring = hudTs.indexOf('this.wireCardActions(back, state, setStatus);', methodStart);
+
+    expect(methodStart).toBeGreaterThanOrEqual(0);
+    expect(listener).toBeGreaterThan(methodStart);
+    expect(metadataAwait).toBeGreaterThan(listener);
+    expect(actionWiring).toBeGreaterThan(metadataAwait);
+
+    const listenerBlock = hudTs.slice(listener, metadataAwait);
+    expect(listenerBlock).toContain('if (!metadataReady) {');
+    expect(listenerBlock).toContain('selectPose(i);');
+    expect(listenerBlock).toContain('return;');
+    expect(hudTs.slice(metadataAwait, actionWiring)).toContain('await compose(requestedPoseIndex);');
   });
 
   it('only displays mobile touch controls after the game is active', () => {
@@ -253,6 +302,24 @@ describe('client HTML shell', () => {
   it('omits Meters from the mobile More tray while keeping the desktop window', () => {
     expect(html).toContain('id="meters-window"');
     expect(html).not.toContain('id="mobile-meters"');
+  });
+
+  it('keeps the World Market to one scroll container with browse filters below the tabs', () => {
+    expect(html).toContain('#market-window { width: 470px; height: min(640px, calc(85vh - 24px)); display: none; flex-direction: column; overflow: hidden;');
+    expect(html).toContain('#market-body { overflow-y: auto; flex: 1; min-height: 0;');
+    expect(html).toContain('.mkt-page { display: flex; align-items: center; justify-content: space-between;');
+    expect(html).toContain('body.mobile-touch #market-window {\n    max-height: calc(58vh - 20px);\n    overflow: hidden;');
+    expect(hudTs).toContain('MARKET_PAGE_SIZE');
+    expect(hudTs).toContain('this.marketBrowsePage');
+    expect(hudTs).toContain('data-market-page="prev"');
+    expect(hudTs).toContain('data-market-page="next"');
+    expect(hudTs).toContain('itemUi.market.pageRange');
+    expect(hudTs).toContain('class="mkt-filters${hasSubtype ? \' has-subtype\' : \'\'}"');
+    expect(hudTs).toContain('data-market-filter-menu="${menu}"');
+    expect(hudTs).toContain("this.renderMarketFilterMenu('itemType'");
+    expect(hudTs).toContain("this.renderMarketFilterMenu('subtype'");
+    expect(hudTs).toContain("this.renderMarketFilterMenu('rarity'");
+    expect(hudTs).not.toContain('<select data-market-filter=');
   });
 
   it('keeps the mobile More and Autorun buttons in the combat row', () => {

@@ -25,7 +25,7 @@
     "bench": "npm run build:env && node dist-env/env_server.cjs --bench",
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",
-    "build:server": "esbuild server/main.ts --bundle --platform=node --format=cjs --external:pg-native --external:bufferutil --external:utf-8-validate --outfile=dist-server/server.cjs",
+    "build:server": "node scripts/build_server.mjs",
     "server": "npm run build:server && node dist-server/server.cjs",
     "realms": "npm run build:server && node scripts/dev-realms.mjs",
     "admin:grant": "node scripts/grant_admin.mjs",
@@ -35,6 +35,13 @@
     "wiki:seed": "node scripts/mediawiki/build_seed.mjs"
   },
   "dependencies": {
+    "@noble/curves": "^1.9.7",
+    "@solana/wallet-standard-chains": "^1.1.2",
+    "@solana/wallet-standard-features": "^1.4.0",
+    "@wallet-standard/app": "^1.1.1",
+    "@wallet-standard/base": "^1.1.1",
+    "@wallet-standard/features": "^1.1.1",
+    "bs58": "^6.0.0",
     "n8ao": "^1.10.1",
     "obscenity": "^0.4.6",
     "pg": "^8.21.0",

@@ -164,6 +164,13 @@ const SPIDER: ClipMap = {
   attack: ['Spider_Attack'], death: 'Spider_Death', // no hit-react in asset
 };
 
+// Chicken-cow rig (chicken_cow.glb, procedurally authored — see
+// scripts/gen_chicken_cow.mjs). Node-transform animations, no hit-react.
+const CHICKEN_COW: ClipMap = {
+  idle: 'Idle', walk: 'Walk', run: 'Run',
+  attack: ['Attack'], death: 'Death', jump: 'Jump',
+};
+
 // ---------------------------------------------------------------------------
 // Asset urls
 // ---------------------------------------------------------------------------
@@ -172,6 +179,10 @@ const PLAYERS = 'models/chars/players';
 const ENEMIES = 'models/chars/enemies';
 const CREATURES = 'models/creatures';
 const WEAPONS = 'models/weapons';
+
+const LOW_URL_ALIAS: Record<string, string> = {
+  'models/chars/players/rogue_hooded.glb': 'models/chars/players/rogue.glb',
+};
 
 const HUMANOID_H = 2.6;
 
@@ -334,6 +345,12 @@ export const VISUALS: Record<string, VisualDef> = {
   form_cat: {
     url: `${CREATURES}/wolf.glb`, height: 1.6,
     clips: animal(['Attack']), tint: 0xd08b45, tintStrength: 0.35,
+  },
+  // Druid Travel Form: a daft chicken-cow hybrid (custom GLB). No tint — its
+  // authored cow-spots/comb/beak colours carry the look.
+  form_travel: {
+    url: `${CREATURES}/chicken_cow.glb`, height: 2.3,
+    clips: CHICKEN_COW,
   },
 
   // -- mob families --------------------------------------------------------
@@ -640,4 +657,16 @@ export function manifestUrls(): string[] {
     for (const a of def.attach ?? []) urls.add(a.url);
   }
   return [...urls];
+}
+
+export function visualAssetUrlForGraphics(url: string, standardMaterials: boolean): string {
+  return standardMaterials ? url : (LOW_URL_ALIAS[url] ?? url);
+}
+
+export function manifestUrlsForGraphics(standardMaterials: boolean): string[] {
+  return [...new Set(manifestUrls().map((url) => visualAssetUrlForGraphics(url, standardMaterials)))];
+}
+
+export function visibleAttachmentsForGraphics(def: Pick<VisualDef, 'attach'>): readonly AttachDef[] {
+  return def.attach ?? [];
 }

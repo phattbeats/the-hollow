@@ -70,6 +70,7 @@ const hudStringsEn = {
       graphics: "Graphics",
       audio: "Audio",
       interface: "Interface",
+      language: "Language",
       logout: "Logout",
       returnToGame: "Return to Game",
       resetToDefaults: "Reset to Defaults",
@@ -310,8 +311,10 @@ const hudStringsEn = {
       targetMustDodge: "Your target must dodge first.",
       requiresCombo: "That ability requires combo points.",
       requiresForm: "You must be in {form} Form.",
+      cantInForm: "You can't do that in {form} Form.",
       bear: "Bear",
       cat: "Wolf",
+      travel: "Travel",
       shapeshifted: "You cannot do that while shapeshifted.",
       stealthed: "You must be stealthed.",
       inCombat: "You cannot do that while in combat.",
@@ -453,6 +456,7 @@ export const hudStrings = {
         graphics: "Gráficos",
         audio: "Audio",
         interface: "Interfaz",
+        language: "Idioma",
         logout: "Cerrar sesión",
         returnToGame: "Volver al juego",
         resetToDefaults: "Restablecer valores",
@@ -613,6 +617,7 @@ export const hudStrings = {
         graphics: "Graphismes",
         audio: "Audio",
         interface: "Interface",
+        language: "Langue",
         logout: "Déconnexion",
         returnToGame: "Retour au jeu",
         resetToDefaults: "Réinitialiser",
@@ -1837,5 +1842,9 @@ export const hudStrings = {
   },
 };
 
-hudStrings.es_ES = hudStrings.es;
-hudStrings.fr_CA = hudStrings.fr_FR;
+// es/fr_FR are legacy inline dialect copies, not the runtime source (i18n.locales/
+// overlays are). New English keys (cantInForm/travel) leave these literals one key
+// short of `typeof hudStringsEn`, so cast — don't hand-translate here (maintainer
+// fills the real es_ES/fr_CA via i18n.locales at release). See i18n CLAUDE.md.
+hudStrings.es_ES = hudStrings.es as typeof hudStringsEn;
+hudStrings.fr_CA = hudStrings.fr_FR as typeof hudStringsEn;
