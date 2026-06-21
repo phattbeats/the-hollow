@@ -897,6 +897,9 @@ export class ClientWorld implements IWorld {
   abandonQuest(questId: string): void {
     this.cmd({ cmd: 'abandon', quest: questId });
   }
+  acceptLinkedQuest(questId: string, fromPid: number): void {
+    this.cmd({ cmd: 'qlinkaccept', quest: questId, from: fromPid });
+  }
   equipItem(itemId: string): void {
     this.cmd({ cmd: 'equip', item: itemId });
   }

@@ -755,6 +755,7 @@ export interface QuestDef {
   requiresQuest?: string; // prerequisite quest id (must be turned in)
   minLevel?: number;
   retired?: boolean; // remains finishable if already accepted, but cannot be newly accepted
+  shareable?: boolean; // quest-link sharing allowed (default true; set false to opt out)
   suggestedPlayers?: number; // group quests ("Suggested players: 5")
 }
 

@@ -1146,6 +1146,7 @@ export class GameServer {
         }
         break;
       case 'abandon': if (typeof msg.quest === 'string') { sim.abandonQuest(msg.quest, pid); this.resyncQuests(session); } break;
+      case 'qlinkaccept': if (typeof msg.quest === 'string' && typeof msg.from === 'number') { sim.acceptLinkedQuest(msg.quest, msg.from, pid); this.resyncQuests(session); } break;
       case 'equip': if (typeof msg.item === 'string') sim.equipItem(msg.item, pid); break;
       case 'use':
         if (typeof msg.item === 'string') {

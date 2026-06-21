@@ -6899,6 +6899,34 @@ export class Sim {
     this.emit({ type: 'log', text: `Quest accepted: ${quest.name}`, color: '#ff0', pid: meta.entityId });
     this.onInventoryChangedForQuests(meta);
   }
+  
+  acceptLinkedQuest(questId: string, sharerPid: number, pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    const { meta } = r;
+    const quest = QUESTS[questId];
+    if (!quest || quest.retired || quest.shareable === false) {
+      this.error(meta.entityId, "This quest can't be shared.");
+      return;
+    }
+    const myParty = this.partyOf(meta.entityId);
+    const sharerParty = this.partyOf(sharerPid);
+    const sharer = this.players.get(sharerPid);
+    if (!myParty || !sharerParty || myParty.id !== sharerParty.id) {
+      const sharerName = sharer ? sharer.name : 'that player';
+      this.error(meta.entityId, `You must be in ${sharerName}'s party to accept that quest.`);
+      return;
+    }
+    if (this.questState(questId, meta.entityId) !== 'available') {
+      this.error(meta.entityId, 'That quest is not available.');
+      return;
+    }
+    meta.questLog.set(questId, { questId, counts: quest.objectives.map(() => 0), state: 'active' });
+    this.emit({ type: 'questAccepted', questId, pid: meta.entityId });
+    this.emit({ type: 'log', text: `Quest accepted: ${quest.name}`, color: '#ff0', pid: meta.entityId });
+    this.onInventoryChangedForQuests(meta);
+    if (sharer) this.notice(sharerPid, `${meta.name} accepted your shared quest.`);
+  }
 
   abandonQuest(questId: string, pid?: number): void {
     const r = this.resolve(pid);

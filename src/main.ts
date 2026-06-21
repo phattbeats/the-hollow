@@ -609,6 +609,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     chatInput.value = '';
     chatInput.style.display = 'none';
     chatInput.blur();
+    hud.clearPendingQuestLinks();
     recoverFromMobileKeyboard();
   };
   function openChat(): void {
@@ -623,8 +624,11 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       // the active channel tab supplies the send prefix, so plain text goes to
       // that channel without the player retyping "/world" etc.
       const raw = chatInput.value;
-      const text = hud.composeChatSend(raw);
-      if (text) world.chat(text);
+      // "/share" links the selected quest into party chat; skip the normal send path.
+      if (!hud.maybeHandleQuestShareCommand(raw)) {
+        const text = hud.composeChatSend(raw);
+        if (text) world.chat(text);
+      }
       // a typed "/join world"/"/leave lfg" opens or closes its channel tab too,
       // mirroring the "+" menu (without hijacking the active send channel)
       hud.syncChatTabsForInput(raw);

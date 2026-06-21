@@ -280,6 +280,7 @@ export interface IWorld {
   acceptQuest(questId: string): void;
   turnInQuest(questId: string): void;
   abandonQuest(questId: string): void;
+  acceptLinkedQuest(questId: string, fromPid: number): void;
   equipItem(itemId: string): void;
   useItem(itemId: string): void;
   discardItem(itemId: string, count?: number): void;
