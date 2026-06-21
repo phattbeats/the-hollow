@@ -1904,6 +1904,14 @@ export const en: EnTranslations = {
     "loot": {
       "takeAll": "Take All",
       "close": "Close loot"
+    },
+    "lootRoll": {
+      "title": "Roll for loot",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "choiceAria": "{choice} for {item}",
+      "everyonePassed": "Everyone passed on {item}."
     }
   },
   "entities": {

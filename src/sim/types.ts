@@ -173,7 +173,8 @@ export interface CorpseLoot {
 }
 
 export type CurrencyLootStrategy = 'looter-takes-all' | 'fair-split';
-export type ItemLootStrategy = 'looter-takes-all' | 'random';
+export type LootRollChoice = 'need' | 'greed' | 'pass';
+export type ItemLootStrategy = 'looter-takes-all' | 'need-greed';
 
 export interface LootStrategies {
   currency: CurrencyLootStrategy;
@@ -183,8 +184,8 @@ export interface LootStrategies {
 
 export const DEFAULT_PARTY_LOOT_STRATEGIES: LootStrategies = {
   currency: 'fair-split',
-  commonItems: 'random',
-  premiumItems: 'random',
+  commonItems: 'need-greed',
+  premiumItems: 'need-greed',
 };
 
 export interface LootEntry {
@@ -933,6 +934,7 @@ export type SimEvent = { pid?: number } & (
   | { type: 'milestoneUnlocked'; milestoneId: string }
   | { type: 'learnAbility'; abilityId: string; rank: number }
   | { type: 'loot'; text: string }
+  | { type: 'lootRoll'; rollId: number; itemId: string; itemName: string; quality: ItemDef['quality']; expiresAt: number }
   | { type: 'error'; text: string; reason?: ErrorReason }
   | { type: 'questAccepted'; questId: string }
   | { type: 'questProgress'; questId: string; text: string }

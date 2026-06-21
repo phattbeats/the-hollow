@@ -13,7 +13,7 @@ import {
   zoneWelcomeText,
 } from '../sim/data';
 import type { ZoneDef } from '../sim/data';
-import type { AbilityDef, EquipSlot, InvSlot, PetMode, PlayerClass, ResourceType, SkinRank, Stats } from '../sim/types';
+import type { AbilityDef, EquipSlot, InvSlot, LootRollChoice, PetMode, PlayerClass, ResourceType, SkinRank, Stats } from '../sim/types';
 import { EVENT_SKIN_TIERS, MECH_CHROMAS, SKIN_RANKS, skinRankOrder, type SkinTier } from '../sim/content/skins';
 import {
   AbilityEffect, CONSUME_DURATION, Entity, FISHING_CAST_ID, GCD, ItemDef, SimEvent,
@@ -451,6 +451,7 @@ export class Hud {
   private minimapZoomLabel: HTMLElement | null = null;
   private mapBg: HTMLCanvasElement | null = null;
   private openLootMobId: number | null = null;
+  private activeLootRolls = new Map<number, { event: Extract<SimEvent, { type: 'lootRoll' }>; receivedAt: number; durationMs: number }>();
   private openVendorNpcId: number | null = null;
   private openGossipNpcId: number | null = null;
   private openQuestDetailId: string | null = null;
@@ -2313,6 +2314,7 @@ export class Hud {
     if (slowHud) this.lastHudSlowAt = now;
 
     this.meters.update();
+    this.updateLootRollTimers(now);
     this.syncActiveHotbarForm();
     this.syncSlotMap(); // picks up newly learned abilities mid-session
 
@@ -3661,9 +3663,14 @@ export class Hud {
         case 'comboPoint': break;
         case 'loot': {
           this.log(this.localizeLootText(ev.text), '#7fdc4f');
+          if (/ wins .+ \(\d+\)$/.test(ev.text) || /^Everyone passed on .+\.$/.test(ev.text)) this.closeLootRollsForItem(ev.text);
           if (ev.text.includes('loot') || ev.text.includes('Sold') || ev.text.includes('Bought back')) audio.coin();
           else audio.lootItem();
           if ($('#bags').style.display !== 'none') this.renderBags();
+          break;
+        }
+        case 'lootRoll': {
+          this.showLootRoll(ev);
           break;
         }
         case 'vendor': {
@@ -4193,6 +4200,8 @@ export class Hud {
     if (match) return t('hud.logs.lootReceiveMoney', { money: this.localizeSimMoney(match[1]) });
     match = /^You loot (.+)\.$/.exec(text);
     if (match) return t('hud.logs.lootMoney', { money: this.localizeSimMoney(match[1]) });
+    match = /^Everyone passed on (.+)\.$/.exec(text);
+    if (match) return t('itemUi.lootRoll.everyonePassed', { item: itemDisplayNameFromSource(match[1]) });
     match = /^Sold (.+) for (.+)\.$/.exec(text);
     if (match) return t('hud.logs.soldItem', { item: itemDisplayNameFromSource(match[1]), money: this.localizeSimMoney(match[2]) });
     match = /^Listed (.+?)( x\d+)? on the World Market for (.+)\.$/.exec(text);
@@ -4741,6 +4750,100 @@ export class Hud {
   // -------------------------------------------------------------------------
   // Loot window
   // -------------------------------------------------------------------------
+
+  private lootRollRoot(): HTMLElement {
+    let root = document.getElementById('loot-rolls');
+    if (!root) {
+      root = document.createElement('div');
+      root.id = 'loot-rolls';
+      root.setAttribute('aria-live', 'polite');
+      document.body.appendChild(root);
+    }
+    return root;
+  }
+
+  private showLootRoll(ev: Extract<SimEvent, { type: 'lootRoll' }>): void {
+    this.activeLootRolls.set(ev.rollId, { event: ev, receivedAt: performance.now(), durationMs: 30_000 });
+    this.renderLootRolls();
+  }
+
+  private submitLootRoll(rollId: number, choice: LootRollChoice): void {
+    this.sim.submitLootRoll(rollId, choice);
+    this.activeLootRolls.delete(rollId);
+    this.renderLootRolls();
+  }
+
+  private updateLootRollTimers(now: number): void {
+    if (this.activeLootRolls.size === 0) return;
+    let changed = false;
+    for (const [rollId, roll] of this.activeLootRolls) {
+      if (now - roll.receivedAt >= roll.durationMs) {
+        this.activeLootRolls.delete(rollId);
+        changed = true;
+      }
+    }
+    if (changed) this.renderLootRolls();
+    const root = document.getElementById('loot-rolls');
+    if (!root) return;
+    for (const row of root.querySelectorAll<HTMLElement>('.loot-roll')) {
+      const rollId = Number(row.dataset.rollId);
+      const roll = this.activeLootRolls.get(rollId);
+      if (!roll) continue;
+      const remaining = Math.max(0, 1 - (now - roll.receivedAt) / roll.durationMs);
+      row.style.setProperty('--loot-roll-frac', remaining.toFixed(3));
+    }
+  }
+
+  private closeLootRollsForItem(text: string): void {
+    const match = /^.+ wins (.+) \(\d+\)$/.exec(text) ?? /^Everyone passed on (.+)\.$/.exec(text);
+    if (!match) return;
+    for (const [rollId, roll] of this.activeLootRolls) {
+      if (roll.event.itemName === match[1]) this.activeLootRolls.delete(rollId);
+    }
+    this.renderLootRolls();
+  }
+
+  private renderLootRolls(): void {
+    const root = this.lootRollRoot();
+    if (this.activeLootRolls.size === 0) {
+      root.style.display = 'none';
+      root.innerHTML = '';
+      return;
+    }
+    root.style.display = 'flex';
+    root.innerHTML = '';
+    for (const [rollId, roll] of this.activeLootRolls) {
+      const ev = roll.event;
+      const item = ITEMS[ev.itemId];
+      const itemName = item ? itemDisplayName(item) : ev.itemName;
+      const quality = item?.quality ?? ev.quality ?? 'common';
+      const row = document.createElement('div');
+      row.className = 'loot-roll panel';
+      row.dataset.rollId = String(rollId);
+      row.style.setProperty('--loot-roll-frac', '1');
+      row.innerHTML = `
+        <div class="loot-roll-item">
+          ${item ? this.itemIcon(item) : `<img class="item-icon q-${quality}" src="${iconDataUrl('item', ev.itemId)}" alt="" draggable="false">`}
+          <div class="loot-roll-copy">
+            <div class="loot-roll-title">${esc(t('itemUi.lootRoll.title'))}</div>
+            <div class="loot-roll-name" style="color:${QUALITY_COLOR[quality] ?? '#fff'}">${esc(itemName)}</div>
+          </div>
+        </div>
+        <div class="loot-roll-timer" aria-hidden="true"><span></span></div>
+        <div class="loot-roll-actions">
+          <button type="button" class="loot-roll-btn need" data-choice="need">${esc(t('itemUi.lootRoll.need'))}</button>
+          <button type="button" class="loot-roll-btn greed" data-choice="greed">${esc(t('itemUi.lootRoll.greed'))}</button>
+          <button type="button" class="loot-roll-btn pass" data-choice="pass">${esc(t('itemUi.lootRoll.pass'))}</button>
+        </div>`;
+      if (item) this.attachTooltip(row.querySelector('.loot-roll-item') as HTMLElement, () => this.itemTooltip(item));
+      row.querySelectorAll<HTMLButtonElement>('[data-choice]').forEach((btn) => {
+        const choice = btn.dataset.choice as LootRollChoice;
+        btn.setAttribute('aria-label', t('itemUi.lootRoll.choiceAria', { choice: t(`itemUi.lootRoll.${choice}`), item: itemName }));
+        btn.addEventListener('click', () => this.submitLootRoll(rollId, choice));
+      });
+      root.appendChild(row);
+    }
+  }
 
   openLoot(mobId: number, screenX: number, screenY: number): void {
     const mob = this.sim.entities.get(mobId);

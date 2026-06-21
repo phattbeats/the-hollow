@@ -1904,6 +1904,14 @@ export const es: EnTranslations = {
     "loot": {
       "takeAll": "Recoger botín",
       "close": "Cerrar botín"
+    },
+    "lootRoll": {
+      "title": "Tirar por botín",
+      "need": "Necesidad",
+      "greed": "Codicia",
+      "pass": "Pasar",
+      "choiceAria": "{choice} por {item}",
+      "everyonePassed": "Todos pasaron por {item}."
     }
   },
   "entities": {

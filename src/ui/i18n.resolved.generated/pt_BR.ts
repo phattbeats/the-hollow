@@ -1904,6 +1904,14 @@ export const pt_BR: EnTranslations = {
     "loot": {
       "takeAll": "Pegar tudo",
       "close": "Fechar saque"
+    },
+    "lootRoll": {
+      "title": "Rolagem de saque",
+      "need": "Necessidade",
+      "greed": "Ganância",
+      "pass": "Passar",
+      "choiceAria": "{choice} por {item}",
+      "everyonePassed": "Todos passaram em {item}."
     }
   },
   "entities": {

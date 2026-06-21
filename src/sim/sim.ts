@@ -27,10 +27,10 @@ import {
 import { groundHeight, WATER_LEVEL } from './world';
 import type { AccountCosmetics, LeaderboardEntry } from '../world_api';
 import {
-  AbilityDef, AbilityEffect, Aura, AuraKind, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION,
+  AbilityDef, AbilityEffect, Aura, AuraKind, CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION, CONSUME_DURATION, ItemDef,
   DEFAULT_PARTY_LOOT_STRATEGIES,
   CONSUME_TICKS, CrowdControlDrCategory, DT, Entity, EquipSlot, FISHING_CAST_ID, FISHING_CAST_TIME, GCD,
-  CurrencyLootStrategy, INTERACT_RANGE, InvSlot, ItemLootStrategy, LootEntry, LootSlot, LootStrategies, MELEE_RANGE, MAX_LEVEL, MobFamily, MobTemplate,
+  CurrencyLootStrategy, INTERACT_RANGE, InvSlot, ItemLootStrategy, LootEntry, LootRollChoice, LootSlot, LootStrategies, MELEE_RANGE, MAX_LEVEL, MobFamily, MobTemplate,
   MoveInput, OverheadEmoteId, PetMode, PlayerClass, QuestProgress, QuestState, RUN_SPEED, SimConfig, SimEvent, TURN_SPEED, Vec3,
   angleTo, armorReduction, dist2d, emptyMoveInput, isConsuming, meleeMissChance, mobXpValue, normAngle,
   rageFromDealing, rageFromTaking, spellHitChance, xpForLevel,
@@ -253,6 +253,7 @@ const DEMON_HEAL_MANA_COST = 55;
 const DEMON_HEAL_DURATION = 5;
 const DEMON_HEAL_TICK = 1;
 const TAMED_TARGET_RESPAWN_SECONDS = 60;
+const LOOT_ROLL_TIMEOUT = 30;
 const FRIENDLY_NPC_REJECTED_AURA_KINDS: ReadonlySet<AuraKind> = new Set([
   'dot', 'slow', 'stun', 'root', 'incapacitate', 'polymorph', 'attackspeed', 'sunder', 'spellvuln', 'vulnerability', 'tongues', 'cost_tax', 'critvuln',
 ]);
@@ -266,6 +267,16 @@ export interface Party {
   leader: number; // pid
   members: number[]; // pids
   lootStrategies: LootStrategies;
+}
+
+interface PendingLootRoll {
+  id: number;
+  itemId: string;
+  itemName: string;
+  quality: ItemDef['quality'];
+  candidates: number[];
+  choices: Map<number, { choice: LootRollChoice; roll: number | null }>;
+  expiresAt: number;
 }
 
 export interface TradeSession {
@@ -687,6 +698,8 @@ export class Sim {
   partyByPid = new Map<number, number>(); // pid -> party id
   partyInvites = new Map<number, { fromPid: number; expires: number }>(); // invitee pid -> invite
   nextPartyId = 1;
+  private nextLootRollId = 1;
+  private pendingLootRolls = new Map<number, PendingLootRoll>();
   // raid/target markers: partyId -> (enemy entityId -> markerId 0..7). A
   // cosmetic, party-scoped overlay — never read by tick()/obs/persistence.
   partyMarkers = new Map<number, Map<number, number>>();
@@ -1623,6 +1636,7 @@ export class Sim {
     this.updateDuels();
     this.updateArena();
     this.updateTradesAndInvites();
+    this.updateLootRolls();
     this.updateInstances();
     this.updateMarket();
     this.emitDueDelayedEvents();
@@ -1645,6 +1659,12 @@ export class Sim {
       else pending.push(delayed);
     }
     this.delayedEvents = pending;
+  }
+
+  private updateLootRolls(): void {
+    for (const roll of [...this.pendingLootRolls.values()]) {
+      if (roll.expiresAt <= this.time) this.resolveLootRoll(roll);
+    }
   }
 
   private *playerEntities(): Iterable<Entity> {
@@ -4389,29 +4409,65 @@ export class Sim {
     mob.loot.copper = 0;
   }
 
-  private tryAwardItemByRandomRoll(itemId: string, mob: Entity): boolean {
-    if (this.effectiveItemLootStrategy(itemId, mob) !== 'random') return false;
+  private startNeedGreedRoll(itemId: string, mob: Entity): boolean {
+    if (this.effectiveItemLootStrategy(itemId, mob) !== 'need-greed') return false;
     const candidates = this.partyLootCandidatesForMob(mob);
     if (candidates.length <= 1) return false;
-    let winner = candidates[0];
-    let bestRoll = -1;
+    const def = ITEMS[itemId];
+    const itemName = def?.name ?? itemId;
+    const roll: PendingLootRoll = {
+      id: this.nextLootRollId++,
+      itemId,
+      itemName,
+      quality: def?.quality,
+      candidates: candidates.map((candidate) => candidate.entityId),
+      choices: new Map(),
+      expiresAt: this.time + LOOT_ROLL_TIMEOUT,
+    };
+    this.pendingLootRolls.set(roll.id, roll);
     for (const candidate of candidates) {
-      const roll = this.rng.int(1, 100);
-      if (roll > bestRoll) {
-        bestRoll = roll;
-        winner = candidate;
-      }
+      this.emit({ type: 'lootRoll', rollId: roll.id, itemId, itemName, quality: roll.quality, expiresAt: roll.expiresAt, pid: candidate.entityId });
     }
-    const itemName = ITEMS[itemId]?.name ?? itemId;
-    for (const candidate of candidates) {
-      this.emit({ type: 'loot', text: `${winner.name} wins ${itemName} (${bestRoll})`, pid: candidate.entityId });
-    }
-    this.addItem(itemId, 1, winner.entityId);
     return true;
   }
 
   private awardSharedLootItem(itemId: string, mob: Entity, looter: PlayerMeta): void {
-    if (!this.tryAwardItemByRandomRoll(itemId, mob)) this.addItem(itemId, 1, looter.entityId);
+    if (!this.startNeedGreedRoll(itemId, mob)) this.addItem(itemId, 1, looter.entityId);
+  }
+
+  submitLootRoll(rollId: number, choice: LootRollChoice, pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    const roll = this.pendingLootRolls.get(rollId);
+    if (!roll || !roll.candidates.includes(r.meta.entityId) || roll.choices.has(r.meta.entityId)) return;
+    roll.choices.set(r.meta.entityId, {
+      choice,
+      roll: choice === 'need' || choice === 'greed' ? this.rng.int(1, 100) : null,
+    });
+    if (roll.choices.size >= roll.candidates.length) this.resolveLootRoll(roll);
+  }
+
+  private resolveLootRoll(roll: PendingLootRoll): void {
+    if (!this.pendingLootRolls.delete(roll.id)) return;
+    const entries = roll.candidates
+      .map((pid) => ({ pid, result: roll.choices.get(pid) ?? { choice: 'pass' as const, roll: null } }))
+      .filter((entry) => entry.result.choice !== 'pass');
+    const needers = entries.filter((entry) => entry.result.choice === 'need');
+    const contenders = needers.length > 0 ? needers : entries.filter((entry) => entry.result.choice === 'greed');
+    if (contenders.length === 0) {
+      for (const pid of roll.candidates) this.emit({ type: 'loot', text: `Everyone passed on ${roll.itemName}.`, pid });
+      return;
+    }
+    let winner = contenders[0];
+    for (const contender of contenders.slice(1)) {
+      if ((contender.result.roll ?? 0) > (winner.result.roll ?? 0)) winner = contender;
+    }
+    const winnerMeta = this.players.get(winner.pid);
+    const winnerName = winnerMeta?.name ?? 'Unknown';
+    for (const pid of roll.candidates) {
+      this.emit({ type: 'loot', text: `${winnerName} wins ${roll.itemName} (${winner.result.roll ?? 0})`, pid });
+    }
+    this.addItem(roll.itemId, 1, winner.pid);
   }
 
   private lootSlotVisibleTo(slot: LootSlot, pid: number): boolean {

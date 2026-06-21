@@ -8,7 +8,7 @@ import {
 } from '../sim/content/talents';
 import { mechChromaItemId, mechChromaSkinIndex } from '../sim/content/skins';
 import {
-  Entity, EquipSlot, InvSlot, MoveInput, PlayerClass, QuestProgress, QuestState, SimEvent,
+  Entity, EquipSlot, InvSlot, LootRollChoice, MoveInput, PlayerClass, QuestProgress, QuestState, SimEvent,
   emptyMoveInput,
 } from '../sim/types';
 import { normalizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
@@ -904,6 +904,9 @@ export class ClientWorld implements IWorld {
   }
   lootCorpse(id: number): void {
     this.cmd({ cmd: 'loot', id });
+  }
+  submitLootRoll(rollId: number, choice: LootRollChoice): void {
+    this.cmd({ cmd: 'lootRoll', rollId, choice });
   }
   pickUpObject(id: number): void {
     this.cmd({ cmd: 'pickup', id });
