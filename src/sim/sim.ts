@@ -8,6 +8,7 @@ import {
 import { ARENA_SPAWN_A, ARENA_SPAWN_B, ARENA_SPAWNS_A_2v2, ARENA_SPAWNS_B_2v2 } from './dungeon_layout';
 import { lineOfSightClear, resolveMovement, resolvePosition } from './colliders';
 import { PLAYER_BODY_RADIUS, PLAYER_MAX_CLIMB_SLOPE, PLAYER_SWIM_DEPTH, findPlayerPath } from './pathfind';
+import { combatProfileForMob, effectiveMobMeleeRange, type MobCombatProfile } from './mob_combat';
 import { createGroundObject, createMob, createNpc, createPlayer, recalcPlayerStats, PlayerEquipment } from './entity';
 import { canEquipItem } from './equipment_rules';
 import {
@@ -98,7 +99,7 @@ const NYTHRAXIS_WARDSTONE_ITEM_ID = 'bastion_ward_stone';
 const NYTHRAXIS_WARDSTONE_RANGE = 100;
 const NYTHRAXIS_GRAVEBREAKER_EVERY = 12;
 const NYTHRAXIS_GRAVEBREAKER_RANGE = 11;
-const NYTHRAXIS_GRAVEBREAKER_HALF_ARC = 0.75;
+const NYTHRAXIS_GRAVEBREAKER_HALF_ARC = Math.PI / 3;
 const NYTHRAXIS_OPENER_SECOND_YELL_DELAY = 4;
 const NYTHRAXIS_DIALOGUE_LINE_SECONDS = 2.6;
 const NYTHRAXIS_RAISE_FALLEN_EVERY = 45;
@@ -111,6 +112,7 @@ const NYTHRAXIS_DEATHLESS_CAST = 10;
 const NYTHRAXIS_DEATHLESS_CHANNEL = 5;
 const NYTHRAXIS_DEATHLESS_STUN = 5;
 const NYTHRAXIS_DEATHLESS_SOUL_REND_LOCKOUT = 15;
+const NYTHRAXIS_PHASE_TWO_SETTLE_DELAY = 5;
 const NYTHRAXIS_LOCKOUT_MS = 24 * 60 * 60 * 1000;
 const NYTHRAXIS_TRANSITION_DURATION = 21;
 const NYTHRAXIS_TRANSITION_STUN = 21.5;
@@ -127,7 +129,7 @@ const RAID_MAX = 10;
 const RAID_GROUP_MAX = 5;
 const VARKAS_BONEGUARD_DAMAGE_IDLE_DESPAWN_SECONDS = 60;
 const RAID_ALLOWED_DUNGEON_IDS = new Set(['nythraxis_crypt', 'nythraxis_boss_arena']);
-const RAID_REQUIRED_DUNGEON_IDS = new Set(['nythraxis_boss_arena']);
+const RAID_REQUIRED_DUNGEON_IDS = new Set<string>();
 const PARTY_XP_RANGE = 80; // yards: members this close share kill xp/credit
 // Rested XP (classic inn-rested bonus). Resting inside an inn footprint accrues a
 // pool that doubles KILL xp (200%) until spent — vanilla's signature casual-pacing
@@ -1813,7 +1815,7 @@ export class Sim {
   }
   private isNythraxisScriptedControl(target: Entity, aura: Aura): boolean {
     return target.kind === 'mob'
-      && target.templateId === NYTHRAXIS_ADD_ID
+      && (target.templateId === NYTHRAXIS_ADD_ID || target.ownerId !== null)
       && aura.id === 'nythraxis_transition_stun';
   }
   private partyLootStrategiesForMob(mob: Entity): LootStrategies | null {
@@ -3803,7 +3805,12 @@ export class Sim {
     if (!t || t.dead || !this.isHostileTo(p, t)) { this.error(p.id, 'Invalid attack target.'); return; }
     if (p.sitting) this.standUp(p);
     p.autoAttack = true;
-    if (t.kind === 'mob' && t.hostile && t.ownerId === null && t.aiState !== 'evade') {
+    const d = dist2d(p.pos, t.pos);
+    const ranged = CLASSES[r.meta.cls].ranged;
+    const inAutoAttackRange = ranged
+      ? d <= ranged.maxRange && d >= (ranged.wand ? 0 : ranged.minRange) && this.hasLineOfSight(p, t)
+      : d <= MELEE_RANGE;
+    if (inAutoAttackRange && t.kind === 'mob' && t.hostile && t.ownerId === null && t.aiState !== 'evade') {
       if (t.aiState === 'idle') this.aggroMob(t, p, true);
       else if (t.aggroTargetId === null) t.aggroTargetId = p.id;
       addThreat(t, p.id, 1);
@@ -4710,16 +4717,18 @@ export class Sim {
   // can never close to the flat MELEE_RANGE and barely swings. Scale reach with
   // size so big mobs connect from where the player actually stands (their feet).
   private mobMeleeRange(mob: Entity): number {
-    if (mob.templateId === NYTHRAXIS_BOSS_ID) return 8;
-    return MELEE_RANGE + Math.max(0, mob.scale - 1) * 3;
+    return this.mobCombatProfile(mob).meleeRange;
+  }
+
+  private mobCombatProfile(mob: Entity): MobCombatProfile {
+    return combatProfileForMob(mob.templateId, mob.scale);
   }
 
   private mobEffectiveMeleeRange(mob: Entity, target: Entity): number {
-    const base = this.mobMeleeRange(mob);
+    const profile = this.mobCombatProfile(mob);
     const targetMoved = dist2d(target.pos, target.prevPos) > 0.05;
     const mobMoved = dist2d(mob.pos, mob.prevPos) > 0.05;
-    if (!targetMoved && !mobMoved) return base;
-    return base + 3;
+    return effectiveMobMeleeRange(profile, targetMoved, mobMoved);
   }
 
   private tryMobMeleeSwingInRange(mob: Entity, target: Entity): boolean {
@@ -4731,6 +4740,58 @@ export class Sim {
       mob.swingTimer = mob.weapon.speed * this.swingIntervalMult(mob);
     }
     return true;
+  }
+
+  private usesProfiledMobCombat(mob: Entity): boolean {
+    const profile = this.mobCombatProfile(mob);
+    return profile.swingWhilePursuing || profile.immediateSwingOnEnterRange || !profile.canLeash;
+  }
+
+  private updateProfiledMobCombat(mob: Entity): void {
+    const profile = this.mobCombatProfile(mob);
+    this.updateMobTarget(mob);
+    const target = mob.aggroTargetId !== null ? this.entities.get(mob.aggroTargetId) : null;
+    if (!target || target.dead) {
+      this.retargetMob(mob);
+      return;
+    }
+    if (this.maybeFlee(mob, target)) return;
+
+    if (profile.canLeash) {
+      const leash = mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
+      const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
+      if (mob.fleeReturnTimer > 0) {
+        mob.fleeReturnTimer = Math.max(0, mob.fleeReturnTimer - DT);
+        if (dist2d(mob.pos, leashAnchor) <= leash - 1) mob.fleeReturnTimer = 0;
+      }
+      if (dist2d(mob.pos, leashAnchor) > leash && mob.fleeReturnTimer <= 0) {
+        mob.aiState = 'evade';
+        mob.aggroTargetId = null;
+        clearThreat(mob);
+        mob.leashAnchor = null;
+        return;
+      }
+    }
+
+    mob.swingTimer = Math.max(0, mob.swingTimer - DT);
+    if (profile.swingWhilePursuing || mob.aiState === 'attack') {
+      this.tryMobMeleeSwingInRange(mob, target);
+    }
+
+    if (dist2d(mob.pos, target.pos) > profile.desiredRange) {
+      if (!this.isRooted(mob)) {
+        this.moveToward(mob, target.pos, mob.moveSpeed * profile.chaseSpeedMult * this.moveSpeedMult(mob));
+      } else {
+        mob.facing = angleTo(mob.pos, target.pos);
+      }
+    } else {
+      mob.facing = angleTo(mob.pos, target.pos);
+    }
+
+    if (profile.immediateSwingOnEnterRange || profile.swingWhilePursuing || mob.aiState === 'attack') {
+      this.tryMobMeleeSwingInRange(mob, target);
+    }
+    mob.aiState = dist2d(mob.pos, target.pos) <= profile.meleeRange ? 'attack' : 'chase';
   }
 
   private aggroMob(mob: Entity, target: Entity, social: boolean): void {
@@ -4809,17 +4870,18 @@ export class Sim {
 
     mob.combatTimer += DT;
 
-    if (mob.ownerId !== null) {
-      this.updatePet(mob);
-      return;
-    }
-
     if (mob.templateId.startsWith('vision_')) {
       mob.hostile = false;
       mob.aiState = 'idle';
       mob.inCombat = false;
       mob.aggroTargetId = null;
       clearThreat(mob);
+      return;
+    }
+
+    if (mob.ownerId !== null) {
+      if (this.isStunned(mob)) return;
+      this.updatePet(mob);
       return;
     }
 
@@ -4884,6 +4946,16 @@ export class Sim {
           mob.prevPos = { ...mob.pos };
           mob.facing = Math.PI;
           mob.prevFacing = Math.PI;
+          const template = MOBS[mob.templateId];
+          let detected: Entity | null = null;
+          let detectedD = Infinity;
+          this.playerGrid.forEachInRadius(mob.pos.x, mob.pos.z, 25, (e, d2) => {
+            if (e.dead) return;
+            const radius = Math.max(4, Math.min(20, template.aggroRadius + (mob.level - e.level) * 1.5));
+            const d = Math.sqrt(d2);
+            if (d < radius && d < detectedD) { detected = e; detectedD = d; }
+          });
+          if (detected) this.aggroMob(mob, detected, true);
           return;
         }
         const template = MOBS[mob.templateId];
@@ -4924,6 +4996,10 @@ export class Sim {
         break;
       }
       case 'chase': {
+        if (this.usesProfiledMobCombat(mob)) {
+          this.updateProfiledMobCombat(mob);
+          break;
+        }
         this.updateMobTarget(mob);
         const target = mob.aggroTargetId !== null ? this.entities.get(mob.aggroTargetId) : null;
         if (!target || target.dead) {
@@ -4961,6 +5037,10 @@ export class Sim {
         break;
       }
       case 'attack': {
+        if (this.usesProfiledMobCombat(mob)) {
+          this.updateProfiledMobCombat(mob);
+          break;
+        }
         this.updateMobTarget(mob);
         const target = mob.aggroTargetId !== null ? this.entities.get(mob.aggroTargetId) : null;
         if (!target || target.dead) { this.retargetMob(mob); break; }
@@ -6410,6 +6490,9 @@ export class Sim {
       p.auras = p.auras.filter((a) => a.id !== 'nythraxis_soul_rend' && a.id !== 'nythraxis_transition_stun');
       this.clearNythraxisWardChannelCast(p);
     }
+    for (const e of this.nythraxisTransitionStunTargets(boss)) {
+      if (e.kind !== 'player') e.auras = e.auras.filter((a) => a.id !== 'nythraxis_transition_stun');
+    }
     const aldric = this.findNythraxisAldric(boss);
     if (aldric) this.dropEntity(aldric.id);
     for (const ward of this.nythraxisDeathlessChannelObjects(boss)) {
@@ -6598,6 +6681,13 @@ export class Sim {
     return out;
   }
 
+  private nythraxisTransitionStunTargets(boss: Entity): Entity[] {
+    return [...this.entities.values()].filter((e) =>
+      !e.dead
+      && dist2d(e.pos, boss.spawnPos) <= NYTHRAXIS_ROOM_RADIUS
+      && (e.kind === 'player' || (e.kind === 'mob' && (e.templateId === NYTHRAXIS_ADD_ID || e.ownerId !== null))));
+  }
+
   private nythraxisRoomMetas(boss: Entity): PlayerMeta[] {
     const out: PlayerMeta[] = [];
     for (const meta of this.players.values()) {
@@ -6622,12 +6712,17 @@ export class Sim {
     st.gravebreakerCasts = (st.gravebreakerCasts ?? 0) + 1;
     if (st.gravebreakerCasts % 3 === 0) this.nythraxisSay(boss, 'nythraxis', 'Kneel before your king');
     this.emit({ type: 'spellfx', sourceId: boss.id, targetId: boss.id, school: 'physical', fx: 'nova' });
+    let rawDmg = this.rng.range(boss.weapon.min, boss.weapon.max) + (this.effectiveAttackPower(boss) / 14) * boss.weapon.speed;
+    const enrage = MOBS[boss.templateId]?.enrage;
+    if (boss.enraged && enrage) rawDmg *= enrage.dmgMult;
     for (const p of this.playersInNythraxisRoom(boss)) {
       const d = dist2d(p.pos, boss.pos);
       if (d > NYTHRAXIS_GRAVEBREAKER_RANGE) continue;
       const delta = Math.abs(normAngle(angleTo(boss.pos, p.pos) - boss.facing));
       if (delta > NYTHRAXIS_GRAVEBREAKER_HALF_ARC) continue;
-      const dmg = Math.round(this.rng.range(58, 82));
+      const mult = p.id === boss.aggroTargetId ? 1 : 1.5;
+      const mitigated = rawDmg * mult * (1 - armorReduction(this.effectiveArmor(p), boss.level));
+      const dmg = Math.max(1, Math.round(mitigated));
       this.dealDamage(boss, p, dmg, false, 'physical', 'Gravebreaker', 'hit', true);
     }
   }
@@ -6689,9 +6784,7 @@ export class Sim {
       { speaker: 'aldric' as const, text: 'Fail and we all perish', delay: 17.1 },
     ];
     this.emit({ type: 'spellfx', sourceId: boss.id, targetId: boss.id, school: 'physical', fx: 'nova' });
-    for (const e of this.entities.values()) {
-      if (e.dead || dist2d(e.pos, boss.spawnPos) > NYTHRAXIS_ROOM_RADIUS) continue;
-      if (e.kind !== 'player' && !(e.kind === 'mob' && e.templateId === NYTHRAXIS_ADD_ID)) continue;
+    for (const e of this.nythraxisTransitionStunTargets(boss)) {
       this.applyAura(e, {
         id: 'nythraxis_transition_stun', name: 'War Stomp', kind: 'stun',
         remaining: NYTHRAXIS_TRANSITION_STUN, duration: NYTHRAXIS_TRANSITION_STUN,
@@ -6735,11 +6828,11 @@ export class Sim {
     st.phase = 2;
     st.transitionReleased = true;
     st.gravebreakerTimer = 3;
-    st.soulRendTimer = 0;
-    st.deathlessTimer = 15;
+    st.soulRendTimer = NYTHRAXIS_PHASE_TWO_SETTLE_DELAY;
+    st.deathlessTimer = NYTHRAXIS_PHASE_TWO_SETTLE_DELAY + 15;
     boss.auras = boss.auras.filter((a) => a.id !== 'nythraxis_transition_pause');
-    for (const p of this.playersInNythraxisRoom(boss)) {
-      p.auras = p.auras.filter((a) => a.id !== 'nythraxis_transition_stun');
+    for (const e of this.nythraxisTransitionStunTargets(boss)) {
+      e.auras = e.auras.filter((a) => a.id !== 'nythraxis_transition_stun');
     }
   }
 
@@ -6754,7 +6847,8 @@ export class Sim {
   }
 
   private canCastNythraxisSoulRend(st: NonNullable<Entity['nythraxis']>): boolean {
-    return st.deathlessCastRemaining <= 0 && st.deathlessStunRemaining <= 0 && st.deathlessTimer >= NYTHRAXIS_DEATHLESS_SOUL_REND_LOCKOUT;
+    return st.deathlessCastRemaining <= 0
+      && st.deathlessStunRemaining <= 0;
   }
 
   private castNythraxisSoulRend(boss: Entity, st: NonNullable<Entity['nythraxis']>): void {

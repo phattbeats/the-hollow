@@ -214,7 +214,7 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
   nythraxis_skeleton_warrior: {
     id: 'nythraxis_skeleton_warrior', name: 'Risen Royal Guard', minLevel: 20, maxLevel: 20, family: 'undead',
     elite: true, ccImmune: true,
-    hpBase: 150, hpPerLevel: 28, dmgBase: 13, dmgPerLevel: 2.8, attackSpeed: 2.2,
+    hpBase: 150, hpPerLevel: 28, dmgBase: 26, dmgPerLevel: 5.6, attackSpeed: 2.2,
     armorPerLevel: 24, moveSpeed: 10, aggroRadius: 14,
     loot: [],
     scale: 1.25, color: 0xc7c0b2,
@@ -229,7 +229,7 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
   nythraxis_scourge_of_thornpeak: {
     id: 'nythraxis_scourge_of_thornpeak', name: 'Nythraxis, Scourge of Thornpeak', minLevel: 20, maxLevel: 20, family: 'undead',
     elite: true, boss: true, ccImmune: true,
-    hpBase: 21739, hpPerLevel: 0, dmgBase: 27, dmgPerLevel: 5.7, attackSpeed: 2.6,
+    hpBase: 2000 / 2.3, hpPerLevel: 0, dmgBase: 54, dmgPerLevel: 11.4, attackSpeed: 2.6,
     armorPerLevel: 42, moveSpeed: 10.5, aggroRadius: 22,
     loot: [
       { copper: 150000, chance: 1 },

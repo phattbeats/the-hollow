@@ -1114,6 +1114,22 @@ describe('social aggro pull radius (#102)', () => {
 });
 
 describe('caster wand auto-attack (#94)', () => {
+  it('does not aggro a hostile mob when melee auto-attack is started out of range', () => {
+    const sim = makeSim('warrior');
+    sim.setPlayerLevel(10);
+    const wolf = nearestMob(sim, 'forest_wolf');
+    teleport(sim, sim.player, wolf.pos.x + 35, wolf.pos.z);
+    sim.targetEntity(wolf.id);
+
+    sim.startAutoAttack(sim.playerId);
+
+    expect(sim.player.autoAttack).toBe(true);
+    expect(wolf.aiState).toBe('idle');
+    expect(wolf.aggroTargetId).toBeNull();
+    expect(wolf.threat.get(sim.playerId)).toBeUndefined();
+    expect(sim.player.inCombat).toBe(false);
+  });
+
   it('a mage auto-attacks at range instead of running into melee', () => {
     const sim = makeSim('mage');
     sim.setPlayerLevel(10);
