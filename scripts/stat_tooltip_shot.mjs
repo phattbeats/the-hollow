@@ -5,16 +5,22 @@
 // captures the rich Agility breakdown (5 lines + header), a derived stat with an
 // informational line (Armor -> damage reduction), and the dps estimate note, and
 // it exercises the touch long-press peek path at narrow widths to confirm the
-// tooltip never overflows / clips. Puppeteer reloads the page when mobile
-// emulation is toggled, so each device boots fresh at its own viewport.
+// tooltip never overflows / clips. It also measures every .stat-cell's box so the
+// >=40px touch-target floor on phones (body.mobile-touch) can be verified, not
+// assumed. Puppeteer reloads the page when mobile emulation is toggled, so we boot
+// once at desktop and PLAIN-resize per device; mobile-touch is the runtime gate the
+// HUD itself uses (isPhoneTouchDevice), so the script toggles it to exercise both
+// the long-press peek and the coarse-pointer cell sizing.
 import puppeteer from 'puppeteer-core';
 import fs from 'node:fs';
 import { BROWSER_PATH as EDGE } from './browser_path.mjs';
 
 const URL = process.env.GAME_URL ?? 'http://localhost:5173';
 const CLASS = process.env.GAME_CLASS ?? 'hunter';
+const OUT = process.env.SHOT_DIR ?? 'tmp';
 const PEEK_MS = 950; // TOOLTIP_PEEK_MS in src/ui/touch_peek.ts
-fs.mkdirSync('tmp', { recursive: true });
+const TOUCH_FLOOR = 40; // src/ui/CLAUDE.md tappable-target floor
+fs.mkdirSync(OUT, { recursive: true });
 
 const browser = await puppeteer.launch({
   executablePath: EDGE,
@@ -69,6 +75,8 @@ async function bootAndKit() {
   await wait(500);
 }
 
+const setTouch = (on) => page.evaluate((v) => document.body.classList.toggle('mobile-touch', v), on);
+
 const ttMetrics = () => page.evaluate(() => {
   const tt = document.querySelector('#tooltip');
   if (tt.style.display !== 'block') return { shown: false };
@@ -80,19 +88,36 @@ const ttMetrics = () => page.evaluate(() => {
   };
 });
 
+// Every .stat-cell box: min/max width+height and how many fall under the touch floor.
+const cellMetrics = (floor) => page.evaluate((f) => {
+  const cells = [...document.querySelectorAll('.char-stats .stat-cell')];
+  const boxes = cells.map((c) => {
+    const r = c.getBoundingClientRect();
+    return { stat: c.dataset.stat, w: Math.round(r.width), h: Math.round(r.height * 10) / 10 };
+  });
+  const hs = boxes.map((b) => b.h);
+  const ws = boxes.map((b) => b.w);
+  return {
+    count: boxes.length,
+    minH: Math.min(...hs), maxH: Math.max(...hs),
+    minW: Math.min(...ws), maxW: Math.max(...ws),
+    underFloor: boxes.filter((b) => b.h < f).map((b) => `${b.stat}:${b.h}`),
+  };
+}, floor);
+
 async function hoverShot(stat, file) {
   await page.evaluate((s) => {
     document.querySelector(`.char-stats [data-stat="${s}"]`)?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
   }, stat);
   await wait(250);
-  await page.screenshot({ path: file });
+  await page.screenshot({ path: `${OUT}/${file}` });
   const m = await ttMetrics();
   await page.evaluate(() => window.__game.hud.hideTooltip());
   return m;
 }
 
 async function longPressShot(stat, file) {
-  await page.evaluate(() => document.body.classList.add('mobile-touch'));
+  await setTouch(true);
   await page.evaluate((s) => {
     const cell = document.querySelector(`.char-stats [data-stat="${s}"]`);
     const r = cell.getBoundingClientRect();
@@ -101,9 +126,23 @@ async function longPressShot(stat, file) {
     }));
   }, stat);
   await wait(PEEK_MS + 300);
-  await page.screenshot({ path: file });
+  await page.screenshot({ path: `${OUT}/${file}` });
   const m = await ttMetrics();
   await page.evaluate(() => window.__game.hud.hideTooltip());
+  return m;
+}
+
+// Tab focus the named cell and capture the :focus-visible pill + its tooltip.
+async function focusShot(stat, file) {
+  await page.evaluate((s) => {
+    const cell = document.querySelector(`.char-stats [data-stat="${s}"]`);
+    cell.focus();
+    cell.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+  }, stat);
+  await wait(250);
+  await page.screenshot({ path: `${OUT}/${file}` });
+  const m = await ttMetrics();
+  await page.evaluate(() => { document.activeElement?.blur?.(); window.__game.hud.hideTooltip(); });
   return m;
 }
 
@@ -126,28 +165,43 @@ async function reopenChar() {
 
 const results = {};
 
-// --- desktop -------------------------------------------------------------
+// --- desktop (fine pointer) ----------------------------------------------
 await page.setViewport({ width: 1280, height: 860 });
 await page.goto(URL, { waitUntil: 'networkidle0', timeout: 30000 });
 await bootAndKit();
-await page.screenshot({ path: 'tmp/stat_tooltip_char_panel.png' });
-results.desktop_agi = await hoverShot('agi', 'tmp/stat_tooltip_desktop_agi.png');
-await hoverShot('armor', 'tmp/stat_tooltip_desktop_armor.png');
-await hoverShot('dps', 'tmp/stat_tooltip_desktop_dps.png');
+await setTouch(false);
+await page.screenshot({ path: `${OUT}/stat_tooltip_char_panel.png` });
+results.desktop_cells = await cellMetrics(TOUCH_FLOOR);
+results.desktop_agi = await hoverShot('agi', 'stat_tooltip_desktop_agi.png');
+results.desktop_armor = await hoverShot('armor', 'stat_tooltip_desktop_armor.png');
+results.desktop_dps = await hoverShot('dps', 'stat_tooltip_desktop_dps.png');
+results.desktop_focus_agi = await focusShot('agi', 'stat_tooltip_desktop_focus_agi.png');
 
 // --- mobile portrait (plain resize, touch long-press) --------------------
 await page.setViewport({ width: 390, height: 844 });
+await setTouch(true);
 await reopenChar();
-await page.screenshot({ path: 'tmp/stat_tooltip_mobile_portrait_panel.png' });
-results.mobile_portrait_agi = await longPressShot('agi', 'tmp/stat_tooltip_mobile_portrait_agi.png');
+await page.screenshot({ path: `${OUT}/stat_tooltip_mobile_portrait_panel.png` });
+results.mobile_portrait_cells = await cellMetrics(TOUCH_FLOOR);
+results.mobile_portrait_agi = await longPressShot('agi', 'stat_tooltip_mobile_portrait_agi.png');
+results.mobile_portrait_armor = await longPressShot('armor', 'stat_tooltip_mobile_portrait_armor.png');
+results.mobile_portrait_dps = await longPressShot('dps', 'stat_tooltip_mobile_portrait_dps.png');
 
-// --- mobile landscape ----------------------------------------------------
+// --- mobile landscape (primary phone mode; portrait shows the rotate gate) -
 await page.setViewport({ width: 844, height: 390 });
+await setTouch(true);
 await reopenChar();
-await page.screenshot({ path: 'tmp/stat_tooltip_mobile_landscape_panel.png' });
-results.mobile_landscape_agi = await longPressShot('agi', 'tmp/stat_tooltip_mobile_landscape_agi.png');
+await page.screenshot({ path: `${OUT}/stat_tooltip_mobile_landscape_panel.png` });
+results.mobile_landscape_cells = await cellMetrics(TOUCH_FLOOR);
+results.mobile_landscape_agi = await longPressShot('agi', 'stat_tooltip_mobile_landscape_agi.png');
+results.mobile_landscape_armor = await longPressShot('armor', 'stat_tooltip_mobile_landscape_armor.png');
+results.mobile_landscape_dps = await longPressShot('dps', 'stat_tooltip_mobile_landscape_dps.png');
 
-console.log('tooltip metrics:', JSON.stringify(results, null, 2));
+console.log('tooltip + cell metrics:', JSON.stringify(results, null, 2));
+const floorFails = ['mobile_portrait_cells', 'mobile_landscape_cells']
+  .filter((k) => results[k].underFloor.length > 0)
+  .map((k) => `${k}: ${results[k].underFloor.join(', ')}`);
+console.log(floorFails.length ? ('TOUCH-FLOOR FAILS (<40px):\n' + floorFails.join('\n')) : `touch targets OK: all phone .stat-cell >= ${TOUCH_FLOOR}px`);
 console.log(errors.length ? ('PAGE ERRORS:\n' + errors.join('\n')) : 'no page/console errors');
-console.log('wrote tmp/stat_tooltip_*.png');
+console.log(`wrote ${OUT}/stat_tooltip_*.png`);
 await browser.close();
