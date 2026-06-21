@@ -6483,14 +6483,21 @@ export class Hud {
   // reader semantics a native <select> has: the trigger is aria-haspopup, the
   // menu is role="listbox" with aria-selected options, and Enter/Space/Arrows/
   // Home/End/Esc are all handled (see dropdown_nav.ts for the pure key math).
-  private buildDropdown(options: { value: string; label: string }[], current: string, onChange?: (value: string) => void, placeholder?: string): HTMLElement {
+  private buildDropdown(options: { value: string; label: string }[], current: string, onChange?: (value: string) => void, placeholder?: string, a11y?: { ariaLabel?: string; labelledBy?: string }): HTMLElement {
     const uid = `ui-dd-${++Hud.ddSeq}`;
     const root = document.createElement('div');
     root.className = 'ui-dd';
     root.dataset.value = current;
+    // Accessible name for both the trigger button and the listbox: prefer an
+    // explicit aria-label, else associate an existing <label>/heading via id.
+    const nameAttr = a11y?.ariaLabel
+      ? ` aria-label="${esc(a11y.ariaLabel)}"`
+      : a11y?.labelledBy
+        ? ` aria-labelledby="${esc(a11y.labelledBy)}"`
+        : '';
     const labelOf = (v: string) => options.find((o) => o.value === v)?.label ?? placeholder ?? '';
-    root.innerHTML = `<button type="button" class="btn ui-dd-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="${uid}"><span class="ui-dd-label">${esc(labelOf(current))}</span><span class="ui-dd-caret" aria-hidden="true">▾</span></button>`
-      + `<div class="ui-dd-menu" id="${uid}" role="listbox" hidden>${options.map((o, i) => `<div class="ui-dd-item${o.value === current ? ' sel' : ''}" id="${uid}-o${i}" role="option" aria-selected="${o.value === current ? 'true' : 'false'}" data-val="${esc(o.value)}">${esc(o.label)}</div>`).join('')}</div>`;
+    root.innerHTML = `<button type="button" class="btn ui-dd-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="${uid}"${nameAttr}><span class="ui-dd-label">${esc(labelOf(current))}</span><span class="ui-dd-caret" aria-hidden="true">▾</span></button>`
+      + `<div class="ui-dd-menu" id="${uid}" role="listbox"${nameAttr} hidden>${options.map((o, i) => `<div class="ui-dd-item${o.value === current ? ' sel' : ''}" id="${uid}-o${i}" role="option" aria-selected="${o.value === current ? 'true' : 'false'}" data-val="${esc(o.value)}">${esc(o.label)}</div>`).join('')}</div>`;
     const btn = root.querySelector('.ui-dd-btn') as HTMLButtonElement;
     const menu = root.querySelector('.ui-dd-menu') as HTMLElement;
     const labelEl = root.querySelector('.ui-dd-label') as HTMLElement;
@@ -6538,9 +6545,11 @@ export class Hud {
     root.addEventListener('keydown', (e) => {
       const action = dropdownKeyNav(e.key, isOpen(), focusedIndex(), items.length);
       if (action.kind === 'none') return;
-      // Tab closes the menu but must NOT preventDefault, so focus traverses to
-      // the next control natively instead of bouncing back to the trigger.
-      if (action.kind === 'tab') { close(false); return; }
+      // Tab closes the menu and returns focus to the trigger button (a real
+      // tab-order element) WITHOUT preventDefault, so the native Tab/Shift+Tab
+      // then deterministically advances/retreats from there. Without returning
+      // focus, display:none-ing the focused option would drop focus to <body>.
+      if (action.kind === 'tab') { close(true); return; }
       e.preventDefault();
       switch (action.kind) {
         case 'open': open(action.index); break;
@@ -7090,7 +7099,7 @@ export class Hud {
         this.applyLoadoutBar(lo.bar);
         this.talentStage = cloneAllocation(lo.alloc);
         this.renderTalents();
-      }, t('game.talents.loadouts')));
+      }, t('game.talents.loadouts'), { ariaLabel: t('game.talents.loadouts') }));
     }
     el.querySelector('[data-act="del"]')?.addEventListener('click', () => {
       if (this.sim.activeLoadout < 0) { this.showError(t('game.talents.selectBuildFirst')); return; }
@@ -7548,7 +7557,11 @@ export class Hud {
       { value: 'cheating', label: t('hud.report.reasons.cheating') },
       { value: 'offensive_name_or_chat', label: t('hud.report.reasons.offensiveNameOrChat') },
       { value: 'other', label: t('hud.report.reasons.other') },
-    ], 'harassment');
+    ], 'harassment', undefined, undefined, { ariaLabel: t('hud.report.reason') });
+    // Give the trigger the id the <label for="report-reason"> points at, so the
+    // label (which lost its original target when the slot div was replaced)
+    // associates with a real focusable control again.
+    reasonDD.querySelector('.ui-dd-btn')?.setAttribute('id', 'report-reason');
     el.querySelector('#report-reason-slot')?.replaceWith(reasonDD);
     el.querySelectorAll('[data-close]').forEach((btn) => btn.addEventListener('click', () => { el.style.display = 'none'; }));
     const submit = $('#report-submit') as HTMLButtonElement;
@@ -8465,9 +8478,8 @@ export class Hud {
           this.setDropdownValue(dropdown, getLanguage());
         })
         .finally(() => { busy = false; });
-    });
+    }, undefined, { ariaLabel: t('hud.options.language') });
     dropdown.classList.add('set-lang-select');
-    dropdown.querySelector<HTMLElement>('.ui-dd-btn')?.setAttribute('aria-label', t('hud.options.language'));
     row.append(name, dropdown);
     parent.append(row, status);
   }

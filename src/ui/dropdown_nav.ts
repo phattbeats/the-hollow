@@ -56,9 +56,11 @@ export function dropdownKeyNav(
     case 'Escape':
       return { kind: 'close' };
     case 'Tab':
-      // Close, but signal the consumer to leave the default Tab behavior intact
-      // so focus advances to the next control (a native <select> traverses too,
-      // rather than bouncing back to the trigger).
+      // Close and return focus to the trigger button, but signal the consumer to
+      // leave the default Tab behavior intact (no preventDefault) so native
+      // Tab/Shift+Tab then advances/retreats deterministically from a real
+      // tab-order element — rather than dropping focus to <body> when the focused
+      // option is display:none-d on close.
       return { kind: 'tab' };
     default:
       return { kind: 'none' };
