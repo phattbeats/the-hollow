@@ -1908,8 +1908,12 @@ function enterLoggedOutChrome(): void {
 }
 
 function logoutAccount(): void {
-  api.clearSession();
-  location.reload();
+  const finish = () => {
+    api.clearSession();
+    location.reload();
+  };
+  if (!api.token) { finish(); return; }
+  void api.logout().finally(finish);
 }
 
 function setAccountFieldMsg(sel: string, text: string, ok: boolean): void {

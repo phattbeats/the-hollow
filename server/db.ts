@@ -499,6 +499,10 @@ export async function revokeTokensExcept(accountId: number, keepToken: string | 
   }
 }
 
+export async function revokeToken(token: string): Promise<void> {
+  await pool.query('DELETE FROM auth_tokens WHERE token = $1', [token]);
+}
+
 export async function setAccountEmail(accountId: number, email: string | null): Promise<void> {
   await pool.query('UPDATE accounts SET email = $2 WHERE id = $1', [accountId, email]);
 }

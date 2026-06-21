@@ -14,6 +14,7 @@ import {
   characterCountForAccount,
   updatePasswordHash,
   revokeTokensExcept,
+  revokeToken,
   setAccountEmail,
   setAccountDeactivated,
   listCharacters,
@@ -80,6 +81,18 @@ export async function handleAccountChangePassword(
   }
   await updatePasswordHash(accountId, await hashPassword(next));
   await revokeTokensExcept(accountId, callerToken);
+  return json(res, 200, { ok: true });
+}
+
+// POST /api/account/logout — revoke this device's bearer token. Unlike the
+// other account routes this does not need an active account gate; banned,
+// suspended, or deactivated accounts should still be able to sign out locally
+// and invalidate the token held by this browser.
+export async function handleAccountLogout(
+  res: http.ServerResponse,
+  callerToken: string,
+): Promise<void> {
+  await revokeToken(callerToken);
   return json(res, 200, { ok: true });
 }
 

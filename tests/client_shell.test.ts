@@ -57,6 +57,8 @@ describe('client HTML shell', () => {
     expect(html).toContain('data-i18n="nav.logout"');
     expect(mainTs).toContain("const loggedInNavItems = ['#nav-item-account', '#nav-item-logout'];");
     expect(mainTs).toContain('function logoutAccount(): void {');
+    expect(mainTs).toContain('void api.logout().finally(finish);');
+    expect(mainTs).toContain('api.clearSession();');
     expect(mainTs).toContain("setupNavBtn($('#nav-btn-logout'), '#hero-view', logoutAccount);");
   });
 

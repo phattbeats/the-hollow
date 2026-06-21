@@ -239,6 +239,10 @@ export class Api {
     await this.post('/api/account/password', { current, next });
   }
 
+  async logout(): Promise<void> {
+    await this.post('/api/account/logout', {});
+  }
+
   async setEmail(email: string): Promise<string> {
     const data = await this.post('/api/account/email', { email });
     return typeof data.email === 'string' ? data.email : '';

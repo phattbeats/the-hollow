@@ -26,7 +26,7 @@ import { verifyTurnstile } from './turnstile';
 import { handleWalletChallenge, handleWalletLink, handleWalletGet, handleWalletUnlink } from './wallet';
 import { handleWocBalance, parseWocBalanceQuery } from './woc_balance';
 import {
-  handleAccountWhoami, handleAccountChangePassword, handleAccountSetEmail, handleAccountDeactivate,
+  handleAccountWhoami, handleAccountChangePassword, handleAccountLogout, handleAccountSetEmail, handleAccountDeactivate,
 } from './account';
 import { handleCardUpload, handleCardRoutes, captureReferral, cardUploadContentLengthTooLarge } from './player_card';
 import { handleAdminApi } from './admin';
@@ -618,6 +618,11 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       const callerToken = bearerToken(req);
       if (!callerToken) return json(res, 401, { error: 'not authenticated' });
       return handleAccountChangePassword(req, res, accountId, callerToken);
+    }
+    if (req.method === 'POST' && url === '/api/account/logout') {
+      const callerToken = bearerToken(req);
+      if (!callerToken || await accountForToken(callerToken) === null) return json(res, 401, { error: 'not authenticated' });
+      return handleAccountLogout(res, callerToken);
     }
     if (req.method === 'POST' && url === '/api/account/email') {
       const accountId = await bearerActiveAccount(req, res);

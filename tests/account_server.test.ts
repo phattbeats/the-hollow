@@ -13,7 +13,7 @@ vi.mock('pg', () => ({
 }));
 
 import {
-  handleAccountWhoami, handleAccountChangePassword, handleAccountSetEmail, handleAccountDeactivate,
+  handleAccountWhoami, handleAccountChangePassword, handleAccountLogout, handleAccountSetEmail, handleAccountDeactivate,
   type AccountGameHooks,
 } from '../server/account';
 import { moderationStatusForAccount } from '../server/db';
@@ -114,6 +114,17 @@ describe('handleAccountChangePassword', () => {
     // The "<> $2" (keep caller) variant, with the caller token as a param.
     expect(revoke!.sql).toContain('token <>');
     expect(revoke!.params).toContain('tokA');
+  });
+});
+
+describe('handleAccountLogout', () => {
+  it('revokes only the caller token', async () => {
+    const res = makeRes();
+    await handleAccountLogout(res, 'tokA');
+    expect(parse(res).status).toBe(200);
+    const revoke = writes.find((w) => w.sql.includes('DELETE FROM auth_tokens WHERE token'));
+    expect(revoke).toBeTruthy();
+    expect(revoke!.params).toEqual(['tokA']);
   });
 });
 
