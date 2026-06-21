@@ -51,6 +51,7 @@ import { cardHostingAvailable, publishCard, fetchReferralInfo, fetchStanding, ty
 import { holderTierForBalance, holderTierByIndex, holderTierBadgeDataUrl, holderTierDisplayName } from './holder_tier';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
 import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES, normalizeClickMoveButton } from '../game/settings';
+import { PerfOverlaySettingsPanel, type PerfOverlayHooks, type PerfSettingsHost } from './perf_overlay_settings';
 import { isPhoneTouchDevice } from '../game/mobile_controls';
 import { chatPlayerContextActions } from './player_context_menu';
 import {
@@ -91,7 +92,9 @@ import {
 } from './hotbar';
 
 // hooks main wires after Input exists (the options menu drives input, audio,
-// graphics, and logout, all of which live outside the HUD)
+// graphics, and logout, all of which live outside the HUD). PerfOverlayHooks
+// (the customizable performance overlay's config seam) lives in
+// perf_overlay_settings.ts alongside the panel that consumes it.
 export interface OptionsHooks {
   logout(): void;
   captureKey(cb: (code: string | null) => void): void;
@@ -105,6 +108,7 @@ export interface OptionsHooks {
   // bag footer and player card reflect on-chain token changes. No-op when the wallet
   // feature is off or no wallet is connected/linked.
   refreshWocBalance(): void;
+  perfOverlay: PerfOverlayHooks;
 }
 
 export interface ReportHooks {
@@ -364,7 +368,10 @@ export class Hud {
   // Soft swear terms from the server (online only), masked in chat when the
   // player's "Filter Profanity" setting is on. Fed by main.ts from ClientWorld.
   private profanityWords: string[] = [];
-  private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' | 'interface' = 'main';
+  private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' | 'interface' | 'performance' = 'main';
+  // The Options > Performance panel, lazily built and reused (it caches the live
+  // position-slider handles so a drag-to-move can update them in place).
+  private perfSettings: PerfOverlaySettingsPanel | null = null;
   private capturingKey: { action: string; index: number } | null = null; // binding awaiting a key
   private keybindNote = '';
   private emoteWheelOpen = false;
@@ -8060,18 +8067,23 @@ export class Hud {
   closeOptions(): void {
     $('#options-menu').style.display = 'none';
     this.capturingKey = null;
+    this.optionsHooks?.perfOverlay.setPlacement(false);
     this.hideTooltip();
     music.resumeFromMenu();
   }
 
   private renderOptions(): void {
-    // The wide multi-column layout belongs to the keybinds view only; clear it
-    // so the other sub-views (and the main menu) keep their default width.
+    // The wide multi-column layouts belong to their own sub-views; clear each when
+    // leaving it so the other sub-views (and the main menu) keep their default width.
     if (this.optionsView !== 'keybinds') $('#options-menu').classList.remove('kb-wide');
+    if (this.optionsView !== 'performance') $('#options-menu').classList.remove('perf-wide');
+    // The overlay is draggable only while the Performance sub-view is open.
+    this.optionsHooks?.perfOverlay.setPlacement(this.optionsView === 'performance');
     if (this.optionsView === 'keybinds') { this.renderKeybinds(); return; }
     if (this.optionsView === 'graphics') { this.renderGraphics(); return; }
     if (this.optionsView === 'audio') { this.renderAudio(); return; }
     if (this.optionsView === 'interface') { this.renderInterface(); return; }
+    if (this.optionsView === 'performance') { this.renderPerformance(); return; }
     const el = $('#options-menu');
     el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.gameMenu'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
     const list = document.createElement('div');
@@ -8083,11 +8095,12 @@ export class Hud {
       b.addEventListener('click', () => { audio.click(); onClick(); });
       list.appendChild(b);
     };
-    const goto = (view: 'keybinds' | 'graphics' | 'audio' | 'interface') => { this.optionsView = view; this.keybindNote = ''; this.renderOptions(); };
+    const goto = (view: 'keybinds' | 'graphics' | 'audio' | 'interface' | 'performance') => { this.optionsView = view; this.keybindNote = ''; this.renderOptions(); };
     add(t('hud.options.keyBindings'), () => goto('keybinds'));
     add(t('hud.options.graphics'), () => goto('graphics'));
     add(t('hud.options.interface'), () => goto('interface'));
     add(t('hud.options.audio'), () => goto('audio'));
+    add(t('hudChrome.perf.title'), () => goto('performance'));
     add(t('hud.options.logout'), () => this.optionsHooks?.logout());
     add(t('hud.options.returnToGame'), () => this.closeOptions());
     el.appendChild(list);
@@ -8415,7 +8428,6 @@ export class Hud {
     this.settingBoolToggle(body, t('hud.options.frostedPanels'), 'frostedPanels');
     this.settingBoolToggle(body, t('hud.options.highContrastText'), 'highContrastText');
     this.settingBoolToggle(body, t('hud.options.reduceMotion'), 'reduceMotion');
-    this.settingBoolToggle(body, t('hud.options.showFps'), 'showFps');
     this.settingBoolToggle(body, t('hudChrome.options.showWalletOnCharacterScreen'), 'showWalletOnCharacterScreen');
     this.settingBoolToggle(body, t('hudChrome.options.showWalletOnPlayerCard'), 'showWalletOnPlayerCard');
     this.settingBoolToggle(body, t('hud.options.invertLookY'), 'invertLookY');
@@ -8488,6 +8500,38 @@ export class Hud {
     back.addEventListener('click', () => { audio.click(); this.optionsView = 'main'; this.renderOptions(); });
     $('#options-menu').appendChild(back);
     $('#options-menu').querySelector('[data-close]')?.addEventListener('click', () => this.closeOptions());
+  }
+
+  // ---- Performance overlay panel -----------------------------------------
+  // Customizable in-game stats overlay (FPS, frame time, ping, draw calls, …).
+  // The wide, categorized panel lives in perf_overlay_settings.ts (the pure
+  // consumer of the overlay's config store); the HUD only owns this thin delegate
+  // + the master on/off wiring (showFps rides on GameSettings).
+
+  private renderPerformance(): void {
+    const hooks = this.optionsHooks;
+    if (!hooks) return;
+    this.perfSettings ??= new PerfOverlaySettingsPanel(this.perfSettingsHost(hooks));
+    this.perfSettings.render($('#options-menu'));
+  }
+
+  private perfSettingsHost(hooks: OptionsHooks): PerfSettingsHost {
+    return {
+      perf: hooks.perfOverlay,
+      getShowFps: () => hooks.settings.get('showFps'),
+      setShowFps: (on) => hooks.onSettingChange('showFps', on),
+      click: () => audio.click(),
+      onClose: () => this.closeOptions(),
+      onBack: () => { this.optionsView = 'main'; this.renderOptions(); },
+      closeIconHtml: svgIcon('close'),
+    };
+  }
+
+  /** Called by main.ts when a drag settles on the live overlay: push the dropped
+   *  normalized position into the open panel's Horizontal/Vertical sliders so they
+   *  do not lag behind the drag. No-op when the panel is not on screen. */
+  onPerfOverlayMoved(x: number, y: number): void {
+    this.perfSettings?.syncPosition(x, y);
   }
 
   // Display name for an action row. Action-bar slots show the shortcut that
