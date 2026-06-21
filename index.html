@@ -5532,6 +5532,16 @@
   body.mobile-touch .equip-col { width: 108px; }
   body.mobile-touch .equip-slot .slot-name { font-size: 9px; }
   body.mobile-touch .equip-slot .slot-item { font-size: 10px; }
+  /* Phones (the long-press peek audience, same body.mobile-touch gate attachTooltip
+     uses) get a comfortable >=40px long-press target per .stat-cell. Symmetric
+     vertical padding both reaches the touch floor and optically centers the single
+     line, so no flex is needed; the -5px side margins are unchanged, preserving the
+     hover/focus pill's bleed into the 12px column gap. Because the sizing applies in
+     every state (rest/hover/focus alike), rows still never reflow between states, and
+     the compact desktop sheet (no mobile-touch) is untouched. */
+  body.mobile-touch .char-stats .stat-cell {
+    min-height: 40px; box-sizing: border-box; padding: 10px 5px; margin: 0 -5px;
+  }
   body.mobile-touch .mkt-price-row {
     flex-wrap: wrap;
   }
