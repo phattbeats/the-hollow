@@ -1009,6 +1009,7 @@ export class Sim {
     }
     player.swingTimer = 0;
     if (opts?.state?.pet) this.restorePet(player, opts.state.pet);
+    else if (cls === 'warlock') this.createDemonPet(player, 'imp');
     return player.id;
   }
 
@@ -3270,6 +3271,10 @@ export class Sim {
     const top = topThreatValue(mob);
     const mine = mob.threat.get(p.id) ?? 0;
     mob.threat.set(p.id, Math.max(mine, top, 1));
+    if (p.ownerId !== null && MOBS[mob.templateId]?.boss) {
+      this.enterCombat(p, mob);
+      return;
+    }
     mob.forcedTargetId = p.id;
     mob.forcedTargetTimer = TAUNT_FORCE_SECONDS;
     if (mob.aiState === 'idle') this.aggroMob(mob, p, false);
@@ -3653,8 +3658,20 @@ export class Sim {
   private summonDemon(owner: Entity, mobId: string): void {
     const template = MOBS[mobId];
     if (!template) return;
-    const existing = this.petOf(owner.id);
-    if (existing) this.removePet(existing);
+    const existing = this.petOf(owner.id, true);
+    if (existing) {
+      this.despawnPet(existing);
+      if (existing.templateId === mobId && !existing.dead) {
+        this.emit({ type: 'log', text: `${existing.name} fades back into the void.`, color: '#b894ff', pid: owner.id });
+        return;
+      }
+    }
+    if (this.createDemonPet(owner, mobId, true)) return;
+  }
+
+  private createDemonPet(owner: Entity, mobId: string, emit = false): Entity | null {
+    const template = MOBS[mobId];
+    if (!template) return null;
     // appear just behind the caster so the demon doesn't spawn inside the target
     const ang = owner.facing + Math.PI;
     const pos = this.groundPos(owner.pos.x + Math.sin(ang) * 2, owner.pos.z + Math.cos(ang) * 2);
@@ -3670,7 +3687,8 @@ export class Sim {
     pet.loot = null;
     pet.lootable = false;
     this.addEntity(pet);
-    this.emit({ type: 'log', text: `You summon ${template.name}.`, color: '#a78bfa', pid: owner.id });
+    if (emit) this.emit({ type: 'log', text: `You summon ${template.name}.`, color: '#a78bfa', pid: owner.id });
+    return pet;
   }
 
   /** Tear-down for any pet: summoned demons vanish from the world; tamed beasts

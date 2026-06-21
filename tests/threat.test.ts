@@ -682,6 +682,37 @@ describe('hunter pets', () => {
     expect(events).toBeTruthy();
   });
 
+  it('pet taunts do not force bosses onto the pet', () => {
+    const { sim, wolf: pet } = tamedSetup();
+    sim.players.get(sim.playerId)!.questsDone.add('q_nythraxis_bound_guardian');
+    while ((sim.partyOf(sim.playerId)?.members.length ?? 1) < 5) {
+      const fill = sim.addPlayer('priest', `RaidFill${sim.players.size}`);
+      sim.partyInvite(fill);
+      sim.partyAccept(fill);
+    }
+    sim.convertPartyToRaid();
+    sim.enterDungeon('nythraxis_boss_arena');
+    const boss = [...sim.entities.values()].find((e) =>
+      e.kind === 'mob' && e.templateId === 'nythraxis_scourge_of_thornpeak' && !e.dead)!;
+    const tankId = sim.addPlayer('warrior', 'Tank');
+    const tank = sim.entities.get(tankId)!;
+    teleport(sim, tank, boss.pos.x + 3, boss.pos.z);
+    teleport(sim, sim.player, boss.pos.x + 8, boss.pos.z);
+    teleport(sim, pet, boss.pos.x + 2, boss.pos.z);
+    boss.inCombat = true;
+    boss.aiState = 'attack';
+    boss.aggroTargetId = tank.id;
+    boss.threat.set(tank.id, 1000);
+    sim.targetEntity(boss.id);
+
+    sim.petTaunt();
+
+    expect(boss.threat.get(pet.id)).toBeGreaterThan(0);
+    expect(boss.forcedTargetId).not.toBe(pet.id);
+    expect(boss.aggroTargetId).toBe(tank.id);
+    expect(pet.petTauntTimer).toBe(10);
+  });
+
   it('hunter aspects apply to the active pet', () => {
     const { sim, wolf: pet } = tamedSetup();
     const apBefore = (sim as any).effectiveAttackPower(pet);
@@ -1329,9 +1360,6 @@ describe('shaman travel and shock mechanics', () => {
 describe('warlock demon summons', () => {
   it('Summon Imp creates a ranged demon that casts Firebolt', () => {
     const sim = makeSim('warlock');
-    sim.player.resource = sim.player.maxResource;
-    sim.castAbility('summon_imp');
-    for (let i = 0; i < 20 * 5; i++) sim.tick();
 
     const imp = sim.petOf(sim.playerId);
     expect(imp).toBeTruthy();
@@ -1358,9 +1386,6 @@ describe('warlock demon summons', () => {
 
   it('warlocks heal demons with mana instead of food and cannot abandon them', () => {
     const sim = makeSim('warlock');
-    sim.player.resource = sim.player.maxResource;
-    sim.castAbility('summon_imp');
-    for (let i = 0; i < 20 * 5; i++) sim.tick();
     const demon = sim.petOf(sim.playerId)!;
     demon.hp = Math.max(1, demon.maxHp - 50);
     sim.addItem('baked_bread', 1);
@@ -1389,9 +1414,6 @@ describe('warlock demon summons', () => {
   it('Summon Voidwalker replaces the imp with a tank demon that Growls', () => {
     const sim = makeSim('warlock');
     sim.setPlayerLevel(10);
-    sim.player.resource = sim.player.maxResource;
-    sim.castAbility('summon_imp');
-    for (let i = 0; i < 20 * 5; i++) sim.tick();
     const imp = sim.petOf(sim.playerId)!;
 
     sim.player.resource = sim.player.maxResource;
@@ -1419,9 +1441,6 @@ describe('warlock demon summons', () => {
 
   it('recasting the same demon unsummons it', () => {
     const sim = makeSim('warlock');
-    sim.player.resource = sim.player.maxResource;
-    sim.castAbility('summon_imp');
-    for (let i = 0; i < 20 * 5; i++) sim.tick();
     const demon = sim.petOf(sim.playerId)!;
     expect(demon.templateId).toBe('imp');
 
@@ -1435,9 +1454,6 @@ describe('warlock demon summons', () => {
 
   it('recasting a dead demon resummons it instead of dismissing', () => {
     const sim = makeSim('warlock');
-    sim.player.resource = sim.player.maxResource;
-    sim.castAbility('summon_imp');
-    for (let i = 0; i < 20 * 5; i++) sim.tick();
     const deadDemon = sim.petOf(sim.playerId)!;
     deadDemon.dead = true;
     deadDemon.hp = 0;
