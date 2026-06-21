@@ -2764,4 +2764,13 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   "hudChrome.plurals.playersOnline.few": "查詢：{realm} 上有 {count} 名玩家在線上。",
   "hudChrome.plurals.playersOnline.many": "查詢：{realm} 上有 {count} 名玩家在線上。",
   "hudChrome.plurals.playersOnline.other": "查詢：{realm} 上有 {count} 名玩家在線上。",
+  "hudChrome.controller.title": "手把",
+  "hudChrome.controller.enable": "啟用手把",
+  "hudChrome.controller.invertY": "反轉鏡頭（Y軸）",
+  "hudChrome.controller.deadzone": "搖桿死區",
+  "hudChrome.controller.cameraSpeed": "鏡頭速度",
+  "hudChrome.controller.vibration": "震動",
+  "hudChrome.controller.buttons": "按鍵配置",
+  "hudChrome.controller.menuAction": "遊戲選單",
+  "hudChrome.controller.help": "左搖桿移動，右搖桿控制鏡頭。開啟視窗即可使用螢幕指標。",
 };

@@ -232,6 +232,17 @@ export const zh_CN: EnTranslations = {
       "showWalletOnCharacterScreen": "在角色界面显示钱包",
       "showWalletOnPlayerCard": "在玩家卡片显示钱包"
     },
+    "controller": {
+      "title": "手柄",
+      "enable": "启用手柄",
+      "invertY": "反转镜头（Y轴）",
+      "deadzone": "摇杆死区",
+      "cameraSpeed": "镜头速度",
+      "vibration": "震动",
+      "buttons": "按键布局",
+      "menuAction": "游戏菜单",
+      "help": "左摇杆移动，右摇杆控制镜头。打开窗口即可使用屏幕指针。"
+    },
     "perf": {
       "title": "性能监视器",
       "enable": "显示性能监视器",

@@ -232,6 +232,17 @@ export const ja_JP: EnTranslations = {
       "showWalletOnCharacterScreen": "キャラクター画面にウォレットを表示",
       "showWalletOnPlayerCard": "プレイヤーカードにウォレットを表示"
     },
+    "controller": {
+      "title": "コントローラー",
+      "enable": "コントローラーを有効化",
+      "invertY": "カメラ反転（Y軸）",
+      "deadzone": "スティックの遊び",
+      "cameraSpeed": "カメラ速度",
+      "vibration": "振動",
+      "buttons": "ボタン配置",
+      "menuAction": "ゲームメニュー",
+      "help": "左スティックで移動、右スティックで視点。ウィンドウを開くと画面ポインターが使えます。"
+    },
     "perf": {
       "title": "パフォーマンスオーバーレイ",
       "enable": "パフォーマンスオーバーレイを表示",

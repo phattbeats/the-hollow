@@ -232,6 +232,17 @@ export const es: EnTranslations = {
       "showWalletOnCharacterScreen": "Mostrar cartera en la pantalla de personajes",
       "showWalletOnPlayerCard": "Mostrar cartera en la tarjeta de jugador"
     },
+    "controller": {
+      "title": "Controller",
+      "enable": "Enable Controller",
+      "invertY": "Invert Camera (Y)",
+      "deadzone": "Stick Deadzone",
+      "cameraSpeed": "Camera Speed",
+      "vibration": "Vibration",
+      "buttons": "Button Layout",
+      "menuAction": "Game Menu",
+      "help": "Left stick moves, right stick looks. Open a window to use the on-screen pointer."
+    },
     "perf": {
       "title": "Superposición de rendimiento",
       "enable": "Mostrar superposición de rendimiento",
