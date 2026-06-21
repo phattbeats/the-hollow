@@ -958,7 +958,7 @@ const PRIMITIVES = {
     ctx.strokeStyle = withAlpha(pal.glow, 0.6); ctx.lineCap = 'round';
     for (const [w, o] of [[8, 0], [3.5, -5]] as const) {
       ctx.lineWidth = w;
-      ctx.beginPath(); ctx.moveTo(24 + o, -28 - o); ctx.lineTo(2, -2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(22 + o, -26 - o); ctx.lineTo(2, -2); ctx.stroke();
     }
     ctx.globalCompositeOperation = 'source-over';
     ctx.beginPath();
@@ -1230,15 +1230,15 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   rapid_fire: r('fury', 'steel', ['arrow'], ['motion']),
   // priest
   heal: r('holy', 'holyGold', ['cross'], ['sparkle']),
-  flash_heal: r('holy', 'holyGold', ['cross'], ['glow']),
+  flash_heal: r('holy', 'holyGold', ['cross'], ['motion']),
   mind_flay: r('shadow', 'shadowPurple', ['eye'], ['motion']),
   // shaman
   frost_shock: r('frost', 'ice', ['snowflake'], ['motion']),
   ghost_wolf: r('nature', 'leafGreen', ['paw'], ['glow']),
   stormstrike: r('storm', 'sky', ['sword', { p: 'lightning', ...BR }]),
   // warlock
-  fear: r('shadow', 'shadowPurple', ['skull'], ['glow']),
-  searing_pain: r('fire', 'ember', ['flame'], ['glow']),
+  fear: r('shadow', 'shadowPurple', ['roar'], ['glow']),
+  searing_pain: r('fire', 'ember', ['bolt'], ['glow']),
   shadowburn: r('shadow', 'shadowPurple', ['flame'], ['glow']),
   summon_imp: r('fire', 'ember', ['imp_head'], ['glow']),
   summon_voidwalker: r('shadow', 'shadowPurple', ['void_brute'], ['glow']),
@@ -1255,9 +1255,9 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   cat_form: r('nature', 'leafGreen', ['paw', { p: 'fang', ...BR }]),
   prowl: r('nature', 'leafGreen', ['paw'], ['arcs']),
   rake: r('nature', 'leafGreen', ['claw_slash'], ['drips']),
-  claw: r('fury', 'steel', ['claw_slash'], ['motion']),
+  claw: r('nature', 'leafGreen', ['claw_slash'], ['motion']),
   ferocious_bite: r('blood', 'blood', ['fang'], ['drips']),
-  swipe: r('fury', 'steel', ['claw_slash'], ['arcs']),
+  swipe: r('earth', 'earthBrown', ['claw_slash'], ['arcs']),
   regrowth: r('nature', 'leafGreen', ['heart', { p: 'leaf', ...BR }], ['sparkle']),
   barkskin: r('earth', 'earthBrown', ['shield', { p: 'leaf', ...BR }]),
   starfire: r('arcane', 'silverWhite', ['moon', { p: 'sunburst', ...BR }], ['sparkle', 'glow']),
@@ -1746,7 +1746,7 @@ function resolveRecipe(kind: IconKind, id: string): IconRecipe {
   return recipe;
 }
 
-// Introspection helpers (no canvas needed) — used by tests/ability_icons.test.ts
+// Introspection helpers (no canvas needed), used by tests/ability_icons.test.ts
 // to assert every ability has a deliberate, distinct icon recipe.
 export function abilityIconRecipe(id: string): IconRecipe {
   return resolveRecipe('ability', id);

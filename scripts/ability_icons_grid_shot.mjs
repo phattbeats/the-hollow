@@ -1,7 +1,7 @@
 // Screenshot harness for the unique-ability-icons change.
 // Renders every class ability's procedural icon in a labeled grid (grouped by
 // class), plus a focused panel of the formerly-colliding groups so the
-// before/after distinctness is obvious. Pure-icon render — no game boot needed.
+// before/after distinctness is obvious. Pure-icon render, no game boot needed.
 //
 // Needs `npm run dev` on :5173 (override with GAME_URL). Writes to tmp/.
 // ?gfx=ultra requested for parity with "max graphics" capture sessions.
@@ -25,7 +25,7 @@ page.on('console', (m) => { if (m.type() === 'error') console.log('CONSOLE:', m.
 
 await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
-// Formerly-colliding fallback groups (see tests/ability_icons.test.ts) — the
+// Formerly-colliding fallback groups (see tests/ability_icons.test.ts), the
 // whole point of the change is that each member now renders differently.
 const COLLISION_GROUPS = [
   ['summon_imp', 'summon_voidwalker', 'summon_succubus', 'summon_felhunter', 'summon_felguard', 'summon_doomguard'],
@@ -56,12 +56,12 @@ await page.evaluate(async (collisionGroups) => {
   document.body.appendChild(root);
 
   const title = document.createElement('h1');
-  title.textContent = 'World of ClaudeCraft — unique icon for every class ability';
+  title.textContent = 'World of ClaudeCraft: unique icon for every class ability';
   title.style.cssText = 'font:700 26px Georgia,serif;color:#d4af37;margin:0 0 4px';
   root.appendChild(title);
   const sub = document.createElement('div');
   const total = Object.values(CLASSES).reduce((n, c) => n + c.abilities.length, 0);
-  sub.textContent = `${total} abilities across ${Object.keys(CLASSES).length} classes — all distinct, hand-authored recipes`;
+  sub.textContent = `${total} abilities across ${Object.keys(CLASSES).length} classes, all distinct, hand-authored recipes`;
   sub.style.cssText = 'color:#b9a87e;margin:0 0 22px';
   root.appendChild(sub);
 
@@ -81,7 +81,7 @@ await page.evaluate(async (collisionGroups) => {
 
   // Section 1: formerly-colliding groups, one row each
   const h2a = document.createElement('h2');
-  h2a.textContent = 'Formerly identical → now distinct';
+  h2a.textContent = 'Formerly identical, now distinct';
   h2a.style.cssText = 'font:600 18px Georgia,serif;color:#e8c969;margin:6px 0 10px';
   root.appendChild(h2a);
   for (const grp of collisionGroups) {
