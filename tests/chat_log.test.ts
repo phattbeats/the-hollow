@@ -76,11 +76,11 @@ describe('sent chat normalization', () => {
     expect(throttled).toBe(true);
   });
 
-  it('caps captured messages at 200 characters like Sim.chat', () => {
+  it('caps captured messages at 255 characters like Sim.chat', () => {
     const sim = makeWorld();
     const a = sim.addPlayer('warrior', 'Aleph');
     const sent = sim.chat('x'.repeat(500), a);
-    expect(sent?.message.length).toBe(200);
+    expect(sent?.message.length).toBe(255);
   });
 });
 
