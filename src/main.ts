@@ -1911,7 +1911,13 @@ function setAccountFieldMsg(sel: string, text: string, ok: boolean): void {
   el.classList.toggle('is-ok', ok && text !== '');
 }
 
-function paintAccountPortal(model: ReturnType<typeof accountPortalModel>): void {
+function paintAccountPortal(
+  model: ReturnType<typeof accountPortalModel>,
+  // When the account fetch failed transiently we re-render the shell but must
+  // NOT clobber an already-populated email field: a blank value would otherwise
+  // be submitted as a null email update on the next save.
+  preserveEmailInput = false,
+): void {
   ($('#account-logged-out') as HTMLElement).hidden = model.loggedIn;
   ($('#account-sections') as HTMLElement).hidden = !model.loggedIn;
   $('#account-username').textContent = model.header.username;
@@ -1922,7 +1928,7 @@ function paintAccountPortal(model: ReturnType<typeof accountPortalModel>): void 
   $('#account-char-count').textContent = t('hudChrome.account.charactersCount', {
     count: formatNumber(model.header.characterCount),
   });
-  ($('#account-email') as HTMLInputElement).value = model.email;
+  if (!preserveEmailInput) ($('#account-email') as HTMLInputElement).value = model.email;
 }
 
 const loggedOutModel = () => accountPortalModel({ loggedIn: false, username: '', email: '', createdAt: '', characterCount: 0 });
@@ -1953,7 +1959,7 @@ async function loadAccountPortal(setChrome: boolean): Promise<void> {
     if (setChrome) enterLoggedInChrome();
     paintAccountPortal(accountPortalModel({
       loggedIn: true, username: api.username ?? '', email: '', createdAt: '', characterCount: 0,
-    }));
+    }), true);
   }
 }
 

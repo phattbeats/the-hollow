@@ -16,13 +16,16 @@ import {
   handleAccountWhoami, handleAccountChangePassword, handleAccountSetEmail, handleAccountDeactivate,
   type AccountGameHooks,
 } from '../server/account';
+import { moderationStatusForAccount } from '../server/db';
 import { hashPassword } from '../server/auth';
 
 // ── http fakes ──────────────────────────────────────────────────────────────
-function makeReq(body: unknown): any {
+// `ip` lets a test drive the per-IP rate limiter from a fresh, untrusted address
+// (127.0.0.1 is a trusted proxy and would be parsed through X-Forwarded-For).
+function makeReq(body: unknown, ip = '203.0.113.7'): any {
   const req: any = Readable.from([Buffer.from(JSON.stringify(body))]);
   req.headers = { host: 'localhost:8787' };
-  req.socket = { remoteAddress: '127.0.0.1' };
+  req.socket = { remoteAddress: ip };
   return req;
 }
 function makeRes(): any {
@@ -167,5 +170,79 @@ describe('handleAccountDeactivate', () => {
     const revoke = writes.find((w) => w.sql.includes('DELETE FROM auth_tokens'));
     expect(revoke!.sql).not.toContain('token <>'); // revoke-all variant
     expect(disconnectAccount).toHaveBeenCalledWith(1, expect.any(String));
+  });
+});
+
+// The deactivate + change-password handlers are bearer-auth but still per-IP
+// rate-limited (default 20/min). Beyond the cap they 429 BEFORE touching the DB,
+// so a flood can't be used to brute-force the password re-verify or hammer the
+// account writes.
+describe('account portal rate limiting (429)', () => {
+  it('429s change-password past the per-IP cap, without writing', async () => {
+    const ip = '198.51.100.21'; // fresh untrusted IP for this test's window
+    let last = makeRes();
+    for (let i = 0; i < 21; i++) {
+      last = makeRes();
+      await handleAccountChangePassword(makeReq({ current: CORRECT_PW, next: 'brandnew1' }, ip), last, 1, 'tokA');
+    }
+    expect(parse(last).status).toBe(429);
+    // The 21st call short-circuited before the password UPDATE for that request.
+    expect(writes.filter((w) => w.sql.includes('UPDATE accounts SET password_hash')).length).toBeLessThanOrEqual(20);
+  });
+
+  it('429s deactivate past the per-IP cap, without locking', async () => {
+    const ip = '198.51.100.22';
+    let last = makeRes();
+    for (let i = 0; i < 21; i++) {
+      last = makeRes();
+      await handleAccountDeactivate(makeReq({ username: 'Aelwyn', password: CORRECT_PW }, ip), last, 1, noHooks);
+    }
+    expect(parse(last).status).toBe(429);
+  });
+});
+
+// recordAuthFailure marks the account on a failed portal re-verify; a SUCCESSFUL
+// verify must call clearAuthFailures so the user's own subsequent login is not
+// throttled by their earlier portal typos. We assert success returns 200 (the
+// branch that now clears) and that a wrong password is rejected (the branch that
+// records) — both from a fresh IP so the 429 cap above doesn't interfere.
+describe('account portal auth-failure accounting', () => {
+  it('change-password success path is reachable (clears failures)', async () => {
+    const res = makeRes();
+    await handleAccountChangePassword(makeReq({ current: CORRECT_PW, next: 'brandnew1' }, '198.51.100.31'), res, 1, 'tokA');
+    expect(parse(res).status).toBe(200);
+  });
+  it('deactivate records on wrong password (401)', async () => {
+    const res = makeRes();
+    await handleAccountDeactivate(makeReq({ username: 'Aelwyn', password: 'wrong' }, '198.51.100.32'), res, 1, noHooks);
+    expect(parse(res).status).toBe(401);
+  });
+});
+
+// moderationStatusForAccount: the login + WS-auth gate. A self-deactivation
+// locks the account, but an admin-imposed ban/suspension must OUTRANK it so the
+// ban reason/label is not lost when an account is both banned and deactivated.
+describe('moderationStatusForAccount precedence', () => {
+  it('a self-deactivated account is locked (deactivated label)', async () => {
+    accountRow = { banned_at: null, suspended_until: null, moderation_reason: null, chat_muted_until: null, chat_strikes: 0, deactivated_at: '2026-02-01T00:00:00.000Z' };
+    const s = await moderationStatusForAccount(1);
+    expect(s.locked).toBe(true);
+    expect(s.banned).toBe(false);
+    expect(s.message).toContain('deactivated');
+  });
+  it('a banned + deactivated account reports the ban, not the deactivation', async () => {
+    accountRow = { banned_at: '2026-01-20T00:00:00.000Z', suspended_until: null, moderation_reason: 'cheating', chat_muted_until: null, chat_strikes: 0, deactivated_at: '2026-02-01T00:00:00.000Z' };
+    const s = await moderationStatusForAccount(1);
+    expect(s.locked).toBe(true);
+    expect(s.banned).toBe(true);
+    expect(s.reason).toBe('cheating');
+    expect(s.message).toContain('banned');
+  });
+  it('an active suspension outranks a self-deactivation', async () => {
+    accountRow = { banned_at: null, suspended_until: new Date(Date.now() + 3_600_000).toISOString(), moderation_reason: 'timeout', chat_muted_until: null, chat_strikes: 0, deactivated_at: '2026-02-01T00:00:00.000Z' };
+    const s = await moderationStatusForAccount(1);
+    expect(s.locked).toBe(true);
+    expect(s.suspendedUntil).toBeTruthy();
+    expect(s.message).toContain('suspended');
   });
 });

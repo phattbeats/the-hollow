@@ -7,7 +7,7 @@
 // delegates here. All four routes are bearer-auth + account-scoped.
 import type http from 'node:http';
 import { json, readBody } from './http_util';
-import { rateLimited, recordAuthFailure } from './ratelimit';
+import { rateLimited, recordAuthFailure, clearAuthFailures } from './ratelimit';
 import { hashPassword, verifyPassword, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH } from './auth';
 import {
   accountById,
@@ -68,6 +68,9 @@ export async function handleAccountChangePassword(
     recordAuthFailure(acct.username);
     return json(res, 401, { error: 'current password is incorrect' });
   }
+  // Correct password: forgive earlier portal mis-types so a re-verify here never
+  // throttles the user's own subsequent login. Mirrors the login success path.
+  clearAuthFailures(acct.username);
   const next = body.next;
   if (typeof next !== 'string' || next.length < MIN_PASSWORD_LENGTH) {
     return json(res, 400, { error: `password must be at least ${MIN_PASSWORD_LENGTH} chars` });
@@ -117,6 +120,9 @@ export async function handleAccountDeactivate(
     recordAuthFailure(acct.username);
     return json(res, 401, { error: 'password is incorrect' });
   }
+  // Correct password: forgive earlier portal mis-types so a re-verify here never
+  // throttles the user's own subsequent login. Mirrors the login success path.
+  clearAuthFailures(acct.username);
   const chars = await listCharacters(accountId);
   if (hooks.anyCharacterOnline(chars.map((c) => c.id))) {
     return json(res, 409, { error: 'log out all characters before deactivating' });

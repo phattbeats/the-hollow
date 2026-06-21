@@ -732,19 +732,9 @@ export async function moderationStatusForAccount(accountId: number): Promise<Acc
     ? mutedUntilDate.toISOString()
     : null;
   const chatStrikes = Number(row.chat_strikes ?? 0);
-  // A self-deactivated account is locked out of login + WS auth (same gate as
-  // banned/suspended) until an admin reactivates it.
-  if (row.deactivated_at) {
-    return {
-      locked: true,
-      banned: false,
-      suspendedUntil: null,
-      reason: '',
-      message: 'This account has been deactivated.',
-      chatMutedUntil,
-      chatStrikes,
-    };
-  }
+  // Admin-imposed states (ban, then active suspension) outrank a self-imposed
+  // deactivation: a banned+deactivated account must still surface the ban reason
+  // and label, not be relabelled "deactivated". All branches resolve to locked.
   if (row.banned_at) {
     return {
       locked: true,
@@ -764,6 +754,19 @@ export async function moderationStatusForAccount(accountId: number): Promise<Acc
       suspendedUntil: suspendedUntil.toISOString(),
       reason: row.moderation_reason ?? '',
       message: `This account is suspended until ${suspendedUntil.toUTCString()}.`,
+      chatMutedUntil,
+      chatStrikes,
+    };
+  }
+  // A self-deactivated account is locked out of login + WS auth (same gate as
+  // banned/suspended) until an admin reactivates it.
+  if (row.deactivated_at) {
+    return {
+      locked: true,
+      banned: false,
+      suspendedUntil: null,
+      reason: '',
+      message: 'This account has been deactivated.',
       chatMutedUntil,
       chatStrikes,
     };

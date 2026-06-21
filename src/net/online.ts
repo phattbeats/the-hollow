@@ -220,7 +220,17 @@ export class Api {
     try { localStorage.removeItem(Api.SESSION_KEY); } catch { /* ignore */ }
   }
 
-  // whoami — returns the current account, or throws on a 401 (expired/revoked).
+  // Account-wide self-service (whoami / password / email / deactivate) routes
+  // through this.base, i.e. the currently-selected realm origin. This is correct
+  // for the single-origin deploy (every realm shares one accounts DB, so the
+  // account locks DB-wide regardless of which realm process serves the request).
+  // MULTI-REALM ASSUMPTION: in a cross-origin multi-realm deploy the deactivate
+  // online-check + forced-disconnect would only see THIS realm's live sessions;
+  // characters live on other realm processes would not be torn down immediately
+  // (they still lose auth at the DB on the next token check). Routing these
+  // account-wide calls to a canonical account origin needs a new client/server
+  // seam (the client has no realm directory today) — deferred to multi-realm
+  // rollout. See server/realm.ts REALM_DIRECTORY / REALM_ORIGINS.
   async getAccount(): Promise<AccountInfo> {
     return this.get('/api/account');
   }
