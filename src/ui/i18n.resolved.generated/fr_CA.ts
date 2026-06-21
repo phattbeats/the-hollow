@@ -4675,6 +4675,16 @@ export const fr_CA: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_scourges_end": {
+        "title": "La fin du Fléau",
+        "text": "La chevaliere a ouvert la voie, $N, mais une tombe ouverte n'est pas une victoire. Nythraxis fut roi autrefois, et la ruine sous Thornpeak reste liee a sa volonte. Entrez dans la crypte avec des allies de confiance. Brisez la couronne immortelle avant que son ordre n'atteigne le champ de bataille au-dessus.",
+        "completion": "Alors la couronne se tait enfin. Thornpeak portera toujours ses morts, mais aucun roi sous la montagne ne les appellera plus a la guerre. Vous avez acheve ce qu'Aldren, Malric et Voss n'avaient pu que contenir.",
+        "objectives": {
+          "0": {
+            "label": "Nythraxis vaincu"
+          }
+        }
+      },
       "q_brightwood_thinning": {
         "title": "Éclaircir la clairière",
         "text": "La clairière de Brightwood est envahie, {playerName}. Les lynx des ronces se reproduisent plus vite que je ne peux les abattre, et les hardes piétinent le peu de pâture qu'il reste. Tuez 8 lynx des ronces et rapportez-moi 6 fourrures de clairière, que je juge de la santé du reste.",

@@ -59,7 +59,7 @@ const QUEST_IDS = [
   'q_necromancers', 'q_revenants', 'q_revenant_vanguard', 'q_wyrm_sigils',
   'q_breaking_the_seal', 'q_voice_below', 'q_sanctum_gate', 'q_korgath', 'q_velkhar',
   'q_gravewyrm', 'q_the_codfather', 'q_nythraxis_restless_dead', 'q_nythraxis_graves',
-  'q_nythraxis_sealed_crypt', 'q_nythraxis_bound_guardian',
+  'q_nythraxis_sealed_crypt', 'q_nythraxis_bound_guardian', 'q_nythraxis_scourges_end',
   'q_brightwood_thinning', 'q_brightwood_monarch',
   'q_ledger_first_duty', 'q_ledger_teeth', 'q_ledger_reedwater', 'q_ledger_silk',
   'q_ledger_brood', 'q_ledger_deepvermin', 'q_ledger_toll', 'q_ledger_vigil',

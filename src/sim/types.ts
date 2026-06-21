@@ -751,6 +751,7 @@ export interface QuestDef {
   name: string;
   giverNpcId: string;
   turnInNpcId: string;
+  turnInNpcIds?: string[];
   text: string;
   completionText: string;
   objectives: QuestObjective[];
@@ -761,6 +762,14 @@ export interface QuestDef {
   minLevel?: number;
   retired?: boolean; // remains finishable if already accepted, but cannot be newly accepted
   suggestedPlayers?: number; // group quests ("Suggested players: 5")
+}
+
+export function questTurnInNpcIds(quest: QuestDef): readonly string[] {
+  return quest.turnInNpcIds && quest.turnInNpcIds.length > 0 ? quest.turnInNpcIds : [quest.turnInNpcId];
+}
+
+export function isQuestTurnInNpc(quest: QuestDef, templateId: string): boolean {
+  return questTurnInNpcIds(quest).includes(templateId);
 }
 
 export type QuestState = 'unavailable' | 'available' | 'active' | 'ready' | 'done';

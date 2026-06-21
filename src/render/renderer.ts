@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { ALL_CLASSES, type Entity, type SimEvent } from '../sim/types';
+import { ALL_CLASSES, isQuestTurnInNpc, type Entity, type SimEvent } from '../sim/types';
 import { OVERHEAD_EMOTES, type IWorld } from '../world_api';
 import { groundHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
 import {
@@ -3466,8 +3466,10 @@ export class Renderer {
         // $WOC holder-tier flair, shown on OTHER players (own nameplate is hidden).
         this.setNameplateTier(v, isSelf ? 0 : (e.holderTier ?? 0));
         this.setNameplateHp(v, e);
-      } else if (e.kind === 'npc') {
-        const npcName = npcDisplayName(e.templateId);
+      } else if (e.kind === 'npc' || (!e.hostile && e.questIds.length > 0)) {
+        const npcName = e.kind === 'npc'
+          ? npcDisplayName(e.templateId)
+          : tEntity({ kind: 'mob', id: e.templateId, field: 'name' });
         let marker = '';
         let cls = '';
         // role-aware: '!' only at the quest's giver, '?' only at its turn-in
@@ -3476,9 +3478,9 @@ export class Renderer {
           const quest = QUESTS[qid];
           if (!quest) continue;
           const st = sim.questState(qid);
-          if (st === 'ready' && quest.turnInNpcId === e.templateId) { marker = '?'; cls = 'ready'; break; }
+          if (st === 'ready' && isQuestTurnInNpc(quest, e.templateId)) { marker = '?'; cls = 'ready'; break; }
           if (st === 'available' && quest.giverNpcId === e.templateId) { marker = '!'; cls = 'avail'; }
-          else if (st === 'active' && quest.turnInNpcId === e.templateId && !marker) { marker = '?'; cls = 'active'; }
+          else if (st === 'active' && isQuestTurnInNpc(quest, e.templateId) && !marker) { marker = '?'; cls = 'active'; }
         }
         const markerClass = cls ? `np-marker ${cls}` : 'np-marker';
         this.setNameplateStatic(v, `npc|${npcName}|${marker}|${markerClass}`, npcName, '#9fdc7f', 'none', marker, markerClass, '1');

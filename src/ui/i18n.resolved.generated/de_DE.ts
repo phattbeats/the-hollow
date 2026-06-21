@@ -4675,6 +4675,16 @@ export const de_DE: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_scourges_end": {
+        "title": "Das Ende der Geissel",
+        "text": "Der Siegelring hat den Weg geoeffnet, $N, doch ein offenes Grab ist kein Sieg. Nythraxis war einst ein Koenig, und die Ruine unter Thornpeak bleibt an seinen Willen gebunden. Betretet die Krypta mit Verbuendeten, denen Ihr vertraut. Brecht die todlose Krone, bevor ihr Befehl das Schlachtfeld darueber erreicht.",
+        "completion": "Dann schweigt die Krone endlich. Thornpeak wird seine Toten weiter tragen, doch kein Koenig unter dem Berg wird sie je wieder in den Krieg rufen. Ihr habt beendet, was Aldren, Malric und Voss nur eindämmen konnten.",
+        "objectives": {
+          "0": {
+            "label": "Nythraxis besiegt"
+          }
+        }
+      },
       "q_brightwood_thinning": {
         "title": "Die Lichtung ausdünnen",
         "text": "Die Hellholz-Lichtung ist überlaufen, {playerName}. Die Dornenluchse vermehren sich schneller, als ich sie ausmerzen kann, und die Herden zertrampeln das wenige Weideland, das noch bleibt. Erlegt 8 Dornenluchse und bringt mir 6 Lichtungsfelle, damit ich über das Wohl der übrigen urteilen kann.",

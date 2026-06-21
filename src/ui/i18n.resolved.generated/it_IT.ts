@@ -4675,6 +4675,16 @@ export const it_IT: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_scourges_end": {
+        "title": "La fine del Flagello",
+        "text": "L'anello ha aperto la via, $N, ma una tomba aperta non e una vittoria. Nythraxis fu un re, e la rovina sotto Thornpeak e ancora legata alla sua volonta. Entra nella cripta con alleati di fiducia. Spezza la corona immortale prima che il suo comando raggiunga il campo di battaglia sopra di voi.",
+        "completion": "Allora la corona tace finalmente. Thornpeak portera ancora i suoi morti, ma nessun re sotto la montagna li richiamera piu in guerra. Hai concluso cio che Aldren, Malric e Voss poterono soltanto contenere.",
+        "objectives": {
+          "0": {
+            "label": "Nythraxis sconfitto"
+          }
+        }
+      },
       "q_brightwood_thinning": {
         "title": "Diradare la radura",
         "text": "La radura di Brightwood è invasa, {playerName}. Le linci dei rovi si riproducono più in fretta di quanto io riesca ad abbatterle, e le mandrie calpestano il poco pascolo rimasto. Uccidi 8 Linci dei rovi e portami 6 Pellicce della radura, così potrò valutare la salute delle altre.",

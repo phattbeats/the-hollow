@@ -406,7 +406,7 @@ export const ZONE3_NPCS: Record<string, NpcDef> = {
       'q_zealots', 'q_cult_orders', 'q_necromancers', 'q_wyrm_sigils', 'q_breaking_the_seal',
       'q_voice_below', 'q_sanctum_gate', 'q_velkhar', 'q_gravewyrm',
       'q_nythraxis_restless_dead', 'q_nythraxis_graves', 'q_nythraxis_sealed_crypt',
-      'q_nythraxis_bound_guardian',
+      'q_nythraxis_bound_guardian', 'q_nythraxis_scourges_end',
     ],
     greeting: 'From a chapel yard in the Vale to the roof of the world... the trail we have followed ends here. I can feel the mountain listening.',
   },
@@ -737,6 +737,17 @@ export const ZONE3_QUESTS: Record<string, QuestDef> = {
     itemRewards: { warrior: 'kings_signet', mage: 'kings_signet', rogue: 'kings_signet' },
     requiresQuest: 'q_nythraxis_sealed_crypt', minLevel: 20, suggestedPlayers: 5,
   },
+  q_nythraxis_scourges_end: {
+    id: 'q_nythraxis_scourges_end', name: 'Scourge\'s End',
+    giverNpcId: 'brother_aldric_highwatch', turnInNpcId: 'brother_aldric_highwatch',
+    turnInNpcIds: ['brother_aldric_highwatch', 'brother_aldric_raid'],
+    text: 'The signet has opened the way, $N, but an open tomb is not a victory. Nythraxis was a king once, and the ruin beneath Thornpeak is still bound to his will. Enter the crypt with allies you trust. Break the deathless crown before its command reaches the battlefield above.',
+    completionText: 'Then the crown is silent at last. Thornpeak will still carry its dead, but no king below it will call them to war again. You have ended what Aldren, Malric, and Voss could only contain.',
+    objectives: [{ type: 'kill', targetMobId: 'nythraxis_scourge_of_thornpeak', count: 1, label: 'Nythraxis slain' }],
+    xpReward: 0, copperReward: 25000,
+    itemRewards: {},
+    requiresQuest: 'q_nythraxis_bound_guardian', minLevel: 20, suggestedPlayers: 10,
+  },
 };
 
 export const ZONE3_QUEST_ORDER = [
@@ -746,7 +757,7 @@ export const ZONE3_QUEST_ORDER = [
   'q_necromancers', 'q_revenants', 'q_revenant_vanguard', 'q_wyrm_sigils', 'q_breaking_the_seal',
   'q_voice_below', 'q_sanctum_gate', 'q_korgath', 'q_velkhar', 'q_gravewyrm',
   'q_nythraxis_restless_dead', 'q_nythraxis_graves', 'q_nythraxis_sealed_crypt',
-  'q_nythraxis_bound_guardian',
+  'q_nythraxis_bound_guardian', 'q_nythraxis_scourges_end',
 ];
 
 // ---------------------------------------------------------------------------

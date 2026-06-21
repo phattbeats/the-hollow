@@ -19,6 +19,7 @@ import { EVENT_SKIN_TIERS, MECH_CHROMAS, SKIN_RANKS, skinRankOrder, type SkinTie
 import {
   AbilityEffect, CONSUME_DURATION, Entity, FISHING_CAST_ID, GCD, ItemDef, SimEvent,
   dist2d, xpForLevel, MAX_LEVEL, MELEE_RANGE, MILESTONES, virtualLevel, canPrestige, xpUntilNextPrestige,
+  isQuestTurnInNpc,
 } from '../sim/types';
 import { xpBarView, formatXp } from './xp_bar';
 import { lowHealthVignette } from './low_health';
@@ -2872,7 +2873,7 @@ export class Hud {
         }
       } else if (e.kind === 'npc') {
         const hasAvail = e.questIds.some((q) => QUESTS[q].giverNpcId === e.templateId && this.sim.questState(q) === 'available');
-        const hasReady = e.questIds.some((q) => QUESTS[q].turnInNpcId === e.templateId && this.sim.questState(q) === 'ready');
+        const hasReady = e.questIds.some((q) => isQuestTurnInNpc(QUESTS[q], e.templateId) && this.sim.questState(q) === 'ready');
         ctx.fillStyle = '#ffd100';
         ctx.font = 'bold 11px Georgia';
         ctx.fillText(hasReady ? '?' : hasAvail ? '!' : '•', mx - 2, my + 3);
@@ -3279,7 +3280,7 @@ export class Hud {
       if (e.pos.z < zone.zMin || e.pos.z >= zone.zMax) continue;
       const { mx, my } = toMap(e.pos.x, e.pos.z);
       const hasAvail = e.questIds.some((q) => QUESTS[q].giverNpcId === e.templateId && this.sim.questState(q) === 'available');
-      const hasReady = e.questIds.some((q) => QUESTS[q].turnInNpcId === e.templateId && this.sim.questState(q) === 'ready');
+      const hasReady = e.questIds.some((q) => isQuestTurnInNpc(QUESTS[q], e.templateId) && this.sim.questState(q) === 'ready');
       if (hasAvail || hasReady) {
         ctx.fillStyle = '#ffd100';
         ctx.font = 'bold 15px Georgia';
@@ -4534,7 +4535,7 @@ export class Hud {
     const interesting = npc.questIds.filter((q) => {
       const st = this.sim.questState(q);
       return (st === 'available' && QUESTS[q].giverNpcId === npc.templateId)
-        || (st === 'ready' && QUESTS[q].turnInNpcId === npc.templateId);
+        || (st === 'ready' && isQuestTurnInNpc(QUESTS[q], npc.templateId));
     });
     const discussionQuests = [...this.sim.questLog.values()]
       .filter((qp) => qp.state === 'active' && npc.questIds.includes(qp.questId))
@@ -4548,7 +4549,7 @@ export class Hud {
     el.setAttribute('aria-modal', 'false');
     el.setAttribute('aria-labelledby', 'quest-dialog-title');
     el.setAttribute('tabindex', '-1');
-    const npcName = npcDisplayName(npc.templateId);
+    const npcName = def ? npcDisplayName(npc.templateId) : mobDisplayName(npc.templateId);
     const npcTitle = def ? npcDisplayTitle(def.id) : '';
     let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(npcName)}<span class="quest-muted"> &lt;${esc(npcTitle)}&gt;</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">${svgIcon('close')}</button></div>`;
     html += `<div class="qd-text">"${esc(def ? npcGreeting(def.id, this.sim.cfg.playerClass, this.sim.player.name) : t('questUi.dialog.greetingFallback'))}"</div>`;

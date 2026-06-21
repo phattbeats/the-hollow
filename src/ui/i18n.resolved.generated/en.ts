@@ -4675,6 +4675,16 @@ export const en: EnTranslations = {
           }
         }
       },
+      "q_nythraxis_scourges_end": {
+        "title": "Scourge's End",
+        "text": "The signet has opened the way, {playerName}, but an open tomb is not a victory. Nythraxis was a king once, and the ruin beneath Thornpeak is still bound to his will. Enter the crypt with allies you trust. Break the deathless crown before its command reaches the battlefield above.",
+        "completion": "Then the crown is silent at last. Thornpeak will still carry its dead, but no king below it will call them to war again. You have ended what Aldren, Malric, and Voss could only contain.",
+        "objectives": {
+          "0": {
+            "label": "Nythraxis slain"
+          }
+        }
+      },
       "q_brightwood_thinning": {
         "title": "Thinning the Glade",
         "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",

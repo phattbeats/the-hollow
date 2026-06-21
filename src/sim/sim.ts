@@ -35,7 +35,7 @@ import {
   CurrencyLootStrategy, INTERACT_RANGE, InvSlot, ItemLootStrategy, LootEntry, LootSlot, LootStrategies, MELEE_RANGE, MAX_LEVEL, MobFamily, MobTemplate,
   MoveInput, OverheadEmoteId, PetMode, PlayerClass, QuestProgress, QuestState, RUN_SPEED, SimConfig, SimEvent, TURN_SPEED, Vec3,
   angleTo, armorReduction, dist2d, emptyMoveInput, isConsuming, meleeMissChance, mobXpValue, normAngle,
-  rageFromDealing, rageFromTaking, spellHitChance, xpForLevel,
+  rageFromDealing, rageFromTaking, spellHitChance, xpForLevel, isQuestTurnInNpc, questTurnInNpcIds,
   MILESTONES, virtualLevel, xpToReachLevel, canPrestige,
   ArenaFormat, ArenaStanding, ArenaCombatant, SkinCatalog, SkinRank, ErrorReason
 } from './types';
@@ -92,6 +92,7 @@ const NYTHRAXIS_CRYPT_QUESTS = new Set([
 const NYTHRAXIS_BOSS_ID = 'nythraxis_scourge_of_thornpeak';
 const NYTHRAXIS_ADD_ID = 'nythraxis_skeleton_warrior';
 const NYTHRAXIS_ALDRIC_ID = 'brother_aldric_raid';
+const NYTHRAXIS_FINAL_QUEST_ID = 'q_nythraxis_scourges_end';
 const NYTHRAXIS_WARDSTONE_ITEM_ID = 'bastion_ward_stone';
 // How far a wardstone may sit from the boss spawn and still belong to this
 // encounter. The three arena wards form a wide forward triangle (~54yd out), so
@@ -6814,6 +6815,7 @@ export class Sim {
     aldric.facing = 0;
     aldric.prevFacing = 0;
     aldric.spawnPos = { ...aldric.pos };
+    aldric.questIds = [NYTHRAXIS_FINAL_QUEST_ID];
     this.addEntity(aldric);
     const inst = this.instances.find((i) => i.partyKey !== null && i.mobIds.includes(boss.id));
     inst?.mobIds.push(aldric.id);
@@ -7727,24 +7729,24 @@ export class Sim {
           this.pickUpObject(target.id, p.id);
           return;
         }
-        if (target.kind === 'npc') { this.talkToNpc(target.id, p.id); return; }
+        if (this.isQuestInteractionEntity(target)) { this.talkToNpc(target.id, p.id); return; }
       }
     }
     let bestCorpse: Entity | null = null;
     let bestCorpseD2 = INTERACT_RANGE * INTERACT_RANGE;
     let bestObj: Entity | null = null;
     let bestObjD2 = INTERACT_RANGE * INTERACT_RANGE;
-    let bestNpc: Entity | null = null;
-    let bestNpcD2 = INTERACT_RANGE * INTERACT_RANGE;
+    let bestQuestEntity: Entity | null = null;
+    let bestQuestD2 = INTERACT_RANGE * INTERACT_RANGE;
     this.grid.forEachInRadius(p.pos.x, p.pos.z, INTERACT_RANGE, (e, d2) => {
       if (e.kind === 'mob' && e.lootable && d2 < bestCorpseD2) { bestCorpse = e; bestCorpseD2 = d2; }
       if (e.kind === 'object' && e.lootable && d2 < bestObjD2) { bestObj = e; bestObjD2 = d2; }
-      if (e.kind === 'npc' && d2 < bestNpcD2) { bestNpc = e; bestNpcD2 = d2; }
+      if (this.isQuestInteractionEntity(e) && d2 < bestQuestD2) { bestQuestEntity = e; bestQuestD2 = d2; }
     });
     // re-read through wider types: TS cannot see the closure assignments above
     const corpse = bestCorpse as Entity | null;
     const obj = bestObj as Entity | null;
-    const npc = bestNpc as Entity | null;
+    const questEntity = bestQuestEntity as Entity | null;
     if (corpse) { this.lootCorpse(corpse.id, p.id); return; }
     if (obj) {
       if (obj.templateId === 'dungeon_door' && obj.dungeonId) { this.enterDungeon(obj.dungeonId, p.id); return; }
@@ -7753,7 +7755,12 @@ export class Sim {
       this.pickUpObject(obj.id, p.id);
       return;
     }
-    if (npc) this.talkToNpc(npc.id, p.id);
+    if (questEntity) this.talkToNpc(questEntity.id, p.id);
+  }
+
+  private isQuestInteractionEntity(e: Entity): boolean {
+    if (e.kind === 'npc') return true;
+    return e.kind === 'mob' && !e.hostile && !e.dead && e.questIds.length > 0;
   }
 
   talkToNpc(npcId: number, pid?: number): void {
@@ -7761,10 +7768,11 @@ export class Sim {
     if (!r) return;
     const { meta } = r;
     const npc = this.entities.get(npcId);
-    if (!npc || npc.kind !== 'npc') return;
+    if (!npc || !this.isQuestInteractionEntity(npc)) return;
     if (this.interactNpcForQuests(npc, meta)) return;
     for (const qid of npc.questIds) {
-      if (QUESTS[qid].turnInNpcId === npc.templateId && meta.questLog.get(qid)?.state === 'ready') {
+      const quest = QUESTS[qid];
+      if (quest && isQuestTurnInNpc(quest, npc.templateId) && meta.questLog.get(qid)?.state === 'ready') {
         this.turnInQuest(qid, meta.entityId);
         return;
       }
@@ -7807,10 +7815,11 @@ export class Sim {
 
   private questNpcFor(questId: string, role: 'giver' | 'turnIn', p: Entity): { npc: Entity | null; tooFar: boolean } {
     const quest = QUESTS[questId];
-    const templateId = role === 'giver' ? quest.giverNpcId : quest.turnInNpcId;
+    const templateIds = role === 'giver' ? [quest.giverNpcId] : questTurnInNpcIds(quest);
     let sawNpc = false;
     for (const e of this.entities.values()) {
-      if (e.kind !== 'npc' || e.templateId !== templateId) continue;
+      if (!this.isQuestInteractionEntity(e) || !templateIds.includes(e.templateId)) continue;
+      if (role === 'giver' && e.kind !== 'npc') continue;
       sawNpc = true;
       if (dist2d(p.pos, e.pos) <= INTERACT_RANGE + 2) return { npc: e, tooFar: false };
     }
