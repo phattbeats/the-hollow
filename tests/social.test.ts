@@ -389,13 +389,12 @@ describe('parties', () => {
     expect(sim.partyInfo?.members.find((m) => m.pid === c)?.group).toBe(2);
   });
 
-  it('blocks raid groups from standard dungeons while allowing attuned solo Nythraxis entry', () => {
+  it('blocks raid groups from standard dungeons while requiring raid groups for Nythraxis entry', () => {
     const sim = makeWorld();
     const leader = sim.addPlayer('warrior', 'Leader');
     sim.players.get(leader)!.questsDone.add('q_nythraxis_bound_guardian');
     sim.enterDungeon('nythraxis_boss_arena', leader);
-    expect(dungeonAt(sim.entities.get(leader)!.pos.x)?.id).toBe('nythraxis_boss_arena');
-    sim.leaveDungeon(leader);
+    expect(sim.entities.get(leader)!.pos.x).toBeLessThan(DUNGEON_X_THRESHOLD);
 
     fillPartyToFive(sim, leader);
     sim.convertPartyToRaid(leader);

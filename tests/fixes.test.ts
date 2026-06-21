@@ -842,6 +842,7 @@ describe('quest npc roles', () => {
 
     sim.questLog.delete('q_nythraxis_sealed_crypt');
     sim.players.get(sim.playerId)!.questsDone.add('q_nythraxis_bound_guardian');
+    formRaid(sim);
     sim.enterDungeon(bossArena.id);
     expect(dungeonAt(sim.player.pos.x)?.id).toBe('nythraxis_boss_arena');
 

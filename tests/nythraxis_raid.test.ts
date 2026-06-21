@@ -137,7 +137,7 @@ describe('Nythraxis raid encounter', () => {
     const origin = enterRaid(sim, pid);
     expect(sim.entities.get(pid)!.pos.x).toBeGreaterThan(3000);
     const boss = mob(sim, 'nythraxis_scourge_of_thornpeak');
-    expect(boss.maxHp).toBe(2000);
+    expect(boss.maxHp).toBe(51239);
     expect(boss.weapon.min).toBe(325);
     expect(boss.weapon.max).toBe(507);
     expect(visualKeyFor(boss)).toBe('skel_golem');
@@ -156,14 +156,15 @@ describe('Nythraxis raid encounter', () => {
     expect(dungeonDaisHasRaisedPlatform('crypt')).toBe(true);
   });
 
-  it('allows an attuned solo player into the Nythraxis arena without a raid group', () => {
+  it('blocks attuned solo players from the Nythraxis arena until they are in a raid group', () => {
     const sim = makeWorld();
     const pid = sim.addPlayer('warrior', 'Solo');
     attune(sim, pid);
+    const before = { ...sim.entities.get(pid)!.pos };
 
     sim.enterDungeon('nythraxis_boss_arena', pid);
 
-    expect(dungeonAt(sim.entities.get(pid)!.pos.x)?.id).toBe('nythraxis_boss_arena');
+    expect(dist2d(sim.entities.get(pid)!.pos, before)).toBeLessThan(0.1);
   });
 
   it('automatically pulls Nythraxis when a player enters his aggro radius', () => {

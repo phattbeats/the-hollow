@@ -229,7 +229,7 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
   nythraxis_scourge_of_thornpeak: {
     id: 'nythraxis_scourge_of_thornpeak', name: 'Nythraxis, Scourge of Thornpeak', minLevel: 20, maxLevel: 20, family: 'undead',
     elite: true, boss: true, ccImmune: true,
-    hpBase: 2000 / 2.3, hpPerLevel: 0, dmgBase: 54, dmgPerLevel: 11.4, attackSpeed: 2.6,
+    hpBase: 51239 / 2.3, hpPerLevel: 0, dmgBase: 54, dmgPerLevel: 11.4, attackSpeed: 2.6,
     armorPerLevel: 42, moveSpeed: 10.5, aggroRadius: 22,
     loot: [
       { copper: 150000, chance: 1 },

@@ -129,7 +129,7 @@ const RAID_MAX = 10;
 const RAID_GROUP_MAX = 5;
 const VARKAS_BONEGUARD_DAMAGE_IDLE_DESPAWN_SECONDS = 60;
 const RAID_ALLOWED_DUNGEON_IDS = new Set(['nythraxis_crypt', 'nythraxis_boss_arena']);
-const RAID_REQUIRED_DUNGEON_IDS = new Set<string>();
+const RAID_REQUIRED_DUNGEON_IDS = new Set(['nythraxis_boss_arena']);
 const PARTY_XP_RANGE = 80; // yards: members this close share kill xp/credit
 // Rested XP (classic inn-rested bonus). Resting inside an inn footprint accrues a
 // pool that doubles KILL xp (200%) until spent — vanilla's signature casual-pacing
