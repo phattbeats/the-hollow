@@ -1351,6 +1351,7 @@ export const fr_CA: EnTranslations = {
         "unignoreChat": "Ne plus ignorer la discussion",
         "report": "Signaler le joueur",
         "removeParty": "Retirer du groupe",
+        "convertToRaid": "Convertir en raid",
         "cancel": "Annuler"
       }
     },
@@ -1569,6 +1570,12 @@ export const fr_CA: EnTranslations = {
       "guildTab": "Guilde",
       "ignoreTab": "Ignorer",
       "leaveParty": "Quitter le groupe",
+      "raidTab": "Raid",
+      "raidEmpty": "Convertissez un groupe en raid pour gérer les groupes de raid ici.",
+      "raidGroupEmpty": "Aucun joueur dans ce groupe.",
+      "raidGroupTitle": "Groupe {position} ({count}/5)",
+      "raidMoveToGroup": "Déplacer vers le groupe {position}",
+      "raidLeader": "Chef de raid",
       "offlineEmpty": "Les amis, guildes et listes d'ignorés sont disponibles en jeu en ligne.",
       "friendsEmpty": "Aucun ami pour l'instant. Cherchez quelqu'un par nom ci-dessous.",
       "ignoreEmpty": "Votre liste d'ignorés est vide.",
@@ -1806,7 +1813,8 @@ export const fr_CA: EnTranslations = {
       "common": "Commun",
       "uncommon": "Inhabituel",
       "rare": "Rare",
-      "epic": "Épique"
+      "epic": "Épique",
+      "legendary": "Légendaire"
     },
     "kind": {
       "weapon": "Arme",
@@ -3513,6 +3521,36 @@ export const fr_CA: EnTranslations = {
       "event_skin_token": {
         "name": "Cache cosmétique mystérieuse"
       },
+      "deathless_heartwood": {
+        "name": "Bois-coeur de la Couronne immortelle"
+      },
+      "kingsbane_last_oath": {
+        "name": "Fléau-du-roi, dernier serment de Thornpeak"
+      },
+      "crownforged_dreadhelm": {
+        "name": "Heaume d'effroi Forgécouronne"
+      },
+      "crownforged_warspaulders": {
+        "name": "Spallières de guerre Forgécouronne"
+      },
+      "nighttalon_crown": {
+        "name": "Couronne Serre-de-nuit"
+      },
+      "nighttalon_shoulderguards": {
+        "name": "Garde-épaules Serre-de-nuit"
+      },
+      "soulflame_cowl": {
+        "name": "Capuche Flamme-d'âme"
+      },
+      "soulflame_mantle": {
+        "name": "Mantelet Flamme-d'âme"
+      },
+      "stormcallers_crown": {
+        "name": "Couronne d'Appel-tempête"
+      },
+      "stormcallers_spaulders": {
+        "name": "Spallières d'Appel-tempête"
+      },
       "unknown_alien_weaponry": {
         "name": "Armement alien inconnu"
       },
@@ -3727,6 +3765,12 @@ export const fr_CA: EnTranslations = {
       },
       "bound_guardian": {
         "name": "Gardien lié"
+      },
+      "nythraxis_skeleton_warrior": {
+        "name": "Garde royal relevé"
+      },
+      "nythraxis_scourge_of_thornpeak": {
+        "name": "Nythraxis, Fléau de Thornpeak"
       },
       "brightwood_hare": {
         "name": "Lièvre de Brightwood"
@@ -3979,6 +4023,11 @@ export const fr_CA: EnTranslations = {
         "name": "Rôdeuse Elwyn",
         "title": "Garde de la clairière",
         "greeting": "Silence, {className} - la clairière est calme aujourd'hui, et j'entends bien qu'elle le reste."
+      },
+      "brother_aldric_raid": {
+        "name": "Frère Aldric",
+        "title": "Prêtre du Val",
+        "greeting": "D'un cimetière de chapelle au toit du monde... la piste s'achève ici. Je sens la montagne écouter."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -4705,8 +4754,8 @@ export const fr_CA: EnTranslations = {
       },
       "q_nythraxis_bound_guardian": {
         "title": "Le Gardien lié",
-        "text": "Voss écrivit que les survivants scellèrent la Chevalière du roi derrière un gardien ancien, afin que nul n'atteigne la tombe de Nythraxis par accident ou par ambition. Portez la Clef de la crypte au cercle rituel sur le terrain plat à l'est de la crypte abandonnée et au sud-est de la tombe occidentale. Utilisez-la là-bas, brisez le gardien et rapportez la chevalière.",
-        "completion": "Les trois reliques racontent la même histoire : Aldren combattit pour défendre son roi, Malric franchit la frontière de la mort, et Voss tenta d'arrêter ce qui suivit. Le sceau faiblit, et cette chevalière est la clef de la tombe de Nythraxis. Vous êtes maintenant harmonisé pour entrer dans la Crypte de Nythraxis.",
+        "text": "Voss ecrivit que les survivants scellerent la Chevaliere du roi derriere un gardien ancien, afin que nul n atteigne la tombe de Nythraxis par accident ou par ambition. Portez la Clef de la crypte au cercle rituel sur le terrain plat a l est de la crypte abandonnee et au sud-est de la tombe occidentale. Utilisez-la la-bas, brisez le gardien et rapportez la chevaliere.",
+        "completion": "Les trois reliques racontent la meme histoire: Aldren combattit pour defendre son roi, Malric franchit la frontiere de la mort, et Voss tenta d arreter ce qui suivit. Le sceau faiblit, et cette chevaliere est la clef de la tombe de Nythraxis. Vous etes maintenant harmonise pour entrer dans la Crypte de Nythraxis. Retournez a la crypte abandonnee, ouvrez la porte royale et affrontez Nythraxis avant que la rage du vieux roi ne deborde Thornpeak.",
         "objectives": {
           "0": {
             "label": "Clef utilisée au cercle rituel"
@@ -4716,6 +4765,16 @@ export const fr_CA: EnTranslations = {
           },
           "2": {
             "label": "Chevalière du roi"
+          }
+        }
+      },
+      "q_nythraxis_scourges_end": {
+        "title": "La fin du Fléau",
+        "text": "La chevaliere a ouvert la voie, {playerName}, mais une tombe ouverte n'est pas une victoire. Nythraxis fut roi autrefois, et la ruine sous Thornpeak reste liee a sa volonte. Entrez dans la crypte avec des allies de confiance. Brisez la couronne immortelle avant que son ordre n'atteigne le champ de bataille au-dessus.",
+        "completion": "Alors la couronne se tait enfin. Thornpeak portera toujours ses morts, mais aucun roi sous la montagne ne les appellera plus a la guerre. Vous avez acheve ce qu'Aldren, Malric et Voss n'avaient pu que contenir.",
+        "objectives": {
+          "0": {
+            "label": "Nythraxis vaincu"
           }
         }
       },
@@ -5053,6 +5112,11 @@ export const fr_CA: EnTranslations = {
         "name": "Crypte abandonnée",
         "enterText": "Vous franchissez le seuil de la crypte abandonnée.",
         "leaveText": "Vous ressortez dans l'air froid de Thornpeak."
+      },
+      "nythraxis_boss_arena": {
+        "name": "Nythraxis Raid Arena",
+        "enterText": "You pass through the sealed royal door.",
+        "leaveText": "You return to the cold air of Thornpeak."
       },
       "drowned_temple": {
         "name": "Le Temple noyé",
