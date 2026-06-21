@@ -960,10 +960,18 @@
     display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
   .char-stats b { color: #fff; font-weight: normal; }
   /* Each stat is a hoverable/focusable cell that opens a class-aware breakdown
-     tooltip. Color/background only (no transform) per the motion-sickness rule. */
-  .char-stats .stat-cell { cursor: help; border-radius: 3px; transition: color .12s, background-color .12s; }
-  .char-stats .stat-cell:hover { color: #fff; background: rgba(255, 215, 120, 0.08); }
-  .char-stats .stat-cell:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 2px; }
+     tooltip. The padding + matching negative margin turn the hover/focus tint into
+     a padded pill WITHOUT moving the text (layout-neutral: the margin box equals the
+     content box, so rows never reflow between states). Color/background only (no
+     transform) per the motion-sickness rule; keyboard focus gets the same pill as
+     hover so the affordance is identical for mouse and keyboard. */
+  .char-stats .stat-cell { cursor: help; border-radius: 4px; padding: 1px 6px; margin: -1px -6px;
+    transition: color .12s, background-color .12s; }
+  .char-stats .stat-cell:hover { color: #fff; background: rgba(255, 215, 120, 0.1); }
+  .char-stats .stat-cell:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 1px;
+    color: #fff; background: rgba(255, 215, 120, 0.1); }
+  /* Honor the OS-level reduced-motion preference too, not just the in-app toggle. */
+  @media (prefers-reduced-motion: reduce) { .char-stats .stat-cell { transition: none; } }
 
   /* spellbook */
   #spellbook { width: 430px; }

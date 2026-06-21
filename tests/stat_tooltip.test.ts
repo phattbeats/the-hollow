@@ -159,6 +159,22 @@ describe('class-aware effect selection', () => {
     expect(buildStatTooltip('spi', inputFor('mage', mage)).minorForClass).toBe(false);
   });
 
+  it('treats a druid as a mana class in every form (Int/Spirit keep their mana lines)', () => {
+    // A druid is fundamentally a mana class whose Int/Spirit govern the caster-form
+    // mana pool, so its breakdown must NOT collapse to "of little benefit" the way a
+    // true rage/energy class does, even while shapeshifted. isManaClass keys off the
+    // base class (not the transient form resource) on purpose; lock that here.
+    expect(isManaClass('druid')).toBe(true);
+    const druid = freshPlayer('druid', 20);
+    const intDruid = buildStatTooltip('int', inputFor('druid', druid));
+    expect(intDruid.minorForClass).toBe(false);
+    expect(effect(intDruid.effects, 'maxMana')).toBeDefined();
+    expect(effect(intDruid.effects, 'spellCritPct')).toBeDefined();
+    const spiDruid = buildStatTooltip('spi', inputFor('druid', druid));
+    expect(spiDruid.minorForClass).toBe(false);
+    expect(effect(spiDruid.effects, 'manaRegen')).toBeDefined();
+  });
+
   it('derived cells carry their notes and no header', () => {
     const p = freshPlayer('warrior', 10);
     const crit = buildStatTooltip('critChance', inputFor('warrior', p));

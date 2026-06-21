@@ -97,7 +97,15 @@ const AP_PER_DPS = 14; // sim.ts: attackPower / 14 = bonus dps
 const REGEN_TICKS_PER_5S = 2.5;
 
 /** Mana classes are the only ones Intellect (mana pool) and Spirit (mana regen)
- *  meaningfully serve; rage/energy classes get the "minor benefit" note. */
+ *  meaningfully serve; rage/energy classes get the "minor benefit" note.
+ *
+ *  This keys off the BASE class definition, not the live `resourceType`, on
+ *  purpose. A druid is fundamentally a mana class whose Intellect and Spirit
+ *  govern the mana pool it casts from; while shapeshifted into a bear/cat form
+ *  that pool is parked (`savedMana`), not gone, and returns when the druid leaves
+ *  the form. The character sheet describes those enduring attributes, so it keeps
+ *  showing the mana lines in every form. Reading the transient form resource here
+ *  would wrongly tell a shifted druid its casting stats are "of little benefit." */
 export function isManaClass(cls: PlayerClass): boolean {
   return CLASSES[cls].resourceType === 'mana';
 }
