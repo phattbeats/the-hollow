@@ -36,7 +36,12 @@ const FLOOR_CELL = 4; // kit floor tiles are 4x4 at MODULE_SCALE 1
 const FLOOR_Y = -0.05; // tile tops sit 0.05 above origin; sink so tops land at y=0
 const PILLAR_XZ_SCALE = 1.3; // 1.5u kit pillar -> ~1.95u footprint (collider r=1)
 
-type Variant = 'crypt' | 'bastion' | 'sanctum' | 'temple' | 'arena' | 'nythraxis';
+export type DungeonInteriorVariant = 'crypt' | 'bastion' | 'sanctum' | 'temple' | 'arena' | 'nythraxis';
+type Variant = DungeonInteriorVariant;
+
+export function dungeonDaisHasRaisedPlatform(variant: DungeonInteriorVariant): boolean {
+  return variant !== 'arena' && variant !== 'nythraxis';
+}
 
 interface TorchColors {
   flame: number;
@@ -899,10 +904,10 @@ export class DungeonInteriors {
   // walkable — deliberately NO collider, matching the layout contract).
   private placeDais(group: THREE.Group, p: Placements, layout: DungeonLayout, variant: Variant): void {
     const d = layout.dais;
-    // the arena keeps a flat fighting floor: no raised platform or rim clutter,
-    // just a warm light pool burned into the centre of the sands
-    if (variant === 'arena') {
-      this.addTorchGlow(group, d.x, d.z, TORCH_COLORS.arena.light, 0.07, 2.4);
+    // The arena and Nythraxis raid keep flat fighting floors: no raised platform
+    // or rim clutter to visually disagree with the walkable sim collision.
+    if (!dungeonDaisHasRaisedPlatform(variant)) {
+      this.addTorchGlow(group, d.x, d.z, TORCH_COLORS[variant].light, 0.07, 2.4);
       return;
     }
     const quarter = Math.PI / 2;

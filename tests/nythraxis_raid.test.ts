@@ -6,6 +6,7 @@ import { isBlocked } from '../src/sim/colliders';
 import { groundHeight } from '../src/sim/world';
 import { NYTHRAXIS_LAYOUT } from '../src/sim/dungeon_layout';
 import { visualKeyFor } from '../src/render/characters/manifest';
+import { dungeonDaisHasRaisedPlatform } from '../src/render/dungeon';
 
 function makeWorld(lockoutNowMs?: () => number) {
   return new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true, lockoutNowMs });
@@ -127,10 +128,14 @@ describe('Nythraxis raid encounter', () => {
     const wards = objects(sim, 'bastion_ward_stone', origin);
     const pillars = objects(sim, 'soulshard_pillar', origin);
     expect(wards).toHaveLength(3);
+    expect(wards.map((w) => ({ x: Math.round(w.pos.x - origin.x), z: Math.round(w.pos.z - origin.z) })).sort((a, b) => a.x - b.x))
+      .toEqual([{ x: -40, z: 79 }, { x: 0, z: 63 }, { x: 40, z: 79 }]);
     expect(pillars).toHaveLength(0);
     expect(isBlocked(sim.cfg.seed, origin.x + 0, origin.z + 96)).toBe(false);
     expect(isBlocked(sim.cfg.seed, origin.x + 18, origin.z + 82)).toBe(false);
     expect(isBlocked(sim.cfg.seed, origin.x + 230, origin.z + 82)).toBe(true);
+    expect(dungeonDaisHasRaisedPlatform('nythraxis')).toBe(false);
+    expect(dungeonDaisHasRaisedPlatform('crypt')).toBe(true);
   });
 
   it('defines four Nythraxis equipment drops with 3 percent legendary rolls', () => {
@@ -990,6 +995,81 @@ describe('Nythraxis raid encounter', () => {
     expect(boss.nythraxis?.deathlessTimer).toBeLessThanOrEqual(15);
     expect(tank.auras.some((a) => a.id === 'nythraxis_transition_stun')).toBe(false);
     expect(visualKeyFor(mob(sim, 'brother_aldric_raid'))).toBe('npc_aldric');
+  });
+
+  it('stuns active Nythraxis adds for the full Aldric transition', () => {
+    const sim = makeWorld();
+    const tankPid = sim.addPlayer('warrior', 'Tank');
+    const origin = enterRaid(sim, tankPid);
+    const tank = sim.entities.get(tankPid)!;
+    const boss = mob(sim, 'nythraxis_scourge_of_thornpeak');
+    teleport(sim, tankPid, origin.x, origin.z + 82);
+    engage(boss, tank);
+    boss.nythraxis = {
+      phase: 1,
+      introSpoken: true,
+      transitionStarted: false,
+      transitionTimer: 0,
+      transitionCues: [],
+      transitionReleased: false,
+      dialogueBusyUntil: 0,
+      dialogueToken: 0,
+      gravebreakerTimer: 999,
+      gravebreakerCasts: 0,
+      raiseFallenTimer: 0,
+      soulRendTimer: 999,
+      soulRendMarks: [],
+      soulRendLockout: 0,
+      deathlessTimer: 999,
+      deathlessCastRemaining: 0,
+      deathlessStunRemaining: 0,
+      wardChannels: [],
+      finalStand: false,
+      deathSpoken: false,
+    };
+    sim.tick();
+    const adds = [...sim.entities.values()].filter((e) => e.kind === 'mob' && e.templateId === 'nythraxis_skeleton_warrior');
+    expect(adds).toHaveLength(2);
+    for (const add of adds) {
+      add.pos = { ...tank.pos };
+      add.prevPos = { ...add.pos };
+      add.aiState = 'attack';
+      add.inCombat = true;
+      add.aggroTargetId = tank.id;
+      add.swingTimer = 0;
+      add.threat.set(tank.id, 1000);
+    }
+
+    boss.hp = Math.floor(boss.maxHp * 0.69);
+    sim.tick();
+    const transitionHp = tank.hp;
+    const transitionEvents = collectEventsForSeconds(sim, 20);
+
+    expect(adds.every((add) => add.auras.some((a) => a.id === 'nythraxis_transition_stun'))).toBe(true);
+    expect(transitionEvents.some((row) =>
+      row.event.type === 'damage'
+      && adds.some((add) => add.id === row.event.sourceId)
+      && row.event.targetId === tank.id)).toBe(false);
+    expect(tank.hp).toBe(transitionHp);
+    expect(boss.nythraxis?.phase).toBe('transition');
+  });
+
+  it('spawns Nythraxis add waves every 45 seconds in phase one', () => {
+    const sim = makeWorld();
+    const tankPid = sim.addPlayer('warrior', 'Tank');
+    const origin = enterRaid(sim, tankPid);
+    const tank = sim.entities.get(tankPid)!;
+    const boss = mob(sim, 'nythraxis_scourge_of_thornpeak');
+    boss.moveSpeed = 0;
+    boss.swingTimer = 999;
+    teleport(sim, tankPid, origin.x, origin.z + 36);
+    engage(boss, tank);
+
+    tickSeconds(sim, 31);
+    expect([...sim.entities.values()].filter((e) => e.kind === 'mob' && e.templateId === 'nythraxis_skeleton_warrior' && !e.dead)).toHaveLength(0);
+
+    tickSeconds(sim, 15);
+    expect([...sim.entities.values()].filter((e) => e.kind === 'mob' && e.templateId === 'nythraxis_skeleton_warrior' && !e.dead)).toHaveLength(2);
   });
 
   it('stages Aldric transition dialogue without interrupting itself before Soul Rend opens phase two', () => {

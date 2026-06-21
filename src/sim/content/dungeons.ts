@@ -414,9 +414,9 @@ export const DUNGEON_DEFS: Record<string, DungeonDef> = {
       // (spawn 0,96), well clear of his body so all three read distinctly and
       // raiders must split to channel them. Kept within the encounter's
       // wardstone search radius (see nythraxisWardstones in sim.ts).
-      { itemId: 'bastion_ward_stone', name: 'Left Wardstone', x: -40, z: 74 },
-      { itemId: 'bastion_ward_stone', name: 'Right Wardstone', x: 40, z: 74 },
-      { itemId: 'bastion_ward_stone', name: 'Threshold Wardstone', x: 0, z: 58 },
+      { itemId: 'bastion_ward_stone', name: 'Left Wardstone', x: -40, z: 79 },
+      { itemId: 'bastion_ward_stone', name: 'Right Wardstone', x: 40, z: 79 },
+      { itemId: 'bastion_ward_stone', name: 'Threshold Wardstone', x: 0, z: 63 },
     ],
     interior: 'nythraxis',
     suggestedPlayers: 10,

@@ -101,7 +101,7 @@ const NYTHRAXIS_GRAVEBREAKER_RANGE = 11;
 const NYTHRAXIS_GRAVEBREAKER_HALF_ARC = 0.75;
 const NYTHRAXIS_OPENER_SECOND_YELL_DELAY = 4;
 const NYTHRAXIS_DIALOGUE_LINE_SECONDS = 2.6;
-const NYTHRAXIS_RAISE_FALLEN_EVERY = 30;
+const NYTHRAXIS_RAISE_FALLEN_EVERY = 45;
 const NYTHRAXIS_PHASE_TWO_HP = 0.7;
 const NYTHRAXIS_SOUL_REND_EVERY = 30;
 const NYTHRAXIS_SOUL_REND_DURATION = 8;
@@ -1811,6 +1811,11 @@ export class Sim {
     return target.kind === 'mob'
       && (target.templateId === NYTHRAXIS_BOSS_ID || target.templateId === NYTHRAXIS_ADD_ID);
   }
+  private isNythraxisScriptedControl(target: Entity, aura: Aura): boolean {
+    return target.kind === 'mob'
+      && target.templateId === NYTHRAXIS_ADD_ID
+      && aura.id === 'nythraxis_transition_stun';
+  }
   private partyLootStrategiesForMob(mob: Entity): LootStrategies | null {
     if (mob.tappedById === null) return null;
     return this.partyOf(mob.tappedById)?.lootStrategies ?? null;
@@ -3207,8 +3212,10 @@ export class Sim {
 
   private applyAura(target: Entity, aura: Aura): void {
     if (target.kind === 'npc' && isRejectedFriendlyNpcAura(aura)) return;
-    if (this.isNythraxisRaidEnemy(target) && this.isNythraxisControlAura(aura.kind) && aura.sourceId !== target.id) return;
-    if (target.kind === 'mob' && MOBS[target.templateId]?.ccImmune && this.isControlAura(aura.kind) && aura.sourceId !== target.id) return;
+    if (this.isNythraxisRaidEnemy(target) && this.isNythraxisControlAura(aura.kind) && aura.sourceId !== target.id
+      && !this.isNythraxisScriptedControl(target, aura)) return;
+    if (target.kind === 'mob' && MOBS[target.templateId]?.ccImmune && this.isControlAura(aura.kind) && aura.sourceId !== target.id
+      && !this.isNythraxisScriptedControl(target, aura)) return;
     const existing = target.auras.findIndex((a) => a.id === aura.id && a.sourceId === aura.sourceId);
     if (existing >= 0) {
       this.applyNonPlayerStatAura(target, target.auras[existing], -1);
