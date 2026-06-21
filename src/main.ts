@@ -5,6 +5,7 @@ import { Keybinds } from './game/keybinds';
 import { Settings, GameSettings, SETTING_RANGES, normalizeClickMoveButton } from './game/settings';
 import { MobileControls, PHONE_TOUCH_QUERY, isPhoneTouchDevice } from './game/mobile_controls';
 import { shouldUseStaticBackdrop } from './game/landing_backdrop';
+import { navigatorSaveData } from './render/sky';
 import { Hud } from './ui/hud';
 import { PerfOverlay } from './ui/perf_overlay';
 import { PerfOverlayConfigStore, type PerfOverlayConfig } from './ui/perf_overlay_config';
@@ -548,6 +549,10 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   // The loading screen covers the gap - not a silent black screen.
   enterLoadingState(t('loading.world'));
   document.body.classList.add('game-active');
+  // We've left the start screen for the world, so pause + release the landing
+  // trailer: it's hidden now, and a decoding background video just wastes CPU/GPU
+  // and battery during play.
+  stopLandingTrailer();
   if (document.activeElement instanceof HTMLElement) {
     document.activeElement.blur();
   }
@@ -3458,16 +3463,33 @@ function wireWallet(): void {
 // 5.7 MB mp4 in the static case (the <video> ships with no source/autoplay; we
 // attach the source only when we choose the video path). Called at boot, when the
 // footer toggle flips, and when the in-game mirror setting changes.
+// Pause + tear down the start-screen trailer video (on enter-world). Releasing
+// the source frees the decoded buffer so it isn't still churning behind the HUD.
+function stopLandingTrailer(): void {
+  const backdrop = document.getElementById('start-screen-backdrop');
+  const video = document.getElementById('bg-home') as HTMLVideoElement | null;
+  backdrop?.classList.remove('trailer-ready', 'trailer-playing');
+  if (!video) return;
+  video.pause();
+  if (video.src) {
+    video.removeAttribute('src');
+    video.load();
+  }
+}
+
 let landingTrailerWired = false;
 function applyLandingBackdrop(highContrast: boolean): void {
   const backdrop = document.getElementById('start-screen-backdrop');
   const video = document.getElementById('bg-home') as HTMLVideoElement | null;
   if (!backdrop) return;
 
-  const saveData = !!(navigator as Navigator & { connection?: { saveData?: boolean } })
-    .connection?.saveData;
-  const reducedMotion = typeof window.matchMedia === 'function'
-    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saveData = navigatorSaveData();
+  // Reduced motion: honour BOTH the OS-level prefers-reduced-motion query and
+  // the player's persisted in-app Reduce Motion toggle, so the drifting trailer
+  // stays off for anyone who asked for less motion in either place.
+  const reducedMotion = (typeof window.matchMedia === 'function'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    || new Settings().get('reduceMotion');
   const useStatic = shouldUseStaticBackdrop({
     phone: isPhoneTouchDevice(),
     saveData,

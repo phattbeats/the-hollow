@@ -230,7 +230,9 @@ export const de_DE: EnTranslations = {
       "clickMoveRight": "Rechtsklick",
       "footstepSounds": "Schrittgeräusche",
       "showWalletOnCharacterScreen": "Wallet auf dem Charakterbildschirm anzeigen",
-      "showWalletOnPlayerCard": "Wallet auf der Spielerkarte anzeigen"
+      "showWalletOnPlayerCard": "Wallet auf der Spielerkarte anzeigen",
+      "uiScale": "UI Scale",
+      "highContrastBackground": "High-Contrast Background"
     },
     "perf": {
       "title": "Leistungsanzeige",
@@ -302,6 +304,10 @@ export const de_DE: EnTranslations = {
     },
     "playerCard": {
       "showWalletBadge": "Wallet-Abzeichen anzeigen"
+    },
+    "landing": {
+      "highContrast": "High Contrast",
+      "highContrastAria": "Toggle high-contrast background — disables the moving trailer so start-screen text stays legible"
     },
     "talents": {
       "defaultBuildName": "Build {n}"

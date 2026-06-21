@@ -3,8 +3,8 @@
 // the 5.7MB trailer mp4 is never requested there). Needs `npm run dev` on :5173.
 import puppeteer from 'puppeteer-core';
 import { mkdirSync } from 'node:fs';
+import { BROWSER_PATH as EXEC } from './browser_path.mjs';
 
-const EXEC = '/usr/bin/google-chrome-stable';
 const BASE = 'http://localhost:5173/';
 const OUT = 'pr-assets-a11y';
 mkdirSync(OUT, { recursive: true });

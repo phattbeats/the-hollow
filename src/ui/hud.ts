@@ -27,6 +27,7 @@ import { formatClockTime } from './clock';
 import { formatMinimapCoords } from './coords';
 import { compassView, type CardinalId } from './compass';
 import { clampMinimapZoom, nextMinimapZoom, isMinMinimapZoom, isMaxMinimapZoom, minimapZoomValue, MINIMAP_ZOOM_DEFAULT } from './minimap_zoom';
+import { getUiScale } from './ui_scale';
 import { restView } from './rest_indicator';
 import { nearestSubzone } from './subzone';
 import { lowResourceView } from './low_resource';
@@ -881,15 +882,40 @@ export class Hud {
 
   private setWindowPixelPosition(el: HTMLElement, left: number, top: number, rect = el.getBoundingClientRect()): void {
     const margin = 8;
-    const width = Math.min(rect.width, window.innerWidth - margin * 2);
-    const height = Math.min(rect.height, window.innerHeight - margin * 2);
-    const maxLeft = Math.max(margin, window.innerWidth - width - margin);
-    const maxTop = Math.max(margin, window.innerHeight - height - margin);
-    el.style.left = `${Math.max(margin, Math.min(maxLeft, left))}px`;
-    el.style.top = `${Math.max(margin, Math.min(maxTop, top))}px`;
+    // Callers pass coordinates in visual (zoomed) space: getBoundingClientRect()
+    // and pointer clientX/clientY are post-zoom, but style.left/top are author
+    // lengths the browser multiplies by #ui's `zoom`. Convert into author space
+    // (divide by the live UI scale) so the window lands where the pointer is, and
+    // clamp against the viewport expressed in that same author space. (Z=1 when
+    // uiScale is at its default, so this is a no-op for most players.)
+    const z = getUiScale();
+    const vw = window.innerWidth / z;
+    const vh = window.innerHeight / z;
+    const aLeft = left / z;
+    const aTop = top / z;
+    const width = Math.min(rect.width / z, vw - margin * 2);
+    const height = Math.min(rect.height / z, vh - margin * 2);
+    const maxLeft = Math.max(margin, vw - width - margin);
+    const maxTop = Math.max(margin, vh - height - margin);
+    el.style.left = `${Math.max(margin, Math.min(maxLeft, aLeft))}px`;
+    el.style.top = `${Math.max(margin, Math.min(maxTop, aTop))}px`;
     el.style.right = 'auto';
     el.style.bottom = 'auto';
     el.style.transform = 'none';
+  }
+
+  // Place a cursor-anchored popup (context menus, the loot window) at a viewport
+  // coordinate. x/y arrive in visual (zoomed / pointer-client) space; #ui is
+  // scaled by `zoom`, so convert into author space (÷ scale) and clamp against
+  // the viewport in that same space, keeping `reserveRight`/`reserveBottom`
+  // author px clear so the popup never spills off-screen. minTop pins it below
+  // the top edge. Z=1 (default uiScale) leaves the math identical to before.
+  private placePopupAt(el: HTMLElement, x: number, y: number, reserveRight: number, reserveBottom: number, minLeft = 0, minTop = 0): void {
+    const z = getUiScale();
+    const maxLeft = window.innerWidth / z - reserveRight;
+    const maxTop = window.innerHeight / z - reserveBottom;
+    el.style.left = `${Math.max(minLeft, Math.min(maxLeft, x / z))}px`;
+    el.style.top = `${Math.max(minTop, Math.min(maxTop, y / z))}px`;
   }
 
   private topmostOpenWindow(): HTMLElement | null {
@@ -1063,8 +1089,7 @@ export class Hud {
     }
     html += `<div class="ctx-item" data-act="close">${esc(t('hud.chat.context.cancel'))}</div>`;
     el.innerHTML = html;
-    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
-    el.style.top = `${Math.max(8, Math.min(window.innerHeight - 320, y))}px`;
+    this.placePopupAt(el, x, y, 170, 320, 0, 8);
     el.style.display = 'block';
     this.bindContextMenuActions((act) => {
       if (!isChatTabChannel(act)) return;
@@ -1404,9 +1429,13 @@ export class Hud {
       this.peekGuard.tooltipShown(trigger);
       this.tooltipEl.innerHTML = html();
       this.tooltipEl.style.display = 'block';
+      // offsetWidth/Height are author-space (zoom-immune) layout sizes, but x/y
+      // arrive in visual (zoomed) space, so map x/y into author space (÷ scale)
+      // before clamping against the author-space tooltip box + viewport.
+      const z = getUiScale();
       const tw = this.tooltipEl.offsetWidth, th = this.tooltipEl.offsetHeight;
-      this.tooltipEl.style.left = `${Math.max(8, Math.min(window.innerWidth - tw - 8, x + 14))}px`;
-      this.tooltipEl.style.top = `${Math.max(8, y - th - 10)}px`;
+      this.tooltipEl.style.left = `${Math.max(8, Math.min(window.innerWidth / z - tw - 8, x / z + 14))}px`;
+      this.tooltipEl.style.top = `${Math.max(8, y / z - th - 10)}px`;
     };
     const showNearElement = () => {
       const rect = el.getBoundingClientRect();
@@ -1419,9 +1448,10 @@ export class Hud {
     });
     el.addEventListener('mousemove', (e) => {
       if (mobile()) return;
+      const z = getUiScale();
       const tw = this.tooltipEl.offsetWidth, th = this.tooltipEl.offsetHeight;
-      this.tooltipEl.style.left = `${Math.min(window.innerWidth - tw - 8, e.clientX + 14)}px`;
-      this.tooltipEl.style.top = `${Math.max(8, e.clientY - th - 10)}px`;
+      this.tooltipEl.style.left = `${Math.min(window.innerWidth / z - tw - 8, e.clientX / z + 14)}px`;
+      this.tooltipEl.style.top = `${Math.max(8, e.clientY / z - th - 10)}px`;
     });
     el.addEventListener('mouseleave', () => { clearTouchTimer(); this.tooltipEl.style.display = 'none'; });
     el.addEventListener('focusin', showNearElement);
@@ -4149,8 +4179,11 @@ export class Hud {
     const el = document.createElement('div');
     el.className = 'fct' + (crit ? ' crit' : '');
     el.style.color = color;
-    el.style.left = `${v.x + (Math.random() * 30 - 15)}px`;
-    el.style.top = `${v.y}px`;
+    // worldToScreen() is in the unzoomed renderer viewport, but #ui (this node's
+    // parent) is scaled by `zoom`, so divide into author space before writing.
+    const z = getUiScale();
+    el.style.left = `${(v.x + (Math.random() * 30 - 15)) / z}px`;
+    el.style.top = `${v.y / z}px`;
     el.textContent = text;
     document.getElementById('ui')!.appendChild(el);
     setTimeout(() => el.remove(), 1250);
@@ -4654,8 +4687,7 @@ export class Hud {
     btn.addEventListener('click', () => { this.sim.lootCorpse(mobId); this.closeLoot(); });
     el.appendChild(btn);
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeLoot());
-    el.style.left = `${Math.min(window.innerWidth - 260, Math.max(10, screenX - 115))}px`;
-    el.style.top = `${Math.min(window.innerHeight - 280, Math.max(10, screenY - 30))}px`;
+    this.placePopupAt(el, screenX - 115, screenY - 30, 260, 280, 10, 10);
     el.style.transform = 'none'; // loot pops at the cursor, not the centred slot
     el.style.display = 'block';
   }
@@ -7248,8 +7280,7 @@ export class Hud {
     html += `<div class="ctx-item" data-act="close">${esc(t('hud.chat.context.cancel'))}</div>`;
     el.innerHTML = html;
     hydratePortraits(el);
-    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
-    el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
+    this.placePopupAt(el, x, y, 170, 240);
     el.style.display = 'block';
     this.bindContextMenuActions((act) => {
       if (act === 'inspect') this.openInspect(pid);
@@ -7322,8 +7353,7 @@ export class Hud {
     html += `<div class="ctx-item" role="button" tabindex="0" data-act="clear">${esc(t('hud.markers.clear'))}</div>`;
     html += `<div class="ctx-item" role="button" tabindex="0" data-act="close">${esc(t('hud.markers.cancel'))}</div>`;
     el.innerHTML = html;
-    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
-    el.style.top = `${Math.min(window.innerHeight - 340, y)}px`;
+    this.placePopupAt(el, x, y, 170, 340);
     el.style.display = 'block';
     el.querySelectorAll('.ctx-item').forEach((item) => {
       const activate = () => {
@@ -7350,8 +7380,7 @@ export class Hud {
     if (!isWarlock) html += `<div class="ctx-item" data-act="abandon">${esc(t('hud.pet.abandon'))}</div>`;
     html += `<div class="ctx-item" data-act="close">${esc(t('hud.pet.cancel'))}</div>`;
     el.innerHTML = html;
-    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
-    el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
+    this.placePopupAt(el, x, y, 170, 240);
     el.style.display = 'block';
     el.querySelectorAll('.ctx-item').forEach((item) => {
       item.addEventListener('click', () => {
@@ -7411,8 +7440,7 @@ export class Hud {
     el.innerHTML = titleHtml + inspectHtml
       + actions.map((a) => `<div class="ctx-item" data-act="${a.id}">${esc(a.label)}</div>`).join('');
     hydratePortraits(el);
-    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
-    el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
+    this.placePopupAt(el, x, y, 170, 240);
     el.style.display = 'block';
     this.bindContextMenuActions((act) => {
       const livePid = this.playerPidByName(name);
