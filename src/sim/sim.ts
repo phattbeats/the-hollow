@@ -325,6 +325,19 @@ export interface DuelState {
   timer: number; // countdown remaining / elapsed
 }
 
+type GroundAoE = {
+  sourceId: number;
+  pos: Vec3;
+  radius: number;
+  min: number;
+  max: number;
+  remaining: number;
+  interval: number;
+  tickTimer: number;
+  school: string;
+  ability: string;
+};
+
 export type { ArenaFormat } from './types';
 
 export interface ArenaQueueUnit {
@@ -760,6 +773,7 @@ export class Sim {
   /** When true, /dev level|tp|give chat commands are accepted (local dev only). */
   readonly devCommands: boolean;
   private pendingMobRespawns: PendingMobRespawn[] = [];
+  private groundAoEs: GroundAoE[] = [];
 
   constructor(cfg: SimConfig) {
     this.devCommands = cfg.devCommands ?? false;
@@ -1617,6 +1631,7 @@ export class Sim {
     this.time += DT;
     this.tickCount++;
     this.updatePendingMobRespawns();
+    this.updateGroundAoEs();
 
     const despawnIds: number[] = [];
     for (const e of this.entities.values()) {
@@ -2285,6 +2300,30 @@ export class Sim {
     if (statsDirty && e.kind === 'player') {
       const meta = this.players.get(e.id);
       if (meta) recalcPlayerStats(e, meta.cls, meta.equipment, this.playerMods(meta));
+    }
+  }
+
+  private updateGroundAoEs(): void {
+    for (let i = this.groundAoEs.length - 1; i >= 0; i--) {
+      const effect = this.groundAoEs[i];
+      effect.remaining -= DT;
+      effect.tickTimer -= DT;
+      while (effect.tickTimer <= CAST_COMPLETE_EPS && effect.remaining > CAST_COMPLETE_EPS) {
+        effect.tickTimer += effect.interval;
+        this.pulseGroundAoE(effect);
+      }
+      if (effect.remaining <= CAST_COMPLETE_EPS) this.groundAoEs.splice(i, 1);
+    }
+  }
+
+  private pulseGroundAoE(effect: GroundAoE, threatOpts?: { flat?: number; mult?: number }): void {
+    const source = this.entities.get(effect.sourceId);
+    if (!source || source.dead) return;
+    this.emit({ type: 'spellfx', sourceId: source.id, targetId: source.id, school: effect.school, fx: 'tick' });
+    for (const target of this.hostilesInRadius(source, effect.pos, effect.radius)) {
+      if (!this.hasLineOfSight(source, target)) continue;
+      const dmg = Math.round(this.rng.range(effect.min, effect.max));
+      this.dealDamage(source, target, dmg, false, effect.school, effect.ability, 'hit', false, threatOpts);
     }
   }
 
@@ -2977,6 +3016,24 @@ export class Sim {
             if (!isSpell) dmg *= 1 - armorReduction(this.effectiveArmor(m), p.level);
             this.dealDamage(p, m, Math.round(dmg), false, ability.school, ability.name, 'hit', false, threatOpts);
           }
+          break;
+        }
+        case 'groundAoE': {
+          const groundEffect: GroundAoE = {
+            sourceId: p.id,
+            pos: { ...p.pos },
+            radius: eff.radius,
+            min: eff.min,
+            max: eff.max,
+            remaining: eff.duration,
+            interval: eff.interval,
+            tickTimer: eff.interval,
+            school: ability.school,
+            ability: ability.name,
+          };
+          this.emit({ type: 'spellfx', sourceId: p.id, targetId: p.id, school: ability.school, fx: 'nova' });
+          this.pulseGroundAoE(groundEffect, threatOpts);
+          this.groundAoEs.push(groundEffect);
           break;
         }
         case 'aoeAttackSpeed': {

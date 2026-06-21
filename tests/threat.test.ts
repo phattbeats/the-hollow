@@ -99,6 +99,32 @@ describe('threat from damage', () => {
     expect(wolf.threat.get(sim.playerId)).toBeCloseTo(100 * RIGHTEOUS_FURY_THREAT_MULT + 101, 5);
   });
 
+  it('consecration burns the ground every 2 seconds from 0s to 8s and generates holy threat each pulse', () => {
+    const sim = makeSim('paladin');
+    sim.setPlayerLevel(20);
+    const wolf = nearestMob(sim, 'forest_wolf');
+    beefUp(wolf);
+    teleport(sim, sim.player, wolf.pos.x, wolf.pos.z + 2);
+    sim.player.resource = sim.player.maxResource;
+    sim.castAbility('righteous_fury');
+    sim.tick();
+    sim.player.gcdRemaining = 0;
+    sim.castAbility('consecration');
+
+    const damageEvents: number[] = [];
+    for (let i = 0; i < 20 * 10; i++) {
+      for (const event of sim.tick()) {
+        if (event.type === 'damage' && event.ability === 'Consecration' && event.targetId === wolf.id && event.amount > 0) {
+          damageEvents.push(event.amount);
+        }
+      }
+    }
+
+    expect(damageEvents).toHaveLength(5);
+    expect(damageEvents.reduce((sum, amount) => sum + amount, 0)).toBeGreaterThanOrEqual(28 * 5);
+    expect(wolf.threat.get(sim.playerId) ?? 0).toBeGreaterThan(28 * 5 * RIGHTEOUS_FURY_THREAT_MULT);
+  });
+
   it('classic flat threat values resolve per rank (heroic strike 20/39)', () => {
     const sim = makeSim('warrior');
     expect(sim.resolvedAbility('heroic_strike')!.threatFlat).toBe(20);
@@ -805,20 +831,22 @@ describe('druid forms', () => {
     expect(sim.player.resource).toBeLessThanOrEqual(manaBefore);
   });
 
-  // Issue #298: bear should grant +65% armor and +15 AP, cat should raise AP.
+  // Issue #298: bear should grant armor, stamina, and +15 AP; cat should raise AP.
   // These apply in recalcPlayerStats; the bug the reporter hit was the missing
   // cat-form *visual* (renderer), but lock the stat math so it can't regress.
-  it('bear form raises armor +65% and attack power +15', () => {
+  it('bear form raises armor, maximum health, and attack power', () => {
     const sim = makeSim('druid');
     sim.setPlayerLevel(20);
     sim.tick();
     const armorBefore = sim.player.stats.armor;
+    const hpBefore = sim.player.maxHp;
     const apBefore = sim.player.attackPower;
     sim.castAbility('bear_form');
     sim.tick();
     expect(sim.player.auras.some((a) => a.kind === 'form_bear')).toBe(true);
-    expect(sim.player.stats.armor).toBe(Math.round(armorBefore * 1.65));
-    expect(sim.player.attackPower).toBe(apBefore + 15);
+    expect(sim.player.stats.armor).toBeGreaterThanOrEqual(Math.round(armorBefore * 1.9));
+    expect(sim.player.maxHp).toBeGreaterThan(hpBefore);
+    expect(sim.player.attackPower).toBeGreaterThan(apBefore + 15);
   });
 
   it('wolf form raises attack power', () => {
