@@ -616,36 +616,36 @@ export const zh_TW: EnTranslations = {
         "flavor": "市場會感到你的動作：供應量的 1%。"
       },
       "tidelord": {
-        "name": "潮汐之主",
-        "flavor": "潮水回應你的召喚：供應量的 2%。"
+        "name": "潮汐領主",
+        "flavor": "潮汐回應你的召喚：供應量的 2%。"
       },
       "stormcaller": {
-        "name": "喚暴者",
-        "flavor": "風暴因你之名而聚：供應量的 3%。"
+        "name": "喚雷者",
+        "flavor": "風暴因你的名字而聚集：供應量的 3%。"
       },
       "krakencrown": {
-        "name": "海妖之冕",
-        "flavor": "深淵為你加冕：供應量的 4%。"
+        "name": "海淵冠冕",
+        "flavor": "深海為你加冕：供應量的 4%。"
       },
       "titanforged": {
-        "name": "泰坦所鑄",
-        "flavor": "於泰坦之間淬鍊而成：供應量的 5%。"
+        "name": "泰坦鑄成",
+        "flavor": "在泰坦之間鍛造而成：供應量的 5%。"
       },
       "starhoard": {
-        "name": "星藏",
-        "flavor": "令星光彎折的寶藏：供應量的 6%。"
+        "name": "星藏者",
+        "flavor": "能彎折星光的寶藏：供應量的 6%。"
       },
       "voidwarden": {
         "name": "虛空守望者",
-        "flavor": "鎮守虛空邊緣：供應量的 7%。"
+        "flavor": "守在虛空邊緣：供應量的 7%。"
       },
       "realmshaper": {
         "name": "塑界者",
-        "flavor": "你重塑了這片國度：供應量的 8%。"
+        "flavor": "你重塑著領域：供應量的 8%。"
       },
       "worldforger": {
         "name": "鑄世者",
-        "flavor": "鍛造屬於自己的世界：供應量的 9%。"
+        "flavor": "鍛造屬於你的世界：供應量的 9%。"
       },
       "worldbearer": {
         "name": "承世者",
@@ -1949,6 +1949,16 @@ export const zh_TW: EnTranslations = {
     "loot": {
       "takeAll": "全部拾取",
       "close": "關閉戰利品"
+    },
+    "lootRoll": {
+      "title": "為戰利品擲骰",
+      "need": "需求",
+      "greed": "貪婪",
+      "pass": "放棄",
+      "needAria": "需求 {item}",
+      "greedAria": "貪婪 {item}",
+      "passAria": "放棄 {item}",
+      "everyonePassed": "所有人都放棄了 {item}。"
     }
   },
   "entities": {

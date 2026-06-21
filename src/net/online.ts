@@ -8,7 +8,7 @@ import {
 } from '../sim/content/talents';
 import { mechChromaItemId, mechChromaSkinIndex } from '../sim/content/skins';
 import {
-  Entity, EquipSlot, InvSlot, MoveInput, PlayerClass, QuestProgress, QuestState, SimEvent,
+  Entity, EquipSlot, InvSlot, LootRollChoice, MoveInput, PlayerClass, QuestProgress, QuestState, SimEvent,
   emptyMoveInput,
 } from '../sim/types';
 import { normalizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
@@ -414,7 +414,7 @@ function blankEntity(id: number): Entity {
     spawnPos: { x: 0, y: 0, z: 0 }, leashAnchor: null, evadeStall: 0, fleeTimer: 0, fleeReturnTimer: 0, hasFled: false, wanderTarget: null, wanderTimer: 0,
     aggroTargetId: null, respawnTimer: 0, corpseTimer: 0, lootable: false, loot: null,
     xpValue: 0, questIds: [], vendorItems: [], objectItemId: null, dungeonId: null,
-    dead: false, scale: 1, color: 0xffffff, skinCatalog: 'class', skin: 0,
+    dead: false, scale: 1, color: 0xffffff, skinCatalog: 'class', skin: 0, guild: '',
   };
 }
 
@@ -726,6 +726,7 @@ export class ClientWorld implements IWorld {
         e.color = w.c ?? 0xffffff;
         e.dungeonId = w.dgn ?? null;
         e.objectItemId = w.obj ?? null;
+        e.guild = w.gd ?? '';
         if (e.kind === 'npc') {
           const def = NPCS[e.templateId];
           e.questIds = def ? [...def.questIds] : [];
@@ -990,6 +991,9 @@ export class ClientWorld implements IWorld {
   }
   lootCorpse(id: number): void {
     this.cmd({ cmd: 'loot', id });
+  }
+  submitLootRoll(rollId: number, choice: LootRollChoice): void {
+    this.cmd({ cmd: 'lootRoll', rollId, choice });
   }
   pickUpObject(id: number): void {
     this.cmd({ cmd: 'pickup', id });

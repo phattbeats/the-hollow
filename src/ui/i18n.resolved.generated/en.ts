@@ -1949,6 +1949,16 @@ export const en: EnTranslations = {
     "loot": {
       "takeAll": "Take All",
       "close": "Close loot"
+    },
+    "lootRoll": {
+      "title": "Roll for loot",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "needAria": "Need for {item}",
+      "greedAria": "Greed for {item}",
+      "passAria": "Pass on {item}",
+      "everyonePassed": "Everyone passed on {item}."
     }
   },
   "entities": {

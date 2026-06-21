@@ -1949,6 +1949,16 @@ export const en_XA: EnTranslations = {
     "loot": {
       "takeAll": "[Ţáķé Áļļ]",
       "close": "[Çļóšé ļóóţ]"
+    },
+    "lootRoll": {
+      "title": "[Ŕóļļ ƒóŕ ļóóţ]",
+      "need": "[Ñééð]",
+      "greed": "[Ĝŕééð]",
+      "pass": "[Þášš]",
+      "needAria": "[Ñééð ƒóŕ {item}]",
+      "greedAria": "[Ĝŕééð ƒóŕ {item}]",
+      "passAria": "[Þášš óñ {item}]",
+      "everyonePassed": "[Éʋéŕýóñé þáššéð óñ {item}.]"
     }
   },
   "entities": {

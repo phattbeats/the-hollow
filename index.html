@@ -473,6 +473,7 @@
     text-shadow: 1px 1px 2px #000; white-space: nowrap; will-change: transform; }
   .nameplate.has-emote { z-index: 30; }
   .np-name { font-size: 12px; font-weight: bold; font-family: var(--title-font); letter-spacing: 0.3px; display: inline-block; vertical-align: middle; }
+  .np-guild { font-size: 10px; font-weight: 700; color: #c9dcfb; font-family: var(--title-font); letter-spacing: 0.2px; margin-top: -1px; }
   /* $WOC holder-tier flair badge, inline to the left of a player's name */
   .np-tier { display: inline-block; width: 15px; height: 15px; vertical-align: middle; margin-right: 3px;
     filter: drop-shadow(0 1px 1px #000); }
@@ -944,6 +945,79 @@
   #loot-window { width: 230px; }
   .loot-item { display: flex; align-items: center; gap: 8px; padding: 4px; font-size: 12px; cursor: default; border-radius: 4px; }
   .loot-item:hover { background: #ffffff10; }
+  #loot-rolls {
+    position: fixed;
+    right: max(14px, env(safe-area-inset-right));
+    bottom: calc(112px + env(safe-area-inset-bottom));
+    z-index: 65;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    width: min(360px, calc(100vw - 28px));
+  }
+  .loot-roll {
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .loot-roll-item {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    align-items: center;
+    gap: 8px;
+  }
+  .loot-roll-copy { min-width: 0; }
+  .loot-roll-title {
+    color: #d5c19a;
+    font-family: var(--title-font);
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+  .loot-roll-name {
+    font-size: 13px;
+    overflow-wrap: anywhere;
+    text-shadow: 1px 1px 1px #000;
+  }
+  .loot-roll-timer {
+    height: 7px;
+    margin: 7px 0;
+    background: #090806;
+    border: 1px solid #3b2e19;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .loot-roll-timer span {
+    display: block;
+    height: 100%;
+    width: calc(var(--loot-roll-frac, 1) * 100%);
+    background: linear-gradient(90deg, #b88625, #f4d36e);
+  }
+  .loot-roll-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .loot-roll-btn {
+    min-height: 34px;
+    padding: 5px 4px;
+    border-radius: 4px;
+    border: 1px solid #8f6c31;
+    outline: 1px solid #000;
+    background: linear-gradient(#6e271d, #411108);
+    color: #ffe3a5;
+    font-family: var(--title-font);
+    font-size: 11px;
+    text-shadow: 1px 1px 1px #000;
+    cursor: var(--cursor-point);
+  }
+  .loot-roll-btn.need { border-color: #339449; color: #c9ffd0; }
+  .loot-roll-btn.greed { border-color: #b18a32; color: #ffe3a5; }
+  .loot-roll-btn.pass { border-color: #8f3a3a; color: #ffc6c6; }
+  .loot-roll-btn:hover { filter: brightness(1.2); }
+  .loot-roll-btn:focus-visible {
+    outline: 3px solid var(--color-border-focus) !important;
+    outline-offset: 2px !important;
+  }
 
   .item-icon { width: 28px; height: 28px; border-radius: 4px; flex: none; display: block;
     object-fit: cover; background: #0d0d13; border: 1px solid #888; }
@@ -4462,7 +4536,14 @@
   .trade-item.mine:hover { background: #ffffff14; }
   .trade-empty { color: var(--color-text-muted); font-size: 11px; padding: 4px; }
   .trade-money { margin-top: 6px; font-size: 12px; }
+  .trade-money-label { display: block; margin-bottom: 4px; }
+  .trade-coins { display: flex; gap: 4px; align-items: center; }
+  /* The coin disc sits between its input and the g/s/c tag; flex gap handles spacing, so drop the disc's own margins here. The tag hugs the disc (no preceding gap). */
+  .trade-coins .coin { margin: 0; }
+  .trade-coins .coin + .mkt-coin-tag { margin-left: -2px; }
+  .trade-money input.coininput { width: 52px; }
   .trade-money input { width: 80px; background: #0d0d14; color: #ffd100; border: 1px solid var(--border); border-radius: 3px; padding: 3px 6px; user-select: text; }
+  .trade-money .mkt-coin-tag { margin-right: 2px; }
   .trade-hint { font-size: 10.5px; color: #887c5c; margin-top: 8px; }
 
   /* ---------- elite target frame ---------- */
@@ -5593,6 +5674,7 @@
   body.mobile-touch .mkt-btn,
   body.mobile-touch .mkt-list-btn,
   body.mobile-touch #loot-window .btn,
+  body.mobile-touch .loot-roll-btn,
   body.mobile-touch .soc-tab,
   body.mobile-touch .soc-x,
   body.mobile-touch .soc-sugg-item,

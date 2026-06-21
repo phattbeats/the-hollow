@@ -1949,6 +1949,16 @@ export const it_IT: EnTranslations = {
     "loot": {
       "takeAll": "Prendi tutto",
       "close": "Chiudi bottino"
+    },
+    "lootRoll": {
+      "title": "Tiro per bottino",
+      "need": "Bisogno",
+      "greed": "Brama",
+      "pass": "Passa",
+      "needAria": "Bisogno per {item}",
+      "greedAria": "Brama per {item}",
+      "passAria": "Passa su {item}",
+      "everyonePassed": "Tutti hanno passato su {item}."
     }
   },
   "entities": {

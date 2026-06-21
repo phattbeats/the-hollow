@@ -616,36 +616,36 @@ export const ja_JP: EnTranslations = {
         "flavor": "あなたが動けば市場が感じ取ります: 供給量の 1%。"
       },
       "tidelord": {
-        "name": "潮の王",
+        "name": "潮の君主",
         "flavor": "潮があなたの呼び声に応えます: 供給量の 2%。"
       },
       "stormcaller": {
-        "name": "嵐を呼ぶ者",
+        "name": "嵐呼び",
         "flavor": "あなたの名に嵐が集います: 供給量の 3%。"
       },
       "krakencrown": {
-        "name": "深海の王冠",
-        "flavor": "深淵に戴冠されし者: 供給量の 4%。"
+        "name": "クラーケンの冠",
+        "flavor": "深海に冠を授けられています: 供給量の 4%。"
       },
       "titanforged": {
-        "name": "巨神に鍛えられし者",
-        "flavor": "巨神たちの間で鍛えられし者: 供給量の 5%。"
+        "name": "タイタン鍛造",
+        "flavor": "タイタンたちの間で鍛えられました: 供給量の 5%。"
       },
       "starhoard": {
-        "name": "星の財宝",
-        "flavor": "星明かりをも歪める財宝: 供給量の 6%。"
+        "name": "星の秘蔵",
+        "flavor": "星光を曲げるほどの宝庫です: 供給量の 6%。"
       },
       "voidwarden": {
-        "name": "虚空の守人",
-        "flavor": "虚空の縁を守る者: 供給量の 7%。"
+        "name": "虚空の番人",
+        "flavor": "虚空の縁を守っています: 供給量の 7%。"
       },
       "realmshaper": {
-        "name": "領界を形づくる者",
-        "flavor": "あなたは領界を造り変えます: 供給量の 8%。"
+        "name": "領域形成者",
+        "flavor": "あなたは領域を作り変えます: 供給量の 8%。"
       },
       "worldforger": {
-        "name": "世界を鍛える者",
-        "flavor": "自らの世界を鍛え上げます: 供給量の 9%。"
+        "name": "世界鍛造者",
+        "flavor": "自分だけの世界を鍛えています: 供給量の 9%。"
       },
       "worldbearer": {
         "name": "世界を担う者",
@@ -1949,6 +1949,16 @@ export const ja_JP: EnTranslations = {
     "loot": {
       "takeAll": "すべて取る",
       "close": "戦利品を閉じる"
+    },
+    "lootRoll": {
+      "title": "戦利品ロール",
+      "need": "必要",
+      "greed": "強欲",
+      "pass": "パス",
+      "needAria": "{item}を必要",
+      "greedAria": "{item}を強欲",
+      "passAria": "{item}をパス",
+      "everyonePassed": "全員が{item}をパスしました。"
     }
   },
   "entities": {

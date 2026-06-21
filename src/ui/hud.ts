@@ -13,7 +13,7 @@ import {
   zoneWelcomeText,
 } from '../sim/data';
 import type { ZoneDef } from '../sim/data';
-import type { AbilityDef, EquipSlot, InvSlot, PetMode, PlayerClass, ResourceType, SkinRank, Stats } from '../sim/types';
+import type { AbilityDef, EquipSlot, InvSlot, LootRollChoice, PetMode, PlayerClass, ResourceType, SkinRank, Stats } from '../sim/types';
 import { EVENT_SKIN_TIERS, MECH_CHROMAS, SKIN_RANKS, skinRankOrder, type SkinTier } from '../sim/content/skins';
 import {
   AbilityEffect, CONSUME_DURATION, Entity, FISHING_CAST_ID, GCD, ItemDef, SimEvent,
@@ -451,6 +451,7 @@ export class Hud {
   private minimapZoomLabel: HTMLElement | null = null;
   private mapBg: HTMLCanvasElement | null = null;
   private openLootMobId: number | null = null;
+  private activeLootRolls = new Map<number, { event: Extract<SimEvent, { type: 'lootRoll' }>; receivedAt: number; durationMs: number }>();
   private openVendorNpcId: number | null = null;
   private openGossipNpcId: number | null = null;
   private openQuestDetailId: string | null = null;
@@ -2313,6 +2314,7 @@ export class Hud {
     if (slowHud) this.lastHudSlowAt = now;
 
     this.meters.update();
+    this.updateLootRollTimers(now);
     this.syncActiveHotbarForm();
     this.syncSlotMap(); // picks up newly learned abilities mid-session
 
@@ -3661,9 +3663,14 @@ export class Hud {
         case 'comboPoint': break;
         case 'loot': {
           this.log(this.localizeLootText(ev.text), '#7fdc4f');
+          if (/ wins .+ \(\d+\)$/.test(ev.text) || /^Everyone passed on .+\.$/.test(ev.text)) this.closeLootRollsForItem(ev.text);
           if (ev.text.includes('loot') || ev.text.includes('Sold') || ev.text.includes('Bought back')) audio.coin();
           else audio.lootItem();
           if ($('#bags').style.display !== 'none') this.renderBags();
+          break;
+        }
+        case 'lootRoll': {
+          this.showLootRoll(ev);
           break;
         }
         case 'vendor': {
@@ -4193,6 +4200,8 @@ export class Hud {
     if (match) return t('hud.logs.lootReceiveMoney', { money: this.localizeSimMoney(match[1]) });
     match = /^You loot (.+)\.$/.exec(text);
     if (match) return t('hud.logs.lootMoney', { money: this.localizeSimMoney(match[1]) });
+    match = /^Everyone passed on (.+)\.$/.exec(text);
+    if (match) return t('itemUi.lootRoll.everyonePassed', { item: itemDisplayNameFromSource(match[1]) });
     match = /^Sold (.+) for (.+)\.$/.exec(text);
     if (match) return t('hud.logs.soldItem', { item: itemDisplayNameFromSource(match[1]), money: this.localizeSimMoney(match[2]) });
     match = /^Listed (.+?)( x\d+)? on the World Market for (.+)\.$/.exec(text);
@@ -4742,6 +4751,100 @@ export class Hud {
   // Loot window
   // -------------------------------------------------------------------------
 
+  private lootRollRoot(): HTMLElement {
+    let root = document.getElementById('loot-rolls');
+    if (!root) {
+      root = document.createElement('div');
+      root.id = 'loot-rolls';
+      root.setAttribute('aria-live', 'polite');
+      document.body.appendChild(root);
+    }
+    return root;
+  }
+
+  private showLootRoll(ev: Extract<SimEvent, { type: 'lootRoll' }>): void {
+    this.activeLootRolls.set(ev.rollId, { event: ev, receivedAt: performance.now(), durationMs: 30_000 });
+    this.renderLootRolls();
+  }
+
+  private submitLootRoll(rollId: number, choice: LootRollChoice): void {
+    this.sim.submitLootRoll(rollId, choice);
+    this.activeLootRolls.delete(rollId);
+    this.renderLootRolls();
+  }
+
+  private updateLootRollTimers(now: number): void {
+    if (this.activeLootRolls.size === 0) return;
+    let changed = false;
+    for (const [rollId, roll] of this.activeLootRolls) {
+      if (now - roll.receivedAt >= roll.durationMs) {
+        this.activeLootRolls.delete(rollId);
+        changed = true;
+      }
+    }
+    if (changed) this.renderLootRolls();
+    const root = document.getElementById('loot-rolls');
+    if (!root) return;
+    for (const row of root.querySelectorAll<HTMLElement>('.loot-roll')) {
+      const rollId = Number(row.dataset.rollId);
+      const roll = this.activeLootRolls.get(rollId);
+      if (!roll) continue;
+      const remaining = Math.max(0, 1 - (now - roll.receivedAt) / roll.durationMs);
+      row.style.setProperty('--loot-roll-frac', remaining.toFixed(3));
+    }
+  }
+
+  private closeLootRollsForItem(text: string): void {
+    const match = /^.+ wins (.+) \(\d+\)$/.exec(text) ?? /^Everyone passed on (.+)\.$/.exec(text);
+    if (!match) return;
+    for (const [rollId, roll] of this.activeLootRolls) {
+      if (roll.event.itemName === match[1]) this.activeLootRolls.delete(rollId);
+    }
+    this.renderLootRolls();
+  }
+
+  private renderLootRolls(): void {
+    const root = this.lootRollRoot();
+    if (this.activeLootRolls.size === 0) {
+      root.style.display = 'none';
+      root.innerHTML = '';
+      return;
+    }
+    root.style.display = 'flex';
+    root.innerHTML = '';
+    for (const [rollId, roll] of this.activeLootRolls) {
+      const ev = roll.event;
+      const item = ITEMS[ev.itemId];
+      const itemName = item ? itemDisplayName(item) : ev.itemName;
+      const quality = item?.quality ?? ev.quality ?? 'common';
+      const row = document.createElement('div');
+      row.className = 'loot-roll panel';
+      row.dataset.rollId = String(rollId);
+      row.style.setProperty('--loot-roll-frac', '1');
+      row.innerHTML = `
+        <div class="loot-roll-item">
+          ${item ? this.itemIcon(item) : `<img class="item-icon q-${quality}" src="${iconDataUrl('item', ev.itemId)}" alt="" draggable="false">`}
+          <div class="loot-roll-copy">
+            <div class="loot-roll-title">${esc(t('itemUi.lootRoll.title'))}</div>
+            <div class="loot-roll-name" style="color:${QUALITY_COLOR[quality] ?? '#fff'}">${esc(itemName)}</div>
+          </div>
+        </div>
+        <div class="loot-roll-timer" aria-hidden="true"><span></span></div>
+        <div class="loot-roll-actions">
+          <button type="button" class="loot-roll-btn need" data-choice="need">${esc(t('itemUi.lootRoll.need'))}</button>
+          <button type="button" class="loot-roll-btn greed" data-choice="greed">${esc(t('itemUi.lootRoll.greed'))}</button>
+          <button type="button" class="loot-roll-btn pass" data-choice="pass">${esc(t('itemUi.lootRoll.pass'))}</button>
+        </div>`;
+      if (item) this.attachTooltip(row.querySelector('.loot-roll-item') as HTMLElement, () => this.itemTooltip(item));
+      row.querySelectorAll<HTMLButtonElement>('[data-choice]').forEach((btn) => {
+        const choice = btn.dataset.choice as LootRollChoice;
+        btn.setAttribute('aria-label', t(`itemUi.lootRoll.${choice}Aria`, { item: itemName }));
+        btn.addEventListener('click', () => this.submitLootRoll(rollId, choice));
+      });
+      root.appendChild(row);
+    }
+  }
+
   openLoot(mobId: number, screenX: number, screenY: number): void {
     const mob = this.sim.entities.get(mobId);
     if (!mob?.loot) return;
@@ -5269,9 +5372,9 @@ export class Hud {
     const g = Math.floor(suggested / 10000), s = Math.floor((suggested % 10000) / 100), c = suggested % 100;
     form.innerHTML = qtyRow
       + `<div class="mkt-price-row"><label>${esc(t('itemUi.market.priceEach'))}</label>`
-      + `<input class="coininput" id="mkt-g" type="number" min="0" value="${g}" aria-label="${esc(t('itemUi.money.gold'))}"><span class="mkt-coin-tag">${esc(t('itemUi.money.goldShort'))}</span>`
-      + `<input class="coininput" id="mkt-s" type="number" min="0" max="99" value="${s}" aria-label="${esc(t('itemUi.money.silver'))}"><span class="mkt-coin-tag">${esc(t('itemUi.money.silverShort'))}</span>`
-      + `<input class="coininput" id="mkt-c" type="number" min="0" max="99" value="${c}" aria-label="${esc(t('itemUi.money.copper'))}"><span class="mkt-coin-tag">${esc(t('itemUi.money.copperShort'))}</span></div>`;
+      + `<input class="coininput" id="mkt-g" type="number" min="0" value="${g}" aria-label="${esc(t('itemUi.money.gold'))}"><span class="coin g" aria-hidden="true"></span><span class="mkt-coin-tag">${esc(t('itemUi.money.goldShort'))}</span>`
+      + `<input class="coininput" id="mkt-s" type="number" min="0" max="99" value="${s}" aria-label="${esc(t('itemUi.money.silver'))}"><span class="coin s" aria-hidden="true"></span><span class="mkt-coin-tag">${esc(t('itemUi.money.silverShort'))}</span>`
+      + `<input class="coininput" id="mkt-c" type="number" min="0" max="99" value="${c}" aria-label="${esc(t('itemUi.money.copper'))}"><span class="coin c" aria-hidden="true"></span><span class="mkt-coin-tag">${esc(t('itemUi.money.copperShort'))}</span></div>`;
     body.appendChild(form);
 
     const listBtn = document.createElement('button');
@@ -5375,6 +5478,10 @@ export class Hud {
   renderBags(): void {
     const el = $('#bags');
     const sim = this.sim;
+    // .bag-grid (not #bags) is the scroll container; it is recreated on every
+    // rebuild, so capture its scroll offset and reapply it to the fresh grid —
+    // otherwise using an item (e.g. a potion) snaps the list back to the top.
+    const prevScrollTop = el.querySelector('.bag-grid')?.scrollTop ?? 0;
     el.innerHTML = `<div class="panel-title"><span>${esc(t('itemUi.bags.title'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('itemUi.bags.close'))}">${svgIcon('close')}</button></div>`;
     const grid = document.createElement('div');
     grid.className = 'bag-grid';
@@ -5452,6 +5559,7 @@ export class Hud {
       grid.appendChild(row);
     }
     el.appendChild(grid);
+    grid.scrollTop = prevScrollTop;
     const money = document.createElement('div');
     money.className = 'money';
     money.innerHTML = `${this.wocBalanceHtml()}${this.moneyHtml(sim.copper)}`;
@@ -8114,7 +8222,13 @@ export class Hud {
         <div class="trade-col ${info.myAccepted ? 'accepted' : ''}">
           <h4>${esc(t('hud.trade.yourOffer'))}</h4>
           <div class="trade-items">${info.myOffer.items.map((s) => itemRow(s, true)).join('') || `<div class="trade-empty">${esc(t('hud.trade.emptyMine'))}</div>`}</div>
-          <label class="trade-money" for="trade-copper">${esc(t('hud.trade.money'))}: <input id="trade-copper" type="number" min="0" value="${this.stagedTrade.copper}" /> ${esc(t('hud.trade.copper'))}</label>
+          <div class="trade-money"><span class="trade-money-label">${esc(t('hud.trade.money'))}:</span>
+            <span class="trade-coins">
+              <input class="coininput" id="trade-g" type="number" min="0" value="${Math.floor(this.stagedTrade.copper / 10000)}" aria-label="${esc(t('itemUi.money.gold'))}"><span class="coin g" aria-hidden="true"></span><span class="mkt-coin-tag">${esc(t('itemUi.money.goldShort'))}</span>
+              <input class="coininput" id="trade-s" type="number" min="0" max="99" value="${Math.floor((this.stagedTrade.copper % 10000) / 100)}" aria-label="${esc(t('itemUi.money.silver'))}"><span class="coin s" aria-hidden="true"></span><span class="mkt-coin-tag">${esc(t('itemUi.money.silverShort'))}</span>
+              <input class="coininput" id="trade-c" type="number" min="0" max="99" value="${this.stagedTrade.copper % 100}" aria-label="${esc(t('itemUi.money.copper'))}"><span class="coin c" aria-hidden="true"></span><span class="mkt-coin-tag">${esc(t('itemUi.money.copperShort'))}</span>
+            </span>
+          </div>
         </div>
         <div class="trade-col ${info.theirAccepted ? 'accepted' : ''}">
           <h4>${esc(t('hud.trade.theirOffer', { name: info.otherName }))}</h4>
@@ -8145,11 +8259,17 @@ export class Hud {
         }
       });
     });
-    const copperInput = el.querySelector('#trade-copper') as HTMLInputElement;
-    copperInput?.addEventListener('change', () => {
-      this.stagedTrade.copper = Math.max(0, Math.floor(Number(copperInput.value) || 0));
+    const goldInput = el.querySelector('#trade-g') as HTMLInputElement;
+    const silverInput = el.querySelector('#trade-s') as HTMLInputElement;
+    const copperInput = el.querySelector('#trade-c') as HTMLInputElement;
+    const syncTradeMoney = () => {
+      const gg = Math.max(0, Math.floor(Number(goldInput?.value) || 0));
+      const ss = Math.max(0, Math.floor(Number(silverInput?.value) || 0));
+      const cc = Math.max(0, Math.floor(Number(copperInput?.value) || 0));
+      this.stagedTrade.copper = gg * 10000 + ss * 100 + cc;
       this.pushTradeOffer();
-    });
+    };
+    [goldInput, silverInput, copperInput].forEach((input) => input?.addEventListener('change', syncTradeMoney));
     el.style.display = 'block';
   }
 
