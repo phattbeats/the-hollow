@@ -1904,6 +1904,16 @@ export const ru_RU: EnTranslations = {
     "loot": {
       "takeAll": "Взять все",
       "close": "Закрыть добычу"
+    },
+    "lootRoll": {
+      "title": "Бросок за добычу",
+      "need": "Нужно",
+      "greed": "Жадность",
+      "pass": "Пас",
+      "needAria": "Нужно: {item}",
+      "greedAria": "Жадность: {item}",
+      "passAria": "Пас: {item}",
+      "everyonePassed": "Все отказались от {item}."
     }
   },
   "entities": {

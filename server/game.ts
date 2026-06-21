@@ -1167,6 +1167,11 @@ export class GameServer {
       case 'stopattack': sim.stopAutoAttack(pid); break;
       case 'interact': sim.interact(pid); break;
       case 'loot': if (typeof msg.id === 'number') sim.lootCorpse(msg.id, pid); break;
+      case 'lootRoll':
+        if (typeof msg.rollId === 'number' && (msg.choice === 'need' || msg.choice === 'greed' || msg.choice === 'pass')) {
+          sim.submitLootRoll(msg.rollId, msg.choice, pid);
+        }
+        break;
       case 'pickup': if (typeof msg.id === 'number') sim.pickUpObject(msg.id, pid); break;
       case 'accept': if (typeof msg.quest === 'string') { sim.acceptQuest(msg.quest, pid); this.resyncQuests(session); } break;
       case 'turnin':

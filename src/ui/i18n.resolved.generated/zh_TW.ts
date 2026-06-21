@@ -1904,6 +1904,16 @@ export const zh_TW: EnTranslations = {
     "loot": {
       "takeAll": "全部拾取",
       "close": "關閉戰利品"
+    },
+    "lootRoll": {
+      "title": "為戰利品擲骰",
+      "need": "需求",
+      "greed": "貪婪",
+      "pass": "放棄",
+      "needAria": "需求 {item}",
+      "greedAria": "貪婪 {item}",
+      "passAria": "放棄 {item}",
+      "everyonePassed": "所有人都放棄了 {item}。"
     }
   },
   "entities": {

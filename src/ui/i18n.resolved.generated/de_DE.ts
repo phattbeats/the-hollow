@@ -1904,6 +1904,16 @@ export const de_DE: EnTranslations = {
     "loot": {
       "takeAll": "Alles nehmen",
       "close": "Beute schließen"
+    },
+    "lootRoll": {
+      "title": "Um Beute würfeln",
+      "need": "Bedarf",
+      "greed": "Gier",
+      "pass": "Passen",
+      "needAria": "Bedarf für {item}",
+      "greedAria": "Gier für {item}",
+      "passAria": "Bei {item} passen",
+      "everyonePassed": "Alle passen bei {item}."
     }
   },
   "entities": {

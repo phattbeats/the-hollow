@@ -1904,6 +1904,16 @@ export const ko_KR: EnTranslations = {
     "loot": {
       "takeAll": "모두 가져가기",
       "close": "전리품 닫기"
+    },
+    "lootRoll": {
+      "title": "전리품 주사위",
+      "need": "필요",
+      "greed": "탐욕",
+      "pass": "포기",
+      "needAria": "{item} 필요",
+      "greedAria": "{item} 탐욕",
+      "passAria": "{item} 포기",
+      "everyonePassed": "모두 {item}을(를) 포기했습니다."
     }
   },
   "entities": {

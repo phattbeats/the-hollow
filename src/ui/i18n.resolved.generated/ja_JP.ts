@@ -1904,6 +1904,16 @@ export const ja_JP: EnTranslations = {
     "loot": {
       "takeAll": "すべて取る",
       "close": "戦利品を閉じる"
+    },
+    "lootRoll": {
+      "title": "戦利品ロール",
+      "need": "必要",
+      "greed": "強欲",
+      "pass": "パス",
+      "needAria": "{item}を必要",
+      "greedAria": "{item}を強欲",
+      "passAria": "{item}をパス",
+      "everyonePassed": "全員が{item}をパスしました。"
     }
   },
   "entities": {
