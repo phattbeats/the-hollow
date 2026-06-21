@@ -303,6 +303,40 @@ export const it_IT: EnTranslations = {
     "playerCard": {
       "showWalletBadge": "Mostra distintivo portafoglio"
     },
+    "statInfo": {
+      "fromYour": "Dai tuoi {value} {stat}:",
+      "desc": {
+        "str": "Aumenta la tua potenza d'attacco, così i colpi della tua arma sono più potenti.",
+        "agi": "Affina i tuoi riflessi e la tua mira, migliorando diverse delle tue statistiche di combattimento.",
+        "sta": "Irrobustisce il tuo corpo, aumentando la tua salute massima e la velocità con cui recuperi salute mentre riposi.",
+        "int": "Amplia la riserva di mana di un incantatore e migliora la sua probabilità di mettere a segno un colpo critico magico.",
+        "spi": "Accelera la velocità con cui il mana di un incantatore si rigenera mentre riposa, fuori dal combattimento.",
+        "armor": "Attutisce i colpi fisici in arrivo. La riduzione è maggiore contro avversari di livello inferiore ed è limitata al 75%.",
+        "attackPower": "Potenzia gli attacchi della tua arma. Ogni 14 punti di potenza d'attacco aggiungono 1 punto di danni al secondo.",
+        "dps": "I danni al secondo stimati della tua arma, combinando i danni e la velocità della tua arma con la tua potenza d'attacco.",
+        "critChance": "La tua probabilità che un attacco colpisca in modo critico, infliggendo danni doppi.",
+        "dodge": "La tua probabilità di evitare completamente un attacco in mischia in arrivo, senza subire danni."
+      },
+      "effects": {
+        "attackPower": "+{value} Potenza d'attacco",
+        "rangedAttackPower": "+{value} Potenza d'attacco a distanza",
+        "critPct": "+{value}% Colpo critico",
+        "dodgePct": "+{value}% Schivata",
+        "armor": "+{value} Armatura",
+        "maxHealth": "+{value} Salute massima",
+        "maxMana": "+{value} Mana massimo",
+        "spellCritPct": "+{value}% Colpo critico magico",
+        "healthRegen": "Circa {value} salute ogni 5 sec mentre riposi",
+        "manaRegen": "Circa {value} mana ogni 5 sec mentre riposi",
+        "damageReduction": "Riduzione dei danni contro un avversario di livello {level}: {value}%",
+        "dpsFromAp": "Aggiunge {value} danni al secondo ai tuoi attacchi"
+      },
+      "notes": {
+        "minorForClass": "Di scarso beneficio per la tua classe.",
+        "baseChance": "Include una probabilità di base del 5% condivisa da tutti gli avventurieri.",
+        "dpsApprox": "Una stima, esclude i colpi critici e i danni delle abilità."
+      }
+    },
     "talents": {
       "defaultBuildName": "Build {n}"
     },

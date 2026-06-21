@@ -303,6 +303,40 @@ export const de_DE: EnTranslations = {
     "playerCard": {
       "showWalletBadge": "Wallet-Abzeichen anzeigen"
     },
+    "statInfo": {
+      "fromYour": "Von deinen {value} Punkten {stat}:",
+      "desc": {
+        "str": "Erhöht deine Angriffskraft, sodass deine Waffenschläge härter treffen.",
+        "agi": "Schärft Reflexe und Zielsicherheit und verbessert mehrere deiner Kampfwerte.",
+        "sta": "Stärkt deinen Körper, erhöht deine maximale Gesundheit und wie schnell du beim Ausruhen Gesundheit wiederherstellst.",
+        "int": "Vergrößert den Manavorrat eines Zauberwirkers und verbessert seine Chance auf einen kritischen Zaubertreffer.",
+        "spi": "Beschleunigt, wie schnell das Mana eines Zauberwirkers außerhalb des Kampfes beim Ausruhen zurückkehrt.",
+        "armor": "Mildert eingehende physische Schläge ab. Die Verringerung fällt gegen Angreifer niedrigerer Stufe stärker aus und ist auf 75% begrenzt.",
+        "attackPower": "Verstärkt deine Waffenangriffe. Je 14 Angriffskraft fügen 1 Schaden pro Sekunde hinzu.",
+        "dps": "Dein geschätzter Waffenschaden pro Sekunde, der Schaden und Geschwindigkeit deiner Waffe mit deiner Angriffskraft verbindet.",
+        "critChance": "Deine Chance, dass ein Angriff kritisch trifft und doppelten Schaden verursacht.",
+        "dodge": "Deine Chance, einem eingehenden Nahkampfangriff vollständig auszuweichen und keinen Schaden zu erleiden."
+      },
+      "effects": {
+        "attackPower": "+{value} Angriffskraft",
+        "rangedAttackPower": "+{value} Fernkampfangriffskraft",
+        "critPct": "+{value}% kritischer Treffer",
+        "dodgePct": "+{value}% Ausweichen",
+        "armor": "+{value} Rüstung",
+        "maxHealth": "+{value} maximale Gesundheit",
+        "maxMana": "+{value} maximales Mana",
+        "spellCritPct": "+{value}% kritischer Zaubertreffer",
+        "healthRegen": "Etwa {value} Gesundheit alle 5 Sek. beim Ausruhen",
+        "manaRegen": "Etwa {value} Mana alle 5 Sek. beim Ausruhen",
+        "damageReduction": "Schadensverringerung gegen einen Angreifer der Stufe {level}: {value}%",
+        "dpsFromAp": "Fügt deinen Angriffen {value} Schaden pro Sekunde hinzu"
+      },
+      "notes": {
+        "minorForClass": "Für deine Klasse von geringem Nutzen.",
+        "baseChance": "Beinhaltet eine Grundchance von 5%, die allen Abenteurern gemein ist.",
+        "dpsApprox": "Ein Schätzwert, kritische Treffer und Fähigkeitsschaden sind ausgenommen."
+      }
+    },
     "talents": {
       "defaultBuildName": "Build {n}"
     },

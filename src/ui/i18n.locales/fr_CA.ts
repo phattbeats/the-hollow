@@ -11,6 +11,21 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const fr_CA: Partial<Record<TranslationKey, string>> = {
+  // Stat tooltips: only the keys that diverge from the fr_FR base.
+  "hudChrome.statInfo.desc.str": "Augmente votre puissance d'attaque, ce qui permet à votre arme de frapper plus fort.",
+  "hudChrome.statInfo.desc.agi": "Aiguise vos réflexes et votre visée, ce qui améliore plusieurs de vos statistiques de combat.",
+  "hudChrome.statInfo.desc.sta": "Endurcit votre corps, ce qui augmente vos points de vie maximum et la vitesse à laquelle vous récupérez des points de vie au repos.",
+  "hudChrome.statInfo.desc.int": "Augmente la réserve de mana d'un lanceur de sorts et améliore ses chances de réussir un coup critique avec un sort.",
+  "hudChrome.statInfo.desc.attackPower": "Renforce vos attaques d'arme. Chaque tranche de 14 de puissance d'attaque ajoute 1 de dégâts par seconde.",
+  "hudChrome.statInfo.desc.dps": "Estimation de vos dégâts d'arme par seconde, combinant les dégâts et la vitesse de votre arme avec votre puissance d'attaque.",
+  "hudChrome.statInfo.desc.critChance": "Vos chances qu'une attaque porte un coup critique, infligeant le double des dégâts.",
+  "hudChrome.statInfo.desc.dodge": "Vos chances d'éviter complètement une attaque de mêlée et de ne subir aucun dégât.",
+  "hudChrome.statInfo.effects.critPct": "+{value} % Coup critique",
+  "hudChrome.statInfo.effects.dodgePct": "+{value} % Esquive",
+  "hudChrome.statInfo.effects.spellCritPct": "+{value} % Coup critique des sorts",
+  "hudChrome.statInfo.effects.dpsFromAp": "Ajoute {value} de dégâts par seconde à vos attaques",
+  "hudChrome.statInfo.notes.baseChance": "Inclut une chance de base de 5 % commune à tous les aventuriers.",
+  "hudChrome.statInfo.notes.dpsApprox": "Une estimation, qui exclut les coups critiques et les dégâts des capacités.",
   "nav.loginRegister": "Se connecter/S'enregistrer",
   "seo.title": "World of ClaudeCraft: MMO Web de style classique",
   "seo.description": "Partez à l'aventure dans World of ClaudeCraft, un micro-MMO de style classique jouable directement dans votre navigateur. Rejoignez un royaume partagé, faites progresser vos classes et terrassez des ennemis.",

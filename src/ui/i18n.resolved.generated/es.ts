@@ -303,6 +303,40 @@ export const es: EnTranslations = {
     "playerCard": {
       "showWalletBadge": "Mostrar insignia de cartera"
     },
+    "statInfo": {
+      "fromYour": "De tu {value} de {stat}:",
+      "desc": {
+        "str": "Aumenta tu poder de ataque, así que tus golpes con el arma impactan con más fuerza.",
+        "agi": "Agudiza tus reflejos y tu puntería, mejorando varias de tus estadísticas de combate.",
+        "sta": "Endurece tu cuerpo, elevando tu salud máxima y la rapidez con la que recuperas salud al descansar.",
+        "int": "Amplía la reserva de maná de un lanzador de hechizos y mejora su probabilidad de asestar un golpe crítico con hechizos.",
+        "spi": "Acelera la rapidez con la que regresa el maná de un lanzador de hechizos al descansar, fuera de combate.",
+        "armor": "Amortigua los golpes físicos que recibes. La reducción es mayor contra atacantes de menor nivel y tiene un tope del 75%.",
+        "attackPower": "Potencia tus ataques con el arma. Cada 14 de poder de ataque añade 1 de daño por segundo.",
+        "dps": "El daño por segundo estimado de tu arma, combinando el daño y la velocidad de tu arma con tu poder de ataque.",
+        "critChance": "Tu probabilidad de que un ataque aseste un golpe crítico, infligiendo el doble de daño.",
+        "dodge": "Tu probabilidad de evitar por completo un ataque cuerpo a cuerpo entrante, sin recibir daño."
+      },
+      "effects": {
+        "attackPower": "+{value} de poder de ataque",
+        "rangedAttackPower": "+{value} de poder de ataque a distancia",
+        "critPct": "+{value}% de golpe crítico",
+        "dodgePct": "+{value}% de esquiva",
+        "armor": "+{value} de armadura",
+        "maxHealth": "+{value} de salud máxima",
+        "maxMana": "+{value} de maná máximo",
+        "spellCritPct": "+{value}% de golpe crítico con hechizos",
+        "healthRegen": "Unos {value} de salud cada 5 seg mientras descansas",
+        "manaRegen": "Unos {value} de maná cada 5 seg mientras descansas",
+        "damageReduction": "Reducción de daño contra un atacante de nivel {level}: {value}%",
+        "dpsFromAp": "Añade {value} de daño por segundo a tus ataques"
+      },
+      "notes": {
+        "minorForClass": "De poco beneficio para tu clase.",
+        "baseChance": "Incluye un 5% de probabilidad base que comparten todos los aventureros.",
+        "dpsApprox": "Es una estimación, no incluye los golpes críticos ni el daño de habilidades."
+      }
+    },
     "talents": {
       "defaultBuildName": "Configuración {n}"
     },

@@ -303,6 +303,40 @@ export const fr_CA: EnTranslations = {
     "playerCard": {
       "showWalletBadge": "Afficher l’insigne de portefeuille"
     },
+    "statInfo": {
+      "fromYour": "Grâce à vos {value} de {stat} :",
+      "desc": {
+        "str": "Augmente votre puissance d'attaque, ce qui permet à votre arme de frapper plus fort.",
+        "agi": "Aiguise vos réflexes et votre visée, ce qui améliore plusieurs de vos statistiques de combat.",
+        "sta": "Endurcit votre corps, ce qui augmente vos points de vie maximum et la vitesse à laquelle vous récupérez des points de vie au repos.",
+        "int": "Augmente la réserve de mana d'un lanceur de sorts et améliore ses chances de réussir un coup critique avec un sort.",
+        "spi": "Accélère la vitesse à laquelle le mana d'un lanceur de sorts se régénère au repos, hors combat.",
+        "armor": "Atténue les coups physiques reçus. La réduction est plus importante contre les attaquants de niveau inférieur et est plafonnée à 75 %.",
+        "attackPower": "Renforce vos attaques d'arme. Chaque tranche de 14 de puissance d'attaque ajoute 1 de dégâts par seconde.",
+        "dps": "Estimation de vos dégâts d'arme par seconde, combinant les dégâts et la vitesse de votre arme avec votre puissance d'attaque.",
+        "critChance": "Vos chances qu'une attaque porte un coup critique, infligeant le double des dégâts.",
+        "dodge": "Vos chances d'éviter complètement une attaque de mêlée et de ne subir aucun dégât."
+      },
+      "effects": {
+        "attackPower": "+{value} Puissance d'attaque",
+        "rangedAttackPower": "+{value} Puissance d'attaque à distance",
+        "critPct": "+{value} % Coup critique",
+        "dodgePct": "+{value} % Esquive",
+        "armor": "+{value} Armure",
+        "maxHealth": "+{value} Points de vie maximum",
+        "maxMana": "+{value} Mana maximum",
+        "spellCritPct": "+{value} % Coup critique des sorts",
+        "healthRegen": "Environ {value} points de vie toutes les 5 sec au repos",
+        "manaRegen": "Environ {value} mana toutes les 5 sec au repos",
+        "damageReduction": "Réduction des dégâts contre un attaquant de niveau {level} : {value} %",
+        "dpsFromAp": "Ajoute {value} de dégâts par seconde à vos attaques"
+      },
+      "notes": {
+        "minorForClass": "De peu d'utilité pour votre classe.",
+        "baseChance": "Inclut une chance de base de 5 % commune à tous les aventuriers.",
+        "dpsApprox": "Une estimation, qui exclut les coups critiques et les dégâts des capacités."
+      }
+    },
     "talents": {
       "defaultBuildName": "Configuration {n}"
     },

@@ -11,6 +11,18 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const es_ES: Partial<Record<TranslationKey, string>> = {
+  // Stat tooltips: only the keys that diverge from the es base.
+  "hudChrome.statInfo.desc.str": "Aumenta tu poder de ataque, por lo que tus golpes con arma impactan con más fuerza.",
+  "hudChrome.statInfo.desc.sta": "Endurece tu cuerpo, aumentando tu salud máxima y la rapidez con la que recuperas salud al descansar.",
+  "hudChrome.statInfo.desc.int": "Amplía la reserva de maná de un lanzador de conjuros y mejora su probabilidad de asestar un golpe crítico con conjuros.",
+  "hudChrome.statInfo.desc.spi": "Acelera la rapidez con la que regresa el maná de un lanzador de conjuros mientras descansa, fuera de combate.",
+  "hudChrome.statInfo.desc.armor": "Amortigua los golpes físicos entrantes. La reducción es mayor contra atacantes de nivel inferior y tiene un límite del 75%.",
+  "hudChrome.statInfo.desc.attackPower": "Potencia tus ataques con arma. Cada 14 de poder de ataque añade 1 de daño por segundo.",
+  "hudChrome.statInfo.desc.dps": "Tu daño por segundo estimado con arma, combinando el daño y la velocidad de tu arma con tu poder de ataque.",
+  "hudChrome.statInfo.desc.critChance": "Tu probabilidad de que un ataque impacte de forma crítica, infligiendo el doble de daño.",
+  "hudChrome.statInfo.effects.spellCritPct": "+{value}% de golpe crítico con conjuros",
+  "hudChrome.statInfo.notes.baseChance": "Incluye una probabilidad base del 5% compartida por todos los aventureros.",
+  "hudChrome.statInfo.notes.dpsApprox": "Es una estimación, excluye los golpes críticos y el daño de habilidades.",
   "hudChrome.emotes.question": "¿Tío?",
   "nav.loginRegister": "Iniciar sesión/Registrarse",
   "stats.playersOnline": "Jugadores en línea",

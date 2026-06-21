@@ -303,6 +303,40 @@ export const pt_BR: EnTranslations = {
     "playerCard": {
       "showWalletBadge": "Mostrar selo da carteira"
     },
+    "statInfo": {
+      "fromYour": "Do seu {value} de {stat}:",
+      "desc": {
+        "str": "Aumenta seu poder de ataque, de modo que seus golpes com armas atinjam com mais força.",
+        "agi": "Aguça seus reflexos e sua mira, melhorando vários dos seus atributos de combate.",
+        "sta": "Enrijece seu corpo, aumentando sua vida máxima e a rapidez com que você recupera vida ao descansar.",
+        "int": "Amplia a reserva de mana de um conjurador e melhora sua chance de aplicar um acerto crítico com magias.",
+        "spi": "Acelera a rapidez com que a mana de um conjurador retorna ao descansar, fora de combate.",
+        "armor": "Suaviza os golpes físicos recebidos. A redução é maior contra atacantes de nível inferior e tem limite de 75%.",
+        "attackPower": "Potencializa seus ataques com armas. A cada 14 de poder de ataque, adiciona 1 de dano por segundo.",
+        "dps": "Seu dano por segundo estimado com armas, combinando o dano e a velocidade da sua arma com seu poder de ataque.",
+        "critChance": "Sua chance de um ataque atingir criticamente, causando dano dobrado.",
+        "dodge": "Sua chance de esquivar completamente de um ataque corpo a corpo recebido, sem sofrer dano."
+      },
+      "effects": {
+        "attackPower": "+{value} de Poder de ataque",
+        "rangedAttackPower": "+{value} de Poder de ataque a distância",
+        "critPct": "+{value}% de Acerto crítico",
+        "dodgePct": "+{value}% de Esquiva",
+        "armor": "+{value} de Armadura",
+        "maxHealth": "+{value} de Vida máxima",
+        "maxMana": "+{value} de Mana máximo",
+        "spellCritPct": "+{value}% de Acerto crítico com magias",
+        "healthRegen": "Cerca de {value} de vida a cada 5 seg ao descansar",
+        "manaRegen": "Cerca de {value} de mana a cada 5 seg ao descansar",
+        "damageReduction": "Redução de dano contra um atacante de nível {level}: {value}%",
+        "dpsFromAp": "Adiciona {value} de dano por segundo aos seus ataques"
+      },
+      "notes": {
+        "minorForClass": "De pouco benefício para a sua classe.",
+        "baseChance": "Inclui uma chance base de 5% compartilhada por todos os aventureiros.",
+        "dpsApprox": "Uma estimativa, que exclui acertos críticos e dano de habilidades."
+      }
+    },
     "talents": {
       "defaultBuildName": "Build {n}"
     },
