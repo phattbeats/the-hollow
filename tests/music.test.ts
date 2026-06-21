@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { MusicDirector } from '../src/game/music';
+import { MusicDirector, dungeonMusicZoneForDungeon, musicZoneForLocation, shouldResetMusicForDungeonEntry } from '../src/game/music';
 
 class FakeParam {
   value = 0;
@@ -128,5 +128,47 @@ describe('MusicDirector boss combat loop', () => {
     director.setBossCombat(false);
     expect(source.stop).toHaveBeenCalledTimes(1);
     expect(source.disconnect).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('dungeon music entry reset', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+    FakeBufferSource.instances = [];
+  });
+
+  it('resets only when entering a dungeon or changing dungeon instances', () => {
+    expect(shouldResetMusicForDungeonEntry(null, 'nythraxis_boss_arena')).toBe(true);
+    expect(shouldResetMusicForDungeonEntry('nythraxis_boss_arena', 'nythraxis_boss_arena')).toBe(false);
+    expect(shouldResetMusicForDungeonEntry('nythraxis_boss_arena', 'hollow_crypt')).toBe(true);
+    expect(shouldResetMusicForDungeonEntry('nythraxis_boss_arena', null)).toBe(false);
+  });
+
+  it('rewinds the active dungeon layer and boss loop on dungeon entry', () => {
+    const director = new MusicDirector();
+    const layer = { target: 1, anchor: 100, nextIdx: 7, loopCount: 3 };
+    const bossElement = { currentTime: 19 };
+    (director as unknown as { ctx: { currentTime: number } }).ctx = { currentTime: 42 };
+    (director as unknown as { layers: Record<string, typeof layer> }).layers = { dungeon_hollow_crypt: layer };
+    (director as unknown as { bossElement: typeof bossElement }).bossElement = bossElement;
+
+    director.resetForDungeonEntry('nythraxis_boss_arena');
+
+    expect(dungeonMusicZoneForDungeon('nythraxis_boss_arena')).toBe('dungeon_hollow_crypt');
+    expect(layer.nextIdx).toBe(-1);
+    expect(layer.loopCount).toBe(0);
+    expect(layer.anchor).toBe(42);
+    expect(bossElement.currentTime).toBe(0);
+  });
+});
+
+describe('world music zone selection', () => {
+  it('uses the original Eastbrook Vale wilderness theme in Thornpeak Heights', () => {
+    expect(musicZoneForLocation('thornpeak_heights', 'peaks', false, false)).toBe('vale_legacy');
+  });
+
+  it('keeps the Thornpeak hub on the Highwatch town theme', () => {
+    expect(musicZoneForLocation('thornpeak_heights', 'peaks', true, false)).toBe('town_highwatch');
   });
 });

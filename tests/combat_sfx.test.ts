@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { shouldPlayCritSfxForTarget, shouldPlayMobVoiceSfxForEntity } from '../src/ui/combat_sfx';
+import { shouldPlayCombatImpactForTarget, shouldPlayCritSfxForTarget, shouldPlayMobVoiceSfxForEntity } from '../src/ui/combat_sfx';
 import type { Entity } from '../src/sim/types';
 
 function target(kind: Entity['kind'], templateId: string): Entity {
@@ -81,5 +81,12 @@ describe('combat SFX policy', () => {
     expect(shouldPlayMobVoiceSfxForEntity(target('mob', 'nythraxis_skeleton_warrior'))).toBe(false);
     expect(shouldPlayMobVoiceSfxForEntity(target('mob', 'crypt_shambler'))).toBe(true);
     expect(shouldPlayMobVoiceSfxForEntity(target('player', 'warrior'))).toBe(false);
+  });
+
+  it('mutes all non-dialogue Nythraxis boss combat sounds', () => {
+    expect(shouldPlayMobVoiceSfxForEntity(target('mob', 'nythraxis_scourge_of_thornpeak'))).toBe(false);
+    expect(shouldPlayCombatImpactForTarget(target('mob', 'nythraxis_scourge_of_thornpeak'))).toBe(false);
+    expect(shouldPlayCombatImpactForTarget(target('mob', 'crypt_shambler'))).toBe(true);
+    expect(shouldPlayCombatImpactForTarget(target('player', 'warrior'))).toBe(true);
   });
 });

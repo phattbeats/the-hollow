@@ -38,12 +38,12 @@ import { Meters } from './meters';
 import { audio } from '../game/audio';
 import { sfx } from '../game/sfx';
 import { voice } from '../game/voice';
-import { music, musicZoneForLocation } from '../game/music';
+import { music, musicZoneForLocation, shouldResetMusicForDungeonEntry } from '../game/music';
 import { iconDataUrl, QUALITY_COLOR, raidMarkerDataUrl, RAID_MARKER_NAMES } from './icons';
 import { UnitPortraitPainter } from './unit_portrait_painter';
 import { crestIdForEntity } from './unit_portrait';
 import { svgIcon } from './ui_icons';
-import { shouldPlayCritSfxForTarget, shouldPlayMobVoiceSfxForEntity } from './combat_sfx';
+import { shouldPlayCombatImpactForTarget, shouldPlayCritSfxForTarget, shouldPlayMobVoiceSfxForEntity } from './combat_sfx';
 import { nextVoicedYell, voicedYellGain, type VoicedYellState } from './voice_events';
 import { walletDisplayAvailable, walletUiEnabled, wocBalance, wocBalanceVerified, verifiedWocBalance, onWalletUiChange } from './wallet_balance';
 import {
@@ -438,6 +438,7 @@ export class Hud {
   private hotDomSkippedWrites = 0;
   private subzoneTimer: number | undefined;
   private lastSubzone: string | null = null;
+  private lastMusicDungeonId: string | null = null;
   private minimapCtx: CanvasRenderingContext2D;
   private minimapBg: HTMLCanvasElement;
   private clockEl: HTMLElement | null = null;
@@ -2512,6 +2513,11 @@ export class Hud {
       const zone = musicZoneForLocation(
         currentZone.id, currentZone.biome, inHub, inDungeon || inNythraxisArena, dungeon?.id ?? null,
       );
+      const musicDungeonId = (inDungeon || inNythraxisArena) ? (dungeon?.id ?? null) : null;
+      if (shouldResetMusicForDungeonEntry(this.lastMusicDungeonId, musicDungeonId)) {
+        music.resetForDungeonEntry(musicDungeonId);
+      }
+      this.lastMusicDungeonId = musicDungeonId;
       music.update(zone, musicCombat);
       music.setBossCombat(bossEngaged);
 
@@ -3404,7 +3410,9 @@ export class Hud {
         // (camp engage), whether you hit it or it hits you.
         if (tgt.kind === 'mob') this.ensureMobEngaged(tgt);
         const physical = !ev.school || ev.school === 'physical';
-        this.combat(physical ? materialImpactKey(tgt) : `impact_${ev.school}`, tp.x, tp.y, tp.z, 0.75, { cooldown: 0.05 });
+        if (shouldPlayCombatImpactForTarget(tgt)) {
+          this.combat(physical ? materialImpactKey(tgt) : `impact_${ev.school}`, tp.x, tp.y, tp.z, 0.75, { cooldown: 0.05 });
+        }
         if (ev.crit && shouldPlayCritSfxForTarget(tgt)) this.combat('combat_crit', tp.x, tp.y, tp.z, 0.7);
         // pain vocalization only on a crit — never on ordinary hits.
         if (ev.crit && ev.targetId === sim.playerId) {
