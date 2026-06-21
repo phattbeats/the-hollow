@@ -14,6 +14,22 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const zh_CN: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.theme.preset": "界面主题",
+  "hudChrome.theme.customColors": "自定义颜色",
+  "hudChrome.theme.reset": "重置",
+  "hudChrome.theme.presets.classic": "经典金色",
+  "hudChrome.theme.presets.midnight": "午夜",
+  "hudChrome.theme.presets.parchment": "羊皮纸",
+  "hudChrome.theme.presets.highContrast": "高对比度",
+  "hudChrome.theme.knob.accent": "强调色",
+  "hudChrome.theme.knob.border": "边框",
+  "hudChrome.theme.knob.panel": "框架",
+  "hudChrome.theme.knob.text": "文字",
+  "hudChrome.theme.knob.textMuted": "次要文字",
+  "hudChrome.theme.knob.hp": "生命",
+  "hudChrome.theme.knob.mana": "法力",
+  "hudChrome.theme.knob.rage": "怒气",
+  "hudChrome.theme.knob.energy": "能量",
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   "hudChrome.statInfo.fromYour": "来自你的 {value} 点{stat}：",
   "hudChrome.statInfo.desc.str": "提高你的攻击强度，使你的武器攻击造成更高的伤害。",

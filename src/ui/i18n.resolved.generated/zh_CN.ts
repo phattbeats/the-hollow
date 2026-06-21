@@ -174,6 +174,28 @@ export const zh_CN: EnTranslations = {
       "title": "表情",
       "done": "完成"
     },
+    "theme": {
+      "preset": "界面主题",
+      "customColors": "自定义颜色",
+      "reset": "重置",
+      "presets": {
+        "classic": "经典金色",
+        "midnight": "午夜",
+        "parchment": "羊皮纸",
+        "highContrast": "高对比度"
+      },
+      "knob": {
+        "accent": "强调色",
+        "border": "边框",
+        "panel": "框架",
+        "text": "文字",
+        "textMuted": "次要文字",
+        "hp": "生命",
+        "mana": "法力",
+        "rage": "怒气",
+        "energy": "能量"
+      }
+    },
     "chatTimestamps": {
       "show": "显示聊天时间戳",
       "format": "时间戳格式",

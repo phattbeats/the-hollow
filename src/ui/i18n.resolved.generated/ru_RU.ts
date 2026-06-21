@@ -174,6 +174,28 @@ export const ru_RU: EnTranslations = {
       "title": "Эмоции",
       "done": "Готово"
     },
+    "theme": {
+      "preset": "Тема интерфейса",
+      "customColors": "Свои цвета",
+      "reset": "Сброс",
+      "presets": {
+        "classic": "Классическое золото",
+        "midnight": "Полночь",
+        "parchment": "Пергамент",
+        "highContrast": "Высокий контраст"
+      },
+      "knob": {
+        "accent": "Акцент",
+        "border": "Рамка",
+        "panel": "Панель",
+        "text": "Текст",
+        "textMuted": "Тусклый текст",
+        "hp": "Здоровье",
+        "mana": "Мана",
+        "rage": "Ярость",
+        "energy": "Энергия"
+      }
+    },
     "chatTimestamps": {
       "show": "Показывать время в чате",
       "format": "Формат времени",

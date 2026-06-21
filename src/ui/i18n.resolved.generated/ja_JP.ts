@@ -174,6 +174,28 @@ export const ja_JP: EnTranslations = {
       "title": "エモート",
       "done": "完了"
     },
+    "theme": {
+      "preset": "UIテーマ",
+      "customColors": "カスタムカラー",
+      "reset": "リセット",
+      "presets": {
+        "classic": "クラシックゴールド",
+        "midnight": "ミッドナイト",
+        "parchment": "羊皮紙",
+        "highContrast": "ハイコントラスト"
+      },
+      "knob": {
+        "accent": "アクセント",
+        "border": "枠線",
+        "panel": "フレーム",
+        "text": "テキスト",
+        "textMuted": "補助テキスト",
+        "hp": "体力",
+        "mana": "マナ",
+        "rage": "怒り",
+        "energy": "エネルギー"
+      }
+    },
     "chatTimestamps": {
       "show": "チャットに時刻を表示",
       "format": "時刻の表記形式",

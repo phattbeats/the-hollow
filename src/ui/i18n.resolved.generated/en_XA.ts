@@ -174,6 +174,28 @@ export const en_XA: EnTranslations = {
       "title": "[Éɱóţéš]",
       "done": "[Ðóñé]"
     },
+    "theme": {
+      "preset": "[ÚÍ Ţĥéɱé]",
+      "customColors": "[Çúšţóɱ Çóļóŕš]",
+      "reset": "[Ŕéšéţ]",
+      "presets": {
+        "classic": "[Çļáššíç Ĝóļð]",
+        "midnight": "[Ɱíðñíĝĥţ]",
+        "parchment": "[Þáŕçĥɱéñţ]",
+        "highContrast": "[Ĥíĝĥ Çóñţŕášţ]"
+      },
+      "knob": {
+        "accent": "[Áççéñţ]",
+        "border": "[Ɓóŕðéŕ]",
+        "panel": "[Ƒŕáɱé]",
+        "text": "[Ţéẋţ]",
+        "textMuted": "[Ɱúţéð Ţéẋţ]",
+        "hp": "[Ĥéáļţĥ]",
+        "mana": "[Ɱáñá]",
+        "rage": "[Ŕáĝé]",
+        "energy": "[Éñéŕĝý]"
+      }
+    },
     "chatTimestamps": {
       "show": "[Šĥóŵ Çĥáţ Ţíɱéšţáɱþš]",
       "format": "[Ţíɱéšţáɱþ Ƒóŕɱáţ]",

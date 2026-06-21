@@ -55,6 +55,7 @@ import { holderTierForBalance, holderTierByIndex, holderTierBadgeDataUrl, holder
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
 import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES, normalizeClickMoveButton } from '../game/settings';
 import { PerfOverlaySettingsPanel, type PerfOverlayHooks, type PerfSettingsHost } from './perf_overlay_settings';
+import { PRESET_ORDER, THEME_KNOB_ORDER, THEME_KNOB_LABEL_KEY, THEME_PRESETS, resolveTheme, type PresetId, type ThemeKnob, type ThemeState } from './theme';
 import { isPhoneTouchDevice } from '../game/mobile_controls';
 import { chatPlayerContextActions } from './player_context_menu';
 import {
@@ -113,6 +114,15 @@ export interface OptionsHooks {
   // feature is off or no wallet is connected/linked.
   refreshWocBalance(): void;
   perfOverlay: PerfOverlayHooks;
+  // UI theming seam — main.ts owns the ThemeStore + live CSS-variable apply.
+  theme: ThemeHooks;
+}
+
+export interface ThemeHooks {
+  get(): ThemeState;
+  setPreset(id: PresetId): void;
+  setCustom(knob: ThemeKnob, value: string | null): void;
+  resetCustom(): void;
 }
 
 export interface ReportHooks {
@@ -8689,9 +8699,81 @@ export class Hud {
     parent.append(row, status);
   }
 
+  // UI theme picker: a preset selector plus a full-palette custom-colour block.
+  // Preset/custom changes route through OptionsHooks.theme; main.ts persists and
+  // live-applies the resulting CSS variables, so no reload is needed.
+  private renderThemeControls(body: HTMLElement): void {
+    const hooks = this.optionsHooks;
+    if (!hooks) return;
+    const theme = hooks.theme;
+
+    const presetRow = document.createElement('div');
+    presetRow.className = 'set-row';
+    const presetName = document.createElement('span');
+    presetName.className = 'set-name';
+    presetName.textContent = t('hudChrome.theme.preset');
+    const seg = document.createElement('div');
+    seg.className = 'set-seg theme-presets';
+    const presetLabel = (id: PresetId): string => t(`hudChrome.theme.presets.${id}` as TranslationKey);
+    for (const id of PRESET_ORDER) {
+      const btn = document.createElement('button');
+      btn.className = 'btn set-seg-btn';
+      btn.textContent = presetLabel(id);
+      btn.classList.toggle('active', theme.get().preset === id);
+      btn.addEventListener('click', () => {
+        audio.click();
+        theme.setPreset(id);
+        this.renderInterface(); // refresh active state + custom pickers
+      });
+      seg.appendChild(btn);
+    }
+    presetRow.append(presetName, seg);
+    body.appendChild(presetRow);
+
+    // Custom palette: one colour input per knob, seeded with the effective value.
+    const effective = resolveTheme(theme.get());
+    const customCount = Object.keys(theme.get().custom).length;
+    const customRow = document.createElement('div');
+    customRow.className = 'set-row theme-custom-head';
+    const customName = document.createElement('span');
+    customName.className = 'set-name';
+    customName.textContent = t('hudChrome.theme.customColors');
+    const reset = document.createElement('button');
+    reset.className = 'btn set-toggle';
+    reset.textContent = t('hudChrome.theme.reset');
+    reset.disabled = customCount === 0;
+    reset.addEventListener('click', () => {
+      audio.click();
+      theme.resetCustom();
+      this.renderInterface();
+    });
+    customRow.append(customName, reset);
+    body.appendChild(customRow);
+
+    const grid = document.createElement('div');
+    grid.className = 'theme-color-grid';
+    for (const knob of THEME_KNOB_ORDER) {
+      const row = document.createElement('label');
+      row.className = 'theme-color-row';
+      const swatchLabel = document.createElement('span');
+      swatchLabel.textContent = t(`hudChrome.theme.knob.${THEME_KNOB_LABEL_KEY[knob]}` as TranslationKey);
+      const input = document.createElement('input');
+      input.type = 'color';
+      input.value = effective[knob];
+      input.setAttribute('aria-label', swatchLabel.textContent);
+      // 'input' fires continuously while dragging the picker → live preview.
+      input.addEventListener('input', () => theme.setCustom(knob, input.value));
+      input.addEventListener('change', () => { theme.setCustom(knob, input.value); reset.disabled = false; });
+      row.append(input, swatchLabel);
+      grid.appendChild(row);
+    }
+    body.appendChild(grid);
+  }
+
   private renderInterface(): void {
     const body = this.settingsViewShell(t('hud.options.interface'));
     this.languageSelect(body);
+    this.renderThemeControls(body);
     this.settingSlider(body, t('hud.options.hudOpacity'), 'hudOpacity');
     this.settingSlider(body, t('hud.options.tooltipScale'), 'tooltipScale');
     this.settingSlider(body, t('hud.options.fctScale'), 'fctScale');

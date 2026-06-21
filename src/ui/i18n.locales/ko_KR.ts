@@ -14,6 +14,22 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const ko_KR: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.theme.preset": "UI 테마",
+  "hudChrome.theme.customColors": "사용자 지정 색상",
+  "hudChrome.theme.reset": "초기화",
+  "hudChrome.theme.presets.classic": "클래식 골드",
+  "hudChrome.theme.presets.midnight": "미드나이트",
+  "hudChrome.theme.presets.parchment": "양피지",
+  "hudChrome.theme.presets.highContrast": "고대비",
+  "hudChrome.theme.knob.accent": "강조색",
+  "hudChrome.theme.knob.border": "테두리",
+  "hudChrome.theme.knob.panel": "프레임",
+  "hudChrome.theme.knob.text": "텍스트",
+  "hudChrome.theme.knob.textMuted": "보조 텍스트",
+  "hudChrome.theme.knob.hp": "체력",
+  "hudChrome.theme.knob.mana": "마나",
+  "hudChrome.theme.knob.rage": "분노",
+  "hudChrome.theme.knob.energy": "에너지",
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   "hudChrome.statInfo.fromYour": "당신의 {value} {stat}에서:",
   "hudChrome.statInfo.desc.str": "전투력을 증가시켜 무기 공격이 더 강하게 적중하도록 합니다.",

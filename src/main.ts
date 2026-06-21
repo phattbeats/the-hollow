@@ -5,6 +5,7 @@ import { Keybinds } from './game/keybinds';
 import { Settings, GameSettings, SETTING_RANGES, normalizeClickMoveButton } from './game/settings';
 import { MobileControls, PHONE_TOUCH_QUERY, isPhoneTouchDevice } from './game/mobile_controls';
 import { Hud } from './ui/hud';
+import { ThemeStore, type PresetId, type ThemeKnob } from './ui/theme';
 import { PerfOverlay } from './ui/perf_overlay';
 import { PerfOverlayConfigStore, type PerfOverlayConfig } from './ui/perf_overlay_config';
 import { FrameMeter, buildPerfOverlayView } from './ui/perf_overlay_model';
@@ -596,6 +597,14 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
   const keybinds = new Keybinds();
   const settings = new Settings();
+  // UI theming: apply the persisted theme's CSS variables to :root, then keep a
+  // hook so the Options panel can switch preset / override colours live.
+  const themeStore = new ThemeStore();
+  function applyTheme(): void {
+    const vars = themeStore.cssVars();
+    for (const name of Object.keys(vars)) document.documentElement.style.setProperty(name, vars[name]);
+  }
+  applyTheme();
   let renderer!: Renderer;
   let hud!: Hud;
   const perf = createPerfMonitor(null);
@@ -877,6 +886,12 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     captureKey: (cb) => input.captureNextKey(cb),
     settings,
     onSettingChange: (key, value) => applySetting(key, value),
+    theme: {
+      get: () => themeStore.get(),
+      setPreset: (id: PresetId) => { themeStore.setPreset(id); applyTheme(); },
+      setCustom: (knob: ThemeKnob, value: string | null) => { themeStore.setCustom(knob, value); applyTheme(); },
+      resetCustom: () => { themeStore.resetCustom(); applyTheme(); },
+    },
     changeLanguage: (lang, onStatus) => changeLanguage(lang, onStatus),
     refreshWocBalance: () => refreshWocBalanceOnDemand(),
     perfOverlay: {

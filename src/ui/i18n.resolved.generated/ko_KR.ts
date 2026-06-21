@@ -174,6 +174,28 @@ export const ko_KR: EnTranslations = {
       "title": "감정 표현",
       "done": "완료"
     },
+    "theme": {
+      "preset": "UI 테마",
+      "customColors": "사용자 지정 색상",
+      "reset": "초기화",
+      "presets": {
+        "classic": "클래식 골드",
+        "midnight": "미드나이트",
+        "parchment": "양피지",
+        "highContrast": "고대비"
+      },
+      "knob": {
+        "accent": "강조색",
+        "border": "테두리",
+        "panel": "프레임",
+        "text": "텍스트",
+        "textMuted": "보조 텍스트",
+        "hp": "체력",
+        "mana": "마나",
+        "rage": "분노",
+        "energy": "에너지"
+      }
+    },
     "chatTimestamps": {
       "show": "채팅 시각 표시",
       "format": "시각 표시 형식",

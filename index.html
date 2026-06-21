@@ -147,6 +147,9 @@
     --gold: #ffd100;
     --gold-dim: #c8a838;
     --border: #6f5a2a;
+    /* --panel-base is the single themeable frame colour; --panel-bg derives the
+       shipped gradient from it (overwritten wholesale by the theme system). */
+    --panel-base: #15151f;
     --panel-bg: linear-gradient(170deg, #15151fF2 0%, #0b0b12F2 60%, #08080dF2 100%);
     /* Typography — Cinzel (heraldic display/headings), Alegreya Sans (UI + body),
        Alegreya (serif flavour prose). Legacy token names alias the canonical set
@@ -426,7 +429,7 @@
     outline: 1px solid #000;
     border-radius: 6px;
     box-shadow: 0 2px 16px #000c, inset 0 0 24px #0006, inset 0 1px 0 #ffffff14;
-    color: #e8d8a8;
+    color: var(--color-text-light);
   }
   .panel-title {
     font-family: var(--title-font);
@@ -791,9 +794,9 @@
   /* ---------- quest tracker ---------- */
   #quest-tracker { position: absolute; right: 14px; top: 262px; width: 240px; font-size: 12px;
     color: var(--gold); text-shadow: 1px 1px 2px #000; pointer-events: none; }
-  #quest-tracker .qt-header { font-family: var(--title-font); font-size: 14px; border-bottom: 1px solid #ffd10044; margin-bottom: 4px; padding-bottom: 2px; }
+  #quest-tracker .qt-header { font-family: var(--title-font); font-size: 14px; border-bottom: 1px solid color-mix(in srgb, var(--gold) 27%, transparent); margin-bottom: 4px; padding-bottom: 2px; }
   #quest-tracker .qt-title { font-weight: bold; margin-top: 8px; font-family: var(--title-font); }
-  #quest-tracker .qt-obj { color: #e8e0c8; font-size: 11px; margin-left: 8px; }
+  #quest-tracker .qt-obj { color: var(--color-text-light); font-size: 11px; margin-left: 8px; }
   #quest-tracker .qt-obj.done,
   .qd-obj.done,
   .quest-complete { color: var(--color-text-success); }
@@ -801,7 +804,7 @@
   /* ---------- combat meters ---------- */
   #meters-window { width: 240px; padding: 8px 10px; display: none; align-self: flex-end; margin-bottom: 6px; text-align: left; }
   #meters-window .panel-title { margin-bottom: 4px; }
-  .mt-tab { background: #1a1410; border: 1px solid #463a1c; border-radius: 3px; color: #c9b27a;
+  .mt-tab { background: #1a1410; border: 1px solid #463a1c; border-radius: 3px; color: var(--color-text-muted);
     font-size: 11px; padding: 1px 7px; cursor: var(--cursor-point); }
   .mt-tab.on { color: var(--gold); border-color: var(--gold-dim); background: #2a2010; }
   .mt-view { font-size: 12px; color: var(--gold); font-family: var(--title-font); text-shadow: 1px 1px 1px #000; }
@@ -905,7 +908,7 @@
     left: 50%; top: 10vh; transform: translateX(-50%);
     max-height: calc(85vh - 24px); overflow-y: auto; }
   #quest-dialog { width: 440px; }
-  .qd-text { font-size: 12.5px; line-height: 1.55; color: #e8e0c8; margin-bottom: 10px; font-family: var(--font-serif); }
+  .qd-text { font-size: 12.5px; line-height: 1.55; color: var(--color-text-light); margin-bottom: 10px; font-family: var(--font-serif); }
   .qd-sub { font-family: var(--title-font); color: var(--gold); font-size: 13px; margin: 8px 0 4px; }
   .qd-obj { font-size: 12px; color: #cfc6a8; margin: 2px 0; }
   .qd-req { display: inline-block; margin: 0 0 10px; padding: 2px 9px; font-family: var(--title-font);
@@ -1494,7 +1497,7 @@
   .mkt-row .mkt-name .nm { display: block; }
   .mkt-row .mkt-name .stack { color: var(--color-text-light); }
   .mkt-row .mkt-name .seller { font-size: 10.5px; color: #8c8468; }
-  .mkt-row .mkt-name .seller.house { color: #d4af37; }
+  .mkt-row .mkt-name .seller.house { color: var(--gold-dim); }
   .mkt-row .mkt-price { font-size: 11.5px; color: #ffe6a8; white-space: nowrap; text-align: right; }
   .mkt-btn { font-family: var(--title-font); font-size: 11px; cursor: var(--cursor-point); border-radius: 4px; padding: 4px 11px;
     border: 1px solid #5a4a18; background: linear-gradient(#3a6a28, #244a18 60%, #1a3812); color: #d6ffc8; white-space: nowrap; }
@@ -1592,6 +1595,17 @@
   .set-seg-btn { margin: 0; padding: 3px 12px; opacity: 0.7; }
   .set-seg-btn.active { opacity: 1; box-shadow: 0 0 0 1px var(--gold) inset; color: #ffd9a0; }
   .set-row.disabled { opacity: 0.45; }
+  /* ---------- UI theme picker ---------- */
+  .set-seg.theme-presets { flex-wrap: wrap; justify-content: flex-end; }
+  .theme-custom-head { grid-template-columns: 1fr auto; }
+  .theme-color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+    gap: 6px 12px; padding: 4px 6px 8px; }
+  .theme-color-row { display: flex; align-items: center; gap: 8px; font-size: 12px;
+    color: var(--color-text-light); cursor: var(--cursor-point); }
+  .theme-color-row input[type="color"] { width: 26px; height: 20px; padding: 0; flex: none;
+    background: none; border: 1px solid var(--border); border-radius: 3px; cursor: var(--cursor-point); }
+  .theme-color-row input[type="color"]::-webkit-color-swatch-wrapper { padding: 1px; }
+  .theme-color-row input[type="color"]::-webkit-color-swatch { border: none; border-radius: 2px; }
   .chat-ts { color: #8f8a76; font-variant-numeric: tabular-nums; }
   /* Performance options panel: section heads, color pickers, metric chips, theme swatches. */
   .set-subhead { font-family: var(--title-font); font-size: 12.5px; color: var(--gold); letter-spacing: 0.5px;

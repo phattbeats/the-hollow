@@ -14,6 +14,22 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const ja_JP: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.theme.preset": "UIテーマ",
+  "hudChrome.theme.customColors": "カスタムカラー",
+  "hudChrome.theme.reset": "リセット",
+  "hudChrome.theme.presets.classic": "クラシックゴールド",
+  "hudChrome.theme.presets.midnight": "ミッドナイト",
+  "hudChrome.theme.presets.parchment": "羊皮紙",
+  "hudChrome.theme.presets.highContrast": "ハイコントラスト",
+  "hudChrome.theme.knob.accent": "アクセント",
+  "hudChrome.theme.knob.border": "枠線",
+  "hudChrome.theme.knob.panel": "フレーム",
+  "hudChrome.theme.knob.text": "テキスト",
+  "hudChrome.theme.knob.textMuted": "補助テキスト",
+  "hudChrome.theme.knob.hp": "体力",
+  "hudChrome.theme.knob.mana": "マナ",
+  "hudChrome.theme.knob.rage": "怒り",
+  "hudChrome.theme.knob.energy": "エネルギー",
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   "hudChrome.statInfo.fromYour": "あなたの{stat}{value}による効果:",
   "hudChrome.statInfo.desc.str": "攻撃力を上昇させ、武器による攻撃の威力を高めます。",

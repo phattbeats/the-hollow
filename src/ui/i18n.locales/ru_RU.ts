@@ -14,6 +14,22 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const ru_RU: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.theme.preset": "Тема интерфейса",
+  "hudChrome.theme.customColors": "Свои цвета",
+  "hudChrome.theme.reset": "Сброс",
+  "hudChrome.theme.presets.classic": "Классическое золото",
+  "hudChrome.theme.presets.midnight": "Полночь",
+  "hudChrome.theme.presets.parchment": "Пергамент",
+  "hudChrome.theme.presets.highContrast": "Высокий контраст",
+  "hudChrome.theme.knob.accent": "Акцент",
+  "hudChrome.theme.knob.border": "Рамка",
+  "hudChrome.theme.knob.panel": "Панель",
+  "hudChrome.theme.knob.text": "Текст",
+  "hudChrome.theme.knob.textMuted": "Тусклый текст",
+  "hudChrome.theme.knob.hp": "Здоровье",
+  "hudChrome.theme.knob.mana": "Мана",
+  "hudChrome.theme.knob.rage": "Ярость",
+  "hudChrome.theme.knob.energy": "Энергия",
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   "hudChrome.statInfo.fromYour": "От вашей характеристики ({value} {stat}):",
   "hudChrome.statInfo.desc.str": "Увеличивает силу атаки, благодаря чему удары вашим оружием бьют сильнее.",
