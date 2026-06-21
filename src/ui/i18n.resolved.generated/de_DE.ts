@@ -232,6 +232,74 @@ export const de_DE: EnTranslations = {
       "showWalletOnCharacterScreen": "Wallet auf dem Charakterbildschirm anzeigen",
       "showWalletOnPlayerCard": "Wallet auf der Spielerkarte anzeigen"
     },
+    "perf": {
+      "title": "Leistungsanzeige",
+      "enable": "Leistungsanzeige anzeigen",
+      "description": "Wähle, welche Werte angezeigt werden, wo die Anzeige sitzt und wie sie aussieht.",
+      "sectionPosition": "Position",
+      "sectionAppearance": "Darstellung",
+      "sectionStats": "Werte",
+      "positionX": "Horizontal",
+      "positionY": "Vertikal",
+      "resetPosition": "Position zurücksetzen",
+      "dragHint": "Ziehe die Anzeige zum Verschieben oder nutze die Regler unten.",
+      "opacity": "Hintergrunddeckkraft",
+      "solidBg": "Undurchsichtiger Hintergrund",
+      "fontScale": "Textgröße",
+      "textColor": "Textfarbe",
+      "bgColor": "Hintergrundfarbe",
+      "colorTheme": "Farbschema",
+      "graph": "Frame-Zeit-Diagramm",
+      "thresholds": "Farbcodierte Warnungen",
+      "presetsLabel": "Schnellvorgaben",
+      "presetMinimal": "Minimal",
+      "presetStandard": "Standard",
+      "presetEverything": "Alles",
+      "groups": {
+        "frame": "Frames & Zeit",
+        "network": "Netzwerk",
+        "renderer": "Renderer",
+        "system": "System"
+      },
+      "labels": {
+        "fps": "FPS",
+        "frameTime": "Frame-Zeit",
+        "fps1Low": "1 % Min.",
+        "fps01Low": "0,1 % Min.",
+        "ping": "Ping",
+        "jitter": "Jitter",
+        "snapshot": "Snapshot-Rate",
+        "connection": "Verbindung",
+        "drawCalls": "Draw Calls",
+        "triangles": "Dreiecke",
+        "geometries": "Geometrien",
+        "textures": "Texturen",
+        "programs": "Shader",
+        "renderScale": "Renderskalierung",
+        "gpu": "GPU",
+        "memory": "Speicher",
+        "hitches": "Ruckler",
+        "entities": "Entitäten"
+      },
+      "themes": {
+        "gold": "Gold",
+        "frost": "Frost",
+        "ember": "Glut",
+        "jade": "Jade",
+        "crimson": "Karmesin",
+        "mono": "Mono"
+      },
+      "units": {
+        "ms": "{value} ms",
+        "mb": "{value} MB",
+        "memPair": "{used} / {limit} MB",
+        "hz": "{value} Hz"
+      },
+      "badges": {
+        "backgrounded": "Im Hintergrund",
+        "offline": "Offline"
+      }
+    },
     "playerCard": {
       "showWalletBadge": "Wallet-Abzeichen anzeigen"
     },
@@ -501,6 +569,38 @@ export const de_DE: EnTranslations = {
       "leviathan": {
         "name": "Leviathan",
         "flavor": "Die Märkte spüren Eure Bewegungen: 1 % des Angebots."
+      },
+      "tidelord": {
+        "name": "Tidelord",
+        "flavor": "The tide answers your call: 2% of supply."
+      },
+      "stormcaller": {
+        "name": "Stormcaller",
+        "flavor": "Storms gather at your name: 3% of supply."
+      },
+      "krakencrown": {
+        "name": "Krakencrown",
+        "flavor": "Crowned by the deep: 4% of supply."
+      },
+      "titanforged": {
+        "name": "Titanforged",
+        "flavor": "Forged among titans: 5% of supply."
+      },
+      "starhoard": {
+        "name": "Starhoard",
+        "flavor": "A hoard that bends starlight: 6% of supply."
+      },
+      "voidwarden": {
+        "name": "Voidwarden",
+        "flavor": "Keeper at the void's edge: 7% of supply."
+      },
+      "realmshaper": {
+        "name": "Realmshaper",
+        "flavor": "You reshape the realm: 8% of supply."
+      },
+      "worldforger": {
+        "name": "Worldforger",
+        "flavor": "Forging a world of your own: 9% of supply."
       },
       "worldbearer": {
         "name": "Weltensträger",

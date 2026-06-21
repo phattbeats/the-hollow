@@ -20,10 +20,10 @@ import {
   hashPassword, verifyPassword, newToken, validUsernameShape, offensiveName, validPassword, normalizeCharName,
 } from './auth';
 import { json, readBody, isUniqueViolation } from './http_util';
-import { requestIp, rateLimited, authThrottled, recordAuthFailure, clearAuthFailures, cardUploadRateLimited } from './ratelimit';
+import { requestIp, rateLimited, authThrottled, recordAuthFailure, clearAuthFailures, cardUploadRateLimited, wocBalanceRateLimited } from './ratelimit';
 import { verifyTurnstile } from './turnstile';
 import { handleWalletChallenge, handleWalletLink, handleWalletGet, handleWalletUnlink } from './wallet';
-import { handleWocBalance } from './woc_balance';
+import { handleWocBalance, parseWocBalanceQuery } from './woc_balance';
 import { handleCardUpload, handleCardRoutes, captureReferral, cardUploadContentLengthTooLarge } from './player_card';
 import { handleAdminApi } from './admin';
 import { pruneExpiredBlockedIps } from './ip_block_db';
@@ -39,9 +39,20 @@ import { recordUsageCacheEvent, recordUsageMetric, setUsageCacheSize } from './p
 const PORT = Number(process.env.PORT ?? 8787);
 const STATIC_DIR = path.join(__dirname, '..', 'dist');
 const WIKI_URL = process.env.WIKI_URL ?? 'http://localhost:8080/wiki/index.php/Main_Page';
-// Pretty URLs that all serve the standalone "official channels" / link-tree page.
-const LINKS_ALIASES = new Set([
-  '/links', '/links/', '/social', '/social/', '/social-media-links', '/social-media-links/',
+// Pretty URLs that serve standalone static HTML pages.
+const STATIC_PAGE_ALIASES = new Map([
+  ['/links', '/links.html'],
+  ['/links/', '/links.html'],
+  ['/social', '/links.html'],
+  ['/social/', '/links.html'],
+  ['/social-media-links', '/links.html'],
+  ['/social-media-links/', '/links.html'],
+  ['/play', '/play.html'],
+  ['/play/', '/play.html'],
+  ['/privacy', '/privacy.html'],
+  ['/privacy/', '/privacy.html'],
+  ['/terms', '/terms.html'],
+  ['/terms/', '/terms.html'],
 ]);
 // How long chat logs are kept (0 = forever); pruned at boot and daily.
 const CHAT_LOG_RETENTION_DAYS = Number(process.env.CHAT_LOG_RETENTION_DAYS ?? 90);
@@ -255,8 +266,8 @@ function serveStatic(req: http.IncomingMessage, res: http.ServerResponse): void 
     res.end();
     return;
   }
-  // Pretty-URL aliases for the standalone official-channels page (public/ -> dist/links.html).
-  if (LINKS_ALIASES.has(urlPath)) urlPath = '/links.html';
+  // Pretty-URL aliases for standalone static pages.
+  urlPath = STATIC_PAGE_ALIASES.get(urlPath) ?? urlPath;
   if (urlPath === '/' || urlPath === '/admin' || urlPath === '/admin/') urlPath = `/${shell}`;
   // normalize once and reuse for BOTH file resolution and cache policy —
   // otherwise /assets/../x would serve a mutable file with immutable caching
@@ -605,12 +616,13 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     // server-side so it never ships in the client bundle. Public (on-chain
     // balances are public) but narrow + IP rate-limited + per-wallet cached.
     if (req.method === 'GET' && url === '/api/woc/balance') {
-      if (rateLimited(req)) {
+      if (wocBalanceRateLimited(req)) {
         recordUsageMetric('woc.balance.rate_limited');
         return json(res, 429, { error: 'rate limited' });
       }
-      const owner = new URLSearchParams((req.url ?? '').split('?')[1] ?? '').get('owner') ?? '';
-      return handleWocBalance(res, owner);
+      // `fresh=1` is parsed AFTER the IP rate-limit above, so it can't be used to hammer the RPC.
+      const { owner, fresh } = parseWocBalanceQuery(req.url ?? '');
+      return handleWocBalance(res, owner, fresh);
     }
     // Shareable player card: publish (PNG body) + referral stats for the card.
     if (req.method === 'POST' && url === '/api/card') {

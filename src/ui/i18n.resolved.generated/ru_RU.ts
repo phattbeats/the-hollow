@@ -232,6 +232,74 @@ export const ru_RU: EnTranslations = {
       "showWalletOnCharacterScreen": "Показывать кошелек на экране персонажей",
       "showWalletOnPlayerCard": "Показывать кошелек на карточке игрока"
     },
+    "perf": {
+      "title": "Оверлей производительности",
+      "enable": "Показывать оверлей производительности",
+      "description": "Выберите, какие показатели отображать, где разместить оверлей и как он выглядит.",
+      "sectionPosition": "Положение",
+      "sectionAppearance": "Внешний вид",
+      "sectionStats": "Показатели",
+      "positionX": "По горизонтали",
+      "positionY": "По вертикали",
+      "resetPosition": "Сбросить положение",
+      "dragHint": "Перетащите оверлей, чтобы переместить его, или используйте ползунки ниже.",
+      "opacity": "Прозрачность фона",
+      "solidBg": "Сплошной фон",
+      "fontScale": "Размер текста",
+      "textColor": "Цвет текста",
+      "bgColor": "Цвет фона",
+      "colorTheme": "Цветовая тема",
+      "graph": "График времени кадра",
+      "thresholds": "Цветовая индикация",
+      "presetsLabel": "Готовые наборы",
+      "presetMinimal": "Минимум",
+      "presetStandard": "Стандарт",
+      "presetEverything": "Всё",
+      "groups": {
+        "frame": "Кадры и время",
+        "network": "Сеть",
+        "renderer": "Рендер",
+        "system": "Система"
+      },
+      "labels": {
+        "fps": "FPS",
+        "frameTime": "Время кадра",
+        "fps1Low": "1% мин.",
+        "fps01Low": "0,1% мин.",
+        "ping": "Пинг",
+        "jitter": "Джиттер",
+        "snapshot": "Частота снимков",
+        "connection": "Соединение",
+        "drawCalls": "Вызовы отрисовки",
+        "triangles": "Треугольники",
+        "geometries": "Геометрия",
+        "textures": "Текстуры",
+        "programs": "Шейдеры",
+        "renderScale": "Масштаб рендера",
+        "gpu": "GPU",
+        "memory": "Память",
+        "hitches": "Подвисания",
+        "entities": "Объекты"
+      },
+      "themes": {
+        "gold": "Золото",
+        "frost": "Иней",
+        "ember": "Жар",
+        "jade": "Нефрит",
+        "crimson": "Багрянец",
+        "mono": "Моно"
+      },
+      "units": {
+        "ms": "{value} мс",
+        "mb": "{value} МБ",
+        "memPair": "{used} / {limit} МБ",
+        "hz": "{value} Гц"
+      },
+      "badges": {
+        "backgrounded": "В фоне",
+        "offline": "Не в сети"
+      }
+    },
     "playerCard": {
       "showWalletBadge": "Показывать значок кошелька"
     },
@@ -501,6 +569,38 @@ export const ru_RU: EnTranslations = {
       "leviathan": {
         "name": "Левиафан",
         "flavor": "Рынок чувствует ваше движение: 1% предложения."
+      },
+      "tidelord": {
+        "name": "Владыка приливов",
+        "flavor": "Прилив отвечает на ваш зов: 2% предложения."
+      },
+      "stormcaller": {
+        "name": "Призыватель бурь",
+        "flavor": "Бури собираются на ваше имя: 3% предложения."
+      },
+      "krakencrown": {
+        "name": "Кракенова корона",
+        "flavor": "Коронованы глубинами: 4% предложения."
+      },
+      "titanforged": {
+        "name": "Выкованный титанами",
+        "flavor": "Выкованы среди титанов: 5% предложения."
+      },
+      "starhoard": {
+        "name": "Звездная сокровищница",
+        "flavor": "Сокровище, искривляющее звездный свет: 6% предложения."
+      },
+      "voidwarden": {
+        "name": "Страж пустоты",
+        "flavor": "Хранитель у края пустоты: 7% предложения."
+      },
+      "realmshaper": {
+        "name": "Преобразователь миров",
+        "flavor": "Вы меняете облик мира: 8% предложения."
+      },
+      "worldforger": {
+        "name": "Кователь миров",
+        "flavor": "Куете собственный мир: 9% предложения."
       },
       "worldbearer": {
         "name": "Носитель мира",

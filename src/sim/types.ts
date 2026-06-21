@@ -965,6 +965,8 @@ export interface NythraxisEncounterState {
   deathSpoken: boolean;
 }
 
+export type ErrorReason = 'target_dead';
+
 // `pid` (when present) marks a personal event that should only be delivered to
 // that player entity's owner; events without pid are world-visible.
 export type SimEvent = { pid?: number } & (
@@ -979,7 +981,7 @@ export type SimEvent = { pid?: number } & (
   | { type: 'milestoneUnlocked'; milestoneId: string }
   | { type: 'learnAbility'; abilityId: string; rank: number }
   | { type: 'loot'; text: string }
-  | { type: 'error'; text: string }
+  | { type: 'error'; text: string; reason?: ErrorReason }
   | { type: 'questAccepted'; questId: string }
   | { type: 'questProgress'; questId: string; text: string }
   | { type: 'questReady'; questId: string }
