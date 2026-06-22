@@ -2456,6 +2456,10 @@ async function refreshCharacters(): Promise<void> {
         row.querySelector('.take-over-btn')!.addEventListener('click', async (e) => {
           e.stopPropagation();
           const btn = e.currentTarget as HTMLButtonElement;
+          // Taking over disconnects the other live session with no undo, so guard a
+          // stray click (e.g. you are genuinely playing on another device) behind a
+          // confirm. The prompt text is the existing t() key, keeping it localized.
+          if (!window.confirm(t('character.takeOverConfirm'))) return;
           $('#charselect-error').textContent = '';
           btn.disabled = true;
           try {
