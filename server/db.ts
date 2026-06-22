@@ -142,7 +142,8 @@ CREATE TABLE IF NOT EXISTS account_totp_recovery (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   consumed_at TIMESTAMPTZ
 );
-CREATE INDEX IF NOT EXISTS account_totp_recovery_account ON account_totp_recovery(account_id);
+-- Composite unique index: enforces one row per (account, code) AND, with
+-- account_id leading, also serves the by-account lookups (consume, count, purge).
 CREATE UNIQUE INDEX IF NOT EXISTS account_totp_recovery_hash ON account_totp_recovery(account_id, code_hash);
 CREATE INDEX IF NOT EXISTS accounts_created_at ON accounts(created_at DESC);
 CREATE INDEX IF NOT EXISTS accounts_created_ip_created ON accounts(created_ip, created_at DESC);
@@ -794,14 +795,19 @@ export async function disableTotp(accountId: number): Promise<void> {
   }
 }
 
-// Advance the replay guard. Guarded so a slow/duplicate request can only ever
-// move the accepted counter forward, never backward.
-export async function updateTotpLastWindow(accountId: number, counter: number): Promise<void> {
-  await pool.query(
+// Atomically claim a TOTP window at login. The conditional UPDATE is the race
+// guard AND the replay guard in one: it succeeds (rowCount 1) only if this
+// counter is strictly newer than the last accepted one, so two concurrent
+// logins presenting the same fresh code cannot both win, and a code can never be
+// replayed once its window has been claimed. Returns true when the claim won.
+export async function claimTotpWindow(accountId: number, counter: number): Promise<boolean> {
+  const res = await pool.query(
     `UPDATE accounts SET totp_last_window = $2
-     WHERE id = $1 AND (totp_last_window IS NULL OR totp_last_window < $2)`,
+     WHERE id = $1 AND (totp_last_window IS NULL OR totp_last_window < $2)
+     RETURNING id`,
     [accountId, counter],
   );
+  return res.rowCount! > 0;
 }
 
 // Burn a recovery code atomically. The UPDATE ... WHERE consumed_at IS NULL is

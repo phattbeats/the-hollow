@@ -102,7 +102,7 @@ describe('recovery codes', () => {
     const codes = generateRecoveryCodes(10);
     expect(codes).toHaveLength(10);
     expect(new Set(codes).size).toBe(10);
-    for (const c of codes) expect(c).toMatch(/^[0-9a-f]{4}-[0-9a-f]{4}$/);
+    for (const c of codes) expect(c).toMatch(/^[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}$/);
   });
   it('hashes a code stably regardless of case, dashes, or spaces', () => {
     const h = hashRecoveryCode('4f8a-3b1c');

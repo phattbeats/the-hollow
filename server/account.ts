@@ -29,7 +29,7 @@ import {
   setTotpPending,
   enableTotp,
   disableTotp,
-  updateTotpLastWindow,
+  claimTotpWindow,
   consumeRecoveryCode,
   type AccountRow,
 } from './db';
@@ -373,9 +373,10 @@ export async function verifyLoginTwoFactor(
     if (matched === null) return false;
     const last = account.totp_last_window;
     const lastNum = last === null || last === undefined ? null : Number(last);
-    if (lastNum !== null && matched <= lastNum) return false; // already spent this window
-    await updateTotpLastWindow(account.id, matched);
-    return true;
+    if (lastNum !== null && matched <= lastNum) return false; // fast-path replay reject
+    // Atomic claim closes the concurrent-login window: only one request can move
+    // the counter to `matched`, so the same code cannot be accepted twice.
+    return claimTotpWindow(account.id, matched);
   }
   if (recoveryCode) {
     return consumeRecoveryCode(account.id, hashRecoveryCode(recoveryCode));

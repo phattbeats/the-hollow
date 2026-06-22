@@ -153,8 +153,10 @@ export function otpauthUri(secretBase32: string, account: string, issuer: string
 export function generateRecoveryCodes(count = RECOVERY_CODE_COUNT): string[] {
   const codes: string[] = [];
   for (let i = 0; i < count; i++) {
-    const hex = randomBytes(4).toString('hex'); // 8 hex chars
-    codes.push(`${hex.slice(0, 4)}-${hex.slice(4)}`);
+    // 64 bits of entropy (8 bytes) so a code is infeasible to guess even though
+    // it is a bearer credential at login; grouped in fours for legibility.
+    const hex = randomBytes(8).toString('hex'); // 16 hex chars
+    codes.push(hex.replace(/(.{4})(?=.)/g, '$1-'));
   }
   return codes;
 }

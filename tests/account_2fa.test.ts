@@ -44,6 +44,7 @@ let accountRow: any;       // shape returned by accountById
 let totpRow: any;          // shape returned by getTotpState
 let twoFactorEnabled: boolean;
 let recoveryConsumeOk: boolean;
+let totpClaimOk: boolean;
 let writes: { sql: string; params: any[] }[];
 
 function routeQuery(sql: string, params: any[]) {
@@ -52,6 +53,7 @@ function routeQuery(sql: string, params: any[]) {
   if (sql.includes('SELECT totp_secret, totp_pending_secret')) return { rows: totpRow ? [totpRow] : [] };
   if (sql.includes('SELECT totp_enabled_at FROM accounts')) return { rows: [{ totp_enabled_at: twoFactorEnabled ? 'now' : null }] };
   if (sql.includes('UPDATE account_totp_recovery SET consumed_at')) return { rows: recoveryConsumeOk ? [{ id: 1 }] : [], rowCount: recoveryConsumeOk ? 1 : 0 };
+  if (sql.includes('UPDATE accounts SET totp_last_window')) return { rows: totpClaimOk ? [{ id: 1 }] : [], rowCount: totpClaimOk ? 1 : 0 };
   if (sql.includes('SELECT COUNT(*)') && sql.includes('account_totp_recovery')) return { rows: [{ count: 5 }] };
   if (sql.includes('SELECT id, username, password_hash, email')) return { rows: accountRow ? [accountRow] : [] };
   if (sql.includes('FROM accounts WHERE id')) return { rows: accountRow ? [accountRow] : [] };
@@ -65,6 +67,7 @@ beforeEach(async () => {
   totpRow = { totp_secret: null, totp_pending_secret: null, totp_enabled_at: null, totp_last_window: null };
   twoFactorEnabled = false;
   recoveryConsumeOk = true;
+  totpClaimOk = true;
   writes = [];
   dbMock.query.mockReset();
   dbMock.query.mockImplementation((sql: string, params: any[]) => routeQuery(sql, params));
@@ -173,6 +176,11 @@ describe('verifyLoginTwoFactor', () => {
   it('rejects a wrong code', async () => {
     const acct: any = { id: 1, totp_secret: secret, totp_enabled_at: 'now', totp_last_window: null };
     expect(await verifyLoginTwoFactor(acct, '000000', '', now)).toBe(false);
+  });
+  it('rejects a valid code when the atomic window claim is lost (concurrent login)', async () => {
+    totpClaimOk = false; // a concurrent login already claimed this window
+    const acct: any = { id: 1, totp_secret: secret, totp_enabled_at: 'now', totp_last_window: null };
+    expect(await verifyLoginTwoFactor(acct, generateTotp(secret, now), '', now)).toBe(false);
   });
   it('accepts a recovery code by burning it', async () => {
     recoveryConsumeOk = true;
