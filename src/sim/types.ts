@@ -894,6 +894,8 @@ export interface Entity {
   ownerId: number | null; // controlled pets: owning player's entity id (null = wild)
   petMode: PetMode; // hunter pet behavior stance
   petTauntTimer: number; // controlled pet Growl cooldown
+  petPath: Vec3[]; // controlled pet heel route around obstacles; consumed front-to-back (like chargePath)
+  petPathCooldown: number; // seconds until this pet may recompute its heel path again
   pulseTimer: number; // boss aoe pulse countdown
   stompTimer: number; // boss War Stomp stun-pulse countdown
   stoneskinTimer: number; // periodic self-absorb barrier countdown
