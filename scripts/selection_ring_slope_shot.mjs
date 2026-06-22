@@ -54,7 +54,7 @@ const staged = await page.evaluate(async () => {
   const gh = (x, z) => w.groundHeight(x, z, seed);
   const mobs = [...sim.entities.values()].filter((e) => e.kind === 'mob');
   const target = mobs[0];
-  // nearest OTHER mob to a point — used to keep the staged scene uncluttered.
+  // nearest OTHER mob to a point, used to keep the staged scene uncluttered.
   const nearestOtherMob = (x, z) => {
     let d2 = Infinity;
     for (const m of mobs) {
@@ -65,8 +65,8 @@ const staged = await page.evaluate(async () => {
     return Math.sqrt(d2);
   };
 
-  // Find a moderate, walkable slope near spawn (grad ~0.3-0.55 ≈ 17-29°,
-  // matching the grassy hill in the report — steeper points are cliffs).
+  // Find a moderate, walkable slope near spawn (grad ~0.3-0.55, about 17 to 29
+  // degrees, matching the grassy hill in the report; steeper points are cliffs).
   let best = null;
   for (let dx = -160; dx <= 160; dx += 4) {
     for (let dz = -160; dz <= 160; dz += 4) {

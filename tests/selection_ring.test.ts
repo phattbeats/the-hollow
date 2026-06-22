@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { drapeRingLocalY } from '../src/render/selection_ring';
 
 // A small square ring footprint (unit radius) sampled at the four cardinal
-// points, expressed as the flat [x0,z0, x1,z1, …] layout the renderer caches.
+// points, expressed as the flat [x0,z0, x1,z1, ...] layout the renderer caches.
 const RING_XZ = new Float32Array([
   1, 0,   // +X
   -1, 0,  // -X

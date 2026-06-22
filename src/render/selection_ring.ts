@@ -9,7 +9,7 @@
 //
 // This module is host-agnostic (no Three.js, no DOM) so the draping math can be
 // unit-tested directly. The renderer is a thin consumer that feeds in the ring
-// geometry's center-relative XZ positions and a `groundHeight` sampler — honoring
+// geometry's center-relative XZ positions and a `groundHeight` sampler, honoring
 // the "terrain height = sim height" invariant (see src/render/CLAUDE.md).
 
 /** A terrain height sampler: world (x, z) -> ground height on the up axis. */
@@ -25,7 +25,7 @@ export type HeightSampler = (x: number, z: number) => number;
  *
  *     localY = (sample(worldX, worldZ) + lift - baseY) / scale
  *
- * @param localXZ flat [x0,z0, x1,z1, …] center-relative ring vertices (unscaled)
+ * @param localXZ flat [x0,z0, x1,z1, ...] center-relative ring vertices (unscaled)
  * @param cx      ring center world X
  * @param cz      ring center world Z
  * @param baseY   world Y the mesh is positioned at (the center's ground height)
