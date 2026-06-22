@@ -1,7 +1,13 @@
 import type { Input, TouchMoveInput } from './input';
 import { t } from '../ui/i18n';
 
-export const PHONE_TOUCH_QUERY = '(pointer: coarse), (any-pointer: coarse)';
+// Detects a genuinely touch-primary device (a phone or a tablet held in the
+// hand): the PRIMARY pointer is coarse AND cannot hover. Deliberately narrower
+// than "(any-pointer: coarse)" or navigator.maxTouchPoints, which both fire on
+// ordinary desktops/laptops that merely have a touch-capable peripheral (a
+// precision touchpad, a pen digitizer, or a touchscreen used alongside a mouse)
+// and would otherwise boot those machines straight into the mobile UI.
+export const PHONE_TOUCH_QUERY = '(pointer: coarse) and (hover: none)';
 const DEADZONE = 0.22;
 const CAMERA_SENSITIVITY = 0.8;
 const SWIPE_LOOK_DEADZONE_PX = 6;
@@ -105,11 +111,8 @@ export function isRecenterDoubleTap(
   return !moved && prevTapAt > 0 && now - prevTapAt <= threshold;
 }
 
-export function isPhoneTouchDevice(
-  win: Pick<Window, 'matchMedia'> = window,
-  nav: Pick<Navigator, 'maxTouchPoints'> = navigator,
-): boolean {
-  return nav.maxTouchPoints > 0 || win.matchMedia(PHONE_TOUCH_QUERY).matches;
+export function isPhoneTouchDevice(win: Pick<Window, 'matchMedia'> = window): boolean {
+  return win.matchMedia(PHONE_TOUCH_QUERY).matches;
 }
 
 function isNativeAppShell(): boolean {

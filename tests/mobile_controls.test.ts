@@ -48,7 +48,7 @@ describe('mapJoystickVector', () => {
 });
 
 describe('isPhoneTouchDevice', () => {
-  it('uses touch capability without requiring phone viewport dimensions', () => {
+  it('detects a touch-primary device: a coarse primary pointer that cannot hover', () => {
     const queries: string[] = [];
     const win = {
       matchMedia: (q: string) => {
@@ -56,20 +56,32 @@ describe('isPhoneTouchDevice', () => {
         return { matches: true };
       },
     } as unknown as Window;
-    const nav = { maxTouchPoints: 0 } as Navigator;
-    expect(isPhoneTouchDevice(win, nav)).toBe(true);
+    expect(isPhoneTouchDevice(win)).toBe(true);
+    // Keyed off the PRIMARY pointer plus hover, not "any pointer is coarse" or a
+    // raw touch-point count, so a desktop with a touch-capable peripheral stays desktop.
     expect(queries[0]).toContain('pointer: coarse');
-    expect(queries[0]).toContain('any-pointer: coarse');
+    expect(queries[0]).toContain('hover: none');
+    expect(queries[0]).not.toContain('any-pointer');
     expect(queries[0]).not.toContain('max-width');
     expect(queries[0]).not.toContain('max-height');
   });
 
-  it('treats devices with touch points as touch controls devices', () => {
+  it('treats a mouse/trackpad desktop as non-phone (fine primary pointer that hovers)', () => {
     const win = {
       matchMedia: () => ({ matches: false }),
     } as unknown as Window;
-    const nav = { maxTouchPoints: 5 } as Navigator;
-    expect(isPhoneTouchDevice(win, nav)).toBe(true);
+    expect(isPhoneTouchDevice(win)).toBe(false);
+  });
+
+  it('ignores touch/pen capability on a non-touchscreen laptop (regression)', () => {
+    // A Windows laptop with a precision touchpad or pen digitizer reports
+    // navigator.maxTouchPoints > 0 and matches (any-pointer: coarse), yet its
+    // PRIMARY pointer is a mouse that hovers. The phone query is false there, so
+    // it must NOT flip to the mobile UI regardless of touch-point count.
+    const win = {
+      matchMedia: (q: string) => ({ matches: q.includes('any-pointer') && !q.includes('hover') }),
+    } as unknown as Window;
+    expect(isPhoneTouchDevice(win)).toBe(false);
   });
 });
 
