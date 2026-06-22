@@ -75,7 +75,6 @@ export function buildChrome(mount: HTMLElement, opts: ChromeOptions, signal: Abo
       <div class="guide-header-inner">
         <a class="guide-brand" href="${esc(GUIDE_BASE)}">
           <span class="guide-brand-name">${esc(t('guide.brand'))}</span>
-          <span class="guide-brand-tag">${esc(t('guide.nav.primary'))}</span>
         </a>
         <button type="button" class="guide-menu-toggle" aria-expanded="false" aria-controls="guide-primary-nav" aria-label="${esc(t('guide.nav.openMenu'))}">
           <span class="guide-menu-bars" aria-hidden="true"></span>

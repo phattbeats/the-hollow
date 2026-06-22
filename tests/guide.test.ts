@@ -37,6 +37,14 @@ describe('Guide routes', () => {
     expect(matchRoute('/guide/nonexistent')).toBeNull();
   });
 
+  it('ignores #hash and ?query when matching (skip link / in-page anchors)', () => {
+    // Regression: the skip link href="#guide-main" must not route to notFound.
+    expect(matchRoute('/guide#guide-main')?.route.id).toBe('home');
+    expect(matchRoute('/guide/reference/controls#movement')?.route.id).toBe('controls');
+    expect(matchRoute('/guide/classes/warrior?from=home')?.params).toEqual(['warrior']);
+    expect(toSub('/guide/classes#kit')).toBe('classes');
+  });
+
   it('derives nav from the single route list', () => {
     expect(topbarRoutes().some((r) => r.id === 'classes')).toBe(true);
     expect(topbarRoutes().some((r) => r.id === 'home')).toBe(false);

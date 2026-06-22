@@ -48,7 +48,9 @@ export interface RouteMatch {
 
 /** Normalize a browser pathname to the Guide sub-path ('' for the landing). */
 export function toSub(pathname: string): string {
-  let p = pathname;
+  // Drop any #hash or ?query so an in-page anchor (e.g. /guide/classes#kit) still
+  // resolves to its route; the hash is handled separately for scroll/focus.
+  let p = pathname.split('#')[0].split('?')[0];
   if (p.startsWith(GUIDE_BASE)) p = p.slice(GUIDE_BASE.length);
   // Strip leading and trailing slashes; collapse to a clean 'a/b' form.
   return p.replace(/^\/+/, '').replace(/\/+$/, '');

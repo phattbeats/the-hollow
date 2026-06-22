@@ -111,6 +111,14 @@ try {
   await page.waitForSelector('.guide-notfound');
   check('unknown route renders notFound', !!(await page.$('.guide-notfound')));
 
+  // Skip link must scroll/focus #guide-main, NOT route to notFound (regression).
+  await page.goto(`${BASE}/guide`, { waitUntil: 'networkidle0' });
+  await page.waitForSelector('.guide-skip');
+  await page.keyboard.press('Tab'); // focus the skip link
+  await page.keyboard.press('Enter'); // activate it
+  check('skip link does not break the page', !(await page.$('.guide-notfound')));
+  check('skip link lands focus on main', await page.evaluate(() => document.activeElement?.id === 'guide-main'));
+
   // Mobile viewport screenshot.
   const mobile = await browser.newPage();
   mobile.on('pageerror', (e) => errors.push(`pageerror(m): ${e.message}`));

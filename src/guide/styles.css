@@ -142,13 +142,6 @@ img { max-width: 100%; height: auto; }
   text-transform: uppercase;
   color: var(--g-gold);
 }
-.guide-brand-tag {
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--g-text-muted);
-}
-
 .guide-primary-nav {
   display: flex;
   align-items: center;
@@ -680,6 +673,10 @@ body[data-guide-route="home"] .guide-main { padding-block-start: 0; }
   color: var(--g-text);
 }
 .guide-zone-blurb { margin: 0; color: var(--g-text-dim); }
+/* per-biome accent (south to north): green vale, teal marsh, cold-blue peaks */
+.guide-zone-vale { border-block-start: 3px solid #7fae5a; }
+.guide-zone-marsh { border-block-start: 3px solid #4f9e8c; }
+.guide-zone-peaks { border-block-start: 3px solid #7fa8d8; }
 
 /* FAQ disclosures */
 .guide-faq { max-width: 720px; margin-inline: auto; }
