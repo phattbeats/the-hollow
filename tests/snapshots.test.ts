@@ -106,7 +106,7 @@ describe('raid lockouts over the wire', () => {
     expect(snap.self.lockouts).toEqual({ nythraxis_boss_arena: until });
 
     const client = bareClient(session.pid);
-    client.applySnapshot(snap);
+    (client as any).applySnapshot(snap);
     const out = client.raidLockouts();
     expect(out.map((l) => l.id)).toEqual(['nythraxis_boss_arena']);
     expect(out[0].msRemaining).toBeGreaterThan(5 * 60 * 60 * 1000 - 5000);
@@ -125,7 +125,7 @@ describe('raid lockouts over the wire', () => {
     expect(snap.self.lockouts).toEqual({}); // server filters to future-only
 
     const client = bareClient(session.pid);
-    client.applySnapshot(snap);
+    (client as any).applySnapshot(snap);
     expect(client.raidLockouts()).toEqual([]);
   });
 });
