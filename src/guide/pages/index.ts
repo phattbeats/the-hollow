@@ -11,12 +11,14 @@ import { combat } from './combat';
 import { controls } from './controls';
 import { glossary } from './glossary';
 import { faq } from './faq';
+import { classes } from './classes';
 
 export type { GuidePage, PageContext } from './types';
 
 const PAGES: Record<string, GuidePage> = {
   home,
   'how-to-play': howToPlay,
+  classes,
   combat,
   controls,
   glossary,

@@ -663,6 +663,39 @@ export const fr_FR: EnTranslations = {
       "q8": "Can I host my own copy?",
       "a8": "Yes. The project is open source, so you can run your own server. See the GitHub repository."
     },
+    "classList": {
+      "heading": "The nine classes",
+      "sub": "Tank, heal, or deal the damage. Pick the fantasy that calls to you, then make it your own with talents."
+    },
+    "role": {
+      "tank": "Tank",
+      "healer": "Healer",
+      "damage": "Damage"
+    },
+    "resourceName": {
+      "rage": "Rage",
+      "mana": "Mana",
+      "energy": "Energy"
+    },
+    "classPage": {
+      "back": "All classes",
+      "roleLabel": "Plays as",
+      "resourceLabel": "Resource",
+      "specsHeading": "Specializations",
+      "abilitiesHeading": "Signature abilities",
+      "abilitiesNote": "A taste of the kit. You learn more as you level, and talents reshape how it all plays."
+    },
+    "classHook": {
+      "warrior": "A relentless front-line fighter who turns every blow taken into fuel for the next.",
+      "paladin": "A holy warrior who can shield allies, mend their wounds, or bring the hammer down.",
+      "hunter": "A ranged marksman with a loyal beast at their side and a trick for every foe.",
+      "rogue": "A master of stealth and poisons who strikes from the shadows and never fights fair.",
+      "priest": "A devoted healer whose light keeps the party standing, or whose shadow unmakes the enemy.",
+      "shaman": "A spirit-caller who bends storm, fire, and water, and mends allies between the lightning.",
+      "mage": "A spellweaver of fire, frost, and arcane who controls the battlefield from afar.",
+      "warlock": "A dark conjurer who commands demons and curses, trading life for devastating power.",
+      "druid": "A shapeshifter who tanks as a bear, savages foes as a cat, or heals in the thick of it."
+    },
     "placeholder": {
       "note": "This part of the guide is on its way."
     },

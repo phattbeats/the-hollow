@@ -1,9 +1,11 @@
 import { readFileSync } from 'node:fs';
-import { describe, expect, it, beforeEach } from 'vitest';
+import { execFileSync } from 'node:child_process';
+import { describe, expect, it } from 'vitest';
 
 import {
   matchRoute, toSub, topbarRoutes, groupedRoutes, hrefFor, GUIDE_ROUTES, GUIDE_BASE,
 } from '../src/guide/routes';
+import { GUIDE_CLASSES } from '../src/guide/content.generated';
 import { t, setLanguage } from '../src/ui/i18n';
 
 const guideHtml = readFileSync(new URL('../guide.html', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
@@ -92,5 +94,33 @@ describe('guide.html shell', () => {
   it('loads the guide client module and a noscript fallback', () => {
     expect(guideHtml).toContain('<script type="module" src="/src/guide/main.ts"></script>');
     expect(guideHtml).toContain('<noscript>');
+  });
+});
+
+describe('Guide generated class content', () => {
+  it('covers all nine classes with grounded data', () => {
+    expect(GUIDE_CLASSES).toHaveLength(9);
+    for (const c of GUIDE_CLASSES) {
+      expect(c.color).toMatch(/^#[0-9a-f]{6}$/);
+      expect(['rage', 'mana', 'energy']).toContain(c.resource);
+      expect(c.roles.length).toBeGreaterThan(0);
+      expect(c.specs.length).toBeGreaterThan(0);
+      expect(c.signatureAbilities.length).toBeGreaterThan(0);
+      for (const s of c.specs) expect(['tank', 'healer', 'dps']).toContain(s.role);
+      // every class nav name resolves
+      expect(t(`classes.${c.id}` as never).length).toBeGreaterThan(0);
+      expect(t(`guide.classHook.${c.id}` as never).length).toBeGreaterThan(0);
+    }
+  });
+
+  it('matches the sim (regenerating leaves the committed file unchanged)', () => {
+    execFileSync('node', ['scripts/wiki/build_content.mjs'], { cwd: new URL('..', import.meta.url) });
+    // No diff means the committed content is derived from the current sim data.
+    expect(() =>
+      execFileSync('git', ['diff', '--exit-code', '--', 'src/guide/content.generated.ts'], {
+        cwd: new URL('..', import.meta.url),
+        encoding: 'utf8',
+      }),
+    ).not.toThrow();
   });
 });

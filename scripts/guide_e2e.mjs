@@ -66,6 +66,26 @@ try {
   await page.waitForSelector('.guide-keytable');
   await page.screenshot({ path: 'tmp/guide-controls.png', fullPage: true });
 
+  // Classes index + a class detail page.
+  await page.goto(`${BASE}/guide/classes`, { waitUntil: 'networkidle0' });
+  await page.waitForSelector('.guide-class-card');
+  check('classes index lists nine classes', (await page.$$('.guide-class-card')).length === 9);
+  const crestSrc = await page.$eval('.guide-class-crest', (el) => el.getAttribute('src') || '');
+  check('class crest is a procedural data URL', crestSrc.startsWith('data:image'));
+  await page.screenshot({ path: 'tmp/guide-classes.png', fullPage: true });
+
+  await page.goto(`${BASE}/guide/classes/warrior`, { waitUntil: 'networkidle0' });
+  await page.waitForSelector('.guide-class-hero');
+  check('class page hero renders', (await page.$eval('.guide-class-hero-name', (el) => el.textContent.trim())).length > 0);
+  check('class page shows specs', (await page.$$('.guide-spec')).length >= 1);
+  check('class page shows signature abilities', (await page.$$('.guide-ability')).length >= 1);
+  check('class page title is the class name', /Warrior/i.test(await page.title()));
+  await page.screenshot({ path: 'tmp/guide-class-warrior.png', fullPage: true });
+
+  await page.goto(`${BASE}/guide/classes/notaclass`, { waitUntil: 'networkidle0' });
+  await page.waitForSelector('.guide-article');
+  check('invalid class id renders not-found', !!(await page.$('.guide-notfound')));
+
   // Deep link + 404.
   await page.goto(`${BASE}/guide/nope-not-real`, { waitUntil: 'networkidle0' });
   await page.waitForSelector('.guide-notfound');

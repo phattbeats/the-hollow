@@ -61,6 +61,7 @@ export class GuideApp {
   private navigate(pathname: string): void {
     const match = matchRoute(pathname);
     let titleKey: TranslationKey;
+    let dynamicTitle: string | null = null;
     if (!match) {
       this.chrome.mainEl.innerHTML = notFoundHtml();
       titleKey = 'guide.notFound.title';
@@ -73,12 +74,13 @@ export class GuideApp {
       const page = pageFor(route.id);
       this.chrome.mainEl.innerHTML = page ? page.render(ctx) : placeholderHtml(ctx);
       titleKey = page?.titleKey ?? route.navKey;
+      dynamicTitle = page?.titleFor ? page.titleFor(ctx) : null;
       this.chrome.setActive(route.sub);
       this.chrome.setSidebarVisible(route.id !== 'home');
       document.body.dataset.guideRoute = route.id;
     }
 
-    const pageTitle = t(titleKey);
+    const pageTitle = dynamicTitle ?? t(titleKey);
     const brand = t('guide.brand');
     document.title = pageTitle === brand ? brand : t('guide.docTitle', { page: pageTitle, brand });
     this.chrome.closeMenu();

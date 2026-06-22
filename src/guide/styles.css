@@ -414,6 +414,86 @@ body.guide-has-sidebar .guide-layout {
 .guide-reveal summary:hover { color: var(--g-gold); }
 .guide-reveal-body { padding: 0 var(--g-md) var(--g-md); color: var(--g-text-dim); }
 
+/* --------------------------------------------------------- classes (Phase 03) */
+/* role + resource badges; never color-only, each carries a text label */
+.guide-badges { display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.guide-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+}
+.guide-role-tank { color: #7ab8ff; }
+.guide-role-healer { color: #7fdc8f; }
+.guide-role-dps { color: #ff9b7a; }
+.guide-badge-resource { color: var(--g-text-dim); }
+
+/* classes index grid */
+.guide-class-cards {
+  display: grid;
+  gap: var(--g-md);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  margin-block-start: var(--g-lg);
+}
+.guide-class-card {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--g-xs) var(--g-md);
+  align-items: center;
+  padding: var(--g-md);
+  background: var(--g-bg-2);
+  border: 1px solid var(--g-border-soft);
+  border-block-start: 3px solid var(--class-color, var(--g-gold));
+  border-radius: var(--g-radius-lg);
+  color: var(--g-text);
+}
+.guide-class-card:hover { border-color: var(--class-color, var(--g-gold)); text-decoration: none; }
+.guide-class-crest { grid-row: 1 / span 3; width: 64px; height: 64px; align-self: start; }
+.guide-class-card-name { font-family: var(--g-font-display); font-size: 18px; font-weight: 700; color: var(--g-text); }
+.guide-class-card-hook { grid-column: 2; margin: 0; color: var(--g-text-dim); font-size: 14px; }
+
+/* class detail page */
+.guide-class-hero {
+  display: flex;
+  align-items: center;
+  gap: var(--g-md);
+  margin-block: var(--g-sm) var(--g-md);
+  padding-block-end: var(--g-md);
+  border-block-end: 1px solid var(--g-border-soft);
+}
+.guide-class-hero-crest { width: 96px; height: 96px; flex: none; }
+.guide-class-hero-name { margin: 0 0 var(--g-xs); color: var(--class-color, var(--g-gold)); }
+
+.guide-spec-list { list-style: none; padding: 0; margin: var(--g-md) 0 0; display: grid; gap: var(--g-sm); }
+.guide-spec {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--g-md);
+  padding: var(--g-sm) var(--g-md);
+  background: var(--g-bg-2);
+  border: 1px solid var(--g-border-soft);
+  border-radius: var(--g-radius);
+}
+.guide-spec-name { font-family: var(--g-font-display); font-weight: 600; }
+
+.guide-ability-strip {
+  list-style: none;
+  padding: 0;
+  margin: var(--g-md) 0 0;
+  display: grid;
+  gap: var(--g-md);
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+}
+.guide-ability { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--g-xs); }
+.guide-ability-icon { width: 48px; height: 48px; border-radius: 8px; border: 1px solid var(--g-border); }
+.guide-ability-name { font-size: 12px; color: var(--g-text-dim); }
+
 /* -------------------------------------------------------------------- hero */
 /* Full-bleed cinematic hero over the game's loading art (kintara-style: one backdrop
    carries the mood, sparse foreground). The breakout reaches the viewport edges; body

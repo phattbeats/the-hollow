@@ -16,5 +16,7 @@ export interface PageContext {
 export interface GuidePage {
   /** Title key for document.title; falls back to the route nav label when omitted. */
   titleKey?: TranslationKey;
+  /** Dynamic document title (e.g. the class name on a class page). Wins over titleKey. */
+  titleFor?(ctx: PageContext): string;
   render(ctx: PageContext): string;
 }
