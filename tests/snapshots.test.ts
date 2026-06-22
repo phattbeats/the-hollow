@@ -18,7 +18,7 @@ import { ClientWorld } from '../src/net/online';
 import { Sim } from '../src/sim/sim';
 import { DT, type PlayerClass } from '../src/sim/types';
 
-const DELTA_KEYS = ['inv', 'buyback', 'equip', 'qlog', 'qdone', 'cds', 'stats', 'weapon', 'party', 'trade', 'duel'];
+const DELTA_KEYS = ['inv', 'buyback', 'equip', 'qlog', 'qdone', 'lockouts', 'cds', 'stats', 'weapon', 'party', 'trade', 'duel'];
 
 interface FakeClient {
   sent: any[];
@@ -90,6 +90,45 @@ function bareClient(pid: number): ClientWorld {
   c.inputEchoSamples = [];
   return c;
 }
+
+describe('raid lockouts over the wire', () => {
+  it('ships a granted lockout in self.lockouts and ClientWorld mirrors it end to end', () => {
+    const server = new GameServer();
+    const fc = fakeWs();
+    const session = joinServer(server, fc, 1, 'Locked');
+    const sim = (server as any).sim;
+    const meta = sim.players.get(session.pid);
+    const until = Date.now() + 5 * 60 * 60 * 1000;
+    meta.raidLockouts.set('nythraxis_boss_arena', until);
+
+    broadcast(server);
+    const snap = lastSnap(fc.sent);
+    expect(snap.self.lockouts).toEqual({ nythraxis_boss_arena: until });
+
+    const client = bareClient(session.pid);
+    client.applySnapshot(snap);
+    const out = client.raidLockouts();
+    expect(out.map((l) => l.id)).toEqual(['nythraxis_boss_arena']);
+    expect(out[0].msRemaining).toBeGreaterThan(5 * 60 * 60 * 1000 - 5000);
+  });
+
+  it('clears the client lockout once the server-side entry has expired', () => {
+    const server = new GameServer();
+    const fc = fakeWs();
+    const session = joinServer(server, fc, 1, 'Expiring');
+    const sim = (server as any).sim;
+    const meta = sim.players.get(session.pid);
+    meta.raidLockouts.set('nythraxis_boss_arena', Date.now() - 1000); // already past
+
+    broadcast(server);
+    const snap = lastSnap(fc.sent);
+    expect(snap.self.lockouts).toEqual({}); // server filters to future-only
+
+    const client = bareClient(session.pid);
+    client.applySnapshot(snap);
+    expect(client.raidLockouts()).toEqual([]);
+  });
+});
 
 describe('delta snapshots', () => {
   let server: GameServer;
