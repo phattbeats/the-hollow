@@ -2898,4 +2898,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "hudChrome.account.deactivated": "アカウントが無効化されました。",
   "hudChrome.account.logOut": "ログアウト",
   "hudChrome.account.logOutSummary": "このデバイスからログアウトします。",
+  // On-screen quest tracker (hudChrome.questTracker.*): collapsed count badge + header toggle hover hint.
+  "hudChrome.questTracker.count": "（{count}）",
+  "hudChrome.questTracker.collapseHint": "クエストトラッカーを折りたたむ",
+  "hudChrome.questTracker.expandHint": "クエストトラッカーを展開する",
 };

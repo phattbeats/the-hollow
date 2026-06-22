@@ -33,6 +33,15 @@ export const hudChromeStrings = {
     title: "Emotes",
     done: "Done",
   },
+  // On-screen quest tracker. The "(N)" count shown beside the header while the
+  // tracker is collapsed (the number is spliced in via formatNumber), plus the
+  // header button's state-aware hover/title hint (Collapse while expanded,
+  // Expand while collapsed).
+  questTracker: {
+    count: "({count})",
+    collapseHint: "Collapse quest tracker",
+    expandHint: "Expand quest tracker",
+  },
   chatTimestamps: {
     show: "Show Chat Timestamps",
     format: "Timestamp Format",

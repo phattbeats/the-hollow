@@ -174,6 +174,11 @@ export const pt_BR: EnTranslations = {
       "title": "Emotes",
       "done": "Concluído"
     },
+    "questTracker": {
+      "count": "({count})",
+      "collapseHint": "Recolher missões",
+      "expandHint": "Expandir missões"
+    },
     "chatTimestamps": {
       "show": "Mostrar horário no chat",
       "format": "Formato do horário",

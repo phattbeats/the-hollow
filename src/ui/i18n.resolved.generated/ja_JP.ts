@@ -174,6 +174,11 @@ export const ja_JP: EnTranslations = {
       "title": "エモート",
       "done": "完了"
     },
+    "questTracker": {
+      "count": "（{count}）",
+      "collapseHint": "クエストトラッカーを折りたたむ",
+      "expandHint": "クエストトラッカーを展開する"
+    },
     "chatTimestamps": {
       "show": "チャットに時刻を表示",
       "format": "時刻の表記形式",

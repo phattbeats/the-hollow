@@ -174,6 +174,11 @@ export const es: EnTranslations = {
       "title": "Emotes",
       "done": "Listo"
     },
+    "questTracker": {
+      "count": "({count})",
+      "collapseHint": "Contraer rastreador de misiones",
+      "expandHint": "Expandir rastreador de misiones"
+    },
     "chatTimestamps": {
       "show": "Mostrar hora en el chat",
       "format": "Formato de hora",

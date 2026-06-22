@@ -174,6 +174,11 @@ export const de_DE: EnTranslations = {
       "title": "Emotes",
       "done": "Fertig"
     },
+    "questTracker": {
+      "count": "({count})",
+      "collapseHint": "Quests einklappen",
+      "expandHint": "Quests ausklappen"
+    },
     "chatTimestamps": {
       "show": "Chat-Zeitstempel anzeigen",
       "format": "Zeitstempelformat",

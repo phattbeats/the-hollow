@@ -2898,4 +2898,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   "hudChrome.account.deactivated": "您的帳號已停用。",
   "hudChrome.account.logOut": "登出",
   "hudChrome.account.logOutSummary": "登出目前的裝置。",
+  // On-screen quest tracker (hudChrome.questTracker.*): collapsed count badge + header toggle hover hint.
+  "hudChrome.questTracker.count": "（{count}）",
+  "hudChrome.questTracker.collapseHint": "收合任務追蹤器",
+  "hudChrome.questTracker.expandHint": "展開任務追蹤器",
 };
