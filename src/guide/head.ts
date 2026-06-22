@@ -13,13 +13,13 @@ import {
   getLanguage, languageTag, t, formatNumber, supportedLanguages,
   type TranslationKey,
 } from '../ui/i18n';
-import { hrefFor, GUIDE_ROUTES, type GuideRoute } from './routes';
+import { hrefFor, type GuideRoute } from './routes';
 import { GLOSSARY_TERMS } from './pages/glossary';
 import { GUIDE_CLASSES } from './content.generated';
 import { LEVEL_CAP } from './data';
 
 // The site origin. Matches index.html's canonical/og:url host exactly.
-export const ORIGIN = 'https://worldofclaudecraft.com';
+const ORIGIN = 'https://worldofclaudecraft.com';
 const LOGO = `${ORIGIN}/woc_logo_square.webp`;
 const GITHUB_URL = 'https://github.com/levy-street/world-of-claudecraft';
 const DISCORD_URL = 'https://discord.gg/GjhnUsBtw';
@@ -57,7 +57,7 @@ function guideUrl(sub: string): string {
  * en at /guide<path>, the 13 others at /guide<path>?lang=<locale>, plus x-default -> en.
  * `sub` is the route sub-path ('' for home), e.g. 'classes/warrior'.
  */
-export function guideAlternates(sub: string): { hreflang: string; href: string }[] {
+function guideAlternates(sub: string): { hreflang: string; href: string }[] {
   const base = guideUrl(sub);
   const out: { hreflang: string; href: string }[] = [];
   for (const lang of supportedLanguages) {
@@ -101,8 +101,15 @@ export function applyRouteHead(input: RouteHeadInput): void {
   const { route, sub, title, detailId } = input;
   const lang = getLanguage();
   const inLanguage = languageTag(lang);
-  const url = guideUrl(sub);
-  const description = descriptionForRoute(route, detailId);
+  // Only the classes route has real detail pages. A trailing param on any other route (or
+  // an unknown class id) is a junk deep path, so canonicalize it back to the section rather
+  // than self-canonicalizing onto the junk URL, and drop the junk breadcrumb leaf.
+  const isClassDetail = route?.id === 'classes' && detailId != null
+    && GUIDE_CLASSES.some((c) => c.id === detailId);
+  const effectiveDetailId = isClassDetail ? detailId : null;
+  const canonSub = route ? (isClassDetail ? `${route.sub}/${detailId}` : route.sub) : sub;
+  const url = guideUrl(canonSub);
+  const description = descriptionForRoute(route, effectiveDetailId);
   // og:/twitter: titles use the page title without the " - brand" suffix when we can,
   // but the full document title is a safe, descriptive social title, so reuse it.
   const socialTitle = title;
@@ -115,8 +122,8 @@ export function applyRouteHead(input: RouteHeadInput): void {
   setMetaProperty('og:description', description);
   setMetaName('twitter:title', socialTitle);
   setMetaName('twitter:description', description);
-  applyAlternates(sub);
-  setStructuredData(buildStructuredData(route, sub, url, description, inLanguage, detailId));
+  applyAlternates(canonSub);
+  setStructuredData(buildStructuredData(route, canonSub, url, description, inLanguage, effectiveDetailId));
 }
 
 // ----- head node helpers (query-or-create, then update in place) -----
@@ -301,6 +308,3 @@ function buildStructuredData(
   }
   return { '@context': 'https://schema.org', '@graph': graph };
 }
-
-// Re-export the route table so callers (and tests) can derive descriptions from one place.
-export { GUIDE_ROUTES };

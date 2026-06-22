@@ -938,8 +938,7 @@ export const fr_FR: EnTranslations = {
       "marshPlaceNotes": "Fenbridge guards the only dry road. The Prowler Reeds and Deepfen Shallows teem with marsh beasts and murlocs; the Widow Thicket is spun thick with web; the Drowned Chapel and the Troll Mounds keep older dangers; the Gravecaller Encampment is the cult dug in, and the Sunken Bastion is the marsh's instanced heart.",
       "peaksPlaceNotes": "Highwatch holds the wall. Stalker Ridge and the Deeprock Burrows belong to ridge cats and kobolds; the Ogre Foothills and Drogmar's War-Camp to brutes for hire; Stormcrag crackles with elementals and the Glimmermere glows below it; the Wyrmcult Tents and Revenant Fields ring the cult's high ground, with Gravewyrm Sanctum at its peak.",
       "gladeTitle": "A quiet corner: Brightwood Glade",
-      "gladeBody": "Not every story in the Vale is about the dead. In the north, a sunlit grove called Brightwood Glade keeps its own gentler rhythm, watched over by a lone ranger who would rather steward it than fight. Her work is balance: thinning what overbreeds, and, when its hollow grows too dangerous to leave be, giving the grove's old crowned stag a respectful end. It is a soft counterpoint to the trail you are following, and worth the detour.",
-      "figuresIntro": "The road north is not a lonely one. A few people travel it with you."
+      "gladeBody": "Not every story in the Vale is about the dead. In the north, a sunlit grove called Brightwood Glade keeps its own gentler rhythm, watched over by a lone ranger who would rather steward it than fight. Her work is balance: thinning what overbreeds, and, when its hollow grows too dangerous to leave be, giving the grove's old crowned stag a respectful end. It is a soft counterpoint to the trail you are following, and worth the detour."
     },
     "questsPage": {
       "heading": "Quêtes",
@@ -1047,7 +1046,7 @@ export const fr_FR: EnTranslations = {
       "wavePrismaticTitle": "Prismatic",
       "wavePrismaticBody": "The final wave: build-defining, screen-melting spikes meant to feel ridiculous in the best way.",
       "powerupsTitle": "Power-ups in the ring",
-      "powerupsBody": "Glowing orbs also drop into the arena mid-fight, free for whoever reaches them first. They are deliberately over the top and last only a short while: Speed Demon for a blink of blinding pace, Colossus to swell up huge and hit like a wall, Moon Boots for a bouncing, low-gravity leap, and Berserker for a sudden surge of fury.",
+      "powerupsBody": "Glowing orbs also drop into the arena mid-fight, free for whoever reaches them first. They are deliberately over the top and last only a short while: Speed Demon for a blink of blinding pace, Colossus to swell up into a lumbering giant, Moon Boots for a bouncing, low-gravity leap, and Berserker for a sudden surge of fury.",
       "ladderHeading": "Gravir l'échelle",
       "ladderBody": "Le jeu classé suit votre classement dans le temps. Consultez le classement pour voir où vous en êtes et qui tient le haut du royaume."
     },
@@ -1123,7 +1122,7 @@ export const fr_FR: EnTranslations = {
       "fishingTitle": "Fishing",
       "fishingBody": "Fishing is a calm change of pace. Equip a fishing pole, cast into open water, and reel in what bites. You mostly catch fish you can cook into food, the odd bit of junk to sell for a few coins, and now and then a prized rare catch. What you find depends on the water you fish in.",
       "fishingFood": "The fish you reel in are raw, and raw fish are food. Cook your catch and it heals more when you sit to eat, with the better fish coming from the colder, deeper waters in the north. A line in the lake is a quiet way to keep your pack stocked between fights.",
-      "fishingRare": "Now and then your line catches something far better than supper: a shimmering prized fish that any angler might luck into in any water. Hook one and the whole realm hears the celebratory shout. It is the kind of lucky pull that makes an idle afternoon at the lake worth telling people about.",
+      "fishingRare": "Now and then your line catches something far better than supper: a shimmering prized fish that any angler might luck into in any water. Hook one and your log lights up with the catch. It is the kind of lucky pull that makes an idle afternoon at the lake worth telling people about.",
       "cosmeticsTitle": "Looks and cosmetics",
       "cosmeticsBody": "Some rewards change only how your character looks, never how strong you are. These cosmetic skins let you stand out without affecting the game, so wear whichever you like.",
       "cosmeticsRanks": "Cosmetics come in rarity tiers of their own, and the rarer ones are a fun thing to chase. Earning a higher tier also unlocks the looks below it.",

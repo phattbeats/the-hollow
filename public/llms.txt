@@ -16,7 +16,7 @@ curated, spoiler-light handbook. The community-edited encyclopedia lives at /wik
 - [Quests](https://worldofclaudecraft.com/guide/quests): How quests work and why they are the fastest way to level.
 - [Dungeons and Raids](https://worldofclaudecraft.com/guide/dungeons): Instanced group content for a party of five, plus the ten-player raid.
 - [FAQ](https://worldofclaudecraft.com/guide/faq): The questions new players ask most often, with plain answers.
-- [Glossary](https://worldofclaudecraft.com/guide/glossary): Short definitions of the MMO terms used across the guide and in chat.
+- [Glossary](https://worldofclaudecraft.com/guide/reference/glossary): Short definitions of the MMO terms used across the guide and in chat.
 
 ## Play and community
 

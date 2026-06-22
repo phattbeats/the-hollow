@@ -521,9 +521,6 @@ export const guideStrings = {
     // Brightwood Glade vignette (Ranger Elwyn + the great stag), distilled spoiler-safe.
     gladeTitle: "A quiet corner: Brightwood Glade",
     gladeBody: "Not every story in the Vale is about the dead. In the north, a sunlit grove called Brightwood Glade keeps its own gentler rhythm, watched over by a lone ranger who would rather steward it than fight. Her work is balance: thinning what overbreeds, and, when its hollow grows too dangerous to leave be, giving the grove's old crowned stag a respectful end. It is a soft counterpoint to the trail you are following, and worth the detour.",
-
-    // "Who you will meet" intro on the World page, ahead of the shared lore.* figures.
-    figuresIntro: "The road north is not a lonely one. A few people travel it with you.",
   },
 
   // Quests.
@@ -656,7 +653,7 @@ export const guideStrings = {
 
     // The grab-in-the-ring power-ups, named as playful flavor.
     powerupsTitle: "Power-ups in the ring",
-    powerupsBody: "Glowing orbs also drop into the arena mid-fight, free for whoever reaches them first. They are deliberately over the top and last only a short while: Speed Demon for a blink of blinding pace, Colossus to swell up huge and hit like a wall, Moon Boots for a bouncing, low-gravity leap, and Berserker for a sudden surge of fury.",
+    powerupsBody: "Glowing orbs also drop into the arena mid-fight, free for whoever reaches them first. They are deliberately over the top and last only a short while: Speed Demon for a blink of blinding pace, Colossus to swell up into a lumbering giant, Moon Boots for a bouncing, low-gravity leap, and Berserker for a sudden surge of fury.",
     ladderHeading: "Climbing the ladder",
     ladderBody: "Ranked play tracks your standing over time. Check the leaderboard to see where you sit and who holds the top of the realm.",
   },
@@ -755,7 +752,7 @@ export const guideStrings = {
     fishingTitle: "Fishing",
     fishingBody: "Fishing is a calm change of pace. Equip a fishing pole, cast into open water, and reel in what bites. You mostly catch fish you can cook into food, the odd bit of junk to sell for a few coins, and now and then a prized rare catch. What you find depends on the water you fish in.",
     fishingFood: "The fish you reel in are raw, and raw fish are food. Cook your catch and it heals more when you sit to eat, with the better fish coming from the colder, deeper waters in the north. A line in the lake is a quiet way to keep your pack stocked between fights.",
-    fishingRare: "Now and then your line catches something far better than supper: a shimmering prized fish that any angler might luck into in any water. Hook one and the whole realm hears the celebratory shout. It is the kind of lucky pull that makes an idle afternoon at the lake worth telling people about.",
+    fishingRare: "Now and then your line catches something far better than supper: a shimmering prized fish that any angler might luck into in any water. Hook one and your log lights up with the catch. It is the kind of lucky pull that makes an idle afternoon at the lake worth telling people about.",
 
     // Looks and cosmetics (skins). Appearance only.
     cosmeticsTitle: "Looks and cosmetics",

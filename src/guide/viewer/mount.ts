@@ -60,9 +60,11 @@ export function wireModelViewers(root: HTMLElement, opts: WireOptions = {}): () 
     let viewer: ModelViewer | null = null;
     let io: IntersectionObserver | null = null;
     let started = false;
+    let loadGen = 0;
     const entry: LiveEntry = { release };
 
     function release(): void {
+      loadGen++; // invalidate any in-flight activate() for this figure
       if (io) { io.disconnect(); io = null; }
       if (viewer) { viewer.destroy(); viewer = null; }
       const i = live.indexOf(entry);
@@ -75,6 +77,10 @@ export function wireModelViewers(root: HTMLElement, opts: WireOptions = {}): () 
     async function activate(): Promise<void> {
       if (started) return;
       started = true;
+      // Generation token: every release() (LRU eviction, context loss, cleanup) bumps
+      // loadGen, so a load evicted mid-await can detect it is stale and discard the context
+      // it built instead of leaving an untracked WebGL context above the cap.
+      const myGen = ++loadGen;
       const spec = GUIDE_MODELS[fig.dataset.model ?? ''];
       if (!spec) {
         // eslint-disable-next-line no-console
@@ -94,14 +100,19 @@ export function wireModelViewers(root: HTMLElement, opts: WireOptions = {}): () 
       btn.disabled = true;
       try {
         const label = t('guide.viewer.canvasLabel', { name: fig.dataset.name ?? '' });
-        viewer = await createViewer(stage, label);
-        const onContextLost = (): void => { release(); fig.dataset.state = 'error'; };
-        viewer.onContextLost(onContextLost);
+        const built = await createViewer(stage, label);
+        // Evicted while the lazy chunk loaded: this load is stale, so drop the just-built
+        // context (release ran before `viewer` was assigned, so it did not destroy it).
+        if (myGen !== loadGen) { built.destroy(); return; }
+        viewer = built;
+        built.onContextLost(() => { release(); fig.dataset.state = 'error'; });
         const tintAttr = fig.dataset.tint;
         const tint = tintAttr ? parseInt(tintAttr.replace('#', ''), 16) : null;
-        await viewer.load(spec, tint);
+        await built.load(spec, tint);
+        // Evicted during the GLB load: release() already destroyed `viewer`, so just bail.
+        if (myGen !== loadGen) return;
         fig.dataset.state = 'ready';
-        const v = viewer;
+        const v = built;
         io = new IntersectionObserver(
           (entries) => { for (const e of entries) v.setOnscreen(e.isIntersecting); },
           { threshold: 0 },
