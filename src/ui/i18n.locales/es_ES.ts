@@ -11,6 +11,9 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const es_ES: Partial<Record<TranslationKey, string>> = {
+  // Stat tooltips inherit the es base: none of these keys needs a genuine Iberian
+  // divergence (es already uses "hechizos" and neutral wording), so per the
+  // divergence-only policy es_ES carries no hudChrome.statInfo.* overrides.
   "hudChrome.emotes.question": "¿Tío?",
   "nav.loginRegister": "Iniciar sesión/Registrarse",
   "stats.playersOnline": "Jugadores en línea",
@@ -83,4 +86,8 @@ export const es_ES: Partial<Record<TranslationKey, string>> = {
   "mobilePreflight.androidInstallDetail": "Para pantalla completa en Android, instala esta página o añádela a la pantalla de inicio primero.",
   "mobilePreflight.androidInstallStep": "En Chrome, toca el menú y luego Instalar app o Añadir a pantalla de inicio.",
   "mobilePreflight.otherInstallDetail": "Instala o añade esta página a la pantalla de inicio para la mejor experiencia móvil a pantalla completa.",
+  // Quest-tracker header toggle hover hint (es_ES uses "seguimiento" vs es-LatAm
+  // "rastreador"); the count badge inherits es (identical "({count})").
+  "hudChrome.questTracker.collapseHint": "Contraer el seguimiento de misiones",
+  "hudChrome.questTracker.expandHint": "Expandir el seguimiento de misiones",
 };

@@ -174,6 +174,11 @@ export const it_IT: EnTranslations = {
       "title": "Emote",
       "done": "Fine"
     },
+    "questTracker": {
+      "count": "({count})",
+      "collapseHint": "Comprimi il riquadro Missioni",
+      "expandHint": "Espandi il riquadro Missioni"
+    },
     "chatTimestamps": {
       "show": "Mostra orari della chat",
       "format": "Formato orario",
@@ -227,7 +232,134 @@ export const it_IT: EnTranslations = {
     },
     "options": {
       "clickMoveLeft": "Clic sinistro",
-      "clickMoveRight": "Clic destro"
+      "clickMoveRight": "Clic destro",
+      "footstepSounds": "Suoni dei passi",
+      "clickFeedback": "Click Marker",
+      "showWalletOnCharacterScreen": "Mostra portafoglio nella schermata personaggi",
+      "showWalletOnPlayerCard": "Mostra portafoglio nella scheda giocatore",
+      "uiScale": "Scala dell'interfaccia",
+      "highContrastBackground": "Sfondo a contrasto elevato"
+    },
+    "controller": {
+      "title": "Controller",
+      "enable": "Attiva controller",
+      "invertY": "Inverti telecamera (Y)",
+      "deadzone": "Zona morta dello stick",
+      "cameraSpeed": "Velocità telecamera",
+      "vibration": "Vibrazione",
+      "buttons": "Disposizione dei pulsanti",
+      "resetButtons": "Ripristina disposizione dei pulsanti",
+      "menuAction": "Menu di gioco",
+      "help": "Lo stick sinistro muove, quello destro orienta la telecamera. Apri una finestra per usare il puntatore a schermo."
+    },
+    "perf": {
+      "title": "Pannello prestazioni",
+      "enable": "Mostra pannello prestazioni",
+      "description": "Scegli quali statistiche mostrare, dove posizionare il pannello e il suo aspetto.",
+      "sectionPosition": "Posizione",
+      "sectionAppearance": "Aspetto",
+      "sectionStats": "Statistiche",
+      "positionX": "Orizzontale",
+      "positionY": "Verticale",
+      "resetPosition": "Ripristina posizione",
+      "dragHint": "Trascina il pannello per spostarlo, oppure usa i cursori qui sotto.",
+      "opacity": "Opacità dello sfondo",
+      "solidBg": "Sfondo opaco",
+      "fontScale": "Dimensione del testo",
+      "textColor": "Colore del testo",
+      "bgColor": "Colore dello sfondo",
+      "colorTheme": "Tema cromatico",
+      "graph": "Grafico tempi di frame",
+      "thresholds": "Avvisi cromatici",
+      "presetsLabel": "Preimpostazioni rapide",
+      "presetMinimal": "Minimo",
+      "presetStandard": "Standard",
+      "presetEverything": "Tutto",
+      "groups": {
+        "frame": "Frame e tempi",
+        "network": "Rete",
+        "renderer": "Renderer",
+        "system": "Sistema"
+      },
+      "labels": {
+        "fps": "FPS",
+        "frameTime": "Tempo di frame",
+        "fps1Low": "Minimi 1%",
+        "fps01Low": "Minimi 0,1%",
+        "ping": "Ping",
+        "jitter": "Jitter",
+        "snapshot": "Frequenza snapshot",
+        "connection": "Connessione",
+        "drawCalls": "Chiamate di disegno",
+        "triangles": "Triangoli",
+        "geometries": "Geometrie",
+        "textures": "Texture",
+        "programs": "Shader",
+        "renderScale": "Scala di rendering",
+        "gpu": "GPU",
+        "memory": "Memoria",
+        "hitches": "Scatti",
+        "entities": "Entità"
+      },
+      "themes": {
+        "gold": "Oro",
+        "frost": "Gelo",
+        "ember": "Brace",
+        "jade": "Giada",
+        "crimson": "Cremisi",
+        "mono": "Mono"
+      },
+      "units": {
+        "ms": "{value} ms",
+        "mb": "{value} MB",
+        "memPair": "{used} / {limit} MB",
+        "hz": "{value} Hz"
+      },
+      "badges": {
+        "backgrounded": "In secondo piano",
+        "offline": "Offline"
+      }
+    },
+    "playerCard": {
+      "showWalletBadge": "Mostra distintivo portafoglio"
+    },
+    "landing": {
+      "highContrast": "Contrasto elevato",
+      "highContrastAria": "Attiva/disattiva lo sfondo a contrasto elevato: disabilita il trailer in movimento per mantenere leggibile il testo della schermata iniziale"
+    },
+    "statInfo": {
+      "fromYour": "Dai tuoi {value} punti {stat}:",
+      "desc": {
+        "str": "Aumenta la tua potenza d'attacco, così i colpi della tua arma sono più potenti.",
+        "agi": "Affina i tuoi riflessi e la tua mira, migliorando diverse delle tue statistiche di combattimento.",
+        "sta": "Irrobustisce il tuo corpo, aumentando la tua salute massima e la velocità con cui recuperi salute mentre riposi.",
+        "int": "Amplia la riserva di mana di un incantatore e migliora la sua probabilità di mettere a segno un colpo critico magico.",
+        "spi": "Accelera la velocità con cui il mana di un incantatore si rigenera mentre riposa, fuori dal combattimento.",
+        "armor": "Attutisce i colpi fisici in arrivo. La riduzione è maggiore contro avversari di livello inferiore ed è limitata al 75%.",
+        "attackPower": "Potenzia gli attacchi della tua arma. Ogni 14 punti di potenza d'attacco aggiungono 1 punto di danni al secondo.",
+        "dps": "I danni al secondo stimati della tua arma, combinando i danni e la velocità della tua arma con la tua potenza d'attacco.",
+        "critChance": "La tua probabilità che un attacco colpisca in modo critico, infliggendo danni doppi.",
+        "dodge": "La tua probabilità di evitare completamente un attacco in mischia in arrivo, senza subire danni."
+      },
+      "effects": {
+        "attackPower": "+{value} Potenza d'attacco",
+        "rangedAttackPower": "+{value} Potenza d'attacco a distanza",
+        "critPct": "+{value}% Colpo critico",
+        "dodgePct": "+{value}% Schivata",
+        "armor": "+{value} Armatura",
+        "maxHealth": "+{value} Salute massima",
+        "maxMana": "+{value} Mana massimo",
+        "spellCritPct": "+{value}% Colpo critico magico",
+        "healthRegen": "Circa {value} salute ogni 5 sec mentre riposi",
+        "manaRegen": "Circa {value} mana ogni 5 sec mentre riposi",
+        "damageReduction": "Riduzione dei danni contro un avversario di livello {level}: {value}%",
+        "dpsFromAp": "Aggiunge {value} danni al secondo ai tuoi attacchi"
+      },
+      "notes": {
+        "minorForClass": "Di scarso beneficio per la tua classe.",
+        "baseChance": "Include una probabilità di base del 5% condivisa da tutti gli avventurieri.",
+        "dpsApprox": "Una stima, esclude i colpi critici e i danni delle abilità."
+      }
     },
     "talents": {
       "defaultBuildName": "Build {n}"
@@ -260,6 +392,71 @@ export const it_IT: EnTranslations = {
         "many": "Chi: {count} giocatori online su {realm}.",
         "other": "Chi: {count} giocatori online su {realm}."
       }
+    },
+    "bugReport": {
+      "menuButton": "Report a Bug",
+      "realm": "Realm",
+      "character": "Character",
+      "position": "Position",
+      "unknown": "Unknown",
+      "description": "What went wrong?",
+      "descriptionPlaceholder": "Describe the bug: what you did, what you expected, and what happened.",
+      "includeScreenshot": "Include Screenshot",
+      "screenshotAlt": "Screenshot of the current view attached to this bug report",
+      "submit": "Send Report",
+      "submitted": "Bug report sent. Thank you!",
+      "submittedNoShot": "Bug report sent, but the screenshot was too large to include.",
+      "describeFirst": "Please describe the bug before sending.",
+      "tooLarge": "That report is too large to send. Try again without the screenshot.",
+      "rateLimited": "You've sent several reports recently. Please wait a bit before sending another.",
+      "failed": "Could not send the bug report. Please try again."
+    },
+    "paperdoll": {
+      "unequipAria": "Rimuovi {item}",
+      "unequipHint": "Clicca su ×, clic destro o trascina nelle borse per rimuovere"
+    },
+    "account": {
+      "title": "Account",
+      "loggedOutPrompt": "Accedi per gestire il tuo account.",
+      "memberSince": "Membro dal {date}",
+      "sectionSettings": "Impostazioni account",
+      "sectionWallet": "Portafoglio $WOC",
+      "sectionCharacters": "Personaggi",
+      "sectionDanger": "Zona pericolosa",
+      "changePassword": "Cambia password",
+      "currentPassword": "Password attuale",
+      "newPassword": "Nuova password",
+      "confirmNewPassword": "Conferma la nuova password",
+      "savePassword": "Aggiorna password",
+      "passwordChanged": "Password aggiornata. Gli altri dispositivi sono stati disconnessi.",
+      "errCurrentRequired": "Inserisci la tua password attuale.",
+      "errPasswordShort": "La nuova password deve avere almeno 6 caratteri.",
+      "errPasswordLong": "La nuova password deve avere al massimo 128 caratteri.",
+      "errPasswordUnchanged": "La nuova password deve essere diversa da quella attuale.",
+      "errPasswordConfirm": "Le nuove password non corrispondono.",
+      "emailLabel": "Email (facoltativa)",
+      "emailHint": "Usata solo per il recupero dell'account. Non inviamo mai email promozionali.",
+      "saveEmail": "Salva email",
+      "emailSaved": "Email salvata.",
+      "errEmailInvalid": "Inserisci un indirizzo email valido.",
+      "errCurrentPassword": "La tua password attuale non è corretta.",
+      "errUsernameMatch": "Questo nome utente non corrisponde al tuo account.",
+      "errPasswordIncorrect": "La tua password non è corretta.",
+      "errCharactersOnline": "Disconnetti tutti i tuoi personaggi prima di disattivare.",
+      "deactivatedLocked": "Questo account è stato disattivato. Contatta un admin per ripristinarlo.",
+      "charactersSummary": "Gestisci i tuoi personaggi ed entra nel mondo.",
+      "charactersCount": "Personaggi: {count}",
+      "goToCharacters": "Visualizza personaggi",
+      "walletSummary": "Verifica un portafoglio Solana per mostrare il distintivo da titolare sulla tua scheda giocatore.",
+      "manageWallet": "Gestisci portafoglio",
+      "deactivate": "Disattiva account",
+      "deactivateWarning": "La disattivazione blocca il tuo account e ti disconnette ovunque. Contatta un admin per ripristinarlo. Conferma reinserendo nome utente e password.",
+      "confirmUsername": "Digita il tuo nome utente per confermare",
+      "confirmPassword": "Password",
+      "deactivateConfirm": "Disattiva il mio account",
+      "deactivated": "Il tuo account è stato disattivato.",
+      "logOut": "Esci",
+      "logOutSummary": "Disconnettiti da questo dispositivo."
     }
   },
   "skinEvent": {
@@ -304,6 +501,8 @@ export const it_IT: EnTranslations = {
     "news": "Novità",
     "download": "Scarica",
     "loginRegister": "Accedi/Registrati",
+    "account": "Account",
+    "logout": "Esci",
     "donate": "Dona"
   },
   "stats": {
@@ -428,6 +627,10 @@ export const it_IT: EnTranslations = {
     "signOut": "Disconnetti",
     "signOutTitle": "Disconnetti l'app del portafoglio su questo browser",
     "signOutAria": "Disconnetti l'app del portafoglio su questo browser",
+    "hide": "Nascondi",
+    "hideTitle": "Nascondi la riga del portafoglio in questa schermata",
+    "hideAria": "Nascondi la riga del portafoglio in questa schermata",
+    "hiddenNotice": "Riga del portafoglio nascosta. Riattivala in gioco da Opzioni > Interfaccia.",
     "linkedTitle": "Portafoglio verificato per il tuo account. Fai clic per gestire l'app del portafoglio.",
     "linkedDisconnectedTitle": "Il portafoglio resta verificato per il tuo account. Riconnettiti per gestire l'app del portafoglio.",
     "linkedDisconnectedAria": "Il portafoglio resta verificato per il tuo account. Riconnettiti per gestire l'app del portafoglio.",
@@ -491,6 +694,38 @@ export const it_IT: EnTranslations = {
       "leviathan": {
         "name": "Leviatano",
         "flavor": "I mercati sentono ogni tuo movimento: l'1% dell'offerta."
+      },
+      "tidelord": {
+        "name": "Signore delle maree",
+        "flavor": "La marea risponde al tuo richiamo: il 2% dell'offerta."
+      },
+      "stormcaller": {
+        "name": "Evocatore di tempeste",
+        "flavor": "Le tempeste si radunano nel tuo nome: il 3% dell'offerta."
+      },
+      "krakencrown": {
+        "name": "Corona del kraken",
+        "flavor": "Incoronato dagli abissi: il 4% dell'offerta."
+      },
+      "titanforged": {
+        "name": "Forgiato tra i titani",
+        "flavor": "Forgiato tra i titani: il 5% dell'offerta."
+      },
+      "starhoard": {
+        "name": "Tesoro stellare",
+        "flavor": "Un tesoro che piega la luce delle stelle: il 6% dell'offerta."
+      },
+      "voidwarden": {
+        "name": "Guardiano del vuoto",
+        "flavor": "Custode sull'orlo del vuoto: il 7% dell'offerta."
+      },
+      "realmshaper": {
+        "name": "Plasmatore del reame",
+        "flavor": "Ridai forma al reame: l'8% dell'offerta."
+      },
+      "worldforger": {
+        "name": "Forgiatore di mondi",
+        "flavor": "Forgi un mondo tutto tuo: il 9% dell'offerta."
       },
       "worldbearer": {
         "name": "Portamondi",
@@ -1162,6 +1397,7 @@ export const it_IT: EnTranslations = {
         "unignoreChat": "Non ignorare la chat",
         "report": "Segnala giocatore",
         "removeParty": "Rimuovi dal gruppo",
+        "convertToRaid": "Converti in incursione",
         "cancel": "Annulla"
       }
     },
@@ -1327,6 +1563,25 @@ export const it_IT: EnTranslations = {
       "friendOnline": "{name} è entrato online.",
       "friendOffline": "{name} è uscito offline."
     },
+    "tutorial": {
+      "title": "Nuovo avventuriero",
+      "stepLabel": "Passo {current} di {total}",
+      "skip": "Salta il tutorial",
+      "dismiss": "Chiudi",
+      "doneTitle": "Pronto all'avventura",
+      "doneBody": "Hai imparato le basi, {name}. La Valle è tutta da esplorare: premi {questKey} in qualsiasi momento per rivedere le tue missioni. Buona caccia!",
+      "moveTitle": "Trova l'equilibrio",
+      "moveBody": "Usa {moveKeys} per muoverti e il mouse per guardarti intorno. Fai qualche passo per iniziare.",
+      "seekTitle": "Cerca il Maresciallo",
+      "seekBody": "Il maresciallo Redbrook attende in città e ha del lavoro per una nuova lama. Segui il segnale per raggiungerlo.",
+      "talkTitle": "Accetta l'incarico",
+      "talkBody": "Avvicinati al maresciallo Redbrook e premi {interactKey} per parlargli, poi accetta il suo incarico.",
+      "slayTitle": "Lupi alle porte",
+      "slayBody": "Dai la caccia ai lupi della foresta sulla strada a nord. Seleziona un bersaglio e attacca per ridurre il branco.",
+      "slayProgress": "Lupi della foresta uccisi: {current} / {needed}",
+      "returnTitle": "Reclama la ricompensa",
+      "returnBody": "Il tuo incarico è compiuto. Torna dal maresciallo Redbrook e premi {interactKey} per consegnarlo."
+    },
     "markers": {
       "names": {
         "star": "Stella",
@@ -1380,6 +1635,12 @@ export const it_IT: EnTranslations = {
       "guildTab": "Gilda",
       "ignoreTab": "Ignora",
       "leaveParty": "Lascia gruppo",
+      "raidTab": "Incursione",
+      "raidEmpty": "Converti un gruppo in incursione per gestire qui i gruppi dell'incursione.",
+      "raidGroupEmpty": "Nessun giocatore in questo gruppo.",
+      "raidGroupTitle": "Gruppo {position} ({count}/5)",
+      "raidMoveToGroup": "Sposta nel gruppo {position}",
+      "raidLeader": "Capo incursione",
       "offlineEmpty": "Amici, gilde e liste ignorati sono disponibili nel gioco online.",
       "friendsEmpty": "Non hai ancora amici. Cerca qualcuno per nome qui sotto.",
       "ignoreEmpty": "La tua lista ignorati è vuota.",
@@ -1480,6 +1741,8 @@ export const it_IT: EnTranslations = {
       "title": "Libro degli incantesimi",
       "classSubtitle": "Abilità di {className}",
       "close": "Chiudi libro degli incantesimi",
+      "resetBar": "Ripristina barra",
+      "resetBarAria": "Ripristina la barra azioni attuale alle abilità predefinite",
       "trainableAtLevel": "Addestrabile al livello {level}",
       "learnAtLevel": "Lo imparerai al livello {level}.",
       "knownAbilityAria": "{name}, grado {rank}. {summary}",
@@ -1542,6 +1805,10 @@ export const it_IT: EnTranslations = {
       "completedStatus": "Completata",
       "returnTo": "Torna da {name}",
       "abandon": "Abbandona missione",
+      "abandonConfirmTitle": "Abbandona missione",
+      "abandonConfirmBody": "Vuoi davvero abbandonare {name}?",
+      "abandonConfirm": "Sì",
+      "abandonCancel": "Annulla",
       "suggestedPlayers": "Giocatori consigliati: {count}"
     },
     "dialog": {
@@ -1615,7 +1882,8 @@ export const it_IT: EnTranslations = {
       "common": "Comune",
       "uncommon": "Non comune",
       "rare": "Raro",
-      "epic": "Epico"
+      "epic": "Epico",
+      "legendary": "Leggendario"
     },
     "kind": {
       "weapon": "Arma",
@@ -1792,6 +2060,16 @@ export const it_IT: EnTranslations = {
     "loot": {
       "takeAll": "Prendi tutto",
       "close": "Chiudi bottino"
+    },
+    "lootRoll": {
+      "title": "Tiro per bottino",
+      "need": "Bisogno",
+      "greed": "Brama",
+      "pass": "Passa",
+      "needAria": "Bisogno per {item}",
+      "greedAria": "Brama per {item}",
+      "passAria": "Passa su {item}",
+      "everyonePassed": "Tutti hanno passato su {item}."
     }
   },
   "entities": {
@@ -3312,6 +3590,36 @@ export const it_IT: EnTranslations = {
       "event_skin_token": {
         "name": "Scrigno cosmetico misterioso"
       },
+      "deathless_heartwood": {
+        "name": "Cuorlegno della Corona immortale"
+      },
+      "kingsbane_last_oath": {
+        "name": "Flagello dei re, ultimo giuramento di Thornpeak"
+      },
+      "crownforged_dreadhelm": {
+        "name": "Elmo del terrore Forgiacorona"
+      },
+      "crownforged_warspaulders": {
+        "name": "Spallacci da guerra Forgiacorona"
+      },
+      "nighttalon_crown": {
+        "name": "Corona Artiglio Notturno"
+      },
+      "nighttalon_shoulderguards": {
+        "name": "Guardaspalle Artiglio Notturno"
+      },
+      "soulflame_cowl": {
+        "name": "Cappuccio Fiammanima"
+      },
+      "soulflame_mantle": {
+        "name": "Manto Fiammanima"
+      },
+      "stormcallers_crown": {
+        "name": "Corona del Chiamatempeste"
+      },
+      "stormcallers_spaulders": {
+        "name": "Spallacci del Chiamatempeste"
+      },
       "unknown_alien_weaponry": {
         "name": "Armamento alieno sconosciuto"
       },
@@ -3526,6 +3834,12 @@ export const it_IT: EnTranslations = {
       },
       "bound_guardian": {
         "name": "Guardiano Vincolato"
+      },
+      "nythraxis_skeleton_warrior": {
+        "name": "Guardia reale risorta"
+      },
+      "nythraxis_scourge_of_thornpeak": {
+        "name": "Nythraxis, Flagello di Thornpeak"
       },
       "brightwood_hare": {
         "name": "Lepre di Brightwood"
@@ -3778,6 +4092,11 @@ export const it_IT: EnTranslations = {
         "name": "Ranger Elwyn",
         "title": "Guardiano della radura",
         "greeting": "Silenzio, {className}: la radura oggi è tranquilla, e intendo che resti così."
+      },
+      "brother_aldric_raid": {
+        "name": "Fratello Aldric",
+        "title": "Sacerdote della Valle",
+        "greeting": "Dal camposanto della cappella al tetto del mondo... la pista finisce qui. Sento la montagna ascoltare."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -4504,8 +4823,8 @@ export const it_IT: EnTranslations = {
       },
       "q_nythraxis_bound_guardian": {
         "title": "Il Guardiano Vincolato",
-        "text": "Voss scrisse che i sopravvissuti sigillarono l'Anello del re dietro un antico guardiano, così che nessuno potesse raggiungere la tomba di Nythraxis per caso o ambizione. Porta la Chiave della cripta al cerchio rituale sul terreno piano a est della cripta abbandonata e a sud-est della tomba occidentale. Usala lì, spezza il guardiano e riporta l'anello.",
-        "completion": "Le tre reliquie raccontano la stessa storia: Aldren combatté per difendere il suo re, Malric spezzò il confine della morte e Voss tentò di fermare ciò che seguì. Il sigillo si indebolisce, e questo anello è la chiave della tomba di Nythraxis. Ora sei armonizzato per entrare nella Cripta di Nythraxis.",
+        "text": "Voss scrisse che i sopravvissuti sigillarono l Anello del re dietro un antico guardiano, cosi che nessuno potesse raggiungere la tomba di Nythraxis per caso o ambizione. Porta la Chiave della cripta al cerchio rituale sul terreno piano a est della cripta abbandonata e a sud-est della tomba occidentale. Usala li, spezza il guardiano e riporta l anello.",
+        "completion": "Le tre reliquie raccontano la stessa storia: Aldren combatte per difendere il suo re, Malric spezzo il confine della morte e Voss tento di fermare cio che segui. Il sigillo si indebolisce, e questo anello e la chiave della tomba di Nythraxis. Ora sei armonizzato per entrare nella Cripta di Nythraxis. Torna alla cripta abbandonata, apri la porta reale e affronta Nythraxis prima che la furia del vecchio re trabocchi oltre Thornpeak.",
         "objectives": {
           "0": {
             "label": "Chiave di volta usata al cerchio rituale"
@@ -4515,6 +4834,16 @@ export const it_IT: EnTranslations = {
           },
           "2": {
             "label": "Anello del re"
+          }
+        }
+      },
+      "q_nythraxis_scourges_end": {
+        "title": "La fine del Flagello",
+        "text": "L'anello ha aperto la via, {playerName}, ma una tomba aperta non e una vittoria. Nythraxis fu un re, e la rovina sotto Thornpeak e ancora legata alla sua volonta. Entra nella cripta con alleati di fiducia. Spezza la corona immortale prima che il suo comando raggiunga il campo di battaglia sopra di voi.",
+        "completion": "Allora la corona tace finalmente. Thornpeak portera ancora i suoi morti, ma nessun re sotto la montagna li richiamera piu in guerra. Hai concluso cio che Aldren, Malric e Voss poterono soltanto contenere.",
+        "objectives": {
+          "0": {
+            "label": "Nythraxis sconfitto"
           }
         }
       },
@@ -4852,6 +5181,11 @@ export const it_IT: EnTranslations = {
         "name": "Cripta abbandonata",
         "enterText": "Attraversi la soglia della cripta abbandonata.",
         "leaveText": "Riemergi nell'aria fredda di Thornpeak."
+      },
+      "nythraxis_boss_arena": {
+        "name": "Arena d'incursione di Nythraxis",
+        "enterText": "Oltrepassi la porta reale sigillata.",
+        "leaveText": "Torni nell'aria fredda di Thornpeak."
       },
       "drowned_temple": {
         "name": "Il Tempio Annegato",

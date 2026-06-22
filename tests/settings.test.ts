@@ -14,6 +14,14 @@ function installStorage(): void {
 beforeEach(() => installStorage());
 
 describe('Settings', () => {
+  it('defaults fresh sessions and initial logins to the ultra graphics preset', () => {
+    const s = new Settings();
+
+    expect(localStorage.getItem('woc_settings')).toBeNull();
+    expect(SETTING_RANGES.graphicsPreset.def).toBe(4);
+    expect(s.get('graphicsPreset')).toBe(4);
+  });
+
   it('starts at the documented defaults (camera calmer than the old 1.0)', () => {
     const s = new Settings();
     expect(s.get('cameraSpeed')).toBe(SETTING_RANGES.cameraSpeed.def);
@@ -110,6 +118,14 @@ describe('Settings', () => {
     expect(b.get('leftHandedTouch')).toBe(true);
   });
 
+  it('defaults footstep sounds off and persists re-enabling across instances', () => {
+    const a = new Settings();
+    expect(a.get('footstepSfx')).toBe(false);
+    a.set('footstepSfx', true);
+    const b = new Settings();
+    expect(b.get('footstepSfx')).toBe(true);
+  });
+
   it('defaults touch look speed to 1x, clamps, and persists', () => {
     const a = new Settings();
     expect(a.get('touchLookSpeed')).toBe(SETTING_RANGES.touchLookSpeed.def);
@@ -181,6 +197,8 @@ describe('Interface & Comfort settings pack', () => {
     expect(s.get('frostedPanels')).toBe(false);
     expect(s.get('compactChat')).toBe(false);
     expect(s.get('showFps')).toBe(false);
+    expect(s.get('showWalletOnCharacterScreen')).toBe(true);
+    expect(s.get('showWalletOnPlayerCard')).toBe(true);
     expect(s.get('invertLookY')).toBe(false);
   });
 
@@ -200,14 +218,33 @@ describe('Interface & Comfort settings pack', () => {
     s.set('showFps', true);
     s.set('invertLookY', true);
     s.set('frostedPanels', true);
+    s.set('showWalletOnCharacterScreen', false);
+    s.set('showWalletOnPlayerCard', false);
     // a fresh instance reads the same backing store
     expect(new Settings().get('reduceMotion')).toBe(true);
     expect(new Settings().get('showFps')).toBe(true);
+    expect(new Settings().get('showWalletOnCharacterScreen')).toBe(false);
+    expect(new Settings().get('showWalletOnPlayerCard')).toBe(false);
     s.reset();
     expect(s.get('reduceMotion')).toBe(false);
     expect(s.get('showFps')).toBe(false);
+    expect(s.get('showWalletOnCharacterScreen')).toBe(true);
+    expect(s.get('showWalletOnPlayerCard')).toBe(true);
     expect(s.get('invertLookY')).toBe(false);
     expect(s.get('frostedPanels')).toBe(false);
+  });
+
+  it('adds a global UI Scale (default 1, clamped to bounds) and a landing high-contrast toggle', () => {
+    const s = new Settings();
+    expect(s.get('uiScale')).toBe(1);
+    expect(s.get('landingHighContrast')).toBe(false);
+    expect(s.set('uiScale', 5)).toBe(SETTING_RANGES.uiScale.max);
+    expect(s.set('uiScale', 0)).toBe(SETTING_RANGES.uiScale.min);
+    s.set('landingHighContrast', true);
+    expect(new Settings().get('landingHighContrast')).toBe(true);
+    s.reset();
+    expect(s.get('uiScale')).toBe(1);
+    expect(s.get('landingHighContrast')).toBe(false);
   });
 });
 

@@ -10,9 +10,10 @@
 let enabled = false;
 let balance: number | null = null;
 let verified = false;
+let displayAvailable = false;
 let listener: (() => void) | null = null;
 
-/** Whether the wallet feature is configured (VITE_REOWN_PROJECT_ID set). */
+/** Whether the wallet feature is enabled in this client build. */
 export function walletUiEnabled(): boolean {
   return enabled;
 }
@@ -32,6 +33,11 @@ export function verifiedWocBalance(): number | null {
   return wocBalanceVerified() ? balance : null;
 }
 
+/** Whether any wallet is connected in this browser or linked to the account. */
+export function walletDisplayAvailable(): boolean {
+  return displayAvailable;
+}
+
 export function setWalletUiEnabled(value: boolean): void {
   if (enabled === value) return;
   enabled = value;
@@ -46,7 +52,45 @@ export function setWocBalance(value: number | null, isVerified = false): void {
   listener?.();
 }
 
+export function setWalletDisplayAvailable(value: boolean): void {
+  if (displayAvailable === value) return;
+  displayAvailable = value;
+  listener?.();
+}
+
 /** Register the HUD's re-render hook (one consumer: the bag). */
 export function onWalletUiChange(cb: () => void): void {
   listener = cb;
+}
+
+export interface WocBalanceUpdate {
+  /** Apply the fetched balance to the connected-wallet slot, or leave it untouched. */
+  apply: boolean;
+  /** Also mirror it into the account-linked slot (this address is the linked one). */
+  setLinked: boolean;
+}
+
+/**
+ * Decide whether a just-fetched balance should update the displayed value, given
+ * what the wallet state looks like NOW (a read is async, so the wallet can change
+ * under it). Pure so main.ts's refresh orchestration is unit-testable without a DOM.
+ *
+ * Two skips: (1) the result is stale — the user switched or unlinked the wallet
+ * mid-flight, so this address is neither the connected nor the linked one; (2) a
+ * FRESH on-demand read came back null, which is a transient client transport
+ * failure (the server falls back to the last-known balance on an RPC failure), so
+ * we must not wipe a value the user was already shown. A non-fresh initial read is
+ * allowed to settle on null (it cleared the slot first).
+ */
+export function resolveWocBalanceUpdate(opts: {
+  address: string;
+  fresh: boolean;
+  balance: number | null;
+  currentAddress: string | null;
+  linkedAddress: string | null;
+}): WocBalanceUpdate {
+  const { address, fresh, balance, currentAddress, linkedAddress } = opts;
+  if (currentAddress !== address && linkedAddress !== address) return { apply: false, setLinked: false };
+  if (fresh && balance === null) return { apply: false, setLinked: false };
+  return { apply: true, setLinked: linkedAddress === address };
 }

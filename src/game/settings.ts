@@ -15,7 +15,7 @@ export const SETTING_RANGES = {
   brightness: { min: 0.6, max: 1.5, def: 1 },
   // 1 low, 2 medium, 3 high, 4 ultra, 5 advanced. The renderer reads this
   // from localStorage during startup because tier choice controls preload.
-  graphicsPreset: { min: 1, max: 5, def: 1 },
+  graphicsPreset: { min: 1, max: 5, def: 4 },
   // Advanced-only: 0 keeps terrain/foliage cheap, 1 enables high terrain.
   terrainDetail: { min: 0, max: 1, def: 1 },
   foliageDensity: { min: 0, max: 1, def: 1 },
@@ -59,6 +59,15 @@ export const SETTING_RANGES = {
   // values make the stick more responsive. Default matches the old fixed 0.22.
   joystickDeadzone: { min: 0.1, max: 0.4, def: 0.22 },
 
+  // --- Gamepad / controller pack. Applied to the GamepadManager in main.ts. ---
+  // How far an analog stick must travel before it registers, killing resting
+  // drift. Separate from the touch joystick deadzone above.
+  gamepadStickDeadzone: { min: 0.05, max: 0.4, def: 0.18 },
+  // Right-stick camera turn/pitch rate, in radians/sec at full deflection.
+  gamepadCameraSpeed: { min: 0.5, max: 5, def: 2.4 },
+  // Rumble intensity (0 silences haptics without disabling the pad entirely).
+  gamepadVibration: { min: 0, max: 1, def: 1 },
+
   // --- Interface & Comfort pack: presentational HUD tuning, applied via CSS
   // custom properties in main.ts. All default to 1.0 (unchanged look) and are
   // purely client-side display choices — they never touch the sim. ---
@@ -76,10 +85,20 @@ export const SETTING_RANGES = {
   // Fades the HUD panels & windows as a whole; lets players see more of the
   // world behind their frames without hiding them entirely.
   hudOpacity: { min: 0.5, max: 1, def: 1 },
+  // Scales the ENTIRE in-game HUD layer (#ui) up or down via CSS zoom, so every
+  // fixed-px frame/label/button grows together — the global "fonts too small"
+  // remedy that the per-element tooltip/chat/fct scales can't cover. 1.0 = stock.
+  uiScale: { min: 0.85, max: 1.4, def: 1 },
 } as const;
 
 export const BOOL_SETTINGS = {
   mouseCamera: { def: false },
+  // on by default: poll a connected controller for input. Off ignores the pad
+  // entirely (keyboard/mouse/touch unaffected).
+  gamepadEnabled: { def: true },
+  // off by default: invert the vertical axis of the right-stick camera, the
+  // classic console/flight-sim preference. Independent of mouse/touch invert.
+  gamepadInvertY: { def: false },
   // off by default: mirrors the touch layout so the movement joystick sits on
   // the right and the camera joystick on the left, for left-thumb-dominant
   // players. CSS-only swap gated on body.mobile-left-handed; ignored on desktop.
@@ -116,12 +135,38 @@ export const BOOL_SETTINGS = {
   // off by default: show a small frames-per-second readout in the corner for
   // players tuning their graphics settings.
   showFps: { def: false },
+  // on by default: show the linked/connected wallet row on the character
+  // selection screen. This is only a local display preference; verification and
+  // holder perks remain active when the row is hidden.
+  showWalletOnCharacterScreen: { def: true },
+  // on by default: include verified wallet holder/balance details in newly
+  // rendered player cards. The player-card modal can toggle this per device.
+  showWalletOnPlayerCard: { def: true },
   // off by default: invert the vertical axis of mouselook (push mouse forward
   // to look down), the classic flight-sim preference.
   invertLookY: { def: false },
   // on by default: play an NPC's voiced line when its dialogue / quest detail
   // opens. Off mutes voice-over entirely (independent of the SFX/music toggles).
   voiceEnabled: { def: true },
+  // off by default: the per-footfall step clips (self + other entities) tend to
+  // read as repetitive over a long session, so they're silenced out of the box;
+  // players who want them back can re-enable. Independent of the SFX volume
+  // slider — jump/land/splash/swim and combat one-shots are unaffected.
+  footstepSfx: { def: false },
+  // on by default: a brief OSRS-style ground marker (an expanding ring plus a
+  // crossed "X") where you left-click in the world, gold for a normal click and
+  // red when the click lands on a hostile. Purely a local presentation cue; it
+  // never touches sim state. Off removes the marker entirely.
+  clickFeedback: { def: true },
+  // off by default: swap the looping landing-page trailer for a static, dimmed,
+  // high-contrast backdrop so the start-screen text stays legible (and the
+  // 5.7 MB video is never fetched). Forced on regardless for phones / Save-Data /
+  // prefers-reduced-motion, see shouldUseStaticBackdrop in landing_backdrop.ts.
+  landingHighContrast: { def: false },
+  // off by default (expanded): when on, the on-screen quest tracker is collapsed
+  // to just its "Quests (N)" header. Toggled by clicking the tracker header; kept
+  // here so the choice persists across sessions like the other HUD preferences.
+  questTrackerCollapsed: { def: false },
 } as const;
 
 export type NumericSettingKey = keyof typeof SETTING_RANGES;

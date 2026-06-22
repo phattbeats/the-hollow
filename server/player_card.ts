@@ -35,6 +35,19 @@ const MAX_CARD_DECODED_BYTES = (2400 * 4 + 1) * 1260;
 const MAX_SLUG_LENGTH = 64;
 const MAX_SLUG_ATTEMPTS = 25;
 const DEFAULT_PRODUCTION_PUBLIC_ORIGIN = 'https://worldofclaudecraft.com';
+const TRUSTED_PUBLIC_HOST_ORIGINS = new Map([
+  ['worldofclaudecraft.com', DEFAULT_PRODUCTION_PUBLIC_ORIGIN],
+  ['www.worldofclaudecraft.com', DEFAULT_PRODUCTION_PUBLIC_ORIGIN],
+  ['dev.worldofclaudecraft.com', 'https://dev.worldofclaudecraft.com'],
+]);
+const CARD_NOT_FOUND_HEADERS = {
+  'Content-Type': 'text/plain',
+  'Cache-Control': 'no-store, max-age=0',
+} as const;
+const CARD_PAGE_NOT_FOUND_HEADERS = {
+  'Content-Type': 'text/html; charset=utf-8',
+  'Cache-Control': 'no-store, max-age=0',
+} as const;
 
 export const PUBLIC_CARD_LOCALES = [
   'en', 'es', 'es_ES', 'fr_FR', 'fr_CA', 'en_CA', 'it_IT', 'de_DE',
@@ -378,9 +391,15 @@ function firstHeaderValue(value: string | string[] | undefined): string {
   return (Array.isArray(value) ? value[0] ?? '' : value ?? '').split(',')[0].trim();
 }
 
+function trustedPublicOriginFromHost(req: http.IncomingMessage): string {
+  const raw = firstHeaderValue(req.headers.host).toLowerCase();
+  const host = raw.includes(':') ? raw.split(':')[0] : raw;
+  return TRUSTED_PUBLIC_HOST_ORIGINS.get(host) ?? '';
+}
+
 function requestOrigin(req: http.IncomingMessage): string {
   if (REALM_PUBLIC_ORIGIN) return REALM_PUBLIC_ORIGIN;
-  if (process.env.NODE_ENV === 'production') return DEFAULT_PRODUCTION_PUBLIC_ORIGIN;
+  if (process.env.NODE_ENV === 'production') return trustedPublicOriginFromHost(req) || DEFAULT_PRODUCTION_PUBLIC_ORIGIN;
   const fwd = firstHeaderValue(req.headers['x-forwarded-proto']).toLowerCase();
   const proto = fwd === 'http' || fwd === 'https'
     ? fwd
@@ -472,7 +491,7 @@ export async function handleCardRoutes(req: http.IncomingMessage, res: http.Serv
     let slug = '';
     try { slug = m ? decodeURIComponent(m[1]).toLowerCase() : ''; } catch { slug = ''; }
     if (!m || !isValidSlug(slug)) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      res.writeHead(404, CARD_NOT_FOUND_HEADERS);
       res.end('not found');
       return;
     }
@@ -488,7 +507,7 @@ export async function handleCardRoutes(req: http.IncomingMessage, res: http.Serv
 async function serveCardImage(res: http.ServerResponse, slug: string): Promise<void> {
   const card = await getPlayerCardBySlug(slug);
   if (!card) {
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.writeHead(404, CARD_NOT_FOUND_HEADERS);
     res.end('not found');
     return;
   }
@@ -507,7 +526,7 @@ async function serveCardPage(req: http.IncomingMessage, res: http.ServerResponse
   const card = await getPlayerCardMetaBySlug(slug);
   const origin = requestOrigin(req);
   if (!card) {
-    res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.writeHead(404, CARD_PAGE_NOT_FOUND_HEADERS);
     res.end(missingCardHtml(origin, requestLocale(req)));
     return;
   }
@@ -517,9 +536,11 @@ async function serveCardPage(req: http.IncomingMessage, res: http.ServerResponse
 
 function cardPageHtml(opts: { slug: string; title: string; description: string; locale: PublicCardLocale; origin: string }): string {
   const { slug, title, description, locale, origin } = opts;
-  const pageUrl = `${origin}/p/${slug}`;
-  const imageUrl = `${pageUrl}/card.png`;
-  const playUrl = `${origin}/?ref=${encodeURIComponent(slug)}`;
+  const pagePath = `/p/${encodeURIComponent(slug)}`;
+  const imagePath = `${pagePath}/card.png`;
+  const playPath = `/?ref=${encodeURIComponent(slug)}`;
+  const pageUrl = `${origin}${pagePath}`;
+  const imageUrl = `${origin}${imagePath}`;
   const copy = publicCardCopy(locale);
   const t = escapeHtml(title);
   const d = escapeHtml(description);
@@ -549,14 +570,19 @@ function cardPageHtml(opts: { slug: string; title: string; description: string; 
 <style>
   :root { --gold: #ffd100; }
   * { box-sizing: border-box; }
-  body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center;
-    justify-content: center; gap: 22px; padding: 32px 16px;
+  /* 100dvh tracks the visible area as the mobile URL bar shows/hides. */
+  body { margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; padding: 32px 16px;
     background: radial-gradient(circle at 50% 18%, #241910, #0a0805 70%);
     color: #ece2c4; font-family: 'Alegreya Sans', system-ui, sans-serif; text-align: center; }
+  /* margin:auto centers the card when it fits and lets the page scroll from the TOP
+     when it doesn't (justify-content:center would clip the top on a short/portrait
+     phone, the reported bug). */
+  main { margin: auto; width: 100%; max-width: 720px; display: flex; flex-direction: column;
+    align-items: center; gap: 22px; }
   h1 { font-family: 'Cinzel', Georgia, serif; color: var(--gold); font-size: clamp(22px, 4vw, 34px);
-    margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,.6); }
-  p { margin: 0; color: #c9bb92; max-width: 640px; line-height: 1.5; }
-  img.card { width: min(720px, 96vw); height: auto; border-radius: 12px;
+    margin: 0; max-width: 100%; overflow-wrap: anywhere; text-shadow: 0 2px 10px rgba(0,0,0,.6); }
+  p { margin: 0; color: #c9bb92; max-width: 640px; line-height: 1.5; overflow-wrap: anywhere; }
+  img.card { width: 100%; max-width: 720px; height: auto; border-radius: 12px;
     box-shadow: 0 12px 48px rgba(0,0,0,.6); border: 1px solid #4a3a18; }
   a.cta { display: inline-block; margin-top: 6px; padding: 13px 30px; border-radius: 8px;
     font-family: 'Cinzel', serif; font-weight: 700; font-size: 17px; text-decoration: none;
@@ -566,11 +592,13 @@ function cardPageHtml(opts: { slug: string; title: string; description: string; 
 </style>
 </head>
 <body>
-  <h1>${t}</h1>
-  <img class="card" src="${escapeHtml(imageUrl)}" alt="${t}" width="1200" height="630">
-  <p>${d}</p>
-  <a class="cta" href="${escapeHtml(playUrl)}">${cta}</a>
-  <footer>${gameName}</footer>
+  <main>
+    <h1>${t}</h1>
+    <img class="card" src="${escapeHtml(imagePath)}" alt="${t}" width="1200" height="630">
+    <p>${d}</p>
+    <a class="cta" href="${escapeHtml(playPath)}">${cta}</a>
+    <footer>${gameName}</footer>
+  </main>
 </body>
 </html>`;
 }
@@ -588,14 +616,14 @@ function missingCardHtml(origin: string, locale: PublicCardLocale): string {
 <title>${title} · ${gameName}</title>
 <link rel="canonical" href="${escapeHtml(origin)}/">
 <style>
-  body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  body { margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center;
     justify-content: center; gap: 16px; background: radial-gradient(circle at 50% 18%, #241910, #0a0805 70%);
     color: #ece2c4; font-family: system-ui, sans-serif; text-align: center; padding: 24px; }
   a { color: #ffd100; }
 </style></head>
 <body><h1>${heading}</h1>
 <p>${description}</p>
-<p><a href="${escapeHtml(origin)}/">${cta}</a></p>
+<p><a href="/">${cta}</a></p>
 </body></html>`;
 }
 

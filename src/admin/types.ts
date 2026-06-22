@@ -126,6 +126,7 @@ export interface AccountDetail {
   chatMutedUntil: string | null;
   chatMuteReason: string;
   chatStrikes: number;
+  lastLoginIp: string | null;
   playtimeSeconds: number;
   characters: {
     id: number;
@@ -144,6 +145,7 @@ export interface AccountDetail {
     startedAt: string;
     endedAt: string | null;
     seconds: number;
+    ip: string | null;
   }[];
 }
 
@@ -157,6 +159,25 @@ export interface ModerationQueueRow {
   latestReason: string;
   characterNames: string[];
   online: boolean;
+}
+
+// Mirrors server/bug_report_db.ts BugReportRow (snake_case from the SQL row). The
+// list row exposes only whether a screenshot exists; the bytes are fetched per
+// report via GET /admin/api/bug-reports/:id/screenshot.
+export interface BugReportRow {
+  id: number;
+  account_id: number | null;
+  character_id: number | null;
+  character_name: string;
+  realm: string;
+  pos_x: number;
+  pos_y: number;
+  pos_z: number;
+  description: string;
+  has_screenshot: boolean;
+  meta: unknown;
+  status: string;
+  created_at: string;
 }
 
 export interface ReportDetail {
@@ -203,6 +224,20 @@ export interface ModerationAccountDetail {
   account: AccountDetail;
   reports: ReportDetail[];
   chat: ChatModerationDetail;
+  blockedIps: string[];
+}
+
+export interface BlockedIpRow {
+  id: number;
+  ip: string;
+  reason: string;
+  createdAt: string;
+  expiresAt: string | null;
+  createdByUsername: string | null;
+}
+
+export interface BlockedIpsData {
+  rows: BlockedIpRow[];
 }
 
 export interface FilterWord {
