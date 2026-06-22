@@ -186,6 +186,13 @@ export const fr_FR: EnTranslations = {
       "clock24h": "24 heures",
       "note": "Préfixe chaque nouvelle ligne de discussion avec l'heure de réception, par ex. [14:32]. N'affecte que les messages reçus quand l'option est activée."
     },
+    "chatWindow": {
+      "move": "Drag to move the chat window",
+      "resize": "Drag to resize the chat window",
+      "reset": "Reset Chat Window",
+      "resetAction": "Reset",
+      "note": "Drag the chat tab strip to move the window, or the corner grip to resize it. Reset returns it to the default position and size."
+    },
     "swing": {
       "ready": "Coup",
       "seconds": "{seconds} s"
