@@ -115,7 +115,6 @@ export function buildChrome(mount: HTMLElement, opts: ChromeOptions, signal: Abo
         <p class="guide-footer-blurb">${esc(t('guide.footer.blurb'))}</p>
         <nav class="guide-footer-links" aria-label="${esc(t('guide.footer.rights'))}">
           <a class="guide-cta guide-cta-sm" href="/play">${esc(t('guide.footer.playNow'))}</a>
-          <a href="/wiki">${esc(t('guide.footer.communityWiki'))}</a>
           <a href="https://github.com/levy-street/world-of-claudecraft" target="_blank" rel="noopener">${esc(t('guide.footer.github'))}</a>
           <a href="https://discord.gg/GjhnUsBtw" target="_blank" rel="noopener">${esc(t('guide.footer.discord'))}</a>
         </nav>

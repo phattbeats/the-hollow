@@ -27,19 +27,19 @@ async function waitState(sel, want, ms = 25000) {
 }
 
 // 1) Class page: click "View in 3D", expect a ready canvas.
-await page.goto(`${BASE}/guide/classes/warrior`, { waitUntil: 'networkidle0' });
+await page.goto(`${BASE}/wiki/classes/warrior`, { waitUntil: 'networkidle0' });
 await page.click('.guide-class-portrait .guide-viewer-load');
 const classReady = await waitState('.guide-class-portrait .guide-viewer', 'ready');
 check('class page viewer reaches ready', classReady);
 check('class page viewer has a live canvas', await page.$('.guide-class-portrait .guide-viewer-canvas') !== null);
 
 // 2) Bestiary: click the first creature thumb, expect ready.
-await page.goto(`${BASE}/guide/bestiary`, { waitUntil: 'networkidle0' });
+await page.goto(`${BASE}/wiki/bestiary`, { waitUntil: 'networkidle0' });
 await page.click('.guide-creature .guide-viewer-load');
 check('bestiary thumb viewer reaches ready', await waitState('.guide-creature .guide-viewer', 'ready'));
 
 // 3) Gallery: first model auto-loads into the single viewer.
-await page.goto(`${BASE}/guide/models`, { waitUntil: 'networkidle0' });
+await page.goto(`${BASE}/wiki/models`, { waitUntil: 'networkidle0' });
 const galleryCanvas = await page.waitForSelector('.guide-gallery-stage .guide-viewer-canvas', { timeout: 25000 }).then(() => true).catch(() => false);
 check('gallery auto-loads a model canvas', galleryCanvas);
 // Switch model via the picker and confirm it stays alive.

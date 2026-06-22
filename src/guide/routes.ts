@@ -1,11 +1,13 @@
 // Single source of truth for the Guide's routes and navigation. Pure data + pure
 // helpers (no DOM), so the router, the nav chrome, and tests all derive from one list.
-// The Guide is a client-rendered SPA mounted at GUIDE_BASE; deep paths (/guide/classes)
-// fall back to guide.html in both vite.config.ts and server/main.ts.
+// The Guide is the site wiki: a client-rendered SPA mounted at GUIDE_BASE (/wiki);
+// deep paths (/wiki/classes) fall back to guide.html in both vite.config.ts and
+// server/main.ts. The shell file is still named guide.html and the module tree
+// still lives under src/guide/; only the public URL is /wiki.
 
 import type { TranslationKey } from '../ui/i18n';
 
-export const GUIDE_BASE = '/guide';
+export const GUIDE_BASE = '/wiki';
 
 // Sidebar groupings, in display order.
 export type GuideGroup = 'start' | 'compendium' | 'reference';

@@ -63,7 +63,9 @@ for (const route of GUIDE_ROUTES) {
 }
 
 // Read the existing sitemap and split its <url> blocks, keeping every non-guide entry
-// exactly as-is. A guide entry is any <url> whose <loc> path is /guide or starts /guide/.
+// exactly as-is. A guide entry is any <url> whose <loc> path is the guide base or a deep
+// path under it. The guide now serves at /wiki; legacy /guide locs are matched too so a
+// one-time regeneration replaces them cleanly (and re-runs stay idempotent).
 const xml = readFileSync(sitemapPath, 'utf8');
 const eol = xml.includes('\r\n') ? '\r\n' : '\n';
 const normalized = xml.replace(/\r\n/g, '\n');
@@ -79,7 +81,10 @@ const isGuideBlock = (block) => {
   } catch {
     pathPart = m[1];
   }
-  return pathPart === '/guide' || pathPart.startsWith('/guide/');
+  return (
+    pathPart === '/wiki' || pathPart.startsWith('/wiki/') ||
+    pathPart === '/guide' || pathPart.startsWith('/guide/')
+  );
 };
 
 const nonGuide = blocks.filter((b) => !isGuideBlock(b));

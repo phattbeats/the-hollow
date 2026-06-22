@@ -66,6 +66,6 @@ export function notFoundHtml(): string {
   return `<article class="guide-article guide-notfound">
     <h1>${esc(t('guide.notFound.title'))}</h1>
     <p class="guide-lead">${esc(t('guide.notFound.body'))}</p>
-    <p><a class="guide-cta" href="/guide">${esc(t('guide.notFound.home'))}</a></p>
+    <p><a class="guide-cta" href="/wiki">${esc(t('guide.notFound.home'))}</a></p>
   </article>`;
 }

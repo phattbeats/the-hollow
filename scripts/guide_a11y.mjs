@@ -1,4 +1,4 @@
-// Accessibility QA for the Guide (/guide). Needs `npm run dev`. Override with GUIDE_URL=.
+// Accessibility QA for the Guide (/wiki). Needs `npm run dev`. Override with GUIDE_URL=.
 // Runs axe-core (WCAG 2 A/AA) on key routes, checks the skip link is the first tab stop,
 // and verifies 320px reflow has no horizontal scroll. Writes a 320px screenshot to tmp/.
 import puppeteer from 'puppeteer-core';
@@ -6,7 +6,7 @@ import { mkdirSync } from 'node:fs';
 import { BROWSER_PATH } from './browser_path.mjs';
 
 const BASE = process.env.GUIDE_URL ?? 'http://localhost:5173';
-const ROUTES = ['/guide', '/guide/how-to-play', '/guide/classes', '/guide/classes/druid', '/guide/bestiary', '/guide/models', '/guide/world', '/guide/gear', '/guide/economy', '/guide/social', '/guide/dungeons', '/guide/quests', '/guide/reference/controls', '/guide/reference/combat', '/guide/reference/stats', '/guide/reference/progression'];
+const ROUTES = ['/wiki', '/wiki/how-to-play', '/wiki/classes', '/wiki/classes/druid', '/wiki/bestiary', '/wiki/models', '/wiki/world', '/wiki/gear', '/wiki/economy', '/wiki/social', '/wiki/dungeons', '/wiki/quests', '/wiki/reference/controls', '/wiki/reference/combat', '/wiki/reference/stats', '/wiki/reference/progression'];
 const AXE_CDN = 'https://cdn.jsdelivr.net/npm/axe-core@4.10.2/axe.min.js';
 mkdirSync('tmp', { recursive: true });
 
@@ -50,7 +50,7 @@ try {
   if (!axeReady) console.log('NOTE  axe-core CDN unreachable; skipped automated WCAG scan (run with network).');
 
   // Keyboard: skip link is the first focusable element.
-  await page.goto(`${BASE}/guide`, { waitUntil: 'networkidle0' });
+  await page.goto(`${BASE}/wiki`, { waitUntil: 'networkidle0' });
   await page.waitForSelector('.guide-skip');
   await page.keyboard.press('Tab');
   const firstFocus = await page.evaluate(() => document.activeElement?.className || '');
@@ -58,11 +58,11 @@ try {
 
   // Reflow at 320px: no horizontal scrollbar (WCAG 1.4.10).
   await page.setViewport({ width: 320, height: 640 });
-  await page.goto(`${BASE}/guide`, { waitUntil: 'networkidle0' });
+  await page.goto(`${BASE}/wiki`, { waitUntil: 'networkidle0' });
   await page.waitForSelector('.guide-hero-title');
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   check('no horizontal scroll at 320px', overflow <= 1, `overflow=${overflow}px`);
-  await page.screenshot({ path: 'tmp/guide-320.png', fullPage: true });
+  await page.screenshot({ path: 'tmp/wiki-320.png', fullPage: true });
 } finally {
   await browser.close();
 }

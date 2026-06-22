@@ -71,15 +71,15 @@ const STATIC_PAGE_ALIASES = new Map([
   ['/data-deletion/', '/data-deletion.html'],
   ['/support', '/support.html'],
   ['/support/', '/support.html'],
-  ['/guide', '/guide.html'],
-  ['/guide/', '/guide.html'],
+  ['/wiki', '/guide.html'],
+  ['/wiki/', '/guide.html'],
 ]);
-// The Guide is a client-routed SPA at /guide: deep paths like /guide/classes/warrior
-// have no static file, so any extensionless /guide* request falls back to guide.html
-// (mirrored in server/main.ts serveStatic). Asset requests under /guide keep their
-// extension and are left alone so they 404 rather than serving HTML.
+// The Guide is the site wiki: a client-routed SPA at /wiki. Deep paths like
+// /wiki/classes/warrior have no static file, so any extensionless /wiki* request falls
+// back to guide.html (mirrored in server/main.ts serveStatic). Asset requests under
+// /wiki keep their extension and are left alone so they 404 rather than serving HTML.
 function isGuideSpaPath(pathOnly: string): boolean {
-  if (pathOnly !== '/guide' && !pathOnly.startsWith('/guide/')) return false;
+  if (pathOnly !== '/wiki' && !pathOnly.startsWith('/wiki/')) return false;
   const last = pathOnly.slice(pathOnly.lastIndexOf('/') + 1);
   return !last.includes('.');
 }

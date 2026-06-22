@@ -22,34 +22,34 @@ const sitemapXml = readFileSync(new URL('../public/sitemap.xml', import.meta.url
 
 describe('Guide routes', () => {
   it('treats the base and empty sub as the home route', () => {
-    expect(matchRoute('/guide')?.route.id).toBe('home');
-    expect(matchRoute('/guide/')?.route.id).toBe('home');
-    expect(toSub('/guide/classes/')).toBe('classes');
-    expect(toSub('/guide')).toBe('');
+    expect(matchRoute('/wiki')?.route.id).toBe('home');
+    expect(matchRoute('/wiki/')?.route.id).toBe('home');
+    expect(toSub('/wiki/classes/')).toBe('classes');
+    expect(toSub('/wiki')).toBe('');
   });
 
   it('matches static section routes exactly', () => {
-    expect(matchRoute('/guide/classes')?.route.id).toBe('classes');
-    expect(matchRoute('/guide/how-to-play')?.route.id).toBe('how-to-play');
-    expect(matchRoute('/guide/reference/controls')?.route.id).toBe('controls');
+    expect(matchRoute('/wiki/classes')?.route.id).toBe('classes');
+    expect(matchRoute('/wiki/how-to-play')?.route.id).toBe('how-to-play');
+    expect(matchRoute('/wiki/reference/controls')?.route.id).toBe('controls');
   });
 
   it('claims deeper segments as params (class/creature detail pages)', () => {
-    const m = matchRoute('/guide/classes/warrior');
+    const m = matchRoute('/wiki/classes/warrior');
     expect(m?.route.id).toBe('classes');
     expect(m?.params).toEqual(['warrior']);
   });
 
   it('returns null for unknown paths so the app can render notFound', () => {
-    expect(matchRoute('/guide/nonexistent')).toBeNull();
+    expect(matchRoute('/wiki/nonexistent')).toBeNull();
   });
 
   it('ignores #hash and ?query when matching (skip link / in-page anchors)', () => {
     // Regression: the skip link href="#guide-main" must not route to notFound.
-    expect(matchRoute('/guide#guide-main')?.route.id).toBe('home');
-    expect(matchRoute('/guide/reference/controls#movement')?.route.id).toBe('controls');
-    expect(matchRoute('/guide/classes/warrior?from=home')?.params).toEqual(['warrior']);
-    expect(toSub('/guide/classes#kit')).toBe('classes');
+    expect(matchRoute('/wiki#guide-main')?.route.id).toBe('home');
+    expect(matchRoute('/wiki/reference/controls#movement')?.route.id).toBe('controls');
+    expect(matchRoute('/wiki/classes/warrior?from=home')?.params).toEqual(['warrior']);
+    expect(toSub('/wiki/classes#kit')).toBe('classes');
   });
 
   it('derives nav from the single route list', () => {
@@ -58,7 +58,7 @@ describe('Guide routes', () => {
     const groups = groupedRoutes();
     expect(groups.map((g) => g.group)).toEqual(['start', 'compendium', 'reference']);
     expect(hrefFor('')).toBe(GUIDE_BASE);
-    expect(hrefFor('classes')).toBe('/guide/classes');
+    expect(hrefFor('classes')).toBe('/wiki/classes');
   });
 
   it('keeps every route nav label resolvable as an English t() key', () => {
@@ -73,14 +73,14 @@ describe('Guide routes', () => {
 });
 
 describe('Guide entry wiring', () => {
-  it('registers the /guide pretty URL in BOTH alias tables (kept in sync)', () => {
-    expect(viteConfig).toContain("['/guide', '/guide.html']");
-    expect(serverMain).toContain("['/guide', '/guide.html']");
+  it('registers the /wiki pretty URL in BOTH alias tables (kept in sync)', () => {
+    expect(viteConfig).toContain("['/wiki', '/guide.html']");
+    expect(serverMain).toContain("['/wiki', '/guide.html']");
   });
 
-  it('falls back deep /guide paths to the guide shell in dev and prod', () => {
+  it('falls back deep /wiki paths to the guide shell in dev and prod', () => {
     expect(viteConfig).toContain('isGuideSpaPath');
-    expect(serverMain).toContain("const isGuide = urlPath === '/guide' || urlPath.startsWith('/guide/');");
+    expect(serverMain).toContain("const isGuide = urlPath === '/wiki' || urlPath.startsWith('/wiki/');");
     expect(serverMain).toContain("isGuide ? 'guide.html'");
   });
 
@@ -89,7 +89,7 @@ describe('Guide entry wiring', () => {
   });
 
   it('lists the guide in the sitemap', () => {
-    expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/guide</loc>');
+    expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/wiki</loc>');
   });
 });
 
@@ -100,9 +100,9 @@ describe('guide.html shell', () => {
     expect(guideHtml).not.toContain('maximum-scale=1.0');
   });
 
-  it('ships crawlable canonical + social metadata for /guide', () => {
-    expect(guideHtml).toContain('<link rel="canonical" href="https://worldofclaudecraft.com/guide" />');
-    expect(guideHtml).toContain('<meta property="og:url" content="https://worldofclaudecraft.com/guide" />');
+  it('ships crawlable canonical + social metadata for /wiki', () => {
+    expect(guideHtml).toContain('<link rel="canonical" href="https://worldofclaudecraft.com/wiki" />');
+    expect(guideHtml).toContain('<meta property="og:url" content="https://worldofclaudecraft.com/wiki" />');
     expect(guideHtml).toContain('content="index, follow, max-image-preview:large"');
   });
 
