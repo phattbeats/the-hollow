@@ -503,7 +503,18 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       }
       try {
         const c = await renameCharacter(accountId, characterId, name);
-        if (!c) return json(res, 404, { error: 'character not found' });
+        if (!c) {
+          // The force_rename-gated UPDATE matched no row even though the pre-check
+          // passed: a concurrent rename cleared the flag, or the character was just
+          // deleted. Re-resolve so the status stays consistent with the pre-check
+          // (403 if it still exists but is no longer flagged, 404 if truly gone)
+          // instead of always answering a misleading 404.
+          const still = await getCharacter(accountId, characterId);
+          if (still && !still.force_rename) {
+            return json(res, 403, { error: 'character rename is not permitted' });
+          }
+          return json(res, 404, { error: 'character not found' });
+        }
         return json(res, 200, { id: c.id, name: c.name, class: c.class, level: c.level, forceRename: c.force_rename });
       } catch (err: any) {
         if (isUniqueViolation(err)) return json(res, 409, { error: 'that name is taken' });
