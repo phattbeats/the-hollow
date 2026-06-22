@@ -886,6 +886,7 @@ async function main(): Promise<void> {
 
     const token = typeof msg.token === 'string' ? msg.token : '';
     const characterId = Number(msg.character ?? 'NaN');
+    const clientSeed = typeof msg.clientSeed === 'string' ? msg.clientSeed : '';
     const accountId = await accountForToken(token);
     if (accountId === null || !Number.isFinite(characterId)) {
       ws.send(JSON.stringify({ t: 'error', error: 'not authenticated' }));
@@ -935,6 +936,7 @@ async function main(): Promise<void> {
         chatStrikes: status.chatStrikes,
         accountCosmetics,
         isAdmin,
+        clientSeed,
       },
     );
     if ('error' in result) {
