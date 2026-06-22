@@ -193,7 +193,7 @@ export interface LootStrategies {
 
 export const DEFAULT_PARTY_LOOT_STRATEGIES: LootStrategies = {
   currency: 'fair-split',
-  commonItems: 'need-greed',
+  commonItems: 'looter-takes-all',
   premiumItems: 'need-greed',
 };
 
