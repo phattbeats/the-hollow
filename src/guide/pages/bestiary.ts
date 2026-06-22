@@ -33,7 +33,7 @@ export const bestiary: GuidePage = {
         const nameKey = `guide.family.${f.family}.name` as TranslationKey;
         const descKey = `guide.family.${f.family}.desc` as TranslationKey;
         return `
-          <section class="guide-family">
+          <section class="guide-family" id="fam-${esc(f.family)}">
             <div class="guide-family-head">
               <img class="guide-family-crest" src="${esc(familyCrest(f.family))}" alt="" width="56" height="56" loading="lazy" decoding="async" />
               <div>

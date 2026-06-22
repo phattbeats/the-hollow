@@ -15,6 +15,9 @@ const QA: { q: TranslationKey; a: TranslationKey; cap?: boolean }[] = [
   { q: 'guide.faqPage.q6', a: 'guide.faqPage.a6', cap: true },
   { q: 'guide.faqPage.q7', a: 'guide.faqPage.a7' },
   { q: 'guide.faqPage.q8', a: 'guide.faqPage.a8' },
+  { q: 'guide.faqPage.q9', a: 'guide.faqPage.a9' },
+  { q: 'guide.faqPage.q10', a: 'guide.faqPage.a10', cap: true },
+  { q: 'guide.faqPage.q11', a: 'guide.faqPage.a11' },
 ];
 
 export const faq: GuidePage = {

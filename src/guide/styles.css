@@ -1035,3 +1035,49 @@ body[data-guide-route="home"] .guide-main { padding-block-start: 0; }
 @media (pointer: coarse) {
   .guide-chip, .guide-chooser-clear { min-height: var(--g-touch); }
 }
+
+/* ============================================================ world map + zones */
+.guide-worldmap-wrap { margin-block: var(--g-lg) var(--g-xl); }
+.guide-worldmap-h { font-family: var(--g-font-display); font-size: clamp(20px, 2.2vw, 26px); color: var(--g-gold-dim); margin: 0 0 var(--g-2xs); }
+.guide-worldmap-sub { margin: 0 0 var(--g-md); color: var(--g-text-dim); max-width: var(--g-prose); }
+.guide-worldmap { display: flex; flex-direction: column; gap: var(--g-sm); max-width: 540px; }
+.guide-worldmap-zone {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: var(--g-2xs) var(--g-md);
+  padding: var(--g-md);
+  background: var(--g-bg-2);
+  border: 1px solid var(--g-border-soft);
+  border-inline-start: 4px solid var(--g-border);
+  border-radius: var(--g-radius);
+  color: var(--g-text);
+}
+.guide-worldmap-zone:hover { border-color: var(--g-border); background: var(--g-wash); text-decoration: none; }
+.guide-worldmap-band { grid-column: 1; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g-gold-dim); }
+.guide-worldmap-name { grid-column: 1; font-family: var(--g-font-display); font-weight: 700; font-size: 18px; }
+.guide-worldmap-hub { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--g-text-muted); font-size: 13px; }
+/* Map rail accents reuse the biome colors as a left border. */
+.guide-worldmap-zone.guide-zone-vale { border-inline-start-color: #7fae5a; border-block-start-color: var(--g-border-soft); }
+.guide-worldmap-zone.guide-zone-marsh { border-inline-start-color: #4f9e8c; border-block-start-color: var(--g-border-soft); }
+.guide-worldmap-zone.guide-zone-peaks { border-inline-start-color: #7fa8d8; border-block-start-color: var(--g-border-soft); }
+
+/* Detail zone cards (wider than the home teasers, with places + residents). */
+.guide-zone-grid-detail { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.guide-zone-detail { margin-block-start: var(--g-md); }
+.guide-zone-subh { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--g-text-muted); margin: 0 0 var(--g-xs); }
+.guide-poi-list { display: flex; flex-wrap: wrap; gap: var(--g-xs2); margin: 0; padding: 0; list-style: none; }
+.guide-poi {
+  display: inline-flex;
+  align-items: center;
+  min-height: 0;
+  padding: var(--g-2xs) var(--g-sm);
+  background: var(--g-bg);
+  border: 1px solid var(--g-border-soft);
+  border-radius: var(--g-radius-pill);
+  font-size: 13px;
+  color: var(--g-text-dim);
+}
+a.guide-poi:hover { color: var(--g-gold); border-color: var(--g-border); text-decoration: none; }
+
+.guide-dungeon-meta { margin: 0 0 var(--g-sm); color: var(--g-text-muted); font-size: 13px; }

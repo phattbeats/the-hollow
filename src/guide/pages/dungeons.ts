@@ -1,38 +1,62 @@
-// Dungeons and Raids: group-content overview plus teaser cards. Thematic only, no boss
-// scripts, timers, or loot. The endgame raid is teased without naming its boss.
+// Dungeons and Raids: group-content overview plus teaser cards. The roster (names, level
+// bands, party sizes) is generated from the sim DUNGEONS so it never drifts; the flavor
+// bodies are curated guide copy. Thematic only, no boss scripts, timers, or loot. The
+// endgame raid is teased without naming its boss (its sim name is withheld in the feed).
 
-import { t, formatNumber } from '../../ui/i18n';
+import { t, formatNumber, type TranslationKey } from '../../ui/i18n';
 import { esc } from '../../ui/esc';
-import { lead } from './ui';
+import { GUIDE_DUNGEONS, type GuideDungeon } from '../content.generated';
+import { hrefFor } from '../routes';
+import { pageHeader, callout, related } from './ui';
 import type { GuidePage } from './types';
+
+// Curated flavor body, keyed by the generated dungeon id (raid is the withheld-name one).
+const BODY: Record<string, TranslationKey> = {
+  hollow_crypt: 'guide.dungeonsPage.hollowBody',
+  sunken_bastion: 'guide.dungeonsPage.bastionBody',
+  drowned_temple: 'guide.dungeonsPage.templeBody',
+  gravewyrm_sanctum: 'guide.dungeonsPage.sanctumBody',
+  raid: 'guide.dungeonsPage.raidBody',
+};
+
+function levelLabel(d: GuideDungeon): string {
+  if (d.min == null || d.max == null) return '';
+  return d.min === d.max
+    ? t('guide.dungeonsPage.levelExact', { n: formatNumber(d.max) })
+    : t('guide.dungeonsPage.levelBand', { min: formatNumber(d.min), max: formatNumber(d.max) });
+}
+
+function dungeonCard(d: GuideDungeon): string {
+  const bodyKey = BODY[d.id];
+  if (!bodyKey) return '';
+  const name = d.isRaid ? t('guide.dungeonsPage.raidName') : (d.name ?? '');
+  const level = levelLabel(d);
+  return `
+    <section class="guide-dungeon-card${d.isRaid ? ' guide-dungeon-raid' : ''}">
+      <div class="guide-dungeon-head">
+        <h2 class="guide-dungeon-name">${esc(name)}</h2>
+        ${level ? `<span class="guide-badge guide-badge-level">${esc(level)}</span>` : ''}
+      </div>
+      <p class="guide-dungeon-meta">${esc(t('guide.dungeonsPage.partySize', { n: formatNumber(d.suggestedPlayers) }))}</p>
+      <p>${esc(t(bodyKey))}</p>
+    </section>`;
+}
 
 export const dungeons: GuidePage = {
   titleKey: 'guide.nav.dungeons',
   render() {
-    // Recompute per render so a language switch re-localizes the level labels.
-    const cards = ([
-      { nameKey: 'guide.dungeonsPage.hollowName', bodyKey: 'guide.dungeonsPage.hollowBody', level: t('guide.dungeonsPage.levelAround', { n: formatNumber(10) }), raid: false },
-      { nameKey: 'guide.dungeonsPage.bastionName', bodyKey: 'guide.dungeonsPage.bastionBody', level: t('guide.dungeonsPage.levelAround', { n: formatNumber(13) }), raid: false },
-      { nameKey: 'guide.dungeonsPage.templeName', bodyKey: 'guide.dungeonsPage.templeBody', level: t('guide.dungeonsPage.levelAround', { n: formatNumber(17) }), raid: false },
-      { nameKey: 'guide.dungeonsPage.sanctumName', bodyKey: 'guide.dungeonsPage.sanctumBody', level: t('guide.dungeonsPage.levelExact', { n: formatNumber(20) }), raid: false },
-      { nameKey: 'guide.dungeonsPage.raidName', bodyKey: 'guide.dungeonsPage.raidBody', level: t('guide.dungeonsPage.raidSize', { n: formatNumber(20) }), raid: true },
-    ] as const)
-      .map((c) => `
-        <section class="guide-dungeon-card${c.raid ? ' guide-dungeon-raid' : ''}">
-          <div class="guide-dungeon-head">
-            <h2 class="guide-dungeon-name">${esc(t(c.nameKey))}</h2>
-            <span class="guide-badge guide-badge-level">${esc(c.level)}</span>
-          </div>
-          <p>${esc(t(c.bodyKey))}</p>
-        </section>`)
-      .join('');
+    const cards = GUIDE_DUNGEONS.map(dungeonCard).join('');
     return `
       <article class="guide-article guide-dungeons">
-        <h1>${esc(t('guide.dungeonsPage.heading'))}</h1>
-        ${lead('guide.dungeonsPage.intro')}
+        ${pageHeader('guide.dungeonsPage.heading', 'guide.dungeonsPage.intro')}
         <p>${esc(t('guide.dungeonsPage.party'))}</p>
-        <p class="guide-callout">${esc(t('guide.dungeonsPage.soloLead'))}</p>
+        ${callout(esc(t('guide.dungeonsPage.soloLead')))}
         <div class="guide-dungeon-grid">${cards}</div>
+        ${related([
+          { href: hrefFor('world'), key: 'guide.nav.world' },
+          { href: hrefFor('reference/arena'), key: 'guide.nav.arena' },
+          { href: hrefFor('classes'), key: 'guide.nav.classes' },
+        ])}
       </article>`;
   },
 };
