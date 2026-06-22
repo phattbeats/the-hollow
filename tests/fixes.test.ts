@@ -572,7 +572,7 @@ describe('boss loot and encounter resets', () => {
     expect(mob.loot).toBeNull();
   });
 
-  it('poor and common corpse drops open need-greed rolls among nearby party members', () => {
+  it('poor and common corpse drops are looted directly by the looter without need-greed rolls', () => {
     const sim = makeSim();
     const a = sim.playerId;
     const b = sim.addPlayer('mage', 'Bert');
@@ -590,12 +590,12 @@ describe('boss loot and encounter resets', () => {
     sim.events.length = 0;
     sim.lootCorpse(mob.id, a);
 
-    expect(sim.countItem('wolf_fang', a) + sim.countItem('wolf_fang', b)).toBe(0);
-    expect(sim.countItem('raw_mirror_trout', a) + sim.countItem('raw_mirror_trout', b)).toBe(0);
+    expect(sim.countItem('wolf_fang', a)).toBe(1);
+    expect(sim.countItem('raw_mirror_trout', a)).toBe(1);
+    expect(sim.countItem('wolf_fang', b)).toBe(0);
+    expect(sim.countItem('raw_mirror_trout', b)).toBe(0);
     const prompts = sim.events.filter((e) => e.type === 'lootRoll');
-    expect(prompts).toHaveLength(4);
-    expect(prompts.filter((e) => e.itemId === 'wolf_fang')).toHaveLength(2);
-    expect(prompts.filter((e) => e.itemId === 'raw_mirror_trout')).toHaveLength(2);
+    expect(prompts).toHaveLength(0);
     expect(mob.loot).toBeNull();
   });
 
