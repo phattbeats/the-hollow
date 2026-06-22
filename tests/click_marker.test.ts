@@ -39,6 +39,15 @@ describe('clickMarkerAnim', () => {
     }
   });
 
+  it('grows the ring from ~0.55x up toward its documented 1.5x ceiling', () => {
+    // Pins the curve to its comment (starts a touch inside the base radius, eases out
+    // to 1.5x), so the two cannot silently drift apart again.
+    expect(clickMarkerAnim(0).ringScale).toBeCloseTo(0.55, 5);
+    const late = clickMarkerAnim(CLICK_MARKER_LIFETIME * 0.999).ringScale;
+    expect(late).toBeGreaterThan(1.4);
+    expect(late).toBeLessThanOrEqual(1.5);
+  });
+
   it('expands the ring outward and fades it monotonically', () => {
     let prevScale = -Infinity;
     let prevAlpha = Infinity;

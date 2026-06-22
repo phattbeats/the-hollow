@@ -53,8 +53,8 @@ export function clickMarkerAnim(
   if (elapsed < 0 || elapsed >= lifetime) return HIDDEN;
   const t = clamp01(elapsed / lifetime);
 
-  // Ring: expands from its base radius outward to ~1.8x while fading linearly to
-  // nothing, a sonar-style pulse.
+  // Ring: expands from 0.55x (a touch inside its base radius) out to 1.5x while
+  // fading linearly to nothing, a sonar-style pulse.
   const ringScale = 0.55 + 0.95 * easeOutCubic(t);
   const ringAlpha = (1 - t) * 0.85;
 
