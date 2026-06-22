@@ -728,7 +728,7 @@ export class GameServer {
     );
     this.applyAccountQuestLockouts(pid, accountCosmetics);
     const sessionIp = meta.ip ?? '';
-    const botTrackingContext = this.botDetector.createTrackingContext({ accountId, characterId, name, ip: sessionIp });
+    const botTrackingContext = this.botDetector.createTrackingContext({ accountId, characterId, name, ip: sessionIp }, meta);
     const session: ClientSession = {
       ws, accountId, accountCosmetics, characterId, pid, name,
       lastSave: Date.now(), alive: true, joinedAt: Date.now(), dbSessionId: null, left: false,

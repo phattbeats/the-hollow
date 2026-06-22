@@ -6,7 +6,10 @@ import { emptyMoveInput } from '../src/sim/types';
 describe('bot-detector stub (open-source no-op)', () => {
   it('satisfies the BotDetector seam and detects nothing', () => {
     const detector: BotDetector = createBotDetector();
-    const ctx = detector.createTrackingContext({ accountId: 1, characterId: 1, name: 'X', ip: '1.2.3.4' });
+    const ctx = detector.createTrackingContext(
+      { accountId: 1, characterId: 1, name: 'X', ip: '1.2.3.4' },
+      { some: 'meta-value', another: 'meta' },
+    );
 
     // A full observation cycle is inert and never escalates.
     detector.observeCommand(ctx, 'attack', Date.now());
