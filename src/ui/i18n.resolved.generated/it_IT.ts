@@ -174,12 +174,24 @@ export const it_IT: EnTranslations = {
       "title": "Emote",
       "done": "Fine"
     },
+    "questTracker": {
+      "count": "({count})",
+      "collapseHint": "Comprimi il riquadro Missioni",
+      "expandHint": "Espandi il riquadro Missioni"
+    },
     "chatTimestamps": {
       "show": "Mostra orari della chat",
       "format": "Formato orario",
       "clock12h": "12 ore",
       "clock24h": "24 ore",
       "note": "Antepone a ogni nuova riga di chat l'ora di arrivo, ad es. [14:32]. Influisce solo sui messaggi ricevuti mentre l'opzione è attiva."
+    },
+    "chatWindow": {
+      "move": "Trascina per spostare la finestra della chat",
+      "resize": "Trascina per ridimensionare la finestra della chat",
+      "reset": "Ripristina finestra della chat",
+      "resetAction": "Ripristina",
+      "note": "Trascina la barra delle schede della chat per spostare la finestra, oppure l'angolo per ridimensionarla. Ripristina la riporta a posizione e dimensioni predefinite."
     },
     "swing": {
       "ready": "Attacco",
@@ -228,9 +240,30 @@ export const it_IT: EnTranslations = {
     "options": {
       "clickMoveLeft": "Clic sinistro",
       "clickMoveRight": "Clic destro",
+      "browserEffects": "Effetti del browser",
+      "browserEffectsAuto": "Auto",
+      "browserEffectsFull": "Completi",
+      "browserEffectsReduced": "Ridotti",
+      "browserEffectsMinimal": "Minimi",
+      "browserEffectsNote": "La modalità automatica attenua gli effetti CSS pesanti (sfocatura, bagliore, movimento dello sfondo) in base al tuo browser e dispositivo. Riducila manualmente se l'interfaccia sembra lenta.",
       "footstepSounds": "Suoni dei passi",
+      "clickFeedback": "Indicatore di clic",
       "showWalletOnCharacterScreen": "Mostra portafoglio nella schermata personaggi",
-      "showWalletOnPlayerCard": "Mostra portafoglio nella scheda giocatore"
+      "showWalletOnPlayerCard": "Mostra portafoglio nella scheda giocatore",
+      "uiScale": "Scala dell'interfaccia",
+      "highContrastBackground": "Sfondo a contrasto elevato"
+    },
+    "controller": {
+      "title": "Controller",
+      "enable": "Attiva controller",
+      "invertY": "Inverti telecamera (Y)",
+      "deadzone": "Zona morta dello stick",
+      "cameraSpeed": "Velocità telecamera",
+      "vibration": "Vibrazione",
+      "buttons": "Disposizione dei pulsanti",
+      "resetButtons": "Ripristina disposizione dei pulsanti",
+      "menuAction": "Menu di gioco",
+      "help": "Lo stick sinistro muove, quello destro orienta la telecamera. Apri una finestra per usare il puntatore a schermo."
     },
     "perf": {
       "title": "Pannello prestazioni",
@@ -303,6 +336,10 @@ export const it_IT: EnTranslations = {
     "playerCard": {
       "showWalletBadge": "Mostra distintivo portafoglio"
     },
+    "landing": {
+      "highContrast": "Contrasto elevato",
+      "highContrastAria": "Attiva/disattiva lo sfondo a contrasto elevato: disabilita il trailer in movimento per mantenere leggibile il testo della schermata iniziale"
+    },
     "statInfo": {
       "fromYour": "Dai tuoi {value} punti {stat}:",
       "desc": {
@@ -368,6 +405,28 @@ export const it_IT: EnTranslations = {
         "many": "Chi: {count} giocatori online su {realm}.",
         "other": "Chi: {count} giocatori online su {realm}."
       }
+    },
+    "bugReport": {
+      "menuButton": "Segnala un bug",
+      "realm": "Reame",
+      "character": "Personaggio",
+      "position": "Posizione",
+      "unknown": "Sconosciuto",
+      "description": "Che cosa è andato storto?",
+      "descriptionPlaceholder": "Descrivi il bug: cosa hai fatto, cosa ti aspettavi e cosa è successo.",
+      "includeScreenshot": "Includi schermata",
+      "screenshotAlt": "Schermata della vista attuale allegata a questa segnalazione del bug",
+      "submit": "Invia segnalazione",
+      "submitted": "Segnalazione del bug inviata. Grazie!",
+      "submittedNoShot": "Segnalazione del bug inviata, ma la schermata era troppo grande per essere inclusa.",
+      "describeFirst": "Descrivi il bug prima di inviare.",
+      "tooLarge": "Questa segnalazione è troppo grande per essere inviata. Riprova senza la schermata.",
+      "rateLimited": "Hai inviato diverse segnalazioni di recente. Attendi un momento prima di inviarne un'altra.",
+      "failed": "Impossibile inviare la segnalazione del bug. Riprova."
+    },
+    "paperdoll": {
+      "unequipAria": "Rimuovi {item}",
+      "unequipHint": "Clicca su ×, clic destro o trascina nelle borse per rimuovere"
     },
     "account": {
       "title": "Account",
@@ -1006,7 +1065,9 @@ export const it_IT: EnTranslations = {
       "webLoginOnly": "L'accesso è consentito solo dal client di gioco.",
       "accountSuspended": "Questo account è sospeso fino al {date}.",
       "alreadyInWorld": "Il personaggio è già nel mondo.",
-      "renameBeforeEntering": "Questo personaggio deve essere rinominato prima di entrare nel mondo."
+      "takenOver": "Il tuo personaggio è stato preso in controllo da un'altra sessione.",
+      "renameBeforeEntering": "Questo personaggio deve essere rinominato prima di entrare nel mondo.",
+      "renameNotPermitted": "Non è consentito rinominare questo personaggio."
     }
   },
   "realm": {
@@ -1032,6 +1093,9 @@ export const it_IT: EnTranslations = {
     "noneYet": "Nessun personaggio ancora. Creane uno qui sotto.",
     "levelClass": "Livello {level} {className}",
     "inWorld": "nel mondo",
+    "takeOver": "Prendi il controllo",
+    "inWorldHint": "Già nel mondo. Esci altrove, oppure prendine il controllo.",
+    "takeOverConfirm": "Questo scollegherà il personaggio da un'altra sessione e lo porterà qui. Continuare?",
     "renameRequired": "rinomina richiesta",
     "delete": "Elimina",
     "rename": "Rinomina",
@@ -1517,6 +1581,25 @@ export const it_IT: EnTranslations = {
       "friendOnline": "{name} è entrato online.",
       "friendOffline": "{name} è uscito offline."
     },
+    "tutorial": {
+      "title": "Nuovo avventuriero",
+      "stepLabel": "Passo {current} di {total}",
+      "skip": "Salta il tutorial",
+      "dismiss": "Chiudi",
+      "doneTitle": "Pronto all'avventura",
+      "doneBody": "Hai imparato le basi, {name}. La Valle è tutta da esplorare: premi {questKey} in qualsiasi momento per rivedere le tue missioni. Buona caccia!",
+      "moveTitle": "Trova l'equilibrio",
+      "moveBody": "Usa {moveKeys} per muoverti e il mouse per guardarti intorno. Fai qualche passo per iniziare.",
+      "seekTitle": "Cerca il Maresciallo",
+      "seekBody": "Il maresciallo Redbrook attende in città e ha del lavoro per una nuova lama. Segui il segnale per raggiungerlo.",
+      "talkTitle": "Accetta l'incarico",
+      "talkBody": "Avvicinati al maresciallo Redbrook e premi {interactKey} per parlargli, poi accetta il suo incarico.",
+      "slayTitle": "Lupi alle porte",
+      "slayBody": "Dai la caccia ai lupi della foresta sulla strada a nord. Seleziona un bersaglio e attacca per ridurre il branco.",
+      "slayProgress": "Lupi della foresta uccisi: {current} / {needed}",
+      "returnTitle": "Reclama la ricompensa",
+      "returnBody": "Il tuo incarico è compiuto. Torna dal maresciallo Redbrook e premi {interactKey} per consegnarlo."
+    },
     "markers": {
       "names": {
         "star": "Stella",
@@ -1740,6 +1823,10 @@ export const it_IT: EnTranslations = {
       "completedStatus": "Completata",
       "returnTo": "Torna da {name}",
       "abandon": "Abbandona missione",
+      "abandonConfirmTitle": "Abbandona missione",
+      "abandonConfirmBody": "Vuoi davvero abbandonare {name}?",
+      "abandonConfirm": "Sì",
+      "abandonCancel": "Annulla",
       "suggestedPlayers": "Giocatori consigliati: {count}"
     },
     "dialog": {

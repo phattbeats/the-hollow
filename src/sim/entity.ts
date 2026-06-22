@@ -1,5 +1,6 @@
 import { CLASSES, ITEMS, MOBS, NpcDef } from './data';
 import type { Entity, EquipSlot, MobTemplate, PlayerClass, Stats, Vec3 } from './types';
+import { EQUIP_SLOTS } from './types';
 import type { TalentModifiers } from './content/talents';
 
 function baseEntity(id: number, pos: Vec3): Entity {
@@ -21,7 +22,7 @@ function baseEntity(id: number, pos: Vec3): Entity {
     chargeTargetId: null, chargeTimeLeft: 0, chargePath: [], followTargetId: null,
     sitting: false, eating: null, drinking: null,
     aiState: 'idle', tappedById: null, pulseTimer: 0, stompTimer: 0, stoneskinTimer: 0, terrifyTimer: 0, detonateTimer: Infinity, mendTimer: 0, wardTimer: 0, rallyTimer: 0, warcryTimer: 0, firedSummons: 0, summonedIds: [], enraged: false, healedThisPull: false,
-    threat: new Map(), forcedTargetId: null, forcedTargetTimer: 0, ownerId: null, petMode: 'defensive', petTauntTimer: 0,
+    threat: new Map(), forcedTargetId: null, forcedTargetTimer: 0, ownerId: null, petMode: 'defensive', petTauntTimer: 0, petPath: [], petPathCooldown: 0,
     spawnPos: { ...pos }, leashAnchor: null, evadeStall: 0, fleeTimer: 0, fleeReturnTimer: 0, hasFled: false, wanderTarget: null, wanderTimer: 0,
     aggroTargetId: null, respawnTimer: 0, corpseTimer: 0, lootable: false, loot: null,
     xpValue: 0, questIds: [], vendorItems: [], objectItemId: null, dungeonId: null,
@@ -72,7 +73,7 @@ export function recalcPlayerStats(e: Entity, cls: PlayerClass, equipment: Player
     spi: def.baseStats.spi + def.statsPerLevel.spi * (lvl - 1),
     armor: def.baseStats.armor + def.statsPerLevel.armor * (lvl - 1),
   };
-  for (const slot of ['mainhand', 'helmet', 'shoulder', 'chest', 'waist', 'legs', 'gloves', 'feet'] as EquipSlot[]) {
+  for (const slot of EQUIP_SLOTS) {
     const itemId = equipment[slot];
     if (!itemId) continue;
     const item = ITEMS[itemId];

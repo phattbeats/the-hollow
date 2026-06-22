@@ -50,6 +50,19 @@ export function buildWebSocketUrl(protocol: string, host: string): string {
   return `${proto}://${host}/ws`;
 }
 
+function normalizeOrigin(raw: string): string {
+  return raw.trim().replace(/\/+$/, '');
+}
+
+export const NATIVE_APP = String(import.meta.env.VITE_NATIVE_APP ?? '') === '1';
+export const NATIVE_API_ORIGIN = normalizeOrigin(String(import.meta.env.VITE_API_ORIGIN ?? ''));
+
+export function apiUrl(path: string, base = ''): string {
+  if (/^https?:\/\//.test(path)) return path;
+  const origin = normalizeOrigin(base) || NATIVE_API_ORIGIN;
+  return origin ? `${origin}${path}` : path;
+}
+
 export function buildWebSocketAuthMessage(token: string, characterId: number): { t: 'auth'; token: string; character: number } {
   return { t: 'auth', token, character: characterId };
 }
@@ -109,17 +122,17 @@ export class Api {
   realm: string | null = null;
   // base origin for realm-scoped calls (characters, search, ws). '' = the page
   // origin; set to another realm's origin when the player picks a realm
-  base = '';
+  base = NATIVE_API_ORIGIN;
 
   setRealm(url: string): void {
-    this.base = url || '';
+    this.base = normalizeOrigin(url) || NATIVE_API_ORIGIN;
   }
 
   // The realm directory is always read from the page's own server. Sending the
   // token (when logged in) also returns per-realm character counts.
   async realms(): Promise<RealmDirectory> {
     try {
-      const res = await fetch('/api/realms', { headers: this.token ? { Authorization: `Bearer ${this.token}` } : {} });
+      const res = await fetch(apiUrl('/api/realms'), { headers: this.token ? { Authorization: `Bearer ${this.token}` } : {} });
       if (!res.ok) return { current: '', realms: [], characters: {} };
       const d = await res.json();
       return { current: d.current ?? '', realms: d.realms ?? [], characters: d.characters ?? {} };
@@ -131,7 +144,7 @@ export class Api {
   // Live status for a realm (population + reachability), for the realm picker.
   async realmStatus(url: string): Promise<{ online: boolean; players: number }> {
     try {
-      const res = await fetch(`${url}/api/status`, { signal: AbortSignal.timeout(3000) });
+      const res = await fetch(apiUrl('/api/status', url), { signal: AbortSignal.timeout(3000) });
       if (!res.ok) return { online: false, players: 0 };
       const d = await res.json();
       return { online: true, players: d.players_online ?? 0 };
@@ -141,7 +154,7 @@ export class Api {
   }
 
   private async post(path: string, body: unknown): Promise<any> {
-    const res = await fetch(this.base + path, {
+    const res = await fetch(apiUrl(path, this.base), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -155,7 +168,7 @@ export class Api {
   }
 
   private async get(path: string): Promise<any> {
-    const res = await fetch(this.base + path, {
+    const res = await fetch(apiUrl(path, this.base), {
       headers: this.token ? { Authorization: `Bearer ${this.token}` } : {},
     });
     const data = await res.json().catch(() => ({}));
@@ -164,7 +177,7 @@ export class Api {
   }
 
   private async delete(path: string, body: unknown): Promise<any> {
-    const res = await fetch(this.base + path, {
+    const res = await fetch(apiUrl(path, this.base), {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -270,12 +283,34 @@ export class Api {
     await this.delete(`/api/characters/${characterId}`, { name });
   }
 
+  // Force-disconnect this character's live session (a stale tab, a crash, or
+  // another device) so we can enter the world on it. Returns whether a session
+  // was actually displaced (false = it was already offline).
+  async takeoverCharacter(characterId: number): Promise<boolean> {
+    const data = await this.post(`/api/characters/${characterId}/takeover`, {});
+    return data.takenOver === true;
+  }
+
   async reportPlayer(reporterCharacterId: number, targetPid: number, reason: string, details: string): Promise<void> {
     await this.post('/api/reports', { reporterCharacterId, targetPid, reason, details });
   }
 
   async reportPlayerByName(reporterCharacterId: number, targetCharacterName: string, reason: string, details: string): Promise<void> {
     await this.post('/api/reports', { reporterCharacterId, targetCharacterName, reason, details });
+  }
+
+  async submitBugReport(payload: {
+    characterId: number;
+    characterName: string;
+    pos: { x: number; y: number; z: number };
+    description: string;
+    screenshot: string | null;
+    meta: unknown;
+  }): Promise<{ screenshotStored: boolean }> {
+    const res = await this.post('/api/bug-reports', payload);
+    // The server drops a screenshot that fails its allowlist/size gate; surface
+    // that so the player is not told the screenshot was attached when it was not.
+    return { screenshotStored: res?.screenshotStored !== false };
   }
 
   async projectStats(): Promise<{ accounts_created: number; players_online: number; realm: string }> {
@@ -296,7 +331,7 @@ export class Api {
   // server. Not realm-scoped — always read from the page's own origin.
   async releases(limit = 20): Promise<ReleaseEntry[]> {
     try {
-      const res = await fetch(`/api/releases?limit=${limit}`);
+      const res = await fetch(apiUrl(`/api/releases?limit=${limit}`));
       if (!res.ok) return [];
       const data = await res.json();
       return data.releases ?? [];
@@ -391,9 +426,28 @@ function copyPos(dst: { x: number; y: number; z: number }, src: { x: number; y: 
 // graveyard release). Those are snapped, not interpolated — see applyWire.
 const TELEPORT_SNAP_DIST_SQ = 40 * 40;
 
+// Despawn grace (anti-flicker, entity-map churn). The server keeps known
+// entities in interest out to a drop radius (100yd players / 130yd npcs) that is
+// wider than the add radius, but a wandering entity riding that boundary — or a
+// single late/dropped frame — can still fall out of one snapshot without truly
+// leaving. (Distance-tier-throttled entities are NOT a source here: the server
+// lists them in `keep`, so they count as seen and are never missing.) Deleting a
+// briefly-absent entity that frame, then re-creating it the next, churns the
+// entity map; hold it at its last pose for this window instead. Kept short so a
+// genuine leaver (logout, corpse cleanup) lingers only momentarily.
+const DESPAWN_GRACE_MS = 600;
+// ...but only for entities last seen near/beyond the interest boundary, where
+// that churn happens. A close-range disappearance is intentional (an enemy going
+// stealth) and must hide at once, so anything nearer than this drops immediately.
+// Note the converse: an out-leveled stealther seen at >=70yd now lingers up to
+// DESPAWN_GRACE_MS before vanishing — acceptable, since you can only see a
+// stealthed unit at that range when far out-leveling it.
+const DESPAWN_GRACE_MIN_DIST_SQ = 70 * 70;
+
 function blankEntity(id: number): Entity {
   return {
     id, kind: 'mob', templateId: '', name: '', level: 1, mendTimer: 0, wardTimer: 0, rallyTimer: 0, warcryTimer: 0,
+    petPath: [], petPathCooldown: 0,
     pos: { x: 0, y: 0, z: 0 }, prevPos: { x: 0, y: 0, z: 0 }, facing: 0, prevFacing: 0,
     vx: 0, vz: 0, vy: 0, onGround: true, jumping: false, fallStartY: 0,
     hp: 1, maxHp: 1, resource: 0, maxResource: 0, resourceType: null,
@@ -457,6 +511,9 @@ export class ClientWorld implements IWorld {
   // snapshot interpolation
   lastSnapAt = 0;
   snapInterval = 50; // ms, adapts to measured cadence
+  // entity id -> performance.now() when it first went missing from a snapshot;
+  // used for the despawn grace window (anti-flicker), cleared once it returns
+  private missingSince = new Map<number, number>();
   // camera follow for keyboard turns applied by the main loop
   pendingFacingDelta = 0;
   connected = false;
@@ -489,12 +546,12 @@ export class ClientWorld implements IWorld {
   constructor(token: string, characterId: number, cls: PlayerClass, base = '') {
     this.characterId = characterId;
     this.token = token;
-    this.base = base;
+    this.base = normalizeOrigin(base) || NATIVE_API_ORIGIN;
     this.cfg = { seed: 20061, playerClass: cls };
     // when a realm was picked, connect to that realm's origin; otherwise the
     // page's own host
-    const wsUrl = base
-      ? base.replace(/^http/, 'ws') + '/ws'
+    const wsUrl = this.base
+      ? this.base.replace(/^http/, 'ws') + '/ws'
       : buildWebSocketUrl(location.protocol, location.host);
     this.ws = new WebSocket(wsUrl);
     this.ws.onopen = () => {
@@ -898,9 +955,35 @@ export class ClientWorld implements IWorld {
       }
     }
 
-    // prune entities that left our interest area
+    // prune entities that left our interest area. An entity briefly absent from
+    // a single snapshot (interest-boundary churn, a late/dropped frame) is held
+    // at its last pose for a short grace window rather than deleted outright, so
+    // the entity map doesn't churn delete/re-create across the boundary. The
+    // grace applies only near/beyond the interest boundary; a close-range
+    // disappearance (an enemy going stealth) still hides immediately.
+    // (A `keep`-listed entity counts as seen above, so its timer is cleared.)
+    const self = this.entities.get(this.playerId);
+    const missingSince = this.missingSince;
     for (const [id, e] of this.entities) {
-      if (!seen.has(id)) this.entities.delete(id);
+      if (id === this.playerId) continue;
+      if (seen.has(id)) {
+        missingSince.delete(id);
+        continue;
+      }
+      const dx = self ? e.pos.x - self.pos.x : 0;
+      const dz = self ? e.pos.z - self.pos.z : 0;
+      if (dx * dx + dz * dz < DESPAWN_GRACE_MIN_DIST_SQ) {
+        this.entities.delete(id);
+        missingSince.delete(id);
+        continue;
+      }
+      const since = missingSince.get(id);
+      if (since === undefined) {
+        missingSince.set(id, now);
+      } else if (now - since >= DESPAWN_GRACE_MS) {
+        this.entities.delete(id);
+        missingSince.delete(id);
+      }
     }
   }
 
@@ -1009,10 +1092,16 @@ export class ClientWorld implements IWorld {
     this.cmd({ cmd: 'turnin', quest: questId });
   }
   abandonQuest(questId: string): void {
+    if (!this.canSendCommand()) return;
+    this.questLog.delete(questId);
+    this.pendingQuestCommands.delete(questId);
     this.cmd({ cmd: 'abandon', quest: questId });
   }
   equipItem(itemId: string): void {
     this.cmd({ cmd: 'equip', item: itemId });
+  }
+  unequipItem(slot: EquipSlot): void {
+    this.cmd({ cmd: 'unequip_item', slot });
   }
   useItem(itemId: string): void {
     this.cmd({ cmd: 'use', item: itemId });
@@ -1181,7 +1270,7 @@ export class ClientWorld implements IWorld {
     const q = query.trim();
     if (!q) return [];
     try {
-      const res = await fetch(`${this.base}/api/search?q=${encodeURIComponent(q)}`, { headers: { Authorization: `Bearer ${this.token}` } });
+      const res = await fetch(apiUrl(`/api/search?q=${encodeURIComponent(q)}`, this.base), { headers: { Authorization: `Bearer ${this.token}` } });
       if (!res.ok) return [];
       return (await res.json()).results ?? [];
     } catch {
@@ -1220,7 +1309,7 @@ export class ClientWorld implements IWorld {
   }
   async leaderboard(): Promise<LeaderboardEntry[]> {
     try {
-      const res = await fetch(`${this.base}/api/leaderboard?metric=lifetimeXp&limit=100`);
+      const res = await fetch(apiUrl('/api/leaderboard?metric=lifetimeXp&limit=100', this.base));
       if (!res.ok) return [];
       return (await res.json()).leaders ?? [];
     } catch {

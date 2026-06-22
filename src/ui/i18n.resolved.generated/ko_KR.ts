@@ -174,12 +174,24 @@ export const ko_KR: EnTranslations = {
       "title": "감정 표현",
       "done": "완료"
     },
+    "questTracker": {
+      "count": "({count})",
+      "collapseHint": "퀘스트 추적기 접기",
+      "expandHint": "퀘스트 추적기 펼치기"
+    },
     "chatTimestamps": {
       "show": "채팅 시각 표시",
       "format": "시각 표시 형식",
       "clock12h": "12시간제",
       "clock24h": "24시간제",
       "note": "새 채팅 줄마다 수신된 시각을 앞에 붙입니다(예: [14:32]). 이 옵션이 켜져 있는 동안 받은 메시지에만 적용됩니다."
+    },
+    "chatWindow": {
+      "move": "드래그하여 채팅 창 이동",
+      "resize": "드래그하여 채팅 창 크기 조절",
+      "reset": "채팅 창 초기화",
+      "resetAction": "초기화",
+      "note": "채팅 탭 줄을 드래그하면 창을 이동하고, 모서리 손잡이를 드래그하면 크기를 조절할 수 있습니다. 초기화하면 기본 위치와 크기로 돌아갑니다."
     },
     "swing": {
       "ready": "공격",
@@ -228,9 +240,30 @@ export const ko_KR: EnTranslations = {
     "options": {
       "clickMoveLeft": "왼쪽 클릭",
       "clickMoveRight": "오른쪽 클릭",
+      "browserEffects": "브라우저 효과",
+      "browserEffectsAuto": "자동",
+      "browserEffectsFull": "전체",
+      "browserEffectsReduced": "감소",
+      "browserEffectsMinimal": "최소",
+      "browserEffectsNote": "자동은 브라우저와 기기에 맞춰 무거운 CSS 효과(흐림, 글로우, 배경 모션)를 낮춥니다. 인터페이스가 느리게 느껴지면 수동으로 낮추세요.",
       "footstepSounds": "발소리",
+      "clickFeedback": "클릭 표시",
       "showWalletOnCharacterScreen": "캐릭터 화면에 지갑 표시",
-      "showWalletOnPlayerCard": "플레이어 카드에 지갑 표시"
+      "showWalletOnPlayerCard": "플레이어 카드에 지갑 표시",
+      "uiScale": "UI 배율",
+      "highContrastBackground": "고대비 배경"
+    },
+    "controller": {
+      "title": "컨트롤러",
+      "enable": "컨트롤러 사용",
+      "invertY": "카메라 반전(Y축)",
+      "deadzone": "스틱 데드존",
+      "cameraSpeed": "카메라 속도",
+      "vibration": "진동",
+      "buttons": "버튼 배치",
+      "resetButtons": "버튼 배치 초기화",
+      "menuAction": "게임 메뉴",
+      "help": "왼쪽 스틱으로 이동, 오른쪽 스틱으로 시점 조작. 창을 열면 화면 포인터를 사용할 수 있습니다."
     },
     "perf": {
       "title": "성능 오버레이",
@@ -303,6 +336,10 @@ export const ko_KR: EnTranslations = {
     "playerCard": {
       "showWalletBadge": "지갑 배지 표시"
     },
+    "landing": {
+      "highContrast": "고대비",
+      "highContrastAria": "고대비 배경 전환: 움직이는 예고편을 꺼서 시작 화면 텍스트를 읽기 쉽게 유지합니다"
+    },
     "statInfo": {
       "fromYour": "당신의 {value} {stat}에서:",
       "desc": {
@@ -368,6 +405,28 @@ export const ko_KR: EnTranslations = {
         "many": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다.",
         "other": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다."
       }
+    },
+    "bugReport": {
+      "menuButton": "버그 신고",
+      "realm": "서버",
+      "character": "캐릭터",
+      "position": "좌표",
+      "unknown": "알 수 없음",
+      "description": "무엇이 잘못되었나요?",
+      "descriptionPlaceholder": "버그를 설명해 주세요: 무엇을 했고, 무엇을 기대했으며, 무엇이 일어났는지.",
+      "includeScreenshot": "스크린샷 포함",
+      "screenshotAlt": "이 버그 신고에 첨부된 현재 화면의 스크린샷",
+      "submit": "신고 보내기",
+      "submitted": "버그 신고가 전송되었습니다. 감사합니다!",
+      "submittedNoShot": "버그 신고가 전송되었습니다. 다만 스크린샷이 너무 커서 첨부하지 못했습니다.",
+      "describeFirst": "보내기 전에 버그를 설명해 주세요.",
+      "tooLarge": "신고가 너무 커서 보낼 수 없습니다. 스크린샷 없이 다시 시도하세요.",
+      "rateLimited": "최근에 여러 건의 신고를 보냈습니다. 잠시 후 다시 보내 주세요.",
+      "failed": "버그 신고를 보낼 수 없습니다. 다시 시도해 주세요."
+    },
+    "paperdoll": {
+      "unequipAria": "{item} 장착 해제",
+      "unequipHint": "× 클릭, 우클릭 또는 가방으로 드래그하여 장착 해제"
     },
     "account": {
       "title": "계정",
@@ -1006,7 +1065,9 @@ export const ko_KR: EnTranslations = {
       "webLoginOnly": "로그인은 게임 클라이언트에서만 허용됩니다.",
       "accountSuspended": "이 계정은 {date}까지 정지되었습니다.",
       "alreadyInWorld": "캐릭터가 이미 세계에 있습니다.",
-      "renameBeforeEntering": "이 캐릭터는 세계에 들어가기 전에 이름을 변경해야 합니다."
+      "takenOver": "다른 세션이 캐릭터를 넘겨받았습니다.",
+      "renameBeforeEntering": "이 캐릭터는 세계에 들어가기 전에 이름을 변경해야 합니다.",
+      "renameNotPermitted": "이 캐릭터의 이름을 변경할 수 없습니다."
     }
   },
   "realm": {
@@ -1032,6 +1093,9 @@ export const ko_KR: EnTranslations = {
     "noneYet": "아직 캐릭터가 없습니다. 아래에서 하나를 만드세요.",
     "levelClass": "{level}레벨 {className}",
     "inWorld": "세계에 있음",
+    "takeOver": "넘겨받기",
+    "inWorldHint": "이미 세계에 있습니다. 다른 곳에서 로그아웃하거나 넘겨받으세요.",
+    "takeOverConfirm": "이 캐릭터를 다른 세션에서 연결 해제하고 여기로 가져옵니다. 계속하시겠습니까?",
     "renameRequired": "이름 변경 필요",
     "delete": "삭제",
     "rename": "이름 변경",
@@ -1517,6 +1581,25 @@ export const ko_KR: EnTranslations = {
       "friendOnline": "{name}님이 접속했습니다.",
       "friendOffline": "{name}님이 접속을 종료했습니다."
     },
+    "tutorial": {
+      "title": "새내기 모험가",
+      "stepLabel": "{total}단계 중 {current}단계",
+      "skip": "튜토리얼 건너뛰기",
+      "dismiss": "닫기",
+      "doneTitle": "모험 준비 완료",
+      "doneBody": "기본기를 익혔습니다, {name}. 이제 골짜기를 자유롭게 누비세요. 언제든 {questKey} 키로 퀘스트를 확인할 수 있습니다. 좋은 사냥 되세요.",
+      "moveTitle": "첫걸음 떼기",
+      "moveBody": "{moveKeys} 키로 이동하고 마우스로 주위를 둘러보세요. 몇 걸음 움직여 시작하세요.",
+      "seekTitle": "원수를 찾으세요",
+      "seekBody": "레드브룩 원수가 마을에서 기다리며 새내기에게 맡길 일이 있습니다. 표식을 따라 그에게 가세요.",
+      "talkTitle": "임무 수락",
+      "talkBody": "레드브룩 원수에게 다가가 {interactKey} 키를 눌러 대화한 뒤 임무를 수락하세요.",
+      "slayTitle": "문 앞의 늑대들",
+      "slayBody": "북쪽 길의 숲늑대를 사냥하세요. 한 마리를 대상으로 지정해 공격하여 무리를 줄이세요.",
+      "slayProgress": "처치한 숲늑대: {current} / {needed}",
+      "returnTitle": "보상 받기",
+      "returnBody": "임무를 마쳤습니다. 레드브룩 원수에게 돌아가 {interactKey} 키를 눌러 완료하세요."
+    },
     "markers": {
       "names": {
         "star": "별",
@@ -1740,6 +1823,10 @@ export const ko_KR: EnTranslations = {
       "completedStatus": "완료됨",
       "returnTo": "{name}에게 돌아가기",
       "abandon": "퀘스트 포기",
+      "abandonConfirmTitle": "퀘스트 포기",
+      "abandonConfirmBody": "{name} 퀘스트를 정말 포기할까요?",
+      "abandonConfirm": "예",
+      "abandonCancel": "취소",
       "suggestedPlayers": "권장 플레이어: {count}"
     },
     "dialog": {
