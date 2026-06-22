@@ -477,6 +477,17 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (name === null) return json(res, 400, { error: 'invalid character name (2-16 letters)' });
       if (offensiveName(name)) return json(res, 400, { error: 'character name is not allowed' });
       const characterId = Number(renameMatch[1]);
+      const character = await getCharacter(accountId, characterId);
+      if (!character) return json(res, 404, { error: 'character not found' });
+      // A rename is a moderator-sanctioned action: the character-select UI only
+      // shows the rename control when a moderator has set force_rename. The UI is
+      // not a security boundary, so gate here too: a normal owner hitting this
+      // route directly must not be able to rename an un-flagged character. (The
+      // UPDATE in renameCharacter re-checks the flag race-free; this returns a
+      // clear 403 instead of a misleading 404.)
+      if (!character.force_rename) {
+        return json(res, 403, { error: 'character rename is not permitted' });
+      }
       // A rename mutates the DB name and clears force_rename, but a live
       // ClientSession keeps its own copy of the name (used by reports, chat and
       // /api/status). Renaming an online character desyncs that copy and — worse

@@ -1028,7 +1028,8 @@ export const ru_RU: EnTranslations = {
       "webLoginOnly": "Вход разрешён только из игрового клиента.",
       "accountSuspended": "Эта учетная запись заблокирована до {date}.",
       "alreadyInWorld": "Персонаж уже находится в мире.",
-      "renameBeforeEntering": "Перед входом в мир этому персонажу нужно сменить имя."
+      "renameBeforeEntering": "Перед входом в мир этому персонажу нужно сменить имя.",
+      "renameNotPermitted": "Переименование этого персонажа не разрешено."
     }
   },
   "realm": {

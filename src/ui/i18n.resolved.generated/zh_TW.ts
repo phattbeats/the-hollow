@@ -1028,7 +1028,8 @@ export const zh_TW: EnTranslations = {
       "webLoginOnly": "只能從遊戲客戶端登入。",
       "accountSuspended": "此帳號停權至 {date}。",
       "alreadyInWorld": "角色已在世界中。",
-      "renameBeforeEntering": "此角色必須先更名才能進入世界。"
+      "renameBeforeEntering": "此角色必須先更名才能進入世界。",
+      "renameNotPermitted": "不允許為此角色更名。"
     }
   },
   "realm": {

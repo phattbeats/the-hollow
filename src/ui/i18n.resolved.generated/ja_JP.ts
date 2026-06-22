@@ -1028,7 +1028,8 @@ export const ja_JP: EnTranslations = {
       "webLoginOnly": "ログインはゲームクライアントからのみ可能です。",
       "accountSuspended": "このアカウントは {date} まで停止されています。",
       "alreadyInWorld": "キャラクターは既に世界にいます。",
-      "renameBeforeEntering": "このキャラクターは世界に入る前に名前変更が必要です。"
+      "renameBeforeEntering": "このキャラクターは世界に入る前に名前変更が必要です。",
+      "renameNotPermitted": "このキャラクターの名前変更は許可されていません。"
     }
   },
   "realm": {

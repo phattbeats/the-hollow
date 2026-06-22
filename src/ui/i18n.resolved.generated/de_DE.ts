@@ -1028,7 +1028,8 @@ export const de_DE: EnTranslations = {
       "webLoginOnly": "Anmeldungen sind nur über den Spiel-Client erlaubt.",
       "accountSuspended": "Dieses Konto ist bis {date} suspendiert.",
       "alreadyInWorld": "Der Charakter ist bereits in der Welt.",
-      "renameBeforeEntering": "Dieser Charakter muss vor dem Betreten der Welt umbenannt werden."
+      "renameBeforeEntering": "Dieser Charakter muss vor dem Betreten der Welt umbenannt werden.",
+      "renameNotPermitted": "Renaming this character is not allowed."
     }
   },
   "realm": {

@@ -1028,7 +1028,8 @@ export const en_XA: EnTranslations = {
       "webLoginOnly": "[Ļóĝíñš áŕé óñļý áļļóŵéð ƒŕóɱ ţĥé ĝáɱé çļíéñţ.]",
       "accountSuspended": "[Ţĥíš áççóúñţ íš šúšþéñðéð úñţíļ {date}.]",
       "alreadyInWorld": "[Çĥáŕáçţéŕ íš áļŕéáðý íñ ŵóŕļð.]",
-      "renameBeforeEntering": "[Ţĥíš çĥáŕáçţéŕ ɱúšţ ƀé ŕéñáɱéð ƀéƒóŕé éñţéŕíñĝ ţĥé ŵóŕļð.]"
+      "renameBeforeEntering": "[Ţĥíš çĥáŕáçţéŕ ɱúšţ ƀé ŕéñáɱéð ƀéƒóŕé éñţéŕíñĝ ţĥé ŵóŕļð.]",
+      "renameNotPermitted": "[Ŕéñáɱíñĝ ţĥíš çĥáŕáçţéŕ íš ñóţ áļļóŵéð.]"
     }
   },
   "realm": {

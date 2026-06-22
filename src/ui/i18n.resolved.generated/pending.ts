@@ -9,17 +9,31 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "errors.api.renameNotPermitted"
+  ],
+  "es_ES": [
+    "errors.api.renameNotPermitted"
+  ],
+  "fr_FR": [
+    "errors.api.renameNotPermitted"
+  ],
+  "fr_CA": [
+    "errors.api.renameNotPermitted"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
+  "it_IT": [
+    "errors.api.renameNotPermitted"
+  ],
+  "de_DE": [
+    "errors.api.renameNotPermitted"
+  ],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
-  "pt_BR": [],
+  "pt_BR": [
+    "errors.api.renameNotPermitted"
+  ],
   "ru_RU": []
 };

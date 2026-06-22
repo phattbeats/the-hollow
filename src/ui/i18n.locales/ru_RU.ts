@@ -520,6 +520,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   "errors.api.accountSuspended": "Эта учетная запись заблокирована до {date}.",
   "errors.api.alreadyInWorld": "Персонаж уже находится в мире.",
   "errors.api.renameBeforeEntering": "Перед входом в мир этому персонажу нужно сменить имя.",
+  "errors.api.renameNotPermitted": "Переименование этого персонажа не разрешено.",
   "realm.noRealms": "Нет доступных миров.",
   "realm.loading": "Загрузка миров...",
   "realm.recommended": "Рекомендуется",

@@ -520,6 +520,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   "errors.api.accountSuspended": "此账号被停用至 {date}。",
   "errors.api.alreadyInWorld": "角色已在世界中。",
   "errors.api.renameBeforeEntering": "此角色必须先改名才能进入世界。",
+  "errors.api.renameNotPermitted": "不允许为此角色改名。",
   "realm.noRealms": "没有可用服务器。",
   "realm.loading": "正在加载服务器...",
   "realm.recommended": "推荐",
