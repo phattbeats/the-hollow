@@ -10,6 +10,7 @@ import { buildChrome, type GuideChrome } from './chrome';
 import { GuideRouter } from './router';
 import { matchRoute } from './routes';
 import { pageFor, placeholderHtml, notFoundHtml, type PageContext } from './pages';
+import { breadcrumbHtml, sequenceHtml, mountToc } from './nav_aids';
 
 const RTL_LANGS = new Set(['ar', 'he', 'fa', 'ur']);
 function isRtl(tag: string): boolean {
@@ -22,7 +23,7 @@ export class GuideApp {
   private chrome!: GuideChrome;
   private chromeAbort: AbortController | null = null;
   private firstNav = true;
-  private pageCleanup: (() => void) | null = null;
+  private pageCleanups: (() => void)[] = [];
 
   constructor(mount: HTMLElement) {
     this.mount = mount;
@@ -75,12 +76,22 @@ export class GuideApp {
       const { route, params } = match;
       const ctx: PageContext = { params, sub: route.sub, titleKey: route.navKey };
       const page = pageFor(route.id);
-      this.chrome.mainEl.innerHTML = page ? page.render(ctx) : placeholderHtml(ctx);
+      const pageHtml = page ? page.render(ctx) : placeholderHtml(ctx);
       titleKey = page?.titleKey ?? route.navKey;
       dynamicTitle = page?.titleFor ? page.titleFor(ctx) : null;
-      if (page?.mount) this.pageCleanup = page.mount(this.chrome.mainEl, ctx) ?? null;
+      // The home landing is a marketing page: no breadcrumb, prev/next, or TOC chrome.
+      const isHome = route.id === 'home';
+      if (isHome) {
+        this.chrome.mainEl.innerHTML = pageHtml;
+      } else {
+        const isDetail = params.length > 0;
+        const leaf = dynamicTitle ?? t(route.navKey);
+        this.chrome.mainEl.innerHTML = breadcrumbHtml(route, isDetail, leaf) + pageHtml + sequenceHtml(route);
+      }
+      if (page?.mount) this.addCleanup(page.mount(this.chrome.mainEl, ctx));
+      if (!isHome) this.addCleanup(mountToc(this.chrome.mainEl));
       this.chrome.setActive(route.sub);
-      this.chrome.setSidebarVisible(route.id !== 'home');
+      this.chrome.setSidebarVisible(!isHome);
       document.body.dataset.guideRoute = route.id;
     }
 
@@ -91,11 +102,14 @@ export class GuideApp {
     this.focusMain(pathname);
   }
 
+  private addCleanup(cleanup: (() => void) | void): void {
+    if (cleanup) this.pageCleanups.push(cleanup);
+  }
+
   private runPageCleanup(): void {
-    if (!this.pageCleanup) return;
-    const cleanup = this.pageCleanup;
-    this.pageCleanup = null;
-    cleanup();
+    const cleanups = this.pageCleanups;
+    this.pageCleanups = [];
+    for (const cleanup of cleanups) cleanup();
   }
 
   private focusMain(pathname: string): void {

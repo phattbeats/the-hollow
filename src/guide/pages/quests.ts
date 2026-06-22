@@ -3,7 +3,8 @@
 
 import { t } from '../../ui/i18n';
 import { esc } from '../../ui/esc';
-import { lead } from './ui';
+import { hrefFor } from '../routes';
+import { lead, related } from './ui';
 import type { GuidePage } from './types';
 
 const STEPS = [
@@ -29,6 +30,11 @@ export const quests: GuidePage = {
           <p>${esc(t('guide.questsPage.storyBody'))}</p>
           <p class="guide-callout">${esc(t('guide.questsPage.soloNote'))}</p>
         </section>
+        ${related([
+          { href: hrefFor('world'), key: 'guide.nav.world' },
+          { href: hrefFor('dungeons'), key: 'guide.nav.dungeons' },
+          { href: hrefFor('how-to-play'), key: 'guide.nav.howToPlay' },
+        ])}
       </article>`;
   },
 };

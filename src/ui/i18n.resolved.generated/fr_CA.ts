@@ -509,6 +509,18 @@ export const fr_CA: EnTranslations = {
       "compendium": "Compendium",
       "reference": "Référence"
     },
+    "breadcrumb": {
+      "label": "Breadcrumb",
+      "home": "Guide"
+    },
+    "seq": {
+      "label": "Page navigation",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "toc": {
+      "heading": "On this page"
+    },
     "footer": {
       "blurb": "Un micro-MMO open source de style classique. Partez en quête, formez un groupe et explorez un monde façonné à la main, directement dans votre navigateur.",
       "playNow": "Jouer maintenant",

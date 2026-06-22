@@ -509,6 +509,18 @@ export const ru_RU: EnTranslations = {
       "compendium": "Компендиум",
       "reference": "Справочник"
     },
+    "breadcrumb": {
+      "label": "Breadcrumb",
+      "home": "Guide"
+    },
+    "seq": {
+      "label": "Page navigation",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "toc": {
+      "heading": "On this page"
+    },
     "footer": {
       "blurb": "Классическая мини-MMO с открытым исходным кодом. Выполняйте задания, объединяйтесь в группы и исследуйте созданный вручную мир прямо в браузере.",
       "playNow": "Играть",

@@ -6,7 +6,8 @@ import { t, formatNumber, type TranslationKey } from '../../ui/i18n';
 import { esc } from '../../ui/esc';
 import { iconDataUrl } from '../../ui/icons';
 import { GUIDE_FAMILIES, type GuideCreature } from '../content.generated';
-import { lead } from './ui';
+import { hrefFor } from '../routes';
+import { lead, related } from './ui';
 import type { GuidePage } from './types';
 
 const familyCrest = (family: string): string => iconDataUrl('crest', `family_${family}`, 96);
@@ -50,6 +51,11 @@ export const bestiary: GuidePage = {
         <h1>${esc(t('guide.bestiary.heading'))}</h1>
         ${lead('guide.bestiary.intro')}
         ${sections}
+        ${related([
+          { href: hrefFor('world'), key: 'guide.nav.world' },
+          { href: hrefFor('classes'), key: 'guide.nav.classes' },
+          { href: hrefFor('dungeons'), key: 'guide.nav.dungeons' },
+        ])}
       </article>`;
   },
 };

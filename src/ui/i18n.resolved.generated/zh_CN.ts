@@ -509,6 +509,18 @@ export const zh_CN: EnTranslations = {
       "compendium": "图鉴大全",
       "reference": "参考"
     },
+    "breadcrumb": {
+      "label": "Breadcrumb",
+      "home": "Guide"
+    },
+    "seq": {
+      "label": "Page navigation",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "toc": {
+      "heading": "On this page"
+    },
     "footer": {
       "blurb": "一款开源的经典风格微型 MMO。在你的浏览器中接受任务、组队、探索一个纯手工打造的世界。",
       "playNow": "立即游玩",

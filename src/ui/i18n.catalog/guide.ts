@@ -54,6 +54,20 @@ export const guideStrings = {
     reference: "Reference",
   },
 
+  // Breadcrumb trail, previous/next page sequence, and the on-this-page contents.
+  breadcrumb: {
+    label: "Breadcrumb",
+    home: "Guide",
+  },
+  seq: {
+    label: "Page navigation",
+    prev: "Previous",
+    next: "Next",
+  },
+  toc: {
+    heading: "On this page",
+  },
+
   // Footer.
   footer: {
     blurb: "An open-source, classic-style micro-MMO. Quest, group up, and explore a hand-built world, right in your browser.",

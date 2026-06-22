@@ -509,6 +509,18 @@ export const de_DE: EnTranslations = {
       "compendium": "Kompendium",
       "reference": "Nachschlagewerk"
     },
+    "breadcrumb": {
+      "label": "Breadcrumb",
+      "home": "Guide"
+    },
+    "seq": {
+      "label": "Page navigation",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "toc": {
+      "heading": "On this page"
+    },
     "footer": {
       "blurb": "Ein quelloffenes Mikro-MMO im klassischen Stil. Erfülle Quests, schließe dich mit anderen zusammen und erkunde eine handgebaute Welt, direkt in deinem Browser.",
       "playNow": "Jetzt spielen",

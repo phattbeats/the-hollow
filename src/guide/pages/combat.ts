@@ -3,7 +3,8 @@
 
 import { t, formatNumber } from '../../ui/i18n';
 import { esc } from '../../ui/esc';
-import { lead } from './ui';
+import { hrefFor } from '../routes';
+import { lead, related } from './ui';
 import { LEVEL_CAP } from '../data';
 import type { GuidePage } from './types';
 
@@ -28,6 +29,11 @@ export const combat: GuidePage = {
           <h2>${esc(t('guide.combat.growTitle'))}</h2>
           <p>${esc(t('guide.combat.growBody', { cap: formatNumber(LEVEL_CAP) }))}</p>
         </section>
+        ${related([
+          { href: hrefFor('classes'), key: 'guide.nav.classes' },
+          { href: hrefFor('reference/talents'), key: 'guide.nav.talents' },
+          { href: hrefFor('reference/glossary'), key: 'guide.nav.glossary' },
+        ])}
       </article>`;
   },
 };

@@ -509,6 +509,18 @@ export const zh_TW: EnTranslations = {
       "compendium": "圖鑑",
       "reference": "參考資料"
     },
+    "breadcrumb": {
+      "label": "Breadcrumb",
+      "home": "Guide"
+    },
+    "seq": {
+      "label": "Page navigation",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "toc": {
+      "heading": "On this page"
+    },
     "footer": {
       "blurb": "一款開放原始碼的經典風格微型MMO。在你的瀏覽器中即可進行任務、組隊並探索一個精心打造的世界。",
       "playNow": "立即遊玩",

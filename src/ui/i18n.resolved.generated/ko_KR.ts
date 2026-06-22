@@ -509,6 +509,18 @@ export const ko_KR: EnTranslations = {
       "compendium": "종합 안내서",
       "reference": "참고 자료"
     },
+    "breadcrumb": {
+      "label": "Breadcrumb",
+      "home": "Guide"
+    },
+    "seq": {
+      "label": "Page navigation",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "toc": {
+      "heading": "On this page"
+    },
     "footer": {
       "blurb": "오픈 소스로 만든 클래식 스타일 마이크로 MMO입니다. 퀘스트를 수행하고, 파티를 맺고, 손수 빚은 세계를 브라우저에서 바로 탐험하세요.",
       "playNow": "지금 플레이",

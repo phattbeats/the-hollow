@@ -509,6 +509,18 @@ export const ja_JP: EnTranslations = {
       "compendium": "コンペンディウム",
       "reference": "リファレンス"
     },
+    "breadcrumb": {
+      "label": "Breadcrumb",
+      "home": "Guide"
+    },
+    "seq": {
+      "label": "Page navigation",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "toc": {
+      "heading": "On this page"
+    },
     "footer": {
       "blurb": "オープンソースの、クラシックスタイルなマイクロMMO。クエストをこなし、仲間と組み、手作りのワールドを冒険しよう。すべてブラウザで。",
       "playNow": "今すぐプレイ",

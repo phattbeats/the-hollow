@@ -4,7 +4,7 @@
 import { t } from '../../ui/i18n';
 import { esc } from '../../ui/esc';
 import { hrefFor } from '../routes';
-import { lead } from './ui';
+import { lead, related } from './ui';
 import type { GuidePage } from './types';
 
 const STEPS = [
@@ -51,6 +51,11 @@ export const howToPlay: GuidePage = {
 
         <p class="guide-callout">${esc(t('guide.howToPlay.reassure'))}</p>
         <p class="guide-section-more"><a href="${esc(hrefFor('reference/controls'))}">${esc(t('guide.howToPlay.controlsLink'))}</a></p>
+        ${related([
+          { href: hrefFor('classes'), key: 'guide.nav.classes' },
+          { href: hrefFor('wish-i-knew'), key: 'guide.nav.wishIKnew' },
+          { href: hrefFor('world'), key: 'guide.nav.world' },
+        ])}
       </article>`;
   },
 };
