@@ -886,3 +886,152 @@ body[data-guide-route="home"] .guide-main { padding-block-start: 0; }
   .guide-related-list a { min-height: var(--g-touch); }
   .guide-side-link { display: flex; align-items: center; }
 }
+
+/* ===================================================== class chooser + class page */
+/* Chooser: facet filters over the nine class cards (role, style, resource, complexity). */
+.guide-chooser {
+  margin-block: var(--g-lg);
+  padding: var(--g-md);
+  background: var(--g-bg-2);
+  border: 1px solid var(--g-border-soft);
+  border-radius: var(--g-radius-lg);
+}
+.guide-chooser-h { font-family: var(--g-font-display); font-size: 18px; margin: 0 0 var(--g-2xs); color: var(--g-text); }
+.guide-chooser-sub { margin: 0 0 var(--g-md); color: var(--g-text-dim); font-size: 14px; }
+.guide-chooser-filters { display: flex; flex-wrap: wrap; gap: var(--g-md) var(--g-lg); align-items: flex-end; }
+.guide-filter-group { display: flex; flex-direction: column; gap: var(--g-xs); }
+.guide-filter-group-toggle { flex-direction: row; align-items: center; gap: var(--g-sm); margin-inline-start: auto; }
+.guide-filter-label { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--g-text-muted); }
+.guide-chips { display: flex; flex-wrap: wrap; gap: var(--g-xs2); }
+.guide-chip {
+  min-height: var(--g-control-h-sm);
+  padding-inline: var(--g-md);
+  background: var(--g-bg);
+  color: var(--g-text-dim);
+  border: 1px solid var(--g-border-soft);
+  border-radius: var(--g-radius-pill);
+  font-family: var(--g-font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color var(--g-motion), border-color var(--g-motion), background var(--g-motion);
+}
+.guide-chip:hover { color: var(--g-text); border-color: var(--g-border); }
+.guide-chip[aria-pressed="true"] { color: var(--g-on-gold); background: var(--g-gold); border-color: var(--g-gold-dim); }
+.guide-chooser-clear {
+  min-height: var(--g-control-h-sm);
+  padding-inline: var(--g-md);
+  background: transparent;
+  color: var(--g-text-muted);
+  border: 1px solid transparent;
+  border-radius: var(--g-radius-pill);
+  font-family: var(--g-font-ui);
+  font-size: 13px;
+  cursor: pointer;
+}
+.guide-chooser-clear:hover { color: var(--g-text); text-decoration: underline; }
+.guide-chooser-count { margin: var(--g-md) 0 0; color: var(--g-text-muted); font-size: 13px; }
+.guide-chooser-none { margin-block-start: var(--g-md); color: var(--g-text-dim); }
+
+/* Card description clamped so cards stay even with the 1-2 sentence canonical lore. */
+.guide-class-card-hook {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Qualitative "feel" tags. */
+.guide-tags { display: flex; flex-wrap: wrap; gap: var(--g-xs2); margin-block-start: var(--g-sm); }
+.guide-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px var(--g-sm);
+  border-radius: var(--g-radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--g-text-dim);
+  background: var(--g-bg-2);
+  border: 1px solid var(--g-border-soft);
+}
+.guide-tag-first { color: var(--g-gold-dim); border-color: var(--g-border); }
+.guide-tag-cx-high { color: var(--g-role-dps); }
+
+/* Class facts row (armor / weapons / resource). */
+.guide-class-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--g-md) var(--g-xl);
+  margin: var(--g-md) 0 0;
+  padding: var(--g-md) 0 0;
+  border-block-start: 1px solid var(--g-border-soft);
+}
+.guide-fact { margin: 0; }
+.guide-fact dt { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g-text-muted); }
+.guide-fact dd { margin: var(--g-2xs) 0 0; color: var(--g-text); font-weight: 600; }
+
+.guide-class-hero-text { min-width: 0; }
+
+/* Signature kit: icon + name + one-liner cards. */
+.guide-kit {
+  list-style: none;
+  padding: 0;
+  margin: var(--g-md) 0 0;
+  display: grid;
+  gap: var(--g-sm);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.guide-kit-item {
+  display: flex;
+  gap: var(--g-sm);
+  align-items: flex-start;
+  padding: var(--g-sm);
+  background: var(--g-bg-2);
+  border: 1px solid var(--g-border-soft);
+  border-radius: var(--g-radius);
+}
+.guide-kit-item .guide-ability-icon { flex: none; }
+.guide-kit-text { min-width: 0; display: flex; flex-direction: column; gap: var(--g-2xs); }
+.guide-kit-name { font-family: var(--g-font-display); font-weight: 600; color: var(--g-text); }
+.guide-kit-line { color: var(--g-text-dim); font-size: 13px; }
+
+/* Specialization cards. */
+.guide-spec-card {
+  display: flex;
+  gap: var(--g-md);
+  align-items: flex-start;
+  padding: var(--g-md);
+  background: var(--g-bg-2);
+  border: 1px solid var(--g-border-soft);
+  border-radius: var(--g-radius);
+}
+.guide-spec-icon { width: 40px; height: 40px; flex: none; border-radius: var(--g-radius-sm); border: 1px solid var(--g-border); }
+.guide-spec-body { min-width: 0; }
+.guide-spec-head { display: flex; align-items: center; gap: var(--g-sm); flex-wrap: wrap; }
+.guide-spec-name { font-family: var(--g-font-display); font-weight: 700; font-size: 16px; color: var(--g-text); }
+.guide-spec-desc { margin: var(--g-xs) 0 0; color: var(--g-text-dim); }
+.guide-spec-mastery { margin: var(--g-xs) 0 0; color: var(--g-text-muted); font-size: 13px; }
+.guide-spec-mastery span { font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; color: var(--g-gold-dim); margin-inline-end: var(--g-2xs); }
+
+/* Warlock demon roster. */
+.guide-pet-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--g-md) 0 0;
+  display: grid;
+  gap: var(--g-sm);
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+.guide-pet {
+  padding: var(--g-sm) var(--g-md);
+  background: var(--g-bg-2);
+  border: 1px solid var(--g-border-soft);
+  border-radius: var(--g-radius);
+}
+.guide-pet-name { display: block; font-family: var(--g-font-display); font-weight: 600; color: var(--g-text); }
+.guide-pet-line { display: block; margin-block-start: var(--g-2xs); color: var(--g-text-dim); font-size: 13px; }
+
+@media (pointer: coarse) {
+  .guide-chip, .guide-chooser-clear { min-height: var(--g-touch); }
+}

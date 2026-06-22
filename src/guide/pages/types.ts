@@ -19,4 +19,10 @@ export interface GuidePage {
   /** Dynamic document title (e.g. the class name on a class page). Wins over titleKey. */
   titleFor?(ctx: PageContext): string;
   render(ctx: PageContext): string;
+  /**
+   * Optional: wire interactivity after the rendered HTML is in the DOM (filters,
+   * scrollspy, search). Receives the <main> element. Return a cleanup function; the app
+   * runs it before the next navigation so document-level listeners do not stack.
+   */
+  mount?(root: HTMLElement, ctx: PageContext): (() => void) | void;
 }

@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import {
   matchRoute, toSub, topbarRoutes, groupedRoutes, hrefFor, GUIDE_ROUTES, GUIDE_BASE,
 } from '../src/guide/routes';
-import { GUIDE_CLASSES } from '../src/guide/content.generated';
+import { GUIDE_CLASSES, GUIDE_WARLOCK_PETS } from '../src/guide/content.generated';
 import { t, setLanguage } from '../src/ui/i18n';
 
 const guideHtml = readFileSync(new URL('../guide.html', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
@@ -114,10 +114,34 @@ describe('Guide generated class content', () => {
       expect(c.roles.length).toBeGreaterThan(0);
       expect(c.specs.length).toBeGreaterThan(0);
       expect(c.signatureAbilities.length).toBeGreaterThan(0);
-      for (const s of c.specs) expect(['tank', 'healer', 'dps']).toContain(s.role);
+      expect(c.abilities.length).toBeGreaterThanOrEqual(c.signatureAbilities.length);
+      for (const s of c.specs) {
+        expect(['tank', 'healer', 'dps']).toContain(s.role);
+        expect(s.signature.length).toBeGreaterThan(0);
+      }
       // every class nav name resolves
       expect(t(`classes.${c.id}` as never).length).toBeGreaterThan(0);
-      expect(t(`guide.classHook.${c.id}` as never).length).toBeGreaterThan(0);
+      // the class page uses the canonical character-creation description, not a guide-only blurb
+      expect(t(`classDetails.lore.${c.id}` as never).length).toBeGreaterThan(0);
+      // every signature ability has a spoiler-safe one-liner
+      for (const a of c.signatureAbilities) {
+        expect(t(`guide.abilityHook.${a.id}` as never).length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it('resolves the new class-page and chooser keys (cast keys are not tsc-checked)', () => {
+    setLanguage('en');
+    for (const k of [
+      'guide.chooser.heading', 'guide.chooser.results', 'guide.tag.melee', 'guide.tag.goodFirst',
+      'guide.classPage.masteryLabel', 'guide.classPage.fullKitHeading', 'guide.classPage.petsHeading',
+      'guide.nav.talents', 'guide.nav.arena', 'guide.related',
+    ]) {
+      expect(t(k as never).length).toBeGreaterThan(0);
+    }
+    // every warlock demon has a role one-liner
+    for (const pet of GUIDE_WARLOCK_PETS) {
+      expect(t(`guide.petHook.${pet.id}` as never).length).toBeGreaterThan(0);
     }
   });
 

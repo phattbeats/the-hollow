@@ -22,6 +22,7 @@ export class GuideApp {
   private chrome!: GuideChrome;
   private chromeAbort: AbortController | null = null;
   private firstNav = true;
+  private pageCleanup: (() => void) | null = null;
 
   constructor(mount: HTMLElement) {
     this.mount = mount;
@@ -59,6 +60,8 @@ export class GuideApp {
   }
 
   private navigate(pathname: string): void {
+    // Tear down the previous page's listeners before swapping its DOM out.
+    this.runPageCleanup();
     const match = matchRoute(pathname);
     let titleKey: TranslationKey;
     let dynamicTitle: string | null = null;
@@ -75,6 +78,7 @@ export class GuideApp {
       this.chrome.mainEl.innerHTML = page ? page.render(ctx) : placeholderHtml(ctx);
       titleKey = page?.titleKey ?? route.navKey;
       dynamicTitle = page?.titleFor ? page.titleFor(ctx) : null;
+      if (page?.mount) this.pageCleanup = page.mount(this.chrome.mainEl, ctx) ?? null;
       this.chrome.setActive(route.sub);
       this.chrome.setSidebarVisible(route.id !== 'home');
       document.body.dataset.guideRoute = route.id;
@@ -85,6 +89,13 @@ export class GuideApp {
     document.title = pageTitle === brand ? brand : t('guide.docTitle', { page: pageTitle, brand });
     this.chrome.closeMenu();
     this.focusMain(pathname);
+  }
+
+  private runPageCleanup(): void {
+    if (!this.pageCleanup) return;
+    const cleanup = this.pageCleanup;
+    this.pageCleanup = null;
+    cleanup();
   }
 
   private focusMain(pathname: string): void {
