@@ -420,7 +420,7 @@ function yellVoiceKey(text: string): string {
 export class Hud {
   private static readonly BAR_ABILITY_SLOTS = 11; // bar slots 1..11; slot 0 is the fixed Attack toggle
   private static ddSeq = 0; // monotonic id source for buildDropdown listbox/option ARIA wiring
-  private static readonly FORM_TOGGLE_IDS = new Set(['bear_form', 'cat_form']); // shift toggles, castable in any form
+  private static readonly FORM_TOGGLE_IDS = new Set(['bear_form', 'cat_form', 'travel_form']); // shift toggles, castable in any form
   private abilityButtons: { btn: HTMLButtonElement; label: HTMLSpanElement; countEl: HTMLSpanElement; keybindEl: HTMLSpanElement; cdOverlay: HTMLDivElement; cdText: HTMLDivElement; lastIcon: string }[] = [];
   private hotbarActions: HotbarAction[] = []; // index = barSlot-1
   private loadedSlotMapFromStorage = false;
