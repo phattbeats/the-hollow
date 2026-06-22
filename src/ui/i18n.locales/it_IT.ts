@@ -3599,4 +3599,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   "guide.worldPage.valeGreeter": "Maresciallo Redbrook, Eastbrook",
   "guide.worldPage.valeGreeting": "Tieni la lama a portata. La Valle non è più quella di un tempo.",
   "guide.worldPage.valePlaceNotes": "Eastbrook è la tua prima base. Il Sentiero dei Lupi e il Prato dei Cinghiali sono terreni di caccia tranquilli; il Lago a Specchio è acqua quieta dove pescare; il Boscoragnatela e lo Scavo di Rame nascondono ragni e scavatori avidi di minerale; un Campo di Banditi e la Cappella Caduta custodiscono lavori più duri; la Radura di Brightwood è una serena radura di natura selvaggia a nord.",
+  // perf overlay (telemetry/APM) keys from release/v0.14.0
+  "hudChrome.perf.groups.input": "Input",
+  "hudChrome.perf.labels.apm": "APM",
 };

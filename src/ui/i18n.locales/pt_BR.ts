@@ -3599,4 +3599,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   "guide.worldPage.valeGreeter": "Marechal Redbrook, Eastbrook",
   "guide.worldPage.valeGreeting": "Mantenha sua lâmina por perto. O Vale não é mais o que era.",
   "guide.worldPage.valePlaceNotes": "Eastbrook é sua primeira base de operações. A Corrida dos Lobos e o Prado dos Javalis são terreno de caça ameno; o Lago Espelho é água tranquila para pescar; a Mata das Teias e a Escavação de Cobre escondem aranhas e escavadores gananciosos por minério; um Acampamento de Bandidos e a Capela Decaída guardam trabalhos mais duros; a Clareira de Brightwood é um bosque calmo de vida selvagem no norte.",
+  // perf overlay (telemetry/APM) keys from release/v0.14.0
+  "hudChrome.perf.groups.input": "Entrada",
+  "hudChrome.perf.labels.apm": "APM",
 };

@@ -3599,4 +3599,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   "guide.worldPage.valeGreeter": "雷德布鲁克元帅，东溪",
   "guide.worldPage.valeGreeting": "把你的刀剑带在身边。谷地已不复往日。",
   "guide.worldPage.valePlaceNotes": "东溪是你的第一个大本营。狼奔之地与野猪草甸是温和的狩猎场；镜湖是供垂钓的静水；蛛网林与铜矿坑藏着蜘蛛和贪婪掘矿者；一处盗匪营地与陨落礼拜堂里有更棘手的活儿；明木林是北方一片宁静的野生动物林地。",
+  // perf overlay (telemetry/APM) keys from release/v0.14.0
+  "hudChrome.perf.groups.input": "输入",
+  "hudChrome.perf.labels.apm": "APM",
 };

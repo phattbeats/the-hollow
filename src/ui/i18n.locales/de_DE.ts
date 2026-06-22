@@ -3599,4 +3599,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   "guide.worldPage.valeGreeter": "Marschall Redbrook, Eastbrook",
   "guide.worldPage.valeGreeting": "Halt deine Klinge griffbereit. Das Tal ist nicht mehr, was es war.",
   "guide.worldPage.valePlaceNotes": "Eastbrook ist deine erste Heimatbasis. Der Wolfslauf und die Eberwiese sind sanftes Jagdgebiet; der Spiegelsee ist stilles Wasser zum Angeln; der Netzwald und die Kupfergrube verbergen Spinnen und erzgierige Schaufler; ein Banditenlager und die Gefallene Kapelle bergen rauere Arbeit; Brightwood Glade ist ein ruhiger Wildtierhain im Norden.",
+  // perf overlay (telemetry/APM) keys from release/v0.14.0
+  "hudChrome.perf.groups.input": "Eingabe",
+  "hudChrome.perf.labels.apm": "APM",
 };

@@ -3599,4 +3599,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "guide.worldPage.valeGreeter": "レッドブルック元帥、イーストブルック",
   "guide.worldPage.valeGreeting": "刃を手放すな。渓谷はかつての姿ではない。",
   "guide.worldPage.valePlaceNotes": "イーストブルックは最初の本拠地です。ウルフランとボアの草原は穏やかな狩り場、ミラー湖は釣りのできる静かな水。ウェブウッドとカッパー採掘場には蜘蛛と鉱石に貪欲な掘り手が隠れ、盗賊の野営地と倒れた礼拝堂にはより手荒い仕事があり、ブライトウッド・グレードは北部の穏やかな野生の林間です。",
+  // perf overlay (telemetry/APM) keys from release/v0.14.0
+  "hudChrome.perf.groups.input": "入力",
+  "hudChrome.perf.labels.apm": "APM",
 };

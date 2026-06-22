@@ -3599,4 +3599,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   "guide.worldPage.valeGreeter": "Maréchal Redbrook, Eastbrook",
   "guide.worldPage.valeGreeting": "Gardez votre lame à portée. Le Val n'est plus ce qu'il était.",
   "guide.worldPage.valePlaceNotes": "Eastbrook est votre premier camp de base. La Course du Loup et le Pré du Sanglier sont des terrains de chasse cléments ; le lac Miroir est une eau calme où pêcher ; le Bois des toiles et la Mine de cuivre cachent araignées et fouisseurs avides de minerai ; un Camp de bandits et la Chapelle déchue gardent des besognes plus rudes ; la clairière de Brightwood est un paisible bosquet sauvage au nord.",
+  // perf overlay (telemetry/APM) keys from release/v0.14.0
+  "hudChrome.perf.groups.input": "Entrée",
+  "hudChrome.perf.labels.apm": "APM",
 };

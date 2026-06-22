@@ -3599,4 +3599,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   "guide.worldPage.valeGreeter": "레드브룩 원수, 이스트브룩",
   "guide.worldPage.valeGreeting": "칼을 가까이 두시오. 골짜기는 예전 같지 않으니.",
   "guide.worldPage.valePlaceNotes": "이스트브룩은 당신의 첫 본거지입니다. 늑대길과 멧돼지 초원은 무난한 사냥터이고, 거울 호수는 낚시하기 좋은 잔잔한 물입니다. 거미숲과 구리 채굴장에는 거미와 광석에 굶주린 굴착꾼이 숨어 있고, 산적 야영지와 무너진 예배당은 한층 거친 일거리를 품으며, 브라이트우드 숲은 북쪽의 고요한 야생 동물 숲입니다.",
+  // perf overlay (telemetry/APM) keys from release/v0.14.0
+  "hudChrome.perf.groups.input": "입력",
+  "hudChrome.perf.labels.apm": "APM",
 };

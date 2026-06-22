@@ -3599,4 +3599,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   "guide.worldPage.valeGreeter": "Mariscal Redbrook, Eastbrook",
   "guide.worldPage.valeGreeting": "Mantén tu espada cerca. El Valle ya no es lo que era.",
   "guide.worldPage.valePlaceNotes": "Eastbrook es tu primera base de operaciones. Wolf Run y el Prado de los Jabalíes son terreno de caza apacible; el Lago Espejo es agua tranquila para pescar; el Bosque de Telarañas y la Excavación de Cobre ocultan arañas y excavadores ávidos de mineral; un Campamento de Bandidos y la Capilla Caída albergan trabajos más recios; la arboleda de Brightwood es una apacible arboleda de fauna salvaje en el norte.",
+  // perf overlay (telemetry/APM) keys from release/v0.14.0
+  "hudChrome.perf.groups.input": "Entrada",
+  "hudChrome.perf.labels.apm": "APM",
 };

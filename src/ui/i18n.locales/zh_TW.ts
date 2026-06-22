@@ -3599,4 +3599,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   "guide.worldPage.valeGreeter": "雷德布魯克元帥，東溪鎮",
   "guide.worldPage.valeGreeting": "把你的劍帶在身邊。谷地已不復昔日。",
   "guide.worldPage.valePlaceNotes": "東溪鎮是你的第一個主據點。狼徑與野豬草甸是溫和的狩獵場；鏡湖是適合垂釣的靜謐水域；蛛網林與銅礦坑藏著蜘蛛與貪礦的掘地者；一座盜匪營地與墮落禮拜堂另有更粗野的活計；碧木林地則是北方一片平和的野生林地。",
+  // perf overlay (telemetry/APM) keys from release/v0.14.0
+  "hudChrome.perf.groups.input": "輸入",
+  "hudChrome.perf.labels.apm": "APM",
 };

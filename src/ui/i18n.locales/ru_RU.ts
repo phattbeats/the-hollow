@@ -3599,4 +3599,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   "guide.worldPage.valeGreeter": "Маршал Редбрук, Истврук",
   "guide.worldPage.valeGreeting": "Держите клинок наготове. Долина уже не та, что прежде.",
   "guide.worldPage.valePlaceNotes": "Истврук, это ваша первая опорная база. Волчья тропа и Кабаний луг, это спокойные охотничьи угодья, Зеркальное озеро, это тихая вода для рыбалки, Паутинный лес и Медный рудник прячут пауков и жадных до руды землекопов, Лагерь разбойников и Павшая часовня хранят работу погрубее, а Поляна Брайтвуда, это безмятежная роща с дикими зверями на севере.",
+  // perf overlay (telemetry/APM) keys from release/v0.14.0
+  "hudChrome.perf.groups.input": "Ввод",
+  "hudChrome.perf.labels.apm": "APM",
 };
