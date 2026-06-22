@@ -240,6 +240,12 @@ export const pt_BR: EnTranslations = {
     "options": {
       "clickMoveLeft": "Clique esquerdo",
       "clickMoveRight": "Clique direito",
+      "browserEffects": "Efeitos do navegador",
+      "browserEffectsAuto": "Auto",
+      "browserEffectsFull": "Completos",
+      "browserEffectsReduced": "Reduzidos",
+      "browserEffectsMinimal": "Mínimos",
+      "browserEffectsNote": "O modo automático suaviza os efeitos CSS pesados (desfoque, brilho, movimento de fundo) com base no seu navegador e dispositivo. Reduza-o manualmente se a interface parecer lenta.",
       "footstepSounds": "Sons de passos",
       "clickFeedback": "Marcador de clique",
       "showWalletOnCharacterScreen": "Mostrar carteira na tela de personagens",

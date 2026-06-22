@@ -240,6 +240,12 @@ export const ja_JP: EnTranslations = {
     "options": {
       "clickMoveLeft": "左クリック",
       "clickMoveRight": "右クリック",
+      "browserEffects": "ブラウザエフェクト",
+      "browserEffectsAuto": "自動",
+      "browserEffectsFull": "フル",
+      "browserEffectsReduced": "軽減",
+      "browserEffectsMinimal": "最小",
+      "browserEffectsNote": "自動はブラウザとデバイスに応じて、負荷の高い CSS エフェクト（ぼかし・グロー・背景アニメーション）を抑えます。動作が重い場合は手動で下げてください。",
       "footstepSounds": "足音",
       "clickFeedback": "クリックマーカー",
       "showWalletOnCharacterScreen": "キャラクター画面にウォレットを表示",

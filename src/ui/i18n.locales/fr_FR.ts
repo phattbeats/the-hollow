@@ -2933,4 +2933,11 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   "hudChrome.chatWindow.resetAction": "Réinitialiser",
   "hudChrome.chatWindow.resize": "Faites glisser pour redimensionner la fenêtre de discussion",
   "hudChrome.options.clickFeedback": "Repère de clic",
+  // v0.13.0 adaptive browser-effects perf tier (PR #759)
+  "hudChrome.options.browserEffects": "Effets du navigateur",
+  "hudChrome.options.browserEffectsAuto": "Auto",
+  "hudChrome.options.browserEffectsFull": "Complets",
+  "hudChrome.options.browserEffectsReduced": "Réduits",
+  "hudChrome.options.browserEffectsMinimal": "Minimaux",
+  "hudChrome.options.browserEffectsNote": "Le mode automatique atténue les effets CSS lourds (flou, lueur, animation d'arrière-plan) selon votre navigateur et votre appareil. Réduisez-le manuellement si l'interface semble lente.",
 };

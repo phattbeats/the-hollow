@@ -1963,6 +1963,37 @@
   /* Frosted Panels — opt-in backdrop blur behind HUD panels & windows. */
   body.frosted-panels .panel, body.frosted-panels .window {
     backdrop-filter: blur(7px) saturate(1.05); -webkit-backdrop-filter: blur(7px) saturate(1.05); }
+
+  /* ---------- Adaptive browser-effects tiers (src/game/browser_env.ts) ----------
+     Engine/version/device-aware downgrade of the most GPU-expensive *decorative*
+     CSS so weaker engines (Safari/WebKit backdrop-filter, older Firefox/Gecko
+     blur compositing, mobile GPUs) stay smooth. main.ts stamps one of
+     fx-full | fx-reduced | fx-minimal on <body> (plus engine-* / is-mobile /
+     is-desktop). fx-full applies no overrides. Gameplay-critical feedback (FCT,
+     cast bar, unit-frame bars) is deliberately untouched — only ambience. */
+
+  /* Reduced + Minimal: drop backdrop-filter everywhere — it is Safari's single
+     most expensive compositing path — and stop the opt-in frosted panels from
+     re-adding it. Panels keep their solid translucent background, just no blur. */
+  body.fx-reduced *, body.fx-reduced *::before, body.fx-reduced *::after,
+  body.fx-minimal *, body.fx-minimal *::before, body.fx-minimal *::after {
+    backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+
+  /* Minimal: also retire the decorative start/loading-screen background work —
+     freeze the infinite ambient animations (portal spin, nebula breathe, ember
+     float, trailer drift, logo pulse) and drop the giant blur layers (the two
+     portal rings carry filter: blur(80–100px), a heavy fullscreen GPU pass). */
+  body.fx-minimal .portal-ring,
+  body.fx-minimal .portal-ring-reverse,
+  body.fx-minimal .nebula-overlay,
+  body.fx-minimal .bg-trailer,
+  body.fx-minimal .ember,
+  body.fx-minimal #title-logo { animation: none !important; }
+  body.fx-minimal .portal-ring,
+  body.fx-minimal .portal-ring-reverse { filter: none !important; }
+  /* The ember particle field is pure ambience; hide it outright on Minimal. */
+  body.fx-minimal .embers-container { display: none !important; }
+
   /* ---------- Performance overlay (customizable stats panel) ----------
      Hidden until toggled on (showFps). perf_overlay.ts sets the inline left/top
      (free positioning) and writes the --perf-* custom properties below; it is

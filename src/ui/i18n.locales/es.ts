@@ -2933,4 +2933,11 @@ export const es: Partial<Record<TranslationKey, string>> = {
   "hudChrome.chatWindow.resetAction": "Restablecer",
   "hudChrome.chatWindow.resize": "Arrastra para cambiar el tamaño de la ventana de chat",
   "hudChrome.options.clickFeedback": "Marcador de clic",
+  // v0.13.0 adaptive browser-effects perf tier (PR #759)
+  "hudChrome.options.browserEffects": "Efectos del navegador",
+  "hudChrome.options.browserEffectsAuto": "Auto",
+  "hudChrome.options.browserEffectsFull": "Completos",
+  "hudChrome.options.browserEffectsReduced": "Reducidos",
+  "hudChrome.options.browserEffectsMinimal": "Mínimos",
+  "hudChrome.options.browserEffectsNote": "El modo automático atenúa los efectos CSS pesados (desenfoque, brillo, movimiento de fondo) según tu navegador y dispositivo. Redúcelo manualmente si la interfaz va lenta.",
 };

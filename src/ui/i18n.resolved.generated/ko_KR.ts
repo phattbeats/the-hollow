@@ -240,6 +240,12 @@ export const ko_KR: EnTranslations = {
     "options": {
       "clickMoveLeft": "왼쪽 클릭",
       "clickMoveRight": "오른쪽 클릭",
+      "browserEffects": "브라우저 효과",
+      "browserEffectsAuto": "자동",
+      "browserEffectsFull": "전체",
+      "browserEffectsReduced": "감소",
+      "browserEffectsMinimal": "최소",
+      "browserEffectsNote": "자동은 브라우저와 기기에 맞춰 무거운 CSS 효과(흐림, 글로우, 배경 모션)를 낮춥니다. 인터페이스가 느리게 느껴지면 수동으로 낮추세요.",
       "footstepSounds": "발소리",
       "clickFeedback": "클릭 표시",
       "showWalletOnCharacterScreen": "캐릭터 화면에 지갑 표시",

@@ -9443,6 +9443,18 @@ export class Hud {
         { value: 1, label: t('hud.options.terrainHigh') },
       ]);
     }
+    // Adaptive CSS-effects tier (DOM layer, separate from the WebGL preset above).
+    // Auto detects the browser engine/version + device; manual values pin it.
+    this.settingChoice(body, t('hudChrome.options.browserEffects'), 'browserEffects', [
+      { value: 0, label: t('hudChrome.options.browserEffectsAuto') },
+      { value: 1, label: t('hudChrome.options.browserEffectsFull') },
+      { value: 2, label: t('hudChrome.options.browserEffectsReduced') },
+      { value: 3, label: t('hudChrome.options.browserEffectsMinimal') },
+    ]);
+    const fxNote = document.createElement('div');
+    fxNote.className = 'set-note';
+    fxNote.textContent = t('hudChrome.options.browserEffectsNote');
+    body.appendChild(fxNote);
     this.settingSlider(body, t('hud.options.cameraSpeed'), 'cameraSpeed');
     // Camera Speed only scales mouselook; on touch the camera joystick has its
     // own rate, so phones get a dedicated sensitivity slider here.

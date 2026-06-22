@@ -116,6 +116,14 @@ export const hudChromeStrings = {
   options: {
     clickMoveLeft: "Left Click",
     clickMoveRight: "Right Click",
+    // Adaptive browser-effects tier control (Graphics panel). Auto detects the
+    // browser engine/version + device; the rest pin the CSS-effects tier.
+    browserEffects: "Browser Effects",
+    browserEffectsAuto: "Auto",
+    browserEffectsFull: "Full",
+    browserEffectsReduced: "Reduced",
+    browserEffectsMinimal: "Minimal",
+    browserEffectsNote: "Auto tones down heavy CSS effects (blur, glow, background motion) based on your browser and device. Lower it manually if the interface feels sluggish.",
     // Audio panel toggle for the per-footfall step clips (off by default).
     footstepSounds: "Footstep Sounds",
     // Toggle for the OSRS-style click-feedback marker: entity targets and

@@ -240,6 +240,12 @@ export const en_XA: EnTranslations = {
     "options": {
       "clickMoveLeft": "[Ļéƒţ Çļíçķ]",
       "clickMoveRight": "[Ŕíĝĥţ Çļíçķ]",
+      "browserEffects": "[Ɓŕóŵšéŕ Éƒƒéçţš]",
+      "browserEffectsAuto": "[Áúţó]",
+      "browserEffectsFull": "[Ƒúļļ]",
+      "browserEffectsReduced": "[Ŕéðúçéð]",
+      "browserEffectsMinimal": "[Ɱíñíɱáļ]",
+      "browserEffectsNote": "[Áúţó ţóñéš ðóŵñ ĥéáʋý ÇŠŠ éƒƒéçţš (ƀļúŕ, ĝļóŵ, ƀáçķĝŕóúñð ɱóţíóñ) ƀášéð óñ ýóúŕ ƀŕóŵšéŕ áñð ðéʋíçé. Ļóŵéŕ íţ ɱáñúáļļý íƒ ţĥé íñţéŕƒáçé ƒééļš šļúĝĝíšĥ.]",
       "footstepSounds": "[Ƒóóţšţéþ Šóúñðš]",
       "clickFeedback": "[Çļíçķ Ɱáŕķéŕ]",
       "showWalletOnCharacterScreen": "[Šĥóŵ Ŵáļļéţ óñ Çĥáŕáçţéŕ Šçŕééñ]",

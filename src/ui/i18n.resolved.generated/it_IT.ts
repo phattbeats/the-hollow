@@ -240,6 +240,12 @@ export const it_IT: EnTranslations = {
     "options": {
       "clickMoveLeft": "Clic sinistro",
       "clickMoveRight": "Clic destro",
+      "browserEffects": "Effetti del browser",
+      "browserEffectsAuto": "Auto",
+      "browserEffectsFull": "Completi",
+      "browserEffectsReduced": "Ridotti",
+      "browserEffectsMinimal": "Minimi",
+      "browserEffectsNote": "La modalità automatica attenua gli effetti CSS pesanti (sfocatura, bagliore, movimento dello sfondo) in base al tuo browser e dispositivo. Riducila manualmente se l'interfaccia sembra lenta.",
       "footstepSounds": "Suoni dei passi",
       "clickFeedback": "Indicatore di clic",
       "showWalletOnCharacterScreen": "Mostra portafoglio nella schermata personaggi",

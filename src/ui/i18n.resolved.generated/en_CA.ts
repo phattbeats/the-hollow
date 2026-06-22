@@ -240,6 +240,12 @@ export const en_CA: EnTranslations = {
     "options": {
       "clickMoveLeft": "Left Click",
       "clickMoveRight": "Right Click",
+      "browserEffects": "Browser Effects",
+      "browserEffectsAuto": "Auto",
+      "browserEffectsFull": "Full",
+      "browserEffectsReduced": "Reduced",
+      "browserEffectsMinimal": "Minimal",
+      "browserEffectsNote": "Auto tones down heavy CSS effects (blur, glow, background motion) based on your browser and device. Lower it manually if the interface feels sluggish.",
       "footstepSounds": "Footstep Sounds",
       "clickFeedback": "Click Marker",
       "showWalletOnCharacterScreen": "Show Wallet on Character Screen",

@@ -4,6 +4,8 @@ import { Input } from './game/input';
 import { Keybinds } from './game/keybinds';
 import { Settings, GameSettings, SETTING_RANGES, normalizeClickMoveButton } from './game/settings';
 import { MobileControls, PHONE_TOUCH_QUERY, isPhoneTouchDevice } from './game/mobile_controls';
+import { readBrowserEnv, cssEffectsTier, browserBodyClasses, BROWSER_BODY_CLASSES } from './game/browser_env';
+import { GFX } from './render/gfx';
 import { GamepadManager } from './game/gamepad';
 import { GamepadBindings } from './game/gamepad_bindings';
 import { shouldUseStaticBackdrop } from './game/landing_backdrop';
@@ -848,6 +850,23 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     input.setAttackMoveEnabled(settings.get('attackMove'));
   }
 
+  // Engine/version/device are fixed for the session; the renderer's GPU tier is
+  // resolved by now (initGfxTier ran during renderer construction). Re-stamp all
+  // classes on every call so a manual Esc-menu override repaints cleanly.
+  const browserEnv = readBrowserEnv();
+  function applyBrowserEffects(override: number): void {
+    const tier = cssEffectsTier({
+      engine: browserEnv.engine,
+      version: browserEnv.engineVersion,
+      mobile: browserEnv.mobile,
+      renderTier: GFX.tier,
+      override,
+    });
+    const body = document.body.classList;
+    body.remove(...BROWSER_BODY_CLASSES);
+    body.add(...browserBodyClasses(browserEnv, tier));
+  }
+
   function applySetting(key: keyof GameSettings, value: number | boolean): void {
     if (key === 'mouseCamera') {
       const v = settings.set('mouseCamera', !!value);
@@ -889,6 +908,10 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     }
     if (key === 'compactChat') {
       document.body.classList.toggle('compact-chat', settings.set('compactChat', !!value));
+      return;
+    }
+    if (key === 'browserEffects') {
+      applyBrowserEffects(settings.set('browserEffects', value as number));
       return;
     }
     if (key === 'showFps') {
@@ -4841,6 +4864,27 @@ function wireStartScreens(): void {
   };
   syncContrastToggle(landingSettings.get('landingHighContrast'));
   applyLandingBackdrop(landingSettings.get('landingHighContrast'));
+
+  // Stamp the engine/device + CSS-effects classes on the landing screen too, so
+  // the decorative #start-screen-backdrop work (portal rings' heavy blur, nebula,
+  // embers, trailer) is toned down from the first paint on costly engines (mobile
+  // WebKit above all). The renderer (and its GPU tier) does not exist yet, so we
+  // pass the conservative 'high' render tier here: only known-bad engine/device
+  // quirks tone the first paint down. startGame() re-stamps with the real GFX.tier
+  // once in-world. Honors a persisted manual browserEffects override.
+  {
+    const landingEnv = readBrowserEnv();
+    const landingTier = cssEffectsTier({
+      engine: landingEnv.engine,
+      version: landingEnv.engineVersion,
+      mobile: landingEnv.mobile,
+      renderTier: 'high',
+      override: landingSettings.get('browserEffects') as number,
+    });
+    const body = document.body.classList;
+    body.remove(...BROWSER_BODY_CLASSES);
+    body.add(...browserBodyClasses(landingEnv, landingTier));
+  }
   contrastToggle?.addEventListener('click', () => {
     const next = !landingSettings.get('landingHighContrast');
     landingSettings.set('landingHighContrast', next);

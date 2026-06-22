@@ -240,6 +240,12 @@ export const de_DE: EnTranslations = {
     "options": {
       "clickMoveLeft": "Linksklick",
       "clickMoveRight": "Rechtsklick",
+      "browserEffects": "Browser-Effekte",
+      "browserEffectsAuto": "Auto",
+      "browserEffectsFull": "Voll",
+      "browserEffectsReduced": "Reduziert",
+      "browserEffectsMinimal": "Minimal",
+      "browserEffectsNote": "Der Automatikmodus reduziert aufwendige CSS-Effekte (Unschärfe, Leuchten, Hintergrundbewegung) je nach Browser und Gerät. Senke ihn manuell, wenn sich die Oberfläche träge anfühlt.",
       "footstepSounds": "Schrittgeräusche",
       "clickFeedback": "Klickmarkierung",
       "showWalletOnCharacterScreen": "Wallet auf dem Charakterbildschirm anzeigen",

@@ -2933,4 +2933,11 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   "hudChrome.chatWindow.resetAction": "Zurücksetzen",
   "hudChrome.chatWindow.resize": "Ziehen, um die Größe des Chatfensters zu ändern",
   "hudChrome.options.clickFeedback": "Klickmarkierung",
+  // v0.13.0 adaptive browser-effects perf tier (PR #759)
+  "hudChrome.options.browserEffects": "Browser-Effekte",
+  "hudChrome.options.browserEffectsAuto": "Auto",
+  "hudChrome.options.browserEffectsFull": "Voll",
+  "hudChrome.options.browserEffectsReduced": "Reduziert",
+  "hudChrome.options.browserEffectsMinimal": "Minimal",
+  "hudChrome.options.browserEffectsNote": "Der Automatikmodus reduziert aufwendige CSS-Effekte (Unschärfe, Leuchten, Hintergrundbewegung) je nach Browser und Gerät. Senke ihn manuell, wenn sich die Oberfläche träge anfühlt.",
 };

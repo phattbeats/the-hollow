@@ -2933,4 +2933,11 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   "hudChrome.chatWindow.resetAction": "Ripristina",
   "hudChrome.chatWindow.resize": "Trascina per ridimensionare la finestra della chat",
   "hudChrome.options.clickFeedback": "Indicatore di clic",
+  // v0.13.0 adaptive browser-effects perf tier (PR #759)
+  "hudChrome.options.browserEffects": "Effetti del browser",
+  "hudChrome.options.browserEffectsAuto": "Auto",
+  "hudChrome.options.browserEffectsFull": "Completi",
+  "hudChrome.options.browserEffectsReduced": "Ridotti",
+  "hudChrome.options.browserEffectsMinimal": "Minimi",
+  "hudChrome.options.browserEffectsNote": "La modalità automatica attenua gli effetti CSS pesanti (sfocatura, bagliore, movimento dello sfondo) in base al tuo browser e dispositivo. Riducila manualmente se l'interfaccia sembra lenta.",
 };
