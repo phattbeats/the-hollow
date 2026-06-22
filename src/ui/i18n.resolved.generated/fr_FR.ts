@@ -670,7 +670,7 @@ export const fr_FR: EnTranslations = {
       "growBody": "Chaque niveau vous rend plus robuste et débloque de nouvelles capacités, jusqu'au plafond de niveau {cap}. Les quêtes sont le moyen le plus rapide de progresser ; les donjons et l'exploration complètent le tableau.",
       "effectsTitle": "Buffs, debuffs, and crowd control",
       "effectsBody": "Many abilities apply an effect that lingers. Helpful ones (buffs) raise your stats, shield you, or heal you a little at a time; harmful ones (debuffs) drain your health with damage over time or weaken you. Watch the small icons near your action bar to see what is on you and how long it lasts.",
-      "ccBody": "Crowd control is a special kind of debuff that limits what a target can do: stuns, roots and slows, silences that stop spellcasting, disarms, fears, and polymorph that turns a foe harmless for a moment. The same kind of control lasts for less time when it is reapplied quickly, so it cannot be chained forever.",
+      "ccBody": "Crowd control is a special kind of debuff that limits what a target can do: stuns, roots and slows, silences that stop spellcasting, disarms, fears, and polymorph that turns a foe harmless for a moment. Some of these, like roots, fears, and polymorph, lose their hold when they are reapplied too quickly, so they cannot be chained forever.",
       "deathTitle": "When you fall",
       "deathBody": "If your health reaches zero you are downed. You revive after a short wait and carry on from where you left off, so a death costs you a little time, not your progress. Between fights, sit to eat and drink so you start the next one at full strength."
     },

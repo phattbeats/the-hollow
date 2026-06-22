@@ -76,7 +76,13 @@ export function wireModelViewers(root: HTMLElement, opts: WireOptions = {}): () 
       if (started) return;
       started = true;
       const spec = GUIDE_MODELS[fig.dataset.model ?? ''];
-      if (!spec || !stage || !btn) { started = false; return; }
+      if (!spec) {
+        // eslint-disable-next-line no-console
+        console.error('Guide model viewer: no model for key', fig.dataset.model);
+        started = false;
+        return;
+      }
+      if (!stage || !btn) { started = false; return; }
       fig.dataset.state = 'loading';
       btn.disabled = true;
       try {

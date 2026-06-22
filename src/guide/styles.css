@@ -106,9 +106,9 @@
 
   /* Biome accents (south to north): green vale, teal marsh, cold-blue peaks. Always
      paired with the zone name, never the only signal. */
-  --g-zone-vale: var(--g-zone-vale);
-  --g-zone-marsh: var(--g-zone-marsh);
-  --g-zone-peaks: var(--g-zone-peaks);
+  --g-zone-vale: #7fae5a;
+  --g-zone-marsh: #4f9e8c;
+  --g-zone-peaks: #7fa8d8;
 
   /* Warning accent for caution callouts. */
   --g-warn: #e8b84b;

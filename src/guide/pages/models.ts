@@ -55,7 +55,8 @@ function optionHtml(o: ModelOption): string {
   const style = o.color ? ` style="--opt-color:${esc(o.color)}"` : '';
   const tint = o.tint ? ` data-tint="${esc(o.tint)}"` : '';
   const img = o.poster ? `<img src="${esc(o.poster)}" alt="" width="28" height="28" loading="lazy" decoding="async" />` : '';
-  return `<button type="button" class="guide-gallery-opt" role="option" aria-selected="false"
+  // A toggle button (aria-pressed): one is active at a time and it loads that model.
+  return `<button type="button" class="guide-gallery-opt" aria-pressed="false"
     data-model="${esc(o.modelKey)}"${tint} data-name="${esc(o.name)}"${style}>
     ${img}<span class="guide-gallery-opt-name">${esc(o.name)}</span>
   </button>`;
@@ -114,27 +115,43 @@ export const models: GuidePage = {
 
     let viewer: ModelViewer | null = null;
     let disposed = false;
-    let loadSeq = 0;
+    // Serialize loads: one model builds at a time, and a faster pick queues so only the
+    // latest selection wins (buildModel is async, so overlapping loads on one viewer
+    // would race). The queued button is always the most recent click.
+    let loading = false;
+    let queued: HTMLElement | null = null;
 
-    const select = async (btn: HTMLElement): Promise<void> => {
+    const load = async (btn: HTMLElement): Promise<void> => {
       const spec = GUIDE_MODELS[btn.dataset.model ?? ''];
       if (!spec) return;
-      picker.querySelectorAll<HTMLElement>('[aria-selected="true"]').forEach((b) => b.setAttribute('aria-selected', 'false'));
-      btn.setAttribute('aria-selected', 'true');
+      picker.querySelectorAll<HTMLElement>('[aria-pressed="true"]').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      btn.setAttribute('aria-pressed', 'true');
       const name = btn.dataset.name ?? '';
       if (caption) caption.textContent = name;
       const tint = btn.dataset.tint ? parseInt(btn.dataset.tint.replace('#', ''), 16) : null;
       const label = t('guide.viewer.canvasLabel', { name });
-      const seq = ++loadSeq;
-      if (!viewer) {
-        viewer = await createViewer(stage, label);
-        if (disposed) { viewer.destroy(); viewer = null; return; }
-      } else {
-        viewer.setLabel(label);
+      try {
+        if (!viewer) {
+          viewer = await createViewer(stage, label);
+          if (disposed) { viewer.destroy(); viewer = null; return; }
+        } else {
+          viewer.setLabel(label);
+        }
+        await viewer.load(spec, tint);
+        if (disposed && viewer) { viewer.destroy(); viewer = null; }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error('Guide gallery failed to load model', err);
+        btn.setAttribute('aria-pressed', 'false');
       }
-      await viewer.load(spec, tint);
-      // A faster subsequent pick supersedes this one; only the latest wins.
-      if (seq !== loadSeq && viewer) { /* superseded; latest load already applied */ }
+    };
+
+    const select = async (btn: HTMLElement): Promise<void> => {
+      if (loading) { queued = btn; return; }
+      loading = true;
+      await load(btn);
+      loading = false;
+      if (queued && !disposed) { const next = queued; queued = null; void select(next); }
     };
 
     const onClick = (e: Event): void => {
