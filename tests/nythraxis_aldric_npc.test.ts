@@ -241,6 +241,7 @@ describe('[SPEC] the online client recognizes Aldric as a quest NPC', () => {
     const c: any = Object.create(ClientWorld.prototype);
     c.cfg = { seed: 42, playerClass: 'warrior' };
     c.entities = new Map();
+    c.missingSince = new Map(); // despawn-grace bookkeeping (set by the real field initializer)
     c.playerId = pid;
     c.questLog = new Map();
     c.questsDone = new Set();

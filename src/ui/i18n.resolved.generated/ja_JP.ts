@@ -174,12 +174,24 @@ export const ja_JP: EnTranslations = {
       "title": "エモート",
       "done": "完了"
     },
+    "questTracker": {
+      "count": "（{count}）",
+      "collapseHint": "クエストトラッカーを折りたたむ",
+      "expandHint": "クエストトラッカーを展開する"
+    },
     "chatTimestamps": {
       "show": "チャットに時刻を表示",
       "format": "時刻の表記形式",
       "clock12h": "12時間表記",
       "clock24h": "24時間表記",
       "note": "新しいチャット行の先頭に受信時刻を付けます（例：[14:32]）。この設定がオンの間に受信したメッセージにのみ適用されます。"
+    },
+    "chatWindow": {
+      "move": "ドラッグでチャットウィンドウを移動",
+      "resize": "ドラッグでチャットウィンドウのサイズを変更",
+      "reset": "チャットウィンドウをリセット",
+      "resetAction": "リセット",
+      "note": "チャットのタブ列をドラッグするとウィンドウを移動でき、右下のグリップをドラッグするとサイズを変更できます。リセットすると既定の位置とサイズに戻ります。"
     },
     "swing": {
       "ready": "攻撃",
@@ -228,9 +240,30 @@ export const ja_JP: EnTranslations = {
     "options": {
       "clickMoveLeft": "左クリック",
       "clickMoveRight": "右クリック",
+      "browserEffects": "ブラウザエフェクト",
+      "browserEffectsAuto": "自動",
+      "browserEffectsFull": "フル",
+      "browserEffectsReduced": "軽減",
+      "browserEffectsMinimal": "最小",
+      "browserEffectsNote": "自動はブラウザとデバイスに応じて、負荷の高い CSS エフェクト（ぼかし・グロー・背景アニメーション）を抑えます。動作が重い場合は手動で下げてください。",
       "footstepSounds": "足音",
+      "clickFeedback": "クリックマーカー",
       "showWalletOnCharacterScreen": "キャラクター画面にウォレットを表示",
-      "showWalletOnPlayerCard": "プレイヤーカードにウォレットを表示"
+      "showWalletOnPlayerCard": "プレイヤーカードにウォレットを表示",
+      "uiScale": "UIスケール",
+      "highContrastBackground": "高コントラスト背景"
+    },
+    "controller": {
+      "title": "コントローラー",
+      "enable": "コントローラーを有効化",
+      "invertY": "カメラ反転（Y軸）",
+      "deadzone": "スティックの遊び",
+      "cameraSpeed": "カメラ速度",
+      "vibration": "振動",
+      "buttons": "ボタン配置",
+      "resetButtons": "ボタン配置をリセット",
+      "menuAction": "ゲームメニュー",
+      "help": "左スティックで移動、右スティックで視点。ウィンドウを開くと画面ポインターが使えます。"
     },
     "perf": {
       "title": "パフォーマンスオーバーレイ",
@@ -303,6 +336,10 @@ export const ja_JP: EnTranslations = {
     "playerCard": {
       "showWalletBadge": "ウォレットバッジを表示"
     },
+    "landing": {
+      "highContrast": "高コントラスト",
+      "highContrastAria": "高コントラスト背景を切り替えます。動画トレーラーを無効にして、スタート画面のテキストを読みやすくします"
+    },
     "statInfo": {
       "fromYour": "あなたの{stat}{value}による効果:",
       "desc": {
@@ -368,6 +405,28 @@ export const ja_JP: EnTranslations = {
         "many": "Who：{realm}に{count}人のプレイヤーがオンラインです。",
         "other": "Who：{realm}に{count}人のプレイヤーがオンラインです。"
       }
+    },
+    "bugReport": {
+      "menuButton": "バグを報告",
+      "realm": "サーバー",
+      "character": "キャラクター",
+      "position": "座標",
+      "unknown": "不明",
+      "description": "何が起きましたか？",
+      "descriptionPlaceholder": "バグの内容を記入してください：何をして、何を期待し、実際に何が起きたか。",
+      "includeScreenshot": "スクリーンショットを添付",
+      "screenshotAlt": "このバグ報告に添付された現在の画面のスクリーンショット",
+      "submit": "報告を送信",
+      "submitted": "バグ報告を送信しました。ありがとうございます！",
+      "submittedNoShot": "バグ報告を送信しました。ただしスクリーンショットが大きすぎて添付できませんでした。",
+      "describeFirst": "送信する前にバグの内容を記入してください。",
+      "tooLarge": "報告のサイズが大きすぎて送信できません。スクリーンショットを外して再試行してください。",
+      "rateLimited": "最近、報告を複数回送信しています。しばらく待ってから送信してください。",
+      "failed": "バグ報告を送信できませんでした。もう一度お試しください。"
+    },
+    "paperdoll": {
+      "unequipAria": "{item}を外す",
+      "unequipHint": "× をクリック、右クリック、またはバッグへドラッグで外す"
     },
     "account": {
       "title": "アカウント",
@@ -1006,7 +1065,9 @@ export const ja_JP: EnTranslations = {
       "webLoginOnly": "ログインはゲームクライアントからのみ可能です。",
       "accountSuspended": "このアカウントは {date} まで停止されています。",
       "alreadyInWorld": "キャラクターは既に世界にいます。",
-      "renameBeforeEntering": "このキャラクターは世界に入る前に名前変更が必要です。"
+      "takenOver": "あなたのキャラクターは別のセッションに引き継がれました。",
+      "renameBeforeEntering": "このキャラクターは世界に入る前に名前変更が必要です。",
+      "renameNotPermitted": "このキャラクターの名前変更は許可されていません。"
     }
   },
   "realm": {
@@ -1032,6 +1093,9 @@ export const ja_JP: EnTranslations = {
     "noneYet": "まだキャラクターがいません。下で作成してください。",
     "levelClass": "レベル{level} {className}",
     "inWorld": "世界にいます",
+    "takeOver": "引き継ぐ",
+    "inWorldHint": "すでに世界にいます。別の場所からログアウトするか、引き継いでください。",
+    "takeOverConfirm": "このキャラクターを別のセッションから切断し、こちらに移します。続けますか？",
     "renameRequired": "名前変更が必要",
     "delete": "削除",
     "rename": "名前変更",
@@ -1517,6 +1581,25 @@ export const ja_JP: EnTranslations = {
       "friendOnline": "{name}がオンラインになりました。",
       "friendOffline": "{name}がオフラインになりました。"
     },
+    "tutorial": {
+      "title": "新米冒険者",
+      "stepLabel": "ステップ {current}/{total}",
+      "skip": "チュートリアルをスキップ",
+      "dismiss": "閉じる",
+      "doneTitle": "冒険の準備完了",
+      "doneBody": "基本は覚えましたね、{name}。イーストブルック渓谷はあなたのもの、自由に探索しましょう。いつでも {questKey} キーでクエストを確認できます。よい狩りを！",
+      "moveTitle": "まず一歩を",
+      "moveBody": "{moveKeys} で移動し、マウスで周囲を見回します。数歩進んで始めましょう。",
+      "seekTitle": "元帥を探す",
+      "seekBody": "レッドブルック元帥が町で待っており、新人に頼みごとがあります。目印をたどって彼のもとへ向かいましょう。",
+      "talkTitle": "依頼を受ける",
+      "talkBody": "レッドブルック元帥に近づき、{interactKey} を押して話しかけ、依頼を受けましょう。",
+      "slayTitle": "戸口の狼",
+      "slayBody": "北の道で森の狼を狩りましょう。一体をターゲットして攻撃し、群れを減らします。",
+      "slayProgress": "倒した森の狼：{current} / {needed}",
+      "returnTitle": "報酬を受け取る",
+      "returnBody": "依頼は完了しました。レッドブルック元帥のもとへ戻り、{interactKey} を押して納品しましょう。"
+    },
     "markers": {
       "names": {
         "star": "星",
@@ -1740,6 +1823,10 @@ export const ja_JP: EnTranslations = {
       "completedStatus": "完了済み",
       "returnTo": "{name}に戻る",
       "abandon": "クエストを破棄",
+      "abandonConfirmTitle": "クエストを破棄",
+      "abandonConfirmBody": "{name}を本当に破棄しますか？",
+      "abandonConfirm": "はい",
+      "abandonCancel": "キャンセル",
       "suggestedPlayers": "推奨プレイヤー数: {count}"
     },
     "dialog": {

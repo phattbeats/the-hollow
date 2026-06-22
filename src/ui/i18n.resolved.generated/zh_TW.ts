@@ -174,12 +174,24 @@ export const zh_TW: EnTranslations = {
       "title": "表情",
       "done": "完成"
     },
+    "questTracker": {
+      "count": "（{count}）",
+      "collapseHint": "收合任務追蹤器",
+      "expandHint": "展開任務追蹤器"
+    },
     "chatTimestamps": {
       "show": "顯示聊天時間戳記",
       "format": "時間戳記格式",
       "clock12h": "12 小時制",
       "clock24h": "24 小時制",
       "note": "在每一行新的聊天訊息前加上收到的時間，例如 [14:32]。只會影響開啟此選項後收到的訊息。"
+    },
+    "chatWindow": {
+      "move": "拖曳以移動聊天視窗",
+      "resize": "拖曳以調整聊天視窗大小",
+      "reset": "重設聊天視窗",
+      "resetAction": "重設",
+      "note": "拖曳聊天標籤列可移動視窗，拖曳右下角控點可調整大小。重設可回復到預設位置與大小。"
     },
     "swing": {
       "ready": "揮砍",
@@ -228,9 +240,30 @@ export const zh_TW: EnTranslations = {
     "options": {
       "clickMoveLeft": "左鍵",
       "clickMoveRight": "右鍵",
+      "browserEffects": "瀏覽器特效",
+      "browserEffectsAuto": "自動",
+      "browserEffectsFull": "完整",
+      "browserEffectsReduced": "精簡",
+      "browserEffectsMinimal": "最低",
+      "browserEffectsNote": "自動模式會根據你的瀏覽器與裝置調低高負擔的 CSS 特效（模糊、光暈、背景動畫）。若介面感覺卡頓，可手動降低。",
       "footstepSounds": "腳步聲",
+      "clickFeedback": "點擊標記",
       "showWalletOnCharacterScreen": "在角色畫面顯示錢包",
-      "showWalletOnPlayerCard": "在玩家卡片顯示錢包"
+      "showWalletOnPlayerCard": "在玩家卡片顯示錢包",
+      "uiScale": "介面縮放",
+      "highContrastBackground": "高對比度背景"
+    },
+    "controller": {
+      "title": "手把",
+      "enable": "啟用手把",
+      "invertY": "反轉鏡頭（Y軸）",
+      "deadzone": "搖桿死區",
+      "cameraSpeed": "鏡頭速度",
+      "vibration": "震動",
+      "buttons": "按鍵配置",
+      "resetButtons": "重設按鍵配置",
+      "menuAction": "遊戲選單",
+      "help": "左搖桿移動，右搖桿控制鏡頭。開啟視窗即可使用螢幕指標。"
     },
     "perf": {
       "title": "效能監視器",
@@ -303,6 +336,10 @@ export const zh_TW: EnTranslations = {
     "playerCard": {
       "showWalletBadge": "顯示錢包徽章"
     },
+    "landing": {
+      "highContrast": "高對比度",
+      "highContrastAria": "切換高對比度背景：關閉動態預告片，使開始畫面文字保持清晰"
+    },
     "statInfo": {
       "fromYour": "來自你的 {value} 點{stat}：",
       "desc": {
@@ -368,6 +405,28 @@ export const zh_TW: EnTranslations = {
         "many": "查詢：{realm} 上有 {count} 名玩家在線上。",
         "other": "查詢：{realm} 上有 {count} 名玩家在線上。"
       }
+    },
+    "bugReport": {
+      "menuButton": "回報錯誤",
+      "realm": "伺服器",
+      "character": "角色",
+      "position": "座標",
+      "unknown": "未知",
+      "description": "出了什麼問題？",
+      "descriptionPlaceholder": "描述這個錯誤：你做了什麼、預期會發生什麼、實際發生了什麼。",
+      "includeScreenshot": "包含截圖",
+      "screenshotAlt": "附加到此錯誤回報的當前畫面截圖",
+      "submit": "傳送回報",
+      "submitted": "錯誤回報已傳送。謝謝！",
+      "submittedNoShot": "錯誤回報已傳送，但截圖過大，無法一併附上。",
+      "describeFirst": "請先描述錯誤再傳送。",
+      "tooLarge": "此回報過大，無法傳送。請移除截圖後重試。",
+      "rateLimited": "你最近已傳送多份回報。請稍候再傳送。",
+      "failed": "無法傳送錯誤回報。請重試。"
+    },
+    "paperdoll": {
+      "unequipAria": "卸下 {item}",
+      "unequipHint": "點擊 ×、右鍵點擊或拖曳至背包以卸下"
     },
     "account": {
       "title": "帳號",
@@ -1006,7 +1065,9 @@ export const zh_TW: EnTranslations = {
       "webLoginOnly": "只能從遊戲客戶端登入。",
       "accountSuspended": "此帳號停權至 {date}。",
       "alreadyInWorld": "角色已在世界中。",
-      "renameBeforeEntering": "此角色必須先更名才能進入世界。"
+      "takenOver": "你的角色已被另一個工作階段接管。",
+      "renameBeforeEntering": "此角色必須先更名才能進入世界。",
+      "renameNotPermitted": "不允許為此角色更名。"
     }
   },
   "realm": {
@@ -1032,6 +1093,9 @@ export const zh_TW: EnTranslations = {
     "noneYet": "還沒有角色。請在下方建立一個。",
     "levelClass": "{level} 級 {className}",
     "inWorld": "在世界中",
+    "takeOver": "接管",
+    "inWorldHint": "已在世界中。請在別處登出，或接管工作階段。",
+    "takeOverConfirm": "這會使該角色從另一個工作階段中斷並切換到此處。是否繼續？",
     "renameRequired": "需要更名",
     "delete": "刪除",
     "rename": "更名",
@@ -1517,6 +1581,25 @@ export const zh_TW: EnTranslations = {
       "friendOnline": "{name} 上線了。",
       "friendOffline": "{name} 下線了。"
     },
+    "tutorial": {
+      "title": "新冒險者",
+      "stepLabel": "第 {current} 步，共 {total} 步",
+      "skip": "跳過教學",
+      "dismiss": "關閉",
+      "doneTitle": "準備好冒險了",
+      "doneBody": "你已掌握基礎，{name}。東溪谷任你探索。隨時按 {questKey} 查看任務。祝你狩獵順利。",
+      "moveTitle": "邁出第一步",
+      "moveBody": "使用 {moveKeys} 移動，用滑鼠環顧四周。先走幾步開始吧。",
+      "seekTitle": "尋找元帥",
+      "seekBody": "雷德布魯克元帥在鎮上等候，他有任務交給新人。跟隨指引前往找他。",
+      "talkTitle": "接受任務",
+      "talkBody": "靠近雷德布魯克元帥並按 {interactKey} 與他交談，然後接受他的任務。",
+      "slayTitle": "狼群來襲",
+      "slayBody": "前往北路獵殺森林狼。選定一隻並發動攻擊，削減狼群數量。",
+      "slayProgress": "已擊殺森林狼：{current} / {needed}",
+      "returnTitle": "領取獎勵",
+      "returnBody": "任務已完成。返回雷德布魯克元帥處並按 {interactKey} 繳交任務。"
+    },
     "markers": {
       "names": {
         "star": "星形",
@@ -1740,6 +1823,10 @@ export const zh_TW: EnTranslations = {
       "completedStatus": "已完成",
       "returnTo": "返回 {name} 處",
       "abandon": "放棄任務",
+      "abandonConfirmTitle": "放棄任務",
+      "abandonConfirmBody": "確定要放棄{name}嗎？",
+      "abandonConfirm": "是",
+      "abandonCancel": "取消",
       "suggestedPlayers": "建議玩家數：{count}"
     },
     "dialog": {

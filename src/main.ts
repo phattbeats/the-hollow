@@ -4,6 +4,12 @@ import { Input } from './game/input';
 import { Keybinds } from './game/keybinds';
 import { Settings, GameSettings, SETTING_RANGES, normalizeClickMoveButton } from './game/settings';
 import { MobileControls, PHONE_TOUCH_QUERY, isPhoneTouchDevice } from './game/mobile_controls';
+import { readBrowserEnv, cssEffectsTier, browserBodyClasses, BROWSER_BODY_CLASSES } from './game/browser_env';
+import { GFX } from './render/gfx';
+import { GamepadManager } from './game/gamepad';
+import { GamepadBindings } from './game/gamepad_bindings';
+import { shouldUseStaticBackdrop } from './game/landing_backdrop';
+import { navigatorSaveData } from './render/sky';
 import { Hud } from './ui/hud';
 import { PerfOverlay } from './ui/perf_overlay';
 import { PerfOverlayConfigStore, type PerfOverlayConfig } from './ui/perf_overlay_config';
@@ -14,8 +20,8 @@ import { music } from './game/music';
 import { voice } from './game/voice';
 import { sfx } from './game/sfx';
 import { activePvpOpponentIds, handlePickedEntity, hoverCursorKind, isAttackableEntity } from './game/interactions';
-import { clickMoveShouldCancel, clickMoveShouldWalk, clickMoveStep, distance2d, latencyAdjustedStopDistance, stepAngleToward } from './game/click_move';
-import { Api, isAuthError, ClientWorld, CharacterSummary, type ReleaseEntry } from './net/online';
+import { clickMoveShouldWalk, clickMoveStep, distance2d, latencyAdjustedStopDistance, resolveClickMoveAction, stepAngleToward } from './game/click_move';
+import { Api, isAuthError, ClientWorld, CharacterSummary, NATIVE_APP, type ReleaseEntry } from './net/online';
 import { setWalletDisplayAvailable, setWocBalance, setWalletUiEnabled, resolveWocBalanceUpdate } from './ui/wallet_balance';
 import {
   accountPortalModel, validatePasswordChange, validateEmailShape, deactivateConfirmReady,
@@ -29,6 +35,8 @@ import type { IWorld, LeaderboardEntry } from './world_api';
 import { findPlayerPath, resolvePlayerDestination } from './sim/pathfind';
 import { pathCrossesFence } from './sim/colliders';
 import { formatXp } from './ui/xp_bar';
+import { assembleBugReportMeta } from './ui/bug_report';
+import { zoneBiomeAt } from './sim/world';
 import { assetsReady } from './render/assets/preload';
 import { CharacterPreview } from './render/characters';
 import { skinCount } from './render/characters/manifest';
@@ -70,6 +78,8 @@ const HOMEPAGE_MUSIC_MUTED_KEY = 'woc_homepage_music_muted';
 const HOMEPAGE_MUSIC_VOLUME = 0.225;
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.querySelector(sel) as T;
+document.body.classList.toggle('native-app', NATIVE_APP);
+if (NATIVE_APP) document.body.classList.add('mobile-touch');
 let pendingDeleteCharacter: CharacterSummary | null = null;
 let homepageMusic: HTMLAudioElement | null = null;
 let homepageMusicStarted = false;
@@ -158,10 +168,12 @@ function userFacingApiError(err: unknown): string {
   if (normalized === 'that name is taken') return t('errors.api.nameTaken');
   if (normalized === 'character not found' || normalized === 'no such character' || normalized === 'not found') return t('errors.api.characterNotFound');
   if (normalized === 'character is currently online') return t('errors.api.characterOnline');
+  if (normalized === 'character rename is not permitted') return t('errors.api.renameNotPermitted');
   if (normalized === 'type the character name to confirm deletion') return t('errors.api.deleteConfirm');
   if (normalized === 'not authenticated' || normalized === 'authentication required') return t('errors.api.notAuthenticated');
   if (normalized === 'this account has been banned.') return t('errors.api.accountBanned');
   if (normalized === 'character already in world') return t('errors.api.alreadyInWorld');
+  if (normalized === 'character taken over') return t('errors.api.takenOver');
   if (normalized === 'this character must be renamed before entering the world.') return t('errors.api.renameBeforeEntering');
   if (normalized === 'logins are only allowed from the game client') return t('errors.api.webLoginOnly');
   // Account portal REST errors (server/main.ts /api/account/*). English-source,
@@ -274,6 +286,11 @@ function preventMobileZoom(): void {
   document.addEventListener('gesturechange', prevent, { passive: false });
   document.addEventListener('gestureend', prevent, { passive: false });
   document.addEventListener('touchend', (e) => {
+    const target = e.target instanceof Element ? e.target : null;
+    if (target?.closest('button, a, input, textarea, select, [role="button"], [role="option"], [tabindex]')) {
+      lastTouchEnd = Date.now();
+      return;
+    }
     const now = Date.now();
     if (now - lastTouchEnd <= 320) e.preventDefault();
     lastTouchEnd = now;
@@ -281,14 +298,14 @@ function preventMobileZoom(): void {
 }
 
 function syncPhoneTouchClass(): void {
-  document.body.classList.toggle('mobile-touch', isPhoneTouchDevice());
+  document.body.classList.toggle('mobile-touch', NATIVE_APP || isPhoneTouchDevice());
   syncCommunityMenuMode();
 }
 
 function syncCommunityMenuMode(): void {
   const communityMenu = document.getElementById('community-menu') as HTMLDetailsElement | null;
   if (!communityMenu) return;
-  communityMenu.open = !isPhoneTouchDevice();
+  communityMenu.open = !(NATIVE_APP || isPhoneTouchDevice());
 }
 
 syncAppViewport();
@@ -306,7 +323,7 @@ window.visualViewport?.addEventListener('resize', syncAppViewport);
 document.addEventListener('fullscreenchange', syncAppViewport);
 
 function requestMobileFullscreenLandscape(): void {
-  if (!isPhoneTouchDevice()) return;
+  if (NATIVE_APP || !isPhoneTouchDevice()) return;
   const root = document.documentElement as HTMLElement & { webkitRequestFullscreen?: () => Promise<void> | void };
   try {
     const request = root.requestFullscreen?.bind(root) ?? root.webkitRequestFullscreen?.bind(root);
@@ -416,6 +433,24 @@ function hideMobilePreflightPrompt(): void {
   document.body.classList.remove('mobile-preflight-open');
 }
 
+function resetMobileGameplayOverlays(): void {
+  document.body.classList.remove('mobile-preflight-open', 'mobile-more-open', 'mobile-chat-open', 'mobile-chatlog-peek');
+  document.getElementById('mobile-controls')?.classList.remove('expanded');
+  document.getElementById('mobile-more')?.classList.remove('active');
+  const preflight = document.getElementById('mobile-preflight') as HTMLElement | null;
+  preflight?.classList.remove('visible');
+  if (preflight) preflight.style.display = '';
+  const more = document.getElementById('mobile-extra-controls') as HTMLElement | null;
+  if (more) {
+    more.style.left = '';
+    more.style.top = '';
+    more.style.right = '';
+    more.style.bottom = '';
+    more.style.transform = '';
+    delete more.dataset.windowMoved;
+  }
+}
+
 type FullscreenDocument = Document & {
   webkitFullscreenElement?: Element | null;
   webkitExitFullscreen?: () => Promise<void> | void;
@@ -455,6 +490,7 @@ function exitBrowserFullscreen(): void {
 }
 
 function requestPreferredFullscreen(): void {
+  if (NATIVE_APP) return;
   if (isPhoneTouchDevice()) {
     requestMobileFullscreenLandscape();
     return;
@@ -556,12 +592,21 @@ function mountGameUi(): void {
 // Shared game wiring (used by both offline sim and online world)
 // ---------------------------------------------------------------------------
 
-async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWorld | null): Promise<void> {
+async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWorld | null, keybindScope: string): Promise<void> {
   // Model/texture/HDRI fetches were kicked off at module import; the renderer
   // builds its scene synchronously, so everything must be resolved first.
   // The loading screen covers the gap - not a silent black screen.
   enterLoadingState(t('loading.world'));
   document.body.classList.add('game-active');
+  // We've left the start screen for the world, so pause + release the landing
+  // trailer: it's hidden now, and a decoding background video just wastes CPU/GPU
+  // and battery during play.
+  stopLandingTrailer();
+  resetMobileGameplayOverlays();
+  syncPhoneTouchClass();
+  syncAppViewport();
+  window.setTimeout(syncAppViewport, 250);
+  window.setTimeout(syncAppViewport, 800);
   if (document.activeElement instanceof HTMLElement) {
     document.activeElement.blur();
   }
@@ -594,7 +639,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   const canvas = $('#game-canvas') as unknown as HTMLCanvasElement;
   const nameplates = $('#nameplates') as HTMLDivElement;
 
-  const keybinds = new Keybinds();
+  const keybinds = new Keybinds(keybindScope);
   const settings = new Settings();
   let renderer!: Renderer;
   let hud!: Hud;
@@ -730,6 +775,42 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   // from a prior session, persisted in localStorage)
   document.getElementById('mobile-music')?.classList.toggle('mm-muted', !music.enabled);
 
+  // Gamepad: a separate remappable button profile drives the same dispatch the
+  // keyboard/touch paths use. Edge-button actions route through this dispatcher;
+  // movement/camera/jump are applied to Input directly by the manager.
+  const gamepadBindings = new GamepadBindings();
+  const canUseGameKeysNow = () => !hud.isModalOpen() && chatInput.style.display !== 'block';
+  function dispatchGamepadAction(id: string): void {
+    if (id === 'escape') { if (!hud.closeAll()) hud.toggleOptionsMenu(); return; }
+    if (!canUseGameKeysNow()) return; // suppress play actions while a modal/chat is up
+    if (id.startsWith('slot')) { hud.castSlot(Number(id.slice(4))); return; }
+    switch (id) {
+      case 'target': world.tabTarget(); break;
+      case 'targetFriendly': world.targetNearestFriendly(); break;
+      case 'targetFriendlyNext': world.friendlyTabTarget(); break;
+      case 'interact': interactKey(); break;
+      case 'bags': hud.toggleBags(); break;
+      case 'char': hud.toggleChar(); break;
+      case 'spellbook': hud.toggleSpellbook(); break;
+      case 'questlog': hud.toggleQuestLog(); break;
+      case 'map': hud.toggleMap(); break;
+      case 'nameplates': renderer.showNameplates = !renderer.showNameplates; break;
+      case 'talents': hud.toggleTalents(); break;
+      case 'meters': hud.toggleMeters(); break;
+      case 'social': hud.toggleSocial(); break;
+      case 'arena': hud.toggleArena(); break;
+      case 'leaderboard': hud.toggleLeaderboard(); break;
+      case 'chat': openChat(); break;
+    }
+  }
+  const gamepad = new GamepadManager(input, gamepadBindings, {
+    onAction: (id) => dispatchGamepadAction(id),
+    isPointerMode: () => hud.isWindowOpen(),
+    getPlayerHealth: () => (world.player.dead ? 0 : world.player.hp),
+  });
+  // The startup apply-all loop (below) calls applySetting('gamepadEnabled', ...)
+  // which starts/stops the manager and pushes the saved deadzone/speed/vibration.
+
   // Customizable performance overlay (master toggle: showFps, kept for back-compat
   // with the old FPS switch). The pure metrics + view core lives in
   // ui/perf_overlay_model; this owns the frame meter, the persisted appearance/
@@ -767,6 +848,23 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
   function syncAttackMoveInput(): void {
     input.setAttackMoveEnabled(settings.get('attackMove'));
+  }
+
+  // Engine/version/device are fixed for the session; the renderer's GPU tier is
+  // resolved by now (initGfxTier ran during renderer construction). Re-stamp all
+  // classes on every call so a manual Esc-menu override repaints cleanly.
+  const browserEnv = readBrowserEnv();
+  function applyBrowserEffects(override: number): void {
+    const tier = cssEffectsTier({
+      engine: browserEnv.engine,
+      version: browserEnv.engineVersion,
+      mobile: browserEnv.mobile,
+      renderTier: GFX.tier,
+      override,
+    });
+    const body = document.body.classList;
+    body.remove(...BROWSER_BODY_CLASSES);
+    body.add(...browserBodyClasses(browserEnv, tier));
   }
 
   function applySetting(key: keyof GameSettings, value: number | boolean): void {
@@ -812,6 +910,10 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       document.body.classList.toggle('compact-chat', settings.set('compactChat', !!value));
       return;
     }
+    if (key === 'browserEffects') {
+      applyBrowserEffects(settings.set('browserEffects', value as number));
+      return;
+    }
     if (key === 'showFps') {
       perfOverlay.setEnabled(settings.set('showFps', !!value));
       return;
@@ -829,12 +931,29 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       input.setInvertLookY(settings.set('invertLookY', !!value));
       return;
     }
+    if (key === 'gamepadEnabled') {
+      const v = settings.set('gamepadEnabled', !!value);
+      if (v) gamepad.start();
+      else gamepad.stop();
+      return;
+    }
+    if (key === 'gamepadInvertY') {
+      gamepad.setInvertY(settings.set('gamepadInvertY', !!value));
+      return;
+    }
     if (key === 'voiceEnabled') {
       voice.setEnabled(settings.set('voiceEnabled', !!value));
       return;
     }
     if (key === 'footstepSfx') {
       sfx.setFootstepsEnabled(settings.set('footstepSfx', !!value));
+      return;
+    }
+    if (key === 'landingHighContrast') {
+      // Mirror of the start-screen toggle; keeps the persisted preference in sync
+      // and re-applies the backdrop (the landing page is hidden in-game, but the
+      // setting still takes effect next time the start screen is shown / reloaded).
+      applyLandingBackdrop(settings.set('landingHighContrast', !!value));
       return;
     }
     const v = settings.set(key as keyof typeof SETTING_RANGES, value as number);
@@ -857,6 +976,9 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
         break;
       case 'actionButtonScale': document.getElementById('mobile-controls')?.style.setProperty('--btn-scale', String(v)); break;
       case 'joystickDeadzone': mobileControls.setMoveDeadzone(v); break;
+      case 'gamepadStickDeadzone': gamepad.setDeadzone(v); break;
+      case 'gamepadCameraSpeed': gamepad.setCameraSpeed(v); break;
+      case 'gamepadVibration': gamepad.setVibration(v); break;
       // Interface & Comfort sliders: each drives one CSS custom property that
       // index.html consumes. Setting them on :root keeps the HUD authoritative.
       case 'tooltipScale': document.documentElement.style.setProperty('--tooltip-scale', String(v)); break;
@@ -864,6 +986,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       case 'chatOpacity': document.documentElement.style.setProperty('--chat-opacity', String(v)); break;
       case 'fctScale': document.documentElement.style.setProperty('--fct-scale', String(v)); break;
       case 'hudOpacity': document.documentElement.style.setProperty('--hud-opacity', String(v)); break;
+      case 'uiScale': document.documentElement.style.setProperty('--ui-scale', String(v)); break;
     }
   }
   // apply persisted settings to the freshly-built subsystems
@@ -887,11 +1010,33 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       resetPosition: () => { perfConfig.resetPosition(); applyPerfOverlayConfig(); },
       setPlacement: (on) => perfOverlay.setPlacementMode(on),
     },
+    gamepad: gamepadBindings,
   });
   if (online) {
     hud.attachReporting({
       submit: (targetPid, reason, details) => api.reportPlayer(online.characterId, targetPid, reason, details),
       submitByName: (targetName, reason, details) => api.reportPlayerByName(online.characterId, targetName, reason, details),
+    });
+    hud.attachBugReporting({
+      capture: () => renderer?.captureScreenshot() ?? null,
+      collectMeta: () => assembleBugReportMeta({
+        build: `${__APP_VERSION__} (${__APP_BUILD_ID__})`,
+        userAgent: navigator.userAgent,
+        viewport: { w: window.innerWidth, h: window.innerHeight, dpr: window.devicePixelRatio },
+        zone: zoneBiomeAt(world.player.pos.z),
+        level: world.player.level,
+        // Entity has no `cls`; the player's class is its templateId (see Entity).
+        className: world.player.templateId,
+        cameraYaw: renderer?.camYaw ?? 0,
+      }),
+      submit: (payload) => api.submitBugReport({
+        characterId: online.characterId,
+        characterName: world.player.name,
+        pos: { x: world.player.pos.x, y: world.player.pos.y, z: world.player.pos.z },
+        description: payload.description,
+        screenshot: payload.screenshot,
+        meta: payload.meta,
+      }),
     });
   }
   function interactKey(): void {
@@ -946,6 +1091,12 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
   function handlePick(x: number, y: number, button: number): void {
     const id = renderer.pick(x, y);
+    // OSRS-style click feedback (its own toggle): a brief ground marker, gold for a
+    // neutral click and red on a hostile. Both reference games only mark a real action,
+    // so the marker stamps where a click actually does something: the click-to-move
+    // destination (OSRS's yellow "walking here" X) and an entity you target or walk to
+    // (OSRS's red interaction X). A plain ground click that only deselects gets nothing.
+    const wantClickFeedback = settings.get('clickFeedback') && !world.player.dead;
     const clickToMove = settings.get('clickToMove') > 0 && !world.player.dead;
     const clickToMoveButton = normalizeClickMoveButton(settings.get('clickToMoveButton'));
     const isClickMoveButton = clickToMove && button === clickToMoveButton;
@@ -953,20 +1104,30 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       if (button === 0) {
         world.targetEntity(null);
       }
+      // One ground raycast feeds both the move target and its marker, so the gold
+      // marker appears only where the click actually sends you.
       if (isClickMoveButton) {
         const g = renderer.groundPoint(x, y, world.player.pos.y);
         if (g) {
+          if (wantClickFeedback) renderer.spawnClickMarker(g.x, g.z, false);
           const target = resolvedClickMoveTarget(g);
           input.setClickMoveTarget(target, 0.5, null, clickMovePathTo(target));
         }
       }
       return;
     }
-    // The configured click-to-move mouse button approaches entities while the
-    // regular click handler still performs target/interact behavior.
-    if (isClickMoveButton) {
-      const e = world.entities.get(id);
-      if (e && e.id !== world.player.id) {
+    const e = world.entities.get(id);
+    if (e && e.id !== world.player.id) {
+      // Mark the entity when you engage it: a left-click target, or the click-to-move
+      // button that walks you to it, so both routes read the same (red on a hostile,
+      // gold otherwise).
+      if (wantClickFeedback && (button === 0 || isClickMoveButton)) {
+        const hostile = isAttackableEntity(e, world.playerId, activePvpOpponentIds(world));
+        renderer.spawnClickMarker(e.pos.x, e.pos.z, hostile);
+      }
+      // The configured click-to-move mouse button approaches the entity while the
+      // regular click handler still performs target/interact behavior.
+      if (isClickMoveButton) {
         const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
         input.setClickMoveTarget(target, 3.5, e.id, clickMovePathTo(target));
       }
@@ -1171,13 +1332,18 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     const mi = input.readMoveInput();
     let facing: number | null = mouselook ? input.camYaw : null;
     if (input.clickMoveTarget) {
-      if (clickMoveShouldCancel(mi, {
+      const action = resolveClickMoveAction(mi, {
         mouselook,
         movementSuspended: input.suspendMovement,
         playerDead: world.player.dead,
         enabled: settings.get('clickToMove') > 0 || settings.get('attackMove'),
-      })) {
+      });
+      if (action === 'cancel') {
         input.clearClickMove();
+      } else if (action === 'pause') {
+        // Game menu is up: hold the destination and stand still; the run resumes
+        // when the menu closes. mi is already all-false here (movement suspended).
+        return { mi, facing };
       } else {
         if (input.clickMoveEntityId !== null) {
           const e = world.entities.get(input.clickMoveEntityId);
@@ -1325,6 +1491,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
     // character behind it (other windows stay non-modal, as before)
     input.suspendMovement = !gameInputReady || hud.isModalOpen();
     perf.trace('input.updateTouchLook', () => input.updateTouchLook(frameDt), { frameDtMs: frameDt * 1000 });
+    perf.trace('input.gamepad', () => gamepad.poll(frameDt), { frameDtMs: frameDt * 1000 });
     perf.trace('input.hoverCursor', () => updateHoverCursor(), { active: input.hoverActive });
     perf.markInputFrame(performance.now());
 
@@ -1466,7 +1633,7 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
         tokenProvider: () => api.token,
         characterIdProvider: () => online?.characterId ?? null,
       });
-      (window as any).__game = { sim: world, world, renderer, input, hud, online, controller, perf };
+      (window as any).__game = { sim: world, world, renderer, input, hud, online, controller, perf, gamepad };
     }, LOADING_FADE_MS);
   }));
   // Now in-game: fade the home-page theme out (it kept playing through loading).
@@ -1490,7 +1657,9 @@ async function startOffline(playerClass: PlayerClass, name: string, skin = 0): P
   enterLoadingState(t('loading.world'));
   const sim = new Sim({ seed: WORLD_SEED, playerClass, playerName: name });
   sim.setPlayerSkin(sim.playerId, skin);
-  void startGame(sim, sim, null);
+  // Offline characters are not persisted (a fresh name is typed each session),
+  // so the only stable handle is class + name. Keybinds scope to that pair.
+  void startGame(sim, sim, null, `offline:${playerClass}:${name}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -1628,6 +1797,7 @@ function updatePreviewContainer(panelId: string): void {
     const cls = (row?.dataset.class as PlayerClass) ?? 'warrior';
     characterPreview.setClass(cls);
     characterPreview.setSkin(Number(row?.dataset.skin ?? 0) || 0);
+    syncPreviewAfterPanelLayout();
     return;
   }
 
@@ -1641,6 +1811,16 @@ function updatePreviewContainer(panelId: string): void {
     if (panelId === '#charcreate-panel') refreshOnlineSkins(cls);
     else refreshOfflineSkins(cls);
   }
+
+  syncPreviewAfterPanelLayout();
+}
+
+function syncPreviewAfterPanelLayout(): void {
+  characterPreview?.syncSize();
+  requestAnimationFrame(() => {
+    characterPreview?.syncSize();
+    requestAnimationFrame(() => characterPreview?.syncSize());
+  });
 }
 
 const currentlyRenderedClass: Record<string, PlayerClass | null> = {
@@ -2067,7 +2247,7 @@ function setupAccountPortal(): void {
     }
   });
 
-  ($('#account-manage-wallet') as HTMLElement).addEventListener('click', () => accountGoToCharacters(true));
+  document.getElementById('account-manage-wallet')?.addEventListener('click', () => accountGoToCharacters(true));
   ($('#account-go-characters') as HTMLElement).addEventListener('click', () => accountGoToCharacters(false));
   ($('#account-logout') as HTMLElement).addEventListener('click', logoutAccount);
 }
@@ -2262,15 +2442,22 @@ async function refreshCharacters(): Promise<void> {
       row.dataset.class = c.class;
       row.dataset.skin = String(c.skin ?? 0);
       const className = classDisplayName(c.class);
-      const statusText = c.online ? ` (${t('character.inWorld')})` : c.forceRename ? ` (${t('character.renameRequired')})` : '';
+      // Online characters explain themselves on their own hint line (below the
+      // class) instead of the terse "(in world)" suffix, so the reason for the
+      // Take Over button is unmissable.
+      const statusText = c.online ? '' : c.forceRename ? ` (${t('character.renameRequired')})` : '';
+      const inWorldHint = c.online ? `<span class="char-inworld-hint">${escapeHtml(t('character.inWorldHint'))}</span>` : '';
       row.innerHTML = `${portraitChipHtml({ cls: c.class, skin: c.skin ?? 0, name: c.name, variant: 'sm' })}
         <div class="char-id">
           <span class="char-name">${escapeHtml(c.name)}</span>
           <span class="char-sub">${escapeHtml(t('character.levelClass', { level: c.level, className }))}${escapeHtml(statusText)}</span>
+          ${inWorldHint}
         </div>
         ${c.forceRename
           ? `<input class="rename-input" placeholder="${escapeHtml(t('character.newNamePlaceholder'))}" maxlength="16" /><span class="char-actions"><button class="btn btn-danger delete-char-btn" ${c.online ? 'disabled' : ''}>${escapeHtml(t('character.delete'))}</button><button class="btn rename-btn">${escapeHtml(t('character.rename'))}</button></span>`
-          : `<span class="char-actions"><button class="btn btn-danger delete-char-btn" ${c.online ? 'disabled' : ''}>${escapeHtml(t('character.delete'))}</button><button class="btn enter-world-btn" ${c.online ? 'disabled' : ''}>${escapeHtml(t('auth.enterWorld'))}</button></span>`}`;
+          : c.online
+            ? `<span class="char-actions"><button class="btn btn-danger delete-char-btn" disabled title="${escapeHtml(t('character.inWorldHint'))}">${escapeHtml(t('character.delete'))}</button><button class="btn take-over-btn" title="${escapeHtml(t('character.takeOverConfirm'))}" aria-label="${escapeHtml(t('character.takeOverConfirm'))}">${escapeHtml(t('character.takeOver'))}</button></span>`
+            : `<span class="char-actions"><button class="btn btn-danger delete-char-btn">${escapeHtml(t('character.delete'))}</button><button class="btn enter-world-btn">${escapeHtml(t('auth.enterWorld'))}</button></span>`}`;
 
       row.querySelector('.delete-char-btn')!.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -2287,6 +2474,31 @@ async function refreshCharacters(): Promise<void> {
             await refreshCharacters();
           } catch (err) {
             $('#charselect-error').textContent = userFacingApiError(err);
+          }
+        });
+      } else if (c.online) {
+        row.querySelector('.take-over-btn')!.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const btn = e.currentTarget as HTMLButtonElement;
+          // Taking over disconnects the other live session with no undo, so guard a
+          // stray click (e.g. you are genuinely playing on another device) behind a
+          // confirm. The prompt text is the existing t() key, keeping it localized.
+          if (!window.confirm(t('character.takeOverConfirm'))) return;
+          $('#charselect-error').textContent = '';
+          btn.disabled = true;
+          try {
+            // Free the stale/other session, then enter on this character.
+            // takeOverCharacter awaits the old session's leave() server-side, so
+            // the slot is free by the time enterWorld connects. Pass btn so
+            // enterWorld owns its loading/disabled state and restores it if entry
+            // is aborted before it begins; surface any failure via the catch.
+            await api.takeoverCharacter(c.id);
+            await enterWorld({ ...c, online: false }, btn);
+          } catch (err) {
+            btn.disabled = false;
+            $('#charselect-error').textContent = userFacingApiError(err);
+            // Reflect any state change (e.g. a lost race) back into the list.
+            void refreshCharacters();
           }
         });
       } else {
@@ -2387,7 +2599,7 @@ async function enterWorld(c: CharacterSummary, button?: HTMLButtonElement): Prom
   const poll = setInterval(() => {
     if (world.connected && world.entities.has(world.playerId)) {
       clearInterval(poll);
-      void startGame(world, null, world);
+      void startGame(world, null, world, `char:${c.id}`);
     } else if (Date.now() - waitStart > 10000) {
       clearInterval(poll);
       world.close();
@@ -3070,8 +3282,9 @@ let walletFlowStatus: 'connect' | 'sign' | 'verify' | null = null;
 let walletHiddenNoticeTimeout: number | null = null;
 
 // Feature flag: Wallet Standard support needs no project id. Keep an escape
-// hatch for deploys that want to hide the wallet UI entirely.
-const WALLET_ENABLED = String(import.meta.env.VITE_WALLET_DISABLED ?? '').trim() !== '1';
+// hatch for deploys that want to hide the wallet UI entirely. Native app builds
+// intentionally exclude wallet verification for now.
+const WALLET_ENABLED = !NATIVE_APP && String(import.meta.env.VITE_WALLET_DISABLED ?? '').trim() !== '1';
 
 function walletCharacterScreenVisible(): boolean {
   try {
@@ -3333,6 +3546,11 @@ function setWalletFlowStatus(status: typeof walletFlowStatus): void {
 }
 
 function updateWalletButton(): void {
+  if (!WALLET_ENABLED) {
+    setWocBalance(null, false);
+    setWalletDisplayAvailable(false);
+    return;
+  }
   syncWalletCharacterScreenVisibility();
   // currentWallet is sync; before the module loads, treat as disconnected.
   const { address, isConnected } = walletMod ? walletMod.currentWallet() : { address: null, isConnected: false };
@@ -3511,6 +3729,13 @@ function flashWalletError(message: string): void {
 // Refreshed after login: ask the server which wallet (if any) this account has
 // linked, so the button can show the verified ✓ state.
 async function refreshWalletLinkStatus(): Promise<void> {
+  if (!WALLET_ENABLED) {
+    linkedWalletPubkey = null;
+    linkedWocBalance = null;
+    connectedWocBalance = null;
+    updateWalletButton();
+    return;
+  }
   if (!api.token) {
     linkedWalletPubkey = null;
     linkedWocBalance = null;
@@ -3644,15 +3869,18 @@ async function switchWallet(): Promise<void> {
 
 function wireWallet(): void {
   setWalletUiEnabled(WALLET_ENABLED);
-  syncWalletCharacterScreenVisibility();
-  const btn = document.getElementById('btn-wallet');
-  if (!btn) return;
   // Feature-gate: when explicitly disabled, remove the wallet row entirely and
   // never download the wallet chunk.
   if (!WALLET_ENABLED) {
     document.querySelector('.cs-wallet')?.remove();
+    document.querySelector('.cs-wallet-hidden-note')?.remove();
+    document.querySelector('.account-wallet-card')?.remove();
+    updateWalletButton();
     return;
   }
+  syncWalletCharacterScreenVisibility();
+  const btn = document.getElementById('btn-wallet');
+  if (!btn) return;
   // These async actions are fire-and-forget from the click, so attach a .catch:
   // a wallet connect/disconnect rejection must surface, not vanish silently.
   const onErr = (what: string) => (e: unknown) => console.error(`[wallet] ${what} failed`, e);
@@ -3675,6 +3903,76 @@ function wireWallet(): void {
     updateWalletButton();
   }).catch((e) => console.error('[wallet] load failed', e));
   updateWalletButton();
+}
+
+// ---- Landing-page cinematic backdrop ------------------------------------
+// Decides per-visit whether the start screen shows the looping trailer video or
+// a static, dimmed, high-contrast poster — and crucially NEVER fetches the
+// 5.7 MB mp4 in the static case (the <video> ships with no source/autoplay; we
+// attach the source only when we choose the video path). Called at boot, when the
+// footer toggle flips, and when the in-game mirror setting changes.
+// Pause + tear down the start-screen trailer video (on enter-world). Releasing
+// the source frees the decoded buffer so it isn't still churning behind the HUD.
+function stopLandingTrailer(): void {
+  const backdrop = document.getElementById('start-screen-backdrop');
+  const video = document.getElementById('bg-home') as HTMLVideoElement | null;
+  backdrop?.classList.remove('trailer-ready', 'trailer-playing');
+  if (!video) return;
+  video.pause();
+  if (video.src) {
+    video.removeAttribute('src');
+    video.load();
+  }
+}
+
+let landingTrailerWired = false;
+function applyLandingBackdrop(highContrast: boolean): void {
+  const backdrop = document.getElementById('start-screen-backdrop');
+  const video = document.getElementById('bg-home') as HTMLVideoElement | null;
+  if (!backdrop) return;
+
+  const saveData = navigatorSaveData();
+  // Reduced motion: honour BOTH the OS-level prefers-reduced-motion query and
+  // the player's persisted in-app Reduce Motion toggle, so the drifting trailer
+  // stays off for anyone who asked for less motion in either place.
+  const reducedMotion = (typeof window.matchMedia === 'function'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    || new Settings().get('reduceMotion');
+  const useStatic = shouldUseStaticBackdrop({
+    phone: isPhoneTouchDevice(),
+    saveData,
+    reducedMotion,
+    highContrast,
+  });
+
+  backdrop.classList.toggle('backdrop-static', useStatic);
+
+  if (!video) return;
+  if (useStatic) {
+    // Keep the poster only; tear down any playing trailer and release the buffer.
+    backdrop.classList.remove('trailer-ready', 'trailer-playing');
+    if (video.src) {
+      video.pause();
+      video.removeAttribute('src');
+      video.load(); // drop the decoded video so the poster shows + memory frees
+    }
+    return;
+  }
+
+  // Video path: attach the source lazily and play. Reveal classes flip on the
+  // first painted frame so the poster cross-fades into live motion.
+  const src = video.dataset.trailerSrc;
+  if (src && !video.src) {
+    video.src = src;
+    if (!landingTrailerWired) {
+      landingTrailerWired = true;
+      video.addEventListener('playing', () => {
+        backdrop.classList.add('trailer-ready', 'trailer-playing');
+      });
+    }
+    video.load();
+  }
+  video.play().catch(() => { /* autoplay blocked: poster stays, no error surfaced */ });
 }
 
 function wireStartScreens(): void {
@@ -4409,6 +4707,8 @@ function wireStartScreens(): void {
       if (header && toggleBtn) {
         header.classList.remove('menu-open');
         toggleBtn.setAttribute('aria-expanded', 'false');
+        const menu = document.getElementById('header-menu-container') as HTMLElement | null;
+        if (menu) menu.style.display = '';
       }
 
       if (customAction) {
@@ -4490,9 +4790,33 @@ function wireStartScreens(): void {
   const mobileMenuToggle = $('#mobile-menu-toggle');
   const homepageHeader = $('.homepage-header');
   if (mobileMenuToggle && homepageHeader) {
+    const headerMenu = document.getElementById('header-menu-container') as HTMLElement | null;
+    let lastNativeMenuToggleAt = 0;
+    const setMobileMenuOpen = (open: boolean) => {
+      homepageHeader.classList.toggle('menu-open', open);
+      mobileMenuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (headerMenu) headerMenu.style.display = open ? 'flex' : '';
+    };
+    const toggleMobileMenu = () => setMobileMenuOpen(!homepageHeader.classList.contains('menu-open'));
+    const handleNativeMenuToggle = (e: Event) => {
+      const target = e.target instanceof Element ? e.target : null;
+      if (!target?.closest('#mobile-menu-toggle')) return;
+      const now = Date.now();
+      if (now - lastNativeMenuToggleAt <= 250) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      lastNativeMenuToggleAt = now;
+      e.preventDefault();
+      e.stopPropagation();
+      toggleMobileMenu();
+    };
+    document.addEventListener('pointerup', handleNativeMenuToggle, true);
+    document.addEventListener('touchend', handleNativeMenuToggle, { capture: true, passive: false });
     mobileMenuToggle.addEventListener('click', () => {
-      const isOpen = homepageHeader.classList.toggle('menu-open');
-      mobileMenuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (Date.now() - lastNativeMenuToggleAt <= 250) return;
+      toggleMobileMenu();
     });
   }
 
@@ -4528,6 +4852,45 @@ function wireStartScreens(): void {
   };
 
   initBackgroundEmbers();
+
+  // Landing backdrop: read the persisted high-contrast preference and decide
+  // trailer-vs-static (also forced static on phones / Save-Data / reduced-motion).
+  // Uses a throwaway Settings read so it works before the game's settings object
+  // exists; the footer toggle persists changes through the same store.
+  const landingSettings = new Settings();
+  const contrastToggle = document.getElementById('landing-contrast-toggle') as HTMLButtonElement | null;
+  const syncContrastToggle = (on: boolean): void => {
+    if (contrastToggle) contrastToggle.setAttribute('aria-pressed', String(on));
+  };
+  syncContrastToggle(landingSettings.get('landingHighContrast'));
+  applyLandingBackdrop(landingSettings.get('landingHighContrast'));
+
+  // Stamp the engine/device + CSS-effects classes on the landing screen too, so
+  // the decorative #start-screen-backdrop work (portal rings' heavy blur, nebula,
+  // embers, trailer) is toned down from the first paint on costly engines (mobile
+  // WebKit above all). The renderer (and its GPU tier) does not exist yet, so we
+  // pass the conservative 'high' render tier here: only known-bad engine/device
+  // quirks tone the first paint down. startGame() re-stamps with the real GFX.tier
+  // once in-world. Honors a persisted manual browserEffects override.
+  {
+    const landingEnv = readBrowserEnv();
+    const landingTier = cssEffectsTier({
+      engine: landingEnv.engine,
+      version: landingEnv.engineVersion,
+      mobile: landingEnv.mobile,
+      renderTier: 'high',
+      override: landingSettings.get('browserEffects') as number,
+    });
+    const body = document.body.classList;
+    body.remove(...BROWSER_BODY_CLASSES);
+    body.add(...browserBodyClasses(landingEnv, landingTier));
+  }
+  contrastToggle?.addEventListener('click', () => {
+    const next = !landingSettings.get('landingHighContrast');
+    landingSettings.set('landingHighContrast', next);
+    syncContrastToggle(next);
+    applyLandingBackdrop(next);
+  });
 
   // Initialize 3D character preview once assets are ready
   assetsReady().then(() => {

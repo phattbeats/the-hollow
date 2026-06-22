@@ -22,6 +22,7 @@ import {
   isQuestTurnInNpc,
 } from '../sim/types';
 import { xpBarView, formatXp } from './xp_bar';
+import { questTrackerView, type QuestTrackerView, type TrackedQuest } from './quest_tracker';
 import { lowHealthVignette } from './low_health';
 import { absorbBarView } from './absorb_bar';
 import { itemStatDeltas } from './item_compare';
@@ -32,13 +33,16 @@ import { formatClockTime } from './clock';
 import { formatMinimapCoords } from './coords';
 import { compassView, type CardinalId } from './compass';
 import { clampMinimapZoom, nextMinimapZoom, isMinMinimapZoom, isMaxMinimapZoom, minimapZoomValue, MINIMAP_ZOOM_DEFAULT } from './minimap_zoom';
+import { getUiScale } from './ui_scale';
 import { restView } from './rest_indicator';
 import { nearestSubzone } from './subzone';
 import { lowResourceView } from './low_resource';
 import { activeCharacterAppearancePreview, characterAppearanceOptions } from './character_appearance';
-import { terrainHeight, WATER_LEVEL, roadDistance, generateDecorations } from '../sim/world';
+import { generateDecorations } from '../sim/world';
 import type { Decoration } from '../sim/world';
+import { paintTerrainRows, mapCanvasHeight, type MapRegion } from './map_terrain';
 import { Meters } from './meters';
+import { TutorialOverlay } from './tutorial';
 import { audio } from '../game/audio';
 import { sfx } from '../game/sfx';
 import { voice } from '../game/voice';
@@ -57,6 +61,7 @@ import {
 import { cardHostingAvailable, publishCard, fetchReferralInfo, fetchStanding, type PublishedCard, type CharacterStanding } from './player_card_share';
 import { holderTierForBalance, holderTierByIndex, holderTierBadgeDataUrl, holderTierDisplayName } from './holder_tier';
 import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } from '../game/keybinds';
+import { GAMEPAD_BUTTON_LABELS, GAMEPAD_NONE } from '../game/gamepad_map';
 import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES, normalizeClickMoveButton } from '../game/settings';
 import { PerfOverlaySettingsPanel, type PerfOverlayHooks, type PerfSettingsHost } from './perf_overlay_settings';
 import { isPhoneTouchDevice } from '../game/mobile_controls';
@@ -87,12 +92,14 @@ import { localizeSimText, localizeSimAuraName } from './sim_i18n';
 import { tTalent, localizeTalentTitle } from './talent_i18n';
 import { armorTypeForItem, weaponArchetypeForItem } from '../sim/equipment_rules';
 import { type ChatClock, clampChatClock, formatChatTimestamp } from './chat_timestamp';
+import { type ChatBoxGeometry, clampChatBox, serializeChatBox, parseChatBox } from './chat_window';
 import {
   talentsFor, computeTalentModifiers, validateAllocation, dormantNodes, pointsSpent,
   exportBuild, importBuild, cloneAllocation, talentPointsAtLevel, FIRST_TALENT_LEVEL,
   type TalentAllocation, type TalentNode, type SpecDef, type Role,
 } from '../sim/content/talents';
 import { talentChoiceIconDataUrl, talentNodeIconDataUrl } from './talent_icons';
+import { dropdownKeyNav } from './dropdown_nav';
 import { augmentCategory, type AugmentCategory } from '../sim/content/augments';
 import {
   buildDefaultFormBar, classHasFormBars, clearHotbarSlot, encodeHotbarAction, HOTBAR_ACTION_MIME, HotbarAction,
@@ -118,11 +125,39 @@ export interface OptionsHooks {
   // feature is off or no wallet is connected/linked.
   refreshWocBalance(): void;
   perfOverlay: PerfOverlayHooks;
+  // Gamepad button-layout seam (the concrete GamepadBindings satisfies it
+  // structurally), so the Controller options panel can read & rebind buttons
+  // without the HUD importing the manager.
+  gamepad: GamepadBindingsHooks;
+}
+
+// Read/rebind the gamepad's button→action layout from the options panel.
+export interface GamepadBindingsHooks {
+  entries(): { button: number; action: string }[];
+  bind(button: number, action: string): void;
+  reset(): void;
 }
 
 export interface ReportHooks {
   submit(targetPid: number, reason: string, details: string): Promise<void>;
   submitByName?(targetName: string, reason: string, details: string): Promise<void>;
+}
+
+export interface BugReportPayload {
+  description: string;
+  screenshot: string | null;
+  meta: unknown;
+}
+
+export interface BugReportHooks {
+  // Submit a captured bug report to the server. Resolves on success (screenshotStored
+  // is false when the server dropped the screenshot), rejects with a server error
+  // message the hud maps via localizeBugReportError.
+  submit(payload: BugReportPayload): Promise<{ screenshotStored: boolean }>;
+  // Grab a JPEG data URL of the current frame, or null if capture failed/unavailable.
+  capture(): string | null;
+  // Auto-collected context (build, userAgent, viewport, zone, level/class, camera).
+  collectMeta(): unknown;
 }
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.querySelector(sel) as T;
@@ -259,6 +294,9 @@ const IGNORED_CHAT_NAMES_KEY = 'woc_ignored_chat_names';
 // implicit and never stored.
 const CHAT_TABS_KEY = 'woc_chat_tabs';
 const CHAT_ACTIVE_TAB_KEY = 'woc_chat_active_tab';
+// Persisted chat-window geometry (drag position + resize size). Desktop only —
+// the mobile layout owns its own placement and ignores this.
+const CHAT_GEOMETRY_KEY = 'woc_chat_geometry';
 const BIND_CATEGORY_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
   Movement: 'hud.keybinds.categories.movement',
   Targeting: 'hud.keybinds.categories.targeting',
@@ -381,21 +419,25 @@ function yellVoiceKey(text: string): string {
 
 export class Hud {
   private static readonly BAR_ABILITY_SLOTS = 11; // bar slots 1..11; slot 0 is the fixed Attack toggle
-  private static readonly FORM_TOGGLE_IDS = new Set(['bear_form', 'cat_form']); // shift toggles, castable in any form
+  private static ddSeq = 0; // monotonic id source for buildDropdown listbox/option ARIA wiring
+  private static readonly FORM_TOGGLE_IDS = new Set(['bear_form', 'cat_form', 'travel_form']); // shift toggles, castable in any form
   private abilityButtons: { btn: HTMLButtonElement; label: HTMLSpanElement; countEl: HTMLSpanElement; keybindEl: HTMLSpanElement; cdOverlay: HTMLDivElement; cdText: HTMLDivElement; lastIcon: string }[] = [];
   private hotbarActions: HotbarAction[] = []; // index = barSlot-1
   private loadedSlotMapFromStorage = false;
   private knownAbilityIdsAtLastSlotSync: Set<string> | null = null;
   private activeHotbarForm: HotbarForm = 'normal';
   private dragAction: { action: Exclude<HotbarAction, null>; sourceIndex: number | null } | null = null;
+  // Set while dragging an equipped piece out of the paperdoll onto the bags window.
+  private dragUnequipSlot: EquipSlot | null = null;
   private mobileHotbarDrag: MobileHotbarDrag | null = null;
   private suppressNextActionClick = false;
   private optionsHooks: OptionsHooks | null = null;
   private reportHooks: ReportHooks | null = null;
+  private bugReportHooks: BugReportHooks | null = null;
   // Soft swear terms from the server (online only), masked in chat when the
   // player's "Filter Profanity" setting is on. Fed by main.ts from ClientWorld.
   private profanityWords: string[] = [];
-  private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' | 'interface' | 'performance' = 'main';
+  private optionsView: 'main' | 'keybinds' | 'graphics' | 'audio' | 'interface' | 'performance' | 'controller' | 'bugreport' = 'main';
   // The Options > Performance panel, lazily built and reused (it caches the live
   // position-slider handles so a drag-to-move can update them in place).
   private perfSettings: PerfOverlaySettingsPanel | null = null;
@@ -475,7 +517,29 @@ export class Hud {
   // presets (see minimap_zoom.ts), persisted to localStorage. 1 = shipped look.
   private minimapZoom = MINIMAP_ZOOM_DEFAULT;
   private minimapZoomLabel: HTMLElement | null = null;
-  private mapBg: HTMLCanvasElement | null = null;
+  // World-map terrain backgrounds, cached per zone. A background depends only on
+  // (seed, zone bounds), both fixed for the session, so it is immutable and
+  // cached forever; rendering one is ~200ms (230k terrainHeight/roadDistance
+  // samples), which is why it must never run on the open path (see mapPrewarm).
+  private mapBgCache = new Map<string, HTMLCanvasElement>();
+  // In-flight idle prewarm of one zone's background, painted a few rows per
+  // idle slice so it never blocks a frame. Committed to mapBgCache when done.
+  private mapPrewarm: {
+    zoneId: string;
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+    img: ImageData;
+    W: number;
+    H: number;
+    row: number;
+    region: MapRegion;
+  } | null = null;
+  private mapPrewarmHandle = 0;
+  // Which scheduler produced mapPrewarmHandle. requestIdleCallback and setTimeout
+  // hand out ids from separate pools, so the handle must be cancelled with the
+  // matching canceller; a clearTimeout on an idle id (or vice versa) could cancel
+  // an unrelated timer that happens to share the number.
+  private mapPrewarmVia: 'idle' | 'timeout' | null = null;
   private openLootMobId: number | null = null;
   private activeLootRolls = new Map<number, { event: Extract<SimEvent, { type: 'lootRoll' }>; receivedAt: number; durationMs: number }>();
   private openVendorNpcId: number | null = null;
@@ -531,13 +595,19 @@ export class Hud {
   private lastNythraxisCombatEventAt = 0;
   private lastResting = false;
   private lastZoneId = '';
-  private mapZoneId = ''; // zone the cached map-window canvas was rendered for
   private mapZoom = 1; // world-map zoom: 1 = whole zone, up to MAP_MAX_ZOOM
   private mapCenter: { x: number; z: number } | null = null; // pan target; null = follow player
   private mapDrag: { px: number; py: number; cx: number; cz: number } | null = null;
   private mapView: { spanX: number; spanZ: number; minX: number; maxX: number; minZ: number; maxZ: number } | null = null;
   private mapDecorations: Decoration[] | null = null; // cached trees/rocks (whole world)
   private windowDrag: { el: HTMLElement; pointerId: number; offsetX: number; offsetY: number } | null = null;
+  // Movable/resizable chat box: current geometry (null = stock CSS default) plus
+  // the in-progress pointer gesture, if any. See chat_window.ts for the math.
+  private chatBox: ChatBoxGeometry | null = null;
+  private chatBoxGesture:
+    | { kind: 'move'; pointerId: number; grabX: number; grabY: number }
+    | { kind: 'resize'; pointerId: number; startX: number; startY: number; startW: number; startH: number }
+    | null = null;
   private windowObserver: MutationObserver | null = null;
   private windowZ = 50;
   private ignoredChatNames = new Set<string>();
@@ -578,6 +648,7 @@ export class Hud {
   private socialSuggest: { field: string; items: { name: string; cls: string; level: number }[]; index: number } = { field: '', items: [], index: -1 };
 
   private meters: Meters;
+  private tutorial = new TutorialOverlay();
   private lastPetBarSig = '';
   private pendingPetFeed = false;
   private petModeMenuOpen = false;
@@ -589,6 +660,7 @@ export class Hud {
     this.ignoredChatNames = this.loadIgnoredChatNames();
     this.meters = new Meters(sim);
     this.initChatTabs();
+    this.initChatBoxGeometry();
     this.initWindowManagement();
     this.emoteWheelSlots = this.loadEmoteWheelSlots();
     this.loadSlotMap();
@@ -693,6 +765,26 @@ export class Hud {
     $('#mm-spell').addEventListener('click', () => this.toggleSpellbook());
     $('#mm-talents')?.addEventListener('click', () => this.toggleTalents());
     $('#mm-quest').addEventListener('click', () => this.toggleQuestLog());
+    // Collapse/expand the on-screen quest tracker by clicking its header. The
+    // overlay is click-through (pointer-events:none) except the header button, so
+    // delegate on the stable container (the header is rebuilt on each render).
+    $('#quest-tracker').addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('.qt-header')) this.toggleQuestTrackerCollapsed();
+    });
+    // Keyboard activation: handle Enter/Space here and stop the event before it
+    // bubbles to the window-level game keybinds (Enter is bound to Open Chat,
+    // Space is preventDefault'd for jump), which would otherwise hijack the
+    // focused header button's native activation. The tracker is a non-modal
+    // overlay, so canUseGameKeys() stays true and those binds fire while it has
+    // focus; stopping propagation here keeps the toggle reachable by keyboard.
+    $('#quest-tracker').addEventListener('keydown', (e) => {
+      if (!(e.target as HTMLElement).closest('.qt-header')) return;
+      if (e.key === 'Enter' || e.key === ' ' || e.code === 'Space') {
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleQuestTrackerCollapsed();
+      }
+    });
     $('#mm-map').addEventListener('click', () => this.toggleMap());
     $('#map-close').addEventListener('click', () => { $('#map-window').style.display = 'none'; });
     const mapCanvas = $('#map-canvas') as unknown as HTMLCanvasElement;
@@ -730,6 +822,29 @@ export class Hud {
     mapCanvas.addEventListener('pointerup', endDrag);
     mapCanvas.addEventListener('pointercancel', endDrag);
     $('#mm-bag').addEventListener('click', () => this.toggleBags());
+    // Drop an equipped piece dragged out of the paperdoll onto the bags window.
+    const bagsEl = $('#bags');
+    bagsEl.addEventListener('dragover', (e) => {
+      if (this.dragUnequipSlot === null) return;
+      e.preventDefault();
+      e.dataTransfer!.dropEffect = 'move';
+      bagsEl.classList.add('drop-target');
+    });
+    bagsEl.addEventListener('dragleave', (e) => {
+      if (e.target === bagsEl) bagsEl.classList.remove('drop-target');
+    });
+    bagsEl.addEventListener('drop', (e) => {
+      if (this.dragUnequipSlot === null) return;
+      e.preventDefault();
+      const slot = this.dragUnequipSlot;
+      this.dragUnequipSlot = null;
+      bagsEl.classList.remove('drop-target');
+      this.sim.unequipItem(slot);
+      audio.click();
+      this.hideTooltip();
+      this.renderBags();
+      this.renderCharIfOpen();
+    });
     $('#mm-social').addEventListener('click', () => this.toggleSocial());
     $('#mm-options')?.addEventListener('click', () => this.toggleOptionsMenu());
     $('#mm-arena').addEventListener('click', () => this.toggleArena());
@@ -754,6 +869,7 @@ export class Hud {
     const startZone = zoneAt(sim.player.pos.z);
     const startZoneName = zoneDisplayName(startZone.id);
     this.lastZoneId = startZone.id;
+    this.prewarmMapBg(startZone.id); // render the spawn-zone map bg during idle, not on first open
     this.showBanner(startZoneName);
     this.log(t('hud.core.welcomeZone', { zone: startZoneName }), '#ffd100');
     this.logZoneWelcome(startZone);
@@ -890,7 +1006,7 @@ export class Hud {
   }
 
   private placeNewWindow(el: HTMLElement): void {
-    if (el.dataset.windowMoved === '1' || el.id === 'loot-window') return;
+    if (el.dataset.windowMoved === '1' || el.id === 'loot-window' || el.id === 'confirm-dialog') return;
     if (document.body.classList.contains('vendor-open') && (el.id === 'vendor-window' || el.id === 'bags')) return;
     const openCount = [...document.querySelectorAll<HTMLElement>('.window.panel')]
       .filter((win) => win !== el && this.isWindowVisible(win)).length;
@@ -927,15 +1043,40 @@ export class Hud {
 
   private setWindowPixelPosition(el: HTMLElement, left: number, top: number, rect = el.getBoundingClientRect()): void {
     const margin = 8;
-    const width = Math.min(rect.width, window.innerWidth - margin * 2);
-    const height = Math.min(rect.height, window.innerHeight - margin * 2);
-    const maxLeft = Math.max(margin, window.innerWidth - width - margin);
-    const maxTop = Math.max(margin, window.innerHeight - height - margin);
-    el.style.left = `${Math.max(margin, Math.min(maxLeft, left))}px`;
-    el.style.top = `${Math.max(margin, Math.min(maxTop, top))}px`;
+    // Callers pass coordinates in visual (zoomed) space: getBoundingClientRect()
+    // and pointer clientX/clientY are post-zoom, but style.left/top are author
+    // lengths the browser multiplies by #ui's `zoom`. Convert into author space
+    // (divide by the live UI scale) so the window lands where the pointer is, and
+    // clamp against the viewport expressed in that same author space. (Z=1 when
+    // uiScale is at its default, so this is a no-op for most players.)
+    const z = getUiScale();
+    const vw = window.innerWidth / z;
+    const vh = window.innerHeight / z;
+    const aLeft = left / z;
+    const aTop = top / z;
+    const width = Math.min(rect.width / z, vw - margin * 2);
+    const height = Math.min(rect.height / z, vh - margin * 2);
+    const maxLeft = Math.max(margin, vw - width - margin);
+    const maxTop = Math.max(margin, vh - height - margin);
+    el.style.left = `${Math.max(margin, Math.min(maxLeft, aLeft))}px`;
+    el.style.top = `${Math.max(margin, Math.min(maxTop, aTop))}px`;
     el.style.right = 'auto';
     el.style.bottom = 'auto';
     el.style.transform = 'none';
+  }
+
+  // Place a cursor-anchored popup (context menus, the loot window) at a viewport
+  // coordinate. x/y arrive in visual (zoomed / pointer-client) space; #ui is
+  // scaled by `zoom`, so convert into author space (÷ scale) and clamp against
+  // the viewport in that same space, keeping `reserveRight`/`reserveBottom`
+  // author px clear so the popup never spills off-screen. minTop pins it below
+  // the top edge. Z=1 (default uiScale) leaves the math identical to before.
+  private placePopupAt(el: HTMLElement, x: number, y: number, reserveRight: number, reserveBottom: number, minLeft = 0, minTop = 0): void {
+    const z = getUiScale();
+    const maxLeft = window.innerWidth / z - reserveRight;
+    const maxTop = window.innerHeight / z - reserveBottom;
+    el.style.left = `${Math.max(minLeft, Math.min(maxLeft, x / z))}px`;
+    el.style.top = `${Math.max(minTop, Math.min(maxTop, y / z))}px`;
   }
 
   private topmostOpenWindow(): HTMLElement | null {
@@ -997,6 +1138,154 @@ export class Hud {
       localStorage.setItem(CHAT_TABS_KEY, serializeChatTabs(this.chatTabs));
       localStorage.setItem(CHAT_ACTIVE_TAB_KEY, this.activeChatTab);
     } catch { /* storage unavailable */ }
+  }
+
+  // -------------------------------------------------------------------------
+  // Movable / resizable chat window (desktop only). The pure geometry math
+  // (clamping, (de)serialization) lives in chat_window.ts; this section is just
+  // the DOM wiring: a drag handle on the tab strip, a corner resize grip, and
+  // localStorage persistence with a reset path back to the CSS default.
+  // -------------------------------------------------------------------------
+
+  private isMobileLayout(): boolean {
+    return document.body.classList.contains('mobile-touch');
+  }
+
+  private initChatBoxGeometry(): void {
+    const wrap = document.getElementById('chatlog-wrap');
+    const tabs = document.getElementById('chatlog-tabs');
+    const frame = document.getElementById('chatlog-frame');
+    if (!wrap || !tabs || !frame) return;
+
+    // Resize grip pinned to the frame's bottom-right corner.
+    const grip = document.createElement('div');
+    grip.className = 'chat-resize-grip';
+    grip.title = t('hudChrome.chatWindow.resize');
+    grip.setAttribute('aria-hidden', 'true');
+    frame.appendChild(grip);
+
+    tabs.style.touchAction = 'none';
+    tabs.setAttribute('aria-label', t('hudChrome.chatWindow.move'));
+    tabs.addEventListener('pointerdown', (ev) => this.onChatBoxMoveStart(ev, wrap, tabs));
+    grip.addEventListener('pointerdown', (ev) => this.onChatBoxResizeStart(ev, wrap, frame));
+    document.addEventListener('pointermove', (ev) => this.onChatBoxPointerMove(ev));
+    const end = (ev: PointerEvent) => this.onChatBoxPointerEnd(ev);
+    document.addEventListener('pointerup', end);
+    document.addEventListener('pointercancel', end);
+    // Re-clamp into view when the viewport changes (mirrors the .window.panel logic).
+    window.addEventListener('resize', () => { if (this.chatBox) this.applyChatBoxGeometry(); });
+
+    let saved: string | null = null;
+    try { saved = localStorage.getItem(CHAT_GEOMETRY_KEY); } catch { /* storage unavailable */ }
+    this.chatBox = parseChatBox(saved);
+    if (this.chatBox) this.applyChatBoxGeometry();
+  }
+
+  // Seed this.chatBox from the live layout the first time a gesture starts, so a
+  // box still on its CSS default converts cleanly to explicit px coordinates.
+  private ensureChatBoxGeometry(wrap: HTMLElement, tabs: HTMLElement): void {
+    if (this.chatBox) return;
+    const wrapRect = wrap.getBoundingClientRect();
+    const frameRect = document.getElementById('chatlog-frame')?.getBoundingClientRect();
+    const chromeH = tabs.getBoundingClientRect().height;
+    this.chatBox = {
+      left: wrapRect.left,
+      top: wrapRect.top,
+      width: wrapRect.width,
+      height: frameRect ? frameRect.height : Math.max(0, wrapRect.height - chromeH),
+    };
+  }
+
+  private onChatBoxMoveStart(ev: PointerEvent, wrap: HTMLElement, tabs: HTMLElement): void {
+    if (ev.button !== 0 || this.isMobileLayout()) return;
+    const target = ev.target as HTMLElement | null;
+    // Tab buttons (select / add / close) keep their own click behaviour; only the
+    // empty strip area initiates a move.
+    if (!target || target.closest('button')) return;
+    ev.preventDefault();
+    this.ensureChatBoxGeometry(wrap, tabs);
+    const rect = wrap.getBoundingClientRect();
+    this.chatBoxGesture = { kind: 'move', pointerId: ev.pointerId, grabX: ev.clientX - rect.left, grabY: ev.clientY - rect.top };
+    document.body.classList.add('chat-box-dragging');
+    try { tabs.setPointerCapture?.(ev.pointerId); } catch { /* synthetic pointer */ }
+  }
+
+  private onChatBoxResizeStart(ev: PointerEvent, wrap: HTMLElement, frame: HTMLElement): void {
+    if (ev.button !== 0 || this.isMobileLayout()) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    const tabs = document.getElementById('chatlog-tabs');
+    if (tabs) this.ensureChatBoxGeometry(wrap, tabs);
+    if (!this.chatBox) return;
+    this.chatBoxGesture = {
+      kind: 'resize', pointerId: ev.pointerId,
+      startX: ev.clientX, startY: ev.clientY,
+      startW: this.chatBox.width, startH: this.chatBox.height,
+    };
+    document.body.classList.add('chat-box-dragging');
+    try { frame.setPointerCapture?.(ev.pointerId); } catch { /* synthetic pointer */ }
+  }
+
+  private onChatBoxPointerMove(ev: PointerEvent): void {
+    const g = this.chatBoxGesture;
+    if (!g || g.pointerId !== ev.pointerId || !this.chatBox) return;
+    ev.preventDefault();
+    if (g.kind === 'move') {
+      this.chatBox = { ...this.chatBox, left: ev.clientX - g.grabX, top: ev.clientY - g.grabY };
+    } else {
+      this.chatBox = { ...this.chatBox, width: g.startW + (ev.clientX - g.startX), height: g.startH + (ev.clientY - g.startY) };
+    }
+    this.applyChatBoxGeometry();
+  }
+
+  private onChatBoxPointerEnd(ev: PointerEvent): void {
+    const g = this.chatBoxGesture;
+    if (!g || g.pointerId !== ev.pointerId) return;
+    this.chatBoxGesture = null;
+    document.body.classList.remove('chat-box-dragging');
+    this.persistChatBoxGeometry();
+  }
+
+  private applyChatBoxGeometry(): void {
+    if (!this.chatBox || this.isMobileLayout()) return;
+    const wrap = document.getElementById('chatlog-wrap');
+    const tabs = document.getElementById('chatlog-tabs');
+    const frame = document.getElementById('chatlog-frame');
+    if (!wrap || !tabs || !frame) return;
+    const chromeH = tabs.getBoundingClientRect().height || 22;
+    const clamped = clampChatBox(this.chatBox, { w: window.innerWidth, h: window.innerHeight }, chromeH);
+    this.chatBox = clamped;
+    wrap.style.left = `${clamped.left}px`;
+    wrap.style.top = `${clamped.top}px`;
+    wrap.style.right = 'auto';
+    wrap.style.bottom = 'auto';
+    wrap.style.width = `${clamped.width}px`;
+    frame.style.height = `${clamped.height}px`;
+    // Keep the (separately positioned) chat input bar aligned above the box.
+    const input = document.getElementById('chat-input');
+    if (input) {
+      input.style.left = `${clamped.left}px`;
+      input.style.width = `${clamped.width}px`;
+      input.style.bottom = `${Math.max(0, window.innerHeight - clamped.top + 4)}px`;
+    }
+  }
+
+  private persistChatBoxGeometry(): void {
+    if (!this.chatBox) return;
+    try { localStorage.setItem(CHAT_GEOMETRY_KEY, serializeChatBox(this.chatBox)); } catch { /* storage unavailable */ }
+  }
+
+  // Public: snap the chat window back to its stock CSS position/size and forget
+  // the saved geometry. Wired to the "Reset Chat Window" interface option.
+  resetChatWindow(): void {
+    this.chatBox = null;
+    try { localStorage.removeItem(CHAT_GEOMETRY_KEY); } catch { /* storage unavailable */ }
+    const ids = ['chatlog-wrap', 'chatlog-frame', 'chat-input'];
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      for (const prop of ['left', 'top', 'right', 'bottom', 'width', 'height']) el.style.removeProperty(prop);
+    }
   }
 
   private renderChatTabs(): void {
@@ -1109,8 +1398,7 @@ export class Hud {
     }
     html += `<div class="ctx-item" data-act="close">${esc(t('hud.chat.context.cancel'))}</div>`;
     el.innerHTML = html;
-    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
-    el.style.top = `${Math.max(8, Math.min(window.innerHeight - 320, y))}px`;
+    this.placePopupAt(el, x, y, 170, 320, 0, 8);
     el.style.display = 'block';
     this.bindContextMenuActions((act) => {
       if (!isChatTabChannel(act)) return;
@@ -1450,9 +1738,13 @@ export class Hud {
       this.peekGuard.tooltipShown(trigger);
       this.tooltipEl.innerHTML = html();
       this.tooltipEl.style.display = 'block';
+      // offsetWidth/Height are author-space (zoom-immune) layout sizes, but x/y
+      // arrive in visual (zoomed) space, so map x/y into author space (÷ scale)
+      // before clamping against the author-space tooltip box + viewport.
+      const z = getUiScale();
       const tw = this.tooltipEl.offsetWidth, th = this.tooltipEl.offsetHeight;
-      this.tooltipEl.style.left = `${Math.max(8, Math.min(window.innerWidth - tw - 8, x + 14))}px`;
-      this.tooltipEl.style.top = `${Math.max(8, y - th - 10)}px`;
+      this.tooltipEl.style.left = `${Math.max(8, Math.min(window.innerWidth / z - tw - 8, x / z + 14))}px`;
+      this.tooltipEl.style.top = `${Math.max(8, y / z - th - 10)}px`;
     };
     const showNearElement = () => {
       const rect = el.getBoundingClientRect();
@@ -1465,9 +1757,10 @@ export class Hud {
     });
     el.addEventListener('mousemove', (e) => {
       if (mobile()) return;
+      const z = getUiScale();
       const tw = this.tooltipEl.offsetWidth, th = this.tooltipEl.offsetHeight;
-      this.tooltipEl.style.left = `${Math.min(window.innerWidth - tw - 8, e.clientX + 14)}px`;
-      this.tooltipEl.style.top = `${Math.max(8, e.clientY - th - 10)}px`;
+      this.tooltipEl.style.left = `${Math.min(window.innerWidth / z - tw - 8, e.clientX / z + 14)}px`;
+      this.tooltipEl.style.top = `${Math.max(8, e.clientY / z - th - 10)}px`;
     });
     el.addEventListener('mouseleave', () => { clearTouchTimer(); this.tooltipEl.style.display = 'none'; });
     el.addEventListener('focusin', showNearElement);
@@ -2365,6 +2658,7 @@ export class Hud {
     if (slowHud) this.lastHudSlowAt = now;
 
     this.meters.update();
+    this.tutorial.update(sim, this.renderer, this.keybinds);
     this.updateLootRollTimers(now);
     this.syncActiveHotbarForm();
     this.syncSlotMap(); // picks up newly learned abilities mid-session
@@ -2624,6 +2918,7 @@ export class Hud {
             this.logZoneWelcome(currentZone);
           }
           this.lastZoneId = currentZone.id;
+          this.prewarmMapBg(currentZone.id); // get the new zone's map bg ready before the player opens it
         }
       }
 
@@ -2787,16 +3082,76 @@ export class Hud {
 
   private updateQuestTracker(): void {
     const el = $('#quest-tracker');
-    let html = this.sim.questLog.size > 0 ? `<div class="qt-header">${esc(t('questUi.tracker.title'))}</div>` : '';
+    const settings = this.optionsHooks?.settings;
+    let collapsed = (settings?.get('questTrackerCollapsed') ?? false) === true;
+    const quests: TrackedQuest[] = [];
     for (const qp of this.sim.questLog.values()) {
       const quest = QUESTS[qp.questId];
-      html += `<div class="qt-title">${esc(questTitle(qp.questId))}${qp.state === 'ready' ? ` <span class="quest-complete">(${esc(t('questUi.tracker.complete'))})</span>` : ''}</div>`;
-      quest.objectives.forEach((obj, i) => {
-        const done = qp.counts[i] >= obj.count;
-        html += `<div class="qt-obj${done ? ' done' : ''}">- ${esc(this.questProgressText(questObjectiveLabel(qp.questId, i), qp.counts[i], obj.count))}</div>`;
+      quests.push({
+        id: qp.questId,
+        title: questTitle(qp.questId),
+        complete: qp.state === 'ready',
+        objectives: quest.objectives.map((obj, i) => ({
+          label: questObjectiveLabel(qp.questId, i),
+          current: qp.counts[i],
+          total: obj.count,
+        })),
       });
     }
+    // Only persist the collapse choice while at least one quest is tracked: when
+    // the tracker empties (all quests turned in or abandoned) drop the flag, so a
+    // freshly accepted quest reappears expanded with its objectives visible
+    // rather than hidden behind a collapsed header. Self-limiting to a single
+    // write: once cleared, later empty frames read false and skip.
+    if (collapsed && quests.length === 0 && settings) {
+      settings.set('questTrackerCollapsed', false);
+      collapsed = false;
+    }
+    const html = this.questTrackerHtml(questTrackerView(quests, collapsed));
     if (el.innerHTML !== html) el.innerHTML = html;
+  }
+
+  // Render the pure tracker view to the floating overlay's HTML. The header is a
+  // <button> (pointer-events re-enabled in CSS over the otherwise click-through
+  // overlay) that toggles the collapse; a delegated listener on #quest-tracker
+  // (see the event-binding constructor) handles activation so it survives these
+  // innerHTML rebuilds.
+  private questTrackerHtml(view: QuestTrackerView): string {
+    if (!view.visible) return '';
+    const chevron = view.collapsed ? '▸' : '▾'; // U+25B8 right / U+25BE down triangle
+    // The leading space keeps a separator in the button's accessible name
+    // ("Quests (5)", not "Quests(5)"); the visual gap is the flex `gap`.
+    const count = view.collapsed
+      ? ` <span class="qt-count">${esc(t('hudChrome.questTracker.count', { count: this.questNumber(view.count) }))}</span>`
+      : '';
+    // State-aware hover hint: clicking collapses while expanded, expands while collapsed.
+    const hint = esc(t(view.collapsed ? 'hudChrome.questTracker.expandHint' : 'hudChrome.questTracker.collapseHint'));
+    // aria-controls points at the row list (kept in the DOM, empty when collapsed)
+    // so assistive tech ties the toggle to the region it shows/hides.
+    let html = `<button type="button" class="qt-header" aria-expanded="${!view.collapsed}" aria-controls="qt-list" title="${hint}">`
+      + `<span class="qt-chevron" aria-hidden="true">${chevron}</span>`
+      + `<span class="qt-h-label">${esc(t('questUi.tracker.title'))}</span>${count}</button>`;
+    let rows = '';
+    for (const q of view.quests) {
+      rows += `<div class="qt-title">${esc(q.title)}${q.complete ? ` <span class="quest-complete">(${esc(t('questUi.tracker.complete'))})</span>` : ''}</div>`;
+      for (const o of q.objectives) {
+        rows += `<div class="qt-obj${o.done ? ' done' : ''}">- ${esc(this.questProgressText(o.label, o.current, o.total))}</div>`;
+      }
+    }
+    return `${html}<div id="qt-list">${rows}</div>`;
+  }
+
+  /** Flip the persisted tracker-collapsed preference (the header click/keyboard
+   *  activation), preserving keyboard focus across the innerHTML rebuild. */
+  private toggleQuestTrackerCollapsed(): void {
+    const settings = this.optionsHooks?.settings;
+    if (!settings) return;
+    const refocus = document.activeElement instanceof HTMLElement
+      && document.activeElement.classList.contains('qt-header');
+    settings.set('questTrackerCollapsed', !settings.get('questTrackerCollapsed'));
+    audio.click();
+    this.updateQuestTracker();
+    if (refocus) ($('#quest-tracker').querySelector('.qt-header') as HTMLElement | null)?.focus();
   }
 
   // -------------------------------------------------------------------------
@@ -2805,54 +3160,116 @@ export class Hud {
 
   // Render a region of the heightfield to a canvas; width W px, height
   // derived from the region's aspect so a yard is square on screen.
-  private renderTerrainCanvas(W: number, region: { minX: number; maxX: number; minZ: number; maxZ: number }): HTMLCanvasElement {
-    const spanX = region.maxX - region.minX;
-    const spanZ = region.maxZ - region.minZ;
-    const H = Math.round(W * spanZ / spanX);
+  private renderTerrainCanvas(W: number, region: MapRegion): HTMLCanvasElement {
+    const H = mapCanvasHeight(W, region);
     const c = document.createElement('canvas');
     c.width = W;
     c.height = H;
     const ctx = c.getContext('2d')!;
     const img = ctx.createImageData(W, H);
-    const seed = this.sim.cfg.seed;
-    let prevH = 0; // height of the left-neighbour pixel, for free hillshade
-    for (let iy = 0; iy < H; iy++) {
-      for (let ix = 0; ix < W; ix++) {
-        // +Z up, +X LEFT: facing 0 is +Z ("north") and turning right
-        // decreases facing, so the world's east is -X — drawing +X to the
-        // right mirrored the whole map east-west
-        const x = region.maxX - (ix / W) * spanX;
-        const z = region.maxZ - (iy / H) * spanZ;
-        const h = terrainHeight(x, z, seed);
-        const biome = zoneAt(z).biome;
-        let r = 58, g = 105, b = 48;
-        if (biome === 'marsh') { r = 64; g = 86; b = 48; }
-        else if (biome === 'peaks') { r = 92; g = 100; b = 82; }
-        if (h < WATER_LEVEL) { r = 38; g = 84; b = 138; }
-        else if (h > 26) { r = 168; g = 172; b = 178; } // ridge / peak rock+snow
-        else if (h > 11) { r = 112; g = 110; b = 102; }
-        else if (h > 6) { r = 88; g = 102; b = 62; }
-        let nearHub = false;
-        for (const zn of ZONES) {
-          if (Math.hypot(x - zn.hub.x, z - zn.hub.z) < 14) { nearHub = true; break; }
-        }
-        if (nearHub) { r = 125; g = 100; b = 66; }
-        else if (h >= WATER_LEVEL && roadDistance(x, z) < 2.4) { r = 138; g = 111; b = 71; }
-        // hillshade: relief from the west→east slope, reusing the already-computed
-        // left-neighbour height so it costs no extra terrainHeight() calls
-        const left = ix === 0 ? h : prevH;
-        prevH = h;
-        if (h >= WATER_LEVEL) {
-          const shade = Math.max(0.74, Math.min(1.28, 1 + (h - left) * 0.16));
-          r = Math.min(255, r * shade); g = Math.min(255, g * shade); b = Math.min(255, b * shade);
-        }
-        const k = (iy * W + ix) * 4;
-        img.data[k] = r; img.data[k + 1] = g; img.data[k + 2] = b; img.data[k + 3] = 255;
-      }
-    }
+    paintTerrainRows(img.data, W, H, region, this.sim.cfg.seed, 0, H);
     ctx.putImageData(img, 0, 0);
     return c;
   }
+
+  // The full-zone band used by the world map (and prewarm), keyed only on z.
+  private mapZoneRegion(zone: ZoneDef): MapRegion {
+    return { minX: WORLD_MIN_X, maxX: WORLD_MAX_X, minZ: zone.zMin, maxZ: zone.zMax };
+  }
+
+  // The cached terrain background for a zone, rendering it synchronously only if
+  // a prewarm hasn't already produced it. The synchronous path is the fallback
+  // for "opened the map the instant we entered a zone"; normally the idle
+  // prewarm has it ready and this is a Map hit.
+  private mapZoneBg(zone: ZoneDef): HTMLCanvasElement {
+    const cached = this.mapBgCache.get(zone.id);
+    if (cached) return cached;
+    const bg = this.renderTerrainCanvas(MAP_BG_RES, this.mapZoneRegion(zone));
+    this.mapBgCache.set(zone.id, bg);
+    // a redundant in-flight prewarm for this same zone can be dropped now
+    if (this.mapPrewarm?.zoneId === zone.id) this.cancelMapPrewarm();
+    return bg;
+  }
+
+  // Kick off (or no-op) an idle, time-sliced render of a zone's map background
+  // so opening the map never pays the ~200ms terrain cost on the click. Called
+  // when the committed zone changes and once at startup for the spawn zone.
+  private prewarmMapBg(zoneId: string): void {
+    if (this.mapBgCache.has(zoneId)) return;
+    if (this.mapPrewarm?.zoneId === zoneId) return; // already prewarming it
+    const zone = ZONES.find((z) => z.id === zoneId);
+    if (!zone) return;
+    this.cancelMapPrewarm(); // drop any prewarm for a now-stale zone
+    const region = this.mapZoneRegion(zone);
+    const W = MAP_BG_RES;
+    const H = mapCanvasHeight(W, region);
+    const c = document.createElement('canvas');
+    c.width = W;
+    c.height = H;
+    const ctx = c.getContext('2d')!;
+    this.mapPrewarm = { zoneId, canvas: c, ctx, img: ctx.createImageData(W, H), W, H, row: 0, region };
+    this.scheduleMapPrewarm();
+  }
+
+  private cancelMapPrewarm(): void {
+    if (this.mapPrewarmHandle) {
+      // Cancel only with the scheduler that produced this handle (see
+      // mapPrewarmVia): the two id pools are separate per spec, so a cross
+      // canceller could clear an unrelated timer sharing the number. When the
+      // idle path lacks cancelIdleCallback there is nothing to call, but the
+      // pumpMapPrewarm `if (!job) return` guard makes the stale callback a no-op.
+      if (this.mapPrewarmVia === 'idle') {
+        const cancel = (window as typeof window & { cancelIdleCallback?: (h: number) => void }).cancelIdleCallback;
+        if (cancel) cancel(this.mapPrewarmHandle);
+      } else {
+        clearTimeout(this.mapPrewarmHandle);
+      }
+      this.mapPrewarmHandle = 0;
+      this.mapPrewarmVia = null;
+    }
+    this.mapPrewarm = null;
+  }
+
+  private scheduleMapPrewarm(): void {
+    const w = window as typeof window & {
+      requestIdleCallback?: (cb: (d: { timeRemaining(): number }) => void, opts?: { timeout: number }) => number;
+    };
+    if (w.requestIdleCallback) {
+      this.mapPrewarmHandle = w.requestIdleCallback(this.pumpMapPrewarm, { timeout: 2000 });
+      this.mapPrewarmVia = 'idle';
+    } else {
+      this.mapPrewarmHandle = window.setTimeout(() => this.pumpMapPrewarm(), 16);
+      this.mapPrewarmVia = 'timeout';
+    }
+  }
+
+  // Paint a budgeted slice of the in-flight prewarm, then reschedule until the
+  // zone is fully rendered. Whole rows per slice keeps it byte-identical to a
+  // one-shot render (the only per-row state, hillshade, resets each row).
+  // With an idle deadline we paint as many slices as fit; without one (the
+  // setTimeout fallback) we paint a single slice and let the reschedule pace it,
+  // so the no-requestIdleCallback path stays sliced instead of rendering the
+  // whole canvas in one ~200ms hitch.
+  private pumpMapPrewarm = (deadline?: { timeRemaining(): number }): void => {
+    const job = this.mapPrewarm;
+    if (!job) return;
+    const seed = this.sim.cfg.seed;
+    const ROWS_PER_SLICE = 16; // ~6ms at MAP_BG_RES; one frame fits several
+    do {
+      const end = Math.min(job.H, job.row + ROWS_PER_SLICE);
+      paintTerrainRows(job.img.data, job.W, job.H, job.region, seed, job.row, end);
+      job.row = end;
+    } while (job.row < job.H && deadline !== undefined && deadline.timeRemaining() > 3);
+    if (job.row >= job.H) {
+      job.ctx.putImageData(job.img, 0, 0);
+      this.mapBgCache.set(job.zoneId, job.canvas);
+      this.mapPrewarm = null;
+      this.mapPrewarmHandle = 0;
+      this.mapPrewarmVia = null;
+      return;
+    }
+    this.scheduleMapPrewarm();
+  };
 
   // Refresh the minimap clock to the current real local time. Cheap to call
   // every frame: the formatted string only changes once a minute, and we skip
@@ -3332,11 +3749,8 @@ export class Hud {
     const zone: ZoneDef = dungeon
       ? zoneAt(dungeon.doorPos.z)
       : ZONES.find((z) => z.id === this.lastZoneId) ?? zoneAt(p.pos.z);
-    const full = { minX: WORLD_MIN_X, maxX: WORLD_MAX_X, minZ: zone.zMin, maxZ: zone.zMax };
-    if (!this.mapBg || this.mapZoneId !== zone.id) {
-      this.mapBg = this.renderTerrainCanvas(MAP_BG_RES, full); // whole zone, cached & detailed
-      this.mapZoneId = zone.id;
-    }
+    const full = this.mapZoneRegion(zone);
+    const mapBg = this.mapZoneBg(zone); // cached per zone; prewarmed during idle
     // zoomed view: a sub-rectangle of the zone, centred on the player and
     // clamped to the zone bounds (zoom 1 = the whole zone).
     const fullSpanX = full.maxX - full.minX;
@@ -3352,7 +3766,7 @@ export class Hud {
     this.mapView = { spanX, spanZ, minX: full.minX, maxX: full.maxX, minZ: full.minZ, maxZ: full.maxZ };
     if (!this.mapDrag) canvas.style.cursor = this.mapZoom > 1 ? 'grab' : 'default';
     // blit the matching sub-rect of the cached terrain (note: +X is map-left)
-    const bg = this.mapBg;
+    const bg = mapBg;
     ctx.imageSmoothingEnabled = true;
     ctx.drawImage(
       bg,
@@ -4378,8 +4792,11 @@ export class Hud {
     const el = document.createElement('div');
     el.className = 'fct' + (crit ? ' crit' : '');
     el.style.color = color;
-    el.style.left = `${v.x + (Math.random() * 30 - 15)}px`;
-    el.style.top = `${v.y}px`;
+    // worldToScreen() is in the unzoomed renderer viewport, but #ui (this node's
+    // parent) is scaled by `zoom`, so divide into author space before writing.
+    const z = getUiScale();
+    el.style.left = `${(v.x + (Math.random() * 30 - 15)) / z}px`;
+    el.style.top = `${v.y / z}px`;
     el.textContent = text;
     document.getElementById('ui')!.appendChild(el);
     setTimeout(() => el.remove(), 1250);
@@ -4858,12 +5275,14 @@ export class Hud {
 
   private lootRollRoot(): HTMLElement {
     let root = document.getElementById('loot-rolls');
+    const uiRoot = document.getElementById('ui');
     if (!root) {
       root = document.createElement('div');
       root.id = 'loot-rolls';
       root.setAttribute('aria-live', 'polite');
-      document.body.appendChild(root);
     }
+    if (uiRoot && root.parentElement !== uiRoot) uiRoot.appendChild(root);
+    else if (!root.parentElement) document.body.appendChild(root);
     return root;
   }
 
@@ -4977,8 +5396,7 @@ export class Hud {
     btn.addEventListener('click', () => { this.sim.lootCorpse(mobId); this.closeLoot(); });
     el.appendChild(btn);
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeLoot());
-    el.style.left = `${Math.min(window.innerWidth - 260, Math.max(10, screenX - 115))}px`;
-    el.style.top = `${Math.min(window.innerHeight - 280, Math.max(10, screenY - 30))}px`;
+    this.placePopupAt(el, screenX - 115, screenY - 30, 260, 280, 10, 10);
     el.style.transform = 'none'; // loot pops at the cursor, not the centred slot
     el.style.display = 'block';
   }
@@ -5847,10 +6265,74 @@ export class Hud {
       const item = itemId ? ITEMS[itemId] : null;
       const row = document.createElement('div');
       row.className = 'equip-slot';
+      // Stable id + programmatic focusability so the corner-× rebuild can hand
+      // focus back to this slot (the rebuilt row may be empty, with no × to focus).
+      row.id = `equip-slot-${slot.key}`;
+      row.tabIndex = -1;
       const qColor = !item ? '#666' : QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
       row.innerHTML = `${item ? this.itemIcon(item) : `<img class="item-icon" style="border-color:#444" src="${iconDataUrl('item', 'slot_empty')}" alt="" draggable="false">`}
         <div><div class="slot-name">${esc(slot.name)}</div><div class="slot-item" style="color:${qColor}">${item ? esc(itemDisplayName(item)) : esc(t('itemUi.equipment.empty'))}</div></div>`;
-      if (item) this.attachTooltip(row, () => this.itemTooltip(item));
+      if (item) {
+        // Remove the piece back to bags, leaving the slot empty (equipping only
+        // ever swaps in a replacement — this is the way to fully unequip). Three
+        // affordances all route through here: the corner ×, right-click, and
+        // dragging the piece out onto the bags window.
+        // `keepFocus` rebuilds the paperdoll (renderChar replaces the subtree via
+        // innerHTML, which otherwise drops focus to <body>) and hands focus back to
+        // the now-empty slot row — the keyboard/touch × path needs this; right-click
+        // and drag are mouse-only and don't.
+        const doUnequip = (keepFocus = false) => {
+          this.sim.unequipItem(slot.key);
+          audio.click();
+          this.hideTooltip();
+          this.renderBags();
+          this.renderCharIfOpen();
+          if (keepFocus) {
+            const rebuilt = document.getElementById(`equip-slot-${slot.key}`);
+            this.restoreFocus(rebuilt instanceof HTMLElement ? rebuilt : null);
+          }
+        };
+        this.attachTooltip(row, () => `${this.itemTooltip(item)}<div class="tt-sub">${esc(t('hudChrome.paperdoll.unequipHint'))}</div>`);
+        // Corner ×: a styled glyph control (not an in-game icon), revealed on
+        // hover/focus and always shown on touch where right-click is unavailable.
+        const unequip = document.createElement('button');
+        unequip.type = 'button';
+        unequip.className = 'equip-unequip-btn';
+        unequip.textContent = '×';
+        unequip.setAttribute('aria-label', t('hudChrome.paperdoll.unequipAria', { item: itemDisplayName(item) }));
+        unequip.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          doUnequip(true);
+        });
+        row.appendChild(unequip);
+        // Right-click the slot (classic-MMO muscle memory; matches the bags grid).
+        row.addEventListener('contextmenu', (ev) => {
+          ev.preventDefault();
+          doUnequip();
+        });
+        // Drag the piece out onto the bags window to unequip it.
+        row.draggable = true;
+        row.addEventListener('dragstart', (e) => {
+          this.dragUnequipSlot = slot.key;
+          e.dataTransfer!.effectAllowed = 'move';
+          this.hideTooltip();
+          // Open the bags window if it's closed so there's a visible drop target —
+          // otherwise the drag silently snaps back with no feedback.
+          const bags = $('#bags');
+          if (bags.style.display !== 'block') {
+            bags.style.display = 'block';
+            this.renderBags();
+          }
+        });
+        row.addEventListener('dragend', () => {
+          this.dragUnequipSlot = null;
+          $('#bags').classList.remove('drop-target');
+        });
+      } else {
+        // Empty slot: still swallow the native browser menu so right-click feels
+        // consistent across the paperdoll (an empty slot has nothing to unequip).
+        row.addEventListener('contextmenu', (ev) => ev.preventDefault());
+      }
       return row;
     };
     for (const slot of leftSlots) leftCol.appendChild(buildSlotRow(slot));
@@ -6770,18 +7252,22 @@ export class Hud {
     );
   }
 
-  // Minimal modal confirm dialog (reuses the .window/.panel chrome). Used by the
-  // prestige flow; built on demand and removed on dismiss.
+  // Minimal modal confirm dialog (reuses the .window/.panel chrome). Built on
+  // demand and removed on dismiss.
   private confirmDialog(title: string, body: string, okText: string, cancelText: string, onOk: () => void): void {
     document.getElementById('confirm-dialog')?.remove();
     const el = document.createElement('div');
     el.id = 'confirm-dialog';
     el.className = 'window panel';
     el.style.display = 'block';
-    el.innerHTML = `<div class="panel-title"><span>${title}</span><span class="x-btn" data-cancel>${svgIcon('close')}</span></div>`
-      + `<div class="cd-body">${body}</div>`
-      + `<div class="cd-actions"><button class="btn" data-cancel>${cancelText}</button><button class="btn cd-ok" data-ok>${okText}</button></div>`;
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'true');
+    el.innerHTML = `<div class="panel-title"><span>${esc(title)}</span><button type="button" class="x-btn" data-cancel aria-label="${esc(cancelText)}">${svgIcon('close')}</button></div>`
+      + `<div class="cd-body">${esc(body)}</div>`
+      + `<div class="cd-actions"><button type="button" class="btn" data-cancel>${esc(cancelText)}</button><button type="button" class="btn cd-ok" data-ok>${esc(okText)}</button></div>`;
     document.body.appendChild(el);
+    this.bringWindowToFront(el);
+    el.querySelector<HTMLElement>('[data-ok]')?.focus();
     const close = () => el.remove();
     el.querySelectorAll('[data-cancel]').forEach((b) => b.addEventListener('click', () => { audio.click(); close(); }));
     el.querySelector('[data-ok]')?.addEventListener('click', () => { close(); onOk(); });
@@ -6829,31 +7315,104 @@ export class Hud {
 
   // Generic in-app dropdown (replaces native <select>). The selected value lives
   // in root.dataset.value; pass onChange to react live. Closes on click-away.
-  private buildDropdown(options: { value: string; label: string }[], current: string, onChange?: (value: string) => void, placeholder?: string): HTMLElement {
+  // Implements the WAI-ARIA listbox pattern so it keeps the keyboard + screen
+  // reader semantics a native <select> has: the trigger is aria-haspopup, the
+  // menu is role="listbox" with aria-selected options, and Enter/Space/Arrows/
+  // Home/End/Esc are all handled (see dropdown_nav.ts for the pure key math).
+  private buildDropdown(options: { value: string; label: string }[], current: string, onChange?: (value: string) => void, placeholder?: string, a11y?: { ariaLabel?: string; labelledBy?: string }): HTMLElement {
+    const uid = `ui-dd-${++Hud.ddSeq}`;
     const root = document.createElement('div');
     root.className = 'ui-dd';
     root.dataset.value = current;
+    // Accessible name for both the trigger button and the listbox: prefer an
+    // explicit aria-label, else associate an existing <label>/heading via id.
+    const nameAttr = a11y?.ariaLabel
+      ? ` aria-label="${esc(a11y.ariaLabel)}"`
+      : a11y?.labelledBy
+        ? ` aria-labelledby="${esc(a11y.labelledBy)}"`
+        : '';
     const labelOf = (v: string) => options.find((o) => o.value === v)?.label ?? placeholder ?? '';
-    root.innerHTML = `<button type="button" class="btn ui-dd-btn"><span class="ui-dd-label">${esc(labelOf(current))}</span><span class="ui-dd-caret">▾</span></button>`
-      + `<div class="ui-dd-menu" hidden>${options.map((o) => `<div class="ui-dd-item${o.value === current ? ' sel' : ''}" data-val="${esc(o.value)}">${esc(o.label)}</div>`).join('')}</div>`;
+    root.innerHTML = `<button type="button" class="btn ui-dd-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="${uid}"${nameAttr}><span class="ui-dd-label">${esc(labelOf(current))}</span><span class="ui-dd-caret" aria-hidden="true">▾</span></button>`
+      + `<div class="ui-dd-menu" id="${uid}" role="listbox"${nameAttr} hidden>${options.map((o, i) => `<div class="ui-dd-item${o.value === current ? ' sel' : ''}" id="${uid}-o${i}" role="option" aria-selected="${o.value === current ? 'true' : 'false'}" data-val="${esc(o.value)}">${esc(o.label)}</div>`).join('')}</div>`;
+    const btn = root.querySelector('.ui-dd-btn') as HTMLButtonElement;
     const menu = root.querySelector('.ui-dd-menu') as HTMLElement;
     const labelEl = root.querySelector('.ui-dd-label') as HTMLElement;
-    root.querySelector('.ui-dd-btn')!.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (menu.hasAttribute('hidden')) {
-        menu.removeAttribute('hidden');
-        setTimeout(() => document.addEventListener('click', () => menu.setAttribute('hidden', ''), { once: true }), 0);
-      } else menu.setAttribute('hidden', '');
-    });
-    root.querySelectorAll('.ui-dd-item').forEach((item) => item.addEventListener('click', () => {
+    const items = [...root.querySelectorAll<HTMLElement>('.ui-dd-item')];
+    const isOpen = () => !menu.hasAttribute('hidden');
+    const focusedIndex = () => items.findIndex((it) => it === document.activeElement);
+
+    const open = (focusIndex: number) => {
+      menu.removeAttribute('hidden');
+      btn.setAttribute('aria-expanded', 'true');
+      items[focusIndex]?.focus();
+      setTimeout(() => document.addEventListener('click', onAway, { once: true }), 0);
+    };
+    const close = (returnFocus = true) => {
+      if (!isOpen()) return;
+      menu.setAttribute('hidden', '');
+      btn.setAttribute('aria-expanded', 'false');
+      document.removeEventListener('click', onAway);
+      if (returnFocus) btn.focus();
+    };
+    const onAway = () => close(false);
+    const commit = (item: HTMLElement) => {
       const v = item.getAttribute('data-val') ?? '';
       root.dataset.value = v;
       labelEl.textContent = labelOf(v);
-      root.querySelectorAll('.ui-dd-item').forEach((x) => x.classList.toggle('sel', x === item));
-      menu.setAttribute('hidden', '');
+      items.forEach((x) => {
+        const sel = x === item;
+        x.classList.toggle('sel', sel);
+        x.setAttribute('aria-selected', sel ? 'true' : 'false');
+      });
+      close();
       onChange?.(v);
-    }));
+    };
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isOpen()) close(false);
+      else open(Math.max(0, items.findIndex((it) => it.classList.contains('sel'))));
+    });
+    // tabindex=-1 keeps options out of the Tab order but programmatically focusable.
+    items.forEach((item) => {
+      item.tabIndex = -1;
+      item.addEventListener('click', () => commit(item));
+    });
+    root.addEventListener('keydown', (e) => {
+      const action = dropdownKeyNav(e.key, isOpen(), focusedIndex(), items.length);
+      if (action.kind === 'none') return;
+      // Tab closes the menu and returns focus to the trigger button (a real
+      // tab-order element) WITHOUT preventDefault, so the native Tab/Shift+Tab
+      // then deterministically advances/retreats from there. Without returning
+      // focus, display:none-ing the focused option would drop focus to <body>.
+      if (action.kind === 'tab') { close(true); return; }
+      e.preventDefault();
+      switch (action.kind) {
+        case 'open': open(action.index); break;
+        case 'move': items[action.index]?.focus(); break;
+        case 'select': { const cur = items[focusedIndex()]; if (cur) commit(cur); break; }
+        case 'close': close(); break;
+      }
+    });
     return root;
+  }
+
+  // Reset a buildDropdown's visible label + dataset.value + aria-selected to a
+  // value in place, WITHOUT firing onChange or rebuilding the node. Used to
+  // revert the language picker after a failed locale switch so the trigger never
+  // advertises a language that never loaded (and so the adjacent aria-live status
+  // node survives to announce the failure). Mirrors commit()'s DOM writes.
+  private setDropdownValue(root: HTMLElement, value: string): void {
+    const items = [...root.querySelectorAll<HTMLElement>('.ui-dd-item')];
+    const match = items.find((x) => x.getAttribute('data-val') === value) ?? null;
+    root.dataset.value = value;
+    const labelEl = root.querySelector('.ui-dd-label');
+    if (labelEl && match) labelEl.textContent = match.textContent;
+    items.forEach((x) => {
+      const sel = x === match;
+      x.classList.toggle('sel', sel);
+      x.setAttribute('aria-selected', sel ? 'true' : 'false');
+    });
   }
 
   // classic-MMO-style choice-node picker: clicking an octagon node opens a flyout of its
@@ -7389,13 +7948,13 @@ export class Hud {
         this.applyLoadoutBar(lo.bar);
         this.talentStage = cloneAllocation(lo.alloc);
         this.renderTalents();
-      }, t('game.talents.loadouts')));
+      }, t('game.talents.loadouts'), { ariaLabel: t('game.talents.loadouts') }));
     }
     el.querySelector('[data-act="del"]')?.addEventListener('click', () => {
       if (this.sim.activeLoadout < 0) { this.showError(t('game.talents.selectBuildFirst')); return; }
       const active = this.sim.loadouts[this.sim.activeLoadout];
       if (!active) { this.showError(t('game.talents.selectBuildFirst')); return; }
-      const body = esc(t('game.talents.deleteBuildBody').replace('{name}', active.name));
+      const body = t('game.talents.deleteBuildBody', { name: active.name });
       this.confirmDialog(t('game.talents.deleteBuildTitle'), body, t('game.talents.deleteBuildConfirm'), t('game.talents.cancel'), () => {
         this.sim.deleteLoadout(this.sim.activeLoadout);
         this.renderTalents();
@@ -7477,7 +8036,7 @@ export class Hud {
     const quests = [...sim.questLog.values()];
     if (quests.length === 0) {
       list.innerHTML = `<div class="ql-empty">${esc(t('questUi.log.emptyTitle'))}</div>`;
-      detail.innerHTML = `<div class="qd-text">${esc(t('questUi.log.emptyHint'))}</div>`;
+      detail.innerHTML = `<div class="ql-detail-body"><div class="qd-text">${esc(t('questUi.log.emptyHint'))}</div></div>`;
     }
     if (!this.selectedQuestLogId || !sim.questLog.has(this.selectedQuestLogId)) {
       this.selectedQuestLogId = quests[0]?.questId ?? null;
@@ -7509,15 +8068,35 @@ export class Hud {
       }
       const giver = NPCS[quest.turnInNpcId];
       html += `<div class="qd-obj quest-return">${esc(t('questUi.log.returnTo', { name: giver ? npcDisplayName(giver.id) : '?' }))}</div>`;
-      detail.innerHTML = html;
-      const rewardRow = detail.querySelector('[data-reward]') as HTMLElement | null;
+      const body = document.createElement('div');
+      body.className = 'ql-detail-body';
+      body.innerHTML = html;
+      detail.replaceChildren(body);
+      const rewardRow = body.querySelector('[data-reward]') as HTMLElement | null;
       if (rewardRow && rewardItem) this.attachTooltip(rewardRow, () => this.itemTooltip(ITEMS[rewardItem]));
+      const actions = document.createElement('div');
+      actions.className = 'ql-detail-actions';
       const abandon = document.createElement('button');
       abandon.className = 'btn';
       abandon.type = 'button';
       abandon.textContent = t('questUi.log.abandon');
-      abandon.addEventListener('click', () => { sim.abandonQuest(this.selectedQuestLogId!); this.renderQuestLog(); });
-      detail.appendChild(abandon);
+      abandon.addEventListener('click', () => {
+        const questId = this.selectedQuestLogId;
+        if (!questId) return;
+        this.confirmDialog(
+          t('questUi.log.abandonConfirmTitle'),
+          t('questUi.log.abandonConfirmBody', { name: questTitle(questId) }),
+          t('questUi.log.abandonConfirm'),
+          t('questUi.log.abandonCancel'),
+          () => {
+            sim.abandonQuest(questId);
+            this.selectedQuestLogId = null;
+            this.renderQuestLog();
+          },
+        );
+      });
+      actions.appendChild(abandon);
+      detail.appendChild(actions);
     }
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestLog());
     this.focusFirstInteractive(el);
@@ -7635,8 +8214,7 @@ export class Hud {
     html += `<div class="ctx-item" data-act="close">${esc(t('hud.chat.context.cancel'))}</div>`;
     el.innerHTML = html;
     hydratePortraits(el);
-    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
-    el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
+    this.placePopupAt(el, x, y, 170, 240);
     el.style.display = 'block';
     this.bindContextMenuActions((act) => {
       if (act === 'inspect') this.openInspect(pid);
@@ -7709,8 +8287,7 @@ export class Hud {
     html += `<div class="ctx-item" role="button" tabindex="0" data-act="clear">${esc(t('hud.markers.clear'))}</div>`;
     html += `<div class="ctx-item" role="button" tabindex="0" data-act="close">${esc(t('hud.markers.cancel'))}</div>`;
     el.innerHTML = html;
-    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
-    el.style.top = `${Math.min(window.innerHeight - 340, y)}px`;
+    this.placePopupAt(el, x, y, 170, 340);
     el.style.display = 'block';
     el.querySelectorAll('.ctx-item').forEach((item) => {
       const activate = () => {
@@ -7737,8 +8314,7 @@ export class Hud {
     if (!isWarlock) html += `<div class="ctx-item" data-act="abandon">${esc(t('hud.pet.abandon'))}</div>`;
     html += `<div class="ctx-item" data-act="close">${esc(t('hud.pet.cancel'))}</div>`;
     el.innerHTML = html;
-    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
-    el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
+    this.placePopupAt(el, x, y, 170, 240);
     el.style.display = 'block';
     el.querySelectorAll('.ctx-item').forEach((item) => {
       item.addEventListener('click', () => {
@@ -7798,8 +8374,7 @@ export class Hud {
     el.innerHTML = titleHtml + inspectHtml
       + actions.map((a) => `<div class="ctx-item" data-act="${a.id}">${esc(a.label)}</div>`).join('');
     hydratePortraits(el);
-    el.style.left = `${Math.min(window.innerWidth - 170, x)}px`;
-    el.style.top = `${Math.min(window.innerHeight - 240, y)}px`;
+    this.placePopupAt(el, x, y, 170, 240);
     el.style.display = 'block';
     this.bindContextMenuActions((act) => {
       const livePid = this.playerPidByName(name);
@@ -7869,7 +8444,11 @@ export class Hud {
       { value: 'cheating', label: t('hud.report.reasons.cheating') },
       { value: 'offensive_name_or_chat', label: t('hud.report.reasons.offensiveNameOrChat') },
       { value: 'other', label: t('hud.report.reasons.other') },
-    ], 'harassment');
+    ], 'harassment', undefined, undefined, { ariaLabel: t('hud.report.reason') });
+    // Give the trigger the id the <label for="report-reason"> points at, so the
+    // label (which lost its original target when the slot div was replaced)
+    // associates with a real focusable control again.
+    reasonDD.querySelector('.ui-dd-btn')?.setAttribute('id', 'report-reason');
     el.querySelector('#report-reason-slot')?.replaceWith(reasonDD);
     el.querySelectorAll('[data-close]').forEach((btn) => btn.addEventListener('click', () => { el.style.display = 'none'; }));
     const submit = $('#report-submit') as HTMLButtonElement;
@@ -8464,6 +9043,12 @@ export class Hud {
     this.reportHooks = hooks;
   }
 
+  // Only wired online (main.ts), so its presence is what gates the "Report a Bug"
+  // option (the offline browser world has no server to receive reports).
+  attachBugReporting(hooks: BugReportHooks): void {
+    this.bugReportHooks = hooks;
+  }
+
   get optionsOpen(): boolean {
     return $('#options-menu').style.display === 'block';
   }
@@ -8471,6 +9056,13 @@ export class Hud {
   // True while a menu that should pause character movement is up.
   isModalOpen(): boolean {
     return this.optionsOpen || this.emoteWheelOpen || $('#emote-editor').style.display === 'block' || this.cardModalEl !== null;
+  }
+
+  // True when any interactive HUD surface is open: a modal OR a managed window
+  // (bags, vendor, character, etc.). Drives the gamepad's virtual-cursor mode so a
+  // controller can point at bag slots / vendor items, not just modal dialogs.
+  isWindowOpen(): boolean {
+    return this.isModalOpen() || this.topmostOpenWindow() !== null;
   }
 
   toggleOptionsMenu(): void {
@@ -8504,7 +9096,9 @@ export class Hud {
     if (this.optionsView === 'graphics') { this.renderGraphics(); return; }
     if (this.optionsView === 'audio') { this.renderAudio(); return; }
     if (this.optionsView === 'interface') { this.renderInterface(); return; }
+    if (this.optionsView === 'controller') { this.renderController(); return; }
     if (this.optionsView === 'performance') { this.renderPerformance(); return; }
+    if (this.optionsView === 'bugreport') { this.renderBugReport(); return; }
     const el = $('#options-menu');
     el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.gameMenu'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
     const list = document.createElement('div');
@@ -8516,12 +9110,15 @@ export class Hud {
       b.addEventListener('click', () => { audio.click(); onClick(); });
       list.appendChild(b);
     };
-    const goto = (view: 'keybinds' | 'graphics' | 'audio' | 'interface' | 'performance') => { this.optionsView = view; this.keybindNote = ''; this.renderOptions(); };
+    const goto = (view: 'keybinds' | 'graphics' | 'audio' | 'interface' | 'performance' | 'controller' | 'bugreport') => { this.optionsView = view; this.keybindNote = ''; this.renderOptions(); };
     add(t('hud.options.keyBindings'), () => goto('keybinds'));
+    add(t('hudChrome.controller.title'), () => goto('controller'));
     add(t('hud.options.graphics'), () => goto('graphics'));
     add(t('hud.options.interface'), () => goto('interface'));
     add(t('hud.options.audio'), () => goto('audio'));
     add(t('hudChrome.perf.title'), () => goto('performance'));
+    // Online-only: capturing realm/character/position needs an authoritative server.
+    if (this.bugReportHooks) add(t('hudChrome.bugReport.menuButton'), () => goto('bugreport'));
     add(t('hud.options.logout'), () => this.optionsHooks?.logout());
     add(t('hud.options.returnToGame'), () => this.closeOptions());
     el.appendChild(list);
@@ -8553,9 +9150,19 @@ export class Hud {
     const fmt = opts?.fmt ?? ((v: number) => formatNumber(v, { style: 'percent', maximumFractionDigits: 0 }));
     const readout = () => fmt(hooks.settings.get(key));
     val.textContent = readout();
+    // Paint a gold fill up to the current value on every engine (CSS alone can't
+    // read the value; --range-fill drives the webkit track gradient and Firefox's
+    // native progress is recolored to match). Set initially + on every input.
+    const paintFill = () => {
+      const min = Number(slider.min), max = Number(slider.max), v = Number(slider.value);
+      const pct = max > min ? ((v - min) / (max - min)) * 100 : 0;
+      slider.style.setProperty('--range-fill', `${Math.max(0, Math.min(100, pct))}%`);
+    };
+    paintFill();
     slider.addEventListener('input', () => {
       hooks.onSettingChange(key, Number(slider.value));
       val.textContent = readout();
+      paintFill();
     });
     row.append(name, slider, val);
     parent.appendChild(row);
@@ -8685,6 +9292,130 @@ export class Hud {
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeOptions());
   }
 
+  private renderBugReport(): void {
+    const hooks = this.bugReportHooks;
+    if (!hooks) { this.optionsView = 'main'; this.renderOptions(); return; }
+    const body = this.settingsViewShell(t('hudChrome.bugReport.menuButton'));
+    const p = this.sim.player;
+    const realm = this.sim.realm || t('hudChrome.bugReport.unknown');
+    const coords = `${formatNumber(p.pos.x, { maximumFractionDigits: 0, useGrouping: false })}, ` +
+      `${formatNumber(p.pos.y, { maximumFractionDigits: 0, useGrouping: false })}, ` +
+      `${formatNumber(p.pos.z, { maximumFractionDigits: 0, useGrouping: false })}`;
+
+    const info = document.createElement('div');
+    info.className = 'bug-info';
+    const row = (label: string, value: string): string =>
+      `<div class="bug-info-row"><span class="bug-info-label">${esc(label)}</span><span class="bug-info-val">${esc(value)}</span></div>`;
+    info.innerHTML =
+      row(t('hudChrome.bugReport.realm'), realm) +
+      row(t('hudChrome.bugReport.character'), p.name) +
+      row(t('hudChrome.bugReport.position'), coords);
+    body.appendChild(info);
+
+    // Capture once when the form opens so the screenshot reflects what the player
+    // saw, not a later frame. null when capture is unavailable/failed.
+    const shot = hooks.capture();
+
+    const descLabel = document.createElement('label');
+    descLabel.className = 'bug-label';
+    descLabel.setAttribute('for', 'bug-desc');
+    descLabel.textContent = t('hudChrome.bugReport.description');
+    const desc = document.createElement('textarea');
+    desc.id = 'bug-desc';
+    desc.className = 'bug-desc';
+    desc.maxLength = 2000;
+    desc.setAttribute('placeholder', t('hudChrome.bugReport.descriptionPlaceholder'));
+    desc.setAttribute('aria-describedby', 'bug-error');
+    body.append(descLabel, desc);
+
+    let includeShot = shot !== null;
+    if (shot) {
+      const shotWrap = document.createElement('div');
+      shotWrap.className = 'bug-shot';
+      const img = document.createElement('img');
+      img.className = 'bug-shot-img';
+      img.src = shot;
+      img.alt = t('hudChrome.bugReport.screenshotAlt');
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'btn set-toggle';
+      const syncToggle = () => {
+        toggle.textContent = includeShot ? t('hud.options.on') : t('hud.options.off');
+        toggle.classList.toggle('off', !includeShot);
+        toggle.setAttribute('aria-pressed', String(includeShot));
+        toggle.setAttribute('aria-label', t('hudChrome.bugReport.includeScreenshot'));
+        img.style.display = includeShot ? '' : 'none';
+      };
+      toggle.addEventListener('click', () => { audio.click(); includeShot = !includeShot; syncToggle(); });
+      syncToggle();
+      const toggleRow = document.createElement('div');
+      toggleRow.className = 'set-row';
+      const name = document.createElement('span');
+      name.className = 'set-name';
+      name.textContent = t('hudChrome.bugReport.includeScreenshot');
+      toggleRow.append(name, toggle);
+      shotWrap.append(toggleRow, img);
+      body.appendChild(shotWrap);
+    }
+
+    const error = document.createElement('div');
+    error.className = 'report-error';
+    error.id = 'bug-error';
+    // role="alert" already implies an assertive live region; a second aria-live
+    // would conflict, so it is the only announcement hook on this node.
+    error.setAttribute('role', 'alert');
+    body.appendChild(error);
+
+    const actions = document.createElement('div');
+    actions.className = 'report-actions';
+    const submit = document.createElement('button');
+    submit.className = 'btn';
+    submit.type = 'button';
+    submit.textContent = t('hudChrome.bugReport.submit');
+    const back = document.createElement('button');
+    back.className = 'btn';
+    back.type = 'button';
+    back.textContent = t('hud.options.back');
+    back.addEventListener('click', () => { audio.click(); this.optionsView = 'main'; this.renderOptions(); });
+    actions.append(submit, back);
+    body.appendChild(actions);
+
+    submit.addEventListener('click', () => {
+      const description = desc.value.trim();
+      if (!description) { error.textContent = t('hudChrome.bugReport.describeFirst'); return; }
+      submit.disabled = true;
+      error.textContent = '';
+      const sentShot = includeShot && shot !== null;
+      hooks.submit({ description, screenshot: includeShot ? shot : null, meta: hooks.collectMeta() })
+        .then(({ screenshotStored }) => {
+          // Be honest when the server dropped a screenshot the player asked to send.
+          const droppedShot = sentShot && !screenshotStored;
+          this.log(t(droppedShot ? 'hudChrome.bugReport.submittedNoShot' : 'hudChrome.bugReport.submitted'), '#ffd100');
+          this.optionsView = 'main';
+          this.renderOptions();
+        })
+        .catch((err: unknown) => {
+          submit.disabled = false;
+          error.textContent = this.localizeBugReportError(err);
+        });
+    });
+
+    $('#options-menu').querySelector('[data-close]')?.addEventListener('click', () => this.closeOptions());
+    // Focus the description so a keyboard/screen-reader user lands in the field.
+    window.setTimeout(() => desc.focus(), 0);
+  }
+
+  private localizeBugReportError(err: unknown): string {
+    const text = err instanceof Error ? err.message : '';
+    const keyByMessage: Record<string, TranslationKey> = {
+      'describe the bug': 'hudChrome.bugReport.describeFirst',
+      'bug report too large': 'hudChrome.bugReport.tooLarge',
+      'too many bug reports, try again later': 'hudChrome.bugReport.rateLimited',
+    };
+    const key = keyByMessage[text.toLowerCase()];
+    return key ? t(key) : t('hudChrome.bugReport.failed');
+  }
+
   private renderGraphics(): void {
     const body = this.settingsViewShell(t('hud.options.graphics'));
     this.settingChoice(body, t('hud.options.graphicsQuality'), 'graphicsPreset', [
@@ -8712,6 +9443,18 @@ export class Hud {
         { value: 1, label: t('hud.options.terrainHigh') },
       ]);
     }
+    // Adaptive CSS-effects tier (DOM layer, separate from the WebGL preset above).
+    // Auto detects the browser engine/version + device; manual values pin it.
+    this.settingChoice(body, t('hudChrome.options.browserEffects'), 'browserEffects', [
+      { value: 0, label: t('hudChrome.options.browserEffectsAuto') },
+      { value: 1, label: t('hudChrome.options.browserEffectsFull') },
+      { value: 2, label: t('hudChrome.options.browserEffectsReduced') },
+      { value: 3, label: t('hudChrome.options.browserEffectsMinimal') },
+    ]);
+    const fxNote = document.createElement('div');
+    fxNote.className = 'set-note';
+    fxNote.textContent = t('hudChrome.options.browserEffectsNote');
+    body.appendChild(fxNote);
     this.settingSlider(body, t('hud.options.cameraSpeed'), 'cameraSpeed');
     // Camera Speed only scales mouselook; on touch the camera joystick has its
     // own rate, so phones get a dedicated sensitivity slider here.
@@ -8773,6 +9516,7 @@ export class Hud {
     body.appendChild(row);
     this.settingBoolToggle(body, t('hud.options.npcVoices'), 'voiceEnabled');
     this.settingBoolToggle(body, t('hudChrome.options.footstepSounds'), 'footstepSfx');
+    this.settingBoolToggle(body, t('hudChrome.options.clickFeedback'), 'clickFeedback');
     this.settingsViewFooter();
   }
 
@@ -8792,54 +9536,56 @@ export class Hud {
     const name = document.createElement('span');
     name.className = 'set-name';
     name.textContent = t('hud.options.language');
-    const select = document.createElement('select');
-    select.className = 'lang-select-dropdown set-lang-select';
-    select.setAttribute('aria-label', t('hud.options.language'));
-    for (const lang of supportedLanguages) {
-      const opt = document.createElement('option');
-      opt.value = lang;
-      opt.textContent = LANGUAGE_ENDONYMS[lang];
-      select.appendChild(opt);
-    }
-    select.value = getLanguage();
+    // Custom gold-themed dropdown (.ui-dd) rather than a native <select>, so the
+    // open option list matches the MMO theme; buildDropdown carries the listbox
+    // ARIA + keyboard semantics a native <select> would have.
+    const options = supportedLanguages.map((lang) => ({ value: lang, label: LANGUAGE_ENDONYMS[lang] }));
     // aria-live status for the async locale load (loading / load-failed).
     const status = document.createElement('span');
     status.className = 'visually-hidden';
     status.setAttribute('role', 'status');
     status.setAttribute('aria-live', 'polite');
-    select.addEventListener('change', () => {
-      const selected = select.value;
-      if (!isSupportedLanguage(selected) || selected === getLanguage()) return;
+    let busy = false;
+    const dropdown = this.buildDropdown(options, getLanguage(), (selected) => {
+      if (busy || !isSupportedLanguage(selected) || selected === getLanguage()) return;
       audio.click();
-      select.disabled = true;
+      busy = true;
       void hooks.changeLanguage(selected, (msg) => { status.textContent = msg; })
         .then((ok) => {
-          if (!ok) {
-            // The locale chunk failed to load — restore the picker to the locale that stayed active.
-            select.value = getLanguage();
-          } else if (this.optionsOpen && this.optionsView === 'interface') {
-            // Rebuild the panel in the new language, then return keyboard focus to the
-            // fresh picker (the control the user just operated) so it isn't lost to <body>.
-            // The refocus also lets screen readers announce the switch via the select's value.
-            this.renderInterface();
-            this.focusFirstInteractive($('#options-menu'), '.set-lang-select');
+          if (ok) {
+            // Success: rebuild the panel in the new language (re-creates this picker
+            // at the now-active locale).
+            if (this.optionsOpen && this.optionsView === 'interface') {
+              this.renderInterface();
+              // Return keyboard focus to the fresh picker trigger so it isn't lost to <body>.
+              this.focusFirstInteractive($('#options-menu'), '.set-lang-select .ui-dd-btn');
+            }
+          } else {
+            // Graceful failure (the locale chunk failed to load): the active locale
+            // is unchanged. Revert the trigger IN PLACE — don't renderInterface(),
+            // which would rebuild and wipe the aria-live `status` node that
+            // changeLanguage just wrote the failure message into.
+            this.setDropdownValue(dropdown, getLanguage());
           }
         })
         .catch(() => {
-          // A relocalization step threw after the locale loaded; keep the picker usable and
-          // surface the failure rather than leaving the control stuck disabled.
-          select.value = getLanguage();
+          // Defensive: changeLanguage swallows load errors and resolves false, so
+          // this is unreachable today — but if it ever throws, keep the same
+          // in-place revert + intact live region rather than rebuilding.
           status.textContent = t('settings.languageLoadFailed');
+          this.setDropdownValue(dropdown, getLanguage());
         })
-        .finally(() => { select.disabled = false; });
-    });
-    row.append(name, select);
+        .finally(() => { busy = false; });
+    }, undefined, { ariaLabel: t('hud.options.language') });
+    dropdown.classList.add('set-lang-select');
+    row.append(name, dropdown);
     parent.append(row, status);
   }
 
   private renderInterface(): void {
     const body = this.settingsViewShell(t('hud.options.interface'));
     this.languageSelect(body);
+    this.settingSlider(body, t('hudChrome.options.uiScale'), 'uiScale');
     this.settingSlider(body, t('hud.options.hudOpacity'), 'hudOpacity');
     this.settingSlider(body, t('hud.options.tooltipScale'), 'tooltipScale');
     this.settingSlider(body, t('hud.options.fctScale'), 'fctScale');
@@ -8851,6 +9597,7 @@ export class Hud {
     this.settingBoolToggle(body, t('hud.options.reduceMotion'), 'reduceMotion');
     this.settingBoolToggle(body, t('hudChrome.options.showWalletOnCharacterScreen'), 'showWalletOnCharacterScreen');
     this.settingBoolToggle(body, t('hudChrome.options.showWalletOnPlayerCard'), 'showWalletOnPlayerCard');
+    this.settingBoolToggle(body, t('hudChrome.options.highContrastBackground'), 'landingHighContrast');
     this.settingBoolToggle(body, t('hud.options.invertLookY'), 'invertLookY');
 
     // On/off toggle for chat timestamps.
@@ -8910,10 +9657,28 @@ export class Hud {
     tsRow.append(tsName, tsToggle);
     body.append(tsRow, fmtRow);
 
+    // Reset the movable/resizable chat window back to its default placement.
+    const resetRow = document.createElement('div');
+    resetRow.className = 'set-row';
+    const resetName = document.createElement('span');
+    resetName.className = 'set-name';
+    resetName.textContent = t('hudChrome.chatWindow.reset');
+    const resetBtn = document.createElement('button');
+    resetBtn.className = 'btn set-toggle';
+    resetBtn.textContent = t('hudChrome.chatWindow.resetAction');
+    resetBtn.addEventListener('click', () => { audio.click(); this.resetChatWindow(); });
+    resetRow.append(resetName, resetBtn);
+    body.append(resetRow);
+
     const note = document.createElement('div');
     note.className = 'set-note';
     note.textContent = t('hudChrome.chatTimestamps.note');
     $('#options-menu').appendChild(note);
+
+    const chatWinNote = document.createElement('div');
+    chatWinNote.className = 'set-note';
+    chatWinNote.textContent = t('hudChrome.chatWindow.note');
+    $('#options-menu').appendChild(chatWinNote);
 
     const back = document.createElement('button');
     back.className = 'btn';
@@ -9028,6 +9793,67 @@ export class Hud {
     });
     row.append(name, toggle);
     parent.appendChild(row);
+  }
+
+  // Action ids a gamepad button may be bound to: explicit unbind, the game menu,
+  // plus every one-shot (edge) keybind action and Jump. Movement-axis actions
+  // (forward/strafe/turn) are excluded, they live on the analog stick.
+  private gamepadActionOptions(): { value: string; label: string }[] {
+    const opts: { value: string; label: string }[] = [
+      { value: GAMEPAD_NONE, label: t('hud.options.unbound') },
+      { value: 'escape', label: t('hudChrome.controller.menuAction') },
+    ];
+    for (const a of BIND_ACTIONS) {
+      if (a.id === 'attackMove') continue; // mode-gated; not a useful pad default
+      if (a.kind !== 'edge' && a.id !== 'jump') continue;
+      opts.push({ value: a.id, label: this.actionDisplayName(a.id, a.label) });
+    }
+    return opts;
+  }
+
+  // Controller panel: enable/invert toggles, deadzone/camera/vibration sliders,
+  // and a remap row per bindable button (dropdown of actions). Mirrors the
+  // separate woc_gamepad profile; keyboard Key Bindings are untouched.
+  private renderController(): void {
+    const hooks = this.optionsHooks;
+    const body = this.settingsViewShell(t('hudChrome.controller.title'));
+    this.settingBoolToggle(body, t('hudChrome.controller.enable'), 'gamepadEnabled');
+    this.settingBoolToggle(body, t('hudChrome.controller.invertY'), 'gamepadInvertY');
+    this.settingSlider(body, t('hudChrome.controller.deadzone'), 'gamepadStickDeadzone');
+    this.settingSlider(body, t('hudChrome.controller.cameraSpeed'), 'gamepadCameraSpeed',
+      { fmt: (v) => formatNumber(v, { maximumFractionDigits: 1 }) });
+    this.settingSlider(body, t('hudChrome.controller.vibration'), 'gamepadVibration');
+
+    const note = document.createElement('div');
+    note.className = 'set-note';
+    note.textContent = t('hudChrome.controller.help');
+    body.appendChild(note);
+
+    const head = document.createElement('div');
+    head.className = 'kb-cat';
+    head.textContent = t('hudChrome.controller.buttons');
+    body.appendChild(head);
+
+    if (hooks) {
+      const opts = this.gamepadActionOptions();
+      for (const { button, action } of hooks.gamepad.entries()) {
+        const row = document.createElement('div');
+        row.className = 'set-row';
+        const name = document.createElement('span');
+        name.className = 'set-name';
+        name.textContent = GAMEPAD_BUTTON_LABELS[button] ?? `#${button}`;
+        const dd = this.buildDropdown(opts, action, (v) => hooks.gamepad.bind(button, v));
+        row.append(name, dd);
+        body.appendChild(row);
+      }
+      const reset = document.createElement('button');
+      reset.type = 'button';
+      reset.className = 'btn';
+      reset.textContent = t('hudChrome.controller.resetButtons');
+      reset.addEventListener('click', () => { audio.click(); hooks.gamepad.reset(); this.renderController(); });
+      body.appendChild(reset);
+    }
+    this.settingsViewFooter();
   }
 
   private renderKeybinds(): void {

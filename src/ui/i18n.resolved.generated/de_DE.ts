@@ -174,12 +174,24 @@ export const de_DE: EnTranslations = {
       "title": "Emotes",
       "done": "Fertig"
     },
+    "questTracker": {
+      "count": "({count})",
+      "collapseHint": "Quests einklappen",
+      "expandHint": "Quests ausklappen"
+    },
     "chatTimestamps": {
       "show": "Chat-Zeitstempel anzeigen",
       "format": "Zeitstempelformat",
       "clock12h": "12-Stunden",
       "clock24h": "24-Stunden",
       "note": "Stellt jeder neuen Chatzeile die Uhrzeit ihres Eintreffens voran, z. B. [14:32]. Betrifft nur Nachrichten, die bei aktivierter Option empfangen werden."
+    },
+    "chatWindow": {
+      "move": "Ziehen, um das Chatfenster zu verschieben",
+      "resize": "Ziehen, um die Größe des Chatfensters zu ändern",
+      "reset": "Chatfenster zurücksetzen",
+      "resetAction": "Zurücksetzen",
+      "note": "Ziehe die Chat-Reiterleiste, um das Fenster zu verschieben, oder den Eckgriff, um die Größe zu ändern. Zurücksetzen stellt die Standardposition und -größe wieder her."
     },
     "swing": {
       "ready": "Schwung",
@@ -228,9 +240,30 @@ export const de_DE: EnTranslations = {
     "options": {
       "clickMoveLeft": "Linksklick",
       "clickMoveRight": "Rechtsklick",
+      "browserEffects": "Browser-Effekte",
+      "browserEffectsAuto": "Auto",
+      "browserEffectsFull": "Voll",
+      "browserEffectsReduced": "Reduziert",
+      "browserEffectsMinimal": "Minimal",
+      "browserEffectsNote": "Der Automatikmodus reduziert aufwendige CSS-Effekte (Unschärfe, Leuchten, Hintergrundbewegung) je nach Browser und Gerät. Senke ihn manuell, wenn sich die Oberfläche träge anfühlt.",
       "footstepSounds": "Schrittgeräusche",
+      "clickFeedback": "Klickmarkierung",
       "showWalletOnCharacterScreen": "Wallet auf dem Charakterbildschirm anzeigen",
-      "showWalletOnPlayerCard": "Wallet auf der Spielerkarte anzeigen"
+      "showWalletOnPlayerCard": "Wallet auf der Spielerkarte anzeigen",
+      "uiScale": "UI-Skalierung",
+      "highContrastBackground": "Hintergrund mit hohem Kontrast"
+    },
+    "controller": {
+      "title": "Controller",
+      "enable": "Controller aktivieren",
+      "invertY": "Kamera invertieren (Y)",
+      "deadzone": "Stick-Totzone",
+      "cameraSpeed": "Kamerageschwindigkeit",
+      "vibration": "Vibration",
+      "buttons": "Tastenbelegung",
+      "resetButtons": "Tastenbelegung zurücksetzen",
+      "menuAction": "Spielmenü",
+      "help": "Linker Stick bewegt, rechter Stick steuert die Kamera. Öffne ein Fenster, um den Bildschirmzeiger zu verwenden."
     },
     "perf": {
       "title": "Leistungsanzeige",
@@ -303,6 +336,10 @@ export const de_DE: EnTranslations = {
     "playerCard": {
       "showWalletBadge": "Wallet-Abzeichen anzeigen"
     },
+    "landing": {
+      "highContrast": "Hoher Kontrast",
+      "highContrastAria": "Hintergrund mit hohem Kontrast umschalten: deaktiviert den bewegten Trailer, damit der Text des Startbildschirms lesbar bleibt"
+    },
     "statInfo": {
       "fromYour": "Von deinen {value} Punkten {stat}:",
       "desc": {
@@ -368,6 +405,28 @@ export const de_DE: EnTranslations = {
         "many": "Wer: {count} Spieler online auf {realm}.",
         "other": "Wer: {count} Spieler online auf {realm}."
       }
+    },
+    "bugReport": {
+      "menuButton": "Fehler melden",
+      "realm": "Realm",
+      "character": "Charakter",
+      "position": "Position",
+      "unknown": "Unbekannt",
+      "description": "Was ist schiefgelaufen?",
+      "descriptionPlaceholder": "Beschreibe den Fehler: was du getan hast, was du erwartet hast und was passiert ist.",
+      "includeScreenshot": "Screenshot anhängen",
+      "screenshotAlt": "Screenshot der aktuellen Ansicht, der dieser Fehlermeldung beigefügt ist",
+      "submit": "Meldung senden",
+      "submitted": "Fehlermeldung gesendet. Danke!",
+      "submittedNoShot": "Fehlermeldung gesendet, aber der Screenshot war zu groß zum Anhängen.",
+      "describeFirst": "Bitte beschreibe den Fehler, bevor du ihn sendest.",
+      "tooLarge": "Diese Meldung ist zu groß zum Senden. Versuche es ohne den Screenshot erneut.",
+      "rateLimited": "Du hast kürzlich mehrere Meldungen gesendet. Bitte warte einen Moment, bevor du eine weitere sendest.",
+      "failed": "Die Fehlermeldung konnte nicht gesendet werden. Bitte versuche es erneut."
+    },
+    "paperdoll": {
+      "unequipAria": "{item} ablegen",
+      "unequipHint": "Klicke auf ×, Rechtsklick oder in die Taschen ziehen zum Ablegen"
     },
     "account": {
       "title": "Konto",
@@ -1006,7 +1065,9 @@ export const de_DE: EnTranslations = {
       "webLoginOnly": "Anmeldungen sind nur über den Spiel-Client erlaubt.",
       "accountSuspended": "Dieses Konto ist bis {date} suspendiert.",
       "alreadyInWorld": "Der Charakter ist bereits in der Welt.",
-      "renameBeforeEntering": "Dieser Charakter muss vor dem Betreten der Welt umbenannt werden."
+      "takenOver": "Dein Charakter wurde von einer anderen Sitzung übernommen.",
+      "renameBeforeEntering": "Dieser Charakter muss vor dem Betreten der Welt umbenannt werden.",
+      "renameNotPermitted": "Das Umbenennen dieses Charakters ist nicht erlaubt."
     }
   },
   "realm": {
@@ -1032,6 +1093,9 @@ export const de_DE: EnTranslations = {
     "noneYet": "Noch keine Charaktere. Erstelle unten einen.",
     "levelClass": "Stufe {level} {className}",
     "inWorld": "in der Welt",
+    "takeOver": "Übernehmen",
+    "inWorldHint": "Bereits in der Welt. Melde dich anderswo ab oder übernimm den Charakter.",
+    "takeOverConfirm": "Dadurch wird dieser Charakter von einer anderen Sitzung getrennt und hierher geholt. Fortfahren?",
     "renameRequired": "Umbenennung erforderlich",
     "delete": "Löschen",
     "rename": "Umbenennen",
@@ -1517,6 +1581,25 @@ export const de_DE: EnTranslations = {
       "friendOnline": "{name} ist online gekommen.",
       "friendOffline": "{name} ist offline gegangen."
     },
+    "tutorial": {
+      "title": "Neuer Abenteurer",
+      "stepLabel": "Schritt {current} von {total}",
+      "skip": "Tutorial überspringen",
+      "dismiss": "Schließen",
+      "doneTitle": "Bereit für das Abenteuer",
+      "doneBody": "Du beherrschst die Grundlagen, {name}. Das Eastbrook-Tal liegt bereit, von dir erkundet zu werden. Drücke jederzeit {questKey}, um deine Quests einzusehen. Gute Jagd.",
+      "moveTitle": "Erste Schritte",
+      "moveBody": "Nutze {moveKeys} zum Bewegen und die Maus zum Umsehen. Mach ein paar Schritte, um zu beginnen.",
+      "seekTitle": "Suche den Marschall",
+      "seekBody": "Marschall Redbrook wartet in der Stadt und hat Arbeit für einen frischen Recken. Folge der Markierung zu ihm.",
+      "talkTitle": "Nimm die Aufgabe an",
+      "talkBody": "Stell dich nah an Marschall Redbrook und drücke {interactKey}, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.",
+      "slayTitle": "Wölfe vor der Tür",
+      "slayBody": "Jage die Waldwölfe an der Nordstraße. Visiere einen an und greife ihn an, um das Rudel zu lichten.",
+      "slayProgress": "Erlegte Waldwölfe: {current} / {needed}",
+      "returnTitle": "Hol dir deine Belohnung",
+      "returnBody": "Deine Aufgabe ist erledigt. Kehre zu Marschall Redbrook zurück und drücke {interactKey}, um sie abzugeben."
+    },
     "markers": {
       "names": {
         "star": "Stern",
@@ -1740,6 +1823,10 @@ export const de_DE: EnTranslations = {
       "completedStatus": "Abgeschlossen",
       "returnTo": "Kehrt zu {name} zurück",
       "abandon": "Quest aufgeben",
+      "abandonConfirmTitle": "Quest aufgeben",
+      "abandonConfirmBody": "Möchtet Ihr {name} wirklich aufgeben?",
+      "abandonConfirm": "Ja",
+      "abandonCancel": "Abbrechen",
       "suggestedPlayers": "Empfohlene Spieler: {count}"
     },
     "dialog": {

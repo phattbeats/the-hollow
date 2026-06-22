@@ -33,12 +33,28 @@ export const hudChromeStrings = {
     title: "Emotes",
     done: "Done",
   },
+  // On-screen quest tracker. The "(N)" count shown beside the header while the
+  // tracker is collapsed (the number is spliced in via formatNumber), plus the
+  // header button's state-aware hover/title hint (Collapse while expanded,
+  // Expand while collapsed).
+  questTracker: {
+    count: "({count})",
+    collapseHint: "Collapse quest tracker",
+    expandHint: "Expand quest tracker",
+  },
   chatTimestamps: {
     show: "Show Chat Timestamps",
     format: "Timestamp Format",
     clock12h: "12-hour",
     clock24h: "24-hour",
     note: "Prefixes each new chat line with the time it arrived, e.g. [14:32]. Only affects messages received while the option is on.",
+  },
+  chatWindow: {
+    move: "Drag to move the chat window",
+    resize: "Drag to resize the chat window",
+    reset: "Reset Chat Window",
+    resetAction: "Reset",
+    note: "Drag the chat tab strip to move the window, or the corner grip to resize it. Reset returns it to the default position and size.",
   },
   swing: {
     ready: "Swing",
@@ -100,10 +116,41 @@ export const hudChromeStrings = {
   options: {
     clickMoveLeft: "Left Click",
     clickMoveRight: "Right Click",
+    // Adaptive browser-effects tier control (Graphics panel). Auto detects the
+    // browser engine/version + device; the rest pin the CSS-effects tier.
+    browserEffects: "Browser Effects",
+    browserEffectsAuto: "Auto",
+    browserEffectsFull: "Full",
+    browserEffectsReduced: "Reduced",
+    browserEffectsMinimal: "Minimal",
+    browserEffectsNote: "Auto tones down heavy CSS effects (blur, glow, background motion) based on your browser and device. Lower it manually if the interface feels sluggish.",
     // Audio panel toggle for the per-footfall step clips (off by default).
     footstepSounds: "Footstep Sounds",
+    // Toggle for the OSRS-style click-feedback marker: entity targets and
+    // click-to-move destinations (on by default).
+    clickFeedback: "Click Marker",
     showWalletOnCharacterScreen: "Show Wallet on Character Screen",
     showWalletOnPlayerCard: "Show Wallet on Player Card",
+    // Interface panel: global HUD zoom slider, and the mirror of the landing
+    // page's high-contrast backdrop toggle.
+    uiScale: "UI Scale",
+    highContrastBackground: "High-Contrast Background",
+  },
+  // Controller / gamepad options panel (Options > Controller). Player-facing
+  // chrome, so every label is a key here; the live numbers run through
+  // formatNumber. The button names themselves (A / LB / D-pad, etc.) stay as
+  // hardware glyphs in gamepad_map and need no translation.
+  controller: {
+    title: "Controller",
+    enable: "Enable Controller",
+    invertY: "Invert Camera (Y)",
+    deadzone: "Stick Deadzone",
+    cameraSpeed: "Camera Speed",
+    vibration: "Vibration",
+    buttons: "Button Layout",
+    resetButtons: "Reset Button Layout",
+    menuAction: "Game Menu",
+    help: "Left stick moves, right stick looks. Open a window to use the on-screen pointer.",
   },
   // Performance overlay (the customizable in-game stats panel + its Options
   // sub-view). Player-facing, so every label is a key here; the live numbers in
@@ -185,6 +232,12 @@ export const hudChromeStrings = {
   },
   playerCard: {
     showWalletBadge: "Show wallet badge",
+  },
+  // Landing-page (start screen) accessibility controls.
+  landing: {
+    // Footer toggle: swap the moving trailer for a static high-contrast backdrop.
+    highContrast: "High Contrast",
+    highContrastAria: "Toggle high-contrast background: disables the moving trailer so start-screen text stays legible",
   },
   // Character-screen stat tooltips (hover a stat on the C panel). The stat NAMES
   // reuse itemUi.stats.*; only these descriptions / effect lines / notes are new.
@@ -268,6 +321,31 @@ export const hudChromeStrings = {
       many: "Who: {count} players online on {realm}.",
       other: "Who: {count} players online on {realm}.",
     },
+  },
+  // "Report a Bug" options sub-view (online only). Captures realm/character/
+  // position/screenshot plus a free-text description and posts to the server.
+  bugReport: {
+    menuButton: "Report a Bug",
+    realm: "Realm",
+    character: "Character",
+    position: "Position",
+    unknown: "Unknown",
+    description: "What went wrong?",
+    descriptionPlaceholder: "Describe the bug: what you did, what you expected, and what happened.",
+    includeScreenshot: "Include Screenshot",
+    screenshotAlt: "Screenshot of the current view attached to this bug report",
+    submit: "Send Report",
+    submitted: "Bug report sent. Thank you!",
+    submittedNoShot: "Bug report sent, but the screenshot was too large to include.",
+    describeFirst: "Please describe the bug before sending.",
+    tooLarge: "That report is too large to send. Try again without the screenshot.",
+    rateLimited: "You've sent several reports recently. Please wait a bit before sending another.",
+    failed: "Could not send the bug report. Please try again.",
+  },
+  // Character window (paperdoll) controls.
+  paperdoll: {
+    unequipAria: "Unequip {item}",
+    unequipHint: "Click ×, right-click, or drag to bags to unequip",
   },
   // Home-page account portal (the logged-in "Account" nav tab). Lives here in the
   // English-only hud_chrome domain so an English-only PR compiles; translations

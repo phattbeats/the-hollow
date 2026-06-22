@@ -174,12 +174,24 @@ export const fr_FR: EnTranslations = {
       "title": "Emotes",
       "done": "Terminé"
     },
+    "questTracker": {
+      "count": "({count})",
+      "collapseHint": "Réduire le suivi des quêtes",
+      "expandHint": "Développer le suivi des quêtes"
+    },
     "chatTimestamps": {
       "show": "Afficher l'horodatage de la discussion",
       "format": "Format de l'horodatage",
       "clock12h": "12 heures",
       "clock24h": "24 heures",
       "note": "Préfixe chaque nouvelle ligne de discussion avec l'heure de réception, par ex. [14:32]. N'affecte que les messages reçus quand l'option est activée."
+    },
+    "chatWindow": {
+      "move": "Faites glisser pour déplacer la fenêtre de discussion",
+      "resize": "Faites glisser pour redimensionner la fenêtre de discussion",
+      "reset": "Réinitialiser la fenêtre de discussion",
+      "resetAction": "Réinitialiser",
+      "note": "Faites glisser la barre d'onglets de la discussion pour déplacer la fenêtre, ou la poignée d'angle pour la redimensionner. Réinitialiser la rétablit à sa position et sa taille par défaut."
     },
     "swing": {
       "ready": "Coup",
@@ -228,9 +240,30 @@ export const fr_FR: EnTranslations = {
     "options": {
       "clickMoveLeft": "Clic gauche",
       "clickMoveRight": "Clic droit",
+      "browserEffects": "Effets du navigateur",
+      "browserEffectsAuto": "Auto",
+      "browserEffectsFull": "Complets",
+      "browserEffectsReduced": "Réduits",
+      "browserEffectsMinimal": "Minimaux",
+      "browserEffectsNote": "Le mode automatique atténue les effets CSS lourds (flou, lueur, animation d'arrière-plan) selon votre navigateur et votre appareil. Réduisez-le manuellement si l'interface semble lente.",
       "footstepSounds": "Sons de pas",
+      "clickFeedback": "Repère de clic",
       "showWalletOnCharacterScreen": "Afficher le portefeuille sur l’écran des personnages",
-      "showWalletOnPlayerCard": "Afficher le portefeuille sur la carte de joueur"
+      "showWalletOnPlayerCard": "Afficher le portefeuille sur la carte de joueur",
+      "uiScale": "Échelle de l’interface",
+      "highContrastBackground": "Arrière-plan à contraste élevé"
+    },
+    "controller": {
+      "title": "Manette",
+      "enable": "Activer la manette",
+      "invertY": "Inverser la caméra (Y)",
+      "deadzone": "Zone morte du stick",
+      "cameraSpeed": "Vitesse de la caméra",
+      "vibration": "Vibrations",
+      "buttons": "Disposition des boutons",
+      "resetButtons": "Réinitialiser la disposition des boutons",
+      "menuAction": "Menu du jeu",
+      "help": "Le stick gauche déplace, le droit oriente la caméra. Ouvrez une fenêtre pour utiliser le pointeur à l'écran."
     },
     "perf": {
       "title": "Surcouche de performance",
@@ -303,6 +336,10 @@ export const fr_FR: EnTranslations = {
     "playerCard": {
       "showWalletBadge": "Afficher l’insigne de portefeuille"
     },
+    "landing": {
+      "highContrast": "Contraste élevé",
+      "highContrastAria": "Basculer l’arrière-plan à contraste élevé : désactive la bande-annonce animée pour que le texte de l’écran de démarrage reste lisible"
+    },
     "statInfo": {
       "fromYour": "Grâce à vos {value} en {stat} :",
       "desc": {
@@ -368,6 +405,28 @@ export const fr_FR: EnTranslations = {
         "many": "Qui : {count} joueurs en ligne sur {realm}.",
         "other": "Qui : {count} joueurs en ligne sur {realm}."
       }
+    },
+    "bugReport": {
+      "menuButton": "Signaler un bug",
+      "realm": "Royaume",
+      "character": "Personnage",
+      "position": "Position",
+      "unknown": "Inconnu",
+      "description": "Que s'est-il passé ?",
+      "descriptionPlaceholder": "Décrivez le bug : ce que vous avez fait, ce que vous attendiez et ce qui s'est produit.",
+      "includeScreenshot": "Inclure une capture d'écran",
+      "screenshotAlt": "Capture d'écran de la vue actuelle jointe à ce rapport de bug",
+      "submit": "Envoyer le rapport",
+      "submitted": "Rapport de bug envoyé. Merci !",
+      "submittedNoShot": "Rapport de bug envoyé, mais la capture d'écran était trop volumineuse pour être incluse.",
+      "describeFirst": "Veuillez décrire le bug avant de l'envoyer.",
+      "tooLarge": "Ce rapport est trop volumineux pour être envoyé. Réessayez sans la capture d'écran.",
+      "rateLimited": "Vous avez envoyé plusieurs rapports récemment. Veuillez patienter un peu avant d'en envoyer un autre.",
+      "failed": "Impossible d'envoyer le rapport de bug. Veuillez réessayer."
+    },
+    "paperdoll": {
+      "unequipAria": "Déséquiper {item}",
+      "unequipHint": "Cliquez sur ×, faites un clic droit ou glissez vers les sacs pour déséquiper"
     },
     "account": {
       "title": "Compte",
@@ -1006,7 +1065,9 @@ export const fr_FR: EnTranslations = {
       "webLoginOnly": "Les connexions ne sont autorisées que depuis le client du jeu.",
       "accountSuspended": "Ce compte est suspendu jusqu'au {date}.",
       "alreadyInWorld": "Le personnage est déjà dans le monde.",
-      "renameBeforeEntering": "Ce personnage doit être renommé avant d'entrer dans le monde."
+      "takenOver": "Votre personnage a été pris en main par une autre session.",
+      "renameBeforeEntering": "Ce personnage doit être renommé avant d'entrer dans le monde.",
+      "renameNotPermitted": "Le changement de nom de ce personnage n'est pas autorisé."
     }
   },
   "realm": {
@@ -1032,6 +1093,9 @@ export const fr_FR: EnTranslations = {
     "noneYet": "Aucun personnage pour l'instant. Créez-en un ci-dessous.",
     "levelClass": "Niveau {level} {className}",
     "inWorld": "en jeu",
+    "takeOver": "Prendre le contrôle",
+    "inWorldHint": "Déjà en jeu. Déconnectez-vous ailleurs, ou prenez le contrôle.",
+    "takeOverConfirm": "Cela déconnectera ce personnage d'une autre session et l'amènera ici. Continuer ?",
     "renameRequired": "renommage requis",
     "delete": "Supprimer",
     "rename": "Renommer",
@@ -1517,6 +1581,25 @@ export const fr_FR: EnTranslations = {
       "friendOnline": "{name} vient de se connecter.",
       "friendOffline": "{name} vient de se déconnecter."
     },
+    "tutorial": {
+      "title": "Nouvel aventurier",
+      "stepLabel": "Étape {current} sur {total}",
+      "skip": "Passer le tutoriel",
+      "dismiss": "Fermer",
+      "doneTitle": "Prêt pour l'aventure",
+      "doneBody": "Tu maîtrises les bases, {name}. Le Val est à toi : appuie sur {questKey} à tout moment pour consulter tes quêtes. Bonne chasse !",
+      "moveTitle": "Trouve tes marques",
+      "moveBody": "Utilise {moveKeys} pour te déplacer et la souris pour regarder autour de toi. Fais quelques pas pour commencer.",
+      "seekTitle": "Trouve le maréchal",
+      "seekBody": "Le maréchal Redbrook attend en ville et a du travail pour une nouvelle lame. Suis le repère pour le rejoindre.",
+      "talkTitle": "Accepte la mission",
+      "talkBody": "Tiens-toi près du maréchal Redbrook et appuie sur {interactKey} pour lui parler, puis accepte sa mission.",
+      "slayTitle": "Des loups à la porte",
+      "slayBody": "Traque les loups des bois sur la route du nord. Cible-en un et attaque pour réduire la meute.",
+      "slayProgress": "Loups des bois tués : {current} / {needed}",
+      "returnTitle": "Réclame ta récompense",
+      "returnBody": "Ta mission est accomplie. Retourne voir le maréchal Redbrook et appuie sur {interactKey} pour la rendre."
+    },
     "markers": {
       "names": {
         "star": "Étoile",
@@ -1740,6 +1823,10 @@ export const fr_FR: EnTranslations = {
       "completedStatus": "Terminée",
       "returnTo": "Retournez voir {name}",
       "abandon": "Abandonner la quête",
+      "abandonConfirmTitle": "Abandonner la quête",
+      "abandonConfirmBody": "Voulez-vous vraiment abandonner {name} ?",
+      "abandonConfirm": "Oui",
+      "abandonCancel": "Annuler",
       "suggestedPlayers": "Joueurs conseillés : {count}"
     },
     "dialog": {
