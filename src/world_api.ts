@@ -242,6 +242,13 @@ export interface AccountCosmetics {
   mechChromaIds: string[];
 }
 
+// One raid's lockout as projected to the HUD: the dungeon id plus the time left
+// until it unlocks. The seam only ever surfaces still-locked raids.
+export interface RaidLockout {
+  id: string;
+  msRemaining: number;
+}
+
 // The surface the renderer + HUD need from a game world. The offline `Sim`
 // satisfies this structurally; the online `ClientWorld` implements it by
 // mirroring server snapshots and sending commands over the socket.
@@ -364,6 +371,9 @@ export interface IWorld {
   marketCollect(): void;
   enterDungeon(dungeonId: string): void;
   leaveDungeon(): void;
+  // Still-locked raids for the local player (unlock countdown in ms), driving the
+  // minimap raid-lockout badge + panel. Empty when nothing is locked.
+  raidLockouts(): RaidLockout[];
   // Post-cap progression: the realm-scoped lifetime-XP leaderboard, and the
   // opt-in cosmetic prestige action.
   leaderboard(): Promise<LeaderboardEntry[]>;

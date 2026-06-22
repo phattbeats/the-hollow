@@ -1353,6 +1353,15 @@ export class Sim {
   get questsDone(): Set<string> {
     return this.primary.questsDone;
   }
+  raidLockouts(): import('../world_api').RaidLockout[] {
+    const now = this.lockoutNowMs();
+    const out: import('../world_api').RaidLockout[] = [];
+    for (const [id, until] of this.primary.raidLockouts) {
+      const msRemaining = until - now;
+      if (msRemaining > 0) out.push({ id, msRemaining });
+    }
+    return out;
+  }
   get counters(): RewardCounters {
     return this.primary.counters;
   }
