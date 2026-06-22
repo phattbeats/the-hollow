@@ -104,6 +104,26 @@ export const hudChromeStrings = {
     footstepSounds: "Footstep Sounds",
     showWalletOnCharacterScreen: "Show Wallet on Character Screen",
     showWalletOnPlayerCard: "Show Wallet on Player Card",
+    // Interface panel: global HUD zoom slider, and the mirror of the landing
+    // page's high-contrast backdrop toggle.
+    uiScale: "UI Scale",
+    highContrastBackground: "High-Contrast Background",
+  },
+  // Controller / gamepad options panel (Options > Controller). Player-facing
+  // chrome, so every label is a key here; the live numbers run through
+  // formatNumber. The button names themselves (A / LB / D-pad, etc.) stay as
+  // hardware glyphs in gamepad_map and need no translation.
+  controller: {
+    title: "Controller",
+    enable: "Enable Controller",
+    invertY: "Invert Camera (Y)",
+    deadzone: "Stick Deadzone",
+    cameraSpeed: "Camera Speed",
+    vibration: "Vibration",
+    buttons: "Button Layout",
+    resetButtons: "Reset Button Layout",
+    menuAction: "Game Menu",
+    help: "Left stick moves, right stick looks. Open a window to use the on-screen pointer.",
   },
   // Performance overlay (the customizable in-game stats panel + its Options
   // sub-view). Player-facing, so every label is a key here; the live numbers in
@@ -185,6 +205,12 @@ export const hudChromeStrings = {
   },
   playerCard: {
     showWalletBadge: "Show wallet badge",
+  },
+  // Landing-page (start screen) accessibility controls.
+  landing: {
+    // Footer toggle: swap the moving trailer for a static high-contrast backdrop.
+    highContrast: "High Contrast",
+    highContrastAria: "Toggle high-contrast background: disables the moving trailer so start-screen text stays legible",
   },
   // Character-screen stat tooltips (hover a stat on the C panel). The stat NAMES
   // reuse itemUi.stats.*; only these descriptions / effect lines / notes are new.
@@ -287,6 +313,11 @@ export const hudChromeStrings = {
     tooLarge: "That report is too large to send. Try again without the screenshot.",
     rateLimited: "You've sent several reports recently. Please wait a bit before sending another.",
     failed: "Could not send the bug report. Please try again.",
+  },
+  // Character window (paperdoll) controls.
+  paperdoll: {
+    unequipAria: "Unequip {item}",
+    unequipHint: "Click ×, right-click, or drag to bags to unequip",
   },
   // Home-page account portal (the logged-in "Account" nav tab). Lives here in the
   // English-only hud_chrome domain so an English-only PR compiles; translations
