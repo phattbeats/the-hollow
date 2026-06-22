@@ -22,6 +22,7 @@ import {
 } from './content/augments';
 import { Rng } from './rng';
 import { SpatialGrid } from './spatial';
+import { orderTabTargets } from './tab_target';
 import {
   HEAL_THREAT_FACTOR, MELEE_SWITCH_MULT, RANGED_SWITCH_MULT,
   TAUNT_FORCE_SECONDS, addThreat, clearThreat, stealthDetectionRadius, threatEntries, threatModifier, topThreatValue,
@@ -7158,10 +7159,20 @@ export class Sim {
     const p = r.e;
     const candidates = this.enemyCandidates(p);
     if (candidates.length === 0) return;
-    candidates.sort((a, b) => a.d - b.d);
-    const curIdx = candidates.findIndex((c) => c.e.id === p.targetId);
-    const next = candidates[(curIdx + 1) % candidates.length];
-    p.targetId = next.e.id;
+    // Cycle the enemies the player can see / is fighting first; off-screen ones
+    // stay reachable but never steal the selection (see tab_target.ts).
+    const ordered = orderTabTargets(
+      candidates.map((c) => ({
+        id: c.e.id,
+        dx: c.e.pos.x - p.pos.x,
+        dz: c.e.pos.z - p.pos.z,
+        d: c.d,
+        engaged: c.e.aggroTargetId === p.id || c.e.targetId === p.id,
+      })),
+      p.facing,
+    );
+    const curIdx = ordered.indexOf(p.targetId ?? -1);
+    p.targetId = ordered[(curIdx + 1) % ordered.length];
   }
 
   targetNearestEnemy(pid?: number): void {
