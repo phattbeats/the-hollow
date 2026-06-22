@@ -5,8 +5,9 @@
 //
 // The thin consumer (hud.ts#updateQuestTracker) resolves quest/objective text
 // through t(), formats the count through formatNumber, and renders this view
-// model to HTML. Keeping this module string/DOM-free mirrors the unit_portrait /
-// xp_bar / perf_overlay_model split the repo standardizes on.
+// model to HTML. Keeping this module fully string/DOM-free mirrors unit_portrait's
+// pure-core split (the consumer owns all t()/formatNumber, the way xp_bar's does),
+// so the collapse + done logic is testable without a locale loaded.
 
 export interface TrackedObjective {
   /** Already-localized objective label. */

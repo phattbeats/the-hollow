@@ -47,10 +47,20 @@ describe('questTrackerView', () => {
     expect(over.quests[0].objectives[0].done).toBe(true);
   });
 
-  it('does not mutate the caller input', () => {
+  it('treats an objective with a zero total as done (0 >= 0)', () => {
+    const v = questTrackerView([{ id: 'x', title: 'X', complete: false, objectives: [{ label: 'o', current: 0, total: 0 }] }], false);
+    expect(v.quests[0].objectives[0].done).toBe(true);
+  });
+
+  it('does not mutate the caller input and returns distinct copies', () => {
     const input: TrackedQuest[] = [{ id: 'a', title: 'A', complete: false, objectives: [{ label: 'o', current: 1, total: 2 }] }];
     const snapshot = JSON.stringify(input);
-    questTrackerView(input, false);
+    const v = questTrackerView(input, false);
     expect(JSON.stringify(input)).toBe(snapshot);
+    // The consumer relies on getting its own quest/objective objects (never
+    // references back into the caller's records), so a future refactor that
+    // returned shared references would be a bug; assert the copy is distinct.
+    expect(v.quests[0]).not.toBe(input[0]);
+    expect(v.quests[0].objectives[0]).not.toBe(input[0].objectives[0]);
   });
 });
