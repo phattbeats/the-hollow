@@ -26,6 +26,7 @@ const entrySource = `
   export { ZONE1_MOBS } from './src/sim/content/zone1.ts';
   export { ZONE2_MOBS } from './src/sim/content/zone2.ts';
   export { ZONE3_MOBS } from './src/sim/content/zone3.ts';
+  export { VISUALS, visualKeyFor } from './src/render/characters/manifest.ts';
 `;
 
 const built = await esbuild.build({
@@ -39,12 +40,54 @@ const built = await esbuild.build({
 const dataUrl = `data:text/javascript;base64,${Buffer.from(built.outputFiles[0].text).toString('base64')}`;
 const {
   CLASSES, ABILITIES, TALENTS, ALL_CLASSES, ZONES, DUNGEONS, MOBS, WARLOCK_PET_MOBS,
-  ZONE1_MOBS, ZONE2_MOBS, ZONE3_MOBS,
+  ZONE1_MOBS, ZONE2_MOBS, ZONE3_MOBS, VISUALS, visualKeyFor,
 } = await import(dataUrl);
 
 const ROLE_ORDER = ['tank', 'healer', 'dps'];
 const hex = (n) => `#${(n >>> 0).toString(16).padStart(6, '0').slice(-6)}`;
 const abilityRef = (aid) => ({ id: aid, name: ABILITIES[aid]?.name ?? aid });
+
+// 3D model registry, mirrored from the renderer's VisualDef manifest so the Guide's
+// interactive viewer (src/guide/viewer) can build the EXACT in-game model from one GLB
+// on demand, without importing the renderer's bulk-preload asset pipeline. We bake only
+// the structural fields the standalone viewer needs (GLB url, idle clip name, height,
+// orientation, the KayKit accessory allowlist, weapon attachments, tint strength) and
+// dedupe by visual key, since many creatures share one model. Per-entity color is carried
+// on each class/creature/pet as `tint`, resolved here from the VisualDef tint mode.
+const MODELS = {};
+function modelKeyFor(visualKey) {
+  const def = VISUALS[visualKey];
+  if (!def) return null;
+  if (!MODELS[visualKey]) {
+    const spec = { url: def.url, idle: def.clips?.idle ?? null, height: def.height };
+    if (def.yaw) spec.yaw = def.yaw;
+    if (def.hover) spec.hover = def.hover;
+    if (def.show) spec.show = def.show;
+    if (def.attach) {
+      spec.attach = def.attach.map((a) => {
+        const o = { url: a.url, bone: a.bone };
+        if (a.position) o.position = a.position;
+        if (a.rotationY) o.rotationY = a.rotationY;
+        if (a.gripRef) o.gripRef = a.gripRef;
+        return o;
+      });
+    }
+    if (def.weaponFix) spec.weaponFix = def.weaponFix;
+    if (def.tint !== undefined) spec.tintStrength = def.tintStrength ?? 0.4;
+    MODELS[visualKey] = spec;
+  }
+  return visualKey;
+}
+// The color the viewer should lerp materials toward, or null when the model is not
+// tinted. 'entity' tint uses the entity's own color (white for a class preview, the mob
+// template color for a creature); a fixed tint uses the manifest value.
+function tintFor(visualKey, entityColor) {
+  const def = VISUALS[visualKey];
+  if (!def || def.tint === undefined) return null;
+  return def.tint === 'entity' ? entityColor : def.tint;
+}
+const playerVisualKey = (id) => visualKeyFor({ kind: 'player', templateId: id });
+const mobVisualKey = (id) => visualKeyFor({ kind: 'mob', templateId: id });
 
 // How many early, spoiler-safe abilities lead the "signature kit". The full kit
 // (allAbilities) follows so every class icon is showcased.
@@ -58,6 +101,9 @@ const classes = ALL_CLASSES.map((id) => {
   const specs = specDefs.map((s) => ({ id: s.id, name: s.name, role: s.role, signature: s.signature }));
   const roles = ROLE_ORDER.filter((r) => specs.some((s) => s.role === r));
   const kit = def.abilities ?? [];
+  // The class preview uses the same model + white tint the in-game character creator does.
+  const vk = playerVisualKey(id);
+  const tint = tintFor(vk, 0xffffff);
   return {
     id,
     color: hex(def.color),
@@ -66,6 +112,8 @@ const classes = ALL_CLASSES.map((id) => {
     specs,
     signatureAbilities: kit.slice(0, SIGNATURE_COUNT).map(abilityRef),
     abilities: kit.map(abilityRef),
+    model: modelKeyFor(vk),
+    ...(tint != null ? { tint: hex(tint) } : {}),
   };
 });
 
@@ -114,7 +162,11 @@ const dungeons = Object.values(DUNGEONS)
   .sort((a, b) => (a.min ?? 99) - (b.min ?? 99) || a.suggestedPlayers - b.suggestedPlayers);
 
 // Warlock demons, in summon order. Names only; role flavor is authored guide copy.
-const warlockPets = Object.values(WARLOCK_PET_MOBS).map((p) => ({ id: p.id, name: p.name }));
+const warlockPets = Object.values(WARLOCK_PET_MOBS).map((p) => {
+  const vk = mobVisualKey(p.id);
+  const tint = tintFor(vk, p.color ?? 0xffffff);
+  return { id: p.id, name: p.name, model: modelKeyFor(vk), ...(tint != null ? { tint: hex(tint) } : {}) };
+});
 
 // Bestiary: OVERWORLD creatures only, grouped by family. Excludes elite/boss (dungeon
 // and raid encounters) and warlock pet summons, so nothing here spoils instanced content.
@@ -124,7 +176,12 @@ for (const [id, m] of Object.entries({ ...ZONE1_MOBS, ...ZONE2_MOBS, ...ZONE3_MO
   if (m.elite || m.boss) continue;
   if (id.startsWith('warlock_')) continue; // summoned pets, not wild creatures
   if (/vision/i.test(id) || /^Vision\b/.test(m.name)) continue; // cinematic apparitions, not creatures
-  (famMap[m.family] ??= new Map()).set(m.name, { name: m.name, min: m.minLevel, max: m.maxLevel, rare: !!m.rare });
+  const vk = mobVisualKey(id);
+  const tint = tintFor(vk, m.color ?? 0xffffff);
+  (famMap[m.family] ??= new Map()).set(m.name, {
+    name: m.name, min: m.minLevel, max: m.maxLevel, rare: !!m.rare,
+    templateId: id, model: modelKeyFor(vk), ...(tint != null ? { tint: hex(tint) } : {}),
+  });
 }
 const families = FAMILY_ORDER
   .filter((f) => famMap[f])
@@ -145,6 +202,23 @@ export type GuideResource = 'rage' | 'mana' | 'energy';
 export interface GuideAbilityRef { id: string; name: string; }
 export interface GuideClassSpec { id: string; name: string; role: GuideRole; signature: string; }
 
+// Interactive 3D model data, mirrored from the renderer's VisualDef manifest. The Guide's
+// standalone viewer builds the model from one GLB on demand; entities reference a model by
+// visual key into GUIDE_MODELS and carry their own tint color.
+export interface GuideModelAttach { url: string; bone: string; position?: [number, number, number]; rotationY?: number; gripRef?: string; }
+export interface GuideModelWeaponFix { node: string; rotX?: number; rotY?: number; rotZ?: number; }
+export interface GuideModelSpec {
+  url: string;
+  idle: string | null;
+  height: number;
+  yaw?: number;
+  hover?: number;
+  show?: string[];
+  attach?: GuideModelAttach[];
+  weaponFix?: GuideModelWeaponFix[];
+  tintStrength?: number;
+}
+
 export interface GuideClassInfo {
   id: string;
   color: string;
@@ -153,6 +227,8 @@ export interface GuideClassInfo {
   specs: GuideClassSpec[];
   signatureAbilities: GuideAbilityRef[];
   abilities: GuideAbilityRef[];
+  model: string;
+  tint?: string;
 }
 
 export interface GuideZoneInfo {
@@ -175,9 +251,9 @@ export interface GuideDungeon {
   name?: string;
 }
 
-export interface GuideWarlockPet { id: string; name: string; }
+export interface GuideWarlockPet { id: string; name: string; model: string; tint?: string; }
 
-export interface GuideCreature { name: string; min: number; max: number; rare: boolean; }
+export interface GuideCreature { name: string; min: number; max: number; rare: boolean; templateId: string; model: string; tint?: string; }
 export interface GuideFamily { family: string; creatures: GuideCreature[]; }
 `;
 
@@ -188,6 +264,7 @@ writeFileSync(outFile, [
   `\nexport const GUIDE_DUNGEONS: GuideDungeon[] = ${JSON.stringify(dungeons, null, 2)};\n`,
   `\nexport const GUIDE_WARLOCK_PETS: GuideWarlockPet[] = ${JSON.stringify(warlockPets, null, 2)};\n`,
   `\nexport const GUIDE_FAMILIES: GuideFamily[] = ${JSON.stringify(families, null, 2)};\n`,
+  `\nexport const GUIDE_MODELS: Record<string, GuideModelSpec> = ${JSON.stringify(MODELS, null, 2)};\n`,
 ].join(''));
 // eslint-disable-next-line no-console
-console.log(`generated src/guide/content.generated.ts (${classes.length} classes, ${zones.length} zones, ${dungeons.length} dungeons, ${warlockPets.length} warlock pets, ${families.length} families)`);
+console.log(`generated src/guide/content.generated.ts (${classes.length} classes, ${zones.length} zones, ${dungeons.length} dungeons, ${warlockPets.length} warlock pets, ${families.length} families, ${Object.keys(MODELS).length} models)`);

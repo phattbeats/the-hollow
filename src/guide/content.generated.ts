@@ -10,6 +10,23 @@ export type GuideResource = 'rage' | 'mana' | 'energy';
 export interface GuideAbilityRef { id: string; name: string; }
 export interface GuideClassSpec { id: string; name: string; role: GuideRole; signature: string; }
 
+// Interactive 3D model data, mirrored from the renderer's VisualDef manifest. The Guide's
+// standalone viewer builds the model from one GLB on demand; entities reference a model by
+// visual key into GUIDE_MODELS and carry their own tint color.
+export interface GuideModelAttach { url: string; bone: string; position?: [number, number, number]; rotationY?: number; gripRef?: string; }
+export interface GuideModelWeaponFix { node: string; rotX?: number; rotY?: number; rotZ?: number; }
+export interface GuideModelSpec {
+  url: string;
+  idle: string | null;
+  height: number;
+  yaw?: number;
+  hover?: number;
+  show?: string[];
+  attach?: GuideModelAttach[];
+  weaponFix?: GuideModelWeaponFix[];
+  tintStrength?: number;
+}
+
 export interface GuideClassInfo {
   id: string;
   color: string;
@@ -18,6 +35,8 @@ export interface GuideClassInfo {
   specs: GuideClassSpec[];
   signatureAbilities: GuideAbilityRef[];
   abilities: GuideAbilityRef[];
+  model: string;
+  tint?: string;
 }
 
 export interface GuideZoneInfo {
@@ -40,9 +59,9 @@ export interface GuideDungeon {
   name?: string;
 }
 
-export interface GuideWarlockPet { id: string; name: string; }
+export interface GuideWarlockPet { id: string; name: string; model: string; tint?: string; }
 
-export interface GuideCreature { name: string; min: number; max: number; rare: boolean; }
+export interface GuideCreature { name: string; min: number; max: number; rare: boolean; templateId: string; model: string; tint?: string; }
 export interface GuideFamily { family: string; creatures: GuideCreature[]; }
 
 export const GUIDE_CLASSES: GuideClassInfo[] = [
@@ -165,7 +184,8 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
         "id": "taunt",
         "name": "Taunt"
       }
-    ]
+    ],
+    "model": "player_warrior"
   },
   {
     "id": "paladin",
@@ -275,7 +295,8 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
         "id": "retribution_aura",
         "name": "Retribution Aura"
       }
-    ]
+    ],
+    "model": "player_paladin"
   },
   {
     "id": "hunter",
@@ -387,7 +408,8 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
         "id": "rapid_fire",
         "name": "Rapid Fire"
       }
-    ]
+    ],
+    "model": "player_hunter"
   },
   {
     "id": "rogue",
@@ -527,7 +549,8 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
         "id": "stealth",
         "name": "Stealth"
       }
-    ]
+    ],
+    "model": "player_rogue"
   },
   {
     "id": "priest",
@@ -624,7 +647,9 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
         "id": "flash_heal",
         "name": "Flash Heal"
       }
-    ]
+    ],
+    "model": "player_priest",
+    "tint": "#f0e9d6"
   },
   {
     "id": "shaman",
@@ -725,7 +750,9 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
         "id": "stormstrike",
         "name": "Stormstrike"
       }
-    ]
+    ],
+    "model": "player_shaman",
+    "tint": "#6f8fc9"
   },
   {
     "id": "mage",
@@ -837,7 +864,8 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
         "id": "pyroblast",
         "name": "Pyroblast"
       }
-    ]
+    ],
+    "model": "player_mage"
   },
   {
     "id": "warlock",
@@ -961,7 +989,9 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
         "id": "summon_doomguard",
         "name": "Summon Doomguard"
       }
-    ]
+    ],
+    "model": "player_warlock",
+    "tint": "#8d5fd3"
   },
   {
     "id": "druid",
@@ -1143,7 +1173,8 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
         "id": "rip",
         "name": "Rip"
       }
-    ]
+    ],
+    "model": "player_druid"
   }
 ];
 
@@ -1255,31 +1286,45 @@ export const GUIDE_DUNGEONS: GuideDungeon[] = [
 export const GUIDE_WARLOCK_PETS: GuideWarlockPet[] = [
   {
     "id": "imp",
-    "name": "Imp"
+    "name": "Imp",
+    "model": "mob_demon",
+    "tint": "#ff7a2a"
   },
   {
     "id": "voidwalker",
-    "name": "Voidwalker"
+    "name": "Voidwalker",
+    "model": "mob_demon",
+    "tint": "#3a3a6e"
   },
   {
     "id": "succubus",
-    "name": "Succubus"
+    "name": "Succubus",
+    "model": "mob_demon",
+    "tint": "#c6469b"
   },
   {
     "id": "felhunter",
-    "name": "Felhunter"
+    "name": "Felhunter",
+    "model": "mob_demonalt",
+    "tint": "#4a7d4a"
   },
   {
     "id": "felguard",
-    "name": "Felguard"
+    "name": "Felguard",
+    "model": "mob_demonalt",
+    "tint": "#6e5a2a"
   },
   {
     "id": "infernal",
-    "name": "Infernal"
+    "name": "Infernal",
+    "model": "mob_demonalt",
+    "tint": "#d24a2a"
   },
   {
     "id": "doomguard",
-    "name": "Doomguard"
+    "name": "Doomguard",
+    "model": "mob_demonalt",
+    "tint": "#7a3a8e"
   }
 ];
 
@@ -1291,97 +1336,145 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "name": "Brightwood Hare",
         "min": 1,
         "max": 2,
-        "rare": false
+        "rare": false,
+        "templateId": "brightwood_hare",
+        "model": "mob_critter",
+        "tint": "#c8a972"
       },
       {
         "name": "Forest Wolf",
         "min": 1,
         "max": 2,
-        "rare": false
+        "rare": false,
+        "templateId": "forest_wolf",
+        "model": "mob_wolf",
+        "tint": "#7f8c8d"
       },
       {
         "name": "Glade Fox",
         "min": 2,
         "max": 3,
-        "rare": false
+        "rare": false,
+        "templateId": "glade_fox",
+        "model": "mob_fox",
+        "tint": "#d2691e"
       },
       {
         "name": "Spotted Fawn",
         "min": 2,
         "max": 3,
-        "rare": false
+        "rare": false,
+        "templateId": "spotted_fawn",
+        "model": "mob_stag",
+        "tint": "#b5895f"
       },
       {
         "name": "Wild Boar",
         "min": 2,
         "max": 3,
-        "rare": false
+        "rare": false,
+        "templateId": "wild_boar",
+        "model": "mob_boar",
+        "tint": "#935116"
       },
       {
         "name": "Dawnmane Doe",
         "min": 3,
         "max": 4,
-        "rare": false
+        "rare": false,
+        "templateId": "dawnmane_doe",
+        "model": "mob_stag",
+        "tint": "#a9763f"
       },
       {
         "name": "Meadow Crane",
         "min": 3,
         "max": 4,
-        "rare": false
+        "rare": false,
+        "templateId": "meadow_crane",
+        "model": "mob_wolf",
+        "tint": "#eaeaea"
       },
       {
         "name": "Thornpelt Badger",
         "min": 3,
         "max": 4,
-        "rare": false
+        "rare": false,
+        "templateId": "thornpelt_badger",
+        "model": "mob_critter",
+        "tint": "#5d5d5d"
       },
       {
         "name": "Bramble Lynx",
         "min": 4,
         "max": 5,
-        "rare": false
+        "rare": false,
+        "templateId": "bramble_lynx",
+        "model": "mob_wolf",
+        "tint": "#8a6d3b"
       },
       {
         "name": "Brightwood Stag",
         "min": 4,
         "max": 5,
-        "rare": false
+        "rare": false,
+        "templateId": "brightwood_stag",
+        "model": "mob_stag",
+        "tint": "#946638"
       },
       {
         "name": "Old Greyjaw",
         "min": 4,
         "max": 4,
-        "rare": true
+        "rare": true,
+        "templateId": "old_greyjaw",
+        "model": "mob_wolf",
+        "tint": "#566061"
       },
       {
         "name": "Grovetusk Boar",
         "min": 5,
         "max": 6,
-        "rare": false
+        "rare": false,
+        "templateId": "grovetusk_boar",
+        "model": "mob_boar",
+        "tint": "#6b4423"
       },
       {
         "name": "Sunhide Bear",
         "min": 5,
         "max": 6,
-        "rare": false
+        "rare": false,
+        "templateId": "sunhide_bear",
+        "model": "mob_bear",
+        "tint": "#5a4030"
       },
       {
         "name": "Mire Prowler",
         "min": 7,
         "max": 8,
-        "rare": false
+        "rare": false,
+        "templateId": "mire_prowler",
+        "model": "mob_wolf",
+        "tint": "#4d5656"
       },
       {
         "name": "Bog Bloat",
         "min": 9,
         "max": 11,
-        "rare": false
+        "rare": false,
+        "templateId": "bog_bloat",
+        "model": "mob_murloc",
+        "tint": "#6b8e23"
       },
       {
         "name": "Ridge Stalker",
         "min": 13,
         "max": 14,
-        "rare": false
+        "rare": false,
+        "templateId": "ridge_stalker",
+        "model": "mob_wolf",
+        "tint": "#8c8270"
       }
     ]
   },
@@ -1392,19 +1485,28 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "name": "Webwood Lurker",
         "min": 2,
         "max": 4,
-        "rare": false
+        "rare": false,
+        "templateId": "webwood_spider",
+        "model": "mob_spider",
+        "tint": "#4a235a"
       },
       {
         "name": "Sableweb Hatchling",
         "min": 5,
         "max": 5,
-        "rare": false
+        "rare": false,
+        "templateId": "sableweb_hatchling",
+        "model": "mob_spider",
+        "tint": "#21112d"
       },
       {
         "name": "Mirefen Widow",
         "min": 8,
         "max": 10,
-        "rare": false
+        "rare": false,
+        "templateId": "mire_widow",
+        "model": "mob_spider",
+        "tint": "#283747"
       }
     ]
   },
@@ -1415,19 +1517,28 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "name": "Mudfin Skulker",
         "min": 3,
         "max": 5,
-        "rare": false
+        "rare": false,
+        "templateId": "mudfin_murloc",
+        "model": "mob_murloc",
+        "tint": "#52be80"
       },
       {
         "name": "Deepfen Snapper",
         "min": 8,
         "max": 9,
-        "rare": false
+        "rare": false,
+        "templateId": "deepfen_murloc",
+        "model": "mob_murloc",
+        "tint": "#45b39d"
       },
       {
         "name": "Mirejaw Frenzy",
         "min": 9,
         "max": 10,
-        "rare": false
+        "rare": false,
+        "templateId": "mirejaw_frenzy",
+        "model": "mob_murloc",
+        "tint": "#1abc9c"
       }
     ]
   },
@@ -1438,19 +1549,28 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "name": "Tunnel Rat Digger",
         "min": 4,
         "max": 6,
-        "rare": false
+        "rare": false,
+        "templateId": "tunnel_rat",
+        "model": "mob_kobold",
+        "tint": "#9c640c"
       },
       {
         "name": "Deeprock Tunneler",
         "min": 14,
         "max": 15,
-        "rare": false
+        "rare": false,
+        "templateId": "deeprock_kobold",
+        "model": "mob_kobold",
+        "tint": "#9c7a3c"
       },
       {
         "name": "Ironvein Sapper",
         "min": 15,
         "max": 16,
-        "rare": false
+        "rare": false,
+        "templateId": "ironvein_sapper",
+        "model": "mob_kobold",
+        "tint": "#8f6b34"
       }
     ]
   },
@@ -1461,49 +1581,73 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "name": "Vale Bandit",
         "min": 3,
         "max": 5,
-        "rare": false
+        "rare": false,
+        "templateId": "vale_bandit",
+        "model": "mob_bandit",
+        "tint": "#6b3a32"
       },
       {
         "name": "Mogger Lackey",
         "min": 5,
         "max": 6,
-        "rare": false
+        "rare": false,
+        "templateId": "mogger_lackey",
+        "model": "mob_bandit",
+        "tint": "#6b3a32"
       },
       {
         "name": "Gravecaller Cultist",
         "min": 10,
         "max": 12,
-        "rare": false
+        "rare": false,
+        "templateId": "gravecaller_cultist",
+        "model": "mob_dark_caster",
+        "tint": "#6c3483"
       },
       {
         "name": "Gravecaller Mender",
         "min": 11,
         "max": 12,
-        "rare": false
+        "rare": false,
+        "templateId": "gravecaller_mender",
+        "model": "mob_bandit",
+        "tint": "#6b3a32"
       },
       {
         "name": "Gravecaller Summoner",
         "min": 11,
         "max": 12,
-        "rare": false
+        "rare": false,
+        "templateId": "gravecaller_summoner",
+        "model": "mob_dark_caster",
+        "tint": "#884ea0"
       },
       {
         "name": "Nhalia Mourner",
         "min": 11,
         "max": 12,
-        "rare": false
+        "rare": false,
+        "templateId": "nhalia_mourner",
+        "model": "mob_bandit",
+        "tint": "#6b3a32"
       },
       {
         "name": "Wyrmcult Zealot",
         "min": 17,
         "max": 19,
-        "rare": false
+        "rare": false,
+        "templateId": "wyrmcult_zealot",
+        "model": "mob_bandit",
+        "tint": "#6b3a32"
       },
       {
         "name": "Wyrmcult Necromancer",
         "min": 18,
         "max": 19,
-        "rare": false
+        "rare": false,
+        "templateId": "wyrmcult_necromancer",
+        "model": "mob_dark_caster",
+        "tint": "#533566"
       }
     ]
   },
@@ -1514,13 +1658,19 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "name": "Mirefen Troll",
         "min": 10,
         "max": 12,
-        "rare": false
+        "rare": false,
+        "templateId": "fen_troll",
+        "model": "mob_troll",
+        "tint": "#229954"
       },
       {
         "name": "Grubjaw the Glutton",
         "min": 12,
         "max": 12,
-        "rare": true
+        "rare": true,
+        "templateId": "grubjaw",
+        "model": "mob_troll",
+        "tint": "#145a32"
       }
     ]
   },
@@ -1531,7 +1681,10 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "name": "Thornpeak Ogre",
         "min": 15,
         "max": 16,
-        "rare": false
+        "rare": false,
+        "templateId": "thornpeak_ogre",
+        "model": "mob_ogre",
+        "tint": "#9e7b53"
       }
     ]
   },
@@ -1542,25 +1695,37 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "name": "Restless Bones",
         "min": 5,
         "max": 7,
-        "rare": false
+        "rare": false,
+        "templateId": "restless_bones",
+        "model": "skel_minion",
+        "tint": "#d5dbdb"
       },
       {
         "name": "Drowned Dead",
         "min": 9,
         "max": 11,
-        "rare": false
+        "rare": false,
+        "templateId": "drowned_dead",
+        "model": "skel_minion",
+        "tint": "#7fb3d5"
       },
       {
         "name": "Boneclad Revenant",
         "min": 18,
         "max": 19,
-        "rare": false
+        "rare": false,
+        "templateId": "boneclad_revenant",
+        "model": "skel_warrior",
+        "tint": "#cacfd2"
       },
       {
         "name": "Varkas Boneguard",
         "min": 18,
         "max": 19,
-        "rare": false
+        "rare": false,
+        "templateId": "varkas_boneguard",
+        "model": "skel_minion",
+        "tint": "#c9c2b5"
       }
     ]
   },
@@ -1571,14 +1736,277 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "name": "Stormcrag Elemental",
         "min": 17,
         "max": 18,
-        "rare": false
+        "rare": false,
+        "templateId": "stormcrag_elemental",
+        "model": "mob_elemental",
+        "tint": "#5dade2"
       },
       {
         "name": "Shardlord Kazzix",
         "min": 18,
         "max": 18,
-        "rare": true
+        "rare": true,
+        "templateId": "shardlord_kazzix",
+        "model": "mob_elemental",
+        "tint": "#aed6f1"
       }
     ]
   }
 ];
+
+export const GUIDE_MODELS: Record<string, GuideModelSpec> = {
+  "player_warrior": {
+    "url": "models/chars/players/knight.glb",
+    "idle": "Idle",
+    "height": 2.6,
+    "show": [
+      "Knight_Helmet",
+      "Knight_Cape"
+    ],
+    "attach": [
+      {
+        "url": "models/weapons/sword_1handed.glb",
+        "bone": "handslot.r"
+      }
+    ]
+  },
+  "player_paladin": {
+    "url": "models/chars/players/paladin.glb",
+    "idle": "Idle",
+    "height": 2.6,
+    "attach": [
+      {
+        "url": "models/weapons/axe_1handed.glb",
+        "bone": "handslot.r"
+      }
+    ]
+  },
+  "player_hunter": {
+    "url": "models/chars/players/ranger.glb",
+    "idle": "Idle",
+    "height": 2.6,
+    "attach": [
+      {
+        "url": "models/weapons/crossbow_1handed.glb",
+        "bone": "handslot.r"
+      }
+    ]
+  },
+  "player_rogue": {
+    "url": "models/chars/players/rogue.glb",
+    "idle": "Idle",
+    "height": 2.6,
+    "show": [
+      "Rogue_Cape"
+    ],
+    "attach": [
+      {
+        "url": "models/weapons/dagger.glb",
+        "bone": "handslot.r"
+      },
+      {
+        "url": "models/weapons/dagger.glb",
+        "bone": "handslot.l"
+      }
+    ]
+  },
+  "player_priest": {
+    "url": "models/chars/players/mage.glb",
+    "idle": "Idle",
+    "height": 2.6,
+    "show": [],
+    "attach": [
+      {
+        "url": "models/weapons/staff.glb",
+        "bone": "handslot.r"
+      }
+    ],
+    "tintStrength": 0.5
+  },
+  "player_shaman": {
+    "url": "models/chars/players/barbarian.glb",
+    "idle": "Idle",
+    "height": 2.6,
+    "show": [
+      "Barbarian_BearHat"
+    ],
+    "attach": [
+      {
+        "url": "models/weapons/axe_1handed.glb",
+        "bone": "handslot.r"
+      }
+    ],
+    "tintStrength": 0.4
+  },
+  "player_mage": {
+    "url": "models/chars/players/mage.glb",
+    "idle": "Idle",
+    "height": 2.6,
+    "show": [
+      "Mage_Cape"
+    ],
+    "attach": [
+      {
+        "url": "models/weapons/staff.glb",
+        "bone": "handslot.r"
+      }
+    ]
+  },
+  "player_warlock": {
+    "url": "models/chars/players/mage.glb",
+    "idle": "Idle",
+    "height": 2.6,
+    "show": [],
+    "attach": [
+      {
+        "url": "models/weapons/wand.glb",
+        "bone": "handslot.r"
+      },
+      {
+        "url": "models/weapons/spellbook_open.glb",
+        "bone": "handslot.l",
+        "gripRef": "Spellbook_open"
+      }
+    ],
+    "tintStrength": 0.45
+  },
+  "player_druid": {
+    "url": "models/chars/players/druid.glb",
+    "idle": "Idle",
+    "height": 2.6,
+    "attach": [
+      {
+        "url": "models/weapons/staff.glb",
+        "bone": "handslot.r"
+      }
+    ]
+  },
+  "mob_demon": {
+    "url": "models/creatures/demonalt.glb",
+    "idle": "Idle",
+    "height": 1.8,
+    "tintStrength": 0.5
+  },
+  "mob_demonalt": {
+    "url": "models/creatures/demonalt.glb",
+    "idle": "Idle",
+    "height": 2.1,
+    "tintStrength": 0.35
+  },
+  "mob_wolf": {
+    "url": "models/creatures/wolf.glb",
+    "idle": "Idle",
+    "height": 1.6,
+    "tintStrength": 0.35
+  },
+  "mob_boar": {
+    "url": "models/creatures/wild_boar.glb",
+    "idle": "Idle1",
+    "height": 1.45,
+    "tintStrength": 0.4
+  },
+  "mob_spider": {
+    "url": "models/creatures/spider.glb",
+    "idle": "Spider_Idle",
+    "height": 1.4,
+    "tintStrength": 0.35
+  },
+  "mob_bandit": {
+    "url": "models/chars/players/rogue_hooded.glb",
+    "idle": "Idle",
+    "height": 2.6,
+    "attach": [
+      {
+        "url": "models/weapons/dagger.glb",
+        "bone": "handslot.r"
+      },
+      {
+        "url": "models/weapons/dagger.glb",
+        "bone": "handslot.l"
+      }
+    ],
+    "tintStrength": 0.3
+  },
+  "mob_murloc": {
+    "url": "models/creatures/frog.glb",
+    "idle": "Idle",
+    "height": 1.7,
+    "tintStrength": 0.45
+  },
+  "mob_kobold": {
+    "url": "models/creatures/goblin.glb",
+    "idle": "Idle",
+    "height": 2.1,
+    "tintStrength": 0.2
+  },
+  "skel_minion": {
+    "url": "models/chars/enemies/skeleton_minion.glb",
+    "idle": "Idle_Combat",
+    "height": 2.5,
+    "tintStrength": 0.25
+  },
+  "mob_critter": {
+    "url": "models/creatures/fox.glb",
+    "idle": "Idle",
+    "height": 0.7,
+    "tintStrength": 0.35
+  },
+  "mob_fox": {
+    "url": "models/creatures/fox.glb",
+    "idle": "Idle",
+    "height": 1,
+    "tintStrength": 0.35
+  },
+  "mob_stag": {
+    "url": "models/creatures/stag.glb",
+    "idle": "Idle",
+    "height": 1.9,
+    "tintStrength": 0.35
+  },
+  "mob_bear": {
+    "url": "models/creatures/yetialt.glb",
+    "idle": "Idle",
+    "height": 2.2,
+    "tintStrength": 0.5
+  },
+  "mob_troll": {
+    "url": "models/creatures/orc.glb",
+    "idle": "Idle",
+    "height": 2.4,
+    "tintStrength": 0.12
+  },
+  "mob_dark_caster": {
+    "url": "models/chars/players/mage.glb",
+    "idle": "Idle",
+    "height": 2.6,
+    "show": [
+      "Mage_Hat"
+    ],
+    "attach": [
+      {
+        "url": "models/weapons/staff.glb",
+        "bone": "handslot.r"
+      }
+    ],
+    "tintStrength": 0.5
+  },
+  "mob_ogre": {
+    "url": "models/creatures/giant.glb",
+    "idle": "Idle",
+    "height": 2.8,
+    "tintStrength": 0.2
+  },
+  "mob_elemental": {
+    "url": "models/creatures/golelingevolved.glb",
+    "idle": "Flying_Idle",
+    "height": 2.2,
+    "hover": 0.3,
+    "tintStrength": 0.4
+  },
+  "skel_warrior": {
+    "url": "models/chars/enemies/skeleton_warrior.glb",
+    "idle": "Idle_Combat",
+    "height": 2.5,
+    "tintStrength": 0.25
+  }
+};
