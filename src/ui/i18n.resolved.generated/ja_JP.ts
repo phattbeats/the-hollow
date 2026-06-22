@@ -234,6 +234,7 @@ export const ja_JP: EnTranslations = {
       "clickMoveLeft": "左クリック",
       "clickMoveRight": "右クリック",
       "footstepSounds": "足音",
+      "clickFeedback": "クリックマーカー",
       "showWalletOnCharacterScreen": "キャラクター画面にウォレットを表示",
       "showWalletOnPlayerCard": "プレイヤーカードにウォレットを表示",
       "uiScale": "UIスケール",

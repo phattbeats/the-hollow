@@ -119,6 +119,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   "hudChrome.options.clickMoveLeft": "左鍵",
   "hudChrome.options.clickMoveRight": "右鍵",
   "hudChrome.options.footstepSounds": "腳步聲",
+  "hudChrome.options.clickFeedback": "點擊標記",
   "hudChrome.options.showWalletOnCharacterScreen": "在角色畫面顯示錢包",
   "hudChrome.options.showWalletOnPlayerCard": "在玩家卡片顯示錢包",
   "hudChrome.playerCard.showWalletBadge": "顯示錢包徽章",

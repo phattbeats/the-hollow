@@ -119,6 +119,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   "hudChrome.options.clickMoveLeft": "Левая кнопка",
   "hudChrome.options.clickMoveRight": "Правая кнопка",
   "hudChrome.options.footstepSounds": "Звуки шагов",
+  "hudChrome.options.clickFeedback": "Метка клика",
   "hudChrome.options.showWalletOnCharacterScreen": "Показывать кошелек на экране персонажей",
   "hudChrome.options.showWalletOnPlayerCard": "Показывать кошелек на карточке игрока",
   "hudChrome.playerCard.showWalletBadge": "Показывать значок кошелька",

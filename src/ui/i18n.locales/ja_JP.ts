@@ -119,6 +119,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "hudChrome.options.clickMoveLeft": "左クリック",
   "hudChrome.options.clickMoveRight": "右クリック",
   "hudChrome.options.footstepSounds": "足音",
+  "hudChrome.options.clickFeedback": "クリックマーカー",
   "hudChrome.options.showWalletOnCharacterScreen": "キャラクター画面にウォレットを表示",
   "hudChrome.options.showWalletOnPlayerCard": "プレイヤーカードにウォレットを表示",
   "hudChrome.playerCard.showWalletBadge": "ウォレットバッジを表示",

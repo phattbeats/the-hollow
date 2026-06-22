@@ -25,7 +25,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submitted",
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
-    "hudChrome.bugReport.unknown"
+    "hudChrome.bugReport.unknown",
+    "hudChrome.options.clickFeedback"
   ],
   "es_ES": [
     "hudChrome.bugReport.character",
@@ -43,7 +44,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submitted",
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
-    "hudChrome.bugReport.unknown"
+    "hudChrome.bugReport.unknown",
+    "hudChrome.options.clickFeedback"
   ],
   "fr_FR": [
     "hudChrome.bugReport.character",
@@ -61,7 +63,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submitted",
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
-    "hudChrome.bugReport.unknown"
+    "hudChrome.bugReport.unknown",
+    "hudChrome.options.clickFeedback"
   ],
   "fr_CA": [
     "hudChrome.bugReport.character",
@@ -79,7 +82,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submitted",
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
-    "hudChrome.bugReport.unknown"
+    "hudChrome.bugReport.unknown",
+    "hudChrome.options.clickFeedback"
   ],
   "en_CA": [],
   "it_IT": [
@@ -98,7 +102,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submitted",
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
-    "hudChrome.bugReport.unknown"
+    "hudChrome.bugReport.unknown",
+    "hudChrome.options.clickFeedback"
   ],
   "de_DE": [
     "hudChrome.bugReport.character",
@@ -116,7 +121,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submitted",
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
-    "hudChrome.bugReport.unknown"
+    "hudChrome.bugReport.unknown",
+    "hudChrome.options.clickFeedback"
   ],
   "zh_CN": [],
   "zh_TW": [],
@@ -138,7 +144,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submitted",
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
-    "hudChrome.bugReport.unknown"
+    "hudChrome.bugReport.unknown",
+    "hudChrome.options.clickFeedback"
   ],
   "ru_RU": []
 };

@@ -234,6 +234,7 @@ export const en_XA: EnTranslations = {
       "clickMoveLeft": "[Ļéƒţ Çļíçķ]",
       "clickMoveRight": "[Ŕíĝĥţ Çļíçķ]",
       "footstepSounds": "[Ƒóóţšţéþ Šóúñðš]",
+      "clickFeedback": "[Çļíçķ Ɱáŕķéŕ]",
       "showWalletOnCharacterScreen": "[Šĥóŵ Ŵáļļéţ óñ Çĥáŕáçţéŕ Šçŕééñ]",
       "showWalletOnPlayerCard": "[Šĥóŵ Ŵáļļéţ óñ Þļáýéŕ Çáŕð]",
       "uiScale": "[ÚÍ Šçáļé]",

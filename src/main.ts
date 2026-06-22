@@ -1066,6 +1066,12 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
 
   function handlePick(x: number, y: number, button: number): void {
     const id = renderer.pick(x, y);
+    // OSRS-style click feedback (its own toggle): a brief ground marker, gold for a
+    // neutral click and red on a hostile. Both reference games only mark a real action,
+    // so the marker stamps where a click actually does something: the click-to-move
+    // destination (OSRS's yellow "walking here" X) and an entity you target or walk to
+    // (OSRS's red interaction X). A plain ground click that only deselects gets nothing.
+    const wantClickFeedback = settings.get('clickFeedback') && !world.player.dead;
     const clickToMove = settings.get('clickToMove') > 0 && !world.player.dead;
     const clickToMoveButton = normalizeClickMoveButton(settings.get('clickToMoveButton'));
     const isClickMoveButton = clickToMove && button === clickToMoveButton;
@@ -1073,20 +1079,30 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
       if (button === 0) {
         world.targetEntity(null);
       }
+      // One ground raycast feeds both the move target and its marker, so the gold
+      // marker appears only where the click actually sends you.
       if (isClickMoveButton) {
         const g = renderer.groundPoint(x, y, world.player.pos.y);
         if (g) {
+          if (wantClickFeedback) renderer.spawnClickMarker(g.x, g.z, false);
           const target = resolvedClickMoveTarget(g);
           input.setClickMoveTarget(target, 0.5, null, clickMovePathTo(target));
         }
       }
       return;
     }
-    // The configured click-to-move mouse button approaches entities while the
-    // regular click handler still performs target/interact behavior.
-    if (isClickMoveButton) {
-      const e = world.entities.get(id);
-      if (e && e.id !== world.player.id) {
+    const e = world.entities.get(id);
+    if (e && e.id !== world.player.id) {
+      // Mark the entity when you engage it: a left-click target, or the click-to-move
+      // button that walks you to it, so both routes read the same (red on a hostile,
+      // gold otherwise).
+      if (wantClickFeedback && (button === 0 || isClickMoveButton)) {
+        const hostile = isAttackableEntity(e, world.playerId, activePvpOpponentIds(world));
+        renderer.spawnClickMarker(e.pos.x, e.pos.z, hostile);
+      }
+      // The configured click-to-move mouse button approaches the entity while the
+      // regular click handler still performs target/interact behavior.
+      if (isClickMoveButton) {
         const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
         input.setClickMoveTarget(target, 3.5, e.id, clickMovePathTo(target));
       }

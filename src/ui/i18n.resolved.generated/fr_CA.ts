@@ -234,6 +234,7 @@ export const fr_CA: EnTranslations = {
       "clickMoveLeft": "Clic gauche",
       "clickMoveRight": "Clic droit",
       "footstepSounds": "Sons de pas",
+      "clickFeedback": "Click Marker",
       "showWalletOnCharacterScreen": "Afficher le portefeuille sur l’écran des personnages",
       "showWalletOnPlayerCard": "Afficher le portefeuille sur la carte de joueur",
       "uiScale": "Échelle de l’interface",
