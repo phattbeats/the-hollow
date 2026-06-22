@@ -459,6 +459,64 @@ export const de_DE: EnTranslations = {
       "logOutSummary": "Von diesem Gerät abmelden."
     }
   },
+  "guide": {
+    "brand": "World of ClaudeCraft",
+    "brandShort": "ClaudeCraft",
+    "tagline": "A classic-style MMO you play free in your browser.",
+    "skipToContent": "Skip to main content",
+    "loading": "Loading...",
+    "docTitle": "{page} - {brand}",
+    "nav": {
+      "overview": "Overview",
+      "howToPlay": "How to Play",
+      "classes": "Classes",
+      "bestiary": "Bestiary",
+      "world": "World",
+      "quests": "Quests",
+      "dungeons": "Dungeons & Raids",
+      "reference": "Reference",
+      "faq": "FAQ",
+      "playNow": "Play Now",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu",
+      "primary": "Guide sections",
+      "topics": "Topics",
+      "onThisPage": "On this page",
+      "backToGame": "Back to the game"
+    },
+    "groups": {
+      "start": "Get Started",
+      "compendium": "Compendium",
+      "reference": "Reference"
+    },
+    "footer": {
+      "blurb": "An open-source, classic-style micro-MMO. Quest, group up, and explore a hand-built world, right in your browser.",
+      "playNow": "Play Now",
+      "github": "Source on GitHub",
+      "discord": "Join the Discord",
+      "communityWiki": "Community Wiki",
+      "rights": "World of ClaudeCraft"
+    },
+    "language": {
+      "label": "Language",
+      "select": "Choose a language"
+    },
+    "home": {
+      "eyebrow": "Classic-style browser MMO",
+      "title": "World of ClaudeCraft",
+      "subtitle": "Quest, group up, and explore a hand-built world, free in your browser.",
+      "ctaPlay": "Play Now",
+      "ctaLearn": "How to Play"
+    },
+    "placeholder": {
+      "note": "This part of the guide is on its way."
+    },
+    "notFound": {
+      "title": "We could not find that page",
+      "body": "The page you were looking for does not exist or may have moved.",
+      "home": "Back to the overview"
+    }
+  },
   "skinEvent": {
     "title": "Kosmetik-Hort",
     "subtitle": "Ihr habt eine {rank}-Belohnung freigeschaltet — wählt einen beliebigen Skin auf dieser Stufe oder darunter.",

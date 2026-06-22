@@ -62,6 +62,8 @@ const STATIC_PAGE_ALIASES = new Map([
   ['/data-deletion/', '/data-deletion.html'],
   ['/support', '/support.html'],
   ['/support/', '/support.html'],
+  ['/guide', '/guide.html'],
+  ['/guide/', '/guide.html'],
 ]);
 // How long chat logs are kept (0 = forever); pruned at boot and daily.
 const CHAT_LOG_RETENTION_DAYS = Number(process.env.CHAT_LOG_RETENTION_DAYS ?? 90);
@@ -275,13 +277,16 @@ function isAdminRequest(req: http.IncomingMessage): boolean {
 }
 
 function serveStatic(req: http.IncomingMessage, res: http.ServerResponse): void {
-  const shell = isAdminRequest(req) ? 'admin.html' : 'index.html';
   let urlPath = (req.url ?? '/').split('?')[0];
   if (urlPath === '/wiki' || urlPath === '/wiki/' || urlPath.startsWith('/wiki/')) {
     res.writeHead(302, { Location: WIKI_URL });
     res.end();
     return;
   }
+  // The curated Guide (/guide, /guide/*) is a client-routed SPA with its own shell, so
+  // deep paths fall back to guide.html rather than the game's index.html.
+  const isGuide = urlPath === '/guide' || urlPath.startsWith('/guide/');
+  const shell = isGuide ? 'guide.html' : isAdminRequest(req) ? 'admin.html' : 'index.html';
   // Pretty-URL aliases for standalone static pages.
   urlPath = STATIC_PAGE_ALIASES.get(urlPath) ?? urlPath;
   if (urlPath === '/' || urlPath === '/admin' || urlPath === '/admin/') urlPath = `/${shell}`;
