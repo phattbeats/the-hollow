@@ -115,6 +115,39 @@ export function isPhoneTouchDevice(win: Pick<Window, 'matchMedia'> = window): bo
   return win.matchMedia(PHONE_TOUCH_QUERY).matches;
 }
 
+// Player-chosen interface override (Options > Graphics > Interface Mode). 'auto'
+// keeps the device auto-detection above; 'desktop'/'touch' force one interface
+// regardless, so a tablet driven by a keyboard+mouse can pick the desktop UI and
+// a desktop user can opt into the on-screen controls.
+export type InterfaceMode = 'auto' | 'desktop' | 'touch';
+
+/** Map the numeric interfaceMode setting (0 Auto, 1 Desktop, 2 Touch) to its mode. */
+export function interfaceModeFromSetting(value: number): InterfaceMode {
+  return value >= 2 ? 'touch' : value >= 1 ? 'desktop' : 'auto';
+}
+
+/** Resolve whether to present the touch interface: an explicit override wins,
+ *  'auto' falls back to what the device auto-detection reported. */
+export function resolveTouchInterface(mode: InterfaceMode, autoDetected: boolean): boolean {
+  if (mode === 'desktop') return false;
+  if (mode === 'touch') return true;
+  return autoDetected;
+}
+
+let interfaceOverride: InterfaceMode = 'auto';
+
+/** main.ts pushes the persisted interfaceMode setting here at boot + on change. */
+export function setInterfaceMode(mode: InterfaceMode): void {
+  interfaceOverride = mode;
+}
+
+/** Whether the on-screen touch interface should be shown for this player: their
+ *  explicit override, else the device auto-detection. The native-app shell still
+ *  forces touch on top of this (see isNativeAppShell call sites). */
+export function useTouchInterface(win: Pick<Window, 'matchMedia'> = window): boolean {
+  return resolveTouchInterface(interfaceOverride, isPhoneTouchDevice(win));
+}
+
 function isNativeAppShell(): boolean {
   return typeof document !== 'undefined' && document.body.classList.contains('native-app');
 }
@@ -193,11 +226,17 @@ export class MobileControls {
     this.moveDeadzone = deadzone;
   }
 
+  /** Re-evaluate touch-interface activation after the player changes the
+   *  Interface Mode setting (main.ts calls setInterfaceMode first). Safe before start(). */
+  refreshInterfaceMode(): void {
+    this.setActive(useTouchInterface() || isNativeAppShell());
+  }
+
   start(): void {
     if (!this.root || !this.moveJoystick || !this.moveStick || !this.cameraJoystick || !this.cameraStick) return;
     this.mq = window.matchMedia(PHONE_TOUCH_QUERY);
-    this.setActive(isPhoneTouchDevice() || isNativeAppShell());
-    this.mq.addEventListener?.('change', () => this.setActive(isPhoneTouchDevice() || isNativeAppShell()));
+    this.setActive(useTouchInterface() || isNativeAppShell());
+    this.mq.addEventListener?.('change', () => this.setActive(useTouchInterface() || isNativeAppShell()));
 
     // The move joystick floats: the pointer lifecycle lives on the lower-left
     // capture zone (so a thumb can land anywhere), while the joystick element is

@@ -3,6 +3,7 @@ import {
   CHAT_LONG_PRESS_MS,
   clampJoystickOrigin,
   HAPTICS_STORE_KEY,
+  interfaceModeFromSetting,
   isChatLongPress,
   isPhoneTouchDevice,
   isRecenterDoubleTap,
@@ -12,8 +13,11 @@ import {
   MobileControls,
   pinchZoomDelta,
   RECENTER_DOUBLE_TAP_MS,
+  resolveTouchInterface,
   saveHapticsEnabled,
+  setInterfaceMode,
   triggerHaptic,
+  useTouchInterface,
 } from '../src/game/mobile_controls';
 import type { Input, TouchMoveInput } from '../src/game/input';
 
@@ -82,6 +86,37 @@ describe('isPhoneTouchDevice', () => {
       matchMedia: (q: string) => ({ matches: q.includes('any-pointer') && !q.includes('hover') }),
     } as unknown as Window;
     expect(isPhoneTouchDevice(win)).toBe(false);
+  });
+});
+
+describe('interface mode override', () => {
+  afterEach(() => setInterfaceMode('auto'));
+
+  it('maps the numeric interfaceMode setting (0 Auto, 1 Desktop, 2 Touch)', () => {
+    expect(interfaceModeFromSetting(0)).toBe('auto');
+    expect(interfaceModeFromSetting(1)).toBe('desktop');
+    expect(interfaceModeFromSetting(2)).toBe('touch');
+  });
+
+  it('auto defers to device detection; explicit modes override it', () => {
+    expect(resolveTouchInterface('auto', true)).toBe(true);
+    expect(resolveTouchInterface('auto', false)).toBe(false);
+    // A tablet (auto-detected as touch) whose player picked Desktop stays desktop.
+    expect(resolveTouchInterface('desktop', true)).toBe(false);
+    // A desktop whose player picked Touch gets the on-screen controls.
+    expect(resolveTouchInterface('touch', false)).toBe(true);
+  });
+
+  it('useTouchInterface combines the persisted override with detection', () => {
+    const touchWin = { matchMedia: () => ({ matches: true }) } as unknown as Window;
+    const desktopWin = { matchMedia: () => ({ matches: false }) } as unknown as Window;
+    setInterfaceMode('auto');
+    expect(useTouchInterface(touchWin)).toBe(true);
+    expect(useTouchInterface(desktopWin)).toBe(false);
+    setInterfaceMode('desktop');
+    expect(useTouchInterface(touchWin)).toBe(false);
+    setInterfaceMode('touch');
+    expect(useTouchInterface(desktopWin)).toBe(true);
   });
 });
 

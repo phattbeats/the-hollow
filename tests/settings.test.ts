@@ -40,6 +40,9 @@ describe('Settings', () => {
     expect(s.get('cameraFov')).toBe(60); // unchanged from the shipped look by default
     expect(s.get('mouseCamera')).toBe(false);
     expect(s.get('joystickDeadzone')).toBe(SETTING_RANGES.joystickDeadzone.def);
+    // Interface Mode defaults to Auto (0): detect desktop vs touch from the device.
+    expect(s.get('interfaceMode')).toBe(SETTING_RANGES.interfaceMode.def);
+    expect(s.get('interfaceMode')).toBe(0);
   });
 
   it('clamps the touch joystick deadzone to its bounds', () => {
