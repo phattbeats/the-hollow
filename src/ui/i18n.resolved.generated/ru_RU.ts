@@ -1060,7 +1060,8 @@ export const ru_RU: EnTranslations = {
       "accountSuspended": "Эта учетная запись заблокирована до {date}.",
       "alreadyInWorld": "Персонаж уже находится в мире.",
       "takenOver": "Вашего персонажа перехватила другая сессия.",
-      "renameBeforeEntering": "Перед входом в мир этому персонажу нужно сменить имя."
+      "renameBeforeEntering": "Перед входом в мир этому персонажу нужно сменить имя.",
+      "renameNotPermitted": "Переименование этого персонажа не разрешено."
     }
   },
   "realm": {

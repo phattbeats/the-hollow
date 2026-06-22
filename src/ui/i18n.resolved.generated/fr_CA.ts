@@ -187,11 +187,11 @@ export const fr_CA: EnTranslations = {
       "note": "Préfixe chaque nouvelle ligne de discussion avec l'heure de réception, par ex. [14:32]. N'affecte que les messages reçus quand l'option est activée."
     },
     "chatWindow": {
-      "move": "Drag to move the chat window",
-      "resize": "Drag to resize the chat window",
-      "reset": "Reset Chat Window",
-      "resetAction": "Reset",
-      "note": "Drag the chat tab strip to move the window, or the corner grip to resize it. Reset returns it to the default position and size."
+      "move": "Faites glisser pour déplacer la fenêtre de discussion",
+      "resize": "Faites glisser pour redimensionner la fenêtre de discussion",
+      "reset": "Réinitialiser la fenêtre de discussion",
+      "resetAction": "Réinitialiser",
+      "note": "Faites glisser la barre d'onglets de la discussion pour déplacer la fenêtre, ou la poignée d'angle pour la redimensionner. Réinitialiser la rétablit à sa position et sa taille par défaut."
     },
     "swing": {
       "ready": "Coup",
@@ -241,7 +241,7 @@ export const fr_CA: EnTranslations = {
       "clickMoveLeft": "Clic gauche",
       "clickMoveRight": "Clic droit",
       "footstepSounds": "Sons de pas",
-      "clickFeedback": "Click Marker",
+      "clickFeedback": "Repère de clic",
       "showWalletOnCharacterScreen": "Afficher le portefeuille sur l’écran des personnages",
       "showWalletOnPlayerCard": "Afficher le portefeuille sur la carte de joueur",
       "uiScale": "Échelle de l’interface",
@@ -401,22 +401,22 @@ export const fr_CA: EnTranslations = {
       }
     },
     "bugReport": {
-      "menuButton": "Report a Bug",
-      "realm": "Realm",
-      "character": "Character",
+      "menuButton": "Signaler un bug",
+      "realm": "Royaume",
+      "character": "Personnage",
       "position": "Position",
-      "unknown": "Unknown",
-      "description": "What went wrong?",
-      "descriptionPlaceholder": "Describe the bug: what you did, what you expected, and what happened.",
-      "includeScreenshot": "Include Screenshot",
-      "screenshotAlt": "Screenshot of the current view attached to this bug report",
-      "submit": "Send Report",
-      "submitted": "Bug report sent. Thank you!",
-      "submittedNoShot": "Bug report sent, but the screenshot was too large to include.",
-      "describeFirst": "Please describe the bug before sending.",
-      "tooLarge": "That report is too large to send. Try again without the screenshot.",
-      "rateLimited": "You've sent several reports recently. Please wait a bit before sending another.",
-      "failed": "Could not send the bug report. Please try again."
+      "unknown": "Inconnu",
+      "description": "Que s'est-il passé ?",
+      "descriptionPlaceholder": "Décrivez le bug : ce que vous avez fait, ce que vous attendiez et ce qui s'est produit.",
+      "includeScreenshot": "Inclure une capture d'écran",
+      "screenshotAlt": "Capture d'écran de la vue actuelle jointe à ce rapport de bug",
+      "submit": "Envoyer le rapport",
+      "submitted": "Rapport de bug envoyé. Merci !",
+      "submittedNoShot": "Rapport de bug envoyé, mais la capture d'écran était trop volumineuse pour être incluse.",
+      "describeFirst": "Veuillez décrire le bug avant de l'envoyer.",
+      "tooLarge": "Ce rapport est trop volumineux pour être envoyé. Réessayez sans la capture d'écran.",
+      "rateLimited": "Vous avez envoyé plusieurs rapports récemment. Veuillez patienter un peu avant d'en envoyer un autre.",
+      "failed": "Impossible d'envoyer le rapport de bug. Veuillez réessayer."
     },
     "paperdoll": {
       "unequipAria": "Déséquiper {item}",
@@ -1059,8 +1059,9 @@ export const fr_CA: EnTranslations = {
       "webLoginOnly": "Les connexions ne sont autorisées que depuis le client du jeu.",
       "accountSuspended": "Ce compte est suspendu jusqu'au {date}.",
       "alreadyInWorld": "Le personnage est déjà dans le monde.",
-      "takenOver": "Your character was taken over by another session.",
-      "renameBeforeEntering": "Ce personnage doit être renommé avant d'entrer dans le monde."
+      "takenOver": "Votre personnage a été pris en main par une autre session.",
+      "renameBeforeEntering": "Ce personnage doit être renommé avant d'entrer dans le monde.",
+      "renameNotPermitted": "Le changement de nom de ce personnage n'est pas autorisé."
     }
   },
   "realm": {
@@ -1086,9 +1087,9 @@ export const fr_CA: EnTranslations = {
     "noneYet": "Aucun personnage pour l'instant. Créez-en un ci-dessous.",
     "levelClass": "Niveau {level} {className}",
     "inWorld": "dans le monde",
-    "takeOver": "Take Over",
-    "inWorldHint": "Already in world. Log out elsewhere, or take over.",
-    "takeOverConfirm": "This will disconnect this character from another session and bring it here. Continue?",
+    "takeOver": "Prendre le contrôle",
+    "inWorldHint": "Déjà en jeu. Déconnectez-vous ailleurs, ou prenez le contrôle.",
+    "takeOverConfirm": "Cela déconnectera ce personnage d'une autre session et l'amènera ici. Continuer ?",
     "renameRequired": "renommage requis",
     "delete": "Supprimer",
     "rename": "Renommer",

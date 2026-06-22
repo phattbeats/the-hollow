@@ -1060,7 +1060,8 @@ export const en_XA: EnTranslations = {
       "accountSuspended": "[Ţĥíš áççóúñţ íš šúšþéñðéð úñţíļ {date}.]",
       "alreadyInWorld": "[Çĥáŕáçţéŕ íš áļŕéáðý íñ ŵóŕļð.]",
       "takenOver": "[Ýóúŕ çĥáŕáçţéŕ ŵáš ţáķéñ óʋéŕ ƀý áñóţĥéŕ šéššíóñ.]",
-      "renameBeforeEntering": "[Ţĥíš çĥáŕáçţéŕ ɱúšţ ƀé ŕéñáɱéð ƀéƒóŕé éñţéŕíñĝ ţĥé ŵóŕļð.]"
+      "renameBeforeEntering": "[Ţĥíš çĥáŕáçţéŕ ɱúšţ ƀé ŕéñáɱéð ƀéƒóŕé éñţéŕíñĝ ţĥé ŵóŕļð.]",
+      "renameNotPermitted": "[Ŕéñáɱíñĝ ţĥíš çĥáŕáçţéŕ íš ñóţ áļļóŵéð.]"
     }
   },
   "realm": {

@@ -166,6 +166,7 @@ function userFacingApiError(err: unknown): string {
   if (normalized === 'that name is taken') return t('errors.api.nameTaken');
   if (normalized === 'character not found' || normalized === 'no such character' || normalized === 'not found') return t('errors.api.characterNotFound');
   if (normalized === 'character is currently online') return t('errors.api.characterOnline');
+  if (normalized === 'character rename is not permitted') return t('errors.api.renameNotPermitted');
   if (normalized === 'type the character name to confirm deletion') return t('errors.api.deleteConfirm');
   if (normalized === 'not authenticated' || normalized === 'authentication required') return t('errors.api.notAuthenticated');
   if (normalized === 'this account has been banned.') return t('errors.api.accountBanned');

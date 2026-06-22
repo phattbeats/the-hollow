@@ -187,11 +187,11 @@ export const it_IT: EnTranslations = {
       "note": "Antepone a ogni nuova riga di chat l'ora di arrivo, ad es. [14:32]. Influisce solo sui messaggi ricevuti mentre l'opzione è attiva."
     },
     "chatWindow": {
-      "move": "Drag to move the chat window",
-      "resize": "Drag to resize the chat window",
-      "reset": "Reset Chat Window",
-      "resetAction": "Reset",
-      "note": "Drag the chat tab strip to move the window, or the corner grip to resize it. Reset returns it to the default position and size."
+      "move": "Trascina per spostare la finestra della chat",
+      "resize": "Trascina per ridimensionare la finestra della chat",
+      "reset": "Ripristina finestra della chat",
+      "resetAction": "Ripristina",
+      "note": "Trascina la barra delle schede della chat per spostare la finestra, oppure l'angolo per ridimensionarla. Ripristina la riporta a posizione e dimensioni predefinite."
     },
     "swing": {
       "ready": "Attacco",
@@ -241,7 +241,7 @@ export const it_IT: EnTranslations = {
       "clickMoveLeft": "Clic sinistro",
       "clickMoveRight": "Clic destro",
       "footstepSounds": "Suoni dei passi",
-      "clickFeedback": "Click Marker",
+      "clickFeedback": "Indicatore di clic",
       "showWalletOnCharacterScreen": "Mostra portafoglio nella schermata personaggi",
       "showWalletOnPlayerCard": "Mostra portafoglio nella scheda giocatore",
       "uiScale": "Scala dell'interfaccia",
@@ -401,22 +401,22 @@ export const it_IT: EnTranslations = {
       }
     },
     "bugReport": {
-      "menuButton": "Report a Bug",
-      "realm": "Realm",
-      "character": "Character",
-      "position": "Position",
-      "unknown": "Unknown",
-      "description": "What went wrong?",
-      "descriptionPlaceholder": "Describe the bug: what you did, what you expected, and what happened.",
-      "includeScreenshot": "Include Screenshot",
-      "screenshotAlt": "Screenshot of the current view attached to this bug report",
-      "submit": "Send Report",
-      "submitted": "Bug report sent. Thank you!",
-      "submittedNoShot": "Bug report sent, but the screenshot was too large to include.",
-      "describeFirst": "Please describe the bug before sending.",
-      "tooLarge": "That report is too large to send. Try again without the screenshot.",
-      "rateLimited": "You've sent several reports recently. Please wait a bit before sending another.",
-      "failed": "Could not send the bug report. Please try again."
+      "menuButton": "Segnala un bug",
+      "realm": "Reame",
+      "character": "Personaggio",
+      "position": "Posizione",
+      "unknown": "Sconosciuto",
+      "description": "Che cosa è andato storto?",
+      "descriptionPlaceholder": "Descrivi il bug: cosa hai fatto, cosa ti aspettavi e cosa è successo.",
+      "includeScreenshot": "Includi schermata",
+      "screenshotAlt": "Schermata della vista attuale allegata a questa segnalazione del bug",
+      "submit": "Invia segnalazione",
+      "submitted": "Segnalazione del bug inviata. Grazie!",
+      "submittedNoShot": "Segnalazione del bug inviata, ma la schermata era troppo grande per essere inclusa.",
+      "describeFirst": "Descrivi il bug prima di inviare.",
+      "tooLarge": "Questa segnalazione è troppo grande per essere inviata. Riprova senza la schermata.",
+      "rateLimited": "Hai inviato diverse segnalazioni di recente. Attendi un momento prima di inviarne un'altra.",
+      "failed": "Impossibile inviare la segnalazione del bug. Riprova."
     },
     "paperdoll": {
       "unequipAria": "Rimuovi {item}",
@@ -1059,8 +1059,9 @@ export const it_IT: EnTranslations = {
       "webLoginOnly": "L'accesso è consentito solo dal client di gioco.",
       "accountSuspended": "Questo account è sospeso fino al {date}.",
       "alreadyInWorld": "Il personaggio è già nel mondo.",
-      "takenOver": "Your character was taken over by another session.",
-      "renameBeforeEntering": "Questo personaggio deve essere rinominato prima di entrare nel mondo."
+      "takenOver": "Il tuo personaggio è stato preso in controllo da un'altra sessione.",
+      "renameBeforeEntering": "Questo personaggio deve essere rinominato prima di entrare nel mondo.",
+      "renameNotPermitted": "Non è consentito rinominare questo personaggio."
     }
   },
   "realm": {
@@ -1086,9 +1087,9 @@ export const it_IT: EnTranslations = {
     "noneYet": "Nessun personaggio ancora. Creane uno qui sotto.",
     "levelClass": "Livello {level} {className}",
     "inWorld": "nel mondo",
-    "takeOver": "Take Over",
-    "inWorldHint": "Already in world. Log out elsewhere, or take over.",
-    "takeOverConfirm": "This will disconnect this character from another session and bring it here. Continue?",
+    "takeOver": "Prendi il controllo",
+    "inWorldHint": "Già nel mondo. Esci altrove, oppure prendine il controllo.",
+    "takeOverConfirm": "Questo scollegherà il personaggio da un'altra sessione e lo porterà qui. Continuare?",
     "renameRequired": "rinomina richiesta",
     "delete": "Elimina",
     "rename": "Rinomina",

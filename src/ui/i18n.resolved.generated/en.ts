@@ -1060,7 +1060,8 @@ export const en: EnTranslations = {
       "accountSuspended": "This account is suspended until {date}.",
       "alreadyInWorld": "Character is already in world.",
       "takenOver": "Your character was taken over by another session.",
-      "renameBeforeEntering": "This character must be renamed before entering the world."
+      "renameBeforeEntering": "This character must be renamed before entering the world.",
+      "renameNotPermitted": "Renaming this character is not allowed."
     }
   },
   "realm": {

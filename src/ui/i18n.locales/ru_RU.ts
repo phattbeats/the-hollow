@@ -538,6 +538,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   "errors.api.alreadyInWorld": "Персонаж уже находится в мире.",
   "errors.api.takenOver": "Вашего персонажа перехватила другая сессия.",
   "errors.api.renameBeforeEntering": "Перед входом в мир этому персонажу нужно сменить имя.",
+  "errors.api.renameNotPermitted": "Переименование этого персонажа не разрешено.",
   "realm.noRealms": "Нет доступных миров.",
   "realm.loading": "Загрузка миров...",
   "realm.recommended": "Рекомендуется",
