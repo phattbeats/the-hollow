@@ -230,7 +230,9 @@ export const ja_JP: EnTranslations = {
       "clickMoveRight": "右クリック",
       "footstepSounds": "足音",
       "showWalletOnCharacterScreen": "キャラクター画面にウォレットを表示",
-      "showWalletOnPlayerCard": "プレイヤーカードにウォレットを表示"
+      "showWalletOnPlayerCard": "プレイヤーカードにウォレットを表示",
+      "uiScale": "UIスケール",
+      "highContrastBackground": "高コントラスト背景"
     },
     "perf": {
       "title": "パフォーマンスオーバーレイ",
@@ -302,6 +304,10 @@ export const ja_JP: EnTranslations = {
     },
     "playerCard": {
       "showWalletBadge": "ウォレットバッジを表示"
+    },
+    "landing": {
+      "highContrast": "高コントラスト",
+      "highContrastAria": "高コントラスト背景を切り替えます。動画トレーラーを無効にして、スタート画面のテキストを読みやすくします"
     },
     "statInfo": {
       "fromYour": "あなたの{stat}{value}による効果:",

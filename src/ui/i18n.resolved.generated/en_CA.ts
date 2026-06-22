@@ -230,7 +230,9 @@ export const en_CA: EnTranslations = {
       "clickMoveRight": "Right Click",
       "footstepSounds": "Footstep Sounds",
       "showWalletOnCharacterScreen": "Show Wallet on Character Screen",
-      "showWalletOnPlayerCard": "Show Wallet on Player Card"
+      "showWalletOnPlayerCard": "Show Wallet on Player Card",
+      "uiScale": "UI Scale",
+      "highContrastBackground": "High-Contrast Background"
     },
     "perf": {
       "title": "Performance Overlay",
@@ -302,6 +304,10 @@ export const en_CA: EnTranslations = {
     },
     "playerCard": {
       "showWalletBadge": "Show wallet badge"
+    },
+    "landing": {
+      "highContrast": "High Contrast",
+      "highContrastAria": "Toggle high-contrast background: disables the moving trailer so start-screen text stays legible"
     },
     "statInfo": {
       "fromYour": "From your {value} {stat}:",

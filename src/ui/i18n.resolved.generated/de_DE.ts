@@ -230,7 +230,9 @@ export const de_DE: EnTranslations = {
       "clickMoveRight": "Rechtsklick",
       "footstepSounds": "Schrittgeräusche",
       "showWalletOnCharacterScreen": "Wallet auf dem Charakterbildschirm anzeigen",
-      "showWalletOnPlayerCard": "Wallet auf der Spielerkarte anzeigen"
+      "showWalletOnPlayerCard": "Wallet auf der Spielerkarte anzeigen",
+      "uiScale": "UI-Skalierung",
+      "highContrastBackground": "Hintergrund mit hohem Kontrast"
     },
     "perf": {
       "title": "Leistungsanzeige",
@@ -302,6 +304,10 @@ export const de_DE: EnTranslations = {
     },
     "playerCard": {
       "showWalletBadge": "Wallet-Abzeichen anzeigen"
+    },
+    "landing": {
+      "highContrast": "Hoher Kontrast",
+      "highContrastAria": "Hintergrund mit hohem Kontrast umschalten: deaktiviert den bewegten Trailer, damit der Text des Startbildschirms lesbar bleibt"
     },
     "statInfo": {
       "fromYour": "Von deinen {value} Punkten {stat}:",

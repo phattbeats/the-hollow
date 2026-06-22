@@ -230,7 +230,9 @@ export const fr_FR: EnTranslations = {
       "clickMoveRight": "Clic droit",
       "footstepSounds": "Sons de pas",
       "showWalletOnCharacterScreen": "Afficher le portefeuille sur l’écran des personnages",
-      "showWalletOnPlayerCard": "Afficher le portefeuille sur la carte de joueur"
+      "showWalletOnPlayerCard": "Afficher le portefeuille sur la carte de joueur",
+      "uiScale": "Échelle de l’interface",
+      "highContrastBackground": "Arrière-plan à contraste élevé"
     },
     "perf": {
       "title": "Surcouche de performance",
@@ -302,6 +304,10 @@ export const fr_FR: EnTranslations = {
     },
     "playerCard": {
       "showWalletBadge": "Afficher l’insigne de portefeuille"
+    },
+    "landing": {
+      "highContrast": "Contraste élevé",
+      "highContrastAria": "Basculer l’arrière-plan à contraste élevé : désactive la bande-annonce animée pour que le texte de l’écran de démarrage reste lisible"
     },
     "statInfo": {
       "fromYour": "Grâce à vos {value} en {stat} :",
