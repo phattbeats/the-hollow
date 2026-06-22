@@ -186,6 +186,13 @@ export const zh_CN: EnTranslations = {
       "clock24h": "24小时制",
       "note": "在每条新聊天消息前加上其到达时间，例如 [14:32]。仅对开启此选项后收到的消息生效。"
     },
+    "chatWindow": {
+      "move": "拖动以移动聊天窗口",
+      "resize": "拖动以调整聊天窗口大小",
+      "reset": "重置聊天窗口",
+      "resetAction": "重置",
+      "note": "拖动聊天标签栏可移动窗口，拖动右下角手柄可调整大小。重置可恢复到默认位置和大小。"
+    },
     "swing": {
       "ready": "挥击",
       "seconds": "{seconds}秒"
@@ -1052,6 +1059,7 @@ export const zh_CN: EnTranslations = {
       "webLoginOnly": "只能从游戏客户端登录。",
       "accountSuspended": "此账号被停用至 {date}。",
       "alreadyInWorld": "角色已在世界中。",
+      "takenOver": "你的角色已被另一个会话接管。",
       "renameBeforeEntering": "此角色必须先改名才能进入世界。",
       "renameNotPermitted": "不允许为此角色改名。"
     }
@@ -1079,6 +1087,9 @@ export const zh_CN: EnTranslations = {
     "noneYet": "还没有角色。请在下方创建一个。",
     "levelClass": "{level} 级 {className}",
     "inWorld": "在世界中",
+    "takeOver": "接管",
+    "inWorldHint": "已在世界中。请在别处登出，或接管会话。",
+    "takeOverConfirm": "这将使该角色从另一个会话断开并切换到此处。是否继续？",
     "renameRequired": "需要改名",
     "delete": "删除",
     "rename": "改名",

@@ -974,6 +974,23 @@ export class GameServer {
     }
   }
 
+  // Force-disconnect the live session (if any) for a character the requesting
+  // account owns, so a fresh login can take its place. Awaits leave() so the
+  // departing session's state is saved and the sessionsByCharacterId slot is
+  // freed before the caller re-enters — otherwise the new login would race the
+  // old save (clobbering progress) or be rejected with "character already in
+  // world". Idempotent: a no-op (returns 'not-online') when nobody is online.
+  async takeOverCharacter(accountId: number, characterId: number): Promise<'taken-over' | 'not-online'> {
+    const session = this.sessionByCharacterId(characterId);
+    // Ownership is also enforced at the REST layer; re-check here so this method
+    // can never disconnect a session that belongs to another account.
+    if (!session || session.accountId !== accountId) return 'not-online';
+    this.send(session, { t: 'error', error: 'character taken over' });
+    try { session.ws.close(); } catch { /* connection already closing */ }
+    await this.leave(session, 'character taken over');
+    return 'taken-over';
+  }
+
   startRestartCountdown(): RestartCountdownStatus {
     if (this.restartCountdownStartedAt !== null) {
       return {

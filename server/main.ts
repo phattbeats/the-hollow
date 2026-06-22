@@ -466,6 +466,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     }
     const delMatch = /^\/api\/characters\/(\d+)$/.exec(url);
     const renameMatch = /^\/api\/characters\/(\d+)\/rename$/.exec(url);
+    const takeoverMatch = /^\/api\/characters\/(\d+)\/takeover$/.exec(url);
     const standingMatch = /^\/api\/characters\/(\d+)\/standing$/.exec(url);
     if (req.method === 'GET' && standingMatch) {
       const accountId = await bearerActiveAccount(req, res);
@@ -520,6 +521,18 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
         if (isUniqueViolation(err)) return json(res, 409, { error: 'that name is taken' });
         throw err;
       }
+    }
+    if (req.method === 'POST' && takeoverMatch) {
+      // Free a character's live session so this account can re-enter on it,
+      // e.g. after a crash/closed tab left a stale session, or to hand a
+      // character off from another device. Ownership-gated and idempotent.
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      const characterId = Number(takeoverMatch[1]);
+      const character = await getCharacter(accountId, characterId);
+      if (!character) return json(res, 404, { error: 'not found' });
+      const result = await game.takeOverCharacter(accountId, characterId);
+      return json(res, 200, { ok: true, takenOver: result === 'taken-over' });
     }
     if (req.method === 'DELETE' && delMatch) {
       const accountId = await bearerActiveAccount(req, res);
