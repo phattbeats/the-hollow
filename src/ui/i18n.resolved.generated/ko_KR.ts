@@ -230,7 +230,9 @@ export const ko_KR: EnTranslations = {
       "clickMoveRight": "오른쪽 클릭",
       "footstepSounds": "발소리",
       "showWalletOnCharacterScreen": "캐릭터 화면에 지갑 표시",
-      "showWalletOnPlayerCard": "플레이어 카드에 지갑 표시"
+      "showWalletOnPlayerCard": "플레이어 카드에 지갑 표시",
+      "uiScale": "UI 배율",
+      "highContrastBackground": "고대비 배경"
     },
     "perf": {
       "title": "성능 오버레이",
@@ -302,6 +304,10 @@ export const ko_KR: EnTranslations = {
     },
     "playerCard": {
       "showWalletBadge": "지갑 배지 표시"
+    },
+    "landing": {
+      "highContrast": "고대비",
+      "highContrastAria": "고대비 배경 전환: 움직이는 예고편을 꺼서 시작 화면 텍스트를 읽기 쉽게 유지합니다"
     },
     "statInfo": {
       "fromYour": "당신의 {value} {stat}에서:",

@@ -230,7 +230,9 @@ export const zh_TW: EnTranslations = {
       "clickMoveRight": "右鍵",
       "footstepSounds": "腳步聲",
       "showWalletOnCharacterScreen": "在角色畫面顯示錢包",
-      "showWalletOnPlayerCard": "在玩家卡片顯示錢包"
+      "showWalletOnPlayerCard": "在玩家卡片顯示錢包",
+      "uiScale": "介面縮放",
+      "highContrastBackground": "高對比度背景"
     },
     "perf": {
       "title": "效能監視器",
@@ -302,6 +304,10 @@ export const zh_TW: EnTranslations = {
     },
     "playerCard": {
       "showWalletBadge": "顯示錢包徽章"
+    },
+    "landing": {
+      "highContrast": "高對比度",
+      "highContrastAria": "切換高對比度背景：關閉動態預告片，使開始畫面文字保持清晰"
     },
     "statInfo": {
       "fromYour": "來自你的 {value} 點{stat}：",

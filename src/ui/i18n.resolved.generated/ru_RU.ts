@@ -230,7 +230,9 @@ export const ru_RU: EnTranslations = {
       "clickMoveRight": "Правая кнопка",
       "footstepSounds": "Звуки шагов",
       "showWalletOnCharacterScreen": "Показывать кошелек на экране персонажей",
-      "showWalletOnPlayerCard": "Показывать кошелек на карточке игрока"
+      "showWalletOnPlayerCard": "Показывать кошелек на карточке игрока",
+      "uiScale": "Масштаб интерфейса",
+      "highContrastBackground": "Фон высокой контрастности"
     },
     "perf": {
       "title": "Оверлей производительности",
@@ -302,6 +304,10 @@ export const ru_RU: EnTranslations = {
     },
     "playerCard": {
       "showWalletBadge": "Показывать значок кошелька"
+    },
+    "landing": {
+      "highContrast": "Высокая контрастность",
+      "highContrastAria": "Переключить фон высокой контрастности: отключает движущийся ролик, чтобы текст начального экрана оставался читаемым"
     },
     "statInfo": {
       "fromYour": "От вашей характеристики ({value} {stat}):",

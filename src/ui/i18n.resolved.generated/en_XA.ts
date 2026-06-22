@@ -230,7 +230,9 @@ export const en_XA: EnTranslations = {
       "clickMoveRight": "[Ŕíĝĥţ Çļíçķ]",
       "footstepSounds": "[Ƒóóţšţéþ Šóúñðš]",
       "showWalletOnCharacterScreen": "[Šĥóŵ Ŵáļļéţ óñ Çĥáŕáçţéŕ Šçŕééñ]",
-      "showWalletOnPlayerCard": "[Šĥóŵ Ŵáļļéţ óñ Þļáýéŕ Çáŕð]"
+      "showWalletOnPlayerCard": "[Šĥóŵ Ŵáļļéţ óñ Þļáýéŕ Çáŕð]",
+      "uiScale": "[ÚÍ Šçáļé]",
+      "highContrastBackground": "[Ĥíĝĥ-Çóñţŕášţ Ɓáçķĝŕóúñð]"
     },
     "perf": {
       "title": "[Þéŕƒóŕɱáñçé Óʋéŕļáý]",
@@ -302,6 +304,10 @@ export const en_XA: EnTranslations = {
     },
     "playerCard": {
       "showWalletBadge": "[Šĥóŵ ŵáļļéţ ƀáðĝé]"
+    },
+    "landing": {
+      "highContrast": "[Ĥíĝĥ Çóñţŕášţ]",
+      "highContrastAria": "[Ţóĝĝļé ĥíĝĥ-çóñţŕášţ ƀáçķĝŕóúñð: ðíšáƀļéš ţĥé ɱóʋíñĝ ţŕáíļéŕ šó šţáŕţ-šçŕééñ ţéẋţ šţáýš ļéĝíƀļé]"
     },
     "statInfo": {
       "fromYour": "[Ƒŕóɱ ýóúŕ {value} {stat}:]",
