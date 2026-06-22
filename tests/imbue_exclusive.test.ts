@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Sim } from '../src/sim/sim';
-import type { Entity, PlayerClass } from '../src/sim/types';
+import type { Entity, PlayerClass, SimEvent } from '../src/sim/types';
 
 // Weapon imbues (shaman rockbiter/flametongue/frostbrand, rogue instant/deadly
 // poison, paladin seal) are a single weapon-enchant slot: classic allows exactly
@@ -18,12 +18,13 @@ function makePlayer(cls: PlayerClass, level: number): { sim: Sim; p: Entity } {
 
 // Cast an instant imbue and let it resolve, clearing the GCD/cost gate first so a
 // rapid sequence of casts all land (mirrors how a player chains them in practice).
-function cast(sim: Sim, p: Entity, ability: string): void {
+// Returns the events drained by the resolving tick so callers can assert on emits.
+function cast(sim: Sim, p: Entity, ability: string): SimEvent[] {
   p.gcdRemaining = 0;
   p.cooldowns.delete(ability);
   p.resource = p.maxResource;
   sim.castAbility(ability, p.id);
-  sim.tick();
+  return sim.tick();
 }
 
 const imbues = (p: Entity) => p.auras.filter((a) => a.kind === 'imbue');
@@ -47,6 +48,16 @@ describe('weapon imbues are a mutually-exclusive single slot (H2-1)', () => {
     expect(imbues(p)[0].id).toBe('deadly_poison');
     // and the surviving bonus is the single enchant's value, never the +22 sum
     expect(imbues(p)[0].value).toBe(14);
+  });
+
+  it('emits an aura-lost event for the displaced imbue so the old buff icon clears', () => {
+    const { sim, p } = makePlayer('shaman', 16);
+    cast(sim, p, 'rockbiter_weapon');
+    const events = cast(sim, p, 'flametongue_weapon');
+    // the replaced imbue is announced lost (this is what clears its client buff icon)
+    expect(events).toContainEqual({ type: 'aura', targetId: p.id, name: 'Rockbiter Weapon', gained: false });
+    // and the new imbue is announced gained
+    expect(events).toContainEqual({ type: 'aura', targetId: p.id, name: 'Flametongue Weapon', gained: true });
   });
 
   it('re-casting the same imbue refreshes in place (still one aura)', () => {
