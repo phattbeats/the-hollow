@@ -16,6 +16,7 @@ import { mechAssetsReady, preloadMechAssets } from './characters/assets';
 import { isVisuallyDead } from './anim_state';
 import { clickMarkerAnim, clickMarkerColor, CLICK_MARKER_LIFETIME } from './click_marker';
 import { LocoTrack, newLocoTrack, updateLocomotion } from './locomotion';
+import { stepSelfFacing } from './facing_smooth';
 import type { SpatialAudioSink, Surface } from './audio_sink';
 import { buildPropMaterialPrewarmGroup, buildProps } from './props';
 import { plankTexture, sparkleTexture } from './textures';
@@ -628,6 +629,11 @@ export class Renderer {
   private tmpV2 = new THREE.Vector3();
   private selfRenderPosition = new THREE.Vector3();
   private selfRenderPositionReady = false;
+  // Last yaw applied to the local player while the camera was driving its facing
+  // (mouselook / mouse-camera). Null when the override is disengaged, so the next
+  // engage re-seeds from the live interpolated facing instead of snapping. See
+  // facing_smooth.ts for why the camera-driven yaw must be rate-limited.
+  private selfFacingOverride: number | null = null;
   private cameraLookAt = new THREE.Vector3();
   // floating /say-/yell bubbles, keyed by speaker entity id
   private chatBubbles = new Map<number, { el: HTMLDivElement; until: number }>();
@@ -2951,7 +2957,16 @@ export class Renderer {
       const z = isSelf ? selfPos.z : e.prevPos.z + (e.pos.z - e.prevPos.z) * ea;
       v.group.position.set(x, y, z);
       let facing = e.prevFacing + shortestAngle(e.prevFacing, e.facing) * ea;
-      if (id === p.id && renderFacingOverride !== null) facing = renderFacingOverride;
+      if (id === p.id && renderFacingOverride !== null) {
+        // Rate-limit the camera-driven heading so engaging mouselook (or starting
+        // to move in Mouse Camera mode) rotates the model smoothly toward the
+        // camera instead of teleporting it up to 180deg in a single frame. Seed
+        // from the current interpolated facing on first engage.
+        facing = stepSelfFacing(this.selfFacingOverride ?? facing, renderFacingOverride, dt);
+        this.selfFacingOverride = facing;
+      } else if (id === p.id) {
+        this.selfFacingOverride = null;
+      }
       v.group.rotation.y = facing;
 
       if (e.kind === 'object') {
