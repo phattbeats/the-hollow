@@ -174,6 +174,11 @@ export const fr_CA: EnTranslations = {
       "title": "Emotes",
       "done": "Terminé"
     },
+    "questTracker": {
+      "count": "({count})",
+      "collapseHint": "Réduire le suivi des quêtes",
+      "expandHint": "Développer le suivi des quêtes"
+    },
     "chatTimestamps": {
       "show": "Afficher l'horodatage de la discussion",
       "format": "Format de l'horodatage",
@@ -235,6 +240,7 @@ export const fr_CA: EnTranslations = {
       "browserEffectsMinimal": "Minimal",
       "browserEffectsNote": "Auto tones down heavy CSS effects (blur, glow, background motion) based on your browser and device. Lower it manually if the interface feels sluggish.",
       "footstepSounds": "Sons de pas",
+      "clickFeedback": "Click Marker",
       "showWalletOnCharacterScreen": "Afficher le portefeuille sur l’écran des personnages",
       "showWalletOnPlayerCard": "Afficher le portefeuille sur la carte de joueur",
       "uiScale": "Échelle de l’interface",
@@ -392,6 +398,24 @@ export const fr_CA: EnTranslations = {
         "many": "Qui : {count} joueurs en ligne sur {realm}.",
         "other": "Qui : {count} joueurs en ligne sur {realm}."
       }
+    },
+    "bugReport": {
+      "menuButton": "Report a Bug",
+      "realm": "Realm",
+      "character": "Character",
+      "position": "Position",
+      "unknown": "Unknown",
+      "description": "What went wrong?",
+      "descriptionPlaceholder": "Describe the bug: what you did, what you expected, and what happened.",
+      "includeScreenshot": "Include Screenshot",
+      "screenshotAlt": "Screenshot of the current view attached to this bug report",
+      "submit": "Send Report",
+      "submitted": "Bug report sent. Thank you!",
+      "submittedNoShot": "Bug report sent, but the screenshot was too large to include.",
+      "describeFirst": "Please describe the bug before sending.",
+      "tooLarge": "That report is too large to send. Try again without the screenshot.",
+      "rateLimited": "You've sent several reports recently. Please wait a bit before sending another.",
+      "failed": "Could not send the bug report. Please try again."
     },
     "paperdoll": {
       "unequipAria": "Déséquiper {item}",
@@ -1787,6 +1811,10 @@ export const fr_CA: EnTranslations = {
       "completedStatus": "Terminée",
       "returnTo": "Retournez voir {name}",
       "abandon": "Abandonner la quête",
+      "abandonConfirmTitle": "Abandonner la quête",
+      "abandonConfirmBody": "Voulez-vous vraiment abandonner {name} ?",
+      "abandonConfirm": "Oui",
+      "abandonCancel": "Annuler",
       "suggestedPlayers": "Joueurs conseillés : {count}"
     },
     "dialog": {

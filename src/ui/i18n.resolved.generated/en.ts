@@ -174,6 +174,11 @@ export const en: EnTranslations = {
       "title": "Emotes",
       "done": "Done"
     },
+    "questTracker": {
+      "count": "({count})",
+      "collapseHint": "Collapse quest tracker",
+      "expandHint": "Expand quest tracker"
+    },
     "chatTimestamps": {
       "show": "Show Chat Timestamps",
       "format": "Timestamp Format",
@@ -235,6 +240,7 @@ export const en: EnTranslations = {
       "browserEffectsMinimal": "Minimal",
       "browserEffectsNote": "Auto tones down heavy CSS effects (blur, glow, background motion) based on your browser and device. Lower it manually if the interface feels sluggish.",
       "footstepSounds": "Footstep Sounds",
+      "clickFeedback": "Click Marker",
       "showWalletOnCharacterScreen": "Show Wallet on Character Screen",
       "showWalletOnPlayerCard": "Show Wallet on Player Card",
       "uiScale": "UI Scale",
@@ -392,6 +398,24 @@ export const en: EnTranslations = {
         "many": "Who: {count} players online on {realm}.",
         "other": "Who: {count} players online on {realm}."
       }
+    },
+    "bugReport": {
+      "menuButton": "Report a Bug",
+      "realm": "Realm",
+      "character": "Character",
+      "position": "Position",
+      "unknown": "Unknown",
+      "description": "What went wrong?",
+      "descriptionPlaceholder": "Describe the bug: what you did, what you expected, and what happened.",
+      "includeScreenshot": "Include Screenshot",
+      "screenshotAlt": "Screenshot of the current view attached to this bug report",
+      "submit": "Send Report",
+      "submitted": "Bug report sent. Thank you!",
+      "submittedNoShot": "Bug report sent, but the screenshot was too large to include.",
+      "describeFirst": "Please describe the bug before sending.",
+      "tooLarge": "That report is too large to send. Try again without the screenshot.",
+      "rateLimited": "You've sent several reports recently. Please wait a bit before sending another.",
+      "failed": "Could not send the bug report. Please try again."
     },
     "paperdoll": {
       "unequipAria": "Unequip {item}",
@@ -1787,6 +1811,10 @@ export const en: EnTranslations = {
       "completedStatus": "Completed",
       "returnTo": "Return to {name}",
       "abandon": "Abandon Quest",
+      "abandonConfirmTitle": "Abandon Quest",
+      "abandonConfirmBody": "Are you sure you want to abandon {name}?",
+      "abandonConfirm": "Yes",
+      "abandonCancel": "Cancel",
       "suggestedPlayers": "Suggested players: {count}"
     },
     "dialog": {
