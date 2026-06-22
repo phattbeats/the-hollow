@@ -245,6 +245,8 @@ const PET_FOLLOW_DISTANCE = 3.5;
 const PET_TELEPORT_DISTANCE = 60; // owner this far AND no route exists: pet warps to heel (last resort)
 const PET_PATH_RECALC = 0.5; // seconds between heel-path A* recomputes per pet (throttle)
 const PET_PATH_SPAN = 96; // A* search half-window in cells; covers the teleport distance + slack
+const PET_PATH_STALE_DISTANCE = 4; // path end this far from the (now-moved) owner: recompute the heel route
+const PET_WAYPOINT_REACHED = 1; // pet within this of the next waypoint: pop it and home on the next leg
 const PET_ASSIST_RANGE = 50; // how far the pet scans for enemies engaging the pair
 const PET_AGGRESSIVE_RANGE = 18; // aggressive pets look for idle enemies this close
 const PET_TAUNT_RANGE = 5;
@@ -5705,10 +5707,10 @@ export class Sim {
     // its end no longer lands near the (now-moved) owner. findPlayerPath returns a
     // single-waypoint straight line (length 1) when the goal is unreachable.
     const end = pet.petPath[pet.petPath.length - 1];
-    const stale = !end || dist2d(end, owner.pos) > 4;
+    const stale = !end || dist2d(end, owner.pos) > PET_PATH_STALE_DISTANCE;
     if (pet.petPathCooldown <= 0 && stale) recompute();
     // drop waypoints we've reached; the last leg homes on the live owner position.
-    while (pet.petPath.length > 1 && dist2d(pet.pos, pet.petPath[0]) < 1) pet.petPath.shift();
+    while (pet.petPath.length > 1 && dist2d(pet.pos, pet.petPath[0]) < PET_WAYPOINT_REACHED) pet.petPath.shift();
 
     // Last-resort teleport: only when the owner is far AND genuinely unreachable.
     // We confirm with a FRESH path (ignoring the throttle) so a stale single-point
