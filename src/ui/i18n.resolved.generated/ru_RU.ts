@@ -216,6 +216,15 @@ export const ru_RU: EnTranslations = {
       "heading": "Направление",
       "minimapZoom": "Масштаб миникарты"
     },
+    "raidLockout": {
+      "title": "Блокировки рейдов",
+      "allReady": "Все рейды доступны",
+      "daysHours": "{d}д {h}ч",
+      "hoursMinutes": "{h}ч {m}м",
+      "minutes": "{m}м",
+      "lessThanMinute": "<1м",
+      "lockedToast": "Вы привязаны к {raid}. Разблокировка через {time}."
+    },
     "compass": {
       "N": "С",
       "NE": "СВ",

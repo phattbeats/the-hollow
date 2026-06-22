@@ -14,6 +14,13 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const zh_CN: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.raidLockout.title": "团队副本锁定",
+  "hudChrome.raidLockout.allReady": "所有团队副本就绪",
+  "hudChrome.raidLockout.daysHours": "{d}天{h}小时",
+  "hudChrome.raidLockout.hoursMinutes": "{h}小时{m}分",
+  "hudChrome.raidLockout.minutes": "{m}分",
+  "hudChrome.raidLockout.lessThanMinute": "<1分",
+  "hudChrome.raidLockout.lockedToast": "你已锁定到{raid}。{time}后解锁。",
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   "hudChrome.statInfo.fromYour": "来自你的 {value} 点{stat}：",
   "hudChrome.statInfo.desc.str": "提高你的攻击强度，使你的武器攻击造成更高的伤害。",

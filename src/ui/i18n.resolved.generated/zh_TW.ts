@@ -216,6 +216,15 @@ export const zh_TW: EnTranslations = {
       "heading": "方位",
       "minimapZoom": "小地圖縮放"
     },
+    "raidLockout": {
+      "title": "團隊副本鎖定",
+      "allReady": "所有團隊副本就緒",
+      "daysHours": "{d}天{h}小時",
+      "hoursMinutes": "{h}小時{m}分",
+      "minutes": "{m}分",
+      "lessThanMinute": "<1分",
+      "lockedToast": "你已鎖定到{raid}。{time}後解鎖。"
+    },
     "compass": {
       "N": "北",
       "NE": "東北",

@@ -216,6 +216,15 @@ export const ko_KR: EnTranslations = {
       "heading": "방향",
       "minimapZoom": "미니맵 확대/축소"
     },
+    "raidLockout": {
+      "title": "레이드 잠금",
+      "allReady": "모든 레이드 준비됨",
+      "daysHours": "{d}일 {h}시간",
+      "hoursMinutes": "{h}시간 {m}분",
+      "minutes": "{m}분",
+      "lessThanMinute": "1분 미만",
+      "lockedToast": "{raid}에 잠겨 있습니다. {time} 후 해제됩니다."
+    },
     "compass": {
       "N": "북",
       "NE": "북동",

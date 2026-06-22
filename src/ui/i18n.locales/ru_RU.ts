@@ -14,6 +14,13 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const ru_RU: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.raidLockout.title": "Блокировки рейдов",
+  "hudChrome.raidLockout.allReady": "Все рейды доступны",
+  "hudChrome.raidLockout.daysHours": "{d}д {h}ч",
+  "hudChrome.raidLockout.hoursMinutes": "{h}ч {m}м",
+  "hudChrome.raidLockout.minutes": "{m}м",
+  "hudChrome.raidLockout.lessThanMinute": "<1м",
+  "hudChrome.raidLockout.lockedToast": "Вы привязаны к {raid}. Разблокировка через {time}.",
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   "hudChrome.statInfo.fromYour": "От вашей характеристики ({value} {stat}):",
   "hudChrome.statInfo.desc.str": "Увеличивает силу атаки, благодаря чему удары вашим оружием бьют сильнее.",

@@ -216,6 +216,15 @@ export const es: EnTranslations = {
       "heading": "Rumbo",
       "minimapZoom": "Zoom del minimapa"
     },
+    "raidLockout": {
+      "title": "Bloqueos de banda",
+      "allReady": "Todas las bandas listas",
+      "daysHours": "{d}d {h}h",
+      "hoursMinutes": "{h}h {m}min",
+      "minutes": "{m}min",
+      "lessThanMinute": "<1min",
+      "lockedToast": "Estás bloqueado en {raid}. Se desbloquea en {time}."
+    },
     "compass": {
       "N": "N",
       "NE": "NE",

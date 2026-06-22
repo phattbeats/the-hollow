@@ -14,6 +14,13 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const fr_FR: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.raidLockout.title": "Verrous de raid",
+  "hudChrome.raidLockout.allReady": "Tous les raids prêts",
+  "hudChrome.raidLockout.daysHours": "{d}j {h}h",
+  "hudChrome.raidLockout.hoursMinutes": "{h}h {m}min",
+  "hudChrome.raidLockout.minutes": "{m}min",
+  "hudChrome.raidLockout.lessThanMinute": "<1min",
+  "hudChrome.raidLockout.lockedToast": "Vous êtes verrouillé sur {raid}. Déverrouillage dans {time}.",
   "hud.tutorial.title": "Nouvel aventurier",
   "hud.tutorial.stepLabel": "Étape {current} sur {total}",
   "hud.tutorial.skip": "Passer le tutoriel",

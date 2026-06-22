@@ -14,6 +14,13 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const ja_JP: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.raidLockout.title": "レイドロックアウト",
+  "hudChrome.raidLockout.allReady": "すべてのレイドが利用可能",
+  "hudChrome.raidLockout.daysHours": "{d}日{h}時間",
+  "hudChrome.raidLockout.hoursMinutes": "{h}時間{m}分",
+  "hudChrome.raidLockout.minutes": "{m}分",
+  "hudChrome.raidLockout.lessThanMinute": "1分未満",
+  "hudChrome.raidLockout.lockedToast": "{raid}にロックされています。解除まで{time}。",
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   "hudChrome.statInfo.fromYour": "あなたの{stat}{value}による効果:",
   "hudChrome.statInfo.desc.str": "攻撃力を上昇させ、武器による攻撃の威力を高めます。",

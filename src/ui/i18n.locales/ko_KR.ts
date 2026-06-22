@@ -14,6 +14,13 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const ko_KR: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.raidLockout.title": "레이드 잠금",
+  "hudChrome.raidLockout.allReady": "모든 레이드 준비됨",
+  "hudChrome.raidLockout.daysHours": "{d}일 {h}시간",
+  "hudChrome.raidLockout.hoursMinutes": "{h}시간 {m}분",
+  "hudChrome.raidLockout.minutes": "{m}분",
+  "hudChrome.raidLockout.lessThanMinute": "1분 미만",
+  "hudChrome.raidLockout.lockedToast": "{raid}에 잠겨 있습니다. {time} 후 해제됩니다.",
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   "hudChrome.statInfo.fromYour": "당신의 {value} {stat}에서:",
   "hudChrome.statInfo.desc.str": "전투력을 증가시켜 무기 공격이 더 강하게 적중하도록 합니다.",
