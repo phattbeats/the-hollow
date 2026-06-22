@@ -9,38 +9,17 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [
-    "hudChrome.paperdoll.unequipAria",
-    "hudChrome.paperdoll.unequipHint"
-  ],
-  "es_ES": [
-    "hudChrome.paperdoll.unequipAria",
-    "hudChrome.paperdoll.unequipHint"
-  ],
-  "fr_FR": [
-    "hudChrome.paperdoll.unequipAria",
-    "hudChrome.paperdoll.unequipHint"
-  ],
-  "fr_CA": [
-    "hudChrome.paperdoll.unequipAria",
-    "hudChrome.paperdoll.unequipHint"
-  ],
+  "es": [],
+  "es_ES": [],
+  "fr_FR": [],
+  "fr_CA": [],
   "en_CA": [],
-  "it_IT": [
-    "hudChrome.paperdoll.unequipAria",
-    "hudChrome.paperdoll.unequipHint"
-  ],
-  "de_DE": [
-    "hudChrome.paperdoll.unequipAria",
-    "hudChrome.paperdoll.unequipHint"
-  ],
+  "it_IT": [],
+  "de_DE": [],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
-  "pt_BR": [
-    "hudChrome.paperdoll.unequipAria",
-    "hudChrome.paperdoll.unequipHint"
-  ],
+  "pt_BR": [],
   "ru_RU": []
 };
