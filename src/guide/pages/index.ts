@@ -18,6 +18,11 @@ import { world } from './world';
 import { quests } from './quests';
 import { dungeons } from './dungeons';
 import { arena } from './arena';
+import { gear } from './gear';
+import { economy } from './economy';
+import { social } from './social';
+import { stats } from './stats';
+import { progression } from './progression';
 import { talents } from './talents';
 import { wishIKnew } from './wish_i_knew';
 
@@ -27,14 +32,19 @@ const PAGES: Record<string, GuidePage> = {
   home,
   'how-to-play': howToPlay,
   'wish-i-knew': wishIKnew,
+  social,
   classes,
   bestiary,
   models,
   world,
+  gear,
+  economy,
   quests,
   dungeons,
   arena,
   combat,
+  stats,
+  progression,
   controls,
   talents,
   glossary,

@@ -29,7 +29,17 @@ export const combat: GuidePage = {
           <h2>${esc(t('guide.combat.growTitle'))}</h2>
           <p>${esc(t('guide.combat.growBody', { cap: formatNumber(LEVEL_CAP) }))}</p>
         </section>
+        <section class="guide-block">
+          <h2>${esc(t('guide.combat.effectsTitle'))}</h2>
+          <p>${esc(t('guide.combat.effectsBody'))}</p>
+          <p>${esc(t('guide.combat.ccBody'))}</p>
+        </section>
+        <section class="guide-block">
+          <h2>${esc(t('guide.combat.deathTitle'))}</h2>
+          <p>${esc(t('guide.combat.deathBody'))}</p>
+        </section>
         ${related([
+          { href: hrefFor('reference/stats'), key: 'guide.nav.stats' },
           { href: hrefFor('classes'), key: 'guide.nav.classes' },
           { href: hrefFor('reference/talents'), key: 'guide.nav.talents' },
           { href: hrefFor('reference/glossary'), key: 'guide.nav.glossary' },

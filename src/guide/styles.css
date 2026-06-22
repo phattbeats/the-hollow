@@ -1489,6 +1489,30 @@ a.guide-poi:hover { color: var(--g-gold); border-color: var(--g-border); text-de
 .guide-gallery-viewer { position: sticky; inset-block-start: calc(var(--g-header-h) + var(--g-md)); }
 .guide-gallery-stage { aspect-ratio: 1 / 1; }
 .guide-gallery-fallback { margin: 0; padding: var(--g-lg); max-width: 36ch; text-align: center; color: var(--g-text-dim); }
+
+/* ====================================================== content lists (social, gear) */
+/* A plain definition-style list: a bold lead-in term followed by its description. */
+.guide-list { margin: var(--g-sm) 0 0; padding-inline-start: var(--g-lg); display: grid; gap: var(--g-xs); }
+.guide-list li { color: var(--g-text-dim); }
+.guide-list strong { color: var(--g-text); }
+
+/* Gear: equip-slot chips and the quality-tier swatch list. */
+.guide-gear-slots { display: flex; flex-wrap: wrap; gap: var(--g-xs2); margin: var(--g-sm) 0 0; padding: 0; list-style: none; }
+.guide-gear-slots li {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--g-control-h-sm);
+  padding-inline: var(--g-sm);
+  background: var(--g-bg-2);
+  border: 1px solid var(--g-border-soft);
+  border-radius: var(--g-radius-pill);
+  color: var(--g-text-dim);
+  font-size: var(--g-text-sm);
+  font-weight: 600;
+}
+.guide-gear-qualities { display: grid; gap: var(--g-xs); margin: var(--g-sm) 0; padding: 0; list-style: none; }
+.guide-gear-quality { display: flex; align-items: center; gap: var(--g-sm); color: var(--g-text); }
+.guide-gear-swatch { width: 16px; height: 16px; flex: none; border-radius: var(--g-radius-sm); border: 1px solid #00000066; }
 .guide-gallery-caption {
   margin: var(--g-sm) 0 0;
   text-align: center;
