@@ -52,6 +52,20 @@ try {
   check('docs sidebar now visible', !(await page.$eval('#guide-sidebar', (el) => el.hidden)));
   check('focus moved to main', await page.evaluate(() => document.activeElement?.id === 'guide-main'));
 
+  // Built section pages render real content (not the placeholder).
+  for (const sub of ['how-to-play', 'reference/combat', 'reference/controls', 'reference/glossary', 'faq']) {
+    await page.goto(`${BASE}/guide/${sub}`, { waitUntil: 'networkidle0' });
+    await page.waitForSelector('.guide-article h1');
+    const placeholder = await page.$('.guide-placeholder');
+    check(`content page renders: ${sub}`, !placeholder);
+  }
+  await page.goto(`${BASE}/guide/how-to-play`, { waitUntil: 'networkidle0' });
+  await page.waitForSelector('.guide-steps li');
+  await page.screenshot({ path: 'tmp/guide-howtoplay.png', fullPage: true });
+  await page.goto(`${BASE}/guide/reference/controls`, { waitUntil: 'networkidle0' });
+  await page.waitForSelector('.guide-keytable');
+  await page.screenshot({ path: 'tmp/guide-controls.png', fullPage: true });
+
   // Deep link + 404.
   await page.goto(`${BASE}/guide/nope-not-real`, { waitUntil: 'networkidle0' });
   await page.waitForSelector('.guide-notfound');

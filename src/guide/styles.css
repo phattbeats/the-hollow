@@ -337,6 +337,82 @@ body.guide-has-sidebar .guide-layout {
 .guide-article p { margin: 0 0 var(--g-md); }
 .guide-lead { font-size: 1.1rem; color: var(--g-text-dim); }
 .guide-placeholder, .guide-notfound { padding-block-start: var(--g-md); }
+.guide-article h3 { font-family: var(--g-font-display); color: var(--g-text); font-size: 17px; margin: 0 0 var(--g-xs); }
+.guide-block { margin-block-start: var(--g-xl); }
+
+/* numbered "first 15 minutes" steps */
+.guide-steps { list-style: none; counter-reset: step; padding: 0; margin: 0; display: grid; gap: var(--g-md); }
+.guide-steps li { counter-increment: step; position: relative; padding-inline-start: 48px; min-height: 32px; }
+.guide-steps li::before {
+  content: counter(step);
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background: var(--g-gold);
+  color: #1a1405;
+  border-radius: 50%;
+  font-family: var(--g-font-display);
+  font-weight: 700;
+}
+.guide-steps li p { margin: 0; color: var(--g-text-dim); }
+
+/* basics cards */
+.guide-basics { display: grid; gap: var(--g-md); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.guide-basic { background: var(--g-bg-2); border: 1px solid var(--g-border-soft); border-radius: var(--g-radius); padding: var(--g-md); }
+.guide-basic p { margin: 0; color: var(--g-text-dim); }
+
+.guide-callout {
+  margin-block-start: var(--g-lg);
+  padding: var(--g-md);
+  border-inline-start: 3px solid var(--g-gold);
+  background: #ffd1000d;
+  border-radius: 0 var(--g-radius) var(--g-radius) 0;
+  color: var(--g-text-dim);
+}
+
+/* controls reference table */
+.guide-keytable { width: 100%; border-collapse: collapse; }
+.guide-keytable th {
+  text-align: start;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--g-text-muted);
+  padding: var(--g-xs) var(--g-sm);
+  border-block-end: 1px solid var(--g-border-soft);
+}
+.guide-keytable td { padding: var(--g-sm); border-block-end: 1px solid var(--g-border-soft); color: var(--g-text-dim); }
+.guide-keys { white-space: nowrap; }
+.guide-article kbd {
+  display: inline-block;
+  min-width: 22px;
+  text-align: center;
+  padding: 2px 6px;
+  margin-inline-end: 2px;
+  background: var(--g-bg);
+  border: 1px solid var(--g-border);
+  border-block-end-width: 2px;
+  border-radius: 4px;
+  font-family: var(--g-font-ui);
+  font-size: 12px;
+  color: var(--g-text);
+}
+
+/* glossary */
+.guide-glossary { margin-block-start: var(--g-lg); }
+.guide-term { padding-block: var(--g-sm); border-block-end: 1px solid var(--g-border-soft); }
+.guide-term dt { font-family: var(--g-font-display); color: var(--g-gold-dim); font-weight: 700; margin-block-end: 2px; }
+.guide-term dd { margin: 0; color: var(--g-text-dim); }
+
+/* opt-in disclosure (spoilers / walkthroughs) */
+.guide-reveal { border: 1px solid var(--g-border-soft); border-radius: var(--g-radius); margin-block: var(--g-md); background: var(--g-bg-2); }
+.guide-reveal summary { cursor: pointer; padding: var(--g-md); font-family: var(--g-font-display); font-weight: 600; color: var(--g-text); min-height: 44px; display: flex; align-items: center; }
+.guide-reveal summary:hover { color: var(--g-gold); }
+.guide-reveal-body { padding: 0 var(--g-md) var(--g-md); color: var(--g-text-dim); }
 
 /* -------------------------------------------------------------------- hero */
 /* Full-bleed cinematic hero over the game's loading art (kintara-style: one backdrop

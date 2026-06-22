@@ -6,11 +6,21 @@ import { t } from '../../ui/i18n';
 import { esc } from '../../ui/esc';
 import type { GuidePage, PageContext } from './types';
 import { home } from './home';
+import { howToPlay } from './how_to_play';
+import { combat } from './combat';
+import { controls } from './controls';
+import { glossary } from './glossary';
+import { faq } from './faq';
 
 export type { GuidePage, PageContext } from './types';
 
 const PAGES: Record<string, GuidePage> = {
   home,
+  'how-to-play': howToPlay,
+  combat,
+  controls,
+  glossary,
+  faq,
 };
 
 export function pageFor(id: string): GuidePage | null {

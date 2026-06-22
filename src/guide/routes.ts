@@ -35,7 +35,9 @@ export const GUIDE_ROUTES: GuideRoute[] = [
   { id: 'world', sub: 'world', navKey: 'guide.nav.world', group: 'compendium', topbar: true },
   { id: 'quests', sub: 'quests', navKey: 'guide.nav.quests', group: 'compendium' },
   { id: 'dungeons', sub: 'dungeons', navKey: 'guide.nav.dungeons', group: 'compendium' },
-  { id: 'controls', sub: 'reference/controls', navKey: 'guide.nav.reference', group: 'reference' },
+  { id: 'controls', sub: 'reference/controls', navKey: 'guide.nav.controls', group: 'reference' },
+  { id: 'combat', sub: 'reference/combat', navKey: 'guide.nav.combat', group: 'reference' },
+  { id: 'glossary', sub: 'reference/glossary', navKey: 'guide.nav.glossary', group: 'reference' },
 ];
 
 export interface RouteMatch {
