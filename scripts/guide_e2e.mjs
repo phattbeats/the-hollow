@@ -86,6 +86,26 @@ try {
   await page.waitForSelector('.guide-article');
   check('invalid class id renders not-found', !!(await page.$('.guide-notfound')));
 
+  // Phase 04 pages.
+  await page.goto(`${BASE}/guide/bestiary`, { waitUntil: 'networkidle0' });
+  await page.waitForSelector('.guide-family');
+  check('bestiary lists creature families', (await page.$$('.guide-family')).length >= 8);
+  check('bestiary shows creatures', (await page.$$('.guide-creature')).length > 10);
+  await page.screenshot({ path: 'tmp/guide-bestiary.png', fullPage: true });
+
+  await page.goto(`${BASE}/guide/world`, { waitUntil: 'networkidle0' });
+  await page.waitForSelector('.guide-zone-card');
+  check('world shows three zones', (await page.$$('.guide-zone-card')).length === 3);
+
+  await page.goto(`${BASE}/guide/quests`, { waitUntil: 'networkidle0' });
+  await page.waitForSelector('.guide-article h1');
+  check('quests page renders', !(await page.$('.guide-placeholder')));
+
+  await page.goto(`${BASE}/guide/dungeons`, { waitUntil: 'networkidle0' });
+  await page.waitForSelector('.guide-dungeon-card');
+  check('dungeons shows teaser cards', (await page.$$('.guide-dungeon-card')).length >= 5);
+  await page.screenshot({ path: 'tmp/guide-dungeons.png', fullPage: true });
+
   // Deep link + 404.
   await page.goto(`${BASE}/guide/nope-not-real`, { waitUntil: 'networkidle0' });
   await page.waitForSelector('.guide-notfound');

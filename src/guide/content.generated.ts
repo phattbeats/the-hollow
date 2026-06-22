@@ -18,6 +18,18 @@ export interface GuideClassInfo {
   signatureAbilities: GuideSignatureAbility[];
 }
 
+export interface GuideZoneInfo {
+  id: string;
+  name: string;
+  min: number;
+  max: number;
+  biome: string;
+  hub: string;
+}
+
+export interface GuideCreature { name: string; min: number; max: number; rare: boolean; }
+export interface GuideFamily { family: string; creatures: GuideCreature[]; }
+
 export const GUIDE_CLASSES: GuideClassInfo[] = [
   {
     "id": "warrior",
@@ -455,6 +467,333 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
       {
         "id": "thorns",
         "name": "Thorns"
+      }
+    ]
+  }
+];
+
+export const GUIDE_ZONES: GuideZoneInfo[] = [
+  {
+    "id": "eastbrook_vale",
+    "name": "Eastbrook Vale",
+    "min": 1,
+    "max": 7,
+    "biome": "vale",
+    "hub": "Eastbrook"
+  },
+  {
+    "id": "mirefen_marsh",
+    "name": "Mirefen Marsh",
+    "min": 6,
+    "max": 13,
+    "biome": "marsh",
+    "hub": "Fenbridge"
+  },
+  {
+    "id": "thornpeak_heights",
+    "name": "Thornpeak Heights",
+    "min": 13,
+    "max": 20,
+    "biome": "peaks",
+    "hub": "Highwatch"
+  }
+];
+
+export const GUIDE_FAMILIES: GuideFamily[] = [
+  {
+    "family": "beast",
+    "creatures": [
+      {
+        "name": "Brightwood Hare",
+        "min": 1,
+        "max": 2,
+        "rare": false
+      },
+      {
+        "name": "Forest Wolf",
+        "min": 1,
+        "max": 2,
+        "rare": false
+      },
+      {
+        "name": "Glade Fox",
+        "min": 2,
+        "max": 3,
+        "rare": false
+      },
+      {
+        "name": "Spotted Fawn",
+        "min": 2,
+        "max": 3,
+        "rare": false
+      },
+      {
+        "name": "Wild Boar",
+        "min": 2,
+        "max": 3,
+        "rare": false
+      },
+      {
+        "name": "Dawnmane Doe",
+        "min": 3,
+        "max": 4,
+        "rare": false
+      },
+      {
+        "name": "Meadow Crane",
+        "min": 3,
+        "max": 4,
+        "rare": false
+      },
+      {
+        "name": "Thornpelt Badger",
+        "min": 3,
+        "max": 4,
+        "rare": false
+      },
+      {
+        "name": "Bramble Lynx",
+        "min": 4,
+        "max": 5,
+        "rare": false
+      },
+      {
+        "name": "Brightwood Stag",
+        "min": 4,
+        "max": 5,
+        "rare": false
+      },
+      {
+        "name": "Old Greyjaw",
+        "min": 4,
+        "max": 4,
+        "rare": true
+      },
+      {
+        "name": "Grovetusk Boar",
+        "min": 5,
+        "max": 6,
+        "rare": false
+      },
+      {
+        "name": "Sunhide Bear",
+        "min": 5,
+        "max": 6,
+        "rare": false
+      },
+      {
+        "name": "Mire Prowler",
+        "min": 7,
+        "max": 8,
+        "rare": false
+      },
+      {
+        "name": "Bog Bloat",
+        "min": 9,
+        "max": 11,
+        "rare": false
+      },
+      {
+        "name": "Ridge Stalker",
+        "min": 13,
+        "max": 14,
+        "rare": false
+      }
+    ]
+  },
+  {
+    "family": "spider",
+    "creatures": [
+      {
+        "name": "Webwood Lurker",
+        "min": 2,
+        "max": 4,
+        "rare": false
+      },
+      {
+        "name": "Sableweb Hatchling",
+        "min": 5,
+        "max": 5,
+        "rare": false
+      },
+      {
+        "name": "Mirefen Widow",
+        "min": 8,
+        "max": 10,
+        "rare": false
+      }
+    ]
+  },
+  {
+    "family": "murloc",
+    "creatures": [
+      {
+        "name": "Mudfin Skulker",
+        "min": 3,
+        "max": 5,
+        "rare": false
+      },
+      {
+        "name": "Deepfen Snapper",
+        "min": 8,
+        "max": 9,
+        "rare": false
+      },
+      {
+        "name": "Mirejaw Frenzy",
+        "min": 9,
+        "max": 10,
+        "rare": false
+      }
+    ]
+  },
+  {
+    "family": "kobold",
+    "creatures": [
+      {
+        "name": "Tunnel Rat Digger",
+        "min": 4,
+        "max": 6,
+        "rare": false
+      },
+      {
+        "name": "Deeprock Tunneler",
+        "min": 14,
+        "max": 15,
+        "rare": false
+      },
+      {
+        "name": "Ironvein Sapper",
+        "min": 15,
+        "max": 16,
+        "rare": false
+      }
+    ]
+  },
+  {
+    "family": "humanoid",
+    "creatures": [
+      {
+        "name": "Vale Bandit",
+        "min": 3,
+        "max": 5,
+        "rare": false
+      },
+      {
+        "name": "Mogger Lackey",
+        "min": 5,
+        "max": 6,
+        "rare": false
+      },
+      {
+        "name": "Gravecaller Cultist",
+        "min": 10,
+        "max": 12,
+        "rare": false
+      },
+      {
+        "name": "Gravecaller Mender",
+        "min": 11,
+        "max": 12,
+        "rare": false
+      },
+      {
+        "name": "Gravecaller Summoner",
+        "min": 11,
+        "max": 12,
+        "rare": false
+      },
+      {
+        "name": "Nhalia Mourner",
+        "min": 11,
+        "max": 12,
+        "rare": false
+      },
+      {
+        "name": "Wyrmcult Zealot",
+        "min": 17,
+        "max": 19,
+        "rare": false
+      },
+      {
+        "name": "Wyrmcult Necromancer",
+        "min": 18,
+        "max": 19,
+        "rare": false
+      }
+    ]
+  },
+  {
+    "family": "troll",
+    "creatures": [
+      {
+        "name": "Mirefen Troll",
+        "min": 10,
+        "max": 12,
+        "rare": false
+      },
+      {
+        "name": "Grubjaw the Glutton",
+        "min": 12,
+        "max": 12,
+        "rare": true
+      }
+    ]
+  },
+  {
+    "family": "ogre",
+    "creatures": [
+      {
+        "name": "Thornpeak Ogre",
+        "min": 15,
+        "max": 16,
+        "rare": false
+      }
+    ]
+  },
+  {
+    "family": "undead",
+    "creatures": [
+      {
+        "name": "Restless Bones",
+        "min": 5,
+        "max": 7,
+        "rare": false
+      },
+      {
+        "name": "Drowned Dead",
+        "min": 9,
+        "max": 11,
+        "rare": false
+      },
+      {
+        "name": "Boneclad Revenant",
+        "min": 18,
+        "max": 19,
+        "rare": false
+      },
+      {
+        "name": "Varkas Boneguard",
+        "min": 18,
+        "max": 19,
+        "rare": false
+      }
+    ]
+  },
+  {
+    "family": "elemental",
+    "creatures": [
+      {
+        "name": "Stormcrag Elemental",
+        "min": 17,
+        "max": 18,
+        "rare": false
+      },
+      {
+        "name": "Shardlord Kazzix",
+        "min": 18,
+        "max": 18,
+        "rare": true
       }
     ]
   }

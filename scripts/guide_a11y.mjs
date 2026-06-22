@@ -6,7 +6,7 @@ import { mkdirSync } from 'node:fs';
 import { BROWSER_PATH } from './browser_path.mjs';
 
 const BASE = process.env.GUIDE_URL ?? 'http://localhost:5173';
-const ROUTES = ['/guide', '/guide/how-to-play', '/guide/classes'];
+const ROUTES = ['/guide', '/guide/how-to-play', '/guide/classes', '/guide/classes/druid', '/guide/bestiary', '/guide/world', '/guide/dungeons', '/guide/quests', '/guide/reference/controls'];
 const AXE_CDN = 'https://cdn.jsdelivr.net/npm/axe-core@4.10.2/axe.min.js';
 mkdirSync('tmp', { recursive: true });
 

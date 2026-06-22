@@ -696,6 +696,93 @@ export const fr_FR: EnTranslations = {
       "warlock": "A dark conjurer who commands demons and curses, trading life for devastating power.",
       "druid": "A shapeshifter who tanks as a bear, savages foes as a cat, or heals in the thick of it."
     },
+    "bestiary": {
+      "heading": "Bestiary",
+      "intro": "The creatures of the world, grouped by family. These are the foes you meet out in the open. The deadliest things wait, unlisted, behind dungeon doors.",
+      "rare": "Rare",
+      "levels": "Levels {min} to {max}",
+      "levelsSame": "Level {min}"
+    },
+    "family": {
+      "beast": {
+        "name": "Beasts",
+        "desc": "Wild animals of forest and field, from wolves and boars to the things that prey on them. Hunters can tame many of them."
+      },
+      "spider": {
+        "name": "Spiders",
+        "desc": "Web-spinners and venomous lurkers that nest in dark, tangled places."
+      },
+      "murloc": {
+        "name": "Murlocs",
+        "desc": "Amphibious marsh-dwellers that swarm the shallows in noisy, territorial packs."
+      },
+      "kobold": {
+        "name": "Kobolds",
+        "desc": "Candle-headed diggers that infest mines and burrows, fiercely guarding their ore."
+      },
+      "humanoid": {
+        "name": "Humanoids",
+        "desc": "Bandits, cultists, and others who took up the wrong trade. They fight with tactics, not just teeth."
+      },
+      "troll": {
+        "name": "Trolls",
+        "desc": "Hulking, fast-healing brutes that lair in the marsh and the high country."
+      },
+      "ogre": {
+        "name": "Ogres",
+        "desc": "Enormous, slow-witted, and dangerous. They camp the high passes and hit like a landslide."
+      },
+      "undead": {
+        "name": "Undead",
+        "desc": "The restless dead, raised by darker hands. They do not tire and they do not flee."
+      },
+      "elemental": {
+        "name": "Elementals",
+        "desc": "Living storm and stone, bound to the wild places where the elements run strong."
+      }
+    },
+    "worldPage": {
+      "heading": "The world",
+      "intro": "World of ClaudeCraft is one continuous land you cross on foot, three zones laid south to north. There is no fast travel, so the journey is part of the adventure.",
+      "hub": "Home base",
+      "valeBlurb": "The green starting valley, where new heroes cut their teeth on wolves and bandits around the town of Eastbrook.",
+      "marshBlurb": "A drowned country of fog and ruins. Murlocs swarm the shallows and something older stirs beneath the water, watched from the bridge-town of Fenbridge.",
+      "peaksBlurb": "Wind-scoured ridges and old mine-works climbing to the realm's coldest, highest dangers, held by the outpost of Highwatch."
+    },
+    "questsPage": {
+      "heading": "Quests",
+      "intro": "Quests are the heart of the world and the fastest way to level. Here is how they work.",
+      "acceptTitle": "Finding and accepting",
+      "acceptBody": "People with a marker over their head have work for you. Talk to them to accept a quest. Your very first is Wolves at the Door, from Marshal Redbrook in Eastbrook.",
+      "objectivesTitle": "Objectives",
+      "objectivesBody": "Slay certain enemies, gather items, or interact with something in the world. The on-screen tracker counts your progress as you go.",
+      "turninTitle": "Turning in",
+      "turninBody": "Return to the quest giver, the map shows you where, for experience, coin, and often a piece of gear chosen to suit your class.",
+      "partyTitle": "Questing in a group",
+      "partyBody": "Party members nearby share kill and objective credit, so questing together is faster, never slower.",
+      "storyTitle": "A thread runs through it all",
+      "storyBody": "From your first errands in Eastbrook, something is wrong with the dead. A cult is at work, and the trail leads north through every zone. Follow it to learn who stands behind it.",
+      "soloNote": "The main story is fully soloable; only its final chapters call for a group."
+    },
+    "dungeonsPage": {
+      "heading": "Dungeons and Raids",
+      "intro": "When the open world is not enough, gather a party and step into an instance: a private copy of a dungeon made just for your group.",
+      "party": "Dungeons are built for a party of five. The endgame raid is for ten.",
+      "soloLead": "Every dungeon opens with a soloable lead-in quest, so you always know why you are going in.",
+      "levelAround": "Around level {n}",
+      "levelExact": "Level {n}",
+      "raidSize": "Ten players, level {n}",
+      "hollowName": "The Hollow Crypt",
+      "hollowBody": "A grave-robbed chapel crypt where the newly dead refuse to rest. The first real test of a new party.",
+      "bastionName": "The Sunken Bastion",
+      "bastionBody": "A flooded fortress lost to the marsh, held by drowned defenders and the rising tide itself.",
+      "templeName": "The Drowned Temple",
+      "templeBody": "A sunken shrine off the marsh road, a side-path for the curious and the well-prepared.",
+      "sanctumName": "Gravewyrm Sanctum",
+      "sanctumBody": "The dark heart of Thornpeak, where the cult's long work reaches its terrible peak.",
+      "raidName": "The endgame raid",
+      "raidBody": "Beyond a sealed royal door waits a ten-player trial: a multi-phase fight and a deathless power the whole raid must shut down together. Earn your way in, then bring nine friends."
+    },
     "placeholder": {
       "note": "This part of the guide is on its way."
     },

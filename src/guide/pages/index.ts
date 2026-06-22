@@ -12,6 +12,10 @@ import { controls } from './controls';
 import { glossary } from './glossary';
 import { faq } from './faq';
 import { classes } from './classes';
+import { bestiary } from './bestiary';
+import { world } from './world';
+import { quests } from './quests';
+import { dungeons } from './dungeons';
 
 export type { GuidePage, PageContext } from './types';
 
@@ -19,6 +23,10 @@ const PAGES: Record<string, GuidePage> = {
   home,
   'how-to-play': howToPlay,
   classes,
+  bestiary,
+  world,
+  quests,
+  dungeons,
   combat,
   controls,
   glossary,
