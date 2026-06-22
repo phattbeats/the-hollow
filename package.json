@@ -1,6 +1,6 @@
 {
   "name": "world-of-claudecraft",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "private": true,
   "license": "MIT",
   "type": "module",
@@ -17,6 +17,8 @@
     "preview": "vite preview",
     "pretest": "npm run i18n:build && npm run i18n:admin && npm run i18n:scan && npm run wiki:content",
     "test": "vitest run",
+    "security:scan": "node scripts/malware_scan.mjs",
+    "security:gate": "node scripts/malware_scan.mjs --gate",
     "i18n:build": "node scripts/i18n_build.mjs",
     "i18n:admin": "node scripts/i18n_admin_build.mjs",
     "i18n:scan": "node scripts/i18n_scan.mjs",
