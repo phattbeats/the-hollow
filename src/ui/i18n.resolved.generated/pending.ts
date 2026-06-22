@@ -10,6 +10,10 @@
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver",
     "hudChrome.bugReport.character",
     "hudChrome.bugReport.describeFirst",
     "hudChrome.bugReport.description",
@@ -34,6 +38,10 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.clickFeedback"
   ],
   "es_ES": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver",
     "hudChrome.bugReport.character",
     "hudChrome.bugReport.describeFirst",
     "hudChrome.bugReport.description",
@@ -58,6 +66,10 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.clickFeedback"
   ],
   "fr_FR": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver",
     "hudChrome.bugReport.character",
     "hudChrome.bugReport.describeFirst",
     "hudChrome.bugReport.description",
@@ -82,6 +94,10 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.clickFeedback"
   ],
   "fr_CA": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver",
     "hudChrome.bugReport.character",
     "hudChrome.bugReport.describeFirst",
     "hudChrome.bugReport.description",
@@ -107,6 +123,10 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "en_CA": [],
   "it_IT": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver",
     "hudChrome.bugReport.character",
     "hudChrome.bugReport.describeFirst",
     "hudChrome.bugReport.description",
@@ -131,6 +151,10 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.clickFeedback"
   ],
   "de_DE": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver",
     "hudChrome.bugReport.character",
     "hudChrome.bugReport.describeFirst",
     "hudChrome.bugReport.description",
@@ -159,6 +183,10 @@ export const pending: Record<string, readonly string[]> = {
   "ko_KR": [],
   "ja_JP": [],
   "pt_BR": [
+    "character.inWorldHint",
+    "character.takeOver",
+    "character.takeOverConfirm",
+    "errors.api.takenOver",
     "hudChrome.bugReport.character",
     "hudChrome.bugReport.describeFirst",
     "hudChrome.bugReport.description",

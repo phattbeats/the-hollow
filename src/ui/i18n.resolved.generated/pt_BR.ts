@@ -1059,6 +1059,7 @@ export const pt_BR: EnTranslations = {
       "webLoginOnly": "O login só é permitido pelo cliente do jogo.",
       "accountSuspended": "Esta conta está suspensa até {date}.",
       "alreadyInWorld": "O personagem já está no mundo.",
+      "takenOver": "Your character was taken over by another session.",
       "renameBeforeEntering": "Este personagem precisa ser renomeado antes de entrar no mundo."
     }
   },
@@ -1085,6 +1086,9 @@ export const pt_BR: EnTranslations = {
     "noneYet": "Nenhum personagem ainda. Crie um abaixo.",
     "levelClass": "Nível {level} {className}",
     "inWorld": "no mundo",
+    "takeOver": "Take Over",
+    "inWorldHint": "Already in world. Log out elsewhere, or take over.",
+    "takeOverConfirm": "This will disconnect this character from another session and bring it here. Continue?",
     "renameRequired": "renomeação necessária",
     "delete": "Excluir",
     "rename": "Renomear",

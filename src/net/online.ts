@@ -283,6 +283,14 @@ export class Api {
     await this.delete(`/api/characters/${characterId}`, { name });
   }
 
+  // Force-disconnect this character's live session (a stale tab, a crash, or
+  // another device) so we can enter the world on it. Returns whether a session
+  // was actually displaced (false = it was already offline).
+  async takeoverCharacter(characterId: number): Promise<boolean> {
+    const data = await this.post(`/api/characters/${characterId}/takeover`, {});
+    return data.takenOver === true;
+  }
+
   async reportPlayer(reporterCharacterId: number, targetPid: number, reason: string, details: string): Promise<void> {
     await this.post('/api/reports', { reporterCharacterId, targetPid, reason, details });
   }

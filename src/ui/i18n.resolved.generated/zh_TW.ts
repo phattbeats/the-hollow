@@ -1059,6 +1059,7 @@ export const zh_TW: EnTranslations = {
       "webLoginOnly": "只能從遊戲客戶端登入。",
       "accountSuspended": "此帳號停權至 {date}。",
       "alreadyInWorld": "角色已在世界中。",
+      "takenOver": "你的角色已被另一個工作階段接管。",
       "renameBeforeEntering": "此角色必須先更名才能進入世界。"
     }
   },
@@ -1085,6 +1086,9 @@ export const zh_TW: EnTranslations = {
     "noneYet": "還沒有角色。請在下方建立一個。",
     "levelClass": "{level} 級 {className}",
     "inWorld": "在世界中",
+    "takeOver": "接管",
+    "inWorldHint": "已在世界中。請在別處登出，或接管工作階段。",
+    "takeOverConfirm": "這會使該角色從另一個工作階段中斷並切換到此處。是否繼續？",
     "renameRequired": "需要更名",
     "delete": "刪除",
     "rename": "更名",

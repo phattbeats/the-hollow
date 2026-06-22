@@ -1059,6 +1059,7 @@ export const ko_KR: EnTranslations = {
       "webLoginOnly": "로그인은 게임 클라이언트에서만 허용됩니다.",
       "accountSuspended": "이 계정은 {date}까지 정지되었습니다.",
       "alreadyInWorld": "캐릭터가 이미 세계에 있습니다.",
+      "takenOver": "다른 세션이 캐릭터를 넘겨받았습니다.",
       "renameBeforeEntering": "이 캐릭터는 세계에 들어가기 전에 이름을 변경해야 합니다."
     }
   },
@@ -1085,6 +1086,9 @@ export const ko_KR: EnTranslations = {
     "noneYet": "아직 캐릭터가 없습니다. 아래에서 하나를 만드세요.",
     "levelClass": "{level}레벨 {className}",
     "inWorld": "세계에 있음",
+    "takeOver": "넘겨받기",
+    "inWorldHint": "이미 세계에 있습니다. 다른 곳에서 로그아웃하거나 넘겨받으세요.",
+    "takeOverConfirm": "이 캐릭터를 다른 세션에서 연결 해제하고 여기로 가져옵니다. 계속하시겠습니까?",
     "renameRequired": "이름 변경 필요",
     "delete": "삭제",
     "rename": "이름 변경",
