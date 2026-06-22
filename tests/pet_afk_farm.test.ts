@@ -78,3 +78,56 @@ describe('aggressive pet AFK-farm gate', () => {
     expect(pick()?.id).toBe(target.id);
   });
 });
+
+// Pin the stamping half end-to-end: drive the REAL movement / cast / auto-attack
+// paths (not lastActiveTick set by hand) so a future tweak to those stamps can't
+// silently regress the gate. Owner is parked far from the target so the mob's
+// players-only proximity aggro never fires on the owner during a live tick.
+describe('aggressive pet AFK-farm gate: activity stamping (end-to-end)', () => {
+  function setupE2E() {
+    const sim = makeWorld();
+    const pid = sim.addPlayer('hunter', 'Brann');
+    const owner = sim.entities.get(pid)!;
+    const pet = givePet(sim, pid);
+    sim.setPetMode('aggressive', pid);
+    const target = findWildHostile(sim, pet.id);
+    place(owner, 0, 0);
+    place(pet, 28, 0);   // within leash of the owner
+    place(target, 33, 0); // 5yd from the pet, 33yd from the owner (no proximity aggro)
+    target.aggroTargetId = null;
+    owner.targetId = null;
+    owner.autoAttack = false;
+    const meta = sim.meta(pid)!;
+    meta.lastActiveTick = sim.tickCount - 100000; // start idle (gate closed)
+    return { sim, pid, owner, pet, target, meta };
+  }
+
+  const isFresh = (sim: Sim, meta: { lastActiveTick: number }) =>
+    sim.tickCount - meta.lastActiveTick <= 1;
+
+  it('a real movement tick stamps activity and re-opens the gate', () => {
+    const { sim, owner, pet, target, meta } = setupE2E();
+    expect((sim as any).petPickTarget(pet, owner)).toBeNull(); // idle: no pull
+    meta.moveInput.forward = true; // hold a movement key
+    sim.tick();                    // updatePlayerMovement runs for real and stamps
+    meta.moveInput.forward = false;
+    expect(isFresh(sim, meta)).toBe(true);
+    place(owner, 0, 0); place(pet, 28, 0); place(target, 33, 0); // undo a tick of drift
+    expect((sim as any).petPickTarget(pet, owner)?.id).toBe(target.id);
+  });
+
+  it('a real ability cast stamps activity', () => {
+    const { sim, pid, meta } = setupE2E();
+    expect(isFresh(sim, meta)).toBe(false);
+    sim.castAbility('raptor_strike', pid); // resolves (known at level 1), stamps
+    expect(isFresh(sim, meta)).toBe(true);
+  });
+
+  it('starting auto-attack stamps activity', () => {
+    const { sim, pid, owner, target, meta } = setupE2E();
+    expect(isFresh(sim, meta)).toBe(false);
+    owner.targetId = target.id;
+    sim.startAutoAttack(pid);
+    expect(isFresh(sim, meta)).toBe(true);
+  });
+});

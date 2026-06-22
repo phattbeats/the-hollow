@@ -3858,6 +3858,7 @@ export class Sim {
     if (!t || t.dead || !this.isHostileTo(p, t)) { this.error(p.id, 'Invalid attack target.'); return; }
     if (p.sitting) this.standUp(p);
     p.autoAttack = true;
+    r.meta.lastActiveTick = this.tickCount; // starting auto-attack is a deliberate action
     const d = dist2d(p.pos, t.pos);
     const ranged = CLASSES[r.meta.cls].ranged;
     const inAutoAttackRange = ranged
