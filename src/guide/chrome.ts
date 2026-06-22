@@ -86,7 +86,7 @@ export function buildChrome(mount: HTMLElement, opts: ChromeOptions, signal: Abo
     <header class="guide-header">
       <div class="guide-header-inner">
         <a class="guide-brand" href="${esc(GUIDE_BASE)}">
-          <span class="guide-brand-name">${esc(t('guide.brand'))}</span>
+          <img class="guide-brand-logo" src="/woc-logo-guide.webp" width="239" height="160" alt="${esc(t('guide.brand'))}" decoding="async" />
         </a>
         <button type="button" class="guide-menu-toggle" aria-expanded="false" aria-controls="guide-primary-nav" aria-label="${esc(t('guide.nav.openMenu'))}">
           <span class="guide-menu-bars" aria-hidden="true"></span>

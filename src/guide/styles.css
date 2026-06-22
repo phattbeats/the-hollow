@@ -136,6 +136,7 @@
   --g-maxw-hero: 640px;
   --g-prose: 72ch;
   --g-header-h: 60px;
+  --g-brand-h: 44px;
   --g-motion: 480ms cubic-bezier(0.22, 0.61, 0.36, 1);
   --g-motion-fast: 150ms cubic-bezier(0.22, 0.61, 0.36, 1);
 }
@@ -221,19 +222,16 @@ img { max-width: 100%; height: auto; }
 
 .guide-brand {
   display: flex;
-  flex-direction: column;
-  line-height: var(--g-leading-tight);
+  align-items: center;
+  flex: none;
   color: var(--g-text);
   margin-inline-end: auto;
 }
 .guide-brand:hover { text-decoration: none; }
-.guide-brand-name {
-  font-family: var(--g-font-display);
-  font-weight: 700;
-  font-size: var(--g-text-lg);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--g-gold);
+.guide-brand-logo {
+  display: block;
+  height: var(--g-brand-h);
+  width: auto;
 }
 .guide-primary-nav {
   display: flex;
@@ -254,6 +252,7 @@ img { max-width: 100%; height: auto; }
   font-size: var(--g-text-base);
   padding-block: var(--g-xs2);
   border-block-end: 2px solid transparent;
+  white-space: nowrap;
 }
 .guide-nav-link:hover { color: var(--g-text); text-decoration: none; }
 .guide-nav-link.is-active {
@@ -309,6 +308,13 @@ img { max-width: 100%; height: auto; }
   transition: filter var(--g-motion), box-shadow var(--g-motion);
 }
 .guide-cta:hover { filter: brightness(1.06); text-decoration: none; box-shadow: var(--g-shadow-cta-hover); }
+/* The CTA is a link, so pin its dark-on-gold text across every link state. Without this
+   the generic a:hover (gold text) and the footer-links color both win on specificity and
+   wash the label out against the gold fill. */
+.guide-cta:link,
+.guide-cta:visited,
+.guide-cta:hover,
+.guide-cta:focus { color: var(--g-on-gold); }
 .guide-cta-sm { min-height: var(--g-control-h-sm); padding-inline: var(--g-md); font-size: var(--g-text-sm); }
 .guide-cta-ghost {
   background: transparent;
@@ -316,6 +322,12 @@ img { max-width: 100%; height: auto; }
   border-color: var(--g-border);
   box-shadow: none;
 }
+/* Ghost variant keeps gold text on every state (these come after the solid rules above so
+   they win for an element carrying both classes). */
+.guide-cta-ghost:link,
+.guide-cta-ghost:visited,
+.guide-cta-ghost:hover,
+.guide-cta-ghost:focus { color: var(--g-gold); }
 .guide-cta-ghost:hover { background: var(--g-wash-gold); filter: none; }
 
 /* Hamburger toggle (mobile only). */
@@ -886,7 +898,7 @@ body[data-guide-route="home"] .guide-main { padding-block-start: 0; }
   .guide-sidebar.topics-open .guide-sidebar-nav { display: block; }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1024px) {
   .guide-menu-toggle { display: inline-flex; }
   .guide-primary-nav {
     position: absolute;
@@ -1319,7 +1331,7 @@ a.guide-poi:hover { color: var(--g-gold); border-color: var(--g-border); text-de
   .guide-toc a { min-height: var(--g-touch); display: flex; align-items: center; }
   .guide-nav-link { min-height: var(--g-touch); display: inline-flex; align-items: center; }
 }
-@media (max-width: 720px) {
+@media (max-width: 1024px) {
   .guide-search { width: 100%; }
   .guide-search-input { width: 100%; }
   .guide-search-results { inset-inline: 0; width: auto; }
