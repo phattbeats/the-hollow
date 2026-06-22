@@ -479,6 +479,7 @@ export const ru_RU: EnTranslations = {
     "skipToContent": "Перейти к основному содержимому",
     "loading": "Загрузка...",
     "docTitle": "{page} - {brand}",
+    "related": "Related",
     "nav": {
       "overview": "Обзор",
       "howToPlay": "Как играть",

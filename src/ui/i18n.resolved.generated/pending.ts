@@ -9,17 +9,41 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "guide.related"
+  ],
+  "es_ES": [
+    "guide.related"
+  ],
+  "fr_FR": [
+    "guide.related"
+  ],
+  "fr_CA": [
+    "guide.related"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
-  "zh_CN": [],
-  "zh_TW": [],
-  "ko_KR": [],
-  "ja_JP": [],
-  "pt_BR": [],
-  "ru_RU": []
+  "it_IT": [
+    "guide.related"
+  ],
+  "de_DE": [
+    "guide.related"
+  ],
+  "zh_CN": [
+    "guide.related"
+  ],
+  "zh_TW": [
+    "guide.related"
+  ],
+  "ko_KR": [
+    "guide.related"
+  ],
+  "ja_JP": [
+    "guide.related"
+  ],
+  "pt_BR": [
+    "guide.related"
+  ],
+  "ru_RU": [
+    "guide.related"
+  ]
 };

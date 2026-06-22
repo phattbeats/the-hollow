@@ -479,6 +479,7 @@ export const es: EnTranslations = {
     "skipToContent": "Saltar al contenido principal",
     "loading": "Cargando...",
     "docTitle": "{page} - {brand}",
+    "related": "Related",
     "nav": {
       "overview": "Resumen",
       "howToPlay": "Cómo jugar",

@@ -20,27 +20,50 @@
   --g-text-muted: #9a8f6c;
   --g-focus: #ffe98a;
 
-  /* Parchment reading palette (long-form article bodies). */
-  --g-parchment: #f3e8cc;
-  --g-parchment-2: #ece0bf;
-  --g-ink: #2a1c10;
-  --g-ink-soft: #5a4427;
-  --g-oak: #241710;
-  --g-link: #8a5a1c;
+  /* Ink-on-gold foreground (CTA, skip link, step counters): dark text on the gold fill. */
+  --g-on-gold: #1a1405;
+
+  /* Role + accent colors, aligned with the in-game unit palette. Always paired with a
+     text label, never color-only. */
+  --g-role-tank: #7ab8ff;
+  --g-role-healer: #7fdc8f;
+  --g-role-dps: #ff9b7a;
+  --g-rare: #6ea8ff;
+
+  /* Hover/active washes: one source for the repeated alpha overlays. */
+  --g-wash: #ffffff0f;
+  --g-wash-soft: #ffffff0a;
+  --g-wash-gold: #ffd1000f;
+  --g-wash-gold-strong: #ffd1001a;
 
   /* Typography (loaded by guide.html). */
   --g-font-display: 'Cinzel', 'Palatino Linotype', Palatino, Georgia, serif;
   --g-font-ui: 'Alegreya Sans', 'Segoe UI', system-ui, 'Helvetica Neue', sans-serif;
   --g-font-serif: 'Alegreya', 'Palatino Linotype', Palatino, Georgia, serif;
 
-  /* Spacing + shape. */
+  /* Spacing scale (2xs to xl) with two in-between steps, so paddings and gaps route
+     through the scale instead of ad-hoc pixels. */
+  --g-2xs: 2px;
   --g-xs: 4px;
+  --g-xs2: 6px;
   --g-sm: 8px;
+  --g-sm2: 12px;
   --g-md: 16px;
   --g-lg: 24px;
   --g-xl: 40px;
+
+  /* Radii. */
+  --g-radius-sm: 4px;
   --g-radius: 8px;
   --g-radius-lg: 14px;
+  --g-radius-pill: 999px;
+
+  /* Control + touch sizing. Every tappable target is at least --g-touch tall. */
+  --g-touch: 44px;
+  --g-control-h: 44px;
+  --g-control-h-sm: 38px;
+
+  /* Layout + motion. */
   --g-maxw: 1180px;
   --g-prose: 72ch;
   --g-header-h: 60px;
@@ -82,7 +105,7 @@ img { max-width: 100%; height: auto; }
 :focus-visible {
   outline: 2px solid var(--g-focus);
   outline-offset: 2px;
-  border-radius: 3px;
+  border-radius: var(--g-radius-sm);
 }
 
 /* Skip link: first focusable element, visible on focus. */
@@ -93,7 +116,7 @@ img { max-width: 100%; height: auto; }
   z-index: 200;
   padding: var(--g-sm) var(--g-md);
   background: var(--g-gold);
-  color: #1a1405;
+  color: var(--g-on-gold);
   font-weight: 700;
   border-radius: var(--g-radius);
   transition: inset-block-start var(--g-motion);
@@ -190,7 +213,7 @@ img { max-width: 100%; height: auto; }
   padding: 6px 8px;
   font-family: var(--g-font-ui);
   font-size: 14px;
-  min-height: 36px;
+  min-height: var(--g-control-h-sm);
   cursor: pointer;
 }
 .guide-lang-select:hover { border-color: var(--g-border); }
@@ -201,10 +224,10 @@ img { max-width: 100%; height: auto; }
   align-items: center;
   justify-content: center;
   gap: var(--g-sm);
-  min-height: 44px;
+  min-height: var(--g-control-h);
   padding-inline: var(--g-lg);
   background: linear-gradient(180deg, #ffef9e 0%, var(--g-gold) 100%);
-  color: #1a1405;
+  color: var(--g-on-gold);
   font-family: var(--g-font-display);
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -216,20 +239,20 @@ img { max-width: 100%; height: auto; }
   transition: filter var(--g-motion), box-shadow var(--g-motion);
 }
 .guide-cta:hover { filter: brightness(1.06); text-decoration: none; box-shadow: 0 4px 16px #00000066, inset 0 1px 0 #ffffff88; }
-.guide-cta-sm { min-height: 38px; padding-inline: var(--g-md); font-size: 13px; }
+.guide-cta-sm { min-height: var(--g-control-h-sm); padding-inline: var(--g-md); font-size: 13px; }
 .guide-cta-ghost {
   background: transparent;
   color: var(--g-gold);
   border-color: var(--g-border);
   box-shadow: none;
 }
-.guide-cta-ghost:hover { background: #ffd1000f; filter: none; }
+.guide-cta-ghost:hover { background: var(--g-wash-gold); filter: none; }
 
 /* Hamburger toggle (mobile only). */
 .guide-menu-toggle {
   display: none;
-  width: 44px;
-  height: 44px;
+  width: var(--g-touch);
+  height: var(--g-touch);
   align-items: center;
   justify-content: center;
   background: var(--g-bg-2);
@@ -271,7 +294,7 @@ body.guide-has-sidebar .guide-layout {
   align-self: start;
   position: sticky;
   inset-block-start: calc(var(--g-header-h) + var(--g-md));
-  max-height: calc(100vh - var(--g-header-h) - var(--g-lg));
+  max-height: calc(100dvh - var(--g-header-h) - var(--g-lg));
   overflow-y: auto;
   padding-block: var(--g-lg);
   padding-inline-end: var(--g-sm);
@@ -296,11 +319,11 @@ body.guide-has-sidebar .guide-layout {
   border-inline-start: 2px solid transparent;
   border-radius: 0 var(--g-radius) var(--g-radius) 0;
 }
-.guide-side-link:hover { color: var(--g-text); background: #ffffff08; text-decoration: none; }
+.guide-side-link:hover { color: var(--g-text); background: var(--g-wash); text-decoration: none; }
 .guide-side-link.is-active {
   color: var(--g-gold);
   border-inline-start-color: var(--g-gold);
-  background: #ffd1000f;
+  background: var(--g-wash-gold);
 }
 .guide-topics-toggle { display: none; }
 
@@ -346,7 +369,7 @@ body.guide-has-sidebar .guide-layout {
   display: grid;
   place-items: center;
   background: var(--g-gold);
-  color: #1a1405;
+  color: var(--g-on-gold);
   border-radius: 50%;
   font-family: var(--g-font-display);
   font-weight: 700;
@@ -389,7 +412,7 @@ body.guide-has-sidebar .guide-layout {
   background: var(--g-bg);
   border: 1px solid var(--g-border);
   border-block-end-width: 2px;
-  border-radius: 4px;
+  border-radius: var(--g-radius-sm);
   font-family: var(--g-font-ui);
   font-size: 12px;
   color: var(--g-text);
@@ -403,7 +426,7 @@ body.guide-has-sidebar .guide-layout {
 
 /* opt-in disclosure (spoilers / walkthroughs) */
 .guide-reveal { border: 1px solid var(--g-border-soft); border-radius: var(--g-radius); margin-block: var(--g-md); background: var(--g-bg-2); }
-.guide-reveal summary { cursor: pointer; padding: var(--g-md); font-family: var(--g-font-display); font-weight: 600; color: var(--g-text); min-height: 44px; display: flex; align-items: center; }
+.guide-reveal summary { cursor: pointer; padding: var(--g-md); font-family: var(--g-font-display); font-weight: 600; color: var(--g-text); min-height: var(--g-control-h); display: flex; align-items: center; }
 .guide-reveal summary:hover { color: var(--g-gold); }
 .guide-reveal-body { padding: 0 var(--g-md) var(--g-md); color: var(--g-text-dim); }
 
@@ -414,16 +437,16 @@ body.guide-has-sidebar .guide-layout {
   display: inline-flex;
   align-items: center;
   padding: 2px 10px;
-  border-radius: 999px;
+  border-radius: var(--g-radius-pill);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   border: 1px solid currentColor;
 }
-.guide-role-tank { color: #7ab8ff; }
-.guide-role-healer { color: #7fdc8f; }
-.guide-role-dps { color: #ff9b7a; }
+.guide-role-tank { color: var(--g-role-tank); }
+.guide-role-healer { color: var(--g-role-healer); }
+.guide-role-dps { color: var(--g-role-dps); }
 .guide-badge-resource { color: var(--g-text-dim); }
 
 /* classes index grid */
@@ -448,7 +471,7 @@ body.guide-has-sidebar .guide-layout {
 .guide-class-card:hover { border-color: var(--class-color, var(--g-gold)); text-decoration: none; }
 .guide-class-crest { grid-row: 1 / span 3; width: 64px; height: 64px; align-self: start; }
 .guide-class-card-name { font-family: var(--g-font-display); font-size: 18px; font-weight: 700; color: var(--g-text); }
-.guide-class-card-hook { grid-column: 2; margin: 0; color: var(--g-text-dim); font-size: 14px; }
+.guide-class-card-hook { grid-column: 2; margin: 0; color: var(--g-text-dim); font-size: 14px; min-width: 0; }
 
 /* class detail page */
 .guide-class-hero {
@@ -483,9 +506,9 @@ body.guide-has-sidebar .guide-layout {
   gap: var(--g-md);
   grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
 }
-.guide-ability { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--g-xs); }
-.guide-ability-icon { width: 48px; height: 48px; border-radius: 8px; border: 1px solid var(--g-border); }
-.guide-ability-name { font-size: 12px; color: var(--g-text-dim); }
+.guide-ability { display: flex; flex-direction: column; align-items: start; text-align: center; gap: var(--g-xs); min-width: 0; }
+.guide-ability-icon { width: 48px; height: 48px; border-radius: var(--g-radius); border: 1px solid var(--g-border); }
+.guide-ability-name { font-size: 12px; color: var(--g-text-dim); overflow-wrap: anywhere; }
 
 /* ------------------------------------------------- bestiary / world / dungeons (Phase 04) */
 .guide-bestiary { max-width: 860px; }
@@ -512,17 +535,17 @@ body.guide-has-sidebar .guide-layout {
   border: 1px solid var(--g-border-soft);
   border-radius: var(--g-radius);
 }
-.guide-creature-name { color: var(--g-text); font-weight: 600; }
+.guide-creature-name { color: var(--g-text); font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
 .guide-creature-band { color: var(--g-text-muted); font-size: 12px; white-space: nowrap; }
 .guide-badge-rare {
   margin-inline-start: 6px;
   padding: 1px 7px;
-  border-radius: 999px;
+  border-radius: var(--g-radius-pill);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #6ea8ff;
+  color: var(--g-rare);
   border: 1px solid currentColor;
 }
 
@@ -642,7 +665,7 @@ body[data-guide-route="home"] .guide-main { padding-block-start: 0; }
 }
 .guide-class-chip:hover {
   border-color: var(--class-color, var(--g-gold));
-  background: #ffffff0a;
+  background: var(--g-wash);
   text-decoration: none;
 }
 
@@ -692,7 +715,7 @@ body[data-guide-route="home"] .guide-main { padding-block-start: 0; }
   font-family: var(--g-font-display);
   font-weight: 600;
   color: var(--g-text);
-  min-height: 44px;
+  min-height: var(--g-control-h);
   display: flex;
   align-items: center;
 }
@@ -775,7 +798,7 @@ body[data-guide-route="home"] .guide-main { padding-block-start: 0; }
   .guide-topics-toggle {
     display: inline-flex;
     align-items: center;
-    min-height: 44px;
+    min-height: var(--g-control-h);
     padding-inline: var(--g-md);
     background: var(--g-bg-2);
     color: var(--g-text);
@@ -821,4 +844,45 @@ body[data-guide-route="home"] .guide-main { padding-block-start: 0; }
 @media (prefers-contrast: more) {
   :root { --g-text-dim: #f0ebd8; --g-text-muted: #d8cda3; --g-border-soft: #6f5a2a; }
   .guide-nav-link { color: var(--g-text); }
+}
+
+/* ============================================================ shared primitives
+   Reusable building blocks consumed across pages via the ui.ts helpers, so spacing,
+   sizing, and touch targets stay consistent. Feature-specific styles live in their
+   own fenced sections below. */
+
+/* Horizontal scroll wrapper for wide tables on narrow screens (keytable, etc.),
+   so nothing is clipped by the body overflow-x: clip. */
+.guide-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Callout variants. The base .guide-callout is the gold "tip"; these recolor it. */
+.guide-callout-title { display: block; font-family: var(--g-font-display); font-weight: 700; color: var(--g-text); margin-block-end: var(--g-2xs); }
+.guide-callout-note { border-inline-start-color: var(--g-role-tank); background: #7ab8ff12; }
+.guide-callout-warn { border-inline-start-color: #e8b84b; background: #e8b84b14; }
+
+/* Related-links block at the foot of a page (cross-linking). */
+.guide-related { margin-block-start: var(--g-xl); padding-block-start: var(--g-md); border-block-start: 1px solid var(--g-border-soft); }
+.guide-related-h { font-size: 11px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--g-text-muted); margin: 0 0 var(--g-sm); }
+.guide-related-list { display: flex; flex-wrap: wrap; gap: var(--g-sm); margin: 0; padding: 0; list-style: none; }
+.guide-related-list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--g-control-h-sm);
+  padding-inline: var(--g-md);
+  background: var(--g-bg-2);
+  border: 1px solid var(--g-border-soft);
+  border-radius: var(--g-radius-pill);
+  color: var(--g-text-dim);
+  font-size: 13px;
+  font-weight: 600;
+}
+.guide-related-list a:hover { color: var(--g-gold); border-color: var(--g-border); text-decoration: none; }
+
+/* Coarse-pointer touch floor: every interactive control reaches the 44px target on
+   touch devices, even where its desktop size is smaller. */
+@media (pointer: coarse) {
+  .guide-lang-select,
+  .guide-side-link,
+  .guide-related-list a { min-height: var(--g-touch); }
+  .guide-side-link { display: flex; align-items: center; }
 }

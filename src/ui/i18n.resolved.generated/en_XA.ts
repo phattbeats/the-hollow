@@ -479,6 +479,7 @@ export const en_XA: EnTranslations = {
     "skipToContent": "[Šķíþ ţó ɱáíñ çóñţéñţ]",
     "loading": "[Ļóáðíñĝ...]",
     "docTitle": "[{page} - {brand}]",
+    "related": "[Ŕéļáţéð]",
     "nav": {
       "overview": "[Óʋéŕʋíéŵ]",
       "howToPlay": "[Ĥóŵ ţó Þļáý]",

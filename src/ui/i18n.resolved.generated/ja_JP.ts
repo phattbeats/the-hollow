@@ -479,6 +479,7 @@ export const ja_JP: EnTranslations = {
     "skipToContent": "メインコンテンツへスキップ",
     "loading": "読み込み中...",
     "docTitle": "{page} - {brand}",
+    "related": "Related",
     "nav": {
       "overview": "概要",
       "howToPlay": "遊び方",

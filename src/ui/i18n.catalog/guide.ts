@@ -18,6 +18,8 @@ export const guideStrings = {
   loading: "Loading...",
   // Browser tab title: "{page} - {brand}". Hyphen separator (not an en dash).
   docTitle: "{page} - {brand}",
+  // Label for the cross-link block at the foot of a page.
+  related: "Related",
 
   // Top navigation + sidebar controls.
   nav: {

@@ -479,6 +479,7 @@ export const zh_CN: EnTranslations = {
     "skipToContent": "跳至正文",
     "loading": "加载中……",
     "docTitle": "{page} | {brand}",
+    "related": "Related",
     "nav": {
       "overview": "概览",
       "howToPlay": "游戏入门",

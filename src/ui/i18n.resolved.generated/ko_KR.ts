@@ -479,6 +479,7 @@ export const ko_KR: EnTranslations = {
     "skipToContent": "본문으로 건너뛰기",
     "loading": "불러오는 중...",
     "docTitle": "{page} - {brand}",
+    "related": "Related",
     "nav": {
       "overview": "개요",
       "howToPlay": "플레이 방법",
