@@ -392,6 +392,24 @@ export const zh_TW: EnTranslations = {
         "other": "查詢：{realm} 上有 {count} 名玩家在線上。"
       }
     },
+    "bugReport": {
+      "menuButton": "回報錯誤",
+      "realm": "伺服器",
+      "character": "角色",
+      "position": "座標",
+      "unknown": "未知",
+      "description": "出了什麼問題？",
+      "descriptionPlaceholder": "描述這個錯誤：你做了什麼、預期會發生什麼、實際發生了什麼。",
+      "includeScreenshot": "包含截圖",
+      "screenshotAlt": "附加到此錯誤回報的當前畫面截圖",
+      "submit": "傳送回報",
+      "submitted": "錯誤回報已傳送。謝謝！",
+      "submittedNoShot": "錯誤回報已傳送，但截圖過大，無法一併附上。",
+      "describeFirst": "請先描述錯誤再傳送。",
+      "tooLarge": "此回報過大，無法傳送。請移除截圖後重試。",
+      "rateLimited": "你最近已傳送多份回報。請稍候再傳送。",
+      "failed": "無法傳送錯誤回報。請重試。"
+    },
     "paperdoll": {
       "unequipAria": "卸下 {item}",
       "unequipHint": "點擊 ×、右鍵點擊或拖曳至背包以卸下"

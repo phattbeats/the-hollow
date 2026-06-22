@@ -392,6 +392,24 @@ export const ko_KR: EnTranslations = {
         "other": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다."
       }
     },
+    "bugReport": {
+      "menuButton": "버그 신고",
+      "realm": "서버",
+      "character": "캐릭터",
+      "position": "좌표",
+      "unknown": "알 수 없음",
+      "description": "무엇이 잘못되었나요?",
+      "descriptionPlaceholder": "버그를 설명해 주세요: 무엇을 했고, 무엇을 기대했으며, 무엇이 일어났는지.",
+      "includeScreenshot": "스크린샷 포함",
+      "screenshotAlt": "이 버그 신고에 첨부된 현재 화면의 스크린샷",
+      "submit": "신고 보내기",
+      "submitted": "버그 신고가 전송되었습니다. 감사합니다!",
+      "submittedNoShot": "버그 신고가 전송되었습니다. 다만 스크린샷이 너무 커서 첨부하지 못했습니다.",
+      "describeFirst": "보내기 전에 버그를 설명해 주세요.",
+      "tooLarge": "신고가 너무 커서 보낼 수 없습니다. 스크린샷 없이 다시 시도하세요.",
+      "rateLimited": "최근에 여러 건의 신고를 보냈습니다. 잠시 후 다시 보내 주세요.",
+      "failed": "버그 신고를 보낼 수 없습니다. 다시 시도해 주세요."
+    },
     "paperdoll": {
       "unequipAria": "{item} 장착 해제",
       "unequipHint": "× 클릭, 우클릭 또는 가방으로 드래그하여 장착 해제"
