@@ -22,7 +22,7 @@ export interface GamepadCallbacks {
   // Reuses the host's existing keybind/UI dispatch; jump & autorun are handled
   // here against Input directly and never reach this.
   onAction(id: string): void;
-  // True while any interactive HUD window is open — switches the pad into the
+  // True while any interactive HUD window is open, switching the pad into the
   // virtual-cursor UI-navigation mode (movement/camera/abilities are suspended).
   isPointerMode(): boolean;
   // Current local-player health, for rumble-on-damage. Optional.
@@ -61,6 +61,13 @@ export class GamepadManager {
   stop(): void {
     window.removeEventListener('gamepadconnected', this.boundConnect);
     window.removeEventListener('gamepaddisconnected', this.boundDisconnect);
+    // Fully release the pad (mirror onDisconnect), not just the listeners: poll()
+    // runs unconditionally from the main loop and activePad() keys off this.index,
+    // so leaving index set would keep a still-connected pad driving movement,
+    // camera, and edge buttons after the Controller setting is turned off. start()
+    // re-acquires an already-connected pad on re-enable.
+    this.index = null;
+    this.prevPressed.fill(false);
     this.input.clearGamepadMove();
     this.hideCursor();
   }
@@ -119,18 +126,18 @@ export class GamepadManager {
     }
     this.hideCursor();
 
-    // Movement — left stick.
+    // Movement: left stick.
     const lx = pad.axes[AXIS.LEFT_X] ?? 0;
     const ly = pad.axes[AXIS.LEFT_Y] ?? 0;
     this.input.setGamepadMove(stickToMoveFlags(lx, ly, this.deadzone));
 
-    // Camera — right stick.
+    // Camera: right stick.
     const rx = pad.axes[AXIS.RIGHT_X] ?? 0;
     const ry = pad.axes[AXIS.RIGHT_Y] ?? 0;
     const look = stickToLook(rx, ry, this.deadzone, this.camSpeed, this.invertY, dt);
     this.input.applyGamepadLook(look.yaw, look.pitch);
 
-    // Edge actions — one-shot on each button's rising edge.
+    // Edge actions: one-shot on each button's rising edge.
     for (const idx of risingEdges(this.prevPressed, cur)) this.dispatch(idx);
 
     this.prevPressed = cur;
@@ -209,6 +216,9 @@ export class GamepadManager {
     }
   }
 
+  // Synthesizes mousedown/mouseup/click at the cursor, reusing every existing DOM
+  // click handler (use/equip/sell/trade/feed). Native HTML5 drag-to-rearrange the
+  // action bar is the one interaction this cannot reach; clicks cover the rest.
   private clickAtCursor(): void {
     const target = document.elementFromPoint(this.cursorX, this.cursorY) as HTMLElement | null;
     if (!target) return;

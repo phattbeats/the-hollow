@@ -2771,6 +2771,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   "hudChrome.controller.cameraSpeed": "鏡頭速度",
   "hudChrome.controller.vibration": "震動",
   "hudChrome.controller.buttons": "按鍵配置",
+  "hudChrome.controller.resetButtons": "重設按鍵配置",
   "hudChrome.controller.menuAction": "遊戲選單",
   "hudChrome.controller.help": "左搖桿移動，右搖桿控制鏡頭。開啟視窗即可使用螢幕指標。",
 };

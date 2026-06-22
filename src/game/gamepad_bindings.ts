@@ -1,4 +1,4 @@
-// A separate, remappable gamepad button layout — deliberately NOT folded into
+// A separate, remappable gamepad button layout, deliberately NOT folded into
 // the keyboard Keybinds map (gamepad button indices and KeyboardEvent.codes are
 // different input spaces, and merging them would complicate Keybinds' one-code-
 // per-action uniqueness sweep). Persists to its own localStorage key. Pure aside
@@ -45,7 +45,10 @@ export class GamepadBindings {
     return this.map.get(buttonIndex) ?? GAMEPAD_NONE;
   }
 
-  /** Rebind a button (or clear it with 'none'); ignores non-bindable indices. */
+  /** Rebind a button (or clear it with 'none'); ignores non-bindable indices.
+   *  Unlike the keyboard Keybinds map there is no one-action-per-button uniqueness
+   *  sweep: a pad may point several buttons at the same action (duplicates allowed
+   *  by design, e.g. both bumpers on one slot). */
   bind(buttonIndex: number, action: GamepadActionId): void {
     if (!BINDABLE.has(buttonIndex)) return;
     if (action === GAMEPAD_NONE) this.map.delete(buttonIndex);

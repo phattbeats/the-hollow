@@ -2771,6 +2771,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   "hudChrome.controller.cameraSpeed": "카메라 속도",
   "hudChrome.controller.vibration": "진동",
   "hudChrome.controller.buttons": "버튼 배치",
+  "hudChrome.controller.resetButtons": "버튼 배치 초기화",
   "hudChrome.controller.menuAction": "게임 메뉴",
   "hudChrome.controller.help": "왼쪽 스틱으로 이동, 오른쪽 스틱으로 시점 조작. 창을 열면 화면 포인터를 사용할 수 있습니다.",
 };

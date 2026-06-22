@@ -2771,6 +2771,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   "hudChrome.controller.cameraSpeed": "镜头速度",
   "hudChrome.controller.vibration": "震动",
   "hudChrome.controller.buttons": "按键布局",
+  "hudChrome.controller.resetButtons": "重置按键布局",
   "hudChrome.controller.menuAction": "游戏菜单",
   "hudChrome.controller.help": "左摇杆移动，右摇杆控制镜头。打开窗口即可使用屏幕指针。",
 };

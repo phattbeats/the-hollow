@@ -23,6 +23,14 @@ describe('applyRadialDeadzone', () => {
     const full = applyRadialDeadzone(0, -1, 0.2);
     expect(Math.hypot(full.x, full.y)).toBeCloseTo(1, 6);
   });
+
+  it('clamps over-deflection past the unit circle (square corners) to magnitude 1', () => {
+    // A raw (1,1) corner has magnitude ~1.41; the Math.min(1, ...) clamp must cap
+    // it at 1 so a diagonal push never out-runs a cardinal one. (The (0,-1) case
+    // above is already magnitude 1, so it cannot catch a deleted clamp.)
+    const corner = applyRadialDeadzone(1, 1, 0.2);
+    expect(Math.hypot(corner.x, corner.y)).toBeCloseTo(1, 6);
+  });
 });
 
 describe('stickToMoveFlags', () => {
@@ -41,6 +49,23 @@ describe('stickToMoveFlags', () => {
     const f = stickToMoveFlags(-0.9, -0.9, 0.2);
     expect(f.forward).toBe(true);
     expect(f.strafeLeft).toBe(true);
+  });
+
+  it('maps right to strafeRight and left to strafeLeft (x-axis sign)', () => {
+    const right = stickToMoveFlags(1, 0, 0.2);
+    expect(right.strafeRight).toBe(true);
+    expect(right.strafeLeft).toBe(false);
+    const left = stickToMoveFlags(-1, 0, 0.2);
+    expect(left.strafeLeft).toBe(true);
+    expect(left.strafeRight).toBe(false);
+  });
+
+  it('fires back + strafeRight on a down-right diagonal', () => {
+    const f = stickToMoveFlags(0.9, 0.9, 0.2);
+    expect(f.back).toBe(true);
+    expect(f.strafeRight).toBe(true);
+    expect(f.forward).toBe(false);
+    expect(f.strafeLeft).toBe(false);
   });
 });
 
@@ -81,6 +106,20 @@ describe('default layout', () => {
     expect(DEFAULT_GAMEPAD_BINDINGS[GP.START]).toBe('escape');
     for (const idx of Object.keys(DEFAULT_GAMEPAD_BINDINGS).map(Number)) {
       expect(BINDABLE_BUTTONS).toContain(idx);
+    }
+  });
+
+  it('assigns a default to every bindable button (catches a dropped binding)', () => {
+    const bound = Object.keys(DEFAULT_GAMEPAD_BINDINGS).map(Number).sort((a, b) => a - b);
+    expect(bound).toEqual(BINDABLE_BUTTONS);
+  });
+
+  it('covers action-bar slots 0..8 exactly once (catches a dropped or duplicated slotN)', () => {
+    const values = Object.values(DEFAULT_GAMEPAD_BINDINGS);
+    for (let slot = 0; slot <= 8; slot++) {
+      // Exactly once: count 0 = a dropped slot, count >= 2 = a duplicated slot
+      // (additive or displacing). The default layout binds each slot to one button.
+      expect(values.filter((v) => v === `slot${slot}`).length, `slot${slot}`).toBe(1);
     }
   });
 });

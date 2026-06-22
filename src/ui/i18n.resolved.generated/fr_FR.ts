@@ -233,15 +233,16 @@ export const fr_FR: EnTranslations = {
       "showWalletOnPlayerCard": "Afficher le portefeuille sur la carte de joueur"
     },
     "controller": {
-      "title": "Controller",
-      "enable": "Enable Controller",
-      "invertY": "Invert Camera (Y)",
-      "deadzone": "Stick Deadzone",
-      "cameraSpeed": "Camera Speed",
-      "vibration": "Vibration",
-      "buttons": "Button Layout",
-      "menuAction": "Game Menu",
-      "help": "Left stick moves, right stick looks. Open a window to use the on-screen pointer."
+      "title": "Manette",
+      "enable": "Activer la manette",
+      "invertY": "Inverser la caméra (Y)",
+      "deadzone": "Zone morte du stick",
+      "cameraSpeed": "Vitesse de la caméra",
+      "vibration": "Vibrations",
+      "buttons": "Disposition des boutons",
+      "resetButtons": "Réinitialiser la disposition des boutons",
+      "menuAction": "Menu du jeu",
+      "help": "Le stick gauche déplace, le droit oriente la caméra. Ouvrez une fenêtre pour utiliser le pointeur à l'écran."
     },
     "perf": {
       "title": "Surcouche de performance",

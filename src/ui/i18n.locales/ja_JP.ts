@@ -2771,6 +2771,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "hudChrome.controller.cameraSpeed": "カメラ速度",
   "hudChrome.controller.vibration": "振動",
   "hudChrome.controller.buttons": "ボタン配置",
+  "hudChrome.controller.resetButtons": "ボタン配置をリセット",
   "hudChrome.controller.menuAction": "ゲームメニュー",
   "hudChrome.controller.help": "左スティックで移動、右スティックで視点。ウィンドウを開くと画面ポインターが使えます。",
 };

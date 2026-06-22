@@ -240,6 +240,7 @@ export const en: EnTranslations = {
       "cameraSpeed": "Camera Speed",
       "vibration": "Vibration",
       "buttons": "Button Layout",
+      "resetButtons": "Reset Button Layout",
       "menuAction": "Game Menu",
       "help": "Left stick moves, right stick looks. Open a window to use the on-screen pointer."
     },

@@ -2771,6 +2771,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   "hudChrome.controller.cameraSpeed": "Скорость камеры",
   "hudChrome.controller.vibration": "Вибрация",
   "hudChrome.controller.buttons": "Раскладка кнопок",
+  "hudChrome.controller.resetButtons": "Сбросить раскладку кнопок",
   "hudChrome.controller.menuAction": "Игровое меню",
   "hudChrome.controller.help": "Левый стик — движение, правый — камера. Откройте окно, чтобы использовать экранный указатель.",
 };

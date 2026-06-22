@@ -107,7 +107,7 @@ export const hudChromeStrings = {
   },
   // Controller / gamepad options panel (Options > Controller). Player-facing
   // chrome, so every label is a key here; the live numbers run through
-  // formatNumber. The button names themselves (A / LB / D-pad …) stay as
+  // formatNumber. The button names themselves (A / LB / D-pad, etc.) stay as
   // hardware glyphs in gamepad_map and need no translation.
   controller: {
     title: "Controller",
@@ -117,6 +117,7 @@ export const hudChromeStrings = {
     cameraSpeed: "Camera Speed",
     vibration: "Vibration",
     buttons: "Button Layout",
+    resetButtons: "Reset Button Layout",
     menuAction: "Game Menu",
     help: "Left stick moves, right stick looks. Open a window to use the on-screen pointer.",
   },

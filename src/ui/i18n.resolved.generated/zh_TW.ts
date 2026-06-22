@@ -240,6 +240,7 @@ export const zh_TW: EnTranslations = {
       "cameraSpeed": "鏡頭速度",
       "vibration": "震動",
       "buttons": "按鍵配置",
+      "resetButtons": "重設按鍵配置",
       "menuAction": "遊戲選單",
       "help": "左搖桿移動，右搖桿控制鏡頭。開啟視窗即可使用螢幕指標。"
     },

@@ -8306,8 +8306,8 @@ export class Hud {
     return this.optionsOpen || this.emoteWheelOpen || $('#emote-editor').style.display === 'block' || this.cardModalEl !== null;
   }
 
-  // True when any interactive HUD surface is open — a modal OR a managed window
-  // (bags, vendor, character, …). Drives the gamepad's virtual-cursor mode so a
+  // True when any interactive HUD surface is open: a modal OR a managed window
+  // (bags, vendor, character, etc.). Drives the gamepad's virtual-cursor mode so a
   // controller can point at bag slots / vendor items, not just modal dialogs.
   isWindowOpen(): boolean {
     return this.isModalOpen() || this.topmostOpenWindow() !== null;
@@ -8874,7 +8874,7 @@ export class Hud {
 
   // Action ids a gamepad button may be bound to: explicit unbind, the game menu,
   // plus every one-shot (edge) keybind action and Jump. Movement-axis actions
-  // (forward/strafe/turn) are excluded — they live on the analog stick.
+  // (forward/strafe/turn) are excluded, they live on the analog stick.
   private gamepadActionOptions(): { value: string; label: string }[] {
     const opts: { value: string; label: string }[] = [
       { value: GAMEPAD_NONE, label: t('hud.options.unbound') },
@@ -8890,7 +8890,7 @@ export class Hud {
 
   // Controller panel: enable/invert toggles, deadzone/camera/vibration sliders,
   // and a remap row per bindable button (dropdown of actions). Mirrors the
-  // separate woc_gamepad profile — keyboard Key Bindings are untouched.
+  // separate woc_gamepad profile; keyboard Key Bindings are untouched.
   private renderController(): void {
     const hooks = this.optionsHooks;
     const body = this.settingsViewShell(t('hudChrome.controller.title'));
@@ -8926,7 +8926,7 @@ export class Hud {
       const reset = document.createElement('button');
       reset.type = 'button';
       reset.className = 'btn';
-      reset.textContent = t('hud.options.resetToDefaults');
+      reset.textContent = t('hudChrome.controller.resetButtons');
       reset.addEventListener('click', () => { audio.click(); hooks.gamepad.reset(); this.renderController(); });
       body.appendChild(reset);
     }

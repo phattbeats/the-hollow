@@ -234,14 +234,15 @@ export const de_DE: EnTranslations = {
     },
     "controller": {
       "title": "Controller",
-      "enable": "Enable Controller",
-      "invertY": "Invert Camera (Y)",
-      "deadzone": "Stick Deadzone",
-      "cameraSpeed": "Camera Speed",
+      "enable": "Controller aktivieren",
+      "invertY": "Kamera invertieren (Y)",
+      "deadzone": "Stick-Totzone",
+      "cameraSpeed": "Kamerageschwindigkeit",
       "vibration": "Vibration",
-      "buttons": "Button Layout",
-      "menuAction": "Game Menu",
-      "help": "Left stick moves, right stick looks. Open a window to use the on-screen pointer."
+      "buttons": "Tastenbelegung",
+      "resetButtons": "Tastenbelegung zurücksetzen",
+      "menuAction": "Spielmenü",
+      "help": "Linker Stick bewegt, rechter Stick steuert die Kamera. Öffne ein Fenster, um den Bildschirmzeiger zu verwenden."
     },
     "perf": {
       "title": "Leistungsanzeige",
