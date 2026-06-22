@@ -369,6 +369,10 @@ export const en_CA: EnTranslations = {
         "other": "Who: {count} players online on {realm}."
       }
     },
+    "paperdoll": {
+      "unequipAria": "Unequip {item}",
+      "unequipHint": "Click ×, right-click, or drag to bags to unequip"
+    },
     "account": {
       "title": "Account",
       "loggedOutPrompt": "Log in to manage your account.",

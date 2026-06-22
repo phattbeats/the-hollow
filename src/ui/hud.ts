@@ -391,6 +391,8 @@ export class Hud {
   private knownAbilityIdsAtLastSlotSync: Set<string> | null = null;
   private activeHotbarForm: HotbarForm = 'normal';
   private dragAction: { action: Exclude<HotbarAction, null>; sourceIndex: number | null } | null = null;
+  // Set while dragging an equipped piece out of the paperdoll onto the bags window.
+  private dragUnequipSlot: EquipSlot | null = null;
   private mobileHotbarDrag: MobileHotbarDrag | null = null;
   private suppressNextActionClick = false;
   private optionsHooks: OptionsHooks | null = null;
@@ -734,6 +736,29 @@ export class Hud {
     mapCanvas.addEventListener('pointerup', endDrag);
     mapCanvas.addEventListener('pointercancel', endDrag);
     $('#mm-bag').addEventListener('click', () => this.toggleBags());
+    // Drop an equipped piece dragged out of the paperdoll onto the bags window.
+    const bagsEl = $('#bags');
+    bagsEl.addEventListener('dragover', (e) => {
+      if (this.dragUnequipSlot === null) return;
+      e.preventDefault();
+      e.dataTransfer!.dropEffect = 'move';
+      bagsEl.classList.add('drop-target');
+    });
+    bagsEl.addEventListener('dragleave', (e) => {
+      if (e.target === bagsEl) bagsEl.classList.remove('drop-target');
+    });
+    bagsEl.addEventListener('drop', (e) => {
+      if (this.dragUnequipSlot === null) return;
+      e.preventDefault();
+      const slot = this.dragUnequipSlot;
+      this.dragUnequipSlot = null;
+      bagsEl.classList.remove('drop-target');
+      this.sim.unequipItem(slot);
+      audio.click();
+      this.hideTooltip();
+      this.renderBags();
+      this.renderCharIfOpen();
+    });
     $('#mm-social').addEventListener('click', () => this.toggleSocial());
     $('#mm-options')?.addEventListener('click', () => this.toggleOptionsMenu());
     $('#mm-arena').addEventListener('click', () => this.toggleArena());
@@ -5852,10 +5877,74 @@ export class Hud {
       const item = itemId ? ITEMS[itemId] : null;
       const row = document.createElement('div');
       row.className = 'equip-slot';
+      // Stable id + programmatic focusability so the corner-× rebuild can hand
+      // focus back to this slot (the rebuilt row may be empty, with no × to focus).
+      row.id = `equip-slot-${slot.key}`;
+      row.tabIndex = -1;
       const qColor = !item ? '#666' : QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
       row.innerHTML = `${item ? this.itemIcon(item) : `<img class="item-icon" style="border-color:#444" src="${iconDataUrl('item', 'slot_empty')}" alt="" draggable="false">`}
         <div><div class="slot-name">${esc(slot.name)}</div><div class="slot-item" style="color:${qColor}">${item ? esc(itemDisplayName(item)) : esc(t('itemUi.equipment.empty'))}</div></div>`;
-      if (item) this.attachTooltip(row, () => this.itemTooltip(item));
+      if (item) {
+        // Remove the piece back to bags, leaving the slot empty (equipping only
+        // ever swaps in a replacement — this is the way to fully unequip). Three
+        // affordances all route through here: the corner ×, right-click, and
+        // dragging the piece out onto the bags window.
+        // `keepFocus` rebuilds the paperdoll (renderChar replaces the subtree via
+        // innerHTML, which otherwise drops focus to <body>) and hands focus back to
+        // the now-empty slot row — the keyboard/touch × path needs this; right-click
+        // and drag are mouse-only and don't.
+        const doUnequip = (keepFocus = false) => {
+          this.sim.unequipItem(slot.key);
+          audio.click();
+          this.hideTooltip();
+          this.renderBags();
+          this.renderCharIfOpen();
+          if (keepFocus) {
+            const rebuilt = document.getElementById(`equip-slot-${slot.key}`);
+            this.restoreFocus(rebuilt instanceof HTMLElement ? rebuilt : null);
+          }
+        };
+        this.attachTooltip(row, () => `${this.itemTooltip(item)}<div class="tt-sub">${esc(t('hudChrome.paperdoll.unequipHint'))}</div>`);
+        // Corner ×: a styled glyph control (not an in-game icon), revealed on
+        // hover/focus and always shown on touch where right-click is unavailable.
+        const unequip = document.createElement('button');
+        unequip.type = 'button';
+        unequip.className = 'equip-unequip-btn';
+        unequip.textContent = '×';
+        unequip.setAttribute('aria-label', t('hudChrome.paperdoll.unequipAria', { item: itemDisplayName(item) }));
+        unequip.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          doUnequip(true);
+        });
+        row.appendChild(unequip);
+        // Right-click the slot (classic-MMO muscle memory; matches the bags grid).
+        row.addEventListener('contextmenu', (ev) => {
+          ev.preventDefault();
+          doUnequip();
+        });
+        // Drag the piece out onto the bags window to unequip it.
+        row.draggable = true;
+        row.addEventListener('dragstart', (e) => {
+          this.dragUnequipSlot = slot.key;
+          e.dataTransfer!.effectAllowed = 'move';
+          this.hideTooltip();
+          // Open the bags window if it's closed so there's a visible drop target —
+          // otherwise the drag silently snaps back with no feedback.
+          const bags = $('#bags');
+          if (bags.style.display !== 'block') {
+            bags.style.display = 'block';
+            this.renderBags();
+          }
+        });
+        row.addEventListener('dragend', () => {
+          this.dragUnequipSlot = null;
+          $('#bags').classList.remove('drop-target');
+        });
+      } else {
+        // Empty slot: still swallow the native browser menu so right-click feels
+        // consistent across the paperdoll (an empty slot has nothing to unequip).
+        row.addEventListener('contextmenu', (ev) => ev.preventDefault());
+      }
       return row;
     };
     for (const slot of leftSlots) leftCol.appendChild(buildSlotRow(slot));

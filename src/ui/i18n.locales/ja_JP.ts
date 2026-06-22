@@ -2737,6 +2737,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   "skinEvent.title": "装いの宝箱",
   "skinEvent.unavailable": "近日公開",
   "skinEvent.unequip": "外す",
+  "hudChrome.paperdoll.unequipAria": "{item}を外す",
+  "hudChrome.paperdoll.unequipHint": "× をクリック、右クリック、またはバッグへドラッグで外す",
   "skinEvent.unlocked": "装いを解除しました！",
   "errors.api.webLoginOnly": "ログインはゲームクライアントからのみ可能です。",
   "hudChrome.chatTimestamps.clock12h": "12時間表記",

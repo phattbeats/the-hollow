@@ -369,6 +369,10 @@ export const en_XA: EnTranslations = {
         "other": "[Ŵĥó: {count} þļáýéŕš óñļíñé óñ {realm}.]"
       }
     },
+    "paperdoll": {
+      "unequipAria": "[Úñéɋúíþ {item}]",
+      "unequipHint": "[Çļíçķ ×, ŕíĝĥţ-çļíçķ, óŕ ðŕáĝ ţó ƀáĝš ţó úñéɋúíþ]"
+    },
     "account": {
       "title": "[Áççóúñţ]",
       "loggedOutPrompt": "[Ļóĝ íñ ţó ɱáñáĝé ýóúŕ áççóúñţ.]",

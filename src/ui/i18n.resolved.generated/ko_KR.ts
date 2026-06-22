@@ -369,6 +369,10 @@ export const ko_KR: EnTranslations = {
         "other": "검색: {realm} 서버에 {count}명의 플레이어가 접속 중입니다."
       }
     },
+    "paperdoll": {
+      "unequipAria": "{item} 장착 해제",
+      "unequipHint": "× 클릭, 우클릭 또는 가방으로 드래그하여 장착 해제"
+    },
     "account": {
       "title": "계정",
       "loggedOutPrompt": "계정을 관리하려면 로그인하세요.",

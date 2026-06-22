@@ -7321,6 +7321,26 @@ export class Sim {
     this.emit({ type: 'log', text: `Equipped ${def.name}.`, color: '#8f8', pid: meta.entityId });
   }
 
+  // Remove the piece in `slot` back to the bags, leaving the slot empty. Unlike
+  // equipItem (which only swaps in a replacement) this is the way to fully
+  // unequip. Bags are uncapped, so the returned item never has nowhere to go.
+  unequipItem(slot: EquipSlot, pid?: number): boolean {
+    const r = this.resolve(pid);
+    if (!r) return false;
+    const { meta, e: p } = r;
+    const itemId = meta.equipment[slot];
+    if (!itemId) return false;
+    delete meta.equipment[slot];
+    // addItemSilent (not addItem): returning a piece you already owned to bags is
+    // not a fresh acquisition, so it must not fire collect-quest credit. No quest
+    // today keys on an unequip, so there is nothing to award here regardless.
+    this.addItemSilent(itemId, 1, meta);
+    recalcPlayerStats(p, meta.cls, meta.equipment, this.playerMods(meta));
+    const def = ITEMS[itemId];
+    this.emit({ type: 'log', text: `Unequipped ${def?.name ?? itemId}.`, color: '#8f8', pid: meta.entityId });
+    return true;
+  }
+
   private hasFishableWaterAhead(p: Entity): boolean {
     const sin = Math.sin(p.facing);
     const cos = Math.cos(p.facing);

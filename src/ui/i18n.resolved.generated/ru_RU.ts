@@ -369,6 +369,10 @@ export const ru_RU: EnTranslations = {
         "other": "Список игроков: на {realm} в сети {count} игрока."
       }
     },
+    "paperdoll": {
+      "unequipAria": "Снять {item}",
+      "unequipHint": "Нажмите ×, ПКМ или перетащите в сумку, чтобы снять"
+    },
     "account": {
       "title": "Аккаунт",
       "loggedOutPrompt": "Войдите, чтобы управлять аккаунтом.",

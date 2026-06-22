@@ -2751,6 +2751,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   "skinEvent.title": "Kosmetik-Hort",
   "skinEvent.unavailable": "Demnächst verfügbar",
   "skinEvent.unequip": "Ablegen",
+  "hudChrome.paperdoll.unequipAria": "{item} ablegen",
+  "hudChrome.paperdoll.unequipHint": "Klicke auf ×, Rechtsklick oder in die Taschen ziehen zum Ablegen",
   "skinEvent.unlocked": "Kosmetik freigeschaltet!",
   "errors.api.webLoginOnly": "Anmeldungen sind nur über den Spiel-Client erlaubt.",
   "hudChrome.chatTimestamps.clock12h": "12-Stunden",

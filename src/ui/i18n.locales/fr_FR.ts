@@ -2751,6 +2751,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   "skinEvent.title": "Cache cosmétique",
   "skinEvent.unavailable": "Bientôt disponible",
   "skinEvent.unequip": "Retirer",
+  "hudChrome.paperdoll.unequipAria": "Déséquiper {item}",
+  "hudChrome.paperdoll.unequipHint": "Cliquez sur ×, faites un clic droit ou glissez vers les sacs pour déséquiper",
   "skinEvent.unlocked": "Cosmétique débloqué !",
   "errors.api.webLoginOnly": "Les connexions ne sont autorisées que depuis le client du jeu.",
   "hudChrome.chatTimestamps.clock12h": "12 heures",

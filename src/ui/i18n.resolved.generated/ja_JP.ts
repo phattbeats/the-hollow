@@ -369,6 +369,10 @@ export const ja_JP: EnTranslations = {
         "other": "Who：{realm}に{count}人のプレイヤーがオンラインです。"
       }
     },
+    "paperdoll": {
+      "unequipAria": "{item}を外す",
+      "unequipHint": "× をクリック、右クリック、またはバッグへドラッグで外す"
+    },
     "account": {
       "title": "アカウント",
       "loggedOutPrompt": "アカウントを管理するにはログインしてください。",

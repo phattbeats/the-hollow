@@ -369,6 +369,10 @@ export const zh_TW: EnTranslations = {
         "other": "查詢：{realm} 上有 {count} 名玩家在線上。"
       }
     },
+    "paperdoll": {
+      "unequipAria": "卸下 {item}",
+      "unequipHint": "點擊 ×、右鍵點擊或拖曳至背包以卸下"
+    },
     "account": {
       "title": "帳號",
       "loggedOutPrompt": "登入以管理您的帳號。",

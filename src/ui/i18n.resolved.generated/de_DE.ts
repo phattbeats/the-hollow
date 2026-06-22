@@ -369,6 +369,10 @@ export const de_DE: EnTranslations = {
         "other": "Wer: {count} Spieler online auf {realm}."
       }
     },
+    "paperdoll": {
+      "unequipAria": "{item} ablegen",
+      "unequipHint": "Klicke auf ×, Rechtsklick oder in die Taschen ziehen zum Ablegen"
+    },
     "account": {
       "title": "Konto",
       "loggedOutPrompt": "Meldet Euch an, um Euer Konto zu verwalten.",

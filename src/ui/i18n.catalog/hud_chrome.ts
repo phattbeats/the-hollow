@@ -269,6 +269,11 @@ export const hudChromeStrings = {
       other: "Who: {count} players online on {realm}.",
     },
   },
+  // Character window (paperdoll) controls.
+  paperdoll: {
+    unequipAria: "Unequip {item}",
+    unequipHint: "Click ×, right-click, or drag to bags to unequip",
+  },
   // Home-page account portal (the logged-in "Account" nav tab). Lives here in the
   // English-only hud_chrome domain so an English-only PR compiles; translations
   // live in the overlays like any other hudChrome.* key.
