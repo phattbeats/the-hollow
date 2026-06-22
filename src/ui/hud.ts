@@ -64,7 +64,7 @@ import { Keybinds, BIND_ACTIONS, BIND_CATEGORIES, isReservedCode, keyLabel } fro
 import { GAMEPAD_BUTTON_LABELS, GAMEPAD_NONE } from '../game/gamepad_map';
 import { Settings, GameSettings, BoolSettingKey, NumericSettingKey, SETTING_RANGES, normalizeClickMoveButton } from '../game/settings';
 import { PerfOverlaySettingsPanel, type PerfOverlayHooks, type PerfSettingsHost } from './perf_overlay_settings';
-import { useTouchInterface } from '../game/mobile_controls';
+import { useTouchInterface, isNativeAppShell } from '../game/mobile_controls';
 import { chatPlayerContextActions } from './player_context_menu';
 import {
   MARKET_ARMOR_TYPE_FILTERS,
@@ -9458,15 +9458,18 @@ export class Hud {
     // Desktop keyboard/mouse vs the on-screen touch controls. Auto detects the
     // device; Desktop/Touch force one (e.g. a tablet with a keyboard picks
     // Desktop). Re-render so the touch-only sliders below show/hide to match.
-    this.settingChoice(body, t('hudChrome.options.interfaceMode'), 'interfaceMode', [
-      { value: 0, label: t('hudChrome.options.interfaceModeAuto') },
-      { value: 1, label: t('hudChrome.options.interfaceModeDesktop') },
-      { value: 2, label: t('hudChrome.options.interfaceModeTouch') },
-    ], () => this.renderGraphics());
-    const interfaceNote = document.createElement('div');
-    interfaceNote.className = 'set-note';
-    interfaceNote.textContent = t('hudChrome.options.interfaceModeNote');
-    body.appendChild(interfaceNote);
+    // Hidden in the native app shell, which forces the touch UI regardless.
+    if (!isNativeAppShell()) {
+      this.settingChoice(body, t('hudChrome.options.interfaceMode'), 'interfaceMode', [
+        { value: 0, label: t('hudChrome.options.interfaceModeAuto') },
+        { value: 1, label: t('hudChrome.options.interfaceModeDesktop') },
+        { value: 2, label: t('hudChrome.options.interfaceModeTouch') },
+      ], () => this.renderGraphics());
+      const interfaceNote = document.createElement('div');
+      interfaceNote.className = 'set-note';
+      interfaceNote.textContent = t('hudChrome.options.interfaceModeNote');
+      body.appendChild(interfaceNote);
+    }
     this.settingSlider(body, t('hud.options.cameraSpeed'), 'cameraSpeed');
     // Camera Speed only scales mouselook; on touch the camera joystick has its
     // own rate, so phones get a dedicated sensitivity slider here.

@@ -148,7 +148,9 @@ export function useTouchInterface(win: Pick<Window, 'matchMedia'> = window): boo
   return resolveTouchInterface(interfaceOverride, isPhoneTouchDevice(win));
 }
 
-function isNativeAppShell(): boolean {
+/** True inside the packaged native mobile app (VITE_NATIVE_APP build), which
+ *  forces the touch UI regardless of the Interface Mode override. */
+export function isNativeAppShell(): boolean {
   return typeof document !== 'undefined' && document.body.classList.contains('native-app');
 }
 
