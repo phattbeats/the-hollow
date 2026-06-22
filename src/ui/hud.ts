@@ -5977,8 +5977,10 @@ export class Hud {
     const visible = applyBagFilter(sim.inventory, (id) => ITEMS[id], this.bagFilter);
     if (sim.inventory.length === 0) {
       grid.innerHTML = `<div class="bag-empty">${esc(t('itemUi.bags.empty'))}</div>`;
+      return;
     } else if (visible.length === 0) {
       grid.innerHTML = `<div class="bag-empty">${esc(t('hudChrome.bags.noMatch'))}</div>`;
+      return;
     }
     for (const s of visible) {
       const item = ITEMS[s.itemId];
