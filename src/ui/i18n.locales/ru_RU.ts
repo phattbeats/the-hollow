@@ -2914,4 +2914,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   "hudChrome.account.deactivated": "Ваш аккаунт деактивирован.",
   "hudChrome.account.logOut": "Выйти",
   "hudChrome.account.logOutSummary": "Выйти на этом устройстве.",
+  // On-screen quest tracker (hudChrome.questTracker.*): collapsed count badge + header toggle hover hint.
+  "hudChrome.questTracker.count": "({count})",
+  "hudChrome.questTracker.collapseHint": "Свернуть трекер заданий",
+  "hudChrome.questTracker.expandHint": "Развернуть трекер заданий",
 };

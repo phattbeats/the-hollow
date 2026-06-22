@@ -174,6 +174,11 @@ export const ko_KR: EnTranslations = {
       "title": "감정 표현",
       "done": "완료"
     },
+    "questTracker": {
+      "count": "({count})",
+      "collapseHint": "퀘스트 추적기 접기",
+      "expandHint": "퀘스트 추적기 펼치기"
+    },
     "chatTimestamps": {
       "show": "채팅 시각 표시",
       "format": "시각 표시 형식",

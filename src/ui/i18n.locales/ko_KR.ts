@@ -2914,4 +2914,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   "hudChrome.account.deactivated": "계정이 비활성화되었습니다.",
   "hudChrome.account.logOut": "로그아웃",
   "hudChrome.account.logOutSummary": "이 기기에서 로그아웃합니다.",
+  // On-screen quest tracker (hudChrome.questTracker.*): collapsed count badge + header toggle hover hint.
+  "hudChrome.questTracker.count": "({count})",
+  "hudChrome.questTracker.collapseHint": "퀘스트 추적기 접기",
+  "hudChrome.questTracker.expandHint": "퀘스트 추적기 펼치기",
 };

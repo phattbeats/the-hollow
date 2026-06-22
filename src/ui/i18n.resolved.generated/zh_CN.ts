@@ -174,6 +174,11 @@ export const zh_CN: EnTranslations = {
       "title": "表情",
       "done": "完成"
     },
+    "questTracker": {
+      "count": "（{count}）",
+      "collapseHint": "收起任务追踪器",
+      "expandHint": "展开任务追踪器"
+    },
     "chatTimestamps": {
       "show": "显示聊天时间戳",
       "format": "时间戳格式",

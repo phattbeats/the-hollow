@@ -174,6 +174,11 @@ export const en_XA: EnTranslations = {
       "title": "[Éɱóţéš]",
       "done": "[Ðóñé]"
     },
+    "questTracker": {
+      "count": "[({count})]",
+      "collapseHint": "[Çóļļáþšé ɋúéšţ ţŕáçķéŕ]",
+      "expandHint": "[Éẋþáñð ɋúéšţ ţŕáçķéŕ]"
+    },
     "chatTimestamps": {
       "show": "[Šĥóŵ Çĥáţ Ţíɱéšţáɱþš]",
       "format": "[Ţíɱéšţáɱþ Ƒóŕɱáţ]",

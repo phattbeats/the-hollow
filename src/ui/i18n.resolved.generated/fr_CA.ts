@@ -174,6 +174,11 @@ export const fr_CA: EnTranslations = {
       "title": "Emotes",
       "done": "Terminé"
     },
+    "questTracker": {
+      "count": "({count})",
+      "collapseHint": "Réduire le suivi des quêtes",
+      "expandHint": "Développer le suivi des quêtes"
+    },
     "chatTimestamps": {
       "show": "Afficher l'horodatage de la discussion",
       "format": "Format de l'horodatage",
