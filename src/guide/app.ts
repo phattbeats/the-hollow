@@ -8,9 +8,10 @@ import {
 } from '../ui/i18n';
 import { buildChrome, type GuideChrome } from './chrome';
 import { GuideRouter } from './router';
-import { matchRoute } from './routes';
+import { matchRoute, type GuideRoute } from './routes';
 import { pageFor, placeholderHtml, notFoundHtml, type PageContext } from './pages';
 import { breadcrumbHtml, sequenceHtml, mountToc } from './nav_aids';
+import { applyRouteHead } from './head';
 
 const RTL_LANGS = new Set(['ar', 'he', 'fa', 'ur']);
 function isRtl(tag: string): boolean {
@@ -66,6 +67,9 @@ export class GuideApp {
     const match = matchRoute(pathname);
     let titleKey: TranslationKey;
     let dynamicTitle: string | null = null;
+    let headRoute: GuideRoute | null = null;
+    let headSub = '';
+    let detailId: string | null = null;
     if (!match) {
       this.chrome.mainEl.innerHTML = notFoundHtml();
       titleKey = 'guide.notFound.title';
@@ -79,6 +83,9 @@ export class GuideApp {
       const pageHtml = page ? page.render(ctx) : placeholderHtml(ctx);
       titleKey = page?.titleKey ?? route.navKey;
       dynamicTitle = page?.titleFor ? page.titleFor(ctx) : null;
+      headRoute = route;
+      detailId = params.length > 0 ? params[0] : null;
+      headSub = params.length > 0 ? `${route.sub}/${params.join('/')}` : route.sub;
       // The home landing is a marketing page: no breadcrumb, prev/next, or TOC chrome.
       const isHome = route.id === 'home';
       if (isHome) {
@@ -97,7 +104,10 @@ export class GuideApp {
 
     const pageTitle = dynamicTitle ?? t(titleKey);
     const brand = t('guide.brand');
-    document.title = pageTitle === brand ? brand : t('guide.docTitle', { page: pageTitle, brand });
+    const title = pageTitle === brand ? brand : t('guide.docTitle', { page: pageTitle, brand });
+    // One seam for all per-route head metadata (title, description, canonical, og/twitter,
+    // hreflang alternates, JSON-LD). Runs on every navigation and after a language switch.
+    applyRouteHead({ route: headRoute, sub: headSub, title, detailId });
     this.chrome.closeMenu();
     this.focusMain(pathname);
   }

@@ -31,9 +31,69 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://worldofclaudecraft.com/guide/wish-i-knew</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/faq</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/social</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://worldofclaudecraft.com/guide/classes</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/classes/warrior</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/classes/paladin</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/classes/hunter</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/classes/rogue</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/classes/priest</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/classes/shaman</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/classes/mage</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/classes/warlock</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/classes/druid</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
   </url>
   <url>
     <loc>https://worldofclaudecraft.com/guide/bestiary</loc>
@@ -41,7 +101,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://worldofclaudecraft.com/guide/models</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://worldofclaudecraft.com/guide/world</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/gear</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/economy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -56,9 +131,39 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://worldofclaudecraft.com/guide/faq</loc>
+    <loc>https://worldofclaudecraft.com/guide/arena</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/reference/controls</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/reference/combat</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/reference/stats</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/reference/progression</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/reference/talents</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://worldofclaudecraft.com/guide/reference/glossary</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://worldofclaudecraft.com/privacy</loc>

@@ -22,31 +22,39 @@ export interface GuideRoute {
   group: GuideGroup | null;
   /** Appears in the top navigation bar. */
   topbar?: boolean;
+  /**
+   * i18n key for the per-route <meta name="description"> (and og/twitter descriptions),
+   * reusing the page's own lead/intro copy so each crawlable route is unique and
+   * localized. Home falls back to guide.tagline; class detail pages build a description
+   * from the class name + lore (see head.ts). Consumed only by head.ts; the pages
+   * themselves render the same key as their visible lead.
+   */
+  descKey?: TranslationKey;
 }
 
 // Static top-level routes. Dynamic entries (per class, per creature family) are
 // layered on later phases via resolveDynamic(); unknown paths render notFound.
 export const GUIDE_ROUTES: GuideRoute[] = [
-  { id: 'home', sub: '', navKey: 'guide.nav.overview', group: null, topbar: true },
-  { id: 'how-to-play', sub: 'how-to-play', navKey: 'guide.nav.howToPlay', group: 'start', topbar: true },
-  { id: 'wish-i-knew', sub: 'wish-i-knew', navKey: 'guide.nav.wishIKnew', group: 'start' },
-  { id: 'faq', sub: 'faq', navKey: 'guide.nav.faq', group: 'start' },
-  { id: 'social', sub: 'social', navKey: 'guide.nav.social', group: 'start' },
-  { id: 'classes', sub: 'classes', navKey: 'guide.nav.classes', group: 'compendium', topbar: true },
-  { id: 'bestiary', sub: 'bestiary', navKey: 'guide.nav.bestiary', group: 'compendium', topbar: true },
-  { id: 'models', sub: 'models', navKey: 'guide.nav.models', group: 'compendium' },
-  { id: 'world', sub: 'world', navKey: 'guide.nav.world', group: 'compendium', topbar: true },
-  { id: 'gear', sub: 'gear', navKey: 'guide.nav.gear', group: 'compendium' },
-  { id: 'economy', sub: 'economy', navKey: 'guide.nav.economy', group: 'compendium' },
-  { id: 'quests', sub: 'quests', navKey: 'guide.nav.quests', group: 'compendium' },
-  { id: 'dungeons', sub: 'dungeons', navKey: 'guide.nav.dungeons', group: 'compendium' },
-  { id: 'arena', sub: 'arena', navKey: 'guide.nav.arena', group: 'compendium' },
-  { id: 'controls', sub: 'reference/controls', navKey: 'guide.nav.controls', group: 'reference' },
-  { id: 'combat', sub: 'reference/combat', navKey: 'guide.nav.combat', group: 'reference' },
-  { id: 'stats', sub: 'reference/stats', navKey: 'guide.nav.stats', group: 'reference' },
-  { id: 'progression', sub: 'reference/progression', navKey: 'guide.nav.progression', group: 'reference' },
-  { id: 'talents', sub: 'reference/talents', navKey: 'guide.nav.talents', group: 'reference' },
-  { id: 'glossary', sub: 'reference/glossary', navKey: 'guide.nav.glossary', group: 'reference' },
+  { id: 'home', sub: '', navKey: 'guide.nav.overview', group: null, topbar: true, descKey: 'guide.tagline' },
+  { id: 'how-to-play', sub: 'how-to-play', navKey: 'guide.nav.howToPlay', group: 'start', topbar: true, descKey: 'guide.howToPlay.intro' },
+  { id: 'wish-i-knew', sub: 'wish-i-knew', navKey: 'guide.nav.wishIKnew', group: 'start', descKey: 'guide.wishPage.intro' },
+  { id: 'faq', sub: 'faq', navKey: 'guide.nav.faq', group: 'start', descKey: 'guide.faqPage.intro' },
+  { id: 'social', sub: 'social', navKey: 'guide.nav.social', group: 'start', descKey: 'guide.social.intro' },
+  { id: 'classes', sub: 'classes', navKey: 'guide.nav.classes', group: 'compendium', topbar: true, descKey: 'guide.classList.sub' },
+  { id: 'bestiary', sub: 'bestiary', navKey: 'guide.nav.bestiary', group: 'compendium', topbar: true, descKey: 'guide.bestiary.intro' },
+  { id: 'models', sub: 'models', navKey: 'guide.nav.models', group: 'compendium', descKey: 'guide.models.intro' },
+  { id: 'world', sub: 'world', navKey: 'guide.nav.world', group: 'compendium', topbar: true, descKey: 'guide.worldPage.intro' },
+  { id: 'gear', sub: 'gear', navKey: 'guide.nav.gear', group: 'compendium', descKey: 'guide.gear.intro' },
+  { id: 'economy', sub: 'economy', navKey: 'guide.nav.economy', group: 'compendium', descKey: 'guide.economy.intro' },
+  { id: 'quests', sub: 'quests', navKey: 'guide.nav.quests', group: 'compendium', descKey: 'guide.questsPage.intro' },
+  { id: 'dungeons', sub: 'dungeons', navKey: 'guide.nav.dungeons', group: 'compendium', descKey: 'guide.dungeonsPage.intro' },
+  { id: 'arena', sub: 'arena', navKey: 'guide.nav.arena', group: 'compendium', descKey: 'guide.arenaPage.intro' },
+  { id: 'controls', sub: 'reference/controls', navKey: 'guide.nav.controls', group: 'reference', descKey: 'guide.controls.intro' },
+  { id: 'combat', sub: 'reference/combat', navKey: 'guide.nav.combat', group: 'reference', descKey: 'guide.combat.intro' },
+  { id: 'stats', sub: 'reference/stats', navKey: 'guide.nav.stats', group: 'reference', descKey: 'guide.stats.intro' },
+  { id: 'progression', sub: 'reference/progression', navKey: 'guide.nav.progression', group: 'reference', descKey: 'guide.progression.intro' },
+  { id: 'talents', sub: 'reference/talents', navKey: 'guide.nav.talents', group: 'reference', descKey: 'guide.talentsPage.intro' },
+  { id: 'glossary', sub: 'reference/glossary', navKey: 'guide.nav.glossary', group: 'reference', descKey: 'guide.glossary.intro' },
 ];
 
 export interface RouteMatch {
