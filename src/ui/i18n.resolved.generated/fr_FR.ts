@@ -922,6 +922,51 @@ export const fr_FR: EnTranslations = {
       "raidName": "Le raid de fin de jeu",
       "raidBody": "Au-delà d'une porte royale scellée attend une épreuve à dix joueurs : un combat en plusieurs phases et un pouvoir immortel que tout le raid doit neutraliser de concert. Méritez votre entrée, puis amenez neuf compagnons."
     },
+    "talentsPage": {
+      "heading": "Talents and specializations",
+      "intro": "Talents are how you make a class your own. They are optional, forgiving, and easy to change, so you can experiment without fear.",
+      "whatHeading": "What talents do",
+      "whatBody": "As you level, you earn talent points to spend on small, permanent upgrades to your abilities and stats. They shape how a class feels, leaning it toward more damage, sturdier defense, or stronger healing.",
+      "howHeading": "How they work",
+      "howBody": "Talents open up at level 10, and you keep earning points as you climb to the cap. You spend them in your class's talent panel, and you can save more than one layout to swap between builds.",
+      "resetTitle": "Nothing is permanent",
+      "resetNote": "You can reset your talents at any time, so an early pick is never a trap. Try things, see what you like, and change your mind freely.",
+      "specsHeading": "Specializations by class",
+      "specsBody": "Every class has a handful of specializations, each with its own role and a signature focus. Here is the shape of all of them. Open a class for its full kit."
+    },
+    "arenaPage": {
+      "heading": "Arena and PvP",
+      "intro": "Want to test yourself against other players? Player versus player is built in, and it is always something you choose, never something forced on you.",
+      "duelsHeading": "Duels",
+      "duelsBody": "Challenge any player you meet to a friendly duel. Nothing is on the line but pride, so it is the easiest way to learn a matchup or settle a friendly argument.",
+      "coliseumHeading": "The Ashen Coliseum",
+      "coliseumBody": "The Coliseum is the realm's arena, where you face other players in ranked matches. Win and your standing climbs, and the strongest fighters rise up the leaderboard for everyone to see.",
+      "fiestaHeading": "Two versus two Fiesta",
+      "fiestaBody": "Fiesta is a fast, two-on-two mode played in short rounds. Between rounds you draft augments, quick boosts that reshape your kit on the fly, so no two matches play quite the same.",
+      "augmentsNote": "Augments and power-ups last only for the match. They are about playful, on-the-spot builds, not lasting power, so nobody buys their way to a win.",
+      "ladderHeading": "Climbing the ladder",
+      "ladderBody": "Ranked play tracks your standing over time. Check the leaderboard to see where you sit and who holds the top of the realm."
+    },
+    "wishPage": {
+      "heading": "Things I wish I knew",
+      "intro": "A few honest truths that save new players a lot of second-guessing. None of it is required reading, but all of it helps.",
+      "i1Title": "You cannot pick a wrong class",
+      "i1Body": "Every class can hold its own and reach the cap. Choose the fantasy you like, not the one someone else calls best.",
+      "i2Title": "Dying barely costs you",
+      "i2Body": "When you fall, you release at a graveyard and run back to your body. No experience is lost, so it is safe to take risks and learn.",
+      "i3Title": "Talents are not a trap",
+      "i3Body": "They unlock at level 10 and reset whenever you want, so your early choices are never permanent.",
+      "i4Title": "Follow the quest trail",
+      "i4Body": "Quests are the fastest way to level and they lead you across the world. When you are unsure where to go, find the next marker.",
+      "i5Title": "Keep your gear current",
+      "i5Body": "A fresh upgrade does more for you than perfect play in old gear. Take the quest rewards that suit your class.",
+      "i6Title": "Grouping is a choice, not a chore",
+      "i6Body": "Most of the world is soloable. Team up for dungeons and the raid, or just when you want some company.",
+      "i7Title": "Learn your resource",
+      "i7Body": "Rage, mana, or energy, managing it well is half of playing your class. Watch that bar, not only your cooldowns.",
+      "i8Title": "Rest between fights",
+      "i8Body": "Eat and drink to recover quickly, especially as a caster. A few seconds now saves a death later."
+    },
     "placeholder": {
       "note": "Cette partie du guide arrive bientôt."
     },

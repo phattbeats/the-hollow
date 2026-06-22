@@ -16,19 +16,25 @@ import { bestiary } from './bestiary';
 import { world } from './world';
 import { quests } from './quests';
 import { dungeons } from './dungeons';
+import { arena } from './arena';
+import { talents } from './talents';
+import { wishIKnew } from './wish_i_knew';
 
 export type { GuidePage, PageContext } from './types';
 
 const PAGES: Record<string, GuidePage> = {
   home,
   'how-to-play': howToPlay,
+  'wish-i-knew': wishIKnew,
   classes,
   bestiary,
   world,
   quests,
   dungeons,
+  arena,
   combat,
   controls,
+  talents,
   glossary,
   faq,
 };

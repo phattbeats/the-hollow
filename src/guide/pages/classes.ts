@@ -5,52 +5,23 @@
 //  - structure + icons: content.generated.ts (roles, resource, specs, signature kit, full kit)
 //  - canonical class description: classDetails.lore.* (the SAME copy as character creation)
 //  - armor / weapons: CLASS_DETAILS (the char-select showcase data) + classDetails.* labels
-//  - spec + mastery prose: talent_i18n.tTalent (the SAME localized text as the talents panel)
-//  - "feel" tags + good-first flag: class_meta.ts (curated guide presentation data)
+//  - spec + mastery prose, role badges, crests, tags: ../class_view (shared with Talents)
 // Spoiler-safe: no balance numbers; ability "what it's for" lines are authored guide keys,
-// never the number-laden sim ability descriptions. Crests and icons are procedural.
+// never the number-laden sim ability descriptions.
 
 import { t, formatNumber, type TranslationKey } from '../../ui/i18n';
 import { esc } from '../../ui/esc';
 import { iconDataUrl } from '../../ui/icons';
 import { CLASS_DETAILS } from '../../ui/class_details_data';
-import { tTalent } from '../../ui/talent_i18n';
-import { TALENTS } from '../../sim/content/talents';
 import type { PlayerClass } from '../../sim/types';
 import { hrefFor } from '../routes';
-import { GUIDE_CLASSES, GUIDE_WARLOCK_PETS, type GuideRole, type GuideClassInfo } from '../content.generated';
+import { GUIDE_CLASSES, GUIDE_WARLOCK_PETS, type GuideClassInfo } from '../content.generated';
 import { CLASS_META } from '../class_meta';
-import { crestImg, badge, tag, tagRow, related } from './ui';
+import {
+  className, classLore, classCrest, abilityHook, roleBadges, classTags, specCardHtml,
+} from '../class_view';
+import { crestImg, badge, related } from './ui';
 import type { GuidePage, PageContext } from './types';
-
-function roleKey(role: GuideRole): TranslationKey {
-  if (role === 'tank') return 'guide.role.tank';
-  if (role === 'healer') return 'guide.role.healer';
-  return 'guide.role.damage';
-}
-const className = (id: string): string => t(`classes.${id}` as TranslationKey);
-const classLore = (id: string): string => t(`classDetails.lore.${id}` as TranslationKey);
-const crest = (id: string, size: number): string => iconDataUrl('crest', `class_${id}`, size);
-
-function roleBadges(roles: GuideRole[]): string {
-  return roles.map((r) => badge(t(roleKey(r)), `guide-role-${r}`)).join('');
-}
-
-// Qualitative "shape" tags from the curated class metadata, never numbers.
-function classTags(id: string): string {
-  const m = CLASS_META[id];
-  if (!m) return '';
-  const styleKey: TranslationKey = m.style === 'melee' ? 'guide.tag.melee' : m.style === 'ranged' ? 'guide.tag.ranged' : 'guide.tag.both';
-  const playKey: TranslationKey = m.play === 'solo' ? 'guide.tag.solo' : m.play === 'group' ? 'guide.tag.group' : 'guide.tag.flexible';
-  const cxKey: TranslationKey = m.complexity === 'low' ? 'guide.tag.simple' : m.complexity === 'med' ? 'guide.tag.moderate' : 'guide.tag.complex';
-  const chips = [
-    tag(t(styleKey), 'guide-tag-style'),
-    tag(t(playKey), 'guide-tag-play'),
-    tag(t(cxKey), `guide-tag-cx guide-tag-cx-${m.complexity}`),
-  ];
-  if (m.goodFirst) chips.push(tag(t('guide.tag.goodFirst'), 'guide-tag-first'));
-  return tagRow(chips.join(''));
-}
 
 // ---------------------------------------------------------------- index + chooser
 const FILTER_GROUPS: { group: string; labelKey: TranslationKey; options: { value: string; labelKey: TranslationKey }[] }[] = [
@@ -115,7 +86,7 @@ function classCard(c: GuideClassInfo): string {
     : ` data-roles="${esc(c.roles.join(' '))}" data-resource="${esc(c.resource)}"`;
   return `
     <a class="guide-class-card" href="${esc(hrefFor(`classes/${c.id}`))}" style="--class-color:${esc(c.color)}"${data}>
-      ${crestImg(crest(c.id, 128), 64, 'guide-class-crest')}
+      ${crestImg(classCrest(c.id, 128), 64, 'guide-class-crest')}
       <span class="guide-class-card-name">${esc(className(c.id))}</span>
       <span class="guide-badges">${roleBadges(c.roles)}</span>
       <span class="guide-class-card-hook">${esc(classLore(c.id))}</span>
@@ -211,10 +182,6 @@ function factsHtml(c: GuideClassInfo): string {
   return `<dl class="guide-class-facts">${cells}</dl>`;
 }
 
-function abilityHook(id: string): string {
-  return t(`guide.abilityHook.${id}` as TranslationKey);
-}
-
 function signatureKitHtml(c: GuideClassInfo): string {
   const items = c.signatureAbilities
     .map((a) => `
@@ -235,25 +202,7 @@ function signatureKitHtml(c: GuideClassInfo): string {
 }
 
 function specsHtml(c: GuideClassInfo): string {
-  const tree = TALENTS[c.id as PlayerClass];
-  const items = c.specs.map((sp) => {
-    const def = tree?.specs.find((s) => s.id === sp.id);
-    const name = def ? tTalent({ kind: 'talentSpec', spec: def, field: 'name' }) : sp.name;
-    const desc = def ? tTalent({ kind: 'talentSpec', spec: def, field: 'description' }) : '';
-    const mastery = def ? tTalent({ kind: 'talentMastery', spec: def, field: 'name' }) : '';
-    return `
-      <li class="guide-spec-card">
-        ${crestImg(iconDataUrl('ability', sp.signature, 48), 40, 'guide-spec-icon')}
-        <div class="guide-spec-body">
-          <div class="guide-spec-head">
-            <span class="guide-spec-name">${esc(name)}</span>
-            ${badge(t(roleKey(sp.role)), `guide-role-${sp.role}`)}
-          </div>
-          ${desc ? `<p class="guide-spec-desc">${esc(desc)}</p>` : ''}
-          ${mastery ? `<p class="guide-spec-mastery"><span>${esc(t('guide.classPage.masteryLabel'))}</span> ${esc(mastery)}</p>` : ''}
-        </div>
-      </li>`;
-  }).join('');
+  const items = c.specs.map((sp) => specCardHtml(c.id, sp)).join('');
   return `
     <section class="guide-block">
       <h2>${esc(t('guide.classPage.specsHeading'))}</h2>
@@ -300,7 +249,7 @@ function detailHtml(id: string): string {
     <article class="guide-article guide-class-page" style="--class-color:${esc(c.color)}">
       <p class="guide-section-more"><a href="${esc(hrefFor('classes'))}">${esc(t('guide.classPage.back'))}</a></p>
       <header class="guide-class-hero">
-        ${crestImg(crest(c.id, 192), 96, 'guide-class-hero-crest')}
+        ${crestImg(classCrest(c.id, 192), 96, 'guide-class-hero-crest')}
         <div class="guide-class-hero-text">
           <h1 class="guide-class-hero-name">${esc(className(c.id))}</h1>
           <div class="guide-badges">

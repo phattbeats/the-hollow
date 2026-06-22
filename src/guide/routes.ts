@@ -29,14 +29,17 @@ export interface GuideRoute {
 export const GUIDE_ROUTES: GuideRoute[] = [
   { id: 'home', sub: '', navKey: 'guide.nav.overview', group: null, topbar: true },
   { id: 'how-to-play', sub: 'how-to-play', navKey: 'guide.nav.howToPlay', group: 'start', topbar: true },
+  { id: 'wish-i-knew', sub: 'wish-i-knew', navKey: 'guide.nav.wishIKnew', group: 'start' },
   { id: 'faq', sub: 'faq', navKey: 'guide.nav.faq', group: 'start' },
   { id: 'classes', sub: 'classes', navKey: 'guide.nav.classes', group: 'compendium', topbar: true },
   { id: 'bestiary', sub: 'bestiary', navKey: 'guide.nav.bestiary', group: 'compendium', topbar: true },
   { id: 'world', sub: 'world', navKey: 'guide.nav.world', group: 'compendium', topbar: true },
   { id: 'quests', sub: 'quests', navKey: 'guide.nav.quests', group: 'compendium' },
   { id: 'dungeons', sub: 'dungeons', navKey: 'guide.nav.dungeons', group: 'compendium' },
+  { id: 'arena', sub: 'arena', navKey: 'guide.nav.arena', group: 'compendium' },
   { id: 'controls', sub: 'reference/controls', navKey: 'guide.nav.controls', group: 'reference' },
   { id: 'combat', sub: 'reference/combat', navKey: 'guide.nav.combat', group: 'reference' },
+  { id: 'talents', sub: 'reference/talents', navKey: 'guide.nav.talents', group: 'reference' },
   { id: 'glossary', sub: 'reference/glossary', navKey: 'guide.nav.glossary', group: 'reference' },
 ];
 

@@ -135,9 +135,16 @@ describe('Guide generated class content', () => {
     for (const k of [
       'guide.chooser.heading', 'guide.chooser.results', 'guide.tag.melee', 'guide.tag.goodFirst',
       'guide.classPage.masteryLabel', 'guide.classPage.fullKitHeading', 'guide.classPage.petsHeading',
-      'guide.nav.talents', 'guide.nav.arena', 'guide.related',
+      'guide.nav.talents', 'guide.nav.arena', 'guide.nav.wishIKnew', 'guide.related',
+      'guide.talentsPage.heading', 'guide.arenaPage.coliseumHeading', 'guide.dungeonsPage.levelBand',
+      'guide.worldPage.places', 'guide.glossary.threatTerm', 'guide.faqPage.q9',
     ]) {
       expect(t(k as never).length).toBeGreaterThan(0);
+    }
+    // the "things I wish I knew" page builds its item keys by index (cast keys)
+    for (let n = 1; n <= 8; n += 1) {
+      expect(t(`guide.wishPage.i${n}Title` as never).length).toBeGreaterThan(0);
+      expect(t(`guide.wishPage.i${n}Body` as never).length).toBeGreaterThan(0);
     }
     // every warlock demon has a role one-liner
     for (const pet of GUIDE_WARLOCK_PETS) {

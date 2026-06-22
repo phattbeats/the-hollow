@@ -1081,3 +1081,31 @@ body[data-guide-route="home"] .guide-main { padding-block-start: 0; }
 a.guide-poi:hover { color: var(--g-gold); border-color: var(--g-border); text-decoration: none; }
 
 .guide-dungeon-meta { margin: 0 0 var(--g-sm); color: var(--g-text-muted); font-size: 13px; }
+
+/* ============================================================ talents + wish pages */
+.guide-talents-classes { display: grid; gap: var(--g-lg); margin-block-start: var(--g-md); }
+.guide-talents-class { padding-block-start: var(--g-sm); }
+.guide-talents-class-h {
+  display: flex;
+  align-items: center;
+  gap: var(--g-sm);
+  margin: 0 0 var(--g-sm);
+  font-family: var(--g-font-display);
+  font-size: 20px;
+  color: var(--g-text);
+}
+.guide-talents-class-h a { color: var(--g-text); }
+.guide-talents-class-h a:hover { color: var(--g-gold); text-decoration: none; }
+.guide-talents-crest { width: 40px; height: 40px; flex: none; }
+
+/* "Things I wish I knew" cards. */
+.guide-wish-list { display: grid; gap: var(--g-md); margin-block-start: var(--g-md); }
+.guide-wish-item {
+  padding: var(--g-md) var(--g-lg);
+  background: var(--g-bg-2);
+  border: 1px solid var(--g-border-soft);
+  border-inline-start: 3px solid var(--g-gold);
+  border-radius: 0 var(--g-radius) var(--g-radius) 0;
+}
+.guide-wish-title { font-family: var(--g-font-display); font-size: 18px; color: var(--g-text); margin: 0 0 var(--g-2xs); }
+.guide-wish-item p { margin: 0; color: var(--g-text-dim); }

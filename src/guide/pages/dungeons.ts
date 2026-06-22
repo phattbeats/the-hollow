@@ -54,7 +54,7 @@ export const dungeons: GuidePage = {
         <div class="guide-dungeon-grid">${cards}</div>
         ${related([
           { href: hrefFor('world'), key: 'guide.nav.world' },
-          { href: hrefFor('reference/arena'), key: 'guide.nav.arena' },
+          { href: hrefFor('arena'), key: 'guide.nav.arena' },
           { href: hrefFor('classes'), key: 'guide.nav.classes' },
         ])}
       </article>`;
