@@ -9,17 +9,38 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate"
+  ],
+  "es_ES": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate"
+  ],
+  "fr_FR": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate"
+  ],
+  "fr_CA": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
+  "it_IT": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate"
+  ],
+  "de_DE": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate"
+  ],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
-  "pt_BR": [],
+  "pt_BR": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate"
+  ],
   "ru_RU": []
 };

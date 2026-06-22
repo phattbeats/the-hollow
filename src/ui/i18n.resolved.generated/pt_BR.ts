@@ -248,6 +248,8 @@ export const pt_BR: EnTranslations = {
       "browserEffectsNote": "O modo automático suaviza os efeitos CSS pesados (desfoque, brilho, movimento de fundo) com base no seu navegador e dispositivo. Reduza-o manualmente se a interface parecer lenta.",
       "footstepSounds": "Sons de passos",
       "clickFeedback": "Marcador de clique",
+      "lockCursorOnRotate": "Lock Cursor While Rotating",
+      "keybindHelpLockCursorOnRotate": "Keeps the mouse cursor inside the window while you drag to rotate the camera, so it cannot reach the screen edge or move to another monitor. Turn off if you prefer a free cursor.",
       "showWalletOnCharacterScreen": "Mostrar carteira na tela de personagens",
       "showWalletOnPlayerCard": "Mostrar carteira no cartão de jogador",
       "uiScale": "Escala da interface",

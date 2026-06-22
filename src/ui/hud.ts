@@ -9863,6 +9863,7 @@ export class Hud {
     el.classList.add('kb-wide');
     el.innerHTML = `<div class="panel-title"><span>${esc(t('hud.options.keyBindings'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
     this.settingToggleKeybind(el, t('hud.options.mouseCamera'), 'mouseCamera');
+    this.settingToggleKeybind(el, t('hudChrome.options.lockCursorOnRotate'), 'lockCursorOnRotate');
     this.settingToggleKeybind(el, t('hud.options.clickToMove'), 'clickToMove');
     this.clickMoveMouseButtonRow(el);
     this.settingToggleKeybind(el, t('hud.keybinds.actions.attackMove'), 'attackMove');
