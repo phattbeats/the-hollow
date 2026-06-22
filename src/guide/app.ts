@@ -21,6 +21,7 @@ export class GuideApp {
   private readonly router: GuideRouter;
   private chrome!: GuideChrome;
   private chromeAbort: AbortController | null = null;
+  private firstNav = true;
 
   constructor(mount: HTMLElement) {
     this.mount = mount;
@@ -94,9 +95,14 @@ export class GuideApp {
         return;
       }
     }
+    // On the initial load leave focus at the document default so the skip link is the
+    // first tab stop. On later client-side navigations move focus to the content region
+    // so keyboard and screen-reader users land on the new page, not the unchanged header.
+    if (this.firstNav) {
+      this.firstNav = false;
+      return;
+    }
     window.scrollTo(0, 0);
-    // Move focus to the content region so keyboard and screen-reader users land on the
-    // new page, not the top of the (unchanged) header.
     this.chrome.mainEl.focus({ preventScroll: true });
   }
 }
