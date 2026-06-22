@@ -23,6 +23,7 @@ import {
 import { Rng } from './rng';
 import { SpatialGrid } from './spatial';
 import { orderTabTargets } from './tab_target';
+import { questFallbackGrants } from './quest_fallback';
 import {
   HEAL_THREAT_FACTOR, MELEE_SWITCH_MULT, RANGED_SWITCH_MULT,
   TAUNT_FORCE_SECONDS, addThreat, clearThreat, stealthDetectionRadius, threatEntries, threatModifier, topThreatValue,
@@ -8015,8 +8016,10 @@ export class Sim {
       return;
     }
     meta.questLog.set(questId, { questId, counts: quest.objectives.map(() => 0), state: 'active' });
-    if (questId === 'q_nythraxis_bound_guardian' && this.countItem('crypt_keystone', meta.entityId) <= 0) {
-      this.addItem('crypt_keystone', 1, meta.entityId);
+    // Re-grant any quest item this quest needs from earlier progression but the player
+    // no longer holds, so a missing item can never permanently block the quest.
+    for (const itemId of questFallbackGrants(quest, (id) => this.countItem(id, meta.entityId) > 0)) {
+      this.addItem(itemId, 1, meta.entityId);
     }
     this.emit({ type: 'questAccepted', questId, pid: meta.entityId });
     this.emit({ type: 'log', text: `Quest accepted: ${quest.name}`, color: '#ff0', pid: meta.entityId });
