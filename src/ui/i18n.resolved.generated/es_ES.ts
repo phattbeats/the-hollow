@@ -485,6 +485,7 @@ export const es_ES: EnTranslations = {
       "howToPlay": "Cómo jugar",
       "classes": "Clases",
       "bestiary": "Bestiario",
+      "models": "3D Models",
       "world": "Mundo",
       "quests": "Misiones",
       "dungeons": "Mazmorras y bandas",
@@ -989,6 +990,25 @@ export const es_ES: EnTranslations = {
       "i7Body": "Ira, maná o energía: gestionarlo bien es la mitad de jugar tu clase. Vigila esa barra, no solo tus reutilizaciones.",
       "i8Title": "Descansa entre combates",
       "i8Body": "Come y bebe para recuperarte rápido, especialmente como lanzador. Unos segundos ahora te evitan una muerte después."
+    },
+    "viewer": {
+      "view3d": "View {name} in 3D",
+      "view3dShort": "View in 3D",
+      "loading": "Loading model...",
+      "error": "The 3D model could not be loaded. The art above still shows this {name}.",
+      "dragHint": "Drag to turn the model. Use the left and right arrow keys when it is focused.",
+      "canvasLabel": "Rotatable 3D model of {name}"
+    },
+    "models": {
+      "title": "3D Model Viewer",
+      "lead": "Inspect the heroes, monsters, and demons of the world up close. Choose a model, then drag to turn it.",
+      "intro": "Every figure here is the same model you meet in the game, rendered live in your browser. Pick one to load it.",
+      "groupClasses": "Classes",
+      "groupCreatures": "Creatures",
+      "groupPets": "Warlock Demons",
+      "pickerLabel": "Choose a model to view",
+      "count": "{count} models",
+      "noWebgl": "This browser cannot display 3D models. Everything is still listed on the class and bestiary pages."
     },
     "placeholder": {
       "note": "Esta parte de la guía está en camino."

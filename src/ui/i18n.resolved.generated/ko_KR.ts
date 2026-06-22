@@ -485,6 +485,7 @@ export const ko_KR: EnTranslations = {
       "howToPlay": "플레이 방법",
       "classes": "직업",
       "bestiary": "몬스터 도감",
+      "models": "3D Models",
       "world": "세계",
       "quests": "퀘스트",
       "dungeons": "던전과 공격대",
@@ -989,6 +990,25 @@ export const ko_KR: EnTranslations = {
       "i7Body": "분노든 마나든 기력이든, 자원을 잘 관리하는 것이 직업 운용의 절반입니다. 쿨다운뿐 아니라 그 막대도 지켜보세요.",
       "i8Title": "전투 사이에 휴식하세요",
       "i8Body": "특히 시전 직업이라면 먹고 마셔서 빠르게 회복하세요. 지금의 몇 초가 나중의 죽음을 막아 줍니다."
+    },
+    "viewer": {
+      "view3d": "View {name} in 3D",
+      "view3dShort": "View in 3D",
+      "loading": "Loading model...",
+      "error": "The 3D model could not be loaded. The art above still shows this {name}.",
+      "dragHint": "Drag to turn the model. Use the left and right arrow keys when it is focused.",
+      "canvasLabel": "Rotatable 3D model of {name}"
+    },
+    "models": {
+      "title": "3D Model Viewer",
+      "lead": "Inspect the heroes, monsters, and demons of the world up close. Choose a model, then drag to turn it.",
+      "intro": "Every figure here is the same model you meet in the game, rendered live in your browser. Pick one to load it.",
+      "groupClasses": "Classes",
+      "groupCreatures": "Creatures",
+      "groupPets": "Warlock Demons",
+      "pickerLabel": "Choose a model to view",
+      "count": "{count} models",
+      "noWebgl": "This browser cannot display 3D models. Everything is still listed on the class and bestiary pages."
     },
     "placeholder": {
       "note": "가이드의 이 부분은 준비 중입니다."

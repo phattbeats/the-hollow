@@ -21,6 +21,7 @@ import {
   className, classLore, classCrest, abilityHook, roleBadges, classTags, specCardHtml,
 } from '../class_view';
 import { crestImg, badge, related } from './ui';
+import { modelViewerEmbed, wireModelViewers } from '../viewer';
 import type { GuidePage, PageContext } from './types';
 
 // ---------------------------------------------------------------- index + chooser
@@ -230,6 +231,7 @@ function warlockPetsHtml(): string {
   const items = GUIDE_WARLOCK_PETS
     .map((pet) => `
       <li class="guide-pet">
+        ${modelViewerEmbed({ modelKey: pet.model, tint: pet.tint, name: pet.name })}
         <span class="guide-pet-name">${esc(pet.name)}</span>
         <span class="guide-pet-line">${esc(t(`guide.petHook.${pet.id}` as TranslationKey))}</span>
       </li>`)
@@ -249,7 +251,9 @@ function detailHtml(id: string): string {
     <article class="guide-article guide-class-page" style="--class-color:${esc(c.color)}">
       <p class="guide-section-more"><a href="${esc(hrefFor('classes'))}">${esc(t('guide.classPage.back'))}</a></p>
       <header class="guide-class-hero">
-        ${crestImg(classCrest(c.id, 192), 96, 'guide-class-hero-crest')}
+        <div class="guide-class-portrait">
+          ${modelViewerEmbed({ modelKey: c.model, tint: c.tint, name: className(c.id), poster: classCrest(c.id, 192), posterSize: 160, variant: 'feature' })}
+        </div>
         <div class="guide-class-hero-text">
           <h1 class="guide-class-hero-name">${esc(className(c.id))}</h1>
           <div class="guide-badges">
@@ -284,7 +288,7 @@ export const classes: GuidePage = {
     return id ? detailHtml(id) : indexHtml();
   },
   mount(root: HTMLElement, ctx: PageContext) {
-    if (ctx.params[0]) return; // detail pages are static
+    if (ctx.params[0]) return wireModelViewers(root); // class portrait + warlock demons
     return mountChooser(root);
   },
 };

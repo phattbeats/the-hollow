@@ -485,6 +485,7 @@ export const zh_TW: EnTranslations = {
       "howToPlay": "如何遊玩",
       "classes": "職業",
       "bestiary": "生物圖鑑",
+      "models": "3D Models",
       "world": "世界",
       "quests": "任務",
       "dungeons": "地城與團隊副本",
@@ -989,6 +990,25 @@ export const zh_TW: EnTranslations = {
       "i7Body": "無論是怒氣、法力還是能量，妥善管理它就是玩好職業的一半。盯著那條資源條，而不只是你的冷卻時間。",
       "i8Title": "在戰鬥之間休息",
       "i8Body": "進食與飲水能快速回復，施法職業尤其如此。現在花幾秒鐘，能省下之後一次死亡。"
+    },
+    "viewer": {
+      "view3d": "View {name} in 3D",
+      "view3dShort": "View in 3D",
+      "loading": "Loading model...",
+      "error": "The 3D model could not be loaded. The art above still shows this {name}.",
+      "dragHint": "Drag to turn the model. Use the left and right arrow keys when it is focused.",
+      "canvasLabel": "Rotatable 3D model of {name}"
+    },
+    "models": {
+      "title": "3D Model Viewer",
+      "lead": "Inspect the heroes, monsters, and demons of the world up close. Choose a model, then drag to turn it.",
+      "intro": "Every figure here is the same model you meet in the game, rendered live in your browser. Pick one to load it.",
+      "groupClasses": "Classes",
+      "groupCreatures": "Creatures",
+      "groupPets": "Warlock Demons",
+      "pickerLabel": "Choose a model to view",
+      "count": "{count} models",
+      "noWebgl": "This browser cannot display 3D models. Everything is still listed on the class and bestiary pages."
     },
     "placeholder": {
       "note": "指南的這個部分即將推出。"

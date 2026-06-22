@@ -485,6 +485,7 @@ export const en: EnTranslations = {
       "howToPlay": "How to Play",
       "classes": "Classes",
       "bestiary": "Bestiary",
+      "models": "3D Models",
       "world": "World",
       "quests": "Quests",
       "dungeons": "Dungeons & Raids",
@@ -989,6 +990,25 @@ export const en: EnTranslations = {
       "i7Body": "Rage, mana, or energy, managing it well is half of playing your class. Watch that bar, not only your cooldowns.",
       "i8Title": "Rest between fights",
       "i8Body": "Eat and drink to recover quickly, especially as a caster. A few seconds now saves a death later."
+    },
+    "viewer": {
+      "view3d": "View {name} in 3D",
+      "view3dShort": "View in 3D",
+      "loading": "Loading model...",
+      "error": "The 3D model could not be loaded. The art above still shows this {name}.",
+      "dragHint": "Drag to turn the model. Use the left and right arrow keys when it is focused.",
+      "canvasLabel": "Rotatable 3D model of {name}"
+    },
+    "models": {
+      "title": "3D Model Viewer",
+      "lead": "Inspect the heroes, monsters, and demons of the world up close. Choose a model, then drag to turn it.",
+      "intro": "Every figure here is the same model you meet in the game, rendered live in your browser. Pick one to load it.",
+      "groupClasses": "Classes",
+      "groupCreatures": "Creatures",
+      "groupPets": "Warlock Demons",
+      "pickerLabel": "Choose a model to view",
+      "count": "{count} models",
+      "noWebgl": "This browser cannot display 3D models. Everything is still listed on the class and bestiary pages."
     },
     "placeholder": {
       "note": "This part of the guide is on its way."

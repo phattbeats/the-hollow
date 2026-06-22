@@ -539,6 +539,9 @@ body.guide-has-sidebar .guide-layout {
   border-block-end: 1px solid var(--g-border-soft);
 }
 .guide-class-hero-crest { width: 96px; height: 96px; flex: none; }
+.guide-class-hero { flex-wrap: wrap; }
+.guide-class-portrait { width: min(260px, 100%); flex: none; }
+.guide-class-portrait .guide-viewer { margin: 0; }
 .guide-class-hero-name { margin: 0 0 var(--g-xs); color: var(--class-color, var(--g-gold)); }
 
 .guide-spec-list { list-style: none; padding: 0; margin: var(--g-md) 0 0; display: grid; gap: var(--g-sm); }
@@ -583,16 +586,16 @@ body.guide-has-sidebar .guide-layout {
 }
 .guide-creature {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  align-items: center;
   gap: var(--g-sm);
-  padding: 6px var(--g-sm);
+  padding: var(--g-sm);
   background: var(--g-bg-2);
   border: 1px solid var(--g-border-soft);
   border-radius: var(--g-radius);
 }
+.guide-creature-info { display: flex; flex-direction: column; gap: var(--g-2xs); min-width: 0; flex: 1; }
 .guide-creature-name { color: var(--g-text); font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
-.guide-creature-band { color: var(--g-text-muted); font-size: var(--g-text-xs); white-space: nowrap; }
+.guide-creature-band { color: var(--g-text-muted); font-size: var(--g-text-xs); }
 .guide-badge-rare {
   margin-inline-start: 6px;
   padding: 1px 7px;
@@ -1302,4 +1305,197 @@ a.guide-poi:hover { color: var(--g-gold); border-color: var(--g-border); text-de
   .guide-search { width: 100%; }
   .guide-search-input { width: 100%; }
   .guide-search-results { inset-inline: 0; width: auto; }
+}
+
+/* ====================================================== interactive 3D model viewer
+   An inline turntable that loads one game model on demand. State is driven by the
+   figure's data-state (idle | loading | ready | error | nowebgl); the 2D poster is the
+   graceful fallback for the pre-load, error, and no-WebGL cases. */
+.guide-viewer { margin: var(--g-md) 0 0; }
+.guide-viewer-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 85% at 50% 10%, #1b1b28 0%, transparent 72%),
+    var(--g-bg-2);
+  border: 1px solid var(--g-border-soft);
+  border-radius: var(--g-radius-lg);
+  overflow: hidden;
+}
+.guide-viewer-feature .guide-viewer-stage { aspect-ratio: 1 / 1; }
+.guide-viewer-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+  touch-action: pan-y; /* vertical page scroll still works; horizontal drag rotates */
+}
+.guide-viewer-canvas:active { cursor: grabbing; }
+.guide-viewer-poster {
+  width: auto;
+  max-width: 60%;
+  max-height: 60%;
+  opacity: 0.92;
+}
+.guide-viewer-load {
+  position: absolute;
+  inset-block-end: var(--g-md);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--g-sm);
+  min-height: var(--g-control-h);
+  padding-inline: var(--g-md);
+  background: linear-gradient(180deg, #ffef9e 0%, var(--g-gold) 100%);
+  color: var(--g-on-gold);
+  font-family: var(--g-font-display);
+  font-weight: 700;
+  font-size: var(--g-text-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid var(--g-gold-dim);
+  border-radius: var(--g-radius);
+  box-shadow: var(--g-shadow-cta);
+  cursor: pointer;
+}
+.guide-viewer-load:hover { filter: brightness(1.06); }
+.guide-viewer-load:disabled { cursor: default; opacity: 0.7; }
+.guide-viewer-load-icon {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--g-on-gold);
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+.guide-viewer-status {
+  position: absolute;
+  inset-block-end: var(--g-md);
+  margin: 0;
+  padding: var(--g-xs) var(--g-md);
+  max-width: 86%;
+  text-align: center;
+  font-size: var(--g-text-sm);
+  color: var(--g-text-dim);
+  background: rgba(8, 8, 13, 0.72);
+  border-radius: var(--g-radius-pill);
+}
+.guide-viewer-status-loading,
+.guide-viewer-status-error { display: none; }
+.guide-viewer-hint {
+  margin: var(--g-xs) 0 0;
+  text-align: center;
+  font-size: var(--g-text-xs);
+  color: var(--g-text-muted);
+}
+
+/* State machine: default (idle) shows poster + load; the rest is layered on by state. */
+.guide-viewer-status { display: none; }
+.guide-viewer-hint { display: none; }
+.guide-viewer[data-state="loading"] .guide-viewer-load { display: none; }
+.guide-viewer[data-state="loading"] .guide-viewer-status { display: block; }
+.guide-viewer[data-state="loading"] .guide-viewer-status-loading { display: inline; }
+.guide-viewer[data-state="loading"] .guide-viewer-poster { opacity: 0.45; }
+.guide-viewer[data-state="ready"] .guide-viewer-poster,
+.guide-viewer[data-state="ready"] .guide-viewer-load { display: none; }
+.guide-viewer[data-state="ready"] .guide-viewer-hint { display: block; }
+.guide-viewer[data-state="error"] .guide-viewer-status { display: block; }
+.guide-viewer[data-state="error"] .guide-viewer-status-error { display: inline; }
+.guide-viewer[data-state="nowebgl"] .guide-viewer-load { display: none; }
+
+/* Compact thumb variant: a small square turntable cell for dense lists (bestiary). */
+.guide-viewer-thumb { margin: 0; flex: none; }
+.guide-viewer-thumb .guide-viewer-stage {
+  width: 88px;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--g-radius);
+}
+.guide-viewer-thumb .guide-viewer-load {
+  inset: 0;
+  inset-inline-start: 0;
+  transform: none;
+  width: 100%;
+  min-height: 100%;
+  padding: 0;
+  gap: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--g-gold);
+}
+.guide-viewer-thumb .guide-viewer-load:hover { filter: none; background: var(--g-wash-gold); }
+.guide-viewer-thumb .guide-viewer-load-icon { width: 16px; height: 16px; border-color: var(--g-gold); }
+.guide-viewer-thumb .guide-viewer-load-text { display: none; }
+.guide-viewer-thumb .guide-viewer-status { font-size: var(--g-text-2xs); inset-block-end: var(--g-2xs); padding: var(--g-2xs) var(--g-xs); }
+.guide-viewer-thumb .guide-viewer-status-error { display: none; } /* too small for prose; poster returns on error */
+.guide-viewer-thumb[data-state="error"] .guide-viewer-status { display: none; }
+.guide-viewer-thumb[data-state="error"] .guide-viewer-load { display: inline-flex; }
+.guide-viewer-thumb .guide-viewer-hint { display: none !important; }
+
+.guide-pet .guide-viewer { margin: 0 0 var(--g-sm); }
+
+/* ====================================================== 3D model gallery (/guide/models) */
+.guide-gallery { display: grid; gap: var(--g-lg); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 760px) {
+  .guide-gallery { grid-template-columns: 260px minmax(0, 1fr); align-items: start; }
+}
+.guide-gallery-picker {
+  display: grid;
+  gap: var(--g-lg);
+}
+.guide-gallery-group-h {
+  margin: 0 0 var(--g-sm);
+  font-size: var(--g-text-2xs);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--g-text-muted);
+}
+.guide-gallery-options {
+  display: grid;
+  gap: var(--g-xs2);
+  grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
+}
+.guide-gallery-opt {
+  display: flex;
+  align-items: center;
+  gap: var(--g-sm);
+  min-height: var(--g-control-h);
+  padding: var(--g-xs2) var(--g-sm);
+  background: var(--g-bg-2);
+  color: var(--g-text-dim);
+  border: 1px solid var(--g-border-soft);
+  border-inline-start: var(--g-bw-rail) solid var(--opt-color, var(--g-border));
+  border-radius: var(--g-radius);
+  font-family: var(--g-font-ui);
+  font-weight: 600;
+  font-size: var(--g-text-sm);
+  cursor: pointer;
+  text-align: start;
+}
+.guide-gallery-opt:hover { color: var(--g-text); background: var(--g-wash); }
+.guide-gallery-opt[aria-pressed="true"] {
+  color: var(--g-text);
+  border-color: var(--opt-color, var(--g-gold));
+  background: var(--g-wash-gold);
+}
+.guide-gallery-opt img { width: 28px; height: 28px; flex: none; }
+.guide-gallery-opt-name { min-width: 0; overflow-wrap: anywhere; }
+.guide-gallery-viewer { position: sticky; inset-block-start: calc(var(--g-header-h) + var(--g-md)); }
+.guide-gallery-stage { aspect-ratio: 1 / 1; }
+.guide-gallery-fallback { margin: 0; padding: var(--g-lg); max-width: 36ch; text-align: center; color: var(--g-text-dim); }
+.guide-gallery-caption {
+  margin: var(--g-sm) 0 0;
+  text-align: center;
+  font-family: var(--g-font-display);
+  font-size: var(--g-text-lg);
+  color: var(--g-text);
+}
+@media (pointer: coarse) {
+  .guide-gallery-opt { min-height: var(--g-touch); }
 }

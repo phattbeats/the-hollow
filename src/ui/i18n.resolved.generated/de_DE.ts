@@ -485,6 +485,7 @@ export const de_DE: EnTranslations = {
       "howToPlay": "So wird gespielt",
       "classes": "Klassen",
       "bestiary": "Bestiarium",
+      "models": "3D Models",
       "world": "Welt",
       "quests": "Quests",
       "dungeons": "Dungeons und Schlachtzüge",
@@ -989,6 +990,25 @@ export const de_DE: EnTranslations = {
       "i7Body": "Wut, Mana oder Energie, sie gut zu verwalten ist die halbe Miete beim Spielen deiner Klasse. Behalte diese Leiste im Auge, nicht nur deine Abklingzeiten.",
       "i8Title": "Raste zwischen den Kämpfen",
       "i8Body": "Iss und trink, um dich schnell zu erholen, besonders als Zauberwirker. Ein paar Sekunden jetzt ersparen dir später einen Tod."
+    },
+    "viewer": {
+      "view3d": "View {name} in 3D",
+      "view3dShort": "View in 3D",
+      "loading": "Loading model...",
+      "error": "The 3D model could not be loaded. The art above still shows this {name}.",
+      "dragHint": "Drag to turn the model. Use the left and right arrow keys when it is focused.",
+      "canvasLabel": "Rotatable 3D model of {name}"
+    },
+    "models": {
+      "title": "3D Model Viewer",
+      "lead": "Inspect the heroes, monsters, and demons of the world up close. Choose a model, then drag to turn it.",
+      "intro": "Every figure here is the same model you meet in the game, rendered live in your browser. Pick one to load it.",
+      "groupClasses": "Classes",
+      "groupCreatures": "Creatures",
+      "groupPets": "Warlock Demons",
+      "pickerLabel": "Choose a model to view",
+      "count": "{count} models",
+      "noWebgl": "This browser cannot display 3D models. Everything is still listed on the class and bestiary pages."
     },
     "placeholder": {
       "note": "Dieser Teil des Leitfadens ist in Arbeit."

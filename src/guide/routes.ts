@@ -33,6 +33,7 @@ export const GUIDE_ROUTES: GuideRoute[] = [
   { id: 'faq', sub: 'faq', navKey: 'guide.nav.faq', group: 'start' },
   { id: 'classes', sub: 'classes', navKey: 'guide.nav.classes', group: 'compendium', topbar: true },
   { id: 'bestiary', sub: 'bestiary', navKey: 'guide.nav.bestiary', group: 'compendium', topbar: true },
+  { id: 'models', sub: 'models', navKey: 'guide.nav.models', group: 'compendium' },
   { id: 'world', sub: 'world', navKey: 'guide.nav.world', group: 'compendium', topbar: true },
   { id: 'quests', sub: 'quests', navKey: 'guide.nav.quests', group: 'compendium' },
   { id: 'dungeons', sub: 'dungeons', navKey: 'guide.nav.dungeons', group: 'compendium' },

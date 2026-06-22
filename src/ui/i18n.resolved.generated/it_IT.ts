@@ -485,6 +485,7 @@ export const it_IT: EnTranslations = {
       "howToPlay": "Come si gioca",
       "classes": "Classi",
       "bestiary": "Bestiario",
+      "models": "3D Models",
       "world": "Mondo",
       "quests": "Missioni",
       "dungeons": "Dungeon e Incursioni",
@@ -989,6 +990,25 @@ export const it_IT: EnTranslations = {
       "i7Body": "Ira, mana o energia, gestirla bene è metà del giocare la tua classe. Tieni d'occhio quella barra, non solo i tuoi tempi di recupero.",
       "i8Title": "Riposa tra uno scontro e l'altro",
       "i8Body": "Mangia e bevi per recuperare in fretta, soprattutto da incantatore. Qualche secondo adesso ti risparmia una morte più tardi."
+    },
+    "viewer": {
+      "view3d": "View {name} in 3D",
+      "view3dShort": "View in 3D",
+      "loading": "Loading model...",
+      "error": "The 3D model could not be loaded. The art above still shows this {name}.",
+      "dragHint": "Drag to turn the model. Use the left and right arrow keys when it is focused.",
+      "canvasLabel": "Rotatable 3D model of {name}"
+    },
+    "models": {
+      "title": "3D Model Viewer",
+      "lead": "Inspect the heroes, monsters, and demons of the world up close. Choose a model, then drag to turn it.",
+      "intro": "Every figure here is the same model you meet in the game, rendered live in your browser. Pick one to load it.",
+      "groupClasses": "Classes",
+      "groupCreatures": "Creatures",
+      "groupPets": "Warlock Demons",
+      "pickerLabel": "Choose a model to view",
+      "count": "{count} models",
+      "noWebgl": "This browser cannot display 3D models. Everything is still listed on the class and bestiary pages."
     },
     "placeholder": {
       "note": "Questa parte della guida è in arrivo."

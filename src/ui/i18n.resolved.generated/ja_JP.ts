@@ -485,6 +485,7 @@ export const ja_JP: EnTranslations = {
       "howToPlay": "遊び方",
       "classes": "クラス",
       "bestiary": "モンスター図鑑",
+      "models": "3D Models",
       "world": "ワールド",
       "quests": "クエスト",
       "dungeons": "ダンジョンとレイド",
@@ -989,6 +990,25 @@ export const ja_JP: EnTranslations = {
       "i7Body": "レイジ、マナ、エナジー。うまく管理することがクラスを使いこなす半分です。クールダウンだけでなく、そのバーにも目を配りましょう。",
       "i8Title": "戦いの合間に休む",
       "i8Body": "特にキャスターは、食べたり飲んだりして手早く回復しましょう。今の数秒が後の死を防ぎます。"
+    },
+    "viewer": {
+      "view3d": "View {name} in 3D",
+      "view3dShort": "View in 3D",
+      "loading": "Loading model...",
+      "error": "The 3D model could not be loaded. The art above still shows this {name}.",
+      "dragHint": "Drag to turn the model. Use the left and right arrow keys when it is focused.",
+      "canvasLabel": "Rotatable 3D model of {name}"
+    },
+    "models": {
+      "title": "3D Model Viewer",
+      "lead": "Inspect the heroes, monsters, and demons of the world up close. Choose a model, then drag to turn it.",
+      "intro": "Every figure here is the same model you meet in the game, rendered live in your browser. Pick one to load it.",
+      "groupClasses": "Classes",
+      "groupCreatures": "Creatures",
+      "groupPets": "Warlock Demons",
+      "pickerLabel": "Choose a model to view",
+      "count": "{count} models",
+      "noWebgl": "This browser cannot display 3D models. Everything is still listed on the class and bestiary pages."
     },
     "placeholder": {
       "note": "ガイドのこの部分は現在準備中です。"
