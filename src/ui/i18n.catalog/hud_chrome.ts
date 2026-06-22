@@ -49,6 +49,13 @@ export const hudChromeStrings = {
     clock24h: "24-hour",
     note: "Prefixes each new chat line with the time it arrived, e.g. [14:32]. Only affects messages received while the option is on.",
   },
+  chatWindow: {
+    move: "Drag to move the chat window",
+    resize: "Drag to resize the chat window",
+    reset: "Reset Chat Window",
+    resetAction: "Reset",
+    note: "Drag the chat tab strip to move the window, or the corner grip to resize it. Reset returns it to the default position and size.",
+  },
   swing: {
     ready: "Swing",
     seconds: "{seconds}s",

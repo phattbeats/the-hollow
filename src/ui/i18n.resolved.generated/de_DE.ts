@@ -186,6 +186,13 @@ export const de_DE: EnTranslations = {
       "clock24h": "24-Stunden",
       "note": "Stellt jeder neuen Chatzeile die Uhrzeit ihres Eintreffens voran, z. B. [14:32]. Betrifft nur Nachrichten, die bei aktivierter Option empfangen werden."
     },
+    "chatWindow": {
+      "move": "Drag to move the chat window",
+      "resize": "Drag to resize the chat window",
+      "reset": "Reset Chat Window",
+      "resetAction": "Reset",
+      "note": "Drag the chat tab strip to move the window, or the corner grip to resize it. Reset returns it to the default position and size."
+    },
     "swing": {
       "ready": "Schwung",
       "seconds": "{seconds}s"

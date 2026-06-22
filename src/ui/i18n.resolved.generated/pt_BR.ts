@@ -186,6 +186,13 @@ export const pt_BR: EnTranslations = {
       "clock24h": "24 horas",
       "note": "Adiciona a cada nova linha do chat o horário em que ela chegou, ex.: [14:32]. Afeta apenas as mensagens recebidas enquanto a opção estiver ativada."
     },
+    "chatWindow": {
+      "move": "Drag to move the chat window",
+      "resize": "Drag to resize the chat window",
+      "reset": "Reset Chat Window",
+      "resetAction": "Reset",
+      "note": "Drag the chat tab strip to move the window, or the corner grip to resize it. Reset returns it to the default position and size."
+    },
     "swing": {
       "ready": "Golpe",
       "seconds": "{seconds}s"

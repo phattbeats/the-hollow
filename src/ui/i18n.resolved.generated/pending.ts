@@ -26,6 +26,11 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
     "hudChrome.bugReport.unknown",
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.clickFeedback"
   ],
   "es_ES": [
@@ -45,6 +50,11 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
     "hudChrome.bugReport.unknown",
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.clickFeedback"
   ],
   "fr_FR": [
@@ -64,6 +74,11 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
     "hudChrome.bugReport.unknown",
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.clickFeedback"
   ],
   "fr_CA": [
@@ -83,6 +98,11 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
     "hudChrome.bugReport.unknown",
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.clickFeedback"
   ],
   "en_CA": [],
@@ -103,6 +123,11 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
     "hudChrome.bugReport.unknown",
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.clickFeedback"
   ],
   "de_DE": [
@@ -122,6 +147,11 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
     "hudChrome.bugReport.unknown",
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.clickFeedback"
   ],
   "zh_CN": [],
@@ -145,6 +175,11 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.bugReport.submittedNoShot",
     "hudChrome.bugReport.tooLarge",
     "hudChrome.bugReport.unknown",
+    "hudChrome.chatWindow.move",
+    "hudChrome.chatWindow.note",
+    "hudChrome.chatWindow.reset",
+    "hudChrome.chatWindow.resetAction",
+    "hudChrome.chatWindow.resize",
     "hudChrome.options.clickFeedback"
   ],
   "ru_RU": []

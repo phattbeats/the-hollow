@@ -186,6 +186,13 @@ export const it_IT: EnTranslations = {
       "clock24h": "24 ore",
       "note": "Antepone a ogni nuova riga di chat l'ora di arrivo, ad es. [14:32]. Influisce solo sui messaggi ricevuti mentre l'opzione è attiva."
     },
+    "chatWindow": {
+      "move": "Drag to move the chat window",
+      "resize": "Drag to resize the chat window",
+      "reset": "Reset Chat Window",
+      "resetAction": "Reset",
+      "note": "Drag the chat tab strip to move the window, or the corner grip to resize it. Reset returns it to the default position and size."
+    },
     "swing": {
       "ready": "Attacco",
       "seconds": "{seconds}s"

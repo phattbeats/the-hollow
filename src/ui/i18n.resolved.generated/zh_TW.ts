@@ -186,6 +186,13 @@ export const zh_TW: EnTranslations = {
       "clock24h": "24 小時制",
       "note": "在每一行新的聊天訊息前加上收到的時間，例如 [14:32]。只會影響開啟此選項後收到的訊息。"
     },
+    "chatWindow": {
+      "move": "拖曳以移動聊天視窗",
+      "resize": "拖曳以調整聊天視窗大小",
+      "reset": "重設聊天視窗",
+      "resetAction": "重設",
+      "note": "拖曳聊天標籤列可移動視窗，拖曳右下角控點可調整大小。重設可回復到預設位置與大小。"
+    },
     "swing": {
       "ready": "揮砍",
       "seconds": "{seconds}秒"

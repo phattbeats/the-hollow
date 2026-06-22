@@ -186,6 +186,13 @@ export const zh_CN: EnTranslations = {
       "clock24h": "24小时制",
       "note": "在每条新聊天消息前加上其到达时间，例如 [14:32]。仅对开启此选项后收到的消息生效。"
     },
+    "chatWindow": {
+      "move": "拖动以移动聊天窗口",
+      "resize": "拖动以调整聊天窗口大小",
+      "reset": "重置聊天窗口",
+      "resetAction": "重置",
+      "note": "拖动聊天标签栏可移动窗口，拖动右下角手柄可调整大小。重置可恢复到默认位置和大小。"
+    },
     "swing": {
       "ready": "挥击",
       "seconds": "{seconds}秒"
