@@ -5381,6 +5381,11 @@
   body.mobile-touch #char-window {
     left: 10px;
     top: 10px;
+    /* Reset the base `.window` centering transform: this rule re-pins the
+       window to the left edge, and a leftover translateX(-50%) would shift it
+       half its own width off-screen (the off-screen-left clipping bug). */
+    right: auto;
+    transform: none;
     width: min(360px, calc(100vw - 20px));
     max-height: calc(100vh - 20px);
     box-sizing: border-box;
