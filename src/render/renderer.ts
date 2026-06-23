@@ -3,6 +3,7 @@ import { ALL_CLASSES, isQuestTurnInNpc, type Entity, type SimEvent } from '../si
 import { OVERHEAD_EMOTES, type IWorld } from '../world_api';
 import { groundHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
 import { drapeRingLocalY } from './selection_ring';
+import { buildFlaredConeFan, buildRingXZ, drapeConeWorld } from './target_cone_debug';
 import {
   CLASSES, MOBS, ABILITIES, DUNGEON_X_THRESHOLD, DUNGEON_LIST, QUESTS,
   instanceOrigin, INSTANCE_SLOT_COUNT, ARENA_SLOT_COUNT, arenaOrigin, isArenaPos, dungeonAt,
@@ -16,6 +17,7 @@ import { mechAssetsReady, preloadMechAssets } from './characters/assets';
 import { isVisuallyDead } from './anim_state';
 import { clickMarkerAnim, clickMarkerColor, CLICK_MARKER_LIFETIME } from './click_marker';
 import { LocoTrack, newLocoTrack, updateLocomotion } from './locomotion';
+import { stepSelfFacing, releaseSelfFacing } from './facing_smooth';
 import type { SpatialAudioSink, Surface } from './audio_sink';
 import { buildPropMaterialPrewarmGroup, buildProps } from './props';
 import { plankTexture, sparkleTexture } from './textures';
@@ -606,6 +608,20 @@ export class Renderer {
   // so sync() can re-drape the ring over the terrain without allocating.
   selectionRingLocalXZ: Float32Array;
   selectionRingDrapeY: Float32Array;
+  // Dev-only Tab-target cone overlay (enabled via ?targetcone=1 in main.ts).
+  // Null until enabled; once built it is re-draped over the terrain in front of
+  // the local player every frame. See target_cone_debug.ts.
+  private targetCone: {
+    group: THREE.Group;
+    pos: THREE.BufferAttribute;
+    localXZ: Float32Array;
+    worldXYZ: Float32Array;
+    // Full query-radius rim (40 yd): the absolute Tab range. Symmetric, so it is
+    // draped with facing 0.
+    ringPos: THREE.BufferAttribute;
+    ringXZ: Float32Array;
+    ringWorldXYZ: Float32Array;
+  } | null = null;
   // Pool of transient click-feedback markers (ring plus crossed "X"). Each slot is
   // a group reused round-robin, so rapid clicking never allocates. A slot with
   // `elapsed >= lifetime` is free. See click_marker.ts for the animation curves.
@@ -632,8 +648,24 @@ export class Renderer {
   private tmpV = new THREE.Vector3();
   private viewCandidates: ViewCandidate[] = [];
   private tmpV2 = new THREE.Vector3();
+  // Manual frustum cull for characters. Their skinned meshes keep
+  // frustumCulled=false (a skinned mesh's bind-pose bounds don't follow the
+  // animated pose, so Three's own cull pops visible rigs out), which means an
+  // off-screen rig otherwise issues its draws every frame. We instead cull at
+  // the group level from the rig's real world position + a generous radius.
+  // Gated to shadowless tiers so a culled off-screen caster can never drop a
+  // shadow that was actually visible in-frame.
+  private cullFrustum = new THREE.Frustum();
+  private cullViewProj = new THREE.Matrix4();
+  private cullSphere = new THREE.Sphere();
+  private cullCharacters = false;
   private selfRenderPosition = new THREE.Vector3();
   private selfRenderPositionReady = false;
+  // Last yaw applied to the local player while the camera was driving its facing
+  // (mouselook / mouse-camera). Null when the override is disengaged, so the next
+  // engage re-seeds from the live interpolated facing instead of snapping. See
+  // facing_smooth.ts for why the camera-driven yaw must be rate-limited.
+  private selfFacingOverride: number | null = null;
   private cameraLookAt = new THREE.Vector3();
   // floating /say-/yell bubbles, keyed by speaker entity id
   private chatBubbles = new Map<number, { el: HTMLDivElement; until: number }>();
@@ -822,6 +854,8 @@ export class Renderer {
     this.scene.add(sun);
     this.scene.add(sun.target);
     this.sun = sun;
+    // characters can self-cull only where they cast no sun shadow (low/lean tier)
+    this.cullCharacters = !sun.castShadow;
     this.sunDir.copy(SUN_DIR);
 
     // visible sun disc + bloom halo
@@ -2838,6 +2872,55 @@ export class Renderer {
     this.views.delete(id);
   }
 
+  // Build the dev-only Tab-target overlay. Called once from main.ts when
+  // ?targetcone=1 is set; the flared-cone half-angle function, near radius, and
+  // query radius are injected so this module never imports the sim targeting
+  // code. Idempotent. Draws a filled flared near-radius cone (idle cluster), its
+  // outline, and a full query-radius rim (absolute Tab range; engaged enemies
+  // inside the cone reach out to here).
+  enableTargetConeDebug(halfAt: (d: number) => number, nearRadius: number, queryRadius: number): void {
+    if (this.targetCone) return;
+    const fan = buildFlaredConeFan(nearRadius, halfAt, 16, 48);
+    const worldXYZ = new Float32Array(fan.vertexCount * 3);
+    // Wrap the array by reference (not Float32BufferAttribute, which copies) so
+    // re-draping worldXYZ each frame writes straight into the uploaded buffer.
+    const pos = new THREE.BufferAttribute(worldXYZ, 3);
+    const fillGeo = new THREE.BufferGeometry();
+    fillGeo.setAttribute('position', pos);
+    fillGeo.setIndex(new THREE.BufferAttribute(fan.index, 1));
+    const fillMat = new THREE.MeshBasicMaterial({
+      color: 0x49c0ff, transparent: true, opacity: 0.16, depthWrite: false, side: THREE.DoubleSide,
+    });
+    const fill = new THREE.Mesh(fillGeo, fillMat);
+    fill.frustumCulled = false; // re-draped every frame; its bounds go stale
+    // Outline: a LineLoop over the flared perimeter (left edge -> outer arc ->
+    // right edge), sharing the position buffer so one update moves fill and edge.
+    const lineGeo = new THREE.BufferGeometry();
+    lineGeo.setAttribute('position', pos);
+    lineGeo.setIndex(new THREE.BufferAttribute(fan.outline, 1));
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x9be0ff, transparent: true, opacity: 0.85, depthWrite: false });
+    const outline = new THREE.LineLoop(lineGeo, lineMat);
+    outline.frustumCulled = false;
+    // Query-radius rim: a full circle at max Tab range, in a contrasting amber so
+    // it reads apart from the blue cone.
+    const ringXZ = buildRingXZ(queryRadius, 96);
+    const ringWorldXYZ = new Float32Array((ringXZ.length / 2) * 3);
+    const ringPos = new THREE.BufferAttribute(ringWorldXYZ, 3);
+    const ringGeo = new THREE.BufferGeometry();
+    ringGeo.setAttribute('position', ringPos);
+    const ringMat = new THREE.LineBasicMaterial({ color: 0xffb24d, transparent: true, opacity: 0.55, depthWrite: false });
+    const ring = new THREE.LineLoop(ringGeo, ringMat);
+    ring.frustumCulled = false;
+    const group = new THREE.Group();
+    group.add(fill);
+    group.add(outline);
+    group.add(ring);
+    setRenderCategory(group, 'ui3d');
+    group.visible = false;
+    this.scene.add(group);
+    this.targetCone = { group, pos, localXZ: fan.localXZ, worldXYZ, ringPos, ringXZ, ringWorldXYZ };
+  }
+
   sync(alpha: number, dt: number, renderFacingOverride: number | null, selfAlphaLead = 0): void {
     const totalStart = performance.now();
     let phaseStart = totalStart;
@@ -2896,6 +2979,14 @@ export class Renderer {
 
     // frame parity for distance-tiered mixer throttling
     this.frameIdx = (this.frameIdx + 1) & 0xffff;
+
+    // world-space view frustum for the per-character cull below. Built from last
+    // frame's camera (it's repositioned after this loop); the one-frame lag is
+    // absorbed by the generous per-rig cull radius.
+    if (this.cullCharacters) {
+      this.cullViewProj.multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse);
+      this.cullFrustum.setFromProjectionMatrix(this.cullViewProj);
+    }
 
     for (const [id, v] of this.views) {
       const e = sim.entities.get(id);
@@ -2958,7 +3049,22 @@ export class Renderer {
       const z = isSelf ? selfPos.z : e.prevPos.z + (e.pos.z - e.prevPos.z) * ea;
       v.group.position.set(x, y, z);
       let facing = e.prevFacing + shortestAngle(e.prevFacing, e.facing) * ea;
-      if (id === p.id && renderFacingOverride !== null) facing = renderFacingOverride;
+      if (id === p.id && renderFacingOverride !== null) {
+        // Rate-limit the camera-driven heading so engaging mouselook (or starting
+        // to move in Mouse Camera mode) rotates the model smoothly toward the
+        // camera instead of teleporting it up to 180deg in a single frame. Seed
+        // from the current interpolated facing on first engage.
+        facing = stepSelfFacing(this.selfFacingOverride ?? facing, renderFacingOverride, dt);
+        this.selfFacingOverride = facing;
+      } else if (id === p.id && this.selfFacingOverride !== null) {
+        // Disengage frame: route the return to the interpolated sim facing
+        // through the SAME rate limiter so releasing mouselook mid-flick (before
+        // the model caught up to the camera) rotates back smoothly instead of
+        // snapping. Hold the override until it has converged onto the sim facing.
+        const r = releaseSelfFacing(this.selfFacingOverride, facing, dt);
+        facing = r.facing;
+        this.selfFacingOverride = r.done ? null : r.facing;
+      }
       v.group.rotation.y = facing;
 
       if (e.kind === 'object') {
@@ -2988,6 +3094,16 @@ export class Renderer {
 
       this.updateBaseVisual(e, v);
       if (!v.visual) continue;
+
+      // off-screen rigs still need their pose/audio updated, but not their draws.
+      // Decide visibility now from the real world position; applied at the end so
+      // the rest of the per-entity work (animation, footstep audio) is unaffected.
+      let charOnScreen = true;
+      if (this.cullCharacters && id !== p.id) {
+        this.cullSphere.center.set(x, y + v.height * 0.5 * e.scale, z);
+        this.cullSphere.radius = (v.height * 0.7 + 1.5) * e.scale;
+        charOnScreen = this.cullFrustum.intersectsSphere(this.cullSphere);
+      }
 
       // live skin swap — appearance changed (in-game changer or a multiplayer peer)
       if (e.skin !== v.skin) { v.skin = e.skin; v.visual.setSkin(e.skin); }
@@ -3130,6 +3246,9 @@ export class Renderer {
         this.vfx.castSparkle(e.id, 'shadow', dt * 3.2);
       }
       if (swimming) this.vfx.swimRipple(v.group.position, moving ? dt * 3 : dt);
+
+      // skip the draw for off-screen rigs (pose/audio above already ran)
+      if (!charOnScreen) v.group.visible = false;
     }
 
     // selection ring
@@ -3167,6 +3286,24 @@ export class Renderer {
       this.selectionRing.visible = false;
     }
     this.updateClickMarkers(dt);
+    // dev-only Tab-target cone overlay: re-drape the front cone on the terrain
+    // under the local player, oriented to the model's rendered facing.
+    if (this.targetCone) {
+      if (p.dead) {
+        this.targetCone.group.visible = false;
+      } else {
+        const seed = this.sim.cfg.seed;
+        const lv = this.views.get(p.id);
+        const facing = lv ? lv.group.rotation.y : p.facing;
+        const sample = (sx: number, sz: number): number => groundHeight(sx, sz, seed);
+        drapeConeWorld(this.targetCone.localXZ, selfPos.x, selfPos.z, facing, 0.07, sample, this.targetCone.worldXYZ);
+        this.targetCone.pos.needsUpdate = true;
+        // The rim is a full circle, so facing is irrelevant: drape it with 0.
+        drapeConeWorld(this.targetCone.ringXZ, selfPos.x, selfPos.z, 0, 0.07, sample, this.targetCone.ringWorldXYZ);
+        this.targetCone.ringPos.needsUpdate = true;
+        this.targetCone.group.visible = true;
+      }
+    }
     markPhase('entities');
 
     let worldStart = performance.now();
