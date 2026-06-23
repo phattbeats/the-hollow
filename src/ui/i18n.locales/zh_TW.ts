@@ -2146,7 +2146,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': '被縛者科加斯',
   'entities.mobs.grand_necromancer_velkhar.name': '大死靈法師維爾卡',
   'entities.mobs.korzul_the_gravewyrm.name': '墓龍科祖爾',
-  'entities.mobs.elder_bristleback.name': '年長硬鬃',
   'entities.mobs.ironvein_foreman.name': '鐵脈工頭',
   'entities.mobs.ironvein_sapper.name': '鐵脈爆破手',
   'entities.mobs.marrowlord_varkas.name': '髓王瓦爾卡斯',
@@ -2155,8 +2154,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': '莫格',
   'entities.mobs.mogger_lackey.name': '莫格的爪牙',
   'entities.mobs.nhalia_mourner.name': '娜莉亞哀悼者',
-  'entities.mobs.sableweb_hatchling.name': '黑網幼蛛',
-  'entities.mobs.sableweb_matriarch.name': '黑網主母',
   'entities.mobs.sister_nhalia.name': '娜莉亞修女',
   'entities.mobs.varkas_boneguard.name': '瓦爾卡斯骨衛',
   'entities.mobs.imp.name': '小鬼',
@@ -2855,7 +2852,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': '裂潮者鉤桿',
   'entities.items.verlans_oathblade.name': '維爾蘭的誓約之刃',
   'entities.mobs.brutok_skullsmasher.name': '碎顱者布魯托克',
-  'entities.mobs.captain_verlan.name': '維爾蘭隊長',
   'entities.mobs.old_cragmaw.name': '老裂顎',
   'entities.mobs.sloomtooth_the_drowned.name': '溺亡者澇牙',
   'entities.mobs.voskar_emberwing.name': '熾翼沃斯卡',
@@ -2867,8 +2863,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.brightwood_venison.name': '明木鹿肉',
   'entities.items.bramblehide_jerkin.name': '棘皮皮衣',
   'entities.items.monarch_crown_helm.name': '君主之冠',
-  'entities.items.monarch_heart.name': '君主之心',
-  // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': '新增聊天頻道',
   'hud.core.chatChannels.addTitle': '新增頻道',
   'hud.core.chatChannels.close': '關閉{channel}分頁',
@@ -2883,92 +2877,10 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': '傳訊至{channel}',
   'hud.options.npcVoices': 'NPC語音',
   'hud.options.voiceVolume': '語音音量',
-  'entities.mobs.bramble_lynx.name': '棘叢猞猁',
-  'entities.mobs.brightwood_monarch.name': '明木君主',
-  'entities.mobs.glade_fox.name': '林間狐狸',
-  'entities.mobs.grovetusk_boar.name': '林牙野豬',
-  'entities.mobs.meadow_crane.name': '草甸鶴',
-  'entities.mobs.spotted_fawn.name': '斑點幼鹿',
-  'entities.mobs.thornpelt_badger.name': '棘毛獾',
   'entities.npcs.ranger_elwyn.greeting':
     '安靜點，{className}，今天林地很平靜，我打算讓它一直這樣。',
   'entities.npcs.ranger_elwyn.name': '巡林員艾爾溫',
   'entities.npcs.ranger_elwyn.title': '林地守護',
-  'entities.quests.q_brightwood_monarch.completion':
-    '這麼說，老王已經倒下了。沉重的一刻啊，但這比讓野狼了結牠要仁慈得多。帶著敬意戴上這頂以牠鹿角製成的王冠吧，{playerName}。',
-  'entities.quests.q_brightwood_monarch.objectives.0.label': '君主之心',
-  'entities.quests.q_brightwood_monarch.text':
-    '有一頭野獸我不會獨自向牠放箭：明木君主，那頭統御深邃林地的巨鹿。牠已經變得老邁而兇殘，凡是接近牠巢穴的都會被牠的鹿角刺穿。牠遠非一名獵人所能匹敵，帶上一兩位夥伴吧。讓牠安息，並把牠的心臟帶來給我，{playerName}。',
-  'entities.quests.q_brightwood_monarch.title': '明木君主',
-  'entities.quests.q_brightwood_thinning.completion':
-    '很好。獸群被疏減了，這些獸皮也很完好，林地還能再撐過一季。',
-  'entities.quests.q_brightwood_thinning.objectives.0.label': '棘叢猞猁已擊殺',
-  'entities.quests.q_brightwood_thinning.objectives.1.label': '林間獸皮',
-  'entities.quests.q_brightwood_thinning.text':
-    '明木林地已經氾濫成災了，{playerName}。棘叢猞猁繁衍的速度比我能撲滅牠們的還快，獸群又踐踏了所剩無幾的牧草。擊殺8隻棘叢猞猁，並帶6張林間獸皮回來，好讓我判斷其餘獸群的健康狀況。',
-  'entities.quests.q_brightwood_thinning.title': '疏減林地',
-  'entities.quests.q_ledger_brood.completion':
-    '淹掉一窩巢穴是樁殘酷的活兒。但此刻的慈悲能省去日後上百場葬禮。這筆帳結清了。',
-  'entities.quests.q_ledger_brood.objectives.0.label': '黑網幼蛛已碾碎',
-  'entities.quests.q_ledger_brood.text':
-    '殺光潛伏者只是給蛛群騰出了地方。黑網幼蛛正從深處的巢穴中傾巢而出，上百根小尖牙殺死旅人的本事，和一根巨牙一樣有效。趁牠們長大之前，碾碎8隻黑網幼蛛。',
-  'entities.quests.q_ledger_brood.title': '繁生的黑暗',
-  'entities.quests.q_ledger_deepvermin.completion':
-    '十二隻頂著燭光腦袋的害蟲，沒了！好，弟兄們，回礦井去。你替自己在元帥那兒掙了句好話，{playerName}。',
-  'entities.quests.q_ledger_deepvermin.objectives.0.label': '地道鼠掘地者已擊殺',
-  'entities.quests.q_ledger_deepvermin.text':
-    '元帥的名冊上說你會清除害蟲。嗯，我這座礦坑裡的是最糟的一批。地道鼠繁衍的速度比我的工班揮鎬還快，宰掉12隻地道鼠掘地者，也許我們入冬前就能挖到銅礦。',
-  'entities.quests.q_ledger_deepvermin.title': '深處的害蟲',
-  'entities.quests.q_ledger_first_duty.completion':
-    '八處獸窩都清空了，林地也歸於平整。很好。這本名冊上的每個名字，都是從你現在站的地方開始的。',
-  'entities.quests.q_ledger_first_duty.objectives.0.label': '棘毛獾已剔除',
-  'entities.quests.q_ledger_first_duty.text':
-    '你想在東溪掙口飯吃嗎，{playerName}？那就從每位守護都起步的地方開始。棘毛獾在明木林地一路掘出獸窩，遠在北方狼徑那頭，林地都快塌進牠們的洞穴裡了。剔除8頭棘毛獾，名冊就會記住你的名字。',
-  'entities.quests.q_ledger_first_duty.title': '守護的首要職責',
-  'entities.quests.q_ledger_great_boar.completion':
-    '年長硬鬃，死於你手！光是那張獸皮就值上一季的交易。你讓名冊與有榮焉，{playerName}。',
-  'entities.quests.q_ledger_great_boar.objectives.0.label': '年長硬鬃已擊殺',
-  'entities.quests.q_ledger_great_boar.objectives.1.label': '豬群的野豬已擊殺',
-  'entities.quests.q_ledger_great_boar.text':
-    '西邊的灌木叢裡有一頭老公野豬，年長硬鬃，皮厚如樹皮，脾氣也一樣硬。牠已經頂傷了我兩名剝皮工。把牠放倒，再清掉躲在牠身後的6頭較弱的野豬，我就讓你的名字在名冊上高高掛起。',
-  'entities.quests.q_ledger_great_boar.title': '巨大的硬鬃',
-  'entities.quests.q_ledger_outlaw_captain.completion':
-    '維爾蘭隊長，死了，他的外套也送到了我門前。這筆帳結清了，{playerName}，而山谷會把結清它的那人之名，傳頌給後來的守護們。',
-  'entities.quests.q_ledger_outlaw_captain.objectives.0.label': '谷地強盜已砍倒',
-  'entities.quests.q_ledger_outlaw_captain.objectives.1.label': '維爾蘭隊長已擊殺',
-  'entities.quests.q_ledger_outlaw_captain.text':
-    '名冊上最後一個名字，是我這一年來最想劃掉的：維爾蘭隊長，他把半個山谷的人都帶成了盜匪。他躲在東南營地裡，由他的副手們護著。砍倒6名谷地強盜殺到他面前，然後了結維爾蘭本人。別獨自前往。',
-  'entities.quests.q_ledger_outlaw_captain.title': '亡命隊長',
-  'entities.quests.q_ledger_reedwater.completion':
-    '這樣能讓那些長腿賊子離我的漁網一季了。告訴元帥，淺灘又屬於我了。',
-  'entities.quests.q_ledger_reedwater.objectives.0.label': '草地鶴已驅離',
-  'entities.quests.q_ledger_reedwater.text':
-    '赤溪派你來的？很好，我這把老骨頭再也涉不過淺灘了。那些草地鶴盯上了我的漁網，牠們叼走的漁獲比泥鰭一族當年還多。把牠們疏減一下：8隻草地鶴，還有，當心深水。',
-  'entities.quests.q_ledger_reedwater.title': '蘆葦水域巡邏',
-  'entities.quests.q_ledger_silk.completion':
-    '多虧了你，藥圃或許還能恢復。這是不得已的仁慈，但對一個高燒不退的孩子而言，這些草藥遠比樹林裡的鹿群更要緊。名冊兩清了。',
-  'entities.quests.q_ledger_silk.objectives.0.label': '斑點幼鹿已剔除',
-  'entities.quests.q_ledger_silk.text':
-    '名冊也把東邊的樹林劃為守護的轄地，我的藥圃也在其中。那些斑點幼鹿把我的銀葉草和血薊啃得連根都不剩，少了這些草藥，半個東溪鎮都會無藥可用。我並不樂見如此，但在秋季的藥草徹底絕收之前，必須剔除8隻斑點幼鹿。',
-  'entities.quests.q_ledger_silk.title': '啃食與荊棘',
-  'entities.quests.q_ledger_teeth.completion':
-    '十隻狐狸，黃昏的雞舍又恢復了安寧。名冊對你更友善了。',
-  'entities.quests.q_ledger_teeth.objectives.0.label': '林地狐已擊殺',
-  'entities.quests.q_ledger_teeth.text':
-    '這些林地狐變得跟野狼一樣膽大，牠們在黃昏潛入雞舍，趁人點燈之前就溜得無影無蹤；一隻餓壞的母狐叼走羔羊跟叼走母雞一樣乾脆。把牠們的數量壓下去，{playerName}。擊殺10隻林地狐，讓剩下的重新學會畏懼亮光。',
-  'entities.quests.q_ledger_teeth.title': '黑暗中的尖牙',
-  'entities.quests.q_ledger_toll.completion':
-    '八隻猛獸清出了道路，馬車又開始通行了。商道有了新守護者的消息已經傳開。名冊愈發向著你了。',
-  'entities.quests.q_ledger_toll.objectives.0.label': '林牙野豬已擊殺',
-  'entities.quests.q_ledger_toll.text':
-    '那些林牙野豬從輝光林下來，闖上了東南方的商道，那是一群長著獠牙的猛獸，牠們頂傷拉車的耕牛，掀翻馬車只為了散落的穀物。名冊上對每一隻都標了賞金。重新打通這條路：撂倒8隻林牙野豬。',
-  'entities.quests.q_ledger_toll.title': '獠牙之路',
-  'entities.quests.q_ledger_vigil.completion':
-    '十個亡魂歸於塵土，也為禮拜堂買來了一夜的安寧。聖光記得這樣的守夜，即便名冊已然遺忘。',
-  'entities.quests.q_ledger_vigil.objectives.0.label': '不寧骸骨已安息',
-  'entities.quests.q_ledger_vigil.text':
-    '當麻煩超出刀劍所能及的範圍時，元帥便會把他的守護派來找我。禮拜堂的亡者不肯安歇，而我太老了，撐不住整夜的守夜。替我守住吧，{playerName}，讓10具不寧骸骨重歸安息。',
-  'entities.quests.q_ledger_vigil.title': '禮拜堂的守夜',
   'entities.zones.eastbrook_vale.pois.8.label': '明木林地',
   'fiesta.augment.aug_apex_predator.desc': '+40%物理傷害，+15%暴擊，並回復所造成傷害的12%生命值。',
   'fiesta.augment.aug_apex_predator.name': '頂級掠食者',

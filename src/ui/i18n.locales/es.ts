@@ -2247,7 +2247,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': 'Korgath el Encadenado',
   'entities.mobs.grand_necromancer_velkhar.name': 'Gran nigromante Velkhar',
   'entities.mobs.korzul_the_gravewyrm.name': 'Korzul el Gravewyrm',
-  'entities.mobs.elder_bristleback.name': 'Viejo Bristleback',
   'entities.mobs.ironvein_foreman.name': 'Capataz Vena de Hierro',
   'entities.mobs.ironvein_sapper.name': 'Zapador Vena de Hierro',
   'entities.mobs.marrowlord_varkas.name': 'Señor de Médula Varkas',
@@ -2256,8 +2255,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': 'Mogger',
   'entities.mobs.mogger_lackey.name': 'Esbirro de Mogger',
   'entities.mobs.nhalia_mourner.name': 'Doliente de Nhalia',
-  'entities.mobs.sableweb_hatchling.name': 'Cría Sableweb',
-  'entities.mobs.sableweb_matriarch.name': 'Matriarca Sableweb',
   'entities.mobs.sister_nhalia.name': 'Hermana Nhalia',
   'entities.mobs.varkas_boneguard.name': 'Guardahuesos de Varkas',
   'entities.mobs.imp.name': 'Diablillo',
@@ -2999,7 +2996,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': 'Bichero del segamareas',
   'entities.items.verlans_oathblade.name': 'Espada del juramento de Verlan',
   'entities.mobs.brutok_skullsmasher.name': 'Brutok Rompecráneos',
-  'entities.mobs.captain_verlan.name': 'Capitán Verlan',
   'entities.mobs.old_cragmaw.name': 'Viejo Cragmaw',
   'entities.mobs.sloomtooth_the_drowned.name': 'Sloomtooth el Ahogado',
   'entities.mobs.voskar_emberwing.name': 'Voskar Aladebrasa',
@@ -3011,8 +3007,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.brightwood_venison.name': 'Venado de Brightwood',
   'entities.items.bramblehide_jerkin.name': 'Jubón de piel de zarza',
   'entities.items.monarch_crown_helm.name': 'Corona del Monarca',
-  'entities.items.monarch_heart.name': 'El Corazón del Monarca',
-  // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': 'Añadir canal de chat',
   'hud.core.chatChannels.addTitle': 'Añadir canal',
   'hud.core.chatChannels.close': 'Cerrar la pestaña {channel}',
@@ -3027,93 +3021,10 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': 'Mensaje a {channel}',
   'hud.options.npcVoices': 'Voces de PNJ',
   'hud.options.voiceVolume': 'Volumen de voces',
-  'entities.mobs.bramble_lynx.name': 'Lince de zarzal',
-  'entities.mobs.brightwood_monarch.name': 'El Monarca de Brightwood',
-  'entities.mobs.glade_fox.name': 'Zorro del claro',
-  'entities.mobs.grovetusk_boar.name': 'Jabalí colmillarbóreo',
-  'entities.mobs.meadow_crane.name': 'Grulla de la pradera',
-  'entities.mobs.spotted_fawn.name': 'Cervatillo moteado',
-  'entities.mobs.thornpelt_badger.name': 'Tejón pielespina',
   'entities.npcs.ranger_elwyn.greeting':
     'Silencio, {className}. El claro está tranquilo hoy, y pretendo que siga así.',
   'entities.npcs.ranger_elwyn.name': 'Montaraz Elwyn',
   'entities.npcs.ranger_elwyn.title': 'Guardiana del claro',
-  'entities.quests.q_brightwood_monarch.completion':
-    'Así que el viejo rey ha caído. Algo pesado, esto, pero un final más amable que el que le habrían dado los lobos. Lleva esta corona de sus astas con respeto, {playerName}.',
-  'entities.quests.q_brightwood_monarch.objectives.0.label': 'El Corazón del Monarca',
-  'entities.quests.q_brightwood_monarch.text':
-    'Hay una bestia a la que no le lanzaré una flecha en solitario: el Monarca de Brightwood, el gran ciervo que reina en lo profundo del claro. Se ha vuelto viejo y feroz, corneando a cualquiera que se acerque a su guarida. Es demasiado para un solo cazador: trae a uno o dos amigos. Dale descanso y tráeme su corazón, {playerName}.',
-  'entities.quests.q_brightwood_monarch.title': 'El Monarca de Brightwood',
-  'entities.quests.q_brightwood_thinning.completion':
-    'Bien. La manada está diezmada y estas pieles están sanas: el claro aguantará otra estación.',
-  'entities.quests.q_brightwood_thinning.objectives.0.label': 'Linces de zarzal abatidos',
-  'entities.quests.q_brightwood_thinning.objectives.1.label': 'Piel del claro',
-  'entities.quests.q_brightwood_thinning.text':
-    'El Claro de Brightwood está infestado, {playerName}. Los linces de zarzal se reproducen más rápido de lo que puedo sacrificarlos, y las manadas pisotean el poco pasto que queda. Mata 8 Linces de zarzal y tráeme 6 Pieles del claro para que pueda juzgar la salud del resto.',
-  'entities.quests.q_brightwood_thinning.title': 'Diezmar el claro',
-  'entities.quests.q_ledger_brood.completion':
-    'Trabajo sombrío, ahogar un nido. Pero la clemencia de ahora son cien funerales evitados después. La cuenta queda saldada.',
-  'entities.quests.q_ledger_brood.objectives.0.label': 'Crías Sableweb aplastadas',
-  'entities.quests.q_ledger_brood.text':
-    'Matar a los acechadores solo dejó sitio a la prole. Las crías Sableweb brotan a raudales del nido profundo, y cien colmillos pequeños matan a un viajero tan seguro como uno grande. Aplasta 8 Crías Sableweb antes de que crezcan.',
-  'entities.quests.q_ledger_brood.title': 'La oscuridad que desova',
-  'entities.quests.q_ledger_deepvermin.completion':
-    '¡Doce de las alimañas con velas en la cabeza, fuera! Bien, muchachos, de vuelta al pozo. Te has ganado una buena palabra ante el Mariscal, {playerName}.',
-  'entities.quests.q_ledger_deepvermin.objectives.0.label': 'Excavadores Rata de Túnel abatidos',
-  'entities.quests.q_ledger_deepvermin.text':
-    'El libro mayor del Mariscal dice que limpias plagas. Pues bien, mi excavación tiene a las peores. Las ratas de túnel se reproducen más rápido de lo que mi cuadrilla puede picar: derriba a 12 Excavadores Rata de Túnel y puede que demos con cobre antes del invierno.',
-  'entities.quests.q_ledger_deepvermin.title': 'Alimañas en lo profundo',
-  'entities.quests.q_ledger_first_duty.completion':
-    'Ocho madrigueras vaciadas y el suelo de la arboleda asentado. Bien. Cada nombre de este libro mayor empezó justo donde tú estás parado.',
-  'entities.quests.q_ledger_first_duty.objectives.0.label': 'Tejón pielespina sacrificado',
-  'entities.quests.q_ledger_first_duty.text':
-    '¿Quieres ganarte el sustento en Eastbrook, {playerName}? Pues empieza donde empieza cada guardián. Los tejones pielespina han excavado sus madrigueras a lo largo del Claro de Brightwood, en el extremo norte pasada la Senda de lobos, y el suelo de la arboleda se está hundiendo en sus túneles. Sacrifica 8 Tejones pielespina y el libro mayor recordará tu nombre.',
-  'entities.quests.q_ledger_first_duty.title': 'El primer deber de un guardián',
-  'entities.quests.q_ledger_great_boar.completion':
-    '¡El Viejo Bristleback, muerto por tu mano! Ese cuero por sí solo vale una estación de comercio. Has hecho que el libro mayor se enorgullezca, {playerName}.',
-  'entities.quests.q_ledger_great_boar.objectives.0.label': 'Viejo Bristleback abatido',
-  'entities.quests.q_ledger_great_boar.objectives.1.label':
-    'Jabalíes salvajes de la manada abatidos',
-  'entities.quests.q_ledger_great_boar.text':
-    'Hay un viejo jabalí macho en los matorrales del oeste: el Viejo Bristleback, con la piel como corteza y un genio a juego. Ha corneado a dos de mis curtidores. Derríbalo y elimina a 6 de los Jabalíes salvajes menores que se refugian tras él, y haré que tu nombre figure en lo alto del libro mayor.',
-  'entities.quests.q_ledger_great_boar.title': 'El gran Bristleback',
-  'entities.quests.q_ledger_outlaw_captain.completion':
-    'El Capitán Verlan, muerto, y su casaca traída a mi puerta. El libro mayor queda cerrado, {playerName}, y el Valle dirá a los guardianes venideros el nombre de quien lo cerró.',
-  'entities.quests.q_ledger_outlaw_captain.objectives.0.label': 'Bandidos del Valle abatidos',
-  'entities.quests.q_ledger_outlaw_captain.objectives.1.label': 'Capitán Verlan abatido',
-  'entities.quests.q_ledger_outlaw_captain.text':
-    'El último nombre del libro mayor es el que llevo un año queriendo tachar: el Capitán Verlan, que volvió bandidos a media comarca del Valle. Se refugia tras sus lugartenientes en el campamento del sureste. Abate a 6 Bandidos del Valle para llegar a él, y luego acaba con el propio Verlan. No vayas solo.',
-  'entities.quests.q_ledger_outlaw_captain.title': 'El capitán proscrito',
-  'entities.quests.q_ledger_reedwater.completion':
-    'Eso mantendrá a esas ladronas zancudas lejos de mis redes una estación. Dile al Mariscal que los bajíos vuelven a ser míos.',
-  'entities.quests.q_ledger_reedwater.objectives.0.label': 'Grullas de la pradera ahuyentadas',
-  'entities.quests.q_ledger_reedwater.text':
-    '¿Te envía Redbrook? Bien, estos viejos huesos ya no pueden vadear los bajíos. Las grullas de la pradera han dado con mis redes, y arponean más de mi captura de lo que jamás hizo el Aletabarro. Diézmalas: 8 Grullas de la pradera, y cuidado con el agua profunda.',
-  'entities.quests.q_ledger_reedwater.title': 'Patrulla del juncal',
-  'entities.quests.q_ledger_silk.completion':
-    'Los huertos aún podrían recuperarse, gracias a ti. Una piedad dura, pero un niño ardiendo de fiebre necesita los remedios más de lo que el bosque necesita a los ciervos. El libro mayor queda saldado.',
-  'entities.quests.q_ledger_silk.objectives.0.label': 'Cervatos moteados sacrificados',
-  'entities.quests.q_ledger_silk.text':
-    'El libro mayor marca también los bosques del este como tierra de guardianes, y mis huertos de hierbas medicinales forman parte de ellos. Los cervatos moteados han arrasado mi hoja de plata y mi cardosangre hasta la raíz, y sin esos remedios la mitad de Eastbrook se queda sin medicina. No me complace, pero sacrifica a 8 Cervatos moteados antes de que se pierdan por completo las hierbas de otoño.',
-  'entities.quests.q_ledger_silk.title': 'Ramoneo y zarza',
-  'entities.quests.q_ledger_teeth.completion':
-    'Diez zorros, y los gallineros vuelven a estar tranquilos al anochecer. El libro mayor se vuelve más amable contigo.',
-  'entities.quests.q_ledger_teeth.objectives.0.label': 'Zorros de la cañada abatidos',
-  'entities.quests.q_ledger_teeth.text':
-    'Los zorros de la cañada se han vuelto tan audaces como lobos: se cuelan en los gallineros al anochecer y desaparecen antes de que se encienda un farol, y una zorra hambrienta se llevará un cordero con la misma facilidad que una gallina. Diézmalos, {playerName}. Abate a 10 Zorros de la cañada y haz que el resto vuelva a temer a la luz.',
-  'entities.quests.q_ledger_teeth.title': 'Colmillos en la oscuridad',
-  'entities.quests.q_ledger_toll.completion':
-    'Ocho bestias menos en el camino, y los carros vuelven a rodar. Ya corre la voz de que el camino comercial tiene un nuevo guardián. El libro mayor sube a tu favor.',
-  'entities.quests.q_ledger_toll.objectives.0.label': 'Jabalíes colmillobosque abatidos',
-  'entities.quests.q_ledger_toll.text':
-    'Los jabalíes colmillobosque han bajado de Brightwood al camino comercial del sureste: grandes bestias colmilludas que cornean a los bueyes de tiro y vuelcan los carros por el grano derramado. El libro mayor pone precio a cada uno de ellos. Reabre el camino: abate a 8 Jabalíes colmillobosque.',
-  'entities.quests.q_ledger_toll.title': 'El camino de los colmillos',
-  'entities.quests.q_ledger_vigil.completion':
-    'Diez almas devueltas a la tierra, y una noche de paz comprada para la capilla. La Luz recuerda tales vigilias, aunque el libro mayor las olvide.',
-  'entities.quests.q_ledger_vigil.objectives.0.label': 'Huesos inquietos devueltos al descanso',
-  'entities.quests.q_ledger_vigil.text':
-    'El Mariscal me envía a sus guardianes cuando el problema está más allá del alcance de las espadas. Los muertos de la capilla no quieren reposar, y yo soy demasiado viejo para aguantar la vigilia nocturna. Hazla por mí, {playerName}: devuelve 10 Huesos inquietos a su descanso.',
-  'entities.quests.q_ledger_vigil.title': 'Vigilia en la capilla',
   'entities.zones.eastbrook_vale.pois.8.label': 'Claro de Brightwood',
   'fiesta.augment.aug_apex_predator.desc':
     '+40% de daño físico, +15% de crítico, sánate por el 12% del daño infligido.',

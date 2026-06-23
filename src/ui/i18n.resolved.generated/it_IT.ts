@@ -4095,9 +4095,6 @@ export const it_IT: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Corona del Monarca"
       },
-      "monarch_heart": {
-        "name": "Il Cuore del Monarca"
-      },
       "bristleback_maul": {
         "name": "Maglio Bristleback"
       },
@@ -4724,30 +4721,6 @@ export const it_IT: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Flagello di Thornpeak"
       },
-      "glade_fox": {
-        "name": "Volpe della radura"
-      },
-      "spotted_fawn": {
-        "name": "Cerbiatto maculato"
-      },
-      "meadow_crane": {
-        "name": "Gru del prato"
-      },
-      "thornpelt_badger": {
-        "name": "Tasso pellespinosa"
-      },
-      "bramble_lynx": {
-        "name": "Lince dei rovi"
-      },
-      "grovetusk_boar": {
-        "name": "Cinghiale zannaboschiva"
-      },
-      "brightwood_monarch": {
-        "name": "Il Monarca di Brightwood"
-      },
-      "elder_bristleback": {
-        "name": "Bristleback anziano"
-      },
       "ironvein_foreman": {
         "name": "Caposquadra Venaferrata"
       },
@@ -4772,12 +4745,6 @@ export const it_IT: EnTranslations = {
       "nhalia_mourner": {
         "name": "Piangente di Nhalia"
       },
-      "sableweb_hatchling": {
-        "name": "Piccolo Sableweb"
-      },
-      "sableweb_matriarch": {
-        "name": "Matriarca Sableweb"
-      },
       "sister_nhalia": {
         "name": "Sorella Nhalia"
       },
@@ -4798,9 +4765,6 @@ export const it_IT: EnTranslations = {
       },
       "brutok_skullsmasher": {
         "name": "Brutok Spaccacranio"
-      },
-      "captain_verlan": {
-        "name": "Capitano Verlan"
       },
       "old_cragmaw": {
         "name": "Vecchio Cragmaw"
@@ -5715,135 +5679,6 @@ export const it_IT: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Nythraxis sconfitto"
-          }
-        }
-      },
-      "q_brightwood_thinning": {
-        "title": "Diradare la radura",
-        "text": "La radura di Brightwood è invasa, {playerName}. Le linci dei rovi si riproducono più in fretta di quanto io riesca ad abbatterle, e le mandrie calpestano il poco pascolo rimasto. Uccidi 8 Linci dei rovi e portami 6 Pellicce della radura, così potrò valutare la salute delle altre.",
-        "completion": "Bene. Il branco è ridotto e queste pellicce sono integre: la radura reggerà un'altra stagione.",
-        "objectives": {
-          "0": {
-            "label": "Lince dei rovi uccisa"
-          },
-          "1": {
-            "label": "Pelliccia della radura"
-          }
-        }
-      },
-      "q_brightwood_monarch": {
-        "title": "Il Monarca di Brightwood",
-        "text": "C'è una bestia contro cui non scoccherò una freccia da solo: il Monarca di Brightwood, il grande cervo che regna sulla radura profonda. È diventato vecchio e feroce, incornando chiunque si avvicini alla sua tana. È più di quanto un solo cacciatore possa affrontare: porta con te un amico o due. Mettilo a riposo e portami il suo cuore, {playerName}.",
-        "completion": "Così il vecchio re è caduto. È una cosa pesante, questa, ma una fine più gentile di quella che gli avrebbero dato i lupi. Porta con rispetto questa corona fatta delle sue corna, {playerName}.",
-        "objectives": {
-          "0": {
-            "label": "Il Cuore del Monarca"
-          }
-        }
-      },
-      "q_ledger_first_duty": {
-        "title": "Il primo dovere di un guardiano",
-        "text": "Vuoi guadagnarti il pane a Eastbrook, {playerName}? Allora comincia da dove comincia ogni guardiano. I tassi pellespinosa hanno scavato le loro tane attraverso la Radura di Brightwood, all'estremo nord oltre il Sentiero dei lupi, e il suolo del bosco sta sprofondando nelle loro gallerie. Abbatti 8 Tassi pellespinosa e il registro ricorderà il tuo nome.",
-        "completion": "Otto tane svuotate e il suolo del bosco si è riassestato. Bene. Ogni nome in questo registro è cominciato proprio dove stai tu adesso.",
-        "objectives": {
-          "0": {
-            "label": "Tasso pellespinosa abbattuto"
-          }
-        }
-      },
-      "q_ledger_teeth": {
-        "title": "Zanne nel buio",
-        "text": "Le volpi della radura sono diventate audaci come lupi: si intrufolano nei pollai al crepuscolo e spariscono prima che si accenda una lanterna, e una volpe affamata prenderà un agnello tanto quanto una gallina. Diradale, {playerName}. Uccidi 10 Volpi della radura e fa' che le altre tornino a temere la luce.",
-        "completion": "Dieci volpi, e al crepuscolo i pollai sono di nuovo tranquilli. Il registro diventa più gentile con te.",
-        "objectives": {
-          "0": {
-            "label": "Volpe della radura uccisa"
-          }
-        }
-      },
-      "q_ledger_reedwater": {
-        "title": "Pattuglia tra le canne",
-        "text": "Ti manda Redbrook? Bene: queste vecchie ossa non riescono più a guadare le secche. Le gru della prateria hanno scoperto le mie reti e mi infilzano più pesci di quanti ne abbiano mai presi i Pinnalimo. Diradale: 8 Gru della prateria, e attento all'acqua profonda.",
-        "completion": "Questo terrà quelle ladre dalle lunghe zampe lontane dalle mie reti per una stagione. Di' al Maresciallo che le secche sono di nuovo mie.",
-        "objectives": {
-          "0": {
-            "label": "Gru della prateria scacciata"
-          }
-        }
-      },
-      "q_ledger_silk": {
-        "title": "Pascolo e rovi",
-        "text": "Il registro segna anche i boschi orientali come terra di guardiani, e i miei orti officinali ne fanno parte. I cerbiatti maculati hanno spogliato fino alla radice la mia foglia d'argento e il cardo sanguigno, e senza quei semplici metà di Eastbrook resta senza medicine. Non ci trovo alcun piacere, ma abbatti 8 Cerbiatti maculati prima che le erbe d'autunno vadano perdute del tutto.",
-        "completion": "Gli orti potrebbero ancora riprendersi, grazie a te. Una dura misericordia, ma un bambino divorato dalla febbre ha più bisogno dei semplici di quanto il bosco abbia bisogno dei cervi. Il registro è in pari.",
-        "objectives": {
-          "0": {
-            "label": "Cerbiatto maculato abbattuto"
-          }
-        }
-      },
-      "q_ledger_brood": {
-        "title": "Il buio che genera",
-        "text": "Uccidere gli acquattati ha solo fatto spazio alla covata. I piccoli Sableweb sciamano fuori dal nido profondo, e cento piccole zanne uccidono un viandante con la stessa certezza di una grande. Schiaccia 8 Piccoli Sableweb prima che crescano.",
-        "completion": "Un lavoro tetro, annegare un nido. Ma la pietà ora è un centinaio di funerali risparmiati più tardi. Il conto è pareggiato.",
-        "objectives": {
-          "0": {
-            "label": "Piccolo Sableweb schiacciato"
-          }
-        }
-      },
-      "q_ledger_deepvermin": {
-        "title": "Parassiti nel profondo",
-        "text": "Il registro del Maresciallo dice che tu ti occupi dei parassiti. Be', il mio scavo ha i peggiori. I ratti di galleria si riproducono più in fretta di quanto la mia squadra sappia menare il piccone: abbatti 12 Ratti di galleria scavatori e magari troveremo il rame prima dell'inverno.",
-        "completion": "Dodici di quei parassiti dalla testa di candela, spariti! Bene, ragazzi: di nuovo giù nel pozzo. Ti sei guadagnato una buona parola dal Maresciallo, {playerName}.",
-        "objectives": {
-          "0": {
-            "label": "Ratto di galleria scavatore ucciso"
-          }
-        }
-      },
-      "q_ledger_toll": {
-        "title": "La strada delle zanne",
-        "text": "I cinghiali zannaboschiva sono scesi dal Boscochiaro fino alla strada commerciale di sud-est: bestioni dalle grandi zanne che incornano i buoi da tiro e rovesciano i carri per il grano sparso. Il registro ha una taglia su ognuno di loro. Riapri la strada: abbatti 8 Cinghiali zannaboschiva.",
-        "completion": "Otto bestioni in meno sulla strada, e i carri tornano a viaggiare. Si sparge già la voce che la strada commerciale ha un nuovo guardiano. Il registro sale a tuo favore.",
-        "objectives": {
-          "0": {
-            "label": "Cinghiale zannaboschiva ucciso"
-          }
-        }
-      },
-      "q_ledger_vigil": {
-        "title": "Veglia alla cappella",
-        "text": "Il Maresciallo manda da me i suoi guardiani quando il guaio è oltre la portata delle sole spade. I morti della cappella non vogliono star fermi, e io sono troppo vecchio per reggere la veglia notturna. Tienila per me, {playerName}: rimetti a riposo 10 Ossa irrequiete.",
-        "completion": "Dieci anime restituite alla terra, e una notte di pace comprata per la cappella. La Luce ricorda queste veglie, anche quando il registro le dimentica.",
-        "objectives": {
-          "0": {
-            "label": "Ossa irrequiete messe a riposo"
-          }
-        }
-      },
-      "q_ledger_great_boar": {
-        "title": "Il grande Bristleback",
-        "text": "C'è un vecchio cinghiale maschio nei boschetti occidentali: il Bristleback anziano, con la pelle dura come corteccia e un carattere altrettanto. Ha incornato due dei miei conciatori. Abbattilo e ripulisci 6 dei Cinghiali selvatici minori che si riparano dietro di lui, e farò scrivere il tuo nome ben in alto nel registro.",
-        "completion": "Il Bristleback anziano, morto per mano tua! Quella sola pelle vale una stagione di commerci. Hai reso fiero il registro, {playerName}.",
-        "objectives": {
-          "0": {
-            "label": "Bristleback anziano ucciso"
-          },
-          "1": {
-            "label": "Cinghiale selvatico del branco ucciso"
-          }
-        }
-      },
-      "q_ledger_outlaw_captain": {
-        "title": "Il capitano fuorilegge",
-        "text": "L'ultimo nome nel registro è quello che voglio cancellato da un anno: il Capitano Verlan, che ha spinto metà della Valle al banditismo. Si ripara dietro i suoi luogotenenti nel campo a sud-est. Abbatti 6 Banditi della Valle per raggiungerlo, poi metti fine a Verlan stesso. Non andarci da solo.",
-        "completion": "Il Capitano Verlan, morto, e il suo cappotto portato alla mia porta. Il registro è chiuso, {playerName}, e la Valle racconterà ai guardiani che verranno il nome di chi l'ha chiuso.",
-        "objectives": {
-          "0": {
-            "label": "Bandito della Valle abbattuto"
-          },
-          "1": {
-            "label": "Capitano Verlan ucciso"
           }
         }
       },

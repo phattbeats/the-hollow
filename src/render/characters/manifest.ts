@@ -737,13 +737,7 @@ const MOB_KEYS: Record<string, string> = {
   warlock_imp: 'mob_demon_flying',
   warlock_voidwalker: 'mob_demonalt',
   wild_boar: 'mob_boar',
-  elder_bristleback: 'mob_boar',
-  grovetusk_boar: 'mob_boar',
   // beasts that would otherwise fall back to the wolf model (FAMILY_KEYS.beast)
-  glade_fox: 'mob_fox',
-  thornpelt_badger: 'mob_critter',
-  spotted_fawn: 'mob_stag',
-  brightwood_monarch: 'mob_stag',
   old_cragmaw: 'mob_bear',
   bog_bloat: 'mob_murloc',
   // gravecaller cult + necromancers: dark-robed casters

@@ -2272,7 +2272,6 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': 'Коргат Связанный',
   'entities.mobs.grand_necromancer_velkhar.name': 'Верховный некромант Велхар',
   'entities.mobs.korzul_the_gravewyrm.name': 'Корзул Могильный Вирм',
-  'entities.mobs.elder_bristleback.name': 'Старый Щетиноспин',
   'entities.mobs.ironvein_foreman.name': 'Прораб Железной жилы',
   'entities.mobs.ironvein_sapper.name': 'Сапер Железной жилы',
   'entities.mobs.marrowlord_varkas.name': 'Владыка костного мозга Варкас',
@@ -2281,8 +2280,6 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': 'Моггер',
   'entities.mobs.mogger_lackey.name': 'Приспешник Моггера',
   'entities.mobs.nhalia_mourner.name': 'Плакальщица Налии',
-  'entities.mobs.sableweb_hatchling.name': 'Детеныш Сейблвеб',
-  'entities.mobs.sableweb_matriarch.name': 'Матриарх Сейблвеб',
   'entities.mobs.sister_nhalia.name': 'Сестра Налия',
   'entities.mobs.varkas_boneguard.name': 'Костяной страж Варкаса',
   'entities.mobs.imp.name': 'Бес',
@@ -3018,7 +3015,6 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': 'Багор Приливореза',
   'entities.items.verlans_oathblade.name': 'Клинок клятвы Верлана',
   'entities.mobs.brutok_skullsmasher.name': 'Бруток Сокрушитель черепов',
-  'entities.mobs.captain_verlan.name': 'Капитан Верлан',
   'entities.mobs.old_cragmaw.name': 'Старый Крэгмо',
   'entities.mobs.sloomtooth_the_drowned.name': 'Слумтус Утопший',
   'entities.mobs.voskar_emberwing.name': 'Воскар Жарокрыл',
@@ -3030,8 +3026,6 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.brightwood_venison.name': 'Оленина Брайтвуда',
   'entities.items.bramblehide_jerkin.name': 'Колет из терновой шкуры',
   'entities.items.monarch_crown_helm.name': 'Корона Монарха',
-  'entities.items.monarch_heart.name': 'Сердце Монарха',
-  // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': 'Добавить канал чата',
   'hud.core.chatChannels.addTitle': 'Добавить канал',
   'hud.core.chatChannels.close': 'Закрыть вкладку {channel}',
@@ -3046,92 +3040,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': 'Сообщение в {channel}',
   'hud.options.npcVoices': 'Голоса НИП',
   'hud.options.voiceVolume': 'Громкость голоса',
-  'entities.mobs.bramble_lynx.name': 'Терновая рысь',
-  'entities.mobs.brightwood_monarch.name': 'Монарх Брайтвуда',
-  'entities.mobs.glade_fox.name': 'Лисица поляны',
-  'entities.mobs.grovetusk_boar.name': 'Рощеклыкий кабан',
-  'entities.mobs.meadow_crane.name': 'Луговой журавль',
-  'entities.mobs.spotted_fawn.name': 'Пятнистый оленёнок',
-  'entities.mobs.thornpelt_badger.name': 'Терношкурый барсук',
   'entities.npcs.ranger_elwyn.greeting':
     'Тише, {className} - поляна сегодня спокойна, и я намерен такой её сохранить.',
   'entities.npcs.ranger_elwyn.name': 'Следопыт Элвин',
   'entities.npcs.ranger_elwyn.title': 'Хранитель поляны',
-  'entities.quests.q_brightwood_monarch.completion':
-    'Значит, старый король пал. Тяжкое дело это - но конец добрее того, что уготовили бы ему волки. Носи эту корону из его рогов с уважением, {playerName}.',
-  'entities.quests.q_brightwood_monarch.objectives.0.label': 'Сердце Монарха',
-  'entities.quests.q_brightwood_monarch.text':
-    'Есть один зверь, в которого я не пущу стрелу в одиночку: Монарх Брайтвуда, великий олень, что правит глубокой поляной. Он состарился и одичал, насмерть бодая всякого, кто приблизится к его логову. Одному охотнику его не одолеть - приведи друга или двух. Упокой его и принеси мне его сердце, {playerName}.',
-  'entities.quests.q_brightwood_monarch.title': 'Монарх Брайтвуда',
-  'entities.quests.q_brightwood_thinning.completion':
-    'Хорошо. Стая поредела, а шкуры эти добротны - поляна продержится ещё сезон.',
-  'entities.quests.q_brightwood_thinning.objectives.0.label': 'Терновая рысь: убито',
-  'entities.quests.q_brightwood_thinning.objectives.1.label': 'Шкура поляны',
-  'entities.quests.q_brightwood_thinning.text':
-    'Поляна Брайтвуда заполонена, {playerName}. Терновые рыси плодятся быстрее, чем я успеваю их выбивать, а стада вытаптывают то немногое, что осталось на выпас. Убей 8 терновых рысей и принеси мне 6 шкур поляны, чтобы я мог судить о здоровье остальных.',
-  'entities.quests.q_brightwood_thinning.title': 'Поредение поляны',
-  'entities.quests.q_ledger_brood.completion':
-    'Мрачное дело - топить гнездо. Но милосердие сейчас - это сотня похорон, предотвращённых после. Реестр сведён.',
-  'entities.quests.q_ledger_brood.objectives.0.label': 'Детеныш Сейблвеб: раздавлено',
-  'entities.quests.q_ledger_brood.text':
-    'Истребление скрытней лишь освободило место для выводка. Детеныши Сейблвеб выползают из глубокого гнезда, а сотня малых клыков убивает путника так же верно, как один большой. Раздави 8 детенышей Сейблвеб, пока они не выросли.',
-  'entities.quests.q_ledger_brood.title': 'Нарождающаяся тьма',
-  'entities.quests.q_ledger_deepvermin.completion':
-    'Двенадцать свечеголовых тварей долой! Так, ребята - назад в шахту. Ты заслужил доброе слово у Маршала, {playerName}.',
-  'entities.quests.q_ledger_deepvermin.objectives.0.label': 'Копающая туннельная крыса: убито',
-  'entities.quests.q_ledger_deepvermin.text':
-    'В реестре Маршала записано, что ты вычищаешь вредителей. Что ж, в моём забое они самые худшие. Туннельные крысы плодятся быстрее, чем моя бригада успевает махать киркой - положи 12 копающих туннельных крыс, и, может, мы доберёмся до меди до зимы.',
-  'entities.quests.q_ledger_deepvermin.title': 'Вредители в глубине',
-  'entities.quests.q_ledger_first_duty.completion':
-    'Восемь нор опустели, и лесная подстилка осела на место. Хорошо. Каждое имя в этом реестре начиналось ровно там, где ты сейчас стоишь.',
-  'entities.quests.q_ledger_first_duty.objectives.0.label': 'Терношкурый барсук: выбито',
-  'entities.quests.q_ledger_first_duty.text':
-    'Хочешь заслужить место в Иствруке, {playerName}? Тогда начни там, откуда начинает каждый страж. Терношкурые барсуки изрыли своими норами всю Поляну Брайтвуда, на дальнем севере за Волчьей тропой, и лесная подстилка проваливается в их подкопы. Выбей 8 терношкурых барсуков, и реестр запомнит твоё имя.',
-  'entities.quests.q_ledger_first_duty.title': 'Первый долг стража',
-  'entities.quests.q_ledger_great_boar.completion':
-    'Старый Щетиноспин, убитый твоей рукой! Одна эта шкура стоит сезона торговли. Ты заставил реестр гордиться, {playerName}.',
-  'entities.quests.q_ledger_great_boar.objectives.0.label': 'Старый Щетиноспин: убито',
-  'entities.quests.q_ledger_great_boar.objectives.1.label': 'Дикий кабан из стада: убито',
-  'entities.quests.q_ledger_great_boar.text':
-    'В западных чащах живёт старый кабан-вожак - Старый Щетиноспин, шкура как кора, а нрав ей под стать. Он забодал двух моих скорняков. Свали его и расчисти 6 диких кабанов помельче, что прячутся за ним, и я впишу твоё имя высоко в реестр.',
-  'entities.quests.q_ledger_great_boar.title': 'Великий Щетиноспин',
-  'entities.quests.q_ledger_outlaw_captain.completion':
-    'Капитан Верлан мёртв, и его плащ доставлен к моей двери. Реестр закрыт, {playerName} - и долина расскажет будущим стражам имя того, кто его закрыл.',
-  'entities.quests.q_ledger_outlaw_captain.objectives.0.label': 'Бандит долины: зарублено',
-  'entities.quests.q_ledger_outlaw_captain.objectives.1.label': 'Капитан Верлан: убито',
-  'entities.quests.q_ledger_outlaw_captain.text':
-    'Последнее имя в реестре - то, что я мечтал вычеркнуть целый год: капитан Верлан, обративший половину долины в разбой. Он укрывается за своими лейтенантами в юго-восточном лагере. Заруби 6 бандитов долины, чтобы добраться до него, а затем покончи с самим Верланом. Не ходи в одиночку.',
-  'entities.quests.q_ledger_outlaw_captain.title': 'Капитан разбойников',
-  'entities.quests.q_ledger_reedwater.completion':
-    'Этого хватит, чтобы длинноногие воры не лезли в мои сети целый сезон. Передай Маршалу, что отмели снова мои.',
-  'entities.quests.q_ledger_reedwater.objectives.0.label': 'Луговой журавль: отогнано',
-  'entities.quests.q_ledger_reedwater.text':
-    'Тебя прислал Редбрук? Хорошо - эти старые кости уже не могут бродить по отмелям. Луговые журавли отыскали мои сети и выхватывают больше улова, чем когда-либо таскали илогривые. Проредь их: 8 луговых журавлей, и берегись глубокой воды.',
-  'entities.quests.q_ledger_reedwater.title': 'Дозор на камышовой воде',
-  'entities.quests.q_ledger_silk.completion':
-    'Грядки ещё могут оправиться - благодаря тебе. Жестокая милость, но ребёнку, что горит в лихорадке, снадобья нужнее, чем лесу - олени. Реестр сведён.',
-  'entities.quests.q_ledger_silk.objectives.0.label': 'Пятнистый оленёнок: выбраковано',
-  'entities.quests.q_ledger_silk.text':
-    'Реестр относит к владениям стража и восточные леса - а мои лекарские грядки часть их. Пятнистые оленята обглодали мой серебролист и кровочертополох под корень, а без этих снадобий половина Истбрука останется без лекарств. Не в радость мне это, но выбракуй 8 пятнистых оленят, пока осенние травы не пропали окончательно.',
-  'entities.quests.q_ledger_silk.title': 'Побеги и шипы',
-  'entities.quests.q_ledger_teeth.completion':
-    'Десять лисиц - и в сумерках у курятников снова тихо. Реестр становится к тебе добрее.',
-  'entities.quests.q_ledger_teeth.objectives.0.label': 'Лесная лисица: убито',
-  'entities.quests.q_ledger_teeth.text':
-    'Лесные лисицы обнаглели не хуже волков - они проскальзывают в курятники в сумерках и исчезают, прежде чем зажгут фонарь, а голодная лиса утащит ягнёнка с той же охотой, что и курицу. Проредь их, {playerName}. Убей 10 лесных лисиц, и пусть остальные снова научатся бояться света.',
-  'entities.quests.q_ledger_teeth.title': 'Зубы во тьме',
-  'entities.quests.q_ledger_toll.completion':
-    'Восемь тварей убрано с дороги, и повозки снова катятся. Уже разносится слух, что у торгового тракта новый хранитель. Реестр склоняется в твою пользу.',
-  'entities.quests.q_ledger_toll.objectives.0.label': 'Клыкастый вепрь: убито',
-  'entities.quests.q_ledger_toll.text':
-    'Клыкастые вепри спустились из Светлолесья на юго-восточный торговый тракт - огромные клыкастые твари, что вспарывают тягловых волов и переворачивают повозки ради рассыпанного зерна. В реестре назначена цена за каждого. Открой дорогу заново: уложи 8 клыкастых вепрей.',
-  'entities.quests.q_ledger_toll.title': 'Клыкастая дорога',
-  'entities.quests.q_ledger_vigil.completion':
-    'Десять душ возвращены земле, и ночь покоя куплена для часовни. Свет помнит такие бдения, даже когда реестр их забывает.',
-  'entities.quests.q_ledger_vigil.objectives.0.label': 'Беспокойные кости: упокоено',
-  'entities.quests.q_ledger_vigil.text':
-    'Маршал шлёт ко мне своих стражей, когда беда уже не по плечу одним мечам. Мертвецы у часовни не желают лежать смирно, а я слишком стар, чтобы выстоять ночное бдение. Сослужи его за меня, {playerName} - упокой 10 беспокойных костей.',
-  'entities.quests.q_ledger_vigil.title': 'Бдение у часовни',
   'entities.zones.eastbrook_vale.pois.8.label': 'Поляна Брайтвуда',
   'fiesta.augment.aug_apex_predator.desc':
     '+40% к физическому урону, +15% к крит. удару, исцеление на 12% от нанесённого урона.',

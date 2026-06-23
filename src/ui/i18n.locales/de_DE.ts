@@ -2242,7 +2242,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': 'Korgath der Gebundene',
   'entities.mobs.grand_necromancer_velkhar.name': 'Großnekromant Velkhar',
   'entities.mobs.korzul_the_gravewyrm.name': 'Korzul der Gravewyrm',
-  'entities.mobs.elder_bristleback.name': 'Alter Bristleback',
   'entities.mobs.ironvein_foreman.name': 'Eisenader-Vorarbeiter',
   'entities.mobs.ironvein_sapper.name': 'Eisenader-Pionier',
   'entities.mobs.marrowlord_varkas.name': 'Marklord Varkas',
@@ -2251,8 +2250,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': 'Mogger',
   'entities.mobs.mogger_lackey.name': 'Moggers Lakai',
   'entities.mobs.nhalia_mourner.name': 'Nhalia-Trauernde',
-  'entities.mobs.sableweb_hatchling.name': 'Sableweb-Jungtier',
-  'entities.mobs.sableweb_matriarch.name': 'Sableweb-Matriarchin',
   'entities.mobs.sister_nhalia.name': 'Schwester Nhalia',
   'entities.mobs.varkas_boneguard.name': "Varkas' Knochenwache",
   'entities.mobs.imp.name': 'Wichtel',
@@ -3000,7 +2997,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': 'Flutschnitter-Enterhaken',
   'entities.items.verlans_oathblade.name': 'Verlans Eidklinge',
   'entities.mobs.brutok_skullsmasher.name': 'Brutok Schädelschmetterer',
-  'entities.mobs.captain_verlan.name': 'Hauptmann Verlan',
   'entities.mobs.old_cragmaw.name': 'Alter Cragmaw',
   'entities.mobs.sloomtooth_the_drowned.name': 'Sloomzahn der Ertrunkene',
   'entities.mobs.voskar_emberwing.name': 'Voskar Glutschwinge',
@@ -3012,8 +3008,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.brightwood_venison.name': 'Hellholz-Wildbret',
   'entities.items.bramblehide_jerkin.name': 'Dornhaut-Wams',
   'entities.items.monarch_crown_helm.name': 'Krone des Monarchen',
-  'entities.items.monarch_heart.name': 'Das Herz des Monarchen',
-  // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': 'Chatkanal hinzufügen',
   'hud.core.chatChannels.addTitle': 'Kanal hinzufügen',
   'hud.core.chatChannels.close': 'Reiter {channel} schließen',
@@ -3028,92 +3022,10 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': 'Nachricht an {channel}',
   'hud.options.npcVoices': 'NSC-Stimmen',
   'hud.options.voiceVolume': 'Stimmlautstärke',
-  'entities.mobs.bramble_lynx.name': 'Dornenluchs',
-  'entities.mobs.brightwood_monarch.name': 'Der Hellholz-Monarch',
-  'entities.mobs.glade_fox.name': 'Lichtungsfuchs',
-  'entities.mobs.grovetusk_boar.name': 'Hainhauer-Keiler',
-  'entities.mobs.meadow_crane.name': 'Wiesenkranich',
-  'entities.mobs.spotted_fawn.name': 'Geflecktes Hirschkalb',
-  'entities.mobs.thornpelt_badger.name': 'Dornpelz-Dachs',
   'entities.npcs.ranger_elwyn.greeting':
     'Ruhig, {className} - die Lichtung ist heute friedlich, und das gedenke ich so zu erhalten.',
   'entities.npcs.ranger_elwyn.name': 'Waldläufer Elwyn',
   'entities.npcs.ranger_elwyn.title': 'Hüter der Lichtung',
-  'entities.quests.q_brightwood_monarch.completion':
-    'So ist der alte König also gefallen. Eine schwere Sache, dies - doch ein gnädigeres Ende, als die Wölfe ihm beschert hätten. Tragt diese Krone aus seinem Geweih mit Achtung, {playerName}.',
-  'entities.quests.q_brightwood_monarch.objectives.0.label': 'Das Herz des Monarchen',
-  'entities.quests.q_brightwood_monarch.text':
-    'Es gibt eine Bestie, auf die ich allein keinen Pfeil löse: den Hellholz-Monarchen, den großen Hirsch, der über die tiefe Lichtung herrscht. Er ist alt und wild geworden und spießt jeden auf, der seinem Bau zu nahe kommt. Er ist mehr, als ein einzelner Jäger gewachsen ist - bringt einen Freund oder zwei mit. Bettet ihn zur Ruhe und bringt mir sein Herz, {playerName}.',
-  'entities.quests.q_brightwood_monarch.title': 'Der Hellholz-Monarch',
-  'entities.quests.q_brightwood_thinning.completion':
-    'Gut. Das Rudel ist ausgedünnt und diese Felle sind heil - die Lichtung wird eine weitere Jahreszeit überstehen.',
-  'entities.quests.q_brightwood_thinning.objectives.0.label': 'Dornenluchse erlegt',
-  'entities.quests.q_brightwood_thinning.objectives.1.label': 'Lichtungsfell',
-  'entities.quests.q_brightwood_thinning.text':
-    'Die Hellholz-Lichtung ist überlaufen, {playerName}. Die Dornenluchse vermehren sich schneller, als ich sie ausmerzen kann, und die Herden zertrampeln das wenige Weideland, das noch bleibt. Erlegt 8 Dornenluchse und bringt mir 6 Lichtungsfelle, damit ich über das Wohl der übrigen urteilen kann.',
-  'entities.quests.q_brightwood_thinning.title': 'Die Lichtung ausdünnen',
-  'entities.quests.q_ledger_brood.completion':
-    'Ein grimmiges Werk, ein Nest zu ertränken. Doch Gnade jetzt erspart hundert Begräbnisse später. Die Schuld ist beglichen.',
-  'entities.quests.q_ledger_brood.objectives.0.label': 'Schwarzweber-Brütlinge zermalmt',
-  'entities.quests.q_ledger_brood.text':
-    'Die Lauerer zu töten machte nur der Brut Platz. Die Schwarzweber-Brütlinge strömen aus dem tiefen Nest, und hundert kleine Fänge töten einen Reisenden ebenso sicher wie ein großer. Zermalmt 8 Schwarzweber-Brütlinge, ehe sie heranwachsen.',
-  'entities.quests.q_ledger_brood.title': 'Die laichende Finsternis',
-  'entities.quests.q_ledger_deepvermin.completion':
-    'Zwölf des kerzenköpfigen Ungeziefers, dahin! Recht so, Burschen - zurück in den Schacht. Ihr habt Euch ein gutes Wort beim Marschall verdient, {playerName}.',
-  'entities.quests.q_ledger_deepvermin.objectives.0.label': 'Tunnelratten-Gräber erlegt',
-  'entities.quests.q_ledger_deepvermin.text':
-    'Im Verzeichnis des Marschalls steht, Ihr räumt mit Schädlingen auf. Nun, mein Stollen hat die schlimmsten von ihnen. Die Tunnelratten vermehren sich schneller, als meine Mannschaft die Spitzhacke schwingen kann - legt 12 Tunnelratten-Gräber um, und vielleicht stoßen wir vor dem Winter auf Kupfer.',
-  'entities.quests.q_ledger_deepvermin.title': 'Ungeziefer in der Tiefe',
-  'entities.quests.q_ledger_first_duty.completion':
-    'Acht Baue geräumt und der Waldboden hat sich gesetzt. Gut. Jeder Name in diesem Verzeichnis hat genau dort begonnen, wo Ihr jetzt steht.',
-  'entities.quests.q_ledger_first_duty.objectives.0.label': 'Dornpelz-Dachs erlegt',
-  'entities.quests.q_ledger_first_duty.text':
-    'Ihr wollt Euch in Eastbrook Euren Unterhalt verdienen, {playerName}? Dann fangt dort an, wo jeder Hüter anfängt. Die Dornpelz-Dachse haben ihre Baue quer durch die Hellholz-Lichtung gegraben, hoch im Norden jenseits des Wolfslaufs, und der Waldboden bricht in ihre Gänge ein. Erlegt 8 Dornpelz-Dachse, und das Verzeichnis wird sich Eures Namens entsinnen.',
-  'entities.quests.q_ledger_first_duty.title': 'Eines Hüters erste Pflicht',
-  'entities.quests.q_ledger_great_boar.completion':
-    'Der Alte Borstenrücken, von Eurer Hand erschlagen! Allein dieses Fell ist eine Handelssaison wert. Ihr habt das Verzeichnis stolz gemacht, {playerName}.',
-  'entities.quests.q_ledger_great_boar.objectives.0.label': 'Alter Borstenrücken erlegt',
-  'entities.quests.q_ledger_great_boar.objectives.1.label': 'Wildschweine der Rotte erlegt',
-  'entities.quests.q_ledger_great_boar.text':
-    'In den westlichen Dickichten haust ein alter Eberbulle - der Alte Borstenrücken, mit einer Haut wie Borke und einem Gemüt, das dazu passt. Er hat zwei meiner Fellläufer aufgespießt. Bringt ihn zur Strecke und räumt 6 der geringeren Wildschweine fort, die sich hinter ihm verbergen, und ich werde Euren Namen hoch oben im Verzeichnis eintragen.',
-  'entities.quests.q_ledger_great_boar.title': 'Der Große Borstenrücken',
-  'entities.quests.q_ledger_outlaw_captain.completion':
-    'Hauptmann Verlan, tot, und sein Mantel vor meiner Tür. Das Verzeichnis ist geschlossen, {playerName} - und das Tal wird den Hütern, die nach Euch kommen, den Namen dessen nennen, der es geschlossen hat.',
-  'entities.quests.q_ledger_outlaw_captain.objectives.0.label': 'Talbanditen niedergestreckt',
-  'entities.quests.q_ledger_outlaw_captain.objectives.1.label': 'Hauptmann Verlan erlegt',
-  'entities.quests.q_ledger_outlaw_captain.text':
-    'Der letzte Name im Verzeichnis ist der, den ich seit einem Jahr gestrichen sehen will: Hauptmann Verlan, der das halbe Tal in die Räuberei trieb. Er verschanzt sich hinter seinen Leutnants im südöstlichen Lager. Streckt 6 Talbanditen nieder, um zu ihm vorzudringen, und macht dann Verlan selbst ein Ende. Geht nicht allein.',
-  'entities.quests.q_ledger_outlaw_captain.title': 'Der Räuberhauptmann',
-  'entities.quests.q_ledger_reedwater.completion':
-    'Das hält die langbeinigen Diebe eine Jahreszeit lang von meinen Netzen fern. Sagt dem Marschall, die Untiefen gehören wieder mir.',
-  'entities.quests.q_ledger_reedwater.objectives.0.label': 'Wiesenkraniche vertrieben',
-  'entities.quests.q_ledger_reedwater.text':
-    'Redbrook hat Euch geschickt? Gut - diese alten Knochen können nicht mehr durch die Untiefen waten. Die Wiesenkraniche haben meine Netze entdeckt, und sie spießen mehr von meinem Fang auf, als es die Schlammflossen je taten. Lichtet ihre Reihen: 8 Wiesenkraniche, und hütet Euch vor dem tiefen Wasser.',
-  'entities.quests.q_ledger_reedwater.title': 'Schilfwasser-Patrouille',
-  'entities.quests.q_ledger_silk.completion':
-    'Die Beete mögen sich noch erholen, dank Euch. Eine harte Gnade - doch ein Kind, das im Fieber brennt, braucht die Heilkräuter dringender, als der Wald die Rehe braucht. Das Verzeichnis ist beglichen.',
-  'entities.quests.q_ledger_silk.objectives.0.label': 'Gefleckte Kitze erlegt',
-  'entities.quests.q_ledger_silk.text':
-    'Das Verzeichnis weist auch die östlichen Wälder als Hüterland aus - und meine Heilkräuterbeete gehören dazu. Die gefleckten Kitze haben mein Silberblatt und meine Blutdistel bis zur Wurzel abgefressen, und ohne diese Heilkräuter bleibt halb Eastbrook ohne Medizin. Es bereitet mir keine Freude, doch erlegt 8 Gefleckte Kitze, ehe die Herbstkräuter gänzlich verloren sind.',
-  'entities.quests.q_ledger_silk.title': 'Äsung und Gestrüpp',
-  'entities.quests.q_ledger_teeth.completion':
-    'Zehn Füchse, und die Hühnerställe sind in der Dämmerung wieder still. Das Verzeichnis wird Euch gnädiger.',
-  'entities.quests.q_ledger_teeth.objectives.0.label': 'Lichtungsfüchse erlegt',
-  'entities.quests.q_ledger_teeth.text':
-    'Die Lichtungsfüchse sind kühn geworden wie Wölfe - sie schleichen sich in der Dämmerung in die Hühnerställe und sind verschwunden, ehe eine Laterne brennt, und eine hungrige Füchsin reißt ein Lamm so bereitwillig wie ein Huhn. Lichtet ihre Reihen, {playerName}. Erlegt 10 Lichtungsfüchse und lehrt den Rest, das Licht wieder zu fürchten.',
-  'entities.quests.q_ledger_teeth.title': 'Zähne in der Dunkelheit',
-  'entities.quests.q_ledger_toll.completion':
-    'Acht Bestien fort von der Straße, und die Karren rollen wieder. Es spricht sich bereits herum, dass die Handelsstraße einen neuen Hüter hat. Das Verzeichnis steigt zu Euren Gunsten.',
-  'entities.quests.q_ledger_toll.objectives.0.label': 'Hainhauer-Keiler erlegt',
-  'entities.quests.q_ledger_toll.text':
-    'Die Hainhauer-Keiler sind aus dem Lichtwald herabgekommen und auf die südöstliche Handelsstraße - mächtige, hauerbewehrte Bestien, die die Zugochsen aufspießen und die Karren umstürzen, um das verschüttete Korn zu fressen. Das Verzeichnis hat auf jeden von ihnen einen Preis gesetzt. Macht die Straße wieder frei: streckt 8 Hainhauer-Keiler nieder.',
-  'entities.quests.q_ledger_toll.title': 'Die Straße der Hauer',
-  'entities.quests.q_ledger_vigil.completion':
-    'Zehn Seelen der Erde zurückgegeben und eine Nacht des Friedens für die Kapelle erkauft. Das Licht entsinnt sich solcher Wachen, selbst wenn das Verzeichnis sie vergisst.',
-  'entities.quests.q_ledger_vigil.objectives.0.label': 'Ruhelose Gebeine zur Ruhe gebettet',
-  'entities.quests.q_ledger_vigil.text':
-    'Der Marschall schickt seine Hüter zu mir, wenn die Not über die Reichweite von Schwertern allein hinausgeht. Die Toten der Kapelle wollen nicht stillliegen, und ich bin zu alt, um die Nachtwache zu halten. Haltet sie für mich, {playerName} - bettet 10 Ruhelose Gebeine zurück zu ihrer Ruhe.',
-  'entities.quests.q_ledger_vigil.title': 'Wache an der Kapelle',
   'entities.zones.eastbrook_vale.pois.8.label': 'Hellholz-Lichtung',
   'fiesta.augment.aug_apex_predator.desc':
     '+40% physischer Schaden, +15% krit. Trefferchance, Heilung um 12% des zugefügten Schadens.',

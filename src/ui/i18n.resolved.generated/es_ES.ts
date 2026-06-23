@@ -4095,9 +4095,6 @@ export const es_ES: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Corona del Monarca"
       },
-      "monarch_heart": {
-        "name": "El Corazón del Monarca"
-      },
       "bristleback_maul": {
         "name": "Maza Bristleback"
       },
@@ -4724,30 +4721,6 @@ export const es_ES: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Azote de Thornpeak"
       },
-      "glade_fox": {
-        "name": "Zorro del claro"
-      },
-      "spotted_fawn": {
-        "name": "Cervatillo moteado"
-      },
-      "meadow_crane": {
-        "name": "Grulla de la pradera"
-      },
-      "thornpelt_badger": {
-        "name": "Tejón pielespina"
-      },
-      "bramble_lynx": {
-        "name": "Lince de zarzal"
-      },
-      "grovetusk_boar": {
-        "name": "Jabalí colmillarbóreo"
-      },
-      "brightwood_monarch": {
-        "name": "El Monarca de Brightwood"
-      },
-      "elder_bristleback": {
-        "name": "Viejo Bristleback"
-      },
       "ironvein_foreman": {
         "name": "Capataz Vena de Hierro"
       },
@@ -4772,12 +4745,6 @@ export const es_ES: EnTranslations = {
       "nhalia_mourner": {
         "name": "Doliente de Nhalia"
       },
-      "sableweb_hatchling": {
-        "name": "Cría Sableweb"
-      },
-      "sableweb_matriarch": {
-        "name": "Matriarca Sableweb"
-      },
       "sister_nhalia": {
         "name": "Hermana Nhalia"
       },
@@ -4798,9 +4765,6 @@ export const es_ES: EnTranslations = {
       },
       "brutok_skullsmasher": {
         "name": "Brutok Rompecráneos"
-      },
-      "captain_verlan": {
-        "name": "Capitán Verlan"
       },
       "old_cragmaw": {
         "name": "Viejo Cragmaw"
@@ -5715,135 +5679,6 @@ export const es_ES: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Nythraxis derrotado"
-          }
-        }
-      },
-      "q_brightwood_thinning": {
-        "title": "Diezmar el claro",
-        "text": "El Claro de Brightwood está infestado, {playerName}. Los linces de zarzal se reproducen más rápido de lo que puedo sacrificarlos, y las manadas pisotean el poco pasto que queda. Mata 8 Linces de zarzal y tráeme 6 Pieles del claro para que pueda juzgar la salud del resto.",
-        "completion": "Bien. La manada está diezmada y estas pieles están sanas: el claro aguantará otra estación.",
-        "objectives": {
-          "0": {
-            "label": "Linces de zarzal abatidos"
-          },
-          "1": {
-            "label": "Piel del claro"
-          }
-        }
-      },
-      "q_brightwood_monarch": {
-        "title": "El Monarca de Brightwood",
-        "text": "Hay una bestia a la que no le lanzaré una flecha en solitario: el Monarca de Brightwood, el gran ciervo que reina en lo profundo del claro. Se ha vuelto viejo y feroz, corneando a cualquiera que se acerque a su guarida. Es demasiado para un solo cazador: trae a uno o dos amigos. Dale descanso y tráeme su corazón, {playerName}.",
-        "completion": "Así que el viejo rey ha caído. Algo pesado, esto, pero un final más amable que el que le habrían dado los lobos. Lleva esta corona de sus astas con respeto, {playerName}.",
-        "objectives": {
-          "0": {
-            "label": "El Corazón del Monarca"
-          }
-        }
-      },
-      "q_ledger_first_duty": {
-        "title": "El primer deber de un guardián",
-        "text": "¿Quieres ganarte el sustento en Eastbrook, {playerName}? Pues empieza donde empieza cada guardián. Los tejones pielespina han excavado sus madrigueras a lo largo del Claro de Brightwood, en el extremo norte pasada la Senda de lobos, y el suelo de la arboleda se está hundiendo en sus túneles. Sacrifica 8 Tejones pielespina y el libro mayor recordará tu nombre.",
-        "completion": "Ocho madrigueras vaciadas y el suelo de la arboleda asentado. Bien. Cada nombre de este libro mayor empezó justo donde tú estás parado.",
-        "objectives": {
-          "0": {
-            "label": "Tejón pielespina sacrificado"
-          }
-        }
-      },
-      "q_ledger_teeth": {
-        "title": "Colmillos en la oscuridad",
-        "text": "Los zorros de la cañada se han vuelto tan audaces como lobos: se cuelan en los gallineros al anochecer y desaparecen antes de que se encienda un farol, y una zorra hambrienta se llevará un cordero con la misma facilidad que una gallina. Diézmalos, {playerName}. Abate a 10 Zorros de la cañada y haz que el resto vuelva a temer a la luz.",
-        "completion": "Diez zorros, y los gallineros vuelven a estar tranquilos al anochecer. El libro mayor se vuelve más amable contigo.",
-        "objectives": {
-          "0": {
-            "label": "Zorros de la cañada abatidos"
-          }
-        }
-      },
-      "q_ledger_reedwater": {
-        "title": "Patrulla del juncal",
-        "text": "¿Te envía Redbrook? Bien, estos viejos huesos ya no pueden vadear los bajíos. Las grullas de la pradera han dado con mis redes, y arponean más de mi captura de lo que jamás hizo el Aletabarro. Diézmalas: 8 Grullas de la pradera, y cuidado con el agua profunda.",
-        "completion": "Eso mantendrá a esas ladronas zancudas lejos de mis redes una estación. Dile al Mariscal que los bajíos vuelven a ser míos.",
-        "objectives": {
-          "0": {
-            "label": "Grullas de la pradera ahuyentadas"
-          }
-        }
-      },
-      "q_ledger_silk": {
-        "title": "Ramoneo y zarza",
-        "text": "El libro mayor marca también los bosques del este como tierra de guardianes, y mis huertos de hierbas medicinales forman parte de ellos. Los cervatos moteados han arrasado mi hoja de plata y mi cardosangre hasta la raíz, y sin esos remedios la mitad de Eastbrook se queda sin medicina. No me complace, pero sacrifica a 8 Cervatos moteados antes de que se pierdan por completo las hierbas de otoño.",
-        "completion": "Los huertos aún podrían recuperarse, gracias a ti. Una piedad dura, pero un niño ardiendo de fiebre necesita los remedios más de lo que el bosque necesita a los ciervos. El libro mayor queda saldado.",
-        "objectives": {
-          "0": {
-            "label": "Cervatos moteados sacrificados"
-          }
-        }
-      },
-      "q_ledger_brood": {
-        "title": "La oscuridad que desova",
-        "text": "Matar a los acechadores solo dejó sitio a la prole. Las crías Sableweb brotan a raudales del nido profundo, y cien colmillos pequeños matan a un viajero tan seguro como uno grande. Aplasta 8 Crías Sableweb antes de que crezcan.",
-        "completion": "Trabajo sombrío, ahogar un nido. Pero la clemencia de ahora son cien funerales evitados después. La cuenta queda saldada.",
-        "objectives": {
-          "0": {
-            "label": "Crías Sableweb aplastadas"
-          }
-        }
-      },
-      "q_ledger_deepvermin": {
-        "title": "Alimañas en lo profundo",
-        "text": "El libro mayor del Mariscal dice que limpias plagas. Pues bien, mi excavación tiene a las peores. Las ratas de túnel se reproducen más rápido de lo que mi cuadrilla puede picar: derriba a 12 Excavadores Rata de Túnel y puede que demos con cobre antes del invierno.",
-        "completion": "¡Doce de las alimañas con velas en la cabeza, fuera! Bien, muchachos, de vuelta al pozo. Te has ganado una buena palabra ante el Mariscal, {playerName}.",
-        "objectives": {
-          "0": {
-            "label": "Excavadores Rata de Túnel abatidos"
-          }
-        }
-      },
-      "q_ledger_toll": {
-        "title": "El camino de los colmillos",
-        "text": "Los jabalíes colmillobosque han bajado de Brightwood al camino comercial del sureste: grandes bestias colmilludas que cornean a los bueyes de tiro y vuelcan los carros por el grano derramado. El libro mayor pone precio a cada uno de ellos. Reabre el camino: abate a 8 Jabalíes colmillobosque.",
-        "completion": "Ocho bestias menos en el camino, y los carros vuelven a rodar. Ya corre la voz de que el camino comercial tiene un nuevo guardián. El libro mayor sube a tu favor.",
-        "objectives": {
-          "0": {
-            "label": "Jabalíes colmillobosque abatidos"
-          }
-        }
-      },
-      "q_ledger_vigil": {
-        "title": "Vigilia en la capilla",
-        "text": "El Mariscal me envía a sus guardianes cuando el problema está más allá del alcance de las espadas. Los muertos de la capilla no quieren reposar, y yo soy demasiado viejo para aguantar la vigilia nocturna. Hazla por mí, {playerName}: devuelve 10 Huesos inquietos a su descanso.",
-        "completion": "Diez almas devueltas a la tierra, y una noche de paz comprada para la capilla. La Luz recuerda tales vigilias, aunque el libro mayor las olvide.",
-        "objectives": {
-          "0": {
-            "label": "Huesos inquietos devueltos al descanso"
-          }
-        }
-      },
-      "q_ledger_great_boar": {
-        "title": "El gran Bristleback",
-        "text": "Hay un viejo jabalí macho en los matorrales del oeste: el Viejo Bristleback, con la piel como corteza y un genio a juego. Ha corneado a dos de mis curtidores. Derríbalo y elimina a 6 de los Jabalíes salvajes menores que se refugian tras él, y haré que tu nombre figure en lo alto del libro mayor.",
-        "completion": "¡El Viejo Bristleback, muerto por tu mano! Ese cuero por sí solo vale una estación de comercio. Has hecho que el libro mayor se enorgullezca, {playerName}.",
-        "objectives": {
-          "0": {
-            "label": "Viejo Bristleback abatido"
-          },
-          "1": {
-            "label": "Jabalíes salvajes de la manada abatidos"
-          }
-        }
-      },
-      "q_ledger_outlaw_captain": {
-        "title": "El capitán proscrito",
-        "text": "El último nombre del libro mayor es el que llevo un año queriendo tachar: el Capitán Verlan, que volvió bandidos a media comarca del Valle. Se refugia tras sus lugartenientes en el campamento del sureste. Abate a 6 Bandidos del Valle para llegar a él, y luego acaba con el propio Verlan. No vayas solo.",
-        "completion": "El Capitán Verlan, muerto, y su casaca traída a mi puerta. El libro mayor queda cerrado, {playerName}, y el Valle dirá a los guardianes venideros el nombre de quien lo cerró.",
-        "objectives": {
-          "0": {
-            "label": "Bandidos del Valle abatidos"
-          },
-          "1": {
-            "label": "Capitán Verlan abatido"
           }
         }
       },

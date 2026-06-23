@@ -2234,7 +2234,6 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': 'Korgath o Acorrentado',
   'entities.mobs.grand_necromancer_velkhar.name': 'Grande necromante Velkhar',
   'entities.mobs.korzul_the_gravewyrm.name': 'Korzul o Gravewyrm',
-  'entities.mobs.elder_bristleback.name': 'Bristleback ancião',
   'entities.mobs.ironvein_foreman.name': 'Capataz Veio de Ferro',
   'entities.mobs.ironvein_sapper.name': 'Sapador Veio de Ferro',
   'entities.mobs.marrowlord_varkas.name': 'Senhor da Medula Varkas',
@@ -2243,8 +2242,6 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': 'Mogger',
   'entities.mobs.mogger_lackey.name': 'Lacaio de Mogger',
   'entities.mobs.nhalia_mourner.name': 'Pranteadora de Nhalia',
-  'entities.mobs.sableweb_hatchling.name': 'Filhote Sableweb',
-  'entities.mobs.sableweb_matriarch.name': 'Matriarca Sableweb',
   'entities.mobs.sister_nhalia.name': 'Irmã Nhalia',
   'entities.mobs.varkas_boneguard.name': 'Guardião dos ossos de Varkas',
   'entities.mobs.imp.name': 'Diabrete',
@@ -2984,7 +2981,6 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': 'Gancho do ceifa-marés',
   'entities.items.verlans_oathblade.name': 'Lâmina do juramento de Verlan',
   'entities.mobs.brutok_skullsmasher.name': 'Brutok Quebra-crânios',
-  'entities.mobs.captain_verlan.name': 'Capitão Verlan',
   'entities.mobs.old_cragmaw.name': 'Velho Cragmaw',
   'entities.mobs.sloomtooth_the_drowned.name': 'Sloomtooth o Afogado',
   'entities.mobs.voskar_emberwing.name': 'Voskar Asa-de-brasa',
@@ -2996,8 +2992,6 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.brightwood_venison.name': 'Carne de veado de Brightwood',
   'entities.items.bramblehide_jerkin.name': 'Gibão de couro de sarça',
   'entities.items.monarch_crown_helm.name': 'Coroa do Monarca',
-  'entities.items.monarch_heart.name': 'O Coração do Monarca',
-  // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': 'Adicionar canal de chat',
   'hud.core.chatChannels.addTitle': 'Adicionar canal',
   'hud.core.chatChannels.close': 'Fechar aba {channel}',
@@ -3012,92 +3006,10 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': 'Mensagem para {channel}',
   'hud.options.npcVoices': 'Vozes de NPC',
   'hud.options.voiceVolume': 'Volume das Vozes',
-  'entities.mobs.bramble_lynx.name': 'Lince das Sarças',
-  'entities.mobs.brightwood_monarch.name': 'O Monarca de Brightwood',
-  'entities.mobs.glade_fox.name': 'Raposa da Clareira',
-  'entities.mobs.grovetusk_boar.name': 'Javali Presa-do-bosque',
-  'entities.mobs.meadow_crane.name': 'Garça do Prado',
-  'entities.mobs.spotted_fawn.name': 'Cervato Malhado',
-  'entities.mobs.thornpelt_badger.name': 'Texugo Pelo-de-espinho',
   'entities.npcs.ranger_elwyn.greeting':
     'Silêncio, {className} - a clareira está calma hoje, e pretendo mantê-la assim.',
   'entities.npcs.ranger_elwyn.name': 'Patrulheiro Elwyn',
   'entities.npcs.ranger_elwyn.title': 'Guardião da Clareira',
-  'entities.quests.q_brightwood_monarch.completion':
-    'Então o velho rei tombou. Coisa pesada, esta - mas um fim mais bondoso do que os lobos lhe dariam. Use esta coroa feita de suas galhadas com respeito, {playerName}.',
-  'entities.quests.q_brightwood_monarch.objectives.0.label': 'O Coração do Monarca',
-  'entities.quests.q_brightwood_monarch.text':
-    'Há uma fera contra a qual não soltarei uma flecha sozinho: o Monarca de Brightwood, o grande cervo que reina sobre as profundezas da clareira. Ele envelheceu e se tornou selvagem, escornando todos que se aproximam de seu refúgio. É mais do que páreo para um só caçador - traga um amigo ou dois. Dê-lhe o descanso e traga-me seu coração, {playerName}.',
-  'entities.quests.q_brightwood_monarch.title': 'O Monarca de Brightwood',
-  'entities.quests.q_brightwood_thinning.completion':
-    'Bom. A alcateia foi reduzida e estas peles estão íntegras - a clareira aguentará mais uma estação.',
-  'entities.quests.q_brightwood_thinning.objectives.0.label': 'Lince das Sarças abatido',
-  'entities.quests.q_brightwood_thinning.objectives.1.label': 'Pele da clareira',
-  'entities.quests.q_brightwood_thinning.text':
-    'A Clareira de Brightwood está infestada, {playerName}. Os linces das sarças se reproduzem mais rápido do que consigo abatê-los, e os rebanhos pisoteiam o pouco pasto que resta. Mate 8 Linces das Sarças e traga-me 6 Peles da clareira para que eu avalie a saúde do restante.',
-  'entities.quests.q_brightwood_thinning.title': 'Reduzindo a Clareira',
-  'entities.quests.q_ledger_brood.completion':
-    'Trabalho sombrio, afogar um ninho. Mas a misericórdia agora são cem funerais poupados depois. O livro-razão está saldado.',
-  'entities.quests.q_ledger_brood.objectives.0.label': 'Filhote Sableweb esmagado',
-  'entities.quests.q_ledger_brood.text':
-    'Matar os espreitadores só abriu espaço para a ninhada. Os filhotes Sableweb estão jorrando do ninho profundo, e cem pequenas presas matam um viajante tão certeiramente quanto uma grande. Esmague 8 Filhotes Sableweb antes que cresçam.',
-  'entities.quests.q_ledger_brood.title': 'A Escuridão que Desova',
-  'entities.quests.q_ledger_deepvermin.completion':
-    'Doze daqueles vermes cabeça-de-vela, mortos! Certo, rapazes - de volta ao poço. Você ganhou uma boa palavra junto ao Marechal, {playerName}.',
-  'entities.quests.q_ledger_deepvermin.objectives.0.label': 'Escavador rato de túnel abatido',
-  'entities.quests.q_ledger_deepvermin.text':
-    'O livro-razão do Marechal diz que você acaba com pragas. Pois bem, minha escavação tem as piores delas. Os ratos de túnel se reproduzem mais rápido do que minha turma consegue erguer uma picareta - derrube 12 Escavadores rato de túnel e talvez encontremos cobre antes do inverno.',
-  'entities.quests.q_ledger_deepvermin.title': 'Vermes nas Profundezas',
-  'entities.quests.q_ledger_first_duty.completion':
-    'Oito tocas esvaziadas e o chão do bosque assentado. Bom. Cada nome neste livro-razão começou exatamente onde você está agora.',
-  'entities.quests.q_ledger_first_duty.objectives.0.label': 'Texugo Pelo-de-espinho abatido',
-  'entities.quests.q_ledger_first_duty.text':
-    'Quer merecer seu sustento em Eastbrook, {playerName}? Então comece onde cada guardião começa. Os texugos pelo-de-espinho cavaram suas tocas por toda a Clareira de Brightwood, lá no extremo norte, depois da Trilha dos lobos, e o chão do bosque está afundando nos buracos deles. Abata 8 Texugos Pelo-de-espinho e o livro-razão lembrará seu nome.',
-  'entities.quests.q_ledger_first_duty.title': 'O Primeiro Dever de um Guardião',
-  'entities.quests.q_ledger_great_boar.completion':
-    'O Bristleback ancião, morto por suas mãos! Só aquele couro vale uma estação de comércio. Você orgulhou o livro-razão, {playerName}.',
-  'entities.quests.q_ledger_great_boar.objectives.0.label': 'Bristleback ancião abatido',
-  'entities.quests.q_ledger_great_boar.objectives.1.label': 'Javali selvagem da vara abatido',
-  'entities.quests.q_ledger_great_boar.text':
-    'Há um velho javali-macho nos matagais ocidentais - o Bristleback ancião, couro feito casca e gênio à altura. Ele escornou dois dos meus coureiros. Derrube-o e elimine 6 dos Javalis selvagens menores que se abrigam atrás dele, e verei seu nome bem alto no livro-razão.',
-  'entities.quests.q_ledger_great_boar.title': 'O Grande Bristleback',
-  'entities.quests.q_ledger_outlaw_captain.completion':
-    'Capitão Verlan, morto, e seu casaco trazido à minha porta. O livro-razão está fechado, {playerName} - e o Vale contará aos guardiões vindouros o nome de quem o fechou.',
-  'entities.quests.q_ledger_outlaw_captain.objectives.0.label': 'Bandido do Vale derrubado',
-  'entities.quests.q_ledger_outlaw_captain.objectives.1.label': 'Capitão Verlan abatido',
-  'entities.quests.q_ledger_outlaw_captain.text':
-    'O último nome no livro-razão é o que há um ano desejo riscar: Capitão Verlan, que arrastou metade do Vale para o banditismo. Ele se esconde atrás de seus tenentes no acampamento a sudeste. Derrube 6 Bandidos do Vale para alcançá-lo e então acabe com o próprio Verlan. Não vá sozinho.',
-  'entities.quests.q_ledger_outlaw_captain.title': 'O Capitão Foragido',
-  'entities.quests.q_ledger_reedwater.completion':
-    'Isso manterá aquelas ladras pernaltas longe das minhas redes por uma estação. Diga ao Marechal que os baixios voltaram a ser meus.',
-  'entities.quests.q_ledger_reedwater.objectives.0.label': 'Garça do Prado expulsa',
-  'entities.quests.q_ledger_reedwater.text':
-    'Redbrook mandou você? Bom - estes ossos velhos não conseguem mais vadear os baixios. As garças do prado descobriram minhas redes e fisgam mais da minha pesca do que os Barbatana-de-lodo jamais fizeram. Reduza-as: 8 Garças do Prado, e cuidado com as águas fundas.',
-  'entities.quests.q_ledger_reedwater.title': 'Patrulha das Águas dos Juncos',
-  'entities.quests.q_ledger_silk.completion':
-    'Os canteiros ainda podem se recuperar, graças a você. Uma misericórdia dura - mas uma criança ardendo em febre precisa mais dos simples do que o bosque precisa dos cervos. O livro-razão está acertado.',
-  'entities.quests.q_ledger_silk.objectives.0.label': 'Cervo Malhado abatido',
-  'entities.quests.q_ledger_silk.text':
-    'O livro-razão marca os bosques orientais como terra de guardião também - e meus canteiros de ervas medicinais fazem parte deles. Os cervos malhados devoraram minha folha-de-prata e meu sangue-de-cardo até a raiz, e sem esses simples metade de Eastbrook fica sem remédios. Não me alegra fazê-lo, mas abata 8 Cervos Malhados antes que as ervas do outono se percam por completo.',
-  'entities.quests.q_ledger_silk.title': 'Pasto e Espinheiro',
-  'entities.quests.q_ledger_teeth.completion':
-    'Dez raposas, e os galinheiros voltaram a ficar tranquilos ao anoitecer. O livro-razão fica mais brando com você.',
-  'entities.quests.q_ledger_teeth.objectives.0.label': 'Raposa do Bosque abatida',
-  'entities.quests.q_ledger_teeth.text':
-    'As raposas do bosque ficaram ousadas como lobos - elas se esgueiram nos galinheiros ao anoitecer e somem antes que uma lanterna se acenda, e uma raposa faminta leva um cordeiro com a mesma facilidade que uma galinha. Reduza-as, {playerName}. Abata 10 Raposas do Bosque e que as demais voltem a temer a luz.',
-  'entities.quests.q_ledger_teeth.title': 'Dentes na Escuridão',
-  'entities.quests.q_ledger_toll.completion':
-    'Oito feras a menos na estrada, e as carroças voltaram a rodar. Já corre a voz de que a estrada de comércio tem um novo guardião. O livro-razão sobe a seu favor.',
-  'entities.quests.q_ledger_toll.objectives.0.label': 'Javali Presa-do-Bosque abatido',
-  'entities.quests.q_ledger_toll.text':
-    'Os javalis presa-do-bosque desceram da Mata Clara para a estrada de comércio do sudeste - feras enormes e presadas que escornam os bois de carga e viram as carroças atrás do grão derramado. O livro-razão tem um preço pela cabeça de cada um. Reabra a estrada: abata 8 Javalis Presa-do-Bosque.',
-  'entities.quests.q_ledger_toll.title': 'A Estrada das Presas',
-  'entities.quests.q_ledger_vigil.completion':
-    'Dez almas devolvidas à terra, e uma noite de paz comprada para a capela. A Luz se lembra de tais vigílias, mesmo quando o livro-razão esquece.',
-  'entities.quests.q_ledger_vigil.objectives.0.label': 'Ossos inquietos postos em descanso',
-  'entities.quests.q_ledger_vigil.text':
-    'O Marechal manda seus guardiões a mim quando o problema está além do alcance das espadas. Os mortos da capela não querem ficar quietos, e estou velho demais para velar a noite. Vele por mim, {playerName} - devolva 10 Ossos inquietos ao seu descanso.',
-  'entities.quests.q_ledger_vigil.title': 'Vigília na Capela',
   'entities.zones.eastbrook_vale.pois.8.label': 'Clareira de Brightwood',
   'fiesta.augment.aug_apex_predator.desc':
     '+40% de dano físico, +15% de crítico, cura de 12% do dano causado.',

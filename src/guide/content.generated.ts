@@ -1342,24 +1342,6 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "tint": "#7f8c8d"
       },
       {
-        "name": "Glade Fox",
-        "min": 2,
-        "max": 3,
-        "rare": false,
-        "templateId": "glade_fox",
-        "model": "mob_fox",
-        "tint": "#d2691e"
-      },
-      {
-        "name": "Spotted Fawn",
-        "min": 2,
-        "max": 3,
-        "rare": false,
-        "templateId": "spotted_fawn",
-        "model": "mob_stag",
-        "tint": "#b5895f"
-      },
-      {
         "name": "Wild Boar",
         "min": 2,
         "max": 3,
@@ -1369,33 +1351,6 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "tint": "#935116"
       },
       {
-        "name": "Meadow Crane",
-        "min": 3,
-        "max": 4,
-        "rare": false,
-        "templateId": "meadow_crane",
-        "model": "mob_wolf",
-        "tint": "#eaeaea"
-      },
-      {
-        "name": "Thornpelt Badger",
-        "min": 3,
-        "max": 4,
-        "rare": false,
-        "templateId": "thornpelt_badger",
-        "model": "mob_critter",
-        "tint": "#5d5d5d"
-      },
-      {
-        "name": "Bramble Lynx",
-        "min": 4,
-        "max": 5,
-        "rare": false,
-        "templateId": "bramble_lynx",
-        "model": "mob_wolf",
-        "tint": "#8a6d3b"
-      },
-      {
         "name": "Old Greyjaw",
         "min": 4,
         "max": 4,
@@ -1403,15 +1358,6 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "templateId": "old_greyjaw",
         "model": "mob_wolf",
         "tint": "#566061"
-      },
-      {
-        "name": "Grovetusk Boar",
-        "min": 5,
-        "max": 6,
-        "rare": false,
-        "templateId": "grovetusk_boar",
-        "model": "mob_boar",
-        "tint": "#6b4423"
       },
       {
         "name": "Mire Prowler",
@@ -1453,15 +1399,6 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "templateId": "webwood_spider",
         "model": "mob_spider",
         "tint": "#4a235a"
-      },
-      {
-        "name": "Sableweb Hatchling",
-        "min": 5,
-        "max": 5,
-        "rare": false,
-        "templateId": "sableweb_hatchling",
-        "model": "mob_spider",
-        "tint": "#21112d"
       },
       {
         "name": "Mirefen Widow",
@@ -1908,24 +1845,6 @@ export const GUIDE_MODELS: Record<string, GuideModelSpec> = {
     "idle": "Idle_Combat",
     "height": 2.5,
     "tintStrength": 0.25
-  },
-  "mob_fox": {
-    "url": "models/creatures/fox.glb",
-    "idle": "Idle",
-    "height": 1,
-    "tintStrength": 0.35
-  },
-  "mob_stag": {
-    "url": "models/creatures/stag.glb",
-    "idle": "Idle",
-    "height": 1.9,
-    "tintStrength": 0.35
-  },
-  "mob_critter": {
-    "url": "models/creatures/fox.glb",
-    "idle": "Idle",
-    "height": 0.7,
-    "tintStrength": 0.35
   },
   "mob_troll": {
     "url": "models/creatures/orc.glb",

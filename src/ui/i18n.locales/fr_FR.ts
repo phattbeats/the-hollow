@@ -2258,7 +2258,6 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': "Korgath l'Enchaîné",
   'entities.mobs.grand_necromancer_velkhar.name': 'Grand nécromancien Velkhar',
   'entities.mobs.korzul_the_gravewyrm.name': 'Korzul le Gravewyrm',
-  'entities.mobs.elder_bristleback.name': 'Ancien Bristleback',
   'entities.mobs.ironvein_foreman.name': 'Contremaître Veinefer',
   'entities.mobs.ironvein_sapper.name': 'Sapeur Veinefer',
   'entities.mobs.marrowlord_varkas.name': 'Seigneur de moelle Varkas',
@@ -2267,8 +2266,6 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': 'Mogger',
   'entities.mobs.mogger_lackey.name': 'Laquais de Mogger',
   'entities.mobs.nhalia_mourner.name': 'Pleureuse de Nhalia',
-  'entities.mobs.sableweb_hatchling.name': 'Jeune Sableweb',
-  'entities.mobs.sableweb_matriarch.name': 'Matriarche Sableweb',
   'entities.mobs.sister_nhalia.name': 'Sœur Nhalia',
   'entities.mobs.varkas_boneguard.name': 'Garde-os de Varkas',
   'entities.mobs.imp.name': 'Diablotin',
@@ -3010,7 +3007,6 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': 'Gaffe du fendeur de marées',
   'entities.items.verlans_oathblade.name': 'Lame du serment de Verlan',
   'entities.mobs.brutok_skullsmasher.name': 'Brutok Brise-crânes',
-  'entities.mobs.captain_verlan.name': 'Capitaine Verlan',
   'entities.mobs.old_cragmaw.name': 'Vieux Cragmaw',
   'entities.mobs.sloomtooth_the_drowned.name': 'Sloomtooth le Noyé',
   'entities.mobs.voskar_emberwing.name': 'Voskar Aile-de-braise',
@@ -3022,8 +3018,6 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.brightwood_venison.name': 'Venaison de Brightwood',
   'entities.items.bramblehide_jerkin.name': 'Justaucorps en peau de ronces',
   'entities.items.monarch_crown_helm.name': 'Couronne du Monarque',
-  'entities.items.monarch_heart.name': 'Le Cœur du Monarque',
-  // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': 'Ajouter un canal de discussion',
   'hud.core.chatChannels.addTitle': 'Ajouter un canal',
   'hud.core.chatChannels.close': "Fermer l'onglet {channel}",
@@ -3038,92 +3032,10 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': 'Message vers {channel}',
   'hud.options.npcVoices': 'Voix des PNJ',
   'hud.options.voiceVolume': 'Volume des voix',
-  'entities.mobs.bramble_lynx.name': 'Lynx des ronces',
-  'entities.mobs.brightwood_monarch.name': 'Le Monarque de Brightwood',
-  'entities.mobs.glade_fox.name': 'Renard des clairières',
-  'entities.mobs.grovetusk_boar.name': 'Sanglier Défense-des-bois',
-  'entities.mobs.meadow_crane.name': 'Grue des prés',
-  'entities.mobs.spotted_fawn.name': 'Faon tacheté',
-  'entities.mobs.thornpelt_badger.name': "Blaireau Pelage-d'épines",
   'entities.npcs.ranger_elwyn.greeting':
     "Silence, {className} - la clairière est calme aujourd'hui, et j'entends bien qu'elle le reste.",
   'entities.npcs.ranger_elwyn.name': 'Rôdeuse Elwyn',
   'entities.npcs.ranger_elwyn.title': 'Garde de la clairière',
-  'entities.quests.q_brightwood_monarch.completion':
-    'Ainsi le vieux roi est tombé. Une chose lourde à porter - mais une fin plus douce que celle que les loups lui auraient réservée. Portez cette couronne taillée dans ses andouillers avec respect, {playerName}.',
-  'entities.quests.q_brightwood_monarch.objectives.0.label': 'Le Cœur du Monarque',
-  'entities.quests.q_brightwood_monarch.text':
-    'Il est une bête sur laquelle je ne décocherai pas une flèche seule : le Monarque de Brightwood, le grand cerf qui règne sur la clairière profonde. Il a vieilli et est devenu sauvage, encornant quiconque approche de son creux. Il est bien trop fort pour un seul chasseur - amenez un ami ou deux. Faites-le reposer en paix et rapportez-moi son cœur, {playerName}.',
-  'entities.quests.q_brightwood_monarch.title': 'Le Monarque de Brightwood',
-  'entities.quests.q_brightwood_thinning.completion':
-    'Bien. La harde est éclaircie et ces fourrures sont saines - la clairière tiendra une saison de plus.',
-  'entities.quests.q_brightwood_thinning.objectives.0.label': 'Lynx des ronces tué',
-  'entities.quests.q_brightwood_thinning.objectives.1.label': 'Fourrure de clairière',
-  'entities.quests.q_brightwood_thinning.text':
-    "La clairière de Brightwood est envahie, {playerName}. Les lynx des ronces se reproduisent plus vite que je ne peux les abattre, et les hardes piétinent le peu de pâture qu'il reste. Tuez 8 lynx des ronces et rapportez-moi 6 fourrures de clairière, que je juge de la santé du reste.",
-  'entities.quests.q_brightwood_thinning.title': 'Éclaircir la clairière',
-  'entities.quests.q_ledger_brood.completion':
-    "Une sombre besogne, que de noyer un nid. Mais la clémence aujourd'hui, c'est une centaine d'enterrements épargnés plus tard. Le registre est en règle.",
-  'entities.quests.q_ledger_brood.objectives.0.label': 'Jeune Sableweb écrasé',
-  'entities.quests.q_ledger_brood.text':
-    "Tuer les rôdeurs n'a fait que laisser la place à la couvée. Les jeunes Sableweb se déversent du nid profond, et cent petits crocs tuent un voyageur aussi sûrement qu'un seul énorme. Écrasez 8 jeunes Sableweb avant qu'ils ne grandissent.",
-  'entities.quests.q_ledger_brood.title': 'Les ténèbres qui essaiment',
-  'entities.quests.q_ledger_deepvermin.completion':
-    'Douze de ces vermines à tête de chandelle, disparues ! Bien, les gars - on redescend dans le puits. Vous avez mérité un bon mot auprès du maréchal, {playerName}.',
-  'entities.quests.q_ledger_deepvermin.objectives.0.label': 'Terrassier Rat des tunnels tué',
-  'entities.quests.q_ledger_deepvermin.text':
-    "Le registre du maréchal dit que vous débarrassez des nuisibles. Eh bien, ma galerie en a les pires. Les rats des tunnels se reproduisent plus vite que mon équipe ne manie la pioche - abattez 12 Terrassiers Rat des tunnels et peut-être trouverons-nous le cuivre avant l'hiver.",
-  'entities.quests.q_ledger_deepvermin.title': 'Vermine des profondeurs',
-  'entities.quests.q_ledger_first_duty.completion':
-    "Huit terriers vidés et le sol du bosquet s'est tassé. Bien. Chaque nom de ce registre a commencé là où vous vous tenez.",
-  'entities.quests.q_ledger_first_duty.objectives.0.label': "Blaireau Pelage-d'épines abattu",
-  'entities.quests.q_ledger_first_duty.text':
-    "Vous voulez gagner votre place à Eastbrook, {playerName} ? Alors commencez là où commence tout gardien. Les blaireaux pelage-d'épines ont creusé leurs terriers à travers toute la Clairière de Brightwood, loin au nord au-delà de la Piste des loups, et le sol du bosquet s'effondre dans leurs galeries. Abattez 8 Blaireaux Pelage-d'épines et le registre retiendra votre nom.",
-  'entities.quests.q_ledger_first_duty.title': "Le premier devoir d'un gardien",
-  'entities.quests.q_ledger_great_boar.completion':
-    "L'Ancien Bristleback, mort de votre main ! Cette peau à elle seule vaut une saison de commerce. Vous avez fait la fierté du registre, {playerName}.",
-  'entities.quests.q_ledger_great_boar.objectives.0.label': 'Ancien Bristleback tué',
-  'entities.quests.q_ledger_great_boar.objectives.1.label': 'Sanglier sauvage de la harde tué',
-  'entities.quests.q_ledger_great_boar.text':
-    "Il y a un vieux sanglier mâle dans les fourrés de l'ouest - l'Ancien Bristleback, une peau dure comme l'écorce et un tempérament à l'avenant. Il a encorné deux de mes écorcheurs. Abattez-le et éliminez 6 des sangliers sauvages moindres qui s'abritent derrière lui, et je ferai inscrire votre nom au plus haut du registre.",
-  'entities.quests.q_ledger_great_boar.title': 'Le grand Bristleback',
-  'entities.quests.q_ledger_outlaw_captain.completion':
-    "Le capitaine Verlan, mort, et son manteau apporté à ma porte. Le registre est clos, {playerName} - et le Val dira aux gardiens à venir le nom de celui qui l'a clos.",
-  'entities.quests.q_ledger_outlaw_captain.objectives.0.label': 'Bandit du Val abattu',
-  'entities.quests.q_ledger_outlaw_captain.objectives.1.label': 'Capitaine Verlan tué',
-  'entities.quests.q_ledger_outlaw_captain.text':
-    "Le dernier nom du registre est celui que je veux rayé depuis un an : le capitaine Verlan, qui a fait basculer la moitié du Val dans le banditisme. Il se terre derrière ses lieutenants dans le camp du sud-est. Abattez 6 bandits du Val pour l'atteindre, puis achevez Verlan lui-même. N'y allez pas seul.",
-  'entities.quests.q_ledger_outlaw_captain.title': 'Le capitaine hors-la-loi',
-  'entities.quests.q_ledger_reedwater.completion':
-    'Voilà qui tiendra ces voleuses à longues pattes loin de mes filets pour une saison. Dites au maréchal que les bas-fonds sont de nouveau à moi.',
-  'entities.quests.q_ledger_reedwater.objectives.0.label': 'Grue des prairies chassée',
-  'entities.quests.q_ledger_reedwater.text':
-    "Redbrook vous envoie ? Bien - ces vieux os ne peuvent plus patauger dans les bas-fonds. Les grues des prairies ont trouvé mes filets, et elles harponnent davantage de mes prises que les Aileron-de-boue ne l'ont jamais fait. Éclaircissez leurs rangs : 8 grues des prairies, et prenez garde à l'eau profonde.",
-  'entities.quests.q_ledger_reedwater.title': 'Patrouille des roselières',
-  'entities.quests.q_ledger_silk.completion':
-    "Les plates-bandes pourront peut-être se rétablir, grâce à vous. Une clémence cruelle - mais un enfant brûlant de fièvre a plus besoin des simples que le bois n'a besoin des cerfs. Le registre est en règle.",
-  'entities.quests.q_ledger_silk.objectives.0.label': 'Faon tacheté abattu',
-  'entities.quests.q_ledger_silk.text':
-    "Le registre marque aussi les bois de l'est comme terre de gardien - et mes plates-bandes médicinales en font partie. Les faons tachetés ont ravagé jusqu'à la racine ma feuille d'argent et mon sang-chardon, et sans ces simples la moitié d'Eastbrook se retrouve sans remèdes. Je n'y prends nulle joie, mais abattez 8 faons tachetés avant que les herbes d'automne ne soient perdues à jamais.",
-  'entities.quests.q_ledger_silk.title': 'Brout et broussailles',
-  'entities.quests.q_ledger_teeth.completion':
-    'Dix renards, et les poulaillers sont enfin paisibles au crépuscule. Le registre se fait plus clément envers vous.',
-  'entities.quests.q_ledger_teeth.objectives.0.label': 'Renard des clairières tué',
-  'entities.quests.q_ledger_teeth.text':
-    "Les renards des clairières sont devenus hardis comme des loups - ils se faufilent dans les poulaillers au crépuscule et disparaissent avant qu'on n'allume une lanterne, et une renarde affamée emportera un agneau aussi volontiers qu'une poule. Éclaircissez leurs rangs, {playerName}. Tuez 10 renards des clairières et que les autres réapprennent à craindre la lumière.",
-  'entities.quests.q_ledger_teeth.title': "Des crocs dans l'obscurité",
-  'entities.quests.q_ledger_toll.completion':
-    'Huit brutes débarrassées de la route, et les chariots roulent de nouveau. Le bruit court déjà que la route commerciale a un nouveau gardien. Le registre grimpe en votre faveur.',
-  'entities.quests.q_ledger_toll.objectives.0.label': 'Sanglier grandcroc tué',
-  'entities.quests.q_ledger_toll.text':
-    'Les sangliers grandcroc sont descendus de Bois-clair sur la route commerciale du sud-est - de grandes brutes à défenses qui encornent les bœufs de trait et renversent les chariots pour le grain répandu. Le registre met un prix sur la tête de chacun. Rouvrez la route : abattez 8 sangliers grandcroc.',
-  'entities.quests.q_ledger_toll.title': 'La route aux défenses',
-  'entities.quests.q_ledger_vigil.completion':
-    'Dix âmes rendues à la terre, et une nuit de paix achetée pour la chapelle. La Lumière se souvient de telles veilles, même quand le registre les oublie.',
-  'entities.quests.q_ledger_vigil.objectives.0.label': 'Ossements agités remis au repos',
-  'entities.quests.q_ledger_vigil.text':
-    "Le maréchal m'envoie ses gardiens quand le trouble dépasse la portée des seules épées. Les morts de la chapelle ne veulent pas reposer en paix, et je suis trop vieux pour tenir la veille de nuit. Tenez-la pour moi, {playerName} - remettez 10 ossements agités au repos.",
-  'entities.quests.q_ledger_vigil.title': 'Veille à la chapelle',
   'entities.zones.eastbrook_vale.pois.8.label': 'Clairière de Brightwood',
   'fiesta.augment.aug_apex_predator.desc':
     '+40% de dégâts physiques, +15% de critique, vous soigne de 12% des dégâts infligés.',

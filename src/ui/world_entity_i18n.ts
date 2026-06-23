@@ -73,14 +73,6 @@ const MOB_IDS = [
   'bound_guardian',
   'nythraxis_skeleton_warrior',
   'nythraxis_scourge_of_thornpeak',
-  // Brightwood Glade wildlife pack
-  'glade_fox',
-  'spotted_fawn',
-  'meadow_crane',
-  'thornpelt_badger',
-  'bramble_lynx',
-  'grovetusk_boar',
-  'brightwood_monarch',
 ] as const;
 
 const NPC_IDS = [
@@ -178,18 +170,6 @@ const QUEST_IDS = [
   'q_nythraxis_sealed_crypt',
   'q_nythraxis_bound_guardian',
   'q_nythraxis_scourges_end',
-  'q_brightwood_thinning',
-  'q_brightwood_monarch',
-  'q_ledger_first_duty',
-  'q_ledger_teeth',
-  'q_ledger_reedwater',
-  'q_ledger_silk',
-  'q_ledger_brood',
-  'q_ledger_deepvermin',
-  'q_ledger_toll',
-  'q_ledger_vigil',
-  'q_ledger_great_boar',
-  'q_ledger_outlaw_captain',
 ] as const;
 
 const ZONE_IDS = ['eastbrook_vale', 'mirefen_marsh', 'thornpeak_heights'] as const;

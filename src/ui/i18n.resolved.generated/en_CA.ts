@@ -4095,9 +4095,6 @@ export const en_CA: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Monarch's Crown"
       },
-      "monarch_heart": {
-        "name": "The Monarch's Heart"
-      },
       "bristleback_maul": {
         "name": "Bristleback Maul"
       },
@@ -4724,30 +4721,6 @@ export const en_CA: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Scourge of Thornpeak"
       },
-      "glade_fox": {
-        "name": "Glade Fox"
-      },
-      "spotted_fawn": {
-        "name": "Spotted Fawn"
-      },
-      "meadow_crane": {
-        "name": "Meadow Crane"
-      },
-      "thornpelt_badger": {
-        "name": "Thornpelt Badger"
-      },
-      "bramble_lynx": {
-        "name": "Bramble Lynx"
-      },
-      "grovetusk_boar": {
-        "name": "Grovetusk Boar"
-      },
-      "brightwood_monarch": {
-        "name": "The Brightwood Monarch"
-      },
-      "elder_bristleback": {
-        "name": "Elder Bristleback"
-      },
       "ironvein_foreman": {
         "name": "Ironvein Foreman"
       },
@@ -4772,12 +4745,6 @@ export const en_CA: EnTranslations = {
       "nhalia_mourner": {
         "name": "Nhalia Mourner"
       },
-      "sableweb_hatchling": {
-        "name": "Sableweb Hatchling"
-      },
-      "sableweb_matriarch": {
-        "name": "Sableweb Matriarch"
-      },
       "sister_nhalia": {
         "name": "Sister Nhalia"
       },
@@ -4798,9 +4765,6 @@ export const en_CA: EnTranslations = {
       },
       "brutok_skullsmasher": {
         "name": "Brutok Skullsmasher"
-      },
-      "captain_verlan": {
-        "name": "Captain Verlan"
       },
       "old_cragmaw": {
         "name": "Old Cragmaw"
@@ -5715,135 +5679,6 @@ export const en_CA: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Nythraxis slain"
-          }
-        }
-      },
-      "q_brightwood_thinning": {
-        "title": "Thinning the Glade",
-        "text": "Brightwood Glade is overrun, {playerName}. The bramble lynx breed faster than I can cull them, and the herds trample what little grazing is left. Slay 8 Bramble Lynx and bring me 6 Glade Pelts so I can judge the health of the rest.",
-        "completion": "Good. The pride is thinned and these pelts are sound - the glade will hold another season.",
-        "objectives": {
-          "0": {
-            "label": "Bramble Lynx slain"
-          },
-          "1": {
-            "label": "Glade Pelt"
-          }
-        }
-      },
-      "q_brightwood_monarch": {
-        "title": "The Brightwood Monarch",
-        "text": "There is one beast I will not loose an arrow at alone: the Brightwood Monarch, the great stag that rules the deep glade. He has grown old and savage, goring any who near his hollow. He is more than a match for one hunter - bring a friend or two. Lay him to rest and bring me his heart, {playerName}.",
-        "completion": "So the old king has fallen. A heavy thing, this - but a kinder end than the wolves would have given him. Wear this crown of his antlers with respect, {playerName}.",
-        "objectives": {
-          "0": {
-            "label": "The Monarch's Heart"
-          }
-        }
-      },
-      "q_ledger_first_duty": {
-        "title": "A Warden's First Duty",
-        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The thornpelt badgers have dug their setts through the south edge of Brightwood Glade, and the grove floor is caving into their burrows. Cull 8 Thornpelt Badgers and the ledger will remember your name.",
-        "completion": "Eight setts emptied and the grove floor settled. Good. Every name in this ledger started just where you are standing.",
-        "objectives": {
-          "0": {
-            "label": "Thornpelt Badger culled"
-          }
-        }
-      },
-      "q_ledger_teeth": {
-        "title": "Teeth in the Dark",
-        "text": "The glade foxes have grown bold as wolves - they slip the henhouses at dusk and are gone before a lantern is lit, and a hungry vixen will take a lamb as soon as a hen. Thin them, {playerName}. Slay 10 Glade Foxes and let the rest learn to fear the light again.",
-        "completion": "Ten foxes, and the henhouses are quiet at dusk again. The ledger grows kinder to you.",
-        "objectives": {
-          "0": {
-            "label": "Glade Fox slain"
-          }
-        }
-      },
-      "q_ledger_reedwater": {
-        "title": "Reedwater Patrol",
-        "text": "Redbrook sent you? Good. The meadow cranes have settled in the wet grass south of town, and they spear more fry than my nets can spare. Thin them: 8 Meadow Cranes, and mind the marshy ground.",
-        "completion": "That will keep the long-legged thieves out of the south meadow for a season. Tell the Marshal the cranes are thinned.",
-        "objectives": {
-          "0": {
-            "label": "Meadow Crane driven off"
-          }
-        }
-      },
-      "q_ledger_silk": {
-        "title": "Browse and Bramble",
-        "text": "The ledger marks the southern glade as warden ground too, and my physic-beds sit close enough to suffer for it. The spotted fawns have stripped my silverleaf and bloodthistle to the root, and without those simples half of Eastbrook goes without medicine. I take no joy in it, but cull 8 Spotted Fawns before the autumn herbs are lost entirely.",
-        "completion": "The beds may yet recover, thanks to you. A hard mercy - but a child burning with fever needs the simples more than the wood needs the deer. The ledger is square.",
-        "objectives": {
-          "0": {
-            "label": "Spotted Fawn culled"
-          }
-        }
-      },
-      "q_ledger_brood": {
-        "title": "The Spawning Dark",
-        "text": "Killing the lurkers only made room for the brood. The Sableweb hatchlings are pouring out of the deep nest, and a hundred small fangs kill a traveler as surely as one great one. Crush 8 Sableweb Hatchlings before they grow.",
-        "completion": "A grim work, drowning a nest. But mercy now is a hundred funerals spared later. The ledger is square.",
-        "objectives": {
-          "0": {
-            "label": "Sableweb Hatchling crushed"
-          }
-        }
-      },
-      "q_ledger_deepvermin": {
-        "title": "Vermin in the Deep",
-        "text": "The Marshal's ledger says you clear pests. Well, my dig has the worst of them. The tunnel rats breed faster than my crew can swing a pick - put down 12 Tunnel Rat Diggers and maybe we strike copper before winter.",
-        "completion": "Twelve of the candle-headed vermin, gone! Right, lads - back down the shaft. You have earned the Marshal a good word, {playerName}.",
-        "objectives": {
-          "0": {
-            "label": "Tunnel Rat Digger slain"
-          }
-        }
-      },
-      "q_ledger_toll": {
-        "title": "The Tusked Road",
-        "text": "The grovetusk boars have pushed down through Brightwood Glade and onto the south road, great tusked brutes that gore the draft oxen and overturn carts for the spilled grain. The ledger has a price on every one. Reopen the road: put down 8 Grovetusk Boars.",
-        "completion": "Eight brutes off the road, and the carts are rolling again. Word is already spreading that the trade road has a new keeper. The ledger climbs in your favor.",
-        "objectives": {
-          "0": {
-            "label": "Grovetusk Boar slain"
-          }
-        }
-      },
-      "q_ledger_vigil": {
-        "title": "Vigil at the Chapel",
-        "text": "The Marshal sends his wardens to me when the trouble is past the reach of swords alone. The chapel dead will not lie still, and I am too old to stand the night vigil. Keep it for me, {playerName} - lay 10 Restless Bones back to their rest.",
-        "completion": "Ten souls returned to the earth, and a night of peace bought for the chapel. The Light remembers such vigils, even when the ledger forgets.",
-        "objectives": {
-          "0": {
-            "label": "Restless Bones laid to rest"
-          }
-        }
-      },
-      "q_ledger_great_boar": {
-        "title": "The Great Bristleback",
-        "text": "There is an old bull boar in the western thickets - the Elder Bristleback, hide like bark and a temper to match. He has gored two of my hide-runners. Bring him down and clear 6 of the lesser Wild Boar that shelter behind him, and I will see your name set high in the ledger.",
-        "completion": "The Elder Bristleback, dead by your hand! That hide alone is worth a season of trade. You have made the ledger proud, {playerName}.",
-        "objectives": {
-          "0": {
-            "label": "Elder Bristleback slain"
-          },
-          "1": {
-            "label": "Wild Boar of the herd slain"
-          }
-        }
-      },
-      "q_ledger_outlaw_captain": {
-        "title": "The Outlaw Captain",
-        "text": "The last name in the ledger is the one I have wanted crossed out for a year: Captain Verlan, who turned half the Vale to banditry. He shelters behind his lieutenants in the southeast camp. Cut down 6 Vale Bandits to reach him, then end Verlan himself. Do not go alone.",
-        "completion": "Captain Verlan, dead, and his coat brought to my door. The ledger is closed, {playerName} - and the Vale will tell wardens-to-come the name of the one who closed it.",
-        "objectives": {
-          "0": {
-            "label": "Vale Bandit cut down"
-          },
-          "1": {
-            "label": "Captain Verlan slain"
           }
         }
       },

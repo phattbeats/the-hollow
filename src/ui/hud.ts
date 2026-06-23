@@ -414,7 +414,7 @@ const COMBAT_GAIN = 0.7;
 
 /** Creature-voice family for a mob templateId (boar split from beast), or null. */
 function mobVoiceFamily(templateId: string): string | null {
-  if (templateId === 'wild_boar' || templateId === 'elder_bristleback') return 'boar';
+  if (templateId === 'wild_boar') return 'boar';
   const fam = MOBS[templateId]?.family;
   return fam && SFX_MOB_FAMILIES.has(fam) ? fam : null;
 }

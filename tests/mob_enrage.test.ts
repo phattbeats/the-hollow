@@ -30,8 +30,8 @@ describe('enrage frenzy (swing-speed haste)', () => {
   it('an enraged mob with hasteMult swings faster than normal', () => {
     const sim = makeSim();
     const mob = anyMob(sim);
-    mob.templateId = 'elder_bristleback'; // enrage: { ..., hasteMult: 1.3 }
-    const haste = MOBS['elder_bristleback'].enrage!.hasteMult!;
+    mob.templateId = 'mogger'; // enrage: { ..., hasteMult: 1.3 }
+    const haste = MOBS['mogger'].enrage!.hasteMult!;
     expect(haste).toBeGreaterThan(1);
 
     mob.enraged = false;
@@ -45,7 +45,7 @@ describe('enrage frenzy (swing-speed haste)', () => {
   it('does nothing when the mob is not enraged', () => {
     const sim = makeSim();
     const mob = anyMob(sim);
-    mob.templateId = 'elder_bristleback';
+    mob.templateId = 'mogger';
     mob.enraged = false;
     expect(swingMult(sim, mob)).toBeCloseTo(1, 6);
   });
@@ -63,8 +63,8 @@ describe('enrage frenzy (swing-speed haste)', () => {
   it('composes multiplicatively with a slow aura', () => {
     const sim = makeSim();
     const mob = anyMob(sim);
-    mob.templateId = 'elder_bristleback';
-    const haste = MOBS['elder_bristleback'].enrage!.hasteMult!;
+    mob.templateId = 'mogger';
+    const haste = MOBS['mogger'].enrage!.hasteMult!;
     mob.enraged = true;
     // attackspeed aura: value > 1 slows (multiplies the interval)
     mob.auras.push({ kind: 'attackspeed', value: 2, name: 'Thunder Clap', remaining: 10, stacks: 1, sourceId: null } as any);

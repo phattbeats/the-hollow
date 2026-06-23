@@ -60,7 +60,7 @@ describe('trivial mobs go passive', () => {
   it('an elite/rare mob is never trivial and aggros even far below level', () => {
     const sim = makeSim();
     const mob = nearestMob(sim);
-    mob.templateId = 'elder_bristleback'; // elite + rare template
+    mob.templateId = 'mogger'; // elite + rare template
     mob.level = 2;
     sim.player.level = 30;
     placeIdleOnPlayer(sim, mob);

@@ -2239,7 +2239,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': '縛られしコルガス',
   'entities.mobs.grand_necromancer_velkhar.name': '大死霊術師ヴェルカー',
   'entities.mobs.korzul_the_gravewyrm.name': '墓ワームのコルズル',
-  'entities.mobs.elder_bristleback.name': '老ブリストルバック',
   'entities.mobs.ironvein_foreman.name': '鉄脈の現場監督',
   'entities.mobs.ironvein_sapper.name': '鉄脈の爆破兵',
   'entities.mobs.marrowlord_varkas.name': '髄王ヴァーカス',
@@ -2248,8 +2247,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': 'モガー',
   'entities.mobs.mogger_lackey.name': 'モガーの手下',
   'entities.mobs.nhalia_mourner.name': 'ナリアの嘆き手',
-  'entities.mobs.sableweb_hatchling.name': 'セーブルウェブの幼体',
-  'entities.mobs.sableweb_matriarch.name': 'セーブルウェブの女家長',
   'entities.mobs.sister_nhalia.name': 'シスター・ナリア',
   'entities.mobs.varkas_boneguard.name': 'ヴァーカスの骨衛兵',
   'entities.mobs.imp.name': 'インプ',
@@ -2980,7 +2977,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': '潮裂きのギャフ',
   'entities.items.verlans_oathblade.name': 'ヴァーランの誓約刃',
   'entities.mobs.brutok_skullsmasher.name': '頭蓋砕きブルトーク',
-  'entities.mobs.captain_verlan.name': 'ヴァーラン隊長',
   'entities.mobs.old_cragmaw.name': '老いたるクラッグモウ',
   'entities.mobs.sloomtooth_the_drowned.name': '溺れし者スルームトゥース',
   'entities.mobs.voskar_emberwing.name': '燃え翼のヴォスカル',
@@ -2992,7 +2988,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.brightwood_venison.name': 'ブライトウッドの鹿肉',
   'entities.items.bramblehide_jerkin.name': '茨革のジャーキン',
   'entities.items.monarch_crown_helm.name': '君主の王冠',
-  'entities.items.monarch_heart.name': '君主の心臓',
   'entities.mobs.nythraxis_skeleton_warrior.name': '蘇った王家の衛兵',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'ナイスラクシス、ソーンピークの災厄',
   // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
@@ -3010,92 +3005,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': '{channel}に送信',
   'hud.options.npcVoices': 'NPCボイス',
   'hud.options.voiceVolume': 'ボイス音量',
-  'entities.mobs.bramble_lynx.name': '茨のオオヤマネコ',
-  'entities.mobs.brightwood_monarch.name': 'ブライトウッドの君主',
-  'entities.mobs.glade_fox.name': '林間のキツネ',
-  'entities.mobs.grovetusk_boar.name': '木立牙の猪',
-  'entities.mobs.meadow_crane.name': '草原のツル',
-  'entities.mobs.spotted_fawn.name': '斑模様の子鹿',
-  'entities.mobs.thornpelt_badger.name': '茨毛のアナグマ',
   'entities.npcs.ranger_elwyn.greeting':
     '静かに、{className}。今日の林間は穏やかだ。私はこのまま保つつもりでね。',
   'entities.npcs.ranger_elwyn.name': 'レンジャー・エルウィン',
   'entities.npcs.ranger_elwyn.title': '林間の守り手',
-  'entities.quests.q_brightwood_monarch.completion':
-    'では老いた王は倒れたか。重いことだ。だが狼に殺されるよりは安らかな最期だった。その角の王冠を敬意とともに身につけてくれ、{playerName}。',
-  'entities.quests.q_brightwood_monarch.objectives.0.label': '君主の心臓',
-  'entities.quests.q_brightwood_monarch.text':
-    'ひとりでは矢を放たぬ獣が一頭いる。ブライトウッドの君主、深い林間を治める大牡鹿だ。年老いて獰猛になり、その隠れ家に近づく者は誰彼かまわず角で突く。ハンターひとりの手には余る。仲間を一人か二人連れていけ。あれを安らかに眠らせ、その心臓を持ち帰ってくれ、{playerName}。',
-  'entities.quests.q_brightwood_monarch.title': 'ブライトウッドの君主',
-  'entities.quests.q_brightwood_thinning.completion':
-    'よし。群れは間引かれ、これらの毛皮も上等だ。林間はもう一季節もちこたえるだろう。',
-  'entities.quests.q_brightwood_thinning.objectives.0.label': '茨のオオヤマネコを討伐',
-  'entities.quests.q_brightwood_thinning.objectives.1.label': '林間の毛皮',
-  'entities.quests.q_brightwood_thinning.text':
-    'ブライトウッドの林間はあふれかえっている、{playerName}。茨のオオヤマネコは私が間引くよりも速く増え、群れはわずかに残った牧草地を踏み荒らす。茨のオオヤマネコを8体倒し、林間の毛皮を6枚持ってきてくれ。残りの健康状態を見極められるように。',
-  'entities.quests.q_brightwood_thinning.title': '林間を間引く',
-  'entities.quests.q_ledger_brood.completion':
-    '巣を水に沈めるとは陰惨な仕事だ。だが今の慈悲は、後に避けられる百の葬式だ。帳尻は合った。',
-  'entities.quests.q_ledger_brood.objectives.0.label': 'セーブルウェブの幼体を粉砕',
-  'entities.quests.q_ledger_brood.text':
-    '潜伏者を殺したことが、かえって幼体に場所を空けてしまった。セーブルウェブの幼体が深い巣からあふれ出ている。小さな牙が百本あれば、大きな一本と同じく確実に旅人を殺す。育つ前にセーブルウェブの幼体を8体粉砕してくれ。',
-  'entities.quests.q_ledger_brood.title': '湧き出す闇',
-  'entities.quests.q_ledger_deepvermin.completion':
-    'ろうそく頭の害獣が十二匹も片付いた！よし、お前たち、坑道へ戻るぞ。元帥にお前のことを良く言っておくぞ、{playerName}。',
-  'entities.quests.q_ledger_deepvermin.objectives.0.label': 'トンネルラット掘りを討伐',
-  'entities.quests.q_ledger_deepvermin.text':
-    '元帥の記録には、お前が害獣を始末すると書いてある。さて、わしの採掘場のは中でも最悪だ。トンネルラットは掘り子がつるはしを振るうより速く増える。トンネルラット掘りを12体始末してくれ。そうすれば冬までに銅を掘り当てられるかもしれん。',
-  'entities.quests.q_ledger_deepvermin.title': '深部の害獣',
-  'entities.quests.q_ledger_first_duty.completion':
-    '巣穴が八つ空になり、林間の地面も落ち着いた。よし。この記録のどの名前も、まさにお前が今立っているところから始まったのだ。',
-  'entities.quests.q_ledger_first_duty.objectives.0.label': '茨毛のアナグマを間引く',
-  'entities.quests.q_ledger_first_duty.text':
-    'イーストブルックで一人前になりたいか、{playerName}？ならばどの番人も始める場所から始めよ。茨毛のアナグマどもが、狼の道を越えたはるか北のブライトウッドの林間を掘り抜いて巣穴を作りおった。林間の地面はやつらの巣穴に陥没しかけている。茨毛のアナグマを8体間引けば、記録はお前の名を覚えるだろう。',
-  'entities.quests.q_ledger_first_duty.title': '番人の初仕事',
-  'entities.quests.q_ledger_great_boar.completion':
-    '老ブリストルバック、お前の手で討たれたか！あの皮一枚で一季節分の交易に値する。お前は記録の誇りとなった、{playerName}。',
-  'entities.quests.q_ledger_great_boar.objectives.0.label': '老ブリストルバックを討伐',
-  'entities.quests.q_ledger_great_boar.objectives.1.label': '群れの野生の猪を討伐',
-  'entities.quests.q_ledger_great_boar.text':
-    '西の茂みに老いた牡の猪がいる。老ブリストルバックだ。樹皮のような皮と、それに見合う気性をしている。あれは私の皮運びを二人も角で突いた。あれを倒し、その後ろに身を寄せる下級の野生の猪を6頭片付けてくれ。そうすればお前の名を記録の上位に記そう。',
-  'entities.quests.q_ledger_great_boar.title': '大いなるブリストルバック',
-  'entities.quests.q_ledger_outlaw_captain.completion':
-    'ヴァーラン隊長は死に、その外套は私の戸口に届けられた。記録は閉じられた、{playerName}。そして谷は、来たるべき番人たちに、それを閉じた者の名を語り継ぐだろう。',
-  'entities.quests.q_ledger_outlaw_captain.objectives.0.label': '谷の盗賊を斬り倒す',
-  'entities.quests.q_ledger_outlaw_captain.objectives.1.label': 'ヴァーラン隊長を討伐',
-  'entities.quests.q_ledger_outlaw_captain.text':
-    '記録の最後の名は、一年も消したいと思っていた者だ。ヴァーラン隊長、谷の半分を盗賊稼業に堕とした男だ。南東の野営地で副官たちの陰に身を潜めている。あれに辿り着くまでに谷の盗賊を6人斬り倒し、それからヴァーラン本人を始末せよ。ひとりで行くな。',
-  'entities.quests.q_ledger_outlaw_captain.title': '無法者の隊長',
-  'entities.quests.q_ledger_reedwater.completion':
-    'これでひと季節は、あの脚長の盗っ人どもを私の網から遠ざけておける。元帥に、浅瀬はまた私のものになったと伝えてくれ。',
-  'entities.quests.q_ledger_reedwater.objectives.0.label': '草原のツルを追い払う',
-  'entities.quests.q_ledger_reedwater.text':
-    'レッドブルックが寄こしたのか？よし。この老骨ではもう浅瀬を渡れぬ。草原のツルどもが私の網を見つけてな、泥ひれの連中などよりずっと多くの獲物をその嘴で突き刺していく。間引いてくれ。草原のツルを8羽、それと深みには気をつけろ。',
-  'entities.quests.q_ledger_reedwater.title': '葦の水辺の巡回',
-  'entities.quests.q_ledger_silk.completion':
-    'お前のおかげで、畑はまだ立ち直れるかもしれぬ。つらい慈悲だ。だが熱に焼かれる子供には、森が鹿を必要とする以上に薬草が要る。記録は清算された。',
-  'entities.quests.q_ledger_silk.objectives.0.label': 'まだらの子鹿を間引く',
-  'entities.quests.q_ledger_silk.text':
-    '記録は東の森も番人の領分と記している。私の薬草畑もその一部だ。まだらの子鹿どもが私のシルバーリーフとブラッドシスルを根こそぎ食い尽くしてしまい、あの薬草がなければイーストブルックの半数が薬にありつけぬ。気は進まぬが、秋の薬草が完全に失われる前に、まだらの子鹿を8頭間引いてくれ。',
-  'entities.quests.q_ledger_silk.title': '若葉と茨',
-  'entities.quests.q_ledger_teeth.completion':
-    'キツネが十匹、そして鶏小屋は黄昏どきにもまた静かになった。記録はお前に優しくなっていく。',
-  'entities.quests.q_ledger_teeth.objectives.0.label': '林間のキツネを討伐',
-  'entities.quests.q_ledger_teeth.text':
-    '林間のキツネどもが狼のように図太くなってな。黄昏どきに鶏小屋へ忍び込み、ランタンに火が灯る前には姿を消す。腹を空かせた牝ギツネは、鶏と同じくらい気軽に子羊もさらっていく。あれを間引いてくれ、{playerName}。林間のキツネを10匹仕留め、残りに再び光を恐れることを覚えさせるのだ。',
-  'entities.quests.q_ledger_teeth.title': '闇の中の牙',
-  'entities.quests.q_ledger_toll.completion':
-    '獣が八頭、道から消え、荷車はまた動き出した。交易路に新しい番人がついたという噂はもう広まっている。記録はお前に有利に傾いていく。',
-  'entities.quests.q_ledger_toll.objectives.0.label': '牙森の猪を討伐',
-  'entities.quests.q_ledger_toll.text':
-    '牙森の猪どもがブライトウッドから下りてきて、南東の交易路に居ついてしまった。荷役の牛を牙で突き、こぼれた穀物欲しさに荷車をひっくり返す、大きな牙を持つ獰猛な獣どもだ。記録にはその一頭ごとに賞金がかかっている。道を再び開け。牙森の猪を8頭始末してくれ。',
-  'entities.quests.q_ledger_toll.title': '牙の道',
-  'entities.quests.q_ledger_vigil.completion':
-    '十の魂が大地に還り、礼拝堂に一夜の安らぎが買われた。たとえ記録が忘れても、聖なる光はこのような夜伽を覚えている。',
-  'entities.quests.q_ledger_vigil.objectives.0.label': '安らがぬ骨を安らかに眠らせる',
-  'entities.quests.q_ledger_vigil.text':
-    '元帥は、剣だけでは手に余る厄介事のとき、番人を私のもとへ寄こす。礼拝堂の死者たちはじっと横たわってくれず、私は夜伽を続けるには年を取りすぎた。私に代わって守ってくれ、{playerName}。安らがぬ骨を10体、ふたたび安らぎへと戻してくれ。',
-  'entities.quests.q_ledger_vigil.title': '礼拝堂の夜伽',
   'entities.zones.eastbrook_vale.pois.8.label': 'ブライトウッドの林間',
   'fiesta.augment.aug_apex_predator.desc':
     '物理ダメージ+40%、クリティカル+15%、与えたダメージの12%を回復。',

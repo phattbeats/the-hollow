@@ -61,8 +61,4 @@ describe('innate mob thorns (Bristled Hide)', () => {
     expect(player.hp).toBe(before);
   });
 
-  it('the elite Elder Bristleback carries a heavier coat of bristles', () => {
-    expect(MOBS['elder_bristleback'].thorns!.value)
-      .toBeGreaterThan(MOBS['wild_boar'].thorns!.value);
-  });
 });
