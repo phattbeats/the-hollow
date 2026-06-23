@@ -4597,6 +4597,8 @@ export class Hud {
       'You cannot afford that.': 'itemUi.errors.cannotAfford',
       'That is not your listing.': 'itemUi.errors.notYourListing',
       'You have nothing to collect.': 'itemUi.errors.nothingToCollect',
+      "You can't assist yourself.": 'hud.errors.assistSelf',
+      'Assist whom? Target a player or use /assist <name>.': 'hud.errors.assistWhom',
     };
     const key = exact[text];
     if (key) return t(key);
@@ -4613,6 +4615,13 @@ export class Hud {
     if (match) return t('hud.errors.whisperAmbiguous', { name: match[1] });
     match = /^There is no player named '(.+)' online\.$/.exec(text);
     if (match) return t('hud.errors.whisperMissing', { name: match[1] });
+    match = /^Assisting (.+)\.$/.exec(text);
+    if (match) return t('hud.errors.assisting', { name: match[1] });
+    // Assist reply only: anchor the name to a single un-punctuated token run so a
+    // future unmapped "... has no target." sim line is not mis-localized with a wrong
+    // {name}. Player names never contain a period, so excluding "." keeps this specific.
+    match = /^([^.]+) has no target\.$/.exec(text);
+    if (match) return t('hud.errors.assistNoTarget', { name: match[1] });
     // Lenient suffix match: the sim's command-help list (". Try /s /y /w /p /g, /me, …")
     // evolves over time; capture the command non-greedily and tolerate any "Try /…" tail
     // so this never silently falls through to raw English again.
