@@ -123,7 +123,7 @@ describe('druid spell pack — casting applies effects', () => {
     expect(e.resource).toBeGreaterThan(0);
   });
 
-  it('Travel Form shapeshifts and grants +100% movement speed out of combat', () => {
+  it('Travel Form shapeshifts and grants +40% movement speed out of combat', () => {
     const sim = makeWorld();
     const a = sim.addPlayer('druid', 'Walker');
     const e = sim.entities.get(a)!;
@@ -133,8 +133,8 @@ describe('druid spell pack — casting applies effects', () => {
     sim.tick();
     const form = e.auras.find((au) => au.kind === 'form_travel');
     expect(form, 'travel_form should apply a form_travel aura').toBeTruthy();
-    expect(form!.value).toBeCloseTo(2.0);
-    expect((sim as any).moveSpeedMult(e)).toBeCloseTo(2.0);
+    expect(form!.value).toBeCloseTo(1.4);
+    expect((sim as any).moveSpeedMult(e)).toBeCloseTo(1.4);
   });
 
   // Regression guard for the player-facing path: moveSpeedMult alone passing is not
@@ -160,8 +160,8 @@ describe('druid spell pack — casting applies effects', () => {
     const base = distanceOver(false);
     const travel = distanceOver(true);
     expect(base).toBeGreaterThan(0);
-    // +100% speed: should cover close to twice the ground (allow slack for terrain).
-    expect(travel / base).toBeGreaterThan(1.8);
+    // +40% speed: should cover about 1.4x the ground (allow slack for terrain).
+    expect(travel / base).toBeCloseTo(1.4, 1);
   });
 
   it('Travel Form toggles off cleanly, removing the form and the speed', () => {
