@@ -174,6 +174,28 @@ export const en_XA: EnTranslations = {
       "title": "[Éɱóţéš]",
       "done": "[Ðóñé]"
     },
+    "theme": {
+      "preset": "[ÚÍ Ţĥéɱé]",
+      "customColors": "[Çúšţóɱ Çóļóŕš]",
+      "reset": "[Ŕéšéţ]",
+      "presets": {
+        "classic": "[Çļáššíç Ĝóļð]",
+        "midnight": "[Ɱíðñíĝĥţ]",
+        "parchment": "[Þáŕçĥɱéñţ]",
+        "highContrast": "[Ĥíĝĥ Çóñţŕášţ]"
+      },
+      "knob": {
+        "accent": "[Áççéñţ]",
+        "border": "[Ɓóŕðéŕ]",
+        "panel": "[Ƒŕáɱé]",
+        "text": "[Ţéẋţ]",
+        "textMuted": "[Ɱúţéð Ţéẋţ]",
+        "hp": "[Ĥéáļţĥ]",
+        "mana": "[Ɱáñá]",
+        "rage": "[Ŕáĝé]",
+        "energy": "[Éñéŕĝý]"
+      }
+    },
     "questTracker": {
       "count": "[({count})]",
       "collapseHint": "[Çóļļáþšé ɋúéšţ ţŕáçķéŕ]",
@@ -253,6 +275,8 @@ export const en_XA: EnTranslations = {
       "interfaceModeNote": "[Áúţó þíçķš ðéšķţóþ óŕ ţóúçĥ çóñţŕóļš ƒŕóɱ ýóúŕ ðéʋíçé. Çĥóóšé Ðéšķţóþ ţó ƒóŕçé ķéýƀóáŕð áñð ɱóúšé (úšéƒúļ óñ á ţáƀļéţ ŵíţĥ á ķéýƀóáŕð), óŕ Ţóúçĥ ƒóŕ ţĥé óñ-šçŕééñ çóñţŕóļš.]",
       "footstepSounds": "[Ƒóóţšţéþ Šóúñðš]",
       "clickFeedback": "[Çļíçķ Ɱáŕķéŕ]",
+      "lockCursorOnRotate": "[Ļóçķ Çúŕšóŕ Ŵĥíļé Ŕóţáţíñĝ]",
+      "keybindHelpLockCursorOnRotate": "[Ķééþš ţĥé ɱóúšé çúŕšóŕ íñšíðé ţĥé ŵíñðóŵ ŵĥíļé ýóú ðŕáĝ ţó ŕóţáţé ţĥé çáɱéŕá, šó íţ çáññóţ ŕéáçĥ ţĥé šçŕééñ éðĝé óŕ ɱóʋé ţó áñóţĥéŕ ɱóñíţóŕ. Ţúŕñ óƒƒ íƒ ýóú þŕéƒéŕ á ƒŕéé çúŕšóŕ.]",
       "showWalletOnCharacterScreen": "[Šĥóŵ Ŵáļļéţ óñ Çĥáŕáçţéŕ Šçŕééñ]",
       "showWalletOnPlayerCard": "[Šĥóŵ Ŵáļļéţ óñ Þļáýéŕ Çáŕð]",
       "uiScale": "[ÚÍ Šçáļé]",
@@ -3777,6 +3801,9 @@ export const en_XA: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "[Ŕíðĝé Šţáļķéŕ Þéļţ]"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "[Þŕíšţíñé Ŕíðĝé Šţáļķéŕ Þéļţ]"
+      },
       "glowing_wax": {
         "name": "[Ĝļóŵíñĝ Ŵáẋ]"
       },
@@ -4217,6 +4244,9 @@ export const en_XA: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "[Çŕáĝɱáŵ Þŕóŵļƀóóţš]"
+      },
+      "cragmaw_huntcord": {
+        "name": "[Çŕáĝɱáŵ'š Ĥúñţçóŕð]"
       },
       "drowned_tide_scepter": {
         "name": "[Ðŕóŵñéð Ţíðé Šçéþţéŕ]"

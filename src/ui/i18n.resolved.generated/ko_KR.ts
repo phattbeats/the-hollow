@@ -174,6 +174,28 @@ export const ko_KR: EnTranslations = {
       "title": "감정 표현",
       "done": "완료"
     },
+    "theme": {
+      "preset": "UI 테마",
+      "customColors": "사용자 지정 색상",
+      "reset": "초기화",
+      "presets": {
+        "classic": "클래식 골드",
+        "midnight": "미드나이트",
+        "parchment": "양피지",
+        "highContrast": "고대비"
+      },
+      "knob": {
+        "accent": "강조색",
+        "border": "테두리",
+        "panel": "프레임",
+        "text": "텍스트",
+        "textMuted": "보조 텍스트",
+        "hp": "체력",
+        "mana": "마나",
+        "rage": "분노",
+        "energy": "에너지"
+      }
+    },
     "questTracker": {
       "count": "({count})",
       "collapseHint": "퀘스트 추적기 접기",
@@ -253,6 +275,8 @@ export const ko_KR: EnTranslations = {
       "interfaceModeNote": "자동은 기기에 따라 데스크톱 또는 터치 조작을 선택합니다. 데스크톱을 선택하면 키보드와 마우스로 고정되며(키보드가 있는 태블릿 등에 유용), 터치를 선택하면 화면 조작이 됩니다.",
       "footstepSounds": "발소리",
       "clickFeedback": "클릭 표시",
+      "lockCursorOnRotate": "회전 중 커서 고정",
+      "keybindHelpLockCursorOnRotate": "드래그하여 카메라를 회전하는 동안 마우스 커서를 창 안에 유지하여 화면 가장자리에 닿거나 다른 모니터로 이동하지 않도록 합니다. 자유로운 커서를 원하면 끄세요.",
       "showWalletOnCharacterScreen": "캐릭터 화면에 지갑 표시",
       "showWalletOnPlayerCard": "플레이어 카드에 지갑 표시",
       "uiScale": "UI 배율",
@@ -3777,6 +3801,9 @@ export const ko_KR: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "산등성이 추적자 가죽"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "온전한 산등성이 추적자 가죽"
+      },
       "glowing_wax": {
         "name": "빛나는 밀랍"
       },
@@ -4217,6 +4244,9 @@ export const ko_KR: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "크래그모의 잠행 장화"
+      },
+      "cragmaw_huntcord": {
+        "name": "크래그모의 사냥 허리끈"
       },
       "drowned_tide_scepter": {
         "name": "익사한 조수의 셉터"
