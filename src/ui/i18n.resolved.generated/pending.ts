@@ -11,28 +11,58 @@
 export const pending: Record<string, readonly string[]> = {
   "es": [
     "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate"
+    "hudChrome.options.lockCursorOnRotate",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "es_ES": [
     "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate"
+    "hudChrome.options.lockCursorOnRotate",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "fr_FR": [
     "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate"
+    "hudChrome.options.lockCursorOnRotate",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "fr_CA": [
     "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate"
+    "hudChrome.options.lockCursorOnRotate",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "en_CA": [],
   "it_IT": [
     "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate"
+    "hudChrome.options.lockCursorOnRotate",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "de_DE": [
     "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate"
+    "hudChrome.options.lockCursorOnRotate",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "zh_CN": [],
   "zh_TW": [],
@@ -40,7 +70,12 @@ export const pending: Record<string, readonly string[]> = {
   "ja_JP": [],
   "pt_BR": [
     "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate"
+    "hudChrome.options.lockCursorOnRotate",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "ru_RU": []
 };
