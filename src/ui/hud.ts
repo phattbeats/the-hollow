@@ -88,7 +88,7 @@ import {
 import { TouchPeekGuard, TOOLTIP_PEEK_MS } from './touch_peek';
 import { maskProfanity } from './profanity';
 import { formatMoney as formatLocalizedMoney, formatNumber, getLanguage, isSupportedLanguage, moneyParts, supportedLanguages, t, tOptional, tPlural, type SupportedLanguage, type TranslationKey } from './i18n';
-import { tEntity } from './entity_i18n';
+import { itemDisplayName, tEntity } from './entity_i18n';
 import { localizeServerText, localizeZone } from './server_i18n';
 import { localizeSimText, localizeSimAuraName } from './sim_i18n';
 import { tTalent, localizeTalentTitle } from './talent_i18n';
@@ -9779,10 +9779,6 @@ function abilityDisplayDescription(def: AbilityDef, damageText: string): string 
 
 function classDisplayName(cls: PlayerClass): string {
   return tEntity({ kind: 'class', id: cls, field: 'name' });
-}
-
-function itemDisplayName(item: ItemDef): string {
-  return tEntity({ kind: 'item', id: item.id, field: 'name' });
 }
 
 function itemDisplayNameFromSource(name: string): string {

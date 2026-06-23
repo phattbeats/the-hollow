@@ -8,7 +8,7 @@
 // one panel and reports clicks back through the injected callbacks.
 
 import { esc } from './esc';
-import { tEntity } from './entity_i18n';
+import { itemDisplayName } from './entity_i18n';
 import { formatMoney as formatLocalizedMoney, t } from './i18n';
 import { svgIcon } from './ui_icons';
 import type { ItemDef } from '../sim/types';
@@ -30,10 +30,6 @@ export interface VendorWindowDeps {
   onClose(): void;
 }
 
-function itemDisplayName(item: ItemDef): string {
-  return tEntity({ kind: 'item', id: item.id, field: 'name' });
-}
-
 /** Paint the vendor panel from a prepared view. */
 export function renderVendorWindow(
   el: HTMLElement,
@@ -42,19 +38,19 @@ export function renderVendorWindow(
   deps: VendorWindowDeps,
 ): void {
   // The rebuild replaces the hovered row (its mouseleave never fires) and
-  // collapses the scrolled list — drop the tooltip and restore the scroll.
+  // collapses the scrolled list, drop the tooltip and restore the scroll.
   deps.hideTooltip();
   const scrollTop = el.scrollTop;
   el.innerHTML = `<div class="panel-title"><span>${esc(t('itemUi.vendor.goodsTitle', { name: vendorName }))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('itemUi.vendor.close'))}">${svgIcon('close')}</button></div>`;
 
-  for (const { itemId, item } of view.goods) {
+  for (const { itemId, item, price: priceCopper } of view.goods) {
     const row = document.createElement('button');
     row.type = 'button';
     row.className = 'vendor-item';
-    const price = formatLocalizedMoney(item.buyValue ?? 0);
+    const price = formatLocalizedMoney(priceCopper);
     const itemName = itemDisplayName(item);
     row.setAttribute('aria-label', t('itemUi.vendor.buyAria', { item: itemName, price }));
-    row.innerHTML = `${deps.itemIcon(item)}<span class="vi-name">${esc(itemName)}</span><span class="vi-price">${deps.moneyHtml(item.buyValue ?? 0)}</span>`;
+    row.innerHTML = `${deps.itemIcon(item)}<span class="vi-name">${esc(itemName)}</span><span class="vi-price">${deps.moneyHtml(priceCopper)}</span>`;
     row.addEventListener('click', () => deps.onBuy(itemId));
     deps.attachTooltip(row, () => deps.itemTooltip(item) + `<div class="tt-sub">${esc(t('itemUi.tooltip.clickBuy'))}</div>`);
     el.appendChild(row);
@@ -71,14 +67,14 @@ export function renderVendorWindow(
     empty.textContent = t('itemUi.vendor.buybackEmpty');
     el.appendChild(empty);
   }
-  for (const { itemId, item, count } of view.buyback) {
+  for (const { itemId, item, count, price: priceCopper } of view.buyback) {
     const row = document.createElement('button');
     row.type = 'button';
     row.className = 'vendor-item';
-    const price = formatLocalizedMoney(item.sellValue);
+    const price = formatLocalizedMoney(priceCopper);
     const itemName = itemDisplayName(item);
     row.setAttribute('aria-label', t('itemUi.vendor.buybackAria', { item: itemName, price }));
-    row.innerHTML = `${deps.itemIcon(item)}<span class="vi-name">${esc(itemName)}${count > 1 ? ` x${count}` : ''}</span><span class="vi-price">${deps.moneyHtml(item.sellValue)}</span>`;
+    row.innerHTML = `${deps.itemIcon(item)}<span class="vi-name">${esc(itemName)}${count > 1 ? ` x${count}` : ''}</span><span class="vi-price">${deps.moneyHtml(priceCopper)}</span>`;
     row.addEventListener('click', () => deps.onBuyBack(itemId));
     deps.attachTooltip(row, () => deps.itemTooltip(item) + `<div class="tt-sub">${esc(t('itemUi.tooltip.clickBuyback'))}</div>`);
     el.appendChild(row);

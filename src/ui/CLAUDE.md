@@ -89,13 +89,13 @@ drives directly, plus a thin DOM/canvas consumer.
 `hud.ts` is one `Hud` class touched by nearly every PR; that is the merge-conflict tax
 this recipe pays down. Migrate one window at a time, on the rule of three, never as a
 big-bang split. **Reference: the Vendor window (`vendor_view.ts` + `vendor_window.ts`,
-the first window migrated this way) — copy its shape for the next one.**
+the first window migrated this way), copy its shape for the next one.**
 
 The split has three parts:
 1. **Pure view model** (`<window>_view.ts`): a DOM-free, i18n-free `build<Window>View(...)`
    that takes the raw world inputs and returns the structure the window draws (which rows,
    which prices, which flags). This is the only part with branching logic worth testing in
-   isolation. Unit-test it directly in `tests/<window>_view.test.ts` (no DOM) — see
+   isolation. Unit-test it directly in `tests/<window>_view.test.ts` (no DOM): see
    `tests/vendor_view.test.ts`. For sim-derived data add `expect(build()).toEqual(build())`.
 2. **Thin consumer** (`<window>_window.ts`): a `render<Window>(el, ...view, deps)` that paints
    the panel and wires clicks. It imports `t`/`esc`/`svgIcon`/formatters directly but takes
@@ -109,8 +109,9 @@ The split has three parts:
    module with `deps`.
 
 Keep the diff a move-plus-import, not a rewrite (root `extract-and-test` skill). Reuse
-existing `t()` keys where the markup is unchanged — a pure extraction adds no i18n keys
-(Vendor added none). All interpolated names still pass through `esc()`.
+existing `t()` keys where the markup is unchanged (a pure extraction adds no i18n keys;
+Vendor added none). All interpolated names still pass through `esc()`. For item-name
+display, import the shared `itemDisplayName` from `entity_i18n.ts` rather than re-copying it.
 
 ## i18n - IMPORTANT (sparse-overlay model; contributors add ENGLISH ONLY)
 The locale data is split across files. Touch the right one:
