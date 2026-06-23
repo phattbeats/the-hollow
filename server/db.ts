@@ -1181,7 +1181,7 @@ export async function getPlayerCardMetaBySlug(slug: string): Promise<{
   title: string;
   description: string;
   locale: string;
-  updatedAt: string | null;
+  updatedAt: number;
 } | null> {
   const res = await pool.query(
     'SELECT title, description, locale, updated_at FROM player_cards WHERE slug = $1',
@@ -1189,10 +1189,11 @@ export async function getPlayerCardMetaBySlug(slug: string): Promise<{
   );
   const row = res.rows[0];
   if (!row) return null;
-  // `updated_at` (a per-publish timestamp) becomes the og:image cache-buster so a
-  // re-published card's new PNG is re-fetched by social/browser caches instead of
-  // serving the stale one. pg hands back a Date for TIMESTAMPTZ; normalize to ISO.
-  const updatedAt = row.updated_at != null ? new Date(row.updated_at).toISOString() : null;
+  // `updated_at` (a per-publish timestamp) is the og:image cache-buster: a
+  // re-published card gets a new ?v= so social/browser caches re-fetch the new PNG
+  // instead of serving the stale one. Surface it as epoch ms (0 when absent) so the
+  // caller versions the URL directly without re-parsing a string.
+  const updatedAt = row.updated_at != null ? new Date(row.updated_at).getTime() : 0;
   return {
     title: row.title ?? '',
     description: row.description ?? '',
