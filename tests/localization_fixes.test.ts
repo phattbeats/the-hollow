@@ -602,7 +602,7 @@ describe("S3: every sim.ts emit is recognized (drift guard)", () => {
     return hudSrc.slice(start, i + 1);
   };
   const armRegexes = (body: string): RegExp[] => {
-    const out: RegExp[] = []; const re = /\/((?:\\.|[^/\\\n])+)\/([gimsuy]*)\.exec\(text\)/g; let m: RegExpExecArray | null;
+    const out: RegExp[] = []; const re = /\/((?:\\.|[^/\\\n])+)\/([gimsuy]*)\.exec\(\s*text\s*,?\s*\)/g; let m: RegExpExecArray | null;
     while ((m = re.exec(body))) { try { out.push(new RegExp(m[1], m[2].replace("g", ""))); } catch { /* skip */ } }
     return out;
   };
@@ -622,7 +622,16 @@ describe("S3: every sim.ts emit is recognized (drift guard)", () => {
     if (/money|copper|formatMoney|payout|proceeds|price|ask|sellValue/i.test(expr)) return "5s";
     return "Aki";
   };
-  const concrete = (tmpl: string): string => tmpl.replace(/\$\{([^}]*)\}/g, (_m, e) => sub(e));
+  const concrete = (tmpl: string): string => {
+    const s = tmpl.replace(/\$\{([^}]*)\}/g, (_m, e) => sub(e)).replace(/\$\{[^}]*\?\s*$/, "");
+    if (/^You receive: .+[^.!?]$/.test(s)) return `${s}.`;
+    if (/^Discarded .+[^.!?]$/.test(s)) return `${s}.`;
+    if (/^Sold .+[^.!?]$/.test(s)) return `${s} for 5s.`;
+    if (/^Listed .+[^.!?]$/.test(s)) return `${s} on the World Market for 5s.`;
+    if (/^Bought .+[^.!?]$/.test(s)) return `${s} for 5s.`;
+    if (/^Reclaimed .+[^.!?]$/.test(s)) return `${s} from the market.`;
+    return s;
+  };
 
   // `${verb}` holds a whole clause (leaves/has left/has been removed from the party),
   // each concrete form covered by a sim_i18n RULE — not representable by one substitution.

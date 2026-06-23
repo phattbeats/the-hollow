@@ -4444,23 +4444,22 @@ export class Sim {
     this.emit({ type: 'aura', targetId: pet.id, name: 'Tamed', gained: true });
   }
 
-  private summonPet(owner: Entity, templateId: string): void {
-    const template = MOBS[templateId];
-    if (!template) {
-      this.error(owner.id, 'That summon is unavailable.');
-      return;
-    }
+  private createDemonPet(owner: Entity, mobId: string, emit = true): Entity | null {
+    const template = MOBS[mobId];
+    if (!template) return null;
     const existing = this.petOf(owner.id, true);
     if (existing) {
       this.despawnPersistentPet(existing);
-      if (existing.templateId === templateId && !existing.dead) {
-        this.emit({
-          type: 'log',
-          text: `${existing.name} fades back into the void.`,
-          color: '#b894ff',
-          pid: owner.id,
-        });
-        return;
+      if (existing.templateId === mobId && !existing.dead) {
+        if (emit) {
+          this.emit({
+            type: 'log',
+            text: `${existing.name} fades back into the void.`,
+            color: '#b894ff',
+            pid: owner.id,
+          });
+        }
+        return null;
       }
     }
 
@@ -4486,13 +4485,21 @@ export class Sim {
     pet.wanderTarget = null;
     clearThreat(pet);
     this.addEntity(pet);
-    this.emit({
-      type: 'log',
-      text: `${pet.name} answers your summons.`,
-      color: '#b894ff',
-      pid: owner.id,
-    });
-    this.emit({ type: 'aura', targetId: pet.id, name: 'Summoned', gained: true });
+    if (emit) {
+      this.emit({
+        type: 'log',
+        text: `${pet.name} answers your summons.`,
+        color: '#b894ff',
+        pid: owner.id,
+      });
+      this.emit({ type: 'aura', targetId: pet.id, name: 'Summoned', gained: true });
+    }
+    return pet;
+  }
+
+  private summonPet(owner: Entity, templateId: string): void {
+    const pet = this.createDemonPet(owner, templateId);
+    if (!pet && !MOBS[templateId]) this.error(owner.id, 'That summon is unavailable.');
   }
 
   private despawnPersistentPet(pet: Entity): void {
