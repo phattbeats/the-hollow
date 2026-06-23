@@ -353,4 +353,68 @@ describe('GameServer sessions', () => {
     expect(server.countIpSessions(ip1)).toBe(0);
     expect(server.countIpSessions(ip2)).toBe(1);
   });
+
+  it('takeOverCharacter frees a live session and lets the same character re-join', async () => {
+    vi.mocked(saveCharacterState).mockResolvedValue(undefined);
+    const server = new GameServer();
+    const ws = fakeWs();
+    expectJoined(server.join(ws, 70, 700, 'Takeoverme', 'warrior', null));
+    // A second join for the same character is rejected while it is online.
+    expect(server.join(fakeWs(), 70, 700, 'Takeoverme', 'warrior', null)).toEqual({
+      error: 'character already in world',
+    });
+
+    const result = await server.takeOverCharacter(70, 700);
+    expect(result).toBe('taken-over');
+    expect(ws.close).toHaveBeenCalled();
+    // Slot is freed: the character can now enter the world again.
+    expectJoined(server.join(fakeWs(), 70, 700, 'Takeoverme', 'warrior', null));
+  });
+
+  it('takeOverCharacter is a no-op when the character is offline', async () => {
+    const server = new GameServer();
+    expect(await server.takeOverCharacter(71, 710)).toBe('not-online');
+  });
+
+  it('takeOverCharacter refuses to disconnect a session owned by another account', async () => {
+    vi.mocked(saveCharacterState).mockResolvedValue(undefined);
+    const server = new GameServer();
+    const ws = fakeWs();
+    expectJoined(server.join(ws, 80, 800, 'Owned', 'mage', null));
+    // A different account must never be able to kick this session.
+    expect(await server.takeOverCharacter(81, 800)).toBe('not-online');
+    expect(ws.close).not.toHaveBeenCalled();
+  });
+
+  it('an anti-bot kick notifies the client and closes the socket so the player can rejoin', async () => {
+    // Regression: the anti-bot kick used to call leave() WITHOUT sending an error
+    // frame or closing the socket (unlike disconnectAccount/takeOverCharacter).
+    // The character was removed from the world but the client stayed wedged
+    // "connected" — no onclose/error fired, so the app never returned to
+    // character select and the player could not rejoin.
+    vi.mocked(saveCharacterState).mockResolvedValue(undefined);
+    const server = new GameServer();
+    const ws = fakeWs();
+    expectJoined(server.join(ws, 90, 900, 'Imdutha', 'warrior', null));
+
+    // Force the bot detector to kick on the next anti-bot tick.
+    (server as any).botDetector = {
+      ...(server as any).botDetector,
+      handleTick: () => 'kick',
+      releaseTrackingContext: () => {},
+    };
+    (server as any).runAntibotTick();
+    await vi.waitFor(() => {
+      expect((server as any).sessionByCharacterId(900)).toBeNull();
+    });
+
+    // The client is told why and the socket is torn down (mirrors the other
+    // kick paths), so net/online.ts surfaces the disconnect and the app can
+    // return to character select.
+    expect(ws.send).toHaveBeenCalledWith(JSON.stringify({ t: 'error', error: 'rejected by server' }));
+    expect(ws.close).toHaveBeenCalled();
+
+    // The character slot is freed: the same character can enter the world again.
+    expectJoined(server.join(fakeWs(), 90, 900, 'Imdutha', 'warrior', null));
+  });
 });

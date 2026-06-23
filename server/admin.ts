@@ -1,7 +1,8 @@
 import * as http from 'node:http';
 import { json, readBody } from './http_util';
 import { rateLimited } from './ratelimit';
-import { findAccount, touchLogin, saveToken, accountForToken, isAdminAccount } from './db';
+import { findAccount, touchLogin, saveToken, accountForToken, isAdminAccount, setAccountDeactivated, accountMailTarget } from './db';
+import { emailSecurityIncident } from './email';
 import { verifyPassword, newToken } from './auth';
 import {
   overviewCounts, registrationsByDay, sessionsByDay, classDistribution, levelDistribution,
@@ -15,6 +16,7 @@ import {
   listFilterWords, removeFilterWord, resetChatStrikes, updateFilterConfig, type WordTier,
 } from './chat_filter_db';
 import { addBlockedIp, cleanIp, listBlockedIps, removeBlockedIp } from './ip_block_db';
+import { listBugReports, getBugReportScreenshot } from './bug_report_db';
 import type { GameServer } from './game';
 import { providerUsageSnapshot } from './provider_usage';
 
@@ -125,10 +127,34 @@ export async function handleAdminApi(
         if (action !== 'unban') {
           const statusText = action === 'ban' ? 'This account has been banned.' : 'This account is suspended.';
           game.disconnectAccount(targetAccountId, statusText);
+          // Notify the affected account of the moderation action. Best-effort and
+          // fully isolated: a mail-target lookup or send failure must never turn a
+          // successful moderation action into an error response.
+          void accountMailTarget(targetAccountId)
+            .then((target) => {
+              if (!target) return;
+              const reasonText = typeof body.reason === 'string' && body.reason.trim() ? body.reason.trim() : 'not specified';
+              const until = action === 'ban'
+                ? 'permanent'
+                : (typeof body.expiresAt === 'string' && body.expiresAt ? body.expiresAt : 'until reviewed');
+              emailSecurityIncident(target, action, reasonText, until);
+            })
+            .catch((err) => console.error('security-incident email failed:', err));
         }
         return ok(res, { ok: true });
       } catch (err) {
         return fail(res, 400, err instanceof Error ? err.message : 'moderation action failed');
+      }
+    }
+    // Reverse a player's self-service deactivation (admin-only).
+    const reactivateMatch = /^\/admin\/api\/moderation\/accounts\/(\d+)\/reactivate$/.exec(path);
+    if (req.method === 'POST' && reactivateMatch) {
+      const targetAccountId = Number(reactivateMatch[1]);
+      try {
+        await setAccountDeactivated(targetAccountId, false);
+        return ok(res, { ok: true });
+      } catch (err) {
+        return fail(res, 400, err instanceof Error ? err.message : 'reactivation failed');
       }
     }
     const chatMuteMatch = /^\/admin\/api\/moderation\/accounts\/(\d+)\/chat-mute$/.exec(path);
@@ -296,6 +322,16 @@ export async function handleAdminApi(
     }
     if (path === '/admin/api/moderation/queue') {
       return ok(res, { rows: await moderationQueue(game.liveAccountIds()) });
+    }
+    if (path === '/admin/api/bug-reports') {
+      const { page, limit } = parsePageParams(url.searchParams);
+      const { rows, total } = await listBugReports(limit, (page - 1) * limit);
+      return ok(res, { rows, total, page, limit });
+    }
+    const bugScreenshotMatch = /^\/admin\/api\/bug-reports\/(\d+)\/screenshot$/.exec(path);
+    if (bugScreenshotMatch) {
+      // The list query omits the (potentially large) screenshot; fetch it per report.
+      return ok(res, { screenshot: await getBugReportScreenshot(Number(bugScreenshotMatch[1])) });
     }
     const moderationAccountMatch = /^\/admin\/api\/moderation\/accounts\/(\d+)$/.exec(path);
     if (moderationAccountMatch) {
