@@ -561,10 +561,10 @@ export const zh_TW: EnTranslations = {
       "noMatch": "沒有符合篩選條件的物品。"
     },
     "raidConvert": {
-      "toPartyDone": "Your raid has converted back to a party.",
-      "notRaid": "Your group is not a raid.",
-      "leaderOnly": "Only the raid leader may convert to a party.",
-      "tooLarge": "A raid with more than five members cannot convert back to a party."
+      "toPartyDone": "你的團隊已轉換回隊伍。",
+      "notRaid": "你的隊伍並非團隊。",
+      "leaderOnly": "只有團隊領袖可以轉換為隊伍。",
+      "tooLarge": "超過五名成員的團隊無法轉換回隊伍。"
     }
   },
   "guide": {
@@ -2285,7 +2285,7 @@ export const zh_TW: EnTranslations = {
         "report": "檢舉玩家",
         "removeParty": "移出隊伍",
         "convertToRaid": "轉換為團隊",
-        "convertToParty": "Convert to party",
+        "convertToParty": "轉換為隊伍",
         "cancel": "取消"
       }
     },

@@ -561,10 +561,10 @@ export const ko_KR: EnTranslations = {
       "noMatch": "필터와 일치하는 아이템이 없습니다."
     },
     "raidConvert": {
-      "toPartyDone": "Your raid has converted back to a party.",
-      "notRaid": "Your group is not a raid.",
-      "leaderOnly": "Only the raid leader may convert to a party.",
-      "tooLarge": "A raid with more than five members cannot convert back to a party."
+      "toPartyDone": "공격대가 파티로 다시 전환되었습니다.",
+      "notRaid": "현재 파티는 공격대가 아닙니다.",
+      "leaderOnly": "공격대장만 파티로 전환할 수 있습니다.",
+      "tooLarge": "인원이 5명을 초과하는 공격대는 파티로 다시 전환할 수 없습니다."
     }
   },
   "guide": {
@@ -2285,7 +2285,7 @@ export const ko_KR: EnTranslations = {
         "report": "플레이어 신고",
         "removeParty": "파티에서 제거",
         "convertToRaid": "공격대로 전환",
-        "convertToParty": "Convert to party",
+        "convertToParty": "파티로 전환",
         "cancel": "취소"
       }
     },

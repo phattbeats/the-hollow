@@ -3300,6 +3300,13 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.stormcallers_crown.name': 'Corona del Invocatormentas',
   'entities.items.stormcallers_spaulders.name': 'Bufas del Invocatormentas',
   'hud.chat.context.convertToRaid': 'Convertir en banda',
+  'hud.chat.context.convertToParty': 'Convertir en grupo',
+  'hudChrome.raidConvert.leaderOnly':
+    'Solo el líder de la banda puede convertir la banda en grupo.',
+  'hudChrome.raidConvert.notRaid': 'Tu grupo no es una banda.',
+  'hudChrome.raidConvert.toPartyDone': 'Tu banda ha vuelto a convertirse en grupo.',
+  'hudChrome.raidConvert.tooLarge':
+    'Una banda con más de cinco miembros no puede volver a convertirse en grupo.',
   'hud.social.raidTab': 'Banda',
   'hud.social.raidEmpty': 'Convierte un grupo en banda para gestionar los grupos de banda aquí.',
   'hud.social.raidGroupEmpty': 'No hay jugadores en este grupo.',

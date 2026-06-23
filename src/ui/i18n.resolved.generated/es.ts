@@ -561,10 +561,10 @@ export const es: EnTranslations = {
       "noMatch": "Ningún objeto coincide con tus filtros."
     },
     "raidConvert": {
-      "toPartyDone": "Your raid has converted back to a party.",
-      "notRaid": "Your group is not a raid.",
-      "leaderOnly": "Only the raid leader may convert to a party.",
-      "tooLarge": "A raid with more than five members cannot convert back to a party."
+      "toPartyDone": "Tu banda ha vuelto a convertirse en grupo.",
+      "notRaid": "Tu grupo no es una banda.",
+      "leaderOnly": "Solo el líder de la banda puede convertir la banda en grupo.",
+      "tooLarge": "Una banda con más de cinco miembros no puede volver a convertirse en grupo."
     }
   },
   "guide": {
@@ -2285,7 +2285,7 @@ export const es: EnTranslations = {
         "report": "Reportar jugador",
         "removeParty": "Expulsar del grupo",
         "convertToRaid": "Convertir en banda",
-        "convertToParty": "Convert to party",
+        "convertToParty": "Convertir en grupo",
         "cancel": "Cancelar"
       }
     },

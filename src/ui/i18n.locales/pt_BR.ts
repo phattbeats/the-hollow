@@ -3278,6 +3278,12 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.stormcallers_crown.name': 'Coroa do Chamatormenta',
   'entities.items.stormcallers_spaulders.name': 'Espaldares do Chamatormenta',
   'hud.chat.context.convertToRaid': 'Converter em raide',
+  'hud.chat.context.convertToParty': 'Converter em grupo',
+  'hudChrome.raidConvert.leaderOnly': 'Só o líder da raide pode converter em um grupo.',
+  'hudChrome.raidConvert.notRaid': 'Seu grupo não é uma raide.',
+  'hudChrome.raidConvert.toPartyDone': 'Sua raide foi convertida de volta em um grupo.',
+  'hudChrome.raidConvert.tooLarge':
+    'Uma raide com mais de cinco membros não pode ser convertida de volta em um grupo.',
   'hud.social.raidTab': 'Raide',
   'hud.social.raidEmpty': 'Converta um grupo em raide para gerenciar os grupos de raide aqui.',
   'hud.social.raidGroupEmpty': 'Nenhum jogador neste grupo.',

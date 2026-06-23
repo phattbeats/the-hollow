@@ -3299,6 +3299,12 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.stormcallers_crown.name': 'Krone des Sturmrufers',
   'entities.items.stormcallers_spaulders.name': 'Schulterplatten des Sturmrufers',
   'hud.chat.context.convertToRaid': 'In Schlachtzug umwandeln',
+  'hud.chat.context.convertToParty': 'In Gruppe umwandeln',
+  'hudChrome.raidConvert.leaderOnly': 'Nur der Schlachtzugsleiter darf in eine Gruppe umwandeln.',
+  'hudChrome.raidConvert.notRaid': 'Eure Gruppe ist kein Schlachtzug.',
+  'hudChrome.raidConvert.toPartyDone': 'Euer Schlachtzug wurde wieder in eine Gruppe umgewandelt.',
+  'hudChrome.raidConvert.tooLarge':
+    'Ein Schlachtzug mit mehr als fünf Mitgliedern kann nicht wieder in eine Gruppe umgewandelt werden.',
   'hud.social.raidTab': 'Schlachtzug',
   'hud.social.raidEmpty':
     'Wandelt eine Gruppe in einen Schlachtzug um, um hier Schlachtzugsgruppen zu verwalten.',

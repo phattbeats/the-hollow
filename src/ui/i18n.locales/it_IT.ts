@@ -3280,6 +3280,12 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.stormcallers_crown.name': 'Corona del Chiamatempeste',
   'entities.items.stormcallers_spaulders.name': 'Spallacci del Chiamatempeste',
   'hud.chat.context.convertToRaid': 'Converti in incursione',
+  'hud.chat.context.convertToParty': 'Converti in gruppo',
+  'hudChrome.raidConvert.leaderOnly': 'Solo il capo incursione può convertire in un gruppo.',
+  'hudChrome.raidConvert.notRaid': "Il tuo gruppo non è un'incursione.",
+  'hudChrome.raidConvert.toPartyDone': 'La tua incursione è tornata a essere un gruppo.',
+  'hudChrome.raidConvert.tooLarge':
+    "Un'incursione con più di cinque membri non può tornare a essere un gruppo.",
   'hud.social.raidTab': 'Incursione',
   'hud.social.raidEmpty':
     "Converti un gruppo in incursione per gestire qui i gruppi dell'incursione.",
