@@ -231,12 +231,27 @@ export const ko_KR: EnTranslations = {
       "hapticsOff": "진동 꺼짐",
       "toggleHaptics": "진동 전환"
     },
+    "tutorial": {
+      "moveBodyTouch": "이동 스틱으로 이동하고 화면을 끌어 주위를 둘러보세요. 몇 걸음 움직여 시작하세요.",
+      "talkBodyTouch": "레드브룩 원수에게 다가가 사용 버튼을 눌러 대화한 뒤 임무를 수락하세요.",
+      "returnBodyTouch": "임무를 마쳤습니다. 레드브룩 원수에게 돌아가 사용 버튼을 눌러 완료하세요.",
+      "doneBodyTouch": "기본기를 익혔습니다, {name}. 이제 골짜기를 자유롭게 누비세요. 더보기를 누른 뒤 퀘스트 기록을 눌러 언제든 퀘스트를 확인할 수 있습니다. 좋은 사냥 되세요."
+    },
     "widgets": {
       "clockTitle": "현지 시각 - 클릭하면 12/24시간제 전환",
       "worldCoordinates": "세계 좌표",
       "coordinates": "좌표",
       "heading": "방향",
       "minimapZoom": "미니맵 확대/축소"
+    },
+    "raidLockout": {
+      "title": "레이드 잠금",
+      "allReady": "모든 레이드 준비됨",
+      "daysHours": "{d}일 {h}시간",
+      "hoursMinutes": "{h}시간 {m}분",
+      "minutes": "{m}분",
+      "lessThanMinute": "1분 미만",
+      "lockedToast": "{raid}에 잠겨 있습니다. {time} 후 해제됩니다."
     },
     "compass": {
       "N": "북",
@@ -550,6 +565,12 @@ export const ko_KR: EnTranslations = {
       "searchPlaceholder": "아이템 검색",
       "searchAria": "이름으로 가방 아이템 검색",
       "noMatch": "필터와 일치하는 아이템이 없습니다."
+    },
+    "raidConvert": {
+      "toPartyDone": "공격대가 파티로 다시 전환되었습니다.",
+      "notRaid": "현재 파티는 공격대가 아닙니다.",
+      "leaderOnly": "공격대장만 파티로 전환할 수 있습니다.",
+      "tooLarge": "인원이 5명을 초과하는 공격대는 파티로 다시 전환할 수 없습니다."
     }
   },
   "guide": {
@@ -2277,6 +2298,7 @@ export const ko_KR: EnTranslations = {
         "report": "플레이어 신고",
         "removeParty": "파티에서 제거",
         "convertToRaid": "공격대로 전환",
+        "convertToParty": "파티로 전환",
         "cancel": "취소"
       }
     },
