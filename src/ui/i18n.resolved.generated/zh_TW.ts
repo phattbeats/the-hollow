@@ -232,10 +232,10 @@ export const zh_TW: EnTranslations = {
       "toggleHaptics": "切換觸覺回饋"
     },
     "tutorial": {
-      "moveBodyTouch": "Use the movement stick to move and drag the screen to look around. Take a few steps to begin.",
-      "talkBodyTouch": "Stand close to Marshal Redbrook and tap the Use button to speak, then accept his task.",
-      "returnBodyTouch": "Your task is done. Return to Marshal Redbrook and tap the Use button to turn it in.",
-      "doneBodyTouch": "You have the basics, {name}. The Vale is yours to explore. Tap More, then Quests, to review your quest log anytime. Good hunting."
+      "moveBodyTouch": "使用搖桿移動，拖曳螢幕環顧四周。先走幾步開始吧。",
+      "talkBodyTouch": "靠近雷德布魯克元帥並點按「使用」按鈕與他交談，然後接受他的任務。",
+      "returnBodyTouch": "任務已完成。返回雷德布魯克元帥處並點按「使用」按鈕繳交任務。",
+      "doneBodyTouch": "你已掌握基礎，{name}。東溪谷任你探索。點按「更多」再選「任務日誌」即可隨時查看任務。祝你狩獵順利。"
     },
     "widgets": {
       "clockTitle": "本地時間 - 點擊切換 12／24 小時制",

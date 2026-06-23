@@ -232,10 +232,10 @@ export const pt_BR: EnTranslations = {
       "toggleHaptics": "Alternar vibração"
     },
     "tutorial": {
-      "moveBodyTouch": "Use the movement stick to move and drag the screen to look around. Take a few steps to begin.",
-      "talkBodyTouch": "Stand close to Marshal Redbrook and tap the Use button to speak, then accept his task.",
-      "returnBodyTouch": "Your task is done. Return to Marshal Redbrook and tap the Use button to turn it in.",
-      "doneBodyTouch": "You have the basics, {name}. The Vale is yours to explore. Tap More, then Quests, to review your quest log anytime. Good hunting."
+      "moveBodyTouch": "Use o analógico de movimento para se mover e arraste a tela para olhar ao redor. Dê alguns passos para começar.",
+      "talkBodyTouch": "Aproxime-se do marechal Redbrook e toque no botão Usar para falar, então aceite a tarefa dele.",
+      "returnBodyTouch": "Sua tarefa está concluída. Volte ao marechal Redbrook e toque no botão Usar para entregá-la.",
+      "doneBodyTouch": "Você já domina o básico, {name}. O Vale é seu para explorar. Toque em Mais e depois em Registro de missões para ver seu registro de missões a qualquer momento. Boa caçada!"
     },
     "widgets": {
       "clockTitle": "Horário local - clique para alternar entre 12/24 horas",

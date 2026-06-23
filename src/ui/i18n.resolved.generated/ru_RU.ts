@@ -232,10 +232,10 @@ export const ru_RU: EnTranslations = {
       "toggleHaptics": "Вкл/выкл вибрацию"
     },
     "tutorial": {
-      "moveBodyTouch": "Use the movement stick to move and drag the screen to look around. Take a few steps to begin.",
-      "talkBodyTouch": "Stand close to Marshal Redbrook and tap the Use button to speak, then accept his task.",
-      "returnBodyTouch": "Your task is done. Return to Marshal Redbrook and tap the Use button to turn it in.",
-      "doneBodyTouch": "You have the basics, {name}. The Vale is yours to explore. Tap More, then Quests, to review your quest log anytime. Good hunting."
+      "moveBodyTouch": "Используйте джойстик передвижения, чтобы двигаться, и проведите по экрану, чтобы осмотреться. Сделайте несколько шагов, чтобы начать.",
+      "talkBodyTouch": "Подойдите к маршалу Редбруку и нажмите кнопку «Использовать», чтобы заговорить, затем примите его задание.",
+      "returnBodyTouch": "Задание выполнено. Вернитесь к маршалу Редбруку и нажмите кнопку «Использовать», чтобы сдать его.",
+      "doneBodyTouch": "Основы освоены, {name}. Долина в вашем распоряжении: исследуйте её. Нажмите «Еще», затем «Журнал заданий», чтобы просмотреть свои задания в любой момент. Удачной охоты!"
     },
     "widgets": {
       "clockTitle": "Местное время — нажмите для переключения 12/24-часового формата",

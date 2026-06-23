@@ -9,77 +9,17 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [
-    "hudChrome.tutorial.doneBodyTouch",
-    "hudChrome.tutorial.moveBodyTouch",
-    "hudChrome.tutorial.returnBodyTouch",
-    "hudChrome.tutorial.talkBodyTouch"
-  ],
-  "es_ES": [
-    "hudChrome.tutorial.doneBodyTouch",
-    "hudChrome.tutorial.moveBodyTouch",
-    "hudChrome.tutorial.returnBodyTouch",
-    "hudChrome.tutorial.talkBodyTouch"
-  ],
-  "fr_FR": [
-    "hudChrome.tutorial.doneBodyTouch",
-    "hudChrome.tutorial.moveBodyTouch",
-    "hudChrome.tutorial.returnBodyTouch",
-    "hudChrome.tutorial.talkBodyTouch"
-  ],
-  "fr_CA": [
-    "hudChrome.tutorial.doneBodyTouch",
-    "hudChrome.tutorial.moveBodyTouch",
-    "hudChrome.tutorial.returnBodyTouch",
-    "hudChrome.tutorial.talkBodyTouch"
-  ],
+  "es": [],
+  "es_ES": [],
+  "fr_FR": [],
+  "fr_CA": [],
   "en_CA": [],
-  "it_IT": [
-    "hudChrome.tutorial.doneBodyTouch",
-    "hudChrome.tutorial.moveBodyTouch",
-    "hudChrome.tutorial.returnBodyTouch",
-    "hudChrome.tutorial.talkBodyTouch"
-  ],
-  "de_DE": [
-    "hudChrome.tutorial.doneBodyTouch",
-    "hudChrome.tutorial.moveBodyTouch",
-    "hudChrome.tutorial.returnBodyTouch",
-    "hudChrome.tutorial.talkBodyTouch"
-  ],
-  "zh_CN": [
-    "hudChrome.tutorial.doneBodyTouch",
-    "hudChrome.tutorial.moveBodyTouch",
-    "hudChrome.tutorial.returnBodyTouch",
-    "hudChrome.tutorial.talkBodyTouch"
-  ],
-  "zh_TW": [
-    "hudChrome.tutorial.doneBodyTouch",
-    "hudChrome.tutorial.moveBodyTouch",
-    "hudChrome.tutorial.returnBodyTouch",
-    "hudChrome.tutorial.talkBodyTouch"
-  ],
-  "ko_KR": [
-    "hudChrome.tutorial.doneBodyTouch",
-    "hudChrome.tutorial.moveBodyTouch",
-    "hudChrome.tutorial.returnBodyTouch",
-    "hudChrome.tutorial.talkBodyTouch"
-  ],
-  "ja_JP": [
-    "hudChrome.tutorial.doneBodyTouch",
-    "hudChrome.tutorial.moveBodyTouch",
-    "hudChrome.tutorial.returnBodyTouch",
-    "hudChrome.tutorial.talkBodyTouch"
-  ],
-  "pt_BR": [
-    "hudChrome.tutorial.doneBodyTouch",
-    "hudChrome.tutorial.moveBodyTouch",
-    "hudChrome.tutorial.returnBodyTouch",
-    "hudChrome.tutorial.talkBodyTouch"
-  ],
-  "ru_RU": [
-    "hudChrome.tutorial.doneBodyTouch",
-    "hudChrome.tutorial.moveBodyTouch",
-    "hudChrome.tutorial.returnBodyTouch",
-    "hudChrome.tutorial.talkBodyTouch"
-  ]
+  "it_IT": [],
+  "de_DE": [],
+  "zh_CN": [],
+  "zh_TW": [],
+  "ko_KR": [],
+  "ja_JP": [],
+  "pt_BR": [],
+  "ru_RU": []
 };

@@ -14,6 +14,10 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const ja_JP: Partial<Record<TranslationKey, string>> = {
+  'hudChrome.tutorial.moveBodyTouch': '移動スティックで移動し、画面をドラッグして周囲を見回します。数歩進んで始めましょう。',
+  'hudChrome.tutorial.talkBodyTouch': 'レッドブルック元帥に近づき、「使用」ボタンをタップして話しかけ、依頼を受けましょう。',
+  'hudChrome.tutorial.returnBodyTouch': '依頼は完了しました。レッドブルック元帥のもとへ戻り、「使用」ボタンをタップして納品しましょう。',
+  'hudChrome.tutorial.doneBodyTouch': '基本は覚えましたね、{name}。イーストブルック渓谷はあなたのもの、自由に探索しましょう。いつでも「その他」から「クエストログ」をタップしてクエストログを確認できます。よい狩りを！',
   'hudChrome.raidLockout.title': 'レイドロックアウト',
   'hudChrome.raidLockout.allReady': 'すべてのレイドが利用可能',
   'hudChrome.raidLockout.daysHours': '{d}日{h}時間',

@@ -232,10 +232,10 @@ export const ko_KR: EnTranslations = {
       "toggleHaptics": "진동 전환"
     },
     "tutorial": {
-      "moveBodyTouch": "Use the movement stick to move and drag the screen to look around. Take a few steps to begin.",
-      "talkBodyTouch": "Stand close to Marshal Redbrook and tap the Use button to speak, then accept his task.",
-      "returnBodyTouch": "Your task is done. Return to Marshal Redbrook and tap the Use button to turn it in.",
-      "doneBodyTouch": "You have the basics, {name}. The Vale is yours to explore. Tap More, then Quests, to review your quest log anytime. Good hunting."
+      "moveBodyTouch": "이동 스틱으로 이동하고 화면을 끌어 주위를 둘러보세요. 몇 걸음 움직여 시작하세요.",
+      "talkBodyTouch": "레드브룩 원수에게 다가가 사용 버튼을 눌러 대화한 뒤 임무를 수락하세요.",
+      "returnBodyTouch": "임무를 마쳤습니다. 레드브룩 원수에게 돌아가 사용 버튼을 눌러 완료하세요.",
+      "doneBodyTouch": "기본기를 익혔습니다, {name}. 이제 골짜기를 자유롭게 누비세요. 더보기를 누른 뒤 퀘스트 기록을 눌러 언제든 퀘스트를 확인할 수 있습니다. 좋은 사냥 되세요."
     },
     "widgets": {
       "clockTitle": "현지 시각 - 클릭하면 12/24시간제 전환",
