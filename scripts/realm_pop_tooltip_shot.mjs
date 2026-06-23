@@ -13,10 +13,10 @@ const BROWSER = ['/usr/bin/chromium', '/usr/bin/google-chrome-stable'].find((p) 
 
 // the exact strings added to src/ui/i18n.catalog/shell.ts (en)
 const TIP = {
-  low: 'Low population — fewer than 15 players online right now. Plenty of room; great for a fresh start.',
-  med: 'Medium population — 15 to 39 players online right now. A healthy, active realm.',
-  high: 'High population — 40 to 79 players online right now. Busy, with lots of players around.',
-  full: 'Full population — 80 or more players online right now. Very busy; you may wait in a login queue.',
+  low: 'Low population: fewer than 15 players online right now. Plenty of room; great for a fresh start.',
+  med: 'Medium population: 15 to 39 players online right now. A healthy, active realm.',
+  high: 'High population: 40 to 79 players online right now. Busy, with lots of players around.',
+  full: 'Full population: 80 or more players online right now. Very busy; you may wait in a login queue.',
 };
 
 const rows = [
@@ -70,7 +70,7 @@ function page(showTip) {
   </style></head><body><div id="wrap">
     <h2>Realm List</h2>
     <div id="realm-list">${rows.map((r) => rowHtml(r, showTip)).join('')}</div>
-    <div class="cap">${showTip ? 'AFTER — hovering the "Low" badge explains the population band' : 'BEFORE — "Low" / "Full" with no explanation'}</div>
+    <div class="cap">${showTip ? 'AFTER: hovering the "Low" badge explains the population band' : 'BEFORE: "Low" / "Full" with no explanation'}</div>
   </div></body></html>`;
 }
 
