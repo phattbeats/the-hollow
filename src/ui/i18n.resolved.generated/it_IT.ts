@@ -245,8 +245,8 @@ export const it_IT: EnTranslations = {
       "minimapZoom": "Zoom minimappa"
     },
     "raidLockout": {
-      "title": "Blocchi raid",
-      "allReady": "Tutti i raid pronti",
+      "title": "Blocchi incursione",
+      "allReady": "Tutte le incursioni pronte",
       "daysHours": "{d}g {h}h",
       "hoursMinutes": "{h}h {m}m",
       "minutes": "{m}m",

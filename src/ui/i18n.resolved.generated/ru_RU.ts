@@ -176,7 +176,7 @@ export const ru_RU: EnTranslations = {
     },
     "theme": {
       "preset": "Тема интерфейса",
-      "customColors": "Свои цвета",
+      "customColors": "Настраиваемые цвета",
       "reset": "Сброс",
       "presets": {
         "classic": "Классическое золото",
@@ -2413,7 +2413,7 @@ export const ru_RU: EnTranslations = {
       "assistSelf": "Вы не можете помогать самому себе.",
       "assistNoTarget": "У {name} нет цели.",
       "assistWhom": "Кому помочь? Выберите игрока или используйте /assist <name>.",
-      "assisting": "Помогаете {name}.",
+      "assisting": "Вы помогаете {name}.",
       "notInParty": "Вы не в группе.",
       "unknownCommand": "Неизвестная команда: {command}. Попробуйте /s /y /w /p /g.",
       "chatCooldown": "Чат на восстановлении еще {seconds} сек.",

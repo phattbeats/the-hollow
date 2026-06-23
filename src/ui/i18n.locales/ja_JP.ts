@@ -643,12 +643,12 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'realm.low': '低',
   'realm.popTipLow':
     '低人口：現在オンラインのプレイヤーは15人未満。余裕があり、新規スタートに最適です。',
-  'realm.popTipMedium': '中人口：現在オンラインのプレイヤーは15〜39人。健全で活発なサーバーです。',
+  'realm.popTipMedium': '中人口：現在オンラインのプレイヤーは15〜39人。健全で活発なレルムです。',
   'realm.popTipHigh':
     '高人口：現在オンラインのプレイヤーは40〜79人。混雑しており、多くのプレイヤーがいます。',
   'realm.popTipFull':
     '満員：現在オンラインのプレイヤーは80人以上。非常に混雑しており、ログイン待ちが発生する場合があります。',
-  'realm.popTipOffline': 'オフライン：このサーバーは現在接続できず、参加できません。',
+  'realm.popTipOffline': 'オフライン：このレルムは現在接続できず、参加できません。',
   'realm.characterCountOne': '{count}キャラクター',
   'realm.characterCountOther': '{count}キャラクター',
   'realm.selectedRealm': 'レルム: {name}',
