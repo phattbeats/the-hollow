@@ -2075,12 +2075,12 @@ const LAST_REALM_KEY = 'woc_last_realm';
 // Classic-MMO population bands, derived from the realm's current online count
 // (the classic MMO's own labels are relative to peak; current count is a fair
 // local stand-in).
-function realmPopulation(online: boolean, players: number): { labelKey: TranslationKey; cls: string } {
-  if (!online) return { labelKey: 'realm.offline', cls: 'offline' };
-  if (players >= 80) return { labelKey: 'realm.full', cls: 'full' };
-  if (players >= 40) return { labelKey: 'realm.high', cls: 'high' };
-  if (players >= 15) return { labelKey: 'realm.medium', cls: 'med' };
-  return { labelKey: 'realm.low', cls: 'low' };
+function realmPopulation(online: boolean, players: number): { labelKey: TranslationKey; tipKey: TranslationKey; cls: string } {
+  if (!online) return { labelKey: 'realm.offline', tipKey: 'realm.popTipOffline', cls: 'offline' };
+  if (players >= 80) return { labelKey: 'realm.full', tipKey: 'realm.popTipFull', cls: 'full' };
+  if (players >= 40) return { labelKey: 'realm.high', tipKey: 'realm.popTipHigh', cls: 'high' };
+  if (players >= 15) return { labelKey: 'realm.medium', tipKey: 'realm.popTipMedium', cls: 'med' };
+  return { labelKey: 'realm.low', tipKey: 'realm.popTipLow', cls: 'low' };
 }
 
 // After login the classic MMO drops you onto a Realm List screen (then character select for
@@ -2322,6 +2322,11 @@ function showRealmList(dir?: import('./net/online').RealmDirectory): void {
       const popEl = row.querySelector('[data-pop]') as HTMLElement;
       popEl.textContent = t(pop.labelKey);
       popEl.className = `realm-pop ${pop.cls}`;
+      // The band label alone ("Low") doesn't say what it means, explain the
+      // threshold on hover (title) and to assistive tech (aria-label).
+      const popTip = t(pop.tipKey);
+      popEl.title = popTip;
+      popEl.setAttribute('aria-label', popTip);
       (row.querySelector('[data-sub]') as HTMLElement).textContent = st.online
         ? t('realm.onlineNow', { count: st.players })
         : t('realm.down');
@@ -2398,6 +2403,11 @@ function renderRealmDropdown(): void {
       const popEl = row.querySelector('[data-pop]') as HTMLElement;
       popEl.textContent = t(pop.labelKey);
       popEl.className = `realm-pop ${pop.cls}`;
+      // The band label alone ("Low") doesn't say what it means, explain the
+      // threshold on hover (title) and to assistive tech (aria-label).
+      const popTip = t(pop.tipKey);
+      popEl.title = popTip;
+      popEl.setAttribute('aria-label', popTip);
       row.classList.toggle('offline', !st.online);
     }));
   });
