@@ -910,7 +910,7 @@ export const ZONE3_ITEMS: Record<string, ItemDef> = {
   // sits a touch under the feet slot. Drops less often than the boots.
   cragmaw_huntcord: {
     id: 'cragmaw_huntcord', name: "Cragmaw's Huntcord", kind: 'armor', slot: 'waist', quality: 'rare',
-    stats: { armor: 44, agi: 6, sta: 3 }, sellValue: 600,
+    stats: { armor: 44, agi: 5, sta: 3 }, sellValue: 340,
   },
   boneplate_vest: {
     id: 'boneplate_vest', name: 'Boneplate Vest', kind: 'armor', slot: 'chest', quality: 'uncommon',
