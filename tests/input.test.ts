@@ -102,22 +102,23 @@ describe('Input autorun', () => {
     expect(input.readMoveInput().forward).toBe(true);
   });
 
-  it('opening the Escape menu pauses but does not cancel autorun, and it resumes on close', () => {
+  it('autorun survives the Escape menu: it keeps running while suspended and after close', () => {
     // The classic complaint: autorun, then hit Escape to change a keybind or a
-    // setting. Suspending movement (the open menu) must only pause forward motion
-    // for that frame, never clear the autorun latch, so closing the menu resumes
-    // the run instead of stranding the player.
+    // setting. In a classic MMO the world never pauses, so the latched autorun
+    // keeps the player moving forward while the menu is open, and closing it
+    // leaves the run uninterrupted. Held keys / pointer / touch are still
+    // suppressed; only the autorun latch drives forward here.
     const { input } = makeInput();
     input.toggleAutorun();
     expect(input.readMoveInput().forward).toBe(true);
 
     input.suspendMovement = true; // mirrors main.ts setting it while the game menu is open
     expect(input.autorun).toBe(true); // latch survives the menu
-    expect(input.readMoveInput().forward).toBe(false); // held still while suspended
+    expect(input.readMoveInput().forward).toBe(true); // autorun keeps running while suspended
 
     input.suspendMovement = false; // menu closed
     expect(input.autorun).toBe(true);
-    expect(input.readMoveInput().forward).toBe(true); // run resumes
+    expect(input.readMoveInput().forward).toBe(true); // run continues uninterrupted
   });
 });
 
@@ -658,6 +659,32 @@ describe('Input modifier combos', () => {
     const { input, windowListeners } = makeInput();
     windowListeners.get('keydown')!({ code: 'KeyW', repeat: false });
     expect(input.readMoveInput().forward).toBe(true);
+  });
+
+  it('fires a held action and a distinct edge chord on the same press', () => {
+    // KeyX is the held emote-wheel key; also bind Shift+X to an ability slot.
+    // One Shift+X press must open the wheel (held, bare key) AND fire the slot
+    // (edge, full chord): the intentional held+edge co-fire.
+    const kb = new Keybinds();
+    expect(kb.bind('slot3', 0, 'Shift+KeyX')).toBe(true);
+    const { windowListeners, cb } = makeInput();
+    windowListeners.get('keydown')!({ code: 'KeyX', repeat: false, shiftKey: true, preventDefault: vi.fn() });
+    expect(cb.onEmoteWheel).toHaveBeenLastCalledWith(true); // held fired
+    expect(cb.onAbility).toHaveBeenLastCalledWith(3);        // edge chord fired
+  });
+
+  it('folds Cmd/Meta into the chord, so Cmd+1 does not fire bare slot 0', () => {
+    // Bind Meta+1 to a slot; capture and dispatch both read e.metaKey, so the
+    // Cmd chord fires its own slot and never steals the bare-1 slot.
+    const kb = new Keybinds();
+    expect(kb.bind('slot7', 0, 'Meta+Digit1')).toBe(true);
+    const { windowListeners, cb } = makeInput();
+    windowListeners.get('keydown')!({ code: 'Digit1', repeat: false, metaKey: true });
+    expect(cb.onAbility).toHaveBeenLastCalledWith(7);
+    cb.onAbility.mockClear();
+    // bare 1 still drives slot 0, unaffected by the Cmd binding
+    windowListeners.get('keydown')!({ code: 'Digit1', repeat: false });
+    expect(cb.onAbility).toHaveBeenLastCalledWith(0);
   });
 });
 

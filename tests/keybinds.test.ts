@@ -365,20 +365,27 @@ describe('per-character scope', () => {
 });
 
 describe('modifier combos', () => {
-  it('builds a canonical combo string in fixed Ctrl/Alt/Shift order', () => {
+  it('builds a canonical combo string in fixed Ctrl/Alt/Shift/Meta order', () => {
     expect(makeCombo('Digit1', { ctrl: false, alt: false, shift: false })).toBe('Digit1');
     expect(makeCombo('Digit1', { ctrl: false, alt: false, shift: true })).toBe('Shift+Digit1');
     expect(makeCombo('KeyA', { ctrl: true, alt: true, shift: true })).toBe('Ctrl+Alt+Shift+KeyA');
     // order is fixed regardless of which flags are set
     expect(makeCombo('KeyF', { ctrl: true, alt: false, shift: true })).toBe('Ctrl+Shift+KeyF');
+    // Meta (Cmd on macOS / Win key) folds in last, so Cmd+1 is its own chord; a
+    // bare 1 stays byte-identical because an omitted/false meta changes nothing.
+    expect(makeCombo('Digit1', { ctrl: false, alt: false, shift: false, meta: true })).toBe('Meta+Digit1');
+    expect(makeCombo('KeyA', { ctrl: true, alt: false, shift: true, meta: true })).toBe('Ctrl+Shift+Meta+KeyA');
+    expect(makeCombo('Digit1', { ctrl: false, alt: false, shift: false, meta: false })).toBe('Digit1');
   });
 
   it('splits a combo back into its code and modifiers', () => {
     expect(comboCode('Shift+Digit1')).toBe('Digit1');
     expect(comboCode('Ctrl+Alt+Shift+KeyA')).toBe('KeyA');
+    expect(comboCode('Meta+Digit1')).toBe('Digit1');
     expect(comboCode('Minus')).toBe('Minus'); // bare code, no '+'
-    expect(comboMods('Ctrl+Shift+KeyF')).toEqual({ ctrl: true, alt: false, shift: true });
-    expect(comboMods('Digit1')).toEqual({ ctrl: false, alt: false, shift: false });
+    expect(comboMods('Ctrl+Shift+KeyF')).toEqual({ ctrl: true, alt: false, shift: true, meta: false });
+    expect(comboMods('Digit1')).toEqual({ ctrl: false, alt: false, shift: false, meta: false });
+    expect(comboMods('Meta+Digit1')).toEqual({ ctrl: false, alt: false, shift: false, meta: true });
   });
 
   it('identifies the bare modifier keys', () => {
@@ -428,6 +435,15 @@ describe('modifier binding (edge actions)', () => {
     expect(b.edgeActionForCombo('Shift+Digit1')).toBe('slot1');
     expect(b.codeAt('slot1', 0)).toBe('Shift+Digit1');
   });
+
+  it('binds Meta+1 (Cmd/Win) as a chord distinct from bare 1', () => {
+    const kb = new Keybinds();
+    expect(kb.bind('slot1', 0, 'Meta+Digit1')).toBe(true);
+    expect(kb.edgeActionForCombo('Meta+Digit1')).toBe('slot1');
+    // bare Digit1 (Attack/slot0) is not stolen by the Cmd+1 chord
+    expect(kb.edgeActionForCombo('Digit1')).toBe('slot0');
+    expect(kb.primaryLabel('slot1')).toBe('Meta+1');
+  });
 });
 
 describe('modifiers and held (movement) actions', () => {
@@ -437,6 +453,16 @@ describe('modifiers and held (movement) actions', () => {
     expect(kb.bind('forward', 0, 'Shift+KeyW')).toBe(true);
     expect(kb.codeAt('forward', 0)).toBe('KeyW');
     expect(kb.heldActionForCode('KeyW')).toBe('forward');
+  });
+
+  it('labels the stored value (what the rebind toast shows), not the captured chord', () => {
+    // hud.ts reads back codeAt(action, index) so the "bound" toast matches the
+    // keycap: a held action drops the modifier, an edge action keeps the chord.
+    const kb = new Keybinds();
+    kb.bind('forward', 0, 'Shift+KeyW'); // held -> stored bare
+    expect(keyLabel(kb.codeAt('forward', 0))).toBe('W');
+    kb.bind('slot1', 0, 'Shift+Digit1'); // edge -> stored full chord
+    expect(keyLabel(kb.codeAt('slot1', 0))).toBe('Shift+1');
   });
 
   it('matches held actions by physical key, ignoring any held modifier', () => {

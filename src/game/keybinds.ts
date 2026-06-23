@@ -95,11 +95,13 @@ export function actionAllowsShared(id: string): boolean {
 
 // --- modifier-aware bindings ---------------------------------------------
 // A binding is serialized as a single "combo" string: the bare KeyboardEvent
-// .code, optionally prefixed by held modifiers in a fixed canonical order,
-// joined by '+'. Examples: "Digit1" (no modifiers), "Shift+Digit1",
-// "Ctrl+Alt+KeyA". A modifier-free combo is byte-identical to a bare code, so
-// every binding saved before modifier support loads unchanged (back-compat).
-export interface KeyMods { ctrl: boolean; alt: boolean; shift: boolean; }
+// .code, optionally prefixed by held modifiers in a fixed canonical order
+// (Ctrl, Alt, Shift, Meta), joined by '+'. Examples: "Digit1" (no modifiers),
+// "Shift+Digit1", "Ctrl+Alt+KeyA", "Meta+Digit1" (Cmd/Win + 1). A modifier-free
+// combo is byte-identical to a bare code, so every binding saved before modifier
+// support loads unchanged (back-compat). `meta` is optional so call sites that
+// predate Cmd/Win support keep compiling.
+export interface KeyMods { ctrl: boolean; alt: boolean; shift: boolean; meta?: boolean; }
 
 // e.code values for the modifier keys themselves — never bindable on their own.
 const MODIFIER_CODES = new Set([
@@ -112,13 +114,16 @@ export function isModifierCode(code: string): boolean {
 }
 
 // Build the canonical combo string. No e.code contains '+', so '+' is a safe
-// separator. Order is fixed (Ctrl, Alt, Shift) so capture and dispatch always
-// produce the same string for the same physical chord.
+// separator. Order is fixed (Ctrl, Alt, Shift, Meta) so capture and dispatch
+// always produce the same string for the same physical chord. Meta is Cmd on
+// macOS and the Windows key elsewhere; folding it in keeps Cmd+1 a distinct
+// chord instead of silently capturing (and evicting) a bare 1.
 export function makeCombo(code: string, mods: KeyMods): string {
   const parts: string[] = [];
   if (mods.ctrl) parts.push('Ctrl');
   if (mods.alt) parts.push('Alt');
   if (mods.shift) parts.push('Shift');
+  if (mods.meta) parts.push('Meta');
   parts.push(code);
   return parts.join('+');
 }
@@ -132,7 +137,7 @@ export function comboCode(combo: string): string {
 export function comboMods(combo: string): KeyMods {
   const head = combo.slice(0, Math.max(0, combo.lastIndexOf('+')));
   const parts = head ? head.split('+') : [];
-  return { ctrl: parts.includes('Ctrl'), alt: parts.includes('Alt'), shift: parts.includes('Shift') };
+  return { ctrl: parts.includes('Ctrl'), alt: parts.includes('Alt'), shift: parts.includes('Shift'), meta: parts.includes('Meta') };
 }
 
 export function isReservedCode(combo: string): boolean {
@@ -252,7 +257,11 @@ export class Keybinds {
     try { localStorage.setItem(this.storeKey, JSON.stringify(obj)); } catch { /* storage unavailable */ }
   }
 
-  /** The action whose binding exactly equals this combo (any kind), or null. */
+  /**
+   * Test-only convenience: the action whose binding exactly equals this combo
+   * (any kind), or null. Production dispatch uses `edgeActionForCombo` (full
+   * chord) and `heldActionForCode` (bare key); this stays for the layout tests.
+   */
   actionForCode(combo: string): string | null {
     for (const [id, codes] of this.map) {
       if (codes.includes(combo)) return id;

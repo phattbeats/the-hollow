@@ -10169,7 +10169,10 @@ export class Hud {
       if (code === null) {
         this.keybindNote = t('hud.options.keybindCancelled');
       } else if (this.keybinds.bind(actionId, index, code)) {
-        this.keybindNote = t('hud.options.keybindBound', { action: name, key: keyLabel(code) });
+        // Label what was actually stored: bind() strips modifiers from held
+        // (movement) actions, so a captured "Shift+KeyW" is saved bare as "KeyW".
+        // Reading it back keeps the confirmation in sync with the action-bar keycap.
+        this.keybindNote = t('hud.options.keybindBound', { action: name, key: keyLabel(this.keybinds.codeAt(actionId, index)) });
         this.refreshKeybindLabels();
       } else if (isReservedCode(code)) {
         this.keybindNote = t('hud.options.keybindReserved', { key: keyLabel(code) });

@@ -543,7 +543,7 @@ export class Input {
       if (isModifierCode(e.code)) return;
       const cb = this.captureCb;
       this.captureCb = null;
-      cb(makeCombo(e.code, { ctrl: e.ctrlKey, alt: e.altKey, shift: e.shiftKey }));
+      cb(makeCombo(e.code, { ctrl: e.ctrlKey, alt: e.altKey, shift: e.shiftKey, meta: e.metaKey }));
       return;
     }
     const tag = (document.activeElement?.tagName ?? '').toLowerCase();
@@ -556,7 +556,7 @@ export class Input {
     // modifier key, which never triggers an action on its own).
     const combo = isModifierCode(e.code)
       ? null
-      : makeCombo(e.code, { ctrl: e.ctrlKey, alt: e.altKey, shift: e.shiftKey });
+      : makeCombo(e.code, { ctrl: e.ctrlKey, alt: e.altKey, shift: e.shiftKey, meta: e.metaKey });
     // Attack Move mode: the bound chord (default A) issues an attack-move toward
     // the cursor and wins over whatever movement action shares that key.
     if (this.attackMoveEnabled && this.hoverActive && combo
@@ -721,7 +721,13 @@ export class Input {
 
   readMoveInput(): MoveInput {
     if (this.suspendMovement) {
-      return { forward: false, back: false, turnLeft: false, turnRight: false, strafeLeft: false, strafeRight: false, jump: false };
+      // A game menu / modal is open (or chat is focused). Suppress held keys and
+      // pointer/touch/gamepad movement so menu keystrokes never leak into the
+      // world, but keep the latched autorun running: in a classic MMO the world
+      // never pauses, so opening the Esc menu lets you keep auto-running while
+      // you change a setting. The latch itself is untouched, and the next manual
+      // forward/back key press still clears it.
+      return { forward: this.autorun, back: false, turnLeft: false, turnRight: false, strafeLeft: false, strafeRight: false, jump: false };
     }
     if (this.controllerMoveInput) return { ...this.controllerMoveInput };
     const held = (id: string) => this.heldAction(id);

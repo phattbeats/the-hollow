@@ -126,3 +126,20 @@ describe('agent movement channel', () => {
     expect(client.mouselookFacing).toBeCloseTo(Math.PI);
   });
 });
+
+describe('autorun survives a suspended menu', () => {
+  it('keeps the latched autorun running while a menu/modal suspends movement', () => {
+    const input: any = Object.create(Input.prototype);
+    input.suspendMovement = true;
+    input.autorun = true;
+    // Menu open: held keys + pointer/touch/gamepad are suppressed, but the
+    // latched autorun keeps the classic-MMO world moving while you change a setting.
+    expect(input.readMoveInput()).toEqual({
+      forward: true, back: false, turnLeft: false, turnRight: false,
+      strafeLeft: false, strafeRight: false, jump: false,
+    });
+    // Clearing the latch stops it even while still suspended.
+    input.autorun = false;
+    expect(input.readMoveInput().forward).toBe(false);
+  });
+});
