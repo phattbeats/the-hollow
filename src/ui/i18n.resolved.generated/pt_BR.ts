@@ -244,6 +244,15 @@ export const pt_BR: EnTranslations = {
       "heading": "Direção",
       "minimapZoom": "Zoom do minimapa"
     },
+    "raidLockout": {
+      "title": "Bloqueios de raide",
+      "allReady": "Todas as raides prontas",
+      "daysHours": "{d}d {h}h",
+      "hoursMinutes": "{h}h {m}min",
+      "minutes": "{m}min",
+      "lessThanMinute": "<1min",
+      "lockedToast": "Você está bloqueado em {raid}. Desbloqueia em {time}."
+    },
     "compass": {
       "N": "N",
       "NE": "NE",
@@ -558,10 +567,10 @@ export const pt_BR: EnTranslations = {
       "noMatch": "Nenhum item corresponde aos seus filtros."
     },
     "raidConvert": {
-      "toPartyDone": "Your raid has converted back to a party.",
-      "notRaid": "Your group is not a raid.",
-      "leaderOnly": "Only the raid leader may convert to a party.",
-      "tooLarge": "A raid with more than five members cannot convert back to a party."
+      "toPartyDone": "Sua raide foi convertida de volta em um grupo.",
+      "notRaid": "Seu grupo não é uma raide.",
+      "leaderOnly": "Só o líder da raide pode converter em um grupo.",
+      "tooLarge": "Uma raide com mais de cinco membros não pode ser convertida de volta em um grupo."
     }
   },
   "guide": {
@@ -2282,7 +2291,7 @@ export const pt_BR: EnTranslations = {
         "report": "Denunciar jogador",
         "removeParty": "Remover do grupo",
         "convertToRaid": "Converter em raide",
-        "convertToParty": "Convert to party",
+        "convertToParty": "Converter em grupo",
         "cancel": "Cancelar"
       }
     },

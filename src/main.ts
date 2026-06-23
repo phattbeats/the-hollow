@@ -39,6 +39,7 @@ import { absolutePublishedCardUrl, setCardUploader, setReferralProvider, setStan
 import type { WalletOption } from './net/wallet';
 import type { IWorld, LeaderboardEntry } from './world_api';
 import { findPlayerPath, resolvePlayerDestination } from './sim/pathfind';
+import { tabConeHalfAt, TAB_NEAR_RADIUS, TAB_QUERY_RADIUS } from './sim/tab_target';
 import { pathCrossesFence } from './sim/colliders';
 import { formatXp } from './ui/xp_bar';
 import { assembleBugReportMeta } from './ui/bug_report';
@@ -675,6 +676,11 @@ async function startGame(world: IWorld, offlineSim: Sim | null, online: ClientWo
   try {
     renderer = new Renderer(world, canvas, nameplates);
     renderer.setAudioSink(sfx);
+    // Dev-only: ?targetcone=1 draws the Tab-target front cone on the ground in
+    // front of the player, for tuning the targeting angle/radius (tab_target.ts).
+    if (import.meta.env.DEV && new URLSearchParams(location.search).get('targetcone') === '1') {
+      renderer.enableTargetConeDebug(tabConeHalfAt, TAB_NEAR_RADIUS, TAB_QUERY_RADIUS);
+    }
     perf.setRenderer(renderer);
     hud = new Hud(world, renderer, keybinds);
     perf.setHud(hud);

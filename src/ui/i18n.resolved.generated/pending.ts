@@ -10,44 +10,24 @@
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
-    "hud.chat.context.convertToParty",
-    "hudChrome.raidConvert.leaderOnly",
-    "hudChrome.raidConvert.notRaid",
-    "hudChrome.raidConvert.toPartyDone",
-    "hudChrome.raidConvert.tooLarge",
     "hudChrome.tutorial.doneBodyTouch",
     "hudChrome.tutorial.moveBodyTouch",
     "hudChrome.tutorial.returnBodyTouch",
     "hudChrome.tutorial.talkBodyTouch"
   ],
   "es_ES": [
-    "hud.chat.context.convertToParty",
-    "hudChrome.raidConvert.leaderOnly",
-    "hudChrome.raidConvert.notRaid",
-    "hudChrome.raidConvert.toPartyDone",
-    "hudChrome.raidConvert.tooLarge",
     "hudChrome.tutorial.doneBodyTouch",
     "hudChrome.tutorial.moveBodyTouch",
     "hudChrome.tutorial.returnBodyTouch",
     "hudChrome.tutorial.talkBodyTouch"
   ],
   "fr_FR": [
-    "hud.chat.context.convertToParty",
-    "hudChrome.raidConvert.leaderOnly",
-    "hudChrome.raidConvert.notRaid",
-    "hudChrome.raidConvert.toPartyDone",
-    "hudChrome.raidConvert.tooLarge",
     "hudChrome.tutorial.doneBodyTouch",
     "hudChrome.tutorial.moveBodyTouch",
     "hudChrome.tutorial.returnBodyTouch",
     "hudChrome.tutorial.talkBodyTouch"
   ],
   "fr_CA": [
-    "hud.chat.context.convertToParty",
-    "hudChrome.raidConvert.leaderOnly",
-    "hudChrome.raidConvert.notRaid",
-    "hudChrome.raidConvert.toPartyDone",
-    "hudChrome.raidConvert.tooLarge",
     "hudChrome.tutorial.doneBodyTouch",
     "hudChrome.tutorial.moveBodyTouch",
     "hudChrome.tutorial.returnBodyTouch",
@@ -55,88 +35,48 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "en_CA": [],
   "it_IT": [
-    "hud.chat.context.convertToParty",
-    "hudChrome.raidConvert.leaderOnly",
-    "hudChrome.raidConvert.notRaid",
-    "hudChrome.raidConvert.toPartyDone",
-    "hudChrome.raidConvert.tooLarge",
     "hudChrome.tutorial.doneBodyTouch",
     "hudChrome.tutorial.moveBodyTouch",
     "hudChrome.tutorial.returnBodyTouch",
     "hudChrome.tutorial.talkBodyTouch"
   ],
   "de_DE": [
-    "hud.chat.context.convertToParty",
-    "hudChrome.raidConvert.leaderOnly",
-    "hudChrome.raidConvert.notRaid",
-    "hudChrome.raidConvert.toPartyDone",
-    "hudChrome.raidConvert.tooLarge",
     "hudChrome.tutorial.doneBodyTouch",
     "hudChrome.tutorial.moveBodyTouch",
     "hudChrome.tutorial.returnBodyTouch",
     "hudChrome.tutorial.talkBodyTouch"
   ],
   "zh_CN": [
-    "hud.chat.context.convertToParty",
-    "hudChrome.raidConvert.leaderOnly",
-    "hudChrome.raidConvert.notRaid",
-    "hudChrome.raidConvert.toPartyDone",
-    "hudChrome.raidConvert.tooLarge",
     "hudChrome.tutorial.doneBodyTouch",
     "hudChrome.tutorial.moveBodyTouch",
     "hudChrome.tutorial.returnBodyTouch",
     "hudChrome.tutorial.talkBodyTouch"
   ],
   "zh_TW": [
-    "hud.chat.context.convertToParty",
-    "hudChrome.raidConvert.leaderOnly",
-    "hudChrome.raidConvert.notRaid",
-    "hudChrome.raidConvert.toPartyDone",
-    "hudChrome.raidConvert.tooLarge",
     "hudChrome.tutorial.doneBodyTouch",
     "hudChrome.tutorial.moveBodyTouch",
     "hudChrome.tutorial.returnBodyTouch",
     "hudChrome.tutorial.talkBodyTouch"
   ],
   "ko_KR": [
-    "hud.chat.context.convertToParty",
-    "hudChrome.raidConvert.leaderOnly",
-    "hudChrome.raidConvert.notRaid",
-    "hudChrome.raidConvert.toPartyDone",
-    "hudChrome.raidConvert.tooLarge",
     "hudChrome.tutorial.doneBodyTouch",
     "hudChrome.tutorial.moveBodyTouch",
     "hudChrome.tutorial.returnBodyTouch",
     "hudChrome.tutorial.talkBodyTouch"
   ],
   "ja_JP": [
-    "hud.chat.context.convertToParty",
-    "hudChrome.raidConvert.leaderOnly",
-    "hudChrome.raidConvert.notRaid",
-    "hudChrome.raidConvert.toPartyDone",
-    "hudChrome.raidConvert.tooLarge",
     "hudChrome.tutorial.doneBodyTouch",
     "hudChrome.tutorial.moveBodyTouch",
     "hudChrome.tutorial.returnBodyTouch",
     "hudChrome.tutorial.talkBodyTouch"
   ],
   "pt_BR": [
-    "hud.chat.context.convertToParty",
-    "hudChrome.raidConvert.leaderOnly",
-    "hudChrome.raidConvert.notRaid",
-    "hudChrome.raidConvert.toPartyDone",
-    "hudChrome.raidConvert.tooLarge",
     "hudChrome.tutorial.doneBodyTouch",
     "hudChrome.tutorial.moveBodyTouch",
     "hudChrome.tutorial.returnBodyTouch",
     "hudChrome.tutorial.talkBodyTouch"
   ],
   "ru_RU": [
-    "hud.chat.context.convertToParty",
-    "hudChrome.raidConvert.leaderOnly",
-    "hudChrome.raidConvert.notRaid",
-    "hudChrome.raidConvert.toPartyDone",
-    "hudChrome.raidConvert.tooLarge",
     "hudChrome.tutorial.doneBodyTouch",
     "hudChrome.tutorial.moveBodyTouch",
     "hudChrome.tutorial.returnBodyTouch",

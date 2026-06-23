@@ -244,6 +244,15 @@ export const it_IT: EnTranslations = {
       "heading": "Direzione",
       "minimapZoom": "Zoom minimappa"
     },
+    "raidLockout": {
+      "title": "Blocchi raid",
+      "allReady": "Tutti i raid pronti",
+      "daysHours": "{d}g {h}h",
+      "hoursMinutes": "{h}h {m}m",
+      "minutes": "{m}m",
+      "lessThanMinute": "<1m",
+      "lockedToast": "Sei bloccato in {raid}. Si sblocca tra {time}."
+    },
     "compass": {
       "N": "N",
       "NE": "NE",
@@ -558,10 +567,10 @@ export const it_IT: EnTranslations = {
       "noMatch": "Nessun oggetto corrisponde ai tuoi filtri."
     },
     "raidConvert": {
-      "toPartyDone": "Your raid has converted back to a party.",
-      "notRaid": "Your group is not a raid.",
-      "leaderOnly": "Only the raid leader may convert to a party.",
-      "tooLarge": "A raid with more than five members cannot convert back to a party."
+      "toPartyDone": "La tua incursione è tornata a essere un gruppo.",
+      "notRaid": "Il tuo gruppo non è un'incursione.",
+      "leaderOnly": "Solo il capo incursione può convertire in un gruppo.",
+      "tooLarge": "Un'incursione con più di cinque membri non può tornare a essere un gruppo."
     }
   },
   "guide": {
@@ -2282,7 +2291,7 @@ export const it_IT: EnTranslations = {
         "report": "Segnala giocatore",
         "removeParty": "Rimuovi dal gruppo",
         "convertToRaid": "Converti in incursione",
-        "convertToParty": "Convert to party",
+        "convertToParty": "Converti in gruppo",
         "cancel": "Annulla"
       }
     },
