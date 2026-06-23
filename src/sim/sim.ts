@@ -244,6 +244,11 @@ function isDevourableAura(a: Aura): boolean {
 }
 const NEARBY_RANGE = 40; // /nearby scan radius — wider than say, tighter than yell
 const NEARBY_MAX = 10; // cap the /nearby list so a crowded camp can't spam chat
+// /assist resolves a named player only if they are within interest range (you can see
+// them) OR in your party/raid (you coordinate with them across the whole map). This
+// mirrors the server's ~120yd snapshot scope so /assist never reaches a stranger on the
+// far side of the world. Party/raid members are always included, regardless of distance.
+const ASSIST_RANGE = 120;
 const CHAT_BURST = 8; // messages a player may send back-to-back...
 const CHAT_REFILL = 2; // ...then this many more per second (caps spam amplifiers)
 const DUEL_FORFEIT_DISTANCE = 60;
@@ -296,6 +301,11 @@ const PET_PATH_STALE_DISTANCE = 4; // path end this far from the (now-moved) own
 const PET_WAYPOINT_REACHED = 1; // pet within this of the next waypoint: pop it and home on the next leg
 const PET_ASSIST_RANGE = 50; // how far the pet scans for enemies engaging the pair
 const PET_AGGRESSIVE_RANGE = 18; // aggressive pets look for idle enemies this close
+// Anti-AFK: an aggressive pet only proactively pulls fresh targets while its
+// owner has acted (moved, cast, or commanded the pet) within this many ticks.
+// 1200 ticks = 60s at 20Hz. Stops hunters/warlocks parking an aggressive pet to
+// farm XP/loot while AFK; the pet still DEFENDS an idle owner. Tunable.
+const PET_OWNER_IDLE_TICKS = 1200;
 // A pet only keeps its OWNER flagged in combat while it is actively trading blows
 // (its combatTimer resets to 0 on every hit dealt/taken). A pet that merely holds a
 // target it is chasing or can't reach stops dragging the owner into perpetual combat
@@ -534,6 +544,11 @@ export interface PlayerMeta {
   // sim.time when this character entered the world; powers /played. Session-only
   // (sim.time resets to 0 each server boot), so it reports time this session.
   joinedAt: number;
+  // Tick of the player's last deliberate action (movement, ability cast, or pet
+  // command). Session-only, never persisted. Powers the anti-AFK gate on
+  // aggressive pet auto-pull (see PET_OWNER_IDLE_TICKS) so an idle owner's pet
+  // cannot farm the area alone.
+  lastActiveTick: number;
   // Ashen Coliseum standings. Legacy arenaRating/Wins/Losses are the 1v1
   // bracket; 2v2 is fully independent and persisted alongside them.
   arenaRating: number;
@@ -984,6 +999,7 @@ export class Sim {
       counters: freshCounters(),
       autoEquip: opts?.autoEquip ?? false,
       joinedAt: this.time,
+      lastActiveTick: this.tickCount,
       arenaRating: savedArena1v1.rating,
       arenaWins: savedArena1v1.wins,
       arenaLosses: savedArena1v1.losses,
@@ -2101,6 +2117,11 @@ export class Sim {
   }
 
   private updatePlayerMovement(p: Entity, meta: PlayerMeta): void {
+    // Any locomotion key counts as a deliberate action for the anti-AFK pet gate.
+    const mv = meta.moveInput;
+    if (mv.forward || mv.back || mv.strafeLeft || mv.strafeRight || mv.turnLeft || mv.turnRight || mv.jump) {
+      meta.lastActiveTick = this.tickCount;
+    }
     if (this.updateChargeMovement(p)) return;
     if (this.updateFollowMovement(p, meta)) return;
     if (this.updateFearMovement(p)) return;
@@ -2485,6 +2506,7 @@ export class Sim {
     const { meta, e: p } = r;
     const res = this.resolvedAbility(abilityId, p.id);
     if (!res || p.dead) return;
+    meta.lastActiveTick = this.tickCount; // a cast attempt is a deliberate action
     const ability = res.def;
     if (this.isStunned(p)) { this.error(p.id, 'You are stunned!'); return; }
     if (ability.school !== 'physical' && this.isSilenced(p)) { this.error(p.id, 'You are silenced!'); return; }
@@ -2963,6 +2985,13 @@ export class Sim {
           break;
         }
         case 'imbue': {
+          for (let i = p.auras.length - 1; i >= 0; i--) {
+            const a = p.auras[i];
+            if (a.kind === 'imbue' && a.id !== ability.id) {
+              p.auras.splice(i, 1);
+              this.emit({ type: 'aura', targetId: p.id, name: a.name, gained: false });
+            }
+          }
           this.applyAura(p, {
             id: ability.id, name: ability.name, kind: 'imbue',
             remaining: eff.duration, duration: eff.duration, value: eff.bonus,
@@ -3642,6 +3671,7 @@ export class Sim {
     const r = this.resolve(pid);
     if (!r) return;
     if (!isPetClass(r.meta.cls)) { this.error(r.e.id, 'Only pet classes can command pets.'); return; }
+    r.meta.lastActiveTick = this.tickCount; // commanding the pet is a deliberate action
     const pet = this.petOf(r.e.id);
     if (!pet) { this.error(r.e.id, 'You have no living pet.'); return; }
     const target = r.e.targetId !== null ? this.entities.get(r.e.targetId) : null;
@@ -3658,6 +3688,7 @@ export class Sim {
     const r = this.resolve(pid);
     if (!r) return;
     if (!isPetClass(r.meta.cls)) { this.error(r.e.id, 'Only pet classes can command pets.'); return; }
+    r.meta.lastActiveTick = this.tickCount; // commanding the pet is a deliberate action
     const pet = this.petOf(r.e.id);
     if (!pet) { this.error(r.e.id, 'You have no living pet.'); return; }
     if (pet.petTauntTimer > 0) { this.error(r.e.id, 'Pet taunt is not ready.'); return; }
@@ -3744,6 +3775,7 @@ export class Sim {
     const r = this.resolve(pid);
     if (!r) return;
     if (!isPetClass(r.meta.cls)) { this.error(r.e.id, 'Only pet classes can command pets.'); return; }
+    r.meta.lastActiveTick = this.tickCount; // commanding the pet is a deliberate action
     const pet = this.petOf(r.e.id, true);
     if (!pet) { this.error(r.e.id, 'You have no pet.'); return; }
     pet.petMode = mode;
@@ -3854,6 +3886,7 @@ export class Sim {
     if (!t || t.dead || !this.isHostileTo(p, t)) { this.error(p.id, 'Invalid attack target.'); return; }
     if (p.sitting) this.standUp(p);
     p.autoAttack = true;
+    r.meta.lastActiveTick = this.tickCount; // starting auto-attack is a deliberate action
     const d = dist2d(p.pos, t.pos);
     const ranged = CLASSES[r.meta.cls].ranged;
     const inAutoAttackRange = ranged
@@ -6234,13 +6267,18 @@ export class Sim {
 
   private petPickTarget(pet: Entity, owner: Entity): Entity | null {
     if (pet.petMode === 'passive') return null;
+    // Anti-AFK: an aggressive pet only proactively pulls fresh targets while its
+    // owner is actually playing. An idle owner's pet still defends (engagingUs /
+    // ownerOffense below) but cannot farm the area alone (hunter/warlock).
+    const ownerMeta = this.players.get(owner.id);
+    const ownerIdle = !ownerMeta || this.tickCount - ownerMeta.lastActiveTick > PET_OWNER_IDLE_TICKS;
     let best: Entity | null = null;
     let bestD = pet.petMode === 'aggressive' ? PET_AGGRESSIVE_RANGE : PET_ASSIST_RANGE;
     for (const m of this.entities.values()) {
       if (m.id === pet.id || m.dead || !this.isHostileTo(pet, m)) continue;
       const engagingUs = m.kind === 'mob' && (m.aggroTargetId === owner.id || m.aggroTargetId === pet.id);
       const ownerOffense = owner.targetId === m.id && (owner.autoAttack || (m.kind === 'mob' && m.threat.has(owner.id)));
-      const aggressive = pet.petMode === 'aggressive' && dist2d(pet.pos, m.pos) <= PET_AGGRESSIVE_RANGE;
+      const aggressive = pet.petMode === 'aggressive' && !ownerIdle && dist2d(pet.pos, m.pos) <= PET_AGGRESSIVE_RANGE;
       if (!engagingUs && !ownerOffense && !aggressive) continue;
       const d = dist2d(pet.pos, m.pos);
       if (d < bestD) { best = m; bestD = d; }
@@ -8073,6 +8111,9 @@ export class Sim {
     this.emit({ type: 'log', text: `Quest completed: ${quest.name}`, color: '#ff0', pid: meta.entityId });
   }
 
+  // No-op in offline mode
+  reportTelemetry(): void {}
+
   private onMobKilledForQuests(mob: Entity, meta: PlayerMeta): void {
     for (const qp of meta.questLog.values()) {
       if (qp.state !== 'active') continue;
@@ -8419,9 +8460,17 @@ export class Sim {
     // have targeted. Resolution lives in the pure resolveAssist() core.
     const am = /^\/(?:assist|as)(?:\s+([\s\S]+))?$/i.exec(raw);
     if (am) {
+      // Scope the candidate roster the way the server scopes a snapshot: players within
+      // interest range of the caster, PLUS the caster's party/raid members by name no
+      // matter how far they have roamed. Classic /assist only resolves a unit you could
+      // know about, never an arbitrary stranger across the map.
+      const assistParty = this.partyOf(r.meta.entityId);
       const candidates: AssistCandidate[] = [];
       for (const meta of this.players.values()) {
         const ent = this.entities.get(meta.entityId);
+        const inParty = assistParty ? assistParty.members.includes(meta.entityId) : false;
+        const inRange = ent ? dist2d(r.e.pos, ent.pos) <= ASSIST_RANGE : false;
+        if (meta.entityId !== r.meta.entityId && !inParty && !inRange) continue;
         candidates.push({ entityId: meta.entityId, name: meta.name, targetId: ent ? ent.targetId : null });
       }
       const res = resolveAssist(candidates, r.meta.entityId, am[1] ?? '');
