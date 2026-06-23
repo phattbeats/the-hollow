@@ -3,6 +3,7 @@ import { ALL_CLASSES, isQuestTurnInNpc, type Entity, type SimEvent } from '../si
 import { OVERHEAD_EMOTES, type IWorld } from '../world_api';
 import { groundHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
 import { drapeRingLocalY } from './selection_ring';
+import { buildFlaredConeFan, buildRingXZ, drapeConeWorld } from './target_cone_debug';
 import {
   CLASSES, MOBS, ABILITIES, DUNGEON_X_THRESHOLD, DUNGEON_LIST, QUESTS,
   instanceOrigin, INSTANCE_SLOT_COUNT, ARENA_SLOT_COUNT, arenaOrigin, isArenaPos, dungeonAt,
@@ -601,6 +602,20 @@ export class Renderer {
   // so sync() can re-drape the ring over the terrain without allocating.
   selectionRingLocalXZ: Float32Array;
   selectionRingDrapeY: Float32Array;
+  // Dev-only Tab-target cone overlay (enabled via ?targetcone=1 in main.ts).
+  // Null until enabled; once built it is re-draped over the terrain in front of
+  // the local player every frame. See target_cone_debug.ts.
+  private targetCone: {
+    group: THREE.Group;
+    pos: THREE.BufferAttribute;
+    localXZ: Float32Array;
+    worldXYZ: Float32Array;
+    // Full query-radius rim (40 yd): the absolute Tab range. Symmetric, so it is
+    // draped with facing 0.
+    ringPos: THREE.BufferAttribute;
+    ringXZ: Float32Array;
+    ringWorldXYZ: Float32Array;
+  } | null = null;
   // Pool of transient click-feedback markers (ring plus crossed "X"). Each slot is
   // a group reused round-robin, so rapid clicking never allocates. A slot with
   // `elapsed >= lifetime` is free. See click_marker.ts for the animation curves.
@@ -2850,6 +2865,55 @@ export class Renderer {
     this.views.delete(id);
   }
 
+  // Build the dev-only Tab-target overlay. Called once from main.ts when
+  // ?targetcone=1 is set; the flared-cone half-angle function, near radius, and
+  // query radius are injected so this module never imports the sim targeting
+  // code. Idempotent. Draws a filled flared near-radius cone (idle cluster), its
+  // outline, and a full query-radius rim (absolute Tab range; engaged enemies
+  // inside the cone reach out to here).
+  enableTargetConeDebug(halfAt: (d: number) => number, nearRadius: number, queryRadius: number): void {
+    if (this.targetCone) return;
+    const fan = buildFlaredConeFan(nearRadius, halfAt, 16, 48);
+    const worldXYZ = new Float32Array(fan.vertexCount * 3);
+    // Wrap the array by reference (not Float32BufferAttribute, which copies) so
+    // re-draping worldXYZ each frame writes straight into the uploaded buffer.
+    const pos = new THREE.BufferAttribute(worldXYZ, 3);
+    const fillGeo = new THREE.BufferGeometry();
+    fillGeo.setAttribute('position', pos);
+    fillGeo.setIndex(new THREE.BufferAttribute(fan.index, 1));
+    const fillMat = new THREE.MeshBasicMaterial({
+      color: 0x49c0ff, transparent: true, opacity: 0.16, depthWrite: false, side: THREE.DoubleSide,
+    });
+    const fill = new THREE.Mesh(fillGeo, fillMat);
+    fill.frustumCulled = false; // re-draped every frame; its bounds go stale
+    // Outline: a LineLoop over the flared perimeter (left edge -> outer arc ->
+    // right edge), sharing the position buffer so one update moves fill and edge.
+    const lineGeo = new THREE.BufferGeometry();
+    lineGeo.setAttribute('position', pos);
+    lineGeo.setIndex(new THREE.BufferAttribute(fan.outline, 1));
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x9be0ff, transparent: true, opacity: 0.85, depthWrite: false });
+    const outline = new THREE.LineLoop(lineGeo, lineMat);
+    outline.frustumCulled = false;
+    // Query-radius rim: a full circle at max Tab range, in a contrasting amber so
+    // it reads apart from the blue cone.
+    const ringXZ = buildRingXZ(queryRadius, 96);
+    const ringWorldXYZ = new Float32Array((ringXZ.length / 2) * 3);
+    const ringPos = new THREE.BufferAttribute(ringWorldXYZ, 3);
+    const ringGeo = new THREE.BufferGeometry();
+    ringGeo.setAttribute('position', ringPos);
+    const ringMat = new THREE.LineBasicMaterial({ color: 0xffb24d, transparent: true, opacity: 0.55, depthWrite: false });
+    const ring = new THREE.LineLoop(ringGeo, ringMat);
+    ring.frustumCulled = false;
+    const group = new THREE.Group();
+    group.add(fill);
+    group.add(outline);
+    group.add(ring);
+    setRenderCategory(group, 'ui3d');
+    group.visible = false;
+    this.scene.add(group);
+    this.targetCone = { group, pos, localXZ: fan.localXZ, worldXYZ, ringPos, ringXZ, ringWorldXYZ };
+  }
+
   sync(alpha: number, dt: number, renderFacingOverride: number | null, selfAlphaLead = 0): void {
     const totalStart = performance.now();
     let phaseStart = totalStart;
@@ -3215,6 +3279,24 @@ export class Renderer {
       this.selectionRing.visible = false;
     }
     this.updateClickMarkers(dt);
+    // dev-only Tab-target cone overlay: re-drape the front cone on the terrain
+    // under the local player, oriented to the model's rendered facing.
+    if (this.targetCone) {
+      if (p.dead) {
+        this.targetCone.group.visible = false;
+      } else {
+        const seed = this.sim.cfg.seed;
+        const lv = this.views.get(p.id);
+        const facing = lv ? lv.group.rotation.y : p.facing;
+        const sample = (sx: number, sz: number): number => groundHeight(sx, sz, seed);
+        drapeConeWorld(this.targetCone.localXZ, selfPos.x, selfPos.z, facing, 0.07, sample, this.targetCone.worldXYZ);
+        this.targetCone.pos.needsUpdate = true;
+        // The rim is a full circle, so facing is irrelevant: drape it with 0.
+        drapeConeWorld(this.targetCone.ringXZ, selfPos.x, selfPos.z, 0, 0.07, sample, this.targetCone.ringWorldXYZ);
+        this.targetCone.ringPos.needsUpdate = true;
+        this.targetCone.group.visible = true;
+      }
+    }
     markPhase('entities');
 
     let worldStart = performance.now();
