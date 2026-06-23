@@ -14,10 +14,14 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const es: Partial<Record<TranslationKey, string>> = {
-  'hudChrome.tutorial.moveBodyTouch': 'Usa el joystick de movimiento para moverte y arrastra la pantalla para mirar alrededor. Da unos pasos para empezar.',
-  'hudChrome.tutorial.talkBodyTouch': 'Acércate al mariscal Redbrook y toca el botón Usar para hablar; luego acepta su tarea.',
-  'hudChrome.tutorial.returnBodyTouch': 'Tu tarea está hecha. Vuelve con el mariscal Redbrook y toca el botón Usar para entregarla.',
-  'hudChrome.tutorial.doneBodyTouch': 'Ya dominas lo básico, {name}. El Valle es tuyo para explorar: toca Más y luego Diario de misiones para revisar tu diario de misiones en cualquier momento. ¡Buena caza!',
+  'hudChrome.tutorial.moveBodyTouch':
+    'Usa el joystick de movimiento para moverte y arrastra la pantalla para mirar alrededor. Da unos pasos para empezar.',
+  'hudChrome.tutorial.talkBodyTouch':
+    'Acércate al mariscal Redbrook y toca el botón Usar para hablar; luego acepta su tarea.',
+  'hudChrome.tutorial.returnBodyTouch':
+    'Tu tarea está hecha. Vuelve con el mariscal Redbrook y toca el botón Usar para entregarla.',
+  'hudChrome.tutorial.doneBodyTouch':
+    'Ya dominas lo básico, {name}. El Valle es tuyo para explorar: toca Más y luego Diario de misiones para revisar tu diario de misiones en cualquier momento. ¡Buena caza!',
   'hudChrome.raidLockout.title': 'Bloqueos de banda',
   'hudChrome.raidLockout.allReady': 'Todas las bandas listas',
   'hudChrome.raidLockout.daysHours': '{d}d {h}h',

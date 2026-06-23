@@ -14,10 +14,14 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const it_IT: Partial<Record<TranslationKey, string>> = {
-  'hudChrome.tutorial.moveBodyTouch': 'Usa il joystick di movimento per muoverti e trascina lo schermo per guardarti intorno. Fai qualche passo per iniziare.',
-  'hudChrome.tutorial.talkBodyTouch': 'Avvicinati al maresciallo Redbrook e tocca il pulsante Usa per parlargli, poi accetta il suo incarico.',
-  'hudChrome.tutorial.returnBodyTouch': 'Il tuo incarico è compiuto. Torna dal maresciallo Redbrook e tocca il pulsante Usa per consegnarlo.',
-  'hudChrome.tutorial.doneBodyTouch': 'Hai imparato le basi, {name}. La Valle è tutta da esplorare: tocca Altro, poi Registro missioni, per rivedere il tuo registro missioni in qualsiasi momento. Buona caccia!',
+  'hudChrome.tutorial.moveBodyTouch':
+    'Usa il joystick di movimento per muoverti e trascina lo schermo per guardarti intorno. Fai qualche passo per iniziare.',
+  'hudChrome.tutorial.talkBodyTouch':
+    'Avvicinati al maresciallo Redbrook e tocca il pulsante Usa per parlargli, poi accetta il suo incarico.',
+  'hudChrome.tutorial.returnBodyTouch':
+    'Il tuo incarico è compiuto. Torna dal maresciallo Redbrook e tocca il pulsante Usa per consegnarlo.',
+  'hudChrome.tutorial.doneBodyTouch':
+    'Hai imparato le basi, {name}. La Valle è tutta da esplorare: tocca Altro, poi Registro missioni, per rivedere il tuo registro missioni in qualsiasi momento. Buona caccia!',
   'hudChrome.raidLockout.title': 'Blocchi incursione',
   'hudChrome.raidLockout.allReady': 'Tutte le incursioni pronte',
   'hudChrome.raidLockout.daysHours': '{d}g {h}h',

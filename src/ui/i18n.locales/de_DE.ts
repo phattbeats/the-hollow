@@ -14,10 +14,14 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const de_DE: Partial<Record<TranslationKey, string>> = {
-  'hudChrome.tutorial.moveBodyTouch': 'Nutze den Bewegungsstick zum Bewegen und zieh über den Bildschirm, um dich umzusehen. Mach ein paar Schritte, um zu beginnen.',
-  'hudChrome.tutorial.talkBodyTouch': 'Stell dich nah an Marschall Redbrook und tippe auf die Schaltfläche Benutzen, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.',
-  'hudChrome.tutorial.returnBodyTouch': 'Deine Aufgabe ist erledigt. Kehre zu Marschall Redbrook zurück und tippe auf die Schaltfläche Benutzen, um sie abzugeben.',
-  'hudChrome.tutorial.doneBodyTouch': 'Du beherrschst die Grundlagen, {name}. Das Eastbrook-Tal liegt bereit, von dir erkundet zu werden. Tippe auf Mehr und dann auf Questlog, um jederzeit dein Questlog einzusehen. Gute Jagd.',
+  'hudChrome.tutorial.moveBodyTouch':
+    'Nutze den Bewegungsstick zum Bewegen und zieh über den Bildschirm, um dich umzusehen. Mach ein paar Schritte, um zu beginnen.',
+  'hudChrome.tutorial.talkBodyTouch':
+    'Stell dich nah an Marschall Redbrook und tippe auf die Schaltfläche Benutzen, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.',
+  'hudChrome.tutorial.returnBodyTouch':
+    'Deine Aufgabe ist erledigt. Kehre zu Marschall Redbrook zurück und tippe auf die Schaltfläche Benutzen, um sie abzugeben.',
+  'hudChrome.tutorial.doneBodyTouch':
+    'Du beherrschst die Grundlagen, {name}. Das Eastbrook-Tal liegt bereit, von dir erkundet zu werden. Tippe auf Mehr und dann auf Questlog, um jederzeit dein Questlog einzusehen. Gute Jagd.',
   'hudChrome.raidLockout.title': 'Schlachtzug-Sperren',
   'hudChrome.raidLockout.allReady': 'Alle Schlachtzüge bereit',
   'hudChrome.raidLockout.daysHours': '{d}T {h}Std',

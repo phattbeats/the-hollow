@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { Sim } from '../src/sim/sim';
-import type { PlayerMeta } from '../src/sim/sim';
 import { MOBS } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
+import type { PlayerMeta } from '../src/sim/sim';
+import { Sim } from '../src/sim/sim';
 import type { Entity } from '../src/sim/types';
 
 // Reproduces: "if you die in a raid/group you don't get to loot at all."
@@ -15,7 +15,15 @@ import type { Entity } from '../src/sim/types';
 type SimInternals = {
   players: Map<number, PlayerMeta>;
   entities: Map<number, Entity>;
-  parties: Map<number, { id: number; leader: number; members: number[]; lootStrategies: { currency: string; commonItems: string; premiumItems: string } }>;
+  parties: Map<
+    number,
+    {
+      id: number;
+      leader: number;
+      members: number[];
+      lootStrategies: { currency: string; commonItems: string; premiumItems: string };
+    }
+  >;
   partyByPid: Map<number, number>;
   handleDeath: (mob: Entity, killer: Entity | null) => void;
   partyLootCandidatesForMob: (mob: Entity) => PlayerMeta[];
@@ -39,7 +47,7 @@ function setup() {
     e.prevPos = { x: 0, y: 0, z: 0 };
   }
 
-  const template = MOBS['forest_wolf'];
+  const template = MOBS.forest_wolf;
   const mob = createMob(9999, template, template.maxLevel, { x: 0, y: 0, z: 0 });
   mob.tappedById = survivor; // the group owns the tag
   internals.entities.set(mob.id, mob);
@@ -52,9 +60,9 @@ describe('downed party member keeps loot/xp rights (classic group rules)', () =>
     const { internals, faller, fE, mob } = setup();
     fE.dead = true; // downed during the fight, corpse left on the mob
 
-    const before = internals.players.get(faller)!.lifetimeXp;
+    const before = internals.players.get(faller)?.lifetimeXp;
     internals.handleDeath(mob, internals.entities.get(mob.tappedById!) ?? null);
-    const after = internals.players.get(faller)!.lifetimeXp;
+    const after = internals.players.get(faller)?.lifetimeXp;
 
     expect(after).toBeGreaterThan(before);
   });
@@ -92,9 +100,9 @@ describe('downed party member keeps loot/xp rights (classic group rules)', () =>
   it('an alive nearby member still earns XP (no regression)', () => {
     const { internals, faller, mob } = setup();
     // faller stays alive this time
-    const before = internals.players.get(faller)!.lifetimeXp;
+    const before = internals.players.get(faller)?.lifetimeXp;
     internals.handleDeath(mob, internals.entities.get(mob.tappedById!) ?? null);
-    const after = internals.players.get(faller)!.lifetimeXp;
+    const after = internals.players.get(faller)?.lifetimeXp;
     expect(after).toBeGreaterThan(before);
   });
 
@@ -102,9 +110,9 @@ describe('downed party member keeps loot/xp rights (classic group rules)', () =>
     const { internals, faller, fE, mob } = setup();
     fE.pos = { x: 500, y: 0, z: 500 }; // far from the kill
     fE.prevPos = { ...fE.pos };
-    const before = internals.players.get(faller)!.lifetimeXp;
+    const before = internals.players.get(faller)?.lifetimeXp;
     internals.handleDeath(mob, internals.entities.get(mob.tappedById!) ?? null);
-    const after = internals.players.get(faller)!.lifetimeXp;
+    const after = internals.players.get(faller)?.lifetimeXp;
     expect(after).toBe(before);
   });
 });

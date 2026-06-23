@@ -1,7 +1,24 @@
-import { OVERHEAD_EMOTE_IDS, type ArenaCombatant, type ArenaFormat, type ArenaStanding, type Entity, type EquipSlot, type InvSlot, type LootRollChoice, type LootRollPrompt, type MoveInput, type OverheadEmoteId, type PetMode, type PlayerClass, type QuestProgress, type QuestState, type ResourceType } from './sim/types';
-import type { ResolvedAbility } from './sim/sim';
-import type { TalentAllocation, SavedLoadout, Role } from './sim/content/talents';
+import type { Role, SavedLoadout, TalentAllocation } from './sim/content/talents';
 import type { LeaderboardPage } from './sim/leaderboard_page';
+import type { ResolvedAbility } from './sim/sim';
+import {
+  type ArenaCombatant,
+  type ArenaFormat,
+  type ArenaStanding,
+  type Entity,
+  type EquipSlot,
+  type InvSlot,
+  type LootRollChoice,
+  type LootRollPrompt,
+  type MoveInput,
+  OVERHEAD_EMOTE_IDS,
+  type OverheadEmoteId,
+  type PetMode,
+  type PlayerClass,
+  type QuestProgress,
+  type QuestState,
+  type ResourceType,
+} from './sim/types';
 
 export type { LeaderboardPage } from './sim/leaderboard_page';
 
@@ -125,7 +142,7 @@ export interface LeaderboardEntry {
   realm?: string; // present on the global (cross-realm) home-page board
 }
 
-export type { ArenaFormat, ArenaCombatant, ArenaStanding };
+export type { ArenaCombatant, ArenaFormat, ArenaStanding };
 
 export interface ArenaLadderEntry {
   pid: number;

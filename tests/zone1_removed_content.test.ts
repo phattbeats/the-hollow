@@ -54,7 +54,10 @@ describe('removed Eastbrook Vale quest content', () => {
   it('removes orphaned mobs and prevents them from spawning in live camps', () => {
     for (const mobId of REMOVED_ZONE1_MOB_IDS) {
       expect(MOBS[mobId], mobId).toBeUndefined();
-      expect(CAMPS.some((camp) => camp.mobId === mobId), mobId).toBe(false);
+      expect(
+        CAMPS.some((camp) => camp.mobId === mobId),
+        mobId,
+      ).toBe(false);
     }
   });
 

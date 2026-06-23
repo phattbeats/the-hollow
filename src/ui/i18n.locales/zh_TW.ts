@@ -15,9 +15,12 @@ import type { TranslationKey } from '../i18n.catalog';
 
 export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tutorial.moveBodyTouch': '使用搖桿移動，拖曳螢幕環顧四周。先走幾步開始吧。',
-  'hudChrome.tutorial.talkBodyTouch': '靠近雷德布魯克元帥並點按「使用」按鈕與他交談，然後接受他的任務。',
-  'hudChrome.tutorial.returnBodyTouch': '任務已完成。返回雷德布魯克元帥處並點按「使用」按鈕繳交任務。',
-  'hudChrome.tutorial.doneBodyTouch': '你已掌握基礎，{name}。東溪谷任你探索。點按「更多」再選「任務日誌」即可隨時查看任務。祝你狩獵順利。',
+  'hudChrome.tutorial.talkBodyTouch':
+    '靠近雷德布魯克元帥並點按「使用」按鈕與他交談，然後接受他的任務。',
+  'hudChrome.tutorial.returnBodyTouch':
+    '任務已完成。返回雷德布魯克元帥處並點按「使用」按鈕繳交任務。',
+  'hudChrome.tutorial.doneBodyTouch':
+    '你已掌握基礎，{name}。東溪谷任你探索。點按「更多」再選「任務日誌」即可隨時查看任務。祝你狩獵順利。',
   'hudChrome.raidLockout.title': '團隊副本鎖定',
   'hudChrome.raidLockout.allReady': '所有團隊副本就緒',
   'hudChrome.raidLockout.daysHours': '{d}天{h}小時',

@@ -14,10 +14,14 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const ko_KR: Partial<Record<TranslationKey, string>> = {
-  'hudChrome.tutorial.moveBodyTouch': '이동 스틱으로 이동하고 화면을 끌어 주위를 둘러보세요. 몇 걸음 움직여 시작하세요.',
-  'hudChrome.tutorial.talkBodyTouch': '레드브룩 원수에게 다가가 사용 버튼을 눌러 대화한 뒤 임무를 수락하세요.',
-  'hudChrome.tutorial.returnBodyTouch': '임무를 마쳤습니다. 레드브룩 원수에게 돌아가 사용 버튼을 눌러 완료하세요.',
-  'hudChrome.tutorial.doneBodyTouch': '기본기를 익혔습니다, {name}. 이제 골짜기를 자유롭게 누비세요. 더보기를 누른 뒤 퀘스트 기록을 눌러 언제든 퀘스트를 확인할 수 있습니다. 좋은 사냥 되세요.',
+  'hudChrome.tutorial.moveBodyTouch':
+    '이동 스틱으로 이동하고 화면을 끌어 주위를 둘러보세요. 몇 걸음 움직여 시작하세요.',
+  'hudChrome.tutorial.talkBodyTouch':
+    '레드브룩 원수에게 다가가 사용 버튼을 눌러 대화한 뒤 임무를 수락하세요.',
+  'hudChrome.tutorial.returnBodyTouch':
+    '임무를 마쳤습니다. 레드브룩 원수에게 돌아가 사용 버튼을 눌러 완료하세요.',
+  'hudChrome.tutorial.doneBodyTouch':
+    '기본기를 익혔습니다, {name}. 이제 골짜기를 자유롭게 누비세요. 더보기를 누른 뒤 퀘스트 기록을 눌러 언제든 퀘스트를 확인할 수 있습니다. 좋은 사냥 되세요.',
   'hudChrome.raidLockout.title': '공격대 잠금',
   'hudChrome.raidLockout.allReady': '모든 공격대 준비됨',
   'hudChrome.raidLockout.daysHours': '{d}일 {h}시간',
