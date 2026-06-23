@@ -148,6 +148,7 @@ import {
   isQuestTurnInNpc,
   type LootEntry,
   type LootRollChoice,
+  type LootRollPrompt,
   type LootSlot,
   type LootStrategies,
   MAX_LEVEL,
@@ -5959,6 +5960,19 @@ export class Sim {
 
   private awardSharedLootItem(itemId: string, mob: Entity, looter: PlayerMeta): void {
     if (!this.startNeedGreedRoll(itemId, mob)) this.addItem(itemId, 1, looter.entityId);
+  }
+
+  // Open need-greed rolls the given player may still answer. Mirrors the
+  // `lootRoll` events but is reconciled from authoritative state, so a client
+  // that missed an event (reconnect, interest churn, a dropped frame) can
+  // re-show the prompt instead of losing the roll while groupmates roll.
+  activeLootRolls(pid = this.playerId): LootRollPrompt[] {
+    const out: LootRollPrompt[] = [];
+    for (const roll of this.pendingLootRolls.values()) {
+      if (!roll.candidates.includes(pid) || roll.choices.has(pid)) continue;
+      out.push({ rollId: roll.id, itemId: roll.itemId, itemName: roll.itemName, quality: roll.quality, expiresAt: roll.expiresAt });
+    }
+    return out;
   }
 
   submitLootRoll(rollId: number, choice: LootRollChoice, pid?: number): void {

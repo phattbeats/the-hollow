@@ -191,6 +191,7 @@ import {
 } from './i18n';
 import { iconDataUrl, QUALITY_COLOR, raidMarkerDataUrl } from './icons';
 import { itemStatDeltas } from './item_compare';
+import { reconcileLootRolls as computeLootRollReconcile } from './loot_roll_reconcile';
 import { lowHealthVignette } from './low_health';
 import { lowResourceView } from './low_resource';
 import { overworldDungeonPortals } from './map_dungeon_portals';
@@ -802,6 +803,13 @@ export class Hud {
     number,
     { event: Extract<SimEvent, { type: 'lootRoll' }>; receivedAt: number; durationMs: number }
   >();
+  // rolls the player has answered or let expire locally; suppresses the
+  // snapshot reconcile from re-showing them until the server drops the roll
+  private dismissedLootRolls = new Set<number>();
+  // shown rolls already observed in the open-roll mirror at least once, so their
+  // later absence from the mirror means the server resolved them (retire), not
+  // that the mirror simply has not caught up to a just-shown event yet.
+  private confirmedLootRolls = new Set<number>();
   private openVendorNpcId: number | null = null;
   private openGossipNpcId: number | null = null;
   private openQuestDetailId: string | null = null;
@@ -3378,6 +3386,7 @@ export class Hud {
 
     this.meters.update();
     this.tutorial.update(sim, this.renderer, this.keybinds);
+    this.reconcileLootRolls();
     this.updateLootRollTimers(now);
     this.syncActiveHotbarForm();
     this.syncSlotMap(); // picks up newly learned abilities mid-session
@@ -6695,7 +6704,50 @@ export class Hud {
   private submitLootRoll(rollId: number, choice: LootRollChoice): void {
     this.sim.submitLootRoll(rollId, choice);
     this.activeLootRolls.delete(rollId);
+    this.dismissedLootRolls.add(rollId);
     this.renderLootRolls();
+  }
+
+  // Reconcile the shown loot-roll prompts against the server's authoritative
+  // open-roll mirror. Loot-roll events are best-effort (a single frame), so this
+  // both RE-SHOWS an open roll whose event was missed (reconnect, interest
+  // churn, a dropped snapshot) and RETIRES a shown roll the server has since
+  // resolved (the mirror drops it to []), so a stale dead-button prompt no
+  // longer lingers until the 30s local timer. The three-way decision lives in
+  // the pure computeLootRollReconcile; here we apply it to the live DOM state.
+  private reconcileLootRolls(): void {
+    const open = this.sim.activeLootRolls();
+    // Steady state (no open rolls and nothing shown/tracked): nothing to do, and
+    // skip allocating the decision arrays every frame.
+    if (
+      open.length === 0 &&
+      this.activeLootRolls.size === 0 &&
+      this.dismissedLootRolls.size === 0 &&
+      this.confirmedLootRolls.size === 0
+    ) {
+      return;
+    }
+    const promptById = new Map(open.map((p) => [p.rollId, p] as const));
+    const decision = computeLootRollReconcile({
+      open: open.map((p) => p.rollId),
+      shown: [...this.activeLootRolls.keys()],
+      dismissed: [...this.dismissedLootRolls],
+      confirmed: [...this.confirmedLootRolls],
+    });
+    this.confirmedLootRolls = new Set(decision.confirmed);
+    for (const id of decision.toPrune) this.dismissedLootRolls.delete(id); // server confirmed it is gone
+    let changed = false;
+    for (const id of decision.toRetire) {
+      this.activeLootRolls.delete(id);
+      changed = true;
+    }
+    for (const id of decision.toShow) {
+      const p = promptById.get(id);
+      if (!p) continue;
+      this.activeLootRolls.set(id, { event: { type: 'lootRoll', ...p }, receivedAt: performance.now(), durationMs: 30_000 });
+      changed = true;
+    }
+    if (changed) this.renderLootRolls();
   }
 
   private updateLootRollTimers(now: number): void {
@@ -6704,6 +6756,7 @@ export class Hud {
     for (const [rollId, roll] of this.activeLootRolls) {
       if (now - roll.receivedAt >= roll.durationMs) {
         this.activeLootRolls.delete(rollId);
+        this.dismissedLootRolls.add(rollId); // expired locally; don't let reconcile re-show it
         changed = true;
       }
     }
