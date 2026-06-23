@@ -174,6 +174,28 @@ export const ko_KR: EnTranslations = {
       "title": "감정 표현",
       "done": "완료"
     },
+    "theme": {
+      "preset": "UI 테마",
+      "customColors": "사용자 지정 색상",
+      "reset": "초기화",
+      "presets": {
+        "classic": "클래식 골드",
+        "midnight": "미드나이트",
+        "parchment": "양피지",
+        "highContrast": "고대비"
+      },
+      "knob": {
+        "accent": "강조색",
+        "border": "테두리",
+        "panel": "프레임",
+        "text": "텍스트",
+        "textMuted": "보조 텍스트",
+        "hp": "체력",
+        "mana": "마나",
+        "rage": "분노",
+        "energy": "에너지"
+      }
+    },
     "questTracker": {
       "count": "({count})",
       "collapseHint": "퀘스트 추적기 접기",
@@ -253,6 +275,8 @@ export const ko_KR: EnTranslations = {
       "interfaceModeNote": "자동은 기기에 따라 데스크톱 또는 터치 조작을 선택합니다. 데스크톱을 선택하면 키보드와 마우스로 고정되며(키보드가 있는 태블릿 등에 유용), 터치를 선택하면 화면 조작이 됩니다.",
       "footstepSounds": "발소리",
       "clickFeedback": "클릭 표시",
+      "lockCursorOnRotate": "회전 중 커서 고정",
+      "keybindHelpLockCursorOnRotate": "드래그하여 카메라를 회전하는 동안 마우스 커서를 창 안에 유지하여 화면 가장자리에 닿거나 다른 모니터로 이동하지 않도록 합니다. 자유로운 커서를 원하면 끄세요.",
       "showWalletOnCharacterScreen": "캐릭터 화면에 지갑 표시",
       "showWalletOnPlayerCard": "플레이어 카드에 지갑 표시",
       "uiScale": "UI 배율",
@@ -476,7 +500,56 @@ export const ko_KR: EnTranslations = {
       "deactivateConfirm": "내 계정 비활성화",
       "deactivated": "계정이 비활성화되었습니다.",
       "logOut": "로그아웃",
-      "logOutSummary": "이 기기에서 로그아웃합니다."
+      "logOutSummary": "이 기기에서 로그아웃합니다.",
+      "sectionSecurity": "보안",
+      "changeEmailTitle": "이메일 변경",
+      "changeEmailHint": "새 주소로 확인 링크를, 기존 주소로 안내 메일을 보냅니다. 링크를 열어야만 이메일이 변경됩니다.",
+      "changeEmailNew": "새 이메일",
+      "changeEmailSubmit": "확인 링크 보내기",
+      "changeEmailSent": "받은 편지함을 확인하세요. 보내드린 링크를 열어 새 이메일을 확인하세요.",
+      "errEmailUnchanged": "이미 사용 중인 이메일 주소입니다.",
+      "twoFactorTitle": "2단계 인증",
+      "twoFactorStatusOn": "계정에 2단계 인증이 켜져 있습니다.",
+      "twoFactorStatusOff": "더 강력한 계정 보안을 위해 인증 앱을 추가하세요.",
+      "twoFactorSetupBtn": "2단계 인증 설정",
+      "twoFactorBeginHint": "설정을 시작하려면 비밀번호를 입력하세요.",
+      "twoFactorBegin": "설정 시작",
+      "twoFactorScanHint": "이 키를 인증 앱(Google Authenticator, Authy, 1Password 등)에 추가한 다음, 앱에 표시되는 6자리 코드를 입력하세요.",
+      "twoFactorSecretLabel": "설정 키",
+      "twoFactorOpenApp": "인증 앱에서 열기",
+      "twoFactorCodeLabel": "6자리 코드",
+      "twoFactorVerifyBtn": "확인 후 사용",
+      "twoFactorEnabledMsg": "이제 2단계 인증이 켜졌습니다.",
+      "twoFactorRecoveryTitle": "복구 코드를 저장하세요",
+      "twoFactorRecoveryHint": "각 코드는 한 번만 사용할 수 있습니다. 안전한 곳에 보관하세요. 인증 앱을 잃어버렸을 때 다시 로그인할 수 있는 유일한 방법입니다.",
+      "twoFactorDownloadCodes": "코드 다운로드",
+      "twoFactorDone": "완료",
+      "twoFactorDisableHint": "2단계 인증을 끄려면 비밀번호를 입력하세요. 복구 코드는 폐기됩니다.",
+      "twoFactorDisableBtn": "2단계 인증 끄기",
+      "twoFactorDisabledMsg": "2단계 인증이 꺼졌습니다.",
+      "errTwoFactorCode": "코드가 올바르지 않습니다. 다시 시도하세요.",
+      "errTwoFactorState": "2단계 인증 설정이 예상한 상태가 아닙니다. 새로고침 후 다시 시도하세요.",
+      "exportTitle": "내 데이터 내보내기",
+      "exportHint": "계정과 캐릭터 사본을 JSON 파일로 다운로드합니다. 확인 메일도 함께 보내드립니다.",
+      "exportBtn": "내 데이터 다운로드",
+      "exportDone": "데이터가 다운로드되었습니다. 확인 메일을 보내드렸습니다.",
+      "exportFailed": "데이터를 내보낼 수 없습니다. 잠시 후 다시 시도하세요."
+    },
+    "bags": {
+      "filterGroupAria": "가방을 분류별로 필터링",
+      "filterAll": "전체",
+      "filterWeapon": "무기",
+      "filterArmor": "방어구",
+      "filterConsumable": "소모품",
+      "filterMaterial": "재료",
+      "filterQuest": "퀘스트",
+      "sortAria": "가방 아이템 정렬",
+      "sortRecent": "최근",
+      "sortQuality": "품질",
+      "sortName": "이름",
+      "searchPlaceholder": "아이템 검색",
+      "searchAria": "이름으로 가방 아이템 검색",
+      "noMatch": "필터와 일치하는 아이템이 없습니다."
     }
   },
   "guide": {
@@ -1386,7 +1459,10 @@ export const ko_KR: EnTranslations = {
     "characterNamePlaceholder": "캐릭터 이름",
     "enterWorld": "세계 입장",
     "offlineCharacter": "오프라인 캐릭터",
-    "create": "생성"
+    "create": "생성",
+    "twoFactorLabel": "인증 코드",
+    "twoFactorPlaceholder": "6자리 또는 복구 코드",
+    "twoFactorHint": "인증 앱에 표시된 코드 또는 복구 코드 중 하나를 입력하세요."
   },
   "wallet": {
     "label": "$WOC 지갑",
@@ -1855,6 +1931,11 @@ export const ko_KR: EnTranslations = {
     "high": "높음",
     "medium": "보통",
     "low": "낮음",
+    "popTipLow": "낮은 인구：현재 접속자 15명 미만. 여유롭고 새로 시작하기에 좋습니다.",
+    "popTipMedium": "보통 인구：현재 접속자 15~39명. 건강하고 활발한 서버입니다.",
+    "popTipHigh": "높은 인구：현재 접속자 40~79명. 붐비고 플레이어가 많습니다.",
+    "popTipFull": "포화 인구：현재 접속자 80명 이상. 매우 붐비며 로그인 대기열이 있을 수 있습니다.",
+    "popTipOffline": "오프라인：이 서버는 현재 연결할 수 없어 입장할 수 없습니다.",
     "characterCountOne": "캐릭터 {count}개",
     "characterCountOther": "캐릭터 {count}개",
     "selectedRealm": "렐름: {name}",
@@ -2307,6 +2388,10 @@ export const ko_KR: EnTranslations = {
       "whisperAmbiguous": "'{name}'와 일치하는 플레이어가 여럿입니다. 정확한 대소문자를 사용하세요.",
       "whisperMissing": "'{name}'라는 플레이어는 온라인이 아닙니다.",
       "whisperSelf": "혼잣말을 중얼거립니다. 아무도 듣지 못합니다.",
+      "assistSelf": "자신을 지원할 수 없습니다.",
+      "assistNoTarget": "{name}님은 대상이 없습니다.",
+      "assistWhom": "누구를 지원할까요? 플레이어를 대상으로 지정하거나 /assist <name>를 사용하세요.",
+      "assisting": "{name}님을 지원합니다.",
       "notInParty": "파티에 속해 있지 않습니다.",
       "unknownCommand": "알 수 없는 명령어: {command}. /s /y /w /p /g를 사용해 보세요.",
       "chatCooldown": "채팅 재사용까지 {seconds}초 남았습니다.",
@@ -3766,6 +3851,9 @@ export const ko_KR: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "산등성이 추적자 가죽"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "온전한 산등성이 추적자 가죽"
+      },
       "glowing_wax": {
         "name": "빛나는 밀랍"
       },
@@ -4200,6 +4288,9 @@ export const ko_KR: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "크래그모의 잠행 장화"
+      },
+      "cragmaw_huntcord": {
+        "name": "크래그모의 사냥 허리끈"
       },
       "drowned_tide_scepter": {
         "name": "익사한 조수의 셉터"

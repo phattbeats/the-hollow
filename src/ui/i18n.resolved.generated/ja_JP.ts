@@ -174,6 +174,28 @@ export const ja_JP: EnTranslations = {
       "title": "エモート",
       "done": "完了"
     },
+    "theme": {
+      "preset": "UIテーマ",
+      "customColors": "カスタムカラー",
+      "reset": "リセット",
+      "presets": {
+        "classic": "クラシックゴールド",
+        "midnight": "ミッドナイト",
+        "parchment": "羊皮紙",
+        "highContrast": "ハイコントラスト"
+      },
+      "knob": {
+        "accent": "アクセント",
+        "border": "枠線",
+        "panel": "フレーム",
+        "text": "テキスト",
+        "textMuted": "補助テキスト",
+        "hp": "体力",
+        "mana": "マナ",
+        "rage": "怒り",
+        "energy": "エネルギー"
+      }
+    },
     "questTracker": {
       "count": "（{count}）",
       "collapseHint": "クエストトラッカーを折りたたむ",
@@ -253,6 +275,8 @@ export const ja_JP: EnTranslations = {
       "interfaceModeNote": "自動では、デバイスに応じてデスクトップ操作かタッチ操作を選びます。デスクトップを選ぶとキーボードとマウスに固定され（キーボード付きタブレットなどに便利）、タッチを選ぶと画面上の操作になります。",
       "footstepSounds": "足音",
       "clickFeedback": "クリックマーカー",
+      "lockCursorOnRotate": "回転中はカーソルを固定",
+      "keybindHelpLockCursorOnRotate": "ドラッグでカメラを回転させている間、マウスカーソルをウィンドウ内に固定し、画面の端や別のモニターに移動しないようにします。自由なカーソルを好む場合はオフにしてください。",
       "showWalletOnCharacterScreen": "キャラクター画面にウォレットを表示",
       "showWalletOnPlayerCard": "プレイヤーカードにウォレットを表示",
       "uiScale": "UIスケール",
@@ -476,7 +500,56 @@ export const ja_JP: EnTranslations = {
       "deactivateConfirm": "アカウントを無効化する",
       "deactivated": "アカウントが無効化されました。",
       "logOut": "ログアウト",
-      "logOutSummary": "このデバイスからログアウトします。"
+      "logOutSummary": "このデバイスからログアウトします。",
+      "sectionSecurity": "セキュリティ",
+      "changeEmailTitle": "メールアドレスの変更",
+      "changeEmailHint": "新しいアドレスに確認用リンクを、古いアドレスに通知をメールで送信します。メールアドレスはリンクを開いて初めて変更されます。",
+      "changeEmailNew": "新しいメールアドレス",
+      "changeEmailSubmit": "確認用リンクを送信",
+      "changeEmailSent": "受信トレイをご確認ください。送信したリンクを開いて新しいメールアドレスを確認してください。",
+      "errEmailUnchanged": "すでに現在のメールアドレスです。",
+      "twoFactorTitle": "二段階認証",
+      "twoFactorStatusOn": "お使いのアカウントの二段階認証は有効です。",
+      "twoFactorStatusOff": "認証アプリを追加して、アカウントのセキュリティを強化しましょう。",
+      "twoFactorSetupBtn": "二段階認証を設定",
+      "twoFactorBeginHint": "設定を開始するにはパスワードを入力してください。",
+      "twoFactorBegin": "設定を開始",
+      "twoFactorScanHint": "このキーを認証アプリ(Google Authenticator、Authy、1Passwordなど)に追加し、表示される6桁のコードを入力してください。",
+      "twoFactorSecretLabel": "設定キー",
+      "twoFactorOpenApp": "認証アプリで開く",
+      "twoFactorCodeLabel": "6桁のコード",
+      "twoFactorVerifyBtn": "確認して有効化",
+      "twoFactorEnabledMsg": "二段階認証が有効になりました。",
+      "twoFactorRecoveryTitle": "リカバリーコードを保存してください",
+      "twoFactorRecoveryHint": "各コードは一度だけ使用できます。安全な場所に保管してください。認証アプリを紛失した場合、これらが唯一の復旧手段です。",
+      "twoFactorDownloadCodes": "コードをダウンロード",
+      "twoFactorDone": "完了",
+      "twoFactorDisableHint": "二段階認証を無効にするにはパスワードを入力してください。リカバリーコードは破棄されます。",
+      "twoFactorDisableBtn": "二段階認証を無効にする",
+      "twoFactorDisabledMsg": "二段階認証は無効です。",
+      "errTwoFactorCode": "そのコードは無効です。もう一度お試しください。",
+      "errTwoFactorState": "二段階認証の設定が想定された状態ではありません。再読み込みしてやり直してください。",
+      "exportTitle": "データのエクスポート",
+      "exportHint": "アカウントとキャラクターのコピーをJSONファイルとしてダウンロードします。確認のメールもお送りします。",
+      "exportBtn": "データをダウンロード",
+      "exportDone": "データをダウンロードしました。確認のメールをお送りしました。",
+      "exportFailed": "データをエクスポートできませんでした。しばらくしてからやり直してください。"
+    },
+    "bags": {
+      "filterGroupAria": "バッグをカテゴリーで絞り込む",
+      "filterAll": "すべて",
+      "filterWeapon": "武器",
+      "filterArmor": "防具",
+      "filterConsumable": "消耗品",
+      "filterMaterial": "素材",
+      "filterQuest": "クエスト",
+      "sortAria": "バッグのアイテムを並べ替える",
+      "sortRecent": "最近",
+      "sortQuality": "品質",
+      "sortName": "名前",
+      "searchPlaceholder": "アイテムを検索",
+      "searchAria": "名前でバッグのアイテムを検索",
+      "noMatch": "条件に一致するアイテムはありません。"
     }
   },
   "guide": {
@@ -1386,7 +1459,10 @@ export const ja_JP: EnTranslations = {
     "characterNamePlaceholder": "キャラクター名",
     "enterWorld": "世界に入る",
     "offlineCharacter": "オフラインキャラクター",
-    "create": "作成"
+    "create": "作成",
+    "twoFactorLabel": "認証コード",
+    "twoFactorPlaceholder": "6桁のコードまたはリカバリーコード",
+    "twoFactorHint": "認証アプリに表示されたコード、またはリカバリーコードのいずれかを入力してください。"
   },
   "wallet": {
     "label": "$WOC ウォレット",
@@ -1855,6 +1931,11 @@ export const ja_JP: EnTranslations = {
     "high": "高",
     "medium": "中",
     "low": "低",
+    "popTipLow": "低人口：現在オンラインのプレイヤーは15人未満。余裕があり、新規スタートに最適です。",
+    "popTipMedium": "中人口：現在オンラインのプレイヤーは15〜39人。健全で活発なサーバーです。",
+    "popTipHigh": "高人口：現在オンラインのプレイヤーは40〜79人。混雑しており、多くのプレイヤーがいます。",
+    "popTipFull": "満員：現在オンラインのプレイヤーは80人以上。非常に混雑しており、ログイン待ちが発生する場合があります。",
+    "popTipOffline": "オフライン：このサーバーは現在接続できず、参加できません。",
     "characterCountOne": "{count}キャラクター",
     "characterCountOther": "{count}キャラクター",
     "selectedRealm": "レルム: {name}",
@@ -2307,6 +2388,10 @@ export const ja_JP: EnTranslations = {
       "whisperAmbiguous": "「{name}」に一致するプレイヤーが複数います。正確な大文字小文字を使ってください。",
       "whisperMissing": "「{name}」というオンラインプレイヤーはいません。",
       "whisperSelf": "自分に向かってつぶやきます。誰にも聞こえません。",
+      "assistSelf": "自分をアシストすることはできません。",
+      "assistNoTarget": "{name} はターゲットを持っていません。",
+      "assistWhom": "誰をアシストしますか？プレイヤーをターゲットするか、/assist <name> を使用してください。",
+      "assisting": "{name} をアシストします。",
       "notInParty": "パーティに入っていません。",
       "unknownCommand": "不明なコマンド: {command}。/s /y /w /p /g を試してください。",
       "chatCooldown": "チャットはあと{seconds}秒クールダウン中です。",
@@ -3766,6 +3851,9 @@ export const ja_JP: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "尾根の追跡者の毛皮"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "極上の尾根の追跡者の毛皮"
+      },
       "glowing_wax": {
         "name": "光る蝋"
       },
@@ -4200,6 +4288,9 @@ export const ja_JP: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "クラッグモウの忍び歩きブーツ"
+      },
+      "cragmaw_huntcord": {
+        "name": "クラッグモウの狩猟帯"
       },
       "drowned_tide_scepter": {
         "name": "溺れた潮の笏"

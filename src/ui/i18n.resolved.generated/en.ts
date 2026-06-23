@@ -174,6 +174,28 @@ export const en: EnTranslations = {
       "title": "Emotes",
       "done": "Done"
     },
+    "theme": {
+      "preset": "UI Theme",
+      "customColors": "Custom Colors",
+      "reset": "Reset",
+      "presets": {
+        "classic": "Classic Gold",
+        "midnight": "Midnight",
+        "parchment": "Parchment",
+        "highContrast": "High Contrast"
+      },
+      "knob": {
+        "accent": "Accent",
+        "border": "Border",
+        "panel": "Frame",
+        "text": "Text",
+        "textMuted": "Muted Text",
+        "hp": "Health",
+        "mana": "Mana",
+        "rage": "Rage",
+        "energy": "Energy"
+      }
+    },
     "questTracker": {
       "count": "({count})",
       "collapseHint": "Collapse quest tracker",
@@ -253,6 +275,8 @@ export const en: EnTranslations = {
       "interfaceModeNote": "Auto picks desktop or touch controls from your device. Choose Desktop to force keyboard and mouse (useful on a tablet with a keyboard), or Touch for the on-screen controls.",
       "footstepSounds": "Footstep Sounds",
       "clickFeedback": "Click Marker",
+      "lockCursorOnRotate": "Lock Cursor While Rotating",
+      "keybindHelpLockCursorOnRotate": "Keeps the mouse cursor inside the window while you drag to rotate the camera, so it cannot reach the screen edge or move to another monitor. Turn off if you prefer a free cursor.",
       "showWalletOnCharacterScreen": "Show Wallet on Character Screen",
       "showWalletOnPlayerCard": "Show Wallet on Player Card",
       "uiScale": "UI Scale",
@@ -476,7 +500,56 @@ export const en: EnTranslations = {
       "deactivateConfirm": "Deactivate My Account",
       "deactivated": "Your account has been deactivated.",
       "logOut": "Log Out",
-      "logOutSummary": "Sign out of this device."
+      "logOutSummary": "Sign out of this device.",
+      "sectionSecurity": "Security",
+      "changeEmailTitle": "Change Email",
+      "changeEmailHint": "We email a confirmation link to the new address and a notice to the old one. Your email only changes once you open the link.",
+      "changeEmailNew": "New email",
+      "changeEmailSubmit": "Send Confirmation Link",
+      "changeEmailSent": "Check your inbox: open the link we sent to confirm your new email.",
+      "errEmailUnchanged": "That is already your email address.",
+      "twoFactorTitle": "Two-Factor Authentication",
+      "twoFactorStatusOn": "Two-factor authentication is ON for your account.",
+      "twoFactorStatusOff": "Add an authenticator app for stronger account security.",
+      "twoFactorSetupBtn": "Set Up Two-Factor",
+      "twoFactorBeginHint": "Enter your password to begin setup.",
+      "twoFactorBegin": "Begin Setup",
+      "twoFactorScanHint": "Add this key to your authenticator app (Google Authenticator, Authy, 1Password, and similar), then enter the 6-digit code it shows.",
+      "twoFactorSecretLabel": "Setup key",
+      "twoFactorOpenApp": "Open in authenticator app",
+      "twoFactorCodeLabel": "6-digit code",
+      "twoFactorVerifyBtn": "Verify and Enable",
+      "twoFactorEnabledMsg": "Two-factor authentication is now on.",
+      "twoFactorRecoveryTitle": "Save your recovery codes",
+      "twoFactorRecoveryHint": "Each code works once. Store them somewhere safe: they are the only way back in if you lose your authenticator app.",
+      "twoFactorDownloadCodes": "Download Codes",
+      "twoFactorDone": "Done",
+      "twoFactorDisableHint": "Enter your password to turn two-factor off. Your recovery codes will be discarded.",
+      "twoFactorDisableBtn": "Turn Off Two-Factor",
+      "twoFactorDisabledMsg": "Two-factor authentication is off.",
+      "errTwoFactorCode": "That code is not valid, try again.",
+      "errTwoFactorState": "Two-factor setup is not in the expected state. Reload and try again.",
+      "exportTitle": "Export My Data",
+      "exportHint": "Download a copy of your account and characters as a JSON file. We also email you a confirmation.",
+      "exportBtn": "Download My Data",
+      "exportDone": "Your data was downloaded. We emailed you a confirmation.",
+      "exportFailed": "Could not export your data. Try again in a moment."
+    },
+    "bags": {
+      "filterGroupAria": "Filter bags by category",
+      "filterAll": "All",
+      "filterWeapon": "Weapons",
+      "filterArmor": "Armor",
+      "filterConsumable": "Consumables",
+      "filterMaterial": "Materials",
+      "filterQuest": "Quest",
+      "sortAria": "Sort bag items",
+      "sortRecent": "Recent",
+      "sortQuality": "Quality",
+      "sortName": "Name",
+      "searchPlaceholder": "Search items",
+      "searchAria": "Search bag items by name",
+      "noMatch": "No items match your filters."
     }
   },
   "guide": {
@@ -1386,7 +1459,10 @@ export const en: EnTranslations = {
     "characterNamePlaceholder": "Character name",
     "enterWorld": "Enter World",
     "offlineCharacter": "Offline Character",
-    "create": "Create"
+    "create": "Create",
+    "twoFactorLabel": "Authentication code",
+    "twoFactorPlaceholder": "6-digit or recovery code",
+    "twoFactorHint": "Enter the code from your authenticator app, or one of your recovery codes."
   },
   "wallet": {
     "label": "$WOC Wallet",
@@ -1855,6 +1931,11 @@ export const en: EnTranslations = {
     "high": "High",
     "medium": "Medium",
     "low": "Low",
+    "popTipLow": "Low population: fewer than 15 players online right now. Plenty of room; great for a fresh start.",
+    "popTipMedium": "Medium population: 15 to 39 players online right now. A healthy, active realm.",
+    "popTipHigh": "High population: 40 to 79 players online right now. Busy, with lots of players around.",
+    "popTipFull": "Full population: 80 or more players online right now. Very busy; you may wait in a login queue.",
+    "popTipOffline": "Offline: this realm is unreachable right now and cannot be joined.",
     "characterCountOne": "{count} character",
     "characterCountOther": "{count} characters",
     "selectedRealm": "Realm: {name}",
@@ -2307,6 +2388,10 @@ export const en: EnTranslations = {
       "whisperAmbiguous": "Several players match '{name}'. Use exact capitalization.",
       "whisperMissing": "There is no player named '{name}' online.",
       "whisperSelf": "You mutter to yourself. Nobody hears it.",
+      "assistSelf": "You can't assist yourself.",
+      "assistNoTarget": "{name} has no target.",
+      "assistWhom": "Assist whom? Target a player or use /assist <name>.",
+      "assisting": "Assisting {name}.",
       "notInParty": "You are not in a party.",
       "unknownCommand": "Unknown command: {command}. Try /s /y /w /p /g.",
       "chatCooldown": "Chat is on cooldown for {seconds}s.",
@@ -3766,6 +3851,9 @@ export const en: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "Ridge Stalker Pelt"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "Pristine Ridge Stalker Pelt"
+      },
       "glowing_wax": {
         "name": "Glowing Wax"
       },
@@ -4200,6 +4288,9 @@ export const en: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "Cragmaw Prowlboots"
+      },
+      "cragmaw_huntcord": {
+        "name": "Cragmaw's Huntcord"
       },
       "drowned_tide_scepter": {
         "name": "Drowned Tide Scepter"

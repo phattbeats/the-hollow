@@ -28,7 +28,10 @@ import { handleWalletChallenge, handleWalletLink, handleWalletGet, handleWalletU
 import { handleWocBalance, parseWocBalanceQuery } from './woc_balance';
 import {
   handleAccountWhoami, handleAccountChangePassword, handleAccountLogout, handleAccountSetEmail, handleAccountDeactivate,
+  handleAccountEmailChange, handleAccountEmailVerify, handleAccountExport, handleAccountMarketing, handleEmailUnsubscribe,
+  handleAccount2faSetup, handleAccount2faEnable, handleAccount2faDisable, verifyLoginTwoFactor,
 } from './account';
+import { emailAccountCreated } from './email';
 import { handleCardUpload, handleCardRoutes, captureReferral, cardUploadContentLengthTooLarge } from './player_card';
 import { handleAdminApi } from './admin';
 import { pruneExpiredBlockedIps } from './ip_block_db';
@@ -405,6 +408,18 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       }
       const token = newToken();
       await saveToken(token, account.id);
+      // Optional email at signup: if a valid address is supplied, store it and
+      // send the welcome mail. Kept optional so existing clients that register
+      // without an email are unaffected (the email is otherwise set later via
+      // the account portal).
+      const signupEmailRaw = typeof body.email === 'string' ? body.email.trim() : '';
+      if (signupEmailRaw && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(signupEmailRaw) && signupEmailRaw.length <= 254) {
+        await setAccountEmail(account.id, signupEmailRaw);
+        emailAccountCreated({
+          id: account.id, username: account.username, email: signupEmailRaw,
+          locale: null, marketing_opt_in: false,
+        });
+      }
       void createSuspiciousRegistrationReport({
         accountId: account.id,
         username: account.username,
@@ -437,6 +452,20 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       // we accept, since moving the check before the password would lock admins out.
       if (game.isIpBlocked(requestIp(req)) && !(await isAdminAccount(account.id))) {
         return json(res, 429, { error: 'too many attempts — wait a minute and try again' });
+      }
+      // Second factor: if 2FA is enabled, the password alone is not enough. With
+      // no code supplied we return a challenge (not a token) so the client shows
+      // the code step; with a code (or recovery code) we verify it before issuing.
+      if (account.totp_enabled_at) {
+        const code = typeof body.code === 'string' ? body.code : '';
+        const recoveryCode = typeof body.recoveryCode === 'string' ? body.recoveryCode : '';
+        if (!code && !recoveryCode) {
+          return json(res, 200, { twoFactorRequired: true });
+        }
+        if (!(await verifyLoginTwoFactor(account, code, recoveryCode))) {
+          recordAuthFailure(username);
+          return json(res, 401, { error: 'invalid authentication code', twoFactorRequired: true });
+        }
       }
       clearAuthFailures(username); // correct password: forgive earlier typos
       await touchLogin(account.id, requestMetadata(req));
@@ -735,6 +764,47 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
           [...game.clients.values()].some((s) => s.characterId != null && characterIds.includes(s.characterId)),
         disconnectAccount: (id, reason) => game.disconnectAccount(id, reason),
       });
+    }
+    if (req.method === 'POST' && url === '/api/account/email/change') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleAccountEmailChange(req, res, accountId);
+    }
+    // Email-change verification is a link click from the inbox: unauthenticated,
+    // the token is the authorization. Parse the token off the query string.
+    if (req.method === 'GET' && url === '/api/account/email/verify') {
+      const token = new URL(req.url ?? '', 'http://localhost').searchParams.get('token') ?? '';
+      return handleAccountEmailVerify(res, token);
+    }
+    if (req.method === 'POST' && url === '/api/account/export') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleAccountExport(req, res, accountId);
+    }
+    if (req.method === 'POST' && url === '/api/account/marketing') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleAccountMarketing(req, res, accountId);
+    }
+    if (req.method === 'POST' && url === '/api/account/2fa/setup') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleAccount2faSetup(req, res, accountId);
+    }
+    if (req.method === 'POST' && url === '/api/account/2fa/enable') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleAccount2faEnable(req, res, accountId);
+    }
+    if (req.method === 'POST' && url === '/api/account/2fa/disable') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleAccount2faDisable(req, res, accountId);
+    }
+    // Public one-click marketing unsubscribe (link from a marketing email).
+    if (req.method === 'GET' && url === '/api/email/unsubscribe') {
+      const token = new URL(req.url ?? '', 'http://localhost').searchParams.get('token') ?? '';
+      return handleEmailUnsubscribe(res, token);
     }
     // Non-custodial Solana wallet linking — all account-scoped.
     if (req.method === 'POST' && url === '/api/wallet/link/challenge') {

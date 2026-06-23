@@ -174,6 +174,28 @@ export const it_IT: EnTranslations = {
       "title": "Emote",
       "done": "Fine"
     },
+    "theme": {
+      "preset": "Tema dell'interfaccia",
+      "customColors": "Colori personalizzati",
+      "reset": "Ripristina",
+      "presets": {
+        "classic": "Oro classico",
+        "midnight": "Mezzanotte",
+        "parchment": "Pergamena",
+        "highContrast": "Alto contrasto"
+      },
+      "knob": {
+        "accent": "Accento",
+        "border": "Bordo",
+        "panel": "Cornice",
+        "text": "Testo",
+        "textMuted": "Testo tenue",
+        "hp": "Salute",
+        "mana": "Mana",
+        "rage": "Rabbia",
+        "energy": "Energia"
+      }
+    },
     "questTracker": {
       "count": "({count})",
       "collapseHint": "Comprimi il riquadro Missioni",
@@ -253,6 +275,8 @@ export const it_IT: EnTranslations = {
       "interfaceModeNote": "Auto sceglie i controlli Desktop o Touch in base al tuo dispositivo. Scegli Desktop per forzare tastiera e mouse (utile su un tablet con tastiera), oppure Touch per i controlli a schermo.",
       "footstepSounds": "Suoni dei passi",
       "clickFeedback": "Indicatore di clic",
+      "lockCursorOnRotate": "Blocca cursore durante la rotazione",
+      "keybindHelpLockCursorOnRotate": "Mantiene il cursore del mouse dentro la finestra mentre trascini per ruotare la telecamera, così non può raggiungere il bordo dello schermo o passare a un altro monitor. Disattiva l'opzione se preferisci un cursore libero.",
       "showWalletOnCharacterScreen": "Mostra portafoglio nella schermata personaggi",
       "showWalletOnPlayerCard": "Mostra portafoglio nella scheda giocatore",
       "uiScale": "Scala dell'interfaccia",
@@ -476,7 +500,56 @@ export const it_IT: EnTranslations = {
       "deactivateConfirm": "Disattiva il mio account",
       "deactivated": "Il tuo account è stato disattivato.",
       "logOut": "Esci",
-      "logOutSummary": "Disconnettiti da questo dispositivo."
+      "logOutSummary": "Disconnettiti da questo dispositivo.",
+      "sectionSecurity": "Sicurezza",
+      "changeEmailTitle": "Cambia email",
+      "changeEmailHint": "Inviamo un link di conferma al nuovo indirizzo e un avviso a quello vecchio. La tua email cambia solo quando apri il link.",
+      "changeEmailNew": "Nuova email",
+      "changeEmailSubmit": "Invia il link di conferma",
+      "changeEmailSent": "Controlla la posta in arrivo: apri il link che ti abbiamo inviato per confermare la nuova email.",
+      "errEmailUnchanged": "Questo è già il tuo indirizzo email.",
+      "twoFactorTitle": "Autenticazione a due fattori",
+      "twoFactorStatusOn": "L'autenticazione a due fattori è ATTIVA per il tuo account.",
+      "twoFactorStatusOff": "Aggiungi un'app di autenticazione per una maggiore sicurezza dell'account.",
+      "twoFactorSetupBtn": "Configura due fattori",
+      "twoFactorBeginHint": "Inserisci la tua password per iniziare la configurazione.",
+      "twoFactorBegin": "Inizia la configurazione",
+      "twoFactorScanHint": "Aggiungi questa chiave alla tua app di autenticazione (Google Authenticator, Authy, 1Password e simili), poi inserisci il codice a 6 cifre che ti mostra.",
+      "twoFactorSecretLabel": "Chiave di configurazione",
+      "twoFactorOpenApp": "Apri nell'app di autenticazione",
+      "twoFactorCodeLabel": "Codice a 6 cifre",
+      "twoFactorVerifyBtn": "Verifica e attiva",
+      "twoFactorEnabledMsg": "L'autenticazione a due fattori è ora attiva.",
+      "twoFactorRecoveryTitle": "Salva i tuoi codici di recupero",
+      "twoFactorRecoveryHint": "Ogni codice funziona una sola volta. Conservali in un luogo sicuro: sono l'unico modo per rientrare se perdi la tua app di autenticazione.",
+      "twoFactorDownloadCodes": "Scarica i codici",
+      "twoFactorDone": "Fatto",
+      "twoFactorDisableHint": "Inserisci la tua password per disattivare l'autenticazione a due fattori. I tuoi codici di recupero verranno eliminati.",
+      "twoFactorDisableBtn": "Disattiva due fattori",
+      "twoFactorDisabledMsg": "L'autenticazione a due fattori è disattivata.",
+      "errTwoFactorCode": "Questo codice non è valido, riprova.",
+      "errTwoFactorState": "La configurazione dell'autenticazione a due fattori non è nello stato previsto. Ricarica e riprova.",
+      "exportTitle": "Esporta i miei dati",
+      "exportHint": "Scarica una copia del tuo account e dei tuoi personaggi come file JSON. Ti inviamo anche una conferma via email.",
+      "exportBtn": "Scarica i miei dati",
+      "exportDone": "I tuoi dati sono stati scaricati. Ti abbiamo inviato una conferma via email.",
+      "exportFailed": "Impossibile esportare i tuoi dati. Riprova tra un momento."
+    },
+    "bags": {
+      "filterGroupAria": "Filtra le borse per categoria",
+      "filterAll": "Tutti",
+      "filterWeapon": "Armi",
+      "filterArmor": "Armatura",
+      "filterConsumable": "Consumabili",
+      "filterMaterial": "Materiali",
+      "filterQuest": "Missione",
+      "sortAria": "Ordina gli oggetti della borsa",
+      "sortRecent": "Recenti",
+      "sortQuality": "Qualità",
+      "sortName": "Nome",
+      "searchPlaceholder": "Cerca oggetti",
+      "searchAria": "Cerca gli oggetti della borsa per nome",
+      "noMatch": "Nessun oggetto corrisponde ai tuoi filtri."
     }
   },
   "guide": {
@@ -1386,7 +1459,10 @@ export const it_IT: EnTranslations = {
     "characterNamePlaceholder": "Nome del personaggio",
     "enterWorld": "Entra nel mondo",
     "offlineCharacter": "Personaggio offline",
-    "create": "Crea"
+    "create": "Crea",
+    "twoFactorLabel": "Codice di autenticazione",
+    "twoFactorPlaceholder": "Codice a 6 cifre o codice di recupero",
+    "twoFactorHint": "Inserisci il codice della tua app di autenticazione, oppure uno dei tuoi codici di recupero."
   },
   "wallet": {
     "label": "Portafoglio $WOC",
@@ -1855,6 +1931,11 @@ export const it_IT: EnTranslations = {
     "high": "Alta",
     "medium": "Media",
     "low": "Bassa",
+    "popTipLow": "Popolazione bassa: meno di 15 giocatori online ora. Molto spazio; ottimo per ricominciare.",
+    "popTipMedium": "Popolazione media: da 15 a 39 giocatori online ora. Un reame sano e attivo.",
+    "popTipHigh": "Popolazione alta: da 40 a 79 giocatori online ora. Affollato, con molti giocatori in giro.",
+    "popTipFull": "Popolazione piena: 80 o più giocatori online ora. Molto affollato; potresti attendere in coda per accedere.",
+    "popTipOffline": "Offline: questo reame al momento non è raggiungibile e non è possibile entrarvi.",
     "characterCountOne": "{count} personaggio",
     "characterCountOther": "{count} personaggi",
     "selectedRealm": "Reame: {name}",
@@ -2307,6 +2388,10 @@ export const it_IT: EnTranslations = {
       "whisperAmbiguous": "Più giocatori corrispondono a '{name}'. Usa le maiuscole esatte.",
       "whisperMissing": "Nessun giocatore chiamato '{name}' è online.",
       "whisperSelf": "Mormori tra te e te. Nessuno lo sente.",
+      "assistSelf": "Non puoi assistere te stesso.",
+      "assistNoTarget": "{name} non ha un bersaglio.",
+      "assistWhom": "Assistere chi? Seleziona un giocatore o usa /assist <name>.",
+      "assisting": "Stai assistendo {name}.",
       "notInParty": "Non sei in un gruppo.",
       "unknownCommand": "Comando sconosciuto: {command}. Prova /s /y /w /p /g.",
       "chatCooldown": "La chat è in recupero per {seconds}s.",
@@ -3766,6 +3851,9 @@ export const it_IT: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "Pelliccia di predatore del crinale"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "Pelliccia immacolata di predatore del crinale"
+      },
       "glowing_wax": {
         "name": "Cera luminosa"
       },
@@ -4200,6 +4288,9 @@ export const it_IT: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "Stivali predatori di Cragmaw"
+      },
+      "cragmaw_huntcord": {
+        "name": "Cinghia da caccia di Cragmaw"
       },
       "drowned_tide_scepter": {
         "name": "Scettro della marea annegata"

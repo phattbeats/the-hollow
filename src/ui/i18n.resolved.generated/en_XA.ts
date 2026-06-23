@@ -174,6 +174,28 @@ export const en_XA: EnTranslations = {
       "title": "[Éɱóţéš]",
       "done": "[Ðóñé]"
     },
+    "theme": {
+      "preset": "[ÚÍ Ţĥéɱé]",
+      "customColors": "[Çúšţóɱ Çóļóŕš]",
+      "reset": "[Ŕéšéţ]",
+      "presets": {
+        "classic": "[Çļáššíç Ĝóļð]",
+        "midnight": "[Ɱíðñíĝĥţ]",
+        "parchment": "[Þáŕçĥɱéñţ]",
+        "highContrast": "[Ĥíĝĥ Çóñţŕášţ]"
+      },
+      "knob": {
+        "accent": "[Áççéñţ]",
+        "border": "[Ɓóŕðéŕ]",
+        "panel": "[Ƒŕáɱé]",
+        "text": "[Ţéẋţ]",
+        "textMuted": "[Ɱúţéð Ţéẋţ]",
+        "hp": "[Ĥéáļţĥ]",
+        "mana": "[Ɱáñá]",
+        "rage": "[Ŕáĝé]",
+        "energy": "[Éñéŕĝý]"
+      }
+    },
     "questTracker": {
       "count": "[({count})]",
       "collapseHint": "[Çóļļáþšé ɋúéšţ ţŕáçķéŕ]",
@@ -253,6 +275,8 @@ export const en_XA: EnTranslations = {
       "interfaceModeNote": "[Áúţó þíçķš ðéšķţóþ óŕ ţóúçĥ çóñţŕóļš ƒŕóɱ ýóúŕ ðéʋíçé. Çĥóóšé Ðéšķţóþ ţó ƒóŕçé ķéýƀóáŕð áñð ɱóúšé (úšéƒúļ óñ á ţáƀļéţ ŵíţĥ á ķéýƀóáŕð), óŕ Ţóúçĥ ƒóŕ ţĥé óñ-šçŕééñ çóñţŕóļš.]",
       "footstepSounds": "[Ƒóóţšţéþ Šóúñðš]",
       "clickFeedback": "[Çļíçķ Ɱáŕķéŕ]",
+      "lockCursorOnRotate": "[Ļóçķ Çúŕšóŕ Ŵĥíļé Ŕóţáţíñĝ]",
+      "keybindHelpLockCursorOnRotate": "[Ķééþš ţĥé ɱóúšé çúŕšóŕ íñšíðé ţĥé ŵíñðóŵ ŵĥíļé ýóú ðŕáĝ ţó ŕóţáţé ţĥé çáɱéŕá, šó íţ çáññóţ ŕéáçĥ ţĥé šçŕééñ éðĝé óŕ ɱóʋé ţó áñóţĥéŕ ɱóñíţóŕ. Ţúŕñ óƒƒ íƒ ýóú þŕéƒéŕ á ƒŕéé çúŕšóŕ.]",
       "showWalletOnCharacterScreen": "[Šĥóŵ Ŵáļļéţ óñ Çĥáŕáçţéŕ Šçŕééñ]",
       "showWalletOnPlayerCard": "[Šĥóŵ Ŵáļļéţ óñ Þļáýéŕ Çáŕð]",
       "uiScale": "[ÚÍ Šçáļé]",
@@ -476,7 +500,56 @@ export const en_XA: EnTranslations = {
       "deactivateConfirm": "[Ðéáçţíʋáţé Ɱý Áççóúñţ]",
       "deactivated": "[Ýóúŕ áççóúñţ ĥáš ƀééñ ðéáçţíʋáţéð.]",
       "logOut": "[Ļóĝ Óúţ]",
-      "logOutSummary": "[Šíĝñ óúţ óƒ ţĥíš ðéʋíçé.]"
+      "logOutSummary": "[Šíĝñ óúţ óƒ ţĥíš ðéʋíçé.]",
+      "sectionSecurity": "[Šéçúŕíţý]",
+      "changeEmailTitle": "[Çĥáñĝé Éɱáíļ]",
+      "changeEmailHint": "[Ŵé éɱáíļ á çóñƒíŕɱáţíóñ ļíñķ ţó ţĥé ñéŵ áððŕéšš áñð á ñóţíçé ţó ţĥé óļð óñé. Ýóúŕ éɱáíļ óñļý çĥáñĝéš óñçé ýóú óþéñ ţĥé ļíñķ.]",
+      "changeEmailNew": "[Ñéŵ éɱáíļ]",
+      "changeEmailSubmit": "[Šéñð Çóñƒíŕɱáţíóñ Ļíñķ]",
+      "changeEmailSent": "[Çĥéçķ ýóúŕ íñƀóẋ: óþéñ ţĥé ļíñķ ŵé šéñţ ţó çóñƒíŕɱ ýóúŕ ñéŵ éɱáíļ.]",
+      "errEmailUnchanged": "[Ţĥáţ íš áļŕéáðý ýóúŕ éɱáíļ áððŕéšš.]",
+      "twoFactorTitle": "[Ţŵó-Ƒáçţóŕ Áúţĥéñţíçáţíóñ]",
+      "twoFactorStatusOn": "[Ţŵó-ƒáçţóŕ áúţĥéñţíçáţíóñ íš ÓÑ ƒóŕ ýóúŕ áççóúñţ.]",
+      "twoFactorStatusOff": "[Áðð áñ áúţĥéñţíçáţóŕ áþþ ƒóŕ šţŕóñĝéŕ áççóúñţ šéçúŕíţý.]",
+      "twoFactorSetupBtn": "[Šéţ Úþ Ţŵó-Ƒáçţóŕ]",
+      "twoFactorBeginHint": "[Éñţéŕ ýóúŕ þáššŵóŕð ţó ƀéĝíñ šéţúþ.]",
+      "twoFactorBegin": "[Ɓéĝíñ Šéţúþ]",
+      "twoFactorScanHint": "[Áðð ţĥíš ķéý ţó ýóúŕ áúţĥéñţíçáţóŕ áþþ (Ĝóóĝļé Áúţĥéñţíçáţóŕ, Áúţĥý, 1Þáššŵóŕð, áñð šíɱíļáŕ), ţĥéñ éñţéŕ ţĥé 6-ðíĝíţ çóðé íţ šĥóŵš.]",
+      "twoFactorSecretLabel": "[Šéţúþ ķéý]",
+      "twoFactorOpenApp": "[Óþéñ íñ áúţĥéñţíçáţóŕ áþþ]",
+      "twoFactorCodeLabel": "[6-ðíĝíţ çóðé]",
+      "twoFactorVerifyBtn": "[Ʋéŕíƒý áñð Éñáƀļé]",
+      "twoFactorEnabledMsg": "[Ţŵó-ƒáçţóŕ áúţĥéñţíçáţíóñ íš ñóŵ óñ.]",
+      "twoFactorRecoveryTitle": "[Šáʋé ýóúŕ ŕéçóʋéŕý çóðéš]",
+      "twoFactorRecoveryHint": "[Éáçĥ çóðé ŵóŕķš óñçé. Šţóŕé ţĥéɱ šóɱéŵĥéŕé šáƒé: ţĥéý áŕé ţĥé óñļý ŵáý ƀáçķ íñ íƒ ýóú ļóšé ýóúŕ áúţĥéñţíçáţóŕ áþþ.]",
+      "twoFactorDownloadCodes": "[Ðóŵñļóáð Çóðéš]",
+      "twoFactorDone": "[Ðóñé]",
+      "twoFactorDisableHint": "[Éñţéŕ ýóúŕ þáššŵóŕð ţó ţúŕñ ţŵó-ƒáçţóŕ óƒƒ. Ýóúŕ ŕéçóʋéŕý çóðéš ŵíļļ ƀé ðíšçáŕðéð.]",
+      "twoFactorDisableBtn": "[Ţúŕñ Óƒƒ Ţŵó-Ƒáçţóŕ]",
+      "twoFactorDisabledMsg": "[Ţŵó-ƒáçţóŕ áúţĥéñţíçáţíóñ íš óƒƒ.]",
+      "errTwoFactorCode": "[Ţĥáţ çóðé íš ñóţ ʋáļíð, ţŕý áĝáíñ.]",
+      "errTwoFactorState": "[Ţŵó-ƒáçţóŕ šéţúþ íš ñóţ íñ ţĥé éẋþéçţéð šţáţé. Ŕéļóáð áñð ţŕý áĝáíñ.]",
+      "exportTitle": "[Éẋþóŕţ Ɱý Ðáţá]",
+      "exportHint": "[Ðóŵñļóáð á çóþý óƒ ýóúŕ áççóúñţ áñð çĥáŕáçţéŕš áš á ĴŠÓÑ ƒíļé. Ŵé áļšó éɱáíļ ýóú á çóñƒíŕɱáţíóñ.]",
+      "exportBtn": "[Ðóŵñļóáð Ɱý Ðáţá]",
+      "exportDone": "[Ýóúŕ ðáţá ŵáš ðóŵñļóáðéð. Ŵé éɱáíļéð ýóú á çóñƒíŕɱáţíóñ.]",
+      "exportFailed": "[Çóúļð ñóţ éẋþóŕţ ýóúŕ ðáţá. Ţŕý áĝáíñ íñ á ɱóɱéñţ.]"
+    },
+    "bags": {
+      "filterGroupAria": "[Ƒíļţéŕ ƀáĝš ƀý çáţéĝóŕý]",
+      "filterAll": "[Áļļ]",
+      "filterWeapon": "[Ŵéáþóñš]",
+      "filterArmor": "[Áŕɱóŕ]",
+      "filterConsumable": "[Çóñšúɱáƀļéš]",
+      "filterMaterial": "[Ɱáţéŕíáļš]",
+      "filterQuest": "[Ɋúéšţ]",
+      "sortAria": "[Šóŕţ ƀáĝ íţéɱš]",
+      "sortRecent": "[Ŕéçéñţ]",
+      "sortQuality": "[Ɋúáļíţý]",
+      "sortName": "[Ñáɱé]",
+      "searchPlaceholder": "[Šéáŕçĥ íţéɱš]",
+      "searchAria": "[Šéáŕçĥ ƀáĝ íţéɱš ƀý ñáɱé]",
+      "noMatch": "[Ñó íţéɱš ɱáţçĥ ýóúŕ ƒíļţéŕš.]"
     }
   },
   "guide": {
@@ -1386,7 +1459,10 @@ export const en_XA: EnTranslations = {
     "characterNamePlaceholder": "[Çĥáŕáçţéŕ ñáɱé]",
     "enterWorld": "[Éñţéŕ Ŵóŕļð]",
     "offlineCharacter": "[Óƒƒļíñé Çĥáŕáçţéŕ]",
-    "create": "[Çŕéáţé]"
+    "create": "[Çŕéáţé]",
+    "twoFactorLabel": "[Áúţĥéñţíçáţíóñ çóðé]",
+    "twoFactorPlaceholder": "[6-ðíĝíţ óŕ ŕéçóʋéŕý çóðé]",
+    "twoFactorHint": "[Éñţéŕ ţĥé çóðé ƒŕóɱ ýóúŕ áúţĥéñţíçáţóŕ áþþ, óŕ óñé óƒ ýóúŕ ŕéçóʋéŕý çóðéš.]"
   },
   "wallet": {
     "label": "[$ŴÓÇ Ŵáļļéţ]",
@@ -1855,6 +1931,11 @@ export const en_XA: EnTranslations = {
     "high": "[Ĥíĝĥ]",
     "medium": "[Ɱéðíúɱ]",
     "low": "[Ļóŵ]",
+    "popTipLow": "[Ļóŵ þóþúļáţíóñ: ƒéŵéŕ ţĥáñ 15 þļáýéŕš óñļíñé ŕíĝĥţ ñóŵ. Þļéñţý óƒ ŕóóɱ; ĝŕéáţ ƒóŕ á ƒŕéšĥ šţáŕţ.]",
+    "popTipMedium": "[Ɱéðíúɱ þóþúļáţíóñ: 15 ţó 39 þļáýéŕš óñļíñé ŕíĝĥţ ñóŵ. Á ĥéáļţĥý, áçţíʋé ŕéáļɱ.]",
+    "popTipHigh": "[Ĥíĝĥ þóþúļáţíóñ: 40 ţó 79 þļáýéŕš óñļíñé ŕíĝĥţ ñóŵ. Ɓúšý, ŵíţĥ ļóţš óƒ þļáýéŕš áŕóúñð.]",
+    "popTipFull": "[Ƒúļļ þóþúļáţíóñ: 80 óŕ ɱóŕé þļáýéŕš óñļíñé ŕíĝĥţ ñóŵ. Ʋéŕý ƀúšý; ýóú ɱáý ŵáíţ íñ á ļóĝíñ ɋúéúé.]",
+    "popTipOffline": "[Óƒƒļíñé: ţĥíš ŕéáļɱ íš úñŕéáçĥáƀļé ŕíĝĥţ ñóŵ áñð çáññóţ ƀé ĵóíñéð.]",
     "characterCountOne": "[{count} çĥáŕáçţéŕ]",
     "characterCountOther": "[{count} çĥáŕáçţéŕš]",
     "selectedRealm": "[Ŕéáļɱ: {name}]",
@@ -2307,6 +2388,10 @@ export const en_XA: EnTranslations = {
       "whisperAmbiguous": "[Šéʋéŕáļ þļáýéŕš ɱáţçĥ '{name}'. Úšé éẋáçţ çáþíţáļížáţíóñ.]",
       "whisperMissing": "[Ţĥéŕé íš ñó þļáýéŕ ñáɱéð '{name}' óñļíñé.]",
       "whisperSelf": "[Ýóú ɱúţţéŕ ţó ýóúŕšéļƒ. Ñóƀóðý ĥéáŕš íţ.]",
+      "assistSelf": "[Ýóú çáñ'ţ áššíšţ ýóúŕšéļƒ.]",
+      "assistNoTarget": "[{name} ĥáš ñó ţáŕĝéţ.]",
+      "assistWhom": "[Áššíšţ ŵĥóɱ? Ţáŕĝéţ á þļáýéŕ óŕ úšé /áššíšţ <ñáɱé>.]",
+      "assisting": "[Áššíšţíñĝ {name}.]",
       "notInParty": "[Ýóú áŕé ñóţ íñ á þáŕţý.]",
       "unknownCommand": "[Úñķñóŵñ çóɱɱáñð: {command}. Ţŕý /š /ý /ŵ /þ /ĝ.]",
       "chatCooldown": "[Çĥáţ íš óñ çóóļðóŵñ ƒóŕ {seconds}š.]",
@@ -3766,6 +3851,9 @@ export const en_XA: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "[Ŕíðĝé Šţáļķéŕ Þéļţ]"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "[Þŕíšţíñé Ŕíðĝé Šţáļķéŕ Þéļţ]"
+      },
       "glowing_wax": {
         "name": "[Ĝļóŵíñĝ Ŵáẋ]"
       },
@@ -4200,6 +4288,9 @@ export const en_XA: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "[Çŕáĝɱáŵ Þŕóŵļƀóóţš]"
+      },
+      "cragmaw_huntcord": {
+        "name": "[Çŕáĝɱáŵ'š Ĥúñţçóŕð]"
       },
       "drowned_tide_scepter": {
         "name": "[Ðŕóŵñéð Ţíðé Šçéþţéŕ]"

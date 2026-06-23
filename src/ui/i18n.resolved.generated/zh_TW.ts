@@ -174,6 +174,28 @@ export const zh_TW: EnTranslations = {
       "title": "表情",
       "done": "完成"
     },
+    "theme": {
+      "preset": "介面主題",
+      "customColors": "自訂顏色",
+      "reset": "重設",
+      "presets": {
+        "classic": "經典金色",
+        "midnight": "午夜",
+        "parchment": "羊皮紙",
+        "highContrast": "高對比"
+      },
+      "knob": {
+        "accent": "強調色",
+        "border": "邊框",
+        "panel": "框架",
+        "text": "文字",
+        "textMuted": "次要文字",
+        "hp": "生命",
+        "mana": "法力",
+        "rage": "怒氣",
+        "energy": "能量"
+      }
+    },
     "questTracker": {
       "count": "（{count}）",
       "collapseHint": "收合任務追蹤器",
@@ -253,6 +275,8 @@ export const zh_TW: EnTranslations = {
       "interfaceModeNote": "自動會根據你的裝置選擇桌面或觸控操作。選擇桌面可強制使用鍵盤與滑鼠（適合有鍵盤的平板），選擇觸控則使用螢幕上的操作控制項。",
       "footstepSounds": "腳步聲",
       "clickFeedback": "點擊標記",
+      "lockCursorOnRotate": "旋轉時鎖定游標",
+      "keybindHelpLockCursorOnRotate": "拖曳旋轉鏡頭時將滑鼠游標保持在視窗內，使其無法到達螢幕邊緣或移動到另一台顯示器。若你偏好自由游標，請關閉此選項。",
       "showWalletOnCharacterScreen": "在角色畫面顯示錢包",
       "showWalletOnPlayerCard": "在玩家卡片顯示錢包",
       "uiScale": "介面縮放",
@@ -476,7 +500,56 @@ export const zh_TW: EnTranslations = {
       "deactivateConfirm": "停用我的帳號",
       "deactivated": "您的帳號已停用。",
       "logOut": "登出",
-      "logOutSummary": "登出目前的裝置。"
+      "logOutSummary": "登出目前的裝置。",
+      "sectionSecurity": "安全性",
+      "changeEmailTitle": "變更電子郵件",
+      "changeEmailHint": "我們會將確認連結寄到新的電子郵件地址，並通知舊地址。只有在你開啟連結後，電子郵件才會變更。",
+      "changeEmailNew": "新的電子郵件",
+      "changeEmailSubmit": "寄送確認連結",
+      "changeEmailSent": "請查看你的收件匣：開啟我們寄出的連結以確認你的新電子郵件。",
+      "errEmailUnchanged": "這已經是你目前的電子郵件地址了。",
+      "twoFactorTitle": "雙重驗證",
+      "twoFactorStatusOn": "你的帳號已開啟雙重驗證。",
+      "twoFactorStatusOff": "新增驗證器應用程式，強化帳號安全性。",
+      "twoFactorSetupBtn": "設定雙重驗證",
+      "twoFactorBeginHint": "請輸入密碼以開始設定。",
+      "twoFactorBegin": "開始設定",
+      "twoFactorScanHint": "將這組金鑰新增到你的驗證器應用程式（Google Authenticator、Authy、1Password 等類似應用程式），然後輸入它顯示的 6 位數驗證碼。",
+      "twoFactorSecretLabel": "設定金鑰",
+      "twoFactorOpenApp": "在驗證器應用程式中開啟",
+      "twoFactorCodeLabel": "6 位數驗證碼",
+      "twoFactorVerifyBtn": "驗證並啟用",
+      "twoFactorEnabledMsg": "雙重驗證已開啟。",
+      "twoFactorRecoveryTitle": "儲存你的復原碼",
+      "twoFactorRecoveryHint": "每組代碼僅能使用一次。請將它們存放在安全的地方：如果你遺失了驗證器應用程式，這是唯一能重新登入的方式。",
+      "twoFactorDownloadCodes": "下載代碼",
+      "twoFactorDone": "完成",
+      "twoFactorDisableHint": "請輸入密碼以關閉雙重驗證。你的復原碼將會作廢。",
+      "twoFactorDisableBtn": "關閉雙重驗證",
+      "twoFactorDisabledMsg": "雙重驗證已關閉。",
+      "errTwoFactorCode": "這組代碼無效，請再試一次。",
+      "errTwoFactorState": "雙重驗證設定不在預期的狀態。請重新載入後再試一次。",
+      "exportTitle": "匯出我的資料",
+      "exportHint": "下載你的帳號與角色資料副本，格式為 JSON 檔案。我們也會寄送確認信給你。",
+      "exportBtn": "下載我的資料",
+      "exportDone": "你的資料已下載。我們已寄送確認信給你。",
+      "exportFailed": "無法匯出你的資料。請稍候再試一次。"
+    },
+    "bags": {
+      "filterGroupAria": "依類別篩選背包",
+      "filterAll": "全部",
+      "filterWeapon": "武器",
+      "filterArmor": "護甲",
+      "filterConsumable": "消耗品",
+      "filterMaterial": "材料",
+      "filterQuest": "任務",
+      "sortAria": "排序背包物品",
+      "sortRecent": "最近",
+      "sortQuality": "品質",
+      "sortName": "名稱",
+      "searchPlaceholder": "搜尋物品",
+      "searchAria": "依名稱搜尋背包物品",
+      "noMatch": "沒有符合篩選條件的物品。"
     }
   },
   "guide": {
@@ -1386,7 +1459,10 @@ export const zh_TW: EnTranslations = {
     "characterNamePlaceholder": "輸入角色名稱",
     "enterWorld": "進入世界",
     "offlineCharacter": "單機角色",
-    "create": "建立"
+    "create": "建立",
+    "twoFactorLabel": "驗證碼",
+    "twoFactorPlaceholder": "6 位數驗證碼或復原碼",
+    "twoFactorHint": "請輸入驗證器應用程式顯示的驗證碼，或其中一組復原碼。"
   },
   "wallet": {
     "label": "$WOC 錢包",
@@ -1855,6 +1931,11 @@ export const zh_TW: EnTranslations = {
     "high": "高",
     "medium": "中",
     "low": "低",
+    "popTipLow": "人數較少：目前在線玩家不足 15 人。空間充足，適合全新開始。",
+    "popTipMedium": "人數適中：目前在線玩家 15 至 39 人。健康活躍的伺服器。",
+    "popTipHigh": "人數較多：目前在線玩家 40 至 79 人。繁忙，玩家眾多。",
+    "popTipFull": "人數已滿：目前在線玩家 80 人或以上。非常繁忙；登入時可能需要排隊。",
+    "popTipOffline": "離線：此伺服器目前無法連接，無法加入。",
     "characterCountOne": "{count} 個角色",
     "characterCountOther": "{count} 個角色",
     "selectedRealm": "伺服器：{name}",
@@ -2307,6 +2388,10 @@ export const zh_TW: EnTranslations = {
       "whisperAmbiguous": "有多名玩家符合「{name}」。請使用準確大小寫。",
       "whisperMissing": "沒有名為「{name}」的玩家在線上。",
       "whisperSelf": "你自言自語，沒人聽見。",
+      "assistSelf": "你無法協助自己。",
+      "assistNoTarget": "{name} 沒有目標。",
+      "assistWhom": "協助誰？請選定一名玩家，或使用 /assist <name>。",
+      "assisting": "正在協助 {name}。",
       "notInParty": "你不在隊伍中。",
       "unknownCommand": "未知指令：{command}。請嘗試 /s /y /w /p /g。",
       "chatCooldown": "聊天冷卻中，還需 {seconds} 秒。",
@@ -3766,6 +3851,9 @@ export const zh_TW: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "山脊潛伏者毛皮"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "無瑕的山脊潛伏者毛皮"
+      },
       "glowing_wax": {
         "name": "發光蠟塊"
       },
@@ -4200,6 +4288,9 @@ export const zh_TW: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "裂顎潛行靴"
+      },
+      "cragmaw_huntcord": {
+        "name": "裂顎的狩獵腰索"
       },
       "drowned_tide_scepter": {
         "name": "溺亡潮汐權杖"

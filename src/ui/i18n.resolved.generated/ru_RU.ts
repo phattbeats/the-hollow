@@ -174,6 +174,28 @@ export const ru_RU: EnTranslations = {
       "title": "Эмоции",
       "done": "Готово"
     },
+    "theme": {
+      "preset": "Тема интерфейса",
+      "customColors": "Свои цвета",
+      "reset": "Сброс",
+      "presets": {
+        "classic": "Классическое золото",
+        "midnight": "Полночь",
+        "parchment": "Пергамент",
+        "highContrast": "Высокий контраст"
+      },
+      "knob": {
+        "accent": "Акцент",
+        "border": "Рамка",
+        "panel": "Панель",
+        "text": "Текст",
+        "textMuted": "Тусклый текст",
+        "hp": "Здоровье",
+        "mana": "Мана",
+        "rage": "Ярость",
+        "energy": "Энергия"
+      }
+    },
     "questTracker": {
       "count": "({count})",
       "collapseHint": "Свернуть трекер заданий",
@@ -253,6 +275,8 @@ export const ru_RU: EnTranslations = {
       "interfaceModeNote": "В режиме «Авто» управление для компьютера или сенсорное выбирается по вашему устройству. Выберите «Компьютер», чтобы включить клавиатуру и мышь (удобно на планшете с клавиатурой), или «Сенсорный» для экранного управления.",
       "footstepSounds": "Звуки шагов",
       "clickFeedback": "Метка клика",
+      "lockCursorOnRotate": "Блокировать курсор при вращении",
+      "keybindHelpLockCursorOnRotate": "Удерживает курсор мыши внутри окна, пока вы вращаете камеру перетаскиванием, чтобы он не достигал края экрана и не переходил на другой монитор. Отключите, если предпочитаете свободный курсор.",
       "showWalletOnCharacterScreen": "Показывать кошелек на экране персонажей",
       "showWalletOnPlayerCard": "Показывать кошелек на карточке игрока",
       "uiScale": "Масштаб интерфейса",
@@ -476,7 +500,56 @@ export const ru_RU: EnTranslations = {
       "deactivateConfirm": "Деактивировать мой аккаунт",
       "deactivated": "Ваш аккаунт деактивирован.",
       "logOut": "Выйти",
-      "logOutSummary": "Выйти на этом устройстве."
+      "logOutSummary": "Выйти на этом устройстве.",
+      "sectionSecurity": "Безопасность",
+      "changeEmailTitle": "Сменить email",
+      "changeEmailHint": "Мы отправим ссылку для подтверждения на новый адрес и уведомление на старый. Ваш email изменится только после того, как вы откроете ссылку.",
+      "changeEmailNew": "Новый email",
+      "changeEmailSubmit": "Отправить ссылку для подтверждения",
+      "changeEmailSent": "Проверьте почту: откройте отправленную нами ссылку, чтобы подтвердить новый email.",
+      "errEmailUnchanged": "Это уже ваш текущий адрес email.",
+      "twoFactorTitle": "Двухфакторная аутентификация",
+      "twoFactorStatusOn": "Двухфакторная аутентификация ВКЛЮЧЕНА для вашей учётной записи.",
+      "twoFactorStatusOff": "Добавьте приложение-аутентификатор для большей защиты учётной записи.",
+      "twoFactorSetupBtn": "Настроить двухфакторную аутентификацию",
+      "twoFactorBeginHint": "Введите пароль, чтобы начать настройку.",
+      "twoFactorBegin": "Начать настройку",
+      "twoFactorScanHint": "Добавьте этот ключ в приложение-аутентификатор (Google Authenticator, Authy, 1Password и подобные), затем введите 6-значный код, который оно покажет.",
+      "twoFactorSecretLabel": "Ключ настройки",
+      "twoFactorOpenApp": "Открыть в приложении-аутентификаторе",
+      "twoFactorCodeLabel": "6-значный код",
+      "twoFactorVerifyBtn": "Проверить и включить",
+      "twoFactorEnabledMsg": "Двухфакторная аутентификация теперь включена.",
+      "twoFactorRecoveryTitle": "Сохраните коды восстановления",
+      "twoFactorRecoveryHint": "Каждый код работает один раз. Храните их в надёжном месте: это единственный способ войти, если вы потеряете приложение-аутентификатор.",
+      "twoFactorDownloadCodes": "Скачать коды",
+      "twoFactorDone": "Готово",
+      "twoFactorDisableHint": "Введите пароль, чтобы отключить двухфакторную аутентификацию. Ваши коды восстановления будут удалены.",
+      "twoFactorDisableBtn": "Отключить двухфакторную аутентификацию",
+      "twoFactorDisabledMsg": "Двухфакторная аутентификация отключена.",
+      "errTwoFactorCode": "Этот код недействителен, попробуйте ещё раз.",
+      "errTwoFactorState": "Настройка двухфакторной аутентификации находится в неожиданном состоянии. Обновите страницу и попробуйте снова.",
+      "exportTitle": "Экспорт моих данных",
+      "exportHint": "Скачайте копию вашей учётной записи и персонажей в виде файла JSON. Мы также отправим вам подтверждение по email.",
+      "exportBtn": "Скачать мои данные",
+      "exportDone": "Ваши данные были скачаны. Мы отправили вам подтверждение по email.",
+      "exportFailed": "Не удалось экспортировать ваши данные. Попробуйте снова через мгновение."
+    },
+    "bags": {
+      "filterGroupAria": "Фильтровать сумки по категории",
+      "filterAll": "Все",
+      "filterWeapon": "Оружие",
+      "filterArmor": "Броня",
+      "filterConsumable": "Расходники",
+      "filterMaterial": "Материалы",
+      "filterQuest": "Задания",
+      "sortAria": "Сортировать предметы в сумках",
+      "sortRecent": "Недавние",
+      "sortQuality": "Качество",
+      "sortName": "Название",
+      "searchPlaceholder": "Поиск предметов",
+      "searchAria": "Поиск предметов в сумках по названию",
+      "noMatch": "Нет предметов, соответствующих фильтрам."
     }
   },
   "guide": {
@@ -1386,7 +1459,10 @@ export const ru_RU: EnTranslations = {
     "characterNamePlaceholder": "Имя персонажа",
     "enterWorld": "Войти в мир",
     "offlineCharacter": "Персонаж вне сети",
-    "create": "Создать"
+    "create": "Создать",
+    "twoFactorLabel": "Код аутентификации",
+    "twoFactorPlaceholder": "6-значный код или код восстановления",
+    "twoFactorHint": "Введите код из приложения-аутентификатора или один из ваших кодов восстановления."
   },
   "wallet": {
     "label": "Кошелек $WOC",
@@ -1855,6 +1931,11 @@ export const ru_RU: EnTranslations = {
     "high": "Высокая",
     "medium": "Средняя",
     "low": "Низкая",
+    "popTipLow": "Низкая населённость: сейчас в сети менее 15 игроков. Много места; отлично для нового старта.",
+    "popTipMedium": "Средняя населённость: сейчас в сети от 15 до 39 игроков. Активный и живой мир.",
+    "popTipHigh": "Высокая населённость: сейчас в сети от 40 до 79 игроков. Оживлённо, много игроков.",
+    "popTipFull": "Полная населённость: сейчас в сети 80 и более игроков. Очень оживлённо; возможна очередь на вход.",
+    "popTipOffline": "Не в сети: этот мир сейчас недоступен и к нему нельзя подключиться.",
     "characterCountOne": "{count} персонаж",
     "characterCountOther": "{count} персонажа",
     "selectedRealm": "Мир: {name}",
@@ -2307,6 +2388,10 @@ export const ru_RU: EnTranslations = {
       "whisperAmbiguous": "Несколько игроков подходят под '{name}'. Используйте точный регистр.",
       "whisperMissing": "Игрока с именем '{name}' нет в сети.",
       "whisperSelf": "Вы бормочете себе под нос. Никто не слышит.",
+      "assistSelf": "Вы не можете помогать самому себе.",
+      "assistNoTarget": "У {name} нет цели.",
+      "assistWhom": "Кому помочь? Выберите игрока или используйте /assist <name>.",
+      "assisting": "Помогаете {name}.",
       "notInParty": "Вы не в группе.",
       "unknownCommand": "Неизвестная команда: {command}. Попробуйте /s /y /w /p /g.",
       "chatCooldown": "Чат на восстановлении еще {seconds} сек.",
@@ -3766,6 +3851,9 @@ export const ru_RU: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "Шкура хребтового охотника"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "Безупречная шкура хребтового охотника"
+      },
       "glowing_wax": {
         "name": "Светящийся воск"
       },
@@ -4200,6 +4288,9 @@ export const ru_RU: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "Крадущиеся сапоги Крэгмо"
+      },
+      "cragmaw_huntcord": {
+        "name": "Охотничий пояс Крэгмо"
       },
       "drowned_tide_scepter": {
         "name": "Скипетр утопшего прилива"

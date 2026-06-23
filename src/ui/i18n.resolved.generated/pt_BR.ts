@@ -174,6 +174,28 @@ export const pt_BR: EnTranslations = {
       "title": "Emotes",
       "done": "Concluído"
     },
+    "theme": {
+      "preset": "Tema da interface",
+      "customColors": "Cores personalizadas",
+      "reset": "Redefinir",
+      "presets": {
+        "classic": "Ouro clássico",
+        "midnight": "Meia-noite",
+        "parchment": "Pergaminho",
+        "highContrast": "Alto contraste"
+      },
+      "knob": {
+        "accent": "Destaque",
+        "border": "Borda",
+        "panel": "Moldura",
+        "text": "Texto",
+        "textMuted": "Texto suave",
+        "hp": "Saúde",
+        "mana": "Mana",
+        "rage": "Raiva",
+        "energy": "Energia"
+      }
+    },
     "questTracker": {
       "count": "({count})",
       "collapseHint": "Recolher missões",
@@ -253,6 +275,8 @@ export const pt_BR: EnTranslations = {
       "interfaceModeNote": "Auto escolhe os controles Desktop ou Touch conforme o seu dispositivo. Escolha Desktop para forçar teclado e mouse (útil em um tablet com teclado), ou Touch para os controles na tela.",
       "footstepSounds": "Sons de passos",
       "clickFeedback": "Marcador de clique",
+      "lockCursorOnRotate": "Bloquear cursor ao girar",
+      "keybindHelpLockCursorOnRotate": "Mantém o cursor do mouse dentro da janela enquanto você arrasta para girar a câmera, para que ele não alcance a borda da tela nem passe para outro monitor. Desative se preferir um cursor livre.",
       "showWalletOnCharacterScreen": "Mostrar carteira na tela de personagens",
       "showWalletOnPlayerCard": "Mostrar carteira no cartão de jogador",
       "uiScale": "Escala da interface",
@@ -476,7 +500,56 @@ export const pt_BR: EnTranslations = {
       "deactivateConfirm": "Desativar minha conta",
       "deactivated": "Sua conta foi desativada.",
       "logOut": "Sair",
-      "logOutSummary": "Sair deste dispositivo."
+      "logOutSummary": "Sair deste dispositivo.",
+      "sectionSecurity": "Segurança",
+      "changeEmailTitle": "Alterar email",
+      "changeEmailHint": "Enviamos um link de confirmação para o novo endereço e um aviso para o antigo. Seu email só muda quando você abre o link.",
+      "changeEmailNew": "Novo email",
+      "changeEmailSubmit": "Enviar link de confirmação",
+      "changeEmailSent": "Verifique sua caixa de entrada: abra o link que enviamos para confirmar seu novo email.",
+      "errEmailUnchanged": "Esse já é o seu endereço de email.",
+      "twoFactorTitle": "Autenticação em duas etapas",
+      "twoFactorStatusOn": "A autenticação em duas etapas está ATIVADA para sua conta.",
+      "twoFactorStatusOff": "Adicione um app autenticador para reforçar a segurança da sua conta.",
+      "twoFactorSetupBtn": "Configurar duas etapas",
+      "twoFactorBeginHint": "Digite sua senha para começar a configuração.",
+      "twoFactorBegin": "Iniciar configuração",
+      "twoFactorScanHint": "Adicione esta chave ao seu app autenticador (Google Authenticator, Authy, 1Password e similares) e depois digite o código de 6 dígitos que ele mostrar.",
+      "twoFactorSecretLabel": "Chave de configuração",
+      "twoFactorOpenApp": "Abrir no app autenticador",
+      "twoFactorCodeLabel": "Código de 6 dígitos",
+      "twoFactorVerifyBtn": "Verificar e ativar",
+      "twoFactorEnabledMsg": "A autenticação em duas etapas agora está ativada.",
+      "twoFactorRecoveryTitle": "Salve seus códigos de recuperação",
+      "twoFactorRecoveryHint": "Cada código funciona uma vez. Guarde-os em um lugar seguro: são a única forma de voltar a entrar se você perder seu app autenticador.",
+      "twoFactorDownloadCodes": "Baixar códigos",
+      "twoFactorDone": "Concluído",
+      "twoFactorDisableHint": "Digite sua senha para desativar a autenticação em duas etapas. Seus códigos de recuperação serão descartados.",
+      "twoFactorDisableBtn": "Desativar duas etapas",
+      "twoFactorDisabledMsg": "A autenticação em duas etapas está desativada.",
+      "errTwoFactorCode": "Esse código não é válido, tente novamente.",
+      "errTwoFactorState": "A configuração da autenticação em duas etapas não está no estado esperado. Recarregue e tente novamente.",
+      "exportTitle": "Exportar meus dados",
+      "exportHint": "Baixe uma cópia da sua conta e dos seus personagens como um arquivo JSON. Também enviamos uma confirmação por email.",
+      "exportBtn": "Baixar meus dados",
+      "exportDone": "Seus dados foram baixados. Enviamos uma confirmação por email.",
+      "exportFailed": "Não foi possível exportar seus dados. Tente novamente em instantes."
+    },
+    "bags": {
+      "filterGroupAria": "Filtrar bolsas por categoria",
+      "filterAll": "Todos",
+      "filterWeapon": "Armas",
+      "filterArmor": "Armadura",
+      "filterConsumable": "Consumíveis",
+      "filterMaterial": "Materiais",
+      "filterQuest": "Missão",
+      "sortAria": "Ordenar itens da bolsa",
+      "sortRecent": "Recentes",
+      "sortQuality": "Qualidade",
+      "sortName": "Nome",
+      "searchPlaceholder": "Pesquisar itens",
+      "searchAria": "Pesquisar itens da bolsa por nome",
+      "noMatch": "Nenhum item corresponde aos seus filtros."
     }
   },
   "guide": {
@@ -1386,7 +1459,10 @@ export const pt_BR: EnTranslations = {
     "characterNamePlaceholder": "Nome do personagem",
     "enterWorld": "Entrar no mundo",
     "offlineCharacter": "Personagem offline",
-    "create": "Criar"
+    "create": "Criar",
+    "twoFactorLabel": "Código de autenticação",
+    "twoFactorPlaceholder": "Código de 6 dígitos ou de recuperação",
+    "twoFactorHint": "Digite o código do seu app autenticador ou um dos seus códigos de recuperação."
   },
   "wallet": {
     "label": "Carteira $WOC",
@@ -1855,6 +1931,11 @@ export const pt_BR: EnTranslations = {
     "high": "Alta",
     "medium": "Média",
     "low": "Baixa",
+    "popTipLow": "População baixa: menos de 15 jogadores online agora. Há bastante espaço; ótimo para começar do zero.",
+    "popTipMedium": "População média: de 15 a 39 jogadores online agora. Um reino saudável e ativo.",
+    "popTipHigh": "População alta: de 40 a 79 jogadores online agora. Movimentado, com muitos jogadores por perto.",
+    "popTipFull": "População cheia: 80 ou mais jogadores online agora. Muito movimentado; talvez você espere em uma fila de login.",
+    "popTipOffline": "Offline: este reino está inacessível no momento e não pode ser acessado.",
     "characterCountOne": "{count} personagem",
     "characterCountOther": "{count} personagens",
     "selectedRealm": "Reino: {name}",
@@ -2307,6 +2388,10 @@ export const pt_BR: EnTranslations = {
       "whisperAmbiguous": "Vários jogadores correspondem a '{name}'. Use a capitalização exata.",
       "whisperMissing": "Não há jogador chamado '{name}' online.",
       "whisperSelf": "Você murmura para si mesmo. Ninguém ouve.",
+      "assistSelf": "Você não pode ajudar a si mesmo.",
+      "assistNoTarget": "{name} não tem alvo.",
+      "assistWhom": "Ajudar quem? Selecione um jogador ou use /assist <name>.",
+      "assisting": "Ajudando {name}.",
       "notInParty": "Você não está em um grupo.",
       "unknownCommand": "Comando desconhecido: {command}. Tente /s /y /w /p /g.",
       "chatCooldown": "O chat está em recarga por {seconds}s.",
@@ -3766,6 +3851,9 @@ export const pt_BR: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "Pele de espreitador da crista"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "Pele imaculada de espreitador da crista"
+      },
       "glowing_wax": {
         "name": "Cera brilhante"
       },
@@ -4200,6 +4288,9 @@ export const pt_BR: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "Botas furtivas de Cragmaw"
+      },
+      "cragmaw_huntcord": {
+        "name": "Cinta de caça de Cragmaw"
       },
       "drowned_tide_scepter": {
         "name": "Cetro da maré afogada"

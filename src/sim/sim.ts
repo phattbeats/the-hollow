@@ -11,6 +11,7 @@ import { PLAYER_BODY_RADIUS, PLAYER_MAX_CLIMB_SLOPE, PLAYER_SWIM_DEPTH, findPlay
 import { combatProfileForMob, effectiveMobMeleeRange, type MobCombatProfile } from './mob_combat';
 import { createGroundObject, createMob, createNpc, createPlayer, recalcPlayerStats, PlayerEquipment } from './entity';
 import { canEquipItem } from './equipment_rules';
+import { resolveAssist, type AssistCandidate } from './assist';
 import {
   computeTalentModifiers, emptyAllocation, emptyModifiers, talentsFor, talentPointsAtLevel,
   validateAllocation, cloneAllocation, pointsSpent, defaultBuild, FIRST_TALENT_LEVEL, MAX_LOADOUTS,
@@ -244,8 +245,17 @@ function isDevourableAura(a: Aura): boolean {
 }
 const NEARBY_RANGE = 40; // /nearby scan radius — wider than say, tighter than yell
 const NEARBY_MAX = 10; // cap the /nearby list so a crowded camp can't spam chat
+// /assist resolves a named player only if they are within interest range (you can see
+// them) OR in your party/raid (you coordinate with them across the whole map). This
+// mirrors the server's ~120yd snapshot scope so /assist never reaches a stranger on the
+// far side of the world. Party/raid members are always included, regardless of distance.
+const ASSIST_RANGE = 120;
 const CHAT_BURST = 8; // messages a player may send back-to-back...
 const CHAT_REFILL = 2; // ...then this many more per second (caps spam amplifiers)
+// Max characters in a single chat line, matching classic WoW's 255-char editbox.
+// Authoritative cap: enforced here in the deterministic core so every host agrees;
+// the client maxlength + server chat-log slices mirror it.
+export const MAX_CHAT_MESSAGE_LEN = 255;
 const DUEL_FORFEIT_DISTANCE = 60;
 const TRADE_RANGE = 10;
 // The World Market (the Merchant's auction house)
@@ -1889,7 +1899,12 @@ export class Sim {
     for (const pid of party.members) {
       const candidate = this.players.get(pid);
       const e = this.entities.get(pid);
-      if (candidate && e && !e.dead && dist2d(e.pos, mob.pos) <= PARTY_XP_RANGE) candidates.push(candidate);
+      // A member downed during the fight (corpse still in range) keeps loot
+      // rights, exactly like the kill-credit gate in handleDeath. Do not filter
+      // on `e.dead` here: that locked fallen members out of currency splits and
+      // need/greed rolls. Releasing to the graveyard moves the corpse out of
+      // range, which is what actually forfeits the rights.
+      if (candidate && e && dist2d(e.pos, mob.pos) <= PARTY_XP_RANGE) candidates.push(candidate);
     }
     return candidates;
   }
@@ -4392,14 +4407,17 @@ export class Sim {
       if (meta && creditEntity) {
         const eliteMult = MOBS[e.templateId]?.elite ? 2 : 1;
         // party play: kill credit, xp split and quest progress shared with
-        // members alive and nearby (classic group rules + group bonus)
+        // members nearby (classic group rules + group bonus). A member downed
+        // during the fight still counts while their corpse is in range: classic
+        // groups credit fallen members (and their loot rights), they are not
+        // erased for dying. Releasing to the graveyard moves them out of range.
         const party = this.partyOf(creditEntity.id);
         const eligible: PlayerMeta[] = [];
         if (party) {
           for (const mPid of party.members) {
             const mMeta = this.players.get(mPid);
             const mE = this.entities.get(mPid);
-            if (mMeta && mE && !mE.dead && dist2d(mE.pos, e.pos) <= PARTY_XP_RANGE) eligible.push(mMeta);
+            if (mMeta && mE && dist2d(mE.pos, e.pos) <= PARTY_XP_RANGE) eligible.push(mMeta);
           }
         }
         if (eligible.length === 0) eligible.push(meta);
@@ -7787,11 +7805,23 @@ export class Sim {
       quest.objectives.forEach((objective, objectiveIndex) => {
         if (objective.type !== 'interact' || objective.targetObjectItemId !== obj.objectItemId) return;
         handled = true;
-        if (qp.counts[objectiveIndex] >= objective.count) return;
-        if (obj.objectItemId === 'crypt_ritual_circle' && !this.countItem('crypt_keystone', meta.entityId)) {
+        const isRitual = obj.objectItemId === 'crypt_ritual_circle';
+        if (isRitual && !this.countItem('crypt_keystone', meta.entityId)) {
           this.error(meta.entityId, 'The ritual circle is silent without the Crypt Keystone.');
           return;
         }
+        // Re-summon the Bound Guardian whenever the player still owes the kill.
+        // The interact objective is one-shot, but a guardian lost to the idle
+        // despawn (leash, wipe) must stay reachable or the kill/collect/signet
+        // dead-ends with no way to retry. summonQuestMob no-ops if one is alive.
+        if (isRitual) {
+          const killIdx = quest.objectives.findIndex((o) => o.type === 'kill' && o.targetMobId === 'bound_guardian');
+          if (killIdx >= 0 && qp.counts[killIdx] < quest.objectives[killIdx].count) {
+            this.summonQuestMob('bound_guardian', obj.pos, meta.entityId);
+          }
+        }
+        // The interact objective itself (and its one-time vision) only credits once.
+        if (qp.counts[objectiveIndex] >= objective.count) return;
         const shared = this.sharedNythraxisObjectParticipants(meta, obj, qp.questId, objectiveIndex);
         for (const member of shared) {
           const memberQp = member.questLog.get(qp.questId);
@@ -7809,7 +7839,6 @@ export class Sim {
         }
         const visionId = this.summonQuestVision(obj.objectItemId, obj.pos);
         this.emitQuestObjectVision(obj.objectItemId, shared.map((m) => m.entityId), visionId);
-        if (obj.objectItemId === 'crypt_ritual_circle') this.summonQuestMob('bound_guardian', obj.pos, meta.entityId);
       });
     }
     return handled;
@@ -8282,7 +8311,7 @@ export class Sim {
   chat(text: string, pid?: number): SentChat | null {
     const r = this.resolve(pid);
     if (!r) return null;
-    const raw = text.trim().slice(0, 200);
+    const raw = text.trim().slice(0, MAX_CHAT_MESSAGE_LEN);
     if (!raw) return null;
     if (!this.chatAllowed(r.meta.entityId)) {
       this.error(r.meta.entityId, 'You are sending messages too quickly.');
@@ -8449,6 +8478,31 @@ export class Sim {
       if (target.entityId === r.meta.entityId) { this.error(r.meta.entityId, "You can't follow yourself."); return null; }
       r.e.followTargetId = target.entityId;
       this.error(r.meta.entityId, `Now following ${target.name}.`);
+      return null;
+    }
+
+    // "/assist [name]" targets whatever the named player is targeting (group-play /
+    // multiboxing target-matching). With no name it assists the player you currently
+    // have targeted. Resolution lives in the pure resolveAssist() core.
+    const am = /^\/(?:assist|as)(?:\s+([\s\S]+))?$/i.exec(raw);
+    if (am) {
+      // Scope the candidate roster the way the server scopes a snapshot: players within
+      // interest range of the caster, PLUS the caster's party/raid members by name no
+      // matter how far they have roamed. Classic /assist only resolves a unit you could
+      // know about, never an arbitrary stranger across the map.
+      const assistParty = this.partyOf(r.meta.entityId);
+      const candidates: AssistCandidate[] = [];
+      for (const meta of this.players.values()) {
+        const ent = this.entities.get(meta.entityId);
+        const inParty = assistParty ? assistParty.members.includes(meta.entityId) : false;
+        const inRange = ent ? dist2d(r.e.pos, ent.pos) <= ASSIST_RANGE : false;
+        if (meta.entityId !== r.meta.entityId && !inParty && !inRange) continue;
+        candidates.push({ entityId: meta.entityId, name: meta.name, targetId: ent ? ent.targetId : null });
+      }
+      const res = resolveAssist(candidates, r.meta.entityId, am[1] ?? '');
+      if (res.kind === 'error') { this.error(r.meta.entityId, res.message); return null; }
+      this.targetEntity(res.targetId, pid);
+      this.error(r.meta.entityId, `Assisting ${res.leaderName}.`);
       return null;
     }
 
@@ -8667,7 +8721,7 @@ export class Sim {
   // actor). `from` carries the actor's name so the client can render it as a
   // clickable name; `text` is the action predicate (e.g. "waves at Bet.").
   private broadcastEmote(actor: PlayerMeta, actorEntity: Entity, text: string): void {
-    const body = text.slice(0, 200);
+    const body = text.slice(0, MAX_CHAT_MESSAGE_LEN);
     for (const meta of this.players.values()) {
       const e = this.entities.get(meta.entityId);
       if (!e || dist2d(actorEntity.pos, e.pos) > SAY_RANGE) continue;
@@ -11443,7 +11497,7 @@ export class Sim {
     return [
       'Chat channels: /s say, /y yell, /general, /p party, /world, /lfg.',
       'Whisper a player with /w <name> <message>, reply with /r.',
-      'Other commands: /join <world|lfg>, /roll, /inspect <name>, /follow <name>, /unfollow, /afk, /dnd, /who.',
+      'Other commands: /join <world|lfg>, /roll, /inspect <name>, /follow <name>, /unfollow, /assist <name>, /afk, /dnd, /who.',
       'Character readouts: /played, /xp, /gold, /stats, /bags, /gear, /abilities, /buffs, /cooldowns, /quest, /completed.',
       'World readouts: /where, /zones, /nearby, /pois, /graveyard, /dungeons, /arena, /session, /listings, /buyback.',
       'Combat readouts: /target, /targetbuffs, /range, /attack, /casting, /combat, /threat, /consider, /combo, /overpower.',

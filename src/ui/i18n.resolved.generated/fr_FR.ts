@@ -174,6 +174,28 @@ export const fr_FR: EnTranslations = {
       "title": "Emotes",
       "done": "Terminé"
     },
+    "theme": {
+      "preset": "Thème de l'interface",
+      "customColors": "Couleurs personnalisées",
+      "reset": "Réinitialiser",
+      "presets": {
+        "classic": "Or classique",
+        "midnight": "Minuit",
+        "parchment": "Parchemin",
+        "highContrast": "Contraste élevé"
+      },
+      "knob": {
+        "accent": "Accent",
+        "border": "Bordure",
+        "panel": "Cadre",
+        "text": "Texte",
+        "textMuted": "Texte atténué",
+        "hp": "Santé",
+        "mana": "Mana",
+        "rage": "Rage",
+        "energy": "Énergie"
+      }
+    },
     "questTracker": {
       "count": "({count})",
       "collapseHint": "Réduire le suivi des quêtes",
@@ -253,6 +275,8 @@ export const fr_FR: EnTranslations = {
       "interfaceModeNote": "Auto choisit les commandes Desktop ou Touch selon votre appareil. Choisissez Desktop pour forcer le clavier et la souris (utile sur une tablette avec clavier), ou Touch pour les commandes à l'écran.",
       "footstepSounds": "Sons de pas",
       "clickFeedback": "Repère de clic",
+      "lockCursorOnRotate": "Verrouiller le curseur pendant la rotation",
+      "keybindHelpLockCursorOnRotate": "Maintient le curseur de la souris dans la fenêtre pendant que vous faites glisser pour faire pivoter la caméra, afin qu'il n'atteigne pas le bord de l'écran et ne passe pas sur un autre moniteur. Désactivez cette option si vous préférez un curseur libre.",
       "showWalletOnCharacterScreen": "Afficher le portefeuille sur l’écran des personnages",
       "showWalletOnPlayerCard": "Afficher le portefeuille sur la carte de joueur",
       "uiScale": "Échelle de l’interface",
@@ -476,7 +500,56 @@ export const fr_FR: EnTranslations = {
       "deactivateConfirm": "Désactiver mon compte",
       "deactivated": "Votre compte a été désactivé.",
       "logOut": "Se déconnecter",
-      "logOutSummary": "Déconnectez-vous de cet appareil."
+      "logOutSummary": "Déconnectez-vous de cet appareil.",
+      "sectionSecurity": "Sécurité",
+      "changeEmailTitle": "Changer l'e-mail",
+      "changeEmailHint": "Nous envoyons un lien de confirmation par e-mail à la nouvelle adresse et un avis à l'ancienne. Votre e-mail ne change qu'une fois le lien ouvert.",
+      "changeEmailNew": "Nouvel e-mail",
+      "changeEmailSubmit": "Envoyer le lien de confirmation",
+      "changeEmailSent": "Consultez votre boîte de réception : ouvrez le lien que nous avons envoyé pour confirmer votre nouvel e-mail.",
+      "errEmailUnchanged": "Il s'agit déjà de votre adresse e-mail.",
+      "twoFactorTitle": "Authentification à deux facteurs",
+      "twoFactorStatusOn": "L'authentification à deux facteurs est ACTIVÉE pour votre compte.",
+      "twoFactorStatusOff": "Ajoutez une application d'authentification pour renforcer la sécurité de votre compte.",
+      "twoFactorSetupBtn": "Configurer l'authentification à deux facteurs",
+      "twoFactorBeginHint": "Saisissez votre mot de passe pour commencer la configuration.",
+      "twoFactorBegin": "Commencer la configuration",
+      "twoFactorScanHint": "Ajoutez cette clé à votre application d'authentification (Google Authenticator, Authy, 1Password, et similaires), puis saisissez le code à 6 chiffres qu'elle affiche.",
+      "twoFactorSecretLabel": "Clé de configuration",
+      "twoFactorOpenApp": "Ouvrir dans l'application d'authentification",
+      "twoFactorCodeLabel": "Code à 6 chiffres",
+      "twoFactorVerifyBtn": "Vérifier et activer",
+      "twoFactorEnabledMsg": "L'authentification à deux facteurs est maintenant activée.",
+      "twoFactorRecoveryTitle": "Enregistrez vos codes de récupération",
+      "twoFactorRecoveryHint": "Chaque code fonctionne une seule fois. Conservez-les en lieu sûr : ils sont le seul moyen de revenir si vous perdez votre application d'authentification.",
+      "twoFactorDownloadCodes": "Télécharger les codes",
+      "twoFactorDone": "Terminé",
+      "twoFactorDisableHint": "Saisissez votre mot de passe pour désactiver l'authentification à deux facteurs. Vos codes de récupération seront supprimés.",
+      "twoFactorDisableBtn": "Désactiver l'authentification à deux facteurs",
+      "twoFactorDisabledMsg": "L'authentification à deux facteurs est désactivée.",
+      "errTwoFactorCode": "Ce code n'est pas valide, réessayez.",
+      "errTwoFactorState": "La configuration de l'authentification à deux facteurs n'est pas dans l'état attendu. Rechargez la page et réessayez.",
+      "exportTitle": "Exporter mes données",
+      "exportHint": "Téléchargez une copie de votre compte et de vos personnages sous forme de fichier JSON. Nous vous envoyons également une confirmation par e-mail.",
+      "exportBtn": "Télécharger mes données",
+      "exportDone": "Vos données ont été téléchargées. Nous vous avons envoyé une confirmation par e-mail.",
+      "exportFailed": "Impossible d'exporter vos données. Réessayez dans un moment."
+    },
+    "bags": {
+      "filterGroupAria": "Filtrer les sacs par catégorie",
+      "filterAll": "Tous",
+      "filterWeapon": "Armes",
+      "filterArmor": "Armure",
+      "filterConsumable": "Consommables",
+      "filterMaterial": "Matériaux",
+      "filterQuest": "Quête",
+      "sortAria": "Trier les objets du sac",
+      "sortRecent": "Récents",
+      "sortQuality": "Qualité",
+      "sortName": "Nom",
+      "searchPlaceholder": "Rechercher des objets",
+      "searchAria": "Rechercher les objets du sac par nom",
+      "noMatch": "Aucun objet ne correspond à vos filtres."
     }
   },
   "guide": {
@@ -1386,7 +1459,10 @@ export const fr_FR: EnTranslations = {
     "characterNamePlaceholder": "Nom du personnage",
     "enterWorld": "Entrer dans le monde",
     "offlineCharacter": "Personnage hors ligne",
-    "create": "Créer"
+    "create": "Créer",
+    "twoFactorLabel": "Code d'authentification",
+    "twoFactorPlaceholder": "Code à 6 chiffres ou code de récupération",
+    "twoFactorHint": "Saisissez le code de votre application d'authentification, ou l'un de vos codes de récupération."
   },
   "wallet": {
     "label": "Portefeuille $WOC",
@@ -1855,6 +1931,11 @@ export const fr_FR: EnTranslations = {
     "high": "Élevée",
     "medium": "Moyenne",
     "low": "Faible",
+    "popTipLow": "Population faible : moins de 15 joueurs en ligne actuellement. Beaucoup de place ; idéal pour un nouveau départ.",
+    "popTipMedium": "Population moyenne : 15 à 39 joueurs en ligne actuellement. Un royaume actif et sain.",
+    "popTipHigh": "Population élevée : 40 à 79 joueurs en ligne actuellement. Fréquenté, avec beaucoup de joueurs autour.",
+    "popTipFull": "Population complète : 80 joueurs ou plus en ligne actuellement. Très fréquenté ; vous pourriez attendre dans une file de connexion.",
+    "popTipOffline": "Hors ligne : ce royaume est inaccessible pour le moment et ne peut pas être rejoint.",
     "characterCountOne": "{count} personnage",
     "characterCountOther": "{count} personnages",
     "selectedRealm": "Royaume: {name}",
@@ -2307,6 +2388,10 @@ export const fr_FR: EnTranslations = {
       "whisperAmbiguous": "Plusieurs joueurs correspondent à '{name}'. Respectez la casse exacte.",
       "whisperMissing": "Aucun joueur nommé '{name}' n'est en ligne.",
       "whisperSelf": "Vous marmonnez pour vous-même. Personne ne l'entend.",
+      "assistSelf": "Vous ne pouvez pas vous assister vous-même.",
+      "assistNoTarget": "{name} n'a pas de cible.",
+      "assistWhom": "Assister qui ? Ciblez un joueur ou utilisez /assist <name>.",
+      "assisting": "Vous assistez {name}.",
       "notInParty": "Vous n'êtes pas dans un groupe.",
       "unknownCommand": "Commande inconnue : {command}. Essayez /s /y /w /p /g.",
       "chatCooldown": "La discussion est en recharge pendant {seconds}s.",
@@ -3766,6 +3851,9 @@ export const fr_FR: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "Peau de rôdeur de la crête"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "Peau immaculée de rôdeur de la crête"
+      },
       "glowing_wax": {
         "name": "Cire luisante"
       },
@@ -4200,6 +4288,9 @@ export const fr_FR: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "Bottes rôdeuses de Cragmaw"
+      },
+      "cragmaw_huntcord": {
+        "name": "Ceinturon de chasse de Cragmaw"
       },
       "drowned_tide_scepter": {
         "name": "Sceptre de la marée noyée"
