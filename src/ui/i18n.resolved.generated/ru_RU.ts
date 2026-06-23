@@ -3775,6 +3775,9 @@ export const ru_RU: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "Шкура хребтового охотника"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "Безупречная шкура хребтового охотника"
+      },
       "glowing_wax": {
         "name": "Светящийся воск"
       },
@@ -4215,6 +4218,9 @@ export const ru_RU: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "Крадущиеся сапоги Крэгмо"
+      },
+      "cragmaw_huntcord": {
+        "name": "Охотничий пояс Крэгмо"
       },
       "drowned_tide_scepter": {
         "name": "Скипетр утопшего прилива"
