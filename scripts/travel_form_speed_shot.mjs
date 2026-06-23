@@ -1,13 +1,19 @@
-// Before/after proof + max-graphics capture for the Druid "Travel Form" buff
-// (form_travel multiplier 1.4 -> 2.0, i.e. +40% -> +100%).
+// Proof + max-graphics capture for the Druid "Travel Form" change.
 //
-// Drives the REAL offline Sim in-page: a level-20 druid runs straight forward
-// for 15s under three conditions and we chart cumulative distance travelled:
-//   - No form            (baseline, mult 1.0)
-//   - Travel Form BEFORE (value 1.4 -> +40%)
-//   - Travel Form AFTER  (value 2.0 -> +100%, mount-tier)
-// Then a real in-game cast at MAX graphics (?gfx=ultra) shows the druid shifted
-// into Travel Form with the buff active.
+// Travel Form keeps its CLASSIC value (form_travel multiplier 1.4, i.e. +40%);
+// the PR's new work is a PRESENTATION-ONLY speed-illusion cue that makes the
+// +40% read as fast (src/render/travel_speed_fx*). So this harness produces two
+// artifacts at MAX graphics (?gfx=ultra):
+//
+//   1) A distance chart driving the REAL offline Sim in-page: a level-20 druid
+//      runs straight forward for 15s with and without Travel Form, charting
+//      cumulative distance to prove the classic +40% applies on the player path:
+//        - No form       (baseline, mult 1.0)
+//        - Travel Form   (value 1.4 -> +40%)
+//   2) A real in-game cast with sustained forward movement so the render loop
+//      measures on-screen speed and paints the speed-streak + motion-vignette
+//      cue over the shifted druid.
+//
 // Needs `npm run dev` (override with GAME_URL). Writes tmp/travel-form-*.png.
 import puppeteer from 'puppeteer-core';
 import fs from 'node:fs';
@@ -69,8 +75,7 @@ const series = await page.evaluate(() => {
 
   return {
     none: run(null),
-    before: run(1.4),
-    after: run(2.0),
+    form: run(1.4),
   };
 });
 
@@ -87,7 +92,7 @@ await page.evaluate((s) => {
   const ctx = cv.getContext('2d');
   ctx.fillStyle = '#11151c'; ctx.fillRect(0, 0, W, H);
 
-  const all = [...s.none, ...s.before, ...s.after];
+  const all = [...s.none, ...s.form];
   const maxD = Math.max(...all) * 1.05;
   const x = (t) => PAD + (t / (TICKS - 1)) * (W - PAD * 1.3);
   const y = (d) => H - PAD - (d / maxD) * (H - PAD * 2);
@@ -112,14 +117,12 @@ await page.evaluate((s) => {
     ctx.stroke(); ctx.setLineDash([]);
   };
   line(s.none, '#6b7688');
-  line(s.before, '#e8c34a', [10, 8]);
-  line(s.after, '#4ad07a');
+  line(s.form, '#4ad07a');
 
   ctx.fillStyle = '#e8edf4'; ctx.font = '600 24px system-ui, sans-serif';
-  ctx.fillText('Druid Travel Form - distance run over 15s (straight line)', PAD, 38);
+  ctx.fillText('Druid Travel Form - distance run over 15s (classic +40%, value 1.4)', PAD, 38);
   const legend = [
-    ['#4ad07a', 'Travel Form AFTER (value 2.0) -> +100% distance'],
-    ['#e8c34a', 'Travel Form BEFORE (value 1.4) -> +40% distance'],
+    ['#4ad07a', 'Travel Form (value 1.4) -> +40% distance'],
     ['#6b7688', 'No form (baseline)'],
   ];
   ctx.font = '16px system-ui, sans-serif';
@@ -131,7 +134,7 @@ await page.evaluate((s) => {
 
   const fd = (a) => a[a.length - 1].toFixed(1);
   ctx.fillStyle = '#8b95a6'; ctx.font = '15px system-ui, sans-serif';
-  ctx.fillText(`final: after ${fd(s.after)} yd, before ${fd(s.before)} yd, none ${fd(s.none)} yd`,
+  ctx.fillText(`final: form ${fd(s.form)} yd, none ${fd(s.none)} yd  (ratio ${(s.form.at(-1) / s.none.at(-1)).toFixed(2)}x)`,
     PAD, H - 18);
 }, series);
 
@@ -140,23 +143,28 @@ const el = await page.$('#tf-chart');
 await el.screenshot({ path: 'tmp/travel-form-speed-chart.png' });
 console.log('wrote tmp/travel-form-speed-chart.png');
 
-// --- second artifact: real in-game cast at MAX graphics, buff bar shows Travel Form ---
+// --- second artifact: real in-game cast at MAX graphics with the speed-illusion
+// cue active. We cast through the real pipeline (value 1.4) then sustain forward
+// movement via the controller move-input so the RENDER loop measures on-screen
+// speed each frame and ramps the screen-space speed-streak / motion vignette.
 await page.evaluate(() => {
   const cv = document.querySelector('#tf-chart'); if (cv) cv.remove();
   const g = window.__game, sim = g.sim, p = sim.player;
-  p.auras = p.auras.filter((a) => a.kind === 'form_travel' ? false : true);
+  p.auras = p.auras.filter((a) => a.kind !== 'form_travel');
   p.resource = 100;
-  sim.castAbility('travel_form', p.id); // real pipeline -> value 2.0
-  sim.moveInput.forward = true;
-  for (let i = 0; i < 8; i++) sim.tick();
+  sim.castAbility('travel_form', p.id); // real pipeline -> classic value 1.4
+  // Persisted forward intent: readMoveInput() returns this every frame until
+  // cleared, so the player keeps running and the render loop sees real speed.
+  g.input.setControllerMoveInput({ forward: true });
 });
-await sleep(1500);
+// Let real animation frames run so selfPos advances and the cue eases up to full.
+await sleep(2600);
 await page.screenshot({ path: 'tmp/travel-form-ultra.png' });
+await page.evaluate(() => window.__game.input.clearControllerMoveInput());
 console.log('wrote tmp/travel-form-ultra.png');
 console.log('final distances:',
   'none', series.none.at(-1).toFixed(1),
-  'before', series.before.at(-1).toFixed(1),
-  'after', series.after.at(-1).toFixed(1),
-  'ratio after/before', (series.after.at(-1) / series.before.at(-1)).toFixed(2));
+  'form', series.form.at(-1).toFixed(1),
+  'ratio form/none', (series.form.at(-1) / series.none.at(-1)).toFixed(2));
 
 await browser.close();
