@@ -103,8 +103,11 @@ export const hudChromeStrings = {
   // mobile-touch interface is active (see tutorial_copy.ts). English-only add, so
   // they live here in the hud_chrome domain rather than the constrained `hud` one.
   tutorial: {
+    // "movement stick", not "left stick": left-handed mode swaps the two thumb
+    // sticks (and the stick can float to wherever you touch), so a fixed side is
+    // wrong for that layout.
     moveBodyTouch:
-      'Use the left stick to move and drag the screen to look around. Take a few steps to begin.',
+      'Use the movement stick to move and drag the screen to look around. Take a few steps to begin.',
     talkBodyTouch:
       'Stand close to Marshal Redbrook and tap the Use button to speak, then accept his task.',
     returnBodyTouch:

@@ -45,3 +45,18 @@ const TOUCH: Partial<Record<TutorialStep, TutorialBodyPlan>> = {
 export function tutorialBodyPlan(step: TutorialStep, touch: boolean): TutorialBodyPlan {
   return (touch && TOUCH[step]) || KEYBOARD[step];
 }
+
+// Whether the overlay must rebuild its card. True on a step change (including the
+// first engage from a null step), and also when the interface mode flips while the
+// same step is showing: touch and keyboard pick different control copy
+// (tutorialBodyPlan), so a card left open across an Interface Mode toggle would
+// otherwise keep the stale "movement stick"/"press F" phrasing until the next step.
+export function tutorialNeedsRerender(
+  prevStep: TutorialStep | null,
+  nextStep: TutorialStep,
+  prevTouch: boolean,
+  nextTouch: boolean,
+): boolean {
+  if (nextStep !== prevStep) return true;
+  return nextTouch !== prevTouch;
+}

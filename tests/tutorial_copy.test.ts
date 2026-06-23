@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { tutorialBodyPlan } from '../src/ui/tutorial_copy';
+import { tutorialBodyPlan, tutorialNeedsRerender } from '../src/ui/tutorial_copy';
 import type { TutorialStep } from '../src/ui/tutorial';
 
 describe('tutorialBodyPlan', () => {
@@ -38,5 +38,30 @@ describe('tutorialBodyPlan', () => {
     expect(tutorialBodyPlan('talk', false).params).toEqual(['interactKey']);
     expect(tutorialBodyPlan('return', false).params).toEqual(['interactKey']);
     expect(tutorialBodyPlan('done', false).params).toEqual(['name', 'questKey']);
+  });
+});
+
+describe('tutorialNeedsRerender', () => {
+  it('re-renders on the first engage (null to a step)', () => {
+    expect(tutorialNeedsRerender(null, 'move', false, false)).toBe(true);
+    expect(tutorialNeedsRerender(null, 'move', true, true)).toBe(true);
+  });
+
+  it('re-renders when the step advances, regardless of touch state', () => {
+    expect(tutorialNeedsRerender('move', 'seek', false, false)).toBe(true);
+    expect(tutorialNeedsRerender('talk', 'slay', true, true)).toBe(true);
+    expect(tutorialNeedsRerender('move', 'seek', true, false)).toBe(true);
+  });
+
+  it('re-renders when Interface Mode is toggled mid-step (touch flips)', () => {
+    // The control copy differs between touch and keyboard, so an open card must
+    // rebuild when the mode changes even though the step is the same.
+    expect(tutorialNeedsRerender('move', 'move', false, true)).toBe(true);
+    expect(tutorialNeedsRerender('talk', 'talk', true, false)).toBe(true);
+  });
+
+  it('does not re-render when neither the step nor the touch state changed', () => {
+    expect(tutorialNeedsRerender('move', 'move', false, false)).toBe(false);
+    expect(tutorialNeedsRerender('slay', 'slay', true, true)).toBe(false);
   });
 });

@@ -19,7 +19,7 @@ import { dist2d, INTERACT_RANGE } from '../sim/types';
 import { QUESTS, ZONES, PLAYER_START } from '../sim/data';
 import { t, formatNumber } from './i18n';
 import type { TranslationKey } from './i18n';
-import { tutorialBodyPlan, type TutorialParam } from './tutorial_copy';
+import { tutorialBodyPlan, tutorialNeedsRerender, type TutorialParam } from './tutorial_copy';
 
 // Starter content the onboarding guides the player toward — all derived from the
 // shipped sim sources so a content rename or a moved spawn can't silently desync
@@ -78,6 +78,7 @@ export class TutorialOverlay {
   private engaged = false; // decided to run for this (fresh) character
   private step: TutorialStep | null = null;
   private doneSince = 0;
+  private lastTouch = false; // mobile-touch state at the last renderPanel
 
   private root: HTMLElement | null = null;
   private titleEl!: HTMLElement;
@@ -115,7 +116,11 @@ export class TutorialOverlay {
     };
 
     const next = computeTutorialStep(snapshot);
-    if (next !== this.step) {
+    // Re-render on a step change, or when Interface Mode is toggled mid-step (the
+    // control copy differs between touch and keyboard), so an open card never keeps
+    // stale phrasing after the mode flips.
+    const touch = document.body.classList.contains('mobile-touch');
+    if (tutorialNeedsRerender(this.step, next, this.lastTouch, touch)) {
       this.step = next;
       if (next === 'done' && this.doneSince === 0) this.doneSince = performance.now();
       this.renderPanel(world, keybinds);
@@ -223,6 +228,7 @@ export class TutorialOverlay {
     // are wrong; tutorialBodyPlan swaps in the touch copy for those steps. Read
     // the same body class the HUD uses so it tracks the Interface Mode override.
     const touch = document.body.classList.contains('mobile-touch');
+    this.lastTouch = touch;
     const allParams: Record<TutorialParam, string> = { moveKeys, interactKey, questKey, name };
     const plan = tutorialBodyPlan(this.step!, touch);
     const params: Partial<Record<TutorialParam, string>> = {};
