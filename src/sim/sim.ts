@@ -7784,11 +7784,23 @@ export class Sim {
       quest.objectives.forEach((objective, objectiveIndex) => {
         if (objective.type !== 'interact' || objective.targetObjectItemId !== obj.objectItemId) return;
         handled = true;
-        if (qp.counts[objectiveIndex] >= objective.count) return;
-        if (obj.objectItemId === 'crypt_ritual_circle' && !this.countItem('crypt_keystone', meta.entityId)) {
+        const isRitual = obj.objectItemId === 'crypt_ritual_circle';
+        if (isRitual && !this.countItem('crypt_keystone', meta.entityId)) {
           this.error(meta.entityId, 'The ritual circle is silent without the Crypt Keystone.');
           return;
         }
+        // Re-summon the Bound Guardian whenever the player still owes the kill.
+        // The interact objective is one-shot, but a guardian lost to the idle
+        // despawn (leash, wipe) must stay reachable or the kill/collect/signet
+        // dead-ends with no way to retry. summonQuestMob no-ops if one is alive.
+        if (isRitual) {
+          const killIdx = quest.objectives.findIndex((o) => o.type === 'kill' && o.targetMobId === 'bound_guardian');
+          if (killIdx >= 0 && qp.counts[killIdx] < quest.objectives[killIdx].count) {
+            this.summonQuestMob('bound_guardian', obj.pos, meta.entityId);
+          }
+        }
+        // The interact objective itself (and its one-time vision) only credits once.
+        if (qp.counts[objectiveIndex] >= objective.count) return;
         const shared = this.sharedNythraxisObjectParticipants(meta, obj, qp.questId, objectiveIndex);
         for (const member of shared) {
           const memberQp = member.questLog.get(qp.questId);
@@ -7806,7 +7818,6 @@ export class Sim {
         }
         const visionId = this.summonQuestVision(obj.objectItemId, obj.pos);
         this.emitQuestObjectVision(obj.objectItemId, shared.map((m) => m.entityId), visionId);
-        if (obj.objectItemId === 'crypt_ritual_circle') this.summonQuestMob('bound_guardian', obj.pos, meta.entityId);
       });
     }
     return handled;
