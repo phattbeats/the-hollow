@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
-import { Sim } from '../src/sim/sim';
-import { createMob } from '../src/sim/entity';
+import { describe, expect, it } from 'vitest';
 import { MOBS } from '../src/sim/data';
+import { createMob } from '../src/sim/entity';
+import { Sim } from '../src/sim/sim';
 import type { Entity } from '../src/sim/types';
 
 // Spawn a Stormcrag Elemental and register it with the sim.
@@ -22,10 +22,31 @@ function placePlayer(sim: Sim, pid: number, x: number, z: number): Entity {
   return e;
 }
 
+function landedSwing(sim: Sim, mob: Entity, target: Entity) {
+  const rng = (sim as any).rng;
+  const realNext = rng.next.bind(rng);
+  let firstRoll = true;
+  rng.next = () => {
+    if (firstRoll) {
+      firstRoll = false;
+      return 0.999;
+    }
+    return 0.5;
+  };
+  try {
+    (sim as any).mobSwing(mob, target);
+  } finally {
+    rng.next = realNext;
+  }
+}
+
 describe('mob chill-on-hit', () => {
   it('the Stormcrag Elemental template carries a Numbing Chill proc', () => {
     expect(MOBS.stormcrag_elemental.chillOnHit).toMatchObject({
-      chance: 0.35, mult: 0.5, duration: 6, name: 'Numbing Chill',
+      chance: 0.35,
+      mult: 0.5,
+      duration: 6,
+      name: 'Numbing Chill',
     });
   });
 
@@ -38,12 +59,13 @@ describe('mob chill-on-hit', () => {
     const baseSpeed = (sim as any).moveSpeedMult(victim);
     expect(baseSpeed).toBe(1);
 
-    let chilled = false;
-    for (let i = 0; i < 200 && !chilled; i++) {
-      (sim as any).mobSwing(elemental, victim);
-      chilled = victim.auras.some((a) => a.kind === 'slow' && a.name === 'Numbing Chill');
-    }
-    expect(chilled).toBe(true);
+    const chill = MOBS.stormcrag_elemental.chillOnHit;
+    if (!chill) throw new Error('Stormcrag elemental must have chillOnHit');
+    const originalChance = chill.chance;
+    chill.chance = 1;
+    landedSwing(sim, elemental, victim);
+    chill.chance = originalChance;
+    expect(victim.auras.some((a) => a.kind === 'slow' && a.name === 'Numbing Chill')).toBe(true);
 
     const aura = victim.auras.find((a) => a.name === 'Numbing Chill')!;
     expect(aura.kind).toBe('slow');
@@ -58,7 +80,8 @@ describe('mob chill-on-hit', () => {
     const pid = sim.addPlayer('warrior', 'Safe');
     const victim = placePlayer(sim, pid, 1, 0);
     const wolf = createMob((sim as any).nextId++, MOBS.forest_wolf, 3, { x: 0, y: 0, z: 0 });
-    wolf.hostile = true; wolf.hp = wolf.maxHp;
+    wolf.hostile = true;
+    wolf.hp = wolf.maxHp;
     (sim as any).addEntity(wolf);
 
     for (let i = 0; i < 200; i++) (sim as any).mobSwing(wolf, victim);

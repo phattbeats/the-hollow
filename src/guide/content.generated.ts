@@ -1333,15 +1333,6 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
     "family": "beast",
     "creatures": [
       {
-        "name": "Brightwood Hare",
-        "min": 1,
-        "max": 2,
-        "rare": false,
-        "templateId": "brightwood_hare",
-        "model": "mob_critter",
-        "tint": "#c8a972"
-      },
-      {
         "name": "Forest Wolf",
         "min": 1,
         "max": 2,
@@ -1378,15 +1369,6 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "tint": "#935116"
       },
       {
-        "name": "Dawnmane Doe",
-        "min": 3,
-        "max": 4,
-        "rare": false,
-        "templateId": "dawnmane_doe",
-        "model": "mob_stag",
-        "tint": "#a9763f"
-      },
-      {
         "name": "Meadow Crane",
         "min": 3,
         "max": 4,
@@ -1414,15 +1396,6 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "tint": "#8a6d3b"
       },
       {
-        "name": "Brightwood Stag",
-        "min": 4,
-        "max": 5,
-        "rare": false,
-        "templateId": "brightwood_stag",
-        "model": "mob_stag",
-        "tint": "#946638"
-      },
-      {
         "name": "Old Greyjaw",
         "min": 4,
         "max": 4,
@@ -1439,15 +1412,6 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "templateId": "grovetusk_boar",
         "model": "mob_boar",
         "tint": "#6b4423"
-      },
-      {
-        "name": "Sunhide Bear",
-        "min": 5,
-        "max": 6,
-        "rare": false,
-        "templateId": "sunhide_bear",
-        "model": "mob_bear",
-        "tint": "#5a4030"
       },
       {
         "name": "Mire Prowler",
@@ -1945,12 +1909,6 @@ export const GUIDE_MODELS: Record<string, GuideModelSpec> = {
     "height": 2.5,
     "tintStrength": 0.25
   },
-  "mob_critter": {
-    "url": "models/creatures/fox.glb",
-    "idle": "Idle",
-    "height": 0.7,
-    "tintStrength": 0.35
-  },
   "mob_fox": {
     "url": "models/creatures/fox.glb",
     "idle": "Idle",
@@ -1963,11 +1921,11 @@ export const GUIDE_MODELS: Record<string, GuideModelSpec> = {
     "height": 1.9,
     "tintStrength": 0.35
   },
-  "mob_bear": {
-    "url": "models/creatures/yetialt.glb",
+  "mob_critter": {
+    "url": "models/creatures/fox.glb",
     "idle": "Idle",
-    "height": 2.2,
-    "tintStrength": 0.5
+    "height": 0.7,
+    "tintStrength": 0.35
   },
   "mob_troll": {
     "url": "models/creatures/orc.glb",

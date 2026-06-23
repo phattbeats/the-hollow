@@ -952,7 +952,6 @@ export const fr_FR: EnTranslations = {
       "notedLabel": "À noter",
       "flavor": {
         "old_greyjaw": "Un vieux loup balafré qu'aucun piège n'a jamais tenu, tenu pour responsable de trois chiens et du bras d'un garçon d'écurie. Il chasse seul au plus profond des bois et devient sauvage à mesure que le combat s'éternise.",
-        "brightwood_stag": "Un fier cerf des bosquets qui baisse sa couronne de bois et charge tête baissée, devenant d'autant plus coriace qu'on le presse longtemps.",
         "grubjaw": "Un troll des fagnes si avide que les autres trolls refusent de creuser à ses côtés ; on dit qu'il a dévoré les deux dernières mules de bât d'un marchand, harnais compris.",
         "shardlord_kazzix": "Un élémentaire de tempête doté d'épaules, qui arpente les crêtes lointaines au-dessus de Stormcrag, porteur d'un éclat de cœur qui vaut bien d'affronter la foudre.",
         "mirejaw_frenzy": "Un murloc des marais qui se monte en frénésie convulsive en plein combat, le plus bruyant d'une meute bruyante et territoriale.",
@@ -4725,9 +4724,6 @@ export const fr_FR: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Fléau de Thornpeak"
       },
-      "brightwood_hare": {
-        "name": "Lièvre de Brightwood"
-      },
       "glade_fox": {
         "name": "Renard des clairières"
       },
@@ -4740,20 +4736,11 @@ export const fr_FR: EnTranslations = {
       "thornpelt_badger": {
         "name": "Blaireau Pelage-d'épines"
       },
-      "dawnmane_doe": {
-        "name": "Biche Crinaube"
-      },
       "bramble_lynx": {
         "name": "Lynx des ronces"
       },
-      "brightwood_stag": {
-        "name": "Cerf de Brightwood"
-      },
       "grovetusk_boar": {
         "name": "Sanglier Défense-des-bois"
-      },
-      "sunhide_bear": {
-        "name": "Ours Peau-de-soleil"
       },
       "brightwood_monarch": {
         "name": "Le Monarque de Brightwood"

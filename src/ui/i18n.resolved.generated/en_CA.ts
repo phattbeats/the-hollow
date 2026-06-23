@@ -952,7 +952,6 @@ export const en_CA: EnTranslations = {
       "notedLabel": "Of note",
       "flavor": {
         "old_greyjaw": "A scarred old wolf no trap has held, blamed for three hounds and a stable boy's arm. He hunts the deep woods alone, and turns savage the longer a fight wears on.",
-        "brightwood_stag": "A proud grove deer that lowers its crown of antlers and bulls forward, growing harder to face the longer it is pressed.",
         "grubjaw": "A fen troll so greedy the other trolls will not dig beside him, said to have eaten a trader's last two pack-mules, harness and all.",
         "shardlord_kazzix": "A storm elemental given shoulders, walking the far crags above Stormcrag with a heartshard worth braving the lightning for.",
         "mirejaw_frenzy": "A marsh murloc that whips itself into a thrashing frenzy mid-fight, the loudest thing in a loud, territorial pack.",
@@ -4725,9 +4724,6 @@ export const en_CA: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Scourge of Thornpeak"
       },
-      "brightwood_hare": {
-        "name": "Brightwood Hare"
-      },
       "glade_fox": {
         "name": "Glade Fox"
       },
@@ -4740,20 +4736,11 @@ export const en_CA: EnTranslations = {
       "thornpelt_badger": {
         "name": "Thornpelt Badger"
       },
-      "dawnmane_doe": {
-        "name": "Dawnmane Doe"
-      },
       "bramble_lynx": {
         "name": "Bramble Lynx"
       },
-      "brightwood_stag": {
-        "name": "Brightwood Stag"
-      },
       "grovetusk_boar": {
         "name": "Grovetusk Boar"
-      },
-      "sunhide_bear": {
-        "name": "Sunhide Bear"
       },
       "brightwood_monarch": {
         "name": "The Brightwood Monarch"
@@ -5756,7 +5743,7 @@ export const en_CA: EnTranslations = {
       },
       "q_ledger_first_duty": {
         "title": "A Warden's First Duty",
-        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The thornpelt badgers have dug their setts clean through the Brightwood Glade, in the far north past Wolf Run, and the grove floor is caving into their burrows. Cull 8 Thornpelt Badgers and the ledger will remember your name.",
+        "text": "You want to earn your keep in Eastbrook, {playerName}? Then start where every warden starts. The thornpelt badgers have dug their setts through the south edge of Brightwood Glade, and the grove floor is caving into their burrows. Cull 8 Thornpelt Badgers and the ledger will remember your name.",
         "completion": "Eight setts emptied and the grove floor settled. Good. Every name in this ledger started just where you are standing.",
         "objectives": {
           "0": {
@@ -5776,8 +5763,8 @@ export const en_CA: EnTranslations = {
       },
       "q_ledger_reedwater": {
         "title": "Reedwater Patrol",
-        "text": "Redbrook sent you? Good - these old bones cannot wade the shallows anymore. The meadow cranes have found my nets, and they spear more of my catch than the Mudfin ever did. Thin them: 8 Meadow Cranes, and mind the deep water.",
-        "completion": "That will keep the long-legged thieves off my nets for a season. Tell the Marshal the shallows are mine again.",
+        "text": "Redbrook sent you? Good. The meadow cranes have settled in the wet grass south of town, and they spear more fry than my nets can spare. Thin them: 8 Meadow Cranes, and mind the marshy ground.",
+        "completion": "That will keep the long-legged thieves out of the south meadow for a season. Tell the Marshal the cranes are thinned.",
         "objectives": {
           "0": {
             "label": "Meadow Crane driven off"
@@ -5786,7 +5773,7 @@ export const en_CA: EnTranslations = {
       },
       "q_ledger_silk": {
         "title": "Browse and Bramble",
-        "text": "The ledger marks the eastern woods as warden ground too - and my physic-beds are part of it. The spotted fawns have stripped my silverleaf and bloodthistle to the root, and without those simples half of Eastbrook goes without medicine. I take no joy in it, but cull 8 Spotted Fawns before the autumn herbs are lost entirely.",
+        "text": "The ledger marks the southern glade as warden ground too, and my physic-beds sit close enough to suffer for it. The spotted fawns have stripped my silverleaf and bloodthistle to the root, and without those simples half of Eastbrook goes without medicine. I take no joy in it, but cull 8 Spotted Fawns before the autumn herbs are lost entirely.",
         "completion": "The beds may yet recover, thanks to you. A hard mercy - but a child burning with fever needs the simples more than the wood needs the deer. The ledger is square.",
         "objectives": {
           "0": {
@@ -5816,7 +5803,7 @@ export const en_CA: EnTranslations = {
       },
       "q_ledger_toll": {
         "title": "The Tusked Road",
-        "text": "The grovetusk boars have come down out of the Brightwood and onto the southeast trade road - great tusked brutes that gore the draft oxen and overturn carts for the spilled grain. The ledger has a price on every one. Reopen the road: put down 8 Grovetusk Boars.",
+        "text": "The grovetusk boars have pushed down through Brightwood Glade and onto the south road, great tusked brutes that gore the draft oxen and overturn carts for the spilled grain. The ledger has a price on every one. Reopen the road: put down 8 Grovetusk Boars.",
         "completion": "Eight brutes off the road, and the carts are rolling again. Word is already spreading that the trade road has a new keeper. The ledger climbs in your favor.",
         "objectives": {
           "0": {
