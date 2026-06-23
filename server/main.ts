@@ -11,6 +11,7 @@ import {
   accountById, characterCountForAccount, updatePasswordHash, revokeTokensExcept, setAccountEmail, setAccountDeactivated,
 } from './db';
 import { virtualLevel } from '../src/sim/types';
+import { paginateLeaderboard, LEADERBOARD_PAGE_SIZE, LEADERBOARD_MAX } from '../src/sim/leaderboard_page';
 import { Sim } from '../src/sim/sim';
 import type { PlayerClass } from '../src/sim/types';
 import type { LeaderboardEntry } from '../src/world_api';
@@ -29,6 +30,7 @@ import { handleWocBalance, parseWocBalanceQuery } from './woc_balance';
 import {
   handleAccountWhoami, handleAccountChangePassword, handleAccountLogout, handleAccountSetEmail, handleAccountDeactivate,
   handleAccountEmailChange, handleAccountEmailVerify, handleAccountExport, handleAccountMarketing, handleEmailUnsubscribe,
+  handleAccount2faSetup, handleAccount2faEnable, handleAccount2faDisable, verifyLoginTwoFactor,
 } from './account';
 import { emailAccountCreated } from './email';
 import { handleCardUpload, handleCardRoutes, captureReferral, cardUploadContentLengthTooLarge } from './player_card';
@@ -102,7 +104,9 @@ function initialCharacterState(cls: PlayerClass, name: string, skin: number): im
 // most once per LEADERBOARD_TTL_MS, plus the boot warm-up below.
 // ---------------------------------------------------------------------------
 const LEADERBOARD_TTL_MS = 30_000;
-const LEADERBOARD_SIZE = 100;
+// Cache the full exposed depth (LEADERBOARD_MAX) once per scope; the REST handler
+// pages through it as an in-memory slice, so no extra query per page click.
+const LEADERBOARD_SIZE = LEADERBOARD_MAX;
 // One cache per scope: 'realm' for the in-game panel, 'global' for the
 // cross-realm home-page board.
 const leaderboardCache: Record<'realm' | 'global', { at: number; entries: LeaderboardEntry[] } | null> = {
@@ -452,6 +456,20 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (game.isIpBlocked(requestIp(req)) && !(await isAdminAccount(account.id))) {
         return json(res, 429, { error: 'too many attempts — wait a minute and try again' });
       }
+      // Second factor: if 2FA is enabled, the password alone is not enough. With
+      // no code supplied we return a challenge (not a token) so the client shows
+      // the code step; with a code (or recovery code) we verify it before issuing.
+      if (account.totp_enabled_at) {
+        const code = typeof body.code === 'string' ? body.code : '';
+        const recoveryCode = typeof body.recoveryCode === 'string' ? body.recoveryCode : '';
+        if (!code && !recoveryCode) {
+          return json(res, 200, { twoFactorRequired: true });
+        }
+        if (!(await verifyLoginTwoFactor(account, code, recoveryCode))) {
+          recordAuthFailure(username);
+          return json(res, 401, { error: 'invalid authentication code', twoFactorRequired: true });
+        }
+      }
       clearAuthFailures(username); // correct password: forgive earlier typos
       await touchLogin(account.id, requestMetadata(req));
       const token = newToken();
@@ -711,13 +729,23 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       // lifetime-XP leaderboard (Max-Level XP Overflow), served from the
       // in-memory cache. metric is fixed to lifetimeXp. ?scope=global ranks
       // across every realm (home page); default is this process's realm (the
-      // in-game panel). Optional ?limit=N (1..100). `url` is the path only, so
-      // the query string is parsed from req.url.
+      // in-game panel). `url` is the path only, so the query string is parsed
+      // from req.url.
       const params = new URLSearchParams((req.url ?? '').split('?')[1] ?? '');
       const scope: 'realm' | 'global' = params.get('scope') === 'global' ? 'global' : 'realm';
-      const limit = Math.max(1, Math.min(LEADERBOARD_SIZE, Number(params.get('limit')) || LEADERBOARD_SIZE));
       const entries = await getLeaderboard(scope);
-      return json(res, 200, { realm: REALM, scope, metric: 'lifetimeXp', leaders: entries.slice(0, limit) });
+      // Legacy ?limit=N (home-page board): top N as a single page, no paging UI.
+      const limitParam = params.get('limit');
+      if (limitParam !== null) {
+        const limit = Math.max(1, Math.min(LEADERBOARD_SIZE, Number(limitParam) || LEADERBOARD_SIZE));
+        const leaders = entries.slice(0, limit);
+        return json(res, 200, { realm: REALM, scope, metric: 'lifetimeXp', leaders, page: 0, pageCount: 1, total: leaders.length, pageSize: limit });
+      }
+      // Paged in-game board: ?page=N (0-based) & ?pageSize=M, clamped server-side.
+      const pageSize = Number(params.get('pageSize')) || LEADERBOARD_PAGE_SIZE;
+      const page = Number(params.get('page')) || 0;
+      const slice = paginateLeaderboard(entries, page, pageSize);
+      return json(res, 200, { realm: REALM, scope, metric: 'lifetimeXp', ...slice });
     }
     if (req.method === 'GET' && url === '/api/releases') {
       recordUsageMetric('github.releases.api');
@@ -785,6 +813,21 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       const accountId = await bearerActiveAccount(req, res);
       if (accountId === null) return;
       return handleAccountMarketing(req, res, accountId);
+    }
+    if (req.method === 'POST' && url === '/api/account/2fa/setup') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleAccount2faSetup(req, res, accountId);
+    }
+    if (req.method === 'POST' && url === '/api/account/2fa/enable') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleAccount2faEnable(req, res, accountId);
+    }
+    if (req.method === 'POST' && url === '/api/account/2fa/disable') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleAccount2faDisable(req, res, accountId);
     }
     // Public one-click marketing unsubscribe (link from a marketing email).
     if (req.method === 'GET' && url === '/api/email/unsubscribe') {

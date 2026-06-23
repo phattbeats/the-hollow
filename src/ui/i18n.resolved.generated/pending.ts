@@ -9,73 +9,17 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [
-    "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate",
-    "realm.popTipFull",
-    "realm.popTipHigh",
-    "realm.popTipLow",
-    "realm.popTipMedium",
-    "realm.popTipOffline"
-  ],
-  "es_ES": [
-    "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate",
-    "realm.popTipFull",
-    "realm.popTipHigh",
-    "realm.popTipLow",
-    "realm.popTipMedium",
-    "realm.popTipOffline"
-  ],
-  "fr_FR": [
-    "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate",
-    "realm.popTipFull",
-    "realm.popTipHigh",
-    "realm.popTipLow",
-    "realm.popTipMedium",
-    "realm.popTipOffline"
-  ],
-  "fr_CA": [
-    "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate",
-    "realm.popTipFull",
-    "realm.popTipHigh",
-    "realm.popTipLow",
-    "realm.popTipMedium",
-    "realm.popTipOffline"
-  ],
+  "es": [],
+  "es_ES": [],
+  "fr_FR": [],
+  "fr_CA": [],
   "en_CA": [],
-  "it_IT": [
-    "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate",
-    "realm.popTipFull",
-    "realm.popTipHigh",
-    "realm.popTipLow",
-    "realm.popTipMedium",
-    "realm.popTipOffline"
-  ],
-  "de_DE": [
-    "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate",
-    "realm.popTipFull",
-    "realm.popTipHigh",
-    "realm.popTipLow",
-    "realm.popTipMedium",
-    "realm.popTipOffline"
-  ],
+  "it_IT": [],
+  "de_DE": [],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
-  "pt_BR": [
-    "hudChrome.options.keybindHelpLockCursorOnRotate",
-    "hudChrome.options.lockCursorOnRotate",
-    "realm.popTipFull",
-    "realm.popTipHigh",
-    "realm.popTipLow",
-    "realm.popTipMedium",
-    "realm.popTipOffline"
-  ],
+  "pt_BR": [],
   "ru_RU": []
 };
