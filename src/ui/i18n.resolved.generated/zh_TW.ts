@@ -174,6 +174,28 @@ export const zh_TW: EnTranslations = {
       "title": "表情",
       "done": "完成"
     },
+    "theme": {
+      "preset": "介面主題",
+      "customColors": "自訂顏色",
+      "reset": "重設",
+      "presets": {
+        "classic": "經典金色",
+        "midnight": "午夜",
+        "parchment": "羊皮紙",
+        "highContrast": "高對比"
+      },
+      "knob": {
+        "accent": "強調色",
+        "border": "邊框",
+        "panel": "框架",
+        "text": "文字",
+        "textMuted": "次要文字",
+        "hp": "生命",
+        "mana": "法力",
+        "rage": "怒氣",
+        "energy": "能量"
+      }
+    },
     "questTracker": {
       "count": "（{count}）",
       "collapseHint": "收合任務追蹤器",

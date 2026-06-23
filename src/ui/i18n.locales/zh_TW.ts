@@ -14,6 +14,22 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const zh_TW: Partial<Record<TranslationKey, string>> = {
+  "hudChrome.theme.preset": "介面主題",
+  "hudChrome.theme.customColors": "自訂顏色",
+  "hudChrome.theme.reset": "重設",
+  "hudChrome.theme.presets.classic": "經典金色",
+  "hudChrome.theme.presets.midnight": "午夜",
+  "hudChrome.theme.presets.parchment": "羊皮紙",
+  "hudChrome.theme.presets.highContrast": "高對比",
+  "hudChrome.theme.knob.accent": "強調色",
+  "hudChrome.theme.knob.border": "邊框",
+  "hudChrome.theme.knob.panel": "框架",
+  "hudChrome.theme.knob.text": "文字",
+  "hudChrome.theme.knob.textMuted": "次要文字",
+  "hudChrome.theme.knob.hp": "生命",
+  "hudChrome.theme.knob.mana": "法力",
+  "hudChrome.theme.knob.rage": "怒氣",
+  "hudChrome.theme.knob.energy": "能量",
   "hudChrome.options.interfaceMode": "介面模式",
   "hudChrome.options.interfaceModeAuto": "自動",
   "hudChrome.options.interfaceModeDesktop": "桌面",

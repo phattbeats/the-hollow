@@ -33,6 +33,28 @@ export const hudChromeStrings = {
     title: "Emotes",
     done: "Done",
   },
+  theme: {
+    preset: "UI Theme",
+    customColors: "Custom Colors",
+    reset: "Reset",
+    presets: {
+      classic: "Classic Gold",
+      midnight: "Midnight",
+      parchment: "Parchment",
+      highContrast: "High Contrast",
+    },
+    knob: {
+      accent: "Accent",
+      border: "Border",
+      panel: "Frame",
+      text: "Text",
+      textMuted: "Muted Text",
+      hp: "Health",
+      mana: "Mana",
+      rage: "Rage",
+      energy: "Energy",
+    },
+  },
   // On-screen quest tracker. The "(N)" count shown beside the header while the
   // tracker is collapsed (the number is spliced in via formatNumber), plus the
   // header button's state-aware hover/title hint (Collapse while expanded,
