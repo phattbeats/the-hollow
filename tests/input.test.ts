@@ -102,23 +102,35 @@ describe('Input autorun', () => {
     expect(input.readMoveInput().forward).toBe(true);
   });
 
-  it('autorun survives the Escape menu: it keeps running while suspended and after close', () => {
+  it('keeps autorun running while the Escape menu is open, then keeps running after close', () => {
     // The classic complaint: autorun, then hit Escape to change a keybind or a
-    // setting. In a classic MMO the world never pauses, so the latched autorun
-    // keeps the player moving forward while the menu is open, and closing it
-    // leaves the run uninterrupted. Held keys / pointer / touch are still
-    // suppressed; only the autorun latch drives forward here.
+    // setting. In a classic MMO the world never pauses, so the open menu must let
+    // the latched autorun keep driving the player forward (you keep running while
+    // you use the menu), not strand them in place for the duration of the menu.
     const { input } = makeInput();
     input.toggleAutorun();
     expect(input.readMoveInput().forward).toBe(true);
 
     input.suspendMovement = true; // mirrors main.ts setting it while the game menu is open
-    expect(input.autorun).toBe(true); // latch survives the menu
-    expect(input.readMoveInput().forward).toBe(true); // autorun keeps running while suspended
+    expect(input.autorun).toBe(true); // latch untouched by the menu
+    expect(input.readMoveInput().forward).toBe(true); // keeps running while suspended
 
     input.suspendMovement = false; // menu closed
     expect(input.autorun).toBe(true);
-    expect(input.readMoveInput().forward).toBe(true); // run continues uninterrupted
+    expect(input.readMoveInput().forward).toBe(true); // still running
+  });
+
+  it('still suppresses a held movement key while suspended (menu keystrokes do not leak)', () => {
+    // Suspending movement must keep protecting the world from raw key holds while
+    // a modal/chat is focused; only the deliberate autorun latch is allowed to
+    // keep moving. With no autorun engaged, a held forward key produces no motion.
+    const { input, windowListeners } = makeInput();
+    windowListeners.get('keydown')!({ code: 'KeyW', repeat: false }); // hold forward
+    expect(input.readMoveInput().forward).toBe(true);
+
+    input.suspendMovement = true; // game menu / chat open
+    expect(input.autorun).toBe(false);
+    expect(input.readMoveInput().forward).toBe(false); // held key is suppressed
   });
 });
 
