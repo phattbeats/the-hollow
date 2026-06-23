@@ -3,6 +3,7 @@ import { ALL_CLASSES, isQuestTurnInNpc, type Entity, type SimEvent } from '../si
 import { OVERHEAD_EMOTES, type IWorld } from '../world_api';
 import { groundHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
 import { drapeRingLocalY } from './selection_ring';
+import { trackWebGLContext } from './context_release';
 import { buildFlaredConeFan, buildRingXZ, drapeConeWorld } from './target_cone_debug';
 import {
   CLASSES, MOBS, ABILITIES, DUNGEON_X_THRESHOLD, DUNGEON_LIST, QUESTS,
@@ -767,6 +768,9 @@ export class Renderer {
     // requesting it here would hit software GL (the autodetect can only run
     // after the context exists) with the most expensive setting there is.
     this.webgl = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
+    // Release this context promptly on page teardown so repeated logout/login
+    // reloads (location.reload) don't exhaust the browser's WebGL context pool.
+    trackWebGLContext(this.webgl);
     this.captureGlIdentity();
     canvas.addEventListener('webglcontextlost', () => { this.contextLostCount++; });
     canvas.addEventListener('webglcontextrestored', () => {
