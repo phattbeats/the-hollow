@@ -71,6 +71,7 @@ import {
   zoneAt,
 } from '../sim/data';
 import { armorTypeForItem, weaponArchetypeForItem } from '../sim/equipment_rules';
+import { LEADERBOARD_PAGE_SIZE } from '../sim/leaderboard_page';
 import type { ResolvedAbility } from '../sim/sim';
 import type {
   AbilityDef,
@@ -108,6 +109,7 @@ import {
   type IWorld,
   isOverheadEmoteId,
   type LeaderboardEntry,
+  type LeaderboardPage,
   type MarketInfo,
   OVERHEAD_EMOTES,
   type OverheadEmoteId,
@@ -483,10 +485,7 @@ const ITEM_STAT_LABEL_KEYS: Partial<Record<keyof Stats, TranslationKey>> = {
 // Classic class colors (CLASSES[cls].color is a 0xRRGGBB number) as a CSS
 // string, used to color-code party members on the minimap and in the frames.
 const classCss = (cls: string): string =>
-  '#' +
-  ((CLASSES as Record<string, { color: number }>)[cls]?.color ?? 0x5fa8ff)
-    .toString(16)
-    .padStart(6, '0');
+  `#${((CLASSES as Record<string, { color: number }>)[cls]?.color ?? 0x5fa8ff).toString(16).padStart(6, '0')}`;
 
 // Party frames dim and the minimap pins members to the rim once they pass
 // this range (yards) — just inside the server's ~120 yd interest scope.
@@ -606,7 +605,7 @@ const COMBAT_GAIN = 0.7;
 
 /** Creature-voice family for a mob templateId (boar split from beast), or null. */
 function mobVoiceFamily(templateId: string): string | null {
-  if (templateId === 'wild_boar') return 'boar';
+  if (templateId === 'wild_boar' || templateId === 'elder_bristleback') return 'boar';
   const fam = MOBS[templateId]?.family;
   return fam && SFX_MOB_FAMILIES.has(fam) ? fam : null;
 }
@@ -651,14 +650,11 @@ function weaponSwingKey(cls: string): string {
 // scripts/voices/extra_lines.mjs (yellKey) so encounter dialogue (e.g. the
 // Nythraxis raid) plays the right clip from the live chat event text.
 function yellVoiceKey(text: string): string {
-  return (
-    'yell__' +
-    text
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '_')
-      .replace(/^_+|_+$/g, '')
-      .slice(0, 60)
-  );
+  return `yell__${text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 60)}`;
 }
 
 export class Hud {
@@ -843,6 +839,7 @@ export class Hud {
   private marketSubtypeFilter: MarketSubtypeFilter = 'all';
   private marketRarityFilter: MarketRarityFilter = 'all';
   private marketBrowsePage = 0;
+  private leaderboardPage = 0;
   private marketSellItem: string | null = null; // bag item staged for listing
   private marketSearchQuery = ''; // active browse search term (sent to the server)
   private lastMarketSig = '';
@@ -3400,9 +3397,7 @@ export class Hud {
     const resFrac = p.resource / Math.max(1, p.maxResource);
     this.setTransform(this.pfResEl, `scaleX(${resFrac})`);
     this.setText(this.pfResTextEl, `${Math.round(p.resource)} / ${p.maxResource}`);
-    const resClass =
-      'bar ' +
-      (p.resourceType === 'rage' ? 'rage' : p.resourceType === 'energy' ? 'energy' : 'mana');
+    const resClass = `bar ${p.resourceType === 'rage' ? 'rage' : p.resourceType === 'energy' ? 'energy' : 'mana'}`;
     if (this.pfResourceEl.className !== resClass) this.pfResourceEl.className = resClass;
     this.updateLowResource(p);
 
@@ -9349,6 +9344,7 @@ export class Hud {
       return;
     }
     this.closeOtherWindows('#leaderboard-window');
+    this.leaderboardPage = 0;
     el.style.display = 'block';
     void this.renderLeaderboard();
   }
@@ -9363,19 +9359,23 @@ export class Hud {
       el.style.display = 'none';
     });
 
-    let rows: LeaderboardEntry[] = [];
+    let result: LeaderboardPage | null = null;
     try {
-      rows = await this.sim.leaderboard();
+      result = await this.sim.leaderboard(this.leaderboardPage, LEADERBOARD_PAGE_SIZE);
     } catch {
-      rows = [];
+      result = null;
     }
     // panel may have been closed while the fetch was in flight
     if (el.style.display !== 'block') return;
     const body = el.querySelector('.lb-body')!;
+    const rows = result?.leaders ?? [];
     if (rows.length === 0) {
       body.innerHTML = `<div class="lb-empty">${t('game.leaderboard.empty')}</div>`;
       return;
     }
+    // The server clamps the requested page; mirror its answer so the pager state
+    // never drifts past the real last page.
+    this.leaderboardPage = result?.page;
     const header = `<div class="lb-row lb-head"><span class="lb-rank">${t('game.leaderboard.rank')}</span><span class="lb-name">${t('game.leaderboard.name')}</span><span class="lb-lvl">${t('game.leaderboard.level')}</span><span class="lb-vlvl">${t('game.leaderboard.vlevel')}</span><span class="lb-xp">${t('game.leaderboard.lifetimeXp')}</span></div>`;
     const rowHtml = (r: LeaderboardEntry, mine: boolean): string => {
       const cls = CLASSES[r.cls];
@@ -9392,11 +9392,38 @@ export class Hud {
     };
     const mineIndex = rows.findIndex((r) => r.name === myName);
     let html = header + rows.map((r) => rowHtml(r, r.name === myName)).join('');
-    // sticky "your standing" row when the viewer is outside the visible list
+    // sticky "your standing" row when the viewer is outside the visible page
     if (mineIndex === -1) {
       html += `<div class="lb-sticky"><div class="lb-row lb-mine"><span class="lb-rank">—</span><span class="lb-name">${myName} <span class="lb-you">(${t('game.leaderboard.you')})</span></span><span class="lb-lvl">${this.sim.player.level}</span><span class="lb-vlvl">${virtualLevel(this.sim.lifetimeXp)}</span><span class="lb-xp">${formatXp(this.sim.lifetimeXp)}</span></div></div>`;
     }
+    html += this.leaderboardPagerHtml(result!);
     body.innerHTML = html;
+    body.querySelectorAll<HTMLButtonElement>('[data-leaderboard-page]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (button.disabled) return;
+        this.leaderboardPage += button.dataset.leaderboardPage === 'next' ? 1 : -1;
+        if (this.leaderboardPage < 0) this.leaderboardPage = 0;
+        void this.renderLeaderboard();
+      });
+    });
+  }
+
+  // Prev/Next pager for the leaderboard, mirroring the World Market browse pager.
+  // Reuses the Market pager's generic, fully-localized page strings ("Page X of
+  // Y", "Prev"/"Next"); the visible button text is the accessible name. Hidden
+  // when the whole board fits on one page.
+  private leaderboardPagerHtml(page: LeaderboardPage): string {
+    if (page.pageCount <= 1) return '';
+    const current = formatNumber(page.page + 1, { maximumFractionDigits: 0 });
+    const total = formatNumber(page.pageCount, { maximumFractionDigits: 0 });
+    const status = t('itemUi.market.pageStatus', { current, total });
+    return (
+      `<div class="lb-pager">` +
+      `<button type="button" class="lb-page-btn" data-leaderboard-page="prev"${page.page <= 0 ? ' disabled' : ''}>${esc(t('itemUi.market.pagePrev'))}</button>` +
+      `<span class="lb-page-status">${esc(status)}</span>` +
+      `<button type="button" class="lb-page-btn" data-leaderboard-page="next"${page.page >= page.pageCount - 1 ? ' disabled' : ''}>${esc(t('itemUi.market.pageNext'))}</button>` +
+      `</div>`
+    );
   }
 
   // -------------------------------------------------------------------------
@@ -10170,12 +10197,7 @@ export class Hud {
       }))
       .filter((m) => m.pid !== this.sim.playerId && (!info.raid || m.group === myGroup));
     // include combat/range state so the frames rebuild when a badge changes
-    const sig = `${others
-      .map(
-        (m) =>
-          `${m.pid}:${m.group}:${m.hp}/${m.mhp}:${m.res}:${m.dead}:${m.inCombat}:${m.oor ? 1 : 0}:${m.level}`,
-      )
-      .join('|')}L${info.leader}:R${info.raid ? 1 : 0}:G${myGroup}`;
+    const sig = `${others.map((m) => `${m.pid}:${m.group}:${m.hp}/${m.mhp}:${m.res}:${m.dead}:${m.inCombat}:${m.oor ? 1 : 0}:${m.level}`).join('|')}L${info.leader}:R${info.raid ? 1 : 0}:G${myGroup}`;
     if (sig === this.lastPartySig) return;
     this.lastPartySig = sig;
     el.innerHTML = '';
