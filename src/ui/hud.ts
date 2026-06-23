@@ -1429,7 +1429,7 @@ export class Hud {
   }
 
   private syncChatPlaceholder(): void {
-    const input = document.getElementById('chat-input') as HTMLInputElement | null;
+    const input = document.getElementById('chat-input') as HTMLTextAreaElement | null;
     if (input) input.placeholder = this.activeChatPlaceholder();
   }
 
@@ -8900,11 +8900,14 @@ export class Hud {
   // Open the chat bar pre-filled with a whisper to this player (classic-MMO-style DM).
   private startWhisper(name: string): void {
     if (!name || name === this.sim.player.name) return;
-    const input = $('#chat-input') as unknown as HTMLInputElement;
+    const input = $('#chat-input') as unknown as HTMLTextAreaElement;
     input.value = `/w ${name} `;
     input.style.display = 'block';
     input.focus();
     input.setSelectionRange(input.value.length, input.value.length);
+    // Re-anchor + autosize the bar for the pre-filled value even if it was
+    // already open (focus alone won't re-fire); main.ts listens for 'input'.
+    input.dispatchEvent(new Event('input'));
   }
 
   // -------------------------------------------------------------------------

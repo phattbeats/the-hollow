@@ -245,6 +245,10 @@ const NEARBY_RANGE = 40; // /nearby scan radius — wider than say, tighter than
 const NEARBY_MAX = 10; // cap the /nearby list so a crowded camp can't spam chat
 const CHAT_BURST = 8; // messages a player may send back-to-back...
 const CHAT_REFILL = 2; // ...then this many more per second (caps spam amplifiers)
+// Max characters in a single chat line, matching classic WoW's 255-char editbox.
+// Authoritative cap: enforced here in the deterministic core so every host agrees;
+// the client maxlength + server chat-log slices mirror it.
+export const MAX_CHAT_MESSAGE_LEN = 255;
 const DUEL_FORFEIT_DISTANCE = 60;
 const TRADE_RANGE = 10;
 // The World Market (the Merchant's auction house)
@@ -8287,7 +8291,7 @@ export class Sim {
   chat(text: string, pid?: number): SentChat | null {
     const r = this.resolve(pid);
     if (!r) return null;
-    const raw = text.trim().slice(0, 200);
+    const raw = text.trim().slice(0, MAX_CHAT_MESSAGE_LEN);
     if (!raw) return null;
     if (!this.chatAllowed(r.meta.entityId)) {
       this.error(r.meta.entityId, 'You are sending messages too quickly.');
@@ -8672,7 +8676,7 @@ export class Sim {
   // actor). `from` carries the actor's name so the client can render it as a
   // clickable name; `text` is the action predicate (e.g. "waves at Bet.").
   private broadcastEmote(actor: PlayerMeta, actorEntity: Entity, text: string): void {
-    const body = text.slice(0, 200);
+    const body = text.slice(0, MAX_CHAT_MESSAGE_LEN);
     for (const meta of this.players.values()) {
       const e = this.entities.get(meta.entityId);
       if (!e || dist2d(actorEntity.pos, e.pos) > SAY_RANGE) continue;
