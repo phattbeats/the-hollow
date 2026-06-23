@@ -275,6 +275,8 @@ export const zh_CN: EnTranslations = {
       "interfaceModeNote": "自动会根据你的设备选择桌面或触控操作。选择桌面可强制使用键盘和鼠标（适合带键盘的平板），选择触控则使用屏幕上的操作控件。",
       "footstepSounds": "脚步声",
       "clickFeedback": "点击标记",
+      "lockCursorOnRotate": "旋转时锁定光标",
+      "keybindHelpLockCursorOnRotate": "拖动旋转镜头时将鼠标光标保持在窗口内，使其无法到达屏幕边缘或移动到另一台显示器。如果你喜欢自由光标，请关闭此选项。",
       "showWalletOnCharacterScreen": "在角色界面显示钱包",
       "showWalletOnPlayerCard": "在玩家卡片显示钱包",
       "uiScale": "界面缩放",
@@ -3795,6 +3797,9 @@ export const zh_CN: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "山脊潜伏者毛皮"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "无瑕的山脊潜伏者毛皮"
+      },
       "glowing_wax": {
         "name": "发光蜡块"
       },
@@ -4235,6 +4240,9 @@ export const zh_CN: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "裂颚潜行靴"
+      },
+      "cragmaw_huntcord": {
+        "name": "裂颚的狩猎腰索"
       },
       "drowned_tide_scepter": {
         "name": "溺亡潮汐权杖"

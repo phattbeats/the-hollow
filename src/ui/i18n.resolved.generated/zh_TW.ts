@@ -275,6 +275,8 @@ export const zh_TW: EnTranslations = {
       "interfaceModeNote": "自動會根據你的裝置選擇桌面或觸控操作。選擇桌面可強制使用鍵盤與滑鼠（適合有鍵盤的平板），選擇觸控則使用螢幕上的操作控制項。",
       "footstepSounds": "腳步聲",
       "clickFeedback": "點擊標記",
+      "lockCursorOnRotate": "旋轉時鎖定游標",
+      "keybindHelpLockCursorOnRotate": "拖曳旋轉鏡頭時將滑鼠游標保持在視窗內，使其無法到達螢幕邊緣或移動到另一台顯示器。若你偏好自由游標，請關閉此選項。",
       "showWalletOnCharacterScreen": "在角色畫面顯示錢包",
       "showWalletOnPlayerCard": "在玩家卡片顯示錢包",
       "uiScale": "介面縮放",
@@ -3795,6 +3797,9 @@ export const zh_TW: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "山脊潛伏者毛皮"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "無瑕的山脊潛伏者毛皮"
+      },
       "glowing_wax": {
         "name": "發光蠟塊"
       },
@@ -4235,6 +4240,9 @@ export const zh_TW: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "裂顎潛行靴"
+      },
+      "cragmaw_huntcord": {
+        "name": "裂顎的狩獵腰索"
       },
       "drowned_tide_scepter": {
         "name": "溺亡潮汐權杖"

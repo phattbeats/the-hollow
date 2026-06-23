@@ -10,6 +10,8 @@
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate",
     "hudChrome.theme.customColors",
     "hudChrome.theme.knob.accent",
     "hudChrome.theme.knob.border",
@@ -33,6 +35,8 @@ export const pending: Record<string, readonly string[]> = {
     "realm.popTipOffline"
   ],
   "es_ES": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate",
     "hudChrome.theme.customColors",
     "hudChrome.theme.knob.accent",
     "hudChrome.theme.knob.border",
@@ -56,6 +60,8 @@ export const pending: Record<string, readonly string[]> = {
     "realm.popTipOffline"
   ],
   "fr_FR": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate",
     "hudChrome.theme.customColors",
     "hudChrome.theme.knob.accent",
     "hudChrome.theme.knob.border",
@@ -79,6 +85,8 @@ export const pending: Record<string, readonly string[]> = {
     "realm.popTipOffline"
   ],
   "fr_CA": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate",
     "hudChrome.theme.customColors",
     "hudChrome.theme.knob.accent",
     "hudChrome.theme.knob.border",
@@ -103,6 +111,8 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "en_CA": [],
   "it_IT": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate",
     "hudChrome.theme.customColors",
     "hudChrome.theme.knob.accent",
     "hudChrome.theme.knob.border",
@@ -126,6 +136,8 @@ export const pending: Record<string, readonly string[]> = {
     "realm.popTipOffline"
   ],
   "de_DE": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate",
     "hudChrome.theme.customColors",
     "hudChrome.theme.knob.accent",
     "hudChrome.theme.knob.border",
@@ -153,6 +165,8 @@ export const pending: Record<string, readonly string[]> = {
   "ko_KR": [],
   "ja_JP": [],
   "pt_BR": [
+    "hudChrome.options.keybindHelpLockCursorOnRotate",
+    "hudChrome.options.lockCursorOnRotate",
     "hudChrome.theme.customColors",
     "hudChrome.theme.knob.accent",
     "hudChrome.theme.knob.border",

@@ -275,6 +275,8 @@ export const ru_RU: EnTranslations = {
       "interfaceModeNote": "В режиме «Авто» управление для компьютера или сенсорное выбирается по вашему устройству. Выберите «Компьютер», чтобы включить клавиатуру и мышь (удобно на планшете с клавиатурой), или «Сенсорный» для экранного управления.",
       "footstepSounds": "Звуки шагов",
       "clickFeedback": "Метка клика",
+      "lockCursorOnRotate": "Блокировать курсор при вращении",
+      "keybindHelpLockCursorOnRotate": "Удерживает курсор мыши внутри окна, пока вы вращаете камеру перетаскиванием, чтобы он не достигал края экрана и не переходил на другой монитор. Отключите, если предпочитаете свободный курсор.",
       "showWalletOnCharacterScreen": "Показывать кошелек на экране персонажей",
       "showWalletOnPlayerCard": "Показывать кошелек на карточке игрока",
       "uiScale": "Масштаб интерфейса",
@@ -3795,6 +3797,9 @@ export const ru_RU: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "Шкура хребтового охотника"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "Безупречная шкура хребтового охотника"
+      },
       "glowing_wax": {
         "name": "Светящийся воск"
       },
@@ -4235,6 +4240,9 @@ export const ru_RU: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "Крадущиеся сапоги Крэгмо"
+      },
+      "cragmaw_huntcord": {
+        "name": "Охотничий пояс Крэгмо"
       },
       "drowned_tide_scepter": {
         "name": "Скипетр утопшего прилива"

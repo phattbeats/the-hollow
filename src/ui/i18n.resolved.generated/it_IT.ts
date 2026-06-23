@@ -275,6 +275,8 @@ export const it_IT: EnTranslations = {
       "interfaceModeNote": "Auto sceglie i controlli Desktop o Touch in base al tuo dispositivo. Scegli Desktop per forzare tastiera e mouse (utile su un tablet con tastiera), oppure Touch per i controlli a schermo.",
       "footstepSounds": "Suoni dei passi",
       "clickFeedback": "Indicatore di clic",
+      "lockCursorOnRotate": "Lock Cursor While Rotating",
+      "keybindHelpLockCursorOnRotate": "Keeps the mouse cursor inside the window while you drag to rotate the camera, so it cannot reach the screen edge or move to another monitor. Turn off if you prefer a free cursor.",
       "showWalletOnCharacterScreen": "Mostra portafoglio nella schermata personaggi",
       "showWalletOnPlayerCard": "Mostra portafoglio nella scheda giocatore",
       "uiScale": "Scala dell'interfaccia",
@@ -3795,6 +3797,9 @@ export const it_IT: EnTranslations = {
       "ridge_stalker_pelt": {
         "name": "Pelliccia di predatore del crinale"
       },
+      "pristine_ridge_stalker_pelt": {
+        "name": "Pelliccia immacolata di predatore del crinale"
+      },
       "glowing_wax": {
         "name": "Cera luminosa"
       },
@@ -4235,6 +4240,9 @@ export const it_IT: EnTranslations = {
       },
       "cragmaw_prowlboots": {
         "name": "Stivali predatori di Cragmaw"
+      },
+      "cragmaw_huntcord": {
+        "name": "Cinghia da caccia di Cragmaw"
       },
       "drowned_tide_scepter": {
         "name": "Scettro della marea annegata"
