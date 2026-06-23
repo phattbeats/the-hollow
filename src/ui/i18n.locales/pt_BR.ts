@@ -14,6 +14,10 @@
 import type { TranslationKey } from '../i18n.catalog';
 
 export const pt_BR: Partial<Record<TranslationKey, string>> = {
+  'hudChrome.tutorial.moveBodyTouch': 'Use o analógico de movimento para se mover e arraste a tela para olhar ao redor. Dê alguns passos para começar.',
+  'hudChrome.tutorial.talkBodyTouch': 'Aproxime-se do marechal Redbrook e toque no botão Usar para falar, então aceite a tarefa dele.',
+  'hudChrome.tutorial.returnBodyTouch': 'Sua tarefa está concluída. Volte ao marechal Redbrook e toque no botão Usar para entregá-la.',
+  'hudChrome.tutorial.doneBodyTouch': 'Você já domina o básico, {name}. O Vale é seu para explorar. Toque em Mais e depois em Registro de missões para ver seu registro de missões a qualquer momento. Boa caçada!',
   'hudChrome.raidLockout.title': 'Bloqueios de raide',
   'hudChrome.raidLockout.allReady': 'Todas as raides prontas',
   'hudChrome.raidLockout.daysHours': '{d}d {h}h',

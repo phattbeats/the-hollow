@@ -1,5 +1,6 @@
 import { Sim } from './sim/sim';
 import { Renderer } from './render/renderer';
+import { installWebGLContextRelease } from './render/context_release';
 import { Input } from './game/input';
 import { InputActivityMeter, installInputActivityTracking } from './game/input_activity';
 import { Keybinds } from './game/keybinds';
@@ -89,6 +90,10 @@ const HOMEPAGE_MUSIC_VOLUME = 0.225;
 const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.querySelector(sel) as T;
 document.body.classList.toggle('native-app', NATIVE_APP);
 if (NATIVE_APP) document.body.classList.add('mobile-touch');
+// Free every WebGL context (game renderer, character preview, portrait rig) when
+// the page is torn down, so logout/login reload cycles don't exhaust the GPU
+// context pool and break the next renderer with "Error creating WebGL context".
+installWebGLContextRelease();
 let pendingDeleteCharacter: CharacterSummary | null = null;
 let homepageMusic: HTMLAudioElement | null = null;
 let homepageMusicStarted = false;
