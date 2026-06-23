@@ -761,7 +761,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     }
     // Email-change verification is a link click from the inbox: unauthenticated,
     // the token is the authorization. Parse the token off the query string.
-    if (req.method === 'GET' && url.startsWith('/api/account/email/verify')) {
+    if (req.method === 'GET' && url === '/api/account/email/verify') {
       const token = new URL(req.url ?? '', 'http://localhost').searchParams.get('token') ?? '';
       return handleAccountEmailVerify(res, token);
     }
@@ -791,7 +791,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       return handleAccount2faDisable(req, res, accountId);
     }
     // Public one-click marketing unsubscribe (link from a marketing email).
-    if (req.method === 'GET' && url.startsWith('/api/email/unsubscribe')) {
+    if (req.method === 'GET' && url === '/api/email/unsubscribe') {
       const token = new URL(req.url ?? '', 'http://localhost').searchParams.get('token') ?? '';
       return handleEmailUnsubscribe(res, token);
     }
