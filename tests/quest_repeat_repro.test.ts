@@ -17,7 +17,11 @@ const QID = 'q_wolves';
 function driveToTurnIn(sim: Sim): void {
   const quest = QUESTS[QID];
   const meta = (sim as any).primary;
-  meta.questLog.set(QID, { questId: QID, state: 'ready', counts: quest.objectives.map((o) => o.count) });
+  meta.questLog.set(QID, {
+    questId: QID,
+    state: 'ready',
+    counts: quest.objectives.map((o) => o.count),
+  });
   const npc = [...sim.entities.values()].find(
     (e) => e.kind === 'npc' && e.templateId === quest.turnInNpcId,
   )!;
@@ -50,10 +54,14 @@ describe('no quest duplicates another (same giver + identical objectives)', () =
     const sig = (id: string): string => {
       const q = QUESTS[id];
       const obj = q.objectives
-        .map((o) =>
-          (o.type === 'kill' ? `kill ${o.targetMobId}`
-            : o.type === 'collect' ? `collect ${o.itemId}`
-              : `interact ${(o as any).targetNpcId}`) + ` x${o.count}`)
+        .map(
+          (o) =>
+            (o.type === 'kill'
+              ? `kill ${o.targetMobId}`
+              : o.type === 'collect'
+                ? `collect ${o.itemId}`
+                : `interact ${(o as any).targetNpcId}`) + ` x${o.count}`,
+        )
         .join(' + ');
       return `${q.giverNpcId} :: ${obj}`;
     };

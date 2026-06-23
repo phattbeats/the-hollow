@@ -1,13 +1,23 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { questTrackerView, type TrackedQuest } from '../src/ui/quest_tracker';
 
 // Titles/labels are already resolved before the tracker receives them.
 const QUESTS: TrackedQuest[] = [
-  { id: 'wolves', title: 'Wolves at the Door', complete: false, objectives: [{ label: 'Forest Wolf slain', current: 0, total: 8 }] },
-  { id: 'webwood', title: 'Webwood Menace', complete: true, objectives: [
-    { label: 'Webwood Lurker slain', current: 6, total: 6 },
-    { label: 'Webwood Silk Gland', current: 4, total: 4 },
-  ] },
+  {
+    id: 'wolves',
+    title: 'Wolves at the Door',
+    complete: false,
+    objectives: [{ label: 'Forest Wolf slain', current: 0, total: 8 }],
+  },
+  {
+    id: 'webwood',
+    title: 'Webwood Menace',
+    complete: true,
+    objectives: [
+      { label: 'Webwood Lurker slain', current: 6, total: 6 },
+      { label: 'Webwood Silk Gland', current: 4, total: 4 },
+    ],
+  },
 ];
 
 describe('questTrackerView', () => {
@@ -42,17 +52,39 @@ describe('questTrackerView', () => {
   });
 
   it('marks an objective done when current meets or exceeds total', () => {
-    const over = questTrackerView([{ id: 'x', title: 'X', complete: false, objectives: [{ label: 'o', current: 9, total: 8 }] }], false);
+    const over = questTrackerView(
+      [
+        {
+          id: 'x',
+          title: 'X',
+          complete: false,
+          objectives: [{ label: 'o', current: 9, total: 8 }],
+        },
+      ],
+      false,
+    );
     expect(over.quests[0].objectives[0].done).toBe(true);
   });
 
   it('treats an objective with a zero total as done (0 >= 0)', () => {
-    const v = questTrackerView([{ id: 'x', title: 'X', complete: false, objectives: [{ label: 'o', current: 0, total: 0 }] }], false);
+    const v = questTrackerView(
+      [
+        {
+          id: 'x',
+          title: 'X',
+          complete: false,
+          objectives: [{ label: 'o', current: 0, total: 0 }],
+        },
+      ],
+      false,
+    );
     expect(v.quests[0].objectives[0].done).toBe(true);
   });
 
   it('does not mutate the caller input and returns distinct copies', () => {
-    const input: TrackedQuest[] = [{ id: 'a', title: 'A', complete: false, objectives: [{ label: 'o', current: 1, total: 2 }] }];
+    const input: TrackedQuest[] = [
+      { id: 'a', title: 'A', complete: false, objectives: [{ label: 'o', current: 1, total: 2 }] },
+    ];
     const snapshot = JSON.stringify(input);
     const v = questTrackerView(input, false);
     expect(JSON.stringify(input)).toBe(snapshot);

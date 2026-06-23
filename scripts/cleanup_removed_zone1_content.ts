@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
-import type { CharacterState } from '../src/sim/sim';
 import { sanitizeRemovedZone1Content } from '../src/sim/removed_zone1_content';
+import type { CharacterState } from '../src/sim/sim';
 
 try {
   process.loadEnvFile?.();

@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { ITEMS, NPCS, QUESTS, QUEST_ORDER } from '../src/sim/data';
+import { ITEMS, NPCS, QUEST_ORDER, QUESTS } from '../src/sim/data';
 import {
-  sanitizeRemovedZone1Content,
   REMOVED_ZONE1_OBJECTIVE_ITEM_IDS,
-  RETIRED_ZONE1_ITEM_IDS,
   REMOVED_ZONE1_QUEST_IDS,
+  RETIRED_ZONE1_ITEM_IDS,
+  sanitizeRemovedZone1Content,
 } from '../src/sim/removed_zone1_content';
 import type { CharacterState } from '../src/sim/sim';
 
@@ -86,9 +86,7 @@ describe('removed Eastbrook Vale quest content', () => {
     expect(result.changed).toBe(true);
     expect(result.state.questLog.map((q) => q.questId)).toEqual(['q_wolves']);
     expect(result.state.questsDone).toEqual(['q_gravecallers_trail']);
-    expect(result.state.inventory).toEqual([
-      { itemId: 'spring_water', count: 2 },
-    ]);
+    expect(result.state.inventory).toEqual([{ itemId: 'spring_water', count: 2 }]);
     expect(result.state.vendorBuyback).toEqual([
       { itemId: 'bramblehide_jerkin', count: 1 },
       { itemId: 'tough_jerky', count: 3 },

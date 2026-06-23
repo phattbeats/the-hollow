@@ -17,15 +17,9 @@ export const REMOVED_ZONE1_QUEST_IDS = [
   'q_ledger_outlaw_captain',
 ] as const;
 
-export const RETIRED_ZONE1_ITEM_IDS = [
-  'bramblehide_jerkin',
-  'monarch_crown_helm',
-] as const;
+export const RETIRED_ZONE1_ITEM_IDS = ['bramblehide_jerkin', 'monarch_crown_helm'] as const;
 
-export const REMOVED_ZONE1_OBJECTIVE_ITEM_IDS = [
-  'glade_pelt',
-  'monarch_heart',
-] as const;
+export const REMOVED_ZONE1_OBJECTIVE_ITEM_IDS = ['glade_pelt', 'monarch_heart'] as const;
 
 const REMOVED_QUESTS: ReadonlySet<string> = new Set(REMOVED_ZONE1_QUEST_IDS);
 const REMOVED_OBJECTIVE_ITEMS: ReadonlySet<string> = new Set(REMOVED_ZONE1_OBJECTIVE_ITEM_IDS);
@@ -42,7 +36,10 @@ function sameSlots(a: readonly InvSlot[] | undefined, b: readonly InvSlot[] | un
   });
 }
 
-export function sanitizeRemovedZone1Content(state: CharacterState): { state: CharacterState; changed: boolean } {
+export function sanitizeRemovedZone1Content(state: CharacterState): {
+  state: CharacterState;
+  changed: boolean;
+} {
   const questLog = state.questLog
     .filter((quest) => !REMOVED_QUESTS.has(quest.questId))
     .map((quest) => ({ questId: quest.questId, counts: [...quest.counts], state: quest.state }));
@@ -51,10 +48,10 @@ export function sanitizeRemovedZone1Content(state: CharacterState): { state: Cha
   const vendorBuyback = state.vendorBuyback?.filter(keepItem).map((slot) => ({ ...slot }));
 
   const changed =
-    questLog.length !== state.questLog.length
-    || questsDone.length !== state.questsDone.length
-    || !sameSlots(inventory, state.inventory)
-    || !sameSlots(vendorBuyback, state.vendorBuyback);
+    questLog.length !== state.questLog.length ||
+    questsDone.length !== state.questsDone.length ||
+    !sameSlots(inventory, state.inventory) ||
+    !sameSlots(vendorBuyback, state.vendorBuyback);
 
   return {
     changed,
