@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { Sim } from '../src/sim/sim';
+import { describe, expect, it } from 'vitest';
 import { ClientWorld } from '../src/net/online';
+import { Sim } from '../src/sim/sim';
 
 const HOUR = 60 * 60 * 1000;
 

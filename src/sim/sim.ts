@@ -6599,10 +6599,6 @@ export class Sim {
           break;
         }
         if (d > this.mobEffectiveMeleeRange(mob)) { mob.aiState = 'chase'; break; }
-        if (d > this.mobEffectiveMeleeRange(mob, target)) {
-          mob.aiState = 'chase';
-          break;
-        }
         mob.facing = angleTo(mob.pos, target.pos);
         mob.swingTimer -= DT;
         if (mob.swingTimer <= 0) {

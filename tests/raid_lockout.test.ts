@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
+  lockoutBadgeUnit,
   lockoutParts,
   lockoutShape,
-  lockoutBadgeUnit,
   soonestLockout,
 } from '../src/ui/raid_lockout';
 

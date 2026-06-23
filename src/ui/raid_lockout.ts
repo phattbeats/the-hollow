@@ -4,6 +4,7 @@
 // them into a localized t() template. Unit tested in tests/raid_lockout.test.ts.
 
 import type { RaidLockout } from '../world_api';
+
 export type { RaidLockout };
 
 export interface LockoutParts {
@@ -56,7 +57,11 @@ export function soonestLockout(lockouts: readonly RaidLockout[]): RaidLockout | 
   let best: RaidLockout | null = null;
   for (const l of lockouts) {
     if (l.msRemaining <= 0) continue;
-    if (!best || l.msRemaining < best.msRemaining || (l.msRemaining === best.msRemaining && l.id < best.id)) {
+    if (
+      !best ||
+      l.msRemaining < best.msRemaining ||
+      (l.msRemaining === best.msRemaining && l.id < best.id)
+    ) {
       best = l;
     }
   }
