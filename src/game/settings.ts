@@ -16,6 +16,13 @@ export const SETTING_RANGES = {
   // 1 low, 2 medium, 3 high, 4 ultra, 5 advanced. The renderer reads this
   // from localStorage during startup because tier choice controls preload.
   graphicsPreset: { min: 1, max: 5, def: 4 },
+  // Adaptive browser-effects tier for the DOM/CSS layer (distinct from the WebGL
+  // graphicsPreset above). 0 = Auto: detect the engine (Chromium/WebKit/Gecko),
+  // version and desktop-vs-mobile and tone down the most GPU-expensive CSS
+  // (backdrop-filter, big blurs/shadows, decorative background animations) so
+  // weaker engines stay smooth. 1 = Full (force all effects), 2 = Reduced,
+  // 3 = Minimal. Purely presentational; never touches the sim. See browser_env.ts.
+  browserEffects: { min: 0, max: 3, def: 0 },
   // Advanced-only: 0 keeps terrain/foliage cheap, 1 enables high terrain.
   terrainDetail: { min: 0, max: 1, def: 1 },
   foliageDensity: { min: 0, max: 1, def: 1 },
@@ -37,6 +44,12 @@ export const SETTING_RANGES = {
   // button in Key Bindings so click-to-move's trigger is remappable without
   // pretending mouse buttons are keyboard codes.
   clickToMoveButton: { min: 0, max: 2, def: 0 },
+  // Which control interface to present: 0 = Auto (detect desktop vs touch from
+  // the device), 1 = Desktop (force keyboard/mouse, hide the on-screen controls),
+  // 2 = Touch (force the on-screen joysticks/buttons). Lets a tablet driven by a
+  // keyboard+mouse pick the desktop UI, and a touch-capable desktop opt into the
+  // on-screen controls. Read by useTouchInterface in mobile_controls.ts.
+  interfaceMode: { min: 0, max: 2, def: 0 },
   // touch-only: scales the camera (look) joystick turn/pitch rate. The Camera
   // Speed slider only scales mouselook, so before this phones had no way to
   // tune look sensitivity; surfaced in Graphics only on phone touch devices.

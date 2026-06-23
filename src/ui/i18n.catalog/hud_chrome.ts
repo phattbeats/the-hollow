@@ -49,6 +49,13 @@ export const hudChromeStrings = {
     clock24h: "24-hour",
     note: "Prefixes each new chat line with the time it arrived, e.g. [14:32]. Only affects messages received while the option is on.",
   },
+  chatWindow: {
+    move: "Drag to move the chat window",
+    resize: "Drag to resize the chat window",
+    reset: "Reset Chat Window",
+    resetAction: "Reset",
+    note: "Drag the chat tab strip to move the window, or the corner grip to resize it. Reset returns it to the default position and size.",
+  },
   swing: {
     ready: "Swing",
     seconds: "{seconds}s",
@@ -109,6 +116,21 @@ export const hudChromeStrings = {
   options: {
     clickMoveLeft: "Left Click",
     clickMoveRight: "Right Click",
+    // Adaptive browser-effects tier control (Graphics panel). Auto detects the
+    // browser engine/version + device; the rest pin the CSS-effects tier.
+    browserEffects: "Browser Effects",
+    browserEffectsAuto: "Auto",
+    browserEffectsFull: "Full",
+    browserEffectsReduced: "Reduced",
+    browserEffectsMinimal: "Minimal",
+    browserEffectsNote: "Auto tones down heavy CSS effects (blur, glow, background motion) based on your browser and device. Lower it manually if the interface feels sluggish.",
+    // Interface Mode control (Graphics panel): desktop keyboard/mouse vs the
+    // on-screen touch controls. Auto detects the device; the rest force one.
+    interfaceMode: "Interface Mode",
+    interfaceModeAuto: "Auto",
+    interfaceModeDesktop: "Desktop",
+    interfaceModeTouch: "Touch",
+    interfaceModeNote: "Auto picks desktop or touch controls from your device. Choose Desktop to force keyboard and mouse (useful on a tablet with a keyboard), or Touch for the on-screen controls.",
     // Audio panel toggle for the per-footfall step clips (off by default).
     footstepSounds: "Footstep Sounds",
     // Toggle for the OSRS-style click-feedback marker: entity targets and
@@ -171,6 +193,7 @@ export const hudChromeStrings = {
       network: "Network",
       renderer: "Renderer",
       system: "System",
+      input: "Input",
     },
     // Short metric labels shown in the overlay's left column and the Stats toggles.
     labels: {
@@ -192,6 +215,7 @@ export const hudChromeStrings = {
       memory: "Memory",
       hitches: "Hitches",
       entities: "Entities",
+      apm: "APM",
     },
     // Color-theme preset names (also the swatches' accessible names).
     themes: {

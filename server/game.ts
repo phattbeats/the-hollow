@@ -1,8 +1,9 @@
 import type { WebSocket } from 'ws';
 import { Sim } from '../src/sim/sim';
 import type { PlayerMeta } from '../src/sim/sim';
-import { DT, Entity, EQUIP_SLOTS, EquipSlot, SimEvent, dist2d, emptyMoveInput } from '../src/sim/types';
+import { DT, Entity, EQUIP_SLOTS, EquipSlot, RUN_SPEED, SimEvent, dist2d, emptyMoveInput } from '../src/sim/types';
 import { parseMoveInputFrame } from '../src/sim/move_input';
+import { verifyChallenge } from '../src/sim/client_challenge';
 import { stealthDetectionRadius, threatEntries } from '../src/sim/threat';
 import { zoneAt, DUNGEONS } from '../src/sim/data';
 import { MECH_CHROMAS, mechChromaItemId, mechChromaSkinIndex } from '../src/sim/content/skins';
@@ -133,6 +134,8 @@ export interface ClientSession {
   // IP address at join time (from requestMetadata); used for per-IP session counting.
   ip: string;
   isAdmin: boolean;
+  // Seed the client sends at auth; signs its challenge answers.
+  clientSeed: string;
   // Behavioral bot-detection state. Ephemeral — reset on every join.
   botTrackingContext: BotTrackingContext;
 }
@@ -159,6 +162,15 @@ export interface AdminServerStats {
   heapUsedBytes: number;
 }
 
+export interface AdminLiveAura {
+  id: string;
+  name: string;
+  kind: string;
+  value: number;
+  remaining: number;
+  duration: number;
+}
+
 export interface AdminLivePlayer {
   pid: number;
   accountId: number;
@@ -173,6 +185,10 @@ export interface AdminLivePlayer {
   zone: string;
   sessionSeconds: number;
   lastSaveSecondsAgo: number;
+  moveSpeedMultiplier: number;
+  runSpeed: number;
+  swimming: boolean;
+  auras: AdminLiveAura[];
 }
 
 export interface RestartCountdownStatus {
@@ -683,7 +699,7 @@ export class GameServer {
     cls: import('../src/sim/types').PlayerClass,
     state: import('../src/sim/sim').CharacterState | null,
     isGm = false,
-    meta: RequestMetadata & Partial<AccountChatMuteStatus> & { accountCosmetics?: AccountCosmetics; chatStrikes?: number; isAdmin?: boolean } = {},
+    meta: RequestMetadata & Partial<AccountChatMuteStatus> & { accountCosmetics?: AccountCosmetics; chatStrikes?: number; isAdmin?: boolean; clientSeed?: string } = {},
   ): ClientSession | { error: string } {
     if (this.sessionsByCharacterId.has(characterId)) return { error: 'character already in world' };
     // Anti-bot: cap simultaneous online characters per account. Accounts can
@@ -712,7 +728,7 @@ export class GameServer {
     );
     this.applyAccountQuestLockouts(pid, accountCosmetics);
     const sessionIp = meta.ip ?? '';
-    const botTrackingContext = this.botDetector.createTrackingContext({ accountId, characterId, name, ip: sessionIp });
+    const botTrackingContext = this.botDetector.createTrackingContext({ accountId, characterId, name, ip: sessionIp }, meta);
     const session: ClientSession = {
       ws, accountId, accountCosmetics, characterId, pid, name,
       lastSave: Date.now(), alive: true, joinedAt: Date.now(), dbSessionId: null, left: false,
@@ -731,6 +747,7 @@ export class GameServer {
       sentEnts: new Map(),
       ip: sessionIp,
       isAdmin: meta.isAdmin ?? false,
+      clientSeed: meta.clientSeed ?? '',
       botTrackingContext,
     };
     this.ipSessionCounts.set(sessionIp, (this.ipSessionCounts.get(sessionIp) ?? 0) + 1);
@@ -935,6 +952,7 @@ export class GameServer {
       const zone = e.dungeonId
         ? (DUNGEONS[e.dungeonId]?.name ?? e.dungeonId)
         : zoneAt(e.pos.z).name;
+      const moveSpeedMultiplier = round2((this.sim as any).moveSpeedMult(e));
       players.push({
         pid: session.pid,
         accountId: session.accountId,
@@ -949,6 +967,17 @@ export class GameServer {
         zone,
         sessionSeconds: Math.round((now - session.joinedAt) / 1000),
         lastSaveSecondsAgo: Math.round((now - session.lastSave) / 1000),
+        moveSpeedMultiplier,
+        runSpeed: round2(RUN_SPEED * moveSpeedMultiplier),
+        swimming: this.sim.isSwimming(e),
+        auras: e.auras.map((a) => ({
+          id: a.id,
+          name: a.name,
+          kind: a.kind,
+          value: a.value,
+          remaining: round2(a.remaining),
+          duration: a.duration,
+        })),
       });
     }
     return players.sort((a, b) => b.sessionSeconds - a.sessionSeconds);
@@ -972,6 +1001,23 @@ export class GameServer {
       try { session.ws.close(); } catch { /* connection already closing */ }
       void this.leave(session, 'moderation action');
     }
+  }
+
+  // Force-disconnect the live session (if any) for a character the requesting
+  // account owns, so a fresh login can take its place. Awaits leave() so the
+  // departing session's state is saved and the sessionsByCharacterId slot is
+  // freed before the caller re-enters — otherwise the new login would race the
+  // old save (clobbering progress) or be rejected with "character already in
+  // world". Idempotent: a no-op (returns 'not-online') when nobody is online.
+  async takeOverCharacter(accountId: number, characterId: number): Promise<'taken-over' | 'not-online'> {
+    const session = this.sessionByCharacterId(characterId);
+    // Ownership is also enforced at the REST layer; re-check here so this method
+    // can never disconnect a session that belongs to another account.
+    if (!session || session.accountId !== accountId) return 'not-online';
+    this.send(session, { t: 'error', error: 'character taken over' });
+    try { session.ws.close(); } catch { /* connection already closing */ }
+    await this.leave(session, 'character taken over');
+    return 'taken-over';
   }
 
   startRestartCountdown(): RestartCountdownStatus {
@@ -1155,7 +1201,7 @@ export class GameServer {
       this.botDetector.observeProtocolAnomaly(session.botTrackingContext, 'unknown_type', raw, receivedAtMs);
       return;
     }
-    this.botDetector.observeCommand(session.botTrackingContext, String(msg.cmd ?? ''), receivedAtMs);
+    this.botDetector.observeCommand(session.botTrackingContext, String(msg.cmd ?? ''), receivedAtMs, msg);
     switch (msg.cmd) {
       case 'castSlot': sim.castAbilityBySlot(msg.slot | 0, pid); break;
       case 'cast': if (typeof msg.ability === 'string') sim.castAbility(msg.ability, pid); break;
@@ -1238,6 +1284,11 @@ export class GameServer {
         }
         break;
       case 'release': sim.releaseSpirit(pid); break;
+      case 'challengeResponse':
+        if (typeof msg.n === 'string' && typeof msg.r === 'string' && typeof msg.sig === 'string') {
+          if (!verifyChallenge(msg.n, msg.r, msg.sig, session.clientSeed)) break;
+        }
+        break;
       case 'chat': {
         if (typeof msg.text !== 'string') break;
         if (this.isChatMuted(session)) break;
@@ -1445,6 +1496,9 @@ export class GameServer {
         if (exit) sim.leaveDungeon(pid);
         break;
       }
+      // client telemetry should not be considered as unknown command. Used for offline stats computing.
+      case 'telemetry':
+        break;
       default:
         this.botDetector.observeProtocolAnomaly(session.botTrackingContext, 'unknown_command', raw, receivedAtMs);
     }

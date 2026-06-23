@@ -37,12 +37,16 @@ import { handleInternalApi } from './internal';
 import { handlePerfReport } from './perf_report';
 import { GameServer } from './game';
 import { REALM, REALM_DIRECTORY, REALM_ORIGINS } from './realm';
-import { webLoginEnforced, isWebClientRequest, NATIVE_APP_ORIGINS } from './web_login_guard';
+import { webLoginEnforced, isWebClientRequest, isNativeAppRequest, NATIVE_APP_ORIGINS } from './web_login_guard';
+import { createNativeAttestationChallenge, verifyNativeAttestation } from './native_attestation';
 import { cacheControlFor, etagFor, isNotModified } from './static_cache';
 import { recordUsageCacheEvent, recordUsageMetric, setUsageCacheSize } from './provider_usage';
 
 const PORT = Number(process.env.PORT ?? 8787);
 const STATIC_DIR = path.join(__dirname, '..', 'dist');
+// DEPRECATED: the standalone community MediaWiki is being retired in favour of the
+// curated in-app guide, which now serves at /wiki. This constant and its (now removed)
+// /wiki -> MediaWiki redirect are dead and slated for deletion in a follow-up ticket.
 const WIKI_URL = process.env.WIKI_URL ?? 'http://localhost:8080/wiki/index.php/Main_Page';
 // Pretty URLs that serve standalone static HTML pages.
 const STATIC_PAGE_ALIASES = new Map([
@@ -58,10 +62,14 @@ const STATIC_PAGE_ALIASES = new Map([
   ['/privacy/', '/privacy.html'],
   ['/terms', '/terms.html'],
   ['/terms/', '/terms.html'],
+  ['/merch', '/merch.html'],
+  ['/merch/', '/merch.html'],
   ['/data-deletion', '/data-deletion.html'],
   ['/data-deletion/', '/data-deletion.html'],
   ['/support', '/support.html'],
   ['/support/', '/support.html'],
+  ['/wiki', '/guide.html'],
+  ['/wiki/', '/guide.html'],
 ]);
 // How long chat logs are kept (0 = forever); pruned at boot and daily.
 const CHAT_LOG_RETENTION_DAYS = Number(process.env.CHAT_LOG_RETENTION_DAYS ?? 90);
@@ -253,6 +261,7 @@ function requestMetadata(req: http.IncomingMessage): { ip: string; userAgent: st
 // client-supplied token must verify. The English error is matched to a t() key
 // by userFacingApiError() in src/main.ts — keep the two strings in sync.
 async function passesTurnstile(req: http.IncomingMessage, body: Record<string, unknown>): Promise<boolean> {
+  if (isNativeAppRequest(req)) return verifyNativeAttestation(req, body.nativeAttestation);
   if (!TURNSTILE_SECRET) return true;
   return verifyTurnstile(String(body.turnstileToken ?? ''), TURNSTILE_SECRET, requestIp(req));
 }
@@ -275,13 +284,12 @@ function isAdminRequest(req: http.IncomingMessage): boolean {
 }
 
 function serveStatic(req: http.IncomingMessage, res: http.ServerResponse): void {
-  const shell = isAdminRequest(req) ? 'admin.html' : 'index.html';
   let urlPath = (req.url ?? '/').split('?')[0];
-  if (urlPath === '/wiki' || urlPath === '/wiki/' || urlPath.startsWith('/wiki/')) {
-    res.writeHead(302, { Location: WIKI_URL });
-    res.end();
-    return;
-  }
+  // The curated Guide is the site wiki: a client-routed SPA served at /wiki with its
+  // own shell, so deep paths (/wiki/classes/...) fall back to guide.html rather than the
+  // game's index.html. (It previously 302'd to a standalone MediaWiki; that is retired.)
+  const isGuide = urlPath === '/wiki' || urlPath.startsWith('/wiki/');
+  const shell = isGuide ? 'guide.html' : isAdminRequest(req) ? 'admin.html' : 'index.html';
   // Pretty-URL aliases for standalone static pages.
   urlPath = STATIC_PAGE_ALIASES.get(urlPath) ?? urlPath;
   if (urlPath === '/' || urlPath === '/admin' || urlPath === '/admin/') urlPath = `/${shell}`;
@@ -360,6 +368,11 @@ const REQUIRE_WEB_LOGIN = webLoginEnforced();
 async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
   const url = (req.url ?? '').split('?')[0];
   try {
+    if (req.method === 'POST' && url === '/api/native-attestation/challenge') {
+      const body = await readBody(req);
+      const action = typeof body.action === 'string' ? body.action : 'auth';
+      return json(res, 200, createNativeAttestationChallenge(req, action));
+    }
     if (REQUIRE_WEB_LOGIN && req.method === 'POST' && (url === '/api/register' || url === '/api/login') && !isWebClientRequest(req)) {
       return json(res, 403, { error: 'logins are only allowed from the game client' });
     }
@@ -466,6 +479,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     }
     const delMatch = /^\/api\/characters\/(\d+)$/.exec(url);
     const renameMatch = /^\/api\/characters\/(\d+)\/rename$/.exec(url);
+    const takeoverMatch = /^\/api\/characters\/(\d+)\/takeover$/.exec(url);
     const standingMatch = /^\/api\/characters\/(\d+)\/standing$/.exec(url);
     if (req.method === 'GET' && standingMatch) {
       const accountId = await bearerActiveAccount(req, res);
@@ -482,6 +496,17 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (name === null) return json(res, 400, { error: 'invalid character name (2-16 letters)' });
       if (offensiveName(name)) return json(res, 400, { error: 'character name is not allowed' });
       const characterId = Number(renameMatch[1]);
+      const character = await getCharacter(accountId, characterId);
+      if (!character) return json(res, 404, { error: 'character not found' });
+      // A rename is a moderator-sanctioned action: the character-select UI only
+      // shows the rename control when a moderator has set force_rename. The UI is
+      // not a security boundary, so gate here too: a normal owner hitting this
+      // route directly must not be able to rename an un-flagged character. (The
+      // UPDATE in renameCharacter re-checks the flag race-free; this returns a
+      // clear 403 instead of a misleading 404.)
+      if (!character.force_rename) {
+        return json(res, 403, { error: 'character rename is not permitted' });
+      }
       // A rename mutates the DB name and clears force_rename, but a live
       // ClientSession keeps its own copy of the name (used by reports, chat and
       // /api/status). Renaming an online character desyncs that copy and — worse
@@ -492,12 +517,35 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       }
       try {
         const c = await renameCharacter(accountId, characterId, name);
-        if (!c) return json(res, 404, { error: 'character not found' });
+        if (!c) {
+          // The force_rename-gated UPDATE matched no row even though the pre-check
+          // passed: a concurrent rename cleared the flag, or the character was just
+          // deleted. Re-resolve so the status stays consistent with the pre-check
+          // (403 if it still exists but is no longer flagged, 404 if truly gone)
+          // instead of always answering a misleading 404.
+          const still = await getCharacter(accountId, characterId);
+          if (still && !still.force_rename) {
+            return json(res, 403, { error: 'character rename is not permitted' });
+          }
+          return json(res, 404, { error: 'character not found' });
+        }
         return json(res, 200, { id: c.id, name: c.name, class: c.class, level: c.level, forceRename: c.force_rename });
       } catch (err: any) {
         if (isUniqueViolation(err)) return json(res, 409, { error: 'that name is taken' });
         throw err;
       }
+    }
+    if (req.method === 'POST' && takeoverMatch) {
+      // Free a character's live session so this account can re-enter on it,
+      // e.g. after a crash/closed tab left a stale session, or to hand a
+      // character off from another device. Ownership-gated and idempotent.
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      const characterId = Number(takeoverMatch[1]);
+      const character = await getCharacter(accountId, characterId);
+      if (!character) return json(res, 404, { error: 'not found' });
+      const result = await game.takeOverCharacter(accountId, characterId);
+      return json(res, 200, { ok: true, takenOver: result === 'taken-over' });
     }
     if (req.method === 'DELETE' && delMatch) {
       const accountId = await bearerActiveAccount(req, res);
@@ -844,6 +892,7 @@ async function main(): Promise<void> {
 
     const token = typeof msg.token === 'string' ? msg.token : '';
     const characterId = Number(msg.character ?? 'NaN');
+    const clientSeed = typeof msg.clientSeed === 'string' ? msg.clientSeed : '';
     const accountId = await accountForToken(token);
     if (accountId === null || !Number.isFinite(characterId)) {
       ws.send(JSON.stringify({ t: 'error', error: 'not authenticated' }));
@@ -893,6 +942,7 @@ async function main(): Promise<void> {
         chatStrikes: status.chatStrikes,
         accountCosmetics,
         isAdmin,
+        clientSeed,
       },
     );
     if ('error' in result) {
