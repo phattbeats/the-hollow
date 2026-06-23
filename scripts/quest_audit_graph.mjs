@@ -1,18 +1,45 @@
-import * as esbuild from 'esbuild';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import * as esbuild from 'esbuild';
 
 const root = process.cwd();
 const baselineCommit = '4a0461e7';
 const sourceModuleDefs = [
-  { id: 'zone1', label: 'Zone 1', path: 'src/sim/content/zone1.ts', questsExport: 'ZONE1_QUESTS', orderExport: 'ZONE1_QUEST_ORDER' },
-  { id: 'zone2', label: 'Zone 2', path: 'src/sim/content/zone2.ts', questsExport: 'ZONE2_QUESTS', orderExport: 'ZONE2_QUEST_ORDER' },
-  { id: 'zone3', label: 'Zone 3', path: 'src/sim/content/zone3.ts', questsExport: 'ZONE3_QUESTS', orderExport: 'ZONE3_QUEST_ORDER' },
-  { id: 'temple', label: 'Temple', path: 'src/sim/content/temple.ts', questsExport: 'TEMPLE_QUESTS', orderExport: 'TEMPLE_QUEST_ORDER' },
+  {
+    id: 'zone1',
+    label: 'Zone 1',
+    path: 'src/sim/content/zone1.ts',
+    questsExport: 'ZONE1_QUESTS',
+    orderExport: 'ZONE1_QUEST_ORDER',
+  },
+  {
+    id: 'zone2',
+    label: 'Zone 2',
+    path: 'src/sim/content/zone2.ts',
+    questsExport: 'ZONE2_QUESTS',
+    orderExport: 'ZONE2_QUEST_ORDER',
+  },
+  {
+    id: 'zone3',
+    label: 'Zone 3',
+    path: 'src/sim/content/zone3.ts',
+    questsExport: 'ZONE3_QUESTS',
+    orderExport: 'ZONE3_QUEST_ORDER',
+  },
+  {
+    id: 'temple',
+    label: 'Temple',
+    path: 'src/sim/content/temple.ts',
+    questsExport: 'TEMPLE_QUESTS',
+    orderExport: 'TEMPLE_QUEST_ORDER',
+  },
 ];
 const outArg = process.argv.indexOf('--out');
-const outDir = path.resolve(root, outArg >= 0 && process.argv[outArg + 1] ? process.argv[outArg + 1] : 'tmp/audits/quests');
+const outDir = path.resolve(
+  root,
+  outArg >= 0 && process.argv[outArg + 1] ? process.argv[outArg + 1] : 'tmp/audits/quests',
+);
 
 const entrySource = `
   export { QUESTS, QUEST_ORDER, MOBS, NPCS, ITEMS } from './src/sim/data.ts';
@@ -72,7 +99,11 @@ for (const id of questIds) {
 const targetToQuests = new Map();
 for (const id of questIds) {
   for (const objective of QUESTS[id].objectives) {
-    const key = objective.targetMobId ?? objective.itemId ?? objective.targetObjectItemId ?? objective.targetNpcId;
+    const key =
+      objective.targetMobId ??
+      objective.itemId ??
+      objective.targetObjectItemId ??
+      objective.targetNpcId;
     if (!key) continue;
     if (!targetToQuests.has(key)) targetToQuests.set(key, []);
     targetToQuests.get(key).push(id);
@@ -99,15 +130,24 @@ const nodes = questIds.map((id) => {
     .map((mobId) => MOBS[mobId])
     .filter(Boolean)
     .map((mob) => [mob.minLevel, mob.maxLevel]);
-  const objectiveMin = objectiveLevels.length > 0 ? Math.min(...objectiveLevels.map(([min]) => min)) : null;
-  const objectiveMax = objectiveLevels.length > 0 ? Math.max(...objectiveLevels.map(([, max]) => max)) : null;
+  const objectiveMin =
+    objectiveLevels.length > 0 ? Math.min(...objectiveLevels.map(([min]) => min)) : null;
+  const objectiveMax =
+    objectiveLevels.length > 0 ? Math.max(...objectiveLevels.map(([, max]) => max)) : null;
   const minLevel = quest.minLevel ?? 1;
   const auditNotes = notesForQuest(id, quest, objectiveMin);
   const isRisk = auditNotes.some((note) => /^High risk:/i.test(note));
   const isWarn = !isRisk && auditNotes.some((note) => !/^No obvious/i.test(note));
   const isAdded = history.created ? !history.created.commit.startsWith(baselineCommit) : false;
   const isChanged = history.edits.length > 0;
-  const originTag = isAdded && isChanged ? 'Added + Changed' : isAdded ? 'Added' : isChanged ? 'Changed' : 'Original';
+  const originTag =
+    isAdded && isChanged
+      ? 'Added + Changed'
+      : isAdded
+        ? 'Added'
+        : isChanged
+          ? 'Changed'
+          : 'Original';
   return {
     id,
     name: quest.name,
@@ -146,7 +186,9 @@ for (const id of questIds) {
   if (req && QUESTS[req]) edges.push({ from: req, to: id });
 }
 
-const layouts = Object.fromEntries(tabs.map((tab) => [tab.id, layoutNodes(nodes.filter((node) => node.tabs.includes(tab.id)))]));
+const layouts = Object.fromEntries(
+  tabs.map((tab) => [tab.id, layoutNodes(nodes.filter((node) => node.tabs.includes(tab.id)))]),
+);
 
 const graphData = {
   sourcePaths: Object.fromEntries(sourceModules.map((source) => [source.id, source.path])),
@@ -161,7 +203,8 @@ writeFileSync(
   path.join(outDir, 'quest-audit-interactive-graph.html'),
   renderPage({
     title: 'World Of ClaudeCraft Quest Graph',
-    subtitle: 'All-game quest audit. Use tabs to inspect each zone, dungeon, attunement, and raid quest flow.',
+    subtitle:
+      'All-game quest audit. Use tabs to inspect each zone, dungeon, attunement, and raid quest flow.',
     rightPanel: baseDetail(),
     data: graphData,
   }),
@@ -197,7 +240,7 @@ function objectiveSummary(objective) {
     ? mobLabel(objective.targetMobId)
     : objective.itemId
       ? itemLabel(objective.itemId)
-      : objective.targetObjectItemId ?? objective.targetNpcId ?? 'Unknown target';
+      : (objective.targetObjectItemId ?? objective.targetNpcId ?? 'Unknown target');
   return `${objective.count} x ${objective.label}\n${target}`;
 }
 
@@ -206,7 +249,9 @@ function itemLabel(itemId) {
   const sources = Object.entries(MOBS)
     .filter(([, mob]) => (mob.loot ?? []).some((loot) => loot.itemId === itemId))
     .map(([mobId]) => mobLabel(mobId));
-  return sources.length > 0 ? `${item?.name ?? itemId}\n${sources.join('; ')}` : item?.name ?? itemId;
+  return sources.length > 0
+    ? `${item?.name ?? itemId}\n${sources.join('; ')}`
+    : (item?.name ?? itemId);
 }
 
 function mobLabel(mobId) {
@@ -221,18 +266,28 @@ function notesForQuest(id, quest, objectiveMin) {
     notes.push(`Level pacing: available at ${minLevel}, objective starts at ${objectiveMin}.`);
   }
   for (const objective of quest.objectives) {
-    const key = objective.targetMobId ?? objective.itemId ?? objective.targetObjectItemId ?? objective.targetNpcId;
+    const key =
+      objective.targetMobId ??
+      objective.itemId ??
+      objective.targetObjectItemId ??
+      objective.targetNpcId;
     const sharing = key ? (targetToQuests.get(key) ?? []).filter((qid) => qid !== id) : [];
     if (sharing.length > 0) notes.push(`Shared objective target with ${sharing.join(', ')}.`);
   }
   if (id === 'q_ledger_outlaw_captain') {
-    notes.push('High risk: asks for bandits, then Captain Verlan, but Captain Verlan is an undead chapel elite rather than a bandit captain.');
+    notes.push(
+      'High risk: asks for bandits, then Captain Verlan, but Captain Verlan is an undead chapel elite rather than a bandit captain.',
+    );
   }
   if (id === 'q_ledger_silk') {
-    notes.push('Naming risk: title says Browse and Bramble, objective is Spotted Fawns. Coherent, but easy to misread beside spider quests.');
+    notes.push(
+      'Naming risk: title says Browse and Bramble, objective is Spotted Fawns. Coherent, but easy to misread beside spider quests.',
+    );
   }
   if (id === 'q_brightwood_thinning') {
-    notes.push('Objective mix: kill Bramble Lynx but collect Glade Pelts from several Brightwood beasts. Text should imply general wildlife sampling.');
+    notes.push(
+      'Objective mix: kill Bramble Lynx but collect Glade Pelts from several Brightwood beasts. Text should imply general wildlife sampling.',
+    );
   }
   if (notes.length === 0) notes.push('No obvious coherence issue found.');
   return notes;
@@ -260,17 +315,19 @@ function laneForQuest(id, quest, sourceId) {
 }
 
 function laneLabelForQuest(id, quest, sourceId) {
-  return {
-    'zone1-main': 'Zone 1 Main Chain',
-    'zone1-ledger': 'Zone 1 Warden Ledger Chain',
-    'zone1-brightwood': 'Zone 1 Brightwood Side Chain',
-    'zone2-main': 'Zone 2 Mirefen Chain',
-    'zone2-dungeon': 'Zone 2 Sunken Bastion Dungeon',
-    'zone3-main': 'Zone 3 Thornpeak Chain',
-    'zone3-dungeon': 'Zone 3 Gravewyrm Sanctum Dungeon',
-    'zone3-nythraxis': 'Zone 3 Nythraxis Attunement And Raid',
-    temple: 'Temple Of The Drowned Moon',
-  }[laneForQuest(id, quest, sourceId)] ?? sourceId;
+  return (
+    {
+      'zone1-main': 'Zone 1 Main Chain',
+      'zone1-ledger': 'Zone 1 Warden Ledger Chain',
+      'zone1-brightwood': 'Zone 1 Brightwood Side Chain',
+      'zone2-main': 'Zone 2 Mirefen Chain',
+      'zone2-dungeon': 'Zone 2 Sunken Bastion Dungeon',
+      'zone3-main': 'Zone 3 Thornpeak Chain',
+      'zone3-dungeon': 'Zone 3 Gravewyrm Sanctum Dungeon',
+      'zone3-nythraxis': 'Zone 3 Nythraxis Attunement And Raid',
+      temple: 'Temple Of The Drowned Moon',
+    }[laneForQuest(id, quest, sourceId)] ?? sourceId
+  );
 }
 
 function layoutNodes(nodeList) {
@@ -338,7 +395,14 @@ function buildQuestHistories(ids) {
 
 function buildQuestHistoriesForPath(ids, sourcePath, histories) {
   const previous = new Map();
-  const commitLines = git(['log', '--follow', '--format=%H%x09%ad%x09%s', '--date=short', '--', sourcePath])
+  const commitLines = git([
+    'log',
+    '--follow',
+    '--format=%H%x09%ad%x09%s',
+    '--date=short',
+    '--',
+    sourcePath,
+  ])
     .split('\n')
     .filter(Boolean)
     .reverse();
@@ -377,7 +441,11 @@ function buildQuestHistoriesForPath(ids, sourcePath, histories) {
 }
 
 function git(args) {
-  return execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trimEnd();
+  return execFileSync('git', args, {
+    cwd: root,
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'ignore'],
+  }).trimEnd();
 }
 
 function extractQuestBlock(source, questId) {
@@ -461,19 +529,23 @@ function summarizeQuestEdit(before, after) {
   const changes = [];
   if (before.name !== after.name) changes.push(changeLine('Name', before.name, after.name));
   if (before.giver !== after.giver) changes.push(changeLine('Giver', before.giver, after.giver));
-  if (before.turnIn !== after.turnIn) changes.push(changeLine('Turn-in', before.turnIn, after.turnIn));
+  if (before.turnIn !== after.turnIn)
+    changes.push(changeLine('Turn-in', before.turnIn, after.turnIn));
   if (before.requiresQuest !== after.requiresQuest) {
     changes.push(changeLine('Requires', before.requiresQuest, after.requiresQuest));
   }
-  if (before.minLevel !== after.minLevel) changes.push(changeLine('Min level', before.minLevel, after.minLevel));
+  if (before.minLevel !== after.minLevel)
+    changes.push(changeLine('Min level', before.minLevel, after.minLevel));
   if (before.suggestedPlayers !== after.suggestedPlayers) {
     changes.push(changeLine('Suggested players', before.suggestedPlayers, after.suggestedPlayers));
   }
-  if (before.xpReward !== after.xpReward) changes.push(changeLine('XP reward', before.xpReward, after.xpReward));
+  if (before.xpReward !== after.xpReward)
+    changes.push(changeLine('XP reward', before.xpReward, after.xpReward));
   if (before.copperReward !== after.copperReward) {
     changes.push(changeLine('Copper reward', before.copperReward, after.copperReward));
   }
-  if (before.objectives !== after.objectives) changes.push(changeLine('Objectives', before.objectives, after.objectives));
+  if (before.objectives !== after.objectives)
+    changes.push(changeLine('Objectives', before.objectives, after.objectives));
   if (before.text !== after.text) changes.push(changeLine('Offer text', before.text, after.text));
   if (before.completionText !== after.completionText) {
     changes.push(changeLine('Completion text', before.completionText, after.completionText));
@@ -489,12 +561,14 @@ function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function overviewDetail(nodeList, lanes) {
+function overviewDetail(nodeList) {
   const risk = nodeList.filter((node) => node.isRisk);
   const warnings = nodeList.filter((node) => node.isWarn && !node.isRisk);
   const added = nodeList.filter((node) => node.isAdded);
   const changed = nodeList.filter((node) => node.isChanged);
-  const pacing = nodeList.filter((node) => node.pacingDelta >= 2).sort((a, b) => b.pacingDelta - a.pacingDelta);
+  const pacing = nodeList
+    .filter((node) => node.pacingDelta >= 2)
+    .sort((a, b) => b.pacingDelta - a.pacingDelta);
   const dupes = nodeList.filter((node) => /Shared objective target/i.test(node.notes));
   return `
     <h2>Quest Overview</h2>
@@ -510,16 +584,20 @@ function overviewDetail(nodeList, lanes) {
     <div class="section-title">Pacing Spikes</div>${listHtml(pacing, (node) => `<li><b>${escapeHtml(node.name)}</b>: quest min ${node.minLevel}, objective starts ${node.objectiveMin}, delta +${node.pacingDelta}.</li>`)}
     <div class="section-title">Objective Reuse</div>${listHtml(dupes, (node) => `<li><b>${escapeHtml(node.name)}</b>: ${escapeHtml(node.notes)}</li>`)}
     <div class="section-title">Quest Groups</div>
-    <ul>${tabs.map((tab) => {
-      const quests = nodeList.filter((node) => node.tabs.includes(tab.id));
-      if (quests.length === 0) return `<li><b>${escapeHtml(tab.label)}</b>: 0 quests.</li>`;
-      return `<li><b>${escapeHtml(tab.label)}</b>: ${quests.length} quests, levels ${Math.min(...quests.map((quest) => quest.minLevel))} to ${Math.max(...quests.map((quest) => quest.minLevel))}.</li>`;
-    }).join('')}</ul>
+    <ul>${tabs
+      .map((tab) => {
+        const quests = nodeList.filter((node) => node.tabs.includes(tab.id));
+        if (quests.length === 0) return `<li><b>${escapeHtml(tab.label)}</b>: 0 quests.</li>`;
+        return `<li><b>${escapeHtml(tab.label)}</b>: ${quests.length} quests, levels ${Math.min(...quests.map((quest) => quest.minLevel))} to ${Math.max(...quests.map((quest) => quest.minLevel))}.</li>`;
+      })
+      .join('')}</ul>
   `;
 }
 
 function listHtml(items, render) {
-  return items.length > 0 ? `<ul>${items.map(render).join('')}</ul>` : '<p class="hint">None detected.</p>';
+  return items.length > 0
+    ? `<ul>${items.map(render).join('')}</ul>`
+    : '<p class="hint">None detected.</p>';
 }
 
 function renderPage({ title, subtitle, rightPanel, data }) {
@@ -607,11 +685,15 @@ drawTabs();renderLaneOptions();renderStats();draw();renderList();`;
 }
 
 function escapeHtml(value) {
-  return String(value ?? '').replace(/[&<>"']/g, (char) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-  }[char]));
+  return String(value ?? '').replace(
+    /[&<>"']/g,
+    (char) =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      })[char],
+  );
 }
