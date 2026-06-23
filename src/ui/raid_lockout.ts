@@ -1,8 +1,7 @@
 // Pure, host-agnostic helpers for the raid lockout indicator (the minimap badge
 // + its panel). No DOM and no i18n runtime import: the countdown is split into
-// whole day/hour/minute parts here and the thin HUD consumer
-// (raid_lockout_indicator.ts) splices them into a localized t() template. Unit
-// tested in tests/raid_lockout.test.ts.
+// whole day/hour/minute parts here and the thin HUD consumer (hud.ts) splices
+// them into a localized t() template. Unit tested in tests/raid_lockout.test.ts.
 
 import type { RaidLockout } from '../world_api';
 export type { RaidLockout };
