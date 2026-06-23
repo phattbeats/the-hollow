@@ -1,9 +1,9 @@
 // Innate "spiked hide" mobs (bristleback boars) reflect flat damage onto
 // anyone who melees them — the mob-side analogue of the druid Thorns aura.
 import { describe, expect, it } from 'vitest';
-import { Sim } from '../src/sim/sim';
-import { createMob } from '../src/sim/entity';
 import { MOBS } from '../src/sim/data';
+import { createMob } from '../src/sim/entity';
+import { Sim } from '../src/sim/sim';
 import type { Entity } from '../src/sim/types';
 
 function makeSim() {
@@ -43,7 +43,7 @@ describe('innate mob thorns (Bristled Hide)', () => {
 
     expect(landed).toBe(10);
     // wild_boar reflects 2 per connecting swing
-    expect(before - player.hp).toBe(landed * MOBS['wild_boar'].thorns!.value);
+    expect(before - player.hp).toBe(landed * MOBS.wild_boar.thorns?.value);
   });
 
   it('a mob without the trait reflects nothing', () => {
@@ -52,7 +52,7 @@ describe('innate mob thorns (Bristled Hide)', () => {
     player.maxHp = 100000;
     player.hp = player.maxHp;
     const wolf = spawnMob(sim, 'forest_wolf', 2);
-    expect(MOBS['forest_wolf'].thorns).toBeUndefined();
+    expect(MOBS.forest_wolf.thorns).toBeUndefined();
 
     const before = player.hp;
     const landed = connectSwings(sim, player, wolf, 10);
@@ -60,5 +60,4 @@ describe('innate mob thorns (Bristled Hide)', () => {
     expect(landed).toBe(10);
     expect(player.hp).toBe(before);
   });
-
 });

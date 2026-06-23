@@ -10,10 +10,16 @@ describe('no quest duplicates another (same giver + identical objectives)', () =
     const sig = (id: string): string => {
       const q = QUESTS[id];
       const obj = q.objectives
-        .map((o) =>
-          (o.type === 'kill' ? `kill ${o.targetMobId}`
-            : o.type === 'collect' ? `collect ${o.itemId}`
-              : `interact ${(o as any).targetNpcId}`) + ` x${o.count}`)
+        .map(
+          (o) =>
+            `${
+              o.type === 'kill'
+                ? `kill ${o.targetMobId}`
+                : o.type === 'collect'
+                  ? `collect ${o.itemId}`
+                  : `interact ${(o as any).targetNpcId}`
+            } x${o.count}`,
+        )
         .join(' + ');
       return `${q.giverNpcId} :: ${obj}`;
     };

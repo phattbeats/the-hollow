@@ -10731,7 +10731,7 @@ export class Sim {
       this.marketListings.splice(idx, 1);
       const sellerMeta = this.metaByName(listing.sellerKey);
       if (sellerMeta) {
-        this.emit({ type: 'loot', text: `${meta.name} bought your ${def.name} for ${formatMoney(listing.price)} — collect ${formatMoney(proceeds)} from the Merchant.`, pid: sellerMeta.entityId });
+        this.emit({ type: 'loot', text: `${meta.name} bought your ${def.name} for ${formatMoney(listing.price)} - collect ${formatMoney(proceeds)} from the Merchant.`, pid: sellerMeta.entityId });
       }
     }
     this.emit({ type: 'loot', text: `Bought ${def.name}${listing.count > 1 ? ' x' + listing.count : ''} for ${formatMoney(listing.price)}.`, pid: meta.entityId });

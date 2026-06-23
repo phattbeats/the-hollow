@@ -2,10 +2,12 @@
 // a warrior wearing the new helmet/shoulder/waist/gloves on the paperdoll, and
 // the eight consignment listings on the Merchant's World Market.
 // Offline flow (no server). Needs `npm run dev`. Writes PNGs to tmp/.
-import puppeteer from 'puppeteer-core';
+
 import fs from 'node:fs';
+import puppeteer from 'puppeteer-core';
 
 import { BROWSER_PATH as EDGE } from './browser_path.mjs';
+
 const URL = process.env.GAME_URL ?? 'http://localhost:5173';
 fs.mkdirSync('tmp', { recursive: true });
 
@@ -39,9 +41,9 @@ const page = await browser.newPage();
 await page.setViewport({ width: 1280, height: 900 });
 
 const errors = [];
-page.on('pageerror', (e) => errors.push('PAGEERROR: ' + e.message));
+page.on('pageerror', (e) => errors.push(`PAGEERROR: ${e.message}`));
 page.on('console', (m) => {
-  if (m.type() === 'error') errors.push('CONSOLE: ' + m.text());
+  if (m.type() === 'error') errors.push(`CONSOLE: ${m.text()}`);
 });
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const tap = (sel) => page.evaluate((s) => document.querySelector(s)?.click(), sel);
@@ -144,6 +146,6 @@ if (box && box.width > 0)
 await page.screenshot({ path: 'tmp/quartermaster_market_full.png' });
 
 console.log('equipment:', JSON.stringify(result.equipment));
-if (errors.length) console.log('PAGE ERRORS:\n' + errors.join('\n'));
+if (errors.length) console.log(`PAGE ERRORS:\n${errors.join('\n')}`);
 console.log('wrote tmp/quartermaster_{bags,character,market}.png');
 await browser.close();

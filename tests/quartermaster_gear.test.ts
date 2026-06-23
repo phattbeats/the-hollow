@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { Sim } from '../src/sim/sim';
 import { ITEMS, MOBS } from '../src/sim/data';
-import { ensureLocaleLoaded, setLanguage } from '../src/ui/i18n';
+import { Sim } from '../src/sim/sim';
 import { tEntity } from '../src/ui/entity_i18n';
+import { ensureLocaleLoaded, setLanguage } from '../src/ui/i18n';
 
 // The Quartermaster's Consignment has 10 uncommon gear pieces. Eight are stocked
 // by The Merchant on the World Market; two drop from Vale threats.

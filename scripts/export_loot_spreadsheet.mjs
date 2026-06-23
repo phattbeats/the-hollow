@@ -1,6 +1,6 @@
-import * as esbuild from 'esbuild';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import * as esbuild from 'esbuild';
 
 const root = process.cwd();
 const outDir = path.join(root, 'docs');

@@ -1,30 +1,30 @@
 import { describe, expect, it } from 'vitest';
-import { Sim } from '../src/sim/sim';
-import { ACTIONS, encodeObs } from '../src/sim/obs';
-import { Entity, SimEvent, dist2d } from '../src/sim/types';
-import {
-  CLASSES,
-  CRYPT_DOOR_POS,
-  DUNGEON_LIST,
-  DUNGEON_X_THRESHOLD,
-  ITEMS,
-  LAKE,
-  MOBS,
-  NPCS,
-  QUESTS,
-  dungeonAt,
-  instanceOrigin,
-  zoneAt,
-  zoneWelcomeText,
-} from '../src/sim/data';
-import { createMob } from '../src/sim/entity';
-import { generateDecorations, groundHeight, WATER_LEVEL } from '../src/sim/world';
 import {
   cameraOcclusion,
   isBlocked,
   lineOfSightClear,
   resolvePosition,
 } from '../src/sim/colliders';
+import {
+  CLASSES,
+  CRYPT_DOOR_POS,
+  DUNGEON_LIST,
+  DUNGEON_X_THRESHOLD,
+  dungeonAt,
+  ITEMS,
+  instanceOrigin,
+  LAKE,
+  MOBS,
+  NPCS,
+  QUESTS,
+  zoneAt,
+  zoneWelcomeText,
+} from '../src/sim/data';
+import { createMob } from '../src/sim/entity';
+import { ACTIONS, encodeObs } from '../src/sim/obs';
+import { Sim } from '../src/sim/sim';
+import { dist2d, type Entity, type SimEvent } from '../src/sim/types';
+import { generateDecorations, groundHeight, WATER_LEVEL } from '../src/sim/world';
 
 const SEED = 20061;
 
@@ -438,8 +438,8 @@ describe('the Hollow Crypt doors', () => {
     sim.tick();
     teleportTo(sim, CRYPT_DOOR_POS.x, CRYPT_DOOR_POS.z - 1, b);
     sim.tick();
-    const slotA = sim.instanceSlotAt(sim.entities.get(a)!.pos);
-    const slotB = sim.instanceSlotAt(sim.entities.get(b)!.pos);
+    const slotA = sim.instanceSlotAt(sim.entities.get(a)?.pos);
+    const slotB = sim.instanceSlotAt(sim.entities.get(b)?.pos);
     expect(slotA).not.toBeNull();
     expect(slotB).not.toBeNull();
     expect(slotA).not.toBe(slotB);
@@ -451,7 +451,7 @@ describe('dungeon instance placement and targetability', () => {
     for (const dungeon of DUNGEON_LIST) {
       const sim = makeSim();
       if (dungeon.id === 'nythraxis_boss_arena') {
-        sim.players.get(sim.playerId)!.questsDone.add('q_nythraxis_bound_guardian');
+        sim.players.get(sim.playerId)?.questsDone.add('q_nythraxis_bound_guardian');
         formRaid(sim);
       }
       sim.enterDungeon(dungeon.id);
@@ -501,7 +501,7 @@ describe('dungeon instance placement and targetability', () => {
 
 describe('mob stat scaling', () => {
   it('scales armor from level 1 like hp and damage, not one level ahead', () => {
-    const template = MOBS['gray_wolf'] ?? Object.values(MOBS)[0];
+    const template = MOBS.gray_wolf ?? Object.values(MOBS)[0];
     const lvl1 = createMob(910001, template, 1, { x: 0, y: 0, z: 0 });
     const lvl10 = createMob(910010, template, 10, { x: 0, y: 0, z: 0 });
     // A level-1 mob has no level-scaled armor (no armorBase in the template).
@@ -614,7 +614,7 @@ describe('boss loot and encounter resets', () => {
 
     sim.lootCorpse(mob.id, b);
 
-    const gains = [a, b, c, d].map((pid) => sim.meta(pid)!.copper);
+    const gains = [a, b, c, d].map((pid) => sim.meta(pid)?.copper);
     expect(gains[0] + gains[1] + gains[2]).toBe(12); // a, b, and the fallen c share it
     expect(gains[0]).toBeGreaterThan(0);
     expect(gains[1]).toBeGreaterThan(0);
@@ -730,7 +730,7 @@ describe('boss loot and encounter resets', () => {
 
     sim.events.length = 0;
     sim.lootCorpse(mob.id, a);
-    const rollId = sim.events.find((e) => e.type === 'lootRoll')!.rollId;
+    const rollId = sim.events.find((e) => e.type === 'lootRoll')?.rollId;
     sim.submitLootRoll(rollId, 'need', a);
     sim.submitLootRoll(rollId, 'greed', b);
 
@@ -758,7 +758,7 @@ describe('boss loot and encounter resets', () => {
 
     sim.events.length = 0;
     sim.lootCorpse(mob.id, a);
-    const rollId = sim.events.find((e) => e.type === 'lootRoll')!.rollId;
+    const rollId = sim.events.find((e) => e.type === 'lootRoll')?.rollId;
     sim.submitLootRoll(rollId, 'pass', a);
     sim.submitLootRoll(rollId, 'greed', b);
 
@@ -810,7 +810,7 @@ describe('boss loot and encounter resets', () => {
 
     sim.events.length = 0;
     sim.lootCorpse(mob.id, a);
-    const rollId = sim.events.find((e) => e.type === 'lootRoll')!.rollId;
+    const rollId = sim.events.find((e) => e.type === 'lootRoll')?.rollId;
     sim.submitLootRoll(rollId, 'pass', a);
     sim.submitLootRoll(rollId, 'pass', b);
 
@@ -846,7 +846,7 @@ describe('boss loot and encounter resets', () => {
 
     sim.events.length = 0;
     sim.lootCorpse(mob.id, a);
-    const rollId = sim.events.find((e) => e.type === 'lootRoll')!.rollId;
+    const rollId = sim.events.find((e) => e.type === 'lootRoll')?.rollId;
     sim.submitLootRoll(rollId, 'pass', a);
     sim.submitLootRoll(rollId, 'pass', b);
 
@@ -896,7 +896,7 @@ describe('boss loot and encounter resets', () => {
     sim.partyInvite(b, a);
     sim.partyAccept(b);
     for (const pid of [a, b]) {
-      sim.meta(pid)!.questLog.set('q_boars', { questId: 'q_boars', counts: [0], state: 'active' });
+      sim.meta(pid)?.questLog.set('q_boars', { questId: 'q_boars', counts: [0], state: 'active' });
     }
     const mob = createMob(990101, MOBS.wild_boar, 3, { x: 20, y: 0, z: 22 });
     const boarHide = MOBS.wild_boar.loot.find((entry) => entry.itemId === 'boar_hide')!;
@@ -954,12 +954,12 @@ describe('boss loot and encounter resets', () => {
     sim.entities.set(mob.id, mob);
     teleportTo(sim, 20, 20, b);
 
-    const beforeCopper = sim.meta(b)!.copper;
+    const beforeCopper = sim.meta(b)?.copper;
     sim.lootCorpse(mob.id, b);
 
     expect(sim.countItem('boar_hide', b)).toBe(1);
     expect(sim.countItem('wolf_fang', b)).toBe(0);
-    expect(sim.meta(b)!.copper).toBe(beforeCopper);
+    expect(sim.meta(b)?.copper).toBe(beforeCopper);
     expect(mob.loot?.copper).toBe(88);
     expect(mob.loot?.items).toContainEqual({ itemId: 'wolf_fang', count: 1 });
   });
@@ -968,7 +968,7 @@ describe('boss loot and encounter resets', () => {
     const sim = makeSim();
     const a = sim.playerId;
     // q_boars only collects boar_hide; it has no collect objective for greyjaw_fang.
-    sim.meta(a)!.questLog.set('q_boars', { questId: 'q_boars', counts: [0], state: 'active' });
+    sim.meta(a)?.questLog.set('q_boars', { questId: 'q_boars', counts: [0], state: 'active' });
     const mob = createMob(990102, MOBS.wild_boar, 3, { x: 20, y: 0, z: 22 });
     // Inject a (mis)configured drop gated on q_boars but for an item the quest
     // does not collect. It must never drop, even at chance 1.
@@ -1126,7 +1126,7 @@ describe('quest npc roles', () => {
     expect(dist2d(sim.player.pos, outerCryptPos)).toBeLessThan(0.1);
 
     sim.questLog.delete('q_nythraxis_sealed_crypt');
-    sim.players.get(sim.playerId)!.questsDone.add('q_nythraxis_bound_guardian');
+    sim.players.get(sim.playerId)?.questsDone.add('q_nythraxis_bound_guardian');
     formRaid(sim);
     sim.enterDungeon(bossArena.id);
     expect(dungeonAt(sim.player.pos.x)?.id).toBe('nythraxis_boss_arena');
@@ -1158,11 +1158,11 @@ describe('quest npc roles', () => {
     expect(delayedEvents).toContainEqual(
       expect.objectContaining({ text: 'I swore my blade to him.', entityId: vision?.id }),
     );
-    sim.targetEntity(vision!.id);
+    sim.targetEntity(vision?.id);
     sim.startAutoAttack();
     expect(sim.player.autoAttack).toBe(false);
     for (let i = 0; i < 440; i++) sim.tick();
-    expect([...sim.entities.values()].some((e) => e.id === vision!.id)).toBe(false);
+    expect([...sim.entities.values()].some((e) => e.id === vision?.id)).toBe(false);
   });
 
   it('shares Nythraxis grave progress and dialogue with nearby party members', () => {
@@ -1180,13 +1180,11 @@ describe('quest npc roles', () => {
       counts: [0, 0, 0],
       state: 'active',
     });
-    sim
-      .meta(allyPid)!
-      .questLog.set('q_nythraxis_graves', {
-        questId: 'q_nythraxis_graves',
-        counts: [0, 0, 0],
-        state: 'active',
-      });
+    sim.meta(allyPid)?.questLog.set('q_nythraxis_graves', {
+      questId: 'q_nythraxis_graves',
+      counts: [0, 0, 0],
+      state: 'active',
+    });
 
     sim.pickUpObject(grave.id);
 
@@ -1228,7 +1226,7 @@ describe('quest npc roles', () => {
 
     sim.player.maxHp = 100000;
     sim.player.hp = sim.player.maxHp;
-    guardian!.hp = Math.floor(guardian!.maxHp * 0.49);
+    guardian!.hp = Math.floor(guardian?.maxHp * 0.49);
     sim.tick();
 
     const boneguards = [...sim.entities.values()].filter(
@@ -1417,13 +1415,11 @@ describe('quest npc roles', () => {
       counts: [0, 0, 0],
       state: 'active',
     });
-    sim
-      .meta(allyPid)!
-      .questLog.set('q_nythraxis_bound_guardian', {
-        questId: 'q_nythraxis_bound_guardian',
-        counts: [0, 0, 0],
-        state: 'active',
-      });
+    sim.meta(allyPid)?.questLog.set('q_nythraxis_bound_guardian', {
+      questId: 'q_nythraxis_bound_guardian',
+      counts: [0, 0, 0],
+      state: 'active',
+    });
     sim.addItem('crypt_keystone', 1);
 
     sim.pickUpObject(ritual.id);

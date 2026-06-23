@@ -3,12 +3,18 @@ import { Sim } from '../src/sim/sim';
 import type { SimEvent } from '../src/sim/types';
 import { groundHeight } from '../src/sim/world';
 
+function entity(sim: Sim, id: number) {
+  const found = sim.entities.get(id);
+  if (!found) throw new Error(`Missing entity ${id}`);
+  return found;
+}
+
 function makeWorld() {
   return new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true });
 }
 
 function teleport(sim: Sim, pid: number, x: number, z: number) {
-  const e = sim.entities.get(pid)!;
+  const e = entity(sim, pid);
   e.pos.x = x;
   e.pos.z = z;
   e.pos.y = groundHeight(x, z, sim.cfg.seed);
@@ -16,8 +22,8 @@ function teleport(sim: Sim, pid: number, x: number, z: number) {
 }
 
 function dist(sim: Sim, a: number, b: number) {
-  const ea = sim.entities.get(a)!;
-  const eb = sim.entities.get(b)!;
+  const ea = entity(sim, a);
+  const eb = entity(sim, b);
   return Math.hypot(ea.pos.x - eb.pos.x, ea.pos.z - eb.pos.z);
 }
 
@@ -75,8 +81,8 @@ describe('/follow', () => {
     expect(sim.entities.get(a)?.followTargetId).toBe(b);
 
     const meta = sim.players.get(a);
-    expect(meta).toBeTruthy();
-    meta!.moveInput.forward = true;
+    if (!meta) throw new Error(`Missing player metadata ${a}`);
+    meta.moveInput.forward = true;
     const msgs = errors(sim.tick());
     expect(sim.entities.get(a)?.followTargetId).toBe(null);
     expect(msgs.some((t) => /stop following/i.test(t))).toBe(true);
@@ -102,11 +108,9 @@ describe('/follow', () => {
     const sim = makeWorld();
     const a = sim.addPlayer('warrior', 'Aleph');
     sim.tick();
-    expect(
-      errors((sim.chat('/follow Aleph', a), sim.tick())).some((t) => /follow yourself/i.test(t)),
-    ).toBe(true);
-    expect(
-      errors((sim.chat('/follow Nobody', a), sim.tick())).some((t) => /no player named/i.test(t)),
-    ).toBe(true);
+    sim.chat('/follow Aleph', a);
+    expect(errors(sim.tick()).some((t) => /follow yourself/i.test(t))).toBe(true);
+    sim.chat('/follow Nobody', a);
+    expect(errors(sim.tick()).some((t) => /no player named/i.test(t))).toBe(true);
   });
 });
