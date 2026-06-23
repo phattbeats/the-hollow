@@ -6744,7 +6744,11 @@ export class Hud {
     for (const id of decision.toShow) {
       const p = promptById.get(id);
       if (!p) continue;
-      this.activeLootRolls.set(id, { event: { type: 'lootRoll', ...p }, receivedAt: performance.now(), durationMs: 30_000 });
+      this.activeLootRolls.set(id, {
+        event: { type: 'lootRoll', ...p },
+        receivedAt: performance.now(),
+        durationMs: 30_000,
+      });
       changed = true;
     }
     if (changed) this.renderLootRolls();
@@ -10932,7 +10936,7 @@ export class Hud {
     // (<= one party's worth) back into a normal party. Larger raids must shed members first.
     const canUnconvert = leader && party.members.length <= 5;
     const footer = canUnconvert
-      ? `<div class="soc-empty-action"><button type="button" class="soc-x" data-act="convert-party">${esc(t('hud.chat.context.convertToParty'))}</button></div>`
+      ? `<div class="soc-empty soc-empty-action"><button type="button" class="soc-x" data-act="convert-party">${esc(t('hud.chat.context.convertToParty'))}</button></div>`
       : '';
     return `<div class="raid-groups">${groupHtml(1)}${groupHtml(2)}</div>${footer}`;
   }

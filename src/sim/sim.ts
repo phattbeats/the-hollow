@@ -4444,22 +4444,23 @@ export class Sim {
     this.emit({ type: 'aura', targetId: pet.id, name: 'Tamed', gained: true });
   }
 
-  private createDemonPet(owner: Entity, mobId: string, emit = true): Entity | null {
-    const template = MOBS[mobId];
-    if (!template) return null;
+  private summonPet(owner: Entity, templateId: string): void {
+    const template = MOBS[templateId];
+    if (!template) {
+      this.error(owner.id, 'That summon is unavailable.');
+      return;
+    }
     const existing = this.petOf(owner.id, true);
     if (existing) {
       this.despawnPersistentPet(existing);
-      if (existing.templateId === mobId && !existing.dead) {
-        if (emit) {
-          this.emit({
-            type: 'log',
-            text: `${existing.name} fades back into the void.`,
-            color: '#b894ff',
-            pid: owner.id,
-          });
-        }
-        return null;
+      if (existing.templateId === templateId && !existing.dead) {
+        this.emit({
+          type: 'log',
+          text: `${existing.name} fades back into the void.`,
+          color: '#b894ff',
+          pid: owner.id,
+        });
+        return;
       }
     }
 
@@ -4485,21 +4486,13 @@ export class Sim {
     pet.wanderTarget = null;
     clearThreat(pet);
     this.addEntity(pet);
-    if (emit) {
-      this.emit({
-        type: 'log',
-        text: `${pet.name} answers your summons.`,
-        color: '#b894ff',
-        pid: owner.id,
-      });
-      this.emit({ type: 'aura', targetId: pet.id, name: 'Summoned', gained: true });
-    }
-    return pet;
-  }
-
-  private summonPet(owner: Entity, templateId: string): void {
-    const pet = this.createDemonPet(owner, templateId);
-    if (!pet && !MOBS[templateId]) this.error(owner.id, 'That summon is unavailable.');
+    this.emit({
+      type: 'log',
+      text: `${pet.name} answers your summons.`,
+      color: '#b894ff',
+      pid: owner.id,
+    });
+    this.emit({ type: 'aura', targetId: pet.id, name: 'Summoned', gained: true });
   }
 
   private despawnPersistentPet(pet: Entity): void {
@@ -5977,7 +5970,13 @@ export class Sim {
     const out: LootRollPrompt[] = [];
     for (const roll of this.pendingLootRolls.values()) {
       if (!roll.candidates.includes(pid) || roll.choices.has(pid)) continue;
-      out.push({ rollId: roll.id, itemId: roll.itemId, itemName: roll.itemName, quality: roll.quality, expiresAt: roll.expiresAt });
+      out.push({
+        rollId: roll.id,
+        itemId: roll.itemId,
+        itemName: roll.itemName,
+        quality: roll.quality,
+        expiresAt: roll.expiresAt,
+      });
     }
     return out;
   }
@@ -11686,15 +11685,35 @@ export class Sim {
     const r = this.resolve(pid);
     if (!r) return;
     const party = this.partyOf(r.meta.entityId);
-    if (!party) { this.error(r.meta.entityId, 'You are not in a raid group.'); return; }
-    if (party.leader !== r.meta.entityId) { this.error(r.meta.entityId, 'Only the raid leader may convert to a party.'); return; }
-    if (!party.raid) { this.error(r.meta.entityId, 'Your group is not a raid.'); return; }
+    if (!party) {
+      this.error(r.meta.entityId, 'You are not in a raid group.');
+      return;
+    }
+    if (party.leader !== r.meta.entityId) {
+      this.error(r.meta.entityId, 'Only the raid leader may convert to a party.');
+      return;
+    }
+    if (!party.raid) {
+      this.error(r.meta.entityId, 'Your group is not a raid.');
+      return;
+    }
     // A raid can hold up to two subgroups; only one party's worth can fold back.
-    if (party.members.length > PARTY_MAX) { this.error(r.meta.entityId, 'A raid with more than five members cannot convert back to a party.'); return; }
+    if (party.members.length > PARTY_MAX) {
+      this.error(
+        r.meta.entityId,
+        'A raid with more than five members cannot convert back to a party.',
+      );
+      return;
+    }
     party.raid = false;
     party.raidGroups.clear();
     for (const mPid of party.members) {
-      this.emit({ type: 'log', text: 'Your raid has converted back to a party.', color: '#aaf', pid: mPid });
+      this.emit({
+        type: 'log',
+        text: 'Your raid has converted back to a party.',
+        color: '#aaf',
+        pid: mPid,
+      });
     }
   }
 
