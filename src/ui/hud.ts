@@ -82,6 +82,17 @@ import {
   type MarketSubtypeFilter,
 } from './market_filters';
 import {
+  BAG_CATEGORIES,
+  BAG_SORTS,
+  DEFAULT_BAG_FILTER,
+  applyBagFilter,
+  parseBagFilter,
+  serializeBagFilter,
+  type BagCategory,
+  type BagFilterState,
+  type BagSort,
+} from './bag_filter';
+import {
   CHAT_TAB_CHANNELS, CHANNEL_LABEL_KEYS, channelNeedsJoin, composeChatLine,
   parseChatTabs, serializeChatTabs, isChatTabChannel,
   type ChatTabChannel, type ChatTabId,
@@ -223,6 +234,19 @@ const RESOURCE_LABEL_KEYS: Record<ResourceType, TranslationKey> = {
   mana: 'abilityUi.resources.mana',
   rage: 'abilityUi.resources.rage',
   energy: 'abilityUi.resources.energy',
+};
+const BAG_CATEGORY_LABEL_KEYS: Record<BagCategory, TranslationKey> = {
+  all: 'hudChrome.bags.filterAll',
+  weapon: 'hudChrome.bags.filterWeapon',
+  armor: 'hudChrome.bags.filterArmor',
+  consumable: 'hudChrome.bags.filterConsumable',
+  material: 'hudChrome.bags.filterMaterial',
+  quest: 'hudChrome.bags.filterQuest',
+};
+const BAG_SORT_LABEL_KEYS: Record<BagSort, TranslationKey> = {
+  recent: 'hudChrome.bags.sortRecent',
+  quality: 'hudChrome.bags.sortQuality',
+  name: 'hudChrome.bags.sortName',
 };
 const RAID_MARKER_LABEL_KEYS = [
   'hud.markers.names.star',
@@ -594,6 +618,13 @@ export class Hud {
   private marketSellItem: string | null = null; // bag item staged for listing
   private marketSearchQuery = ''; // active browse search term (sent to the server)
   private lastMarketSig = '';
+  // Modular bag filtering: category chips + sort + live search, persisted across
+  // sessions. Pure logic lives in bag_filter.ts; renderBags() is the thin consumer.
+  private static readonly BAG_FILTER_KEY = 'woc_bag_filter';
+  private bagFilter: BagFilterState = (() => {
+    try { return parseBagFilter(localStorage.getItem(Hud.BAG_FILTER_KEY)); }
+    catch { return { ...DEFAULT_BAG_FILTER }; }
+  })();
   // all-time ladder, fetched best-effort from the server (online only)
   private arenaAllTime: Partial<Record<ArenaFormat, { name: string; class: string; level: number; rating: number; wins: number; losses: number }[]>> = {};
   private arenaLbFetchedAt: Partial<Record<ArenaFormat, number>> = {};
@@ -5989,6 +6020,77 @@ export class Hud {
     if ($('#char-window').style.display === 'block') this.renderChar();
   }
 
+  private persistBagFilter(): void {
+    try { localStorage.setItem(Hud.BAG_FILTER_KEY, serializeBagFilter(this.bagFilter)); }
+    catch { /* storage unavailable (private mode); filter still works in-session */ }
+  }
+
+  // The category-chip + sort + search controls above the bag grid. Each control
+  // mutates this.bagFilter, persists, and re-renders; the actual filtering is the
+  // pure applyBagFilter() in bag_filter.ts.
+  private buildBagFilterBar(): HTMLElement {
+    const bar = document.createElement('div');
+    bar.className = 'bag-filter-bar';
+
+    const chips = document.createElement('div');
+    chips.className = 'bag-chips';
+    chips.setAttribute('role', 'group');
+    chips.setAttribute('aria-label', t('hudChrome.bags.filterGroupAria'));
+    for (const category of BAG_CATEGORIES) {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'bag-chip' + (this.bagFilter.category === category ? ' active' : '');
+      chip.textContent = t(BAG_CATEGORY_LABEL_KEYS[category]);
+      chip.setAttribute('aria-pressed', this.bagFilter.category === category ? 'true' : 'false');
+      chip.addEventListener('click', () => {
+        if (this.bagFilter.category === category) return;
+        this.bagFilter.category = category;
+        this.persistBagFilter();
+        audio.click();
+        this.renderBags();
+      });
+      chips.appendChild(chip);
+    }
+    bar.appendChild(chips);
+
+    const tools = document.createElement('div');
+    tools.className = 'bag-tools';
+
+    const search = document.createElement('input');
+    search.type = 'search';
+    search.className = 'bag-search';
+    search.placeholder = t('hudChrome.bags.searchPlaceholder');
+    search.setAttribute('aria-label', t('hudChrome.bags.searchAria'));
+    search.value = this.bagFilter.search;
+    search.addEventListener('input', () => {
+      this.bagFilter.search = search.value;
+      this.persistBagFilter();
+      this.refreshBagGrid();
+    });
+    tools.appendChild(search);
+
+    const sort = document.createElement('select');
+    sort.className = 'bag-sort';
+    sort.setAttribute('aria-label', t('hudChrome.bags.sortAria'));
+    for (const option of BAG_SORTS) {
+      const opt = document.createElement('option');
+      opt.value = option;
+      opt.textContent = t(BAG_SORT_LABEL_KEYS[option]);
+      if (this.bagFilter.sort === option) opt.selected = true;
+      sort.appendChild(opt);
+    }
+    sort.addEventListener('change', () => {
+      this.bagFilter.sort = sort.value as BagSort;
+      this.persistBagFilter();
+      audio.click();
+      this.renderBags();
+    });
+    tools.appendChild(sort);
+
+    bar.appendChild(tools);
+    return bar;
+  }
+
   renderBags(): void {
     const el = $('#bags');
     const sim = this.sim;
@@ -5997,12 +6099,43 @@ export class Hud {
     // otherwise using an item (e.g. a potion) snaps the list back to the top.
     const prevScrollTop = el.querySelector('.bag-grid')?.scrollTop ?? 0;
     el.innerHTML = `<div class="panel-title"><span>${esc(t('itemUi.bags.title'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('itemUi.bags.close'))}">${svgIcon('close')}</button></div>`;
+    // Skip the chip/search row entirely when the bag is empty: a full filter bar
+    // above a single "(empty)" line is just noise.
+    if (sim.inventory.length > 0) el.appendChild(this.buildBagFilterBar());
     const grid = document.createElement('div');
     grid.className = 'bag-grid';
+    this.fillBagGrid(grid);
+    el.appendChild(grid);
+    grid.scrollTop = prevScrollTop;
+    const moneyRow = document.createElement('div');
+    moneyRow.className = 'money';
+    moneyRow.innerHTML = `${this.wocBalanceHtml()}${this.moneyHtml(sim.copper)}`;
+    el.appendChild(moneyRow);
+    el.querySelector('[data-close]')?.addEventListener('click', () => {
+      if (this.vendorOpen && document.body.classList.contains('mobile-touch')) {
+        this.closeVendor();
+        return;
+      }
+      el.style.display = 'none';
+      this.hideTooltip();
+      this.cancelPetFeed();
+    });
+  }
+
+  // Populate (or repopulate) the .bag-grid scroll container from the current
+  // filter state. Split out so a search keystroke can refresh just the grid
+  // (refreshBagGrid) without rebuilding the filter bar and stealing input focus.
+  private fillBagGrid(grid: HTMLElement): void {
+    const sim = this.sim;
+    const visible = applyBagFilter(sim.inventory, (id) => ITEMS[id], this.bagFilter);
     if (sim.inventory.length === 0) {
       grid.innerHTML = `<div class="bag-empty">${esc(t('itemUi.bags.empty'))}</div>`;
+      return;
+    } else if (visible.length === 0) {
+      grid.innerHTML = `<div class="bag-empty">${esc(t('hudChrome.bags.noMatch'))}</div>`;
+      return;
     }
-    for (const s of [...sim.inventory]) {
+    for (const s of visible) {
       const item = ITEMS[s.itemId];
       if (!item) continue;
       const row = document.createElement('button');
@@ -6072,21 +6205,17 @@ export class Hud {
       });
       grid.appendChild(row);
     }
-    el.appendChild(grid);
+  }
+
+  // Refresh only the grid contents (used by live search) so the search input
+  // keeps focus and caret position across keystrokes.
+  private refreshBagGrid(): void {
+    const grid = $('#bags').querySelector('.bag-grid') as HTMLElement | null;
+    if (!grid) return;
+    const prevScrollTop = grid.scrollTop;
+    grid.innerHTML = '';
+    this.fillBagGrid(grid);
     grid.scrollTop = prevScrollTop;
-    const money = document.createElement('div');
-    money.className = 'money';
-    money.innerHTML = `${this.wocBalanceHtml()}${this.moneyHtml(sim.copper)}`;
-    el.appendChild(money);
-    el.querySelector('[data-close]')?.addEventListener('click', () => {
-      if (this.vendorOpen && document.body.classList.contains('mobile-touch')) {
-        this.closeVendor();
-        return;
-      }
-      el.style.display = 'none';
-      this.hideTooltip();
-      this.cancelPetFeed();
-    });
   }
 
   private sellBagItem(slot: InvSlot, ev: MouseEvent): void {

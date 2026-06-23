@@ -501,6 +501,22 @@ export const en_XA: EnTranslations = {
       "deactivated": "[Ýóúŕ áççóúñţ ĥáš ƀééñ ðéáçţíʋáţéð.]",
       "logOut": "[Ļóĝ Óúţ]",
       "logOutSummary": "[Šíĝñ óúţ óƒ ţĥíš ðéʋíçé.]"
+    },
+    "bags": {
+      "filterGroupAria": "[Ƒíļţéŕ ƀáĝš ƀý çáţéĝóŕý]",
+      "filterAll": "[Áļļ]",
+      "filterWeapon": "[Ŵéáþóñš]",
+      "filterArmor": "[Áŕɱóŕ]",
+      "filterConsumable": "[Çóñšúɱáƀļéš]",
+      "filterMaterial": "[Ɱáţéŕíáļš]",
+      "filterQuest": "[Ɋúéšţ]",
+      "sortAria": "[Šóŕţ ƀáĝ íţéɱš]",
+      "sortRecent": "[Ŕéçéñţ]",
+      "sortQuality": "[Ɋúáļíţý]",
+      "sortName": "[Ñáɱé]",
+      "searchPlaceholder": "[Šéáŕçĥ íţéɱš]",
+      "searchAria": "[Šéáŕçĥ ƀáĝ íţéɱš ƀý ñáɱé]",
+      "noMatch": "[Ñó íţéɱš ɱáţçĥ ýóúŕ ƒíļţéŕš.]"
     }
   },
   "guide": {

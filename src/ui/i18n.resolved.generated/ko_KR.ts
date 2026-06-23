@@ -501,6 +501,22 @@ export const ko_KR: EnTranslations = {
       "deactivated": "계정이 비활성화되었습니다.",
       "logOut": "로그아웃",
       "logOutSummary": "이 기기에서 로그아웃합니다."
+    },
+    "bags": {
+      "filterGroupAria": "가방을 분류별로 필터링",
+      "filterAll": "전체",
+      "filterWeapon": "무기",
+      "filterArmor": "방어구",
+      "filterConsumable": "소모품",
+      "filterMaterial": "재료",
+      "filterQuest": "퀘스트",
+      "sortAria": "가방 아이템 정렬",
+      "sortRecent": "최근",
+      "sortQuality": "품질",
+      "sortName": "이름",
+      "searchPlaceholder": "아이템 검색",
+      "searchAria": "이름으로 가방 아이템 검색",
+      "noMatch": "필터와 일치하는 아이템이 없습니다."
     }
   },
   "guide": {

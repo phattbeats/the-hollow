@@ -501,6 +501,22 @@ export const de_DE: EnTranslations = {
       "deactivated": "Euer Konto wurde deaktiviert.",
       "logOut": "Abmelden",
       "logOutSummary": "Von diesem Gerät abmelden."
+    },
+    "bags": {
+      "filterGroupAria": "Taschen nach Kategorie filtern",
+      "filterAll": "Alle",
+      "filterWeapon": "Waffen",
+      "filterArmor": "Rüstung",
+      "filterConsumable": "Verbrauchbares",
+      "filterMaterial": "Materialien",
+      "filterQuest": "Quest",
+      "sortAria": "Taschengegenstände sortieren",
+      "sortRecent": "Neueste",
+      "sortQuality": "Qualität",
+      "sortName": "Name",
+      "searchPlaceholder": "Gegenstände durchsuchen",
+      "searchAria": "Taschengegenstände nach Namen durchsuchen",
+      "noMatch": "Keine Gegenstände entsprechen Euren Filtern."
     }
   },
   "guide": {

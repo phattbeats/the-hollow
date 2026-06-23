@@ -501,6 +501,22 @@ export const zh_TW: EnTranslations = {
       "deactivated": "您的帳號已停用。",
       "logOut": "登出",
       "logOutSummary": "登出目前的裝置。"
+    },
+    "bags": {
+      "filterGroupAria": "依類別篩選背包",
+      "filterAll": "全部",
+      "filterWeapon": "武器",
+      "filterArmor": "護甲",
+      "filterConsumable": "消耗品",
+      "filterMaterial": "材料",
+      "filterQuest": "任務",
+      "sortAria": "排序背包物品",
+      "sortRecent": "最近",
+      "sortQuality": "品質",
+      "sortName": "名稱",
+      "searchPlaceholder": "搜尋物品",
+      "searchAria": "依名稱搜尋背包物品",
+      "noMatch": "沒有符合篩選條件的物品。"
     }
   },
   "guide": {

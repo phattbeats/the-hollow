@@ -501,6 +501,22 @@ export const fr_CA: EnTranslations = {
       "deactivated": "Votre compte a été désactivé.",
       "logOut": "Se déconnecter",
       "logOutSummary": "Déconnectez-vous de cet appareil."
+    },
+    "bags": {
+      "filterGroupAria": "Filtrer les sacs par catégorie",
+      "filterAll": "Tous",
+      "filterWeapon": "Armes",
+      "filterArmor": "Armure",
+      "filterConsumable": "Consommables",
+      "filterMaterial": "Matériaux",
+      "filterQuest": "Quête",
+      "sortAria": "Trier les objets du sac",
+      "sortRecent": "Récents",
+      "sortQuality": "Qualité",
+      "sortName": "Nom",
+      "searchPlaceholder": "Rechercher des objets",
+      "searchAria": "Rechercher les objets du sac par nom",
+      "noMatch": "Aucun objet ne correspond à vos filtres."
     }
   },
   "guide": {

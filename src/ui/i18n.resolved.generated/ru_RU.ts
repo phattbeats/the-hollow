@@ -501,6 +501,22 @@ export const ru_RU: EnTranslations = {
       "deactivated": "Ваш аккаунт деактивирован.",
       "logOut": "Выйти",
       "logOutSummary": "Выйти на этом устройстве."
+    },
+    "bags": {
+      "filterGroupAria": "Фильтровать сумки по категории",
+      "filterAll": "Все",
+      "filterWeapon": "Оружие",
+      "filterArmor": "Броня",
+      "filterConsumable": "Расходники",
+      "filterMaterial": "Материалы",
+      "filterQuest": "Задания",
+      "sortAria": "Сортировать предметы в сумках",
+      "sortRecent": "Недавние",
+      "sortQuality": "Качество",
+      "sortName": "Название",
+      "searchPlaceholder": "Поиск предметов",
+      "searchAria": "Поиск предметов в сумках по названию",
+      "noMatch": "Нет предметов, соответствующих фильтрам."
     }
   },
   "guide": {

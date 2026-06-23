@@ -436,4 +436,22 @@ export const hudChromeStrings = {
     logOut: "Log Out",
     logOutSummary: "Sign out of this device.",
   },
+  // Modular bag filtering controls: the category chips, sort dropdown, and live
+  // search above the bag grid, plus the "no items match" empty state.
+  bags: {
+    filterGroupAria: "Filter bags by category",
+    filterAll: "All",
+    filterWeapon: "Weapons",
+    filterArmor: "Armor",
+    filterConsumable: "Consumables",
+    filterMaterial: "Materials",
+    filterQuest: "Quest",
+    sortAria: "Sort bag items",
+    sortRecent: "Recent",
+    sortQuality: "Quality",
+    sortName: "Name",
+    searchPlaceholder: "Search items",
+    searchAria: "Search bag items by name",
+    noMatch: "No items match your filters.",
+  },
 };

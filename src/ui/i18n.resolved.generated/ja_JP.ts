@@ -501,6 +501,22 @@ export const ja_JP: EnTranslations = {
       "deactivated": "アカウントが無効化されました。",
       "logOut": "ログアウト",
       "logOutSummary": "このデバイスからログアウトします。"
+    },
+    "bags": {
+      "filterGroupAria": "バッグをカテゴリーで絞り込む",
+      "filterAll": "すべて",
+      "filterWeapon": "武器",
+      "filterArmor": "防具",
+      "filterConsumable": "消耗品",
+      "filterMaterial": "素材",
+      "filterQuest": "クエスト",
+      "sortAria": "バッグのアイテムを並べ替える",
+      "sortRecent": "最近",
+      "sortQuality": "品質",
+      "sortName": "名前",
+      "searchPlaceholder": "アイテムを検索",
+      "searchAria": "名前でバッグのアイテムを検索",
+      "noMatch": "条件に一致するアイテムはありません。"
     }
   },
   "guide": {

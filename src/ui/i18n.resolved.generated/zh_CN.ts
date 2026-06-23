@@ -501,6 +501,22 @@ export const zh_CN: EnTranslations = {
       "deactivated": "您的账户已注销。",
       "logOut": "退出登录",
       "logOutSummary": "退出当前设备的登录。"
+    },
+    "bags": {
+      "filterGroupAria": "按类别筛选背包",
+      "filterAll": "全部",
+      "filterWeapon": "武器",
+      "filterArmor": "护甲",
+      "filterConsumable": "消耗品",
+      "filterMaterial": "材料",
+      "filterQuest": "任务",
+      "sortAria": "排序背包物品",
+      "sortRecent": "最近",
+      "sortQuality": "品质",
+      "sortName": "名称",
+      "searchPlaceholder": "搜索物品",
+      "searchAria": "按名称搜索背包物品",
+      "noMatch": "没有符合筛选条件的物品。"
     }
   },
   "guide": {
