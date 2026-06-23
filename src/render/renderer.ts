@@ -3285,7 +3285,7 @@ export class Renderer {
     this.updateNameplates(fullNameplatePass);
     this.updateChatBubbles();
     markPhase('nameplates');
-    this.updateTravelSpeedFx(p, dt);
+    this.updateTravelSpeedFx(p, selfPos, dt);
     // Fiesta screen shake: trauma^2 jitter offsets the camera for the draw only.
     let shakeX = 0, shakeY = 0;
     if (this.shakeTrauma > 0) {
@@ -3351,17 +3351,20 @@ export class Renderer {
   // intensity scaled by real ground speed. Honors prefers-reduced-motion. The
   // streak/vignette math lives in the pure core (travel_speed_fx.ts); this only
   // derives the speed and forwards a target intensity to the painter.
-  private updateTravelSpeedFx(p: Entity, dt: number): void {
+  private updateTravelSpeedFx(p: Entity, selfPos: THREE.Vector3, dt: number): void {
+    // Measure ground speed from the SAME interpolated self render position the
+    // camera uses (selfPos), advanced per render frame, so the cue tracks the
+    // smooth on-screen motion rather than the raw 20Hz sim-tick snapping of p.pos.
     let speed = 0;
     const last = this.lastLocalPos;
     if (last && dt > 0) {
-      speed = Math.hypot(p.pos.x - last.x, p.pos.z - last.z) / dt;
+      speed = Math.hypot(selfPos.x - last.x, selfPos.z - last.z) / dt;
     }
     if (this.lastLocalPos) {
-      this.lastLocalPos.x = p.pos.x;
-      this.lastLocalPos.z = p.pos.z;
+      this.lastLocalPos.x = selfPos.x;
+      this.lastLocalPos.z = selfPos.z;
     } else {
-      this.lastLocalPos = { x: p.pos.x, z: p.pos.z };
+      this.lastLocalPos = { x: selfPos.x, z: selfPos.z };
     }
     const inTravelForm = p.auras.some((a) => a.kind === 'form_travel');
     const target = targetIntensity({ inTravelForm, speed, reducedMotion: this.reducedMotion() });
