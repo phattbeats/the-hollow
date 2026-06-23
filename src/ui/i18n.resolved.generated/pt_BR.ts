@@ -175,25 +175,25 @@ export const pt_BR: EnTranslations = {
       "done": "Concluído"
     },
     "theme": {
-      "preset": "UI Theme",
-      "customColors": "Custom Colors",
-      "reset": "Reset",
+      "preset": "Tema da interface",
+      "customColors": "Cores personalizadas",
+      "reset": "Redefinir",
       "presets": {
-        "classic": "Classic Gold",
-        "midnight": "Midnight",
-        "parchment": "Parchment",
-        "highContrast": "High Contrast"
+        "classic": "Ouro clássico",
+        "midnight": "Meia-noite",
+        "parchment": "Pergaminho",
+        "highContrast": "Alto contraste"
       },
       "knob": {
-        "accent": "Accent",
-        "border": "Border",
-        "panel": "Frame",
-        "text": "Text",
-        "textMuted": "Muted Text",
-        "hp": "Health",
+        "accent": "Destaque",
+        "border": "Borda",
+        "panel": "Moldura",
+        "text": "Texto",
+        "textMuted": "Texto suave",
+        "hp": "Saúde",
         "mana": "Mana",
-        "rage": "Rage",
-        "energy": "Energy"
+        "rage": "Raiva",
+        "energy": "Energia"
       }
     },
     "questTracker": {
@@ -275,8 +275,8 @@ export const pt_BR: EnTranslations = {
       "interfaceModeNote": "Auto escolhe os controles Desktop ou Touch conforme o seu dispositivo. Escolha Desktop para forçar teclado e mouse (útil em um tablet com teclado), ou Touch para os controles na tela.",
       "footstepSounds": "Sons de passos",
       "clickFeedback": "Marcador de clique",
-      "lockCursorOnRotate": "Lock Cursor While Rotating",
-      "keybindHelpLockCursorOnRotate": "Keeps the mouse cursor inside the window while you drag to rotate the camera, so it cannot reach the screen edge or move to another monitor. Turn off if you prefer a free cursor.",
+      "lockCursorOnRotate": "Bloquear cursor ao girar",
+      "keybindHelpLockCursorOnRotate": "Mantém o cursor do mouse dentro da janela enquanto você arrasta para girar a câmera, para que ele não alcance a borda da tela nem passe para outro monitor. Desative se preferir um cursor livre.",
       "showWalletOnCharacterScreen": "Mostrar carteira na tela de personagens",
       "showWalletOnPlayerCard": "Mostrar carteira no cartão de jogador",
       "uiScale": "Escala da interface",
@@ -952,6 +952,7 @@ export const pt_BR: EnTranslations = {
       "notedLabel": "Digno de nota",
       "flavor": {
         "old_greyjaw": "Um velho lobo marcado por cicatrizes que armadilha alguma jamais prendeu, culpado por três cães e o braço de um cavalariço. Ele caça sozinho nas matas profundas e fica mais selvagem quanto mais a luta se arrasta.",
+        "brightwood_stag": "Um orgulhoso cervo do bosque que baixa sua coroa de chifres e avança como um touro, ficando mais difícil de enfrentar quanto mais é pressionado.",
         "grubjaw": "Um troll do brejo tão ganancioso que os outros trolls não cavam ao seu lado, dizem que comeu as duas últimas mulas de carga de um mercador, arreios e tudo.",
         "shardlord_kazzix": "Um elemental de tempestade ganhando ombros, caminhando pelos despenhadeiros distantes acima de Stormcrag com um fragmento-coração que vale enfrentar os raios.",
         "mirejaw_frenzy": "Um murloc do pântano que se lança num frenesi furioso no meio da luta, a coisa mais barulhenta de um bando barulhento e territorial.",
@@ -1016,8 +1017,8 @@ export const pt_BR: EnTranslations = {
       "valePlaceNotes": "Eastbrook é sua primeira base de operações. A Corrida dos Lobos e o Prado dos Javalis são terreno de caça ameno; o Lago Espelho é água tranquila para pescar; a Mata das Teias e a Escavação de Cobre escondem aranhas e escavadores gananciosos por minério; um Acampamento de Bandidos e a Capela Decaída guardam trabalhos mais duros; a Clareira de Brightwood é um bosque calmo de vida selvagem no norte.",
       "marshPlaceNotes": "Fenbridge guarda a única estrada seca. Os Juncos do Espreitador e os Baixios de Deepfen fervilham de feras do pântano e murlocs; o Matagal da Viúva é tecido de teias; a Capela Afogada e os Montículos dos Trolls guardam perigos mais antigos; o Acampamento dos Chamadores de Sepulturas é o culto entrincheirado, e o Bastião Submerso é o coração instanciado do pântano.",
       "peaksPlaceNotes": "Highwatch defende a muralha. A Cumeeira do Espreitador e as Tocas de Deeprock pertencem a felinos da serra e kobolds; os Sopés dos Ogros e o Acampamento de Guerra de Drogmar a brutamontes de aluguel; Stormcrag crepita de elementais e o Glimmermere reluz abaixo dela; as Tendas do Culto do Verme e os Campos dos Revenantes cercam o terreno alto do culto, com o Santuário do Gravewyrm no seu topo.",
-      "gladeTitle": "Um canto tranquilo: a Clareira de Brightwood",
-      "gladeBody": "Nem toda história no Vale é sobre os mortos. No norte, um bosque ensolarado chamado Clareira de Brightwood mantém seu próprio ritmo mais brando, vigiado por uma patrulheira solitária que prefere zelar por ele a lutar. Seu trabalho é o equilíbrio: controlar o que se reproduz demais e, quando seu vazio fica perigoso demais para ser deixado em paz, dar ao velho cervo coroado do bosque um fim respeitoso. É um contraponto suave à trilha que você segue, e vale o desvio."
+      "gladeTitle": "Um canto tranquilo: Clareira de Brightwood",
+      "gladeBody": "Nem toda história no Vale fala dos mortos. Ao norte, uma clareira ensolarada chamada Brightwood mantém seu próprio ritmo mais gentil, com trilhas silenciosas, cervos pastando e feras cautelosas sob os galhos. É um contraponto suave à trilha que você segue, e vale ser vista quando a estrada lhe der espaço para vaguear."
     },
     "questsPage": {
       "heading": "Missões",
@@ -1065,9 +1066,7 @@ export const pt_BR: EnTranslations = {
       "aldricRole": "Sacerdote do Vale",
       "aldricBody": "Um humilde sacerdote de aldeia que primeiro dá nome ao culto sobre uma sepultura profanada em Eastbrook, e então segue sua trilha em pessoa pelo pântano e até a muralha em Highwatch. Ele é o coração firme de toda a campanha.",
       "marenRole": "A Batedora do Marechal",
-      "marenBody": "Uma rastreadora de fala baixa que você conhece nos juncos de Mirefen, toda pés silenciosos e uma lâmina curta. Ela também segue a trilha ao norte, e é o ouvido dela que capta as palavras que enviam você aos cumes.",
-      "elwynRole": "Guardiã da Clareira de Brightwood",
-      "elwynBody": "A única guardiã de um bosque ensolarado no norte do Vale. Seu trabalho é zelar, não massacrar: controlar o que se reproduz demais e conceder à fera mais antiga do bosque um fim mais bondoso do que os lobos dariam."
+      "marenBody": "Uma rastreadora de fala baixa que você conhece nos juncos de Mirefen, toda pés silenciosos e uma lâmina curta. Ela também segue a trilha ao norte, e é o ouvido dela que capta as palavras que enviam você aos cumes."
     },
     "dungeonsPage": {
       "heading": "Masmorras e Raides",
@@ -1932,11 +1931,11 @@ export const pt_BR: EnTranslations = {
     "high": "Alta",
     "medium": "Média",
     "low": "Baixa",
-    "popTipLow": "Low population: fewer than 15 players online right now. Plenty of room; great for a fresh start.",
-    "popTipMedium": "Medium population: 15 to 39 players online right now. A healthy, active realm.",
-    "popTipHigh": "High population: 40 to 79 players online right now. Busy, with lots of players around.",
-    "popTipFull": "Full population: 80 or more players online right now. Very busy; you may wait in a login queue.",
-    "popTipOffline": "Offline: this realm is unreachable right now and cannot be joined.",
+    "popTipLow": "População baixa: menos de 15 jogadores online agora. Há bastante espaço; ótimo para começar do zero.",
+    "popTipMedium": "População média: de 15 a 39 jogadores online agora. Um reino saudável e ativo.",
+    "popTipHigh": "População alta: de 40 a 79 jogadores online agora. Movimentado, com muitos jogadores por perto.",
+    "popTipFull": "População cheia: 80 ou mais jogadores online agora. Muito movimentado; talvez você espere em uma fila de login.",
+    "popTipOffline": "Offline: este reino está inacessível no momento e não pode ser acessado.",
     "characterCountOne": "{count} personagem",
     "characterCountOther": "{count} personagens",
     "selectedRealm": "Reino: {name}",
@@ -4074,9 +4073,6 @@ export const pt_BR: EnTranslations = {
       "milepost_boots": {
         "name": "Botas de Marco"
       },
-      "glade_pelt": {
-        "name": "Pele da clareira"
-      },
       "soft_down": {
         "name": "Tufo de penugem macia"
       },
@@ -4721,6 +4717,42 @@ export const pt_BR: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Flagelo de Thornpeak"
       },
+      "brightwood_hare": {
+        "name": "Lebre de Brightwood"
+      },
+      "glade_fox": {
+        "name": "Raposa da Clareira"
+      },
+      "spotted_fawn": {
+        "name": "Cervato Malhado"
+      },
+      "meadow_crane": {
+        "name": "Garça do Prado"
+      },
+      "thornpelt_badger": {
+        "name": "Texugo Pelo-de-espinho"
+      },
+      "dawnmane_doe": {
+        "name": "Corça Crina-da-aurora"
+      },
+      "bramble_lynx": {
+        "name": "Lince das Sarças"
+      },
+      "brightwood_stag": {
+        "name": "Cervo de Brightwood"
+      },
+      "grovetusk_boar": {
+        "name": "Javali Presa-do-bosque"
+      },
+      "sunhide_bear": {
+        "name": "Urso Pelo-do-sol"
+      },
+      "brightwood_monarch": {
+        "name": "O Monarca de Brightwood"
+      },
+      "elder_bristleback": {
+        "name": "Bristleback ancião"
+      },
       "ironvein_foreman": {
         "name": "Capataz Veio de Ferro"
       },
@@ -4745,6 +4777,12 @@ export const pt_BR: EnTranslations = {
       "nhalia_mourner": {
         "name": "Pranteadora de Nhalia"
       },
+      "sableweb_hatchling": {
+        "name": "Filhote Sableweb"
+      },
+      "sableweb_matriarch": {
+        "name": "Matriarca Sableweb"
+      },
       "sister_nhalia": {
         "name": "Irmã Nhalia"
       },
@@ -4765,6 +4803,9 @@ export const pt_BR: EnTranslations = {
       },
       "brutok_skullsmasher": {
         "name": "Brutok Quebra-crânios"
+      },
+      "captain_verlan": {
+        "name": "Capitão Verlan"
       },
       "old_cragmaw": {
         "name": "Velho Cragmaw"
@@ -4922,11 +4963,6 @@ export const pt_BR: EnTranslations = {
         "name": "Mestre do saber Caddis",
         "title": "Mestre do saber",
         "greeting": "Cuidado com a ardósia solta, {className}. A montanha anda inquieta, e quero saber por quê."
-      },
-      "ranger_elwyn": {
-        "name": "Patrulheiro Elwyn",
-        "title": "Guardião da Clareira",
-        "greeting": "Silêncio, {className} - a clareira está calma hoje, e pretendo mantê-la assim."
       },
       "brother_aldric_raid": {
         "name": "Irmão Aldric",
@@ -5679,16 +5715,6 @@ export const pt_BR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Nythraxis derrotado"
-          }
-        }
-      },
-      "q_mogger_tracks": {
-        "title": "A trilha de Mogger",
-        "text": "Antes de pegar a estrada ao norte, Eastbrook tem um último espinho: Mogger. A fera pisoteia o prado baixo e enlouquece os javalis. Limpe o prado ao redor da trilha para descobrirmos onde ele se esconde.",
-        "completion": "Essas pegadas são recentes e fundas o bastante para segurar chuva. Mogger não é história de acampamento, {playerName}, e está perto.",
-        "objectives": {
-          "0": {
-            "label": "Javali selvagem expulso da trilha"
           }
         }
       },

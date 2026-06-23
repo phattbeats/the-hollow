@@ -2272,6 +2272,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': 'Коргат Связанный',
   'entities.mobs.grand_necromancer_velkhar.name': 'Верховный некромант Велхар',
   'entities.mobs.korzul_the_gravewyrm.name': 'Корзул Могильный Вирм',
+  'entities.mobs.elder_bristleback.name': 'Старый Щетиноспин',
   'entities.mobs.ironvein_foreman.name': 'Прораб Железной жилы',
   'entities.mobs.ironvein_sapper.name': 'Сапер Железной жилы',
   'entities.mobs.marrowlord_varkas.name': 'Владыка костного мозга Варкас',
@@ -2280,6 +2281,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': 'Моггер',
   'entities.mobs.mogger_lackey.name': 'Приспешник Моггера',
   'entities.mobs.nhalia_mourner.name': 'Плакальщица Налии',
+  'entities.mobs.sableweb_hatchling.name': 'Детеныш Сейблвеб',
+  'entities.mobs.sableweb_matriarch.name': 'Матриарх Сейблвеб',
   'entities.mobs.sister_nhalia.name': 'Сестра Налия',
   'entities.mobs.varkas_boneguard.name': 'Костяной страж Варкаса',
   'entities.mobs.imp.name': 'Бес',
@@ -2764,12 +2767,6 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_gravewyrm.completion':
     'Все кончено. Мертвые трех земель покоятся, гора спит без призраков, и сегодня каждый колокол отсюда до Истбрука звонит твоим именем, {playerName}.',
   'entities.quests.q_gravewyrm.objectives.0.label': 'Корзул Могильный Вирм: убито',
-  'entities.quests.q_mogger_tracks.title': 'След Моггера',
-  'entities.quests.q_mogger_tracks.text':
-    'Прежде чем идти на северную дорогу, у Истврука осталась последняя заноза: Моггер. Зверь топчет нижний луг и сводит кабанов с ума. Очистите луг вокруг его следа, чтобы мы поняли, где он прячется.',
-  'entities.quests.q_mogger_tracks.completion':
-    'Эти следы свежие и такие глубокие, что удержат дождь. Моггер не байка у костра, {playerName}, и он близко.',
-  'entities.quests.q_mogger_tracks.objectives.0.label': 'Дикий кабан отогнан от следа',
   'entities.quests.q_mogger.title': 'Моггер должен пасть',
   'entities.quests.q_mogger.text':
     'Моггер расколол повозки, расплющил изгороди и перебил столько скота, что хватило бы опустошить половину долины. Не выходите против него в одиночку. Возьмите двух сильных спутников на восточный луг и добейте зверя навсегда.',
@@ -3015,17 +3012,18 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': 'Багор Приливореза',
   'entities.items.verlans_oathblade.name': 'Клинок клятвы Верлана',
   'entities.mobs.brutok_skullsmasher.name': 'Бруток Сокрушитель черепов',
+  'entities.mobs.captain_verlan.name': 'Капитан Верлан',
   'entities.mobs.old_cragmaw.name': 'Старый Крэгмо',
   'entities.mobs.sloomtooth_the_drowned.name': 'Слумтус Утопший',
   'entities.mobs.voskar_emberwing.name': 'Воскар Жарокрыл',
   'entities.mobs.wraithbinder_maldrec.name': 'Малдрек Пленитель призраков',
-  'entities.items.glade_pelt.name': 'Шкура поляны',
   'entities.items.soft_down.name': 'Пучок мягкого пуха',
   'entities.items.amber_hide.name': 'Янтарная шкура',
   'entities.items.stag_antler.name': 'Ветвистый рог',
   'entities.items.brightwood_venison.name': 'Оленина Брайтвуда',
   'entities.items.bramblehide_jerkin.name': 'Колет из терновой шкуры',
   'entities.items.monarch_crown_helm.name': 'Корона Монарха',
+  // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': 'Добавить канал чата',
   'hud.core.chatChannels.addTitle': 'Добавить канал',
   'hud.core.chatChannels.close': 'Закрыть вкладку {channel}',
@@ -3040,10 +3038,17 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': 'Сообщение в {channel}',
   'hud.options.npcVoices': 'Голоса НИП',
   'hud.options.voiceVolume': 'Громкость голоса',
-  'entities.npcs.ranger_elwyn.greeting':
-    'Тише, {className} - поляна сегодня спокойна, и я намерен такой её сохранить.',
-  'entities.npcs.ranger_elwyn.name': 'Следопыт Элвин',
-  'entities.npcs.ranger_elwyn.title': 'Хранитель поляны',
+  'entities.mobs.bramble_lynx.name': 'Терновая рысь',
+  'entities.mobs.brightwood_hare.name': 'Заяц Брайтвуда',
+  'entities.mobs.brightwood_monarch.name': 'Монарх Брайтвуда',
+  'entities.mobs.brightwood_stag.name': 'Олень Брайтвуда',
+  'entities.mobs.dawnmane_doe.name': 'Зарегривая лань',
+  'entities.mobs.glade_fox.name': 'Лисица поляны',
+  'entities.mobs.grovetusk_boar.name': 'Рощеклыкий кабан',
+  'entities.mobs.meadow_crane.name': 'Луговой журавль',
+  'entities.mobs.spotted_fawn.name': 'Пятнистый оленёнок',
+  'entities.mobs.sunhide_bear.name': 'Солнцешкурый медведь',
+  'entities.mobs.thornpelt_badger.name': 'Терношкурый барсук',
   'entities.zones.eastbrook_vale.pois.8.label': 'Поляна Брайтвуда',
   'fiesta.augment.aug_apex_predator.desc':
     '+40% к физическому урону, +15% к крит. удару, исцеление на 12% от нанесённого урона.',
@@ -4043,6 +4048,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.arenaPage.wavesBody':
     'Каждый раунд Фиесты предлагает вам свежий выбор, и эти варианты становятся всё смелее по ходу матча. Вы выстраиваете сборку от волны к волне, каждый раз беря один из нескольких вариантов и оставляя его до конца боя.',
   'guide.arenaPage.wavesTitle': 'Улучшения приходят волнами',
+  'guide.bestiary.flavor.brightwood_stag':
+    'Гордый олень из рощи, что пригибает свою венценосную корону рогов и прёт вперёд, становясь тем опаснее, чем дольше его теснят.',
   'guide.bestiary.flavor.gravecaller_cultist':
     'Облачённые в рясы прислужники культа смерти, чьи труды оскверняют могилы от Долины до самых вершин. Там, где они собираются, мёртвым нет покоя.',
   'guide.bestiary.flavor.grubjaw':
@@ -4154,9 +4161,6 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.lore.aldricBody':
     'Скромный деревенский жрец, что первым называет культ над осквернённой могилой в Иствруке, а затем лично идёт по его следу через топь и до самой стены в Хайвотче. Он, незыблемое сердце всей кампании.',
   'guide.lore.aldricRole': 'Жрец Долины',
-  'guide.lore.elwynBody':
-    'Одинокая хранительница залитой солнцем рощи на севере Долины. Её дело, это попечение, а не резня: прореживать то, что расплодилось сверх меры, и даровать старейшему зверю рощи конец милосерднее, чем уготовили бы волки.',
-  'guide.lore.elwynRole': 'Страж Поляны Брайтвуда',
   'guide.lore.figuresBody':
     'Горстка людей пройдёт с вами всю дорогу. Запоминайте эти имена от долины до самых вершин.',
   'guide.lore.figuresTitle': 'Лица, что станут вам знакомы',
@@ -4346,9 +4350,6 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.loading': 'Загрузка модели...',
   'guide.viewer.view3d': 'Посмотреть {name} в 3D',
   'guide.viewer.view3dShort': 'Посмотреть в 3D',
-  'guide.worldPage.gladeBody':
-    'Не всякая история в Долине, о мёртвых. На севере залитая солнцем роща под названием Поляна Брайтвуда хранит свой собственный, более мягкий ритм, и приглядывает за ней одинокая рейнджер, что предпочла бы пестовать её, а не сражаться. Её дело, это равновесие: прореживать то, что расплодилось сверх меры, и, когда впадина рощи становится слишком опасной, чтобы оставить всё как есть, даровать старому венценосному оленю рощи достойный конец. Это мягкий противовес следу, по которому вы идёте, и он стоит того, чтобы свернуть в сторону.',
-  'guide.worldPage.gladeTitle': 'Тихий уголок: Поляна Брайтвуда',
   'guide.worldPage.marshGreeter': 'Страж Фенвик, Топкомостье',
   'guide.worldPage.marshGreeting': 'Стой у ворот. За теми камышами топь убивает за нас.',
   'guide.worldPage.marshPlaceNotes':
@@ -4362,6 +4363,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.valeGreeting': 'Держите клинок наготове. Долина уже не та, что прежде.',
   'guide.worldPage.valePlaceNotes':
     'Истврук, это ваша первая опорная база. Волчья тропа и Кабаний луг, это спокойные охотничьи угодья, Зеркальное озеро, это тихая вода для рыбалки, Паутинный лес и Медный рудник прячут пауков и жадных до руды землекопов, Лагерь разбойников и Павшая часовня хранят работу погрубее, а Поляна Брайтвуда, это безмятежная роща с дикими зверями на севере.',
+  'guide.worldPage.gladeTitle': 'Тихий уголок: Поляна Брайтвуда',
+  'guide.worldPage.gladeBody':
+    'Не всякая история в долине рассказывает о мертвых. На севере солнечная роща под названием Поляна Брайтвуда живет в собственном, более мягком ритме: тихие тропы, пасущиеся олени и настороженные звери под ветвями. Это спокойный контрапункт следу, по которому вы идете, и его стоит увидеть, когда дорога даст время побродить.',
   // APM telemetry label from release/v0.14.0
   'hudChrome.perf.labels.apm': 'APM',
 };

@@ -90,6 +90,7 @@ const MERGE_ITEM_IDS = [
 ] as const;
 
 const MERGE_MOB_IDS = [
+  'elder_bristleback',
   'ironvein_foreman',
   'ironvein_sapper',
   'marrowlord_varkas',
@@ -98,6 +99,8 @@ const MERGE_MOB_IDS = [
   'mogger',
   'mogger_lackey',
   'nhalia_mourner',
+  'sableweb_hatchling',
+  'sableweb_matriarch',
   'sister_nhalia',
   'varkas_boneguard',
   'imp',
@@ -105,6 +108,7 @@ const MERGE_MOB_IDS = [
   'succubus',
   'grix_the_tunnelking',
   'brutok_skullsmasher',
+  'captain_verlan',
   'old_cragmaw',
   'sloomtooth_the_drowned',
   'voskar_emberwing',
@@ -2318,6 +2322,7 @@ const mergeEntitiesEn = {
   mobs: mergeNameTranslations(
     MERGE_MOB_IDS,
     [
+      'Elder Bristleback',
       'Ironvein Foreman',
       'Ironvein Sapper',
       'Marrowlord Varkas',
@@ -2326,6 +2331,8 @@ const mergeEntitiesEn = {
       'Mogger',
       'Mogger Lackey',
       'Nhalia Mourner',
+      'Sableweb Hatchling',
+      'Sableweb Matriarch',
       'Sister Nhalia',
       'Varkas Boneguard',
       'Imp',
@@ -2333,6 +2340,7 @@ const mergeEntitiesEn = {
       'Succubus',
       'Grix the Tunnelking',
       'Brutok Skullsmasher',
+      'Captain Verlan',
       'Old Cragmaw',
       'Sloomtooth the Drowned',
       'Voskar the Emberwing',
@@ -2345,13 +2353,6 @@ const mergeEntitiesEn = {
     'mob',
   ),
   quests: {
-    q_mogger_tracks: {
-      title: "Mogger's Trail",
-      text: 'Before you take the road north, Eastbrook has one last thorn in its side: Mogger. The brute has been trampling the lower meadow and driving the boars mad. Clear the meadow around his trail so we can see where he lairs.',
-      completion:
-        'Those tracks are fresh and deep enough to hold rain. Mogger is no camp tale, {playerName} - and he is close.',
-      objectives: { 0: { label: 'Wild Boar driven from the trail' } },
-    },
     q_mogger: {
       title: 'Mogger Must Fall',
       text: 'Mogger has split carts, flattened fences, and killed enough livestock to empty half the Vale. Do not face him alone. Take two strong companions into the eastern meadow and put the brute down for good.',
@@ -2454,6 +2455,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(
       MERGE_MOB_IDS,
       [
+        'Viejo Bristleback',
         'Capataz Vena de Hierro',
         'Zapador Vena de Hierro',
         'Señor de Médula Varkas',
@@ -2462,6 +2464,8 @@ export const mergeEntities = {
         'Mogger',
         'Esbirro de Mogger',
         'Doliente de Nhalia',
+        'Cría Sableweb',
+        'Matriarca Sableweb',
         'Hermana Nhalia',
         'Guardahuesos de Varkas',
         'Diablillo',
@@ -2469,6 +2473,7 @@ export const mergeEntities = {
         'Súcubo',
         'Grix el Rey del Túnel',
         'Brutok Rompecráneos',
+        'Capitán Verlan',
         'Viejo Cragmaw',
         'Sloomtooth el Ahogado',
         'Voskar Aladebrasa',
@@ -2481,13 +2486,6 @@ export const mergeEntities = {
       'mob',
     ),
     quests: {
-      q_mogger_tracks: {
-        title: 'El rastro de Mogger',
-        text: 'Antes de tomar el camino al norte, Eastbrook tiene una última espina clavada: Mogger. La bestia pisotea el prado bajo y enloquece a los jabalíes. Limpia la zona de su rastro para que veamos dónde se esconde.',
-        completion:
-          'Esas huellas son recientes y bastante hondas para juntar lluvia. Mogger no es un cuento de campamento, {playerName}, y está cerca.',
-        objectives: { 0: { label: 'Jabalí salvaje expulsado del rastro' } },
-      },
       q_mogger: {
         title: 'Mogger debe caer',
         text: 'Mogger ha partido carretas, aplastado cercas y matado tanto ganado como para vaciar medio Valle. No lo enfrentes a solas. Lleva dos compañeros fuertes al prado oriental y acaba con la bestia para siempre.',
@@ -2588,6 +2586,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(
       MERGE_MOB_IDS,
       [
+        'Ancien Bristleback',
         'Contremaître Veinefer',
         'Sapeur Veinefer',
         'Seigneur de moelle Varkas',
@@ -2596,6 +2595,8 @@ export const mergeEntities = {
         'Mogger',
         'Laquais de Mogger',
         'Pleureuse de Nhalia',
+        'Jeune Sableweb',
+        'Matriarche Sableweb',
         'Soeur Nhalia',
         'Garde-os de Varkas',
         'Diablotin',
@@ -2603,6 +2604,7 @@ export const mergeEntities = {
         'Succube',
         'Grix le Roi des tunnels',
         'Brutok Brise-crânes',
+        'Capitaine Verlan',
         'Vieux Cragmaw',
         'Sloomtooth le Noyé',
         'Voskar Aile-de-braise',
@@ -2615,13 +2617,6 @@ export const mergeEntities = {
       'mob',
     ),
     quests: {
-      q_mogger_tracks: {
-        title: 'La piste de Mogger',
-        text: 'Avant de prendre la route du nord, Eastbrook a une dernière épine dans le pied : Mogger. La brute piétine le pré bas et rend les sangliers fous. Nettoyez le pré autour de sa piste pour que nous voyions où il se terre.',
-        completion:
-          "Ces traces sont fraîches et assez profondes pour retenir la pluie. Mogger n'est pas une histoire de camp, {playerName}, et il est proche.",
-        objectives: { 0: { label: 'Sanglier sauvage chassé de la piste' } },
-      },
       q_mogger: {
         title: 'Mogger doit tomber',
         text: "Mogger a brisé des chariots, aplati des clôtures et tué assez de bétail pour vider la moitié du Val. Ne l'affrontez pas seul. Emmenez deux compagnons solides au pré de l'est et abattez la brute pour de bon.",
@@ -2723,6 +2718,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(
       MERGE_MOB_IDS,
       [
+        'Bristleback anziano',
         'Caposquadra Venaferrata',
         'Zappatore Venaferrata',
         'Signore del Midollo Varkas',
@@ -2731,6 +2727,8 @@ export const mergeEntities = {
         'Mogger',
         'Lacchè di Mogger',
         'Piangente di Nhalia',
+        'Piccolo Sableweb',
+        'Matriarca Sableweb',
         'Sorella Nhalia',
         "Guardia d'ossa di Varkas",
         'Folletto',
@@ -2738,6 +2736,7 @@ export const mergeEntities = {
         'Succube',
         'Grix il Re dei tunnel',
         'Brutok Spaccacranio',
+        'Capitano Verlan',
         'Vecchio Cragmaw',
         "Sloomtooth l'Annegato",
         'Voskar Aladibrace',
@@ -2750,13 +2749,6 @@ export const mergeEntities = {
       'mob',
     ),
     quests: {
-      q_mogger_tracks: {
-        title: 'La traccia di Mogger',
-        text: "Prima di prendere la strada a nord, Eastbrook ha un'ultima spina nel fianco: Mogger. Il bruto calpesta il prato basso e fa impazzire i cinghiali. Ripulisci il prato attorno alla sua traccia per scoprire dove si tana.",
-        completion:
-          'Quelle impronte sono fresche e abbastanza profonde da trattenere la pioggia. Mogger non è una storia da campo, {playerName}, ed è vicino.',
-        objectives: { 0: { label: 'Cinghiale selvatico scacciato dalla traccia' } },
-      },
       q_mogger: {
         title: 'Mogger deve cadere',
         text: 'Mogger ha spaccato carri, schiacciato recinti e ucciso bestiame quanto basta per svuotare mezzo Valle. Non affrontarlo da solo. Porta due compagni forti nel prato orientale e abbatti il bruto per sempre.',
@@ -2856,6 +2848,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(
       MERGE_MOB_IDS,
       [
+        'Alter Bristleback',
         'Eisenader-Vorarbeiter',
         'Eisenader-Pionier',
         'Marklord Varkas',
@@ -2864,6 +2857,8 @@ export const mergeEntities = {
         'Mogger',
         'Moggers Lakai',
         'Nhalia-Trauernde',
+        'Sableweb-Jungtier',
+        'Sableweb-Matriarchin',
         'Schwester Nhalia',
         "Varkas' Knochenwache",
         'Wichtel',
@@ -2871,6 +2866,7 @@ export const mergeEntities = {
         'Sukkubus',
         'Grix der Tunnelkönig',
         'Brutok Schädelschmetterer',
+        'Hauptmann Verlan',
         'Alter Cragmaw',
         'Sloomzahn der Ertrunkene',
         'Voskar Glutschwinge',
@@ -2883,13 +2879,6 @@ export const mergeEntities = {
       'mob',
     ),
     quests: {
-      q_mogger_tracks: {
-        title: 'Moggers Spur',
-        text: 'Bevor du die Straße nach Norden nimmst, hat Eastbrook noch einen letzten Dorn im Fleisch: Mogger. Der Grobian zertrampelt die untere Wiese und treibt die Eber in den Wahnsinn. Säubere die Wiese um seine Spur, damit wir sehen, wo er haust.',
-        completion:
-          'Diese Spuren sind frisch und tief genug, um Regen zu halten. Mogger ist kein Lagerfeuermärchen, {playerName}, und er ist nah.',
-        objectives: { 0: { label: 'Wilder Eber von der Spur vertrieben' } },
-      },
       q_mogger: {
         title: 'Mogger muss fallen',
         text: 'Mogger hat Karren gespalten, Zäune plattgewalzt und genug Vieh getötet, um das halbe Tal zu leeren. Stell dich ihm nicht allein. Nimm zwei starke Gefährten zur östlichen Wiese und leg den Grobian endgültig um.',
@@ -2989,6 +2978,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(
       MERGE_MOB_IDS,
       [
+        '年长硬鬃',
         '铁脉工头',
         '铁脉爆破手',
         '髓王瓦尔卡斯',
@@ -2997,6 +2987,8 @@ export const mergeEntities = {
         '莫格',
         '莫格的爪牙',
         '娜莉娅哀悼者',
+        '黑网幼蛛',
+        '黑网主母',
         '娜莉娅修女',
         '瓦尔卡斯骨卫',
         '小鬼',
@@ -3004,6 +2996,7 @@ export const mergeEntities = {
         '魅魔',
         'Grix the Tunnelking',
         '碎颅者布鲁托克',
+        '维尔兰队长',
         '老裂颚',
         '溺亡者涝牙',
         '炽翼沃斯卡',
@@ -3016,13 +3009,6 @@ export const mergeEntities = {
       'mob',
     ),
     quests: {
-      q_mogger_tracks: {
-        title: '莫格的踪迹',
-        text: '在你踏上北路前，东溪还有最后一根刺：莫格。那蛮兽践踏下方草地，把野猪都逼疯了。清理它踪迹周围的草地，我们才能看出它藏在哪里。',
-        completion:
-          '这些足迹很新，也深得能积住雨水。莫格不是营火故事，{playerName}，而且它就在附近。',
-        objectives: { 0: { label: '野猪被赶离踪迹' } },
-      },
       q_mogger: {
         title: '莫格必须倒下',
         text: '莫格劈裂货车，踏平栅栏，杀死的牲口足以让半个谷地空掉。不要独自面对它。带两名强壮同伴去东边草地，把那蛮兽彻底放倒。',
@@ -3121,6 +3107,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(
       MERGE_MOB_IDS,
       [
+        '年長硬鬃',
         '鐵脈工頭',
         '鐵脈爆破手',
         '髓王瓦爾卡斯',
@@ -3129,6 +3116,8 @@ export const mergeEntities = {
         '莫格',
         '莫格的爪牙',
         '娜莉亞哀悼者',
+        '黑網幼蛛',
+        '黑網主母',
         '娜莉亞修女',
         '瓦爾卡斯骨衛',
         '小鬼',
@@ -3136,6 +3125,7 @@ export const mergeEntities = {
         '魅魔',
         'Grix the Tunnelking',
         '碎顱者布魯托克',
+        '維爾蘭隊長',
         '老裂顎',
         '溺亡者澇牙',
         '熾翼沃斯卡',
@@ -3148,13 +3138,6 @@ export const mergeEntities = {
       'mob',
     ),
     quests: {
-      q_mogger_tracks: {
-        title: '莫格的蹤跡',
-        text: '在你踏上北路前，東溪還有最後一根刺：莫格。那蠻獸踐踏下方草地，把野豬都逼瘋了。清理牠蹤跡周圍的草地，我們才能看出牠藏在哪裡。',
-        completion:
-          '這些足跡很新，也深得能積住雨水。莫格不是營火故事，{playerName}，而且牠就在附近。',
-        objectives: { 0: { label: '野豬被趕離蹤跡' } },
-      },
       q_mogger: {
         title: '莫格必須倒下',
         text: '莫格劈裂貨車，踏平柵欄，殺死的牲口足以讓半個谷地空掉。不要獨自面對牠。帶兩名強壯同伴去東邊草地，把那蠻獸徹底放倒。',
@@ -3253,6 +3236,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(
       MERGE_MOB_IDS,
       [
+        '늙은 뻣센등뼈',
         '철맥 감독관',
         '철맥 폭파병',
         '골수군주 바르카스',
@@ -3261,6 +3245,8 @@ export const mergeEntities = {
         '모거',
         '모거의 졸개',
         '날리아 애도자',
+        '검은그물 새끼',
+        '검은그물 우두머리',
         '자매 날리아',
         '바르카스 뼈수호병',
         '임프',
@@ -3268,6 +3254,7 @@ export const mergeEntities = {
         '서큐버스',
         'Grix the Tunnelking',
         '해골분쇄자 브루톡',
+        '베를란 대장',
         '늙은 크래그모',
         '익사한 슬룸투스',
         '잿불날개 보스카르',
@@ -3280,13 +3267,6 @@ export const mergeEntities = {
       'mob',
     ),
     quests: {
-      q_mogger_tracks: {
-        title: '모거의 흔적',
-        text: '북쪽 길을 떠나기 전에 이스트브룩에는 마지막 골칫거리, 모거가 남았습니다. 그 짐승은 아래 초원을 짓밟고 멧돼지를 미치게 합니다. 흔적 주변의 초원을 정리해 은신처를 찾아내십시오.',
-        completion:
-          '그 발자국은 새롭고 비를 담을 만큼 깊습니다. 모거는 야영지 이야기가 아닙니다, {playerName}. 아주 가까이 있습니다.',
-        objectives: { 0: { label: '야생 멧돼지를 흔적에서 몰아냄' } },
-      },
       q_mogger: {
         title: '모거를 쓰러뜨려라',
         text: '모거는 수레를 쪼개고 울타리를 납작하게 만들며 계곡 절반을 비울 만큼 가축을 죽였습니다. 혼자 맞서지 마십시오. 강한 동료 둘과 동쪽 초원으로 가서 그 짐승을 끝내십시오.',
@@ -3386,6 +3366,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(
       MERGE_MOB_IDS,
       [
+        '老ブリストルバック',
         '鉄脈の現場監督',
         '鉄脈の爆破兵',
         '髄王ヴァーカス',
@@ -3394,6 +3375,8 @@ export const mergeEntities = {
         'モガー',
         'モガーの手下',
         'ナリアの嘆き手',
+        'セーブルウェブの幼体',
+        'セーブルウェブの女家長',
         'シスター・ナリア',
         'ヴァーカスの骨衛兵',
         'インプ',
@@ -3401,6 +3384,7 @@ export const mergeEntities = {
         'サキュバス',
         'Grix the Tunnelking',
         '頭蓋砕きブルトーク',
+        'ヴァーラン隊長',
         '老いたるクラッグモウ',
         '溺れし者スルームトゥース',
         '燃え翼のヴォスカル',
@@ -3413,13 +3397,6 @@ export const mergeEntities = {
       'mob',
     ),
     quests: {
-      q_mogger_tracks: {
-        title: 'モガーの足跡',
-        text: '北への道を進む前に、イーストブルックには最後の厄介者がいます。モガーです。あの巨獣は低い草地を踏み荒らし、猪を狂わせています。足跡の周囲を片付け、巣を見つけられるようにしてください。',
-        completion:
-          'その足跡は新しく、雨を溜めるほど深い。モガーは焚き火話ではありません、{playerName}。近くにいます。',
-        objectives: { 0: { label: '野猪を足跡から追い払う' } },
-      },
       q_mogger: {
         title: 'モガーを倒せ',
         text: 'モガーは荷車を裂き、柵を潰し、谷の半分を空にするほど家畜を殺しました。ひとりで挑んではいけません。強い仲間を二人連れ、東の草地であの巨獣を完全に倒してください。',
@@ -3519,6 +3496,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(
       MERGE_MOB_IDS,
       [
+        'Bristleback ancião',
         'Capataz Veio de Ferro',
         'Sapador Veio de Ferro',
         'Senhor da Medula Varkas',
@@ -3527,6 +3505,8 @@ export const mergeEntities = {
         'Mogger',
         'Lacaio de Mogger',
         'Pranteadora de Nhalia',
+        'Filhote Sableweb',
+        'Matriarca Sableweb',
         'Irmã Nhalia',
         'Guardião dos ossos de Varkas',
         'Diabrete',
@@ -3534,6 +3514,7 @@ export const mergeEntities = {
         'Súcubo',
         'Grix, o Rei dos Túneis',
         'Brutok Quebra-crânios',
+        'Capitão Verlan',
         'Velho Cragmaw',
         'Sloomtooth o Afogado',
         'Voskar Asa-de-brasa',
@@ -3546,13 +3527,6 @@ export const mergeEntities = {
       'mob',
     ),
     quests: {
-      q_mogger_tracks: {
-        title: 'A trilha de Mogger',
-        text: 'Antes de pegar a estrada ao norte, Eastbrook tem um último espinho: Mogger. A fera pisoteia o prado baixo e enlouquece os javalis. Limpe o prado ao redor da trilha para descobrirmos onde ele se esconde.',
-        completion:
-          'Essas pegadas são recentes e fundas o bastante para segurar chuva. Mogger não é história de acampamento, {playerName}, e está perto.',
-        objectives: { 0: { label: 'Javali selvagem expulso da trilha' } },
-      },
       q_mogger: {
         title: 'Mogger deve cair',
         text: 'Mogger partiu carroças, achatou cercas e matou gado suficiente para esvaziar metade do Vale. Não o enfrente só. Leve dois companheiros fortes ao prado leste e derrube a fera de vez.',
@@ -3652,6 +3626,7 @@ export const mergeEntities = {
     mobs: mergeNameTranslations(
       MERGE_MOB_IDS,
       [
+        'Старый Щетиноспин',
         'Прораб Железной жилы',
         'Сапер Железной жилы',
         'Владыка костного мозга Варкас',
@@ -3660,6 +3635,8 @@ export const mergeEntities = {
         'Моггер',
         'Приспешник Моггера',
         'Плакальщица Налии',
+        'Детеныш Сейблвеб',
+        'Матриарх Сейблвеб',
         'Сестра Налия',
         'Костяной страж Варкаса',
         'Бес',
@@ -3667,6 +3644,7 @@ export const mergeEntities = {
         'Суккуб',
         'Грикс, Король туннелей',
         'Бруток Сокрушитель черепов',
+        'Капитан Верлан',
         'Старый Крэгмо',
         'Слумтус Утопший',
         'Воскар Жарокрыл',
@@ -3679,13 +3657,6 @@ export const mergeEntities = {
       'mob',
     ),
     quests: {
-      q_mogger_tracks: {
-        title: 'След Моггера',
-        text: 'Прежде чем идти на северную дорогу, у Истврука осталась последняя заноза: Моггер. Зверь топчет нижний луг и сводит кабанов с ума. Очистите луг вокруг его следа, чтобы мы поняли, где он прячется.',
-        completion:
-          'Эти следы свежие и такие глубокие, что удержат дождь. Моггер не байка у костра, {playerName}, и он близко.',
-        objectives: { 0: { label: 'Дикий кабан отогнан от следа' } },
-      },
       q_mogger: {
         title: 'Моггер должен пасть',
         text: 'Моггер расколол повозки, расплющил изгороди и перебил столько скота, что хватило бы опустошить половину долины. Не выходите против него в одиночку. Возьмите двух сильных спутников на восточный луг и добейте зверя навсегда.',

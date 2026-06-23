@@ -952,6 +952,7 @@ export const en_CA: EnTranslations = {
       "notedLabel": "Of note",
       "flavor": {
         "old_greyjaw": "A scarred old wolf no trap has held, blamed for three hounds and a stable boy's arm. He hunts the deep woods alone, and turns savage the longer a fight wears on.",
+        "brightwood_stag": "A proud grove deer that lowers its crown of antlers and bulls forward, growing harder to face the longer it is pressed.",
         "grubjaw": "A fen troll so greedy the other trolls will not dig beside him, said to have eaten a trader's last two pack-mules, harness and all.",
         "shardlord_kazzix": "A storm elemental given shoulders, walking the far crags above Stormcrag with a heartshard worth braving the lightning for.",
         "mirejaw_frenzy": "A marsh murloc that whips itself into a thrashing frenzy mid-fight, the loudest thing in a loud, territorial pack.",
@@ -1017,7 +1018,7 @@ export const en_CA: EnTranslations = {
       "marshPlaceNotes": "Fenbridge guards the only dry road. The Prowler Reeds and Deepfen Shallows teem with marsh beasts and murlocs; the Widow Thicket is spun thick with web; the Drowned Chapel and the Troll Mounds keep older dangers; the Gravecaller Encampment is the cult dug in, and the Sunken Bastion is the marsh's instanced heart.",
       "peaksPlaceNotes": "Highwatch holds the wall. Stalker Ridge and the Deeprock Burrows belong to ridge cats and kobolds; the Ogre Foothills and Drogmar's War-Camp to brutes for hire; Stormcrag crackles with elementals and the Glimmermere glows below it; the Wyrmcult Tents and Revenant Fields ring the cult's high ground, with Gravewyrm Sanctum at its peak.",
       "gladeTitle": "A quiet corner: Brightwood Glade",
-      "gladeBody": "Not every story in the Vale is about the dead. In the north, a sunlit grove called Brightwood Glade keeps its own gentler rhythm, watched over by a lone ranger who would rather steward it than fight. Her work is balance: thinning what overbreeds, and, when its hollow grows too dangerous to leave be, giving the grove's old crowned stag a respectful end. It is a soft counterpoint to the trail you are following, and worth the detour."
+      "gladeBody": "Not every story in the Vale is about the dead. In the north, a sunlit grove called Brightwood Glade keeps its own gentler rhythm, with quiet paths, grazing deer, and wary beasts under the boughs. It is a soft counterpoint to the trail you are following, and worth seeing when the road gives you room to wander."
     },
     "questsPage": {
       "heading": "Quests",
@@ -1065,9 +1066,7 @@ export const en_CA: EnTranslations = {
       "aldricRole": "Priest of the Vale",
       "aldricBody": "A humble village priest who first names the cult over a defiled grave in Eastbrook, then follows its trail in person through the marsh and up to the wall at Highwatch. He is the steady heart of the whole campaign.",
       "marenRole": "The Marshal's Scout",
-      "marenBody": "A low-talking tracker you meet in the reeds of Mirefen, all quiet feet and a short blade. She follows the trail north too, and it is her ear that catches the words that send you to the peaks.",
-      "elwynRole": "Glade Warden of Brightwood",
-      "elwynBody": "The lone keeper of a sunlit grove in the north of the Vale. Her work is stewardship, not slaughter: thinning what overbreeds and granting the grove's oldest beast a kinder end than the wolves would."
+      "marenBody": "A low-talking tracker you meet in the reeds of Mirefen, all quiet feet and a short blade. She follows the trail north too, and it is her ear that catches the words that send you to the peaks."
     },
     "dungeonsPage": {
       "heading": "Dungeons and Raids",
@@ -4074,9 +4073,6 @@ export const en_CA: EnTranslations = {
       "milepost_boots": {
         "name": "Milepost Boots"
       },
-      "glade_pelt": {
-        "name": "Glade Pelt"
-      },
       "soft_down": {
         "name": "Soft Down Tuft"
       },
@@ -4721,6 +4717,42 @@ export const en_CA: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Scourge of Thornpeak"
       },
+      "brightwood_hare": {
+        "name": "Brightwood Hare"
+      },
+      "glade_fox": {
+        "name": "Glade Fox"
+      },
+      "spotted_fawn": {
+        "name": "Spotted Fawn"
+      },
+      "meadow_crane": {
+        "name": "Meadow Crane"
+      },
+      "thornpelt_badger": {
+        "name": "Thornpelt Badger"
+      },
+      "dawnmane_doe": {
+        "name": "Dawnmane Doe"
+      },
+      "bramble_lynx": {
+        "name": "Bramble Lynx"
+      },
+      "brightwood_stag": {
+        "name": "Brightwood Stag"
+      },
+      "grovetusk_boar": {
+        "name": "Grovetusk Boar"
+      },
+      "sunhide_bear": {
+        "name": "Sunhide Bear"
+      },
+      "brightwood_monarch": {
+        "name": "The Brightwood Monarch"
+      },
+      "elder_bristleback": {
+        "name": "Elder Bristleback"
+      },
       "ironvein_foreman": {
         "name": "Ironvein Foreman"
       },
@@ -4745,6 +4777,12 @@ export const en_CA: EnTranslations = {
       "nhalia_mourner": {
         "name": "Nhalia Mourner"
       },
+      "sableweb_hatchling": {
+        "name": "Sableweb Hatchling"
+      },
+      "sableweb_matriarch": {
+        "name": "Sableweb Matriarch"
+      },
       "sister_nhalia": {
         "name": "Sister Nhalia"
       },
@@ -4765,6 +4803,9 @@ export const en_CA: EnTranslations = {
       },
       "brutok_skullsmasher": {
         "name": "Brutok Skullsmasher"
+      },
+      "captain_verlan": {
+        "name": "Captain Verlan"
       },
       "old_cragmaw": {
         "name": "Old Cragmaw"
@@ -4922,11 +4963,6 @@ export const en_CA: EnTranslations = {
         "name": "Loremaster Caddis",
         "title": "Loremaster",
         "greeting": "Mind the loose shale, {className}. The mountain has been... restless of late. I intend to learn why."
-      },
-      "ranger_elwyn": {
-        "name": "Ranger Elwyn",
-        "title": "Glade Warden",
-        "greeting": "Quiet, {className} - the glade is calm today, and I mean to keep it that way."
       },
       "brother_aldric_raid": {
         "name": "Brother Aldric",
@@ -5679,16 +5715,6 @@ export const en_CA: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Nythraxis slain"
-          }
-        }
-      },
-      "q_mogger_tracks": {
-        "title": "Mogger's Trail",
-        "text": "Before you take the road north, Eastbrook has one last thorn in its side: Mogger. The brute has been trampling the lower meadow and driving the boars mad. Clear the meadow around his trail so we can see where he lairs.",
-        "completion": "Those tracks are fresh and deep enough to hold rain. Mogger is no camp tale, {playerName} - and he is close.",
-        "objectives": {
-          "0": {
-            "label": "Wild Boar driven from the trail"
           }
         }
       },

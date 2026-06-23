@@ -952,6 +952,7 @@ export const zh_CN: EnTranslations = {
       "notedLabel": "值得一提",
       "flavor": {
         "old_greyjaw": "一头浑身伤疤的老狼，从未被任何陷阱困住，三条猎犬和一名马童的手臂都算在它头上。它独自在密林深处狩猎，战斗拖得越久就越发狂暴。",
+        "brightwood_stag": "一头骄傲的林地雄鹿，会低下顶着鹿角的头颅猛冲向前，被逼得越久就越发难缠。",
         "grubjaw": "一头贪婪到连其他巨魔都不愿与之为伍的沼泽巨魔，据说曾把一名商人最后两头驮货的骡子连同挽具一同吞下。",
         "shardlord_kazzix": "一个化作魁梧身形的风暴元素，徘徊在风暴岩之上遥远的峭壁间，身上的心石值得你冒着雷电去夺取。",
         "mirejaw_frenzy": "一只沼泽鱼人，会在战斗中将自己鞭策进狂乱的扑腾，是一支喧闹而极具地盘意识的鱼群中嗓门最大的那个。",
@@ -1016,8 +1017,8 @@ export const zh_CN: EnTranslations = {
       "valePlaceNotes": "东溪是你的第一个大本营。狼奔之地与野猪草甸是温和的狩猎场；镜湖是供垂钓的静水；蛛网林与铜矿坑藏着蜘蛛和贪婪掘矿者；一处盗匪营地与陨落礼拜堂里有更棘手的活儿；明木林是北方一片宁静的野生动物林地。",
       "marshPlaceNotes": "芬桥守着唯一一条干燥的道路。潜行者芦苇荡与深沼浅滩里满是沼泽野兽和鱼人；寡妇密林被蛛网织得密不透风；溺亡礼拜堂与巨魔土丘藏着更古老的危险；唤墓者营地是邪教的盘踞之处，沉没堡垒则是这片湿地的副本核心。",
       "peaksPlaceNotes": "高守哨站扼守着城墙。潜猎者山脊与深岩洞穴属于山脊猫和狗头人；食人魔丘陵与卓格玛的战营属于受雇的莽夫；风暴岩中元素噼啪作响，饮月之池在它下方泛着微光；蜿龙教帐篷与亡魂之野环绕着邪教的制高点，墓龙圣所则居于其巅。",
-      "gladeTitle": "一处幽静的角落：明木林",
-      "gladeBody": "谷地里并非每个故事都关乎死者。在北方，一片名为明木林的洒满阳光的林地保持着自己更为温和的节奏，由一名宁愿看护它也不愿动武的孤独游侠守望着。她的工作是平衡：剔除过度繁衍之物，并在林地那头顶王冠的老雄鹿心魔变得过于危险、无法坐视时，给予它一个体面的结局。这是你所循之路的一抹柔和反衬，值得绕道一探。"
+      "gladeTitle": "宁静一隅：明木林地",
+      "gladeBody": "山谷里的故事并不全都关于亡者。北方有一片被阳光照亮的林地，名为明木林，那里有自己的温和节奏：安静小径、吃草的鹿，以及枝叶下警觉的野兽。它是你所追寻踪迹之外的一段柔和对照，若道路给你余裕闲逛，很值得去看一看。"
     },
     "questsPage": {
       "heading": "任务",
@@ -1065,9 +1066,7 @@ export const zh_CN: EnTranslations = {
       "aldricRole": "谷地的牧师",
       "aldricBody": "一位谦逊的乡村牧师，他在东溪一座被玷污的坟墓前最先道出了邪教之名，随后亲自循着踪迹穿过湿地，一路追到高守哨站的城墙下。他是整场战役坚定的核心。",
       "marenRole": "元帅的斥候",
-      "marenBody": "一位你在泥沼的芦苇丛中遇见的低声寡言的追踪者，脚步轻悄，配一柄短刃。她也一路向北循迹而行，正是她的耳朵捕捉到了那些话语，将你引向峰巅。",
-      "elwynRole": "明木林的林地守望者",
-      "elwynBody": "谷地北方一片洒满阳光的林地的唯一守护者。她的工作是看护，而非杀戮：剔除过度繁衍之物，并给予林地最古老的野兽一个比死于狼口更仁慈的结局。"
+      "marenBody": "一位你在泥沼的芦苇丛中遇见的低声寡言的追踪者，脚步轻悄，配一柄短刃。她也一路向北循迹而行，正是她的耳朵捕捉到了那些话语，将你引向峰巅。"
     },
     "dungeonsPage": {
       "heading": "地下城与团队副本",
@@ -4074,9 +4073,6 @@ export const zh_CN: EnTranslations = {
       "milepost_boots": {
         "name": "里程靴"
       },
-      "glade_pelt": {
-        "name": "林间兽皮"
-      },
       "soft_down": {
         "name": "柔软绒毛"
       },
@@ -4721,6 +4717,42 @@ export const zh_CN: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "尼思拉克西斯，荆峰之灾"
       },
+      "brightwood_hare": {
+        "name": "明木野兔"
+      },
+      "glade_fox": {
+        "name": "林地狐狸"
+      },
+      "spotted_fawn": {
+        "name": "斑点幼鹿"
+      },
+      "meadow_crane": {
+        "name": "草甸仙鹤"
+      },
+      "thornpelt_badger": {
+        "name": "棘毛獾"
+      },
+      "dawnmane_doe": {
+        "name": "晨鬃母鹿"
+      },
+      "bramble_lynx": {
+        "name": "棘丛猞猁"
+      },
+      "brightwood_stag": {
+        "name": "明木雄鹿"
+      },
+      "grovetusk_boar": {
+        "name": "林牙野猪"
+      },
+      "sunhide_bear": {
+        "name": "阳皮熊"
+      },
+      "brightwood_monarch": {
+        "name": "明木君主"
+      },
+      "elder_bristleback": {
+        "name": "年长硬鬃"
+      },
       "ironvein_foreman": {
         "name": "铁脉工头"
       },
@@ -4745,6 +4777,12 @@ export const zh_CN: EnTranslations = {
       "nhalia_mourner": {
         "name": "娜莉娅哀悼者"
       },
+      "sableweb_hatchling": {
+        "name": "黑网幼蛛"
+      },
+      "sableweb_matriarch": {
+        "name": "黑网主母"
+      },
       "sister_nhalia": {
         "name": "娜莉娅修女"
       },
@@ -4765,6 +4803,9 @@ export const zh_CN: EnTranslations = {
       },
       "brutok_skullsmasher": {
         "name": "碎颅者布鲁托克"
+      },
+      "captain_verlan": {
+        "name": "维尔兰队长"
       },
       "old_cragmaw": {
         "name": "老裂颚"
@@ -4922,11 +4963,6 @@ export const zh_CN: EnTranslations = {
         "name": "凯迪斯博学者",
         "title": "博学者",
         "greeting": "小心松动的页岩，{className}。这座山近来不安，我想知道原因。"
-      },
-      "ranger_elwyn": {
-        "name": "游侠埃尔温",
-        "title": "林地守望者",
-        "greeting": "安静些，{className}，林地今日很宁静，我也想让它一直如此。"
       },
       "brother_aldric_raid": {
         "name": "奥德里克修士",
@@ -5679,16 +5715,6 @@ export const zh_CN: EnTranslations = {
         "objectives": {
           "0": {
             "label": "击败尼思拉克西斯"
-          }
-        }
-      },
-      "q_mogger_tracks": {
-        "title": "莫格的踪迹",
-        "text": "在你踏上北路前，东溪还有最后一根刺：莫格。那蛮兽践踏下方草地，把野猪都逼疯了。清理它踪迹周围的草地，我们才能看出它藏在哪里。",
-        "completion": "这些足迹很新，也深得能积住雨水。莫格不是营火故事，{playerName}，而且它就在附近。",
-        "objectives": {
-          "0": {
-            "label": "野猪被赶离踪迹"
           }
         }
       },

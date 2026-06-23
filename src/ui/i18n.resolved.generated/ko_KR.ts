@@ -952,6 +952,7 @@ export const ko_KR: EnTranslations = {
       "notedLabel": "특기 사항",
       "flavor": {
         "old_greyjaw": "어떤 덫도 가두지 못한, 상처투성이 늙은 늑대. 사냥개 셋과 마구간 소년의 팔이 이놈 탓으로 돌려졌습니다. 깊은 숲을 홀로 사냥하며, 싸움이 길어질수록 더욱 사나워집니다.",
+        "brightwood_stag": "뿔로 된 왕관을 낮추고 밀어붙이는 당당한 숲의 사슴으로, 몰아붙일수록 상대하기 더 까다로워집니다.",
         "grubjaw": "다른 트롤들조차 곁에서 땅을 파려 하지 않을 만큼 탐욕스러운 습지 트롤로, 한 상인의 마지막 짐말 두 마리를 멍에까지 통째로 삼켰다고 전해집니다.",
         "shardlord_kazzix": "어깨를 갖춘 폭풍의 정령으로, 스톰크래그 위 먼 바위산을 거닐며 번개를 무릅쓸 만한 가치가 있는 심장 파편을 지니고 있습니다.",
         "mirejaw_frenzy": "전투 도중 스스로를 광란으로 몰아넣어 마구 날뛰는 습지 멀록으로, 시끄럽고 영역 의식 강한 무리 가운데서도 가장 요란합니다.",
@@ -1017,7 +1018,7 @@ export const ko_KR: EnTranslations = {
       "marshPlaceNotes": "펜브리지는 유일하게 마른 길을 지킵니다. 배회자 갈대밭과 깊은습지 얕은 물에는 습지 짐승과 멀록이 들끓고, 과부 덤불은 거미줄로 빽빽이 얽혀 있습니다. 익사한 예배당과 트롤 봉분은 한층 오래된 위험을 품고, 무덤부름 야영지는 교단이 자리를 틀고 박힌 곳이며, 가라앉은 요새는 습지의 인스턴스 심장부입니다.",
       "peaksPlaceNotes": "하이워치가 성벽을 지킵니다. 추적자 능선과 깊은바위 굴은 능선 들고양이와 코볼트의 차지이고, 오우거 산기슭과 드로그마르의 전쟁 야영지는 고용된 흉포한 자들의 것입니다. 스톰크래그는 정령들로 들끓고 그 아래에서 글리머미어가 빛나며, 고룡교단 천막과 망령의 들판이 교단의 높은 거점을 에워싸고, 그 정점에 무덤고룡 성소가 있습니다.",
       "gladeTitle": "고요한 한구석: 브라이트우드 숲",
-      "gladeBody": "골짜기의 모든 이야기가 죽은 자에 관한 것은 아닙니다. 북쪽에는 브라이트우드 숲이라 불리는 양지바른 숲이 한결 부드러운 제 가락을 지키며, 싸우기보다 보살피기를 택한 외로운 순찰자가 그곳을 지켜봅니다. 그녀의 일은 균형입니다. 지나치게 번식한 것을 솎아내고, 둥지가 너무 위험해져 그냥 둘 수 없게 되면 숲의 늙은 왕관 쓴 수사슴에게 정중한 마지막을 베푸는 것이지요. 당신이 좇는 자취에 대비되는 잔잔한 대목이며, 잠시 들를 만한 가치가 있습니다."
+      "gladeBody": "계곡의 모든 이야기가 죽은 자들에 관한 것은 아닙니다. 북쪽에는 브라이트우드라는 햇살 드는 숲이 있어 조용한 길, 풀을 뜯는 사슴, 가지 아래의 경계심 많은 짐승들과 함께 더 부드러운 고유한 리듬을 지킵니다. 당신이 따라가는 흔적에 대한 차분한 대비이며, 길이 잠시 여유를 줄 때 둘러볼 만한 곳입니다."
     },
     "questsPage": {
       "heading": "퀘스트",
@@ -1065,9 +1066,7 @@ export const ko_KR: EnTranslations = {
       "aldricRole": "골짜기의 사제",
       "aldricBody": "동부개울에서 더럽혀진 무덤 앞에 서서 교단의 이름을 처음 밝혀낸 다음, 직접 그 자취를 좇아 습지를 지나 하이워치의 성벽까지 오르는 소박한 마을 사제. 온 원정의 굳건한 심장입니다.",
       "marenRole": "원수의 정찰병",
-      "marenBody": "마이어펜의 갈대밭에서 만나는, 말수 적은 추적자. 조용한 발걸음과 짧은 칼이 전부입니다. 그녀 역시 북쪽으로 자취를 좇으며, 당신을 봉우리로 보내는 그 말을 알아챈 것도 바로 그녀의 귀입니다.",
-      "elwynRole": "브라이트우드의 숲지기",
-      "elwynBody": "골짜기 북쪽 양지바른 숲을 홀로 지키는 이. 그녀의 일은 살육이 아니라 보살핌입니다. 지나치게 번식한 것을 솎아내고, 숲에서 가장 늙은 짐승에게 늑대들이 주는 것보다 한결 너그러운 마지막을 베풉니다."
+      "marenBody": "마이어펜의 갈대밭에서 만나는, 말수 적은 추적자. 조용한 발걸음과 짧은 칼이 전부입니다. 그녀 역시 북쪽으로 자취를 좇으며, 당신을 봉우리로 보내는 그 말을 알아챈 것도 바로 그녀의 귀입니다."
     },
     "dungeonsPage": {
       "heading": "던전과 공격대",
@@ -4074,9 +4073,6 @@ export const ko_KR: EnTranslations = {
       "milepost_boots": {
         "name": "이정표 장화"
       },
-      "glade_pelt": {
-        "name": "숲속 가죽"
-      },
       "soft_down": {
         "name": "부드러운 솜털 뭉치"
       },
@@ -4721,6 +4717,42 @@ export const ko_KR: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "나이트락시스, 손피크의 재앙"
       },
+      "brightwood_hare": {
+        "name": "브라이트우드 산토끼"
+      },
+      "glade_fox": {
+        "name": "숲속 여우"
+      },
+      "spotted_fawn": {
+        "name": "얼룩 새끼사슴"
+      },
+      "meadow_crane": {
+        "name": "초원 두루미"
+      },
+      "thornpelt_badger": {
+        "name": "가시털 오소리"
+      },
+      "dawnmane_doe": {
+        "name": "여명갈기 암사슴"
+      },
+      "bramble_lynx": {
+        "name": "가시덤불 살쾡이"
+      },
+      "brightwood_stag": {
+        "name": "브라이트우드 수사슴"
+      },
+      "grovetusk_boar": {
+        "name": "숲엄니 멧돼지"
+      },
+      "sunhide_bear": {
+        "name": "햇살가죽 곰"
+      },
+      "brightwood_monarch": {
+        "name": "브라이트우드의 군주"
+      },
+      "elder_bristleback": {
+        "name": "늙은 뻣센등뼈"
+      },
       "ironvein_foreman": {
         "name": "철맥 감독관"
       },
@@ -4745,6 +4777,12 @@ export const ko_KR: EnTranslations = {
       "nhalia_mourner": {
         "name": "날리아 애도자"
       },
+      "sableweb_hatchling": {
+        "name": "검은그물 새끼"
+      },
+      "sableweb_matriarch": {
+        "name": "검은그물 우두머리"
+      },
       "sister_nhalia": {
         "name": "자매 날리아"
       },
@@ -4765,6 +4803,9 @@ export const ko_KR: EnTranslations = {
       },
       "brutok_skullsmasher": {
         "name": "해골분쇄자 브루톡"
+      },
+      "captain_verlan": {
+        "name": "베를란 대장"
       },
       "old_cragmaw": {
         "name": "늙은 크래그모"
@@ -4922,11 +4963,6 @@ export const ko_KR: EnTranslations = {
         "name": "현자 캐디스",
         "title": "현자",
         "greeting": "느슨한 혈암을 조심하십시오, {className}. 산이 요즘 불안정해졌고, 나는 그 이유를 알고 싶습니다."
-      },
-      "ranger_elwyn": {
-        "name": "순찰병 엘윈",
-        "title": "숲의 수호인",
-        "greeting": "조용히 하게, {className} - 오늘 숲은 고요하고, 나는 그대로 지킬 생각이네."
       },
       "brother_aldric_raid": {
         "name": "알드릭 수사",
@@ -5679,16 +5715,6 @@ export const ko_KR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "니트락시스 처치"
-          }
-        }
-      },
-      "q_mogger_tracks": {
-        "title": "모거의 흔적",
-        "text": "북쪽 길을 떠나기 전에 이스트브룩에는 마지막 골칫거리, 모거가 남았습니다. 그 짐승은 아래 초원을 짓밟고 멧돼지를 미치게 합니다. 흔적 주변의 초원을 정리해 은신처를 찾아내십시오.",
-        "completion": "그 발자국은 새롭고 비를 담을 만큼 깊습니다. 모거는 야영지 이야기가 아닙니다, {playerName}. 아주 가까이 있습니다.",
-        "objectives": {
-          "0": {
-            "label": "야생 멧돼지를 흔적에서 몰아냄"
           }
         }
       },

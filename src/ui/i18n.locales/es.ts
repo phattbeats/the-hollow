@@ -20,6 +20,34 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.interfaceModeTouch': 'Touch',
   'hudChrome.options.interfaceModeNote':
     'Auto elige los controles Desktop o Touch según tu dispositivo. Elige Desktop para forzar teclado y ratón (útil en una tableta con teclado), o Touch para los controles en pantalla.',
+  'hudChrome.options.lockCursorOnRotate': 'Bloquear cursor al rotar',
+  'hudChrome.options.keybindHelpLockCursorOnRotate':
+    'Mantiene el cursor del ratón dentro de la ventana mientras arrastras para rotar la cámara, para que no llegue al borde de la pantalla ni pase a otro monitor. Desactívalo si prefieres un cursor libre.',
+  'hudChrome.theme.preset': 'Tema de la interfaz',
+  'hudChrome.theme.customColors': 'Colores personalizados',
+  'hudChrome.theme.reset': 'Restablecer',
+  'hudChrome.theme.presets.classic': 'Oro clásico',
+  'hudChrome.theme.presets.midnight': 'Medianoche',
+  'hudChrome.theme.presets.parchment': 'Pergamino',
+  'hudChrome.theme.presets.highContrast': 'Alto contraste',
+  'hudChrome.theme.knob.accent': 'Acento',
+  'hudChrome.theme.knob.border': 'Borde',
+  'hudChrome.theme.knob.panel': 'Marco',
+  'hudChrome.theme.knob.text': 'Texto',
+  'hudChrome.theme.knob.textMuted': 'Texto atenuado',
+  'hudChrome.theme.knob.hp': 'Salud',
+  'hudChrome.theme.knob.mana': 'Maná',
+  'hudChrome.theme.knob.rage': 'Ira',
+  'hudChrome.theme.knob.energy': 'Energía',
+  'realm.popTipLow':
+    'Población baja: menos de 15 jugadores conectados ahora. Mucho espacio; ideal para empezar de cero.',
+  'realm.popTipMedium':
+    'Población media: entre 15 y 39 jugadores conectados ahora. Un reino activo y saludable.',
+  'realm.popTipHigh':
+    'Población alta: entre 40 y 79 jugadores conectados ahora. Concurrido, con muchos jugadores cerca.',
+  'realm.popTipFull':
+    'Población llena: 80 o más jugadores conectados ahora. Muy concurrido; puede que esperes en una cola de inicio de sesión.',
+  'realm.popTipOffline': 'Sin conexión: este reino no está disponible ahora y no se puede entrar.',
   'hud.tutorial.title': 'Nuevo Aventurero',
   'hud.tutorial.stepLabel': 'Paso {current} de {total}',
   'hud.tutorial.skip': 'Saltar tutorial',
@@ -2247,6 +2275,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': 'Korgath el Encadenado',
   'entities.mobs.grand_necromancer_velkhar.name': 'Gran nigromante Velkhar',
   'entities.mobs.korzul_the_gravewyrm.name': 'Korzul el Gravewyrm',
+  'entities.mobs.elder_bristleback.name': 'Viejo Bristleback',
   'entities.mobs.ironvein_foreman.name': 'Capataz Vena de Hierro',
   'entities.mobs.ironvein_sapper.name': 'Zapador Vena de Hierro',
   'entities.mobs.marrowlord_varkas.name': 'Señor de Médula Varkas',
@@ -2255,6 +2284,8 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': 'Mogger',
   'entities.mobs.mogger_lackey.name': 'Esbirro de Mogger',
   'entities.mobs.nhalia_mourner.name': 'Doliente de Nhalia',
+  'entities.mobs.sableweb_hatchling.name': 'Cría Sableweb',
+  'entities.mobs.sableweb_matriarch.name': 'Matriarca Sableweb',
   'entities.mobs.sister_nhalia.name': 'Hermana Nhalia',
   'entities.mobs.varkas_boneguard.name': 'Guardahuesos de Varkas',
   'entities.mobs.imp.name': 'Diablillo',
@@ -2748,12 +2779,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_gravewyrm.completion':
     'Ha terminado. Los muertos de tres tierras descansan, y cada campana canta tu nombre, {playerName}.',
   'entities.quests.q_gravewyrm.objectives.0.label': 'Korzul el Gravewyrm abatido',
-  'entities.quests.q_mogger_tracks.title': 'El rastro de Mogger',
-  'entities.quests.q_mogger_tracks.text':
-    'Antes de tomar el camino al norte, Eastbrook tiene una última espina clavada: Mogger. La bestia pisotea el prado bajo y enloquece a los jabalíes. Limpia la zona de su rastro para que veamos dónde se esconde.',
-  'entities.quests.q_mogger_tracks.completion':
-    'Esas huellas son recientes y bastante hondas para juntar lluvia. Mogger no es un cuento de campamento, {playerName}, y está cerca.',
-  'entities.quests.q_mogger_tracks.objectives.0.label': 'Jabalí salvaje expulsado del rastro',
   'entities.quests.q_mogger.title': 'Mogger debe caer',
   'entities.quests.q_mogger.text':
     'Mogger ha partido carretas, aplastado cercas y matado tanto ganado como para vaciar medio Valle. No lo enfrentes a solas. Lleva dos compañeros fuertes al prado oriental y acaba con la bestia para siempre.',
@@ -2996,17 +3021,18 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': 'Bichero del segamareas',
   'entities.items.verlans_oathblade.name': 'Espada del juramento de Verlan',
   'entities.mobs.brutok_skullsmasher.name': 'Brutok Rompecráneos',
+  'entities.mobs.captain_verlan.name': 'Capitán Verlan',
   'entities.mobs.old_cragmaw.name': 'Viejo Cragmaw',
   'entities.mobs.sloomtooth_the_drowned.name': 'Sloomtooth el Ahogado',
   'entities.mobs.voskar_emberwing.name': 'Voskar Aladebrasa',
   'entities.mobs.wraithbinder_maldrec.name': 'Maldrec el Ataespectros',
-  'entities.items.glade_pelt.name': 'Piel del claro',
   'entities.items.soft_down.name': 'Mechón de plumón suave',
   'entities.items.amber_hide.name': 'Piel ambarina',
   'entities.items.stag_antler.name': 'Asta ramificada',
   'entities.items.brightwood_venison.name': 'Venado de Brightwood',
   'entities.items.bramblehide_jerkin.name': 'Jubón de piel de zarza',
   'entities.items.monarch_crown_helm.name': 'Corona del Monarca',
+  // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': 'Añadir canal de chat',
   'hud.core.chatChannels.addTitle': 'Añadir canal',
   'hud.core.chatChannels.close': 'Cerrar la pestaña {channel}',
@@ -3021,10 +3047,17 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': 'Mensaje a {channel}',
   'hud.options.npcVoices': 'Voces de PNJ',
   'hud.options.voiceVolume': 'Volumen de voces',
-  'entities.npcs.ranger_elwyn.greeting':
-    'Silencio, {className}. El claro está tranquilo hoy, y pretendo que siga así.',
-  'entities.npcs.ranger_elwyn.name': 'Montaraz Elwyn',
-  'entities.npcs.ranger_elwyn.title': 'Guardiana del claro',
+  'entities.mobs.bramble_lynx.name': 'Lince de zarzal',
+  'entities.mobs.brightwood_hare.name': 'Liebre de Brightwood',
+  'entities.mobs.brightwood_monarch.name': 'El Monarca de Brightwood',
+  'entities.mobs.brightwood_stag.name': 'Ciervo de Brightwood',
+  'entities.mobs.dawnmane_doe.name': 'Cierva crinalba',
+  'entities.mobs.glade_fox.name': 'Zorro del claro',
+  'entities.mobs.grovetusk_boar.name': 'Jabalí colmillarbóreo',
+  'entities.mobs.meadow_crane.name': 'Grulla de la pradera',
+  'entities.mobs.spotted_fawn.name': 'Cervatillo moteado',
+  'entities.mobs.sunhide_bear.name': 'Oso pielsolar',
+  'entities.mobs.thornpelt_badger.name': 'Tejón pielespina',
   'entities.zones.eastbrook_vale.pois.8.label': 'Claro de Brightwood',
   'fiesta.augment.aug_apex_predator.desc':
     '+40% de daño físico, +15% de crítico, sánate por el 12% del daño infligido.',
@@ -4006,6 +4039,8 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.arenaPage.wavesBody':
     'Cada ronda de una Fiesta te ofrece una elección nueva, y las opciones se vuelven más audaces conforme avanza la partida. Construyes de una oleada a la siguiente, eligiendo una de unas pocas opciones cada vez y conservándola durante el resto del combate.',
   'guide.arenaPage.wavesTitle': 'Las mejoras llegan en oleadas',
+  'guide.bestiary.flavor.brightwood_stag':
+    'Un orgulloso ciervo de la arboleda que baja su corona de astas y embiste hacia delante, volviéndose más temible cuanto más se le presiona.',
   'guide.bestiary.flavor.gravecaller_cultist':
     'Sirvientes encapuchados del culto de la muerte cuya obra mancilla las tumbas desde el Valle hasta los picos. Donde se reúnen, los muertos no descansan.',
   'guide.bestiary.flavor.grubjaw':
@@ -4117,9 +4152,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.lore.aldricBody':
     'Un humilde sacerdote de aldea que es el primero en nombrar al culto ante una tumba profanada en Eastbrook, y luego sigue su rastro en persona a través de la ciénaga y hasta el muro de Highwatch. Es el corazón firme de toda la campaña.',
   'guide.lore.aldricRole': 'Sacerdote del Valle',
-  'guide.lore.elwynBody':
-    'La única guardiana de una arboleda bañada por el sol en el norte del Valle. Su labor es la administración, no la matanza: aclarar lo que se reproduce en exceso y conceder a la bestia más anciana de la arboleda un final más amable del que le darían los lobos.',
-  'guide.lore.elwynRole': 'Guardabosques de la arboleda de Brightwood',
   'guide.lore.figuresBody':
     'Un puñado de personas recorren contigo el camino entero. Atento a estos nombres del valle a los picos.',
   'guide.lore.figuresTitle': 'Rostros que llegarás a conocer',
@@ -4308,9 +4340,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.loading': 'Cargando modelo...',
   'guide.viewer.view3d': 'Ver {name} en 3D',
   'guide.viewer.view3dShort': 'Ver en 3D',
-  'guide.worldPage.gladeBody':
-    'No todas las historias del Valle tratan de los muertos. En el norte, una arboleda bañada por el sol llamada arboleda de Brightwood mantiene su propio ritmo, más apacible, vigilada por una montaraz solitaria que prefiere cuidarla a luchar. Su labor es el equilibrio: aclarar lo que se reproduce en exceso y, cuando su madriguera se vuelve demasiado peligrosa para dejarla estar, dar al viejo ciervo coronado de la arboleda un final respetuoso. Es un suave contrapunto al rastro que sigues, y bien merece el desvío.',
-  'guide.worldPage.gladeTitle': 'Un rincón tranquilo: la arboleda de Brightwood',
   'guide.worldPage.marshGreeter': 'Guardiana Fenwick, Fenbridge',
   'guide.worldPage.marshGreeting':
     'Detente en la puerta. Pasados esos juncos, la ciénaga mata por nosotros.',
@@ -4325,6 +4354,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.valeGreeting': 'Mantén tu espada cerca. El Valle ya no es lo que era.',
   'guide.worldPage.valePlaceNotes':
     'Eastbrook es tu primera base de operaciones. Wolf Run y el Prado de los Jabalíes son terreno de caza apacible; el Lago Espejo es agua tranquila para pescar; el Bosque de Telarañas y la Excavación de Cobre ocultan arañas y excavadores ávidos de mineral; un Campamento de Bandidos y la Capilla Caída albergan trabajos más recios; la arboleda de Brightwood es una apacible arboleda de fauna salvaje en el norte.',
+  'guide.worldPage.gladeTitle': 'Un rincón tranquilo: la arboleda de Brightwood',
+  'guide.worldPage.gladeBody':
+    'No todas las historias del Valle tratan de los muertos. Al norte, una arboleda soleada llamada arboleda de Brightwood conserva su propio ritmo más amable, con senderos silenciosos, ciervos pastando y bestias cautelosas bajo las ramas. Es un contrapunto suave al rastro que sigues y merece verse cuando el camino te deje espacio para vagar.',
   // APM telemetry label from release/v0.14.0
   'hudChrome.perf.labels.apm': 'APM',
   // Account-security portal (2FA, verified email change, GDPR export) from PR #833.

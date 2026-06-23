@@ -175,25 +175,25 @@ export const de_DE: EnTranslations = {
       "done": "Fertig"
     },
     "theme": {
-      "preset": "UI Theme",
-      "customColors": "Custom Colors",
-      "reset": "Reset",
+      "preset": "Oberflächendesign",
+      "customColors": "Eigene Farben",
+      "reset": "Zurücksetzen",
       "presets": {
-        "classic": "Classic Gold",
-        "midnight": "Midnight",
-        "parchment": "Parchment",
-        "highContrast": "High Contrast"
+        "classic": "Klassisches Gold",
+        "midnight": "Mitternacht",
+        "parchment": "Pergament",
+        "highContrast": "Hoher Kontrast"
       },
       "knob": {
-        "accent": "Accent",
-        "border": "Border",
-        "panel": "Frame",
+        "accent": "Akzent",
+        "border": "Rahmen",
+        "panel": "Fensterrahmen",
         "text": "Text",
-        "textMuted": "Muted Text",
-        "hp": "Health",
+        "textMuted": "Gedämpfter Text",
+        "hp": "Gesundheit",
         "mana": "Mana",
-        "rage": "Rage",
-        "energy": "Energy"
+        "rage": "Wut",
+        "energy": "Energie"
       }
     },
     "questTracker": {
@@ -275,8 +275,8 @@ export const de_DE: EnTranslations = {
       "interfaceModeNote": "Auto wählt je nach Gerät die Desktop- oder Touch-Steuerung. Wähle Desktop, um Tastatur und Maus zu erzwingen (praktisch bei einem Tablet mit Tastatur), oder Touch für die Bildschirmsteuerung.",
       "footstepSounds": "Schrittgeräusche",
       "clickFeedback": "Klickmarkierung",
-      "lockCursorOnRotate": "Lock Cursor While Rotating",
-      "keybindHelpLockCursorOnRotate": "Keeps the mouse cursor inside the window while you drag to rotate the camera, so it cannot reach the screen edge or move to another monitor. Turn off if you prefer a free cursor.",
+      "lockCursorOnRotate": "Cursor beim Drehen sperren",
+      "keybindHelpLockCursorOnRotate": "Hält den Mauszeiger im Fenster, während Ihr zum Drehen der Kamera zieht, damit er nicht den Bildschirmrand erreicht oder auf einen anderen Monitor wandert. Schaltet dies aus, wenn Ihr einen freien Cursor bevorzugt.",
       "showWalletOnCharacterScreen": "Wallet auf dem Charakterbildschirm anzeigen",
       "showWalletOnPlayerCard": "Wallet auf der Spielerkarte anzeigen",
       "uiScale": "UI-Skalierung",
@@ -952,6 +952,7 @@ export const de_DE: EnTranslations = {
       "notedLabel": "Bemerkenswert",
       "flavor": {
         "old_greyjaw": "Ein vernarbter alter Wolf, den keine Falle gehalten hat, dem drei Jagdhunde und der Arm eines Stalljungen zur Last gelegt werden. Er jagt allein in den tiefen Wäldern und wird umso wilder, je länger ein Kampf andauert.",
+        "brightwood_stag": "Ein stolzer Hain-Hirsch, der seine Krone aus Geweih senkt und vorwärts stürmt, und der schwerer zu bezwingen wird, je länger man ihn bedrängt.",
         "grubjaw": "Ein Moortroll, so gierig, dass die anderen Trolle nicht neben ihm graben wollen, von dem man sagt, er habe einem Händler die letzten zwei Packmaultiere gefressen, samt Geschirr und allem.",
         "shardlord_kazzix": "Ein Sturmelementar, dem man Schultern gegeben hat und der über die fernen Felszacken hoch über Stormcrag wandelt, mit einem Herzsplitter, für den es sich lohnt, dem Blitz zu trotzen.",
         "mirejaw_frenzy": "Ein Moor-Murloc, der sich mitten im Kampf in eine um sich schlagende Raserei steigert, das lauteste Wesen in einem lauten, territorialen Rudel.",
@@ -1017,7 +1018,7 @@ export const de_DE: EnTranslations = {
       "marshPlaceNotes": "Fenbridge bewacht die einzige trockene Straße. Das Pirscherschilf und die Tieffenniederung wimmeln von Moorbestien und Murlocs; das Witwendickicht ist dicht mit Netzen versponnen; die Ertrunkene Kapelle und die Trollhügel beherbergen ältere Gefahren; das Grabruferlager ist der eingegrabene Kult, und die versunkene Bastion ist das instanzierte Herz des Moores.",
       "peaksPlaceNotes": "Highwatch hält die Mauer. Der Pirscherkamm und die Tieffelsbaue gehören Bergkatzen und Kobolden; die Ogervorberge und Drogmars Kriegslager den Schlägern für Sold; Stormcrag knistert vor Elementaren, und der Glimmermere leuchtet darunter; die Wyrmkultzelte und die Wiedergängerfelder umringen das Hochland des Kults, mit dem Gravewyrm-Heiligtum auf seinem Gipfel.",
       "gladeTitle": "Eine stille Ecke: Brightwood Glade",
-      "gladeBody": "Nicht jede Geschichte im Tal handelt von den Toten. Im Norden hält ein sonnenbeschienener Hain namens Brightwood Glade seinen eigenen sanfteren Rhythmus, behütet von einer einsamen Waldläuferin, die ihn lieber pflegt als kämpft. Ihre Arbeit ist Gleichgewicht: zu lichten, was sich überzüchtet, und, wenn seine Aushöhlung zu gefährlich wird, um sie zu belassen, dem alten gekrönten Hirsch des Hains ein würdevolles Ende zu geben. Es ist ein leiser Gegenpol zu der Spur, der du folgst, und den Umweg wert."
+      "gladeBody": "Nicht jede Geschichte im Tal handelt von den Toten. Im Norden bewahrt ein sonnenheller Hain namens Brightwood Glade seinen eigenen, sanfteren Rhythmus, mit stillen Pfaden, grasenden Hirschen und wachsamen Tieren unter den Zweigen. Er ist ein ruhiger Gegenklang zu der Spur, der du folgst, und einen Blick wert, wenn die Straße dir Raum zum Umherstreifen lässt."
     },
     "questsPage": {
       "heading": "Quests",
@@ -1065,9 +1066,7 @@ export const de_DE: EnTranslations = {
       "aldricRole": "Priester des Tals",
       "aldricBody": "Ein bescheidener Dorfpriester, der den Kult zuerst über einem geschändeten Grab in Eastbrook beim Namen nennt und dann seiner Spur höchstpersönlich durch das Moor und hinauf zur Mauer von Highwatch folgt. Er ist das ruhige Herz des ganzen Feldzugs.",
       "marenRole": "Die Späherin des Marschalls",
-      "marenBody": "Eine wortkarge Fährtenleserin, der du im Schilf von Mirefen begegnest, lauter leise Füße und eine kurze Klinge. Auch sie folgt der Spur nach Norden, und es ist ihr Ohr, das die Worte auffängt, die dich zu den Gipfeln schicken.",
-      "elwynRole": "Lichtungswächterin von Brightwood",
-      "elwynBody": "Die einsame Hüterin eines sonnenbeschienenen Hains im Norden des Tals. Ihre Arbeit ist Pflege, nicht Gemetzel: Sie lichtet, was sich überzüchtet, und gewährt dem ältesten Tier des Hains ein gnädigeres Ende, als die Wölfe es ihm bereiten würden."
+      "marenBody": "Eine wortkarge Fährtenleserin, der du im Schilf von Mirefen begegnest, lauter leise Füße und eine kurze Klinge. Auch sie folgt der Spur nach Norden, und es ist ihr Ohr, das die Worte auffängt, die dich zu den Gipfeln schicken."
     },
     "dungeonsPage": {
       "heading": "Dungeons und Schlachtzüge",
@@ -1932,11 +1931,11 @@ export const de_DE: EnTranslations = {
     "high": "Hoch",
     "medium": "Mittel",
     "low": "Niedrig",
-    "popTipLow": "Low population: fewer than 15 players online right now. Plenty of room; great for a fresh start.",
-    "popTipMedium": "Medium population: 15 to 39 players online right now. A healthy, active realm.",
-    "popTipHigh": "High population: 40 to 79 players online right now. Busy, with lots of players around.",
-    "popTipFull": "Full population: 80 or more players online right now. Very busy; you may wait in a login queue.",
-    "popTipOffline": "Offline: this realm is unreachable right now and cannot be joined.",
+    "popTipLow": "Niedrige Bevölkerung: derzeit weniger als 15 Spieler online. Viel Platz; ideal für einen Neustart.",
+    "popTipMedium": "Mittlere Bevölkerung: derzeit 15 bis 39 Spieler online. Ein gesunder, aktiver Realm.",
+    "popTipHigh": "Hohe Bevölkerung: derzeit 40 bis 79 Spieler online. Belebt, mit vielen Spielern in der Nähe.",
+    "popTipFull": "Volle Bevölkerung: derzeit 80 oder mehr Spieler online. Sehr belebt; eventuell müsst Ihr in einer Login-Warteschlange warten.",
+    "popTipOffline": "Offline: Dieser Realm ist derzeit nicht erreichbar und kann nicht betreten werden.",
     "characterCountOne": "{count} Charakter",
     "characterCountOther": "{count} Charaktere",
     "selectedRealm": "Realm: {name}",
@@ -4074,9 +4073,6 @@ export const de_DE: EnTranslations = {
       "milepost_boots": {
         "name": "Meilenstein-Stiefel"
       },
-      "glade_pelt": {
-        "name": "Lichtungsfell"
-      },
       "soft_down": {
         "name": "Weicher Daunenbüschel"
       },
@@ -4721,6 +4717,42 @@ export const de_DE: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Geißel von Thornpeak"
       },
+      "brightwood_hare": {
+        "name": "Hellholz-Hase"
+      },
+      "glade_fox": {
+        "name": "Lichtungsfuchs"
+      },
+      "spotted_fawn": {
+        "name": "Geflecktes Hirschkalb"
+      },
+      "meadow_crane": {
+        "name": "Wiesenkranich"
+      },
+      "thornpelt_badger": {
+        "name": "Dornpelz-Dachs"
+      },
+      "dawnmane_doe": {
+        "name": "Morgenmähnen-Hirschkuh"
+      },
+      "bramble_lynx": {
+        "name": "Dornenluchs"
+      },
+      "brightwood_stag": {
+        "name": "Hellholz-Hirsch"
+      },
+      "grovetusk_boar": {
+        "name": "Hainhauer-Keiler"
+      },
+      "sunhide_bear": {
+        "name": "Sonnenfell-Bär"
+      },
+      "brightwood_monarch": {
+        "name": "Der Hellholz-Monarch"
+      },
+      "elder_bristleback": {
+        "name": "Alter Bristleback"
+      },
       "ironvein_foreman": {
         "name": "Eisenader-Vorarbeiter"
       },
@@ -4745,6 +4777,12 @@ export const de_DE: EnTranslations = {
       "nhalia_mourner": {
         "name": "Nhalia-Trauernde"
       },
+      "sableweb_hatchling": {
+        "name": "Sableweb-Jungtier"
+      },
+      "sableweb_matriarch": {
+        "name": "Sableweb-Matriarchin"
+      },
       "sister_nhalia": {
         "name": "Schwester Nhalia"
       },
@@ -4765,6 +4803,9 @@ export const de_DE: EnTranslations = {
       },
       "brutok_skullsmasher": {
         "name": "Brutok Schädelschmetterer"
+      },
+      "captain_verlan": {
+        "name": "Hauptmann Verlan"
       },
       "old_cragmaw": {
         "name": "Alter Cragmaw"
@@ -4922,11 +4963,6 @@ export const de_DE: EnTranslations = {
         "name": "Lehrmeister Caddis",
         "title": "Lehrmeister",
         "greeting": "Achte auf lockeren Schiefer, {className}. Der Berg ist unruhig geworden, und ich will wissen warum."
-      },
-      "ranger_elwyn": {
-        "name": "Waldläufer Elwyn",
-        "title": "Hüter der Lichtung",
-        "greeting": "Ruhig, {className} - die Lichtung ist heute friedlich, und das gedenke ich so zu erhalten."
       },
       "brother_aldric_raid": {
         "name": "Bruder Aldric",
@@ -5679,16 +5715,6 @@ export const de_DE: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Nythraxis besiegt"
-          }
-        }
-      },
-      "q_mogger_tracks": {
-        "title": "Moggers Spur",
-        "text": "Bevor du die Straße nach Norden nimmst, hat Eastbrook noch einen letzten Dorn im Fleisch: Mogger. Der Grobian zertrampelt die untere Wiese und treibt die Eber in den Wahnsinn. Säubere die Wiese um seine Spur, damit wir sehen, wo er haust.",
-        "completion": "Diese Spuren sind frisch und tief genug, um Regen zu halten. Mogger ist kein Lagerfeuermärchen, {playerName}, und er ist nah.",
-        "objectives": {
-          "0": {
-            "label": "Wilder Eber von der Spur vertrieben"
           }
         }
       },

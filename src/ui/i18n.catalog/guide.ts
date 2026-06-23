@@ -516,6 +516,8 @@ export const guideStrings = {
     flavor: {
       old_greyjaw:
         "A scarred old wolf no trap has held, blamed for three hounds and a stable boy's arm. He hunts the deep woods alone, and turns savage the longer a fight wears on.",
+      brightwood_stag:
+        'A proud grove deer that lowers its crown of antlers and bulls forward, growing harder to face the longer it is pressed.',
       grubjaw:
         "A fen troll so greedy the other trolls will not dig beside him, said to have eaten a trader's last two pack-mules, harness and all.",
       shardlord_kazzix:
@@ -602,10 +604,10 @@ export const guideStrings = {
     peaksPlaceNotes:
       "Highwatch holds the wall. Stalker Ridge and the Deeprock Burrows belong to ridge cats and kobolds; the Ogre Foothills and Drogmar's War-Camp to brutes for hire; Stormcrag crackles with elementals and the Glimmermere glows below it; the Wyrmcult Tents and Revenant Fields ring the cult's high ground, with Gravewyrm Sanctum at its peak.",
 
-    // Brightwood Glade vignette (Ranger Elwyn + the great stag), distilled spoiler-safe.
+    // Brightwood Glade vignette, distilled spoiler-safe.
     gladeTitle: 'A quiet corner: Brightwood Glade',
     gladeBody:
-      "Not every story in the Vale is about the dead. In the north, a sunlit grove called Brightwood Glade keeps its own gentler rhythm, watched over by a lone ranger who would rather steward it than fight. Her work is balance: thinning what overbreeds, and, when its hollow grows too dangerous to leave be, giving the grove's old crowned stag a respectful end. It is a soft counterpoint to the trail you are following, and worth the detour.",
+      'Not every story in the Vale is about the dead. In the north, a sunlit grove called Brightwood Glade keeps its own gentler rhythm, with quiet paths, grazing deer, and wary beasts under the boughs. It is a soft counterpoint to the trail you are following, and worth seeing when the road gives you room to wander.',
   },
 
   // Quests.
@@ -684,9 +686,6 @@ export const guideStrings = {
     marenRole: "The Marshal's Scout",
     marenBody:
       'A low-talking tracker you meet in the reeds of Mirefen, all quiet feet and a short blade. She follows the trail north too, and it is her ear that catches the words that send you to the peaks.',
-    elwynRole: 'Glade Warden of Brightwood',
-    elwynBody:
-      "The lone keeper of a sunlit grove in the north of the Vale. Her work is stewardship, not slaughter: thinning what overbreeds and granting the grove's oldest beast a kinder end than the wolves would.",
   },
 
   // Dungeons and Raids.

@@ -73,6 +73,18 @@ const MOB_IDS = [
   'bound_guardian',
   'nythraxis_skeleton_warrior',
   'nythraxis_scourge_of_thornpeak',
+  // Brightwood Glade wildlife pack
+  'brightwood_hare',
+  'glade_fox',
+  'spotted_fawn',
+  'meadow_crane',
+  'thornpelt_badger',
+  'dawnmane_doe',
+  'bramble_lynx',
+  'brightwood_stag',
+  'grovetusk_boar',
+  'sunhide_bear',
+  'brightwood_monarch',
 ] as const;
 
 const NPC_IDS = [
@@ -95,7 +107,6 @@ const NPC_IDS = [
   'quartermaster_bree',
   'armorer_hode',
   'loremaster_caddis',
-  'ranger_elwyn',
   'brother_aldric_raid', // dynamically-spawned raid turn-in NPC (Crypt of Nythraxis)
 ] as const;
 
@@ -170,6 +181,7 @@ const QUEST_IDS = [
   'q_nythraxis_sealed_crypt',
   'q_nythraxis_bound_guardian',
   'q_nythraxis_scourges_end',
+  'q_mogger',
 ] as const;
 
 const ZONE_IDS = ['eastbrook_vale', 'mirefen_marsh', 'thornpeak_heights'] as const;

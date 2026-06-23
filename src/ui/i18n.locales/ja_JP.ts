@@ -2239,6 +2239,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': '縛られしコルガス',
   'entities.mobs.grand_necromancer_velkhar.name': '大死霊術師ヴェルカー',
   'entities.mobs.korzul_the_gravewyrm.name': '墓ワームのコルズル',
+  'entities.mobs.elder_bristleback.name': '老ブリストルバック',
   'entities.mobs.ironvein_foreman.name': '鉄脈の現場監督',
   'entities.mobs.ironvein_sapper.name': '鉄脈の爆破兵',
   'entities.mobs.marrowlord_varkas.name': '髄王ヴァーカス',
@@ -2247,6 +2248,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': 'モガー',
   'entities.mobs.mogger_lackey.name': 'モガーの手下',
   'entities.mobs.nhalia_mourner.name': 'ナリアの嘆き手',
+  'entities.mobs.sableweb_hatchling.name': 'セーブルウェブの幼体',
+  'entities.mobs.sableweb_matriarch.name': 'セーブルウェブの女家長',
   'entities.mobs.sister_nhalia.name': 'シスター・ナリア',
   'entities.mobs.varkas_boneguard.name': 'ヴァーカスの骨衛兵',
   'entities.mobs.imp.name': 'インプ',
@@ -2729,12 +2732,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_gravewyrm.completion':
     '終わりました。三つの地の死者は休み、山は憑かれずに眠ります。{playerName}、今夜すべての鐘があなたの名を鳴らします。',
   'entities.quests.q_gravewyrm.objectives.0.label': '墓ワームのコルズルを討伐',
-  'entities.quests.q_mogger_tracks.title': 'モガーの足跡',
-  'entities.quests.q_mogger_tracks.text':
-    '北への道を進む前に、イーストブルックには最後の厄介者がいます。モガーです。あの巨獣は低い草地を踏み荒らし、猪を狂わせています。足跡の周囲を片付け、巣を見つけられるようにしてください。',
-  'entities.quests.q_mogger_tracks.completion':
-    'その足跡は新しく、雨を溜めるほど深い。モガーは焚き火話ではありません、{playerName}。近くにいます。',
-  'entities.quests.q_mogger_tracks.objectives.0.label': '野猪を足跡から追い払う',
   'entities.quests.q_mogger.title': 'モガーを倒せ',
   'entities.quests.q_mogger.text':
     'モガーは荷車を裂き、柵を潰し、谷の半分を空にするほど家畜を殺しました。ひとりで挑んではいけません。強い仲間を二人連れ、東の草地であの巨獣を完全に倒してください。',
@@ -2977,11 +2974,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': '潮裂きのギャフ',
   'entities.items.verlans_oathblade.name': 'ヴァーランの誓約刃',
   'entities.mobs.brutok_skullsmasher.name': '頭蓋砕きブルトーク',
+  'entities.mobs.captain_verlan.name': 'ヴァーラン隊長',
   'entities.mobs.old_cragmaw.name': '老いたるクラッグモウ',
   'entities.mobs.sloomtooth_the_drowned.name': '溺れし者スルームトゥース',
   'entities.mobs.voskar_emberwing.name': '燃え翼のヴォスカル',
   'entities.mobs.wraithbinder_maldrec.name': '魂縛りマルドレク',
-  'entities.items.glade_pelt.name': '林間の毛皮',
   'entities.items.soft_down.name': '柔らかな綿毛',
   'entities.items.amber_hide.name': '琥珀色の革',
   'entities.items.stag_antler.name': '枝分かれした角',
@@ -3005,10 +3002,17 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': '{channel}に送信',
   'hud.options.npcVoices': 'NPCボイス',
   'hud.options.voiceVolume': 'ボイス音量',
-  'entities.npcs.ranger_elwyn.greeting':
-    '静かに、{className}。今日の林間は穏やかだ。私はこのまま保つつもりでね。',
-  'entities.npcs.ranger_elwyn.name': 'レンジャー・エルウィン',
-  'entities.npcs.ranger_elwyn.title': '林間の守り手',
+  'entities.mobs.bramble_lynx.name': '茨のオオヤマネコ',
+  'entities.mobs.brightwood_hare.name': 'ブライトウッドの野ウサギ',
+  'entities.mobs.brightwood_monarch.name': 'ブライトウッドの君主',
+  'entities.mobs.brightwood_stag.name': 'ブライトウッドの牡鹿',
+  'entities.mobs.dawnmane_doe.name': '暁のたてがみの雌鹿',
+  'entities.mobs.glade_fox.name': '林間のキツネ',
+  'entities.mobs.grovetusk_boar.name': '木立牙の猪',
+  'entities.mobs.meadow_crane.name': '草原のツル',
+  'entities.mobs.spotted_fawn.name': '斑模様の子鹿',
+  'entities.mobs.sunhide_bear.name': '陽光皮の熊',
+  'entities.mobs.thornpelt_badger.name': '茨毛のアナグマ',
   'entities.zones.eastbrook_vale.pois.8.label': 'ブライトウッドの林間',
   'fiesta.augment.aug_apex_predator.desc':
     '物理ダメージ+40%、クリティカル+15%、与えたダメージの12%を回復。',
@@ -3946,6 +3950,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.arenaPage.wavesBody':
     'Fiestaの各ラウンドでは新たな一手が手に入り、試合が進むにつれてその一手は大胆になっていきます。一つのウェーブから次へとビルドを築き上げ、毎回いくつかの候補から一つを選び、残りの試合の間はそれを持ち続けます。',
   'guide.arenaPage.wavesTitle': 'オーグメントはウェーブで訪れる',
+  'guide.bestiary.flavor.brightwood_stag':
+    '誇り高い林間の牡鹿。角の冠を下げて突進し、追い詰められるほどに手強くなります。',
   'guide.bestiary.flavor.gravecaller_cultist':
     '死のカルトに仕えるローブ姿の僕たち。その業は渓谷から高地まで墓を汚し、彼らが集う場所では死者が安らぎません。',
   'guide.bestiary.flavor.grubjaw':
@@ -4057,9 +4063,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.lore.aldricBody':
     'つつましい村の司祭。イーストブルックの汚された墓の前で初めてカルトの名を口にし、その足取りを自ら湿地を抜け、ハイウォッチの壁まで追っていきます。彼はこの遠征全体の揺るがぬ心です。',
   'guide.lore.aldricRole': '渓谷の司祭',
-  'guide.lore.elwynBody':
-    '渓谷北部の陽の差す林間を独りで守る者。その務めは殺戮ではなく管理です。増えすぎたものを間引き、林間の最も古い獣に、狼たちが与えるよりも優しい最期を授けます。',
-  'guide.lore.elwynRole': 'ブライトウッドの林間の守り手',
   'guide.lore.figuresBody':
     'ひと握りの人々が、あなたと共にこの道のりを最後まで歩みます。渓谷から高地まで、これらの名前に心を留めておきましょう。',
   'guide.lore.figuresTitle': 'やがて知ることになる顔ぶれ',
@@ -4247,9 +4250,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.loading': 'モデルを読み込み中...',
   'guide.viewer.view3d': '{name}を3Dで見る',
   'guide.viewer.view3dShort': '3Dで見る',
-  'guide.worldPage.gladeBody':
-    '渓谷のすべての物語が死者についてのものというわけではありません。北部には、ブライトウッド・グレードと呼ばれる陽の差す林間が、それ自身の穏やかなリズムを保っています。戦うよりも管理することを選ぶ、独りのレンジャーに見守られています。その務めは均衡です。増えすぎたものを間引き、その隠れ家が放っておくには危険になりすぎたときには、林間の老いた冠をいただく牡鹿に敬意ある最期を与えます。あなたが追う足取りへの柔らかな対比であり、寄り道する価値があります。',
-  'guide.worldPage.gladeTitle': '静かな一角：ブライトウッド・グレード',
   'guide.worldPage.marshGreeter': '番人フェンウィック、フェンブリッジ',
   'guide.worldPage.marshGreeting':
     '門で止まれ。あの葦の向こうでは、沼が我々の代わりに殺しをやってくれる。',
@@ -4264,6 +4264,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.valeGreeting': '刃を手放すな。渓谷はかつての姿ではない。',
   'guide.worldPage.valePlaceNotes':
     'イーストブルックは最初の本拠地です。ウルフランとボアの草原は穏やかな狩り場、ミラー湖は釣りのできる静かな水。ウェブウッドとカッパー採掘場には蜘蛛と鉱石に貪欲な掘り手が隠れ、盗賊の野営地と倒れた礼拝堂にはより手荒い仕事があり、ブライトウッド・グレードは北部の穏やかな野生の林間です。',
+  'guide.worldPage.gladeTitle': '静かな一角：ブライトウッド・グレード',
+  'guide.worldPage.gladeBody':
+    '谷の物語がすべて死者について語るわけではありません。北にはブライトウッド・グレードと呼ばれる陽だまりの林があり、静かな小道、草を食む鹿、枝の下で警戒する獣たちとともに、穏やかな独自の調子を保っています。あなたが追う足跡への静かな対照であり、道に寄り道の余裕があるなら見る価値があります。',
   // APM telemetry label from release/v0.14.0
   'hudChrome.perf.labels.apm': 'APM',
 };

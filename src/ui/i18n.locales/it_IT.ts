@@ -20,6 +20,35 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.interfaceModeTouch': 'Touch',
   'hudChrome.options.interfaceModeNote':
     'Auto sceglie i controlli Desktop o Touch in base al tuo dispositivo. Scegli Desktop per forzare tastiera e mouse (utile su un tablet con tastiera), oppure Touch per i controlli a schermo.',
+  'hudChrome.options.lockCursorOnRotate': 'Blocca cursore durante la rotazione',
+  'hudChrome.options.keybindHelpLockCursorOnRotate':
+    "Mantiene il cursore del mouse dentro la finestra mentre trascini per ruotare la telecamera, così non può raggiungere il bordo dello schermo o passare a un altro monitor. Disattiva l'opzione se preferisci un cursore libero.",
+  'hudChrome.theme.preset': "Tema dell'interfaccia",
+  'hudChrome.theme.customColors': 'Colori personalizzati',
+  'hudChrome.theme.reset': 'Ripristina',
+  'hudChrome.theme.presets.classic': 'Oro classico',
+  'hudChrome.theme.presets.midnight': 'Mezzanotte',
+  'hudChrome.theme.presets.parchment': 'Pergamena',
+  'hudChrome.theme.presets.highContrast': 'Alto contrasto',
+  'hudChrome.theme.knob.accent': 'Accento',
+  'hudChrome.theme.knob.border': 'Bordo',
+  'hudChrome.theme.knob.panel': 'Cornice',
+  'hudChrome.theme.knob.text': 'Testo',
+  'hudChrome.theme.knob.textMuted': 'Testo tenue',
+  'hudChrome.theme.knob.hp': 'Salute',
+  'hudChrome.theme.knob.mana': 'Mana',
+  'hudChrome.theme.knob.rage': 'Rabbia',
+  'hudChrome.theme.knob.energy': 'Energia',
+  'realm.popTipLow':
+    'Popolazione bassa: meno di 15 giocatori online ora. Molto spazio; ottimo per ricominciare.',
+  'realm.popTipMedium':
+    'Popolazione media: da 15 a 39 giocatori online ora. Un reame sano e attivo.',
+  'realm.popTipHigh':
+    'Popolazione alta: da 40 a 79 giocatori online ora. Affollato, con molti giocatori in giro.',
+  'realm.popTipFull':
+    'Popolazione piena: 80 o più giocatori online ora. Molto affollato; potresti attendere in coda per accedere.',
+  'realm.popTipOffline':
+    'Offline: questo reame al momento non è raggiungibile e non è possibile entrarvi.',
   'hud.tutorial.title': 'Nuovo avventuriero',
   'hud.tutorial.stepLabel': 'Passo {current} di {total}',
   'hud.tutorial.skip': 'Salta il tutorial',
@@ -2236,6 +2265,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': 'Korgath il Vincolato',
   'entities.mobs.grand_necromancer_velkhar.name': 'Grande negromante Velkhar',
   'entities.mobs.korzul_the_gravewyrm.name': 'Korzul il Gravewyrm',
+  'entities.mobs.elder_bristleback.name': 'Bristleback anziano',
   'entities.mobs.ironvein_foreman.name': 'Caposquadra Venaferrata',
   'entities.mobs.ironvein_sapper.name': 'Zappatore Venaferrata',
   'entities.mobs.marrowlord_varkas.name': 'Signore del Midollo Varkas',
@@ -2244,6 +2274,8 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': 'Mogger',
   'entities.mobs.mogger_lackey.name': 'Lacchè di Mogger',
   'entities.mobs.nhalia_mourner.name': 'Piangente di Nhalia',
+  'entities.mobs.sableweb_hatchling.name': 'Piccolo Sableweb',
+  'entities.mobs.sableweb_matriarch.name': 'Matriarca Sableweb',
   'entities.mobs.sister_nhalia.name': 'Sorella Nhalia',
   'entities.mobs.varkas_boneguard.name': "Guardia d'ossa di Varkas",
   'entities.mobs.imp.name': 'Folletto',
@@ -2736,13 +2768,6 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_gravewyrm.completion':
     'È finita. I morti di tre terre riposano, e ogni campana canta il tuo nome, {playerName}.',
   'entities.quests.q_gravewyrm.objectives.0.label': 'Korzul il Gravewyrm ucciso',
-  'entities.quests.q_mogger_tracks.title': 'La traccia di Mogger',
-  'entities.quests.q_mogger_tracks.text':
-    "Prima di prendere la strada a nord, Eastbrook ha un'ultima spina nel fianco: Mogger. Il bruto calpesta il prato basso e fa impazzire i cinghiali. Ripulisci il prato attorno alla sua traccia per scoprire dove si tana.",
-  'entities.quests.q_mogger_tracks.completion':
-    'Quelle impronte sono fresche e abbastanza profonde da trattenere la pioggia. Mogger non è una storia da campo, {playerName}, ed è vicino.',
-  'entities.quests.q_mogger_tracks.objectives.0.label':
-    'Cinghiale selvatico scacciato dalla traccia',
   'entities.quests.q_mogger.title': 'Mogger deve cadere',
   'entities.quests.q_mogger.text':
     'Mogger ha spaccato carri, schiacciato recinti e ucciso bestiame quanto basta per svuotare mezzo Valle. Non affrontarlo da solo. Porta due compagni forti nel prato orientale e abbatti il bruto per sempre.',
@@ -2984,17 +3009,18 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': 'Gancio del falciamaree',
   'entities.items.verlans_oathblade.name': 'Lama del giuramento di Verlan',
   'entities.mobs.brutok_skullsmasher.name': 'Brutok Spaccacranio',
+  'entities.mobs.captain_verlan.name': 'Capitano Verlan',
   'entities.mobs.old_cragmaw.name': 'Vecchio Cragmaw',
   'entities.mobs.sloomtooth_the_drowned.name': "Sloomtooth l'Annegato",
   'entities.mobs.voskar_emberwing.name': 'Voskar Aladibrace',
   'entities.mobs.wraithbinder_maldrec.name': 'Maldrec il Legaspettri',
-  'entities.items.glade_pelt.name': 'Pelliccia della radura',
   'entities.items.soft_down.name': 'Ciuffo di piumino morbido',
   'entities.items.amber_hide.name': "Pelle d'ambra",
   'entities.items.stag_antler.name': 'Corno ramificato',
   'entities.items.brightwood_venison.name': 'Selvaggina di Brightwood',
   'entities.items.bramblehide_jerkin.name': 'Giubbotto di pelle di rovo',
   'entities.items.monarch_crown_helm.name': 'Corona del Monarca',
+  // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': 'Aggiungi canale di chat',
   'hud.core.chatChannels.addTitle': 'Aggiungi canale',
   'hud.core.chatChannels.close': 'Chiudi la scheda {channel}',
@@ -3009,10 +3035,17 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': 'Messaggio in {channel}',
   'hud.options.npcVoices': 'Voci dei PNG',
   'hud.options.voiceVolume': 'Volume voci',
-  'entities.npcs.ranger_elwyn.greeting':
-    'Silenzio, {className}: la radura oggi è tranquilla, e intendo che resti così.',
-  'entities.npcs.ranger_elwyn.name': 'Ranger Elwyn',
-  'entities.npcs.ranger_elwyn.title': 'Guardiano della radura',
+  'entities.mobs.bramble_lynx.name': 'Lince dei rovi',
+  'entities.mobs.brightwood_hare.name': 'Lepre di Brightwood',
+  'entities.mobs.brightwood_monarch.name': 'Il Monarca di Brightwood',
+  'entities.mobs.brightwood_stag.name': 'Cervo di Brightwood',
+  'entities.mobs.dawnmane_doe.name': 'Cerva crindalba',
+  'entities.mobs.glade_fox.name': 'Volpe della radura',
+  'entities.mobs.grovetusk_boar.name': 'Cinghiale zannaboschiva',
+  'entities.mobs.meadow_crane.name': 'Gru del prato',
+  'entities.mobs.spotted_fawn.name': 'Cerbiatto maculato',
+  'entities.mobs.sunhide_bear.name': 'Orso pellesolare',
+  'entities.mobs.thornpelt_badger.name': 'Tasso pellespinosa',
   'entities.zones.eastbrook_vale.pois.8.label': 'Radura di Brightwood',
   'fiesta.augment.aug_apex_predator.desc':
     '+40% danni fisici, +15% critico, cura pari al 12% dei danni inflitti.',
@@ -3994,6 +4027,8 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'guide.arenaPage.wavesBody':
     "Ogni round di una Fiesta ti offre una nuova scelta, e le scelte si fanno più audaci man mano che la partita procede. Costruisci da un'ondata alla successiva, scegliendo ogni volta una tra poche opzioni e tenendola per il resto dell'incontro.",
   'guide.arenaPage.wavesTitle': 'I potenziamenti arrivano a ondate',
+  'guide.bestiary.flavor.brightwood_stag':
+    'Un fiero cervo della radura che abbassa la sua corona di corna e carica in avanti, diventando più ostico da affrontare quanto più lo si incalza.',
   'guide.bestiary.flavor.gravecaller_cultist':
     'Servi incappucciati del culto della morte la cui opera profana le tombe dalla Valle alle vette. Dove si radunano, i morti non riposano.',
   'guide.bestiary.flavor.grubjaw':
@@ -4105,9 +4140,6 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'guide.lore.aldricBody':
     "Un umile sacerdote di villaggio che per primo dà un nome al culto su una tomba profanata a Eastbrook, poi ne segue la pista di persona attraverso la palude e fino al muro di Highwatch. È il cuore saldo dell'intera campagna.",
   'guide.lore.aldricRole': 'Sacerdote della Valle',
-  'guide.lore.elwynBody':
-    'La solitaria custode di una radura assolata nel nord della Valle. Il suo compito è la cura, non la mattanza: dirada ciò che prolifica troppo e concede alla più antica bestia della radura una fine più dolce di quella che le darebbero i lupi.',
-  'guide.lore.elwynRole': 'Guardiana della Radura di Brightwood',
   'guide.lore.figuresBody':
     "Una manciata di persone percorre con te tutta la strada. Tieni d'occhio questi nomi, dalla valle alle vette.",
   'guide.lore.figuresTitle': 'Volti che imparerai a conoscere',
@@ -4296,9 +4328,6 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.loading': 'Caricamento del modello...',
   'guide.viewer.view3d': 'Visualizza {name} in 3D',
   'guide.viewer.view3dShort': 'Visualizza in 3D',
-  'guide.worldPage.gladeBody':
-    "Non tutte le storie della Valle parlano dei morti. A nord, una radura assolata chiamata Radura di Brightwood mantiene il proprio ritmo più gentile, vegliata da una ranger solitaria che preferisce curarla piuttosto che combattere. Il suo compito è l'equilibrio: diradare ciò che prolifica troppo e, quando la sua tana diventa troppo pericolosa da lasciar stare, dare al vecchio cervo coronato della radura una fine rispettosa. È un dolce contrappunto alla pista che stai seguendo, e vale la deviazione.",
-  'guide.worldPage.gladeTitle': 'Un angolo tranquillo: la Radura di Brightwood',
   'guide.worldPage.marshGreeter': 'Guardiano Fenwick, Fenbridge',
   'guide.worldPage.marshGreeting':
     "Fermati al cancello. Oltre quelle canne, l'acquitrino uccide al posto nostro.",
@@ -4313,6 +4342,9 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.valeGreeting': 'Tieni la lama a portata. La Valle non è più quella di un tempo.',
   'guide.worldPage.valePlaceNotes':
     'Eastbrook è la tua prima base. Il Sentiero dei Lupi e il Prato dei Cinghiali sono terreni di caccia tranquilli; il Lago a Specchio è acqua quieta dove pescare; il Boscoragnatela e lo Scavo di Rame nascondono ragni e scavatori avidi di minerale; un Campo di Banditi e la Cappella Caduta custodiscono lavori più duri; la Radura di Brightwood è una serena radura di natura selvaggia a nord.',
+  'guide.worldPage.gladeTitle': 'Un angolo quieto: la Radura di Brightwood',
+  'guide.worldPage.gladeBody':
+    'Non ogni storia della Valle parla dei morti. A nord, una radura assolata chiamata Brightwood mantiene un ritmo più gentile tutto suo, con sentieri silenziosi, cervi al pascolo e bestie guardinghe sotto i rami. È un contrappunto lieve alla pista che stai seguendo e vale la pena vederla quando la strada ti lascia spazio per vagare.',
   // APM telemetry label from release/v0.14.0
   'hudChrome.perf.labels.apm': 'APM',
   // Account-security portal (2FA, verified email change, GDPR export) from PR #833.

@@ -175,25 +175,25 @@ export const it_IT: EnTranslations = {
       "done": "Fine"
     },
     "theme": {
-      "preset": "UI Theme",
-      "customColors": "Custom Colors",
-      "reset": "Reset",
+      "preset": "Tema dell'interfaccia",
+      "customColors": "Colori personalizzati",
+      "reset": "Ripristina",
       "presets": {
-        "classic": "Classic Gold",
-        "midnight": "Midnight",
-        "parchment": "Parchment",
-        "highContrast": "High Contrast"
+        "classic": "Oro classico",
+        "midnight": "Mezzanotte",
+        "parchment": "Pergamena",
+        "highContrast": "Alto contrasto"
       },
       "knob": {
-        "accent": "Accent",
-        "border": "Border",
-        "panel": "Frame",
-        "text": "Text",
-        "textMuted": "Muted Text",
-        "hp": "Health",
+        "accent": "Accento",
+        "border": "Bordo",
+        "panel": "Cornice",
+        "text": "Testo",
+        "textMuted": "Testo tenue",
+        "hp": "Salute",
         "mana": "Mana",
-        "rage": "Rage",
-        "energy": "Energy"
+        "rage": "Rabbia",
+        "energy": "Energia"
       }
     },
     "questTracker": {
@@ -275,8 +275,8 @@ export const it_IT: EnTranslations = {
       "interfaceModeNote": "Auto sceglie i controlli Desktop o Touch in base al tuo dispositivo. Scegli Desktop per forzare tastiera e mouse (utile su un tablet con tastiera), oppure Touch per i controlli a schermo.",
       "footstepSounds": "Suoni dei passi",
       "clickFeedback": "Indicatore di clic",
-      "lockCursorOnRotate": "Lock Cursor While Rotating",
-      "keybindHelpLockCursorOnRotate": "Keeps the mouse cursor inside the window while you drag to rotate the camera, so it cannot reach the screen edge or move to another monitor. Turn off if you prefer a free cursor.",
+      "lockCursorOnRotate": "Blocca cursore durante la rotazione",
+      "keybindHelpLockCursorOnRotate": "Mantiene il cursore del mouse dentro la finestra mentre trascini per ruotare la telecamera, così non può raggiungere il bordo dello schermo o passare a un altro monitor. Disattiva l'opzione se preferisci un cursore libero.",
       "showWalletOnCharacterScreen": "Mostra portafoglio nella schermata personaggi",
       "showWalletOnPlayerCard": "Mostra portafoglio nella scheda giocatore",
       "uiScale": "Scala dell'interfaccia",
@@ -952,6 +952,7 @@ export const it_IT: EnTranslations = {
       "notedLabel": "Da notare",
       "flavor": {
         "old_greyjaw": "Un vecchio lupo sfregiato che nessuna trappola ha mai trattenuto, accusato della morte di tre cani e del braccio di uno stalliere. Caccia da solo nelle foreste profonde, e si fa più selvaggio quanto più lo scontro si protrae.",
+        "brightwood_stag": "Un fiero cervo della radura che abbassa la sua corona di corna e carica in avanti, diventando più ostico da affrontare quanto più lo si incalza.",
         "grubjaw": "Un troll della palude così avido che gli altri troll non scavano al suo fianco, si dice abbia divorato le ultime due mule da soma di un mercante, finimenti compresi.",
         "shardlord_kazzix": "Un elementale della tempesta dotato di spalle, che cammina sulle creste lontane sopra Stormcrag con una scheggia del cuore che vale la pena di sfidare i fulmini.",
         "mirejaw_frenzy": "Un murloc della palude che nel vivo dello scontro si lavora fino a una frenesia furibonda, la cosa più rumorosa in un branco rumoroso e territoriale.",
@@ -1016,8 +1017,8 @@ export const it_IT: EnTranslations = {
       "valePlaceNotes": "Eastbrook è la tua prima base. Il Sentiero dei Lupi e il Prato dei Cinghiali sono terreni di caccia tranquilli; il Lago a Specchio è acqua quieta dove pescare; il Boscoragnatela e lo Scavo di Rame nascondono ragni e scavatori avidi di minerale; un Campo di Banditi e la Cappella Caduta custodiscono lavori più duri; la Radura di Brightwood è una serena radura di natura selvaggia a nord.",
       "marshPlaceNotes": "Fenbridge custodisce l'unica strada asciutta. Le Canne del Predatore e le Secche di Deepfen brulicano di bestie di palude e murloc; il Roveto della Vedova è fittamente intessuto di ragnatele; la Cappella Annegata e i Tumuli dei Troll custodiscono pericoli più antichi; l'Accampamento dei Richiamatombe è il culto trincerato, e il Bastione Sommerso è il cuore istanziato della palude.",
       "peaksPlaceNotes": "Highwatch tiene il muro. La Cresta del Cacciatore e le Tane di Deeprock appartengono ai felini di cresta e ai kobold; le Pendici degli Ogre e l'Accampamento di Guerra di Drogmar ai bruti a pagamento; Stormcrag crepita di elementali e il Glimmermere risplende sotto di esso; le Tende del Culto del Wyrm e i Campi dei Revenant cingono l'altura del culto, con il Santuario del Gravewyrm alla sua sommità.",
-      "gladeTitle": "Un angolo tranquillo: la Radura di Brightwood",
-      "gladeBody": "Non tutte le storie della Valle parlano dei morti. A nord, una radura assolata chiamata Radura di Brightwood mantiene il proprio ritmo più gentile, vegliata da una ranger solitaria che preferisce curarla piuttosto che combattere. Il suo compito è l'equilibrio: diradare ciò che prolifica troppo e, quando la sua tana diventa troppo pericolosa da lasciar stare, dare al vecchio cervo coronato della radura una fine rispettosa. È un dolce contrappunto alla pista che stai seguendo, e vale la deviazione."
+      "gladeTitle": "Un angolo quieto: la Radura di Brightwood",
+      "gladeBody": "Non ogni storia della Valle parla dei morti. A nord, una radura assolata chiamata Brightwood mantiene un ritmo più gentile tutto suo, con sentieri silenziosi, cervi al pascolo e bestie guardinghe sotto i rami. È un contrappunto lieve alla pista che stai seguendo e vale la pena vederla quando la strada ti lascia spazio per vagare."
     },
     "questsPage": {
       "heading": "Missioni",
@@ -1065,9 +1066,7 @@ export const it_IT: EnTranslations = {
       "aldricRole": "Sacerdote della Valle",
       "aldricBody": "Un umile sacerdote di villaggio che per primo dà un nome al culto su una tomba profanata a Eastbrook, poi ne segue la pista di persona attraverso la palude e fino al muro di Highwatch. È il cuore saldo dell'intera campagna.",
       "marenRole": "L'Esploratrice del Maresciallo",
-      "marenBody": "Una battitrice di pista dalla voce sommessa che incontri tra le canne di Mirefen, tutta passi silenziosi e una lama corta. Anche lei segue la pista verso nord, ed è il suo orecchio a cogliere le parole che ti mandano alle vette.",
-      "elwynRole": "Guardiana della Radura di Brightwood",
-      "elwynBody": "La solitaria custode di una radura assolata nel nord della Valle. Il suo compito è la cura, non la mattanza: dirada ciò che prolifica troppo e concede alla più antica bestia della radura una fine più dolce di quella che le darebbero i lupi."
+      "marenBody": "Una battitrice di pista dalla voce sommessa che incontri tra le canne di Mirefen, tutta passi silenziosi e una lama corta. Anche lei segue la pista verso nord, ed è il suo orecchio a cogliere le parole che ti mandano alle vette."
     },
     "dungeonsPage": {
       "heading": "Dungeon e Incursioni",
@@ -1932,11 +1931,11 @@ export const it_IT: EnTranslations = {
     "high": "Alta",
     "medium": "Media",
     "low": "Bassa",
-    "popTipLow": "Low population: fewer than 15 players online right now. Plenty of room; great for a fresh start.",
-    "popTipMedium": "Medium population: 15 to 39 players online right now. A healthy, active realm.",
-    "popTipHigh": "High population: 40 to 79 players online right now. Busy, with lots of players around.",
-    "popTipFull": "Full population: 80 or more players online right now. Very busy; you may wait in a login queue.",
-    "popTipOffline": "Offline: this realm is unreachable right now and cannot be joined.",
+    "popTipLow": "Popolazione bassa: meno di 15 giocatori online ora. Molto spazio; ottimo per ricominciare.",
+    "popTipMedium": "Popolazione media: da 15 a 39 giocatori online ora. Un reame sano e attivo.",
+    "popTipHigh": "Popolazione alta: da 40 a 79 giocatori online ora. Affollato, con molti giocatori in giro.",
+    "popTipFull": "Popolazione piena: 80 o più giocatori online ora. Molto affollato; potresti attendere in coda per accedere.",
+    "popTipOffline": "Offline: questo reame al momento non è raggiungibile e non è possibile entrarvi.",
     "characterCountOne": "{count} personaggio",
     "characterCountOther": "{count} personaggi",
     "selectedRealm": "Reame: {name}",
@@ -4074,9 +4073,6 @@ export const it_IT: EnTranslations = {
       "milepost_boots": {
         "name": "Stivali della pietra miliare"
       },
-      "glade_pelt": {
-        "name": "Pelliccia della radura"
-      },
       "soft_down": {
         "name": "Ciuffo di piumino morbido"
       },
@@ -4721,6 +4717,42 @@ export const it_IT: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Flagello di Thornpeak"
       },
+      "brightwood_hare": {
+        "name": "Lepre di Brightwood"
+      },
+      "glade_fox": {
+        "name": "Volpe della radura"
+      },
+      "spotted_fawn": {
+        "name": "Cerbiatto maculato"
+      },
+      "meadow_crane": {
+        "name": "Gru del prato"
+      },
+      "thornpelt_badger": {
+        "name": "Tasso pellespinosa"
+      },
+      "dawnmane_doe": {
+        "name": "Cerva crindalba"
+      },
+      "bramble_lynx": {
+        "name": "Lince dei rovi"
+      },
+      "brightwood_stag": {
+        "name": "Cervo di Brightwood"
+      },
+      "grovetusk_boar": {
+        "name": "Cinghiale zannaboschiva"
+      },
+      "sunhide_bear": {
+        "name": "Orso pellesolare"
+      },
+      "brightwood_monarch": {
+        "name": "Il Monarca di Brightwood"
+      },
+      "elder_bristleback": {
+        "name": "Bristleback anziano"
+      },
       "ironvein_foreman": {
         "name": "Caposquadra Venaferrata"
       },
@@ -4745,6 +4777,12 @@ export const it_IT: EnTranslations = {
       "nhalia_mourner": {
         "name": "Piangente di Nhalia"
       },
+      "sableweb_hatchling": {
+        "name": "Piccolo Sableweb"
+      },
+      "sableweb_matriarch": {
+        "name": "Matriarca Sableweb"
+      },
       "sister_nhalia": {
         "name": "Sorella Nhalia"
       },
@@ -4765,6 +4803,9 @@ export const it_IT: EnTranslations = {
       },
       "brutok_skullsmasher": {
         "name": "Brutok Spaccacranio"
+      },
+      "captain_verlan": {
+        "name": "Capitano Verlan"
       },
       "old_cragmaw": {
         "name": "Vecchio Cragmaw"
@@ -4922,11 +4963,6 @@ export const it_IT: EnTranslations = {
         "name": "Maestro del sapere Caddis",
         "title": "Maestro del sapere",
         "greeting": "Fai attenzione allo scisto instabile, {className}. La montagna è inquieta da qualche tempo, e voglio sapere perché."
-      },
-      "ranger_elwyn": {
-        "name": "Ranger Elwyn",
-        "title": "Guardiano della radura",
-        "greeting": "Silenzio, {className}: la radura oggi è tranquilla, e intendo che resti così."
       },
       "brother_aldric_raid": {
         "name": "Fratello Aldric",
@@ -5679,16 +5715,6 @@ export const it_IT: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Nythraxis sconfitto"
-          }
-        }
-      },
-      "q_mogger_tracks": {
-        "title": "La traccia di Mogger",
-        "text": "Prima di prendere la strada a nord, Eastbrook ha un'ultima spina nel fianco: Mogger. Il bruto calpesta il prato basso e fa impazzire i cinghiali. Ripulisci il prato attorno alla sua traccia per scoprire dove si tana.",
-        "completion": "Quelle impronte sono fresche e abbastanza profonde da trattenere la pioggia. Mogger non è una storia da campo, {playerName}, ed è vicino.",
-        "objectives": {
-          "0": {
-            "label": "Cinghiale selvatico scacciato dalla traccia"
           }
         }
       },

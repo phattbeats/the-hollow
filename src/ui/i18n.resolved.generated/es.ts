@@ -175,25 +175,25 @@ export const es: EnTranslations = {
       "done": "Listo"
     },
     "theme": {
-      "preset": "UI Theme",
-      "customColors": "Custom Colors",
-      "reset": "Reset",
+      "preset": "Tema de la interfaz",
+      "customColors": "Colores personalizados",
+      "reset": "Restablecer",
       "presets": {
-        "classic": "Classic Gold",
-        "midnight": "Midnight",
-        "parchment": "Parchment",
-        "highContrast": "High Contrast"
+        "classic": "Oro clásico",
+        "midnight": "Medianoche",
+        "parchment": "Pergamino",
+        "highContrast": "Alto contraste"
       },
       "knob": {
-        "accent": "Accent",
-        "border": "Border",
-        "panel": "Frame",
-        "text": "Text",
-        "textMuted": "Muted Text",
-        "hp": "Health",
-        "mana": "Mana",
-        "rage": "Rage",
-        "energy": "Energy"
+        "accent": "Acento",
+        "border": "Borde",
+        "panel": "Marco",
+        "text": "Texto",
+        "textMuted": "Texto atenuado",
+        "hp": "Salud",
+        "mana": "Maná",
+        "rage": "Ira",
+        "energy": "Energía"
       }
     },
     "questTracker": {
@@ -275,8 +275,8 @@ export const es: EnTranslations = {
       "interfaceModeNote": "Auto elige los controles Desktop o Touch según tu dispositivo. Elige Desktop para forzar teclado y ratón (útil en una tableta con teclado), o Touch para los controles en pantalla.",
       "footstepSounds": "Sonidos de pasos",
       "clickFeedback": "Marcador de clic",
-      "lockCursorOnRotate": "Lock Cursor While Rotating",
-      "keybindHelpLockCursorOnRotate": "Keeps the mouse cursor inside the window while you drag to rotate the camera, so it cannot reach the screen edge or move to another monitor. Turn off if you prefer a free cursor.",
+      "lockCursorOnRotate": "Bloquear cursor al rotar",
+      "keybindHelpLockCursorOnRotate": "Mantiene el cursor del ratón dentro de la ventana mientras arrastras para rotar la cámara, para que no llegue al borde de la pantalla ni pase a otro monitor. Desactívalo si prefieres un cursor libre.",
       "showWalletOnCharacterScreen": "Mostrar cartera en la pantalla de personajes",
       "showWalletOnPlayerCard": "Mostrar cartera en la tarjeta de jugador",
       "uiScale": "Escala de la interfaz",
@@ -952,6 +952,7 @@ export const es: EnTranslations = {
       "notedLabel": "De interés",
       "flavor": {
         "old_greyjaw": "Un viejo lobo lleno de cicatrices al que ninguna trampa ha retenido, culpable de tres sabuesos y del brazo de un mozo de cuadra. Caza solo en lo profundo del bosque y se torna salvaje cuanto más se prolonga el combate.",
+        "brightwood_stag": "Un orgulloso ciervo de la arboleda que baja su corona de astas y embiste hacia delante, volviéndose más temible cuanto más se le presiona.",
         "grubjaw": "Un trol de ciénaga tan codicioso que los demás troles no cavan a su lado; se dice que se comió las dos últimas mulas de carga de un mercader, arnés incluido.",
         "shardlord_kazzix": "Un elemental de tormenta dotado de hombros, que recorre los riscos lejanos por encima de Stormcrag con una esquirla del corazón que vale la pena arriesgarse a los rayos por conseguir.",
         "mirejaw_frenzy": "Un múrloc de la ciénaga que se azuza hasta un frenesí convulso en mitad del combate, lo más ruidoso de una bandada ruidosa y territorial.",
@@ -1017,7 +1018,7 @@ export const es: EnTranslations = {
       "marshPlaceNotes": "Fenbridge custodia el único camino seco. Los Juncos del Acechador y los Bajíos de Deepfen rebosan de bestias de la ciénaga y múrlocs; la Espesura de la Viuda está tupida de telarañas; la Capilla Ahogada y los Túmulos de los Troles guardan peligros más antiguos; el Campamento de los Llamatumbas es el culto atrincherado, y el Bastión Sumergido es el corazón instanciado de la ciénaga.",
       "peaksPlaceNotes": "Highwatch defiende el muro. La Cresta del Acechador y las Galerías de Deeprock pertenecen a felinos de las crestas y kobolds; las Estribaciones de los Ogros y el Campamento de Guerra de Drogmar, a brutos a sueldo; Stormcrag crepita de elementales y el Glimmermere reluce a sus pies; las Tiendas del Culto del Vermis y los Campos de los Resucitados rodean el bastión elevado del culto, con el Santuario del Gravewyrm en su cima.",
       "gladeTitle": "Un rincón tranquilo: la arboleda de Brightwood",
-      "gladeBody": "No todas las historias del Valle tratan de los muertos. En el norte, una arboleda bañada por el sol llamada arboleda de Brightwood mantiene su propio ritmo, más apacible, vigilada por una montaraz solitaria que prefiere cuidarla a luchar. Su labor es el equilibrio: aclarar lo que se reproduce en exceso y, cuando su madriguera se vuelve demasiado peligrosa para dejarla estar, dar al viejo ciervo coronado de la arboleda un final respetuoso. Es un suave contrapunto al rastro que sigues, y bien merece el desvío."
+      "gladeBody": "No todas las historias del Valle tratan de los muertos. Al norte, una arboleda soleada llamada arboleda de Brightwood conserva su propio ritmo más amable, con senderos silenciosos, ciervos pastando y bestias cautelosas bajo las ramas. Es un contrapunto suave al rastro que sigues y merece verse cuando el camino te deje espacio para vagar."
     },
     "questsPage": {
       "heading": "Misiones",
@@ -1065,9 +1066,7 @@ export const es: EnTranslations = {
       "aldricRole": "Sacerdote del Valle",
       "aldricBody": "Un humilde sacerdote de aldea que es el primero en nombrar al culto ante una tumba profanada en Eastbrook, y luego sigue su rastro en persona a través de la ciénaga y hasta el muro de Highwatch. Es el corazón firme de toda la campaña.",
       "marenRole": "La exploradora del mariscal",
-      "marenBody": "Una rastreadora de hablar quedo a la que conoces entre los juncos de Mirefen, pura sigilosa de pies ligeros y una hoja corta. También sigue el rastro hacia el norte, y es su oído el que capta las palabras que te envían a los picos.",
-      "elwynRole": "Guardabosques de la arboleda de Brightwood",
-      "elwynBody": "La única guardiana de una arboleda bañada por el sol en el norte del Valle. Su labor es la administración, no la matanza: aclarar lo que se reproduce en exceso y conceder a la bestia más anciana de la arboleda un final más amable del que le darían los lobos."
+      "marenBody": "Una rastreadora de hablar quedo a la que conoces entre los juncos de Mirefen, pura sigilosa de pies ligeros y una hoja corta. También sigue el rastro hacia el norte, y es su oído el que capta las palabras que te envían a los picos."
     },
     "dungeonsPage": {
       "heading": "Mazmorras y bandas",
@@ -1932,11 +1931,11 @@ export const es: EnTranslations = {
     "high": "Alta",
     "medium": "Media",
     "low": "Baja",
-    "popTipLow": "Low population: fewer than 15 players online right now. Plenty of room; great for a fresh start.",
-    "popTipMedium": "Medium population: 15 to 39 players online right now. A healthy, active realm.",
-    "popTipHigh": "High population: 40 to 79 players online right now. Busy, with lots of players around.",
-    "popTipFull": "Full population: 80 or more players online right now. Very busy; you may wait in a login queue.",
-    "popTipOffline": "Offline: this realm is unreachable right now and cannot be joined.",
+    "popTipLow": "Población baja: menos de 15 jugadores conectados ahora. Mucho espacio; ideal para empezar de cero.",
+    "popTipMedium": "Población media: entre 15 y 39 jugadores conectados ahora. Un reino activo y saludable.",
+    "popTipHigh": "Población alta: entre 40 y 79 jugadores conectados ahora. Concurrido, con muchos jugadores cerca.",
+    "popTipFull": "Población llena: 80 o más jugadores conectados ahora. Muy concurrido; puede que esperes en una cola de inicio de sesión.",
+    "popTipOffline": "Sin conexión: este reino no está disponible ahora y no se puede entrar.",
     "characterCountOne": "{count} personaje",
     "characterCountOther": "{count} personajes",
     "selectedRealm": "Reino: {name}",
@@ -4074,9 +4073,6 @@ export const es: EnTranslations = {
       "milepost_boots": {
         "name": "Botas de hito"
       },
-      "glade_pelt": {
-        "name": "Piel del claro"
-      },
       "soft_down": {
         "name": "Mechón de plumón suave"
       },
@@ -4721,6 +4717,42 @@ export const es: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Azote de Thornpeak"
       },
+      "brightwood_hare": {
+        "name": "Liebre de Brightwood"
+      },
+      "glade_fox": {
+        "name": "Zorro del claro"
+      },
+      "spotted_fawn": {
+        "name": "Cervatillo moteado"
+      },
+      "meadow_crane": {
+        "name": "Grulla de la pradera"
+      },
+      "thornpelt_badger": {
+        "name": "Tejón pielespina"
+      },
+      "dawnmane_doe": {
+        "name": "Cierva crinalba"
+      },
+      "bramble_lynx": {
+        "name": "Lince de zarzal"
+      },
+      "brightwood_stag": {
+        "name": "Ciervo de Brightwood"
+      },
+      "grovetusk_boar": {
+        "name": "Jabalí colmillarbóreo"
+      },
+      "sunhide_bear": {
+        "name": "Oso pielsolar"
+      },
+      "brightwood_monarch": {
+        "name": "El Monarca de Brightwood"
+      },
+      "elder_bristleback": {
+        "name": "Viejo Bristleback"
+      },
       "ironvein_foreman": {
         "name": "Capataz Vena de Hierro"
       },
@@ -4745,6 +4777,12 @@ export const es: EnTranslations = {
       "nhalia_mourner": {
         "name": "Doliente de Nhalia"
       },
+      "sableweb_hatchling": {
+        "name": "Cría Sableweb"
+      },
+      "sableweb_matriarch": {
+        "name": "Matriarca Sableweb"
+      },
       "sister_nhalia": {
         "name": "Hermana Nhalia"
       },
@@ -4765,6 +4803,9 @@ export const es: EnTranslations = {
       },
       "brutok_skullsmasher": {
         "name": "Brutok Rompecráneos"
+      },
+      "captain_verlan": {
+        "name": "Capitán Verlan"
       },
       "old_cragmaw": {
         "name": "Viejo Cragmaw"
@@ -4922,11 +4963,6 @@ export const es: EnTranslations = {
         "name": "Maestro de saber Caddis",
         "title": "Maestro de saber",
         "greeting": "Cuida la pizarra suelta, {className}. La montaña está inquieta últimamente y quiero saber por qué."
-      },
-      "ranger_elwyn": {
-        "name": "Montaraz Elwyn",
-        "title": "Guardiana del claro",
-        "greeting": "Silencio, {className}. El claro está tranquilo hoy, y pretendo que siga así."
       },
       "brother_aldric_raid": {
         "name": "Hermano Aldric",
@@ -5679,16 +5715,6 @@ export const es: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Nythraxis derrotado"
-          }
-        }
-      },
-      "q_mogger_tracks": {
-        "title": "El rastro de Mogger",
-        "text": "Antes de tomar el camino al norte, Eastbrook tiene una última espina clavada: Mogger. La bestia pisotea el prado bajo y enloquece a los jabalíes. Limpia la zona de su rastro para que veamos dónde se esconde.",
-        "completion": "Esas huellas son recientes y bastante hondas para juntar lluvia. Mogger no es un cuento de campamento, {playerName}, y está cerca.",
-        "objectives": {
-          "0": {
-            "label": "Jabalí salvaje expulsado del rastro"
           }
         }
       },

@@ -920,7 +920,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     questId: 'q_gravecallers_trail',
   },
   // --- Brightwood Glade wildlife pack ---
-  glade_pelt: { id: 'glade_pelt', name: 'Glade Pelt', kind: 'junk', quality: 'poor', sellValue: 6 },
   soft_down: {
     id: 'soft_down',
     name: 'Soft Down Tuft',

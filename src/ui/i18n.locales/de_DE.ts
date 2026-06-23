@@ -20,6 +20,35 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.interfaceModeTouch': 'Touch',
   'hudChrome.options.interfaceModeNote':
     'Auto wählt je nach Gerät die Desktop- oder Touch-Steuerung. Wähle Desktop, um Tastatur und Maus zu erzwingen (praktisch bei einem Tablet mit Tastatur), oder Touch für die Bildschirmsteuerung.',
+  'hudChrome.options.lockCursorOnRotate': 'Cursor beim Drehen sperren',
+  'hudChrome.options.keybindHelpLockCursorOnRotate':
+    'Hält den Mauszeiger im Fenster, während Ihr zum Drehen der Kamera zieht, damit er nicht den Bildschirmrand erreicht oder auf einen anderen Monitor wandert. Schaltet dies aus, wenn Ihr einen freien Cursor bevorzugt.',
+  'hudChrome.theme.preset': 'Oberflächendesign',
+  'hudChrome.theme.customColors': 'Eigene Farben',
+  'hudChrome.theme.reset': 'Zurücksetzen',
+  'hudChrome.theme.presets.classic': 'Klassisches Gold',
+  'hudChrome.theme.presets.midnight': 'Mitternacht',
+  'hudChrome.theme.presets.parchment': 'Pergament',
+  'hudChrome.theme.presets.highContrast': 'Hoher Kontrast',
+  'hudChrome.theme.knob.accent': 'Akzent',
+  'hudChrome.theme.knob.border': 'Rahmen',
+  'hudChrome.theme.knob.panel': 'Fensterrahmen',
+  'hudChrome.theme.knob.text': 'Text',
+  'hudChrome.theme.knob.textMuted': 'Gedämpfter Text',
+  'hudChrome.theme.knob.hp': 'Gesundheit',
+  'hudChrome.theme.knob.mana': 'Mana',
+  'hudChrome.theme.knob.rage': 'Wut',
+  'hudChrome.theme.knob.energy': 'Energie',
+  'realm.popTipLow':
+    'Niedrige Bevölkerung: derzeit weniger als 15 Spieler online. Viel Platz; ideal für einen Neustart.',
+  'realm.popTipMedium':
+    'Mittlere Bevölkerung: derzeit 15 bis 39 Spieler online. Ein gesunder, aktiver Realm.',
+  'realm.popTipHigh':
+    'Hohe Bevölkerung: derzeit 40 bis 79 Spieler online. Belebt, mit vielen Spielern in der Nähe.',
+  'realm.popTipFull':
+    'Volle Bevölkerung: derzeit 80 oder mehr Spieler online. Sehr belebt; eventuell müsst Ihr in einer Login-Warteschlange warten.',
+  'realm.popTipOffline':
+    'Offline: Dieser Realm ist derzeit nicht erreichbar und kann nicht betreten werden.',
   'hud.tutorial.title': 'Neuer Abenteurer',
   'hud.tutorial.stepLabel': 'Schritt {current} von {total}',
   'hud.tutorial.skip': 'Tutorial überspringen',
@@ -2242,6 +2271,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': 'Korgath der Gebundene',
   'entities.mobs.grand_necromancer_velkhar.name': 'Großnekromant Velkhar',
   'entities.mobs.korzul_the_gravewyrm.name': 'Korzul der Gravewyrm',
+  'entities.mobs.elder_bristleback.name': 'Alter Bristleback',
   'entities.mobs.ironvein_foreman.name': 'Eisenader-Vorarbeiter',
   'entities.mobs.ironvein_sapper.name': 'Eisenader-Pionier',
   'entities.mobs.marrowlord_varkas.name': 'Marklord Varkas',
@@ -2250,6 +2280,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': 'Mogger',
   'entities.mobs.mogger_lackey.name': 'Moggers Lakai',
   'entities.mobs.nhalia_mourner.name': 'Nhalia-Trauernde',
+  'entities.mobs.sableweb_hatchling.name': 'Sableweb-Jungtier',
+  'entities.mobs.sableweb_matriarch.name': 'Sableweb-Matriarchin',
   'entities.mobs.sister_nhalia.name': 'Schwester Nhalia',
   'entities.mobs.varkas_boneguard.name': "Varkas' Knochenwache",
   'entities.mobs.imp.name': 'Wichtel',
@@ -2746,12 +2778,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_gravewyrm.completion':
     'Es ist vorbei. Die Toten dreier Länder ruhen, und jede Glocke singt heute deinen Namen, {playerName}.',
   'entities.quests.q_gravewyrm.objectives.0.label': 'Korzul der Gravewyrm getötet',
-  'entities.quests.q_mogger_tracks.title': 'Moggers Spur',
-  'entities.quests.q_mogger_tracks.text':
-    'Bevor du die Straße nach Norden nimmst, hat Eastbrook noch einen letzten Dorn im Fleisch: Mogger. Der Grobian zertrampelt die untere Wiese und treibt die Eber in den Wahnsinn. Säubere die Wiese um seine Spur, damit wir sehen, wo er haust.',
-  'entities.quests.q_mogger_tracks.completion':
-    'Diese Spuren sind frisch und tief genug, um Regen zu halten. Mogger ist kein Lagerfeuermärchen, {playerName}, und er ist nah.',
-  'entities.quests.q_mogger_tracks.objectives.0.label': 'Wilder Eber von der Spur vertrieben',
   'entities.quests.q_mogger.title': 'Mogger muss fallen',
   'entities.quests.q_mogger.text':
     'Mogger hat Karren gespalten, Zäune plattgewalzt und genug Vieh getötet, um das halbe Tal zu leeren. Stell dich ihm nicht allein. Nimm zwei starke Gefährten zur östlichen Wiese und leg den Grobian endgültig um.',
@@ -2997,17 +3023,18 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': 'Flutschnitter-Enterhaken',
   'entities.items.verlans_oathblade.name': 'Verlans Eidklinge',
   'entities.mobs.brutok_skullsmasher.name': 'Brutok Schädelschmetterer',
+  'entities.mobs.captain_verlan.name': 'Hauptmann Verlan',
   'entities.mobs.old_cragmaw.name': 'Alter Cragmaw',
   'entities.mobs.sloomtooth_the_drowned.name': 'Sloomzahn der Ertrunkene',
   'entities.mobs.voskar_emberwing.name': 'Voskar Glutschwinge',
   'entities.mobs.wraithbinder_maldrec.name': 'Maldrec der Geisterbinder',
-  'entities.items.glade_pelt.name': 'Lichtungsfell',
   'entities.items.soft_down.name': 'Weicher Daunenbüschel',
   'entities.items.amber_hide.name': 'Bernsteinhaut',
   'entities.items.stag_antler.name': 'Verzweigtes Geweih',
   'entities.items.brightwood_venison.name': 'Hellholz-Wildbret',
   'entities.items.bramblehide_jerkin.name': 'Dornhaut-Wams',
   'entities.items.monarch_crown_helm.name': 'Krone des Monarchen',
+  // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': 'Chatkanal hinzufügen',
   'hud.core.chatChannels.addTitle': 'Kanal hinzufügen',
   'hud.core.chatChannels.close': 'Reiter {channel} schließen',
@@ -3022,10 +3049,17 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': 'Nachricht an {channel}',
   'hud.options.npcVoices': 'NSC-Stimmen',
   'hud.options.voiceVolume': 'Stimmlautstärke',
-  'entities.npcs.ranger_elwyn.greeting':
-    'Ruhig, {className} - die Lichtung ist heute friedlich, und das gedenke ich so zu erhalten.',
-  'entities.npcs.ranger_elwyn.name': 'Waldläufer Elwyn',
-  'entities.npcs.ranger_elwyn.title': 'Hüter der Lichtung',
+  'entities.mobs.bramble_lynx.name': 'Dornenluchs',
+  'entities.mobs.brightwood_hare.name': 'Hellholz-Hase',
+  'entities.mobs.brightwood_monarch.name': 'Der Hellholz-Monarch',
+  'entities.mobs.brightwood_stag.name': 'Hellholz-Hirsch',
+  'entities.mobs.dawnmane_doe.name': 'Morgenmähnen-Hirschkuh',
+  'entities.mobs.glade_fox.name': 'Lichtungsfuchs',
+  'entities.mobs.grovetusk_boar.name': 'Hainhauer-Keiler',
+  'entities.mobs.meadow_crane.name': 'Wiesenkranich',
+  'entities.mobs.spotted_fawn.name': 'Geflecktes Hirschkalb',
+  'entities.mobs.sunhide_bear.name': 'Sonnenfell-Bär',
+  'entities.mobs.thornpelt_badger.name': 'Dornpelz-Dachs',
   'entities.zones.eastbrook_vale.pois.8.label': 'Hellholz-Lichtung',
   'fiesta.augment.aug_apex_predator.desc':
     '+40% physischer Schaden, +15% krit. Trefferchance, Heilung um 12% des zugefügten Schadens.',
@@ -4013,6 +4047,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.arenaPage.wavesBody':
     'Jede Runde einer Fiesta reicht dir eine frische Auswahl, und die Auswahlmöglichkeiten werden mutiger, je länger das Match dauert. Du baust von einer Welle zur nächsten auf, wählst jedes Mal eine von wenigen Optionen und behältst sie für den Rest des Gefechts.',
   'guide.arenaPage.wavesTitle': 'Augmentierungen kommen in Wellen',
+  'guide.bestiary.flavor.brightwood_stag':
+    'Ein stolzer Hain-Hirsch, der seine Krone aus Geweih senkt und vorwärts stürmt, und der schwerer zu bezwingen wird, je länger man ihn bedrängt.',
   'guide.bestiary.flavor.gravecaller_cultist':
     'Gewandete Diener des Todeskults, deren Treiben die Gräber vom Tal bis zu den Gipfeln schändet. Wo sie sich versammeln, ruhen die Toten nicht.',
   'guide.bestiary.flavor.grubjaw':
@@ -4124,9 +4160,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.lore.aldricBody':
     'Ein bescheidener Dorfpriester, der den Kult zuerst über einem geschändeten Grab in Eastbrook beim Namen nennt und dann seiner Spur höchstpersönlich durch das Moor und hinauf zur Mauer von Highwatch folgt. Er ist das ruhige Herz des ganzen Feldzugs.',
   'guide.lore.aldricRole': 'Priester des Tals',
-  'guide.lore.elwynBody':
-    'Die einsame Hüterin eines sonnenbeschienenen Hains im Norden des Tals. Ihre Arbeit ist Pflege, nicht Gemetzel: Sie lichtet, was sich überzüchtet, und gewährt dem ältesten Tier des Hains ein gnädigeres Ende, als die Wölfe es ihm bereiten würden.',
-  'guide.lore.elwynRole': 'Lichtungswächterin von Brightwood',
   'guide.lore.figuresBody':
     'Eine Handvoll Leute gehen den ganzen Weg mit dir. Halte vom Tal bis zu den Gipfeln nach diesen Namen Ausschau.',
   'guide.lore.figuresTitle': 'Gesichter, die du kennenlernen wirst',
@@ -4316,9 +4349,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.loading': 'Modell wird geladen...',
   'guide.viewer.view3d': '{name} in 3D ansehen',
   'guide.viewer.view3dShort': 'In 3D ansehen',
-  'guide.worldPage.gladeBody':
-    'Nicht jede Geschichte im Tal handelt von den Toten. Im Norden hält ein sonnenbeschienener Hain namens Brightwood Glade seinen eigenen sanfteren Rhythmus, behütet von einer einsamen Waldläuferin, die ihn lieber pflegt als kämpft. Ihre Arbeit ist Gleichgewicht: zu lichten, was sich überzüchtet, und, wenn seine Aushöhlung zu gefährlich wird, um sie zu belassen, dem alten gekrönten Hirsch des Hains ein würdevolles Ende zu geben. Es ist ein leiser Gegenpol zu der Spur, der du folgst, und den Umweg wert.',
-  'guide.worldPage.gladeTitle': 'Eine stille Ecke: Brightwood Glade',
   'guide.worldPage.marshGreeter': 'Wächter Fenwick, Fenbridge',
   'guide.worldPage.marshGreeting':
     'Halt am Tor. Jenseits dieses Schilfs erledigt das Moor das Töten für uns.',
@@ -4334,6 +4364,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Halt deine Klinge griffbereit. Das Tal ist nicht mehr, was es war.',
   'guide.worldPage.valePlaceNotes':
     'Eastbrook ist deine erste Heimatbasis. Der Wolfslauf und die Eberwiese sind sanftes Jagdgebiet; der Spiegelsee ist stilles Wasser zum Angeln; der Netzwald und die Kupfergrube verbergen Spinnen und erzgierige Schaufler; ein Banditenlager und die Gefallene Kapelle bergen rauere Arbeit; Brightwood Glade ist ein ruhiger Wildtierhain im Norden.',
+  'guide.worldPage.gladeTitle': 'Eine stille Ecke: Brightwood Glade',
+  'guide.worldPage.gladeBody':
+    'Nicht jede Geschichte im Tal handelt von den Toten. Im Norden bewahrt ein sonnenheller Hain namens Brightwood Glade seinen eigenen, sanfteren Rhythmus, mit stillen Pfaden, grasenden Hirschen und wachsamen Tieren unter den Zweigen. Er ist ein ruhiger Gegenklang zu der Spur, der du folgst, und einen Blick wert, wenn die Straße dir Raum zum Umherstreifen lässt.',
   // APM telemetry label from release/v0.14.0
   'hudChrome.perf.labels.apm': 'APM',
   // Account-security portal (2FA, verified email change, GDPR export) from PR #833.

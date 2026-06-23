@@ -20,6 +20,35 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.interfaceModeTouch': 'Touch',
   'hudChrome.options.interfaceModeNote':
     "Auto choisit les commandes Desktop ou Touch selon votre appareil. Choisissez Desktop pour forcer le clavier et la souris (utile sur une tablette avec clavier), ou Touch pour les commandes à l'écran.",
+  'hudChrome.options.lockCursorOnRotate': 'Verrouiller le curseur pendant la rotation',
+  'hudChrome.options.keybindHelpLockCursorOnRotate':
+    "Maintient le curseur de la souris dans la fenêtre pendant que vous faites glisser pour faire pivoter la caméra, afin qu'il n'atteigne pas le bord de l'écran et ne passe pas sur un autre moniteur. Désactivez cette option si vous préférez un curseur libre.",
+  'hudChrome.theme.preset': "Thème de l'interface",
+  'hudChrome.theme.customColors': 'Couleurs personnalisées',
+  'hudChrome.theme.reset': 'Réinitialiser',
+  'hudChrome.theme.presets.classic': 'Or classique',
+  'hudChrome.theme.presets.midnight': 'Minuit',
+  'hudChrome.theme.presets.parchment': 'Parchemin',
+  'hudChrome.theme.presets.highContrast': 'Contraste élevé',
+  'hudChrome.theme.knob.accent': 'Accent',
+  'hudChrome.theme.knob.border': 'Bordure',
+  'hudChrome.theme.knob.panel': 'Cadre',
+  'hudChrome.theme.knob.text': 'Texte',
+  'hudChrome.theme.knob.textMuted': 'Texte atténué',
+  'hudChrome.theme.knob.hp': 'Santé',
+  'hudChrome.theme.knob.mana': 'Mana',
+  'hudChrome.theme.knob.rage': 'Rage',
+  'hudChrome.theme.knob.energy': 'Énergie',
+  'realm.popTipLow':
+    'Population faible : moins de 15 joueurs en ligne actuellement. Beaucoup de place ; idéal pour un nouveau départ.',
+  'realm.popTipMedium':
+    'Population moyenne : 15 à 39 joueurs en ligne actuellement. Un royaume actif et sain.',
+  'realm.popTipHigh':
+    'Population élevée : 40 à 79 joueurs en ligne actuellement. Fréquenté, avec beaucoup de joueurs autour.',
+  'realm.popTipFull':
+    'Population complète : 80 joueurs ou plus en ligne actuellement. Très fréquenté ; vous pourriez attendre dans une file de connexion.',
+  'realm.popTipOffline':
+    'Hors ligne : ce royaume est inaccessible pour le moment et ne peut pas être rejoint.',
   'hud.tutorial.title': 'Nouvel aventurier',
   'hud.tutorial.stepLabel': 'Étape {current} sur {total}',
   'hud.tutorial.skip': 'Passer le tutoriel',
@@ -2258,6 +2287,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': "Korgath l'Enchaîné",
   'entities.mobs.grand_necromancer_velkhar.name': 'Grand nécromancien Velkhar',
   'entities.mobs.korzul_the_gravewyrm.name': 'Korzul le Gravewyrm',
+  'entities.mobs.elder_bristleback.name': 'Ancien Bristleback',
   'entities.mobs.ironvein_foreman.name': 'Contremaître Veinefer',
   'entities.mobs.ironvein_sapper.name': 'Sapeur Veinefer',
   'entities.mobs.marrowlord_varkas.name': 'Seigneur de moelle Varkas',
@@ -2266,6 +2296,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': 'Mogger',
   'entities.mobs.mogger_lackey.name': 'Laquais de Mogger',
   'entities.mobs.nhalia_mourner.name': 'Pleureuse de Nhalia',
+  'entities.mobs.sableweb_hatchling.name': 'Jeune Sableweb',
+  'entities.mobs.sableweb_matriarch.name': 'Matriarche Sableweb',
   'entities.mobs.sister_nhalia.name': 'Sœur Nhalia',
   'entities.mobs.varkas_boneguard.name': 'Garde-os de Varkas',
   'entities.mobs.imp.name': 'Diablotin',
@@ -2761,12 +2793,6 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_gravewyrm.completion':
     "C'est fini. Les morts de trois terres reposent, et chaque cloche chante votre nom, {playerName}.",
   'entities.quests.q_gravewyrm.objectives.0.label': 'Korzul le Gravewyrm tué',
-  'entities.quests.q_mogger_tracks.title': 'La piste de Mogger',
-  'entities.quests.q_mogger_tracks.text':
-    'Avant de prendre la route du nord, Eastbrook a une dernière épine dans le pied : Mogger. La brute piétine le pré bas et rend les sangliers fous. Nettoyez le pré autour de sa piste pour que nous voyions où il se terre.',
-  'entities.quests.q_mogger_tracks.completion':
-    "Ces traces sont fraîches et assez profondes pour retenir la pluie. Mogger n'est pas une histoire de camp, {playerName}, et il est proche.",
-  'entities.quests.q_mogger_tracks.objectives.0.label': 'Sanglier sauvage chassé de la piste',
   'entities.quests.q_mogger.title': 'Mogger doit tomber',
   'entities.quests.q_mogger.text':
     "Mogger a brisé des chariots, aplati des clôtures et tué assez de bétail pour vider la moitié du Val. Ne l'affrontez pas seul. Emmenez deux compagnons solides au pré de l'est et abattez la brute pour de bon.",
@@ -3007,17 +3033,18 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': 'Gaffe du fendeur de marées',
   'entities.items.verlans_oathblade.name': 'Lame du serment de Verlan',
   'entities.mobs.brutok_skullsmasher.name': 'Brutok Brise-crânes',
+  'entities.mobs.captain_verlan.name': 'Capitaine Verlan',
   'entities.mobs.old_cragmaw.name': 'Vieux Cragmaw',
   'entities.mobs.sloomtooth_the_drowned.name': 'Sloomtooth le Noyé',
   'entities.mobs.voskar_emberwing.name': 'Voskar Aile-de-braise',
   'entities.mobs.wraithbinder_maldrec.name': 'Maldrec le Lie-spectres',
-  'entities.items.glade_pelt.name': 'Fourrure de clairière',
   'entities.items.soft_down.name': 'Touffe de duvet doux',
   'entities.items.amber_hide.name': "Peau d'ambre",
   'entities.items.stag_antler.name': 'Andouiller ramifié',
   'entities.items.brightwood_venison.name': 'Venaison de Brightwood',
   'entities.items.bramblehide_jerkin.name': 'Justaucorps en peau de ronces',
   'entities.items.monarch_crown_helm.name': 'Couronne du Monarque',
+  // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': 'Ajouter un canal de discussion',
   'hud.core.chatChannels.addTitle': 'Ajouter un canal',
   'hud.core.chatChannels.close': "Fermer l'onglet {channel}",
@@ -3032,10 +3059,17 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': 'Message vers {channel}',
   'hud.options.npcVoices': 'Voix des PNJ',
   'hud.options.voiceVolume': 'Volume des voix',
-  'entities.npcs.ranger_elwyn.greeting':
-    "Silence, {className} - la clairière est calme aujourd'hui, et j'entends bien qu'elle le reste.",
-  'entities.npcs.ranger_elwyn.name': 'Rôdeuse Elwyn',
-  'entities.npcs.ranger_elwyn.title': 'Garde de la clairière',
+  'entities.mobs.bramble_lynx.name': 'Lynx des ronces',
+  'entities.mobs.brightwood_hare.name': 'Lièvre de Brightwood',
+  'entities.mobs.brightwood_monarch.name': 'Le Monarque de Brightwood',
+  'entities.mobs.brightwood_stag.name': 'Cerf de Brightwood',
+  'entities.mobs.dawnmane_doe.name': 'Biche Crinaube',
+  'entities.mobs.glade_fox.name': 'Renard des clairières',
+  'entities.mobs.grovetusk_boar.name': 'Sanglier Défense-des-bois',
+  'entities.mobs.meadow_crane.name': 'Grue des prés',
+  'entities.mobs.spotted_fawn.name': 'Faon tacheté',
+  'entities.mobs.sunhide_bear.name': 'Ours Peau-de-soleil',
+  'entities.mobs.thornpelt_badger.name': "Blaireau Pelage-d'épines",
   'entities.zones.eastbrook_vale.pois.8.label': 'Clairière de Brightwood',
   'fiesta.augment.aug_apex_predator.desc':
     '+40% de dégâts physiques, +15% de critique, vous soigne de 12% des dégâts infligés.',
@@ -4029,6 +4063,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.arenaPage.wavesBody':
     "Chaque manche d'une Fiesta vous offre un nouveau choix, et les choix se font plus audacieux au fil du match. Vous construisez d'une manche à l'autre, en retenant à chaque fois l'une des quelques options proposées et en la gardant pour le reste de la partie.",
   'guide.arenaPage.wavesTitle': 'Les augmentations arrivent par vagues',
+  'guide.bestiary.flavor.brightwood_stag':
+    "Un fier cerf des bosquets qui baisse sa couronne de bois et charge tête baissée, devenant d'autant plus coriace qu'on le presse longtemps.",
   'guide.bestiary.flavor.gravecaller_cultist':
     "Des serviteurs en robe du culte de la mort dont l'œuvre souille les tombes, du Val jusqu'aux sommets. Là où ils se réunissent, les morts ne reposent pas.",
   'guide.bestiary.flavor.grubjaw':
@@ -4140,9 +4176,6 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.lore.aldricBody':
     "Un humble prêtre de village qui, le premier, nomme le culte au-dessus d'une tombe profanée à Eastbrook, puis suit sa piste en personne à travers le marais jusqu'au rempart de Highwatch. Il est le cœur constant de toute la campagne.",
   'guide.lore.aldricRole': 'Prêtre du Val',
-  'guide.lore.elwynBody':
-    "L'unique gardienne d'un bosquet baigné de soleil au nord du Val. Son travail est l'intendance, non le carnage : éclaircir ce qui pullule et offrir à la plus vieille bête du bosquet une fin plus douce que celle que lui réserveraient les loups.",
-  'guide.lore.elwynRole': 'Gardienne de la clairière de Brightwood',
   'guide.lore.figuresBody':
     "Une poignée de gens parcourent toute la route à vos côtés. Guettez ces noms, de la vallée jusqu'aux sommets.",
   'guide.lore.figuresTitle': 'Des visages que vous apprendrez à connaître',
@@ -4332,9 +4365,6 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.loading': 'Chargement du modèle...',
   'guide.viewer.view3d': 'Voir {name} en 3D',
   'guide.viewer.view3dShort': 'Voir en 3D',
-  'guide.worldPage.gladeBody':
-    "Toutes les histoires du Val ne parlent pas des morts. Au nord, un bosquet baigné de soleil nommé la clairière de Brightwood garde son propre rythme, plus doux, veillé par une rôdeuse solitaire qui préfère l'entretenir que se battre. Son travail est l'équilibre : éclaircir ce qui pullule et, quand son creux devient trop dangereux pour qu'on le laisse, offrir au vieux cerf couronné du bosquet une fin respectueuse. C'est un contrepoint paisible à la piste que vous suivez, et le détour en vaut la peine.",
-  'guide.worldPage.gladeTitle': 'Un coin tranquille : la clairière de Brightwood',
   'guide.worldPage.marshGreeter': 'Gardien Fenwick, Fenbridge',
   'guide.worldPage.marshGreeting':
     'Restez à la porte. Au-delà de ces roseaux, la fagne tue à notre place.',
@@ -4349,6 +4379,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.valeGreeting': "Gardez votre lame à portée. Le Val n'est plus ce qu'il était.",
   'guide.worldPage.valePlaceNotes':
     'Eastbrook est votre premier camp de base. La Course du Loup et le Pré du Sanglier sont des terrains de chasse cléments ; le lac Miroir est une eau calme où pêcher ; le Bois des toiles et la Mine de cuivre cachent araignées et fouisseurs avides de minerai ; un Camp de bandits et la Chapelle déchue gardent des besognes plus rudes ; la clairière de Brightwood est un paisible bosquet sauvage au nord.',
+  'guide.worldPage.gladeTitle': 'Un coin paisible : la clairière de Brightwood',
+  'guide.worldPage.gladeBody':
+    'Toutes les histoires du Val ne parlent pas des morts. Au nord, une clairière ensoleillée appelée Brightwood garde son propre rythme plus doux, avec des sentiers calmes, des cerfs au pâturage et des bêtes méfiantes sous les branches. C’est un contrepoint apaisé à la piste que vous suivez, et elle mérite le détour quand la route vous laisse le temps de flâner.',
   // APM telemetry label from release/v0.14.0
   'hudChrome.perf.labels.apm': 'APM',
   // Account-security portal (2FA, verified email change, GDPR export) from PR #833.

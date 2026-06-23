@@ -2146,6 +2146,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': '被縛者科加斯',
   'entities.mobs.grand_necromancer_velkhar.name': '大死靈法師維爾卡',
   'entities.mobs.korzul_the_gravewyrm.name': '墓龍科祖爾',
+  'entities.mobs.elder_bristleback.name': '年長硬鬃',
   'entities.mobs.ironvein_foreman.name': '鐵脈工頭',
   'entities.mobs.ironvein_sapper.name': '鐵脈爆破手',
   'entities.mobs.marrowlord_varkas.name': '髓王瓦爾卡斯',
@@ -2154,6 +2155,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': '莫格',
   'entities.mobs.mogger_lackey.name': '莫格的爪牙',
   'entities.mobs.nhalia_mourner.name': '娜莉亞哀悼者',
+  'entities.mobs.sableweb_hatchling.name': '黑網幼蛛',
+  'entities.mobs.sableweb_matriarch.name': '黑網主母',
   'entities.mobs.sister_nhalia.name': '娜莉亞修女',
   'entities.mobs.varkas_boneguard.name': '瓦爾卡斯骨衛',
   'entities.mobs.imp.name': '小鬼',
@@ -2611,12 +2614,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_gravewyrm.completion':
     '結束了。三地死者得以安息，山也不再被鬼魂驚擾，今晚每一口鐘鳴響的，都是你的名字，{playerName}。',
   'entities.quests.q_gravewyrm.objectives.0.label': '擊敗墓龍科祖爾',
-  'entities.quests.q_mogger_tracks.title': '莫格的蹤跡',
-  'entities.quests.q_mogger_tracks.text':
-    '在你踏上北路前，東溪還有最後一根刺：莫格。那蠻獸踐踏下方草地，把野豬都逼瘋了。清理牠蹤跡周圍的草地，我們才能看出牠藏在哪裡。',
-  'entities.quests.q_mogger_tracks.completion':
-    '這些足跡很新，也深得能積住雨水。莫格不是營火故事，{playerName}，而且牠就在附近。',
-  'entities.quests.q_mogger_tracks.objectives.0.label': '野豬被趕離蹤跡',
   'entities.quests.q_mogger.title': '莫格必須倒下',
   'entities.quests.q_mogger.text':
     '莫格劈裂貨車，踏平柵欄，殺死的牲口足以讓半個谷地空掉。不要獨自面對牠。帶兩名強壯同伴去東邊草地，把那蠻獸徹底放倒。',
@@ -2852,17 +2849,18 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': '裂潮者鉤桿',
   'entities.items.verlans_oathblade.name': '維爾蘭的誓約之刃',
   'entities.mobs.brutok_skullsmasher.name': '碎顱者布魯托克',
+  'entities.mobs.captain_verlan.name': '維爾蘭隊長',
   'entities.mobs.old_cragmaw.name': '老裂顎',
   'entities.mobs.sloomtooth_the_drowned.name': '溺亡者澇牙',
   'entities.mobs.voskar_emberwing.name': '熾翼沃斯卡',
   'entities.mobs.wraithbinder_maldrec.name': '縛魂者瑪爾德雷克',
-  'entities.items.glade_pelt.name': '林間獸皮',
   'entities.items.soft_down.name': '柔軟絨毛',
   'entities.items.amber_hide.name': '琥珀獸皮',
   'entities.items.stag_antler.name': '分岔鹿角',
   'entities.items.brightwood_venison.name': '明木鹿肉',
   'entities.items.bramblehide_jerkin.name': '棘皮皮衣',
   'entities.items.monarch_crown_helm.name': '君主之冠',
+  // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': '新增聊天頻道',
   'hud.core.chatChannels.addTitle': '新增頻道',
   'hud.core.chatChannels.close': '關閉{channel}分頁',
@@ -2877,10 +2875,17 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': '傳訊至{channel}',
   'hud.options.npcVoices': 'NPC語音',
   'hud.options.voiceVolume': '語音音量',
-  'entities.npcs.ranger_elwyn.greeting':
-    '安靜點，{className}，今天林地很平靜，我打算讓它一直這樣。',
-  'entities.npcs.ranger_elwyn.name': '巡林員艾爾溫',
-  'entities.npcs.ranger_elwyn.title': '林地守護',
+  'entities.mobs.bramble_lynx.name': '棘叢猞猁',
+  'entities.mobs.brightwood_hare.name': '明木野兔',
+  'entities.mobs.brightwood_monarch.name': '明木君主',
+  'entities.mobs.brightwood_stag.name': '明木雄鹿',
+  'entities.mobs.dawnmane_doe.name': '曦鬃母鹿',
+  'entities.mobs.glade_fox.name': '林間狐狸',
+  'entities.mobs.grovetusk_boar.name': '林牙野豬',
+  'entities.mobs.meadow_crane.name': '草甸鶴',
+  'entities.mobs.spotted_fawn.name': '斑點幼鹿',
+  'entities.mobs.sunhide_bear.name': '陽皮熊',
+  'entities.mobs.thornpelt_badger.name': '棘毛獾',
   'entities.zones.eastbrook_vale.pois.8.label': '明木林地',
   'fiesta.augment.aug_apex_predator.desc': '+40%物理傷害，+15%暴擊，並回復所造成傷害的12%生命值。',
   'fiesta.augment.aug_apex_predator.name': '頂級掠食者',
@@ -3735,6 +3740,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.arenaPage.wavesBody':
     '嘉年華的每一回合都會發給你一份新的選項，而隨著對戰進行，選項也愈來愈大膽。你會一波接一波地堆疊配套，每次從幾個選項中挑一個，並保留到這場對戰結束。',
   'guide.arenaPage.wavesTitle': '強化如波浪般湧來',
+  'guide.bestiary.flavor.brightwood_stag':
+    '一頭高傲的林地雄鹿，會低下牠那頂鹿角王冠橫衝直撞，而且被逼得愈久就愈難對付。',
   'guide.bestiary.flavor.gravecaller_cultist':
     '死亡邪教的長袍僕從，他們的作為玷污了從谷地到群峰的座座墳塚。凡他們聚集之處，亡者便不得安息。',
   'guide.bestiary.flavor.grubjaw':
@@ -3846,9 +3853,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.lore.aldricBody':
     '一位謙卑的鄉村牧師，他最先在東溪一座被玷污的墳前指出邪教的名號，隨後親自循著線索穿過沼澤，一路向上來到高守哨站的城牆。他是整場戰役中堅定不移的核心。',
   'guide.lore.aldricRole': '谷地的牧師',
-  'guide.lore.elwynBody':
-    '北谷一片陽光普照的林間空地唯一的守護者。她的職責是看管，而非殺戮：剔除過度繁衍之物，並讓林地中最年邁的野獸得到比死於狼口更仁慈的結局。',
-  'guide.lore.elwynRole': '碧木林地守衛',
   'guide.lore.figuresBody': '有少數幾個人會與你一同走過這整條路。從谷地到群峰，請記住這些名字。',
   'guide.lore.figuresTitle': '你將會熟識的面孔',
   'guide.lore.marenBody':
@@ -4026,9 +4030,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.loading': '正在載入模型...',
   'guide.viewer.view3d': '以3D檢視{name}',
   'guide.viewer.view3dShort': '以3D檢視',
-  'guide.worldPage.gladeBody':
-    '並非谷地裡的每一個故事都與亡者有關。在北方，一片名為碧木林地、陽光普照的林間空地保有它自己更為平和的節奏，由一名寧願看管它而非戰鬥的孤獨遊俠守望著。她的職責是平衡：剔除過度繁衍之物，並在林地老去的鹿王巢穴變得太過危險而不能放任不管時，給予牠一個體面的結局。這是你正在追隨的軌跡的一段柔和對照，值得你繞道一訪。',
-  'guide.worldPage.gladeTitle': '一處靜謐的角落：碧木林地',
   'guide.worldPage.marshGreeter': '守衛芬威克，沼橋鎮',
   'guide.worldPage.marshGreeting': '守在城門這頭。越過那片蘆葦，沼澤便會替我們動手殺人。',
   'guide.worldPage.marshPlaceNotes':
@@ -4041,6 +4042,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.valeGreeting': '把你的劍帶在身邊。谷地已不復昔日。',
   'guide.worldPage.valePlaceNotes':
     '東溪鎮是你的第一個主據點。狼徑與野豬草甸是溫和的狩獵場；鏡湖是適合垂釣的靜謐水域；蛛網林與銅礦坑藏著蜘蛛與貪礦的掘地者；一座盜匪營地與墮落禮拜堂另有更粗野的活計；碧木林地則是北方一片平和的野生林地。',
+  'guide.worldPage.gladeTitle': '寧靜一隅：碧木林地',
+  'guide.worldPage.gladeBody':
+    '谷地裡的故事並不全都關於亡者。北方有一片陽光灑落的林地，名為碧木林地，保有自己較溫和的節奏：安靜小徑、啃草的鹿，以及枝葉下警覺的野獸。它是你所追循之路旁的一段柔和對照，當道路給你餘裕漫遊時，很值得前去一看。',
   // APM telemetry label from release/v0.14.0
   'hudChrome.perf.labels.apm': 'APM',
 };

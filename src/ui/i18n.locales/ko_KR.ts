@@ -2235,6 +2235,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korgath_the_bound.name': '속박된 코르가스',
   'entities.mobs.grand_necromancer_velkhar.name': '대강령술사 벨카르',
   'entities.mobs.korzul_the_gravewyrm.name': '무덤고룡 코르줄',
+  'entities.mobs.elder_bristleback.name': '늙은 뻣센등뼈',
   'entities.mobs.ironvein_foreman.name': '철맥 감독관',
   'entities.mobs.ironvein_sapper.name': '철맥 폭파병',
   'entities.mobs.marrowlord_varkas.name': '골수군주 바르카스',
@@ -2243,6 +2244,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.mogger.name': '모거',
   'entities.mobs.mogger_lackey.name': '모거의 졸개',
   'entities.mobs.nhalia_mourner.name': '날리아 애도자',
+  'entities.mobs.sableweb_hatchling.name': '검은그물 새끼',
+  'entities.mobs.sableweb_matriarch.name': '검은그물 우두머리',
   'entities.mobs.sister_nhalia.name': '자매 날리아',
   'entities.mobs.varkas_boneguard.name': '바르카스 뼈수호병',
   'entities.mobs.imp.name': '임프',
@@ -2728,12 +2731,6 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_gravewyrm.completion':
     '끝났습니다. 세 땅의 죽은 자들이 쉬고 산은 혼령 없이 잠듭니다. 오늘 밤 여기서 이스트브룩까지 모든 종이 울리는 것은 바로 그대의 이름입니다, {playerName}이여.',
   'entities.quests.q_gravewyrm.objectives.0.label': '무덤고룡 코르줄 처치',
-  'entities.quests.q_mogger_tracks.title': '모거의 흔적',
-  'entities.quests.q_mogger_tracks.text':
-    '북쪽 길을 떠나기 전에 이스트브룩에는 마지막 골칫거리, 모거가 남았습니다. 그 짐승은 아래 초원을 짓밟고 멧돼지를 미치게 합니다. 흔적 주변의 초원을 정리해 은신처를 찾아내십시오.',
-  'entities.quests.q_mogger_tracks.completion':
-    '그 발자국은 새롭고 비를 담을 만큼 깊습니다. 모거는 야영지 이야기가 아닙니다, {playerName}. 아주 가까이 있습니다.',
-  'entities.quests.q_mogger_tracks.objectives.0.label': '야생 멧돼지를 흔적에서 몰아냄',
   'entities.quests.q_mogger.title': '모거를 쓰러뜨려라',
   'entities.quests.q_mogger.text':
     '모거는 수레를 쪼개고 울타리를 납작하게 만들며 계곡 절반을 비울 만큼 가축을 죽였습니다. 혼자 맞서지 마십시오. 강한 동료 둘과 동쪽 초원으로 가서 그 짐승을 끝내십시오.',
@@ -2976,17 +2973,18 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tidereaver_gaff.name': '조수가르기의 갈고리',
   'entities.items.verlans_oathblade.name': '베를란의 맹세검',
   'entities.mobs.brutok_skullsmasher.name': '해골분쇄자 브루톡',
+  'entities.mobs.captain_verlan.name': '베를란 대장',
   'entities.mobs.old_cragmaw.name': '늙은 크래그모',
   'entities.mobs.sloomtooth_the_drowned.name': '익사한 슬룸투스',
   'entities.mobs.voskar_emberwing.name': '잿불날개 보스카르',
   'entities.mobs.wraithbinder_maldrec.name': '영혼결속자 말드렉',
-  'entities.items.glade_pelt.name': '숲속 가죽',
   'entities.items.soft_down.name': '부드러운 솜털 뭉치',
   'entities.items.amber_hide.name': '호박색 가죽',
   'entities.items.stag_antler.name': '가지진 사슴뿔',
   'entities.items.brightwood_venison.name': '브라이트우드 사슴고기',
   'entities.items.bramblehide_jerkin.name': '가시가죽 저킨',
   'entities.items.monarch_crown_helm.name': '군주의 왕관',
+  // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': '채팅 채널 추가',
   'hud.core.chatChannels.addTitle': '채널 추가',
   'hud.core.chatChannels.close': '{channel} 탭 닫기',
@@ -3001,10 +2999,17 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hud.core.chatChannels.sendingTo': '{channel} 채널에 보내기',
   'hud.options.npcVoices': 'NPC 음성',
   'hud.options.voiceVolume': '음성 음량',
-  'entities.npcs.ranger_elwyn.greeting':
-    '조용히 하게, {className} - 오늘 숲은 고요하고, 나는 그대로 지킬 생각이네.',
-  'entities.npcs.ranger_elwyn.name': '순찰병 엘윈',
-  'entities.npcs.ranger_elwyn.title': '숲의 수호인',
+  'entities.mobs.bramble_lynx.name': '가시덤불 살쾡이',
+  'entities.mobs.brightwood_hare.name': '브라이트우드 산토끼',
+  'entities.mobs.brightwood_monarch.name': '브라이트우드의 군주',
+  'entities.mobs.brightwood_stag.name': '브라이트우드 수사슴',
+  'entities.mobs.dawnmane_doe.name': '여명갈기 암사슴',
+  'entities.mobs.glade_fox.name': '숲속 여우',
+  'entities.mobs.grovetusk_boar.name': '숲엄니 멧돼지',
+  'entities.mobs.meadow_crane.name': '초원 두루미',
+  'entities.mobs.spotted_fawn.name': '얼룩 새끼사슴',
+  'entities.mobs.sunhide_bear.name': '햇살가죽 곰',
+  'entities.mobs.thornpelt_badger.name': '가시털 오소리',
   'entities.zones.eastbrook_vale.pois.8.label': '브라이트우드 숲',
   'fiesta.augment.aug_apex_predator.desc':
     '물리 피해 +40%, 치명타 +15%, 입힌 피해의 12%만큼 회복합니다.',
@@ -3955,6 +3960,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.arenaPage.wavesBody':
     'Fiesta의 매 라운드마다 새로운 선택지가 주어지며, 시합이 진행될수록 그 선택은 점점 대담해집니다. 한 웨이브에서 다음 웨이브로 빌드를 쌓아 가는데, 매번 몇 가지 중 하나를 골라 남은 시합 동안 계속 지니게 됩니다.',
   'guide.arenaPage.wavesTitle': '증강은 웨이브로 찾아옵니다',
+  'guide.bestiary.flavor.brightwood_stag':
+    '뿔로 된 왕관을 낮추고 밀어붙이는 당당한 숲의 사슴으로, 몰아붙일수록 상대하기 더 까다로워집니다.',
   'guide.bestiary.flavor.gravecaller_cultist':
     '골짜기에서 봉우리까지 무덤을 더럽히는 죽음교단의 로브 두른 종복들. 이들이 모이는 곳에서는 죽은 자가 쉬지 못합니다.',
   'guide.bestiary.flavor.grubjaw':
@@ -4066,9 +4073,6 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.lore.aldricBody':
     '동부개울에서 더럽혀진 무덤 앞에 서서 교단의 이름을 처음 밝혀낸 다음, 직접 그 자취를 좇아 습지를 지나 하이워치의 성벽까지 오르는 소박한 마을 사제. 온 원정의 굳건한 심장입니다.',
   'guide.lore.aldricRole': '골짜기의 사제',
-  'guide.lore.elwynBody':
-    '골짜기 북쪽 양지바른 숲을 홀로 지키는 이. 그녀의 일은 살육이 아니라 보살핌입니다. 지나치게 번식한 것을 솎아내고, 숲에서 가장 늙은 짐승에게 늑대들이 주는 것보다 한결 너그러운 마지막을 베풉니다.',
-  'guide.lore.elwynRole': '브라이트우드의 숲지기',
   'guide.lore.figuresBody':
     '몇몇 사람들은 당신과 함께 이 길을 끝까지 걷습니다. 골짜기에서 봉우리까지, 이 이름들을 눈여겨보세요.',
   'guide.lore.figuresTitle': '차차 알게 될 얼굴들',
@@ -4257,9 +4261,6 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.loading': '모델 불러오는 중...',
   'guide.viewer.view3d': '{name} 3D로 보기',
   'guide.viewer.view3dShort': '3D로 보기',
-  'guide.worldPage.gladeBody':
-    '골짜기의 모든 이야기가 죽은 자에 관한 것은 아닙니다. 북쪽에는 브라이트우드 숲이라 불리는 양지바른 숲이 한결 부드러운 제 가락을 지키며, 싸우기보다 보살피기를 택한 외로운 순찰자가 그곳을 지켜봅니다. 그녀의 일은 균형입니다. 지나치게 번식한 것을 솎아내고, 둥지가 너무 위험해져 그냥 둘 수 없게 되면 숲의 늙은 왕관 쓴 수사슴에게 정중한 마지막을 베푸는 것이지요. 당신이 좇는 자취에 대비되는 잔잔한 대목이며, 잠시 들를 만한 가치가 있습니다.',
-  'guide.worldPage.gladeTitle': '고요한 한구석: 브라이트우드 숲',
   'guide.worldPage.marshGreeter': '감시관 펜윅, 펜브리지',
   'guide.worldPage.marshGreeting':
     '문에서 멈추시오. 저 갈대밭 너머에서는, 습지가 우리 대신 죽이는 일을 하니까.',
@@ -4274,6 +4275,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.valeGreeting': '칼을 가까이 두시오. 골짜기는 예전 같지 않으니.',
   'guide.worldPage.valePlaceNotes':
     '이스트브룩은 당신의 첫 본거지입니다. 늑대길과 멧돼지 초원은 무난한 사냥터이고, 거울 호수는 낚시하기 좋은 잔잔한 물입니다. 거미숲과 구리 채굴장에는 거미와 광석에 굶주린 굴착꾼이 숨어 있고, 산적 야영지와 무너진 예배당은 한층 거친 일거리를 품으며, 브라이트우드 숲은 북쪽의 고요한 야생 동물 숲입니다.',
+  'guide.worldPage.gladeTitle': '고요한 한구석: 브라이트우드 숲',
+  'guide.worldPage.gladeBody':
+    '계곡의 모든 이야기가 죽은 자들에 관한 것은 아닙니다. 북쪽에는 브라이트우드라는 햇살 드는 숲이 있어 조용한 길, 풀을 뜯는 사슴, 가지 아래의 경계심 많은 짐승들과 함께 더 부드러운 고유한 리듬을 지킵니다. 당신이 따라가는 흔적에 대한 차분한 대비이며, 길이 잠시 여유를 줄 때 둘러볼 만한 곳입니다.',
   // APM telemetry label from release/v0.14.0
   'hudChrome.perf.labels.apm': 'APM',
 };

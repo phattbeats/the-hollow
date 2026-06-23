@@ -175,25 +175,25 @@ export const fr_FR: EnTranslations = {
       "done": "Terminé"
     },
     "theme": {
-      "preset": "UI Theme",
-      "customColors": "Custom Colors",
-      "reset": "Reset",
+      "preset": "Thème de l'interface",
+      "customColors": "Couleurs personnalisées",
+      "reset": "Réinitialiser",
       "presets": {
-        "classic": "Classic Gold",
-        "midnight": "Midnight",
-        "parchment": "Parchment",
-        "highContrast": "High Contrast"
+        "classic": "Or classique",
+        "midnight": "Minuit",
+        "parchment": "Parchemin",
+        "highContrast": "Contraste élevé"
       },
       "knob": {
         "accent": "Accent",
-        "border": "Border",
-        "panel": "Frame",
-        "text": "Text",
-        "textMuted": "Muted Text",
-        "hp": "Health",
+        "border": "Bordure",
+        "panel": "Cadre",
+        "text": "Texte",
+        "textMuted": "Texte atténué",
+        "hp": "Santé",
         "mana": "Mana",
         "rage": "Rage",
-        "energy": "Energy"
+        "energy": "Énergie"
       }
     },
     "questTracker": {
@@ -275,8 +275,8 @@ export const fr_FR: EnTranslations = {
       "interfaceModeNote": "Auto choisit les commandes Desktop ou Touch selon votre appareil. Choisissez Desktop pour forcer le clavier et la souris (utile sur une tablette avec clavier), ou Touch pour les commandes à l'écran.",
       "footstepSounds": "Sons de pas",
       "clickFeedback": "Repère de clic",
-      "lockCursorOnRotate": "Lock Cursor While Rotating",
-      "keybindHelpLockCursorOnRotate": "Keeps the mouse cursor inside the window while you drag to rotate the camera, so it cannot reach the screen edge or move to another monitor. Turn off if you prefer a free cursor.",
+      "lockCursorOnRotate": "Verrouiller le curseur pendant la rotation",
+      "keybindHelpLockCursorOnRotate": "Maintient le curseur de la souris dans la fenêtre pendant que vous faites glisser pour faire pivoter la caméra, afin qu'il n'atteigne pas le bord de l'écran et ne passe pas sur un autre moniteur. Désactivez cette option si vous préférez un curseur libre.",
       "showWalletOnCharacterScreen": "Afficher le portefeuille sur l’écran des personnages",
       "showWalletOnPlayerCard": "Afficher le portefeuille sur la carte de joueur",
       "uiScale": "Échelle de l’interface",
@@ -952,6 +952,7 @@ export const fr_FR: EnTranslations = {
       "notedLabel": "À noter",
       "flavor": {
         "old_greyjaw": "Un vieux loup balafré qu'aucun piège n'a jamais tenu, tenu pour responsable de trois chiens et du bras d'un garçon d'écurie. Il chasse seul au plus profond des bois et devient sauvage à mesure que le combat s'éternise.",
+        "brightwood_stag": "Un fier cerf des bosquets qui baisse sa couronne de bois et charge tête baissée, devenant d'autant plus coriace qu'on le presse longtemps.",
         "grubjaw": "Un troll des fagnes si avide que les autres trolls refusent de creuser à ses côtés ; on dit qu'il a dévoré les deux dernières mules de bât d'un marchand, harnais compris.",
         "shardlord_kazzix": "Un élémentaire de tempête doté d'épaules, qui arpente les crêtes lointaines au-dessus de Stormcrag, porteur d'un éclat de cœur qui vaut bien d'affronter la foudre.",
         "mirejaw_frenzy": "Un murloc des marais qui se monte en frénésie convulsive en plein combat, le plus bruyant d'une meute bruyante et territoriale.",
@@ -1016,8 +1017,8 @@ export const fr_FR: EnTranslations = {
       "valePlaceNotes": "Eastbrook est votre premier camp de base. La Course du Loup et le Pré du Sanglier sont des terrains de chasse cléments ; le lac Miroir est une eau calme où pêcher ; le Bois des toiles et la Mine de cuivre cachent araignées et fouisseurs avides de minerai ; un Camp de bandits et la Chapelle déchue gardent des besognes plus rudes ; la clairière de Brightwood est un paisible bosquet sauvage au nord.",
       "marshPlaceNotes": "Fenbridge garde la seule route sèche. Les Roseaux du Rôdeur et les Hauts-fonds de Deepfen grouillent de bêtes des marais et de murlocs ; le Fourré de la Veuve est tissé d'une épaisse toile ; la Chapelle noyée et les Tertres des trolls gardent des dangers plus anciens ; le Campement des Appelants des tombes, c'est le culte retranché, et le Bastion englouti est le cœur en instance du marais.",
       "peaksPlaceNotes": "Highwatch tient le rempart. La Crête du Traqueur et les Terriers de Deeprock appartiennent aux félins des crêtes et aux kobolds ; les Contreforts des ogres et le Camp de guerre de Drogmar à des brutes à gages ; Stormcrag crépite d'élémentaires et le Glimmermere luit en contrebas ; les Tentes du culte du Ver et les Champs des revenants ceignent les hauteurs du culte, avec le Sanctuaire du Gravewyrm à son sommet.",
-      "gladeTitle": "Un coin tranquille : la clairière de Brightwood",
-      "gladeBody": "Toutes les histoires du Val ne parlent pas des morts. Au nord, un bosquet baigné de soleil nommé la clairière de Brightwood garde son propre rythme, plus doux, veillé par une rôdeuse solitaire qui préfère l'entretenir que se battre. Son travail est l'équilibre : éclaircir ce qui pullule et, quand son creux devient trop dangereux pour qu'on le laisse, offrir au vieux cerf couronné du bosquet une fin respectueuse. C'est un contrepoint paisible à la piste que vous suivez, et le détour en vaut la peine."
+      "gladeTitle": "Un coin paisible : la clairière de Brightwood",
+      "gladeBody": "Toutes les histoires du Val ne parlent pas des morts. Au nord, une clairière ensoleillée appelée Brightwood garde son propre rythme plus doux, avec des sentiers calmes, des cerfs au pâturage et des bêtes méfiantes sous les branches. C’est un contrepoint apaisé à la piste que vous suivez, et elle mérite le détour quand la route vous laisse le temps de flâner."
     },
     "questsPage": {
       "heading": "Quêtes",
@@ -1065,9 +1066,7 @@ export const fr_FR: EnTranslations = {
       "aldricRole": "Prêtre du Val",
       "aldricBody": "Un humble prêtre de village qui, le premier, nomme le culte au-dessus d'une tombe profanée à Eastbrook, puis suit sa piste en personne à travers le marais jusqu'au rempart de Highwatch. Il est le cœur constant de toute la campagne.",
       "marenRole": "L'éclaireuse du maréchal",
-      "marenBody": "Une traqueuse à la voix basse que vous croisez dans les roseaux de Mirefen, tout en pas feutrés et en lame courte. Elle suit la piste vers le nord, elle aussi, et c'est son oreille qui saisit les mots qui vous envoient vers les sommets.",
-      "elwynRole": "Gardienne de la clairière de Brightwood",
-      "elwynBody": "L'unique gardienne d'un bosquet baigné de soleil au nord du Val. Son travail est l'intendance, non le carnage : éclaircir ce qui pullule et offrir à la plus vieille bête du bosquet une fin plus douce que celle que lui réserveraient les loups."
+      "marenBody": "Une traqueuse à la voix basse que vous croisez dans les roseaux de Mirefen, tout en pas feutrés et en lame courte. Elle suit la piste vers le nord, elle aussi, et c'est son oreille qui saisit les mots qui vous envoient vers les sommets."
     },
     "dungeonsPage": {
       "heading": "Donjons et raids",
@@ -1932,11 +1931,11 @@ export const fr_FR: EnTranslations = {
     "high": "Élevée",
     "medium": "Moyenne",
     "low": "Faible",
-    "popTipLow": "Low population: fewer than 15 players online right now. Plenty of room; great for a fresh start.",
-    "popTipMedium": "Medium population: 15 to 39 players online right now. A healthy, active realm.",
-    "popTipHigh": "High population: 40 to 79 players online right now. Busy, with lots of players around.",
-    "popTipFull": "Full population: 80 or more players online right now. Very busy; you may wait in a login queue.",
-    "popTipOffline": "Offline: this realm is unreachable right now and cannot be joined.",
+    "popTipLow": "Population faible : moins de 15 joueurs en ligne actuellement. Beaucoup de place ; idéal pour un nouveau départ.",
+    "popTipMedium": "Population moyenne : 15 à 39 joueurs en ligne actuellement. Un royaume actif et sain.",
+    "popTipHigh": "Population élevée : 40 à 79 joueurs en ligne actuellement. Fréquenté, avec beaucoup de joueurs autour.",
+    "popTipFull": "Population complète : 80 joueurs ou plus en ligne actuellement. Très fréquenté ; vous pourriez attendre dans une file de connexion.",
+    "popTipOffline": "Hors ligne : ce royaume est inaccessible pour le moment et ne peut pas être rejoint.",
     "characterCountOne": "{count} personnage",
     "characterCountOther": "{count} personnages",
     "selectedRealm": "Royaume: {name}",
@@ -4074,9 +4073,6 @@ export const fr_FR: EnTranslations = {
       "milepost_boots": {
         "name": "Bottes de borne"
       },
-      "glade_pelt": {
-        "name": "Fourrure de clairière"
-      },
       "soft_down": {
         "name": "Touffe de duvet doux"
       },
@@ -4721,6 +4717,42 @@ export const fr_FR: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Fléau de Thornpeak"
       },
+      "brightwood_hare": {
+        "name": "Lièvre de Brightwood"
+      },
+      "glade_fox": {
+        "name": "Renard des clairières"
+      },
+      "spotted_fawn": {
+        "name": "Faon tacheté"
+      },
+      "meadow_crane": {
+        "name": "Grue des prés"
+      },
+      "thornpelt_badger": {
+        "name": "Blaireau Pelage-d'épines"
+      },
+      "dawnmane_doe": {
+        "name": "Biche Crinaube"
+      },
+      "bramble_lynx": {
+        "name": "Lynx des ronces"
+      },
+      "brightwood_stag": {
+        "name": "Cerf de Brightwood"
+      },
+      "grovetusk_boar": {
+        "name": "Sanglier Défense-des-bois"
+      },
+      "sunhide_bear": {
+        "name": "Ours Peau-de-soleil"
+      },
+      "brightwood_monarch": {
+        "name": "Le Monarque de Brightwood"
+      },
+      "elder_bristleback": {
+        "name": "Ancien Bristleback"
+      },
       "ironvein_foreman": {
         "name": "Contremaître Veinefer"
       },
@@ -4745,6 +4777,12 @@ export const fr_FR: EnTranslations = {
       "nhalia_mourner": {
         "name": "Pleureuse de Nhalia"
       },
+      "sableweb_hatchling": {
+        "name": "Jeune Sableweb"
+      },
+      "sableweb_matriarch": {
+        "name": "Matriarche Sableweb"
+      },
       "sister_nhalia": {
         "name": "Sœur Nhalia"
       },
@@ -4765,6 +4803,9 @@ export const fr_FR: EnTranslations = {
       },
       "brutok_skullsmasher": {
         "name": "Brutok Brise-crânes"
+      },
+      "captain_verlan": {
+        "name": "Capitaine Verlan"
       },
       "old_cragmaw": {
         "name": "Vieux Cragmaw"
@@ -4922,11 +4963,6 @@ export const fr_FR: EnTranslations = {
         "name": "Maître du savoir Caddis",
         "title": "Maître du savoir",
         "greeting": "Méfiez-vous des schistes instables, {className}. La montagne est agitée ces temps-ci, et je veux savoir pourquoi."
-      },
-      "ranger_elwyn": {
-        "name": "Rôdeuse Elwyn",
-        "title": "Garde de la clairière",
-        "greeting": "Silence, {className} - la clairière est calme aujourd'hui, et j'entends bien qu'elle le reste."
       },
       "brother_aldric_raid": {
         "name": "Frère Aldric",
@@ -5679,16 +5715,6 @@ export const fr_FR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Nythraxis vaincu"
-          }
-        }
-      },
-      "q_mogger_tracks": {
-        "title": "La piste de Mogger",
-        "text": "Avant de prendre la route du nord, Eastbrook a une dernière épine dans le pied : Mogger. La brute piétine le pré bas et rend les sangliers fous. Nettoyez le pré autour de sa piste pour que nous voyions où il se terre.",
-        "completion": "Ces traces sont fraîches et assez profondes pour retenir la pluie. Mogger n'est pas une histoire de camp, {playerName}, et il est proche.",
-        "objectives": {
-          "0": {
-            "label": "Sanglier sauvage chassé de la piste"
           }
         }
       },
