@@ -1,4 +1,4 @@
-import { OVERHEAD_EMOTE_IDS, type ArenaCombatant, type ArenaFormat, type ArenaStanding, type Entity, type EquipSlot, type InvSlot, type LootRollChoice, type MoveInput, type OverheadEmoteId, type PetMode, type PlayerClass, type QuestProgress, type QuestState, type ResourceType } from './sim/types';
+import { OVERHEAD_EMOTE_IDS, type ArenaCombatant, type ArenaFormat, type ArenaStanding, type Entity, type EquipSlot, type InvSlot, type LootRollChoice, type LootRollPrompt, type MoveInput, type OverheadEmoteId, type PetMode, type PlayerClass, type QuestProgress, type QuestState, type ResourceType } from './sim/types';
 import type { ResolvedAbility } from './sim/sim';
 import type { TalentAllocation, SavedLoadout, Role } from './sim/content/talents';
 
@@ -279,6 +279,9 @@ export interface IWorld {
   interact(): void;
   lootCorpse(id: number): void;
   submitLootRoll(rollId: number, choice: LootRollChoice): void;
+  // Open need-greed rolls the local player may still answer; lets the HUD
+  // reconcile prompts from authoritative state so a missed event is recoverable.
+  activeLootRolls(): LootRollPrompt[];
   pickUpObject(id: number): void;
   acceptQuest(questId: string): void;
   turnInQuest(questId: string): void;

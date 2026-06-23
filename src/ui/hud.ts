@@ -542,6 +542,9 @@ export class Hud {
   private mapPrewarmVia: 'idle' | 'timeout' | null = null;
   private openLootMobId: number | null = null;
   private activeLootRolls = new Map<number, { event: Extract<SimEvent, { type: 'lootRoll' }>; receivedAt: number; durationMs: number }>();
+  // rolls the player has answered or let expire locally; suppresses the
+  // snapshot reconcile from re-showing them until the server drops the roll
+  private dismissedLootRolls = new Set<number>();
   private openVendorNpcId: number | null = null;
   private openGossipNpcId: number | null = null;
   private openQuestDetailId: string | null = null;
@@ -2660,6 +2663,7 @@ export class Hud {
 
     this.meters.update();
     this.tutorial.update(sim, this.renderer, this.keybinds);
+    this.reconcileLootRolls();
     this.updateLootRollTimers(now);
     this.syncActiveHotbarForm();
     this.syncSlotMap(); // picks up newly learned abilities mid-session
@@ -5304,7 +5308,27 @@ export class Hud {
   private submitLootRoll(rollId: number, choice: LootRollChoice): void {
     this.sim.submitLootRoll(rollId, choice);
     this.activeLootRolls.delete(rollId);
+    this.dismissedLootRolls.add(rollId);
     this.renderLootRolls();
+  }
+
+  // Re-show any open roll the server still lists us as able to answer. Loot-roll
+  // events are best-effort (a single frame); if one is missed (reconnect,
+  // interest churn, a dropped snapshot) this recovers the prompt from
+  // authoritative state instead of leaving the player unable to roll.
+  private reconcileLootRolls(): void {
+    const open = this.sim.activeLootRolls();
+    const openIds = new Set(open.map((p) => p.rollId));
+    for (const id of this.dismissedLootRolls) {
+      if (!openIds.has(id)) this.dismissedLootRolls.delete(id); // server confirmed it is gone
+    }
+    let changed = false;
+    for (const p of open) {
+      if (this.activeLootRolls.has(p.rollId) || this.dismissedLootRolls.has(p.rollId)) continue;
+      this.activeLootRolls.set(p.rollId, { event: { type: 'lootRoll', ...p }, receivedAt: performance.now(), durationMs: 30_000 });
+      changed = true;
+    }
+    if (changed) this.renderLootRolls();
   }
 
   private updateLootRollTimers(now: number): void {
@@ -5313,6 +5337,7 @@ export class Hud {
     for (const [rollId, roll] of this.activeLootRolls) {
       if (now - roll.receivedAt >= roll.durationMs) {
         this.activeLootRolls.delete(rollId);
+        this.dismissedLootRolls.add(rollId); // expired locally; don't let reconcile re-show it
         changed = true;
       }
     }

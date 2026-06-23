@@ -9,7 +9,7 @@ import {
 import { mechChromaItemId, mechChromaSkinIndex } from '../sim/content/skins';
 import { signChallenge } from '../sim/client_challenge';
 import {
-  Entity, EquipSlot, InvSlot, LootRollChoice, MoveInput, PlayerClass, QuestProgress, QuestState, SimEvent,
+  Entity, EquipSlot, InvSlot, LootRollChoice, LootRollPrompt, MoveInput, PlayerClass, QuestProgress, QuestState, SimEvent,
   emptyMoveInput,
 } from '../sim/types';
 import { normalizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
@@ -506,6 +506,7 @@ export class ClientWorld implements IWorld {
   arenaInfo: ArenaInfo | null = null;
   marketInfo: MarketInfo | null = null;
   markers: Record<number, number> = {}; // entityId -> markerId, mirrored from the self-wire
+  private lootRollPrompts: LootRollPrompt[] = []; // open need-greed rolls, mirrored from the self-wire
   realm = '';
   // bumped whenever a fresh social snapshot lands, so an open panel re-renders
   private socialDirty = false;
@@ -959,6 +960,7 @@ export class ClientWorld implements IWorld {
       if (s.duel !== undefined) this.duelInfo = s.duel;
       if (s.arena !== undefined) this.arenaInfo = s.arena;
       if (s.market !== undefined) this.marketInfo = s.market;
+      if (s.lroll !== undefined) this.lootRollPrompts = s.lroll ?? [];
       // camera follows server-side facing changes when not mouselooking
       if (prevSelfFacing !== undefined && this.mouselookFacing === null) {
         let d = e.facing - prevSelfFacing;
@@ -1090,6 +1092,9 @@ export class ClientWorld implements IWorld {
   }
   submitLootRoll(rollId: number, choice: LootRollChoice): void {
     this.cmd({ cmd: 'lootRoll', rollId, choice });
+  }
+  activeLootRolls(): LootRollPrompt[] {
+    return this.lootRollPrompts;
   }
   pickUpObject(id: number): void {
     this.cmd({ cmd: 'pickup', id });

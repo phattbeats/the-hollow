@@ -1677,6 +1677,9 @@ export class GameServer {
     // market info is null unless the player is standing at the Merchant, so it
     // only rides the wire for players actually browsing the World Market
     maybe('market', this.sim.marketInfoFor(session.pid));
+    // open need-greed rolls this player can still answer, so a client that
+    // missed the transient lootRoll event re-shows the prompt from state
+    maybe('lroll', this.sim.activeLootRolls(session.pid));
     // talents/spec/loadouts ride the wire only when they change (PR-5: never
     // every snapshot). The client recomputes its known abilities from this.
     maybe('tal', { alloc: meta.talents, spec: meta.talentMods.spec, role: meta.talentMods.role, loadouts: meta.loadouts, activeLoadout: meta.activeLoadout });
