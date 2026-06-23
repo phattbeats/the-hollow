@@ -15,6 +15,10 @@
 
 export const SELF_TURN_MAX_RATE = 10; // rad/sec cap on camera-driven model yaw
 const MAX_FRAME_DT = 1 / 30; // clamp long frames so a hitch cannot over-rotate
+// Override is considered converged onto the sim facing once within this gap, at
+// which point the renderer drops it and hands control back to the interpolated
+// facing. Small enough to be visually indistinguishable from a perfect match.
+export const SELF_FACING_CONVERGE_EPS = 1e-4; // rad
 
 /** Shortest signed angular distance from `from` to `to`, in (-PI, PI]. */
 export function wrapAngle(d: number): number {
@@ -43,4 +47,22 @@ export function approachAngle(current: number, target: number, maxStep: number):
 export function stepSelfFacing(current: number, target: number, frameDt: number): number {
   const dt = Math.min(Math.max(0, frameDt), MAX_FRAME_DT);
   return approachAngle(current, target, SELF_TURN_MAX_RATE * dt);
+}
+
+/**
+ * Disengage frame: the camera-driven override has been released, so step the
+ * model's displayed yaw back toward the live interpolated sim `facing` under the
+ * SAME rate limiter rather than snapping to it. This avoids a one-frame snap-back
+ * when the override is dropped mid-flick before the rate-limited model had caught
+ * up. Returns the next yaw plus whether it has converged onto the sim facing; the
+ * caller clears its stored override only once `done` is true.
+ */
+export function releaseSelfFacing(
+  current: number,
+  simFacing: number,
+  frameDt: number,
+): { facing: number; done: boolean } {
+  const next = stepSelfFacing(current, simFacing, frameDt);
+  const done = Math.abs(wrapAngle(simFacing - next)) <= SELF_FACING_CONVERGE_EPS;
+  return { facing: done ? simFacing : next, done };
 }

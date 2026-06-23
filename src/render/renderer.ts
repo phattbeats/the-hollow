@@ -16,7 +16,7 @@ import { mechAssetsReady, preloadMechAssets } from './characters/assets';
 import { isVisuallyDead } from './anim_state';
 import { clickMarkerAnim, clickMarkerColor, CLICK_MARKER_LIFETIME } from './click_marker';
 import { LocoTrack, newLocoTrack, updateLocomotion } from './locomotion';
-import { stepSelfFacing } from './facing_smooth';
+import { stepSelfFacing, releaseSelfFacing } from './facing_smooth';
 import type { SpatialAudioSink, Surface } from './audio_sink';
 import { buildPropMaterialPrewarmGroup, buildProps } from './props';
 import { plankTexture, sparkleTexture } from './textures';
@@ -2964,8 +2964,14 @@ export class Renderer {
         // from the current interpolated facing on first engage.
         facing = stepSelfFacing(this.selfFacingOverride ?? facing, renderFacingOverride, dt);
         this.selfFacingOverride = facing;
-      } else if (id === p.id) {
-        this.selfFacingOverride = null;
+      } else if (id === p.id && this.selfFacingOverride !== null) {
+        // Disengage frame: route the return to the interpolated sim facing
+        // through the SAME rate limiter so releasing mouselook mid-flick (before
+        // the model caught up to the camera) rotates back smoothly instead of
+        // snapping. Hold the override until it has converged onto the sim facing.
+        const r = releaseSelfFacing(this.selfFacingOverride, facing, dt);
+        facing = r.facing;
+        this.selfFacingOverride = r.done ? null : r.facing;
       }
       v.group.rotation.y = facing;
 
