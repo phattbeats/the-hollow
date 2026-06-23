@@ -1,8 +1,9 @@
 import type { WebSocket } from 'ws';
-import { Sim } from '../src/sim/sim';
+import { Sim, MAX_CHAT_MESSAGE_LEN } from '../src/sim/sim';
 import type { PlayerMeta } from '../src/sim/sim';
-import { DT, Entity, SimEvent, dist2d, emptyMoveInput } from '../src/sim/types';
+import { DT, Entity, EQUIP_SLOTS, EquipSlot, RUN_SPEED, SimEvent, dist2d, emptyMoveInput } from '../src/sim/types';
 import { parseMoveInputFrame } from '../src/sim/move_input';
+import { verifyChallenge } from '../src/sim/client_challenge';
 import { stealthDetectionRadius, threatEntries } from '../src/sim/threat';
 import { zoneAt, DUNGEONS } from '../src/sim/data';
 import { MECH_CHROMAS, mechChromaItemId, mechChromaSkinIndex } from '../src/sim/content/skins';
@@ -14,6 +15,8 @@ import { holderInfoForPubkey } from './woc_balance';
 import type { AccountChatMuteStatus, AccountCosmetics, RequestMetadata } from './db';
 import { ChatFilter } from './chat_filter';
 import { loadChatFilterState, applyChatStrike, recordChatViolation } from './chat_filter_db';
+import { IpBlockList } from './ip_block';
+import { loadActiveBlockedIps } from './ip_block_db';
 import { offensiveName } from './auth';
 import { ChatLogger } from './chat_log';
 import { SocialService } from './social';
@@ -21,8 +24,8 @@ import type { Presence, PresenceStatus, SocialActor, SocialEvent, SocialTranspor
 import { PgSocialDb } from './social_db';
 import { REALM } from './realm';
 import { isOverheadEmoteId } from '../src/world_api';
-import * as antibot from './antibot';
-import type { BotTracker } from './antibot';
+import { createBotDetector } from '#bot-detector';
+import type { BotDetector, BotTrackingContext } from './bot_detector/contract';
 
 const WORLD_SEED = 20061;
 const ALDRIC_METEOR_QUEST_ID = 'q_aldrics_fallen_star';
@@ -70,9 +73,6 @@ const RESTART_COUNTDOWN_STEPS = [
   { atSeconds: 590, text: 'Server restart in 10 seconds.' },
   { atSeconds: 600, text: 'Server restarting now.' },
 ] as const;
-const MAX_WS_PER_IP_SOFT = Number(process.env.MAX_WS_PER_IP_SOFT ?? '5');
-// Antibot enforcement (shadow-throttle + auto-kick), off by default: detection runs
-// report-only until the signals are mature and the false-positive rate is measured.
 const ANTIBOT_ENFORCE = process.env.ANTIBOT_ENFORCE === '1';
 // Clients stream movement intent every 50ms. If that stream goes silent while
 // the last packet held a key down, stop applying it instead of turning/running
@@ -133,8 +133,11 @@ export interface ClientSession {
   socialTrackedIds?: number[];
   // IP address at join time (from requestMetadata); used for per-IP session counting.
   ip: string;
+  isAdmin: boolean;
+  // Seed the client sends at auth; signs its challenge answers.
+  clientSeed: string;
   // Behavioral bot-detection state. Ephemeral — reset on every join.
-  bot: BotTracker;
+  botTrackingContext: BotTrackingContext;
 }
 
 interface SentEntityVersions {
@@ -159,6 +162,15 @@ export interface AdminServerStats {
   heapUsedBytes: number;
 }
 
+export interface AdminLiveAura {
+  id: string;
+  name: string;
+  kind: string;
+  value: number;
+  remaining: number;
+  duration: number;
+}
+
 export interface AdminLivePlayer {
   pid: number;
   accountId: number;
@@ -173,6 +185,10 @@ export interface AdminLivePlayer {
   zone: string;
   sessionSeconds: number;
   lastSaveSecondsAgo: number;
+  moveSpeedMultiplier: number;
+  runSpeed: number;
+  swimming: boolean;
+  auras: AdminLiveAura[];
 }
 
 export interface RestartCountdownStatus {
@@ -211,6 +227,7 @@ function identityFields(e: Entity): Record<string, unknown> {
   if (e.skin) out.sk = e.skin;
   if (e.holderTier) out.ht = e.holderTier; // $WOC holder-tier flair (cosmetic)
   if (e.holderBalance) out.hb = Math.round(e.holderBalance); // exact $WOC, for inspect
+  if (e.guild) out.gd = e.guild;
   if (e.dungeonId) out.dgn = e.dungeonId;
   if (e.objectItemId) out.obj = e.objectItemId;
   if (e.scale !== 1) out.sc = e.scale;
@@ -343,10 +360,12 @@ export class GameServer {
   clients = new Map<number, ClientSession>(); // by pid
   private readonly sessionsByCharacterId = new Map<number, ClientSession>();
   private readonly accountCosmeticsByAccount = new Map<number, AccountCosmetics>();
+  private readonly botDetector: BotDetector = createBotDetector();
   readonly chatLog = new ChatLogger(insertChatLogs);
   // Admin-managed soft/hard word lists + escalation config. Loaded from the DB
   // at boot (loadChatFilter) and refreshed whenever an admin edits the lists.
   readonly chatFilter = new ChatFilter();
+  private readonly ipBlockList = new IpBlockList();
   private readonly socialDb = new PgSocialDb(pool);
   readonly social: SocialService;
   private wireCache = new Map<number, EntityWireCache>();
@@ -374,6 +393,7 @@ export class GameServer {
       playerClass: 'warrior',
       noPlayer: true,
       devCommands: process.env.ALLOW_DEV_COMMANDS === '1',
+      lockoutNowMs: () => Date.now(),
     });
     this.social = new SocialService(this.socialDb, this.socialTransport());
   }
@@ -382,25 +402,6 @@ export class GameServer {
   // Called by main.ts before join() for the hard-reject check.
   countIpSessions(ip: string): number {
     return this.ipSessionCounts.get(ip) ?? 0;
-  }
-
-  // Reconcile multi_ip evidence for every session on `ip` against the live session
-  // count. Called on join/leave (the only events that change the count), so the
-  // signal marks all sessions on a crowded IP and clears once it thins out.
-  private refreshMultiIpEvidence(ip: string): void {
-    if (!ip) return;
-    const count = this.countIpSessions(ip);
-    const crowded = count > MAX_WS_PER_IP_SOFT;
-
-    const clientsWithSameIp = [...this.clients.values()].filter(s => s.ip === ip);
-    clientsWithSameIp.forEach(s => {
-      if (crowded) {
-        antibot.addEvidence(s.bot, { kind: 'multi_ip', weight: 0.4, expiresAt: Infinity,
-          detail: `${count} sessions from ${ip}` });
-      } else {
-        antibot.removeEvidence(s.bot, 'multi_ip');
-      }
-    });
   }
 
   // -------------------------------------------------------------------------
@@ -470,6 +471,10 @@ export class GameServer {
     try {
       const snap = await this.social.snapshot(charId);
       this.send(session, { t: 'social', ...snap });
+      // Stamp the guild name onto the player's world entity so it rides the
+      // identity wire and shows under their nameplate for everyone nearby. This
+      // is the single chokepoint hit on join and on every membership change.
+      this.sim.setPlayerGuild(session.pid, snap.guild?.name ?? '');
       // remember who to track for the live position push (friends + guildmates)
       session.socialTrackedIds = [
         ...snap.friends.map((f) => f.id),
@@ -573,12 +578,9 @@ export class GameServer {
   private runAntibotTick(): void {
     const now = Date.now();
     for (const session of this.clients.values()) {
-      // Skip sessions with no evidence and no active escalation timers (CPU budget).
-      const t = session.bot;
-      if (t.evidence.length === 0 && t.aboveLogSince === null && t.aboveThrottleSince === null && t.aboveKickSince === null) continue;
-      const action = antibot.onSimTick(t, session, now, ANTIBOT_ENFORCE);
+      const action = this.botDetector.handleTick(session.botTrackingContext, now, ANTIBOT_ENFORCE);
       if (action === 'kick') {
-        void this.leave(session, 'disconnected');
+        void this.kickSession(session, 'rejected by server', 'disconnected');
       }
     }
   }
@@ -697,7 +699,7 @@ export class GameServer {
     cls: import('../src/sim/types').PlayerClass,
     state: import('../src/sim/sim').CharacterState | null,
     isGm = false,
-    meta: RequestMetadata & Partial<AccountChatMuteStatus> & { accountCosmetics?: AccountCosmetics; chatStrikes?: number } = {},
+    meta: RequestMetadata & Partial<AccountChatMuteStatus> & { accountCosmetics?: AccountCosmetics; chatStrikes?: number; isAdmin?: boolean; clientSeed?: string } = {},
   ): ClientSession | { error: string } {
     if (this.sessionsByCharacterId.has(characterId)) return { error: 'character already in world' };
     // Anti-bot: cap simultaneous online characters per account. Accounts can
@@ -726,6 +728,7 @@ export class GameServer {
     );
     this.applyAccountQuestLockouts(pid, accountCosmetics);
     const sessionIp = meta.ip ?? '';
+    const botTrackingContext = this.botDetector.createTrackingContext({ accountId, characterId, name, ip: sessionIp }, meta);
     const session: ClientSession = {
       ws, accountId, accountCosmetics, characterId, pid, name,
       lastSave: Date.now(), alive: true, joinedAt: Date.now(), dbSessionId: null, left: false,
@@ -743,12 +746,13 @@ export class GameServer {
       lastSent: {},
       sentEnts: new Map(),
       ip: sessionIp,
-      bot: antibot.createTracker(),
+      isAdmin: meta.isAdmin ?? false,
+      clientSeed: meta.clientSeed ?? '',
+      botTrackingContext,
     };
     this.ipSessionCounts.set(sessionIp, (this.ipSessionCounts.get(sessionIp) ?? 0) + 1);
     this.clients.set(pid, session);
     this.sessionsByCharacterId.set(characterId, session);
-    this.refreshMultiIpEvidence(sessionIp);
     this.peakOnline = Math.max(this.peakOnline, this.clients.size);
     openPlaySession(accountId, characterId, name, meta)
       .then((id) => {
@@ -799,15 +803,29 @@ export class GameServer {
       .catch((err) => console.error('presence announce failed:', err));
   }
 
+  // Tear down a live session as a kick: tell the client why, close the socket,
+  // then run the normal leave() cleanup. Sending the error frame and closing the
+  // socket (not just calling leave) is what lets net/online.ts surface the
+  // disconnect and return the app to character select, so a kicked player can
+  // rejoin. Every forced-disconnect path (moderation, IP block, character
+  // takeover, and the anti-bot tick) funnels through here so none can
+  // half-tear-down a session, leaving the world without the client and wedging
+  // the player "connected" with no way back in.
+  private kickSession(session: ClientSession, clientError: string, leaveReason: string): Promise<void> {
+    this.send(session, { t: 'error', error: clientError });
+    try { session.ws.close(); } catch { /* connection already closing */ }
+    return this.leave(session, leaveReason);
+  }
+
   async leave(session: ClientSession, reason: string): Promise<void> {
     if (session.left || !this.clients.has(session.pid)) return;
     session.left = true;
     this.clients.delete(session.pid);
+    this.botDetector.releaseTrackingContext(session.botTrackingContext);
     if (session.ip) {
       const prev = this.ipSessionCounts.get(session.ip) ?? 1;
       if (prev <= 1) this.ipSessionCounts.delete(session.ip);
       else this.ipSessionCounts.set(session.ip, prev - 1);
-      this.refreshMultiIpEvidence(session.ip);
     }
     this.devTierPids.delete(session.pid);
     this.social.forget(session.characterId);
@@ -948,6 +966,7 @@ export class GameServer {
       const zone = e.dungeonId
         ? (DUNGEONS[e.dungeonId]?.name ?? e.dungeonId)
         : zoneAt(e.pos.z).name;
+      const moveSpeedMultiplier = round2((this.sim as any).moveSpeedMult(e));
       players.push({
         pid: session.pid,
         accountId: session.accountId,
@@ -962,6 +981,17 @@ export class GameServer {
         zone,
         sessionSeconds: Math.round((now - session.joinedAt) / 1000),
         lastSaveSecondsAgo: Math.round((now - session.lastSave) / 1000),
+        moveSpeedMultiplier,
+        runSpeed: round2(RUN_SPEED * moveSpeedMultiplier),
+        swimming: this.sim.isSwimming(e),
+        auras: e.auras.map((a) => ({
+          id: a.id,
+          name: a.name,
+          kind: a.kind,
+          value: a.value,
+          remaining: round2(a.remaining),
+          duration: a.duration,
+        })),
       });
     }
     return players.sort((a, b) => b.sessionSeconds - a.sessionSeconds);
@@ -981,10 +1011,23 @@ export class GameServer {
   disconnectAccount(accountId: number, reason: string): void {
     for (const session of [...this.clients.values()]) {
       if (session.accountId !== accountId) continue;
-      this.send(session, { t: 'error', error: reason });
-      try { session.ws.close(); } catch { /* connection already closing */ }
-      void this.leave(session, 'moderation action');
+      void this.kickSession(session, reason, 'moderation action');
     }
+  }
+
+  // Force-disconnect the live session (if any) for a character the requesting
+  // account owns, so a fresh login can take its place. Awaits leave() so the
+  // departing session's state is saved and the sessionsByCharacterId slot is
+  // freed before the caller re-enters — otherwise the new login would race the
+  // old save (clobbering progress) or be rejected with "character already in
+  // world". Idempotent: a no-op (returns 'not-online') when nobody is online.
+  async takeOverCharacter(accountId: number, characterId: number): Promise<'taken-over' | 'not-online'> {
+    const session = this.sessionByCharacterId(characterId);
+    // Ownership is also enforced at the REST layer; re-check here so this method
+    // can never disconnect a session that belongs to another account.
+    if (!session || session.accountId !== accountId) return 'not-online';
+    await this.kickSession(session, 'character taken over', 'character taken over');
+    return 'taken-over';
   }
 
   startRestartCountdown(): RestartCountdownStatus {
@@ -1061,6 +1104,41 @@ export class GameServer {
     }
   }
 
+  // -------------------------------------------------------------------------
+  // IP blocklist
+  // -------------------------------------------------------------------------
+
+  async loadBlockedIps(): Promise<void> {
+    try {
+      this.ipBlockList.setEntries(await loadActiveBlockedIps());
+    } catch (err) {
+      console.error('failed to load blocked IPs:', err);
+    }
+  }
+
+  async reloadBlockedIps(): Promise<void> {
+    await this.loadBlockedIps();
+  }
+
+  isIpBlocked(ip: string): boolean {
+    return this.ipBlockList.isBlocked(ip, Date.now());
+  }
+
+  disconnectByIp(ip: string, reason: string): void {
+    for (const session of [...this.clients.values()]) {
+      if (session.ip !== ip || session.isAdmin) continue;
+      void this.kickSession(session, reason, 'moderation action');
+    }
+  }
+
+  disconnectBlockedSessions(reason: string): void {
+    const now = Date.now();
+    for (const session of [...this.clients.values()]) {
+      if (session.isAdmin || !this.ipBlockList.isBlocked(session.ip, now)) continue;
+      void this.kickSession(session, reason, 'moderation action');
+    }
+  }
+
   /** Reflect an admin "lift mute" on any live sessions so chat unlocks at once. */
   liftChatMuteLive(accountId: number): void {
     for (const session of this.clients.values()) {
@@ -1083,44 +1161,53 @@ export class GameServer {
   // -------------------------------------------------------------------------
 
   handleMessage(session: ClientSession, raw: string): void {
+    const receivedAtMs = Date.now();
     let msg: any;
     try {
       msg = JSON.parse(raw);
     } catch {
+      this.botDetector.observeProtocolAnomaly(session.botTrackingContext, 'invalid_json', raw, receivedAtMs);
       return;
     }
     // a malformed payload must never take down the server for everyone
     try {
-      this.dispatchMessage(session, msg);
+      this.dispatchMessage(session, msg, raw, receivedAtMs);
     } catch (err) {
       console.error(`bad message from ${session.name} (cmd: ${String(msg?.cmd ?? msg?.t)}):`, err);
     }
   }
 
-  private dispatchMessage(session: ClientSession, msg: any): void {
+  private dispatchMessage(session: ClientSession, msg: any, raw: string, receivedAtMs: number): void {
     // JSON.parse returns null / numbers / strings / arrays for valid JSON that
     // isn't an object — `null` in particular threw on `msg.t`. Drop anything
     // that isn't a plain object before touching its fields.
-    if (typeof msg !== 'object' || msg === null || Array.isArray(msg)) return;
+    if (typeof msg !== 'object' || msg === null || Array.isArray(msg)) {
+      this.botDetector.observeProtocolAnomaly(session.botTrackingContext, 'non_object', raw, receivedAtMs);
+      return;
+    }
     const sim = this.sim;
     const pid = session.pid;
     if (msg.t === 'input') {
       const meta = sim.meta(pid);
       const e = sim.entities.get(pid);
       if (!meta || !e) return;
-      const { moveInput, facing } = parseMoveInputFrame(msg);
-      Object.assign(meta.moveInput, moveInput);
+      const frame = parseMoveInputFrame(msg);
+      Object.assign(meta.moveInput, frame.moveInput);
       session.lastInputAt = sim.time;
       if (typeof msg.seq === 'number' && Number.isFinite(msg.seq) && msg.seq > 0) {
         session.lastInputSeq = Math.max(session.lastInputSeq, Math.floor(msg.seq));
       }
-      if (facing !== null && !e.dead) {
-        e.facing = facing;
+      if (frame.facing !== null && !e.dead) {
+        e.facing = frame.facing;
       }
+      this.botDetector.observeInput(session.botTrackingContext, frame, receivedAtMs);
       return;
     }
-    if (msg.t !== 'cmd') return;
-    antibot.observeAction(session.bot, String(msg.cmd ?? ''), Date.now());
+    if (msg.t !== 'cmd') {
+      this.botDetector.observeProtocolAnomaly(session.botTrackingContext, 'unknown_type', raw, receivedAtMs);
+      return;
+    }
+    this.botDetector.observeCommand(session.botTrackingContext, String(msg.cmd ?? ''), receivedAtMs, msg);
     switch (msg.cmd) {
       case 'castSlot': sim.castAbilityBySlot(msg.slot | 0, pid); break;
       case 'cast': if (typeof msg.ability === 'string') sim.castAbility(msg.ability, pid); break;
@@ -1133,6 +1220,11 @@ export class GameServer {
       case 'stopattack': sim.stopAutoAttack(pid); break;
       case 'interact': sim.interact(pid); break;
       case 'loot': if (typeof msg.id === 'number') sim.lootCorpse(msg.id, pid); break;
+      case 'lootRoll':
+        if (typeof msg.rollId === 'number' && (msg.choice === 'need' || msg.choice === 'greed' || msg.choice === 'pass')) {
+          sim.submitLootRoll(msg.rollId, msg.choice, pid);
+        }
+        break;
       case 'pickup': if (typeof msg.id === 'number') sim.pickUpObject(msg.id, pid); break;
       case 'accept': if (typeof msg.quest === 'string') { sim.acceptQuest(msg.quest, pid); this.resyncQuests(session); } break;
       case 'turnin':
@@ -1148,6 +1240,11 @@ export class GameServer {
         break;
       case 'abandon': if (typeof msg.quest === 'string') { sim.abandonQuest(msg.quest, pid); this.resyncQuests(session); } break;
       case 'equip': if (typeof msg.item === 'string') sim.equipItem(msg.item, pid); break;
+      case 'unequip_item':
+        if (typeof msg.slot === 'string' && (EQUIP_SLOTS as readonly string[]).includes(msg.slot)) {
+          sim.unequipItem(msg.slot as EquipSlot, pid);
+        }
+        break;
       case 'use':
         if (typeof msg.item === 'string') {
           const result = sim.useItem(msg.item, pid);
@@ -1193,6 +1290,11 @@ export class GameServer {
         }
         break;
       case 'release': sim.releaseSpirit(pid); break;
+      case 'challengeResponse':
+        if (typeof msg.n === 'string' && typeof msg.r === 'string' && typeof msg.sig === 'string') {
+          if (!verifyChallenge(msg.n, msg.r, msg.sig, session.clientSeed)) break;
+        }
+        break;
       case 'chat': {
         if (typeof msg.text !== 'string') break;
         if (this.isChatMuted(session)) break;
@@ -1221,7 +1323,7 @@ export class GameServer {
             if (sent) {
               this.chatLog.log({
                 accountId: session.accountId, characterId: session.characterId,
-                characterName: session.name, channel, message: body.trim().slice(0, 200),
+                characterName: session.name, channel, message: body.trim().slice(0, MAX_CHAT_MESSAGE_LEN),
               });
             }
           }).catch((err) => console.error(`${channel} chat failed:`, err));
@@ -1250,6 +1352,8 @@ export class GameServer {
       case 'pdecline': sim.partyDecline(pid); break;
       case 'pleave': sim.partyLeave(pid); break;
       case 'pkick': if (typeof msg.id === 'number') sim.partyKick(msg.id, pid); break;
+      case 'praid': sim.convertPartyToRaid(pid); break;
+      case 'pmoveRaid': if (typeof msg.id === 'number' && (msg.group === 1 || msg.group === 2)) sim.moveRaidMember(msg.id, msg.group, pid); break;
       // raid/target markers
       case 'setMarker': if (typeof msg.id === 'number' && typeof msg.marker === 'number') sim.setMarker(msg.id, msg.marker, pid); break;
       case 'clearMarker': if (typeof msg.id === 'number') sim.clearMarker(msg.id, pid); break;
@@ -1270,8 +1374,12 @@ export class GameServer {
         if (msg.mode === 'passive' || msg.mode === 'defensive' || msg.mode === 'aggressive') sim.setPetMode(msg.mode, pid);
         break;
       // trade
-      case 'trade_req': if (typeof msg.id === 'number') sim.tradeRequest(msg.id, pid); break;
-      case 'trade_accept': sim.tradeAccept(pid); break;
+      case 'trade_req':
+        if (typeof msg.id === 'number') sim.tradeRequest(msg.id, pid);
+        break;
+      case 'trade_accept':
+        sim.tradeAccept(pid);
+        break;
       case 'trade_offer':
         if (Array.isArray(msg.items)) sim.tradeSetOffer(msg.items, Number(msg.copper) || 0, pid);
         break;
@@ -1394,6 +1502,11 @@ export class GameServer {
         if (exit) sim.leaveDungeon(pid);
         break;
       }
+      // client telemetry should not be considered as unknown command. Used for offline stats computing.
+      case 'telemetry':
+        break;
+      default:
+        this.botDetector.observeProtocolAnomaly(session.botTrackingContext, 'unknown_command', raw, receivedAtMs);
     }
   }
 
@@ -1570,6 +1683,9 @@ export class GameServer {
     // market info is null unless the player is standing at the Merchant, so it
     // only rides the wire for players actually browsing the World Market
     maybe('market', this.sim.marketInfoFor(session.pid));
+    // open need-greed rolls this player can still answer, so a client that
+    // missed the transient lootRoll event re-shows the prompt from state
+    maybe('lroll', this.sim.activeLootRolls(session.pid));
     // talents/spec/loadouts ride the wire only when they change (PR-5: never
     // every snapshot). The client recomputes its known abilities from this.
     maybe('tal', { alloc: meta.talents, spec: meta.talentMods.spec, role: meta.talentMods.role, loadouts: meta.loadouts, activeLoadout: meta.activeLoadout });
@@ -1626,6 +1742,7 @@ export class GameServer {
 
   private routeEvents(events: SimEvent[]): void {
     if (events.length === 0 || this.clients.size === 0) return;
+    const eventTime = Date.now();
     for (const session of this.clients.values()) {
       const p = this.sim.entities.get(session.pid);
       if (!p) continue;
@@ -1642,6 +1759,7 @@ export class GameServer {
             if (ev.type === 'chat' && ev.channel === 'whisper' && ev.to === undefined && ev.fromPid !== session.pid) {
               session.lastWhisperFrom = ev.from;
             }
+            this.botDetector.observeEvent(session.botTrackingContext, ev, eventTime);
           }
           continue;
         }
@@ -1705,7 +1823,7 @@ export class GameServer {
             if (sent) {
               this.chatLog.log({
                 accountId: session.accountId, characterId: session.characterId,
-                characterName: session.name, channel, message: body.trim().slice(0, 200),
+                characterName: session.name, channel, message: body.trim().slice(0, MAX_CHAT_MESSAGE_LEN),
               });
             }
           }).catch((err) => console.error(`${channel} chat failed:`, err));
