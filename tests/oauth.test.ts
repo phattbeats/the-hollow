@@ -73,6 +73,11 @@ describe('PKCE', () => {
     expect(verifyPkce(verifier, challenge, 'weird')).toBe(false);
     expect(verifyPkce('', challenge, 'S256')).toBe(false);
   });
+  it('rejects the plain method (no downgrade from S256)', () => {
+    // A 'plain' challenge equals the verifier; it must still be rejected.
+    const verifier = 'a'.repeat(43);
+    expect(verifyPkce(verifier, verifier, 'plain')).toBe(false);
+  });
 });
 
 describe('user codes & redirect allowlist', () => {

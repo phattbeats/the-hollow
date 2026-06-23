@@ -48,12 +48,13 @@ function safeEqual(a: string, b: string): boolean {
   return timingSafeEqual(ab, bb);
 }
 
-// Verify a PKCE code_verifier against the stored challenge. Supports 'S256'
-// (required for real clients) and 'plain'. Returns false for anything else.
+// Verify a PKCE code_verifier against the stored challenge. Only 'S256' is
+// accepted; 'plain' is rejected so a client cannot downgrade away from the
+// protection against an intercepted authorization code. Returns false for
+// anything else.
 export function verifyPkce(verifier: string, challenge: string, method: string): boolean {
   if (!verifier || !challenge) return false;
   if (method === 'S256') return safeEqual(pkceChallengeFromVerifier(verifier), challenge);
-  if (method === 'plain') return safeEqual(verifier, challenge);
   return false;
 }
 
@@ -177,7 +178,7 @@ async function renderAuthorize(req: http.IncomingMessage, res: http.ServerRespon
   if (!redirectUri || !redirectAllowed(client.redirect_uris, redirectUri)) {
     return htmlError(res, 400, 'Bad redirect', 'redirect_uri is not registered for this client.');
   }
-  if (!codeChallenge || (method !== 'S256' && method !== 'plain')) {
+  if (!codeChallenge || method !== 'S256') {
     return htmlError(res, 400, 'PKCE required', 'A code_challenge with method S256 is required.');
   }
   res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
@@ -200,8 +201,8 @@ async function approveAuthorize(req: http.IncomingMessage, res: http.ServerRespo
   if (!redirectUri || !redirectAllowed(client.redirect_uris, redirectUri)) {
     return oauthError(res, 400, 'invalid_request', 'redirect_uri not registered');
   }
-  if (!codeChallenge || (method !== 'S256' && method !== 'plain')) {
-    return oauthError(res, 400, 'invalid_request', 'PKCE code_challenge required');
+  if (!codeChallenge || method !== 'S256') {
+    return oauthError(res, 400, 'invalid_request', 'PKCE code_challenge with method S256 required');
   }
   const code = newToken();
   await createAuthCode(pool, {
