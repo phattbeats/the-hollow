@@ -46,5 +46,6 @@ Thumbs.db
 .claude/*
 !.claude/skills/
 !.claude/agents/
+pr-assets-2fa
 
 .vite/
