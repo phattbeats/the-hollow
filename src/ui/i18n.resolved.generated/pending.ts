@@ -45,7 +45,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.account.twoFactorStatusOff",
     "hudChrome.account.twoFactorStatusOn",
     "hudChrome.account.twoFactorTitle",
-    "hudChrome.account.twoFactorVerifyBtn"
+    "hudChrome.account.twoFactorVerifyBtn",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "es_ES": [
     "auth.twoFactorHint",
@@ -83,7 +88,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.account.twoFactorStatusOff",
     "hudChrome.account.twoFactorStatusOn",
     "hudChrome.account.twoFactorTitle",
-    "hudChrome.account.twoFactorVerifyBtn"
+    "hudChrome.account.twoFactorVerifyBtn",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "fr_FR": [
     "auth.twoFactorHint",
@@ -121,7 +131,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.account.twoFactorStatusOff",
     "hudChrome.account.twoFactorStatusOn",
     "hudChrome.account.twoFactorTitle",
-    "hudChrome.account.twoFactorVerifyBtn"
+    "hudChrome.account.twoFactorVerifyBtn",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "fr_CA": [
     "auth.twoFactorHint",
@@ -159,7 +174,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.account.twoFactorStatusOff",
     "hudChrome.account.twoFactorStatusOn",
     "hudChrome.account.twoFactorTitle",
-    "hudChrome.account.twoFactorVerifyBtn"
+    "hudChrome.account.twoFactorVerifyBtn",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "en_CA": [],
   "it_IT": [
@@ -198,7 +218,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.account.twoFactorStatusOff",
     "hudChrome.account.twoFactorStatusOn",
     "hudChrome.account.twoFactorTitle",
-    "hudChrome.account.twoFactorVerifyBtn"
+    "hudChrome.account.twoFactorVerifyBtn",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "de_DE": [
     "auth.twoFactorHint",
@@ -236,7 +261,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.account.twoFactorStatusOff",
     "hudChrome.account.twoFactorStatusOn",
     "hudChrome.account.twoFactorTitle",
-    "hudChrome.account.twoFactorVerifyBtn"
+    "hudChrome.account.twoFactorVerifyBtn",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "zh_CN": [],
   "zh_TW": [],
@@ -278,7 +308,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.account.twoFactorStatusOff",
     "hudChrome.account.twoFactorStatusOn",
     "hudChrome.account.twoFactorTitle",
-    "hudChrome.account.twoFactorVerifyBtn"
+    "hudChrome.account.twoFactorVerifyBtn",
+    "realm.popTipFull",
+    "realm.popTipHigh",
+    "realm.popTipLow",
+    "realm.popTipMedium",
+    "realm.popTipOffline"
   ],
   "ru_RU": []
 };
