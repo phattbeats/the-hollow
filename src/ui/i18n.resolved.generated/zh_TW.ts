@@ -231,12 +231,27 @@ export const zh_TW: EnTranslations = {
       "hapticsOff": "觸覺回饋已關閉",
       "toggleHaptics": "切換觸覺回饋"
     },
+    "tutorial": {
+      "moveBodyTouch": "Use the movement stick to move and drag the screen to look around. Take a few steps to begin.",
+      "talkBodyTouch": "Stand close to Marshal Redbrook and tap the Use button to speak, then accept his task.",
+      "returnBodyTouch": "Your task is done. Return to Marshal Redbrook and tap the Use button to turn it in.",
+      "doneBodyTouch": "You have the basics, {name}. The Vale is yours to explore. Tap More, then Quests, to review your quest log anytime. Good hunting."
+    },
     "widgets": {
       "clockTitle": "本地時間 - 點擊切換 12／24 小時制",
       "worldCoordinates": "世界座標",
       "coordinates": "座標",
       "heading": "方位",
       "minimapZoom": "小地圖縮放"
+    },
+    "raidLockout": {
+      "title": "團隊副本鎖定",
+      "allReady": "所有團隊副本就緒",
+      "daysHours": "{d}天{h}小時",
+      "hoursMinutes": "{h}小時{m}分",
+      "minutes": "{m}分",
+      "lessThanMinute": "<1分",
+      "lockedToast": "你已鎖定到{raid}。{time}後解鎖。"
     },
     "compass": {
       "N": "北",
@@ -552,10 +567,10 @@ export const zh_TW: EnTranslations = {
       "noMatch": "沒有符合篩選條件的物品。"
     },
     "raidConvert": {
-      "toPartyDone": "Your raid has converted back to a party.",
-      "notRaid": "Your group is not a raid.",
-      "leaderOnly": "Only the raid leader may convert to a party.",
-      "tooLarge": "A raid with more than five members cannot convert back to a party."
+      "toPartyDone": "你的團隊已轉換回隊伍。",
+      "notRaid": "你的隊伍並非團隊。",
+      "leaderOnly": "只有團隊領袖可以轉換為隊伍。",
+      "tooLarge": "超過五名成員的團隊無法轉換回隊伍。"
     }
   },
   "guide": {
@@ -2276,7 +2291,7 @@ export const zh_TW: EnTranslations = {
         "report": "檢舉玩家",
         "removeParty": "移出隊伍",
         "convertToRaid": "轉換為團隊",
-        "convertToParty": "Convert to party",
+        "convertToParty": "轉換為隊伍",
         "cancel": "取消"
       }
     },

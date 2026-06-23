@@ -231,12 +231,27 @@ export const ko_KR: EnTranslations = {
       "hapticsOff": "진동 꺼짐",
       "toggleHaptics": "진동 전환"
     },
+    "tutorial": {
+      "moveBodyTouch": "Use the movement stick to move and drag the screen to look around. Take a few steps to begin.",
+      "talkBodyTouch": "Stand close to Marshal Redbrook and tap the Use button to speak, then accept his task.",
+      "returnBodyTouch": "Your task is done. Return to Marshal Redbrook and tap the Use button to turn it in.",
+      "doneBodyTouch": "You have the basics, {name}. The Vale is yours to explore. Tap More, then Quests, to review your quest log anytime. Good hunting."
+    },
     "widgets": {
       "clockTitle": "현지 시각 - 클릭하면 12/24시간제 전환",
       "worldCoordinates": "세계 좌표",
       "coordinates": "좌표",
       "heading": "방향",
       "minimapZoom": "미니맵 확대/축소"
+    },
+    "raidLockout": {
+      "title": "레이드 잠금",
+      "allReady": "모든 레이드 준비됨",
+      "daysHours": "{d}일 {h}시간",
+      "hoursMinutes": "{h}시간 {m}분",
+      "minutes": "{m}분",
+      "lessThanMinute": "1분 미만",
+      "lockedToast": "{raid}에 잠겨 있습니다. {time} 후 해제됩니다."
     },
     "compass": {
       "N": "북",
@@ -552,10 +567,10 @@ export const ko_KR: EnTranslations = {
       "noMatch": "필터와 일치하는 아이템이 없습니다."
     },
     "raidConvert": {
-      "toPartyDone": "Your raid has converted back to a party.",
-      "notRaid": "Your group is not a raid.",
-      "leaderOnly": "Only the raid leader may convert to a party.",
-      "tooLarge": "A raid with more than five members cannot convert back to a party."
+      "toPartyDone": "공격대가 파티로 다시 전환되었습니다.",
+      "notRaid": "현재 파티는 공격대가 아닙니다.",
+      "leaderOnly": "공격대장만 파티로 전환할 수 있습니다.",
+      "tooLarge": "인원이 5명을 초과하는 공격대는 파티로 다시 전환할 수 없습니다."
     }
   },
   "guide": {
@@ -2276,7 +2291,7 @@ export const ko_KR: EnTranslations = {
         "report": "플레이어 신고",
         "removeParty": "파티에서 제거",
         "convertToRaid": "공격대로 전환",
-        "convertToParty": "Convert to party",
+        "convertToParty": "파티로 전환",
         "cancel": "취소"
       }
     },

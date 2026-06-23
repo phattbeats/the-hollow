@@ -231,12 +231,27 @@ export const ja_JP: EnTranslations = {
       "hapticsOff": "振動オフ",
       "toggleHaptics": "振動を切り替え"
     },
+    "tutorial": {
+      "moveBodyTouch": "Use the movement stick to move and drag the screen to look around. Take a few steps to begin.",
+      "talkBodyTouch": "Stand close to Marshal Redbrook and tap the Use button to speak, then accept his task.",
+      "returnBodyTouch": "Your task is done. Return to Marshal Redbrook and tap the Use button to turn it in.",
+      "doneBodyTouch": "You have the basics, {name}. The Vale is yours to explore. Tap More, then Quests, to review your quest log anytime. Good hunting."
+    },
     "widgets": {
       "clockTitle": "現地時刻 - クリックで12/24時間表記を切り替え",
       "worldCoordinates": "ワールド座標",
       "coordinates": "座標",
       "heading": "方角",
       "minimapZoom": "ミニマップのズーム"
+    },
+    "raidLockout": {
+      "title": "レイドロックアウト",
+      "allReady": "すべてのレイドが利用可能",
+      "daysHours": "{d}日{h}時間",
+      "hoursMinutes": "{h}時間{m}分",
+      "minutes": "{m}分",
+      "lessThanMinute": "1分未満",
+      "lockedToast": "{raid}にロックされています。解除まで{time}。"
     },
     "compass": {
       "N": "北",
@@ -552,10 +567,10 @@ export const ja_JP: EnTranslations = {
       "noMatch": "条件に一致するアイテムはありません。"
     },
     "raidConvert": {
-      "toPartyDone": "Your raid has converted back to a party.",
-      "notRaid": "Your group is not a raid.",
-      "leaderOnly": "Only the raid leader may convert to a party.",
-      "tooLarge": "A raid with more than five members cannot convert back to a party."
+      "toPartyDone": "レイドがパーティに戻りました。",
+      "notRaid": "パーティはレイドではありません。",
+      "leaderOnly": "パーティに変換できるのはレイドリーダーだけです。",
+      "tooLarge": "メンバーが5人を超えるレイドはパーティに戻せません。"
     }
   },
   "guide": {
@@ -2276,7 +2291,7 @@ export const ja_JP: EnTranslations = {
         "report": "プレイヤーを通報",
         "removeParty": "パーティから外す",
         "convertToRaid": "レイドに変換",
-        "convertToParty": "Convert to party",
+        "convertToParty": "パーティに変換",
         "cancel": "キャンセル"
       }
     },

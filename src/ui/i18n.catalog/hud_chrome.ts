@@ -96,6 +96,25 @@ export const hudChromeStrings = {
     hapticsOff: 'Haptics Off',
     toggleHaptics: 'Toggle haptics',
   },
+  // New-adventurer tutorial copy for the touch interface. The default tutorial
+  // bodies (hud.tutorial.*Body) reference keyboard/mouse ("W/A/S/D", "press F"),
+  // which is wrong on a phone whose only controls are the on-screen sticks and
+  // the Use / More action buttons. These touch variants are swapped in when the
+  // mobile-touch interface is active (see tutorial_copy.ts). English-only add, so
+  // they live here in the hud_chrome domain rather than the constrained `hud` one.
+  tutorial: {
+    // "movement stick", not "left stick": left-handed mode swaps the two thumb
+    // sticks (and the stick can float to wherever you touch), so a fixed side is
+    // wrong for that layout.
+    moveBodyTouch:
+      'Use the movement stick to move and drag the screen to look around. Take a few steps to begin.',
+    talkBodyTouch:
+      'Stand close to Marshal Redbrook and tap the Use button to speak, then accept his task.',
+    returnBodyTouch:
+      'Your task is done. Return to Marshal Redbrook and tap the Use button to turn it in.',
+    doneBodyTouch:
+      'You have the basics, {name}. The Vale is yours to explore. Tap More, then Quests, to review your quest log anytime. Good hunting.',
+  },
   // Minimap / compass / clock / coordinate widget tooltips and accessible names.
   widgets: {
     clockTitle: 'Local time - click to toggle 12/24-hour',
@@ -103,6 +122,20 @@ export const hudChromeStrings = {
     coordinates: 'Coordinates',
     heading: 'Heading',
     minimapZoom: 'Minimap zoom',
+  },
+  // Raid-lockout badge on the minimap rim + its hover/tap panel: the title, the
+  // accessible label, the "all ready" line, and the unlock-countdown templates
+  // (digits run through formatNumber; the units reorder per locale).
+  raidLockout: {
+    title: 'Raid Lockouts',
+    allReady: 'All raids ready',
+    daysHours: '{d}d {h}h',
+    hoursMinutes: '{h}h {m}m',
+    minutes: '{m}m',
+    lessThanMinute: '<1m',
+    // Entry-denied toast, enriched client-side with the live unlock countdown
+    // ({raid} = the localized raid name, {time} = the formatted countdown).
+    lockedToast: 'You are locked to {raid}. Unlocks in {time}.',
   },
   // Eight-point compass abbreviations as drawn on the heading strip. Each locale
   // overrides with its own established compass abbreviations (e.g. West = "O" in

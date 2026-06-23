@@ -231,12 +231,27 @@ export const pt_BR: EnTranslations = {
       "hapticsOff": "Vibração desligada",
       "toggleHaptics": "Alternar vibração"
     },
+    "tutorial": {
+      "moveBodyTouch": "Use the movement stick to move and drag the screen to look around. Take a few steps to begin.",
+      "talkBodyTouch": "Stand close to Marshal Redbrook and tap the Use button to speak, then accept his task.",
+      "returnBodyTouch": "Your task is done. Return to Marshal Redbrook and tap the Use button to turn it in.",
+      "doneBodyTouch": "You have the basics, {name}. The Vale is yours to explore. Tap More, then Quests, to review your quest log anytime. Good hunting."
+    },
     "widgets": {
       "clockTitle": "Horário local - clique para alternar entre 12/24 horas",
       "worldCoordinates": "Coordenadas do mundo",
       "coordinates": "Coordenadas",
       "heading": "Direção",
       "minimapZoom": "Zoom do minimapa"
+    },
+    "raidLockout": {
+      "title": "Bloqueios de raide",
+      "allReady": "Todas as raides prontas",
+      "daysHours": "{d}d {h}h",
+      "hoursMinutes": "{h}h {m}min",
+      "minutes": "{m}min",
+      "lessThanMinute": "<1min",
+      "lockedToast": "Você está bloqueado em {raid}. Desbloqueia em {time}."
     },
     "compass": {
       "N": "N",
@@ -552,10 +567,10 @@ export const pt_BR: EnTranslations = {
       "noMatch": "Nenhum item corresponde aos seus filtros."
     },
     "raidConvert": {
-      "toPartyDone": "Your raid has converted back to a party.",
-      "notRaid": "Your group is not a raid.",
-      "leaderOnly": "Only the raid leader may convert to a party.",
-      "tooLarge": "A raid with more than five members cannot convert back to a party."
+      "toPartyDone": "Sua raide foi convertida de volta em um grupo.",
+      "notRaid": "Seu grupo não é uma raide.",
+      "leaderOnly": "Só o líder da raide pode converter em um grupo.",
+      "tooLarge": "Uma raide com mais de cinco membros não pode ser convertida de volta em um grupo."
     }
   },
   "guide": {
@@ -2276,7 +2291,7 @@ export const pt_BR: EnTranslations = {
         "report": "Denunciar jogador",
         "removeParty": "Remover do grupo",
         "convertToRaid": "Converter em raide",
-        "convertToParty": "Convert to party",
+        "convertToParty": "Converter em grupo",
         "cancel": "Cancelar"
       }
     },

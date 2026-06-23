@@ -231,12 +231,27 @@ export const it_IT: EnTranslations = {
       "hapticsOff": "Vibrazione disattivata",
       "toggleHaptics": "Attiva/disattiva vibrazione"
     },
+    "tutorial": {
+      "moveBodyTouch": "Use the movement stick to move and drag the screen to look around. Take a few steps to begin.",
+      "talkBodyTouch": "Stand close to Marshal Redbrook and tap the Use button to speak, then accept his task.",
+      "returnBodyTouch": "Your task is done. Return to Marshal Redbrook and tap the Use button to turn it in.",
+      "doneBodyTouch": "You have the basics, {name}. The Vale is yours to explore. Tap More, then Quests, to review your quest log anytime. Good hunting."
+    },
     "widgets": {
       "clockTitle": "Ora locale - clicca per alternare 12/24 ore",
       "worldCoordinates": "Coordinate del mondo",
       "coordinates": "Coordinate",
       "heading": "Direzione",
       "minimapZoom": "Zoom minimappa"
+    },
+    "raidLockout": {
+      "title": "Blocchi raid",
+      "allReady": "Tutti i raid pronti",
+      "daysHours": "{d}g {h}h",
+      "hoursMinutes": "{h}h {m}m",
+      "minutes": "{m}m",
+      "lessThanMinute": "<1m",
+      "lockedToast": "Sei bloccato in {raid}. Si sblocca tra {time}."
     },
     "compass": {
       "N": "N",
@@ -552,10 +567,10 @@ export const it_IT: EnTranslations = {
       "noMatch": "Nessun oggetto corrisponde ai tuoi filtri."
     },
     "raidConvert": {
-      "toPartyDone": "Your raid has converted back to a party.",
-      "notRaid": "Your group is not a raid.",
-      "leaderOnly": "Only the raid leader may convert to a party.",
-      "tooLarge": "A raid with more than five members cannot convert back to a party."
+      "toPartyDone": "La tua incursione è tornata a essere un gruppo.",
+      "notRaid": "Il tuo gruppo non è un'incursione.",
+      "leaderOnly": "Solo il capo incursione può convertire in un gruppo.",
+      "tooLarge": "Un'incursione con più di cinque membri non può tornare a essere un gruppo."
     }
   },
   "guide": {
@@ -2276,7 +2291,7 @@ export const it_IT: EnTranslations = {
         "report": "Segnala giocatore",
         "removeParty": "Rimuovi dal gruppo",
         "convertToRaid": "Converti in incursione",
-        "convertToParty": "Convert to party",
+        "convertToParty": "Converti in gruppo",
         "cancel": "Annulla"
       }
     },
