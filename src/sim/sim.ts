@@ -4467,6 +4467,20 @@ export class Sim {
       }
     }
 
+    const pet = this.createDemonPet(owner, templateId);
+    if (!pet) return;
+    this.emit({
+      type: 'log',
+      text: `${pet.name} answers your summons.`,
+      color: '#b894ff',
+      pid: owner.id,
+    });
+    this.emit({ type: 'aura', targetId: pet.id, name: 'Summoned', gained: true });
+  }
+
+  private createDemonPet(owner: Entity, mobId: string, emit = false): Entity | null {
+    const template = MOBS[mobId];
+    if (!template) return null;
     const pet = createMob(
       this.nextId++,
       template,
@@ -4489,13 +4503,14 @@ export class Sim {
     pet.wanderTarget = null;
     clearThreat(pet);
     this.addEntity(pet);
-    this.emit({
-      type: 'log',
-      text: `${pet.name} answers your summons.`,
-      color: '#b894ff',
-      pid: owner.id,
-    });
-    this.emit({ type: 'aura', targetId: pet.id, name: 'Summoned', gained: true });
+    if (emit)
+      this.emit({
+        type: 'log',
+        text: `${pet.name} answers your summons.`,
+        color: '#b894ff',
+        pid: owner.id,
+      });
+    return pet;
   }
 
   private despawnPersistentPet(pet: Entity): void {
