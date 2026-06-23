@@ -3,6 +3,7 @@ import { Sim } from '../src/sim/sim';
 import { MOBS } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
 import { terrainHeight } from '../src/sim/world';
+import { reconcileLootRolls } from '../src/ui/loot_roll_reconcile';
 
 // Loot-roll prompts were delivered only as a single best-effort `lootRoll`
 // event. A client that missed that one frame (reconnect, interest churn, a
@@ -72,5 +73,66 @@ describe('Sim.activeLootRolls', () => {
   it('is deterministic for the same seed', () => {
     const run = () => partyWithSharedRoll(7).sim.activeLootRolls(2);
     expect(run()).toEqual(run());
+  });
+});
+
+// The pure three-way decision behind the HUD recovery glue: given the server's
+// open-roll mirror, the locally shown prompts, the locally dismissed rolls, and
+// which shown rolls have been mirror-confirmed, decide what to show, retire, and
+// prune. This is the subtlest part of the fix (the appear/disappear asymmetry
+// and the event-before-mirror race), so it is unit-tested in isolation here.
+describe('reconcileLootRolls (HUD decision)', () => {
+  it('shows an open roll that is not yet shown or dismissed', () => {
+    const d = reconcileLootRolls({ open: [1], shown: [], dismissed: [], confirmed: [] });
+    expect(d.toShow).toEqual([1]);
+    expect(d.toRetire).toEqual([]);
+    // The newly open roll becomes confirmed for the next tick.
+    expect(d.confirmed).toEqual([1]);
+  });
+
+  it('does not re-show a roll that is already shown or dismissed', () => {
+    const d = reconcileLootRolls({ open: [1, 2], shown: [1], dismissed: [2], confirmed: [1] });
+    expect(d.toShow).toEqual([]);
+    expect(d.toRetire).toEqual([]);
+  });
+
+  it('retires a mirror-confirmed shown roll once the server drops it', () => {
+    // Roll 1 was shown and previously seen in the mirror; the mirror is now empty,
+    // so the server resolved it: retire the stale dead-button prompt.
+    const d = reconcileLootRolls({ open: [], shown: [1], dismissed: [], confirmed: [1] });
+    expect(d.toRetire).toEqual([1]);
+    expect(d.confirmed).toEqual([]);
+  });
+
+  it('does NOT retire a just-shown roll the mirror has not caught up to yet', () => {
+    // Roll 1 was shown from the transient event this frame but is not in the
+    // mirror and was never confirmed: the event-before-mirror race. Leave it.
+    const d = reconcileLootRolls({ open: [], shown: [1], dismissed: [], confirmed: [] });
+    expect(d.toRetire).toEqual([]);
+    expect(d.toShow).toEqual([]);
+  });
+
+  it('confirms an event-shown roll once it appears in the mirror, then retires it later', () => {
+    // Frame A: shown from event, mirror now lists it -> becomes confirmed, no retire.
+    const a = reconcileLootRolls({ open: [1], shown: [1], dismissed: [], confirmed: [] });
+    expect(a.toRetire).toEqual([]);
+    expect(a.confirmed).toEqual([1]);
+    // Frame B: mirror drops it -> now retire (confirmation carried forward).
+    const b = reconcileLootRolls({ open: [], shown: [1], dismissed: [], confirmed: a.confirmed });
+    expect(b.toRetire).toEqual([1]);
+  });
+
+  it('prunes a dismissed roll once the server drops it, keeping still-open ones', () => {
+    const d = reconcileLootRolls({ open: [2], shown: [], dismissed: [1, 2], confirmed: [] });
+    expect(d.toPrune).toEqual([1]); // 1 gone from mirror -> forget it
+    expect(d.toPrune).not.toContain(2); // 2 still open -> keep suppressing
+  });
+
+  it('handles show and retire in the same reconcile', () => {
+    // Roll 1 confirmed-and-dropped (retire), roll 2 newly open (show).
+    const d = reconcileLootRolls({ open: [2], shown: [1], dismissed: [], confirmed: [1] });
+    expect(d.toRetire).toEqual([1]);
+    expect(d.toShow).toEqual([2]);
+    expect(d.confirmed).toEqual([2]);
   });
 });

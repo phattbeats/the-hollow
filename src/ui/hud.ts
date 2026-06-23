@@ -50,6 +50,7 @@ import { music, musicZoneForLocation, shouldResetMusicForDungeonEntry } from '..
 import { iconDataUrl, QUALITY_COLOR, raidMarkerDataUrl, RAID_MARKER_NAMES } from './icons';
 import { UnitPortraitPainter } from './unit_portrait_painter';
 import { crestIdForEntity } from './unit_portrait';
+import { reconcileLootRolls as computeLootRollReconcile } from './loot_roll_reconcile';
 import { svgIcon } from './ui_icons';
 import { shouldPlayCombatImpactForTarget, shouldPlayCritSfxForTarget, shouldPlayMobVoiceSfxForEntity } from './combat_sfx';
 import { nextVoicedYell, voicedYellGain, type VoicedYellState } from './voice_events';
@@ -545,6 +546,10 @@ export class Hud {
   // rolls the player has answered or let expire locally; suppresses the
   // snapshot reconcile from re-showing them until the server drops the roll
   private dismissedLootRolls = new Set<number>();
+  // shown rolls already observed in the open-roll mirror at least once, so their
+  // later absence from the mirror means the server resolved them (retire), not
+  // that the mirror simply has not caught up to a just-shown event yet.
+  private confirmedLootRolls = new Set<number>();
   private openVendorNpcId: number | null = null;
   private openGossipNpcId: number | null = null;
   private openQuestDetailId: string | null = null;
@@ -5312,20 +5317,43 @@ export class Hud {
     this.renderLootRolls();
   }
 
-  // Re-show any open roll the server still lists us as able to answer. Loot-roll
-  // events are best-effort (a single frame); if one is missed (reconnect,
-  // interest churn, a dropped snapshot) this recovers the prompt from
-  // authoritative state instead of leaving the player unable to roll.
+  // Reconcile the shown loot-roll prompts against the server's authoritative
+  // open-roll mirror. Loot-roll events are best-effort (a single frame), so this
+  // both RE-SHOWS an open roll whose event was missed (reconnect, interest
+  // churn, a dropped snapshot) and RETIRES a shown roll the server has since
+  // resolved (the mirror drops it to []), so a stale dead-button prompt no
+  // longer lingers until the 30s local timer. The three-way decision lives in
+  // the pure computeLootRollReconcile; here we apply it to the live DOM state.
   private reconcileLootRolls(): void {
     const open = this.sim.activeLootRolls();
-    const openIds = new Set(open.map((p) => p.rollId));
-    for (const id of this.dismissedLootRolls) {
-      if (!openIds.has(id)) this.dismissedLootRolls.delete(id); // server confirmed it is gone
+    // Steady state (no open rolls and nothing shown/tracked): nothing to do, and
+    // skip allocating the decision arrays every frame.
+    if (
+      open.length === 0 &&
+      this.activeLootRolls.size === 0 &&
+      this.dismissedLootRolls.size === 0 &&
+      this.confirmedLootRolls.size === 0
+    ) {
+      return;
     }
+    const promptById = new Map(open.map((p) => [p.rollId, p] as const));
+    const decision = computeLootRollReconcile({
+      open: open.map((p) => p.rollId),
+      shown: [...this.activeLootRolls.keys()],
+      dismissed: [...this.dismissedLootRolls],
+      confirmed: [...this.confirmedLootRolls],
+    });
+    this.confirmedLootRolls = new Set(decision.confirmed);
+    for (const id of decision.toPrune) this.dismissedLootRolls.delete(id); // server confirmed it is gone
     let changed = false;
-    for (const p of open) {
-      if (this.activeLootRolls.has(p.rollId) || this.dismissedLootRolls.has(p.rollId)) continue;
-      this.activeLootRolls.set(p.rollId, { event: { type: 'lootRoll', ...p }, receivedAt: performance.now(), durationMs: 30_000 });
+    for (const id of decision.toRetire) {
+      this.activeLootRolls.delete(id);
+      changed = true;
+    }
+    for (const id of decision.toShow) {
+      const p = promptById.get(id);
+      if (!p) continue;
+      this.activeLootRolls.set(id, { event: { type: 'lootRoll', ...p }, receivedAt: performance.now(), durationMs: 30_000 });
       changed = true;
     }
     if (changed) this.renderLootRolls();
