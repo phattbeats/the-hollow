@@ -7,22 +7,21 @@
 // The card data is the PUBLIC character-sheet subset (never stats/vitals/gold/
 // pos), so the page leaks nothing the public JSON wouldn't.
 
-import * as http from 'node:http';
-import {
-  findCharacterReportTargetByName, getCharacterById, guildNameForCharacter,
-  lifetimeXpRankForCharacter, listCharacterNamesForSitemap,
-} from './db';
-import { characterSheet, type CharacterSheet, type SheetRank } from './character_sheet';
+import type * as http from 'node:http';
 import { avatarPng, isPlayerClass, isValidSkin } from './avatar';
-import { REALM, REALM_PUBLIC_ORIGIN } from './realm';
+import { type CharacterSheet, characterSheet, type SheetRank } from './character_sheet';
+import {
+  findCharacterReportTargetByName,
+  getCharacterById,
+  guildNameForCharacter,
+  lifetimeXpRankForCharacter,
+  listCharacterNamesForSitemap,
+} from './db';
 import { publicReadRateLimited } from './ratelimit';
+import { publicOriginFromRequest, REALM } from './realm';
 
 function publicOrigin(req: http.IncomingMessage): string {
-  if (REALM_PUBLIC_ORIGIN) return REALM_PUBLIC_ORIGIN;
-  const host = String(req.headers.host ?? '').trim();
-  if (!host) return '';
-  const proto = String(req.headers['x-forwarded-proto'] ?? '').split(',')[0].trim() || 'https';
-  return `${proto}://${host}`;
+  return publicOriginFromRequest(req);
 }
 
 function escapeHtml(s: string): string {
@@ -51,7 +50,10 @@ const GAME_NAME = 'World of ClaudeCraft';
 
 // ── GET /c/:name ───────────────────────────────────────────────────────────
 
-export async function handleProfilePage(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
+export async function handleProfilePage(
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+): Promise<void> {
   try {
     if (publicReadRateLimited(req)) {
       res.writeHead(429, { 'Content-Type': 'text/plain' });
@@ -67,7 +69,11 @@ export async function handleProfilePage(req: http.IncomingMessage, res: http.Ser
       return;
     }
     let rawName = '';
-    try { rawName = decodeURIComponent(m[1]); } catch { rawName = m[1]; }
+    try {
+      rawName = decodeURIComponent(m[1]);
+    } catch {
+      rawName = m[1];
+    }
     const target = await findCharacterReportTargetByName(rawName);
     const row = target ? await getCharacterById(target.characterId) : null;
     if (!row) {
@@ -80,7 +86,12 @@ export async function handleProfilePage(req: http.IncomingMessage, res: http.Ser
       lifetimeXpRankForCharacter(row.id),
     ]);
     const sheet = characterSheet({
-      row, visibility: 'public', realm: REALM, origin, guild, rank: toSheetRank(rank),
+      row,
+      visibility: 'public',
+      realm: REALM,
+      origin,
+      guild,
+      rank: toSheetRank(rank),
     });
     res.writeHead(200, {
       'Content-Type': 'text/html; charset=utf-8',
@@ -125,7 +136,9 @@ function profileHtml(sheet: CharacterSheet, origin: string): string {
   const rankLine = sheet.rank
     ? `<li>Realm rank: <strong>#${sheet.rank.rank}</strong> of ${sheet.rank.total}</li>`
     : '';
-  const guildLine = sheet.guild ? `<li>Guild: <strong>&lt;${escapeHtml(sheet.guild)}&gt;</strong></li>` : '';
+  const guildLine = sheet.guild
+    ? `<li>Guild: <strong>&lt;${escapeHtml(sheet.guild)}&gt;</strong></li>`
+    : '';
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -208,7 +221,10 @@ color:#ece2c4;font-family:system-ui,sans-serif;text-align:center;padding:24px}a{
 
 // ── GET /avatar/:class/:skin.png ───────────────────────────────────────────
 
-export async function handleAvatar(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
+export async function handleAvatar(
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+): Promise<void> {
   try {
     const path = (req.url ?? '').split('?')[0];
     const m = /^\/avatar\/([a-z]+)\/(\d+)\.png$/.exec(path);
@@ -236,12 +252,18 @@ export async function handleAvatar(req: http.IncomingMessage, res: http.ServerRe
 
 const SITEMAP_MAX = 50000; // sitemap protocol per-file URL cap
 
-export async function handleCharacterSitemap(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
+export async function handleCharacterSitemap(
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+): Promise<void> {
   try {
     const origin = publicOrigin(req);
     const names = await listCharacterNamesForSitemap(SITEMAP_MAX);
     const urls = names
-      .map((name) => `  <url><loc>${escapeXml(`${origin}/c/${encodeURIComponent(name)}`)}</loc><changefreq>daily</changefreq></url>`)
+      .map(
+        (name) =>
+          `  <url><loc>${escapeXml(`${origin}/c/${encodeURIComponent(name)}`)}</loc><changefreq>daily</changefreq></url>`,
+      )
       .join('\n');
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

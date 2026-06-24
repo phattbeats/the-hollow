@@ -47,12 +47,20 @@ export interface OAuthClientRow {
 }
 
 export async function getOAuthClient(pool: Pool, clientId: string): Promise<OAuthClientRow | null> {
-  const res = await pool.query('SELECT client_id, name, redirect_uris FROM oauth_clients WHERE client_id = $1', [clientId]);
+  const res = await pool.query(
+    'SELECT client_id, name, redirect_uris FROM oauth_clients WHERE client_id = $1',
+    [clientId],
+  );
   return res.rows[0] ?? null;
 }
 
 // Idempotent client upsert — used to seed first-party companion clients at boot.
-export async function upsertOAuthClient(pool: Pool, clientId: string, name: string, redirectUris: string[]): Promise<void> {
+export async function upsertOAuthClient(
+  pool: Pool,
+  clientId: string,
+  name: string,
+  redirectUris: string[],
+): Promise<void> {
   await pool.query(
     `INSERT INTO oauth_clients (client_id, name, redirect_uris) VALUES ($1, $2, $3)
      ON CONFLICT (client_id) DO UPDATE SET name = EXCLUDED.name, redirect_uris = EXCLUDED.redirect_uris`,
@@ -62,15 +70,32 @@ export async function upsertOAuthClient(pool: Pool, clientId: string, name: stri
 
 // ── Authorization codes (auth-code + PKCE grant) ───────────────────────────
 
-export async function createAuthCode(pool: Pool, params: {
-  code: string; clientId: string; accountId: number; redirectUri: string;
-  codeChallenge: string; codeChallengeMethod: string; scope: string; ttlSeconds: number;
-}): Promise<void> {
+export async function createAuthCode(
+  pool: Pool,
+  params: {
+    code: string;
+    clientId: string;
+    accountId: number;
+    redirectUri: string;
+    codeChallenge: string;
+    codeChallengeMethod: string;
+    scope: string;
+    ttlSeconds: number;
+  },
+): Promise<void> {
   await pool.query(
     `INSERT INTO oauth_codes (code, client_id, account_id, redirect_uri, code_challenge, code_challenge_method, scope, expires_at)
      VALUES ($1, $2, $3, $4, $5, $6, $7, now() + ($8 || ' seconds')::interval)`,
-    [params.code, params.clientId, params.accountId, params.redirectUri,
-     params.codeChallenge, params.codeChallengeMethod, params.scope, String(params.ttlSeconds)],
+    [
+      params.code,
+      params.clientId,
+      params.accountId,
+      params.redirectUri,
+      params.codeChallenge,
+      params.codeChallengeMethod,
+      params.scope,
+      String(params.ttlSeconds),
+    ],
   );
 }
 
@@ -97,9 +122,16 @@ export async function consumeAuthCode(pool: Pool, code: string): Promise<Consume
 
 // ── Device codes (device-code grant) ───────────────────────────────────────
 
-export async function createDeviceCode(pool: Pool, params: {
-  deviceCode: string; userCode: string; clientId: string; scope: string; ttlSeconds: number;
-}): Promise<void> {
+export async function createDeviceCode(
+  pool: Pool,
+  params: {
+    deviceCode: string;
+    userCode: string;
+    clientId: string;
+    scope: string;
+    ttlSeconds: number;
+  },
+): Promise<void> {
   await pool.query(
     `INSERT INTO oauth_device_codes (device_code, user_code, client_id, scope, expires_at)
      VALUES ($1, $2, $3, $4, now() + ($5 || ' seconds')::interval)`,
@@ -118,7 +150,10 @@ export interface DeviceCodeRow {
   consumed: boolean;
 }
 
-export async function getDeviceByUserCode(pool: Pool, userCode: string): Promise<DeviceCodeRow | null> {
+export async function getDeviceByUserCode(
+  pool: Pool,
+  userCode: string,
+): Promise<DeviceCodeRow | null> {
   const res = await pool.query(
     `SELECT device_code, user_code, client_id, scope, account_id, approved,
             (expires_at <= now()) AS expired, (consumed_at IS NOT NULL) AS consumed
@@ -130,7 +165,11 @@ export async function getDeviceByUserCode(pool: Pool, userCode: string): Promise
 
 // Approve a pending device authorization, binding it to the approving account.
 // Only an unexpired, unapproved row is updated. Returns true on success.
-export async function approveDeviceCode(pool: Pool, userCode: string, accountId: number): Promise<boolean> {
+export async function approveDeviceCode(
+  pool: Pool,
+  userCode: string,
+  accountId: number,
+): Promise<boolean> {
   const res = await pool.query(
     `UPDATE oauth_device_codes SET approved = TRUE, account_id = $2
       WHERE user_code = $1 AND approved = FALSE AND expires_at > now()`,
@@ -147,7 +186,11 @@ export interface DevicePollRow {
   consumed: boolean;
 }
 
-export async function getDeviceByDeviceCode(pool: Pool, deviceCode: string, clientId: string): Promise<DevicePollRow | null> {
+export async function getDeviceByDeviceCode(
+  pool: Pool,
+  deviceCode: string,
+  clientId: string,
+): Promise<DevicePollRow | null> {
   const res = await pool.query(
     `SELECT account_id, approved, scope,
             (expires_at <= now()) AS expired, (consumed_at IS NOT NULL) AS consumed
@@ -158,7 +201,10 @@ export async function getDeviceByDeviceCode(pool: Pool, deviceCode: string, clie
 }
 
 // Atomically claim an approved device code so a poll issues exactly one token.
-export async function consumeDeviceCode(pool: Pool, deviceCode: string): Promise<{ account_id: number; scope: string } | null> {
+export async function consumeDeviceCode(
+  pool: Pool,
+  deviceCode: string,
+): Promise<{ account_id: number; scope: string } | null> {
   const res = await pool.query(
     `UPDATE oauth_device_codes SET consumed_at = now()
       WHERE device_code = $1 AND approved = TRUE AND account_id IS NOT NULL
@@ -171,6 +217,6 @@ export async function consumeDeviceCode(pool: Pool, deviceCode: string): Promise
 
 // Prune expired grant rows (best-effort housekeeping).
 export async function pruneExpiredOAuthGrants(pool: Pool): Promise<void> {
-  await pool.query('DELETE FROM oauth_codes WHERE expires_at < now() - interval \'1 day\'');
-  await pool.query('DELETE FROM oauth_device_codes WHERE expires_at < now() - interval \'1 day\'');
+  await pool.query("DELETE FROM oauth_codes WHERE expires_at < now() - interval '1 day'");
+  await pool.query("DELETE FROM oauth_device_codes WHERE expires_at < now() - interval '1 day'");
 }

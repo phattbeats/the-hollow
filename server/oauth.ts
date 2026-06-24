@@ -11,22 +11,35 @@
 // without this code touching them. The approval POST requires a FULL session
 // token (a read token cannot authorize new read tokens — no escalation).
 
-import * as http from 'node:http';
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
-import { json, readBinaryBody } from './http_util';
+import type * as http from 'node:http';
 import { newToken } from './auth';
-import { pool, accountAndScopeForToken, saveToken, moderationStatusForAccount, revokeReadToken } from './db';
-import { REALM_PUBLIC_ORIGIN } from './realm';
 import {
-  getOAuthClient, upsertOAuthClient, createAuthCode, consumeAuthCode,
-  createDeviceCode, getDeviceByUserCode, approveDeviceCode, getDeviceByDeviceCode, consumeDeviceCode,
+  accountAndScopeForToken,
+  moderationStatusForAccount,
+  pool,
+  revokeReadToken,
+  saveToken,
+} from './db';
+import { json, readBinaryBody } from './http_util';
+import {
+  approveDeviceCode,
+  consumeAuthCode,
+  consumeDeviceCode,
+  createAuthCode,
+  createDeviceCode,
+  getDeviceByDeviceCode,
+  getDeviceByUserCode,
+  getOAuthClient,
+  upsertOAuthClient,
 } from './oauth_db';
+import { publicOriginFromRequest } from './realm';
 
 export const OAUTH_SCOPE = 'character:read';
-const CODE_TTL_SECONDS = 600;        // authorization code: 10 min
-const DEVICE_TTL_SECONDS = 900;      // device code: 15 min
-const DEVICE_POLL_INTERVAL = 5;      // seconds between device polls
-const TOKEN_TTL_HOURS = 24 * 90;     // issued read token lifetime: 90 days
+const CODE_TTL_SECONDS = 600; // authorization code: 10 min
+const DEVICE_TTL_SECONDS = 900; // device code: 15 min
+const DEVICE_POLL_INTERVAL = 5; // seconds between device polls
+const TOKEN_TTL_HOURS = 24 * 90; // issued read token lifetime: 90 days
 const DEVICE_GRANT = 'urn:ietf:params:oauth:grant-type:device_code';
 
 // ── Pure helpers (exported for tests) ──────────────────────────────────────
@@ -77,15 +90,15 @@ export function normalizeUserCode(raw: string): string {
 
 // Exact-match redirect allowlist (newline-separated in oauth_clients).
 export function redirectAllowed(redirectUris: string, redirectUri: string): boolean {
-  return redirectUris.split('\n').map((s) => s.trim()).filter(Boolean).includes(redirectUri);
+  return redirectUris
+    .split('\n')
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .includes(redirectUri);
 }
 
 function publicOrigin(req: http.IncomingMessage): string {
-  if (REALM_PUBLIC_ORIGIN) return REALM_PUBLIC_ORIGIN;
-  const host = String(req.headers.host ?? '').trim();
-  if (!host) return '';
-  const proto = String(req.headers['x-forwarded-proto'] ?? '').split(',')[0].trim() || 'https';
-  return `${proto}://${host}`;
+  return publicOriginFromRequest(req);
 }
 
 function appendQuery(url: string, params: Record<string, string>): string {
@@ -105,7 +118,10 @@ export async function seedOAuthClients(): Promise<void> {
     if (!seg) continue;
     const [id, name, uris] = seg.split('|').map((s) => (s ?? '').trim());
     if (!id) continue;
-    const redirects = (uris ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+    const redirects = (uris ?? '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
     await upsertOAuthClient(pool, id, name || id, redirects);
   }
 }
@@ -115,7 +131,7 @@ async function fullSessionAccount(req: http.IncomingMessage): Promise<number | n
   const m = /^Bearer ([a-f0-9]{64})$/.exec(req.headers.authorization ?? '');
   if (!m) return null;
   const info = await accountAndScopeForToken(m[1]);
-  if (!info || info.scope !== 'full') return null;
+  if (info?.scope !== 'full') return null;
   const status = await moderationStatusForAccount(info.accountId);
   if (status.locked) return null;
   return info.accountId;
@@ -131,27 +147,39 @@ async function readForm(req: http.IncomingMessage): Promise<Record<string, strin
       const out: Record<string, string> = {};
       for (const [k, v] of Object.entries(obj)) out[k] = String(v ?? '');
       return out;
-    } catch { return {}; }
+    } catch {
+      return {};
+    }
   }
   const out: Record<string, string> = {};
   for (const [k, v] of new URLSearchParams(text)) out[k] = v;
   return out;
 }
 
-function oauthError(res: http.ServerResponse, status: number, error: string, description?: string): void {
+function oauthError(
+  res: http.ServerResponse,
+  status: number,
+  error: string,
+  description?: string,
+): void {
   json(res, status, description ? { error, error_description: description } : { error });
 }
 
 // ── Router ──────────────────────────────────────────────────────────────────
 
-export async function handleOAuth(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
+export async function handleOAuth(
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+): Promise<void> {
   const path = (req.url ?? '').split('?')[0];
   try {
     if (req.method === 'GET' && path === '/oauth/authorize') return await renderAuthorize(req, res);
-    if (req.method === 'POST' && path === '/oauth/authorize') return await approveAuthorize(req, res);
+    if (req.method === 'POST' && path === '/oauth/authorize')
+      return await approveAuthorize(req, res);
     if (req.method === 'POST' && path === '/oauth/token') return await tokenEndpoint(req, res);
     if (req.method === 'POST' && path === '/oauth/revoke') return await revokeEndpoint(req, res);
-    if (req.method === 'POST' && path === '/oauth/device_authorization') return await deviceAuthorization(req, res);
+    if (req.method === 'POST' && path === '/oauth/device_authorization')
+      return await deviceAuthorization(req, res);
     if (req.method === 'GET' && path === '/oauth/device') return renderDevicePage(res);
     if (req.method === 'POST' && path === '/oauth/device') return await approveDevice(req, res);
     oauthError(res, 404, 'not_found');
@@ -173,8 +201,10 @@ async function renderAuthorize(req: http.IncomingMessage, res: http.ServerRespon
   const scope = q.get('scope') || OAUTH_SCOPE;
 
   const client = clientId ? await getOAuthClient(pool, clientId) : null;
-  if (!client) return htmlError(res, 400, 'Unknown application', 'This client_id is not registered.');
-  if (responseType !== 'code') return htmlError(res, 400, 'Unsupported request', 'response_type must be "code".');
+  if (!client)
+    return htmlError(res, 400, 'Unknown application', 'This client_id is not registered.');
+  if (responseType !== 'code')
+    return htmlError(res, 400, 'Unsupported request', 'response_type must be "code".');
   if (!redirectUri || !redirectAllowed(client.redirect_uris, redirectUri)) {
     return htmlError(res, 400, 'Bad redirect', 'redirect_uri is not registered for this client.');
   }
@@ -182,13 +212,32 @@ async function renderAuthorize(req: http.IncomingMessage, res: http.ServerRespon
     return htmlError(res, 400, 'PKCE required', 'A code_challenge with method S256 is required.');
   }
   res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
-  res.end(authorizeHtml({ client: client.name, clientId, redirectUri, codeChallenge, method, state, scope }));
+  res.end(
+    authorizeHtml({
+      client: client.name,
+      clientId,
+      redirectUri,
+      codeChallenge,
+      method,
+      state,
+      scope,
+    }),
+  );
 }
 
 // POST /oauth/authorize — the consent page approves, using the web session token.
-async function approveAuthorize(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
+async function approveAuthorize(
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+): Promise<void> {
   const accountId = await fullSessionAccount(req);
-  if (accountId === null) return oauthError(res, 401, 'access_denied', 'log in to your World of ClaudeCraft account first');
+  if (accountId === null)
+    return oauthError(
+      res,
+      401,
+      'access_denied',
+      'log in to your World of ClaudeCraft account first',
+    );
   const body = await readForm(req);
   const clientId = body.client_id ?? '';
   const redirectUri = body.redirect_uri ?? '';
@@ -206,8 +255,14 @@ async function approveAuthorize(req: http.IncomingMessage, res: http.ServerRespo
   }
   const code = newToken();
   await createAuthCode(pool, {
-    code, clientId, accountId, redirectUri,
-    codeChallenge, codeChallengeMethod: method, scope, ttlSeconds: CODE_TTL_SECONDS,
+    code,
+    clientId,
+    accountId,
+    redirectUri,
+    codeChallenge,
+    codeChallengeMethod: method,
+    scope,
+    ttlSeconds: CODE_TTL_SECONDS,
   });
   const redirect = appendQuery(redirectUri, body.state ? { code, state: body.state } : { code });
   json(res, 200, { redirect });
@@ -232,37 +287,52 @@ async function tokenEndpoint(req: http.IncomingMessage, res: http.ServerResponse
   return oauthError(res, 400, 'unsupported_grant_type');
 }
 
-async function tokenFromAuthCode(res: http.ServerResponse, body: Record<string, string>): Promise<void> {
+async function tokenFromAuthCode(
+  res: http.ServerResponse,
+  body: Record<string, string>,
+): Promise<void> {
   const code = body.code ?? '';
   const verifier = body.code_verifier ?? '';
   const clientId = body.client_id ?? '';
   const redirectUri = body.redirect_uri ?? '';
-  if (!code || !verifier) return oauthError(res, 400, 'invalid_request', 'code and code_verifier required');
+  if (!code || !verifier)
+    return oauthError(res, 400, 'invalid_request', 'code and code_verifier required');
   const row = await consumeAuthCode(pool, code);
   if (!row) return oauthError(res, 400, 'invalid_grant', 'code invalid, expired, or already used');
   if (row.client_id !== clientId) return oauthError(res, 400, 'invalid_grant', 'client mismatch');
-  if (row.redirect_uri !== redirectUri) return oauthError(res, 400, 'invalid_grant', 'redirect_uri mismatch');
+  if (row.redirect_uri !== redirectUri)
+    return oauthError(res, 400, 'invalid_grant', 'redirect_uri mismatch');
   if (!verifyPkce(verifier, row.code_challenge, row.code_challenge_method)) {
     return oauthError(res, 400, 'invalid_grant', 'PKCE verification failed');
   }
   await issueReadToken(res, row.account_id, clientId, row.scope);
 }
 
-async function tokenFromDeviceCode(res: http.ServerResponse, body: Record<string, string>): Promise<void> {
+async function tokenFromDeviceCode(
+  res: http.ServerResponse,
+  body: Record<string, string>,
+): Promise<void> {
   const deviceCode = body.device_code ?? '';
   const clientId = body.client_id ?? '';
-  if (!deviceCode || !clientId) return oauthError(res, 400, 'invalid_request', 'device_code and client_id required');
+  if (!deviceCode || !clientId)
+    return oauthError(res, 400, 'invalid_request', 'device_code and client_id required');
   const row = await getDeviceByDeviceCode(pool, deviceCode, clientId);
   if (!row) return oauthError(res, 400, 'invalid_grant', 'unknown device_code');
   if (row.expired) return oauthError(res, 400, 'expired_token');
   if (row.consumed) return oauthError(res, 400, 'invalid_grant', 'device_code already used');
-  if (!row.approved || row.account_id === null) return oauthError(res, 400, 'authorization_pending');
+  if (!row.approved || row.account_id === null)
+    return oauthError(res, 400, 'authorization_pending');
   const claimed = await consumeDeviceCode(pool, deviceCode);
   if (!claimed) return oauthError(res, 400, 'authorization_pending');
   await issueReadToken(res, claimed.account_id, clientId, claimed.scope);
 }
 
-async function issueReadToken(res: http.ServerResponse, accountId: number, clientId: string, scope: string): Promise<void> {
+async function issueReadToken(
+  res: http.ServerResponse,
+  accountId: number,
+  clientId: string,
+  scope: string,
+): Promise<void> {
   const token = newToken();
   await saveToken(token, accountId, TOKEN_TTL_HOURS, 'read', `oauth:${clientId}`);
   json(res, 200, {
@@ -274,7 +344,10 @@ async function issueReadToken(res: http.ServerResponse, accountId: number, clien
 }
 
 // POST /oauth/device_authorization — start the device flow.
-async function deviceAuthorization(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
+async function deviceAuthorization(
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+): Promise<void> {
   const body = await readForm(req);
   const clientId = body.client_id ?? '';
   const scope = body.scope || OAUTH_SCOPE;
@@ -285,7 +358,13 @@ async function deviceAuthorization(req: http.IncomingMessage, res: http.ServerRe
   // so it matches the lookup in approveDevice (which normalizes the submitted
   // code before an exact-match query). Without this, approval never matches.
   const userCode = newUserCode();
-  await createDeviceCode(pool, { deviceCode, userCode: normalizeUserCode(userCode), clientId, scope, ttlSeconds: DEVICE_TTL_SECONDS });
+  await createDeviceCode(pool, {
+    deviceCode,
+    userCode: normalizeUserCode(userCode),
+    clientId,
+    scope,
+    ttlSeconds: DEVICE_TTL_SECONDS,
+  });
   const base = publicOrigin(req);
   json(res, 200, {
     device_code: deviceCode,
@@ -305,7 +384,8 @@ async function approveDevice(req: http.IncomingMessage, res: http.ServerResponse
   const userCode = normalizeUserCode(body.user_code ?? '');
   if (!userCode) return oauthError(res, 400, 'invalid_request', 'user_code required');
   const device = await getDeviceByUserCode(pool, userCode);
-  if (!device || device.expired) return oauthError(res, 400, 'invalid_grant', 'code expired or unknown');
+  if (!device || device.expired)
+    return oauthError(res, 400, 'invalid_grant', 'code expired or unknown');
   const ok = await approveDeviceCode(pool, userCode, accountId);
   if (!ok) return oauthError(res, 400, 'invalid_grant', 'code already used or expired');
   json(res, 200, { ok: true });
@@ -314,7 +394,12 @@ async function approveDevice(req: http.IncomingMessage, res: http.ServerResponse
 // ── HTML (consent + device pages) ───────────────────────────────────────────
 
 function escapeHtml(s: string): string {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 const PAGE_STYLE = `<style>
@@ -332,11 +417,23 @@ const PAGE_STYLE = `<style>
   .msg{min-height:20px;color:#ffb4a0}
 </style>`;
 
-function authorizeHtml(o: { client: string; clientId: string; redirectUri: string; codeChallenge: string; method: string; state: string; scope: string }): string {
+function authorizeHtml(o: {
+  client: string;
+  clientId: string;
+  redirectUri: string;
+  codeChallenge: string;
+  method: string;
+  state: string;
+  scope: string;
+}): string {
   const data = JSON.stringify({
-    client_id: o.clientId, redirect_uri: o.redirectUri, code_challenge: o.codeChallenge,
-    code_challenge_method: o.method, state: o.state, scope: o.scope,
-  });
+    client_id: o.clientId,
+    redirect_uri: o.redirectUri,
+    code_challenge: o.codeChallenge,
+    code_challenge_method: o.method,
+    state: o.state,
+    scope: o.scope,
+  }).replace(/</g, '\\u003c');
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Authorize ${escapeHtml(o.client)} · World of ClaudeCraft</title><meta name="robots" content="noindex">${PAGE_STYLE}</head>
@@ -396,7 +493,10 @@ function renderDevicePage(res: http.ServerResponse): void {
 }
 
 function htmlError(res: http.ServerResponse, status: number, title: string, detail: string): void {
-  res.writeHead(status, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+  res.writeHead(status, {
+    'Content-Type': 'text/html; charset=utf-8',
+    'Cache-Control': 'no-store',
+  });
   res.end(`<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)}</title>${PAGE_STYLE}</head>
 <body><main><h1>${escapeHtml(title)}</h1><p>${escapeHtml(detail)}</p></main></body></html>`);

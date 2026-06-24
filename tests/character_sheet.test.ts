@@ -1,25 +1,44 @@
-import { describe, it, expect } from 'vitest';
-import { characterSheet, splitCopper, type CharacterSheetInput } from '../server/character_sheet';
+import { describe, expect, it } from 'vitest';
+import { type CharacterSheetInput, characterSheet, splitCopper } from '../server/character_sheet';
 import type { CharacterRow } from '../server/db';
-import type { CharacterState } from '../src/sim/sim';
-import { createPlayer, recalcPlayerStats } from '../src/sim/entity';
 import { zoneAt } from '../src/sim/data';
-import { virtualLevel, type PlayerClass } from '../src/sim/types';
+import { createPlayer, recalcPlayerStats } from '../src/sim/entity';
+import type { CharacterState } from '../src/sim/sim';
+import { type PlayerClass, virtualLevel } from '../src/sim/types';
 
 function makeState(over: Partial<CharacterState> = {}): CharacterState {
   return {
-    level: 20, xp: 0, lifetimeXp: 50_000, prestigeRank: 1,
-    copper: 123456, hp: 500, resource: 200,
-    pos: { x: 5, z: 0 }, facing: 0,
-    equipment: {}, inventory: [{ itemId: 'wolf_pelt', qty: 3 } as any],
-    questLog: [{ questId: 'q1', counts: [1], state: 'active' }], questsDone: [],
-    arena1v1Rating: 1600, arena1v1Wins: 10, arena1v1Losses: 4,
+    level: 20,
+    xp: 0,
+    lifetimeXp: 50_000,
+    prestigeRank: 1,
+    copper: 123456,
+    hp: 500,
+    resource: 200,
+    pos: { x: 5, z: 0 },
+    facing: 0,
+    equipment: {},
+    inventory: [{ itemId: 'wolf_pelt', qty: 3 } as any],
+    questLog: [{ questId: 'q1', counts: [1], state: 'active' }],
+    questsDone: [],
+    arena1v1Rating: 1600,
+    arena1v1Wins: 10,
+    arena1v1Losses: 4,
     ...over,
   } as CharacterState;
 }
 
 function makeRow(cls: PlayerClass, level: number, state: CharacterState): CharacterRow {
-  return { id: 7, account_id: 1, name: 'Thrallish', class: cls, level, state, is_gm: false, force_rename: false };
+  return {
+    id: 7,
+    account_id: 1,
+    name: 'Thrallish',
+    class: cls,
+    level,
+    state,
+    is_gm: false,
+    force_rename: false,
+  };
 }
 
 function input(over: Partial<CharacterSheetInput> = {}): CharacterSheetInput {
@@ -62,7 +81,9 @@ describe('characterSheet — shared fields', () => {
   });
 
   it('backfills virtualLevel from level when lifetimeXp is absent', () => {
-    const sheet = characterSheet(input({ row: makeRow('mage', 12, makeState({ lifetimeXp: undefined, level: 12 })) }));
+    const sheet = characterSheet(
+      input({ row: makeRow('mage', 12, makeState({ lifetimeXp: undefined, level: 12 })) }),
+    );
     expect(sheet.virtualLevel).toBe(12);
   });
 });
@@ -80,7 +101,9 @@ describe('characterSheet — owner variant', () => {
   it('stats equal recalcPlayerStats output for the same class/level/gear', () => {
     const cls: PlayerClass = 'warrior';
     const level = 18;
-    const sheet = characterSheet(input({ row: makeRow(cls, level, makeState({ level, talents: undefined, equipment: {} })) }));
+    const sheet = characterSheet(
+      input({ row: makeRow(cls, level, makeState({ level, talents: undefined, equipment: {} })) }),
+    );
     // Independently derive via the engine's one true function.
     const e = createPlayer(0, cls, { x: 0, y: 0, z: 0 }, '');
     e.level = level;
@@ -113,10 +136,22 @@ describe('characterSheet — public variant leaks nothing sensitive', () => {
   });
 
   it('property check: no owner-only key survives across many class/level combos', () => {
-    const classes: PlayerClass[] = ['warrior', 'paladin', 'hunter', 'rogue', 'priest', 'shaman', 'mage', 'warlock', 'druid'];
+    const classes: PlayerClass[] = [
+      'warrior',
+      'paladin',
+      'hunter',
+      'rogue',
+      'priest',
+      'shaman',
+      'mage',
+      'warlock',
+      'druid',
+    ];
     for (const cls of classes) {
       for (const level of [1, 10, 20]) {
-        const sheet = characterSheet(input({ visibility: 'public', row: makeRow(cls, level, makeState({ level })) }));
+        const sheet = characterSheet(
+          input({ visibility: 'public', row: makeRow(cls, level, makeState({ level })) }),
+        );
         expect('stats' in sheet).toBe(false);
         expect('vitals' in sheet).toBe(false);
         expect('gold' in sheet).toBe(false);

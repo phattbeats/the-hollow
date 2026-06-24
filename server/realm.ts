@@ -1,3 +1,5 @@
+import type * as http from 'node:http';
+
 // The realm (world/shard) this server process serves. In the process-per-realm
 // model each instance hosts exactly one realm — set REALM_NAME per deployment
 // (e.g. a Caddy vhost or compose service per realm), all pointing at the same
@@ -83,7 +85,9 @@ export const REALM_DIRECTORY: RealmEntry[] = (() => {
 
 // Cross-origin requests from these realm origins are allowed (CORS), so a
 // client served by one realm can call another realm's API after switching.
-export const REALM_ORIGINS: ReadonlySet<string> = new Set(REALM_DIRECTORY.map((r) => r.url).filter(Boolean));
+export const REALM_ORIGINS: ReadonlySet<string> = new Set(
+  REALM_DIRECTORY.map((r) => r.url).filter(Boolean),
+);
 
 // Public, unauthenticated read surfaces that any browser origin may call (CORS
 // `*`): the public character sheet and the deterministic avatar art. These carry
@@ -102,4 +106,38 @@ export function publicOriginForRealm(realm: string, directory: readonly RealmEnt
 }
 
 export const CONFIGURED_PUBLIC_ORIGIN = resolvePublicOrigin(process.env.PUBLIC_ORIGIN);
-export const REALM_PUBLIC_ORIGIN = CONFIGURED_PUBLIC_ORIGIN || publicOriginForRealm(REALM, REALM_DIRECTORY);
+export const REALM_PUBLIC_ORIGIN =
+  CONFIGURED_PUBLIC_ORIGIN || publicOriginForRealm(REALM, REALM_DIRECTORY);
+
+const DEFAULT_PRODUCTION_PUBLIC_ORIGIN = 'https://worldofclaudecraft.com';
+const TRUSTED_PUBLIC_HOST_ORIGINS = new Map([
+  ['worldofclaudecraft.com', DEFAULT_PRODUCTION_PUBLIC_ORIGIN],
+  ['www.worldofclaudecraft.com', DEFAULT_PRODUCTION_PUBLIC_ORIGIN],
+  ['dev.worldofclaudecraft.com', 'https://dev.worldofclaudecraft.com'],
+]);
+
+function firstHeaderValue(value: string | string[] | undefined): string {
+  return (Array.isArray(value) ? (value[0] ?? '') : (value ?? '')).split(',')[0].trim();
+}
+
+function trustedPublicOriginFromHost(req: http.IncomingMessage): string {
+  const raw = firstHeaderValue(req.headers.host).toLowerCase();
+  const host = raw.includes(':') ? raw.split(':')[0] : raw;
+  return TRUSTED_PUBLIC_HOST_ORIGINS.get(host) ?? '';
+}
+
+export function publicOriginFromRequest(req: http.IncomingMessage): string {
+  if (REALM_PUBLIC_ORIGIN) return REALM_PUBLIC_ORIGIN;
+  if (process.env.NODE_ENV === 'production') {
+    return trustedPublicOriginFromHost(req) || DEFAULT_PRODUCTION_PUBLIC_ORIGIN;
+  }
+  const fwd = firstHeaderValue(req.headers['x-forwarded-proto']).toLowerCase();
+  const proto =
+    fwd === 'http' || fwd === 'https'
+      ? fwd
+      : (req.socket as { encrypted?: boolean } | undefined)?.encrypted
+        ? 'https'
+        : 'http';
+  const host = firstHeaderValue(req.headers.host) || 'localhost';
+  return `${proto}://${host}`;
+}

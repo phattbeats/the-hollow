@@ -683,7 +683,9 @@ export async function revokeToken(token: string): Promise<void> {
 // logout). Restricted to scope='read' so a presented full web-session token can
 // never be deleted through this path. Returns true if a row was removed.
 export async function revokeReadToken(token: string): Promise<boolean> {
-  const res = await pool.query(`DELETE FROM auth_tokens WHERE token = $1 AND scope = 'read'`, [token]);
+  const res = await pool.query(`DELETE FROM auth_tokens WHERE token = $1 AND scope = 'read'`, [
+    token,
+  ]);
   return (res.rowCount ?? 0) > 0;
 }
 
@@ -981,7 +983,7 @@ export async function claimTotpWindow(accountId: number, counter: number): Promi
      RETURNING id`,
     [accountId, counter],
   );
-  return res.rowCount! > 0;
+  return (res.rowCount ?? 0) > 0;
 }
 
 // Burn a recovery code atomically. The UPDATE ... WHERE consumed_at IS NULL is
@@ -994,7 +996,7 @@ export async function consumeRecoveryCode(accountId: number, codeHash: string): 
      RETURNING id`,
     [accountId, codeHash],
   );
-  return res.rowCount! > 0;
+  return (res.rowCount ?? 0) > 0;
 }
 
 // GDPR-style data export bundle: the account's own profile plus every character

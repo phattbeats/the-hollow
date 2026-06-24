@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { avatarPng, isPlayerClass, isValidSkin, PLAYER_CLASSES, MAX_SKIN } from '../server/avatar';
+import { describe, expect, it } from 'vitest';
+import { avatarPng, isPlayerClass, isValidSkin, MAX_SKIN, PLAYER_CLASSES } from '../server/avatar';
 
 const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 

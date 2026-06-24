@@ -13,13 +13,19 @@
 // recalcPlayerStats (through characterDerivedStats), zone via zoneAt, spec via
 // the talents specLabel, virtualLevel via the types helper.
 
-import type { CharacterState } from '../src/sim/sim';
-import type { CharacterRow } from './db';
-import type { PlayerClass } from '../src/sim/types';
-import { virtualLevel, xpToReachLevel } from '../src/sim/types';
+import {
+  computeTalentModifiers,
+  emptyAllocation,
+  specLabel,
+  type TalentAllocation,
+  type TalentModifiers,
+} from '../src/sim/content/talents';
 import { zoneAt } from '../src/sim/data';
 import { characterDerivedStats } from '../src/sim/entity';
-import { computeTalentModifiers, emptyAllocation, specLabel, type TalentAllocation, type TalentModifiers } from '../src/sim/content/talents';
+import type { CharacterState } from '../src/sim/sim';
+import type { PlayerClass } from '../src/sim/types';
+import { virtualLevel, xpToReachLevel } from '../src/sim/types';
+import type { CharacterRow } from './db';
 
 export type SheetVisibility = 'owner' | 'public';
 
@@ -33,7 +39,7 @@ export interface CharacterSheetInput {
   row: CharacterRow;
   visibility: SheetVisibility;
   realm: string;
-  origin: string;          // e.g. https://worldofclaudecraft.com ('' = relative)
+  origin: string; // e.g. https://worldofclaudecraft.com ('' = relative)
   guild: string | null;
   rank: SheetRank | null;
   // ISO timestamp for the sheet; defaults to now(). Pass the row's updated_at
@@ -41,14 +47,29 @@ export interface CharacterSheetInput {
   updatedAt?: string;
 }
 
-export interface MoneySplit { gold: number; silver: number; copper: number; }
-export interface SheetStats { str: number; agi: number; sta: number; int: number; spi: number; armor: number; }
+export interface MoneySplit {
+  gold: number;
+  silver: number;
+  copper: number;
+}
+export interface SheetStats {
+  str: number;
+  agi: number;
+  sta: number;
+  int: number;
+  spi: number;
+  armor: number;
+}
 export interface SheetVitals {
   hp: number;
   maxHp: number;
   resource: { type: string; value: number; max: number };
 }
-export interface SheetArenaBracket { rating: number; wins: number; losses: number; }
+export interface SheetArenaBracket {
+  rating: number;
+  wins: number;
+  losses: number;
+}
 
 export interface CharacterSheet {
   name: string;
@@ -76,8 +97,15 @@ export interface CharacterSheet {
 }
 
 const CLASS_LABELS: Record<PlayerClass, string> = {
-  warrior: 'Warrior', paladin: 'Paladin', hunter: 'Hunter', rogue: 'Rogue',
-  priest: 'Priest', shaman: 'Shaman', mage: 'Mage', warlock: 'Warlock', druid: 'Druid',
+  warrior: 'Warrior',
+  paladin: 'Paladin',
+  hunter: 'Hunter',
+  rogue: 'Rogue',
+  priest: 'Priest',
+  shaman: 'Shaman',
+  mage: 'Mage',
+  warlock: 'Warlock',
+  druid: 'Druid',
 };
 
 export function splitCopper(copper: number): MoneySplit {
@@ -112,8 +140,16 @@ function arenaBrackets(state: CharacterState): Record<string, SheetArenaBracket>
   if (r1 !== undefined || w1 !== undefined || l1 !== undefined) {
     out['1v1'] = { rating: r1 ?? 0, wins: w1 ?? 0, losses: l1 ?? 0 };
   }
-  if (state.arena2v2Rating !== undefined || state.arena2v2Wins !== undefined || state.arena2v2Losses !== undefined) {
-    out['2v2'] = { rating: state.arena2v2Rating ?? 0, wins: state.arena2v2Wins ?? 0, losses: state.arena2v2Losses ?? 0 };
+  if (
+    state.arena2v2Rating !== undefined ||
+    state.arena2v2Wins !== undefined ||
+    state.arena2v2Losses !== undefined
+  ) {
+    out['2v2'] = {
+      rating: state.arena2v2Rating ?? 0,
+      wins: state.arena2v2Wins ?? 0,
+      losses: state.arena2v2Losses ?? 0,
+    };
   }
   return out;
 }
@@ -153,7 +189,12 @@ export function characterSheet(input: CharacterSheetInput): CharacterSheet {
   };
 
   if (visibility === 'owner') {
-    const derived = characterDerivedStats(cls, level, state.equipment ?? {}, talentMods(cls, state));
+    const derived = characterDerivedStats(
+      cls,
+      level,
+      state.equipment ?? {},
+      talentMods(cls, state),
+    );
     sheet.stats = { ...derived.stats };
     sheet.vitals = {
       hp: state.hp ?? derived.maxHp,

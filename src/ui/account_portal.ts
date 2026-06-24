@@ -32,7 +32,13 @@ export interface AccountPortalModel {
 
 export type AccountPortalSection = 'settings' | 'wallet' | 'characters' | 'companion' | 'logout';
 
-const SECTION_ORDER: AccountPortalSection[] = ['settings', 'wallet', 'characters', 'companion', 'logout'];
+const SECTION_ORDER: AccountPortalSection[] = [
+  'settings',
+  'wallet',
+  'characters',
+  'companion',
+  'logout',
+];
 
 // Password length bounds — mirror the server's validPassword (6..128 chars) so
 // the client gate matches what the server will accept byte-for-byte.
@@ -58,7 +64,12 @@ function normalizeIso(value: string): string {
   return Number.isNaN(t) ? '' : new Date(t).toISOString();
 }
 
-export type PasswordError = 'empty-current' | 'too-short' | 'too-long' | 'unchanged' | 'confirm-mismatch';
+export type PasswordError =
+  | 'empty-current'
+  | 'too-short'
+  | 'too-long'
+  | 'unchanged'
+  | 'confirm-mismatch';
 
 /**
  * Validate a password-change form. Returns null when the input is acceptable to
@@ -75,7 +86,11 @@ export function validateNewPassword(current: string, next: string): PasswordErro
   return null;
 }
 
-export function validatePasswordChange(current: string, next: string, confirm: string): PasswordError | null {
+export function validatePasswordChange(
+  current: string,
+  next: string,
+  confirm: string,
+): PasswordError | null {
   const baseError = validateNewPassword(current, next);
   if (baseError) return baseError;
   if (next !== confirm) return 'confirm-mismatch';
@@ -98,7 +113,11 @@ export function validateEmailShape(email: string): boolean {
  * username and a non-empty password — a deliberate friction gate on an
  * account-locking action.
  */
-export function deactivateConfirmReady(expectedUsername: string, typedUsername: string, password: string): boolean {
+export function deactivateConfirmReady(
+  expectedUsername: string,
+  typedUsername: string,
+  password: string,
+): boolean {
   return typedUsername === expectedUsername && password.length > 0;
 }
 
@@ -137,7 +156,7 @@ export interface CompanionTokenRowView {
 export function companionTokenRows(tokens: CompanionTokenSummary[]): CompanionTokenRowView[] {
   return tokens.map((t) => ({
     prefix: t.prefix,
-    label: t.label && t.label.trim() ? t.label.trim() : 'Unnamed token',
+    label: t.label?.trim() ? t.label.trim() : 'Unnamed token',
     createdAtIso: normalizeIso(t.createdAt),
     expiresAtIso: normalizeIso(t.expiresAt),
   }));

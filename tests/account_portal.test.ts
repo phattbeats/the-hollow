@@ -1,16 +1,16 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
+  type AccountPortalState,
   accountPortalModel,
+  COMPANION_TOKEN_LABEL_MAX,
+  companionTokenRows,
+  deactivateConfirmReady,
+  MAX_PASSWORD_LENGTH,
+  MIN_PASSWORD_LENGTH,
+  validateCompanionTokenLabel,
+  validateEmailShape,
   validateNewPassword,
   validatePasswordChange,
-  validateEmailShape,
-  deactivateConfirmReady,
-  validateCompanionTokenLabel,
-  companionTokenRows,
-  COMPANION_TOKEN_LABEL_MAX,
-  MIN_PASSWORD_LENGTH,
-  MAX_PASSWORD_LENGTH,
-  type AccountPortalState,
 } from '../src/ui/account_portal';
 
 const base: AccountPortalState = {
@@ -112,17 +112,25 @@ describe('companion tokens', () => {
 
   it('builds a row view with a fallback label and normalized timestamps, never the full secret', () => {
     const rows = companionTokenRows([
-      { prefix: 'deadbeef', label: 'Tracker', createdAt: '2026-06-01T00:00:00.000Z', expiresAt: '2026-09-01T00:00:00.000Z' },
+      {
+        prefix: 'deadbeef',
+        label: 'Tracker',
+        createdAt: '2026-06-01T00:00:00.000Z',
+        expiresAt: '2026-09-01T00:00:00.000Z',
+      },
       { prefix: 'cafe1234', label: null, createdAt: 'junk', expiresAt: '2026-09-01T00:00:00.000Z' },
     ]);
     expect(rows[0]).toEqual({
-      prefix: 'deadbeef', label: 'Tracker',
-      createdAtIso: '2026-06-01T00:00:00.000Z', expiresAtIso: '2026-09-01T00:00:00.000Z',
+      prefix: 'deadbeef',
+      label: 'Tracker',
+      createdAtIso: '2026-06-01T00:00:00.000Z',
+      expiresAtIso: '2026-09-01T00:00:00.000Z',
     });
     expect(rows[1].label).toBe('Unnamed token');
     expect(rows[1].createdAtIso).toBe(''); // junk normalizes to empty
     // No field carries a 64-hex secret.
-    for (const r of rows) for (const v of Object.values(r)) expect(String(v)).not.toMatch(/[a-f0-9]{64}/);
+    for (const r of rows)
+      for (const v of Object.values(r)) expect(String(v)).not.toMatch(/[a-f0-9]{64}/);
   });
 });
 

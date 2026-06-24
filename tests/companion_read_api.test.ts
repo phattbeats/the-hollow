@@ -7,7 +7,7 @@
 // verified structurally rather than over a live socket.
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 // db.ts builds a pg Pool at import; give it a dummy URL (no connection is made
 // until a query runs, and these tests never query).
@@ -30,7 +30,9 @@ describe('token scope policy', () => {
 
 describe('migration is additive; old tokens read full', () => {
   it('adds the scope and label columns to auth_tokens', () => {
-    expect(SCHEMA).toMatch(/ALTER TABLE auth_tokens ADD COLUMN IF NOT EXISTS scope TEXT NOT NULL DEFAULT 'full'/);
+    expect(SCHEMA).toMatch(
+      /ALTER TABLE auth_tokens ADD COLUMN IF NOT EXISTS scope TEXT NOT NULL DEFAULT 'full'/,
+    );
     expect(SCHEMA).toMatch(/ALTER TABLE auth_tokens ADD COLUMN IF NOT EXISTS label TEXT/);
   });
   it("defaults scope to 'full' so pre-existing sessions keep full power", () => {
@@ -45,11 +47,11 @@ describe('every mutating / owner-action route funnels through bearerActiveAccoun
   // bearerActiveAccount (which rejects read tokens), never on the read/optional
   // helpers. Anchored on the route guard literal in main.ts.
   const MUTATING_ROUTE_ANCHORS = [
-    "if (url === '/api/characters') {",          // POST create (and GET list)
-    'if (req.method === \'POST\' && renameMatch) {',
-    'if (req.method === \'POST\' && takeoverMatch) {',
-    'if (req.method === \'DELETE\' && delMatch) {',
-    'if (req.method === \'GET\' && standingMatch) {', // owner-scoped read
+    "if (url === '/api/characters') {", // POST create (and GET list)
+    "if (req.method === 'POST' && renameMatch) {",
+    "if (req.method === 'POST' && takeoverMatch) {",
+    "if (req.method === 'DELETE' && delMatch) {",
+    "if (req.method === 'GET' && standingMatch) {", // owner-scoped read
     "if (req.method === 'POST' && url === '/api/reports') {",
     "if (req.method === 'POST' && url === '/api/bug-reports') {",
     "if (url === '/api/account/companion-token') {",
@@ -78,7 +80,7 @@ describe('every mutating / owner-action route funnels through bearerActiveAccoun
 
 describe('sheet routes use the right gate', () => {
   it('owner /sheet accepts read tokens via bearerReadAccount', () => {
-    const idx = MAIN.indexOf("const ownerSheetMatch = /^\\/api\\/characters\\/(\\d+)\\/sheet$/");
+    const idx = MAIN.indexOf('const ownerSheetMatch = /^\\/api\\/characters\\/(\\d+)\\/sheet$/');
     expect(idx).toBeGreaterThanOrEqual(0);
     expect(MAIN.slice(idx, idx + 600)).toContain('bearerReadAccount(req, res)');
   });
@@ -109,12 +111,15 @@ describe('GET /api/me/characters (read-scoped my-characters list)', () => {
   });
 
   it('returns the same shape as GET /api/characters (both call characterListPayload)', () => {
-    const calls = (MAIN.match(/characterListPayload\(await listCharacters\(accountId\)\)/g) ?? []).length;
+    const calls = (MAIN.match(/characterListPayload\(await listCharacters\(accountId\)\)/g) ?? [])
+      .length;
     expect(calls).toBe(2); // /api/me/characters and the full-session GET /api/characters
   });
 
   it('is matched before the generic /api/characters route', () => {
-    expect(MAIN.indexOf("url === '/api/me/characters'")).toBeLessThan(MAIN.indexOf("if (url === '/api/characters')"));
+    expect(MAIN.indexOf("url === '/api/me/characters'")).toBeLessThan(
+      MAIN.indexOf("if (url === '/api/characters')"),
+    );
   });
 });
 
@@ -124,7 +129,9 @@ describe('CORS opens only the public read surfaces', () => {
     expect(MAIN).toContain('publicCors(res)');
     // The * is set only in publicCors, not maybeCors.
     const publicCorsIdx = MAIN.indexOf('function publicCors');
-    expect(MAIN.slice(publicCorsIdx, publicCorsIdx + 300)).toContain("'Access-Control-Allow-Origin', '*'");
+    expect(MAIN.slice(publicCorsIdx, publicCorsIdx + 300)).toContain(
+      "'Access-Control-Allow-Origin', '*'",
+    );
   });
 });
 

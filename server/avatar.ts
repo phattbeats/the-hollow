@@ -11,16 +11,30 @@ import { deflateSync } from 'node:zlib';
 import type { PlayerClass } from '../src/sim/types';
 
 export const PLAYER_CLASSES: readonly PlayerClass[] = [
-  'warrior', 'paladin', 'hunter', 'rogue', 'priest', 'shaman', 'mage', 'warlock', 'druid',
+  'warrior',
+  'paladin',
+  'hunter',
+  'rogue',
+  'priest',
+  'shaman',
+  'mage',
+  'warlock',
+  'druid',
 ];
 
 export const MAX_SKIN = 7;
 
 // Card-design class colors (shared palette in WORLD-OF-CLAUDECRAFT.md §6).
 const CLASS_COLOR: Record<PlayerClass, [number, number, number]> = {
-  warrior: [0xc7, 0x9c, 0x6e], paladin: [0xf5, 0x8c, 0xba], hunter: [0xab, 0xd4, 0x73],
-  rogue: [0xff, 0xf5, 0x69], priest: [0xff, 0xff, 0xff], shaman: [0x00, 0x70, 0xde],
-  mage: [0x69, 0xcc, 0xf0], warlock: [0x94, 0x82, 0xc9], druid: [0xff, 0x7d, 0x0a],
+  warrior: [0xc7, 0x9c, 0x6e],
+  paladin: [0xf5, 0x8c, 0xba],
+  hunter: [0xab, 0xd4, 0x73],
+  rogue: [0xff, 0xf5, 0x69],
+  priest: [0xff, 0xff, 0xff],
+  shaman: [0x00, 0x70, 0xde],
+  mage: [0x69, 0xcc, 0xf0],
+  warlock: [0x94, 0x82, 0xc9],
+  druid: [0xff, 0x7d, 0x0a],
 };
 
 export function isPlayerClass(s: string): s is PlayerClass {
@@ -49,8 +63,8 @@ function scale([r, g, b]: [number, number, number], f: number): [number, number,
   return [clamp8(r * f), clamp8(g * f), clamp8(b * f)];
 }
 
-const SIZE = 256;       // output is SIZE×SIZE
-const GRID = 8;         // 8×8 emblem grid, left half mirrored to the right
+const SIZE = 256; // output is SIZE×SIZE
+const GRID = 8; // 8×8 emblem grid, left half mirrored to the right
 const CELL = SIZE / GRID;
 
 // Build the raw RGB pixel buffer for the avatar (no PNG framing yet).
@@ -63,9 +77,11 @@ function renderPixels(cls: PlayerClass, skin: number): Buffer {
   let rng = hashSeed(`${cls}:${skin}`);
   const nextBit = (): boolean => {
     // xorshift32 step; take the top bit.
-    rng ^= rng << 13; rng >>>= 0;
+    rng ^= rng << 13;
+    rng >>>= 0;
     rng ^= rng >> 17;
-    rng ^= rng << 5; rng >>>= 0;
+    rng ^= rng << 5;
+    rng >>>= 0;
     return (rng & 0x80000000) !== 0;
   };
 
@@ -88,7 +104,9 @@ function renderPixels(cls: PlayerClass, skin: number): Buffer {
       const gridCol = Math.floor(x / CELL);
       const [r, g, b] = filled[gridRow][gridCol] ? fg : bg;
       const o = (y * SIZE + x) * 3;
-      pixels[o] = r; pixels[o + 1] = g; pixels[o + 2] = b;
+      pixels[o] = r;
+      pixels[o + 1] = g;
+      pixels[o + 2] = b;
     }
   }
   return pixels;
@@ -127,11 +145,11 @@ function encodePng(width: number, height: number, rgb: Buffer): Buffer {
   const ihdr = Buffer.alloc(13);
   ihdr.writeUInt32BE(width, 0);
   ihdr.writeUInt32BE(height, 4);
-  ihdr[8] = 8;   // bit depth
-  ihdr[9] = 2;   // color type 2 = truecolor RGB
-  ihdr[10] = 0;  // compression
-  ihdr[11] = 0;  // filter
-  ihdr[12] = 0;  // interlace
+  ihdr[8] = 8; // bit depth
+  ihdr[9] = 2; // color type 2 = truecolor RGB
+  ihdr[10] = 0; // compression
+  ihdr[11] = 0; // filter
+  ihdr[12] = 0; // interlace
   // Prepend a filter byte (0 = none) to each scanline.
   const stride = width * 3;
   const raw = Buffer.alloc(height * (stride + 1));
@@ -140,7 +158,12 @@ function encodePng(width: number, height: number, rgb: Buffer): Buffer {
     rgb.copy(raw, y * (stride + 1) + 1, y * stride, y * stride + stride);
   }
   const idat = deflateSync(raw);
-  return Buffer.concat([sig, chunk('IHDR', ihdr), chunk('IDAT', idat), chunk('IEND', Buffer.alloc(0))]);
+  return Buffer.concat([
+    sig,
+    chunk('IHDR', ihdr),
+    chunk('IDAT', idat),
+    chunk('IEND', Buffer.alloc(0)),
+  ]);
 }
 
 // Public: a deterministic PNG avatar for (class, skin). Throws on bad inputs so
