@@ -29,49 +29,172 @@ export interface BindAction {
 
 export const ACTION_BAR_SLOTS = 12; // slot 0 is Attack, 1..11 the ability bar
 
-const SLOT_DEFAULTS = ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6',
-  'Digit7', 'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal'];
+const SLOT_DEFAULTS = [
+  'Digit1',
+  'Digit2',
+  'Digit3',
+  'Digit4',
+  'Digit5',
+  'Digit6',
+  'Digit7',
+  'Digit8',
+  'Digit9',
+  'Digit0',
+  'Minus',
+  'Equal',
+];
 
 export const BIND_ACTIONS: BindAction[] = [
   // Movement / camera — polled every frame (held)
-  { id: 'forward', label: 'Move Forward', category: 'Movement', kind: 'held', defaults: ['KeyW', 'ArrowUp'] },
-  { id: 'back', label: 'Move Backward', category: 'Movement', kind: 'held', defaults: ['KeyS', 'ArrowDown'] },
-  { id: 'turnLeft', label: 'Turn Left', category: 'Movement', kind: 'held', defaults: ['KeyA', 'ArrowLeft'] },
-  { id: 'turnRight', label: 'Turn Right', category: 'Movement', kind: 'held', defaults: ['KeyD', 'ArrowRight'] },
-  { id: 'strafeLeft', label: 'Strafe Left', category: 'Movement', kind: 'held', defaults: ['KeyQ'] },
-  { id: 'strafeRight', label: 'Strafe Right', category: 'Movement', kind: 'held', defaults: ['KeyE'] },
+  {
+    id: 'forward',
+    label: 'Move Forward',
+    category: 'Movement',
+    kind: 'held',
+    defaults: ['KeyW', 'ArrowUp'],
+  },
+  {
+    id: 'back',
+    label: 'Move Backward',
+    category: 'Movement',
+    kind: 'held',
+    defaults: ['KeyS', 'ArrowDown'],
+  },
+  {
+    id: 'turnLeft',
+    label: 'Turn Left',
+    category: 'Movement',
+    kind: 'held',
+    defaults: ['KeyA', 'ArrowLeft'],
+  },
+  {
+    id: 'turnRight',
+    label: 'Turn Right',
+    category: 'Movement',
+    kind: 'held',
+    defaults: ['KeyD', 'ArrowRight'],
+  },
+  {
+    id: 'strafeLeft',
+    label: 'Strafe Left',
+    category: 'Movement',
+    kind: 'held',
+    defaults: ['KeyQ'],
+  },
+  {
+    id: 'strafeRight',
+    label: 'Strafe Right',
+    category: 'Movement',
+    kind: 'held',
+    defaults: ['KeyE'],
+  },
   { id: 'jump', label: 'Jump', category: 'Movement', kind: 'held', defaults: ['Space'] },
-  { id: 'autorun', label: 'Toggle Autorun', category: 'Movement', kind: 'edge', defaults: ['KeyR'] },
+  {
+    id: 'autorun',
+    label: 'Toggle Autorun',
+    category: 'Movement',
+    kind: 'edge',
+    defaults: ['KeyR'],
+  },
   // Targeting / interaction
-  { id: 'target', label: 'Target Nearest Enemy', category: 'Targeting', kind: 'edge', defaults: ['Tab'] },
-  { id: 'targetFriendly', label: 'Target Nearest Friendly', category: 'Targeting', kind: 'edge', defaults: ['KeyH'] },
-  { id: 'targetFriendlyNext', label: 'Cycle Friendly Target', category: 'Targeting', kind: 'edge', defaults: ['KeyJ'] },
-  { id: 'interact', label: 'Interact / Loot', category: 'Targeting', kind: 'edge', defaults: ['KeyF'] },
+  {
+    id: 'target',
+    label: 'Target Nearest Enemy',
+    category: 'Targeting',
+    kind: 'edge',
+    defaults: ['Tab'],
+  },
+  {
+    id: 'targetFriendly',
+    label: 'Target Nearest Friendly',
+    category: 'Targeting',
+    kind: 'edge',
+    defaults: ['KeyH'],
+  },
+  {
+    id: 'targetFriendlyNext',
+    label: 'Cycle Friendly Target',
+    category: 'Targeting',
+    kind: 'edge',
+    defaults: ['KeyJ'],
+  },
+  {
+    id: 'interact',
+    label: 'Interact / Loot',
+    category: 'Targeting',
+    kind: 'edge',
+    defaults: ['KeyF'],
+  },
   // Only acts while the Attack Move setting is on; shares its default key with
   // Turn Left intentionally, and only that key is reserved while active.
-  { id: 'attackMove', label: 'Attack Move', category: 'Targeting', kind: 'edge', defaults: ['KeyA'], allowShared: true },
+  {
+    id: 'attackMove',
+    label: 'Attack Move',
+    category: 'Targeting',
+    kind: 'edge',
+    defaults: ['KeyA'],
+    allowShared: true,
+  },
   // Interface windows
   { id: 'char', label: 'Character', category: 'Interface', kind: 'edge', defaults: ['KeyC'] },
   { id: 'spellbook', label: 'Spellbook', category: 'Interface', kind: 'edge', defaults: ['KeyP'] },
   { id: 'questlog', label: 'Quest Log', category: 'Interface', kind: 'edge', defaults: ['KeyL'] },
   { id: 'map', label: 'World Map', category: 'Interface', kind: 'edge', defaults: ['KeyM'] },
   { id: 'bags', label: 'Bags', category: 'Interface', kind: 'edge', defaults: ['KeyB'] },
-  { id: 'nameplates', label: 'Toggle Nameplates', category: 'Interface', kind: 'edge', defaults: ['KeyV'] },
+  {
+    id: 'nameplates',
+    label: 'Toggle Nameplates',
+    category: 'Interface',
+    kind: 'edge',
+    defaults: ['KeyV'],
+  },
   { id: 'talents', label: 'Talents', category: 'Interface', kind: 'edge', defaults: ['KeyN'] },
   { id: 'meters', label: 'Damage Meters', category: 'Interface', kind: 'edge', defaults: ['KeyH'] },
-  { id: 'social', label: 'Friends & Guild', category: 'Interface', kind: 'edge', defaults: ['KeyO'] },
-  { id: 'arena', label: 'Arena (Ashen Coliseum)', category: 'Interface', kind: 'edge', defaults: ['KeyG'] },
-  { id: 'leaderboard', label: 'Leaderboard', category: 'Interface', kind: 'edge', defaults: ['KeyK'] },
-  { id: 'chat', label: 'Open Chat', category: 'Interface', kind: 'edge', defaults: ['Enter', 'NumpadEnter'] },
-  { id: 'emoteWheel', label: 'Emote Wheel', category: 'Interface', kind: 'held', defaults: ['KeyX'] },
-  // Action bar (slot 0 = Attack)
-  ...SLOT_DEFAULTS.map((code, i): BindAction => ({
-    id: `slot${i}`,
-    label: i === 0 ? 'Attack' : `Action Bar ${i + 1}`,
-    category: 'Action Bar',
+  {
+    id: 'social',
+    label: 'Friends & Guild',
+    category: 'Interface',
     kind: 'edge',
-    defaults: [code],
-  })),
+    defaults: ['KeyO'],
+  },
+  {
+    id: 'arena',
+    label: 'Arena (Ashen Coliseum)',
+    category: 'Interface',
+    kind: 'edge',
+    defaults: ['KeyG'],
+  },
+  {
+    id: 'leaderboard',
+    label: 'Leaderboard',
+    category: 'Interface',
+    kind: 'edge',
+    defaults: ['KeyK'],
+  },
+  {
+    id: 'chat',
+    label: 'Open Chat',
+    category: 'Interface',
+    kind: 'edge',
+    defaults: ['Enter', 'NumpadEnter'],
+  },
+  {
+    id: 'emoteWheel',
+    label: 'Emote Wheel',
+    category: 'Interface',
+    kind: 'held',
+    defaults: ['KeyX'],
+  },
+  // Action bar (slot 0 = Attack)
+  ...SLOT_DEFAULTS.map(
+    (code, i): BindAction => ({
+      id: `slot${i}`,
+      label: i === 0 ? 'Attack' : `Action Bar ${i + 1}`,
+      category: 'Action Bar',
+      kind: 'edge',
+      defaults: [code],
+    }),
+  ),
 ];
 
 const ACTION_BY_ID = new Map(BIND_ACTIONS.map((a) => [a.id, a]));
@@ -101,12 +224,23 @@ export function actionAllowsShared(id: string): boolean {
 // combo is byte-identical to a bare code, so every binding saved before modifier
 // support loads unchanged (back-compat). `meta` is optional so call sites that
 // predate Cmd/Win support keep compiling.
-export interface KeyMods { ctrl: boolean; alt: boolean; shift: boolean; meta?: boolean; }
+export interface KeyMods {
+  ctrl: boolean;
+  alt: boolean;
+  shift: boolean;
+  meta?: boolean;
+}
 
 // e.code values for the modifier keys themselves — never bindable on their own.
 const MODIFIER_CODES = new Set([
-  'ShiftLeft', 'ShiftRight', 'ControlLeft', 'ControlRight',
-  'AltLeft', 'AltRight', 'MetaLeft', 'MetaRight',
+  'ShiftLeft',
+  'ShiftRight',
+  'ControlLeft',
+  'ControlRight',
+  'AltLeft',
+  'AltRight',
+  'MetaLeft',
+  'MetaRight',
 ]);
 
 export function isModifierCode(code: string): boolean {
@@ -137,7 +271,12 @@ export function comboCode(combo: string): string {
 export function comboMods(combo: string): KeyMods {
   const head = combo.slice(0, Math.max(0, combo.lastIndexOf('+')));
   const parts = head ? head.split('+') : [];
-  return { ctrl: parts.includes('Ctrl'), alt: parts.includes('Alt'), shift: parts.includes('Shift'), meta: parts.includes('Meta') };
+  return {
+    ctrl: parts.includes('Ctrl'),
+    alt: parts.includes('Alt'),
+    shift: parts.includes('Shift'),
+    meta: parts.includes('Meta'),
+  };
 }
 
 export function isReservedCode(combo: string): boolean {
@@ -151,14 +290,38 @@ function codeLabel(code: string): string {
   if (/^F\d{1,2}$/.test(code)) return code;
   if (/^Numpad\d$/.test(code)) return 'Num' + code.slice(6);
   const named: Record<string, string> = {
-    Minus: '-', Equal: '=', Backquote: '`', BracketLeft: '[', BracketRight: ']',
-    Backslash: '\\', Semicolon: ';', Quote: "'", Comma: ',', Period: '.', Slash: '/',
-    Space: 'Space', Tab: 'Tab', Enter: 'Enter', Escape: 'Esc',
-    ArrowUp: '↑', ArrowDown: '↓', ArrowLeft: '←', ArrowRight: '→',
-    ShiftLeft: 'LShift', ShiftRight: 'RShift', ControlLeft: 'LCtrl', ControlRight: 'RCtrl',
-    AltLeft: 'LAlt', AltRight: 'RAlt', CapsLock: 'Caps',
-    NumpadAdd: 'Num+', NumpadSubtract: 'Num-', NumpadMultiply: 'Num*',
-    NumpadDivide: 'Num/', NumpadDecimal: 'Num.', NumpadEnter: 'NumEnter',
+    Minus: '-',
+    Equal: '=',
+    Backquote: '`',
+    BracketLeft: '[',
+    BracketRight: ']',
+    Backslash: '\\',
+    Semicolon: ';',
+    Quote: "'",
+    Comma: ',',
+    Period: '.',
+    Slash: '/',
+    Space: 'Space',
+    Tab: 'Tab',
+    Enter: 'Enter',
+    Escape: 'Esc',
+    ArrowUp: '↑',
+    ArrowDown: '↓',
+    ArrowLeft: '←',
+    ArrowRight: '→',
+    ShiftLeft: 'LShift',
+    ShiftRight: 'RShift',
+    ControlLeft: 'LCtrl',
+    ControlRight: 'RCtrl',
+    AltLeft: 'LAlt',
+    AltRight: 'RAlt',
+    CapsLock: 'Caps',
+    NumpadAdd: 'Num+',
+    NumpadSubtract: 'Num-',
+    NumpadMultiply: 'Num*',
+    NumpadDivide: 'Num/',
+    NumpadDecimal: 'Num.',
+    NumpadEnter: 'NumEnter',
   };
   return named[code] ?? code;
 }
@@ -168,7 +331,11 @@ function codeLabel(code: string): string {
 // "no profile"; the caller then falls back to the legacy seed or to defaults.
 function readBindingsBlob(key: string): Record<string, unknown> | null {
   let parsed: unknown = null;
-  try { parsed = JSON.parse(localStorage.getItem(key) ?? 'null'); } catch { /* corrupt */ }
+  try {
+    parsed = JSON.parse(localStorage.getItem(key) ?? 'null');
+  } catch {
+    /* corrupt */
+  }
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
   return parsed as Record<string, unknown>;
 }
@@ -254,7 +421,11 @@ export class Keybinds {
   private save(): void {
     const obj: Record<string, (string | null)[]> = {};
     for (const [id, codes] of this.map) obj[id] = codes;
-    try { localStorage.setItem(this.storeKey, JSON.stringify(obj)); } catch { /* storage unavailable */ }
+    try {
+      localStorage.setItem(this.storeKey, JSON.stringify(obj));
+    } catch {
+      /* storage unavailable */
+    }
   }
 
   /**

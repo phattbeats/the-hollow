@@ -1,7 +1,16 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
-  Keybinds, BIND_ACTIONS, BIND_CATEGORIES, actionKind, actionAllowsShared, isReservedCode, keyLabel,
-  makeCombo, comboCode, comboMods, isModifierCode,
+  actionAllowsShared,
+  actionKind,
+  BIND_ACTIONS,
+  BIND_CATEGORIES,
+  comboCode,
+  comboMods,
+  isModifierCode,
+  isReservedCode,
+  Keybinds,
+  keyLabel,
+  makeCombo,
 } from '../src/game/keybinds';
 
 // minimal localStorage stub (the test env is plain node, no DOM)
@@ -9,8 +18,12 @@ function installStorage(): void {
   const map = new Map<string, string>();
   (globalThis as any).localStorage = {
     getItem: (k: string) => (map.has(k) ? map.get(k)! : null),
-    setItem: (k: string, v: string) => { map.set(k, v); },
-    removeItem: (k: string) => { map.delete(k); },
+    setItem: (k: string, v: string) => {
+      map.set(k, v);
+    },
+    removeItem: (k: string) => {
+      map.delete(k);
+    },
     clear: () => map.clear(),
   };
 }
@@ -195,10 +208,13 @@ describe('persistence', () => {
     // Simulate a save written before some actions existed: it only contains a
     // couple of bindings. Every other action must keep its default, not load
     // unbound.
-    localStorage.setItem('woc_keybinds', JSON.stringify({
-      slot0: ['KeyR', null],
-      jump: ['KeyJ', null],
-    }));
+    localStorage.setItem(
+      'woc_keybinds',
+      JSON.stringify({
+        slot0: ['KeyR', null],
+        jump: ['KeyJ', null],
+      }),
+    );
     const kb = new Keybinds();
     expect(kb.actionForCode('KeyR')).toBe('slot0');
     expect(kb.actionForCode('KeyJ')).toBe('jump');
@@ -215,9 +231,12 @@ describe('persistence', () => {
     // A stored binding takes KeyH (the default for the newer friendly-target
     // action), which is absent from the blob. The new action must not also keep
     // KeyH.
-    localStorage.setItem('woc_keybinds', JSON.stringify({
-      jump: ['KeyH', null],
-    }));
+    localStorage.setItem(
+      'woc_keybinds',
+      JSON.stringify({
+        jump: ['KeyH', null],
+      }),
+    );
     const kb = new Keybinds();
     expect(kb.actionForCode('KeyH')).toBe('jump');
     expect(kb.codeAt('targetFriendly', 0)).toBe(null);
@@ -225,19 +244,25 @@ describe('persistence', () => {
 
   it('drops duplicate codes when loading corrupt storage', () => {
     // two actions claim KeyR — the later one must lose it on load
-    localStorage.setItem('woc_keybinds', JSON.stringify({
-      slot0: ['KeyR', null],
-      slot1: ['KeyR', null],
-    }));
+    localStorage.setItem(
+      'woc_keybinds',
+      JSON.stringify({
+        slot0: ['KeyR', null],
+        slot1: ['KeyR', null],
+      }),
+    );
     const kb = new Keybinds();
     expect(kb.actionForCode('KeyR')).toBe('slot0');
     expect(kb.codeAt('slot1', 0)).toBe(null);
   });
 
   it('does not let stored Space action-bar bindings also keep default Jump', () => {
-    localStorage.setItem('woc_keybinds', JSON.stringify({
-      slot1: ['Space', null],
-    }));
+    localStorage.setItem(
+      'woc_keybinds',
+      JSON.stringify({
+        slot1: ['Space', null],
+      }),
+    );
     const kb = new Keybinds();
     expect(kb.actionForCode('Space')).toBe('slot1');
     expect(kb.codeAt('jump', 0)).toBe(null);
@@ -268,10 +293,13 @@ describe('per-character scope', () => {
 
   it('seeds a fresh character from the legacy account-wide blob', () => {
     // An existing player has account-wide binds under the bare key.
-    localStorage.setItem('woc_keybinds', JSON.stringify({
-      jump: ['KeyJ', null],
-      slot0: ['KeyR', null],
-    }));
+    localStorage.setItem(
+      'woc_keybinds',
+      JSON.stringify({
+        jump: ['KeyJ', null],
+        slot0: ['KeyR', null],
+      }),
+    );
     // A character with no profile yet inherits them as a one-time seed. KeyJ and
     // KeyR are the seeded jump/slot0 codes; the load-time uniqueness sweep also
     // strips them from their default owners (targetFriendlyNext/autorun), so each
@@ -373,9 +401,15 @@ describe('modifier combos', () => {
     expect(makeCombo('KeyF', { ctrl: true, alt: false, shift: true })).toBe('Ctrl+Shift+KeyF');
     // Meta (Cmd on macOS / Win key) folds in last, so Cmd+1 is its own chord; a
     // bare 1 stays byte-identical because an omitted/false meta changes nothing.
-    expect(makeCombo('Digit1', { ctrl: false, alt: false, shift: false, meta: true })).toBe('Meta+Digit1');
-    expect(makeCombo('KeyA', { ctrl: true, alt: false, shift: true, meta: true })).toBe('Ctrl+Shift+Meta+KeyA');
-    expect(makeCombo('Digit1', { ctrl: false, alt: false, shift: false, meta: false })).toBe('Digit1');
+    expect(makeCombo('Digit1', { ctrl: false, alt: false, shift: false, meta: true })).toBe(
+      'Meta+Digit1',
+    );
+    expect(makeCombo('KeyA', { ctrl: true, alt: false, shift: true, meta: true })).toBe(
+      'Ctrl+Shift+Meta+KeyA',
+    );
+    expect(makeCombo('Digit1', { ctrl: false, alt: false, shift: false, meta: false })).toBe(
+      'Digit1',
+    );
   });
 
   it('splits a combo back into its code and modifiers', () => {
@@ -383,7 +417,12 @@ describe('modifier combos', () => {
     expect(comboCode('Ctrl+Alt+Shift+KeyA')).toBe('KeyA');
     expect(comboCode('Meta+Digit1')).toBe('Digit1');
     expect(comboCode('Minus')).toBe('Minus'); // bare code, no '+'
-    expect(comboMods('Ctrl+Shift+KeyF')).toEqual({ ctrl: true, alt: false, shift: true, meta: false });
+    expect(comboMods('Ctrl+Shift+KeyF')).toEqual({
+      ctrl: true,
+      alt: false,
+      shift: true,
+      meta: false,
+    });
     expect(comboMods('Digit1')).toEqual({ ctrl: false, alt: false, shift: false, meta: false });
     expect(comboMods('Meta+Digit1')).toEqual({ ctrl: false, alt: false, shift: false, meta: true });
   });

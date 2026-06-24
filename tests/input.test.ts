@@ -6,8 +6,12 @@ function installStorage(): void {
   const map = new Map<string, string>();
   (globalThis as any).localStorage = {
     getItem: (k: string) => (map.has(k) ? map.get(k)! : null),
-    setItem: (k: string, v: string) => { map.set(k, v); },
-    removeItem: (k: string) => { map.delete(k); },
+    setItem: (k: string, v: string) => {
+      map.set(k, v);
+    },
+    removeItem: (k: string) => {
+      map.delete(k);
+    },
     clear: () => map.clear(),
   };
 }
@@ -36,7 +40,8 @@ function makeInput() {
     activeElement: null,
     body: {
       classList: {
-        contains: (cls: string) => (cls === 'game-active' && gameActive) || (cls === 'mobile-touch' && mobileTouch),
+        contains: (cls: string) =>
+          (cls === 'game-active' && gameActive) || (cls === 'mobile-touch' && mobileTouch),
       },
     },
     fullscreenElement: null,
@@ -66,8 +71,12 @@ function makeInput() {
     documentListeners,
     cb,
     input,
-    setGameActive: (active: boolean) => { gameActive = active; },
-    setMobileTouch: (active: boolean) => { mobileTouch = active; },
+    setGameActive: (active: boolean) => {
+      gameActive = active;
+    },
+    setMobileTouch: (active: boolean) => {
+      mobileTouch = active;
+    },
   };
 }
 
@@ -166,9 +175,15 @@ describe('Input click-to-move marker pulses', () => {
 
   it('reroutes an active click-move path without pulsing the marker', () => {
     const { input } = makeInput();
-    input.setClickMoveTarget({ x: 3, z: 0 }, 0.5, 42, [{ x: 1, z: 0 }, { x: 3, z: 0 }]);
+    input.setClickMoveTarget({ x: 3, z: 0 }, 0.5, 42, [
+      { x: 1, z: 0 },
+      { x: 3, z: 0 },
+    ]);
     input.advanceClickMoveWaypoint();
-    input.rerouteClickMoveTarget({ x: 8, z: 0 }, [{ x: 5, z: 0 }, { x: 8, z: 0 }]);
+    input.rerouteClickMoveTarget({ x: 8, z: 0 }, [
+      { x: 5, z: 0 },
+      { x: 8, z: 0 },
+    ]);
     expect(input.clickMovePulse).toBe(1);
     expect(input.clickMoveGoal).toEqual({ x: 8, z: 0 });
     expect(input.clickMoveTarget).toEqual({ x: 5, z: 0 });
@@ -177,7 +192,10 @@ describe('Input click-to-move marker pulses', () => {
 
   it('clears path state when click-to-move stops', () => {
     const { input } = makeInput();
-    input.setClickMoveTarget({ x: 3, z: 0 }, 0.5, null, [{ x: 1, z: 0 }, { x: 3, z: 0 }]);
+    input.setClickMoveTarget({ x: 3, z: 0 }, 0.5, null, [
+      { x: 1, z: 0 },
+      { x: 3, z: 0 },
+    ]);
     input.clearClickMove();
     expect(input.clickMoveTarget).toBeNull();
     expect(input.clickMoveGoal).toBeNull();
@@ -203,7 +221,12 @@ describe('Input pointer lock', () => {
     // A real click jitters a few pixels well under CAMERA_DRAG_START_DISTANCE
     // and releases before CAMERA_DRAG_START_MS: it must stay a click, never a
     // drag, so the browser pointer-capture banner is never shown.
-    canvasListeners.get('mousedown')!({ button: 2, clientX: 100, clientY: 100, preventDefault: vi.fn() });
+    canvasListeners.get('mousedown')!({
+      button: 2,
+      clientX: 100,
+      clientY: 100,
+      preventDefault: vi.fn(),
+    });
     now += 30;
     windowListeners.get('mousemove')!({ movementX: 3, movementY: 2 });
     now += 30;
@@ -232,7 +255,12 @@ describe('Input pointer lock', () => {
     const { canvas, input, canvasListeners, windowListeners } = makeInput();
     input.setMouseCameraEnabled(true);
 
-    canvasListeners.get('mousedown')!({ button: 0, clientX: 100, clientY: 100, preventDefault: vi.fn() });
+    canvasListeners.get('mousedown')!({
+      button: 0,
+      clientX: 100,
+      clientY: 100,
+      preventDefault: vi.fn(),
+    });
     windowListeners.get('mousemove')!({ movementX: 10, movementY: 5 });
     windowListeners.get('mousemove')!({ movementX: 4, movementY: 0 });
 
@@ -253,7 +281,8 @@ describe('Input pointer lock', () => {
 
   it('uses normal mouse dragging instead of pointer lock while browser fullscreen is active', () => {
     const { canvas, canvasListeners, windowListeners } = makeInput();
-    (globalThis as any).document.fullscreenElement = (globalThis as any).document.documentElement ?? canvas;
+    (globalThis as any).document.fullscreenElement =
+      (globalThis as any).document.documentElement ?? canvas;
 
     canvasListeners.get('mousedown')!({ button: 2, clientX: 100, clientY: 100 });
     windowListeners.get('mousemove')!({ movementX: 19, movementY: 0 });
@@ -269,7 +298,12 @@ describe('Input pointer lock', () => {
     const yaw = input.camYaw;
     const pitch = input.camPitch;
 
-    canvasListeners.get('mousedown')!({ button: 0, clientX: 120, clientY: 160, preventDefault: vi.fn() });
+    canvasListeners.get('mousedown')!({
+      button: 0,
+      clientX: 120,
+      clientY: 160,
+      preventDefault: vi.fn(),
+    });
     now += 40;
     windowListeners.get('mousemove')!({ movementX: 12, movementY: 3 });
     expect(input.isCameraDragActive()).toBe(false);
@@ -282,12 +316,17 @@ describe('Input pointer lock', () => {
   });
 
   it('starts camera drag by distance but discards the threshold-crossing movement', () => {
-    let now = 1000;
+    const now = 1000;
     vi.spyOn(performance, 'now').mockImplementation(() => now);
     const { canvas, input, canvasListeners, windowListeners } = makeInput();
     const yaw = input.camYaw;
 
-    canvasListeners.get('mousedown')!({ button: 2, clientX: 100, clientY: 100, preventDefault: vi.fn() });
+    canvasListeners.get('mousedown')!({
+      button: 2,
+      clientX: 100,
+      clientY: 100,
+      preventDefault: vi.fn(),
+    });
     windowListeners.get('mousemove')!({ movementX: 10, movementY: 5 });
     windowListeners.get('mousemove')!({ movementX: 4, movementY: 0 });
     expect(input.isCameraDragActive()).toBe(true);
@@ -307,7 +346,12 @@ describe('Input pointer lock', () => {
     const { input, canvasListeners, windowListeners } = makeInput();
     const yaw = input.camYaw;
 
-    canvasListeners.get('mousedown')!({ button: 2, clientX: 100, clientY: 100, preventDefault: vi.fn() });
+    canvasListeners.get('mousedown')!({
+      button: 2,
+      clientX: 100,
+      clientY: 100,
+      preventDefault: vi.fn(),
+    });
     now += 150;
     windowListeners.get('mousemove')!({ movementX: 1, movementY: 0 });
     expect(input.isCameraDragActive()).toBe(true);
@@ -324,7 +368,12 @@ describe('Input pointer lock', () => {
     input.setClickMoveMouseButton(0);
     const yaw = input.camYaw;
 
-    canvasListeners.get('mousedown')!({ button: 0, clientX: 120, clientY: 160, preventDefault: vi.fn() });
+    canvasListeners.get('mousedown')!({
+      button: 0,
+      clientX: 120,
+      clientY: 160,
+      preventDefault: vi.fn(),
+    });
     now += 180;
     windowListeners.get('mousemove')!({ movementX: 40, movementY: 12 });
     expect(input.isCameraDragActive()).toBe(false);
@@ -342,7 +391,12 @@ describe('Input pointer lock', () => {
     input.setClickMoveMouseButton(2);
     const yaw = input.camYaw;
 
-    canvasListeners.get('mousedown')!({ button: 2, clientX: 100, clientY: 100, preventDefault: vi.fn() });
+    canvasListeners.get('mousedown')!({
+      button: 2,
+      clientX: 100,
+      clientY: 100,
+      preventDefault: vi.fn(),
+    });
     now += 281;
     windowListeners.get('mousemove')!({ movementX: 1, movementY: 0 });
     expect(input.isCameraDragActive()).toBe(true);
@@ -363,7 +417,12 @@ describe('Input pointer lock', () => {
     input.setClickMoveMouseButton(0);
     const yaw = input.camYaw;
 
-    canvasListeners.get('mousedown')!({ button: 2, clientX: 100, clientY: 100, preventDefault: vi.fn() });
+    canvasListeners.get('mousedown')!({
+      button: 2,
+      clientX: 100,
+      clientY: 100,
+      preventDefault: vi.fn(),
+    });
     windowListeners.get('mousemove')!({ movementX: 19, movementY: 0 });
     expect(input.isCameraDragActive()).toBe(true);
     expect(input.camYaw).toBe(yaw);
@@ -517,15 +576,20 @@ describe('Input movement is not cancelled by a camera drag', () => {
   // Discord regression: walking with W (or any held key) then right/left-drag to
   // look around and releasing the button stopped movement, because exiting
   // pointer lock cleared the held keyboard keys.
-  function walkAndDrag(button: number, windowListeners: Map<string, (e: any) => void>, canvasListeners: Map<string, (e: any) => void>, documentListeners: Map<string, (e: any) => void>) {
-    windowListeners.get('keydown')!({ code: 'KeyW', repeat: false });        // hold forward
-    canvasListeners.get('mousedown')!({ button });                           // press camera button
-    windowListeners.get('mousemove')!({ movementX: 19, movementY: 0 });      // drag activates
-    windowListeners.get('mousemove')!({ movementX: 1, movementY: 0 });       // drag → pointer lock
+  function walkAndDrag(
+    button: number,
+    windowListeners: Map<string, (e: any) => void>,
+    canvasListeners: Map<string, (e: any) => void>,
+    documentListeners: Map<string, (e: any) => void>,
+  ) {
+    windowListeners.get('keydown')!({ code: 'KeyW', repeat: false }); // hold forward
+    canvasListeners.get('mousedown')!({ button }); // press camera button
+    windowListeners.get('mousemove')!({ movementX: 19, movementY: 0 }); // drag activates
+    windowListeners.get('mousemove')!({ movementX: 1, movementY: 0 }); // drag → pointer lock
     (globalThis as any).document.pointerLockElement = (globalThis as any).document; // lock engaged
-    windowListeners.get('mouseup')!({ button });                             // release → exitPointerLock
-    (globalThis as any).document.pointerLockElement = null;                  // lock ends
-    documentListeners.get('pointerlockchange')!({});                         // browser fires change
+    windowListeners.get('mouseup')!({ button }); // release → exitPointerLock
+    (globalThis as any).document.pointerLockElement = null; // lock ends
+    documentListeners.get('pointerlockchange')!({}); // browser fires change
   }
 
   it('keeps walking forward after a right-drag ends', () => {
@@ -559,11 +623,11 @@ describe('keyboard jump latch', () => {
     windowListeners.get('keydown')!({ code: 'Space', repeat: false, preventDefault: () => {} });
     windowListeners.get('keyup')!({ code: 'Space' }); // released almost immediately
     now.mockReturnValue(1010);
-    expect(input.readMoveInput().jump).toBe(true);   // still inside the latch window
+    expect(input.readMoveInput().jump).toBe(true); // still inside the latch window
     now.mockReturnValue(1140);
     expect(input.readMoveInput().jump).toBe(true);
     now.mockReturnValue(1200);
-    expect(input.readMoveInput().jump).toBe(false);  // latch expired
+    expect(input.readMoveInput().jump).toBe(false); // latch expired
     now.mockRestore();
   });
 
@@ -680,9 +744,14 @@ describe('Input modifier combos', () => {
     const kb = new Keybinds();
     expect(kb.bind('slot3', 0, 'Shift+KeyX')).toBe(true);
     const { windowListeners, cb } = makeInput();
-    windowListeners.get('keydown')!({ code: 'KeyX', repeat: false, shiftKey: true, preventDefault: vi.fn() });
+    windowListeners.get('keydown')!({
+      code: 'KeyX',
+      repeat: false,
+      shiftKey: true,
+      preventDefault: vi.fn(),
+    });
     expect(cb.onEmoteWheel).toHaveBeenLastCalledWith(true); // held fired
-    expect(cb.onAbility).toHaveBeenLastCalledWith(3);        // edge chord fired
+    expect(cb.onAbility).toHaveBeenLastCalledWith(3); // edge chord fired
   });
 
   it('folds Cmd/Meta into the chord, so Cmd+1 does not fire bare slot 0', () => {
