@@ -5,16 +5,29 @@
    inlines these local @imports into one stylesheet at build, so there is no runtime
    import waterfall.
 
-   P1 filled the tokens and base layers; P2 adds hud.css into the components layer
-   (the in-world HUD chrome). P3 to P4 fill the remaining layers against this fixed
-   order, so no later CSS phase re-litigates the cascade. The layers not yet filled
-   are declared here but empty until their phase lands. admin.html and guide.html
-   keep their own inline CSS (state.md decision 18) and do not load this barrel.
+   P1 filled the tokens and base layers; P2 added hud.css into the components layer
+   (the in-world HUD chrome). P3 adds layout.css (the shared .window shell, in @layer
+   layout) and components.css (the feature-window bodies, in @layer components). P4
+   fills the remaining layers against this fixed order, so no later CSS phase
+   re-litigates the cascade. The layers not yet filled are declared here but empty
+   until their phase lands. admin.html and guide.html keep their own inline CSS
+   (state.md decision 18) and do not load this barrel.
 
-   See docs/frontend-modernization/phase-01-css-lightning-tokens-base.md and
-   docs/frontend-modernization/phase-02-css-hud-chrome.md. */
+   Both hud.css and components.css put their rules in @layer components (the declared
+   `hud` layer below stays empty, reserved). Because they share one layer, cross-layer
+   @layer ordering does NOT separate them; their equal-specificity ties fall to WITHIN
+   -layer order, which is import order here. components.css is imported last, so the
+   feature-window bodies win those ties over the HUD chrome, matching the pre-extraction
+   precedence (the windows block was inline-unlayered and beat the layered HUD chrome).
+   In practice the two never share a selector, so this is precedence insurance, not an
+   active tie-break.
+
+   See docs/frontend-modernization/phase-01-css-lightning-tokens-base.md,
+   phase-02-css-hud-chrome.md and phase-03-css-windows.md. */
 @layer tokens, base, layout, components, hud, hud.mobile, shell, index.extra, play.extra;
 
 @import "./tokens.css";
 @import "./base.css";
+@import "./layout.css";
 @import "./hud.css";
+@import "./components.css";
