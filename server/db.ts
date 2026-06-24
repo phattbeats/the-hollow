@@ -1179,15 +1179,24 @@ export async function getPlayerCardBySlug(slug: string): Promise<PlayerCardRow |
 // ~4 MB) PNG bytes — keeps getPlayerCardBySlug's heavy SELECT for the image route.
 export async function getPlayerCardMetaBySlug(
   slug: string,
-): Promise<{ title: string; description: string; locale: string } | null> {
+): Promise<{ title: string; description: string; locale: string; updatedAt: number } | null> {
   const res = await pool.query(
-    'SELECT title, description, locale FROM player_cards WHERE slug = $1',
+    'SELECT title, description, locale, updated_at FROM player_cards WHERE slug = $1',
     [slug],
   );
   const row = res.rows[0];
-  return row
-    ? { title: row.title ?? '', description: row.description ?? '', locale: row.locale ?? 'en' }
-    : null;
+  if (!row) return null;
+  // `updated_at` (a per-publish timestamp) is the og:image cache-buster: a
+  // re-published card gets a new ?v= so social/browser caches re-fetch the new PNG
+  // instead of serving the stale one. Surface it as epoch ms (0 when absent) so the
+  // caller versions the URL directly without re-parsing a string.
+  const updatedAt = row.updated_at != null ? new Date(row.updated_at).getTime() : 0;
+  return {
+    title: row.title ?? '',
+    description: row.description ?? '',
+    locale: row.locale ?? 'en',
+    updatedAt,
+  };
 }
 
 // The account that owns a card slug — i.e. the referrer credited when someone
