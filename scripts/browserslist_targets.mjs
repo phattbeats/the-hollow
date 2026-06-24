@@ -14,7 +14,10 @@
 // widen or drop the floor.
 import { readFileSync } from 'node:fs';
 
-// browserslist browser ids for the names we use in .browserslistrc.
+// browserslist browser ids for the names this project's floor uses (big-3 + iOS,
+// state.md decision 14), plus the obvious input aliases for those same browsers. A name
+// outside this set throws rather than silently passing through, so a typo or a browser
+// the floor does not target cannot quietly widen the engine baseline.
 const BROWSER_IDS = {
   chrome: 'chrome',
   firefox: 'firefox',
@@ -22,7 +25,6 @@ const BROWSER_IDS = {
   safari: 'safari',
   ios: 'ios_saf',
   ios_saf: 'ios_saf',
-  edge: 'edge',
 };
 
 // Parse the text of a .browserslistrc into the ['<id> <version>', ...] array that

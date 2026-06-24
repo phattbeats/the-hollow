@@ -26,6 +26,19 @@ describe('browserslist floor parser', () => {
     expect(parseBrowserslistFloors(text)).toEqual(['chrome 120', 'safari 17.2']);
   });
 
+  it('strips a # comment BEFORE splitting on comma (a comment may contain a comma)', () => {
+    // Load-bearing ordering: if comma-split ran first, the text after the comma in the
+    // comment would lose its '#' and parse as a bogus floor. This is the exact bug the
+    // real .browserslistrc comment (which contains commas) would trip.
+    expect(parseBrowserslistFloors('Chrome >= 120 # primary, see note')).toEqual(['chrome 120']);
+    expect(parseBrowserslistFloors('# a, b, c\nFirefox >= 121')).toEqual(['firefox 121']);
+  });
+
+  it('accepts the ff and ios_saf input aliases for in-floor browsers', () => {
+    expect(parseBrowserslistFloors('ff >= 121')).toEqual(['firefox 121']);
+    expect(parseBrowserslistFloors('ios_saf >= 17.2')).toEqual(['ios_saf 17.2']);
+  });
+
   it('maps iOS to the ios_saf id browserslistToTargets understands', () => {
     expect(parseBrowserslistFloors('iOS >= 17.2')).toEqual(['ios_saf 17.2']);
   });

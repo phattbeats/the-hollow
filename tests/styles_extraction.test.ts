@@ -1,0 +1,107 @@
+import { readFileSync } from 'node:fs';
+import { describe, expect, it } from 'vitest';
+
+// Rule-level guard for the frontend-modernization v0.16.0 CSS extraction. The css_corpus
+// guard keys on ten-dash HUD section banners; the P1 tokens/base blocks carry none (they
+// sit above the first banner), so css_corpus provides NO rule-level protection for THIS
+// move. These assertions pin the load-bearing pieces so a later edit that drops a
+// runtime-written :root default, re-relativizes a cursor url(), promotes --range-fill to
+// :root, breaks the @layer order, or drops the barrel import goes red in Vitest rather than
+// only in an out-of-band build. Later CSS phases (P2 to P4) can extend this with their own
+// describe blocks.
+
+const root = new URL('../', import.meta.url);
+const read = (p: string) => readFileSync(new URL(p, root), 'utf8').replace(/\r\n/g, '\n');
+// CSS comments carry token names in prose (the tokens.css header documents --range-fill,
+// for example), so strip them to test declarations, not documentation.
+const stripCssComments = (css: string) => css.replace(/\/\*[\s\S]*?\*\//g, '');
+
+const tokens = read('src/styles/tokens.css');
+const tokensCode = stripCssComments(tokens);
+const base = read('src/styles/base.css');
+const baseCode = stripCssComments(base);
+const barrel = read('src/styles/index.css');
+const mainTs = read('src/main.ts');
+const viteConfig = read('vite.config.ts');
+
+describe('P1 CSS extraction: tokens.css', () => {
+  it('keeps the runtime-written custom props as :root defaults (overridden at runtime)', () => {
+    // theme.ts writes the --color-* accents and the resizer writes --app-vw/--app-vh, both
+    // onto documentElement.style, which beats this stylesheet rule. They MUST stay as
+    // :root defaults so the runtime overrides have a base to cascade over.
+    for (const v of [
+      '--app-vw',
+      '--app-vh',
+      '--color-gold',
+      '--color-accent',
+      '--color-text-overlay',
+      '--color-hp',
+      '--color-mana',
+      '--color-rage',
+      '--color-energy',
+    ]) {
+      expect(tokensCode, `${v} default missing from tokens.css`).toContain(`${v}:`);
+    }
+  });
+
+  it('absolutizes the cursor url()s (a relative url in bundled CSS / a custom prop breaks Lightning)', () => {
+    for (const png of ['arrow.png', 'gauntlet.png', 'hand-grab.png']) {
+      expect(tokensCode).toContain(`/ui/cursors/${png}`);
+    }
+    expect(tokensCode, 'page-relative ./ui/cursors must not survive in bundled CSS').not.toContain(
+      './ui/cursors/',
+    );
+  });
+
+  it('does NOT promote --range-fill to a :root token (it is the slider inline fallback)', () => {
+    expect(tokensCode).not.toContain('--range-fill');
+  });
+
+  it('wraps the tokens under @layer tokens', () => {
+    expect(tokens).toContain('@layer tokens {');
+  });
+});
+
+describe('P1 CSS extraction: base.css', () => {
+  it('keeps the slider track --range-fill inline fallback (never promoted to :root)', () => {
+    expect(baseCode).toMatch(/var\(--range-fill,\s*0%\)/);
+  });
+
+  it('keeps the load-bearing base rules that moved out of index.html', () => {
+    expect(baseCode).toContain('body.game-active');
+    expect(baseCode).toContain('#ui {');
+    expect(baseCode).toContain('#game-canvas');
+    expect(baseCode).toMatch(/::-webkit-scrollbar/);
+    // the documented iOS 16px text-input zoom floor (a load-bearing !important rule)
+    expect(baseCode).toMatch(/@media \(pointer: coarse\)/);
+  });
+
+  it('wraps the base block under @layer base', () => {
+    expect(base).toContain('@layer base {');
+  });
+});
+
+describe('P1 CSS extraction: barrel + seam wiring', () => {
+  it('declares the single @layer order once, with the later layers ahead of the per-entry extras', () => {
+    expect(barrel).toContain(
+      '@layer tokens, base, layout, components, hud, hud.mobile, shell, index.extra, play.extra;',
+    );
+  });
+
+  it('imports tokens then base from the barrel', () => {
+    const ti = barrel.indexOf('tokens.css');
+    const bi = barrel.indexOf('base.css');
+    expect(ti).toBeGreaterThan(-1);
+    expect(bi).toBeGreaterThan(ti);
+  });
+
+  it('imports the barrel once from the shared game bootstrap (covers index.html + play.html)', () => {
+    expect(mainTs).toContain("import './styles/index.css'");
+  });
+
+  it('flips Vite to the Lightning CSS transformer with browserslist-derived targets', () => {
+    expect(viteConfig).toContain("transformer: 'lightningcss'");
+    expect(viteConfig).toContain('browserslistToTargets');
+    expect(viteConfig).toContain('loadBrowserslistFloors');
+  });
+});
