@@ -35,7 +35,17 @@ describe('held weapon models', () => {
     // Each variant key must contain a known weapon-type token so it maps to a grip
     // family in KAYKIT_WEAPON_ACCESSORY (assets.ts). Covers both the bare variant
     // keys (sword_a) and the prefixed/extra models (adv_sword_1handed, spear_a).
-    const TYPES = ['sword', 'dagger', 'staff', 'hammer', 'axe', 'halberd', 'spear', 'scythe', 'wand'];
+    const TYPES = [
+      'sword',
+      'dagger',
+      'staff',
+      'hammer',
+      'axe',
+      'halberd',
+      'spear',
+      'scythe',
+      'wand',
+    ];
     for (const key of new Set(Object.values(ITEM_WEAPON_VARIANTS))) {
       const ok = TYPES.some((t) => key.includes(t));
       expect(ok, `${key} has no recognized weapon type (needs a grip mapping)`).toBe(true);
@@ -45,7 +55,9 @@ describe('held weapon models', () => {
   // Every player class swaps its held mainhand to the equipped weapon, EXCEPT the
   // hunter, which keeps its crossbow regardless of the melee weapon equipped.
   it('all player classes swap the mainhand except the hunter', () => {
-    const players = Object.keys(VISUALS).filter((k) => k.startsWith('player_') && k !== 'player_mech');
+    const players = Object.keys(VISUALS).filter(
+      (k) => k.startsWith('player_') && k !== 'player_mech',
+    );
     expect(players).toContain('player_hunter');
     for (const key of players) {
       const def = VISUALS[key];

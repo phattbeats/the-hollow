@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import { CharacterVisual } from './visual';
 import { CLASSES } from '../../sim/data';
-import { PlayerClass } from '../../sim/types';
+import type { PlayerClass } from '../../sim/types';
 import { trackWebGLContext } from '../context_release';
+import { CharacterVisual } from './visual';
 
 const PREVIEW_ANIM_STATE = {
   speed: 0,
@@ -53,15 +53,11 @@ export class CharacterPreview {
     this.scene = new THREE.Scene();
 
     // 3. Initialize Camera
-    const aspect = this.container.clientHeight > 0
-      ? this.container.clientWidth / this.container.clientHeight
-      : 1;
-    this.camera = new THREE.PerspectiveCamera(
-      45,
-      aspect,
-      0.1,
-      100
-    );
+    const aspect =
+      this.container.clientHeight > 0
+        ? this.container.clientWidth / this.container.clientHeight
+        : 1;
+    this.camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 100);
     this.camera.position.set(-0.15, 1.45, 5.1);
     this.camera.lookAt(new THREE.Vector3(-0.15, 1.3, 0));
 
@@ -239,7 +235,13 @@ export class CharacterPreview {
    * restore, the browser never paints the intermediate frame.
    */
   captureCloseup(
-    opts: { width?: number; height?: number; angle?: number; poseClips?: readonly string[]; poseFraction?: number } = {},
+    opts: {
+      width?: number;
+      height?: number;
+      angle?: number;
+      poseClips?: readonly string[];
+      poseFraction?: number;
+    } = {},
   ): string {
     const width = Math.max(1, Math.round(opts.width ?? 540));
     const height = Math.max(1, Math.round(opts.height ?? 720));
@@ -254,9 +256,10 @@ export class CharacterPreview {
 
     // Optionally lock a deliberate pose for the shot (e.g. a hero/cast/cheer
     // stance) instead of whatever idle frame is up. Restored via clearPose below.
-    const posed = opts.poseClips && opts.poseClips.length > 0
-      ? this.currentVisual?.poseFreeze(opts.poseClips, opts.poseFraction ?? 0.5) ?? null
-      : null;
+    const posed =
+      opts.poseClips && opts.poseClips.length > 0
+        ? (this.currentVisual?.poseFreeze(opts.poseClips, opts.poseFraction ?? 0.5) ?? null)
+        : null;
 
     // Pixel-exact buffer (ratio 1 → drawingBuffer is exactly width×height).
     this.renderer.setPixelRatio(1);

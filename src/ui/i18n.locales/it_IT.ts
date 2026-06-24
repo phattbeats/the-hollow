@@ -17,6 +17,13 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'seo.officialLabel': 'Sito ufficiale di World of ClaudeCraft',
   'seo.officialBody':
     "worldofclaudecraft.com è l'MMO gratuito ufficiale da browser del reame Claudemoon. Gioca online con un personaggio persistente, esplora offline in solitaria, leggi il wiki e segui i link della community verificati da questo sito.",
+  'character.sortBy': 'Ordina',
+  'character.sortByLabel': 'Ordina personaggi',
+  'character.sortMenuLabel': 'Opzioni di ordinamento',
+  'character.sortLevel': 'Livello',
+  'character.sortName': 'Nome',
+  'character.sortRecent': 'Giocati di recente',
+  'character.sortPlaytime': 'Tempo di gioco',
   'hudChrome.tutorial.moveBodyTouch':
     'Usa il joystick di movimento per muoverti e trascina lo schermo per guardarti intorno. Fai qualche passo per iniziare.',
   'hudChrome.tutorial.talkBodyTouch':
@@ -1111,6 +1118,8 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'hud.logs.lootReceiveMoney': 'Ricevi {money}.',
   'hud.logs.lootMoney': 'Raccogli {money}.',
   'hud.logs.soldItem': 'Hai venduto {item} per {money}.',
+  'hud.logs.soldJunkOne': 'Hai venduto {count} oggetto grigio per {money}.',
+  'hud.logs.soldJunkMany': 'Hai venduto {count} oggetti grigi per {money}.',
   'hud.logs.friendOnline': '{name} è entrato online.',
   'hud.logs.friendOffline': '{name} è uscito offline.',
   'hud.markers.names.star': 'Stella',
@@ -1432,6 +1441,10 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'itemUi.vendor.sellQuantityInput': 'Quantità da vendere',
   'itemUi.vendor.sellQuantityConfirm': 'Vendi',
   'itemUi.vendor.sellQuantityCancel': 'Annulla',
+  'itemUi.vendor.sellJunk': 'Vendi cianfrusaglie',
+  'itemUi.vendor.sellJunkAria': 'Vendi tutte le cianfrusaglie per {price}',
+  'itemUi.vendor.sellJunkHint':
+    'Vende tutti gli oggetti grigi nelle borse tranne gli oggetti di missione.',
   'itemUi.market.title': 'Mercato Mondiale',
   'itemUi.market.subtitle': 'scambio del Mercante',
   'itemUi.market.close': 'Chiudi mercato',

@@ -60,6 +60,8 @@ export interface CharacterSummary {
   skin: number;
   online: boolean;
   forceRename: boolean;
+  lastPlayed?: string | null;
+  playtimeSeconds?: number;
 }
 
 function stringList(value: unknown): string[] {
@@ -1422,6 +1424,9 @@ export class ClientWorld implements IWorld {
   }
   sellItem(itemId: string, count?: number): void {
     this.cmd({ cmd: 'sell', item: itemId, count });
+  }
+  sellAllJunk(): void {
+    this.cmd({ cmd: 'sell_all_junk' });
   }
   buyBackItem(itemId: string): void {
     this.cmd({ cmd: 'buyback', item: itemId });

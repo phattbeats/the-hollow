@@ -17,6 +17,13 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'seo.officialLabel': 'Site officiel de World of ClaudeCraft',
   'seo.officialBody':
     'worldofclaudecraft.com est le MMO gratuit officiel sur navigateur du royaume Claudemoon. Jouez en ligne avec un personnage persistant, explorez en solo hors ligne, lisez le wiki et suivez les liens communautaires vérifiés depuis ce site.',
+  'character.sortBy': 'Trier',
+  'character.sortByLabel': 'Trier les personnages',
+  'character.sortMenuLabel': 'Options de tri',
+  'character.sortLevel': 'Niveau',
+  'character.sortName': 'Nom',
+  'character.sortRecent': 'Joués récemment',
+  'character.sortPlaytime': 'Temps de jeu',
   'hudChrome.tutorial.moveBodyTouch':
     "Utilise le joystick de déplacement pour te déplacer et fais glisser l'écran pour regarder autour de toi. Fais quelques pas pour commencer.",
   'hudChrome.tutorial.talkBodyTouch':
@@ -1122,6 +1129,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'hud.logs.lootReceiveMoney': 'Vous recevez {money}.',
   'hud.logs.lootMoney': 'Vous ramassez {money}.',
   'hud.logs.soldItem': 'Vous avez vendu {item} pour {money}.',
+  'hud.logs.soldJunkOne': 'Vous avez vendu {count} objet gris pour {money}.',
+  'hud.logs.soldJunkMany': 'Vous avez vendu {count} objets gris pour {money}.',
   'hud.logs.friendOnline': '{name} vient de se connecter.',
   'hud.logs.friendOffline': '{name} vient de se déconnecter.',
   'hud.markers.names.star': 'Étoile',
@@ -1452,6 +1461,10 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'itemUi.vendor.sellQuantityInput': 'Quantité à vendre',
   'itemUi.vendor.sellQuantityConfirm': 'Vendre',
   'itemUi.vendor.sellQuantityCancel': 'Annuler',
+  'itemUi.vendor.sellJunk': 'Vendre les rebuts',
+  'itemUi.vendor.sellJunkAria': 'Vendre tous les rebuts pour {price}',
+  'itemUi.vendor.sellJunkHint':
+    'Vend tous les objets gris dans vos sacs, sauf les objets de quête.',
   'itemUi.market.title': 'Marché mondial',
   'itemUi.market.subtitle': 'bourse du Marchand',
   'itemUi.market.close': 'Fermer le marché',

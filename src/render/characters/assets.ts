@@ -7,22 +7,22 @@
 // preload registry; main.ts awaits assetsReady() before the Renderer exists,
 // so everything here can assume resolved GLTFs synchronously afterwards.
 import * as THREE from 'three';
-import { clone as cloneSkinned } from 'three/addons/utils/SkeletonUtils.js';
-import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { clone as cloneSkinned } from 'three/addons/utils/SkeletonUtils.js';
 import { loadGltf, loadTexture } from '../assets/loader';
 import { registerPreload } from '../assets/preload';
-import { GFX, addRimGlow } from '../gfx';
+import { addRimGlow, GFX } from '../gfx';
 import {
+  type AttachDef,
   itemWeaponModelUrl,
   manifestUrlsForGraphics,
-  SKINS,
   SKIN_EMISSIVE,
-  visibleAttachmentsForGraphics,
+  SKINS,
   VISUALS,
-  VisualDef,
+  type VisualDef,
+  visibleAttachmentsForGraphics,
   visualAssetUrlForGraphics,
-  type AttachDef,
 } from './manifest';
 
 const DEFAULT_TINT_STRENGTH = 0.4;
@@ -53,29 +53,56 @@ const KAYKIT_WEAPON_ACCESSORY: Record<string, string> = {
   // do NOT recenter (that would move the grip to mid-blade and make long blades
   // drag); we attach at the origin and only clamp oversized models. VAR_* keys
   // route to applyVariantGrip (no rig node matches them).
-  sword_a: 'VAR_SWORD', sword_b: 'VAR_SWORD', sword_c: 'VAR_SWORD', sword_d: 'VAR_SWORD',
-  sword_e: 'VAR_SWORD', sword_f: 'VAR_SWORD', sword_g: 'VAR_SWORD',
-  dagger_a: 'VAR_DAGGER', dagger_b: 'VAR_DAGGER', dagger_c: 'VAR_DAGGER',
-  staff_a: 'VAR_STAFF', staff_b: 'VAR_STAFF', staff_c: 'VAR_STAFF', staff_d: 'VAR_STAFF',
-  axe_a: 'VAR_AXE', axe_b: 'VAR_AXE', axe_c: 'VAR_AXE', axe_d: 'VAR_AXE',
-  hammer_a: 'VAR_AXE', hammer_b: 'VAR_AXE', hammer_c: 'VAR_AXE', hammer_d: 'VAR_AXE',
+  sword_a: 'VAR_SWORD',
+  sword_b: 'VAR_SWORD',
+  sword_c: 'VAR_SWORD',
+  sword_d: 'VAR_SWORD',
+  sword_e: 'VAR_SWORD',
+  sword_f: 'VAR_SWORD',
+  sword_g: 'VAR_SWORD',
+  dagger_a: 'VAR_DAGGER',
+  dagger_b: 'VAR_DAGGER',
+  dagger_c: 'VAR_DAGGER',
+  staff_a: 'VAR_STAFF',
+  staff_b: 'VAR_STAFF',
+  staff_c: 'VAR_STAFF',
+  staff_d: 'VAR_STAFF',
+  axe_a: 'VAR_AXE',
+  axe_b: 'VAR_AXE',
+  axe_c: 'VAR_AXE',
+  axe_d: 'VAR_AXE',
+  hammer_a: 'VAR_AXE',
+  hammer_b: 'VAR_AXE',
+  hammer_c: 'VAR_AXE',
+  hammer_d: 'VAR_AXE',
   halberd: 'VAR_POLEARM',
   // additional distinct models (KayKit Adventurers set + spears/scythe/wands) for
   // weapon variety. adv_* swords/dagger/staff/axe share the variant-pack convention
   // (float geo, origin-at-grip) so they reuse the same family grips.
-  adv_sword_1handed: 'VAR_SWORD', adv_sword_2handed: 'VAR_SWORD', adv_sword_2handed_color: 'VAR_SWORD',
+  adv_sword_1handed: 'VAR_SWORD',
+  adv_sword_2handed: 'VAR_SWORD',
+  adv_sword_2handed_color: 'VAR_SWORD',
   adv_dagger: 'VAR_DAGGER',
-  adv_staff: 'VAR_STAFF', adv_druid_staff: 'VAR_STAFF',
-  adv_axe_1handed: 'VAR_AXE', adv_axe_2handed: 'VAR_AXE',
-  spear_a: 'VAR_POLEARM', spear_b: 'VAR_POLEARM', scythe: 'VAR_POLEARM',
-  wand_a: 'VAR_WAND', wand_b: 'VAR_WAND', adv_wand: 'VAR_WAND',
+  adv_staff: 'VAR_STAFF',
+  adv_druid_staff: 'VAR_STAFF',
+  adv_axe_1handed: 'VAR_AXE',
+  adv_axe_2handed: 'VAR_AXE',
+  spear_a: 'VAR_POLEARM',
+  spear_b: 'VAR_POLEARM',
+  scythe: 'VAR_POLEARM',
+  wand_a: 'VAR_WAND',
+  wand_b: 'VAR_WAND',
+  adv_wand: 'VAR_WAND',
 };
 
 // Per-family grip for the variant pack. The model origin IS the grip, so we attach
 // at it: `lift` nudges the grip along the hand bone (tuned against the generic
 // look), `maxHeight` clamps an oversized model so a long blade doesn't drag (scale
 // is only ever reduced, so normal-size weapons keep their native scale and variety).
-interface VariantGrip { lift: number; maxHeight: number }
+interface VariantGrip {
+  lift: number;
+  maxHeight: number;
+}
 const VARIANT_GRIPS: Record<string, VariantGrip> = {
   VAR_SWORD: { lift: 0.04, maxHeight: 2.0 },
   VAR_DAGGER: { lift: 0.04, maxHeight: 1.4 },
@@ -94,7 +121,11 @@ const KAYKIT_HAND_GRIPS: Record<string, { r: HandGrip; l?: HandGrip }> = {
     r: { position: [0, 0.4626, 0], quaternion: [0, 1, 0, 0], scale: 0.8623 },
   },
   '1H_Crossbow': {
-    r: { position: [0.2286, 0.0213, -0.0012], quaternion: [0, 0.7071068, 0, 0.7071067], scale: 0.6109 },
+    r: {
+      position: [0.2286, 0.0213, -0.0012],
+      quaternion: [0, 0.7071068, 0, 0.7071067],
+      scale: 0.6109,
+    },
   },
   '2H_Crossbow': {
     r: { position: [0.3381, 0.058, 0], quaternion: [0, 0.7071068, 0, 0.7071067], scale: 0.7204 },
@@ -128,14 +159,16 @@ function handSide(bone: string): 'r' | 'l' {
 }
 
 function kaykitAccessoryFor(url: string): string | null {
-  const base = url.split('/').pop()?.replace(/\.glb$/, '') ?? '';
+  const base =
+    url
+      .split('/')
+      .pop()
+      ?.replace(/\.glb$/, '') ?? '';
   return KAYKIT_WEAPON_ACCESSORY[base] ?? null;
 }
 
 function findAccessoryNode(root: THREE.Object3D, name: string): THREE.Object3D | null {
-  return root.getObjectByName(name)
-    ?? root.getObjectByName(name.replace(/[[\].:/]/g, ''))
-    ?? null;
+  return root.getObjectByName(name) ?? root.getObjectByName(name.replace(/[[\].:/]/g, '')) ?? null;
 }
 
 function accessoryNodeName(accessory: string, side: 'r' | 'l'): string {
@@ -150,7 +183,12 @@ function copyAccessoryTransform(payload: THREE.Object3D, ref: THREE.Object3D): v
   payload.scale.copy(ref.scale);
 }
 
-function applyHandGrip(payload: THREE.Object3D, root: THREE.Object3D, bone: string, url: string): void {
+function applyHandGrip(
+  payload: THREE.Object3D,
+  root: THREE.Object3D,
+  bone: string,
+  url: string,
+): void {
   const accessory = kaykitAccessoryFor(url);
   if (!accessory) return;
   const side = handSide(bone);
@@ -203,9 +241,16 @@ function applyVariantGrip(payload: THREE.Object3D, bone: string, grip: VariantGr
   payload.scale.setScalar(scale);
 }
 
-function attachProp(root: THREE.Object3D, bone: THREE.Object3D, att: AttachDef, markSwap = false): void {
+function attachProp(
+  root: THREE.Object3D,
+  bone: THREE.Object3D,
+  att: AttachDef,
+  markSwap = false,
+): void {
   const payload = flattenWeaponScene(cloneSkinned(resolvedGltf(att.url).scene));
-  payload.traverse((o) => { if ((o as THREE.Mesh).isMesh) o.userData.weaponMesh = true; });
+  payload.traverse((o) => {
+    if ((o as THREE.Mesh).isMesh) o.userData.weaponMesh = true;
+  });
   if (markSwap) payload.userData[SWAP_WEAPON_TAG] = true;
   const variantGrip = isHandslotBone(att.bone) ? variantGripFor(att.url) : null;
   if (variantGrip) {
@@ -248,7 +293,11 @@ function assetUrl(url: string): string {
 const preloadUrls = manifestUrlsForGraphics(GFX.standardMaterials);
 
 for (const url of preloadUrls) {
-  registerPreload(loadGltf(url).then((g) => { gltfByUrl.set(url, g); }));
+  registerPreload(
+    loadGltf(url).then((g) => {
+      gltfByUrl.set(url, g);
+    }),
+  );
 }
 
 // Skin textures: player alternate body atlases, loaded sRGB + flipY=false so
@@ -279,7 +328,7 @@ for (const url of bootSkinUrls) registerPreload(loadSkinTexInto(url, skinTexByUr
  *  embedded default (index 0, unknown key, or an atlas that is not loaded yet). */
 export function skinTexture(key: string, skinIndex: number): THREE.Texture | null {
   const url = SKINS[key]?.[skinIndex] ?? null;
-  return url ? skinTexByUrl.get(url) ?? null : null;
+  return url ? (skinTexByUrl.get(url) ?? null) : null;
 }
 
 /** Ensure the alternate atlas for (key, skinIndex) is loaded. Returns a promise
@@ -295,7 +344,8 @@ export function ensureSkinTexture(key: string, skinIndex: number): Promise<void>
   const emisUrl = SKIN_EMISSIVE[key]?.[skinIndex] ?? null;
   const pending: Promise<void>[] = [];
   if (baseUrl && !skinTexByUrl.has(baseUrl)) pending.push(loadSkinTexInto(baseUrl, skinTexByUrl));
-  if (emisUrl && !skinEmisTexByUrl.has(emisUrl)) pending.push(loadSkinTexInto(emisUrl, skinEmisTexByUrl));
+  if (emisUrl && !skinEmisTexByUrl.has(emisUrl))
+    pending.push(loadSkinTexInto(emisUrl, skinEmisTexByUrl));
   if (pending.length === 0) return null;
   return Promise.all(pending).then(() => undefined);
 }
@@ -304,7 +354,7 @@ export function ensureSkinTexture(key: string, skinIndex: number): Promise<void>
  *  skin has no glow (most do) / it isn't loaded / low tier. */
 export function skinEmissiveTexture(key: string, skinIndex: number): THREE.Texture | null {
   const url = SKIN_EMISSIVE[key]?.[skinIndex] ?? null;
-  return url ? skinEmisTexByUrl.get(url) ?? null : null;
+  return url ? (skinEmisTexByUrl.get(url) ?? null) : null;
 }
 
 // Lazy fetch for cosmetic-only bodies (the Combat Mech) — the GLB plus every
@@ -316,11 +366,14 @@ export function preloadMechAssets(): Promise<void> {
   const def = VISUALS.player_mech;
   if (!def) return Promise.resolve();
   const jobs: Promise<unknown>[] = [
-    loadGltf(def.url).then((g) => { gltfByUrl.set(def.url, g); }),
+    loadGltf(def.url).then((g) => {
+      gltfByUrl.set(def.url, g);
+    }),
   ];
   for (const url of SKINS.player_mech ?? []) if (url) jobs.push(loadSkinTexInto(url, skinTexByUrl));
   if (GFX.standardMaterials) {
-    for (const url of SKIN_EMISSIVE.player_mech ?? []) if (url) jobs.push(loadSkinTexInto(url, skinEmisTexByUrl));
+    for (const url of SKIN_EMISSIVE.player_mech ?? [])
+      if (url) jobs.push(loadSkinTexInto(url, skinEmisTexByUrl));
   }
   mechAssetsPromise = Promise.all(jobs).then(() => undefined);
   return mechAssetsPromise;
@@ -331,7 +384,10 @@ export function mechAssetsReady(): boolean {
   if (!def || !gltfByUrl.has(assetUrl(def.url))) return false;
   const skinsReady = (SKINS.player_mech ?? []).every((url) => !url || skinTexByUrl.has(url));
   if (!GFX.standardMaterials) return skinsReady;
-  return skinsReady && (SKIN_EMISSIVE.player_mech ?? []).every((url) => !url || skinEmisTexByUrl.has(url));
+  return (
+    skinsReady &&
+    (SKIN_EMISSIVE.player_mech ?? []).every((url) => !url || skinEmisTexByUrl.has(url))
+  );
 }
 
 function resolvedGltf(url: string): GLTF {
@@ -361,13 +417,16 @@ function optimizedScene(url: string): THREE.Object3D {
 const BIND_EPS = 1e-3;
 
 function sameBindData(a: THREE.SkinnedMesh, b: THREE.SkinnedMesh): boolean {
-  const ia = a.skeleton.boneInverses, ib = b.skeleton.boneInverses;
+  const ia = a.skeleton.boneInverses,
+    ib = b.skeleton.boneInverses;
   if (ia.length !== ib.length) return false;
   for (let m = 0; m < ia.length; m++) {
-    const ea = ia[m].elements, eb = ib[m].elements;
+    const ea = ia[m].elements,
+      eb = ib[m].elements;
     for (let i = 0; i < 16; i++) if (Math.abs(ea[i] - eb[i]) > BIND_EPS) return false;
   }
-  const ba = a.bindMatrix.elements, bb = b.bindMatrix.elements;
+  const ba = a.bindMatrix.elements,
+    bb = b.bindMatrix.elements;
   for (let i = 0; i < 16; i++) if (Math.abs(ba[i] - bb[i]) > BIND_EPS) return false;
   return true;
 }
@@ -398,7 +457,10 @@ function mergeSkinnedParts(root: THREE.Object3D): void {
     if (parts.length < 2) continue;
     const names = new Set(parts.flatMap((p) => Object.keys(p.geometry.attributes)));
     if (![...names].every((n) => parts.every((p) => p.geometry.getAttribute(n)))) continue;
-    const geo = mergeGeometries(parts.map((p) => p.geometry), false);
+    const geo = mergeGeometries(
+      parts.map((p) => p.geometry),
+      false,
+    );
     if (!geo) continue;
     const first = parts[0];
     const merged = new THREE.SkinnedMesh(geo, first.material);
@@ -422,7 +484,9 @@ export function assembleModel(def: VisualDef, weaponItemId?: string | null): THR
   const root = cloneSkinned(optimizedScene(def.url));
   // tag the character's own meshes (body + accessories share one texture atlas)
   // so a skin override hits them but not the separate weapons attached below
-  root.traverse((o) => { if ((o as THREE.Mesh).isMesh) o.userData.bodyMesh = true; });
+  root.traverse((o) => {
+    if ((o as THREE.Mesh).isMesh) o.userData.bodyMesh = true;
+  });
   // KayKit characters ship every accessory mesh visible; keep only the kit
   if (def.show) {
     const keep = new Set(def.show);
@@ -450,8 +514,8 @@ export function assembleModel(def: VisualDef, weaponItemId?: string | null): THR
   }
   // Re-orient mis-baked built-in weapon nodes (e.g. the golem axe) in place.
   for (const fix of def.weaponFix ?? []) {
-    const node = root.getObjectByName(fix.node)
-      ?? root.getObjectByName(fix.node.replace(/[[\].:/]/g, ''));
+    const node =
+      root.getObjectByName(fix.node) ?? root.getObjectByName(fix.node.replace(/[[\].:/]/g, ''));
     if (!node) continue;
     if (fix.rotX) node.rotateX(fix.rotX);
     if (fix.rotY) node.rotateY(fix.rotY);
@@ -466,10 +530,16 @@ export function assembleModel(def: VisualDef, weaponItemId?: string | null): THR
  *  both hands update). The caller must re-apply materials and re-snapshot the
  *  original-material map afterwards (see CharacterVisual.setWeapon), since the new
  *  weapon meshes start on the source GLB's raw materials. */
-export function setHeldWeapon(root: THREE.Object3D, def: VisualDef, weaponItemId: string | null): void {
+export function setHeldWeapon(
+  root: THREE.Object3D,
+  def: VisualDef,
+  weaponItemId: string | null,
+): void {
   if (!def.weaponSlots?.length) return;
   const stale: THREE.Object3D[] = [];
-  root.traverse((o) => { if (o.userData[SWAP_WEAPON_TAG]) stale.push(o); });
+  root.traverse((o) => {
+    if (o.userData[SWAP_WEAPON_TAG]) stale.push(o);
+  });
   for (const o of stale) o.removeFromParent();
   for (const i of def.weaponSlots) {
     const base = def.attach?.[i];
@@ -491,7 +561,10 @@ const lowReadabilityWhite = new THREE.Color(0xffffff);
 const weaponHighlight = new THREE.Color(0xfff0c2);
 type MaterialRole = 'body' | 'weapon';
 
-function applyLowReadabilityLift(mat: THREE.MeshStandardMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial, role: MaterialRole): void {
+function applyLowReadabilityLift(
+  mat: THREE.MeshStandardMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial,
+  role: MaterialRole,
+): void {
   const lift = role === 'weapon' ? 0.14 : 0.075;
   const emissive = role === 'weapon' ? 0.075 : 0.045;
   mat.color.lerp(role === 'weapon' ? weaponHighlight : lowReadabilityWhite, lift);
@@ -501,7 +574,9 @@ function applyLowReadabilityLift(mat: THREE.MeshStandardMaterial | THREE.MeshLam
   }
 }
 
-function applyWeaponMaterialPolish(mat: THREE.MeshStandardMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial): void {
+function applyWeaponMaterialPolish(
+  mat: THREE.MeshStandardMaterial | THREE.MeshLambertMaterial | THREE.MeshBasicMaterial,
+): void {
   mat.color.lerp(weaponHighlight, 0.08);
   const std = mat as THREE.MeshStandardMaterial;
   if (std.isMeshStandardMaterial) {
@@ -570,7 +645,13 @@ function tintFor(def: VisualDef, entityColor: number): number | null {
 
 /** Swap every mesh material in an assembled clone for the shared tinted
  *  (and tier-appropriate) variant. Returns nothing — mutates the clone. */
-export function applyMaterials(root: THREE.Object3D, def: VisualDef, entityColor: number, skinTex: THREE.Texture | null = null, emisTex: THREE.Texture | null = null): void {
+export function applyMaterials(
+  root: THREE.Object3D,
+  def: VisualDef,
+  entityColor: number,
+  skinTex: THREE.Texture | null = null,
+  emisTex: THREE.Texture | null = null,
+): void {
   const tint = tintFor(def, entityColor);
   const strength = def.tintStrength ?? DEFAULT_TINT_STRENGTH;
   root.traverse((o) => {
@@ -582,14 +663,20 @@ export function applyMaterials(root: THREE.Object3D, def: VisualDef, entityColor
     const sk = skinTex && mesh.userData.bodyMesh ? skinTex : null;
     const em = emisTex && mesh.userData.bodyMesh ? emisTex : null;
     if (Array.isArray(mesh.material)) {
-      mesh.material = mesh.material.map((m) => tintedMaterial(m, materialTint, strength, sk, em, role));
+      mesh.material = mesh.material.map((m) =>
+        tintedMaterial(m, materialTint, strength, sk, em, role),
+      );
     } else {
       mesh.material = tintedMaterial(mesh.material, materialTint, strength, sk, em, role);
     }
   });
 }
 
-export function tintedFarMaterials(def: VisualDef, entityColor: number, srcMats: THREE.Material[]): THREE.Material[] {
+export function tintedFarMaterials(
+  def: VisualDef,
+  entityColor: number,
+  srcMats: THREE.Material[],
+): THREE.Material[] {
   const tint = tintFor(def, entityColor);
   const strength = def.tintStrength ?? DEFAULT_TINT_STRENGTH;
   return srcMats.map((m) => tintedMaterial(m, tint, strength));
@@ -673,7 +760,12 @@ export function prepareVisual(key: string): PreparedVisual {
   if (bounds.isEmpty()) {
     temp.traverse((o) => {
       const mesh = o as THREE.Mesh;
-      if (!mesh.isMesh || (mesh as unknown as THREE.SkinnedMesh).isSkinnedMesh || !meshChainVisible(mesh, temp)) return;
+      if (
+        !mesh.isMesh ||
+        (mesh as unknown as THREE.SkinnedMesh).isSkinnedMesh ||
+        !meshChainVisible(mesh, temp)
+      )
+        return;
       const pos = mesh.geometry.getAttribute('position') as THREE.BufferAttribute | undefined;
       if (!pos) return;
       for (let i = 0; i < pos.count; i++) {
@@ -686,8 +778,13 @@ export function prepareVisual(key: string): PreparedVisual {
   const rawHeight = Math.max(1e-3, bounds.max.y - bounds.min.y);
   const normScale = def.height / rawHeight;
   const yOffset = (def.hover ?? 0) - bounds.min.y * normScale;
-  const clickRadius = Math.min(2.2, Math.max(0.5,
-    Math.max(bounds.max.x, -bounds.min.x, bounds.max.z, -bounds.min.z) * normScale * 0.9));
+  const clickRadius = Math.min(
+    2.2,
+    Math.max(
+      0.5,
+      Math.max(bounds.max.x, -bounds.min.x, bounds.max.z, -bounds.min.z) * normScale * 0.9,
+    ),
+  );
 
   const norm = new THREE.Matrix4()
     .makeTranslation(0, yOffset, 0)
@@ -696,7 +793,16 @@ export function prepareVisual(key: string): PreparedVisual {
 
   const { geo, mats } = bakeStaticPose(temp, norm);
 
-  const prep: PreparedVisual = { key, def, normScale, yOffset, clips, idleGeo: geo, idleSrcMats: mats, clickRadius };
+  const prep: PreparedVisual = {
+    key,
+    def,
+    normScale,
+    yOffset,
+    clips,
+    idleGeo: geo,
+    idleSrcMats: mats,
+    clickRadius,
+  };
   prepared.set(key, prep);
   return prep;
 }
@@ -713,7 +819,10 @@ function meshChainVisible(o: THREE.Object3D, stopAt: THREE.Object3D): boolean {
 
 /** Bake every visible mesh of a posed clone into one static BufferGeometry
  *  (skinned verts via applyBoneTransform), normalized into world units. */
-function bakeStaticPose(root: THREE.Object3D, norm: THREE.Matrix4): { geo: THREE.BufferGeometry | null; mats: THREE.Material[] } {
+function bakeStaticPose(
+  root: THREE.Object3D,
+  norm: THREE.Matrix4,
+): { geo: THREE.BufferGeometry | null; mats: THREE.Material[] } {
   const geos: THREE.BufferGeometry[] = [];
   const mats: THREE.Material[] = [];
   const v = new THREE.Vector3();
@@ -728,7 +837,8 @@ function bakeStaticPose(root: THREE.Object3D, norm: THREE.Matrix4): { geo: THREE
     const out = new THREE.BufferGeometry();
     const baked = new Float32Array(srcPos.count * 3);
     const skinned = (mesh as unknown as THREE.SkinnedMesh).isSkinnedMesh
-      ? (mesh as unknown as THREE.SkinnedMesh) : null;
+      ? (mesh as unknown as THREE.SkinnedMesh)
+      : null;
     full.multiplyMatrices(norm, mesh.matrixWorld);
     for (let i = 0; i < srcPos.count; i++) {
       v.fromBufferAttribute(srcPos, i);

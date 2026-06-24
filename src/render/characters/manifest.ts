@@ -5,8 +5,8 @@
 import { MECH_CHROMAS, type MechChroma } from '../../sim/content/skins';
 import { MOBS } from '../../sim/data';
 import type { Entity } from '../../sim/types';
-import type { OverheadEmoteId } from '../../world_api';
 import { ITEM_WEAPON_VARIANTS } from '../../ui/weapon_variants';
+import type { OverheadEmoteId } from '../../world_api';
 
 export interface EmoteClipSpec {
   clips: readonly string[];
