@@ -351,7 +351,7 @@ Full per-phase scope/acceptance is in the `phase-NN-*.md` files; line numbers in
 | P0 | Foundation gates: CSS-corpus + UI-purity guard + perf/visual/mobile baseline | low | port+extend | done (tests/css_corpus.test.ts + tests/architecture.test.ts UI_PURE_CORES/RENDER_PURE_CORES; baselines perf-/visual-/mobile-baseline-v016.md; mobile perf + 2 mobile E2E scripts surfaced for P17a/P4b) |
 | P1 | CSS A: Lightning flip + tokens + base + the CSS-import seam | low | port | done (Lightning flip via browserslistToTargets + zero-dep .browserslistrc parser, no browserslist npm dep; dead css.postcss removed; src/styles/{index,tokens,base}.css; one @layer order declared in index.css, imported once from src/main.ts -> both game entries; --range-fill stays the slider inline fallback; play.html 3 cursor url()s absolutized to survive the flip; biome src/styles override; 3 commits b9fe99b2/0a120e9f/0892c250; tsc + vitest 3906 + build x4 green; qa-checklist no BLOCKING) |
 | P2 | CSS B1: in-world HUD chrome (full section map incl Fiesta HUD + tooltip) | medium | port | done (NEW src/styles/hud.css under @layer components, barrel @imports it after tokens+base; runs A+B + tooltip + FCT + Interface/adaptive/perf + Fiesta + center/vignette/death; Fiesta+tooltip ORPHANS CLOSED, tooltip upgraded to a 10-dash marker -> css_corpus 48 index/46 play. CASCADE fixes for the unlayered-beats-@layer intermediate hazard: UI-chrome-icons (.ui-icon/.x-btn .ui-icon/.micro-btn .ui-icon/.pfm-crest) moved to base.css @layer base, closing the P1 base-tier gap so #mm-music .ui-icon component-override wins; and 5 .btn.fiesta-practice/.arena-bracket*.fiesta glue rules DEFERRED inline to P3 with their unlayered .btn/.arena-bracket bases. backdrop -webkit-first on the 2 real rules + PORTED scripts/check_backdrop_survival.mjs build gate (P0 gap, first phase with teeth) + 12-case test. Lossless token-multiset proof; css_corpus/client_shell/backdrop + tsc + full vitest 3931 + build x4 + survival(both twins) + biome + live HUD screenshot all green; commits local) |
-| P3 | CSS B2: modal + feature windows (arena/market/options/theme/emote ranges fixed) | medium | port | pending (NOTE: P2 deferred 5 fiesta/arena glue rules - .btn.fiesta-practice(+:hover), .arena-bracket.fiesta(.active), .arena-bracket-tag.fiesta, index.html ~line 1153 - to this phase; move them into @layer components alongside their .btn (windows) and .arena-bracket (arena) bases so modifier+base share a layer) |
+| P3 | CSS B2: modal + feature windows (arena/market/options/theme/emote ranges fixed) | medium | port | done (NEW src/styles/layout.css `@layer layout` = the `.window` shell only; NEW src/styles/components.css `@layer components` = all feature-window bodies in source order: delve, lockpick, windows lead chrome (quest dialog/.btn/loot/item-quality), character window, spellbook, quest log, leaderboard, talents, modals and dropdown, vendor, bags, social, map, arena, market, options, theme picker, emote, + the 5 deferred Fiesta glue rules now beside their .btn/.arena-bracket bases. Barrel imports both, order tokens,base,layout,hud,components -> components.css last so window bodies win ties over hud.css (both `@layer components`); both load via the one src/main.ts barrel so index.html AND play.html get them. index.html inline emptied 187-1158; play.html inline windows untouched (P4b reconciles; its unlayered inline still wins, zero visual change). CASCADE safe: only other bare `.window` is hud.css `.panel,.window{opacity}` (disjoint), `body.frosted-panels .window` + base.css `.window .panel-title`/`.window.window-dragging`/`#start-screen :is(.btn,...)` are more specific; no equal-specificity tie flip. NO backdrop in P3 content. css_corpus split the coarse "windows" banner into per-window banners +11 (window shell/character window/spellbook/quest log/leaderboard/talents/modals and dropdown/vendor/bags/social/map) -> 59 index/57 play. 6 moved-comment em dashes normalized. 3 tests repointed (client_shell, mobile_window_transform via inline-UNION-modules, social_status_dots). Lossless: 625 rules identical (biome cosmetics absorbed). tsc + css_corpus + client_shell + full vitest 3931 + build x4 + survival + biome(new .css) all green; adversarial 4-lens review no BLOCKING; commits local) |
 | P4a | CSS C-1: pre-game shell + char-select -> shell.css | medium | port | pending |
 | P4b | CSS C-2: mobile-touch -> hud.mobile.css + per-entry .extra; empty both inline blocks | medium | port | pending |
 | P5 | ui_effects_profile resolver (src/game, 5-axis, defines the cutoff) + applier | medium | port+extend | pending |
@@ -419,7 +419,14 @@ async-failure copy for leaderboard/market (P9b/P8b), and a lazy-window loading l
   (new P1), `biome.json`, `tsconfig.json`. V16 has NO existing CSS-import seam (unlike FB): P1 defines
   it (a barrel imported once from the game entries' TS) and which entries load it. CSS (new):
   `src/styles/{tokens,base,layout,components,hud,hud.mobile,shell,index.extra,play.extra}.css`.
-  Entries: `index.html`, `play.html` (extracted), `admin.html`, `guide.html` (survival-only, decision 18).
+  FILLED so far: tokens/base (P1), hud (P2, `@layer components`), and as of P3 `layout.css`
+  (`@layer layout`, the `.window` shell only) + `components.css` (`@layer components`, every feature-window
+  body: delve/lockpick, the classic stat windows, shared window chrome, vendor/bags/social/map,
+  arena/market/options/theme/emote, + the Fiesta glue). Barrel import order tokens,base,layout,hud,components
+  (components.css last so window bodies win ties over hud.css, both `@layer components`). `hud.mobile`/`shell`/
+  `index.extra`/`play.extra` stay empty until P4a/P4b.
+  Entries: `index.html`, `play.html` (extracted; play.html window/mobile/shell inline still pending P4b),
+  `admin.html`, `guide.html` (survival-only, decision 18).
   `--range-fill` is NOT a `:root` token: it is the inline `var(--range-fill, 0%)` fallback on the
   slider track at `index.html:356`, written per-element at `hud.ts:12899`; it rides into `base.css`
   inside the slider rule, do NOT promote it to `:root`.
@@ -467,8 +474,10 @@ async-failure copy for leaderboard/market (P9b/P8b), and a lazy-window loading l
 5. Two-controller hazard (P5/P14a): tier knobs read the static preset, never the governor.
 6. CSS cascade/rule-drop (P2-P4b): mitigated by the css_corpus section-by-section guard every CSS
    phase + the backdrop -webkit-first gotcha + JS-written custom props kept in `:root` + a
-   screenshot-diff against the P0 visual baseline. Watch the orphan band (arena 1846, market 1900,
-   options 1973, theme 2040, emote 2108, Fiesta HUD 2303) that the draft P2/P3/P4 ranges skipped.
+   screenshot-diff against the P0 visual baseline. Orphan band now CLOSED: P2 took Fiesta HUD (2303);
+   P3 took arena (1846) / market (1900) / options (1973) / theme (2040) / emote (2108) into
+   components.css, so the 1846-2161 window band is fully assigned. P3 had NO backdrop-filter in its
+   moved content, so the -webkit-first gotcha was a no-op there (gate still runs).
 7. Canvas painters vs no-magic-values (P9a, P12b, P14b): a 2D context cannot read CSS vars; resolve
    tokens via `getComputedStyle` once per redraw (decision 12), do not weaken the guard.
 8. ClientWorld-vs-Sim drift (decision 15): an offline-only-shape assumption ships broken online; the
