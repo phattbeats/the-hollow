@@ -426,6 +426,18 @@ export const fr_CA: EnTranslations = {
     "tips": {
       "joinChannels": "Conseil : tapez /join world ou /join lfg pour discuter avec les joueurs de tout le royaume."
     },
+    "questShare": {
+      "notShareable": "Cette quête ne peut pas être partagée.",
+      "notInSharerParty": "Vous devez être dans le groupe de {name} pour accepter cette quête.",
+      "accepted": "{name} a accepté votre quête partagée.",
+      "dialogTitle": "Quête partagée",
+      "viewOnlyHint": "Rejoignez le groupe de la personne qui la partage pour accepter cette quête.",
+      "alreadyOn": "Vous avez déjà cette quête.",
+      "alreadyDone": "Vous avez déjà terminé cette quête.",
+      "ineligible": "Vous ne remplissez pas les conditions de cette quête.",
+      "noQuestSelected": "Sélectionnez une quête dans votre journal à partager.",
+      "linkTitle": "Maj + clic pour insérer le lien de cette quête dans le chat."
+    },
     "plurals": {
       "guildMembers": {
         "one": "vous êtes {rank}, {count} membre",
@@ -1981,7 +1993,14 @@ export const fr_CA: EnTranslations = {
     "portraitAlt": "Portrait de {name}",
     "viewProfile": "Voir le profil",
     "profile": "Profil",
-    "closeProfile": "Fermer le profil"
+    "closeProfile": "Fermer le profil",
+    "sortBy": "Trier",
+    "sortByLabel": "Trier les personnages",
+    "sortMenuLabel": "Options de tri",
+    "sortLevel": "Niveau",
+    "sortName": "Nom",
+    "sortRecent": "Joués récemment",
+    "sortPlaytime": "Temps de jeu"
   },
   "deleteCharacter": {
     "title": "Supprimer le personnage",
@@ -2459,6 +2478,8 @@ export const fr_CA: EnTranslations = {
       "lootReceiveMoney": "Vous recevez {money}.",
       "lootMoney": "Vous ramassez {money}.",
       "soldItem": "Vous avez vendu {item} pour {money}.",
+      "soldJunkOne": "Vous avez vendu {count} objet gris pour {money}.",
+      "soldJunkMany": "Vous avez vendu {count} objets gris pour {money}.",
       "friendOnline": "{name} vient de se connecter.",
       "friendOffline": "{name} vient de se déconnecter."
     },
@@ -2862,7 +2883,10 @@ export const fr_CA: EnTranslations = {
       "sellQuantityTitle": "Vendre {item}",
       "sellQuantityInput": "Quantité à vendre",
       "sellQuantityConfirm": "Vendre",
-      "sellQuantityCancel": "Annuler"
+      "sellQuantityCancel": "Annuler",
+      "sellJunk": "Vendre les rebuts",
+      "sellJunkAria": "Vendre tous les rebuts pour {price}",
+      "sellJunkHint": "Vend tous les objets gris dans vos sacs, sauf les objets de quête."
     },
     "market": {
       "title": "Marché mondial",

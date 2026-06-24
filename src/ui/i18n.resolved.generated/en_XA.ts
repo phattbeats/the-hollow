@@ -426,6 +426,18 @@ export const en_XA: EnTranslations = {
     "tips": {
       "joinChannels": "[Ţíþ: ţýþé /ĵóíñ ŵóŕļð óŕ /ĵóíñ ļƒĝ ţó çĥáţ ŵíţĥ þļáýéŕš áçŕóšš ţĥé ŕéáļɱ.]"
     },
+    "questShare": {
+      "notShareable": "[Ţĥíš ɋúéšţ çáñ'ţ ƀé šĥáŕéð.]",
+      "notInSharerParty": "[Ýóú ɱúšţ ƀé íñ {name}'š þáŕţý ţó áççéþţ ţĥáţ ɋúéšţ.]",
+      "accepted": "[{name} áççéþţéð ýóúŕ šĥáŕéð ɋúéšţ.]",
+      "dialogTitle": "[Šĥáŕéð Ɋúéšţ]",
+      "viewOnlyHint": "[Ĵóíñ ţĥé šĥáŕéŕ'š þáŕţý ţó áççéþţ ţĥíš ɋúéšţ.]",
+      "alreadyOn": "[Ýóú'ŕé áļŕéáðý óñ ţĥíš ɋúéšţ.]",
+      "alreadyDone": "[Ýóú'ʋé áļŕéáðý çóɱþļéţéð ţĥíš ɋúéšţ.]",
+      "ineligible": "[Ýóú ðóñ'ţ ɱééţ ţĥé ŕéɋúíŕéɱéñţš ƒóŕ ţĥíš ɋúéšţ.]",
+      "noQuestSelected": "[Šéļéçţ á ɋúéšţ íñ ýóúŕ ļóĝ ţó šĥáŕé.]",
+      "linkTitle": "[Šĥíƒţ-çļíçķ ţó ļíñķ ţĥíš ɋúéšţ íñ çĥáţ.]"
+    },
     "plurals": {
       "guildMembers": {
         "one": "[ýóú áŕé {rank}, {count} ɱéɱƀéŕ]",
@@ -494,7 +506,7 @@ export const en_XA: EnTranslations = {
       "errPasswordUnchanged": "[Ñéŵ þáššŵóŕð ɱúšţ ƀé ðíƒƒéŕéñţ ƒŕóɱ ţĥé çúŕŕéñţ óñé.]",
       "errPasswordConfirm": "[Ñéŵ þáššŵóŕðš ðó ñóţ ɱáţçĥ.]",
       "emailLabel": "[Éɱáíļ (óþţíóñáļ)]",
-      "emailHint": "[Úšéð óñļý ƒóŕ áççóúñţ ŕéçóʋéŕý. Ŵé ñéʋéŕ šéñð ɱáŕķéţíñĝ éɱáíļ.]",
+      "emailHint": "[Úšéð óñļý ƒóŕ áççóúñţ ŕéçóʋéŕý. Úšé Çĥáñĝé Éɱáíļ ƀéļóŵ ţó úþðáţé íţ.]",
       "saveEmail": "[Šáʋé Éɱáíļ]",
       "emailSaved": "[Éɱáíļ šáʋéð.]",
       "errEmailInvalid": "[Éñţéŕ á ʋáļíð éɱáíļ áððŕéšš.]",
@@ -1981,7 +1993,14 @@ export const en_XA: EnTranslations = {
     "portraitAlt": "[Þóŕţŕáíţ óƒ {name}]",
     "viewProfile": "[Ʋíéŵ Þŕóƒíļé]",
     "profile": "[Þŕóƒíļé]",
-    "closeProfile": "[Çļóšé þŕóƒíļé]"
+    "closeProfile": "[Çļóšé þŕóƒíļé]",
+    "sortBy": "[Šóŕţ]",
+    "sortByLabel": "[Šóŕţ çĥáŕáçţéŕš]",
+    "sortMenuLabel": "[Šóŕţ óþţíóñš]",
+    "sortLevel": "[Ļéʋéļ]",
+    "sortName": "[Ñáɱé]",
+    "sortRecent": "[Ŕéçéñţļý Þļáýéð]",
+    "sortPlaytime": "[Þļáýţíɱé]"
   },
   "deleteCharacter": {
     "title": "[Ðéļéţé Çĥáŕáçţéŕ]",
@@ -2459,6 +2478,8 @@ export const en_XA: EnTranslations = {
       "lootReceiveMoney": "[Ýóú ŕéçéíʋé {money}.]",
       "lootMoney": "[Ýóú ļóóţ {money}.]",
       "soldItem": "[Šóļð {item} ƒóŕ {money}.]",
+      "soldJunkOne": "[Šóļð {count} ĵúñķ íţéɱ ƒóŕ {money}.]",
+      "soldJunkMany": "[Šóļð {count} ĵúñķ íţéɱš ƒóŕ {money}.]",
       "friendOnline": "[{name} ĥáš çóɱé óñļíñé.]",
       "friendOffline": "[{name} ĥáš ĝóñé óƒƒļíñé.]"
     },
@@ -2862,7 +2883,10 @@ export const en_XA: EnTranslations = {
       "sellQuantityTitle": "[Šéļļ {item}]",
       "sellQuantityInput": "[Ɋúáñţíţý ţó šéļļ]",
       "sellQuantityConfirm": "[Šéļļ]",
-      "sellQuantityCancel": "[Çáñçéļ]"
+      "sellQuantityCancel": "[Çáñçéļ]",
+      "sellJunk": "[Šéļļ Ĵúñķ]",
+      "sellJunkAria": "[Šéļļ áļļ ĵúñķ ƒóŕ {price}]",
+      "sellJunkHint": "[Šéļļš éʋéŕý ĝŕáý íţéɱ íñ ýóúŕ ƀáĝš éẋçéþţ ɋúéšţ íţéɱš.]"
     },
     "market": {
       "title": "[Ţĥé Ŵóŕļð Ɱáŕķéţ]",

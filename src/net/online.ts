@@ -60,6 +60,8 @@ export interface CharacterSummary {
   skin: number;
   online: boolean;
   forceRename: boolean;
+  lastPlayed?: string | null;
+  playtimeSeconds?: number;
 }
 
 function stringList(value: unknown): string[] {
@@ -335,11 +337,6 @@ export class Api {
 
   async logout(): Promise<void> {
     await this.post('/api/account/logout', {});
-  }
-
-  async setEmail(email: string): Promise<string> {
-    const data = await this.post('/api/account/email', { email });
-    return typeof data.email === 'string' ? data.email : '';
   }
 
   async deactivateAccount(username: string, password: string): Promise<void> {
@@ -679,6 +676,8 @@ function blankEntity(id: number): Entity {
     ownerId: null,
     petMode: 'defensive',
     petTauntTimer: 0,
+    petAutoTaunt: false,
+    petManualTauntPending: false,
     spawnPos: { x: 0, y: 0, z: 0 },
     leashAnchor: null,
     evadeStall: 0,
@@ -702,6 +701,7 @@ function blankEntity(id: number): Entity {
     color: 0xffffff,
     skinCatalog: 'class',
     skin: 0,
+    mainhandItemId: null,
     guild: '',
   };
 }
@@ -1047,6 +1047,7 @@ export class ClientWorld implements IWorld {
         e.name = w.nm;
         e.level = w.lv;
         e.skin = w.sk ?? 0;
+        e.mainhandItemId = w.mh ?? null; // equipped mainhand → held weapon model (render-only)
         e.skinCatalog = w.cat === 'mech' ? 'mech' : 'class';
         e.holderTier = w.ht ?? 0; // $WOC holder-tier flair (cosmetic, server-set)
         e.holderBalance = typeof w.hb === 'number' ? w.hb : undefined; // exact $WOC, for inspect
@@ -1131,6 +1132,8 @@ export class ClientWorld implements IWorld {
       e.ownerId = w.own ?? null;
       e.petMode = w.pm ?? 'defensive';
       e.petTauntTimer = w.pt ?? 0;
+      e.petAutoTaunt = !!w.pa;
+      e.petManualTauntPending = false;
       e.threat = new Map(w.thr ?? []);
       e.auras = (w.auras ?? []).map((a: any) => ({
         id: a.id,
@@ -1141,6 +1144,7 @@ export class ClientWorld implements IWorld {
         value: 0,
         sourceId: 0,
         school: 'physical' as const,
+        stacks: a.stacks,
       }));
       e.loot = w.lootList ?? null;
       return e;
@@ -1403,6 +1407,9 @@ export class ClientWorld implements IWorld {
     this.pendingQuestCommands.delete(questId);
     this.cmd({ cmd: 'abandon', quest: questId });
   }
+  acceptLinkedQuest(questId: string, fromPid: number): void {
+    this.cmd({ cmd: 'qlinkaccept', quest: questId, from: fromPid });
+  }
   equipItem(itemId: string): void {
     this.cmd({ cmd: 'equip', item: itemId });
   }
@@ -1420,6 +1427,9 @@ export class ClientWorld implements IWorld {
   }
   sellItem(itemId: string, count?: number): void {
     this.cmd({ cmd: 'sell', item: itemId, count });
+  }
+  sellAllJunk(): void {
+    this.cmd({ cmd: 'sell_all_junk' });
   }
   buyBackItem(itemId: string): void {
     this.cmd({ cmd: 'buyback', item: itemId });
@@ -1492,6 +1502,15 @@ export class ClientWorld implements IWorld {
   }
   petTaunt(): void {
     this.cmd({ cmd: 'pet_taunt' });
+  }
+  setPetAutoTaunt(enabled: boolean): void {
+    for (const e of this.entities.values()) {
+      if (e.kind === 'mob' && e.ownerId === this.playerId) {
+        e.petAutoTaunt = enabled;
+        break;
+      }
+    }
+    this.cmd({ cmd: 'pet_auto_taunt', enabled });
   }
   feedPet(itemId: string): void {
     this.cmd({ cmd: 'pet_feed', item: itemId });

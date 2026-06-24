@@ -426,6 +426,18 @@ export const en: EnTranslations = {
     "tips": {
       "joinChannels": "Tip: type /join world or /join lfg to chat with players across the realm."
     },
+    "questShare": {
+      "notShareable": "This quest can't be shared.",
+      "notInSharerParty": "You must be in {name}'s party to accept that quest.",
+      "accepted": "{name} accepted your shared quest.",
+      "dialogTitle": "Shared Quest",
+      "viewOnlyHint": "Join the sharer's party to accept this quest.",
+      "alreadyOn": "You're already on this quest.",
+      "alreadyDone": "You've already completed this quest.",
+      "ineligible": "You don't meet the requirements for this quest.",
+      "noQuestSelected": "Select a quest in your log to share.",
+      "linkTitle": "Shift-click to link this quest in chat."
+    },
     "plurals": {
       "guildMembers": {
         "one": "you are {rank}, {count} member",
@@ -494,7 +506,7 @@ export const en: EnTranslations = {
       "errPasswordUnchanged": "New password must be different from the current one.",
       "errPasswordConfirm": "New passwords do not match.",
       "emailLabel": "Email (optional)",
-      "emailHint": "Used only for account recovery. We never send marketing email.",
+      "emailHint": "Used only for account recovery. Use Change Email below to update it.",
       "saveEmail": "Save Email",
       "emailSaved": "Email saved.",
       "errEmailInvalid": "Enter a valid email address.",
@@ -1981,7 +1993,14 @@ export const en: EnTranslations = {
     "portraitAlt": "Portrait of {name}",
     "viewProfile": "View Profile",
     "profile": "Profile",
-    "closeProfile": "Close profile"
+    "closeProfile": "Close profile",
+    "sortBy": "Sort",
+    "sortByLabel": "Sort characters",
+    "sortMenuLabel": "Sort options",
+    "sortLevel": "Level",
+    "sortName": "Name",
+    "sortRecent": "Recently Played",
+    "sortPlaytime": "Playtime"
   },
   "deleteCharacter": {
     "title": "Delete Character",
@@ -2459,6 +2478,8 @@ export const en: EnTranslations = {
       "lootReceiveMoney": "You receive {money}.",
       "lootMoney": "You loot {money}.",
       "soldItem": "Sold {item} for {money}.",
+      "soldJunkOne": "Sold {count} junk item for {money}.",
+      "soldJunkMany": "Sold {count} junk items for {money}.",
       "friendOnline": "{name} has come online.",
       "friendOffline": "{name} has gone offline."
     },
@@ -2862,7 +2883,10 @@ export const en: EnTranslations = {
       "sellQuantityTitle": "Sell {item}",
       "sellQuantityInput": "Quantity to sell",
       "sellQuantityConfirm": "Sell",
-      "sellQuantityCancel": "Cancel"
+      "sellQuantityCancel": "Cancel",
+      "sellJunk": "Sell Junk",
+      "sellJunkAria": "Sell all junk for {price}",
+      "sellJunkHint": "Sells every gray item in your bags except quest items."
     },
     "market": {
       "title": "The World Market",

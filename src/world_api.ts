@@ -314,12 +314,16 @@ export interface IWorld {
   turnInQuest(questId: string): void;
   reportTelemetry(kind: string, data: Record<string, number>): void;
   abandonQuest(questId: string): void;
+  acceptLinkedQuest(questId: string, fromPid: number): void;
   equipItem(itemId: string): void;
   unequipItem(slot: EquipSlot): void;
   useItem(itemId: string): void;
   discardItem(itemId: string, count?: number): void;
   buyItem(npcId: number, itemId: string): void;
   sellItem(itemId: string, count?: number): void;
+  // Sell every gray (poor-quality) item in the bags at once while a vendor is open.
+  // Quest items and anything flagged noVendorSell are left untouched.
+  sellAllJunk(): void;
   buyBackItem(itemId: string): void;
   changeSkin(skin: number, catalog?: 'class' | 'mech'): void;
   // Lock in a skin from the cosmetic skin-select event overlay. The server
@@ -335,6 +339,7 @@ export interface IWorld {
   revivePet(): void;
   petAttack(): void;
   petTaunt(): void;
+  setPetAutoTaunt(enabled: boolean): void;
   feedPet(itemId: string): void;
   healPet(): void;
   setPetMode(mode: PetMode): void;

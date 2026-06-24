@@ -649,6 +649,7 @@
     background-size: cover; background-position: center; background-repeat: no-repeat; }
   .buff.debuff { border-color: var(--color-debuff); }
   .buff .dur { position: absolute; bottom: -13px; left: 0; right: 0; text-align: center; font-size: 9px; color: #eee; text-shadow: 1px 1px 1px #000; }
+  .buff .stacks { position: absolute; top: -4px; right: -3px; min-width: 13px; height: 13px; padding: 0 2px; box-sizing: border-box; text-align: center; font: 700 9px/11px var(--body-font); color: #fff; background: rgba(8, 8, 12, 0.92); border: 1px solid var(--color-debuff); border-radius: 7px; }
 
   /* ---------- cast bar ---------- */
   #castbar { position: absolute; left: 50%; transform: translateX(-50%); bottom: 200px; width: 300px;
@@ -791,6 +792,9 @@
   .chat-player-name { cursor: var(--cursor-point); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
   .chat-player-name:hover { filter: brightness(1.25); }
   .chat-player-name:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 2px; }
+  .chat-quest-link { color: #ffd100; cursor: var(--cursor-point); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  .chat-quest-link:hover { color: #fff176; }
+  .chat-quest-link:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 2px; }
   .chat-pane::-webkit-scrollbar { width: 8px; }
   .chat-pane::-webkit-scrollbar-track { background: #0b0b10; }
   .chat-pane::-webkit-scrollbar-thumb { background: #4a3d1d; border-radius: 4px; }
@@ -6322,8 +6326,11 @@
   }
   .cs-title { text-align: left; margin: 0; }
 
-  /* Realm dropdown — left-aligned, sits above the roster */
+  /* Realm + sort dropdowns — left-aligned, sit above the roster */
+  .cs-controls { display: flex; flex-wrap: wrap; gap: 8px; }
   .cs-realm-switch { position: relative; }
+  .cs-sort-switch { position: relative; }
+  .cs-sort-menu { min-width: 200px; }
   .cs-realm-btn {
     display: inline-flex;
     align-items: center;
@@ -7564,13 +7571,23 @@
           <header class="cs-head">
             <h2 class="auth-title cs-title"><span data-i18n="auth.characters">Characters:</span> <span id="charselect-user" class="gold"></span></h2>
             <div class="cs-head-row">
-              <div class="cs-realm-switch">
-                <button type="button" id="btn-change-realm" class="cs-realm-btn" aria-haspopup="listbox" aria-expanded="false" data-i18n-aria="auth.changeRealm" aria-label="Change Realm">
-                  <span class="cs-realm-caption" data-i18n="auth.realm">Realm</span>
-                  <span id="charselect-realm" class="cs-realm-name"></span>
-                  <svg class="cs-realm-caret" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
-                </button>
-                <div id="cs-realm-menu" class="cs-realm-menu" role="listbox" data-i18n-aria="auth.realmList" aria-label="Realm List" hidden></div>
+              <div class="cs-controls">
+                <div class="cs-realm-switch">
+                  <button type="button" id="btn-change-realm" class="cs-realm-btn" aria-haspopup="listbox" aria-expanded="false" data-i18n-aria="auth.changeRealm" aria-label="Change Realm">
+                    <span class="cs-realm-caption" data-i18n="auth.realm">Realm</span>
+                    <span id="charselect-realm" class="cs-realm-name"></span>
+                    <svg class="cs-realm-caret" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+                  </button>
+                  <div id="cs-realm-menu" class="cs-realm-menu" role="listbox" data-i18n-aria="auth.realmList" aria-label="Realm List" hidden></div>
+                </div>
+                <div class="cs-sort-switch">
+                  <button type="button" id="cs-sort-btn" class="cs-realm-btn cs-sort-btn" aria-haspopup="listbox" aria-expanded="false" data-i18n-aria="character.sortByLabel" aria-label="Sort characters">
+                    <span class="cs-realm-caption" data-i18n="character.sortBy">Sort</span>
+                    <span id="cs-sort-current" class="cs-realm-name"></span>
+                    <svg class="cs-realm-caret" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+                  </button>
+                  <div id="cs-sort-menu" class="cs-realm-menu cs-sort-menu" role="listbox" data-i18n-aria="character.sortMenuLabel" aria-label="Sort options" hidden></div>
+                </div>
               </div>
               <div class="cs-wallet cs-wallet-group">
                 <span class="cs-wallet-label" data-i18n="wallet.label">$WOC Wallet</span>

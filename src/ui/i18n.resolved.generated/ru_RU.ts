@@ -426,6 +426,18 @@ export const ru_RU: EnTranslations = {
     "tips": {
       "joinChannels": "Совет: введите /join world или /join lfg, чтобы общаться с игроками по всему миру."
     },
+    "questShare": {
+      "notShareable": "Этим заданием нельзя поделиться.",
+      "notInSharerParty": "Вы должны состоять в группе игрока {name}, чтобы принять это задание.",
+      "accepted": "{name} принял задание, которым вы поделились.",
+      "dialogTitle": "Общее задание",
+      "viewOnlyHint": "Вступите в группу того, кто поделился, чтобы принять это задание.",
+      "alreadyOn": "Вы уже выполняете это задание.",
+      "alreadyDone": "Вы уже выполнили это задание.",
+      "ineligible": "Вы не соответствуете требованиям этого задания.",
+      "noQuestSelected": "Выберите задание в журнале, чтобы поделиться им.",
+      "linkTitle": "Shift + клик, чтобы вставить ссылку на это задание в чат."
+    },
     "plurals": {
       "guildMembers": {
         "one": "вы {rank}, {count} участник",
@@ -1981,7 +1993,14 @@ export const ru_RU: EnTranslations = {
     "portraitAlt": "Портрет {name}",
     "viewProfile": "Профиль",
     "profile": "Профиль",
-    "closeProfile": "Закрыть профиль"
+    "closeProfile": "Закрыть профиль",
+    "sortBy": "Сортировка",
+    "sortByLabel": "Сортировать персонажей",
+    "sortMenuLabel": "Параметры сортировки",
+    "sortLevel": "Уровень",
+    "sortName": "Имя",
+    "sortRecent": "Недавно сыгранные",
+    "sortPlaytime": "Время в игре"
   },
   "deleteCharacter": {
     "title": "Удалить персонажа",
@@ -2459,6 +2478,8 @@ export const ru_RU: EnTranslations = {
       "lootReceiveMoney": "Вы получаете {money}.",
       "lootMoney": "Вы добываете {money}.",
       "soldItem": "Вы продали {item} за {money}.",
+      "soldJunkOne": "Вы продали {count} серый предмет за {money}.",
+      "soldJunkMany": "Вы продали серые предметы ({count}) за {money}.",
       "friendOnline": "{name} вошел в игру.",
       "friendOffline": "{name} вышел из игры."
     },
@@ -2862,7 +2883,10 @@ export const ru_RU: EnTranslations = {
       "sellQuantityTitle": "Продать {item}",
       "sellQuantityInput": "Количество для продажи",
       "sellQuantityConfirm": "Продать",
-      "sellQuantityCancel": "Отмена"
+      "sellQuantityCancel": "Отмена",
+      "sellJunk": "Продать хлам",
+      "sellJunkAria": "Продать весь хлам за {price}",
+      "sellJunkHint": "Продает все серые предметы в сумках, кроме предметов заданий."
     },
     "market": {
       "title": "Мировой рынок",

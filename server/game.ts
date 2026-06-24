@@ -222,6 +222,7 @@ interface WireAura {
   kind: string;
   rem: number;
   dur: number;
+  stacks?: number;
 }
 
 interface WhoRosterRow {
@@ -243,6 +244,7 @@ function identityFields(e: Entity): Record<string, unknown> {
   const out: Record<string, unknown> = { k: e.kind, tid: e.templateId, nm: e.name, lv: e.level };
   if (e.skinCatalog === 'mech') out.cat = 'mech';
   if (e.skin) out.sk = e.skin;
+  if (e.mainhandItemId) out.mh = e.mainhandItemId; // equipped mainhand → held weapon model (render-only)
   if (e.holderTier) out.ht = e.holderTier; // $WOC holder-tier flair (cosmetic)
   if (e.holderBalance) out.hb = Math.round(e.holderBalance); // exact $WOC, for inspect
   if (e.guild) out.gd = e.guild;
@@ -284,6 +286,7 @@ function dynamicFields(e: Entity): Record<string, unknown> {
   if (e.ownerId !== null) {
     out.pm = e.petMode;
     out.pt = round2(e.petTauntTimer);
+    if (e.petAutoTaunt) out.pa = 1;
   }
   // top hate-table entries so the party threat meter shows real numbers
   if (e.kind === 'mob' && !e.dead && e.threat.size > 0) out.thr = threatEntries(e, 8);
@@ -295,6 +298,7 @@ function dynamicFields(e: Entity): Record<string, unknown> {
         kind: a.kind,
         rem: round2(a.remaining),
         dur: a.duration,
+        ...(a.stacks && a.stacks > 1 ? { stacks: a.stacks } : {}),
       }),
     );
   }
@@ -1132,6 +1136,17 @@ export class GameServer {
       : null;
   }
 
+  // Live authoritative level for a currently-online character. This uses the
+  // serialized character state rather than entity.level so temporary event
+  // scaling does not leak into shared-card metadata. Callers must verify
+  // ownership before reading by raw character id.
+  liveLevelForCharacter(characterId: number): number | null {
+    const session = this.sessionsByCharacterId.get(characterId);
+    if (!session) return null;
+    const state = this.sim.serializeCharacter(session.pid);
+    return state ? state.level : null;
+  }
+
   disconnectAccount(accountId: number, reason: string): void {
     for (const session of [...this.clients.values()]) {
       if (session.accountId !== accountId) continue;
@@ -1431,6 +1446,12 @@ export class GameServer {
           this.resyncQuests(session);
         }
         break;
+      case 'qlinkaccept':
+        if (typeof msg.quest === 'string' && typeof msg.from === 'number') {
+          sim.acceptLinkedQuest(msg.quest, msg.from, pid);
+          this.resyncQuests(session);
+        }
+        break;
       case 'equip':
         if (typeof msg.item === 'string') sim.equipItem(msg.item, pid);
         break;
@@ -1461,6 +1482,9 @@ export class GameServer {
         break;
       case 'buyback':
         if (typeof msg.item === 'string') sim.buyBackItem(msg.item, pid);
+        break;
+      case 'sell_all_junk':
+        sim.sellAllJunk(pid);
         break;
       case 'change_skin':
         if (typeof msg.skin === 'number') {
@@ -1612,6 +1636,9 @@ export class GameServer {
         break;
       case 'pet_taunt':
         sim.petTaunt(pid);
+        break;
+      case 'pet_auto_taunt':
+        if (typeof msg.enabled === 'boolean') sim.setPetAutoTaunt(msg.enabled, pid);
         break;
       case 'pet_feed':
         if (typeof msg.item === 'string') sim.feedPet(msg.item, pid);

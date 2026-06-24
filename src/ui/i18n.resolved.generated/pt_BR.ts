@@ -426,6 +426,18 @@ export const pt_BR: EnTranslations = {
     "tips": {
       "joinChannels": "Dica: digite /join world ou /join lfg para conversar com jogadores do reino inteiro."
     },
+    "questShare": {
+      "notShareable": "Esta missão não pode ser compartilhada.",
+      "notInSharerParty": "Você precisa estar no grupo de {name} para aceitar essa missão.",
+      "accepted": "{name} aceitou sua missão compartilhada.",
+      "dialogTitle": "Missão compartilhada",
+      "viewOnlyHint": "Entre no grupo de quem compartilhou para aceitar esta missão.",
+      "alreadyOn": "Você já está nesta missão.",
+      "alreadyDone": "Você já concluiu esta missão.",
+      "ineligible": "Você não atende aos requisitos desta missão.",
+      "noQuestSelected": "Selecione uma missão no seu registro para compartilhar.",
+      "linkTitle": "Shift + clique para vincular esta missão no chat."
+    },
     "plurals": {
       "guildMembers": {
         "one": "você é {rank}, {count} membro",
@@ -1981,7 +1993,14 @@ export const pt_BR: EnTranslations = {
     "portraitAlt": "Retrato de {name}",
     "viewProfile": "Ver perfil",
     "profile": "Perfil",
-    "closeProfile": "Fechar perfil"
+    "closeProfile": "Fechar perfil",
+    "sortBy": "Ordenar",
+    "sortByLabel": "Ordenar personagens",
+    "sortMenuLabel": "Opções de ordenação",
+    "sortLevel": "Nível",
+    "sortName": "Nome",
+    "sortRecent": "Jogados recentemente",
+    "sortPlaytime": "Tempo de jogo"
   },
   "deleteCharacter": {
     "title": "Excluir personagem",
@@ -2459,6 +2478,8 @@ export const pt_BR: EnTranslations = {
       "lootReceiveMoney": "Você recebe {money}.",
       "lootMoney": "Você saqueia {money}.",
       "soldItem": "Você vendeu {item} por {money}.",
+      "soldJunkOne": "Você vendeu {count} item cinza por {money}.",
+      "soldJunkMany": "Você vendeu {count} itens cinza por {money}.",
       "friendOnline": "{name} ficou online.",
       "friendOffline": "{name} ficou offline."
     },
@@ -2862,7 +2883,10 @@ export const pt_BR: EnTranslations = {
       "sellQuantityTitle": "Vender {item}",
       "sellQuantityInput": "Quantidade para vender",
       "sellQuantityConfirm": "Vender",
-      "sellQuantityCancel": "Cancelar"
+      "sellQuantityCancel": "Cancelar",
+      "sellJunk": "Vender tralha",
+      "sellJunkAria": "Vender toda a tralha por {price}",
+      "sellJunkHint": "Vende todos os itens cinza nas suas bolsas, exceto itens de missão."
     },
     "market": {
       "title": "Mercado Mundial",

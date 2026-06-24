@@ -426,6 +426,18 @@ export const es_ES: EnTranslations = {
     "tips": {
       "joinChannels": "Consejo: escribe /join world o /join lfg para chatear con jugadores de todas partes del reino."
     },
+    "questShare": {
+      "notShareable": "Esta misión no se puede compartir.",
+      "notInSharerParty": "Debes estar en el grupo de {name} para aceptar esa misión.",
+      "accepted": "{name} aceptó tu misión compartida.",
+      "dialogTitle": "Misión compartida",
+      "viewOnlyHint": "Únete al grupo de quien la comparte para aceptar esta misión.",
+      "alreadyOn": "Ya tienes esta misión.",
+      "alreadyDone": "Ya has completado esta misión.",
+      "ineligible": "No cumples los requisitos de esta misión.",
+      "noQuestSelected": "Selecciona una misión en tu diario para compartirla.",
+      "linkTitle": "Mayús + clic para enlazar esta misión en el chat."
+    },
     "plurals": {
       "guildMembers": {
         "one": "eres {rank}, {count} miembro",
@@ -1981,7 +1993,14 @@ export const es_ES: EnTranslations = {
     "portraitAlt": "Retrato de {name}",
     "viewProfile": "Ver perfil",
     "profile": "Perfil",
-    "closeProfile": "Cerrar perfil"
+    "closeProfile": "Cerrar perfil",
+    "sortBy": "Ordenar",
+    "sortByLabel": "Ordenar personajes",
+    "sortMenuLabel": "Opciones de orden",
+    "sortLevel": "Nivel",
+    "sortName": "Nombre",
+    "sortRecent": "Jugados recientemente",
+    "sortPlaytime": "Tiempo de juego"
   },
   "deleteCharacter": {
     "title": "Eliminar personaje",
@@ -2459,6 +2478,8 @@ export const es_ES: EnTranslations = {
       "lootReceiveMoney": "Recibes {money}.",
       "lootMoney": "Saqueas {money}.",
       "soldItem": "Vendiste {item} por {money}.",
+      "soldJunkOne": "Vendiste {count} objeto gris por {money}.",
+      "soldJunkMany": "Vendiste {count} objetos grises por {money}.",
       "friendOnline": "{name} se ha conectado.",
       "friendOffline": "{name} se ha desconectado."
     },
@@ -2862,7 +2883,10 @@ export const es_ES: EnTranslations = {
       "sellQuantityTitle": "Vender {item}",
       "sellQuantityInput": "Cantidad a vender",
       "sellQuantityConfirm": "Vender",
-      "sellQuantityCancel": "Cancelar"
+      "sellQuantityCancel": "Cancelar",
+      "sellJunk": "Vender basura",
+      "sellJunkAria": "Vender toda la basura por {price}",
+      "sellJunkHint": "Vende todos los objetos grises de tus bolsas excepto los objetos de misión."
     },
     "market": {
       "title": "Mercado Mundial",

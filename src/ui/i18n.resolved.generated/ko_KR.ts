@@ -426,6 +426,18 @@ export const ko_KR: EnTranslations = {
     "tips": {
       "joinChannels": "팁: /join world 또는 /join lfg를 입력하면 서버 전역의 플레이어와 대화할 수 있습니다."
     },
+    "questShare": {
+      "notShareable": "이 퀘스트는 공유할 수 없습니다.",
+      "notInSharerParty": "{name}님의 파티에 속해 있어야 이 퀘스트를 수락할 수 있습니다.",
+      "accepted": "{name}님이 당신의 공유 퀘스트를 수락했습니다.",
+      "dialogTitle": "공유 퀘스트",
+      "viewOnlyHint": "이 퀘스트를 수락하려면 공유한 사람의 파티에 참가하세요.",
+      "alreadyOn": "이미 진행 중인 퀘스트입니다.",
+      "alreadyDone": "이미 완료한 퀘스트입니다.",
+      "ineligible": "이 퀘스트의 요구 조건을 충족하지 못합니다.",
+      "noQuestSelected": "공유할 퀘스트를 기록에서 선택하세요.",
+      "linkTitle": "Shift + 클릭하면 이 퀘스트를 채팅에 연결합니다."
+    },
     "plurals": {
       "guildMembers": {
         "one": "당신은 {rank}, {count}명 회원",
@@ -1981,7 +1993,14 @@ export const ko_KR: EnTranslations = {
     "portraitAlt": "{name}의 초상화",
     "viewProfile": "프로필 보기",
     "profile": "프로필",
-    "closeProfile": "프로필 닫기"
+    "closeProfile": "프로필 닫기",
+    "sortBy": "정렬",
+    "sortByLabel": "캐릭터 정렬",
+    "sortMenuLabel": "정렬 옵션",
+    "sortLevel": "레벨",
+    "sortName": "이름",
+    "sortRecent": "최근 플레이",
+    "sortPlaytime": "플레이 시간"
   },
   "deleteCharacter": {
     "title": "캐릭터 삭제",
@@ -2459,6 +2478,8 @@ export const ko_KR: EnTranslations = {
       "lootReceiveMoney": "{money}을(를) 받았습니다.",
       "lootMoney": "{money}을(를) 전리품으로 획득했습니다.",
       "soldItem": "{item}을(를) {money}에 팔았습니다.",
+      "soldJunkOne": "잡동사니 아이템 {count}개를 {money}에 팔았습니다.",
+      "soldJunkMany": "잡동사니 아이템 {count}개를 {money}에 팔았습니다.",
       "friendOnline": "{name}님이 접속했습니다.",
       "friendOffline": "{name}님이 접속을 종료했습니다."
     },
@@ -2862,7 +2883,10 @@ export const ko_KR: EnTranslations = {
       "sellQuantityTitle": "{item} 판매",
       "sellQuantityInput": "판매할 수량",
       "sellQuantityConfirm": "판매",
-      "sellQuantityCancel": "취소"
+      "sellQuantityCancel": "취소",
+      "sellJunk": "잡동사니 판매",
+      "sellJunkAria": "모든 잡동사니를 {price}에 판매",
+      "sellJunkHint": "퀘스트 아이템을 제외한 가방의 모든 회색 아이템을 판매합니다."
     },
     "market": {
       "title": "세계 시장",

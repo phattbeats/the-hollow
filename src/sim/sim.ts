@@ -161,6 +161,7 @@ import {
   type OverheadEmoteId,
   type PetMode,
   type PlayerClass,
+  type QuestDef,
   type QuestProgress,
   type QuestState,
   questTurnInNpcIds,
@@ -863,6 +864,7 @@ export interface PetState {
   hp: number;
   dead: boolean;
   mode?: PetMode;
+  autoTaunt?: boolean;
 }
 
 const PET_NAME_RE = /^[A-Za-z][A-Za-z '-]{1,15}$/;
@@ -4317,6 +4319,7 @@ export class Sim {
       hp: pet.dead ? 0 : Math.max(1, Math.min(pet.maxHp, pet.hp)),
       dead: pet.dead,
       mode: pet.petMode,
+      autoTaunt: pet.petAutoTaunt,
     };
   }
 
@@ -4330,6 +4333,8 @@ export class Sim {
     pet.ownerId = owner.id;
     pet.petMode = state.mode ?? 'defensive';
     pet.petTauntTimer = 0;
+    pet.petAutoTaunt = state.autoTaunt ?? false;
+    pet.petManualTauntPending = false;
     pet.hostile = false;
     pet.aiState = state.dead ? 'dead' : 'idle';
     pet.aggroTargetId = null;
@@ -4402,6 +4407,8 @@ export class Sim {
     pet.ownerId = p.id;
     pet.petMode = 'defensive';
     pet.petTauntTimer = 0;
+    pet.petAutoTaunt = false;
+    pet.petManualTauntPending = false;
     pet.hostile = false;
     pet.aiState = 'idle';
     pet.aggroTargetId = null;
@@ -4491,6 +4498,8 @@ export class Sim {
     pet.ownerId = owner.id;
     pet.petMode = 'defensive';
     pet.petTauntTimer = 0;
+    pet.petAutoTaunt = false;
+    pet.petManualTauntPending = false;
     pet.hostile = false;
     pet.aiState = 'idle';
     pet.aggroTargetId = null;
@@ -4658,8 +4667,12 @@ export class Sim {
     pet.aggroTargetId = target.id;
     pet.inCombat = true;
     addThreat(target, pet.id, 1);
-    if (dist2d(pet.pos, target.pos) > PET_TAUNT_RANGE) return;
+    if (dist2d(pet.pos, target.pos) > PET_TAUNT_RANGE) {
+      pet.petManualTauntPending = true;
+      return;
+    }
     this.applyTaunt(pet, target);
+    pet.petManualTauntPending = false;
     pet.petTauntTimer = PET_GROWL_INTERVAL;
   }
 
@@ -4798,8 +4811,25 @@ export class Sim {
       pet.aggroTargetId = null;
       pet.inCombat = false;
       pet.autoAttack = false;
+      pet.petManualTauntPending = false;
     }
     this.emit({ type: 'log', text: `${pet.name} is now ${mode}.`, color: '#ffd100', pid: r.e.id });
+  }
+
+  setPetAutoTaunt(enabled: boolean, pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    if (!isPetClass(r.meta.cls)) {
+      this.error(r.e.id, 'Only pet classes can command pets.');
+      return;
+    }
+    r.meta.lastActiveTick = this.tickCount; // commanding the pet is a deliberate action
+    const pet = this.petOf(r.e.id, true);
+    if (!pet) {
+      this.error(r.e.id, 'You have no pet.');
+      return;
+    }
+    pet.petAutoTaunt = enabled;
   }
 
   /** Remove a summoned demon from the world entirely, scrubbing any references
@@ -7808,6 +7838,7 @@ export class Sim {
     if (!target && !owner.dead) target = this.petPickTarget(pet, owner);
     pet.aggroTargetId = target?.id ?? null;
     pet.inCombat = target !== null;
+    if (!target) pet.petManualTauntPending = false;
 
     if (target) {
       // ranged demon (imp) holds its distance and hurls bolts; melee pets close
@@ -7826,8 +7857,14 @@ export class Sim {
         pet.swingTimer = Math.max(0, pet.swingTimer - DT);
       } else {
         pet.facing = angleTo(pet.pos, target.pos);
-        if (target.kind === 'mob' && !ranged && pet.petTauntTimer <= 0) {
+        if (
+          target.kind === 'mob' &&
+          !ranged &&
+          pet.petTauntTimer <= 0 &&
+          (pet.petAutoTaunt || pet.petManualTauntPending)
+        ) {
           this.applyTaunt(pet, target);
+          pet.petManualTauntPending = false;
           pet.petTauntTimer = PET_GROWL_INTERVAL;
         }
         pet.swingTimer -= DT;
@@ -9808,6 +9845,53 @@ export class Sim {
     });
   }
 
+  // Bulk-sell every gray (poor-quality) item in the bags in one action, applying the
+  // same rules as the per-item sellItem path: quest items and noVendorSell items are
+  // left untouched and each sold stack is recorded for buyback. One summary loot line
+  // is emitted instead of one per stack.
+  sellAllJunk(pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    const { meta, e: p } = r;
+    if (p.dead) {
+      this.error(meta.entityId, "You can't do that while dead.");
+      return;
+    }
+    if (!this.vendorInRange(p)) {
+      this.error(meta.entityId, 'There is no merchant nearby.');
+      return;
+    }
+    const junk = meta.inventory
+      .filter((s) => {
+        const def = ITEMS[s.itemId];
+        return (
+          !!def &&
+          def.quality === 'poor' &&
+          def.kind !== 'quest' &&
+          !def.noVendorSell &&
+          s.count > 0
+        );
+      })
+      .map((s) => ({ itemId: s.itemId, count: s.count }));
+    if (junk.length === 0) return; // nothing gray to sell; the vendor UI keeps the button disabled here
+    let total = 0;
+    let soldCount = 0;
+    for (const { itemId, count } of junk) {
+      const def = ITEMS[itemId]!;
+      this.removeItem(itemId, count, meta.entityId);
+      this.recordVendorBuyback(meta, itemId, count);
+      total += def.sellValue * count;
+      soldCount += count;
+    }
+    meta.copper += total;
+    this.emit({ type: 'vendor', action: 'sell', pid: meta.entityId });
+    this.emit({
+      type: 'loot',
+      text: `Sold ${soldCount} junk item${soldCount === 1 ? '' : 's'} for ${formatMoney(total)}.`,
+      pid: meta.entityId,
+    });
+  }
+
   buyBackItem(itemId: string, pid?: number): void {
     const r = this.resolve(pid);
     if (!r) return;
@@ -10342,6 +10426,28 @@ export class Sim {
     return { npc: null, tooFar: sawNpc };
   }
 
+  // Shared accept core for the NPC and linked-share paths. Records progress, then
+  // re-grants any requiredItem the player no longer holds so a lost prerequisite item
+  // can never permanently block the quest, and announces the accept. Both callers go
+  // through here so the two paths cannot drift (notably this re-grant).
+  private finalizeQuestAccept(questId: string, quest: QuestDef, meta: PlayerMeta): void {
+    meta.questLog.set(questId, { questId, counts: quest.objectives.map(() => 0), state: 'active' });
+    for (const itemId of questFallbackGrants(
+      quest,
+      (id) => this.countItem(id, meta.entityId) > 0,
+    )) {
+      this.addItem(itemId, 1, meta.entityId);
+    }
+    this.emit({ type: 'questAccepted', questId, pid: meta.entityId });
+    this.emit({
+      type: 'log',
+      text: `Quest accepted: ${quest.name}`,
+      color: '#ff0',
+      pid: meta.entityId,
+    });
+    this.onInventoryChangedForQuests(meta);
+  }
+
   acceptQuest(questId: string, pid?: number): void {
     const r = this.resolve(pid);
     if (!r) return;
@@ -10363,23 +10469,32 @@ export class Sim {
       );
       return;
     }
-    meta.questLog.set(questId, { questId, counts: quest.objectives.map(() => 0), state: 'active' });
-    // Re-grant any quest item this quest needs from earlier progression but the player
-    // no longer holds, so a missing item can never permanently block the quest.
-    for (const itemId of questFallbackGrants(
-      quest,
-      (id) => this.countItem(id, meta.entityId) > 0,
-    )) {
-      this.addItem(itemId, 1, meta.entityId);
+    this.finalizeQuestAccept(questId, quest, meta);
+  }
+
+  acceptLinkedQuest(questId: string, sharerPid: number, pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    const { meta } = r;
+    const quest = QUESTS[questId];
+    if (!quest || quest.retired || quest.shareable === false) {
+      this.error(meta.entityId, "This quest can't be shared.");
+      return;
     }
-    this.emit({ type: 'questAccepted', questId, pid: meta.entityId });
-    this.emit({
-      type: 'log',
-      text: `Quest accepted: ${quest.name}`,
-      color: '#ff0',
-      pid: meta.entityId,
-    });
-    this.onInventoryChangedForQuests(meta);
+    const myParty = this.partyOf(meta.entityId);
+    const sharerParty = this.partyOf(sharerPid);
+    const sharer = this.players.get(sharerPid);
+    if (!myParty || !sharerParty || myParty.id !== sharerParty.id) {
+      const sharerName = sharer ? sharer.name : 'that player';
+      this.error(meta.entityId, `You must be in ${sharerName}'s party to accept that quest.`);
+      return;
+    }
+    if (this.questState(questId, meta.entityId) !== 'available') {
+      this.error(meta.entityId, 'That quest is not available.');
+      return;
+    }
+    this.finalizeQuestAccept(questId, quest, meta);
+    if (sharer) this.notice(sharerPid, `${meta.name} accepted your shared quest.`);
   }
 
   abandonQuest(questId: string, pid?: number): void {
@@ -14819,18 +14934,21 @@ export class Sim {
         : ' It should be a safe landing.';
     return `You are falling — ${height}yd above the ground.${danger}`;
   }
-  // Self-only readout of the controlled pet's Growl (taunt) cooldown. Reads
-  // only the live pet Entity's petTauntTimer (the same field updatePet counts
-  // down at sim.ts ~2770 and resets to PET_GROWL_INTERVAL after each growl), so
-  // it stays truthful without any new state. Distinct from /pet (vitals) and
-  // /cooldowns (the player's own ability map, which never holds this timer).
+  // Self-only readout of the controlled pet's Growl cooldown and autocast state.
+  // Distinct from /pet (vitals) and /cooldowns (the player's own ability map,
+  // which never holds this timer).
   private petTauntReadout(owner: Entity): string {
     const pet = this.petOf(owner.id);
     if (!pet) return 'You do not have a pet.';
     if (pet.petTauntTimer <= 0) {
-      return `Your pet's Growl is ready — it will taunt its target on the next melee swing.`;
+      return pet.petAutoTaunt
+        ? `Your pet's Growl is ready. Auto-taunt is on.`
+        : `Your pet's Growl is ready. Auto-taunt is off.`;
     }
-    return `Your pet's Growl is on cooldown — ready in ${Math.ceil(pet.petTauntTimer)}s.`;
+    const seconds = Math.ceil(pet.petTauntTimer);
+    return pet.petAutoTaunt
+      ? `Your pet's Growl is on cooldown. Auto-taunt is on. Ready in ${seconds}s.`
+      : `Your pet's Growl is on cooldown. Auto-taunt is off. Ready in ${seconds}s.`;
   }
   // Druid forms park the mana bar in savedMana and run on rage/energy instead
   // (entity.ts:126-130). That parked pool has no in-game UI — the bar shows the
