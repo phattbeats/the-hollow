@@ -13,10 +13,16 @@ const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8').rep
 // (delve, lockpick, the classic stat windows, vendor/bags/social/map, arena/market/
 // options/theme/emote) into src/styles/components.css and the shared .window shell into
 // src/styles/layout.css. Assertions on relocated rules read base.css / hud.css /
-// components.css / layout.css; rules still inline in index.html (the pre-game shell and
-// the body.mobile-touch overrides, which are P4) keep reading `html`. Note biome
-// reformats the moved rules one-declaration-per-line, so the repointed expectations use
-// that format, not the compact inline form.
+// components.css / layout.css. Phase P4a then moved the desktop pre-game shell + char
+// select (start screen, loading, play console, skin picker rows, login form, the
+// animated + cinematic backdrops, controls drawer, char list + delete modal + class
+// details, and the unified character-select layout + skin-select overlay, each with its
+// interspersed body.mobile-touch shell rules) into src/styles/shell.css (@layer shell),
+// so assertions on those rules read shell.css. What is STILL inline in index.html (the
+// in-game mobile-touch controls section, the not-yet-extracted P2/P3 chrome, and the
+// pre-start rule) keeps reading `html`. Note biome reformats the moved rules one-
+// declaration-per-line, so the repointed expectations use that format, not the compact
+// inline form.
 const baseCss = readFileSync(new URL('../src/styles/base.css', import.meta.url), 'utf8').replace(
   /\r\n/g,
   '\n',
@@ -29,6 +35,10 @@ const componentsCss = readFileSync(
   new URL('../src/styles/components.css', import.meta.url),
   'utf8',
 ).replace(/\r\n/g, '\n');
+const shellCss = readFileSync(new URL('../src/styles/shell.css', import.meta.url), 'utf8').replace(
+  /\r\n/g,
+  '\n',
+);
 const playHtml = readFileSync(new URL('../play.html', import.meta.url), 'utf8').replace(
   /\r\n/g,
   '\n',
@@ -447,27 +457,28 @@ describe('client HTML shell', () => {
     expect(baseCss).toContain('touch-action: pan-y;\n    overscroll-behavior-y: auto;');
     expect(baseCss).toContain('body.game-active {\n    overflow: hidden;\n    touch-action: none;');
     expect(html).toContain('-webkit-overflow-scrolling: touch;');
-    expect(html).toContain(
+    expect(shellCss).toContain(
       'body.mobile-touch .homepage-header {\n    display: flex;\n    position: sticky;\n    top: 0;\n    z-index: 120;',
     );
-    expect(html).toContain('padding-top: calc(var(--spacing-sm) + env(safe-area-inset-top));');
-    expect(html).toContain('padding-right: max(var(--spacing-md), env(safe-area-inset-right));');
-    expect(html).toContain(
+    expect(shellCss).toContain('padding-top: calc(var(--spacing-sm) + env(safe-area-inset-top));');
+    expect(shellCss).toContain('padding-right: max(var(--spacing-md), env(safe-area-inset-right));');
+    expect(shellCss).toContain(
       'body.mobile-touch #homepage-views-container {\n    padding-top: var(--spacing-lg);\n    padding-right: max(var(--spacing-md), env(safe-area-inset-right));',
     );
-    expect(html).toContain(
+    expect(shellCss).toContain(
       'body.mobile-touch .header-actions {\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    align-items: center;',
     );
-    expect(html).toContain(
+    expect(shellCss).toContain(
       'body.mobile-touch .footer-lang-row {\n    width: 100%;\n    flex-direction: column;\n    align-items: center;',
     );
-    expect(html).toContain(
-      'body.native-app.mobile-touch .auth-panel-premium {\n    backdrop-filter: none;\n    -webkit-backdrop-filter: none;',
+    // P4a authored this backdrop pair -webkit-first (Lightning drops the std otherwise).
+    expect(shellCss).toContain(
+      'body.native-app.mobile-touch .auth-panel-premium {\n    -webkit-backdrop-filter: none;\n    backdrop-filter: none;',
     );
-    expect(html).toContain(
+    expect(shellCss).toContain(
       'body.native-app.mobile-touch[data-start-panel="login-panel"] .portal-ring,',
     );
-    expect(html).toContain(
+    expect(shellCss).toContain(
       'touch-action: manipulation;\n    -webkit-tap-highlight-color: transparent;',
     );
     expect(mainTs).toContain(
@@ -480,7 +491,7 @@ describe('client HTML shell', () => {
       "document.addEventListener('touchend', handleNativeMenuToggle, { capture: true, passive: false });",
     );
     expect(mainTs).toContain("if (headerMenu) headerMenu.style.display = open ? 'flex' : '';");
-    expect(html).not.toContain(
+    expect(shellCss).not.toContain(
       'body.mobile-touch .homepage-header {\n    display: flex;\n    position: relative;',
     );
     expect(mainTs).not.toContain("visualViewport?.addEventListener('scroll', syncAppViewport)");
@@ -508,15 +519,15 @@ describe('client HTML shell', () => {
     expect(mainTs).toContain(
       '<h3 class="news-item-title">${title}</h3><div class="news-item-meta">${tag}${badge}${when}</div></div>',
     );
-    expect(html).toContain(
+    expect(shellCss).toContain(
       'body.mobile-touch .news-item-head {\n    flex-direction: column;\n    align-items: flex-start;',
     );
-    expect(html).toContain(
+    expect(shellCss).toContain(
       'body.mobile-touch .news-item-meta {\n    width: 100%;\n    margin-left: 0;',
     );
-    expect(html).toContain('overflow-wrap: break-word;\n    word-break: normal;');
-    expect(html).toContain('body.mobile-touch .news-body {\n    text-align: left;');
-    expect(html).toContain(
+    expect(shellCss).toContain('overflow-wrap: break-word;\n    word-break: normal;');
+    expect(shellCss).toContain('body.mobile-touch .news-body {\n    text-align: left;');
+    expect(shellCss).toContain(
       'body.mobile-touch .news-body ul {\n    list-style: none;\n    padding-left: 0;',
     );
   });
@@ -528,21 +539,21 @@ describe('client HTML shell', () => {
     expect(mainTs).toContain(
       '<span class="hs-xp" data-label="${esc(lifetimeXpLabel)}">${formatXp(r.lifetimeXp)}</span>',
     );
-    expect(html).toContain('body.mobile-touch .hs-head {\n    display: none;');
-    expect(html).toContain(
+    expect(shellCss).toContain('body.mobile-touch .hs-head {\n    display: none;');
+    expect(shellCss).toContain(
       'body.mobile-touch .hs-row {\n    grid-template-columns: 38px minmax(0, 1fr);',
     );
-    expect(html).toContain(
+    expect(shellCss).toContain(
       'grid-template-areas:\n      "rank name"\n      "rank realm"\n      "rank lvl"\n      "rank vlvl"\n      "rank xp";',
     );
-    expect(html).toContain(
+    expect(shellCss).toContain(
       'body.mobile-touch .hs-realm::before,\n  body.mobile-touch .hs-lvl::before,\n  body.mobile-touch .hs-vlvl::before,\n  body.mobile-touch .hs-xp::before {\n    content: attr(data-label);',
     );
   });
 
   it('stacks selected character details on mobile', () => {
     expect(html).toContain('id="charselect-class-details"');
-    expect(html).toContain(
+    expect(shellCss).toContain(
       'body.mobile-touch #charselect-panel #charselect-class-details .class-details-grid,\n  body.mobile-touch #charselect-panel #online-class-details .class-details-grid {\n    display: flex;\n    flex-direction: column;',
     );
   });

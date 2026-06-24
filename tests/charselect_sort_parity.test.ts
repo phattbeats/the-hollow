@@ -21,6 +21,13 @@ const mainTs = readFileSync(new URL('../src/main.ts', import.meta.url), 'utf8').
   /\r\n/g,
   '\n',
 );
+// Phase P4a moved index.html's char-select CSS into src/styles/shell.css (@layer shell),
+// loaded by the index entry via the barrel; play.html keeps its inline copy until the
+// P4b per-entry .extra split. So the index-side CSS parity check reads shell.css.
+const shellCss = readFileSync(new URL('../src/styles/shell.css', import.meta.url), 'utf8').replace(
+  /\r\n/g,
+  '\n',
+);
 
 // The ids/classes wireStartScreens() and the sort menu depend on at boot/open time.
 const REQUIRED_SORT_IDS = ['cs-sort-btn', 'cs-sort-menu', 'cs-sort-current'];
@@ -43,11 +50,11 @@ describe('character-select sort control parity', () => {
   }
 
   for (const rule of REQUIRED_SORT_CSS) {
-    it(`index.html styles ${rule}`, () => {
-      expect(indexHtml).toContain(`${rule} {`);
+    it(`shell.css styles ${rule} (moved from index.html inline in P4a)`, () => {
+      expect(shellCss).toContain(`${rule} {`);
     });
 
-    it(`play.html styles ${rule} (mirrors index.html)`, () => {
+    it(`play.html styles ${rule} (mirrors index.html; play.html .extra split is P4b)`, () => {
       expect(playHtml).toContain(`${rule} {`);
     });
   }
