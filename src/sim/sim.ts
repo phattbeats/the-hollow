@@ -161,6 +161,7 @@ import {
   type OverheadEmoteId,
   type PetMode,
   type PlayerClass,
+  type QuestDef,
   type QuestProgress,
   type QuestState,
   questTurnInNpcIds,
@@ -10425,6 +10426,28 @@ export class Sim {
     return { npc: null, tooFar: sawNpc };
   }
 
+  // Shared accept core for the NPC and linked-share paths. Records progress, then
+  // re-grants any requiredItem the player no longer holds so a lost prerequisite item
+  // can never permanently block the quest, and announces the accept. Both callers go
+  // through here so the two paths cannot drift (notably this re-grant).
+  private finalizeQuestAccept(questId: string, quest: QuestDef, meta: PlayerMeta): void {
+    meta.questLog.set(questId, { questId, counts: quest.objectives.map(() => 0), state: 'active' });
+    for (const itemId of questFallbackGrants(
+      quest,
+      (id) => this.countItem(id, meta.entityId) > 0,
+    )) {
+      this.addItem(itemId, 1, meta.entityId);
+    }
+    this.emit({ type: 'questAccepted', questId, pid: meta.entityId });
+    this.emit({
+      type: 'log',
+      text: `Quest accepted: ${quest.name}`,
+      color: '#ff0',
+      pid: meta.entityId,
+    });
+    this.onInventoryChangedForQuests(meta);
+  }
+
   acceptQuest(questId: string, pid?: number): void {
     const r = this.resolve(pid);
     if (!r) return;
@@ -10446,23 +10469,32 @@ export class Sim {
       );
       return;
     }
-    meta.questLog.set(questId, { questId, counts: quest.objectives.map(() => 0), state: 'active' });
-    // Re-grant any quest item this quest needs from earlier progression but the player
-    // no longer holds, so a missing item can never permanently block the quest.
-    for (const itemId of questFallbackGrants(
-      quest,
-      (id) => this.countItem(id, meta.entityId) > 0,
-    )) {
-      this.addItem(itemId, 1, meta.entityId);
+    this.finalizeQuestAccept(questId, quest, meta);
+  }
+
+  acceptLinkedQuest(questId: string, sharerPid: number, pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    const { meta } = r;
+    const quest = QUESTS[questId];
+    if (!quest || quest.retired || quest.shareable === false) {
+      this.error(meta.entityId, "This quest can't be shared.");
+      return;
     }
-    this.emit({ type: 'questAccepted', questId, pid: meta.entityId });
-    this.emit({
-      type: 'log',
-      text: `Quest accepted: ${quest.name}`,
-      color: '#ff0',
-      pid: meta.entityId,
-    });
-    this.onInventoryChangedForQuests(meta);
+    const myParty = this.partyOf(meta.entityId);
+    const sharerParty = this.partyOf(sharerPid);
+    const sharer = this.players.get(sharerPid);
+    if (!myParty || !sharerParty || myParty.id !== sharerParty.id) {
+      const sharerName = sharer ? sharer.name : 'that player';
+      this.error(meta.entityId, `You must be in ${sharerName}'s party to accept that quest.`);
+      return;
+    }
+    if (this.questState(questId, meta.entityId) !== 'available') {
+      this.error(meta.entityId, 'That quest is not available.');
+      return;
+    }
+    this.finalizeQuestAccept(questId, quest, meta);
+    if (sharer) this.notice(sharerPid, `${meta.name} accepted your shared quest.`);
   }
 
   abandonQuest(questId: string, pid?: number): void {

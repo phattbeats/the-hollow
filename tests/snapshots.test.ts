@@ -967,6 +967,16 @@ describe('client-side delta merge', () => {
     }
   });
 
+  it('reconstructs stacking-debuff stack counts from the wire (Sunder Armor)', () => {
+    const client = bareClient(1);
+    (client as any).applySnapshot({ ents: [{
+      id: 2, k: 'mob', tid: 'wolf', nm: 'Wolf', lv: 3, x: 0, y: 0, z: 0, f: 0, hp: 40, mhp: 40,
+      auras: [{ id: 'sunder_armor', name: 'Sunder Armor', kind: 'sunder', rem: 30, dur: 30, stacks: 3 }],
+    }] });
+    const aura = client.entities.get(2)!.auras.find((a) => a.kind === 'sunder');
+    expect(aura?.stacks, 'client should mirror the wire stack count').toBe(3);
+  });
+
   it('snaps the interpolation anchor on a teleport but tweens normal moves', () => {
     const client = bareClient(1);
     const ent = (x: number, z: number) => ({
@@ -1205,5 +1215,43 @@ describe('guild nameplate wire', () => {
     // a later full record without `gd` means "no guild" → reset to ''
     (client as any).applySnapshot({ t: 'snap', ents: [base] });
     expect(client.entities.get(7)!.guild).toBe('');
+  });
+});
+
+// Equipped mainhand item id rides the identity wire (terse key `mh`) so the
+// renderer can show each player's held weapon model. Recomputed in
+// recalcPlayerStats; the renderer maps it to a GLB (ITEM_WEAPON_VARIANTS).
+describe('held weapon wire (mainhandItemId)', () => {
+  it('carries the equipped mainhand item through wireEntity', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'warrior', noPlayer: true });
+    const pid = sim.addPlayer('warrior', 'Thaldrin');
+    const e = sim.entities.get(pid)!;
+    // a fresh warrior starts holding its class startWeapon
+    expect(e.mainhandItemId).toBe('worn_sword');
+    expect(wireEntity(e).mh).toBe('worn_sword');
+  });
+
+  it('restores entity.mainhandItemId on the client from a full record', () => {
+    const client = bareClient(99);
+    const base = {
+      id: 7,
+      k: 'player',
+      tid: 'warrior',
+      nm: 'Brae',
+      lv: 5,
+      x: 0,
+      y: 0,
+      z: 0,
+      f: 0,
+      hp: 100,
+      mhp: 100,
+    };
+
+    (client as any).applySnapshot({ t: 'snap', ents: [{ ...base, mh: 'zealotsbane_blade' }] });
+    expect(client.entities.get(7)!.mainhandItemId).toBe('zealotsbane_blade');
+
+    // a later full record without `mh` means "no equipped weapon" → reset to null
+    (client as any).applySnapshot({ t: 'snap', ents: [base] });
+    expect(client.entities.get(7)!.mainhandItemId).toBeNull();
   });
 });

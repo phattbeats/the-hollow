@@ -222,6 +222,7 @@ interface WireAura {
   kind: string;
   rem: number;
   dur: number;
+  stacks?: number;
 }
 
 interface WhoRosterRow {
@@ -243,6 +244,7 @@ function identityFields(e: Entity): Record<string, unknown> {
   const out: Record<string, unknown> = { k: e.kind, tid: e.templateId, nm: e.name, lv: e.level };
   if (e.skinCatalog === 'mech') out.cat = 'mech';
   if (e.skin) out.sk = e.skin;
+  if (e.mainhandItemId) out.mh = e.mainhandItemId; // equipped mainhand → held weapon model (render-only)
   if (e.holderTier) out.ht = e.holderTier; // $WOC holder-tier flair (cosmetic)
   if (e.holderBalance) out.hb = Math.round(e.holderBalance); // exact $WOC, for inspect
   if (e.guild) out.gd = e.guild;
@@ -296,6 +298,7 @@ function dynamicFields(e: Entity): Record<string, unknown> {
         kind: a.kind,
         rem: round2(a.remaining),
         dur: a.duration,
+        ...(a.stacks && a.stacks > 1 ? { stacks: a.stacks } : {}),
       }),
     );
   }
@@ -1429,6 +1432,12 @@ export class GameServer {
       case 'abandon':
         if (typeof msg.quest === 'string') {
           sim.abandonQuest(msg.quest, pid);
+          this.resyncQuests(session);
+        }
+        break;
+      case 'qlinkaccept':
+        if (typeof msg.quest === 'string' && typeof msg.from === 'number') {
+          sim.acceptLinkedQuest(msg.quest, msg.from, pid);
           this.resyncQuests(session);
         }
         break;

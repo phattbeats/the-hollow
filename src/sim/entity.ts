@@ -111,6 +111,7 @@ function baseEntity(id: number, pos: Vec3): Entity {
     color: 0xffffff,
     skinCatalog: 'class',
     skin: 0,
+    mainhandItemId: null,
     guild: '',
   };
 }
@@ -237,6 +238,12 @@ export function recalcPlayerStats(
     speed: 2,
   };
   e.weapon = weapon;
+  // Render-only: the equipped mainhand item id drives the held weapon model on
+  // the client (mapped via ITEM_WEAPON_VARIANTS). Gated on the item actually being
+  // a weapon, mirroring the e.weapon derivation above (so a non-weapon mainhand,
+  // were one ever stored, never resolves to a held model).
+  e.mainhandItemId =
+    equipment.mainhand && ITEMS[equipment.mainhand]?.weapon ? equipment.mainhand : null;
   // Melee AP by class (vanilla-ish): warriors/paladins/shamans/druids 2/str,
   // rogues str+agi, hunters str+agi, pure casters str.
   const apFromStats =

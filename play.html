@@ -649,6 +649,7 @@
     background-size: cover; background-position: center; background-repeat: no-repeat; }
   .buff.debuff { border-color: var(--color-debuff); }
   .buff .dur { position: absolute; bottom: -13px; left: 0; right: 0; text-align: center; font-size: 9px; color: #eee; text-shadow: 1px 1px 1px #000; }
+  .buff .stacks { position: absolute; top: -4px; right: -3px; min-width: 13px; height: 13px; padding: 0 2px; box-sizing: border-box; text-align: center; font: 700 9px/11px var(--body-font); color: #fff; background: rgba(8, 8, 12, 0.92); border: 1px solid var(--color-debuff); border-radius: 7px; }
 
   /* ---------- cast bar ---------- */
   #castbar { position: absolute; left: 50%; transform: translateX(-50%); bottom: 200px; width: 300px;
@@ -791,6 +792,9 @@
   .chat-player-name { cursor: var(--cursor-point); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
   .chat-player-name:hover { filter: brightness(1.25); }
   .chat-player-name:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 2px; }
+  .chat-quest-link { color: #ffd100; cursor: var(--cursor-point); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  .chat-quest-link:hover { color: #fff176; }
+  .chat-quest-link:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 2px; }
   .chat-pane::-webkit-scrollbar { width: 8px; }
   .chat-pane::-webkit-scrollbar-track { background: #0b0b10; }
   .chat-pane::-webkit-scrollbar-thumb { background: #4a3d1d; border-radius: 4px; }
