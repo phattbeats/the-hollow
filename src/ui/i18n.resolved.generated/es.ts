@@ -1981,7 +1981,14 @@ export const es: EnTranslations = {
     "portraitAlt": "Retrato de {name}",
     "viewProfile": "Ver perfil",
     "profile": "Perfil",
-    "closeProfile": "Cerrar perfil"
+    "closeProfile": "Cerrar perfil",
+    "sortBy": "Ordenar",
+    "sortByLabel": "Ordenar personajes",
+    "sortMenuLabel": "Opciones de orden",
+    "sortLevel": "Nivel",
+    "sortName": "Nombre",
+    "sortRecent": "Jugados recientemente",
+    "sortPlaytime": "Tiempo de juego"
   },
   "deleteCharacter": {
     "title": "Eliminar personaje",

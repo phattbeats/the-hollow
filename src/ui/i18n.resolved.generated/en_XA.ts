@@ -1981,7 +1981,14 @@ export const en_XA: EnTranslations = {
     "portraitAlt": "[Þóŕţŕáíţ óƒ {name}]",
     "viewProfile": "[Ʋíéŵ Þŕóƒíļé]",
     "profile": "[Þŕóƒíļé]",
-    "closeProfile": "[Çļóšé þŕóƒíļé]"
+    "closeProfile": "[Çļóšé þŕóƒíļé]",
+    "sortBy": "[Šóŕţ]",
+    "sortByLabel": "[Šóŕţ çĥáŕáçţéŕš]",
+    "sortMenuLabel": "[Šóŕţ óþţíóñš]",
+    "sortLevel": "[Ļéʋéļ]",
+    "sortName": "[Ñáɱé]",
+    "sortRecent": "[Ŕéçéñţļý Þļáýéð]",
+    "sortPlaytime": "[Þļáýţíɱé]"
   },
   "deleteCharacter": {
     "title": "[Ðéļéţé Çĥáŕáçţéŕ]",

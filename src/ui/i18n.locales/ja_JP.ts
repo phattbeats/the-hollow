@@ -17,6 +17,13 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'seo.officialLabel': 'World of ClaudeCraft 公式サイト',
   'seo.officialBody':
     'worldofclaudecraft.com は Claudemoon レルムの公式無料ブラウザMMOです。永続キャラクターでオンラインプレイし、オフラインでソロ探索し、wikiを読み、このサイトから確認済みのコミュニティリンクをたどれます。',
+  'character.sortBy': '並べ替え',
+  'character.sortByLabel': 'キャラクターを並べ替え',
+  'character.sortMenuLabel': '並べ替えオプション',
+  'character.sortLevel': 'レベル',
+  'character.sortName': '名前',
+  'character.sortRecent': '最近プレイ',
+  'character.sortPlaytime': 'プレイ時間',
   'hudChrome.tutorial.moveBodyTouch':
     '移動スティックで移動し、画面をドラッグして周囲を見回します。数歩進んで始めましょう。',
   'hudChrome.tutorial.talkBodyTouch':

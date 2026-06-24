@@ -60,6 +60,8 @@ export interface CharacterSummary {
   skin: number;
   online: boolean;
   forceRename: boolean;
+  lastPlayed?: string | null;
+  playtimeSeconds?: number;
 }
 
 function stringList(value: unknown): string[] {

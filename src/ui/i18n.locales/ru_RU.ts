@@ -17,6 +17,13 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'seo.officialLabel': 'Официальный сайт World of ClaudeCraft',
   'seo.officialBody':
     'worldofclaudecraft.com - официальная бесплатная браузерная MMO для мира Claudemoon. Играйте онлайн с постоянным персонажем, исследуйте мир в одиночку офлайн, читайте wiki и переходите по проверенным ссылкам сообщества с этого сайта.',
+  'character.sortBy': 'Сортировка',
+  'character.sortByLabel': 'Сортировать персонажей',
+  'character.sortMenuLabel': 'Параметры сортировки',
+  'character.sortLevel': 'Уровень',
+  'character.sortName': 'Имя',
+  'character.sortRecent': 'Недавно сыгранные',
+  'character.sortPlaytime': 'Время в игре',
   'hudChrome.tutorial.moveBodyTouch':
     'Используйте джойстик передвижения, чтобы двигаться, и проведите по экрану, чтобы осмотреться. Сделайте несколько шагов, чтобы начать.',
   'hudChrome.tutorial.talkBodyTouch':
@@ -1448,8 +1455,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'itemUi.vendor.sellQuantityCancel': 'Отмена',
   'itemUi.vendor.sellJunk': 'Продать хлам',
   'itemUi.vendor.sellJunkAria': 'Продать весь хлам за {price}',
-  'itemUi.vendor.sellJunkHint':
-    'Продает все серые предметы в сумках, кроме предметов заданий.',
+  'itemUi.vendor.sellJunkHint': 'Продает все серые предметы в сумках, кроме предметов заданий.',
   'itemUi.market.title': 'Мировой рынок',
   'itemUi.market.subtitle': 'биржа Торговца',
   'itemUi.market.close': 'Закрыть рынок',

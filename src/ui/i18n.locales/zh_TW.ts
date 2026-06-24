@@ -17,6 +17,13 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'seo.officialLabel': 'World of ClaudeCraft 官方網站',
   'seo.officialBody':
     'worldofclaudecraft.com 是 Claudemoon 伺服器的官方免費瀏覽器 MMO。你可以用持久角色線上遊玩，也可以離線單人探索、閱讀 wiki，並從本站前往已驗證的社群連結。',
+  'character.sortBy': '排序',
+  'character.sortByLabel': '排序角色',
+  'character.sortMenuLabel': '排序選項',
+  'character.sortLevel': '等級',
+  'character.sortName': '名稱',
+  'character.sortRecent': '最近遊玩',
+  'character.sortPlaytime': '遊戲時間',
   'hudChrome.tutorial.moveBodyTouch': '使用搖桿移動，拖曳螢幕環顧四周。先走幾步開始吧。',
   'hudChrome.tutorial.talkBodyTouch':
     '靠近雷德布魯克元帥並點按「使用」按鈕與他交談，然後接受他的任務。',

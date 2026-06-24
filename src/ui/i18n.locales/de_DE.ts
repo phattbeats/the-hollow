@@ -17,6 +17,13 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'seo.officialLabel': 'Offizielle Website von World of ClaudeCraft',
   'seo.officialBody':
     'worldofclaudecraft.com ist das offizielle kostenlose Browser-MMO für das Reich Claudemoon. Spiele online mit einem dauerhaften Charakter, erkunde solo offline, lies das Wiki und folge den verifizierten Community-Links auf dieser Website.',
+  'character.sortBy': 'Sortieren',
+  'character.sortByLabel': 'Charaktere sortieren',
+  'character.sortMenuLabel': 'Sortieroptionen',
+  'character.sortLevel': 'Stufe',
+  'character.sortName': 'Name',
+  'character.sortRecent': 'Zuletzt gespielt',
+  'character.sortPlaytime': 'Spielzeit',
   'hudChrome.tutorial.moveBodyTouch':
     'Nutze den Bewegungsstick zum Bewegen und zieh über den Bildschirm, um dich umzusehen. Mach ein paar Schritte, um zu beginnen.',
   'hudChrome.tutorial.talkBodyTouch':

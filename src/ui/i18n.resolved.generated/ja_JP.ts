@@ -1981,7 +1981,14 @@ export const ja_JP: EnTranslations = {
     "portraitAlt": "{name}の肖像",
     "viewProfile": "プロフィールを見る",
     "profile": "プロフィール",
-    "closeProfile": "プロフィールを閉じる"
+    "closeProfile": "プロフィールを閉じる",
+    "sortBy": "並べ替え",
+    "sortByLabel": "キャラクターを並べ替え",
+    "sortMenuLabel": "並べ替えオプション",
+    "sortLevel": "レベル",
+    "sortName": "名前",
+    "sortRecent": "最近プレイ",
+    "sortPlaytime": "プレイ時間"
   },
   "deleteCharacter": {
     "title": "キャラクターを削除",

@@ -1981,7 +1981,14 @@ export const ko_KR: EnTranslations = {
     "portraitAlt": "{name}의 초상화",
     "viewProfile": "프로필 보기",
     "profile": "프로필",
-    "closeProfile": "프로필 닫기"
+    "closeProfile": "프로필 닫기",
+    "sortBy": "정렬",
+    "sortByLabel": "캐릭터 정렬",
+    "sortMenuLabel": "정렬 옵션",
+    "sortLevel": "레벨",
+    "sortName": "이름",
+    "sortRecent": "최근 플레이",
+    "sortPlaytime": "플레이 시간"
   },
   "deleteCharacter": {
     "title": "캐릭터 삭제",
