@@ -5,9 +5,17 @@ const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8').rep
 // Phase P1 of the frontend modernization moved the :root tokens and the reset/base
 // block (universal reset, scrollbars, forms, the global canvas/#ui/#nameplates base
 // rules) out of index.html's inline <style> into src/styles/base.css, loaded by the
-// game entries via the src/styles/index.css barrel. Assertions on those base rules
-// read base.css; the HUD/shell rules still inline in index.html keep reading `html`.
+// game entries via the src/styles/index.css barrel. Phase P2 then moved the in-world
+// HUD chrome (nameplates, frames, bars, chat, trackers, meters, minimap, community
+// HUD, tooltip, FCT, the Interface/adaptive/perf rules, the Fiesta HUD, and the
+// center/vignette/death overlays) into src/styles/hud.css (@layer components), and
+// the UI-chrome-icon glyph sizing into base.css. Assertions on relocated rules read
+// base.css / hud.css; rules still inline in index.html keep reading `html`.
 const baseCss = readFileSync(new URL('../src/styles/base.css', import.meta.url), 'utf8').replace(
+  /\r\n/g,
+  '\n',
+);
+const hudCss = readFileSync(new URL('../src/styles/hud.css', import.meta.url), 'utf8').replace(
   /\r\n/g,
   '\n',
 );
@@ -215,8 +223,8 @@ describe('client HTML shell', () => {
   });
 
   it('excludes wallet verification surfaces from native app builds', () => {
-    expect(html).toContain('body.native-app #nav-btn-download,');
-    expect(html).toContain(
+    expect(hudCss).toContain('body.native-app #nav-btn-download,');
+    expect(hudCss).toContain(
       'body.native-app .cs-wallet,\n  body.native-app .cs-wallet-hidden-note,\n  body.native-app .account-wallet-card',
     );
     expect(html).toContain('<section class="account-card account-wallet-card">');

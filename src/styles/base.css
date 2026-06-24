@@ -544,4 +544,36 @@
   .gold {
     color: var(--gold);
   }
+
+  /* UI chrome icons: shared glyph-sizing primitives (siblings of the .x-btn /
+     .panel chrome above). Relocated from index.html's inline <style> in P2: the
+     phase note calls these "P1/base-tier glyph styling", and keeping them in
+     @layer base lets component overrides (e.g. #mm-music .ui-icon) win as intended.
+     P1 had left them inline-unlayered, which would have inverted those overrides. */
+  /* ---------- UI chrome icons (inline SVG from ui_icons.ts, tinted via currentColor) ---------- */
+  .ui-icon {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    vertical-align: -0.125em;
+    flex: none;
+    pointer-events: none;
+  }
+  .x-btn .ui-icon {
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+  }
+  .micro-btn .ui-icon {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+  }
+  .pfm-crest {
+    width: 16px;
+    height: 16px;
+    vertical-align: -3px;
+    margin-right: 3px;
+    border-radius: 3px;
+  }
 }

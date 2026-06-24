@@ -80,10 +80,13 @@ const CORPUS = [
 ].join('\n');
 const CORPUS_SECTIONS = new Set(sectionNames(CORPUS));
 
-// PINNED manifest: the 47 ten-dash section banners that index.html ships today,
-// enumerated live from the shipped HTML at authoring time (not invented). play.html
-// is a near-clone that ships 45 of these, omitting the two listed in PLAY_OMITS.
-// Because play's set is a subset of index's, this list IS the union manifest.
+// PINNED manifest: the 48 ten-dash section banners, enumerated live from the shipped
+// HTML at authoring time (not invented). 47 were inline in index.html; P2 added the
+// 48th by upgrading the lowercase tooltip banner to a ten-dash marker as it moved to
+// src/styles/hud.css. As P1 to P4b migrate sections out of the inline <style> they
+// reappear in src/styles modules, so the union corpus stays complete. play.html is a
+// near-clone that ships 46 of these (it omits the two in PLAY_OMITS; tooltip is shared
+// via hud.css, which play loads). play's set is a subset of index's, so this is the union.
 const INDEX_SECTIONS = [
   'UI chrome icons (inline SVG from ui_icons.ts, tinted via currentColor)',
   'nameplates',
@@ -108,6 +111,7 @@ const INDEX_SECTIONS = [
   'options / game menu (Esc)',
   'UI theme picker',
   'emote wheel',
+  'tooltip',
   'floating combat text',
   '2v2 Fiesta HUD',
   'center messages',
@@ -134,7 +138,7 @@ const INDEX_SECTIONS = [
   'Cosmetic skin-select event overlay',
 ];
 
-// The two index-only sections play.html does not ship, so its count is 45.
+// The two index-only sections play.html does not ship, so its count is 46.
 const PLAY_OMITS = ['new-adventurer tutorial', 'UI theme picker'];
 const PLAY_SECTIONS = INDEX_SECTIONS.filter((name) => !PLAY_OMITS.includes(name));
 
@@ -142,12 +146,12 @@ const PLAY_SECTIONS = INDEX_SECTIONS.filter((name) => !PLAY_OMITS.includes(name)
 const MANIFEST = INDEX_SECTIONS;
 
 describe('css_corpus section manifest', () => {
-  it('pins a non-vacuous manifest: 47 index + 45 play sections, no duplicate names', () => {
-    expect(INDEX_SECTIONS.length).toBe(47);
-    expect(PLAY_SECTIONS.length).toBe(45);
-    expect(MANIFEST.length).toBe(47);
-    expect(new Set(INDEX_SECTIONS).size).toBe(47);
-    expect(new Set(PLAY_SECTIONS).size).toBe(45);
+  it('pins a non-vacuous manifest: 48 index + 46 play sections, no duplicate names', () => {
+    expect(INDEX_SECTIONS.length).toBe(48);
+    expect(PLAY_SECTIONS.length).toBe(46);
+    expect(MANIFEST.length).toBe(48);
+    expect(new Set(INDEX_SECTIONS).size).toBe(48);
+    expect(new Set(PLAY_SECTIONS).size).toBe(46);
   });
 
   it('captures the live corpus markers (the marker regex is non-vacuous, not a zero match)', () => {

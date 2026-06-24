@@ -5,14 +5,16 @@
    inlines these local @imports into one stylesheet at build, so there is no runtime
    import waterfall.
 
-   P1 fills only the tokens and base layers; P2 to P4 fill the later layers against
-   this fixed order, so no later CSS phase re-litigates the cascade. The layers
-   beyond base are declared here but empty until their phase lands. admin.html and
-   guide.html keep their own inline CSS (state.md decision 18) and do not load this
-   barrel.
+   P1 filled the tokens and base layers; P2 adds hud.css into the components layer
+   (the in-world HUD chrome). P3 to P4 fill the remaining layers against this fixed
+   order, so no later CSS phase re-litigates the cascade. The layers not yet filled
+   are declared here but empty until their phase lands. admin.html and guide.html
+   keep their own inline CSS (state.md decision 18) and do not load this barrel.
 
-   See docs/frontend-modernization/phase-01-css-lightning-tokens-base.md. */
+   See docs/frontend-modernization/phase-01-css-lightning-tokens-base.md and
+   docs/frontend-modernization/phase-02-css-hud-chrome.md. */
 @layer tokens, base, layout, components, hud, hud.mobile, shell, index.extra, play.extra;
 
 @import "./tokens.css";
 @import "./base.css";
+@import "./hud.css";
