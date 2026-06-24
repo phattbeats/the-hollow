@@ -217,6 +217,7 @@ import {
   minimapZoomValue,
   nextMinimapZoom,
 } from './minimap_zoom';
+import { selectPartyFrameMembers } from './party_frames';
 import {
   type PerfOverlayHooks,
   PerfOverlaySettingsPanel,
@@ -491,9 +492,6 @@ const ITEM_STAT_LABEL_KEYS: Partial<Record<keyof Stats, TranslationKey>> = {
 const classCss = (cls: string): string =>
   `#${((CLASSES as Record<string, { color: number }>)[cls]?.color ?? 0x5fa8ff).toString(16).padStart(6, '0')}`;
 
-// Party frames dim and the minimap pins members to the rim once they pass
-// this range (yards) — just inside the server's ~120 yd interest scope.
-const PARTY_RANGE_YD = 100;
 const EMOTE_WHEEL_LIMIT = 8;
 const DEFAULT_EMOTE_WHEEL: OverheadEmoteId[] = [
   'wave',
@@ -4099,7 +4097,7 @@ export class Hud {
 
   private renderAuras(el: HTMLElement, e: Entity, mode: 'all' | 'debuffs'): void {
     // cheap diff: rebuild only when the aura set changes
-    const sig = e.auras.map((a) => a.id + Math.ceil(a.remaining) + 'x' + (a.stacks ?? 0)).join('|');
+    const sig = e.auras.map((a) => `${a.id}${Math.ceil(a.remaining)}x${a.stacks ?? 0}`).join('|');
     if ((el as any).__sig === sig) return;
     (el as any).__sig = sig;
     el.innerHTML = '';
@@ -10720,14 +10718,8 @@ export class Hud {
       this.lastPartySig = '';
       return;
     }
-    const p = this.sim.player;
     const myGroup = info.members.find((m) => m.pid === this.sim.playerId)?.group ?? 1;
-    const others = info.members
-      .map((m) => ({
-        ...m,
-        oor: !m.dead && Math.hypot(m.x - p.pos.x, m.z - p.pos.z) > PARTY_RANGE_YD,
-      }))
-      .filter((m) => m.pid !== this.sim.playerId && (!info.raid || m.group === myGroup));
+    const others = selectPartyFrameMembers(info, this.sim.playerId, this.sim.player.pos);
     // include combat/range state so the frames rebuild when a badge changes
     const sig = `${others.map((m) => `${m.pid}:${m.group}:${m.hp}/${m.mhp}:${m.res}:${m.dead}:${m.inCombat}:${m.oor ? 1 : 0}:${m.level}`).join('|')}L${info.leader}:R${info.raid ? 1 : 0}:G${myGroup}`;
     if (sig === this.lastPartySig) return;
