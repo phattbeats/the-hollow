@@ -1,3 +1,7 @@
+// Game-client style barrel (declares the @layer order, loads tokens + base, etc.).
+// index.html and play.html both bootstrap through this module, so this one import
+// styles both game entries; admin/guide use their own entries and inline CSS.
+import './styles/index.css';
 import { audio } from './game/audio';
 import {
   BROWSER_BODY_CLASSES,

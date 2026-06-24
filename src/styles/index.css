@@ -1,0 +1,18 @@
+/* index.css: the single style barrel for the game client. Both game entries
+   (index.html and play.html) are bootstrapped by src/main.ts, which imports this
+   file once, so this barrel serves both. It declares the one canonical @layer
+   cascade order up front, then @imports the layer modules in that order. Vite
+   inlines these local @imports into one stylesheet at build, so there is no runtime
+   import waterfall.
+
+   P1 fills only the tokens and base layers; P2 to P4 fill the later layers against
+   this fixed order, so no later CSS phase re-litigates the cascade. The layers
+   beyond base are declared here but empty until their phase lands. admin.html and
+   guide.html keep their own inline CSS (state.md decision 18) and do not load this
+   barrel.
+
+   See docs/frontend-modernization/phase-01-css-lightning-tokens-base.md. */
+@layer tokens, base, layout, components, hud, hud.mobile, shell, index.extra, play.extra;
+
+@import "./tokens.css";
+@import "./base.css";
