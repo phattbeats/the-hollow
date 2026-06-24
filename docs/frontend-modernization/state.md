@@ -225,8 +225,24 @@ the packet's final QA.
 
 ## Canonical workflow (every implementation phase follows this)
 
-Every phase runs on Opus 4.8, xhigh effort. Batch-heavy phases (CSS B1/B2/C; cold-window batches;
-the per-frame batches) use `ultracode` + a Workflow (parallel fan-out + adversarial verify).
+EFFORT + VERIFICATION + FAN-OUT are three SEPARATE axes (decided 2026-06-24; quality is the goal,
+token cost is not a constraint). Do not conflate them under the `ULTRACODE` tag:
+- EFFORT: every phase runs on Opus 4.8 at `xhigh`. Reserve `max` for a genuinely stuck moment (it
+  overthinks / oscillates on structured tasks); do not default to it.
+- VERIFICATION: every phase, regardless of its `ULTRACODE` tag, ends with an adversarial verification
+  pass (a fresh-subagent diff review prompted for COVERAGE, plus a "what is missing" critic) on top of
+  the STEP 3 review-dispatch and the QA pass. This is the highest-leverage quality lever; always do it.
+- GENERATION FAN-OUT (what the `ULTRACODE: yes` tag actually gates): use a Workflow to fan out parallel
+  generation ONLY where the phase decomposes into independent work items (the CSS section cohorts, the
+  cold-window batches, the per-frame element slices). For a single-module, sequential, or docs phase
+  (P5, P6, P7a, P9a, P16, P17a, P17b), DO NOT force generation fan-out: it fragments a design that one
+  mind should hold and collides on shared files. Single coherent author pass + the verification above.
+  P16 in particular MUST stay single-author (parallel CLAUDE.md prose self-conflicts).
+- CONTEXT HYGIENE: a Workflow SHELL (push heavy reading/editing to a subagent that returns a summary)
+  is encouraged on EVERY phase to keep the orchestrator under the 40% ceiling, even when generation is
+  not parallelized. This helps the budget independently of fan-out.
+The per-phase `ULTRACODE` tag in each phase file marks only the GENERATION-fan-out axis; xhigh effort
+and the adversarial verification pass apply to all phases either way.
 
 - STEP 0 Pre-flight: `git status` clean (ask the user if not; concurrent session may share the
   checkout). Memory scan (MEMORY.md + the entries the phase lists). Confirm you are in the
