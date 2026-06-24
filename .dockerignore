@@ -4,6 +4,7 @@ dist
 dist-env
 dist-server
 .git
+private/**/.git
 python
 docs
 tests
