@@ -10,7 +10,7 @@ Full per-phase scope/acceptance: each `phase-NN-*.md`; line numbers in `v016-rec
 
 | Phase | Title | Layer | Status | Notes / deferrals |
 |---|---|---|---|---|
-| P0 | Foundation gates (CSS-corpus + UI-purity guard + perf/visual/mobile baseline) | gates | pending | records the perf_tour + visual + mobile non-regression floors; 10-dash markers; corpus = inline UNION src/styles |
+| P0 | Foundation gates (CSS-corpus + UI-purity guard + perf/visual/mobile baseline) | gates | done | css_corpus.test.ts (47 index + 45 play 10-dash sections, corpus = inline UNION src/styles, teeth-proven) + architecture.test.ts UI_PURE_CORES (15 src/ui cores) + RENDER_PURE_CORES (cast_bar); tsc clean, npm test 3899 pass, biome clean, all 3 negative proofs fired+reverted. Baselines: perf-baseline-v016.md (DESKTOP frameP95 250ms / inputIntentToFrameP95 652.7ms / hudHotDomSkipRate 0.962 on M4 Max swiftshader; MOBILE deferred to P17a - portrait 390x844 + undismissed preflight, landscape-only d16a), visual-baseline-v016.md (theme/tab_target/loot_roll/mmo_controls; no diff harness exists), mobile-baseline-v016.md (4 PASS / 2 RED: button_size+joystick_size don't dismiss #mobile-preflight - pre-existing harness gap; only 2 of 6 truly assert; no portrait #rotate-device assertion - all for P4b) |
 | P1 | CSS A: Lightning flip + tokens + base + CSS-import seam | css | pending | --range-fill stays the inline slider fallback (NOT a :root token); reconcile dead css.postcss; define the import seam |
 | P2 | CSS B1: in-world HUD chrome | css | pending | ULTRACODE; full section map incl Fiesta HUD 2303 + tooltip block |
 | P3 | CSS B2: modal + feature windows | css | pending | ULTRACODE; Slice D ranges fixed (arena 1846, market 1900, options 1973, theme 2040, emote 2108) |

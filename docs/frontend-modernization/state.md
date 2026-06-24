@@ -14,8 +14,13 @@ cold-window and per-frame phases, and several cross-cutting gaps (ClientWorld-vs
 responsive rendered-layout gate, the write-elision writer coverage gap, admin/guide CSS scope,
 `user-scalable=no`). To retire the 40% context risk up front (user directive: "rather take longer and
 get it perfect than degrade by context usage"), the 18-phase packet was RESTRUCTURED into 30 phases via
-sub-letter splits (see the OLD->NEW map below). No code has moved. Awaiting the go to start P0. Docs are
-untracked / on-branch pending the user's word.
+sub-letter splits (see the OLD->NEW map below). No product code has moved. P0 (foundation gates) is
+DONE 2026-06-24: the css_corpus + UI-purity guards landed (tests/css_corpus.test.ts,
+tests/architecture.test.ts) and the three non-regression floors are recorded
+(perf-/visual-/mobile-baseline-v016.md). Surfaced for later phases: perf_tour's mobile profile cannot
+boot (portrait viewport + undismissed #mobile-preflight, landscape-only d16a) so mobile perf is deferred
+to P17a; mobile_button_size + mobile_joystick_size are RED (pre-existing preflight-dismissal gap) and only
+2 of 6 mobile E2E scripts truly assert, all for P4b. NEXT: phase-01-css-lightning-tokens-base.md.
 
 ## Provenance (read these once for the why)
 
@@ -343,7 +348,7 @@ Full per-phase scope/acceptance is in the `phase-NN-*.md` files; line numbers in
 
 | Phase | Title | Risk | Kind | Status |
 |---|---|---|---|---|
-| P0 | Foundation gates: CSS-corpus + UI-purity guard + perf/visual/mobile baseline | low | port+extend | pending |
+| P0 | Foundation gates: CSS-corpus + UI-purity guard + perf/visual/mobile baseline | low | port+extend | done (tests/css_corpus.test.ts + tests/architecture.test.ts UI_PURE_CORES/RENDER_PURE_CORES; baselines perf-/visual-/mobile-baseline-v016.md; mobile perf + 2 mobile E2E scripts surfaced for P17a/P4b) |
 | P1 | CSS A: Lightning flip + tokens + base + the CSS-import seam | low | port | pending |
 | P2 | CSS B1: in-world HUD chrome (full section map incl Fiesta HUD + tooltip) | medium | port | pending |
 | P3 | CSS B2: modal + feature windows (arena/market/options/theme/emote ranges fixed) | medium | port | pending |
