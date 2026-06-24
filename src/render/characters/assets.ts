@@ -14,6 +14,7 @@ import { loadGltf, loadTexture } from '../assets/loader';
 import { registerPreload } from '../assets/preload';
 import { GFX, addRimGlow } from '../gfx';
 import {
+  itemWeaponModelUrl,
   manifestUrlsForGraphics,
   SKINS,
   SKIN_EMISSIVE,
@@ -45,6 +46,43 @@ const KAYKIT_WEAPON_ACCESSORY: Record<string, string> = {
   staff: '2H_Staff',
   dagger: 'Knife',
   wand: '1H_Wand',
+  // Per-item weapon variants (ITEM_WEAPON_VARIANTS / public/models/weapons/<key>.glb)
+  // come from a different pack than the KayKit generics. Crucially, each variant's
+  // mesh ORIGIN is authored AT the grip (the handle/guard): minY is consistent
+  // within a family (~-0.4 for swords) while the blade length (maxY) varies. So we
+  // do NOT recenter (that would move the grip to mid-blade and make long blades
+  // drag); we attach at the origin and only clamp oversized models. VAR_* keys
+  // route to applyVariantGrip (no rig node matches them).
+  sword_a: 'VAR_SWORD', sword_b: 'VAR_SWORD', sword_c: 'VAR_SWORD', sword_d: 'VAR_SWORD',
+  sword_e: 'VAR_SWORD', sword_f: 'VAR_SWORD', sword_g: 'VAR_SWORD',
+  dagger_a: 'VAR_DAGGER', dagger_b: 'VAR_DAGGER', dagger_c: 'VAR_DAGGER',
+  staff_a: 'VAR_STAFF', staff_b: 'VAR_STAFF', staff_c: 'VAR_STAFF', staff_d: 'VAR_STAFF',
+  axe_a: 'VAR_AXE', axe_b: 'VAR_AXE', axe_c: 'VAR_AXE', axe_d: 'VAR_AXE',
+  hammer_a: 'VAR_AXE', hammer_b: 'VAR_AXE', hammer_c: 'VAR_AXE', hammer_d: 'VAR_AXE',
+  halberd: 'VAR_POLEARM',
+  // additional distinct models (KayKit Adventurers set + spears/scythe/wands) for
+  // weapon variety. adv_* swords/dagger/staff/axe share the variant-pack convention
+  // (float geo, origin-at-grip) so they reuse the same family grips.
+  adv_sword_1handed: 'VAR_SWORD', adv_sword_2handed: 'VAR_SWORD', adv_sword_2handed_color: 'VAR_SWORD',
+  adv_dagger: 'VAR_DAGGER',
+  adv_staff: 'VAR_STAFF', adv_druid_staff: 'VAR_STAFF',
+  adv_axe_1handed: 'VAR_AXE', adv_axe_2handed: 'VAR_AXE',
+  spear_a: 'VAR_POLEARM', spear_b: 'VAR_POLEARM', scythe: 'VAR_POLEARM',
+  wand_a: 'VAR_WAND', wand_b: 'VAR_WAND', adv_wand: 'VAR_WAND',
+};
+
+// Per-family grip for the variant pack. The model origin IS the grip, so we attach
+// at it: `lift` nudges the grip along the hand bone (tuned against the generic
+// look), `maxHeight` clamps an oversized model so a long blade doesn't drag (scale
+// is only ever reduced, so normal-size weapons keep their native scale and variety).
+interface VariantGrip { lift: number; maxHeight: number }
+const VARIANT_GRIPS: Record<string, VariantGrip> = {
+  VAR_SWORD: { lift: 0.04, maxHeight: 2.0 },
+  VAR_DAGGER: { lift: 0.04, maxHeight: 1.4 },
+  VAR_STAFF: { lift: 0.18, maxHeight: 2.4 },
+  VAR_AXE: { lift: 0.04, maxHeight: 1.5 },
+  VAR_POLEARM: { lift: 0.18, maxHeight: 2.5 },
+  VAR_WAND: { lift: 0.04, maxHeight: 1.2 },
 };
 
 const KAYKIT_HAND_GRIPS: Record<string, { r: HandGrip; l?: HandGrip }> = {
@@ -142,10 +180,37 @@ function flattenWeaponScene(src: THREE.Object3D): THREE.Object3D {
   return holder;
 }
 
-function attachProp(root: THREE.Object3D, bone: THREE.Object3D, att: AttachDef): void {
+// Marks the holder group of the equipped-weapon attachment (the `weaponSlot`
+// entry), so setHeldWeapon can find and replace exactly that prop without
+// touching fixed offhands (rogue's second dagger, the warlock spellbook).
+const SWAP_WEAPON_TAG = 'swapWeaponHolder';
+
+// Grip for a variant-pack weapon. Its origin is authored AT the grip, so we attach
+// at the origin (no recenter) and only clamp an oversized model so its blade does
+// not drag. `lift` nudges along the hand bone; the side picks the 180-degree flip.
+const variantBox = new THREE.Box3();
+function variantGripFor(url: string): VariantGrip | null {
+  const accessory = kaykitAccessoryFor(url);
+  return accessory ? (VARIANT_GRIPS[accessory] ?? null) : null;
+}
+function applyVariantGrip(payload: THREE.Object3D, bone: string, grip: VariantGrip): void {
+  variantBox.setFromObject(payload);
+  const height = variantBox.max.y - variantBox.min.y;
+  const scale = height > 1e-3 ? Math.min(1, grip.maxHeight / height) : 1;
+  const left = handSide(bone) === 'l';
+  payload.position.set(0, grip.lift, 0);
+  payload.quaternion.set(0, left ? 0 : 1, 0, left ? 1 : 0);
+  payload.scale.setScalar(scale);
+}
+
+function attachProp(root: THREE.Object3D, bone: THREE.Object3D, att: AttachDef, markSwap = false): void {
   const payload = flattenWeaponScene(cloneSkinned(resolvedGltf(att.url).scene));
   payload.traverse((o) => { if ((o as THREE.Mesh).isMesh) o.userData.weaponMesh = true; });
-  if (att.position || att.rotationY !== undefined) {
+  if (markSwap) payload.userData[SWAP_WEAPON_TAG] = true;
+  const variantGrip = isHandslotBone(att.bone) ? variantGripFor(att.url) : null;
+  if (variantGrip) {
+    applyVariantGrip(payload, att.bone, variantGrip);
+  } else if (att.position || att.rotationY !== undefined) {
     if (att.position) payload.position.set(...att.position);
     if (att.rotationY !== undefined) payload.rotation.y = att.rotationY;
   } else if (att.gripRef) {
@@ -155,6 +220,19 @@ function attachProp(root: THREE.Object3D, bone: THREE.Object3D, att: AttachDef):
     applyHandGrip(payload, root, att.bone, att.url);
   }
   bone.add(payload);
+}
+
+// The AttachDef for the swappable mainhand slot, with the equipped item's model
+// substituted when one is mapped (else the class default). The grip resolves from
+// the item model's own family (KAYKIT_WEAPON_ACCESSORY), so any base position/
+// rotationY/gripRef override is dropped for the substituted model.
+function swapAttachDef(base: AttachDef, weaponItemId: string | null | undefined): AttachDef {
+  const url = itemWeaponModelUrl(weaponItemId);
+  return url ? { url, bone: base.bone } : base;
+}
+
+function resolveBone(root: THREE.Object3D, name: string): THREE.Object3D | null {
+  return root.getObjectByName(name) ?? root.getObjectByName(name.replace(/[[\].:/]/g, '')) ?? null;
 }
 
 // ---------------------------------------------------------------------------
@@ -340,7 +418,7 @@ function mergeSkinnedParts(root: THREE.Object3D): void {
 
 /** Fresh SkeletonUtils clone of a manifest entry with its kit applied.
  *  Pure model space — normalization (scale/yaw/feet offset) happens upstream. */
-export function assembleModel(def: VisualDef): THREE.Object3D {
+export function assembleModel(def: VisualDef, weaponItemId?: string | null): THREE.Object3D {
   const root = cloneSkinned(optimizedScene(def.url));
   // tag the character's own meshes (body + accessories share one texture atlas)
   // so a skin override hits them but not the separate weapons attached below
@@ -358,13 +436,17 @@ export function assembleModel(def: VisualDef): THREE.Object3D {
   // Weapons and held props are gameplay-readable silhouettes, not decoration.
   // Low tier still downgrades body/material cost, but keeps attachments visible.
   const attachments = visibleAttachmentsForGraphics(def);
-  for (const att of attachments) {
+  for (let i = 0; i < attachments.length; i++) {
+    const isSwap = def.weaponSlots?.includes(i) ?? false;
+    // Swappable slots take the equipped item's model (when given); every other
+    // attachment is fixed (the warlock's spellbook offhand). The rogue lists both
+    // hand slots so a dagger shows in both.
+    const att = isSwap ? swapAttachDef(attachments[i], weaponItemId) : attachments[i];
     // GLTFLoader sanitizes node names (PropertyBinding strips [].:/ chars),
     // so the authored "handslot.r" arrives as "handslotr" — try both
-    const bone = root.getObjectByName(att.bone)
-      ?? root.getObjectByName(att.bone.replace(/[[\].:/]/g, ''));
+    const bone = resolveBone(root, att.bone);
     if (!bone) continue; // manifest/bone mismatch — ship without the prop
-    attachProp(root, bone, att);
+    attachProp(root, bone, att, isSwap);
   }
   // Re-orient mis-baked built-in weapon nodes (e.g. the golem axe) in place.
   for (const fix of def.weaponFix ?? []) {
@@ -376,6 +458,27 @@ export function assembleModel(def: VisualDef): THREE.Object3D {
     if (fix.rotZ) node.rotateZ(fix.rotZ);
   }
   return root;
+}
+
+/** Replace the equipped-weapon attachment(s) on an already-assembled model in place,
+ *  for a runtime gear swap. No-op for visuals without `weaponSlots` (hunter keeps its
+ *  crossbow; mobs/NPCs are fixed). Re-attaches every swap slot (the rogue has two, so
+ *  both hands update). The caller must re-apply materials and re-snapshot the
+ *  original-material map afterwards (see CharacterVisual.setWeapon), since the new
+ *  weapon meshes start on the source GLB's raw materials. */
+export function setHeldWeapon(root: THREE.Object3D, def: VisualDef, weaponItemId: string | null): void {
+  if (!def.weaponSlots?.length) return;
+  const stale: THREE.Object3D[] = [];
+  root.traverse((o) => { if (o.userData[SWAP_WEAPON_TAG]) stale.push(o); });
+  for (const o of stale) o.removeFromParent();
+  for (const i of def.weaponSlots) {
+    const base = def.attach?.[i];
+    if (!base) continue;
+    const att = swapAttachDef(base, weaponItemId);
+    const bone = resolveBone(root, att.bone);
+    if (!bone) continue;
+    attachProp(root, bone, att, true);
+  }
 }
 
 // ---------------------------------------------------------------------------

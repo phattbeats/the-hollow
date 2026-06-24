@@ -8131,8 +8131,11 @@ export class Hud {
     } else {
       this.charPreview.setContainer(container);
     }
-    if (previewKey) this.charPreview.setVisualKey(previewKey);
-    else this.charPreview.setClass(cls);
+    // Show the player's currently equipped mainhand on the character sheet, so the
+    // 3D model reflects gear changes (re-runs on each renderChar after an equip).
+    const weapon = this.sim.equipment.mainhand ?? null;
+    if (previewKey) this.charPreview.setVisualKey(previewKey, weapon);
+    else this.charPreview.setClass(cls, weapon);
     this.charPreview.setSkin(skin);
   }
 

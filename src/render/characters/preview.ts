@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { CharacterVisual } from './visual';
+import { CLASSES } from '../../sim/data';
 import { PlayerClass } from '../../sim/types';
 import { trackWebGLContext } from '../context_release';
 
@@ -90,14 +91,18 @@ export class CharacterPreview {
     this.animate();
   }
 
-  /** Set the active character model by player class. */
-  setClass(cls: PlayerClass): void {
-    this.setVisualKey(`player_${cls}`);
+  /** Set the active character model by player class. Pass `weaponItemId` to hold a
+   *  specific weapon (e.g. the character sheet shows the equipped mainhand); omit it
+   *  to default to the class start weapon (so the creation turntable matches the
+   *  freshly created character in-world). */
+  setClass(cls: PlayerClass, weaponItemId?: string | null): void {
+    const weapon = weaponItemId !== undefined ? weaponItemId : (CLASSES[cls].startWeapon ?? null);
+    this.setVisualKey(`player_${cls}`, weapon);
   }
 
   /** Set the active model by raw visual key (e.g. `player_mech` for the cosmetic
    *  turntable). The asset must already be loaded — callers preload first. */
-  setVisualKey(visualKey: string): void {
+  setVisualKey(visualKey: string, weaponItemId: string | null = null): void {
     // Clean up current visual if it exists
     if (this.currentVisual) {
       this.characterGroup.remove(this.currentVisual.root);
@@ -106,7 +111,7 @@ export class CharacterPreview {
     }
 
     try {
-      this.currentVisual = new CharacterVisual(visualKey, 0xffffff, this.currentSkin);
+      this.currentVisual = new CharacterVisual(visualKey, 0xffffff, this.currentSkin, weaponItemId);
       this.characterGroup.add(this.currentVisual.root);
 
       // Reset rotation of group so new character faces forward but holds any user offset if preferred.

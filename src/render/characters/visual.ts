@@ -8,7 +8,7 @@ import type { OverheadEmoteId } from '../../world_api';
 import { GFX } from '../gfx';
 import type { EmoteClipSpec, VisualDef } from './manifest';
 import {
-  applyMaterials, assembleModel, ensureSkinTexture, prepareVisual, skinTexture, skinEmissiveTexture, tintedFarMaterials,
+  applyMaterials, assembleModel, ensureSkinTexture, prepareVisual, setHeldWeapon, skinTexture, skinEmissiveTexture, tintedFarMaterials,
 } from './assets';
 import { desiredBaseState, locomotionTimeScale, type AnimState, type BaseState } from './anim_state';
 
@@ -62,6 +62,7 @@ export class CharacterVisual {
   private key: string;
   private entityColor: number;
   private skinIndex: number;
+  private weaponItemId: string | null;
   private disposed = false;
   private ghosted = false;
   private mixer: THREE.AnimationMixer;
@@ -94,16 +95,19 @@ export class CharacterVisual {
   private soulRend = false;
   private bobPhase = Math.random() * Math.PI * 2;
 
-  constructor(key: string, entityColor: number, skinIndex = 0) {
+  constructor(key: string, entityColor: number, skinIndex = 0, weaponItemId: string | null = null) {
     const prep = prepareVisual(key);
     this.def = prep.def;
     this.key = key;
     this.entityColor = entityColor;
     this.skinIndex = skinIndex;
+    this.weaponItemId = weaponItemId;
     this.height = prep.def.height;
 
-    // model: yaw/scale/feet normalization wrapper around the skinned clone
-    this.model = assembleModel(prep.def);
+    // model: yaw/scale/feet normalization wrapper around the skinned clone. The
+    // equipped mainhand item (if the class swaps; see VisualDef.weaponSlot) picks
+    // the held weapon model, so the visual is born holding the right weapon.
+    this.model = assembleModel(prep.def, weaponItemId);
     applyMaterials(this.model, prep.def, entityColor, skinTexture(key, skinIndex), skinEmissiveTexture(key, skinIndex));
     this.model.traverse((o) => {
       const mesh = o as THREE.Mesh;
@@ -389,6 +393,40 @@ export class CharacterVisual {
       if (mesh.isMesh) this.originalMaterials.set(mesh, mesh.material);
     });
     this.applyVisualMaterials();
+  }
+
+  /** Swap the held mainhand weapon model at runtime (gear equip/unequip); no-op if
+   *  unchanged or if this class keeps a fixed weapon (hunter crossbow, mobs/NPCs —
+   *  no VisualDef.weaponSlot). Mirrors setSkin: re-attach the prop, re-run the
+   *  shared material pass, re-snapshot the original-material map, then re-apply any
+   *  active ghost/soul-rend overlay. Cheap (one prop clone) and keeps the mixer/
+   *  animation state, unlike a full visual rebuild. */
+  setWeapon(weaponItemId: string | null): void {
+    if (weaponItemId === this.weaponItemId) return;
+    this.weaponItemId = weaponItemId;
+    if (!this.def.weaponSlots?.length) return;
+    setHeldWeapon(this.model, this.def, weaponItemId);
+    applyMaterials(this.model, this.def, this.entityColor, skinTexture(this.key, this.skinIndex), skinEmissiveTexture(this.key, this.skinIndex));
+    // the model graph changed (weapon meshes added/removed): rebuild the caster
+    // list and re-snapshot originals, then re-apply ghost/stealth overlays.
+    this.originalMaterials.clear();
+    this.rebuildCasters();
+    this.applyVisualMaterials();
+  }
+
+  /** Rebuild the shadow-caster list and original-material snapshot after the model
+   *  graph changes (a weapon swap adds/removes bone-child meshes). */
+  private rebuildCasters(): void {
+    this.casters.length = 0;
+    this.model.traverse((o) => {
+      const mesh = o as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      mesh.castShadow = this.shadowOn;
+      mesh.receiveShadow = false;
+      if ((mesh as unknown as THREE.SkinnedMesh).isSkinnedMesh) mesh.frustumCulled = false;
+      this.originalMaterials.set(mesh, mesh.material);
+      this.casters.push(mesh);
+    });
   }
 
   dispose(): void {

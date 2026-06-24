@@ -1261,6 +1261,10 @@ export interface Entity {
   color: number;
   skinCatalog: SkinCatalog; // player appearance catalog: class texture set or cosmetic body.
   skin: number; // player appearance: index into SKINS[visualKey]; 0 = default. synced in identity fields.
+  // Equipped mainhand item id (players only; null otherwise). Render-only: the
+  // client maps it to a held weapon model. Recomputed in recalcPlayerStats and
+  // synced in identity fields (terse `mh`). The sim never reads it for gameplay.
+  mainhandItemId: string | null;
   // $WOC holder-tier flair (cosmetic): 0/undefined = none, 1-10 = Ember…Sovereign.
   // Set server-side from the player's connected-wallet balance and synced in
   // identity fields like skin. The sim never reads it (no gameplay effect).
