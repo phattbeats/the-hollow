@@ -3930,7 +3930,7 @@ export class Hud {
 
   private renderAuras(el: HTMLElement, e: Entity, mode: 'all' | 'debuffs'): void {
     // cheap diff: rebuild only when the aura set changes
-    const sig = e.auras.map((a) => a.id + Math.ceil(a.remaining)).join('|');
+    const sig = e.auras.map((a) => a.id + Math.ceil(a.remaining) + 'x' + (a.stacks ?? 0)).join('|');
     if ((el as any).__sig === sig) return;
     (el as any).__sig = sig;
     el.innerHTML = '';
@@ -3947,6 +3947,10 @@ export class Hud {
           'polymorph',
           'attackspeed',
           'debuff_ap',
+          'sunder',
+          'mortal_wound',
+          'silence',
+          'disarm',
           'blind',
           'expose',
           'spellvuln',
@@ -3967,6 +3971,12 @@ export class Hud {
       dur.className = 'dur';
       dur.textContent = a.remaining < 99 ? `${Math.ceil(a.remaining)}s` : '';
       d.appendChild(dur);
+      if (a.stacks && a.stacks > 1) {
+        const st = document.createElement('div');
+        st.className = 'stacks';
+        st.textContent = formatNumber(a.stacks, { maximumFractionDigits: 0 });
+        d.appendChild(st);
+      }
       const auraName = ABILITIES[a.id]
         ? abilityDisplayName(ABILITIES[a.id])
         : auraDisplayNameFromSource(a.name);

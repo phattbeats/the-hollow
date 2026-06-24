@@ -222,6 +222,7 @@ interface WireAura {
   kind: string;
   rem: number;
   dur: number;
+  stacks?: number;
 }
 
 interface WhoRosterRow {
@@ -296,6 +297,7 @@ function dynamicFields(e: Entity): Record<string, unknown> {
         kind: a.kind,
         rem: round2(a.remaining),
         dur: a.duration,
+        ...(a.stacks && a.stacks > 1 ? { stacks: a.stacks } : {}),
       }),
     );
   }

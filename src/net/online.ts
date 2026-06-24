@@ -1145,6 +1145,7 @@ export class ClientWorld implements IWorld {
         value: 0,
         sourceId: 0,
         school: 'physical' as const,
+        stacks: a.stacks,
       }));
       e.loot = w.lootList ?? null;
       return e;
