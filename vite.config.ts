@@ -6,8 +6,18 @@ import path from 'node:path';
 // Untyped zero-dep build helper (same convention as the other scripts/*.mjs tools).
 // vite.config.ts is outside tsconfig `include`, so this import is never type-checked.
 import { templateModulepreload } from './scripts/i18n_modulepreload.mjs';
+import { browserslistToTargets } from 'lightningcss';
+import { loadBrowserslistFloors } from './scripts/browserslist_targets.mjs';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
+
+// Lightning CSS engine targets, derived from .browserslistrc (the single source of
+// the floor) via the zero-dep parser, never a hand-typed object. Drives both the
+// CSS transform and the minifier below, so the floor governs which prefixes and
+// fallbacks survive minification (for example the -webkit-backdrop-filter twin).
+const cssTargets = browserslistToTargets(
+  loadBrowserslistFloors(fileURLToPath(new URL('.browserslistrc', import.meta.url))),
+);
 
 // `#bot-detector` → the private detector if its clone is present, else the no-op
 // stub. Mirrors scripts/build_server.mjs (bundle) and tsconfig.json `paths` (tsc).
@@ -131,11 +141,12 @@ export default defineConfig({
     __APP_BUILD_ID__: JSON.stringify(appBuildId.slice(0, 12)),
     __APP_BUILD_DATE__: JSON.stringify(appBuildDate),
   },
-  // Parent dir has a postcss.config.js with Tailwind — ignore it; this project has no CSS pipeline.
+  // Lightning CSS handles all CSS transform and minify. Under the lightningcss
+  // transformer css.postcss is inert, so no postcss.config is consulted and the
+  // project stays vanilla (no Tailwind, no PostCSS plugins).
   css: {
-    postcss: {
-      plugins: [],
-    },
+    transformer: 'lightningcss',
+    lightningcss: { targets: cssTargets },
   },
   server: {
     port: 5173,
@@ -152,6 +163,7 @@ export default defineConfig({
   },
   build: {
     target: 'es2022',
+    cssMinify: 'lightningcss',
     chunkSizeWarningLimit: 1500,
     // Emit dist/.vite/manifest.json so the Phase 4 modulepreload hook can resolve each
     // lazy locale chunk's content-hashed filename. Metadata only - does not perturb the
