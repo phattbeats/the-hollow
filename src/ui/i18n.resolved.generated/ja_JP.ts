@@ -2409,7 +2409,9 @@ export const ja_JP: EnTranslations = {
       "mobileMap": "マップ",
       "closeMap": "マップを閉じる",
       "zoomIn": "ズームイン",
-      "zoomOut": "ズームアウト"
+      "zoomOut": "ズームアウト",
+      "mapCanvasLabel": "Map",
+      "mapSummary": "Map of {zone}."
     },
     "options": {
       "gameMenu": "ゲームメニュー",

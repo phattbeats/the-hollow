@@ -2409,7 +2409,9 @@ export const ko_KR: EnTranslations = {
       "mobileMap": "지도",
       "closeMap": "지도 닫기",
       "zoomIn": "확대",
-      "zoomOut": "축소"
+      "zoomOut": "축소",
+      "mapCanvasLabel": "Map",
+      "mapSummary": "Map of {zone}."
     },
     "options": {
       "gameMenu": "게임 메뉴",

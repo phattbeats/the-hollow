@@ -2409,7 +2409,9 @@ export const zh_TW: EnTranslations = {
       "mobileMap": "地圖",
       "closeMap": "關閉地圖",
       "zoomIn": "放大",
-      "zoomOut": "縮小"
+      "zoomOut": "縮小",
+      "mapCanvasLabel": "Map",
+      "mapSummary": "Map of {zone}."
     },
     "options": {
       "gameMenu": "遊戲選單",

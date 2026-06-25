@@ -1,0 +1,202 @@
+// Tests for the overworld map window pure core (map_window_view.ts):
+//  - the mode discriminator (delve vs overworld) under both world shapes,
+//  - the pure overworld draw model: Sim-vs-ClientWorld parity + determinism,
+//  - per-state geometry: the full-zone blit + cursor at zoom 1, the zoomed-detail
+//    overlay at/above MAP_DETAIL_ZOOM, the player arrow, and ally dedup/order.
+//
+// DOM/Three/2D-context-free, so this Node suite drives the core directly. The
+// painter's canvas draws (map_window_painter.ts) need a real 2D context +
+// getComputedStyle and are covered by the no-magic-values source guard instead.
+
+import { describe, expect, it } from 'vitest';
+import { QUESTS, WORLD_MAX_X, WORLD_MIN_X, ZONES } from '../src/sim/data';
+import type { Decoration } from '../src/sim/world';
+import {
+  buildOverworldMapModel,
+  MAP_DETAIL_ZOOM,
+  MAP_MAX_ZOOM,
+  mapWindowMode,
+  type OverworldMapInput,
+} from '../src/ui/map_window_view';
+import type { IWorld } from '../src/world_api';
+
+const ZONE = ZONES[0];
+const ZONE_CZ = (ZONE.zMin + ZONE.zMax) / 2; // a z inside the committed zone band
+const CANVAS = 560;
+// A quest giver with a real giverNpcId, so the npc-marker branch exercises real
+// content rather than an undefined === undefined accident.
+function requireQuestWithGiver() {
+  const quest = Object.values(QUESTS).find((q) => q.giverNpcId);
+  if (!quest) throw new Error('expected a quest with a giverNpcId');
+  return quest;
+}
+const GIVER_QUEST = requireQuestWithGiver();
+
+// One scenario as plain data, so we can build two structurally-distinct IWorld
+// stubs (a "Sim-shaped" one carrying extra sim-only fields the core must ignore,
+// and a lean "ClientWorld-mirror-shaped" one) and assert identical output
+// (decision 15). Iteration order of consumed collections is kept identical.
+function makeOverworldWorld(shape: 'sim' | 'client'): IWorld {
+  const simJunk = shape === 'sim' ? { hp: 100, maxHp: 100, castingAbility: null } : {};
+  const player = {
+    id: 1,
+    kind: 'player',
+    name: 'Me',
+    pos: { x: 0, z: ZONE_CZ },
+    facing: 0.5,
+    ...simJunk,
+  };
+  const npc = {
+    id: 2,
+    kind: 'npc',
+    name: 'Giver',
+    templateId: GIVER_QUEST.giverNpcId,
+    questIds: [GIVER_QUEST.id],
+    pos: { x: 10, z: ZONE_CZ },
+    ...simJunk,
+  };
+  const entities = new Map<number, unknown>([
+    [player.id, player],
+    [npc.id, npc],
+  ]);
+  const socialInfo = {
+    friends: [{ id: 10, name: 'FriendA', online: true, x: 0, z: ZONE_CZ }],
+    guild: {
+      members: [
+        { id: 10, name: 'FriendA', online: true, x: 0, z: ZONE_CZ }, // dup id -> deduped
+        { id: 11, name: 'GuildB', online: true, x: 5, z: ZONE_CZ },
+      ],
+    },
+  };
+  return {
+    player,
+    entities,
+    socialInfo,
+    delveRun: null,
+    cfg: { seed: 42, playerClass: 'warrior' },
+    playerId: 1,
+    questState: (q: string) => (q === GIVER_QUEST.id ? 'available' : 'unavailable'),
+  } as unknown as IWorld;
+}
+
+function makeDelveWorld(shape: 'sim' | 'client'): IWorld {
+  const simJunk = shape === 'sim' ? { hp: 100 } : {};
+  return {
+    player: { id: 1, kind: 'player', name: 'Me', pos: { x: 5000, z: 0 }, facing: 0, ...simJunk },
+    entities: new Map(),
+    socialInfo: null,
+    delveRun: { delveId: 'd', modules: ['m'], moduleIndex: 0, origin: { x: 5000, z: 0 } },
+    cfg: { seed: 42, playerClass: 'warrior' },
+    playerId: 1,
+    questState: () => 'unavailable',
+  } as unknown as IWorld;
+}
+
+const NO_DECOR: Decoration[] = [];
+
+function input(
+  world: IWorld,
+  zoom: number,
+  decorations: Decoration[] = NO_DECOR,
+): OverworldMapInput {
+  return { world, zone: ZONE, zoom, center: null, canvasSize: CANVAS, decorations };
+}
+
+describe('mapWindowMode (delve vs overworld discriminator)', () => {
+  it('returns overworld for an overworld position with no run (both shapes)', () => {
+    expect(mapWindowMode(makeOverworldWorld('sim'))).toBe('overworld');
+    expect(mapWindowMode(makeOverworldWorld('client'))).toBe('overworld');
+  });
+
+  it('returns delve when the player is in a delve band with an active run (both shapes)', () => {
+    expect(mapWindowMode(makeDelveWorld('sim'))).toBe('delve');
+    expect(mapWindowMode(makeDelveWorld('client'))).toBe('delve');
+  });
+
+  it('returns overworld in a delve band when no run is active (the data-absent trap)', () => {
+    const world = makeDelveWorld('client') as unknown as { delveRun: unknown };
+    world.delveRun = null;
+    expect(mapWindowMode(world as unknown as IWorld)).toBe('overworld');
+  });
+});
+
+describe('buildOverworldMapModel (pure draw model)', () => {
+  it('Sim-shaped and ClientWorld-mirror-shaped stubs render identically (decision 15)', () => {
+    const sim = makeOverworldWorld('sim');
+    const client = makeOverworldWorld('client');
+    expect(sim).not.toBe(client);
+    const fromSim = buildOverworldMapModel(input(sim, 3));
+    const fromClient = buildOverworldMapModel(input(client, 3));
+    expect(fromSim).toEqual(fromClient);
+  });
+
+  it('is deterministic: identical inputs produce a deep-equal model', () => {
+    const a = buildOverworldMapModel(input(makeOverworldWorld('sim'), 3));
+    const b = buildOverworldMapModel(input(makeOverworldWorld('sim'), 3));
+    expect(a).toEqual(b);
+  });
+
+  it('at zoom 1 blits the whole cached background and is not draggable', () => {
+    const model = buildOverworldMapModel(input(makeOverworldWorld('sim'), 1));
+    expect(model.blit).toEqual({ sxFrac: 0, syFrac: 0, swFrac: 1, shFrac: 1 });
+    expect(model.cursor).toBe('default');
+    expect(model.detail).toBeNull();
+    expect(model.view).toEqual({
+      spanX: WORLD_MAX_X - WORLD_MIN_X,
+      spanZ: ZONE.zMax - ZONE.zMin,
+      minX: WORLD_MIN_X,
+      maxX: WORLD_MAX_X,
+      minZ: ZONE.zMin,
+      maxZ: ZONE.zMax,
+    });
+    expect(model.zoneId).toBe(ZONE.id);
+  });
+
+  it('zooms into a sub-rect and turns draggable above zoom 1', () => {
+    const model = buildOverworldMapModel(input(makeOverworldWorld('sim'), 3));
+    expect(model.cursor).toBe('grab');
+    expect(model.blit.swFrac).toBeCloseTo(1 / 3, 10);
+    expect(model.view.spanX).toBeCloseTo((WORLD_MAX_X - WORLD_MIN_X) / 3, 6);
+  });
+
+  it('builds the zoomed-detail overlay only at/above MAP_DETAIL_ZOOM', () => {
+    const decor: Decoration[] = [
+      { kind: 'rock', x: 0, z: ZONE_CZ, scale: 1, variant: 0, biome: ZONE.biome },
+      { kind: 'tree', x: 1, z: ZONE_CZ, scale: 1, variant: 0, biome: ZONE.biome },
+      { kind: 'tree2', x: -1, z: ZONE_CZ, scale: 1, variant: 0, biome: ZONE.biome },
+    ];
+    expect(buildOverworldMapModel(input(makeOverworldWorld('sim'), 1, decor)).detail).toBeNull();
+    const detail = buildOverworldMapModel(
+      input(makeOverworldWorld('sim'), MAP_DETAIL_ZOOM, decor),
+    ).detail;
+    expect(detail).not.toBeNull();
+    // rock/tree(pine)/tree2(oak) map to the three decoration color keys, in order.
+    expect(detail?.decorations.map((d) => d.kind)).toEqual(['rock', 'tree', 'oak']);
+  });
+
+  it('emits a player arrow at -facing and one quest-giver glyph', () => {
+    const model = buildOverworldMapModel(input(makeOverworldWorld('sim'), 1));
+    expect(model.player).not.toBeNull();
+    expect(model.player?.angle).toBe(-0.5);
+    // the npc has an available quest from its own giver -> one '!' (not ready) glyph
+    expect(model.npcs).toHaveLength(1);
+    expect(model.npcs[0].ready).toBe(false);
+  });
+
+  it('dedups allies by id (friend wins ties) and orders friends before guild', () => {
+    const model = buildOverworldMapModel(input(makeOverworldWorld('sim'), 1));
+    expect(model.allies.map((a) => a.kind)).toEqual(['friend', 'guild']);
+    expect(model.allies.map((a) => a.name)).toEqual(['FriendA', 'GuildB']);
+  });
+
+  it('drops the player marker when standing east past the world edge', () => {
+    const world = makeOverworldWorld('client') as unknown as { player: { pos: { x: number } } };
+    world.player.pos.x = WORLD_MAX_X + 50;
+    const model = buildOverworldMapModel(input(world as unknown as IWorld, 1));
+    expect(model.player).toBeNull();
+  });
+
+  it('exposes the zoom ceiling used by the zoom control', () => {
+    expect(MAP_MAX_ZOOM).toBeGreaterThan(1);
+  });
+});

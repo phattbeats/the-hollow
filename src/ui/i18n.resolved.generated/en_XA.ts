@@ -2409,7 +2409,9 @@ export const en_XA: EnTranslations = {
       "mobileMap": "[Ɱáþ]",
       "closeMap": "[Çļóšé ɱáþ]",
       "zoomIn": "[Žóóɱ íñ]",
-      "zoomOut": "[Žóóɱ óúţ]"
+      "zoomOut": "[Žóóɱ óúţ]",
+      "mapCanvasLabel": "[Ɱáþ]",
+      "mapSummary": "[Ɱáþ óƒ {zone}.]"
     },
     "options": {
       "gameMenu": "[Ĝáɱé Ɱéñú]",

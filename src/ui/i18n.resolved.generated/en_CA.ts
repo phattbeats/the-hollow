@@ -2409,7 +2409,9 @@ export const en_CA: EnTranslations = {
       "mobileMap": "Map",
       "closeMap": "Close map",
       "zoomIn": "Zoom in",
-      "zoomOut": "Zoom out"
+      "zoomOut": "Zoom out",
+      "mapCanvasLabel": "Map",
+      "mapSummary": "Map of {zone}."
     },
     "options": {
       "gameMenu": "Game Menu",

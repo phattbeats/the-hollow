@@ -2409,7 +2409,9 @@ export const ru_RU: EnTranslations = {
       "mobileMap": "Карта",
       "closeMap": "Закрыть карту",
       "zoomIn": "Приблизить",
-      "zoomOut": "Отдалить"
+      "zoomOut": "Отдалить",
+      "mapCanvasLabel": "Map",
+      "mapSummary": "Map of {zone}."
     },
     "options": {
       "gameMenu": "Меню игры",

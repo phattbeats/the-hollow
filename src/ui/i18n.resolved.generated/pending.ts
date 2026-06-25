@@ -9,17 +9,53 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "hud.core.mapCanvasLabel",
+    "hud.core.mapSummary"
+  ],
+  "es_ES": [
+    "hud.core.mapCanvasLabel",
+    "hud.core.mapSummary"
+  ],
+  "fr_FR": [
+    "hud.core.mapCanvasLabel",
+    "hud.core.mapSummary"
+  ],
+  "fr_CA": [
+    "hud.core.mapCanvasLabel",
+    "hud.core.mapSummary"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
-  "zh_CN": [],
-  "zh_TW": [],
-  "ko_KR": [],
-  "ja_JP": [],
-  "pt_BR": [],
-  "ru_RU": []
+  "it_IT": [
+    "hud.core.mapCanvasLabel",
+    "hud.core.mapSummary"
+  ],
+  "de_DE": [
+    "hud.core.mapCanvasLabel",
+    "hud.core.mapSummary"
+  ],
+  "zh_CN": [
+    "hud.core.mapCanvasLabel",
+    "hud.core.mapSummary"
+  ],
+  "zh_TW": [
+    "hud.core.mapCanvasLabel",
+    "hud.core.mapSummary"
+  ],
+  "ko_KR": [
+    "hud.core.mapCanvasLabel",
+    "hud.core.mapSummary"
+  ],
+  "ja_JP": [
+    "hud.core.mapCanvasLabel",
+    "hud.core.mapSummary"
+  ],
+  "pt_BR": [
+    "hud.core.mapCanvasLabel",
+    "hud.core.mapSummary"
+  ],
+  "ru_RU": [
+    "hud.core.mapCanvasLabel",
+    "hud.core.mapSummary"
+  ]
 };
