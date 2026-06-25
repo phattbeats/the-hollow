@@ -127,4 +127,26 @@ describe('coverage: each scenario fires its subsystem', () => {
     const rec = run('party_loot');
     expect((rec.allEvents as Ev[]).some((e) => e.type === 'lootRoll')).toBe(true);
   });
+
+  it('entity_roster: both despawn branches drop, delayed drain runs, graveyard release at full hp', () => {
+    const rec = run('entity_roster');
+    const ents = entities(rec);
+    const ghostId = rec.notes.ghostId as number;
+    const guardId = rec.notes.guardId as number;
+    // despawn prologue dropped both: despawnTimer mob + DAMAGE_IDLE_DESPAWN idle mob.
+    expect(ents.some((e) => e.id === ghostId)).toBe(false);
+    expect(ents.some((e) => e.id === guardId)).toBe(false);
+    // delayed drain: 3 scheduled -> 1 fired, 1 guard-dropped, 1 (future) still pending.
+    expect((rec.sim as any).delayedEvents.length).toBe(1);
+    expect((rec.allEvents as Ev[]).some((e) => e.type === 'respawn')).toBe(true);
+    // outdoor release-spirit: alive again at full hp.
+    const p = (rec.sim as any).player;
+    expect(p.dead).toBe(false);
+    expect(p.hp).toBe(p.maxHp);
+  });
+
+  it('delve_death: second in-run death fails the delve and ejects the player', () => {
+    const rec = run('delve_death');
+    expect((rec.allEvents as Ev[]).some((e) => e.type === 'delveFailed')).toBe(true);
+  });
 });

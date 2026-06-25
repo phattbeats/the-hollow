@@ -556,6 +556,105 @@ function partyLoot(): Scenario {
   };
 }
 
+// Entity roster (E1): the spawn/despawn/decay plumbing, the delayed-event drain,
+// and the outdoor player release-spirit path. Spawns mobs via addEntity, expires
+// them through BOTH despawn branches (despawnTimer + the idle-despawn timer on a
+// DAMAGE_IDLE_DESPAWN mob) so the prologue collect-then-drop loop fires; schedules
+// three delayed events (due+fires, due+guard-fails-and-drops, future+stays-pending)
+// so emitDueDelayedEvents exercises every branch; then kills the player and releases
+// the spirit to the zone graveyard (full hp, auras + ccDr cleared, out of combat).
+function entityRoster(): Scenario {
+  return {
+    name: 'entity_roster',
+    coverage: [
+      'addEntity roster + spatial grids',
+      'despawn prologue: despawnTimer + DAMAGE_IDLE_DESPAWN idle-despawn (collect-then-drop)',
+      'emitDueDelayedEvents drain (fires / guard-drops / stays-pending)',
+      'releaseSpirit outdoor graveyard respawn (full hp, ~10966)',
+    ],
+    sampleEvery: 2,
+    build: () => new Sim({ seed: 1012, playerClass: 'warrior', autoEquip: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      sim.setPlayerLevel(10);
+      const p = sim.player as AnyEntity;
+      beef(p);
+      // (1a) despawnTimer churn: a far, quiescent mob set to expire in ~2 ticks.
+      const ghost = spawnMob(sim, 'forest_wolf', 2, p.pos.x + 200, p.pos.y, p.pos.z + 200);
+      ghost.hostile = false;
+      ghost.despawnTimer = 0.1;
+      rec.track(ghost.id);
+      // (1b) idle-despawn churn: a DAMAGE_IDLE_DESPAWN mob, idle + out of combat,
+      // with its idle timer pre-seeded so the second despawn branch fires.
+      const guard = spawnMob(sim, 'varkas_boneguard', 30, p.pos.x - 200, p.pos.y, p.pos.z - 200);
+      guard.hostile = false;
+      guard.inCombat = false;
+      guard.damageIdleDespawnTimer = 0.1;
+      rec.track(guard.id);
+      rec.notes.ghostId = ghost.id;
+      rec.notes.guardId = guard.id;
+      // (2) delayed-event drain: one due+fires, one due+guard-false (dropped), one
+      // future (stays pending). delayedEvents is the field this slice owns.
+      const delayed = (sim as any).delayedEvents as { at: number; event: any; guard?: () => boolean }[];
+      delayed.push({ at: sim.time + 0.05, event: { type: 'respawn', pid: p.id } });
+      delayed.push({ at: sim.time + 0.05, event: { type: 'respawn', pid: p.id }, guard: () => false });
+      delayed.push({ at: sim.time + 100, event: { type: 'respawn', pid: p.id } });
+      rec.tick(5); // both mobs despawn (0.1s) and the due delayed events resolve
+      rec.snapshot('post-churn');
+      // (4) outdoor release-spirit -> zone graveyard at FULL hp.
+      p.hp = 1;
+      p.dead = true;
+      sim.releaseSpirit();
+      rec.snapshot('graveyard-release');
+      rec.tick(2);
+    },
+  };
+}
+
+// Delve player death (E1, merged E2): the in-delve release-spirit path. First death
+// respawns at the module entry at 50% hp; a second death in the same run fails the
+// run (no respawn) and ejects to the board door.
+function delveDeath(): Scenario {
+  return {
+    name: 'delve_death',
+    coverage: [
+      'releaseSpiritInDelve first death (50% hp respawn at module entry, ~16345)',
+      'releaseSpiritInDelve second death fails the run (deathsThisRun >= 2)',
+      'rebucket after delve respawn teleport',
+    ],
+    sampleEvery: 5,
+    build: () => new Sim({ seed: 1013, playerClass: 'rogue', autoEquip: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const def = DELVES.collapsed_reliquary;
+      sim.setPlayerLevel(def.minLevel);
+      const p = sim.player as AnyEntity;
+      beef(p);
+      teleport(sim, p, def.doorPos.x, def.doorPos.z);
+      sim.enterDelve('collapsed_reliquary', 'normal');
+      const run = sim.delveRunForPlayer(sim.playerId);
+      if (!run) {
+        rec.tick(2);
+        return;
+      }
+      run.bountiful = false; // pin against the rare coffer roll
+      run.modules = ['reliquary_finale'];
+      run.moduleIndex = 0;
+      (sim as any).spawnDelveModule(run);
+      // First death: 50% hp respawn at the module entry.
+      p.dead = true;
+      sim.releaseSpirit();
+      rec.snapshot('delve-first-release');
+      // Second death in the same run: fails the run (delveFailed, ejected).
+      const e2 = sim.entities.get(sim.playerId) as AnyEntity;
+      e2.dead = true;
+      sim.releaseSpirit();
+      rec.tick(2); // failDelveRun's delveFailed is queued, drained on the next tick
+      rec.snapshot('delve-fail');
+    },
+  };
+}
+
 export const SCENARIOS: Scenario[] = [
   soloWarrior(),
   soloMage(),
@@ -568,4 +667,6 @@ export const SCENARIOS: Scenario[] = [
   fiesta(),
   delveLockpick(),
   partyLoot(),
+  entityRoster(),
+  delveDeath(),
 ];
