@@ -3226,6 +3226,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.widgets.coordinates': '좌표',
   'hudChrome.widgets.heading': '방향',
   'hudChrome.widgets.minimapZoom': '미니맵 확대/축소',
+  'hudChrome.leaderboard.close': '닫기',
   'hudChrome.widgets.worldCoordinates': '세계 좌표',
   'hudChrome.plurals.guildMembers.one': '당신은 {rank}, {count}명 회원',
   'hudChrome.plurals.guildMembers.few': '당신은 {rank}, {count}명 회원',

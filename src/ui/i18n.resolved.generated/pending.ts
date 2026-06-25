@@ -11,28 +11,34 @@
 export const pending: Record<string, readonly string[]> = {
   "es": [
     "hud.core.mapCanvasLabel",
-    "hud.core.mapSummary"
+    "hud.core.mapSummary",
+    "hudChrome.leaderboard.close"
   ],
   "es_ES": [
     "hud.core.mapCanvasLabel",
-    "hud.core.mapSummary"
+    "hud.core.mapSummary",
+    "hudChrome.leaderboard.close"
   ],
   "fr_FR": [
     "hud.core.mapCanvasLabel",
-    "hud.core.mapSummary"
+    "hud.core.mapSummary",
+    "hudChrome.leaderboard.close"
   ],
   "fr_CA": [
     "hud.core.mapCanvasLabel",
-    "hud.core.mapSummary"
+    "hud.core.mapSummary",
+    "hudChrome.leaderboard.close"
   ],
   "en_CA": [],
   "it_IT": [
     "hud.core.mapCanvasLabel",
-    "hud.core.mapSummary"
+    "hud.core.mapSummary",
+    "hudChrome.leaderboard.close"
   ],
   "de_DE": [
     "hud.core.mapCanvasLabel",
-    "hud.core.mapSummary"
+    "hud.core.mapSummary",
+    "hudChrome.leaderboard.close"
   ],
   "zh_CN": [
     "hud.core.mapCanvasLabel",
@@ -52,7 +58,8 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "pt_BR": [
     "hud.core.mapCanvasLabel",
-    "hud.core.mapSummary"
+    "hud.core.mapSummary",
+    "hudChrome.leaderboard.close"
   ],
   "ru_RU": [
     "hud.core.mapCanvasLabel",

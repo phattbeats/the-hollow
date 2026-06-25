@@ -244,6 +244,9 @@ export const zh_CN: EnTranslations = {
       "heading": "朝向",
       "minimapZoom": "小地图缩放"
     },
+    "leaderboard": {
+      "close": "关闭"
+    },
     "raidLockout": {
       "title": "团队副本锁定",
       "allReady": "所有团队副本就绪",

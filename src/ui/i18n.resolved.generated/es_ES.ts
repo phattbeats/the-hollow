@@ -244,6 +244,9 @@ export const es_ES: EnTranslations = {
       "heading": "Rumbo",
       "minimapZoom": "Zoom del minimapa"
     },
+    "leaderboard": {
+      "close": "Close"
+    },
     "raidLockout": {
       "title": "Bloqueos de banda",
       "allReady": "Todas las bandas listas",

@@ -244,6 +244,9 @@ export const pt_BR: EnTranslations = {
       "heading": "Direção",
       "minimapZoom": "Zoom do minimapa"
     },
+    "leaderboard": {
+      "close": "Close"
+    },
     "raidLockout": {
       "title": "Bloqueios de raide",
       "allReady": "Todas as raides prontas",

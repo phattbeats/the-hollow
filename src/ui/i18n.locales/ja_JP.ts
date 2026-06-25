@@ -3227,6 +3227,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.widgets.coordinates': '座標',
   'hudChrome.widgets.heading': '方角',
   'hudChrome.widgets.minimapZoom': 'ミニマップのズーム',
+  'hudChrome.leaderboard.close': '閉じる',
   'hudChrome.widgets.worldCoordinates': 'ワールド座標',
   'hudChrome.plurals.guildMembers.one': 'あなたは{rank}、{count}人のメンバー',
   'hudChrome.plurals.guildMembers.few': 'あなたは{rank}、{count}人のメンバー',

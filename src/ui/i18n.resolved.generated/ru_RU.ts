@@ -244,6 +244,9 @@ export const ru_RU: EnTranslations = {
       "heading": "Направление",
       "minimapZoom": "Масштаб миникарты"
     },
+    "leaderboard": {
+      "close": "Закрыть"
+    },
     "raidLockout": {
       "title": "Блокировки рейдов",
       "allReady": "Все рейды доступны",

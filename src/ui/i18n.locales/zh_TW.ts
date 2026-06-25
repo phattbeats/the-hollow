@@ -3092,6 +3092,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.widgets.coordinates': '座標',
   'hudChrome.widgets.heading': '方位',
   'hudChrome.widgets.minimapZoom': '小地圖縮放',
+  'hudChrome.leaderboard.close': '關閉',
   'hudChrome.widgets.worldCoordinates': '世界座標',
   'hudChrome.plurals.guildMembers.one': '你是{rank}，{count}名成員',
   'hudChrome.plurals.guildMembers.few': '你是{rank}，{count}名成員',

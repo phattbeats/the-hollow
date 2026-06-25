@@ -244,6 +244,9 @@ export const ja_JP: EnTranslations = {
       "heading": "方角",
       "minimapZoom": "ミニマップのズーム"
     },
+    "leaderboard": {
+      "close": "閉じる"
+    },
     "raidLockout": {
       "title": "レイドロックアウト",
       "allReady": "すべてのレイドが利用可能",

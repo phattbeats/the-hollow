@@ -244,6 +244,9 @@ export const fr_FR: EnTranslations = {
       "heading": "Cap",
       "minimapZoom": "Zoom de la minicarte"
     },
+    "leaderboard": {
+      "close": "Close"
+    },
     "raidLockout": {
       "title": "Verrous de raid",
       "allReady": "Tous les raids prêts",

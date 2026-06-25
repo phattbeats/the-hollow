@@ -244,6 +244,9 @@ export const ko_KR: EnTranslations = {
       "heading": "방향",
       "minimapZoom": "미니맵 확대/축소"
     },
+    "leaderboard": {
+      "close": "닫기"
+    },
     "raidLockout": {
       "title": "공격대 잠금",
       "allReady": "모든 공격대 준비됨",

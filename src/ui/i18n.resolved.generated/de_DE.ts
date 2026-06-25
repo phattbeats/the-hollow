@@ -244,6 +244,9 @@ export const de_DE: EnTranslations = {
       "heading": "Blickrichtung",
       "minimapZoom": "Minikarten-Zoom"
     },
+    "leaderboard": {
+      "close": "Close"
+    },
     "raidLockout": {
       "title": "Schlachtzug-Sperren",
       "allReady": "Alle Schlachtzüge bereit",

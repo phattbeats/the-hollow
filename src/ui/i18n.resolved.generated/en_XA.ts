@@ -244,6 +244,9 @@ export const en_XA: EnTranslations = {
       "heading": "[Ĥéáðíñĝ]",
       "minimapZoom": "[Ɱíñíɱáþ žóóɱ]"
     },
+    "leaderboard": {
+      "close": "[Çļóšé]"
+    },
     "raidLockout": {
       "title": "[Ŕáíð Ļóçķóúţš]",
       "allReady": "[Áļļ ŕáíðš ŕéáðý]",

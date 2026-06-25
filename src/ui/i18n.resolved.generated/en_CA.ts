@@ -244,6 +244,9 @@ export const en_CA: EnTranslations = {
       "heading": "Heading",
       "minimapZoom": "Minimap zoom"
     },
+    "leaderboard": {
+      "close": "Close"
+    },
     "raidLockout": {
       "title": "Raid Lockouts",
       "allReady": "All raids ready",

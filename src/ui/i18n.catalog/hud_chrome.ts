@@ -123,6 +123,13 @@ export const hudChromeStrings = {
     heading: 'Heading',
     minimapZoom: 'Minimap zoom',
   },
+  // Leaderboard window chrome: the close-control accessible label only. The board's
+  // title / subtitle / column / loading / empty / retry strings live in the game.ts
+  // catalog (game.leaderboard.*); this is the one control label the inline window
+  // lacked an accessible name for.
+  leaderboard: {
+    close: 'Close',
+  },
   // Raid-lockout badge on the minimap rim + its hover/tap panel: the title, the
   // accessible label, the "all ready" line, and the unlock-countdown templates
   // (digits run through formatNumber; the units reorder per locale).

@@ -3273,6 +3273,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.widgets.coordinates': 'Координаты',
   'hudChrome.widgets.heading': 'Направление',
   'hudChrome.widgets.minimapZoom': 'Масштаб миникарты',
+  'hudChrome.leaderboard.close': 'Закрыть',
   'hudChrome.widgets.worldCoordinates': 'Координаты мира',
   'hudChrome.plurals.guildMembers.one': 'вы {rank}, {count} участник',
   'hudChrome.plurals.guildMembers.few': 'вы {rank}, {count} участника',
