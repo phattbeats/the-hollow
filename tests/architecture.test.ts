@@ -125,6 +125,9 @@ const UI_PURE_CORES = [
   'src/ui/char_view.ts',
   'src/ui/map_window_view.ts',
   'src/ui/arena_window_view.ts',
+  'src/ui/leaderboard_view.ts',
+  'src/ui/spellbook_view.ts',
+  'src/ui/questlog_view.ts',
   'src/game/ui_effects_profile.ts',
 ].map((rel) => join(repoRoot, rel));
 

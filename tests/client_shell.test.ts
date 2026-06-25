@@ -97,6 +97,13 @@ const marketWindowTs = readFileSync(
   new URL('../src/ui/market_window.ts', import.meta.url),
   'utf8',
 ).replace(/\r\n/g, '\n');
+// The spellbook window was extracted to spellbook_view.ts (the class-kit model) +
+// spellbook_window.ts (the painter) in P9b; the spellbook guards read the painter
+// rather than the old inline hud.ts renderSpellbook cluster.
+const spellbookWindowTs = readFileSync(
+  new URL('../src/ui/spellbook_window.ts', import.meta.url),
+  'utf8',
+).replace(/\r\n/g, '\n');
 const mobileControlsTs = readFileSync(
   new URL('../src/game/mobile_controls.ts', import.meta.url),
   'utf8',
@@ -833,12 +840,14 @@ describe('client HTML shell', () => {
   });
 
   it('offers a reset-to-default action bar button in the spellbook, only for classes with form bars', () => {
-    expect(hudTs).toContain('data-reset-bar');
-    expect(hudTs).toContain('this.resetActiveFormBarToDefault()');
-    expect(hudTs).toContain("t('abilityUi.spellbook.resetBar')");
+    // The reset button + its label live in the spellbook painter (P9b extraction);
+    // Hud still owns resetActiveFormBarToDefault + the form-bar predicate it wires.
+    expect(spellbookWindowTs).toContain('data-reset-bar');
+    expect(spellbookWindowTs).toContain("t('abilityUi.spellbook.resetBar')");
+    expect(spellbookWindowTs).toContain('const resetBtnHtml = view.hasFormBars');
+    expect(hudTs).toContain('resetFormBar: () => this.resetActiveFormBarToDefault()');
     expect(componentsCss).toContain('.spellbook-reset {');
     expect(hudMobileCss).toContain('body.mobile-touch #spellbook .spellbook-reset {');
-    expect(hudTs).toContain('const resetBtnHtml = this.classHasFormBars()');
     expect(hudTs).toContain('return classHasFormBars(this.sim.cfg.playerClass);');
   });
 
@@ -848,9 +857,10 @@ describe('client HTML shell', () => {
       'body.mobile-touch #spellbook .spell-hotbar-toggle {\n    min-width: 40px;\n    min-height: 40px;',
     );
     expect(hudMobileCss).toContain('body.mobile-touch #spellbook .spell-hotbar-toggle.remove');
-    expect(hudTs).toMatch(/toggle\.className = [`']spell-hotbar-toggle/);
-    expect(hudTs).toContain('this.removeAbilityFromHotbar(known.def.id)');
-    expect(hudTs).toContain('this.addAbilityToHotbar(known.def.id)');
+    // The +/- toggle button + its add/remove wiring live in the spellbook painter.
+    expect(spellbookWindowTs).toMatch(/toggle\.className = [`']spell-hotbar-toggle/);
+    expect(spellbookWindowTs).toContain('this.deps.removeFromBar(id)');
+    expect(spellbookWindowTs).toContain('this.deps.addToBar(id)');
   });
 
   it('sizes the mobile Bags window as a usable modal', () => {
