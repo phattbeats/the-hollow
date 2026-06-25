@@ -219,6 +219,8 @@ import { localizeSimAuraName, localizeSimText } from './sim_i18n';
 import { buildStatTooltip, type StatId, type StatTooltipModel, weaponDps } from './stat_tooltip';
 import { type StatTooltipI18n, statCellHtml, statTooltipHtml } from './stat_tooltip_view';
 import { nearestSubzone } from './subzone';
+import { swingTimerState } from './swing_timer';
+import { SwingTimerPainter } from './swing_timer_painter';
 import { localizeTalentTitle, roleLabel, tTalent } from './talent_i18n';
 import { TalentsWindow } from './talents_window';
 import { type PresetId, type ThemeKnob, type ThemeState } from './theme';
@@ -240,6 +242,7 @@ import {
   wocBalanceVerified,
 } from './wallet_balance';
 import { formatXp, xpBarView } from './xp_bar';
+import { XpBarPainter } from './xp_bar_painter';
 
 // hooks main wires after Input exists (the options menu drives input, audio,
 // graphics, and logout, all of which live outside the HUD). PerfOverlayHooks
@@ -640,9 +643,25 @@ export class Hud {
   private actionbarEl = $('#actionbar');
   private xpFillEl = $('#xpbar .fill');
   private xpLabelEl = $('#xpbar .label');
+  // XP + swing bar element refs cached once for their painters (the #xpbar /
+  // .rested / #player-frame / #swingbar refs were re-queried via $()/querySelector
+  // every frame, the leak P10a fixes).
+  private xpbarEl = $('#xpbar');
+  private xpRestedEl = $('#xpbar .rested');
+  private playerFrameEl = $('#player-frame');
+  private swingbarEl = $('#swingbar');
+  private swingFillEl = this.swingbarEl.querySelector('.fill') as HTMLElement;
+  private swingLabelEl = this.swingbarEl.querySelector('.label') as HTMLElement;
   private deathOverlayEl = $('#death-overlay');
   private releaseSpiritBtnEl = $('#release-btn');
+  // Cached once (was re-queried every frame): the near-death screen-edge overlay.
+  private lowHealthVignetteEl = document.getElementById('low-health-vignette');
   private hotWriteCache = new Map<HTMLElement, string>();
+  // Multi-slot caches for the P10a writers (decision 5a): one element holds many
+  // custom properties / toggled classes, so these key per (element, prop) and
+  // (element, class) instead of the single slot per element hotWriteCache uses.
+  private hotStylePropCache = new Map<HTMLElement, Map<string, string>>();
+  private hotClassCache = new Map<HTMLElement, Map<string, string>>();
   private hotDomWrites = 0;
   private hotDomSkippedWrites = 0;
   private subzoneTimer: number | undefined;
@@ -1157,6 +1176,44 @@ export class Hud {
     this.hotWriteCache.set(el, key);
     this.hotDomWrites++;
     el.style.width = width;
+  }
+
+  // P10a write-elision extension (decision 5a). setStyleProp drives a custom
+  // property (or any standard property) and toggleClass drives a class, each
+  // keyed in a MULTI-SLOT cache: one element can hold many props / toggled
+  // classes, so collapsing these into the single-slot hotWriteCache would
+  // silently break elision (Top risk 1). The facet in painter_host.ts binds the
+  // same two writers over these same caches + counters, so Hud-direct writes and
+  // painter writes share one skip-rate.
+  private setStyleProp(el: HTMLElement, prop: string, value: string): void {
+    let slots = this.hotStylePropCache.get(el);
+    if (slots === undefined) {
+      slots = new Map();
+      this.hotStylePropCache.set(el, slots);
+    }
+    if (slots.get(prop) === value) {
+      this.hotDomSkippedWrites++;
+      return;
+    }
+    slots.set(prop, value);
+    this.hotDomWrites++;
+    el.style.setProperty(prop, value);
+  }
+
+  private toggleClass(el: HTMLElement, cls: string, on: boolean): void {
+    const state = on ? 'on' : 'off';
+    let slots = this.hotClassCache.get(el);
+    if (slots === undefined) {
+      slots = new Map();
+      this.hotClassCache.set(el, slots);
+    }
+    if (slots.get(cls) === state) {
+      this.hotDomSkippedWrites++;
+      return;
+    }
+    slots.set(cls, state);
+    this.hotDomWrites++;
+    el.classList.toggle(cls, on);
   }
 
   perfStats(): { hotDomWrites: number; hotDomSkippedWrites: number; hotDomSkipRate: number } {
@@ -2149,13 +2206,16 @@ export class Hud {
   // HUD just routes the framed unit (class headshot vs mob/NPC crest) to it.
   private readonly portraits = new UnitPortraitPainter();
 
-  // PainterHost facets (painter_host.ts). The write-elision facet binds the four
-  // private hot writers as closures over the SAME hotWriteCache + counters (no
-  // visibility change), so the HUD and painters share one skip-rate; the delve
-  // painter uses it for the '#zone-label' text. The presentation bag is the shared
-  // icon/money/tooltip surface item windows compose (today only the vendor window).
+  // PainterHost facets (painter_host.ts). The write-elision facet binds the six
+  // private hot writers as closures over the SAME caches + counters (no visibility
+  // change), so the HUD and painters share one skip-rate; the delve painter uses it
+  // for the '#zone-label' text, the xp/swing painters for their per-frame writes.
+  // The presentation bag is the shared icon/money/tooltip surface item windows
+  // compose (today only the vendor window).
   private readonly writerFacet = makeWriterFacet(
     this.hotWriteCache,
+    this.hotStylePropCache,
+    this.hotClassCache,
     () => {
       this.hotDomWrites++;
     },
@@ -2164,6 +2224,23 @@ export class Hud {
     },
   );
   private readonly delvePainter = new DelveMapPainter(this.writerFacet, classCss);
+  // Per-frame XP + swing painters (P10a). Each caches its element refs once and
+  // routes every write through the same six-writer facet, so their --xp-fill /
+  // .rested / swing writes share the one skip-rate (decision 5a).
+  private readonly xpBarPainter = new XpBarPainter(
+    this.writerFacet,
+    this.xpbarEl,
+    this.xpFillEl,
+    this.xpRestedEl,
+    this.xpLabelEl,
+    this.playerFrameEl,
+  );
+  private readonly swingTimerPainter = new SwingTimerPainter(
+    this.writerFacet,
+    this.swingbarEl,
+    this.swingFillEl,
+    this.swingLabelEl,
+  );
   // Overworld world-map painter (the delve branch stays with delvePainter). Owns
   // the cached whole-world decorations; redraws from the mediumHud band while open.
   private readonly mapPainter = new MapWindowPainter();
@@ -3695,16 +3772,16 @@ export class Hud {
   // from the pure lowHealthVignette() curve; purely presentational (CSS vars on
   // a fixed overlay), works on every GFX tier since it's DOM, not a post pass.
   private updateLowHealthVignette(hp: number, maxHp: number): void {
-    const el = document.getElementById('low-health-vignette');
+    const el = this.lowHealthVignetteEl;
     if (!el) return;
     const v = lowHealthVignette(hp, maxHp);
-    if (!v.active) {
-      el.classList.remove('active');
-      return;
-    }
-    el.style.setProperty('--lhv-opacity', v.opacity.toFixed(3));
-    el.style.setProperty('--lhv-pulse', `${v.pulseSeconds.toFixed(3)}s`);
-    el.classList.add('active');
+    // Route through the P10a elided writers (the cached ref + setStyleProp /
+    // toggleClass): a per-frame query + raw uncounted writes become a counted,
+    // change-only write that the skip-rate sees while the player is at full health.
+    this.toggleClass(el, 'active', v.active);
+    if (!v.active) return;
+    this.setStyleProp(el, '--lhv-opacity', v.opacity.toFixed(3));
+    this.setStyleProp(el, '--lhv-pulse', `${v.pulseSeconds.toFixed(3)}s`);
   }
 
   update(): void {
@@ -3880,34 +3957,15 @@ export class Hud {
       this.setText(this.castbarTimerEl, '');
     }
 
-    // swing timer — fills between melee/ranged auto-attack swings. swingTimer
-    // counts DOWN to 0 (ready); we recover the full interval from the reset
-    // edge so the bar stays accurate under haste and for ranged weapons.
-    const sw = $('#swingbar');
-    if (p.autoAttack && target && !target.dead && target.kind !== 'object') {
-      if (p.swingTimer > this.lastSwingTimer + 1e-4 || this.swingPeriod <= 0) {
-        this.swingPeriod = Math.max(p.swingTimer, p.weapon.speed);
-      }
-      this.lastSwingTimer = p.swingTimer;
-      const frac =
-        this.swingPeriod > 0 ? Math.min(1, Math.max(0, 1 - p.swingTimer / this.swingPeriod)) : 1;
-      sw.style.display = 'block';
-      (sw.querySelector('.fill') as HTMLElement).style.width = `${(frac * 100).toFixed(1)}%`;
-      sw.classList.toggle('ready', p.swingTimer <= 0);
-      (sw.querySelector('.label') as HTMLElement).textContent =
-        p.swingTimer <= 0
-          ? t('hudChrome.swing.ready')
-          : t('hudChrome.swing.seconds', {
-              seconds: formatNumber(p.swingTimer, {
-                minimumFractionDigits: 1,
-                maximumFractionDigits: 1,
-              }),
-            });
-    } else {
-      sw.style.display = 'none';
-      this.lastSwingTimer = 0;
-      this.swingPeriod = 0;
-    }
+    // swing timer: fills between melee/ranged auto-attack swings. swingTimer
+    // counts DOWN to 0 (ready); swing_timer.ts recovers the full interval from the
+    // reset edge so the bar stays accurate under haste and for ranged weapons. The
+    // period/timer edge-tracking round-trips through the core (parameter-in /
+    // next-state-out): Hud holds the two scalars and feeds them back next frame.
+    const swing = swingTimerState(p, target ?? null, this.swingPeriod, this.lastSwingTimer);
+    this.swingPeriod = swing.nextPeriod;
+    this.lastSwingTimer = swing.nextTimer;
+    this.swingTimerPainter.paint(swing);
 
     // action bar
     this.renderPetBar();
@@ -4013,8 +4071,10 @@ export class Hud {
       ab.btn.classList.toggle('queued', p.queuedOnSwing === a.id);
     }
 
-    // xp bar — pre-cap shows the level bar; post-cap fills toward the next
-    // virtual level (Max-Level XP Overflow), with distinct prestige/gold styling.
+    // xp bar: pre-cap shows the level bar; post-cap fills toward the next virtual
+    // level (Max-Level XP Overflow), with distinct prestige/gold styling. The
+    // painter caches the #xpbar / .rested / #player-frame refs once and routes the
+    // --xp-fill / .rested / class writes through the elided helpers (decision 5a).
     const showOverflow = (this.optionsHooks?.settings.get('showOverflowXp') ?? 1) >= 0.5;
     const bar = xpBarView({
       level: p.level,
@@ -4023,16 +4083,7 @@ export class Hud {
       restedXp: sim.restedXp,
       showOverflow,
     });
-    this.setWidth(this.xpFillEl, `${(bar.fillFrac * 100).toFixed(1)}%`);
-    $('#xpbar').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));
-    $('#player-frame').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));
-    // Rested overlay sits ahead of the fill (classic inn-rested bonus preview).
-    const restedEl = $('#xpbar .rested') as HTMLElement;
-    restedEl.style.left = `${(bar.fillFrac * 100).toFixed(1)}%`;
-    restedEl.style.width = `${(bar.restedFrac * 100).toFixed(1)}%`;
-    this.setText(this.xpLabelEl, bar.label);
-    $('#xpbar').classList.toggle('overflow', bar.postCap);
-    $('#xpbar').classList.toggle('rested', bar.restedFrac > 0);
+    this.xpBarPainter.paint(bar);
 
     const deadInArena = p.dead && !!this.sim.arenaInfo?.match;
     this.setDisplay(this.deathOverlayEl, p.dead ? 'flex' : 'none');

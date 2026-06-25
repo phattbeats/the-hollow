@@ -90,6 +90,14 @@ const optionsViewTs = readFileSync(
   new URL('../src/ui/options_view.ts', import.meta.url),
   'utf8',
 ).replace(/\r\n/g, '\n');
+// The XP bar was extracted to xp_bar.ts (the view core) + xp_bar_painter.ts (the
+// painter) in P10a; the mobile-XP-ring guard reads the painter (which drives
+// --xp-fill on both #xpbar and #player-frame through the elided writers) rather
+// than the old inline hud.ts xp block.
+const xpBarPainterTs = readFileSync(
+  new URL('../src/ui/xp_bar_painter.ts', import.meta.url),
+  'utf8',
+).replace(/\r\n/g, '\n');
 // The World Market window was extracted to market_view.ts (the state model) +
 // market_window.ts (the painter) in P8b; the browse/filter/pagination guards read
 // the painter rather than the old inline hud.ts renderMarket cluster.
@@ -506,9 +514,16 @@ describe('client HTML shell', () => {
       'body.mobile-touch #party-frames.below-target {\n      top: calc(max(6px, env(safe-area-inset-top)) + 100px);',
     );
     expect(hudMobileCss).not.toContain('body.mobile-touch.mobile-left-handed #xpbar,');
-    expect(hudTs).toContain("$('#xpbar').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));");
-    expect(hudTs).toContain(
-      "$('#player-frame').style.setProperty('--xp-fill', bar.fillFrac.toFixed(4));",
+    // The XP fill fraction is mirrored into --xp-fill on BOTH the #xpbar and the
+    // #player-frame (the mobile ring around the class circle reads it). The painter
+    // owns those writes now: it caches the #player-frame ref and drives --xp-fill on
+    // the bar and the player frame through the elided setStyleProp.
+    expect(hudTs).toContain("private playerFrameEl = $('#player-frame');");
+    expect(hudTs).toContain('this.playerFrameEl,');
+    expect(xpBarPainterTs).toContain("const XP_FILL_PROP = '--xp-fill';");
+    expect(xpBarPainterTs).toContain('this.writers.setStyleProp(this.bar, XP_FILL_PROP, fillFrac4);');
+    expect(xpBarPainterTs).toContain(
+      'this.writers.setStyleProp(this.playerFrame, XP_FILL_PROP, fillFrac4);',
     );
   });
 

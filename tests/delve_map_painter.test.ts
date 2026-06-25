@@ -1,104 +1,21 @@
 // Tests for the delve_map painter (the P6 PainterHost seam pilot):
-//  - the write-elision facet (makeWriterFacet) against a fake cache,
 //  - the pure delveDrawModel: Sim-vs-ClientWorld parity + both-sites determinism,
 //  - the no-magic-values canvas guard over the painter source (decision 12),
 //  - the WCAG-chrome boundary over the vendor window the host now composes.
 //
+// The write-elision facet (makeWriterFacet) is exercised in painter_host.test.ts
+// (P10a grew it to six writers); this file keeps only the delve-specific path.
 // The painter's canvas/DOM methods (paintMinimapDelve / paintWorldMapDelve) need a
 // real 2D context + getComputedStyle, so they are NOT exercised here; this Node
-// suite drives the PURE path (delveDrawModel) + the writer facet, which is exactly
-// the contract the per-frame phases P10-P13 lean on.
+// suite drives the PURE path (delveDrawModel), which is exactly the contract the
+// per-frame phases P10-P13 lean on.
 
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { DELVE_MODULE_LAYOUTS } from '../src/sim/delve_layout';
 import { delveLocalToCanvas, delveSchematicStatic } from '../src/ui/delve_map';
 import { delveDrawModel } from '../src/ui/delve_map_painter';
-import { makeWriterFacet } from '../src/ui/painter_host';
 import type { IWorld } from '../src/world_api';
-
-// --- Write-elision facet (decision 5 / 5a, the host contract this phase locks) ---
-
-/** A DOM-free element good enough for the facet's textContent / style writes. */
-function fakeEl(): HTMLElement {
-  return { textContent: '', style: {} as CSSStyleDeclaration } as unknown as HTMLElement;
-}
-
-function fakeFacet() {
-  const cache = new Map<HTMLElement, string>();
-  const counts = { writes: 0, skips: 0 };
-  const facet = makeWriterFacet(
-    cache,
-    () => {
-      counts.writes++;
-    },
-    () => {
-      counts.skips++;
-    },
-  );
-  return { cache, facet, counts };
-}
-
-describe('makeWriterFacet (write-elision facet)', () => {
-  it('writes a value once, then elides repeats of the same value to the same element', () => {
-    const { facet, counts } = fakeFacet();
-    const el = fakeEl();
-    facet.setText(el, 'x');
-    expect(el.textContent).toBe('x');
-    expect(counts).toEqual({ writes: 1, skips: 0 });
-    facet.setText(el, 'x'); // identical -> elided
-    expect(counts).toEqual({ writes: 1, skips: 1 });
-    facet.setText(el, 'y'); // changed -> writes
-    expect(el.textContent).toBe('y');
-    expect(counts).toEqual({ writes: 2, skips: 1 });
-  });
-
-  it('keys per element: a write to one element never elides a write to another', () => {
-    const { facet, counts } = fakeFacet();
-    const a = fakeEl();
-    const b = fakeEl();
-    facet.setText(a, 'same');
-    facet.setText(b, 'same'); // different element -> still a real write
-    expect(counts).toEqual({ writes: 2, skips: 0 });
-    facet.setText(a, 'same'); // repeat on a -> elided
-    facet.setText(b, 'same'); // repeat on b -> elided
-    expect(counts).toEqual({ writes: 2, skips: 2 });
-  });
-
-  it('namespaces by write type: same raw value via display vs width does not false-elide', () => {
-    const { facet, counts } = fakeFacet();
-    const el = fakeEl();
-    facet.setDisplay(el, 'block'); // key "display:block"
-    facet.setWidth(el, 'block'); // key "width:block" -> not elided by the display write
-    expect(counts).toEqual({ writes: 2, skips: 0 });
-    expect(el.style.display).toBe('block');
-    expect(el.style.width).toBe('block');
-  });
-
-  it('two facets over one shared cache share a single skip-rate (HUD + painter coherence)', () => {
-    // Hud keeps its own writers AND hands painters a facet built from the SAME
-    // hotWriteCache; the second writer must see the first writer's cache entry so
-    // the '#zone-label' write is elided whichever path wrote it last.
-    const cache = new Map<HTMLElement, string>();
-    const a = { writes: 0, skips: 0 };
-    const b = { writes: 0, skips: 0 };
-    const facetA = makeWriterFacet(
-      cache,
-      () => a.writes++,
-      () => a.skips++,
-    );
-    const facetB = makeWriterFacet(
-      cache,
-      () => b.writes++,
-      () => b.skips++,
-    );
-    const el = fakeEl();
-    facetA.setText(el, 'Delve: Ossuary');
-    expect(a).toEqual({ writes: 1, skips: 0 });
-    facetB.setText(el, 'Delve: Ossuary'); // shared cache -> elided through the other facet
-    expect(b).toEqual({ writes: 0, skips: 1 });
-  });
-});
 
 // --- Pure draw model: Sim-vs-ClientWorld parity + both-sites determinism --------
 
