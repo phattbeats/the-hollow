@@ -53,8 +53,12 @@ const CAMPFIRE_RADIUS_PPU = 0.5;
  *  delve_map_painter) or the overworld map (this core). */
 export type MapWindowMode = 'delve' | 'overworld';
 
-/** The committed-zone region the map covers (world coords): the full zone band
- *  spans the whole world in X and the zone's [zMin, zMax) in Z. */
+/** A map region in world coords, used with two meanings for spanX/spanZ. The
+ *  internal `full` rect carries the full committed-zone spans (the whole world in
+ *  X, the zone's [zMin, zMax) in Z). The returned model `view` (which Hud stores
+ *  as mapView for the drag handler) keeps those FULL min/max bounds but carries
+ *  the current ZOOMED spans (full span / zoom). So min/max are always full-zone;
+ *  spanX/spanZ are full-zone on `full` and zoomed on the returned `view`. */
 export interface MapViewRect {
   spanX: number;
   spanZ: number;

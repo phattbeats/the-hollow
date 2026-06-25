@@ -192,14 +192,16 @@ export class MapWindowPainter {
       const dungeonName = dungeonDisplayName(portal.dungeonId);
       ctx.strokeText(dungeonName, portal.mx, portal.my - PORTAL_NAME_OFFSET_Y);
       ctx.fillText(dungeonName, portal.mx, portal.my - PORTAL_NAME_OFFSET_Y);
-      ctx.font = LABEL_FONT;
-      ctx.fillStyle = colors.label;
     }
 
-    // Quest-giver glyphs ('?' turn-in ready, '!' available).
+    // Quest-giver glyphs ('?' turn-in ready, '!' available). Color + font are
+    // loop-invariant, so set them once before the loop, not per glyph (assigning
+    // ctx.font re-parses the font string each time). The next text-drawing layer
+    // (allies) sets its own font/fillStyle, so the carried-over portal-name font
+    // is never read by a draw in between (pixel-identical to the inline original).
+    ctx.fillStyle = colors.npcQuest;
+    ctx.font = NPC_GLYPH_FONT;
     for (const npc of model.npcs) {
-      ctx.fillStyle = colors.npcQuest;
-      ctx.font = NPC_GLYPH_FONT;
       const glyph = npc.ready ? NPC_GLYPH_READY : NPC_GLYPH_AVAILABLE;
       ctx.strokeText(glyph, npc.mx, npc.my);
       ctx.fillText(glyph, npc.mx, npc.my);

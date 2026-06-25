@@ -222,7 +222,7 @@ export class ArenaWindow {
     if (section.kind === 'members') {
       const rows = section.members
         .map((m) => {
-          const cls = m.knownClass ? this.className(m.cls) : m.cls;
+          const cls = m.knownClass ? this.classDisplayName(m.cls) : m.cls;
           return (
             `<div class="arena-party-row${m.me ? ' me' : ''}"><span class="apr-name">${esc(m.name)}</span>` +
             `<span class="apr-meta">${esc(
@@ -263,7 +263,7 @@ export class ArenaWindow {
   private ladderHtml(rows: ArenaLadderRow[]): string {
     const html = rows
       .map((r) => {
-        const cls = r.knownClass ? this.className(r.cls) : r.cls;
+        const cls = r.knownClass ? this.classDisplayName(r.cls) : r.cls;
         return (
           `<div class="ladder-row${r.me ? ' me' : ''}"><span class="rank">${esc(formatNumber(r.rank, { maximumFractionDigits: 0 }))}</span>` +
           `<span class="lr-name" title="${esc(t('hud.arena.playerClassTitle', { name: r.name, className: cls }))}">${esc(r.name)}</span>` +
@@ -278,7 +278,7 @@ export class ArenaWindow {
   private allTimeHtml(rows: ArenaAllTimeRow[]): string {
     return rows
       .map((r) => {
-        const cls = r.knownClass ? this.className(r.cls) : r.cls;
+        const cls = r.knownClass ? this.classDisplayName(r.cls) : r.cls;
         return (
           `<div class="ladder-row${r.me ? ' me' : ''}"><span class="rank">${esc(formatNumber(r.rank, { maximumFractionDigits: 0 }))}</span>` +
           `<span class="lr-name" title="${esc(
@@ -299,7 +299,7 @@ export class ArenaWindow {
     return fmt === 'fiesta' ? t('fiesta.bracket') : fmt;
   }
 
-  private className(cls: string): string {
+  private classDisplayName(cls: string): string {
     return tEntity({ kind: 'class', id: cls as PlayerClass, field: 'name' });
   }
 }
