@@ -172,4 +172,34 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(mob.aggroTargetId).toBe(null);
     expect(mob.threat.size).toBe(0);
   });
+
+  it('mob_locomotion: boss pulse/stomp/terrify fire, idle wander + evade reset + cowardly flee', () => {
+    const rec = run('mob_locomotion');
+    const n = rec.notes as Record<string, any>;
+    const ev = rec.allEvents as Ev[];
+    const ents = entities(rec);
+    // aoePulse dealt damage + emitted spellfx (mogger Ground Pound).
+    expect(ev.some((e) => e.type === 'spellfx' && e.sourceId === n.pulserId)).toBe(true);
+    expect(ev.some((e) => e.type === 'damage' && e.sourceId === n.pulserId)).toBe(true);
+    // War Stomp landed a stomp_stun + Banshee terrify landed a fear_incap (captured at
+    // the moment each arm fired; the CC does not persist to the end without a tick).
+    expect(n.stompStunLanded).toBe(true);
+    expect(n.fearLanded).toBe(true);
+    // War Stomp + terrify each emit an 'unleashes' combat-log line (>= 2 total).
+    expect(
+      ev.filter((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('unleashes')).length,
+    ).toBeGreaterThanOrEqual(2);
+    // Idle wander picked a target (wanderTimer re-armed to the 30s patrol window).
+    const wanderer = ents.find((e) => e.id === n.wandererId);
+    expect(wanderer.wanderTarget).not.toBeNull();
+    // Evade arrival reset the mob: back to idle at full hp.
+    expect(n.evaderState).toBe('idle');
+    expect(n.evaderHp).toBeGreaterThan(1);
+    // Cowardly flee: the lackey panicked into the flee state and stayed fleeing.
+    expect(n.cowardStateAfterPanic).toBe('flee');
+    expect(n.cowardStateFleeing).toBe('flee');
+    expect(
+      ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('attempts to flee')),
+    ).toBe(true);
+  });
 });
