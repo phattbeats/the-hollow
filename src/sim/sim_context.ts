@@ -22,6 +22,7 @@ import type {
   FiestaState,
   InstanceSlot,
   Party,
+  PetState,
   PlayerMeta,
   TradeSession,
 } from './sim';
@@ -32,6 +33,7 @@ import type {
   DelveRun,
   Entity,
   ErrorReason,
+  PlayerClass,
   QuestProgress,
   SimConfig,
   SimEvent,
@@ -97,6 +99,13 @@ export interface SimContextPrimitives {
   arenaQueueFiesta: ArenaQueueUnit[];
   readonly arenaBusySlots: Set<number>;
   nextArenaMatchId: number;
+  // I2a delve runs: the live run pool (seeded in the Sim ctor, never reassigned) and
+  // the transient pet stash both stay Sim-owned (the disconnect path + serializePet
+  // poke them); exposed here as live views the run module reads/mutates in place.
+  readonly delveRuns: DelveRun[];
+  readonly delvePetStash: Map<number, PetState>;
+  // Host-supplied UTC day string ('' = unknown) gating the delve daily reset.
+  readonly utcDay: string;
 }
 
 // Cross-system callbacks. Each signature mirrors the still-on-`Sim` method it
@@ -335,6 +344,30 @@ export interface SimContextCallbacks {
   // the module never touches the map directly).
   effectiveArmor(e: Entity): number;
   recalcPlayer(target: Entity): void;
+  // I2a delve run lifecycle (delves/runs.ts). The reach-in callbacks delveRunForMob/
+  // onDelveBossDefeated/delveDetectMult are declared above (C1/M2 stubs; I2a flips
+  // points-at to delves/runs via the Sim delegate); startDelveRaiseDeadChannel is the
+  // one NEW reach-in. The rest still live on their owning slice (points-at Sim): the
+  // shared helpers (partyMembersForKey/addItem/spawnBossAdds; grantXp is the C1 decl
+  // above), the gate predicates (tradeFor/duelFor), the P1 pet seam (serializePet/
+  // restorePet/despawnPersistentPet/isPetClass; despawnPet is the M2 decl above), the
+  // I2b lockpick controller (abandonLockpick/tickLockpickTimeout), and the I2c companion
+  // AI (spawnDelveCompanion/despawnDelveCompanion/maybeCompanionBark).
+  partyMembersForKey(key: string): number[];
+  addItem(itemId: string, count: number, pid?: number): void;
+  spawnBossAdds(boss: Entity, mobId: string, count: number): void;
+  tradeFor(pid: number): TradeSession | null;
+  duelFor(pid: number): DuelState | null;
+  serializePet(ownerPid: number): PetState | null;
+  restorePet(owner: Entity, state: PetState): void;
+  despawnPersistentPet(pet: Entity): void;
+  isPetClass(cls: PlayerClass): boolean;
+  spawnDelveCompanion(run: DelveRun, pid: number, companionId: string): void;
+  despawnDelveCompanion(run: DelveRun): void;
+  maybeCompanionBark(run: DelveRun, pid: number, barkId: string): void;
+  abandonLockpick(run: DelveRun): void;
+  tickLockpickTimeout(run: DelveRun): void;
+  startDelveRaiseDeadChannel(run: DelveRun, boss: Entity, mobId: string, count: number): boolean;
 }
 
 // The seam consumed by extracted modules.
@@ -442,6 +475,15 @@ export function createSimContext(host: SimContextHost): SimContext {
     },
     set nextArenaMatchId(v) {
       host.nextArenaMatchId = v;
+    },
+    get delveRuns() {
+      return host.delveRuns;
+    },
+    get delvePetStash() {
+      return host.delvePetStash;
+    },
+    get utcDay() {
+      return host.utcDay;
     },
     emit: host.emit,
     error: host.error,
@@ -558,5 +600,22 @@ export function createSimContext(host: SimContextHost): SimContext {
     // M3 mob-swing affix cascade seam.
     effectiveArmor: host.effectiveArmor,
     recalcPlayer: host.recalcPlayer,
+    // I2a delve run lifecycle bindings. grantXp/despawnPet/delveRunForMob/
+    // onDelveBossDefeated/delveDetectMult are bound above (C1/M2/C3); deduped here.
+    partyMembersForKey: host.partyMembersForKey,
+    addItem: host.addItem,
+    spawnBossAdds: host.spawnBossAdds,
+    tradeFor: host.tradeFor,
+    duelFor: host.duelFor,
+    serializePet: host.serializePet,
+    restorePet: host.restorePet,
+    despawnPersistentPet: host.despawnPersistentPet,
+    isPetClass: host.isPetClass,
+    spawnDelveCompanion: host.spawnDelveCompanion,
+    despawnDelveCompanion: host.despawnDelveCompanion,
+    maybeCompanionBark: host.maybeCompanionBark,
+    abandonLockpick: host.abandonLockpick,
+    tickLockpickTimeout: host.tickLockpickTimeout,
+    startDelveRaiseDeadChannel: host.startDelveRaiseDeadChannel,
   };
 }

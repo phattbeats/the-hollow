@@ -138,6 +138,24 @@ const CALLBACK_KEYS = [
   // M3 mob-swing affix cascade surface.
   'effectiveArmor',
   'recalcPlayer',
+  // I2a delve run lifecycle consume surface (helpers / gates / pet seam / I2b / I2c
+  // + the reach-in callbacks). grantXp/despawnPet/delveRunForMob/onDelveBossDefeated/
+  // delveDetectMult already listed above (C1/M2/C3) - deduped, not re-added.
+  'partyMembersForKey',
+  'addItem',
+  'spawnBossAdds',
+  'tradeFor',
+  'duelFor',
+  'serializePet',
+  'restorePet',
+  'despawnPersistentPet',
+  'isPetClass',
+  'spawnDelveCompanion',
+  'despawnDelveCompanion',
+  'maybeCompanionBark',
+  'abandonLockpick',
+  'tickLockpickTimeout',
+  'startDelveRaiseDeadChannel',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -178,6 +196,9 @@ function makeFakeHost() {
     arenaQueueFiesta: [],
     arenaBusySlots: new Set(),
     nextArenaMatchId: 1,
+    delveRuns: [],
+    delvePetStash: new Map(),
+    utcDay: '',
     emit: vi.fn(),
     error: vi.fn(),
     dealDamage: vi.fn(),
@@ -291,6 +312,23 @@ function makeFakeHost() {
     onBossDeath: vi.fn(),
     effectiveArmor: vi.fn(() => 0),
     recalcPlayer: vi.fn(),
+    // I2a delve run lifecycle stubs. grantXp/despawnPet/delveRunForMob/onDelveBossDefeated/
+    // delveDetectMult stubbed above (C1/M2/C3) - deduped here.
+    partyMembersForKey: vi.fn(() => []),
+    addItem: vi.fn(),
+    spawnBossAdds: vi.fn(),
+    tradeFor: vi.fn(() => null),
+    duelFor: vi.fn(() => null),
+    serializePet: vi.fn(() => null),
+    restorePet: vi.fn(),
+    despawnPersistentPet: vi.fn(),
+    isPetClass: vi.fn(() => false),
+    spawnDelveCompanion: vi.fn(),
+    despawnDelveCompanion: vi.fn(),
+    maybeCompanionBark: vi.fn(),
+    abandonLockpick: vi.fn(),
+    tickLockpickTimeout: vi.fn(),
+    startDelveRaiseDeadChannel: vi.fn(() => false),
   };
   return { host, rng, entities, clock };
 }
