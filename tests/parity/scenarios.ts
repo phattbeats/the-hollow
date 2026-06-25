@@ -866,6 +866,92 @@ function partyRaid(): Scenario {
   };
 }
 
+// Player target selection (tab / nearest / friendly cycle) + the party-scoped raid
+// marker store (set/toggle/symbol-uniqueness + death-strip). T1 extracts both into
+// src/sim/targeting.ts; the slice draws no rng of its own, so this pins (a) the
+// targetId/autoAttack the selectors write onto the player entity, and (b) that the
+// surrounding draws (the lethal blow's rollLoot) stay byte-identical across the move.
+function targetingMarkers(): Scenario {
+  // Raid-marker symbols are integer ids 0..7 (skull / star here).
+  const SKULL = 0;
+  const STAR = 1;
+  return {
+    name: 'targeting_markers',
+    coverage: [
+      'tabTarget cycle over visible enemies via orderTabTargets + grid order (~9690)',
+      'targetNearestEnemy / enemyCandidates grid scan, engaged vs idle (~9724/9740)',
+      'targetNearestFriendly + friendlyTabTarget wrap, autoAttack never armed (~9782/9797)',
+      'setMarker set/toggle-off/symbol-uniqueness + clearEntityMarker death-strip (~11956/12002)',
+    ],
+    build: () => new Sim({ seed: 7177, playerClass: 'warrior', noPlayer: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const a = sim.addPlayer('warrior', 'Aaa');
+      const b = sim.addPlayer('priest', 'Bbb');
+      const c = sim.addPlayer('mage', 'Ccc');
+      rec.notes.aPid = a;
+      rec.notes.m2Id = -1; // filled once the mobs spawn (the SKULL-marked, killed mob)
+      rec.notes.m3Id = -1; // a live STAR-marked mob whose mark must survive the kill
+      const ae = sim.entities.get(a) as AnyEntity;
+      const be = sim.entities.get(b) as AnyEntity;
+      const ce = sim.entities.get(c) as AnyEntity;
+      // cluster the trio so the friendly grid scan (radius 40) finds the allies.
+      teleport(sim, ae, 0, 0);
+      teleport(sim, be, 2, 0);
+      teleport(sim, ce, -2, 0);
+      ae.facing = 0; // face +Z so the tab cone has a stable orientation
+      // hostile wild mobs at varied distance/angle: one engaged (aggro'd onto the
+      // player), two idle, all inside TAB_QUERY_RADIUS.
+      const m1 = spawnMob(sim, 'forest_wolf', 3, 4, 0, 4);
+      const m2 = spawnMob(sim, 'forest_wolf', 3, -3, 0, 6);
+      const m3 = spawnMob(sim, 'forest_wolf', 3, 0, 0, 10);
+      beef(m1);
+      beef(m3);
+      rec.notes.m2Id = m2.id;
+      rec.notes.m3Id = m3.id;
+      rec.track(a, b, c, m1.id, m2.id, m3.id);
+      aggroOnto(m1, ae); // m1 is "engaged" -> exercises the near-cluster branch
+
+      // 1) cycle the visible enemies, then snap to the nearest.
+      sim.tabTarget(a);
+      rec.snapshot('tab-1');
+      sim.tabTarget(a);
+      rec.snapshot('tab-2');
+      sim.tabTarget(a);
+      rec.snapshot('tab-3');
+      sim.targetNearestEnemy(a);
+      rec.snapshot('nearest-enemy');
+
+      // 2) form a party, then cycle friendlies (auto-attack must never arm).
+      sim.partyInvite(b, a);
+      sim.partyAccept(b);
+      sim.partyInvite(c, a);
+      sim.partyAccept(c);
+      sim.targetNearestFriendly(a);
+      rec.snapshot('nearest-friendly');
+      sim.friendlyTabTarget(a);
+      rec.snapshot('friendly-tab-1');
+      sim.friendlyTabTarget(a);
+      rec.snapshot('friendly-tab-2');
+
+      // 3) markers: set, toggle off, set again, then move the symbol to another mob.
+      sim.setMarker(m1.id, SKULL, a);
+      rec.snapshot('mark-set');
+      sim.setMarker(m1.id, SKULL, a); // same symbol same mob -> toggle off
+      rec.snapshot('mark-toggle-off');
+      sim.setMarker(m1.id, SKULL, a);
+      sim.setMarker(m3.id, STAR, a); // a second, distinct symbol
+      sim.setMarker(m2.id, SKULL, a); // uniqueness: SKULL leaves m1, lands on m2
+      rec.notes.markedBeforeKill = { ...sim.markersFor(a) };
+      rec.snapshot('mark-moved');
+
+      // 4) kill the SKULL-marked mob -> clearEntityMarker strips it everywhere.
+      lethal(sim, ae, m2);
+      rec.snapshot('m2-dead');
+    },
+  };
+}
+
 export const SCENARIOS: Scenario[] = [
   soloWarrior(),
   soloMage(),
@@ -884,4 +970,5 @@ export const SCENARIOS: Scenario[] = [
   partyRaid(),
   entityRoster(),
   delveDeath(),
+  targetingMarkers(),
 ];

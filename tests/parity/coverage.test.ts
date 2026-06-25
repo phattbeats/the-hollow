@@ -201,4 +201,25 @@ describe('coverage: each scenario fires its subsystem', () => {
     const rec = run('delve_death');
     expect((rec.allEvents as Ev[]).some((e) => e.type === 'delveFailed')).toBe(true);
   });
+
+  it('targeting_markers: selectors set a target without arming auto-attack, marker set + death-strip', () => {
+    const rec = run('targeting_markers');
+    const sim = rec.sim as any;
+    const aPid = rec.notes.aPid as number;
+    const ae = sim.entities.get(aPid);
+    // the tab / nearest / friendly selectors landed a target on the player...
+    expect(typeof ae.targetId).toBe('number');
+    // ...and friendly cycling never armed auto-attack.
+    expect(ae.autoAttack).toBe(false);
+    // the killed mob carried a mark before its death; clearEntityMarker stripped
+    // exactly that mob's mark, while a still-live marked mob keeps its symbol.
+    const marked = rec.notes.markedBeforeKill as Record<number, number>;
+    const m2Id = rec.notes.m2Id as number;
+    const m3Id = rec.notes.m3Id as number;
+    expect(marked[m2Id]).toBeDefined(); // SKULL was on the (soon dead) mob
+    const after = sim.markersFor(aPid);
+    expect(after[m2Id]).toBeUndefined(); // death-strip removed the dead mob's mark
+    expect(after[m3Id]).toBeDefined(); // a live mob's mark survives
+    expect((rec.allEvents as Ev[]).some((e) => e.type === 'death')).toBe(true);
+  });
 });
