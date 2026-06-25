@@ -764,11 +764,12 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
   // src/sim/mob/lifecycle.ts (the death-throes "begins to swell" / "flies into a frenzy" /
   // corpse "bursts in a cloud of" lines), I1 -> src/sim/instances/dungeons.ts (raid-door
   // seals, lockout, "instances busy"), I2a -> src/sim/delves/runs.ts (delve enter/clear/
-  // advance/reward/grave-rite, interact guards, run-failed). They emit via this.ctx.* /
-  // bare ctx.* through SimContext. Scan ALL of them alongside sim.ts so every
-  // language-agnostic sim emit stays under the drift guard; they are re-localized
-  // client-side by the same matchers. When a slice moves emit literals out of the
-  // monolith, append its path here.
+  // advance/reward/grave-rite, interact guards, run-failed), I2b ->
+  // src/sim/delves/lockpick_controller.ts (lockpick engage/abort guards, jam errors,
+  // "the chest is empty", the "lock jams" log). They emit via this.ctx.* / bare ctx.*
+  // through SimContext. Scan ALL of them alongside sim.ts so every language-agnostic sim
+  // emit stays under the drift guard; they are re-localized client-side by the same
+  // matchers. When a slice moves emit literals out of the monolith, append its path here.
   const socialDir = path.resolve(process.cwd(), 'src/sim/social');
   const socialSrc = fs.existsSync(socialDir)
     ? fs
@@ -787,6 +788,7 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/lifecycle.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/instances/dungeons.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/runs.ts'), 'utf8'),
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/lockpick_controller.ts'), 'utf8'),
     socialSrc,
   ].join('\n');
   // Hardened S3: also scan the authoritative server's player-facing emits. The

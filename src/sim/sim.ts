@@ -49,11 +49,6 @@ import {
 // the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
 import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
 import {
-  delveChestItemsForTier,
-  LOCKPICK_TIER_REWARD,
-  lockpickPresetFor,
-} from './content/delves/lockpick_tiers';
-import {
   classHasSkin,
   EVENT_SKIN_TOKEN_ID,
   MECH_CHROMAS,
@@ -130,18 +125,7 @@ import {
   type LeaderboardPage,
   paginateLeaderboard,
 } from './leaderboard_page';
-import {
-  ANTE_TO_PAGES,
-  ANTE_TO_STEP_TIMEOUT_MS,
-  ANTE_TO_TIER,
-  ANTE_TO_TRIES,
-  type Ante,
-  generateLockPages,
-  type LockSession,
-  type PickAction,
-  stepLock,
-  visibleCells,
-} from './lockpick';
+import { type Ante, type PickAction } from './lockpick';
 import {
   isTrivialTo as isTrivialToFn,
   retargetMob as retargetMobFn,
@@ -183,6 +167,7 @@ import {
   switchTalentLoadout,
   talentPointBudget,
 } from './progression/talents';
+import * as lockpickMod from './delves/lockpick_controller';
 import * as runsMod from './delves/runs';
 import { createSimContext, type SimContext, type SimContextHost } from './sim_context';
 import {
@@ -1449,7 +1434,7 @@ export class Sim {
     // resolves via the still-present entity position and party key.
     const leavingRun = this.delveRunForPlayer(pid);
     if (leavingRun?.lockpick && leavingRun.lockpick.ownerId === pid)
-      this.abandonLockpick(leavingRun);
+      this.ctx.abandonLockpick(leavingRun);
     // leave social systems cleanly. removeFromParty lives on the PartyMachine now
     // (A1); reach it through the seam, keeping this call in its load-bearing
     // teardown position (must run while the leaver is still in players/entities).
@@ -2140,8 +2125,8 @@ export class Sim {
         sim.spawnDelveCompanion(run, pid, companionId),
       despawnDelveCompanion: (run) => sim.despawnDelveCompanion(run),
       maybeCompanionBark: (run, pid, barkId) => sim.maybeCompanionBark(run, pid, barkId),
-      abandonLockpick: (run) => sim.abandonLockpick(run),
-      tickLockpickTimeout: (run) => sim.tickLockpickTimeout(run),
+      abandonLockpick: (run) => lockpickMod.abandonLockpick(sim.ctx, run),
+      tickLockpickTimeout: (run) => lockpickMod.tickLockpickTimeout(sim.ctx, run),
       delveRunForMob: (mobId) => sim.delveRunForMob(mobId),
       onDelveBossDefeated: (run) => sim.onDelveBossDefeated(run),
       delveDetectMult: (player) => sim.delveDetectMult(player),
@@ -11176,278 +11161,27 @@ export class Sim {
   }
 
   // -------------------------------------------------------------------------
-  // Lockpicking minigame ("Tumbler's Path"), server-authoritative. The client
-  // submits one action enum per step; the sim owns the lock, validates every
-  // step, and grants loot only on a server-side SUCCESS. The full lock layout is
+  // Lockpicking minigame ("Tumbler's Path"), server-authoritative. The session
+  // state machine MOVED to delves/lockpick_controller.ts (I2b); Sim keeps thin
+  // delegates so the public IWorld surface (engage/action/abort/view + the
+  // lockpickState accessor below) stays reachable, while the per-tick timeout
+  // clock and the leave/disconnect teardown reach the controller via SimContext
+  // (ctx.tickLockpickTimeout / ctx.abandonLockpick). The full lock layout is
   // never serialized, only visibleCells() inside the fog window is emitted.
   // -------------------------------------------------------------------------
 
-  /** Resolve the locked-chest object + run for an acting player, with all the
-   * proximity/eligibility guards. Returns null (after emitting an error) on any
-   * failure. */
-  private resolveLockChest(
-    objectId: number,
-    pid?: number,
-  ): {
-    r: { e: Entity; meta: PlayerMeta };
-    run: DelveRun;
-    state: DelveObjectState;
-    obj: Entity;
-  } | null {
-    const r = this.resolve(pid);
-    if (!r) return null;
-    let run = this.delveRunForPlayer(r.meta.entityId);
-    if (!run)
-      run =
-        this.delveRuns.find((d) => d.partyKey !== null && d.objectIds.includes(objectId)) ?? null;
-    if (!run) {
-      this.error(r.meta.entityId, 'You are not in a delve.');
-      return null;
-    }
-    const state = run.objectState[objectId];
-    const obj = this.entities.get(objectId);
-    if (!state || !obj || state.kind !== 'locked_chest') {
-      this.error(r.meta.entityId, 'You cannot pick that.');
-      return null;
-    }
-    if (dist2d(r.e.pos, obj.pos) > DELVE_PLATE_RADIUS + 2) {
-      this.error(r.meta.entityId, 'Move closer to the chest.');
-      return null;
-    }
-    return { r, run, state, obj };
-  }
-
   /** Start a lockpicking attempt: commit an ante (1/2/3 lives = loot tier). */
   lockpickEngage(objectId: number, ante: Ante, pid?: number): void {
-    const got = this.resolveLockChest(objectId, pid);
-    if (!got) return;
-    const { r, run, state } = got;
-    if (ante !== 1 && ante !== 2 && ante !== 3) {
-      this.error(r.meta.entityId, 'Choose 1, 2, or 3 picks.');
-      return;
-    }
-    if (state.looted) {
-      this.emit({ type: 'log', text: 'The chest is empty.', color: '#aaa', pid: r.meta.entityId });
-      return;
-    }
-    if (!state.attemptAvailable) {
-      this.error(
-        r.meta.entityId,
-        'The lock is jammed beyond picking. Clear the delve again for another attempt.',
-      );
-      return;
-    }
-    if (run.lockpick && run.lockpick.state === 'IN_PROGRESS') {
-      this.error(r.meta.entityId, 'Someone is already working the lock.');
-      return;
-    }
-
-    // §7.6 Bountiful Coffer: a purple coffer only yields to a Hard-tier (heroic
-    // preset) + Premium-ante (1) solve. Server-authoritative, rejected here no
-    // matter what ante the UI offered; the lower antes are not an option.
-    const isCoffer = run.bountiful && objectId === run.rewardChestId;
-    if (isCoffer && ante !== 1) {
-      this.error(
-        r.meta.entityId,
-        "This seal yields only to a master's hand. Only the Premium ante can open it.",
-      );
-      return;
-    }
-
-    const tier = lockpickPresetFor(isCoffer ? 'heroic' : run.tierId);
-    const baseSeed = (run.seed ^ (objectId * 0x9e3779b1)) >>> 0;
-    const triesTotal = ANTE_TO_TRIES[ante];
-    const pages = generateLockPages(baseSeed, tier, ANTE_TO_PAGES[ante]);
-    const spec = pages[0];
-    const session: LockSession = {
-      // Unique per engage (tickCount is the deterministic sim clock) so the
-      // staleness guard rejects actions from a prior, re-engaged attempt.
-      sessionId: `lp_${objectId}_${this.tickCount}`,
-      chestId: objectId,
-      ownerId: r.meta.entityId,
-      baseSeed,
-      pages,
-      pageIndex: 0,
-      ante,
-      lootTier: ANTE_TO_TIER[ante],
-      col: 0,
-      row: spec.startRow,
-      triesLeft: triesTotal,
-      triesTotal,
-      stepDeadlineTick: 0, // set by armLockpickStep below
-      state: 'IN_PROGRESS',
-    };
-    run.lockpick = session;
-    this.armLockpickStep(session);
-    this.emit({
-      type: 'lockpickSession',
-      sessionId: session.sessionId,
-      objectId,
-      w: spec.tier.cols,
-      h: spec.tier.rows,
-      col: session.col,
-      row: session.row,
-      page: 1,
-      pageCount: pages.length,
-      tries: session.triesLeft,
-      triesTotal: session.triesTotal,
-      lootTier: session.lootTier,
-      allowed: spec.tier.allowedActions,
-      visible: visibleCells(spec, session.col, spec.tier.visibilityWindow),
-      stepTimeoutMs: ANTE_TO_STEP_TIMEOUT_MS[ante],
-      pid: r.meta.entityId,
-    });
+    lockpickMod.lockpickEngage(this.ctx, objectId, ante, pid);
   }
 
-  /** (Re)start the per-step clock for the active page. The deadline is in sim
-   * ticks (deterministic), so the timeout is reproducible from the input timing
-   * alone and identical offline, on the server, and headless. The budget is the
-   * ante's ANTE_TO_STEP_TIMEOUT_MS (hard 3s / medium 6s / easy 9s per move). */
-  private armLockpickStep(session: LockSession): void {
-    const ms = ANTE_TO_STEP_TIMEOUT_MS[session.ante];
-    session.stepDeadlineTick = this.tickCount + Math.ceil(ms / (DT * 1000));
-  }
-
-  /** Server-authoritative per-step clock, run every tick for every run (so a solo
-   * offline run, an online run, and a headless run all enforce it identically).
-   * When the active step's deadline passes it counts as a failed try; the client
-   * never reports a timeout. */
-  private tickLockpickTimeout(run: DelveRun): void {
-    const s = run.lockpick;
-    if (s?.state !== 'IN_PROGRESS') return;
-    if (this.tickCount >= s.stepDeadlineTick) this.lockpickStepTimeout(run, s);
-  }
-
-  /** A step's clock expired: burn a try (board reset on retry, chest jams when
-   * tries run out), mirroring a slip. lockpickBurnTry re-arms the clock on retry. */
-  private lockpickStepTimeout(run: DelveRun, session: LockSession): void {
-    const result = this.lockpickBurnTry(session);
-    const spec = session.pages[session.pageIndex];
-    this.emit({
-      type: 'lockpickStep',
-      sessionId: session.sessionId,
-      col: session.col,
-      row: session.row,
-      page: session.pageIndex + 1,
-      pageCount: session.pages.length,
-      tries: session.triesLeft,
-      triesTotal: session.triesTotal,
-      result,
-      visible: visibleCells(spec, session.col, spec.tier.visibilityWindow),
-      pid: session.ownerId,
-    });
-    if (result === 'fail') this.lockpickFail(run, session);
-  }
-
-  /** Submit one pick action on the player's active attempt. Abort ends it
-   * (preserving the chest). `sessionId`, when supplied (server path), is checked
-   * for staleness; offline play omits it and acts on the one live session. */
+  /** Submit one pick action on the player's active attempt (server-authoritative). */
   lockpickAction(action: PickAction, pid?: number, sessionId?: string): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const run = this.delveRunForPlayer(r.meta.entityId);
-    const session = run?.lockpick ?? null;
-    if (!run || !session) {
-      this.error(r.meta.entityId, 'No lock attempt in progress.');
-      return;
-    }
-    if (sessionId !== undefined && session.sessionId !== sessionId) {
-      this.error(r.meta.entityId, 'No lock attempt in progress.');
-      return;
-    }
-    if (session.ownerId !== r.meta.entityId) {
-      this.error(r.meta.entityId, 'That is not your lock.');
-      return;
-    }
-    if (session.state !== 'IN_PROGRESS') return;
-
-    if (action === 'abort') {
-      this.lockpickAbort(r.meta.entityId, session.sessionId);
-      return;
-    }
-    let spec = session.pages[session.pageIndex];
-    if (!spec.tier.allowedActions.includes(action)) {
-      this.error(r.meta.entityId, 'That tool slips off this lock.');
-      return;
-    }
-
-    const step = stepLock(spec, session.col, session.row, action);
-    let result = step.result;
-    if (result === 'slip' || result === 'bind' || result === 'trap') {
-      // The try failed. Burn one try; if any remain, reset to a fresh board so
-      // the player can try again. Only when tries run out does the chest jam.
-      result = this.lockpickBurnTry(session);
-      spec = session.pages[session.pageIndex];
-    } else {
-      session.col = step.col;
-      session.row = step.row;
-      if (result === 'success' && session.pageIndex < session.pages.length - 1) {
-        // Page seated but more remain, roll onto the next lock board.
-        session.pageIndex += 1;
-        spec = session.pages[session.pageIndex];
-        session.col = 0;
-        session.row = spec.startRow;
-        result = 'pageCleared';
-      }
-      // A correct move re-arms the per-step clock (a terminal success ends the
-      // session right after, so the fresh deadline is simply never reached).
-      this.armLockpickStep(session);
-    }
-
-    this.emit({
-      type: 'lockpickStep',
-      sessionId: session.sessionId,
-      col: session.col,
-      row: session.row,
-      page: session.pageIndex + 1,
-      pageCount: session.pages.length,
-      tries: session.triesLeft,
-      triesTotal: session.triesTotal,
-      result,
-      visible: visibleCells(spec, session.col, spec.tier.visibilityWindow),
-      pid: r.meta.entityId,
-    });
-
-    if (result === 'success') {
-      this.lockpickSucceed(run, session);
-    } else if (result === 'fail') {
-      this.lockpickFail(run, session);
-    }
-  }
-
-  /** A try failed (slip/bind/trap or timeout). Consume one try; if any remain,
-   * regenerate a fresh page set and reset to the start, returning 'retry'.
-   * Otherwise return 'fail' (caller jams the chest). */
-  private lockpickBurnTry(session: LockSession): 'retry' | 'fail' {
-    session.triesLeft -= 1;
-    if (session.triesLeft <= 0) return 'fail';
-    // Fresh boards each try so a failed run can't simply be memorized.
-    const triesUsed = session.triesTotal - session.triesLeft;
-    const seed = (session.baseSeed ^ (triesUsed * 0x85ebca6b)) >>> 0;
-    session.pages = generateLockPages(seed, session.pages[0].tier, session.pages.length);
-    session.pageIndex = 0;
-    session.col = 0;
-    session.row = session.pages[0].startRow;
-    this.armLockpickStep(session); // fresh board, fresh per-step clock
-    return 'retry';
+    lockpickMod.lockpickAction(this.ctx, action, pid, sessionId);
   }
 
   lockpickAbort(pid?: number, sessionId?: string): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const run = this.delveRunForPlayer(r.meta.entityId);
-    const session = run?.lockpick ?? null;
-    if (!run || !session || session.ownerId !== r.meta.entityId) return;
-    if (sessionId !== undefined && session.sessionId !== sessionId) return;
-    session.state = 'ABANDONED';
-    run.lockpick = null;
-    // ABANDONED preserves the attempt (disconnect-friendly): attemptAvailable stays true.
-    this.emit({
-      type: 'lockpickEnd',
-      sessionId: session.sessionId,
-      outcome: 'abandoned',
-      pid: r.meta.entityId,
-    });
+    lockpickMod.lockpickAbort(this.ctx, pid, sessionId);
   }
 
   /** Claim item loot from an opened delve chest (shown on the loot overlay). */
@@ -11455,132 +11189,9 @@ export class Sim {
     runsMod.collectDelveChestLoot(this.ctx, chestId, pid);
   }
 
-  /** Tear down any active lockpick session on a run (player left / disconnected). */
-  private abandonLockpick(run: DelveRun): void {
-    const session = run.lockpick;
-    if (session?.state !== 'IN_PROGRESS') return;
-    session.state = 'ABANDONED';
-    run.lockpick = null;
-    this.emit({
-      type: 'lockpickEnd',
-      sessionId: session.sessionId,
-      outcome: 'abandoned',
-      pid: session.ownerId,
-    });
-  }
-
-  private lockpickSucceed(run: DelveRun, session: LockSession): void {
-    session.state = 'SUCCESS';
-    const state = run.objectState[session.chestId];
-    const obj = this.entities.get(session.chestId);
-    const ownerCls = this.players.get(session.ownerId)?.cls ?? 'warrior';
-    // A solved Bountiful Coffer guarantees the signature rare (see §7.6).
-    const isCoffer = run.bountiful && session.chestId === run.rewardChestId;
-    const items = delveChestItemsForTier(session.lootTier, ownerCls, this.rng, isCoffer);
-    if (state) {
-      state.looted = true;
-      state.open = true;
-      state.triggered = true;
-      state.attemptAvailable = false;
-      state.lootedTier = session.lootTier;
-      state.pendingLoot = items.map((s) => ({ ...s }));
-      // Loot belongs to the picker; record it so a non-picker party member who is
-      // also standing on the chest cannot front-run the collect.
-      state.lootOwnerId = session.ownerId;
-    }
-    if (obj) {
-      obj.name = 'Opened Chest';
-      obj.templateId = 'delve_reward_chest';
-    }
-    this.grantDelveRewards(run);
-    this.grantLockpickBonus(run, session.lootTier);
-    this.openDelveSurfaceExit(run);
-    this.emit({ type: 'delveChestLoot', chestId: session.chestId, items, pid: session.ownerId });
-    this.emit({
-      type: 'lockpickEnd',
-      sessionId: session.sessionId,
-      outcome: 'success',
-      lootTier: session.lootTier,
-      pid: session.ownerId,
-    });
-    run.lockpick = null;
-  }
-
-  private lockpickFail(run: DelveRun, session: LockSession): void {
-    session.state = 'FAILED';
-    const state = run.objectState[session.chestId];
-    if (state) state.attemptAvailable = false; // chest lost, re-clear the delve
-    this.emit({
-      type: 'lockpickEnd',
-      sessionId: session.sessionId,
-      outcome: 'fail',
-      pid: session.ownerId,
-    });
-    if (run.partyKey) {
-      for (const pid of this.partyMembersForKey(run.partyKey)) {
-        this.emit({
-          type: 'log',
-          text: 'The last pick snaps. The lock jams. The chest is lost unless you clear the delve again.',
-          color: '#f88',
-          pid,
-        });
-      }
-    }
-    // The boss is already dead and the chest is now jammed: open the surface exit
-    // so a failed pick can never strand the party in a cleared delve. (Success
-    // opens it via lockpickSuccess; this mirrors that for the failure path.)
-    this.openDelveSurfaceExit(run);
-    run.lockpick = null;
-  }
-
-  /** Loot-tier bonus on top of the base delve chest rewards (marks + copper). */
-  private grantLockpickBonus(run: DelveRun, tier: 'premium' | 'medium' | 'low'): void {
-    const reward = LOCKPICK_TIER_REWARD[tier];
-    const delve = DELVES[run.delveId];
-    const members = run.partyKey ? this.partyMembersForKey(run.partyKey) : [];
-    const baseCopper = Math.round((delve.baseRewards.copperMin + delve.baseRewards.copperMax) / 2);
-    const bonusCopper = Math.round(baseCopper * (reward.copperMult - 1));
-    for (const pid of members) {
-      const meta = this.players.get(pid);
-      if (!meta) continue;
-      meta.delveMarks += reward.bonusMarks;
-      meta.copper += bonusCopper;
-      // Structured (no prose crosses the sim boundary): the client builds the
-      // localized "spoils" line from the tier token and formats the numbers.
-      this.emit({
-        type: 'lockpickBonus',
-        tier,
-        marks: reward.bonusMarks,
-        copper: bonusCopper,
-        pid,
-      });
-    }
-  }
-
   /** Read-only projection of the active lockpick attempt for IWorld (offline). */
   lockpickViewFor(pid?: number): LockpickView | null {
-    const r = this.resolve(pid);
-    if (!r) return null;
-    const run = this.delveRunForPlayer(r.meta.entityId);
-    const s = run?.lockpick ?? null;
-    if (s?.state !== 'IN_PROGRESS' || s.ownerId !== r.meta.entityId) return null;
-    const spec = s.pages[s.pageIndex];
-    return {
-      sessionId: s.sessionId,
-      objectId: s.chestId,
-      w: spec.tier.cols,
-      h: spec.tier.rows,
-      col: s.col,
-      row: s.row,
-      page: s.pageIndex + 1,
-      pageCount: s.pages.length,
-      tries: s.triesLeft,
-      triesTotal: s.triesTotal,
-      lootTier: s.lootTier,
-      allowed: spec.tier.allowedActions.slice(),
-      visible: visibleCells(spec, s.col, spec.tier.visibilityWindow),
-      stepTimeoutMs: ANTE_TO_STEP_TIMEOUT_MS[s.ante],
-    };
+    return lockpickMod.lockpickViewFor(this.ctx, pid);
   }
 
   companionUpgrade(companionId: string, pid?: number): void {

@@ -783,6 +783,69 @@ function delveLockpick(): Scenario {
   };
 }
 
+// Delve + lockpick FAIL/jam: enter the same Collapsed Reliquary finale, engage the
+// reward chest, then idle past the server-authoritative per-step clock so the single
+// premium try burns -> the chest jams (attemptAvailable=false) and the surface exit
+// opens (the party is never stranded). Pins the timeout/burn-try/fail path the
+// success-only delve_lockpick golden does not exercise.
+function delveLockpickFail(): Scenario {
+  return {
+    name: 'delve_lockpick_fail',
+    coverage: [
+      'delve run (collapsed_reliquary finale)',
+      'lockpick minigame (server-authoritative timeout jam)',
+      'tickLockpickTimeout -> lockpickStepTimeout -> lockpickBurnTry -> lockpickFail',
+      'jammed chest (attemptAvailable=false) + surface exit opens',
+    ],
+    sampleEvery: 10,
+    build: () => new Sim({ seed: 2024, playerClass: 'rogue', autoEquip: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const def = DELVES.collapsed_reliquary;
+      sim.setPlayerLevel(def.minLevel);
+      const p = sim.player as AnyEntity;
+      beef(p);
+      teleport(sim, p, def.doorPos.x, def.doorPos.z);
+      sim.enterDelve('collapsed_reliquary', 'normal');
+      const run = sim.delveRunForPlayer(sim.playerId);
+      if (!run) {
+        rec.tick(2);
+        return;
+      }
+      run.bountiful = false; // pin against the rare coffer roll
+      run.modules = ['reliquary_finale'];
+      run.moduleIndex = 0;
+      (sim as any).spawnDelveModule(run);
+      const boss = [...sim.entities.values()].find(
+        (e: AnyEntity) => e.templateId === 'deacon_varric',
+      ) as AnyEntity | undefined;
+      if (boss) (sim as any).dealDamage(p, boss, boss.maxHp + 1, false, 'physical', null, 'hit', true);
+      rec.tick(4); // reward chest spawns
+      // Drop the finale swarm so the ONLY thing that can end the attempt during the
+      // pause is the per-step clock under test (incidental combat is covered elsewhere).
+      for (const [id, e] of [...sim.entities]) {
+        if ((e as AnyEntity).kind === 'mob') sim.entities.delete(id);
+      }
+      const chestId = run.rewardChestId;
+      if (chestId != null) {
+        rec.track(chestId);
+        rec.notes.chestId = chestId;
+        const chest = sim.entities.get(chestId) as AnyEntity;
+        p.pos = { ...chest.pos };
+        p.prevPos = { ...chest.pos };
+        sim.rebucket(p);
+        sim.lockpickEngage(chestId, 1); // premium ante: a single try
+        rec.tick(1);
+        // Idle past the single-try step deadline (3000ms / 50ms = 60 ticks) so the sim
+        // clock burns the try -> lockpickFail jams the chest and opens the surface exit.
+        rec.tick(64);
+      }
+      rec.snapshot('lockpick-jammed');
+      rec.tick(2);
+    },
+  };
+}
+
 // Party loot: a need/greed roll over a party-tagged corpse carrying a premium
 // item. Exercises lootCorpse -> lootRoll -> submitLootRoll resolution.
 function partyLoot(): Scenario {
@@ -2134,6 +2197,7 @@ export const SCENARIOS: Scenario[] = [
   duelToWinner(),
   arena2v2Wipe(),
   delveLockpick(),
+  delveLockpickFail(),
   partyLoot(),
   partyRaid(),
   entityRoster(),
