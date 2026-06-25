@@ -15,7 +15,15 @@
 import type { TalentModifiers } from './content/talents';
 import type { DelayedEvent, GroundAoE } from './entity_roster';
 import type { Rng } from './rng';
-import type { ArenaMatch, DuelState, Party, PlayerMeta } from './sim';
+import type {
+  ArenaMatch,
+  ArenaQueueUnit,
+  DuelState,
+  FiestaState,
+  Party,
+  PlayerMeta,
+  TradeSession,
+} from './sim';
 import type { SpatialGrid } from './spatial';
 import type { Aura, CrowdControlDrCategory, DelveRun, Entity, ErrorReason, SimEvent, Vec3 } from './types';
 
@@ -53,6 +61,18 @@ export interface SimContextPrimitives {
   // live arena bouts keyed by every participant pid (A2); release-spirit early-bails
   // when the dead player is mid-bout.
   readonly arenaMatches: Map<number, ArenaMatch>;
+  // A2 duel + arena state. Live views: the backing fields stay on Sim (mutated in
+  // place / reassigned), like E1's delayedEvents. `duels` is also read per-attack by
+  // isHostileTo/dealDamage (PvP hostility) so it stays Sim-owned. The three queues
+  // are REASSIGNED by the matchmaker's filter, so they are read-write; the maps/set
+  // and the match-id counter are mutated/incremented in place.
+  readonly duels: Map<number, DuelState>;
+  readonly trades: Map<number, TradeSession>;
+  arenaQueue1v1: number[];
+  arenaQueue2v2: ArenaQueueUnit[];
+  arenaQueueFiesta: ArenaQueueUnit[];
+  readonly arenaBusySlots: Set<number>;
+  nextArenaMatchId: number;
 }
 
 // Cross-system callbacks. Each signature mirrors the still-on-`Sim` method it
@@ -92,6 +112,26 @@ export interface SimContextCallbacks {
     reason: 'defeat' | 'timeout' | 'forfeit',
   ): void;
   endDuel(duel: DuelState, winnerPid: number | null): void;
+  // A2 duel/arena slice (social/duel.ts + social/arena.ts). isArenaCrossTeam,
+  // arenaTeamOf, endArenaMatch, endDuel (above) now point at the moved modules via
+  // Sim's thin delegates. The block below is what the moved code CONSUMES that stays
+  // on Sim (clearAurasFromSource has non-duel callers; entityInDungeon /
+  // hasPendingSocialInvite are core; the five fiesta* hooks are A3-owned), plus the
+  // arena bodies EXPOSED for the Fiesta slice (A3): readyArenaFighter / resetForArena
+  // / isArenaTeamWiped / arenaIsDown / arenaAllPids (arenaTeamOf already above).
+  clearAurasFromSource(target: Entity, sourceId: number): void;
+  entityInDungeon(e: Entity, dungeonId: string): boolean;
+  hasPendingSocialInvite(targetPid: number): boolean;
+  createFiestaState(): FiestaState;
+  fiestaStandardize(meta: PlayerMeta, e: Entity): void;
+  updateFiestaActive(match: ArenaMatch): void;
+  fiestaRestoreChar(meta: PlayerMeta, e: Entity): void;
+  clearFiestaAugments(meta: PlayerMeta, e: Entity): void;
+  readyArenaFighter(e: Entity, opts: { clearPrep: boolean }): void;
+  resetForArena(e: Entity): void;
+  isArenaTeamWiped(match: ArenaMatch, team: 'A' | 'B'): boolean;
+  arenaIsDown(match: ArenaMatch, pid: number): boolean;
+  arenaAllPids(match: ArenaMatch): number[];
   fiestaTakedown(match: ArenaMatch, killerPid: number, victim: Entity): void;
   fiestaDown(match: ArenaMatch, victim: Entity, killerPid: number | null): void;
   rollLoot(mob: Entity, meta: PlayerMeta, eligible?: PlayerMeta[]): void;
@@ -213,6 +253,39 @@ export function createSimContext(host: SimContextHost): SimContext {
     get arenaMatches() {
       return host.arenaMatches;
     },
+    get duels() {
+      return host.duels;
+    },
+    get trades() {
+      return host.trades;
+    },
+    get arenaQueue1v1() {
+      return host.arenaQueue1v1;
+    },
+    set arenaQueue1v1(v) {
+      host.arenaQueue1v1 = v;
+    },
+    get arenaQueue2v2() {
+      return host.arenaQueue2v2;
+    },
+    set arenaQueue2v2(v) {
+      host.arenaQueue2v2 = v;
+    },
+    get arenaQueueFiesta() {
+      return host.arenaQueueFiesta;
+    },
+    set arenaQueueFiesta(v) {
+      host.arenaQueueFiesta = v;
+    },
+    get arenaBusySlots() {
+      return host.arenaBusySlots;
+    },
+    get nextArenaMatchId() {
+      return host.nextArenaMatchId;
+    },
+    set nextArenaMatchId(v) {
+      host.nextArenaMatchId = v;
+    },
     emit: host.emit,
     error: host.error,
     dealDamage: host.dealDamage,
@@ -225,6 +298,19 @@ export function createSimContext(host: SimContextHost): SimContext {
     arenaTeamOf: host.arenaTeamOf,
     endArenaMatch: host.endArenaMatch,
     endDuel: host.endDuel,
+    clearAurasFromSource: host.clearAurasFromSource,
+    entityInDungeon: host.entityInDungeon,
+    hasPendingSocialInvite: host.hasPendingSocialInvite,
+    createFiestaState: host.createFiestaState,
+    fiestaStandardize: host.fiestaStandardize,
+    updateFiestaActive: host.updateFiestaActive,
+    fiestaRestoreChar: host.fiestaRestoreChar,
+    clearFiestaAugments: host.clearFiestaAugments,
+    readyArenaFighter: host.readyArenaFighter,
+    resetForArena: host.resetForArena,
+    isArenaTeamWiped: host.isArenaTeamWiped,
+    arenaIsDown: host.arenaIsDown,
+    arenaAllPids: host.arenaAllPids,
     fiestaTakedown: host.fiestaTakedown,
     fiestaDown: host.fiestaDown,
     rollLoot: host.rollLoot,
