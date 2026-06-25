@@ -222,6 +222,9 @@ export const ru_RU: EnTranslations = {
     "rest": {
       "resting": "Отдых"
     },
+    "unitFrame": {
+      "playerLabel": "Your Hero"
+    },
     "mobile": {
       "autorun": "Автобег",
       "jump": "Прыжок",

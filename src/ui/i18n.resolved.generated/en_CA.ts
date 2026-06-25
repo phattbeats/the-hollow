@@ -222,6 +222,9 @@ export const en_CA: EnTranslations = {
     "rest": {
       "resting": "Resting"
     },
+    "unitFrame": {
+      "playerLabel": "Your Hero"
+    },
     "mobile": {
       "autorun": "Autorun",
       "jump": "Jump",

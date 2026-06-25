@@ -85,6 +85,13 @@ export const hudChromeStrings = {
   rest: {
     resting: 'Resting',
   },
+  // Accessible group name for the player unit frame (#player-frame is a role="group"
+  // wrapping the player's portrait, name, level, health, and resource bars). Kept a
+  // short, non-prose label so it reads cleanly as a screen-reader group name and the
+  // maintainer translates it per locale at release.
+  unitFrame: {
+    playerLabel: 'Your Hero',
+  },
   // On-screen / mobile control labels and their accessible names. char/bags/music
   // reuse existing keys (hud.keybinds.actions.*, hud.options.music) at the call site.
   mobile: {

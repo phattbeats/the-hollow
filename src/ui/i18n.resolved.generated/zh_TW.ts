@@ -222,6 +222,9 @@ export const zh_TW: EnTranslations = {
     "rest": {
       "resting": "休息中"
     },
+    "unitFrame": {
+      "playerLabel": "Your Hero"
+    },
     "mobile": {
       "autorun": "自動奔跑",
       "jump": "跳躍",

@@ -222,6 +222,9 @@ export const ja_JP: EnTranslations = {
     "rest": {
       "resting": "休息中"
     },
+    "unitFrame": {
+      "playerLabel": "Your Hero"
+    },
     "mobile": {
       "autorun": "オートラン",
       "jump": "ジャンプ",

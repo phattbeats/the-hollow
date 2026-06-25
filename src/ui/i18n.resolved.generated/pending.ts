@@ -12,57 +12,69 @@ export const pending: Record<string, readonly string[]> = {
   "es": [
     "hud.core.mapCanvasLabel",
     "hud.core.mapSummary",
-    "hudChrome.leaderboard.close"
+    "hudChrome.leaderboard.close",
+    "hudChrome.unitFrame.playerLabel"
   ],
   "es_ES": [
     "hud.core.mapCanvasLabel",
     "hud.core.mapSummary",
-    "hudChrome.leaderboard.close"
+    "hudChrome.leaderboard.close",
+    "hudChrome.unitFrame.playerLabel"
   ],
   "fr_FR": [
     "hud.core.mapCanvasLabel",
     "hud.core.mapSummary",
-    "hudChrome.leaderboard.close"
+    "hudChrome.leaderboard.close",
+    "hudChrome.unitFrame.playerLabel"
   ],
   "fr_CA": [
     "hud.core.mapCanvasLabel",
     "hud.core.mapSummary",
-    "hudChrome.leaderboard.close"
+    "hudChrome.leaderboard.close",
+    "hudChrome.unitFrame.playerLabel"
   ],
   "en_CA": [],
   "it_IT": [
     "hud.core.mapCanvasLabel",
     "hud.core.mapSummary",
-    "hudChrome.leaderboard.close"
+    "hudChrome.leaderboard.close",
+    "hudChrome.unitFrame.playerLabel"
   ],
   "de_DE": [
     "hud.core.mapCanvasLabel",
     "hud.core.mapSummary",
-    "hudChrome.leaderboard.close"
+    "hudChrome.leaderboard.close",
+    "hudChrome.unitFrame.playerLabel"
   ],
   "zh_CN": [
     "hud.core.mapCanvasLabel",
-    "hud.core.mapSummary"
+    "hud.core.mapSummary",
+    "hudChrome.unitFrame.playerLabel"
   ],
   "zh_TW": [
     "hud.core.mapCanvasLabel",
-    "hud.core.mapSummary"
+    "hud.core.mapSummary",
+    "hudChrome.unitFrame.playerLabel"
   ],
   "ko_KR": [
     "hud.core.mapCanvasLabel",
-    "hud.core.mapSummary"
+    "hud.core.mapSummary",
+    "hudChrome.unitFrame.playerLabel"
   ],
   "ja_JP": [
     "hud.core.mapCanvasLabel",
-    "hud.core.mapSummary"
+    "hud.core.mapSummary",
+    "hudChrome.unitFrame.playerLabel"
   ],
   "pt_BR": [
     "hud.core.mapCanvasLabel",
     "hud.core.mapSummary",
-    "hudChrome.leaderboard.close"
+    "hudChrome.leaderboard.close",
+    "hudChrome.unitFrame.playerLabel"
   ],
   "ru_RU": [
     "hud.core.mapCanvasLabel",
-    "hud.core.mapSummary"
+    "hud.core.mapSummary",
+    "hudChrome.unitFrame.playerLabel"
   ]
 };

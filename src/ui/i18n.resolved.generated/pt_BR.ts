@@ -222,6 +222,9 @@ export const pt_BR: EnTranslations = {
     "rest": {
       "resting": "Descansando"
     },
+    "unitFrame": {
+      "playerLabel": "Your Hero"
+    },
     "mobile": {
       "autorun": "Corrida automática",
       "jump": "Pular",

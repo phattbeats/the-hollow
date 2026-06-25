@@ -222,6 +222,9 @@ export const en_XA: EnTranslations = {
     "rest": {
       "resting": "[Ŕéšţíñĝ]"
     },
+    "unitFrame": {
+      "playerLabel": "[Ýóúŕ Ĥéŕó]"
+    },
     "mobile": {
       "autorun": "[Áúţóŕúñ]",
       "jump": "[Ĵúɱþ]",
