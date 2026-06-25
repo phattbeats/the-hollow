@@ -4,6 +4,8 @@ import { ClientWorld } from '../src/net/online';
 import { SimEvent } from '../src/sim/types';
 import { groundHeight } from '../src/sim/world';
 import { zoneAt } from '../src/sim/data';
+import * as chatMod from '../src/sim/social/chat';
+import type { SimContext } from '../src/sim/sim_context';
 
 function makeWorld() {
   return new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true });
@@ -861,5 +863,136 @@ describe('/afk and /dnd presence', () => {
     sim.chat('back now', a);
     const out = logEvents(sim.tick());
     expect(out.some((m) => m.pid === a && /no longer marked as away/.test(m.text))).toBe(true);
+  });
+});
+
+// Direct unit tests for the extracted chat module (src/sim/social/chat.ts),
+// exercising the helpers in isolation through a minimal fake SimContext (no full
+// Sim). The big chat() router stays on Sim and is covered by the suites above.
+describe('chat module (direct, no Sim)', () => {
+  function fakeChatCtx() {
+    const players = new Map<number, any>();
+    const entities = new Map<number, any>();
+    const chatTokens = new Map<number, { tokens: number; at: number }>();
+    const channelSubs = new Map<number, Set<string>>();
+    const events: any[] = [];
+    let time = 0;
+    const ctx = {
+      get time() {
+        return time;
+      },
+      players,
+      entities,
+      chatTokens,
+      channelSubs,
+      resolve: (pid: number) => {
+        const meta = players.get(pid);
+        const e = entities.get(pid);
+        return meta && e ? { meta, e } : null;
+      },
+      emit: (ev: any) => events.push(ev),
+      error: (pid: number, text: string) => events.push({ type: 'error', pid, text }),
+      notice: (pid: number, text: string) => events.push({ type: 'log', pid, text }),
+    } as unknown as SimContext;
+    function addPlayer(pid: number, name: string, x = 0, z = 0) {
+      players.set(pid, { entityId: pid, name, cls: 'mage' });
+      entities.set(pid, { id: pid, pos: { x, y: 0, z }, hp: 100, maxHp: 100, level: 5 });
+    }
+    return { ctx, players, entities, chatTokens, channelSubs, events, addPlayer, setTime: (t: number) => (time = t) };
+  }
+
+  it('chatAllowed: a burst of 8 passes, the 9th is throttled, then refills over time', () => {
+    const h = fakeChatCtx();
+    let pass = 0;
+    for (let i = 0; i < 8; i++) if (chatMod.chatAllowed(h.ctx, 1)) pass++;
+    expect(pass).toBe(8);
+    expect(chatMod.chatAllowed(h.ctx, 1)).toBe(false); // bucket drained
+    h.setTime(1); // +1s -> +2 tokens (CHAT_REFILL)
+    expect(chatMod.chatAllowed(h.ctx, 1)).toBe(true);
+  });
+
+  it('whisperMessageForName: exact-case prefix + whitespace boundary; CI only when asked', () => {
+    expect(chatMod.whisperMessageForName('Bet hello', 'Bet', true)).toBe('hello');
+    expect(chatMod.whisperMessageForName('bet hello', 'Bet', true)).toBe(null); // case-exact required
+    expect(chatMod.whisperMessageForName('bet hello', 'Bet', false)).toBe('hello');
+    expect(chatMod.whisperMessageForName('Betty hi', 'Bet', true)).toBe(null); // needs a ws boundary
+    expect(chatMod.whisperMessageForName('Bet   ', 'Bet', true)).toBe(null); // empty message
+  });
+
+  it('resolveWhisperTarget: exact-case wins; an unambiguous CI match resolves; ties error', () => {
+    const exactCtx = fakeChatCtx();
+    exactCtx.addPlayer(1, 'Bet');
+    exactCtx.addPlayer(2, 'bet');
+    const exact = chatMod.resolveWhisperTarget(exactCtx.ctx, 'Bet hi there');
+    expect(exact && 'target' in exact && exact.target.name).toBe('Bet');
+
+    const ciCtx = fakeChatCtx();
+    ciCtx.addPlayer(1, 'Bet');
+    const ci = chatMod.resolveWhisperTarget(ciCtx.ctx, 'bet hi');
+    expect(ci && 'target' in ci && ci.target.name).toBe('Bet');
+
+    const ambCtx = fakeChatCtx();
+    ambCtx.addPlayer(1, 'Abc');
+    ambCtx.addPlayer(2, 'aBc');
+    const amb = chatMod.resolveWhisperTarget(ambCtx.ctx, 'abc hi');
+    expect(amb && 'error' in amb).toBe(true);
+  });
+
+  it('handleChannelMembership: join/dup/unknown/leave behave and notify', () => {
+    const h = fakeChatCtx();
+    h.addPlayer(1, 'Aleph');
+    const meta = h.players.get(1);
+    chatMod.handleChannelMembership(h.ctx, meta, 'join', 'world');
+    expect(h.channelSubs.get(1)?.has('world')).toBe(true);
+    expect(h.events.some((e) => /Joined the world channel/.test(e.text))).toBe(true);
+    chatMod.handleChannelMembership(h.ctx, meta, 'join', 'world');
+    expect(h.events.some((e) => e.type === 'error' && /already in the world/.test(e.text))).toBe(true);
+    chatMod.handleChannelMembership(h.ctx, meta, 'join', 'nope');
+    expect(h.events.some((e) => e.type === 'error' && /no channel named 'nope'/.test(e.text))).toBe(true);
+    chatMod.handleChannelMembership(h.ctx, meta, 'leave', 'world');
+    expect(h.channelSubs.has(1)).toBe(false);
+    expect(h.events.some((e) => /Left the world channel/.test(e.text))).toBe(true);
+  });
+
+  it('broadcastEmote: delivers an emote chat event to players within SAY_RANGE only', () => {
+    const h = fakeChatCtx();
+    h.addPlayer(1, 'Aleph', 0, 0);
+    h.addPlayer(2, 'Bet', 3, 0); // in range
+    h.addPlayer(3, 'Far', 200, 0); // out of range
+    chatMod.broadcastEmote(h.ctx, h.players.get(1), h.entities.get(1), 'waves.');
+    const recipients = new Set(
+      h.events.filter((e) => e.type === 'chat' && e.channel === 'emote').map((e) => e.pid),
+    );
+    expect(recipients.has(1)).toBe(true);
+    expect(recipients.has(2)).toBe(true);
+    expect(recipients.has(3)).toBe(false);
+  });
+
+  it('inspectReadout + helpLines are pure readouts', () => {
+    const target = { name: 'Bet', cls: 'mage' } as any;
+    const e = { hp: 50, maxHp: 100, level: 7 } as any;
+    const line = chatMod.inspectReadout(target, e);
+    expect(line).toContain('Bet: Level 7');
+    expect(line).toContain('50%');
+    expect(chatMod.helpLines().length).toBe(7);
+  });
+
+  it('handleDevChat: parses dev cheats; returns undefined for non-dev input', () => {
+    const calls: any[] = [];
+    const ctx = {
+      setPlayerLevel: (lvl: number, pid?: number) => calls.push(['level', lvl, pid]),
+      addItem: (id: string, n: number, pid?: number) => calls.push(['item', id, n, pid]),
+      emit: () => {},
+      error: () => {},
+      entities: new Map(),
+      grid: { update() {} },
+      playerGrid: { update() {} },
+      groundPos: (x: number, z: number) => ({ x, y: 0, z }),
+    } as unknown as SimContext;
+    expect(chatMod.handleDevChat(ctx, '/dev level 5', 1)).toBe(null);
+    expect(calls).toContainEqual(['level', 5, 1]);
+    expect(chatMod.handleDevChat(ctx, '/dev give wolf_fang 3', 1)).toBe(null);
+    expect(calls).toContainEqual(['item', 'wolf_fang', 3, 1]);
+    expect(chatMod.handleDevChat(ctx, 'hello world', 1)).toBe(undefined);
   });
 });
