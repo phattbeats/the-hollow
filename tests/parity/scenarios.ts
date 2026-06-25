@@ -655,6 +655,88 @@ function delveDeath(): Scenario {
   };
 }
 
+// Delve run progression (I2a): the multi-module run lifecycle the existing
+// delve_lockpick golden skips (it pins straight to the finale). Pins a two-module
+// run (one non-finale chamber + the finale), clears the chamber (mobs down +
+// pressure plates stepped), walks the opened tombstone exit so advanceDelveModule
+// rolls onto the finale, then buys at the Marks shop (delveBuyShopItem gate +
+// addItem), upgrades the companion (Marks/copper spend), and rolls the UTC day so
+// refreshDelveDaily resets firstClearXp/markClears. Covers spawnDelveModule(x2),
+// tickDelvePressurePlates, tryOpen/openDelveExitPortal, findDelveExitPortal,
+// tickDelveModuleExit, advanceDelveModule, the shop, and the daily reset, none of
+// which the finale-only delve_lockpick scenario exercises.
+function delveProgression(): Scenario {
+  return {
+    name: 'delve_progression',
+    coverage: [
+      'multi-module delve: spawnDelveModule(non-finale) -> clear -> advanceDelveModule',
+      'tickDelvePressurePlates + exit portal open + tombstone advance',
+      'Marks shop buy (delveBuyShopItem gate + addItem + vendor)',
+      'companionUpgrade rank bump + refreshDelveDaily day rollover',
+    ],
+    sampleEvery: 5,
+    build: () => new Sim({ seed: 2010, playerClass: 'warrior', autoEquip: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const def = DELVES.collapsed_reliquary;
+      sim.setPlayerLevel(def.minLevel);
+      const p = sim.player as AnyEntity;
+      beef(p);
+      teleport(sim, p, def.doorPos.x, def.doorPos.z);
+      sim.enterDelve('collapsed_reliquary', 'normal');
+      const run = sim.delveRunForPlayer(sim.playerId);
+      if (!run) {
+        rec.tick(2);
+        return;
+      }
+      run.bountiful = false; // pin against the rare coffer roll
+      // Pin a two-module run: one non-finale chamber, then the finale.
+      const nonFinale = def.modules.find((m: string) => m !== def.finaleModuleId) as string;
+      run.modules = [nonFinale, def.finaleModuleId];
+      run.moduleIndex = 0;
+      (sim as any).spawnDelveModule(run);
+      // Clear the chamber: down every spawned mob, then step every pressure plate
+      // through the real tickDelvePressurePlates path (teleport onto the plate).
+      for (const id of [...run.mobIds]) {
+        const m = sim.entities.get(id) as AnyEntity | undefined;
+        if (m) m.dead = true;
+      }
+      for (const oid of [...run.objectIds]) {
+        if (run.objectState[oid]?.kind !== 'pressure_plate') continue;
+        const plate = sim.entities.get(oid) as AnyEntity | undefined;
+        if (!plate) continue;
+        p.pos = { x: plate.pos.x, y: plate.pos.y, z: plate.pos.z };
+        p.prevPos = { ...p.pos };
+        sim.rebucket(p);
+        rec.tick(1); // tickDelvePressurePlates triggers this plate
+      }
+      rec.tick(2); // all mobs dead + plates triggered -> exit portal opens
+      const portal = [...sim.entities.values()].find(
+        (e: AnyEntity) => run.objectState[e.id]?.kind === 'module_exit',
+      ) as AnyEntity | undefined;
+      if (portal) {
+        p.pos = { x: portal.pos.x, y: portal.pos.y, z: portal.pos.z };
+        p.prevPos = { ...p.pos };
+        sim.rebucket(p);
+        rec.tick(3); // walk into the tombstone -> advanceDelveModule to the finale
+      }
+      rec.snapshot('advanced-to-finale');
+      // Marks shop: an 'available'-gated piece + a companion rank bump.
+      const meta = sim.players.get(sim.playerId) as AnyEntity;
+      meta.delveMarks = 100;
+      meta.copper = 100000;
+      sim.delveBuyShopItem('collapsed_reliquary', 'reliquary_legs');
+      sim.companionUpgrade('companion_tessa');
+      // Daily rollover: a fresh UTC day resets firstClearXp/markClears.
+      meta.delveDaily = { date: '2099-01-01', firstClearXp: new Set(['seed']), markClears: 2 };
+      sim.utcDay = '2099-06-25';
+      sim.delveDailyWire(sim.playerId);
+      rec.snapshot('shop-daily');
+      rec.tick(2);
+    },
+  };
+}
+
 // Quest kill-credit (Q1): accept a kill quest at its giver NPC (driving
 // finalizeQuestAccept's onInventoryChangedForQuests), then slay the target mob one
 // at a time so handleDeath's party-credit loop fires onMobKilledForQuests (counts++
@@ -867,6 +949,7 @@ export const SCENARIOS: Scenario[] = [
   partyLoot(),
   entityRoster(),
   delveDeath(),
+  delveProgression(),
   questKillCredit(),
   questCollectTurnIn(),
   dungeonInstances(),

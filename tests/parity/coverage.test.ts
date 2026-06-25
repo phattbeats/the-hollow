@@ -150,6 +150,15 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect((rec.allEvents as Ev[]).some((e) => e.type === 'delveFailed')).toBe(true);
   });
 
+  it('delve_progression: chamber advances to the finale and the Marks shop buy resolves', () => {
+    const rec = run('delve_progression');
+    const ev = rec.allEvents as Ev[];
+    // advanceDelveModule walked the run from the chamber onto the finale module.
+    expect(ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('tombstone into'))).toBe(true);
+    // delveBuyShopItem deducted Marks and granted the item via the vendor event.
+    expect(ev.some((e) => e.type === 'vendor' && e.action === 'buy' && e.itemId === 'reliquary_legs')).toBe(true);
+  });
+
   it('quest_kill_credit: kill credit accrues and the quest promotes to ready then turns in', () => {
     const rec = run('quest_kill_credit');
     const ev = rec.allEvents as Ev[];
