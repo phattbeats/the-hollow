@@ -1263,6 +1263,131 @@ function multiClassHeal(): Scenario {
   };
 }
 
+// Mob locomotion (M2): the updateMob dispatcher's boss-mechanic attack arms plus the
+// idle-wander, evade-arrival, and cowardly-flee states. Each is driven DIRECTLY through
+// updateMob (exactly as the mob_* unit tests do; the extraction keeps a thin Sim
+// delegate) so the rng draws INSIDE the moved arms are pinned at fixed stream positions:
+// aoePulse rng.range(min,max), War Stomp rng.range(min,max), Banshee terrify
+// rng.range(-PI,PI), the idle wander heading/radius draws, and resetEvadingMob's
+// rng.range(2,8). The flee path (maybeFlee at FLEE_HP_THRESHOLD -> flee arm) draws no
+// rng but pins its full-state transition. The four mechanic mobs sit on the player in
+// melee (spawnPos == player pos, so no leash); the wanderer/evader sit far out of aggro
+// range. None of these mobs is profiled, so the attack arm reaches every mechanic.
+function mobLocomotion(): Scenario {
+  return {
+    name: 'mob_locomotion',
+    coverage: [
+      'attack arm aoePulse rng.range(pulse.min,pulse.max) + spellfx (mogger Ground Pound)',
+      'attack arm War Stomp rng.range(stomp.min,stomp.max) + stomp_stun aura (korgath)',
+      'attack arm Banshee terrify rng.range(-PI,PI) fear facing + fear_incap aura (sister_nhalia)',
+      'idle arm wander draws (range(0,2PI) heading + range(2,9) radius -> groundPos wanderTarget)',
+      'evade arm arrival -> resetEvadingMob (rng.range(2,8), full-heal, clearThreat, telegraph re-arm)',
+      'cowardly flee: maybeFlee at FLEE_HP_THRESHOLD -> flee arm (fleeMoveSpeed run-away)',
+    ],
+    sampleEvery: 1,
+    build: () => new Sim({ seed: 7777, playerClass: 'warrior', noPlayer: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const pid = sim.addPlayer('warrior', 'Anvil');
+      const player = sim.entities.get(pid) as AnyEntity;
+      rec.track(pid);
+      rec.notes.pid = pid;
+      // Keep the target alive through every mechanic. beef() on a player does not
+      // stick: applyAura -> recalcPlayerStats resets maxHp to the real (level-1)
+      // value, so each boss aura would otherwise shrink maxHp and the next mechanic
+      // would kill the player. recalc clamps only at the aura-apply point (at/after
+      // the draw), so a fresh top-up right before each call keeps every draw firing.
+      const reviveTarget = () => {
+        player.hp = 1_000_000;
+      };
+
+      // Spawn a boss locked in melee on the player (spawnPos == player pos -> no leash),
+      // arm its mechanic timer to fire now, then tick its AI once so the mechanic lands.
+      const fireMechanic = (key: string, level: number, arm: (m: AnyEntity) => void): AnyEntity => {
+        const m = spawnMob(sim, key, level, player.pos.x, player.pos.y, player.pos.z);
+        m.spawnPos = { ...player.pos };
+        m.aiState = 'attack';
+        m.aggroTargetId = pid;
+        m.inCombat = true;
+        m.hostile = true;
+        arm(m);
+        reviveTarget();
+        rec.track(m.id);
+        (sim as any).updateMob(m);
+        return m;
+      };
+
+      // aoePulse: Ground Pound draws rng.range(14,20) per player in radius.
+      const pulser = fireMechanic('mogger', 6, (m) => {
+        m.pulseTimer = 0.001;
+      });
+      rec.notes.pulserId = pulser.id;
+      rec.snapshot('aoe-pulse');
+
+      // War Stomp: draws rng.range(20,30) + lands a stomp_stun aura on the player.
+      const stomper = fireMechanic('korgath_the_bound', 20, (m) => {
+        m.stompTimer = 0.001;
+      });
+      rec.notes.stomperId = stomper.id;
+      rec.notes.stompStunLanded = player.auras.some((a: any) => a.id === 'stomp_stun');
+      rec.snapshot('war-stomp');
+
+      // Banshee terrify: draws rng.range(-PI,PI) for the fear facing + fear_incap aura.
+      const terrifier = fireMechanic('sister_nhalia', 12, (m) => {
+        m.terrifyTimer = 0.001;
+      });
+      rec.notes.terrifierId = terrifier.id;
+      rec.notes.fearLanded = player.auras.some((a: any) => a.id === 'fear_incap');
+      rec.snapshot('terrify');
+
+      // Idle wander: a mob far out of aggro range whose wanderTimer is due picks a new
+      // wander target (rng.range(0,2PI) heading + rng.range(2,9) radius -> groundPos).
+      const wanderer = spawnMob(sim, 'forest_wolf', 5, 300, terrainHeight(300, 300, sim.cfg.seed), 300);
+      wanderer.aiState = 'idle';
+      wanderer.wanderTarget = null;
+      wanderer.wanderTimer = 0.001;
+      rec.track(wanderer.id);
+      (sim as any).updateMob(wanderer);
+      rec.notes.wandererId = wanderer.id;
+      rec.snapshot('idle-wander');
+
+      // Evade arrival: a mob already at its spawn in the evade state arrives immediately
+      // (moveToward returns true at dist 0) -> resetEvadingMob (rng.range(2,8) wanderTimer,
+      // hp -> maxHp, threat cleared, telegraph timers re-armed).
+      const evader = spawnMob(sim, 'forest_wolf', 5, 320, terrainHeight(320, 320, sim.cfg.seed), 320);
+      evader.aiState = 'evade';
+      evader.hp = 1;
+      evader.inCombat = true;
+      evader.threat.set(pid, 50);
+      rec.track(evader.id);
+      (sim as any).updateMob(evader);
+      rec.notes.evaderHp = evader.hp;
+      rec.notes.evaderState = evader.aiState;
+      rec.snapshot('evade-reset');
+
+      // Cowardly flee: a low-HP humanoid in melee panics once (maybeFlee at/under
+      // FLEE_HP_THRESHOLD -> aiState 'flee'), then the flee arm runs it away. The
+      // 'attempts to flee!' emit + callForHelp stay on Sim; the flee arm draws no rng.
+      const coward = spawnMob(sim, 'mogger_lackey', 6, player.pos.x + 1, player.pos.y, player.pos.z + 1);
+      coward.spawnPos = { ...coward.pos };
+      coward.aiState = 'attack';
+      coward.aggroTargetId = pid;
+      coward.inCombat = true;
+      coward.hostile = true;
+      coward.hp = Math.max(1, Math.floor(coward.maxHp * 0.15)); // <= FLEE_HP_THRESHOLD (0.2)
+      rec.track(coward.id);
+      reviveTarget(); // the lackey needs a living target to panic away from
+      (sim as any).updateMob(coward); // attack arm -> maybeFlee triggers the flee
+      rec.notes.cowardStateAfterPanic = coward.aiState;
+      rec.snapshot('flee-panic');
+      reviveTarget();
+      (sim as any).updateMob(coward); // flee arm: fleeMoveSpeed + run away from the player
+      rec.notes.cowardStateFleeing = coward.aiState;
+      rec.snapshot('flee-run');
+    },
+  };
+}
+
 export const SCENARIOS: Scenario[] = [
   soloWarrior(),
   soloMage(),
@@ -1285,4 +1410,5 @@ export const SCENARIOS: Scenario[] = [
   questCollectTurnIn(),
   talentsProgression(),
   multiClassHeal(),
+  mobLocomotion(),
 ];

@@ -147,6 +147,7 @@ import {
   retargetMob as retargetMobFn,
   updateMobTarget as updateMobTargetFn,
 } from './mob/targeting';
+import { resetEvadingMob as resetEvadingMobFn, updateMob as updateMobFn } from './mob/locomotion';
 import { combatProfileForMob, effectiveMobMeleeRange, type MobCombatProfile } from './mob_combat';
 import {
   findPlayerPath,
@@ -218,6 +219,7 @@ import {
   type DelveRun,
   DT,
   dist2d,
+  DUNGEON_LEASH_DISTANCE,
   type Entity,
   type EquipSlot,
   type ErrorReason,
@@ -231,6 +233,7 @@ import {
   type ItemLootStrategy,
   isConsuming,
   isQuestTurnInNpc,
+  LEASH_DISTANCE,
   type LootEntry,
   type LootRollChoice,
   type LootRollPrompt,
@@ -243,6 +246,7 @@ import {
   type MoveInput,
   meleeMissChance,
   normAngle,
+  NYTHRAXIS_ADD_ID,
   NYTHRAXIS_BOSS_ID,
   type OverheadEmoteId,
   PARTY_XP_RANGE,
@@ -266,16 +270,10 @@ import {
 } from './types';
 import { groundHeight, WATER_LEVEL } from './world';
 
-const LEASH_DISTANCE = 45;
-const DUNGEON_LEASH_DISTANCE = 70;
 // TRIVIAL_LEVEL_GAP moved to mob/targeting.ts (used only by isTrivialTo).
-// CORPSE_DURATION moved to combat/damage.ts (used only by the death path).
-const EVADE_SPEED_MULT = 1.6;
-// An evading mob walks a straight line home (no pathfinding) and stalls if deep
-// water or a collider sits between it and its spawn. Since evading mobs are
-// immune while resetting, a permanent stall = a permanently unkillable mob. If it
-// can't get closer to home for this long, it starts phasing through the blocker.
-const EVADE_STALL_TIMEOUT = 3;
+// CORPSE_DURATION moved to combat/damage.ts (C1; used only by the death path).
+// LEASH_DISTANCE / DUNGEON_LEASH_DISTANCE moved to types.ts (M2; shared with mob/locomotion.ts).
+// EVADE_SPEED_MULT / EVADE_STALL_TIMEOUT moved to mob/locomotion.ts (M2; slice-only).
 // Heading offsets (radians) a mob tries when its straight path is blocked, so it
 // can slide around a prop instead of pinning on it. Desired heading (0) first;
 // only evaluated past the first entry when that straight step is obstructed.
@@ -289,7 +287,7 @@ const FLEE_HP_THRESHOLD = 0.2;
 const FLEE_DURATION = 5;
 const FLEE_SPEED_MULT = 1.4;
 const FLEE_MAX_SPEED = RUN_SPEED;
-const FLEE_RETURN_GRACE = 8;
+// FLEE_RETURN_GRACE moved to mob/locomotion.ts (M2; used only by recoverFromFlee).
 const FLEE_HELP_RADIUS = 8;
 // Only sentient, cowardly families flee; beasts/undead/elementals/dragonkin fight
 // to the death. Elites, rares, and bosses never flee regardless of family.
@@ -305,7 +303,7 @@ const NYTHRAXIS_RELIC_SUMMONS: Record<string, string> = {
   royal_seal: 'deathstalker_voss',
 };
 const _NYTHRAXIS_CRYPT_QUESTS = new Set(['q_nythraxis_sealed_crypt', 'q_nythraxis_bound_guardian']);
-const NYTHRAXIS_ADD_ID = 'nythraxis_skeleton_warrior';
+// NYTHRAXIS_BOSS_ID / NYTHRAXIS_ADD_ID moved to types.ts (M2; shared with mob/locomotion.ts).
 const NYTHRAXIS_ALDRIC_ID = 'brother_aldric_raid';
 const _NYTHRAXIS_FINAL_QUEST_ID = 'q_nythraxis_scourges_end';
 const NYTHRAXIS_WARDSTONE_ITEM_ID = 'bastion_ward_stone';
@@ -2080,6 +2078,36 @@ export class Sim {
       armDeathThroes: sim.armDeathThroes.bind(sim),
       refreshKnownAbilities: sim.refreshKnownAbilities.bind(sim),
       syncPetLevel: sim.syncPetLevel.bind(sim),
+      // M2 mob locomotion seam (all still on Sim; owners flip points-at later).
+      moveToward: sim.moveToward.bind(sim),
+      mobSwing: sim.mobSwing.bind(sim),
+      updateRangedPetAttack: sim.updateRangedPetAttack.bind(sim),
+      fleeMoveSpeed: sim.fleeMoveSpeed.bind(sim),
+      usesProfiledMobCombat: sim.usesProfiledMobCombat.bind(sim),
+      updateProfiledMobCombat: sim.updateProfiledMobCombat.bind(sim),
+      tryMobMeleeSwingInRange: sim.tryMobMeleeSwingInRange.bind(sim),
+      maybeFlee: sim.maybeFlee.bind(sim),
+      aggroMob: sim.aggroMob.bind(sim),
+      isStunned: sim.isStunned.bind(sim),
+      isRooted: sim.isRooted.bind(sim),
+      moveSpeedMult: sim.moveSpeedMult.bind(sim),
+      swingIntervalMult: sim.swingIntervalMult.bind(sim),
+      mobEffectiveMeleeRange: sim.mobEffectiveMeleeRange.bind(sim),
+      mobCanSwim: sim.mobCanSwim.bind(sim),
+      resolveMovePoint: sim.resolveMovePoint.bind(sim),
+      updatePet: sim.updatePet.bind(sim),
+      isDelveCompanionMob: sim.isDelveCompanionMob.bind(sim),
+      updateDelveCompanion: sim.updateDelveCompanion.bind(sim),
+      updateBossMechanics: sim.updateBossMechanics.bind(sim),
+      updateNythraxisEncounter: sim.updateNythraxisEncounter.bind(sim),
+      resetNythraxisEncounter: sim.resetNythraxisEncounter.bind(sim),
+      despawnSummonedAdds: sim.despawnSummonedAdds.bind(sim),
+      updateFearMovement: sim.updateFearMovement.bind(sim),
+      delveDetectMult: sim.delveDetectMult.bind(sim),
+      detonateCorpse: sim.detonateCorpse.bind(sim),
+      despawnPet: sim.despawnPet.bind(sim),
+      respawnMob: sim.respawnMob.bind(sim),
+      onBossDeath: sim.onBossDeath.bind(sim),
     };
     return createSimContext(host);
   }
@@ -2474,11 +2502,7 @@ export class Sim {
     return Math.min(e.moveSpeed * FLEE_SPEED_MULT, FLEE_MAX_SPEED) * this.moveSpeedMult(e);
   }
 
-  private recoverFromFlee(mob: Entity, target: Entity, leash: number, leashAnchor: Vec3): void {
-    mob.aiState = dist2d(mob.pos, target.pos) > MELEE_RANGE ? 'chase' : 'attack';
-    mob.fleeTimer = 0;
-    if (dist2d(mob.pos, leashAnchor) >= leash - 1) mob.fleeReturnTimer = FLEE_RETURN_GRACE;
-  }
+  // recoverFromFlee moved to mob/locomotion.ts (M2; called only by the flee arm).
 
   // Fiesta "Moon Boots" power-up: a buff_jump aura multiplies jump height.
   private jumpMult(e: Entity): number {
@@ -5739,496 +5763,32 @@ export class Sim {
   }
 
   private updateMob(mob: Entity): void {
-    if (mob.dead) {
-      if (mob.templateId === NYTHRAXIS_BOSS_ID && mob.nythraxis && !mob.nythraxis.deathSpoken) {
-        mob.nythraxis.deathSpoken = true;
-        mob.nythraxis.phase = 'dead';
-        this.nythraxisDialogueSet(mob, [
-          { speaker: 'nythraxis', text: 'Malric...', delay: 0 },
-          {
-            speaker: 'nythraxis',
-            text: 'What have you done',
-            delay: NYTHRAXIS_DIALOGUE_LINE_SECONDS,
-          },
-        ]);
-      }
-      if (mob.ownerId !== null && MOBS[mob.templateId]?.family !== 'demon') return;
-      mob.corpseTimer -= DT;
-      mob.respawnTimer -= DT;
-      // Death Throes: a volatile corpse counts down its fuse, then detonates once.
-      if (mob.detonateTimer !== Infinity) {
-        mob.detonateTimer -= DT;
-        if (mob.detonateTimer <= 0) {
-          mob.detonateTimer = Infinity;
-          this.detonateCorpse(mob);
-        }
-      }
-      // a slain summoned demon unravels rather than respawning into the wild
-      if (mob.ownerId !== null && MOBS[mob.templateId]?.family === 'demon') {
-        if (mob.corpseTimer <= 0) this.despawnPet(mob);
-        return;
-      }
-      // dungeon mobs stay dead until the instance resets
-      const isInstanceMob = mob.spawnPos.x > DUNGEON_X_THRESHOLD;
-      if (!isInstanceMob && mob.respawnTimer <= 0 && (mob.corpseTimer <= 0 || !mob.lootable)) {
-        this.respawnMob(mob);
-      }
-      return;
-    }
+    updateMobFn(this.ctx, mob);
+  }
 
-    mob.combatTimer += DT;
-
-    if (mob.templateId.startsWith('vision_')) {
-      mob.hostile = false;
-      mob.aiState = 'idle';
-      mob.inCombat = false;
-      mob.aggroTargetId = null;
-      clearThreat(mob);
-      return;
-    }
-
-    if (mob.ownerId !== null) {
-      if (this.isStunned(mob)) return;
-      if (this.isDelveCompanionMob(mob)) {
-        this.updateDelveCompanion(mob);
-        return;
-      }
-      this.updatePet(mob);
-      return;
-    }
-
-    // Self-healing safety net (#113/#99): every mob spawns hostile and only
-    // taming clears that (which always assigns an owner). A live, owner-less,
-    // non-hostile mob is therefore a leak — exactly the "immortal, invalid
-    // target" wolves players hit. Restore hostility so no mob can ever be left
-    // permanently untargetable, whatever path corrupted it.
-    if (mob.templateId === NYTHRAXIS_ADD_ID && mob.despawnTimer !== undefined) {
-      mob.hostile = false;
-      mob.aiState = 'idle';
-      mob.inCombat = false;
-      mob.aggroTargetId = null;
-      return;
-    }
-
-    if (!mob.hostile) mob.hostile = true;
-
-    const isNythraxis = mob.templateId === NYTHRAXIS_BOSS_ID;
-    if (mob.inCombat || (isNythraxis && mob.nythraxis && mob.nythraxis.phase !== 'dead')) {
-      const nythraxisScriptLocked =
-        isNythraxis &&
-        mob.nythraxis &&
-        (mob.nythraxis.phase === 'transition' ||
-          mob.nythraxis.deathlessCastRemaining > 0 ||
-          mob.nythraxis.deathlessStunRemaining > 0);
-      if (isNythraxis) {
-        this.updateNythraxisEncounter(mob);
-        if (
-          nythraxisScriptLocked ||
-          (mob.nythraxis &&
-            (mob.nythraxis.phase === 'transition' ||
-              mob.nythraxis.deathlessCastRemaining > 0 ||
-              mob.nythraxis.deathlessStunRemaining > 0))
-        )
-          return;
-      } else {
-        this.updateBossMechanics(mob);
-      }
-    }
-
-    if (this.isStunned(mob)) {
-      if (this.updateFearMovement(mob)) return;
-      if (mob.auras.some((a) => a.kind === 'polymorph')) {
-        mob.wanderTimer -= DT;
-        if (mob.wanderTimer <= 0) {
-          mob.wanderTimer = this.rng.range(0.8, 2);
-          mob.facing = this.rng.range(-Math.PI, Math.PI);
-        }
-        const step = 1.6 * DT;
-        mob.pos.x += Math.sin(mob.facing) * step;
-        mob.pos.z += Math.cos(mob.facing) * step;
-        mob.pos.y = groundHeight(mob.pos.x, mob.pos.z, this.cfg.seed);
-      }
-      return;
-    }
-
-    switch (mob.aiState) {
-      case 'idle': {
-        if (mob.templateId === NYTHRAXIS_BOSS_ID && !mob.inCombat) {
-          mob.wanderTarget = null;
-          mob.wanderTimer = 3;
-          mob.pos = { ...mob.spawnPos };
-          mob.prevPos = { ...mob.pos };
-          mob.facing = Math.PI;
-          mob.prevFacing = Math.PI;
-          const template = MOBS[mob.templateId];
-          let detected: Entity | null = null;
-          let detectedD = Infinity;
-          this.playerGrid.forEachInRadius(mob.pos.x, mob.pos.z, 25, (e, d2) => {
-            if (e.dead) return;
-            const radius = Math.max(
-              4,
-              Math.min(20, template.aggroRadius + (mob.level - e.level) * 1.5),
-            );
-            const d = Math.sqrt(d2);
-            if (d < radius && d < detectedD) {
-              detected = e;
-              detectedD = d;
-            }
-          });
-          if (detected) this.aggroMob(mob, detected, true);
-          return;
-        }
-        const template = MOBS[mob.templateId];
-        let detected: Entity | null = null;
-        let detectedD = Infinity;
-        this.playerGrid.forEachInRadius(mob.pos.x, mob.pos.z, 25, (e, d2) => {
-          if (e.dead) return;
-          if (this.isTrivialTo(mob, e)) return;
-          let radius = Math.max(
-            4,
-            Math.min(20, template.aggroRadius + (mob.level - e.level) * 1.5),
-          );
-          radius *= this.delveDetectMult(e);
-          // stealthed rogues are harder to detect, relative to observer level
-          if (e.auras.some((a) => a.kind === 'stealth'))
-            radius = stealthDetectionRadius(mob, e, radius);
-          const d = Math.sqrt(d2);
-          if (d < radius && d < detectedD) {
-            detected = e;
-            detectedD = d;
-          }
-        });
-        if (detected) {
-          this.aggroMob(mob, detected, true);
-          break;
-        }
-        mob.wanderTimer -= DT;
-        if (mob.wanderTimer <= 0) {
-          if (mob.wanderTarget) {
-            mob.wanderTarget = null;
-            mob.wanderTimer = this.rng.range(3, 10);
-          } else {
-            const ang = this.rng.range(0, Math.PI * 2);
-            const r = this.rng.range(2, 9);
-            mob.wanderTarget = this.groundPos(
-              mob.spawnPos.x + Math.sin(ang) * r,
-              mob.spawnPos.z + Math.cos(ang) * r,
-            );
-            mob.wanderTimer = 30;
-          }
-        }
-        if (mob.wanderTarget) {
-          const arrived = this.moveToward(mob, mob.wanderTarget, mob.moveSpeed * 0.35);
-          if (arrived) {
-            mob.wanderTarget = null;
-            mob.wanderTimer = this.rng.range(3, 10);
-          }
-        }
-        break;
-      }
-      case 'chase': {
-        if (this.usesProfiledMobCombat(mob)) {
-          this.updateProfiledMobCombat(mob);
-          break;
-        }
-        this.updateMobTarget(mob);
-        const target = mob.aggroTargetId !== null ? this.entities.get(mob.aggroTargetId) : null;
-        if (!target || target.dead) {
-          this.retargetMob(mob);
-          break;
-        }
-        if (this.maybeFlee(mob, target)) break;
-        const spell = MOBS[mob.templateId]?.petSpell;
-        const leash =
-          mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
-        const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
-        if (mob.fleeReturnTimer > 0) {
-          mob.fleeReturnTimer = Math.max(0, mob.fleeReturnTimer - DT);
-          if (dist2d(mob.pos, leashAnchor) <= leash - 1) mob.fleeReturnTimer = 0;
-        }
-        // Nythraxis is a raid boss: he never leashes/resets from being kited.
-        // Only a full wipe resets him (handled in updateNythraxisEncounter).
-        if (!isNythraxis && dist2d(mob.pos, leashAnchor) > leash && mob.fleeReturnTimer <= 0) {
-          mob.aiState = 'evade';
-          mob.aggroTargetId = null;
-          clearThreat(mob);
-          mob.leashAnchor = null;
-          break;
-        }
-        const d = dist2d(mob.pos, target.pos);
-        if (spell && d <= spell.range) {
-          mob.aiState = 'attack';
-          mob.swingTimer = Math.min(mob.swingTimer, 0.4);
-          break;
-        }
-        mob.swingTimer = Math.max(0, mob.swingTimer - DT);
-        if (this.tryMobMeleeSwingInRange(mob, target)) break;
-        if (!this.isRooted(mob))
-          this.moveToward(mob, target.pos, mob.moveSpeed * this.moveSpeedMult(mob));
-        else mob.facing = angleTo(mob.pos, target.pos);
-        if (this.tryMobMeleeSwingInRange(mob, target)) break;
-        break;
-      }
-      case 'attack': {
-        if (this.usesProfiledMobCombat(mob)) {
-          this.updateProfiledMobCombat(mob);
-          break;
-        }
-        this.updateMobTarget(mob);
-        const target = mob.aggroTargetId !== null ? this.entities.get(mob.aggroTargetId) : null;
-        if (!target || target.dead) {
-          this.retargetMob(mob);
-          break;
-        }
-        if (this.maybeFlee(mob, target)) break;
-        const d = dist2d(mob.pos, target.pos);
-        const spell = MOBS[mob.templateId]?.petSpell;
-        if (spell) {
-          if (d > spell.range) {
-            mob.aiState = 'chase';
-            break;
-          }
-          this.updateRangedPetAttack(mob, target, spell);
-          break;
-        }
-        if (d > this.mobEffectiveMeleeRange(mob)) {
-          mob.aiState = 'chase';
-          break;
-        }
-        mob.facing = angleTo(mob.pos, target.pos);
-        mob.swingTimer -= DT;
-        if (mob.swingTimer <= 0) {
-          this.mobSwing(mob, target);
-          mob.swingTimer = mob.weapon.speed * this.swingIntervalMult(mob);
-        }
-        // Boss/miniboss pulse mechanic.
-        const pulse = MOBS[mob.templateId]?.aoePulse;
-        if (pulse) {
-          mob.pulseTimer -= DT;
-          if (mob.pulseTimer <= 0) {
-            mob.pulseTimer = pulse.every;
-            const school = pulse.school ?? 'shadow';
-            this.emit({
-              type: 'spellfx',
-              sourceId: mob.id,
-              targetId: mob.id,
-              school,
-              fx: pulse.fx ?? 'nova',
-            });
-            for (const meta of this.players.values()) {
-              const pe = this.entities.get(meta.entityId);
-              if (pe && !pe.dead && dist2d(pe.pos, mob.pos) <= pulse.radius) {
-                const dmg = Math.round(this.rng.range(pulse.min, pulse.max));
-                this.dealDamage(mob, pe, dmg, false, school, pulse.name, 'hit', true);
-              }
-            }
-          }
-        }
-        // Boss/miniboss War Stomp: a periodic ground slam that stuns (and
-        // optionally damages) nearby players. Telegraphed via createMob, which
-        // seeds stompTimer to one full interval so the first slam never lands
-        // the instant combat opens.
-        const stomp = MOBS[mob.templateId]?.stomp;
-        if (stomp) {
-          mob.stompTimer -= DT;
-          if (mob.stompTimer <= 0) {
-            mob.stompTimer = stomp.every;
-            const school = stomp.school ?? 'physical';
-            this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
-            this.emit({
-              type: 'log',
-              text: `${mob.name} unleashes ${stomp.name}!`,
-              color: '#ff9933',
-              entityId: mob.id,
-            });
-            for (const meta of this.players.values()) {
-              const pe = this.entities.get(meta.entityId);
-              if (!pe || pe.dead || dist2d(pe.pos, mob.pos) > stomp.radius) continue;
-              if (stomp.min !== undefined && stomp.max !== undefined) {
-                const dmg = Math.round(this.rng.range(stomp.min, stomp.max));
-                this.dealDamage(mob, pe, dmg, false, school, stomp.name, 'hit', true);
-              }
-              if (pe.dead) continue; // a fatal slam shouldn't also stun the corpse
-              this.applyAura(pe, {
-                id: 'stomp_stun',
-                name: stomp.name,
-                kind: 'stun',
-                remaining: stomp.duration,
-                duration: stomp.duration,
-                value: 0,
-                sourceId: mob.id,
-                school: school as Aura['school'],
-              });
-            }
-          }
-        }
-        // Stoneskin: a periodic self-absorb barrier. Telegraphed via createMob,
-        // which seeds stoneskinTimer to one full interval so the first barrier
-        // never snaps up the instant combat opens. Reuses the `absorb` aura,
-        // which dealDamage already soaks before any health is lost.
-        const stoneskin = MOBS[mob.templateId]?.stoneskin;
-        if (stoneskin) {
-          mob.stoneskinTimer -= DT;
-          if (mob.stoneskinTimer <= 0) {
-            mob.stoneskinTimer = stoneskin.every;
-            const school = (stoneskin.school ?? 'physical') as Aura['school'];
-            this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
-            this.emit({
-              type: 'log',
-              text: `${mob.name} unleashes ${stoneskin.name}!`,
-              color: '#c9c2b5',
-              entityId: mob.id,
-            });
-            this.applyAura(mob, {
-              id: `stoneskin_${mob.templateId}`,
-              name: stoneskin.name,
-              kind: 'absorb',
-              remaining: stoneskin.duration,
-              duration: stoneskin.duration,
-              value: stoneskin.amount,
-              sourceId: mob.id,
-              school,
-            });
-          }
-        }
-        // Banshee's Wail: a periodic, telegraphed scream that terrifies nearby
-        // players into fleeing. The fear analogue of War Stomp — same timed,
-        // room-wide cadence — but it applies the `fear_incap` aura the on-hit
-        // `dread` and player-cast Fear share, so `updateFearMovement` drives the
-        // panic. Telegraphed via createMob, which seeds terrifyTimer to one full
-        // interval so the first wail never lands the instant combat opens.
-        const terrify = MOBS[mob.templateId]?.terrify;
-        if (terrify) {
-          mob.terrifyTimer -= DT;
-          if (mob.terrifyTimer <= 0) {
-            mob.terrifyTimer = terrify.every;
-            const school = terrify.school ?? 'shadow';
-            this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
-            this.emit({
-              type: 'log',
-              text: `${mob.name} unleashes ${terrify.name}!`,
-              color: '#ff9933',
-              entityId: mob.id,
-            });
-            for (const meta of this.players.values()) {
-              const pe = this.entities.get(meta.entityId);
-              if (!pe || pe.dead || dist2d(pe.pos, mob.pos) > terrify.radius) continue;
-              const remaining = this.diminishedCrowdControlDuration(
-                mob,
-                pe,
-                'fear',
-                terrify.duration,
-              );
-              if (remaining === null) continue;
-              this.applyAura(pe, {
-                id: 'fear_incap',
-                name: terrify.name,
-                kind: 'incapacitate',
-                remaining,
-                duration: remaining,
-                value: this.rng.range(-Math.PI, Math.PI),
-                sourceId: mob.id,
-                school,
-                breaksOnDamage: true,
-              });
-            }
-          }
-        }
-        break;
-      }
-      case 'flee': {
-        const target = mob.aggroTargetId !== null ? this.entities.get(mob.aggroTargetId) : null;
-        if (!target || target.dead) {
-          this.retargetMob(mob);
-          break;
-        }
-        const fleeSpeed = this.fleeMoveSpeed(mob);
-        // A panic flee should not be the thing that breaks leash and full-heals
-        // the mob. If it reaches the leash edge, it recovers and re-engages;
-        // normal chase/attack leash checks still handle genuine dragged pulls.
-        const leash =
-          mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
-        const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
-        if (dist2d(mob.pos, leashAnchor) >= leash - fleeSpeed * DT) {
-          this.recoverFromFlee(mob, target, leash, leashAnchor);
-          break;
-        }
-        mob.fleeTimer -= DT;
-        if (mob.fleeTimer <= 0) {
-          // Recover nerve and turn to fight again; hasFled keeps it from re-fleeing.
-          this.recoverFromFlee(mob, target, leash, leashAnchor);
-          mob.swingTimer = Math.min(mob.swingTimer, 0.4);
-          break;
-        }
-        // Run directly away from the attacker. A root pins it in place (it just
-        // cowers facing away); a stun is already handled by the early return above.
-        const away = angleTo(target.pos, mob.pos);
-        mob.facing = away;
-        if (!this.isRooted(mob)) {
-          const fleePos = this.groundPos(
-            mob.pos.x + Math.sin(away) * 10,
-            mob.pos.z + Math.cos(away) * 10,
-          );
-          this.moveToward(mob, fleePos, fleeSpeed);
-        }
-        break;
-      }
-      case 'evade': {
-        // moveToward has no pathfinding: a straight line home that crosses a prop
-        // (the camp tent/crate/campfire) or deep water makes no progress, so the
-        // mob stays evading — and therefore immune — forever. Walk home normally,
-        // but once stalled, phase straight through the blocker just until a normal
-        // step works again. Phasing always makes progress, so arrival is the
-        // backstop: worst case it phases the rest of the way home.
-        const phasing = mob.evadeStall >= EVADE_STALL_TIMEOUT;
-        const distBefore = dist2d(mob.pos, mob.spawnPos);
-        const arrived = this.moveToward(
-          mob,
-          mob.spawnPos,
-          mob.moveSpeed * EVADE_SPEED_MULT,
-          phasing,
-        );
-        if (arrived) {
-          this.resetEvadingMob(mob);
-        } else if (phasing) {
-          if (!this.blockedTowardSpawn(mob, mob.spawnPos)) mob.evadeStall = 0; // cleared the obstacle
-        } else if (dist2d(mob.pos, mob.spawnPos) < distBefore - 1e-3) {
-          mob.evadeStall = 0; // walking home fine
-        } else {
-          mob.evadeStall += DT; // pinned on something
-        }
-        break;
-      }
+  // Boss-death dialogue hook (left by M2 for N1). updateMob (now in mob/locomotion.ts)
+  // calls this via ctx.onBossDeath for every dead mob; the Nythraxis death dialogue is
+  // the only current handler and the body stays on Sim until N1 owns the encounter.
+  // Draws no rng, so calling it unconditionally for every dead mob preserves draw order.
+  private onBossDeath(mob: Entity): void {
+    if (mob.templateId === NYTHRAXIS_BOSS_ID && mob.nythraxis && !mob.nythraxis.deathSpoken) {
+      mob.nythraxis.deathSpoken = true;
+      mob.nythraxis.phase = 'dead';
+      this.nythraxisDialogueSet(mob, [
+        { speaker: 'nythraxis', text: 'Malric...', delay: 0 },
+        {
+          speaker: 'nythraxis',
+          text: 'What have you done',
+          delay: NYTHRAXIS_DIALOGUE_LINE_SECONDS,
+        },
+      ]);
     }
   }
 
-  // An evading mob has reached its spawn (walking or phasing): drop the pull
-  // entirely and return to idle at full health, ready to be pulled again.
+  // resetEvadingMob moved to mob/locomotion.ts (M2). Sim keeps a thin delegate because
+  // wipeNythraxisEncounter + 8 mob_* tests + the parity scenario call sim.resetEvadingMob.
   private resetEvadingMob(mob: Entity): void {
-    mob.aiState = 'idle';
-    mob.hp = mob.maxHp;
-    mob.auras = [];
-    mob.inCombat = false;
-    mob.tappedById = null;
-    mob.leashAnchor = null;
-    mob.evadeStall = 0;
-    mob.fleeTimer = 0;
-    mob.fleeReturnTimer = 0;
-    mob.hasFled = false;
-    clearThreat(mob);
-    this.despawnSummonedAdds(mob);
-    mob.firedSummons = 0;
-    mob.enraged = false;
-    mob.healedThisPull = false;
-    mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
-    mob.terrifyTimer = MOBS[mob.templateId]?.terrify?.every ?? 0;
-    mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
-    mob.wardTimer = MOBS[mob.templateId]?.wardAllies?.every ?? 0;
-    mob.stoneskinTimer = MOBS[mob.templateId]?.stoneskin?.every ?? 0;
-    mob.rallyTimer = MOBS[mob.templateId]?.rally?.every ?? 0;
-    mob.warcryTimer = MOBS[mob.templateId]?.warcry?.every ?? 0;
-    mob.wanderTimer = this.rng.range(2, 8);
-    if (mob.templateId === NYTHRAXIS_BOSS_ID) this.resetNythraxisEncounter(mob);
+    resetEvadingMobFn(this.ctx, mob);
   }
 
   // Cowardly mobs panic once per pull at low HP: turn and run from the attacker
@@ -7559,25 +7119,7 @@ export class Sim {
     return dist2d(e.pos, dest) < 0.3;
   }
 
-  // Would a normal (collision- and water-aware) step toward `dest` be blocked —
-  // i.e. is a prop or deep water right in front of this mob? Used to decide when
-  // a phasing evader has cleared the obstacle and can walk normally again.
-  private blockedTowardSpawn(e: Entity, dest: Vec3): boolean {
-    const d = dist2d(e.pos, dest);
-    if (d < 0.3) return false;
-    const facing = angleTo(e.pos, dest);
-    const step = Math.min(e.moveSpeed * EVADE_SPEED_MULT * DT, d);
-    const nx = e.pos.x + Math.sin(facing) * step;
-    const nz = e.pos.z + Math.cos(facing) * step;
-    if (
-      !this.mobCanSwim(MOBS[e.templateId]) &&
-      groundHeight(nx, nz, this.cfg.seed) < WATER_LEVEL - SWIM_DEPTH
-    )
-      return true;
-    const resolved = this.resolveMovePoint(nx, nz, BODY_RADIUS, e);
-    // a collider ate most of the intended movement -> still blocked
-    return Math.hypot(nx - resolved.x, nz - resolved.z) > step * 0.5;
-  }
+  // blockedTowardSpawn moved to mob/locomotion.ts (M2; called only by the evade arm).
 
   private respawnMob(mob: Entity): void {
     if (mob.ownerId !== null) {

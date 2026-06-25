@@ -65,7 +65,8 @@ export interface SimContextPrimitives {
   readonly arenaMatches: Map<number, ArenaMatch>;
   // C1 damage-core live views. The shared `players` map (declared above) plus `duels`
   // (shared duel keyed by both pids) back the damage/death/xp paths; `cfg` supplies
-  // respawn tuning on mob death. Backing fields stay on Sim.
+  // respawn tuning on mob death (M2 also reads cfg.seed for mob terrain height).
+  // Backing fields stay on Sim.
   readonly duels: Map<number, DuelState>;
   readonly cfg: Required<Omit<SimConfig, 'noPlayer'>>;
 }
@@ -209,6 +210,54 @@ export interface SimContextCallbacks {
   // delegate into the module (server/HUD/tests call the `Sim` facade directly).
   refreshKnownAbilities(meta: PlayerMeta, announce: boolean): void;
   syncPetLevel(owner: Entity): void;
+  // M2 mob locomotion: the updateMob dispatcher reaches every boss/pet/Nythraxis/
+  // corpse branch and movement helper it dispatches to through these. All still live
+  // on Sim (or a shared module); the eventual owners flip points-at, never rename.
+  // --- shared movement/combat entry points (STAY on Sim, exposed here) ---
+  moveToward(e: Entity, dest: Vec3, speed: number, ignoreObstacles?: boolean): boolean;
+  mobSwing(mob: Entity, target: Entity): void;
+  updateRangedPetAttack(
+    pet: Entity,
+    target: Entity,
+    spell: {
+      name: string;
+      school: 'physical' | 'fire' | 'frost' | 'arcane' | 'shadow' | 'holy' | 'nature';
+      min: number;
+      max: number;
+      range: number;
+      every: number;
+    },
+  ): void;
+  fleeMoveSpeed(e: Entity): number;
+  // --- mob-AI helpers the dispatcher consults ---
+  usesProfiledMobCombat(mob: Entity): boolean;
+  updateProfiledMobCombat(mob: Entity): void;
+  tryMobMeleeSwingInRange(mob: Entity, target: Entity): boolean;
+  maybeFlee(mob: Entity, target: Entity): boolean;
+  aggroMob(mob: Entity, target: Entity, social: boolean): void;
+  isStunned(e: Entity): boolean;
+  isRooted(e: Entity): boolean;
+  moveSpeedMult(e: Entity): number;
+  swingIntervalMult(e: Entity): number;
+  mobEffectiveMeleeRange(mob: Entity): number;
+  mobCanSwim(template: { family?: string; canSwim?: boolean } | undefined): boolean;
+  resolveMovePoint(nx: number, nz: number, r: number, e: Entity): { x: number; z: number };
+  // --- pet / delve-companion / boss-mechanic branches (owners: P1 / delve / M3-N1) ---
+  updatePet(pet: Entity): void;
+  isDelveCompanionMob(mob: Entity): boolean;
+  updateDelveCompanion(companion: Entity): void;
+  updateBossMechanics(mob: Entity): void;
+  updateNythraxisEncounter(boss: Entity): void;
+  resetNythraxisEncounter(boss: Entity): void;
+  despawnSummonedAdds(boss: Entity): void;
+  updateFearMovement(e: Entity): boolean;
+  delveDetectMult(player: Entity): number;
+  // --- corpse lifecycle (owners: M4) ---
+  detonateCorpse(dead: Entity): void;
+  despawnPet(pet: Entity): void;
+  respawnMob(mob: Entity): void;
+  // --- boss-death dialogue hook (N1 owns the body; left here by M2) ---
+  onBossDeath(mob: Entity): void;
 }
 
 // The seam consumed by extracted modules.
@@ -338,5 +387,35 @@ export function createSimContext(host: SimContextHost): SimContext {
     armDeathThroes: host.armDeathThroes,
     refreshKnownAbilities: host.refreshKnownAbilities,
     syncPetLevel: host.syncPetLevel,
+    // M2 mob locomotion seam.
+    moveToward: host.moveToward,
+    mobSwing: host.mobSwing,
+    updateRangedPetAttack: host.updateRangedPetAttack,
+    fleeMoveSpeed: host.fleeMoveSpeed,
+    usesProfiledMobCombat: host.usesProfiledMobCombat,
+    updateProfiledMobCombat: host.updateProfiledMobCombat,
+    tryMobMeleeSwingInRange: host.tryMobMeleeSwingInRange,
+    maybeFlee: host.maybeFlee,
+    aggroMob: host.aggroMob,
+    isStunned: host.isStunned,
+    isRooted: host.isRooted,
+    moveSpeedMult: host.moveSpeedMult,
+    swingIntervalMult: host.swingIntervalMult,
+    mobEffectiveMeleeRange: host.mobEffectiveMeleeRange,
+    mobCanSwim: host.mobCanSwim,
+    resolveMovePoint: host.resolveMovePoint,
+    updatePet: host.updatePet,
+    isDelveCompanionMob: host.isDelveCompanionMob,
+    updateDelveCompanion: host.updateDelveCompanion,
+    updateBossMechanics: host.updateBossMechanics,
+    updateNythraxisEncounter: host.updateNythraxisEncounter,
+    resetNythraxisEncounter: host.resetNythraxisEncounter,
+    despawnSummonedAdds: host.despawnSummonedAdds,
+    updateFearMovement: host.updateFearMovement,
+    delveDetectMult: host.delveDetectMult,
+    detonateCorpse: host.detonateCorpse,
+    despawnPet: host.despawnPet,
+    respawnMob: host.respawnMob,
+    onBossDeath: host.onBossDeath,
   };
 }

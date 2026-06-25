@@ -45,6 +45,8 @@ function makeCtx() {
   const groundAoEs: GroundAoE[] = [];
   const dungeonDoorIds: number[] = [];
   const arenaMatches = new Map();
+  const players = new Map();
+  const cfg = { seed: 1 } as unknown as SimContextHost['cfg'];
   const clock = { time: 0, tick: 0 };
   let delayedEvents: { at: number; event: any; guard?: () => boolean }[] = [];
   const emit = vi.fn();
@@ -63,7 +65,6 @@ function makeCtx() {
     get entities() {
       return entities;
     },
-    players: new Map(),
     tradeInvites: new Map(),
     duelInvites: new Map(),
     get grid() {
@@ -86,6 +87,12 @@ function makeCtx() {
     },
     get arenaMatches() {
       return arenaMatches;
+    },
+    get players() {
+      return players;
+    },
+    get cfg() {
+      return cfg;
     },
     emit,
     error: vi.fn(),
@@ -135,7 +142,6 @@ function makeCtx() {
     delveModuleEntry: vi.fn(() => ({ x: 0, y: 0, z: 0 })),
     failDelveRun: vi.fn(),
     duels: new Map(),
-    cfg: {} as SimContextHost['cfg'],
     grantXp: vi.fn(),
     enterCombat: vi.fn(),
     hexOutputMult: vi.fn(() => 1),
@@ -152,6 +158,35 @@ function makeCtx() {
     armDeathThroes: vi.fn(),
     refreshKnownAbilities: vi.fn(),
     syncPetLevel: vi.fn(),
+    moveToward: vi.fn(() => false),
+    mobSwing: vi.fn(),
+    updateRangedPetAttack: vi.fn(),
+    fleeMoveSpeed: vi.fn(() => 0),
+    usesProfiledMobCombat: vi.fn(() => false),
+    updateProfiledMobCombat: vi.fn(),
+    tryMobMeleeSwingInRange: vi.fn(() => false),
+    maybeFlee: vi.fn(() => false),
+    aggroMob: vi.fn(),
+    isStunned: vi.fn(() => false),
+    isRooted: vi.fn(() => false),
+    moveSpeedMult: vi.fn(() => 1),
+    swingIntervalMult: vi.fn(() => 1),
+    mobEffectiveMeleeRange: vi.fn(() => 0),
+    mobCanSwim: vi.fn(() => false),
+    resolveMovePoint: vi.fn(() => ({ x: 0, z: 0 })),
+    updatePet: vi.fn(),
+    isDelveCompanionMob: vi.fn(() => false),
+    updateDelveCompanion: vi.fn(),
+    updateBossMechanics: vi.fn(),
+    updateNythraxisEncounter: vi.fn(),
+    resetNythraxisEncounter: vi.fn(),
+    despawnSummonedAdds: vi.fn(),
+    updateFearMovement: vi.fn(() => false),
+    delveDetectMult: vi.fn(() => 1),
+    detonateCorpse: vi.fn(),
+    despawnPet: vi.fn(),
+    respawnMob: vi.fn(),
+    onBossDeath: vi.fn(),
   };
   const ctx = createSimContext(host);
   return {

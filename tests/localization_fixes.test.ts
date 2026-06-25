@@ -755,9 +755,10 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
   // Extraction sessions moved player-facing emits out of sim.ts into sibling sim
   // modules: C1 -> src/sim/combat/damage.ts (the frenzy proc + pet "<name> dies."
   // line), A1+ -> src/sim/social/*.ts (the party machine, later duel/arena/fiesta/
-  // markers), G1a -> src/sim/progression/talents.ts (talent validation toasts). They
-  // emit via this.ctx.* / bare ctx.* through SimContext. Scan ALL of them alongside
-  // sim.ts so every language-agnostic sim emit stays under the drift guard; they are
+  // markers), G1a -> src/sim/progression/talents.ts (talent validation toasts),
+  // M2 -> src/sim/mob/locomotion.ts (the boss "unleashes" lines). They emit via
+  // this.ctx.* / bare ctx.* through SimContext. Scan ALL of them alongside sim.ts so
+  // every language-agnostic sim emit stays under the drift guard; they are
   // re-localized client-side by the same matchers. When a slice moves emit literals
   // out of the monolith, append its path here.
   const socialDir = path.resolve(process.cwd(), 'src/sim/social');
@@ -772,6 +773,7 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/sim.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/combat/damage.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/progression/talents.ts'), 'utf8'),
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/locomotion.ts'), 'utf8'),
     socialSrc,
   ].join('\n');
   // Hardened S3: also scan the authoritative server's player-facing emits. The

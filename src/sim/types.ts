@@ -8,6 +8,15 @@ export const RUN_SPEED = 7; // yards/sec, classic run speed
 export const TURN_SPEED = Math.PI; // rad/sec keyboard turning
 export const MELEE_RANGE = 5; // yards
 export const INTERACT_RANGE = 5;
+// Leash distance: how far a pulled mob may be dragged from its leash anchor before
+// it evades home. Shared between the mob-locomotion slice (chase/flee leash checks)
+// and the profiled-combat path that stays on Sim, so it lives in this neutral module.
+export const LEASH_DISTANCE = 45;
+export const DUNGEON_LEASH_DISTANCE = 70;
+// Nythraxis encounter template ids. Shared between the mob-locomotion slice (the
+// boss/add branches of updateMob) and the Nythraxis encounter code still on Sim.
+export const NYTHRAXIS_BOSS_ID = 'nythraxis_scourge_of_thornpeak';
+export const NYTHRAXIS_ADD_ID = 'nythraxis_skeleton_warrior';
 export const GCD = 1.5; // seconds
 export const CAST_PUSHBACK_SEC = 0.5; // vanilla: each hit delays a cast by 0.5s
 export const CHANNEL_PUSHBACK_FRACTION = 0.25; // vanilla: each hit shaves 25% off a channel
