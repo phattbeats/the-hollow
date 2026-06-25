@@ -115,6 +115,30 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(ents.find((e) => e.id === tankId)?.aggroTargetId ?? null).toBeNull();
   });
 
+  it('pet_commands: tame/feed/revive/abandon + warlock summon/swap/Demon Heal + despawn scrubs fire', () => {
+    const rec = run('pet_commands');
+    const ev = rec.allEvents as Ev[];
+    const logs = ev.filter((e) => e.type === 'log' && typeof e.text === 'string').map((e) => e.text as string);
+    // completeTame produced an owned pet (and re-tame produced a second).
+    expect(logs.some((t) => t.includes('is now your loyal companion'))).toBe(true);
+    // feedPet applied the feed_pet HoT (the "You feed" line fires only on a successful feed).
+    expect(logs.some((t) => t.startsWith('You feed'))).toBe(true);
+    // revivePet brought a dead pet back.
+    expect(logs.some((t) => t.includes('returns to your side'))).toBe(true);
+    // abandonPet despawned the tame.
+    expect(logs.some((t) => t.startsWith('You abandon'))).toBe(true);
+    // Demon Heal channel ticked: applyDemonHealTick emits a heal2 with ability 'Demon Heal'.
+    expect(ev.some((e) => e.type === 'heal2' && e.ability === 'Demon Heal')).toBe(true);
+    // Demon swap exercised BOTH branches: a new demon answered, then the same demon faded.
+    expect(logs.some((t) => t.includes('answers your summons'))).toBe(true);
+    expect(logs.some((t) => t.includes('fades back into the void'))).toBe(true);
+    // despawnPet scrubbed the hunter's targetId (set to the demon, nulled on its hard despawn).
+    expect((rec.sim as any).player.targetId).toBeNull();
+    // abandon's despawnPersistentPet scrub pulled the biter off the (now-gone) pet.
+    const petId = rec.notes.petId as number;
+    expect(entities(rec).every((e) => e.aggroTargetId !== petId)).toBe(true);
+  });
+
   it('paladin_consecration: ground AoE pulses fire from BOTH callers (immediate + deferred)', () => {
     const rec = run('paladin_consecration');
     const hits = (rec.allEvents as Ev[]).filter(
