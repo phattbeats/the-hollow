@@ -442,6 +442,96 @@ function fiesta(): Scenario {
   };
 }
 
+// Duel to a winner (A2): two adjacent players, duelRequest -> duelAccept, run the
+// DUEL_COUNTDOWN out so the bout is live, then one lands a finishing blow. The
+// dealDamage 1-HP duel guard ends the bout via endDuel (a winner/loser duelEnd,
+// the loser clamped to 1 hp, this.duels cleared). This slice draws no rng of its
+// own, so the draw-order digest must stay byte-identical across the move.
+function duelToWinner(): Scenario {
+  return {
+    name: 'duel_to_winner',
+    coverage: [
+      'duelRequest/duelAccept duel formation (~11982/12022)',
+      'updateDuels countdown -> active + duelStart',
+      'endDuel on a PvP finishing blow (winner/loser + this.duels cleared)',
+    ],
+    build: () => new Sim({ seed: 1015, playerClass: 'warrior', noPlayer: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const a = sim.addPlayer('warrior', 'Aleph', { autoEquip: true });
+      const b = sim.addPlayer('mage', 'Bet', { autoEquip: true });
+      teleport(sim, sim.entities.get(a)!, 0, -40);
+      teleport(sim, sim.entities.get(b)!, 4, -40);
+      rec.track(a, b);
+      sim.duelRequest(b, a); // Aleph challenges Bet
+      sim.duelAccept(b); // Bet accepts -> countdown
+      // run the 3s countdown (TICK_RATE 20) out so the duel flips to 'active'.
+      for (let i = 0; i < 20 * 4; i++) {
+        rec.tick(1);
+        const d = sim.duels.get(a);
+        if (d && d.state === 'active') break;
+      }
+      rec.snapshot('duel-active');
+      // Aleph lands a finishing blow; the 1-HP duel guard ends the bout with
+      // Aleph as the winner (Bet survives at 1 hp, the duel is cleared).
+      const ea = sim.entities.get(a) as AnyEntity;
+      const eb = sim.entities.get(b) as AnyEntity;
+      sim.dealDamage(ea, eb, eb.hp + 1000, false, 'physical', 'Finisher', 'hit');
+      rec.snapshot('duel-ended');
+      rec.tick(20 * 2);
+    },
+  };
+}
+
+// Arena 2v2 to a team wipe (A2): queue four solos into one 2v2 match, run the
+// countdown to active, then drop BOTH of teamB. The first death does NOT end the
+// match; the second wipes the team (isArenaTeamWiped) so endArenaMatch scores a
+// ranked, symmetric Elo delta on all four metas (arena2v2 standings, floored at
+// ARENA_MIN_RATING), then returnFromArena sends survivors home after the aftermath.
+function arena2v2Wipe(): Scenario {
+  return {
+    name: 'arena_2v2_wipe',
+    coverage: [
+      'arena 2v2 matchmaking (matchmakeTeamFormat: four solos -> two teams)',
+      'first kill does not end the match; team wipe (isArenaTeamWiped) does',
+      'endArenaMatch ranked Elo on both teams (arena2v2 standings) + returnFromArena',
+    ],
+    sampleEvery: 25,
+    build: () => new Sim({ seed: 1016, playerClass: 'warrior', noPlayer: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const classes: Array<'warrior' | 'mage' | 'rogue' | 'priest'> = ['warrior', 'mage', 'rogue', 'priest'];
+      const names = ['Aleph', 'Bet', 'Gimel', 'Dalet'];
+      const pids = classes.map((c, i) => sim.addPlayer(c, names[i]));
+      pids.forEach((pid, i) => teleport(sim, sim.entities.get(pid)!, i * 3, -40));
+      rec.track(...pids);
+      pids.forEach((pid) => sim.arenaQueueJoin(pid, '2v2'));
+      rec.tick(1); // matchmake seats the four solos into one 2v2 match
+      for (let i = 0; i < 20 * 8; i++) {
+        rec.tick(1);
+        const m = sim.arenaMatchFor(pids[0]);
+        if (m && m.state === 'active') break;
+      }
+      const match = sim.arenaMatchFor(pids[0]);
+      if (match && match.teamA.length === 2 && match.teamB.length === 2) {
+        rec.snapshot('bout-active');
+        const killer = sim.entities.get(match.teamA[0]) as AnyEntity;
+        // First takedown: teamB[0] dies but the team is not wiped -> match active.
+        sim.dealDamage(killer, sim.entities.get(match.teamB[0]) as AnyEntity, 99999, false, 'physical', null, 'hit');
+        rec.tick(1);
+        rec.snapshot('first-down');
+        // Second takedown: teamB is wiped -> endArenaMatch (ranked Elo on all four).
+        sim.dealDamage(killer, sim.entities.get(match.teamB[1]) as AnyEntity, 99999, false, 'physical', null, 'hit');
+        rec.tick(1);
+        rec.snapshot('team-wiped');
+      }
+      // run the aftermath out so returnFromArena frees the slot + sends them home.
+      for (let i = 0; i < 20 * 7; i++) rec.tick(1);
+      rec.snapshot('returned');
+    },
+  };
+}
+
 // Delve + lockpick: enter the Collapsed Reliquary finale, pin the module so it is
 // deterministic, kill the boss, then pick the reward chest flawlessly. Exercises
 // the delve run progression, the lockpick minigame, and the reward-chest loot.
@@ -720,6 +810,8 @@ export const SCENARIOS: Scenario[] = [
   paladinConsecration(),
   arena1v1(),
   fiesta(),
+  duelToWinner(),
+  arena2v2Wipe(),
   delveLockpick(),
   partyLoot(),
   partyRaid(),

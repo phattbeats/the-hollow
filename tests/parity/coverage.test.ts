@@ -112,6 +112,33 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect((rec.sim as any).players.get(victimPid)?.fiestaAugments?.length).toBeGreaterThan(0);
   });
 
+  it('duel_to_winner: a duel goes active then ends with a winner, clearing duels', () => {
+    const rec = run('duel_to_winner');
+    const ev = rec.allEvents as Ev[];
+    expect(ev.some((e) => e.type === 'duelStart')).toBe(true);
+    const end = ev.find((e) => e.type === 'duelEnd');
+    expect(end).toBeTruthy();
+    expect(end!.winnerName).toBe('Aleph');
+    expect(end!.loserName).toBe('Bet');
+    // the 1-HP duel guard left the loser alive, and the duel was cleared.
+    expect((rec.sim as any).duels.size).toBe(0);
+  });
+
+  it('arena_2v2_wipe: first kill keeps the match; team wipe ends it with a ranked Elo swing', () => {
+    const rec = run('arena_2v2_wipe');
+    const ev = rec.allEvents as Ev[];
+    const ends = ev.filter((e) => e.type === 'arenaEnd');
+    expect(ends.length).toBe(4); // both teams, two players each
+    // ranked 2v2 result: the winners gained rating, the losers lost it.
+    const moved = ends.some((e) => e.ratingAfter !== e.ratingBefore);
+    expect(moved).toBe(true);
+    const sim = rec.sim as any;
+    const totalWins = [...sim.players.values()].reduce((n, m) => n + (m.arena2v2Wins ?? 0), 0);
+    const totalLosses = [...sim.players.values()].reduce((n, m) => n + (m.arena2v2Losses ?? 0), 0);
+    expect(totalWins).toBe(2);
+    expect(totalLosses).toBe(2);
+  });
+
   it('delve_lockpick: companion swings the boss (16762), lockpick engaged + stepped', () => {
     const rec = run('delve_lockpick');
     const ev = rec.allEvents as Ev[];
