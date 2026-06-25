@@ -759,12 +759,18 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
   // castAbility / applyChannelTick: "You are stunned!", "Out of range.", etc.) out of
   // sim.ts into src/sim/combat/casting_lifecycle.ts, emitted via ctx.error. Scan that
   // module too so those literals stay under the drift guard.
+  // C4b moved the per-effect dispatch switch (the runEffects body) out of sim.ts into
+  // src/sim/combat/effect_dispatch.ts, with its player-facing ctx.error literals
+  // ("You have no active Seal.", "Not enough health.", the pet messages). Scan it too.
   const simSrc =
     `${fs.readFileSync(path.resolve(process.cwd(), 'src/sim/sim.ts'), 'utf8')}\n${fs.readFileSync(
       path.resolve(process.cwd(), 'src/sim/combat/damage.ts'),
       'utf8',
     )}\n${fs.readFileSync(
       path.resolve(process.cwd(), 'src/sim/combat/casting_lifecycle.ts'),
+      'utf8',
+    )}\n${fs.readFileSync(
+      path.resolve(process.cwd(), 'src/sim/combat/effect_dispatch.ts'),
       'utf8',
     )}`;
   // Hardened S3: also scan the authoritative server's player-facing emits. The

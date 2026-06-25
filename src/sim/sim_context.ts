@@ -209,6 +209,32 @@ export interface SimContextCallbacks {
   addItem(itemId: string, count: number, pid?: number): void;
   completeFishing(p: Entity, meta: PlayerMeta): void;
   applyDemonHealTick(owner: Entity): void;
+
+  // C4b effect dispatch (src/sim/combat/effect_dispatch.ts) consumes these; all stay
+  // on Sim. `awardCombo` is the combo-point award the weaponStrike/directDamage/
+  // incapacitate cases gate on the `comboAwarded` latch; `meleeSwing` is the shared
+  // physical-swing entry (also a C4a weaponStrike path); `effectiveArmor`/
+  // `effectiveAttackPower` are the stat reads the damage formulas use; `hasLineOfSight`
+  // gates the AoE cases; `findChargePath` builds the warrior/druid charge route.
+  // `runEffects` itself is the C4b boundary: it flips points-at to effect_dispatch
+  // (the moved switch), reached only via the cast lifecycle's applyAbility/applyChannelTick.
+  awardCombo(p: Entity, target: Entity, points: number): void;
+  meleeSwing(
+    attacker: Entity,
+    target: Entity,
+    bonus: number,
+    abilityName: string | null,
+    opts: {
+      cannotBeDodged?: boolean;
+      weaponMult?: number;
+      threatFlat?: number;
+      threatMult?: number;
+    },
+  ): boolean;
+  effectiveArmor(e: Entity): number;
+  effectiveAttackPower(e: Entity): number;
+  hasLineOfSight(source: Entity, target: Entity): boolean;
+  findChargePath(p: Entity, target: Entity): Vec3[];
   runEffects(p: Entity, meta: PlayerMeta, target: Entity | null, res: ResolvedAbility): void;
 }
 
@@ -345,6 +371,12 @@ export function createSimContext(host: SimContextHost): SimContext {
     addItem: host.addItem,
     completeFishing: host.completeFishing,
     applyDemonHealTick: host.applyDemonHealTick,
+    awardCombo: host.awardCombo,
+    meleeSwing: host.meleeSwing,
+    effectiveArmor: host.effectiveArmor,
+    effectiveAttackPower: host.effectiveAttackPower,
+    hasLineOfSight: host.hasLineOfSight,
+    findChargePath: host.findChargePath,
     runEffects: host.runEffects,
   };
 }

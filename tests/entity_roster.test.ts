@@ -162,6 +162,12 @@ function makeCtx() {
     addItem: vi.fn(),
     completeFishing: vi.fn(),
     applyDemonHealTick: vi.fn(),
+    awardCombo: vi.fn(),
+    meleeSwing: vi.fn(() => false),
+    effectiveArmor: vi.fn(() => 0),
+    effectiveAttackPower: vi.fn(() => 0),
+    hasLineOfSight: vi.fn(() => true),
+    findChargePath: vi.fn(() => []),
     runEffects: vi.fn(),
   };
   const ctx = createSimContext(host);
