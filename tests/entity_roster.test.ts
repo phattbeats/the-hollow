@@ -67,6 +67,7 @@ function makeCtx() {
     },
     tradeInvites: new Map(),
     duelInvites: new Map(),
+    nextId: 1,
     get grid() {
       return grid;
     },
@@ -85,6 +86,7 @@ function makeCtx() {
     get dungeonDoorIds() {
       return dungeonDoorIds;
     },
+    instances: [],
     get arenaMatches() {
       return arenaMatches;
     },
@@ -132,6 +134,11 @@ function makeCtx() {
     onInventoryChangedForQuests: vi.fn(),
     checkQuestReady: vi.fn(),
     countItem: vi.fn(() => 0),
+    lockoutNowMs: vi.fn(() => 0),
+    instanceKeyFor: vi.fn(() => 'solo:0'),
+    instanceOriginOf: vi.fn(() => ({ x: 0, z: 0 })),
+    enterDungeon: vi.fn(),
+    leaveDungeon: vi.fn(),
     addEntity: vi.fn(),
     dropEntity: vi.fn(),
     rebucket: vi.fn(),

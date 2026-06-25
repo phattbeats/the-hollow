@@ -207,6 +207,15 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(mob.threat.size).toBe(0);
   });
 
+  it('delve_progression: chamber advances to the finale and the Marks shop buy resolves', () => {
+    const rec = run('delve_progression');
+    const ev = rec.allEvents as Ev[];
+    // advanceDelveModule walked the run from the chamber onto the finale module.
+    expect(ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('tombstone into'))).toBe(true);
+    // delveBuyShopItem deducted Marks and granted the item via the vendor event.
+    expect(ev.some((e) => e.type === 'vendor' && e.action === 'buy' && e.itemId === 'reliquary_legs')).toBe(true);
+  });
+
   it('quest_kill_credit: kill credit accrues and the quest promotes to ready then turns in', () => {
     const rec = run('quest_kill_credit');
     const ev = rec.allEvents as Ev[];
@@ -301,6 +310,30 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(n.cowardStateFleeing).toBe('flee');
     expect(
       ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('attempts to flee')),
+    ).toBe(true);
+  });
+
+  it('dungeon_instances: party shares one instance via the door trigger, then it resets when empty', () => {
+    const rec = run('dungeon_instances');
+    const sim = rec.sim as any;
+    // Door-trigger entry claimed an instance and both party members joined the SAME slot.
+    expect(rec.notes.slotA).not.toBe(null);
+    expect(rec.notes.slotA).toBe(rec.notes.slotB);
+    // claimInstance spawned mobs (rng.int per spawn).
+    expect((rec.notes.instMobIds as number[]).length).toBeGreaterThan(0);
+    // After the empty-reset, freeInstance nulled partyKey and despawned the mobs.
+    const inst = (sim.instances as any[]).find((i) => i.dungeonId === 'hollow_crypt' && i.slot === rec.notes.slotA);
+    expect(inst.partyKey).toBe(null);
+    expect(inst.mobIds.length).toBe(0);
+    expect((rec.notes.instMobIds as number[]).every((id) => !sim.entities.has(id))).toBe(true);
+  });
+
+  it('dungeon_raid_lockout: an active raid lockout blocks Nythraxis arena re-entry', () => {
+    const rec = run('dungeon_raid_lockout');
+    expect(
+      (rec.allEvents as Ev[]).some(
+        (e) => e.type === 'error' && e.text === 'You are locked to Nythraxis Raid Arena.',
+      ),
     ).toBe(true);
   });
 });
