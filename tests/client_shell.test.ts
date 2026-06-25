@@ -171,6 +171,19 @@ describe('client HTML shell', () => {
     }
   });
 
+  it('labels the player frame as a role=group with a localized name in BOTH entries', () => {
+    // P10b made #player-frame a role="group" with a t()-localized accessible name via
+    // data-i18n-aria. index.html and play.html both boot src/main.ts and ship the same
+    // in-game HUD, so the group label must be present in BOTH entries or a screen
+    // reader on one of them announces a bare unlabelled div. Pinning the full opening
+    // tag also locks the attribute order + the exact i18n key across entries.
+    for (const entry of [html, playHtml]) {
+      expect(entry).toContain(
+        'id="player-frame" class="unitframe" role="group" data-i18n-aria="hudChrome.unitFrame.playerLabel"',
+      );
+    }
+  });
+
   it('keeps the Account nav tab hidden unless a session is restored', () => {
     expect(html).toContain('<li class="nav-item" id="nav-item-account" hidden>');
     expect(html).toContain('<li class="nav-item" id="nav-item-logout" hidden>');

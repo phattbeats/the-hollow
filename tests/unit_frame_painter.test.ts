@@ -224,6 +224,15 @@ describe('UnitFramePainter: the instance-parameterized contract (target / party 
     const calls = paint(playerDescriptor({ present: false }));
     expect(calls).toEqual([]);
   });
+
+  it('writes an empty level string when the level is hidden (levelText null, the P11 party path)', () => {
+    // levelText ?? '' is the painter's ONLY non-passthrough transform. The player
+    // always passes a numeric string, but a party member may hide the level, so pin
+    // the null -> '' coercion here (a regression to `?? '0'` or a dropped `??` would
+    // otherwise survive every existing painter test).
+    const calls = paint(playerDescriptor({ levelText: null }));
+    expect(calls).toContainEqual({ m: 'setText', args: [LEVEL, ''] });
+  });
 });
 
 describe('UnitFramePainter: the portrait repaint gate (decision 9, lastPortraitTarget path)', () => {
@@ -241,11 +250,17 @@ describe('UnitFramePainter: the portrait repaint gate (decision 9, lastPortraitT
   });
 
   it('never repaints when no callback is wired (the player frame)', () => {
-    // No repaintPortrait in opts: the gate runs but calls nothing. Two paints with a
-    // changing key must not throw and emit no portrait write.
-    const a = paint(playerDescriptor({ portraitKey: 'k1' }));
-    const b = paint(playerDescriptor({ portraitKey: 'k2' }));
-    expect(a.length).toBe(b.length);
+    // Drive ONE no-callback instance across frames with a CHANGING key (not two fresh
+    // instances): the gate must run on the stateful lastPortraitKey, not throw (the
+    // optional-chain no-op when repaintPortrait is undefined), and add no writer call
+    // for the key change (the portrait canvas is never routed through the elided
+    // writers). So the second paint emits exactly the same writer calls as the first.
+    const { calls, writers } = recordingFacet();
+    const painter = new UnitFramePainter(writers, PLAYER_ELEMENTS);
+    painter.paint(unitFrameView(playerDescriptor({ portraitKey: 'k1' })));
+    const first = calls.length;
+    painter.paint(unitFrameView(playerDescriptor({ portraitKey: 'k2' })));
+    expect(calls.length - first).toBe(first); // the changing key added nothing
   });
 });
 
@@ -253,18 +268,25 @@ describe('UnitFramePainter: no raw DOM writes, no magic values (decisions 5a / 1
   const src = readFileSync(new URL('../src/ui/unit_frame_painter.ts', import.meta.url), 'utf8');
   const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
 
-  it('makes no raw style / textContent / classList / setAttribute / setProperty write', () => {
+  it('makes no raw style / textContent / className / classList / setAttribute / setProperty write', () => {
     expect(code).not.toMatch(/\.style\b/);
     expect(code).not.toMatch(/\.textContent\b/);
+    // .className is the exact raw write this phase folded into toggleClass (the old
+    // `pfResourceEl.className = 'bar rage|energy|mana'` swap); guard it explicitly.
+    expect(code).not.toMatch(/\.className\b/);
     expect(code).not.toMatch(/\.classList\b/);
     expect(code).not.toMatch(/\.setAttribute\b/);
     expect(code).not.toMatch(/\.setProperty\b/);
   });
 
-  it('carries no literal hex or rgb color (scaleX VALUE strings excepted)', () => {
+  it('carries no literal hex / rgb / px value (scaleX VALUE strings excepted)', () => {
     const hex = code.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     const rgb = code.match(/\brgba?\s*\(/g) ?? [];
+    // Decision 12 names hex / px / color: the painter drives tokens, never a px
+    // literal. scaleX VALUE strings carry no px, so this stays green.
+    const px = code.match(/\b\d+px\b/g) ?? [];
     expect(hex, `hex: ${hex.join(', ')}`).toEqual([]);
     expect(rgb, `rgb: ${rgb.join(', ')}`).toEqual([]);
+    expect(px, `px: ${px.join(', ')}`).toEqual([]);
   });
 });
