@@ -760,13 +760,15 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
   // A1+ -> src/sim/social/*.ts (the party machine, later duel/arena/fiesta/
   // markers), G1a -> src/sim/progression/talents.ts (talent validation toasts),
   // M2 -> src/sim/mob/locomotion.ts (the boss "unleashes" lines), M3 ->
-  // src/sim/mob/mob_swing.ts (the knockback "unleashes" line), I1 ->
-  // src/sim/instances/dungeons.ts (raid-door seals, lockout, "instances busy"), I2a ->
-  // src/sim/delves/runs.ts (delve enter/clear/advance/reward/grave-rite, interact guards,
-  // run-failed). They emit via this.ctx.* / bare ctx.* through SimContext. Scan ALL of
-  // them alongside sim.ts so every language-agnostic sim emit stays under the drift
-  // guard; they are re-localized client-side by the same matchers. When a slice moves
-  // emit literals out of the monolith, append its path here.
+  // src/sim/mob/mob_swing.ts (the knockback "unleashes" line), M4 ->
+  // src/sim/mob/lifecycle.ts (the death-throes "begins to swell" / "flies into a frenzy" /
+  // corpse "bursts in a cloud of" lines), I1 -> src/sim/instances/dungeons.ts (raid-door
+  // seals, lockout, "instances busy"), I2a -> src/sim/delves/runs.ts (delve enter/clear/
+  // advance/reward/grave-rite, interact guards, run-failed). They emit via this.ctx.* /
+  // bare ctx.* through SimContext. Scan ALL of them alongside sim.ts so every
+  // language-agnostic sim emit stays under the drift guard; they are re-localized
+  // client-side by the same matchers. When a slice moves emit literals out of the
+  // monolith, append its path here.
   const socialDir = path.resolve(process.cwd(), 'src/sim/social');
   const socialSrc = fs.existsSync(socialDir)
     ? fs
@@ -782,6 +784,7 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/progression/talents.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/locomotion.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/mob_swing.ts'), 'utf8'),
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/lifecycle.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/instances/dungeons.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/runs.ts'), 'utf8'),
     socialSrc,

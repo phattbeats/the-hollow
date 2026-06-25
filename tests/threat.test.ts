@@ -559,7 +559,7 @@ describe('hunter pets', () => {
     expect(pet.dead).toBe(true);
     expect(pet.auras).toHaveLength(0);
     expect(pet.maxHp).toBe(maxHpBefore);
-    (sim as any).respawnMob(pet);
+    (sim as any).ctx.respawnMob(pet); // respawnMob moved to mob/lifecycle.ts (M4); reach it via the seam
     expect(sim.entities.has(pet.id)).toBe(false);
     expect(sim.petOf(sim.playerId, true)).toBe(null);
   });
