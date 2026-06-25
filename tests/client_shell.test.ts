@@ -90,6 +90,13 @@ const optionsViewTs = readFileSync(
   new URL('../src/ui/options_view.ts', import.meta.url),
   'utf8',
 ).replace(/\r\n/g, '\n');
+// The World Market window was extracted to market_view.ts (the state model) +
+// market_window.ts (the painter) in P8b; the browse/filter/pagination guards read
+// the painter rather than the old inline hud.ts renderMarket cluster.
+const marketWindowTs = readFileSync(
+  new URL('../src/ui/market_window.ts', import.meta.url),
+  'utf8',
+).replace(/\r\n/g, '\n');
 const mobileControlsTs = readFileSync(
   new URL('../src/game/mobile_controls.ts', import.meta.url),
   'utf8',
@@ -704,17 +711,17 @@ describe('client HTML shell', () => {
     expect(hudMobileCss).toContain(
       'body.mobile-touch #market-window {\n    max-height: calc(58vh - 20px);\n    overflow: hidden;',
     );
-    expect(hudTs).toContain('MARKET_PAGE_SIZE');
-    expect(hudTs).toContain('this.marketBrowsePage');
-    expect(hudTs).toContain('data-market-page="prev"');
-    expect(hudTs).toContain('data-market-page="next"');
-    expect(hudTs).toContain('itemUi.market.pageRange');
-    expect(hudTs).toContain("class=\"mkt-filters${hasSubtype ? ' has-subtype' : ''}\"");
-    expect(hudTs).toContain('data-market-filter-menu="${menu}"');
-    expect(hudTs).toMatch(/this\.renderMarketFilterMenu\(\s*'itemType'/);
-    expect(hudTs).toMatch(/this\.renderMarketFilterMenu\(\s*'subtype'/);
-    expect(hudTs).toMatch(/this\.renderMarketFilterMenu\(\s*'rarity'/);
-    expect(hudTs).not.toContain('<select data-market-filter=');
+    expect(marketWindowTs).toContain('buildMarketView'); // pagination + filtering delegated to the core
+    expect(marketWindowTs).toContain('this.browsePage');
+    expect(marketWindowTs).toContain('data-market-page="prev"');
+    expect(marketWindowTs).toContain('data-market-page="next"');
+    expect(marketWindowTs).toContain('itemUi.market.pageRange');
+    expect(marketWindowTs).toContain("class=\"mkt-filters${hasSubtype ? ' has-subtype' : ''}\"");
+    expect(marketWindowTs).toContain('data-market-filter-menu="${menu}"');
+    expect(marketWindowTs).toMatch(/this\.renderMarketFilterMenu\(\s*'itemType'/);
+    expect(marketWindowTs).toMatch(/this\.renderMarketFilterMenu\(\s*'subtype'/);
+    expect(marketWindowTs).toMatch(/this\.renderMarketFilterMenu\(\s*'rarity'/);
+    expect(marketWindowTs).not.toContain('<select data-market-filter=');
   });
 
   it('keeps the mobile More and Autorun buttons in the combat row', () => {

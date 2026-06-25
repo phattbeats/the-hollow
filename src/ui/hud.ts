@@ -102,7 +102,6 @@ import {
   isOverheadEmoteId,
   type LeaderboardEntry,
   type LeaderboardPage,
-  type MarketInfo,
   OVERHEAD_EMOTES,
   type OverheadEmoteId,
 } from '../world_api';
@@ -178,18 +177,7 @@ import { lowHealthVignette } from './low_health';
 import { lowResourceView } from './low_resource';
 import { overworldDungeonPortals } from './map_dungeon_portals';
 import { type MapRegion, mapCanvasHeight, paintTerrainRows } from './map_terrain';
-import {
-  filterMarketListings,
-  MARKET_ARMOR_TYPE_FILTERS,
-  MARKET_ITEM_TYPE_FILTERS,
-  MARKET_PAGE_SIZE,
-  MARKET_RARITY_FILTERS,
-  MARKET_WEAPON_TYPE_FILTERS,
-  type MarketItemTypeFilter,
-  type MarketRarityFilter,
-  type MarketSubtypeFilter,
-  paginateMarketListings,
-} from './market_filters';
+import { MarketWindow } from './market_window';
 import { Meters } from './meters';
 import {
   clampMinimapZoom,
@@ -767,17 +755,7 @@ export class Hud {
   // Offline only: dev toggle that spins up a 2v2 Fiesta vs bots. Wired by main.ts
   // (left null online, which hides the button).
   private fiestaPracticeHook: (() => void) | null = null;
-  // World Market (the Merchant's auction house)
-  private marketOpen = false;
-  private marketTab: 'browse' | 'sell' | 'collect' = 'browse';
-  private marketItemTypeFilter: MarketItemTypeFilter = 'all';
-  private marketSubtypeFilter: MarketSubtypeFilter = 'all';
-  private marketRarityFilter: MarketRarityFilter = 'all';
-  private marketBrowsePage = 0;
   private leaderboardPage = 0;
-  private marketSellItem: string | null = null; // bag item staged for listing
-  private marketSearchQuery = ''; // active browse search term (sent to the server)
-  private lastMarketSig = '';
   // all-time ladder, fetched best-effort from the server (online only)
   private arenaAllTime: Partial<
     Record<
@@ -2253,14 +2231,11 @@ export class Hud {
     renderCharIfOpen: () => this.renderCharIfOpen(),
     vendorOpen: () => this.vendorOpen,
     tradeOpen: () => this.tradeOpen,
-    isMarketSell: () => this.marketOpen && this.marketTab === 'sell',
+    isMarketSell: () => this.marketWindow.isSellTab,
     pendingPetFeed: () => this.pendingPetFeed,
     closeVendor: () => this.closeVendor(),
     addItemToTrade: (itemId) => this.addItemToTrade(itemId),
-    stageMarketSell: (itemId) => {
-      this.marketSellItem = itemId;
-      this.renderMarket();
-    },
+    stageMarketSell: (itemId) => this.marketWindow.stageSell(itemId),
     showError: (text) => this.showError(text),
     setPendingPetFeed: (active) => {
       this.pendingPetFeed = active;
@@ -2273,6 +2248,30 @@ export class Hud {
       this.dragAction = action ? { action, sourceIndex: null } : null;
     },
     clearActionDropTargets: () => this.clearActionDropTargets(),
+  });
+  // World Market window painter (market_view.ts core + market_window.ts painter).
+  // It composes the shared presentation bag (icon/money/tooltip) and owns the
+  // market's view-state (tab, filters, page, staged sell item, search). The bags
+  // window stays HUD-coordinated (it rides alongside and stages the Sell tab), so
+  // the cross-window bag sync routes back through these lazy closures.
+  private readonly marketWindow = new MarketWindow({
+    ...this.presentationBag,
+    root: () => $('#market-window'),
+    world: () => this.sim,
+    closeOthers: () => this.closeOtherWindows('#market-window'),
+    hideTooltip: () => this.hideTooltip(),
+    captureFocus: () => this.currentFocusableElement(),
+    restoreFocus: (target) => this.restoreFocus(target),
+    showError: (text) => this.showError(text),
+    slotName: (slot) => itemSlotName(slot),
+    syncBags: (open) => {
+      if (open) {
+        this.renderBags();
+        $('#bags').style.display = 'flex';
+      } else if ($('#bags').style.display !== 'none') {
+        this.renderBags();
+      }
+    },
   });
   // Options window painter (options_view.ts core + options_window.ts painter). The
   // window renders no item rows, so it composes no PainterHostPresentation bag; it
@@ -2594,10 +2593,7 @@ export class Hud {
     if ($('#bags').style.display === 'block') this.renderBags();
     if (this.openVendorNpcId !== null && $('#vendor-window').style.display === 'block')
       this.renderVendor();
-    if (this.marketOpen) {
-      this.lastMarketSig = '';
-      this.renderMarket();
-    }
+    if (this.marketWindow.isOpen) this.marketWindow.render();
     if ($('#char-window').style.display === 'block') this.renderChar();
     const dialog = $('#quest-dialog');
     if (dialog.style.display !== 'block' || this.openGossipNpcId === null) return;
@@ -4071,9 +4067,9 @@ export class Hud {
     // Social repaints only on the slow divider, behind the painter's struct/content
     // diff-gate; a content tick swaps the body innerHTML without re-wiring rows.
     if (slowHud) this.socialWindow.refreshIfChanged();
-    if (slowHud && this.marketOpen) {
-      if (!this.nearbyMarketNpc()) this.closeMarket();
-      else this.refreshMarket();
+    if (slowHud && this.marketWindow.isOpen) {
+      if (!this.nearbyMarketNpc()) this.marketWindow.close();
+      else this.marketWindow.refreshIfChanged();
     }
   }
 
@@ -7993,36 +7989,15 @@ export class Hud {
   // -------------------------------------------------------------------------
 
   openMarket(): void {
-    this.closeOtherWindows('#market-window');
-    this.marketOpen = true;
-    this.marketTab = 'browse';
-    this.marketItemTypeFilter = 'all';
-    this.marketSubtypeFilter = 'all';
-    this.marketRarityFilter = 'all';
-    this.marketBrowsePage = 0;
-    this.marketSellItem = null;
-    this.marketSearchQuery = '';
-    this.sim.marketSearch('');
-    this.lastMarketSig = '';
-    this.renderMarket();
-    $('#market-window').style.display = 'flex';
-    // bags ride alongside so you can click items straight onto the Sell tab
-    this.renderBags();
-    $('#bags').style.display = 'flex';
-    audio.bagOpen();
+    this.marketWindow.open();
   }
 
   closeMarket(): void {
-    if (!this.marketOpen) return;
-    this.marketOpen = false;
-    this.marketSellItem = null;
-    $('#market-window').style.display = 'none';
-    this.hideTooltip();
-    if ($('#bags').style.display !== 'none') this.renderBags();
+    this.marketWindow.close();
   }
 
   get marketWindowOpen(): boolean {
-    return this.marketOpen;
+    return this.marketWindow.isOpen;
   }
 
   private nearbyMarketNpc(): Entity | null {
@@ -8031,480 +8006,6 @@ export class Hud {
       if (e.kind === 'npc' && NPCS[e.templateId]?.market && dist2d(p.pos, e.pos) <= 8) return e;
     }
     return null;
-  }
-
-  private bagCount(itemId: string): number {
-    return this.sim.inventory.filter((s) => s.itemId === itemId).reduce((n, s) => n + s.count, 0);
-  }
-
-  private marketItemTypeLabelKey(filter: MarketItemTypeFilter): TranslationKey {
-    if (filter === 'weapon') return 'itemUi.market.filterTypeWeapon';
-    if (filter === 'armor') return 'itemUi.market.filterTypeArmor';
-    if (filter === 'consumable') return 'itemUi.market.filterTypeConsumable';
-    if (filter === 'material') return 'itemUi.market.filterTypeMaterial';
-    if (filter === 'cosmetic') return 'itemUi.market.filterTypeCosmetic';
-    if (filter === 'other') return 'itemUi.market.filterTypeOther';
-    return 'itemUi.market.filterTypeAll';
-  }
-
-  private marketRarityLabelKey(filter: MarketRarityFilter): TranslationKey {
-    if (filter === 'poor') return 'itemUi.market.rarityPoor';
-    if (filter === 'common') return 'itemUi.market.rarityCommon';
-    if (filter === 'uncommon') return 'itemUi.market.rarityUncommon';
-    if (filter === 'rare') return 'itemUi.market.rarityRare';
-    if (filter === 'epic') return 'itemUi.market.rarityEpic';
-    return 'itemUi.market.filterRarityAll';
-  }
-
-  private marketSubtypeOptions(): readonly MarketSubtypeFilter[] {
-    if (this.marketItemTypeFilter === 'armor') return MARKET_ARMOR_TYPE_FILTERS;
-    if (this.marketItemTypeFilter === 'weapon') return MARKET_WEAPON_TYPE_FILTERS;
-    return ['all'];
-  }
-
-  private marketSubtypeLabel(): string {
-    return t(
-      this.marketItemTypeFilter === 'armor'
-        ? 'itemUi.market.filterArmorType'
-        : 'itemUi.market.filterWeaponType',
-    );
-  }
-
-  private marketSubtypeOptionLabel(filter: MarketSubtypeFilter): string {
-    if (filter === 'all')
-      return t(
-        this.marketItemTypeFilter === 'armor'
-          ? 'itemUi.market.filterArmorAll'
-          : 'itemUi.market.filterWeaponAll',
-      );
-    if (this.marketItemTypeFilter === 'armor') return itemSlotName(filter as EquipSlot);
-    if (filter === 'sword') return t('itemUi.market.weaponSword');
-    if (filter === 'dagger') return t('itemUi.market.weaponDagger');
-    if (filter === 'staff') return t('itemUi.market.weaponStaff');
-    if (filter === 'mace') return t('itemUi.market.weaponMace');
-    if (filter === 'axe') return t('itemUi.market.weaponAxe');
-    return t('itemUi.market.weaponOther');
-  }
-
-  private renderMarketFilterMenu(
-    menu: 'itemType' | 'subtype' | 'rarity',
-    label: string,
-    value: string,
-    options: readonly string[],
-    optionLabel: (option: string) => string,
-  ): string {
-    const current = optionLabel(value);
-    const optionHtml = options
-      .map((option) => {
-        const selected = option === value;
-        return `<button type="button" class="mkt-select-option${selected ? ' sel' : ''}" role="option" aria-selected="${selected ? 'true' : 'false'}" data-market-filter-option="${option}">${esc(optionLabel(option))}</button>`;
-      })
-      .join('');
-    return (
-      `<div class="mkt-filter"><span>${esc(label)}</span><div class="mkt-select" data-market-filter-menu="${menu}">` +
-      `<button type="button" class="mkt-select-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="${esc(`${label}: ${current}`)}"><span>${esc(current)}</span><span class="mkt-select-chevron" aria-hidden="true"></span></button>` +
-      `<div class="mkt-select-menu" role="listbox" hidden>${optionHtml}</div>` +
-      `</div></div>`
-    );
-  }
-
-  private renderMarketFilters(): string {
-    if (this.marketTab !== 'browse') return '';
-    const hasSubtype =
-      this.marketItemTypeFilter === 'armor' || this.marketItemTypeFilter === 'weapon';
-    return (
-      `<div class="mkt-filters${hasSubtype ? ' has-subtype' : ''}" role="group" aria-label="${esc(t('itemUi.market.filters'))}">` +
-      this.renderMarketFilterMenu(
-        'itemType',
-        t('itemUi.market.filterType'),
-        this.marketItemTypeFilter,
-        MARKET_ITEM_TYPE_FILTERS,
-        (filter) => t(this.marketItemTypeLabelKey(filter as MarketItemTypeFilter)),
-      ) +
-      (hasSubtype
-        ? this.renderMarketFilterMenu(
-            'subtype',
-            this.marketSubtypeLabel(),
-            this.marketSubtypeFilter,
-            this.marketSubtypeOptions(),
-            (filter) => this.marketSubtypeOptionLabel(filter as MarketSubtypeFilter),
-          )
-        : '') +
-      this.renderMarketFilterMenu(
-        'rarity',
-        t('itemUi.market.filterRarity'),
-        this.marketRarityFilter,
-        MARKET_RARITY_FILTERS,
-        (filter) => t(this.marketRarityLabelKey(filter as MarketRarityFilter)),
-      ) +
-      `</div>`
-    );
-  }
-
-  private renderMarket(): void {
-    const el = $('#market-window');
-    this.hideTooltip();
-    const info = this.sim.marketInfo;
-    const collectN = info ? (info.collectionCopper > 0 ? 1 : 0) + info.collectionItems.length : 0;
-    const tabLabel = (id: typeof this.marketTab): string => {
-      if (id === 'browse') return t('itemUi.market.browse');
-      if (id === 'sell') return t('itemUi.market.sell');
-      return collectN > 0
-        ? t('itemUi.market.collectWithCount', {
-            count: formatNumber(collectN, { maximumFractionDigits: 0 }),
-          })
-        : t('itemUi.market.collect');
-    };
-    const tab = (id: typeof this.marketTab) =>
-      `<button type="button" class="mkt-tab${this.marketTab === id ? ' sel' : ''}" data-tab="${id}" aria-pressed="${this.marketTab === id ? 'true' : 'false'}">${esc(tabLabel(id))}</button>`;
-    el.innerHTML =
-      `<div class="panel-title"><span>${esc(t('itemUi.market.title'))} <span class="panel-subtitle">${esc(t('itemUi.market.subtitle'))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('itemUi.market.close'))}">${svgIcon('close')}</button></div>` +
-      `<div class="mkt-tabs">` +
-      tab('browse') +
-      tab('sell') +
-      tab('collect') +
-      `</div>` +
-      this.renderMarketFilters() +
-      `<div id="market-body"></div>`;
-    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeMarket());
-    el.querySelectorAll('[data-tab]').forEach((t) => {
-      t.addEventListener('click', () => {
-        const next = (t as HTMLElement).dataset.tab as typeof this.marketTab;
-        if (next === this.marketTab) return;
-        this.marketTab = next;
-        this.marketBrowsePage = 0;
-        this.lastMarketSig = '';
-        audio.click();
-        this.renderMarket();
-      });
-    });
-    const closeFilterMenus = () => {
-      el.querySelectorAll<HTMLElement>('.mkt-select.open').forEach((menu) => {
-        menu.classList.remove('open');
-        menu
-          .querySelector<HTMLButtonElement>('.mkt-select-btn')
-          ?.setAttribute('aria-expanded', 'false');
-        const list = menu.querySelector<HTMLElement>('.mkt-select-menu');
-        if (list) list.hidden = true;
-      });
-    };
-    el.querySelectorAll<HTMLButtonElement>('.mkt-select-btn').forEach((button) => {
-      button.addEventListener('click', (event) => {
-        event.stopPropagation();
-        const menu = button.closest<HTMLElement>('.mkt-select');
-        if (!menu) return;
-        const open = !menu.classList.contains('open');
-        closeFilterMenus();
-        menu.classList.toggle('open', open);
-        button.setAttribute('aria-expanded', open ? 'true' : 'false');
-        const list = menu.querySelector<HTMLElement>('.mkt-select-menu');
-        if (list) list.hidden = !open;
-      });
-    });
-    el.querySelectorAll<HTMLButtonElement>('[data-market-filter-option]').forEach((option) => {
-      option.addEventListener('click', () => {
-        const menu = option.closest<HTMLElement>('[data-market-filter-menu]');
-        const key = menu?.dataset.marketFilterMenu;
-        const value = option.dataset.marketFilterOption ?? 'all';
-        if (key === 'itemType') {
-          const next = value as MarketItemTypeFilter;
-          if (next !== this.marketItemTypeFilter) {
-            this.marketItemTypeFilter = next;
-            this.marketSubtypeFilter = 'all';
-            this.marketBrowsePage = 0;
-          }
-        } else if (key === 'subtype') {
-          this.marketSubtypeFilter = value as MarketSubtypeFilter;
-          this.marketBrowsePage = 0;
-        } else if (key === 'rarity') {
-          this.marketRarityFilter = value as MarketRarityFilter;
-          this.marketBrowsePage = 0;
-        } else {
-          return;
-        }
-        this.lastMarketSig = '';
-        audio.click();
-        this.renderMarket();
-      });
-    });
-    el.addEventListener('click', closeFilterMenus);
-    this.renderMarketContent(info);
-  }
-
-  // Per-frame: refresh the live lists (Browse/Collect) when they change. The
-  // Sell tab holds typed inputs, so it is only rebuilt on explicit actions.
-  private refreshMarket(): void {
-    if (!this.marketOpen || this.marketTab === 'sell') return;
-    const info = this.sim.marketInfo;
-    const collectN = info ? (info.collectionCopper > 0 ? 1 : 0) + info.collectionItems.length : 0;
-    const sig = JSON.stringify([
-      this.marketTab,
-      this.marketItemTypeFilter,
-      this.marketSubtypeFilter,
-      this.marketRarityFilter,
-      this.marketBrowsePage,
-      info?.listings,
-      info?.totalCount,
-      info?.filter,
-      info?.collectionCopper,
-      info?.collectionItems,
-    ]);
-    if (sig === this.lastMarketSig) return;
-    this.lastMarketSig = sig;
-    const collectTab = $('#market-window').querySelector('[data-tab="collect"]');
-    if (collectTab) {
-      collectTab.textContent =
-        collectN > 0
-          ? t('itemUi.market.collectWithCount', {
-              count: formatNumber(collectN, { maximumFractionDigits: 0 }),
-            })
-          : t('itemUi.market.collect');
-    }
-    this.renderMarketContent(info);
-  }
-
-  private renderMarketContent(info: MarketInfo | null): void {
-    const body = document.getElementById('market-body');
-    if (!body) return;
-    if (!info) {
-      body.innerHTML = `<div class="mkt-empty">${esc(t('itemUi.market.noMerchant'))}</div>`;
-      return;
-    }
-    if (this.marketTab === 'browse') this.renderMarketBrowse(body, info);
-    else if (this.marketTab === 'sell') this.renderMarketSell(body, info);
-    else this.renderMarketCollect(body, info);
-  }
-
-  private renderMarketBrowse(body: HTMLElement, info: MarketInfo): void {
-    // Reuse the search field and list container across refreshes so typing in
-    // the box never loses focus when the server streams back filtered results.
-    let search = body.querySelector('.mkt-search') as HTMLInputElement | null;
-    let list = body.querySelector('.mkt-list') as HTMLElement | null;
-    if (!search || !list) {
-      body.innerHTML = '';
-      search = document.createElement('input');
-      search.type = 'search';
-      search.className = 'mkt-search';
-      search.placeholder = t('itemUi.market.searchPlaceholder');
-      search.setAttribute('aria-label', t('itemUi.market.searchAria'));
-      search.value = this.marketSearchQuery;
-      search.addEventListener('input', () => {
-        if (!search) return;
-        this.marketSearchQuery = search.value;
-        this.marketBrowsePage = 0;
-        this.sim.marketSearch(search.value);
-      });
-      body.appendChild(search);
-      list = document.createElement('div');
-      list.className = 'mkt-list';
-      body.appendChild(list);
-    }
-    // Keep the field in sync on external resets, but never clobber active typing.
-    if (document.activeElement !== search && search.value !== this.marketSearchQuery) {
-      search.value = this.marketSearchQuery;
-    }
-    list.innerHTML = '';
-    if (info.listings.length === 0) {
-      const empty = document.createElement('div');
-      empty.className = 'mkt-empty';
-      empty.textContent = info.filter.trim()
-        ? t('itemUi.market.emptySearch')
-        : t('itemUi.market.emptyBrowse');
-      list.appendChild(empty);
-      return;
-    }
-    const listings = filterMarketListings(info.listings, {
-      itemType: this.marketItemTypeFilter,
-      subtype: this.marketSubtypeFilter,
-      rarity: this.marketRarityFilter,
-    });
-    if (listings.length === 0) {
-      this.marketBrowsePage = 0;
-      const empty = document.createElement('div');
-      empty.className = 'mkt-empty';
-      empty.textContent = t('itemUi.market.emptyFiltered');
-      list.appendChild(empty);
-      return;
-    }
-    const page = paginateMarketListings(listings, this.marketBrowsePage, MARKET_PAGE_SIZE);
-    this.marketBrowsePage = page.page;
-    const note = document.createElement('div');
-    note.className = 'mkt-note';
-    const shown = `${formatNumber(page.start + 1, { maximumFractionDigits: 0 })}-${formatNumber(page.end, { maximumFractionDigits: 0 })}`;
-    const total = formatNumber(page.total, { maximumFractionDigits: 0 });
-    note.textContent = t('itemUi.market.pageRange', { shown, total });
-    list.appendChild(note);
-    for (const l of page.items) {
-      const item = ITEMS[l.itemId];
-      if (!item) continue;
-      const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
-      const row = document.createElement('div');
-      row.className = 'mkt-row';
-      const itemName = itemDisplayName(item);
-      const each =
-        l.count > 1
-          ? `<br><span class="seller">${esc(t('itemUi.market.each', { money: formatLocalizedMoney(Math.ceil(l.price / l.count)) }))}</span>`
-          : '';
-      const stack =
-        l.count > 1
-          ? ` <span class="stack">${esc(t('itemUi.market.stackCount', { count: formatNumber(l.count, { maximumFractionDigits: 0 }) }))}</span>`
-          : '';
-      row.innerHTML =
-        `${this.itemIcon(item)}` +
-        `<span class="mkt-name"><span class="nm" style="color:${qColor}">${esc(itemName)}${stack}</span>` +
-        `<span class="seller${l.house ? ' house' : ''}">${esc(l.house ? t('itemUi.market.merchantStock') : l.sellerName)}</span></span>` +
-        `<span class="mkt-price">${this.moneyHtml(l.price)}${each}</span>`;
-      const btn = document.createElement('button');
-      btn.className = `mkt-btn${l.mine ? ' cancel' : ''}`;
-      btn.textContent = l.mine ? t('itemUi.market.reclaim') : t('itemUi.market.buy');
-      btn.setAttribute(
-        'aria-label',
-        t(l.mine ? 'itemUi.market.reclaimAria' : 'itemUi.market.buyAria', {
-          item: itemName,
-          price: formatLocalizedMoney(l.price),
-        }),
-      );
-      btn.addEventListener('click', () => {
-        if (l.mine) this.sim.marketCancel(l.id);
-        else this.sim.marketBuy(l.id);
-        audio.click();
-      });
-      row.appendChild(btn);
-      this.attachTooltip(row, () => this.itemTooltip(item));
-      list.appendChild(row);
-    }
-    if (page.pageCount > 1) {
-      const pager = document.createElement('div');
-      pager.className = 'mkt-page';
-      const pageNumber = formatNumber(page.page + 1, { maximumFractionDigits: 0 });
-      const pageCount = formatNumber(page.pageCount, { maximumFractionDigits: 0 });
-      pager.innerHTML =
-        `<button type="button" class="mkt-page-btn" data-market-page="prev"${page.page <= 0 ? ' disabled' : ''} aria-label="${esc(t('itemUi.market.pagePrevAria'))}">${esc(t('itemUi.market.pagePrev'))}</button>` +
-        `<span class="mkt-page-info">${esc(t('itemUi.market.pageStatus', { current: pageNumber, total: pageCount }))}</span>` +
-        `<button type="button" class="mkt-page-btn" data-market-page="next"${page.page >= page.pageCount - 1 ? ' disabled' : ''} aria-label="${esc(t('itemUi.market.pageNextAria'))}">${esc(t('itemUi.market.pageNext'))}</button>`;
-      pager.querySelectorAll<HTMLButtonElement>('[data-market-page]').forEach((button) => {
-        button.addEventListener('click', () => {
-          if (button.disabled) return;
-          this.marketBrowsePage += button.dataset.marketPage === 'next' ? 1 : -1;
-          this.lastMarketSig = '';
-          audio.click();
-          this.renderMarketContent(info);
-          body.scrollTop = 0;
-        });
-      });
-      list.appendChild(pager);
-    }
-  }
-
-  private renderMarketSell(body: HTMLElement, info: MarketInfo): void {
-    body.innerHTML = `<div class="mkt-note">${esc(
-      t('itemUi.market.sellNote', {
-        cut: formatNumber(info.cutPct, { maximumFractionDigits: 0 }),
-        used: formatNumber(info.myListingCount, { maximumFractionDigits: 0 }),
-        max: formatNumber(info.maxListings, { maximumFractionDigits: 0 }),
-      }),
-    )}</div>`;
-    const item = this.marketSellItem ? ITEMS[this.marketSellItem] : null;
-    const have = this.marketSellItem ? this.bagCount(this.marketSellItem) : 0;
-    const pick = document.createElement('div');
-    if (!item || have <= 0) {
-      pick.className = 'mkt-sell-pick empty';
-      pick.textContent = t('itemUi.market.sellPickEmpty');
-      body.appendChild(pick);
-      return;
-    }
-    if (item.kind === 'quest' || item.noMarketList) {
-      this.marketSellItem = null;
-      pick.className = 'mkt-sell-pick empty';
-      pick.textContent = t('itemUi.tooltip.cannotMarket');
-      body.appendChild(pick);
-      return;
-    }
-    const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
-    pick.className = 'mkt-sell-pick';
-    pick.innerHTML = `${this.itemIcon(item)}<span class="ps-name" style="color:${qColor}">${esc(itemDisplayName(item))}</span>`;
-    body.appendChild(pick);
-
-    const form = document.createElement('div');
-    form.className = 'mkt-price-form';
-    const qtyRow =
-      have > 1
-        ? `<div class="mkt-price-row"><label for="mkt-qty">${esc(t('itemUi.market.quantity'))}</label><input class="coininput" id="mkt-qty" type="number" min="1" max="${have}" value="1"> <span class="mkt-coin-tag">${esc(t('itemUi.market.quantityOf', { count: formatNumber(have, { maximumFractionDigits: 0 }) }))}</span></div>`
-        : '';
-    // a gentle starting ask: a few times vendor value, never below 1c
-    const suggested = Math.max(1, item.buyValue ?? Math.max(1, item.sellValue) * 4);
-    const g = Math.floor(suggested / 10000),
-      s = Math.floor((suggested % 10000) / 100),
-      c = suggested % 100;
-    form.innerHTML =
-      qtyRow +
-      `<div class="mkt-price-row"><label>${esc(t('itemUi.market.priceEach'))}</label>` +
-      `<input class="coininput" id="mkt-g" type="number" min="0" value="${g}" aria-label="${esc(t('itemUi.money.gold'))}"><span class="coin g" aria-hidden="true"></span><span class="mkt-coin-tag">${esc(t('itemUi.money.goldShort'))}</span>` +
-      `<input class="coininput" id="mkt-s" type="number" min="0" max="99" value="${s}" aria-label="${esc(t('itemUi.money.silver'))}"><span class="coin s" aria-hidden="true"></span><span class="mkt-coin-tag">${esc(t('itemUi.money.silverShort'))}</span>` +
-      `<input class="coininput" id="mkt-c" type="number" min="0" max="99" value="${c}" aria-label="${esc(t('itemUi.money.copper'))}"><span class="coin c" aria-hidden="true"></span><span class="mkt-coin-tag">${esc(t('itemUi.money.copperShort'))}</span></div>`;
-    body.appendChild(form);
-
-    const listBtn = document.createElement('button');
-    listBtn.className = 'mkt-list-btn';
-    listBtn.textContent = t('itemUi.market.listButton');
-    listBtn.addEventListener('click', () => {
-      const qty =
-        have > 1
-          ? Math.max(
-              1,
-              Math.min(have, parseInt(($('#mkt-qty') as HTMLInputElement)?.value || '1', 10) || 1),
-            )
-          : 1;
-      const gg = Math.max(0, parseInt(($('#mkt-g') as HTMLInputElement)?.value || '0', 10) || 0);
-      const ss = Math.max(0, parseInt(($('#mkt-s') as HTMLInputElement)?.value || '0', 10) || 0);
-      const cc = Math.max(0, parseInt(($('#mkt-c') as HTMLInputElement)?.value || '0', 10) || 0);
-      const each = gg * 10000 + ss * 100 + cc;
-      if (each < 1) {
-        this.showError(t('itemUi.market.minPriceError'));
-        return;
-      }
-      this.sim.marketList(this.marketSellItem!, qty, each * qty);
-      this.marketSellItem = null;
-      audio.coin();
-      this.renderMarket(); // the next snapshot echoes the new bags + listings
-    });
-    body.appendChild(listBtn);
-  }
-
-  private renderMarketCollect(body: HTMLElement, info: MarketInfo): void {
-    if (info.collectionCopper <= 0 && info.collectionItems.length === 0) {
-      body.innerHTML = `<div class="mkt-empty">${esc(t('itemUi.market.collectEmpty'))}</div>`;
-      return;
-    }
-    body.innerHTML = `<div class="mkt-note">${esc(t('itemUi.market.collectNote'))}</div>`;
-    if (info.collectionCopper > 0) {
-      const row = document.createElement('div');
-      row.className = 'mkt-collect';
-      row.innerHTML = `<span>${esc(t('itemUi.market.saleProceeds'))}</span><span class="mkt-price">${this.moneyHtml(info.collectionCopper)}</span>`;
-      body.appendChild(row);
-    }
-    for (const s of info.collectionItems) {
-      const item = ITEMS[s.itemId];
-      if (!item) continue;
-      const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
-      const row = document.createElement('div');
-      row.className = 'mkt-collect';
-      const stack =
-        s.count > 1
-          ? ` ${t('itemUi.market.stackCount', { count: formatNumber(s.count, { maximumFractionDigits: 0 }) })}`
-          : '';
-      row.innerHTML = `<span style="display:flex;gap:8px;align-items:center">${this.itemIcon(item)}<span style="color:${qColor}">${esc(itemDisplayName(item))}${esc(stack)}</span></span>`;
-      this.attachTooltip(row, () => this.itemTooltip(item));
-      body.appendChild(row);
-    }
-    const btn = document.createElement('button');
-    btn.className = 'mkt-list-btn';
-    btn.textContent = t('itemUi.market.collectAll');
-    btn.addEventListener('click', () => {
-      this.sim.marketCollect();
-      audio.coin();
-    });
-    body.appendChild(btn);
   }
 
   // -------------------------------------------------------------------------
