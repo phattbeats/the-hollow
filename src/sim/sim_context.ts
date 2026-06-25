@@ -39,6 +39,10 @@ export interface SimContextPrimitives {
   // Live player roster (keyed by entity id). Stays a Sim field; exposed here so the
   // moved party machine (A1) resolves member names/metas through the seam.
   readonly players: Map<number, PlayerMeta>;
+  // The local / RL player id (single-player + renderer contexts). Reassigned on the
+  // first join and on the primary's departure, so it is a LIVE getter, not a snapshot.
+  // Stays a Sim field; the moved raid-marker `markerFor` (T1) reads it through the seam.
+  readonly primaryId: number;
   // Social-invite maps owned by the trade (G2) and duel (A2) slices. The party
   // machine (A1) reads them for hasPendingSocialInvite's cross-system pending check
   // and lazily expires entries in place, so these are LIVE views: the backing fields
@@ -166,13 +170,25 @@ export interface SimContextCallbacks {
   completeTame(player: Entity, target: Entity): void;
 
   // A1/T1 raid markers + party; Q1 quest credit on inventory change.
+  // clearEntityMarker (death/despawn hooks) + dropPartyMarkers (the A1 disband path)
+  // now point at the T1 marker store (src/sim/targeting.ts) via Sim's late-bound
+  // delegate; partyOf stays on Sim (A1's thin delegate -> social/party).
   clearEntityMarker(entityId: number): void;
   partyOf(pid: number): Party | null;
   removeFromParty(pid: number, verb: string): void;
-  // Drop a disbanded party's whole raid-marker set. The marker store is T1's
-  // (src/sim/targeting.ts) once T1 lands; until then this points at Sim.
+  // Drop a disbanded party's whole raid-marker set (points at T1's targeting store).
   dropPartyMarkers(partyId: number): void;
   onInventoryChangedForQuests(meta: PlayerMeta): void;
+
+  // T1 player target selection: the hostility / follow helpers the moved tab/nearest/
+  // friendly selectors consume. All STAY on Sim (their many in-sim.ts callers keep
+  // calling this.X). `pvpController` is also owned by C1 on the integrated base, so on
+  // merge this decl dedupes to one (identical signature); the other three + `stopFollow`
+  // are new to the seam here.
+  isHostileTo(attacker: Entity, target: Entity): boolean;
+  isFriendlyTo(caster: Entity, target: Entity): boolean;
+  pvpController(e: Entity | null): Entity | null;
+  stopFollow(p: Entity, msg?: string): void;
 
   // E1 entity roster: the moved roster ops, exposed so the foreign callers across
   // not-yet-extracted slices reach them through the seam. Implemented in
@@ -225,6 +241,9 @@ export function createSimContext(host: SimContextHost): SimContext {
     },
     get players() {
       return host.players;
+    },
+    get primaryId() {
+      return host.primaryId;
     },
     get tradeInvites() {
       return host.tradeInvites;
@@ -326,6 +345,10 @@ export function createSimContext(host: SimContextHost): SimContext {
     petOf: host.petOf,
     completeTame: host.completeTame,
     clearEntityMarker: host.clearEntityMarker,
+    isHostileTo: host.isHostileTo,
+    isFriendlyTo: host.isFriendlyTo,
+    pvpController: host.pvpController,
+    stopFollow: host.stopFollow,
     partyOf: host.partyOf,
     removeFromParty: host.removeFromParty,
     dropPartyMarkers: host.dropPartyMarkers,

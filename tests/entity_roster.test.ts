@@ -64,6 +64,7 @@ function makeCtx() {
       return entities;
     },
     players: new Map(),
+    primaryId: -1,
     tradeInvites: new Map(),
     duelInvites: new Map(),
     get grid() {
@@ -135,6 +136,10 @@ function makeCtx() {
     summonPet: vi.fn(),
     petOf: vi.fn(() => null),
     completeTame: vi.fn(),
+    isHostileTo: vi.fn(() => false),
+    isFriendlyTo: vi.fn(() => false),
+    pvpController: vi.fn(() => null),
+    stopFollow: vi.fn(),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
     dropPartyMarkers: vi.fn(),

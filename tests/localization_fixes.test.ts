@@ -762,8 +762,16 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
         .map((f) => fs.readFileSync(path.join(socialDir, f), 'utf8'))
         .join('\n')
     : '';
+  // T1: the player target selectors + the raid-marker store moved to
+  // src/sim/targeting.ts; scan it too so the setMarker `this.ctx.error` literal stays
+  // drift-guarded (the moved string is byte-identical, so its matcher is unchanged).
+  const targetingSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/sim/targeting.ts'), 'utf8');
   const simSrc =
-    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/sim.ts'), 'utf8') + '\n' + socialSrc;
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/sim.ts'), 'utf8') +
+    '\n' +
+    socialSrc +
+    '\n' +
+    targetingSrc;
   // Hardened S3: also scan the authoritative server's player-facing emits. The
   // server (server/game.ts) is language-agnostic like the sim and re-localized
   // client-side by localizeServerText; previously the guard read only sim.ts, so
