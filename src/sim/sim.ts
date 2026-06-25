@@ -126,6 +126,7 @@ import {
   runDespawnDecay,
   tickGroundAoEs,
 } from './entity_roster';
+import * as companionMod from './delves/companion';
 import * as lockpickMod from './delves/lockpick_controller';
 import * as runsMod from './delves/runs';
 import { createSimContext, type SimContext, type SimContextHost } from './sim_context';
@@ -174,6 +175,7 @@ import {
   type CurrencyLootStrategy,
   canPrestige,
   DEFAULT_PARTY_LOOT_STRATEGIES,
+  DELVE_COMPANION_HEAL_INTERVAL,
   DELVE_COMPANION_MAX_RANK,
   DELVE_PLATE_RADIUS,
   type DelveDef,
@@ -212,6 +214,7 @@ import {
   normAngle,
   NYTHRAXIS_BOSS_ID,
   type OverheadEmoteId,
+  PET_TELEPORT_DISTANCE,
   type PetMode,
   type PlayerClass,
   type QuestDef,
@@ -478,16 +481,10 @@ const VENDOR_BUYBACK_LIMIT = 12;
 // radii (DELVE_CHEST/GRAVE/WALL_SOLID_R), DELVE_INTERACT_RANGE, DELVE_BAD_AIR_INTERVAL,
 // DELVE_RAISE_DEAD_CHANNEL, DELVE_EXIT_PORTAL_RADIUS, DELVE_LORE_ORDER, and (re-exported
 // below) DELVE_MODULE_NAMES + DELVE_IMPLEMENTED_AFFIXES. DELVE_PLATE_RADIUS +
-// DELVE_COMPANION_MAX_RANK relocated to types.ts (shared with the I2b/I2c lockpick +
-// companion code still on Sim). The companion (I2c) tuning consts stay here until I2c.
-const DELVE_COMPANION_HEAL_RANGE = 22;
-const DELVE_COMPANION_HEAL_INTERVAL = 3;
-const DELVE_COMPANION_FOLLOW = 4;
-// Tessa heals a PERCENT of the target's max HP each tick, indexed by rank (1-3), so
-// her output stays relevant as player HP grows, the old flat `8 + rank*4` decayed to
-// noise by level 9. Tuned (combat spec) so L7 Normal is sustainable, L7 Heroic is not
-// savable by Tessa alone, and L9 Heroic is sustainable from rank 2.
-const DELVE_COMPANION_HEAL_PCT = [0, 0.06, 0.08, 0.1];
+// DELVE_COMPANION_MAX_RANK + DELVE_COMPANION_HEAL_INTERVAL relocated to types.ts
+// (shared by the I2a run module / Sim.spawnDelveCompanion and the I2c companion AI).
+// The companion (I2c) AI tuning consts (HEAL_RANGE/FOLLOW/HEAL_PCT) now live with the
+// per-tick brain in src/sim/delves/companion.ts; only LEVEL_PCT (spawn-only) stays.
 // Tessa's combat level as a fraction of the owner's, indexed by rank (1-3): she
 // arrives a junior aide and grows into a true peer as you invest Marks. Pairs with
 // DELVE_COMPANION_HEAL_PCT so a rank-up lifts both her survivability and her healing.
@@ -526,7 +523,7 @@ const FOLLOW_STOP_DIST = 3; // /follow trails this close behind the leader (yard
 const FOLLOW_MAX_RANGE = 60; // give up follow once the leader is this far away
 const PET_LEASH = 40; // yards from the owner before a pet gives up its target
 const PET_FOLLOW_DISTANCE = 3.5;
-const PET_TELEPORT_DISTANCE = 60; // owner this far AND no route exists: pet warps to heel (last resort)
+// PET_TELEPORT_DISTANCE relocated to types.ts (shared by Sim.updatePet + I2c companion AI).
 const PET_PATH_RECALC = 0.5; // seconds between heel-path A* recomputes per pet (throttle)
 const PET_PATH_SPAN = 96; // A* search half-window in cells; covers the teleport distance + slack
 const PET_PATH_STALE_DISTANCE = 4; // path end this far from the (now-moved) owner: recompute the heel route
@@ -2048,6 +2045,21 @@ export class Sim {
       delveDetectMult: (player) => sim.delveDetectMult(player),
       startDelveRaiseDeadChannel: (run, boss, mobId, count) =>
         sim.startDelveRaiseDeadChannel(run, boss, mobId, count),
+      // I2c delve companion AI now lives in src/sim/delves/companion.ts; the mob-AI
+      // dispatch (updateMob, owned non-stunned companion branch) calls it via
+      // ctx.updateDelveCompanion (late-bound -> companionMod). It reaches the shared
+      // mob/movement/hostility helpers (all still on Sim) through these: mobSwing +
+      // moveToward are shared entry points; isHostileTo/isRooted/moveSpeedMult/
+      // swingIntervalMult stay on Sim. (M2/T1/C3 register the same six with identical
+      // signatures on the integrated base -> dedupe to one each at integration; keep
+      // updateDelveCompanion's points-at = delves/companion.)
+      updateDelveCompanion: (companion) => companionMod.updateDelveCompanion(sim.ctx, companion),
+      mobSwing: sim.mobSwing.bind(sim),
+      moveToward: sim.moveToward.bind(sim),
+      isHostileTo: sim.isHostileTo.bind(sim),
+      isRooted: sim.isRooted.bind(sim),
+      moveSpeedMult: sim.moveSpeedMult.bind(sim),
+      swingIntervalMult: sim.swingIntervalMult.bind(sim),
     };
     return createSimContext(host);
   }
@@ -6657,7 +6669,7 @@ export class Sim {
     if (mob.ownerId !== null) {
       if (this.isStunned(mob)) return;
       if (this.isDelveCompanionMob(mob)) {
-        this.updateDelveCompanion(mob);
+        this.ctx.updateDelveCompanion(mob);
         return;
       }
       this.updatePet(mob);
@@ -15702,116 +15714,6 @@ export class Sim {
     if (!run.companion || run.companionBarks.includes(barkId)) return;
     run.companionBarks.push(barkId);
     this.emit({ type: 'companionBark', barkId, pid });
-  }
-
-  private updateDelveCompanion(companion: Entity): void {
-    const owner = companion.ownerId !== null ? this.entities.get(companion.ownerId) : null;
-    if (owner?.kind !== 'player' || owner.dead) {
-      this.dropEntity(companion.id);
-      return;
-    }
-    const run = this.delveRunForPlayer(owner.id);
-    if (!run?.companion || run.companion.entityId !== companion.id) {
-      this.dropEntity(companion.id);
-      return;
-    }
-    if (owner.inCombat) this.maybeCompanionBark(run, owner.id, 'combat_start');
-    if (owner.hp / Math.max(1, owner.maxHp) < 0.3) this.maybeCompanionBark(run, owner.id, 'low_hp');
-
-    companion.swingTimer = (companion.swingTimer ?? 0) - DT;
-    let combatTarget: Entity | null = null;
-    if (owner.targetId !== null) {
-      const t = this.entities.get(owner.targetId);
-      if (t && !t.dead && this.isHostileTo(companion, t)) combatTarget = t;
-    }
-    if (!combatTarget) {
-      let best: Entity | null = null;
-      let bestD = 40;
-      for (const m of this.entities.values()) {
-        if (m.kind !== 'mob' || m.dead || !this.isHostileTo(companion, m)) continue;
-        const engagingOwner = m.aggroTargetId === owner.id;
-        const ownerOffense =
-          owner.targetId === m.id && (owner.autoAttack || owner.inCombat || m.threat.has(owner.id));
-        if (!engagingOwner && !ownerOffense) continue;
-        const d = dist2d(companion.pos, m.pos);
-        if (d < bestD) {
-          best = m;
-          bestD = d;
-        }
-      }
-      combatTarget = best;
-    }
-    if (combatTarget) {
-      companion.inCombat = true;
-      const reach = MELEE_RANGE * 0.9;
-      const cd = dist2d(companion.pos, combatTarget.pos);
-      if (cd > reach) {
-        companion.swingTimer = Math.max(0, (companion.swingTimer ?? 0) - DT);
-        if (!this.isRooted(companion)) {
-          this.moveToward(
-            companion,
-            combatTarget.pos,
-            companion.moveSpeed * this.moveSpeedMult(companion),
-          );
-        }
-      } else {
-        companion.facing = angleTo(companion.pos, combatTarget.pos);
-        companion.swingTimer = (companion.swingTimer ?? 0) - DT;
-        if (companion.swingTimer <= 0) {
-          this.mobSwing(companion, combatTarget);
-          companion.swingTimer = companion.weapon.speed * this.swingIntervalMult(companion);
-        }
-      }
-    } else {
-      companion.inCombat = false;
-      companion.swingTimer = Math.max(0, (companion.swingTimer ?? 0) - DT);
-    }
-
-    companion.wanderTimer = (companion.wanderTimer ?? 0) - DT;
-    if (companion.wanderTimer <= 0) {
-      companion.wanderTimer = DELVE_COMPANION_HEAL_INTERVAL;
-      const rank = this.players.get(owner.id)?.companionUpgrades[run.companion.companionId] ?? 1;
-      let target: Entity = owner;
-      let lowest = owner.hp / owner.maxHp;
-      if (run.partyKey) {
-        for (const pid of this.partyMembersForKey(run.partyKey)) {
-          const ally = this.entities.get(pid);
-          if (!ally || ally.dead) continue;
-          const frac = ally.hp / ally.maxHp;
-          if (frac < lowest && dist2d(companion.pos, ally.pos) <= DELVE_COMPANION_HEAL_RANGE) {
-            lowest = frac;
-            target = ally;
-          }
-        }
-      }
-      if (
-        target.hp < target.maxHp &&
-        dist2d(companion.pos, target.pos) <= DELVE_COMPANION_HEAL_RANGE
-      ) {
-        const pct =
-          DELVE_COMPANION_HEAL_PCT[Math.min(rank, DELVE_COMPANION_MAX_RANK)] ??
-          DELVE_COMPANION_HEAL_PCT[1];
-        const healed = Math.min(target.maxHp - target.hp, Math.round(target.maxHp * pct));
-        target.hp += healed;
-        this.emit({ type: 'heal', targetId: target.id, amount: healed });
-        this.emit({
-          type: 'spellfx',
-          sourceId: companion.id,
-          targetId: target.id,
-          school: 'holy',
-          fx: 'tick',
-        });
-      }
-    }
-    if (combatTarget) return;
-    const d = dist2d(companion.pos, owner.pos);
-    if (d > PET_TELEPORT_DISTANCE) {
-      companion.pos = { ...owner.pos };
-      companion.prevPos = { ...companion.pos };
-      this.rebucket(companion);
-    } else if (d > DELVE_COMPANION_FOLLOW && !this.isRooted(companion)) {
-      this.moveToward(companion, owner.pos, companion.moveSpeed * this.moveSpeedMult(companion));
-    }
   }
 
   delveInteract(objectId: number, pid?: number): void {

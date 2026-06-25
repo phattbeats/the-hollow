@@ -225,6 +225,21 @@ export interface SimContextCallbacks {
   onDelveBossDefeated(run: DelveRun): void;
   delveDetectMult(player: Entity): number;
   startDelveRaiseDeadChannel(run: DelveRun, boss: Entity, mobId: string, count: number): boolean;
+
+  // I2c delve companion AI (delves/companion.ts). updateDelveCompanion is the per-tick
+  // brain the mob-AI dispatch invokes for an owned, non-stunned companion mob (before
+  // the pet branch); points-at delves/companion. It consumes the shared mob/movement/
+  // hostility helpers below, which STAY on Sim (mobSwing/moveToward are shared entry
+  // points; isHostileTo/isRooted/moveSpeedMult/swingIntervalMult are Sim predicates).
+  // M2/T1/C3 register these six with identical signatures on the integrated base ->
+  // dedupe to one each at integration.
+  updateDelveCompanion(companion: Entity): void;
+  mobSwing(mob: Entity, target: Entity): void;
+  moveToward(e: Entity, dest: Vec3, speed: number, ignoreObstacles?: boolean): boolean;
+  isHostileTo(attacker: Entity, target: Entity): boolean;
+  isRooted(e: Entity): boolean;
+  moveSpeedMult(e: Entity): number;
+  swingIntervalMult(e: Entity): number;
 }
 
 // The seam consumed by extracted modules.
@@ -368,5 +383,12 @@ export function createSimContext(host: SimContextHost): SimContext {
     onDelveBossDefeated: host.onDelveBossDefeated,
     delveDetectMult: host.delveDetectMult,
     startDelveRaiseDeadChannel: host.startDelveRaiseDeadChannel,
+    updateDelveCompanion: host.updateDelveCompanion,
+    mobSwing: host.mobSwing,
+    moveToward: host.moveToward,
+    isHostileTo: host.isHostileTo,
+    isRooted: host.isRooted,
+    moveSpeedMult: host.moveSpeedMult,
+    swingIntervalMult: host.swingIntervalMult,
   };
 }

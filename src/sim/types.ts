@@ -29,8 +29,14 @@ export const INSTANCE_EMPTY_TIMEOUT = 300;
 // controller still on Sim (resolveLockChest proximity gate). Relocated from sim.ts.
 export const DELVE_PLATE_RADIUS = 2.5;
 // Max purchasable companion rank. Shared by the I2a run module (companionUpgrade cap)
-// and the I2c companion AI still on Sim (updateDelveCompanion heal-pct index).
+// and the I2c companion AI (delves/companion.ts: updateDelveCompanion heal-pct index).
 export const DELVE_COMPANION_MAX_RANK = 3;
+// Companion heal cadence (seconds). Shared by the I2c companion AI (delves/companion.ts:
+// updateDelveCompanion wanderTimer reset) and Sim.spawnDelveCompanion (initial timer).
+export const DELVE_COMPANION_HEAL_INTERVAL = 3;
+// Owner this far AND no route exists: a pet/companion warps to heel (last resort).
+// Shared by Sim.updatePet and the I2c companion AI (delves/companion.ts).
+export const PET_TELEPORT_DISTANCE = 60;
 
 export type PlayerClass =
   | 'warrior'

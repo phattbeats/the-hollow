@@ -158,6 +158,13 @@ function makeCtx() {
     onDelveBossDefeated: vi.fn(),
     delveDetectMult: vi.fn(() => 1),
     startDelveRaiseDeadChannel: vi.fn(() => false),
+    updateDelveCompanion: vi.fn(),
+    mobSwing: vi.fn(),
+    moveToward: vi.fn(() => false),
+    isHostileTo: vi.fn(() => false),
+    isRooted: vi.fn(() => false),
+    moveSpeedMult: vi.fn(() => 1),
+    swingIntervalMult: vi.fn(() => 1),
   };
   const ctx = createSimContext(host);
   return {

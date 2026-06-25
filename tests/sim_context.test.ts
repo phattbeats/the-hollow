@@ -90,6 +90,14 @@ const CALLBACK_KEYS = [
   'onDelveBossDefeated',
   'delveDetectMult',
   'startDelveRaiseDeadChannel',
+  // I2c delve companion AI + the shared mob/movement/hostility helpers it consumes.
+  'updateDelveCompanion',
+  'mobSwing',
+  'moveToward',
+  'isHostileTo',
+  'isRooted',
+  'moveSpeedMult',
+  'swingIntervalMult',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -191,6 +199,13 @@ function makeFakeHost() {
     onDelveBossDefeated: vi.fn(),
     delveDetectMult: vi.fn(() => 1),
     startDelveRaiseDeadChannel: vi.fn(() => false),
+    updateDelveCompanion: vi.fn(),
+    mobSwing: vi.fn(),
+    moveToward: vi.fn(() => false),
+    isHostileTo: vi.fn(() => false),
+    isRooted: vi.fn(() => false),
+    moveSpeedMult: vi.fn(() => 1),
+    swingIntervalMult: vi.fn(() => 1),
   };
   return { host, rng, entities, clock };
 }
