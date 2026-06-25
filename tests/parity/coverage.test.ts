@@ -100,6 +100,21 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(entities(rec).some((e) => e.templateId === 'forest_wolf' && e.forcedTargetId === pet.id)).toBe(true);
   });
 
+  it('pet_ai: imp fires petRangedAttack (fire bolt), melee pet pulls+swings, both heel', () => {
+    const rec = run('pet_ai');
+    const ev = rec.allEvents as Ev[];
+    const impId = rec.notes.impId as number;
+    const tankId = rec.notes.tankId as number;
+    // petRangedAttack: the imp's only damage path is the fire bolt (no miss roll).
+    expect(ev.some((e) => e.type === 'damage' && e.sourceId === impId && e.school === 'fire')).toBe(true);
+    // melee arm: the voidwalker acquired a target via petPickTarget and swung it.
+    expect(ev.some((e) => e.type === 'damage' && e.sourceId === tankId)).toBe(true);
+    // heel transition: both pets dropped their target and follow the owner.
+    const ents = entities(rec);
+    expect(ents.find((e) => e.id === impId)?.aggroTargetId ?? null).toBeNull();
+    expect(ents.find((e) => e.id === tankId)?.aggroTargetId ?? null).toBeNull();
+  });
+
   it('paladin_consecration: ground AoE pulses fire from BOTH callers (immediate + deferred)', () => {
     const rec = run('paladin_consecration');
     const hits = (rec.allEvents as Ev[]).filter(
