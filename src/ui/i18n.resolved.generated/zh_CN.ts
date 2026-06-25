@@ -223,7 +223,8 @@ export const zh_CN: EnTranslations = {
       "resting": "休息中"
     },
     "unitFrame": {
-      "playerLabel": "Your Hero"
+      "playerLabel": "Your Hero",
+      "targetLabel": "Your Mark"
     },
     "mobile": {
       "autorun": "自动奔跑",

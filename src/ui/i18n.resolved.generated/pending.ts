@@ -15,7 +15,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
-    "hudChrome.unitFrame.playerLabel"
+    "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetLabel"
   ],
   "es_ES": [
     "hud.core.mapCanvasLabel",
@@ -23,7 +24,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
-    "hudChrome.unitFrame.playerLabel"
+    "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetLabel"
   ],
   "fr_FR": [
     "hud.core.mapCanvasLabel",
@@ -31,7 +33,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
-    "hudChrome.unitFrame.playerLabel"
+    "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetLabel"
   ],
   "fr_CA": [
     "hud.core.mapCanvasLabel",
@@ -39,7 +42,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
-    "hudChrome.unitFrame.playerLabel"
+    "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetLabel"
   ],
   "en_CA": [],
   "it_IT": [
@@ -48,7 +52,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
-    "hudChrome.unitFrame.playerLabel"
+    "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetLabel"
   ],
   "de_DE": [
     "hud.core.mapCanvasLabel",
@@ -56,35 +61,40 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
-    "hudChrome.unitFrame.playerLabel"
+    "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetLabel"
   ],
   "zh_CN": [
     "hud.core.mapCanvasLabel",
     "hud.core.mapSummary",
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
-    "hudChrome.unitFrame.playerLabel"
+    "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetLabel"
   ],
   "zh_TW": [
     "hud.core.mapCanvasLabel",
     "hud.core.mapSummary",
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
-    "hudChrome.unitFrame.playerLabel"
+    "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetLabel"
   ],
   "ko_KR": [
     "hud.core.mapCanvasLabel",
     "hud.core.mapSummary",
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
-    "hudChrome.unitFrame.playerLabel"
+    "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetLabel"
   ],
   "ja_JP": [
     "hud.core.mapCanvasLabel",
     "hud.core.mapSummary",
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
-    "hudChrome.unitFrame.playerLabel"
+    "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetLabel"
   ],
   "pt_BR": [
     "hud.core.mapCanvasLabel",
@@ -92,13 +102,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
-    "hudChrome.unitFrame.playerLabel"
+    "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetLabel"
   ],
   "ru_RU": [
     "hud.core.mapCanvasLabel",
     "hud.core.mapSummary",
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
-    "hudChrome.unitFrame.playerLabel"
+    "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetLabel"
   ]
 };

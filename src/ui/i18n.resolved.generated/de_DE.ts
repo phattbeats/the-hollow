@@ -223,7 +223,8 @@ export const de_DE: EnTranslations = {
       "resting": "Erholung"
     },
     "unitFrame": {
-      "playerLabel": "Your Hero"
+      "playerLabel": "Your Hero",
+      "targetLabel": "Your Mark"
     },
     "mobile": {
       "autorun": "Auto-Laufen",

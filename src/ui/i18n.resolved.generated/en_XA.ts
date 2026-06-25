@@ -223,7 +223,8 @@ export const en_XA: EnTranslations = {
       "resting": "[Ŕéšţíñĝ]"
     },
     "unitFrame": {
-      "playerLabel": "[Ýóúŕ Ĥéŕó]"
+      "playerLabel": "[Ýóúŕ Ĥéŕó]",
+      "targetLabel": "[Ýóúŕ Ɱáŕķ]"
     },
     "mobile": {
       "autorun": "[Áúţóŕúñ]",

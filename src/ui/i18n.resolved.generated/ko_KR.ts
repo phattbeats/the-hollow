@@ -223,7 +223,8 @@ export const ko_KR: EnTranslations = {
       "resting": "휴식 중"
     },
     "unitFrame": {
-      "playerLabel": "Your Hero"
+      "playerLabel": "Your Hero",
+      "targetLabel": "Your Mark"
     },
     "mobile": {
       "autorun": "자동 달리기",

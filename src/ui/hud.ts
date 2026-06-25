@@ -97,7 +97,6 @@ import {
   OVERHEAD_EMOTES,
   type OverheadEmoteId,
 } from '../world_api';
-import { absorbBarView } from './absorb_bar';
 import { BagsWindow } from './bags_window';
 import { CastBarPainter } from './cast_bar_painter';
 import { CharWindow } from './char_window';
@@ -229,7 +228,7 @@ import { TOOLTIP_PEEK_MS, TouchPeekGuard } from './touch_peek';
 import { TutorialOverlay } from './tutorial';
 import { svgIcon } from './ui_icons';
 import { getUiScale } from './ui_scale';
-import { unitFrameView } from './unit_frame';
+import { type UnitFrameDescriptor, unitFrameView } from './unit_frame';
 import { UnitFramePainter } from './unit_frame_painter';
 import { crestIdForEntity } from './unit_portrait';
 import { UnitPortraitPainter } from './unit_portrait_painter';
@@ -315,6 +314,28 @@ const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.quer
 // painter's repaint gate never fires for it; the constant just pins the key so the
 // gate stays a no-op (target/party pass a per-unit key in P11).
 const PLAYER_PORTRAIT_KEY = 'player';
+// The target frame's boss glyph (a skull replaces the numeric level chip for a
+// boss-rank target) and the number of combo pips, named so the per-frame target
+// paint carries no bare literal at the call site (decision 12).
+const BOSS_SKULL_GLYPH = '☠';
+const COMBO_PIP_COUNT = 5;
+// The descriptor for a hidden target frame (no target, or a targeted world object).
+// unitFrameView reads only `present` when hiding, so the rest are no-op defaults; a
+// shared const avoids allocating a fresh descriptor for every hidden frame.
+const ABSENT_TARGET_DESCRIPTOR: UnitFrameDescriptor = {
+  present: false,
+  hpFrac: 0,
+  hpText: '',
+  resourceKind: 'none',
+  resFrac: 0,
+  resText: '',
+  levelText: null,
+  name: '',
+  portraitKey: '',
+  absorb: null,
+  dead: false,
+  outOfRange: false,
+};
 const trackMetaPixel = (eventName: string, data?: Record<string, unknown>): void => {
   const fbq = (window as Window & { fbq?: (...args: unknown[]) => void }).fbq;
   if (typeof fbq !== 'function') return;
@@ -639,7 +660,18 @@ export class Hud {
   private targetHpEl = $('#tf-hp');
   private targetHpTextEl = $('#tf-hp-text');
   private targetPortraitEl = $('#tf-portrait') as unknown as HTMLCanvasElement;
+  // The target absorb-shield overlay node, resolved ONCE here instead of the old
+  // per-frame updateAbsorb document query by hardcoded selector (decision 9 /
+  // per-frame discipline). The unit_frame painter drives it through the elided
+  // writers, exactly as the player frame drives its own absorb node.
+  private targetAbsorbEl = $('#tf-absorb');
   private targetDebuffsEl = $('#tf-debuffs');
+  // The target whose portrait the family painter's repaint gate redraws this frame.
+  // The gate fires synchronously inside the targetFramePainter.paint() call below,
+  // so this holds the subject for that one call (the old inline block read `target`
+  // from its enclosing scope; the gate now lives in the painter, so the redraw
+  // closure reads it from here).
+  private targetPortraitSubject: Entity | null = null;
   private comboRowEl = $('#combo-row');
   private castbarEl = $('#castbar');
   private castbarFillEl = this.castbarEl.querySelector('.fill') as HTMLElement;
@@ -756,7 +788,6 @@ export class Hud {
   private pendingChatLinks = new Map<string, string>(); // display "[Name]" -> questId
   private questDialogReturnFocus: HTMLElement | null = null;
   private questDialogOpenedAtMs = 0;
-  private lastPortraitTarget = -999;
   // swing timer: the period is captured from the reset edge (swingTimer jumping
   // up), so the bar tracks real swing speed including haste / ranged weapons.
   private swingPeriod = 0;
@@ -880,7 +911,7 @@ export class Hud {
     // ready, upgrade the player frame and force the target frame to redraw.
     onPortraitsReady(() => {
       this.drawPlayerFramePortrait();
-      this.lastPortraitTarget = -999;
+      this.targetFramePainter.invalidatePortrait();
     });
     const mm = $('#minimap') as unknown as HTMLCanvasElement;
     this.minimapCtx = mm.getContext('2d')!;
@@ -1165,21 +1196,12 @@ export class Hud {
     el.style.display = display;
   }
 
-  private setTransform(el: HTMLElement, transform: string): void {
-    const key = `transform:${transform}`;
-    if (this.hotWriteCache.get(el) === key) {
-      this.hotDomSkippedWrites++;
-      return;
-    }
-    this.hotWriteCache.set(el, key);
-    this.hotDomWrites++;
-    el.style.transform = transform;
-  }
-
-  // Note: the per-frame width writer lives only on the painter facet now
-  // (makeWriterFacet's setWidth, painter_host.ts). The cast bars were the last
-  // Hud-direct width write; with them on the cast_bar painter (P11a), every width
-  // write routes through the facet, so the Hud no longer mirrors a private setWidth.
+  // Note: the per-frame transform + width writers live only on the painter facet now
+  // (makeWriterFacet's setTransform/setWidth, painter_host.ts). The target hp bar was
+  // the last Hud-direct setTransform caller (P11b) and the cast bars were the last
+  // setWidth caller (P11a); with both on their painters, every transform/width write
+  // routes through the facet over the SAME hotWriteCache + `transform:`/`width:` keys,
+  // so the Hud no longer mirrors a private setTransform or setWidth.
 
   // P10a write-elision extension (decision 5a). setStyleProp drives a custom
   // property (or any standard property) and toggleClass drives a class, each
@@ -2287,6 +2309,31 @@ export class Hud {
     },
     { resolveCastLabel: (s) => s.label },
   );
+  // The target frame is the SECOND instance of the unit_frame family (P11b): the same
+  // painter + core as the player, over the target's element set. It supplies the
+  // per-unit `name`, the cached `#tf-absorb` overlay node (no per-frame query), the
+  // `shownDisplay` show/hide path, and the portrait repaint gate (the painter owns
+  // the gate, so the old `lastPortraitTarget` sentinel is now the painter's
+  // `lastPortraitKey`). It passes NO resource group (the target has no power bar) and
+  // NO `stateClasses` (the target carries its own `elite` class, painted at the call
+  // site, not the party dead/out-of-range classes). The target-only concerns the
+  // family does not express (the elite class + tag, the hostile/friendly name color,
+  // the combo pips) route through the SAME elided writers in update() below.
+  private readonly targetFramePainter = new UnitFramePainter(
+    this.writerFacet,
+    {
+      frame: this.targetFrameEl,
+      name: this.targetNameEl,
+      level: this.targetLevelEl,
+      hpFill: this.targetHpEl,
+      hpText: this.targetHpTextEl,
+      absorb: this.targetAbsorbEl,
+    },
+    {
+      shownDisplay: 'flex',
+      repaintPortrait: () => this.drawTargetPortrait(),
+    },
+  );
   // Overworld world-map painter (the delve branch stays with delvePainter). Owns
   // the cached whole-world decorations; redraws from the mediumHud band while open.
   private readonly mapPainter = new MapWindowPainter();
@@ -2562,6 +2609,28 @@ export class Hud {
       this.sim.cfg.playerClass,
       this.sim.player.skin ?? 0,
     );
+  }
+
+  // Redraw the target portrait canvas. Called by the unit_frame painter's repaint
+  // gate ONLY when the target identity changes (or after invalidatePortrait), never
+  // per frame, and reads the subject set just before that frame's paint() call. A
+  // player target shows its real 3D class headshot (rendered locally from the synced
+  // class + skin); any other entity shows its faction/family crest.
+  private drawTargetPortrait(): void {
+    const target = this.targetPortraitSubject;
+    if (!target) return;
+    if (target.kind === 'player') {
+      this.portraits.drawClass(
+        this.targetPortraitEl,
+        target.templateId as PlayerClass,
+        target.skin ?? 0,
+      );
+    } else {
+      this.portraits.drawCrest(
+        this.targetPortraitEl,
+        crestIdForEntity(target.kind, MOBS[target.templateId]?.family),
+      );
+    }
   }
 
   private itemIcon(item: ItemDef): string {
@@ -3887,57 +3956,60 @@ export class Hud {
     // buff bar (player buffs + debuffs)
     this.renderAuras(this.buffBarEl, p, 'all');
 
-    // target frame
+    // target frame: the SECOND instance of the unit_frame family (P11b). The shared
+    // frame (display/name/level/hp/absorb/portrait gate) goes through the family
+    // painter; the target-only concerns (the elite class + tag, the hostile/friendly
+    // name color, and the combo pips) route through the SAME elided writers here, and
+    // the target debuffs + cast bar CONSUME the existing auras paint + P11a's cast_bar
+    // target instance. (Targeting a world object hides the frame, like no target.)
     const target = p.targetId !== null ? sim.entities.get(p.targetId) : null;
     if (target && target.kind !== 'object') {
-      this.setDisplay(this.targetFrameEl, 'flex');
-      this.targetFrameEl.classList.toggle('elite', !!MOBS[target.templateId]?.elite);
-      this.setText(
-        this.targetEliteTagEl,
-        MOBS[target.templateId]?.boss ? t('hud.core.boss') : t('hud.core.elite'),
+      const isBoss = !!MOBS[target.templateId]?.boss;
+      // The portrait gate fires inside paint(); hand it the subject to redraw.
+      this.targetPortraitSubject = target;
+      this.targetFramePainter.paint(
+        unitFrameView({
+          present: true,
+          hpFrac: target.hp / Math.max(1, target.maxHp),
+          hpText: target.dead ? t('hud.core.dead') : `${target.hp} / ${target.maxHp}`,
+          resourceKind: 'none',
+          resFrac: 0,
+          resText: '',
+          levelText: isBoss ? BOSS_SKULL_GLYPH : String(target.level),
+          name: entityDisplayName(target),
+          // id-keyed gate, byte-faithful to the old lastPortraitTarget !== target.id;
+          // the painter resets it on hide so an id reused by a new mob still redraws.
+          portraitKey: String(target.id),
+          absorb: target.dead ? null : target,
+          dead: false,
+          outOfRange: false,
+        }),
       );
-      this.setText(this.targetNameEl, entityDisplayName(target));
-      this.setText(this.targetLevelEl, MOBS[target.templateId]?.boss ? '☠' : String(target.level));
-      this.setTransform(this.targetHpEl, `scaleX(${target.hp / Math.max(1, target.maxHp)})`);
-      this.updateAbsorb('#tf-absorb', target.dead ? null : target);
-      this.setText(
-        this.targetHpTextEl,
-        target.dead ? t('hud.core.dead') : `${target.hp} / ${target.maxHp}`,
+      // Target-only sub-parts the family frame does not express, each routed through
+      // the elided writers (the elite class + name color are the two writes the four
+      // original writers cannot express, hence the P10a toggleClass / setStyleProp).
+      this.toggleClass(this.targetFrameEl, 'elite', !!MOBS[target.templateId]?.elite);
+      this.setText(this.targetEliteTagEl, isBoss ? t('hud.core.boss') : t('hud.core.elite'));
+      this.setStyleProp(
+        this.targetNameEl,
+        'color',
+        target.hostile ? 'var(--color-hostile)' : 'var(--color-friendly)',
       );
-      const targetNameColor = target.hostile ? 'var(--color-hostile)' : 'var(--color-friendly)';
-      if (this.targetNameEl.style.color !== targetNameColor)
-        this.targetNameEl.style.color = targetNameColor;
-      if (this.lastPortraitTarget !== target.id) {
-        this.lastPortraitTarget = target.id;
-        if (target.kind === 'player') {
-          // Other players: their real 3D headshot, rendered locally from the
-          // class (templateId) + skin in their synced identity fields.
-          this.portraits.drawClass(
-            this.targetPortraitEl,
-            target.templateId as PlayerClass,
-            target.skin ?? 0,
-          );
-        } else {
-          this.portraits.drawCrest(
-            this.targetPortraitEl,
-            crestIdForEntity(target.kind, MOBS[target.templateId]?.family),
-          );
-        }
-      }
       this.renderAuras(this.targetDebuffsEl, target, 'debuffs');
-      // target/boss cast bar (e.g. Nythraxis' Deathless Rage) — shown under the
-      // name + HP so the raid sees exactly when to channel the wardstones. The
-      // target instance shows the raw cast id and never eats/drinks (no `consume`).
+      // target/boss cast bar (e.g. Nythraxis' Deathless Rage), shown under the name +
+      // HP so the raid sees exactly when to channel the wardstones. The target
+      // instance shows the raw cast id and never eats/drinks (no `consume`).
       this.targetCastBarPainter.paint({
         cast: castBarState(target),
         castRemaining: target.castRemaining,
       });
-      // combo points
+      // combo points: the row of pips is lazy-built ONCE (then only the `on` class is
+      // toggled per frame, through the elided writer), never rebuilt per frame.
       if (p.resourceType === 'energy') {
         this.setDisplay(this.comboRowEl, 'flex');
-        if (this.comboRowEl.children.length !== 5) {
+        if (this.comboRowEl.children.length !== COMBO_PIP_COUNT) {
           this.comboRowEl.innerHTML = '';
-          for (let i = 0; i < 5; i++) {
+          for (let i = 0; i < COMBO_PIP_COUNT; i++) {
             const pip = document.createElement('div');
             pip.className = 'combo-pip';
             this.comboRowEl.appendChild(pip);
@@ -3945,14 +4017,15 @@ export class Hud {
         }
         const points = p.comboTargetId === target.id ? p.comboPoints : 0;
         [...this.comboRowEl.children].forEach((pip, i) => {
-          pip.classList.toggle('on', i < points);
+          this.toggleClass(pip as HTMLElement, 'on', i < points);
         });
       } else {
         this.setDisplay(this.comboRowEl, 'none');
       }
     } else {
-      this.setDisplay(this.targetFrameEl, 'none');
-      this.lastPortraitTarget = -999;
+      // No target (or a world object): hide the frame. The painter also resets its
+      // portrait gate here, so re-acquiring a target repaints (the old -999 reset).
+      this.targetFramePainter.paint(unitFrameView(ABSENT_TARGET_DESCRIPTOR));
     }
 
     // cast bar: the player instance localizes the cast id (castDisplayName), layers
@@ -4231,15 +4304,6 @@ export class Hud {
       if (!this.nearbyMarketNpc()) this.marketWindow.close();
       else this.marketWindow.refreshIfChanged();
     }
-  }
-
-  // Overlay the absorb-shield segment on a unit-frame health bar. A null entity
-  // (no target / dead) hides it.
-  private updateAbsorb(sel: string, e: Entity | null): void {
-    const el = $(sel) as HTMLElement;
-    const v = e ? absorbBarView(e) : { fillFrac: 0, overshield: false, total: 0 };
-    el.style.transform = `scaleX(${v.fillFrac})`;
-    el.classList.toggle('overshield', v.overshield);
   }
 
   // Classic "low mana/energy" warning: pulse the player resource bar when power

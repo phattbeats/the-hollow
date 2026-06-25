@@ -96,6 +96,12 @@ export class UnitFramePainter {
 
   paint(view: UnitFrameView): void {
     if (!view.present) {
+      // Reset the portrait gate while the frame is hidden so that re-showing the
+      // same unit redraws its portrait. This preserves the old target block's
+      // `lastPortraitTarget = -999` reset on no-target (so re-targeting a mob whose
+      // id was reused, or simply re-acquiring the same target, repaints). Harmless
+      // for a frame with no repaint callback (the player is always present anyway).
+      this.lastPortraitKey = null;
       if (this.opts.shownDisplay !== undefined) this.writers.setDisplay(this.el.frame, 'none');
       return;
     }
@@ -144,5 +150,13 @@ export class UnitFramePainter {
     if (key === this.lastPortraitKey) return;
     this.lastPortraitKey = key;
     this.opts.repaintPortrait?.(key);
+  }
+
+  // Force the next present paint to repaint the portrait even if the identity key is
+  // unchanged. The Hud calls this when the underlying portrait ASSETS change (the 3D
+  // character GLBs finish loading after the HUD mounts), where the inline target
+  // block reset its `lastPortraitTarget` sentinel for the same reason.
+  invalidatePortrait(): void {
+    this.lastPortraitKey = null;
   }
 }
