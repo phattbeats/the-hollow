@@ -147,6 +147,22 @@ function makeCtx() {
     onMobKilledForQuests: vi.fn(),
     refreshKnownAbilities: vi.fn(),
     syncPetLevel: vi.fn(),
+    resolvedAbility: vi.fn(() => null),
+    playerGcdFor: vi.fn(() => 1.5),
+    error: vi.fn(),
+    isFriendlyTo: vi.fn(() => false),
+    isHostileTo: vi.fn(() => false),
+    lineOfSightBlocked: vi.fn(() => false),
+    stopFollow: vi.fn(),
+    tameError: vi.fn(() => null),
+    standUp: vi.fn(),
+    breakGhostWolf: vi.fn(),
+    startAutoAttack: vi.fn(),
+    revivePet: vi.fn(),
+    addItem: vi.fn(),
+    completeFishing: vi.fn(),
+    applyDemonHealTick: vi.fn(),
+    runEffects: vi.fn(),
   };
   const ctx = createSimContext(host);
   return {

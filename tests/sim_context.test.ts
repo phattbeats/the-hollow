@@ -80,6 +80,23 @@ const CALLBACK_KEYS = [
   'onMobKilledForQuests',
   'refreshKnownAbilities',
   'syncPetLevel',
+  // C4a casting-lifecycle surface.
+  'resolvedAbility',
+  'playerGcdFor',
+  'error',
+  'isFriendlyTo',
+  'isHostileTo',
+  'lineOfSightBlocked',
+  'stopFollow',
+  'tameError',
+  'standUp',
+  'breakGhostWolf',
+  'startAutoAttack',
+  'revivePet',
+  'addItem',
+  'completeFishing',
+  'applyDemonHealTick',
+  'runEffects',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -170,6 +187,22 @@ function makeFakeHost() {
     onMobKilledForQuests: vi.fn(),
     refreshKnownAbilities: vi.fn(),
     syncPetLevel: vi.fn(),
+    resolvedAbility: vi.fn(() => null),
+    playerGcdFor: vi.fn(() => 1.5),
+    error: vi.fn(),
+    isFriendlyTo: vi.fn(() => false),
+    isHostileTo: vi.fn(() => false),
+    lineOfSightBlocked: vi.fn(() => false),
+    stopFollow: vi.fn(),
+    tameError: vi.fn(() => null),
+    standUp: vi.fn(),
+    breakGhostWolf: vi.fn(),
+    startAutoAttack: vi.fn(),
+    revivePet: vi.fn(),
+    addItem: vi.fn(),
+    completeFishing: vi.fn(),
+    applyDemonHealTick: vi.fn(),
+    runEffects: vi.fn(),
   };
   return { host, rng, entities, clock };
 }

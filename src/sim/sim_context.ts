@@ -15,13 +15,16 @@
 import type { TalentModifiers } from './content/talents';
 import type { DelayedEvent, GroundAoE } from './entity_roster';
 import type { Rng } from './rng';
-import type { ArenaMatch, DuelState, Party, PlayerMeta } from './sim';
+import type { ArenaMatch, DuelState, Party, PlayerMeta, ResolvedAbility } from './sim';
 import type { SpatialGrid } from './spatial';
 import type {
+  AbilityDef,
   Aura,
   CrowdControlDrCategory,
   DelveRun,
   Entity,
+  ErrorReason,
+  PlayerClass,
   SimConfig,
   SimEvent,
   Vec3,
@@ -186,6 +189,27 @@ export interface SimContextCallbacks {
   onMobKilledForQuests(mob: Entity, meta: PlayerMeta): void;
   refreshKnownAbilities(meta: PlayerMeta, announce: boolean): void;
   syncPetLevel(owner: Entity): void;
+
+  // C4a casting lifecycle (src/sim/combat/casting_lifecycle.ts) consumes these; all
+  // still on Sim. `runEffects` is the C4b boundary (the moved applyAbility +
+  // applyChannelTick reach the actual ability resolution only through here).
+  // `cancelCast`/`pushbackCast` (declared above, S0b) flip points-at to this slice.
+  resolvedAbility(abilityId: string, pid?: number): ResolvedAbility | null;
+  playerGcdFor(cls: PlayerClass): number;
+  error(pid: number, text: string, reason?: ErrorReason): void;
+  isFriendlyTo(caster: Entity, target: Entity): boolean;
+  isHostileTo(attacker: Entity, target: Entity): boolean;
+  lineOfSightBlocked(source: Entity, target: Entity, ability: AbilityDef): boolean;
+  stopFollow(p: Entity, msg?: string): void;
+  tameError(p: Entity, target: Entity): string | null;
+  standUp(p: Entity): void;
+  breakGhostWolf(e: Entity): void;
+  startAutoAttack(pid?: number): void;
+  revivePet(pid?: number): void;
+  addItem(itemId: string, count: number, pid?: number): void;
+  completeFishing(p: Entity, meta: PlayerMeta): void;
+  applyDemonHealTick(owner: Entity): void;
+  runEffects(p: Entity, meta: PlayerMeta, target: Entity | null, res: ResolvedAbility): void;
 }
 
 // The seam consumed by extracted modules.
@@ -306,5 +330,21 @@ export function createSimContext(host: SimContextHost): SimContext {
     onMobKilledForQuests: host.onMobKilledForQuests,
     refreshKnownAbilities: host.refreshKnownAbilities,
     syncPetLevel: host.syncPetLevel,
+    resolvedAbility: host.resolvedAbility,
+    playerGcdFor: host.playerGcdFor,
+    error: host.error,
+    isFriendlyTo: host.isFriendlyTo,
+    isHostileTo: host.isHostileTo,
+    lineOfSightBlocked: host.lineOfSightBlocked,
+    stopFollow: host.stopFollow,
+    tameError: host.tameError,
+    standUp: host.standUp,
+    breakGhostWolf: host.breakGhostWolf,
+    startAutoAttack: host.startAutoAttack,
+    revivePet: host.revivePet,
+    addItem: host.addItem,
+    completeFishing: host.completeFishing,
+    applyDemonHealTick: host.applyDemonHealTick,
+    runEffects: host.runEffects,
   };
 }
