@@ -116,17 +116,7 @@ import {
   type OverheadEmoteId,
 } from '../world_api';
 import { absorbBarView } from './absorb_bar';
-import {
-  applyBagFilter,
-  BAG_CATEGORIES,
-  BAG_SORTS,
-  type BagCategory,
-  type BagFilterState,
-  type BagSort,
-  DEFAULT_BAG_FILTER,
-  parseBagFilter,
-  serializeBagFilter,
-} from './bag_filter';
+import { BagsWindow } from './bags_window';
 import {
   activeCharacterAppearancePreview,
   characterAppearanceOptions,
@@ -253,6 +243,7 @@ import { lockoutParts, lockoutShape } from './raid_lockout';
 import { type RaidLockoutI18n, raidLockoutPanelHtml } from './raid_lockout_view';
 import { restView } from './rest_indicator';
 import { localizeServerText, localizeZone } from './server_i18n';
+import { SocialWindow } from './social_window';
 import { localizeSimAuraName, localizeSimText } from './sim_i18n';
 import { buildStatTooltip, type StatId, type StatTooltipModel, weaponDps } from './stat_tooltip';
 import { type StatTooltipI18n, statCellHtml, statTooltipHtml } from './stat_tooltip_view';
@@ -415,19 +406,6 @@ const RESOURCE_LABEL_KEYS: Record<ResourceType, TranslationKey> = {
   mana: 'abilityUi.resources.mana',
   rage: 'abilityUi.resources.rage',
   energy: 'abilityUi.resources.energy',
-};
-const BAG_CATEGORY_LABEL_KEYS: Record<BagCategory, TranslationKey> = {
-  all: 'hudChrome.bags.filterAll',
-  weapon: 'hudChrome.bags.filterWeapon',
-  armor: 'hudChrome.bags.filterArmor',
-  consumable: 'hudChrome.bags.filterConsumable',
-  material: 'hudChrome.bags.filterMaterial',
-  quest: 'hudChrome.bags.filterQuest',
-};
-const BAG_SORT_LABEL_KEYS: Record<BagSort, TranslationKey> = {
-  recent: 'hudChrome.bags.sortRecent',
-  quality: 'hudChrome.bags.sortQuality',
-  name: 'hudChrome.bags.sortName',
 };
 const RAID_MARKER_LABEL_KEYS = [
   'hud.markers.names.star',
@@ -896,16 +874,6 @@ export class Hud {
   private marketSellItem: string | null = null; // bag item staged for listing
   private marketSearchQuery = ''; // active browse search term (sent to the server)
   private lastMarketSig = '';
-  // Modular bag filtering: category chips + sort + live search, persisted across
-  // sessions. Pure logic lives in bag_filter.ts; renderBags() is the thin consumer.
-  private static readonly BAG_FILTER_KEY = 'woc_bag_filter';
-  private bagFilter: BagFilterState = (() => {
-    try {
-      return parseBagFilter(localStorage.getItem(Hud.BAG_FILTER_KEY));
-    } catch {
-      return { ...DEFAULT_BAG_FILTER };
-    }
-  })();
   // all-time ladder, fetched best-effort from the server (online only)
   private arenaAllTime: Partial<
     Record<
@@ -960,14 +928,6 @@ export class Hud {
   private windowObserver: MutationObserver | null = null;
   private windowZ = 50;
   private ignoredChatNames = new Set<string>();
-  private socialTab: 'friends' | 'guild' | 'ignore' | 'raid' = 'friends';
-  // split signatures: structural changes (tab, guild membership) rebuild the
-  // whole panel; content-only changes (a friend's presence) refresh just the
-  // list, so an open typeahead / half-typed name survives a snapshot
-  private lastSocialStruct = '';
-  private lastSocialContent = '';
-  private socialNotice: { text: string; error: boolean } | null = null;
-  private socialSuggestTimer: number | undefined;
   private lastHudFastAt = 0;
   private lastHudMediumAt = 0;
   private lastHudSlowAt = 0;
@@ -992,14 +952,6 @@ export class Hud {
   // current pose so a $WOC balance change (the bag-footer path can't reach the
   // card's canvas) is reflected. Cleared when the modal closes.
   private recomposeOpenCard: (() => void) | null = null;
-  // current typeahead state: which input, its results, and the keyboard-
-  // highlighted row (-1 = none), so Enter/Arrow keys can pick a suggestion
-  private socialSuggest: {
-    field: string;
-    items: { name: string; cls: string; level: number }[];
-    index: number;
-  } = { field: '', items: [], index: -1 };
-
   private meters: Meters;
   private tutorial = new TutorialOverlay();
   private lastPetBarSig = '';
@@ -1576,8 +1528,9 @@ export class Hud {
         this.closeOptions();
         break;
       case 'social-window':
-        el.classList.remove('open');
-        this.hideTooltip();
+        // Route through the painter so focus returns to the opener (WCAG 2.2 AA),
+        // consistent with the toggle/X close path.
+        this.socialWindow.close();
         break;
       case 'trade-window':
         this.sim.tradeCancel();
@@ -2366,6 +2319,56 @@ export class Hud {
     confirmDialog: (title, body, okText, cancelText, onOk) =>
       this.confirmDialog(title, body, okText, cancelText, onOk),
     showError: (text) => this.showError(text),
+  });
+  // Social panel painter (social_view.ts core + social_window.ts painter). The
+  // window renders no item rows, so it composes no PainterHostPresentation bag; it
+  // reads/commands the live world and routes the shared chrome (whisper, confirm
+  // prompt, close-others, focus return) through these lazy closures.
+  private readonly socialWindow = new SocialWindow({
+    root: () => $('#social-window'),
+    world: () => this.sim,
+    closeOthers: () => this.closeOtherWindows('#social-window'),
+    hideTooltip: () => this.hideTooltip(),
+    captureFocus: () => this.currentFocusableElement(),
+    restoreFocus: (target) => this.restoreFocus(target),
+    showPrompt: (text, acceptLabel, onAccept, onDecline) =>
+      this.showPrompt(text, acceptLabel, onAccept, onDecline),
+    startWhisper: (name) => this.startWhisper(name),
+  });
+  // Bags window painter (bags_view.ts core + bags_window.ts painter). It composes
+  // the shared presentation bag (icon/money/tooltip) and adds the inventory-cluster
+  // surface: world reads, cross-window mode flags + commands, pet-feed / drag /
+  // wallet plumbing. The cross-window modes stay HUD state, read each click.
+  private readonly bagsWindow = new BagsWindow({
+    ...this.presentationBag,
+    root: () => $('#bags'),
+    world: () => this.sim,
+    wocBalanceHtml: () => this.wocBalanceHtml(),
+    hideTooltip: () => this.hideTooltip(),
+    cancelPetFeed: () => this.cancelPetFeed(),
+    renderCharIfOpen: () => this.renderCharIfOpen(),
+    vendorOpen: () => this.vendorOpen,
+    tradeOpen: () => this.tradeOpen,
+    isMarketSell: () => this.marketOpen && this.marketTab === 'sell',
+    pendingPetFeed: () => this.pendingPetFeed,
+    closeVendor: () => this.closeVendor(),
+    addItemToTrade: (itemId) => this.addItemToTrade(itemId),
+    stageMarketSell: (itemId) => {
+      this.marketSellItem = itemId;
+      this.renderMarket();
+    },
+    showError: (text) => this.showError(text),
+    setPendingPetFeed: (active) => {
+      this.pendingPetFeed = active;
+    },
+    resetPetBarSig: () => {
+      this.lastPetBarSig = '';
+    },
+    isHotbarItemId: (itemId) => this.isHotbarItemId(itemId),
+    setDragAction: (action) => {
+      this.dragAction = action ? { action, sourceIndex: null } : null;
+    },
+    clearActionDropTargets: () => this.clearActionDropTargets(),
   });
 
   private drawPlayerFramePortrait(): void {
@@ -4120,23 +4123,9 @@ export class Hud {
       this.updateMinimapCoords();
       this.updateCompass();
     }
-    if (slowHud && $('#social-window').classList.contains('open')) {
-      const struct = this.socialStructSig();
-      if (struct !== this.lastSocialStruct) {
-        this.lastSocialStruct = struct;
-        this.lastSocialContent = JSON.stringify({
-          social: this.sim.socialInfo,
-          party: this.sim.partyInfo,
-        });
-        this.renderSocial();
-      } else {
-        const content = JSON.stringify({ social: this.sim.socialInfo, party: this.sim.partyInfo });
-        if (content !== this.lastSocialContent) {
-          this.lastSocialContent = content;
-          this.refreshSocialList();
-        }
-      }
-    }
+    // Social repaints only on the slow divider, behind the painter's struct/content
+    // diff-gate; a content tick swaps the body innerHTML without re-wiring rows.
+    if (slowHud) this.socialWindow.refreshIfChanged();
     if (slowHud && this.marketOpen) {
       if (!this.nearbyMarketNpc()) this.closeMarket();
       else this.refreshMarket();
@@ -8629,339 +8618,8 @@ export class Hud {
     if ($('#char-window').style.display === 'block') this.renderChar();
   }
 
-  private persistBagFilter(): void {
-    try {
-      localStorage.setItem(Hud.BAG_FILTER_KEY, serializeBagFilter(this.bagFilter));
-    } catch {
-      /* storage unavailable (private mode); filter still works in-session */
-    }
-  }
-
-  // The category-chip + sort + search controls above the bag grid. Each control
-  // mutates this.bagFilter, persists, and re-renders; the actual filtering is the
-  // pure applyBagFilter() in bag_filter.ts.
-  private buildBagFilterBar(): HTMLElement {
-    const bar = document.createElement('div');
-    bar.className = 'bag-filter-bar';
-
-    const chips = document.createElement('div');
-    chips.className = 'bag-chips';
-    chips.setAttribute('role', 'group');
-    chips.setAttribute('aria-label', t('hudChrome.bags.filterGroupAria'));
-    for (const category of BAG_CATEGORIES) {
-      const chip = document.createElement('button');
-      chip.type = 'button';
-      chip.className = `bag-chip${this.bagFilter.category === category ? ' active' : ''}`;
-      chip.textContent = t(BAG_CATEGORY_LABEL_KEYS[category]);
-      chip.setAttribute('aria-pressed', this.bagFilter.category === category ? 'true' : 'false');
-      chip.addEventListener('click', () => {
-        if (this.bagFilter.category === category) return;
-        this.bagFilter.category = category;
-        this.persistBagFilter();
-        audio.click();
-        this.renderBags();
-      });
-      chips.appendChild(chip);
-    }
-    bar.appendChild(chips);
-
-    const tools = document.createElement('div');
-    tools.className = 'bag-tools';
-
-    const search = document.createElement('input');
-    search.type = 'search';
-    search.className = 'bag-search';
-    search.placeholder = t('hudChrome.bags.searchPlaceholder');
-    search.setAttribute('aria-label', t('hudChrome.bags.searchAria'));
-    search.value = this.bagFilter.search;
-    search.addEventListener('input', () => {
-      this.bagFilter.search = search.value;
-      this.persistBagFilter();
-      this.refreshBagGrid();
-    });
-    tools.appendChild(search);
-
-    const sort = document.createElement('select');
-    sort.className = 'bag-sort';
-    sort.setAttribute('aria-label', t('hudChrome.bags.sortAria'));
-    for (const option of BAG_SORTS) {
-      const opt = document.createElement('option');
-      opt.value = option;
-      opt.textContent = t(BAG_SORT_LABEL_KEYS[option]);
-      if (this.bagFilter.sort === option) opt.selected = true;
-      sort.appendChild(opt);
-    }
-    sort.addEventListener('change', () => {
-      this.bagFilter.sort = sort.value as BagSort;
-      this.persistBagFilter();
-      audio.click();
-      this.renderBags();
-    });
-    tools.appendChild(sort);
-
-    bar.appendChild(tools);
-    return bar;
-  }
-
   renderBags(): void {
-    const el = $('#bags');
-    const sim = this.sim;
-    // .bag-grid (not #bags) is the scroll container; it is recreated on every
-    // rebuild, so capture its scroll offset and reapply it to the fresh grid —
-    // otherwise using an item (e.g. a potion) snaps the list back to the top.
-    const prevScrollTop = el.querySelector('.bag-grid')?.scrollTop ?? 0;
-    el.innerHTML = `<div class="panel-title"><span>${esc(t('itemUi.bags.title'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('itemUi.bags.close'))}">${svgIcon('close')}</button></div>`;
-    // Skip the chip/search row entirely when the bag is empty: a full filter bar
-    // above a single "(empty)" line is just noise.
-    if (sim.inventory.length > 0) el.appendChild(this.buildBagFilterBar());
-    const grid = document.createElement('div');
-    grid.className = 'bag-grid';
-    this.fillBagGrid(grid);
-    el.appendChild(grid);
-    grid.scrollTop = prevScrollTop;
-    const moneyRow = document.createElement('div');
-    moneyRow.className = 'money';
-    moneyRow.innerHTML = `${this.wocBalanceHtml()}${this.moneyHtml(sim.copper)}`;
-    el.appendChild(moneyRow);
-    el.querySelector('[data-close]')?.addEventListener('click', () => {
-      if (this.vendorOpen && document.body.classList.contains('mobile-touch')) {
-        this.closeVendor();
-        return;
-      }
-      el.style.display = 'none';
-      this.hideTooltip();
-      this.cancelPetFeed();
-    });
-  }
-
-  // Populate (or repopulate) the .bag-grid scroll container from the current
-  // filter state. Split out so a search keystroke can refresh just the grid
-  // (refreshBagGrid) without rebuilding the filter bar and stealing input focus.
-  private fillBagGrid(grid: HTMLElement): void {
-    const sim = this.sim;
-    const visible = applyBagFilter(sim.inventory, (id) => ITEMS[id], this.bagFilter);
-    if (sim.inventory.length === 0) {
-      grid.innerHTML = `<div class="bag-empty">${esc(t('itemUi.bags.empty'))}</div>`;
-      return;
-    } else if (visible.length === 0) {
-      grid.innerHTML = `<div class="bag-empty">${esc(t('hudChrome.bags.noMatch'))}</div>`;
-      return;
-    }
-    for (const s of visible) {
-      const item = ITEMS[s.itemId];
-      if (!item) continue;
-      const row = document.createElement('button');
-      row.type = 'button';
-      row.className = 'bag-item';
-      const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
-      const itemName = itemDisplayName(item);
-      row.setAttribute(
-        'aria-label',
-        t('itemUi.bags.itemAria', {
-          item: itemName,
-          count: formatNumber(s.count, { maximumFractionDigits: 0 }),
-        }),
-      );
-      row.innerHTML = `${this.itemIcon(item)}<span style="color:${qColor}">${esc(itemName)}</span><span class="bi-count">${s.count > 1 ? esc(t('itemUi.bags.stackCount', { count: formatNumber(s.count, { maximumFractionDigits: 0 }) })) : ''}</span>`;
-      row.addEventListener('click', (ev) => {
-        if (this.tradeOpen) {
-          this.addItemToTrade(s.itemId);
-        } else if (this.marketOpen && this.marketTab === 'sell') {
-          if (item.kind === 'quest') {
-            this.showError(t('itemUi.errors.noQuestItems'));
-            return;
-          }
-          if (item.noMarketList) {
-            this.showError(t('itemUi.tooltip.cannotMarket'));
-            return;
-          }
-          this.marketSellItem = s.itemId;
-          this.renderMarket();
-        } else if (this.vendorOpen) {
-          this.sellBagItem(s, ev);
-        } else if (this.pendingPetFeed) {
-          if (item.kind !== 'food') {
-            this.showError(t('hud.pet.petEatsFoodOnly'));
-            return;
-          }
-          this.sim.feedPet(s.itemId);
-          this.pendingPetFeed = false;
-          this.lastPetBarSig = '';
-          this.renderBags();
-        } else if (item.kind === 'quest') {
-          this.showDiscardItemPrompt(s.itemId, Math.max(1, Math.floor(s.count)));
-        } else {
-          this.sim.useItem(s.itemId);
-          this.renderBags();
-          this.renderCharIfOpen();
-        }
-      });
-      row.addEventListener('contextmenu', (ev) => {
-        if (!this.vendorOpen || (!ev.ctrlKey && !ev.metaKey)) return;
-        ev.preventDefault();
-        this.sellBagItem(s, ev);
-      });
-      if (!this.tradeOpen && !this.vendorOpen && this.isHotbarItemId(s.itemId)) {
-        row.draggable = true;
-        row.addEventListener('dragstart', (e) => {
-          const action = { type: 'item' as const, id: s.itemId };
-          this.dragAction = { action, sourceIndex: null };
-          this.writeDraggedAction(e.dataTransfer, action);
-          e.dataTransfer!.effectAllowed = 'copy';
-          this.hideTooltip();
-        });
-        row.addEventListener('dragend', () => {
-          this.dragAction = null;
-          this.clearActionDropTargets();
-        });
-      }
-      this.attachTooltip(row, () => {
-        let extra = '';
-        if (this.tradeOpen)
-          extra = `<div class="tt-sub">${esc(t('itemUi.tooltip.clickTradeOffer'))}</div>`;
-        else if (this.marketOpen && this.marketTab === 'sell')
-          extra =
-            item.kind === 'quest' || item.noMarketList
-              ? `<div class="tt-sub">${esc(t('itemUi.tooltip.cannotMarket'))}</div>`
-              : `<div class="tt-sub">${esc(t('itemUi.tooltip.clickMarketList'))}</div>`;
-        else if (this.vendorOpen)
-          extra =
-            item.kind === 'quest'
-              ? `<div class="tt-sub">${esc(t('itemUi.tooltip.cannotVendor'))}</div>`
-              : `<div class="tt-sub">${esc(t('itemUi.tooltip.clickSell'))}</div>`;
-        else if (item.kind === 'quest')
-          extra = `<div class="tt-sub">${esc(t('itemUi.tooltip.clickDestroy'))}</div>`;
-        else if (item.kind === 'weapon' || item.kind === 'armor')
-          extra = `<div class="tt-sub">${esc(t('itemUi.tooltip.clickEquip'))}</div>`;
-        else if (item.kind === 'food' || item.kind === 'drink')
-          extra = `<div class="tt-sub">${esc(t('itemUi.tooltip.clickConsume'))}</div>`;
-        else if (item.kind === 'potion')
-          extra = `<div class="tt-sub">${esc(t('itemUi.tooltip.clickUseInstant'))}</div>`;
-        else if (item.use) extra = `<div class="tt-sub">${esc(t('itemUi.tooltip.clickUse'))}</div>`;
-        return this.itemTooltip(item) + extra;
-      });
-      grid.appendChild(row);
-    }
-  }
-
-  // Refresh only the grid contents (used by live search) so the search input
-  // keeps focus and caret position across keystrokes.
-  private refreshBagGrid(): void {
-    const grid = $('#bags').querySelector('.bag-grid') as HTMLElement | null;
-    if (!grid) return;
-    const prevScrollTop = grid.scrollTop;
-    grid.innerHTML = '';
-    this.fillBagGrid(grid);
-    grid.scrollTop = prevScrollTop;
-  }
-
-  private sellBagItem(slot: InvSlot, ev: MouseEvent): void {
-    const count = Math.max(1, Math.floor(slot.count));
-    if (ev.ctrlKey || ev.metaKey) {
-      this.sim.sellItem(slot.itemId, count);
-    } else if (ev.shiftKey && count > 1) {
-      this.showSellQuantityPrompt(slot.itemId, count);
-    } else {
-      this.sim.sellItem(slot.itemId);
-    }
-  }
-
-  private showDiscardItemPrompt(itemId: string, maxCount: number): void {
-    document.querySelectorAll('.discard-item-prompt').forEach((el) => {
-      el.remove();
-    });
-    const item = ITEMS[itemId];
-    const stack = $('#prompt-stack');
-    const prompt = document.createElement('div');
-    prompt.className = 'prompt panel discard-item-prompt';
-    const itemName = item ? itemDisplayName(item) : itemId;
-    prompt.innerHTML = `<div class="prompt-text">${esc(t('itemUi.bags.destroyTitle', { item: itemName }))}</div>`;
-    let input: HTMLInputElement | null = null;
-    if (maxCount > 1) {
-      input = document.createElement('input');
-      input.className = 'prompt-number';
-      input.type = 'number';
-      input.min = '1';
-      input.max = String(maxCount);
-      input.step = '1';
-      input.value = '1';
-      prompt.appendChild(input);
-    }
-    const confirm = document.createElement('button');
-    confirm.className = 'btn';
-    confirm.textContent = t('itemUi.bags.destroyConfirm');
-    const cancel = document.createElement('button');
-    cancel.className = 'btn';
-    cancel.textContent = t('itemUi.bags.destroyCancel');
-    const close = () => prompt.remove();
-    const submit = () => {
-      const count = input
-        ? Math.max(1, Math.min(maxCount, Math.floor(Number(input.value) || 0)))
-        : 1;
-      this.sim.discardItem(itemId, count);
-      close();
-      this.hideTooltip();
-      this.renderBags();
-    };
-    confirm.addEventListener('click', submit);
-    cancel.addEventListener('click', close);
-    if (input) {
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') submit();
-        else if (e.key === 'Escape') close();
-      });
-    }
-    prompt.append(confirm, cancel);
-    stack.appendChild(prompt);
-    if (input)
-      window.setTimeout(() => {
-        input.focus();
-        input.select();
-      }, 0);
-  }
-
-  private showSellQuantityPrompt(itemId: string, maxCount: number): void {
-    document.querySelectorAll('.sell-quantity-prompt').forEach((el) => {
-      el.remove();
-    });
-    const item = ITEMS[itemId];
-    const stack = $('#prompt-stack');
-    const prompt = document.createElement('div');
-    prompt.className = 'prompt panel sell-quantity-prompt';
-    const itemName = item ? itemDisplayName(item) : itemId;
-    prompt.innerHTML = `<div class="prompt-text">${esc(t('itemUi.vendor.sellQuantityTitle', { item: itemName }))}</div>`;
-    const input = document.createElement('input');
-    input.className = 'prompt-number';
-    input.type = 'number';
-    input.setAttribute('aria-label', t('itemUi.vendor.sellQuantityInput'));
-    input.min = '1';
-    input.max = String(maxCount);
-    input.step = '1';
-    input.value = '1';
-    const confirm = document.createElement('button');
-    confirm.className = 'btn';
-    confirm.textContent = t('itemUi.vendor.sellQuantityConfirm');
-    const cancel = document.createElement('button');
-    cancel.className = 'btn';
-    cancel.textContent = t('itemUi.vendor.sellQuantityCancel');
-    const close = () => prompt.remove();
-    const submit = () => {
-      const count = Math.max(1, Math.min(maxCount, Math.floor(Number(input.value) || 0)));
-      this.sim.sellItem(itemId, count);
-      close();
-    };
-    confirm.addEventListener('click', submit);
-    cancel.addEventListener('click', close);
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') submit();
-      else if (e.key === 'Escape') close();
-    });
-    prompt.append(input, confirm, cancel);
-    stack.appendChild(prompt);
-    window.setTimeout(() => {
-      input.focus();
-      input.select();
-    }, 0);
+    this.bagsWindow.render();
   }
 
   // -------------------------------------------------------------------------
@@ -10911,12 +10569,10 @@ export class Hud {
     this.bindContextMenuActions((act) => {
       if (act === 'convert-raid') {
         this.sim.convertPartyToRaid();
-        this.socialTab = 'raid';
-        if ($('#social-window').classList.contains('open')) this.renderSocial();
+        this.socialWindow.selectRaidTab();
       } else if (act === 'convert-party') {
         this.sim.convertRaidToParty();
-        this.socialTab = 'raid';
-        if ($('#social-window').classList.contains('open')) this.renderSocial();
+        this.socialWindow.selectRaidTab();
       }
     });
   }
@@ -11313,563 +10969,18 @@ export class Hud {
   }
 
   // -------------------------------------------------------------------------
-  // Social panel: friends / guild / ignore (online play)
+  // Social panel: friends / guild / ignore / raid (online play).
+  //
+  // The window is a pure core (social_view.ts) + painter (social_window.ts). Hud
+  // stays the coordinator: it owns the open/close keybind, the slow-HUD cadence
+  // refresh (update -> socialWindow.refreshIfChanged), the chat-context raid-tab
+  // jump (selectRaidTab), and the window-manager close, delegating each to the
+  // painter. The painter owns the tab/notice/typeahead state + the listener
+  // delegation that keeps a cadence repaint from churning per-row handlers.
   // -------------------------------------------------------------------------
 
   toggleSocial(): void {
-    const el = $('#social-window');
-    if (el.classList.contains('open')) {
-      el.classList.remove('open');
-      return;
-    }
-    this.closeOtherWindows('#social-window');
-    el.classList.add('open');
-    this.socialNotice = null;
-    this.lastSocialStruct = this.socialStructSig();
-    this.lastSocialContent = JSON.stringify({
-      social: this.sim.socialInfo,
-      party: this.sim.partyInfo,
-    });
-    this.renderSocial();
-  }
-
-  // structural identity of the panel: which tab, online or not, and the guild
-  // membership/rank (which changes the footer). Content within a tab — a
-  // friend's zone, the roster — doesn't count, so it can refresh in place.
-  private socialStructSig(): string {
-    const g = this.sim.socialInfo?.guild;
-    const p = this.sim.partyInfo;
-    const raidSig = p
-      ? `${p.raid ? 1 : 0}:${p.leader}:${p.members.map((m) => `${m.pid}.${m.group}`).join(',')}`
-      : 'solo';
-    return `${this.socialTab}|${this.sim.socialInfo !== null}|${g?.id ?? 0}|${g?.rank ?? ''}|${raidSig}`;
-  }
-
-  // Full rebuild: title, tabs, body, notice, and the tab's footer (with its
-  // typeahead). Used on open, tab switch, and guild-membership changes.
-  private renderSocial(): void {
-    const el = $('#social-window');
-    if (!el.classList.contains('open')) return;
-    const tab = this.socialTab;
-    const online = this.sim.socialInfo !== null;
-    const realmTag =
-      online && this.sim.realm
-        ? ` <span class="soc-realm-tag">- ${esc(this.sim.realm)}</span>`
-        : '';
-    el.innerHTML =
-      `<div class="panel-title"><span>${esc(t('hud.social.title'))}${realmTag}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>` +
-      `<div class="soc-tabs">` +
-      `<button type="button" class="soc-tab ${tab === 'friends' ? 'on' : ''}" data-tab="friends" aria-pressed="${tab === 'friends' ? 'true' : 'false'}">${esc(t('hud.social.friendsTab'))}</button>` +
-      `<button type="button" class="soc-tab ${tab === 'guild' ? 'on' : ''}" data-tab="guild" aria-pressed="${tab === 'guild' ? 'true' : 'false'}">${esc(t('hud.social.guildTab'))}</button>` +
-      `<button type="button" class="soc-tab ${tab === 'ignore' ? 'on' : ''}" data-tab="ignore" aria-pressed="${tab === 'ignore' ? 'true' : 'false'}">${esc(t('hud.social.ignoreTab'))}</button>` +
-      `<button type="button" class="soc-tab ${tab === 'raid' ? 'on' : ''}" data-tab="raid" aria-pressed="${tab === 'raid' ? 'true' : 'false'}">${esc(t('hud.social.raidTab'))}</button>` +
-      `</div>` +
-      `<div class="soc-body"></div>` +
-      `<div class="soc-notice"></div>` +
-      (tab === 'raid' ? '' : online ? this.socialFooter() : '');
-    this.wireSocialChrome(el);
-    this.refreshSocialList();
-    this.renderSocialNotice();
-  }
-
-  // Lighter refresh: just the list inside the current tab, leaving the footer
-  // (and any half-typed name / open suggestions) untouched.
-  private refreshSocialList(): void {
-    const body = $('#social-window').querySelector('.soc-body') as HTMLElement | null;
-    if (!body) return;
-    const online = this.sim.socialInfo !== null;
-    body.innerHTML =
-      this.socialTab === 'raid'
-        ? this.raidHtml()
-        : !online
-          ? `<div class="soc-empty">${esc(t('hud.social.offlineEmpty'))}</div>`
-          : this.socialTab === 'friends'
-            ? this.friendsHtml()
-            : this.socialTab === 'guild'
-              ? this.guildHtml()
-              : this.ignoreHtml();
-    this.wireSocialRows(body);
-  }
-
-  private friendsHtml(): string {
-    const friends = this.sim.socialInfo?.friends ?? [];
-    if (friends.length === 0)
-      return `<div class="soc-empty">${esc(t('hud.social.friendsEmpty'))}</div>`;
-    return friends
-      .map((f) => {
-        const dot = f.online ? (f.status ?? 'online') : 'off';
-        const meta = f.online
-          ? `<span class="zone">${esc(f.zone ? localizeZone(f.zone) : '')}</span><br>${esc(statusLabel(f.status))}`
-          : esc(t('hud.social.status.offline'));
-        const name = f.online
-          ? `<button type="button" class="soc-name soc-link" data-whisper="${esc(f.name)}" title="${esc(t('hud.social.whisperTitle', { name: f.name }))}">${esc(f.name)}</button>`
-          : `<span class="soc-name">${esc(f.name)}</span>`;
-        const whisper = f.online
-          ? `<button type="button" class="soc-x" data-whisper="${esc(f.name)}" title="${esc(t('hud.social.whisperTitle', { name: f.name }))}">${svgIcon('whisper')}</button>`
-          : '';
-        const tip = esc(dotTitle(f.online, f.status, f.zone));
-        return (
-          `<div class="soc-row">` +
-          `<span class="soc-dot ${dot === 'off' ? '' : dot}" title="${tip}"></span>` +
-          `<span class="soc-id">${name}<span class="soc-sub">${esc(t('hud.social.levelClass', { level: formatNumber(f.level, { maximumFractionDigits: 0 }), className: playerClassDisplayName(f.cls) }))}</span></span>` +
-          `<span class="soc-meta" title="${tip}">${meta}</span>` +
-          `<span class="soc-actions">${whisper}<button type="button" class="soc-x" data-act="unfriend" data-name="${esc(f.name)}" title="${esc(t('hud.social.removeFriendTitle', { name: f.name }))}">${svgIcon('close')}</button></span>` +
-          `</div>`
-        );
-      })
-      .join('');
-  }
-
-  private ignoreHtml(): string {
-    const blocks = this.sim.socialInfo?.blocks ?? [];
-    if (blocks.length === 0)
-      return `<div class="soc-empty">${esc(t('hud.social.ignoreEmpty'))}</div>`;
-    return blocks
-      .map(
-        (b) =>
-          `<div class="soc-row">` +
-          `<span class="soc-name">${esc(b.name)}</span>` +
-          `<span class="soc-actions" style="margin-left:auto"><button type="button" class="soc-x" data-act="unblock" data-name="${esc(b.name)}" title="${esc(t('hud.social.stopIgnoringTitle', { name: b.name }))}">${svgIcon('close')}</button></span>` +
-          `</div>`,
-      )
-      .join('');
-  }
-
-  private guildHtml(): string {
-    const guild = this.sim.socialInfo?.guild ?? null;
-    if (!guild) return `<div class="soc-empty">${esc(t('hud.social.noGuild'))}</div>`;
-    const me = guild.rank;
-    const memberCount = guild.members.length;
-    const guildCount = formatNumber(memberCount, { maximumFractionDigits: 0 });
-    const head = `<div class="soc-guild-head">&lt;${esc(guild.name)}&gt; <span class="gm">${esc(tPlural('hudChrome.plurals.guildMembers', memberCount, { rank: rankLabel(me), count: guildCount }))}</span></div>`;
-    const rows = guild.members
-      .map((m) => {
-        const dot = m.online ? (m.status ?? 'online') : 'off';
-        const meta = m.online
-          ? `<span class="zone">${esc(m.zone ? localizeZone(m.zone) : '')}</span><br>${esc(statusLabel(m.status))}`
-          : esc(t('hud.social.status.offline'));
-        const self = m.name === this.sim.player.name;
-        const nameInner = `${esc(m.name)}<span class="rank">${esc(rankLabel(m.rank))}</span>`;
-        const name =
-          m.online && !self
-            ? `<button type="button" class="soc-name soc-link" data-whisper="${esc(m.name)}" title="${esc(t('hud.social.whisperTitle', { name: m.name }))}">${nameInner}</button>`
-            : `<span class="soc-name">${nameInner}</span>`;
-        let actions =
-          m.online && !self
-            ? `<button type="button" class="soc-x" data-whisper="${esc(m.name)}" title="${esc(t('hud.social.whisperTitle', { name: m.name }))}">${svgIcon('whisper')}</button>`
-            : '';
-        if (!self && me === 'leader')
-          actions += `<button type="button" class="soc-x" data-act="gtransfer" data-name="${esc(m.name)}" title="${esc(t('hud.social.makeGuildMasterTitle', { name: m.name }))}">${svgIcon('crown')}</button>`;
-        if (!self && me === 'leader' && m.rank === 'member')
-          actions += `<button type="button" class="soc-x" data-act="promote" data-name="${esc(m.name)}" title="${esc(t('hud.social.promoteTitle', { name: m.name }))}">▲</button>`;
-        if (!self && me === 'leader' && m.rank === 'officer')
-          actions += `<button type="button" class="soc-x" data-act="demote" data-name="${esc(m.name)}" title="${esc(t('hud.social.demoteTitle', { name: m.name }))}">▼</button>`;
-        // leaders may remove members + officers; officers may remove only members
-        const canKick =
-          !self &&
-          ((me === 'leader' && m.rank !== 'leader') || (me === 'officer' && m.rank === 'member'));
-        if (canKick)
-          actions += `<button type="button" class="soc-x" data-act="gkick" data-name="${esc(m.name)}" title="${esc(t('hud.social.removeGuildTitle', { name: m.name }))}">${svgIcon('close')}</button>`;
-        const tip = esc(dotTitle(m.online, m.status, m.zone));
-        return (
-          `<div class="soc-row">` +
-          `<span class="soc-dot ${dot === 'off' ? '' : dot}" title="${tip}"></span>` +
-          `<span class="soc-id">${name}<span class="soc-sub">${esc(t('hud.social.levelClass', { level: formatNumber(m.level, { maximumFractionDigits: 0 }), className: playerClassDisplayName(m.cls) }))}</span></span>` +
-          `<span class="soc-meta" title="${tip}">${meta}</span>` +
-          (actions ? `<span class="soc-actions">${actions}</span>` : '') +
-          `</div>`
-        );
-      })
-      .join('');
-    return head + rows;
-  }
-
-  private raidHtml(): string {
-    const party = this.sim.partyInfo;
-    if (!party?.raid) {
-      const canConvert = !!party && party.leader === this.sim.playerId && party.members.length >= 5;
-      return `<div class="soc-empty">${esc(t('hud.social.raidEmpty'))}${canConvert ? `<div class="soc-empty-action"><button type="button" class="soc-x" data-act="convert-raid">${esc(t('hud.chat.context.convertToRaid'))}</button></div>` : ''}</div>`;
-    }
-    const leader = party.leader === this.sim.playerId;
-    const groups: Record<1 | 2, typeof party.members> = {
-      1: party.members.filter((m) => m.group === 1),
-      2: party.members.filter((m) => m.group === 2),
-    };
-    const groupHtml = (group: 1 | 2): string => {
-      const rows =
-        groups[group]
-          .map((m) => {
-            const isLead = m.pid === party.leader;
-            const otherGroup = group === 1 ? 2 : 1;
-            const otherFull = groups[otherGroup].length >= 5;
-            const move =
-              leader && !otherFull
-                ? `<button type="button" class="soc-x" data-act="raid-move" data-pid="${m.pid}" data-group="${otherGroup}" title="${esc(t('hud.social.raidMoveToGroup', { group: formatNumber(otherGroup, { maximumFractionDigits: 0 }) }))}">${esc(formatNumber(otherGroup, { maximumFractionDigits: 0 }))}</button>`
-                : '';
-            return (
-              `<div class="soc-row raid-row">` +
-              `<span class="soc-id"><span class="soc-name">${esc(m.name)}${isLead ? `<span class="rank">${esc(t('hud.social.raidLeader'))}</span>` : ''}</span><span class="soc-sub">${esc(t('hud.social.levelClass', { level: formatNumber(m.level, { maximumFractionDigits: 0 }), className: playerClassDisplayName(m.cls) }))}</span></span>` +
-              `<span class="soc-meta">${esc(formatNumber(Math.round((m.hp / Math.max(1, m.mhp)) * 100), { maximumFractionDigits: 0 }))}%</span>` +
-              (move ? `<span class="soc-actions">${move}</span>` : '') +
-              `</div>`
-            );
-          })
-          .join('') || `<div class="soc-empty">${esc(t('hud.social.raidGroupEmpty'))}</div>`;
-      return `<div class="raid-group"><div class="soc-guild-head">${esc(t('hud.social.raidGroupTitle', { position: formatNumber(group, { maximumFractionDigits: 0 }), count: formatNumber(groups[group].length, { maximumFractionDigits: 0 }) }))}</div>${rows}</div>`;
-    };
-    // Raid groups cannot enter standard instances; let the leader fold a small raid
-    // (<= one party's worth) back into a normal party. Larger raids must shed members first.
-    const canUnconvert = leader && party.members.length <= 5;
-    const footer = canUnconvert
-      ? `<div class="soc-empty-action"><button type="button" class="soc-x" data-act="convert-party">${esc(t('hud.chat.context.convertToParty'))}</button></div>`
-      : '';
-    return `<div class="raid-groups">${groupHtml(1)}${groupHtml(2)}</div>${footer}`;
-  }
-
-  // The add/action row changes with the tab (and guild membership). Inputs
-  // tagged data-suggest get the username typeahead.
-  private socialFooter(): string {
-    if (this.socialTab === 'friends')
-      return this.addRow(
-        'friend',
-        'friend-add',
-        t('hud.social.friendSearchPlaceholder'),
-        t('hud.social.add'),
-        16,
-        true,
-      );
-    if (this.socialTab === 'ignore')
-      return this.addRow(
-        'ignore',
-        'block-add',
-        t('hud.social.ignoreSearchPlaceholder'),
-        t('hud.social.ignoreAction'),
-        16,
-        true,
-      );
-    const guild = this.sim.socialInfo?.guild ?? null;
-    if (!guild)
-      return this.addRow(
-        'gname',
-        'guild-create',
-        t('hud.social.guildNamePlaceholder'),
-        t('hud.social.found'),
-        24,
-        false,
-      );
-    let foot = '';
-    if (guild.rank !== 'member')
-      foot += this.addRow(
-        'ginvite',
-        'guild-invite',
-        t('hud.social.guildInvitePlaceholder'),
-        t('hud.social.invite'),
-        16,
-        true,
-      );
-    // classic MMOs: a Guild Master with other members can't just leave — they disband
-    // (or hand over leadership via the crown action). Everyone else can leave.
-    foot +=
-      guild.rank === 'leader' && guild.members.length > 1
-        ? `<div class="soc-add soc-leave"><button class="btn" data-act="guild-disband">${esc(t('hud.social.disbandGuild'))}</button></div>`
-        : `<div class="soc-add soc-leave"><button class="btn" data-act="guild-leave">${esc(t('hud.social.leaveGuild'))}</button></div>`;
-    return foot;
-  }
-
-  private addRow(
-    field: string,
-    act: string,
-    placeholder: string,
-    label: string,
-    maxlen: number,
-    suggest: boolean,
-  ): string {
-    return (
-      `<div class="soc-add">` +
-      (suggest ? `<div class="soc-suggest" data-for="${field}" role="listbox"></div>` : '') +
-      `<input maxlength="${maxlen}" aria-label="${esc(placeholder)}" placeholder="${esc(placeholder)}" data-field="${field}"${suggest ? ' data-suggest="1" aria-autocomplete="list"' : ''} autocomplete="off" spellcheck="false"/>` +
-      `<button class="btn" data-act="${act}">${esc(label)}</button></div>`
-    );
-  }
-
-  // Wire the parts that survive a content refresh: close, tabs, footer + search.
-  private wireSocialChrome(el: HTMLElement): void {
-    el.querySelector('[data-close]')?.addEventListener('click', () => this.toggleSocial());
-    el.querySelectorAll('.soc-tab').forEach((t) => {
-      t.addEventListener('click', () => {
-        this.socialTab = (t as HTMLElement).dataset.tab as 'friends' | 'guild' | 'ignore' | 'raid';
-        this.socialNotice = null;
-        this.lastSocialStruct = this.socialStructSig();
-        this.renderSocial();
-      });
-    });
-    const field = (sel: string): string =>
-      (el.querySelector(`input[data-field="${sel}"]`) as HTMLInputElement | null)?.value.trim() ??
-      '';
-    const submit = (act: string | undefined): void => {
-      if (act === 'friend-add') void this.socialResolveAndAct('friend', field('friend'));
-      else if (act === 'block-add') void this.socialResolveAndAct('ignore', field('ignore'));
-      else if (act === 'guild-invite') void this.socialResolveAndAct('ginvite', field('ginvite'));
-      else if (act === 'guild-create') {
-        const n = field('gname');
-        if (n) {
-          this.sim.guildCreate(n);
-          this.clearSocialInput('gname');
-        }
-      } else if (act === 'guild-leave')
-        this.showPrompt(
-          esc(t('hud.social.leavePrompt')),
-          t('hud.social.leaveGuild'),
-          () => this.sim.guildLeave(),
-          () => {},
-        );
-      else if (act === 'guild-disband')
-        this.showPrompt(
-          esc(t('hud.social.disbandPrompt')),
-          t('hud.social.disbandConfirm'),
-          () => this.sim.guildDisband(),
-          () => {
-            /* keep */
-          },
-        );
-    };
-    el.querySelectorAll('.soc-add .btn').forEach((b) => {
-      b.addEventListener('click', () => {
-        submit((b as HTMLElement).dataset.act);
-      });
-    });
-    // Enter-to-submit only for plain inputs (the guild name). Search inputs get
-    // richer keyboard handling — arrows + Enter to pick a suggestion — below.
-    el.querySelectorAll('.soc-add input:not([data-suggest])').forEach((inp) => {
-      inp.addEventListener('keydown', (e) => {
-        if ((e as KeyboardEvent).key !== 'Enter') return;
-        submit((inp.parentElement?.querySelector('.btn') as HTMLElement | null)?.dataset.act);
-      });
-    });
-    this.wireSuggest(el);
-  }
-
-  // Wire per-row actions (re-run on every list refresh).
-  private wireSocialRows(scope: HTMLElement): void {
-    scope.querySelectorAll('.soc-x').forEach((x) => {
-      x.addEventListener('click', () => {
-        const act = (x as HTMLElement).dataset.act;
-        const name = (x as HTMLElement).dataset.name ?? '';
-        if (act === 'unfriend') this.sim.friendRemove(name);
-        else if (act === 'unblock') this.sim.blockRemove(name);
-        else if (act === 'gkick') this.sim.guildKick(name);
-        else if (act === 'promote') this.sim.guildPromote(name);
-        else if (act === 'demote') this.sim.guildDemote(name);
-        else if (act === 'gtransfer')
-          this.showPrompt(
-            t('hud.social.transferPrompt', { name: `<b>${esc(name)}</b>` }),
-            t('hud.social.transferConfirm'),
-            () => this.sim.guildTransfer(name),
-            () => {
-              /* keep */
-            },
-          );
-        else if (act === 'raid-move') {
-          const pid = Number((x as HTMLElement).dataset.pid);
-          const group = Number((x as HTMLElement).dataset.group);
-          if (Number.isFinite(pid) && (group === 1 || group === 2))
-            this.sim.moveRaidMember(pid, group);
-        } else if (act === 'convert-raid') {
-          this.sim.convertPartyToRaid();
-          this.socialTab = 'raid';
-          this.renderSocial();
-        } else if (act === 'convert-party') {
-          this.sim.convertRaidToParty();
-          this.socialTab = 'raid';
-          this.renderSocial();
-        }
-      });
-    });
-    scope.querySelectorAll('[data-whisper]').forEach((w) => {
-      w.addEventListener('click', () => {
-        this.startWhisper((w as HTMLElement).dataset.whisper ?? '');
-      });
-    });
-  }
-
-  private suggestKind(field: string): 'friend' | 'ignore' | 'ginvite' {
-    return field === 'friend' ? 'friend' : field === 'ignore' ? 'ignore' : 'ginvite';
-  }
-
-  // Username typeahead: debounced search against same-realm characters, with
-  // arrow-key navigation and Enter to pick the highlighted name.
-  private wireSuggest(el: HTMLElement): void {
-    el.querySelectorAll('input[data-suggest]').forEach((node) => {
-      const input = node as HTMLInputElement;
-      const field = input.dataset.field ?? '';
-      input.addEventListener('input', () => {
-        const q = input.value.trim();
-        window.clearTimeout(this.socialSuggestTimer);
-        if (!q) {
-          this.renderSuggest(field, []);
-          return;
-        }
-        this.socialSuggestTimer = window.setTimeout(async () => {
-          const results = await this.sim.searchCharacters(q);
-          this.renderSuggest(
-            field,
-            results.filter((r) => r.name !== this.sim.player.name).slice(0, 8),
-          );
-        }, 160);
-      });
-      input.addEventListener('keydown', (e) => {
-        const ke = e as KeyboardEvent;
-        const open = this.socialSuggest.field === field && this.socialSuggest.items.length > 0;
-        if (ke.key === 'ArrowDown' && open) {
-          ke.preventDefault();
-          this.moveSuggest(field, 1);
-        } else if (ke.key === 'ArrowUp' && open) {
-          ke.preventDefault();
-          this.moveSuggest(field, -1);
-        } else if (ke.key === 'Escape' && open) {
-          ke.preventDefault();
-          this.renderSuggest(field, []);
-        } else if (ke.key === 'Enter') {
-          ke.preventDefault();
-          const picked =
-            open && this.socialSuggest.index >= 0
-              ? this.socialSuggest.items[this.socialSuggest.index].name
-              : input.value;
-          void this.socialResolveAndAct(this.suggestKind(field), picked);
-        }
-      });
-      // let a suggestion's mousedown fire before blur clears the list
-      input.addEventListener('blur', () =>
-        window.setTimeout(() => this.renderSuggest(field, []), 150),
-      );
-    });
-  }
-
-  private renderSuggest(
-    field: string,
-    results: { name: string; cls: string; level: number }[],
-  ): void {
-    const box = $('#social-window').querySelector(
-      `.soc-suggest[data-for="${field}"]`,
-    ) as HTMLElement | null;
-    if (!box) return;
-    this.socialSuggest = { field, items: results, index: -1 };
-    if (results.length === 0) {
-      box.style.display = 'none';
-      box.innerHTML = '';
-      return;
-    }
-    const kind = this.suggestKind(field);
-    box.innerHTML = results
-      .map((r, i) => {
-        const meta = t('hud.social.levelClass', {
-          level: formatNumber(r.level, { maximumFractionDigits: 0 }),
-          className: playerClassDisplayName(r.cls),
-        });
-        return `<button type="button" class="soc-sugg-item" data-i="${i}" data-name="${esc(r.name)}" role="option"><span class="soc-name">${esc(r.name)}</span><span class="soc-meta">${esc(meta)}</span></button>`;
-      })
-      .join('');
-    box.style.display = 'block';
-    box.querySelectorAll('.soc-sugg-item').forEach((it) => {
-      it.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-        void this.socialResolveAndAct(kind, (it as HTMLElement).dataset.name ?? '');
-      });
-      it.addEventListener('mousemove', () => {
-        this.socialSuggest.index = Number((it as HTMLElement).dataset.i);
-        this.highlightSuggest(field);
-      });
-    });
-  }
-
-  private moveSuggest(field: string, delta: number): void {
-    const n = this.socialSuggest.items.length;
-    if (n === 0) return;
-    // start at the top when nothing is highlighted yet, then wrap
-    this.socialSuggest.index =
-      this.socialSuggest.index < 0
-        ? delta > 0
-          ? 0
-          : n - 1
-        : (this.socialSuggest.index + delta + n) % n;
-    this.highlightSuggest(field);
-  }
-
-  private highlightSuggest(field: string): void {
-    const box = $('#social-window').querySelector(
-      `.soc-suggest[data-for="${field}"]`,
-    ) as HTMLElement | null;
-    if (!box) return;
-    box.querySelectorAll('.soc-sugg-item').forEach((it) => {
-      const on = Number((it as HTMLElement).dataset.i) === this.socialSuggest.index;
-      it.classList.toggle('active', on);
-      if (on) (it as HTMLElement).scrollIntoView({ block: 'nearest' });
-    });
-  }
-
-  // Authoritative existence check (realm-scoped) before acting, so we can give
-  // clear inline "no such player" feedback instead of a silent failure.
-  private async socialResolveAndAct(
-    kind: 'friend' | 'ignore' | 'ginvite',
-    rawName: string,
-  ): Promise<void> {
-    const name = rawName.trim();
-    if (!name) return;
-    const results = await this.sim.searchCharacters(name);
-    const exact = results.find((r) => r.name.toLowerCase() === name.toLowerCase());
-    if (!exact) {
-      this.setSocialNotice(
-        t('hud.social.noPlayerNamed', {
-          name,
-          realm: this.sim.realm || t('hud.social.currentRealm'),
-        }),
-        true,
-      );
-      return;
-    }
-    if (exact.name === this.sim.player.name) {
-      this.setSocialNotice(t('hud.social.selfNotice'), true);
-      return;
-    }
-    if (kind === 'friend') {
-      this.sim.friendAdd(exact.name);
-      this.setSocialNotice(t('hud.social.friendAdded', { name: exact.name }), false);
-      this.clearSocialInput('friend');
-    } else if (kind === 'ignore') {
-      this.sim.blockAdd(exact.name);
-      this.setSocialNotice(t('hud.social.nowIgnoring', { name: exact.name }), false);
-      this.clearSocialInput('ignore');
-    } else {
-      this.sim.guildInvite(exact.name);
-      this.setSocialNotice(t('hud.social.guildInvited', { name: exact.name }), false);
-      this.clearSocialInput('ginvite');
-    }
-    this.renderSuggest(kind, []);
-  }
-
-  private clearSocialInput(field: string): void {
-    const inp = $('#social-window').querySelector(
-      `input[data-field="${field}"]`,
-    ) as HTMLInputElement | null;
-    if (inp) inp.value = '';
-  }
-
-  private setSocialNotice(text: string, error: boolean): void {
-    this.socialNotice = { text, error };
-    this.renderSocialNotice();
-  }
-
-  private renderSocialNotice(): void {
-    const box = $('#social-window').querySelector('.soc-notice') as HTMLElement | null;
-    if (!box) return;
-    if (!this.socialNotice) {
-      box.style.display = 'none';
-      box.textContent = '';
-      return;
-    }
-    box.textContent = this.socialNotice.text;
-    box.className = `soc-notice${this.socialNotice.error ? ' err' : ' ok'}`;
-    box.style.display = 'block';
+    this.socialWindow.toggle();
   }
 
   // Open the chat bar pre-filled with a whisper to this player (classic-MMO-style DM).

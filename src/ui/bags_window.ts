@@ -1,0 +1,460 @@
+// Bags window painter: owns the #bags DOM + the window-local filter state (the
+// category/sort/search chips, persisted to localStorage), reads the player's
+// inventory + copper from IWorld, and runs the mode-dependent bag click (trade /
+// market-sell / vendor-sell / pet-feed / quest-discard / plain-use) plus the
+// bag-only discard/sell prompts. The pure click/tooltip/grid decisions live in
+// bags_view.ts (which reuses bag_filter.ts for the filter/sort); this is the thin
+// DOM consumer per the unit_portrait / vendor_window template, composing the shared
+// PainterHostPresentation bag (icon/money/tooltip) plus the bags-specific glue.
+//
+// Bags is the inventory cluster's hub: it rides alongside the vendor / market /
+// trade windows, and those cross-window modes + shared drag state stay on the HUD
+// behind the injected deps (tradeOpen / marketSell / vendorOpen / pet-feed), so the
+// painter owns no cross-window state of its own. The HUD keeps toggleBags() +
+// onInventoryChanged() as the coordinator and calls render() to repaint.
+//
+// No raw hex (decision 12): the item-quality color comes from the shared
+// QUALITY_COLOR map, and the unranked fallback is the --color-quality-default token
+// (not a literal white hex).
+
+import { audio } from '../game/audio';
+import { ITEMS } from '../sim/data';
+import type { InvSlot } from '../sim/types';
+import type { IWorld } from '../world_api';
+import {
+  BAG_CATEGORIES,
+  BAG_SORTS,
+  type BagCategory,
+  type BagFilterState,
+  type BagSort,
+  DEFAULT_BAG_FILTER,
+  parseBagFilter,
+  serializeBagFilter,
+} from './bag_filter';
+import {
+  type BagMode,
+  bagItemAction,
+  bagQualityKey,
+  bagTooltipHintKey,
+  buildBagGrid,
+} from './bags_view';
+import { itemDisplayName } from './entity_i18n';
+import { esc } from './esc';
+import { encodeHotbarAction, HOTBAR_ACTION_MIME } from './hotbar';
+import { formatNumber, type TranslationKey, t } from './i18n';
+import { QUALITY_COLOR } from './icons';
+import type { PainterHostPresentation } from './painter_host';
+import { svgIcon } from './ui_icons';
+
+const BAG_FILTER_KEY = 'woc_bag_filter';
+
+// The unranked quality fallback as a CSS custom property (decision 12). The shared
+// QUALITY_COLOR map carries the real per-quality hex; this token covers the rare
+// item with no quality field, so no raw hex lives in the painter.
+const QUALITY_DEFAULT_COLOR = 'var(--color-quality-default)';
+
+const BAG_CATEGORY_LABEL_KEYS: Record<BagCategory, TranslationKey> = {
+  all: 'hudChrome.bags.filterAll',
+  weapon: 'hudChrome.bags.filterWeapon',
+  armor: 'hudChrome.bags.filterArmor',
+  consumable: 'hudChrome.bags.filterConsumable',
+  material: 'hudChrome.bags.filterMaterial',
+  quest: 'hudChrome.bags.filterQuest',
+};
+const BAG_SORT_LABEL_KEYS: Record<BagSort, TranslationKey> = {
+  recent: 'hudChrome.bags.sortRecent',
+  quality: 'hudChrome.bags.sortQuality',
+  name: 'hudChrome.bags.sortName',
+};
+
+/**
+ * Hud-supplied glue. The icon/money/tooltip painters are the shared
+ * PainterHostPresentation bag (Hud builds it once and hands it to every window that
+ * renders item rows); this composes that base and adds the inventory-cluster
+ * surface: the world reads, the cross-window mode flags + commands, the pet-feed /
+ * drag / wallet plumbing, and the close/teardown chrome. The module never reaches
+ * into Hud directly.
+ */
+export interface BagsWindowDeps extends PainterHostPresentation {
+  /** The #bags root (Hud owns the id; the painter stays instance-parameterized). */
+  root(): HTMLElement;
+  /** The live world (offline Sim or online ClientWorld mirror). */
+  world(): IWorld;
+  /** Localized $WOC on-chain balance markup for the money footer. */
+  wocBalanceHtml(): string;
+  hideTooltip(): void;
+  cancelPetFeed(): void;
+  renderCharIfOpen(): void;
+  // Cross-window mode flags (read each click so the painter never caches stale modes).
+  vendorOpen(): boolean;
+  tradeOpen(): boolean;
+  /** The World Market is open on its Sell tab. */
+  isMarketSell(): boolean;
+  pendingPetFeed(): boolean;
+  // Cross-window commands the bag click fans out to.
+  closeVendor(): void;
+  addItemToTrade(itemId: string): void;
+  /** Stage a bag item for a Market listing (selects it + repaints the market). */
+  stageMarketSell(itemId: string): void;
+  showError(text: string): void;
+  setPendingPetFeed(active: boolean): void;
+  resetPetBarSig(): void;
+  // Hotbar drag plumbing (cross-window drag state lives on the HUD).
+  isHotbarItemId(itemId: string): boolean;
+  setDragAction(action: { type: 'item'; id: string } | null): void;
+  clearActionDropTargets(): void;
+}
+
+export class BagsWindow {
+  // Window-local filter state: category chips + sort + live search, persisted across
+  // sessions. Pure logic lives in bag_filter.ts / bags_view.ts; this is the consumer.
+  private filter: BagFilterState = (() => {
+    try {
+      return parseBagFilter(localStorage.getItem(BAG_FILTER_KEY));
+    } catch {
+      return { ...DEFAULT_BAG_FILTER };
+    }
+  })();
+
+  constructor(private readonly deps: BagsWindowDeps) {}
+
+  render(): void {
+    const el = this.deps.root();
+    const world = this.deps.world();
+    // .bag-grid (not #bags) is the scroll container; it is recreated on every
+    // rebuild, so capture its scroll offset and reapply it to the fresh grid:
+    // otherwise using an item (e.g. a potion) snaps the list back to the top.
+    const prevScrollTop = el.querySelector('.bag-grid')?.scrollTop ?? 0;
+    el.innerHTML = `<div class="panel-title"><span>${esc(t('itemUi.bags.title'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('itemUi.bags.close'))}">${svgIcon('close')}</button></div>`;
+    // Skip the chip/search row entirely when the bag is empty: a full filter bar
+    // above a single "(empty)" line is just noise.
+    if (world.inventory.length > 0) el.appendChild(this.buildFilterBar());
+    const grid = document.createElement('div');
+    grid.className = 'bag-grid';
+    this.fillGrid(grid);
+    el.appendChild(grid);
+    grid.scrollTop = prevScrollTop;
+    const moneyRow = document.createElement('div');
+    moneyRow.className = 'money';
+    moneyRow.innerHTML = `${this.deps.wocBalanceHtml()}${this.deps.moneyHtml(world.copper)}`;
+    el.appendChild(moneyRow);
+    el.querySelector('[data-close]')?.addEventListener('click', () => {
+      if (this.deps.vendorOpen() && document.body.classList.contains('mobile-touch')) {
+        this.deps.closeVendor();
+        return;
+      }
+      el.style.display = 'none';
+      this.deps.hideTooltip();
+      this.deps.cancelPetFeed();
+    });
+  }
+
+  private persistFilter(): void {
+    try {
+      localStorage.setItem(BAG_FILTER_KEY, serializeBagFilter(this.filter));
+    } catch {
+      /* storage unavailable (private mode); filter still works in-session */
+    }
+  }
+
+  // The category-chip + sort + search controls above the bag grid. Each control
+  // mutates this.filter, persists, and re-renders; the actual filtering is the pure
+  // buildBagGrid() in bags_view.ts (which reuses bag_filter.ts).
+  private buildFilterBar(): HTMLElement {
+    const bar = document.createElement('div');
+    bar.className = 'bag-filter-bar';
+
+    const chips = document.createElement('div');
+    chips.className = 'bag-chips';
+    chips.setAttribute('role', 'group');
+    chips.setAttribute('aria-label', t('hudChrome.bags.filterGroupAria'));
+    for (const category of BAG_CATEGORIES) {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = `bag-chip${this.filter.category === category ? ' active' : ''}`;
+      chip.textContent = t(BAG_CATEGORY_LABEL_KEYS[category]);
+      chip.setAttribute('aria-pressed', this.filter.category === category ? 'true' : 'false');
+      chip.addEventListener('click', () => {
+        if (this.filter.category === category) return;
+        this.filter.category = category;
+        this.persistFilter();
+        audio.click();
+        this.render();
+      });
+      chips.appendChild(chip);
+    }
+    bar.appendChild(chips);
+
+    const tools = document.createElement('div');
+    tools.className = 'bag-tools';
+
+    const search = document.createElement('input');
+    search.type = 'search';
+    search.className = 'bag-search';
+    search.placeholder = t('hudChrome.bags.searchPlaceholder');
+    search.setAttribute('aria-label', t('hudChrome.bags.searchAria'));
+    search.value = this.filter.search;
+    search.addEventListener('input', () => {
+      this.filter.search = search.value;
+      this.persistFilter();
+      this.refreshGrid();
+    });
+    tools.appendChild(search);
+
+    const sort = document.createElement('select');
+    sort.className = 'bag-sort';
+    sort.setAttribute('aria-label', t('hudChrome.bags.sortAria'));
+    for (const option of BAG_SORTS) {
+      const opt = document.createElement('option');
+      opt.value = option;
+      opt.textContent = t(BAG_SORT_LABEL_KEYS[option]);
+      if (this.filter.sort === option) opt.selected = true;
+      sort.appendChild(opt);
+    }
+    sort.addEventListener('change', () => {
+      this.filter.sort = sort.value as BagSort;
+      this.persistFilter();
+      audio.click();
+      this.render();
+    });
+    tools.appendChild(sort);
+
+    bar.appendChild(tools);
+    return bar;
+  }
+
+  // Populate (or repopulate) the .bag-grid scroll container from the current filter
+  // state. Split out so a search keystroke can refresh just the grid (refreshGrid)
+  // without rebuilding the filter bar and stealing input focus.
+  private fillGrid(grid: HTMLElement): void {
+    const world = this.deps.world();
+    const model = buildBagGrid(world.inventory, (id) => ITEMS[id], this.filter);
+    if (model.state === 'empty') {
+      grid.innerHTML = `<div class="bag-empty">${esc(t('itemUi.bags.empty'))}</div>`;
+      return;
+    }
+    if (model.state === 'noMatch') {
+      grid.innerHTML = `<div class="bag-empty">${esc(t('hudChrome.bags.noMatch'))}</div>`;
+      return;
+    }
+    for (const s of model.visible) {
+      const item = ITEMS[s.itemId];
+      if (!item) continue;
+      const row = document.createElement('button');
+      row.type = 'button';
+      row.className = 'bag-item';
+      const qColor = QUALITY_COLOR[bagQualityKey(item)] ?? QUALITY_DEFAULT_COLOR;
+      const itemName = itemDisplayName(item);
+      row.setAttribute(
+        'aria-label',
+        t('itemUi.bags.itemAria', {
+          item: itemName,
+          count: formatNumber(s.count, { maximumFractionDigits: 0 }),
+        }),
+      );
+      row.innerHTML = `${this.deps.itemIcon(item)}<span style="color:${qColor}">${esc(itemName)}</span><span class="bi-count">${s.count > 1 ? esc(t('itemUi.bags.stackCount', { count: formatNumber(s.count, { maximumFractionDigits: 0 }) })) : ''}</span>`;
+      row.addEventListener('click', (ev) => {
+        const action = bagItemAction(item, this.bagMode());
+        switch (action) {
+          case 'trade':
+            this.deps.addItemToTrade(s.itemId);
+            break;
+          case 'marketSellBlockedQuest':
+            this.deps.showError(t('itemUi.errors.noQuestItems'));
+            return;
+          case 'marketSellBlockedNoMarket':
+            this.deps.showError(t('itemUi.tooltip.cannotMarket'));
+            return;
+          case 'marketSell':
+            this.deps.stageMarketSell(s.itemId);
+            break;
+          case 'vendorSell':
+            this.sellBagItem(s, ev);
+            break;
+          case 'petFeedBlocked':
+            this.deps.showError(t('hud.pet.petEatsFoodOnly'));
+            return;
+          case 'petFeed':
+            this.deps.world().feedPet(s.itemId);
+            this.deps.setPendingPetFeed(false);
+            this.deps.resetPetBarSig();
+            this.render();
+            break;
+          case 'discardQuest':
+            this.showDiscardItemPrompt(s.itemId, Math.max(1, Math.floor(s.count)));
+            break;
+          case 'use':
+            this.deps.world().useItem(s.itemId);
+            this.render();
+            this.deps.renderCharIfOpen();
+            break;
+        }
+      });
+      row.addEventListener('contextmenu', (ev) => {
+        if (!this.deps.vendorOpen() || (!ev.ctrlKey && !ev.metaKey)) return;
+        ev.preventDefault();
+        this.sellBagItem(s, ev);
+      });
+      if (!this.deps.tradeOpen() && !this.deps.vendorOpen() && this.deps.isHotbarItemId(s.itemId)) {
+        row.draggable = true;
+        row.addEventListener('dragstart', (e) => {
+          const action = { type: 'item' as const, id: s.itemId };
+          this.deps.setDragAction(action);
+          this.writeDraggedAction(e.dataTransfer, action);
+          e.dataTransfer!.effectAllowed = 'copy';
+          this.deps.hideTooltip();
+        });
+        row.addEventListener('dragend', () => {
+          this.deps.setDragAction(null);
+          this.deps.clearActionDropTargets();
+        });
+      }
+      this.deps.attachTooltip(row, () => {
+        const key = bagTooltipHintKey(item, this.bagMode());
+        const extra = key ? `<div class="tt-sub">${esc(t(key))}</div>` : '';
+        return this.deps.itemTooltip(item) + extra;
+      });
+      grid.appendChild(row);
+    }
+  }
+
+  // Refresh only the grid contents (used by live search) so the search input keeps
+  // focus and caret position across keystrokes.
+  private refreshGrid(): void {
+    const grid = this.deps.root().querySelector('.bag-grid') as HTMLElement | null;
+    if (!grid) return;
+    const prevScrollTop = grid.scrollTop;
+    grid.innerHTML = '';
+    this.fillGrid(grid);
+    grid.scrollTop = prevScrollTop;
+  }
+
+  // The current open-window modes that change what a bag click does. Cross-window
+  // state lives on the HUD; the painter reads it through the deps each click so it
+  // never caches stale modes.
+  private bagMode(): BagMode {
+    return {
+      tradeOpen: this.deps.tradeOpen(),
+      marketSell: this.deps.isMarketSell(),
+      vendorOpen: this.deps.vendorOpen(),
+      petFeed: this.deps.pendingPetFeed(),
+    };
+  }
+
+  private sellBagItem(slot: InvSlot, ev: MouseEvent): void {
+    const count = Math.max(1, Math.floor(slot.count));
+    if (ev.ctrlKey || ev.metaKey) {
+      this.deps.world().sellItem(slot.itemId, count);
+    } else if (ev.shiftKey && count > 1) {
+      this.showSellQuantityPrompt(slot.itemId, count);
+    } else {
+      this.deps.world().sellItem(slot.itemId);
+    }
+  }
+
+  private showDiscardItemPrompt(itemId: string, maxCount: number): void {
+    document.querySelectorAll('.discard-item-prompt').forEach((el) => {
+      el.remove();
+    });
+    const item = ITEMS[itemId];
+    const stack = document.getElementById('prompt-stack')!;
+    const prompt = document.createElement('div');
+    prompt.className = 'prompt panel discard-item-prompt';
+    const itemName = item ? itemDisplayName(item) : itemId;
+    prompt.innerHTML = `<div class="prompt-text">${esc(t('itemUi.bags.destroyTitle', { item: itemName }))}</div>`;
+    let input: HTMLInputElement | null = null;
+    if (maxCount > 1) {
+      input = document.createElement('input');
+      input.className = 'prompt-number';
+      input.type = 'number';
+      input.min = '1';
+      input.max = String(maxCount);
+      input.step = '1';
+      input.value = '1';
+      prompt.appendChild(input);
+    }
+    const confirm = document.createElement('button');
+    confirm.className = 'btn';
+    confirm.textContent = t('itemUi.bags.destroyConfirm');
+    const cancel = document.createElement('button');
+    cancel.className = 'btn';
+    cancel.textContent = t('itemUi.bags.destroyCancel');
+    const close = () => prompt.remove();
+    const submit = () => {
+      const count = input
+        ? Math.max(1, Math.min(maxCount, Math.floor(Number(input.value) || 0)))
+        : 1;
+      this.deps.world().discardItem(itemId, count);
+      close();
+      this.deps.hideTooltip();
+      this.render();
+    };
+    confirm.addEventListener('click', submit);
+    cancel.addEventListener('click', close);
+    if (input) {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') submit();
+        else if (e.key === 'Escape') close();
+      });
+    }
+    prompt.append(confirm, cancel);
+    stack.appendChild(prompt);
+    if (input)
+      window.setTimeout(() => {
+        input.focus();
+        input.select();
+      }, 0);
+  }
+
+  private showSellQuantityPrompt(itemId: string, maxCount: number): void {
+    document.querySelectorAll('.sell-quantity-prompt').forEach((el) => {
+      el.remove();
+    });
+    const item = ITEMS[itemId];
+    const stack = document.getElementById('prompt-stack')!;
+    const prompt = document.createElement('div');
+    prompt.className = 'prompt panel sell-quantity-prompt';
+    const itemName = item ? itemDisplayName(item) : itemId;
+    prompt.innerHTML = `<div class="prompt-text">${esc(t('itemUi.vendor.sellQuantityTitle', { item: itemName }))}</div>`;
+    const input = document.createElement('input');
+    input.className = 'prompt-number';
+    input.type = 'number';
+    input.setAttribute('aria-label', t('itemUi.vendor.sellQuantityInput'));
+    input.min = '1';
+    input.max = String(maxCount);
+    input.step = '1';
+    input.value = '1';
+    const confirm = document.createElement('button');
+    confirm.className = 'btn';
+    confirm.textContent = t('itemUi.vendor.sellQuantityConfirm');
+    const cancel = document.createElement('button');
+    cancel.className = 'btn';
+    cancel.textContent = t('itemUi.vendor.sellQuantityCancel');
+    const close = () => prompt.remove();
+    const submit = () => {
+      const count = Math.max(1, Math.min(maxCount, Math.floor(Number(input.value) || 0)));
+      this.deps.world().sellItem(itemId, count);
+      close();
+    };
+    confirm.addEventListener('click', submit);
+    cancel.addEventListener('click', close);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submit();
+      else if (e.key === 'Escape') close();
+    });
+    prompt.append(input, confirm, cancel);
+    stack.appendChild(prompt);
+    window.setTimeout(() => {
+      input.focus();
+      input.select();
+    }, 0);
+  }
+
+  // Write the dragged item onto the DataTransfer (reproduced from the exported
+  // hotbar encoder so cross-window drag state stays on the HUD via the deps).
+  private writeDraggedAction(dt: DataTransfer | null, action: { type: 'item'; id: string }): void {
+    if (!dt) return;
+    dt.setData(HOTBAR_ACTION_MIME, encodeHotbarAction(action));
+    dt.setData('text/plain', action.id);
+  }
+}

@@ -70,6 +70,10 @@
     --panel-edge: #08080d;
     --color-text-error: #ff8f85;
     --color-text-success: #7fdc4f;
+    /* Item-name color for an item with no quality (bags_window.ts uses this token
+       as the fallback when QUALITY_COLOR has no entry, so the painter carries no
+       raw hex). Exact pre-existing value. */
+    --color-quality-default: #fff;
 
     /* delve minimap / world-map schematic (resolved by delve_map_painter.ts via
        getComputedStyle: a 2D canvas context cannot read a CSS var directly) */
