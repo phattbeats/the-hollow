@@ -106,7 +106,6 @@ import {
   MOBS,
   NPCS,
   PLAYER_START,
-  PROPS,
   QUESTS,
   questRewardItemId,
   resolveDelveShopOffers,
@@ -149,6 +148,7 @@ import {
   PLAYER_MAX_CLIMB_SLOPE,
   PLAYER_SWIM_DEPTH,
 } from './pathfind';
+import { prestige as prestigeImpl, updateRested } from './progression/xp';
 import { questFallbackGrants } from './quest_fallback';
 import { sanitizeRemovedZone1Content } from './removed_zone1_content';
 import { Rng } from './rng';
@@ -238,7 +238,6 @@ import {
   CONSUME_TICKS,
   type CrowdControlDrCategory,
   type CurrencyLootStrategy,
-  canPrestige,
   DELVE_COMPANION_HEAL_INTERVAL,
   DELVE_COMPANION_MAX_RANK,
   DELVE_PLATE_RADIUS,
@@ -376,16 +375,8 @@ const NYTHRAXIS_ALDRIC_WALK_DIST = 30;
 // DAMAGE_IDLE_DESPAWN_SECONDS / DAMAGE_IDLE_DESPAWN_MOB_IDS moved to entity_roster.ts
 // (the despawn prologue's home); imported above for the damage-path timer reset.
 // PARTY_XP_RANGE moved to types.ts (C1; used by the damage-core xp-split + M1 assist), imported above.
-// Rested XP (classic inn-rested bonus). Resting inside an inn footprint accrues a
-// pool that doubles KILL xp (200%) until spent — vanilla's signature casual-pacing
-// lever. Vanilla rate is 5% of a level per 8 in-game hours, capped at 1.5 levels.
-// The sim has no day/night clock, so "in-game hours" map to a fixed sim-seconds
-// constant (determinism: accrual is keyed off sim time via DT, never wall-clock).
-const RESTED_SECONDS_PER_GAME_HOUR = 60; // 1 in-game hour = 60 sim seconds
-const RESTED_FILL_FRACTION = 0.05; // a full "bubble" = 5% of the level's XP-to-level
-const RESTED_FILL_HOURS = 8; // accrued per this many in-game hours of resting
-const RESTED_CAP_LEVELS = 1.5; // pool clamps to 1.5 levels of XP, as in vanilla
-const RESTED_INN_PADDING = 2; // yards of slack around the inn footprint that still counts as resting
+// RESTED_* rested-XP tuning + isResting/updateRested moved to progression/xp.ts (G1b),
+// the only code that reads them.
 // A2: DUEL_COUNTDOWN/DUEL_FORFEIT_DISTANCE moved to social/duel.ts; the Ashen
 // Coliseum 1v1 arena tuning (ARENA_COUNTDOWN/RETURN_DELAY/MAX_DURATION/BASE_RATING/
 // MIN_RATING/K_FACTOR) + eloDelta moved to social/arena.ts (ARENA_BASE_RATING is
@@ -2334,7 +2325,7 @@ export class Sim {
         this.updateCasting(p, meta);
         this.updatePlayerAutoAttack(p, meta);
         updateRegen(this.ctx, p, meta);
-        this.updateRested(p, meta);
+        updateRested(p, meta);
       }
       updateTimers(p);
       updateAuras(this.ctx, p);
@@ -3404,44 +3395,6 @@ export class Sim {
     handleDeathImpl(this.ctx, e, killer);
   }
 
-  // True while the player is standing in (or just beside) an inn footprint and
-  // out of combat — the classic "resting" state that accrues rested XP.
-  private isResting(p: Entity): boolean {
-    if (p.inCombat) return false;
-    for (const b of PROPS.buildings) {
-      if (b.kind !== 'inn') continue;
-      // Point-in-rotated-rect: bring the player into the inn's local frame.
-      const dx = p.pos.x - b.x;
-      const dz = p.pos.z - b.z;
-      const cos = Math.cos(-b.rot);
-      const sin = Math.sin(-b.rot);
-      const lx = dx * cos - dz * sin;
-      const lz = dx * sin + dz * cos;
-      if (
-        Math.abs(lx) <= b.w / 2 + RESTED_INN_PADDING &&
-        Math.abs(lz) <= b.d / 2 + RESTED_INN_PADDING
-      )
-        return true;
-    }
-    return false;
-  }
-
-  // Accrue rested XP while resting in an inn. Vanilla: 5% of the level's
-  // XP-to-level per 8 in-game hours, clamped to 1.5 levels. Deterministic —
-  // paced off DT, never wall-clock. No accrual at the cap (no level bar).
-  private updateRested(p: Entity, meta: PlayerMeta): void {
-    if (p.level >= MAX_LEVEL) return;
-    const cap = RESTED_CAP_LEVELS * xpForLevel(p.level);
-    if (meta.restedXp >= cap) {
-      meta.restedXp = cap;
-      return;
-    }
-    if (!this.isResting(p)) return;
-    const fillSeconds = RESTED_FILL_HOURS * RESTED_SECONDS_PER_GAME_HOUR;
-    const perSecond = (RESTED_FILL_FRACTION * xpForLevel(p.level)) / fillSeconds;
-    meta.restedXp = Math.min(cap, meta.restedXp + perSecond * DT);
-  }
-
   grantXp(amount: number, meta: PlayerMeta = this.primary, opts?: { fromKill?: boolean }): void {
     grantXpImpl(this.ctx, amount, meta, opts);
   }
@@ -3451,22 +3404,7 @@ export class Sim {
   // and deliberately leaves lifetimeXp, level, gear, talents, and learned
   // abilities untouched — strictly cosmetic, zero power change (FR-6.1/6.3).
   prestige(pid?: number): boolean {
-    const r = this.resolve(pid);
-    if (!r) return false;
-    // Authoritative anti-abuse gate: must be at the cap AND have earned a full
-    // prestige bar of post-cap XP since the last rank. This caps prestigeRank at
-    // what lifetimeXp supports, so spamming the `prestige` command (e.g. from a
-    // hacked client) can never inflate the rank beyond XP actually earned.
-    if (!canPrestige(r.e.level, r.meta.lifetimeXp, r.meta.prestigeRank)) return false;
-    r.meta.xp = 0;
-    r.meta.prestigeRank += 1;
-    this.emit({
-      type: 'log',
-      pid: r.e.id,
-      text: `You have prestiged! Prestige Rank ${r.meta.prestigeRank}.`,
-      color: '#ffd100',
-    });
-    return true;
+    return prestigeImpl(this.ctx, pid);
   }
 
   private needsQuestDrop(entry: LootEntry, meta: PlayerMeta): boolean {

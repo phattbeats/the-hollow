@@ -763,6 +763,7 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
   // "Invalid attack target." error),
   // A1+ -> src/sim/social/*.ts (the party machine, later duel/arena/fiesta/
   // markers), G1a -> src/sim/progression/talents.ts (talent validation toasts),
+  // G1b -> src/sim/progression/xp.ts (the "You have prestiged!" gold log emit),
   // M2 -> src/sim/mob/locomotion.ts (the boss "unleashes" lines), M3 ->
   // src/sim/mob/mob_swing.ts (the knockback "unleashes" line), M4 ->
   // src/sim/mob/lifecycle.ts (the death-throes "begins to swell" / "flies into a frenzy" /
@@ -793,6 +794,7 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/combat/effect_dispatch.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/combat/auto_attack.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/progression/talents.ts'), 'utf8'),
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/progression/xp.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/locomotion.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/mob_swing.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/lifecycle.ts'), 'utf8'),
