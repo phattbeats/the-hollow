@@ -83,6 +83,13 @@ const hudTs = readFileSync(new URL('../src/ui/hud.ts', import.meta.url), 'utf8')
   /\r\n/g,
   '\n',
 );
+// The Esc options menu was extracted to options_view.ts (the declarative menu
+// model) + options_window.ts (the painter) in P8a; the menu guard reads the
+// model rather than the old inline hud.ts main-menu builder.
+const optionsViewTs = readFileSync(
+  new URL('../src/ui/options_view.ts', import.meta.url),
+  'utf8',
+).replace(/\r\n/g, '\n');
 const mobileControlsTs = readFileSync(
   new URL('../src/game/mobile_controls.ts', import.meta.url),
   'utf8',
@@ -270,9 +277,9 @@ describe('client HTML shell', () => {
   });
 
   it('keeps the game menu free of duplicate and dev-only entries', () => {
-    const interfaceEntries =
-      hudTs.match(/add\(t\('hud\.options\.interface'\), \(\) => goto\('interface'\)\);/g) ?? [];
+    const interfaceEntries = optionsViewTs.match(/labelKey: 'hud\.options\.interface'/g) ?? [];
     expect(interfaceEntries).toHaveLength(1);
+    expect(optionsViewTs).not.toContain('Skin Select (dev)');
     expect(hudTs).not.toContain('Skin Select (dev)');
   });
 

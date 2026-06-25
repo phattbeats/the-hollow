@@ -618,9 +618,10 @@ describe("R2: bug-report errors map to the server's exact emitted bytes", () => 
       expect(serverSrc.includes(`'${e}'`), `server no longer emits "${e}"`).toBe(true);
     }
 
-    const hudSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/ui/hud.ts'), 'utf8');
+    // localizeBugReportError moved to the options window painter in P8a.
+    const hudSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/ui/options_window.ts'), 'utf8');
     const fnStart = hudSrc.indexOf('localizeBugReportError(err: unknown)');
-    expect(fnStart, 'localizeBugReportError not found in hud.ts').toBeGreaterThan(-1);
+    expect(fnStart, 'localizeBugReportError not found in options_window.ts').toBeGreaterThan(-1);
     const start = hudSrc.indexOf('keyByMessage: Record<string, TranslationKey> = {', fnStart);
     const body = hudSrc.slice(start, hudSrc.indexOf('};', start));
     const keys = new Set(
