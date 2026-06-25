@@ -1098,6 +1098,88 @@ function dungeonRaidLockout(): Scenario {
   };
 }
 
+// World Market (L2): the Merchant's auction house. Two players stand at the
+// Merchant; the seller lists a stack (escrow pulls it from their bags), the
+// browse filter narrows then clears, the buyer buys it (coin leaves the buyer,
+// goods enter their bags, the seller's proceeds = floor(price*(1-MARKET_CUT))
+// wait in their collection), the seller lists then reclaims a second stack
+// (escrow returns to bags), a third stack is forced past its expiry so the
+// once-a-second updateMarket sweep returns it to the collection, and finally the
+// seller collects (gold + the expired item move to bags). The market draws NO
+// rng — its behavior is pinned entirely through PlayerMeta (copper/inventory) and
+// the emitted event stream.
+function marketRoundTrip(): Scenario {
+  return {
+    name: 'market_round_trip',
+    coverage: [
+      'World Market: marketList escrow (ctx.removeItem pulls the stack from bags)',
+      'marketSearch browse filter (narrow to a substring, then clear)',
+      'marketBuy cross-player sale: buyer copper - price + addItem; seller proceeds = floor(price*(1-MARKET_CUT))',
+      'marketCancel reclaim escrow to bags',
+      'updateMarket once-a-second expiry sweep (% 20): expired listing -> seller collection',
+      'marketCollect: gold + expired items move to bags, collection cleared',
+    ],
+    build: () => new Sim({ seed: 1019, playerClass: 'warrior', noPlayer: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const seller = sim.addPlayer('warrior', 'Seller');
+      const buyer = sim.addPlayer('mage', 'Buyer');
+      const merchant = [...sim.entities.values()].find(
+        (e: AnyEntity) => e.templateId === 'the_merchant',
+      ) as AnyEntity;
+      // Stand both at the Merchant so the proximity gate passes (nearMerchant is
+      // a dist2d check, so matching x/z is enough).
+      teleport(sim, sim.entities.get(seller) as AnyEntity, merchant.pos.x, merchant.pos.z);
+      teleport(sim, sim.entities.get(buyer) as AnyEntity, merchant.pos.x, merchant.pos.z);
+      sim.addItem('wolf_fang', 4, seller);
+      sim.players.get(buyer)!.copper = 5000;
+      rec.notes.seller = seller;
+      rec.notes.buyer = buyer;
+      rec.snapshot('market-setup');
+
+      // 1) list a stack of 2 -> escrow pulls them from the seller's bags.
+      sim.marketList('wolf_fang', 2, 300, seller);
+      rec.snapshot('listed');
+
+      // 2) browse filter narrows to the wolf_fang listing, then clears.
+      sim.marketSearch('wolf', seller);
+      rec.snapshot('searched');
+      sim.marketSearch('', seller);
+      rec.snapshot('search-cleared');
+
+      // 3) the buyer buys it: coin leaves the buyer, goods enter their bags, the
+      // seller's proceeds (less the 5% cut) wait in their collection.
+      const sale = sim.marketListings.find(
+        (l) => !l.house && l.sellerName === 'Seller',
+      )!;
+      sim.marketBuy(sale.id, buyer);
+      rec.snapshot('bought');
+
+      // 4) list a second stack then reclaim it -> the escrow returns to the bags.
+      sim.marketList('wolf_fang', 1, 150, seller);
+      const reclaim = sim.marketListings.find(
+        (l) => !l.house && l.sellerName === 'Seller',
+      )!;
+      sim.marketCancel(reclaim.id, seller);
+      rec.snapshot('cancelled');
+
+      // 5) list a third stack, force it past due, then run the once-a-second
+      // sweep (updateMarket fires at tickCount % 20 === 0) -> returns to collection.
+      sim.marketList('wolf_fang', 1, 200, seller);
+      const expiring = sim.marketListings.find(
+        (l) => !l.house && l.sellerName === 'Seller',
+      )!;
+      expiring.expiresAt = sim.time - 1;
+      rec.tick(20);
+      rec.snapshot('expired');
+
+      // 6) collect everything waiting: the sale gold + the expired item -> bags.
+      sim.marketCollect(seller);
+      rec.snapshot('collected');
+    },
+  };
+}
+
 export const SCENARIOS: Scenario[] = [
   soloWarrior(),
   soloMage(),
@@ -1119,4 +1201,5 @@ export const SCENARIOS: Scenario[] = [
   questCollectTurnIn(),
   dungeonInstances(),
   dungeonRaidLockout(),
+  marketRoundTrip(),
 ];

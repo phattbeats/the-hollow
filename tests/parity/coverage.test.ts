@@ -238,4 +238,29 @@ describe('coverage: each scenario fires its subsystem', () => {
       ),
     ).toBe(true);
   });
+
+  it('market_round_trip: list/buy/cancel/expire/collect all fire and coin + goods move', () => {
+    const rec = run('market_round_trip');
+    const sim = rec.sim as any;
+    const ev = rec.allEvents as Ev[];
+    const seller = rec.notes.seller as number;
+    const buyer = rec.notes.buyer as number;
+    const loot = (re: RegExp) =>
+      ev.some((e) => e.type === 'loot' && typeof e.text === 'string' && re.test(e.text));
+    // marketList escrow + the listing emit.
+    expect(loot(/^Listed /)).toBe(true);
+    // marketBuy cross-player sale: the seller's notice and the buyer's confirmation.
+    expect(loot(/bought your /)).toBe(true);
+    expect(loot(/^Bought /)).toBe(true);
+    // marketCancel reclaim.
+    expect(loot(/^Reclaimed /)).toBe(true);
+    // updateMarket once-a-second expiry sweep returned the third stack to collection.
+    expect(
+      ev.some((e) => e.type === 'log' && typeof e.text === 'string' && /expired and waits/.test(e.text)),
+    ).toBe(true);
+    // marketCollect moved the proceeds into the seller's purse.
+    expect(loot(/^You collect /)).toBe(true);
+    expect(sim.players.get(seller)?.copper).toBe(285); // 300 sale - 5% cut
+    expect(sim.players.get(buyer)?.copper).toBe(4700); // 5000 - 300
+  });
 });
