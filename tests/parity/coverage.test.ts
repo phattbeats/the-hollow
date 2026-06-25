@@ -214,4 +214,34 @@ describe('coverage: each scenario fires its subsystem', () => {
       ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('attempts to flee')),
     ).toBe(true);
   });
+
+  it('mob_lifecycle: frenzy + death-throes arm/detonate + wild respawn (despawn adds) + dungeon stays dead', () => {
+    const rec = run('mob_lifecycle');
+    const n = rec.notes as Record<string, any>;
+    const ev = rec.allEvents as Ev[];
+    // frenzyPackmates: same-template hostile neighbors gained Pack Frenzy; the boar did not.
+    expect(n.wolfBFrenzied).toBe(true);
+    expect(n.wolfCFrenzied).toBe(true);
+    expect(n.boarFrenzied).toBe(false);
+    expect(ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('flies into a frenzy'))).toBe(
+      true,
+    );
+    // armDeathThroes armed the fuse (delay 1.5) + emitted the swell telegraph.
+    expect(n.bogArmed).toBeCloseTo(1.5, 5);
+    expect(ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('begins to swell'))).toBe(
+      true,
+    );
+    // detonateCorpse fired once (timer -> Infinity), burst the in-radius player, logged the cloud.
+    expect(n.bogDetonated).toBe(true);
+    expect(ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('bursts in a cloud of'))).toBe(
+      true,
+    );
+    // respawnMob: the wild mob came back to life at its spawn point, idle, and despawnSummonedAdds dropped the add.
+    expect(n.wildRespawned).toBe(true);
+    expect(n.wildState).toBe('idle');
+    expect(n.wildAtSpawn).toBe(true);
+    expect(n.addDespawned).toBe(true);
+    // the dungeon-x mob never respawned.
+    expect(n.dungeonStaysDead).toBe(true);
+  });
 });

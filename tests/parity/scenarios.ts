@@ -1007,6 +1007,102 @@ function mobLocomotion(): Scenario {
   };
 }
 
+// M4 mob death-lifecycle: the five execution bodies (frenzyPackmates,
+// armDeathThroes, detonateCorpse, respawnMob, despawnSummonedAdds) driven through
+// their stable entry points so the move is checked against a committed golden:
+// frenzy + arm fire from handleDeath (via dealDamage); detonate + respawn fire
+// from the updateMob corpse-tick. Pins the two rng draws this slice carries:
+// detonateCorpse's rng.range(min,max) per in-radius player and respawnMob's
+// rng.range(2,8) wanderTimer. Drives like mobLocomotion (direct updateMob +
+// snapshot, no full tick) so each path fires in isolation.
+function mobLifecycle(): Scenario {
+  return {
+    name: 'mob_lifecycle',
+    coverage: [
+      'death -> frenzyPackmates: a packFrenzy mob death gives same-template hostile neighbors the Pack Frenzy buff_haste aura (different-template boar unaffected; no rng)',
+      'death -> armDeathThroes: a deathThroes mob arms its detonateTimer fuse + swell telegraph (no rng)',
+      'corpse-tick -> detonateCorpse: fuse reaches 0, rng.range(dt.min,dt.max) per in-radius living player + dealDamage burst, fires once',
+      'corpse-tick -> respawnMob: a slain wild mob respawns at spawnPos (rng.range(2,8) wanderTimer) and despawnSummonedAdds drops its summoned add',
+      'corpse-tick gate: a dungeon mob (spawnPos.x > DUNGEON_X_THRESHOLD) stays dead, no respawn',
+    ],
+    sampleEvery: 1,
+    build: () => new Sim({ seed: 1015, playerClass: 'warrior', noPlayer: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const pid = sim.addPlayer('warrior', 'Anvil');
+      const player = sim.entities.get(pid) as AnyEntity;
+      rec.track(pid);
+      rec.notes.pid = pid;
+      const revive = () => {
+        player.hp = 1_000_000;
+      };
+
+      // 1) Pack frenzy: kill one forest_wolf amid a same-template pack. Survivors
+      // within packFrenzy.radius (12) gain the Pack Frenzy haste aura; a
+      // different-template boar in range stays unaffected (frenzyPackmates draws no rng).
+      const wolfA = spawnMob(sim, 'forest_wolf', 5, player.pos.x + 3, player.pos.y, player.pos.z + 3);
+      const wolfB = spawnMob(sim, 'forest_wolf', 5, player.pos.x + 5, player.pos.y, player.pos.z + 3);
+      const wolfC = spawnMob(sim, 'forest_wolf', 5, player.pos.x + 7, player.pos.y, player.pos.z + 3);
+      const boar = spawnMob(sim, 'wild_boar', 5, player.pos.x + 4, player.pos.y, player.pos.z + 4);
+      rec.track(wolfA.id, wolfB.id, wolfC.id, boar.id);
+      lethal(sim, player, wolfA); // handleDeath -> frenzyPackmates(wolfA)
+      rec.notes.wolfBFrenzied = wolfB.auras.some((a: any) => a.id === 'pack_frenzy');
+      rec.notes.wolfCFrenzied = wolfC.auras.some((a: any) => a.id === 'pack_frenzy');
+      rec.notes.boarFrenzied = boar.auras.some((a: any) => a.id === 'pack_frenzy');
+      rec.snapshot('pack-frenzy');
+
+      // 2) Death Throes arm: kill a bog_bloat with the player in blast radius (8).
+      // The corpse arms a detonateTimer fuse (delay 1.5s) + the swell telegraph.
+      const bog = spawnMob(sim, 'bog_bloat', 10, player.pos.x + 2, player.pos.y, player.pos.z + 2);
+      rec.track(bog.id);
+      lethal(sim, player, bog); // handleDeath -> armDeathThroes(bog): detonateTimer = 1.5
+      rec.notes.bogArmed = bog.detonateTimer;
+      rec.snapshot('throes-arm');
+
+      // 3) Death Throes detonate: count the fuse down via the corpse tick. On the
+      // tick the fuse reaches 0 the corpse bursts for rng.range(min,max) to the
+      // in-radius player (one draw), then sets detonateTimer = Infinity (fires once).
+      revive();
+      for (let i = 0; i < 31; i++) (sim as any).updateMob(bog);
+      rec.notes.bogDetonated = bog.detonateTimer === Infinity;
+      rec.notes.playerHpAfterBurst = player.hp;
+      rec.snapshot('throes-detonate');
+
+      // 4) Respawn: a slain WILD mob whose corpse/respawn timers have elapsed
+      // respawns at spawnPos (rng.range(2,8) wanderTimer) and despawnSummonedAdds
+      // drops the add it summoned this pull.
+      const wild = spawnMob(sim, 'forest_wolf', 5, 300, terrainHeight(300, 300, sim.cfg.seed), 300);
+      wild.spawnPos = { x: 300, y: wild.pos.y, z: 300 };
+      const add = spawnMob(sim, 'wild_boar', 5, 302, terrainHeight(302, 300, sim.cfg.seed), 300);
+      rec.track(wild.id, add.id);
+      lethal(sim, player, wild);
+      wild.summonedIds = [add.id];
+      wild.corpseTimer = 0;
+      wild.respawnTimer = 0;
+      wild.lootable = false;
+      (sim as any).updateMob(wild); // corpse-tick gate -> respawnMob + despawnSummonedAdds(add)
+      rec.notes.wildRespawned = !wild.dead;
+      rec.notes.wildState = wild.aiState;
+      rec.notes.wildAtSpawn = wild.pos.x === 300 && wild.pos.z === 300;
+      rec.notes.addDespawned = !sim.entities.has(add.id);
+      rec.snapshot('respawn');
+
+      // 5) Dungeon mob stays dead: spawnPos past DUNGEON_X_THRESHOLD (600) -> the
+      // corpse-tick respawn gate is skipped, the mob never respawns into the wild.
+      const dungeonMob = spawnMob(sim, 'forest_wolf', 5, 700, terrainHeight(700, 300, sim.cfg.seed), 300);
+      dungeonMob.spawnPos = { x: 700, y: dungeonMob.pos.y, z: 300 };
+      rec.track(dungeonMob.id);
+      lethal(sim, player, dungeonMob);
+      dungeonMob.corpseTimer = 0;
+      dungeonMob.respawnTimer = 0;
+      dungeonMob.lootable = false;
+      (sim as any).updateMob(dungeonMob);
+      rec.notes.dungeonStaysDead = dungeonMob.dead;
+      rec.snapshot('dungeon-stays-dead');
+    },
+  };
+}
+
 export const SCENARIOS: Scenario[] = [
   soloWarrior(),
   soloMage(),
@@ -1024,4 +1120,5 @@ export const SCENARIOS: Scenario[] = [
   delveDeath(),
   mobTargeting(),
   mobLocomotion(),
+  mobLifecycle(),
 ];
