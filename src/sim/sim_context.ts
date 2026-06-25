@@ -17,7 +17,15 @@ import type { DelayedEvent, GroundAoE } from './entity_roster';
 import type { Rng } from './rng';
 import type { ArenaMatch, DuelState, Party, PlayerMeta } from './sim';
 import type { SpatialGrid } from './spatial';
-import type { Aura, CrowdControlDrCategory, DelveRun, Entity, SimEvent, Vec3 } from './types';
+import type {
+  Aura,
+  CrowdControlDrCategory,
+  DelveRun,
+  Entity,
+  ErrorReason,
+  SimEvent,
+  Vec3,
+} from './types';
 
 // Live primitive views onto the running Sim. These are GETTERS, not snapshots:
 // `time`/`tickCount` advance every tick, and the `rng`/`entities` identities are
@@ -148,7 +156,7 @@ export interface SimContextCallbacks {
   // reaches it through the context (server/HUD/tests call the `Sim` facade directly), so
   // per "add only the callbacks the slice needs" Sim keeps thin wrapper methods that
   // delegate into the module instead.
-  error(pid: number, text: string): void;
+  error(pid: number, text: string, reason?: ErrorReason): void;
   refreshKnownAbilities(meta: PlayerMeta, announce: boolean): void;
 }
 
