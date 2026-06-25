@@ -89,6 +89,20 @@
     --scrollbar-border: #7c6233;
     --app-vw: 100vw;
     --app-vh: 100vh;
+    /* effects tier (wired by src/ui/ui_effects_applier.ts from the pure
+       src/game/ui_effects_profile.ts resolver): data-fx-level (low | medium | high
+       | ultra) is stamped on the document root, and these three tokens are written
+       inline from the resolved profile. These :root values are the pre-boot / no-JS
+       fallback (full Ultra behaviour, so calc/var reads below resolve to today's
+       look exactly); the applier overrides them on every settings / reduced-motion
+       change. The effect buckets CONSUME them: --fx-shadow scales decorative glow
+       blur (0 at low), --fx-ambient-anim is the ambient-loop animation-play-state,
+       --motion-scale multiplies ambient durations (near-zero 0.001, never 0, under
+       reduced-motion so animationend still fires). The data-fx-level ATTRIBUTE
+       additionally drops glass (B1) whole-rule at the low tier (below). */
+    --fx-shadow: 1;
+    --fx-ambient-anim: running;
+    --motion-scale: 1;
     /* Shared with src/game/cursors.ts — keep hotspots in sync.
        --cursor-arrow = default; --cursor-point = interactive/hover (gauntlet finger). */
     --cursor-arrow: url("/ui/cursors/arrow.png") 7 2, default;
@@ -98,5 +112,19 @@
     --cursor-hand: var(--cursor-arrow);
     --cursor-sword: var(--cursor-point);
     --cursor-shield: var(--cursor-point);
+  }
+
+  /* B1 glass is dropped WHOLE-RULE at the low effect tier: a universal removal
+     mirroring the engine-tier body.fx-reduced / body.fx-minimal cut (the
+     backdrop-filter rules ship a -webkit- twin + a solid translucent fallback, so
+     dropping the blur leaves a clean opaque panel). It is !important so it crosses
+     cascade layers and wins over the opt-in frosted panels; a low-tier player then
+     computes backdrop-filter:none, so the per-pixel composite over the WebGL canvas
+     never runs. Ultra/high/medium are untouched (data-fx-level only matches "low"). */
+  :root[data-fx-level="low"] *,
+  :root[data-fx-level="low"] *::before,
+  :root[data-fx-level="low"] *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 }
