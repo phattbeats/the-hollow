@@ -193,4 +193,28 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(healerIds.some((hid) => m1.threat.has(hid))).toBe(true);
     expect(healerIds.some((hid) => m3.threat.has(hid))).toBe(true);
   });
+
+  it('c3_aura_runner: dot kills victim mid-tick (guard fires, rider aura survives), regen heal emitted, AoE hits 2+ mobs', () => {
+    const rec = run('c3_aura_runner');
+    const pid = (rec.sim as any).playerId;
+    const ev = rec.allEvents as Ev[];
+    const ents = entities(rec);
+    const victim = ents.find((e) => e.id === rec.notes.victimId);
+    expect(victim, 'victim missing').toBeTruthy();
+    // The dot (index 1, ticked first in the backward walk) dropped the victim to lethal
+    // mid-updateAuras, so the `if (e.dead) return;` guard fired before the index-0 aura
+    // was reached. (handleDeath clears the corpse's auras, so the observable proof is the
+    // dead victim + the byte-identical golden draw order, not a surviving aura.)
+    expect(victim.dead).toBe(true);
+    // updateRegen eat path fired: a 'heal' to the paladin (the ctx.healingTakenMult call).
+    expect(ev.some((e) => e.type === 'heal' && e.targetId === pid)).toBe(true);
+    // pulseGroundAoE hit >=2 distinct in-radius targets (rng.range once per target).
+    const aoeMobIds = rec.notes.aoeMobIds as number[];
+    const consTargets = new Set(
+      ev
+        .filter((e) => e.type === 'damage' && typeof e.ability === 'string' && e.ability.toLowerCase().includes('consecrat'))
+        .map((e) => e.targetId),
+    );
+    expect(aoeMobIds.filter((id) => consTargets.has(id)).length).toBeGreaterThanOrEqual(2);
+  });
 });

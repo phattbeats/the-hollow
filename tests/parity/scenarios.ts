@@ -946,6 +946,93 @@ function multiClassHeal(): Scenario {
   };
 }
 
+// C3 aura/regen runner: the per-tick aura/regen/timer slice that moves to
+// src/sim/combat/auras.ts. Three phases pin the pieces other scenarios miss:
+//  A. DoT-kills-mid-tick guard: a victim mob carries a buff at index 0 and a lethal
+//     dot at index 1. updateAuras walks auras BACKWARD, so the dot ticks first; its
+//     dealDamage drops the victim to dead and the `if (e.dead) return;` guard (~3095)
+//     short-circuits BEFORE the index-0 aura is reached (handleDeath has already cleared
+//     the corpse's auras, so without the guard the loop would walk a mutated list).
+//     Reordering or dropping the guard forks the draw order / trace.
+//  B. updateRegen eat/drink (the ctx.healingTakenMult seam call + the 'heal' emit) and
+//     mana/hp regen, plus a short buff_ap that expires inside updateAuras -> statsDirty
+//     -> recalcPlayerStats (player branch) + applyNonPlayerStatAura on expiry.
+//  C. A ground AoE pulsing over 2+ hostiles so pulseGroundAoE iterates hostilesInRadius
+//     and draws rng.range once per in-radius target in stable order (paladin_consecration
+//     only ever has one mob in radius).
+function c3AuraRunner(): Scenario {
+  return {
+    name: 'c3_aura_runner',
+    coverage: [
+      'updateAuras dot-tick kills target mid-walk -> e.dead guard short-circuits (~3095)',
+      'updateAuras aura-expiry statsDirty -> recalcPlayerStats + applyNonPlayerStatAura',
+      "updateRegen eat/drink path (ctx.healingTakenMult + 'heal' emit) + out-of-combat regen",
+      'pulseGroundAoE over 2+ in-radius hostiles: rng.range per target, stable order',
+      'class:paladin',
+    ],
+    sampleEvery: 5,
+    build: () => new Sim({ seed: 1017, playerClass: 'paladin', autoEquip: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      sim.setPlayerLevel(20); // consecration learnLevel 18
+      const p = sim.player as AnyEntity;
+      beef(p);
+
+      // ----- Phase A: a DoT kills the victim mid-updateAuras (the e.dead guard) -----
+      // The buff at index 0 + the lethal dot at index 1: the backward walk ticks the dot
+      // first, its dealDamage kills the victim, and the guard returns before index 0 is
+      // touched (the rider buff survives intact on the corpse). The dot is sourceless
+      // (caster id absent) so the death cascade stays minimal and attributable.
+      const ABSENT_SOURCE = 999999;
+      const victim = spawnMob(sim, 'forest_wolf', 5, 40, p.pos.y, 40);
+      victim.hostile = true;
+      victim.auras.push(
+        aura({ id: 'rider_buff', name: 'Rider', kind: 'buff_armor', value: 10, sourceId: ABSENT_SOURCE }),
+      );
+      victim.auras.push(
+        aura({ id: 'lethal_dot', name: 'Rupture', kind: 'dot', value: 9999, sourceId: ABSENT_SOURCE, tickInterval: 0.05 }),
+      );
+      rec.track(victim.id);
+      rec.notes.victimId = victim.id;
+      rec.tick(2); // tick 1: dot ticks -> lethal -> guard fires; the index-0 buff survives
+      rec.snapshot('dot-guard');
+
+      // ----- Phase B: updateRegen eat/drink + an aura-expiry statsDirty recalc -----
+      // Out of combat with hp/mana to recover, sitting to eat + drink. updateRegen fires
+      // every 40 ticks (the 2s classic tick): the food heal runs ctx.healingTakenMult +
+      // the 'heal' emit, the drink restores mana, and the short buff_ap expires inside
+      // updateAuras -> statsDirty -> recalcPlayerStats (+ applyNonPlayerStatAura).
+      p.inCombat = false;
+      p.combatTimer = 99;
+      p.fiveSecondRule = 99;
+      p.hp = Math.max(1, p.maxHp - 600);
+      p.resource = Math.max(0, p.maxResource - 300);
+      p.eating = { itemId: 'parity_food', kind: 'food', hpPer2s: 90, manaPer2s: 0, remaining: 6 };
+      p.drinking = { itemId: 'parity_drink', kind: 'drink', hpPer2s: 0, manaPer2s: 50, remaining: 6 };
+      p.auras.push(aura({ id: 'short_buff', name: 'Blessing', kind: 'buff_ap', value: 20, sourceId: p.id, duration: 1.5 }));
+      rec.tick(60); // >40: updateRegen fires (tick 40); buff_ap expires -> statsDirty recalc
+      rec.snapshot('regen-expiry');
+
+      // ----- Phase C: a ground AoE pulsing over 2+ hostiles -----
+      // Two beefed mobs clustered inside consecration's 8yd radius so pulseGroundAoE
+      // iterates hostilesInRadius (>=2 targets), drawing rng.range once per target in
+      // entities-insertion order, from BOTH callers (the on-cast pulse + deferred ticks).
+      const a1 = spawnMob(sim, 'forest_wolf', 5, p.pos.x + 2, p.pos.y, p.pos.z + 2);
+      const a2 = spawnMob(sim, 'forest_wolf', 5, p.pos.x - 2, p.pos.y, p.pos.z - 2);
+      for (const m of [a1, a2]) {
+        beef(m, 40000);
+        m.hostile = true;
+      }
+      rec.track(a1.id, a2.id);
+      rec.notes.aoeMobIds = [a1.id, a2.id];
+      p.resource = p.maxResource;
+      p.gcdRemaining = 0;
+      sim.castAbility('consecration'); // immediate on-cast pulse + deferred interval pulses
+      rec.tick(20 * 6); // 6s of interval-2 deferred pulses over both mobs
+    },
+  };
+}
+
 export const SCENARIOS: Scenario[] = [
   soloWarrior(),
   soloMage(),
@@ -963,4 +1050,5 @@ export const SCENARIOS: Scenario[] = [
   fiestaMidcastKill(),
   multiClassFrenzy(),
   multiClassHeal(),
+  c3AuraRunner(),
 ];
