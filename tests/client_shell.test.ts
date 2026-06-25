@@ -140,6 +140,22 @@ describe('client HTML shell', () => {
     expect(liveHtml).not.toContain('id="chat-input"');
   });
 
+  it('carries the map-canvas a11y label + #map-summary live region in BOTH entries', () => {
+    // updateMapWindow() writes the sr-only summary on every redraw via
+    // setText($('#map-summary'), ...), which is not null-guarded, so the element
+    // MUST exist in every entry that ships the map window or opening the map
+    // throws. index.html and play.html both boot src/main.ts and both carry the
+    // map window, so the live region + canvas accessible name must be in both.
+    expect(hudTs).toContain("const summaryEl = $('#map-summary');");
+    for (const entry of [html, playHtml]) {
+      expect(entry).toContain('id="map-canvas"');
+      expect(entry).toContain('data-i18n-aria="hud.core.mapCanvasLabel"');
+      expect(entry).toContain('<span id="map-summary"');
+      expect(entry).toContain('role="status"');
+      expect(entry).toContain('aria-live="polite"');
+    }
+  });
+
   it('keeps the Account nav tab hidden unless a session is restored', () => {
     expect(html).toContain('<li class="nav-item" id="nav-item-account" hidden>');
     expect(html).toContain('<li class="nav-item" id="nav-item-logout" hidden>');
@@ -497,7 +513,9 @@ describe('client HTML shell', () => {
       'body.mobile-touch .homepage-header {\n    display: flex;\n    position: sticky;\n    top: 0;\n    z-index: 120;',
     );
     expect(shellCss).toContain('padding-top: calc(var(--spacing-sm) + env(safe-area-inset-top));');
-    expect(shellCss).toContain('padding-right: max(var(--spacing-md), env(safe-area-inset-right));');
+    expect(shellCss).toContain(
+      'padding-right: max(var(--spacing-md), env(safe-area-inset-right));',
+    );
     expect(shellCss).toContain(
       'body.mobile-touch #homepage-views-container {\n    padding-top: var(--spacing-lg);\n    padding-right: max(var(--spacing-md), env(safe-area-inset-right));',
     );
