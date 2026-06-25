@@ -252,11 +252,12 @@ function makeCtx() {
     applyDemonHealTick: vi.fn(),
     awardCombo: vi.fn(),
     meleeSwing: vi.fn(() => false),
-    effectiveArmor: vi.fn(() => 0),
     effectiveAttackPower: vi.fn(() => 0),
     hasLineOfSight: vi.fn(() => true),
     findChargePath: vi.fn(() => []),
     runEffects: vi.fn(),
+    // P1a pet-AI stub (effectiveAttackPower/isHostileTo already stubbed above; deduped).
+    syncPetAspect: vi.fn(),
   };
   const ctx = createSimContext(host);
   return {

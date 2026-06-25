@@ -406,9 +406,10 @@ export interface SimContextCallbacks {
   // C4b effect dispatch (src/sim/combat/effect_dispatch.ts) consumes these; all stay
   // on Sim. `awardCombo` is the combo-point award the weaponStrike/directDamage/
   // incapacitate cases gate on the `comboAwarded` latch; `meleeSwing` is the shared
-  // physical-swing entry (also a C4a weaponStrike path); `effectiveArmor`/
-  // `effectiveAttackPower` are the stat reads the damage formulas use; `hasLineOfSight`
-  // gates the AoE cases; `findChargePath` builds the warrior/druid charge route.
+  // physical-swing entry (also a C4a weaponStrike path); `effectiveAttackPower` is the
+  // attack-power stat read the damage formulas use (`effectiveArmor` is the M3 decl
+  // above, shared, not re-declared here); `hasLineOfSight` gates the AoE cases;
+  // `findChargePath` builds the warrior/druid charge route.
   // `runEffects` itself is the C4b boundary: it flips points-at to effect_dispatch
   // (the moved switch), reached only via the cast lifecycle's applyAbility/applyChannelTick.
   awardCombo(p: Entity, target: Entity, points: number): void;
@@ -424,11 +425,17 @@ export interface SimContextCallbacks {
       threatMult?: number;
     },
   ): boolean;
-  effectiveArmor(e: Entity): number;
   effectiveAttackPower(e: Entity): number;
   hasLineOfSight(source: Entity, target: Entity): boolean;
   findChargePath(p: Entity, target: Entity): Vec3[];
   runEffects(p: Entity, meta: PlayerMeta, target: Entity | null, res: ResolvedAbility): void;
+
+  // P1a pet AI (src/sim/pet/pet_ai): the moved updatePet/petRangedAttack/petPickTarget
+  // reach back for these. All STAY on Sim. `syncPetAspect` is pet-management (the P1b
+  // pet-command slice owns it eventually). effectiveAttackPower (C4b decl above, scales
+  // the imp bolt) and isHostileTo (C4a decl above, ~20 Sim callers) are already declared,
+  // not re-declared here.
+  syncPetAspect(pet: Entity, owner: Entity): void;
 }
 
 // The seam consumed by extracted modules.
@@ -696,10 +703,11 @@ export function createSimContext(host: SimContextHost): SimContext {
     applyDemonHealTick: host.applyDemonHealTick,
     awardCombo: host.awardCombo,
     meleeSwing: host.meleeSwing,
-    effectiveArmor: host.effectiveArmor,
     effectiveAttackPower: host.effectiveAttackPower,
     hasLineOfSight: host.hasLineOfSight,
     findChargePath: host.findChargePath,
     runEffects: host.runEffects,
+    // P1a pet-AI seam (effectiveAttackPower/isHostileTo already bound above; deduped).
+    syncPetAspect: host.syncPetAspect,
   };
 }

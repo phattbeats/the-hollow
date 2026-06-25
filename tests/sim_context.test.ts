@@ -61,10 +61,6 @@ const CALLBACK_KEYS = [
   'petOf',
   'completeTame',
   'clearEntityMarker',
-  'isHostileTo',
-  'isFriendlyTo',
-  'pvpController',
-  'stopFollow',
   'partyOf',
   'removeFromParty',
   'dropPartyMarkers',
@@ -132,10 +128,6 @@ const CALLBACK_KEYS = [
   'detonateCorpse',
   'despawnPet',
   'respawnMob',
-  'frenzyPackmates',
-  'armDeathThroes',
-  'despawnPersistentPet',
-  'clearNonPlayerStatAuras',
   'onBossDeath',
   // I1 dungeon instancing + the shared raid-lockout clock.
   'lockoutNowMs',
@@ -180,11 +172,12 @@ const CALLBACK_KEYS = [
   'applyDemonHealTick',
   'awardCombo',
   'meleeSwing',
-  'effectiveArmor',
   'effectiveAttackPower',
   'hasLineOfSight',
   'findChargePath',
   'runEffects',
+  // P1a pet-AI surface (effectiveAttackPower/isHostileTo already listed above; deduped).
+  'syncPetAspect',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -272,10 +265,6 @@ function makeFakeHost() {
     petOf: vi.fn(() => null),
     completeTame: vi.fn(),
     clearEntityMarker: vi.fn(),
-    isHostileTo: vi.fn(() => false),
-    isFriendlyTo: vi.fn(() => false),
-    pvpController: vi.fn(() => null),
-    stopFollow: vi.fn(),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
     dropPartyMarkers: vi.fn(),
@@ -343,10 +332,6 @@ function makeFakeHost() {
     detonateCorpse: vi.fn(),
     despawnPet: vi.fn(),
     respawnMob: vi.fn(),
-    frenzyPackmates: vi.fn(),
-    armDeathThroes: vi.fn(),
-    despawnPersistentPet: vi.fn(),
-    clearNonPlayerStatAuras: vi.fn(),
     onBossDeath: vi.fn(),
     effectiveArmor: vi.fn(() => 0),
     recalcPlayer: vi.fn(),
@@ -382,11 +367,12 @@ function makeFakeHost() {
     applyDemonHealTick: vi.fn(),
     awardCombo: vi.fn(),
     meleeSwing: vi.fn(() => false),
-    effectiveArmor: vi.fn(() => 0),
     effectiveAttackPower: vi.fn(() => 0),
     hasLineOfSight: vi.fn(() => true),
     findChargePath: vi.fn(() => []),
     runEffects: vi.fn(),
+    // P1a pet-AI stub (effectiveAttackPower/isHostileTo already stubbed above; deduped).
+    syncPetAspect: vi.fn(),
   };
   return { host, rng, entities, clock };
 }

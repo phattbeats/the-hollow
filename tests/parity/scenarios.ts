@@ -440,6 +440,86 @@ function warlockPet(): Scenario {
   };
 }
 
+// P1a pet-AI tick: the slice paths the existing hunter_pet / warlock_pet goldens
+// leave UNPINNED. A warlock imp (a petRanged demon) runs the petRangedAttack
+// imp-bolt arm (the crit roll + AP-scaled fire damage, distinct from the shared
+// updateRangedPetAttack a ranged_dps petSpell mob uses, which hunter_pet covers); a
+// voidwalker melee pet with NO pre-set target acquires one via petPickTarget
+// (aggressive auto-pull) then closes, auto-taunts, and mobSwings while keeping the
+// OWNER inCombat (the PET_COMBAT_LINGER coupling); and finally both pets drop their
+// targets and heel-follow a moved owner (petFollow). updatePet draws rng only in the
+// imp-bolt arm, so the draw-order log pins petRangedAttack and the full-state sample
+// pins petPickTarget / petFollow / the owner inCombat flag tick-by-tick.
+function petAi(): Scenario {
+  return {
+    name: 'pet_ai',
+    coverage: [
+      'class:hunter (pet owner)',
+      'petRangedAttack imp-bolt arm (petRanged crit roll + AP-scaled fire damage)',
+      'petPickTarget aggressive auto-pull',
+      'updatePet melee arm: close + auto-taunt + mobSwing (PET_COMBAT_LINGER owner inCombat)',
+      'petFollow heel transition (pets return to a moved owner)',
+    ],
+    build: () => new Sim({ seed: 1016, playerClass: 'hunter', autoEquip: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      sim.setPlayerLevel(12);
+      const p = sim.player as AnyEntity;
+      beef(p);
+
+      // Imp (petRanged demon): pre-targeted on a beefed wolf inside bolt range so
+      // updatePet runs the petRangedAttack arm (crit roll + AP-scaled fire damage).
+      const imp = spawnMob(sim, 'imp', 12, p.pos.x + 2, p.pos.y, p.pos.z);
+      imp.ownerId = p.id;
+      imp.hostile = false;
+      imp.hp = imp.maxHp;
+      imp.petMode = 'aggressive';
+      rec.track(imp.id);
+      const impTarget = spawnMob(sim, 'forest_wolf', 8, p.pos.x + 12, p.pos.y, p.pos.z);
+      beef(impTarget);
+      imp.aggroTargetId = impTarget.id;
+      rec.track(impTarget.id);
+
+      // Voidwalker (melee tank): NO pre-set target, so petPickTarget runs the
+      // aggressive auto-pull to acquire a beefed wolf in range, then the melee arm
+      // closes, auto-taunts the mob, and swings via mobSwing.
+      const tank = spawnMob(sim, 'voidwalker', 12, p.pos.x - 2, p.pos.y, p.pos.z);
+      tank.ownerId = p.id;
+      tank.hostile = false;
+      tank.hp = tank.maxHp;
+      tank.petMode = 'aggressive';
+      tank.petAutoTaunt = true;
+      tank.petTauntTimer = 0;
+      rec.track(tank.id);
+      const tankTarget = spawnMob(sim, 'forest_wolf', 8, p.pos.x - 10, p.pos.y, p.pos.z);
+      beef(tankTarget);
+      aggroOnto(tankTarget, p);
+      rec.track(tankTarget.id);
+      rec.notes.impId = imp.id;
+      rec.notes.tankId = tank.id;
+
+      // Target + auto-attack the tank's mark: stamps owner activity (so the
+      // aggressive auto-pull gate stays open) and drives the owner's own combat.
+      sim.targetEntity(tankTarget.id);
+      sim.startAutoAttack();
+      rec.tick(120); // 6s combat: imp bolts; tank pulls + closes + auto-taunts + swings
+
+      // Heel: drop both pets to passive with no target and move the owner away, so
+      // updatePet takes the heel arm (petFollow) each tick and the PET_COMBAT_LINGER
+      // coupling releases the owner's inCombat once the pets stop trading blows.
+      teleport(sim, impTarget, p.pos.x + 200, p.pos.z);
+      teleport(sim, tankTarget, p.pos.x + 200, p.pos.z + 20);
+      imp.petMode = 'passive';
+      imp.aggroTargetId = null;
+      tank.petMode = 'passive';
+      tank.aggroTargetId = null;
+      teleport(sim, p, p.pos.x + 25, p.pos.z);
+      rec.snapshot('heel');
+      rec.tick(60); // pets route home; owner regen resumes after the linger window
+    },
+  };
+}
+
 // Paladin Consecration: a ground AoE so updateGroundAoEs (which runs FIRST in the
 // tick) and pulseGroundAoE fire from BOTH callers (the immediate on-cast pulse and
 // the deferred interval pulses).
@@ -2439,6 +2519,7 @@ export const SCENARIOS: Scenario[] = [
   mobSwingAffixes(),
   hunterPet(),
   warlockPet(),
+  petAi(),
   paladinConsecration(),
   arena1v1(),
   fiesta(),
