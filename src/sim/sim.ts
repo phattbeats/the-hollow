@@ -156,6 +156,7 @@ import {
   runDespawnDecay,
   tickGroundAoEs,
 } from './entity_roster';
+import * as runsMod from './delves/runs';
 import { createSimContext, type SimContext, type SimContextHost } from './sim_context';
 import {
   enterCrypt as enterCryptImpl,
@@ -202,6 +203,8 @@ import {
   type CurrencyLootStrategy,
   canPrestige,
   DEFAULT_PARTY_LOOT_STRATEGIES,
+  DELVE_COMPANION_MAX_RANK,
+  DELVE_PLATE_RADIUS,
   type DelveDef,
   type DelveModuleDef,
   type DelveObjectState,
@@ -500,16 +503,12 @@ const MARKET_WIRE_LIMIT = 120; // most listings shipped to one client at a time
 const VENDOR_BUYBACK_LIMIT = 12;
 // INSTANCE_EMPTY_TIMEOUT relocated to types.ts (I1: shared with the delve reaper below);
 // imported above.
-const DELVE_PLATE_RADIUS = 2.5;
-// Push-out radii (yards) for solid delve props, kept under the chest/grave interact
-// range (DELVE_PLATE_RADIUS + 2 = 4.5) so you can still loot from adjacent. Pressure
-// plates and open passages stay walkable (no entry here = radius 0).
-const DELVE_CHEST_SOLID_R = 2.4; // matches the enlarged reliquary chest footprint
-const DELVE_GRAVE_SOLID_R = 1.0;
-const DELVE_WALL_SOLID_R = 3.2; // an intact (undestroyed) destructible wall
-const DELVE_INTERACT_RANGE = 6;
-const DELVE_BAD_AIR_INTERVAL = 8;
-const DELVE_RAISE_DEAD_CHANNEL = 5;
+// Delve run-lifecycle consts moved to src/sim/delves/runs.ts (I2a): the solid-prop
+// radii (DELVE_CHEST/GRAVE/WALL_SOLID_R), DELVE_INTERACT_RANGE, DELVE_BAD_AIR_INTERVAL,
+// DELVE_RAISE_DEAD_CHANNEL, DELVE_EXIT_PORTAL_RADIUS, DELVE_LORE_ORDER, and (re-exported
+// below) DELVE_MODULE_NAMES + DELVE_IMPLEMENTED_AFFIXES. DELVE_PLATE_RADIUS +
+// DELVE_COMPANION_MAX_RANK relocated to types.ts (shared with the I2b/I2c lockpick +
+// companion code still on Sim). The companion (I2c) tuning consts stay here until I2c.
 const DELVE_COMPANION_HEAL_RANGE = 22;
 const DELVE_COMPANION_HEAL_INTERVAL = 3;
 const DELVE_COMPANION_FOLLOW = 4;
@@ -522,32 +521,9 @@ const DELVE_COMPANION_HEAL_PCT = [0, 0.06, 0.08, 0.1];
 // arrives a junior aide and grows into a true peer as you invest Marks. Pairs with
 // DELVE_COMPANION_HEAL_PCT so a rank-up lifts both her survivability and her healing.
 const DELVE_COMPANION_LEVEL_PCT = [0, 0.5, 0.75, 1.0]; // index = rank
-const DELVE_COMPANION_MAX_RANK = 3;
-const DELVE_EXIT_PORTAL_RADIUS = 3.5;
-export const DELVE_MODULE_NAMES: Record<string, string> = {
-  reliquary_sunken_ossuary: 'The Sunken Ossuary',
-  reliquary_bell_niche: 'The Bell Niche',
-  reliquary_saintless_hall: 'The Saintless Hall',
-  reliquary_finale: 'The Bell-Buried Chamber',
-};
-// Lore journal entries unlocked one-per-clear across repeat runs (PRD §6.4 / §7.6).
-// Ids match the `delveUi.lore.*` i18n keys.
-const DELVE_LORE_ORDER = [
-  'eastbrook_ledger',
-  'first_collapse',
-  'gravecaller_mark',
-  'bell_below',
-  'tessa_note',
-] as const;
-// Affixes that actually have a sim hook today; rollDelveAffixes only draws from
-// these so a Heroic run never rolls an inert affix (PRD §6.7 v1 subset). The
-// other registered crypt affixes (grave_tax / unstable_roof / cult_remnants)
-// keep their UI/i18n entries but are excluded from the roll until implemented.
-export const DELVE_IMPLEMENTED_AFFIXES = new Set<string>([
-  'restless_graves',
-  'bad_air',
-  'candleblind',
-]);
+// DELVE_MODULE_NAMES + DELVE_IMPLEMENTED_AFFIXES now live in src/sim/delves/runs.ts;
+// re-exported from there so external importers (src/ui/sim_i18n.ts, tests) are unchanged.
+export { DELVE_IMPLEMENTED_AFFIXES, DELVE_MODULE_NAMES } from './delves/runs';
 const MAX_CLIMB_SLOPE = PLAYER_MAX_CLIMB_SLOPE; // rise/run above which a ground move is blocked (cliffs, world rim)
 
 // How far a mob pulls same-family neighbours into a fight ("social aggro").
@@ -2008,6 +1984,15 @@ export class Sim {
       get arenaMatches() {
         return sim.arenaMatches;
       },
+      get delveRuns() {
+        return sim.delveRuns;
+      },
+      get delvePetStash() {
+        return sim.delvePetStash;
+      },
+      get utcDay() {
+        return sim.utcDay;
+      },
       emit: sim.emit.bind(sim),
       error: sim.error.bind(sim),
       dealDamage: sim.dealDamage.bind(sim),
@@ -2062,6 +2047,36 @@ export class Sim {
       delveModuleEntry: sim.delveModuleEntry.bind(sim),
       failDelveRun: sim.failDelveRun.bind(sim),
       pulseGroundAoE: sim.pulseGroundAoE.bind(sim),
+      // I2a delve run lifecycle now lives in src/sim/delves/runs.ts; the moved module
+      // reaches the still-on-Sim helpers / gate predicates / pet seam / I2b lockpick /
+      // I2c companion through these delegates. The five reach-in callbacks resolve back
+      // to the moved body via the Sim delegate (delveRunForMob/onDelveBossDefeated/
+      // delveDetectMult/startDelveRaiseDeadChannel + delveRunForPlayer above). These wrap
+      // still-on-Sim methods as LATE-bound arrows (looked up at call time, not `.bind`d at
+      // ctor) so they preserve the pre-move `this.X` semantics exactly, including tests
+      // that reassign a method (e.g. delves.test.ts swaps sim.grantXp to observe payout).
+      partyMembersForKey: (key) => sim.partyMembersForKey(key),
+      grantXp: (amount, meta, opts) => sim.grantXp(amount, meta, opts),
+      addItem: (itemId, count, pid) => sim.addItem(itemId, count, pid),
+      spawnBossAdds: (boss, mobId, count) => sim.spawnBossAdds(boss, mobId, count),
+      tradeFor: (pid) => sim.tradeFor(pid),
+      duelFor: (pid) => sim.duelFor(pid),
+      serializePet: (ownerPid) => sim.serializePet(ownerPid),
+      restorePet: (owner, state) => sim.restorePet(owner, state),
+      despawnPet: (pet) => sim.despawnPet(pet),
+      despawnPersistentPet: (pet) => sim.despawnPersistentPet(pet),
+      isPetClass,
+      spawnDelveCompanion: (run, pid, companionId) =>
+        sim.spawnDelveCompanion(run, pid, companionId),
+      despawnDelveCompanion: (run) => sim.despawnDelveCompanion(run),
+      maybeCompanionBark: (run, pid, barkId) => sim.maybeCompanionBark(run, pid, barkId),
+      abandonLockpick: (run) => sim.abandonLockpick(run),
+      tickLockpickTimeout: (run) => sim.tickLockpickTimeout(run),
+      delveRunForMob: (mobId) => sim.delveRunForMob(mobId),
+      onDelveBossDefeated: (run) => sim.onDelveBossDefeated(run),
+      delveDetectMult: (player) => sim.delveDetectMult(player),
+      startDelveRaiseDeadChannel: (run, boss, mobId, count) =>
+        sim.startDelveRaiseDeadChannel(run, boss, mobId, count),
     };
     return createSimContext(host);
   }
@@ -15425,26 +15440,24 @@ export class Sim {
   // Delves, replayable modular instances (see docs/prd/delves.md)
   // -------------------------------------------------------------------------
 
+  // Delve run lifecycle (I2a) lives in src/sim/delves/runs.ts; Sim keeps same-named
+  // thin delegates so the IWorld surface, the shared reach-in entry points, the
+  // interleaved I2b/I2c callers, the movement clamps, and the (sim as any) test casts
+  // all resolve unchanged. The bodies moved verbatim behind SimContext.
   private delveOriginOf(run: DelveRun): { x: number; z: number } {
-    return delveOrigin(DELVES[run.delveId].index, run.slot);
+    return runsMod.delveOriginOf(run);
   }
 
   private delveModuleZOffset(run: DelveRun, moduleIndex = run.moduleIndex): number {
-    return delveModuleZOffset(run.modules, moduleIndex);
+    return runsMod.delveModuleZOffset(run, moduleIndex);
   }
 
   private delveOccupancyRadius(run: DelveRun): number {
-    const mi = Math.max(0, run.modules.length - 1);
-    const modId = run.modules[mi] as DelveModuleId;
-    const layout = DELVE_MODULE_LAYOUTS[modId];
-    const span = layout ? layout.zMax - layout.zMin : 50;
-    return delveModuleZOffset(run.modules, mi) + span + 40;
+    return runsMod.delveOccupancyRadius(run);
   }
 
   private delveRunForEntity(e: Entity): DelveRun | null {
-    const byPlayer = this.delveRunForPlayer(e.id);
-    if (byPlayer) return byPlayer;
-    return this.delveRunForMob(e.id);
+    return runsMod.delveRunForEntity(this.ctx, e);
   }
 
   // Swept move resolution for players, keeps v0.10.0's segment-based
@@ -15475,113 +15488,34 @@ export class Sim {
     return this.clampDelveDoors(run, clamped.x, clamped.z, r);
   }
 
-  // Confine an entity to the active module's interior box. Module-to-module
-  // travel is teleport-only (advanceDelveModule), so the 16u inter-module gap is
-  // never meant to be walkable: without this clamp the gap is an unsealed dead
-  // zone (no side walls) the player can slip into and walk out of the map, and
-  // it lets a freshly-transitioned player backtrack south into the prior room.
-  // Bounds come straight from the active module's own layout so they always
-  // match the room the player is actually standing in.
   private clampDelveModuleBounds(
     run: DelveRun,
     x: number,
     z: number,
     r: number,
   ): { x: number; z: number } {
-    const moduleId = run.modules[run.moduleIndex] as DelveModuleId;
-    const layout = DELVE_MODULE_LAYOUTS[moduleId];
-    if (!layout) return { x, z };
-    const wallX = layout.wallX ?? DUNGEON_WALL_X;
-    const halfX = wallX - DUNGEON_WALL_HW - r; // inner wall face minus body radius
-    const zBase = this.delveModuleZOffset(run);
-    const localX = x - run.origin.x;
-    const localZ = z - (run.origin.z + zBase);
-    const clampedX = Math.max(-halfX, Math.min(halfX, localX));
-    // Front/back end walls are DUNGEON_WALL_HW thick at zMin/zMax; keep the body
-    // inside their inner faces.
-    const minZ = layout.zMin + DUNGEON_WALL_HW + r;
-    const maxZ = layout.zMax - DUNGEON_WALL_HW - r;
-    const clampedZ = Math.max(minZ, Math.min(maxZ, localZ));
-    return { x: clampedX + run.origin.x, z: clampedZ + run.origin.z + zBase };
+    return runsMod.clampDelveModuleBounds(run, x, z, r);
   }
 
-  // Closed portcullis doors block the full walkable aisle until all plates fire;
-  // solid props (chests, cracked graves, an intact destructible wall) block as
-  // circles so you cannot walk through them. Pressure plates and open passages
-  // stay walkable. Mobs and the companion route through the same clamp.
   private clampDelveDoors(
     run: DelveRun,
     x: number,
     z: number,
     r: number,
   ): { x: number; z: number } {
-    for (const id of run.objectIds) {
-      const state = run.objectState[id];
-      if (!state) continue;
-      const obj = this.entities.get(id);
-      if (!obj) continue;
-      if (state.kind === 'locked_door') {
-        if (state.open) continue;
-        // Span the full walkable aisle (delve side walls at |x|=25, hw=1) so the
-        // portcullis cannot be bypassed by skirting the centre mesh.
-        const hw = 24,
-          hd = 1.2;
-        const dx = x - obj.pos.x,
-          dz = z - obj.pos.z;
-        const ox = Math.abs(dx) - hw - r;
-        const oz = Math.abs(dz) - hd - r;
-        if (ox < 0 && oz < 0) {
-          if (ox > oz) x = obj.pos.x + Math.sign(dx || 1) * (hw + r);
-          else z = obj.pos.z + Math.sign(dz || 1) * (hd + r);
-        }
-        continue;
-      }
-      let solidR = 0;
-      if (state.kind === 'reward_chest' || state.kind === 'locked_chest')
-        solidR = DELVE_CHEST_SOLID_R;
-      else if (state.kind === 'cracked_grave') solidR = DELVE_GRAVE_SOLID_R;
-      else if (state.kind === 'destructible_wall') solidR = obj.hp > 0 ? DELVE_WALL_SOLID_R : 0;
-      if (solidR <= 0) continue;
-      const dx = x - obj.pos.x,
-        dz = z - obj.pos.z;
-      const dist = Math.hypot(dx, dz);
-      const min = solidR + r;
-      if (dist < min) {
-        if (dist > 1e-6) {
-          x = obj.pos.x + (dx / dist) * min;
-          z = obj.pos.z + (dz / dist) * min;
-        } else x = obj.pos.x + min;
-      }
-    }
-    return { x, z };
+    return runsMod.clampDelveDoors(this.ctx, run, x, z, r);
   }
 
   delveModuleEntry(run: DelveRun): Vec3 {
-    const moduleId = run.modules[run.moduleIndex] as DelveModuleId;
-    const layout = DELVE_MODULE_LAYOUTS[moduleId];
-    const entry = layout ? delveLayoutEntry(layout) : { x: 0, z: 8 };
-    const zBase = this.delveModuleZOffset(run);
-    return this.groundPos(run.origin.x + entry.x, run.origin.z + zBase + entry.z);
+    return runsMod.delveModuleEntry(this.ctx, run);
   }
 
   delveRunForPlayer(pid: number): DelveRun | null {
-    const e = this.entities.get(pid);
-    if (!e) return null;
-    const key = this.instanceKeyFor(pid);
-    for (const run of this.delveRuns) {
-      if (run.partyKey !== key) continue;
-      const dx = Math.abs(e.pos.x - run.origin.x);
-      const dz = Math.abs(e.pos.z - run.origin.z);
-      if (dx <= 120 && dz <= this.delveOccupancyRadius(run)) return run;
-    }
-    if (!isDelvePos(e.pos.x)) return null;
-    const delve = delveAt(e.pos.x);
-    if (!delve) return null;
-    return this.delveRuns.find((r) => r.delveId === delve.id && r.partyKey === key) ?? null;
+    return runsMod.delveRunForPlayer(this.ctx, pid);
   }
 
   private delveRunForMob(mobId: number): DelveRun | null {
-    return this.delveRuns.find((r) => r.partyKey !== null && r.mobIds.includes(mobId)) ?? null;
+    return runsMod.delveRunForMob(this.ctx, mobId);
   }
 
   private partyMembersForKey(key: string): number[] {
@@ -15593,469 +15527,79 @@ export class Sim {
   }
 
   private refreshDelveDaily(meta: PlayerMeta): void {
-    // `utcDay` is supplied by the host (never read from the wall clock here, so the
-    // sim stays deterministic). When unknown (''), the daily window does not roll
-    // over, same-seed replays stay reproducible.
-    const today = this.utcDay;
-    if (today && meta.delveDaily.date !== today) {
-      meta.delveDaily = { date: today, firstClearXp: new Set(), markClears: 0 };
-    }
+    runsMod.refreshDelveDaily(this.ctx, meta);
   }
 
   private pickDelveModules(delve: DelveDef, seed: number, tierId: string): string[] {
-    const rng = new Rng(seed);
-    const pool = delve.modules.filter((id) => id !== delve.finaleModuleId);
-    const shuffled = [...pool];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = rng.int(0, i);
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    // moduleCount is [normal, heroic] in tier order; pick by the tier's position so
-    // a higher tier can run more rooms. Defaults to the Normal count if unmatched.
-    const tierIdx = delve.tiers.findIndex((t) => t.id === tierId);
-    const count = delve.moduleCount[tierIdx >= 0 ? tierIdx : 0] ?? delve.moduleCount[0];
-    const picked = shuffled.slice(0, count);
-    picked.push(delve.finaleModuleId);
-    return picked;
+    return runsMod.pickDelveModules(delve, seed, tierId);
   }
 
   private stowPetForDelve(pid: number): void {
-    const meta = this.players.get(pid);
-    if (!meta || !isPetClass(meta.cls)) return;
-    const pet = this.petOf(pid, true);
-    if (!pet) return;
-    const state = this.serializePet(pid);
-    if (state) this.delvePetStash.set(pid, state);
-    if (MOBS[pet.templateId]?.family === 'demon') this.despawnPet(pet);
-    else this.despawnPersistentPet(pet);
+    runsMod.stowPetForDelve(this.ctx, pid);
   }
 
   private restorePetFromDelveStash(pid: number): void {
-    const state = this.delvePetStash.get(pid);
-    if (!state) return;
-    this.delvePetStash.delete(pid);
-    const e = this.entities.get(pid);
-    if (!e || this.petOf(pid, true)) return;
-    this.restorePet(e, state);
+    runsMod.restorePetFromDelveStash(this.ctx, pid);
   }
 
   private canEnterDelve(pid: number): string | null {
-    const r = this.resolve(pid);
-    if (!r || r.e.dead) return 'You cannot enter a delve right now.';
-    if (dungeonAt(r.e.pos.x)) return 'Leave the dungeon first.';
-    if (isArenaPos(r.e.pos.x)) return 'Leave the arena first.';
-    if (isDelvePos(r.e.pos.x)) return 'You are already in a delve.';
-    if (this.tradeFor(pid)) return 'You cannot enter a delve while trading.';
-    if (this.duelFor(pid)) return 'You cannot enter a delve during a duel.';
-    if (this.arenaMatches.has(pid)) return 'You cannot enter a delve during an arena match.';
-    return null;
+    return runsMod.canEnterDelve(this.ctx, pid);
   }
 
   enterDelve(delveId: string, tierId: string, pid?: number): void {
-    const r = this.resolve(pid);
-    const delve = DELVES[delveId];
-    if (!r || !delve) return;
-    const gate = this.canEnterDelve(r.meta.entityId);
-    if (gate) {
-      this.error(r.meta.entityId, gate);
-      return;
-    }
-    if (!delve.tiers.some((t) => t.id === tierId)) {
-      this.error(r.meta.entityId, 'Unknown delve tier.');
-      return;
-    }
-    if (r.e.level < delve.minLevel) {
-      this.error(r.meta.entityId, `You must be level ${delve.minLevel} to enter ${delve.name}.`);
-      return;
-    }
-    const tierDef = delve.tiers.find((t) => t.id === tierId);
-    if (tierDef?.minPlayerLevel && r.e.level < tierDef.minPlayerLevel) {
-      this.error(
-        r.meta.entityId,
-        `You must be level ${tierDef.minPlayerLevel} to enter ${delve.name} on ${tierDef.label}.`,
-      );
-      return;
-    }
-    const key = this.instanceKeyFor(r.meta.entityId);
-    let run = this.delveRuns.find((d) => d.delveId === delveId && d.partyKey === key);
-    if (!run) {
-      run = this.delveRuns.find((d) => d.delveId === delveId && d.partyKey === null);
-      if (!run) {
-        this.error(r.meta.entityId, `All instances of ${delve.name} are busy. Try again soon.`);
-        return;
-      }
-      this.claimDelveRun(run, key, delveId, tierId);
-    } else {
-      run.emptyFor = 0;
-    }
-    this.stowPetForDelve(r.meta.entityId);
-    const entry = this.delveModuleEntry(run);
-    const p = r.e;
-    p.pos = entry;
-    p.prevPos = { ...entry };
-    this.rebucket(p);
-    p.facing = 0;
-    p.targetId = null;
-    p.autoAttack = false;
-    run.emptyFor = 0;
-    if (key.startsWith('solo:') && delve.autoCompanionId && !run.companion) {
-      this.spawnDelveCompanion(run, r.meta.entityId, delve.autoCompanionId);
-    }
-    this.emit({ type: 'log', text: delve.enterText, color: '#b9f', pid: r.meta.entityId });
-    this.emit({ type: 'delveEntered', delveId, tierId, pid: r.meta.entityId });
+    runsMod.enterDelve(this.ctx, delveId, tierId, pid);
   }
 
-  // Early-abandon path: drop the player back at the board door without completing
-  // (despawns the companion, restores the stowed pet, tears down any lockpick). The
-  // shipped in-delve exit instead runs through the 'surface_exit' interactable ->
-  // freeDelveRun, so this IWorld method (and its server 'leave_delve' command) is
-  // currently only reachable as scaffolding for a future explicit "Abandon Delve"
-  // control; kept wired in both worlds so that control needs no new plumbing.
   leaveDelve(pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r || r.e.dead) return;
-    const run = this.delveRunForPlayer(r.meta.entityId);
-    if (!run) return;
-    const delve = DELVES[run.delveId];
-    // Tear down the leaver's live lockpick session, if any (preserves the attempt).
-    if (run.lockpick && run.lockpick.ownerId === r.meta.entityId) this.abandonLockpick(run);
-    if (run?.companion) this.despawnDelveCompanion(run);
-    this.restorePetFromDelveStash(r.meta.entityId);
-    const p = r.e;
-    p.pos = this.groundPos(delve.doorPos.x, delve.doorPos.z - 4);
-    p.prevPos = { ...p.pos };
-    this.rebucket(p);
-    p.targetId = null;
-    p.autoAttack = false;
-    this.emit({ type: 'log', text: delve.leaveText, color: '#b9f', pid: r.meta.entityId });
+    runsMod.leaveDelve(this.ctx, pid);
   }
 
   private claimDelveRun(run: DelveRun, key: string, delveId: string, tierId: string): void {
-    const delve = DELVES[delveId];
-    run.partyKey = key;
-    run.seed = this.rng.int(1, 0x7fffffff);
-    run.tierId = tierId;
-    // §7.6, roll Bountiful once at run start (Heroic 5% / Normal 2%). Derived from
-    // run.seed in its own stream (like affixes/modules) so it is deterministic
-    // without perturbing the global rng draw order that the chest loot depends on.
-    run.bountiful = new Rng((run.seed ^ 0x600dc0ff) >>> 0).chance(
-      tierId === 'heroic' ? 0.05 : 0.02,
-    );
-    run.affixes = this.rollDelveAffixes(delve, tierId, run.seed);
-    run.modules = this.pickDelveModules(delve, run.seed, tierId);
-    run.moduleIndex = 0;
-    run.completed = false;
-    run.emptyFor = 0;
-    run.deathsThisRun = {};
-    run.objectState = {};
-    run.raiseDeadChannel = null;
-    run.restlessPending = [];
-    run.badAirTimer = 0;
-    run.companionBarks = [];
-    run.companion = undefined;
-    run.exitPortalOpen = false;
-    run.rewardChestId = null;
-    run.surfaceExitId = null;
-    run.objective = { kind: delve.objective, counts: [0], complete: false };
-    const origin = this.delveOriginOf(run);
-    run.origin = { x: origin.x, z: origin.z };
-    this.spawnDelveModule(run);
+    runsMod.claimDelveRun(this.ctx, run, key, delveId, tierId);
   }
 
   private spawnDelveModule(run: DelveRun): void {
-    for (const id of run.mobIds) {
-      if (!this.entities.has(id)) continue;
-      for (const meta of this.players.values()) {
-        const e = this.entities.get(meta.entityId);
-        if (e?.targetId === id) e.targetId = null;
-        if (e?.comboTargetId === id) {
-          e.comboTargetId = null;
-          e.comboPoints = 0;
-        }
-      }
-      this.dropEntity(id);
-    }
-    run.mobIds = [];
-    for (const id of run.objectIds) {
-      if (this.entities.has(id)) this.dropEntity(id);
-    }
-    run.objectIds = [];
-    run.objectState = {};
-    run.raiseDeadChannel = null;
-    run.exitPortalOpen = false;
-    run.rewardChestId = null;
-    run.surfaceExitId = null;
-
-    const moduleId = run.modules[run.moduleIndex];
-    const mod = DELVE_MODULES[moduleId];
-    if (!mod) return;
-    const delve = DELVES[run.delveId];
-    const tier = delve.tiers.find((t) => t.id === run.tierId) ?? delve.tiers[0];
-    const zBase = this.delveModuleZOffset(run);
-    const spawnSet = this.pickDelveSpawnSet(mod, run.seed, run.moduleIndex);
-    if (!spawnSet) return;
-    for (const spawn of spawnSet.spawns) {
-      const template = MOBS[spawn.mobId];
-      if (!template) continue;
-      const level = template.minLevel + tier.enemyLevelBonus;
-      const mob = createMob(
-        this.nextId++,
-        template,
-        level,
-        this.groundPos(run.origin.x + spawn.x, run.origin.z + zBase + spawn.z),
-      );
-      mob.facing = Math.PI;
-      mob.prevFacing = mob.facing;
-      this.addEntity(mob);
-      run.mobIds.push(mob.id);
-    }
-    this.spawnDelveInteractables(run, mod, zBase);
-    const isFinale = mod.id === delve.finaleModuleId || run.moduleIndex >= run.modules.length - 1;
-    if (!isFinale) this.spawnDelveModuleExit(run, mod, zBase);
-    this.emitDelveModuleEnter(run, mod);
-    if (run.companion) {
-      const companion = this.entities.get(run.companion.entityId);
-      if (companion) {
-        const entry = this.delveModuleEntry(run);
-        companion.pos = this.groundPos(entry.x + 1.5, entry.z);
-        companion.prevPos = { ...companion.pos };
-        this.rebucket(companion);
-      }
-    }
+    runsMod.spawnDelveModule(this.ctx, run);
   }
 
   private freeDelveRun(run: DelveRun): void {
-    this.abandonLockpick(run);
-    if (run.companion) this.despawnDelveCompanion(run);
-    for (const id of run.mobIds) {
-      if (!this.entities.has(id)) continue;
-      for (const meta of this.players.values()) {
-        const e = this.entities.get(meta.entityId);
-        if (e?.targetId === id) e.targetId = null;
-        if (e?.comboTargetId === id) {
-          e.comboTargetId = null;
-          e.comboPoints = 0;
-        }
-      }
-      this.dropEntity(id);
-    }
-    for (const id of run.objectIds) {
-      if (this.entities.has(id)) this.dropEntity(id);
-    }
-    run.partyKey = null;
-    run.seed = 0;
-    run.tierId = 'normal';
-    run.affixes = [];
-    run.modules = [];
-    run.moduleIndex = 0;
-    run.mobIds = [];
-    run.objectIds = [];
-    run.objective = { kind: DELVES[run.delveId].objective, counts: [0], complete: false };
-    run.completed = false;
-    run.emptyFor = 0;
-    run.deathsThisRun = {};
-    run.objectState = {};
-    run.raiseDeadChannel = null;
-    run.restlessPending = [];
-    run.badAirTimer = 0;
-    run.companionBarks = [];
-    run.companion = undefined;
-    run.exitPortalOpen = false;
-    run.bountiful = false;
-    run.rewardChestId = null;
-    run.surfaceExitId = null;
-    run.lockpick = null;
+    runsMod.freeDelveRun(this.ctx, run);
   }
 
   private updateDelveRuns(): void {
-    for (const run of this.delveRuns) {
-      // The lockpick per-step clock is enforced for EVERY run (a solo offline run
-      // has partyKey === null and is skipped by tickDelveRun below, but its lock
-      // must still time out identically to an online/headless one).
-      this.tickLockpickTimeout(run);
-      if (run.partyKey !== null) this.tickDelveRun(run);
-    }
-    if (this.tickCount % 20 !== 0) return;
-    for (const run of this.delveRuns) {
-      if (run.partyKey === null) continue;
-      const origin = run.origin;
-      let occupied = false;
-      for (const meta of this.players.values()) {
-        const e = this.entities.get(meta.entityId);
-        if (
-          e &&
-          Math.abs(e.pos.x - origin.x) < 120 &&
-          Math.abs(e.pos.z - origin.z) < this.delveOccupancyRadius(run)
-        ) {
-          occupied = true;
-          break;
-        }
-      }
-      if (occupied) run.emptyFor = 0;
-      else {
-        run.emptyFor += 1;
-        if (run.emptyFor >= INSTANCE_EMPTY_TIMEOUT) this.freeDelveRun(run);
-      }
-    }
+    runsMod.updateDelveRuns(this.ctx);
   }
 
   private ejectToDelveDoor(pid: number, delve: DelveDef): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const p = r.e;
-    p.dead = false;
-    p.pos = this.groundPos(delve.doorPos.x, delve.doorPos.z - 4);
-    p.prevPos = { ...p.pos };
-    this.rebucket(p);
-    p.facing = 0;
-    p.auras = [];
-    p.ccDr.clear();
-    recalcPlayerStats(p, r.meta.cls, r.meta.equipment, r.meta.talentMods);
-    p.hp = p.maxHp;
-    p.resource = p.resourceType === 'mana' ? p.maxResource : p.resourceType === 'energy' ? 100 : 0;
-    p.targetId = null;
-    p.combatTimer = 99;
-    p.inCombat = false;
-    p.autoAttack = false;
+    runsMod.ejectToDelveDoor(this.ctx, pid, delve);
   }
 
   private failDelveRun(run: DelveRun): void {
-    const delve = DELVES[run.delveId];
-    const members = run.partyKey ? this.partyMembersForKey(run.partyKey) : [];
-    for (const pid of members) {
-      this.restorePetFromDelveStash(pid);
-      this.ejectToDelveDoor(pid, delve);
-      this.emit({ type: 'delveFailed', delveId: run.delveId, tierId: run.tierId, pid });
-      this.emit({ type: 'log', text: `${delve.name} run failed.`, color: '#f66', pid });
-    }
-    this.freeDelveRun(run);
+    runsMod.failDelveRun(this.ctx, run);
   }
 
   private onDelveBossDefeated(run: DelveRun): void {
-    // Guard against double-spawn (e.g. if called twice due to a race)
-    if (run.rewardChestId !== null) return;
-    const delve = DELVES[run.delveId];
-    const moduleId = run.modules[run.moduleIndex] as DelveModuleId;
-    if (moduleId !== delve.finaleModuleId) return;
-    const layout = DELVE_MODULE_LAYOUTS[moduleId];
-    const zBase = this.delveModuleZOffset(run);
-    const dais = layout?.dais ?? { x: 0, z: 52 };
-    // Centre aisle, toward the entrance (south) edge of the dais and facing the
-    // approaching player, clear of the north surface-exit stairs at dais.z+6.
-    const chestLocalZ = dais.z - 14;
-    const chestPos = this.groundPos(run.origin.x, run.origin.z + zBase + chestLocalZ);
-    // Drop any stale module_exit (same z as dais / north passage) before placing the chest.
-    for (const id of [...run.objectIds]) {
-      if (run.objectState[id]?.kind !== 'module_exit') continue;
-      this.dropEntity(id);
-      run.objectIds = run.objectIds.filter((oid) => oid !== id);
-      delete run.objectState[id];
-    }
-    const chest = this.createDelveObject(run, 'locked_chest', chestPos);
-    chest.facing = Math.PI; // face south, toward the player entering from the aisle
-    chest.prevFacing = Math.PI;
-    run.rewardChestId = chest.id;
-    run.objectState[chest.id].attemptAvailable = true;
-    if (!run.partyKey) return;
-    for (const pid of this.partyMembersForKey(run.partyKey)) {
-      this.emit({
-        type: 'log',
-        text: 'The boss falls. A warded reliquary chest rises on the dais. Pick its lock to claim your spoils.',
-        color: '#8f8',
-        pid,
-      });
-    }
+    runsMod.onDelveBossDefeated(this.ctx, run);
   }
 
-  // Base Marks payout for one clear. PRD §6.5 FR-5.3: full Marks for the first 3
-  // completions per UTC day, then a diminished payout (Heroic 1 guaranteed, Normal
-  // 50% chance of 1). §6.7 FR-7.1 Heroic "+30% Marks" rides the tier `rewardMult`.
-  // Reads `markClears` BEFORE the caller increments it. NOTE: at the base of 1 Mark
-  // the +30% rounds to no per-clear difference; the Heroic mark advantage comes from
-  // the post-3 guaranteed-vs-50% rule. Uses `this.rng` only (deterministic).
   private delveMarkPayout(run: DelveRun, meta: PlayerMeta): number {
-    const isHeroic = run.tierId === 'heroic';
-    // First 3 clears/day pay full: 1 Normal / 2 Heroic (§7.4). After that, Heroic
-    // still guarantees 1; Normal has a 50% shot. (The old `Math.round(rewardMult)`
-    // rounded Heroic's 1.3 down to 1, silently erasing the Heroic advantage.)
-    if (meta.delveDaily.markClears < 3) return isHeroic ? 2 : 1;
-    if (isHeroic) return 1;
-    return this.rng.chance(0.5) ? 1 : 0;
+    return runsMod.delveMarkPayout(this.ctx, run, meta);
   }
 
-  // Unlock the next un-owned lore journal entry (PRD §6.4 / §7.6, five entries
-  // across repeat clears). Emits a stable lore id (no English crosses the sim
-  // boundary); the client localises it via the `delveUi.lore.*` keys.
   private unlockNextDelveLore(meta: PlayerMeta, pid: number): void {
-    const idx = meta.delveLoreUnlocked.size;
-    if (idx >= DELVE_LORE_ORDER.length) return;
-    const loreId = DELVE_LORE_ORDER[idx];
-    meta.delveLoreUnlocked.add(loreId);
-    this.emit({ type: 'delveLoreUnlock', loreId, pid });
+    runsMod.unlockNextDelveLore(this.ctx, meta, pid);
   }
 
-  // Shared per-member clear economy used by BOTH completion paths so they cannot
-  // diverge: daily reset, first-vs-repeat XP, Marks (FR-5.3), clear tally, copper,
-  // next lore entry, pet restore, and the delveComplete event.
   private grantDelveClearTo(run: DelveRun, delve: DelveDef, meta: PlayerMeta, pid: number): void {
-    this.refreshDelveDaily(meta);
-    const tier = delve.tiers.find((t) => t.id === run.tierId);
-    const clearKey = `${run.delveId}:${run.tierId}`;
-    const firstClear = !meta.delveDaily.firstClearXp.has(clearKey);
-    // Per-tier reward overrides (Heroic 1050/650, copper 16-24) fall back to the
-    // delve's Normal baseRewards when a tier omits them.
-    const xp = firstClear
-      ? (tier?.firstClearXp ?? delve.baseRewards.firstClearXp)
-      : (tier?.repeatClearXp ?? delve.baseRewards.repeatClearXp);
-    if (firstClear) meta.delveDaily.firstClearXp.add(clearKey);
-    const marks = this.delveMarkPayout(run, meta);
-    meta.delveDaily.markClears += 1;
-    meta.delveMarks += marks;
-    meta.delveClears[clearKey] = (meta.delveClears[clearKey] ?? 0) + 1;
-    this.grantXp(xp, meta);
-    const copper = this.rng.int(
-      tier?.copperMin ?? delve.baseRewards.copperMin,
-      tier?.copperMax ?? delve.baseRewards.copperMax,
-    );
-    meta.copper += copper;
-    this.unlockNextDelveLore(meta, pid);
-    this.maybeCompanionBark(run, pid, 'completion');
-    this.restorePetFromDelveStash(pid);
-    this.emit({ type: 'delveComplete', delveId: run.delveId, tierId: run.tierId, pid });
+    runsMod.grantDelveClearTo(this.ctx, run, delve, meta, pid);
   }
 
   private grantDelveRewards(run: DelveRun): void {
-    if (run.completed) return;
-    run.completed = true;
-    const delve = DELVES[run.delveId];
-    const members = run.partyKey ? this.partyMembersForKey(run.partyKey) : [];
-    for (const pid of members) {
-      const meta = this.players.get(pid);
-      if (!meta) continue;
-      this.grantDelveClearTo(run, delve, meta, pid);
-    }
+    runsMod.grantDelveRewards(this.ctx, run);
   }
 
   private openDelveSurfaceExit(run: DelveRun): void {
-    if (run.surfaceExitId !== null) return;
-    const moduleId = run.modules[run.moduleIndex] as DelveModuleId;
-    const layout = DELVE_MODULE_LAYOUTS[moduleId];
-    const zBase = this.delveModuleZOffset(run);
-    const dais = layout?.dais ?? { x: 0, z: 52 };
-    const exitLocalZ = Math.min(layout.zMax - 2, dais.z + 6);
-    const exitPos = this.groundPos(run.origin.x + dais.x, run.origin.z + zBase + exitLocalZ);
-    const exitObj = this.createDelveObject(run, 'surface_exit', exitPos);
-    run.objectState[exitObj.id].open = true;
-    run.surfaceExitId = exitObj.id;
-    if (!run.partyKey) return;
-    for (const pid of this.partyMembersForKey(run.partyKey)) {
-      this.emit({
-        type: 'log',
-        text: 'A stairway to the surface opens. Press F at the stairs to leave.',
-        color: '#8cf',
-        pid,
-      });
-    }
+    runsMod.openDelveSurfaceExit(this.ctx, run);
   }
 
   // In-delve respawn lives in entity_roster.ts (E1, merged E2). Thin delegate keeps
@@ -16065,332 +15609,75 @@ export class Sim {
   }
 
   private pickDelveSpawnSet(mod: DelveModuleDef, seed: number, moduleIndex: number) {
-    if (!mod.spawnSets.length) return null;
-    if (mod.spawnSets.length === 1) return mod.spawnSets[0];
-    const rng = new Rng(seed ^ (moduleIndex * 7919));
-    const total = mod.spawnSets.reduce((sum, set) => sum + set.weight, 0);
-    let roll = rng.int(1, total);
-    for (const set of mod.spawnSets) {
-      roll -= set.weight;
-      if (roll <= 0) return set;
-    }
-    return mod.spawnSets[0];
+    return runsMod.pickDelveSpawnSet(mod, seed, moduleIndex);
   }
 
   private spawnDelveInteractables(run: DelveRun, mod: DelveModuleDef, zBase: number): void {
-    const spawned: { kind: string; id: number }[] = [];
-    for (const slot of mod.interactableSlots) {
-      for (const variant of slot.variants) {
-        if (variant === 'darkness_zone') continue;
-        const pos = this.groundPos(run.origin.x + slot.x, run.origin.z + zBase + slot.z);
-        const obj = this.createDelveObject(run, variant, pos);
-        spawned.push({ kind: variant, id: obj.id });
-      }
-    }
-    // Link every pressure plate in this module to every locked door.
-    // A door only opens once ALL plates that reference it are triggered.
-    const plates = spawned.filter((s) => s.kind === 'pressure_plate');
-    const doors = spawned.filter((s) => s.kind === 'locked_door');
-    for (const door of doors) {
-      run.objectState[door.id].open = false;
-    }
-    for (const plate of plates) {
-      run.objectState[plate.id].linkIds = doors.map((d) => d.id);
-    }
+    runsMod.spawnDelveInteractables(this.ctx, run, mod, zBase);
   }
 
   private createDelveObject(run: DelveRun, kind: string, pos: Vec3): Entity {
-    const names: Record<string, string> = {
-      pressure_plate: 'Pressure Plate',
-      locked_door: 'Locked Door',
-      cracked_grave: 'Cracked Grave',
-      destructible_wall: 'Cracked Wall',
-      module_exit: 'Sealed Passage',
-      reward_chest: 'Reliquary Chest',
-      locked_chest: 'Warded Reliquary Chest',
-      surface_exit: 'Ascend to the Surface',
-    };
-    const maxHp = kind === 'destructible_wall' ? 80 : 1;
-    const obj = createGroundObject(this.nextId++, '', names[kind] ?? kind, pos);
-    obj.templateId = `delve_${kind}`;
-    obj.maxHp = maxHp;
-    obj.hp = maxHp;
-    obj.lootable =
-      kind === 'cracked_grave' || kind === 'destructible_wall' || kind === 'module_exit';
-    const startOpen = kind !== 'locked_door' && kind !== 'locked_chest';
-    run.objectState[obj.id] = {
-      kind,
-      triggered: false,
-      hp: maxHp,
-      maxHp,
-      linkIds: [],
-      open: startOpen,
-    };
-    run.objectIds.push(obj.id);
-    this.addEntity(obj);
-    return obj;
+    return runsMod.createDelveObject(this.ctx, run, kind, pos);
   }
 
   private tickDelveRun(run: DelveRun): void {
-    this.tickDelvePressurePlates(run);
-    this.tickDelveModuleExit(run);
-    this.tickDelveRaiseDeadChannel(run);
-    this.tickDelveBadAir(run);
-    this.tickDelveRestlessGraves(run);
+    runsMod.tickDelveRun(this.ctx, run);
   }
 
   private emitDelveModuleEnter(run: DelveRun, mod: DelveModuleDef): void {
-    if (!run.partyKey) return;
-    const modName = DELVE_MODULE_NAMES[mod.id] ?? mod.id;
-    const isFinale = run.moduleIndex >= run.modules.length - 1;
-    for (const pid of this.partyMembersForKey(run.partyKey)) {
-      // Keep the objective as a literal at each emit site (not a variable) so the
-      // S3 guard sees the full "<module>: Clear the room." / ": Defeat the boss."
-      // strings the sim_i18n rules are anchored on.
-      this.emit({
-        type: 'log',
-        text: isFinale ? `${modName}: Defeat the boss.` : `${modName}: Clear the room.`,
-        color: '#cc9',
-        pid,
-      });
-      if (run.moduleIndex === 0 && !isFinale) {
-        this.emit({
-          type: 'log',
-          text: 'A tombstone passage opens to the north when the room is cleared.',
-          color: '#aaa',
-          pid,
-        });
-      }
-    }
+    runsMod.emitDelveModuleEnter(this.ctx, run, mod);
   }
 
   private spawnDelveModuleExit(run: DelveRun, mod: DelveModuleDef, zBase: number): void {
-    const layout = DELVE_MODULE_LAYOUTS[mod.layout as DelveModuleId];
-    if (!layout) return;
-    const pos = this.groundPos(run.origin.x, run.origin.z + zBase + layout.zMax - 6);
-    const obj = this.createDelveObject(run, 'module_exit', pos);
-    run.objectState[obj.id].open = false;
-    obj.name = 'Sealed Passage';
+    runsMod.spawnDelveModuleExit(this.ctx, run, mod, zBase);
   }
 
   private findDelveExitPortal(run: DelveRun): Entity | null {
-    for (const id of run.objectIds) {
-      if (run.objectState[id]?.kind === 'module_exit') return this.entities.get(id) ?? null;
-    }
-    return null;
+    return runsMod.findDelveExitPortal(this.ctx, run);
   }
 
   private tryOpenDelveExitPortal(run: DelveRun): void {
-    if (run.exitPortalOpen || run.moduleIndex >= run.modules.length - 1) return;
-    const liveMobs = run.mobIds.some((id) => {
-      const e = this.entities.get(id);
-      return e && !e.dead;
-    });
-    if (liveMobs) return;
-    const plates = run.objectIds.filter((id) => run.objectState[id]?.kind === 'pressure_plate');
-    if (plates.length > 0 && !plates.some((id) => run.objectState[id].triggered)) return;
-    this.openDelveExitPortal(run);
+    runsMod.tryOpenDelveExitPortal(this.ctx, run);
   }
 
   private openDelveExitPortal(run: DelveRun): void {
-    if (run.exitPortalOpen) return;
-    run.exitPortalOpen = true;
-    const portal = this.findDelveExitPortal(run);
-    if (portal) {
-      run.objectState[portal.id].open = true;
-      portal.name = 'Exit to next chamber';
-    }
-    if (!run.partyKey) return;
-    for (const pid of this.partyMembersForKey(run.partyKey)) {
-      this.emit({
-        type: 'log',
-        text: 'A sealed tombstone passage grinds open to the north. Walk into it to continue.',
-        color: '#8cf',
-        pid,
-      });
-    }
+    runsMod.openDelveExitPortal(this.ctx, run);
   }
 
   private advanceDelveModule(run: DelveRun): void {
-    if (!run.exitPortalOpen || run.moduleIndex >= run.modules.length - 1) return;
-    const members = run.partyKey ? this.partyMembersForKey(run.partyKey) : [];
-    run.moduleIndex += 1;
-    this.spawnDelveModule(run);
-    const entry = this.delveModuleEntry(run);
-    const modId = run.modules[run.moduleIndex];
-    const modName = modId ? (DELVE_MODULE_NAMES[modId] ?? modId) : 'the next chamber';
-    for (const pid of members) {
-      const p = this.entities.get(pid);
-      if (!p || p.dead) continue;
-      p.pos = entry;
-      p.prevPos = { ...entry };
-      this.rebucket(p);
-      p.facing = 0;
-      this.emit({
-        type: 'log',
-        text: `You pass through the tombstone into ${modName}.`,
-        color: '#b9f',
-        pid,
-      });
-    }
+    runsMod.advanceDelveModule(this.ctx, run);
   }
 
   private tickDelveModuleExit(run: DelveRun): void {
-    if (!run.exitPortalOpen) {
-      this.tryOpenDelveExitPortal(run);
-      return;
-    }
-    const portal = this.findDelveExitPortal(run);
-    if (!portal || !run.partyKey) return;
-    for (const pid of this.partyMembersForKey(run.partyKey)) {
-      const p = this.entities.get(pid);
-      if (!p || p.dead) continue;
-      if (dist2d(p.pos, portal.pos) <= DELVE_EXIT_PORTAL_RADIUS) {
-        this.advanceDelveModule(run);
-        return;
-      }
-    }
+    runsMod.tickDelveModuleExit(this.ctx, run);
   }
 
   private tickDelvePressurePlates(run: DelveRun): void {
-    for (const id of run.objectIds) {
-      const state = run.objectState[id];
-      if (state?.kind !== 'pressure_plate' || state.triggered) continue;
-      const plate = this.entities.get(id);
-      if (!plate || !run.partyKey) continue;
-      for (const pid of this.partyMembersForKey(run.partyKey)) {
-        const p = this.entities.get(pid);
-        if (!p || p.dead) continue;
-        const d = dist2d(p.pos, plate.pos);
-        // Companion warns when a party member first nears an un-triggered plate.
-        if (d <= DELVE_PLATE_RADIUS + 4) this.maybeCompanionBark(run, pid, 'trap_spotted');
-        if (d > DELVE_PLATE_RADIUS) continue;
-        state.triggered = true;
-        // Switch the visual to the triggered (green) variant, renderer rebuilds the view.
-        plate.templateId = 'delve_pressure_plate_triggered';
-        // Open each linked door only when ALL plates referencing it are triggered.
-        for (const linkId of state.linkIds) {
-          const linked = run.objectState[linkId];
-          if (linked?.kind !== 'locked_door' || linked.open) continue;
-          const allTriggered = run.objectIds.every((oid) => {
-            const s = run.objectState[oid];
-            if (s?.kind !== 'pressure_plate') return true;
-            if (!s.linkIds.includes(linkId)) return true;
-            return s.triggered;
-          });
-          if (!allTriggered) continue;
-          linked.open = true;
-          const doorEnt = this.entities.get(linkId);
-          if (doorEnt) this.dropEntity(linkId);
-          for (const party of this.partyMembersForKey(run.partyKey)) {
-            this.emit({
-              type: 'log',
-              text: 'A mechanism clicks open nearby. A passage opens to the north. Find the exit portal ahead.',
-              color: '#cc9',
-              pid: party,
-            });
-          }
-        }
-        break;
-      }
-    }
+    runsMod.tickDelvePressurePlates(this.ctx, run);
   }
 
   private tickDelveRaiseDeadChannel(run: DelveRun): void {
-    const channel = run.raiseDeadChannel;
-    if (!channel) return;
-    channel.remaining -= DT;
-    if (channel.remaining > 0) return;
-    run.raiseDeadChannel = null;
-    const boss = this.entities.get(channel.bossId);
-    if (boss && !boss.dead) {
-      this.spawnBossAdds(boss, channel.mobId, channel.count);
-      // Raise Dead resolved uninterrupted (PRD §7.4 telegraph): mirror of the
-      // interrupt-success line emitted from delveInteract on the cracked grave.
-      this.emit({
-        type: 'log',
-        text: "The dead answer Deacon Varric's call!",
-        color: '#f96',
-        entityId: boss.id,
-      });
-    }
+    runsMod.tickDelveRaiseDeadChannel(this.ctx, run);
   }
 
   private tickDelveBadAir(run: DelveRun): void {
-    if (!run.affixes.includes('bad_air')) return;
-    run.badAirTimer += DT;
-    if (run.badAirTimer < DELVE_BAD_AIR_INTERVAL) return;
-    run.badAirTimer = 0;
-    if (!run.partyKey) return;
-    for (const pid of this.partyMembersForKey(run.partyKey)) {
-      const p = this.entities.get(pid);
-      if (!p || p.dead) continue;
-      this.applyAura(p, {
-        id: 'bad_air',
-        name: 'Bad Air',
-        kind: 'dot',
-        school: 'nature',
-        remaining: 4,
-        duration: 4,
-        value: 3,
-        tickInterval: 2,
-        tickTimer: 2,
-        sourceId: p.id,
-      });
-    }
+    runsMod.tickDelveBadAir(this.ctx, run);
   }
 
   private tickDelveRestlessGraves(run: DelveRun): void {
-    if (!run.restlessPending.length) return;
-    const ready: typeof run.restlessPending = [];
-    const pending: typeof run.restlessPending = [];
-    for (const spawn of run.restlessPending) {
-      if (spawn.at <= this.time) ready.push(spawn);
-      else pending.push(spawn);
-    }
-    run.restlessPending = pending;
-    for (const spawn of ready) {
-      const template = MOBS[spawn.mobId];
-      if (!template) continue;
-      const mob = createMob(
-        this.nextId++,
-        template,
-        template.minLevel,
-        this.groundPos(spawn.x, spawn.z),
-      );
-      mob.facing = Math.PI;
-      this.addEntity(mob);
-      run.mobIds.push(mob.id);
-    }
+    runsMod.tickDelveRestlessGraves(this.ctx, run);
   }
 
   private rollDelveAffixes(delve: DelveDef, tierId: string, seed: number): string[] {
-    const tier = delve.tiers.find((t) => t.id === tierId) ?? delve.tiers[0];
-    if (tier.affixCount <= 0) return [];
-    const pool = Object.values(DELVE_AFFIXES).filter(
-      (a) => !a.blessing && a.themes.includes(delve.theme) && DELVE_IMPLEMENTED_AFFIXES.has(a.id),
-    );
-    if (!pool.length) return [];
-    const rng = new Rng(seed ^ 0x5a11c0de);
-    const shuffled = [...pool];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = rng.int(0, i);
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled.slice(0, Math.min(tier.affixCount, shuffled.length)).map((a) => a.id);
+    return runsMod.rollDelveAffixes(delve, tierId, seed);
   }
 
   private delveDetectMult(player: Entity): number {
-    const run = this.delveRunForPlayer(player.id);
-    if (!run?.affixes.includes('candleblind')) return 1;
-    return 0.65;
+    return runsMod.delveDetectMult(this.ctx, player);
   }
 
   private findDelveObject(run: DelveRun, kind: string): Entity | null {
-    for (const id of run.objectIds) {
-      if (run.objectState[id]?.kind === kind) return this.entities.get(id) ?? null;
-    }
-    return null;
+    return runsMod.findDelveObject(this.ctx, run, kind);
   }
 
   private startDelveRaiseDeadChannel(
@@ -16399,22 +15686,7 @@ export class Sim {
     mobId: string,
     count: number,
   ): boolean {
-    const grave = this.findDelveObject(run, 'cracked_grave');
-    if (!grave) return false;
-    run.raiseDeadChannel = {
-      graveId: grave.id,
-      bossId: boss.id,
-      mobId,
-      count,
-      remaining: DELVE_RAISE_DEAD_CHANNEL,
-    };
-    this.emit({
-      type: 'log',
-      text: `${boss.name} begins Raise Dead.`,
-      color: '#f96',
-      entityId: boss.id,
-    });
-    return true;
+    return runsMod.startDelveRaiseDeadChannel(this.ctx, run, boss, mobId, count);
   }
 
   private isDelveCompanionMob(mob: Entity): boolean {
@@ -16572,144 +15844,7 @@ export class Sim {
   }
 
   delveInteract(objectId: number, pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    let run = this.delveRunForPlayer(r.meta.entityId);
-    if (!run) {
-      run =
-        this.delveRuns.find((d) => d.partyKey !== null && d.objectIds.includes(objectId)) ?? null;
-    }
-    if (!run) {
-      this.error(r.meta.entityId, 'You are not in a delve.');
-      return;
-    }
-    const state = run.objectState[objectId];
-    const obj = this.entities.get(objectId);
-    if (!state || !obj || !run.objectIds.includes(objectId)) {
-      this.error(r.meta.entityId, 'You cannot interact with that.');
-      return;
-    }
-    if (dist2d(r.e.pos, obj.pos) > DELVE_INTERACT_RANGE) {
-      this.error(r.meta.entityId, 'You are too far away.');
-      return;
-    }
-    if (state.kind === 'cracked_grave') {
-      if (run.raiseDeadChannel) {
-        run.raiseDeadChannel = null;
-        this.emit({
-          type: 'log',
-          text: 'The grave rite falters.',
-          color: '#8f8',
-          pid: r.meta.entityId,
-        });
-      } else {
-        this.error(r.meta.entityId, 'The grave is silent for now.');
-      }
-      return;
-    }
-    if (state.kind === 'locked_door') {
-      if (state.open)
-        this.emit({
-          type: 'log',
-          text: 'The door is already open.',
-          color: '#aaa',
-          pid: r.meta.entityId,
-        });
-      else this.error(r.meta.entityId, 'The door is locked.');
-      return;
-    }
-    if (state.kind === 'destructible_wall') {
-      this.error(r.meta.entityId, 'Strike the wall to break through.');
-      return;
-    }
-    if (state.kind === 'module_exit') {
-      if (!state.open) {
-        this.error(r.meta.entityId, 'The passage is sealed.');
-        return;
-      }
-      if (dist2d(r.e.pos, obj.pos) > DELVE_EXIT_PORTAL_RADIUS + 2) {
-        this.error(r.meta.entityId, 'Move closer to the passage.');
-        return;
-      }
-      this.advanceDelveModule(run);
-      return;
-    }
-    if (state.kind === 'locked_chest') {
-      if (dist2d(r.e.pos, obj.pos) > DELVE_PLATE_RADIUS + 2) {
-        this.error(r.meta.entityId, 'Move closer to the chest.');
-        return;
-      }
-      if (state.looted) {
-        this.emit({
-          type: 'log',
-          text: 'The chest is empty.',
-          color: '#aaa',
-          pid: r.meta.entityId,
-        });
-        return;
-      }
-      if (!state.attemptAvailable) {
-        this.error(
-          r.meta.entityId,
-          'The lock is jammed beyond picking. Clear the delve again for another attempt.',
-        );
-        return;
-      }
-      if (run.lockpick && run.lockpick.state === 'IN_PROGRESS') {
-        // Someone is already picking it (single interactor, v1).
-        if (run.lockpick.ownerId !== r.meta.entityId) {
-          this.error(r.meta.entityId, 'Someone is already working the lock.');
-        }
-        return;
-      }
-      // Open the ante selector on the client; no session yet. A Bountiful Coffer
-      // (purple) tells the client to force the Hard/Premium ante (§7.6).
-      const isCoffer = run.bountiful && objectId === run.rewardChestId;
-      // No per-move budget on the offer: the clock is an ante dial, so the client
-      // shows each ante's own time from ANTE_TO_STEP_TIMEOUT_MS in the selector.
-      this.emit({ type: 'lockpickOffer', objectId, bountiful: isCoffer, pid: r.meta.entityId });
-      return;
-    }
-    if (state.kind === 'reward_chest') {
-      if (dist2d(r.e.pos, obj.pos) > DELVE_PLATE_RADIUS + 2) {
-        this.error(r.meta.entityId, 'Move closer to the chest.');
-        return;
-      }
-      if (state.open && state.triggered) {
-        this.emit({
-          type: 'log',
-          text: 'The chest is empty.',
-          color: '#aaa',
-          pid: r.meta.entityId,
-        });
-        return;
-      }
-      this.grantDelveRewards(run);
-      state.triggered = true;
-      state.open = true;
-      obj.name = 'Opened Chest';
-      this.openDelveSurfaceExit(run);
-      return;
-    }
-    if (state.kind === 'surface_exit') {
-      if (!state.open) {
-        this.error(r.meta.entityId, 'The way out is not yet open.');
-        return;
-      }
-      if (dist2d(r.e.pos, obj.pos) > DELVE_EXIT_PORTAL_RADIUS + 2) {
-        this.error(r.meta.entityId, 'Move closer to the stairs.');
-        return;
-      }
-      const delve = DELVES[run.delveId];
-      const members = run.partyKey ? this.partyMembersForKey(run.partyKey) : [];
-      for (const pid of members) {
-        this.restorePetFromDelveStash(pid);
-        this.ejectToDelveDoor(pid, delve);
-      }
-      this.freeDelveRun(run);
-      return;
-    }
-    this.error(r.meta.entityId, 'Nothing happens.');
+    runsMod.delveInteract(this.ctx, objectId, pid);
   }
 
   // -------------------------------------------------------------------------
@@ -16989,28 +16124,7 @@ export class Sim {
 
   /** Claim item loot from an opened delve chest (shown on the loot overlay). */
   collectDelveChestLoot(chestId: number, pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const run = this.delveRunForPlayer(r.meta.entityId);
-    if (!run) return;
-    const state = run.objectState[chestId];
-    const obj = this.entities.get(chestId);
-    if (state?.kind !== 'locked_chest' || !state.pendingLoot?.length) {
-      this.error(r.meta.entityId, 'There is nothing left to take.');
-      return;
-    }
-    if (state.lootOwnerId != null && state.lootOwnerId !== r.meta.entityId) {
-      this.error(r.meta.entityId, 'There is nothing left to take.');
-      return;
-    }
-    if (!obj || dist2d(r.e.pos, obj.pos) > DELVE_PLATE_RADIUS + 2) {
-      this.error(r.meta.entityId, 'Move closer to the chest.');
-      return;
-    }
-    for (const slot of state.pendingLoot) {
-      this.addItem(slot.itemId, slot.count, r.meta.entityId);
-    }
-    state.pendingLoot = [];
+    runsMod.collectDelveChestLoot(this.ctx, chestId, pid);
   }
 
   /** Tear down any active lockpick session on a run (player left / disconnected). */
@@ -17142,145 +16256,43 @@ export class Sim {
   }
 
   companionUpgrade(companionId: string, pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const def = DELVE_COMPANIONS[companionId];
-    if (!def) {
-      this.error(r.meta.entityId, 'Unknown companion.');
-      return;
-    }
-    const rank = r.meta.companionUpgrades[companionId] ?? 1;
-    if (rank >= DELVE_COMPANION_MAX_RANK) {
-      this.error(r.meta.entityId, 'This companion is already fully upgraded.');
-      return;
-    }
-    const next = rank + 1;
-    const cost = COMPANION_UPGRADE_COSTS[next];
-    if (!cost) return;
-    if (r.meta.delveMarks < cost.marks) {
-      this.error(r.meta.entityId, `You need ${cost.marks} Delve Marks to upgrade ${def.name}.`);
-      return;
-    }
-    if (r.meta.copper < cost.copper) {
-      this.error(r.meta.entityId, 'You cannot afford this upgrade.');
-      return;
-    }
-    r.meta.delveMarks -= cost.marks;
-    r.meta.copper -= cost.copper;
-    r.meta.companionUpgrades[companionId] = next;
-    this.emit({
-      type: 'log',
-      text: `${def.name} reaches rank ${next}.`,
-      color: '#8f8',
-      pid: r.meta.entityId,
-    });
+    runsMod.companionUpgrade(this.ctx, companionId, pid);
   }
 
-  // Has the player unlocked a Marks-vendor entry? `available` is always open;
-  // `clears:N` counts total clears of this delve at ANY difficulty; `heroicClear`
-  // requires at least one Heroic (difficulty ≥ 2) completion. Delegates to the pure
-  // content helper so the server-authoritative buy and the client lock badge
-  // (ClientWorld) agree, same answer offline, on the server, and headless.
   delveShopGateMet(meta: PlayerMeta, delveId: string, gate: DelveShopGate): boolean {
-    return delveShopGateUnlocked(meta.delveClears, delveId, gate);
+    return runsMod.delveShopGateMet(meta, delveId, gate);
   }
 
-  // Brother Halven's stock for `delveId`, each entry resolved against this player's
-  // clears (unlock state). The client renders the lock badge from this; the buy is
-  // re-validated server-side in delveBuyShopItem regardless of what the UI shows.
   delveShopOffersFor(delveId: string, pid: number): DelveShopOffer[] {
-    return resolveDelveShopOffers(delveId, this.players.get(pid)?.delveClears ?? {});
+    return runsMod.delveShopOffersFor(this.ctx, delveId, pid);
   }
 
-  // Per-player clears map for the self-snapshot wire (so the online client can
-  // resolve shop lock state without the server shipping the whole offer list).
   delveClearsFor(pid: number): Record<string, number> {
-    return { ...(this.players.get(pid)?.delveClears ?? {}) };
+    return runsMod.delveClearsFor(this.ctx, pid);
   }
 
-  // Server-authoritative Marks-vendor purchase. Re-validates the gate + balance
-  // here regardless of what the client shows; the client only sends intent. The
-  // server geo-gates this to the board NPC (see the `delve_buy` command) so a
-  // player must be standing at Brother Halven, mirroring `enter_delve`.
   delveBuyShopItem(delveId: string, itemId: string, pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const { meta } = r;
-    const entry = DELVE_SHOPS[delveId]?.find((s) => s.itemId === itemId);
-    if (!entry) {
-      this.error(meta.entityId, 'That item is not sold here.');
-      return;
-    }
-    const def = ITEMS[itemId];
-    if (!def) {
-      this.error(meta.entityId, 'That item is not for sale.');
-      return;
-    }
-    if (!this.delveShopGateMet(meta, delveId, entry.gate)) {
-      this.error(meta.entityId, 'You have not unlocked that item yet.');
-      return;
-    }
-    if (meta.delveMarks < entry.marks) {
-      this.error(meta.entityId, `You need ${entry.marks} Delve Marks to buy ${def.name}.`);
-      return;
-    }
-    meta.delveMarks -= entry.marks;
-    this.addItem(itemId, 1, meta.entityId);
-    // Feedback rides the 'vendor' event (the shop panel re-renders), matching the
-    // regular buyItem path, no raw English log string emitted from the sim.
-    this.emit({ type: 'vendor', action: 'buy', itemId, pid: meta.entityId });
+    runsMod.delveBuyShopItem(this.ctx, delveId, itemId, pid);
   }
 
   delveCompanionWire(pid: number): DelveCompanionInfo | null {
-    const run = this.delveRunForPlayer(pid);
-    if (!run?.companion) return null;
-    const e = this.entities.get(run.companion.entityId);
-    if (!e) return null;
-    return {
-      companionId: run.companion.companionId,
-      entityId: e.id,
-      rank: this.players.get(pid)?.companionUpgrades[run.companion.companionId] ?? 1,
-      hp: e.hp,
-      maxHp: e.maxHp,
-    };
+    return runsMod.delveCompanionWire(this.ctx, pid);
   }
 
   delveRunWire(pid: number): object | null {
-    const run = this.delveRunForPlayer(pid);
-    if (!run?.partyKey) return null;
-    return {
-      delveId: run.delveId,
-      tierId: run.tierId,
-      slot: run.slot,
-      origin: { x: run.origin.x, z: run.origin.z },
-      moduleIndex: run.moduleIndex,
-      moduleCount: run.modules.length,
-      modules: run.modules,
-      objective: run.objective,
-      affixes: run.affixes,
-      completed: run.completed,
-      exitPortalOpen: run.exitPortalOpen,
-      bountiful: run.bountiful,
-    };
+    return runsMod.delveRunWire(this.ctx, pid);
   }
 
   delveMarksFor(pid: number): number {
-    return this.players.get(pid)?.delveMarks ?? 0;
+    return runsMod.delveMarksFor(this.ctx, pid);
   }
 
   companionUpgradesFor(pid: number): Record<string, number> {
-    return { ...(this.players.get(pid)?.companionUpgrades ?? {}) };
+    return runsMod.companionUpgradesFor(this.ctx, pid);
   }
 
   delveDailyWire(pid: number): { date: string; firstClearXp: string[]; markClears: number } {
-    const meta = this.players.get(pid);
-    if (!meta) return { date: '', firstClearXp: [], markClears: 0 };
-    this.refreshDelveDaily(meta);
-    return {
-      date: meta.delveDaily.date,
-      firstClearXp: [...meta.delveDaily.firstClearXp],
-      markClears: meta.delveDaily.markClears,
-    };
+    return runsMod.delveDailyWire(this.ctx, pid);
   }
 
   get delveRun(): DelveRunInfo | null {

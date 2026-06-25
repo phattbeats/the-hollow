@@ -15,7 +15,15 @@
 import type { TalentModifiers } from './content/talents';
 import type { DelayedEvent, GroundAoE } from './entity_roster';
 import type { Rng } from './rng';
-import type { ArenaMatch, DuelState, InstanceSlot, Party, PlayerMeta } from './sim';
+import type {
+  ArenaMatch,
+  DuelState,
+  InstanceSlot,
+  Party,
+  PetState,
+  PlayerMeta,
+  TradeSession,
+} from './sim';
 import type { SpatialGrid } from './spatial';
 import type {
   Aura,
@@ -23,6 +31,7 @@ import type {
   DelveRun,
   Entity,
   ErrorReason,
+  PlayerClass,
   QuestProgress,
   SimEvent,
   Vec3,
@@ -65,6 +74,13 @@ export interface SimContextPrimitives {
   // live arena bouts keyed by every participant pid (A2); release-spirit early-bails
   // when the dead player is mid-bout.
   readonly arenaMatches: Map<number, ArenaMatch>;
+  // I2a delve runs: the live run pool (seeded in the Sim ctor, never reassigned) and
+  // the transient pet stash both stay Sim-owned (the disconnect path + serializePet
+  // poke them); exposed here as live views the run module reads/mutates in place.
+  readonly delveRuns: DelveRun[];
+  readonly delvePetStash: Map<number, PetState>;
+  // Host-supplied UTC day string ('' = unknown) gating the delve daily reset.
+  readonly utcDay: string;
 }
 
 // Cross-system callbacks. Each signature mirrors the still-on-`Sim` method it
@@ -179,6 +195,36 @@ export interface SimContextCallbacks {
   delveModuleEntry(run: DelveRun): Vec3;
   failDelveRun(run: DelveRun): void;
   pulseGroundAoE(effect: GroundAoE, threatOpts?: { flat?: number; mult?: number }): void;
+
+  // I2a delve run lifecycle (delves/runs.ts). delveRunForMob/onDelveBossDefeated/
+  // delveDetectMult/startDelveRaiseDeadChannel (+ delveRunForPlayer/delveModuleEntry/
+  // failDelveRun above) are the reach-in callbacks foreign mob-death/summon/detection
+  // hot paths use; they resolve to the moved body via the Sim delegate. The rest still
+  // live on their owning slice (points-at Sim): the shared helpers (partyMembersForKey/
+  // grantXp/addItem/spawnBossAdds), the gate predicates (tradeFor/duelFor), the P1 pet
+  // seam (serializePet/restorePet/despawnPet/despawnPersistentPet/isPetClass), the I2b
+  // lockpick controller (abandonLockpick/tickLockpickTimeout), and the I2c companion AI
+  // (spawnDelveCompanion/despawnDelveCompanion/maybeCompanionBark).
+  partyMembersForKey(key: string): number[];
+  grantXp(amount: number, meta: PlayerMeta, opts?: { fromKill?: boolean }): void;
+  addItem(itemId: string, count: number, pid?: number): void;
+  spawnBossAdds(boss: Entity, mobId: string, count: number): void;
+  tradeFor(pid: number): TradeSession | null;
+  duelFor(pid: number): DuelState | null;
+  serializePet(ownerPid: number): PetState | null;
+  restorePet(owner: Entity, state: PetState): void;
+  despawnPet(pet: Entity): void;
+  despawnPersistentPet(pet: Entity): void;
+  isPetClass(cls: PlayerClass): boolean;
+  spawnDelveCompanion(run: DelveRun, pid: number, companionId: string): void;
+  despawnDelveCompanion(run: DelveRun): void;
+  maybeCompanionBark(run: DelveRun, pid: number, barkId: string): void;
+  abandonLockpick(run: DelveRun): void;
+  tickLockpickTimeout(run: DelveRun): void;
+  delveRunForMob(mobId: number): DelveRun | null;
+  onDelveBossDefeated(run: DelveRun): void;
+  delveDetectMult(player: Entity): number;
+  startDelveRaiseDeadChannel(run: DelveRun, boss: Entity, mobId: string, count: number): boolean;
 }
 
 // The seam consumed by extracted modules.
@@ -245,6 +291,15 @@ export function createSimContext(host: SimContextHost): SimContext {
     get arenaMatches() {
       return host.arenaMatches;
     },
+    get delveRuns() {
+      return host.delveRuns;
+    },
+    get delvePetStash() {
+      return host.delvePetStash;
+    },
+    get utcDay() {
+      return host.utcDay;
+    },
     emit: host.emit,
     error: host.error,
     lockoutNowMs: host.lockoutNowMs,
@@ -293,5 +348,25 @@ export function createSimContext(host: SimContextHost): SimContext {
     delveModuleEntry: host.delveModuleEntry,
     failDelveRun: host.failDelveRun,
     pulseGroundAoE: host.pulseGroundAoE,
+    partyMembersForKey: host.partyMembersForKey,
+    grantXp: host.grantXp,
+    addItem: host.addItem,
+    spawnBossAdds: host.spawnBossAdds,
+    tradeFor: host.tradeFor,
+    duelFor: host.duelFor,
+    serializePet: host.serializePet,
+    restorePet: host.restorePet,
+    despawnPet: host.despawnPet,
+    despawnPersistentPet: host.despawnPersistentPet,
+    isPetClass: host.isPetClass,
+    spawnDelveCompanion: host.spawnDelveCompanion,
+    despawnDelveCompanion: host.despawnDelveCompanion,
+    maybeCompanionBark: host.maybeCompanionBark,
+    abandonLockpick: host.abandonLockpick,
+    tickLockpickTimeout: host.tickLockpickTimeout,
+    delveRunForMob: host.delveRunForMob,
+    onDelveBossDefeated: host.onDelveBossDefeated,
+    delveDetectMult: host.delveDetectMult,
+    startDelveRaiseDeadChannel: host.startDelveRaiseDeadChannel,
   };
 }

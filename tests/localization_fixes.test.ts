@@ -755,7 +755,12 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
   // drift-guarded. (Same pattern other extractions use for their modules.)
   const simSrc =
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/sim.ts'), 'utf8') +
-    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/instances/dungeons.ts'), 'utf8');
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/instances/dungeons.ts'), 'utf8') +
+    // I2a moved the delve run-lifecycle player emits (enter/clear/advance/reward/grave
+    // rite, interact guards, run-failed) from sim.ts into delves/runs.ts; concat it so
+    // those moved literals stay drift-guarded (the ctx.emit/ctx.error/return regexes
+    // already match the free-function module form).
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/runs.ts'), 'utf8');
   // Hardened S3: also scan the authoritative server's player-facing emits. The
   // server (server/game.ts) is language-agnostic like the sim and re-localized
   // client-side by localizeServerText; previously the guard read only sim.ts, so

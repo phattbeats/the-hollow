@@ -722,7 +722,7 @@ function delveProgression(): Scenario {
       }
       rec.snapshot('advanced-to-finale');
       // Marks shop: an 'available'-gated piece + a companion rank bump.
-      const meta = sim.players.get(sim.playerId) as AnyEntity;
+      const meta = sim.players.get(sim.playerId) as Record<string, any>;
       meta.delveMarks = 100;
       meta.copper = 100000;
       sim.delveBuyShopItem('collapsed_reliquary', 'reliquary_legs');

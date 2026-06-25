@@ -24,6 +24,13 @@ export const NYTHRAXIS_BOSS_ID = 'nythraxis_scourge_of_thornpeak';
 // Seconds an empty instance idles before it resets. Shared by the dungeon instance
 // reaper (instances/dungeons.ts) and the delve reaper (sim.ts).
 export const INSTANCE_EMPTY_TIMEOUT = 300;
+// Delve pressure-plate trigger radius (yards). Shared by the I2a run module
+// (delves/runs.ts: plate stepping + chest/exit proximity) and the I2b lockpick
+// controller still on Sim (resolveLockChest proximity gate). Relocated from sim.ts.
+export const DELVE_PLATE_RADIUS = 2.5;
+// Max purchasable companion rank. Shared by the I2a run module (companionUpgrade cap)
+// and the I2c companion AI still on Sim (updateDelveCompanion heal-pct index).
+export const DELVE_COMPANION_MAX_RANK = 3;
 
 export type PlayerClass =
   | 'warrior'

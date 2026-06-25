@@ -87,6 +87,9 @@ function makeCtx() {
     get arenaMatches() {
       return arenaMatches;
     },
+    delveRuns: [],
+    delvePetStash: new Map(),
+    utcDay: '',
     emit,
     error: vi.fn(),
     clearEntityMarker,
@@ -135,6 +138,26 @@ function makeCtx() {
     delveRunForPlayer: vi.fn(() => null),
     delveModuleEntry: vi.fn(() => ({ x: 0, y: 0, z: 0 })),
     failDelveRun: vi.fn(),
+    partyMembersForKey: vi.fn(() => []),
+    grantXp: vi.fn(),
+    addItem: vi.fn(),
+    spawnBossAdds: vi.fn(),
+    tradeFor: vi.fn(() => null),
+    duelFor: vi.fn(() => null),
+    serializePet: vi.fn(() => null),
+    restorePet: vi.fn(),
+    despawnPet: vi.fn(),
+    despawnPersistentPet: vi.fn(),
+    isPetClass: vi.fn(() => false),
+    spawnDelveCompanion: vi.fn(),
+    despawnDelveCompanion: vi.fn(),
+    maybeCompanionBark: vi.fn(),
+    abandonLockpick: vi.fn(),
+    tickLockpickTimeout: vi.fn(),
+    delveRunForMob: vi.fn(() => null),
+    onDelveBossDefeated: vi.fn(),
+    delveDetectMult: vi.fn(() => 1),
+    startDelveRaiseDeadChannel: vi.fn(() => false),
   };
   const ctx = createSimContext(host);
   return {
