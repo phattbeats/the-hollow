@@ -65,6 +65,7 @@ function makeCtx() {
     get entities() {
       return entities;
     },
+    primaryId: -1,
     tradeInvites: new Map(),
     duelInvites: new Map(),
     nextId: 1,
@@ -216,10 +217,6 @@ function makeCtx() {
     detonateCorpse: vi.fn(),
     despawnPet: vi.fn(),
     respawnMob: vi.fn(),
-    frenzyPackmates: vi.fn(),
-    armDeathThroes: vi.fn(),
-    despawnPersistentPet: vi.fn(),
-    clearNonPlayerStatAuras: vi.fn(),
     onBossDeath: vi.fn(),
     effectiveArmor: vi.fn(() => 0),
     recalcPlayer: vi.fn(),

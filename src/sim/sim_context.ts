@@ -54,6 +54,10 @@ export interface SimContextPrimitives {
   // Live player roster (keyed by entity id). Stays a Sim field; exposed here so the
   // moved party machine (A1) resolves member names/metas through the seam.
   readonly players: Map<number, PlayerMeta>;
+  // The local / RL player id (single-player + renderer contexts). Reassigned on the
+  // first join and on the primary's departure, so it is a LIVE getter, not a snapshot.
+  // Stays a Sim field; the moved raid-marker `markerFor` (T1) reads it through the seam.
+  readonly primaryId: number;
   // Social-invite maps owned by the trade (G2) and duel (A2) slices. The party
   // machine (A1) reads them for hasPendingSocialInvite's cross-system pending check
   // and lazily expires entries in place, so these are LIVE views: the backing fields
@@ -223,16 +227,22 @@ export interface SimContextCallbacks {
   // A1/T1 raid markers + party; Q1 quest-credit trio (kill/collect/turn-in credit,
   // foreign-called from handleDeath + the inventory hub + the interaction/crypt
   // dispatchers), reading inventory via countItem (stays on Sim / L2 inventory hub).
+  // clearEntityMarker (death/despawn hooks) + dropPartyMarkers (the A1 disband path)
+  // now point at the T1 marker store (src/sim/targeting.ts) via Sim's late-bound
+  // delegate; partyOf stays on Sim (A1's thin delegate -> social/party).
   clearEntityMarker(entityId: number): void;
   partyOf(pid: number): Party | null;
   removeFromParty(pid: number, verb: string): void;
-  // Drop a disbanded party's whole raid-marker set. The marker store is T1's
-  // (src/sim/targeting.ts) once T1 lands; until then this points at Sim.
+  // Drop a disbanded party's whole raid-marker set (points at T1's targeting store).
   dropPartyMarkers(partyId: number): void;
   onMobKilledForQuests(mob: Entity, meta: PlayerMeta): void;
   onInventoryChangedForQuests(meta: PlayerMeta): void;
   checkQuestReady(qp: QuestProgress, meta: PlayerMeta): void;
   countItem(itemId: string, pid?: number): number;
+
+  // T1 player target selection consumes isHostileTo/isFriendlyTo/pvpController/stopFollow;
+  // all already on the seam (C4a added the first two + stopFollow, C1 added pvpController)
+  // and STAY on Sim, so they are not re-declared here.
 
   // E1 entity roster: the moved roster ops, exposed so the foreign callers across
   // not-yet-extracted slices reach them through the seam. Implemented in
@@ -336,12 +346,9 @@ export interface SimContextCallbacks {
   detonateCorpse(dead: Entity): void;
   despawnPet(pet: Entity): void;
   respawnMob(mob: Entity): void;
-  frenzyPackmates(dead: Entity): void;
-  armDeathThroes(dead: Entity): void;
-  // shared helpers the M4 respawnMob body consumes; the bodies STAY on Sim (the pet
-  // slice owns despawnPersistentPet eventually; clearNonPlayerStatAuras is shared).
-  despawnPersistentPet(pet: Entity): void;
-  clearNonPlayerStatAuras(target: Entity): void;
+  // frenzyPackmates / armDeathThroes flipped points-at to mob/lifecycle (M4); the M4
+  // respawnMob body also consumes despawnPersistentPet (I2a) + clearNonPlayerStatAuras
+  // (C1), which stay on Sim. All four are declared once elsewhere in this interface.
   // --- boss-death dialogue hook (N1 owns the body; left here by M2) ---
   onBossDeath(mob: Entity): void;
 
@@ -428,6 +435,9 @@ export function createSimContext(host: SimContextHost): SimContext {
     },
     get players() {
       return host.players;
+    },
+    get primaryId() {
+      return host.primaryId;
     },
     get tradeInvites() {
       return host.tradeInvites;
@@ -624,10 +634,6 @@ export function createSimContext(host: SimContextHost): SimContext {
     detonateCorpse: host.detonateCorpse,
     despawnPet: host.despawnPet,
     respawnMob: host.respawnMob,
-    frenzyPackmates: host.frenzyPackmates,
-    armDeathThroes: host.armDeathThroes,
-    despawnPersistentPet: host.despawnPersistentPet,
-    clearNonPlayerStatAuras: host.clearNonPlayerStatAuras,
     onBossDeath: host.onBossDeath,
     // M3 mob-swing affix cascade seam.
     effectiveArmor: host.effectiveArmor,

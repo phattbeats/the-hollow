@@ -200,7 +200,7 @@ import {
 import * as fiestaBotsMod from './social/fiesta_bots';
 import { PartyMachine } from './social/party';
 import { SpatialGrid } from './spatial';
-import { orderTabTargets, TAB_QUERY_RADIUS } from './tab_target';
+import { Targeting } from './targeting';
 import {
   addThreat,
   clearThreat,
@@ -994,6 +994,13 @@ export class Sim {
   // behind SimContext. Built in the ctor after `ctx`. Sim keeps thin delegates
   // (partyOf + the eight command methods) so IWorld + foreign call sites resolve.
   private party!: PartyMachine;
+  // Player target selection + the party-scoped raid-marker store (T1): owns
+  // partyMarkers and the tab/nearest/friendly selectors, moved off Sim behind
+  // SimContext. Built in the ctor after `ctx`. Sim keeps thin delegates (the nine
+  // selectors + markersFor/setMarker/clearMarker/markerFor) so IWorld + the foreign
+  // main/hud/renderer/server/obs call sites resolve; clearEntityMarker/dropPartyMarkers
+  // reach it through the seam.
+  private targeting!: Targeting;
   players = new Map<number, PlayerMeta>(); // keyed by entity id
   // spatial indexes for radius queries; re-bucketed at the end of each tick
   // and kept roster-exact on spawn/despawn/teleport
@@ -1012,9 +1019,6 @@ export class Sim {
   accountCosmetics: AccountCosmetics = { completedQuestIds: [], mechChromaIds: [] };
   private nextLootRollId = 1;
   private pendingLootRolls = new Map<number, PendingLootRoll>();
-  // raid/target markers: partyId -> (enemy entityId -> markerId 0..7). A
-  // cosmetic, party-scoped overlay — never read by tick()/obs/persistence.
-  partyMarkers = new Map<number, Map<number, number>>();
   trades = new Map<number, TradeSession>(); // pid -> shared session (both pids point at it)
   tradeInvites = new Map<number, { fromPid: number; expires: number }>();
   duels = new Map<number, DuelState>(); // pid -> shared duel (both pids)
@@ -1074,6 +1078,10 @@ export class Sim {
     // is what they resolve against; nothing below this point draws on the machine
     // during construction.
     this.party = new PartyMachine(this.ctx);
+    // Target selection + raid-marker store (T1): also constructed after ctx (it
+    // consumes the seam). The ctx clearEntityMarker/dropPartyMarkers callbacks are
+    // lazy arrows resolving against this instance.
+    this.targeting = new Targeting(this.ctx);
 
     // NPCs — nudged out of buildings and deep water if their data position is bad
     for (const npcDef of Object.values(NPCS)) {
@@ -1872,6 +1880,9 @@ export class Sim {
       get players() {
         return sim.players;
       },
+      get primaryId() {
+        return sim.primaryId;
+      },
       get tradeInvites() {
         return sim.tradeInvites;
       },
@@ -2004,16 +2015,18 @@ export class Sim {
       summonPet: sim.summonPet.bind(sim),
       petOf: sim.petOf.bind(sim),
       completeTame: sim.completeTame.bind(sim),
-      clearEntityMarker: sim.clearEntityMarker.bind(sim),
       // partyOf stays bound to Sim's thin delegate (it forwards to this.party);
-      // removeFromParty + dropPartyMarkers route straight to the moved machine /
-      // the still-on-Sim marker store. points-at = social/party (A1) for the first
-      // two; dropPartyMarkers points at Sim until T1 owns the marker store.
+      // removeFromParty routes to the moved machine (points-at social/party, A1).
+      // clearEntityMarker + dropPartyMarkers now route to the moved marker store
+      // (points-at targeting, T1); lazy arrows since `sim.targeting` is built after ctx.
+      clearEntityMarker: (id: number) => sim.targeting.clearEntityMarker(id),
       partyOf: sim.partyOf.bind(sim),
       removeFromParty: (pid: number, verb: string) => sim.party.removeFromParty(pid, verb),
-      dropPartyMarkers: (partyId: number) => {
-        sim.partyMarkers.delete(partyId);
-      },
+      // dropPartyMarkers flips to the T1 marker store (targeting); lazy arrow since
+      // sim.targeting is built after ctx. The T1 selectors consume isHostileTo/
+      // isFriendlyTo/pvpController/stopFollow, which are already bound above (C4a/C1) and
+      // stay on Sim.
+      dropPartyMarkers: (partyId: number) => sim.targeting.dropPartyMarkers(partyId),
       // Q1 quest-credit trio now lives in quests/quest_credit.ts; the callbacks route
       // through `sim.ctx` (lazily read at call time, after the ctor sets it). countItem
       // stays on Sim (L2 inventory hub) and is consumed by the collect updater.
@@ -3948,7 +3961,7 @@ export class Sim {
       dungeonId: target.dungeonId,
       timer: TAMED_TARGET_RESPAWN_SECONDS,
     });
-    this.clearEntityMarker(target.id);
+    this.ctx.clearEntityMarker(target.id);
     this.dropEntity(target.id);
 
     // The owned copy is friendly now: nobody keeps swinging at the old target,
@@ -6642,141 +6655,29 @@ export class Sim {
   // Targeting
   // -------------------------------------------------------------------------
 
+  // Target selection moved to src/sim/targeting.ts (T1); Sim keeps thin same-named
+  // delegates so IWorld + the foreign main/hud/server/obs/interactions call sites
+  // (and the internal assist command) resolve unchanged. enemyCandidates /
+  // isEnemyTargetCandidate / friendlyCandidates are now module-private (no caller
+  // outside the slice).
   targetEntity(id: number | null, pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const p = r.e;
-    // switching to a different target ends a follow (re-targeting is manual intent)
-    if (p.followTargetId !== null && id !== p.followTargetId)
-      this.stopFollow(p, 'You stop following.');
-    if (id === null) {
-      p.targetId = null;
-      p.autoAttack = false;
-      return;
-    }
-    const e = this.entities.get(id);
-    if (!e || (e.dead && !e.lootable)) return;
-    p.targetId = id;
-    if (!this.isHostileTo(p, e) || e.dead) p.autoAttack = false;
+    this.targeting.targetEntity(id, pid);
   }
 
   tabTarget(pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const p = r.e;
-    const candidates = this.enemyCandidates(p);
-    if (candidates.length === 0) return;
-    // Cycle the enemies the player can see / is fighting first; off-screen ones
-    // stay reachable but never steal the selection (see tab_target.ts).
-    const { ids, primaryCount } = orderTabTargets(
-      candidates.map((c) => ({
-        id: c.e.id,
-        dx: c.e.pos.x - p.pos.x,
-        dz: c.e.pos.z - p.pos.z,
-        d: c.d,
-        engaged: c.e.aggroTargetId === p.id || c.e.targetId === p.id,
-      })),
-      p.facing,
-    );
-    const curIdx = ids.indexOf(p.targetId ?? -1);
-    if (curIdx === -1) {
-      // No (or no longer valid) target: grab the priority enemy, cluster first.
-      p.targetId = ids[0];
-    } else if (curIdx < primaryCount) {
-      // Cycling the near fight cluster: wrap back to its first (priority) mob
-      // instead of stepping out to a distant idle enemy still in range.
-      p.targetId = ids[(curIdx + 1) % primaryCount];
-    } else {
-      // Sitting on a distant fallback target: walk the rest of the fallback,
-      // then wrap back into the near cluster.
-      const next = curIdx + 1;
-      p.targetId = next < ids.length ? ids[next] : ids[0];
-    }
+    this.targeting.tabTarget(pid);
   }
 
   targetNearestEnemy(pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const p = r.e;
-    let best: Entity | null = null;
-    let bestD2 = TAB_QUERY_RADIUS * TAB_QUERY_RADIUS;
-    this.grid.forEachInRadius(p.pos.x, p.pos.z, TAB_QUERY_RADIUS, (e, d2) => {
-      if (!this.isEnemyTargetCandidate(p, e)) return;
-      if (d2 < bestD2) {
-        bestD2 = d2;
-        best = e;
-      }
-    });
-    if (best) p.targetId = (best as Entity).id;
-  }
-
-  private enemyCandidates(p: Entity): { e: Entity; d: number }[] {
-    const out: { e: Entity; d: number }[] = [];
-    if (p.dead) return out;
-    this.grid.forEachInRadius(p.pos.x, p.pos.z, TAB_QUERY_RADIUS, (e, d2) => {
-      if (!this.isEnemyTargetCandidate(p, e)) return;
-      out.push({ e, d: Math.sqrt(d2) });
-    });
-    return out;
-  }
-
-  private isEnemyTargetCandidate(attacker: Entity, target: Entity): boolean {
-    if (attacker.dead) return false;
-    if (target.id === attacker.id || target.dead) return false;
-    if (this.isHostileTo(attacker, target)) return true;
-    if (target.kind === 'mob' && target.ownerId !== null) {
-      const owner = this.entities.get(target.ownerId);
-      return !!owner && owner.kind === 'player' && this.isEnemyTargetCandidate(attacker, owner);
-    }
-    if (target.kind !== 'player') return false;
-    const attackerPlayer = this.pvpController(attacker);
-    if (!attackerPlayer || attackerPlayer.dead) return false;
-    const match = this.arenaMatches.get(attackerPlayer.id);
-    return (
-      !!match &&
-      match.state === 'countdown' &&
-      this.isArenaCrossTeam(match, attackerPlayer.id, target.id)
-    );
-  }
-
-  // Nearby allies a beneficial spell can land on: other players (and friendly
-  // pets) within range, never yourself, never dead/hostile. Mirrors the enemy
-  // targeting helpers so heals/buffs are reachable by keyboard, not just by
-  // clicking party frames or world models (#133).
-  private friendlyCandidates(p: Entity): { e: Entity; d: number }[] {
-    const out: { e: Entity; d: number }[] = [];
-    this.grid.forEachInRadius(p.pos.x, p.pos.z, 40, (e, d2) => {
-      if (e.id === p.id || e.dead || !this.isFriendlyTo(p, e)) return;
-      out.push({ e, d: Math.sqrt(d2) });
-    });
-    return out;
+    this.targeting.targetNearestEnemy(pid);
   }
 
   targetNearestFriendly(pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const p = r.e;
-    let best: Entity | null = null;
-    let bestD = Infinity;
-    for (const c of this.friendlyCandidates(p)) {
-      if (c.d < bestD) {
-        bestD = c.d;
-        best = c.e;
-      }
-    }
-    if (best) p.targetId = best.id;
+    this.targeting.targetNearestFriendly(pid);
   }
 
   friendlyTabTarget(pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const p = r.e;
-    const candidates = this.friendlyCandidates(p);
-    if (candidates.length === 0) return;
-    candidates.sort((a, b) => a.d - b.d);
-    const curIdx = candidates.findIndex((c) => c.e.id === p.targetId);
-    const next = candidates[(curIdx + 1) % candidates.length];
-    p.targetId = next.e.id;
+    this.targeting.friendlyTabTarget(pid);
   }
 
   // -------------------------------------------------------------------------
@@ -8857,67 +8758,24 @@ export class Sim {
   // Raid markers (party-scoped target markers)
   // -------------------------------------------------------------------------
 
-  // Every mark visible to the actor's party, as { entityId: markerId }. Empty
-  // when the actor is not in a party. Pure read — cleanup happens on the
-  // death/despawn/disband hooks, never here.
+  // The raid-marker store + methods moved to src/sim/targeting.ts (T1); Sim keeps thin
+  // same-named delegates so the foreign hud/renderer/server call sites resolve.
+  // clearEntityMarker is no longer on Sim: the death/despawn hooks reach it through
+  // this.ctx.clearEntityMarker, and the A1 disband path through this.ctx.dropPartyMarkers.
   markersFor(pid: number): Record<number, number> {
-    const party = this.partyOf(pid);
-    if (!party) return {};
-    const marks = this.partyMarkers.get(party.id);
-    if (!marks) return {};
-    const out: Record<number, number> = {};
-    for (const [eid, mid] of marks) out[eid] = mid;
-    return out;
+    return this.targeting.markersFor(pid);
   }
 
   setMarker(entityId: number, markerId: number, pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const party = this.partyOf(r.meta.entityId);
-    if (!party) {
-      this.error(r.meta.entityId, 'You must be in a party to use raid markers.');
-      return;
-    }
-    if (!Number.isInteger(markerId) || markerId < 0 || markerId > 7) return;
-    // markable: a live, wild, hostile mob (not players, NPCs, corpses, or pets)
-    const target = this.entities.get(entityId);
-    if (target?.kind !== 'mob' || target.dead || !target.hostile || target.ownerId !== null) return;
-    let marks = this.partyMarkers.get(party.id);
-    if (!marks) {
-      marks = new Map();
-      this.partyMarkers.set(party.id, marks);
-    }
-    // re-applying the same symbol to the same mob toggles it off
-    if (marks.get(entityId) === markerId) {
-      marks.delete(entityId);
-      return;
-    }
-    // a symbol is unique within the party: take it off whatever held it
-    for (const [eid, mid] of marks) {
-      if (mid === markerId) marks.delete(eid);
-    }
-    marks.set(entityId, markerId);
+    this.targeting.setMarker(entityId, markerId, pid);
   }
 
   clearMarker(entityId: number, pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const party = this.partyOf(r.meta.entityId);
-    if (!party) return;
-    this.partyMarkers.get(party.id)?.delete(entityId);
+    this.targeting.clearMarker(entityId, pid);
   }
 
-  // The local player's view of one entity's mark (for the renderer). Direct
-  // lookup, no per-call allocation.
   markerFor(entityId: number): number | null {
-    const party = this.partyOf(this.primaryId);
-    if (!party) return null;
-    return this.partyMarkers.get(party.id)?.get(entityId) ?? null;
-  }
-
-  // Strip an entity's mark from every party — used when it dies or despawns.
-  private clearEntityMarker(entityId: number): void {
-    for (const marks of this.partyMarkers.values()) marks.delete(entityId);
+    return this.targeting.markerFor(entityId);
   }
 
   // -------------------------------------------------------------------------
