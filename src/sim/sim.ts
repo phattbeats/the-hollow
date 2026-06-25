@@ -35,17 +35,11 @@ import {
   healingThreat as healingThreatImpl,
   hexOutputMult as hexOutputMultImpl,
 } from './combat/heal';
-import {
-  AUGMENTS_BY_ID,
-  type AugmentDef,
-  type AugmentSpecial,
-  type AugmentTier,
-  eligibleAugments,
-  POWERUPS,
-  POWERUPS_BY_ID,
-  type PowerupDef,
-  tierForWave,
-} from './content/augments';
+// A3: the augment/power-up content helpers used by the Fiesta match logic
+// (AUGMENTS_BY_ID/AugmentDef/eligibleAugments/POWERUPS/PowerupDef/tierForWave)
+// moved to social/fiesta.ts with that logic; sim.ts keeps only the type used by
+// the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
+import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
 import {
   delveChestItemsForTier,
   LOCKPICK_TIER_REWARD,
@@ -122,12 +116,9 @@ import {
   type DelveModuleId,
   delveModuleEntry as delveLayoutEntry,
 } from './delve_layout';
-import {
-  ARENA_SPAWNS_A_2v2,
-  ARENA_SPAWNS_B_2v2,
-  DUNGEON_WALL_HW,
-  DUNGEON_WALL_X,
-} from './dungeon_layout';
+// A3: ARENA_SPAWNS_A_2v2/B_2v2 (read only by the moved fiestaRevive) now live with
+// social/fiesta.ts; the dungeon-wall consts stay (non-Fiesta callers).
+import { DUNGEON_WALL_HW, DUNGEON_WALL_X } from './dungeon_layout';
 import {
   createGroundObject,
   createMob,
@@ -212,6 +203,17 @@ import * as duelMod from './social/duel';
 // A2: eloDelta (with ARENA_K_FACTOR) moved to social/arena.ts. Re-exported so the
 // public path `import { Sim, eloDelta } from './sim'` (tests/arena.test.ts) holds.
 export { eloDelta } from './social/arena';
+import * as fiestaMod from './social/fiesta';
+// A3: Fiesta tuning consts moved to social/fiesta.ts; these five are read back here
+// by the fiestaMatchInfo presentation accessor (which STAYS on Sim).
+import {
+  FIESTA_POWERUP_TELEGRAPH,
+  FIESTA_POWERUP_TTL,
+  FIESTA_RING_CX,
+  FIESTA_RING_CZ,
+  FIESTA_TOTAL_WAVES,
+} from './social/fiesta';
+import * as fiestaBotsMod from './social/fiesta_bots';
 import { PartyMachine } from './social/party';
 import { SpatialGrid } from './spatial';
 import { orderTabTargets, TAB_QUERY_RADIUS } from './tab_target';
@@ -389,33 +391,11 @@ const RESTED_INN_PADDING = 2; // yards of slack around the inn footprint that st
 // MIN_RATING/K_FACTOR) + eloDelta moved to social/arena.ts (ARENA_BASE_RATING is
 // imported back via arenaMod for the PlayerMeta ctor default).
 const ARENA_LADDER_SIZE = 10; // live online standings shipped to clients
-// 2v2 Fiesta — the dopamine-maxxed party mode. Score-based: down a foe to score,
-// they respawn (timers grow as the bout drags on), augments drop in three
-// escalating waves, and a hazard ring squeezes everyone toward the middle.
-// (A2: FIESTA_COUNTDOWN moved to social/arena.ts with the ranked match-start path;
-// the rest of the Fiesta tuning stays here with createFiestaState / A3.)
-const FIESTA_SCORE_LIMIT = 15; // first team to this many takedowns wins
-const FIESTA_MAX_DURATION = 360; // hard cap (s); highest score wins, ties = draw
-const FIESTA_TOTAL_WAVES = 3; // augment waves
-const FIESTA_WAVE_INTERVAL = 50; // s of active play between augment waves
-const FIESTA_FIRST_WAVE_AT = 8; // s into the fight the first wave opens
-const FIESTA_RESPAWN_BASE = 3; // s for a first death
-const FIESTA_RESPAWN_PER_DEATH = 1.2; // each prior death lengthens your next wait
-const FIESTA_RESPAWN_PER_MINUTE = 1.5; // and the bout dragging on lengthens it too
-const FIESTA_RESPAWN_MAX = 14; // cap so it never feels hopeless
-const FIESTA_RING_CX = 0; // ring centre (instance-local) — the arena dais
-const FIESTA_RING_CZ = 2;
-const FIESTA_RING_START = 22; // radius covering both teams' spawns
-const FIESTA_RING_MIN = 6; // fully-closed radius
-const FIESTA_RING_DPS_PCT = 0.06; // max-hp fraction per second taken outside the ring
-const FIESTA_RING_SHRINK_RATE = 0.6; // yards/s the radius eases toward its target
-const FIESTA_POWERUP_FIRST = 12; // s into the bout before the first power-up
-const FIESTA_POWERUP_INTERVAL = 16; // s between power-up spawn attempts
-const FIESTA_POWERUP_TELEGRAPH = 5; // s of "spawning" warning before it's grabbable
-const FIESTA_POWERUP_TTL = 18; // s a ready power-up waits to be grabbed
-const FIESTA_POWERUP_RADIUS = 2; // grab radius
-const FIESTA_POWERUP_MAX = 3; // concurrent power-ups on the field
-const FIESTA_STANDARD_LEVEL = 20; // everyone fights at this level, balanced
+// A3: the 2v2 Fiesta tuning consts (score limit, augment waves, respawn growth,
+// hazard ring, power-ups, standard level) moved to social/fiesta.ts with the match
+// logic. FIESTA_RING_CX/CZ, FIESTA_TOTAL_WAVES, and FIESTA_POWERUP_TELEGRAPH/TTL are
+// imported back (above) for the fiestaMatchInfo presentation accessor, which stays
+// on Sim. (A2 already moved FIESTA_COUNTDOWN to social/arena.ts.)
 const PVP_ROOT_DR_RESET = 18; // seconds before a repeated PvP root is fresh again
 const PVP_POLYMORPH_DR_RESET = 60;
 const PVP_FEAR_DR_RESET = 60;
@@ -9701,33 +9681,11 @@ export class Sim {
     arenaMod.updateArena(this.ctx);
   }
 
-  // A2: createFiestaState stays on Sim (Fiesta-state construction is A3-owned); the
-  // moved arena startArenaMatch reaches it via ctx.createFiestaState(). It seeds a
-  // per-match sub-Rng off the sim clock + match id (not the shared draw stream).
+  // A3: createFiestaState (FiestaState factory + per-match sub-Rng seed) moved to
+  // social/fiesta.ts. Thin delegate keeps the ctx.createFiestaState seam binding
+  // (consumed by the moved arena startArenaMatch) resolving into the module.
   private createFiestaState(): FiestaState {
-    return {
-      scoreA: 0,
-      scoreB: 0,
-      scoreLimit: FIESTA_SCORE_LIMIT,
-      wave: 0,
-      nextWaveAt: FIESTA_FIRST_WAVE_AT,
-      offers: new Map(),
-      ringRadius: FIESTA_RING_START,
-      ringTarget: FIESTA_RING_START,
-      respawn: new Map(),
-      deaths: new Map(),
-      kills: new Map(),
-      streak: new Map(),
-      lastKill: new Map(),
-      pending: new Map(),
-      powerups: [],
-      nextPowerupId: 1,
-      powerupTimer: FIESTA_POWERUP_FIRST,
-      firstBlood: false,
-      // Per-match deterministic stream, seeded off the sim clock + slot so a
-      // replay re-offers identical augment cards.
-      rng: new Rng((this.tickCount * 2654435761 + this.nextArenaMatchId * 40503) >>> 0),
-    };
+    return fiestaMod.createFiestaState(this.ctx);
   }
 
   private placeInArena(
@@ -9775,622 +9733,84 @@ export class Sim {
     return meta.fiestaMods ?? meta.talentMods;
   }
 
-  // talentMods + the chosen augments' flat effects, deep-cloned so the base
-  // talent struct is never mutated.
-  private mergeAugmentMods(base: TalentModifiers, augIds: string[]): TalentModifiers {
-    const m: TalentModifiers = {
-      spec: base.spec,
-      role: base.role,
-      stats: { ...base.stats },
-      global: { ...base.global },
-      abilities: {},
-      grants: [...base.grants],
-    };
-    for (const k in base.abilities) m.abilities[k] = { ...base.abilities[k] };
-    for (const id of augIds) {
-      const eff = AUGMENTS_BY_ID[id]?.effect;
-      if (!eff) continue;
-      if (eff.stats) {
-        const s = m.stats,
-          e = eff.stats;
-        s.str += e.str ?? 0;
-        s.agi += e.agi ?? 0;
-        s.sta += e.sta ?? 0;
-        s.int += e.int ?? 0;
-        s.spi += e.spi ?? 0;
-        s.armor += e.armor ?? 0;
-        s.ap += e.ap ?? 0;
-        s.crit += e.crit ?? 0;
-        s.dodge += e.dodge ?? 0;
-        s.apPct += e.apPct ?? 0;
-        s.staPct += e.staPct ?? 0;
-        s.armorPct += e.armorPct ?? 0;
-        s.maxHpPct += e.maxHpPct ?? 0;
-      }
-      if (eff.global) {
-        const g = m.global,
-          e = eff.global;
-        g.meleeDmgPct += e.meleeDmgPct ?? 0;
-        g.spellDmgPct += e.spellDmgPct ?? 0;
-        g.healPct += e.healPct ?? 0;
-        g.threatPct += e.threatPct ?? 0;
-      }
-      for (const am of eff.ability ?? []) {
-        if (!m.abilities[am.ability]) {
-          m.abilities[am.ability] = {
-            dmgPct: 0,
-            flatDmg: 0,
-            costPct: 0,
-            cooldownPct: 0,
-            castPct: 0,
-          };
-        }
-        const cur = m.abilities[am.ability];
-        cur.dmgPct += am.dmgPct ?? 0;
-        cur.flatDmg += am.flatDmg ?? 0;
-        cur.costPct += am.costPct ?? 0;
-        cur.cooldownPct += am.cooldownPct ?? 0;
-        cur.castPct += am.castPct ?? 0;
-      }
-      if (eff.grant) m.grants.push({ ability: eff.grant.ability, rank: eff.grant.rank ?? 1 });
-    }
-    return m;
-  }
+  // -------------------------------------------------------------------------
+  // 2v2 Fiesta: match logic MOVED to social/fiesta.ts (A3). Sim keeps thin
+  // same-named delegates for the foreign-reachable surface: the seam-bound hooks
+  // (createFiestaState above; fiestaStandardize / updateFiestaActive /
+  // fiestaRestoreChar / clearFiestaAugments consumed by the moved arena lifecycle;
+  // fiestaTakedown / fiestaDown consumed by dealDamage's cross-team arms), the
+  // public arenaAugmentPick command (HUD + offline bots), and fiestaOpenWave /
+  // fiestaRespawnTime (parity scenario + fiesta tests). The module-internal helpers
+  // (mergeAugmentMods, fiestaApplyAugments, fiestaDownEntity, fiestaRevive,
+  // fiestaPresentPending, fiestaPickOffers, fiestaRingDamage, fiestaUpdatePowerups,
+  // fiestaSpawnPowerup, fiestaGrabPowerup) have no foreign caller and live only in
+  // the module. playerMods (above) + fiestaMatchInfo (below) STAY on Sim.
+  // -------------------------------------------------------------------------
 
-  // Recompute a fighter's effective modifiers + special bag from their picked
-  // augments, then rebuild known abilities and stats (preserving hp fraction so
-  // a +maxHp augment grows the bar instead of healing to full).
-  private fiestaApplyAugments(meta: PlayerMeta, e: Entity): void {
-    meta.fiestaMods = this.mergeAugmentMods(meta.talentMods, meta.fiestaAugments);
-    const sp: AugmentSpecial = {};
-    for (const id of meta.fiestaAugments) {
-      const s = AUGMENTS_BY_ID[id]?.special;
-      if (!s) continue;
-      if (s.lifestealPct) sp.lifestealPct = (sp.lifestealPct ?? 0) + s.lifestealPct;
-      if (s.moveSpeedPct) sp.moveSpeedPct = (sp.moveSpeedPct ?? 0) + s.moveSpeedPct;
-      if (s.scorePerKill) sp.scorePerKill = (sp.scorePerKill ?? 0) + s.scorePerKill;
-    }
-    meta.fiestaSpecial = sp;
-    meta.known = abilitiesKnownAt(meta.cls, e.level, meta.fiestaMods);
-    const frac = e.maxHp > 0 ? e.hp / e.maxHp : 1;
-    recalcPlayerStats(e, meta.cls, meta.equipment, meta.fiestaMods);
-    e.hp = e.dead ? 0 : Math.max(1, Math.round(e.maxHp * frac));
-  }
-
-  // Strip all Fiesta augment state and restore plain talent-only stats/abilities.
   private clearFiestaAugments(meta: PlayerMeta, e: Entity): void {
-    if (
-      meta.fiestaAugments.length === 0 &&
-      !meta.fiestaMods &&
-      !meta.fiestaSpecial.lifestealPct &&
-      !meta.fiestaSpecial.moveSpeedPct &&
-      !meta.fiestaSpecial.scorePerKill
-    )
-      return;
-    meta.fiestaAugments = [];
-    meta.fiestaMods = null;
-    meta.fiestaSpecial = {};
-    meta.known = abilitiesKnownAt(meta.cls, e.level, meta.talentMods);
-    recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods);
+    fiestaMod.clearFiestaAugments(meta, e);
   }
 
-  // Standardize a fighter to a balanced level-20 build for the bout. The
-  // pre-fiesta character is snapshotted in meta.fiestaRestore (which also makes
-  // serializeCharacter persist the real, not the temporary, state).
   private fiestaStandardize(meta: PlayerMeta, e: Entity): void {
-    if (meta.fiestaRestore) return;
-    meta.fiestaRestore = { level: e.level, xp: meta.xp, talents: cloneAllocation(meta.talents) };
-    e.level = FIESTA_STANDARD_LEVEL;
-    meta.talents = defaultBuild(meta.cls, talentPointsAtLevel(FIESTA_STANDARD_LEVEL));
-    meta.talentMods = computeTalentModifiers(meta.cls, meta.talents);
-    meta.known = abilitiesKnownAt(meta.cls, e.level, this.playerMods(meta));
-    recalcPlayerStats(e, meta.cls, meta.equipment, this.playerMods(meta));
+    fiestaMod.fiestaStandardize(this.ctx, meta, e);
   }
 
-  // Undo fiestaStandardize: restore the player's real level/xp/talents.
   private fiestaRestoreChar(meta: PlayerMeta, e: Entity): void {
-    const snap = meta.fiestaRestore;
-    if (!snap) return;
-    e.level = snap.level;
-    meta.xp = snap.xp;
-    meta.talents = snap.talents;
-    meta.talentMods = computeTalentModifiers(meta.cls, meta.talents);
-    meta.fiestaRestore = null;
-    meta.known = abilitiesKnownAt(meta.cls, e.level, meta.talentMods);
-    recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods);
+    fiestaMod.fiestaRestoreChar(meta, e);
   }
 
-  // Player command: lock in one of the augments currently on offer.
   arenaAugmentPick(augmentId: string, pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const id = r.meta.entityId;
-    const match = this.arenaMatches.get(id);
-    if (!match?.fiesta || match.state !== 'active') return;
-    const offer = match.fiesta.offers.get(id);
-    if (!offer) {
-      this.error(id, 'You have no augment to choose right now.');
-      return;
-    }
-    if (!offer.choices.includes(augmentId)) {
-      this.error(id, 'That augment is not on offer.');
-      return;
-    }
-    match.fiesta.offers.delete(id);
-    r.meta.fiestaAugments.push(augmentId);
-    this.fiestaApplyAugments(r.meta, r.e);
-    for (const mPid of this.arenaAllPids(match)) {
-      this.emit({
-        type: 'augmentChosen',
-        augmentId,
-        byPid: id,
-        byName: r.meta.name,
-        mine: mPid === id,
-        pid: mPid,
-      });
-    }
-    // Still benched with more waves banked? Offer the next one right away.
-    if (this.arenaIsDown(match, id)) this.fiestaPresentPending(match, id);
+    fiestaMod.arenaAugmentPick(this.ctx, augmentId, pid);
   }
 
   private fiestaRespawnTime(deaths: number, elapsed: number): number {
-    const t =
-      FIESTA_RESPAWN_BASE +
-      (deaths - 1) * FIESTA_RESPAWN_PER_DEATH +
-      Math.floor(elapsed / 60) * FIESTA_RESPAWN_PER_MINUTE;
-    return Math.min(FIESTA_RESPAWN_MAX, t);
+    return fiestaMod.fiestaRespawnTime(deaths, elapsed);
   }
 
-  // Strip a downed fighter to a clean dead state WITHOUT the normal player-death
-  // (graveyard) flow — Fiesta revives them itself on a timer.
-  private fiestaDownEntity(e: Entity, killer: Entity | null): void {
-    e.dead = true;
-    e.hp = 0;
-    e.auras = [];
-    e.ccDr.clear();
-    e.castingAbility = null;
-    e.castRemaining = 0;
-    e.channeling = false;
-    e.autoAttack = false;
-    e.queuedOnSwing = null;
-    e.comboPoints = 0;
-    e.comboTargetId = null;
-    e.eating = null;
-    e.drinking = null;
-    e.sitting = false;
-    e.chargeTargetId = null;
-    e.chargePath = [];
-    e.followTargetId = null;
-    e.targetId = null;
-    const meta = this.players.get(e.id);
-    if (meta) meta.counters.deaths++;
-    this.emit({ type: 'death', entityId: e.id, killerId: killer?.id ?? -1 });
-  }
-
-  // Bench a fighter and start their (growing) respawn countdown.
   private fiestaDown(match: ArenaMatch, victim: Entity, killerPid: number | null): void {
-    const f = match.fiesta!;
-    if (f.respawn.has(victim.id)) return;
-    const killer = killerPid !== null ? (this.entities.get(killerPid) ?? null) : null;
-    this.fiestaDownEntity(victim, killer);
-    const deaths = (f.deaths.get(victim.id) ?? 0) + 1;
-    f.deaths.set(victim.id, deaths);
-    const respawnIn = this.fiestaRespawnTime(deaths, match.timer);
-    f.respawn.set(victim.id, respawnIn);
-    f.streak.set(victim.id, 0);
-    this.emit({ type: 'fiestaDown', seconds: Math.ceil(respawnIn), pid: victim.id });
-    // Down time is the polite moment to offer any augment that's been waiting.
-    this.fiestaPresentPending(match, victim.id);
+    fiestaMod.fiestaDown(this.ctx, match, victim, killerPid);
   }
 
-  // A scored takedown: award the point(s), bench the victim, fire the right
-  // word-pop, broadcast the new tally, and end the bout if the cap is reached.
   private fiestaTakedown(match: ArenaMatch, killerPid: number, victim: Entity): void {
-    const f = match.fiesta!;
-    const victimStreak = f.streak.get(victim.id) ?? 0;
-    const killerTeam = this.arenaTeamOf(match, killerPid);
-    const killerMeta = this.players.get(killerPid);
-    const points = 1 + (killerMeta?.fiestaSpecial.scorePerKill ?? 0);
-    if (killerTeam === 'A') f.scoreA += points;
-    else if (killerTeam === 'B') f.scoreB += points;
-    if (killerMeta) killerMeta.counters.kills++;
-    f.kills.set(killerPid, (f.kills.get(killerPid) ?? 0) + 1);
-
-    this.fiestaDown(match, victim, killerPid);
-
-    const now = match.timer;
-    const rapid = now - (f.lastKill.get(killerPid) ?? -999) <= 4;
-    f.lastKill.set(killerPid, now);
-    const ks = (f.streak.get(killerPid) ?? 0) + 1;
-    f.streak.set(killerPid, ks);
-    if (!f.firstBlood) {
-      f.firstBlood = true;
-      this.emit({ type: 'fiestaWord', flavor: 'firstblood', pid: killerPid });
-    } else if (victimStreak >= 3)
-      this.emit({ type: 'fiestaWord', flavor: 'shutdown', pid: killerPid });
-    else if (rapid) this.emit({ type: 'fiestaWord', flavor: 'doublekill', pid: killerPid });
-    else if (ks >= 3) this.emit({ type: 'fiestaWord', flavor: 'spree', n: ks, pid: killerPid });
-    else this.emit({ type: 'fiestaWord', flavor: 'kill', pid: killerPid });
-
-    for (const mPid of this.arenaAllPids(match)) {
-      this.emit({
-        type: 'fiestaScore',
-        a: f.scoreA,
-        b: f.scoreB,
-        limit: f.scoreLimit,
-        team: this.arenaTeamOf(match, mPid)!,
-        pid: mPid,
-      });
-    }
-
-    if (f.scoreA >= f.scoreLimit || f.scoreB >= f.scoreLimit) {
-      this.endArenaMatch(match, f.scoreA >= f.scoreLimit ? 'A' : 'B', 'defeat');
-    }
-  }
-
-  private fiestaRevive(match: ArenaMatch, e: Entity): void {
-    const f = match.fiesta!;
-    f.respawn.delete(e.id);
-    const team = this.arenaTeamOf(match, e.id);
-    if (!team) return;
-    const origin = arenaOrigin(match.slot);
-    const spawns = team === 'A' ? ARENA_SPAWNS_A_2v2 : ARENA_SPAWNS_B_2v2;
-    const teamPids = team === 'A' ? match.teamA : match.teamB;
-    const idx = Math.max(0, teamPids.indexOf(e.id));
-    this.placeInArena(e, origin, spawns[idx] ?? spawns[0]);
-    this.readyArenaFighter(e, { clearPrep: true });
-    this.emit({ type: 'respawn', pid: e.id });
-    this.emit({ type: 'fiestaWord', flavor: 'revived', pid: e.id });
+    fiestaMod.fiestaTakedown(this.ctx, match, killerPid, victim);
   }
 
   private fiestaOpenWave(match: ArenaMatch): void {
-    const f = match.fiesta!;
-    f.wave++;
-    f.nextWaveAt = match.timer + FIESTA_WAVE_INTERVAL;
-    // Close the ring one step toward its minimum with each wave.
-    const frac = f.wave / FIESTA_TOTAL_WAVES;
-    f.ringTarget = Math.round(FIESTA_RING_START - (FIESTA_RING_START - FIESTA_RING_MIN) * frac);
-    const tier = tierForWave(f.wave);
-    for (const pid of this.arenaAllPids(match)) {
-      const meta = this.players.get(pid);
-      const e = this.entities.get(pid);
-      if (!meta || !e) continue;
-      const owned = new Set(meta.fiestaAugments);
-      const pool = eligibleAugments(tier, meta.cls, this.playerMods(meta).role, owned);
-      const choices = this.fiestaPickOffers(f.rng, pool, 3);
-      if (choices.length === 0) continue;
-      // Don't interrupt the fight: queue the offer and reveal it on the player's
-      // next death (or right now if they're already down).
-      const queue = f.pending.get(pid) ?? [];
-      queue.push({ tier, wave: f.wave, choices });
-      f.pending.set(pid, queue);
-      if (this.arenaIsDown(match, pid)) this.fiestaPresentPending(match, pid);
-    }
-    for (const mPid of this.arenaAllPids(match)) {
-      this.emit({ type: 'fiestaWave', wave: f.wave, totalWaves: FIESTA_TOTAL_WAVES, pid: mPid });
-    }
-  }
-
-  // Reveal the oldest queued augment offer (the pick UI watches `offers`), unless
-  // the player is already mid-choice. Fired on death and on wave-open-while-down.
-  private fiestaPresentPending(match: ArenaMatch, pid: number): void {
-    const f = match.fiesta!;
-    if (f.offers.has(pid)) return;
-    const queue = f.pending.get(pid);
-    if (!queue || queue.length === 0) return;
-    const next = queue.shift()!;
-    if (queue.length === 0) f.pending.delete(pid);
-    f.offers.set(pid, next);
-    this.emit({
-      type: 'augmentOffer',
-      tier: next.tier,
-      wave: next.wave,
-      choices: next.choices,
-      pid,
-    });
-  }
-
-  // Deterministic Fisher–Yates draw of up to n augment ids from the eligible pool.
-  private fiestaPickOffers(rng: Rng, pool: AugmentDef[], n: number): string[] {
-    const arr = pool.slice();
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(rng.next() * (i + 1));
-      const tmp = arr[i];
-      arr[i] = arr[j];
-      arr[j] = tmp;
-    }
-    return arr.slice(0, Math.min(n, arr.length)).map((a) => a.id);
-  }
-
-  private fiestaRingDamage(match: ArenaMatch): void {
-    if (this.tickCount % 10 !== 0) return; // twice a second
-    const f = match.fiesta!;
-    const origin = arenaOrigin(match.slot);
-    const cx = origin.x + FIESTA_RING_CX,
-      cz = origin.z + FIESTA_RING_CZ;
-    const interval = 10 * DT;
-    for (const pid of this.arenaAllPids(match)) {
-      if (this.arenaIsDown(match, pid)) continue;
-      const e = this.entities.get(pid);
-      if (!e || e.dead) continue;
-      const d = Math.hypot(e.pos.x - cx, e.pos.z - cz);
-      if (d <= f.ringRadius) continue;
-      const dmg = Math.max(1, Math.round(e.maxHp * FIESTA_RING_DPS_PCT * interval));
-      this.emit({
-        type: 'damage',
-        sourceId: -1,
-        targetId: pid,
-        amount: Math.min(dmg, e.hp),
-        crit: false,
-        school: 'fire',
-        ability: null,
-        kind: 'hit',
-      });
-      if (e.hp - dmg <= 0) {
-        e.hp = 0;
-        this.fiestaDown(match, e, null);
-      } else e.hp -= dmg;
-    }
+    fiestaMod.fiestaOpenWave(this.ctx, match);
   }
 
   private updateFiestaActive(match: ArenaMatch): void {
-    const f = match.fiesta!;
-    if (match.timer >= FIESTA_MAX_DURATION) {
-      const winner = f.scoreA === f.scoreB ? null : f.scoreA > f.scoreB ? 'A' : 'B';
-      this.endArenaMatch(match, winner, 'timeout');
-      return;
-    }
-    // Ease the ring toward its target radius and burn anyone caught outside.
-    if (f.ringRadius > f.ringTarget) {
-      f.ringRadius = Math.max(f.ringTarget, f.ringRadius - FIESTA_RING_SHRINK_RATE * DT);
-    }
-    this.fiestaRingDamage(match);
-    this.fiestaUpdatePowerups(match);
-    if (f.wave < FIESTA_TOTAL_WAVES && match.timer >= f.nextWaveAt) this.fiestaOpenWave(match);
-    for (const [pid, t] of [...f.respawn]) {
-      const nt = t - DT;
-      const e = this.entities.get(pid);
-      if (!e) {
-        f.respawn.delete(pid);
-        continue;
-      }
-      if (nt <= 0) this.fiestaRevive(match, e);
-      else f.respawn.set(pid, nt);
-    }
-  }
-
-  // ---- Ring power-ups: spawn on a timer, telegraph, then wait to be grabbed --
-
-  private fiestaUpdatePowerups(match: ArenaMatch): void {
-    const f = match.fiesta!;
-    // age existing power-ups (telegraph → ready → despawn)
-    for (let i = f.powerups.length - 1; i >= 0; i--) {
-      const p = f.powerups[i];
-      p.timer -= DT;
-      if (p.timer <= 0) {
-        if (p.state === 'spawning') {
-          p.state = 'ready';
-          p.timer = FIESTA_POWERUP_TTL;
-        } else {
-          f.powerups.splice(i, 1);
-        }
-      }
-    }
-    // pickups: a live fighter touching a ready power-up scoops it
-    for (let i = f.powerups.length - 1; i >= 0; i--) {
-      const p = f.powerups[i];
-      if (p.state !== 'ready') continue;
-      for (const pid of this.arenaAllPids(match)) {
-        if (this.arenaIsDown(match, pid)) continue;
-        const e = this.entities.get(pid);
-        if (!e || e.dead) continue;
-        if (Math.hypot(e.pos.x - p.x, e.pos.z - p.z) > FIESTA_POWERUP_RADIUS) continue;
-        this.fiestaGrabPowerup(match, e, p);
-        f.powerups.splice(i, 1);
-        break;
-      }
-    }
-    // spawn timer
-    f.powerupTimer -= DT;
-    if (f.powerupTimer <= 0) {
-      f.powerupTimer = FIESTA_POWERUP_INTERVAL;
-      if (f.powerups.length < FIESTA_POWERUP_MAX) this.fiestaSpawnPowerup(match);
-    }
-  }
-
-  private fiestaSpawnPowerup(match: ArenaMatch): void {
-    const f = match.fiesta!;
-    const def: PowerupDef = f.rng.pick(POWERUPS);
-    const origin = arenaOrigin(match.slot);
-    const cx = origin.x + FIESTA_RING_CX,
-      cz = origin.z + FIESTA_RING_CZ;
-    // somewhere inside the current ring (kept off the exact centre)
-    const ang = f.rng.next() * Math.PI * 2;
-    const r = (0.25 + f.rng.next() * 0.6) * Math.max(3, f.ringRadius - 2);
-    f.powerups.push({
-      id: f.nextPowerupId++,
-      defId: def.id,
-      x: cx + Math.sin(ang) * r,
-      z: cz + Math.cos(ang) * r,
-      state: 'spawning',
-      timer: FIESTA_POWERUP_TELEGRAPH,
-    });
-  }
-
-  private fiestaGrabPowerup(_match: ArenaMatch, e: Entity, p: FiestaPowerup): void {
-    const def = POWERUPS_BY_ID[p.defId];
-    if (!def) return;
-    // Re-apply (refreshing) each buff aura for the power-up's duration. These are
-    // real auras, so they survive recalc and tick down in updateAuras.
-    for (const b of def.buffs) {
-      this.applyAura(e, {
-        id: `powerup_${def.id}_${b.kind}`,
-        name: def.name,
-        kind: b.kind,
-        remaining: def.duration,
-        duration: def.duration,
-        value: b.value,
-        sourceId: e.id,
-        school: 'nature',
-      });
-    }
-    // The client localizes the pickup banner/log from this event (defId), so no
-    // English log text is emitted from the sim here.
-    this.emit({
-      type: 'fiestaPowerup',
-      entityId: e.id,
-      defId: def.id,
-      glow: def.glow,
-      duration: def.duration,
-    });
+    fiestaMod.updateFiestaActive(this.ctx, match);
   }
 
   // -------------------------------------------------------------------------
-  // 2v2 Fiesta — OFFLINE/DEV practice vs bots. Spawns three AI-driven player
-  // bots, queues them with the local player, and steers them each tick so a full
-  // Fiesta bout plays out solo. Offline only (the online server never calls
-  // these — matches there are made of real players). Deterministic: all bot
-  // randomness flows through this.rng.
+  // 2v2 Fiesta: OFFLINE/DEV practice vs bots. The harness (spawn + queue + steer
+  // three AI player bots) MOVED to social/fiesta_bots.ts (A3). It is offline-only
+  // and reaches deep into Sim (casting, auto-attack, movement, add/remove player),
+  // so its functions take the Sim directly rather than polluting the seam with a
+  // dozen offline-only callbacks; arena queue/return helpers route through the
+  // arena module. fiestaBotPids STAYS a Sim field (the E1 "state stays on Sim"
+  // pattern) so the module reads/writes it via sim.fiestaBotPids and the existing
+  // tests' (sim as any).fiestaBotPids reads resolve unchanged. Sim keeps the four
+  // public delegates so main.ts (offline loop) + tests resolve unchanged.
   // -------------------------------------------------------------------------
 
-  private fiestaBotPids: number[] = [];
+  fiestaBotPids: number[] = [];
 
   fiestaPracticeActive(): boolean {
-    return this.fiestaBotPids.some((pid) => this.entities.has(pid));
+    return fiestaBotsMod.fiestaPracticeActive(this);
   }
 
-  // Toggle target: start a practice set (spawn + queue bots + queue you), or
-  // tear it down if one is already running. Returns true when a set is active
-  // afterward.
   startFiestaPractice(): boolean {
-    const me = this.entities.get(this.primaryId);
-    const meMeta = this.players.get(this.primaryId);
-    if (!me || !meMeta) return false;
-    if (this.fiestaPracticeActive()) {
-      this.stopFiestaPractice();
-      return false;
-    }
-    if (me.pos.x > DUNGEON_X_THRESHOLD) return false; // must queue from the overworld
-
-    this.fiestaBotPids = [];
-    const kit: { cls: PlayerClass; name: string }[] = [
-      { cls: 'paladin', name: 'Sir Botsworth' },
-      { cls: 'mage', name: 'Botzo the Arcane' },
-      { cls: 'rogue', name: 'Sneakbot' },
-    ];
-    for (let i = 0; i < kit.length; i++) {
-      const pid = this.addPlayer(kit[i].cls, kit[i].name);
-      const e = this.entities.get(pid);
-      if (e) {
-        const ang = (i / kit.length) * Math.PI * 2;
-        e.pos = this.groundPos(me.pos.x + Math.sin(ang) * 4, me.pos.z + Math.cos(ang) * 4);
-        e.prevPos = { ...e.pos };
-        this.rebucket(e);
-        if (me.level > 1) this.setPlayerLevel(me.level, pid); // a fair fight
-      }
-      this.fiestaBotPids.push(pid);
-    }
-    this.fiestaPracticeRequeue(true);
-    return true;
+    return fiestaBotsMod.startFiestaPractice(this);
   }
 
   stopFiestaPractice(): void {
-    for (const pid of this.fiestaBotPids) {
-      this.arenaQueueLeave(pid);
-      const match = this.arenaMatches.get(pid);
-      if (match) this.returnFromArena(match);
-      if (this.entities.has(pid)) this.removePlayer(pid);
-    }
-    this.fiestaBotPids = [];
+    fiestaBotsMod.stopFiestaPractice(this);
   }
 
-  // Keep idle practice participants in the queue so bouts flow back-to-back.
-  // `includeMe` also (re)queues the local player — used on the explicit Start
-  // click; the per-tick driver only tops up the bots so you can step away.
-  private fiestaPracticeRequeue(includeMe: boolean): void {
-    const ids = includeMe ? [this.primaryId, ...this.fiestaBotPids] : [...this.fiestaBotPids];
-    for (const pid of ids) {
-      const e = this.entities.get(pid);
-      if (!e || e.dead) continue;
-      if (this.arenaMatches.has(pid) || this.isArenaQueued(pid)) continue;
-      if (e.pos.x > DUNGEON_X_THRESHOLD) continue;
-      this.arenaQueueJoin(pid, 'fiesta');
-    }
-  }
-
-  // Called once per tick from the offline loop (before tick()): keeps the bots
-  // queued between bouts and steers any that are mid-fight.
   updateFiestaBots(): void {
-    if (this.fiestaBotPids.length === 0) return;
-    // drop any bot that no longer exists (shouldn't happen offline, but be safe)
-    this.fiestaBotPids = this.fiestaBotPids.filter((pid) => this.entities.has(pid));
-    this.fiestaPracticeRequeue(false);
-    for (const pid of this.fiestaBotPids) this.driveFiestaBot(pid);
-  }
-
-  private driveFiestaBot(pid: number): void {
-    const e = this.entities.get(pid);
-    const meta = this.players.get(pid);
-    if (!e || !meta) return;
-    const match = this.arenaMatches.get(pid);
-    // Snap up any offered augment immediately (random, deterministic via rng).
-    if (match?.fiesta) {
-      const offer = match.fiesta.offers.get(pid);
-      if (offer?.choices.length) this.arenaAugmentPick(this.rng.pick(offer.choices), pid);
-    }
-    meta.moveInput = emptyMoveInput();
-    if (e.dead || !match?.fiesta || match.state !== 'active') return;
-
-    const team = this.arenaTeamOf(match, pid);
-    const enemyPids = team === 'A' ? match.teamB : match.teamA;
-    let target: Entity | null = null,
-      best = Infinity;
-    for (const id of enemyPids) {
-      const en = this.entities.get(id);
-      if (!en || en.dead || this.arenaIsDown(match, id)) continue;
-      const d = dist2d(e.pos, en.pos);
-      if (d < best) {
-        best = d;
-        target = en;
-      }
-    }
-
-    // Stay inside the closing ring above all else.
-    const origin = arenaOrigin(match.slot);
-    const cx = origin.x + FIESTA_RING_CX,
-      cz = origin.z + FIESTA_RING_CZ;
-    const distCenter = Math.hypot(e.pos.x - cx, e.pos.z - cz);
-    if (distCenter > match.fiesta.ringRadius - 2.5) {
-      e.facing = angleTo(e.pos, { x: cx, y: 0, z: cz });
-      meta.moveInput.forward = true;
-      return;
-    }
-    if (!target) return;
-
-    e.facing = angleTo(e.pos, target.pos);
-    const engageRange = CLASSES[meta.cls].ranged ? 22 : MELEE_RANGE * 0.9;
-    if (best > engageRange) meta.moveInput.forward = true;
-    e.targetId = target.id;
-    if (!e.autoAttack) this.startAutoAttack(pid);
-    // Fire an offensive ability now and then (staggered per bot by pid).
-    if (this.tickCount % 24 === pid % 24) {
-      const ability = this.pickBotAbility(meta);
-      if (ability) this.castAbility(ability, pid);
-    }
-  }
-
-  // The bot's go-to offensive ability: a known, enemy-targeted, damage-dealing
-  // spell/strike. castAbility no-ops if it's on cooldown or unaffordable.
-  private pickBotAbility(meta: PlayerMeta): string | null {
-    for (const k of meta.known) {
-      const def = k.def;
-      if (def.targetType === 'friendly' || !def.requiresTarget) continue;
-      const dealsDamage = def.effects.some(
-        (ef) => ef.type === 'directDamage' || ef.type === 'weaponDamage' || ef.type === 'dot',
-      );
-      if (dealsDamage) return def.id;
-    }
-    return null;
+    fiestaBotsMod.updateFiestaBots(this);
   }
 
   private fiestaMatchInfo(

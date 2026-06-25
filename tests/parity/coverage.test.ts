@@ -124,6 +124,19 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect((rec.sim as any).players.get(victimPid)?.fiestaAugments?.length).toBeGreaterThan(0);
   });
 
+  it('fiesta_powerups: a power-up is grabbed (buff aura), the ring burns, and a downed fighter revives', () => {
+    const rec = run('fiesta_powerups');
+    const ev = rec.allEvents as Ev[];
+    // power-up spawned and was grabbed -> buff aura applied (fiestaPowerup event).
+    expect(ev.some((e) => e.type === 'fiestaPowerup')).toBe(true);
+    // hazard ring burned a fighter standing outside it (ring damage is sourceId -1).
+    expect(ev.some((e) => e.type === 'damage' && e.sourceId === -1)).toBe(true);
+    // a downed fighter came back on their respawn timer (fiestaRevive -> respawn).
+    expect(ev.some((e) => e.type === 'respawn')).toBe(true);
+    const victimPid = rec.notes.fiestaPowerupVictimPid as number;
+    expect((rec.sim as any).entities.get(victimPid)?.dead).toBe(false);
+  });
+
   it('duel_to_winner: a duel goes active then ends with a winner, clearing duels', () => {
     const rec = run('duel_to_winner');
     const ev = rec.allEvents as Ev[];
