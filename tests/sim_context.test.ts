@@ -10,6 +10,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { Rng } from '../src/sim/rng';
 import { Sim } from '../src/sim/sim';
 import { createSimContext, type SimContextHost } from '../src/sim/sim_context';
+import { SpatialGrid } from '../src/sim/spatial';
 import type { Entity, SimEvent } from '../src/sim/types';
 
 // Every cross-system callback on the seam. The list IS the contract: each must be a
@@ -45,6 +46,17 @@ const CALLBACK_KEYS = [
   'partyOf',
   'removeFromParty',
   'onInventoryChangedForQuests',
+  // E1 entity-roster surface.
+  'addEntity',
+  'dropEntity',
+  'rebucket',
+  'resolve',
+  'groundPos',
+  'playerMods',
+  'delveRunForPlayer',
+  'delveModuleEntry',
+  'failDelveRun',
+  'pulseGroundAoE',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -66,6 +78,12 @@ function makeFakeHost() {
     get entities() {
       return entities;
     },
+    grid: new SpatialGrid(),
+    playerGrid: new SpatialGrid(),
+    delayedEvents: [],
+    groundAoEs: [],
+    dungeonDoorIds: null,
+    arenaMatches: new Map(),
     emit: vi.fn(),
     dealDamage: vi.fn(),
     handleDeath: vi.fn(),
@@ -95,6 +113,16 @@ function makeFakeHost() {
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
+    addEntity: vi.fn(),
+    dropEntity: vi.fn(),
+    rebucket: vi.fn(),
+    resolve: vi.fn(() => null),
+    groundPos: vi.fn(() => ({ x: 0, y: 0, z: 0 })),
+    playerMods: vi.fn(),
+    delveRunForPlayer: vi.fn(() => null),
+    delveModuleEntry: vi.fn(() => ({ x: 0, y: 0, z: 0 })),
+    failDelveRun: vi.fn(),
+    pulseGroundAoE: vi.fn(),
   };
   return { host, rng, entities, clock };
 }

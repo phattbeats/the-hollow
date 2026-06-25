@@ -142,6 +142,21 @@ import {
 import { questFallbackGrants } from './quest_fallback';
 import { sanitizeRemovedZone1Content } from './removed_zone1_content';
 import { Rng } from './rng';
+import {
+  addEntityToRoster,
+  DAMAGE_IDLE_DESPAWN_MOB_IDS,
+  DAMAGE_IDLE_DESPAWN_SECONDS,
+  type DelayedEvent,
+  drainDelayedEvents,
+  dropEntityFromRoster,
+  graveyardReadout,
+  type GroundAoE,
+  rebucketEntity,
+  releasePlayerSpirit,
+  releaseSpiritInDelve as releaseSpiritInDelveImpl,
+  runDespawnDecay,
+  tickGroundAoEs,
+} from './entity_roster';
 import { createSimContext, type SimContext, type SimContextHost } from './sim_context';
 import { SpatialGrid } from './spatial';
 import { orderTabTargets, TAB_QUERY_RADIUS } from './tab_target';
@@ -167,6 +182,7 @@ import {
   type AuraKind,
   angleTo,
   armorReduction,
+  CAST_COMPLETE_EPS,
   CAST_PUSHBACK_SEC,
   CHANNEL_PUSHBACK_FRACTION,
   CONSUME_DURATION,
@@ -312,8 +328,8 @@ const PARTY_MAX = 5;
 const RAID_MIN = 5;
 const RAID_MAX = 10;
 const RAID_GROUP_MAX = 5;
-const DAMAGE_IDLE_DESPAWN_SECONDS = 60;
-const DAMAGE_IDLE_DESPAWN_MOB_IDS = new Set(['varkas_boneguard', 'bound_guardian']);
+// DAMAGE_IDLE_DESPAWN_SECONDS / DAMAGE_IDLE_DESPAWN_MOB_IDS moved to entity_roster.ts
+// (the despawn prologue's home); imported above for the damage-path timer reset.
 const RAID_ALLOWED_DUNGEON_IDS = new Set(['nythraxis_crypt', 'nythraxis_boss_arena']);
 const RAID_REQUIRED_DUNGEON_IDS = new Set(['nythraxis_boss_arena']);
 const PARTY_XP_RANGE = 80; // yards: members this close share kill xp/credit
@@ -373,7 +389,7 @@ const DEMON_HEAL_CAST_ID = 'demon_heal';
 const SAY_RANGE = 25; // /say carries a short distance; /yell across a camp
 const YELL_RANGE = 100;
 const OVERHEAD_EMOTE_DURATION = 3.2;
-const CAST_COMPLETE_EPS = 1e-9;
+// CAST_COMPLETE_EPS moved to types.ts (shared with entity_roster.ts); imported above.
 
 // Predefined social emotes. Each entry maps a command (and its aliases) to the
 // third-person action text shown to everyone in /say range. `solo` is used with
@@ -631,18 +647,7 @@ export interface DuelState {
   timer: number; // countdown remaining / elapsed
 }
 
-type GroundAoE = {
-  sourceId: number;
-  pos: Vec3;
-  radius: number;
-  min: number;
-  max: number;
-  remaining: number;
-  interval: number;
-  tickTimer: number;
-  school: string;
-  ability: string;
-};
+// GroundAoE type moved to entity_roster.ts (the ground-AoE drain's home); imported above.
 
 export type { ArenaFormat } from './types';
 
@@ -1008,14 +1013,7 @@ export function computeQuestState(
   return 'available';
 }
 
-function copyPos(
-  dst: { x: number; y: number; z: number },
-  src: { x: number; y: number; z: number },
-): void {
-  dst.x = src.x;
-  dst.y = src.y;
-  dst.z = src.z;
-}
+// copyPos moved to entity_roster.ts (used only by the despawn prologue).
 
 function freshCounters(): RewardCounters {
   return {
@@ -1098,7 +1096,9 @@ export class Sim {
   primaryId = -1; // the local/RL player in single-player contexts
   nextId = 1;
   events: SimEvent[] = [];
-  private delayedEvents: { at: number; event: SimEvent; guard?: () => boolean }[] = [];
+  // Owned by E1 (entity_roster drains it); stays on Sim because N1/M3 schedule into
+  // it. Exposed as a live view via SimContext.
+  private delayedEvents: DelayedEvent[] = [];
   // social systems
   parties = new Map<number, Party>();
   accountCosmetics: AccountCosmetics = { completedQuestIds: [], mechChromaIds: [] };
@@ -1300,25 +1300,19 @@ export class Sim {
   // spatial indexes always match the entities map
   // -------------------------------------------------------------------------
 
+  // Roster ops live in entity_roster.ts (E1). These thin delegates keep the public
+  // surface (`sim.addEntity`/`sim.rebucket`) and every internal `this.addEntity` /
+  // `this.dropEntity` / `this.rebucket` call site resolving unchanged through the seam.
   addEntity(e: Entity): void {
-    this.entities.set(e.id, e);
-    this.grid.insert(e);
-    if (e.kind === 'player') this.playerGrid.insert(e);
-    if (e.templateId === 'dungeon_door' && this.dungeonDoorIds) this.dungeonDoorIds.push(e.id);
+    addEntityToRoster(this.ctx, e);
   }
 
   private dropEntity(id: number): void {
-    this.clearEntityMarker(id); // a despawned entity keeps no raid marker
-    const e = this.entities.get(id);
-    if (!e) return;
-    this.grid.remove(e);
-    if (e.kind === 'player') this.playerGrid.remove(e);
-    this.entities.delete(id);
+    dropEntityFromRoster(this.ctx, id);
   }
 
   rebucket(e: Entity): void {
-    this.grid.update(e);
-    if (e.kind === 'player') this.playerGrid.update(e);
+    rebucketEntity(this.ctx, e);
   }
 
   private updatePendingMobRespawns(): void {
@@ -1963,6 +1957,27 @@ export class Sim {
       get entities() {
         return sim.entities;
       },
+      get grid() {
+        return sim.grid;
+      },
+      get playerGrid() {
+        return sim.playerGrid;
+      },
+      get delayedEvents() {
+        return sim.delayedEvents;
+      },
+      set delayedEvents(v) {
+        sim.delayedEvents = v;
+      },
+      get groundAoEs() {
+        return sim.groundAoEs;
+      },
+      get dungeonDoorIds() {
+        return sim.dungeonDoorIds;
+      },
+      get arenaMatches() {
+        return sim.arenaMatches;
+      },
       emit: sim.emit.bind(sim),
       dealDamage: sim.dealDamage.bind(sim),
       handleDeath: sim.handleDeath.bind(sim),
@@ -1992,6 +2007,16 @@ export class Sim {
       partyOf: sim.partyOf.bind(sim),
       removeFromParty: sim.removeFromParty.bind(sim),
       onInventoryChangedForQuests: sim.onInventoryChangedForQuests.bind(sim),
+      addEntity: sim.addEntity.bind(sim),
+      dropEntity: sim.dropEntity.bind(sim),
+      rebucket: sim.rebucket.bind(sim),
+      resolve: sim.resolve.bind(sim),
+      groundPos: sim.groundPos.bind(sim),
+      playerMods: sim.playerMods.bind(sim),
+      delveRunForPlayer: sim.delveRunForPlayer.bind(sim),
+      delveModuleEntry: sim.delveModuleEntry.bind(sim),
+      failDelveRun: sim.failDelveRun.bind(sim),
+      pulseGroundAoE: sim.pulseGroundAoE.bind(sim),
     };
     return createSimContext(host);
   }
@@ -2322,31 +2347,9 @@ export class Sim {
     this.time += DT;
     this.tickCount++;
     this.updatePendingMobRespawns();
-    this.updateGroundAoEs();
+    tickGroundAoEs(this.ctx);
 
-    const despawnIds: number[] = [];
-    for (const e of this.entities.values()) {
-      copyPos(e.prevPos, e.pos);
-      e.prevFacing = e.facing;
-      if (e.despawnTimer !== undefined) {
-        e.despawnTimer -= DT;
-        if (e.despawnTimer <= 0) despawnIds.push(e.id);
-      }
-      if (
-        e.kind === 'mob' &&
-        DAMAGE_IDLE_DESPAWN_MOB_IDS.has(e.templateId) &&
-        !e.dead &&
-        !e.inCombat
-      ) {
-        e.damageIdleDespawnTimer = (e.damageIdleDespawnTimer ?? DAMAGE_IDLE_DESPAWN_SECONDS) - DT;
-        if (e.damageIdleDespawnTimer <= 0) despawnIds.push(e.id);
-      }
-      if (e.overheadEmoteId && this.time >= e.overheadEmoteUntil) {
-        e.overheadEmoteId = null;
-        e.overheadEmoteUntil = 0;
-      }
-    }
-    for (const id of despawnIds) this.dropEntity(id);
+    runDespawnDecay(this.ctx);
 
     for (const meta of this.players.values()) {
       const p = this.entities.get(meta.entityId);
@@ -2413,7 +2416,7 @@ export class Sim {
     this.updateInstances();
     this.updateDelveRuns();
     this.updateMarket();
-    this.emitDueDelayedEvents();
+    drainDelayedEvents(this.ctx);
 
     // movement re-bucketing: queries during the next tick and the server's
     // snapshot broadcast right after this one see fresh cells
@@ -2423,17 +2426,6 @@ export class Sim {
     const out = this.events;
     this.events = [];
     return out;
-  }
-
-  private emitDueDelayedEvents(): void {
-    if (this.delayedEvents.length === 0) return;
-    const pending: { at: number; event: SimEvent; guard?: () => boolean }[] = [];
-    for (const delayed of this.delayedEvents) {
-      if (delayed.at <= this.time) {
-        if (!delayed.guard || delayed.guard()) this.emit(delayed.event);
-      } else pending.push(delayed);
-    }
-    this.delayedEvents = pending;
   }
 
   private updateLootRolls(): void {
@@ -3111,19 +3103,9 @@ export class Sim {
     }
   }
 
-  private updateGroundAoEs(): void {
-    for (let i = this.groundAoEs.length - 1; i >= 0; i--) {
-      const effect = this.groundAoEs[i];
-      effect.remaining -= DT;
-      effect.tickTimer -= DT;
-      while (effect.tickTimer <= CAST_COMPLETE_EPS && effect.remaining > CAST_COMPLETE_EPS) {
-        effect.tickTimer += effect.interval;
-        this.pulseGroundAoE(effect);
-      }
-      if (effect.remaining <= CAST_COMPLETE_EPS) this.groundAoEs.splice(i, 1);
-    }
-  }
-
+  // updateGroundAoEs (the drain) moved to entity_roster.ts (tickGroundAoEs); it pulses
+  // through this.ctx.pulseGroundAoE. pulseGroundAoE STAYS here (shared entry point,
+  // also called on-cast from the effect path).
   private pulseGroundAoE(effect: GroundAoE, threatOpts?: { flat?: number; mult?: number }): void {
     const source = this.entities.get(effect.sourceId);
     if (!source || source.dead) return;
@@ -10963,36 +10945,10 @@ export class Sim {
   // Player death / respawn
   // -------------------------------------------------------------------------
 
+  // Player death/respawn lives in entity_roster.ts (E1, merged E2). Thin delegate
+  // keeps the public IWorld surface (`sim.releaseSpirit`) resolving unchanged.
   releaseSpirit(pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const { meta, e: p } = r;
-    if (!p.dead) return;
-    if (this.arenaMatches.has(p.id)) return;
-    if (isDelvePos(p.pos.x)) {
-      this.releaseSpiritInDelve(meta.entityId);
-      return;
-    }
-    p.dead = false;
-    // dying in a dungeon sends you to the graveyard of the zone its door is
-    // in; dying outdoors, to your current zone's graveyard
-    const dungeon = dungeonAt(p.pos.x);
-    const graveyard = zoneAt(dungeon ? dungeon.doorPos.z : p.pos.z).graveyard;
-    p.pos = this.groundPos(graveyard.x, graveyard.z);
-    p.prevPos = { ...p.pos };
-    this.rebucket(p);
-    p.facing = 0;
-    p.auras = [];
-    p.ccDr.clear();
-    recalcPlayerStats(p, meta.cls, meta.equipment, this.playerMods(meta));
-    p.hp = p.maxHp;
-    p.resource = p.resourceType === 'mana' ? p.maxResource : p.resourceType === 'energy' ? 100 : 0;
-    p.targetId = null;
-    p.autoAttack = false;
-    p.queuedOnSwing = null;
-    p.combatTimer = 99;
-    p.inCombat = false;
-    this.emit({ type: 'respawn', pid: meta.entityId });
+    releasePlayerSpirit(this.ctx, pid);
   }
 
   // Token-bucket throttle: returns false (and notifies the player once) when
@@ -11494,7 +11450,7 @@ export class Sim {
       return null;
     }
     if (/^\/(?:graveyard|gy|spirithealer)(?:\s|$)/i.test(raw)) {
-      this.error(r.meta.entityId, this.graveyardReadout(r.e));
+      this.error(r.meta.entityId, graveyardReadout(r.e));
       return null;
     }
     if (/^\/(?:dungeons|dungeon|instances)(?:\s|$)/i.test(raw)) {
@@ -15136,12 +15092,7 @@ export class Sim {
   // lookups (no new fields) and resolves the same target as releaseSpirit —
   // dying inside a dungeon resurrects you at the graveyard of the zone its door
   // sits in, dying outdoors at your current zone's graveyard.
-  private graveyardReadout(p: Entity): string {
-    const dungeon = dungeonAt(p.pos.x);
-    const zone = zoneAt(dungeon ? dungeon.doorPos.z : p.pos.z);
-    const gy = zone.graveyard;
-    return `If you fall here, your spirit returns to the ${zone.name} graveyard at (${Math.floor(gy.x)}, ${Math.floor(gy.z)}).`;
-  }
+  // graveyardReadout moved to entity_roster.ts (pure zone lookup); imported above.
   // Readout for "/dungeons": lists every group instance in entrance order with
   // the overworld zone its door sits in and its suggested party size. Reads
   // only the static DUNGEON_LIST (already entrance-sorted by index) and the
@@ -16342,39 +16293,10 @@ export class Sim {
     }
   }
 
+  // In-delve respawn lives in entity_roster.ts (E1, merged E2). Thin delegate keeps
+  // the public method resolving unchanged.
   releaseSpiritInDelve(pid: number): void {
-    const r = this.resolve(pid);
-    if (!r?.e.dead) return;
-    const run = this.delveRunForPlayer(pid);
-    if (!run) return;
-    const deaths = (run.deathsThisRun[pid] ?? 0) + 1;
-    run.deathsThisRun[pid] = deaths;
-    if (deaths >= 2) {
-      r.e.dead = false;
-      this.failDelveRun(run);
-      return;
-    }
-    const p = r.e;
-    p.dead = false;
-    const entry = this.delveModuleEntry(run);
-    p.pos = entry;
-    p.prevPos = { ...entry };
-    this.rebucket(p);
-    p.facing = 0;
-    p.auras = [];
-    p.ccDr.clear();
-    recalcPlayerStats(p, r.meta.cls, r.meta.equipment, r.meta.talentMods);
-    p.hp = Math.max(1, Math.round(p.maxHp * 0.5));
-    p.resource =
-      p.resourceType === 'mana'
-        ? Math.round(p.maxResource * 0.5)
-        : p.resourceType === 'energy'
-          ? 100
-          : 0;
-    p.targetId = null;
-    p.combatTimer = 99;
-    p.inCombat = false;
-    this.emit({ type: 'respawn', pid });
+    releaseSpiritInDelveImpl(this.ctx, pid);
   }
 
   private pickDelveSpawnSet(mod: DelveModuleDef, seed: number, moduleIndex: number) {

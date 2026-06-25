@@ -12,9 +12,12 @@
 // game/net/DOM/Three, no `Math.random`/`Date.now`), so it runs unchanged in Node,
 // the browser, and the headless RL env (enforced by tests/architecture.test.ts).
 
+import type { TalentModifiers } from './content/talents';
+import type { DelayedEvent, GroundAoE } from './entity_roster';
 import type { Rng } from './rng';
 import type { ArenaMatch, DuelState, Party, PlayerMeta } from './sim';
-import type { Aura, CrowdControlDrCategory, Entity, SimEvent, Vec3 } from './types';
+import type { SpatialGrid } from './spatial';
+import type { Aura, CrowdControlDrCategory, DelveRun, Entity, SimEvent, Vec3 } from './types';
 
 // Live primitive views onto the running Sim. These are GETTERS, not snapshots:
 // `time`/`tickCount` advance every tick, and the `rng`/`entities` identities are
@@ -25,6 +28,22 @@ export interface SimContextPrimitives {
   readonly time: number;
   readonly tickCount: number;
   readonly entities: Map<number, Entity>;
+  // Spatial indexes kept roster-exact alongside `entities` (E1). Stay public on Sim
+  // too (server/game.ts queries them); exposed here as live views for the roster ops.
+  readonly grid: SpatialGrid;
+  readonly playerGrid: SpatialGrid;
+  // Sim-owned tick-prologue collections (E1). The drains (drainDelayedEvents /
+  // tickGroundAoEs) live in entity_roster; the SCHEDULING push sites stay on Sim
+  // (N1/M3 delayed events, C1/C4b ground AoEs), so the fields stay on Sim and are
+  // reached here as live views. `delayedEvents` is read-write (the drain reassigns
+  // the pending list); `groundAoEs` is mutated in place (splice), so read-only.
+  delayedEvents: DelayedEvent[];
+  readonly groundAoEs: GroundAoE[];
+  // dungeon-door registry (I1) appended to on dungeon_door spawn; null until built.
+  readonly dungeonDoorIds: number[] | null;
+  // live arena bouts keyed by every participant pid (A2); release-spirit early-bails
+  // when the dead player is mid-bout.
+  readonly arenaMatches: Map<number, ArenaMatch>;
 }
 
 // Cross-system callbacks. Each signature mirrors the still-on-`Sim` method it
@@ -99,6 +118,26 @@ export interface SimContextCallbacks {
   partyOf(pid: number): Party | null;
   removeFromParty(pid: number, verb: string): void;
   onInventoryChangedForQuests(meta: PlayerMeta): void;
+
+  // E1 entity roster: the moved roster ops, exposed so the foreign callers across
+  // not-yet-extracted slices reach them through the seam. Implemented in
+  // entity_roster; Sim retains thin delegating methods so existing `this.addEntity`
+  // / test `sim.addEntity` call sites resolve unchanged.
+  addEntity(e: Entity): void;
+  dropEntity(id: number): void;
+  rebucket(e: Entity): void;
+
+  // E1 forward references the moved code consumes; all still on Sim. `resolve`,
+  // `groundPos`, `playerMods` are core; `delveRunForPlayer`/`delveModuleEntry`/
+  // `failDelveRun` are delve-slice internals release-spirit calls; `pulseGroundAoE`
+  // is the shared ground-AoE entry point the drain pulses.
+  resolve(pid?: number): { meta: PlayerMeta; e: Entity } | null;
+  groundPos(x: number, z: number): Vec3;
+  playerMods(meta: PlayerMeta): TalentModifiers;
+  delveRunForPlayer(pid: number): DelveRun | null;
+  delveModuleEntry(run: DelveRun): Vec3;
+  failDelveRun(run: DelveRun): void;
+  pulseGroundAoE(effect: GroundAoE, threatOpts?: { flat?: number; mult?: number }): void;
 }
 
 // The seam consumed by extracted modules.
@@ -129,6 +168,27 @@ export function createSimContext(host: SimContextHost): SimContext {
     get entities() {
       return host.entities;
     },
+    get grid() {
+      return host.grid;
+    },
+    get playerGrid() {
+      return host.playerGrid;
+    },
+    get delayedEvents() {
+      return host.delayedEvents;
+    },
+    set delayedEvents(v) {
+      host.delayedEvents = v;
+    },
+    get groundAoEs() {
+      return host.groundAoEs;
+    },
+    get dungeonDoorIds() {
+      return host.dungeonDoorIds;
+    },
+    get arenaMatches() {
+      return host.arenaMatches;
+    },
     emit: host.emit,
     dealDamage: host.dealDamage,
     handleDeath: host.handleDeath,
@@ -158,5 +218,15 @@ export function createSimContext(host: SimContextHost): SimContext {
     partyOf: host.partyOf,
     removeFromParty: host.removeFromParty,
     onInventoryChangedForQuests: host.onInventoryChangedForQuests,
+    addEntity: host.addEntity,
+    dropEntity: host.dropEntity,
+    rebucket: host.rebucket,
+    resolve: host.resolve,
+    groundPos: host.groundPos,
+    playerMods: host.playerMods,
+    delveRunForPlayer: host.delveRunForPlayer,
+    delveModuleEntry: host.delveModuleEntry,
+    failDelveRun: host.failDelveRun,
+    pulseGroundAoE: host.pulseGroundAoE,
   };
 }

@@ -11,6 +11,9 @@ export const INTERACT_RANGE = 5;
 export const GCD = 1.5; // seconds
 export const CAST_PUSHBACK_SEC = 0.5; // vanilla: each hit delays a cast by 0.5s
 export const CHANNEL_PUSHBACK_FRACTION = 0.25; // vanilla: each hit shaves 25% off a channel
+// Tolerance for "this per-tick timer is effectively complete" comparisons (casting,
+// channels, ground-AoE pulses). Shared across sim modules (sim.ts + entity_roster.ts).
+export const CAST_COMPLETE_EPS = 1e-9;
 export const FISHING_CAST_ID = 'fishing';
 export const FISHING_CAST_NAME = 'Fishing';
 export const FISHING_CAST_TIME = 5;
