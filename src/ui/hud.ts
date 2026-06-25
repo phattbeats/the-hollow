@@ -10,7 +10,7 @@ import {
 } from '../game/settings';
 import { sfx } from '../game/sfx';
 import { voice } from '../game/voice';
-import { castBarState } from '../render/cast_bar';
+import { castBarState, consumeBarState } from '../render/cast_bar';
 import { CharacterPreview } from '../render/characters';
 import { preloadMechAssets } from '../render/characters/assets';
 import { skinCount } from '../render/characters/manifest';
@@ -99,6 +99,7 @@ import {
 } from '../world_api';
 import { absorbBarView } from './absorb_bar';
 import { BagsWindow } from './bags_window';
+import { CastBarPainter } from './cast_bar_painter';
 import { CharWindow } from './char_window';
 import {
   activeCharacterAppearancePreview,
@@ -1175,16 +1176,10 @@ export class Hud {
     el.style.transform = transform;
   }
 
-  private setWidth(el: HTMLElement, width: string): void {
-    const key = `width:${width}`;
-    if (this.hotWriteCache.get(el) === key) {
-      this.hotDomSkippedWrites++;
-      return;
-    }
-    this.hotWriteCache.set(el, key);
-    this.hotDomWrites++;
-    el.style.width = width;
-  }
+  // Note: the per-frame width writer lives only on the painter facet now
+  // (makeWriterFacet's setWidth, painter_host.ts). The cast bars were the last
+  // Hud-direct width write; with them on the cast_bar painter (P11a), every width
+  // write routes through the facet, so the Hud no longer mirrors a private setWidth.
 
   // P10a write-elision extension (decision 5a). setStyleProp drives a custom
   // property (or any standard property) and toggleClass drives a class, each
@@ -2265,6 +2260,33 @@ export class Hud {
     absorb: this.pfAbsorbEl,
     resource: { container: this.pfResourceEl, fill: this.pfResEl, text: this.pfResTextEl },
   });
+  // The two cast bars are ONE instance-parameterized painter (P11a), over the
+  // castBarState core. The PLAYER instance localizes the cast id (castDisplayName),
+  // layers the eat/drink overlay (consumeBarState, player-only), and clears the bar
+  // on hide (its inline block did). The TARGET instance shows the raw cast id
+  // (byte-faithful: the target block set the raw `label`), has no eat/drink (the
+  // target never eats/drinks, so its paint omits `consume`), and hides with only
+  // display:none (its inline block did not clear).
+  private readonly playerCastBarPainter = new CastBarPainter(
+    this.writerFacet,
+    {
+      bar: this.castbarEl,
+      fill: this.castbarFillEl,
+      label: this.castbarLabelEl,
+      timer: this.castbarTimerEl,
+    },
+    { resolveCastLabel: (s) => castDisplayName(s.label), clearOnHide: true },
+  );
+  private readonly targetCastBarPainter = new CastBarPainter(
+    this.writerFacet,
+    {
+      bar: this.targetCastbarEl,
+      fill: this.targetCastbarFillEl,
+      label: this.targetCastbarLabelEl,
+      timer: this.targetCastbarTimerEl,
+    },
+    { resolveCastLabel: (s) => s.label },
+  );
   // Overworld world-map painter (the delve branch stays with delvePainter). Owns
   // the cached whole-world decorations; redraws from the mediumHud band while open.
   private readonly mapPainter = new MapWindowPainter();
@@ -3904,23 +3926,12 @@ export class Hud {
       }
       this.renderAuras(this.targetDebuffsEl, target, 'debuffs');
       // target/boss cast bar (e.g. Nythraxis' Deathless Rage) — shown under the
-      // name + HP so the raid sees exactly when to channel the wardstones
-      const tcb = castBarState(target);
-      if (tcb.visible) {
-        this.setDisplay(this.targetCastbarEl, 'block');
-        this.targetCastbarEl.classList.toggle('channel', tcb.channel);
-        this.setWidth(this.targetCastbarFillEl, `${(tcb.fill * 100).toFixed(1)}%`);
-        this.setText(this.targetCastbarLabelEl, tcb.label);
-        this.setText(
-          this.targetCastbarTimerEl,
-          formatNumber(Math.max(0, target.castRemaining), {
-            minimumFractionDigits: 1,
-            maximumFractionDigits: 1,
-          }),
-        );
-      } else {
-        this.setDisplay(this.targetCastbarEl, 'none');
-      }
+      // name + HP so the raid sees exactly when to channel the wardstones. The
+      // target instance shows the raw cast id and never eats/drinks (no `consume`).
+      this.targetCastBarPainter.paint({
+        cast: castBarState(target),
+        castRemaining: target.castRemaining,
+      });
       // combo points
       if (p.resourceType === 'energy') {
         this.setDisplay(this.comboRowEl, 'flex');
@@ -3944,54 +3955,13 @@ export class Hud {
       this.lastPortraitTarget = -999;
     }
 
-    // cast bar
-    if (p.castingAbility) {
-      this.setDisplay(this.castbarEl, 'block');
-      this.castbarEl.classList.toggle('channel', p.channeling);
-      const frac = p.channeling
-        ? p.castRemaining / Math.max(0.01, p.castTotal)
-        : 1 - p.castRemaining / Math.max(0.01, p.castTotal);
-      this.setWidth(this.castbarFillEl, `${(frac * 100).toFixed(1)}%`);
-      this.setText(this.castbarLabelEl, castDisplayName(p.castingAbility));
-      this.setText(
-        this.castbarTimerEl,
-        formatNumber(Math.max(0, p.castRemaining), {
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        }),
-      );
-    } else if (p.eating || p.drinking) {
-      this.setDisplay(this.castbarEl, 'block');
-      this.castbarEl.classList.add('channel');
-      const c =
-        p.eating && p.drinking
-          ? p.eating.remaining >= p.drinking.remaining
-            ? p.eating
-            : p.drinking
-          : (p.eating ?? p.drinking)!;
-      this.setWidth(this.castbarFillEl, `${((c.remaining / CONSUME_DURATION) * 100).toFixed(1)}%`);
-      this.setText(
-        this.castbarLabelEl,
-        p.eating && p.drinking
-          ? t('hud.core.eatingDrinking')
-          : p.eating
-            ? t('hud.core.eating')
-            : t('hud.core.drinking'),
-      );
-      this.setText(
-        this.castbarTimerEl,
-        formatNumber(Math.max(0, c.remaining), {
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        }),
-      );
-    } else {
-      this.setDisplay(this.castbarEl, 'none');
-      this.castbarEl.classList.remove('channel');
-      this.setWidth(this.castbarFillEl, '0%');
-      this.setText(this.castbarLabelEl, '');
-      this.setText(this.castbarTimerEl, '');
-    }
+    // cast bar: the player instance localizes the cast id (castDisplayName), layers
+    // the player-only eat/drink overlay (consumeBarState), and clears on hide.
+    this.playerCastBarPainter.paint({
+      cast: castBarState(p),
+      castRemaining: p.castRemaining,
+      consume: consumeBarState(p.eating, p.drinking),
+    });
 
     // swing timer: fills between melee/ranged auto-attack swings. swingTimer
     // counts DOWN to 0 (ready); swing_timer.ts recovers the full interval from the

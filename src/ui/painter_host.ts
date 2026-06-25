@@ -12,12 +12,15 @@
 //      members on top.
 //
 //   2) PainterHostWriters -- the write-elision facet: the SIX cached DOM writers
-//      Hud uses on its per-frame path (setText/setDisplay/setTransform/setWidth +
-//      the P10a additions setStyleProp/toggleClass at hud.ts), exposed to painters
-//      as closures over Hud's shared caches via makeWriterFacet. Hud keeps its own
-//      private writer methods (no visibility change) AND builds an equivalent facet
-//      to hand to painters; both share the SAME caches, so the skip-rate stays one
-//      number. The per-frame phases (P10-P13) consume this facet; P10a EXTENDED it
+//      (setText/setDisplay/setTransform/setWidth + the P10a additions
+//      setStyleProp/toggleClass), exposed to painters as closures over Hud's shared
+//      caches via makeWriterFacet. Hud also keeps private mirrors of the writers it
+//      still uses on its own per-frame path AND builds this equivalent facet to hand
+//      to painters; both share the SAME caches, so the skip-rate stays one number.
+//      (As per-frame work migrates onto painters the Hud-direct mirror shrinks: P11a
+//      moved the last direct width write onto the cast_bar painter, so setWidth now
+//      lives only on the facet -- the interface still exposes all six.)
+//      The per-frame phases (P10-P13) consume this facet; P10a EXTENDED it
 //      with setStyleProp/toggleClass (locked decision 5a) that the four original
 //      single-slot writers cannot express: a custom-property write to a `--var` and
 //      a classList toggle. Those two need a MULTI-SLOT cache keyed per (element,
