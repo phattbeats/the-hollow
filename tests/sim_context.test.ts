@@ -177,6 +177,7 @@ const CALLBACK_KEYS = [
   'findChargePath',
   'runEffects',
   // P1a pet-AI surface (effectiveAttackPower/isHostileTo already listed above; deduped).
+  // C5 auto-attack consumes aggroMob/swingIntervalMult, already listed above (M2; deduped).
   'syncPetAspect',
 ] as const;
 
@@ -372,6 +373,7 @@ function makeFakeHost() {
     findChargePath: vi.fn(() => []),
     runEffects: vi.fn(),
     // P1a pet-AI stub (effectiveAttackPower/isHostileTo already stubbed above; deduped).
+    // C5 auto-attack consumes aggroMob/swingIntervalMult, already stubbed above (M2; deduped).
     syncPetAspect: vi.fn(),
   };
   return { host, rng, entities, clock };

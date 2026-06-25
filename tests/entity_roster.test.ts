@@ -257,6 +257,7 @@ function makeCtx() {
     findChargePath: vi.fn(() => []),
     runEffects: vi.fn(),
     // P1a pet-AI stub (effectiveAttackPower/isHostileTo already stubbed above; deduped).
+    // C5 auto-attack consumes aggroMob/swingIntervalMult, already stubbed above (M2; deduped).
     syncPetAspect: vi.fn(),
   };
   const ctx = createSimContext(host);

@@ -441,6 +441,10 @@ export interface SimContextCallbacks {
   // delves/companion (the binding flips in sim.ts; the decl is M2's, declared above). The
   // shared helpers it consumes (mobSwing/moveToward/isHostileTo/isRooted/moveSpeedMult/
   // swingIntervalMult) are already declared above (M2/C4a), not re-declared here.
+  // C5 player auto-attack (src/sim/combat/auto_attack.ts) consumes aggroMob (the shared
+  // mob-aggro entry startAutoAttack uses to pull an idle target into combat) and
+  // swingIntervalMult (the haste read the driver applies to the next swing timer); both
+  // are M2's decls above, points-at Sim. Not re-declared here (dedupe).
 }
 
 // The seam consumed by extracted modules.
@@ -713,6 +717,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     findChargePath: host.findChargePath,
     runEffects: host.runEffects,
     // P1a pet-AI seam (effectiveAttackPower/isHostileTo already bound above; deduped).
+    // C5 auto-attack consumes aggroMob/swingIntervalMult, already passed through above (M2; deduped).
     syncPetAspect: host.syncPetAspect,
   };
 }

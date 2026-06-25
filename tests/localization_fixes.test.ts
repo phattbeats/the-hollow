@@ -759,6 +759,8 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
   // applyChannelTick: "You are stunned!", "Out of range.", etc., emitted via ctx.error),
   // C4b -> src/sim/combat/effect_dispatch.ts (the runEffects per-effect dispatch switch:
   // "You have no active Seal.", "Not enough health.", the pet messages, via ctx.error),
+  // C5 -> src/sim/combat/auto_attack.ts (the "Auto Shot"/"Wand" swing labels + the
+  // "Invalid attack target." error),
   // A1+ -> src/sim/social/*.ts (the party machine, later duel/arena/fiesta/
   // markers), G1a -> src/sim/progression/talents.ts (talent validation toasts),
   // M2 -> src/sim/mob/locomotion.ts (the boss "unleashes" lines), M3 ->
@@ -785,6 +787,7 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/combat/damage.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/combat/casting_lifecycle.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/combat/effect_dispatch.ts'), 'utf8'),
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/combat/auto_attack.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/progression/talents.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/locomotion.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/mob_swing.ts'), 'utf8'),
