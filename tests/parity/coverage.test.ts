@@ -171,4 +171,26 @@ describe('coverage: each scenario fires its subsystem', () => {
     const sources = new Set(ev.filter((e) => e.type === 'damage' && e.targetId === gid).map((e) => e.sourceId));
     expect(sources.size).toBeGreaterThanOrEqual(2); // multiple class sources wounded the mob
   });
+
+  it('multi_class_heal: heals land, a crit fires, absorb is consumed, threat splits across aware mobs, HoT ticks', () => {
+    const rec = run('multi_class_heal');
+    const ev = rec.allEvents as Ev[];
+    const heals = ev.filter((e) => e.type === 'heal2' && e.amount > 0);
+    expect(heals.length).toBeGreaterThan(0); // applyHeal emitted real (non-overheal) heals
+    expect(heals.some((e) => e.crit === true)).toBe(true); // forced-crit *1.5 path fired
+    // HoT aura-tick heal path (the hot branch -> healingTakenMult + healingThreat).
+    const hotAbility = rec.notes.hotAbility as string;
+    expect(ev.some((e) => e.type === 'heal2' && e.ability === hotAbility && e.amount > 0)).toBe(true);
+    const ents = entities(rec);
+    const tank = ents.find((e) => e.id === rec.notes.tankPid);
+    // consumeHealAbsorb: the small shield depleted + was filtered out; the big survived.
+    expect(tank.auras?.some((a: Ev) => a.id === 'absorb_small')).toBe(false);
+    expect(tank.auras?.some((a: Ev) => a.id === 'absorb_big')).toBe(true);
+    // healingThreat split landed: each aware mob now lists healer ids in its hate table.
+    const healerIds = rec.notes.healerIds as number[];
+    const m1 = ents.find((e) => e.id === rec.notes.m1Id);
+    const m3 = ents.find((e) => e.id === rec.notes.m3Id); // matched only via the pet-owner branch
+    expect(healerIds.some((hid) => m1.threat.has(hid))).toBe(true);
+    expect(healerIds.some((hid) => m3.threat.has(hid))).toBe(true);
+  });
 });

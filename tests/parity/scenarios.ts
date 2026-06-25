@@ -22,7 +22,7 @@ import { createMob } from '../../src/sim/entity';
 import { Sim } from '../../src/sim/sim';
 import { solveLockActions } from '../../src/sim/lockpick';
 import { FISHING_CAST_ID } from '../../src/sim/types';
-import type { Entity } from '../../src/sim/types';
+import type { Aura, Entity } from '../../src/sim/types';
 import { terrainHeight } from '../../src/sim/world';
 import type { Recorder, Scenario } from './record';
 
@@ -772,6 +772,180 @@ function multiClassFrenzy(): Scenario {
   };
 }
 
+// C2 heal core: a healer of every class that owns a heal (priest/paladin/druid/
+// shaman) heals a damaged tank while three hostile mobs hold threat on it, so BOTH
+// the heal math (crit branch via the rng.chance(spellCrit) draw, overheal clamp,
+// Weakening-Hex outgoing cut, Mortal-Wound incoming cut, heal-absorb soak with the
+// depleted/survived split) AND the healingThreat fan-out (split evenly across the
+// aware mobs, including the pet-owner threat-entry branch) land in the sampled
+// trace. The four direct applyHeal calls are the verbatim heal core; the closing
+// druid HoT exercises the aura-tick foreign callers (healingTakenMult + healingThreat
+// off the `hot` branch), and a forced crit on a critvuln+hexed target exercises the
+// dealDamage consumers of critVulnBonus/hexOutputMult. Forced crits boost the source's
+// int so rng.chance(spellCrit) is certain to pass (the draw STILL fires, so the
+// draw-order log stays meaningful); int is restored immediately. The existing four
+// solo/mob scenarios never build a heal or a healing-threat table (parity CLAUDE.md
+// "Known coverage gaps"), so this is the only scenario that pins heal drift.
+function aura(spec: {
+  id: string;
+  name: string;
+  kind: Aura['kind'];
+  value: number;
+  sourceId: number;
+  duration?: number;
+  tickInterval?: number;
+}): Aura {
+  const duration = spec.duration ?? 60;
+  return {
+    id: spec.id,
+    name: spec.name,
+    kind: spec.kind,
+    remaining: duration,
+    duration,
+    value: spec.value,
+    sourceId: spec.sourceId,
+    school: 'physical',
+    ...(spec.tickInterval !== undefined ? { tickInterval: spec.tickInterval } : {}),
+  } as Aura;
+}
+
+function multiClassHeal(): Scenario {
+  return {
+    name: 'multi_class_heal',
+    coverage: [
+      'applyHeal core: crit branch (rng.chance(spellCrit) draw), overheal clamp, heal2 emit',
+      'hexOutputMult outgoing cut (hex on source) + healingTakenMult Mortal-Wound cut (target)',
+      'consumeHealAbsorb soak: small shield depletes+filters, big shield survives',
+      'healingThreat even split across multiple aware mobs (entities.values insertion order)',
+      'threatEntryMatchesEntity direct-target + pet-owner branches',
+      'hot aura-tick heal path (healingTakenMult ~3089 + healingThreat ~3101)',
+      'dealDamage consumers: critVulnBonus (crit-only) + hexOutputMult on a damage hit',
+      'multi-class healers: priest/paladin/druid/shaman',
+    ],
+    sampleEvery: 5,
+    build: () => new Sim({ seed: 1016, playerClass: 'priest', noPlayer: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      // Four healers, each a class that owns a heal.
+      const priest = sim.addPlayer('priest', 'Pr') as number;
+      const paladin = sim.addPlayer('paladin', 'Pa') as number;
+      const druid = sim.addPlayer('druid', 'Dr') as number;
+      const shaman = sim.addPlayer('shaman', 'Sh') as number;
+      const healerIds = [priest, paladin, druid, shaman];
+      healerIds.forEach((pid, i) => teleport(sim, sim.entities.get(pid) as AnyEntity, i * 3, -30));
+      const ePriest = sim.entities.get(priest) as AnyEntity;
+      const ePaladin = sim.entities.get(paladin) as AnyEntity;
+      const eDruid = sim.entities.get(druid) as AnyEntity;
+      const eShaman = sim.entities.get(shaman) as AnyEntity;
+
+      // The damaged friendly the healers heal (a player, so it is sampled by default).
+      const tankPid = sim.addPlayer('warrior', 'Tk') as number;
+      const tank = sim.entities.get(tankPid) as AnyEntity;
+      teleport(sim, tank, 30, -30);
+      beef(tank, 10000);
+
+      // A pet owned by the tank, so a mob holding threat on the PET (not the tank
+      // directly) still counts the tank as aware via threatEntryMatchesEntity's
+      // owner branch. Friendly + no threat of its own, so it is never an aware mob.
+      const pet = spawnMob(sim, 'forest_wolf', 5, 80, tank.pos.y, 80);
+      pet.ownerId = tankPid;
+      pet.hostile = false;
+      pet.inCombat = false;
+
+      // Three hostile mobs in combat on the tank, far enough that they do not engage
+      // within the short HoT tick window. m1/m2 hold the tank directly; m3 holds the
+      // tank's pet (the owner branch). Threat is seeded directly so the split is
+      // deterministic and re-derivable for QA.
+      const m1 = spawnMob(sim, 'forest_wolf', 5, 90, tank.pos.y, 90);
+      const m2 = spawnMob(sim, 'forest_wolf', 5, -90, tank.pos.y, 90);
+      const m3 = spawnMob(sim, 'forest_wolf', 5, 90, tank.pos.y, -90);
+      for (const m of [m1, m2, m3]) {
+        beef(m, 50000);
+        m.hostile = true;
+        m.inCombat = true;
+        m.aiState = 'idle';
+      }
+      m1.threat.set(tankPid, 10);
+      m2.threat.set(tankPid, 10);
+      m3.threat.set(pet.id, 10); // owner branch: pet in m3's hate table
+      rec.track(m1.id, m2.id, m3.id, pet.id);
+      rec.notes.healerIds = healerIds;
+      rec.notes.tankPid = tankPid;
+      rec.notes.m1Id = m1.id;
+      rec.notes.m2Id = m2.id;
+      rec.notes.m3Id = m3.id;
+      rec.notes.petId = pet.id;
+      rec.notes.hotAbility = 'Rejuvenation';
+
+      // Force a crit by boosting int so spellCrit(source) >= 1: rng.chance STILL
+      // draws (next() < p), it just always passes, so the *1.5 crit path lands in
+      // the golden deterministically. Restored immediately after the heal.
+      const forcedHeal = (
+        e: AnyEntity,
+        source: number,
+        amount: number,
+        ability: string,
+      ): void => {
+        const int0 = e.stats.int;
+        e.stats.int = 5000;
+        (sim as any).applyHeal(sim.entities.get(source) as AnyEntity, tank, amount, ability);
+        e.stats.int = int0;
+      };
+
+      // Heal 1: priest, plain (no mults), tank damaged -> split across all 3 mobs.
+      tank.hp = 2000;
+      (sim as any).applyHeal(ePriest, tank, 600, 'Heal');
+
+      // Heal 2: paladin, forced crit (no mults) -> *1.5 path.
+      tank.hp = 2000;
+      forcedHeal(ePaladin, paladin, 800, 'Holy Light');
+
+      // Heal 3: druid, hex on source (outgoing cut) + Mortal-Wound on target
+      // (incoming cut), forced crit -> crit*hex*mortal combined.
+      eDruid.auras.push(aura({ id: 'hex_dr', name: 'Weakening Hex', kind: 'hex', value: 0.3, sourceId: m1.id }));
+      tank.auras.push(aura({ id: 'mw_tk', name: 'Mortal Wound', kind: 'mortal_wound', value: 0.5, sourceId: m1.id }));
+      tank.hp = 2000;
+      forcedHeal(eDruid, druid, 1000, 'Healing Touch');
+      tank.auras = tank.auras.filter((a: Aura) => a.kind !== 'mortal_wound');
+
+      // Heal 4: shaman, two heal-absorb shields -> the small one depletes and is
+      // filtered out, the big one survives with reduced budget.
+      tank.auras.push(aura({ id: 'absorb_small', name: 'Necrotic', kind: 'heal_absorb', value: 200, sourceId: m1.id }));
+      tank.auras.push(aura({ id: 'absorb_big', name: 'Necrotic', kind: 'heal_absorb', value: 5000, sourceId: m1.id }));
+      tank.hp = 2000;
+      (sim as any).applyHeal(eShaman, tank, 1000, 'Healing Wave');
+
+      // Heal 5: overheal -> healed clamps to 0 -> healingThreat healed<=0 early bail.
+      tank.hp = tank.maxHp;
+      (sim as any).applyHeal(ePriest, tank, 500, 'Heal');
+
+      // Heal 6: aware.length===0 early bail (target with no mob holding threat on it).
+      ePaladin.hp = Math.max(1, ePaladin.maxHp - 200);
+      (sim as any).applyHeal(ePriest, ePaladin, 300, 'Heal');
+      // One checkpoint pins the cumulative result of all six heals (per-heal amount +
+      // crit are folded into this window's event digest; the draw-order log + tank/mob
+      // threat tables are pinned in the frame body).
+      rec.snapshot('heals');
+
+      // dealDamage consumers: druid (still hexed) crit-hits a critvuln mob ->
+      // hexOutputMult (outgoing-damage cut) + critVulnBonus (crit-only) both read.
+      m1.auras.push(aura({ id: 'cv_m1', name: 'Find Weakness', kind: 'critvuln', value: 0.5, sourceId: druid }));
+      sim.dealDamage(eDruid, m1, 100, true, 'physical', 'Smite', 'hit');
+      rec.snapshot('crit-vuln-damage');
+
+      // HoT path: a druid Rejuvenation on the tank ticks through the `hot` aura
+      // branch -> healingTakenMult(~3089) + healingThreat(~3101) foreign callers.
+      // (The surviving absorb_big rides along untouched: the hot branch never calls
+      // consumeHealAbsorb, only applyHeal does.)
+      tank.hp = 2000;
+      tank.auras.push(
+        aura({ id: 'hot_tk', name: 'Rejuvenation', kind: 'hot', value: 300, sourceId: druid, duration: 3, tickInterval: 0.1 }),
+      );
+      rec.tick(8); // ~4 HoT ticks; finish() pins the end state + folded HoT events
+    },
+  };
+}
+
 export const SCENARIOS: Scenario[] = [
   soloWarrior(),
   soloMage(),
@@ -788,4 +962,5 @@ export const SCENARIOS: Scenario[] = [
   delveDeath(),
   fiestaMidcastKill(),
   multiClassFrenzy(),
+  multiClassHeal(),
 ];
