@@ -75,6 +75,12 @@
        raw hex). Exact pre-existing value. */
     --color-quality-default: #fff;
 
+    /* Empty paperdoll slot greys (char_window.ts uses these so the painter carries
+       no raw hex): the muted "Empty" label and the dimmed placeholder-icon border.
+       Exact pre-existing values. */
+    --color-slot-empty-text: #666;
+    --color-slot-empty-border: #444;
+
     /* delve minimap / world-map schematic (resolved by delve_map_painter.ts via
        getComputedStyle: a 2D canvas context cannot read a CSS var directly) */
     --color-delve-room: #0e0c0a;

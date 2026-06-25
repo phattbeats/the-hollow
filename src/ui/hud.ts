@@ -107,6 +107,7 @@ import {
 } from '../world_api';
 import { absorbBarView } from './absorb_bar';
 import { BagsWindow } from './bags_window';
+import { CharWindow } from './char_window';
 import {
   activeCharacterAppearancePreview,
   characterAppearanceOptions,
@@ -1414,6 +1415,10 @@ export class Hud {
         // consistent with the toggle/X close path.
         this.socialWindow.close();
         break;
+      case 'char-window':
+        // Route through the painter so focus returns to the opener (WCAG 2.2 AA).
+        this.charWindow.close();
+        break;
       case 'trade-window':
         this.sim.tradeCancel();
         this.hideTooltip();
@@ -2273,6 +2278,54 @@ export class Hud {
       }
     },
   });
+  // Character window painter (char_view.ts paperdoll core + char_window.ts painter).
+  // It composes the presentation bag (icon/tooltip) for the equip slots and routes
+  // the HUD-built stat / talent / progression fragments plus the unequip + drag
+  // plumbing. The shared 3D turntable preview and the cosmetic skin picker stay
+  // HUD-owned (the single WebGL preview is borrowed by the skin-event overlay and
+  // the player card), so the painter triggers them through renderPreview /
+  // renderSkinPicker closures rather than building them.
+  private readonly charWindow = new CharWindow({
+    ...this.presentationBag,
+    root: () => $('#char-window'),
+    world: () => this.sim,
+    closeOthers: () => this.closeOtherWindows('#char-window'),
+    hideTooltip: () => this.hideTooltip(),
+    captureFocus: () => this.currentFocusableElement(),
+    restoreFocus: (target) => this.restoreFocus(target),
+    slotName: (slot) => itemSlotName(slot),
+    statCellHtml: (stat) => statCellHtml(this.statModel(stat), STAT_VIEW_DEPS),
+    statTooltipHtml: (stat) => statTooltipHtml(this.statModel(stat), STAT_VIEW_DEPS),
+    talentSummaryHtml: () => this.talentSummaryHtml(),
+    progressionHtml: (level) => this.progressionHtml(level),
+    unequip: (slot) => {
+      this.sim.unequipItem(slot);
+      audio.click();
+      this.hideTooltip();
+      this.renderBags();
+      this.renderCharIfOpen();
+    },
+    beginUnequipDrag: (slot) => {
+      this.dragUnequipSlot = slot;
+      // Open the bags window if it's closed so there's a visible drop target,
+      // otherwise the drag silently snaps back with no feedback.
+      const bags = $('#bags');
+      if (bags.style.display !== 'block') {
+        bags.style.display = 'block';
+        this.renderBags();
+      }
+    },
+    endUnequipDrag: () => {
+      this.dragUnequipSlot = null;
+      $('#bags').classList.remove('drop-target');
+    },
+    renderPreview: () => this.renderCharPreview(),
+    renderSkinPicker: () => this.renderCharSkinPicker(),
+    openPlayerCard: () => {
+      void this.openPlayerCard();
+    },
+    openPrestige: () => this.openPrestigeDialog(),
+  });
   // Options window painter (options_view.ts core + options_window.ts painter). The
   // window renders no item rows, so it composes no PainterHostPresentation bag; it
   // reads only the world's bug-report slice and routes the options/bug-report seams,
@@ -2594,7 +2647,7 @@ export class Hud {
     if (this.openVendorNpcId !== null && $('#vendor-window').style.display === 'block')
       this.renderVendor();
     if (this.marketWindow.isOpen) this.marketWindow.render();
-    if ($('#char-window').style.display === 'block') this.renderChar();
+    this.charWindow.renderIfOpen();
     const dialog = $('#quest-dialog');
     if (dialog.style.display !== 'block' || this.openGossipNpcId === null) return;
     const npc = this.sim.entities.get(this.openGossipNpcId);
@@ -8061,7 +8114,7 @@ export class Hud {
   }
 
   private renderCharIfOpen(): void {
-    if ($('#char-window').style.display === 'block') this.renderChar();
+    this.charWindow.renderIfOpen();
   }
 
   renderBags(): void {
@@ -8073,172 +8126,7 @@ export class Hud {
   // -------------------------------------------------------------------------
 
   toggleChar(): void {
-    const el = $('#char-window');
-    if (el.style.display === 'block') {
-      el.style.display = 'none';
-      this.hideTooltip();
-      return;
-    }
-    this.closeOtherWindows('#char-window');
-    this.renderChar();
-    el.style.display = 'block';
-  }
-
-  renderChar(): void {
-    const el = $('#char-window');
-    const sim = this.sim;
-    const p = sim.player;
-    const cls = CLASSES[sim.cfg.playerClass];
-    const className = classDisplayName(cls.id);
-    let html = `<div class="panel-title char-title-portrait">${portraitChipHtml({ cls: sim.cfg.playerClass, skin: p.skin ?? 0, name: p.name, variant: 'md' })}<span class="char-title-text">${esc(p.name)} <span class="panel-subtitle">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(p.level, { maximumFractionDigits: 0 }), className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
-    html += `<div class="paperdoll">
-      <div class="equip-col" id="equip-col-left"></div>
-      <div class="char-model-panel">
-        <div id="char-model-preview" class="char-model-preview"></div>
-        <div id="char-skin-row" class="skin-row char-skin-row" role="list" aria-label="${esc(t('auth.appearance'))}"></div>
-      </div>
-      <div class="equip-col equip-col-right" id="equip-col-right"></div>
-    </div>`;
-    // Ten focusable stat cells, primaries down the left column and derived stats
-    // down the right. The cell markup, value formatting, and the visually-hidden
-    // aria breakdown all come from the pure, unit-tested stat_tooltip_view module;
-    // each cell's value is read from the model so it cannot drift from the tooltip
-    // it opens, and the post-render pass below attaches the floating breakdown.
-    const statCell = (stat: StatId) => statCellHtml(this.statModel(stat), STAT_VIEW_DEPS);
-    html += `<div class="char-stats">
-      ${statCell('str')}${statCell('armor')}
-      ${statCell('agi')}${statCell('attackPower')}
-      ${statCell('sta')}${statCell('dps')}
-      ${statCell('int')}${statCell('critChance')}
-      ${statCell('spi')}${statCell('dodge')}
-    </div>`;
-    html += this.talentSummaryHtml();
-    html += this.progressionHtml(p.level);
-    const shareGlyph = `<svg class="pc-share-ico" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M18 16.1a3 3 0 0 0-2.3 1.1l-6.7-3.9a3 3 0 0 0 0-2.6l6.7-3.9A3 3 0 1 0 15 4l-6.7 3.9a3 3 0 1 0 0 8.2L15 20a3 3 0 1 0 3-3.9z"/></svg>`;
-    html += `<div class="pc-share-row"><button type="button" class="btn pc-share-btn" data-act="share-card">${shareGlyph}<span>${esc(t('playerCard.shareButton'))}</span></button></div>`;
-    el.innerHTML = html;
-    hydratePortraits(el);
-    el.querySelector('[data-act="prestige"]')?.addEventListener('click', () =>
-      this.openPrestigeDialog(),
-    );
-    el.querySelector('[data-act="share-card"]')?.addEventListener('click', () => {
-      audio.click();
-      void this.openPlayerCard();
-    });
-    const leftCol = el.querySelector('#equip-col-left')!;
-    const rightCol = el.querySelector('#equip-col-right')!;
-    // Two columns flanking the model, like the classic WoW character sheet:
-    // the left column holds head/shoulder/chest (+ weapon, since we have no
-    // neck/back/wrist slots to fill it) and the right column holds the
-    // hands/waist/legs/feet quartet.
-    const leftSlots: { key: EquipSlot; name: string }[] = [
-      { key: 'helmet', name: itemSlotName('helmet') },
-      { key: 'shoulder', name: itemSlotName('shoulder') },
-      { key: 'chest', name: itemSlotName('chest') },
-      { key: 'mainhand', name: itemSlotName('mainhand') },
-    ];
-    const rightSlots: { key: EquipSlot; name: string }[] = [
-      { key: 'gloves', name: itemSlotName('gloves') },
-      { key: 'waist', name: itemSlotName('waist') },
-      { key: 'legs', name: itemSlotName('legs') },
-      { key: 'feet', name: itemSlotName('feet') },
-    ];
-    const buildSlotRow = (slot: { key: EquipSlot; name: string }): HTMLElement => {
-      const itemId = sim.equipment[slot.key];
-      const item = itemId ? ITEMS[itemId] : null;
-      const row = document.createElement('div');
-      row.className = 'equip-slot';
-      // Stable id + programmatic focusability so the corner-× rebuild can hand
-      // focus back to this slot (the rebuilt row may be empty, with no × to focus).
-      row.id = `equip-slot-${slot.key}`;
-      row.tabIndex = -1;
-      const qColor = !item ? '#666' : (QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff');
-      row.innerHTML = `${item ? this.itemIcon(item) : `<img class="item-icon" style="border-color:#444" src="${iconDataUrl('item', 'slot_empty')}" alt="" draggable="false">`}
-        <div><div class="slot-name">${esc(slot.name)}</div><div class="slot-item" style="color:${qColor}">${item ? esc(itemDisplayName(item)) : esc(t('itemUi.equipment.empty'))}</div></div>`;
-      if (item) {
-        // Remove the piece back to bags, leaving the slot empty (equipping only
-        // ever swaps in a replacement — this is the way to fully unequip). Three
-        // affordances all route through here: the corner ×, right-click, and
-        // dragging the piece out onto the bags window.
-        // `keepFocus` rebuilds the paperdoll (renderChar replaces the subtree via
-        // innerHTML, which otherwise drops focus to <body>) and hands focus back to
-        // the now-empty slot row — the keyboard/touch × path needs this; right-click
-        // and drag are mouse-only and don't.
-        const doUnequip = (keepFocus = false) => {
-          this.sim.unequipItem(slot.key);
-          audio.click();
-          this.hideTooltip();
-          this.renderBags();
-          this.renderCharIfOpen();
-          if (keepFocus) {
-            const rebuilt = document.getElementById(`equip-slot-${slot.key}`);
-            this.restoreFocus(rebuilt instanceof HTMLElement ? rebuilt : null);
-          }
-        };
-        this.attachTooltip(
-          row,
-          () =>
-            `${this.itemTooltip(item)}<div class="tt-sub">${esc(t('hudChrome.paperdoll.unequipHint'))}</div>`,
-        );
-        // Corner ×: a styled glyph control (not an in-game icon), revealed on
-        // hover/focus and always shown on touch where right-click is unavailable.
-        const unequip = document.createElement('button');
-        unequip.type = 'button';
-        unequip.className = 'equip-unequip-btn';
-        unequip.textContent = '×';
-        unequip.setAttribute(
-          'aria-label',
-          t('hudChrome.paperdoll.unequipAria', { item: itemDisplayName(item) }),
-        );
-        unequip.addEventListener('click', (ev) => {
-          ev.stopPropagation();
-          doUnequip(true);
-        });
-        row.appendChild(unequip);
-        // Right-click the slot (classic-MMO muscle memory; matches the bags grid).
-        row.addEventListener('contextmenu', (ev) => {
-          ev.preventDefault();
-          doUnequip();
-        });
-        // Drag the piece out onto the bags window to unequip it.
-        row.draggable = true;
-        row.addEventListener('dragstart', (e) => {
-          this.dragUnequipSlot = slot.key;
-          e.dataTransfer!.effectAllowed = 'move';
-          this.hideTooltip();
-          // Open the bags window if it's closed so there's a visible drop target —
-          // otherwise the drag silently snaps back with no feedback.
-          const bags = $('#bags');
-          if (bags.style.display !== 'block') {
-            bags.style.display = 'block';
-            this.renderBags();
-          }
-        });
-        row.addEventListener('dragend', () => {
-          this.dragUnequipSlot = null;
-          $('#bags').classList.remove('drop-target');
-        });
-      } else {
-        // Empty slot: still swallow the native browser menu so right-click feels
-        // consistent across the paperdoll (an empty slot has nothing to unequip).
-        row.addEventListener('contextmenu', (ev) => ev.preventDefault());
-      }
-      return row;
-    };
-    for (const slot of leftSlots) leftCol.appendChild(buildSlotRow(slot));
-    for (const slot of rightSlots) rightCol.appendChild(buildSlotRow(slot));
-    for (const cell of el.querySelectorAll<HTMLElement>('.char-stats [data-stat]')) {
-      const stat = cell.dataset.stat as StatId;
-      // Resolve the model lazily, on show, so the breakdown reflects the player's
-      // current stats (gear/buffs/talents) at the moment they hover, not at render.
-      this.attachTooltip(cell, () => statTooltipHtml(this.statModel(stat), STAT_VIEW_DEPS));
-    }
-    this.renderCharPreview();
-    this.renderCharSkinPicker();
-    el.querySelector('[data-close]')?.addEventListener('click', () => {
-      el.style.display = 'none';
-      this.hideTooltip();
-    });
+    this.charWindow.toggle();
   }
 
   private renderCharPreview(): void {
