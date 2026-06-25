@@ -57,22 +57,16 @@ import {
   arenaOrigin,
   CAMPS,
   CLASSES,
-  COMPANION_UPGRADE_COSTS,
   DEEPFEN_SHALLOWS_LAKE,
-  DELVE_AFFIXES,
   DELVE_COMPANIONS,
   DELVE_LIST,
-  DELVE_MODULES,
-  DELVE_SHOPS,
   DELVE_SLOT_COUNT,
   DELVES,
   DUNGEON_LIST,
   DUNGEON_X_THRESHOLD,
   DUNGEONS,
   delveAt,
-  delveModuleZOffset,
   delveOrigin,
-  delveShopGateUnlocked,
   dungeonAt,
   FISHING_RARE_ID,
   FISHING_TABLES,
@@ -80,7 +74,6 @@ import {
   GROUP_XP_BONUS,
   INSTANCE_SLOT_COUNT,
   ITEMS,
-  isArenaPos,
   isDelvePos,
   MOBS,
   NPCS,
@@ -93,17 +86,10 @@ import {
   zoneAt,
 } from './data';
 import {
-  DELVE_MODULE_LAYOUTS,
-  type DelveModuleId,
-  delveModuleEntry as delveLayoutEntry,
-} from './delve_layout';
-import {
   ARENA_SPAWN_A,
   ARENA_SPAWN_B,
   ARENA_SPAWNS_A_2v2,
   ARENA_SPAWNS_B_2v2,
-  DUNGEON_WALL_HW,
-  DUNGEON_WALL_X,
 } from './dungeon_layout';
 import {
   createGroundObject,
