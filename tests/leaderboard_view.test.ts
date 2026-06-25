@@ -14,6 +14,7 @@
 // leaderboard_window.ts WCAG-markup source guard.
 
 import { describe, expect, it } from 'vitest';
+import { virtualLevel } from '../src/sim/types';
 import {
   buildLeaderboardView,
   type LeaderboardInput,
@@ -124,6 +125,21 @@ describe('buildLeaderboardView: row derivation', () => {
     );
     expect(v.rows[0].prestigeRank).toBe(3);
   });
+
+  it('passes the level, virtual level, and lifetime xp through to the row', () => {
+    // entry() carries distinct level (60) / virtualLevel (12) / lifetimeXp values,
+    // so a swapped passthrough (e.g. level into virtualLevel) is caught here.
+    const v = ranked(
+      buildLeaderboardView({
+        kind: 'page',
+        page: page('sim', [entry({ level: 60, virtualLevel: 12, lifetimeXp: 5_000_000 })]),
+        viewer: VIEWER,
+      }),
+    );
+    expect(v.rows[0].level).toBe(60);
+    expect(v.rows[0].virtualLevel).toBe(12);
+    expect(v.rows[0].lifetimeXp).toBe(5_000_000);
+  });
 });
 
 describe('buildLeaderboardView: off-page "your standing" sticky row', () => {
@@ -138,11 +154,12 @@ describe('buildLeaderboardView: off-page "your standing" sticky row', () => {
     expect(v.standing).toEqual({
       name: 'Me',
       level: 60,
-      // virtualLevel is derived from the viewer's lifetime XP, not passed in.
-      virtualLevel: v.standing?.virtualLevel,
+      // virtualLevel is DERIVED from the viewer's lifetime XP (not passed in), so
+      // assert the real derived value: this is the one field the core computes, and
+      // it is distinct from the viewer's level (60), so a level/vlevel swap is caught.
+      virtualLevel: virtualLevel(999_999),
       lifetimeXp: 999_999,
     });
-    expect(typeof v.standing?.virtualLevel).toBe('number');
   });
 
   it('omits the sticky standing when the viewer is on the visible page', () => {

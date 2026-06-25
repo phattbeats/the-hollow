@@ -49,6 +49,15 @@ describe('leaderboard_window: WCAG chrome (live region + focusable controls + fo
     expect(code).toContain('this.deps.restoreFocus(this.openerFocus)');
   });
 
+  it('captures the opener BEFORE closing other windows (order is load-bearing)', () => {
+    // A sibling window's own focus-return on close must not clobber the opener we
+    // restore to, so the capture has to happen before closeOthers(). Pin the order,
+    // not just the presence (both calls appear exactly once, in toggle()).
+    expect(code.indexOf('this.openerFocus = this.deps.captureFocus()')).toBeLessThan(
+      code.indexOf('this.deps.closeOthers()'),
+    );
+  });
+
   it('escapes the server-supplied player names before interpolating them into HTML', () => {
     // Names are server-validated, but the src/ui invariant routes all player text
     // through esc(); match the sibling questlog painter (no raw-name innerHTML).
@@ -56,6 +65,28 @@ describe('leaderboard_window: WCAG chrome (live region + focusable controls + fo
     expect(code).toContain('${esc(standing.name)}');
     expect(code).not.toMatch(/\$\{r\.name\}/);
     expect(code).not.toMatch(/\$\{standing\.name\}/);
+  });
+});
+
+describe('leaderboard_window: async + page wiring contracts (the painter half)', () => {
+  it('maps a rejected / offline fetch to the error input (catch sets the result null)', () => {
+    // The view test proves buildLeaderboardView({kind:'error'}) -> error; this pins
+    // the painter wiring (the sanctioned new error state) that turns a rejected
+    // Promise into that input, so removing the catch cannot silently regress it.
+    expect(code).toMatch(/catch\s*\{[\s\S]{0,60}result = null/);
+    expect(code).toContain('result === null');
+  });
+
+  it('guards against painting into a window closed during the in-flight fetch', () => {
+    // close() hides the window without clearing innerHTML, so a late-resolving fetch
+    // must bail rather than repaint a hidden panel.
+    expect(code).toContain("if (el.style.display !== 'block') return;");
+  });
+
+  it('mirrors the server-clamped page back into the pager state', () => {
+    // The core passes page.page through (view test); the painter must write it back
+    // so the page index never drifts past the real last page.
+    expect(code).toContain('this.page = view.page');
   });
 });
 

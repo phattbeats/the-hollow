@@ -46,6 +46,15 @@ describe('spellbook_window: WCAG chrome (rows + toggles + focus-return)', () => 
     expect(code).toContain('this.openerFocus = this.deps.captureFocus()');
     expect(code).toContain('this.deps.restoreFocus(this.openerFocus)');
   });
+
+  it('captures the opener BEFORE closing other windows (order is load-bearing)', () => {
+    // A sibling window's own focus-return on close must not clobber the opener we
+    // restore to, so the capture has to happen before closeOthers(). Both calls
+    // appear exactly once (in toggle()), so the order check is unambiguous.
+    expect(code.indexOf('this.openerFocus = this.deps.captureFocus()')).toBeLessThan(
+      code.indexOf('this.deps.closeOthers()'),
+    );
+  });
 });
 
 describe('spellbook_window: no magic values (decision 12, DOM painter)', () => {
@@ -68,5 +77,14 @@ describe('spellbook_window: hud.update() refresh call site', () => {
     expect(hud).toContain(
       'if (this.spellbookWindow.isOpen) this.spellbookWindow.refreshHotbarControls();',
     );
+  });
+
+  it('keeps the in-place refresh updating the aria-pressed + disabled state per toggle', () => {
+    // The call-site guard above proves the refresh fires; this pins what it WRITES.
+    // refreshHotbarControls keys off `btn` (vs appendRow's `toggle`), so the row
+    // guard does not cover this path: without these, the open spellbook's toggles
+    // would stop tracking the bar (the whole reason this path is not-cold).
+    expect(code).toContain("btn.setAttribute('aria-pressed'");
+    expect(code).toContain('btn.disabled = !onBar && !hasFree');
   });
 });
