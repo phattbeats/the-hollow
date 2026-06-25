@@ -1122,13 +1122,20 @@
   #leaderboard-window {
     width: 480px;
   }
+  /* Title subtitle ("Lifetime XP, realm"): the muted-gold token + 11px the painter
+     used to set with an inline style (decision 12 keeps the literals out of TS). */
+  .lb-subtitle {
+    color: var(--color-text-muted);
+    font-size: 11px;
+  }
   .lb-body {
     margin-top: 8px;
     max-height: 56vh;
     overflow-y: auto;
   }
   .lb-loading,
-  .lb-empty {
+  .lb-empty,
+  .lb-error {
     font-size: 12px;
     color: #b9ac82;
     padding: 10px 4px;

@@ -59,7 +59,6 @@ import {
   zoneAt,
 } from '../sim/data';
 import { armorTypeForItem, weaponArchetypeForItem } from '../sim/equipment_rules';
-import { LEADERBOARD_PAGE_SIZE } from '../sim/leaderboard_page';
 import type { Ante, PickAction } from '../sim/lockpick';
 import { PICK_ACTIONS } from '../sim/lockpick';
 import type { ResolvedAbility } from '../sim/sim';
@@ -95,8 +94,6 @@ import {
   type DelveRunInfo,
   type IWorld,
   isOverheadEmoteId,
-  type LeaderboardEntry,
-  type LeaderboardPage,
   OVERHEAD_EMOTES,
   type OverheadEmoteId,
 } from '../world_api';
@@ -175,7 +172,10 @@ import { type MapRegion, mapCanvasHeight, paintTerrainRows } from './map_terrain
 import { MapWindowPainter } from './map_window_painter';
 import { MAP_MAX_ZOOM, mapWindowMode } from './map_window_view';
 import { ArenaWindow } from './arena_window';
+import { LeaderboardWindow } from './leaderboard_window';
 import { MarketWindow } from './market_window';
+import { QuestLogWindow } from './questlog_window';
+import { SpellbookWindow } from './spellbook_window';
 import { Meters } from './meters';
 import {
   clampMinimapZoom,
@@ -725,11 +725,9 @@ export class Hud {
   });
   private openGossipNpcId: number | null = null;
   private openQuestDetailId: string | null = null;
-  private selectedQuestLogId: string | null = null;
   private pendingChatLinks = new Map<string, string>(); // display "[Name]" -> questId
   private questDialogReturnFocus: HTMLElement | null = null;
   private questDialogOpenedAtMs = 0;
-  private questLogReturnFocus: HTMLElement | null = null;
   private lastPortraitTarget = -999;
   // swing timer: the period is captured from the reset edge (swingTimer jumping
   // up), so the bar tracks real swing speed including haste / ranged weapons.
@@ -748,7 +746,6 @@ export class Hud {
   private fiestaOfferKey = ''; // identity of the currently-shown augment offer
   private fiestaActiveSeen = false; // were we in a fiesta bout last frame
   private fiestaWasDown = false; // were we benched last frame (for the revive cue)
-  private leaderboardPage = 0;
   private lastCombatEventAt = 0;
   // mob ids that have already vocalized their aggro alert (so the first strike
   // roars and subsequent strikes use the attack vocalization). Cleared on death
@@ -1439,6 +1436,16 @@ export class Hud {
         // returns to the opener (WCAG), consistent with the toggle/X close path.
         this.talentsWindow.close();
         break;
+      case 'spellbook':
+        // Route through the painter so focus returns to the opener (WCAG 2.2 AA).
+        this.spellbookWindow.close();
+        break;
+      case 'quest-log-window':
+        this.questlogWindow.close();
+        break;
+      case 'leaderboard-window':
+        this.leaderboardWindow.close();
+        break;
       case 'emote-editor':
         this.closeEmoteEditor();
         break;
@@ -1878,7 +1885,7 @@ export class Hud {
   // existing "You are not in a party." error from the /p path.
   maybeHandleQuestShareCommand(raw: string): boolean {
     if (!/^\/share(?:\s|$)/i.test(raw.trim())) return false;
-    const id = this.selectedQuestLogId;
+    const id = this.questlogWindow.selectedQuestId;
     if (!id || !this.sim.questLog.has(id)) {
       this.showError(t('hudChrome.questShare.noQuestSelected'));
       return true;
@@ -2369,6 +2376,62 @@ export class Hud {
       localStorage.setItem('chatClock', clock);
     },
   });
+  // Leaderboard window painter (leaderboard_view.ts async-free core + leaderboard_
+  // window.ts painter). It owns the page index + focus opener and the packet's one
+  // consumed-new signature: it awaits the paged leaderboard() and renders the page
+  // (or the loading / empty / error state). All closures are lazy.
+  private readonly leaderboardWindow = new LeaderboardWindow({
+    root: () => $('#leaderboard-window'),
+    world: () => this.sim,
+    closeOthers: () => this.closeOtherWindows('#leaderboard-window'),
+    captureFocus: () => this.currentFocusableElement(),
+    restoreFocus: (target) => this.restoreFocus(target),
+  });
+  // Spellbook window painter (spellbook_view.ts core + spellbook_window.ts painter).
+  // The window renders ability rows (not item rows), so it composes no presentation
+  // bag; it reads the class kit + bar state from the world and routes the hotbar /
+  // drag / tooltip seams through these lazy closures. refreshHotbarControls keeps
+  // the +/- toggles in sync from hud.update() while the window is open.
+  private readonly spellbookWindow = new SpellbookWindow({
+    root: () => $('#spellbook'),
+    world: () => this.sim,
+    closeOthers: () => this.closeOtherWindows('#spellbook'),
+    captureFocus: () => this.currentFocusableElement(),
+    restoreFocus: (target) => this.restoreFocus(target),
+    hideTooltip: () => this.hideTooltip(),
+    attachTooltip: (el, html) => this.attachTooltip(el, html),
+    abilitySummary: (known) => describeAbilitySummary(known, this.sim.player.resourceType),
+    abilityTooltip: (known) => this.abilityTooltip(known),
+    barAbilityIds: () =>
+      this.hotbarActions.flatMap((a) => (a && a.type === 'ability' ? [a.id] : [])),
+    hasFreeSlot: () => this.firstEmptyHotbarIndex() !== -1,
+    addToBar: (id) => this.addAbilityToHotbar(id),
+    removeFromBar: (id) => this.removeAbilityFromHotbar(id),
+    hasFormBars: () => this.classHasFormBars(),
+    resetFormBar: () => this.resetActiveFormBarToDefault(),
+    setDragAction: (action) => {
+      this.dragAction = action ? { action, sourceIndex: null } : null;
+    },
+    clearActionDropTargets: () => this.clearActionDropTargets(),
+  });
+  // Quest-log window painter (questlog_view.ts core + questlog_window.ts painter).
+  // It composes the presentation bag (icon/money/tooltip) for the reward row and
+  // owns the selected quest id (Hud's quest-share command reads it back); the
+  // abandon / chat-link / confirm seams route through these lazy closures.
+  private readonly questlogWindow = new QuestLogWindow({
+    ...this.presentationBag,
+    root: () => $('#quest-log-window'),
+    world: () => this.sim,
+    closeOthers: () => this.closeOtherWindows('#quest-log-window'),
+    captureFocus: () => this.currentFocusableElement(),
+    restoreFocus: (target) => this.restoreFocus(target),
+    hideTooltip: () => this.hideTooltip(),
+    focusFirstInteractive: (root, preferredSelector) =>
+      this.focusFirstInteractive(root, preferredSelector),
+    confirmDialog: (title, body, okText, cancelText, onOk) =>
+      this.confirmDialog(title, body, okText, cancelText, onOk),
+    insertQuestChatLink: (questId) => this.insertQuestChatLink(questId),
+  });
 
   private drawPlayerFramePortrait(): void {
     this.portraits.drawClass(
@@ -2643,8 +2706,7 @@ export class Hud {
     this.refreshKeybindLabels();
     this.updateQuestTracker();
     this.updateDelveTracker();
-    const log = $('#quest-log-window');
-    if (log.style.display === 'block') this.renderQuestLog();
+    if (this.questlogWindow.isOpen) this.questlogWindow.render();
     if ($('#bags').style.display === 'block') this.renderBags();
     if (this.openVendorNpcId !== null && $('#vendor-window').style.display === 'block')
       this.renderVendor();
@@ -2904,20 +2966,6 @@ export class Hud {
     return true;
   }
 
-  private refreshSpellbookHotbarControls(): void {
-    document
-      .querySelectorAll<HTMLButtonElement>('#spellbook .spell-hotbar-toggle')
-      .forEach((btn) => {
-        const id = btn.dataset.abilityId;
-        if (!id) return;
-        const onBar = this.hotbarIndexForAbility(id) !== -1;
-        btn.textContent = onBar ? '-' : '+';
-        btn.classList.toggle('remove', onBar);
-        btn.setAttribute('aria-pressed', onBar ? 'true' : 'false');
-        btn.disabled = !onBar && this.firstEmptyHotbarIndex() === -1;
-      });
-  }
-
   // Rebuild the active bar from its default kit (form bars get their form kit;
   // the caster/stealth bar gets the form-filtered known abilities). Item
   // shortcuts and manual arrangement are intentionally discarded — it's a reset.
@@ -2931,7 +2979,7 @@ export class Hud {
     this.knownAbilityIdsAtLastSlotSync = new Set(this.sim.known.map((k) => k.def.id));
     this.markFormBarSeeded();
     this.saveSlotMap();
-    this.refreshSpellbookHotbarControls();
+    this.spellbookWindow.refreshHotbarControls();
   }
 
   private formToggleAbilityId(): string | null {
@@ -3868,7 +3916,7 @@ export class Hud {
       'many-spells',
       this.hotbarActions.filter((action) => action !== null).length > 10,
     );
-    if ($('#spellbook').style.display === 'block') this.refreshSpellbookHotbarControls();
+    if (this.spellbookWindow.isOpen) this.spellbookWindow.refreshHotbarControls();
     for (let i = 0; i < this.abilityButtons.length; i++) {
       const ab = this.abilityButtons[i];
       const slotLabel = formatAbilityNumber(i + 1);
@@ -9025,217 +9073,22 @@ export class Hud {
     });
   }
 
+  // The leaderboard window is the packet's one async/paged window; it lives in
+  // LeaderboardWindow (leaderboard_view.ts core + leaderboard_window.ts painter),
+  // which consumes the paged leaderboard() and owns the page index + focus.
   toggleLeaderboard(): void {
-    const el = $('#leaderboard-window');
-    if (el.style.display === 'block') {
-      el.style.display = 'none';
-      this.hideTooltip();
-      return;
-    }
-    this.closeOtherWindows('#leaderboard-window');
-    this.leaderboardPage = 0;
-    el.style.display = 'block';
-    void this.renderLeaderboard();
-  }
-
-  async renderLeaderboard(): Promise<void> {
-    const el = $('#leaderboard-window');
-    const myName = this.sim.player.name;
-    el.innerHTML =
-      `<div class="panel-title"><span>${t('game.leaderboard.title')} <span style="color:#998d6a;font-size:11px">${t('game.leaderboard.subtitle')}${this.sim.realm ? ` &middot; ${this.sim.realm}` : ''}</span></span><span class="x-btn" data-close>${svgIcon('close')}</span></div>` +
-      `<div class="lb-body"><div class="lb-loading">${t('game.leaderboard.loading')}</div></div>`;
-    el.querySelector('[data-close]')?.addEventListener('click', () => {
-      el.style.display = 'none';
-    });
-
-    let result: LeaderboardPage | null = null;
-    try {
-      result = await this.sim.leaderboard(this.leaderboardPage, LEADERBOARD_PAGE_SIZE);
-    } catch {
-      result = null;
-    }
-    // panel may have been closed while the fetch was in flight
-    if (el.style.display !== 'block') return;
-    const body = el.querySelector('.lb-body')!;
-    const rows = result?.leaders ?? [];
-    if (rows.length === 0) {
-      body.innerHTML = `<div class="lb-empty">${t('game.leaderboard.empty')}</div>`;
-      return;
-    }
-    // The server clamps the requested page; mirror its answer so the pager state
-    // never drifts past the real last page.
-    this.leaderboardPage = result?.page ?? 0;
-    const header = `<div class="lb-row lb-head"><span class="lb-rank">${t('game.leaderboard.rank')}</span><span class="lb-name">${t('game.leaderboard.name')}</span><span class="lb-lvl">${t('game.leaderboard.level')}</span><span class="lb-vlvl">${t('game.leaderboard.vlevel')}</span><span class="lb-xp">${t('game.leaderboard.lifetimeXp')}</span></div>`;
-    const rowHtml = (r: LeaderboardEntry, mine: boolean): string => {
-      const cls = CLASSES[r.cls];
-      const star =
-        r.prestigeRank > 0
-          ? `<span class="lb-prestige" title="${t('game.prestige.rank')} ${r.prestigeRank}">★${r.prestigeRank}</span> `
-          : '';
-      const title = cls ? ` title="${esc(classDisplayName(r.cls))}"` : '';
-      return (
-        `<div class="lb-row${mine ? ' lb-mine' : ''}"><span class="lb-rank">${r.rank}</span>` +
-        `<span class="lb-name"${title}>${star}${r.name}${mine ? ` <span class="lb-you">(${t('game.leaderboard.you')})</span>` : ''}</span>` +
-        `<span class="lb-lvl">${r.level}</span><span class="lb-vlvl">${r.virtualLevel}</span><span class="lb-xp">${formatXp(r.lifetimeXp)}</span></div>`
-      );
-    };
-    const mineIndex = rows.findIndex((r) => r.name === myName);
-    let html = header + rows.map((r) => rowHtml(r, r.name === myName)).join('');
-    // sticky "your standing" row when the viewer is outside the visible page
-    if (mineIndex === -1) {
-      html += `<div class="lb-sticky"><div class="lb-row lb-mine"><span class="lb-rank">—</span><span class="lb-name">${myName} <span class="lb-you">(${t('game.leaderboard.you')})</span></span><span class="lb-lvl">${this.sim.player.level}</span><span class="lb-vlvl">${virtualLevel(this.sim.lifetimeXp)}</span><span class="lb-xp">${formatXp(this.sim.lifetimeXp)}</span></div></div>`;
-    }
-    html += this.leaderboardPagerHtml(result!);
-    body.innerHTML = html;
-    body.querySelectorAll<HTMLButtonElement>('[data-leaderboard-page]').forEach((button) => {
-      button.addEventListener('click', () => {
-        if (button.disabled) return;
-        this.leaderboardPage += button.dataset.leaderboardPage === 'next' ? 1 : -1;
-        if (this.leaderboardPage < 0) this.leaderboardPage = 0;
-        void this.renderLeaderboard();
-      });
-    });
-  }
-
-  // Prev/Next pager for the leaderboard, mirroring the World Market browse pager.
-  // Reuses the Market pager's generic, fully-localized page strings ("Page X of
-  // Y", "Prev"/"Next"); the visible button text is the accessible name. Hidden
-  // when the whole board fits on one page.
-  private leaderboardPagerHtml(page: LeaderboardPage): string {
-    if (page.pageCount <= 1) return '';
-    const current = formatNumber(page.page + 1, { maximumFractionDigits: 0 });
-    const total = formatNumber(page.pageCount, { maximumFractionDigits: 0 });
-    const status = t('itemUi.market.pageStatus', { current, total });
-    return (
-      `<div class="lb-pager">` +
-      `<button type="button" class="lb-page-btn" data-leaderboard-page="prev"${page.page <= 0 ? ' disabled' : ''}>${esc(t('itemUi.market.pagePrev'))}</button>` +
-      `<span class="lb-page-status">${esc(status)}</span>` +
-      `<button type="button" class="lb-page-btn" data-leaderboard-page="next"${page.page >= page.pageCount - 1 ? ' disabled' : ''}>${esc(t('itemUi.market.pageNext'))}</button>` +
-      `</div>`
-    );
+    this.leaderboardWindow.toggle();
   }
 
   // -------------------------------------------------------------------------
   // Spellbook
   // -------------------------------------------------------------------------
 
+  // The spellbook window lives in SpellbookWindow (spellbook_view.ts core +
+  // spellbook_window.ts painter), which renders the class kit + bar toggles and
+  // refreshes the +/- controls from hud.update() while open.
   toggleSpellbook(): void {
-    const el = $('#spellbook');
-    if (el.style.display === 'block') {
-      el.style.display = 'none';
-      this.hideTooltip();
-      return;
-    }
-    this.closeOtherWindows('#spellbook');
-    this.renderSpellbook();
-    el.style.display = 'block';
-  }
-
-  renderSpellbook(): void {
-    const el = $('#spellbook');
-    const sim = this.sim;
-    const cls = CLASSES[sim.cfg.playerClass];
-    const className = classDisplayName(cls.id);
-    el.setAttribute('aria-label', t('abilityUi.spellbook.title'));
-    // "Reset bar" only applies to classes with per-form bars (druid); other
-    // classes have a single bar, so the button is omitted for them.
-    const resetBtnHtml = this.classHasFormBars()
-      ? `<button type="button" class="x-btn spellbook-reset" data-reset-bar aria-label="${esc(t('abilityUi.spellbook.resetBarAria'))}">${esc(t('abilityUi.spellbook.resetBar'))}</button>`
-      : '';
-    el.innerHTML = `<div class="panel-title"><span>${esc(t('abilityUi.spellbook.title'))} <span class="spellbook-class">${esc(t('abilityUi.spellbook.classSubtitle', { className }))}</span></span><div class="panel-title-actions">${resetBtnHtml}<button type="button" class="x-btn" data-close aria-label="${esc(t('abilityUi.spellbook.close'))}">${svgIcon('close')}</button></div></div>`;
-    const list = document.createElement('div');
-    list.className = 'spell-list';
-    list.setAttribute('role', 'list');
-    el.appendChild(list);
-    let rendered = 0;
-    for (const abilityId of cls.abilities) {
-      const def = ABILITIES[abilityId];
-      const known = sim.known.find((k) => k.def.id === abilityId) ?? null;
-      const row = document.createElement('div');
-      row.className = `spell-row${known ? '' : ' locked'}`;
-      row.tabIndex = 0;
-      row.setAttribute('role', 'listitem');
-      const locked = !known;
-      const summary = known ? describeAbilitySummary(known, sim.player.resourceType) : '';
-      const name = abilityDisplayName(def);
-      const learnLevel = formatAbilityNumber(def.learnLevel);
-      row.setAttribute(
-        'aria-label',
-        known
-          ? t('abilityUi.spellbook.knownAbilityAria', {
-              name,
-              rank: formatAbilityNumber(known.rank),
-              summary,
-            })
-          : t('abilityUi.spellbook.unlearnedAbilityAria', { name, level: learnLevel }),
-      );
-      row.innerHTML = `<div class="spell-icon" style="background-image:url(${iconDataUrl('ability', abilityId)})"></div>
-        <div class="spell-text"><div class="spell-name">${esc(name)}${known && known.rank > 1 ? ` <span class="spell-rank">${esc(t('abilityUi.tooltip.rank', { rank: formatAbilityNumber(known.rank) }))}</span>` : ''}</div>
-        <div class="spell-sub">${locked ? esc(t('abilityUi.spellbook.trainableAtLevel', { level: learnLevel })) : esc(summary)}</div></div>`;
-      if (known) {
-        const onBar = this.hotbarIndexForAbility(known.def.id) !== -1;
-        const toggle = document.createElement('button');
-        toggle.type = 'button';
-        toggle.className = `spell-hotbar-toggle${onBar ? ' remove' : ''}`;
-        toggle.dataset.abilityId = known.def.id;
-        toggle.textContent = onBar ? '-' : '+';
-        toggle.setAttribute('aria-label', `${name} ${onBar ? '-' : '+'}`);
-        toggle.setAttribute('aria-pressed', onBar ? 'true' : 'false');
-        toggle.disabled = !onBar && this.firstEmptyHotbarIndex() === -1;
-        toggle.addEventListener('pointerdown', (ev) => ev.stopPropagation());
-        toggle.addEventListener('click', (ev) => {
-          ev.preventDefault();
-          ev.stopPropagation();
-          const changed =
-            this.hotbarIndexForAbility(known.def.id) !== -1
-              ? this.removeAbilityFromHotbar(known.def.id)
-              : this.addAbilityToHotbar(known.def.id);
-          if (!changed) return;
-          audio.click();
-          this.refreshSpellbookHotbarControls();
-        });
-        row.appendChild(toggle);
-        row.draggable = true;
-        row.addEventListener('dragstart', (e) => {
-          const action = { type: 'ability' as const, id: known.def.id };
-          this.dragAction = { action, sourceIndex: null };
-          this.writeDraggedAction(e.dataTransfer, action);
-          e.dataTransfer!.effectAllowed = 'move';
-          this.hideTooltip();
-        });
-        row.addEventListener('dragend', () => {
-          this.dragAction = null;
-          this.clearActionDropTargets();
-        });
-        this.attachTooltip(row, () => this.abilityTooltip(known));
-      } else {
-        this.attachTooltip(
-          row,
-          () =>
-            `<div class="tt-title">${esc(name)}</div><div class="tt-sub">${esc(t('abilityUi.spellbook.learnAtLevel', { level: learnLevel }))}</div>`,
-        );
-      }
-      list.appendChild(row);
-      rendered++;
-    }
-    if (rendered === 0) {
-      const empty = document.createElement('div');
-      empty.className = 'spell-sub';
-      empty.textContent = t('abilityUi.spellbook.empty');
-      list.appendChild(empty);
-    }
-    el.querySelector('[data-close]')?.addEventListener('click', () => {
-      el.style.display = 'none';
-      this.hideTooltip();
-    });
-    const resetBtn = el.querySelector('[data-reset-bar]');
-    resetBtn?.addEventListener('pointerdown', (ev) => ev.stopPropagation());
-    resetBtn?.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      ev.stopPropagation();
-      this.resetActiveFormBarToDefault();
-      audio.click();
-    });
+    this.spellbookWindow.toggle();
   }
 
   // -------------------------------------------------------------------------
@@ -9270,130 +9123,11 @@ export class Hud {
   // Quest log window
   // -------------------------------------------------------------------------
 
+  // The quest-log window lives in QuestLogWindow (questlog_view.ts core +
+  // questlog_window.ts painter), which owns the selected quest id (read back by the
+  // quest-share command via selectedQuestId) and the abandon / chat-link flows.
   toggleQuestLog(): void {
-    const el = $('#quest-log-window');
-    if (el.style.display === 'block') {
-      this.closeQuestLog();
-      return;
-    }
-    this.questLogReturnFocus = this.currentFocusableElement();
-    this.closeOtherWindows('#quest-log-window');
-    this.renderQuestLog();
-    el.style.display = 'block';
-  }
-
-  private closeQuestLog(restoreFocus = true): void {
-    $('#quest-log-window').style.display = 'none';
-    this.hideTooltip();
-    const target = this.questLogReturnFocus;
-    this.questLogReturnFocus = null;
-    if (restoreFocus) this.restoreFocus(target);
-  }
-
-  renderQuestLog(): void {
-    const el = $('#quest-log-window');
-    const sim = this.sim;
-    el.setAttribute('role', 'dialog');
-    el.setAttribute('aria-modal', 'false');
-    el.setAttribute('aria-labelledby', 'quest-log-title');
-    el.setAttribute('tabindex', '-1');
-    el.innerHTML = `<div class="panel-title"><span id="quest-log-title">${esc(t('questUi.log.title'))} <span class="quest-muted">${esc(
-      t('questUi.log.summary', {
-        active: this.questNumber(sim.questLog.size),
-        completed: this.questNumber(sim.questsDone.size),
-      }),
-    )}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.log.close'))}">${svgIcon('close')}</button></div>`;
-    const cols = document.createElement('div');
-    cols.className = 'ql-cols';
-    const list = document.createElement('div');
-    list.className = 'ql-list';
-    const detail = document.createElement('div');
-    detail.className = 'ql-detail';
-    cols.append(list, detail);
-    el.appendChild(cols);
-
-    const quests = [...sim.questLog.values()];
-    if (quests.length === 0) {
-      list.innerHTML = `<div class="ql-empty">${esc(t('questUi.log.emptyTitle'))}</div>`;
-      detail.innerHTML = `<div class="ql-detail-body"><div class="qd-text">${esc(t('questUi.log.emptyHint'))}</div></div>`;
-    }
-    if (!this.selectedQuestLogId || !sim.questLog.has(this.selectedQuestLogId)) {
-      this.selectedQuestLogId = quests[0]?.questId ?? null;
-    }
-    for (const qp of quests) {
-      const _quest = QUESTS[qp.questId];
-      const item = document.createElement('button');
-      const status =
-        qp.state === 'ready' ? t('questUi.log.readyStatus') : t('questUi.log.activeStatus');
-      const title = questTitle(qp.questId);
-      item.type = 'button';
-      item.className = `ql-item${qp.questId === this.selectedQuestLogId ? ' sel' : ''}`;
-      item.setAttribute('aria-pressed', qp.questId === this.selectedQuestLogId ? 'true' : 'false');
-      item.setAttribute('aria-label', t('questUi.log.selectedQuestAria', { name: title, status }));
-      item.title = t('hudChrome.questShare.linkTitle');
-      item.innerHTML = `${esc(title)}${qp.state === 'ready' ? ` <span class="quest-complete">(${esc(t('questUi.log.readyStatus'))})</span>` : ''}`;
-      item.addEventListener('click', (ev) => {
-        if (ev.shiftKey) {
-          this.insertQuestChatLink(qp.questId);
-          return;
-        }
-        this.selectedQuestLogId = qp.questId;
-        this.renderQuestLog();
-      });
-      list.appendChild(item);
-    }
-    if (this.selectedQuestLogId) {
-      const qp = sim.questLog.get(this.selectedQuestLogId)!;
-      const quest = QUESTS[this.selectedQuestLogId];
-      let html = `<div class="qd-sub ql-detail-title">${esc(questTitle(this.selectedQuestLogId))}${this.questSuggestedPlayersHtml(quest.suggestedPlayers)}</div>`;
-      html += quest.objectives
-        .map(
-          (o, i) =>
-            `<div class="qd-obj${qp.counts[i] >= o.count ? ' done' : ''}">${esc(this.questProgressText(questObjectiveLabel(this.selectedQuestLogId!, i), qp.counts[i], o.count))}</div>`,
-        )
-        .join('');
-      html += `<div class="qd-text ql-detail-text">${esc(questNarrative(this.selectedQuestLogId, 'text', sim.player.name))}</div>`;
-      html += `<div class="qd-sub">${esc(t('questUi.detail.rewards'))}</div><div class="qd-obj">${esc(t('questUi.detail.xpReward', { xp: this.questNumber(quest.xpReward) }))} &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
-      const rewardItem = questRewardItem(quest, sim.cfg.playerClass);
-      if (rewardItem) {
-        const item = ITEMS[rewardItem];
-        html += `<div class="qd-reward-row" data-reward><span class="qd-reward-label">${esc(t('questUi.detail.itemReward'))}</span>${this.itemIcon(item)}<span class="qd-reward-name" style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'}">${esc(itemDisplayName(item))}</span></div>`;
-      }
-      const giver = NPCS[quest.turnInNpcId];
-      html += `<div class="qd-obj quest-return">${esc(t('questUi.log.returnTo', { name: giver ? npcDisplayName(giver.id) : '?' }))}</div>`;
-      const body = document.createElement('div');
-      body.className = 'ql-detail-body';
-      body.innerHTML = html;
-      detail.replaceChildren(body);
-      const rewardRow = body.querySelector('[data-reward]') as HTMLElement | null;
-      if (rewardRow && rewardItem)
-        this.attachTooltip(rewardRow, () => this.itemTooltip(ITEMS[rewardItem]));
-      const actions = document.createElement('div');
-      actions.className = 'ql-detail-actions';
-      const abandon = document.createElement('button');
-      abandon.className = 'btn';
-      abandon.type = 'button';
-      abandon.textContent = t('questUi.log.abandon');
-      abandon.addEventListener('click', () => {
-        const questId = this.selectedQuestLogId;
-        if (!questId) return;
-        this.confirmDialog(
-          t('questUi.log.abandonConfirmTitle'),
-          t('questUi.log.abandonConfirmBody', { name: questTitle(questId) }),
-          t('questUi.log.abandonConfirm'),
-          t('questUi.log.abandonCancel'),
-          () => {
-            sim.abandonQuest(questId);
-            this.selectedQuestLogId = null;
-            this.renderQuestLog();
-          },
-        );
-      });
-      actions.appendChild(abandon);
-      detail.appendChild(actions);
-    }
-    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestLog());
-    this.focusFirstInteractive(el);
+    this.questlogWindow.toggle();
   }
 
   // -------------------------------------------------------------------------
