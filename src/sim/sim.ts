@@ -215,9 +215,6 @@ import {
   type AuraKind,
   angleTo,
   armorReduction,
-  CAST_COMPLETE_EPS,
-  CAST_PUSHBACK_SEC,
-  CHANNEL_PUSHBACK_FRACTION,
   DEMON_HEAL_CAST_ID,
   CONSUME_DURATION,
   CONSUME_TICKS,
@@ -414,7 +411,6 @@ const PVP_FEAR_DR_DURATIONS = [8, 4, 2, 1] as const;
 const SAY_RANGE = 25; // /say carries a short distance; /yell across a camp
 const YELL_RANGE = 100;
 const OVERHEAD_EMOTE_DURATION = 3.2;
-// CAST_COMPLETE_EPS moved to types.ts (shared with entity_roster.ts); imported above.
 
 // Predefined social emotes. Each entry maps a command (and its aliases) to the
 // third-person action text shown to everyone in /say range. `solo` is used with
