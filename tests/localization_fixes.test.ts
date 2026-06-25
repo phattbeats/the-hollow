@@ -765,6 +765,9 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
   // C5 moved the auto-attack driver + the melee/ranged white-hit table out of sim.ts
   // into src/sim/combat/auto_attack.ts, carrying the "Auto Shot"/"Wand" swing labels
   // and the "Invalid attack target." error. Scan it so those literals stay guarded.
+  // G1b moved the cosmetic prestige command out of sim.ts into
+  // src/sim/progression/xp.ts, carrying its "You have prestiged!" gold log emit
+  // (now via ctx.emit). Scan it so that literal stays under the drift guard.
   const simSrc =
     `${fs.readFileSync(path.resolve(process.cwd(), 'src/sim/sim.ts'), 'utf8')}\n${fs.readFileSync(
       path.resolve(process.cwd(), 'src/sim/combat/damage.ts'),
@@ -777,6 +780,9 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
       'utf8',
     )}\n${fs.readFileSync(
       path.resolve(process.cwd(), 'src/sim/combat/auto_attack.ts'),
+      'utf8',
+    )}\n${fs.readFileSync(
+      path.resolve(process.cwd(), 'src/sim/progression/xp.ts'),
       'utf8',
     )}`;
   // Hardened S3: also scan the authoritative server's player-facing emits. The
