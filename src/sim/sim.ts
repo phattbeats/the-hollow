@@ -142,6 +142,7 @@ import {
 import { questFallbackGrants } from './quest_fallback';
 import { sanitizeRemovedZone1Content } from './removed_zone1_content';
 import { Rng } from './rng';
+import { createSimContext, type SimContext, type SimContextHost } from './sim_context';
 import { SpatialGrid } from './spatial';
 import { orderTabTargets, TAB_QUERY_RADIUS } from './tab_target';
 import {
@@ -1083,6 +1084,11 @@ export class Sim {
   time = 0;
   tickCount = 0;
   entities = new Map<number, Entity>();
+  // The shared SimContext seam (S0b): a live view of rng/time/tickCount/entities +
+  // emit, plus the cross-system callbacks the extracted game-system slices route
+  // through instead of reaching into Sim. Built once in the ctor (buildSimContext);
+  // it moves no behavior. See src/sim/sim_context.ts.
+  readonly ctx: SimContext;
   players = new Map<number, PlayerMeta>(); // keyed by entity id
   // spatial indexes for radius queries; re-bucketed at the end of each tick
   // and kept roster-exact on spawn/despawn/teleport
@@ -1154,6 +1160,10 @@ export class Sim {
       lockoutNowMs: cfg.lockoutNowMs ?? (() => Math.floor(this.time * 1000)),
     };
     this.rng = new Rng(cfg.seed);
+    // S0b seam: the shared SimContext every extracted slice routes through. Built
+    // once here (the rng now exists); a live view + bound callbacks, it draws no rng
+    // and mutates nothing, so it cannot perturb the construction draws below.
+    this.ctx = this.buildSimContext();
 
     // NPCs — nudged out of buildings and deep water if their data position is bad
     for (const npcDef of Object.values(NPCS)) {
@@ -1932,6 +1942,60 @@ export class Sim {
     return out;
   }
 
+  // Build the shared SimContext seam (S0b). Pure plumbing: it exposes the live core
+  // primitives (rng/time/tickCount/entities via getters) and binds the still-on-Sim
+  // methods the early extracted slices call. It MOVES NO behavior - every callback
+  // routes straight back to the Sim method of the same name (the callback registry
+  // in 02-WORKING-MEMORY.md). As a later slice owns one of these, it reimplements the
+  // callback in its own module without renaming it here, so consumers never change.
+  private buildSimContext(): SimContext {
+    const sim = this;
+    const host: SimContextHost = {
+      get rng() {
+        return sim.rng;
+      },
+      get time() {
+        return sim.time;
+      },
+      get tickCount() {
+        return sim.tickCount;
+      },
+      get entities() {
+        return sim.entities;
+      },
+      emit: sim.emit.bind(sim),
+      dealDamage: sim.dealDamage.bind(sim),
+      handleDeath: sim.handleDeath.bind(sim),
+      cancelCast: sim.cancelCast.bind(sim),
+      pushbackCast: sim.pushbackCast.bind(sim),
+      refreshMobLeashFromAction: sim.refreshMobLeashFromAction.bind(sim),
+      retargetMob: sim.retargetMob.bind(sim),
+      isArenaCrossTeam: sim.isArenaCrossTeam.bind(sim),
+      arenaTeamOf: sim.arenaTeamOf.bind(sim),
+      endArenaMatch: sim.endArenaMatch.bind(sim),
+      endDuel: sim.endDuel.bind(sim),
+      fiestaTakedown: sim.fiestaTakedown.bind(sim),
+      fiestaDown: sim.fiestaDown.bind(sim),
+      rollLoot: sim.rollLoot.bind(sim),
+      applyHeal: sim.applyHeal.bind(sim),
+      applyAura: sim.applyAura.bind(sim),
+      applyRootAura: sim.applyRootAura.bind(sim),
+      applyKnockback: sim.applyKnockback.bind(sim),
+      diminishedCrowdControlDuration: sim.diminishedCrowdControlDuration.bind(sim),
+      hostilesInRadius: sim.hostilesInRadius.bind(sim),
+      breakStealth: sim.breakStealth.bind(sim),
+      applyTaunt: sim.applyTaunt.bind(sim),
+      summonPet: sim.summonPet.bind(sim),
+      petOf: sim.petOf.bind(sim),
+      completeTame: sim.completeTame.bind(sim),
+      clearEntityMarker: sim.clearEntityMarker.bind(sim),
+      partyOf: sim.partyOf.bind(sim),
+      removeFromParty: sim.removeFromParty.bind(sim),
+      onInventoryChangedForQuests: sim.onInventoryChangedForQuests.bind(sim),
+    };
+    return createSimContext(host);
+  }
+
   private refreshKnownAbilities(meta: PlayerMeta, announce: boolean): void {
     const e = this.entities.get(meta.entityId);
     if (!e) return;
@@ -2250,6 +2314,11 @@ export class Sim {
   // -------------------------------------------------------------------------
 
   tick(): SimEvent[] {
+    // The shared SimContext seam (`this.ctx`, built in the ctor) spans this whole
+    // tick: the head/tail phases and the end-of-tick system block all run on the Sim
+    // that holds it, so a later slice's extracted update() routes through `this.ctx`
+    // without changing the phase order below. S0b threads the seam but moves no
+    // behavior, so every phase here is byte-identical (the parity gate proves it).
     this.time += DT;
     this.tickCount++;
     this.updatePendingMobRespawns();
