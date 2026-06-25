@@ -101,6 +101,7 @@ function makeCtx() {
     fiestaDown: vi.fn(),
     rollLoot: vi.fn(),
     applyHeal: vi.fn(),
+    spellCrit: vi.fn(() => 0.05),
     applyAura: vi.fn(),
     applyRootAura: vi.fn(),
     applyKnockback: vi.fn(() => 0),

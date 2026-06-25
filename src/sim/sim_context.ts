@@ -100,6 +100,9 @@ export interface SimContextCallbacks {
 
   // C2/C3/C4b heal, aura, knockback, and crowd-control surface.
   applyHeal(source: Entity, target: Entity, amount: number, ability: string): void;
+  // Spell crit chance from intellect. STAYS on Sim (shared: the casting/ability
+  // paths read it too); exposed here so the extracted heal core can draw its crit.
+  spellCrit(p: Entity): number;
   applyAura(target: Entity, aura: Aura): void;
   applyRootAura(
     source: Entity,
@@ -249,6 +252,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     fiestaDown: host.fiestaDown,
     rollLoot: host.rollLoot,
     applyHeal: host.applyHeal,
+    spellCrit: host.spellCrit,
     applyAura: host.applyAura,
     applyRootAura: host.applyRootAura,
     applyKnockback: host.applyKnockback,

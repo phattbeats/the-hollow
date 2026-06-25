@@ -12,6 +12,14 @@ import {
   handleDeath as handleDeathImpl,
 } from './combat/damage';
 import {
+  applyHeal as applyHealImpl,
+  consumeHealAbsorb as consumeHealAbsorbImpl,
+  critVulnBonus as critVulnBonusImpl,
+  healingTakenMult as healingTakenMultImpl,
+  healingThreat as healingThreatImpl,
+  hexOutputMult as hexOutputMultImpl,
+} from './combat/heal';
+import {
   AUGMENTS_BY_ID,
   type AugmentDef,
   type AugmentSpecial,
@@ -165,7 +173,6 @@ import { orderTabTargets, TAB_QUERY_RADIUS } from './tab_target';
 import {
   addThreat,
   clearThreat,
-  HEAL_THREAT_FACTOR,
   MELEE_SWITCH_MULT,
   RANGED_SWITCH_MULT,
   stealthDetectionRadius,
@@ -1992,6 +1999,7 @@ export class Sim {
       fiestaDown: sim.fiestaDown.bind(sim),
       rollLoot: sim.rollLoot.bind(sim),
       applyHeal: sim.applyHeal.bind(sim),
+      spellCrit: sim.spellCrit.bind(sim),
       applyAura: sim.applyAura.bind(sim),
       applyRootAura: sim.applyRootAura.bind(sim),
       applyKnockback: sim.applyKnockback.bind(sim),
@@ -3572,105 +3580,35 @@ export class Sim {
     return 0.05 + p.stats.int * 0.0008;
   }
 
-  // Combined incoming-healing multiplier from Mortal Wound debuffs (classic
-  // Mortal Strike): each reduces healing the target receives; multiple stack
-  // multiplicatively. 1 = unaffected, 0 = fully suppressed.
+  // Heal core, heal multipliers, heal-absorb soak, crit-vuln bonus, and the
+  // healing-threat fan-out moved to src/sim/combat/heal.ts (C2). These stay as thin
+  // delegates so the foreign `this.X` callers (aura `hot` tick, regen/potion heal,
+  // the heal ability effect, mob mendAlly, and dealDamage's hex/crit-vuln reads via
+  // the seam) plus the existing `(sim as any).X` unit tests resolve unchanged.
+  // threatEntryMatchesEntity moved too; it had no caller outside healingThreat, so it
+  // is module-private there with no Sim delegate.
   private healingTakenMult(target: Entity): number {
-    let mult = 1;
-    for (const a of target.auras) {
-      if (a.kind === 'mortal_wound') mult *= 1 - a.value;
-    }
-    return mult < 0 ? 0 : mult;
+    return healingTakenMultImpl(this.ctx, target);
   }
 
-  // Weakening Hex: while a `hex` aura rides the source, the damage AND healing it
-  // deals are scaled by (1 - value). Read by dealDamage (outgoing damage) and
-  // applyHeal (outgoing healing) so a hexed player's whole output is throttled.
   private hexOutputMult(source: Entity | null): number {
-    if (!source) return 1;
-    let mult = 1;
-    for (const a of source.auras) {
-      if (a.kind === 'hex') mult *= 1 - a.value;
-    }
-    return mult < 0 ? 0 : mult;
+    return hexOutputMultImpl(this.ctx, source);
   }
 
-  // Consume the victim's Heal-Absorb shields (classic necrotic blight): each such
-  // aura holds a remaining budget of healing it devours. Drains `healed` against
-  // every active shield, decrementing their stored budget and dropping any that
-  // run dry. Returns the healing that survives (>= 0). A no-op when none are set.
   private consumeHealAbsorb(target: Entity, healed: number): number {
-    if (healed <= 0) return healed;
-    let remaining = healed;
-    let depleted = false;
-    for (const a of target.auras) {
-      if (a.kind !== 'heal_absorb' || a.value <= 0) continue;
-      const eaten = Math.min(remaining, a.value);
-      a.value -= eaten;
-      remaining -= eaten;
-      if (a.value <= 0) depleted = true;
-      if (remaining <= 0) break;
-    }
-    if (depleted)
-      target.auras = target.auras.filter((a) => !(a.kind === 'heal_absorb' && a.value <= 0));
-    return remaining;
+    return consumeHealAbsorbImpl(this.ctx, target, healed);
   }
 
-  // "Find Weakness" vulnerability: the largest active critvuln aura adds its
-  // fraction to the damage of CRITICAL hits the target takes (read in dealDamage).
   private critVulnBonus(target: Entity): number {
-    let bonus = 0;
-    for (const a of target.auras) {
-      if (a.kind === 'critvuln' && a.value > bonus) bonus = a.value;
-    }
-    return bonus;
+    return critVulnBonusImpl(this.ctx, target);
   }
 
   private applyHeal(source: Entity, target: Entity, amount: number, ability: string): void {
-    if (target.dead) return;
-    const crit = this.rng.chance(this.spellCrit(source));
-    let healed = Math.round(
-      amount * (crit ? 1.5 : 1) * this.hexOutputMult(source) * this.healingTakenMult(target),
-    );
-    healed = this.consumeHealAbsorb(target, healed);
-    healed = Math.min(healed, target.maxHp - target.hp);
-    target.hp += healed;
-    this.emit({
-      type: 'heal2',
-      sourceId: source.id,
-      targetId: target.id,
-      amount: healed,
-      crit,
-      ability,
-    });
-    this.healingThreat(source, target, healed);
+    applyHealImpl(this.ctx, source, target, amount, ability);
   }
 
-  // Classic healing threat: 0.5 per point of EFFECTIVE healing (overheal is
-  // free), split evenly among every mob already fighting the healed target.
-  // Party membership does not change threat; it only affects social systems.
   private healingThreat(source: Entity, target: Entity, healed: number): void {
-    if (source.kind !== 'player' || healed <= 0) return;
-    const total = healed * HEAL_THREAT_FACTOR * this.threatMod(source, 'physical');
-    const aware: Entity[] = [];
-    for (const m of this.entities.values()) {
-      if (m.kind !== 'mob' || m.dead || !m.hostile || !m.inCombat || m.threat.size === 0) continue;
-      if (this.threatEntryMatchesEntity(m, target)) aware.push(m);
-    }
-    if (aware.length === 0) return;
-    const per = total / aware.length;
-    for (const m of aware) addThreat(m, source.id, per);
-  }
-
-  /** True when a hate-table entry belongs to the healed entity or its pet. */
-  private threatEntryMatchesEntity(mob: Entity, e: Entity): boolean {
-    if (mob.threat.has(e.id)) return true;
-    if (e.kind !== 'player') return false;
-    for (const id of mob.threat.keys()) {
-      const entry = this.entities.get(id);
-      if (entry?.ownerId === e.id) return true;
-    }
-    return false;
+    healingThreatImpl(this.ctx, source, target, healed);
   }
 
   private applyAbility(p: Entity, meta: PlayerMeta, res: ResolvedAbility): void {
