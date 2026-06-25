@@ -99,6 +99,9 @@ const CALLBACK_KEYS = [
   'isRooted',
   'moveSpeedMult',
   'swingIntervalMult',
+  'hasPendingSocialInvite',
+  'setPlayerLevel',
+  'notice',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -132,6 +135,12 @@ function makeFakeHost() {
     delveRuns: [],
     delvePetStash: new Map(),
     utcDay: '',
+    trades: new Map(),
+    tradeInvites: new Map(),
+    partyInvites: new Map(),
+    duelInvites: new Map(),
+    chatTokens: new Map(),
+    channelSubs: new Map(),
     emit: vi.fn(),
     error: vi.fn(),
     dealDamage: vi.fn(),
@@ -208,6 +217,9 @@ function makeFakeHost() {
     isRooted: vi.fn(() => false),
     moveSpeedMult: vi.fn(() => 1),
     swingIntervalMult: vi.fn(() => 1),
+    hasPendingSocialInvite: vi.fn(() => false),
+    setPlayerLevel: vi.fn(),
+    notice: vi.fn(),
   };
   return { host, rng, entities, clock };
 }

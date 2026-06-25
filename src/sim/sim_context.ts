@@ -19,6 +19,7 @@ import type {
   ArenaMatch,
   DuelState,
   InstanceSlot,
+  JoinableChannel,
   Party,
   PetState,
   PlayerMeta,
@@ -81,6 +82,19 @@ export interface SimContextPrimitives {
   readonly delvePetStash: Map<number, PetState>;
   // Host-supplied UTC day string ('' = unknown) gating the delve daily reset.
   readonly utcDay: string;
+  // G2 social plumbing: the trade + invite + chat state stays Sim-owned (the
+  // leave/removePlayer cleanup, the joint invite-expiry sweep, and the chat()
+  // router all reach it on Sim) and is exposed here as live views. The maps are
+  // mutated in place (set/get/delete), never reassigned, so all are read-only.
+  // `partyInvites`/`duelInvites` belong to the party/duel slices; trade only
+  // sweeps them inside the shared updateTradesAndInvites loop, so they route
+  // through ctx until those slices extract (dedupe vs A1/A2 at integration).
+  readonly trades: Map<number, TradeSession>;
+  readonly tradeInvites: Map<number, { fromPid: number; expires: number }>;
+  readonly partyInvites: Map<number, { fromPid: number; expires: number }>;
+  readonly duelInvites: Map<number, { fromPid: number; expires: number }>;
+  readonly chatTokens: Map<number, { tokens: number; at: number }>;
+  readonly channelSubs: Map<number, Set<JoinableChannel>>;
 }
 
 // Cross-system callbacks. Each signature mirrors the still-on-`Sim` method it
@@ -243,6 +257,15 @@ export interface SimContextCallbacks {
   isRooted(e: Entity): boolean;
   moveSpeedMult(e: Entity): number;
   swingIntervalMult(e: Entity): number;
+
+  // G2 social plumbing. `hasPendingSocialInvite` is the shared party/trade/duel
+  // invite gate (stays on Sim; A2 also registers it on the integrated base ->
+  // dedupe). `setPlayerLevel` backs the /dev level cheat (handleDevChat in
+  // social/chat.ts); `notice` is the positive chat-log line the /join /leave
+  // handler emits. Both stay on Sim.
+  hasPendingSocialInvite(targetPid: number): boolean;
+  setPlayerLevel(level: number, pid?: number): void;
+  notice(pid: number, text: string, color?: string): void;
 }
 
 // The seam consumed by extracted modules.
@@ -317,6 +340,24 @@ export function createSimContext(host: SimContextHost): SimContext {
     },
     get utcDay() {
       return host.utcDay;
+    },
+    get trades() {
+      return host.trades;
+    },
+    get tradeInvites() {
+      return host.tradeInvites;
+    },
+    get partyInvites() {
+      return host.partyInvites;
+    },
+    get duelInvites() {
+      return host.duelInvites;
+    },
+    get chatTokens() {
+      return host.chatTokens;
+    },
+    get channelSubs() {
+      return host.channelSubs;
     },
     emit: host.emit,
     error: host.error,
@@ -394,5 +435,8 @@ export function createSimContext(host: SimContextHost): SimContext {
     isRooted: host.isRooted,
     moveSpeedMult: host.moveSpeedMult,
     swingIntervalMult: host.swingIntervalMult,
+    hasPendingSocialInvite: host.hasPendingSocialInvite,
+    setPlayerLevel: host.setPlayerLevel,
+    notice: host.notice,
   };
 }

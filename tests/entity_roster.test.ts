@@ -90,6 +90,12 @@ function makeCtx() {
     delveRuns: [],
     delvePetStash: new Map(),
     utcDay: '',
+    trades: new Map(),
+    tradeInvites: new Map(),
+    partyInvites: new Map(),
+    duelInvites: new Map(),
+    chatTokens: new Map(),
+    channelSubs: new Map(),
     emit,
     error: vi.fn(),
     clearEntityMarker,
@@ -166,6 +172,9 @@ function makeCtx() {
     isRooted: vi.fn(() => false),
     moveSpeedMult: vi.fn(() => 1),
     swingIntervalMult: vi.fn(() => 1),
+    hasPendingSocialInvite: vi.fn(() => false),
+    setPlayerLevel: vi.fn(),
+    notice: vi.fn(),
   };
   const ctx = createSimContext(host);
   return {

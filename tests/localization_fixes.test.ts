@@ -768,7 +768,13 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     // L2 moved the World Market player emits (list/buy/cancel/collect guards + the
     // "Listed"/"Bought"/"Reclaimed"/"You collect" loot lines + the expiry log) from
     // sim.ts into market.ts; concat it so those moved literals stay drift-guarded.
-    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/market.ts'), 'utf8');
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/market.ts'), 'utf8') +
+    // G2 moved the player-to-player trade toasts (request/expire/window/complete/
+    // cancel/fail) into social/trade.ts and the chat helper emits (dev-chat, the
+    // /join /leave channel notices) into social/chat.ts; concat both so those moved
+    // literals stay drift-guarded. (The big chat() router stays on sim.ts above.)
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/social/trade.ts'), 'utf8') +
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/social/chat.ts'), 'utf8');
   // Hardened S3: also scan the authoritative server's player-facing emits. The
   // server (server/game.ts) is language-agnostic like the sim and re-localized
   // client-side by localizeServerText; previously the guard read only sim.ts, so
