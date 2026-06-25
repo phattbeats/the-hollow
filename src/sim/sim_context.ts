@@ -17,7 +17,7 @@ import type { DelayedEvent, GroundAoE } from './entity_roster';
 import type { Rng } from './rng';
 import type { ArenaMatch, DuelState, Party, PlayerMeta } from './sim';
 import type { SpatialGrid } from './spatial';
-import type { Aura, CrowdControlDrCategory, DelveRun, Entity, SimEvent, Vec3 } from './types';
+import type { Aura, CrowdControlDrCategory, DelveRun, Entity, QuestProgress, SimEvent, Vec3 } from './types';
 
 // Live primitive views onto the running Sim. These are GETTERS, not snapshots:
 // `time`/`tickCount` advance every tick, and the `rng`/`entities` identities are
@@ -113,11 +113,16 @@ export interface SimContextCallbacks {
   petOf(ownerPid: number, includeDead?: boolean): Entity | null;
   completeTame(player: Entity, target: Entity): void;
 
-  // A1/T1 raid markers + party; Q1 quest credit on inventory change.
+  // A1/T1 raid markers + party; Q1 quest-credit trio (kill/collect/turn-in credit,
+  // foreign-called from handleDeath + the inventory hub + the interaction/crypt
+  // dispatchers), reading inventory via countItem (stays on Sim / L2 inventory hub).
   clearEntityMarker(entityId: number): void;
   partyOf(pid: number): Party | null;
   removeFromParty(pid: number, verb: string): void;
+  onMobKilledForQuests(mob: Entity, meta: PlayerMeta): void;
   onInventoryChangedForQuests(meta: PlayerMeta): void;
+  checkQuestReady(qp: QuestProgress, meta: PlayerMeta): void;
+  countItem(itemId: string, pid?: number): number;
 
   // E1 entity roster: the moved roster ops, exposed so the foreign callers across
   // not-yet-extracted slices reach them through the seam. Implemented in
@@ -217,7 +222,10 @@ export function createSimContext(host: SimContextHost): SimContext {
     clearEntityMarker: host.clearEntityMarker,
     partyOf: host.partyOf,
     removeFromParty: host.removeFromParty,
+    onMobKilledForQuests: host.onMobKilledForQuests,
     onInventoryChangedForQuests: host.onInventoryChangedForQuests,
+    checkQuestReady: host.checkQuestReady,
+    countItem: host.countItem,
     addEntity: host.addEntity,
     dropEntity: host.dropEntity,
     rebucket: host.rebucket,

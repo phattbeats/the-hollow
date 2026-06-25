@@ -158,6 +158,7 @@ import {
   tickGroundAoEs,
 } from './entity_roster';
 import { createSimContext, type SimContext, type SimContextHost } from './sim_context';
+import { checkQuestReady, onInventoryChangedForQuests, onMobKilledForQuests } from './quests/quest_credit';
 import { SpatialGrid } from './spatial';
 import { orderTabTargets, TAB_QUERY_RADIUS } from './tab_target';
 import {
@@ -2006,7 +2007,13 @@ export class Sim {
       clearEntityMarker: sim.clearEntityMarker.bind(sim),
       partyOf: sim.partyOf.bind(sim),
       removeFromParty: sim.removeFromParty.bind(sim),
-      onInventoryChangedForQuests: sim.onInventoryChangedForQuests.bind(sim),
+      // Q1 quest-credit trio now lives in quests/quest_credit.ts; the callbacks route
+      // through `sim.ctx` (lazily read at call time, after the ctor sets it). countItem
+      // stays on Sim (L2 inventory hub) and is consumed by the collect updater.
+      onMobKilledForQuests: (mob, meta) => onMobKilledForQuests(sim.ctx, mob, meta),
+      onInventoryChangedForQuests: (meta) => onInventoryChangedForQuests(sim.ctx, meta),
+      checkQuestReady: (qp, meta) => checkQuestReady(sim.ctx, qp, meta),
+      countItem: sim.countItem.bind(sim),
       addEntity: sim.addEntity.bind(sim),
       dropEntity: sim.dropEntity.bind(sim),
       rebucket: sim.rebucket.bind(sim),
@@ -5922,7 +5929,7 @@ export class Sim {
             (mobXpValue(e.level, mE.level) * eliteMult * bonus) / eligible.length,
           );
           if (xpGain > 0) this.grantXp(xpGain, member, { fromKill: true });
-          this.onMobKilledForQuests(e, member);
+          this.ctx.onMobKilledForQuests(e, member);
         }
         this.rollLoot(e, meta, eligible);
       }
@@ -9779,7 +9786,7 @@ export class Sim {
       text: `You receive: ${def?.name ?? itemId}${count > 1 ? ' x' + count : ''}.`,
       pid: meta.entityId,
     });
-    this.onInventoryChangedForQuests(meta);
+    this.ctx.onInventoryChangedForQuests(meta);
     if (meta.autoEquip && (def?.kind === 'weapon' || def?.kind === 'armor')) {
       this.maybeAutoEquip(itemId, meta);
     }
@@ -9797,7 +9804,7 @@ export class Sim {
       count -= take;
       if (s.count <= 0) meta.inventory.splice(i, 1);
     }
-    this.onInventoryChangedForQuests(meta);
+    this.ctx.onInventoryChangedForQuests(meta);
   }
 
   discardItem(itemId: string, count = 1, pid?: number): void {
@@ -10227,7 +10234,7 @@ export class Sim {
     slot.count -= 1;
     if (slot.count <= 0) meta.vendorBuyback = meta.vendorBuyback.filter((s) => s !== slot);
     this.addItemSilent(itemId, 1, meta);
-    this.onInventoryChangedForQuests(meta);
+    this.ctx.onInventoryChangedForQuests(meta);
     this.emit({ type: 'vendor', action: 'buyback', itemId, pid: meta.entityId });
     this.emit({
       type: 'loot',
@@ -10422,7 +10429,7 @@ export class Sim {
             text: `${objective.label}: ${memberQp.counts[objectiveIndex]}/${objective.count}`,
             pid: member.entityId,
           });
-          this.checkQuestReady(memberQp, member);
+          this.ctx.checkQuestReady(memberQp, member);
         }
         const visionId = this.summonQuestVision(obj.objectItemId, obj.pos);
         this.emitQuestObjectVision(
@@ -10702,7 +10709,7 @@ export class Sim {
           text: `${objective.label}: ${qp.counts[objectiveIndex]}/${objective.count}`,
           pid: meta.entityId,
         });
-        this.checkQuestReady(qp, meta);
+        this.ctx.checkQuestReady(qp, meta);
       });
     }
     return progressed;
@@ -10754,7 +10761,7 @@ export class Sim {
       color: '#ff0',
       pid: meta.entityId,
     });
-    this.onInventoryChangedForQuests(meta);
+    this.ctx.onInventoryChangedForQuests(meta);
   }
 
   acceptQuest(questId: string, pid?: number): void {
@@ -10878,68 +10885,12 @@ export class Sim {
   // No-op in offline mode
   reportTelemetry(): void {}
 
-  private onMobKilledForQuests(mob: Entity, meta: PlayerMeta): void {
-    for (const qp of meta.questLog.values()) {
-      if (qp.state !== 'active') continue;
-      const quest = QUESTS[qp.questId];
-      let changed = false;
-      quest.objectives.forEach((obj, i) => {
-        if (obj.type === 'kill' && obj.targetMobId === mob.templateId && qp.counts[i] < obj.count) {
-          qp.counts[i]++;
-          changed = true;
-          meta.counters.questProgress++;
-          this.emit({
-            type: 'questProgress',
-            questId: qp.questId,
-            text: `${obj.label}: ${qp.counts[i]}/${obj.count}`,
-            pid: meta.entityId,
-          });
-        }
-      });
-      if (changed) this.checkQuestReady(qp, meta);
-    }
-  }
-
-  private onInventoryChangedForQuests(meta: PlayerMeta): void {
-    for (const qp of meta.questLog.values()) {
-      const quest = QUESTS[qp.questId];
-      let changed = false;
-      quest.objectives.forEach((obj, i) => {
-        if (obj.type === 'collect' && obj.itemId) {
-          const have = Math.min(obj.count, this.countItem(obj.itemId, meta.entityId));
-          if (have !== qp.counts[i]) {
-            if (have > qp.counts[i]) meta.counters.questProgress += have - qp.counts[i];
-            qp.counts[i] = have;
-            changed = true;
-            this.emit({
-              type: 'questProgress',
-              questId: qp.questId,
-              text: `${obj.label}: ${have}/${obj.count}`,
-              pid: meta.entityId,
-            });
-          }
-        }
-      });
-      if (changed) this.checkQuestReady(qp, meta);
-    }
-  }
-
-  private checkQuestReady(qp: QuestProgress, meta: PlayerMeta): void {
-    const quest = QUESTS[qp.questId];
-    const ready = quest.objectives.every((obj, i) => qp.counts[i] >= obj.count);
-    if (ready && qp.state === 'active') {
-      qp.state = 'ready';
-      this.emit({ type: 'questReady', questId: qp.questId, pid: meta.entityId });
-      this.emit({
-        type: 'log',
-        text: `${quest.name} (Complete)`,
-        color: '#ff0',
-        pid: meta.entityId,
-      });
-    } else if (!ready && qp.state === 'ready') {
-      qp.state = 'active';
-    }
-  }
+  // Quest-credit math (onMobKilledForQuests / onInventoryChangedForQuests /
+  // checkQuestReady) moved to quests/quest_credit.ts (Q1) behind SimContext. Foreign
+  // callers reach the trio via this.ctx.<name>: the handleDeath party loop calls
+  // ctx.onMobKilledForQuests, the inventory hub (addItem/removeItem/buyBackItem) and
+  // finalizeQuestAccept call ctx.onInventoryChangedForQuests, and interactNpcForQuests
+  // plus the N1 crypt interactObjectForQuests call ctx.checkQuestReady.
 
   // -------------------------------------------------------------------------
   // Player death / respawn
