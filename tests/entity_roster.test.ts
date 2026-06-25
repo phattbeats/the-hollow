@@ -229,6 +229,7 @@ function makeCtx() {
     // delveDetectMult stubbed above (C1/M2/C3) - deduped here.
     partyMembersForKey: vi.fn(() => []),
     addItem: vi.fn(),
+    removeItem: vi.fn(),
     spawnBossAdds: vi.fn(),
     tradeFor: vi.fn(() => null),
     duelFor: vi.fn(() => null),

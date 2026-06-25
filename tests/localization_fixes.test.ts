@@ -772,7 +772,9 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
   // seals, lockout, "instances busy"), I2a -> src/sim/delves/runs.ts (delve enter/clear/
   // advance/reward/grave-rite, interact guards, run-failed), I2b ->
   // src/sim/delves/lockpick_controller.ts (lockpick engage/abort guards, jam errors,
-  // "the chest is empty", the "lock jams" log). They emit via this.ctx.* / bare ctx.*
+  // "the chest is empty", the "lock jams" log), L2 -> src/sim/market.ts (the World Market
+  // list/buy/cancel/collect guards + the "Listed"/"Bought"/"Reclaimed"/"You collect" loot
+  // lines + the expiry log). They emit via this.ctx.* / bare ctx.*
   // through SimContext. Scan ALL of them alongside sim.ts so every language-agnostic sim
   // emit stays under the drift guard; they are re-localized client-side by the same
   // matchers. When a slice moves emit literals out of the monolith, append its path here.
@@ -798,6 +800,7 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/instances/dungeons.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/runs.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/lockpick_controller.ts'), 'utf8'),
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/market.ts'), 'utf8'),
     // T1: player target selectors + raid-marker store (the setMarker error literal,
     // byte-identical after the move so its matcher is unchanged).
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/targeting.ts'), 'utf8'),

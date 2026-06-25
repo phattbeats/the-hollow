@@ -384,6 +384,9 @@ export interface SimContextCallbacks {
   // AI (spawnDelveCompanion/despawnDelveCompanion/maybeCompanionBark).
   partyMembersForKey(key: string): number[];
   addItem(itemId: string, count: number, pid?: number): void;
+  // L2 World Market escrow (marketList) pulls the listed stack from the seller's
+  // bags via removeItem; the inventory hub stays on Sim (points-at Sim).
+  removeItem(itemId: string, count: number, pid?: number): void;
   spawnBossAdds(boss: Entity, mobId: string, count: number): void;
   tradeFor(pid: number): TradeSession | null;
   duelFor(pid: number): DuelState | null;
@@ -705,6 +708,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     // onDelveBossDefeated/delveDetectMult are bound above (C1/M2/C3); deduped here.
     partyMembersForKey: host.partyMembersForKey,
     addItem: host.addItem,
+    removeItem: host.removeItem,
     spawnBossAdds: host.spawnBossAdds,
     tradeFor: host.tradeFor,
     duelFor: host.duelFor,

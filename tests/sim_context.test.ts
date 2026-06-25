@@ -147,6 +147,7 @@ const CALLBACK_KEYS = [
   // delveDetectMult already listed above (C1/M2/C3) - deduped, not re-added.
   'partyMembersForKey',
   'addItem',
+  'removeItem',
   'spawnBossAdds',
   'tradeFor',
   'duelFor',
@@ -349,6 +350,7 @@ function makeFakeHost() {
     // delveDetectMult stubbed above (C1/M2/C3) - deduped here.
     partyMembersForKey: vi.fn(() => []),
     addItem: vi.fn(),
+    removeItem: vi.fn(),
     spawnBossAdds: vi.fn(),
     tradeFor: vi.fn(() => null),
     duelFor: vi.fn(() => null),
