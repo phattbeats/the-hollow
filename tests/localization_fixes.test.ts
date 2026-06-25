@@ -760,7 +760,11 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     // rite, interact guards, run-failed) from sim.ts into delves/runs.ts; concat it so
     // those moved literals stay drift-guarded (the ctx.emit/ctx.error/return regexes
     // already match the free-function module form).
-    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/runs.ts'), 'utf8');
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/runs.ts'), 'utf8') +
+    // I2b moved the lockpick minigame player emits (engage/abort guards, jam errors,
+    // "the chest is empty", the "lock jams" log) from sim.ts into
+    // delves/lockpick_controller.ts; concat it so those moved literals stay drift-guarded.
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/lockpick_controller.ts'), 'utf8');
   // Hardened S3: also scan the authoritative server's player-facing emits. The
   // server (server/game.ts) is language-agnostic like the sim and re-localized
   // client-side by localizeServerText; previously the guard read only sim.ts, so
