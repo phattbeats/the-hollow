@@ -17,7 +17,7 @@
 // mobSwing, spawnDelveModule), never reaching into not-yet-extracted internals
 // in a way the sim itself does not already expose.
 
-import { MOBS, DELVES } from '../../src/sim/data';
+import { arenaOrigin, MOBS, DELVES } from '../../src/sim/data';
 import { createMob } from '../../src/sim/entity';
 import { Sim } from '../../src/sim/sim';
 import { solveLockActions } from '../../src/sim/lockpick';
@@ -442,6 +442,72 @@ function fiesta(): Scenario {
   };
 }
 
+// Fiesta power-ups, hazard ring, and respawn revive (A3). Seats a 2v2 Fiesta, runs
+// until the first power-up spawns (fiestaSpawnPowerup draws the PER-MATCH f.rng: one
+// pick + two next() for placement), telegraphs it to ready, walks a live fighter
+// onto it (fiestaGrabPowerup applies a buff aura), then closes the ring and pushes a
+// fighter outside (fiestaRingDamage burn), and finally downs a fighter and runs
+// their respawn timer out (fiestaRevive). The per-match f.rng power-up placement
+// surfaces in the full-state trace (powerup defId/x/z); the SHARED this.rng
+// draw-order digest is untouched (fiesta match logic draws only the per-match
+// stream). Complements `fiesta` (takedown + augment wave) with the power-up / ring /
+// revive arms it does not reach.
+function fiestaPowerups(): Scenario {
+  return {
+    name: 'fiesta_powerups',
+    coverage: [
+      'fiesta power-up spawn (f.rng pick/next) + telegraph + grab (buff aura)',
+      'hazard ring burn (fiestaRingDamage) outside the closing ring',
+      'down + respawn-timer revive (fiestaRevive)',
+    ],
+    sampleEvery: 10,
+    build: () => new Sim({ seed: 2027, playerClass: 'warrior', noPlayer: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const classes: Array<'warrior' | 'mage' | 'rogue' | 'priest'> = ['warrior', 'mage', 'rogue', 'priest'];
+      const pids = classes.map((c, i) => sim.addPlayer(c, `P${i}`));
+      pids.forEach((pid, i) => teleport(sim, sim.entities.get(pid)!, i * 4, -40));
+      pids.forEach((pid) => sim.arenaQueueJoin(pid, 'fiesta'));
+      rec.tick(1);
+      for (let i = 0; i < 20 * 10; i++) {
+        rec.tick(1);
+        const m = sim.arenaMatchFor(pids[0]);
+        if (m && m.state === 'active') break;
+      }
+      const match = sim.arenaMatchFor(pids[0]);
+      if (match && match.fiesta) {
+        const f = match.fiesta;
+        // First power-up attempt is ~12s into the bout; run until one spawns.
+        for (let i = 0; i < 20 * 20 && f.powerups.length === 0; i++) rec.tick(1);
+        // Telegraph -> ready.
+        for (let i = 0; i < 20 * 6 && f.powerups[0]?.state === 'spawning'; i++) rec.tick(1);
+        // Walk a live fighter onto the ready power-up so it is grabbed (buff aura).
+        const p = f.powerups[0];
+        if (p && p.state === 'ready') {
+          const grabPid = match.teamA[0];
+          teleport(sim, sim.entities.get(grabPid)! as AnyEntity, p.x, p.z);
+          rec.tick(1);
+        }
+        // Hazard ring: close it tight and push a fighter well outside -> burn.
+        f.ringRadius = 6;
+        const origin = arenaOrigin(match.slot);
+        const ringPid = match.teamA[0];
+        teleport(sim, sim.entities.get(ringPid)! as AnyEntity, origin.x + 30, origin.z);
+        rec.tick(20); // ~1s; the ring burns twice a second
+        // Down a cross-team fighter, then run their respawn timer out -> revive.
+        const victimPid = match.teamB[0];
+        const killer = sim.entities.get(match.teamA[0]) as AnyEntity;
+        const victim = sim.entities.get(victimPid) as AnyEntity;
+        (sim as any).dealDamage(killer, victim, victim.maxHp + 50, false, 'physical', null);
+        rec.notes.fiestaPowerupVictimPid = victimPid;
+        const downedFor = f.respawn.get(victimPid) ?? 5;
+        rec.tick(Math.ceil(downedFor * 20) + 10);
+      }
+      rec.tick(20 * 2);
+    },
+  };
+}
+
 // Duel to a winner (A2): two adjacent players, duelRequest -> duelAccept, run the
 // DUEL_COUNTDOWN out so the bout is live, then one lands a finishing blow. The
 // dealDamage 1-HP duel guard ends the bout via endDuel (a winner/loser duelEnd,
@@ -810,6 +876,7 @@ export const SCENARIOS: Scenario[] = [
   paladinConsecration(),
   arena1v1(),
   fiesta(),
+  fiestaPowerups(),
   duelToWinner(),
   arena2v2Wipe(),
   delveLockpick(),
