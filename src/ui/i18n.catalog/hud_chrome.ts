@@ -85,12 +85,16 @@ export const hudChromeStrings = {
   rest: {
     resting: 'Resting',
   },
-  // Accessible group name for the player unit frame (#player-frame is a role="group"
-  // wrapping the player's portrait, name, level, health, and resource bars). Kept a
-  // short, non-prose label so it reads cleanly as a screen-reader group name and the
-  // maintainer translates it per locale at release.
+  // Accessible group names for the unit frames (#player-frame and #target-frame are
+  // role="group" wrappers over a portrait, name, level, and health/resource bars).
+  // Kept short, non-prose labels so they read cleanly as screen-reader group names
+  // (and stay non-wordy so an English-filled non-Latin locale does not trip the
+  // untranslated-leak guard); the maintainer translates them per locale at release.
+  // targetLabel reads as the unit you have marked as your current target (faction
+  // neutral: it labels friendly and hostile targets alike).
   unitFrame: {
     playerLabel: 'Your Hero',
+    targetLabel: 'Your Mark',
   },
   // On-screen / mobile control labels and their accessible names. char/bags/music
   // reuse existing keys (hud.keybinds.actions.*, hud.options.music) at the call site.
