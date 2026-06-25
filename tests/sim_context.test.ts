@@ -178,6 +178,12 @@ const CALLBACK_KEYS = [
   'revivePet',
   'completeFishing',
   'applyDemonHealTick',
+  'awardCombo',
+  'meleeSwing',
+  'effectiveArmor',
+  'effectiveAttackPower',
+  'hasLineOfSight',
+  'findChargePath',
   'runEffects',
 ] as const;
 
@@ -374,6 +380,12 @@ function makeFakeHost() {
     revivePet: vi.fn(),
     completeFishing: vi.fn(),
     applyDemonHealTick: vi.fn(),
+    awardCombo: vi.fn(),
+    meleeSwing: vi.fn(() => false),
+    effectiveArmor: vi.fn(() => 0),
+    effectiveAttackPower: vi.fn(() => 0),
+    hasLineOfSight: vi.fn(() => true),
+    findChargePath: vi.fn(() => []),
     runEffects: vi.fn(),
   };
   return { host, rng, entities, clock };

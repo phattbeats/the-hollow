@@ -2268,6 +2268,169 @@ function targetingMarkers(): Scenario {
   };
 }
 
+// C4b effect dispatch: a multi-class drive that fans runEffects across its most
+// draw-order-sensitive cases in ONE golden so the move (runEffects -> combat/
+// effect_dispatch.ts) is pinned. The highest-risk reorder points the brief calls
+// out are each fired at least once, in effect-array order:
+//  - warrior sunder_armor: the sunder MISS roll (rng.chance(meleeMissChance)).
+//  - mage arcane_explosion: aoeDamage per-target rng.range over 2 in-radius mobs.
+//  - rogue sinister_strike -> eviscerate -> kidney_shot: weaponStrike awardCombo
+//    latch, finisherDamage range-THEN-chance, and the combo-spend reset after the loop.
+//  - paladin seal_of_righteousness -> judgement -> consecration: imbue Seal, the
+//    judgement range-THEN-chance draw (consuming the Seal), and the groundAoE on-cast
+//    pulse (pulseGroundAoE + groundAoEs.push).
+//  - druid moonfire -> bear_form -> cat_form -> rejuvenation: directDamage range-then-
+//    chance + a dot in ONE cast, exclusive selfBuff form switch (recalc), and a hot.
+//  - warlock fear -> summon_imp: incapacitate fear-angle draw rng.range(-PI,PI) and the
+//    summonDemon -> ctx.summonPet path. Run FIRST (clean cast environment) so the timed
+//    casts are not pushed back by another caster's ground-AoE.
+function c4bEffectDispatch(): Scenario {
+  return {
+    name: 'c4b_effect_dispatch',
+    coverage: [
+      'runEffects multi-class multi-effect dispatch',
+      'directDamage/finisherDamage range-then-chance (druid moonfire, rogue eviscerate)',
+      'judgement range-then-chance (paladin seal -> judgement)',
+      'incapacitate fear-angle draw rng.range(-PI,PI) (warlock fear)',
+      'aoeDamage per-target rng.range (mage arcane_explosion, 2 mobs)',
+      'sunder miss rng.chance (warrior sunder_armor)',
+      'groundAoE on-cast pulse (paladin consecration)',
+      'summonDemon -> summonPet (warlock summon_imp) + selfBuff form switch (druid)',
+      'weaponStrike awardCombo latch + finisher combo-spend reset',
+    ],
+    sampleEvery: 5,
+    build: () => new Sim({ seed: 1018, playerClass: 'warrior', noPlayer: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const warrior = sim.addPlayer('warrior', 'Wr') as number;
+      const mage = sim.addPlayer('mage', 'Mg') as number;
+      const rogue = sim.addPlayer('rogue', 'Rg') as number;
+      const paladin = sim.addPlayer('paladin', 'Pl') as number;
+      const druid = sim.addPlayer('druid', 'Dr') as number;
+      const warlock = sim.addPlayer('warlock', 'Wl') as number;
+      const eWarrior = sim.entities.get(warrior) as AnyEntity;
+      const eMage = sim.entities.get(mage) as AnyEntity;
+      const eRogue = sim.entities.get(rogue) as AnyEntity;
+      const ePaladin = sim.entities.get(paladin) as AnyEntity;
+      const eDruid = sim.entities.get(druid) as AnyEntity;
+      const eWarlock = sim.entities.get(warlock) as AnyEntity;
+      const cells: Array<[number, AnyEntity]> = [
+        [-42, eWarrior],
+        [-28, eMage],
+        [-14, eRogue],
+        [0, ePaladin],
+        [14, eDruid],
+        [42, eWarlock],
+      ];
+      for (const pid of [warrior, mage, rogue, paladin, druid, warlock]) sim.setPlayerLevel(20, pid);
+      for (const [x, e] of cells) {
+        teleport(sim, e, x, -45);
+        beef(e, 50000);
+      }
+      rec.notes.warriorId = warrior;
+      rec.notes.mageId = mage;
+      rec.notes.rogueId = rogue;
+      rec.notes.paladinId = paladin;
+      rec.notes.druidId = druid;
+      rec.notes.warlockId = warlock;
+
+      // Spawn an idle hostile dummy adjacent to a caster (north, within melee).
+      const dummy = (owner: AnyEntity, level = 8): AnyEntity => {
+        const m = spawnMob(sim, 'forest_wolf', level, owner.pos.x, owner.pos.y, owner.pos.z + 3);
+        beef(m, 500000);
+        m.hostile = true;
+        m.aiState = 'idle';
+        rec.track(m.id);
+        return m;
+      };
+      const ready = (e: AnyEntity): void => {
+        e.gcdRemaining = 0;
+        e.resource = e.maxResource;
+      };
+
+      // --- warlock FIRST (timed casts in a clean environment) ---
+      const mobL = dummy(eWarlock);
+      rec.notes.warlockMobId = mobL.id;
+      face(eWarlock, mobL);
+      sim.targetEntity(mobL.id, warlock);
+      ready(eWarlock);
+      sim.castAbility('fear', warlock); // 1.5s cast -> incapacitate fear-angle rng.range(-PI,PI)
+      rec.tick(32); // finish fear
+      rec.snapshot('warlock-fear');
+      ready(eWarlock);
+      sim.castAbility('summon_imp', warlock); // 5s cast -> summonDemon -> ctx.summonPet
+      rec.tick(101); // finish summon
+      rec.snapshot('warlock-summon');
+
+      // --- warrior: sunder_armor (sunder miss rng.chance + threat) ---
+      const mobW = dummy(eWarrior);
+      face(eWarrior, mobW);
+      sim.targetEntity(mobW.id, warrior);
+      ready(eWarrior);
+      sim.castAbility('sunder_armor', warrior);
+      rec.snapshot('warrior-sunder');
+
+      // --- mage: arcane_explosion (aoeDamage per-target rng.range over 2 mobs) ---
+      const mobM1 = spawnMob(sim, 'forest_wolf', 8, eMage.pos.x + 2, eMage.pos.y, eMage.pos.z + 1);
+      const mobM2 = spawnMob(sim, 'forest_wolf', 8, eMage.pos.x - 2, eMage.pos.y, eMage.pos.z + 2);
+      for (const m of [mobM1, mobM2]) {
+        beef(m, 500000);
+        m.hostile = true;
+        m.aiState = 'idle';
+        rec.track(m.id);
+      }
+      rec.notes.aoeMobIds = [mobM1.id, mobM2.id];
+      ready(eMage);
+      sim.castAbility('arcane_explosion', mage);
+      rec.snapshot('mage-arcane-explosion');
+
+      // --- rogue: sinister_strike (weaponStrike awardCombo) then finishers ---
+      const mobR = dummy(eRogue);
+      face(eRogue, mobR);
+      sim.targetEntity(mobR.id, rogue);
+      ready(eRogue);
+      sim.castAbility('sinister_strike', rogue); // weaponStrike -> meleeSwing + awardCombo latch
+      ready(eRogue);
+      eRogue.comboPoints = 3;
+      eRogue.comboTargetId = mobR.id;
+      sim.castAbility('eviscerate', rogue); // finisherDamage range-then-chance + combo reset
+      ready(eRogue);
+      eRogue.comboPoints = 2;
+      eRogue.comboTargetId = mobR.id;
+      sim.castAbility('kidney_shot', rogue); // finisherStun + combo-spend reset
+      rec.snapshot('rogue-combo-finishers');
+
+      // --- paladin: seal -> judgement (range-then-chance) -> consecration (groundAoE) ---
+      const mobP = dummy(ePaladin);
+      face(ePaladin, mobP);
+      sim.targetEntity(mobP.id, paladin);
+      ready(ePaladin);
+      sim.castAbility('seal_of_righteousness', paladin); // imbue (sets the Seal)
+      ready(ePaladin);
+      sim.castAbility('judgement', paladin); // judgement: rng.range then rng.chance
+      ready(ePaladin);
+      sim.castAbility('consecration', paladin); // groundAoE: on-cast pulse + groundAoEs.push
+      rec.snapshot('paladin-judge-consecrate');
+
+      // --- druid: moonfire (directDamage range-then-chance + dot) -> forms -> hot ---
+      const mobD = dummy(eDruid);
+      face(eDruid, mobD);
+      sim.targetEntity(mobD.id, druid);
+      ready(eDruid);
+      sim.castAbility('moonfire', druid); // directDamage (range then chance) + dot
+      ready(eDruid);
+      sim.castAbility('bear_form', druid); // selfBuff form + recalc
+      ready(eDruid);
+      sim.castAbility('cat_form', druid); // form switch (exclusive: strips bear)
+      ready(eDruid);
+      eDruid.hp = Math.max(1, eDruid.maxHp - 1000);
+      sim.targetEntity(druid, druid); // self-target the friendly hot
+      sim.castAbility('rejuvenation', druid); // hot
+      rec.snapshot('druid-moonfire-forms');
+    },
+  };
+}
+
 export const SCENARIOS: Scenario[] = [
   soloWarrior(),
   soloMage(),
@@ -2303,4 +2466,5 @@ export const SCENARIOS: Scenario[] = [
   c4aCastingLifecycle(),
   mobLifecycle(),
   targetingMarkers(),
+  c4bEffectDispatch(),
 ];

@@ -493,4 +493,38 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(after[m3Id]).toBeDefined(); // a live mob's mark survives
     expect((rec.allEvents as Ev[]).some((e) => e.type === 'death')).toBe(true);
   });
+
+  it('c4b_effect_dispatch: runEffects fans across sunder/aoe/finisher/judgement/fear/groundAoE/summon/form', () => {
+    const rec = run('c4b_effect_dispatch');
+    const ev = rec.allEvents as Ev[];
+    const ents = entities(rec);
+    // warrior sunder_armor: the sunder aura landed (or a miss event fired) on its mob.
+    const warriorMob = ents.find((e) => e.templateId === 'forest_wolf' && e.auras?.some((a: Ev) => a.kind === 'sunder'));
+    const sunderMiss = ev.some((e) => e.type === 'damage' && e.kind === 'miss' && typeof e.ability === 'string' && e.ability.toLowerCase().includes('sunder'));
+    expect(Boolean(warriorMob) || sunderMiss).toBe(true);
+    // mage arcane_explosion: the per-target aoeDamage hit BOTH in-radius mobs.
+    const aoeMobIds = rec.notes.aoeMobIds as number[];
+    const arcaneTargets = new Set(
+      ev.filter((e) => e.type === 'damage' && e.school === 'arcane' && aoeMobIds.includes(e.targetId)).map((e) => e.targetId),
+    );
+    expect(arcaneTargets.size).toBe(2);
+    // rogue eviscerate: finisher dealt physical damage AND the combo-spend reset fired.
+    const rogue = rec.notes.rogueId as number;
+    expect(ev.some((e) => e.type === 'damage' && e.sourceId === rogue && e.school === 'physical')).toBe(true);
+    expect(ev.some((e) => e.type === 'comboPoint' && e.pid === rogue && e.points === 0)).toBe(true);
+    // paladin judgement: a holy damage from the paladin (the Seal unleashed).
+    const paladin = rec.notes.paladinId as number;
+    expect(ev.some((e) => e.type === 'damage' && e.sourceId === paladin && e.school === 'holy')).toBe(true);
+    // paladin consecration: a ground AoE was pushed (on-cast pulse path).
+    expect((rec.sim as any).groundAoEs.length).toBeGreaterThanOrEqual(1);
+    // warlock fear: the incapacitate aura landed on the warlock's mob (fear-angle draw).
+    const warlockMob = ents.find((e) => e.id === rec.notes.warlockMobId);
+    expect(warlockMob?.auras?.some((a: Ev) => a.kind === 'incapacitate')).toBe(true);
+    // warlock summon_imp: a pet now belongs to the warlock (summonDemon -> summonPet).
+    expect(ents.some((e) => e.ownerId === rec.notes.warlockId)).toBe(true);
+    // druid form switch: the LAST form (cat) is active and bear was stripped.
+    const druid = ents.find((e) => e.id === rec.notes.druidId);
+    expect(druid?.auras?.some((a: Ev) => a.kind === 'form_cat')).toBe(true);
+    expect(druid?.auras?.some((a: Ev) => a.kind === 'form_bear')).toBe(false);
+  });
 });
