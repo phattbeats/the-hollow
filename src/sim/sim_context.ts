@@ -236,6 +236,14 @@ export interface SimContextCallbacks {
   hasLineOfSight(source: Entity, target: Entity): boolean;
   findChargePath(p: Entity, target: Entity): Vec3[];
   runEffects(p: Entity, meta: PlayerMeta, target: Entity | null, res: ResolvedAbility): void;
+
+  // C5 player auto-attack (src/sim/combat/auto_attack.ts) consumes these; both stay
+  // on Sim. `aggroMob` is the shared mob-aggro entry (~20 callers) startAutoAttack
+  // uses to pull an idle target into combat; `swingIntervalMult` is the haste read
+  // the driver applies to the next swing timer. (M2 registers identical sigs on the
+  // Mob track; dedupe to one each at integration, both stay points-at Sim.)
+  aggroMob(mob: Entity, target: Entity, social: boolean): void;
+  swingIntervalMult(e: Entity): number;
 }
 
 // The seam consumed by extracted modules.
@@ -378,5 +386,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     hasLineOfSight: host.hasLineOfSight,
     findChargePath: host.findChargePath,
     runEffects: host.runEffects,
+    aggroMob: host.aggroMob,
+    swingIntervalMult: host.swingIntervalMult,
   };
 }

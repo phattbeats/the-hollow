@@ -169,6 +169,8 @@ function makeCtx() {
     hasLineOfSight: vi.fn(() => true),
     findChargePath: vi.fn(() => []),
     runEffects: vi.fn(),
+    aggroMob: vi.fn(),
+    swingIntervalMult: vi.fn(() => 1),
   };
   const ctx = createSimContext(host);
   return {

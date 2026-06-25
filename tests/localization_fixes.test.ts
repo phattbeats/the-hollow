@@ -762,6 +762,9 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
   // C4b moved the per-effect dispatch switch (the runEffects body) out of sim.ts into
   // src/sim/combat/effect_dispatch.ts, with its player-facing ctx.error literals
   // ("You have no active Seal.", "Not enough health.", the pet messages). Scan it too.
+  // C5 moved the auto-attack driver + the melee/ranged white-hit table out of sim.ts
+  // into src/sim/combat/auto_attack.ts, carrying the "Auto Shot"/"Wand" swing labels
+  // and the "Invalid attack target." error. Scan it so those literals stay guarded.
   const simSrc =
     `${fs.readFileSync(path.resolve(process.cwd(), 'src/sim/sim.ts'), 'utf8')}\n${fs.readFileSync(
       path.resolve(process.cwd(), 'src/sim/combat/damage.ts'),
@@ -771,6 +774,9 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
       'utf8',
     )}\n${fs.readFileSync(
       path.resolve(process.cwd(), 'src/sim/combat/effect_dispatch.ts'),
+      'utf8',
+    )}\n${fs.readFileSync(
+      path.resolve(process.cwd(), 'src/sim/combat/auto_attack.ts'),
       'utf8',
     )}`;
   // Hardened S3: also scan the authoritative server's player-facing emits. The

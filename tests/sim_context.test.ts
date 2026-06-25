@@ -103,6 +103,8 @@ const CALLBACK_KEYS = [
   'hasLineOfSight',
   'findChargePath',
   'runEffects',
+  'aggroMob',
+  'swingIntervalMult',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -215,6 +217,8 @@ function makeFakeHost() {
     hasLineOfSight: vi.fn(() => true),
     findChargePath: vi.fn(() => []),
     runEffects: vi.fn(),
+    aggroMob: vi.fn(),
+    swingIntervalMult: vi.fn(() => 1),
   };
   return { host, rng, entities, clock };
 }
