@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { EFFECTS_QUALITY_LOW_CUTOFF } from '../game/ui_effects_profile';
 
 // Quality tiers: every tier-dependent knob keys off this module instead of
 // scattered LOW_GFX ternaries.
@@ -305,7 +306,7 @@ function settingsFor(
   if (hints?.graphicsPreset === PRESET_ADVANCED) {
     if ((hints.terrainDetail ?? 1) < 0.5) settings = { ...settings, terrainSplat: false };
     if ((hints.foliageDensity ?? 1) < 0.5) settings = { ...settings, grassRadius: 34, grassStep: 3.8 };
-    if ((hints.effectsQuality ?? 1) < 0.5) settings = { ...settings, composer: false, ao: false, msaaSamples: 0, maxPointLights: 3 };
+    if ((hints.effectsQuality ?? 1) < EFFECTS_QUALITY_LOW_CUTOFF) settings = { ...settings, composer: false, ao: false, msaaSamples: 0, maxPointLights: 3 };
     if ((hints.shadowQuality ?? 1) < 0.5) settings = { ...settings, shadowMap: 1024 };
   }
   return settings;
