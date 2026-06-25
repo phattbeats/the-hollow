@@ -15,7 +15,16 @@
 import type { TalentModifiers } from './content/talents';
 import type { DelayedEvent, GroundAoE } from './entity_roster';
 import type { Rng } from './rng';
-import type { ArenaMatch, DuelState, InstanceSlot, Party, PlayerMeta } from './sim';
+import type {
+  ArenaMatch,
+  ArenaQueueUnit,
+  DuelState,
+  FiestaState,
+  InstanceSlot,
+  Party,
+  PlayerMeta,
+  TradeSession,
+} from './sim';
 import type { SpatialGrid } from './spatial';
 import type {
   Aura,
@@ -74,9 +83,20 @@ export interface SimContextPrimitives {
   // C1 damage-core live views. The shared `players` map (declared above) plus `duels`
   // (shared duel keyed by both pids) back the damage/death/xp paths; `cfg` supplies
   // respawn tuning on mob death (M2 also reads cfg.seed for mob terrain height).
-  // Backing fields stay on Sim.
+  // Backing fields stay on Sim. `duels` is also read per-attack by isHostileTo/
+  // dealDamage (PvP hostility), so it stays Sim-owned (A2).
   readonly duels: Map<number, DuelState>;
   readonly cfg: Required<Omit<SimConfig, 'noPlayer'>>;
+  // A2 duel + arena state. Live views: the backing fields stay on Sim (mutated in
+  // place / reassigned), like E1's delayedEvents. The three queues are REASSIGNED by
+  // the matchmaker's filter, so they are read-write; the maps/set and the match-id
+  // counter are mutated/incremented in place.
+  readonly trades: Map<number, TradeSession>;
+  arenaQueue1v1: number[];
+  arenaQueue2v2: ArenaQueueUnit[];
+  arenaQueueFiesta: ArenaQueueUnit[];
+  readonly arenaBusySlots: Set<number>;
+  nextArenaMatchId: number;
 }
 
 // Cross-system callbacks. Each signature mirrors the still-on-`Sim` method it
@@ -133,6 +153,26 @@ export interface SimContextCallbacks {
     reason: 'defeat' | 'timeout' | 'forfeit',
   ): void;
   endDuel(duel: DuelState, winnerPid: number | null): void;
+  // A2 duel/arena slice (social/duel.ts + social/arena.ts). isArenaCrossTeam,
+  // arenaTeamOf, endArenaMatch, endDuel (above) now point at the moved modules via
+  // Sim's thin delegates. The block below is what the moved code CONSUMES that stays
+  // on Sim (clearAurasFromSource has non-duel callers; entityInDungeon /
+  // hasPendingSocialInvite are core; the five fiesta* hooks are A3-owned), plus the
+  // arena bodies EXPOSED for the Fiesta slice (A3): readyArenaFighter / resetForArena
+  // / isArenaTeamWiped / arenaIsDown / arenaAllPids (arenaTeamOf already above).
+  clearAurasFromSource(target: Entity, sourceId: number): void;
+  entityInDungeon(e: Entity, dungeonId: string): boolean;
+  hasPendingSocialInvite(targetPid: number): boolean;
+  createFiestaState(): FiestaState;
+  fiestaStandardize(meta: PlayerMeta, e: Entity): void;
+  updateFiestaActive(match: ArenaMatch): void;
+  fiestaRestoreChar(meta: PlayerMeta, e: Entity): void;
+  clearFiestaAugments(meta: PlayerMeta, e: Entity): void;
+  readyArenaFighter(e: Entity, opts: { clearPrep: boolean }): void;
+  resetForArena(e: Entity): void;
+  isArenaTeamWiped(match: ArenaMatch, team: 'A' | 'B'): boolean;
+  arenaIsDown(match: ArenaMatch, pid: number): boolean;
+  arenaAllPids(match: ArenaMatch): number[];
   fiestaTakedown(match: ArenaMatch, killerPid: number, victim: Entity): void;
   fiestaDown(match: ArenaMatch, victim: Entity, killerPid: number | null): void;
   rollLoot(mob: Entity, meta: PlayerMeta, eligible?: PlayerMeta[]): void;
@@ -213,8 +253,8 @@ export interface SimContextCallbacks {
   critVulnBonus(target: Entity): number;
   pvpController(e: Entity | null): Entity | null;
   threatMod(source: Entity, school: string): number;
-  isArenaTeamWiped(match: ArenaMatch, team: 'A' | 'B'): boolean;
-  arenaIsDown(match: ArenaMatch, pid: number): boolean;
+  // isArenaTeamWiped / arenaIsDown declared in the A2 duel/arena block above (C1's
+  // dealDamage death path consumes them via ctx; A2 owns them -> social/arena).
   clearNonPlayerStatAuras(target: Entity): void;
   delveRunForMob(mobId: number): DelveRun | null;
   onDelveBossDefeated(run: DelveRun): void;
@@ -356,6 +396,36 @@ export function createSimContext(host: SimContextHost): SimContext {
     get cfg() {
       return host.cfg;
     },
+    get trades() {
+      return host.trades;
+    },
+    get arenaQueue1v1() {
+      return host.arenaQueue1v1;
+    },
+    set arenaQueue1v1(v) {
+      host.arenaQueue1v1 = v;
+    },
+    get arenaQueue2v2() {
+      return host.arenaQueue2v2;
+    },
+    set arenaQueue2v2(v) {
+      host.arenaQueue2v2 = v;
+    },
+    get arenaQueueFiesta() {
+      return host.arenaQueueFiesta;
+    },
+    set arenaQueueFiesta(v) {
+      host.arenaQueueFiesta = v;
+    },
+    get arenaBusySlots() {
+      return host.arenaBusySlots;
+    },
+    get nextArenaMatchId() {
+      return host.nextArenaMatchId;
+    },
+    set nextArenaMatchId(v) {
+      host.nextArenaMatchId = v;
+    },
     emit: host.emit,
     error: host.error,
     lockoutNowMs: host.lockoutNowMs,
@@ -375,6 +445,19 @@ export function createSimContext(host: SimContextHost): SimContext {
     arenaTeamOf: host.arenaTeamOf,
     endArenaMatch: host.endArenaMatch,
     endDuel: host.endDuel,
+    clearAurasFromSource: host.clearAurasFromSource,
+    entityInDungeon: host.entityInDungeon,
+    hasPendingSocialInvite: host.hasPendingSocialInvite,
+    createFiestaState: host.createFiestaState,
+    fiestaStandardize: host.fiestaStandardize,
+    updateFiestaActive: host.updateFiestaActive,
+    fiestaRestoreChar: host.fiestaRestoreChar,
+    clearFiestaAugments: host.clearFiestaAugments,
+    readyArenaFighter: host.readyArenaFighter,
+    resetForArena: host.resetForArena,
+    isArenaTeamWiped: host.isArenaTeamWiped,
+    arenaIsDown: host.arenaIsDown,
+    arenaAllPids: host.arenaAllPids,
     fiestaTakedown: host.fiestaTakedown,
     fiestaDown: host.fiestaDown,
     rollLoot: host.rollLoot,
@@ -414,8 +497,6 @@ export function createSimContext(host: SimContextHost): SimContext {
     critVulnBonus: host.critVulnBonus,
     pvpController: host.pvpController,
     threatMod: host.threatMod,
-    isArenaTeamWiped: host.isArenaTeamWiped,
-    arenaIsDown: host.arenaIsDown,
     clearNonPlayerStatAuras: host.clearNonPlayerStatAuras,
     delveRunForMob: host.delveRunForMob,
     onDelveBossDefeated: host.onDelveBossDefeated,

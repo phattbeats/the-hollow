@@ -63,7 +63,6 @@ import {
 import type { DelveShopGate, DelveShopOffer } from './data';
 import {
   ABILITIES,
-  ARENA_SLOT_COUNT,
   abilitiesKnownAt,
   arenaOrigin,
   CAMPS,
@@ -108,8 +107,6 @@ import {
   delveModuleEntry as delveLayoutEntry,
 } from './delve_layout';
 import {
-  ARENA_SPAWN_A,
-  ARENA_SPAWN_B,
   ARENA_SPAWNS_A_2v2,
   ARENA_SPAWNS_B_2v2,
   DUNGEON_WALL_HW,
@@ -193,6 +190,11 @@ import {
   updateInstances as updateInstancesImpl,
 } from './instances/dungeons';
 import { checkQuestReady, onInventoryChangedForQuests, onMobKilledForQuests } from './quests/quest_credit';
+import * as arenaMod from './social/arena';
+import * as duelMod from './social/duel';
+// A2: eloDelta (with ARENA_K_FACTOR) moved to social/arena.ts. Re-exported so the
+// public path `import { Sim, eloDelta } from './sim'` (tests/arena.test.ts) holds.
+export { eloDelta } from './social/arena';
 import { PartyMachine } from './social/party';
 import { SpatialGrid } from './spatial';
 import { orderTabTargets, TAB_QUERY_RADIUS } from './tab_target';
@@ -366,19 +368,16 @@ const RESTED_FILL_FRACTION = 0.05; // a full "bubble" = 5% of the level's XP-to-
 const RESTED_FILL_HOURS = 8; // accrued per this many in-game hours of resting
 const RESTED_CAP_LEVELS = 1.5; // pool clamps to 1.5 levels of XP, as in vanilla
 const RESTED_INN_PADDING = 2; // yards of slack around the inn footprint that still counts as resting
-const DUEL_COUNTDOWN = 3;
-// Ashen Coliseum 1v1 arena
-const ARENA_COUNTDOWN = 5; // gates pre-fight: heal up, no swings land yet
-const ARENA_RETURN_DELAY = 5; // aftermath: hold on the sands before going home
-const ARENA_MAX_DURATION = 150; // seconds; a stalling match resolves on hp%
-const ARENA_BASE_RATING = 1500; // every character starts here, unranked
-const ARENA_MIN_RATING = 100; // a rating floor so a losing streak can't go absurd
-const ARENA_K_FACTOR = 32; // Elo sensitivity per match
+// A2: DUEL_COUNTDOWN/DUEL_FORFEIT_DISTANCE moved to social/duel.ts; the Ashen
+// Coliseum 1v1 arena tuning (ARENA_COUNTDOWN/RETURN_DELAY/MAX_DURATION/BASE_RATING/
+// MIN_RATING/K_FACTOR) + eloDelta moved to social/arena.ts (ARENA_BASE_RATING is
+// imported back via arenaMod for the PlayerMeta ctor default).
 const ARENA_LADDER_SIZE = 10; // live online standings shipped to clients
 // 2v2 Fiesta — the dopamine-maxxed party mode. Score-based: down a foe to score,
 // they respawn (timers grow as the bout drags on), augments drop in three
 // escalating waves, and a hazard ring squeezes everyone toward the middle.
-const FIESTA_COUNTDOWN = 5;
+// (A2: FIESTA_COUNTDOWN moved to social/arena.ts with the ranked match-start path;
+// the rest of the Fiesta tuning stays here with createFiestaState / A3.)
 const FIESTA_SCORE_LIMIT = 15; // first team to this many takedowns wins
 const FIESTA_MAX_DURATION = 360; // hard cap (s); highest score wins, ties = draw
 const FIESTA_TOTAL_WAVES = 3; // augment waves
@@ -496,7 +495,7 @@ const CHAT_REFILL = 2; // ...then this many more per second (caps spam amplifier
 // Authoritative cap: enforced here in the deterministic core so every host agrees;
 // the client maxlength + server chat-log slices mirror it.
 export const MAX_CHAT_MESSAGE_LEN = 255;
-const DUEL_FORFEIT_DISTANCE = 60;
+// A2: DUEL_FORFEIT_DISTANCE moved to social/duel.ts.
 const TRADE_RANGE = 10;
 // The World Market (the Merchant's auction house)
 const MARKET_RANGE = INTERACT_RANGE + 2; // you must stand at the Merchant to deal
@@ -738,12 +737,8 @@ export interface FiestaPowerup {
   timer: number; // spawning: countdown to ready; ready: countdown to despawn
 }
 
-// Standard Elo. Returns the points the winner gains (and the loser loses) for
-// an outright result; a draw moves each toward its expected score by half.
-export function eloDelta(winnerRating: number, loserRating: number, score = 1): number {
-  const expected = 1 / (1 + 10 ** ((loserRating - winnerRating) / 400));
-  return Math.round(ARENA_K_FACTOR * (score - expected));
-}
+// A2: eloDelta (with ARENA_K_FACTOR) moved to social/arena.ts; re-exported from the
+// import block above so `import { Sim, eloDelta } from './sim'` is preserved.
 
 export interface InstanceSlot {
   dungeonId: string;
@@ -1389,12 +1384,12 @@ export class Sim {
       ? this.groundPos(savedPos.x, savedPos.z)
       : this.groundPos(PLAYER_START.x, PLAYER_START.z);
     const savedArena1v1: ArenaStanding = {
-      rating: savedState?.arena1v1Rating ?? savedState?.arenaRating ?? ARENA_BASE_RATING,
+      rating: savedState?.arena1v1Rating ?? savedState?.arenaRating ?? arenaMod.ARENA_BASE_RATING,
       wins: savedState?.arena1v1Wins ?? savedState?.arenaWins ?? 0,
       losses: savedState?.arena1v1Losses ?? savedState?.arenaLosses ?? 0,
     };
     const savedArena2v2: ArenaStanding = {
-      rating: savedState?.arena2v2Rating ?? ARENA_BASE_RATING,
+      rating: savedState?.arena2v2Rating ?? arenaMod.ARENA_BASE_RATING,
       wins: savedState?.arena2v2Wins ?? 0,
       losses: savedState?.arena2v2Losses ?? 0,
     };
@@ -2034,6 +2029,38 @@ export class Sim {
       get cfg() {
         return sim.cfg;
       },
+      // A2: duel + arena state stays on Sim, exposed as live views (backing fields
+      // mutated in place / the queues reassigned by the matchmaker filter).
+      get trades() {
+        return sim.trades;
+      },
+      get arenaQueue1v1() {
+        return sim.arenaQueue1v1;
+      },
+      set arenaQueue1v1(v) {
+        sim.arenaQueue1v1 = v;
+      },
+      get arenaQueue2v2() {
+        return sim.arenaQueue2v2;
+      },
+      set arenaQueue2v2(v) {
+        sim.arenaQueue2v2 = v;
+      },
+      get arenaQueueFiesta() {
+        return sim.arenaQueueFiesta;
+      },
+      set arenaQueueFiesta(v) {
+        sim.arenaQueueFiesta = v;
+      },
+      get arenaBusySlots() {
+        return sim.arenaBusySlots;
+      },
+      get nextArenaMatchId() {
+        return sim.nextArenaMatchId;
+      },
+      set nextArenaMatchId(v) {
+        sim.nextArenaMatchId = v;
+      },
       emit: sim.emit.bind(sim),
       error: sim.error.bind(sim),
       dealDamage: sim.dealDamage.bind(sim),
@@ -2050,6 +2077,24 @@ export class Sim {
       endDuel: sim.endDuel.bind(sim),
       fiestaTakedown: sim.fiestaTakedown.bind(sim),
       fiestaDown: sim.fiestaDown.bind(sim),
+      // A2: isArenaCrossTeam/arenaTeamOf/endArenaMatch/endDuel (above) now forward to
+      // social/arena.ts + social/duel.ts via Sim's thin delegates. The block below is
+      // what the moved code CONSUMES that stays on Sim (clearAurasFromSource has
+      // non-duel callers; entityInDungeon/hasPendingSocialInvite are core; the five
+      // fiesta* hooks are A3-owned), plus the arena bodies EXPOSED for Fiesta (A3).
+      clearAurasFromSource: sim.clearAurasFromSource.bind(sim),
+      entityInDungeon: sim.entityInDungeon.bind(sim),
+      hasPendingSocialInvite: sim.hasPendingSocialInvite.bind(sim),
+      createFiestaState: sim.createFiestaState.bind(sim),
+      fiestaStandardize: sim.fiestaStandardize.bind(sim),
+      updateFiestaActive: sim.updateFiestaActive.bind(sim),
+      fiestaRestoreChar: sim.fiestaRestoreChar.bind(sim),
+      clearFiestaAugments: sim.clearFiestaAugments.bind(sim),
+      readyArenaFighter: sim.readyArenaFighter.bind(sim),
+      resetForArena: sim.resetForArena.bind(sim),
+      isArenaTeamWiped: sim.isArenaTeamWiped.bind(sim),
+      arenaIsDown: sim.arenaIsDown.bind(sim),
+      arenaAllPids: sim.arenaAllPids.bind(sim),
       rollLoot: sim.rollLoot.bind(sim),
       applyHeal: sim.applyHeal.bind(sim),
       spellCrit: sim.spellCrit.bind(sim),
@@ -2104,8 +2149,6 @@ export class Sim {
       critVulnBonus: sim.critVulnBonus.bind(sim),
       pvpController: sim.pvpController.bind(sim),
       threatMod: sim.threatMod.bind(sim),
-      isArenaTeamWiped: sim.isArenaTeamWiped.bind(sim),
-      arenaIsDown: sim.arenaIsDown.bind(sim),
       clearNonPlayerStatAuras: sim.clearNonPlayerStatAuras.bind(sim),
       delveRunForMob: sim.delveRunForMob.bind(sim),
       onDelveBossDefeated: sim.onDelveBossDefeated.bind(sim),
@@ -10641,95 +10684,15 @@ export class Sim {
   // -------------------------------------------------------------------------
 
   duelRequest(targetPid: number, pid?: number): void {
-    const r = this.resolve(pid);
-    const target = this.players.get(targetPid);
-    const targetE = this.entities.get(targetPid);
-    if (!r || !target || !targetE) return;
-    if (targetPid === r.meta.entityId) return;
-    if (
-      this.entityInDungeon(r.e, 'nythraxis_boss_arena') ||
-      this.entityInDungeon(targetE, 'nythraxis_boss_arena')
-    ) {
-      this.error(r.meta.entityId, 'You cannot duel in Nythraxis Raid Arena.');
-      return;
-    }
-    if (this.duels.has(r.meta.entityId) || this.duels.has(targetPid)) {
-      this.error(r.meta.entityId, 'A duel is already in progress.');
-      return;
-    }
-    if (dist2d(r.e.pos, targetE.pos) > 30) {
-      this.error(r.meta.entityId, 'Target is too far away.');
-      return;
-    }
-    if (this.hasPendingSocialInvite(targetPid)) {
-      this.error(r.meta.entityId, `${target.name} already has a pending invitation.`);
-      return;
-    }
-    this.duelInvites.set(targetPid, { fromPid: r.meta.entityId, expires: this.time + 30 });
-    this.emit({
-      type: 'duelRequest',
-      fromPid: r.meta.entityId,
-      fromName: r.meta.name,
-      pid: targetPid,
-    });
-    this.emit({
-      type: 'log',
-      text: `You have challenged ${target.name} to a duel.`,
-      color: '#fa6',
-      pid: r.meta.entityId,
-    });
+    duelMod.duelRequest(this.ctx, targetPid, pid);
   }
 
   duelAccept(pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const invite = this.duelInvites.get(r.meta.entityId);
-    if (!invite || invite.expires < this.time) {
-      this.error(r.meta.entityId, 'The challenge has expired.');
-      return;
-    }
-    this.duelInvites.delete(r.meta.entityId);
-    const other = this.players.get(invite.fromPid);
-    if (!other) return;
-    const otherE = this.entities.get(invite.fromPid);
-    if (
-      !otherE ||
-      this.entityInDungeon(r.e, 'nythraxis_boss_arena') ||
-      this.entityInDungeon(otherE, 'nythraxis_boss_arena')
-    ) {
-      this.error(r.meta.entityId, 'You cannot duel in Nythraxis Raid Arena.');
-      return;
-    }
-    if (this.duels.has(invite.fromPid) || this.duels.has(r.meta.entityId)) {
-      this.error(r.meta.entityId, 'A duel is already in progress.');
-      return;
-    }
-    const duel: DuelState = {
-      a: invite.fromPid,
-      b: r.meta.entityId,
-      state: 'countdown',
-      timer: DUEL_COUNTDOWN,
-    };
-    this.duels.set(duel.a, duel);
-    this.duels.set(duel.b, duel);
-    for (const dPid of [duel.a, duel.b]) {
-      this.emit({ type: 'duelCountdown', seconds: DUEL_COUNTDOWN, pid: dPid });
-    }
+    duelMod.duelAccept(this.ctx, pid);
   }
 
   duelDecline(pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const invite = this.duelInvites.get(r.meta.entityId);
-    this.duelInvites.delete(r.meta.entityId);
-    if (invite) {
-      this.emit({
-        type: 'log',
-        text: `${r.meta.name} declines your challenge.`,
-        color: '#fa6',
-        pid: invite.fromPid,
-      });
-    }
+    duelMod.duelDecline(this.ctx, pid);
   }
 
   // Persistent social systems (friends / ignore / guilds) require an account
@@ -10756,42 +10719,7 @@ export class Sim {
   }
 
   private updateDuels(): void {
-    const seen = new Set<DuelState>();
-    for (const duel of this.duels.values()) {
-      if (seen.has(duel)) continue;
-      seen.add(duel);
-      const ea = this.entities.get(duel.a);
-      const eb = this.entities.get(duel.b);
-      if (!ea || !eb) {
-        this.endDuel(duel, null);
-        continue;
-      }
-      if (duel.state === 'countdown') {
-        const before = Math.ceil(duel.timer);
-        duel.timer -= DT;
-        const after = Math.ceil(duel.timer);
-        if (after < before && after > 0) {
-          for (const dPid of [duel.a, duel.b])
-            this.emit({ type: 'duelCountdown', seconds: after, pid: dPid });
-        }
-        if (duel.timer <= 0) {
-          duel.state = 'active';
-          for (const dPid of [duel.a, duel.b]) {
-            this.emit({ type: 'log', text: 'The duel has begun!', color: '#fa6', pid: dPid });
-            this.emit({ type: 'duelStart', pid: dPid });
-          }
-        }
-        continue;
-      }
-      // forfeit by running away or dying to something else
-      if (dist2d(ea.pos, eb.pos) > DUEL_FORFEIT_DISTANCE) {
-        this.endDuel(duel, null);
-      } else if (ea.dead) {
-        this.endDuel(duel, duel.b);
-      } else if (eb.dead) {
-        this.endDuel(duel, duel.a);
-      }
-    }
+    duelMod.updateDuels(this.ctx);
   }
 
   private clearAurasFromSource(target: Entity, sourceId: number): void {
@@ -10811,34 +10739,11 @@ export class Sim {
 
   // winnerPid null = draw/cancelled
   private endDuel(duel: DuelState, winnerPid: number | null): void {
-    this.duels.delete(duel.a);
-    this.duels.delete(duel.b);
-    const aMeta = this.players.get(duel.a);
-    const bMeta = this.players.get(duel.b);
-    const ea = this.entities.get(duel.a);
-    const eb = this.entities.get(duel.b);
-    // stop the combatants from swinging at each other
-    for (const e of [ea, eb]) {
-      if (e) e.ccDr.clear();
-      if (e && e.targetId !== null && (e.targetId === duel.a || e.targetId === duel.b)) {
-        e.autoAttack = false;
-      }
-    }
-    if (ea) this.clearAurasFromSource(ea, duel.b);
-    if (eb) this.clearAurasFromSource(eb, duel.a);
-    if (winnerPid !== null && aMeta && bMeta) {
-      const winner = winnerPid === duel.a ? aMeta : bMeta;
-      const loser = winnerPid === duel.a ? bMeta : aMeta;
-      this.emit({ type: 'duelEnd', winnerName: winner.name, loserName: loser.name });
-    } else if (aMeta && bMeta) {
-      for (const dPid of [duel.a, duel.b]) {
-        this.emit({ type: 'log', text: 'The duel has ended.', color: '#fa6', pid: dPid });
-      }
-    }
+    duelMod.endDuel(this.ctx, duel, winnerPid);
   }
 
   duelFor(pid: number): DuelState | null {
-    return this.duels.get(pid) ?? null;
+    return duelMod.duelFor(this.ctx, pid);
   }
 
   // -------------------------------------------------------------------------
@@ -10846,595 +10751,60 @@ export class Sim {
   // -------------------------------------------------------------------------
 
   arenaQueueJoin(pidOrFormat?: number | ArenaFormat, format: ArenaFormat = '1v1'): void {
-    let pid: number | undefined;
-    let fmt: ArenaFormat = format;
-    if (typeof pidOrFormat === 'string') {
-      fmt = pidOrFormat;
-      pid = undefined;
-    } else {
-      pid = pidOrFormat;
-    }
-    const r = this.resolve(pid);
-    if (!r) return;
-    const id = r.meta.entityId;
-    if (this.isArenaQueued(id)) {
-      const currentFmt = this.arenaQueuedFormat(id);
-      if (currentFmt !== fmt) {
-        this.error(
-          id,
-          `You are already in the ${currentFmt} queue. Leave it before queueing for ${fmt}.`,
-        );
-        return;
-      }
-      const position = this.arenaQueuePosition(id, fmt);
-      this.emit({ type: 'arenaQueued', position, format: fmt, pid: id });
-      return;
-    }
-    if (this.arenaMatches.has(id)) {
-      this.error(id, 'You are already in an arena match.');
-      return;
-    }
-    if (r.e.dead) {
-      this.error(id, 'You cannot queue for the arena while dead.');
-      return;
-    }
-    if (this.duels.has(id)) {
-      this.error(id, 'You cannot queue while dueling.');
-      return;
-    }
-    if (this.trades.has(id)) {
-      this.error(id, 'Finish your trade before queueing.');
-      return;
-    }
-    if (r.e.pos.x > DUNGEON_X_THRESHOLD) {
-      this.error(id, 'You cannot queue from inside an instance.');
-      return;
-    }
-
-    if (fmt === '1v1') {
-      const party = this.partyOf(id);
-      if (party && party.members.length > 1) {
-        this.error(id, 'Leave your party before queueing for 1v1.');
-        return;
-      }
-      this.arenaQueue1v1.push(id);
-      this.emit({
-        type: 'arenaQueued',
-        position: this.arenaQueue1v1.length,
-        format: '1v1',
-        pid: id,
-      });
-      this.emit({
-        type: 'log',
-        text: 'You join the Ashen Coliseum queue. Stand by for a worthy opponent…',
-        color: '#ffa040',
-        pid: id,
-      });
-      return;
-    }
-
-    // 2v2 and Fiesta share the same team-formation + queueing path; only the
-    // destination queue and the flavour text differ.
-    const isFiesta = fmt === 'fiesta';
-    const label = isFiesta ? 'Fiesta' : '2v2';
-    const party = this.partyOf(id);
-    let unitPids: number[];
-    if (!party || party.members.length === 1) {
-      unitPids = [id];
-    } else if (party.members.length === 2) {
-      if (party.leader !== id) {
-        this.error(id, `Only the party leader may queue your team for ${label}.`);
-        return;
-      }
-      unitPids = [...party.members];
-    } else {
-      this.error(id, `${label} premade requires a party of exactly two.`);
-      return;
-    }
-    for (const mPid of unitPids) {
-      if (mPid === id) continue;
-      const e = this.entities.get(mPid);
-      const mMeta = this.players.get(mPid);
-      if (!e || !mMeta) {
-        this.error(id, 'A party member is unavailable.');
-        return;
-      }
-      if (e.dead) {
-        this.error(id, `${mMeta.name} cannot queue while dead.`);
-        return;
-      }
-      if (this.arenaMatches.has(mPid)) {
-        this.error(id, `${mMeta.name} is already in an arena match.`);
-        return;
-      }
-      if (this.isArenaQueued(mPid)) {
-        this.error(id, `${mMeta.name} is already in the arena queue.`);
-        return;
-      }
-      if (this.duels.has(mPid)) {
-        this.error(id, `${mMeta.name} cannot queue while dueling.`);
-        return;
-      }
-      if (this.trades.has(mPid)) {
-        this.error(id, `${mMeta.name} must finish trading before queueing.`);
-        return;
-      }
-      if (e.pos.x > DUNGEON_X_THRESHOLD) {
-        this.error(id, `${mMeta.name} cannot queue from inside an instance.`);
-        return;
-      }
-    }
-    const queue = isFiesta ? this.arenaQueueFiesta : this.arenaQueue2v2;
-    const unit: ArenaQueueUnit = { pids: unitPids, rating: this.arenaTeamRating(unitPids, '2v2') };
-    queue.push(unit);
-    const position = queue.reduce((n, u) => n + u.pids.length, 0);
-    const joinText = isFiesta
-      ? 'You join the 2v2 Fiesta queue. Get ready to PARTY…'
-      : 'You join the Ashen Coliseum 2v2 queue. Stand by for opponents…';
-    for (const mPid of unitPids) {
-      this.emit({ type: 'arenaQueued', position, format: fmt, pid: mPid });
-      this.emit({
-        type: 'log',
-        text: joinText,
-        color: isFiesta ? '#ff3df0' : '#ffa040',
-        pid: mPid,
-      });
-    }
+    arenaMod.arenaQueueJoin(this.ctx, pidOrFormat, format);
   }
 
   arenaQueueLeave(pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const id = r.meta.entityId;
-    const fmt = this.arenaQueuedFormat(id);
-    const teamQueue =
-      fmt === '2v2' ? this.arenaQueue2v2 : fmt === 'fiesta' ? this.arenaQueueFiesta : null;
-    const unit = teamQueue ? teamQueue.find((u) => u.pids.includes(id)) : null;
-    if (this.arenaDequeue(id)) {
-      this.emit({ type: 'arenaUnqueued', pid: id });
-      const leaveText =
-        fmt === 'fiesta'
-          ? 'You leave the 2v2 Fiesta queue.'
-          : fmt === '2v2'
-            ? 'You leave the Ashen Coliseum 2v2 queue.'
-            : 'You leave the Ashen Coliseum queue.';
-      this.emit({ type: 'log', text: leaveText, color: '#ffa040', pid: id });
-      if (unit) {
-        const teamLeaveText =
-          fmt === 'fiesta'
-            ? 'Your team leaves the 2v2 Fiesta queue.'
-            : 'Your team leaves the Ashen Coliseum 2v2 queue.';
-        for (const mPid of unit.pids) {
-          if (mPid === id) continue;
-          this.emit({ type: 'arenaUnqueued', pid: mPid });
-          this.emit({ type: 'log', text: teamLeaveText, color: '#ffa040', pid: mPid });
-        }
-      }
-    }
+    arenaMod.arenaQueueLeave(this.ctx, pid);
   }
 
   private isArenaQueued(pid: number): boolean {
-    return (
-      this.arenaQueue1v1.includes(pid) ||
-      this.arenaQueue2v2.some((u) => u.pids.includes(pid)) ||
-      this.arenaQueueFiesta.some((u) => u.pids.includes(pid))
-    );
+    return arenaMod.isArenaQueued(this.ctx, pid);
   }
 
   private arenaQueuedFormat(pid: number): ArenaFormat | null {
-    if (this.arenaQueue1v1.includes(pid)) return '1v1';
-    if (this.arenaQueue2v2.some((u) => u.pids.includes(pid))) return '2v2';
-    if (this.arenaQueueFiesta.some((u) => u.pids.includes(pid))) return 'fiesta';
-    return null;
-  }
-
-  private arenaQueuePosition(pid: number, format: ArenaFormat): number {
-    if (format === '1v1') return this.arenaQueue1v1.indexOf(pid) + 1;
-    const queue = format === 'fiesta' ? this.arenaQueueFiesta : this.arenaQueue2v2;
-    let pos = 0;
-    for (const unit of queue) {
-      if (unit.pids.includes(pid)) return pos + 1;
-      pos += unit.pids.length;
-    }
-    return pos + 1;
+    return arenaMod.arenaQueuedFormat(this.ctx, pid);
   }
 
   private arenaDequeue(pid: number): boolean {
-    const i1 = this.arenaQueue1v1.indexOf(pid);
-    if (i1 >= 0) {
-      this.arenaQueue1v1.splice(i1, 1);
-      return true;
-    }
-    const ui = this.arenaQueue2v2.findIndex((u) => u.pids.includes(pid));
-    if (ui >= 0) {
-      this.arenaQueue2v2.splice(ui, 1);
-      return true;
-    }
-    const fi = this.arenaQueueFiesta.findIndex((u) => u.pids.includes(pid));
-    if (fi >= 0) {
-      this.arenaQueueFiesta.splice(fi, 1);
-      return true;
-    }
-    return false;
-  }
-
-  private freeArenaSlot(): number | null {
-    for (let i = 0; i < ARENA_SLOT_COUNT; i++) {
-      if (!this.arenaBusySlots.has(i)) return i;
-    }
-    return null;
+    return arenaMod.arenaDequeue(this.ctx, pid);
   }
 
   private arenaTeamOf(match: ArenaMatch, pid: number): 'A' | 'B' | null {
-    if (match.teamA.includes(pid)) return 'A';
-    if (match.teamB.includes(pid)) return 'B';
-    return null;
+    return arenaMod.arenaTeamOf(this.ctx, match, pid);
   }
 
   arenaAllPids(match: ArenaMatch): number[] {
-    return [...match.teamA, ...match.teamB];
+    return arenaMod.arenaAllPids(match);
   }
 
   private arenaStanding(meta: PlayerMeta, format: ArenaFormat): ArenaStanding {
-    return format === '2v2'
-      ? { rating: meta.arena2v2Rating, wins: meta.arena2v2Wins, losses: meta.arena2v2Losses }
-      : { rating: meta.arenaRating, wins: meta.arenaWins, losses: meta.arenaLosses };
-  }
-
-  private arenaRatingForPid(pid: number, format: ArenaFormat): number {
-    const meta = this.players.get(pid);
-    return meta ? this.arenaStanding(meta, format).rating : ARENA_BASE_RATING;
-  }
-
-  private addArenaResult(
-    meta: PlayerMeta,
-    format: ArenaFormat,
-    delta: number,
-    won: boolean | null,
-  ): { before: number; after: number } {
-    const before = this.arenaStanding(meta, format).rating;
-    const after = Math.max(ARENA_MIN_RATING, before + delta);
-    if (format === '2v2') {
-      meta.arena2v2Rating = after;
-      if (won === true) meta.arena2v2Wins++;
-      else if (won === false) meta.arena2v2Losses++;
-    } else {
-      meta.arenaRating = after;
-      if (won === true) meta.arenaWins++;
-      else if (won === false) meta.arenaLosses++;
-    }
-    return { before, after };
-  }
-
-  private arenaTeamRating(pids: number[], format: ArenaFormat): number {
-    if (pids.length === 0) return ARENA_BASE_RATING;
-    let sum = 0;
-    for (const pid of pids) sum += this.arenaRatingForPid(pid, format);
-    return sum / pids.length;
+    return arenaMod.arenaStanding(meta, format);
   }
 
   private isArenaCrossTeam(match: ArenaMatch, attackerPid: number, targetPid: number): boolean {
-    const atkTeam = this.arenaTeamOf(match, attackerPid);
-    const tgtTeam = this.arenaTeamOf(match, targetPid);
-    if (!atkTeam || !tgtTeam || atkTeam === tgtTeam) return false;
-    if (this.arenaIsDown(match, attackerPid)) return false;
-    return !this.arenaIsDown(match, targetPid);
+    return arenaMod.isArenaCrossTeam(this.ctx, match, attackerPid, targetPid);
   }
 
-  // "Down" = out of the fight right now. Ranked bouts eliminate permanently
-  // (`defeated`); Fiesta only benches you until your respawn timer elapses.
   private arenaIsDown(match: ArenaMatch, pid: number): boolean {
-    if (match.fiesta) return match.fiesta.respawn.has(pid);
-    return match.defeated.has(pid);
+    return arenaMod.arenaIsDown(match, pid);
   }
 
   private isArenaTeamWiped(match: ArenaMatch, team: 'A' | 'B'): boolean {
-    const pids = team === 'A' ? match.teamA : match.teamB;
-    return pids.every((pid) => match.defeated.has(pid));
-  }
-
-  private arenaTeamHpFrac(match: ArenaMatch, team: 'A' | 'B'): number {
-    const pids = team === 'A' ? match.teamA : match.teamB;
-    let sum = 0,
-      count = 0;
-    for (const pid of pids) {
-      if (match.defeated.has(pid)) continue;
-      const e = this.entities.get(pid);
-      if (!e) continue;
-      sum += e.hp / Math.max(1, e.maxHp);
-      count++;
-    }
-    return count > 0 ? sum / count : 0;
+    return arenaMod.isArenaTeamWiped(match, team);
   }
 
   private arenaCombatants(pids: number[]): ArenaCombatant[] {
-    const out: ArenaCombatant[] = [];
-    for (const pid of pids) {
-      const meta = this.players.get(pid);
-      const e = this.entities.get(pid);
-      if (meta && e) out.push({ pid, name: meta.name, cls: meta.cls, level: e.level });
-    }
-    return out;
+    return arenaMod.arenaCombatants(this.ctx, pids);
   }
 
   private updateArena(): void {
-    this.matchmakeArena1v1();
-    this.matchmakeArena2v2();
-    const seen = new Set<ArenaMatch>();
-    for (const match of this.arenaMatches.values()) {
-      if (seen.has(match)) continue;
-      seen.add(match);
-      const missingA = match.teamA.some((pid) => !this.entities.get(pid));
-      const missingB = match.teamB.some((pid) => !this.entities.get(pid));
-      if (missingA || missingB) {
-        if (match.state === 'over') this.returnFromArena(match);
-        else {
-          let winner: 'A' | 'B' | null = null;
-          if (missingA && !missingB) winner = 'B';
-          else if (missingB && !missingA) winner = 'A';
-          this.endArenaMatch(match, winner, 'forfeit');
-        }
-        continue;
-      }
-      if (match.state === 'over') {
-        match.timer -= DT;
-        if (match.timer <= 0) this.returnFromArena(match);
-        continue;
-      }
-      const fighters = this.arenaAllPids(match)
-        .map((pid) => this.entities.get(pid)!)
-        .filter(Boolean);
-      if (match.state === 'countdown') {
-        const before = Math.ceil(match.timer);
-        match.timer -= DT;
-        const after = Math.ceil(match.timer);
-        if (after < before && after > 0) {
-          for (const mPid of this.arenaAllPids(match))
-            this.emit({ type: 'arenaCountdown', seconds: after, pid: mPid });
-        }
-        if (match.timer <= 0) {
-          match.state = 'active';
-          match.timer = 0;
-          for (const e of fighters) this.readyArenaFighter(e, { clearPrep: false });
-          for (const mPid of this.arenaAllPids(match)) {
-            this.emit({
-              type: 'log',
-              text: match.fiesta ? 'FIESTA — GO!' : 'Fight!',
-              color: '#ff5a3c',
-              pid: mPid,
-            });
-            this.emit({ type: 'arenaStart', pid: mPid });
-          }
-          if (match.fiesta) {
-            for (const mPid of this.arenaAllPids(match)) {
-              this.emit({
-                type: 'fiestaScore',
-                a: 0,
-                b: 0,
-                limit: match.fiesta.scoreLimit,
-                team: this.arenaTeamOf(match, mPid)!,
-                pid: mPid,
-              });
-            }
-          }
-        }
-        continue;
-      }
-      match.timer += DT;
-      if (match.fiesta) {
-        this.updateFiestaActive(match);
-        continue;
-      }
-      if (match.timer >= ARENA_MAX_DURATION) {
-        const fa = this.arenaTeamHpFrac(match, 'A');
-        const fb = this.arenaTeamHpFrac(match, 'B');
-        const winner = Math.abs(fa - fb) < 0.02 ? null : fa > fb ? 'A' : 'B';
-        this.endArenaMatch(match, winner, 'timeout');
-      }
-    }
+    arenaMod.updateArena(this.ctx);
   }
 
-  private matchmakeArena1v1(): void {
-    let guard = ARENA_SLOT_COUNT + 1;
-    while (guard-- > 0) {
-      this.arenaQueue1v1 = this.arenaQueue1v1.filter((id) => {
-        const e = this.entities.get(id);
-        return !!e && !e.dead && !this.arenaMatches.has(id);
-      });
-      if (this.arenaQueue1v1.length < 2 || this.freeArenaSlot() === null) return;
-      const aPid = this.arenaQueue1v1[0];
-      const aRating = this.arenaRatingForPid(aPid, '1v1');
-      let bPid = -1,
-        bestGap = Infinity;
-      for (let i = 1; i < this.arenaQueue1v1.length; i++) {
-        const id = this.arenaQueue1v1[i];
-        const gap = Math.abs(this.arenaRatingForPid(id, '1v1') - aRating);
-        if (gap < bestGap) {
-          bestGap = gap;
-          bPid = id;
-        }
-      }
-      if (bPid < 0) return;
-      this.arenaDequeue(aPid);
-      this.arenaDequeue(bPid);
-      this.startArenaMatch('1v1', [aPid], [bPid]);
-    }
-  }
-
-  private pruneTeamQueue(fmt: '2v2' | 'fiesta'): void {
-    const keep = (unit: ArenaQueueUnit) =>
-      unit.pids.every((id) => {
-        const e = this.entities.get(id);
-        return !!e && !e.dead && !this.arenaMatches.has(id);
-      });
-    if (fmt === 'fiesta') this.arenaQueueFiesta = this.arenaQueueFiesta.filter(keep);
-    else this.arenaQueue2v2 = this.arenaQueue2v2.filter(keep);
-  }
-
-  private removeTeamQueueUnits(units: ArenaQueueUnit[], fmt: '2v2' | 'fiesta'): void {
-    const queue = fmt === 'fiesta' ? this.arenaQueueFiesta : this.arenaQueue2v2;
-    for (const unit of units) {
-      const i = queue.indexOf(unit);
-      if (i >= 0) queue.splice(i, 1);
-    }
-  }
-
-  private matchmakeArena2v2(): void {
-    this.matchmakeTeamFormat('2v2');
-    this.matchmakeTeamFormat('fiesta');
-  }
-
-  // Shared 2v2 / Fiesta matchmaker: premades pair off first, then a premade is
-  // filled out against the two closest-rated solos, then four solos form two
-  // pairs. Identical for both formats — only the queue + spawned format differ.
-  private matchmakeTeamFormat(fmt: '2v2' | 'fiesta'): void {
-    let guard = ARENA_SLOT_COUNT + 1;
-    while (guard-- > 0) {
-      this.pruneTeamQueue(fmt);
-      if (this.freeArenaSlot() === null) return;
-      const queue = fmt === 'fiesta' ? this.arenaQueueFiesta : this.arenaQueue2v2;
-
-      const premades = queue.filter((u) => u.pids.length === 2);
-      if (premades.length >= 2) {
-        const anchor = premades[0];
-        let best = premades[1],
-          bestGap = Math.abs(premades[1].rating - anchor.rating);
-        for (let i = 2; i < premades.length; i++) {
-          const gap = Math.abs(premades[i].rating - anchor.rating);
-          if (gap < bestGap) {
-            bestGap = gap;
-            best = premades[i];
-          }
-        }
-        this.removeTeamQueueUnits([anchor, best], fmt);
-        this.startArenaMatch(fmt, anchor.pids, best.pids);
-        continue;
-      }
-
-      if (premades.length >= 1) {
-        const solos = queue.filter((u) => u.pids.length === 1);
-        if (solos.length >= 2) {
-          const premade = premades[0];
-          const anchorSolo = solos[0];
-          let partner = solos[1],
-            bestGap = Math.abs(solos[1].rating - anchorSolo.rating);
-          for (let i = 2; i < solos.length; i++) {
-            const gap = Math.abs(solos[i].rating - anchorSolo.rating);
-            if (gap < bestGap) {
-              bestGap = gap;
-              partner = solos[i];
-            }
-          }
-          this.removeTeamQueueUnits([premade, anchorSolo, partner], fmt);
-          this.startArenaMatch(fmt, premade.pids, [anchorSolo.pids[0], partner.pids[0]]);
-          continue;
-        }
-      }
-
-      const solos = queue.filter((u) => u.pids.length === 1);
-      if (solos.length >= 4) {
-        const anchor = solos[0];
-        let partner = solos[1],
-          bestGap = Math.abs(solos[1].rating - anchor.rating);
-        for (let i = 2; i < solos.length; i++) {
-          const gap = Math.abs(solos[i].rating - anchor.rating);
-          if (gap < bestGap) {
-            bestGap = gap;
-            partner = solos[i];
-          }
-        }
-        const teamASet = new Set([anchor.pids[0], partner.pids[0]]);
-        const rest = solos.filter((u) => !teamASet.has(u.pids[0]));
-        if (rest.length >= 2) {
-          this.removeTeamQueueUnits([anchor, partner, rest[0], rest[1]], fmt);
-          this.startArenaMatch(
-            fmt,
-            [anchor.pids[0], partner.pids[0]],
-            [rest[0].pids[0], rest[1].pids[0]],
-          );
-          continue;
-        }
-      }
-      return;
-    }
-  }
-
-  private startArenaMatch(format: ArenaFormat, teamA: number[], teamB: number[]): void {
-    const slot = this.freeArenaSlot();
-    const allPids = [...teamA, ...teamB];
-    const entities = allPids.map((pid) => this.entities.get(pid));
-    const metas = allPids.map((pid) => this.players.get(pid));
-    if (slot === null || entities.some((e) => !e) || metas.some((m) => !m)) {
-      if (format === '1v1') {
-        for (const pid of allPids) {
-          if (this.entities.get(pid) && !this.arenaMatches.has(pid))
-            this.arenaQueue1v1.unshift(pid);
-        }
-      } else {
-        const requeue = format === 'fiesta' ? this.arenaQueueFiesta : this.arenaQueue2v2;
-        const okA = teamA.every((pid) => this.entities.get(pid) && !this.arenaMatches.has(pid));
-        const okB = teamB.every((pid) => this.entities.get(pid) && !this.arenaMatches.has(pid));
-        if (okB) requeue.unshift({ pids: teamB, rating: this.arenaTeamRating(teamB, format) });
-        if (okA) requeue.unshift({ pids: teamA, rating: this.arenaTeamRating(teamA, format) });
-      }
-      return;
-    }
-    this.arenaBusySlots.add(slot);
-    const returns = new Map<number, { x: number; z: number; facing: number }>();
-    for (let i = 0; i < allPids.length; i++) {
-      const e = entities[i]!;
-      returns.set(allPids[i], { x: e.pos.x, z: e.pos.z, facing: e.facing });
-    }
-    const isFiesta = format === 'fiesta';
-    const countdown = isFiesta ? FIESTA_COUNTDOWN : ARENA_COUNTDOWN;
-    const match: ArenaMatch = {
-      id: this.nextArenaMatchId++,
-      format,
-      teamA,
-      teamB,
-      slot,
-      state: 'countdown',
-      timer: countdown,
-      returns,
-      ratingA: this.arenaTeamRating(teamA, format),
-      ratingB: this.arenaTeamRating(teamB, format),
-      defeated: new Set(),
-      fiesta: isFiesta ? this.createFiestaState() : undefined,
-    };
-    for (const pid of allPids) this.arenaMatches.set(pid, match);
-    const origin = arenaOrigin(slot);
-    if (format === '1v1') {
-      this.placeInArena(entities[0]!, origin, ARENA_SPAWN_A);
-      this.placeInArena(entities[1]!, origin, ARENA_SPAWN_B);
-    } else {
-      this.placeTeamInArena(teamA, origin, ARENA_SPAWNS_A_2v2);
-      this.placeTeamInArena(teamB, origin, ARENA_SPAWNS_B_2v2);
-    }
-    // Fiesta: everyone fights at a balanced level 20 — standardize before the
-    // clean-slate reset so countdown stats/abilities already reflect it.
-    if (isFiesta) {
-      for (let i = 0; i < allPids.length; i++) {
-        const m = metas[i];
-        const e = entities[i];
-        if (m && e) this.fiestaStandardize(m, e);
-      }
-    }
-    for (const e of entities) this.resetForArena(e!);
-    this.emitArenaFound(match);
-    const stepText = isFiesta
-      ? 'Welcome to the 2v2 FIESTA! Score takedowns, grab augments, survive the ring!'
-      : 'You step onto the sands of the Ashen Coliseum.';
-    for (const mPid of allPids) {
-      this.emit({ type: 'arenaCountdown', seconds: countdown, pid: mPid });
-      this.emit({
-        type: 'log',
-        text: stepText,
-        color: isFiesta ? '#ff3df0' : '#ffa040',
-        pid: mPid,
-      });
-    }
-  }
-
+  // A2: createFiestaState stays on Sim (Fiesta-state construction is A3-owned); the
+  // moved arena startArenaMatch reaches it via ctx.createFiestaState(). It seeds a
+  // per-match sub-Rng off the sim clock + match id (not the shared draw stream).
   private createFiestaState(): FiestaState {
     return {
       scoreA: 0,
@@ -11461,212 +10831,36 @@ export class Sim {
     };
   }
 
-  private emitArenaFound(match: ArenaMatch): void {
-    for (const pid of this.arenaAllPids(match)) {
-      const myTeam = this.arenaTeamOf(match, pid)!;
-      const allyPids = (myTeam === 'A' ? match.teamA : match.teamB).filter((p) => p !== pid);
-      const enemyPids = myTeam === 'A' ? match.teamB : match.teamA;
-      const allies = this.arenaCombatants(allyPids);
-      const enemies = this.arenaCombatants(enemyPids);
-      const primary = enemies[0];
-      if (!primary) continue;
-      this.emit({
-        type: 'arenaFound',
-        format: match.format,
-        oppName: enemies.map((e) => e.name).join(' & '),
-        oppClass: primary.cls,
-        oppLevel: primary.level,
-        allies,
-        enemies,
-        pid,
-      });
-    }
-  }
-
   private placeInArena(
     e: Entity,
     origin: { x: number; z: number },
     spawn: { x: number; z: number; facing: number },
   ): void {
-    e.pos = this.groundPos(origin.x + spawn.x, origin.z + spawn.z);
-    e.prevPos = { ...e.pos };
-    e.facing = spawn.facing;
-    e.prevFacing = spawn.facing;
-    this.rebucket(e);
+    arenaMod.placeInArena(this.ctx, e, origin, spawn);
   }
 
-  private placeTeamInArena(
-    pids: number[],
-    origin: { x: number; z: number },
-    spawns: { x: number; z: number; facing: number }[],
-  ): void {
-    for (let i = 0; i < pids.length; i++) {
-      const e = this.entities.get(pids[i]);
-      if (e) this.placeInArena(e, origin, spawns[i] ?? spawns[spawns.length - 1]);
-    }
-  }
-
-  // A clean slate so the bout is decided by play, not by what each fighter
-  // walked in carrying: full health/resource, cooldowns and combat reset.
   private resetForArena(e: Entity): void {
-    this.readyArenaFighter(e, { clearPrep: true });
+    arenaMod.resetForArena(this.ctx, e);
   }
 
   private readyArenaFighter(e: Entity, opts: { clearPrep: boolean }): void {
-    e.dead = false;
-    if (opts.clearPrep) {
-      e.auras = [];
-      e.cooldowns.clear();
-      e.ccDr.clear();
-    }
-    const meta = this.players.get(e.id);
-    if (meta) recalcPlayerStats(e, meta.cls, meta.equipment, this.playerMods(meta));
-    e.hp = e.maxHp;
-    e.resource = e.resourceType === 'mana' ? e.maxResource : e.resourceType === 'energy' ? 100 : 0;
-    e.targetId = null;
-    e.autoAttack = false;
-    e.queuedOnSwing = null;
-    e.castingAbility = null;
-    e.castRemaining = 0;
-    e.channeling = false;
-    e.comboPoints = 0;
-    e.comboTargetId = null;
-    e.gcdRemaining = 0;
-    e.swingTimer = 0;
-    e.chargeTargetId = null;
-    e.chargePath = [];
-    e.followTargetId = null;
-    e.combatTimer = 99;
-    e.inCombat = false;
-    e.sitting = false;
-    e.eating = null;
-    e.drinking = null;
+    arenaMod.readyArenaFighter(this.ctx, e, opts);
   }
 
-  // Decide a bout: score it (once), then either send survivors home now (a
-  // forfeit) or hold everyone on the sands for a brief aftermath before
-  // returning them. winnerTeam null = draw.
   private endArenaMatch(
     match: ArenaMatch,
     winnerTeam: 'A' | 'B' | null,
     reason: 'defeat' | 'timeout' | 'forfeit',
   ): void {
-    const ratingA0 = match.ratingA;
-    const ratingB0 = match.ratingB;
-    // Fiesta is unranked party play — it never moves the Elo ladder.
-    const ranked = !match.fiesta;
-    let deltaA: number;
-    if (!ranked) {
-      deltaA = 0;
-    } else if (winnerTeam === null) {
-      deltaA = eloDelta(ratingA0, ratingB0, 0.5);
-    } else if (winnerTeam === 'A') {
-      deltaA = eloDelta(ratingA0, ratingB0, 1);
-    } else {
-      deltaA = -eloDelta(ratingB0, ratingA0, 1);
-    }
-
-    const scoreTeam = (team: 'A' | 'B', delta: number, won: boolean | null) => {
-      const pids = team === 'A' ? match.teamA : match.teamB;
-      const enemies = team === 'A' ? match.teamB : match.teamA;
-      const enemyNames = enemies.map((pid) => this.players.get(pid)?.name ?? '?').join(' & ');
-      for (const pid of pids) {
-        const meta = this.players.get(pid);
-        if (!meta) continue;
-        // Fiesta is unranked party play — it never moves the ladder, so report
-        // an unchanged rating; ranked bouts go through the per-bracket updater.
-        let ratingBefore: number, ratingAfter: number;
-        if (ranked) {
-          ({ before: ratingBefore, after: ratingAfter } = this.addArenaResult(
-            meta,
-            match.format,
-            delta,
-            won,
-          ));
-        } else {
-          ratingBefore = ratingAfter = this.arenaStanding(meta, match.format).rating;
-        }
-        this.emit({
-          type: 'arenaEnd',
-          pid,
-          format: match.format,
-          draw: winnerTeam === null,
-          won: won === true,
-          oppName: enemyNames,
-          ratingBefore,
-          ratingAfter,
-          allies: this.arenaCombatants(pids.filter((p) => p !== pid)),
-          enemies: this.arenaCombatants(enemies),
-        });
-      }
-    };
-
-    const wonA = winnerTeam === null ? null : winnerTeam === 'A';
-    const wonB = winnerTeam === null ? null : winnerTeam === 'B';
-    scoreTeam('A', deltaA, wonA);
-    scoreTeam('B', -deltaA, wonB);
-
-    if (reason === 'forfeit') {
-      this.returnFromArena(match);
-      return;
-    }
-
-    const allPresent = this.arenaAllPids(match).every((pid) => this.entities.get(pid));
-    if (!allPresent) {
-      this.returnFromArena(match);
-      return;
-    }
-
-    for (const pid of this.arenaAllPids(match)) {
-      if (match.defeated.has(pid)) continue;
-      const e = this.entities.get(pid);
-      if (e) this.resetForArena(e);
-    }
-    match.state = 'over';
-    match.timer = ARENA_RETURN_DELAY;
-    const overText = match.fiesta
-      ? 'FIESTA OVER! What a party. Returning to the world…'
-      : 'The bout is decided. Returning to the world…';
-    for (const mPid of this.arenaAllPids(match)) {
-      this.emit({
-        type: 'log',
-        text: overText,
-        color: match.fiesta ? '#ff3df0' : '#ffa040',
-        pid: mPid,
-      });
-    }
+    arenaMod.endArenaMatch(this.ctx, match, winnerTeam, reason);
   }
 
-  // Teleport all fighters back to where they queued, fully cleansed, and
-  // release the instance slot.
   private returnFromArena(match: ArenaMatch): void {
-    for (const pid of this.arenaAllPids(match)) this.arenaMatches.delete(pid);
-    this.arenaBusySlots.delete(match.slot);
-    for (const pid of this.arenaAllPids(match)) {
-      const e = this.entities.get(pid);
-      const ret = match.returns.get(pid);
-      if (!e || !ret) continue;
-      // Fiesta augments + the level-20 standardization are bout-only — undo both
-      // before the player goes home so resetForArena recomputes their real stats.
-      if (match.fiesta) {
-        const meta = this.players.get(pid);
-        if (meta) {
-          this.fiestaRestoreChar(meta, e);
-          this.clearFiestaAugments(meta, e);
-        }
-      }
-      this.resetForArena(e);
-      e.pos = this.groundPos(ret.x, ret.z);
-      e.prevPos = { ...e.pos };
-      e.facing = ret.facing;
-      e.dead = false;
-      this.rebucket(e);
-      this.emit({ type: 'respawn', pid: e.id });
-    }
+    arenaMod.returnFromArena(this.ctx, match);
   }
 
   arenaMatchFor(pid: number): ArenaMatch | null {
-    return this.arenaMatches.get(pid) ?? null;
+    return arenaMod.arenaMatchFor(this.ctx, pid);
   }
 
   // -------------------------------------------------------------------------
