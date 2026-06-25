@@ -22,6 +22,7 @@ import type {
   FiestaState,
   InstanceSlot,
   Party,
+  PendingMobRespawn,
   PetState,
   PlayerMeta,
   ResolvedAbility,
@@ -108,10 +109,15 @@ export interface SimContextPrimitives {
   // I2a delve runs: the live run pool (seeded in the Sim ctor, never reassigned) and
   // the transient pet stash both stay Sim-owned (the disconnect path + serializePet
   // poke them); exposed here as live views the run module reads/mutates in place.
+  // (P1b also consumes delvePetStash; it is the same I2a-declared field, not re-added.
+  // P1b's nextId dedupes with I1's declaration above.)
   readonly delveRuns: DelveRun[];
   readonly delvePetStash: Map<number, PetState>;
   // Host-supplied UTC day string ('' = unknown) gating the delve daily reset.
   readonly utcDay: string;
+  // Wild-respawn queue (P1b: completeTame pushes the tamed beast's respawn). Live view;
+  // the backing array stays on Sim, mutated in place (push), so read-only ref.
+  readonly pendingMobRespawns: PendingMobRespawn[];
 }
 
 // Cross-system callbacks. Each signature mirrors the still-on-`Sim` method it
@@ -223,6 +229,14 @@ export interface SimContextCallbacks {
   summonPet(owner: Entity, templateId: string): void;
   petOf(ownerPid: number, includeDead?: boolean): Entity | null;
   completeTame(player: Entity, target: Entity): void;
+
+  // P1b pet commands also consume error / playerGcdFor / healingThreat / countItem,
+  // all declared elsewhere on the seam (A1/G1a, C4a, C2/C3, Q1) - deduped, not re-added.
+  // They add two NEW shared helpers that STAY on Sim: spendResource (healPet's Demon-Heal
+  // mana spend; C4a exports it as a sibling fn, not yet a ctx callback) and removeItem
+  // (feedPet consumes the inventory hub; L2 dedupes when it adds the identical decl).
+  spendResource(p: Entity, cost: number): void;
+  removeItem(itemId: string, count: number, pid?: number): void;
 
   // A1/T1 raid markers + party; Q1 quest-credit trio (kill/collect/turn-in credit,
   // foreign-called from handleDeath + the inventory hub + the interaction/crypt
@@ -565,6 +579,9 @@ export function createSimContext(host: SimContextHost): SimContext {
     get utcDay() {
       return host.utcDay;
     },
+    get pendingMobRespawns() {
+      return host.pendingMobRespawns;
+    },
     emit: host.emit,
     error: host.error,
     lockoutNowMs: host.lockoutNowMs,
@@ -612,6 +629,10 @@ export function createSimContext(host: SimContextHost): SimContext {
     summonPet: host.summonPet,
     petOf: host.petOf,
     completeTame: host.completeTame,
+    // P1b new shared-helper passthroughs (error/playerGcdFor/healingThreat/countItem
+    // already passed through elsewhere - deduped, not re-added).
+    spendResource: host.spendResource,
+    removeItem: host.removeItem,
     clearEntityMarker: host.clearEntityMarker,
     partyOf: host.partyOf,
     removeFromParty: host.removeFromParty,

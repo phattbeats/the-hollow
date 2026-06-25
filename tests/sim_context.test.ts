@@ -60,6 +60,10 @@ const CALLBACK_KEYS = [
   'summonPet',
   'petOf',
   'completeTame',
+  // P1b new shared-helper keys (error/playerGcdFor/healingThreat/countItem already listed
+  // elsewhere - deduped, not re-added).
+  'spendResource',
+  'removeItem',
   'clearEntityMarker',
   'partyOf',
   'removeFromParty',
@@ -223,6 +227,7 @@ function makeFakeHost() {
     delveRuns: [],
     delvePetStash: new Map(),
     utcDay: '',
+    pendingMobRespawns: [],
     emit: vi.fn(),
     error: vi.fn(),
     dealDamage: vi.fn(),
@@ -265,6 +270,10 @@ function makeFakeHost() {
     summonPet: vi.fn(),
     petOf: vi.fn(() => null),
     completeTame: vi.fn(),
+    // P1b new shared-helper stubs (error/playerGcdFor/healingThreat/countItem stubbed
+    // elsewhere in this host - deduped).
+    spendResource: vi.fn(),
+    removeItem: vi.fn(),
     clearEntityMarker: vi.fn(),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),

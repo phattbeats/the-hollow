@@ -22,6 +22,7 @@ import { arenaOrigin, MOBS, DELVES, QUESTS } from '../../src/sim/data';
 import { createMob } from '../../src/sim/entity';
 import { Sim } from '../../src/sim/sim';
 import { solveLockActions } from '../../src/sim/lockpick';
+import { addThreat } from '../../src/sim/threat';
 import { DT, FISHING_CAST_ID, MAX_LEVEL, type Aura, type Entity } from '../../src/sim/types';
 import { terrainHeight } from '../../src/sim/world';
 import type { Recorder, Scenario } from './record';
@@ -516,6 +517,144 @@ function petAi(): Scenario {
       teleport(sim, p, p.pos.x + 25, p.pos.z);
       rec.snapshot('heel');
       rec.tick(60); // pets route home; owner regen resumes after the linger window
+    },
+  };
+}
+
+// P1b pet commands/lifecycle: the command surface + create/destroy/persist plumbing
+// the hunter_pet/warlock_pet/pet_ai goldens leave UNPINNED. A hunter tames a beast
+// (completeTame -> syncPetLevel), cycles pet mode (passive clears aggro/inCombat/
+// autoAttack), feeds it (feed_pet HoT replace-then-apply), petTaunts a hostile target
+// (applyTaunt manual arm + PET_GROWL_INTERVAL), then ABANDONS it with a mob aggroed
+// on the pet so despawnPersistentPet's threat-scrub + retargetMob draws; then re-tames,
+// revives a dead pet, and a stow/restore round-trip (serializePet -> despawnPersistentPet
+// -> restorePet). A warlock summons a demon, channels Demon Heal (applyDemonHealTick:
+// heal2 + healingThreat), swaps demons (despawnPersistentPet + the "answers your summons"
+// vs "fades back into the void" branches), then stows a demon so despawnPet runs its
+// player-target + threat scrub (retargetMob draw). The despawn scrubs are the slice's
+// only rng draws, so the draw-order log pins them; the snapshots pin every state change.
+function petCommands(): Scenario {
+  return {
+    name: 'pet_commands',
+    coverage: [
+      'class:hunter (tame/feed/revive/abandon/stow)',
+      'class:warlock (summon/demon-swap/healPet channel)',
+      'completeTame + syncPetLevel (tamePet target -> owned pet scaled to owner)',
+      'despawnPersistentPet threat-scrub + retargetMob (abandon, demon swap, stow beast)',
+      'despawnPet player-target + threat scrub + retargetMob (stow demon)',
+      'feedPet feed_pet HoT (replace-then-apply)',
+      'revivePet (dead pet -> alive at 35%)',
+      'setPetMode passive clears aggroTargetId/inCombat/autoAttack',
+      'applyDemonHealTick (heal2 + healingThreat) via the Demon Heal channel',
+      'petTaunt -> applyTaunt manual arm + PET_GROWL_INTERVAL cooldown',
+      'stowPetForDelve/restorePetFromDelveStash (serializePet/restorePet round-trip)',
+    ],
+    build: () => new Sim({ seed: 1017, playerClass: 'hunter', autoEquip: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      sim.setPlayerLevel(12);
+      const hunter = sim.player as AnyEntity;
+      const hid = sim.playerId as number;
+      beef(hunter);
+
+      // --- HUNTER: tame -> setMode -> feed ---
+      const wolf = spawnMob(sim, 'forest_wolf', 2, hunter.pos.x + 4, hunter.pos.y, hunter.pos.z);
+      rec.track(wolf.id);
+      (sim as any).completeTame(hunter, wolf); // tamePet effect target -> owned pet, syncPetLevel to owner
+      const pet = sim.petOf(hid) as AnyEntity;
+      rec.notes.petId = pet.id;
+      rec.track(pet.id);
+
+      sim.setPetMode('aggressive');
+      pet.aggroTargetId = wolf.id; // give passive something to clear
+      pet.inCombat = true;
+      pet.autoAttack = true;
+      sim.setPetMode('passive'); // clears aggroTargetId/inCombat/autoAttack
+      rec.snapshot('pet-passive');
+      sim.setPetMode('defensive');
+
+      pet.hp = Math.max(1, Math.floor(pet.maxHp * 0.5)); // wound so feed lands
+      sim.addItem('baked_bread', 1, hid);
+      sim.feedPet('baked_bread'); // feed_pet HoT applied (replace-then-apply)
+      rec.snapshot('pet-fed');
+      rec.tick(40); // feed HoT ticks
+
+      // --- HUNTER: petTaunt then ABANDON (despawnPersistentPet retarget scrub draw) ---
+      const biter = spawnMob(sim, 'forest_wolf', 8, pet.pos.x + 1, pet.pos.y, pet.pos.z);
+      beef(biter);
+      biter.hostile = true;
+      addThreat(biter, pet.id, 50);
+      addThreat(biter, hid, 30);
+      biter.aggroTargetId = pet.id;
+      biter.targetId = pet.id;
+      rec.track(biter.id);
+      pet.petTauntTimer = 0;
+      pet.aggroTargetId = biter.id;
+      sim.petTaunt(); // applyTaunt manual arm + PET_GROWL_INTERVAL
+      rec.snapshot('pet-taunt');
+      biter.aggroTargetId = pet.id; // force the scrub branch in despawnPersistentPet
+      sim.abandonPet(); // despawnPersistentPet(pet): threat-scrub + retargetMob(biter) draw
+      rec.snapshot('pet-abandoned');
+
+      // --- HUNTER: re-tame -> revive a dead pet -> stow/restore round-trip ---
+      const wolf2 = spawnMob(sim, 'forest_wolf', 2, hunter.pos.x + 4, hunter.pos.y, hunter.pos.z);
+      rec.track(wolf2.id);
+      (sim as any).completeTame(hunter, wolf2);
+      const pet2 = sim.petOf(hid) as AnyEntity;
+      rec.notes.pet2Id = pet2.id;
+      rec.track(pet2.id);
+      pet2.dead = true; // a dead pet to revive
+      pet2.hp = 0;
+      rec.snapshot('pet-dead');
+      sim.revivePet(); // back to life at 35% hp
+      rec.snapshot('pet-revived');
+      (sim as any).stowPetForDelve(hid); // serializePet + despawnPersistentPet (beast, not demon)
+      rec.snapshot('pet-stowed');
+      (sim as any).restorePetFromDelveStash(hid); // restorePet from the stash snapshot
+      rec.snapshot('pet-restored');
+
+      // --- WARLOCK: summon -> Demon Heal channel -> demon swap -> despawnPet ---
+      const wpid = sim.addPlayer('warlock', 'Demonist') as number;
+      sim.setPlayerLevel(12, wpid);
+      const warlock = sim.entities.get(wpid) as AnyEntity;
+      teleport(sim, warlock, hunter.pos.x + 30, hunter.pos.z);
+      beef(warlock);
+      warlock.resource = warlock.maxResource;
+      rec.track(wpid);
+
+      (sim as any).summonPet(warlock, 'imp'); // createDemonPet -> "answers your summons"
+      const imp = sim.petOf(wpid) as AnyEntity;
+      rec.notes.impId = imp.id;
+      rec.track(imp.id);
+      imp.hp = Math.max(1, Math.floor(imp.maxHp * 0.4)); // wound so Demon Heal lands
+      sim.healPet(wpid); // Demon Heal channel start (castStart)
+      rec.snapshot('demon-heal-start');
+      rec.tick(40); // applyDemonHealTick fires: heal2 + healingThreat
+      rec.snapshot('demon-heal-tick');
+
+      (sim as any).summonPet(warlock, 'voidwalker'); // different template: despawnPersistentPet(imp) + "answers"
+      const vw = sim.petOf(wpid) as AnyEntity;
+      rec.notes.voidId = vw.id;
+      rec.track(vw.id);
+      (sim as any).summonPet(warlock, 'voidwalker'); // same template, alive: "fades back into the void" (no new pet)
+      rec.snapshot('demon-faded');
+
+      // despawnPet (demon hard despawn): re-summon, point a player target + mob threat at it, stow the demon.
+      (sim as any).summonPet(warlock, 'imp');
+      const imp2 = sim.petOf(wpid) as AnyEntity;
+      rec.notes.imp2Id = imp2.id;
+      rec.track(imp2.id);
+      hunter.targetId = imp2.id; // player-target scrub target
+      const hater = spawnMob(sim, 'forest_wolf', 8, imp2.pos.x + 1, imp2.pos.y, imp2.pos.z);
+      beef(hater);
+      hater.hostile = true;
+      addThreat(hater, imp2.id, 40);
+      addThreat(hater, wpid, 20);
+      hater.aggroTargetId = imp2.id;
+      hater.targetId = imp2.id;
+      rec.track(hater.id);
+      (sim as any).stowPetForDelve(wpid); // demon -> despawnPet: scrub hunter.targetId + retargetMob(hater) draw
+      rec.snapshot('demon-despawned');
     },
   };
 }
@@ -2726,6 +2865,7 @@ export const SCENARIOS: Scenario[] = [
   hunterPet(),
   warlockPet(),
   petAi(),
+  petCommands(),
   paladinConsecration(),
   arena1v1(),
   fiesta(),

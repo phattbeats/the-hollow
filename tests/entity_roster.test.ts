@@ -106,6 +106,7 @@ function makeCtx() {
     delveRuns: [],
     delvePetStash: new Map(),
     utcDay: '',
+    pendingMobRespawns: [],
     emit,
     error: vi.fn(),
     clearEntityMarker,
@@ -150,6 +151,10 @@ function makeCtx() {
     summonPet: vi.fn(),
     petOf: vi.fn(() => null),
     completeTame: vi.fn(),
+    // P1b new shared-helper stubs (error/playerGcdFor/healingThreat/countItem stubbed
+    // elsewhere in this host - deduped).
+    spendResource: vi.fn(),
+    removeItem: vi.fn(),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
     dropPartyMarkers: vi.fn(),

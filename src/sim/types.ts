@@ -44,6 +44,9 @@ export const DELVE_PLATE_RADIUS = 2.5;
 // Max purchasable companion rank. Shared by the I2a run module (companionUpgrade cap)
 // and the I2c companion AI (delves/companion.ts: updateDelveCompanion heal-pct index).
 export const DELVE_COMPANION_MAX_RANK = 3;
+// The warlock Demon Heal channel id. Shared by the casting/channel path on Sim (C4a
+// relocation) and the P1b pet-command healPet/applyDemonHealTick slice; here so both
+// import it cycle-free. (P1b's identical relocation deduped to this one decl.)
 export const DEMON_HEAL_CAST_ID = 'demon_heal';
 // Companion heal cadence (seconds). Shared by the I2c companion AI (delves/companion.ts:
 // updateDelveCompanion wanderTimer reset) and Sim.spawnDelveCompanion (initial timer).
@@ -61,6 +64,12 @@ export type PlayerClass =
   | 'mage'
   | 'warlock'
   | 'druid';
+
+// Classes that command a persistent pet (hunter beast, warlock demon). Pure
+// predicate, here so the pet-command slice imports it without a sim.ts cycle.
+export function isPetClass(cls: PlayerClass): boolean {
+  return cls === 'hunter' || cls === 'warlock';
+}
 // '1v1'/'2v2' are the ranked Ashen Coliseum ladders; 'fiesta' is the
 // dopamine-maxxed 2v2 party mode (score-based, respawns, augments, a shrinking
 // ring) — see docs/design and the Fiesta region of sim.ts.

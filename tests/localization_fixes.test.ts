@@ -697,9 +697,9 @@ function scanEmitCandidates(simSrc: string, serverSrc: string): Cand[] {
   }
   // `this.error` on Sim, `this.ctx.error` from class modules (A1+ social/*.ts), and
   // bare `ctx.error` from free-function modules (G1a progression/talents.ts, I1
-  // instances/dungeons.ts, C4a combat/casting_lifecycle.ts) are the same player-facing
-  // error sink. `(?:this|ctx)\.error` matches all three (it catches this.ctx.error via
-  // the trailing ctx.error).
+  // instances/dungeons.ts, C4a combat/casting_lifecycle.ts, P1b pet/pet_commands.ts) are
+  // the same player-facing error sink. `(?:this|ctx)\.error` matches all three (it catches
+  // this.ctx.error via the trailing ctx.error).
   const er = new RegExp(`(?:this|ctx)\\.error\\([^,]+,\\s*${lit}\\s*\\)`, 'g');
   for (const m of simSrc.matchAll(er)) cands.push({ type: 'error', tmpl: unq(m[1]) });
   // Variable-routed sim emits: this/ctx.notice(pid, '<lit>') (emits 'log') and
@@ -766,7 +766,9 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
   // M2 -> src/sim/mob/locomotion.ts (the boss "unleashes" lines), M3 ->
   // src/sim/mob/mob_swing.ts (the knockback "unleashes" line), M4 ->
   // src/sim/mob/lifecycle.ts (the death-throes "begins to swell" / "flies into a frenzy" /
-  // corpse "bursts in a cloud of" lines), I1 -> src/sim/instances/dungeons.ts (raid-door
+  // corpse "bursts in a cloud of" lines), P1b -> src/sim/pet/pet_commands.ts (the pet
+  // command/lifecycle toasts: abandon/feed/summon/heal/rename, via this.ctx.* / ctx.*),
+  // I1 -> src/sim/instances/dungeons.ts (raid-door
   // seals, lockout, "instances busy"), I2a -> src/sim/delves/runs.ts (delve enter/clear/
   // advance/reward/grave-rite, interact guards, run-failed), I2b ->
   // src/sim/delves/lockpick_controller.ts (lockpick engage/abort guards, jam errors,
@@ -792,6 +794,7 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/locomotion.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/mob_swing.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/lifecycle.ts'), 'utf8'),
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/pet/pet_commands.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/instances/dungeons.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/runs.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/lockpick_controller.ts'), 'utf8'),
