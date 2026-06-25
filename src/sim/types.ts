@@ -12,8 +12,8 @@ export const INTERACT_RANGE = 5;
 // Pet tuning shared between the pet-AI slice (src/sim/pet/pet_ai.ts) and code that
 // stays on Sim, so it lives in this neutral module (the slice-only PET_* consts live
 // in pet_ai.ts). PET_GROWL_INTERVAL is read by the moved updatePet auto-taunt arm AND
-// the on-Sim manual-growl command; PET_TELEPORT_DISTANCE by the moved petFollow heel
-// AND an on-Sim follow check.
+// the on-Sim manual-growl command; PET_TELEPORT_DISTANCE by the moved petFollow heel,
+// an on-Sim follow check, AND the I2c delve companion AI (delves/companion.ts) heel warp.
 export const PET_GROWL_INTERVAL = 10; // controlled pets can tank by forcing attention
 export const PET_TELEPORT_DISTANCE = 60; // owner this far AND no route exists: pet warps to heel (last resort)
 // Leash distance: how far a pulled mob may be dragged from its leash anchor before
@@ -42,9 +42,14 @@ export const INSTANCE_EMPTY_TIMEOUT = 300;
 // controller still on Sim (resolveLockChest proximity gate). Relocated from sim.ts.
 export const DELVE_PLATE_RADIUS = 2.5;
 // Max purchasable companion rank. Shared by the I2a run module (companionUpgrade cap)
-// and the I2c companion AI still on Sim (updateDelveCompanion heal-pct index).
+// and the I2c companion AI (delves/companion.ts: updateDelveCompanion heal-pct index).
 export const DELVE_COMPANION_MAX_RANK = 3;
 export const DEMON_HEAL_CAST_ID = 'demon_heal';
+// Companion heal cadence (seconds). Shared by the I2c companion AI (delves/companion.ts:
+// updateDelveCompanion wanderTimer reset) and Sim.spawnDelveCompanion (initial timer).
+export const DELVE_COMPANION_HEAL_INTERVAL = 3;
+// PET_TELEPORT_DISTANCE (the pet/companion last-resort heel warp) was relocated to this
+// module by P1a (above); the I2c companion AI shares that same const, not re-declared here.
 
 export type PlayerClass =
   | 'warrior'

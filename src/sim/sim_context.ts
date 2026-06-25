@@ -436,6 +436,11 @@ export interface SimContextCallbacks {
   // the imp bolt) and isHostileTo (C4a decl above, ~20 Sim callers) are already declared,
   // not re-declared here.
   syncPetAspect(pet: Entity, owner: Entity): void;
+
+  // I2c delve companion AI (delves/companion.ts): updateDelveCompanion flips points-at to
+  // delves/companion (the binding flips in sim.ts; the decl is M2's, declared above). The
+  // shared helpers it consumes (mobSwing/moveToward/isHostileTo/isRooted/moveSpeedMult/
+  // swingIntervalMult) are already declared above (M2/C4a), not re-declared here.
 }
 
 // The seam consumed by extracted modules.
