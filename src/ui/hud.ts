@@ -38,17 +38,9 @@ import {
   skinRankOrder,
 } from '../sim/content/skins';
 import {
-  cloneAllocation,
-  dormantNodes,
-  exportBuild,
   FIRST_TALENT_LEVEL,
-  importBuild,
-  pointsSpent,
-  type Role,
   type TalentAllocation,
-  type TalentNode,
   talentsFor,
-  validateAllocation,
 } from '../sim/content/talents';
 import type { ZoneDef } from '../sim/data';
 import {
@@ -265,8 +257,8 @@ import { localizeSimAuraName, localizeSimText } from './sim_i18n';
 import { buildStatTooltip, type StatId, type StatTooltipModel, weaponDps } from './stat_tooltip';
 import { type StatTooltipI18n, statCellHtml, statTooltipHtml } from './stat_tooltip_view';
 import { nearestSubzone } from './subzone';
-import { localizeTalentTitle, tTalent } from './talent_i18n';
-import { talentChoiceIconDataUrl, talentNodeIconDataUrl } from './talent_icons';
+import { localizeTalentTitle, roleLabel, tTalent } from './talent_i18n';
+import { TalentsWindow } from './talents_window';
 import {
   PRESET_ORDER,
   type PresetId,
@@ -1013,9 +1005,9 @@ export class Hud {
   private lastPetBarSig = '';
   private pendingPetFeed = false;
   private petModeMenuOpen = false;
-  // Talents: a local staged allocation the user edits before committing (Apply).
+  // Talents: the local staged allocation the user edits before committing it on save
+  // or loadout switch. Owned here; TalentsWindow reads/replaces it via its deps.
   private talentStage: TalentAllocation | null = null;
-  private talentTab: 'class' | 'spec' = 'class';
 
   constructor(
     private sim: IWorld,
@@ -1615,9 +1607,9 @@ export class Hud {
         }
         break;
       case 'talents-window':
-        el.style.display = 'none';
-        this.talentStage = null;
-        this.hideTooltip();
+        // Route through the painter so the staged buffer is dropped AND focus
+        // returns to the opener (WCAG), consistent with the toggle/X close path.
+        this.talentsWindow.close();
         break;
       case 'emote-editor':
         this.closeEmoteEditor();
@@ -2343,6 +2335,38 @@ export class Hud {
     itemTooltip: (item) => this.itemTooltip(item),
     attachTooltip: (el, html) => this.attachTooltip(el, html),
   };
+  // The interactive talents window. Hud stays the coordinator (closeOtherWindows
+  // needs its private window state) and owns the single staged edit buffer
+  // (talentStage); the painter reads/replaces it via getStage/setStage and mutates
+  // it in place. All closures are lazy, so this field initializer is safe even
+  // though this.sim is assigned in the ctor body.
+  private readonly talentsWindow = new TalentsWindow({
+    ...this.presentationBag,
+    root: () => $('#talents-window'),
+    hideTooltip: () => this.hideTooltip(),
+    captureFocus: () => this.currentFocusableElement(),
+    restoreFocus: (target) => this.restoreFocus(target),
+    getStage: () => this.talentStage,
+    setStage: (s) => {
+      this.talentStage = s;
+    },
+    playerClass: () => this.sim.cfg.playerClass,
+    totalPoints: () => this.sim.talentPoints().total,
+    currentAllocation: () => this.sim.talents,
+    activeLoadout: () => this.sim.activeLoadout,
+    loadouts: () => this.sim.loadouts,
+    currentBar: () => this.hotbarActions.map((a) => (a && a.type === 'ability' ? a.id : null)),
+    saveLoadout: (name, bar, alloc) => this.sim.saveLoadout(name, bar, alloc),
+    switchLoadout: (i) => this.sim.switchLoadout(i),
+    deleteLoadout: (i) => this.sim.deleteLoadout(i),
+    applyLoadoutBar: (bar) => this.applyLoadoutBar(bar),
+    buildDropdown: (options, current, onChange, placeholder, a11y) =>
+      this.buildDropdown(options, current, onChange, placeholder, a11y),
+    inputDialog: (opts) => this.inputDialog(opts),
+    confirmDialog: (title, body, okText, cancelText, onOk) =>
+      this.confirmDialog(title, body, okText, cancelText, onOk),
+    showError: (text) => this.showError(text),
+  });
 
   private drawPlayerFramePortrait(): void {
     this.portraits.drawClass(
@@ -10138,7 +10162,7 @@ export class Hud {
       : t('game.talents.noSpec');
     let html = `<div class="char-progression"><div class="cp-title">${t('game.talents.specTab')}</div>`;
     html += `<div class="char-stats cp-stats"><span>${t('game.talents.specTab')}: <b>${specName}</b></span>`;
-    if (sp) html += `<span>${t('game.talents.role')}: <b>${this.roleLabel(sp.role)}</b></span>`;
+    if (sp) html += `<span>${t('game.talents.role')}: <b>${roleLabel(sp.role)}</b></span>`;
     html += `</div>`;
     if (sp)
       html += `<div class="cp-milestones"><span class="cp-ms-label">${t('game.talents.mastery')}:</span> <b style="color:var(--gold)">${esc(tTalent({ kind: 'talentMastery', spec: sp, field: 'name' }))}</b> <span class="cp-none">${esc(tTalent({ kind: 'talentMastery', spec: sp, field: 'description' }))}</span></div>`;
@@ -10431,75 +10455,6 @@ export class Hud {
     });
   }
 
-  // classic-MMO-style choice-node picker: clicking an octagon node opens a flyout of its
-  // options; selecting one assigns it (spending a point if needed). Anchored to
-  // the node, closes on click-away.
-  private openChoicePopup(anchor: HTMLElement, node: TalentNode, stage: TalentAllocation): void {
-    document.getElementById('tal-choice-pop')?.remove();
-    const cls = this.sim.cfg.playerClass;
-    const total = this.sim.talentPoints().total;
-    const ranks = stage.ranks[node.id] ?? 0;
-    const pop = document.createElement('div');
-    pop.id = 'tal-choice-pop';
-    pop.className = 'tal-choice-pop';
-    pop.setAttribute('role', 'menu');
-    pop.setAttribute('aria-label', tTalent({ kind: 'talentNode', node, field: 'name' }));
-    pop.innerHTML = (node.choices ?? [])
-      .map((o) => {
-        const sel = stage.choices[node.id] === o.id;
-        return (
-          `<div class="tal-choice-opt${sel ? ' sel' : ''}" role="menuitemradio" tabindex="0" aria-checked="${sel}" data-opt="${esc(o.id)}"><span class="tco-icon" style="background-image:url(${esc(talentChoiceIconDataUrl(o))})"></span>` +
-          `<span class="tco-text"><b>${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'name' }))}</b><span>${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'description' }))}</span></span></div>`
-        );
-      })
-      .join('');
-    document.body.appendChild(pop);
-    const r = anchor.getBoundingClientRect();
-    const preferredLeft = r.left + r.width / 2 - pop.offsetWidth / 2;
-    const left = Math.max(8, Math.min(window.innerWidth - pop.offsetWidth - 8, preferredLeft));
-    const top = Math.max(8, Math.min(window.innerHeight - pop.offsetHeight - 8, r.bottom + 12));
-    const caretLeft = Math.max(14, Math.min(pop.offsetWidth - 14, r.left + r.width / 2 - left));
-    pop.style.left = `${left}px`;
-    pop.style.top = `${top}px`;
-    pop.style.setProperty('--tal-choice-caret-left', `${caretLeft}px`);
-    const choose = (optEl: Element) => {
-      const optId = optEl.getAttribute('data-opt') ?? '';
-      if (ranks === 0) {
-        const cand = cloneAllocation(stage);
-        cand.ranks[node.id] = 1;
-        cand.choices[node.id] = optId;
-        if (!validateAllocation(cls, cand, total).ok) {
-          pop.remove();
-          return;
-        } // can't afford / gated
-        stage.ranks[node.id] = 1;
-      }
-      stage.choices[node.id] = optId;
-      pop.remove();
-      this.renderTalents();
-    };
-    pop.querySelectorAll('.tal-choice-opt').forEach((optEl) => {
-      optEl.addEventListener('click', (e) => {
-        e.stopPropagation();
-        choose(optEl);
-      });
-      optEl.addEventListener('keydown', (e) => {
-        const ke = e as KeyboardEvent;
-        if (ke.key === 'Escape') {
-          ke.preventDefault();
-          pop.remove();
-          anchor.focus();
-          return;
-        }
-        this.keyboardActivate(ke, () => choose(optEl));
-      });
-    });
-    const firstOpt = (pop.querySelector('.tal-choice-opt.sel') ??
-      pop.querySelector('.tal-choice-opt')) as HTMLElement | null;
-    firstOpt?.focus();
-    setTimeout(() => document.addEventListener('click', () => pop.remove(), { once: true }), 0);
-  }
-
   toggleLeaderboard(): void {
     const el = $('#leaderboard-window');
     if (el.style.display === 'block') {
@@ -10714,494 +10669,21 @@ export class Hud {
   }
 
   // -------------------------------------------------------------------------
-  // Talents & Specializations panel (bound to 'N'). Staged-edit model: the user
-  // edits a local copy (talentStage), then Apply commits the whole build via the
-  // server-authoritative IWorld.applyTalents (which re-validates). Class/Spec
-  // tabs, shape-coded nodes (square=active, circle=passive, octagon=choice),
-  // prereq arrows, dormant (red) dependents, loadouts, and import/export.
+  // Talents & Specializations panel (bound to 'N'). The interactive staged-edit
+  // window (tree, spec tabs, loadout footer) lives in TalentsWindow; Hud stays the
+  // coordinator (closeOtherWindows needs its private window state). The staged build
+  // commits through the server-authoritative IWorld on save / loadout switch /
+  // delete (saveLoadout / switchLoadout / deleteLoadout), never inline.
   // -------------------------------------------------------------------------
 
   toggleTalents(): void {
     const el = $('#talents-window');
     if (el.style.display === 'block') {
-      el.style.display = 'none';
-      this.hideTooltip();
-      this.talentStage = null;
+      this.talentsWindow.close();
       return;
     }
     this.closeOtherWindows('#talents-window');
-    this.talentStage = cloneAllocation(this.sim.talents);
-    this.renderTalents();
-    el.style.display = 'block';
-  }
-
-  private roleLabel(role: Role): string {
-    return role === 'tank'
-      ? t('game.talents.roleTank')
-      : role === 'healer'
-        ? t('game.talents.roleHealer')
-        : t('game.talents.roleDps');
-  }
-
-  private keyboardActivate(e: KeyboardEvent, action: () => void): void {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    e.preventDefault();
-    action();
-  }
-
-  renderTalents(): void {
-    const el = $('#talents-window');
-    if (el.style.display !== 'block' && this.talentStage === null) return;
-    const cls = this.sim.cfg.playerClass;
-    const ct = talentsFor(cls);
-    const close = `<span class="x-btn" data-close>${svgIcon('close')}</span>`;
-    if (!ct) {
-      el.innerHTML =
-        `<div class="panel-title"><span>${t('game.talents.title')} <span style="color:#998d6a;font-size:11px">${esc(classDisplayName(cls))}</span></span>${close}</div>` +
-        `<div class="tal-empty tal-coming-soon" data-talents-coming-soon>` +
-        `<b>${t('game.talents.comingSoonTitle')}</b>` +
-        `<span>${t('game.talents.comingSoonBody')}</span>` +
-        `</div>`;
-      el.querySelector('[data-close]')?.addEventListener('click', () => {
-        el.style.display = 'none';
-        this.hideTooltip();
-      });
-      return;
-    }
-    if (!this.talentStage) this.talentStage = cloneAllocation(this.sim.talents);
-    const stage = this.talentStage;
-    const total = this.sim.talentPoints().total;
-    const spent = pointsSpent(stage);
-    const treeSpent = (tree: 'class' | 'spec') =>
-      ct.nodes
-        .filter((n) => n.tree === tree && (tree === 'class' || n.specId === stage.spec))
-        .reduce((a, n) => a + (stage.ranks[n.id] ?? 0), 0);
-
-    el.innerHTML =
-      `<div class="panel-title"><span>${t('game.talents.title')} <span style="color:#998d6a;font-size:11px">${esc(classDisplayName(cls))}</span></span>${close}</div>` +
-      `<div class="tal-head"><span>${t('game.talents.available')}: <b>${Math.max(0, total - spent)}</b> / ${total}</span><span>${t('game.talents.spent')}: <b>${spent}</b></span></div>` +
-      `<div class="tal-help">${esc(t('game.talents.pointSource').replace('{first}', String(FIRST_TALENT_LEVEL)).replace('{cap}', String(MAX_LEVEL)))}</div>` +
-      `<div class="tal-tabs" role="tablist" aria-label="${esc(t('game.talents.title'))}">` +
-      `<div class="tal-tab${this.talentTab === 'class' ? ' active' : ''}" role="tab" tabindex="${this.talentTab === 'class' ? '0' : '-1'}" aria-selected="${this.talentTab === 'class'}" aria-controls="tal-body" data-tab="class"><span class="tal-tab-label">${t('game.talents.classTab')}</span><span class="tt-pts">${treeSpent('class')}</span></div>` +
-      `<div class="tal-tab${this.talentTab === 'spec' ? ' active' : ''}" role="tab" tabindex="${this.talentTab === 'spec' ? '0' : '-1'}" aria-selected="${this.talentTab === 'spec'}" aria-controls="tal-body" data-tab="spec"><span class="tal-tab-label">${t('game.talents.specTab')}</span><span class="tt-pts">${treeSpent('spec')}</span></div>` +
-      `</div><div id="tal-body" role="tabpanel"></div>` +
-      this.talentFooterHtml(stage, total, spent);
-
-    const switchTab = (tab: HTMLElement) => {
-      this.talentTab = tab.dataset.tab as 'class' | 'spec';
-      this.renderTalents();
-    };
-    el.querySelectorAll('.tal-tab').forEach((tab) => {
-      tab.addEventListener('click', () => switchTab(tab as HTMLElement));
-      tab.addEventListener('keydown', (e) =>
-        this.keyboardActivate(e as KeyboardEvent, () => switchTab(tab as HTMLElement)),
-      );
-    });
-    el.querySelector('[data-close]')?.addEventListener('click', () => {
-      el.style.display = 'none';
-      this.hideTooltip();
-      this.talentStage = null;
-    });
-
-    const body = el.querySelector('#tal-body') as HTMLElement;
-    if (this.talentTab === 'class') {
-      const tree = document.createElement('div');
-      tree.className = 'tal-tree';
-      body.appendChild(tree);
-      this.renderTalentTree(tree, ct, stage, 'class', undefined);
-    } else {
-      this.renderSpecTab(body, ct, stage);
-    }
-    this.wireTalentFooter(el, stage, total);
-  }
-
-  private renderSpecTab(
-    body: HTMLElement,
-    ct: NonNullable<ReturnType<typeof talentsFor>>,
-    stage: TalentAllocation,
-  ): void {
-    const picker = document.createElement('div');
-    picker.className = 'tal-specs';
-    picker.setAttribute('role', 'radiogroup');
-    picker.setAttribute('aria-label', t('game.talents.specTab'));
-    for (const sp of ct.specs) {
-      const card = document.createElement('div');
-      const selected = stage.spec === sp.id;
-      card.className = `tal-spec${selected ? ' sel' : ''}`;
-      card.setAttribute('role', 'radio');
-      card.setAttribute('tabindex', selected || !stage.spec ? '0' : '-1');
-      card.setAttribute('aria-checked', String(selected));
-      const specName = tTalent({ kind: 'talentSpec', spec: sp, field: 'name' });
-      const specDescription = tTalent({ kind: 'talentSpec', spec: sp, field: 'description' });
-      const masteryName = tTalent({ kind: 'talentMastery', spec: sp, field: 'name' });
-      const masteryDescription = tTalent({ kind: 'talentMastery', spec: sp, field: 'description' });
-      card.setAttribute('aria-label', `${specName}, ${this.roleLabel(sp.role)}`);
-      card.innerHTML = `<div class="ts-icon">${esc(sp.icon)}</div><div class="ts-name">${esc(specName)}</div><div class="ts-role">${this.roleLabel(sp.role)}</div>`;
-      this.attachTooltip(
-        card,
-        () =>
-          `<div class="tt-title">${esc(specName)}</div><div class="tt-sub">${esc(specDescription)}</div>` +
-          `<div class="tt-sub" style="color:#ffd100">${t('game.talents.signature')}: ${esc(ABILITIES[sp.signature] ? abilityDisplayName(ABILITIES[sp.signature]) : sp.signature)}</div>` +
-          `<div class="tt-sub">${t('game.talents.mastery')}: ${esc(masteryName)} — ${esc(masteryDescription)}</div>`,
-      );
-      card.addEventListener('click', () => this.stageSetSpec(stage, sp.id));
-      card.addEventListener('keydown', (e) =>
-        this.keyboardActivate(e as KeyboardEvent, () => this.stageSetSpec(stage, sp.id)),
-      );
-      picker.appendChild(card);
-    }
-    body.appendChild(picker);
-    const sp = ct.specs.find((s) => s.id === stage.spec);
-    if (!sp) {
-      const e = document.createElement('div');
-      e.className = 'tal-empty';
-      e.textContent = t('game.talents.chooseSpec');
-      body.appendChild(e);
-      return;
-    }
-    const m = document.createElement('div');
-    m.className = 'tal-mastery';
-    m.innerHTML = `<b>${t('game.talents.mastery')}: ${esc(tTalent({ kind: 'talentMastery', spec: sp, field: 'name' }))}</b> — ${esc(tTalent({ kind: 'talentMastery', spec: sp, field: 'description' }))}`;
-    body.appendChild(m);
-    const tree = document.createElement('div');
-    tree.className = 'tal-tree';
-    body.appendChild(tree);
-    this.renderTalentTree(tree, ct, stage, 'spec', sp.id);
-  }
-
-  private stageSetSpec(stage: TalentAllocation, specId: string): void {
-    if (stage.spec === specId) return;
-    stage.spec = specId;
-    const ct = talentsFor(this.sim.cfg.playerClass);
-    for (const id of Object.keys(stage.ranks)) {
-      const n = ct?.nodes.find((x) => x.id === id);
-      if (n?.tree === 'spec' && n.specId !== specId) {
-        delete stage.ranks[id];
-        delete stage.choices[id];
-      }
-    }
-    this.renderTalents();
-  }
-
-  private renderTalentTree(
-    host: HTMLElement,
-    ct: NonNullable<ReturnType<typeof talentsFor>>,
-    stage: TalentAllocation,
-    tree: 'class' | 'spec',
-    specId: string | undefined,
-  ): void {
-    const cls = this.sim.cfg.playerClass;
-    const nodes = ct.nodes.filter(
-      (n) => n.tree === tree && (tree === 'class' || n.specId === specId),
-    );
-    if (nodes.length === 0) {
-      host.innerHTML = `<div class="tal-empty">${t('game.talents.pickSpecFirst')}</div>`;
-      return;
-    }
-    const cols = Math.max(...nodes.map((n) => n.col)) + 1;
-    const rows = Math.max(...nodes.map((n) => n.row)) + 1;
-    const CW = 86,
-      CH = 70,
-      NS = 46,
-      TOP = 6;
-    const W = cols * CW,
-      H = rows * CH + TOP;
-    host.style.width = `${W}px`;
-    host.style.height = `${H}px`;
-    const cx = (n: TalentNode) => n.col * CW + CW / 2;
-    const cy = (n: TalentNode) => n.row * CH + TOP + NS / 2;
-    const byId = new Map(nodes.map((n) => [n.id, n]));
-    const dormant = dormantNodes(cls, stage);
-    const total = this.sim.talentPoints().total;
-
-    let svg = `<svg class="tal-arrows" width="${W}" height="${H}">`;
-    for (const n of nodes)
-      for (const req of n.requires ?? []) {
-        const r = byId.get(req);
-        if (!r) continue;
-        const filled = (stage.ranks[req] ?? 0) > 0;
-        svg += `<line x1="${cx(r)}" y1="${cy(r) + NS / 2}" x2="${cx(n)}" y2="${cy(n) - NS / 2}" stroke="${filled ? '#f5c843' : '#5a4a22'}" stroke-width="2"/>`;
-      }
-    host.insertAdjacentHTML('beforeend', `${svg}</svg>`);
-
-    for (const n of nodes) {
-      const ranks = stage.ranks[n.id] ?? 0;
-      const isDormant = dormant.has(n.id);
-      const cand = cloneAllocation(stage);
-      cand.ranks[n.id] = ranks + 1;
-      if (n.kind === 'choice' && !cand.choices[n.id] && n.choices?.[0]) {
-        cand.choices[n.id] = n.choices[0].id;
-      }
-      const canAdd = ranks < n.maxRank && validateAllocation(cls, cand, total).ok;
-      const shape = n.kind === 'active' ? 'square' : n.kind === 'choice' ? 'octagon' : 'circle';
-      const state = isDormant
-        ? 'dormant'
-        : ranks >= n.maxRank
-          ? 'maxed'
-          : ranks > 0
-            ? 'filled'
-            : canAdd
-              ? 'avail'
-              : 'locked';
-      const chosen =
-        n.kind === 'choice' ? n.choices?.find((c) => c.id === stage.choices[n.id]) : undefined;
-      const div = document.createElement('div');
-      div.className = `tal-node ${shape} ${state}`;
-      div.setAttribute('role', 'button');
-      div.setAttribute('tabindex', '0');
-      div.setAttribute('aria-pressed', String(ranks > 0));
-      if (!canAdd && ranks <= 0) div.setAttribute('aria-disabled', 'true');
-      const nodeName = tTalent({ kind: 'talentNode', node: n, field: 'name' });
-      const chosenLabel = chosen
-        ? `, ${tTalent({ kind: 'talentChoice', choice: chosen, field: 'name' })}`
-        : '';
-      div.setAttribute(
-        'aria-label',
-        `${nodeName}${chosenLabel}, ${t('game.talents.rank')} ${ranks}/${n.maxRank}`,
-      );
-      div.style.left = `${n.col * CW + (CW - NS) / 2}px`;
-      div.style.top = `${n.row * CH + TOP}px`;
-      const icon = document.createElement('span');
-      icon.className = 'tal-icon';
-      icon.style.backgroundImage = `url(${chosen ? talentChoiceIconDataUrl(chosen) : talentNodeIconDataUrl(n)})`;
-      div.appendChild(icon);
-      if (ranks > 0 || n.maxRank > 1) {
-        const badge = document.createElement('span');
-        badge.className = 'tal-rank';
-        badge.textContent = `${ranks}/${n.maxRank}`;
-        div.appendChild(badge);
-      }
-      this.attachTooltip(div, () => this.talentTooltip(n, stage, isDormant));
-      div.addEventListener('click', () => {
-        // octagon choice nodes open a classic-MMO-style option flyout; others add a rank
-        if (n.kind === 'choice') this.openChoicePopup(div, n, stage);
-        else this.talentNodeClick(stage, n);
-      });
-      div.addEventListener('keydown', (e) => {
-        const ke = e as KeyboardEvent;
-        if (ke.key === 'Backspace' || ke.key === 'Delete') {
-          ke.preventDefault();
-          this.talentNodeRemove(stage, n);
-          return;
-        }
-        this.keyboardActivate(ke, () => {
-          if (n.kind === 'choice') this.openChoicePopup(div, n, stage);
-          else this.talentNodeClick(stage, n);
-        });
-      });
-      div.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        this.talentNodeRemove(stage, n);
-      });
-      host.appendChild(div);
-    }
-  }
-
-  private talentNodeClick(stage: TalentAllocation, n: TalentNode): void {
-    const cls = this.sim.cfg.playerClass;
-    const total = this.sim.talentPoints().total;
-    const ranks = stage.ranks[n.id] ?? 0;
-    if (ranks >= n.maxRank) return;
-    const cand = cloneAllocation(stage);
-    cand.ranks[n.id] = ranks + 1;
-    if (!validateAllocation(cls, cand, total).ok) return;
-    stage.ranks[n.id] = ranks + 1;
-    this.renderTalents();
-  }
-
-  private talentNodeRemove(stage: TalentAllocation, n: TalentNode): void {
-    const ranks = stage.ranks[n.id] ?? 0;
-    if (ranks <= 0) return;
-    if (ranks - 1 <= 0) {
-      delete stage.ranks[n.id];
-      delete stage.choices[n.id];
-    } else stage.ranks[n.id] = ranks - 1;
-    this.renderTalents();
-  }
-
-  private talentTooltip(n: TalentNode, stage: TalentAllocation, isDormant: boolean): string {
-    const ranks = stage.ranks[n.id] ?? 0;
-    let html = `<div class="tt-title">${esc(tTalent({ kind: 'talentNode', node: n, field: 'name' }))}</div><div class="tt-sub">${esc(tTalent({ kind: 'talentNode', node: n, field: 'description' }))}</div>`;
-    if (n.kind === 'choice') {
-      for (const o of n.choices!) {
-        const sel = stage.choices[n.id] === o.id;
-        html += `<div class="tt-sub" style="color:${sel ? '#ffd100' : '#aaa'}"><span class="tt-opt-icon" style="background-image:url(${esc(talentChoiceIconDataUrl(o))})"></span> ${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'name' }))} — ${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'description' }))}</div>`;
-      }
-      html += `<div class="tt-sub" style="color:#8aa">${t('game.talents.cycleHint')}</div>`;
-    } else {
-      html += `<div class="tt-sub">${t('game.talents.rank')} ${ranks}/${n.maxRank}</div>`;
-    }
-    const ct = talentsFor(this.sim.cfg.playerClass);
-    if (n.requires?.length) {
-      const names = n.requires
-        .map((r) => {
-          const required = ct?.nodes.find((x) => x.id === r);
-          return required ? tTalent({ kind: 'talentNode', node: required, field: 'name' }) : r;
-        })
-        .join(', ');
-      html += `<div class="tt-sub" style="color:#caa">${t('game.talents.requires')}: ${esc(names)}</div>`;
-    }
-    if (n.pointsGate)
-      html += `<div class="tt-sub" style="color:#caa">${n.pointsGate} ${t('game.talents.pointsGate')}</div>`;
-    if (isDormant)
-      html += `<div class="tt-sub" style="color:#e0635a">${t('game.talents.dormant')}</div>`;
-    html += `<div class="tt-sub" style="color:#8aa">${t('game.talents.editHint')}</div>`;
-    return html;
-  }
-
-  private talentFooterHtml(stage: TalentAllocation, total: number, spent: number): string {
-    const cls = this.sim.cfg.playerClass;
-    const valid = validateAllocation(cls, stage, total).ok;
-    return (
-      `<div class="tal-foot">` +
-      `<section class="tal-build-card tal-build-current" aria-label="${esc(t('game.talents.currentBuild'))}">` +
-      `<div class="tal-build-head"><span>${t('game.talents.currentBuild')}</span><span class="tal-loadslot"></span></div>` +
-      `<div class="tal-build-actions">` +
-      `<button class="btn tal-primary" data-act="save"${valid ? '' : ' disabled'}>${t('game.talents.saveBuild')}</button>` +
-      `<button class="btn tal-secondary" data-act="export">${t('game.talents.export')}</button>` +
-      `<button class="btn tal-secondary" data-act="del"${this.sim.activeLoadout >= 0 ? '' : ' disabled'}>${t('game.talents.deleteBuild')}</button>` +
-      `<button class="btn tal-secondary" data-act="clear"${spent > 0 ? '' : ' disabled'}>${t('game.talents.clear')}</button>` +
-      `</div>` +
-      `<div class="tal-build-help">${t('game.talents.currentBuildHint')}</div>` +
-      `</section>` +
-      `<section class="tal-build-card tal-build-create" aria-label="${esc(t('game.talents.createBuild'))}">` +
-      `<div class="tal-build-head"><span>${t('game.talents.createBuild')}</span></div>` +
-      `<div class="tal-build-actions">` +
-      `<button class="btn tal-primary" data-act="new"${valid ? '' : ' disabled'}>${t('game.talents.newBuild')}</button>` +
-      `<button class="btn tal-secondary" data-act="import">${t('game.talents.import')}</button>` +
-      `</div>` +
-      `<div class="tal-build-help">${t('game.talents.createBuildHint')}</div>` +
-      `</section>` +
-      `</div>`
-    );
-  }
-
-  private wireTalentFooter(el: HTMLElement, stage: TalentAllocation, total: number): void {
-    const cls = this.sim.cfg.playerClass;
-    el.querySelector('[data-act="clear"]')?.addEventListener('click', () => {
-      stage.ranks = {};
-      stage.choices = {};
-      this.renderTalents();
-    });
-    const saveStagedBuild = (name: string): void => {
-      const n = name.trim();
-      if (!n) return;
-      this.sim.saveLoadout(
-        n,
-        this.hotbarActions.map((a) => (a && a.type === 'ability' ? a.id : null)),
-        cloneAllocation(stage),
-      );
-      this.talentStage = cloneAllocation(stage);
-      this.renderTalents();
-    };
-    const promptNewBuild = (): void => {
-      this.inputDialog({
-        title: t('game.talents.saveBuildAs'),
-        label: t('game.talents.namePrompt'),
-        value: t('hudChrome.talents.defaultBuildName', { n: this.sim.loadouts.length + 1 }),
-        okText: t('game.talents.save'),
-        selectText: true,
-        onOk: saveStagedBuild,
-      });
-    };
-    el.querySelector('[data-act="save"]')?.addEventListener('click', () => {
-      if (!validateAllocation(cls, stage, total).ok) {
-        this.showError(t('game.talents.buildInvalid'));
-        return;
-      }
-      const active = this.sim.activeLoadout >= 0 ? this.sim.loadouts[this.sim.activeLoadout] : null;
-      if (active) saveStagedBuild(active.name);
-      else promptNewBuild();
-    });
-    el.querySelector('[data-act="new"]')?.addEventListener('click', () => {
-      if (!validateAllocation(cls, stage, total).ok) {
-        this.showError(t('game.talents.buildInvalid'));
-        return;
-      }
-      promptNewBuild();
-    });
-    // in-app loadout dropdown (shared component, no native <select>)
-    const slot = el.querySelector('.tal-loadslot');
-    if (slot) {
-      const opts = this.sim.loadouts.length
-        ? this.sim.loadouts.map((l, i) => ({ value: String(i), label: l.name }))
-        : [{ value: '-1', label: t('game.talents.noBuilds') }];
-      const current =
-        this.sim.activeLoadout >= 0
-          ? String(this.sim.activeLoadout)
-          : this.sim.loadouts.length
-            ? ''
-            : '-1';
-      slot.replaceWith(
-        this.buildDropdown(
-          opts,
-          current,
-          (v) => {
-            const i = parseInt(v, 10);
-            const lo = this.sim.loadouts[i];
-            if (!lo) return;
-            this.sim.switchLoadout(i);
-            this.applyLoadoutBar(lo.bar);
-            this.talentStage = cloneAllocation(lo.alloc);
-            this.renderTalents();
-          },
-          t('game.talents.loadouts'),
-          { ariaLabel: t('game.talents.loadouts') },
-        ),
-      );
-    }
-    el.querySelector('[data-act="del"]')?.addEventListener('click', () => {
-      if (this.sim.activeLoadout < 0) {
-        this.showError(t('game.talents.selectBuildFirst'));
-        return;
-      }
-      const active = this.sim.loadouts[this.sim.activeLoadout];
-      if (!active) {
-        this.showError(t('game.talents.selectBuildFirst'));
-        return;
-      }
-      const body = t('game.talents.deleteBuildBody', { name: active.name });
-      this.confirmDialog(
-        t('game.talents.deleteBuildTitle'),
-        body,
-        t('game.talents.deleteBuildConfirm'),
-        t('game.talents.cancel'),
-        () => {
-          this.sim.deleteLoadout(this.sim.activeLoadout);
-          this.renderTalents();
-        },
-      );
-    });
-    el.querySelector('[data-act="export"]')?.addEventListener('click', () => {
-      const active = this.sim.activeLoadout >= 0 ? this.sim.loadouts[this.sim.activeLoadout] : null;
-      this.inputDialog({
-        title: t('game.talents.export'),
-        label: t('game.talents.exportTitle'),
-        value: exportBuild(cls, active?.alloc ?? stage),
-        multiline: true,
-        readOnly: true,
-        copy: true,
-        cancelText: t('game.talents.close'),
-      });
-    });
-    el.querySelector('[data-act="import"]')?.addEventListener('click', () => {
-      this.inputDialog({
-        title: t('game.talents.import'),
-        label: t('game.talents.importPrompt'),
-        placeholder: 'eyJ2Ijox…',
-        multiline: true,
-        okText: t('game.talents.import'),
-        onOk: (str) => {
-          const res = importBuild(str.trim());
-          if (!res.ok || res.cls !== cls) {
-            this.showError(t('game.talents.invalidBuild'));
-            return;
-          }
-          this.talentStage = res.alloc;
-          this.renderTalents();
-        },
-      });
-    });
+    this.talentsWindow.open();
   }
 
   // Restore a saved loadout's action bar into the per-class slot map (reuses the

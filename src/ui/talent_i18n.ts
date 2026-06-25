@@ -3,6 +3,7 @@ import {
   TALENTS,
   type ClassTalents,
   type GlobalModEffect,
+  type Role,
   type SpecDef,
   type StatModEffect,
   type TalentChoiceOption,
@@ -10,8 +11,20 @@ import {
   type TalentNode,
 } from '../sim/content/talents';
 import type { PlayerClass } from '../sim/types';
-import { getLanguage, languageTag, type SupportedLanguage } from './i18n';
+import { getLanguage, languageTag, t, type SupportedLanguage } from './i18n';
 import { tEntity } from './entity_i18n';
+
+// Localized UI label for a spec's combat role (tank/healer/dps). Shared by the
+// talents window (spec cards) and the character sheet's spec summary so the role
+// name reads identically in both. Distinct from the lowercased role words used to
+// generate talent descriptions (localeText.roleLabels below).
+export function roleLabel(role: Role): string {
+  return role === 'tank'
+    ? t('game.talents.roleTank')
+    : role === 'healer'
+      ? t('game.talents.roleHealer')
+      : t('game.talents.roleDps');
+}
 
 export type TalentTranslationKind = 'talentNode' | 'talentChoice' | 'talentSpec' | 'talentMastery';
 export type TalentTranslationField = 'name' | 'description';

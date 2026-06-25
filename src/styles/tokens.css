@@ -80,6 +80,15 @@
     --color-delve-label: #ffe9a0;
     --color-delve-outline: #000;
 
+    /* Talents window: tree arrows + tooltip accents (talents_window.ts references
+       these via var() so the painter carries no raw hex). Exact pre-existing values. */
+    --color-talent-arrow: #f5c843;
+    --color-talent-arrow-dim: #5a4a22;
+    --color-talent-opt-dim: #aaa;
+    --color-talent-hint: #8aa;
+    --color-talent-req: #caa;
+    --color-talent-dormant: #e0635a;
+
     --spacing-xs: 4px;
     --spacing-sm: 8px;
     --spacing-md: 16px;
