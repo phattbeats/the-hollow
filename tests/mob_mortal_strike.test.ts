@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Sim } from '../src/sim/sim';
+import { updateAuras } from '../src/sim/combat/auras';
 import { Aura, Entity } from '../src/sim/types';
 import { MOBS } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
@@ -31,7 +32,7 @@ describe('Mortal Strike healing-reduction debuff', () => {
 
     p.hp = 1000;
     p.auras.push(primedHot(100));
-    (sim as any).updateAuras(p);
+    updateAuras((sim as any).ctx,p);
     const baseline = p.hp - 1000;
     expect(baseline).toBe(100);
 
@@ -40,7 +41,7 @@ describe('Mortal Strike healing-reduction debuff', () => {
     p2.hp = 1000;
     p2.auras.push(woundAura(0.5));
     p2.auras.push(primedHot(100));
-    (sim as any).updateAuras(p2);
+    updateAuras((sim as any).ctx,p2);
     const reduced = p2.hp - 1000;
     expect(reduced).toBe(50);
   });
@@ -52,7 +53,7 @@ describe('Mortal Strike healing-reduction debuff', () => {
     p.hp = 1000;
     p.auras.push(woundAura(1));
     p.auras.push(primedHot(200));
-    (sim as any).updateAuras(p);
+    updateAuras((sim as any).ctx,p);
     expect(p.hp).toBe(1000);
   });
 
@@ -69,11 +70,11 @@ describe('Mortal Strike healing-reduction debuff', () => {
     const p = sim.entities.get(sim.playerId)!;
     p.maxHp = 100000;
     p.auras.push(woundAura(0.5, 0.05)); // one tick of life
-    (sim as any).updateAuras(p); // remaining -> 0 -> spliced
+    updateAuras((sim as any).ctx,p); // remaining -> 0 -> spliced
     expect(p.auras.some((a) => a.kind === 'mortal_wound')).toBe(false);
     p.hp = 1000;
     p.auras.push(primedHot(100));
-    (sim as any).updateAuras(p);
+    updateAuras((sim as any).ctx,p);
     expect(p.hp - 1000).toBe(100);
   });
 

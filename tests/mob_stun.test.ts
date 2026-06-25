@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Sim } from '../src/sim/sim';
+import { isStunned } from '../src/sim/combat/cc';
 import { MOBS } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
 
@@ -35,7 +36,7 @@ describe('Skullthump on-hit stun affix', () => {
       const a = p.auras.find((x) => x.kind === 'stun')!;
       expect(a.name).toBe('Skullthump');
       expect(a.id).toBe('stun_mogger_lackey');
-      expect((sim as any).isStunned(p)).toBe(true);
+      expect(isStunned(p)).toBe(true);
     } finally {
       tmpl.stunOnHit!.chance = saved;
     }

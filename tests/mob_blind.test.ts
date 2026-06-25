@@ -5,6 +5,7 @@
 // spellcasting, movement and the victim's defenses untouched.
 import { describe, expect, it } from 'vitest';
 import { Sim } from '../src/sim/sim';
+import { blindMissBonus } from '../src/sim/combat/cc';
 import { MOBS } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
 import type { Entity } from '../src/sim/types';
@@ -82,12 +83,12 @@ describe('mob blind ("Blinding Powder")', () => {
     const sim = makeSim('warrior');
     const p = sim.player;
     // No blind aura → the swing math sees zero added miss chance.
-    expect((sim as any).blindMissBonus(p)).toBe(0);
+    expect(blindMissBonus(p)).toBe(0);
     p.auras.push({
       id: 'blind_x', name: 'Blinding Powder', kind: 'blind',
       remaining: 5, duration: 5, value: 0.3, sourceId: 999, school: 'physical',
     });
-    expect((sim as any).blindMissBonus(p)).toBe(0.3);
+    expect(blindMissBonus(p)).toBe(0.3);
   });
 
   it('does not block spellcasting while blinded', () => {

@@ -7,6 +7,22 @@ import type {
 import { type AssistCandidate, resolveAssist } from './assist';
 import { lineOfSightClear, resolveMovement, resolvePosition } from './colliders';
 import {
+  cleanseFriendlyNpcAuras,
+  isRejectedFriendlyNpcAura,
+  updateAuras,
+  updateRegen,
+  updateTimers,
+} from './combat/auras';
+import {
+  blindMissBonus,
+  isDisarmed,
+  isLockedOut,
+  isRooted,
+  isSilenced,
+  isStunned,
+  tonguesMult,
+} from './combat/cc';
+import {
   dealDamage as dealDamageImpl,
   grantXp as grantXpImpl,
   handleDeath as handleDeathImpl,
@@ -592,25 +608,6 @@ const DEMON_HEAL_DURATION = 5;
 const DEMON_HEAL_TICK = 1;
 const TAMED_TARGET_RESPAWN_SECONDS = 60;
 const LOOT_ROLL_TIMEOUT = 30;
-const FRIENDLY_NPC_REJECTED_AURA_KINDS: ReadonlySet<AuraKind> = new Set([
-  'dot',
-  'slow',
-  'stun',
-  'root',
-  'incapacitate',
-  'polymorph',
-  'attackspeed',
-  'sunder',
-  'spellvuln',
-  'vulnerability',
-  'tongues',
-  'cost_tax',
-  'critvuln',
-]);
-
-function isRejectedFriendlyNpcAura(aura: Aura): boolean {
-  return FRIENDLY_NPC_REJECTED_AURA_KINDS.has(aura.kind);
-}
 
 export interface Party {
   id: number;
@@ -2033,6 +2030,12 @@ export class Sim {
       isArenaTeamWiped: sim.isArenaTeamWiped.bind(sim),
       arenaIsDown: sim.arenaIsDown.bind(sim),
       clearNonPlayerStatAuras: sim.clearNonPlayerStatAuras.bind(sim),
+      // C3 aura/regen runner (combat/auras.ts) consumes these: the incoming-heal mult +
+      // effective-healing threat (both delegate to combat/heal.ts), and the per-aura stat
+      // apply/remove on expiry (stays on Sim).
+      healingTakenMult: sim.healingTakenMult.bind(sim),
+      healingThreat: sim.healingThreat.bind(sim),
+      applyNonPlayerStatAura: sim.applyNonPlayerStatAura.bind(sim),
       delveRunForMob: sim.delveRunForMob.bind(sim),
       onDelveBossDefeated: sim.onDelveBossDefeated.bind(sim),
       grantNythraxisLockout: sim.grantNythraxisLockout.bind(sim),
@@ -2383,19 +2386,19 @@ export class Sim {
         this.updateDoorTriggers(p);
         this.updateCasting(p, meta);
         this.updatePlayerAutoAttack(p, meta);
-        this.updateRegen(p, meta);
+        updateRegen(this.ctx, p, meta);
         this.updateRested(p, meta);
       }
-      this.updateTimers(p);
-      this.updateAuras(p);
+      updateTimers(p);
+      updateAuras(this.ctx, p);
     }
 
     for (const e of this.entities.values()) {
       if (e.kind === 'mob') {
         this.updateMob(e);
-        this.updateAuras(e);
+        updateAuras(this.ctx, e);
       } else if (e.kind === 'npc') {
-        this.cleanseFriendlyNpcAuras(e);
+        cleanseFriendlyNpcAuras(this.ctx, e);
       } else if (e.kind === 'object') {
         if (!e.lootable) {
           e.respawnTimer -= DT;
@@ -2469,14 +2472,6 @@ export class Sim {
   // Player movement
   // -------------------------------------------------------------------------
 
-  private isStunned(e: Entity): boolean {
-    return e.auras.some(
-      (a) => a.kind === 'stun' || a.kind === 'incapacitate' || a.kind === 'polymorph',
-    );
-  }
-  private isRooted(e: Entity): boolean {
-    return this.isStunned(e) || e.auras.some((a) => a.kind === 'root');
-  }
   private fearAura(e: Entity): Aura | undefined {
     return e.auras.find((a) => a.id === 'fear_incap' && a.kind === 'incapacitate');
   }
@@ -2487,40 +2482,6 @@ export class Sim {
     const dest = this.groundPos(e.pos.x + Math.sin(angle) * 10, e.pos.z + Math.cos(angle) * 10);
     this.moveToward(e, dest, this.fleeMoveSpeed(e));
     return true;
-  }
-  // Silence locks out spell (non-physical) casts but leaves physical abilities,
-  // movement and melee untouched — unlike a stun, which freezes everything.
-  private isSilenced(e: Entity): boolean {
-    return e.auras.some((a) => a.kind === 'silence');
-  }
-
-  // Extra chance for the entity's own weapon swings to whiff while blinded.
-  // Returns the strongest active blind aura's value (0 when not blinded).
-  private blindMissBonus(e: Entity): number {
-    let bonus = 0;
-    for (const a of e.auras) if (a.kind === 'blind' && a.value > bonus) bonus = a.value;
-    return bonus;
-  }
-
-  // Disarm suppresses weapon swings (auto-attack, melee and ranged) but leaves
-  // movement, spells and instant abilities untouched — the inverse of silence.
-  private isDisarmed(e: Entity): boolean {
-    return e.auras.some((a) => a.kind === 'disarm');
-  }
-
-  // A school lockout denies casts of one specific school only (a counterspell),
-  // leaving every other school — and physical abilities — untouched.
-  private isLockedOut(e: Entity, school: Aura['school']): boolean {
-    return e.auras.some((a) => a.kind === 'lockout' && a.school === school);
-  }
-
-  // Curse of Tongues: returns the spell cast-time multiplier (>=1) imposed by any
-  // active `tongues` aura, or 1 when unafflicted. Non-stacking across sources — the
-  // strongest curse wins (refresh-by-id keeps a single source from compounding).
-  private tonguesMult(e: Entity): number {
-    let m = 1;
-    for (const a of e.auras) if (a.kind === 'tongues') m = Math.max(m, a.value);
-    return m;
   }
   private mobCanSwim(template: { family?: string; canSwim?: boolean } | undefined): boolean {
     return !!template;
@@ -2728,7 +2689,7 @@ export class Sim {
       if (arrived) this.startAutoAttack(p.id);
       return true;
     };
-    if (!target || target.dead || p.chargeTimeLeft <= 0 || this.isRooted(p)) return done(false);
+    if (!target || target.dead || p.chargeTimeLeft <= 0 || isRooted(p)) return done(false);
     if (dist2d(p.pos, target.pos) <= CHARGE_ARRIVE_RANGE) return done(true);
     if (p.sitting) this.standUp(p);
     // re-route when the target has run well away from where the path ends
@@ -2798,7 +2759,7 @@ export class Sim {
     }
     // always turn to face the leader, even while held in place
     p.facing = angleTo(p.pos, t.pos);
-    if (this.isStunned(p) || this.isRooted(p) || d <= FOLLOW_STOP_DIST) return true;
+    if (isStunned(p) || isRooted(p) || d <= FOLLOW_STOP_DIST) return true;
     let speed = RUN_SPEED * this.moveSpeedMult(p);
     if (this.isSwimming(p)) speed *= SWIM_SPEED_MULT;
     const step = Math.min(speed * DT, d - FOLLOW_STOP_DIST);
@@ -2839,7 +2800,7 @@ export class Sim {
     // Convention: facing f points along (sin f, cos f); the camera sits behind
     // the player, so screen-right is the world vector (-cos f, sin f).
     // Turning right therefore DECREASES facing.
-    if (!this.isStunned(p)) {
+    if (!isStunned(p)) {
       if (inp.turnLeft) p.facing = normAngle(p.facing + TURN_SPEED * DT);
       if (inp.turnRight) p.facing = normAngle(p.facing - TURN_SPEED * DT);
     }
@@ -2855,7 +2816,7 @@ export class Sim {
     if (wantsMove && p.sitting) this.standUp(p);
 
     const hasMoveInput = mx !== 0 || mz !== 0;
-    const moving = hasMoveInput && !this.isRooted(p);
+    const moving = hasMoveInput && !isRooted(p);
     const swimming = this.isSwimming(p);
     let wishX = 0,
       wishZ = 0,
@@ -2924,7 +2885,7 @@ export class Sim {
       p.onGround = true;
       p.jumping = false;
       p.fallStartY = p.pos.y;
-      if (inp.jump && !this.isRooted(p)) {
+      if (inp.jump && !isRooted(p)) {
         // small hop to climb onto shores and docks
         p.vy = JUMP_VELOCITY * 0.7 * this.jumpMult(p);
         p.vx = wishX * wishSpeed;
@@ -2934,7 +2895,7 @@ export class Sim {
       }
       return;
     }
-    if (inp.jump && p.onGround && !this.isRooted(p)) {
+    if (inp.jump && p.onGround && !isRooted(p)) {
       p.vy = JUMP_VELOCITY * this.jumpMult(p);
       p.vx = wishX * wishSpeed;
       p.vz = wishZ * wishSpeed;
@@ -3008,125 +2969,10 @@ export class Sim {
   // Regen, timers, auras
   // -------------------------------------------------------------------------
 
-  private updateRegen(p: Entity, _meta: PlayerMeta): void {
-    if (this.tickCount % 40 !== 0) return; // every 2 seconds (the classic tick)
-    if (p.resourceType === 'mana') {
-      if (p.fiveSecondRule >= 5) {
-        // out-of-combat mana regen: faster than before and scales with spirit
-        // (gear/level) plus a small flat per-level floor so low-spirit casters
-        // still recover at a reasonable pace (#103)
-        const regen = p.stats.spi / 3 + 4 + Math.floor(p.level / 5);
-        p.resource = Math.min(p.maxResource, p.resource + Math.round(regen));
-      }
-    } else if (p.resourceType === 'energy') {
-      p.resource = Math.min(p.maxResource, p.resource + 20);
-    } else if (p.resourceType === 'rage' && !p.inCombat) {
-      p.resource = Math.max(0, p.resource - 2);
-    }
-    if (!p.inCombat && p.hp < p.maxHp && !p.eating) {
-      const regen = p.stats.sta * 0.3 + 2;
-      p.hp = Math.min(p.maxHp, p.hp + Math.round(regen));
-    }
-    // food and drink tick independently, so both can run at once
-    for (const slot of ['eating', 'drinking'] as const) {
-      const c = p[slot];
-      if (!c) continue;
-      if (c.hpPer2s > 0 && p.hp < p.maxHp) {
-        const heal = Math.min(Math.round(c.hpPer2s * this.healingTakenMult(p)), p.maxHp - p.hp);
-        p.hp += heal;
-        this.emit({ type: 'heal', targetId: p.id, amount: heal });
-      }
-      if (c.manaPer2s > 0 && p.resourceType === 'mana') {
-        p.resource = Math.min(p.maxResource, p.resource + c.manaPer2s);
-      }
-      c.remaining -= 2;
-      if (c.remaining <= 0) p[slot] = null;
-    }
-  }
-
-  private updateTimers(p: Entity): void {
-    p.gcdRemaining = Math.max(0, p.gcdRemaining - DT);
-    p.fiveSecondRule += DT;
-    p.combatTimer += DT;
-    for (const [k, v] of p.cooldowns) {
-      const nv = v - DT;
-      if (nv <= 0) p.cooldowns.delete(k);
-      else p.cooldowns.set(k, nv);
-    }
-  }
-
-  private cleanseFriendlyNpcAuras(e: Entity): void {
-    for (let i = e.auras.length - 1; i >= 0; i--) {
-      const aura = e.auras[i];
-      if (!isRejectedFriendlyNpcAura(aura)) continue;
-      e.auras.splice(i, 1);
-      this.emit({ type: 'aura', targetId: e.id, name: aura.name, gained: false });
-    }
-  }
-
-  private updateAuras(e: Entity): void {
-    if (e.dead) return;
-    let statsDirty = false;
-    for (let i = e.auras.length - 1; i >= 0; i--) {
-      const a = e.auras[i];
-      a.remaining -= DT;
-      if (a.tickInterval) {
-        a.tickTimer = (a.tickTimer ?? a.tickInterval) - DT;
-        if (a.tickTimer <= CAST_COMPLETE_EPS) {
-          a.tickTimer += a.tickInterval;
-          if (a.kind === 'dot') {
-            this.emit({
-              type: 'spellfx',
-              sourceId: a.sourceId,
-              targetId: e.id,
-              school: a.school,
-              fx: 'tick',
-            });
-            this.dealDamage(
-              this.entities.get(a.sourceId) ?? null,
-              e,
-              a.value,
-              false,
-              a.school,
-              a.name,
-              'hit',
-              true,
-            );
-            if (e.dead) return;
-          } else if (a.kind === 'hot') {
-            const healed = Math.min(Math.round(a.value * this.healingTakenMult(e)), e.maxHp - e.hp);
-            if (healed > 0) {
-              e.hp += healed;
-              this.emit({
-                type: 'heal2',
-                sourceId: a.sourceId,
-                targetId: e.id,
-                amount: healed,
-                crit: false,
-                ability: a.name,
-              });
-              const src = this.entities.get(a.sourceId);
-              if (src) this.healingThreat(src, e, healed);
-            }
-          } else if (a.kind === 'polymorph') {
-            const heal = Math.round(e.maxHp * 0.1);
-            e.hp = Math.min(e.maxHp, e.hp + heal);
-          }
-        }
-      }
-      if (a.remaining <= CAST_COMPLETE_EPS) {
-        e.auras.splice(i, 1);
-        this.applyNonPlayerStatAura(e, a, -1);
-        this.emit({ type: 'aura', targetId: e.id, name: a.name, gained: false });
-        if (a.kind.startsWith('buff') || a.kind.startsWith('form')) statsDirty = true;
-      }
-    }
-    if (statsDirty && e.kind === 'player') {
-      const meta = this.players.get(e.id);
-      if (meta) recalcPlayerStats(e, meta.cls, meta.equipment, this.playerMods(meta));
-    }
-  }
-
+  // updateRegen / updateTimers / cleanseFriendlyNpcAuras / updateAuras moved to
+  // combat/auras.ts (C3); the tick() coordinator calls them in their existing per-entity
+  // phase (dead players still tick timers/auras). updateAuras keeps its two load-bearing
+  // e.dead guards (a DoT tick can kill the target mid-walk) inside the module.
   // updateGroundAoEs (the drain) moved to entity_roster.ts (tickGroundAoEs); it pulses
   // through this.ctx.pulseGroundAoE. pulseGroundAoE STAYS here (shared entry point,
   // also called on-cast from the effect path).
@@ -3163,13 +3009,13 @@ export class Sim {
 
   private updateCasting(p: Entity, meta: PlayerMeta): void {
     if (!p.castingAbility) return;
-    if (this.isStunned(p)) {
+    if (isStunned(p)) {
       this.cancelCast(p);
       return;
     }
     // a silence breaks an in-progress spell, but never the fishing cast or a
     // physical channel (e.g. an aimed-shot kind) — those aren't spells.
-    if (this.isSilenced(p) && p.castingAbility !== FISHING_CAST_ID) {
+    if (isSilenced(p) && p.castingAbility !== FISHING_CAST_ID) {
       const cast = this.resolvedAbility(p.castingAbility, p.id);
       if (cast && cast.def.school !== 'physical') {
         this.cancelCast(p);
@@ -3179,7 +3025,7 @@ export class Sim {
     // a school lockout breaks an in-progress spell only when it matches the locked school.
     if (p.castingAbility !== FISHING_CAST_ID) {
       const cast = this.resolvedAbility(p.castingAbility, p.id);
-      if (cast && cast.def.school !== 'physical' && this.isLockedOut(p, cast.def.school)) {
+      if (cast && cast.def.school !== 'physical' && isLockedOut(p, cast.def.school)) {
         this.cancelCast(p);
         return;
       }
@@ -3263,15 +3109,15 @@ export class Sim {
     if (!res || p.dead) return;
     meta.lastActiveTick = this.tickCount; // a cast attempt is a deliberate action
     const ability = res.def;
-    if (this.isStunned(p)) {
+    if (isStunned(p)) {
       this.error(p.id, 'You are stunned!');
       return;
     }
-    if (ability.school !== 'physical' && this.isSilenced(p)) {
+    if (ability.school !== 'physical' && isSilenced(p)) {
       this.error(p.id, 'You are silenced!');
       return;
     }
-    if (ability.school !== 'physical' && this.isLockedOut(p, ability.school)) {
+    if (ability.school !== 'physical' && isLockedOut(p, ability.school)) {
       this.error(p.id, 'You are silenced!');
       return;
     }
@@ -3467,7 +3313,7 @@ export class Sim {
 
     if (res.castTime > 0 && !togglingOff) {
       // Curse of Tongues stretches the resolved (already haste-adjusted) cast time.
-      const castTime = res.castTime * this.tonguesMult(p);
+      const castTime = res.castTime * tonguesMult(p);
       p.castingAbility = ability.id;
       p.castTotal = castTime;
       p.castRemaining = castTime;
@@ -4945,7 +4791,7 @@ export class Sim {
       this.error(r.e.id, 'You are dead.');
       return;
     }
-    if (this.isStunned(r.e)) {
+    if (isStunned(r.e)) {
       this.error(r.e.id, 'You are stunned.');
       return;
     }
@@ -5121,8 +4967,8 @@ export class Sim {
       return;
     }
     if (p.swingTimer > 0) return;
-    if (this.isStunned(p)) return;
-    if (this.isDisarmed(p)) return; // weapon knocked away: no auto-attack swings
+    if (isStunned(p)) return;
+    if (isDisarmed(p)) return; // weapon knocked away: no auto-attack swings
     const d = dist2d(p.pos, t.pos);
     const facingDiff = Math.abs(normAngle(angleTo(p.pos, t.pos) - p.facing));
     if (facingDiff > MELEE_ARC) return;
@@ -5180,7 +5026,7 @@ export class Sim {
       fx: 'projectile',
     });
     const missChance =
-      meleeMissChance(attacker.level, target.level) + this.blindMissBonus(attacker);
+      meleeMissChance(attacker.level, target.level) + blindMissBonus(attacker);
     if (this.rng.chance(missChance)) {
       this.emit({
         type: 'damage',
@@ -5222,7 +5068,7 @@ export class Sim {
     },
   ): boolean {
     const missChance =
-      meleeMissChance(attacker.level, target.level) + this.blindMissBonus(attacker);
+      meleeMissChance(attacker.level, target.level) + blindMissBonus(attacker);
     const dodgeChance = opts.cannotBeDodged
       ? 0
       : target.kind === 'player'
@@ -5865,7 +5711,7 @@ export class Sim {
     }
 
     if (dist2d(mob.pos, target.pos) > profile.desiredRange) {
-      if (!this.isRooted(mob)) {
+      if (!isRooted(mob)) {
         this.moveToward(
           mob,
           target.pos,
@@ -5988,7 +5834,7 @@ export class Sim {
     }
 
     if (mob.ownerId !== null) {
-      if (this.isStunned(mob)) return;
+      if (isStunned(mob)) return;
       if (this.isDelveCompanionMob(mob)) {
         this.updateDelveCompanion(mob);
         return;
@@ -6035,7 +5881,7 @@ export class Sim {
       }
     }
 
-    if (this.isStunned(mob)) {
+    if (isStunned(mob)) {
       if (this.updateFearMovement(mob)) return;
       if (mob.auras.some((a) => a.kind === 'polymorph')) {
         mob.wanderTimer -= DT;
@@ -6163,7 +6009,7 @@ export class Sim {
         }
         mob.swingTimer = Math.max(0, mob.swingTimer - DT);
         if (this.tryMobMeleeSwingInRange(mob, target)) break;
-        if (!this.isRooted(mob))
+        if (!isRooted(mob))
           this.moveToward(mob, target.pos, mob.moveSpeed * this.moveSpeedMult(mob));
         else mob.facing = angleTo(mob.pos, target.pos);
         if (this.tryMobMeleeSwingInRange(mob, target)) break;
@@ -6364,7 +6210,7 @@ export class Sim {
         // cowers facing away); a stun is already handled by the early return above.
         const away = angleTo(target.pos, mob.pos);
         mob.facing = away;
-        if (!this.isRooted(mob)) {
+        if (!isRooted(mob)) {
           const fleePos = this.groundPos(
             mob.pos.x + Math.sin(away) * 10,
             mob.pos.z + Math.cos(away) * 10,
@@ -7484,7 +7330,7 @@ export class Sim {
       this.despawnPersistentPet(pet);
       return;
     }
-    if (this.isStunned(pet)) return;
+    if (isStunned(pet)) return;
     this.syncPetAspect(pet, owner);
     pet.petTauntTimer = Math.max(0, pet.petTauntTimer - DT);
     if (!pet.inCombat && this.tickCount % 40 === 0 && pet.hp < pet.maxHp) {
@@ -7511,7 +7357,7 @@ export class Sim {
       const reach = ranged ? ranged.range : MELEE_RANGE * 0.8;
       const d = dist2d(pet.pos, target.pos);
       if (d > reach) {
-        if (!this.isRooted(pet))
+        if (!isRooted(pet))
           this.moveToward(pet, target.pos, pet.moveSpeed * this.moveSpeedMult(pet));
         pet.swingTimer = Math.max(0, pet.swingTimer - DT);
       } else {
@@ -7554,7 +7400,7 @@ export class Sim {
       pet.petPath = [];
       return;
     }
-    if (this.isRooted(pet)) return;
+    if (isRooted(pet)) return;
 
     const swim = this.mobCanSwim(MOBS[pet.templateId]);
     const recompute = (): void => {
@@ -7643,7 +7489,7 @@ export class Sim {
   ): void {
     const d = dist2d(pet.pos, target.pos);
     if (d > spell.range) {
-      if (!this.isRooted(pet))
+      if (!isRooted(pet))
         this.moveToward(pet, target.pos, pet.moveSpeed * this.moveSpeedMult(pet));
       pet.swingTimer = Math.max(0, pet.swingTimer - DT);
       return;
@@ -8836,7 +8682,7 @@ export class Sim {
         !ward ||
         !p ||
         p.dead ||
-        this.isStunned(p) ||
+        isStunned(p) ||
         dist2d(p.pos, ward.pos) > INTERACT_RANGE + 1
       ) {
         if (p) this.clearNythraxisWardChannelCast(p);
@@ -14547,7 +14393,7 @@ export class Sim {
   // multiplier folds slow/stealth auras against speed buffs; a root pins the
   // player regardless of the multiplier, so it is reported first.
   private speedReadout(e: Entity): string {
-    if (this.isRooted(e)) return 'You are rooted in place and cannot move.';
+    if (isRooted(e)) return 'You are rooted in place and cannot move.';
     const mult = this.moveSpeedMult(e);
     const pct = Math.round(mult * 100);
     if (pct > 100) return `Movement speed: ${pct}% of normal (hastened).`;
@@ -16103,7 +15949,7 @@ export class Sim {
       const cd = dist2d(companion.pos, combatTarget.pos);
       if (cd > reach) {
         companion.swingTimer = Math.max(0, (companion.swingTimer ?? 0) - DT);
-        if (!this.isRooted(companion)) {
+        if (!isRooted(companion)) {
           this.moveToward(
             companion,
             combatTarget.pos,
@@ -16165,7 +16011,7 @@ export class Sim {
       companion.pos = { ...owner.pos };
       companion.prevPos = { ...companion.pos };
       this.rebucket(companion);
-    } else if (d > DELVE_COMPANION_FOLLOW && !this.isRooted(companion)) {
+    } else if (d > DELVE_COMPANION_FOLLOW && !isRooted(companion)) {
       this.moveToward(companion, owner.pos, companion.moveSpeed * this.moveSpeedMult(companion));
     }
   }
