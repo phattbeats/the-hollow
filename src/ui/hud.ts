@@ -76,7 +76,6 @@ import {
   ZONES,
   zoneAt,
 } from '../sim/data';
-import { DELVE_MODULE_LAYOUTS, type DelveModuleId } from '../sim/delve_layout';
 import { armorTypeForItem, weaponArchetypeForItem } from '../sim/equipment_rules';
 import { LEADERBOARD_PAGE_SIZE } from '../sim/leaderboard_page';
 import type { Ante, PickAction } from '../sim/lockpick';
@@ -161,13 +160,7 @@ import {
 } from './combat_sfx';
 import { type CardinalId, compassView } from './compass';
 import { formatMinimapCoords } from './coords';
-import {
-  delveAreaLabel,
-  delveSchematicPlayer,
-  delveSchematicStatic,
-  playerDelveLocal,
-  type SchematicPrimitive,
-} from './delve_map';
+import { DelveMapPainter } from './delve_map_painter';
 import { dropdownKeyNav } from './dropdown_nav';
 import { emoteIconUrl } from './emote_icons';
 import { itemDisplayName, tEntity } from './entity_i18n';
@@ -236,6 +229,7 @@ import {
   minimapZoomValue,
   nextMinimapZoom,
 } from './minimap_zoom';
+import { makeWriterFacet, type PainterHostPresentation } from './painter_host';
 import { selectPartyFrameMembers } from './party_frames';
 import {
   type PerfOverlayHooks,
@@ -835,10 +829,6 @@ export class Hud {
   private mapPrewarmVia: 'idle' | 'timeout' | null = null;
   // Delve schematic caches: static background (floor/pillars/tombs/dais/exit)
   // keyed by module id, redrawn only when the module changes.
-  private delveSchematicBg: HTMLCanvasElement | null = null;
-  private delveSchematicBgModuleId: string = '';
-  private delveMapBg: HTMLCanvasElement | null = null;
-  private delveMapBgModuleId: string = '';
   private openLootMobId: number | null = null;
   private openLootChestId: number | null = null;
   private activeLootRolls = new Map<
@@ -2331,6 +2321,28 @@ export class Hud {
   // crest overscan live in UnitPortraitPainter (unit_portrait_painter.ts); the
   // HUD just routes the framed unit (class headshot vs mob/NPC crest) to it.
   private readonly portraits = new UnitPortraitPainter();
+
+  // PainterHost facets (painter_host.ts). The write-elision facet binds the four
+  // private hot writers as closures over the SAME hotWriteCache + counters (no
+  // visibility change), so the HUD and painters share one skip-rate; the delve
+  // painter uses it for the '#zone-label' text. The presentation bag is the shared
+  // icon/money/tooltip surface item windows compose (today only the vendor window).
+  private readonly writerFacet = makeWriterFacet(
+    this.hotWriteCache,
+    () => {
+      this.hotDomWrites++;
+    },
+    () => {
+      this.hotDomSkippedWrites++;
+    },
+  );
+  private readonly delvePainter = new DelveMapPainter(this.writerFacet, classCss);
+  private readonly presentationBag: PainterHostPresentation = {
+    itemIcon: (item) => this.itemIcon(item),
+    moneyHtml: (copper) => this.moneyHtml(copper),
+    itemTooltip: (item) => this.itemTooltip(item),
+    attachTooltip: (el, html) => this.attachTooltip(el, html),
+  };
 
   private drawPlayerFramePortrait(): void {
     this.portraits.drawClass(
@@ -5024,104 +5036,20 @@ export class Hud {
     const S = 162;
     const p = this.sim.player;
     const run = this.sim.delveRun;
-    const inDelve = isDelvePos(p.pos.x);
-
-    // Area label: delve module name or overworld zone name
-    if (inDelve && run) {
-      const modId = run.modules[run.moduleIndex];
-      const delveName = delveDisplayName(run.delveId);
-      const modName = modId ? t(`delveUi.moduleName.${modId}` as TranslationKey) : '';
-      $('#zone-label').textContent = delveAreaLabel(delveName, modName);
-    } else {
-      $('#zone-label').textContent = zoneDisplayName(zoneAt(p.pos.z).id);
+    if (isDelvePos(p.pos.x) && run) {
+      // The delve painter owns the '#zone-label' text (written through the
+      // write-elision facet) and the full minimap schematic render.
+      this.delvePainter.paintMinimapDelve(ctx, this.sim, $('#zone-label'), S);
+      return;
     }
 
+    this.setText($('#zone-label'), zoneDisplayName(zoneAt(p.pos.z).id));
     ctx.clearRect(0, 0, S, S);
     ctx.save();
     ctx.beginPath();
     ctx.arc(S / 2, S / 2, S / 2 - 2, 0, Math.PI * 2);
     ctx.clip();
     ctx.imageSmoothingEnabled = false;
-
-    if (inDelve && run) {
-      // Draw delve schematic instead of overworld terrain
-      const modId = run.modules[run.moduleIndex];
-      const layoutId = (modId ?? 'reliquary_sunken_ossuary') as DelveModuleId;
-      const layout =
-        DELVE_MODULE_LAYOUTS[layoutId] ?? DELVE_MODULE_LAYOUTS.reliquary_sunken_ossuary;
-      const pad = 8;
-
-      // Rebuild static background only when module changes
-      if (!this.delveSchematicBg || this.delveSchematicBgModuleId !== layoutId) {
-        const bgCanvas = document.createElement('canvas');
-        bgCanvas.width = S;
-        bgCanvas.height = S;
-        const bgCtx = bgCanvas.getContext('2d')!;
-        // Dark room fill behind everything
-        bgCtx.fillStyle = '#0e0c0a';
-        bgCtx.fillRect(0, 0, S, S);
-        drawSchematicPrimitives(bgCtx, delveSchematicStatic(layout, S, pad));
-        this.delveSchematicBg = bgCanvas;
-        this.delveSchematicBgModuleId = layoutId;
-      }
-      ctx.drawImage(this.delveSchematicBg, 0, 0);
-
-      // Entity overlay (mobs and party only -- no NPCs/loot inside delves for simplicity)
-      const { localX: pLocalX, localZ: pLocalZ } = playerDelveLocal(p.pos.x, p.pos.z, run.origin);
-      for (const e of this.sim.entities.values()) {
-        if (e.id === p.id) continue;
-        if (e.kind !== 'mob' || e.dead) continue;
-        const elocalX = e.pos.x - run.origin.x;
-        const elocalZ = e.pos.z - run.origin.z;
-        // Map from module-local to the same toCanvas space (mirror X for map-left)
-        const ex = pad + ((23 - elocalX) / 46) * (S - pad * 2);
-        const ey = pad + ((elocalZ - layout.zMin) / (layout.zMax - layout.zMin)) * (S - pad * 2);
-        if (ex < 0 || ex > S || ey < 0 || ey > S) continue;
-        ctx.fillStyle = e.aggroTargetId === p.id ? '#ff8800' : '#e74c3c';
-        ctx.fillRect(ex - 1.5, ey - 1.5, 3, 3);
-      }
-
-      // Party members in the delve
-      const party = this.sim.partyInfo;
-      if (party) {
-        for (const m of party.members) {
-          if (m.pid === p.id) continue;
-          const mlx = m.x - run.origin.x;
-          const mlz = m.z - run.origin.z;
-          const mx = pad + ((23 - mlx) / 46) * (S - pad * 2);
-          const my = pad + ((mlz - layout.zMin) / (layout.zMax - layout.zMin)) * (S - pad * 2);
-          if (mx < 0 || mx > S || my < 0 || my > S) continue;
-          const color = m.dead ? '#9a9a9a' : classCss(m.cls);
-          ctx.fillStyle = color;
-          ctx.strokeStyle = '#000';
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.arc(mx, my, 4, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-        }
-      }
-
-      // Player arrow (schematic uses absolute canvas position from delveSchematicPlayer)
-      const arrow = delveSchematicPlayer(pLocalX, pLocalZ, p.facing, layout, S, pad);
-      ctx.save();
-      ctx.translate(arrow.cx, arrow.cy);
-      ctx.rotate(arrow.angle);
-      ctx.fillStyle = arrow.fill;
-      ctx.strokeStyle = arrow.stroke;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(0, -arrow.size);
-      ctx.lineTo(arrow.size * 0.6, arrow.size * 0.8);
-      ctx.lineTo(-arrow.size * 0.6, arrow.size * 0.8);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-      ctx.restore();
-
-      ctx.restore();
-      return;
-    }
 
     // 1.7 is the historical base scale; the zoom multiplier shrinks the world
     // radius shown so markers spread out as you zoom in (default 1 = unchanged).
@@ -5567,91 +5495,9 @@ export class Hud {
     // --- Delve branch: render the module schematic instead of the overworld map
     const run = this.sim.delveRun;
     if (isDelvePos(p.pos.x) && run) {
-      const modId = run.modules[run.moduleIndex];
-      const layoutId = (modId ?? 'reliquary_sunken_ossuary') as DelveModuleId;
-      const layout =
-        DELVE_MODULE_LAYOUTS[layoutId] ?? DELVE_MODULE_LAYOUTS.reliquary_sunken_ossuary;
-      const pad = Math.round(S * 0.06);
-
-      // Rebuild static background only when module changes
-      if (!this.delveMapBg || this.delveMapBgModuleId !== layoutId) {
-        const bgCanvas = document.createElement('canvas');
-        bgCanvas.width = S;
-        bgCanvas.height = S;
-        const bgCtx = bgCanvas.getContext('2d')!;
-        bgCtx.fillStyle = '#0e0c0a';
-        bgCtx.fillRect(0, 0, S, S);
-        drawSchematicPrimitives(bgCtx, delveSchematicStatic(layout, S, pad));
-        this.delveMapBg = bgCanvas;
-        this.delveMapBgModuleId = layoutId;
-      }
-
-      ctx.clearRect(0, 0, S, S);
-      ctx.drawImage(this.delveMapBg, 0, 0);
-
-      // Map-local coordinate helper (mirrors local-to-canvas from delve_map.ts)
-      const toDelveMap = (localX: number, localZ: number) => ({
-        mx: pad + ((23 - localX) / 46) * (S - pad * 2),
-        my: pad + ((localZ - layout.zMin) / (layout.zMax - layout.zMin)) * (S - pad * 2),
-      });
-
-      // Mob overlays
-      for (const e of this.sim.entities.values()) {
-        if (e.kind !== 'mob' || e.dead) continue;
-        const { mx, my } = toDelveMap(e.pos.x - run.origin.x, e.pos.z - run.origin.z);
-        if (mx < 0 || mx > S || my < 0 || my > S) continue;
-        ctx.fillStyle = e.aggroTargetId === p.id ? '#ff8800' : '#e74c3c';
-        ctx.fillRect(mx - 2, my - 2, 4, 4);
-      }
-
-      // Party members
-      const party = this.sim.partyInfo;
-      if (party) {
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 2;
-        for (const m of party.members) {
-          if (m.pid === p.id) continue;
-          const { mx, my } = toDelveMap(m.x - run.origin.x, m.z - run.origin.z);
-          if (mx < 0 || mx > S || my < 0 || my > S) continue;
-          ctx.fillStyle = m.dead ? '#9a9a9a' : classCss(m.cls);
-          ctx.beginPath();
-          ctx.arc(mx, my, 5, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-        }
-      }
-
-      // Player arrow
-      const { localX: pLocalX, localZ: pLocalZ } = playerDelveLocal(p.pos.x, p.pos.z, run.origin);
-      const arrow = delveSchematicPlayer(pLocalX, pLocalZ, p.facing, layout, S, pad);
-      ctx.save();
-      ctx.translate(arrow.cx, arrow.cy);
-      ctx.rotate(arrow.angle);
-      ctx.fillStyle = arrow.fill;
-      ctx.strokeStyle = '#000';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(0, -arrow.size);
-      ctx.lineTo(arrow.size * 0.6, arrow.size * 0.8);
-      ctx.lineTo(-arrow.size * 0.6, arrow.size * 0.8);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-      ctx.restore();
-
-      // Module title at top
-      const delveName = delveDisplayName(run.delveId);
-      const modName = modId ? t(`delveUi.moduleName.${modId}` as TranslationKey) : '';
-      const areaLabel = delveAreaLabel(delveName, modName);
-      ctx.font = 'bold 14px Georgia';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.strokeStyle = '#000';
-      ctx.lineWidth = 3;
-      ctx.fillStyle = '#ffe9a0';
-      ctx.strokeText(areaLabel, S / 2, 6);
-      ctx.fillText(areaLabel, S / 2, 6);
-      ctx.textBaseline = 'alphabetic';
+      // The delve painter owns the full world-map schematic render (the area
+      // title is drawn on-canvas, since the world map has no DOM zone label).
+      this.delvePainter.paintWorldMapDelve(ctx, this.sim, S);
       return;
     }
 
@@ -8151,10 +7997,7 @@ export class Hud {
       entityDisplayName(npc),
       buildVendorView(npc.vendorItems, this.sim.vendorBuyback, ITEMS),
       {
-        itemIcon: (item) => this.itemIcon(item),
-        moneyHtml: (copper) => this.moneyHtml(copper),
-        itemTooltip: (item) => this.itemTooltip(item),
-        attachTooltip: (el, html) => this.attachTooltip(el, html),
+        ...this.presentationBag,
         hideTooltip: () => this.hideTooltip(),
         onBuy: (itemId) => buyAndRefresh(() => this.sim.buyItem(npc.id, itemId)),
         onBuyBack: (itemId) => buyAndRefresh(() => this.sim.buyBackItem(itemId)),
@@ -14115,54 +13958,6 @@ function delveDisplayName(delveId: string): string {
   return tEntity({ kind: 'delve', id: delveId, field: 'name' });
 }
 
-/** Render SchematicPrimitive[] onto a canvas context (shared by minimap and world-map). */
-function drawSchematicPrimitives(ctx: CanvasRenderingContext2D, prims: SchematicPrimitive[]): void {
-  for (const prim of prims) {
-    ctx.save();
-    if (prim.kind === 'circle') {
-      ctx.beginPath();
-      ctx.arc(prim.cx, prim.cy, prim.r, 0, Math.PI * 2);
-      ctx.fillStyle = prim.fill;
-      ctx.fill();
-      if (prim.stroke) {
-        ctx.strokeStyle = prim.stroke;
-        ctx.lineWidth = prim.strokeWidth ?? 1;
-        ctx.stroke();
-      }
-    } else if (prim.kind === 'rect') {
-      ctx.fillStyle = prim.fill;
-      ctx.fillRect(prim.x, prim.y, prim.w, prim.h);
-      if (prim.stroke) {
-        ctx.strokeStyle = prim.stroke;
-        ctx.lineWidth = prim.strokeWidth ?? 1;
-        ctx.strokeRect(prim.x, prim.y, prim.w, prim.h);
-      }
-    } else if (prim.kind === 'text') {
-      ctx.font = prim.font;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = prim.fill;
-      ctx.strokeStyle = '#000';
-      ctx.lineWidth = 2;
-      ctx.strokeText(prim.text, prim.cx, prim.cy);
-      ctx.fillText(prim.text, prim.cx, prim.cy);
-    } else if (prim.kind === 'arrow') {
-      ctx.translate(prim.cx, prim.cy);
-      ctx.rotate(prim.angle);
-      ctx.fillStyle = prim.fill;
-      ctx.strokeStyle = prim.stroke;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(0, -prim.size);
-      ctx.lineTo(prim.size * 0.6, prim.size * 0.8);
-      ctx.lineTo(-prim.size * 0.6, prim.size * 0.8);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-    }
-    ctx.restore();
-  }
-}
 
 function abilityDisplayNameFromSource(name: string): string {
   const ability = Object.values(ABILITIES).find((candidate) => candidate.name === name);

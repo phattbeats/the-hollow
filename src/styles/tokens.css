@@ -71,6 +71,15 @@
     --color-text-error: #ff8f85;
     --color-text-success: #7fdc4f;
 
+    /* delve minimap / world-map schematic (resolved by delve_map_painter.ts via
+       getComputedStyle: a 2D canvas context cannot read a CSS var directly) */
+    --color-delve-room: #0e0c0a;
+    --color-delve-mob: #e74c3c;
+    --color-delve-mob-aggro: #ff8800;
+    --color-delve-party-dead: #9a9a9a;
+    --color-delve-label: #ffe9a0;
+    --color-delve-outline: #000;
+
     --spacing-xs: 4px;
     --spacing-sm: 8px;
     --spacing-md: 16px;
