@@ -748,7 +748,14 @@ function scanEmitCandidates(simSrc: string, serverSrc: string): Cand[] {
 // hud.ts source) + the real localizeServerText/localizeSimText fallbacks. ---
 describe('S3: every sim.ts emit is recognized (drift guard)', () => {
   const hudSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/ui/hud.ts'), 'utf8');
-  const simSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/sim/sim.ts'), 'utf8');
+  // Scan sim.ts PLUS the extracted sim sub-modules that carry player-facing emits, so a
+  // moved emit literal (M2 carried the boss "unleashes" lines into mob/locomotion.ts)
+  // stays drift-guarded. The emit regexes anchor on `emit({...})`, not `this.emit`, so
+  // the modules' `ctx.emit({...})` forms are recognized identically.
+  const simSrc =
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/sim.ts'), 'utf8') +
+    '\n' +
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/locomotion.ts'), 'utf8');
   // Hardened S3: also scan the authoritative server's player-facing emits. The
   // server (server/game.ts) is language-agnostic like the sim and re-localized
   // client-side by localizeServerText; previously the guard read only sim.ts, so

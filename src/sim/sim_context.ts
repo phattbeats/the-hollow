@@ -17,7 +17,7 @@ import type { DelayedEvent, GroundAoE } from './entity_roster';
 import type { Rng } from './rng';
 import type { ArenaMatch, DuelState, Party, PlayerMeta } from './sim';
 import type { SpatialGrid } from './spatial';
-import type { Aura, CrowdControlDrCategory, DelveRun, Entity, SimEvent, Vec3 } from './types';
+import type { Aura, CrowdControlDrCategory, DelveRun, Entity, SimConfig, SimEvent, Vec3 } from './types';
 
 // Live primitive views onto the running Sim. These are GETTERS, not snapshots:
 // `time`/`tickCount` advance every tick, and the `rng`/`entities` identities are
@@ -44,6 +44,12 @@ export interface SimContextPrimitives {
   // live arena bouts keyed by every participant pid (A2); release-spirit early-bails
   // when the dead player is mid-bout.
   readonly arenaMatches: Map<number, ArenaMatch>;
+  // Player roster keyed by entity id (M2: the boss pulse/stomp/terrify arms iterate it).
+  // Live view; the backing field stays on Sim. [DEDUPE with A1/C1, which also add it.]
+  readonly players: Map<number, PlayerMeta>;
+  // Resolved sim config (M2: mob movement reads cfg.seed for terrain height).
+  // [DEDUPE with C1, which also adds it.]
+  readonly cfg: Required<Omit<SimConfig, 'noPlayer'>>;
 }
 
 // Cross-system callbacks. Each signature mirrors the still-on-`Sim` method it
@@ -143,6 +149,55 @@ export interface SimContextCallbacks {
   delveModuleEntry(run: DelveRun): Vec3;
   failDelveRun(run: DelveRun): void;
   pulseGroundAoE(effect: GroundAoE, threatOpts?: { flat?: number; mult?: number }): void;
+
+  // M2 mob locomotion: the updateMob dispatcher reaches every boss/pet/Nythraxis/
+  // corpse branch and movement helper it dispatches to through these. All still live
+  // on Sim (or a shared module); the eventual owners flip points-at, never rename.
+  // --- shared movement/combat entry points (STAY on Sim, exposed here) ---
+  moveToward(e: Entity, dest: Vec3, speed: number, ignoreObstacles?: boolean): boolean;
+  mobSwing(mob: Entity, target: Entity): void;
+  updateRangedPetAttack(
+    pet: Entity,
+    target: Entity,
+    spell: {
+      name: string;
+      school: 'physical' | 'fire' | 'frost' | 'arcane' | 'shadow' | 'holy' | 'nature';
+      min: number;
+      max: number;
+      range: number;
+      every: number;
+    },
+  ): void;
+  fleeMoveSpeed(e: Entity): number;
+  // --- mob-AI helpers the dispatcher consults ---
+  usesProfiledMobCombat(mob: Entity): boolean;
+  updateProfiledMobCombat(mob: Entity): void;
+  tryMobMeleeSwingInRange(mob: Entity, target: Entity): boolean;
+  maybeFlee(mob: Entity, target: Entity): boolean;
+  aggroMob(mob: Entity, target: Entity, social: boolean): void;
+  isStunned(e: Entity): boolean;
+  isRooted(e: Entity): boolean;
+  moveSpeedMult(e: Entity): number;
+  swingIntervalMult(e: Entity): number;
+  mobEffectiveMeleeRange(mob: Entity): number;
+  mobCanSwim(template: { family?: string; canSwim?: boolean } | undefined): boolean;
+  resolveMovePoint(nx: number, nz: number, r: number, e: Entity): { x: number; z: number };
+  // --- pet / delve-companion / boss-mechanic branches (owners: P1 / delve / M3-N1) ---
+  updatePet(pet: Entity): void;
+  isDelveCompanionMob(mob: Entity): boolean;
+  updateDelveCompanion(companion: Entity): void;
+  updateBossMechanics(mob: Entity): void;
+  updateNythraxisEncounter(boss: Entity): void;
+  resetNythraxisEncounter(boss: Entity): void;
+  despawnSummonedAdds(boss: Entity): void;
+  updateFearMovement(e: Entity): boolean;
+  delveDetectMult(player: Entity): number;
+  // --- corpse lifecycle (owners: M4) ---
+  detonateCorpse(dead: Entity): void;
+  despawnPet(pet: Entity): void;
+  respawnMob(mob: Entity): void;
+  // --- boss-death dialogue hook (N1 owns the body; left here by M2) ---
+  onBossDeath(mob: Entity): void;
 }
 
 // The seam consumed by extracted modules.
@@ -194,6 +249,12 @@ export function createSimContext(host: SimContextHost): SimContext {
     get arenaMatches() {
       return host.arenaMatches;
     },
+    get players() {
+      return host.players;
+    },
+    get cfg() {
+      return host.cfg;
+    },
     emit: host.emit,
     dealDamage: host.dealDamage,
     handleDeath: host.handleDeath,
@@ -235,5 +296,35 @@ export function createSimContext(host: SimContextHost): SimContext {
     delveModuleEntry: host.delveModuleEntry,
     failDelveRun: host.failDelveRun,
     pulseGroundAoE: host.pulseGroundAoE,
+    // M2 mob locomotion seam.
+    moveToward: host.moveToward,
+    mobSwing: host.mobSwing,
+    updateRangedPetAttack: host.updateRangedPetAttack,
+    fleeMoveSpeed: host.fleeMoveSpeed,
+    usesProfiledMobCombat: host.usesProfiledMobCombat,
+    updateProfiledMobCombat: host.updateProfiledMobCombat,
+    tryMobMeleeSwingInRange: host.tryMobMeleeSwingInRange,
+    maybeFlee: host.maybeFlee,
+    aggroMob: host.aggroMob,
+    isStunned: host.isStunned,
+    isRooted: host.isRooted,
+    moveSpeedMult: host.moveSpeedMult,
+    swingIntervalMult: host.swingIntervalMult,
+    mobEffectiveMeleeRange: host.mobEffectiveMeleeRange,
+    mobCanSwim: host.mobCanSwim,
+    resolveMovePoint: host.resolveMovePoint,
+    updatePet: host.updatePet,
+    isDelveCompanionMob: host.isDelveCompanionMob,
+    updateDelveCompanion: host.updateDelveCompanion,
+    updateBossMechanics: host.updateBossMechanics,
+    updateNythraxisEncounter: host.updateNythraxisEncounter,
+    resetNythraxisEncounter: host.resetNythraxisEncounter,
+    despawnSummonedAdds: host.despawnSummonedAdds,
+    updateFearMovement: host.updateFearMovement,
+    delveDetectMult: host.delveDetectMult,
+    detonateCorpse: host.detonateCorpse,
+    despawnPet: host.despawnPet,
+    respawnMob: host.respawnMob,
+    onBossDeath: host.onBossDeath,
   };
 }
