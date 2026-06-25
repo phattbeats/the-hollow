@@ -14,6 +14,7 @@
 
 import type { TalentModifiers } from './content/talents';
 import type { DelayedEvent, GroundAoE } from './entity_roster';
+import type { PendingLootRoll } from './loot/loot_roll';
 import type { Rng } from './rng';
 import type { ArenaMatch, DuelState, Party, PlayerMeta, ResolvedAbility } from './sim';
 import type { SpatialGrid } from './spatial';
@@ -61,6 +62,12 @@ export interface SimContextPrimitives {
   readonly players: Map<number, PlayerMeta>;
   readonly duels: Map<number, DuelState>;
   readonly cfg: Required<Omit<SimConfig, 'noPlayer'>>;
+  // L1 loot-distribution state. The pending need-greed rolls map is mutated in
+  // place (.set/.delete), so its identity is stable -> read-only view. The roll-id
+  // counter is bumped via `ctx.nextLootRollId++` in startNeedGreedRoll, so it is a
+  // read-write primitive (get + set). Backing fields stay on Sim.
+  readonly pendingLootRolls: Map<number, PendingLootRoll>;
+  nextLootRollId: number;
 }
 
 // Cross-system callbacks. Each signature mirrors the still-on-`Sim` method it
@@ -207,6 +214,11 @@ export interface SimContextCallbacks {
   startAutoAttack(pid?: number): void;
   revivePet(pid?: number): void;
   addItem(itemId: string, count: number, pid?: number): void;
+  // Inventory-hub item-count query (stays on Sim). The L1 loot quest-drop branch
+  // (needsQuestDrop in loot/loot_roll.ts) reads it to decide whether a quest-gated
+  // item still drops. Q1's quest-credit + L2 register the identical signature on
+  // their tracks; dedupe to one (points-at Sim) at integration.
+  countItem(itemId: string, pid?: number): number;
   completeFishing(p: Entity, meta: PlayerMeta): void;
   applyDemonHealTick(owner: Entity): void;
 
@@ -304,6 +316,15 @@ export function createSimContext(host: SimContextHost): SimContext {
     get cfg() {
       return host.cfg;
     },
+    get pendingLootRolls() {
+      return host.pendingLootRolls;
+    },
+    get nextLootRollId() {
+      return host.nextLootRollId;
+    },
+    set nextLootRollId(v) {
+      host.nextLootRollId = v;
+    },
     emit: host.emit,
     dealDamage: host.dealDamage,
     handleDeath: host.handleDeath,
@@ -377,6 +398,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     startAutoAttack: host.startAutoAttack,
     revivePet: host.revivePet,
     addItem: host.addItem,
+    countItem: host.countItem,
     completeFishing: host.completeFishing,
     applyDemonHealTick: host.applyDemonHealTick,
     awardCombo: host.awardCombo,
