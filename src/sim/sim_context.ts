@@ -192,10 +192,16 @@ export interface SimContextCallbacks {
   despawnSummonedAdds(boss: Entity): void;
   updateFearMovement(e: Entity): boolean;
   delveDetectMult(player: Entity): number;
-  // --- corpse lifecycle (owners: M4) ---
+  // --- corpse lifecycle (mob/lifecycle.ts, M4; despawnPet is P1's pet slice) ---
   detonateCorpse(dead: Entity): void;
   despawnPet(pet: Entity): void;
   respawnMob(mob: Entity): void;
+  frenzyPackmates(dead: Entity): void;
+  armDeathThroes(dead: Entity): void;
+  // shared helpers the M4 respawnMob body consumes; the bodies STAY on Sim (the pet
+  // slice owns despawnPersistentPet eventually; clearNonPlayerStatAuras is shared).
+  despawnPersistentPet(pet: Entity): void;
+  clearNonPlayerStatAuras(target: Entity): void;
   // --- boss-death dialogue hook (N1 owns the body; left here by M2) ---
   onBossDeath(mob: Entity): void;
 
@@ -333,6 +339,10 @@ export function createSimContext(host: SimContextHost): SimContext {
     detonateCorpse: host.detonateCorpse,
     despawnPet: host.despawnPet,
     respawnMob: host.respawnMob,
+    frenzyPackmates: host.frenzyPackmates,
+    armDeathThroes: host.armDeathThroes,
+    despawnPersistentPet: host.despawnPersistentPet,
+    clearNonPlayerStatAuras: host.clearNonPlayerStatAuras,
     onBossDeath: host.onBossDeath,
     // M3 mob-swing affix cascade seam.
     effectiveArmor: host.effectiveArmor,

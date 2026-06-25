@@ -139,6 +139,7 @@ import {
 } from './mob/targeting';
 import { resetEvadingMob as resetEvadingMobFn, updateMob as updateMobFn } from './mob/locomotion';
 import { runMobSwingAffixes } from './mob/mob_swing';
+import * as lifecycle from './mob/lifecycle';
 import { combatProfileForMob, effectiveMobMeleeRange, type MobCombatProfile } from './mob_combat';
 import {
   findPlayerPath,
@@ -529,7 +530,7 @@ const DEFAULT_SOCIAL_PULL_RADIUS = 5;
 const SOCIAL_PULL_RADIUS: Partial<Record<MobFamily, number>> = {
   murloc: 8,
 };
-const PACK_FRENZY_AURA_ID = 'pack_frenzy'; // attack-speed buff granted to surviving packmates
+// PACK_FRENZY_AURA_ID moved to mob/lifecycle.ts (M4; used only by frenzyPackmates).
 const BLOOD_FRENZY_AURA_ID = 'blood_frenzy'; // self attack-speed buff a wounded frenzyOnHit mob gains
 const SWIM_SURFACE_Y = WATER_LEVEL - 0.75; // body bobs just below the water line
 const SWIM_DEPTH = PLAYER_SWIM_DEPTH; // ground this far under the water line = deep water
@@ -2033,12 +2034,21 @@ export class Sim {
       updateBossMechanics: sim.updateBossMechanics.bind(sim),
       updateNythraxisEncounter: sim.updateNythraxisEncounter.bind(sim),
       resetNythraxisEncounter: sim.resetNythraxisEncounter.bind(sim),
-      despawnSummonedAdds: sim.despawnSummonedAdds.bind(sim),
       updateFearMovement: sim.updateFearMovement.bind(sim),
       delveDetectMult: sim.delveDetectMult.bind(sim),
-      detonateCorpse: sim.detonateCorpse.bind(sim),
       despawnPet: sim.despawnPet.bind(sim),
-      respawnMob: sim.respawnMob.bind(sim),
+      // M4 mob death lifecycle: the five execution bodies live in mob/lifecycle.ts;
+      // handleDeath + the updateMob corpse-tick reach them through these seam
+      // bindings (late-bound arrows so sim.ctx resolves at call time, after the ctor
+      // finishes building it). despawnPersistentPet + clearNonPlayerStatAuras stay
+      // Sim methods, exposed here for the moved respawnMob to consume.
+      respawnMob: (mob) => lifecycle.respawnMob(sim.ctx, mob),
+      despawnSummonedAdds: (boss) => lifecycle.despawnSummonedAdds(sim.ctx, boss),
+      frenzyPackmates: (dead) => lifecycle.frenzyPackmates(sim.ctx, dead),
+      armDeathThroes: (dead) => lifecycle.armDeathThroes(sim.ctx, dead),
+      detonateCorpse: (dead) => lifecycle.detonateCorpse(sim.ctx, dead),
+      despawnPersistentPet: sim.despawnPersistentPet.bind(sim),
+      clearNonPlayerStatAuras: sim.clearNonPlayerStatAuras.bind(sim),
       onBossDeath: sim.onBossDeath.bind(sim),
       // M3 mob on-hit affix cascade seam: effectiveArmor (cleave splash armor) +
       // the devour recalc wrapper. Both stay on Sim; the cascade reaches them via ctx.
@@ -5901,8 +5911,8 @@ export class Sim {
         if (MOBS[e.templateId]?.family === 'demon') e.corpseTimer = 3;
         return; // owned pets drop no loot/credit; demons unravel, hunters revive or abandon
       }
-      this.frenzyPackmates(e); // wild packmates fly into a frenzy when one falls
-      this.armDeathThroes(e); // volatile corpses begin to destabilize, then burst
+      this.ctx.frenzyPackmates(e); // wild packmates fly into a frenzy when one falls
+      this.ctx.armDeathThroes(e); // volatile corpses begin to destabilize, then burst
 
       // credit goes to the tapping player (fall back to the killer)
       const creditId = e.tappedById ?? (killer?.kind === 'player' ? killer.id : null);
@@ -6943,161 +6953,13 @@ export class Sim {
 
   // blockedTowardSpawn moved to mob/locomotion.ts (M2; called only by the evade arm).
 
-  private respawnMob(mob: Entity): void {
-    if (mob.ownerId !== null) {
-      this.despawnPersistentPet(mob);
-      return;
-    }
-    this.clearNonPlayerStatAuras(mob);
-    mob.dead = false;
-    mob.lootable = false;
-    mob.loot = null;
-    mob.lootRecipientIds = undefined;
-    mob.tappedById = null;
-    mob.ownerId = null;
-    mob.hostile = true;
-    mob.pos = { ...mob.spawnPos };
-    mob.pos.y = groundHeight(mob.pos.x, mob.pos.z, this.cfg.seed);
-    mob.prevPos = { ...mob.pos };
-    this.rebucket(mob);
-    mob.hp = mob.maxHp;
-    mob.auras = [];
-    mob.aiState = 'idle';
-    mob.aggroTargetId = null;
-    mob.inCombat = false;
-    if (mob.templateId === NYTHRAXIS_BOSS_ID) {
-      mob.facing = Math.PI;
-      mob.prevFacing = Math.PI;
-    }
-    mob.leashAnchor = null;
-    mob.evadeStall = 0;
-    mob.fleeTimer = 0;
-    mob.fleeReturnTimer = 0;
-    mob.hasFled = false;
-    clearThreat(mob);
-    this.despawnSummonedAdds(mob);
-    mob.firedSummons = 0;
-    mob.enraged = false;
-    mob.healedThisPull = false;
-    mob.stompTimer = MOBS[mob.templateId]?.stomp?.every ?? 0;
-    mob.terrifyTimer = MOBS[mob.templateId]?.terrify?.every ?? 0;
-    mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
-    mob.wardTimer = MOBS[mob.templateId]?.wardAllies?.every ?? 0;
-    mob.stoneskinTimer = MOBS[mob.templateId]?.stoneskin?.every ?? 0;
-    mob.rallyTimer = MOBS[mob.templateId]?.rally?.every ?? 0;
-    mob.warcryTimer = MOBS[mob.templateId]?.warcry?.every ?? 0;
-    mob.wanderTimer = this.rng.range(2, 8);
-    if (mob.templateId === NYTHRAXIS_BOSS_ID) this.resetNythraxisEncounter(mob);
-    for (const meta of this.players.values()) {
-      const e = this.entities.get(meta.entityId);
-      if (e && e.targetId === mob.id) e.targetId = null;
-    }
-  }
-
-  // Encounter reset: remove the adds a boss summoned this pull so retries
-  // start clean (firedSummons re-fires a fresh wave per pull). Player
-  // target/combo refs are cleared first, like freeInstance does.
-  private despawnSummonedAdds(boss: Entity): void {
-    if (boss.summonedIds.length === 0) return;
-    for (const id of boss.summonedIds) {
-      if (!this.entities.has(id)) continue;
-      for (const meta of this.players.values()) {
-        const e = this.entities.get(meta.entityId);
-        if (e?.targetId === id) e.targetId = null;
-        if (e?.comboTargetId === id) {
-          e.comboTargetId = null;
-          e.comboPoints = 0;
-        }
-      }
-      this.dropEntity(id);
-    }
-    boss.summonedIds = [];
-  }
-
-  // Classic beast "Frenzy": when a mob carrying the packFrenzy trait dies, the
-  // surviving same-family hostile mobs nearby briefly attack faster. Modelled as
-  // a refreshable buff_haste aura, so it rides the normal aura tick (expires on
-  // its own) and the existing snapshot wire — no new Entity field is needed.
-  private frenzyPackmates(dead: Entity): void {
-    const fr = MOBS[dead.templateId]?.packFrenzy;
-    if (!fr) return;
-    const r2 = fr.radius * fr.radius;
-    this.grid.forEachInRadius(dead.pos.x, dead.pos.z, fr.radius, (m, d2) => {
-      if (m.id === dead.id || m.kind !== 'mob' || m.dead || m.aiState === 'dead') return;
-      if (!m.hostile || m.ownerId !== null || d2 > r2) return;
-      // packmates = same creature type (a wolf pack), matching the social-aggro convention
-      if (m.templateId !== dead.templateId) return;
-      const existing = m.auras.find((a) => a.id === PACK_FRENZY_AURA_ID);
-      if (existing) {
-        existing.remaining = fr.duration; // refresh on each further loss; don't stack
-        return;
-      }
-      m.auras.push({
-        id: PACK_FRENZY_AURA_ID,
-        name: 'Pack Frenzy',
-        kind: 'buff_haste',
-        remaining: fr.duration,
-        duration: fr.duration,
-        value: fr.hasteMult,
-        sourceId: m.id,
-        school: 'physical',
-      });
-      this.emit({ type: 'aura', targetId: m.id, name: 'Pack Frenzy', gained: true });
-      this.emit({
-        type: 'log',
-        text: `${m.name} flies into a frenzy!`,
-        color: '#ff8c00',
-        entityId: m.id,
-      });
-      this.emit({
-        type: 'spellfx',
-        sourceId: m.id,
-        targetId: m.id,
-        school: 'physical',
-        fx: 'nova',
-      });
-    });
-  }
-
-  // Death Throes (arm): a volatile creature does not explode the instant it
-  // dies. Its corpse destabilizes for `delay` seconds — a telegraph players can
-  // run from — by arming a fuse that the corpse tick (updateMob) counts down.
-  private armDeathThroes(dead: Entity): void {
-    const dt = MOBS[dead.templateId]?.deathThroes;
-    if (!dt) return;
-    dead.detonateTimer = dt.delay;
-    const school = dt.school ?? 'nature';
-    this.emit({ type: 'spellfx', sourceId: dead.id, targetId: dead.id, school, fx: 'nova' });
-    this.emit({
-      type: 'log',
-      text: `${dead.name} begins to swell — get clear!`,
-      color: '#9acd32',
-      entityId: dead.id,
-    });
-  }
-
-  // Death Throes (detonate): the corpse bursts for min..max `school` damage to
-  // every living player within `radius`. Mirrors the aoePulse damage loop; the
-  // dead mob is the damage source so credit/threat resolve as a normal hit.
-  private detonateCorpse(dead: Entity): void {
-    const dt = MOBS[dead.templateId]?.deathThroes;
-    if (!dt) return;
-    const school = dt.school ?? 'nature';
-    this.emit({ type: 'spellfx', sourceId: dead.id, targetId: dead.id, school, fx: 'nova' });
-    this.emit({
-      type: 'log',
-      text: `${dead.name} bursts in a cloud of ${dt.name}!`,
-      color: '#9acd32',
-      entityId: dead.id,
-    });
-    for (const meta of this.players.values()) {
-      const pe = this.entities.get(meta.entityId);
-      if (pe && !pe.dead && dist2d(pe.pos, dead.pos) <= dt.radius) {
-        const dmg = Math.round(this.rng.range(dt.min, dt.max));
-        this.dealDamage(dead, pe, dmg, false, school, dt.name, 'hit', true);
-      }
-    }
-  }
+  // respawnMob / despawnSummonedAdds / frenzyPackmates / armDeathThroes /
+  // detonateCorpse moved to mob/lifecycle.ts (M4). The five execution bodies are
+  // reached through SimContext: handleDeath fires ctx.frenzyPackmates +
+  // ctx.armDeathThroes; the updateMob corpse-tick (mob/locomotion.ts) fires
+  // ctx.detonateCorpse + ctx.respawnMob; resetEvadingMob fires
+  // ctx.despawnSummonedAdds. despawnPersistentPet + clearNonPlayerStatAuras stay
+  // Sim methods, now also exposed on the seam for the moved respawnMob to consume.
 
   // Boss threshold mechanics: add waves (summonAdds) and enrage. Checked
   // every tick while the boss is in combat; thresholds fire once per pull
