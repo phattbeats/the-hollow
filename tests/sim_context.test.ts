@@ -18,6 +18,7 @@ import type { Entity, SimEvent } from '../src/sim/types';
 // name). Keep in sync with SimContextCallbacks.
 const CALLBACK_KEYS = [
   'emit',
+  'error',
   'dealDamage',
   'handleDeath',
   'cancelCast',
@@ -45,6 +46,7 @@ const CALLBACK_KEYS = [
   'clearEntityMarker',
   'partyOf',
   'removeFromParty',
+  'dropPartyMarkers',
   'onInventoryChangedForQuests',
   // E1 entity-roster surface.
   'addEntity',
@@ -78,6 +80,9 @@ function makeFakeHost() {
     get entities() {
       return entities;
     },
+    players: new Map(),
+    tradeInvites: new Map(),
+    duelInvites: new Map(),
     grid: new SpatialGrid(),
     playerGrid: new SpatialGrid(),
     delayedEvents: [],
@@ -85,6 +90,7 @@ function makeFakeHost() {
     dungeonDoorIds: null,
     arenaMatches: new Map(),
     emit: vi.fn(),
+    error: vi.fn(),
     dealDamage: vi.fn(),
     handleDeath: vi.fn(),
     cancelCast: vi.fn(),
@@ -112,6 +118,7 @@ function makeFakeHost() {
     clearEntityMarker: vi.fn(),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
+    dropPartyMarkers: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
     addEntity: vi.fn(),
     dropEntity: vi.fn(),

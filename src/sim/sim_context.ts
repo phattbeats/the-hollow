@@ -17,7 +17,7 @@ import type { DelayedEvent, GroundAoE } from './entity_roster';
 import type { Rng } from './rng';
 import type { ArenaMatch, DuelState, Party, PlayerMeta } from './sim';
 import type { SpatialGrid } from './spatial';
-import type { Aura, CrowdControlDrCategory, DelveRun, Entity, SimEvent, Vec3 } from './types';
+import type { Aura, CrowdControlDrCategory, DelveRun, Entity, ErrorReason, SimEvent, Vec3 } from './types';
 
 // Live primitive views onto the running Sim. These are GETTERS, not snapshots:
 // `time`/`tickCount` advance every tick, and the `rng`/`entities` identities are
@@ -28,6 +28,15 @@ export interface SimContextPrimitives {
   readonly time: number;
   readonly tickCount: number;
   readonly entities: Map<number, Entity>;
+  // Live player roster (keyed by entity id). Stays a Sim field; exposed here so the
+  // moved party machine (A1) resolves member names/metas through the seam.
+  readonly players: Map<number, PlayerMeta>;
+  // Social-invite maps owned by the trade (G2) and duel (A2) slices. The party
+  // machine (A1) reads them for hasPendingSocialInvite's cross-system pending check
+  // and lazily expires entries in place, so these are LIVE views: the backing fields
+  // stay on Sim (mutated in place), like E1's delayedEvents/groundAoEs.
+  readonly tradeInvites: Map<number, { fromPid: number; expires: number }>;
+  readonly duelInvites: Map<number, { fromPid: number; expires: number }>;
   // Spatial indexes kept roster-exact alongside `entities` (E1). Stay public on Sim
   // too (server/game.ts queries them); exposed here as live views for the roster ops.
   readonly grid: SpatialGrid;
@@ -52,6 +61,9 @@ export interface SimContextPrimitives {
 export interface SimContextCallbacks {
   // Event sink (core). Routes to `Sim.emit`.
   emit(ev: SimEvent): void;
+  // Personal error toast/event to a player (core). Routes to `Sim.error`, which
+  // emits `{ type: 'error', text, pid, reason? }`.
+  error(pid: number, text: string, reason?: ErrorReason): void;
 
   // C1 damage/death hub + the casting/leash/arena/duel/fiesta/loot teardown it
   // drives mid-tick. `dealDamage` is the post-mitigation entry (crit/dodge/miss and
@@ -117,6 +129,9 @@ export interface SimContextCallbacks {
   clearEntityMarker(entityId: number): void;
   partyOf(pid: number): Party | null;
   removeFromParty(pid: number, verb: string): void;
+  // Drop a disbanded party's whole raid-marker set. The marker store is T1's
+  // (src/sim/targeting.ts) once T1 lands; until then this points at Sim.
+  dropPartyMarkers(partyId: number): void;
   onInventoryChangedForQuests(meta: PlayerMeta): void;
 
   // E1 entity roster: the moved roster ops, exposed so the foreign callers across
@@ -168,6 +183,15 @@ export function createSimContext(host: SimContextHost): SimContext {
     get entities() {
       return host.entities;
     },
+    get players() {
+      return host.players;
+    },
+    get tradeInvites() {
+      return host.tradeInvites;
+    },
+    get duelInvites() {
+      return host.duelInvites;
+    },
     get grid() {
       return host.grid;
     },
@@ -190,6 +214,7 @@ export function createSimContext(host: SimContextHost): SimContext {
       return host.arenaMatches;
     },
     emit: host.emit,
+    error: host.error,
     dealDamage: host.dealDamage,
     handleDeath: host.handleDeath,
     cancelCast: host.cancelCast,
@@ -217,6 +242,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     clearEntityMarker: host.clearEntityMarker,
     partyOf: host.partyOf,
     removeFromParty: host.removeFromParty,
+    dropPartyMarkers: host.dropPartyMarkers,
     onInventoryChangedForQuests: host.onInventoryChangedForQuests,
     addEntity: host.addEntity,
     dropEntity: host.dropEntity,

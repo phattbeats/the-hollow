@@ -63,6 +63,9 @@ function makeCtx() {
     get entities() {
       return entities;
     },
+    players: new Map(),
+    tradeInvites: new Map(),
+    duelInvites: new Map(),
     get grid() {
       return grid;
     },
@@ -85,6 +88,7 @@ function makeCtx() {
       return arenaMatches;
     },
     emit,
+    error: vi.fn(),
     clearEntityMarker,
     pulseGroundAoE,
     dealDamage: vi.fn(),
@@ -113,6 +117,7 @@ function makeCtx() {
     completeTame: vi.fn(),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
+    dropPartyMarkers: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
     addEntity: vi.fn(),
     dropEntity: vi.fn(),
