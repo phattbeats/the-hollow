@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Sim } from '../src/sim/sim';
+import { isRooted } from '../src/sim/combat/cc';
 import { MOBS } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
 
@@ -24,7 +25,7 @@ describe('Ensnare web-root affix', () => {
       expect(applied).toBe(true);
       const a = p.auras.find((x) => x.kind === 'root')!;
       expect(a.name).toBe('Sticky Web');
-      expect((sim as any).isRooted(p)).toBe(true);
+      expect(isRooted(p)).toBe(true);
     } finally {
       tmpl.ensnare!.chance = saved;
     }

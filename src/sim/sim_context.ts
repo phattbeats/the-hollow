@@ -256,6 +256,15 @@ export interface SimContextCallbacks {
   // isArenaTeamWiped / arenaIsDown declared in the A2 duel/arena block above (C1's
   // dealDamage death path consumes them via ctx; A2 owns them -> social/arena).
   clearNonPlayerStatAuras(target: Entity): void;
+
+  // C3 per-tick aura/regen runner (src/sim/combat/auras.ts) consumes these.
+  // healingTakenMult (the incoming-heal mult applied to eat/drink + HoT ticks) and
+  // healingThreat (effective-healing threat fan-out off a HoT tick) delegate to
+  // combat/heal.ts (C2). applyNonPlayerStatAura folds a mob/npc stat aura in/out on
+  // expiry; it STAYS on Sim (shared with the applyAura path).
+  healingTakenMult(target: Entity): number;
+  healingThreat(source: Entity, target: Entity, healed: number): void;
+  applyNonPlayerStatAura(target: Entity, aura: Aura, direction: 1 | -1): void;
   delveRunForMob(mobId: number): DelveRun | null;
   onDelveBossDefeated(run: DelveRun): void;
   grantNythraxisLockout(boss: Entity): void;
@@ -498,6 +507,9 @@ export function createSimContext(host: SimContextHost): SimContext {
     pvpController: host.pvpController,
     threatMod: host.threatMod,
     clearNonPlayerStatAuras: host.clearNonPlayerStatAuras,
+    healingTakenMult: host.healingTakenMult,
+    healingThreat: host.healingThreat,
+    applyNonPlayerStatAura: host.applyNonPlayerStatAura,
     delveRunForMob: host.delveRunForMob,
     onDelveBossDefeated: host.onDelveBossDefeated,
     grantNythraxisLockout: host.grantNythraxisLockout,
