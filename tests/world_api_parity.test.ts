@@ -34,6 +34,28 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { ClientWorld } from '../src/net/online';
 import { Sim } from '../src/sim/sim';
 import type { PlayerClass } from '../src/sim/types';
+// The 20 facet interfaces the W1 split produced (src/world_api/<facet>.ts). Imported
+// type-only to pin each facet's runtime member array to its interface key-set below.
+import type { IWorldChat } from '../src/world_api/chat';
+import type { IWorldCombat } from '../src/world_api/combat';
+import type { IWorldCosmetics } from '../src/world_api/cosmetics';
+import type { IWorldDelves } from '../src/world_api/delves';
+import type { IWorldDuelArena } from '../src/world_api/duel_arena';
+import type { IWorldDungeons } from '../src/world_api/dungeons';
+import type { IWorldEntityRoster } from '../src/world_api/entity_roster';
+import type { IWorldInteraction } from '../src/world_api/interaction';
+import type { IWorldInventory } from '../src/world_api/inventory';
+import type { IWorldLoot } from '../src/world_api/loot';
+import type { IWorldMarket } from '../src/world_api/market';
+import type { IWorldParty } from '../src/world_api/party';
+import type { IWorldPet } from '../src/world_api/pet';
+import type { IWorldProgressionXp } from '../src/world_api/progression_xp';
+import type { IWorldQuests } from '../src/world_api/quests';
+import type { IWorldSocialGraph } from '../src/world_api/social_graph';
+import type { IWorldTalents } from '../src/world_api/talents';
+import type { IWorldTargeting } from '../src/world_api/targeting';
+import type { IWorldTelemetry } from '../src/world_api/telemetry';
+import type { IWorldTrade } from '../src/world_api/trade';
 
 type IWorldMemberKind = 'method' | 'data';
 
@@ -403,12 +425,215 @@ describe('membership, not equality: world extras do not fail the gate', () => {
   });
 });
 
-// --- W1 HOOK (inert) ---------------------------------------------------------------
-// After the facet split (W1), the aggregate `IWorld` member set must equal the UNION
-// of the 19 facet member sets (no member dropped or duplicated across the split). W1
-// may add an optional `facet` tag to each IWORLD_MEMBERS entry and assert the per-facet
-// partition unions back to this whole. Do NOT build the facet partition now: the 19
-// facet interfaces do not exist until W1 (YAGNI).
-describe('W1: aggregate equals the union of the 19 facet member sets', () => {
-  it.todo('aggregate IWorld member set equals the UNION of the 19 facet member sets (W1)');
+// --- W1: aggregate == disjoint union of the 20 facet member sets --------------------
+// After the facet split (W1), `interface IWorld extends` 20 domain facet interfaces
+// (src/world_api/<facet>.ts; the 19 owner-backed facets plus IWorldTelemetry). This
+// block proves the split dropped nothing and duplicated nothing:
+//   (1) each facet's runtime name array is pinned to its interface key-set via
+//       `satisfies readonly (keyof IWorldX)[]` (rejects a FOREIGN name at compile time);
+//   (2) a type-level AssertNever<Exclude<keyof IWorldX, array[number]>> per facet rejects
+//       a MISSING name (if the array omits a key, Exclude<> is a non-never union and tsc
+//       fails) -- (1)+(2) together make each array EXACTLY its facet key-set;
+//   (3) the 20 arrays are pairwise DISJOINT (a member filed in two facets reddens);
+//   (4) their union, sorted, equals the pinned 142-name IWORLD_MEMBERS set (a member
+//       dropped from the split reddens).
+// This is the rigorous form, NOT the tautological `keyof IWorld === keyof (A & B & ...)`
+// (IWorld extends them, so that self-equality proves nothing): it asserts against the
+// PINNED list, the same anti-loosening baseline the rest of this file uses.
+
+// Compile-time assertion that T is exactly `never`. Used once per facet: if the facet
+// interface carries a key absent from its runtime array, `Exclude<...>` is a non-never
+// union and the reference fails tsc with "does not satisfy the constraint 'never'".
+type AssertNever<T extends never> = T;
+
+const FACET_ENTITY_ROSTER = [
+  'cfg', 'entities', 'playerId', 'player', 'moveInput', 'realm',
+] as const satisfies readonly (keyof IWorldEntityRoster)[];
+type _ExhaustEntityRoster = AssertNever<
+  Exclude<keyof IWorldEntityRoster, (typeof FACET_ENTITY_ROSTER)[number]>
+>;
+
+const FACET_COMBAT = [
+  'known', 'castAbility', 'castAbilityBySlot', 'startAutoAttack', 'stopAutoAttack', 'releaseSpirit',
+] as const satisfies readonly (keyof IWorldCombat)[];
+type _ExhaustCombat = AssertNever<Exclude<keyof IWorldCombat, (typeof FACET_COMBAT)[number]>>;
+
+const FACET_TARGETING = [
+  'targetEntity', 'tabTarget', 'targetNearestFriendly', 'friendlyTabTarget',
+] as const satisfies readonly (keyof IWorldTargeting)[];
+type _ExhaustTargeting = AssertNever<
+  Exclude<keyof IWorldTargeting, (typeof FACET_TARGETING)[number]>
+>;
+
+const FACET_INTERACTION = [
+  'interact', 'lootCorpse', 'pickUpObject',
+] as const satisfies readonly (keyof IWorldInteraction)[];
+type _ExhaustInteraction = AssertNever<
+  Exclude<keyof IWorldInteraction, (typeof FACET_INTERACTION)[number]>
+>;
+
+const FACET_LOOT = [
+  'submitLootRoll', 'activeLootRolls',
+] as const satisfies readonly (keyof IWorldLoot)[];
+type _ExhaustLoot = AssertNever<Exclude<keyof IWorldLoot, (typeof FACET_LOOT)[number]>>;
+
+const FACET_INVENTORY = [
+  'inventory', 'vendorBuyback', 'equipment', 'copper', 'equipItem', 'unequipItem',
+  'useItem', 'discardItem', 'buyItem', 'sellItem', 'sellAllJunk', 'buyBackItem',
+] as const satisfies readonly (keyof IWorldInventory)[];
+type _ExhaustInventory = AssertNever<
+  Exclude<keyof IWorldInventory, (typeof FACET_INVENTORY)[number]>
+>;
+
+const FACET_COSMETICS = [
+  'accountCosmetics', 'changeSkin', 'claimEventSkin', 'unequipMechChroma',
+] as const satisfies readonly (keyof IWorldCosmetics)[];
+type _ExhaustCosmetics = AssertNever<
+  Exclude<keyof IWorldCosmetics, (typeof FACET_COSMETICS)[number]>
+>;
+
+const FACET_QUESTS = [
+  'questLog', 'questsDone', 'questState', 'acceptQuest', 'turnInQuest', 'abandonQuest',
+  'acceptLinkedQuest',
+] as const satisfies readonly (keyof IWorldQuests)[];
+type _ExhaustQuests = AssertNever<Exclude<keyof IWorldQuests, (typeof FACET_QUESTS)[number]>>;
+
+const FACET_PROGRESSION_XP = [
+  'xp', 'lifetimeXp', 'prestigeRank', 'unlockedMilestones', 'restedXp', 'leaderboard', 'prestige',
+] as const satisfies readonly (keyof IWorldProgressionXp)[];
+type _ExhaustProgressionXp = AssertNever<
+  Exclude<keyof IWorldProgressionXp, (typeof FACET_PROGRESSION_XP)[number]>
+>;
+
+const FACET_TALENTS = [
+  'talents', 'talentSpec', 'talentRole', 'loadouts', 'activeLoadout', 'talentPoints',
+  'applyTalents', 'respec', 'setSpec', 'saveLoadout', 'switchLoadout', 'deleteLoadout',
+] as const satisfies readonly (keyof IWorldTalents)[];
+type _ExhaustTalents = AssertNever<Exclude<keyof IWorldTalents, (typeof FACET_TALENTS)[number]>>;
+
+const FACET_PET = [
+  'abandonPet', 'renamePet', 'revivePet', 'petAttack', 'petTaunt', 'setPetAutoTaunt',
+  'feedPet', 'healPet', 'setPetMode',
+] as const satisfies readonly (keyof IWorldPet)[];
+type _ExhaustPet = AssertNever<Exclude<keyof IWorldPet, (typeof FACET_PET)[number]>>;
+
+const FACET_PARTY = [
+  'partyInfo', 'partyInvite', 'partyAccept', 'partyDecline', 'partyLeave', 'partyKick',
+  'convertPartyToRaid', 'convertRaidToParty', 'moveRaidMember', 'markerFor', 'setMarker',
+  'clearMarker',
+] as const satisfies readonly (keyof IWorldParty)[];
+type _ExhaustParty = AssertNever<Exclude<keyof IWorldParty, (typeof FACET_PARTY)[number]>>;
+
+const FACET_TRADE = [
+  'tradeInfo', 'tradeRequest', 'tradeAccept', 'tradeSetOffer', 'tradeConfirm', 'tradeCancel',
+] as const satisfies readonly (keyof IWorldTrade)[];
+type _ExhaustTrade = AssertNever<Exclude<keyof IWorldTrade, (typeof FACET_TRADE)[number]>>;
+
+const FACET_CHAT = ['chat', 'playEmote'] as const satisfies readonly (keyof IWorldChat)[];
+type _ExhaustChat = AssertNever<Exclude<keyof IWorldChat, (typeof FACET_CHAT)[number]>>;
+
+const FACET_DUEL_ARENA = [
+  'duelInfo', 'duelRequest', 'duelAccept', 'duelDecline', 'arenaInfo', 'arenaQueueJoin',
+  'arenaQueueLeave', 'arenaAugmentPick',
+] as const satisfies readonly (keyof IWorldDuelArena)[];
+type _ExhaustDuelArena = AssertNever<
+  Exclude<keyof IWorldDuelArena, (typeof FACET_DUEL_ARENA)[number]>
+>;
+
+const FACET_SOCIAL_GRAPH = [
+  'socialInfo', 'friendAdd', 'friendRemove', 'blockAdd', 'blockRemove', 'guildCreate',
+  'guildInvite', 'guildAccept', 'guildDecline', 'guildLeave', 'guildKick', 'guildPromote',
+  'guildDemote', 'guildTransfer', 'guildDisband', 'searchCharacters',
+] as const satisfies readonly (keyof IWorldSocialGraph)[];
+type _ExhaustSocialGraph = AssertNever<
+  Exclude<keyof IWorldSocialGraph, (typeof FACET_SOCIAL_GRAPH)[number]>
+>;
+
+const FACET_MARKET = [
+  'marketInfo', 'marketSearch', 'marketList', 'marketBuy', 'marketCancel', 'marketCollect',
+] as const satisfies readonly (keyof IWorldMarket)[];
+type _ExhaustMarket = AssertNever<Exclude<keyof IWorldMarket, (typeof FACET_MARKET)[number]>>;
+
+const FACET_DUNGEONS = [
+  'enterDungeon', 'leaveDungeon', 'raidLockouts',
+] as const satisfies readonly (keyof IWorldDungeons)[];
+type _ExhaustDungeons = AssertNever<
+  Exclude<keyof IWorldDungeons, (typeof FACET_DUNGEONS)[number]>
+>;
+
+const FACET_DELVES = [
+  'enterDelve', 'leaveDelve', 'delveInteract', 'companionUpgrade', 'delveBuyShopItem',
+  'delveShopOffers', 'lockpickState', 'lockpickEngage', 'lockpickAction', 'lockpickAbort',
+  'collectDelveChestLoot', 'delveRun', 'companionState', 'delveMarks', 'companionUpgrades',
+  'delveDaily',
+] as const satisfies readonly (keyof IWorldDelves)[];
+type _ExhaustDelves = AssertNever<Exclude<keyof IWorldDelves, (typeof FACET_DELVES)[number]>>;
+
+const FACET_TELEMETRY = [
+  'reportTelemetry',
+] as const satisfies readonly (keyof IWorldTelemetry)[];
+type _ExhaustTelemetry = AssertNever<
+  Exclude<keyof IWorldTelemetry, (typeof FACET_TELEMETRY)[number]>
+>;
+
+// The 20-facet partition, keyed by facet for legible failure messages.
+const FACET_MEMBER_ARRAYS: Readonly<Record<string, readonly string[]>> = {
+  entityRoster: FACET_ENTITY_ROSTER,
+  combat: FACET_COMBAT,
+  targeting: FACET_TARGETING,
+  interaction: FACET_INTERACTION,
+  loot: FACET_LOOT,
+  inventory: FACET_INVENTORY,
+  cosmetics: FACET_COSMETICS,
+  quests: FACET_QUESTS,
+  progressionXp: FACET_PROGRESSION_XP,
+  talents: FACET_TALENTS,
+  pet: FACET_PET,
+  party: FACET_PARTY,
+  trade: FACET_TRADE,
+  chat: FACET_CHAT,
+  duelArena: FACET_DUEL_ARENA,
+  socialGraph: FACET_SOCIAL_GRAPH,
+  market: FACET_MARKET,
+  dungeons: FACET_DUNGEONS,
+  delves: FACET_DELVES,
+  telemetry: FACET_TELEMETRY,
+};
+
+describe('W1: aggregate IWorld member set equals the disjoint union of the 20 facets', () => {
+  it('pins the facet count at 20', () => {
+    expect(Object.keys(FACET_MEMBER_ARRAYS).length).toBe(20);
+  });
+
+  it('each facet array is non-empty and internally duplicate-free', () => {
+    for (const [name, arr] of Object.entries(FACET_MEMBER_ARRAYS)) {
+      expect(arr.length, `facet ${name} is empty`).toBeGreaterThan(0);
+      expect(new Set(arr).size, `facet ${name} has a duplicate member`).toBe(arr.length);
+    }
+  });
+
+  it('the 20 facet arrays are pairwise disjoint (no member filed in two facets)', () => {
+    const entries = Object.entries(FACET_MEMBER_ARRAYS);
+    const overlaps: string[] = [];
+    for (let i = 0; i < entries.length; i++) {
+      for (let j = i + 1; j < entries.length; j++) {
+        const [aName, a] = entries[i];
+        const [bName, b] = entries[j];
+        const bSet = new Set(b);
+        for (const member of a) {
+          if (bSet.has(member)) overlaps.push(`${member}: in both ${aName} and ${bName}`);
+        }
+      }
+    }
+    expect(overlaps, `members filed in more than one facet:\n${overlaps.join('\n')}`).toEqual([]);
+  });
+
+  it('the union of the 20 facets equals the pinned 142-member IWORLD_MEMBERS set', () => {
+    const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(142);
+    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(142);
+    const sortedUnion = [...union].sort();
+    const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();
+    expect(sortedUnion).toEqual(pinned);
+  });
 });
