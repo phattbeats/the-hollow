@@ -11,6 +11,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import type { UiEffectsTier } from '../src/game/ui_effects_profile';
 import { FCT_MAX_CONCURRENT_LOW, FCT_TTL_SCALE_LOW } from '../src/game/ui_tier_knobs';
 import {
+  DAMAGE_FCT_KINDS,
   FCT_ANCHOR_HEAD_OFFSET,
   FCT_JITTER_RANGE,
   FCT_TTL_MS,
@@ -490,6 +491,20 @@ describe('FctPainter: P14a static-preset tiering (Slice A)', () => {
     const ultra = tierPainter('ultra', 8);
     ultra.spawn(evt({ kind: 'damage-taken', text: '-7', crit: false }), 0);
     expect(ultra.liveCount()).toBe(1); // ultra keeps non-crit damage too (byte-equivalent)
+  });
+
+  it('drop-non-crit gate is UNIFORM across all three damage kinds (non-crit dropped, crit kept)', () => {
+    // Pin that the low gate (isDamageFctKind(kind) && !crit) is kind-agnostic across the
+    // whole DAMAGE_FCT_KINDS set (iterated, so a future damage kind is auto-covered), not
+    // accidentally specific to the two kinds the case above happens to spawn. Each kind: a
+    // non-crit sheds, a crit is kept.
+    for (const kind of DAMAGE_FCT_KINDS) {
+      const low = tierPainter('low', 8);
+      low.spawn(evt({ kind, text: '1', crit: false }), 0);
+      expect(low.liveCount()).toBe(0); // non-crit damage of EVERY kind sheds on low
+      low.spawn(evt({ kind, text: '2', crit: true }), 0);
+      expect(low.liveCount()).toBe(1); // a crit of EVERY kind is kept
+    }
   });
 
   it('max-concurrent: low caps the live count tighter than the pre-allocated pool', () => {
