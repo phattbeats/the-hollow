@@ -192,6 +192,9 @@ const CALLBACK_KEYS = [
   'unlockMechChromaFromItem',
   'openSkinSelect',
   'isSwimming',
+  // W3 interaction: the two still-on-Sim quest-NPC delegates the moved interact dispatches to.
+  'talkToNpc',
+  'isQuestInteractionEntity',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -409,6 +412,9 @@ function makeFakeHost() {
     unlockMechChromaFromItem: vi.fn(),
     openSkinSelect: vi.fn(),
     isSwimming: vi.fn(() => false),
+    // W3 interaction: the two still-on-Sim quest-NPC delegates the moved interact dispatches to.
+    talkToNpc: vi.fn(),
+    isQuestInteractionEntity: vi.fn(() => false),
   };
   return { host, rng, entities, clock };
 }

@@ -280,6 +280,9 @@ function makeCtx() {
     unlockMechChromaFromItem: vi.fn(),
     openSkinSelect: vi.fn(),
     isSwimming: vi.fn(() => false),
+    // W3 interaction: the two still-on-Sim quest-NPC delegates the moved interact dispatches to.
+    talkToNpc: vi.fn(),
+    isQuestInteractionEntity: vi.fn(() => false),
   };
   const ctx = createSimContext(host);
   return {

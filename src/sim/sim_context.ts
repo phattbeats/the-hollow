@@ -513,6 +513,14 @@ export interface SimContextCallbacks {
   ): ItemUseResult | undefined;
   openSkinSelect(meta: PlayerMeta, catalog: SkinCatalog, itemId: string): void;
   isSwimming(e: Entity): boolean;
+
+  // W3 interaction (src/sim/interaction.ts): the moved `interact` dispatcher fans into
+  // the quest-NPC surface that STAYS on Sim (W4 owns talkToNpc / interactNpcForQuests /
+  // isQuestInteractionEntity). These two callbacks are thin late-bound delegates to the
+  // still-on-Sim methods; W4 later re-points them into the quests module WITHOUT renaming
+  // (append-only). talkToNpc MUST stay a resolvable Sim delegate (external test call sites).
+  talkToNpc(npcId: number, pid?: number): void;
+  isQuestInteractionEntity(e: Entity): boolean;
 }
 
 // The seam consumed by extracted modules.
@@ -823,5 +831,8 @@ export function createSimContext(host: SimContextHost): SimContext {
     unlockMechChromaFromItem: host.unlockMechChromaFromItem,
     openSkinSelect: host.openSkinSelect,
     isSwimming: host.isSwimming,
+    // W3 interaction: the two still-on-Sim quest-NPC delegates the moved interact dispatches to.
+    talkToNpc: host.talkToNpc,
+    isQuestInteractionEntity: host.isQuestInteractionEntity,
   };
 }

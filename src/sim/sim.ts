@@ -56,12 +56,8 @@ import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content
 // Sim keeps thin same-named delegates that call these.
 import {
   activeLootRolls as activeLootRollsImpl,
-  awardSharedLootItem as awardSharedLootItemImpl,
-  distributeLootCopper as distributeLootCopperImpl,
-  lootSlotVisibleTo as lootSlotVisibleToImpl,
   partyLootCandidatesForMob as partyLootCandidatesForMobImpl,
   type PendingLootRoll,
-  pruneCorpseLoot as pruneCorpseLootImpl,
   resolveLootRoll as resolveLootRollImpl,
   rollLoot as rollLootImpl,
   submitLootRoll as submitLootRollImpl,
@@ -188,6 +184,7 @@ import * as companionMod from './delves/companion';
 import * as lockpickMod from './delves/lockpick_controller';
 import { Market, MARKET_MAX_LISTINGS, type MarketListing, type MarketSave } from './market';
 import * as items from './items';
+import * as interaction from './interaction';
 import { formatMoney } from './format_money';
 import * as runsMod from './delves/runs';
 import * as chatMod from './social/chat';
@@ -268,7 +265,6 @@ import {
   LEASH_DISTANCE,
   type LootRollChoice,
   type LootRollPrompt,
-  type LootSlot,
   type LootStrategies,
   MAX_LEVEL,
   MELEE_RANGE,
@@ -276,7 +272,6 @@ import {
   type MoveInput,
   meleeMissChance,
   normAngle,
-  OBJECT_RESPAWN,
   type OverheadEmoteId,
   type PetMode,
   type PlayerClass,
@@ -2155,6 +2150,14 @@ export class Sim {
         sim.unlockMechChromaFromItem(meta, itemId, chromaId),
       openSkinSelect: (meta, catalog, itemId) => sim.openSkinSelect(meta, catalog, itemId),
       isSwimming: (e) => sim.isSwimming(e),
+      // Interaction (W3): the moved interaction.interact dispatches into the quest-NPC
+      // surface that STAYS on Sim (W4 owns talkToNpc / interactNpcForQuests /
+      // isQuestInteractionEntity). Late-bound arrows (call-time lookup, not `.bind`d) so
+      // W4 can re-point them into the quests module without touching this binding, and so
+      // a test that reassigns sim.talkToNpc is honored. talkToNpc is public; isQuestInteractionEntity
+      // is private on Sim. Both MUST keep talkToNpc a resolvable Sim delegate (W4 contract).
+      talkToNpc: (npcId, pid) => sim.talkToNpc(npcId, pid),
+      isQuestInteractionEntity: (e) => sim.isQuestInteractionEntity(e),
     };
     return createSimContext(host);
   }
@@ -3384,22 +3387,14 @@ export class Sim {
   // lifecycle, corpse-loot helpers) moved to loot/loot_roll.ts behind SimContext.
   // Sim keeps thin same-named delegates only where a foreign caller resolves them:
   //  - rollLoot: ctx.rollLoot (combat/damage.ts handleDeath) + (sim as any) test casts.
-  //  - distributeLootCopper/awardSharedLootItem/lootSlotVisibleTo/pruneCorpseLoot:
-  //    the lootCorpse interaction handler (stays on Sim) calls them.
   //  - resolveLootRoll: the updateLootRolls tick driver (stays on Sim) calls it.
   //  - activeLootRolls/submitLootRoll: the public IWorld surface (HUD + player action).
   // The strategy resolvers + copper/need-greed internals had no external caller and
-  // moved fully (no delegate).
+  // moved fully (no delegate). The corpse-loot helpers (distributeLootCopper/
+  // awardSharedLootItem/lootSlotVisibleTo/pruneCorpseLoot) had their sole Sim caller
+  // (lootCorpse) moved to interaction.ts (W3), which now imports them directly.
   private rollLoot(mob: Entity, meta: PlayerMeta, eligible: PlayerMeta[] = [meta]): void {
     rollLootImpl(this.ctx, mob, meta, eligible);
-  }
-
-  private distributeLootCopper(mob: Entity, looter: PlayerMeta): void {
-    distributeLootCopperImpl(this.ctx, mob, looter);
-  }
-
-  private awardSharedLootItem(itemId: string, mob: Entity, looter: PlayerMeta): void {
-    awardSharedLootItemImpl(this.ctx, itemId, mob, looter);
   }
 
   activeLootRolls(pid = this.playerId): LootRollPrompt[] {
@@ -3412,14 +3407,6 @@ export class Sim {
 
   private resolveLootRoll(roll: PendingLootRoll): void {
     resolveLootRollImpl(this.ctx, roll);
-  }
-
-  private lootSlotVisibleTo(slot: LootSlot, pid: number): boolean {
-    return lootSlotVisibleToImpl(slot, pid);
-  }
-
-  private pruneCorpseLoot(mob: Entity): void {
-    pruneCorpseLootImpl(this.ctx, mob);
   }
 
   // -------------------------------------------------------------------------
@@ -4055,16 +4042,13 @@ export class Sim {
   // room/participant queries, lockout grant, Gravebreaker/Raise Fallen/adds, the Aldric
   // transition + wardstones, Soul Rend, Deathless Rage + ward channels) moved to
   // encounters/nythraxis.ts (N1). updateNythraxisEncounter + grantNythraxisLockout are
-  // reached only via ctx (bound to the module in buildSimContext). Sim keeps two thin
-  // delegates: resetNythraxisEncounter (reached by resetEvadingMob's boss-reset re-entry,
-  // respawnMob, and nythraxis_aldric_npc.test.ts via cast) and tryStartNythraxisWardChannel
-  // (the three interaction call sites short-circuit on a true return).
+  // reached only via ctx (bound to the module in buildSimContext). Sim keeps one thin
+  // delegate: resetNythraxisEncounter (reached by resetEvadingMob's boss-reset re-entry,
+  // respawnMob, and nythraxis_aldric_npc.test.ts via cast). tryStartNythraxisWardChannel
+  // moved with its sole callers (lootCorpse/pickUpObject/interact) to interaction.ts (W3),
+  // which imports it directly from encounters/nythraxis.ts.
   private resetNythraxisEncounter(boss: Entity): void {
     nythraxis.resetNythraxisEncounter(this.ctx, boss);
-  }
-
-  private tryStartNythraxisWardChannel(ward: Entity, player: Entity): boolean {
-    return nythraxis.tryStartNythraxisWardChannel(this.ctx, ward, player);
   }
 
   private spawnBossAdds(boss: Entity, mobId: string, count: number): void {
@@ -4336,176 +4320,22 @@ export class Sim {
   // Interaction: looting, quest NPCs, ground objects
   // -------------------------------------------------------------------------
 
+  // lootCorpse / pickUpObject / interact (the three IWorldInteraction members) moved
+  // to interaction.ts (W3) behind SimContext. Sim keeps thin same-named PUBLIC delegates
+  // (the widened `pid?` overload preserved) so the IWorld surface, server/game.ts, and
+  // tests resolve them on the Sim facade unchanged; each forwards via this.ctx. The
+  // quest-NPC dispatch they fan into (talkToNpc / isQuestInteractionEntity below) STAYS
+  // on Sim (W4) and is reached through two append-only SimContext callbacks.
   lootCorpse(mobId: number, pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const { meta, e: p } = r;
-    const mob = this.entities.get(mobId);
-    if (!mob?.lootable || !mob.loot) return;
-    const tapperParty = mob.tappedById !== null ? this.partyOf(mob.tappedById) : null;
-    const hasSharedLootRights =
-      mob.tappedById === null ||
-      mob.tappedById === meta.entityId ||
-      !!tapperParty?.members.includes(meta.entityId);
-    const hasPersonalLoot = mob.loot.items.some((s) => s.personalFor?.includes(meta.entityId));
-    const hasOpenLoot = mob.loot.items.some((s) => s.openToAll && s.count > 0);
-    if (!hasSharedLootRights && !hasPersonalLoot && !hasOpenLoot) {
-      this.error(meta.entityId, "You don't have permission to loot that.");
-      return;
-    }
-    if (dist2d(p.pos, mob.pos) > INTERACT_RANGE) {
-      this.error(meta.entityId, 'Too far away.');
-      return;
-    }
-    if (hasSharedLootRights) this.distributeLootCopper(mob, meta);
-    for (const s of [...mob.loot.items]) {
-      if (!this.lootSlotVisibleTo(s, meta.entityId)) continue;
-      if (s.openToAll) {
-        for (let i = 0; i < s.count; i++) this.addItem(s.itemId, 1, meta.entityId);
-        s.count = 0;
-        continue;
-      }
-      if (s.personalFor) {
-        this.addItem(s.itemId, 1, meta.entityId);
-        s.personalFor = s.personalFor.filter((id) => id !== meta.entityId);
-        continue;
-      }
-      if (!hasSharedLootRights) continue;
-      for (let i = 0; i < s.count; i++) {
-        this.awardSharedLootItem(s.itemId, mob, meta);
-      }
-      s.count = 0;
-    }
-    this.pruneCorpseLoot(mob);
-    if (p.targetId === mobId) p.targetId = null;
+    interaction.lootCorpse(this.ctx, mobId, pid);
   }
 
   pickUpObject(objId: number, pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const { meta, e: p } = r;
-    const obj = this.entities.get(objId);
-    if (obj?.kind !== 'object' || !obj.lootable || !obj.objectItemId) return;
-    if (dist2d(p.pos, obj.pos) > INTERACT_RANGE) {
-      this.error(meta.entityId, 'Too far away.');
-      return;
-    }
-    if (this.tryStartNythraxisWardChannel(obj, p)) return;
-    if (this.activateNythraxisRelic(obj, meta)) return;
-    if (this.interactObjectForQuests(obj, meta)) return;
-    const def = ITEMS[obj.objectItemId];
-    if (def?.questId) {
-      const qp = meta.questLog.get(def.questId);
-      if (!qp || (qp.state !== 'active' && qp.state !== 'ready')) {
-        this.error(meta.entityId, def.pickupDeny ?? `You cannot take the ${def.name} yet.`);
-        return;
-      }
-      const quest = QUESTS[def.questId];
-      const objIdx = quest.objectives.findIndex(
-        (o) => o.type === 'collect' && o.itemId === obj.objectItemId,
-      );
-      if (objIdx < 0) {
-        this.error(meta.entityId, def.pickupEnough ?? `${def.name} offers nothing more.`);
-        return;
-      }
-      if (
-        objIdx >= 0 &&
-        this.countItem(obj.objectItemId, meta.entityId) >= quest.objectives[objIdx].count
-      ) {
-        this.error(meta.entityId, def.pickupEnough ?? 'You have enough of those.');
-        return;
-      }
-    }
-    this.addItem(obj.objectItemId, 1, meta.entityId);
-    obj.lootable = false;
-    obj.respawnTimer = OBJECT_RESPAWN;
-  }
-
-  // The Nythraxis crypt-relic / grave-vision quest chain (activateNythraxisRelic +
-  // interactObjectForQuests + the sharedNythraxisObjectParticipants / summonQuestVision /
-  // summonQuestMob / emitQuestObjectVision / emitQuestMobDialogue helpers) moved to
-  // encounters/nythraxis.ts (N1). pickUpObject short-circuits on the two delegates below
-  // before the generic object-pickup path; the helpers are module-internal.
-  private activateNythraxisRelic(obj: Entity, meta: PlayerMeta): boolean {
-    return nythraxis.activateNythraxisRelic(this.ctx, obj, meta);
-  }
-
-  private interactObjectForQuests(obj: Entity, meta: PlayerMeta): boolean {
-    return nythraxis.interactObjectForQuests(this.ctx, obj, meta);
+    interaction.pickUpObject(this.ctx, objId, pid);
   }
 
   interact(pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const p = r.e;
-    if (p.targetId !== null) {
-      const target = this.entities.get(p.targetId);
-      if (target && dist2d(p.pos, target.pos) <= INTERACT_RANGE + 2) {
-        if (target.kind === 'mob' && target.lootable) {
-          this.lootCorpse(target.id, p.id);
-          return;
-        }
-        if (target.kind === 'object' && target.lootable) {
-          if (target.templateId === 'dungeon_door' && target.dungeonId) {
-            this.enterDungeon(target.dungeonId, p.id);
-            return;
-          }
-          if (target.templateId === 'dungeon_exit') {
-            this.leaveDungeon(p.id);
-            return;
-          }
-          if (this.tryStartNythraxisWardChannel(target, p)) return;
-          this.pickUpObject(target.id, p.id);
-          return;
-        }
-        if (this.isQuestInteractionEntity(target)) {
-          this.talkToNpc(target.id, p.id);
-          return;
-        }
-      }
-    }
-    let bestCorpse: Entity | null = null;
-    let bestCorpseD2 = INTERACT_RANGE * INTERACT_RANGE;
-    let bestObj: Entity | null = null;
-    let bestObjD2 = INTERACT_RANGE * INTERACT_RANGE;
-    let bestQuestEntity: Entity | null = null;
-    let bestQuestD2 = INTERACT_RANGE * INTERACT_RANGE;
-    this.grid.forEachInRadius(p.pos.x, p.pos.z, INTERACT_RANGE, (e, d2) => {
-      if (e.kind === 'mob' && e.lootable && d2 < bestCorpseD2) {
-        bestCorpse = e;
-        bestCorpseD2 = d2;
-      }
-      if (e.kind === 'object' && e.lootable && d2 < bestObjD2) {
-        bestObj = e;
-        bestObjD2 = d2;
-      }
-      if (this.isQuestInteractionEntity(e) && d2 < bestQuestD2) {
-        bestQuestEntity = e;
-        bestQuestD2 = d2;
-      }
-    });
-    // re-read through wider types: TS cannot see the closure assignments above
-    const corpse = bestCorpse as Entity | null;
-    const obj = bestObj as Entity | null;
-    const questEntity = bestQuestEntity as Entity | null;
-    if (corpse) {
-      this.lootCorpse(corpse.id, p.id);
-      return;
-    }
-    if (obj) {
-      if (obj.templateId === 'dungeon_door' && obj.dungeonId) {
-        this.enterDungeon(obj.dungeonId, p.id);
-        return;
-      }
-      if (obj.templateId === 'dungeon_exit') {
-        this.leaveDungeon(p.id);
-        return;
-      }
-      if (this.tryStartNythraxisWardChannel(obj, p)) return;
-      this.pickUpObject(obj.id, p.id);
-      return;
-    }
-    if (questEntity) this.talkToNpc(questEntity.id, p.id);
+    interaction.interact(this.ctx, pid);
   }
 
   private isQuestInteractionEntity(e: Entity): boolean {
