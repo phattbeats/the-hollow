@@ -3352,7 +3352,7 @@ export class Hud {
       countEl.className = 'item-count';
       const kb = document.createElement('span');
       kb.className = 'keybind';
-      kb.textContent = this.keybinds.primaryLabel(`slot${i}`); // rebindable; refreshKeybindLabels keeps it current
+      kb.textContent = this.keybinds.primaryLabel(`slot${i}`); // initial keycap; the ActionBarPainter keeps it current each frame
       const cdOverlay = document.createElement('div');
       cdOverlay.className = 'cd-overlay';
       const cdText = document.createElement('div');
@@ -3654,11 +3654,14 @@ export class Hud {
     btn.addEventListener('pointercancel', finish);
   }
 
-  // Repaint the keycap on every action button from the current bindings.
+  // Repaint the side-menu button keycaps + aria labels from the current bindings.
   private refreshKeybindLabels(): void {
-    for (let i = 0; i < this.abilityButtons.length; i++) {
-      this.abilityButtons[i].keybindEl.textContent = this.keybinds.primaryLabel(`slot${i}`);
-    }
+    // The action-bar keycaps are owned by the per-frame ActionBarPainter, which writes
+    // each slot's keybind label through the elided setText every frame; a rebind or
+    // language switch therefore lands on the next update() tick (update() runs every
+    // frame in-game). Refreshing them here too would be a second writer bypassing that
+    // elision cache (decision 5a). This method owns only the side-menu buttons, which
+    // have no per-frame painter.
     const sideButtons: [selector: string, action: string, labelKey: TranslationKey][] = [
       ['#mm-char', 'char', 'hud.keybinds.actions.char'],
       ['#mm-spell', 'spellbook', 'abilityUi.spellbook.title'],

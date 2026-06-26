@@ -5,10 +5,11 @@
 // The aria-label was the Top-risk-4 hazard: a raw setAttribute fired every frame per
 // slot, allocating a fresh localized string and touching the DOM unconditionally.
 //
-// The core stays DOM-free and i18n-MECHANISM-free (it never imports the i18n module),
-// yet it still produces the FINAL localized aria string by calling an INJECTED t()
-// each frame, so the painter never concats and the i18n key keeps firing every frame
-// (CLAUDE.md i18n + Top risk 4). The painter elides the actual DOM write.
+// The core stays DOM-free and i18n-MECHANISM-free (no i18n RUNTIME import, only the
+// TranslationKey / InterpolationValues types, which erase at build), yet it still
+// produces the FINAL localized aria string by calling an INJECTED t() each frame, so
+// the painter never concats and the i18n key keeps firing every frame (CLAUDE.md i18n
+// + Top risk 4). The painter elides the actual DOM write.
 //
 // DECISION 9 (component contract): the core is INSTANCE-PARAMETERIZED by a bar
 // DESCRIPTOR (the slot set, each slot's ability/item source + keybind label, NO DOM

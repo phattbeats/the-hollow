@@ -6,7 +6,7 @@
 // parity (decision 15) drives both world shapes to identical output.
 
 import { describe, expect, it, vi } from 'vitest';
-import type { AbilityDef, ItemDef } from '../src/sim/types';
+import { type AbilityDef, type ItemDef, MELEE_RANGE } from '../src/sim/types';
 import {
   ABILITY_ICON_PREFIX,
   type ActionBarAbility,
@@ -195,6 +195,57 @@ describe('actionBarView: ability cooldown / usable / range / queued math', () =>
     const near = view.tick(world({ resource: 60, targetPos: { x: 1, y: 1, z: 1 } })).slots[0];
     expect(near.usable).toBe(true);
     expect(near.outOfRange).toBe(false);
+  });
+
+  it('a range-0 targeted ability falls back to MELEE_RANGE for the range check', () => {
+    const view = createActionBarView(
+      descriptor(slot(1, { ability: ability('rend', { requiresTarget: true, range: 0 }) })),
+      fakeDeps(),
+    );
+    // range 0 -> the out-of-range check uses MELEE_RANGE (dist2d is on the x/z plane).
+    // Snapshot the primitive each tick: the core reuses the slot object across ticks.
+    const far = view.tick(world({ targetPos: { x: MELEE_RANGE + 1, y: 0, z: 0 } })).slots[0]
+      .outOfRange;
+    const near = view.tick(world({ targetPos: { x: MELEE_RANGE - 2, y: 0, z: 0 } })).slots[0]
+      .outOfRange;
+    expect(far).toBe(true);
+    expect(near).toBe(false);
+  });
+
+  it('a dead target yields no distance, so a ranged ability never reads out of range', () => {
+    const view = createActionBarView(
+      descriptor(slot(1, { ability: ability('pyro', { requiresTarget: true, range: 5 }) })),
+      fakeDeps(),
+    );
+    // The target is well past range BUT dead: tgtDist is null (dead targets are
+    // ignored, matching the old `target && !target.dead`), so oor never fires.
+    const s = view.tick(world({ targetPos: { x: 100, y: 0, z: 100 }, targetDead: true })).slots[0];
+    expect(s.outOfRange).toBe(false);
+    expect(s.usable).toBe(true);
+  });
+
+  it('a non-targeted ability ignores range entirely even with a far target', () => {
+    const view = createActionBarView(
+      descriptor(slot(1, { ability: ability('renew', { requiresTarget: false, range: 0 }) })),
+      fakeDeps(),
+    );
+    const s = view.tick(world({ targetPos: { x: 100, y: 0, z: 100 } })).slots[0];
+    expect(s.outOfRange).toBe(false);
+  });
+
+  it('cooldown active AND gcd active: the sweep tracks max(cd, gcd) over the cooldown denom', () => {
+    const view = createActionBarView(
+      descriptor(slot(1, { ability: ability('frostbolt', { cooldown: 6, offGcd: false }) })),
+      fakeDeps(),
+    );
+    // On its own 2s cooldown while a 4s GCD still runs: shown = max(2, 4) = 4, the
+    // denom stays the ability cooldown (6, because cd > 0), and the countdown text
+    // reflects the ability cooldown (2), byte-identical to the old inline block.
+    const s = view.tick(world({ cooldowns: new Map([['frostbolt', 2]]), gcdRemaining: 4 }))
+      .slots[0];
+    expect(s.cooldownTotal).toBe(6);
+    expect(s.cooldownPercent).toBeCloseTo((4 / 6) * 100);
+    expect(s.cdText).toBe('2');
   });
 
   it('queued reflects the swing-queued ability id', () => {
