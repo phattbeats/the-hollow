@@ -3,6 +3,7 @@ import {
   TALENTS, talentsFor, validateTalentTree, talentPointsAtLevel, FIRST_TALENT_LEVEL,
   validateAllocation, dormantNodes, computeTalentModifiers, emptyAllocation,
   exportBuild, importBuild, TALENT_BUILD_VERSION, MAX_LOADOUTS, type TalentAllocation,
+  repairAllocation, pointsSpent,
 } from '../src/sim/content/talents';
 import { ALL_CLASSES, MAX_LEVEL, dist2d } from '../src/sim/types';
 import { Sim } from '../src/sim/sim';
@@ -521,6 +522,114 @@ describe('ClientWorld path (online display reflects server state)', () => {
     // the client resolves known with the precomputed mods -> shield_slam granted
     expect(c.known.some((k: any) => k.def.id === 'shield_slam')).toBe(true);
     expect(c.talentPoints()).toMatchObject({ total: 11, spent: 2 });
+  });
+});
+
+describe('repairAllocation (load-time revalidation)', () => {
+  it('is the identity on an already-valid in-budget allocation', () => {
+    const a = alloc({ spec: 'arms', ranks: { war_cruelty: 2, arms_imp_overpower: 2 } });
+    const repaired = repairAllocation('warrior', a, talentPointsAtLevel(MAX_LEVEL));
+    expect(repaired).toEqual(a);
+  });
+
+  it('is deterministic (same input -> same output)', () => {
+    const a = alloc({ spec: 'arms', ranks: { war_toughness: 3, war_cruelty: 3, war_deflection: 3, arms_imp_overpower: 2 } });
+    const run = () => repairAllocation('warrior', a, 11);
+    expect(run()).toEqual(run());
+  });
+
+  it('trims an over-budget allocation down to the level budget', () => {
+    // Structurally legal nodes, but 14 points spent against an 11-point cap.
+    const a = alloc({
+      spec: 'arms',
+      ranks: { war_toughness: 3, war_cruelty: 3, war_deflection: 3, arms_imp_overpower: 2, war_imp_heroic_strike: 2, war_imp_thunder_clap: 1 },
+    });
+    expect(pointsSpent(a)).toBeGreaterThan(11);
+    const repaired = repairAllocation('warrior', a, 11);
+    expect(pointsSpent(repaired)).toBeLessThanOrEqual(11);
+    expect(validateAllocation('warrior', repaired, 11).ok).toBe(true);
+  });
+
+  it('drops a node whose prerequisite is no longer satisfied', () => {
+    // war_deflection requires war_cruelty; persist it without the prereq.
+    const a = alloc({ ranks: { war_deflection: 2 } });
+    const repaired = repairAllocation('warrior', a, 11);
+    expect(repaired.ranks.war_deflection).toBeUndefined();
+  });
+
+  it('drops a node whose points-gate is no longer met', () => {
+    // war_imp_thunder_clap has pointsGate 2 (2 points required above its row);
+    // persist it alone so nothing sits above it.
+    const a = alloc({ ranks: { war_imp_thunder_clap: 2 } });
+    const repaired = repairAllocation('warrior', a, 11);
+    expect(repaired.ranks.war_imp_thunder_clap).toBeUndefined();
+    expect(validateAllocation('warrior', repaired, 11).ok).toBe(true);
+  });
+
+  it('clamps a rank above its node maximum', () => {
+    const a = alloc({ ranks: { war_toughness: 99 } }); // maxRank 3
+    const repaired = repairAllocation('warrior', a, 11);
+    expect(repaired.ranks.war_toughness).toBe(3);
+  });
+
+  it('drops a spec node when the spec no longer matches', () => {
+    const a = alloc({ spec: 'fury', ranks: { arms_imp_overpower: 2 } });
+    const repaired = repairAllocation('warrior', a, 11);
+    expect(repaired.ranks.arms_imp_overpower).toBeUndefined();
+  });
+});
+
+describe('persisted talents are revalidated on load (FR security)', () => {
+  it('trims an over-budget persisted build and does not grant its stats on load', () => {
+    const sim = warriorAtCap();
+    sim.applyTalents(alloc({ spec: 'arms', ranks: { war_cruelty: 3, arms_imp_overpower: 2 } }));
+    const state = sim.serializeCharacter(sim.playerId)!;
+    // Tamper: a level-5 character (0 talent points) carrying a max-level build.
+    state.level = 5;
+
+    const sim2 = new Sim({ seed: 9, playerClass: 'warrior', noPlayer: true });
+    const pid = sim2.addPlayer('warrior', 'Tampered', { state });
+    const meta = sim2.meta(pid)!;
+    // 0 points available at level 5 -> nothing survives.
+    expect(pointsSpent(meta.talents)).toBe(0);
+    expect(meta.talentMods.abilities.overpower?.dmgPct ?? 0).toBe(0);
+    expect(meta.talentMods.spec).toBeNull();
+  });
+
+  it('deleting the active loadout never auto-applies an illegal next loadout', () => {
+    const sim = warriorAtCap();
+    const cap = talentPointsAtLevel(MAX_LEVEL);
+    // Loadout 0: a valid, active build.
+    sim.saveLoadout('A', [], alloc({ spec: 'arms', ranks: { war_cruelty: 2 } }));
+    // Loadout 1: an illegal (over-budget) build injected directly, as a tampered
+    // save would arrive. saveLoadout would have rejected it, so inject it raw.
+    const meta = sim.meta(sim.playerId)!;
+    meta.loadouts.push({
+      name: 'Bad',
+      alloc: alloc({
+        spec: 'arms',
+        ranks: { war_toughness: 3, war_cruelty: 3, war_deflection: 3, war_imp_heroic_strike: 2, war_imp_thunder_clap: 2, arms_imp_overpower: 2 },
+      }),
+      bar: [],
+    });
+    meta.activeLoadout = 0;
+    // Deleting the active loadout collapses index 1 ("Bad") into slot 0 and
+    // auto-applies it. It must be repaired, not granted wholesale.
+    sim.deleteLoadout(0);
+    expect(pointsSpent(meta.talents)).toBeLessThanOrEqual(cap);
+    expect(validateAllocation('warrior', meta.talents, cap).ok).toBe(true);
+  });
+
+  it('still loads a legitimately valid build unchanged', () => {
+    const sim = warriorAtCap();
+    sim.applyTalents(alloc({ spec: 'arms', ranks: { war_cruelty: 2, arms_imp_overpower: 2 } }));
+    const state = sim.serializeCharacter(sim.playerId)!;
+    const sim2 = new Sim({ seed: 9, playerClass: 'warrior', noPlayer: true });
+    const pid = sim2.addPlayer('warrior', 'Honest', { state });
+    const meta = sim2.meta(pid)!;
+    expect(meta.talents.ranks.war_cruelty).toBe(2);
+    expect(meta.talents.ranks.arms_imp_overpower).toBe(2);
+    expect(meta.talentMods.abilities.overpower.dmgPct).toBeCloseTo(0.5);
   });
 });
 
