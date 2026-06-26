@@ -143,10 +143,14 @@ const UI_PURE_CORES = [
   'src/game/ui_tier_knobs.ts',
 ].map((rel) => join(repoRoot, rel));
 
-// Pure logic cores that live in src/render (the painter half is Three-side). Just
-// cast_bar today: it emits the cast-bar state from sim types with no Three import
-// and no i18n, so the painter can draw it and a Vitest can drive it directly.
-const RENDER_PURE_CORES = ['src/render/cast_bar.ts'].map((rel) => join(repoRoot, rel));
+// Pure logic cores that live in src/render (the painter half is Three-side):
+// cast_bar (the overhead cast/channel state) and nameplate_view (the per-entity
+// nameplate visibility / anchor / threat / combo model, P14b). Each emits state
+// from sim types with no Three import and no i18n, so a NameplatePainter /
+// cast_bar painter draws it and a Vitest drives it directly.
+const RENDER_PURE_CORES = ['src/render/cast_bar.ts', 'src/render/nameplate_view.ts'].map((rel) =>
+  join(repoRoot, rel),
+);
 
 function importSpecs(src: string): string[] {
   const specs: string[] = [];

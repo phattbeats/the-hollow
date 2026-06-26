@@ -1233,9 +1233,19 @@ describe('i18n Localization Key Coverage', () => {
       path.resolve(process.cwd(), 'src/render/renderer.ts'),
       'utf8',
     );
+    // objectDisplayName still localizes the build-time object nameplate write in the
+    // renderer; the helper itself moved into entity_labels.ts (P14b).
     expect(rendererSource).toContain('objectDisplayName');
-    expect(rendererSource).toContain('worldContent.corpseName');
-    expect(rendererSource).not.toContain('`${e.name} (corpse)`');
+    // The per-entity nameplate content (corpse/mob names) moved into the
+    // NameplatePainter (P14b); localization is preserved, just relocated (mirrors the
+    // P12b minimap_painter zone-label move above).
+    const nameplatePainterSource = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/render/nameplate_painter.ts'),
+      'utf8',
+    );
+    expect(nameplatePainterSource).toContain('objectDisplayName');
+    expect(nameplatePainterSource).toContain('worldContent.corpseName');
+    expect(nameplatePainterSource).not.toContain('`${e.name} (corpse)`');
   });
 
   it('should preserve and render every HUD interpolation placeholder in every locale', () => {
