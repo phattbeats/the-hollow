@@ -154,26 +154,33 @@ export function nonSelfRepaintDue(
 // BASE cadence that throttles on EVERY tier (projecting and DOM-writing every rig
 // every frame is wasteful even at full effects), so it always returns a positive
 // interval rather than 0. It REPLACES the old mobile-vs-desktop runtime fork
-// (renderer.ts: isMobileRuntime() ? 1/15 : 1/24) with a static-preset read: the
-// lowest tier keeps the old mobile cadence as a FLOOR (never slower than 1/15s),
-// the richer tiers keep the old desktop cadence. Seconds, not ms: the renderer
-// accumulates dt (seconds) against this, so it is NOT gated through cadenceDue().
-// Two-controller invariant (decision 6): the renderer derives the tier from the
-// static data-fx-level (coerceFxTier), never the FPS governor.
+// (renderer.ts: isMobileRuntime() ? 1/15 : 1/24) with a static-preset read. NOTE
+// the control AXIS changed device -> preset: the old fork capped EVERY mobile
+// device at 1/15s (a weak-GPU cost ceiling, the PR901 lesson); here 1/15s is the
+// LOW tier alone and 1/24s every richer tier, so a mobile device on a non-low
+// preset now runs the faster/costlier 1/24s. The 1/15s is kept only as a STALENESS
+// floor (no tier refreshes slower, so a nameplate never lags more than before);
+// restoring the mobile cost ceiling is the P17a mobile-perf gate's job, not this
+// knob's. Seconds, not ms: the renderer accumulates dt (seconds) against this, so
+// it is NOT gated through cadenceDue(). Two-controller invariant (decision 6): the
+// renderer derives the tier from the static data-fx-level (coerceFxTier), never the
+// FPS governor.
 // ---------------------------------------------------------------------------
 
 /** Nameplate refresh interval on the lowest tier (seconds): the pre-P14b mobile
- *  cadence (1/15s ~ 66.7ms). This is the mobile FLOOR the extraction must not
- *  regress below (a tier may refresh faster, never slower than this). */
+ *  cadence (1/15s ~ 66.7ms). Kept as the STALENESS floor (no tier refreshes slower
+ *  than this); it now binds the LOW tier, NOT every mobile device as the old device
+ *  fork did (see the axis-change note above). */
 export const NAMEPLATE_INTERVAL_LOW_SEC = 1 / 15;
 /** Nameplate refresh interval at the full tiers (seconds): the pre-P14b desktop
  *  cadence (1/24s ~ 41.7ms). */
 export const NAMEPLATE_INTERVAL_FULL_SEC = 1 / 24;
 
-/** Seconds between full nameplate refreshes for `tier`: the lowest tier holds the
- *  1/15s mobile floor, every richer tier runs the 1/24s desktop cadence. Always
- *  positive (nameplates throttle on every tier), so the renderer compares it
- *  directly against its accumulated dt, not through cadenceDue(). */
+/** Seconds between full nameplate refreshes for `tier`: the LOW tier holds 1/15s,
+ *  every richer tier runs 1/24s. (Old behavior keyed on the device, not the tier,
+ *  so a mobile device on a non-low preset now gets 1/24s: the accepted, P17a-tracked
+ *  axis change.) Always positive (nameplates throttle on every tier), so the renderer
+ *  compares it directly against its accumulated dt, not through cadenceDue(). */
 export function nameplateIntervalSec(tier: UiEffectsTier): number {
   return tier === 'low' ? NAMEPLATE_INTERVAL_LOW_SEC : NAMEPLATE_INTERVAL_FULL_SEC;
 }

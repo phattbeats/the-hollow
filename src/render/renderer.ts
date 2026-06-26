@@ -4072,8 +4072,10 @@ export class Renderer {
     // Static-preset tiered cadence (P14b): the nameplate refresh interval follows
     // the player's chosen graphics tier (the data-fx-level the preset applier
     // stamps), NEVER the FPS governor (the two-controller rule, decision 6). The
-    // lowest tier keeps the old mobile 1/15s floor; richer tiers run the old
-    // desktop 1/24s cadence.
+    // LOW tier runs 1/15s, richer tiers 1/24s. NOTE this keys on the preset, not the
+    // device as before: a mobile device on a non-low preset now refreshes at the
+    // faster 1/24s (not the old device-forced 1/15s); the 1/15s is now a staleness
+    // floor only, with the mobile cost ceiling tracked for the P17a perf gate.
     const nameplateInterval = nameplateIntervalSec(
       coerceFxTier(document.documentElement.dataset.fxLevel),
     );

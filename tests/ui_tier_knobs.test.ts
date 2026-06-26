@@ -146,10 +146,16 @@ describe('ui_tier_knobs - nameplate refresh cadence (P14b, static-preset tiered,
     }
   });
 
-  // MOBILE FLOOR (the PR901 WebGL-context lesson): the lowest/mobile tier must
-  // never refresh SLOWER than the pre-extraction 1/15s mobile cadence. Interval is
-  // in seconds, so "no slower" means the interval is <= 1/15s for EVERY tier.
-  it('never regresses the mobile 1/15s floor: every tier interval is <= 1/15s', () => {
+  // STALENESS FLOOR (not a device cost cap): no tier may refresh SLOWER than the
+  // pre-extraction 1/15s, so a nameplate never lags more than it used to. Interval
+  // is in seconds, so "no slower" means <= 1/15s for EVERY tier. This guards only
+  // the SLOW direction. The old isMobileRuntime() fork capped EVERY mobile device
+  // at 1/15s (a weak-GPU cost ceiling, the PR901 lesson); the preset axis now binds
+  // 1/15s to the LOW tier alone, so a mobile device on a non-low preset runs the
+  // faster/costlier 1/24s. That accepted axis change (restoring the mobile cost
+  // ceiling) is tracked for the P17a mobile-perf gate; this test does NOT assert a
+  // mobile device receives 1/15s.
+  it('never refreshes slower than the 1/15s staleness floor: every tier interval is <= 1/15s', () => {
     const FLOOR_SEC = 1 / 15;
     for (const tier of ALL_TIERS) {
       expect(nameplateIntervalSec(tier)).toBeLessThanOrEqual(FLOOR_SEC);
