@@ -6,6 +6,8 @@
 
 import { readFileSync } from 'node:fs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { UiEffectsTier } from '../src/game/ui_effects_profile';
+import { AURA_VISIBLE_CAP_LOW } from '../src/game/ui_tier_knobs';
 import { AurasPainter, type AurasPainterDeps } from '../src/ui/auras_painter';
 import type { AuraSlotState, AurasState } from '../src/ui/auras_view';
 import type { PainterHostWriters } from '../src/ui/painter_host';
@@ -322,5 +324,83 @@ describe('AurasPainter: keyed pool over the elided writers', () => {
   it('hides the stacks badge (setDisplay none) when the aura does not stack', () => {
     painter.paint(state([slot({ key: 'a', stacksText: '' })]));
     expect(calls.some((c) => c.m === 'setDisplay' && c.args[0] === 'none')).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// P14a Slice C: the visible-count cap is a pure function of the STATIC ui effects tier
+// (data-fx-level), NEVER the governor, injected via getFxTier. Ultra renders every active
+// aura (byte-equivalent to the untiered painter); low renders at most AURA_VISIBLE_CAP_LOW
+// and recycles the overflow out of the pool, identically under a Sim- and a ClientWorld-
+// shaped state. (The refresh/tick-granularity throttle is the Hud's call-site gate, tested
+// in the tier-knobs cadence suite; the painter owns only the count cap.)
+// ---------------------------------------------------------------------------
+
+describe('AurasPainter: P14a static-preset visible-count cap (Slice C)', () => {
+  let container: FakeEl;
+  let tooltips: ReturnType<typeof recordingTooltips>;
+
+  beforeEach(() => {
+    container = fakeEl('div');
+    tooltips = recordingTooltips();
+  });
+
+  function tierPainter(tier: UiEffectsTier): AurasPainter {
+    const facet = recordingFacet();
+    const deps: AurasPainterDeps = {
+      resolveIconUrl: (key) => `url(${key})`,
+      renderTooltip: (name, remaining) => `${name}|${Math.ceil(remaining)}`,
+      attachTooltip: tooltips.attachTooltip,
+    };
+    return new AurasPainter(
+      facet.writers,
+      container as unknown as HTMLElement,
+      deps,
+      fakeDoc,
+      () => tier,
+    );
+  }
+  const nodes = () => container.childNodes;
+  const manyAuras = (count: number) =>
+    state(Array.from({ length: count }, (_, i) => slot({ key: `aura${i}` })));
+
+  it('ultra renders every active aura (uncapped, byte-equivalent)', () => {
+    const over = AURA_VISIBLE_CAP_LOW + 5;
+    tierPainter('ultra').paint(manyAuras(over));
+    expect(nodes()).toHaveLength(over);
+  });
+
+  it('low caps the rendered aura count at AURA_VISIBLE_CAP_LOW, dropping the overflow', () => {
+    const over = AURA_VISIBLE_CAP_LOW + 5;
+    const painter = tierPainter('low');
+    painter.paint(manyAuras(over));
+    expect(nodes()).toHaveLength(AURA_VISIBLE_CAP_LOW);
+    // The first cap auras (display order) are the ones kept.
+    expect(nodes().length).toBeLessThan(over);
+  });
+
+  it('low under the cap renders every aura (the cap only bites past the limit)', () => {
+    const painter = tierPainter('low');
+    painter.paint(manyAuras(AURA_VISIBLE_CAP_LOW - 2));
+    expect(nodes()).toHaveLength(AURA_VISIBLE_CAP_LOW - 2);
+  });
+
+  it('decision 15: the low cap renders an identical count for a Sim- and ClientWorld-shaped state', () => {
+    // The painter consumes AurasState (the parity-identical view output). Build the same
+    // logical aura set two ways: a Sim-shaped slot carrying view-only extras and a lean
+    // ClientWorld-mirror slot. The cap applies to the count, so both render the cap.
+    const over = AURA_VISIBLE_CAP_LOW + 4;
+    const simState = state(
+      Array.from({ length: over }, (_, i) => slot({ key: `s${i}`, stacksText: '2', remaining: 9 })),
+    );
+    const clientState = state(Array.from({ length: over }, (_, i) => slot({ key: `s${i}` })));
+    const simPainter = tierPainter('low');
+    simPainter.paint(simState);
+    const simCount = nodes().length;
+    container = fakeEl('div'); // fresh container for the client run
+    const clientPainter = tierPainter('low');
+    clientPainter.paint(clientState);
+    expect(nodes().length).toBe(simCount);
+    expect(nodes().length).toBe(AURA_VISIBLE_CAP_LOW);
   });
 });

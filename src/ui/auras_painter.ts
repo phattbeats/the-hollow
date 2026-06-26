@@ -25,6 +25,8 @@
 // of node moves (the P11c reconcileOrder discipline), so a steady-state frame moves no
 // nodes. The buff bar is `flex-wrap` row-reverse, so DOM order is the aura order.
 
+import type { UiEffectsTier } from '../game/ui_effects_profile';
+import { auraVisibleCap } from '../game/ui_tier_knobs';
 import type { AurasState } from './auras_view';
 import type { PainterHostWriters } from './painter_host';
 
@@ -104,6 +106,10 @@ export class AurasPainter {
     private readonly deps: AurasPainterDeps,
     // Injectable so a Node test can drive the pool without a global document.
     private readonly doc: Document = document,
+    // P14a Slice C: the STATIC ui effects tier accessor (data-fx-level, never the FPS
+    // governor). Read per paint to cap the visible aura count on low. Defaults to the
+    // full tier so a painter built without it is untiered (uncapped, byte-faithful).
+    private readonly getFxTier: () => UiEffectsTier = () => 'ultra',
   ) {}
 
   /** Reconcile the pool to this frame's active auras and repaint each in place. Runs
@@ -111,8 +117,14 @@ export class AurasPainter {
   paint(state: AurasState): void {
     this.frame++;
     const { slots, count } = state;
+    // P14a Slice C: on low, render at most auraVisibleCap auras; any beyond the cap are
+    // simply not touched this frame, so the recycle sweep below detaches them. The full
+    // tiers return an infinite cap, so n === count and every active aura renders (the
+    // unchanged path). Capping the render (not the view) keeps the parity-identical core
+    // untouched, so the same cap applies under a Sim-shaped and a ClientWorld-mirror state.
+    const n = Math.min(count, auraVisibleCap(this.getFxTier()));
     this.ordered.length = 0;
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < n; i++) {
       const s = slots[i];
       // Resolve the pool key. The common case (a unique aura id this frame) takes the
       // base key directly. If the base key is already claimed THIS frame, this is a
