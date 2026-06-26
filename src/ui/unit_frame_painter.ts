@@ -45,8 +45,9 @@ export interface UnitFrameResourceElements {
   container: HTMLElement;
   /** The resource fill (scaleX transform). */
   fill: HTMLElement;
-  /** The resource text node. */
-  text: HTMLElement;
+  /** The resource text node; omitted by a frame whose resource bar has no text
+   *  label (a party frame shows the bar fill only, no "523 / 600" readout). */
+  text?: HTMLElement;
 }
 
 /** The DOM element set one unit frame instance paints into. */
@@ -57,8 +58,9 @@ export interface UnitFrameElements {
   level: HTMLElement;
   /** The hp fill (scaleX transform). */
   hpFill: HTMLElement;
-  /** The hp text node. */
-  hpText: HTMLElement;
+  /** The hp text node; omitted by a frame with no health readout (a party frame
+   *  shows the hp bar fill only, no "523 / 600" text). */
+  hpText?: HTMLElement;
   /** The unit name node; omitted by a frame whose name is static and set once
    *  elsewhere (the player name is set at login, not on the hot path). A frame
    *  whose name changes per unit (target/party) supplies it. */
@@ -81,6 +83,12 @@ export interface UnitFrameOptions {
    *  player and target frames never carry them, so they leave this off and pay no
    *  per-frame cost (the view still carries the flags for the family contract). */
   stateClasses?: boolean;
+  /** Format a bar fraction into the `transform` string for the hp / resource /
+   *  absorb fills. Omit for the byte-faithful default `scaleX(<frac>)` (player /
+   *  target, which write the raw number). A party frame supplies a quantizing
+   *  formatter (fixed decimals) so its bars keep their inline `.toFixed(3)`
+   *  precision, which also stabilizes the write-elision cache key. */
+  formatScaleX?: (frac: number) => string;
 }
 
 export class UnitFramePainter {
@@ -111,8 +119,8 @@ export class UnitFramePainter {
     if (this.el.name) this.writers.setText(this.el.name, view.name);
     this.gatePortrait(view.portraitKey);
     this.writers.setText(this.el.level, view.levelText ?? '');
-    this.writers.setTransform(this.el.hpFill, `scaleX(${view.hpFrac})`);
-    this.writers.setText(this.el.hpText, view.hpText);
+    this.writers.setTransform(this.el.hpFill, this.barScaleX(view.hpFrac));
+    if (this.el.hpText) this.writers.setText(this.el.hpText, view.hpText);
     this.paintAbsorb(view);
     this.paintResource(view);
     if (this.opts.stateClasses) {
@@ -127,7 +135,7 @@ export class UnitFramePainter {
   private paintAbsorb(view: UnitFrameView): void {
     const absorb = this.el.absorb;
     if (!absorb) return;
-    this.writers.setTransform(absorb, `scaleX(${view.absorbFrac})`);
+    this.writers.setTransform(absorb, this.barScaleX(view.absorbFrac));
     this.writers.toggleClass(absorb, OVERSHIELD_CLASS, view.absorbOvershield);
   }
 
@@ -140,8 +148,16 @@ export class UnitFramePainter {
     for (const cls of RES_TYPE_CLASSES) {
       this.writers.toggleClass(res.container, cls, view.resClass === cls);
     }
-    this.writers.setTransform(res.fill, `scaleX(${view.resFrac})`);
-    this.writers.setText(res.text, view.resText);
+    this.writers.setTransform(res.fill, this.barScaleX(view.resFrac));
+    if (res.text) this.writers.setText(res.text, view.resText);
+  }
+
+  // The bar `transform` string. The default is byte-faithful to the inline
+  // `scaleX(<frac>)` (the player / target write the raw number); an instance can
+  // override formatScaleX to quantize the precision (a party frame keeps its
+  // `.toFixed(3)`), which also stabilizes the elided cache key.
+  private barScaleX(frac: number): string {
+    return this.opts.formatScaleX ? this.opts.formatScaleX(frac) : `scaleX(${frac})`;
   }
 
   // Repaint the portrait canvas only when the identity key changes; a no-op when no
