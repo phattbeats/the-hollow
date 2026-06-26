@@ -46,6 +46,7 @@ import {
 } from '../delve_layout';
 import { DUNGEON_WALL_HW, DUNGEON_WALL_X } from '../dungeon_layout';
 import { createGroundObject, createMob, recalcPlayerStats } from '../entity';
+import { restorePetFromDelveStash, stowPetForDelve } from '../pet/pet_commands';
 import { Rng } from '../rng';
 import type { PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
@@ -259,26 +260,8 @@ export function pickDelveModules(delve: DelveDef, seed: number, tierId: string):
 }
 
 // ----- pet stash (links to pets, P1) -----------------------------------------
-
-export function stowPetForDelve(ctx: SimContext, pid: number): void {
-  const meta = ctx.players.get(pid);
-  if (!meta || !ctx.isPetClass(meta.cls)) return;
-  const pet = ctx.petOf(pid, true);
-  if (!pet) return;
-  const state = ctx.serializePet(pid);
-  if (state) ctx.delvePetStash.set(pid, state);
-  if (MOBS[pet.templateId]?.family === 'demon') ctx.despawnPet(pet);
-  else ctx.despawnPersistentPet(pet);
-}
-
-export function restorePetFromDelveStash(ctx: SimContext, pid: number): void {
-  const state = ctx.delvePetStash.get(pid);
-  if (!state) return;
-  ctx.delvePetStash.delete(pid);
-  const e = ctx.entities.get(pid);
-  if (!e || ctx.petOf(pid, true)) return;
-  ctx.restorePet(e, state);
-}
+// stowPetForDelve / restorePetFromDelveStash live in pet/pet_commands.ts (P1b, the
+// pet domain owner) and are imported above; the delve lifecycle just calls them.
 
 // ----- enter / leave / claim / spawn / free ----------------------------------
 
