@@ -16,6 +16,7 @@ import { makeWriterFacet } from '../src/ui/painter_host';
 function fakeEl() {
   const props: Record<string, string> = {};
   const classes: Record<string, boolean> = {};
+  const attrs: Record<string, string> = {};
   const node = {
     textContent: '',
     style: {
@@ -31,19 +32,24 @@ function fakeEl() {
         classes[cls] = on;
       },
     },
+    setAttribute(name: string, value: string): void {
+      attrs[name] = value;
+    },
   };
-  return { node, props, classes, el: node as unknown as HTMLElement };
+  return { node, props, classes, attrs, el: node as unknown as HTMLElement };
 }
 
 function fakeFacet() {
   const cache = new Map<HTMLElement, string>();
   const stylePropCache = new Map<HTMLElement, Map<string, string>>();
   const classCache = new Map<HTMLElement, Map<string, string>>();
+  const attrCache = new Map<HTMLElement, Map<string, string>>();
   const counts = { writes: 0, skips: 0 };
   const facet = makeWriterFacet(
     cache,
     stylePropCache,
     classCache,
+    attrCache,
     () => {
       counts.writes++;
     },
@@ -51,7 +57,7 @@ function fakeFacet() {
       counts.skips++;
     },
   );
-  return { cache, stylePropCache, classCache, facet, counts };
+  return { cache, stylePropCache, classCache, attrCache, facet, counts };
 }
 
 // --- The four single-slot writers (unchanged from P6) --------------------------
@@ -170,6 +176,32 @@ describe('makeWriterFacet: toggleClass (multi-slot, keyed per (element, class))'
   });
 });
 
+describe('makeWriterFacet: setAttr (multi-slot, keyed per (element, attr))', () => {
+  it('writes on first set, elides a repeat of the same value, tracks a change', () => {
+    const { facet, counts } = fakeFacet();
+    const { el, attrs } = fakeEl();
+    facet.setAttr(el, 'aria-label', 'Action slot 1: Attack');
+    expect(attrs['aria-label']).toBe('Action slot 1: Attack');
+    expect(counts).toEqual({ writes: 1, skips: 0 });
+    facet.setAttr(el, 'aria-label', 'Action slot 1: Attack'); // same value -> elided
+    expect(counts).toEqual({ writes: 1, skips: 1 });
+    facet.setAttr(el, 'aria-label', 'Action slot 1: Fireball'); // changed -> a real write
+    expect(attrs['aria-label']).toBe('Action slot 1: Fireball');
+    expect(counts).toEqual({ writes: 2, skips: 1 });
+  });
+
+  it('does NOT collapse two different attributes on one element (the multi-slot key)', () => {
+    const { facet, counts } = fakeFacet();
+    const { el } = fakeEl();
+    facet.setAttr(el, 'aria-label', 'x');
+    facet.setAttr(el, 'title', 'x'); // same value, DIFFERENT attr -> a real write
+    expect(counts).toEqual({ writes: 2, skips: 0 });
+    facet.setAttr(el, 'aria-label', 'x'); // each attr elides on its own slot
+    facet.setAttr(el, 'title', 'x');
+    expect(counts).toEqual({ writes: 2, skips: 2 });
+  });
+});
+
 // --- Shared-cache coherence + single/multi-slot independence --------------------
 
 describe('makeWriterFacet: shared caches keep one skip-rate (HUD + painter coherence)', () => {
@@ -180,12 +212,14 @@ describe('makeWriterFacet: shared caches keep one skip-rate (HUD + painter coher
     const cache = new Map<HTMLElement, string>();
     const stylePropCache = new Map<HTMLElement, Map<string, string>>();
     const classCache = new Map<HTMLElement, Map<string, string>>();
+    const attrCache = new Map<HTMLElement, Map<string, string>>();
     const a = { writes: 0, skips: 0 };
     const b = { writes: 0, skips: 0 };
     const facetA = makeWriterFacet(
       cache,
       stylePropCache,
       classCache,
+      attrCache,
       () => a.writes++,
       () => a.skips++,
     );
@@ -193,6 +227,7 @@ describe('makeWriterFacet: shared caches keep one skip-rate (HUD + painter coher
       cache,
       stylePropCache,
       classCache,
+      attrCache,
       () => b.writes++,
       () => b.skips++,
     );
@@ -200,10 +235,12 @@ describe('makeWriterFacet: shared caches keep one skip-rate (HUD + painter coher
     facetA.setText(el, 'Delve: Ossuary');
     facetA.setStyleProp(el, '--xp-fill', '0.5');
     facetA.toggleClass(el, 'rested', true);
-    expect(a).toEqual({ writes: 3, skips: 0 });
+    facetA.setAttr(el, 'aria-label', 'Action slot 1: Attack');
+    expect(a).toEqual({ writes: 4, skips: 0 });
     facetB.setText(el, 'Delve: Ossuary'); // shared single-slot cache -> elided
     facetB.setStyleProp(el, '--xp-fill', '0.5'); // shared style-prop cache -> elided
     facetB.toggleClass(el, 'rested', true); // shared class cache -> elided
-    expect(b).toEqual({ writes: 0, skips: 3 });
+    facetB.setAttr(el, 'aria-label', 'Action slot 1: Attack'); // shared attr cache -> elided
+    expect(b).toEqual({ writes: 0, skips: 4 });
   });
 });

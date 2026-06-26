@@ -11,23 +11,28 @@
 //      window's own deps interface EXTENDS this and keeps its window-specific
 //      members on top.
 //
-//   2) PainterHostWriters -- the write-elision facet: the SIX cached DOM writers
+//   2) PainterHostWriters -- the write-elision facet: the SEVEN cached DOM writers
 //      (setText/setDisplay/setTransform/setWidth + the P10a additions
-//      setStyleProp/toggleClass), exposed to painters as closures over Hud's shared
-//      caches via makeWriterFacet. Hud also keeps private mirrors of the writers it
-//      still uses on its own per-frame path AND builds this equivalent facet to hand
-//      to painters; both share the SAME caches, so the skip-rate stays one number.
-//      (As per-frame work migrates onto painters the Hud-direct mirror shrinks: P11a
-//      moved the last direct width write onto the cast_bar painter, so setWidth now
-//      lives only on the facet -- the interface still exposes all six.)
+//      setStyleProp/toggleClass + the P12a addition setAttr), exposed to painters as
+//      closures over Hud's shared caches via makeWriterFacet. Hud also keeps private
+//      mirrors of the writers it still uses on its own per-frame path AND builds this
+//      equivalent facet to hand to painters; both share the SAME caches, so the
+//      skip-rate stays one number. (As per-frame work migrates onto painters the
+//      Hud-direct mirror shrinks: P11a moved the last direct width write onto the
+//      cast_bar painter, so setWidth now lives only on the facet -- the interface
+//      still exposes all seven.)
 //      The per-frame phases (P10-P13) consume this facet; P10a EXTENDED it
 //      with setStyleProp/toggleClass (locked decision 5a) that the four original
 //      single-slot writers cannot express: a custom-property write to a `--var` and
-//      a classList toggle. Those two need a MULTI-SLOT cache keyed per (element,
-//      prop) / (element, class), because one element legitimately holds many custom
-//      properties and toggled classes, whereas the four single-slot writers each
-//      own one DOM facet per element; collapsing the two into the single-slot cache
-//      would silently break elision (Top risk 1), so they take their own caches.
+//      a classList toggle. P12a added setAttr for the same reason: the action-bar
+//      aria-label is a per-frame ATTRIBUTE write the other writers cannot express,
+//      and it was the Top-risk-4 raw `setAttribute` fired every frame per slot.
+//      These three need a MULTI-SLOT cache keyed per (element, prop) / (element,
+//      class) / (element, attr), because one element legitimately holds many custom
+//      properties, toggled classes, and attributes, whereas the four single-slot
+//      writers each own one DOM facet per element; collapsing them into the
+//      single-slot cache would silently break elision (Top risk 1), so they take
+//      their own caches.
 //
 // This module is host-agnostic and Node-importable: it touches no `window` /
 // `document` global. The writer closures write element properties (`el.textContent`
@@ -54,18 +59,18 @@ export interface PainterHostPresentation {
 }
 
 /**
- * Facet 2: the write-elision facet. Six cached DOM writers, each eliding a repeat
+ * Facet 2: the write-elision facet. Seven cached DOM writers, each eliding a repeat
  * write of an identical value to the same element. A painter routes its DOM
- * text/display/transform/width/custom-property/class writes through these so a
- * no-op frame costs no DOM mutation. The CANVAS schematic a 2D painter draws is NOT
- * routed through here: a 2D context cannot be elided (locked decision 12), so a
+ * text/display/transform/width/custom-property/class/attribute writes through these
+ * so a no-op frame costs no DOM mutation. The CANVAS schematic a 2D painter draws is
+ * NOT routed through here: a 2D context cannot be elided (locked decision 12), so a
  * Canvas painter touches the context directly and uses these writers only for the
  * DOM bits it owns (e.g. a `#zone-label` text node).
  *
  * setText/setDisplay/setTransform/setWidth are SINGLE-SLOT (one cached string per
- * element, since each owns one DOM facet). setStyleProp/toggleClass are MULTI-SLOT
- * (keyed per (element, prop) / (element, class)), since one element holds many
- * custom properties and toggled classes.
+ * element, since each owns one DOM facet). setStyleProp/toggleClass/setAttr are
+ * MULTI-SLOT (keyed per (element, prop) / (element, class) / (element, attr)), since
+ * one element holds many custom properties, toggled classes, and attributes.
  */
 export interface PainterHostWriters {
   /** Set `el.textContent`, eliding a repeat of the same text. */
@@ -87,24 +92,33 @@ export interface PainterHostWriters {
    * (element, class). Multi-slot: different classes on one element never collide.
    */
   toggleClass(el: HTMLElement, cls: string, on: boolean): void;
+  /**
+   * Set an attribute on `el` via `el.setAttribute`, eliding a repeat of the same
+   * value for the same (element, attr). Multi-slot: different attributes on one
+   * element never collide. Added in P12a for the action-bar aria-label, which was
+   * written every frame per slot (Top risk 4); the rendered string still comes from
+   * the core's `t()` call each frame, this only elides the DOM write.
+   */
+  setAttr(el: HTMLElement, name: string, value: string): void;
 }
 
 /**
  * Build the write-elision facet over the supplied caches. The four single-slot
- * writers share `cache` (one string per element); setStyleProp/toggleClass use the
- * multi-slot `stylePropCache` / `classCache` (a per-element inner map keyed by prop
- * / class). Every closure reports each real write via `onWrite` and each elided
- * write via `onSkip`, so a host that builds the facet from its own caches +
- * counters keeps a single skip-rate across its direct writes and the painter
- * writes. The key scheme matches Hud's private writers exactly (raw text for
- * setText; `display:`/`transform:`/`width:` prefixes for the style writers; the raw
- * value for setStyleProp; `on`/`off` for toggleClass) so the two never disagree on
- * the same element.
+ * writers share `cache` (one string per element); setStyleProp/toggleClass/setAttr
+ * use the multi-slot `stylePropCache` / `classCache` / `attrCache` (a per-element
+ * inner map keyed by prop / class / attr). Every closure reports each real write via
+ * `onWrite` and each elided write via `onSkip`, so a host that builds the facet from
+ * its own caches + counters keeps a single skip-rate across its direct writes and
+ * the painter writes. The key scheme matches Hud's private writers exactly (raw text
+ * for setText; `display:`/`transform:`/`width:` prefixes for the style writers; the
+ * raw value for setStyleProp; `on`/`off` for toggleClass; the raw value for setAttr)
+ * so the two never disagree on the same element.
  */
 export function makeWriterFacet(
   cache: Map<HTMLElement, string>,
   stylePropCache: Map<HTMLElement, Map<string, string>>,
   classCache: Map<HTMLElement, Map<string, string>>,
+  attrCache: Map<HTMLElement, Map<string, string>>,
   onWrite: () => void,
   onSkip: () => void,
 ): PainterHostWriters {
@@ -164,6 +178,10 @@ export function makeWriterFacet(
     toggleClass: (el, cls, on) =>
       writeSlot(classCache, el, cls, on ? 'on' : 'off', () => {
         el.classList.toggle(cls, on);
+      }),
+    setAttr: (el, name, value) =>
+      writeSlot(attrCache, el, name, value, () => {
+        el.setAttribute(name, value);
       }),
   };
 }

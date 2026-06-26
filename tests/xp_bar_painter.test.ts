@@ -35,6 +35,9 @@ function recordingFacet() {
     toggleClass: (el, cls, on) => {
       calls.push({ m: 'toggleClass', args: [el, cls, on] });
     },
+    setAttr: (el, name, value) => {
+      calls.push({ m: 'setAttr', args: [el, name, value] });
+    },
   };
   return { calls, writers };
 }

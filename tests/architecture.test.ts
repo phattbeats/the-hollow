@@ -135,6 +135,7 @@ const UI_PURE_CORES = [
   'src/ui/questlog_view.ts',
   'src/ui/swing_timer.ts',
   'src/ui/unit_frame.ts',
+  'src/ui/action_bar_view.ts',
   'src/game/ui_effects_profile.ts',
 ].map((rel) => join(repoRoot, rel));
 

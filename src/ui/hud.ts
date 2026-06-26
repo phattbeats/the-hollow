@@ -80,11 +80,9 @@ import {
   dist2d,
   type Entity,
   FISHING_CAST_ID,
-  GCD,
   type ItemDef,
   isQuestTurnInNpc,
   MAX_LEVEL,
-  MELEE_RANGE,
   MILESTONES,
   type SimEvent,
   virtualLevel,
@@ -97,6 +95,15 @@ import {
   OVERHEAD_EMOTES,
   type OverheadEmoteId,
 } from '../world_api';
+import { ActionBarPainter } from './action_bar_painter';
+import {
+  ABILITY_ICON_PREFIX,
+  ATTACK_ICON_KEY,
+  type ActionBarView,
+  createActionBarView,
+  EMPTY_ICON_KEY,
+  ITEM_ICON_PREFIX,
+} from './action_bar_view';
 import { BagsWindow } from './bags_window';
 import { CastBarPainter } from './cast_bar_painter';
 import { CharWindow } from './char_window';
@@ -603,8 +610,13 @@ export class Hud {
     keybindEl: HTMLSpanElement;
     cdOverlay: HTMLDivElement;
     cdText: HTMLDivElement;
-    lastIcon: string;
   }[] = [];
+  // The action bar's pure core + thin painter (P12a). Built in buildActionBar once
+  // the slot buttons exist; tick(world) -> ActionBarState, painted via the shared
+  // elided writer facet. The descriptor parameterizes the single existing bar so a
+  // second/third bar is another descriptor, not a code fork (decision 9).
+  private actionBarView!: ActionBarView;
+  private actionBarPainter!: ActionBarPainter;
   private hotbarActions: HotbarAction[] = []; // index = barSlot-1
   private loadedSlotMapFromStorage = false;
   private knownAbilityIdsAtLastSlotSync: Set<string> | null = null;
@@ -707,6 +719,9 @@ export class Hud {
   // (element, class) instead of the single slot per element hotWriteCache uses.
   private hotStylePropCache = new Map<HTMLElement, Map<string, string>>();
   private hotClassCache = new Map<HTMLElement, Map<string, string>>();
+  // Multi-slot cache for the P12a setAttr writer (decision 5a): the action-bar
+  // aria-label is a per-frame attribute write, keyed per (element, attr name).
+  private hotAttrCache = new Map<HTMLElement, Map<string, string>>();
   private hotDomWrites = 0;
   private hotDomSkippedWrites = 0;
   private subzoneTimer: number | undefined;
@@ -2245,6 +2260,7 @@ export class Hud {
     this.hotWriteCache,
     this.hotStylePropCache,
     this.hotClassCache,
+    this.hotAttrCache,
     () => {
       this.hotDomWrites++;
     },
@@ -3479,9 +3495,65 @@ export class Hud {
         keybindEl: kb,
         cdOverlay,
         cdText,
-        lastIcon: '',
       });
     }
+
+    // Build the action-bar core + painter now that the slot buttons exist. The core
+    // descriptor carries slot identity + the host-resolved binding/keybind accessors
+    // (NO element refs); the paint descriptor carries the container + per-slot
+    // elements (decision 9 multiplicity is a constructor arg, not a hardcoded id).
+    this.actionBarView = createActionBarView(
+      {
+        slots: this.abilityButtons.map((_, i) => {
+          // Precompute the keybind lookup key once per slot (not per frame).
+          const slotKey = `slot${i}`;
+          return {
+            slotIndex: i,
+            isAttack: i === 0,
+            // Raw binding presence (any assigned slot, even one whose ability is
+            // unlearned or item id is unknown): the many-spells count source, kept
+            // byte-identical to the former hotbarActions.filter(a => a !== null).
+            hasAction: () => this.actionForSlot(i) !== null,
+            ability: () => this.abilityForSlot(i),
+            item: () => this.itemForSlot(i),
+            keybindLabel: () => this.keybinds.primaryLabel(slotKey),
+          };
+        }),
+      },
+      {
+        t,
+        abilityName: abilityDisplayName,
+        itemName: itemDisplayName,
+        slotLabel: (i) => formatAbilityNumber(i + 1),
+      },
+    );
+    this.actionBarPainter = new ActionBarPainter(
+      this.writerFacet,
+      {
+        container: this.actionbarEl,
+        slots: this.abilityButtons.map((ab) => ({
+          btn: ab.btn,
+          label: ab.label,
+          countEl: ab.countEl,
+          keybindEl: ab.keybindEl,
+          cdOverlay: ab.cdOverlay,
+          cdText: ab.cdText,
+        })),
+      },
+      (iconKey) => this.actionBarIconBg(iconKey),
+    );
+  }
+
+  // Resolve a core icon key to the slot label's background-image value. Kept on the
+  // Hud (not the painter) so the painter holds no icon table or literal URL; the
+  // painter calls this only when a slot's icon key changes.
+  private actionBarIconBg(iconKey: string): string {
+    if (iconKey === EMPTY_ICON_KEY) return '';
+    if (iconKey === ATTACK_ICON_KEY) return `url(${iconDataUrl('ability', 'attack')})`;
+    if (iconKey.startsWith(ITEM_ICON_PREFIX)) {
+      return `url(${iconDataUrl('item', iconKey.slice(ITEM_ICON_PREFIX.length))})`;
+    }
+    return `url(${iconDataUrl('ability', iconKey.slice(ABILITY_ICON_PREFIX.length))})`;
   }
 
   private clearActionDropTargets(): void {
@@ -4069,109 +4141,15 @@ export class Hud {
     this.lastSwingTimer = swing.nextTimer;
     this.swingTimerPainter.paint(swing);
 
-    // action bar
+    // action bar: the slot row, driven by the pure action_bar_view core + the thin
+    // ActionBarPainter (P12a). Every per-slot icon / cooldown / dimming / count write
+    // routes through the elided writer facet; the aria-label keeps its per-frame t()
+    // call IN the core while the painter elides the DOM setAttribute (Top risk 4).
     this.renderPetBar();
-    const tgtDist = target && !target.dead ? dist2d(p.pos, target.pos) : null;
-    this.actionbarEl.classList.toggle(
-      'many-spells',
-      this.hotbarActions.filter((action) => action !== null).length > 10,
-    );
     if (this.spellbookWindow.isOpen) this.spellbookWindow.refreshHotbarControls();
-    for (let i = 0; i < this.abilityButtons.length; i++) {
-      const ab = this.abilityButtons[i];
-      const slotLabel = formatAbilityNumber(i + 1);
-      if (i === 0) {
-        // Attack button: glows while auto-attacking, red-edged out of range
-        ab.btn.classList.remove('empty', 'unusable');
-        ab.btn.setAttribute(
-          'aria-label',
-          t('abilityUi.actionBar.slotAria', {
-            slot: slotLabel,
-            ability: t('abilityUi.actionBar.attackName'),
-          }),
-        );
-        if (ab.lastIcon !== '__attack') {
-          ab.lastIcon = '__attack';
-          ab.label.style.backgroundImage = `url(${iconDataUrl('ability', 'attack')})`;
-        }
-        this.setText(ab.countEl, '');
-        if (ab.cdOverlay.style.height !== '0%') ab.cdOverlay.style.height = '0%';
-        this.setText(ab.cdText, '');
-        ab.btn.classList.toggle('queued', !!p.autoAttack);
-        ab.btn.classList.toggle('oor', tgtDist !== null && tgtDist > MELEE_RANGE);
-        continue;
-      }
-      const action = this.actionForSlot(i);
-      const known = this.abilityForSlot(i);
-      const item = this.itemForSlot(i);
-      if (!known && !item) {
-        ab.btn.classList.add('empty');
-        ab.btn.setAttribute(
-          'aria-label',
-          t('abilityUi.actionBar.emptySlotAria', { slot: slotLabel }),
-        );
-        ab.btn.classList.remove('unusable', 'oor', 'queued');
-        if (ab.lastIcon !== '') {
-          ab.lastIcon = '';
-          ab.label.style.backgroundImage = '';
-        }
-        this.setText(ab.countEl, '');
-        if (ab.cdOverlay.style.height !== '0%') ab.cdOverlay.style.height = '0%';
-        this.setText(ab.cdText, '');
-        continue;
-      }
-      ab.btn.classList.remove('empty');
-      if (item && action?.type === 'item') {
-        ab.btn.setAttribute(
-          'aria-label',
-          t('abilityUi.actionBar.slotAria', {
-            slot: slotLabel,
-            ability: itemDisplayName(item),
-          }),
-        );
-        const iconKey = `item:${item.id}`;
-        if (ab.lastIcon !== iconKey) {
-          ab.lastIcon = iconKey;
-          ab.label.style.backgroundImage = `url(${iconDataUrl('item', item.id)})`;
-        }
-        const count = this.inventoryCount(item.id);
-        this.setText(ab.countEl, String(count));
-        if (ab.cdOverlay.style.height !== '0%') ab.cdOverlay.style.height = '0%';
-        this.setText(ab.cdText, '');
-        ab.btn.classList.toggle('unusable', count <= 0 || p.dead);
-        ab.btn.classList.remove('oor', 'queued');
-        continue;
-      }
-      if (!known) continue;
-      const a = known.def;
-      ab.btn.setAttribute(
-        'aria-label',
-        t('abilityUi.actionBar.slotAria', {
-          slot: slotLabel,
-          ability: abilityDisplayName(a),
-        }),
-      );
-      // set the painted icon once per slot change, not every frame
-      const iconKey = `ability:${a.id}`;
-      if (ab.lastIcon !== iconKey) {
-        ab.lastIcon = iconKey;
-        ab.label.style.backgroundImage = `url(${iconDataUrl('ability', a.id)})`;
-      }
-      this.setText(ab.countEl, '');
-      const cd = p.cooldowns.get(a.id) ?? 0;
-      const gcdActive = !a.offGcd && p.gcdRemaining > 0;
-      const shown = Math.max(cd, gcdActive ? p.gcdRemaining : 0);
-      const denom = cd > 0 ? a.cooldown : GCD;
-      const cdHeight =
-        shown > 0 ? `${Math.min(100, (shown / Math.max(0.01, denom)) * 100)}%` : '0%';
-      if (ab.cdOverlay.style.height !== cdHeight) ab.cdOverlay.style.height = cdHeight;
-      this.setText(ab.cdText, cd > 1 ? Math.ceil(cd).toString() : '');
-      ab.btn.classList.toggle('unusable', p.resource < known.cost);
-      const oor =
-        a.requiresTarget && tgtDist !== null && tgtDist > (a.range > 0 ? a.range : MELEE_RANGE);
-      ab.btn.classList.toggle('oor', !!oor);
-      ab.btn.classList.toggle('queued', p.queuedOnSwing === a.id);
-    }
+    this.actionBarPainter.paint(
+      this.actionBarView.tick({ player: p, target: target ?? null, inventory: sim.inventory }),
+    );
 
     // xp bar: pre-cap shows the level bar; post-cap fills toward the next virtual
     // level (Max-Level XP Overflow), with distinct prestige/gold styling. The

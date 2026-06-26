@@ -215,6 +215,7 @@ function recordingFacet() {
     setWidth: (el, width) => calls.push({ m: 'setWidth', el, args: [width] }),
     setStyleProp: (el, prop, value) => calls.push({ m: 'setStyleProp', el, args: [prop, value] }),
     toggleClass: (el, cls, on) => calls.push({ m: 'toggleClass', el, args: [cls, on] }),
+    setAttr: (el, name, value) => calls.push({ m: 'setAttr', el, args: [name, value] }),
   };
   return { calls, writers };
 }
