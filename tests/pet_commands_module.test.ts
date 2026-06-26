@@ -14,7 +14,7 @@ import {
   summonPet,
 } from '../src/sim/pet/pet_commands';
 import { Sim } from '../src/sim/sim';
-import { type Entity } from '../src/sim/types';
+import type { Entity } from '../src/sim/types';
 
 // Direct unit tests for the extracted pet command/lifecycle module (P1b). They drive
 // the moved functions through the real Sim.ctx seam (so the still-on-Sim helpers they

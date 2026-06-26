@@ -61,13 +61,31 @@ describe('serializeCharacter <-> addPlayer round-trip (G2 persistence)', () => {
     // simulate an old save: strip the fields added after the field existed.
     const legacy: Record<string, unknown> = { ...full };
     for (const key of [
-      'arenaRating', 'arenaWins', 'arenaLosses',
-      'arena1v1Rating', 'arena1v1Wins', 'arena1v1Losses',
-      'arena2v2Rating', 'arena2v2Wins', 'arena2v2Losses',
-      'skin', 'skinCatalog', 'pendingSkinRank', 'pendingSkinCatalog', 'pendingSkinItemId',
-      'loadouts', 'activeLoadout',
-      'delveMarks', 'delveClears', 'companionUpgrades', 'delveLoreUnlocked', 'delveDaily',
-      'prestigeRank', 'unlockedMilestones', 'lifetimeXp', 'restedXp',
+      'arenaRating',
+      'arenaWins',
+      'arenaLosses',
+      'arena1v1Rating',
+      'arena1v1Wins',
+      'arena1v1Losses',
+      'arena2v2Rating',
+      'arena2v2Wins',
+      'arena2v2Losses',
+      'skin',
+      'skinCatalog',
+      'pendingSkinRank',
+      'pendingSkinCatalog',
+      'pendingSkinItemId',
+      'loadouts',
+      'activeLoadout',
+      'delveMarks',
+      'delveClears',
+      'companionUpgrades',
+      'delveLoreUnlocked',
+      'delveDaily',
+      'prestigeRank',
+      'unlockedMilestones',
+      'lifetimeXp',
+      'restedXp',
     ]) {
       delete legacy[key];
     }

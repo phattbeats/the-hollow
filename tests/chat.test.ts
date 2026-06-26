@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { Sim } from '../src/sim/sim';
 import { ClientWorld } from '../src/net/online';
-import { SimEvent } from '../src/sim/types';
-import { groundHeight } from '../src/sim/world';
 import { zoneAt } from '../src/sim/data';
-import * as chatMod from '../src/sim/social/chat';
+import { Sim } from '../src/sim/sim';
 import type { SimContext } from '../src/sim/sim_context';
+import * as chatMod from '../src/sim/social/chat';
+import type { SimEvent } from '../src/sim/types';
+import { groundHeight } from '../src/sim/world';
 
 function makeWorld() {
   return new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true });
@@ -13,7 +13,8 @@ function makeWorld() {
 
 function teleport(sim: Sim, pid: number, x: number, z: number) {
   const e = sim.entities.get(pid)!;
-  e.pos.x = x; e.pos.z = z;
+  e.pos.x = x;
+  e.pos.z = z;
   e.pos.y = groundHeight(x, z, sim.cfg.seed);
   e.prevPos = { ...e.pos };
 }
@@ -29,15 +30,17 @@ describe('chat channels', () => {
     const near = sim.addPlayer('mage', 'Bet');
     const far = sim.addPlayer('rogue', 'Gimel');
     teleport(sim, a, 0, -40);
-    teleport(sim, near, 10, -40);  // within 25
-    teleport(sim, far, 60, -40);   // beyond 25
+    teleport(sim, near, 10, -40); // within 25
+    teleport(sim, far, 60, -40); // beyond 25
     sim.tick();
 
     sim.chat('Hello there', a);
     const msgs = chatEvents(sim.tick());
-    expect(msgs.every((m) => m.channel === 'say' && m.entityId === a && m.text === 'Hello there')).toBe(true);
+    expect(
+      msgs.every((m) => m.channel === 'say' && m.entityId === a && m.text === 'Hello there'),
+    ).toBe(true);
     const pids = msgs.map((m) => m.pid).sort();
-    expect(pids).toContain(a);     // speaker hears themselves
+    expect(pids).toContain(a); // speaker hears themselves
     expect(pids).toContain(near);
     expect(pids).not.toContain(far);
   });
@@ -48,8 +51,8 @@ describe('chat channels', () => {
     const mid = sim.addPlayer('mage', 'Bet');
     const far = sim.addPlayer('rogue', 'Gimel');
     teleport(sim, a, 0, -40);
-    teleport(sim, mid, 60, -40);   // beyond say(25), within yell(100)
-    teleport(sim, far, 0, -400);   // beyond yell
+    teleport(sim, mid, 60, -40); // beyond say(25), within yell(100)
+    teleport(sim, far, 0, -400); // beyond yell
     sim.tick();
 
     sim.chat('/y Over here!', a);
@@ -66,7 +69,7 @@ describe('chat channels', () => {
     const b = sim.addPlayer('mage', 'Bet');
     const c = sim.addPlayer('rogue', 'Gimel');
     teleport(sim, a, 0, -40);
-    teleport(sim, b, 0, -900);     // whisper ignores distance
+    teleport(sim, b, 0, -900); // whisper ignores distance
     teleport(sim, c, 2, -40);
     sim.tick();
 
@@ -201,10 +204,12 @@ describe('chat channels', () => {
     sim.chat('/who', a);
     const events = sim.tick();
     expect(chatEvents(events)).toHaveLength(0);
-    expect(events).toContainEqual(expect.objectContaining({
-      type: 'error',
-      text: 'The /who roster is available in online play.',
-    }));
+    expect(events).toContainEqual(
+      expect.objectContaining({
+        type: 'error',
+        text: 'The /who roster is available in online play.',
+      }),
+    );
   });
 
   it('/help lists the chat commands as system notices without sending chat', () => {
@@ -214,7 +219,10 @@ describe('chat channels', () => {
     sim.chat('/help', a);
     const events = sim.tick();
     expect(chatEvents(events)).toHaveLength(0);
-    const help = events.filter((e) => e.type === 'error' && e.pid === a) as Extract<SimEvent, { type: 'error' }>[];
+    const help = events.filter((e) => e.type === 'error' && e.pid === a) as Extract<
+      SimEvent,
+      { type: 'error' }
+    >[];
     expect(help.length).toBeGreaterThan(0);
     const text = help.map((e) => e.text).join('\n');
     expect(text).toContain('/w <name> <message>');
@@ -240,7 +248,9 @@ describe('chat channels', () => {
     sim.chat('/bogus stuff', a);
     const events = sim.tick();
     expect(chatEvents(events)).toHaveLength(0);
-    expect(events.some((e) => e.type === 'error' && e.pid === a && e.text.includes('/help'))).toBe(true);
+    expect(events.some((e) => e.type === 'error' && e.pid === a && e.text.includes('/help'))).toBe(
+      true,
+    );
   });
 
   it('/played reports zero on a freshly joined character', () => {
@@ -251,14 +261,16 @@ describe('chat channels', () => {
     sim.chat('/played', a);
     const events = sim.tick();
     expect(chatEvents(events)).toHaveLength(0);
-    expect(events).toContainEqual(expect.objectContaining({
-      type: 'error',
-      pid: a,
-      text: 'Time played this session: 0s.',
-    }));
+    expect(events).toContainEqual(
+      expect.objectContaining({
+        type: 'error',
+        pid: a,
+        text: 'Time played this session: 0s.',
+      }),
+    );
   });
 
-  it('/where reports the caller\'s zone, level range, and coordinates', () => {
+  it("/where reports the caller's zone, level range, and coordinates", () => {
     const sim = makeWorld();
     const a = sim.addPlayer('warrior', 'Aleph');
     teleport(sim, a, 12, -340);
@@ -268,11 +280,13 @@ describe('chat channels', () => {
     sim.chat('/where', a);
     const events = sim.tick();
     expect(chatEvents(events)).toHaveLength(0);
-    expect(events).toContainEqual(expect.objectContaining({
-      type: 'error',
-      pid: a,
-      text: `You are in ${zone.name} (levels ${lo}–${hi}) at (12, -340).`,
-    }));
+    expect(events).toContainEqual(
+      expect.objectContaining({
+        type: 'error',
+        pid: a,
+        text: `You are in ${zone.name} (levels ${lo}–${hi}) at (12, -340).`,
+      }),
+    );
   });
 
   it('/played accumulates session time as the sim advances', () => {
@@ -310,7 +324,7 @@ describe('chat channels', () => {
     const sim = makeWorld();
     const a = sim.addPlayer('warrior', 'Aleph');
     const squatter = sim.addPlayer('mage', 'bet'); // joins first, lowercase
-    const real = sim.addPlayer('rogue', 'Bet');    // the intended target
+    const real = sim.addPlayer('rogue', 'Bet'); // the intended target
     teleport(sim, a, 0, -40);
     sim.tick();
     sim.chat('/w Bet exact match', a);
@@ -417,10 +431,12 @@ describe('chat channels', () => {
 
     sim.chat('/world anyone for the crypt?', a);
     const msgs = chatEvents(sim.tick());
-    expect(msgs.every((m) => m.channel === 'world' && m.text === 'anyone for the crypt?')).toBe(true);
+    expect(msgs.every((m) => m.channel === 'world' && m.text === 'anyone for the crypt?')).toBe(
+      true,
+    );
     const pids = msgs.map((m) => m.pid).sort();
-    expect(pids).toContain(a);          // sender hears their own message
-    expect(pids).toContain(b);          // joined, ignores distance
+    expect(pids).toContain(a); // sender hears their own message
+    expect(pids).toContain(b); // joined, ignores distance
     expect(pids).not.toContain(outsider); // never joined → never hears it
   });
 
@@ -431,7 +447,9 @@ describe('chat channels', () => {
     sim.chat('/world hello?', a);
     const events = sim.tick();
     expect(chatEvents(events)).toHaveLength(0);
-    expect(events.some((e) => e.type === 'error' && /not in the world channel/i.test(e.text))).toBe(true);
+    expect(events.some((e) => e.type === 'error' && /not in the world channel/i.test(e.text))).toBe(
+      true,
+    );
   });
 
   it('/leave stops further delivery on that channel', () => {
@@ -478,7 +496,11 @@ describe('chat channels', () => {
     sim.tick();
     sim.chat('/join world', a);
     const events = sim.tick();
-    expect(events.some((e) => e.type === 'log' && e.pid === a && /joined the world channel/i.test(e.text))).toBe(true);
+    expect(
+      events.some(
+        (e) => e.type === 'log' && e.pid === a && /joined the world channel/i.test(e.text),
+      ),
+    ).toBe(true);
   });
 
   it('/join rejects unknown channels and the always-on general channel', () => {
@@ -489,7 +511,9 @@ describe('chat channels', () => {
     sim.chat('/join general', a);
     const events = sim.tick();
     expect(events.some((e) => e.type === 'error' && /no channel named/i.test(e.text))).toBe(true);
-    expect(events.some((e) => e.type === 'error' && /general channel is always on/i.test(e.text))).toBe(true);
+    expect(
+      events.some((e) => e.type === 'error' && /general channel is always on/i.test(e.text)),
+    ).toBe(true);
     expect(chatEvents(events)).toHaveLength(0); // nothing said out loud
   });
 
@@ -536,7 +560,7 @@ describe('chat channels', () => {
     const far = sim.addPlayer('rogue', 'Gimel');
     teleport(sim, a, 0, -40);
     teleport(sim, near, 10, -40); // within SAY_RANGE
-    teleport(sim, far, 80, -40);  // beyond SAY_RANGE
+    teleport(sim, far, 80, -40); // beyond SAY_RANGE
     sim.tick();
 
     sim.chat('/roll', a);
@@ -550,7 +574,7 @@ describe('chat channels', () => {
     expect(result).toBeGreaterThanOrEqual(1);
     expect(result).toBeLessThanOrEqual(100);
     const pids = msgs.map((x) => x.pid);
-    expect(pids).toContain(a);    // roller sees their own roll
+    expect(pids).toContain(a); // roller sees their own roll
     expect(pids).toContain(near);
     expect(pids).not.toContain(far);
   });
@@ -582,7 +606,7 @@ describe('chat channels', () => {
     const b = sim.addPlayer('mage', 'Bet');
     const outsider = sim.addPlayer('rogue', 'Gimel');
     teleport(sim, a, 0, -40);
-    teleport(sim, b, 0, -900);   // out of say range but in the party
+    teleport(sim, b, 0, -900); // out of say range but in the party
     teleport(sim, outsider, 2, -40);
     sim.tick();
     sim.partyInvite(b, a);
@@ -594,7 +618,7 @@ describe('chat channels', () => {
     expect(msgs.every((x) => x.channel === 'roll')).toBe(true);
     const pids = msgs.map((x) => x.pid);
     expect(pids).toContain(a);
-    expect(pids).toContain(b);            // distant party member still sees it
+    expect(pids).toContain(b); // distant party member still sees it
     expect(pids).not.toContain(outsider); // a nearby non-member does not
   });
 
@@ -618,14 +642,16 @@ describe('emotes', () => {
     const far = sim.addPlayer('rogue', 'Gimel');
     teleport(sim, a, 0, -40);
     teleport(sim, near, 10, -40); // within say range
-    teleport(sim, far, 60, -40);  // beyond say range
+    teleport(sim, far, 60, -40); // beyond say range
     sim.tick();
 
     sim.chat('/wave', a);
     const msgs = chatEvents(sim.tick());
-    expect(msgs.every((m) => m.channel === 'emote' && m.from === 'Aleph' && m.text === 'waves.')).toBe(true);
+    expect(
+      msgs.every((m) => m.channel === 'emote' && m.from === 'Aleph' && m.text === 'waves.'),
+    ).toBe(true);
     const pids = msgs.map((m) => m.pid).sort();
-    expect(pids).toContain(a);    // the actor sees their own emote
+    expect(pids).toContain(a); // the actor sees their own emote
     expect(pids).toContain(near);
     expect(pids).not.toContain(far);
   });
@@ -735,11 +761,14 @@ describe('snapshot interpolation continuity', () => {
     c.playerId = pid;
     c.inventory = [];
     c.equipment = {};
-    c.copper = 0; c.xp = 0;
+    c.copper = 0;
+    c.xp = 0;
     c.known = [];
     c.questLog = new Map();
     c.questsDone = new Set();
-    c.partyInfo = null; c.tradeInfo = null; c.duelInfo = null;
+    c.partyInfo = null;
+    c.tradeInfo = null;
+    c.duelInfo = null;
     c.lastSnapAt = 0;
     c.snapInterval = 50;
     c.pendingFacingDelta = 0;
@@ -750,15 +779,34 @@ describe('snapshot interpolation continuity', () => {
   }
 
   const wire = (id: number, x: number) => ({
-    id, k: 'player', tid: 'warrior', nm: 'Runner', lv: 1,
-    x, y: 0, z: 0, f: 0, hp: 100, mhp: 100,
+    id,
+    k: 'player',
+    tid: 'warrior',
+    nm: 'Runner',
+    lv: 1,
+    x,
+    y: 0,
+    z: 0,
+    f: 0,
+    hp: 100,
+    mhp: 100,
   });
 
   it('re-anchors prevPos at the rendered pose instead of the last server pose', () => {
     const c = bareClient(7);
     const self = (x: number) => ({
-      ...wire(7, x), res: 0, mres: 100, rtype: 'mana', xp: 0, copper: 0,
-      inv: [], equip: {}, qlog: [], qdone: [], cds: {}, gcd: 0,
+      ...wire(7, x),
+      res: 0,
+      mres: 100,
+      rtype: 'mana',
+      xp: 0,
+      copper: 0,
+      inv: [],
+      equip: {},
+      qlog: [],
+      qdone: [],
+      cds: {},
+      gcd: 0,
       stats: { str: 1, agi: 1, sta: 1, int: 1, spi: 1, armor: 0 },
       weapon: { min: 1, max: 2, speed: 2 },
     });
@@ -781,9 +829,19 @@ describe('snapshot interpolation continuity', () => {
   it('mirrors overhead emotes from snapshots and clears them when absent', () => {
     const c = bareClient(7);
     const self = (emo?: string, emoSeq?: number) => ({
-      ...wire(7, 0), ...(emo ? { emo, emoSeq } : {}),
-      res: 0, mres: 100, rtype: 'mana', xp: 0, copper: 0,
-      inv: [], equip: {}, qlog: [], qdone: [], cds: {}, gcd: 0,
+      ...wire(7, 0),
+      ...(emo ? { emo, emoSeq } : {}),
+      res: 0,
+      mres: 100,
+      rtype: 'mana',
+      xp: 0,
+      copper: 0,
+      inv: [],
+      equip: {},
+      qlog: [],
+      qdone: [],
+      cds: {},
+      gcd: 0,
       stats: { str: 1, agi: 1, sta: 1, int: 1, spi: 1, armor: 0 },
       weapon: { min: 1, max: 2, speed: 2 },
     });
@@ -813,14 +871,24 @@ describe('/afk and /dnd presence', () => {
 
     sim.chat('/afk grabbing lunch', a);
     const confirm = logEvents(sim.tick());
-    expect(confirm.some((m) => m.pid === a && /Away From Keyboard: grabbing lunch/.test(m.text))).toBe(true);
+    expect(
+      confirm.some((m) => m.pid === a && /Away From Keyboard: grabbing lunch/.test(m.text)),
+    ).toBe(true);
 
     sim.chat('/w Aleph you around?', b);
     const out = sim.tick();
     // Bet gets an auto-reply line about Aleph being away...
-    expect(logEvents(out).some((m) => m.pid === b && /Aleph is Away From Keyboard: grabbing lunch/.test(m.text))).toBe(true);
+    expect(
+      logEvents(out).some(
+        (m) => m.pid === b && /Aleph is Away From Keyboard: grabbing lunch/.test(m.text),
+      ),
+    ).toBe(true);
     // ...and the whisper is still delivered to Aleph (afk does not withhold)
-    expect(chatEvents(out).some((m) => m.channel === 'whisper' && m.pid === a && m.text === 'you around?')).toBe(true);
+    expect(
+      chatEvents(out).some(
+        (m) => m.channel === 'whisper' && m.pid === a && m.text === 'you around?',
+      ),
+    ).toBe(true);
   });
 
   it('/dnd withholds the whisper but still echoes the sender and notifies them', () => {
@@ -834,11 +902,15 @@ describe('/afk and /dnd presence', () => {
 
     sim.chat('/w Aleph ping', b);
     const out = sim.tick();
-    expect(logEvents(out).some((m) => m.pid === b && /Aleph is Do Not Disturb: raiding/.test(m.text))).toBe(true);
+    expect(
+      logEvents(out).some((m) => m.pid === b && /Aleph is Do Not Disturb: raiding/.test(m.text)),
+    ).toBe(true);
     // the recipient copy (no `to`) must not reach Aleph
     expect(chatEvents(out).some((m) => m.channel === 'whisper' && m.pid === a)).toBe(false);
     // but the sender still sees their own outgoing line (carries `to`)
-    expect(chatEvents(out).some((m) => m.channel === 'whisper' && m.pid === b && m.to === 'Aleph')).toBe(true);
+    expect(
+      chatEvents(out).some((m) => m.channel === 'whisper' && m.pid === b && m.to === 'Aleph'),
+    ).toBe(true);
   });
 
   it('repeating the bare command toggles the status off', () => {
@@ -898,7 +970,16 @@ describe('chat module (direct, no Sim)', () => {
       players.set(pid, { entityId: pid, name, cls: 'mage' });
       entities.set(pid, { id: pid, pos: { x, y: 0, z }, hp: 100, maxHp: 100, level: 5 });
     }
-    return { ctx, players, entities, chatTokens, channelSubs, events, addPlayer, setTime: (t: number) => (time = t) };
+    return {
+      ctx,
+      players,
+      entities,
+      chatTokens,
+      channelSubs,
+      events,
+      addPlayer,
+      setTime: (t: number) => (time = t),
+    };
   }
 
   it('chatAllowed: a burst of 8 passes, the 9th is throttled, then refills over time', () => {
@@ -946,9 +1027,13 @@ describe('chat module (direct, no Sim)', () => {
     expect(h.channelSubs.get(1)?.has('world')).toBe(true);
     expect(h.events.some((e) => /Joined the world channel/.test(e.text))).toBe(true);
     chatMod.handleChannelMembership(h.ctx, meta, 'join', 'world');
-    expect(h.events.some((e) => e.type === 'error' && /already in the world/.test(e.text))).toBe(true);
+    expect(h.events.some((e) => e.type === 'error' && /already in the world/.test(e.text))).toBe(
+      true,
+    );
     chatMod.handleChannelMembership(h.ctx, meta, 'join', 'nope');
-    expect(h.events.some((e) => e.type === 'error' && /no channel named 'nope'/.test(e.text))).toBe(true);
+    expect(h.events.some((e) => e.type === 'error' && /no channel named 'nope'/.test(e.text))).toBe(
+      true,
+    );
     chatMod.handleChannelMembership(h.ctx, meta, 'leave', 'world');
     expect(h.channelSubs.has(1)).toBe(false);
     expect(h.events.some((e) => /Left the world channel/.test(e.text))).toBe(true);

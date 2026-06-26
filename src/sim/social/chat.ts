@@ -16,14 +16,14 @@
 import { CLASSES, ITEMS } from '../data';
 import {
   JOINABLE_CHANNELS,
-  MAX_CHAT_MESSAGE_LEN,
-  SAY_RANGE,
   type JoinableChannel,
+  MAX_CHAT_MESSAGE_LEN,
   type PlayerMeta,
+  SAY_RANGE,
   type SentChat,
 } from '../sim';
 import type { SimContext } from '../sim_context';
-import { dist2d, MAX_LEVEL, type Entity, type OverheadEmoteId } from '../types';
+import { dist2d, type Entity, MAX_LEVEL, type OverheadEmoteId } from '../types';
 
 const CHAT_BURST = 8; // messages a player may send back-to-back...
 const CHAT_REFILL = 2; // ...then this many more per second (caps spam amplifiers)
@@ -47,7 +47,11 @@ export function chatAllowed(ctx: SimContext, pid: number): boolean {
 // Dev chat cheats — only when Sim.devCommands is enabled (offline local play
 // or online server with ALLOW_DEV_COMMANDS=1). Returns null when handled
 // (no channel message), or undefined when not a dev command.
-export function handleDevChat(ctx: SimContext, raw: string, pid: number): SentChat | null | undefined {
+export function handleDevChat(
+  ctx: SimContext,
+  raw: string,
+  pid: number,
+): SentChat | null | undefined {
   const levelM = /^\/(?:dev\s+level|devlevel)\s+(\d+)\s*$/i.exec(raw);
   if (levelM) {
     const level = Number(levelM[1]);
@@ -94,7 +98,11 @@ export function handleDevChat(ctx: SimContext, raw: string, pid: number): SentCh
   return undefined;
 }
 
-export function whisperMessageForName(rest: string, name: string, exactCase: boolean): string | null {
+export function whisperMessageForName(
+  rest: string,
+  name: string,
+  exactCase: boolean,
+): string | null {
   const input = exactCase ? rest : rest.toLowerCase();
   const prefix = exactCase ? name : name.toLowerCase();
   if (!input.startsWith(prefix)) return null;
@@ -196,8 +204,7 @@ export function helpLines(): string[] {
 // One-line readout for /inspect: another player's level, class, and health.
 export function inspectReadout(target: PlayerMeta, e: Entity): string {
   const cls = CLASSES[target.cls]?.name ?? target.cls;
-  const hp =
-    e.hp <= 0 ? 'dead' : `${Math.round(Math.max(0, Math.min(1, e.hp / e.maxHp)) * 100)}%`;
+  const hp = e.hp <= 0 ? 'dead' : `${Math.round(Math.max(0, Math.min(1, e.hp / e.maxHp)) * 100)}%`;
   return `${target.name}: Level ${e.level} ${cls} — HP ${hp}.`;
 }
 

@@ -22,8 +22,8 @@
 import { MOBS } from '../data';
 import type { SimContext } from '../sim_context';
 import { addThreat, MELEE_SWITCH_MULT, RANGED_SWITCH_MULT } from '../threat';
-import { DT, dist2d, MELEE_RANGE } from '../types';
 import type { Entity } from '../types';
+import { DT, dist2d, MELEE_RANGE } from '../types';
 
 // Classic "trivial con" gap: a wild mob this far below the player's level stops
 // auto-aggroing from proximity. Moved with isTrivialTo (its only reader).

@@ -23,8 +23,8 @@
 import { dungeonAt, isDelvePos, zoneAt } from './data';
 import { recalcPlayerStats } from './entity';
 import type { SimContext } from './sim_context';
-import { CAST_COMPLETE_EPS, DT } from './types';
 import type { Entity, SimEvent, Vec3 } from './types';
+import { CAST_COMPLETE_EPS, DT } from './types';
 
 // Mobs that despawn after sitting out of combat too long (boss adds that should not
 // litter the world). The idle timer is reset to DAMAGE_IDLE_DESPAWN_SECONDS whenever

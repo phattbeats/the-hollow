@@ -6,9 +6,9 @@
 // frenzy rng draw, and the xp-grant chain) is intact.
 
 import { describe, expect, it } from 'vitest';
+import { dealDamage, grantXp, handleDeath } from '../src/sim/combat/damage';
 import { MOBS } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
-import { dealDamage, grantXp, handleDeath } from '../src/sim/combat/damage';
 import { Sim } from '../src/sim/sim';
 import type { Aura, Entity } from '../src/sim/types';
 
@@ -58,8 +58,26 @@ describe('combat/damage dealDamage (post-mitigation)', () => {
     mob.maxHp = 5000;
     mob.hp = 5000;
     // +50% vulnerability, then a 30-point absorb shield.
-    mob.auras.push({ id: 'v', name: 'Frailty', kind: 'vulnerability', remaining: 9, duration: 9, value: 0.5, sourceId: p.id, school: 'shadow' } as Aura);
-    mob.auras.push({ id: 'a', name: 'Shield', kind: 'absorb', remaining: 9, duration: 9, value: 30, sourceId: mob.id, school: 'physical' } as Aura);
+    mob.auras.push({
+      id: 'v',
+      name: 'Frailty',
+      kind: 'vulnerability',
+      remaining: 9,
+      duration: 9,
+      value: 0.5,
+      sourceId: p.id,
+      school: 'shadow',
+    } as Aura);
+    mob.auras.push({
+      id: 'a',
+      name: 'Shield',
+      kind: 'absorb',
+      remaining: 9,
+      duration: 9,
+      value: 30,
+      sourceId: mob.id,
+      school: 'physical',
+    } as Aura);
 
     dealDamage(sim.ctx, p, mob, 100, false, 'physical', null, 'hit');
 
@@ -81,7 +99,9 @@ describe('combat/damage dealDamage (post-mitigation)', () => {
 
     expect(mob.hp).toBe(0);
     expect(mob.dead).toBe(true);
-    expect(sim.drainEvents().some((e) => e.type === 'death' && (e as any).entityId === mob.id)).toBe(true);
+    expect(
+      sim.drainEvents().some((e) => e.type === 'death' && (e as any).entityId === mob.id),
+    ).toBe(true);
   });
 
   it('drives the only in-slice rng draw via maybeFrenzyOnHit (frenzyOnHit mob gains blood_frenzy)', () => {
@@ -137,7 +157,16 @@ describe('combat/damage handleDeath', () => {
     const meta = sim.players.get(p.id) as any;
     const mob = spawnHostileMob(sim, 'forest_wolf', 5);
     mob.tappedById = p.id;
-    mob.auras.push({ id: 'x', name: 'Buff', kind: 'buff_haste', remaining: 9, duration: 9, value: 1.2, sourceId: mob.id, school: 'physical' } as Aura);
+    mob.auras.push({
+      id: 'x',
+      name: 'Buff',
+      kind: 'buff_haste',
+      remaining: 9,
+      duration: 9,
+      value: 1.2,
+      sourceId: mob.id,
+      school: 'physical',
+    } as Aura);
     const kills = meta.counters.kills;
 
     handleDeath(sim.ctx, mob, p);

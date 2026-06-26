@@ -20,7 +20,14 @@
 
 import { arenaOrigin, CLASSES, DUNGEON_X_THRESHOLD } from '../data';
 import type { PlayerMeta, Sim } from '../sim';
-import { angleTo, dist2d, emptyMoveInput, type Entity, MELEE_RANGE, type PlayerClass } from '../types';
+import {
+  angleTo,
+  dist2d,
+  type Entity,
+  emptyMoveInput,
+  MELEE_RANGE,
+  type PlayerClass,
+} from '../types';
 import * as arenaMod from './arena';
 import { FIESTA_RING_CX, FIESTA_RING_CZ } from './fiesta';
 

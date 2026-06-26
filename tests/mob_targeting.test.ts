@@ -17,7 +17,7 @@ import {
   updateMobTarget,
 } from '../src/sim/mob/targeting';
 import type { SimContext } from '../src/sim/sim_context';
-import { MELEE_RANGE, type Entity } from '../src/sim/types';
+import { type Entity, MELEE_RANGE } from '../src/sim/types';
 
 // Minimal Entity carrying only the fields the four functions touch.
 function ent(id: number, over: Partial<Entity> = {}): Entity {
@@ -58,25 +58,56 @@ describe('mob/targeting: highestThreatTarget', () => {
   it('picks the highest-threat living attacker', () => {
     const a = ent(1);
     const b = ent(2);
-    const ctx = fakeCtx(new Map([[1, a], [2, b]]));
-    const mob = ent(10, { threat: new Map([[1, 30], [2, 70]]) });
+    const ctx = fakeCtx(
+      new Map([
+        [1, a],
+        [2, b],
+      ]),
+    );
+    const mob = ent(10, {
+      threat: new Map([
+        [1, 30],
+        [2, 70],
+      ]),
+    });
     expect(highestThreatTarget(ctx, mob)).toBe(b);
   });
 
   it('tie-break keeps the first-inserted on equal threat (strict `>`)', () => {
     const a = ent(1);
     const b = ent(2);
-    const ctx = fakeCtx(new Map([[1, a], [2, b]]));
+    const ctx = fakeCtx(
+      new Map([
+        [1, a],
+        [2, b],
+      ]),
+    );
     // Insertion order a then b; equal threat -> b never exceeds bestT, so a wins.
-    const mob = ent(10, { threat: new Map([[1, 50], [2, 50]]) });
+    const mob = ent(10, {
+      threat: new Map([
+        [1, 50],
+        [2, 50],
+      ]),
+    });
     expect(highestThreatTarget(ctx, mob)).toBe(a);
   });
 
   it('prunes dead and missing entries mid-iterate', () => {
     const alive = ent(1);
     const dead = ent(2, { dead: true });
-    const ctx = fakeCtx(new Map([[1, alive], [2, dead]])); // id 3 is missing entirely
-    const mob = ent(10, { threat: new Map([[1, 10], [2, 99], [3, 99]]) });
+    const ctx = fakeCtx(
+      new Map([
+        [1, alive],
+        [2, dead],
+      ]),
+    ); // id 3 is missing entirely
+    const mob = ent(10, {
+      threat: new Map([
+        [1, 10],
+        [2, 99],
+        [3, 99],
+      ]),
+    });
     expect(highestThreatTarget(ctx, mob)).toBe(alive);
     expect(mob.threat.has(2)).toBe(false); // dead pruned
     expect(mob.threat.has(3)).toBe(false); // missing pruned
@@ -88,8 +119,19 @@ describe('mob/targeting: updateMobTarget pull-over', () => {
   it('110% melee pull-over: an in-melee attacker past 110% steals aggro', () => {
     const tank = ent(1);
     const bruiser = ent(2, { pos: { x: MELEE_IN, y: 0, z: 0 } });
-    const ctx = fakeCtx(new Map([[1, tank], [2, bruiser]]));
-    const mob = ent(10, { aggroTargetId: 1, threat: new Map([[1, 100], [2, 120]]) });
+    const ctx = fakeCtx(
+      new Map([
+        [1, tank],
+        [2, bruiser],
+      ]),
+    );
+    const mob = ent(10, {
+      aggroTargetId: 1,
+      threat: new Map([
+        [1, 100],
+        [2, 120],
+      ]),
+    });
     updateMobTarget(ctx, mob);
     expect(mob.aggroTargetId).toBe(2);
   });
@@ -97,8 +139,19 @@ describe('mob/targeting: updateMobTarget pull-over', () => {
   it('does NOT switch at exactly 110% in melee (strict `>` MELEE_SWITCH_MULT)', () => {
     const tank = ent(1);
     const bruiser = ent(2, { pos: { x: MELEE_IN, y: 0, z: 0 } });
-    const ctx = fakeCtx(new Map([[1, tank], [2, bruiser]]));
-    const mob = ent(10, { aggroTargetId: 1, threat: new Map([[1, 100], [2, 110]]) });
+    const ctx = fakeCtx(
+      new Map([
+        [1, tank],
+        [2, bruiser],
+      ]),
+    );
+    const mob = ent(10, {
+      aggroTargetId: 1,
+      threat: new Map([
+        [1, 100],
+        [2, 110],
+      ]),
+    });
     updateMobTarget(ctx, mob);
     expect(mob.aggroTargetId).toBe(1);
   });
@@ -106,8 +159,19 @@ describe('mob/targeting: updateMobTarget pull-over', () => {
   it('130% ranged pull-over: an out-of-melee attacker past 130% steals aggro', () => {
     const tank = ent(1);
     const caster = ent(3, { pos: { x: MELEE_OUT, y: 0, z: 0 } });
-    const ctx = fakeCtx(new Map([[1, tank], [3, caster]]));
-    const mob = ent(10, { aggroTargetId: 1, threat: new Map([[1, 100], [3, 140]]) });
+    const ctx = fakeCtx(
+      new Map([
+        [1, tank],
+        [3, caster],
+      ]),
+    );
+    const mob = ent(10, {
+      aggroTargetId: 1,
+      threat: new Map([
+        [1, 100],
+        [3, 140],
+      ]),
+    });
     updateMobTarget(ctx, mob);
     expect(mob.aggroTargetId).toBe(3);
   });
@@ -115,8 +179,19 @@ describe('mob/targeting: updateMobTarget pull-over', () => {
   it('does NOT switch at exactly 130% at range (strict `>` RANGED_SWITCH_MULT)', () => {
     const tank = ent(1);
     const caster = ent(3, { pos: { x: MELEE_OUT, y: 0, z: 0 } });
-    const ctx = fakeCtx(new Map([[1, tank], [3, caster]]));
-    const mob = ent(10, { aggroTargetId: 1, threat: new Map([[1, 100], [3, 130]]) });
+    const ctx = fakeCtx(
+      new Map([
+        [1, tank],
+        [3, caster],
+      ]),
+    );
+    const mob = ent(10, {
+      aggroTargetId: 1,
+      threat: new Map([
+        [1, 100],
+        [3, 130],
+      ]),
+    });
     updateMobTarget(ctx, mob);
     expect(mob.aggroTargetId).toBe(1);
   });
@@ -126,16 +201,38 @@ describe('mob/targeting: updateMobTarget pull-over', () => {
     const melee = (() => {
       const tank = ent(1);
       const att = ent(2, { pos: { x: MELEE_IN, y: 0, z: 0 } });
-      const ctx = fakeCtx(new Map([[1, tank], [2, att]]));
-      const mob = ent(10, { aggroTargetId: 1, threat: new Map([[1, 100], [2, 120]]) });
+      const ctx = fakeCtx(
+        new Map([
+          [1, tank],
+          [2, att],
+        ]),
+      );
+      const mob = ent(10, {
+        aggroTargetId: 1,
+        threat: new Map([
+          [1, 100],
+          [2, 120],
+        ]),
+      });
       updateMobTarget(ctx, mob);
       return mob.aggroTargetId;
     })();
     const ranged = (() => {
       const tank = ent(1);
       const att = ent(2, { pos: { x: MELEE_OUT, y: 0, z: 0 } });
-      const ctx = fakeCtx(new Map([[1, tank], [2, att]]));
-      const mob = ent(10, { aggroTargetId: 1, threat: new Map([[1, 100], [2, 120]]) });
+      const ctx = fakeCtx(
+        new Map([
+          [1, tank],
+          [2, att],
+        ]),
+      );
+      const mob = ent(10, {
+        aggroTargetId: 1,
+        threat: new Map([
+          [1, 100],
+          [2, 120],
+        ]),
+      });
       updateMobTarget(ctx, mob);
       return mob.aggroTargetId;
     })();
@@ -146,8 +243,19 @@ describe('mob/targeting: updateMobTarget pull-over', () => {
   it('repicks the highest threat when the current target is dead/missing', () => {
     const dead = ent(1, { dead: true });
     const alive = ent(3);
-    const ctx = fakeCtx(new Map([[1, dead], [3, alive]]));
-    const mob = ent(10, { aggroTargetId: 1, threat: new Map([[1, 100], [3, 50]]) });
+    const ctx = fakeCtx(
+      new Map([
+        [1, dead],
+        [3, alive],
+      ]),
+    );
+    const mob = ent(10, {
+      aggroTargetId: 1,
+      threat: new Map([
+        [1, 100],
+        [3, 50],
+      ]),
+    });
     updateMobTarget(ctx, mob);
     expect(mob.aggroTargetId).toBe(3); // fell back to highestThreatTarget
     expect(mob.threat.has(1)).toBe(false); // dead current pruned by the rescan
@@ -158,7 +266,12 @@ describe('mob/targeting: updateMobTarget forced-target/taunt', () => {
   it('forces the taunter, decrements the timer, then clears + reverts on expiry', () => {
     const tank = ent(1);
     const taunter = ent(2);
-    const ctx = fakeCtx(new Map([[1, tank], [2, taunter]]));
+    const ctx = fakeCtx(
+      new Map([
+        [1, tank],
+        [2, taunter],
+      ]),
+    );
     const mob = ent(10, {
       aggroTargetId: 1,
       forcedTargetId: 2,
@@ -189,8 +302,19 @@ describe('mob/targeting: retargetMob', () => {
   it('grabs the highest-threat target and chases', () => {
     const a = ent(1);
     const b = ent(3);
-    const ctx = fakeCtx(new Map([[1, a], [3, b]]));
-    const mob = ent(10, { aiState: 'attack', threat: new Map([[1, 100], [3, 140]]) });
+    const ctx = fakeCtx(
+      new Map([
+        [1, a],
+        [3, b],
+      ]),
+    );
+    const mob = ent(10, {
+      aiState: 'attack',
+      threat: new Map([
+        [1, 100],
+        [3, 140],
+      ]),
+    });
     retargetMob(ctx, mob);
     expect(mob.aggroTargetId).toBe(3);
     expect(mob.aiState).toBe('chase');

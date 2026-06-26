@@ -5,10 +5,10 @@
 // bout (to a defeat and to a timeout draw) behind the seam without Sim's delegates.
 
 import { describe, expect, it } from 'vitest';
+import type { PlayerMeta } from '../src/sim/sim';
 import { Sim } from '../src/sim/sim';
 import * as arena from '../src/sim/social/arena';
 import { ARENA_BASE_RATING, eloDelta } from '../src/sim/social/arena';
-import type { PlayerMeta } from '../src/sim/sim';
 import { groundHeight } from '../src/sim/world';
 
 type AnySim = Sim & Record<string, any>;

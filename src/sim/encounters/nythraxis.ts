@@ -32,17 +32,17 @@ import type { PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
 import { clearThreat, threatEntries } from '../threat';
 import {
-  angleTo,
-  armorReduction,
   type Aura,
   type AuraKind,
+  angleTo,
+  armorReduction,
   DT,
   dist2d,
   type Entity,
   INTERACT_RANGE,
-  normAngle,
   NYTHRAXIS_ADD_ID,
   NYTHRAXIS_BOSS_ID,
+  normAngle,
   OBJECT_RESPAWN,
   type SimEvent,
   type Vec3,
@@ -134,8 +134,7 @@ export function nythraxisAddFallbackTarget(ctx: SimContext, add: Entity): Entity
 
 export function scheduleNythraxisAddDespawnIfBossReset(ctx: SimContext, add: Entity): boolean {
   const boss = findNythraxisBossForAdd(ctx, add);
-  if (!boss || (boss.inCombat && boss.aiState !== 'idle' && boss.aiState !== 'evade'))
-    return false;
+  if (!boss || (boss.inCombat && boss.aiState !== 'idle' && boss.aiState !== 'evade')) return false;
   add.aggroTargetId = null;
   add.aiState = 'idle';
   add.inCombat = false;
@@ -200,8 +199,7 @@ export function resetNythraxisEncounter(ctx: SimContext, boss: Entity): void {
     clearNythraxisWardChannelCast(p);
   }
   for (const e of nythraxisTransitionStunTargets(ctx, boss)) {
-    if (e.kind !== 'player')
-      e.auras = e.auras.filter((a) => a.id !== 'nythraxis_transition_stun');
+    if (e.kind !== 'player') e.auras = e.auras.filter((a) => a.id !== 'nythraxis_transition_stun');
   }
   const aldric = findNythraxisAldric(ctx, boss);
   if (aldric) ctx.dropEntity(aldric.id);
@@ -758,16 +756,7 @@ export function updateNythraxisSoulRend(
       (other) => dist2d(other.pos, p.pos) <= NYTHRAXIS_SOUL_REND_STACK_RANGE,
     ).length;
     const share = Math.max(1, stacked);
-    ctx.dealDamage(
-      boss,
-      p,
-      Math.ceil(p.maxHp / share),
-      false,
-      'shadow',
-      'Soul Rend',
-      'hit',
-      true,
-    );
+    ctx.dealDamage(boss, p, Math.ceil(p.maxHp / share), false, 'shadow', 'Soul Rend', 'hit', true);
     p.auras = p.auras.filter((a) => a.id !== 'nythraxis_soul_rend');
     ctx.emit({
       type: 'spellfx',
@@ -889,13 +878,7 @@ export function updateNythraxisWardChannels(
     if (channel.complete || channel.playerId === null) continue;
     const ward = ctx.entities.get(channel.objectId);
     const p = ctx.entities.get(channel.playerId);
-    if (
-      !ward ||
-      !p ||
-      p.dead ||
-      isStunned(p) ||
-      dist2d(p.pos, ward.pos) > INTERACT_RANGE + 1
-    ) {
+    if (!ward || !p || p.dead || isStunned(p) || dist2d(p.pos, ward.pos) > INTERACT_RANGE + 1) {
       if (p) clearNythraxisWardChannelCast(p);
       channel.playerId = null;
       channel.remaining = NYTHRAXIS_DEATHLESS_CHANNEL;
@@ -950,7 +933,11 @@ export function nythraxisDeathlessChannelObjects(ctx: SimContext, boss: Entity):
   return nythraxisWardstones(ctx, boss);
 }
 
-export function tryStartNythraxisWardChannel(ctx: SimContext, ward: Entity, player: Entity): boolean {
+export function tryStartNythraxisWardChannel(
+  ctx: SimContext,
+  ward: Entity,
+  player: Entity,
+): boolean {
   if (ward.objectItemId !== NYTHRAXIS_WARDSTONE_ITEM_ID) return false;
   const boss = [...ctx.entities.values()].find(
     (e) =>
@@ -1043,13 +1030,7 @@ export function interactObjectForQuests(ctx: SimContext, obj: Entity, meta: Play
       }
       // The interact objective itself (and its one-time vision) only credits once.
       if (qp.counts[objectiveIndex] >= objective.count) return;
-      const shared = sharedNythraxisObjectParticipants(
-        ctx,
-        meta,
-        obj,
-        qp.questId,
-        objectiveIndex,
-      );
+      const shared = sharedNythraxisObjectParticipants(ctx, meta, obj, qp.questId, objectiveIndex);
       for (const member of shared) {
         const memberQp = member.questLog.get(qp.questId);
         if (memberQp?.state !== 'active') continue;
@@ -1118,11 +1099,7 @@ export function emitQuestObjectVision(
     itemId === 'grave_sir_aldren'
       ? ['My king was a good man.', 'I swore my blade to him.', 'I would do so again.']
       : itemId === 'grave_high_priest_malric'
-        ? [
-            'There had to be another way.',
-            'I could not let him die.',
-            'I only wanted to save him.',
-          ]
+        ? ['There had to be another way.', 'I could not let him die.', 'I only wanted to save him.']
         : itemId === 'grave_captain_voss'
           ? [
               'The king was already dead.',
@@ -1195,12 +1172,7 @@ export function summonQuestMob(
   if (existing) return;
   const template = MOBS[templateId];
   if (!template) return;
-  const mob = createMob(
-    ctx.nextId++,
-    template,
-    template.maxLevel,
-    ctx.groundPos(pos.x, pos.z + 3),
-  );
+  const mob = createMob(ctx.nextId++, template, template.maxLevel, ctx.groundPos(pos.x, pos.z + 3));
   mob.facing = Math.PI;
   mob.prevFacing = mob.facing;
   mob.tappedById = ownerPid;

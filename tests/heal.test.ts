@@ -7,8 +7,6 @@
 // parity golden.
 
 import { describe, expect, it } from 'vitest';
-import { MOBS } from '../src/sim/data';
-import { createMob } from '../src/sim/entity';
 import {
   applyHeal,
   consumeHealAbsorb,
@@ -18,6 +16,8 @@ import {
   hexOutputMult,
   threatEntryMatchesEntity,
 } from '../src/sim/combat/heal';
+import { MOBS } from '../src/sim/data';
+import { createMob } from '../src/sim/entity';
 import { Sim } from '../src/sim/sim';
 import type { Aura, Entity } from '../src/sim/types';
 
@@ -73,7 +73,9 @@ describe('heal: healingTakenMult (Mortal Wound)', () => {
 
   it('reduces by (1 - value) per mortal_wound and stacks multiplicatively', () => {
     const sim = makeSim();
-    const e = { auras: [aura('mortal_wound', 0.5), aura('mortal_wound', 0.25)] } as unknown as Entity;
+    const e = {
+      auras: [aura('mortal_wound', 0.5), aura('mortal_wound', 0.25)],
+    } as unknown as Entity;
     expect(healingTakenMult(sim.ctx, e)).toBeCloseTo(0.5 * 0.75, 6); // 0.375
   });
 
@@ -162,7 +164,9 @@ describe('heal: critVulnBonus (Find Weakness)', () => {
 
   it('reports the largest active critvuln value', () => {
     const sim = makeSim();
-    const e = { auras: [aura('critvuln', 0.2), aura('critvuln', 0.5), aura('critvuln', 0.3)] } as unknown as Entity;
+    const e = {
+      auras: [aura('critvuln', 0.2), aura('critvuln', 0.5), aura('critvuln', 0.3)],
+    } as unknown as Entity;
     expect(critVulnBonus(sim.ctx, e)).toBe(0.5);
   });
 });
@@ -317,7 +321,7 @@ describe('heal: threatEntryMatchesEntity', () => {
     expect(threatEntryMatchesEntity(sim.ctx, m, tgt)).toBe(true);
   });
 
-  it("matches a player via a hate-table entry owned by that player (pet branch)", () => {
+  it('matches a player via a hate-table entry owned by that player (pet branch)', () => {
     const sim = makeSim();
     const tgt = sim.player as AnyEntity;
     const pet = awareMob(sim, []);

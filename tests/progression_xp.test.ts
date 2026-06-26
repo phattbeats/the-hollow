@@ -6,11 +6,11 @@
 // extracted module is callable and the move preserved behavior.
 
 import { describe, expect, it } from 'vitest';
+import { PROPS } from '../src/sim/data';
+import { isResting, prestige, updateRested } from '../src/sim/progression/xp';
 import { Sim } from '../src/sim/sim';
 import { DT, MAX_LEVEL, PRESTIGE_XP_PER_RANK, xpForLevel } from '../src/sim/types';
-import { PROPS } from '../src/sim/data';
 import { terrainHeight } from '../src/sim/world';
-import { isResting, prestige, updateRested } from '../src/sim/progression/xp';
 
 type AnySim = Sim & Record<string, any>;
 
@@ -114,7 +114,10 @@ describe('progression/xp — prestige (cap-gated, cosmetic)', () => {
     // the gold prestige log emit fired through ctx.emit.
     expect(
       sim.events.some(
-        (e: any) => e.type === 'log' && typeof e.text === 'string' && e.text === 'You have prestiged! Prestige Rank 1.',
+        (e: any) =>
+          e.type === 'log' &&
+          typeof e.text === 'string' &&
+          e.text === 'You have prestiged! Prestige Rank 1.',
       ),
     ).toBe(true);
   });

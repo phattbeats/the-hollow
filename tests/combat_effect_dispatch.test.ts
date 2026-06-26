@@ -11,8 +11,8 @@ import { describe, expect, it } from 'vitest';
 import { runEffects } from '../src/sim/combat/effect_dispatch';
 import { MOBS } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
-import { Sim } from '../src/sim/sim';
 import type { ResolvedAbility } from '../src/sim/sim';
+import { Sim } from '../src/sim/sim';
 import type { Entity, PlayerClass } from '../src/sim/types';
 
 type AnySim = Sim & Record<string, any>;

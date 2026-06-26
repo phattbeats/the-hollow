@@ -50,7 +50,9 @@ describe('parity gate', () => {
           writeFileSync(path, `${JSON.stringify(trace, null, 2)}\n`);
           return;
         }
-        expect(existsSync(path), `missing golden for ${scenario.name}; run UPDATE_PARITY=1`).toBe(true);
+        expect(existsSync(path), `missing golden for ${scenario.name}; run UPDATE_PARITY=1`).toBe(
+          true,
+        );
         const golden = JSON.parse(readFileSync(path, 'utf8'));
         expect(trace).toEqual(golden);
       });

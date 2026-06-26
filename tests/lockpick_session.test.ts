@@ -176,7 +176,9 @@ describe('lockpick controller (I2b module), guards', () => {
     setup(sim);
     lockpick.lockpickAction(sim.ctx, 'set', sim.playerId);
     expect(
-      sim.tick().find((e) => e.type === 'error' && (e as any).text === 'No lock attempt in progress.'),
+      sim
+        .tick()
+        .find((e) => e.type === 'error' && (e as any).text === 'No lock attempt in progress.'),
     ).toBeDefined();
   });
 

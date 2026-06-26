@@ -16,8 +16,8 @@
 //
 // See tests/parity/CLAUDE.md for the field-selection rationale.
 
-import type { Entity } from '../../src/sim/types';
 import type { PlayerMeta } from '../../src/sim/sim';
+import type { Entity } from '../../src/sim/types';
 
 // A JSON-safe number: either a finite number quantized to 1e-6, or a sentinel
 // string for a non-finite value (Infinity shows up on e.g. Entity.detonateTimer).

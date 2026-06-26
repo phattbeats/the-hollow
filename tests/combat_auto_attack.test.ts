@@ -21,9 +21,22 @@ import type { Entity, PlayerClass } from '../src/sim/types';
 
 type AnySim = Sim & Record<string, any>;
 type AnyEntity = Entity & Record<string, any>;
-type Ev = { type?: string; kind?: string; school?: string; ability?: string | null; sourceId?: number; targetId?: number; amount?: number; crit?: boolean };
+type Ev = {
+  type?: string;
+  kind?: string;
+  school?: string;
+  ability?: string | null;
+  sourceId?: number;
+  targetId?: number;
+  amount?: number;
+  crit?: boolean;
+};
 
-function makeSim(cls: PlayerClass, level: number, seed = 7): { sim: AnySim; p: AnyEntity; meta: any } {
+function makeSim(
+  cls: PlayerClass,
+  level: number,
+  seed = 7,
+): { sim: AnySim; p: AnyEntity; meta: any } {
   const sim = new Sim({ seed, playerClass: cls, autoEquip: true }) as AnySim;
   sim.setPlayerLevel(level);
   const p = sim.player as AnyEntity;
@@ -68,7 +81,12 @@ describe('auto_attack meleeSwing: the white-hit table', () => {
     const hp0 = mob.hp;
     const connected = meleeSwing(sim.ctx, p, mob, 0, null, { cannotBeDodged: true });
     expect(connected).toBe(true);
-    expect(events.some((e) => e.type === 'damage' && e.kind === 'hit' && e.school === 'physical' && e.sourceId === p.id)).toBe(true);
+    expect(
+      events.some(
+        (e) =>
+          e.type === 'damage' && e.kind === 'hit' && e.school === 'physical' && e.sourceId === p.id,
+      ),
+    ).toBe(true);
     expect(mob.hp).toBeLessThan(hp0);
   });
 
@@ -79,21 +97,31 @@ describe('auto_attack meleeSwing: the white-hit table', () => {
     const events = capture(sim);
     const connected = meleeSwing(sim.ctx, p, mob, 0, null, { cannotBeDodged: true });
     expect(connected).toBe(true);
-    expect(events.some((e) => e.type === 'damage' && e.kind === 'hit' && e.crit === true)).toBe(true);
+    expect(events.some((e) => e.type === 'damage' && e.kind === 'hit' && e.crit === true)).toBe(
+      true,
+    );
   });
 
   it('a 100% blind forces a miss: returns false, emits a miss, deals no damage', () => {
     const { sim, p } = makeSim('warrior', 12);
     const mob = spawnDummy(sim, p, 1);
     p.auras.push({
-      id: 'blind_x', name: 'Blinding Powder', kind: 'blind',
-      remaining: 5, duration: 5, value: 1, sourceId: 999, school: 'physical',
+      id: 'blind_x',
+      name: 'Blinding Powder',
+      kind: 'blind',
+      remaining: 5,
+      duration: 5,
+      value: 1,
+      sourceId: 999,
+      school: 'physical',
     } as any);
     const events = capture(sim);
     const hp0 = mob.hp;
     const connected = meleeSwing(sim.ctx, p, mob, 0, null, { cannotBeDodged: true });
     expect(connected).toBe(false);
-    expect(events.some((e) => e.type === 'damage' && e.kind === 'miss' && e.sourceId === p.id)).toBe(true);
+    expect(
+      events.some((e) => e.type === 'damage' && e.kind === 'miss' && e.sourceId === p.id),
+    ).toBe(true);
     expect(mob.hp).toBe(hp0);
   });
 
@@ -107,7 +135,9 @@ describe('auto_attack meleeSwing: the white-hit table', () => {
     const events = capture(sim);
     const connected = meleeSwing(sim.ctx, p, target, 0, null, {});
     expect(connected).toBe(false);
-    expect(events.some((e) => e.type === 'damage' && e.kind === 'dodge' && e.sourceId === p.id)).toBe(true);
+    expect(
+      events.some((e) => e.type === 'damage' && e.kind === 'dodge' && e.sourceId === p.id),
+    ).toBe(true);
     expect(p.overpowerUntil).toBeGreaterThan(0); // attacker.overpowerUntil = time + 5
   });
 });
@@ -128,7 +158,9 @@ describe('auto_attack rangedSwing: Auto Shot vs Wand', () => {
     const events = capture(sim);
     rangedSwing(sim.ctx, p, mob, { min: 3, max: 6, speed: 1.8, wand: true, school: 'arcane' });
     expect(events.some((e) => e.type === 'spellfx' && e.school === 'arcane')).toBe(true);
-    expect(events.some((e) => e.type === 'damage' && e.ability === 'Wand' && e.school === 'arcane')).toBe(true);
+    expect(
+      events.some((e) => e.type === 'damage' && e.ability === 'Wand' && e.school === 'arcane'),
+    ).toBe(true);
   });
 });
 
@@ -151,7 +183,9 @@ describe('auto_attack updatePlayerAutoAttack: ranged-vs-melee dispatch', () => {
     p.swingTimer = 0;
     const events = capture(sim);
     updatePlayerAutoAttack(sim.ctx, p, meta);
-    expect(events.some((e) => e.type === 'damage' && e.school === 'physical' && e.sourceId === p.id)).toBe(true);
+    expect(
+      events.some((e) => e.type === 'damage' && e.school === 'physical' && e.sourceId === p.id),
+    ).toBe(true);
     expect(p.swingTimer).toBeCloseTo(p.weapon.speed * sim.swingIntervalMult(p));
   });
 

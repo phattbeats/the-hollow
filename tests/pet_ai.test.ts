@@ -112,8 +112,12 @@ describe('pet_ai module (P1a) — direct unit tests', () => {
     target.hp = 50000;
     petRangedAttack(sim.ctx, pet, target, { range: 25, school: 'fire' });
     const ev = sim.drainEvents() as Array<Record<string, any>>;
-    expect(ev.some((e) => e.type === 'spellfx' && e.fx === 'projectile' && e.school === 'fire')).toBe(true);
-    expect(ev.some((e) => e.type === 'damage' && e.sourceId === pet.id && e.school === 'fire')).toBe(true);
+    expect(
+      ev.some((e) => e.type === 'spellfx' && e.fx === 'projectile' && e.school === 'fire'),
+    ).toBe(true);
+    expect(
+      ev.some((e) => e.type === 'damage' && e.sourceId === pet.id && e.school === 'fire'),
+    ).toBe(true);
     expect(target.hp).toBeLessThan(target.maxHp); // the bolt never misses (crit-only roll)
   });
 

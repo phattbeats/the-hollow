@@ -27,7 +27,11 @@ const ctxOf = (sim: Sim): SimContext => (sim as unknown as { ctx: SimContext }).
 describe('mob/locomotion: recoverFromFlee (pure helper, no ctx)', () => {
   it('returns to chase out of melee, attack in melee; clears the flee timer', () => {
     const mob = createMob(1, MOBS.forest_wolf, 5, { x: 0, y: 0, z: 0 }) as AnyEntity;
-    const target = createMob(2, MOBS.forest_wolf, 5, { x: MELEE_RANGE + 10, y: 0, z: 0 }) as AnyEntity;
+    const target = createMob(2, MOBS.forest_wolf, 5, {
+      x: MELEE_RANGE + 10,
+      y: 0,
+      z: 0,
+    }) as AnyEntity;
     mob.fleeTimer = 3;
     recoverFromFlee(mob, target, 45, mob.spawnPos);
     expect(mob.aiState).toBe('chase');

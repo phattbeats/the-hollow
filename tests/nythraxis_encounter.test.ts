@@ -47,7 +47,9 @@ function setup() {
   ) as AnyEntity;
   teleport(sim, tank, boss.pos.x, boss.pos.z - 6, boss.pos.y);
   const dps = dpsPids.map((pid) => sim.entities.get(pid) as AnyEntity);
-  dps.forEach((e, i) => teleport(sim, e, boss.spawnPos.x + (i - 1.5), boss.spawnPos.z - 20, boss.pos.y));
+  dps.forEach((e, i) => {
+    teleport(sim, e, boss.spawnPos.x + (i - 1.5), boss.spawnPos.z - 20, boss.pos.y);
+  });
   // engage so the encounter keeps the boss locked on the tank.
   boss.inCombat = true;
   boss.aiState = 'attack';
@@ -78,13 +80,16 @@ describe('Nythraxis encounter module (N1)', () => {
     boss.hp = Math.floor(boss.maxHp * 0.69);
     nythraxis.updateNythraxisEncounter(ctx, boss);
     expect(boss.nythraxis?.phase).toBe('transition');
-    expect(tank.auras.some((a) => a.id ==='nythraxis_transition_stun')).toBe(true);
+    expect(tank.auras.some((a) => a.id === 'nythraxis_transition_stun')).toBe(true);
     const aldric = [...ctx.entities.values()].find(
       (e) => e.templateId === 'brother_aldric_raid' && !e.dead,
     );
     expect(aldric?.kind).toBe('npc');
     const wards = [...ctx.entities.values()].filter(
-      (e) => e.kind === 'object' && e.objectItemId === 'bastion_ward_stone' && dist2d(e.pos, boss.spawnPos) < 100,
+      (e) =>
+        e.kind === 'object' &&
+        e.objectItemId === 'bastion_ward_stone' &&
+        dist2d(e.pos, boss.spawnPos) < 100,
     );
     expect(wards.length).toBe(3);
     expect(wards.every((w) => w.auras.some((a) => a.id === 'nythraxis_wardstone_lit'))).toBe(true);
@@ -103,7 +108,7 @@ describe('Nythraxis encounter module (N1)', () => {
     // The marked players carry the Soul Rend vulnerability aura.
     for (const id of markedIds) {
       const p = ctx.entities.get(id) as AnyEntity;
-      expect(p.auras.some((a) => a.id ==='nythraxis_soul_rend')).toBe(true);
+      expect(p.auras.some((a) => a.id === 'nythraxis_soul_rend')).toBe(true);
     }
   });
 
@@ -116,7 +121,10 @@ describe('Nythraxis encounter module (N1)', () => {
     expect(st.wardChannels.length).toBe(3);
     const wards = [...ctx.entities.values()]
       .filter(
-        (e) => e.kind === 'object' && e.objectItemId === 'bastion_ward_stone' && dist2d(e.pos, boss.spawnPos) < 100,
+        (e) =>
+          e.kind === 'object' &&
+          e.objectItemId === 'bastion_ward_stone' &&
+          dist2d(e.pos, boss.spawnPos) < 100,
       )
       .sort((a, b) => a.id - b.id) as AnyEntity[];
     // Three distinct players each claim a distinct wardstone via the object-click entry.
@@ -132,7 +140,7 @@ describe('Nythraxis encounter module (N1)', () => {
     nythraxis.updateNythraxisDeathlessRage(ctx, boss, st);
     expect(st.deathlessStunRemaining).toBeGreaterThan(0);
     expect(st.deathlessCastRemaining).toBe(0);
-    expect(boss.auras.some((a) => a.id ==='nythraxis_deathless_stun')).toBe(true);
+    expect(boss.auras.some((a) => a.id === 'nythraxis_deathless_stun')).toBe(true);
   });
 
   it('a wardstone with no boss in range falls through (overworld Sunken Bastion stone)', () => {

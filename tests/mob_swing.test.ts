@@ -38,7 +38,7 @@ const cascade = (sim: Sim, mob: any, target: any, base = BASE) =>
 
 // Force a template affix's chance to 1 for the duration of fn, then restore (MOBS is a
 // process-wide singleton shared across the whole test run).
-const withChance = <T,>(affix: { chance: number } | undefined, fn: () => T): T => {
+const withChance = <T>(affix: { chance: number } | undefined, fn: () => T): T => {
   if (!affix) throw new Error('affix missing');
   const old = affix.chance;
   affix.chance = 1;
@@ -65,7 +65,9 @@ describe('mob_swing module: runMobSwingAffixes', () => {
     const mob = spawn(sim, 'webwood_spider', 18);
     mob.hostile = true;
     withChance(MOBS.webwood_spider.venom, () => cascade(sim, mob, p));
-    expect(p.auras.some((a: any) => a.id === 'venom_webwood_spider' && a.kind === 'dot')).toBe(true);
+    expect(p.auras.some((a: any) => a.id === 'venom_webwood_spider' && a.kind === 'dot')).toBe(
+      true,
+    );
   });
 
   it('a friendly (hostile=false) swing applies NO debuff, even with the proc forced to 1', () => {

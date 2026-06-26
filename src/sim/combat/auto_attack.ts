@@ -61,9 +61,7 @@ export function startAutoAttack(ctx: SimContext, pid?: number): void {
   const d = dist2d(p.pos, t.pos);
   const ranged = CLASSES[r.meta.cls].ranged;
   const inAutoAttackRange = ranged
-    ? d <= ranged.maxRange &&
-      d >= (ranged.wand ? 0 : ranged.minRange) &&
-      ctx.hasLineOfSight(p, t)
+    ? d <= ranged.maxRange && d >= (ranged.wand ? 0 : ranged.minRange) && ctx.hasLineOfSight(p, t)
     : d <= MELEE_RANGE;
   if (
     inAutoAttackRange &&
@@ -153,8 +151,7 @@ export function rangedSwing(
     school,
     fx: 'projectile',
   });
-  const missChance =
-    meleeMissChance(attacker.level, target.level) + blindMissBonus(attacker);
+  const missChance = meleeMissChance(attacker.level, target.level) + blindMissBonus(attacker);
   if (ctx.rng.chance(missChance)) {
     ctx.emit({
       type: 'damage',
@@ -196,8 +193,7 @@ export function meleeSwing(
     threatMult?: number;
   },
 ): boolean {
-  const missChance =
-    meleeMissChance(attacker.level, target.level) + blindMissBonus(attacker);
+  const missChance = meleeMissChance(attacker.level, target.level) + blindMissBonus(attacker);
   const dodgeChance = opts.cannotBeDodged
     ? 0
     : target.kind === 'player'

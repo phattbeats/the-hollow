@@ -30,21 +30,21 @@
 import { ITEMS, MOBS } from '../data';
 import type { PlayerMeta, ResolvedAbility } from '../sim';
 import type { SimContext } from '../sim_context';
+import type { AbilityDef, Entity } from '../types';
 import {
   angleTo,
   CAST_COMPLETE_EPS,
   CAST_PUSHBACK_SEC,
   CHANNEL_PUSHBACK_FRACTION,
   DEMON_HEAL_CAST_ID,
-  dist2d,
   DT,
+  dist2d,
   FISHING_CAST_ID,
   MELEE_ARC,
   MELEE_RANGE,
   normAngle,
   spellHitChance,
 } from '../types';
-import type { AbilityDef, Entity } from '../types';
 import { isLockedOut, isSilenced, isStunned, tonguesMult } from './cc';
 
 // Shaman shocks (earth/flame/frost) share one cooldown; lightning_shock joins them
@@ -226,10 +226,7 @@ export function castAbility(ctx: SimContext, abilityId: string, pid?: number): v
   if (ability.requiresForm) {
     const need = ability.requiresForm === 'bear' ? 'form_bear' : 'form_cat';
     if (!form || form.kind !== need) {
-      ctx.error(
-        p.id,
-        `You must be in ${ability.requiresForm === 'bear' ? 'Bear' : 'Wolf'} Form.`,
-      );
+      ctx.error(p.id, `You must be in ${ability.requiresForm === 'bear' ? 'Bear' : 'Wolf'} Form.`);
       return;
     }
   } else if (form && !isFormToggle(ability)) {
@@ -398,9 +395,7 @@ function formShiftKind(p: Entity, ability: AbilityDef): 'off' | 'cross' | null {
   if (!isFormToggle(ability)) return null;
   if (p.auras.some((a) => a.id === ability.id)) return 'off';
   if (
-    p.auras.some(
-      (a) => a.kind === 'form_bear' || a.kind === 'form_cat' || a.kind === 'form_travel',
-    )
+    p.auras.some((a) => a.kind === 'form_bear' || a.kind === 'form_cat' || a.kind === 'form_travel')
   )
     return 'cross';
   return null;

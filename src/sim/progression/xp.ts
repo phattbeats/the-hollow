@@ -5,9 +5,9 @@
 // (move + import, not a rewrite). The XP curve formulas (xpForLevel / canPrestige)
 // stay pure in ../types and are imported here.
 import { PROPS } from '../data';
-import { canPrestige, DT, MAX_LEVEL, xpForLevel, type Entity } from '../types';
 import type { PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
+import { canPrestige, DT, type Entity, MAX_LEVEL, xpForLevel } from '../types';
 
 // Rested-XP tuning. Consumed only by updateRested / isResting below.
 const RESTED_SECONDS_PER_GAME_HOUR = 60; // 1 in-game hour = 60 sim seconds
