@@ -339,14 +339,17 @@ describe('AurasPainter: keyed pool over the elided writers', () => {
 describe('AurasPainter: P14a static-preset visible-count cap (Slice C)', () => {
   let container: FakeEl;
   let tooltips: ReturnType<typeof recordingTooltips>;
+  let calls: Call[];
 
   beforeEach(() => {
     container = fakeEl('div');
     tooltips = recordingTooltips();
+    calls = [];
   });
 
   function tierPainter(tier: UiEffectsTier): AurasPainter {
     const facet = recordingFacet();
+    calls = facet.calls;
     const deps: AurasPainterDeps = {
       resolveIconUrl: (key) => `url(${key})`,
       renderTooltip: (name, remaining) => `${name}|${Math.ceil(remaining)}`,
@@ -361,46 +364,89 @@ describe('AurasPainter: P14a static-preset visible-count cap (Slice C)', () => {
     );
   }
   const nodes = () => container.childNodes;
-  const manyAuras = (count: number) =>
+  const manyBuffs = (count: number) =>
     state(Array.from({ length: count }, (_, i) => slot({ key: `aura${i}` })));
+  // Did the painter toggle the `debuff` class ON for any node this paint (i.e. a debuff
+  // actually rendered)? Identity of the node does not matter, only that the debuff write
+  // fired, which it only does for a rendered slot.
+  const aDebuffRendered = () =>
+    calls.some((c) => c.m === 'toggleClass' && c.args[0] === 'debuff' && c.args[1] === true);
 
   it('ultra renders every active aura (uncapped, byte-equivalent)', () => {
     const over = AURA_VISIBLE_CAP_LOW + 5;
-    tierPainter('ultra').paint(manyAuras(over));
+    tierPainter('ultra').paint(manyBuffs(over));
     expect(nodes()).toHaveLength(over);
   });
 
-  it('low caps the rendered aura count at AURA_VISIBLE_CAP_LOW, dropping the overflow', () => {
+  it('low caps the rendered BUFF count at AURA_VISIBLE_CAP_LOW, dropping buff overflow', () => {
+    // A buff-only bar (the common case): low keeps the first cap buffs, drops the rest.
     const over = AURA_VISIBLE_CAP_LOW + 5;
-    const painter = tierPainter('low');
-    painter.paint(manyAuras(over));
+    tierPainter('low').paint(manyBuffs(over));
     expect(nodes()).toHaveLength(AURA_VISIBLE_CAP_LOW);
-    // The first cap auras (display order) are the ones kept.
     expect(nodes().length).toBeLessThan(over);
   });
 
   it('low under the cap renders every aura (the cap only bites past the limit)', () => {
-    const painter = tierPainter('low');
-    painter.paint(manyAuras(AURA_VISIBLE_CAP_LOW - 2));
+    tierPainter('low').paint(manyBuffs(AURA_VISIBLE_CAP_LOW - 2));
     expect(nodes()).toHaveLength(AURA_VISIBLE_CAP_LOW - 2);
   });
 
-  it('decision 15: the low cap renders an identical count for a Sim- and ClientWorld-shaped state', () => {
-    // The painter consumes AurasState (the parity-identical view output). Build the same
-    // logical aura set two ways: a Sim-shaped slot carrying view-only extras and a lean
-    // ClientWorld-mirror slot. The cap applies to the count, so both render the cap.
-    const over = AURA_VISIBLE_CAP_LOW + 4;
-    const simState = state(
-      Array.from({ length: over }, (_, i) => slot({ key: `s${i}`, stacksText: '2', remaining: 9 })),
+  it('FAIRNESS: low NEVER culls a debuff -- a debuff past the buff cap still renders', () => {
+    // The player buff bar is mode 'all' (buffs + debuffs interleaved). A flat first-N cap
+    // would hide a debuff applied after the front buffs; the debuff-priority cap renders it
+    // anyway (it is the actionable half; there is no self-dispel). Build cap+2 leading buffs
+    // then one debuff at the end (the worst case, well past the cap): the debuff renders and
+    // the buff overflow is what gets shed instead.
+    const slots = Array.from({ length: AURA_VISIBLE_CAP_LOW + 2 }, (_, i) =>
+      slot({ key: `buff${i}` }),
     );
-    const clientState = state(Array.from({ length: over }, (_, i) => slot({ key: `s${i}` })));
+    slots.push(slot({ key: 'boss_curse', isDebuff: true, name: 'Boss Curse', remaining: 9 }));
+    tierPainter('low').paint(state(slots));
+    // cap buffs + the never-culled debuff = cap + 1 nodes; the 2 trailing buffs are shed.
+    expect(nodes()).toHaveLength(AURA_VISIBLE_CAP_LOW + 1);
+    expect(aDebuffRendered()).toBe(true);
+  });
+
+  it('low renders ALL debuffs even when debuffs alone exceed the cap (a debuff is never the shed)', () => {
+    // A pathological all-debuff bar (cap+3 debuffs): none may be hidden, so the count
+    // exceeds the cap. Debuffs are the actionable half; the cap only ever sheds buffs.
+    const debuffs = Array.from({ length: AURA_VISIBLE_CAP_LOW + 3 }, (_, i) =>
+      slot({ key: `dot${i}`, isDebuff: true }),
+    );
+    tierPainter('low').paint(state(debuffs));
+    expect(nodes()).toHaveLength(AURA_VISIBLE_CAP_LOW + 3);
+  });
+
+  it('the tiered painter is deterministic: identical painted output by value for the same state', () => {
+    // The painter consumes AurasState (the already-normalized, parity-identical view
+    // output), so cross-world SHAPE parity (Sim {stacks:1} vs ClientWorld {stacks:undefined},
+    // the value-zeroed buff_* case) is a VIEW concern, covered in auras_view.test.ts. Here we
+    // pin that the painter itself, at a fixed low tier, is a pure function of its state: feed
+    // the SAME logical aura set (a debuff past the cap among buffs) through two independent
+    // painters and assert identical painted OUTPUT by value (not just count) -- the icon URLs,
+    // debuff toggles, and duration/stacks text -- and that the debuff-priority cap selection
+    // (cap buffs + the kept debuff) is reproduced.
+    const build = () => {
+      const s = Array.from({ length: AURA_VISIBLE_CAP_LOW + 2 }, (_, i) =>
+        slot({ key: `b${i}`, iconKey: `ic${i}`, durationText: `${i}s` }),
+      );
+      s.push(slot({ key: 'curse', iconKey: 'ic_curse', isDebuff: true, durationText: '9s' }));
+      return state(s);
+    };
+    // Reduce each run's writes to a value-only signature (drop the per-run node identity).
+    const sig = (cs: Call[]) => cs.map((c) => `${c.m}:${JSON.stringify(c.args)}`);
+
     const simPainter = tierPainter('low');
-    simPainter.paint(simState);
+    simPainter.paint(build());
+    const simSig = sig(calls);
     const simCount = nodes().length;
-    container = fakeEl('div'); // fresh container for the client run
+
+    container = fakeEl('div'); // fresh container + facet for the client-mirror run
     const clientPainter = tierPainter('low');
-    clientPainter.paint(clientState);
+    clientPainter.paint(build());
+
     expect(nodes().length).toBe(simCount);
-    expect(nodes().length).toBe(AURA_VISIBLE_CAP_LOW);
+    expect(nodes().length).toBe(AURA_VISIBLE_CAP_LOW + 1); // cap buffs + the kept debuff
+    expect(sig(calls)).toEqual(simSig); // identical painted output, value for value
   });
 });

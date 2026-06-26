@@ -117,15 +117,33 @@ export class AurasPainter {
   paint(state: AurasState): void {
     this.frame++;
     const { slots, count } = state;
-    // P14a Slice C: on low, render at most auraVisibleCap auras; any beyond the cap are
+    // P14a Slice C: on low, cap the number of rendered auras; auras beyond the cap are
     // simply not touched this frame, so the recycle sweep below detaches them. The full
-    // tiers return an infinite cap, so n === count and every active aura renders (the
-    // unchanged path). Capping the render (not the view) keeps the parity-identical core
-    // untouched, so the same cap applies under a Sim-shaped and a ClientWorld-mirror state.
-    const n = Math.min(count, auraVisibleCap(this.getFxTier()));
+    // tiers return an infinite cap, so every active aura renders (the unchanged path).
+    //
+    // FAIRNESS (senior re-audit): the cap sheds BUFF overflow only, never a DEBUFF. The
+    // player buff bar is mode 'all' (buffs + debuffs interleaved in sim-application
+    // order), and persistent raid buffs fill the front slots, so a flat first-N cap would
+    // push a mid-combat boss/mob debuff (DoT / stun / curse) off-screen on low while every
+    // other tier still shows it. With no self-dispel, that icon is the player's only read
+    // of the debuff, so hiding it makes the game worse to play on low. A debuff is the
+    // actionable half of the bar; a buff is cosmetic, so the budget is spent on buffs and a
+    // debuff always renders: slot i is shown when it is a debuff OR fewer than `cap` auras
+    // have rendered so far. When count <= cap (ALWAYS true on the full tiers, where cap is
+    // +Infinity) every aura renders in order, byte-identical to the untiered painter.
+    // Capping the render (not the view) keeps the parity-identical core untouched, so the
+    // same selection applies under a Sim-shaped and a ClientWorld-mirror state. (Scope: a
+    // debuff is anything the core flags isDebuff -- every allowlisted KIND in both worlds.
+    // The one offline-only case is a negative-value buff_* stat-sap, which the wire zeroes
+    // online so it reads as a buff there; that pre-existing wire-fidelity gap, NOT this cap,
+    // is the only way such a sap could ride the low buff budget. See auras_view.isAuraDebuff.)
+    const cap = auraVisibleCap(this.getFxTier());
     this.ordered.length = 0;
-    for (let i = 0; i < n; i++) {
+    let rendered = 0;
+    for (let i = 0; i < count; i++) {
       const s = slots[i];
+      if (!s.isDebuff && rendered >= cap) continue; // shed buff overflow; never a debuff
+      rendered++;
       // Resolve the pool key. The common case (a unique aura id this frame) takes the
       // base key directly. If the base key is already claimed THIS frame, this is a
       // second (or later) aura sharing the ability id from a different source; probe
