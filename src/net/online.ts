@@ -753,10 +753,17 @@ export class ClientWorld implements IWorld {
   // The raid-target markers ride the `markers` map below; IWorldPet keeps no mirror
   // field (pet state lives on the owned-mob entity wire). ---
   partyInfo: PartyInfo | null = null;
+  // --- IWorldTrade: active trade-window state, mirrored from the snapshot self
+  // (`s.trade`, delta-omitted). ---
   tradeInfo: TradeInfo | null = null;
+  // --- IWorldDuelArena: duel + rated-arena state, mirrored from the snapshot self
+  // (`s.duel`/`s.arena`, delta-omitted); the live 2v2 Fiesta view rides
+  // arenaInfo.match.fiesta and its dynamics flow over the events queue. ---
   duelInfo: DuelInfo | null = null;
-  socialInfo: SocialInfo | null = null;
   arenaInfo: ArenaInfo | null = null;
+  // --- IWorldSocialGraph: persistent friends/blocks/guild, set ONLY by the
+  // `social`/`socialpos` frames (there is no `s.social` snapshot field). ---
+  socialInfo: SocialInfo | null = null;
   marketInfo: MarketInfo | null = null;
   delveRun: DelveRunInfo | null = null;
   companionState: DelveCompanionInfo | null = null;
@@ -1300,6 +1307,10 @@ export class ClientWorld implements IWorld {
       // (keep the prior value when absent; `marks: null` clears on disband). ---
       if (s.party !== undefined) this.partyInfo = s.party;
       if (s.marks !== undefined) this.markers = s.marks ?? {}; // null = cleared (no party/disband)
+      // --- IWorldTrade / IWorldDuelArena: trade/duel/arena delta self-decode
+      // (W0a-covered; keep the prior mirror value when the field is omitted).
+      // IWorldSocialGraph.socialInfo has NO snapshot key - it is set only by the
+      // social/socialpos frames. ---
       if (s.trade !== undefined) this.tradeInfo = s.trade;
       if (s.duel !== undefined) this.duelInfo = s.duel;
       if (s.arena !== undefined) this.arenaInfo = s.arena;
@@ -1637,6 +1648,7 @@ export class ClientWorld implements IWorld {
   clearMarker(entityId: number): void {
     this.cmd({ cmd: 'clearMarker', id: entityId });
   }
+  // --- IWorldTrade: trade-window command sends (tradeInfo is a snapshot read). ---
   tradeRequest(targetPid: number): void {
     this.cmd({ cmd: 'trade_req', id: targetPid });
   }
@@ -1652,6 +1664,8 @@ export class ClientWorld implements IWorld {
   tradeCancel(): void {
     this.cmd({ cmd: 'trade_cancel' });
   }
+  // --- IWorldDuelArena: duel + rated-arena-queue + 2v2 Fiesta augment-pick sends
+  // (duelInfo/arenaInfo are snapshot reads; fiesta dynamics ride the events queue). ---
   duelRequest(targetPid: number): void {
     this.cmd({ cmd: 'duel_req', id: targetPid });
   }
@@ -1661,7 +1675,18 @@ export class ClientWorld implements IWorld {
   duelDecline(): void {
     this.cmd({ cmd: 'duel_decline' });
   }
-  // persistent social (resolved server-side by character name)
+  arenaQueueJoin(format?: import('../world_api').ArenaFormat): void {
+    this.cmd({ cmd: 'arena_queue', format: format ?? '1v1' });
+  }
+  arenaQueueLeave(): void {
+    this.cmd({ cmd: 'arena_leave' });
+  }
+  arenaAugmentPick(augmentId: string): void {
+    this.cmd({ cmd: 'arena_augment', augment: augmentId });
+  }
+  // --- IWorldSocialGraph: persistent social command sends (resolved server-side by
+  // character name) + the REST character typeahead. socialInfo arrives via the
+  // social/socialpos frames; searchCharacters is a GET, not a cmd(). ---
   friendAdd(name: string): void {
     this.cmd({ cmd: 'friend_add', name });
   }
@@ -1716,15 +1741,6 @@ export class ClientWorld implements IWorld {
     } catch {
       return [];
     }
-  }
-  arenaQueueJoin(format?: import('../world_api').ArenaFormat): void {
-    this.cmd({ cmd: 'arena_queue', format: format ?? '1v1' });
-  }
-  arenaQueueLeave(): void {
-    this.cmd({ cmd: 'arena_leave' });
-  }
-  arenaAugmentPick(augmentId: string): void {
-    this.cmd({ cmd: 'arena_augment', augment: augmentId });
   }
   marketSearch(query: string): void {
     this.cmd({ cmd: 'market_search', q: query });

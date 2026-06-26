@@ -155,3 +155,59 @@ describe('command facet tags (W8)', () => {
     expect('markersFor' in tags).toBe(false);
   });
 });
+
+// W9: append the social cluster's tags (trade + duel/arena/fiesta + social graph).
+// The table-consistency invariants in the W6 block above (no orphan tag, no
+// dispatch-only leak) already cover these new entries; this block pins the exact
+// facet per W9 command and that the non-command members stay untagged. socialInfo
+// rides the social/socialpos frames (no command), searchCharacters is a REST GET,
+// and social_refresh stays a dispatch-only server push. Append-only: never edit a tag.
+const W9_TAGS: Readonly<Record<string, string>> = {
+  trade_req: 'IWorldTrade',
+  trade_accept: 'IWorldTrade',
+  trade_offer: 'IWorldTrade',
+  trade_confirm: 'IWorldTrade',
+  trade_cancel: 'IWorldTrade',
+  duel_req: 'IWorldDuelArena',
+  duel_accept: 'IWorldDuelArena',
+  duel_decline: 'IWorldDuelArena',
+  arena_queue: 'IWorldDuelArena',
+  arena_leave: 'IWorldDuelArena',
+  arena_augment: 'IWorldDuelArena',
+  friend_add: 'IWorldSocialGraph',
+  friend_remove: 'IWorldSocialGraph',
+  block_add: 'IWorldSocialGraph',
+  block_remove: 'IWorldSocialGraph',
+  guild_create: 'IWorldSocialGraph',
+  guild_invite: 'IWorldSocialGraph',
+  guild_accept: 'IWorldSocialGraph',
+  guild_decline: 'IWorldSocialGraph',
+  guild_leave: 'IWorldSocialGraph',
+  guild_kick: 'IWorldSocialGraph',
+  guild_promote: 'IWorldSocialGraph',
+  guild_demote: 'IWorldSocialGraph',
+  guild_transfer: 'IWorldSocialGraph',
+  guild_disband: 'IWorldSocialGraph',
+};
+
+describe('command facet tags (W9)', () => {
+  const tags = COMMAND_FACETS as Readonly<Record<string, string>>;
+
+  it('tags every W9 trade/duel-arena/social command with its facet', () => {
+    for (const [cmd, facet] of Object.entries(W9_TAGS)) {
+      expect(tags[cmd], `facet tag for '${cmd}'`).toBe(facet);
+    }
+  });
+
+  it('keeps duel + arena (incl. the fiesta arena_augment) under the one IWorldDuelArena facet', () => {
+    expect(tags['duel_req']).toBe('IWorldDuelArena');
+    expect(tags['arena_queue']).toBe('IWorldDuelArena');
+    expect(tags['arena_augment']).toBe('IWorldDuelArena');
+  });
+
+  it('does not tag social_refresh (dispatch-only), searchCharacters (REST) or socialInfo (frame)', () => {
+    expect('social_refresh' in tags).toBe(false);
+    expect('searchCharacters' in tags).toBe(false);
+    expect('socialInfo' in tags).toBe(false);
+  });
+});

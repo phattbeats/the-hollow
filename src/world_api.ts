@@ -333,4 +333,39 @@ export const COMMAND_FACETS = {
   pmoveRaid: 'IWorldParty',
   setMarker: 'IWorldParty',
   clearMarker: 'IWorldParty',
+  // IWorldTrade: peer-to-peer trade-window commands (tradeInfo is a snapshot read,
+  // no send).
+  trade_req: 'IWorldTrade',
+  trade_accept: 'IWorldTrade',
+  trade_offer: 'IWorldTrade',
+  trade_confirm: 'IWorldTrade',
+  trade_cancel: 'IWorldTrade',
+  // IWorldDuelArena: duels + rated-arena queue + the 2v2 Fiesta augment pick. Fiesta
+  // has no top-level member (it lives in arenaInfo.match.fiesta and flows over the
+  // events queue); arena_augment is its only command. duelInfo/arenaInfo are snapshot
+  // reads (no send).
+  duel_req: 'IWorldDuelArena',
+  duel_accept: 'IWorldDuelArena',
+  duel_decline: 'IWorldDuelArena',
+  arena_queue: 'IWorldDuelArena',
+  arena_leave: 'IWorldDuelArena',
+  arena_augment: 'IWorldDuelArena',
+  // IWorldSocialGraph: friends/blocks/guild commands (online only; resolved
+  // server-side by character name, handled by the #4 SocialService). socialInfo
+  // arrives via the social/socialpos frames (no command); searchCharacters is a REST
+  // GET (no wire command); social_refresh is a dispatch-only server push (untagged).
+  friend_add: 'IWorldSocialGraph',
+  friend_remove: 'IWorldSocialGraph',
+  block_add: 'IWorldSocialGraph',
+  block_remove: 'IWorldSocialGraph',
+  guild_create: 'IWorldSocialGraph',
+  guild_invite: 'IWorldSocialGraph',
+  guild_accept: 'IWorldSocialGraph',
+  guild_decline: 'IWorldSocialGraph',
+  guild_leave: 'IWorldSocialGraph',
+  guild_kick: 'IWorldSocialGraph',
+  guild_promote: 'IWorldSocialGraph',
+  guild_demote: 'IWorldSocialGraph',
+  guild_transfer: 'IWorldSocialGraph',
+  guild_disband: 'IWorldSocialGraph',
 } as const satisfies Partial<Record<ClientCommand, WorldFacet>>;
