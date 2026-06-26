@@ -1,7 +1,8 @@
 // P13b pooled FCT painter: the no-raw-write + no-magic source guards (decisions 5a / 12),
 // and an end-to-end pool proof over a tiny fake DOM (no jsdom): a FIXED cap that the live
-// node count never exceeds, FIFO-by-sequence eviction that reuses the oldest slot, correct
-// TTL recycle, no dropped or duplicated text under rapid spawn, the getUiScale author-space
+// node count never exceeds, FIFO-by-spawn-order eviction (array position, no sequence
+// counter) that reuses the oldest slot, correct TTL recycle including interleaved with
+// over-cap eviction, no dropped or duplicated text under rapid spawn, the getUiScale author-space
 // divide + behind-cull (positioning under zoom, on both a Sim- and a ClientWorld-shaped
 // anchor), the CSS-rise animation restart on reuse, and the colour-token / crit class swap.
 
@@ -186,7 +187,7 @@ describe('FctPainter: pooled ring over the elided writers', () => {
     expect(painter.liveCount()).toBe(cap);
   });
 
-  it('FIFO-by-sequence eviction: over-cap spawns drop the OLDEST, keep the newest, no dup', () => {
+  it('FIFO-by-spawn-order eviction: over-cap spawns drop the OLDEST, keep the newest, no dup', () => {
     const cap = 3;
     const painter = makePainter({ cap });
     for (let i = 1; i <= 5; i++) painter.spawn(evt({ kind: 'damage-taken', text: `-${i}` }), 0);
@@ -214,6 +215,49 @@ describe('FctPainter: pooled ring over the elided writers', () => {
     painter.spawn(evt({ kind: 'xp', text: '+20 XP' }), FCT_TTL_MS);
     expect(painter.liveCount()).toBe(1);
     expect(liveNodes().length).toBe(before + 1);
+  });
+
+  it('defaults to the real FCT_POOL_CAP and bounds the live count at it (no cap option)', () => {
+    // The lifecycle tests use a tiny cap for readability; this pins the SHIPPING default so a
+    // regression of FCT_POOL_CAP (the perf-gate bound) to a different value fails a unit test,
+    // not only the flaky browser burst. Construct with no cap -> the exported default.
+    const facet = recordingFacet();
+    const painter = new FctPainter(
+      facet.writers,
+      mount as unknown as HTMLElement,
+      () => ({ x: 0, y: 0, behind: false }),
+      () => 1,
+      { doc: fakeDoc, random: () => 0.5 },
+    );
+    for (let i = 0; i < FCT_POOL_CAP + 5; i++)
+      painter.spawn(evt({ kind: 'heal', text: `+${i}` }), 0);
+    expect(painter.liveCount()).toBe(FCT_POOL_CAP);
+    expect(mount.childNodes.length).toBe(FCT_POOL_CAP);
+  });
+
+  it('interleaves TTL recycle and over-cap eviction with staggered bornAt: no drop, no dup, no stale', () => {
+    const cap = 4;
+    const painter = makePainter({ cap });
+    // Three floaters with DISTINCT spawn clocks (staggered bornAt), so step() recycles only
+    // the genuinely-expired one and the survivors keep their true spawn order.
+    painter.spawn(evt({ kind: 'damage-taken', text: 'A' }), 0);
+    painter.spawn(evt({ kind: 'damage-taken', text: 'B' }), 100);
+    painter.spawn(evt({ kind: 'damage-taken', text: 'C' }), 200);
+    expect(painter.liveCount()).toBe(3);
+    // Age to exactly A's ttl: A (born 0) expires, B (born 100) and C (born 200) survive.
+    painter.step(FCT_TTL_MS);
+    expect(painter.liveCount()).toBe(2);
+    expect(new Set(liveNodes().map((n) => lastText(calls, n)))).toEqual(new Set(['B', 'C']));
+    // Now flood over the cap at a fresh clock: D,E fill the 2 free slots, then F,G,H evict the
+    // oldest survivors in spawn order (B, then C, then D). The 4 newest (E,F,G,H) remain.
+    for (const text of ['D', 'E', 'F', 'G', 'H']) {
+      painter.spawn(evt({ kind: 'heal', text }), 1300);
+    }
+    expect(painter.liveCount()).toBe(cap);
+    const surviving = liveNodes().map((n) => lastText(calls, n));
+    expect(new Set(surviving)).toEqual(new Set(['E', 'F', 'G', 'H']));
+    // The recycled (A) and evicted (B, C, D) text never lingers on a reused node.
+    for (const gone of ['A', 'B', 'C', 'D']) expect(surviving).not.toContain(gone);
   });
 
   it('an empty pool makes step() a no-op (no writes, holds the perf gate by construction)', () => {
@@ -340,7 +384,9 @@ describe('FctPainter: pooled ring over the elided writers', () => {
     expect(on('toggleClass', (c) => c.args[0] === 'crit' && c.args[1] === true)).toBe(true);
     expect(on('setStyleProp', (c) => c.args[0] === 'left')).toBe(true);
     expect(on('setStyleProp', (c) => c.args[0] === 'top')).toBe(true);
-    expect(on('setDisplay', (c) => c.args[0] === '')).toBe(true);
+    // No setDisplay: a node is shown by being attached (appendChild) and hidden by remove();
+    // the spawn path never writes display, so there must be no setDisplay call at all.
+    expect(calls.some((c) => c.m === 'setDisplay')).toBe(false);
   });
 
   // DECISION 15 (ClientWorld-vs-Sim parity): the painter reads ONLY pos.{x,y,z} + scale off
@@ -388,5 +434,37 @@ describe('FctPainter: pooled ring over the elided writers', () => {
 describe('FctPainter: the exported cap', () => {
   it('exposes FCT_POOL_CAP as a positive bound', () => {
     expect(FCT_POOL_CAP).toBeGreaterThan(0);
+  });
+});
+
+// The per-kind colours moved out of TS (decision 12) into hud.css's .fct-<token> rules, so the
+// faithfulness guard for them must live where the colours now are: this asserts each token rule
+// still carries the EXACT hex the live fct() passed. A drift (a heal that is no longer #3ce63c,
+// say) fails here. It reads CSS, never TS, so it reintroduces no hex into the painter.
+describe('FCT colour tokens: the .fct-<token> hex stays byte-faithful to the old fct()', () => {
+  const css = readFileSync(new URL('../src/styles/hud.css', import.meta.url), 'utf8');
+  // token -> the exact hex the live per-event fct() passed for that spawn kind.
+  const PINNED: Record<string, string> = {
+    'fct-miss-self': '#bbb',
+    'fct-dodge-self': '#bbb',
+    'fct-miss-other': '#fff',
+    'fct-dodge-other': '#fff',
+    'fct-damage-done-auto': '#fff',
+    'fct-damage-done-ability': '#ffe97a',
+    'fct-damage-taken': '#ff5544',
+    'fct-heal': '#3ce63c',
+    'fct-xp': '#b974ff',
+    'fct-rested-xp': '#4a9eff',
+    'fct-self-note': '#ff8c66',
+  };
+
+  it('declares every descriptor colour token with its pinned hex', () => {
+    for (const [token, hex] of Object.entries(PINNED)) {
+      // Find the selector (it may be grouped with siblings), then assert the colour in its block.
+      const at = css.indexOf(`.${token}`);
+      expect(at, `.${token} selector present in hud.css`).toBeGreaterThanOrEqual(0);
+      const block = css.slice(at, css.indexOf('}', at)).toLowerCase();
+      expect(block, `.${token} -> color: ${hex}`).toContain(`color: ${hex}`);
+    }
   });
 });
