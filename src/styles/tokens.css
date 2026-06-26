@@ -116,6 +116,22 @@
     --color-map-mudhut: #7a6a4a;
     --color-map-campfire: #ff9a3c;
 
+    /* overworld minimap markers (resolved by minimap_painter.ts via getComputedStyle:
+       a 2D canvas context cannot read a CSS var directly). Exact pre-existing values
+       from the inline updateMinimap overworld branch. */
+    --color-minimap-ally-friend: #4ade80;
+    --color-minimap-ally-guild: #60a5fa;
+    --color-minimap-npc-quest: #ffd100;
+    --color-minimap-portal: #c084ff;
+    --color-minimap-object-loot: #ffe97a;
+    --color-minimap-mob-aggro: #ff8800;
+    --color-minimap-mob: #e74c3c;
+    --color-minimap-mob-loot: #ffd100;
+    --color-minimap-party-dead: #9a9a9a;
+    --color-minimap-party-pip: #ffffffcc;
+    --color-minimap-player: #fff;
+    --color-minimap-outline: #000;
+
     /* Talents window: tree arrows + tooltip accents (talents_window.ts references
        these via var() so the painter carries no raw hex). Exact pre-existing values. */
     --color-talent-arrow: #f5c843;
