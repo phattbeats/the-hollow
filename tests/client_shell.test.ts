@@ -214,6 +214,45 @@ describe('client HTML shell', () => {
     }
   });
 
+  it('labels the party-frames region as a role=group with a localized name in BOTH entries', () => {
+    // P11c makes each party member a focusable role="button" named by its visible
+    // member text, and labels the #party-frames container as a role="group" via
+    // data-i18n-aria (hydrated in main.ts). index.html and play.html ship the same HUD,
+    // so the region label must be present in BOTH or a screen reader on one entry
+    // announces a bare unlabelled div. The full opening tag locks the i18n key too.
+    for (const entry of [html, playHtml]) {
+      expect(entry).toContain(
+        'id="party-frames" role="group" data-i18n-aria="hudChrome.unitFrame.partyLabel"',
+      );
+    }
+  });
+
+  it('drives the party frames as a keyed node pool (P11c), not the inline innerHTML wipe', () => {
+    // The #party-frames container is resolved ONCE and the keyed-pool painter owns its
+    // children; the old per-rebuild innerHTML wipe + per-member createElement +
+    // re-attached click/contextmenu listeners are gone.
+    expect(hudTs).toContain("private partyFramesEl = $('#party-frames');");
+    expect(hudTs).toContain('private readonly partyFramesPainter = new PartyFramesPainter(');
+    // The cheap signature is computed BEFORE the selector so an unchanged party
+    // allocates nothing (the hoist), and the selector call follows the short-circuit.
+    const body = hudTs.slice(hudTs.indexOf('private updatePartyFrames(): void {'));
+    const sigAt = body.indexOf('partyFrameSignature(');
+    const shortCircuitAt = body.indexOf('if (sig === this.lastPartySig) return;');
+    const selectorAt = body.indexOf('selectPartyFrameMembers(');
+    expect(sigAt).toBeGreaterThanOrEqual(0);
+    expect(shortCircuitAt).toBeGreaterThan(sigAt);
+    expect(selectorAt).toBeGreaterThan(shortCircuitAt);
+    // The inline party render is gone (the --cls setProperty + the per-rebuild
+    // contextmenu re-attach the keyed pool replaced).
+    expect(hudTs).not.toContain("frame.style.setProperty('--cls', classCss(m.cls))");
+    // The pooled rows re-localize on a language switch (their DOM is never rebuilt), so
+    // refreshLocalizedDynamicUi must drive the painter's relocalize.
+    const refresh = hudTs.slice(hudTs.indexOf('private refreshLocalizedDynamicUi(): void {'));
+    expect(
+      refresh.slice(0, refresh.indexOf('\n  }')).includes('this.partyFramesPainter.relocalize();'),
+    ).toBe(true);
+  });
+
   it('drives the target frame as a unit_frame instance with a cached absorb node (P11b)', () => {
     // The target absorb overlay is resolved ONCE (no per-frame updateAbsorb document
     // query), and the family painter drives the frame, so the old hardcoded
