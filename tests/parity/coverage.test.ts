@@ -693,4 +693,31 @@ describe('coverage: each scenario fires its subsystem', () => {
         .length,
     ).toBeGreaterThanOrEqual(1);
   });
+
+  it('nythraxis_full_pull: every phase fires (transition + soul rend + deathless interrupt + lockout + death dialogue)', () => {
+    const rec = run('nythraxis_full_pull');
+    const ev = rec.allEvents as Ev[];
+    const n = rec.notes as Record<string, any>;
+    const sim = rec.sim as any;
+    const chats = ev.filter((e) => e.type === 'chat');
+    const auras = ev.filter((e) => e.type === 'aura' && e.gained);
+    // Phase 1 raise-fallen wave + the three wardstones the transition lit.
+    expect(n.addIds.length).toBe(2);
+    expect(n.wardIds.length).toBe(3);
+    // Transition: War Stomp room stun + Brother Aldric spawned and still present.
+    expect(auras.some((e) => e.name === 'War Stomp')).toBe(true);
+    expect(entities(rec).some((e) => e.templateId === 'brother_aldric_raid')).toBe(true);
+    // Soul Rend marks pick (the rng.int callout) + Deathless Rage interrupt self-stun.
+    expect(chats.some((e) => e.text === 'Your spirit belongs to me')).toBe(true);
+    expect(auras.some((e) => e.name === 'Deathless Rage Interrupted')).toBe(true);
+    // Final Stand enrage aura.
+    expect(auras.some((e) => e.name === 'Final Stand')).toBe(true);
+    // Kill: raid lockout granted to the tank + the death-dialogue first line emitted.
+    const boss = sim.entities.get(n.bossId);
+    expect(boss.dead).toBe(true);
+    expect(boss.nythraxis?.phase).toBe('dead');
+    const tankMeta = [...sim.players.values()].find((m: any) => m.name === 'NyxTank') as any;
+    expect(tankMeta.raidLockouts.has('nythraxis_boss_arena')).toBe(true);
+    expect(chats.some((e) => e.text === 'Malric...')).toBe(true);
+  });
 });

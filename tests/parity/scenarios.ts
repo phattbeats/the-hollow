@@ -19,15 +19,18 @@
 // mobSwing, spawnDelveModule), never reaching into not-yet-extracted internals
 // in a way the sim itself does not already expose.
 
-import { arenaOrigin, MOBS, DELVES, QUESTS, PROPS } from '../../src/sim/data';
+import { arenaOrigin, DUNGEONS, instanceOrigin, MOBS, DELVES, QUESTS, PROPS } from '../../src/sim/data';
 import { createMob } from '../../src/sim/entity';
 import { Sim } from '../../src/sim/sim';
 import { solveLockActions } from '../../src/sim/lockpick';
 import { addThreat } from '../../src/sim/threat';
 import {
   DT,
+  dist2d,
   FISHING_CAST_ID,
   MAX_LEVEL,
+  NYTHRAXIS_ADD_ID,
+  NYTHRAXIS_BOSS_ID,
   PRESTIGE_XP_PER_RANK,
   xpForLevel,
   type Aura,
@@ -2312,6 +2315,184 @@ function dungeonRaidLockout(): Scenario {
   };
 }
 
+// Nythraxis full raid pull (N1): the most coupled scripted content in the sim,
+// driven end to end through every phase so the encounter extraction is pinned.
+// A five-strong attuned raid enters the arena; the tank engages and four max-level
+// mages stack in the room as Soul Rend candidates + wardstone channelers. Every
+// room player is topped to full each tick (`step`) so a stray wipe never resets the
+// encounter mid-pull -- the transition stun re-applies player stats (applyAura ->
+// recalcPlayerStats), so we cannot simply inflate maxHp once. The drive exercises:
+//  - phase 1 Gravebreaker (rng.range weapon draw + cone) and a forced Raise Fallen add wave
+//  - the 70% transition: room War Stomp stun + Brother Aldric spawn/walk-in + wardstones lit
+//  - phase 2 Soul Rend (rng.int marks pick) -> mark expiry damage
+//  - Deathless Rage cast -> three players channel the wardstones (tryStartNythraxisWardChannel
+//    via the object click) -> the interrupt + boss self-stun
+//  - the 5% Final Stand enrage
+//  - the kill: grantNythraxisLockout (raidLockouts set) + the onBossDeath death dialogue
+// The two encounter rng draws (Gravebreaker rng.range, Soul Rend rng.int) ride the
+// shared stream, so the draw-order digest pins them at their global positions.
+function nythraxisFullPull(): Scenario {
+  return {
+    name: 'nythraxis_full_pull',
+    coverage: [
+      'updateNythraxisEncounter full pull (phase 1 -> transition -> phase 2 -> final stand -> death)',
+      'Gravebreaker rng.range weapon draw + front-cone Gravebreaker damage',
+      'Raise Fallen add wave (spawnNythraxisAdds) in phase one',
+      'transition: nythraxis_transition_stun room stun + Aldric spawn/walk-in + wardstones lit',
+      'Soul Rend rng.int marks pick + mark-expiry damage',
+      'Deathless Rage interrupt via tryStartNythraxisWardChannel (object-click channel) + boss self-stun',
+      'Final Stand enrage at 5% + grantNythraxisLockout (raidLockouts) + onBossDeath death dialogue',
+      'class:warrior',
+    ],
+    sampleEvery: 10,
+    build: () => new Sim({ seed: 1031, playerClass: 'warrior', noPlayer: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const tankPid = sim.addPlayer('warrior', 'NyxTank') as number;
+      sim.setPlayerLevel(MAX_LEVEL, tankPid);
+      (sim.players.get(tankPid) as any).questsDone.add('q_nythraxis_bound_guardian'); // attune
+      const dpsPids: number[] = [];
+      for (let i = 0; i < 4; i++) {
+        const pid = sim.addPlayer('mage', `NyxDps${i}`) as number;
+        sim.setPlayerLevel(MAX_LEVEL, pid);
+        sim.partyInvite(pid, tankPid);
+        sim.partyAccept(pid);
+        dpsPids.push(pid);
+      }
+      sim.convertPartyToRaid(tankPid); // raid requires five
+      sim.enterDungeon('nythraxis_boss_arena', tankPid);
+      const tank = sim.entities.get(tankPid) as AnyEntity;
+      const boss = [...sim.entities.values()].find(
+        (e: AnyEntity) => e.kind === 'mob' && e.templateId === NYTHRAXIS_BOSS_ID && !e.dead,
+      ) as AnyEntity;
+      rec.track(boss.id);
+      rec.notes.bossId = boss.id;
+
+      // Place an entity at (x,z) on the instance FLOOR (y). The parity `teleport`
+      // helper snaps y to the overworld terrainHeight, which floats players above the
+      // arena floor (y=0) so they take lethal Falling damage; pin y to the local floor.
+      const floorTeleport = (e: AnyEntity, x: number, z: number, y: number) => {
+        teleport(sim, e, x, z);
+        e.pos.y = y;
+        e.prevPos = { ...e.pos };
+        e.fallStartY = y;
+        e.vy = 0;
+        e.onGround = true;
+        sim.rebucket(e);
+      };
+
+      // Tank in melee in front of the throne; four mages stacked tightly behind him
+      // (within Soul Rend's 5yd stack range so a triple mark splits the damage three
+      // ways and nobody is one-shot).
+      floorTeleport(tank, boss.pos.x, boss.pos.z - 6, boss.pos.y);
+      const dps = dpsPids.map((pid) => sim.entities.get(pid) as AnyEntity);
+      dps.forEach((e, i) => floorTeleport(e, boss.spawnPos.x + (i - 1.5), boss.spawnPos.z - 20, boss.pos.y));
+      const room = [tank, ...dps];
+      const topUp = () => {
+        for (const e of room) {
+          e.hp = e.maxHp;
+          e.dead = false;
+        }
+      };
+      // Tick n times, restoring every room player to full after each tick so the
+      // room is never empty at the next updateNythraxisEncounter wipe check.
+      const step = (n: number) => {
+        for (let i = 0; i < n; i++) {
+          rec.tick(1);
+          topUp();
+        }
+      };
+
+      // engage: lock the boss onto the tank (mirrors the raid-test engage helper).
+      boss.inCombat = true;
+      boss.aiState = 'attack';
+      boss.aggroTargetId = tank.id;
+      boss.threat.set(tank.id, 1000);
+      step(1); // init the encounter (intro yells)
+      rec.snapshot('engage');
+
+      // ----- Phase 1: Gravebreaker (rng.range) + a forced Raise Fallen add wave -----
+      step(20 * 2); // ~2s: gravebreakerTimer (1.5) elapses -> rng.range draw + front cone
+      (boss.nythraxis as any).raiseFallenTimer = DT; // fire the add wave next tick
+      step(1);
+      const adds = [...sim.entities.values()].filter(
+        (e: AnyEntity) => e.kind === 'mob' && e.templateId === NYTHRAXIS_ADD_ID && !e.dead,
+      ) as AnyEntity[];
+      rec.track(...adds.map((a) => a.id));
+      rec.notes.addIds = adds.map((a) => a.id);
+      rec.snapshot('phase1-adds');
+
+      // ----- Transition at 70%: room War Stomp stun + Aldric + wardstones lit -----
+      boss.hp = Math.floor(boss.maxHp * 0.69);
+      step(1);
+      const aldric = [...sim.entities.values()].find(
+        (e: AnyEntity) => e.templateId === 'brother_aldric_raid' && !e.dead,
+      ) as AnyEntity | undefined;
+      if (aldric) rec.track(aldric.id);
+      const wards = ([...sim.entities.values()].filter(
+        (e: AnyEntity) =>
+          e.kind === 'object' &&
+          e.objectItemId === 'bastion_ward_stone' &&
+          dist2d(e.pos, boss.spawnPos) < 100,
+      ) as AnyEntity[]).sort((a, b) => a.id - b.id);
+      rec.track(...wards.map((w) => w.id));
+      rec.notes.wardIds = wards.map((w) => w.id);
+      rec.snapshot('transition');
+
+      // Shorten the transition timer so phase two opens without 21s of ticks, then
+      // run updateNythraxisTransition (Aldric walk-in + timer) to completion.
+      (boss.nythraxis as any).transitionTimer = 1;
+      step(20 * 8); // transition (1s) + settle (5s) + margin -> phase 2, soul-rend timer live
+      // Freeze the auto cadence so the explicit Soul Rend / Deathless Rage triggers
+      // below fire in a controlled order (no stray auto-cast mid-resolve).
+      (boss.nythraxis as any).soulRendTimer = 999;
+      (boss.nythraxis as any).deathlessTimer = 999;
+      rec.snapshot('phase2');
+
+      // ----- Soul Rend: the rng.int marks pick -----
+      (boss.nythraxis as any).soulRendTimer = DT;
+      step(1); // castNythraxisSoulRend -> rng.int pick + Soul Rend marks
+      rec.snapshot('soulrend');
+      step(20 * 9); // marks expire (8s duration) -> dealDamage split across the stack
+
+      // The phase-1 adds are spent by now (a real raid kills them before the
+      // wardstone phase); clear them so their on-hit stun cannot break a channel.
+      for (const add of adds) sim.dealDamage(tank, add, add.hp + 1, false, 'physical', null, 'hit', true);
+      step(1);
+
+      // ----- Deathless Rage + the three-wardstone interrupt -----
+      (boss.nythraxis as any).soulRendLockout = 0;
+      (boss.nythraxis as any).soulRendMarks = [];
+      (boss.nythraxis as any).deathlessTimer = DT;
+      step(1); // startNythraxisDeathlessRage -> ward channels armed (10s cast)
+      rec.snapshot('deathless-start');
+      // Three distinct players each channel a distinct wardstone via the object click.
+      wards.forEach((ward, i) => {
+        const channeler = dps[i];
+        floorTeleport(channeler, ward.pos.x, ward.pos.z, ward.pos.y);
+        sim.pickUpObject(ward.id, channeler.id);
+      });
+      step(20 * 6); // channels complete (5s) -> interrupt + nythraxis_deathless_stun
+      rec.snapshot('deathless-interrupt');
+      step(20 * 6); // the 5s self-stun expires
+
+      // ----- Final Stand at 5% -----
+      boss.hp = Math.floor(boss.maxHp * 0.04);
+      step(1); // finalStand -> enrage + Final Stand haste aura
+      rec.snapshot('finalstand');
+
+      // ----- Kill: grantNythraxisLockout + onBossDeath death dialogue -----
+      // Clear the dialogue lock so the (non-critical) death line is not suppressed by
+      // the still-active Final Stand callout.
+      (boss.nythraxis as any).dialogueBusyUntil = 0;
+      sim.dealDamage(tank, boss, boss.hp, false, 'physical', null, 'hit', true);
+      step(1); // updateMob dead-branch -> onBossDeath schedules the death dialogue
+      rec.snapshot('death');
+      step(20 * 3); // drain the delayed death-dialogue yells
+    },
+  };
+}
+
 // C3 aura/regen runner: the per-tick aura/regen/timer slice that moves to
 // src/sim/combat/auras.ts. Three phases pin the pieces other scenarios miss:
 //  A. DoT-kills-mid-tick guard: a victim mob carries a buff at index 0 and a lethal
@@ -3251,6 +3432,7 @@ export const SCENARIOS: Scenario[] = [
   delveProgression(),
   dungeonInstances(),
   dungeonRaidLockout(),
+  nythraxisFullPull(),
   c3AuraRunner(),
   c4aCastingLifecycle(),
   mobLifecycle(),
