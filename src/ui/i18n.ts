@@ -363,8 +363,26 @@ export function tPlural(base: string, count: number, values?: InterpolationValue
   return t(key, merged);
 }
 
+// Constructing an Intl.NumberFormat parses locale data and is one of the costlier JS
+// ops; the HUD calls formatNumber on per-frame paths (aura stack counts, cast-bar
+// timers, the action bar). One formatter is cached per (language tag, options) so a
+// repeat format reuses it instead of rebuilding (mirrors pluralRulesCache). The key
+// folds the options by value, not identity, so two call sites passing equal options
+// share one formatter; a BCP-47 tag never contains '{', so tag + the options JSON is an
+// unambiguous key. NumberFormat instances are immutable, so sharing is safe.
+const numberFormatCache = new Map<string, Intl.NumberFormat>();
+function numberFormatFor(tag: string, options?: Intl.NumberFormatOptions): Intl.NumberFormat {
+  const key = options ? `${tag}${JSON.stringify(options)}` : tag;
+  let fmt = numberFormatCache.get(key);
+  if (!fmt) {
+    fmt = new Intl.NumberFormat(tag, options);
+    numberFormatCache.set(key, fmt);
+  }
+  return fmt;
+}
+
 export function formatNumber(value: number, options?: Intl.NumberFormatOptions, lang: SupportedLanguage = currentLanguage): string {
-  return new Intl.NumberFormat(languageTag(lang), options).format(value);
+  return numberFormatFor(languageTag(lang), options).format(value);
 }
 
 export function formatDateTime(value: Date | number, options?: Intl.DateTimeFormatOptions, lang: SupportedLanguage = currentLanguage): string {
