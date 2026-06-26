@@ -7,10 +7,19 @@
 //     route ends in) returns focus to the opener;
 //   - and the gameplay guard: Tab is NOT trapped while focus is OUTSIDE the window, so the
 //     game's Tab-target-nearest-enemy key still works when no modal owns focus.
+// The final block wires a REAL window painter (TalentsWindow) to a REAL FocusManager through
+// the actual captureFocus/restoreFocus bridge (a faithful copy of hud.ts windowFocus), so the
+// open()->trap and close()->return-to-opener integration is driven, not just source-scanned.
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { FocusManager } from '../../src/ui/focus_manager';
-import { cleanup, host } from './_harness';
+import { type TalentAllocation, type TalentNode, talentsFor } from '../../src/sim/content/talents';
+import { FocusManager, type FocusTrapHandle } from '../../src/ui/focus_manager';
+import { TalentsWindow } from '../../src/ui/talents_window';
+import { cleanup, host, stubDeps } from './_harness';
+
+function key(k: string): KeyboardEvent {
+  return new KeyboardEvent('keydown', { key: k, bubbles: true, cancelable: true });
+}
 
 afterEach(cleanup);
 
@@ -102,5 +111,150 @@ describe('keyboard-nav: the P15a focus trap (trap + focus-first + return)', () =
     // pass the key through (defaultPrevented stays false) and the game keeps Tab-targeting.
     expect(ev.defaultPrevented).toBe(false);
     handle.release(false);
+  });
+});
+
+// A faithful copy of hud.ts windowFocus(): the {captureFocus, restoreFocus} pair every
+// painter window is wired through. captureFocus records the opener and installs the trap on
+// the window root; restoreFocus releases it (only when focus left the root) and returns to
+// the opener. Reconstructing it here drives the REAL open()->trap->close()->return path,
+// which the axe fixtures (captureFocus stubbed to null) and the synthetic cases above do not.
+function windowFocusBridge(
+  fm: FocusManager,
+  root: () => HTMLElement,
+): { captureFocus: () => HTMLElement | null; restoreFocus: (t: HTMLElement | null) => void } {
+  let handle: FocusTrapHandle | null = null;
+  return {
+    captureFocus: () => {
+      handle?.release(false);
+      const opener = fm.activeFocusable();
+      handle = fm.open({ root, returnFocusTo: opener });
+      return opener;
+    },
+    restoreFocus: (target) => {
+      const r = root();
+      if (target && r.contains(target)) {
+        fm.restore(target);
+        return;
+      }
+      handle?.release(false);
+      handle = null;
+      fm.restore(target);
+    },
+  };
+}
+
+describe('keyboard-nav: a REAL window painter through the captureFocus bridge', () => {
+  it('TalentsWindow.open() arms the trap and close() returns focus to the opener', async () => {
+    const opener = document.createElement('button');
+    opener.id = 'kbd-real-opener';
+    document.body.appendChild(opener);
+    const root = host('talents-window');
+    root.style.display = 'none';
+    const fm = new FocusManager();
+    let stage: TalentAllocation | null = null;
+    const win = new TalentsWindow(
+      stubDeps({
+        root: () => root,
+        ...windowFocusBridge(fm, () => root),
+        getStage: () => stage,
+        setStage: (s: TalentAllocation | null) => {
+          stage = s;
+        },
+        playerClass: () => 'warrior',
+        totalPoints: () => 31,
+        currentAllocation: () => ({ ranks: {}, choices: {} }) as TalentAllocation,
+        activeLoadout: () => -1,
+        loadouts: () => [],
+        currentBar: () => [],
+        buildDropdown: () => document.createElement('div'),
+      }),
+    );
+    opener.focus();
+    win.open(); // captureFocus records the opener + arms the trap
+    // The trap is live: Tab from a control inside the window is intercepted and cycles within.
+    const inside = root.querySelector<HTMLElement>('button[data-close]');
+    expect(inside, 'the window rendered its close button').toBeTruthy();
+    inside?.focus();
+    const ev = pressTab();
+    expect(ev.defaultPrevented).toBe(true);
+    expect(root.contains(document.activeElement)).toBe(true);
+    // close() -> restoreFocus(opener): the real end of the Esc -> closeAll route. The manager
+    // defers the restore a tick.
+    win.close();
+    await vi.waitFor(() => expect(document.activeElement).toBe(opener));
+  });
+});
+
+// The talents choice-node flyout (openChoicePopup) is a role=menu of menuitemradio options
+// that lives on document.body (OUTSIDE the dialog's focus trap), so it owns its own keyboard
+// model: roving tabindex + Arrow/Home/End move focus (no select-on-move), Enter/Space pick,
+// and any focus leaving it (Tab-out, click-away, Escape) dismisses it and returns focus to
+// the anchor so a keyboard user cannot escape the dialog through the flyout. P15b shipped this
+// behavior with no test; this drives it on a REAL warrior choice node.
+describe('keyboard-nav: the talents choice-node flyout (roving menu + focus-return)', () => {
+  function openPopup(): { anchor: HTMLElement; pop: HTMLElement } {
+    const root = host('talents-window');
+    root.style.display = 'block';
+    // A stand-in anchor inside the window root (openChoicePopup positions against it and
+    // returns focus to it on dismiss); a real rendered node would do, but this keeps the
+    // fixture to the one method under test.
+    const anchor = document.createElement('div');
+    anchor.className = 'tal-node';
+    anchor.tabIndex = 0;
+    root.appendChild(anchor);
+    const win = new TalentsWindow(
+      stubDeps({ root: () => root, playerClass: () => 'warrior', totalPoints: () => 31 }),
+    );
+    const node = talentsFor('warrior')?.nodes.find((n) => n.kind === 'choice');
+    if (!node) throw new Error('fixture: warrior has no choice node');
+    (
+      win as unknown as {
+        openChoicePopup(a: HTMLElement, n: TalentNode, s: TalentAllocation): void;
+      }
+    ).openChoicePopup(anchor, node, { ranks: {}, choices: {} } as TalentAllocation);
+    const pop = document.getElementById('tal-choice-pop');
+    if (!pop) throw new Error('the choice flyout did not open');
+    return { anchor, pop };
+  }
+
+  it('opens as a menu with roving tabindex (exactly one option focusable, and focused)', () => {
+    const { pop } = openPopup();
+    expect(pop.getAttribute('role')).toBe('menu');
+    const opts = Array.from(pop.querySelectorAll<HTMLElement>('.tal-choice-opt'));
+    expect(opts.length).toBeGreaterThan(1);
+    expect(opts.every((o) => o.getAttribute('role') === 'menuitemradio')).toBe(true);
+    // exactly one option is in the tab order (roving), and the flyout holds focus
+    expect(opts.filter((o) => o.getAttribute('tabindex') === '0')).toHaveLength(1);
+    expect(pop.contains(document.activeElement)).toBe(true);
+  });
+
+  it('Arrow keys move the roving focus among options without selecting or dismissing', () => {
+    const { pop } = openPopup();
+    const opts = Array.from(pop.querySelectorAll<HTMLElement>('.tal-choice-opt'));
+    const start = opts.findIndex((o) => o === document.activeElement);
+    opts[start].dispatchEvent(key('ArrowDown'));
+    const next = (start + 1) % opts.length;
+    expect(document.activeElement).toBe(opts[next]);
+    expect(opts[next].getAttribute('tabindex')).toBe('0');
+    expect(opts[start].getAttribute('tabindex')).toBe('-1');
+    // moving focus does NOT select or close the flyout (Enter/Space is what picks)
+    expect(document.getElementById('tal-choice-pop')).toBeTruthy();
+  });
+
+  it('Escape dismisses the flyout and returns focus to the anchor', () => {
+    const { anchor, pop } = openPopup();
+    pop.querySelector<HTMLElement>('.tal-choice-opt[tabindex="0"]')?.dispatchEvent(key('Escape'));
+    expect(document.getElementById('tal-choice-pop')).toBeNull();
+    expect(document.activeElement).toBe(anchor);
+  });
+
+  it('focus leaving the flyout (Tab-out) dismisses it and returns focus to the anchor', () => {
+    const { anchor } = openPopup();
+    const outside = document.createElement('button');
+    document.body.appendChild(outside);
+    outside.focus(); // focus leaves the popup -> focusout -> dismiss + return-to-anchor
+    expect(document.getElementById('tal-choice-pop')).toBeNull();
+    expect(document.activeElement).toBe(anchor);
   });
 });

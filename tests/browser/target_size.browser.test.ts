@@ -99,4 +99,20 @@ describe('mobile target-size: in-game touch controls are >=40x40 in landscape', 
     document.body.appendChild(controls);
     expectAtLeastFloor(joystick, '.mobile-joystick');
   });
+
+  it('the map +/- zoom buttons (raised to the floor this phase)', () => {
+    // P15b raised these from the 32x32 desktop size to the 40x40 mobile touch floor via
+    // body.mobile-touch .map-zoom-btn { min-width/height: 40px } (no ancestor needed, so
+    // mount on body directly, NOT inside #map-window which is display:none until opened).
+    // On a real phone the box itself (display:flex, 32px) comes from the @media (pointer:
+    // coarse) base rule in components.css, which Playwright's fine-pointer context does not
+    // match, so stand in that base box here; the under-test mobile floor then decides the
+    // size (drop it below 40 and this fails at the new smaller value).
+    const zoom = el('button', { class: 'map-zoom-btn' });
+    zoom.style.display = 'flex';
+    zoom.style.width = '32px';
+    zoom.style.height = '32px';
+    document.body.appendChild(zoom);
+    expectAtLeastFloor(zoom, '.map-zoom-btn');
+  });
 });

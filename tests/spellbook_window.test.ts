@@ -87,4 +87,13 @@ describe('spellbook_window: hud.update() refresh call site', () => {
     expect(code).toContain("btn.setAttribute('aria-pressed'");
     expect(code).toContain('btn.disabled = !onBar && !hasFree');
   });
+
+  it('elides the per-frame toggle writes to on-bar flips only (this runs every frame)', () => {
+    // refreshHotbarControls fires on EVERY animation frame while the window is open, so
+    // the +/- text, the remove class, the aria-pressed, and the i18n-backed aria-label
+    // are gated on an actual on-bar membership flip (read from aria-pressed, which
+    // appendRow seeds), not rewritten unconditionally. Only `disabled` stays per-frame
+    // (it depends on hasFree). A revert to unconditional writes drops this guard.
+    expect(code).toContain("(btn.getAttribute('aria-pressed') === 'true') !== onBar");
+  });
 });
