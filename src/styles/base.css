@@ -584,15 +584,18 @@
   /* ---------- skip links ---------- */
   /* P15a a11y: the first focusable elements on both game entries, parked off-screen
      until they take keyboard focus, then slid into view (mirrors the src/guide
-     .guide-skip precedent). Only the position transitions; the :focus-visible ring is
-     steady (no transition / animation / filter on the outline) per the focus-ring
-     rule. Colours / spacing / radius reference tokens; the off-screen offset and the
-     anti-zoom 16px font floor are intentional literals (no token exists for either). */
+     .guide-skip precedent). Only the position transitions, and that transition is
+     dropped under prefers-reduced-motion (below); the :focus-visible ring is steady (no
+     transition / animation / filter on the outline) per the focus-ring rule. Colours /
+     spacing / radius reference tokens; the off-screen offset, the anti-zoom 16px font
+     floor, and the top-tier z-index are intentional literals (no token exists for any of
+     them; the z-index matches the existing top overlay precedent at base.css:75). */
   .hud-skip {
     position: fixed;
     inset-block-start: -120px;
     inset-inline-start: var(--spacing-sm);
-    /* matches the topmost overlay tier so a focused skip link is never occluded */
+    /* rides the top overlay tier (shared with the gamepad cursor) so a focused skip link
+       is not occluded by HUD chrome; the dev-only perf overlay may sit above it. */
     z-index: 100000;
     padding: var(--spacing-sm) var(--spacing-md);
     background: var(--panel-base);
@@ -608,6 +611,13 @@
     inset-block-start: var(--spacing-sm);
     outline: 2px solid var(--color-border-focus);
     outline-offset: 2px;
+  }
+  /* Reveal instantly under reduced-motion: drop the slide (the steady focus ring still
+     marks the link), mirroring the prefers-reduced-motion handling elsewhere in the HUD. */
+  @media (prefers-reduced-motion: reduce) {
+    .hud-skip {
+      transition: none;
+    }
   }
   /* The skip links target the in-game HUD, so hide them while the pre-game start
      screen is up (they would otherwise sit ahead of the login / char-select flow). */
