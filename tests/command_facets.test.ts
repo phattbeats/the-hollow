@@ -98,3 +98,60 @@ describe('command facet tags (W7)', () => {
     expect('leaderboard' in tags).toBe(false);
   });
 });
+
+// W8: append the pet + party cluster's tags (hunter pets, party/raid, raid-target
+// markers). The table-consistency invariants in the W6 block above (no orphan tag, no
+// dispatch-only leak) already cover these new entries; this block pins the exact facet
+// per W8 command and that the no-wire reads (partyInfo/markerFor) stay untagged. The
+// raid markers belong to IWorldParty, not IWorldTargeting (the W6 exclusion).
+// Append-only: never edit a tag.
+const W8_TAGS: Readonly<Record<string, string>> = {
+  pet_abandon: 'IWorldPet',
+  pet_rename: 'IWorldPet',
+  pet_revive: 'IWorldPet',
+  pet_attack: 'IWorldPet',
+  pet_taunt: 'IWorldPet',
+  pet_auto_taunt: 'IWorldPet',
+  pet_feed: 'IWorldPet',
+  pet_heal: 'IWorldPet',
+  pet_mode: 'IWorldPet',
+  pinvite: 'IWorldParty',
+  paccept: 'IWorldParty',
+  pdecline: 'IWorldParty',
+  pleave: 'IWorldParty',
+  pkick: 'IWorldParty',
+  praid: 'IWorldParty',
+  punraid: 'IWorldParty',
+  pmoveRaid: 'IWorldParty',
+  setMarker: 'IWorldParty',
+  clearMarker: 'IWorldParty',
+};
+
+describe('command facet tags (W8)', () => {
+  const tags = COMMAND_FACETS as Readonly<Record<string, string>>;
+
+  it('tags every W8 pet/party/marker command with its facet', () => {
+    for (const [cmd, facet] of Object.entries(W8_TAGS)) {
+      expect(tags[cmd], `facet tag for '${cmd}'`).toBe(facet);
+    }
+  });
+
+  it('preserves the snake_case pet wire strings (never normalized to camelCase)', () => {
+    expect('pet_abandon' in tags).toBe(true);
+    expect('pet_auto_taunt' in tags).toBe(true);
+    expect('pet_mode' in tags).toBe(true);
+    expect('petAbandon' in tags).toBe(false);
+    expect('petAutoTaunt' in tags).toBe(false);
+  });
+
+  it('tags the raid markers to IWorldParty, not IWorldTargeting (the W6 exclusion)', () => {
+    expect(tags['setMarker']).toBe('IWorldParty');
+    expect(tags['clearMarker']).toBe('IWorldParty');
+  });
+
+  it('does not tag partyInfo/markerFor (snapshot reads, no wire send)', () => {
+    expect('partyInfo' in tags).toBe(false);
+    expect('markerFor' in tags).toBe(false);
+    expect('markersFor' in tags).toBe(false);
+  });
+});

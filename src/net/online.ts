@@ -749,6 +749,9 @@ export class ClientWorld implements IWorld {
   activeLoadout = -1;
   questLog = new Map<string, QuestProgress>();
   questsDone = new Set<string>();
+  // --- IWorldParty: party/raid roster, mirrored from the snapshot self (`party`).
+  // The raid-target markers ride the `markers` map below; IWorldPet keeps no mirror
+  // field (pet state lives on the owned-mob entity wire). ---
   partyInfo: PartyInfo | null = null;
   tradeInfo: TradeInfo | null = null;
   duelInfo: DuelInfo | null = null;
@@ -766,6 +769,8 @@ export class ClientWorld implements IWorld {
   // delveShopOffers can resolve the shop lock badge client-side.
   delveClears: Record<string, number> = {};
   delveDaily: DelveDailyInfo = { date: '', firstClearXp: [], markClears: 0 };
+  // --- IWorldParty: raid-target marker mirror, from the self-wire `marks` (markerFor
+  // reads it, no send). ---
   markers: Record<number, number> = {}; // entityId -> markerId, mirrored from the self-wire
   private lootRollPrompts: LootRollPrompt[] = []; // open need-greed rolls, mirrored from the self-wire
   // bumped whenever a fresh social snapshot lands, so an open panel re-renders
@@ -1291,6 +1296,8 @@ export class ClientWorld implements IWorld {
         e.level,
         computeTalentModifiers(this.cfg.playerClass, talents),
       );
+      // --- IWorldParty: party roster + raid markers, delta-omitted self-decode
+      // (keep the prior value when absent; `marks: null` clears on disband). ---
       if (s.party !== undefined) this.partyInfo = s.party;
       if (s.marks !== undefined) this.markers = s.marks ?? {}; // null = cleared (no party/disband)
       if (s.trade !== undefined) this.tradeInfo = s.trade;
@@ -1556,6 +1563,9 @@ export class ClientWorld implements IWorld {
     }
     this.cmd({ cmd: 'emote', emote: emoteId });
   }
+  // --- IWorldPet: hunter-pet commands (snake_case wire; pet state mirrors on the
+  // owned-mob entity wire, not the self frame). setPetAutoTaunt nudges the owned mob
+  // locally before the send (sanctioned trivial-UI optimism), re-confirmed next frame. ---
   abandonPet(): void {
     this.cmd({ cmd: 'pet_abandon' });
   }
@@ -1589,6 +1599,9 @@ export class ClientWorld implements IWorld {
   setPetMode(mode: 'passive' | 'defensive' | 'aggressive'): void {
     this.cmd({ cmd: 'pet_mode', mode });
   }
+  // --- IWorldParty: party/raid commands + raid-target markers (terse wire strings;
+  // markers belong to IWorldParty, not IWorldTargeting; markerFor is a mirrored-state
+  // read, no send). ---
   // social systems
   partyInvite(targetPid: number): void {
     this.cmd({ cmd: 'pinvite', id: targetPid });

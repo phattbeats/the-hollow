@@ -309,4 +309,28 @@ export const COMMAND_FACETS = {
   change_skin: 'IWorldCosmetics',
   claim_event_skin: 'IWorldCosmetics',
   unequip_mech_chroma: 'IWorldCosmetics',
+  // IWorldPet: hunter-pet commands (snake_case wire strings, by design; pet state
+  // mirrors on the owned-mob entity wire, not a self-snapshot field).
+  pet_abandon: 'IWorldPet',
+  pet_rename: 'IWorldPet',
+  pet_revive: 'IWorldPet',
+  pet_attack: 'IWorldPet',
+  pet_taunt: 'IWorldPet',
+  pet_auto_taunt: 'IWorldPet',
+  pet_feed: 'IWorldPet',
+  pet_heal: 'IWorldPet',
+  pet_mode: 'IWorldPet',
+  // IWorldParty: party/raid commands + raid-target markers (terse wire strings; the
+  // markers belong to IWorldParty, not IWorldTargeting; partyInfo/markerFor are
+  // snapshot reads with no send).
+  pinvite: 'IWorldParty',
+  paccept: 'IWorldParty',
+  pdecline: 'IWorldParty',
+  pleave: 'IWorldParty',
+  pkick: 'IWorldParty',
+  praid: 'IWorldParty',
+  punraid: 'IWorldParty',
+  pmoveRaid: 'IWorldParty',
+  setMarker: 'IWorldParty',
+  clearMarker: 'IWorldParty',
 } as const satisfies Partial<Record<ClientCommand, WorldFacet>>;
