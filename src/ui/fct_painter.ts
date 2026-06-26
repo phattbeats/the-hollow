@@ -63,7 +63,15 @@
 // raw per-damage streaming) over this surface and aria-hide the raw .fct nodes so the
 // summary does not double-announce.
 
-import { describeFct, type FctColorToken, type FctDescriptor, type FctEvent } from './fct_core';
+import type { UiEffectsTier } from '../game/ui_effects_profile';
+import { fctDropNonCrit, fctMaxConcurrent, fctTtlScale } from '../game/ui_tier_knobs';
+import {
+  describeFct,
+  type FctColorToken,
+  type FctDescriptor,
+  type FctEvent,
+  isDamageFctKind,
+} from './fct_core';
 import type { PainterHostWriters } from './painter_host';
 
 /**
@@ -125,15 +133,37 @@ export class FctPainter {
   // order, so live[0] is always the oldest -> the eviction victim.
   private readonly live: FctSlot[] = [];
   private readonly random: () => number;
+  // The pre-allocated pool size. On the full tiers this is also the live cap, so eviction
+  // fires only at pool-full (the pre-tiering behavior); on low fctMaxConcurrent caps the
+  // live count tighter (P14a).
+  private readonly cap: number;
+  // The STATIC ui effects tier accessor (reads data-fx-level, written only by the
+  // preset applier, NEVER the FPS governor: the two-controller hazard). Read per spawn
+  // (event-driven, not a per-frame cost) to tier the cap / TTL / drop-non-crit knobs.
+  private readonly getFxTier: () => UiEffectsTier;
 
   constructor(
     private readonly writers: PainterHostWriters,
     private readonly mount: HTMLElement,
     private readonly project: FctProject,
     private readonly getScale: () => number,
-    opts: { cap?: number; doc?: Document; random?: () => number } = {},
+    opts: {
+      cap?: number;
+      doc?: Document;
+      random?: () => number;
+      getFxTier?: () => UiEffectsTier;
+    } = {},
   ) {
-    const { cap = FCT_POOL_CAP, doc = document, random = Math.random } = opts;
+    const {
+      cap = FCT_POOL_CAP,
+      doc = document,
+      random = Math.random,
+      // Default to the full tier so a painter built without the accessor (e.g. a Node
+      // test) is untiered (byte-faithful to pre-P14a).
+      getFxTier = () => 'ultra' as UiEffectsTier,
+    } = opts;
+    this.cap = cap;
+    this.getFxTier = getFxTier;
     // Math.random for the horizontal jitter is allowed on the PAINTER (not the pure core);
     // a test injects a deterministic draw.
     this.random = random;
@@ -152,16 +182,44 @@ export class FctPainter {
    * when an attached node was evicted) replays the CSS rise.
    */
   spawn(event: FctEvent, now: number): void {
+    const tier = this.getFxTier();
+    // Low sheds non-crit DAMAGE-NUMBER floaters (the high-volume combat spam, the cost
+    // driver). Scoped to the damage kinds via isDamageFctKind, so a low player still gets
+    // every crit hit PLUS the low-volume informational floaters (xp, rested-xp, self-note)
+    // and avoidance words (miss, dodge). Gate on the event crit + kind BEFORE describeFct
+    // so a dropped floater costs no descriptor / projection / jitter draw. A crit's number
+    // is never refused; crit EMPHASIS on low (the scale/pop) is the separate, already-
+    // shipped CSS gate ([data-fx-level="low"] .fct.crit).
+    if (fctDropNonCrit(tier) && isDamageFctKind(event.kind) && !event.crit) return;
     const d = describeFct(event, this.random());
     const v = this.project(d.anchor.x, d.anchor.y, d.anchor.z);
     if (v.behind) return; // faithful to the live `if (v.behind) return;` -- waste no slot.
-    // A free node was detached in an earlier frame, so re-appending restarts its CSS rise
-    // naturally; an evicted node is still attached and needs the forced restart below.
-    let slot = this.free.pop();
-    const evicted = slot === undefined;
-    if (slot === undefined) slot = this.live.shift() as FctSlot;
+    // Claim a slot honoring the tier's live cap. At the cap, evict the OLDEST live entry
+    // (live[0]); an evicted node is still attached and needs the forced restart, while a
+    // free node was detached in an earlier frame so re-appending restarts its CSS rise
+    // naturally. On the full tiers maxConcurrent == this.cap (the pool size), so when the
+    // cap is reached the free list is already empty and this is byte-identical to the
+    // pre-tiering "free.pop() ?? live.shift()" pool-full eviction.
+    const maxConcurrent = fctMaxConcurrent(tier, this.cap);
+    let slot: FctSlot;
+    let evicted: boolean;
+    if (this.live.length >= maxConcurrent) {
+      slot = this.live.shift() as FctSlot;
+      evicted = true;
+    } else {
+      const freeSlot = this.free.pop();
+      if (freeSlot !== undefined) {
+        slot = freeSlot;
+        evicted = false;
+      } else {
+        slot = this.live.shift() as FctSlot;
+        evicted = true;
+      }
+    }
     slot.bornAt = now;
-    slot.ttlMs = d.ttlMs;
+    // Low shortens the lifetime so floaters clear faster (lower live count, less eviction
+    // pressure); the full tier scale is exactly 1, so 1250 * 1 = 1250 is byte-identical.
+    slot.ttlMs = d.ttlMs * fctTtlScale(tier);
     this.applyContent(slot, d);
     this.position(slot.node, v, d.jitterOffset, this.getScale());
     this.mount.appendChild(slot.node); // a detached node becomes visible on attach...

@@ -8,6 +8,8 @@
 
 import { readFileSync } from 'node:fs';
 import { beforeEach, describe, expect, it } from 'vitest';
+import type { UiEffectsTier } from '../src/game/ui_effects_profile';
+import { FCT_MAX_CONCURRENT_LOW, FCT_TTL_SCALE_LOW } from '../src/game/ui_tier_knobs';
 import {
   FCT_ANCHOR_HEAD_OFFSET,
   FCT_JITTER_RANGE,
@@ -434,6 +436,118 @@ describe('FctPainter: pooled ring over the elided writers', () => {
 describe('FctPainter: the exported cap', () => {
   it('exposes FCT_POOL_CAP as a positive bound', () => {
     expect(FCT_POOL_CAP).toBeGreaterThan(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// P14a Slice A: the pool cap / TTL / drop-non-crit knobs are a pure function of the
+// STATIC ui effects tier (data-fx-level), NEVER the governor. These drive the painter
+// through the injected getFxTier accessor and assert: ultra is byte-equivalent to the
+// untiered painter (no drop, full cap, full TTL) and low sheds (drops non-crit, caps
+// tighter, shortens TTL), identically under a Sim- and a ClientWorld-shaped anchor.
+// ---------------------------------------------------------------------------
+
+describe('FctPainter: P14a static-preset tiering (Slice A)', () => {
+  let mount: FakeEl;
+  let calls: Call[];
+
+  beforeEach(() => {
+    mount = fakeEl('div');
+    calls = recordingFacet().calls;
+  });
+
+  function tierPainter(tier: UiEffectsTier, cap = FCT_POOL_CAP): FctPainter {
+    const facet = recordingFacet();
+    calls = facet.calls;
+    return new FctPainter(
+      facet.writers,
+      mount as unknown as HTMLElement,
+      () => ({ x: 0, y: 0, behind: false }),
+      () => 1,
+      { cap, doc: fakeDoc, random: () => 0.5, getFxTier: () => tier },
+    );
+  }
+  const liveNodes = () => mount.childNodes;
+
+  it('drop-non-crit: low drops non-crit DAMAGE numbers, keeps crits + informational floaters', () => {
+    const low = tierPainter('low', 16);
+    // Non-crit damage numbers are the high-volume combat spam: dropped on low.
+    low.spawn(evt({ kind: 'damage-taken', text: '-7', crit: false }), 0);
+    low.spawn(evt({ kind: 'damage-done-auto', text: '12', crit: false }), 0);
+    expect(low.liveCount()).toBe(0);
+    // A crit damage number is never refused.
+    low.spawn(evt({ kind: 'damage-done-ability', text: '99', crit: true }), 0);
+    expect(low.liveCount()).toBe(1);
+    expect(lastText(calls, liveNodes()[0])).toBe('99');
+    // Low-volume floaters that are NOT damage numbers are KEPT on low (no UX regression):
+    // xp progression, the self-note hint, heals, and avoidance words.
+    low.spawn(evt({ kind: 'xp', text: '+10 XP', crit: false }), 0);
+    low.spawn(evt({ kind: 'self-note', text: 'Cannot move', crit: false }), 0);
+    low.spawn(evt({ kind: 'heal', text: '+5', crit: false }), 0);
+    low.spawn(evt({ kind: 'miss', text: 'Miss', crit: false }), 0);
+    expect(low.liveCount()).toBe(5); // crit damage + xp + self-note + heal + miss
+
+    const ultra = tierPainter('ultra', 8);
+    ultra.spawn(evt({ kind: 'damage-taken', text: '-7', crit: false }), 0);
+    expect(ultra.liveCount()).toBe(1); // ultra keeps non-crit damage too (byte-equivalent)
+  });
+
+  it('max-concurrent: low caps the live count tighter than the pre-allocated pool', () => {
+    const low = tierPainter('low', FCT_POOL_CAP);
+    // All crits (so drop-non-crit does not interfere), well over the low cap.
+    for (let i = 0; i < FCT_MAX_CONCURRENT_LOW + 16; i++) {
+      low.spawn(evt({ kind: 'damage-done-ability', text: `${i}`, crit: true }), 0);
+    }
+    expect(low.liveCount()).toBe(FCT_MAX_CONCURRENT_LOW);
+    expect(liveNodes().length).toBe(FCT_MAX_CONCURRENT_LOW);
+
+    // Ultra over the SAME spawn count stays uncapped until the pool itself fills.
+    const ultra = tierPainter('ultra', FCT_POOL_CAP);
+    for (let i = 0; i < FCT_MAX_CONCURRENT_LOW + 16; i++) {
+      ultra.spawn(evt({ kind: 'damage-done-ability', text: `${i}`, crit: true }), 0);
+    }
+    expect(ultra.liveCount()).toBe(FCT_MAX_CONCURRENT_LOW + 16);
+    expect(ultra.liveCount()).toBeGreaterThan(low.liveCount());
+  });
+
+  it('TTL: low recycles a floater earlier (FCT_TTL_MS * scale) than ultra', () => {
+    const lowTtl = FCT_TTL_MS * FCT_TTL_SCALE_LOW;
+    const low = tierPainter('low', 4);
+    low.spawn(evt({ kind: 'heal', text: '+5', crit: true }), 0);
+    low.step(lowTtl - 1);
+    expect(low.liveCount()).toBe(1); // alive just before the shortened ttl
+    low.step(lowTtl);
+    expect(low.liveCount()).toBe(0); // recycled at the shortened ttl
+
+    // Ultra is still alive at the same clock (full 1250ms ttl), proving low is shorter.
+    const ultra = tierPainter('ultra', 4);
+    ultra.spawn(evt({ kind: 'heal', text: '+5', crit: true }), 0);
+    ultra.step(lowTtl);
+    expect(ultra.liveCount()).toBe(1);
+    ultra.step(FCT_TTL_MS);
+    expect(ultra.liveCount()).toBe(0);
+  });
+
+  it('decision 15: the tier gate behaves identically for a Sim- and a ClientWorld-shaped anchor', () => {
+    // The crit gate reads the event, not the anchor; assert the tiered drop is anchor-shape
+    // independent. Sim-shaped anchor carries sim-only junk the descriptor must ignore; the
+    // ClientWorld mirror is lean. Both: a crit spawns, a non-crit is dropped, on low.
+    const simAnchor = {
+      pos: { x: 1, y: 2, z: 3 },
+      scale: 1,
+      hp: 100,
+      maxHp: 100,
+    } as FctEvent['target'];
+    const clientAnchor = { pos: { x: 1, y: 2, z: 3 }, scale: 1 } as FctEvent['target'];
+    for (const anchor of [simAnchor, clientAnchor]) {
+      mount = fakeEl('div'); // fresh mount + facet per anchor (tierPainter reads both)
+      const low = tierPainter('low', 8);
+      low.spawn(evt({ kind: 'damage-taken', text: '-7', crit: false, target: anchor }), 0);
+      expect(low.liveCount()).toBe(0);
+      low.spawn(evt({ kind: 'damage-done-ability', text: '42', crit: true, target: anchor }), 0);
+      expect(low.liveCount()).toBe(1);
+      expect(lastText(calls, liveNodes()[0])).toBe('42');
+    }
   });
 });
 

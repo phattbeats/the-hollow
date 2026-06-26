@@ -37,6 +37,24 @@ export type FctKind =
   | 'self-note';
 
 /**
+ * The combat-DAMAGE FCT kinds: the high-volume floaters (one per hit, the AoE / boss
+ * burst spam) and the ONLY kinds that can crit. P14a's low-tier drop-non-crit gate
+ * applies ONLY to these, so a low-preset player still sees crit hits PLUS every low-volume
+ * informational floater (xp, rested-xp, self-note) and avoidance word (miss, dodge); only
+ * the non-crit damage-number spam (the actual cost driver) is shed.
+ */
+export const DAMAGE_FCT_KINDS: ReadonlySet<FctKind> = new Set<FctKind>([
+  'damage-done-ability',
+  'damage-done-auto',
+  'damage-taken',
+]);
+
+/** Whether `kind` is a combat-damage floater (the low-tier drop-non-crit target). */
+export function isDamageFctKind(kind: FctKind): boolean {
+  return DAMAGE_FCT_KINDS.has(kind);
+}
+
+/**
  * Color CLASS TOKEN discriminator, keyed by kind (plus the isSelf flag for miss/dodge).
  * P13b's painter owns the token -> CSS color class table (the hex->token migration); the
  * core never emits a hex. Crit does NOT change the token: the live fct() keys color by

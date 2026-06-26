@@ -11,6 +11,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
+  DAMAGE_FCT_KINDS,
   describeFct,
   FCT_ANCHOR_HEAD_OFFSET,
   FCT_JITTER_RANGE,
@@ -19,6 +20,7 @@ import {
   type FctColorToken,
   type FctEvent,
   type FctKind,
+  isDamageFctKind,
 } from '../src/ui/fct_core';
 
 const CORE_SRC = fileURLToPath(new URL('../src/ui/fct_core.ts', import.meta.url));
@@ -180,5 +182,23 @@ describe('describeFct: ClientWorld-vs-Sim parity (decision 15)', () => {
     const fromSim = describeFct(makeEvent({ target: simEntity, kind: 'damage-taken' }), 0.25);
     const fromMirror = describeFct(makeEvent({ target: mirrorEntity, kind: 'damage-taken' }), 0.25);
     expect(fromSim).toEqual(fromMirror);
+  });
+});
+
+describe('isDamageFctKind: the combat-damage taxonomy (P14a drop-non-crit target)', () => {
+  it('classifies exactly the three damage-number kinds as damage', () => {
+    expect([...DAMAGE_FCT_KINDS].sort()).toEqual([
+      'damage-done-ability',
+      'damage-done-auto',
+      'damage-taken',
+    ]);
+    for (const kind of DAMAGE_FCT_KINDS) expect(isDamageFctKind(kind)).toBe(true);
+  });
+
+  it('treats informational / avoidance floaters as NON-damage (kept on low)', () => {
+    // These are the low-volume floaters the low-tier drop must NOT shed: progression,
+    // the self-note UX hint, heals, and avoidance words.
+    const nonDamage: FctKind[] = ['miss', 'dodge', 'heal', 'xp', 'rested-xp', 'self-note'];
+    for (const kind of nonDamage) expect(isDamageFctKind(kind)).toBe(false);
   });
 });
