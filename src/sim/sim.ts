@@ -83,7 +83,6 @@ import {
 } from './content/talents';
 import type { DelveShopGate, DelveShopOffer } from './data';
 import {
-  ABILITIES,
   abilitiesKnownAt,
   arenaOrigin,
   CAMPS,
@@ -110,9 +109,9 @@ import {
   zoneAt,
 } from './data';
 // A3: ARENA_SPAWNS_A_2v2/B_2v2 (read only by the moved fiestaRevive) now live with
-// social/fiesta.ts; the dungeon-wall consts stay (non-Fiesta callers). I2a's delve
+// social/fiesta.ts. The dungeon-wall consts (DUNGEON_WALL_HW/X) are now read only by
+// delves/runs.ts + render/dungeon.ts; W11 dropped the stranded sim.ts import. I2a's delve
 // move also dropped the now-unused delve_layout import (DELVE_MODULE_LAYOUTS et al.).
-import { DUNGEON_WALL_HW, DUNGEON_WALL_X } from './dungeon_layout';
 import {
   createGroundObject,
   createMob,
@@ -282,7 +281,6 @@ import {
   type Vec3,
   virtualLevel,
   xpToReachLevel,
-  YELL_RANGE,
 } from './types';
 import { groundHeight, WATER_LEVEL } from './world';
 
