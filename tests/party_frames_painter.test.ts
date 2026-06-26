@@ -12,10 +12,13 @@ import { createPartyRow, type PartyRowSlot, partyRowHandlers } from '../src/ui/p
 import type { PartyFrameMember } from '../src/ui/party_frames';
 import { PartyFramesPainter } from '../src/ui/party_frames_painter';
 
+// The crest icon's procedural path needs a canvas; the pool only needs a string. A
+// hoisted spy returning a key-derived stub so a test can assert the portrait gate
+// repaints the crest with the recycled member's class (the live-slot crest gate).
+const iconDataUrlSpy = vi.hoisted(() => vi.fn((_kind: string, key: string) => `data:${key}`));
 vi.mock('../src/ui/icons', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../src/ui/icons')>()),
-  // The crest icon's procedural path needs a canvas; the pool only needs a string.
-  iconDataUrl: () => 'data:image/png;base64,stub',
+  iconDataUrl: iconDataUrlSpy,
 }));
 
 // ---------------------------------------------------------------------------
@@ -120,6 +123,11 @@ interface FakeEl {
   tagName: string;
   parentNode: FakeEl | null;
   childNodes: FakeEl[];
+  firstChild: FakeEl | null;
+  nextSibling: FakeEl | null;
+  // Count of child (re)insertions on THIS node, so a test can prove a steady-state
+  // rebuild moves nothing (the keyed-pool no-churn guarantee).
+  _mutations: number;
   listeners: Record<string, Array<(ev: unknown) => void>>;
   [k: string]: unknown;
   setAttribute(k: string, v: string): void;
@@ -127,6 +135,7 @@ interface FakeEl {
   addEventListener(type: string, fn: (ev: unknown) => void): void;
   append(...kids: FakeEl[]): void;
   appendChild(kid: FakeEl): FakeEl;
+  insertBefore(node: FakeEl, ref: FakeEl | null): FakeEl;
   _detach(kid: FakeEl): void;
   remove(): void;
   getBoundingClientRect(): { left: number; top: number; right: number; bottom: number };
@@ -138,6 +147,7 @@ function fakeEl(tag: string): FakeEl {
     tagName: tag.toUpperCase(),
     parentNode: null as FakeEl | null,
     childNodes: [] as FakeEl[],
+    _mutations: 0,
     listeners: {} as Record<string, Array<(ev: unknown) => void>>,
     setAttribute(k: string, v: string) {
       (el as Record<string, unknown>)[k] = v;
@@ -156,7 +166,26 @@ function fakeEl(tag: string): FakeEl {
       kid.parentNode?._detach(kid);
       kid.parentNode = el;
       el.childNodes.push(kid);
+      el._mutations++;
       return kid;
+    },
+    insertBefore(node: FakeEl, ref: FakeEl | null) {
+      node.parentNode?._detach(node);
+      node.parentNode = el;
+      const i = ref ? el.childNodes.indexOf(ref) : -1;
+      if (i < 0) el.childNodes.push(node);
+      else el.childNodes.splice(i, 0, node);
+      el._mutations++;
+      return node;
+    },
+    get firstChild() {
+      return el.childNodes[0] ?? null;
+    },
+    get nextSibling() {
+      const p = el.parentNode;
+      if (!p) return null;
+      const i = p.childNodes.indexOf(el);
+      return p.childNodes[i + 1] ?? null;
     },
     _detach(kid: FakeEl) {
       const i = el.childNodes.indexOf(kid);
@@ -216,6 +245,15 @@ describe('createPartyRow: decorative badges + relocalize hook (a11y + live langu
       { onTarget() {}, onContextMenu() {} },
       member({ pid: 1 }),
     );
+
+  it('builds a keyboard-focusable button row (role=button + tabindex 0) so the global focus ring + keydown apply', () => {
+    const row = build();
+    // The old party div was unfocusable; P11c makes each row a real SR button and a
+    // tab stop. Dropping either silently kills keyboard focus AND the global
+    // [tabindex="0"]:focus-visible ring with every other test still green.
+    expect(row.el.getAttribute('role')).toBe('button');
+    expect(row.el.tabIndex).toBe(0);
+  });
 
   it('marks the dead/combat/oor badges aria-hidden so their glyphs do not pollute the row button name', () => {
     const row = build();
@@ -305,6 +343,58 @@ describe('PartyFramesPainter: keyed pool over the elided writers', () => {
     const kids = container.childNodes;
     expect(kids.filter((c) => c.tagName === 'DIV')).toHaveLength(3);
     expect(kids[kids.length - 1].tagName).toBe('BUTTON'); // leave button last
+  });
+
+  it('reconciles DOM order on reorder + partial-membership churn, reusing the SAME nodes, leave last', () => {
+    painter.sync([member({ pid: 2 }), member({ pid: 3 }), member({ pid: 4 })], 1);
+    const [r2, r3, r4] = rows();
+    // Reorder to 4,2,3 (e.g. a raid group-swap flips the sort): same nodes moved into
+    // the new order via the minimal-move reconcile, not rebuilt.
+    painter.sync([member({ pid: 4 }), member({ pid: 2 }), member({ pid: 3 })], 1);
+    const reordered = rows();
+    expect(reordered).toHaveLength(3);
+    expect(reordered[0]).toBe(r4);
+    expect(reordered[1]).toBe(r2);
+    expect(reordered[2]).toBe(r3);
+    expect(container.childNodes[container.childNodes.length - 1].tagName).toBe('BUTTON');
+    // The middle member (pid 2) leaves: the remaining two keep their order, leave last.
+    painter.sync([member({ pid: 4 }), member({ pid: 3 })], 1);
+    const trimmed = rows();
+    expect(trimmed).toHaveLength(2);
+    expect(trimmed[0]).toBe(r4);
+    expect(trimmed[1]).toBe(r3);
+    expect(container.childNodes[container.childNodes.length - 1].tagName).toBe('BUTTON');
+  });
+
+  it('a steady-state rebuild (same members + order) moves no node, so a focused row keeps its place', () => {
+    painter.sync([member({ pid: 2 }), member({ pid: 3 })], 1);
+    const movesBefore = container._mutations;
+    // Re-sync the same party with only a stat change: the reconcile must touch the DOM
+    // not at all (zero detach/reinsert). That no-churn is what preserves keyboard focus
+    // and avoids the per-combat-tick relocation the old unconditional appendChild caused
+    // (re-appending a focused node blurs it). A regression to appendChild-every-row
+    // would bump the mutation count and fail here while leaving the final order intact.
+    painter.sync([member({ pid: 2, hp: 10 }), member({ pid: 3, inCombat: 1 })], 1);
+    expect(container._mutations).toBe(movesBefore); // zero DOM moves in the hot path
+    expect(rows()).toHaveLength(2);
+  });
+
+  it('repaints the crest with the recycled member class via the live slot (the portrait gate)', () => {
+    iconDataUrlSpy.mockClear();
+    // A mage joins: the gate fires once for class_mage on the first paint.
+    painter.sync([member({ pid: 2, name: 'Mage', cls: 'mage' })], 1);
+    expect(iconDataUrlSpy.mock.calls.some((c) => c[1] === 'class_mage')).toBe(true);
+    // Re-sync the SAME mage (a stat changed): the class key is unchanged, so the gate
+    // skips the crest repaint.
+    iconDataUrlSpy.mockClear();
+    painter.sync([member({ pid: 2, name: 'Mage', cls: 'mage', hp: 10 })], 1);
+    expect(iconDataUrlSpy.mock.calls.some((c) => c[1] === 'class_mage')).toBe(false);
+    // The mage leaves; a PRIEST reuses the freed row node. The crest repaints for the
+    // NEW class, proving the gate reads the live slot, not a member captured at build.
+    painter.sync([], 1);
+    iconDataUrlSpy.mockClear();
+    painter.sync([member({ pid: 9, name: 'Priest', cls: 'priest' })], 1);
+    expect(iconDataUrlSpy.mock.calls.some((c) => c[1] === 'class_priest')).toBe(true);
   });
 
   it('clear() empties the container (no-party transition)', () => {

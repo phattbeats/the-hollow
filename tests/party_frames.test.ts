@@ -175,4 +175,26 @@ describe('ClientWorld-vs-Sim out-of-range parity (decision 15, P11c)', () => {
       );
     }
   });
+
+  it('pins the accepted divergence at the exact 100yd boundary (sub-cm rounding flips oor)', () => {
+    // dist 100.003: the full-precision Sim is out of range (100.003 > 100); the mirror
+    // rounds the coordinate to 100.00, which is NOT > 100, so it reads in range. This
+    // ~2cm knife-edge disagreement at the threshold is the decision-15 accepted
+    // tolerance (like P11b's absorb). Pinning it gives the parity block teeth: a change
+    // to the comparison (> vs >=), the range constant, or the mirror's rounding model
+    // would move this boundary and fail here, where the ~50yd cases cannot.
+    const dist = 100.003;
+    const sim: PartyInfo = {
+      leader: 1,
+      raid: false,
+      members: [member(1, 1), member(2, 1, dist, 0)],
+    };
+    const mirror: PartyInfo = {
+      leader: 1,
+      raid: false,
+      members: [member(1, 1), member(2, 1, round2(dist), 0)],
+    };
+    expect(selectPartyFrameMembers(sim, 1, playerPos)[0].oor).toBe(true);
+    expect(selectPartyFrameMembers(mirror, 1, playerPos)[0].oor).toBe(false);
+  });
 });
