@@ -167,6 +167,9 @@ export default defineConfig({
     },
   },
   test: {
-    exclude: ['**/node_modules/**', '**/dist/**', '**/.claude/**'],
+    // .codex/.venv are local-only worktree/venv pollution that a clean CI checkout
+    // never has; excluding them keeps the local gate mirroring CI (otherwise stale
+    // .codex worktree copies of test files run and falsely fail).
+    exclude: ['**/node_modules/**', '**/dist/**', '**/.claude/**', '**/.codex/**', '**/.venv/**'],
   },
 });
