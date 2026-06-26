@@ -174,6 +174,67 @@ async function teleportTown(page) {
   await sleep(SETTLE_MS);
 }
 
+// P13b FCT perf gate: prove the pooled FCT painter BOUNDS the live floater node count
+// under an AoE / boss burst. The old per-event createElement + setTimeout fct() grew the
+// #ui .fct node count without any ceiling; the fixed-size pooled-div ring caps it at
+// FCT_POOL_CAP and FIFO-evicts the oldest past that. Drive several waves of synthetic
+// combat events through the REAL migrated spawn path (window.__game.hud.handleEvents ->
+// fctPainter.spawn), each wave far above any sane cap, and read the live node count in the
+// SAME tick (right after the flood saturates + evicts). The count must be > 0 (spawns
+// happened, not all behind-culled), bounded well below the spawn count (not per-event
+// growth), and STABLE across waves (the fixed ring re-saturates to the same count). A
+// regression to unbounded createElement lets the count climb toward the spawn count.
+async function fctBurstBoundedNodes(page) {
+  const SPAWN_PER_WAVE = 400;
+  const WAVES = 3;
+  // Re-centre the player so its head anchor projects in front of the camera (FCT behind
+  // the camera is culled at spawn, exactly as the live fct() did).
+  await teleportTown(page);
+  const counts = [];
+  for (let wave = 0; wave < WAVES; wave++) {
+    const count = await page.evaluate((n) => {
+      const g = window.__game;
+      const pid = g.sim?.playerId ?? g.sim?.player?.id;
+      if (pid == null || !g.hud?.handleEvents) return -1;
+      const evs = [];
+      for (let i = 0; i < n; i++) evs.push({ type: 'heal', targetId: pid, amount: 1000 + i });
+      g.hud.handleEvents(evs);
+      // Count in the same synchronous tick: the flood just filled + FIFO-evicted to the cap,
+      // before the next rAF runs step() (which only recycles on TTL, never grows the pool).
+      return document.querySelectorAll('#ui .fct').length;
+    }, SPAWN_PER_WAVE);
+    counts.push(count);
+    await sleep(Math.max(SETTLE_MS, 1500)); // let TTL (1250ms) recycle before the next wave
+  }
+  const valid = counts.filter((c) => c >= 0);
+  return {
+    spawnPerWave: SPAWN_PER_WAVE,
+    waves: WAVES,
+    counts,
+    max: valid.length ? Math.max(...valid) : -1,
+    min: valid.length ? Math.min(...valid) : -1,
+    drove: valid.length === counts.length,
+  };
+}
+
+function fctBurstFailures(burst) {
+  if (!burst) return [];
+  const failures = [];
+  if (!burst.drove)
+    failures.push(`FCT burst could not drive spawns (counts ${burst.counts.join(',')})`);
+  else if (burst.min <= 0)
+    failures.push(`FCT burst spawned no floaters (counts ${burst.counts.join(',')})`);
+  else if (burst.max >= burst.spawnPerWave)
+    failures.push(
+      `FCT node count ${burst.max} not bounded below ${burst.spawnPerWave} (unbounded pool)`,
+    );
+  else if (burst.max !== burst.min)
+    failures.push(
+      `FCT node count unstable across waves (${burst.counts.join(',')}), expected a fixed cap`,
+    );
+  return failures;
+}
+
 async function sample(page, label) {
   return page.evaluate((label) => {
     const g = window.__game;
@@ -402,6 +463,10 @@ async function runViewport(browser, viewport) {
     const lastFrame = samples.at(-1)?.report?.frames ?? 0;
     if (lastFrame <= firstFrame) errors.push(`Frame counter did not advance for ${viewport.label}.`);
 
+    // P13b: run the bounded-node FCT burst AFTER the tour samples, so its hot DOM writes do
+    // not skew the steady-state frameP95 / skip-rate the summary reads from the last sample.
+    const fctBurst = await fctBurstBoundedNodes(page);
+
     const result = {
       viewport: viewport.label,
       dimensions: {
@@ -413,11 +478,13 @@ async function runViewport(browser, viewport) {
       },
       userAgent: await page.evaluate(() => navigator.userAgent),
       samples,
+      fctBurst,
       ignoredConsoleErrors,
       errors,
     };
     result.summary = summarizeResult(result);
     result.budgetFailures = budgetFailures(result.summary);
+    result.fctBurstFailures = fctBurstFailures(fctBurst);
     return result;
   } finally {
     await page.close();
@@ -468,9 +535,15 @@ for (const r of results) {
   console.log(`${r.viewport}: fps ${s.fps} (10s ${s.fps10s}) p95 ${s.frameP95}ms maxP95 ${s.maxFrameP95}ms longtask ${s.longTasks}/${s.longTaskP95}ms tasks ${s.preloadTasks} gltf ${s.gltfCount} tex ${s.textureCount} boot ${s.bootMib}MiB calls ${s.calls}/${s.maxSampleCalls} tris ${s.triangles}/${s.maxSampleTriangles} views ${s.views}/${s.maxViews} foliage q${s.foliageModelQuality} buckets ${s.foliageModelVisibleBuckets} draws ${s.foliageModelVisibleDraws} tris ${s.foliageModelVisibleTriangles} prewarm ${s.prewarmElapsedMs}/${s.prewarmMaxMs}ms ${s.prewarmCompleted}/${s.prewarmPlanned} fail ${s.prewarmFailedEntries} timeout ${s.prewarmTimedOutEntries} input ${s.inputIntentToVisibleP95}ms tier ${s.rendererTier} hudSkip ${Math.round(s.hudHotDomSkipRate * 100)}%`);
 }
 
+for (const r of results) {
+  const b = r.fctBurst;
+  if (b) console.log(`${r.viewport}: fct burst ${b.spawnPerWave}/wave x${b.waves} -> live nodes [${b.counts.join(', ')}] (cap-bounded)`);
+}
+
 const hardErrors = results.flatMap((r) => [
   ...r.errors.map((e) => `${r.viewport}: ${e}`),
   ...r.budgetFailures.map((e) => `${r.viewport}: budget ${e}`),
+  ...(r.fctBurstFailures ?? []).map((e) => `${r.viewport}: ${e}`),
 ]);
 if (hardErrors.length) {
   console.error(hardErrors.join('\n'));
