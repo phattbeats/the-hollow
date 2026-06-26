@@ -96,6 +96,8 @@ import {
   type OverheadEmoteId,
 } from '../world_api';
 import { ActionBarPainter } from './action_bar_painter';
+import { AurasPainter, type AurasPainterDeps } from './auras_painter';
+import { type AurasDeps, createAurasView } from './auras_view';
 import {
   ABILITY_ICON_PREFIX,
   ATTACK_ICON_KEY,
@@ -178,6 +180,8 @@ import { lowResourceView } from './low_resource';
 import { type MapRegion, mapCanvasHeight, paintTerrainRows } from './map_terrain';
 import { MapWindowPainter } from './map_window_painter';
 import { MAP_MAX_ZOOM, mapWindowMode } from './map_window_view';
+import { minimapMode } from './minimap_markers';
+import { MINIMAP_SIZE, MinimapPainter } from './minimap_painter';
 import { ArenaWindow } from './arena_window';
 import { LeaderboardWindow } from './leaderboard_window';
 import { MarketWindow } from './market_window';
@@ -2373,6 +2377,42 @@ export class Hud {
   // Overworld world-map painter (the delve branch stays with delvePainter). Owns
   // the cached whole-world decorations; redraws from the mediumHud band while open.
   private readonly mapPainter = new MapWindowPainter();
+  // The aura strips are the keyed-pool aura painter (P12b), two instances of the
+  // auras_view core + AurasPainter (decision 9): the player buff bar (#buff-bar, mode
+  // 'all') and the target debuffs (#tf-debuffs, mode 'debuffs'). The shared deps fire
+  // the i18n lookups every frame (so a language switch lands on the next tick) and the
+  // painter's tooltip closure reads the pool's LIVE record (Top risk 3, never a captured
+  // aura). All closures are lazy, so these field initializers are safe.
+  private readonly aurasViewDeps: AurasDeps = {
+    iconId: (a) => (ABILITIES[a.id] ? a.id : `aura_${a.kind}`),
+    auraName: (a) =>
+      ABILITIES[a.id] ? abilityDisplayName(ABILITIES[a.id]) : auraDisplayNameFromSource(a.name),
+    formatStacks: (n) => formatNumber(n, { maximumFractionDigits: 0 }),
+  };
+  private readonly aurasPainterDeps: AurasPainterDeps = {
+    resolveIconUrl: (iconKey) => `url(${iconDataUrl('aura', iconKey)})`,
+    renderTooltip: (name, remaining) =>
+      `<div class="tt-title">${esc(name)}</div><div class="tt-sub">${esc(tPlural('hudChrome.plurals.secondsRemaining', Math.ceil(remaining)))}</div>`,
+    attachTooltip: (el, html) => this.attachTooltip(el, html),
+  };
+  private readonly buffBarView = createAurasView('all', this.aurasViewDeps);
+  private readonly targetDebuffsView = createAurasView('debuffs', this.aurasViewDeps);
+  private readonly buffBarPainter = new AurasPainter(
+    this.writerFacet,
+    this.buffBarEl,
+    this.aurasPainterDeps,
+  );
+  private readonly targetDebuffsPainter = new AurasPainter(
+    this.writerFacet,
+    this.targetDebuffsEl,
+    this.aurasPainterDeps,
+  );
+  // Overworld minimap canvas painter (the delve branch stays with delvePainter). Owns
+  // the marker core; redraws from the fastHud (~10Hz) band. classCss colors the party
+  // discs/arrows; zoneDisplayName localizes the '#zone-label' it writes via setText.
+  private readonly minimapPainter = new MinimapPainter(this.writerFacet, classCss, (zoneId) =>
+    zoneDisplayName(zoneId),
+  );
   private readonly presentationBag: PainterHostPresentation = {
     itemIcon: (item) => this.itemIcon(item),
     moneyHtml: (copper) => this.moneyHtml(copper),
@@ -4051,8 +4091,9 @@ export class Hud {
     this.updateLowHealthVignette(p.hp, p.maxHp);
     this.updateLowResource(p);
 
-    // buff bar (player buffs + debuffs)
-    this.renderAuras(this.buffBarEl, p, 'all');
+    // buff bar (player buffs + debuffs): the keyed-pool aura painter (P12b), driven by
+    // the auras_view core every frame (the elided writers make a no-op frame free).
+    this.buffBarPainter.paint(this.buffBarView.tick(p));
 
     // target frame: the SECOND instance of the unit_frame family (P11b). The shared
     // frame (display/name/level/hp/absorb/portrait gate) goes through the family
@@ -4093,7 +4134,7 @@ export class Hud {
         'color',
         target.hostile ? 'var(--color-hostile)' : 'var(--color-friendly)',
       );
-      this.renderAuras(this.targetDebuffsEl, target, 'debuffs');
+      this.targetDebuffsPainter.paint(this.targetDebuffsView.tick(target));
       // target/boss cast bar (e.g. Nythraxis' Deathless Rage), shown under the name +
       // HP so the raid sees exactly when to channel the wardstones. The target
       // instance shows the raw cast id and never eats/drinks (no `consume`).
@@ -4375,67 +4416,6 @@ export class Hud {
         return t('hudChrome.raidLockout.minutes', { m: n(minutes) });
       default:
         return t('hudChrome.raidLockout.lessThanMinute');
-    }
-  }
-
-  private renderAuras(el: HTMLElement, e: Entity, mode: 'all' | 'debuffs'): void {
-    // cheap diff: rebuild only when the aura set changes
-    const sig = e.auras.map((a) => `${a.id}${Math.ceil(a.remaining)}x${a.stacks ?? 0}`).join('|');
-    if ((el as any).__sig === sig) return;
-    (el as any).__sig = sig;
-    el.innerHTML = '';
-    for (const a of e.auras) {
-      // A negative-value stat aura (e.g. a mob's Withering Wail sapping attack
-      // power, or an Intellect-draining curse) is a debuff even though it reuses a buff_* kind.
-      const isDebuff =
-        [
-          'dot',
-          'slow',
-          'root',
-          'stun',
-          'incapacitate',
-          'polymorph',
-          'attackspeed',
-          'debuff_ap',
-          'sunder',
-          'mortal_wound',
-          'silence',
-          'disarm',
-          'blind',
-          'expose',
-          'spellvuln',
-          'lockout',
-          'vulnerability',
-          'hex',
-          'tongues',
-          'cost_tax',
-          'heal_absorb',
-          'critvuln',
-        ].includes(a.kind) ||
-        (a.kind.startsWith('buff_') && a.value < 0);
-      if (mode === 'debuffs' && !isDebuff) continue;
-      const d = document.createElement('div');
-      d.className = `buff${isDebuff ? ' debuff' : ''}`;
-      d.style.backgroundImage = `url(${iconDataUrl('aura', ABILITIES[a.id] ? a.id : `aura_${a.kind}`)})`;
-      const dur = document.createElement('div');
-      dur.className = 'dur';
-      dur.textContent = a.remaining < 99 ? `${Math.ceil(a.remaining)}s` : '';
-      d.appendChild(dur);
-      if (a.stacks && a.stacks > 1) {
-        const st = document.createElement('div');
-        st.className = 'stacks';
-        st.textContent = formatNumber(a.stacks, { maximumFractionDigits: 0 });
-        d.appendChild(st);
-      }
-      const auraName = ABILITIES[a.id]
-        ? abilityDisplayName(ABILITIES[a.id])
-        : auraDisplayNameFromSource(a.name);
-      this.attachTooltip(
-        d,
-        () =>
-          `<div class="tt-title">${esc(auraName)}</div><div class="tt-sub">${esc(tPlural('hudChrome.plurals.secondsRemaining', Math.ceil(a.remaining)))}</div>`,
-      );
-      el.appendChild(d);
     }
   }
 
@@ -5216,156 +5196,25 @@ export class Hud {
 
   private updateMinimap(): void {
     const ctx = this.minimapCtx;
-    const S = 162;
-    const p = this.sim.player;
-    const run = this.sim.delveRun;
-    if (isDelvePos(p.pos.x) && run) {
+    // minimapMode (the minimap_markers core) is the single source of truth for the
+    // delve-vs-overworld branch (the same isDelvePos + delveRun guard, lifted into the
+    // core so hud and the painters never duplicate it).
+    if (minimapMode(this.sim) === 'delve') {
       // The delve painter owns the '#zone-label' text (written through the
       // write-elision facet) and the full minimap schematic render.
-      this.delvePainter.paintMinimapDelve(ctx, this.sim, $('#zone-label'), S);
+      this.delvePainter.paintMinimapDelve(ctx, this.sim, $('#zone-label'), MINIMAP_SIZE);
       return;
     }
-
-    this.setText($('#zone-label'), zoneDisplayName(zoneAt(p.pos.z).id));
-    ctx.clearRect(0, 0, S, S);
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(S / 2, S / 2, S / 2 - 2, 0, Math.PI * 2);
-    ctx.clip();
-    ctx.imageSmoothingEnabled = false;
-
-    // 1.7 is the historical base scale; the zoom multiplier shrinks the world
-    // radius shown so markers spread out as you zoom in (default 1 = unchanged).
-    const pxPerYard = 1.7 * this.minimapZoom;
-    const bg = this.minimapBg;
-    const bgPxPerYard = bg.width / (WORLD_MAX_X - WORLD_MIN_X);
-    const sw = S / (pxPerYard / bgPxPerYard);
-    const sx = (WORLD_MAX_X - p.pos.x) * bgPxPerYard - sw / 2; // bg is +X-left
-    const sy = (WORLD_MAX_Z - p.pos.z) * bgPxPerYard - sw / 2;
-    ctx.drawImage(bg, sx, sy, sw, sw, 0, 0, S, S);
-
-    // friend/guild lookup for colouring nearby allies (party markers are drawn
-    // separately below, so skip party members here to avoid double dots)
-    const social = this.sim.socialInfo;
-    const friendNames = social
-      ? new Set(social.friends.filter((f) => f.online).map((f) => f.name))
-      : null;
-    const guildNames = social?.guild ? new Set(social.guild.members.map((m) => m.name)) : null;
-    const partyPids = this.sim.partyInfo
-      ? new Set(this.sim.partyInfo.members.map((m) => m.pid))
-      : null;
-
-    for (const e of this.sim.entities.values()) {
-      if (e.id === p.id) continue;
-      const dx = -(e.pos.x - p.pos.x) * pxPerYard; // +X is map-left
-      const dz = -(e.pos.z - p.pos.z) * pxPerYard;
-      const mx = S / 2 + dx,
-        my = S / 2 + dz;
-      if ((mx - S / 2) ** 2 + (my - S / 2) ** 2 > (S / 2 - 7) ** 2) continue;
-      if (e.kind === 'player' && !partyPids?.has(e.id)) {
-        const isFriend = friendNames?.has(e.name) ?? false;
-        const isGuild = !isFriend && (guildNames?.has(e.name) ?? false);
-        if (isFriend || isGuild) {
-          ctx.fillStyle = isFriend ? '#4ade80' : '#60a5fa';
-          ctx.strokeStyle = '#000';
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.arc(mx, my, 3, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-        }
-      } else if (e.kind === 'npc') {
-        const hasAvail = e.questIds.some(
-          (q) => QUESTS[q].giverNpcId === e.templateId && this.sim.questState(q) === 'available',
-        );
-        const hasReady = e.questIds.some(
-          (q) => isQuestTurnInNpc(QUESTS[q], e.templateId) && this.sim.questState(q) === 'ready',
-        );
-        ctx.fillStyle = '#ffd100';
-        ctx.font = 'bold 11px Georgia';
-        ctx.fillText(hasReady ? '?' : hasAvail ? '!' : '•', mx - 2, my + 3);
-      } else if (
-        e.kind === 'object' &&
-        (e.templateId === 'dungeon_door' || e.templateId === 'dungeon_exit')
-      ) {
-        ctx.fillStyle = '#c084ff';
-        ctx.beginPath();
-        ctx.arc(mx, my, 3.5, 0, Math.PI * 2);
-        ctx.fill();
-      } else if (e.kind === 'object' && e.lootable) {
-        ctx.fillStyle = '#ffe97a';
-        ctx.fillRect(mx - 1.5, my - 1.5, 3, 3);
-      } else if (e.kind === 'mob' && !e.dead) {
-        ctx.fillStyle = e.aggroTargetId === p.id ? '#ff8800' : '#e74c3c';
-        ctx.fillRect(mx - 1.5, my - 1.5, 3, 3);
-      } else if (e.kind === 'mob' && e.lootable) {
-        ctx.fillStyle = '#ffd100';
-        ctx.fillRect(mx - 1.5, my - 1.5, 3, 3);
-      }
-    }
-    // Party members: class-colored markers. On-map allies are discs that
-    // scale up the closer they are (proximity scaling); allies past the rim
-    // are pinned to the edge as arrows pointing the way to regroup.
-    const party = this.sim.partyInfo;
-    if (party) {
-      const R = S / 2 - 7;
-      for (const m of party.members) {
-        if (m.pid === p.id) continue;
-        const dx = -(m.x - p.pos.x) * pxPerYard; // +X is map-left
-        const dz = -(m.z - p.pos.z) * pxPerYard;
-        const dist = Math.hypot(dx, dz);
-        const offMap = dist > R;
-        const ang = Math.atan2(dz, dx);
-        const color = m.dead ? '#9a9a9a' : classCss(m.cls);
-        ctx.save();
-        if (offMap) {
-          // edge-anchored arrow pointing outward toward the off-screen ally
-          ctx.translate(S / 2 + Math.cos(ang) * R, S / 2 + Math.sin(ang) * R);
-          ctx.rotate(ang);
-          ctx.fillStyle = color;
-          ctx.strokeStyle = '#000';
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.moveTo(6, 0);
-          ctx.lineTo(-4, 4.5);
-          ctx.lineTo(-4, -4.5);
-          ctx.closePath();
-          ctx.fill();
-          ctx.stroke();
-        } else {
-          // proximity scaling: ~6px adjacent down to ~3px near the rim
-          const r = 6 - (dist / R) * 3;
-          ctx.translate(S / 2 + dx, S / 2 + dz);
-          ctx.fillStyle = color;
-          ctx.strokeStyle = '#000';
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.arc(0, 0, r, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-          if (!m.dead) {
-            // bright inner pip so members pop against terrain
-            ctx.fillStyle = '#ffffffcc';
-            ctx.beginPath();
-            ctx.arc(0, 0, Math.max(1, r * 0.35), 0, Math.PI * 2);
-            ctx.fill();
-          }
-        }
-        ctx.restore();
-      }
-    }
-    ctx.translate(S / 2, S / 2);
-    ctx.rotate(-p.facing); // canvas rotates clockwise; facing increases turning left
-    ctx.fillStyle = '#fff';
-    ctx.strokeStyle = '#000';
-    ctx.beginPath();
-    ctx.moveTo(0, -7);
-    ctx.lineTo(4.5, 5.5);
-    ctx.lineTo(-4.5, 5.5);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-    ctx.restore();
+    // The overworld minimap: a pure marker core (minimap_markers) + the thin canvas
+    // painter (P12b). It owns the cached terrain blit + the marker draws and writes
+    // '#zone-label' through the write-elision facet.
+    this.minimapPainter.paintOverworld(
+      ctx,
+      this.sim,
+      $('#zone-label'),
+      this.minimapBg,
+      this.minimapZoom,
+    );
   }
 
   toggleMeters(): void {

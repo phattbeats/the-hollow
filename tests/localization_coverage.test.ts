@@ -1216,7 +1216,15 @@ describe('i18n Localization Key Coverage', () => {
   it('should route rendered world-content labels through localized entity helpers', () => {
     const hudSource = fs.readFileSync(path.resolve(process.cwd(), 'src/ui/hud.ts'), 'utf8');
     expect(hudSource).toContain('zoneDisplayName');
-    expect(hudSource).toContain("this.setText($('#zone-label'), zoneDisplayName");
+    // The overworld #zone-label write moved into minimap_painter (P12b): hud wires
+    // zoneDisplayName into the painter, and the painter writes the label through the
+    // elided setText. The localization is preserved, just relocated.
+    expect(hudSource).toContain('zoneDisplayName(zoneId)');
+    const minimapPainterSource = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/ui/minimap_painter.ts'),
+      'utf8',
+    );
+    expect(minimapPainterSource).toContain('this.writers.setText(zoneLabelEl, this.localizeZone(');
     expect(hudSource).toContain('zonePoiLabel');
     expect(hudSource).toContain('dungeonDisplayNameFromSource');
     expect(hudSource).not.toContain('zoneWelcomeText(');

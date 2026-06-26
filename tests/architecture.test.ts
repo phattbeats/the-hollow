@@ -136,6 +136,8 @@ const UI_PURE_CORES = [
   'src/ui/swing_timer.ts',
   'src/ui/unit_frame.ts',
   'src/ui/action_bar_view.ts',
+  'src/ui/auras_view.ts',
+  'src/ui/minimap_markers.ts',
   'src/game/ui_effects_profile.ts',
 ].map((rel) => join(repoRoot, rel));
 
