@@ -139,6 +139,7 @@ import { dropdownKeyNav } from './dropdown_nav';
 import { emoteIconUrl } from './emote_icons';
 import { itemDisplayName, tEntity } from './entity_i18n';
 import { esc } from './esc';
+import { FctDriver } from './fct_driver';
 import {
   holderTierBadgeDataUrl,
   holderTierByIndex,
@@ -2290,6 +2291,13 @@ export class Hud {
     this.swingFillEl,
     this.swingLabelEl,
   );
+  // The per-frame FCT driver (P13a). DORMANT this phase: it ticks every frame from
+  // update() but no spawn site feeds it, so it spawns/writes nothing and the per-event
+  // fct() path below is still the only thing that puts floating combat text on screen
+  // (visible FCT is byte-identical to before). P13b reroutes the spawn sites onto it and
+  // fills in the pooled-div painter body. It takes the same write-elision facet so P13b's
+  // writes are elided by construction (decisions 3 / 5a), with no raw-write path.
+  private readonly fctDriver = new FctDriver(this.writerFacet);
   // The player frame is the FIRST instance of the unit_frame family (P10b). It owns
   // its own element set; target/party become further instances of this exact
   // painter in P11. The element set + options deliberately mirror the inline block
@@ -4208,6 +4216,12 @@ export class Hud {
       showOverflow,
     });
     this.xpBarPainter.paint(bar);
+
+    // FCT driver (P13a): tick the per-frame floating-combat-text driver on the
+    // every-frame tier (decision 8: folded into the existing `hud` perf bucket, not a
+    // second rAF). DORMANT until P13b -- it holds no live entries, so step() returns
+    // immediately and writes nothing; the per-event fct() path stays the only spawn path.
+    this.fctDriver.step(now);
 
     const deadInArena = p.dead && !!this.sim.arenaInfo?.match;
     this.setDisplay(this.deathOverlayEl, p.dead ? 'flex' : 'none');
