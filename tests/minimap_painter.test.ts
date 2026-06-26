@@ -49,6 +49,19 @@ describe('minimap_painter: no magic values (decision 12, canvas sub-rule)', () =
     expect(code.match(/getComputedStyle/g) ?? []).toHaveLength(1);
   });
 
+  it('resolves the tokens once in paintOverworld, never inside the per-marker draw loop', () => {
+    // Cadence teeth that survive a call-site MOVE (the textual getComputedStyle count
+    // alone would not catch relocating the resolve into the per-marker loop, since the
+    // string lives only at the definition site). The per-marker loop lives in
+    // drawMarkers; assert resolveColors() is called exactly once (in paintOverworld) and
+    // is never referenced inside the drawMarkers body. A runtime getComputedStyle spy is
+    // deferred to the P15b browser suite.
+    expect(code.match(/this\.resolveColors\(\)/g) ?? []).toHaveLength(1);
+    const drawMarkersBody = code.slice(code.indexOf('private drawMarkers('));
+    expect(drawMarkersBody.length).toBeGreaterThan(0);
+    expect(drawMarkersBody).not.toContain('resolveColors');
+  });
+
   it('defines every minimap color token it reads in the design-token sheet', () => {
     for (const tok of MINIMAP_COLOR_TOKENS) {
       expect(code, `painter never reads ${tok}`).toContain(tok);
