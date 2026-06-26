@@ -245,3 +245,53 @@ export type DispatchOnlyCommand = (typeof DISPATCH_ONLY_COMMANDS)[number];
 // dispatch-only extras. The typed `cmd()` send path is keyed to this, so a send
 // of any dispatch-only token is a compile error.
 export type ClientCommand = Exclude<CommandName, DispatchOnlyCommand>;
+
+// ---------------------------------------------------------------------------
+// Command facet tags (W6+). APPEND-ONLY metadata that names, for each wire
+// command, the IWorld facet whose method sends it, so the command universe is
+// discoverable by domain. Like COMMAND_NAMES this is types-as-data, not
+// player-facing copy (no t(), no DOM); it never gates the wire (COMMAND_NAMES is
+// the protocol). PARTIAL by design: each cluster slice (W6-W10) appends its
+// facet's commands, and members with no wire command (roster reads like `cfg`,
+// the HUD-read `activeLootRolls`) are deliberately absent. Keyed by ClientCommand
+// so a dispatch-only token (e.g. `targetNearest`, the RL-only Sim action) can
+// never be tagged.
+export type WorldFacet =
+  | 'IWorldEntityRoster'
+  | 'IWorldCombat'
+  | 'IWorldTargeting'
+  | 'IWorldInteraction'
+  | 'IWorldLoot'
+  | 'IWorldInventory'
+  | 'IWorldCosmetics'
+  | 'IWorldQuests'
+  | 'IWorldProgressionXp'
+  | 'IWorldTalents'
+  | 'IWorldPet'
+  | 'IWorldParty'
+  | 'IWorldTrade'
+  | 'IWorldChat'
+  | 'IWorldDuelArena'
+  | 'IWorldSocialGraph'
+  | 'IWorldMarket'
+  | 'IWorldDungeons'
+  | 'IWorldDelves'
+  | 'IWorldTelemetry';
+
+export const COMMAND_FACETS = {
+  // IWorldCombat: ability casts, auto-attack, spirit release.
+  cast: 'IWorldCombat',
+  castSlot: 'IWorldCombat',
+  attack: 'IWorldCombat',
+  stopattack: 'IWorldCombat',
+  release: 'IWorldCombat',
+  // IWorldTargeting: target selection + tab cycling.
+  target: 'IWorldTargeting',
+  tab: 'IWorldTargeting',
+  targetNearestFriendly: 'IWorldTargeting',
+  tabFriendly: 'IWorldTargeting',
+  // IWorldLoot: need-greed roll submit.
+  lootRoll: 'IWorldLoot',
+  // IWorldTelemetry: fire-and-forget metrics sink.
+  telemetry: 'IWorldTelemetry',
+} as const satisfies Partial<Record<ClientCommand, WorldFacet>>;

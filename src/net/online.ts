@@ -714,10 +714,16 @@ function blankEntity(id: number): Entity {
 }
 
 export class ClientWorld implements IWorld {
+  // --- IWorldEntityRoster: roster + player reads, mirrored from snapshots. The
+  // `player` getter lives below the ctor (it reads `entities`/`playerId`). `known`
+  // is IWorldCombat-owned but rides here as a self-wire mirror field with the rest
+  // of the roster data. ---
   cfg: { seed: number; playerClass: PlayerClass };
   entities = new Map<number, Entity>();
   playerId = -1;
   moveInput: MoveInput = emptyMoveInput();
+  known: ResolvedAbility[] = [];
+  realm = '';
   inventory: InvSlot[] = [];
   vendorBuyback: InvSlot[] = [];
   equipment: Partial<Record<EquipSlot, string>> = {};
@@ -730,7 +736,6 @@ export class ClientWorld implements IWorld {
   // Rested XP pool, mirrored from snapshot self.
   restedXp = 0;
   unlockedMilestones: string[] = [];
-  known: ResolvedAbility[] = [];
   // Talents & Specializations, mirrored from snapshot self (display + staging).
   talents: TalentAllocation = emptyAllocation();
   talentSpec: string | null = null;
@@ -758,7 +763,6 @@ export class ClientWorld implements IWorld {
   delveDaily: DelveDailyInfo = { date: '', firstClearXp: [], markClears: 0 };
   markers: Record<number, number> = {}; // entityId -> markerId, mirrored from the self-wire
   private lootRollPrompts: LootRollPrompt[] = []; // open need-greed rolls, mirrored from the self-wire
-  realm = '';
   // bumped whenever a fresh social snapshot lands, so an open panel re-renders
   private socialDirty = false;
   // snapshot interpolation
@@ -1369,6 +1373,7 @@ export class ClientWorld implements IWorld {
     return !!target && target.dead;
   }
 
+  // --- IWorldCombat: ability casts, auto-attack, spirit release ---
   castAbility(abilityId: string): void {
     if (this.deadTargetCast(this.known.find((k) => k.def.id === abilityId)?.def)) {
       this.eventQueue.push({ type: 'error', text: 'You have no target.', reason: 'target_dead' });
@@ -1376,7 +1381,6 @@ export class ClientWorld implements IWorld {
     }
     this.cmd({ cmd: 'cast', ability: abilityId });
   }
-
   castAbilityBySlot(slot: number): void {
     if (this.deadTargetCast(this.known[slot]?.def)) {
       this.eventQueue.push({ type: 'error', text: 'You have no target.', reason: 'target_dead' });
@@ -1384,7 +1388,17 @@ export class ClientWorld implements IWorld {
     }
     this.cmd({ cmd: 'castSlot', slot });
   }
+  startAutoAttack(): void {
+    this.cmd({ cmd: 'attack' });
+  }
+  stopAutoAttack(): void {
+    this.cmd({ cmd: 'stopattack' });
+  }
+  releaseSpirit(): void {
+    this.cmd({ cmd: 'release' });
+  }
 
+  // --- IWorldTargeting: target selection + tab cycling ---
   targetEntity(id: number | null): void {
     // optimistic local update for snappy UI
     const p = this.entities.get(this.playerId);
@@ -1406,11 +1420,11 @@ export class ClientWorld implements IWorld {
   friendlyTabTarget(): void {
     this.cmd({ cmd: 'tabFriendly' });
   }
-  startAutoAttack(): void {
-    this.cmd({ cmd: 'attack' });
-  }
-  stopAutoAttack(): void {
-    this.cmd({ cmd: 'stopattack' });
+
+  // --- IWorldTelemetry: fire-and-forget metrics sink ---
+  reportTelemetry(kind: string, data: Record<string, number>): void {
+    if (!this.canSendCommand()) return;
+    this.cmd({ cmd: 'telemetry', kind, ...data });
   }
   interact(): void {
     this.cmd({ cmd: 'interact' });
@@ -1418,6 +1432,7 @@ export class ClientWorld implements IWorld {
   lootCorpse(id: number): void {
     this.cmd({ cmd: 'loot', id });
   }
+  // --- IWorldLoot: need-greed roll submit + HUD reconcile read ---
   submitLootRoll(rollId: number, choice: LootRollChoice): void {
     this.cmd({ cmd: 'lootRoll', rollId, choice });
   }
@@ -1436,10 +1451,6 @@ export class ClientWorld implements IWorld {
     if (!this.canSendCommand()) return;
     this.pendingQuestCommands.set(questId, 'turnin');
     this.cmd({ cmd: 'turnin', quest: questId });
-  }
-  reportTelemetry(kind: string, data: Record<string, number>): void {
-    if (!this.canSendCommand()) return;
-    this.cmd({ cmd: 'telemetry', kind, ...data });
   }
   abandonQuest(questId: string): void {
     if (!this.canSendCommand()) return;
@@ -1516,9 +1527,6 @@ export class ClientWorld implements IWorld {
       this.cosmeticsChanged = true;
     }
     this.cmd({ cmd: 'unequip_mech_chroma', chroma: chromaId });
-  }
-  releaseSpirit(): void {
-    this.cmd({ cmd: 'release' });
   }
   chat(text: string): void {
     this.cmd({ cmd: 'chat', text });
