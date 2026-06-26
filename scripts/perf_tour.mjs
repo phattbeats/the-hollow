@@ -14,6 +14,12 @@ const SETTLE_MS = Number(process.env.PERF_SETTLE_MS ?? 600);
 const BOOT_TIMEOUT_MS = Number(process.env.PERF_BOOT_TIMEOUT_MS ?? 120000);
 const NAV_TIMEOUT_MS = Number(process.env.PERF_NAV_TIMEOUT_MS ?? 30000);
 const OUTPUT = process.env.PERF_OUT ?? path.join('tmp', `perf-tour-${new Date().toISOString().replace(/[:.]/g, '-')}.json`);
+// PERF_PRESET seeds the STATIC graphics preset before boot so the P5 applier stamps
+// data-fx-level and the per-element P14a tier knobs engage (the per-tier perf gate). Unset
+// = the app's own default (ultra). Maps the preset label to the woc_settings numeric value
+// (src/render/gfx.ts PRESET_LOW..PRESET_ULTRA).
+const PERF_PRESET = process.env.PERF_PRESET ?? null;
+const PRESET_VALUES = { low: 1, medium: 2, high: 3, ultra: 4 };
 
 const THRESHOLDS = {
   maxFrameP95: numberEnv('PERF_MAX_FRAME_P95'),
@@ -197,7 +203,13 @@ async function fctBurstBoundedNodes(page) {
       const pid = g.sim?.playerId ?? g.sim?.player?.id;
       if (pid == null || !g.hud?.handleEvents) return -1;
       const evs = [];
-      for (let i = 0; i < n; i++) evs.push({ type: 'heal', targetId: pid, amount: 1000 + i });
+      // Crit damage-taken events: P14a's drop-non-crit (low tier) sheds only NON-crit
+      // floaters, so a CRIT burst is kept on every tier and exercises the live pool cap
+      // (FCT_POOL_CAP at the full tiers, the tighter cap at low) rather than being dropped
+      // entirely. Self-sourced (sourceId === targetId === player) so both the src and tgt
+      // lookups resolve in the spawn path, with no missing-entity edge case.
+      for (let i = 0; i < n; i++)
+        evs.push({ type: 'damage', sourceId: pid, targetId: pid, amount: 1000 + i, crit: true });
       g.hud.handleEvents(evs);
       // Count in the same synchronous tick: the flood just filled + FIFO-evicted to the cap,
       // before the next rAF runs step() (which only recycles on TTL, never grows the pool).
@@ -429,6 +441,24 @@ function budgetFailures(summary) {
 
 async function runViewport(browser, viewport) {
   const page = await browser.newPage();
+  if (PERF_PRESET) {
+    const presetValue = PRESET_VALUES[PERF_PRESET];
+    if (!presetValue) {
+      throw new Error(`Unknown PERF_PRESET=${PERF_PRESET}; use low, medium, high, or ultra.`);
+    }
+    // Seed the STATIC graphics preset into woc_settings before any app script runs, so the
+    // applier resolves it on boot and the P14a HUD tier knobs read the right data-fx-level.
+    await page.evaluateOnNewDocument((value) => {
+      try {
+        const key = 'woc_settings';
+        const cur = JSON.parse(localStorage.getItem(key) ?? '{}');
+        cur.graphicsPreset = value;
+        localStorage.setItem(key, JSON.stringify(cur));
+      } catch {
+        /* storage unavailable */
+      }
+    }, presetValue);
+  }
   const errors = [];
   const ignoredConsoleErrors = [];
   page.on('pageerror', (e) => errors.push(`PAGEERROR: ${e.message}`));
