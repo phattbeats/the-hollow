@@ -764,7 +764,13 @@ export class ClientWorld implements IWorld {
   // --- IWorldSocialGraph: persistent friends/blocks/guild, set ONLY by the
   // `social`/`socialpos` frames (there is no `s.social` snapshot field). ---
   socialInfo: SocialInfo | null = null;
+  // --- IWorldMarket: World Market view, mirrored from the snapshot self
+  // (`s.market`, delta-omitted). ---
   marketInfo: MarketInfo | null = null;
+  // --- IWorldDelves: active delve run + companion + marks/upgrades + daily, all
+  // mirrored from the snapshot self (delta-omitted). lockpickState is the exception:
+  // it has NO snapshot field and is rebuilt from the lockpick* events by the private
+  // applyLockpickEvent. delveClears is a NON-IWorld mirror behind delveShopOffers. ---
   delveRun: DelveRunInfo | null = null;
   companionState: DelveCompanionInfo | null = null;
   // Lockpicking: rebuilt from the lockpick* events (there is no snapshot field).
@@ -1742,6 +1748,8 @@ export class ClientWorld implements IWorld {
       return [];
     }
   }
+  // --- IWorldMarket: World Market browse/list/buy/cancel/collect command sends
+  // (snake_case wire strings). marketInfo is a snapshot read (mirror field above). ---
   marketSearch(query: string): void {
     this.cmd({ cmd: 'market_search', q: query });
   }
@@ -1757,12 +1765,34 @@ export class ClientWorld implements IWorld {
   marketCollect(): void {
     this.cmd({ cmd: 'market_collect' });
   }
+  // --- IWorldDungeons: dungeon enter/leave sends + the raid-lockout countdown read.
+  // selfLockouts mirrors the snapshot `s.lockouts`; raidLockouts derives the live
+  // countdown locally so it ticks without traffic. enter_crypt/leave_crypt are legacy
+  // dispatch-only aliases ClientWorld never sends (the enterCrypt/leaveCrypt helpers
+  // below just forward to enterDungeon/leaveDungeon). ---
   enterDungeon(dungeonId: string): void {
     this.cmd({ cmd: 'enter_dungeon', dungeon: dungeonId });
   }
   leaveDungeon(): void {
     this.cmd({ cmd: 'leave_dungeon' });
   }
+  // Raid lockouts mirrored from snapshot self as {dungeonId: expiryEpochMs}; the
+  // remaining time is derived locally so the countdown ticks down without traffic.
+  private selfLockouts: Record<string, number> = {};
+  raidLockouts(): RaidLockout[] {
+    const now = Date.now();
+    const src = this.selfLockouts ?? {};
+    const out: RaidLockout[] = [];
+    for (const id of Object.keys(src)) {
+      const msRemaining = src[id] - now;
+      if (msRemaining > 0) out.push({ id, msRemaining });
+    }
+    return out;
+  }
+  // --- IWorldDelves: delve enter/leave + interact + companion-upgrade + Marks-vendor
+  // buy + lockpick lifecycle + chest collect. delveShopOffers is a pure client read
+  // from the delveClears mirror (no command). lockpickState rides no snapshot field;
+  // the private applyLockpickEvent below rebuilds it from the lockpick* events. ---
   enterDelve(delveId: string, tierId: string): void {
     this.cmd({ cmd: 'enter_delve', delveId, tierId });
   }
@@ -1827,19 +1857,6 @@ export class ClientWorld implements IWorld {
     } else if (ev.type === 'lockpickEnd') {
       if (this.lockpickState?.sessionId === ev.sessionId) this.lockpickState = null;
     }
-  }
-  // Raid lockouts mirrored from snapshot self as {dungeonId: expiryEpochMs}; the
-  // remaining time is derived locally so the countdown ticks down without traffic.
-  private selfLockouts: Record<string, number> = {};
-  raidLockouts(): RaidLockout[] {
-    const now = Date.now();
-    const src = this.selfLockouts ?? {};
-    const out: RaidLockout[] = [];
-    for (const id of Object.keys(src)) {
-      const msRemaining = src[id] - now;
-      if (msRemaining > 0) out.push({ id, msRemaining });
-    }
-    return out;
   }
   // --- IWorldProgressionXp: lifetime-XP leaderboard (REST GET, no wire command) +
   // the opt-in prestige action (cmd 'prestige'). The XP/milestone reads ride the

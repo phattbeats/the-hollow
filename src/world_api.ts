@@ -368,4 +368,31 @@ export const COMMAND_FACETS = {
   guild_demote: 'IWorldSocialGraph',
   guild_transfer: 'IWorldSocialGraph',
   guild_disband: 'IWorldSocialGraph',
+  // IWorldMarket: World Market browse/list/buy/cancel/collect (snake_case wire
+  // strings, by design). marketInfo is a snapshot read (no send, untagged).
+  market_search: 'IWorldMarket',
+  market_list: 'IWorldMarket',
+  market_buy: 'IWorldMarket',
+  market_cancel: 'IWorldMarket',
+  market_collect: 'IWorldMarket',
+  // IWorldDungeons: dungeon enter/leave. raidLockouts is a snapshot-derived read
+  // (no send, untagged). enter_crypt/leave_crypt are legacy dispatch-only aliases
+  // (untagged; on the DISPATCH_ONLY_COMMANDS allowlist), NOT IWorldDungeons.
+  enter_dungeon: 'IWorldDungeons',
+  leave_dungeon: 'IWorldDungeons',
+  // IWorldDelves: delve enter/leave + interact + companion upgrade + Marks-vendor buy
+  // + lockpick lifecycle + chest collect. Note the wire-name skew: delveBuyShopItem
+  // sends `delve_buy`, so the tag is keyed on the WIRE string `delve_buy`. The reads
+  // delveShopOffers (pure client compute from the dclears mirror), lockpickState
+  // (event-rebuilt), delveRun/companionState/delveMarks/companionUpgrades/delveDaily
+  // (snapshot reads) carry no command and stay untagged.
+  enter_delve: 'IWorldDelves',
+  leave_delve: 'IWorldDelves',
+  delve_interact: 'IWorldDelves',
+  companion_upgrade: 'IWorldDelves',
+  delve_buy: 'IWorldDelves',
+  lockpick_engage: 'IWorldDelves',
+  lockpick_action: 'IWorldDelves',
+  lockpick_abort: 'IWorldDelves',
+  collect_delve_chest_loot: 'IWorldDelves',
 } as const satisfies Partial<Record<ClientCommand, WorldFacet>>;

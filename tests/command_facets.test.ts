@@ -211,3 +211,74 @@ describe('command facet tags (W9)', () => {
     expect('socialInfo' in tags).toBe(false);
   });
 });
+
+// W10: append the market + dungeons + delves cluster's tags. The table-consistency
+// invariants in the W6 block above (no orphan tag, no dispatch-only leak) already
+// cover these new entries; this block pins the exact facet per W10 command and that
+// the non-command reads stay untagged. The wire-name skew matters: delveBuyShopItem
+// sends `delve_buy`, so the tag is keyed on the WIRE string `delve_buy`, never
+// `delve_buy_shop_item`. enter_crypt/leave_crypt stay dispatch-only (untagged).
+// Append-only: never edit a tag.
+const W10_TAGS: Readonly<Record<string, string>> = {
+  market_search: 'IWorldMarket',
+  market_list: 'IWorldMarket',
+  market_buy: 'IWorldMarket',
+  market_cancel: 'IWorldMarket',
+  market_collect: 'IWorldMarket',
+  enter_dungeon: 'IWorldDungeons',
+  leave_dungeon: 'IWorldDungeons',
+  enter_delve: 'IWorldDelves',
+  leave_delve: 'IWorldDelves',
+  delve_interact: 'IWorldDelves',
+  companion_upgrade: 'IWorldDelves',
+  delve_buy: 'IWorldDelves',
+  lockpick_engage: 'IWorldDelves',
+  lockpick_action: 'IWorldDelves',
+  lockpick_abort: 'IWorldDelves',
+  collect_delve_chest_loot: 'IWorldDelves',
+};
+
+describe('command facet tags (W10)', () => {
+  const tags = COMMAND_FACETS as Readonly<Record<string, string>>;
+
+  it('tags every W10 market/dungeons/delves command with its facet', () => {
+    for (const [cmd, facet] of Object.entries(W10_TAGS)) {
+      expect(tags[cmd], `facet tag for '${cmd}'`).toBe(facet);
+    }
+  });
+
+  it('tags delveBuyShopItem by its WIRE string delve_buy (not the method name)', () => {
+    expect(tags['delve_buy']).toBe('IWorldDelves');
+    expect('delve_buy_shop_item' in tags).toBe(false);
+    expect('delveBuyShopItem' in tags).toBe(false);
+  });
+
+  it('preserves the snake_case market/delve wire strings (never normalized to camelCase)', () => {
+    expect('market_search' in tags).toBe(true);
+    expect('enter_dungeon' in tags).toBe(true);
+    expect('collect_delve_chest_loot' in tags).toBe(true);
+    expect('marketSearch' in tags).toBe(false);
+    expect('enterDungeon' in tags).toBe(false);
+  });
+
+  it('does not tag enter_crypt/leave_crypt (dispatch-only legacy aliases, not IWorldDungeons)', () => {
+    expect('enter_crypt' in tags).toBe(false);
+    expect('leave_crypt' in tags).toBe(false);
+  });
+
+  it('does not tag the command-less reads (marketInfo/raidLockouts/delveShopOffers/lockpickState/delveRun/companionState/delveMarks/companionUpgrades/delveDaily)', () => {
+    for (const read of [
+      'marketInfo',
+      'raidLockouts',
+      'delveShopOffers',
+      'lockpickState',
+      'delveRun',
+      'companionState',
+      'delveMarks',
+      'companionUpgrades',
+      'delveDaily',
+    ]) {
+      expect(read in tags, `${read} should be untagged (no wire command)`).toBe(false);
+    }
+  });
+});
