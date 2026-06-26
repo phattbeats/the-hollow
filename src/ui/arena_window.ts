@@ -80,14 +80,23 @@ export class ArenaWindow {
     }
     this.deps.closeOthers();
     this.openerFocus = this.deps.captureFocus();
-    this.deps.root().style.display = 'block';
+    const root = this.deps.root();
+    // WCAG 2.2 AA (P15b): the focus-trapped root's dialog identity is a STATIC property
+    // of the (stable, never-replaced) root node, so set it ONCE here on open rather than
+    // re-writing it inside render(), which the 250ms mediumHud band repeats while the
+    // window is open. The innerHTML rebuilds in render() only replace the children.
+    root.setAttribute('role', 'dialog');
+    root.setAttribute('aria-modal', 'false');
+    root.setAttribute('aria-labelledby', 'arena-title');
+    root.setAttribute('tabindex', '-1');
+    root.style.display = 'block';
     this.lastSig = '';
     this.fetchLeaderboard(this.bracket);
     this.render();
-    // WCAG 2.2 AA (P15b): move keyboard focus into the freshly opened window (onto
-    // the close button), matching the sibling cold windows, so a keyboard user is not
-    // left on the opener while the focus trap is active.
-    (this.deps.root().querySelector('[data-close]') as HTMLElement | null)?.focus();
+    // Move keyboard focus into the freshly opened window (onto the close button),
+    // matching the sibling cold windows, so a keyboard user is not left on the opener
+    // while the focus trap is active.
+    (root.querySelector('[data-close]') as HTMLElement | null)?.focus();
   }
 
   close(): void {
@@ -123,13 +132,9 @@ export class ArenaWindow {
   render(): void {
     const world = this.deps.world();
     const el = this.deps.root();
-    // WCAG 2.2 AA (P15b): name the focus-trapped root via its title. Set on the own
-    // element each render (idempotent; innerHTML below replaces only the children),
-    // ahead of the sig-skip early return so the first paint always carries it.
-    el.setAttribute('role', 'dialog');
-    el.setAttribute('aria-modal', 'false');
-    el.setAttribute('aria-labelledby', 'arena-title');
-    el.setAttribute('tabindex', '-1');
+    // The dialog role / aria-modal / aria-labelledby / tabindex are set ONCE in toggle()
+    // on open (the root is stable across renders), not here, so the 250ms mediumHud
+    // re-render does not re-write them every tick.
     const view = buildArenaView({
       info: world.arenaInfo,
       selectedBracket: this.bracket,
