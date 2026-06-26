@@ -508,3 +508,157 @@ export interface IWorld {
   switchLoadout(index: number): void;
   deleteLoadout(index: number): void;
 }
+
+// ---------------------------------------------------------------------------
+// Command schema (W0b): the shared wire-token vocabulary.
+//
+// COMMAND_NAMES is the canonical command universe: every entry is byte-identical
+// to a `case 'X':` label in `server/game.ts` dispatchMessage and to a `cmd:'X'`
+// literal that `src/net/online.ts` (ClientWorld) sends. Both files import this
+// single table so the command-schema lockstep invariant has one source of truth:
+// every ClientWorld send is provably a token the server dispatches.
+//
+// APPEND-ONLY: the wire string IS the protocol. Never rename or remove a token
+// (that is a breaking protocol change); the table only ever grows, with new
+// tokens added at the end. These literals are the one blessed string set in this
+// otherwise string-free seam: they are types-as-data (no t(), no DOM), not
+// player-facing copy.
+//
+// NOTE: this is the protocol vocabulary, deliberately not derived from any per
+// command method name, because the wire tokens (`pinvite`, `qlinkaccept`,
+// `unequip_item`, ...) intentionally differ from the IWorld member names.
+export const COMMAND_NAMES = [
+  'castSlot',
+  'cast',
+  'target',
+  'tab',
+  'targetNearest',
+  'tabFriendly',
+  'targetNearestFriendly',
+  'attack',
+  'stopattack',
+  'interact',
+  'loot',
+  'lootRoll',
+  'pickup',
+  'accept',
+  'turnin',
+  'abandon',
+  'qlinkaccept',
+  'equip',
+  'unequip_item',
+  'use',
+  'discard',
+  'buy',
+  'sell',
+  'buyback',
+  'sell_all_junk',
+  'change_skin',
+  'unequip_mech_chroma',
+  'claim_event_skin',
+  'release',
+  'challengeResponse',
+  'chat',
+  'emote',
+  'pinvite',
+  'paccept',
+  'pdecline',
+  'pleave',
+  'pkick',
+  'praid',
+  'punraid',
+  'pmoveRaid',
+  'setMarker',
+  'clearMarker',
+  'pet_abandon',
+  'pet_rename',
+  'pet_revive',
+  'pet_attack',
+  'pet_taunt',
+  'pet_auto_taunt',
+  'pet_feed',
+  'pet_heal',
+  'pet_mode',
+  'trade_req',
+  'trade_accept',
+  'trade_offer',
+  'trade_confirm',
+  'trade_cancel',
+  'duel_req',
+  'duel_accept',
+  'duel_decline',
+  'friend_add',
+  'friend_remove',
+  'block_add',
+  'block_remove',
+  'social_refresh',
+  'guild_create',
+  'guild_invite',
+  'guild_accept',
+  'guild_decline',
+  'guild_leave',
+  'guild_kick',
+  'guild_promote',
+  'guild_demote',
+  'guild_transfer',
+  'guild_disband',
+  'arena_queue',
+  'arena_leave',
+  'arena_augment',
+  'prestige',
+  'applyTalents',
+  'respec',
+  'setSpec',
+  'saveLoadout',
+  'switchLoadout',
+  'deleteLoadout',
+  'market_search',
+  'market_list',
+  'market_buy',
+  'market_cancel',
+  'market_collect',
+  'dev_level',
+  'dev_teleport',
+  'dev_give',
+  'enter_crypt',
+  'enter_dungeon',
+  'leave_crypt',
+  'leave_dungeon',
+  'enter_delve',
+  'leave_delve',
+  'delve_interact',
+  'companion_upgrade',
+  'delve_buy',
+  'lockpick_engage',
+  'lockpick_action',
+  'lockpick_abort',
+  'collect_delve_chest_loot',
+  'telemetry',
+] as const;
+
+// The union both the send path (`online.ts`) and the dispatch switch
+// (`game.ts`) reference.
+export type CommandName = (typeof COMMAND_NAMES)[number];
+
+// Dispatch-only extras: commands the server routes but ClientWorld never sends.
+// `dev_*` are env-gated cheats (ALLOW_DEV_COMMANDS, never production);
+// `enter_crypt`/`leave_crypt` are legacy aliases that fall through to the
+// dungeon cases; `social_refresh` is a server-push refresh path; `targetNearest`
+// is called directly on the Sim by the headless RL action layer, never over the
+// wire. Each must be a member of COMMAND_NAMES (the `satisfies` enforces it).
+export const DISPATCH_ONLY_COMMANDS = [
+  'dev_level',
+  'dev_teleport',
+  'dev_give',
+  'enter_crypt',
+  'leave_crypt',
+  'social_refresh',
+  'targetNearest',
+] as const satisfies readonly CommandName[];
+
+export type DispatchOnlyCommand = (typeof DISPATCH_ONLY_COMMANDS)[number];
+
+// The tokens ClientWorld is allowed to send: the full vocabulary minus the
+// dispatch-only extras. The typed `cmd()` send path is keyed to this, so a send
+// of any dispatch-only token is a compile error.
+export type ClientCommand = Exclude<CommandName, DispatchOnlyCommand>;

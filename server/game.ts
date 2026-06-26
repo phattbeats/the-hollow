@@ -17,7 +17,7 @@ import {
   RUN_SPEED,
   type SimEvent,
 } from '../src/sim/types';
-import { isOverheadEmoteId } from '../src/world_api';
+import { type CommandName, isOverheadEmoteId } from '../src/world_api';
 import { recordOnlineSample } from './admin_db';
 import { offensiveName } from './auth';
 import type { BotDetector, BotTrackingContext } from './bot_detector/contract';
@@ -1399,7 +1399,15 @@ export class GameServer {
       receivedAtMs,
       msg,
     );
-    switch (msg.cmd) {
+    // W0b command-schema lockstep: cast the untyped wire token to the shared
+    // CommandName union so tsc proves every `case` label below is a member of
+    // COMMAND_NAMES (a typo or out-of-table token is a compile error) and that
+    // the switch covers the whole vocabulary (the `never` assignment in
+    // `default` reddens if a token is missing). Unknown wire input is not a
+    // CommandName at runtime; it still falls through to `default` and is flagged
+    // as a protocol anomaly, exactly as before.
+    const command = msg.cmd as CommandName;
+    switch (command) {
       case 'castSlot':
         sim.castAbilityBySlot(msg.slot | 0, pid);
         break;
@@ -1968,13 +1976,20 @@ export class GameServer {
       // client telemetry should not be considered as unknown command. Used for offline stats computing.
       case 'telemetry':
         break;
-      default:
+      default: {
+        // Exhaustiveness guard: `command` is `never` here when the cases above
+        // cover every CommandName. At runtime an unrecognised wire token lands
+        // in this branch (the cast above is the deliberate boundary) and is
+        // reported as a protocol anomaly, unchanged from before.
+        const _exhaustive: never = command;
+        void _exhaustive;
         this.botDetector.observeProtocolAnomaly(
           session.botTrackingContext,
           'unknown_command',
           raw,
           receivedAtMs,
         );
+      }
     }
   }
 
