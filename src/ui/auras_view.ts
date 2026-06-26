@@ -107,9 +107,11 @@ export interface AurasDeps {
  *  pool by `key` and copies `name`/`remaining` into a LIVE pooled record the tooltip
  *  reads. */
 export interface AuraSlotState {
-  /** The pool key: the aura id. Aura ids are unique per entity (the sim refreshes an
-   *  existing aura rather than adding a second, and stacking uses `stacks`), so the id
-   *  is a stable per-aura-instance key. */
+  /** The pool BASE key: the aura id. Stable per logical aura across frames. NOTE the id
+   *  is NOT unique per entity: the sim dedups by id+sourceId (sim.ts), so one entity can
+   *  carry several auras sharing an ability id from different sources (two casters' same
+   *  DoT, two healers' same HoT). The painter disambiguates same-id duplicates within a
+   *  frame onto distinct nodes (auras_painter.ts), so the core leaves the base id here. */
   key: string;
   /** The icon identity the painter resolves + elides by. */
   iconKey: string;

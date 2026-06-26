@@ -35,6 +35,14 @@ const DEBUFF_CLASS = 'debuff';
 const DUR_CLASS = 'dur';
 const STACKS_CLASS = 'stacks';
 const BACKGROUND_IMAGE_PROP = 'background-image';
+// Pool-key separator for same-id auras. The core keys a slot by the aura id, but one
+// entity can legitimately carry several auras with the SAME id from different sources
+// (the sim dedups by id+sourceId, sim.ts), and the online wire zeroes sourceId, so the
+// id alone is NOT a unique pool key. When a base key repeats within a frame, the painter
+// suffixes the running occurrence index after this separator so each duplicate keeps its
+// own persistent node. Aura ids are lowercase identifiers (e.g. nythraxis_soul_rend,
+// `${ability.id}_stun`), so '#' cannot collide with a real id.
+const DUP_KEY_SEP = '#';
 // The stacks badge persists in the DOM; only its display toggles. '' reverts to the
 // stylesheet display (shown), 'none' hides it (byte-faithful to the old site, which
 // appended the badge only when stacks > 1).
@@ -106,11 +114,22 @@ export class AurasPainter {
     this.ordered.length = 0;
     for (let i = 0; i < count; i++) {
       const s = slots[i];
-      let rec = this.pool.get(s.key);
+      // Resolve the pool key. The common case (a unique aura id this frame) takes the
+      // base key directly. If the base key is already claimed THIS frame, this is a
+      // second (or later) aura sharing the ability id from a different source; probe
+      // suffixed keys so each gets its own persistent node (byte-faithful to the old
+      // one-div-per-aura render). The suffix is stable while the duplicate set is, so a
+      // steady-state frame still moves no node; the no-duplicate path never concatenates.
+      let key = s.key;
+      let rec = this.pool.get(key);
+      for (let dup = 1; rec && rec.seen === this.frame; dup++) {
+        key = `${s.key}${DUP_KEY_SEP}${dup}`;
+        rec = this.pool.get(key);
+      }
       if (!rec) {
         rec = this.free.pop() ?? this.createNode();
-        rec.key = s.key;
-        this.pool.set(s.key, rec);
+        rec.key = key;
+        this.pool.set(key, rec);
       }
       // Update the LIVE fields the tooltip reads BEFORE any DOM write, so a node
       // recycled to a different aura never renders the previous aura (Top risk 3).
@@ -136,12 +155,15 @@ export class AurasPainter {
       this.ordered.push(rec);
     }
     // Recycle records whose aura left this frame: detach to the free list (the node's
-    // tooltip closure stays attached for reuse), so we never innerHTML-wipe.
-    for (const [key, rec] of this.pool) {
+    // tooltip closure stays attached for reuse), so we never innerHTML-wipe. Iterate
+    // `.values()` (not entries) and delete by the record's own `key`: a Map tolerates
+    // deleting the current entry mid-iteration, and this avoids the per-entry [key, rec]
+    // tuple the `for (const [k, v] of map)` form allocates every frame on this hot path.
+    for (const rec of this.pool.values()) {
       if (rec.seen !== this.frame) {
         rec.el.remove();
         this.free.push(rec);
-        this.pool.delete(key);
+        this.pool.delete(rec.key);
       }
     }
     this.reconcileOrder();

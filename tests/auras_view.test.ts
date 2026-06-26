@@ -101,6 +101,21 @@ describe('createAurasView: derivation per mode', () => {
     expect(debuffs.slots.slice(0, 2).map((s) => s.key)).toEqual(['rend', 'sunder']);
   });
 
+  it('emits one slot PER aura even when two share an id (no core-side dedup)', () => {
+    // The sim dedups by id+sourceId, so one entity can carry two auras with the same id
+    // from different sources. The core must NOT collapse them (that is the painter's job,
+    // by per-frame occurrence): it emits a slot per aura so the painter can disambiguate.
+    const state = createAurasView('all', deps()).tick(
+      entity([
+        aura({ id: 'corruption', name: 'A', kind: 'dot', remaining: 6 }),
+        aura({ id: 'corruption', name: 'B', kind: 'dot', remaining: 12 }),
+      ]),
+    );
+    expect(state.count).toBe(2);
+    expect(state.slots.slice(0, 2).map((s) => s.key)).toEqual(['corruption', 'corruption']);
+    expect(state.slots.slice(0, 2).map((s) => s.name)).toEqual(['name:A', 'name:B']);
+  });
+
   it('derives icon key, debuff flag, duration text, stacks text, name, and remaining', () => {
     const state = createAurasView('all', deps()).tick(
       entity([

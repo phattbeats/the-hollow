@@ -19,9 +19,7 @@ describe('AurasPainter: no raw DOM writes, no magic values (decisions 5a / 12)',
   const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
 
   it('makes no raw style / textContent / classList / setAttribute / setProperty / innerHTML write', () => {
-    // createNode legitimately sets .className once on the pooled node (the structural
-    // base class) + appendChild for its children; everything per-frame routes through
-    // the facet. So .className may appear once (the base), but no per-frame raw writers.
+    // Everything per-frame routes through the facet; no raw single-slot writers.
     expect(code).not.toMatch(/\.style\b/);
     expect(code).not.toMatch(/\.textContent\b/);
     expect(code).not.toMatch(/\.classList\b/);
@@ -31,6 +29,11 @@ describe('AurasPainter: no raw DOM writes, no magic values (decisions 5a / 12)',
     // No listener churn in the hot painter: the tooltip attaches once in createNode via
     // the injected helper, never addEventListener directly + never per frame.
     expect(code).not.toMatch(/addEventListener/);
+    // .className is set EXACTLY 3 times, all in createNode (the pooled node + its .dur /
+    // .stacks children, set once at build). Pinning the count gives the guard teeth: the
+    // debuff state must flow through toggleClass, so any per-frame raw `rec.el.className =`
+    // write (the shape the old inline code used) would push this above 3 and fail here.
+    expect(code.match(/\.className\b/g) ?? []).toHaveLength(3);
   });
 
   it('carries no literal hex / rgb / px value', () => {
@@ -238,6 +241,61 @@ describe('AurasPainter: keyed pool over the elided writers', () => {
     expect(reordered[0]).toBe(c);
     expect(reordered[1]).toBe(a);
     expect(reordered[2]).toBe(b);
+  });
+
+  it('detaches only the departed node on a PARTIAL departure, keeping the rest in order', () => {
+    // One of several auras leaves (a -> still here, b -> gone, c -> still here). The
+    // detach sweep must remove exactly b (recycle it to the free list) and leave a + c
+    // in place, then recycle b's freed node to a new aura d. This exercises deleting a
+    // non-last map entry mid-iteration (the values()-iteration detach path).
+    painter.paint(state([slot({ key: 'a' }), slot({ key: 'b' }), slot({ key: 'c' })]));
+    const [a, b, c] = nodes();
+    painter.paint(state([slot({ key: 'a' }), slot({ key: 'c' })]));
+    expect(nodes()).toHaveLength(2);
+    expect(nodes()[0]).toBe(a);
+    expect(nodes()[1]).toBe(c);
+    expect(b.parentNode).toBe(null); // b detached, not orphaned in the container
+    // d recycles b's freed node (no new node allocated), proving the free list took it.
+    painter.paint(state([slot({ key: 'a' }), slot({ key: 'c' }), slot({ key: 'd' })]));
+    const after = nodes();
+    expect(after).toHaveLength(3);
+    expect(after[2]).toBe(b); // b's node reused for d
+    expect(tooltips.attached).toHaveLength(3); // a, b, c built once; d reused b's node
+  });
+
+  it('renders two NODES for two auras sharing an id from different sources (no collapse)', () => {
+    // The sim dedups auras by id+sourceId, so one entity can carry two auras with the
+    // same ability id from different casters (e.g. two warlocks' Corruption on a boss,
+    // or two healers' same shield on the player). The old renderAuras appended one .buff
+    // per aura, so the pool must NOT collapse same-id auras onto one node (the wire also
+    // zeroes sourceId, so disambiguation is by per-frame occurrence, not the composite).
+    painter.paint(
+      state([
+        slot({ key: 'corruption', name: 'Corruption A', remaining: 6 }),
+        slot({ key: 'corruption', name: 'Corruption B', remaining: 12 }),
+      ]),
+    );
+    expect(nodes()).toHaveLength(2);
+    expect(tooltips.attached).toHaveLength(2);
+    // Each node's tooltip reads its OWN aura's live data (no collapse to the second).
+    expect(tooltips.attached[0].html()).toBe('Corruption A|6');
+    expect(tooltips.attached[1].html()).toBe('Corruption B|12');
+    // Steady state: the same two auras next frame reuse the SAME two nodes, no churn.
+    const [a, b] = nodes();
+    const moves = container._mutations;
+    painter.paint(
+      state([
+        slot({ key: 'corruption', name: 'Corruption A', remaining: 5 }),
+        slot({ key: 'corruption', name: 'Corruption B', remaining: 11 }),
+      ]),
+    );
+    expect(nodes()[0]).toBe(a);
+    expect(nodes()[1]).toBe(b);
+    expect(container._mutations).toBe(moves);
+    // When one of the duplicates leaves, the survivor keeps a node and the other detaches.
+    painter.paint(state([slot({ key: 'corruption', name: 'Corruption A', remaining: 4 })]));
+    expect(nodes()).toHaveLength(1);
+    expect(nodes()[0].childNodes).toHaveLength(2); // a real pooled node, not orphaned
   });
 
   it('routes EVERY per-frame write through the elided writers', () => {
