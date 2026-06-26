@@ -636,4 +636,48 @@ describe('coverage: each scenario fires its subsystem', () => {
     // the anti-abuse cap held: rank is exactly 1, never inflated by the second call.
     expect((rec.sim as any).prestigeRank).toBe(1);
   });
+
+  it('player_trade: items + copper swap both ways; cancel + drift sweep clear the session', () => {
+    const rec = run('player_trade');
+    const sim = rec.sim as any;
+    const a = rec.notes.a as number;
+    const b = rec.notes.b as number;
+    // atomic swap moved goods + coin both directions.
+    expect(sim.countItem('wolf_fang', a)).toBe(1); // 3 - 2
+    expect(sim.countItem('wolf_fang', b)).toBe(2);
+    expect(sim.countItem('baked_bread', a)).toBe(1);
+    expect(sim.countItem('baked_bread', b)).toBe(1); // 2 - 1
+    expect(sim.players.get(a)?.copper).toBe(80); // 100 - 30 + 10
+    expect(sim.players.get(b)?.copper).toBe(70); // 50 - 10 + 30
+    // every session ended cleared (swap close + explicit cancel + drift sweep).
+    expect(sim.tradeFor(a)).toBe(null);
+    expect(sim.tradeFor(b)).toBe(null);
+    const ev = rec.allEvents as Ev[];
+    expect(ev.some((e) => e.type === 'tradeDone')).toBe(true);
+    // 'Trade cancelled.' fires twice per cancel (both pids): the explicit cancel
+    // and the out-of-range drift cancel each emit it.
+    expect(
+      ev.filter((e) => e.type === 'log' && e.text === 'Trade cancelled.').length,
+    ).toBeGreaterThanOrEqual(4);
+  });
+
+  it('chat_social: channels route, whisper round-trips, emotes broadcast, throttle fires', () => {
+    const rec = run('chat_social');
+    const ev = rec.allEvents as Ev[];
+    const a = rec.notes.a as number;
+    const b = rec.notes.b as number;
+    const chats = ev.filter((e) => e.type === 'chat');
+    // each channel delivered at least one chat event.
+    for (const ch of ['say', 'yell', 'party', 'general', 'world', 'lfg', 'whisper', 'emote']) {
+      expect(chats.some((e) => e.channel === ch), `no ${ch} chat`).toBe(true);
+    }
+    // whisper round-trip: a -> b then the /r reply resolves back to a.
+    expect(chats.some((e) => e.channel === 'whisper' && e.from === 'Aleph' && e.pid === b)).toBe(true);
+    expect(chats.some((e) => e.channel === 'whisper' && e.from === 'Bet' && e.pid === a)).toBe(true);
+    // token-bucket throttle fired once c exhausted its burst.
+    expect(
+      ev.filter((e) => e.type === 'error' && e.text === 'You are sending messages too quickly.')
+        .length,
+    ).toBeGreaterThanOrEqual(1);
+  });
 });

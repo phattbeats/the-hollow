@@ -762,7 +762,8 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
   // C5 -> src/sim/combat/auto_attack.ts (the "Auto Shot"/"Wand" swing labels + the
   // "Invalid attack target." error),
   // A1+ -> src/sim/social/*.ts (the party machine, later duel/arena/fiesta/
-  // markers), G1a -> src/sim/progression/talents.ts (talent validation toasts),
+  // markers, and G2's player-trade toasts + chat /join /leave notices; the social/*
+  // glob below picks all of them up), G1a -> src/sim/progression/talents.ts (talent validation toasts),
   // G1b -> src/sim/progression/xp.ts (the "You have prestiged!" gold log emit),
   // M2 -> src/sim/mob/locomotion.ts (the boss "unleashes" lines), M3 ->
   // src/sim/mob/mob_swing.ts (the knockback "unleashes" line), M4 ->

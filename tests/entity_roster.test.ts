@@ -107,6 +107,9 @@ function makeCtx() {
     delvePetStash: new Map(),
     utcDay: '',
     pendingMobRespawns: [],
+    partyInvites: new Map(),
+    chatTokens: new Map(),
+    channelSubs: new Map(),
     emit,
     error: vi.fn(),
     clearEntityMarker,
@@ -229,7 +232,7 @@ function makeCtx() {
     // delveDetectMult stubbed above (C1/M2/C3) - deduped here.
     partyMembersForKey: vi.fn(() => []),
     addItem: vi.fn(),
-    removeItem: vi.fn(),
+    // removeItem stubbed above (P1b inventory-hub helper) - deduped.
     spawnBossAdds: vi.fn(),
     tradeFor: vi.fn(() => null),
     duelFor: vi.fn(() => null),
@@ -265,6 +268,9 @@ function makeCtx() {
     // P1a pet-AI stub (effectiveAttackPower/isHostileTo already stubbed above; deduped).
     // C5 auto-attack consumes aggroMob/swingIntervalMult, already stubbed above (M2; deduped).
     syncPetAspect: vi.fn(),
+    // G2 social plumbing (hasPendingSocialInvite already stubbed above; deduped).
+    setPlayerLevel: vi.fn(),
+    notice: vi.fn(),
   };
   const ctx = createSimContext(host);
   return {

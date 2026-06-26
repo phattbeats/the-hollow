@@ -179,6 +179,8 @@ import * as companionMod from './delves/companion';
 import * as lockpickMod from './delves/lockpick_controller';
 import { Market, MARKET_MAX_LISTINGS, type MarketListing, type MarketSave } from './market';
 import * as runsMod from './delves/runs';
+import * as chatMod from './social/chat';
+import * as tradeMod from './social/trade';
 import { createSimContext, type SimContext, type SimContextHost } from './sim_context';
 // Re-export so server/db.ts's `import type { MarketSave } from '../src/sim/sim'`
 // stays valid now that the type lives in market.ts.
@@ -393,9 +395,11 @@ const PVP_FEAR_DR_RESET = 60;
 const PVP_CC_DR_MULTIPLIERS = [1, 0.5, 0.25] as const;
 const PVP_POLYMORPH_DR_DURATIONS = [10, 5, 1] as const;
 const PVP_FEAR_DR_DURATIONS = [8, 4, 2, 1] as const;
-const SAY_RANGE = 25; // /say carries a short distance; /yell across a camp
+// Exported for social/chat.ts (broadcastEmote) + the /roll say/yell ranges; the in-sim
+// say/yell distance checks read it too. /say carries a short distance; /yell across a camp.
+export const SAY_RANGE = 25;
 const YELL_RANGE = 100;
-const OVERHEAD_EMOTE_DURATION = 3.2;
+// OVERHEAD_EMOTE_DURATION moved to social/chat.ts (playEmote moved with it).
 
 // Predefined social emotes. Each entry maps a command (and its aliases) to the
 // third-person action text shown to everyone in /say range. `solo` is used with
@@ -460,14 +464,13 @@ const NEARBY_MAX = 10; // cap the /nearby list so a crowded camp can't spam chat
 // mirrors the server's ~120yd snapshot scope so /assist never reaches a stranger on the
 // far side of the world. Party/raid members are always included, regardless of distance.
 const ASSIST_RANGE = 120;
-const CHAT_BURST = 8; // messages a player may send back-to-back...
-const CHAT_REFILL = 2; // ...then this many more per second (caps spam amplifiers)
+// CHAT_BURST / CHAT_REFILL moved to social/chat.ts (chatAllowed moved with them).
 // Max characters in a single chat line, matching classic WoW's 255-char editbox.
 // Authoritative cap: enforced here in the deterministic core so every host agrees;
 // the client maxlength + server chat-log slices mirror it.
 export const MAX_CHAT_MESSAGE_LEN = 255;
 // A2: DUEL_FORFEIT_DISTANCE moved to social/duel.ts.
-const TRADE_RANGE = 10;
+// G2: TRADE_RANGE moved to social/trade.ts with the trade methods.
 // The World Market (the Merchant's auction house) moved to market.ts (L2); the
 // MARKET_* consts live there now. MARKET_MAX_LISTINGS is re-imported above for the
 // /listings readout (the one in-sim.ts consumer left behind).
@@ -1914,6 +1917,18 @@ export class Sim {
       get pendingMobRespawns() {
         return sim.pendingMobRespawns;
       },
+      // G2 social plumbing live views. partyInvites lives on the PartyMachine now (A1),
+      // so it reads through sim.party; chatTokens/channelSubs stay direct Sim fields.
+      // (trades/tradeInvites/duelInvites getters are already bound above; deduped.)
+      get partyInvites() {
+        return sim.party.partyInvites;
+      },
+      get chatTokens() {
+        return sim.chatTokens;
+      },
+      get channelSubs() {
+        return sim.channelSubs;
+      },
       // LATE-bound (not .bind(sim)): a moved emit site (C5 meleeSwing/rangedSwing)
       // now emits via ctx.emit, and tests swap (sim as any).emit post-construction to
       // observe events (mob_blind/mob_cleave). An early .bind(sim) would capture the
@@ -2150,6 +2165,11 @@ export class Sim {
       // already bound, not re-bound here.
       // C5 auto-attack consumes aggroMob/swingIntervalMult, already bound above (M2; deduped).
       syncPetAspect: sim.syncPetAspect.bind(sim),
+      // G2 social plumbing: setPlayerLevel backs the /dev level cheat in social/chat.ts;
+      // notice is the /join /leave chat-log line. Both stay on Sim. (hasPendingSocialInvite
+      // already bound above; isRooted/moveSpeedMult/swingIntervalMult are M2 bindings above.)
+      setPlayerLevel: sim.setPlayerLevel.bind(sim),
+      notice: sim.notice.bind(sim),
     };
     return createSimContext(host);
   }
@@ -6295,115 +6315,16 @@ export class Sim {
     releasePlayerSpirit(this.ctx, pid);
   }
 
-  // Token-bucket throttle: returns false (and notifies the player once) when
-  // they are out of chat tokens. Keeps /g and /w from being spam amplifiers.
-  private chatAllowed(pid: number): boolean {
-    let b = this.chatTokens.get(pid);
-    if (!b) {
-      b = { tokens: CHAT_BURST, at: this.time };
-      this.chatTokens.set(pid, b);
-    }
-    b.tokens = Math.min(CHAT_BURST, b.tokens + (this.time - b.at) * CHAT_REFILL);
-    b.at = this.time;
-    if (b.tokens < 1) return false;
-    b.tokens -= 1;
-    return true;
-  }
-
-  // Dev chat cheats — only when Sim.devCommands is enabled (offline local play
-  // or online server with ALLOW_DEV_COMMANDS=1). Returns null when handled
-  // (no channel message), or undefined when not a dev command.
-  private handleDevChat(raw: string, pid: number): SentChat | null | undefined {
-    const levelM = /^\/(?:dev\s+level|devlevel)\s+(\d+)\s*$/i.exec(raw);
-    if (levelM) {
-      const level = Number(levelM[1]);
-      this.setPlayerLevel(level, pid);
-      this.emit({
-        type: 'log',
-        text: `[dev] Level set to ${Math.max(1, Math.min(MAX_LEVEL, level))}.`,
-        pid,
-      });
-      return null;
-    }
-    const tpM = /^\/(?:dev\s+tp|devtp)\s+(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)\s*$/i.exec(raw);
-    if (tpM) {
-      const e = this.entities.get(pid);
-      if (e) {
-        const p = this.groundPos(Number(tpM[1]), Number(tpM[2]));
-        e.pos = p;
-        e.prevPos = { ...p };
-        this.grid.update(e);
-        this.playerGrid.update(e);
-        this.emit({
-          type: 'log',
-          text: `[dev] Teleported to ${p.x.toFixed(1)}, ${p.z.toFixed(1)}.`,
-          pid,
-        });
-      }
-      return null;
-    }
-    const giveM = /^\/(?:dev\s+give|devgive)\s+(\S+)(?:\s+(\d+))?\s*$/i.exec(raw);
-    if (giveM) {
-      const itemId = giveM[1];
-      const count = Math.max(1, Math.min(20, Number(giveM[2] ?? 1)));
-      if (!ITEMS[itemId]) {
-        this.error(pid, `[dev] Unknown item '${itemId}'.`);
-        return null;
-      }
-      this.addItem(itemId, count, pid);
-      return null;
-    }
-    if (/^\/dev(?:\s|$)/i.test(raw)) {
-      this.error(pid, 'Dev commands: /dev level N, /dev tp X Z, /dev give itemId [count]');
-      return null;
-    }
-    return undefined;
-  }
-
-  private whisperMessageForName(rest: string, name: string, exactCase: boolean): string | null {
-    const input = exactCase ? rest : rest.toLowerCase();
-    const prefix = exactCase ? name : name.toLowerCase();
-    if (!input.startsWith(prefix)) return null;
-    const next = rest.charAt(name.length);
-    if (!next || !/\s/.test(next)) return null;
-    const message = rest.slice(name.length).trim();
-    return message ? message : null;
-  }
-
-  private resolveWhisperTarget(
-    rest: string,
-  ): { target: PlayerMeta; message: string } | { error: string } | null {
-    const trimmed = rest.trim();
-    if (!trimmed) return null;
-    const matches: { target: PlayerMeta; message: string; exactCase: boolean }[] = [];
-    for (const target of this.players.values()) {
-      const exactMessage = this.whisperMessageForName(trimmed, target.name, true);
-      if (exactMessage !== null) {
-        matches.push({ target, message: exactMessage, exactCase: true });
-        continue;
-      }
-      const insensitiveMessage = this.whisperMessageForName(trimmed, target.name, false);
-      if (insensitiveMessage !== null)
-        matches.push({ target, message: insensitiveMessage, exactCase: false });
-    }
-    matches.sort((a, b) => b.target.name.length - a.target.name.length);
-    const longestLength = matches[0]?.target.name.length ?? 0;
-    const longest = matches.filter((m) => m.target.name.length === longestLength);
-    const exact = longest.filter((m) => m.exactCase);
-    if (exact.length > 0) return exact[0];
-    if (longest.length === 1) return longest[0];
-    const typedName = trimmed.split(/\s+/, 1)[0] ?? trimmed;
-    if (longest.length > 1)
-      return { error: `Several players match '${typedName}'. Use exact capitalization.` };
-    return { error: `There is no player named '${typedName}' online.` };
-  }
+  // chatAllowed / handleDevChat / whisperMessageForName / resolveWhisperTarget
+  // moved to social/chat.ts (G2). The chat() router below dispatches to them via
+  // chatMod.*(this.ctx, ...); they had no callers outside chat().
 
   chat(text: string, pid?: number): SentChat | null {
     const r = this.resolve(pid);
     if (!r) return null;
     const raw = text.trim().slice(0, MAX_CHAT_MESSAGE_LEN);
     if (!raw) return null;
-    if (!this.chatAllowed(r.meta.entityId)) {
+    if (!chatMod.chatAllowed(this.ctx, r.meta.entityId)) {
       this.error(r.meta.entityId, 'You are sending messages too quickly.');
       return null;
     }
@@ -6461,7 +6382,7 @@ export class Sim {
     }
 
     if (this.devCommands) {
-      const devHandled = this.handleDevChat(raw, r.meta.entityId);
+      const devHandled = chatMod.handleDevChat(this.ctx, raw, r.meta.entityId);
       if (devHandled !== undefined && devHandled !== null) return devHandled;
     }
 
@@ -6482,7 +6403,7 @@ export class Sim {
     // system notice to the asker only. Like /who, it produces no chat message,
     // so it works identically offline and online without server wiring.
     if (/^\/(?:help|commands|\?)(?:\s|$)/i.test(raw)) {
-      for (const line of this.helpLines()) this.error(r.meta.entityId, line);
+      for (const line of chatMod.helpLines()) this.error(r.meta.entityId, line);
       return null;
     }
 
@@ -6590,7 +6511,7 @@ export class Sim {
         this.error(r.meta.entityId, `There is no player named '${targetName}' online.`);
         return null;
       }
-      this.error(r.meta.entityId, this.inspectReadout(target, te));
+      this.error(r.meta.entityId, chatMod.inspectReadout(target, te));
       return null;
     }
 
@@ -6875,7 +6796,7 @@ export class Sim {
     // same longest-online-name resolver.
     const wm = /^\/(?:w|whisper|t|tell)\s+([\s\S]+)$/i.exec(line);
     if (wm) {
-      const resolved = this.resolveWhisperTarget(wm[1]);
+      const resolved = chatMod.resolveWhisperTarget(this.ctx, wm[1]);
       if (!resolved) return null;
       if ('error' in resolved) {
         this.error(r.meta.entityId, resolved.error);
@@ -6971,7 +6892,8 @@ export class Sim {
     // "/join <channel>" / "/leave <channel>" — opt-in global channels
     const jm = /^\/(join|leave)\b\s*(\S*)\s*$/i.exec(raw);
     if (jm) {
-      this.handleChannelMembership(
+      chatMod.handleChannelMembership(
+        this.ctx,
         r.meta,
         jm[1].toLowerCase() as 'join' | 'leave',
         jm[2].toLowerCase(),
@@ -7015,7 +6937,7 @@ export class Sim {
     const meMatch = /^\/(?:me|emote|e)\s+([\s\S]+)$/i.exec(raw);
     if (meMatch) {
       const action = meMatch[1].trim();
-      if (action) this.broadcastEmote(r.meta, r.e, action);
+      if (action) chatMod.broadcastEmote(this.ctx, r.meta, r.e, action);
       return null;
     }
 
@@ -7030,10 +6952,10 @@ export class Sim {
         const targetName = emMatch[2];
         let text = def.solo;
         if (targetName && def.target) {
-          const t = this.findPlayerByName(targetName);
+          const t = chatMod.findPlayerByName(this.ctx, targetName);
           if (t) text = def.target.replace('%t', t.name === r.meta.name ? 'themselves' : t.name);
         }
-        this.broadcastEmote(r.meta, r.e, text);
+        chatMod.broadcastEmote(this.ctx, r.meta, r.e, text);
         return null;
       }
     }
@@ -7069,46 +6991,13 @@ export class Sim {
     return { channel, message: clean };
   }
 
+  // PUBLIC (IWorld + server) overhead-emote entry; body moved to social/chat.ts (G2).
   playEmote(emoteId: OverheadEmoteId, pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    r.e.overheadEmoteId = emoteId;
-    r.e.overheadEmoteUntil = this.time + OVERHEAD_EMOTE_DURATION;
-    r.e.overheadEmoteSeq += 1;
+    chatMod.playEmote(this.ctx, emoteId, pid);
   }
 
-  // Resolve a player by name the same way whispers do: an exact-case match
-  // wins outright, otherwise a case-insensitive match is used only when it is
-  // unambiguous.
-  private findPlayerByName(name: string): PlayerMeta | null {
-    const wanted = name.toLowerCase();
-    const ci: PlayerMeta[] = [];
-    for (const meta of this.players.values()) {
-      if (meta.name === name) return meta;
-      if (meta.name.toLowerCase() === wanted) ci.push(meta);
-    }
-    return ci.length === 1 ? ci[0] : null;
-  }
-
-  // Send a third-person emote to every player within /say range (including the
-  // actor). `from` carries the actor's name so the client can render it as a
-  // clickable name; `text` is the action predicate (e.g. "waves at Bet.").
-  private broadcastEmote(actor: PlayerMeta, actorEntity: Entity, text: string): void {
-    const body = text.slice(0, MAX_CHAT_MESSAGE_LEN);
-    for (const meta of this.players.values()) {
-      const e = this.entities.get(meta.entityId);
-      if (!e || dist2d(actorEntity.pos, e.pos) > SAY_RANGE) continue;
-      this.emit({
-        type: 'chat',
-        fromPid: actor.entityId,
-        from: actor.name,
-        text: body,
-        channel: 'emote',
-        entityId: actorEntity.id,
-        pid: meta.entityId,
-      });
-    }
-  }
+  // findPlayerByName / broadcastEmote moved to social/chat.ts (G2); chat() reaches
+  // them via chatMod.*(this.ctx, ...). They had no callers outside chat().
 
   // -------------------------------------------------------------------------
   // Hostility: mobs are hostile to players; controlled pets inherit their
@@ -7654,193 +7543,42 @@ export class Sim {
   // Trading
   // -------------------------------------------------------------------------
 
+  // Trade SESSION + INVITE state stays on Sim (live ctx views this.trades /
+  // this.tradeInvites); the method bodies moved to social/trade.ts (G2). Sim keeps
+  // thin same-named delegates so the IWorld + server + leave-path + tick() call
+  // sites resolve unchanged.
   tradeRequest(targetPid: number, pid?: number): void {
-    const r = this.resolve(pid);
-    const target = this.players.get(targetPid);
-    const targetE = this.entities.get(targetPid);
-    if (!r || !target || !targetE) return;
-    if (targetPid === r.meta.entityId) return;
-    if (this.trades.has(r.meta.entityId) || this.trades.has(targetPid)) {
-      this.error(r.meta.entityId, 'A trade is already in progress.');
-      return;
-    }
-    if (dist2d(r.e.pos, targetE.pos) > TRADE_RANGE) {
-      this.error(r.meta.entityId, 'Target is too far away to trade.');
-      return;
-    }
-    if (this.hasPendingSocialInvite(targetPid)) {
-      this.error(r.meta.entityId, `${target.name} already has a pending invitation.`);
-      return;
-    }
-    this.tradeInvites.set(targetPid, { fromPid: r.meta.entityId, expires: this.time + 30 });
-    this.emit({
-      type: 'tradeRequest',
-      fromPid: r.meta.entityId,
-      fromName: r.meta.name,
-      pid: targetPid,
-    });
-    this.emit({
-      type: 'log',
-      text: `You have requested to trade with ${target.name}.`,
-      color: '#8df',
-      pid: r.meta.entityId,
-    });
+    tradeMod.tradeRequest(this.ctx, targetPid, pid);
   }
 
   tradeAccept(pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const invite = this.tradeInvites.get(r.meta.entityId);
-    if (!invite || invite.expires < this.time) {
-      this.error(r.meta.entityId, 'The trade request has expired.');
-      return;
-    }
-    this.tradeInvites.delete(r.meta.entityId);
-    if (!this.players.get(invite.fromPid)) return;
-    if (this.trades.has(invite.fromPid) || this.trades.has(r.meta.entityId)) {
-      this.error(r.meta.entityId, 'That player is already trading.');
-      return;
-    }
-    const session: TradeSession = {
-      a: invite.fromPid,
-      b: r.meta.entityId,
-      offerA: { items: [], copper: 0 },
-      offerB: { items: [], copper: 0 },
-      acceptedA: false,
-      acceptedB: false,
-    };
-    this.trades.set(session.a, session);
-    this.trades.set(session.b, session);
-    for (const tPid of [session.a, session.b]) {
-      this.emit({ type: 'log', text: 'Trade window opened.', color: '#8df', pid: tPid });
-    }
+    tradeMod.tradeAccept(this.ctx, pid);
   }
 
   tradeSetOffer(items: InvSlot[], copper: number, pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const session = this.trades.get(r.meta.entityId);
-    if (!session) return;
-    // validate the offer against the player's bags; merge duplicate slots so
-    // the offered total per item is checked, not each slot in isolation
-    const merged = new Map<string, number>();
-    for (const slot of items.slice(0, 6)) {
-      // slots come straight off the wire — reject anything malformed
-      if (!slot || typeof slot.itemId !== 'string' || !Number.isFinite(slot.count)) continue;
-      const count = Math.max(1, Math.floor(slot.count));
-      const def = ITEMS[slot.itemId];
-      if (!def || def.kind === 'quest') continue; // quest items are soulbound-ish
-      merged.set(slot.itemId, (merged.get(slot.itemId) ?? 0) + count);
-    }
-    const cleaned: InvSlot[] = [];
-    for (const [itemId, count] of merged) {
-      if (this.countItem(itemId, r.meta.entityId) < count) continue;
-      cleaned.push({ itemId, count });
-    }
-    const offer = {
-      items: cleaned,
-      copper: Math.max(0, Math.min(Math.floor(copper), r.meta.copper)),
-    };
-    if (session.a === r.meta.entityId) session.offerA = offer;
-    else session.offerB = offer;
-    session.acceptedA = false;
-    session.acceptedB = false;
+    tradeMod.tradeSetOffer(this.ctx, items, copper, pid);
   }
 
   tradeConfirm(pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const session = this.trades.get(r.meta.entityId);
-    if (!session) return;
-    if (session.a === r.meta.entityId) session.acceptedA = true;
-    else session.acceptedB = true;
-    if (!(session.acceptedA && session.acceptedB)) return;
-
-    const metaA = this.players.get(session.a);
-    const metaB = this.players.get(session.b);
-    if (!metaA || !metaB) {
-      this.tradeCancel(session.a);
-      return;
-    }
-    // final validation before the atomic swap
-    const valid =
-      session.offerA.copper <= metaA.copper &&
-      session.offerB.copper <= metaB.copper &&
-      this.offerCovered(session.offerA.items, session.a) &&
-      this.offerCovered(session.offerB.items, session.b);
-    if (!valid) {
-      for (const tPid of [session.a, session.b])
-        this.error(tPid, 'Trade failed: items or money no longer available.');
-      this.closeTrade(session);
-      return;
-    }
-    // swap
-    metaA.copper = metaA.copper - session.offerA.copper + session.offerB.copper;
-    metaB.copper = metaB.copper - session.offerB.copper + session.offerA.copper;
-    for (const s of session.offerA.items) {
-      this.removeItem(s.itemId, s.count, session.a);
-      this.addItem(s.itemId, s.count, session.b);
-    }
-    for (const s of session.offerB.items) {
-      this.removeItem(s.itemId, s.count, session.b);
-      this.addItem(s.itemId, s.count, session.a);
-    }
-    for (const tPid of [session.a, session.b]) {
-      this.emit({ type: 'log', text: 'Trade complete.', color: '#8df', pid: tPid });
-      this.emit({ type: 'tradeDone', pid: tPid });
-    }
-    this.closeTrade(session);
+    tradeMod.tradeConfirm(this.ctx, pid);
   }
 
   tradeCancel(pid?: number): void {
-    const r = this.resolve(pid);
-    if (!r) return;
-    const session = this.trades.get(r.meta.entityId);
-    if (!session) return;
-    for (const tPid of [session.a, session.b]) {
-      this.emit({ type: 'log', text: 'Trade cancelled.', color: '#8df', pid: tPid });
-    }
-    this.closeTrade(session);
+    tradeMod.tradeCancel(this.ctx, pid);
   }
 
-  // true when the player's bags cover the offered totals per item, summing
-  // duplicate slots — a per-slot check would let duplicates each pass alone
-  private offerCovered(items: InvSlot[], pid: number): boolean {
-    const totals = new Map<string, number>();
-    for (const s of items) totals.set(s.itemId, (totals.get(s.itemId) ?? 0) + s.count);
-    for (const [itemId, count] of totals) {
-      if (this.countItem(itemId, pid) < count) return false;
-    }
-    return true;
-  }
-
-  private closeTrade(session: TradeSession): void {
-    this.trades.delete(session.a);
-    this.trades.delete(session.b);
-  }
+  // offerCovered / closeTrade are module-internal in social/trade.ts now (no Sim
+  // delegate; only the moved trade methods used them).
 
   tradeFor(pid: number): TradeSession | null {
-    return this.trades.get(pid) ?? null;
+    return tradeMod.tradeFor(this.ctx, pid);
   }
 
+  // Stays in the end-of-tick system block (trades phase, called from tick()). The
+  // joint party/trade/duel invite-expiry sweep + the trade-drift cancel pass moved
+  // verbatim to social/trade.ts; partyInvites/duelInvites route through ctx.
   private updateTradesAndInvites(): void {
-    // expire stale invites (partyInvites is the PartyMachine's field now, A1)
-    for (const map of [this.party.partyInvites, this.tradeInvites, this.duelInvites]) {
-      for (const [pid, invite] of map) {
-        if (invite.expires < this.time) map.delete(pid);
-      }
-    }
-    // cancel trades when the parties drift apart
-    const seen = new Set<TradeSession>();
-    for (const session of this.trades.values()) {
-      if (seen.has(session)) continue;
-      seen.add(session);
-      const ea = this.entities.get(session.a);
-      const eb = this.entities.get(session.b);
-      if (!ea || !eb || dist2d(ea.pos, eb.pos) > TRADE_RANGE + 4 || ea.dead || eb.dead) {
-        this.tradeCancel(session.a);
-      }
-    }
+    tradeMod.updateTradesAndInvites(this.ctx);
   }
 
   // -------------------------------------------------------------------------
@@ -7978,18 +7716,7 @@ export class Sim {
   }
 
   get tradeInfo(): import('../world_api').TradeInfo | null {
-    const t = this.tradeFor(this.primaryId);
-    if (!t) return null;
-    const mine = t.a === this.primaryId;
-    const otherPid = mine ? t.b : t.a;
-    return {
-      otherPid,
-      otherName: this.players.get(otherPid)?.name ?? '?',
-      myOffer: mine ? t.offerA : t.offerB,
-      theirOffer: mine ? t.offerB : t.offerA,
-      myAccepted: mine ? t.acceptedA : t.acceptedB,
-      theirAccepted: mine ? t.acceptedB : t.acceptedA,
-    };
+    return tradeMod.tradeInfoFor(this.ctx, this.primaryId);
   }
 
   get duelInfo(): import('../world_api').DuelInfo | null {
@@ -8323,27 +8050,9 @@ export class Sim {
     this.emit(reason ? { type: 'error', text, pid, reason } : { type: 'error', text, pid });
   }
 
-  // Lines shown by the "/help" command, one system notice per entry. Keep this
-  // in sync with the commands handled in chat() above.
-  private helpLines(): string[] {
-    return [
-      'Chat channels: /s say, /y yell, /general, /p party, /world, /lfg.',
-      'Whisper a player with /w <name> <message>, reply with /r.',
-      'Other commands: /join <world|lfg>, /roll, /inspect <name>, /follow <name>, /unfollow, /assist <name>, /afk, /dnd, /who.',
-      'Character readouts: /played, /xp, /gold, /stats, /bags, /gear, /abilities, /buffs, /cooldowns, /quest, /completed.',
-      'World readouts: /where, /zones, /nearby, /pois, /graveyard, /dungeons, /arena, /session, /listings, /buyback.',
-      'Combat readouts: /target, /targetbuffs, /range, /attack, /casting, /combat, /threat, /consider, /combo, /overpower.',
-      'State readouts: /pet, /pettaunt, /speed, /consumable, /potion, /form, /manaregen, /falling, /queued, /savedmana.',
-    ];
-  }
-
-  // One-line readout for /inspect: another player's level, class, and health.
-  private inspectReadout(target: PlayerMeta, e: Entity): string {
-    const cls = CLASSES[target.cls]?.name ?? target.cls;
-    const hp =
-      e.hp <= 0 ? 'dead' : `${Math.round(Math.max(0, Math.min(1, e.hp / e.maxHp)) * 100)}%`;
-    return `${target.name}: Level ${e.level} ${cls} — HP ${hp}.`;
-  }
+  // helpLines / inspectReadout moved to social/chat.ts (G2); chat() reaches them
+  // via chatMod.*. notice() below stays (the /join handler in chat.ts consumes it
+  // via ctx.notice, and the quest-share path still calls this.notice).
 
   // A positive, personal chat-log notice (e.g. confirming a /join). Unlike
   // error(), this lands in the chat log rather than flashing the error toast.
@@ -8351,47 +8060,9 @@ export class Sim {
     this.emit({ type: 'log', text, color, pid });
   }
 
-  // Handles /join and /leave for the opt-in global channels.
-  private handleChannelMembership(meta: PlayerMeta, action: 'join' | 'leave', arg: string): void {
-    const pid = meta.entityId;
-    if (!arg) {
-      this.error(pid, `Usage: /${action} <channel>. Channels: ${JOINABLE_CHANNELS.join(', ')}.`);
-      return;
-    }
-    if (arg === 'general') {
-      this.error(pid, 'The General channel is always on - just use /general.');
-      return;
-    }
-    if (!JOINABLE_CHANNELS.includes(arg as JoinableChannel)) {
-      this.error(
-        pid,
-        `There is no channel named '${arg}'. Channels: ${JOINABLE_CHANNELS.join(', ')}.`,
-      );
-      return;
-    }
-    const channel = arg as JoinableChannel;
-    let set = this.channelSubs.get(pid);
-    if (action === 'join') {
-      if (!set) {
-        set = new Set();
-        this.channelSubs.set(pid, set);
-      }
-      if (set.has(channel)) {
-        this.error(pid, `You are already in the ${channel} channel.`);
-        return;
-      }
-      set.add(channel);
-      this.notice(pid, `Joined the ${channel} channel. Type /${channel} <message> to talk.`);
-    } else {
-      if (!set?.has(channel)) {
-        this.error(pid, `You are not in the ${channel} channel.`);
-        return;
-      }
-      set.delete(channel);
-      if (set.size === 0) this.channelSubs.delete(pid);
-      this.notice(pid, `Left the ${channel} channel.`);
-    }
-  }
+  // handleChannelMembership moved to social/chat.ts (G2); the chat() /join /leave
+  // branch reaches it via chatMod.handleChannelMembership(this.ctx, ...).
+
   // One-line description of an entity for the self-only "/target" readout:
   // name, level, what it is (player / pet / mob), and current health. A dead
   // body reports "dead" instead of a percentage so a lootable corpse reads

@@ -21,6 +21,7 @@ import type {
   DuelState,
   FiestaState,
   InstanceSlot,
+  JoinableChannel,
   Party,
   PendingMobRespawn,
   PetState,
@@ -118,6 +119,16 @@ export interface SimContextPrimitives {
   // Wild-respawn queue (P1b: completeTame pushes the tamed beast's respawn). Live view;
   // the backing array stays on Sim, mutated in place (push), so read-only ref.
   readonly pendingMobRespawns: PendingMobRespawn[];
+  // G2 social plumbing: the chat + party-invite state stays Sim-owned (the leave/
+  // removePlayer cleanup, the joint invite-expiry sweep, and the chat() router all
+  // reach it on Sim) and is exposed here as live views, mutated in place (set/get/
+  // delete), never reassigned, so all read-only. `partyInvites` belongs to the party
+  // slice (A1); trade only sweeps it inside the shared updateTradesAndInvites loop, so
+  // it routes through ctx until that slice puts it on the seam. (trades/tradeInvites/
+  // duelInvites are already declared above; deduped.)
+  readonly partyInvites: Map<number, { fromPid: number; expires: number }>;
+  readonly chatTokens: Map<number, { tokens: number; at: number }>;
+  readonly channelSubs: Map<number, Set<JoinableChannel>>;
 }
 
 // Cross-system callbacks. Each signature mirrors the still-on-`Sim` method it
@@ -384,9 +395,8 @@ export interface SimContextCallbacks {
   // AI (spawnDelveCompanion/despawnDelveCompanion/maybeCompanionBark).
   partyMembersForKey(key: string): number[];
   addItem(itemId: string, count: number, pid?: number): void;
-  // L2 World Market escrow (marketList) pulls the listed stack from the seller's
-  // bags via removeItem; the inventory hub stays on Sim (points-at Sim).
-  removeItem(itemId: string, count: number, pid?: number): void;
+  // L2 World Market escrow (marketList) also consumes removeItem; it is declared once
+  // above (P1b inventory-hub helper, points-at Sim) - deduped, not re-added here.
   spawnBossAdds(boss: Entity, mobId: string, count: number): void;
   tradeFor(pid: number): TradeSession | null;
   duelFor(pid: number): DuelState | null;
@@ -462,6 +472,13 @@ export interface SimContextCallbacks {
   // mob-aggro entry startAutoAttack uses to pull an idle target into combat) and
   // swingIntervalMult (the haste read the driver applies to the next swing timer); both
   // are M2's decls above, points-at Sim. Not re-declared here (dedupe).
+
+  // G2 social plumbing. `setPlayerLevel` backs the /dev level cheat (handleDevChat in
+  // social/chat.ts); `notice` is the positive chat-log line the /join /leave handler
+  // emits. Both stay on Sim. (hasPendingSocialInvite is already declared above; isRooted/
+  // moveSpeedMult/swingIntervalMult are M2 decls above -> all deduped.)
+  setPlayerLevel(level: number, pid?: number): void;
+  notice(pid: number, text: string, color?: string): void;
 }
 
 // The seam consumed by extracted modules.
@@ -584,6 +601,15 @@ export function createSimContext(host: SimContextHost): SimContext {
     },
     get pendingMobRespawns() {
       return host.pendingMobRespawns;
+    },
+    get partyInvites() {
+      return host.partyInvites;
+    },
+    get chatTokens() {
+      return host.chatTokens;
+    },
+    get channelSubs() {
+      return host.channelSubs;
     },
     emit: host.emit,
     error: host.error,
@@ -708,7 +734,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     // onDelveBossDefeated/delveDetectMult are bound above (C1/M2/C3); deduped here.
     partyMembersForKey: host.partyMembersForKey,
     addItem: host.addItem,
-    removeItem: host.removeItem,
+    // removeItem passed through above (P1b inventory-hub helper) - deduped, not re-added.
     spawnBossAdds: host.spawnBossAdds,
     tradeFor: host.tradeFor,
     duelFor: host.duelFor,
@@ -744,5 +770,8 @@ export function createSimContext(host: SimContextHost): SimContext {
     // P1a pet-AI seam (effectiveAttackPower/isHostileTo already bound above; deduped).
     // C5 auto-attack consumes aggroMob/swingIntervalMult, already passed through above (M2; deduped).
     syncPetAspect: host.syncPetAspect,
+    // G2 social plumbing passthroughs (hasPendingSocialInvite already bound above; deduped).
+    setPlayerLevel: host.setPlayerLevel,
+    notice: host.notice,
   };
 }

@@ -3005,6 +3005,128 @@ function g1bXpPrestige(): Scenario {
   };
 }
 
+// Player-to-player trade (G2): tradeRequest/tradeAccept open a shared session,
+// tradeSetOffer validates the offer against the bags, tradeConfirm performs the
+// atomic items+copper swap. A cancel path and an out-of-range drift auto-cancel
+// (updateTradesAndInvites) round out the trade surface. No rng in the trade path;
+// the single tick() advances the world for the drift sweep.
+function playerTrade(): Scenario {
+  return {
+    name: 'player_trade',
+    coverage: [
+      'tradeRequest + tradeAccept open a shared session (both pids point at it)',
+      'tradeSetOffer validates items against bags; tradeConfirm swaps items + copper atomically',
+      'tradeCancel closes an open session with both sides notified',
+      'updateTradesAndInvites drift cancel when the traders walk out of range',
+    ],
+    build: () => new Sim({ seed: 1021, playerClass: 'warrior', noPlayer: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const a = sim.addPlayer('warrior', 'Ayla');
+      const b = sim.addPlayer('mage', 'Borin');
+      teleport(sim, sim.entities.get(a) as AnyEntity, 0, -40);
+      teleport(sim, sim.entities.get(b) as AnyEntity, 3, -40);
+      sim.addItem('wolf_fang', 3, a);
+      sim.addItem('baked_bread', 2, b);
+      sim.players.get(a)!.copper = 100;
+      sim.players.get(b)!.copper = 50;
+      rec.notes.a = a;
+      rec.notes.b = b;
+      rec.snapshot('trade-setup');
+
+      // 1) atomic swap: A gives 2 wolf_fang + 30 copper, B gives 1 baked_bread + 10 copper.
+      sim.tradeRequest(b, a);
+      sim.tradeAccept(b);
+      sim.tradeSetOffer([{ itemId: 'wolf_fang', count: 2 }], 30, a);
+      sim.tradeSetOffer([{ itemId: 'baked_bread', count: 1 }], 10, b);
+      sim.tradeConfirm(a);
+      sim.tradeConfirm(b);
+      rec.snapshot('swapped');
+
+      // 2) cancel path: open another session, A confirms, B cancels it (no swap).
+      sim.tradeRequest(b, a);
+      sim.tradeAccept(b);
+      sim.tradeSetOffer([{ itemId: 'wolf_fang', count: 1 }], 0, a);
+      sim.tradeConfirm(a);
+      sim.tradeCancel(b);
+      rec.snapshot('cancelled');
+
+      // 3) drift auto-cancel: open a session, walk B out of range, then let the
+      // end-of-tick updateTradesAndInvites sweep cancel it.
+      sim.tradeRequest(b, a);
+      sim.tradeAccept(b);
+      rec.snapshot('drift-open');
+      teleport(sim, sim.entities.get(b) as AnyEntity, 40, -40);
+      rec.tick(1);
+      rec.snapshot('drift-cancelled');
+    },
+  };
+}
+
+// Player social chat (G2): the chat() router on Sim dispatches to the extracted
+// chat helpers in src/sim/social/chat.ts (whisper resolution, channel membership,
+// broadcastEmote, the chatAllowed token bucket). Exercises say/yell range
+// delivery, party + general + opt-in (world/lfg) channels, a /w + /r whisper
+// round-trip, /me and predefined emotes, /inspect + /help readouts, an overhead
+// playEmote, and the anti-spam throttle. Chat draws no shared rng.
+function chatSocial(): Scenario {
+  return {
+    name: 'chat_social',
+    coverage: [
+      'say/yell range delivery + party/general/world/lfg channel routing',
+      'whisper /w + /r round-trip via resolveWhisperTarget (exact-then-unambiguous-CI)',
+      '/me + predefined /wave emotes via broadcastEmote + findPlayerByName; playEmote bubble',
+      'handleChannelMembership /join opt-in channels; chatAllowed token-bucket throttle',
+    ],
+    build: () => new Sim({ seed: 1023, playerClass: 'warrior', noPlayer: true }),
+    drive(rec: Recorder) {
+      const sim = rec.sim as AnySim;
+      const a = sim.addPlayer('warrior', 'Aleph');
+      const b = sim.addPlayer('mage', 'Bet');
+      const c = sim.addPlayer('rogue', 'Gimel');
+      teleport(sim, sim.entities.get(a) as AnyEntity, 0, -40);
+      teleport(sim, sim.entities.get(b) as AnyEntity, 3, -40);
+      teleport(sim, sim.entities.get(c) as AnyEntity, 6, -40);
+      sim.partyInvite(b, a);
+      sim.partyAccept(b);
+      rec.notes.a = a;
+      rec.notes.b = b;
+      rec.notes.c = c;
+      rec.snapshot('chat-setup');
+
+      // a (<= 8-message burst): opt-in join, channel + say/yell + party sends, a
+      // whisper to Bet (sets Bet.lastWhisperFrom), and a freeform /me emote.
+      sim.chat('/join world', a);
+      sim.chat('/world hello world', a);
+      sim.chat('/s hi there', a);
+      sim.chat('/y HELLO CAMP', a);
+      sim.chat('/p ready check', a);
+      sim.chat('/w Bet psst', a);
+      sim.chat('/me waves to the crowd', a);
+      rec.snapshot('a-chats');
+
+      // b (<= 8-message burst): join world+lfg, an lfg send, general, the /r reply
+      // (resolves to Aleph), a predefined /wave at Aleph, and an /inspect readout.
+      sim.chat('/join world', b);
+      sim.chat('/join lfg', b);
+      sim.chat('/lfg need a healer', b);
+      sim.chat('/general anyone there', b);
+      sim.chat('/r got your whisper', b);
+      sim.chat('/wave Aleph', b);
+      sim.chat('/inspect Aleph', b);
+      rec.snapshot('b-chats');
+
+      sim.chat('/help', a);
+      sim.playEmote('salute', a);
+      rec.snapshot('readout-emote');
+
+      // c: token-bucket throttle — the first 8 messages pass, later ones are throttled.
+      for (let i = 0; i < 10; i++) sim.chat(`/s spam ${i}`, c);
+      rec.snapshot('throttled');
+    },
+  };
+}
+
 export const SCENARIOS: Scenario[] = [
   soloWarrior(),
   soloMage(),
@@ -3047,4 +3169,6 @@ export const SCENARIOS: Scenario[] = [
   c5AutoAttack(),
   marketRoundTrip(),
   g1bXpPrestige(),
+  playerTrade(),
+  chatSocial(),
 ];
