@@ -227,6 +227,10 @@ export const en_XA: EnTranslations = {
       "targetLabel": "[Ýóúŕ Ɱáŕķ]",
       "partyLabel": "[Ýóúŕ Ɓáñð]"
     },
+    "skipLinks": {
+      "mainHud": "[Šķíþ ţó Ɱáíñ ĤÚÐ]",
+      "chat": "[Šķíþ ţó Çĥáţ]"
+    },
     "mobile": {
       "autorun": "[Áúţóŕúñ]",
       "jump": "[Ĵúɱþ]",

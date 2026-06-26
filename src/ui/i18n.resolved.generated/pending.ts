@@ -15,6 +15,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
+    "hudChrome.skipLinks.chat",
+    "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
     "hudChrome.unitFrame.targetLabel"
@@ -25,6 +27,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
+    "hudChrome.skipLinks.chat",
+    "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
     "hudChrome.unitFrame.targetLabel"
@@ -35,6 +39,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
+    "hudChrome.skipLinks.chat",
+    "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
     "hudChrome.unitFrame.targetLabel"
@@ -45,6 +51,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
+    "hudChrome.skipLinks.chat",
+    "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
     "hudChrome.unitFrame.targetLabel"
@@ -56,6 +64,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
+    "hudChrome.skipLinks.chat",
+    "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
     "hudChrome.unitFrame.targetLabel"
@@ -66,6 +76,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
+    "hudChrome.skipLinks.chat",
+    "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
     "hudChrome.unitFrame.targetLabel"
@@ -75,6 +87,8 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.mapSummary",
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
+    "hudChrome.skipLinks.chat",
+    "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
     "hudChrome.unitFrame.targetLabel"
@@ -84,6 +98,8 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.mapSummary",
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
+    "hudChrome.skipLinks.chat",
+    "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
     "hudChrome.unitFrame.targetLabel"
@@ -93,6 +109,8 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.mapSummary",
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
+    "hudChrome.skipLinks.chat",
+    "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
     "hudChrome.unitFrame.targetLabel"
@@ -102,6 +120,8 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.mapSummary",
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
+    "hudChrome.skipLinks.chat",
+    "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
     "hudChrome.unitFrame.targetLabel"
@@ -112,6 +132,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
     "hudChrome.leaderboard.close",
+    "hudChrome.skipLinks.chat",
+    "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
     "hudChrome.unitFrame.targetLabel"
@@ -121,6 +143,8 @@ export const pending: Record<string, readonly string[]> = {
     "hud.core.mapSummary",
     "hudChrome.castBar.playerAria",
     "hudChrome.castBar.targetAria",
+    "hudChrome.skipLinks.chat",
+    "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
     "hudChrome.unitFrame.targetLabel"

@@ -171,6 +171,64 @@ describe('client HTML shell', () => {
     }
   });
 
+  it('places skip links as the first focusable elements in BOTH entries (P15a)', () => {
+    for (const entry of [html, playHtml]) {
+      const skipMain = entry.indexOf('class="hud-skip" href="#ui"');
+      const skipChat = entry.indexOf('class="hud-skip" href="#chatlog"');
+      expect(skipMain).toBeGreaterThan(-1);
+      expect(skipChat).toBeGreaterThan(-1);
+      // English-only hud_chrome control labels via data-i18n (the catalog exception).
+      expect(entry).toContain('data-i18n="hudChrome.skipLinks.mainHud"');
+      expect(entry).toContain('data-i18n="hudChrome.skipLinks.chat"');
+      // First focusable: the skip links precede the canvas + the templated game UI,
+      // and the main-HUD link comes first.
+      expect(skipMain).toBeLessThan(entry.indexOf('id="game-canvas"'));
+      expect(skipMain).toBeLessThan(skipChat);
+      // The skip targets must be focusable landing points (tabindex=-1).
+      expect(entry).toContain('<div id="ui" tabindex="-1">');
+    }
+  });
+
+  it('carries chat + combat live regions in BOTH entries without double-announcing (P15a)', () => {
+    for (const entry of [html, playHtml]) {
+      // The chat pane is a polite log AND the "skip to chat" landing target.
+      expect(entry).toContain(
+        '<div id="chatlog" class="chat-pane active" role="log" aria-live="polite" tabindex="-1">',
+      );
+      // The off-screen polite combat summary the throttled announcer writes; a separate
+      // node so it never re-announces what an existing aria-live / role=alert speaks.
+      expect(entry).toContain(
+        '<div id="combat-live" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true">',
+      );
+    }
+    // Wired into the single combatLog funnel, throttled (never assertive-spammed).
+    expect(hudTs).toContain('this.combatAnnouncer.push(text, performance.now());');
+  });
+
+  it('drops the user-scalable viewport scale-lock in BOTH entries (P15a, 16px anti-zoom floor stays)', () => {
+    for (const entry of [html, playHtml]) {
+      expect(entry).toContain(
+        '<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />',
+      );
+      expect(entry).not.toContain('user-scalable=no');
+      expect(entry).not.toContain('maximum-scale=1.0');
+    }
+  });
+
+  it('ships the forced-colors + print + skip-link a11y CSS, forced-colors as the only contrast adaptation (P15a)', () => {
+    // forced-colors is the ONLY contrast adaptation (decision 11): no light theme, no
+    // prefers-color-scheme rule anywhere in the corpus.
+    expect(baseCss).toContain('@media (forced-colors: active) {');
+    expect(baseCss).toMatch(/outline:\s*2px solid Highlight/);
+    expect(baseCss).toContain('border: 1px solid CanvasText');
+    expect(baseCss).not.toMatch(/@media\s*\(prefers-color-scheme/);
+    // Minimal print reset (hide, do not reflow).
+    expect(baseCss).toContain('@media print {');
+    // Skip-link reveal with a :focus-visible ring.
+    expect(baseCss).toContain('.hud-skip {');
+    expect(baseCss).toContain('.hud-skip:focus-visible {');
+  });
+
   it('labels the player frame as a role=group with a localized name in BOTH entries', () => {
     // P10b made #player-frame a role="group" with a t()-localized accessible name via
     // data-i18n-aria. index.html and play.html both boot src/main.ts and ship the same

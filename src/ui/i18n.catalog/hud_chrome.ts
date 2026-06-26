@@ -102,6 +102,15 @@ export const hudChromeStrings = {
     // companions, parallel to playerLabel / targetLabel.
     partyLabel: 'Your Band',
   },
+  // Skip links: the first focusable elements on both game entries, a keyboard /
+  // screen-reader shortcut to the main HUD and the chat log (mirrors the src/guide
+  // .guide-skip precedent). English-only control labels (the hud_chrome exception);
+  // Title Case keeps them non-wordy (no run of four+ lowercase) so an English-filled
+  // non-Latin locale does not trip the untranslated-leak guard, like the labels above.
+  skipLinks: {
+    mainHud: 'Skip to Main HUD',
+    chat: 'Skip to Chat',
+  },
   // On-screen / mobile control labels and their accessible names. char/bags/music
   // reuse existing keys (hud.keybinds.actions.*, hud.options.music) at the call site.
   mobile: {

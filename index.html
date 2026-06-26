@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#050509" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -193,12 +193,19 @@
 </style>
 </head>
 <body data-start-panel="mode-select">
+  <!-- Skip links: the first focusable elements, visually hidden until focused (P15a
+       a11y infra). Targets live inside #game-ui-template, cloned into the page in-game. -->
+  <a class="hud-skip" href="#ui" data-i18n="hudChrome.skipLinks.mainHud">Skip to Main HUD</a>
+  <a class="hud-skip" href="#chatlog" data-i18n="hudChrome.skipLinks.chat">Skip to Chat</a>
   <noscript><img height="1" width="1" style="display:none" alt="" aria-hidden="true" src="https://www.facebook.com/tr?id=1692101265042180&ev=PageView&noscript=1" /></noscript>
   <canvas id="game-canvas"></canvas>
   <div id="nameplates"></div>
 
   <template id="game-ui-template">
-  <div id="ui">
+  <div id="ui" tabindex="-1">
+    <!-- Off-screen polite live region for the throttled combat summary (P15a). The 3D
+         world / game canvas is OUT of a11y scope; this speaks combat-log text only. -->
+    <div id="combat-live" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
     <div id="perf-overlay" aria-hidden="true"></div>
     <div id="click-move-marker" class="click-move-marker" aria-hidden="true">
       <span class="ctm-arrow ctm-n"></span>
@@ -322,7 +329,7 @@
            rendered by the HUD (hud.ts initChatTabs); this stays empty. -->
       <div id="chatlog-tabs" role="tablist"></div>
       <div id="chatlog-frame" class="panel">
-        <div id="chatlog" class="chat-pane active"></div>
+        <div id="chatlog" class="chat-pane active" role="log" aria-live="polite" tabindex="-1"></div>
         <div id="combatlog" class="chat-pane"></div>
       </div>
     </div>

@@ -136,6 +136,7 @@ import {
 import { type ChatClock, clampChatClock, formatChatTimestamp } from './chat_timestamp';
 import { type ChatBoxGeometry, clampChatBox, parseChatBox, serializeChatBox } from './chat_window';
 import { formatClockTime } from './clock';
+import { CombatAnnouncer } from './combat_announcer';
 import {
   shouldPlayCombatImpactForTarget,
   shouldPlayCritSfxForTarget,
@@ -149,6 +150,7 @@ import { emoteIconUrl } from './emote_icons';
 import { itemDisplayName, tEntity } from './entity_i18n';
 import { esc } from './esc';
 import { FctPainter } from './fct_painter';
+import { FocusManager, type FocusTrapHandle } from './focus_manager';
 import {
   holderTierBadgeDataUrl,
   holderTierByIndex,
@@ -659,6 +661,18 @@ export class Hud {
   private chatTimestamps = localStorage.getItem('chatTimestamps') === '1';
   private chatClock: ChatClock = clampChatClock(localStorage.getItem('chatClock'));
   private combatLogEl = $('#combatlog');
+  // Off-screen polite live region for the throttled combat summary (P15a). The 3D
+  // world / game canvas is OUT of accessibility scope (not screen-readable), so this
+  // announces only the combat-log text, never the game world.
+  private combatLiveEl = $('#combat-live');
+  private readonly combatAnnouncer = new CombatAnnouncer((summary) => {
+    this.combatLiveEl.textContent = summary;
+  });
+  // The ONE shared focus manager: trap (Tab/Shift+Tab cycle) + focus-first +
+  // return-to-opener, unifying the former ad-hoc Hud focus helpers. See
+  // ./focus_manager. Escape is NOT handled here: it stays with the existing unified
+  // dispatcher (main.ts game input -> hud.closeAll()), so there is one Escape path.
+  private readonly focusManager = new FocusManager();
   // WoW-style chat tabs. `chatTabs` are the player-added channel tabs (the
   // built-in `all`/`combat` views are implicit); `activeChatTab` is the one
   // currently shown, and drives both the log filter and the send channel.
@@ -800,10 +814,10 @@ export class Hud {
   private lastDelveTrackerSig = '';
   private selectedDelveTier: 'normal' | 'heroic' = 'normal';
   private delveBoardTab: 'delve' | 'shop' = 'delve';
-  private delveBoardReturnFocus: HTMLElement | null = null;
+  private delveTrap: FocusTrapHandle | null = null;
   private lockpickOfferId: number | null = null;
   private lockpickCoffer = false;
-  private lockpickReturnFocus: HTMLElement | null = null;
+  private lockpickTrap: FocusTrapHandle | null = null;
   private lockpickKeyHandler: ((e: KeyboardEvent) => void) | null = null;
   // The board paints from the authoritative world.lockpickState (never a cached
   // copy), and owns the per-page countdown with a generation guard. hud.ts keeps
@@ -819,7 +833,7 @@ export class Hud {
   private openGossipNpcId: number | null = null;
   private openQuestDetailId: string | null = null;
   private pendingChatLinks = new Map<string, string>(); // display "[Name]" -> questId
-  private questDialogReturnFocus: HTMLElement | null = null;
+  private questDialogTrap: FocusTrapHandle | null = null;
   private questDialogOpenedAtMs = 0;
   // swing timer: the period is captured from the reset edge (swingTimer jumping
   // up), so the bar tracks real swing speed including haste / ranged weapons.
@@ -902,6 +916,7 @@ export class Hud {
   // Cosmetic skin-select event overlay (opened by the skinEvent cue). The shared
   // CharacterPreview above is borrowed for the rotatable 3D preview.
   private skinEventEl: HTMLElement | null = null;
+  private skinEventTrap: FocusTrapHandle | null = null;
   private skinEventRank: SkinRank | null = null;
   private skinEventTiers: readonly SkinTier[] = EVENT_SKIN_TIERS;
   private skinEventSelected = -1;
@@ -913,7 +928,9 @@ export class Hud {
   // Pending lazy-load of the mech GLB + chromas; the reveal waits on it.
   private mechAssetsPromise: Promise<void> | null = null;
   private cardModalEl: HTMLElement | null = null;
-  private cardModalReturnFocus: HTMLElement | null = null;
+  private cardModalTrap: FocusTrapHandle | null = null;
+  // Shared by the confirm + input modals (one #confirm-dialog id; they never coexist).
+  private confirmTrap: FocusTrapHandle | null = null;
   // Set while the player-card modal is open: re-composites the card with the
   // current pose so a $WOC balance change (the bag-footer path can't reach the
   // card's canvas) is reflected. Cleared when the modal closes.
@@ -1511,6 +1528,8 @@ export class Hud {
     delete el.dataset.windowOpen;
     switch (el.id) {
       case 'confirm-dialog':
+        this.confirmTrap?.release();
+        this.confirmTrap = null;
         el.remove();
         break;
       case 'options-menu':
@@ -2474,8 +2493,7 @@ export class Hud {
     ...this.presentationBag,
     root: () => $('#talents-window'),
     hideTooltip: () => this.hideTooltip(),
-    captureFocus: () => this.currentFocusableElement(),
-    restoreFocus: (target) => this.restoreFocus(target),
+    ...this.windowFocus('#talents-window'),
     getStage: () => this.talentStage,
     setStage: (s) => {
       this.talentStage = s;
@@ -2506,8 +2524,7 @@ export class Hud {
     world: () => this.sim,
     closeOthers: () => this.closeOtherWindows('#social-window'),
     hideTooltip: () => this.hideTooltip(),
-    captureFocus: () => this.currentFocusableElement(),
-    restoreFocus: (target) => this.restoreFocus(target),
+    ...this.windowFocus('#social-window'),
     showPrompt: (text, acceptLabel, onAccept, onDecline) =>
       this.showPrompt(text, acceptLabel, onAccept, onDecline),
     startWhisper: (name) => this.startWhisper(name),
@@ -2555,8 +2572,7 @@ export class Hud {
     world: () => this.sim,
     closeOthers: () => this.closeOtherWindows('#market-window'),
     hideTooltip: () => this.hideTooltip(),
-    captureFocus: () => this.currentFocusableElement(),
-    restoreFocus: (target) => this.restoreFocus(target),
+    ...this.windowFocus('#market-window'),
     showError: (text) => this.showError(text),
     slotName: (slot) => itemSlotName(slot),
     syncBags: (open) => {
@@ -2576,8 +2592,7 @@ export class Hud {
     root: () => $('#arena-window'),
     world: () => this.sim,
     closeOthers: () => this.closeOtherWindows('#arena-window'),
-    captureFocus: () => this.currentFocusableElement(),
-    restoreFocus: (target) => this.restoreFocus(target),
+    ...this.windowFocus('#arena-window'),
   });
   // Character window painter (char_view.ts paperdoll core + char_window.ts painter).
   // It composes the presentation bag (icon/tooltip) for the equip slots and routes
@@ -2592,8 +2607,7 @@ export class Hud {
     world: () => this.sim,
     closeOthers: () => this.closeOtherWindows('#char-window'),
     hideTooltip: () => this.hideTooltip(),
-    captureFocus: () => this.currentFocusableElement(),
-    restoreFocus: (target) => this.restoreFocus(target),
+    ...this.windowFocus('#char-window'),
     slotName: (slot) => itemSlotName(slot),
     statCellHtml: (stat) => statCellHtml(this.statModel(stat), STAT_VIEW_DEPS),
     statTooltipHtml: (stat) => statTooltipHtml(this.statModel(stat), STAT_VIEW_DEPS),
@@ -2649,11 +2663,10 @@ export class Hud {
       this.buildDropdown(options, current, onChange, placeholder, a11y),
     setDropdownValue: (root, value) => this.setDropdownValue(root, value),
     focusFirstInteractive: (root, preferredSelector) =>
-      this.focusFirstInteractive(root, preferredSelector),
+      this.focusManager.focusFirst(root, preferredSelector),
     closeOthers: () => this.closeOtherWindows('#options-menu'),
     hideTooltip: () => this.hideTooltip(),
-    captureFocus: () => this.currentFocusableElement(),
-    restoreFocus: (target) => this.restoreFocus(target),
+    ...this.windowFocus('#options-menu'),
     // The gold log tint stays Hud-side so the painter carries no color literal (decision 12).
     log: (message) => this.log(message, '#ffd100'),
     resetChatWindow: () => this.resetChatWindow(),
@@ -2676,8 +2689,7 @@ export class Hud {
     root: () => $('#leaderboard-window'),
     world: () => this.sim,
     closeOthers: () => this.closeOtherWindows('#leaderboard-window'),
-    captureFocus: () => this.currentFocusableElement(),
-    restoreFocus: (target) => this.restoreFocus(target),
+    ...this.windowFocus('#leaderboard-window'),
   });
   // Spellbook window painter (spellbook_view.ts core + spellbook_window.ts painter).
   // The window renders ability rows (not item rows), so it composes no presentation
@@ -2688,8 +2700,7 @@ export class Hud {
     root: () => $('#spellbook'),
     world: () => this.sim,
     closeOthers: () => this.closeOtherWindows('#spellbook'),
-    captureFocus: () => this.currentFocusableElement(),
-    restoreFocus: (target) => this.restoreFocus(target),
+    ...this.windowFocus('#spellbook'),
     hideTooltip: () => this.hideTooltip(),
     attachTooltip: (el, html) => this.attachTooltip(el, html),
     abilitySummary: (known) => describeAbilitySummary(known, this.sim.player.resourceType),
@@ -2715,11 +2726,10 @@ export class Hud {
     root: () => $('#quest-log-window'),
     world: () => this.sim,
     closeOthers: () => this.closeOtherWindows('#quest-log-window'),
-    captureFocus: () => this.currentFocusableElement(),
-    restoreFocus: (target) => this.restoreFocus(target),
+    ...this.windowFocus('#quest-log-window'),
     hideTooltip: () => this.hideTooltip(),
     focusFirstInteractive: (root, preferredSelector) =>
-      this.focusFirstInteractive(root, preferredSelector),
+      this.focusManager.focusFirst(root, preferredSelector),
     confirmDialog: (title, body, okText, cancelText, onOk) =>
       this.confirmDialog(title, body, okText, cancelText, onOk),
     insertQuestChatLink: (questId) => this.insertQuestChatLink(questId),
@@ -2982,38 +2992,38 @@ export class Hud {
     return ` <span class="quest-suggested">${esc(t('questUi.log.suggestedPlayers', { count: this.questNumber(count) }))}</span>`;
   }
 
-  private canRestoreFocusTo(target: HTMLElement | null): target is HTMLElement {
-    return Boolean(target?.isConnected && target.getClientRects().length > 0);
-  }
-
-  private currentFocusableElement(): HTMLElement | null {
-    const active = document.activeElement;
-    return active instanceof HTMLElement &&
-      active !== document.body &&
-      this.canRestoreFocusTo(active)
-      ? active
-      : null;
-  }
-
-  private restoreFocus(target: HTMLElement | null, fallback?: HTMLElement | null): void {
-    const candidate = this.canRestoreFocusTo(target)
-      ? target
-      : this.canRestoreFocusTo(fallback ?? null)
-        ? fallback!
-        : null;
-    if (!candidate) return;
-    window.setTimeout(() => candidate.focus(), 0);
-  }
-
-  private focusFirstInteractive(root: HTMLElement, preferredSelector?: string): void {
-    window.setTimeout(() => {
-      const target =
-        (preferredSelector ? root.querySelector<HTMLElement>(preferredSelector) : null) ??
-        root.querySelector<HTMLElement>(
-          'button:not([disabled]):not([data-close]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        );
-      (target ?? root).focus();
-    }, 0);
+  // The {captureFocus, restoreFocus} pair for a painter window, wired to the ONE
+  // shared focus manager (P15a). It keeps the painter window interface unchanged:
+  // captureFocus records the opener AND installs the Tab trap on the window root;
+  // restoreFocus removes the trap and returns focus to that opener. Escape is handled
+  // by the existing unified dispatcher (main.ts game input -> hud.closeAll()), so the
+  // trap deliberately does not register an Escape handler (one Escape path, not two).
+  private windowFocus(rootSel: string): {
+    captureFocus: () => HTMLElement | null;
+    restoreFocus: (target: HTMLElement | null) => void;
+  } {
+    let handle: FocusTrapHandle | null = null;
+    return {
+      captureFocus: () => {
+        const opener = this.focusManager.activeFocusable();
+        handle = this.focusManager.open({ root: () => $(rootSel), returnFocusTo: opener });
+        return opener;
+      },
+      restoreFocus: (target) => {
+        // An in-window refocus (target still inside the open window, e.g. char_window
+        // handing focus back to the rebuilt slot row after a keyboard unequip) must NOT
+        // tear down the trap; only a return-to-opener on close (target outside the
+        // window, or null) releases it.
+        const root = $(rootSel);
+        if (target && root.contains(target)) {
+          this.focusManager.restore(target);
+          return;
+        }
+        handle?.release(false);
+        handle = null;
+        this.focusManager.restore(target);
+      },
+    };
   }
 
   private refreshLocalizedDynamicUi(): void {
@@ -4107,6 +4117,10 @@ export class Hud {
     const slowHud = now - this.lastHudSlowAt >= 500;
     if (slowHud) this.lastHudSlowAt = now;
 
+    // Drain a trailing combat-announcement burst to the polite live region (push()
+    // already flushes; this catches the last buffered line once combat goes quiet).
+    if (fastHud) this.combatAnnouncer.flush(now);
+
     this.meters.update();
     this.lockpickWindow.repaintIfChanged();
     this.tutorial.update(sim, this.renderer, this.keybinds);
@@ -4627,7 +4641,7 @@ export class Hud {
     const delve = Object.values(DELVES).find((d) => d.boardNpcId === npc.templateId);
     if (!delve) return;
     if ($('#delve-board').style.display !== 'block')
-      this.delveBoardReturnFocus = this.currentFocusableElement();
+      this.delveTrap = this.focusManager.open({ root: () => $('#delve-board') });
     this.openDelveBoardNpcId = npcId;
     this.selectedDelveTier = 'normal';
     this.delveBoardTab = 'delve';
@@ -4744,7 +4758,7 @@ export class Hud {
     }
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeDelveBoard());
     if (focus)
-      this.focusFirstInteractive(el, tab === 'shop' ? '.delve-shop-buy' : '.delve-enter-btn');
+      this.delveTrap?.focusFirst(tab === 'shop' ? '.delve-shop-buy' : '.delve-enter-btn');
   }
 
   // Brother Halven's Marks-vendor stock for the open delve. Offers + lock state
@@ -4805,9 +4819,8 @@ export class Hud {
     $('#delve-board').style.display = 'none';
     this.openDelveBoardNpcId = null;
     this.hideTooltip();
-    const target = this.delveBoardReturnFocus;
-    this.delveBoardReturnFocus = null;
-    if (restoreFocus) this.restoreFocus(target);
+    this.delveTrap?.release(restoreFocus);
+    this.delveTrap = null;
   }
 
   // ---------------------------------------------------------------------------
@@ -4820,13 +4833,14 @@ export class Hud {
 
   private openLockpickAnte(objectId: number, bountiful = false): void {
     const el = $('#lockpick-panel');
-    if (el.style.display !== 'block') this.lockpickReturnFocus = this.currentFocusableElement();
+    if (el.style.display !== 'block')
+      this.lockpickTrap = this.focusManager.open({ root: () => $('#lockpick-panel') });
     this.lockpickOfferId = objectId;
     this.lockpickCoffer = bountiful;
     el.style.display = 'block';
     this.bindLockpickKeys();
     this.lockpickWindow.renderAnte(objectId, bountiful);
-    this.focusFirstInteractive(el, '.lp-ante-btn');
+    this.lockpickTrap?.focusFirst('.lp-ante-btn');
   }
 
   // The lockpick loot tier names are shared with the combat-log lines, so reuse
@@ -4845,7 +4859,8 @@ export class Hud {
   // world.lockpickState; show the panel and let the window paint from it.
   private openLockpickBoard(): void {
     const el = $('#lockpick-panel');
-    if (el.style.display !== 'block') this.lockpickReturnFocus = this.currentFocusableElement();
+    if (el.style.display !== 'block')
+      this.lockpickTrap = this.focusManager.open({ root: () => $('#lockpick-panel') });
     this.lockpickOfferId = null;
     el.style.display = 'block';
     this.bindLockpickKeys();
@@ -4973,9 +4988,8 @@ export class Hud {
       window.removeEventListener('keydown', this.lockpickKeyHandler, true);
       this.lockpickKeyHandler = null;
     }
-    const target = this.lockpickReturnFocus;
-    this.lockpickReturnFocus = null;
-    if (restoreFocus) this.restoreFocus(target);
+    this.lockpickTrap?.release(restoreFocus);
+    this.lockpickTrap = null;
   }
 
   private delveObjectiveLine(run: DelveRunInfo): string {
@@ -6846,6 +6860,10 @@ export class Hud {
 
   private combatLog(text: string, color = '#ccc'): void {
     this.appendLog(this.combatLogEl, text, color);
+    // Mirror the combat line to the off-screen polite live region, throttled so a
+    // damage burst does not flood the screen reader (see ./combat_announcer). The
+    // text is already a t()-localized line, so nothing new is concatenated here.
+    this.combatAnnouncer.push(text, performance.now());
   }
 
   private appendLog(
@@ -7204,7 +7222,7 @@ export class Hud {
     if (npc?.kind !== 'npc') return;
     this.questDialogOpenedAtMs = performance.now();
     if ($('#quest-dialog').style.display !== 'block')
-      this.questDialogReturnFocus = this.currentFocusableElement();
+      this.questDialogTrap = this.focusManager.open({ root: () => $('#quest-dialog') });
     this.closeOtherWindows('#quest-dialog');
     // Voice the greeting only on the initial open — renderGossip also runs when
     // navigating back from a quest detail or after accept/turn-in, where a
@@ -7302,7 +7320,7 @@ export class Hud {
     });
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
     el.style.display = 'block';
-    this.focusFirstInteractive(el);
+    this.questDialogTrap?.focusFirst();
   }
 
   private renderQuestDetail(npc: Entity, questId: string): void {
@@ -7382,7 +7400,7 @@ export class Hud {
     el.appendChild(back);
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
     el.style.display = 'block';
-    this.focusFirstInteractive(el);
+    this.questDialogTrap?.focusFirst();
   }
 
   // Open the read-only quest detail for a chat-link click. Shows Accept only when the
@@ -7393,7 +7411,7 @@ export class Hud {
     if (!quest) return;
     this.openGossipNpcId = null;
     if ($('#quest-dialog').style.display !== 'block')
-      this.questDialogReturnFocus = this.currentFocusableElement();
+      this.questDialogTrap = this.focusManager.open({ root: () => $('#quest-dialog') });
     this.closeOtherWindows('#quest-dialog');
     const el = $('#quest-dialog');
     const state = this.sim.questState(questId);
@@ -7452,7 +7470,7 @@ export class Hud {
     }
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
     el.style.display = 'block';
-    this.focusFirstInteractive(el);
+    this.questDialogTrap?.focusFirst();
   }
 
   private renderQuestDiscussion(npc: Entity, questId: string, page: number): void {
@@ -7494,7 +7512,7 @@ export class Hud {
     el.appendChild(back);
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
     el.style.display = 'block';
-    this.focusFirstInteractive(el);
+    this.questDialogTrap?.focusFirst();
   }
 
   closeQuestDialog(restoreFocus = true): void {
@@ -7502,9 +7520,8 @@ export class Hud {
     this.openGossipNpcId = null;
     this.openQuestDetailId = null;
     this.hideTooltip();
-    const target = this.questDialogReturnFocus;
-    this.questDialogReturnFocus = null;
-    if (restoreFocus) this.restoreFocus(target);
+    this.questDialogTrap?.release(restoreFocus);
+    this.questDialogTrap = null;
   }
 
   // Re-render the open gossip dialog after quest state changes so completed
@@ -8190,6 +8207,8 @@ export class Hud {
       this.skinEventRevealTimer = null;
     }
     this.skinEventEl.classList.remove('open');
+    this.skinEventTrap?.release();
+    this.skinEventTrap = null;
     this.skinEventRank = null;
     this.skinEventTiers = EVENT_SKIN_TIERS;
     this.skinEventMode = 'class';
@@ -8259,6 +8278,8 @@ export class Hud {
       `<b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b>` +
       `<b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>` +
       `</div>`;
+    if (!this.skinEventTrap)
+      this.skinEventTrap = this.focusManager.open({ root: () => this.skinEventEl });
     el.classList.add('open');
   }
 
@@ -8419,6 +8440,8 @@ export class Hud {
     });
 
     // Show, mount the shared 3D preview into the right column, focus the choice.
+    if (!this.skinEventTrap)
+      this.skinEventTrap = this.focusManager.open({ root: () => this.skinEventEl });
     el.classList.add('open');
     this.mountCharPreview(
       el.querySelector('.se-preview') as HTMLElement,
@@ -8452,7 +8475,7 @@ export class Hud {
     // async result lands via onWalletUiChange → recomposeOpenCard (below), which
     // re-composites the card with the current pose once the new value arrives.
     this.optionsHooks?.refreshWocBalance();
-    this.cardModalReturnFocus = this.currentFocusableElement();
+    this.cardModalTrap = this.focusManager.open({ root: () => this.cardModalEl });
     const back = document.createElement('div');
     back.className = 'modal-backdrop';
     back.id = 'player-card-modal';
@@ -8487,7 +8510,7 @@ export class Hud {
       audio.click();
       close();
     });
-    this.focusFirstInteractive(back, '[data-close]');
+    this.cardModalTrap?.focusFirst('[data-close]');
 
     const previewBox = back.querySelector('.pc-preview') as HTMLElement;
     const status = back.querySelector('.pc-status') as HTMLElement;
@@ -8620,9 +8643,8 @@ export class Hud {
     back.remove();
     if (this.cardModalEl === back) this.cardModalEl = null;
     this.recomposeOpenCard = null;
-    const target = this.cardModalReturnFocus;
-    this.cardModalReturnFocus = null;
-    if (restoreFocus) this.restoreFocus(target);
+    this.cardModalTrap?.release(restoreFocus);
+    this.cardModalTrap = null;
   }
 
   private wireCardActions(
@@ -8978,6 +9000,8 @@ export class Hud {
     cancelText: string,
     onOk: () => void,
   ): void {
+    this.confirmTrap?.release(false);
+    this.confirmTrap = null;
     document.getElementById('confirm-dialog')?.remove();
     const el = document.createElement('div');
     el.id = 'confirm-dialog';
@@ -8991,8 +9015,13 @@ export class Hud {
       `<div class="cd-actions"><button type="button" class="btn" data-cancel>${esc(cancelText)}</button><button type="button" class="btn cd-ok" data-ok>${esc(okText)}</button></div>`;
     document.body.appendChild(el);
     this.bringWindowToFront(el);
+    this.confirmTrap = this.focusManager.open({ root: () => el });
     el.querySelector<HTMLElement>('[data-ok]')?.focus();
-    const close = () => el.remove();
+    const close = () => {
+      this.confirmTrap?.release();
+      this.confirmTrap = null;
+      el.remove();
+    };
     el.querySelectorAll('[data-cancel]').forEach((b) => {
       b.addEventListener('click', () => {
         audio.click();
@@ -9021,6 +9050,8 @@ export class Hud {
     cancelText?: string;
     onOk?: (value: string) => void;
   }): void {
+    this.confirmTrap?.release(false);
+    this.confirmTrap = null;
     document.getElementById('confirm-dialog')?.remove();
     const el = document.createElement('div');
     el.id = 'confirm-dialog';
@@ -9040,8 +9071,13 @@ export class Hud {
         : '') +
       `</div>`;
     document.body.appendChild(el);
+    this.confirmTrap = this.focusManager.open({ root: () => el });
     const input = el.querySelector('.cd-input') as HTMLInputElement | HTMLTextAreaElement;
-    const close = () => el.remove();
+    const close = () => {
+      this.confirmTrap?.release();
+      this.confirmTrap = null;
+      el.remove();
+    };
     const submit = () => {
       const v = input?.value ?? '';
       close();
@@ -9119,6 +9155,10 @@ export class Hud {
       menu.setAttribute('hidden', '');
       btn.setAttribute('aria-expanded', 'false');
       document.removeEventListener('click', onAway);
+      // Return-to-trigger stays synchronous and OUTSIDE the focus manager: this is the
+      // WAI-ARIA listbox pattern (dropdown_nav.ts), not a window trap, and the manager's
+      // restore() defers a tick, which would drop focus to <body> before the native Tab
+      // handoff below. The dropdown lives inside windows the manager already traps.
       if (returnFocus) btn.focus();
     };
     const onAway = () => close(false);

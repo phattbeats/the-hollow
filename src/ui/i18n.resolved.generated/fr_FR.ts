@@ -227,6 +227,10 @@ export const fr_FR: EnTranslations = {
       "targetLabel": "Your Mark",
       "partyLabel": "Your Band"
     },
+    "skipLinks": {
+      "mainHud": "Skip to Main HUD",
+      "chat": "Skip to Chat"
+    },
     "mobile": {
       "autorun": "Course automatique",
       "jump": "Sauter",

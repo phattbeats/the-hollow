@@ -4490,6 +4490,12 @@ function closeWalletPicker(id: string | null): void {
   if (resolve) resolve(id);
 }
 
+// TODO(P15b): fold this modal's ad-hoc focus handling (opener capture, the Tab cycle
+// in the keydown below, return-to-opener on close) into the shared src/ui/focus_manager
+// FocusManager. It stays standalone for P15a because the manager is an instance on the
+// Hud (decision 9, instance-parameterized) and is not reachable from these top-level
+// main.ts functions without threading it across the module boundary; unifying the
+// remaining out-of-hud modals is P15b's chrome-wide per-window scope.
 function showWalletPicker(
   wallets: readonly WalletOption[],
   selectedId: string | null,

@@ -139,6 +139,8 @@ const UI_PURE_CORES = [
   'src/ui/auras_view.ts',
   'src/ui/minimap_markers.ts',
   'src/ui/fct_core.ts',
+  'src/ui/focus_order.ts',
+  'src/ui/live_region_politeness.ts',
   'src/game/ui_effects_profile.ts',
   'src/game/ui_tier_knobs.ts',
 ].map((rel) => join(repoRoot, rel));

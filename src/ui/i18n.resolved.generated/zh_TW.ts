@@ -227,6 +227,10 @@ export const zh_TW: EnTranslations = {
       "targetLabel": "Your Mark",
       "partyLabel": "Your Band"
     },
+    "skipLinks": {
+      "mainHud": "Skip to Main HUD",
+      "chat": "Skip to Chat"
+    },
     "mobile": {
       "autorun": "自動奔跑",
       "jump": "跳躍",
