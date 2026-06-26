@@ -811,6 +811,10 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     // T1: player target selectors + raid-marker store (the setMarker error literal,
     // byte-identical after the move so its matcher is unchanged).
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/targeting.ts'), 'utf8'),
+    // N1: the Nythraxis raid encounter (crypt-quest "ritual circle is silent" error +
+    // the "<name> awakens!" summon log; the boss yells are variable-routed chat, not
+    // scanned). Literals are byte-identical after the move so their matchers are unchanged.
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/encounters/nythraxis.ts'), 'utf8'),
     socialSrc,
   ].join('\n');
   // Hardened S3: also scan the authoritative server's player-facing emits. The

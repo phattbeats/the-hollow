@@ -9,6 +9,11 @@ export const TURN_SPEED = Math.PI; // rad/sec keyboard turning
 export const MELEE_RANGE = 5; // yards
 export const MELEE_ARC = 2.2; // radians half-arc within which melee swings connect
 export const INTERACT_RANGE = 5;
+// /yell broadcast radius and ground-object respawn delay: neutral consts shared by
+// code that stays on Sim (the chat router, pickUpObject) and an extracted slice (the
+// Nythraxis encounter's yells + crypt-relic respawn), so they live here, not in sim.ts.
+export const YELL_RANGE = 100;
+export const OBJECT_RESPAWN = 30;
 // Pet tuning shared between the pet-AI slice (src/sim/pet/pet_ai.ts) and code that
 // stays on Sim, so it lives in this neutral module (the slice-only PET_* consts live
 // in pet_ai.ts). PET_GROWL_INTERVAL is read by the moved updatePet auto-taunt arm AND

@@ -222,6 +222,10 @@ export interface SimContextCallbacks {
   // paths read it too); exposed here so the extracted heal core can draw its crit.
   spellCrit(p: Entity): number;
   applyAura(target: Entity, aura: Aura): void;
+  // General control-aura predicate (stun/root/incapacitate/polymorph). STAYS on Sim
+  // (the applyAura CC-immunity path reads it too); exposed so the extracted Nythraxis
+  // encounter's isNythraxisControlAura (which adds 'slow') can consult it via the seam.
+  isControlAura(kind: Aura['kind']): boolean;
   applyRootAura(
     source: Entity,
     target: Entity,
@@ -378,6 +382,11 @@ export interface SimContextCallbacks {
   detonateCorpse(dead: Entity): void;
   despawnPet(pet: Entity): void;
   respawnMob(mob: Entity): void;
+  // M2 evade reset (mob/locomotion.ts via Sim's thin delegate). Exposed so the
+  // extracted Nythraxis wipe (wipeNythraxisEncounter) can send the boss home; the
+  // delegate re-enters resetNythraxisEncounter for the boss, the documented mutual
+  // recursion (terminated by the boss.nythraxis = undefined clear on the first pass).
+  resetEvadingMob(mob: Entity): void;
   // frenzyPackmates / armDeathThroes flipped points-at to mob/lifecycle (M4); the M4
   // respawnMob body also consumes despawnPersistentPet (I2a) + clearNonPlayerStatAuras
   // (C1), which stay on Sim. All four are declared once elsewhere in this interface.
@@ -665,6 +674,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     applyHeal: host.applyHeal,
     spellCrit: host.spellCrit,
     applyAura: host.applyAura,
+    isControlAura: host.isControlAura,
     applyRootAura: host.applyRootAura,
     applyKnockback: host.applyKnockback,
     diminishedCrowdControlDuration: host.diminishedCrowdControlDuration,
@@ -742,6 +752,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     detonateCorpse: host.detonateCorpse,
     despawnPet: host.despawnPet,
     respawnMob: host.respawnMob,
+    resetEvadingMob: host.resetEvadingMob,
     onBossDeath: host.onBossDeath,
     // M3 mob-swing affix cascade seam.
     effectiveArmor: host.effectiveArmor,
