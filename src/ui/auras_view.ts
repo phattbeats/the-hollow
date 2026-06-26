@@ -1,0 +1,206 @@
+// Pure derivation of the aura strip (the #buff-bar player buffs/debuffs and the
+// #tf-debuffs target debuffs).
+//
+// This is the per-frame HOT core: hud.update() rendered each entity's auras every
+// frame. The old renderAuras used an ad-hoc `__sig` cache + an innerHTML wipe; this
+// core replaces the derivation half, and auras_painter.ts replaces the DOM half with
+// a typed keyed per-aura node pool (Top risk 3: the pool's tooltip closure reads a
+// LIVE mutable slot, never a captured aura).
+//
+// DECISION 9 (component contract): the core is INSTANCE-PARAMETERIZED by the aura
+// MODE ('all' for the buff bar, 'debuffs' for the target frame). createAurasView(mode,
+// deps) preallocates a per-aura slot pool ONCE and returns a tick(entity) that mutates
+// it IN PLACE and returns the SAME { slots, count } container every call, so a correct
+// frame allocates no new array/object garbage (the reused-reference allocation proxy,
+// tests/util/alloc_probe.ts). Two modes yield two independent views (the buff bar and
+// the target debuffs are two instances, not a code fork).
+//
+// The DEBUFF allowlist lives HERE (it is presentation/domain classification, lifted
+// out of the old painter-side branch). The core stays DOM-free and i18n-MECHANISM-free
+// (no i18n runtime import): the localized aura name + the formatted stack count are
+// produced by INJECTED deps each frame (so the i18n keys keep firing and the painter
+// never concats), while the icon identity and the duration text are pure.
+//
+// DECISION 15 (parity): the input is a structural subset of IWorld's Entity.auras that
+// BOTH the offline Sim and the online ClientWorld mirror expose. Aura.stacks is
+// OPTIONAL (the wire sends it only when > 1), so the core treats a missing stacks the
+// same as 1 (no stacks badge), and a Sim-shaped aura {stacks:1} and a ClientWorld
+// mirror aura {stacks:undefined} derive identical output.
+
+import type { AuraKind } from '../sim/types';
+
+// The aura kinds that read as a DEBUFF even when they reuse a buff_* kind is handled
+// separately below. Lifted verbatim from the old inline `renderAuras` allowlist; a
+// Set so the per-frame classification is O(1) and the table is built once at load, not
+// per aura. A negative-value stat aura (a mob's attack-power sap, an intellect-draining
+// curse) is also a debuff (see isAuraDebuff).
+export const DEBUFF_AURA_KINDS: ReadonlySet<AuraKind> = new Set<AuraKind>([
+  'dot',
+  'slow',
+  'root',
+  'stun',
+  'incapacitate',
+  'polymorph',
+  'attackspeed',
+  'debuff_ap',
+  'sunder',
+  'mortal_wound',
+  'silence',
+  'disarm',
+  'blind',
+  'expose',
+  'spellvuln',
+  'lockout',
+  'vulnerability',
+  'hex',
+  'tongues',
+  'cost_tax',
+  'heal_absorb',
+  'critvuln',
+]);
+
+// Below this many seconds remaining the duration label is shown; at/above it the aura
+// reads as effectively permanent and the label is blank (byte-faithful to the old
+// `a.remaining < 99 ? ... : ''`).
+const DURATION_HIDE_THRESHOLD = 99;
+// The duration unit suffix. NOT a t() key: the old inline site hardcoded `${n}s` with
+// no localization, and this is a byte-faithful extraction, not a new string (a real
+// localization of aura durations would be a separate, deliberate i18n change).
+const DURATION_UNIT_SUFFIX = 's';
+
+/** Which aura strip a view drives: every aura (the player buff bar) or debuffs only
+ *  (the target frame). */
+export type AuraMode = 'all' | 'debuffs';
+
+/** The aura fields the core reads. A structural subset of sim `Aura` that both worlds
+ *  mirror. `stacks` is optional (the wire omits it when 1). */
+export interface AuraInput {
+  id: string;
+  name: string;
+  kind: AuraKind;
+  remaining: number;
+  value: number;
+  stacks?: number;
+}
+
+/** The entity fields the core reads: just its aura list. */
+export interface AurasEntityInput {
+  auras: readonly AuraInput[];
+}
+
+/** Injected host helpers. The core produces localized text without importing the i18n
+ *  runtime (testable with spies); each fires its key/lookup every frame so an in-game
+ *  language switch lands on the next tick. */
+export interface AurasDeps {
+  /** The icon identity the painter resolves to a background-image URL (host:
+   *  `ABILITIES[id] ? id : 'aura_' + kind`). */
+  iconId(aura: AuraInput): string;
+  /** The localized aura display name, for the tooltip (host: `ABILITIES[id] ?
+   *  abilityDisplayName(...) : auraDisplayNameFromSource(name)`). */
+  auraName(aura: AuraInput): string;
+  /** The formatted stack count (host: `formatNumber(stacks, {maximumFractionDigits:0})`). */
+  formatStacks(stacks: number): string;
+}
+
+/** One aura's derived state. All fields are mutated IN PLACE each tick; the object
+ *  reference is stable across ticks (no per-frame garbage). The painter keys its node
+ *  pool by `key` and copies `name`/`remaining` into a LIVE pooled record the tooltip
+ *  reads. */
+export interface AuraSlotState {
+  /** The pool key: the aura id. Aura ids are unique per entity (the sim refreshes an
+   *  existing aura rather than adding a second, and stacking uses `stacks`), so the id
+   *  is a stable per-aura-instance key. */
+  key: string;
+  /** The icon identity the painter resolves + elides by. */
+  iconKey: string;
+  /** Whether this aura reads as a debuff (drives the `debuff` class, not a color). */
+  isDebuff: boolean;
+  /** The remaining-duration label, or '' when effectively permanent. */
+  durationText: string;
+  /** The stack-count label, or '' when the aura does not stack past 1. */
+  stacksText: string;
+  /** The localized aura name, for the tooltip (read live by the pooled closure). */
+  name: string;
+  /** Raw seconds remaining, for the tooltip (read live by the pooled closure). */
+  remaining: number;
+}
+
+/** The whole strip's derived state: the reused slot pool plus the active count. Both
+ *  the object and the array are reused across ticks; `count` is how many leading slots
+ *  are active this frame (slots.length is the high-water capacity, never truncated, so
+ *  the pooled slot references stay stable). */
+export interface AurasState {
+  slots: AuraSlotState[];
+  count: number;
+}
+
+export interface AurasView {
+  /** Derive this frame's state, mutating the reused pool in place. */
+  tick(entity: AurasEntityInput): AurasState;
+}
+
+/** Whether an aura reads as a debuff: an allowlisted kind, or a negative-value stat
+ *  buff (a buff_* kind whose value saps rather than grants, e.g. a mob stat-sap riding
+ *  buff_int/buff_ap with a negative value). Byte-faithful to the old inline
+ *  classification, lifted into the core.
+ *
+ *  CAVEAT (pre-existing wire-fidelity gap, NOT introduced by P12b): the online wire
+ *  decodes aura.value as 0 (online.ts), so the `value < 0` branch is OFFLINE-ONLY - a
+ *  negative-value buff_* stat-sap shows the debuff border offline but not online. The
+ *  old inline renderAuras used the identical expression, so this divergence predates the
+ *  extraction; closing it is a wire change (send value, or a precomputed debuff flag),
+ *  out of this presentation-only phase's scope. The allowlisted kinds (dot, debuff_ap,
+ *  ...) do not depend on value and stay debuffs under both worlds. */
+export function isAuraDebuff(aura: AuraInput): boolean {
+  return DEBUFF_AURA_KINDS.has(aura.kind) || (aura.kind.startsWith('buff_') && aura.value < 0);
+}
+
+function makeSlotState(): AuraSlotState {
+  return {
+    key: '',
+    iconKey: '',
+    isDebuff: false,
+    durationText: '',
+    stacksText: '',
+    name: '',
+    remaining: 0,
+  };
+}
+
+/**
+ * Build an aura view bound to one mode. The slot pool is preallocated lazily and grows
+ * only to the high-water aura count (amortized zero allocation in steady state);
+ * tick() mutates it in place and returns the SAME { slots, count } container every
+ * call. Each createAurasView yields an INDEPENDENT view (decision 9): the buff bar and
+ * the target debuffs never share a pool.
+ */
+export function createAurasView(mode: AuraMode, deps: AurasDeps): AurasView {
+  const slots: AuraSlotState[] = [];
+  const state: AurasState = { slots, count: 0 };
+
+  return {
+    tick(entity: AurasEntityInput): AurasState {
+      let count = 0;
+      for (const a of entity.auras) {
+        const debuff = isAuraDebuff(a);
+        if (mode === 'debuffs' && !debuff) continue;
+        // Grow the pool only when this frame needs a slot it has never held before.
+        if (count >= slots.length) slots.push(makeSlotState());
+        const slot = slots[count];
+        slot.key = a.id;
+        slot.iconKey = deps.iconId(a);
+        slot.isDebuff = debuff;
+        slot.durationText =
+          a.remaining < DURATION_HIDE_THRESHOLD
+            ? `${Math.ceil(a.remaining)}${DURATION_UNIT_SUFFIX}`
+            : '';
+        slot.stacksText = a.stacks && a.stacks > 1 ? deps.formatStacks(a.stacks) : '';
+        slot.name = deps.auraName(a);
+        slot.remaining = a.remaining;
+        count++;
+      }
+      state.count = count;
+      return state;
+    },
+  };
+}
