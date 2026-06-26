@@ -162,6 +162,11 @@ export class MarketWindow {
   render(): void {
     const el = this.deps.root();
     this.deps.hideTooltip();
+    // WCAG 2.2 AA (P15b): name the focus-trapped root with a dialog role.
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'false');
+    el.setAttribute('tabindex', '-1');
+    el.setAttribute('aria-label', t('itemUi.market.title'));
     const info = this.deps.world().marketInfo;
     const tabLabel = (id: MarketTab): string => {
       if (id === 'browse') return t('itemUi.market.browse');
@@ -194,6 +199,9 @@ export class MarketWindow {
         this.lastSig = '';
         audio.click();
         this.render();
+        // Keyboard focus would otherwise fall to <body> when render() rebuilds the
+        // tab strip; land it on the newly selected tab instead (P15b, WCAG 2.4.3).
+        (this.deps.root().querySelector(`[data-tab="${next}"]`) as HTMLElement | null)?.focus();
       });
     });
     const closeFilterMenus = () => {
@@ -243,6 +251,12 @@ export class MarketWindow {
         this.lastSig = '';
         audio.click();
         this.render();
+        // Return focus to the filter's trigger button after render() rebuilds the
+        // menus, so a keyboard user is not dropped to <body> (P15b, WCAG 2.4.3).
+        const newMenu = this.deps.root().querySelector(`[data-market-filter-menu="${key}"]`);
+        (
+          newMenu?.closest('.mkt-select')?.querySelector('.mkt-select-btn') as HTMLElement | null
+        )?.focus();
       });
     });
     el.addEventListener('click', closeFilterMenus);
@@ -303,6 +317,20 @@ export class MarketWindow {
       list.className = 'mkt-list';
       body.appendChild(list);
     }
+    // Decision 15 / lazy-load a11y (P15b): the Browse search round-trips through the
+    // server (sync offline, async online) and streams results back into the list. A
+    // persistent off-screen polite status node announces the new result count (or the
+    // empty reason) so a screen-reader user hears that the async results arrived. It
+    // updates only when renderContent re-runs on a real signature change, so it never
+    // floods. visually-hidden mirrors the #combat-live utility class.
+    let status = body.querySelector('.mkt-status') as HTMLElement | null;
+    if (!status) {
+      status = document.createElement('div');
+      status.className = 'mkt-status visually-hidden';
+      status.setAttribute('role', 'status');
+      status.setAttribute('aria-live', 'polite');
+      body.appendChild(status);
+    }
     // Keep the field in sync on external resets, but never clobber active typing.
     if (document.activeElement !== search && search.value !== this.searchQuery) {
       search.value = this.searchQuery;
@@ -319,6 +347,7 @@ export class MarketWindow {
             ? t('itemUi.market.emptyFiltered')
             : t('itemUi.market.emptyBrowse');
       list.appendChild(empty);
+      status.textContent = empty.textContent;
       return;
     }
     const page = view.page;
@@ -329,6 +358,7 @@ export class MarketWindow {
     const total = formatNumber(page.total, { maximumFractionDigits: 0 });
     note.textContent = t('itemUi.market.pageRange', { shown, total });
     list.appendChild(note);
+    status.textContent = note.textContent;
     for (const { listing: l, item } of page.items) {
       const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? QUALITY_DEFAULT_COLOR;
       const row = document.createElement('div');
@@ -378,11 +408,18 @@ export class MarketWindow {
       pager.querySelectorAll<HTMLButtonElement>('[data-market-page]').forEach((button) => {
         button.addEventListener('click', () => {
           if (button.disabled) return;
-          this.browsePage += button.dataset.marketPage === 'next' ? 1 : -1;
+          const dir = button.dataset.marketPage;
+          this.browsePage += dir === 'next' ? 1 : -1;
           this.lastSig = '';
           audio.click();
           this.renderContent();
           body.scrollTop = 0;
+          // The pager is rebuilt by renderContent, so move focus to the matching new
+          // page button (or any enabled pager button if it became disabled at an end),
+          // keeping the keyboard user off <body> (P15b, WCAG 2.4.3).
+          const refocus = body.querySelector<HTMLButtonElement>(`[data-market-page="${dir}"]`);
+          if (refocus && !refocus.disabled) refocus.focus();
+          else body.querySelector<HTMLButtonElement>('[data-market-page]:not([disabled])')?.focus();
         });
       });
       list.appendChild(pager);
@@ -494,7 +531,7 @@ export class MarketWindow {
         count > 1
           ? ` ${t('itemUi.market.stackCount', { count: formatNumber(count, { maximumFractionDigits: 0 }) })}`
           : '';
-      row.innerHTML = `<span style="display:flex;gap:8px;align-items:center">${this.deps.itemIcon(item)}<span style="color:${qColor}">${esc(itemDisplayName(item))}${esc(stack)}</span></span>`;
+      row.innerHTML = `<span class="mkt-collect-item">${this.deps.itemIcon(item)}<span style="color:${qColor}">${esc(itemDisplayName(item))}${esc(stack)}</span></span>`;
       this.deps.attachTooltip(row, () => this.deps.itemTooltip(item));
       body.appendChild(row);
     }

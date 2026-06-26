@@ -261,6 +261,13 @@ export class OptionsWindow {
 
   private render(): void {
     const el = this.deps.root();
+    // WCAG 2.2 AA (P15b): the Esc/options menu is a focus-trapped window, so name the
+    // root and give it a dialog role. Each sub-view's panelTitle carries id=options-title
+    // (only one is in the DOM at a time), so aria-labelledby names whichever sub-view shows.
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'false');
+    el.setAttribute('tabindex', '-1');
+    el.setAttribute('aria-labelledby', 'options-title');
     // The wide multi-column layouts belong to their own sub-views; clear each when
     // leaving it so the other sub-views (and the main menu) keep their default width.
     if (this.view !== 'keybinds') el.classList.remove('kb-wide');
@@ -295,7 +302,7 @@ export class OptionsWindow {
   }
 
   private panelTitle(title: string): string {
-    return `<div class="panel-title"><span>${esc(title)}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
+    return `<div class="panel-title"><span id="options-title">${esc(title)}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
   }
 
   private renderMain(): void {

@@ -4490,12 +4490,15 @@ function closeWalletPicker(id: string | null): void {
   if (resolve) resolve(id);
 }
 
-// TODO(P15b): fold this modal's ad-hoc focus handling (opener capture, the Tab cycle
-// in the keydown below, return-to-opener on close) into the shared src/ui/focus_manager
-// FocusManager. It stays standalone for P15a because the manager is an instance on the
-// Hud (decision 9, instance-parameterized) and is not reachable from these top-level
-// main.ts functions without threading it across the module boundary; unifying the
-// remaining out-of-hud modals is P15b's chrome-wide per-window scope.
+// P15b assessment: this modal is already fully keyboard-accessible on its own (role=dialog
+// + aria-modal + labelledby/describedby, the Tab cycle in the keydown below, Escape close,
+// initial focus, and return-to-opener), so there is no accessibility gap to fix here. Folding
+// it into the shared src/ui/focus_manager FocusManager would be an architecture-consistency
+// change only: the manager is a Hud instance (decision 9, instance-parameterized), not
+// reachable from these top-level main.ts functions without making it a module singleton
+// (which decision 9 deliberately avoided) or threading it across the boundary. Because the
+// modal is already accessible and the wallet-connect flow is sensitive, the shared-manager
+// unification is left as a non-blocking consistency follow-up rather than a P15b a11y fix.
 function showWalletPicker(
   wallets: readonly WalletOption[],
   selectedId: string | null,

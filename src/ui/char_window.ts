@@ -136,11 +136,16 @@ export class CharWindow {
     const p = world.player;
     const className = classDisplayName(world.cfg.playerClass);
     const level = formatNumber(p.level, { maximumFractionDigits: 0 });
-    let html = `<div class="panel-title char-title-portrait">${portraitChipHtml({ cls: world.cfg.playerClass, skin: p.skin ?? 0, name: p.name, variant: 'md' })}<span class="char-title-text">${esc(p.name)} <span class="panel-subtitle">${esc(t('itemUi.equipment.levelClass', { level, className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
+    // WCAG 2.2 AA (P15b): name the focus-trapped root via the character title span.
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'false');
+    el.setAttribute('tabindex', '-1');
+    el.setAttribute('aria-labelledby', 'char-title');
+    let html = `<div class="panel-title char-title-portrait">${portraitChipHtml({ cls: world.cfg.playerClass, skin: p.skin ?? 0, name: p.name, variant: 'md' })}<span class="char-title-text" id="char-title">${esc(p.name)} <span class="panel-subtitle">${esc(t('itemUi.equipment.levelClass', { level, className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
     html += `<div class="paperdoll">
       <div class="equip-col" id="equip-col-left"></div>
       <div class="char-model-panel">
-        <div id="char-model-preview" class="char-model-preview"></div>
+        <div id="char-model-preview" class="char-model-preview" role="img" aria-label="${esc(t('itemUi.equipment.levelClass', { level, className }))}"></div>
         <div id="char-skin-row" class="skin-row char-skin-row" role="list" aria-label="${esc(t('auth.appearance'))}"></div>
       </div>
       <div class="equip-col equip-col-right" id="equip-col-right"></div>

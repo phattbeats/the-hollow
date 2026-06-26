@@ -126,6 +126,10 @@ export class CastBarPainter {
     this.writers.setWidth(this.el.fill, `${(fill * 100).toFixed(PERCENT_FRACTION_DIGITS)}%`);
     this.writers.setText(this.el.label, label);
     this.writers.setText(this.el.timer, this.timerText(remaining));
+    // Report the progress value (P15b): the bar is role="progressbar" with static
+    // aria-valuemin/max but never exposed a value. Numeric, so no i18n key and no D12
+    // literal; routes through the elided setAttr so an unchanged percent does not write.
+    this.writers.setAttr(this.el.bar, 'aria-valuenow', String(Math.round(fill * 100)));
   }
 
   private timerText(remaining: number): string {

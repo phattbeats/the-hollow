@@ -161,6 +161,11 @@ export class SpellbookWindow {
         btn.textContent = onBar ? '-' : '+';
         btn.classList.toggle('remove', onBar);
         btn.setAttribute('aria-pressed', onBar ? 'true' : 'false');
+        // Keep the accessible name in sync with the toggle state (P15b): appendRow
+        // sets `${name} +/-`, but this in-place refresh used to leave it stale when
+        // the bar changed under an open window. Same symbol-concat format as appendRow.
+        const def = ABILITIES[id];
+        if (def) btn.setAttribute('aria-label', `${this.abilityName(def)} ${onBar ? '-' : '+'}`);
         btn.disabled = !onBar && !hasFree;
       });
   }

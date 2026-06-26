@@ -100,6 +100,7 @@ describe('CastBarPainter: the player instance routes every write through the eli
       { m: 'setWidth', args: [FILL, '80.0%'] },
       { m: 'setText', args: [LABEL, 'LOC:fireball'] },
       { m: 'setText', args: [TIMER, timer(0.5)] },
+      { m: 'setAttr', args: [BAR, 'aria-valuenow', '80'] },
     ]);
   });
 
@@ -126,6 +127,7 @@ describe('CastBarPainter: the player instance routes every write through the eli
       { m: 'setWidth', args: [FILL, '50.0%'] },
       { m: 'setText', args: [LABEL, t('hud.core.eating')] },
       { m: 'setText', args: [TIMER, timer(9)] },
+      { m: 'setAttr', args: [BAR, 'aria-valuenow', '50'] },
     ]);
     const drink = paint(
       { cast: HIDDEN_CAST, castRemaining: 0, consume: consumeState({ mode: 'drink' }) },
@@ -179,6 +181,7 @@ describe('CastBarPainter: the target instance (raw label, no eat/drink, display-
       { m: 'setWidth', args: [FILL, '50.0%'] },
       { m: 'setText', args: [LABEL, 'nythraxis_deathless_rage'] },
       { m: 'setText', args: [TIMER, timer(5)] },
+      { m: 'setAttr', args: [BAR, 'aria-valuenow', '50'] },
     ]);
   });
 

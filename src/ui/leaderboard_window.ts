@@ -130,10 +130,12 @@ export class LeaderboardWindow {
 
     if (view.kind === 'error') {
       body.innerHTML = `<div class="lb-empty lb-error" role="alert">${esc(t('game.leaderboard.retry'))}</div>`;
+      this.focusCloseAfterPage(focus);
       return;
     }
     if (view.kind === 'empty') {
       body.innerHTML = `<div class="lb-empty">${esc(t('game.leaderboard.empty'))}</div>`;
+      this.focusCloseAfterPage(focus);
       return;
     }
     // 'loading' is painted before the await (loadingBodyHtml), never returned here.
@@ -236,8 +238,16 @@ export class LeaderboardWindow {
     if (focus === 'prev' || focus === 'next') {
       const wanted = body.querySelector<HTMLButtonElement>(`[data-leaderboard-page="${focus}"]`);
       if (wanted && !wanted.disabled) wanted.focus();
-      else (this.deps.root().querySelector('[data-close]') as HTMLElement | null)?.focus();
+      else this.focusCloseAfterPage(focus);
     }
+  }
+
+  // After an async page-change swap that has no pager (the error / empty / single-page
+  // states), keep keyboard focus inside the window by landing it on the close button
+  // rather than letting it fall to <body> (WCAG 2.4.3, P15b).
+  private focusCloseAfterPage(focus: FocusTarget): void {
+    if (focus !== 'prev' && focus !== 'next') return;
+    (this.deps.root().querySelector('[data-close]') as HTMLElement | null)?.focus();
   }
 
   private classDisplayName(cls: PlayerClass): string {

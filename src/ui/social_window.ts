@@ -198,6 +198,12 @@ export class SocialWindow {
   private render(): void {
     const el = this.deps.root();
     if (!el.classList.contains('open')) return;
+    // WCAG 2.2 AA (P15b): name the focus-trapped root so AT users entering the trap
+    // land on a labeled dialog (the sibling cold windows all set this).
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'false');
+    el.setAttribute('tabindex', '-1');
+    el.setAttribute('aria-label', t('hud.social.title'));
     const w = this.deps.world();
     const tab = this.tab;
     const online = w.socialInfo !== null;
@@ -460,12 +466,25 @@ export class SocialWindow {
     maxlen: number,
     suggest: boolean,
   ): string {
+    // The typeahead is an ARIA 1.2 combobox: the input owns the .soc-suggest listbox
+    // via aria-controls, toggles aria-expanded as suggestions appear, and points
+    // aria-activedescendant at the highlighted option as the arrow keys move (P15b).
+    const listId = `soc-suggest-${field}`;
     return (
       `<div class="soc-add">` +
-      (suggest ? `<div class="soc-suggest" data-for="${field}" role="listbox"></div>` : '') +
-      `<input maxlength="${maxlen}" aria-label="${esc(placeholder)}" placeholder="${esc(placeholder)}" data-field="${field}"${suggest ? ' data-suggest="1" aria-autocomplete="list"' : ''} autocomplete="off" spellcheck="false"/>` +
+      (suggest
+        ? `<div class="soc-suggest" id="${listId}" data-for="${field}" role="listbox"></div>`
+        : '') +
+      `<input maxlength="${maxlen}" aria-label="${esc(placeholder)}" placeholder="${esc(placeholder)}" data-field="${field}"${suggest ? ` data-suggest="1" role="combobox" aria-autocomplete="list" aria-controls="${listId}" aria-expanded="false"` : ''} autocomplete="off" spellcheck="false"/>` +
       `<button class="btn" data-act="${act}">${esc(label)}</button></div>`
     );
+  }
+
+  /** The typeahead input for a field, for combobox aria state (expanded / activedescendant). */
+  private suggestInput(field: string): HTMLInputElement | null {
+    return this.deps
+      .root()
+      .querySelector(`input[data-field="${field}"]`) as HTMLInputElement | null;
   }
 
   // Wire the parts that survive a content refresh: close, tabs, footer + search.
@@ -586,9 +605,12 @@ export class SocialWindow {
       .querySelector(`.soc-suggest[data-for="${field}"]`) as HTMLElement | null;
     if (!box) return;
     this.suggest = { field, items: results, index: -1 };
+    const input = this.suggestInput(field);
     if (results.length === 0) {
       box.style.display = 'none';
       box.innerHTML = '';
+      input?.setAttribute('aria-expanded', 'false');
+      input?.removeAttribute('aria-activedescendant');
       return;
     }
     const kind = this.suggestKind(field);
@@ -598,10 +620,12 @@ export class SocialWindow {
           level: formatNumber(r.level, { maximumFractionDigits: 0 }),
           className: playerClassDisplayName(r.cls),
         });
-        return `<button type="button" class="soc-sugg-item" data-i="${i}" data-name="${esc(r.name)}" role="option"><span class="soc-name">${esc(r.name)}</span><span class="soc-meta">${esc(meta)}</span></button>`;
+        return `<button type="button" id="soc-sugg-${field}-${i}" class="soc-sugg-item" data-i="${i}" data-name="${esc(r.name)}" role="option"><span class="soc-name">${esc(r.name)}</span><span class="soc-meta">${esc(meta)}</span></button>`;
       })
       .join('');
     box.style.display = 'block';
+    input?.setAttribute('aria-expanded', 'true');
+    input?.removeAttribute('aria-activedescendant');
     box.querySelectorAll('.soc-sugg-item').forEach((it) => {
       it.addEventListener('mousedown', (e) => {
         e.preventDefault();
@@ -633,6 +657,10 @@ export class SocialWindow {
       it.classList.toggle('active', on);
       if (on) (it as HTMLElement).scrollIntoView({ block: 'nearest' });
     });
+    const input = this.suggestInput(field);
+    if (this.suggest.index >= 0)
+      input?.setAttribute('aria-activedescendant', `soc-sugg-${field}-${this.suggest.index}`);
+    else input?.removeAttribute('aria-activedescendant');
   }
 
   // Authoritative existence check (realm-scoped) before acting, so we can give

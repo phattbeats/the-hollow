@@ -29,13 +29,17 @@ describe('FctPainter: no raw DOM writes, no magic values (decisions 5a / 12)', (
   const src = readFileSync(new URL('../src/ui/fct_painter.ts', import.meta.url), 'utf8');
   const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
 
-  it('makes no raw style / textContent / classList / setAttribute / setProperty / innerHTML write', () => {
+  it('makes no raw per-frame style / textContent / classList / setProperty / innerHTML write (setAttribute only the build-time aria-hidden)', () => {
     // Everything per-frame routes through the facet; the only direct DOM touch is the
     // offsetWidth read that forces the animation-restart reflow (a read, not a write).
     expect(code).not.toMatch(/\.style\b/);
     expect(code).not.toMatch(/\.textContent\b/);
     expect(code).not.toMatch(/\.classList\b/);
-    expect(code).not.toMatch(/\.setAttribute\b/);
+    // setAttribute appears EXACTLY once: the one-time build-time aria-hidden on each
+    // pooled node (P15b honest boundary), set in the constructor like .className, NOT a
+    // per-frame write. Any per-frame raw setAttribute would push this above 1 and fail.
+    expect(code.match(/\.setAttribute\b/g) ?? []).toHaveLength(1);
+    expect(code).toMatch(/setAttribute\('aria-hidden', 'true'\)/);
     expect(code).not.toMatch(/\.setProperty\b/);
     expect(code).not.toMatch(/\.innerHTML\b/);
     expect(code).not.toMatch(/setTimeout/);
@@ -67,6 +71,8 @@ interface FakeEl {
   appendChild(kid: FakeEl): FakeEl;
   _detach(kid: FakeEl): void;
   remove(): void;
+  setAttribute(name: string, value: string): void;
+  attrs: Record<string, string>;
 }
 
 function fakeEl(tag: string): FakeEl {
@@ -76,6 +82,10 @@ function fakeEl(tag: string): FakeEl {
     parentNode: null as FakeEl | null,
     childNodes: [] as FakeEl[],
     offsetWidth: 0,
+    attrs: {} as Record<string, string>,
+    setAttribute(name: string, value: string) {
+      el.attrs[name] = value;
+    },
     appendChild(kid: FakeEl) {
       // Re-appending an attached node (an evicted slot) detaches it first, then pushes it
       // to the end -- exactly real appendChild semantics, so the live count stays bounded.

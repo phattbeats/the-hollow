@@ -352,10 +352,58 @@ export class BagsWindow {
     }
   }
 
+  // WCAG 2.2 AA (P15b): the ad-hoc bag prompts (discard / sell quantity) are modal
+  // dialogs but carried no role/name, no keyboard trap, and no focus return. This wires
+  // role=dialog + aria-modal + aria-labelledby (the prompt text), a self-contained Tab
+  // cycle among the prompt's controls (these prompts are appended to #prompt-stack,
+  // outside the bag window's reach, so they own their own trap), an Escape close, and
+  // focus return to the element that opened the prompt. Returns a close-and-return fn.
+  private installPromptDialog(
+    prompt: HTMLElement,
+    opener: HTMLElement | null,
+    close: () => void,
+  ): () => void {
+    prompt.setAttribute('role', 'dialog');
+    prompt.setAttribute('aria-modal', 'true');
+    const titleEl = prompt.querySelector('.prompt-text') as HTMLElement | null;
+    if (titleEl) {
+      if (!titleEl.id) titleEl.id = `${prompt.classList[prompt.classList.length - 1]}-title`;
+      prompt.setAttribute('aria-labelledby', titleEl.id);
+    }
+    const closeAndReturn = (): void => {
+      close();
+      opener?.focus();
+    };
+    prompt.addEventListener('keydown', (e) => {
+      const ke = e as KeyboardEvent;
+      if (ke.key === 'Escape') {
+        ke.preventDefault();
+        closeAndReturn();
+        return;
+      }
+      if (ke.key !== 'Tab') return;
+      const f = Array.from(
+        prompt.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled])'),
+      );
+      if (f.length === 0) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (ke.shiftKey && document.activeElement === first) {
+        ke.preventDefault();
+        last.focus();
+      } else if (!ke.shiftKey && document.activeElement === last) {
+        ke.preventDefault();
+        first.focus();
+      }
+    });
+    return closeAndReturn;
+  }
+
   private showDiscardItemPrompt(itemId: string, maxCount: number): void {
     document.querySelectorAll('.discard-item-prompt').forEach((el) => {
       el.remove();
     });
+    const opener = document.activeElement as HTMLElement | null;
     const item = ITEMS[itemId];
     const stack = document.getElementById('prompt-stack')!;
     const prompt = document.createElement('div');
@@ -390,26 +438,32 @@ export class BagsWindow {
       this.render();
     };
     confirm.addEventListener('click', submit);
-    cancel.addEventListener('click', close);
+    prompt.append(confirm, cancel);
+    const closeAndReturn = this.installPromptDialog(prompt, opener, close);
+    cancel.addEventListener('click', closeAndReturn);
     if (input) {
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') submit();
-        else if (e.key === 'Escape') close();
       });
     }
-    prompt.append(confirm, cancel);
     stack.appendChild(prompt);
-    if (input)
-      window.setTimeout(() => {
+    // Move focus into the modal: the quantity input when present, else the confirm
+    // button, so a keyboard user is never left outside the prompt (P15b).
+    window.setTimeout(() => {
+      if (input) {
         input.focus();
         input.select();
-      }, 0);
+      } else {
+        confirm.focus();
+      }
+    }, 0);
   }
 
   private showSellQuantityPrompt(itemId: string, maxCount: number): void {
     document.querySelectorAll('.sell-quantity-prompt').forEach((el) => {
       el.remove();
     });
+    const opener = document.activeElement as HTMLElement | null;
     const item = ITEMS[itemId];
     const stack = document.getElementById('prompt-stack')!;
     const prompt = document.createElement('div');
@@ -437,12 +491,12 @@ export class BagsWindow {
       close();
     };
     confirm.addEventListener('click', submit);
-    cancel.addEventListener('click', close);
+    prompt.append(input, confirm, cancel);
+    const closeAndReturn = this.installPromptDialog(prompt, opener, close);
+    cancel.addEventListener('click', closeAndReturn);
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') submit();
-      else if (e.key === 'Escape') close();
     });
-    prompt.append(input, confirm, cancel);
     stack.appendChild(prompt);
     window.setTimeout(() => {
       input.focus();

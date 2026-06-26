@@ -55,13 +55,13 @@
 //    pointer-events:none), so the P11c / P12b capture-by-value hazard cannot occur; the only
 //    mutable slot state is read synchronously inside spawn() / step().
 //
-// ACCESSIBILITY (decision 10): the combat-text live region (a coalesced, polite aria-live
-// summary of FCT) is DEFERRED to P15a, which owns the cross-window a11y infra. FCT divs
-// themselves are decorative transient text (not focusable, pointer-events:none), so this
-// painter introduces no focus trap and no announced text. TODO(P15a): build the polite
-// role=status combat-text live region (a FCT_ANNOUNCE_CADENCE_MS-coalesced summary, never
-// raw per-damage streaming) over this surface and aria-hide the raw .fct nodes so the
-// summary does not double-announce.
+// ACCESSIBILITY (decision 10): FCT divs are decorative transient text (not focusable,
+// pointer-events:none, world-anchored over the 3D scene), so this painter introduces no
+// focus trap and no announced text. P15b marks every pooled node aria-hidden at build (see
+// createNode below) so the raw per-hit numbers never reach the a11y tree. The coalesced,
+// polite combat summary belongs to the P15a #combat-live region, not these nodes; routing a
+// FCT-specific coalesced feed into that region (never raw per-damage streaming) remains a
+// follow-up, but the raw nodes are now correctly hidden so they cannot double-announce.
 
 import type { UiEffectsTier } from '../game/ui_effects_profile';
 import { fctDropNonCrit, fctMaxConcurrent, fctTtlScale } from '../game/ui_tier_knobs';
@@ -170,6 +170,11 @@ export class FctPainter {
     for (let i = 0; i < cap; i++) {
       const node = doc.createElement('div');
       node.className = FCT_BASE_CLASS;
+      // P15b honest boundary: FCT floaters are decorative, world-anchored transient
+      // text over the 3D scene (not screen-readable). Mark each pooled node aria-hidden
+      // once at build so the raw per-hit numbers never leak into the a11y tree; the
+      // coalesced summary belongs to the #combat-live region, not these nodes.
+      node.setAttribute('aria-hidden', 'true');
       this.free.push({ node, colorClass: null, bornAt: 0, ttlMs: 0 });
     }
   }

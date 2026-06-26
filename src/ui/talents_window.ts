@@ -156,8 +156,18 @@ export class TalentsWindow {
     const el = this.deps.root();
     // Early-return when hidden AND no staged buffer (nothing to repaint).
     if (el.style.display !== 'block' && this.deps.getStage() === null) return;
+    // WCAG 2.2 AA (P15b): name the focus-trapped root so AT users entering the trap
+    // land on a labeled dialog, not an anonymous group. innerHTML below replaces the
+    // children, not these own-element attributes, so setting them once per render is
+    // idempotent and covers both the coming-soon and the populated branch.
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'false');
+    el.setAttribute('tabindex', '-1');
+    el.setAttribute('aria-label', t('game.talents.title'));
     const cls = this.deps.playerClass();
-    const close = `<span class="x-btn" data-close>${svgIcon('close')}</span>`;
+    // A real <button> close (was a non-focusable <span>): keyboard-reachable and named,
+    // matching the sibling cold windows. focusFirst skips [data-close] on open.
+    const close = `<button type="button" class="x-btn" data-close aria-label="${esc(t('game.talents.close'))}">${svgIcon('close')}</button>`;
     if (!talentsFor(cls)) {
       el.innerHTML =
         `<div class="panel-title"><span>${t('game.talents.title')} <span style="color:${TAL_COLOR.classAccent};font-size:11px">${esc(classDisplayName(cls))}</span></span>${close}</div>` +
@@ -191,11 +201,36 @@ export class TalentsWindow {
       this.tab = tab.dataset.tab as 'class' | 'spec';
       this.render();
     };
-    el.querySelectorAll('.tal-tab').forEach((tab) => {
-      tab.addEventListener('click', () => switchTab(tab as HTMLElement));
-      tab.addEventListener('keydown', (e) =>
-        this.keyboardActivate(e as KeyboardEvent, () => switchTab(tab as HTMLElement)),
-      );
+    // WAI-ARIA tabs: roving arrow navigation (Left/Right/Home/End) plus Enter/Space.
+    // switchTab re-renders the window; the root persists, so focus the freshly active
+    // tab afterward to keep the roving-tabindex focus on the selected tab.
+    const tabs = Array.from(el.querySelectorAll<HTMLElement>('.tal-tab'));
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => switchTab(tab));
+      tab.addEventListener('keydown', (e) => {
+        const ke = e as KeyboardEvent;
+        if (
+          ke.key === 'ArrowRight' ||
+          ke.key === 'ArrowLeft' ||
+          ke.key === 'Home' ||
+          ke.key === 'End'
+        ) {
+          ke.preventDefault();
+          const next =
+            ke.key === 'Home'
+              ? 0
+              : ke.key === 'End'
+                ? tabs.length - 1
+                : (i + (ke.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+          const target = tabs[next];
+          if (target && target !== tab) {
+            switchTab(target);
+            (el.querySelector('.tal-tab.active') as HTMLElement | null)?.focus();
+          }
+          return;
+        }
+        this.keyboardActivate(ke, () => switchTab(tab));
+      });
     });
     el.querySelector('[data-close]')?.addEventListener('click', () => this.close());
 
@@ -216,6 +251,9 @@ export class TalentsWindow {
     picker.className = 'tal-specs';
     picker.setAttribute('role', 'radiogroup');
     picker.setAttribute('aria-label', t('game.talents.specTab'));
+    // WAI-ARIA radiogroup: arrow keys move focus among the spec radios and select on
+    // move (setSpec re-renders; the root persists, so focus the new selected card).
+    const specCards: { el: HTMLElement; id: string }[] = [];
     for (const specVM of view.specs) {
       const sp = specVM.spec;
       const card = document.createElement('div');
@@ -238,9 +276,36 @@ export class TalentsWindow {
           `<div class="tt-sub">${t('game.talents.mastery')}: ${esc(masteryName)} - ${esc(masteryDescription)}</div>`,
       );
       card.addEventListener('click', () => this.setSpec(stage, sp.id));
-      card.addEventListener('keydown', (e) =>
-        this.keyboardActivate(e as KeyboardEvent, () => this.setSpec(stage, sp.id)),
-      );
+      card.addEventListener('keydown', (e) => {
+        const ke = e as KeyboardEvent;
+        if (
+          ke.key === 'ArrowDown' ||
+          ke.key === 'ArrowRight' ||
+          ke.key === 'ArrowUp' ||
+          ke.key === 'ArrowLeft' ||
+          ke.key === 'Home' ||
+          ke.key === 'End'
+        ) {
+          ke.preventDefault();
+          const i = specCards.findIndex((c) => c.el === card);
+          const n = specCards.length;
+          if (n > 0) {
+            const next =
+              ke.key === 'Home'
+                ? 0
+                : ke.key === 'End'
+                  ? n - 1
+                  : ke.key === 'ArrowDown' || ke.key === 'ArrowRight'
+                    ? (i + 1) % n
+                    : (i - 1 + n) % n;
+            this.setSpec(stage, specCards[next].id);
+            (this.deps.root().querySelector('.tal-spec.sel') as HTMLElement | null)?.focus();
+          }
+          return;
+        }
+        this.keyboardActivate(ke, () => this.setSpec(stage, sp.id));
+      });
+      specCards.push({ el: card, id: sp.id });
       picker.appendChild(card);
     }
     body.appendChild(picker);
@@ -461,7 +526,24 @@ export class TalentsWindow {
     const firstOpt = (pop.querySelector('.tal-choice-opt.sel') ??
       pop.querySelector('.tal-choice-opt')) as HTMLElement | null;
     firstOpt?.focus();
-    setTimeout(() => document.addEventListener('click', () => pop.remove(), { once: true }), 0);
+    // Return focus to the node that opened the flyout when it is dismissed by an
+    // outside click, mirroring the Escape path (keyboard users are not dumped to body).
+    // Guard on the popup still being attached: a prior Escape / selection dismiss
+    // (choose() -> render()) already removed it, and this once:true listener would
+    // otherwise fire on the NEXT click and yank focus onto a stale/detached anchor.
+    setTimeout(
+      () =>
+        document.addEventListener(
+          'click',
+          () => {
+            if (!document.body.contains(pop)) return;
+            pop.remove();
+            anchor.focus();
+          },
+          { once: true },
+        ),
+      0,
+    );
   }
 
   private footerHtml(view: TalentsView): string {

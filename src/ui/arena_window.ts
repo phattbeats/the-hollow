@@ -84,6 +84,10 @@ export class ArenaWindow {
     this.lastSig = '';
     this.fetchLeaderboard(this.bracket);
     this.render();
+    // WCAG 2.2 AA (P15b): move keyboard focus into the freshly opened window (onto
+    // the close button), matching the sibling cold windows, so a keyboard user is not
+    // left on the opener while the focus trap is active.
+    (this.deps.root().querySelector('[data-close]') as HTMLElement | null)?.focus();
   }
 
   close(): void {
@@ -119,6 +123,13 @@ export class ArenaWindow {
   render(): void {
     const world = this.deps.world();
     const el = this.deps.root();
+    // WCAG 2.2 AA (P15b): name the focus-trapped root via its title. Set on the own
+    // element each render (idempotent; innerHTML below replaces only the children),
+    // ahead of the sig-skip early return so the first paint always carries it.
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'false');
+    el.setAttribute('aria-labelledby', 'arena-title');
+    el.setAttribute('tabindex', '-1');
     const view = buildArenaView({
       info: world.arenaInfo,
       selectedBracket: this.bracket,
@@ -175,14 +186,14 @@ export class ArenaWindow {
 
   private offlineHtml(): string {
     return (
-      `<div class="panel-title"><span>${esc(t('hud.arena.title'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.arena.close'))}">${svgIcon('close')}</button></div>` +
+      `<div class="panel-title"><span id="arena-title">${esc(t('hud.arena.title'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.arena.close'))}">${svgIcon('close')}</button></div>` +
       `<div class="arena-note">${esc(t('hud.arena.offlineNote'))}</div>`
     );
   }
 
   private liveHtml(view: Extract<ArenaView, { kind: 'live' }>): string {
     const bracketTag = `<span class="arena-bracket-tag${view.bracket === 'fiesta' ? ' fiesta' : ''}">${esc(this.bracketLabel(view.bracket))}</span>`;
-    const title = `<div class="panel-title"><span>${esc(t('hud.arena.title'))} ${bracketTag}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.arena.close'))}">${svgIcon('close')}</button></div>`;
+    const title = `<div class="panel-title"><span id="arena-title">${esc(t('hud.arena.title'))} ${bracketTag}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.arena.close'))}">${svgIcon('close')}</button></div>`;
     const bracketTabs = `<div class="arena-brackets">${view.brackets.map((b) => this.bracketBtn(b)).join('')}</div>`;
     const rank =
       `<div class="arena-rank"><span class="rating">${esc(formatNumber(view.standing.rating, { maximumFractionDigits: 0 }))}</span>` +

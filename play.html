@@ -149,7 +149,7 @@
   <a class="hud-skip" href="#ui" data-i18n="hudChrome.skipLinks.mainHud">Skip to Main HUD</a>
   <a class="hud-skip" href="#chatlog" data-i18n="hudChrome.skipLinks.chat">Skip to Chat</a>
   <canvas id="game-canvas"></canvas>
-  <div id="nameplates"></div>
+  <div id="nameplates" aria-hidden="true"></div>
 
   <template id="game-ui-template">
   <div id="ui" tabindex="-1">
@@ -187,12 +187,12 @@
     <div id="trade-window" class="window panel"></div>
 
     <div id="castbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" data-i18n-aria="hudChrome.castBar.playerAria" aria-label="Your Cast Bar"><div class="fill"></div><div class="label"></div><div class="timer"></div></div>
-    <div id="swingbar"><div class="fill"></div><div class="label"></div></div>
+    <div id="swingbar" aria-hidden="true"><div class="fill"></div><div class="label"></div></div>
 
     <div id="minimap-wrap">
       <div id="zone-label" data-i18n="entities.zones.eastbrook_vale.name">Eastbrook Vale</div>
       <div id="minimap-disc">
-        <canvas id="minimap" width="162" height="162"></canvas>
+        <canvas id="minimap" width="162" height="162" aria-hidden="true"></canvas>
         <button id="raid-lockout" type="button" hidden data-i18n-title="hudChrome.raidLockout.title" data-i18n-aria="hudChrome.raidLockout.title" title="Raid Lockouts" aria-label="Raid Lockouts"></button>
       </div>
       <div id="minimap-clock" data-i18n-title="hudChrome.widgets.clockTitle" title="Local time — click to toggle 12/24-hour">--:--</div>
@@ -849,9 +849,9 @@
       <button class="btn" id="mobile-preflight-continue" data-i18n="mobilePreflight.continue">Continue to Game</button>
     </div>
   </div>
-  <div id="rotate-device">
+  <div id="rotate-device" role="alert">
     <div>
-      <div class="rotate-icon">↻</div>
+      <div class="rotate-icon" aria-hidden="true">↻</div>
       <div class="rotate-title" data-i18n="mobilePreflight.rotateTitle">Rotate to Landscape</div>
       <div class="rotate-sub" data-i18n="mobilePreflight.rotateSub">Play in landscape fullscreen for the best mobile experience.</div>
     </div>
