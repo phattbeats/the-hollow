@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock the db layer so no Postgres is needed; snapshot logic is under test.
@@ -166,7 +168,9 @@ describe('delta snapshots', () => {
     broadcast(server);
     const snap = lastSnap(fc.sent);
     expect(snap).not.toBeNull();
-    for (const key of DELTA_KEYS) {
+    // a fresh session has an empty lastSent, so EVERY maybe() delta key rides the
+    // first snapshot (even the null-valued ones like party/trade); widened to all 25
+    for (const key of ALL_DELTA_KEYS) {
       expect(snap.self, `self.${key} missing from first snapshot`).toHaveProperty(key);
     }
     expect(snap.self.party).toBeNull();
@@ -226,6 +230,9 @@ describe('delta snapshots', () => {
     server.sim.tick();
     broadcast(server);
     const snap = lastSnap(fc.sent);
+    // This single-tick test stays on the decay-safe subset: cds and the timer-backed
+    // keys (delve/arena timers, delveDaily) can re-emit after a real sim.tick(), so the
+    // widened all-25 omission is proven by the no-op re-broadcast test instead.
     for (const key of DELTA_KEYS) {
       expect(snap.self, `self.${key} resent although unchanged`).not.toHaveProperty(key);
     }
@@ -484,7 +491,8 @@ describe('delta snapshots', () => {
     joinServer(server, fc2, 2, 'Testb');
     broadcast(server);
     const snapNew = lastSnap(fc2.sent);
-    for (const key of DELTA_KEYS) {
+    // a fresh session always receives the full self state: all 25 delta keys
+    for (const key of ALL_DELTA_KEYS) {
       expect(snapNew.self, `self.${key} missing for fresh session`).toHaveProperty(key);
     }
     // the veteran session still gets deltas only
@@ -1539,6 +1547,42 @@ const ALL_DELTA_KEYS = [
   'weapon',
 ] as const;
 
+// The terse wire key -> IWorld member name rename map, in sorted order. The wire
+// string IS the protocol (contract #4): a terse key renamed on one side passes tsc
+// and most per-field tests but silently breaks the world, so this map is pinned and
+// each target is validated as a survived value by the round-trip test below. It
+// carries the always-present self scalars (res/mres/rtype/lxp/rxp/prk) plus every
+// delta key whose IWorld name differs from its terse key (stats/weapon/delveDaily
+// keep their name; tal fans out to several members and is asserted directly).
+const TERSE_TO_IWORLD: Record<string, string> = {
+  arena: 'arenaInfo',
+  buyback: 'vendorBuyback',
+  cds: 'cooldowns',
+  cosmetics: 'accountCosmetics',
+  dclears: 'delveClears',
+  dcomp: 'companionUpgrades',
+  dcompanion: 'companionState',
+  dmarks: 'delveMarks',
+  drun: 'delveRun',
+  duel: 'duelInfo',
+  equip: 'equipment',
+  inv: 'inventory',
+  lockouts: 'selfLockouts',
+  lroll: 'lootRollPrompts',
+  lxp: 'lifetimeXp',
+  market: 'marketInfo',
+  marks: 'markers',
+  milestones: 'unlockedMilestones',
+  mres: 'maxResource',
+  party: 'partyInfo',
+  prk: 'prestigeRank',
+  qdone: 'questsDone',
+  qlog: 'questLog',
+  res: 'resource',
+  rtype: 'resourceType',
+  rxp: 'restedXp',
+};
+
 // Year ~2223 in epoch ms. Beats selfWireJson's `until > Date.now()` lockout
 // filter without a wall-clock read in test scaffolding.
 const FAR_FUTURE_MS = 8_000_000_000_000;
@@ -1659,6 +1703,153 @@ describe('full self-state snapshot delta fixture', () => {
       expect(snap.self, `self.${key} missing from first snapshot`).toHaveProperty(key);
       // each was dirtied to a non-default value, so none rides the wire as null
       expect(snap.self[key], `self.${key} arrived null`).not.toBeNull();
+    }
+  });
+
+  it('mirrors every dirtied self value onto the correct decode target', () => {
+    const { server, fc, leader, memberPid } = dirtyEveryDeltaField();
+    broadcast(server);
+    const client = bareClient(leader.pid);
+    (client as any).applySnapshot(lastSnap(fc.sent));
+
+    // --- fields that decode onto the player ENTITY (client.player), not the client ---
+    expect(client.player.cooldowns.get('heroic_strike')).toBe(5); // cds -> e.cooldowns
+    expect(client.player.stats).toMatchObject({ str: 12345 }); // stats (inline s.X ?? e.X)
+    expect(client.player.weapon).toMatchObject({ min: 999 }); // weapon (inline s.X ?? e.X)
+    expect(client.player.resource).toBe(42); // res -> resource
+    expect(client.player.maxResource).toBe(150); // mres -> maxResource
+    expect(client.player.resourceType).toBe('rage'); // rtype -> resourceType
+
+    // --- always-present scalar renames ---
+    expect(client.lifetimeXp).toBe(555); // lxp -> lifetimeXp
+    expect(client.restedXp).toBe(222); // rxp -> restedXp
+    expect(client.prestigeRank).toBe(3); // prk -> prestigeRank
+
+    // --- fields that decode onto the client ---
+    expect(client.inventory).toEqual([{ itemId: 'baked_bread', count: 3 }]); // inv -> inventory
+    expect(client.vendorBuyback).toEqual([{ itemId: 'apprentice_staff', count: 1 }]); // buyback -> vendorBuyback
+    expect(client.equipment).toMatchObject({ mainhand: 'zealotsbane_blade' }); // equip -> equipment
+    // cosmetics -> accountCosmetics, asserted against the normalized shape (the input
+    // is already the normal {completedQuestIds, mechChromaIds} form, see :192-202)
+    expect(client.accountCosmetics).toEqual({
+      completedQuestIds: ['q_aldrics_fallen_star'],
+      mechChromaIds: ['amber_crimson'],
+    });
+    expect([...client.questLog.values()]).toEqual([
+      { questId: 'q_widows', counts: [10, 0], state: 'active' },
+    ]); // qlog -> questLog (Map)
+    expect(client.questsDone.has('q_wolves')).toBe(true); // qdone -> questsDone (Set)
+    expect(client.unlockedMilestones).toEqual(['milestone_test']); // milestones -> unlockedMilestones
+    // lockouts -> selfLockouts (private), via the raidLockouts() accessor
+    expect(client.raidLockouts().map((l) => l.id)).toEqual(['nythraxis_boss_arena']);
+    expect(client.partyInfo).not.toBeNull(); // party -> partyInfo
+    expect(client.partyInfo?.members.some((m) => m.pid === memberPid)).toBe(true);
+    expect(client.markerFor(memberPid)).toBe(3); // marks -> markers, via markerFor()
+    expect((client.tradeInfo as any)?.otherPid).toBe(memberPid); // trade -> tradeInfo
+    expect((client.duelInfo as any)?.state).toBe('countdown'); // duel -> duelInfo
+    expect(client.arenaInfo).not.toBeNull(); // arena -> arenaInfo
+    expect(client.marketInfo).not.toBeNull(); // market -> marketInfo
+    expect(client.activeLootRolls().map((r) => r.rollId)).toEqual([1]); // lroll -> lootRollPrompts
+    expect(client.delveRun).not.toBeNull(); // drun -> delveRun
+    expect(client.companionState?.companionId).toBe('companion_tessa'); // dcompanion -> companionState
+    expect(client.delveMarks).toBe(7); // dmarks -> delveMarks
+    expect(client.companionUpgrades).toEqual({ companion_tessa: 2 }); // dcomp -> companionUpgrades
+    expect(client.delveClears).toEqual({ 'collapsed_reliquary:heroic': 1 }); // dclears -> delveClears
+    expect(client.delveDaily).toMatchObject({ markClears: 4 }); // delveDaily
+    // tal -> talents / talentSpec / loadouts / activeLoadout
+    expect(client.talents).toEqual({ spec: 'arms', ranks: {}, choices: {} });
+    expect(client.talentSpec).toBe('arms');
+    expect(client.loadouts).toEqual([
+      { name: 'PvP', alloc: { spec: 'arms', ranks: {}, choices: {} }, bar: [] },
+    ]);
+    expect(client.activeLoadout).toBe(0);
+  });
+
+  it('omits all 25 delta keys on a no-op re-broadcast and preserves the prior mirror', () => {
+    const { server, fc, leader, memberPid } = dirtyEveryDeltaField();
+    broadcast(server);
+    const client = bareClient(leader.pid);
+    (client as any).applySnapshot(lastSnap(fc.sent));
+
+    // capture the structures decoded from snapshot #1, by reference
+    const invRef = client.inventory;
+    const cooldownsRef = client.player.cooldowns;
+    const statsRef = client.player.stats;
+    const weaponRef = client.player.weapon;
+    const partyRef = client.partyInfo;
+    const delveRunRef = client.delveRun;
+
+    // a second broadcast with NO intervening sim.tick() and no state mutation: the
+    // maybe() closure sees byte-identical JSON for all 25 and omits every one
+    fc.sent.length = 0;
+    broadcast(server);
+    const snap2 = lastSnap(fc.sent);
+    for (const key of ALL_DELTA_KEYS) {
+      expect(snap2.self, `self.${key} resent although unchanged`).not.toHaveProperty(key);
+    }
+
+    // applying the delta-less snapshot keeps the prior mirror untouched, by reference
+    // (covers both the `if (s.X !== undefined)` and the inline `s.X ?? e.X` forms)
+    (client as any).applySnapshot(snap2);
+    expect(client.inventory).toBe(invRef); // if !== undefined (client field)
+    expect(client.player.cooldowns).toBe(cooldownsRef); // if !== undefined (player entity)
+    expect(client.player.stats).toBe(statsRef); // s.stats ?? e.stats (inline, player entity)
+    expect(client.player.weapon).toBe(weaponRef); // s.weapon ?? e.weapon (inline, player entity)
+    expect(client.partyInfo).toBe(partyRef);
+    expect(client.delveRun).toBe(delveRunRef);
+    expect(client.markerFor(memberPid)).toBe(3);
+    expect(client.delveMarks).toBe(7);
+    expect(client.companionState?.companionId).toBe('companion_tessa');
+  });
+});
+
+describe('delta-key contract pins (anti-drift)', () => {
+  it('ALL_DELTA_KEYS contains exactly 25 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(25);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(25);
+    expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
+  });
+
+  it('ALL_DELTA_KEYS equals the maybe(...) keys scraped from server/game.ts (multi-line lockouts incl.)', () => {
+    const src = readFileSync(resolve(process.cwd(), 'server/game.ts'), 'utf8');
+    // tolerate whitespace/newline between `(` and the quote so the multi-line
+    // maybe('lockouts', ...) call (game.ts ~2166-2169) is captured, not undercounted to 24
+    const re = /\bmaybe\(\s*['"](\w+)['"]/g;
+    const scraped = new Set<string>();
+    for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
+    expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
+    expect(scraped.size).toBe(25);
+    expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
+  });
+
+  it('TERSE_TO_IWORLD pins the terse-key to IWorld-name renames in sorted membership', () => {
+    // the 11 non-obvious renames the brief calls out as where drift hides
+    const required: Record<string, string> = {
+      res: 'resource',
+      mres: 'maxResource',
+      rtype: 'resourceType',
+      lxp: 'lifetimeXp',
+      rxp: 'restedXp',
+      prk: 'prestigeRank',
+      drun: 'delveRun',
+      dcompanion: 'companionState',
+      dmarks: 'delveMarks',
+      dcomp: 'companionUpgrades',
+      dclears: 'delveClears',
+    };
+    for (const [terse, iworld] of Object.entries(required)) {
+      expect(TERSE_TO_IWORLD[terse], `rename ${terse} -> ${iworld} drifted`).toBe(iworld);
+    }
+    // sorted-membership pin: adding or renaming an entry must be a deliberate,
+    // reviewable change landing in alphabetical order
+    expect(Object.keys(TERSE_TO_IWORLD)).toEqual([...Object.keys(TERSE_TO_IWORLD)].sort());
+    // every entry is either a delta key or one of the always-present self scalars
+    const SELF_SCALARS = new Set(['res', 'mres', 'rtype', 'lxp', 'rxp', 'prk']);
+    for (const terse of Object.keys(TERSE_TO_IWORLD)) {
+      expect(
+        (ALL_DELTA_KEYS as readonly string[]).includes(terse) || SELF_SCALARS.has(terse),
+        `${terse} is neither a delta key nor a known self scalar`,
+      ).toBe(true);
     }
   });
 });
