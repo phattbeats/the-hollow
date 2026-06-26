@@ -2292,13 +2292,15 @@ export class Hud {
     this.swingLabelEl,
   );
   // The per-frame FCT painter (P13b): the pooled-div ring that replaced the per-event
-  // createElement + setTimeout fct() below. handleEvents + showSelfNote feed spawn(); the
-  // every-frame tier of update() drives step() (which re-projects, repositions, behind-culls
-  // and TTL-recycles each live floater). It owns FCT_POOL_CAP pre-allocated #ui children,
-  // projecting through renderer.worldToScreen and dividing by getUiScale into author space
-  // (the same zoom correction the old fct() applied). All writes route through the
-  // write-elision facet (decisions 3 / 5a); the per-kind colour is a CSS class token, never
-  // an inline hex (decision 12).
+  // createElement + setTimeout fct() below. handleEvents + showSelfNote feed spawn(), which
+  // projects the head anchor ONCE (screen-anchored, byte-faithful to the old fct() and to
+  // WoW combat text: the number rises in screen space, it does not chase the camera) and
+  // behind-culls; the every-frame tier of update() drives step(), which ONLY TTL-recycles
+  // expired floaters (no per-frame reposition). It owns FCT_POOL_CAP pre-allocated #ui
+  // children, projecting through renderer.worldToScreen and dividing by getUiScale into
+  // author space (the same zoom correction the old fct() applied). All writes route through
+  // the write-elision facet (decisions 3 / 5a); the per-kind colour is a CSS class token,
+  // never an inline hex (decision 12).
   private readonly fctPainter = new FctPainter(
     this.writerFacet,
     document.getElementById('ui') as HTMLElement,
@@ -4226,8 +4228,9 @@ export class Hud {
 
     // FCT painter (P13b): drive the pooled floating-combat-text ring on the every-frame
     // tier (decision 8: folded into the existing `hud` perf bucket, not a second rAF).
-    // step() re-projects + repositions + TTL-recycles each live floater; an empty pool (no
-    // recent combat) returns immediately, so this costs nothing at steady state.
+    // step() only TTL-recycles each live floater (the number is screen-anchored, positioned
+    // once at spawn, so there is no per-frame reposition); an empty pool (no recent combat)
+    // returns immediately, so this costs nothing at steady state.
     this.fctPainter.step(now);
 
     const deadInArena = p.dead && !!this.sim.arenaInfo?.match;

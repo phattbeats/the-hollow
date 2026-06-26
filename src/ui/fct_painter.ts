@@ -19,8 +19,10 @@
 //
 // WRITE ROUTING (decisions 3 / 5a): every DOM write goes through the PainterHost
 // write-elision facet -- setText for the number, toggleClass for the colour token + crit
-// class, setStyleProp for left / top / animation, setDisplay for the show. So a no-op frame
-// costs no DOM mutation and the skip-rate holds. The per-kind colour moved off el.style.color
+// class, setStyleProp for left / top / animation. A node is shown purely by being attached
+// (appendChild) and hidden by being detached (remove() on TTL recycle), so the spawn path
+// makes no display write at all. A no-op frame costs no DOM mutation and the skip-rate holds.
+// The per-kind colour moved off el.style.color
 // onto a CSS class token keyed by the descriptor kind (decision 12); the painter never names
 // a hex (the colours live in hud.css's .fct-<token> rules). The crit rise stays on the
 // .fct.crit CSS class (the crit keyframe rises -86px, the base -76px), never a descriptor
@@ -39,7 +41,16 @@
 //    spawn() forces the restart there with the reflow trick (animation:none -> read
 //    offsetWidth -> restore), routed through the elided setStyleProp. Normal play never
 //    evicts (the pool is far above a boss pull), so it pays no reflow; only a genuine
-//    over-cap AoE burst does.
+//    over-cap AoE burst does (and there it costs one forced reflow per eviction, bounded by
+//    the burst size not the cap -- acceptable because real play never evicts, and P14a's
+//    drop-non-crit / concurrency tiering caps the eviction pressure under heavy load).
+//  - FRAME-ORDERING CONTRACT (the natural-restart precondition): every spawn site MUST run
+//    before step() within a frame. The live callers honour this -- hud.handleEvents() and
+//    showSelfNote() both run before hud.update()'s step() in the same rAF tick -- so a node
+//    freed by step() is never reused until the NEXT frame, guaranteeing the browser paints
+//    between its detach and its re-append (which is what restarts its animation naturally). If
+//    a future change ran step() before a same-frame spawn, a freed-then-reused node would skip
+//    that natural restart and render invisible (the rise keyframes end at opacity 0, forwards).
 //  - NO STALE CLOSURE: the painter holds no per-slot listener (FCT is decorative,
 //    pointer-events:none), so the P11c / P12b capture-by-value hazard cannot occur; the only
 //    mutable slot state is read synchronously inside spawn() / step().
@@ -88,7 +99,6 @@ const TOP_PROP = 'top';
 const ANIMATION_PROP = 'animation';
 const ANIMATION_SUSPEND = 'none'; // suspend the CSS rise...
 const ANIMATION_RESTORE = ''; // ...then restore the stylesheet animation to replay it.
-const DISPLAY_SHOWN = '';
 
 function colorClass(token: FctColorToken): string {
   return `${FCT_COLOR_CLASS_PREFIX}${token}`;
@@ -154,9 +164,8 @@ export class FctPainter {
     slot.ttlMs = d.ttlMs;
     this.applyContent(slot, d);
     this.position(slot.node, v, d.jitterOffset, this.getScale());
-    this.writers.setDisplay(slot.node, DISPLAY_SHOWN);
-    this.mount.appendChild(slot.node);
-    if (evicted) this.restartAnimation(slot.node);
+    this.mount.appendChild(slot.node); // a detached node becomes visible on attach...
+    if (evicted) this.restartAnimation(slot.node); // ...an evicted (attached) one needs the restart.
     this.live.push(slot);
   }
 
