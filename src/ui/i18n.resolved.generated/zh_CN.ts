@@ -224,7 +224,8 @@ export const zh_CN: EnTranslations = {
     },
     "unitFrame": {
       "playerLabel": "Your Hero",
-      "targetLabel": "Your Mark"
+      "targetLabel": "Your Mark",
+      "partyLabel": "Your Band"
     },
     "mobile": {
       "autorun": "自动奔跑",

@@ -187,7 +187,8 @@ import {
 } from './minimap_zoom';
 import { OptionsWindow } from './options_window';
 import { makeWriterFacet, type PainterHostPresentation } from './painter_host';
-import { selectPartyFrameMembers } from './party_frames';
+import { partyFrameSignature, selectPartyFrameMembers } from './party_frames';
+import { PartyFramesPainter } from './party_frames_painter';
 import { type PerfOverlayHooks } from './perf_overlay_settings';
 import {
   CARD_POSES,
@@ -690,6 +691,9 @@ export class Hud {
   private xpbarEl = $('#xpbar');
   private xpRestedEl = $('#xpbar .rested');
   private playerFrameEl = $('#player-frame');
+  // The party-frames container, resolved once (was re-queried every frame); the
+  // keyed-pool party painter owns its children (P11c).
+  private partyFramesEl = $('#party-frames');
   private swingbarEl = $('#swingbar');
   private swingFillEl = this.swingbarEl.querySelector('.fill') as HTMLElement;
   private swingLabelEl = this.swingbarEl.querySelector('.label') as HTMLElement;
@@ -2334,6 +2338,22 @@ export class Hud {
       repaintPortrait: () => this.drawTargetPortrait(),
     },
   );
+  // The party frames are N further instances of the unit_frame family (P11c), one per
+  // member, behind a keyed node pool that replaces the old per-rebuild innerHTML wipe
+  // + click/contextmenu re-attach. The pool owns #party-frames; updatePartyFrames
+  // feeds it the pure selectPartyFrameMembers result only when the cheap signature
+  // changed. All closures are lazy, so this field initializer is safe.
+  private readonly partyFramesPainter = new PartyFramesPainter(
+    this.writerFacet,
+    this.partyFramesEl,
+    {
+      classCss,
+      onTarget: (pid) => this.sim.targetEntity(pid),
+      onContextMenu: (pid, name, x, y) => this.openContextMenu(pid, name, x, y),
+      onLeave: () => this.sim.partyLeave(),
+      leaveLabel: () => t('hud.social.leaveParty'),
+    },
+  );
   // Overworld world-map painter (the delve branch stays with delvePainter). Owns
   // the cached whole-world decorations; redraws from the mediumHud band while open.
   private readonly mapPainter = new MapWindowPainter();
@@ -2898,6 +2918,9 @@ export class Hud {
     this.refreshKeybindLabels();
     this.updateQuestTracker();
     this.updateDelveTracker();
+    // The keyed-pool party rows reuse their DOM, so a rebuild never re-runs t() on
+    // their badge tooltips / leave label; re-localize them in place on a switch.
+    this.partyFramesPainter.relocalize();
     if (this.questlogWindow.isOpen) this.questlogWindow.render();
     if ($('#bags').style.display === 'block') this.renderBags();
     if (this.openVendorNpcId !== null && $('#vendor-window').style.display === 'block')
@@ -9257,59 +9280,27 @@ export class Hud {
   // -------------------------------------------------------------------------
 
   private updatePartyFrames(): void {
-    const el = $('#party-frames');
     const target =
       this.sim.player.targetId !== null ? this.sim.entities.get(this.sim.player.targetId) : null;
-    el.classList.toggle('below-target', !!target && target.kind !== 'object');
+    this.partyFramesPainter.setBelowTarget(!!target && target.kind !== 'object');
     const info = this.sim.partyInfo;
     if (!info) {
-      if (el.innerHTML !== '') el.innerHTML = '';
-      this.lastPartySig = '';
+      // Clear only on the transition out of a party (matching the inline `innerHTML
+      // !== ''` guard), so a persistently party-less HUD does no per-frame work.
+      if (this.lastPartySig !== '') {
+        this.partyFramesPainter.clear();
+        this.lastPartySig = '';
+      }
       return;
     }
-    const myGroup = info.members.find((m) => m.pid === this.sim.playerId)?.group ?? 1;
-    const others = selectPartyFrameMembers(info, this.sim.playerId, this.sim.player.pos);
-    // include combat/range state so the frames rebuild when a badge changes
-    const sig = `${others.map((m) => `${m.pid}:${m.group}:${m.hp}/${m.mhp}:${m.res}:${m.dead}:${m.inCombat}:${m.oor ? 1 : 0}:${m.level}`).join('|')}L${info.leader}:R${info.raid ? 1 : 0}:G${myGroup}`;
+    // Hoist the cheap signature (a single string pass, no intermediate arrays) AHEAD
+    // of the selector so an unchanged party short-circuits before selectPartyFrameMembers
+    // allocates its sorted / filtered / mapped arrays.
+    const sig = partyFrameSignature(info, this.sim.playerId, this.sim.player.pos);
     if (sig === this.lastPartySig) return;
     this.lastPartySig = sig;
-    el.innerHTML = '';
-    for (const m of others) {
-      const frame = document.createElement('div');
-      frame.className =
-        'party-frame panel' +
-        (m.dead ? ' dead' : m.inCombat ? ' combat' : '') +
-        (m.oor ? ' oor' : '');
-      frame.style.setProperty('--cls', classCss(m.cls));
-      const resClass = m.rtype === 'rage' ? 'rage' : m.rtype === 'energy' ? 'energy' : 'mana';
-      const badge = m.dead
-        ? `<span class="pf-badge dead" title="${esc(t('hud.social.status.dead'))}">${svgIcon('skull')}</span>`
-        : m.inCombat
-          ? `<span class="pf-badge combat" title="${esc(t('hud.social.status.combat'))}">${svgIcon('arena')}</span>`
-          : '';
-      const range = m.oor
-        ? `<span class="pf-badge oor" title="${esc(t('hud.errors.outOfRange'))}">⤢</span>`
-        : '';
-      const crest = m.cls
-        ? `<img class="pfm-crest" src="${iconDataUrl('crest', `class_${m.cls}`, 20)}" alt="">`
-        : '';
-      frame.innerHTML = `
-        <div class="pfm-name"><span class="pfm-id">${crest}${esc(m.name)}</span><span class="pfm-meta">${badge}${range}<span class="lead">${info.leader === m.pid ? '★' : ''}${m.level}</span></span></div>
-        <div class="bar hp"><div class="bar-fill" style="transform:scaleX(${(m.hp / Math.max(1, m.mhp)).toFixed(3)})"></div></div>
-        <div class="bar ${resClass}"><div class="bar-fill" style="transform:scaleX(${(m.res / Math.max(1, m.mres)).toFixed(3)})"></div></div>`;
-      frame.addEventListener('click', () => this.sim.targetEntity(m.pid));
-      frame.addEventListener('contextmenu', (ev) => {
-        ev.preventDefault();
-        this.openContextMenu(m.pid, m.name, ev.clientX, ev.clientY);
-      });
-      el.appendChild(frame);
-    }
-    const leave = document.createElement('button');
-    leave.className = 'btn';
-    leave.id = 'party-leave';
-    leave.textContent = t('hud.social.leaveParty');
-    leave.addEventListener('click', () => this.sim.partyLeave());
-    el.appendChild(leave);
+    const others = selectPartyFrameMembers(info, this.sim.playerId, this.sim.player.pos);
+    this.partyFramesPainter.sync(others, info.leader);
   }
 
   // -------------------------------------------------------------------------

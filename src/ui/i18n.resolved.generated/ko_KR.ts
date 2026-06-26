@@ -224,7 +224,8 @@ export const ko_KR: EnTranslations = {
     },
     "unitFrame": {
       "playerLabel": "Your Hero",
-      "targetLabel": "Your Mark"
+      "targetLabel": "Your Mark",
+      "partyLabel": "Your Band"
     },
     "mobile": {
       "autorun": "자동 달리기",

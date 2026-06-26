@@ -224,7 +224,8 @@ export const fr_CA: EnTranslations = {
     },
     "unitFrame": {
       "playerLabel": "Your Hero",
-      "targetLabel": "Your Mark"
+      "targetLabel": "Your Mark",
+      "partyLabel": "Your Band"
     },
     "mobile": {
       "autorun": "Course automatique",

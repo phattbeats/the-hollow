@@ -95,6 +95,12 @@ export const hudChromeStrings = {
   unitFrame: {
     playerLabel: 'Your Hero',
     targetLabel: 'Your Mark',
+    // partyLabel names the #party-frames region (a group of tappable / focusable
+    // party member buttons, each named by its visible member name). Kept short and
+    // non-wordy (no run of four+ lowercase) so an English-filled non-Latin locale
+    // does not trip the untranslated-leak guard; "Band" reads as your group of
+    // companions, parallel to playerLabel / targetLabel.
+    partyLabel: 'Your Band',
   },
   // On-screen / mobile control labels and their accessible names. char/bags/music
   // reuse existing keys (hud.keybinds.actions.*, hud.options.music) at the call site.

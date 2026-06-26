@@ -224,7 +224,8 @@ export const en_XA: EnTranslations = {
     },
     "unitFrame": {
       "playerLabel": "[Ýóúŕ Ĥéŕó]",
-      "targetLabel": "[Ýóúŕ Ɱáŕķ]"
+      "targetLabel": "[Ýóúŕ Ɱáŕķ]",
+      "partyLabel": "[Ýóúŕ Ɓáñð]"
     },
     "mobile": {
       "autorun": "[Áúţóŕúñ]",
