@@ -31,7 +31,9 @@ See `server/CLAUDE.md` for server conventions; read `server/game.ts` directly fo
 - **Delta invariant:** the server OMITS heavy/unchanged fields (`cds`, `inv`,
   `equip`, `qlog`, `qdone`, `tal`, `stats`, `party`…). Guard every one with
   `if (s.X !== undefined)` and keep the prior value otherwise — do NOT default a
-  missing field to empty, that wipes local state. (`tests/snapshots.test.ts`.)
+  missing field to empty, that wipes local state. The full delta-key set (the 25
+  `maybe(...)` keys the encoder may omit) and the terse-key to IWorld-name mapping are
+  pinned by `ALL_DELTA_KEYS` + `TERSE_TO_IWORLD` in `tests/snapshots.test.ts` (W0a).
 - **Lite vs full:** identity fields (`k`, `tid`, `nm`…) ride only in "full" records
   (`hasIdentity = w.k !== undefined`); a lite record for an unknown id is skipped.
   This split is what `tests/bandwidth.test.ts` measures — preserve it.
@@ -48,12 +50,19 @@ page host), sends `auth` on open, waits for `hello`. No auto-reconnect — `oncl
 clears the send timer and fires `onDisconnect`; the app re-creates the world.
 
 ## Adding a networked action
-1. Add the method to `IWorld` (`world_api.ts`). 2. Implement here as a one-line
-`this.cmd({ cmd: 'foo', … })`. 3. Add the matching `cmd === 'foo'` handler in
-`server/game.ts` and surface results via an `events` frame or a `self` snapshot
-field. 4. If it returns state, mirror that field in `applySnapshot` (delta-guarded)
-and add it to the snapshot test's expected-field lists. Also implement it in the
-offline `Sim` so both worlds satisfy `IWorld`.
+1. Add the method to the owning FACET interface under `src/world_api/<facet>.ts`
+(a combat action to `src/world_api/combat.ts`, a market action to `market.ts`, ...);
+the aggregate `IWorld` in `src/world_api.ts` re-exports it via `extends`, so render/ui
+see it unchanged. Add the wire token to the shared `COMMAND_NAMES` table in
+`src/world_api.ts` (append-only: the wire string IS the protocol, never rename or
+remove one). 2. Implement here as a one-line `this.cmd({ cmd: 'foo', ... })`; the
+`cmd()` send path is typed to `ClientCommand`, so a token missing from the table is a
+compile error. 3. Add the matching `case 'foo':` in `server/game.ts` `dispatchMessage`
+and surface results via an `events` frame or a `self` snapshot field. 4. If it returns
+state, mirror that field in `applySnapshot` (delta-guarded) and add it to the snapshot
+test's expected-field lists, plus the `ALL_DELTA_KEYS` registry (W0a). Also implement
+it in the offline `Sim` so both worlds satisfy `IWorld`. The send-set subset-of-dispatch
+lockstep is pinned by `tests/command_schema.test.ts` (W0b).
 
 ## i18n — this layer carries text but does NOT translate it
 `online.ts` itself imports no `t()` / matcher and renders no UI. Its only

@@ -66,10 +66,33 @@ persists to Postgres, and serves the built client. esbuild-bundled for Node via
   set `TRUSTED_PROXY_IPS`; otherwise private/loopback sources are trusted to set XFF.
 
 ## Adding a typical command
-1. Add a `case` in `dispatchMessage` (game.ts), validating every field, then call
-   the `sim.*` method that owns the rule. 2. If it changes self-state the client
-   reads, surface it via `selfWireJson` (use `maybe(...)` for heavy fields that
-   ride only on change). 3. Mirror the wire shape in `src/net/online.ts`. 4. Add a Vitest.
+1. Add the wire token to the shared `COMMAND_NAMES` table in `src/world_api.ts`
+   (append-only; both `game.ts` and `online.ts` import it), then add the matching
+   `case` in `dispatchMessage` (game.ts), validating every field, then call the
+   `sim.*` method that owns the rule. A server-only case the client never sends (a
+   `dev_*` cheat, an `enter_crypt`/`leave_crypt` legacy alias, the `social_refresh`
+   push, the RL-only `targetNearest`) goes on the `DISPATCH_ONLY_COMMANDS` allowlist
+   in `src/world_api.ts` instead, so the send-subset check stays green. 2. If it
+   changes self-state the client reads, surface it via `selfWireJson` (use `maybe(...)`
+   for heavy fields that ride only on change). 3. Mirror the wire shape in
+   `src/net/online.ts`. 4. Add a Vitest. Command-schema lockstep is pinned by
+   `tests/command_schema.test.ts` (W0b).
+
+- **Delta-key registry.** The heavy self fields `selfWireJson` may omit are written
+  with `maybe(...)`; the 25 such keys plus their terse-key to IWorld-name mapping are
+  pinned by `ALL_DELTA_KEYS` + `TERSE_TO_IWORLD` in `tests/snapshots.test.ts` (W0a),
+  which guards the `selfWireJson` (encode) to `applySnapshot` (decode) round-trip. A
+  new heavy self field lands in `selfWireJson` (here) and `applySnapshot` (`online.ts`)
+  in one commit, and is added to that registry.
+
+- **Workstream #4 inherits this command + encoder surface.** Workstream #3 (the World
+  API refactor) made the `CommandName` table and the 20-facet `IWorld` real; the
+  PHYSICAL `game.ts` restructure is workstream #4. #4 owns reordering the
+  `dispatchMessage` switch into facet sections, extracting per-facet command modules,
+  and grouping/extracting the `selfWireJson` encoder into a facet-aligned encoder.
+  Until #4 lands, add new commands inline as above. See
+  `docs/refactor/world-api-to-server-runtime-handoff.md` for exactly what #4 inherits
+  and owns.
 
 ## i18n: player-facing text is English at the source
 - Like the sim, `server/` is **language-agnostic** (no `t()`, no DOM). `game.ts` emits

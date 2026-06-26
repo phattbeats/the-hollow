@@ -7,6 +7,42 @@
 // so every downstream `from '../world_api'` import path is unchanged. There is
 // deliberately NO `./world_api/index.ts`: the bare specifier `./world_api` must
 // keep resolving to THIS file, never the sibling directory.
+//
+// ---------------------------------------------------------------------------
+// FACET MAP: the 20 domain facets (each IWorld member assigned exactly once; 142
+// total). One interface per file under ./world_api/; aux types travel with their
+// facet. The authoritative member-per-facet split is the W0c parity test.
+//
+//   entity_roster.ts    IWorldEntityRoster   cfg/entities/player/moveInput/realm reads
+//   combat.ts           IWorldCombat         ability casts, auto-attack, spirit release
+//   targeting.ts        IWorldTargeting      target selection + tab cycling
+//   interaction.ts      IWorldInteraction    interact / lootCorpse / pickUpObject
+//   loot.ts             IWorldLoot           need/greed loot rolls
+//   inventory.ts        IWorldInventory      bags, equipment, vendor, copper
+//   cosmetics.ts        IWorldCosmetics      account skins + mech chroma
+//   quests.ts           IWorldQuests         quest log + accept/turn-in/abandon
+//   progression_xp.ts   IWorldProgressionXp  xp/lifetimeXp/prestige/rested/leaderboard
+//   talents.ts          IWorldTalents        talents, specs, loadouts
+//   pet.ts              IWorldPet            hunter-pet command surface
+//   party.ts            IWorldParty          party/raid + raid-target markers
+//   trade.ts            IWorldTrade          peer-to-peer trade window
+//   chat.ts             IWorldChat           chat router + emotes
+//   duel_arena.ts       IWorldDuelArena      duels + ranked arena + 2v2 fiesta
+//   social_graph.ts     IWorldSocialGraph    friends/blocks/guild (online-only frames)
+//   market.ts           IWorldMarket         World Market browse/list/buy
+//   dungeons.ts         IWorldDungeons       dungeon enter/leave + raid lockouts
+//   delves.ts           IWorldDelves         delve runs, lockpick, companion
+//   telemetry.ts        IWorldTelemetry      fire-and-forget metrics sink
+//
+// THREE GATES pin this seam (run before any facet edit):
+//   tests/snapshots.test.ts        (W0a)  selfWireJson <-> applySnapshot round-trip;
+//                                          ALL_DELTA_KEYS (25) + TERSE_TO_IWORLD mapping.
+//   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
+//                                          subset-of dispatch-set; DISPATCH_ONLY (7).
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (142) present + same-kind on
+//                                          Sim + ClientWorld; aggregate == disjoint
+//                                          union of the 20 facets.
+// ---------------------------------------------------------------------------
 
 import type { IWorldChat } from './world_api/chat';
 import type { IWorldCombat } from './world_api/combat';
