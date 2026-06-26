@@ -139,7 +139,7 @@ import { dropdownKeyNav } from './dropdown_nav';
 import { emoteIconUrl } from './emote_icons';
 import { itemDisplayName, tEntity } from './entity_i18n';
 import { esc } from './esc';
-import { FctDriver } from './fct_driver';
+import { FctPainter } from './fct_painter';
 import {
   holderTierBadgeDataUrl,
   holderTierByIndex,
@@ -2291,13 +2291,20 @@ export class Hud {
     this.swingFillEl,
     this.swingLabelEl,
   );
-  // The per-frame FCT driver (P13a). DORMANT this phase: it ticks every frame from
-  // update() but no spawn site feeds it, so it spawns/writes nothing and the per-event
-  // fct() path below is still the only thing that puts floating combat text on screen
-  // (visible FCT is byte-identical to before). P13b reroutes the spawn sites onto it and
-  // fills in the pooled-div painter body. It takes the same write-elision facet so P13b's
-  // writes are elided by construction (decisions 3 / 5a), with no raw-write path.
-  private readonly fctDriver = new FctDriver(this.writerFacet);
+  // The per-frame FCT painter (P13b): the pooled-div ring that replaced the per-event
+  // createElement + setTimeout fct() below. handleEvents + showSelfNote feed spawn(); the
+  // every-frame tier of update() drives step() (which re-projects, repositions, behind-culls
+  // and TTL-recycles each live floater). It owns FCT_POOL_CAP pre-allocated #ui children,
+  // projecting through renderer.worldToScreen and dividing by getUiScale into author space
+  // (the same zoom correction the old fct() applied). All writes route through the
+  // write-elision facet (decisions 3 / 5a); the per-kind colour is a CSS class token, never
+  // an inline hex (decision 12).
+  private readonly fctPainter = new FctPainter(
+    this.writerFacet,
+    document.getElementById('ui') as HTMLElement,
+    (x, y, z) => this.renderer.worldToScreen(x, y, z),
+    getUiScale,
+  );
   // The player frame is the FIRST instance of the unit_frame family (P10b). It owns
   // its own element set; target/party become further instances of this exact
   // painter in P11. The element set + options deliberately mirror the inline block
@@ -4217,11 +4224,11 @@ export class Hud {
     });
     this.xpBarPainter.paint(bar);
 
-    // FCT driver (P13a): tick the per-frame floating-combat-text driver on the
-    // every-frame tier (decision 8: folded into the existing `hud` perf bucket, not a
-    // second rAF). DORMANT until P13b -- it holds no live entries, so step() returns
-    // immediately and writes nothing; the per-event fct() path stays the only spawn path.
-    this.fctDriver.step(now);
+    // FCT painter (P13b): drive the pooled floating-combat-text ring on the every-frame
+    // tier (decision 8: folded into the existing `hud` perf bucket, not a second rAF).
+    // step() re-projects + repositions + TTL-recycles each live floater; an empty pool (no
+    // recent combat) returns immediately, so this costs nothing at steady state.
+    this.fctPainter.step(now);
 
     const deadInArena = p.dead && !!this.sim.arenaInfo?.match;
     this.setDisplay(this.deathOverlayEl, p.dead ? 'flex' : 'none');
@@ -5548,6 +5555,9 @@ export class Hud {
 
   handleEvents(events: SimEvent[]): void {
     const sim = this.sim;
+    // One spawn clock for the whole batch: FCT floaters spawned from this event burst
+    // share a bornAt, and the pooled painter's step() evicts each once now - bornAt >= ttl.
+    const now = performance.now();
     for (const ev of events) {
       // visual effects (swings, projectiles, glows) — for everyone nearby,
       // not just events involving this player
@@ -5564,11 +5574,17 @@ export class Hud {
           const isPlayerTarget = ev.targetId === sim.playerId;
           if (isPlayerSource || isPlayerTarget) this.lastCombatEventAt = performance.now();
           if (ev.kind === 'miss' || ev.kind === 'dodge') {
-            this.fct(
-              tgt,
-              ev.kind === 'miss' ? t('hud.combat.floatingMiss') : t('hud.combat.floatingDodge'),
-              isPlayerTarget ? '#bbb' : '#fff',
-              false,
+            this.fctPainter.spawn(
+              {
+                kind: ev.kind === 'miss' ? 'miss' : 'dodge',
+                text:
+                  ev.kind === 'miss' ? t('hud.combat.floatingMiss') : t('hud.combat.floatingDodge'),
+                target: tgt,
+                crit: false,
+                // self vs other drives the miss/dodge colour token (#bbb vs #fff).
+                isSelf: isPlayerTarget,
+              },
+              now,
             );
             // Fiesta: a dodge is a moment — pop a big exaggerated word for it.
             if (ev.kind === 'dodge' && (isPlayerSource || isPlayerTarget) && this.inFiesta()) {
@@ -5587,8 +5603,16 @@ export class Hud {
             break;
           }
           if (isPlayerSource && !isPlayerTarget) {
-            const color = ev.ability ? '#ffe97a' : '#fff';
-            this.fct(tgt, `${ev.amount}${ev.crit ? '!' : ''}`, color, ev.crit);
+            this.fctPainter.spawn(
+              {
+                kind: ev.ability ? 'damage-done-ability' : 'damage-done-auto',
+                text: `${ev.amount}${ev.crit ? '!' : ''}`,
+                target: tgt,
+                crit: ev.crit,
+                isSelf: false,
+              },
+              now,
+            );
             this.combatLog(
               t(ev.crit ? 'hud.combat.damageDoneCrit' : 'hud.combat.damageDone', {
                 ability: combatAbilityName(ev.ability),
@@ -5602,7 +5626,10 @@ export class Hud {
             // Fiesta: every blow you land kicks the camera (bigger on a crit).
             if (this.inFiesta()) this.renderer.addShake(ev.crit ? 0.3 : 0.12);
           } else if (isPlayerTarget) {
-            this.fct(tgt, `-${ev.amount}`, '#ff5544', ev.crit);
+            this.fctPainter.spawn(
+              { kind: 'damage-taken', text: `-${ev.amount}`, target: tgt, crit: ev.crit, isSelf: true },
+              now,
+            );
             this.combatLog(
               t(ev.crit ? 'hud.combat.damageTakenCrit' : 'hud.combat.damageTaken', {
                 source: src ? entityDisplayName(src) : '?',
@@ -5619,7 +5646,17 @@ export class Hud {
           if (ev.amount > 0) {
             const healed =
               ev.targetId === sim.playerId ? sim.player : sim.entities.get(ev.targetId);
-            if (healed) this.fct(healed, `+${ev.amount}`, '#3ce63c', false);
+            if (healed)
+              this.fctPainter.spawn(
+                {
+                  kind: 'heal',
+                  text: `+${ev.amount}`,
+                  target: healed,
+                  crit: false,
+                  isSelf: ev.targetId === sim.playerId,
+                },
+                now,
+              );
           }
           break;
         }
@@ -5630,13 +5667,26 @@ export class Hud {
           break;
         }
         case 'xp': {
-          this.fct(sim.player, t('hud.core.xpFloat', { amount: ev.amount }), '#b974ff', false);
+          this.fctPainter.spawn(
+            {
+              kind: 'xp',
+              text: t('hud.core.xpFloat', { amount: ev.amount }),
+              target: sim.player,
+              crit: false,
+              isSelf: true,
+            },
+            now,
+          );
           if (ev.rested && ev.rested > 0) {
-            this.fct(
-              sim.player,
-              t('hud.core.xpFloatRested', { amount: ev.rested }),
-              '#4a9eff',
-              false,
+            this.fctPainter.spawn(
+              {
+                kind: 'rested-xp',
+                text: t('hud.core.xpFloatRested', { amount: ev.rested }),
+                target: sim.player,
+                crit: false,
+                isSelf: true,
+              },
+              now,
             );
             this.log(
               t('hud.core.xpGainRested', { amount: ev.amount, rested: ev.rested }),
@@ -5886,7 +5936,16 @@ export class Hud {
         case 'heal2': {
           const tgt = sim.entities.get(ev.targetId);
           if (tgt && ev.amount > 0) {
-            this.fct(tgt, `+${ev.amount}${ev.crit ? '!' : ''}`, '#3ce63c', ev.crit);
+            this.fctPainter.spawn(
+              {
+                kind: 'heal',
+                text: `+${ev.amount}${ev.crit ? '!' : ''}`,
+                target: tgt,
+                crit: ev.crit,
+                isSelf: ev.targetId === sim.playerId,
+              },
+              now,
+            );
             if (ev.sourceId === sim.playerId) {
               const selfTarget = ev.targetId === sim.playerId;
               this.combatLog(
@@ -6716,30 +6775,15 @@ export class Hud {
     if (wasNearBottom) el.scrollTop = el.scrollHeight;
   }
 
-  // A floating note over the local player (e.g. "Can't move!" when a movement
-  // command lands while rooted/stunned). Throttling is the caller's job.
-  showSelfNote(text: string, color = '#ff8c66'): void {
-    this.fct(this.sim.player, text, color, false);
-  }
-
-  private fct(target: Entity, text: string, color: string, crit: boolean): void {
-    const v = this.renderer.worldToScreen(
-      target.pos.x,
-      target.pos.y + 2.2 * target.scale,
-      target.pos.z,
+  // A floating note over the local player (e.g. "Can't move!" when a movement command
+  // lands while rooted/stunned). The 8th FCT spawn site: it rides the same pooled painter
+  // as the combat floaters via the self-note kind (the #ff8c66 colour token). Throttling
+  // is the caller's job (main.ts gates it behind IMMOBILE_NOTE_THROTTLE_MS).
+  showSelfNote(text: string): void {
+    this.fctPainter.spawn(
+      { kind: 'self-note', text, target: this.sim.player, crit: false, isSelf: true },
+      performance.now(),
     );
-    if (v.behind) return;
-    const el = document.createElement('div');
-    el.className = `fct${crit ? ' crit' : ''}`;
-    el.style.color = color;
-    // worldToScreen() is in the unzoomed renderer viewport, but #ui (this node's
-    // parent) is scaled by `zoom`, so divide into author space before writing.
-    const z = getUiScale();
-    el.style.left = `${(v.x + (Math.random() * 30 - 15)) / z}px`;
-    el.style.top = `${v.y / z}px`;
-    el.textContent = text;
-    document.getElementById('ui')?.appendChild(el);
-    setTimeout(() => el.remove(), 1250);
   }
 
   showError(text: string): void {
