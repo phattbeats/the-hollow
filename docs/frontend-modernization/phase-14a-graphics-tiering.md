@@ -74,8 +74,8 @@ STEP 4 - COMMIT CADENCE: 2 to 5 Conventional Commits with a scope and EXPLICIT p
 STEP 5 - ACCEPTANCE CRITERIA (every item green before the phase is done):
 - [ ] FCT max-concurrent, per-text TTL, and drop-non-crit are each a pure function of fxLevel; low caps concurrency tighter, shortens TTL, and drops non-crit text; ultra is unchanged from pre-tiering.
 - [ ] Minimap redraw cadence reads fxLevel (10Hz ultra/high down to ~4Hz low); the marker pure core is byte-unchanged; the canvas resolves tokens once per redraw.
-- [ ] Aura visible-count cap and tick granularity read fxLevel; low shows fewer auras / coarser tick.
-- [ ] Non-self party-frame and target-frame refresh cadence slow on low; self/player frame stays full-rate.
+- [ ] Aura visible-count cap and tick granularity read fxLevel; low shows fewer auras / coarser tick. (SUPERSEDED by the 2026-06-26 fairness re-audit: the cap is now DEBUFF-PRIORITY, so low sheds BUFF overflow only and never hides an actionable debuff. See the P14a row in state.md / progress.md.)
+- [ ] Non-self party-frame and target-frame refresh cadence slow on low; self/player frame stays full-rate. (SUPERSEDED by the 2026-06-26 fairness re-audit: PARTY frames are deliberately NOT tiered -- party-member HP is a healer's actionable signal, so it stays 4Hz on every tier. Slice D is now TARGET-ONLY. See state.md / progress.md.)
 - [ ] Every tier threshold/cadence/cap is a NAMED constant in the tier-knobs module (no bare literals; no-magic-values guard passes).
 - [ ] Import-absence test: the tier-knob mapping imports no governor module. Behavioral test: only the static preset moves a knob; driving governor.state() moves nothing. The ui gfx bucket stays governable:false.
 - [ ] tsc clean; biome check clean on the new/changed .ts; architecture.test.ts green (tier-knobs module registered in UI_PURE_CORES); same-input-same-output holds per tier function.
