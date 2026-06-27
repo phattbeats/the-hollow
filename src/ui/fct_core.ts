@@ -123,12 +123,6 @@ export interface FctDescriptor {
    * before the /z divide. Range: -FCT_JITTER_RANGE / 2 .. +FCT_JITTER_RANGE / 2.
    */
   readonly jitterOffset: number;
-  /**
-   * Author-space vertical rise the text travels over its life (the live CSS @keyframes
-   * fct-rise base rise). A pure function of kind (the same base for every kind); the
-   * larger crit rise rides the .fct.crit class, consistent with crit flipping only a class.
-   */
-  readonly riseDistance: number;
   /** Lifetime in ms before the painter evicts the entry (the live setTimeout removal). */
   readonly ttlMs: number;
 }
@@ -143,10 +137,12 @@ export const FCT_TTL_MS = 1250;
 /** Head offset above the entity origin, scaled by entity scale. Live fct(): pos.y + 2.2 * scale. */
 export const FCT_ANCHOR_HEAD_OFFSET = 2.2;
 /**
- * Base author-space rise over the entry's life. Live CSS @keyframes fct-rise: margin-top
- * 0 -> -76px. The crit variant rises further (@keyframes fct-crit -> -86px) but that larger
- * rise rides the .fct.crit class, NOT this constant, so P13b must keep driving the rise off
- * the .fct / .fct.crit CSS class (not descriptor.riseDistance), or crits would under-rise.
+ * Base author-space rise over the entry's life: the documentary constant the test pins
+ * against the CSS rise distance (tests/fct_core.test.ts). The live CSS @keyframes fct-rise
+ * composites the rise via `translate` (P18e moved it off the old margin-top so it stays on
+ * the compositor); the crit variant rises further (@keyframes fct-crit -> -86px) and that
+ * larger rise rides the .fct.crit class. The painter drives the rise off the .fct / .fct.crit
+ * CSS class, never a descriptor field, so a crit never under-rises.
  */
 export const FCT_RISE_PX = 76;
 
@@ -180,7 +176,6 @@ export function describeFct(event: FctEvent, jitter01: number): FctDescriptor {
     crit: event.crit,
     anchor: { x: pos.x, y: pos.y + FCT_ANCHOR_HEAD_OFFSET * scale, z: pos.z },
     jitterOffset: jitter01 * FCT_JITTER_RANGE - FCT_JITTER_RANGE / 2,
-    riseDistance: FCT_RISE_PX,
     ttlMs: FCT_TTL_MS,
   };
 }

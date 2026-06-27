@@ -49,7 +49,6 @@ describe('describeFct: determinism (same input -> same output)', () => {
       crit: true,
       anchor: { x: 10, y: 2 + FCT_ANCHOR_HEAD_OFFSET, z: -3 },
       jitterOffset: 0.37 * FCT_JITTER_RANGE - FCT_JITTER_RANGE / 2,
-      riseDistance: FCT_RISE_PX,
       ttlMs: FCT_TTL_MS,
     });
   });
@@ -112,8 +111,8 @@ describe('describeFct: color token by kind + flags', () => {
   });
 });
 
-describe('describeFct: ttl + rise are pure functions of kind (constant across kinds)', () => {
-  it('emits the named ttl + rise constants for every kind, regardless of crit/jitter', () => {
+describe('describeFct: ttl is a pure function of kind (constant across kinds)', () => {
+  it('emits the named ttl constant for every kind, regardless of crit/jitter', () => {
     for (const kind of [
       'miss',
       'dodge',
@@ -127,7 +126,6 @@ describe('describeFct: ttl + rise are pure functions of kind (constant across ki
     ] as FctKind[]) {
       const d = describeFct(makeEvent({ kind, crit: true }), 0.9);
       expect(d.ttlMs).toBe(FCT_TTL_MS);
-      expect(d.riseDistance).toBe(FCT_RISE_PX);
     }
   });
 
