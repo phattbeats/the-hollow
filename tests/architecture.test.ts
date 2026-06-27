@@ -470,9 +470,9 @@ describe('curated bare-named pure cores (cross-check)', () => {
     // basename is bare (not _view / _core). A new bare-named core added to an allowlist
     // but forgotten here would escape both onDiskCores() (bare name) and the loop above
     // (not listed), reopening the gap; this equality makes that omission fail.
-    const bareNameRe = /_(?:view|core)\.ts$/;
+    const viewOrCoreRe = /_(?:view|core)\.ts$/;
     const derivedBare = [...UI_PURE_CORES, ...RENDER_PURE_CORES]
-      .filter((f) => !bareNameRe.test(f))
+      .filter((f) => !viewOrCoreRe.test(f))
       .map((f) => relative(repoRoot, f))
       .sort();
     expect(

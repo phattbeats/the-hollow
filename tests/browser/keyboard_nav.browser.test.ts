@@ -209,7 +209,8 @@ describe('keyboard-nav: the talents choice-node flyout (roving menu + focus-retu
   it('Arrow keys move the roving focus among options without selecting or dismissing', () => {
     const { pop } = openPopup();
     const opts = Array.from(pop.querySelectorAll<HTMLElement>('.tal-choice-opt'));
-    const start = opts.findIndex((o) => o === document.activeElement);
+    const active = document.activeElement;
+    const start = active instanceof HTMLElement ? opts.indexOf(active) : -1;
     opts[start].dispatchEvent(key('ArrowDown'));
     const next = (start + 1) % opts.length;
     expect(document.activeElement).toBe(opts[next]);

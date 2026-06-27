@@ -885,7 +885,7 @@ describe('client HTML shell', () => {
 
   it('lets HUD windows scroll by touch on iOS (Bag / Market)', () => {
     // The HUD overlay must permit one-finger panning so scroll containers
-    // inside it can scroll on iOS — `touch-action: none` here would block them
+    // inside it can scroll on iOS, `touch-action: none` here would block them
     // (Safari intersects touch-action down the ancestor chain, so a child's
     // own pan-y cannot re-enable it). pan-x pan-y still blocks pinch-zoom.
     expect(hudMobileCss).toContain('body.mobile-touch #ui {\n    touch-action: pan-x pan-y;\n  }');
@@ -905,6 +905,7 @@ describe('client HTML shell', () => {
 
   it('places news release metadata below the heading on mobile', () => {
     expect(mainTs).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting the source literally contains this template expression
       '<h3 class="news-item-title">${title}</h3><div class="news-item-meta">${tag}${badge}${when}</div></div>',
     );
     expect(shellCss).toContain(
@@ -922,9 +923,11 @@ describe('client HTML shell', () => {
 
   it('renders the high scores leaderboard responsively on mobile', () => {
     expect(mainTs).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting the source literally contains this template expression
       '<span class="hs-realm" data-label="${esc(realmLabel)}">${esc(r.realm ?? \'\')}</span>',
     );
     expect(mainTs).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting the source literally contains this template expression
       '<span class="hs-xp" data-label="${esc(lifetimeXpLabel)}">${formatXp(r.lifetimeXp)}</span>',
     );
     expect(shellCss).toContain('body.mobile-touch .hs-head {\n    display: none;');
@@ -1066,7 +1069,9 @@ describe('client HTML shell', () => {
     expect(marketWindowTs).toContain('data-market-page="prev"');
     expect(marketWindowTs).toContain('data-market-page="next"');
     expect(marketWindowTs).toContain('itemUi.market.pageRange');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting the source literally contains this template expression
     expect(marketWindowTs).toContain("class=\"mkt-filters${hasSubtype ? ' has-subtype' : ''}\"");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting the source literally contains this template expression
     expect(marketWindowTs).toContain('data-market-filter-menu="${menu}"');
     expect(marketWindowTs).toMatch(/this\.renderMarketFilterMenu\(\s*'itemType'/);
     expect(marketWindowTs).toMatch(/this\.renderMarketFilterMenu\(\s*'subtype'/);

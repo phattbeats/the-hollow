@@ -130,6 +130,12 @@ function canvasCtx(size: number): CanvasRenderingContext2D {
 
 // Non-blank iff at least one pixel has a non-zero alpha (a freshly cleared canvas is fully
 // transparent, alpha 0 everywhere, so any drawn opaque pixel differs from that blank base).
+// SCOPE: this is a "the imperative half ran and produced output" smoke check, not a per-marker
+// assertion. The painter always blits an opaque schematic background, so non-blank confirms
+// paintMinimapDelve / paintWorldMapDelve executed end to end against a real 2D context plus
+// getComputedStyle without throwing; WHICH primitives drew (mobs, party, the player arrow) is
+// covered by the pure delveDrawModel parity in tests/delve_map_painter.test.ts, and the
+// #zone-label assertion below is the meaningful DOM-write check this browser test adds on top.
 function hasPaintedPixels(ctx: CanvasRenderingContext2D, w: number, h: number): boolean {
   const { data } = ctx.getImageData(0, 0, w, h);
   for (let i = 3; i < data.length; i += 4) {
