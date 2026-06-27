@@ -208,7 +208,11 @@ main packet itself recorded, behavior-preserving and presentation-first.
       does not apply under a synthetic `userEvent.tab()` focus (a WebKit-automation limitation of the
       test, not a product a11y regression). Landing a standing CI job in that state would keep CI red,
       and making it green needs a cross-engine-robust rewrite of that P18c test, out of P18f's
-      tooling/docs scope. DECLINED again, mirroring P17b; decision 14 stays OPEN and
+      tooling/docs scope. A Chromium-plus-Firefox-only job (omitting the red WebKit instances;
+      Firefox/Gecko is green) was available as a clean partial second-engine gate, but was deferred
+      too: the highest-value second engine here is mobile WebKit/Safari (the game is mobile-playable),
+      which is exactly the red one, so a Gecko-only gate adds little over Chromium while still
+      committing a standing CI job. DECLINED again, mirroring P17b; decision 14 stays OPEN and
       vitest.browser.config.ts is left chromium-only (no change).
 15. CLIENTWORLD-vs-SIM PAINTER PARITY (added by the deep review). Every painter consumes `IWorld`,
     which BOTH the offline `Sim` and the online `ClientWorld` mirror satisfy, but the perf harness
