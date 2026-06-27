@@ -1,9 +1,10 @@
 import * as THREE from 'three';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { NAMEPLATE_INTERVAL_LOW_SEC, nameplateIntervalSec } from '../src/game/ui_tier_knobs';
 import {
   classifyGpuRenderer,
   configureMaskedDoubleSidedVegetationMaterial,
+  firstRunGraphicsPreset,
   forcedTierFromSearch,
   GFX_BUCKET_BANDS,
   GFX_BUDGETS,
@@ -217,17 +218,42 @@ describe('graphics tier resolution', () => {
     expect(classifyGpuRenderer('ANGLE (Apple, ANGLE Metal Renderer: Apple M2)')).toBe(
       'strongDesktop',
     );
+    // AMD discrete + Intel Arc desktop -> strongDesktop (the "(TM)" Windows drivers print is tolerated)
+    expect(classifyGpuRenderer('ANGLE (AMD, AMD Radeon RX 6800 XT Direct3D11 vs_5_0 ps_5_0)')).toBe(
+      'strongDesktop',
+    );
+    expect(classifyGpuRenderer('AMD Radeon(TM) RX 580')).toBe('strongDesktop');
+    expect(classifyGpuRenderer('ANGLE (Intel, Intel(R) Arc(TM) A770 Graphics)')).toBe(
+      'strongDesktop',
+    );
     expect(classifyGpuRenderer('Adreno (TM) 730')).toBe('flagshipMobile');
+    expect(classifyGpuRenderer('Mali-G715')).toBe('flagshipMobile');
     expect(classifyGpuRenderer('Apple A17 Pro GPU')).toBe('flagshipMobile');
+    // software rasterizers (both common names) -> software
     expect(classifyGpuRenderer('Google SwiftShader')).toBe('software');
+    expect(classifyGpuRenderer('Mesa llvmpipe (LLVM 15.0.7, 256 bits)')).toBe('software');
     // the codebase's named weak-integrated parts stay weak (checked before mid-integrated)
     expect(classifyGpuRenderer('ANGLE (Intel, Intel(R) Iris(TM) Plus Graphics 655)')).toBe('weak');
     expect(classifyGpuRenderer('Adreno (TM) 330')).toBe('weak');
     expect(classifyGpuRenderer('PowerVR SGX 544')).toBe('weak');
+    // entry-level Mali Valhall (G51/G52) are weak (NOT shadowed by the mid Mali clause) -> LOW
+    expect(classifyGpuRenderer('Mali-G51')).toBe('weak');
+    expect(classifyGpuRenderer('Mali-G52')).toBe('weak');
+    // older Intel UHD desktop iGPU stays weak; the modern UHD 7xx desktop part is mid
+    expect(classifyGpuRenderer('ANGLE (Intel, Intel(R) UHD Graphics 630 Direct3D11)')).toBe('weak');
+    expect(classifyGpuRenderer('ANGLE (Intel, Intel(R) UHD Graphics 770)')).toBe('midIntegrated');
     // newer integrated + mid mobile -> their own buckets (the MEDIUM path)
     expect(classifyGpuRenderer('ANGLE (Intel, Intel(R) Iris(R) Xe Graphics)')).toBe(
       'midIntegrated',
     );
+    // AMD Ryzen iGPUs print "(TM)" in Chrome's ANGLE string; both forms bucket midIntegrated
+    expect(classifyGpuRenderer('ANGLE (AMD, AMD Radeon(TM) Graphics Direct3D11)')).toBe(
+      'midIntegrated',
+    );
+    expect(classifyGpuRenderer('ANGLE (AMD, AMD Radeon(TM) Vega 8 Graphics)')).toBe(
+      'midIntegrated',
+    );
+    expect(classifyGpuRenderer('AMD Radeon Vega 8 Graphics')).toBe('midIntegrated');
     expect(classifyGpuRenderer('Mali-G57')).toBe('midMobile');
     // masked / unplaced / empty -> unknown -> the MEDIUM fallback path
     expect(classifyGpuRenderer('Apple GPU')).toBe('unknown');
@@ -243,6 +269,16 @@ describe('graphics tier resolution', () => {
       expect(resolveDefaultGraphicsPreset(desktop)).toBe(2); // no GPU/mem/cores -> medium
       expect(resolveDefaultGraphicsPreset({ ...desktop, gpuRenderer: 'Apple GPU' })).toBe(2); // masked
       expect(resolveDefaultGraphicsPreset({ ...desktop, gpuRenderer: 'Intel Iris Xe' })).toBe(2); // mid
+      // AMD Ryzen iGPU desktop (ample RAM + cores) must bucket midIntegrated -> MEDIUM, NOT be
+      // promoted to HIGH via the unknown-desktop branch (the "(TM)" misclassification regression).
+      expect(
+        resolveDefaultGraphicsPreset({
+          ...desktop,
+          gpuRenderer: 'ANGLE (AMD, AMD Radeon(TM) Graphics Direct3D11)',
+          deviceMemory: 8,
+          hardwareConcurrency: 16,
+        }),
+      ).toBe(2);
     });
 
     it('drops a software or weak GPU to LOW (only the GPU class can low, never RAM/cores)', () => {
@@ -250,6 +286,8 @@ describe('graphics tier resolution', () => {
         1,
       );
       expect(resolveDefaultGraphicsPreset({ ...desktop, gpuRenderer: 'Adreno (TM) 330' })).toBe(1);
+      // entry-level Mali-G52 budget phone -> LOW (must not be shadowed into the mid Mali bucket)
+      expect(resolveDefaultGraphicsPreset({ ...phone, gpuRenderer: 'Mali-G52' })).toBe(1);
       // PITFALL 1: a thin RAM/core count NEVER pulls a tier down (a flagship iPhone reports
       // cores=2 / mem=undefined); an unknown GPU with low mem+cores stays MEDIUM, not low.
       expect(resolveDefaultGraphicsPreset({ ...desktop, deviceMemory: 2 })).toBe(2);
@@ -312,6 +350,76 @@ describe('graphics tier resolution', () => {
       const label = graphicsPresetLabel(preset);
       expect(label).toBe('low');
       expect(nameplateIntervalSec(label as 'low')).toBe(NAMEPLATE_INTERVAL_LOW_SEC);
+    });
+  });
+
+  describe('firstRunGraphicsPreset: device default applied at most once, never over a choice', () => {
+    function stubGpu(renderer: string | undefined): void {
+      gfxInternalsForTest.resetGpuRendererProbe();
+      const getParameter = vi.fn(() => renderer);
+      const getExtension = vi.fn((name: string) =>
+        name === 'WEBGL_lose_context'
+          ? { loseContext: vi.fn() }
+          : { UNMASKED_RENDERER_WEBGL: 0x9246 },
+      );
+      const getContext = vi.fn(() =>
+        renderer === undefined ? null : { getExtension, getParameter },
+      );
+      vi.stubGlobal('document', { createElement: vi.fn(() => ({ getContext })) });
+    }
+    afterEach(() => {
+      vi.unstubAllGlobals();
+      gfxInternalsForTest.resetGpuRendererProbe();
+    });
+
+    it('returns null once a device default has been applied (never re-detects over a choice)', () => {
+      stubGpu('ANGLE (NVIDIA, NVIDIA GeForce RTX 4080)');
+      expect(firstRunGraphicsPreset(true)).toBeNull();
+    });
+
+    it('detects a recognized desktop GPU on first run, gated by the marker not the preset key', () => {
+      // The gate is the dedicated marker arg, NOT the graphicsPreset key (which Settings.save()
+      // def-fills the moment any setting is stored), so a strong desktop still resolves to a real
+      // high-or-ultra tier on first run even after an unrelated setting has been persisted.
+      stubGpu('ANGLE (NVIDIA, NVIDIA GeForce RTX 4080)');
+      const preset = firstRunGraphicsPreset(false);
+      expect(preset).not.toBeNull();
+      expect(preset).toBeGreaterThanOrEqual(3); // high or ultra, never the medium fallback
+    });
+
+    it('leaves a masked/inconclusive device unpersisted (null) so it re-detects later', () => {
+      stubGpu('Apple GPU'); // masked -> unknown -> medium fallback -> null (not persisted, re-probed next boot)
+      expect(firstRunGraphicsPreset(false)).toBeNull();
+    });
+  });
+
+  describe('probeGpuRenderer: one cached probe, context released (PR901 exhaustion guard)', () => {
+    afterEach(() => {
+      vi.unstubAllGlobals();
+      gfxInternalsForTest.resetGpuRendererProbe();
+    });
+
+    it('creates exactly one WebGL context, loses it, and memoizes the renderer string', () => {
+      gfxInternalsForTest.resetGpuRendererProbe();
+      const loseContext = vi.fn();
+      const getParameter = vi.fn(() => 'ANGLE (NVIDIA, NVIDIA GeForce RTX 4080)');
+      const getExtension = vi.fn((name: string) =>
+        name === 'WEBGL_lose_context' ? { loseContext } : { UNMASKED_RENDERER_WEBGL: 0x9246 },
+      );
+      const getContext = vi.fn(() => ({ getExtension, getParameter }));
+      const createElement = vi.fn(() => ({ getContext }));
+      vi.stubGlobal('document', { createElement });
+
+      const first = gfxInternalsForTest.probeGpuRenderer();
+      const second = gfxInternalsForTest.probeGpuRenderer();
+
+      expect(first).toBe('ANGLE (NVIDIA, NVIDIA GeForce RTX 4080)');
+      expect(second).toBe(first);
+      // Memoized: only the first call probes; the rest reuse the cached string.
+      expect(createElement).toHaveBeenCalledTimes(1);
+      expect(getContext).toHaveBeenCalledTimes(1);
+      // The throwaway probe context is released instead of left to leak (PR901).
+      expect(loseContext).toHaveBeenCalledTimes(1);
     });
   });
 

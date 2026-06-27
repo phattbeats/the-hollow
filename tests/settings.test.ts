@@ -14,7 +14,7 @@ function installStorage(): void {
 beforeEach(() => installStorage());
 
 describe('Settings', () => {
-  it('defaults fresh sessions and initial logins to the ultra graphics preset', () => {
+  it('defaults fresh sessions and initial logins to the medium graphics preset', () => {
     const s = new Settings();
 
     expect(localStorage.getItem('woc_settings')).toBeNull();
@@ -22,6 +22,21 @@ describe('Settings', () => {
     // main.ts persists a device-appropriate preset over it (see resolveDefaultGraphicsPreset).
     expect(SETTING_RANGES.graphicsPreset.def).toBe(2);
     expect(s.get('graphicsPreset')).toBe(2);
+  });
+
+  it('keeps graphicsDefaultApplied false through an unrelated save and clears it on reset', () => {
+    const s = new Settings();
+    expect(s.get('graphicsDefaultApplied')).toBe(false);
+    // save() persists the whole values object; an unrelated write must NOT flip the marker
+    // (that is what would silently defeat first-run device detection, since firstRunGraphicsPreset
+    // gates on this marker and never on the def-filled graphicsPreset key).
+    s.set('showFps', true);
+    expect(new Settings().get('graphicsDefaultApplied')).toBe(false);
+    // a conclusive detection sets it; reset() restores it to false so Reset re-detects.
+    s.set('graphicsDefaultApplied', true);
+    expect(new Settings().get('graphicsDefaultApplied')).toBe(true);
+    s.reset();
+    expect(s.get('graphicsDefaultApplied')).toBe(false);
   });
 
   it('starts at the documented defaults (camera calmer than the old 1.0)', () => {

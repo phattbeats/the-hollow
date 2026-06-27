@@ -109,6 +109,13 @@ const PRESET_ULTRA = 4;
 const PRESET_ADVANCED = 5;
 const DEFAULT_PRESET = PRESET_ULTRA;
 
+// Corroborating-signal thresholds for resolveDefaultGraphicsPreset. Chromium clamps
+// navigator.deviceMemory to a max of 8 (GiB) and WebKit caps hardwareConcurrency at 8 on
+// macOS, so 8 is the practical "ample" ceiling on both axes; these only ever RAISE a tier or
+// break a tie, never demote (see resolveDefaultGraphicsPreset).
+const AMPLE_DEVICE_MEMORY_GIB = 8;
+const AMPLE_LOGICAL_CORES = 8;
+
 export const GFX_BUDGETS: Record<GfxTier, GfxRuntimeBudget> = {
   low: {
     targetFps: 60,
@@ -331,16 +338,36 @@ function storedNumericSetting(key: string): number | undefined {
   }
 }
 
+// The session's GPU renderer string never changes, so probe it at most once and
+// release the throwaway context immediately. runtimeHints() is called several
+// times during boot (the module-load GFX best-guess, firstRunGraphicsPreset, and
+// initGfxTier), and a fresh canvas context per call would ORPHAN one WebGL context
+// each: browsers cap live contexts near 16, and exhausting them is exactly what
+// starved the world models before the PR901 release-on-teardown fix. One probe,
+// one context, lost the moment its renderer string is read, cached thereafter.
+let gpuRendererProbed = false;
+let probedGpuRenderer: string | undefined;
+
 function probeGpuRenderer(): string | undefined {
+  if (gpuRendererProbed) return probedGpuRenderer;
+  gpuRendererProbed = true;
+  probedGpuRenderer = readGpuRendererString();
+  return probedGpuRenderer;
+}
+
+function readGpuRendererString(): string | undefined {
   if (typeof document === 'undefined') return undefined;
+  let gl: WebGLRenderingContext | WebGL2RenderingContext | null = null;
   try {
     const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl2') ?? canvas.getContext('webgl');
+    gl = canvas.getContext('webgl2') ?? canvas.getContext('webgl');
     if (!gl) return undefined;
     const dbg = gl.getExtension('WEBGL_debug_renderer_info');
     return String(dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
   } catch {
     return undefined;
+  } finally {
+    gl?.getExtension('WEBGL_lose_context')?.loseContext();
   }
 }
 
@@ -405,8 +432,9 @@ export function classifyGpuRenderer(name: string | undefined): GpuClass {
   // mid-integrated bucket so an Iris Plus 6xx / UHD 6xx / HD 5xx-6xx stays weak, consistent with
   // the existing leanFoliage treatment in settingsFor).
   if (isWeakIntegratedGpu(name)) return 'weak';
-  // Strong desktop discrete + Apple Silicon.
-  if (/\b(rtx|gtx)\b|geforce|radeon\s?(rx|pro|vii)|\barc\b|\bnvidia\b|apple\s?m[1-9]/.test(n))
+  // Strong desktop discrete + Apple Silicon. The `(\(tm\))?` tolerates the "(TM)" some Windows
+  // drivers print after "Radeon" ("Radeon(TM) RX 580").
+  if (/\b(rtx|gtx)\b|geforce|radeon(\(tm\))?\s?(rx|pro|vii)|\barc\b|\bnvidia\b|apple\s?m[1-9]/.test(n))
     return 'strongDesktop';
   // Recent flagship mobile.
   if (
@@ -415,12 +443,17 @@ export function classifyGpuRenderer(name: string | undefined): GpuClass {
     )
   )
     return 'flagshipMobile';
-  // Mid integrated (newer Intel Xe / AMD integrated).
-  if (/iris xe|iris plus|radeon (vega|graphics)|uhd graphics 6\d\d|intel.*xe/.test(n))
+  // Mid integrated (newer Intel Xe / AMD Vega-and-RDNA iGPUs / modern desktop UHD 7xx). The
+  // `radeon(\(tm\))? ?` form matches Chrome's ANGLE strings ("AMD Radeon(TM) Graphics", "AMD
+  // Radeon(TM) Vega 8 Graphics") and the Mesa form ("AMD Radeon Vega 8 Graphics"); strongDesktop
+  // already claimed the discrete RX/Pro/VII families, so this only catches integrated Radeons.
+  // UHD 6xx and older stay weak via isWeakIntegratedGpu (checked first).
+  if (/iris xe|iris plus|radeon(\(tm\))? ?(vega|graphics)|uhd graphics 7\d\d|intel.*xe/.test(n))
     return 'midIntegrated';
-  // Mid mobile.
+  // Mid mobile. The Mali clause excludes G50-G52 (the entry-level Valhall parts the weak ladder
+  // below claims) so they fall through to LOW; G53+ stay mid.
   if (
-    /apple a1[1-3]|adreno \(tm\) (5\d\d|6[0-5]\d)|mali-g(5\d|6\d|7[0-8])|powervr (gt|gm|b)/.test(n)
+    /apple a1[1-3]|adreno \(tm\) (5\d\d|6[0-5]\d)|mali-g(5[3-9]|6\d|7[0-8])|powervr (gt|gm|b)/.test(n)
   )
     return 'midMobile';
   // Old / low mobile + old integrated.
@@ -461,7 +494,9 @@ export function resolveDefaultGraphicsPreset(hints: GfxRuntimeHints): number {
   // Corroborating RAM/core signal (or deviceMemory simply unreported, as on Firefox): only ever
   // used to RAISE the strong-desktop tier to ultra, never to demote.
   const ampleOrUnknownMem =
-    mem === undefined || mem >= 8 || (cores !== undefined && cores >= 8);
+    mem === undefined ||
+    mem >= AMPLE_DEVICE_MEMORY_GIB ||
+    (cores !== undefined && cores >= AMPLE_LOGICAL_CORES);
 
   if (gpu === 'software' || gpu === 'weak') return PRESET_LOW;
   if (gpu === 'strongDesktop' && !isMobile)
@@ -473,23 +508,31 @@ export function resolveDefaultGraphicsPreset(hints: GfxRuntimeHints): number {
     gpu === 'unknown' &&
     !isMobile &&
     mem !== undefined &&
-    mem >= 8 &&
+    mem >= AMPLE_DEVICE_MEMORY_GIB &&
     cores !== undefined &&
-    cores >= 8
+    cores >= AMPLE_LOGICAL_CORES
   )
     return PRESET_HIGH;
   return PRESET_MEDIUM; // unknown / masked / inconclusive -> the safe middle
 }
 
 /**
- * The device-aware preset to persist on a player's FIRST run, or null when they have already
- * chosen (or auto-persisted) a preset, so the caller never overrides an explicit choice and
- * only writes once. Reads localStorage directly (storedNumericSetting), so it sees the true
- * unset state that settings.get() masks behind the medium default.
+ * The device-aware preset to persist on a player's FIRST run, or null when no default should be
+ * written. The caller passes a dedicated `defaultAlreadyApplied` marker rather than the presence
+ * of graphicsPreset in storage, because Settings.save() persists the WHOLE values object (with
+ * graphicsPreset at its medium def) the first time ANY unrelated setting is written, so the key
+ * is present long before the player ever chooses, and a key-presence check would silently defeat
+ * detection. The caller persists the returned preset AND sets the marker, so a recognized device
+ * is classified at most once and an explicit later choice is never re-detected over. A masked or
+ * inconclusive device resolves to MEDIUM and returns null: it stays on the medium default and is
+ * re-detected on later boots, so once its GPU becomes identifiable it can still settle on its true
+ * tier instead of being pinned to medium forever (the marker is set only for a CONCLUSIVE result).
+ * Pure aside from one memoized GPU probe; never reads the FPS governor.
  */
-export function firstRunGraphicsPreset(): number | null {
-  if (storedNumericSetting('graphicsPreset') !== undefined) return null;
-  return resolveDefaultGraphicsPreset(runtimeHints());
+export function firstRunGraphicsPreset(defaultAlreadyApplied: boolean): number | null {
+  if (defaultAlreadyApplied) return null;
+  const detected = resolveDefaultGraphicsPreset(runtimeHints());
+  return detected === PRESET_MEDIUM ? null : detected;
 }
 
 export function tierFromHints(hints: GfxRuntimeHints, softwareGl: boolean): GfxTier {
@@ -542,6 +585,11 @@ export function initGfxTier(webgl: THREE.WebGLRenderer): GfxTier {
 
 export const gfxInternalsForTest = {
   settingsFor,
+  probeGpuRenderer,
+  resetGpuRendererProbe: () => {
+    gpuRendererProbed = false;
+    probedGpuRenderer = undefined;
+  },
 };
 
 // One clock uniform shared by every onBeforeCompile shader (wind, water,

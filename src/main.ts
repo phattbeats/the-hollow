@@ -102,7 +102,7 @@ import {
 import { assembleBugReportMeta } from './ui/bug_report';
 import { chatInputSize } from './ui/chat_input_autosize';
 import { CLASS_DETAILS, SIGNATURE_ABILITIES } from './ui/class_details_data';
-import { tEntity } from './ui/entity_i18n';
+import { classDisplayName, tEntity } from './ui/entity_i18n';
 import { FocusManager, type FocusTrapHandle } from './ui/focus_manager';
 import { Hud } from './ui/hud';
 import {
@@ -192,10 +192,6 @@ const RESOURCE_KEYS = {
   energy: 'classDetails.resources.energy',
   rage: 'classDetails.resources.rage',
 } satisfies Record<string, TranslationKey>;
-
-function classDisplayName(className: PlayerClass): string {
-  return tEntity({ kind: 'class', id: className, field: 'name' });
-}
 
 function classDisplayDescription(className: PlayerClass): string {
   return tEntity({ kind: 'class', id: className, field: 'description' });
@@ -858,14 +854,22 @@ async function startGame(
 
   const keybinds = new Keybinds(keybindScope);
   const settings = new Settings();
-  // First-run graphics default: if the player has never chosen a graphics preset, probe the
-  // device (GPU name, memory, cores, touch) and PERSIST a device-appropriate preset (medium
-  // when inconclusive) over the medium default, BEFORE the effects applier and renderer read
-  // it, so the 3D tier, the data-fx-level cadence (nameplates), and the options UI all agree.
-  // A static one-shot probe (resolveDefaultGraphicsPreset), never the FPS governor (decision 6);
-  // an explicit stored preset returns null here and is never overridden.
-  const autoPreset = firstRunGraphicsPreset();
-  if (autoPreset !== null) settings.set('graphicsPreset', autoPreset);
+  // First-run graphics default: until a device default has been applied (the dedicated
+  // graphicsDefaultApplied marker, NOT the graphicsPreset key, which save() def-fills the moment
+  // any unrelated setting is stored), probe the device (GPU name, memory, cores, touch) and
+  // PERSIST a device-appropriate preset over the medium default, BEFORE the effects applier and
+  // renderer read it, so the 3D tier, the data-fx-level cadence (nameplates), and the options UI
+  // all agree. A static one-shot probe (resolveDefaultGraphicsPreset), never the FPS governor
+  // (decision 6). A masked/inconclusive device resolves to medium and returns null, so it stays on
+  // the medium default and re-detects next boot; only a CONCLUSIVE result is persisted + marked.
+  // An explicit player choice is never overridden: a recognized device is marked applied on its
+  // first boot so it never re-detects, and an inconclusive device returns null so it never
+  // overwrites a stored preset.
+  const autoPreset = firstRunGraphicsPreset(settings.get('graphicsDefaultApplied'));
+  if (autoPreset !== null) {
+    settings.set('graphicsPreset', autoPreset);
+    settings.set('graphicsDefaultApplied', true);
+  }
   // UI theming: apply the persisted theme's CSS variables to :root, then keep a
   // hook so the Options panel can switch preset / override colours live.
   const themeStore = new ThemeStore();
