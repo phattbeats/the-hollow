@@ -16,6 +16,8 @@
 import { audio } from '../game/audio';
 import type { EquipSlot } from '../sim/types';
 import type { IWorld } from '../world_api';
+import { markDialogRoot } from './dialog_root';
+import { dropdownKeyNav } from './dropdown_nav';
 import { itemDisplayName } from './entity_i18n';
 import { esc } from './esc';
 import { formatMoney as formatLocalizedMoney, formatNumber, t } from './i18n';
@@ -163,10 +165,7 @@ export class MarketWindow {
     const el = this.deps.root();
     this.deps.hideTooltip();
     // WCAG 2.2 AA (P15b): name the focus-trapped root with a dialog role.
-    el.setAttribute('role', 'dialog');
-    el.setAttribute('aria-modal', 'false');
-    el.setAttribute('tabindex', '-1');
-    el.setAttribute('aria-label', t('itemUi.market.title'));
+    markDialogRoot(el, { label: t('itemUi.market.title') });
     const info = this.deps.world().marketInfo;
     const tabLabel = (id: MarketTab): string => {
       if (id === 'browse') return t('itemUi.market.browse');
@@ -257,6 +256,61 @@ export class MarketWindow {
         (
           newMenu?.closest('.mkt-select')?.querySelector('.mkt-select-btn') as HTMLElement | null
         )?.focus();
+      });
+    });
+    // Keyboard operation of the filter listboxes via the shared dropdownKeyNav core (the
+    // same WAI-ARIA listbox pattern buildDropdown wires onto its custom listbox): roving
+    // focus through the options, Enter/Space commit, Escape/Tab close returning focus to the
+    // trigger. The options carry tabindex=-1 (out of the Tab order but programmatically
+    // focusable); the mouse toggle, the click-away close, and the option-click commit above
+    // are reused unchanged (select dispatches a real click on the focused option).
+    el.querySelectorAll<HTMLElement>('.mkt-select').forEach((select) => {
+      const trigger = select.querySelector<HTMLButtonElement>('.mkt-select-btn');
+      const options = Array.from(select.querySelectorAll<HTMLElement>('.mkt-select-option'));
+      const focusedIndex = () =>
+        document.activeElement instanceof HTMLElement
+          ? options.indexOf(document.activeElement)
+          : -1;
+      select.addEventListener('keydown', (event) => {
+        const ke = event as KeyboardEvent;
+        const action = dropdownKeyNav(
+          ke.key,
+          select.classList.contains('open'),
+          focusedIndex(),
+          options.length,
+        );
+        if (action.kind === 'none') return;
+        // Tab closes and returns focus to the trigger WITHOUT preventDefault, so native Tab
+        // then advances from a real tab-order element (matches buildDropdown's tab branch).
+        if (action.kind === 'tab') {
+          closeFilterMenus();
+          trigger?.focus();
+          return;
+        }
+        // preventDefault suppresses the native button activation (Enter/Space) so the open
+        // and select paths below are the only ones that fire, exactly as buildDropdown does.
+        ke.preventDefault();
+        switch (action.kind) {
+          case 'open': {
+            closeFilterMenus();
+            select.classList.add('open');
+            trigger?.setAttribute('aria-expanded', 'true');
+            const list = select.querySelector<HTMLElement>('.mkt-select-menu');
+            if (list) list.hidden = false;
+            options[action.index]?.focus();
+            break;
+          }
+          case 'move':
+            options[action.index]?.focus();
+            break;
+          case 'select':
+            options[focusedIndex()]?.click();
+            break;
+          case 'close':
+            closeFilterMenus();
+            trigger?.focus();
+            break;
+        }
       });
     });
     el.addEventListener('click', closeFilterMenus);
@@ -614,7 +668,7 @@ export class MarketWindow {
     const optionHtml = options
       .map((option) => {
         const selected = option === value;
-        return `<button type="button" class="mkt-select-option${selected ? ' sel' : ''}" role="option" aria-selected="${selected ? 'true' : 'false'}" data-market-filter-option="${option}">${esc(optionLabel(option))}</button>`;
+        return `<button type="button" class="mkt-select-option${selected ? ' sel' : ''}" role="option" tabindex="-1" aria-selected="${selected ? 'true' : 'false'}" data-market-filter-option="${option}">${esc(optionLabel(option))}</button>`;
       })
       .join('');
     return (
