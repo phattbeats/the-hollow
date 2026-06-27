@@ -23,6 +23,7 @@ private/*
 # test artifacts & screenshots
 tmp/
 .codex-research/
+.codex/
 .playwright-mcp/
 # Vitest Browser Mode failure screenshots + attachments (opt-in test:browser suite)
 tests/browser/__screenshots__/
