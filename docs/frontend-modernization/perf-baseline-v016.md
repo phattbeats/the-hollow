@@ -6,13 +6,22 @@ itself is NOT re-authored in P0 (its re-author is P17a); this phase only ran it.
 
 ## How the numbers are framed (read this first)
 
-Two different kinds of number live here, and they are NOT compared the same way:
+Three kinds of number live here, and they are NOT compared the same way:
 
-- **`hudHotDomSkipRate` is the DURABLE anchor.** It is a ratio (skipped hot-DOM writes /
-  total hot-DOM writes), so it is machine-independent: it measures how often the HUD's
-  write-elision cache avoided a redundant DOM write, which does not depend on CPU/GPU
-  speed. Every per-frame phase asserts this skip-rate has not DROPPED versus this baseline.
+- **`hudHotDomWrites` (the elision-bypass COUNT) is the DURABLE, run-length-independent
+  anchor.** It counts the hot-DOM writes that BYPASSED the write-elision cache (boot plus the
+  occasional state-change write). A longer tour adds only SKIPS, never new bypass writes once
+  the world is steady, so this count does not move with frame count, CPU/GPU speed, or machine
+  load: it is `152` post-extraction, byte-identical on desktop, mobile, and every re-run. A
+  collapse of write-elision makes it BALLOON toward the frame count, so the standing floor
+  (`tests/hud_perf_budget.test.ts` ARM 3) gates `hudHotDomWrites <= 152` on every viewport.
   This is the number that travels.
+- **`hudHotDomSkipRate` (the skip RATIO) is a DERIVED, frame-count-dependent quantity.** It is
+  skipped / (skipped + bypassed); the denominator is the total frame count, which jitters with
+  software-WebGL fps and machine load run-to-run (a clean re-run measured desktop `0.959` vs
+  the recorded `0.962` with `hudHotDomWrites` IDENTICALLY `152`). So it is reported for human
+  context and used as a hard floor only by ARM 2's DETERMINISTIC fake-DOM loop (a FIXED
+  denominator, floor `0.962`); it is NOT a safe cross-run hard gate in a real-browser tour.
 - **`frameP95` and `inputIntentToFrameP95` are SAME-MACHINE-RELATIVE only.** They are
   wall-clock milliseconds and do NOT travel across hardware. They were captured under
   headless Chrome with software WebGL (`--use-angle=swiftshader`), which renders at roughly
@@ -65,7 +74,7 @@ threshold was set, so the run records numbers without failing on a budget.
 
 | Metric | Value | Role |
 |---|---|---|
-| **hudHotDomSkipRate** | **0.962** (38 hot writes / 950 skipped, 988 total) | DURABLE anchor: per-frame phases assert skip-rate does not drop below this |
+| **hudHotDomSkipRate** | **0.962** (38 hot writes / 950 skipped, 988 total) | ARM 2 deterministic-loop floor (the P0 pre-extraction ratio; ARM 2 asserts its fake-DOM loop stays >= this). The post-extraction all-together desktop run reads `hudHotDomWrites` 152 (the durable count anchor below), still at 0.962 |
 | frameP95 | 250 ms | same-machine-relative only |
 | inputIntentToFrameP95 | 652.7 ms | same-machine-relative only |
 | inputIntentToVisibleP95 | 658.2 ms | same-machine-relative only |
@@ -106,7 +115,13 @@ floor. The durable per-frame anchor across both profiles is hotWrites=152.
   hardware). Re-run `PERF_VIEWPORT=desktop node scripts/perf_tour.mjs` on the gating machine
   to get the comparison number.
 - P17a (DONE 2026-06-26): re-authored perf_tour's mobile profile (landscape boot, above) and
-  added the standing `tests/hud_perf_budget.test.ts`, which READS the 0.962 floor from this
-  file (throws if absent). The first all-together run (desktop + mobile) held: desktop
-  frameP95 250 == baseline, skip-rate 0.962 == floor, FCT [64,64,64]; mobile booted and
-  measured (skip-rate 0.961 / hotWrites 152, see above). No per-frame regression.
+  added the standing `tests/hud_perf_budget.test.ts`, which READS this baseline (throws if
+  absent: the 0.962 ratio floor for ARM 2's deterministic loop, the 152 bypass anchor for
+  ARM 3). The first all-together run (desktop + mobile) held: desktop frameP95 250 == baseline,
+  skip-rate 0.962, hotWrites 152; mobile booted and measured (skip-rate 0.961, hotWrites 152).
+  No per-frame regression.
+- P17a re-verification (2026-06-26, ultracode): an independent all-together re-run measured
+  desktop skip-rate `0.959` (not 0.962) with `hudHotDomWrites` IDENTICALLY 152, proving the
+  skip RATIO is frame-count-noisy run-to-run while the bypass COUNT is the true invariant. ARM
+  3 was switched to gate `hudHotDomWrites <= 152` on EVERY viewport (was a brittle desktop-only
+  `skip-rate >= 0.962`, which the re-run false-failed; mobile elision was previously ungated).
