@@ -63,7 +63,9 @@ describe('leaderboard_window: WCAG chrome (live region + focusable controls + fo
   it('escapes the server-supplied player names before interpolating them into HTML', () => {
     // Names are server-validated, but the src/ui invariant routes all player text
     // through esc(); match the sibling questlog painter (no raw-name innerHTML).
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting the painter source literally contains this template expression
     expect(code).toContain('${esc(r.name)}');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting the painter source literally contains this template expression
     expect(code).toContain('${esc(standing.name)}');
     expect(code).not.toMatch(/\$\{r\.name\}/);
     expect(code).not.toMatch(/\$\{standing\.name\}/);

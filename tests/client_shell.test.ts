@@ -249,8 +249,10 @@ describe('client HTML shell', () => {
   });
 
   it('ships the forced-colors + print + skip-link a11y CSS, forced-colors as the only contrast adaptation (P15a)', () => {
-    // forced-colors is the ONLY contrast adaptation (decision 11): no light theme, no
-    // prefers-color-scheme rule anywhere in the corpus.
+    // forced-colors is the only AUTOMATIC contrast adaptation (decision 11): no
+    // @media (prefers-color-scheme) switch in the corpus. (A user-selectable light
+    // parchment / highContrast theme exists via theme.ts at runtime; this guards only
+    // the absence of an automatic CSS theme switch.)
     expect(baseCss).toContain('@media (forced-colors: active) {');
     expect(baseCss).toMatch(/outline:\s*2px solid Highlight/);
     expect(baseCss).toContain('border: 1px solid CanvasText');

@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
@@ -168,6 +168,39 @@ const UI_PURE_CORES = [
 const RENDER_PURE_CORES = ['src/render/cast_bar.ts', 'src/render/nameplate_view.ts'].map((rel) =>
   join(repoRoot, rel),
 );
+
+// Bare-named pure cores: registered cores (from UI_PURE_CORES + RENDER_PURE_CORES)
+// whose basename does NOT end in _view / _core, so the onDiskCores() sweep's
+// /_(?:view|core)\.ts$/ regex cannot reach them. Bare names are enforced by this
+// curated cross-check while *_view / *_core are auto-swept by onDiskCores(): each
+// entry below must still exist on disk AND stay registered in its allowlist, so
+// deleting or renaming a bare core (e.g. xp_bar.ts -> xp_bar_view.ts without
+// updating this list) fails the cross-check instead of silently escaping the
+// reverse-completeness guard.
+const BARE_NAMED = [
+  'src/ui/unit_portrait.ts',
+  'src/ui/xp_bar.ts',
+  'src/ui/absorb_bar.ts',
+  'src/ui/party_frames.ts',
+  'src/ui/rest_indicator.ts',
+  'src/ui/low_health.ts',
+  'src/ui/low_resource.ts',
+  'src/ui/clock.ts',
+  'src/ui/compass.ts',
+  'src/ui/coords.ts',
+  'src/ui/quest_tracker.ts',
+  'src/ui/delve_map.ts',
+  'src/ui/swing_timer.ts',
+  'src/ui/unit_frame.ts',
+  'src/ui/minimap_markers.ts',
+  'src/ui/fct_event.ts',
+  'src/ui/focus_order.ts',
+  'src/ui/roving_index.ts',
+  'src/ui/live_region_politeness.ts',
+  'src/game/ui_effects_profile.ts',
+  'src/game/ui_tier_knobs.ts',
+  'src/render/cast_bar.ts',
+].map((rel) => join(repoRoot, rel));
 
 function importSpecs(src: string): string[] {
   const specs: string[] = [];
@@ -407,5 +440,44 @@ describe('src/render pure-core invariants', () => {
     expect(forbiddenRenderCoreImport('../sim/types')).toBeNull();
     expect(forbiddenRenderCoreImport('../sim/data')).toBeNull();
     expect(forbiddenRenderCoreImport('./delve_map')).toBeNull();
+  });
+});
+
+describe('curated bare-named pure cores (cross-check)', () => {
+  // Bare names are enforced by this curated cross-check while *_view / *_core are
+  // auto-swept by onDiskCores(): the sweep's /_(?:view|core)\.ts$/ regex cannot see a
+  // bare-named core (xp_bar, swing_timer, cast_bar, ...), so a delete or rename of one
+  // would slip the reverse-completeness check. This pins each registered bare core to
+  // disk AND to its allowlist, so dropping it from UI_PURE_CORES / RENDER_PURE_CORES,
+  // or renaming the file out from under the entry, fails here.
+  it('every bare-named core exists on disk and is registered in its allowlist', () => {
+    const registered = new Set([...UI_PURE_CORES, ...RENDER_PURE_CORES]);
+    const problems: string[] = [];
+    for (const f of BARE_NAMED) {
+      if (!existsSync(f)) problems.push(`${relative(repoRoot, f)} (missing on disk)`);
+      else if (!registered.has(f)) {
+        problems.push(
+          `${relative(repoRoot, f)} (not registered in UI_PURE_CORES / RENDER_PURE_CORES)`,
+        );
+      }
+    }
+    expect(
+      problems,
+      `every bare-named pure core must exist on disk and stay registered:\n${problems.join('\n')}`,
+    ).toEqual([]);
+
+    // Forward-completeness: BARE_NAMED must list EXACTLY the registered cores whose
+    // basename is bare (not _view / _core). A new bare-named core added to an allowlist
+    // but forgotten here would escape both onDiskCores() (bare name) and the loop above
+    // (not listed), reopening the gap; this equality makes that omission fail.
+    const bareNameRe = /_(?:view|core)\.ts$/;
+    const derivedBare = [...UI_PURE_CORES, ...RENDER_PURE_CORES]
+      .filter((f) => !bareNameRe.test(f))
+      .map((f) => relative(repoRoot, f))
+      .sort();
+    expect(
+      [...new Set(derivedBare)],
+      'BARE_NAMED must equal the registered cores whose name is bare (not _view/_core)',
+    ).toEqual([...new Set(BARE_NAMED.map((f) => relative(repoRoot, f)))].sort());
   });
 });

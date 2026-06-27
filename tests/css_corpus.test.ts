@@ -54,9 +54,9 @@ function sectionNames(css: string): string[] {
 // hand-authored entries.
 function inlineStyleCss(entryFile: string): string {
   const html = readFileSync(join(repoRoot, entryFile), 'utf8').replace(/\r\n/g, '\n');
-  let css = '';
-  for (const block of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) css += '\n' + block[1];
-  return css;
+  const parts: string[] = [''];
+  for (const block of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) parts.push(block[1]);
+  return parts.join('\n');
 }
 
 // Every CSS module already migrated into src/styles/. None exist in P0 and the
@@ -65,11 +65,11 @@ function inlineStyleCss(entryFile: string): string {
 // here and the union below picks them up with no edit to this guard.
 function extractedStyleCss(): string {
   if (!existsSync(stylesDir)) return '';
-  let css = '';
+  const parts: string[] = [''];
   for (const name of readdirSync(stylesDir).sort()) {
-    if (name.endsWith('.css')) css += '\n' + readFileSync(join(stylesDir, name), 'utf8');
+    if (name.endsWith('.css')) parts.push(readFileSync(join(stylesDir, name), 'utf8'));
   }
-  return css;
+  return parts.join('\n');
 }
 
 // The whole game-HUD CSS corpus: both entries' inline <style> UNION src/styles.
