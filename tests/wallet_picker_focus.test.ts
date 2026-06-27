@@ -30,6 +30,15 @@ describe('wallet picker uses the shared FocusManager (P18d item 6)', () => {
     expect(mainSrc).toContain('closeWalletPicker(null, false);');
   });
 
+  it('preserves the original opener across a re-entrant re-open (return focus is byte-faithful)', () => {
+    // The re-entrant close detaches the prior modal (dropping focus to document.body), so the
+    // opener is captured ONCE on the first open into walletPickerOpener and reused, not re-read
+    // from document.activeElement on the re-open; release(true) returns there, never to body.
+    expect(mainSrc).toMatch(/const reentrant\s*=\s*walletPickerResolve\s*!==\s*null;/);
+    expect(mainSrc).toMatch(/returnFocusTo:\s*walletPickerOpener/);
+    expect(mainSrc).toMatch(/if\s*\(!reentrant\)\s*\{/);
+  });
+
   it('deletes the old hand-rolled focus trap (no walletPickerFocusable / walletPickerReturnFocus)', () => {
     expect(mainSrc).not.toContain('walletPickerFocusable');
     expect(mainSrc).not.toContain('walletPickerReturnFocus');

@@ -4504,6 +4504,11 @@ let walletPickerResolve: ((id: string | null) => void) | null = null;
 // deliberately owns no Escape and the wallet picker is not a hud.closeAll window.
 const walletFocusManager = new FocusManager();
 let walletPickerFocusHandle: FocusTrapHandle | null = null;
+// The control that opened the picker, captured on the FIRST open and preserved across a
+// re-entrant re-open so closing the (re-)opened modal still returns focus to where the flow
+// started. The re-entrant close detaches the prior modal (dropping focus to document.body), so
+// re-reading document.activeElement at the new open would record body, not the real opener.
+let walletPickerOpener: HTMLElement | null = null;
 
 function closeWalletPicker(id: string | null, returnFocus = true): void {
   const modal = walletPickerModal;
@@ -4514,13 +4519,14 @@ function closeWalletPicker(id: string | null, returnFocus = true): void {
   walletPickerFocusHandle = null;
   if (modal) modal.remove();
   // Return focus to the opener through the shared FocusManager (replacing the manual
-  // returnFocus.focus()): release() pops the trap and refocuses the recorded opener. The
-  // re-entrant re-open path passes returnFocus=false: the manager defers the opener focus a
-  // tick, so without this the prior modal's deferred focus would land AFTER the new modal's
-  // synchronous initial focus and steal it back to the old opener (the old code returned focus
-  // synchronously, so the new modal's focus simply overwrote it; release(false) preserves that
-  // net behavior).
+  // returnFocus.focus()): release(true) pops the trap and refocuses the recorded opener. The
+  // re-entrant re-open path passes returnFocus=false so the FocusManager's deferred opener
+  // focus cannot land AFTER (and steal focus from) the new modal's synchronous initial focus;
+  // the original opener is preserved separately in walletPickerOpener for the eventual real
+  // close. Drop that recorded opener only on a real (returnFocus=true) close so a re-opened
+  // picker still returns to where the flow started.
   focusHandle?.release(returnFocus);
+  if (returnFocus) walletPickerOpener = null;
   if (resolve) resolve(id);
 }
 
@@ -4532,12 +4538,18 @@ function showWalletPicker(
   wallets: readonly WalletOption[],
   selectedId: string | null,
 ): Promise<string | null> {
-  if (walletPickerResolve) closeWalletPicker(null, false);
+  const reentrant = walletPickerResolve !== null;
+  if (reentrant) closeWalletPicker(null, false);
   return new Promise((resolve) => {
     walletPickerResolve = resolve;
-    // Capture the opener BEFORE focus moves into the modal; the FocusManager returns focus
-    // here on release().
-    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    // Capture the opener BEFORE focus moves into the modal; the FocusManager returns focus here
+    // on release(). On a re-entrant re-open keep the FIRST opener (the re-entrant close already
+    // detached its modal and dropped focus to body, so re-reading activeElement now would record
+    // body, not the control that started the flow).
+    if (!reentrant) {
+      walletPickerOpener =
+        document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    }
 
     const back = document.createElement('div');
     back.className = 'modal-backdrop wallet-picker-backdrop';
@@ -4612,7 +4624,10 @@ function showWalletPicker(
     // Install the shared focus trap over the panel: Tab/Shift+Tab cycle + return-to-opener.
     // This replaces the deleted hand-rolled focusable list + inline Tab cycle, so there is one
     // focus-trap implementation (the manager re-queries the panel's focusables on each Tab).
-    walletPickerFocusHandle = walletFocusManager.open({ root: () => panel, returnFocusTo: opener });
+    walletPickerFocusHandle = walletFocusManager.open({
+      root: () => panel,
+      returnFocusTo: walletPickerOpener,
+    });
 
     const close = () => closeWalletPicker(null);
     closeBtn.addEventListener('click', close);
