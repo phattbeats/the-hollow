@@ -384,7 +384,7 @@ describe('client HTML shell', () => {
     expect(hudTs.match(/\$\('#tf-absorb'\)/g)).toHaveLength(1);
   });
 
-  it('routes the target elite class + name color + combo pips through the elided writers (P11b)', () => {
+  it('routes the target elite class + name color + combo pips + hostile cue through the elided writers (P11b, P18c)', () => {
     // The two raw writes the four original writers cannot express (the elite class and
     // the hostile/friendly name color) go through the P10a toggleClass / setStyleProp,
     // and the combo pip `on` toggle through toggleClass. No raw classList/style write
@@ -392,9 +392,29 @@ describe('client HTML shell', () => {
     expect(hudTs).toContain("this.toggleClass(this.targetFrameEl, 'elite'");
     expect(hudTs).toMatch(/this\.setStyleProp\(\s*this\.targetNameEl,\s*'color',/);
     expect(hudTs).toContain("this.toggleClass(pip as HTMLElement, 'on', i < points);");
+    // P18c: the forced-colors hostile cue is a non-color redundant marker on the target
+    // name, routed through the same elided toggleClass writer (no raw class write on the
+    // per-frame hot path) so it stays write-elided.
+    expect(hudTs).toContain("this.toggleClass(this.targetNameEl, 'hostile', target.hostile);");
+    expect(hudTs).not.toContain("this.targetNameEl.classList.toggle('hostile'");
     expect(hudTs).not.toContain("this.targetFrameEl.classList.toggle('elite'");
     expect(hudTs).not.toContain('this.targetNameEl.style.color');
     expect(hudTs).not.toContain("pip.classList.toggle('on'");
+  });
+
+  it('reconciles every #bags display show-site to flex and every read-guard to !== none (P18c)', () => {
+    // #bags is a flex-column layout (components.css flex-direction: column). Every show-site
+    // must set display = 'flex' (a 'block' drops the column), and every render read-guard must
+    // test !== 'none' (an === 'block' guard never fired when bags was opened via the common
+    // flex path). No '#bags' 'block' display write or read survives, in either the $('#bags')
+    // or the cached-var (drag drop-target) form.
+    expect(hudTs).not.toContain("#bags').style.display = 'block'");
+    expect(hudTs).not.toContain("#bags').style.display === 'block'");
+    expect(hudTs).not.toContain("bags.style.display = 'block'");
+    expect(hudTs).not.toContain("bags.style.display !== 'block'");
+    expect(hudTs).toContain("$('#bags').style.display = 'flex';");
+    expect(hudTs).toContain("$('#bags').style.display !== 'none'");
+    expect(hudTs).toContain("bags.style.display !== 'flex'");
   });
 
   it('lazy-builds the combo pips once, then only toggles them (P11b)', () => {

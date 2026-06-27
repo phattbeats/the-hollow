@@ -964,7 +964,7 @@ export class Hud {
     // re-render the bag footer (and re-composite an open player card) when the
     // connected wallet's $WOC balance changes
     onWalletUiChange(() => {
-      if ($('#bags').style.display === 'block') this.renderBags();
+      if ($('#bags').style.display !== 'none') this.renderBags();
       this.recomposeOpenCard?.();
     });
     $('#pf-name').textContent = sim.player.name;
@@ -2629,8 +2629,12 @@ export class Hud {
       // Open the bags window if it's closed so there's a visible drop target,
       // otherwise the drag silently snaps back with no feedback.
       const bags = $('#bags');
-      if (bags.style.display !== 'block') {
-        bags.style.display = 'block';
+      // Match the common open path (display: flex): opening as 'block' would drop the
+      // flex-column layout, and re-forcing 'block' on an already-open (flex) bag would
+      // clobber it mid-drag. Open as flex only when it is not already shown as flex (this
+      // also covers the never-yet-opened state, where the inline display is '').
+      if (bags.style.display !== 'flex') {
+        bags.style.display = 'flex';
         this.renderBags();
       }
     },
@@ -3043,7 +3047,7 @@ export class Hud {
     // their badge tooltips / leave label; re-localize them in place on a switch.
     this.partyFramesPainter.relocalize();
     if (this.questlogWindow.isOpen) this.questlogWindow.render();
-    if ($('#bags').style.display === 'block') this.renderBags();
+    if ($('#bags').style.display !== 'none') this.renderBags();
     if (this.openVendorNpcId !== null && $('#vendor-window').style.display === 'block')
       this.renderVendor();
     if (this.marketWindow.isOpen) this.marketWindow.render();
@@ -4026,7 +4030,7 @@ export class Hud {
           }
           this.pendingPetFeed = true;
           this.lastPetBarSig = '';
-          $('#bags').style.display = 'block';
+          $('#bags').style.display = 'flex';
           this.renderBags();
         },
         { active: this.pendingPetFeed },
