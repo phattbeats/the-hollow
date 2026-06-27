@@ -144,10 +144,10 @@ export function uiEffectsTokens(profile: UiEffectsProfile): Record<string, strin
  *  published `data-fx-level` value (the damage number, colour and "!" always show;
  *  only the crit emphasis is gated off at the low tier). Takes the published tier
  *  STRING (= `profile.tier`, what `document.documentElement.dataset.fxLevel` holds)
- *  rather than a profile object so the FCT call site, which reads that dataset value,
- *  can consume it directly. The single source of the FCT-crit rule: the resolver
- *  derives `profile.allowFctCrit` from it, and the FCT painter (P14) reads
- *  `data-fx-level` and calls it, so the two never drift. */
+ *  rather than a profile object. The resolver above derives `profile.allowFctCrit` from
+ *  it (and the diff-guard compares that field); the FCT painter's own per-element crit
+ *  gate ships separately via `fctDropNonCrit` (src/game/ui_tier_knobs.ts), so this helper
+ *  is the resolver-side rule, not the painter call site. */
 export function uiEffectsAllowFctCrit(fxLevel: string | null | undefined): boolean {
   return fxLevel !== 'low';
 }

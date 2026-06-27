@@ -402,7 +402,8 @@ export class SocialWindow {
           .join('') || `<div class="soc-empty">${esc(t('hud.social.raidGroupEmpty'))}</div>`;
       return `<div class="raid-group"><div class="soc-guild-head">${esc(t('hud.social.raidGroupTitle', { position: formatNumber(grp.group, { maximumFractionDigits: 0 }), count: formatNumber(grp.count, { maximumFractionDigits: 0 }) }))}</div>${rows}</div>`;
     };
-    const [g1, g2] = view.groups!;
+    if (!view.groups) return '';
+    const [g1, g2] = view.groups;
     const footer = view.canUnconvert
       ? `<div class="soc-empty-action"><button type="button" class="soc-x" data-act="convert-party">${esc(t('hud.chat.context.convertToParty'))}</button></div>`
       : '';

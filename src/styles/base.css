@@ -83,7 +83,7 @@
      controls are covered for free. Native <select> menus can't be themed
      cross-browser, so those are migrated to the .ui-dd custom dropdown. */
 
-  /* Range sliders — inset groove with gold fill + a raised gem thumb. */
+  /* Range sliders, inset groove with gold fill + a raised gem thumb. */
   input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
@@ -161,7 +161,7 @@
       0 1px 3px #000b;
   }
 
-  /* Number inputs — drop the cramped native spinner arrows (all such inputs
+  /* Number inputs, drop the cramped native spinner arrows (all such inputs
      have explicit min/max validation, so the micro-steppers add nothing but
      browser chrome and sub-40px tap targets). */
   input[type="number"] {
@@ -175,7 +175,7 @@
     margin: 0;
   }
 
-  /* Checkboxes — gold accent + themed focus ring instead of OS blue. */
+  /* Checkboxes, gold accent + themed focus ring instead of OS blue. */
   input[type="checkbox"],
   input[type="radio"] {
     accent-color: var(--gold);
@@ -187,7 +187,7 @@
     outline-offset: 2px;
   }
 
-  /* Textareas — keep vertical resize but swap the native diagonal grip for a
+  /* Textareas, keep vertical resize but swap the native diagonal grip for a
      themed gold corner that matches the chat-window resize grip. */
   textarea {
     resize: vertical;

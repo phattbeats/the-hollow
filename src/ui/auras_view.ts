@@ -198,9 +198,7 @@ export function createAurasView(mode: AuraMode, deps: AurasDeps): AurasView {
         slot.iconKey = deps.iconId(a);
         slot.isDebuff = debuff;
         slot.durationText =
-          a.remaining < DURATION_HIDE_THRESHOLD
-            ? `${Math.ceil(a.remaining)}${durSuffix}`
-            : '';
+          a.remaining < DURATION_HIDE_THRESHOLD ? `${Math.ceil(a.remaining)}${durSuffix}` : '';
         slot.stacksText = a.stacks && a.stacks > 1 ? deps.formatStacks(a.stacks) : '';
         slot.name = deps.auraName(a);
         slot.remaining = a.remaining;

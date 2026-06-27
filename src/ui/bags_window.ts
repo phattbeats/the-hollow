@@ -354,7 +354,7 @@ export class BagsWindow {
           const action = { type: 'item' as const, id: s.itemId };
           this.deps.setDragAction(action);
           this.writeDraggedAction(e.dataTransfer, action);
-          e.dataTransfer!.effectAllowed = 'copy';
+          if (e.dataTransfer) e.dataTransfer.effectAllowed = 'copy';
           this.deps.hideTooltip();
         });
         row.addEventListener('dragend', () => {
@@ -484,7 +484,8 @@ export class BagsWindow {
     });
     const opener = document.activeElement as HTMLElement | null;
     const item = ITEMS[itemId];
-    const stack = document.getElementById('prompt-stack')!;
+    const stack = document.getElementById('prompt-stack');
+    if (!stack) return;
     const prompt = document.createElement('div');
     prompt.className = 'prompt panel discard-item-prompt';
     const itemName = item ? itemDisplayName(item) : itemId;
@@ -550,7 +551,8 @@ export class BagsWindow {
     });
     const opener = document.activeElement as HTMLElement | null;
     const item = ITEMS[itemId];
-    const stack = document.getElementById('prompt-stack')!;
+    const stack = document.getElementById('prompt-stack');
+    if (!stack) return;
     const prompt = document.createElement('div');
     prompt.className = 'prompt panel sell-quantity-prompt';
     const itemName = item ? itemDisplayName(item) : itemId;

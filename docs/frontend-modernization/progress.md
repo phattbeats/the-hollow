@@ -126,3 +126,28 @@ starts.
   phase-18-cleanup-overview.md. Two follow-on FEATURES (the extra action bars, the raid/focus/boss unit
   frames) are explicitly NOT in this wave (new product surface, not cleanup). The stale "P2/P11b: _not
   started_" bullets above are themselves a P18f item (docs hygiene); they were fixed when P18f ran (2026-06-27).
+- Post-P18 residual sweep (2026-06-27): a fresh doc + live-code audit (14 finders, every candidate
+  adversarially re-verified against the live tree) found a small residual the P18 triage had not
+  reached; it was cleared in one pass. (1) a11y: gave the generic #confirm-dialog an accessible name
+  (aria-labelledby -> a titled span), the one inline role=dialog P18a left unnamed, and gave its
+  sibling inputDialog (the build-name/import/export prompt reusing the same chrome) full named
+  dialog semantics (role=dialog + aria-modal + the same name), which it had lacked entirely.
+  (2) i18n: added
+  ArenaWindow.relocalize() and wired it into refreshLocalizedDynamicUi, so an open arena panel
+  re-localizes on an in-game language switch (its render-skip sig is text-independent); pinned by a
+  client_shell source guard. (3) dead code: deleted the orphaned emoji glyph maps
+  _FAMILY_GLYPH/_CLASS_GLYPH (superseded by the procedural CREST_RECIPES) and the write-only
+  _nythraxisAlive in hud.ts, folded the render-layer dungeonDisplayName onto the canonical
+  entity_i18n export, and dropped the unused ARENA_BRACKETS export. (4) glyphs: normalized the em/en
+  dashes in the four packet-created CSS files' comments (finishing the moved-comment normalization
+  P3/P4a started). (5) comments: corrected the stale FCT-crit gate comments (the painter consumes
+  fctDropNonCrit, not uiEffectsAllowFctCrit). (6) biome: cleared every diagnostic on packet-touched
+  files (auras_view + hud.css format, check_backdrop_survival organizeImports+format, the questlog
+  unused import, six noNonNull assertions across the cold-window painters). Gates: tsc clean, full
+  vitest 5129 pass / 11 skip, build + backdrop-survival green, biome clean on all touched files.
+  DELIBERATELY LEFT (verified NOT packet leftovers): renderer.ts adaptiveCooldown/stableFrameTime
+  dead fields and the renderer/i18n noNonNull cluster (pre-existing perf/governor + the deferred
+  repo-wide biome chore, off this packet's presentation surface; decision 6 keeps the packet out of
+  the FPS governor); nameplate_painter inline name hex (matches reaction.ts's render-layer inline-hex
+  convention, mobNameColor included); and the broad pre-existing em-dash/emoji presence across the
+  monolith (the deferred repo-wide glyph chore, not introduced by this packet).

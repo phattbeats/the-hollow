@@ -22,7 +22,7 @@ import type { PlayerClass } from '../sim/types';
 import type { ArenaFormat, ArenaInfo, ArenaStanding, PartyInfo } from '../world_api';
 
 /** The three brackets, in display order. */
-export const ARENA_BRACKETS: readonly ArenaFormat[] = ['1v1', '2v2', 'fiesta'];
+const ARENA_BRACKETS: readonly ArenaFormat[] = ['1v1', '2v2', 'fiesta'];
 
 /** One all-time ladder entry as the HUD caches it (server-fetched, online only). */
 export interface ArenaAllTimeEntry {

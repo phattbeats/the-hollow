@@ -1031,9 +1031,9 @@
     gap: var(--spacing-md);
   }
 
-  /* Realm Status now lives under the Play CTA — match the console width and
+  /* Realm Status now lives under the Play CTA, match the console width and
      give it breathing room beneath the button. */
-  /* Frosted-glass console card around the play landing — gives the central UI
+  /* Frosted-glass console card around the play landing, gives the central UI
      its own surface so the cinematic backdrop can stay vivid behind it. */
   #mode-select {
     width: 100%;
@@ -1079,7 +1079,7 @@
     color: var(--color-text-muted);
   }
 
-  /* Realm stats — live counts shown in the realm dropdown (trigger sub-line +
+  /* Realm stats, live counts shown in the realm dropdown (trigger sub-line +
      the opened Online option). */
   .realm-status-sep {
     display: inline-block;
@@ -1108,7 +1108,7 @@
     display: none;
   }
 
-  /* Tip — an inner section of the play container (divider above), not a box. */
+  /* Tip, an inner section of the play container (divider above), not a box. */
   .play-tip {
     margin-top: 18px;
     padding-top: 16px;
@@ -1856,7 +1856,7 @@
     margin-inline: auto;
   }
 
-  /* Realm selector — themed dropdown, defaults to Online */
+  /* Realm selector, themed dropdown, defaults to Online */
   .server-select {
     position: relative;
     width: 100%;
@@ -2040,7 +2040,7 @@
     opacity: 1;
   }
 
-  /* Primary CTA — forged-gold Play button */
+  /* Primary CTA, forged-gold Play button */
   .btn-play {
     position: relative;
     isolation: isolate;
@@ -2135,7 +2135,7 @@
     text-shadow: 1px 1px 2px #000;
   }
 
-  /* Hidden automation hooks — present in the DOM, never seen or tabbed to. */
+  /* Hidden automation hooks, present in the DOM, never seen or tabbed to. */
   .play-compat-trigger {
     position: absolute;
     width: 1px;
@@ -2169,7 +2169,7 @@
     letter-spacing: 0.8px;
     margin-right: var(--spacing-xs);
   }
-  /* $WOC contract address — click-to-copy pill, sits under the performance tip. */
+  /* $WOC contract address, click-to-copy pill, sits under the performance tip. */
   #token-ca {
     margin: var(--spacing-lg) auto 0;
     padding-top: var(--spacing-md);
@@ -2265,7 +2265,7 @@
     text-align: center;
     text-shadow: 1px 1px 2px #000;
   }
-  /* Copied state — swap clipboard glyph for a check, reveal the confirmation. */
+  /* Copied state, swap clipboard glyph for a check, reveal the confirmation. */
   #token-ca.is-copied .token-ca-pill {
     border-color: var(--color-text-success);
   }
@@ -2757,7 +2757,7 @@
   }
 
   .auth-error::before {
-    content: "\26A0\FE0E"; /* warning sign, text-presentation — inherits the error colour */
+    content: "\26A0\FE0E"; /* warning sign, text-presentation, inherits the error colour */
     display: inline-block;
     margin-right: 8px;
     font-size: 14px;
@@ -2870,7 +2870,7 @@
   /* ---------- Animated Backdrop ---------- */
   #start-screen-backdrop {
     /* fixed (not absolute) so the atmospheric backdrop stays pinned to the
-       viewport and keeps covering as the homepage scrolls — an absolute
+       viewport and keeps covering as the homepage scrolls, an absolute
        inset:0 child of the scrolling #start-screen only spans the first
        viewport height, leaving bare #040408 below the fold. */
     position: fixed;
@@ -2986,7 +2986,7 @@
     /* three stacked layers: top + bottom darkening for header/CTA legibility,
        an edge vignette, and a brand-tinted wash to keep the palette cohesive.
        Bumped from the original (0.46/0.58 top/bottom) so white/gold type clears
-       4.5:1 contrast over the brightest trailer frames — an accessibility fix. */
+       4.5:1 contrast over the brightest trailer frames, an accessibility fix. */
     background:
       linear-gradient(
         180deg,
@@ -3109,7 +3109,7 @@
     #title-logo {
       filter: drop-shadow(0 0 20px rgba(255, 209, 0, 0.35)) drop-shadow(2px 2px 5px #000) !important;
     }
-    /* No black wipe with reduced motion — reveal the static poster immediately. */
+    /* No black wipe with reduced motion, reveal the static poster immediately. */
     .bg-trailer-fade {
       opacity: 0 !important;
       animation: none !important;
@@ -3962,7 +3962,7 @@
       gap: var(--spacing-md);
     }
 
-    /* Logo scales up with the viewport on desktop — bigger screen, bigger wordmark. */
+    /* Logo scales up with the viewport on desktop, bigger screen, bigger wordmark. */
     #title-logo {
       width: clamp(204px, 12vw, 264px) !important;
     }
@@ -4116,7 +4116,7 @@
   }
 
   /* ===================================================================
-     Character-select & create screens (v2) — full-height roster, no heavy
+     Character-select & create screens (v2), full-height roster, no heavy
      bounding box, left-aligned realm dropdown, portrait-framed roster rows.
      Scoped to .charselect-screen / .cs-* so the offline panel is untouched.
      =================================================================== */
@@ -4144,7 +4144,7 @@
     margin: 0;
   }
 
-  /* Realm + sort dropdowns — left-aligned, sit above the roster */
+  /* Realm + sort dropdowns, left-aligned, sit above the roster */
   .cs-controls {
     display: flex;
     flex-wrap: wrap;
@@ -4217,7 +4217,7 @@
     border-radius: var(--radius-sm);
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.7);
   }
-  /* Flat rows — no nested container box; the menu panel is the only container. */
+  /* Flat rows, no nested container box; the menu panel is the only container. */
   .cs-realm-menu .realm-row {
     display: flex !important;
     align-items: center;
@@ -4303,7 +4303,7 @@
     box-shadow: none;
     border-radius: 0;
   }
-  /* Inner class card is now frameless — the outer column provides the frame. */
+  /* Inner class card is now frameless, the outer column provides the frame. */
   .cs-detail-col .class-details-panel {
     background: transparent !important;
     border: 0 !important;
@@ -4591,7 +4591,7 @@
     font-size: 13px;
   }
 
-  /* Class color tokens — any element with data-class exposes --class-color */
+  /* Class color tokens, any element with data-class exposes --class-color */
   [data-class="warrior"] {
     --class-color: #c79c6e;
   }
@@ -4620,7 +4620,7 @@
     --class-color: #ff7d0a;
   }
 
-  /* Portrait chip — a class-ringed headshot rendered from the 3D model.
+  /* Portrait chip, a class-ringed headshot rendered from the 3D model.
      The ring clips the image; the chip itself stays overflow-visible so the
      class badge can overlay the rim without being cut off. */
   .portrait-chip {
@@ -4790,7 +4790,7 @@
      lines up with the realm/wallet header row instead of starting below the
      whole header. The panel becomes a 2-col grid: the title spans the top, the
      realm + $WOC wallet line and roster stack in the left lane, and the
-     showcase spans from the wallet line down to the panel bottom — giving room
+     showcase spans from the wallet line down to the panel bottom, giving room
      for a noticeably larger character and more prominent stats/abilities. */
   @media (min-width: 900px) {
     /* Gated to :not(.mobile-touch): the mobile-touch query reaches up to 940px

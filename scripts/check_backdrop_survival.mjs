@@ -13,7 +13,7 @@
 // it has nothing to scan). Pure logic lives in scanBackdropSurvival() so
 // tests/backdrop_filter_survival.test.ts can prove the teeth without a full build.
 
-import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -67,7 +67,8 @@ export function scanBackdropSurvival(css, label = 'css') {
       const wk = webkit.slice().sort();
       const paired = std.length > 0 && wk.length === std.length && std.every((v, i) => v === wk[i]);
       if (!paired) {
-        const selStart = Math.max(css.lastIndexOf('}', open - 1), css.lastIndexOf('{', open - 1)) + 1;
+        const selStart =
+          Math.max(css.lastIndexOf('}', open - 1), css.lastIndexOf('{', open - 1)) + 1;
         violations.push({
           label,
           selector: css.slice(selStart, open).trim().slice(-100),

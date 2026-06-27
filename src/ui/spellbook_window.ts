@@ -227,7 +227,7 @@ export class SpellbookWindow {
         const action = { type: 'ability' as const, id: known.def.id };
         this.deps.setDragAction(action);
         this.writeDraggedAction(e.dataTransfer, action);
-        e.dataTransfer!.effectAllowed = 'move';
+        if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
         this.deps.hideTooltip();
       });
       el.addEventListener('dragend', () => {

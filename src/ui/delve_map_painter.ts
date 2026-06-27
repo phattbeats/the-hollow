@@ -281,7 +281,8 @@ export class DelveMapPainter {
     const bg = document.createElement('canvas');
     bg.width = size;
     bg.height = size;
-    const bgCtx = bg.getContext('2d')!;
+    const bgCtx = bg.getContext('2d');
+    if (!bgCtx) return bg;
     bgCtx.fillStyle = colors.room;
     bgCtx.fillRect(0, 0, size, size);
     this.drawSchematic(bgCtx, prims, colors.outline);

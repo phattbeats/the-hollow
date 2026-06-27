@@ -18,7 +18,6 @@
 // 12).
 
 import { ITEMS, NPCS } from '../sim/data';
-import type { PlayerClass } from '../sim/types';
 import type { IWorld } from '../world_api';
 import { markDialogRoot } from './dialog_root';
 import { itemDisplayName, tEntity } from './entity_i18n';

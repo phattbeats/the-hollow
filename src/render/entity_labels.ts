@@ -5,7 +5,7 @@
 // a renderer <-> painter import cycle.
 
 import type { Entity } from '../sim/types';
-import { tEntity } from '../ui/entity_i18n';
+import { dungeonDisplayName, tEntity } from '../ui/entity_i18n';
 import { t } from '../ui/i18n';
 
 export function mobDisplayName(mobId: string): string {
@@ -14,10 +14,6 @@ export function mobDisplayName(mobId: string): string {
 
 export function npcDisplayName(npcId: string): string {
   return tEntity({ kind: 'npc', id: npcId, field: 'name' });
-}
-
-function dungeonDisplayName(dungeonId: string): string {
-  return tEntity({ kind: 'dungeon', id: dungeonId, field: 'name' });
 }
 
 export function objectDisplayName(entity: Entity): string {
