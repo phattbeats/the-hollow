@@ -137,12 +137,13 @@ export const FCT_TTL_MS = 1250;
 /** Head offset above the entity origin, scaled by entity scale. Live fct(): pos.y + 2.2 * scale. */
 export const FCT_ANCHOR_HEAD_OFFSET = 2.2;
 /**
- * Base author-space rise over the entry's life: the documentary constant the test pins
- * against the CSS rise distance (tests/fct_core.test.ts). The live CSS @keyframes fct-rise
- * composites the rise via `translate` (P18e moved it off the old margin-top so it stays on
- * the compositor); the crit variant rises further (@keyframes fct-crit -> -86px) and that
- * larger rise rides the .fct.crit class. The painter drives the rise off the .fct / .fct.crit
- * CSS class, never a descriptor field, so a crit never under-rises.
+ * Base author-space rise over the entry's life. No production code reads this (the painter rises
+ * off the .fct / .fct.crit CSS class, never a descriptor field, so a crit never under-rises); it
+ * is the documentary constant that tests/fct_core.test.ts pins against the live @keyframes fct-rise
+ * distance in hud.css (calc(-50% - 76px)), so a CSS rise edit fails the test instead of silently
+ * drifting. P18e moved the rise off the old margin-top onto `translate` so it stays on the
+ * compositor; the crit variant rises further (@keyframes fct-crit -> -86px) and that larger rise
+ * rides the .fct.crit class.
  */
 export const FCT_RISE_PX = 76;
 

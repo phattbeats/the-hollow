@@ -135,6 +135,19 @@ describe('describeFct: ttl is a pure function of kind (constant across kinds)', 
     expect(FCT_ANCHOR_HEAD_OFFSET).toBe(2.2);
     expect(FCT_RISE_PX).toBe(76);
   });
+
+  it('pins FCT_RISE_PX against the live hud.css @keyframes rise distance', () => {
+    // FCT_RISE_PX feeds no production code (the painter rises off the .fct / .fct.crit CSS class),
+    // so this scan is what actually ties the documentary constant to the CSS rise Slice F preserved:
+    // @keyframes fct-rise rises FCT_RISE_PX (76px) and fct-crit rises 86px. A future CSS edit that
+    // changes either fails here instead of silently drifting from the constant.
+    const css = readFileSync(
+      fileURLToPath(new URL('../src/styles/hud.css', import.meta.url)),
+      'utf8',
+    );
+    expect(css).toContain(`calc(-50% - ${FCT_RISE_PX}px)`); // @keyframes fct-rise 'to'
+    expect(css).toContain('calc(-50% - 86px)'); // @keyframes fct-crit '100%' (the larger crit rise)
+  });
 });
 
 describe('describeFct: injected jitter maps to the documented horizontal offset', () => {

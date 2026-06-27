@@ -19,7 +19,7 @@
 import { audio } from '../game/audio';
 import { ABILITIES, CLASSES } from '../sim/data';
 import type { ResolvedAbility } from '../sim/sim';
-import type { AbilityDef, PlayerClass } from '../sim/types';
+import type { AbilityDef } from '../sim/types';
 import type { IWorld } from '../world_api';
 import { markDialogRoot } from './dialog_root';
 import { classDisplayName, tEntity } from './entity_i18n';

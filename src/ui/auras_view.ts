@@ -97,8 +97,9 @@ export interface AurasDeps {
   /** The formatted stack count (host: `formatNumber(stacks, {maximumFractionDigits:0})`). */
   formatStacks(stacks: number): string;
   /** The localized duration unit suffix appended to the remaining-seconds count (host:
-   *  `t('hudChrome.unitFrame.durationUnitSeconds')`, English 's'). Fired every frame like the
-   *  deps above so an in-game language switch lands on the next tick. */
+   *  `t('hudChrome.unitFrame.durationUnitSeconds')`, English 's'). Frame-constant: tick() reads
+   *  it ONCE per frame (not per aura, unlike the per-aura deps above), and re-reads each frame so
+   *  an in-game language switch still lands on the next tick. */
   durationUnitSuffix(): string;
 }
 
@@ -184,6 +185,9 @@ export function createAurasView(mode: AuraMode, deps: AurasDeps): AurasView {
   return {
     tick(entity: AurasEntityInput): AurasState {
       let count = 0;
+      // Frame-constant, so read once per tick instead of per aura (it still re-reads each frame,
+      // so an in-game language switch lands on the next tick).
+      const durSuffix = deps.durationUnitSuffix();
       for (const a of entity.auras) {
         const debuff = isAuraDebuff(a);
         if (mode === 'debuffs' && !debuff) continue;
@@ -195,7 +199,7 @@ export function createAurasView(mode: AuraMode, deps: AurasDeps): AurasView {
         slot.isDebuff = debuff;
         slot.durationText =
           a.remaining < DURATION_HIDE_THRESHOLD
-            ? `${Math.ceil(a.remaining)}${deps.durationUnitSuffix()}`
+            ? `${Math.ceil(a.remaining)}${durSuffix}`
             : '';
         slot.stacksText = a.stacks && a.stacks > 1 ? deps.formatStacks(a.stacks) : '';
         slot.name = deps.auraName(a);

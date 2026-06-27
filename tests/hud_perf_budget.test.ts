@@ -659,7 +659,7 @@ tourDescribe(
     // COUNT (`hudHotDomWrites`): the writes that bypassed the cache. It is run-length-
     // INDEPENDENT - a longer tour adds only SKIPS, never new bypass writes once state is
     // steady - so it is the same on desktop, mobile, and every re-run (the baseline pins it
-    // at 152). The skip RATIO (skipped / total) is a DERIVED quantity whose denominator is
+    // at 153 post-P18e). The skip RATIO (skipped / total) is a DERIVED quantity whose denominator is
     // the total frame count, which jitters with software-WebGL fps + machine load: a clean
     // re-run measured desktop 0.959 vs the recorded 0.962 with hudHotDomWrites IDENTICALLY
     // 152 (elision intact, pure ratio noise), so the ratio is NOT a safe cross-run hard gate.

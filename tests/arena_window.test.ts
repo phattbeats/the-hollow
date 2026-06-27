@@ -67,4 +67,29 @@ describe('arena_window: mediumHud redraw call site', () => {
       "if ($('#arena-window').style.display === 'block') this.arenaWindow.render();",
     );
   });
+
+  it('routes the match-start auto-close through close() (focus-return), never a raw hide', () => {
+    // When a bout starts hud.update() must close the queue panel via the painter so focus
+    // returns to the opener (WCAG 2.4.3, P18e), not a raw style.display = 'none' that would
+    // drop focus to <body>. Pin the routing so a refactor cannot regress it silently.
+    expect(hud).toContain(
+      "if (inArenaMatch && !this.arenaMatchSeen && $('#arena-window').style.display === 'block') {",
+    );
+    expect(hud).not.toContain("'#arena-window').style.display = 'none'");
+  });
+});
+
+describe('arena_window: offline skip-rebuild sentinel (collision-proof)', () => {
+  it('uses a named offline sentinel sig the live JSON sig can never collide with', () => {
+    const m = code.match(/ARENA_OFFLINE_SIG\s*=\s*'([^']*)'/);
+    expect(m, 'ARENA_OFFLINE_SIG literal').not.toBeNull();
+    const sentinel = m ? m[1] : '';
+    // The live sig is JSON.stringify([...]) so it always starts with '['; the sentinel must not,
+    // or an offline->live transition could wrongly skip a real rebuild.
+    expect(sentinel.length).toBeGreaterThan(0);
+    expect(sentinel.startsWith('[')).toBe(false);
+    // The offline branch early-returns on the sentinel (builds once per open, not every tick).
+    expect(code).toContain('this.lastSig === ARENA_OFFLINE_SIG');
+    expect(code).toContain('this.lastSig = ARENA_OFFLINE_SIG');
+  });
 });
