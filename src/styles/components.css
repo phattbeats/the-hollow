@@ -1458,7 +1458,10 @@
     align-items: center;
     justify-content: center;
     color: #fff6e8;
-    background: var(--color-debuff);
+    /* literal, NOT --color-debuff: the value matches but a dormant-node warning badge is not a
+       combat debuff, and its sibling .tal-node.dormant border / shadow reds are literals too,
+       so keep the hand-tuned dormant-red palette cohesive. */
+    background: #c0392b;
     border: 1px solid #3a0803;
     border-radius: 50%;
     font: 800 11px / 1 var(--body-font);
@@ -3013,7 +3016,9 @@
     border-bottom-color: #cc9a3c;
   }
   .mkt-tab .pip {
-    color: var(--color-friendly);
+    /* literal, NOT --color-friendly: the value matches but a market tab pip is a UI accent,
+       not a friendly-unit color. */
+    color: #9fdc7f;
     font-size: 10.5px;
   }
   .mkt-search {

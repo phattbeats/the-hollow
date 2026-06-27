@@ -664,13 +664,16 @@
     }
     /* Cast progress is shown by the .fill gradient, which forced-colors strips, so the filled
        width that conveys cast / channel PROGRESS would vanish against the bar background. Pin
-       the fill to the Highlight system color so progress stays visible. The !important is
-       load-bearing for the same reason as the focus net above: #castbar / #tf-castbar live in
-       @layer components and the .fill gradient is a normal declaration there, so an !important
-       in this earlier @layer base is required to win the cascade. (No second forced accent
-       exists, so the cast-vs-channel hue distinction is intentionally not restored.) */
+       the fill to the Highlight system color so progress stays visible across all three cast
+       bars: the player (#castbar) and target (#tf-castbar) HUD bars and the world-anchored mob
+       nameplate bar (.np-castfill, also the channel variant). The !important is load-bearing
+       for the same reason as the focus net above: these fills live in @layer components (a
+       normal declaration there), so an !important in this earlier @layer base is required to
+       win the cascade. (No second forced accent exists, so the cast-vs-channel hue distinction
+       is intentionally not restored on any of them.) */
     #castbar .fill,
-    #tf-castbar .fill {
+    #tf-castbar .fill,
+    .np-castfill {
       background: Highlight !important;
     }
   }
