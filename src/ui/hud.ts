@@ -7793,7 +7793,13 @@ export class Hud {
     document.body.classList.remove('vendor-open'); // bags (if still open) re-centres
     this.hideTooltip();
     if (closeMobileBags) {
-      $('#bags').style.display = 'none';
+      // Mirror BagsWindow.close()'s teardown backstop: a discard/sell prompt may hold
+      // #bags inert (installPromptDialog) and this mobile path hides the grid without
+      // running the prompt's dismiss(), so clear inert here too or the next open shows a
+      // dead grid (item 3 invariant: a hidden #bags is never inert).
+      const bags = $('#bags');
+      bags.style.display = 'none';
+      bags.inert = false;
       this.cancelPetFeed();
     } else if ($('#bags').style.display !== 'none') {
       this.renderBags();

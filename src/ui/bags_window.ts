@@ -150,6 +150,13 @@ export class BagsWindow {
     // 'block'-shown bags would never close.
     if (el.style.display === 'none') return;
     el.style.display = 'none';
+    // Teardown backstop for the inert set by installPromptDialog. A discard / sell prompt
+    // marks #bags inert and normally clears it via dismiss(); but the window can be
+    // force-closed out from under an open prompt (the bags keybind fires while the
+    // prompt's confirm BUTTON has focus, which input.ts does not suppress), and that path
+    // never runs dismiss(). A hidden window must never stay inert, or the next open would
+    // show a dead, non-interactive grid, so clear it here as part of the window teardown.
+    el.inert = false;
     this.deps.hideTooltip();
     this.deps.cancelPetFeed();
     this.deps.restoreFocus(this.openerFocus);
@@ -402,12 +409,14 @@ export class BagsWindow {
     prompt.setAttribute('role', 'dialog');
     prompt.setAttribute('aria-modal', 'true');
     // Mark the bag grid behind the modal prompt inert while it is open, so a screen
-    // reader / Tab cannot reach the now-blocked inventory underneath. EVERY teardown path
-    // (confirm/submit, cancel, Escape) routes through dismiss(), which clears inert before
-    // the prompt is removed, so #bags is never left permanently non-interactive. The
-    // focus-returning variant clears inert BEFORE refocusing (a focus into a still-inert
-    // subtree is silently dropped, and the openers live inside #bags). This single
-    // chokepoint covers BOTH the discard and sell prompts.
+    // reader / Tab cannot reach the now-blocked inventory underneath. EVERY prompt
+    // teardown path (confirm/submit, cancel, Escape) routes through dismiss(), which
+    // clears inert before the prompt is removed; and if the bags window itself is
+    // force-closed out from under an open prompt, close() clears inert as a teardown
+    // backstop, so #bags is never left inert while hidden. The focus-returning variant
+    // clears inert BEFORE refocusing (a focus into a still-inert subtree is silently
+    // dropped, and the openers live inside #bags). This single chokepoint covers BOTH the
+    // discard and sell prompts.
     const bagsRoot = this.deps.root();
     bagsRoot.inert = true;
     const titleEl = prompt.querySelector('.prompt-text') as HTMLElement | null;
