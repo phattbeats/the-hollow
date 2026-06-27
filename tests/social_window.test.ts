@@ -29,6 +29,33 @@ describe('social_window: no magic values (decision 12)', () => {
   });
 });
 
+describe('social_window: WAI-ARIA tabs (P18b item 1)', () => {
+  it('renders the tab strip as a role=tablist with role=tab + aria-selected + roving tabindex', () => {
+    expect(painter).toContain('role="tablist"');
+    // Exactly four real tabs (friends / guild / ignore / raid), each a role=tab. The
+    // closing quote in /role="tab"/ does NOT match role="tablist" / role="tabpanel".
+    expect(painter.match(/role="tab"/g)?.length).toBe(4);
+    expect(painter).toContain('aria-selected="${tab ===');
+    expect(painter).toContain('tabindex="${tab ===');
+    expect(painter).toContain('aria-controls="soc-body-panel"');
+  });
+
+  it('makes .soc-body the labelled tabpanel (refreshList still queries it by class)', () => {
+    expect(painter).toContain('id="soc-body-panel"');
+    expect(painter).toContain('role="tabpanel"');
+    expect(painter).toContain('class="soc-body"');
+  });
+
+  it('drops aria-pressed entirely (a tab is not a toggle button)', () => {
+    expect(painter).not.toContain('aria-pressed');
+  });
+
+  it('wires the roving Arrow/Home/End handler via the shared roving_index core', () => {
+    expect(painter).toContain("from './roving_index'");
+    expect(painter).toContain('rovingTarget(');
+  });
+});
+
 describe('social_window: delegated row listeners (no per-tick churn)', () => {
   it('wires ONE delegated click listener on the body in render(), dispatched by onBodyClick', () => {
     expect(painter).toMatch(/body\.addEventListener\('click'/);
