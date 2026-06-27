@@ -37,7 +37,7 @@ Most directories above have their own `CLAUDE.md` with local conventions; read i
 - `npm run dev`: Vite client on :5173 (proxies `/api`, `/admin/api`, `/ws` to :8787).
 - `npm run server`: esbuild-bundle + run the authoritative server on :8787.
 - `npm test`: Vitest. **Prefer a single file while iterating:** `npx vitest run tests/sim.test.ts`.
-- `npm run build`: generate media manifest, then `vite build`, then emit manifest. Two entries (game + admin).
+- `npm run build`: generate media manifest, then `vite build`, then emit manifest. Four entries (game, admin, play, guide).
 - `npm run env` / `npm run bench`: build + run the headless RL env server.
 - `npm run db:up` / `npm run db:down`: Postgres 16 in Docker (dev DB on :5433).
 - `npm run realms`: run multiple realm processes locally.
@@ -120,13 +120,14 @@ See `README.md` for the full host/develop/play guide and the classic-fidelity ch
   `test(sim): ...`). Branches: `feature/<slug>`, `fix/<slug>`.
 
 ## Modularity, module-first for new code
-The large existing files are normal: `sim.ts` and `hud.ts` are the two largest, then
-`main.ts` and `renderer.ts`. Do NOT split one just to hit a line count; the
-deterministic sim core and the single scene coordinator are correct as monoliths. But
-NEW self-contained behavior belongs in its own small module behind an existing seam,
-not bolted onto a monolith as another method cluster or banner section. If the work
-does not need a monolith's private mutable state, it is a sibling module. Use the seams
-this repo already has, do not invent new ones:
+Large coordinator files are normal (`hud.ts`, `main.ts`, `renderer.ts`, and the `sim.ts`
+tick coordinator). Do NOT split one just to hit a line count. But NEW self-contained
+behavior belongs in its own small module behind an existing seam, not bolted onto a
+coordinator as another method cluster or banner section. If the work does not need a
+coordinator's private mutable state, it is a sibling module. The repo is already
+refactored this way on both sides: `sim.ts` delegates each game SYSTEM to a module behind
+the `SimContext` seam, and `hud.ts` composes per-window/per-frame painters over pure
+view-cores. Use the seams this repo already has, do not invent new ones:
 - New render/ui feature: extend `IWorld` (`src/world_api.ts`) first, implement in BOTH
   `Sim` and `ClientWorld`, then consume via `IWorld`. render/ui never import a concrete world.
 - New HUD component (a self-contained window OR a per-frame frame/bar): its own module the
@@ -144,6 +145,10 @@ this repo already has, do not invent new ones:
   painter that owns each element now, not `hud.ts`). Full recipe + the a11y / perf / token /
   canvas contracts: `src/ui/CLAUDE.md` + `src/styles/CLAUDE.md`.
 - New visual system: a new `src/render/<thing>.ts` the renderer calls, not a method bank on `renderer.ts`.
+- New sim SYSTEM behavior (a combat/mob/social/economy mechanic, not just a data record):
+  its own module behind the `SimContext` seam (`src/sim/sim_context.ts`), with backing
+  state kept on `Sim` as a live `ctx` view, never a new method cluster on the `sim.ts`
+  coordinator. See `src/sim/CLAUDE.md`.
 - New game content (mob/quest/item/ability/zone): a declarative record in
   `src/sim/content/`, merged by `data.ts`, never a content table inline in `sim.ts`.
   Player-facing content also feeds the `/wiki` guide: run `npm run wiki:content` (auto in
