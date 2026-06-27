@@ -424,7 +424,7 @@ all PRESENTATION-FIRST: src/ui / src/render / src/styles / tests / docs only, no
 
 | Phase | Title | Risk | Kind | Status |
 |---|---|---|---|---|
-| P18a | Shared keyboard-nav + dialog-root a11y primitives (roving_index core + dialog_root helper + market-filter kbd nav + purity-guard widen) | low | extract+adopt | planned (4 items) |
+| P18a | Shared keyboard-nav + dialog-root a11y primitives (roving_index core + dialog_root helper + market-filter kbd nav + purity-guard widen) | low | extract+adopt | done (NEW src/ui/roving_index.ts [pure, UI_PURE_CORES] folds the 3 triplicated talents roving handlers via the normalized wrap (((x%n)+n)%n), byte-faithful; NEW src/ui/dialog_root.ts markDialogRoot adopted at 13 roots, 2 left inline [hud confirm-dialog + bags prompt: no tabindex today]; dropdownKeyNav wired into the market filter listboxes [the one behavior ADD]; forbiddenUiCore/RenderCoreImport regex widened to flag a *_window import with teeth, no registered core trips it. roving_index = visible-siblings primitive, dropdown_nav = open/collapse primitive. tests: roving_index/dialog_root units + 3 market keyboard_nav.browser cases + the widened guard teeth + 3 re-pointed window guards. reviewers qa-checklist + adversarial coverage + completeness, all no-blocking; tsc/biome clean, full vitest 5068 pass/11 skip, test:browser 34. talents_window -42, hud.ts -7. commits local) |
 | P18b | Per-window interactive ARIA + structure polish (social tablist, bags/char/party a11y, axe coverage) | low | a11y polish | planned (9 items) |
 | P18c | Visual a11y: forced-colors cues + residual-hex tokenize + target-size + focus-indicator check | low | a11y/css | planned (6 items) |
 | P18d | Live regions + FocusManager unification (target-name / combat / chat live regions + wallet-picker fold) | medium | a11y/new | planned (6 items) |
@@ -592,6 +592,15 @@ async-failure copy for leaderboard/market (P9b/P8b), and a lazy-window loading l
   / restoreFocus / focusFirstInteractive, canonical focusable selector at 2598). The full restoreFocus /
   focusFirstInteractive / dropdown-focus-return caller set is ~15 sites (grep the FULL set; the 6 listed
   in the draft were incomplete), plus the `src/guide/chrome.ts:85` skip-link precedent to reuse.
+- A11y primitives (P18a): `src/ui/roving_index.ts` (pure core, registered in UI_PURE_CORES) =
+  `rovingTarget(key,current,count,orientation)`, the always-visible roving-siblings keyboard
+  primitive (tablist / radiogroup / flyout), folded out of the three triplicated talents handlers;
+  `src/ui/dialog_root.ts` = `markDialogRoot(el,{label|labelledBy,modal})`, the cold-window dialog-root
+  helper (raw setAttribute, NOT the elision facet; NOT a registered pure core), adopted across 13
+  window roots. `dropdown_nav.ts` stays the open/collapse-listbox primitive (the market filter wires
+  onto it) -- do NOT merge the two keyboard-nav cores. The UI-purity guard
+  (architecture.test.ts `forbiddenUiCoreImport` / `forbiddenRenderCoreImport`) now also flags a
+  `*_window` import, not just `*_painter` / `painter_host`.
 - Guards: `tests/client_shell.test.ts`, `tests/architecture.test.ts`, `tests/css_corpus.test.ts`
   (new, 10-dash markers), `tests/hud_perf_budget.test.ts` (new, STANDING in P17a),
   `scripts/perf_tour.mjs`, `scripts/*_shot.mjs` (visual baseline), the V16 `mobile_*` E2E scripts,
