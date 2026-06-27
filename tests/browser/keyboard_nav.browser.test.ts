@@ -8,14 +8,15 @@
 //   - and the gameplay guard: Tab is NOT trapped while focus is OUTSIDE the window, so the
 //     game's Tab-target-nearest-enemy key still works when no modal owns focus.
 // The final block wires a REAL window painter (TalentsWindow) to a REAL FocusManager through
-// the actual captureFocus/restoreFocus bridge (a faithful copy of hud.ts windowFocus), so the
-// open()->trap and close()->return-to-opener integration is driven, not just source-scanned.
+// the actual makeWindowFocus bridge (the same src/ui/window_focus.ts helper hud.ts wires), so
+// the open()->trap and close()->return-to-opener integration is driven, not just source-scanned.
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { type TalentAllocation, type TalentNode, talentsFor } from '../../src/sim/content/talents';
-import { FocusManager, type FocusTrapHandle } from '../../src/ui/focus_manager';
+import { FocusManager } from '../../src/ui/focus_manager';
 import { MarketWindow } from '../../src/ui/market_window';
 import { TalentsWindow } from '../../src/ui/talents_window';
+import { makeWindowFocus } from '../../src/ui/window_focus';
 import { cleanup, host, stubDeps } from './_harness';
 
 function key(k: string): KeyboardEvent {
@@ -120,36 +121,6 @@ describe('keyboard-nav: the P15a focus trap (trap + focus-first + return)', () =
   });
 });
 
-// A faithful copy of hud.ts windowFocus(): the {captureFocus, restoreFocus} pair every
-// painter window is wired through. captureFocus records the opener and installs the trap on
-// the window root; restoreFocus releases it (only when focus left the root) and returns to
-// the opener. Reconstructing it here drives the REAL open()->trap->close()->return path,
-// which the axe fixtures (captureFocus stubbed to null) and the synthetic cases above do not.
-function windowFocusBridge(
-  fm: FocusManager,
-  root: () => HTMLElement,
-): { captureFocus: () => HTMLElement | null; restoreFocus: (t: HTMLElement | null) => void } {
-  let handle: FocusTrapHandle | null = null;
-  return {
-    captureFocus: () => {
-      handle?.release(false);
-      const opener = fm.activeFocusable();
-      handle = fm.open({ root, returnFocusTo: opener });
-      return opener;
-    },
-    restoreFocus: (target) => {
-      const r = root();
-      if (target && r.contains(target)) {
-        fm.restore(target);
-        return;
-      }
-      handle?.release(false);
-      handle = null;
-      fm.restore(target);
-    },
-  };
-}
-
 describe('keyboard-nav: a REAL window painter through the captureFocus bridge', () => {
   it('TalentsWindow.open() arms the trap and close() returns focus to the opener', async () => {
     const opener = document.createElement('button');
@@ -162,7 +133,7 @@ describe('keyboard-nav: a REAL window painter through the captureFocus bridge', 
     const win = new TalentsWindow(
       stubDeps({
         root: () => root,
-        ...windowFocusBridge(fm, () => root),
+        ...makeWindowFocus(fm, () => root),
         getStage: () => stage,
         setStage: (s: TalentAllocation | null) => {
           stage = s;

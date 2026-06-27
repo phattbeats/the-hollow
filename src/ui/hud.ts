@@ -1,13 +1,7 @@
 import { audio } from '../game/audio';
-import { type Keybinds } from '../game/keybinds';
+import type { Keybinds } from '../game/keybinds';
 import { music, musicZoneForLocation, shouldResetMusicForDungeonEntry } from '../game/music';
-import {
-  type BoolSettingKey,
-  type GameSettings,
-  type NumericSettingKey,
-  SETTING_RANGES,
-  type Settings,
-} from '../game/settings';
+import type { GameSettings, Settings } from '../game/settings';
 import { sfx } from '../game/sfx';
 import type { UiEffectsTier } from '../game/ui_effects_profile';
 import {
@@ -37,11 +31,7 @@ import {
   type SkinTier,
   skinRankOrder,
 } from '../sim/content/skins';
-import {
-  FIRST_TALENT_LEVEL,
-  type TalentAllocation,
-  talentsFor,
-} from '../sim/content/talents';
+import { FIRST_TALENT_LEVEL, type TalentAllocation, talentsFor } from '../sim/content/talents';
 import type { ZoneDef } from '../sim/data';
 import {
   ABILITIES,
@@ -105,16 +95,17 @@ import {
   type OverheadEmoteId,
 } from '../world_api';
 import { ActionBarPainter } from './action_bar_painter';
-import { AurasPainter, type AurasPainterDeps } from './auras_painter';
-import { type AurasDeps, createAurasView } from './auras_view';
 import {
   ABILITY_ICON_PREFIX,
-  ATTACK_ICON_KEY,
   type ActionBarView,
+  ATTACK_ICON_KEY,
   createActionBarView,
   EMPTY_ICON_KEY,
   ITEM_ICON_PREFIX,
 } from './action_bar_view';
+import { ArenaWindow } from './arena_window';
+import { AurasPainter, type AurasPainterDeps } from './auras_painter';
+import { type AurasDeps, createAurasView } from './auras_view';
 import { BagsWindow } from './bags_window';
 import { CastBarPainter } from './cast_bar_painter';
 import { CharWindow } from './char_window';
@@ -194,6 +185,7 @@ import {
 } from './i18n';
 import { iconDataUrl, QUALITY_COLOR, raidMarkerDataUrl } from './icons';
 import { itemStatDeltas } from './item_compare';
+import { LeaderboardWindow } from './leaderboard_window';
 import { ReannounceMarker } from './live_region_reannounce';
 import { PICK_ACTION_HOTKEYS } from './lockpick_panel';
 import { LockpickWindow } from './lockpick_window';
@@ -203,14 +195,10 @@ import { lowResourceView } from './low_resource';
 import { type MapRegion, mapCanvasHeight, paintTerrainRows } from './map_terrain';
 import { MapWindowPainter } from './map_window_painter';
 import { MAP_MAX_ZOOM, mapWindowMode } from './map_window_view';
+import { MarketWindow } from './market_window';
+import { Meters } from './meters';
 import { minimapMode } from './minimap_markers';
 import { MINIMAP_SIZE, MinimapPainter } from './minimap_painter';
-import { ArenaWindow } from './arena_window';
-import { LeaderboardWindow } from './leaderboard_window';
-import { MarketWindow } from './market_window';
-import { QuestLogWindow } from './questlog_window';
-import { SpellbookWindow } from './spellbook_window';
-import { Meters } from './meters';
 import {
   clampMinimapZoom,
   isMaxMinimapZoom,
@@ -223,7 +211,7 @@ import { OptionsWindow } from './options_window';
 import { makeWriterFacet, type PainterHostPresentation } from './painter_host';
 import { partyFrameSignature, selectPartyFrameMembers } from './party_frames';
 import { PartyFramesPainter } from './party_frames_painter';
-import { type PerfOverlayHooks } from './perf_overlay_settings';
+import type { PerfOverlayHooks } from './perf_overlay_settings';
 import {
   CARD_POSES,
   cardCanvasToBlob,
@@ -245,12 +233,14 @@ import { hydratePortraits, portraitChipHtml } from './portrait_chip';
 import { maskProfanity } from './profanity';
 import { encodeQuestLink, parseChatSegments } from './quest_link';
 import { type QuestTrackerView, questTrackerView, type TrackedQuest } from './quest_tracker';
+import { QuestLogWindow } from './questlog_window';
 import { lockoutParts, lockoutShape } from './raid_lockout';
 import { type RaidLockoutI18n, raidLockoutPanelHtml } from './raid_lockout_view';
 import { restView } from './rest_indicator';
-import { localizeServerText, localizeZone } from './server_i18n';
-import { SocialWindow } from './social_window';
+import { localizeServerText } from './server_i18n';
 import { localizeSimAuraName, localizeSimText } from './sim_i18n';
+import { SocialWindow } from './social_window';
+import { SpellbookWindow } from './spellbook_window';
 import { buildStatTooltip, type StatId, type StatTooltipModel, weaponDps } from './stat_tooltip';
 import { type StatTooltipI18n, statCellHtml, statTooltipHtml } from './stat_tooltip_view';
 import { nearestSubzone } from './subzone';
@@ -258,7 +248,7 @@ import { swingTimerState } from './swing_timer';
 import { SwingTimerPainter } from './swing_timer_painter';
 import { localizeTalentTitle, roleLabel, tTalent } from './talent_i18n';
 import { TalentsWindow } from './talents_window';
-import { type PresetId, type ThemeKnob, type ThemeState } from './theme';
+import type { PresetId, ThemeKnob, ThemeState } from './theme';
 import { TOOLTIP_PEEK_MS, TouchPeekGuard } from './touch_peek';
 import { TutorialOverlay } from './tutorial';
 import { svgIcon } from './ui_icons';
@@ -278,6 +268,7 @@ import {
   wocBalance,
   wocBalanceVerified,
 } from './wallet_balance';
+import { makeWindowFocus } from './window_focus';
 import { formatXp, xpBarView } from './xp_bar';
 import { XpBarPainter } from './xp_bar_painter';
 
@@ -851,8 +842,6 @@ export class Hud {
   private selectedDelveTier: 'normal' | 'heroic' = 'normal';
   private delveBoardTab: 'delve' | 'shop' = 'delve';
   private delveTrap: FocusTrapHandle | null = null;
-  private lockpickOfferId: number | null = null;
-  private lockpickCoffer = false;
   private lockpickTrap: FocusTrapHandle | null = null;
   private lockpickKeyHandler: ((e: KeyboardEvent) => void) | null = null;
   // The board paints from the authoritative world.lockpickState (never a cached
@@ -1011,7 +1000,7 @@ export class Hud {
       this.targetFramePainter.invalidatePortrait();
     });
     const mm = $('#minimap') as unknown as HTMLCanvasElement;
-    this.minimapCtx = mm.getContext('2d')!;
+    this.minimapCtx = require2dContext(mm);
     this.minimapBg = this.renderTerrainCanvas(140, {
       minX: WORLD_MIN_X,
       maxX: WORLD_MAX_X,
@@ -1223,7 +1212,7 @@ export class Hud {
     bagsEl.addEventListener('dragover', (e) => {
       if (this.dragUnequipSlot === null) return;
       e.preventDefault();
-      e.dataTransfer!.dropEffect = 'move';
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
       bagsEl.classList.add('drop-target');
     });
     bagsEl.addEventListener('dragleave', (e) => {
@@ -3036,43 +3025,17 @@ export class Hud {
     return ` <span class="quest-suggested">${esc(t('questUi.log.suggestedPlayers', { count: this.questNumber(count) }))}</span>`;
   }
 
-  // The {captureFocus, restoreFocus} pair for a painter window, wired to the ONE
-  // shared focus manager (P15a). It keeps the painter window interface unchanged:
-  // captureFocus records the opener AND installs the Tab trap on the window root;
-  // restoreFocus removes the trap and returns focus to that opener. Escape is handled
-  // by the existing unified dispatcher (main.ts game input -> hud.closeAll()), so the
-  // trap deliberately does not register an Escape handler (one Escape path, not two).
+  // The {captureFocus, restoreFocus} pair for a painter window. The bridge logic
+  // (open the trap on capture, release-and-return on close, leaving an in-window
+  // refocus alone) lives in ./window_focus, so hud.ts and the keyboard E2E share
+  // ONE implementation; this thin wrapper binds it to the shared focus manager
+  // (P15a) and the window root. Escape is handled by the existing unified
+  // dispatcher (main.ts game input -> hud.closeAll()), not by the trap.
   private windowFocus(rootSel: string): {
     captureFocus: () => HTMLElement | null;
     restoreFocus: (target: HTMLElement | null) => void;
   } {
-    let handle: FocusTrapHandle | null = null;
-    return {
-      captureFocus: () => {
-        // Defensive: if a prior trap for this window was never released (a re-open
-        // without an intervening close), drop it first so a double-capture cannot
-        // orphan a trap on the manager's stack (the self-heal would clear it on the
-        // next Tab, but releasing here keeps the stack honest).
-        handle?.release(false);
-        const opener = this.focusManager.activeFocusable();
-        handle = this.focusManager.open({ root: () => $(rootSel), returnFocusTo: opener });
-        return opener;
-      },
-      restoreFocus: (target) => {
-        // An in-window refocus (target still inside the open window, e.g. char_window
-        // handing focus back to the rebuilt slot row after a keyboard unequip) must NOT
-        // tear down the trap; only a return-to-opener on close (target outside the
-        // window, or null) releases it.
-        const root = $(rootSel);
-        if (target && root.contains(target)) {
-          this.focusManager.restore(target);
-          return;
-        }
-        handle?.release(false);
-        handle = null;
-        this.focusManager.restore(target);
-      },
-    };
+    return makeWindowFocus(this.focusManager, () => $(rootSel));
   }
 
   private refreshLocalizedDynamicUi(): void {
@@ -3583,7 +3546,7 @@ export class Hud {
           }
           this.dragAction = { action, sourceIndex: slot - 1 };
           this.writeDraggedAction(e.dataTransfer, action);
-          e.dataTransfer!.effectAllowed = 'move';
+          if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
           this.hideTooltip();
         });
         btn.addEventListener('dragover', (e) => {
@@ -3591,8 +3554,9 @@ export class Hud {
           if (!dragged) return;
           if (this.dragAction?.sourceIndex === slot - 1) return;
           e.preventDefault(); // required to permit the drop
-          e.dataTransfer!.dropEffect =
-            this.dragAction?.sourceIndex === null && dragged.type === 'item' ? 'copy' : 'move';
+          if (e.dataTransfer)
+            e.dataTransfer.dropEffect =
+              this.dragAction?.sourceIndex === null && dragged.type === 'item' ? 'copy' : 'move';
           btn.classList.add('drop-target');
         });
         btn.addEventListener('dragleave', () => btn.classList.remove('drop-target'));
@@ -4843,8 +4807,7 @@ export class Hud {
       });
     }
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeDelveBoard());
-    if (focus)
-      this.delveTrap?.focusFirst(tab === 'shop' ? '.delve-shop-buy' : '.delve-enter-btn');
+    if (focus) this.delveTrap?.focusFirst(tab === 'shop' ? '.delve-shop-buy' : '.delve-enter-btn');
   }
 
   // Brother Halven's Marks-vendor stock for the open delve. Offers + lock state
@@ -4921,8 +4884,6 @@ export class Hud {
     const el = $('#lockpick-panel');
     if (el.style.display !== 'block')
       this.lockpickTrap = this.focusManager.open({ root: () => $('#lockpick-panel') });
-    this.lockpickOfferId = objectId;
-    this.lockpickCoffer = bountiful;
     el.style.display = 'block';
     this.bindLockpickKeys();
     this.lockpickWindow.renderAnte(objectId, bountiful);
@@ -4947,7 +4908,6 @@ export class Hud {
     const el = $('#lockpick-panel');
     if (el.style.display !== 'block')
       this.lockpickTrap = this.focusManager.open({ root: () => $('#lockpick-panel') });
-    this.lockpickOfferId = null;
     el.style.display = 'block';
     this.bindLockpickKeys();
     this.lockpickWindow.openBoard();
@@ -4985,7 +4945,7 @@ export class Hud {
     }
     el.innerHTML = html;
     el.querySelectorAll('[data-item]').forEach((row) => {
-      const itemId = (row as HTMLElement).dataset.item!;
+      const itemId = (row as HTMLElement).dataset.item ?? '';
       this.attachTooltip(row as HTMLElement, () => this.itemTooltip(ITEMS[itemId]));
     });
     const btn = document.createElement('button');
@@ -5066,8 +5026,6 @@ export class Hud {
 
   private closeLockpick(restoreFocus = true): void {
     $('#lockpick-panel').style.display = 'none';
-    this.lockpickOfferId = null;
-    this.lockpickCoffer = false;
     this.lockpickWindow.close();
     this.hideTooltip();
     if (this.lockpickKeyHandler) {
@@ -5160,7 +5118,7 @@ export class Hud {
       `<div class="dt-obj">- ${esc(t('delveUi.tracker.marks', { count: marks }))}</div>` +
       affixHtml;
     el.querySelectorAll('.dt-affix-icon').forEach((icon) => {
-      const affixId = (icon as HTMLElement).dataset.affix!;
+      const affixId = (icon as HTMLElement).dataset.affix ?? '';
       this.attachTooltip(
         icon as HTMLElement,
         () => `<div class="tt-title">${esc(this.delveAffixLabel(affixId))}</div>`,
@@ -5179,7 +5137,7 @@ export class Hud {
     const c = document.createElement('canvas');
     c.width = W;
     c.height = H;
-    const ctx = c.getContext('2d')!;
+    const ctx = require2dContext(c);
     const img = ctx.createImageData(W, H);
     paintTerrainRows(img.data, W, H, region, this.sim.cfg.seed, 0, H);
     ctx.putImageData(img, 0, 0);
@@ -5220,7 +5178,7 @@ export class Hud {
     const c = document.createElement('canvas');
     c.width = W;
     c.height = H;
-    const ctx = c.getContext('2d')!;
+    const ctx = require2dContext(c);
     this.mapPrewarm = {
       zoneId,
       canvas: c,
@@ -5528,7 +5486,7 @@ export class Hud {
   // map_window_painter; the pure geometry lives in map_window_view.ts.
   private updateMapWindow(): void {
     const canvas = $('#map-canvas') as unknown as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d')!;
+    const ctx = require2dContext(canvas);
     const S = canvas.width;
     const p = this.sim.player;
     const summaryEl = $('#map-summary');
@@ -5876,7 +5834,11 @@ export class Hud {
           const xpShape = fctSpawnShape({ type: 'xp' });
           if (xpShape)
             this.fctPainter.spawn(
-              { ...xpShape, text: t('hud.core.xpFloat', { amount: ev.amount }), target: sim.player },
+              {
+                ...xpShape,
+                text: t('hud.core.xpFloat', { amount: ev.amount }),
+                target: sim.player,
+              },
               now,
             );
           if (ev.rested && ev.rested > 0) {
@@ -6571,8 +6533,11 @@ export class Hud {
     this.chatLogEl.appendChild(div);
     // Announce the player-chat line through the tab-independent #chat-live region (P18d).
     this.announceChatLine(div);
-    while (this.chatLogEl.children.length > 200)
-      this.chatLogEl.removeChild(this.chatLogEl.firstChild!);
+    while (this.chatLogEl.children.length > 200) {
+      const first = this.chatLogEl.firstChild;
+      if (!first) break;
+      this.chatLogEl.removeChild(first);
+    }
     if (wasNearBottom) this.chatLogEl.scrollTop = this.chatLogEl.scrollHeight;
   }
 
@@ -6994,7 +6959,11 @@ export class Hud {
     el.appendChild(div);
     // Announce chat-pane lines through #chat-live (the combat pane has its own announcer).
     if (el === this.chatLogEl) this.announceChatLine(div);
-    while (el.children.length > 200) el.removeChild(el.firstChild!);
+    while (el.children.length > 200) {
+      const first = el.firstChild;
+      if (!first) break;
+      el.removeChild(first);
+    }
     if (wasNearBottom) el.scrollTop = el.scrollHeight;
   }
 
@@ -7170,7 +7139,8 @@ export class Hud {
 
   // A burst of CSS confetti raining down the screen in a team colour.
   private fiestaConfetti(color: string): void {
-    const ui = document.getElementById('ui')!;
+    const ui = document.getElementById('ui');
+    if (!ui) return;
     const layer = document.createElement('div');
     layer.className = 'fiesta-confetti';
     const tints = [color, '#ffffff', '#ffd24a'];
@@ -7223,7 +7193,8 @@ export class Hud {
     const tierLabel = esc(t(`fiesta.tier.${offer.tier}` as TranslationKey));
     el.innerHTML = `<div class="fa-head">${esc(t('fiesta.augment.choose'))} <span class="fa-tier ${offer.tier}">${tierLabel}</span></div>
       <div class="fa-cards"></div>`;
-    const cards = el.querySelector('.fa-cards')!;
+    const cards = el.querySelector('.fa-cards');
+    if (!cards) return;
     for (const id of offer.choices) {
       const cat = augmentCategory(id);
       const card = document.createElement('button');
@@ -7409,12 +7380,11 @@ export class Hud {
     el.innerHTML = html;
     el.querySelectorAll('[data-quest]').forEach((item) => {
       item.addEventListener('click', () =>
-        this.renderQuestDetail(npc, (item as HTMLElement).dataset.quest!),
+        this.renderQuestDetail(npc, (item as HTMLElement).dataset.quest ?? ''),
       );
     });
     el.querySelectorAll('[data-discuss]').forEach((item) => {
       item.addEventListener('click', () => {
-        const _questId = (item as HTMLElement).dataset.discuss!;
         this.sim.targetEntity(npc.id);
         this.sim.interact();
         (item as HTMLButtonElement).disabled = true;
@@ -7558,7 +7528,8 @@ export class Hud {
       btn.type = 'button';
       btn.textContent = t('questUi.dialog.accept');
       btn.addEventListener('click', () => {
-        this.sim.acceptLinkedQuest(questId, fromPid!);
+        if (fromPid === undefined) return;
+        this.sim.acceptLinkedQuest(questId, fromPid);
         this.closeQuestDialog();
       });
       el.appendChild(btn);
@@ -7814,7 +7785,7 @@ export class Hud {
     }
     el.innerHTML = html;
     el.querySelectorAll('[data-item]').forEach((row) => {
-      const itemId = (row as HTMLElement).dataset.item!;
+      const itemId = (row as HTMLElement).dataset.item ?? '';
       this.attachTooltip(row as HTMLElement, () => this.itemTooltip(ITEMS[itemId]));
     });
     const btn = document.createElement('button');
@@ -10028,7 +9999,7 @@ export class Hud {
     el.querySelector('[data-close]')?.addEventListener('click', () => this.sim.tradeCancel());
     el.querySelectorAll('.trade-item.mine').forEach((row) => {
       row.addEventListener('click', () => {
-        const itemId = (row as HTMLElement).dataset.item!;
+        const itemId = (row as HTMLElement).dataset.item ?? '';
         const idx = this.stagedTrade.items.findIndex((s) => s.itemId === itemId);
         if (idx >= 0) {
           this.stagedTrade.items[idx].count--;
@@ -10252,7 +10223,6 @@ function delveDisplayName(delveId: string): string {
   return tEntity({ kind: 'delve', id: delveId, field: 'name' });
 }
 
-
 function abilityDisplayNameFromSource(name: string): string {
   const ability = Object.values(ABILITIES).find((candidate) => candidate.name === name);
   if (ability) return abilityDisplayName(ability);
@@ -10427,40 +10397,15 @@ function cap(s: string): string {
   return s ? s[0].toUpperCase() + s.slice(1) : s;
 }
 
-function playerClassDisplayName(value: string): string {
-  const cls = value as PlayerClass;
-  return CLASSES[cls] ? classDisplayName(cls) : cap(value);
+// A 2D canvas context is non-null for any attached canvas in this app; centralize
+// the assertion so the call sites do not each carry a non-null bang. Throws (a
+// dev-surfaced failure, never reached in practice) rather than asserting.
+function require2dContext(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('2D canvas context unavailable');
+  return ctx;
 }
 
 function raidMarkerDisplayName(index: number): string {
   return t(RAID_MARKER_LABEL_KEYS[index] ?? RAID_MARKER_LABEL_KEYS[0]);
-}
-
-function statusLabel(status: string | undefined): string {
-  switch (status) {
-    case 'combat':
-      return t('hud.social.status.combat');
-    case 'dungeon':
-      return t('hud.social.status.dungeon');
-    case 'dead':
-      return t('hud.social.status.dead');
-    default:
-      return t('hud.social.status.online');
-  }
-}
-
-// Hover text spelling out what a status dot means, so the orange/grey circles
-// aren't a mystery (#100).
-function dotTitle(online: boolean, status: string | undefined, zone: string | undefined): string {
-  if (!online) return t('hud.social.status.offline');
-  const label = statusLabel(status);
-  return zone ? t('hud.social.statusWithZone', { status: label, zone: localizeZone(zone) }) : label;
-}
-
-function rankLabel(rank: string): string {
-  return rank === 'leader'
-    ? t('hud.social.ranks.leader')
-    : rank === 'officer'
-      ? t('hud.social.ranks.officer')
-      : t('hud.social.ranks.member');
 }
