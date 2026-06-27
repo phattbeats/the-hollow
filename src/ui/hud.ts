@@ -122,6 +122,7 @@ import {
   activeCharacterAppearancePreview,
   characterAppearanceOptions,
 } from './character_appearance';
+import { ChatAnnouncer } from './chat_announcer';
 import {
   CHANNEL_LABEL_KEYS,
   CHAT_TAB_CHANNELS,
@@ -668,6 +669,23 @@ export class Hud {
   private combatLiveEl = $('#combat-live');
   private readonly combatAnnouncer = new CombatAnnouncer((summary) => {
     this.combatLiveEl.textContent = summary;
+  });
+  // Off-screen polite live region for the current target's name, announced once per target
+  // CHANGE (P18d item 1), never per frame. A separate node from #combat-live so it never
+  // re-announces what the combat summary speaks; the announce is written through the elided
+  // setText writer so the per-frame target path stays write-elided.
+  private targetLiveEl = $('#target-live');
+  // The last target id announced into #target-live, tracked SEPARATELY from the paint
+  // cadence id (lastTargetFrameId) so the announce fires on the real id change, not the
+  // throttled repaint; reset to null on no-target so re-acquiring the SAME target re-announces.
+  private lastAnnouncedTargetId: number | null = null;
+  // Dedicated tab-independent off-screen polite live region for chat (P18d items 3 + 5):
+  // #chatlog goes display:none on the combat tab (a display:none live region is silent), so
+  // chat rides this always-present region instead, throttled by ChatAnnouncer so a chat
+  // burst never floods the screen reader.
+  private chatLiveEl = $('#chat-live');
+  private readonly chatAnnouncer = new ChatAnnouncer((summary) => {
+    this.chatLiveEl.textContent = summary;
   });
   // The ONE shared focus manager: trap (Tab/Shift+Tab cycle) + focus-first +
   // return-to-opener, unifying the former ad-hoc Hud focus helpers. See
@@ -4133,6 +4151,9 @@ export class Hud {
     // Drain a trailing combat-announcement burst to the polite live region (push()
     // already flushes; this catches the last buffered line once combat goes quiet).
     if (fastHud) this.combatAnnouncer.flush(now);
+    // Same for the tab-independent chat live region (P18d items 3 + 5): drain the trailing
+    // chat burst on the fast tier once chat goes quiet.
+    if (fastHud) this.chatAnnouncer.flush(now);
 
     this.meters.update();
     this.lockpickWindow.repaintIfChanged();
@@ -4203,6 +4224,18 @@ export class Hud {
       // full-rate (debuffs are separately tiered in Slice C; the cast bar is a raid
       // mechanic indicator), so only the unit_frame body is throttled.
       const targetChanged = target.id !== this.lastTargetFrameId;
+      // Announce the new target's name into the polite #target-live region once per target
+      // CHANGE (P18d item 1), tracked by lastAnnouncedTargetId independently of the paint
+      // cadence so it fires on the real id change, not the throttled repaint. The change gate
+      // means it does not write per frame; the write itself routes through the elided setText
+      // writer so the per-frame target path stays write-elided.
+      if (target.id !== this.lastAnnouncedTargetId) {
+        this.setText(
+          this.targetLiveEl,
+          t('hudChrome.unitFrame.targetAnnounce', { name: entityDisplayName(target) }),
+        );
+        this.lastAnnouncedTargetId = target.id;
+      }
       if (
         nonSelfRepaintDue(
           targetChanged,
@@ -4295,6 +4328,15 @@ export class Hud {
       // the P14a cadence id too, so re-acquiring a target bypasses the low-tier throttle
       // and paints immediately (targetChanged becomes true on the next frame with a target).
       this.lastTargetFrameId = null;
+      // Clear the target-name live region on the transition to no-target, and reset the
+      // tracker so re-acquiring the SAME target re-announces (P18d item 1). GATED on the
+      // tracker so it fires only on the clear EDGE, never per frame: with no target (e.g. the
+      // whole perf tour, which acquires none) the region is never written, so the hot-write
+      // bypass count anchor is unchanged. The write routes through the elided setText writer.
+      if (this.lastAnnouncedTargetId !== null) {
+        this.setText(this.targetLiveEl, '');
+        this.lastAnnouncedTargetId = null;
+      }
       this.targetFramePainter.paint(unitFrameView(ABSENT_TARGET_DESCRIPTOR));
     }
 
@@ -6495,6 +6537,8 @@ export class Hud {
       this.appendChatMessageBody(div, text, fromPid);
     }
     this.chatLogEl.appendChild(div);
+    // Announce the player-chat line through the tab-independent #chat-live region (P18d).
+    this.announceChatLine(div);
     while (this.chatLogEl.children.length > 200)
       this.chatLogEl.removeChild(this.chatLogEl.firstChild!);
     if (wasNearBottom) this.chatLogEl.scrollTop = this.chatLogEl.scrollHeight;
@@ -6885,6 +6929,19 @@ export class Hud {
     this.combatAnnouncer.push(text, performance.now());
   }
 
+  // Announce a chat line that reached the visible #chatlog pane through the tab-independent
+  // #chat-live region (P18d items 3 + 5), mirroring what the old #chatlog aria-live spoke: a
+  // channel-filtered line is .chat-hidden (display:none) and stays silent, exactly as a
+  // display:none live-region child did. The relayed text is the rendered line text the
+  // screen reader read off the div (sender + message, already localized); ChatAnnouncer
+  // coalesces + throttles a burst. Both chat append paths (appendLog's chat case and
+  // chatLogFrom) call this so player chat and system chat announce alike, as #chatlog's
+  // implicit-polite log did before the decouple.
+  private announceChatLine(div: HTMLElement): void {
+    if (div.classList.contains('chat-hidden')) return;
+    this.chatAnnouncer.push(div.textContent ?? '', performance.now());
+  }
+
   private appendLog(
     el: HTMLElement,
     text: string,
@@ -6903,6 +6960,8 @@ export class Hud {
     }
     div.append(document.createTextNode(text));
     el.appendChild(div);
+    // Announce chat-pane lines through #chat-live (the combat pane has its own announcer).
+    if (el === this.chatLogEl) this.announceChatLine(div);
     while (el.children.length > 200) el.removeChild(el.firstChild!);
     if (wasNearBottom) el.scrollTop = el.scrollHeight;
   }
@@ -6916,6 +6975,14 @@ export class Hud {
       { kind: 'self-note', text, target: this.sim.player, crit: false, isSelf: true },
       performance.now(),
     );
+    // Also route the self-note into the polite #combat-live region (P18d item 2): the
+    // self-note is the one FCT-only event with NO combat-log line, so without this it would
+    // never be announced. The text is already t()-localized (e.g. "Can't move!") so nothing
+    // new is built here, and the announcer coalesces + throttles so it never streams raw
+    // per-damage text. (The xp / rested-xp floats are NOT routed here: those events already
+    // emit a textual chat line via log(), so the #chat-live region announces them; adding the
+    // float too would double-announce, which decision 10 forbids.)
+    this.combatAnnouncer.push(text, performance.now());
   }
 
   showError(text: string): void {

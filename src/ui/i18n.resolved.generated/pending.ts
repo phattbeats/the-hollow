@@ -21,6 +21,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.unitFrame.partyGroup",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetAnnounce",
     "hudChrome.unitFrame.targetLabel"
   ],
   "es_ES": [
@@ -35,6 +36,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.unitFrame.partyGroup",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetAnnounce",
     "hudChrome.unitFrame.targetLabel"
   ],
   "fr_FR": [
@@ -49,6 +51,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.unitFrame.partyGroup",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetAnnounce",
     "hudChrome.unitFrame.targetLabel"
   ],
   "fr_CA": [
@@ -63,6 +66,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.unitFrame.partyGroup",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetAnnounce",
     "hudChrome.unitFrame.targetLabel"
   ],
   "en_CA": [],
@@ -78,6 +82,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.unitFrame.partyGroup",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetAnnounce",
     "hudChrome.unitFrame.targetLabel"
   ],
   "de_DE": [
@@ -92,6 +97,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.unitFrame.partyGroup",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetAnnounce",
     "hudChrome.unitFrame.targetLabel"
   ],
   "zh_CN": [
@@ -103,6 +109,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetAnnounce",
     "hudChrome.unitFrame.targetLabel"
   ],
   "zh_TW": [
@@ -114,6 +121,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetAnnounce",
     "hudChrome.unitFrame.targetLabel"
   ],
   "ko_KR": [
@@ -125,6 +133,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetAnnounce",
     "hudChrome.unitFrame.targetLabel"
   ],
   "ja_JP": [
@@ -136,6 +145,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetAnnounce",
     "hudChrome.unitFrame.targetLabel"
   ],
   "pt_BR": [
@@ -150,6 +160,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.unitFrame.partyGroup",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetAnnounce",
     "hudChrome.unitFrame.targetLabel"
   ],
   "ru_RU": [
@@ -161,6 +172,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.skipLinks.mainHud",
     "hudChrome.unitFrame.partyLabel",
     "hudChrome.unitFrame.playerLabel",
+    "hudChrome.unitFrame.targetAnnounce",
     "hudChrome.unitFrame.targetLabel"
   ]
 };

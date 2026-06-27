@@ -225,6 +225,7 @@ export const ru_RU: EnTranslations = {
     "unitFrame": {
       "playerLabel": "Your Hero",
       "targetLabel": "Your Mark",
+      "targetAnnounce": "Mark {name}",
       "partyLabel": "Your Band",
       "partyGroup": "Группа {n}"
     },

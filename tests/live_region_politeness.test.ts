@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
+  CHAT_ANNOUNCE_INTERVAL_MS,
   COMBAT_ANNOUNCE_INTERVAL_MS,
+  chatLineKind,
   combatAnnounceDue,
   combatLineKind,
   liveRegionPoliteness,
@@ -57,6 +59,45 @@ describe('combat-line politeness parity + safety (decision 15: Sim vs ClientWorl
     const politeness = liveRegionPoliteness(combatLineKind());
     expect(politeness).toBe('polite');
     expect(politeness).not.toBe('assertive');
+  });
+});
+
+describe('chat-line politeness parity + safety (decision 15: Sim vs ClientWorld)', () => {
+  // The HUD funnels BOTH hosts' chat lines through the one chat append path, and
+  // chatLineKind() takes NO host argument: it is parameterless and always classifies a chat
+  // line as 'chat'. So there is no input by which a Sim-emitted line and a ClientWorld-
+  // mirrored line could diverge; the parity is structural, mirroring combatLineKind.
+  it('classifies a chat line host-agnostically (no parameter the host could vary)', () => {
+    expect(chatLineKind.length).toBe(0); // parameterless: nothing host-specific feeds it
+    expect(chatLineKind()).toBe('chat');
+  });
+
+  it('always announces a chat line polite and NEVER assertive, on either host', () => {
+    const politeness = liveRegionPoliteness(chatLineKind());
+    expect(politeness).toBe('polite');
+    expect(politeness).not.toBe('assertive');
+  });
+
+  it('is deterministic: same input -> same output (offline Sim == online ClientWorld)', () => {
+    expect(chatLineKind()).toBe(chatLineKind());
+    expect(liveRegionPoliteness(chatLineKind())).toBe(liveRegionPoliteness(chatLineKind()));
+  });
+});
+
+describe('CHAT_ANNOUNCE_INTERVAL_MS (decision 12: a named cadence, not a magic literal)', () => {
+  it('is a positive number, a separate named constant mirroring the combat cadence', () => {
+    expect(typeof CHAT_ANNOUNCE_INTERVAL_MS).toBe('number');
+    expect(CHAT_ANNOUNCE_INTERVAL_MS).toBeGreaterThan(0);
+  });
+
+  it('gates a chat flush through the SAME pure throttle gate (interval injected)', () => {
+    // combatAnnounceDue is the host/kind-agnostic time comparison the chat announcer reuses
+    // with CHAT_ANNOUNCE_INTERVAL_MS; assert the gate honors the chat interval too.
+    expect(combatAnnounceDue(0, Number.NEGATIVE_INFINITY, CHAT_ANNOUNCE_INTERVAL_MS)).toBe(true);
+    expect(combatAnnounceDue(CHAT_ANNOUNCE_INTERVAL_MS - 1, 0, CHAT_ANNOUNCE_INTERVAL_MS)).toBe(
+      false,
+    );
+    expect(combatAnnounceDue(CHAT_ANNOUNCE_INTERVAL_MS, 0, CHAT_ANNOUNCE_INTERVAL_MS)).toBe(true);
   });
 });
 

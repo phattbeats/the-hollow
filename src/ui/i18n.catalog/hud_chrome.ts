@@ -95,6 +95,13 @@ export const hudChromeStrings = {
   unitFrame: {
     playerLabel: 'Your Hero',
     targetLabel: 'Your Mark',
+    // targetAnnounce is the polite #target-live announcement spoken once when the player's
+    // target CHANGES (P18d item 1); {name} is the new target's display name. Kept NON-WORDY
+    // (no run of four-plus lowercase after stripping {name}) so an English-filled non-Latin
+    // locale does not trip the M16 untranslated-leak guard: "Target" would FAIL it ("arget"
+    // is a five-letter run), so this reuses the frame's own term for the target ("Mark", from
+    // targetLabel above), which a screen-reader user already hears as the target frame's name.
+    targetAnnounce: 'Mark {name}',
     // partyLabel names the #party-frames region (a group of tappable / focusable
     // party member buttons, each named by its visible member name). Kept short and
     // non-wordy (no run of four+ lowercase) so an English-filled non-Latin locale

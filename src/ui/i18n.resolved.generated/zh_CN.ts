@@ -225,6 +225,7 @@ export const zh_CN: EnTranslations = {
     "unitFrame": {
       "playerLabel": "Your Hero",
       "targetLabel": "Your Mark",
+      "targetAnnounce": "Mark {name}",
       "partyLabel": "Your Band",
       "partyGroup": "小队 {n}"
     },

@@ -153,9 +153,15 @@
 
   <template id="game-ui-template">
   <div id="ui" tabindex="-1">
-    <!-- Off-screen polite live region for the throttled combat summary (P15a). The 3D
-         world / game canvas is OUT of a11y scope; this speaks combat-log text only. -->
+    <!-- Off-screen polite live regions (P15a + P18d). The 3D world / game canvas is OUT of
+         a11y scope; these speak HUD text only. #combat-live: the throttled combat summary
+         (plus the FCT self-note, which has no combat-log line). #target-live: the new
+         target's name, announced once per target change. #chat-live: chat, kept here
+         (tab-independent) because #chatlog goes display:none on the combat tab and a
+         display:none live region is silent. -->
     <div id="combat-live" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+    <div id="target-live" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+    <div id="chat-live" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
     <div id="perf-overlay" aria-hidden="true"></div>
     <div id="click-move-marker" class="click-move-marker" aria-hidden="true">
       <span class="ctm-arrow ctm-n"></span>
@@ -283,7 +289,11 @@
            rendered by the HUD (hud.ts initChatTabs); this stays empty. -->
       <div id="chatlog-tabs" role="tablist"></div>
       <div id="chatlog-frame" class="panel">
-        <div id="chatlog" class="chat-pane active" role="log" aria-live="polite" tabindex="-1"></div>
+        <!-- P18d: aria-live="off" overrides role="log"'s IMPLICIT polite so this pane (which
+             goes display:none on the combat tab) does not double-announce alongside the
+             tab-independent #chat-live region. role="log" + tabindex="-1" stay: it is still
+             the visible scrollback and the "skip to chat" landing target. -->
+        <div id="chatlog" class="chat-pane active" role="log" aria-live="off" tabindex="-1"></div>
         <div id="combatlog" class="chat-pane"></div>
       </div>
     </div>

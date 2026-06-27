@@ -59,9 +59,14 @@
 // pointer-events:none, world-anchored over the 3D scene), so this painter introduces no
 // focus trap and no announced text. P15b marks every pooled node aria-hidden at build (see
 // createNode below) so the raw per-hit numbers never reach the a11y tree. The coalesced,
-// polite combat summary belongs to the P15a #combat-live region, not these nodes; routing a
-// FCT-specific coalesced feed into that region (never raw per-damage streaming) remains a
-// follow-up, but the raw nodes are now correctly hidden so they cannot double-announce.
+// polite combat summary belongs to the P15a #combat-live region, not these nodes. P18d
+// resolved the FCT-feed follow-up: the self-note kind (the one FCT-only event with NO
+// combat-log line, e.g. "Can't move!") is now ALSO pushed into #combat-live from
+// hud.showSelfNote, so an event the combat log never logs is still announced; the raw damage
+// numbers are never streamed there (the throttled combat summary already covers them). The xp
+// and rested-xp floats stay UNANNOUNCED through this painter on purpose: those events already
+// emit a textual chat line via hud.log() (which the #chat-live region announces), so routing
+// the float into a live region too would double-announce.
 
 import type { UiEffectsTier } from '../game/ui_effects_profile';
 import { fctDropNonCrit, fctMaxConcurrent, fctTtlScale } from '../game/ui_tier_knobs';

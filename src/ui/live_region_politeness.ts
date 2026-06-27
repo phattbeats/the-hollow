@@ -53,11 +53,31 @@ export function combatLineKind(): LiveRegionEventKind {
 }
 
 /**
+ * The kind for a routine chat-pane line. Chat is always announced politely and throttled,
+ * never escalated to assertive: the throttle (not politeness) is what prevents a chat
+ * burst from flooding the screen reader, mirroring combat. Online (the ClientWorld mirror)
+ * and offline (the Sim) feed the SAME localized lines through the one HUD chat funnel, so
+ * this kind -> politeness mapping is identical on both hosts (decision 15 parity).
+ */
+export function chatLineKind(): LiveRegionEventKind {
+  return 'chat';
+}
+
+/**
  * The polite combat summary updates at most once per this interval, so a burst of
  * routine damage collapses to a single announcement instead of flooding the screen
  * reader (decision 12: the cadence is a named constant, not a magic literal).
  */
 export const COMBAT_ANNOUNCE_INTERVAL_MS = 1500;
+
+/**
+ * The polite chat summary updates at most once per this interval, so a burst of chat lines
+ * collapses to a single announcement instead of flooding the screen reader. A SEPARATE
+ * named constant from COMBAT_ANNOUNCE_INTERVAL_MS (decision 12: the cadence is a named
+ * constant, not a magic literal) so chat and combat can be tuned independently without
+ * re-introducing a magic literal at either announcer.
+ */
+export const CHAT_ANNOUNCE_INTERVAL_MS = 1500;
 
 /**
  * Pure throttle gate: true when enough time has elapsed since the last combat
