@@ -1404,6 +1404,10 @@ export class Sim {
     // throwaway build, persist the PRE-fiesta snapshot so an autosave or
     // mid-match disconnect never writes the temporary state to the database.
     const restore = meta.fiestaRestore;
+    // Warlock demons are not persisted across logout: drop the snapshot so a relog
+    // forces a fresh re-summon instead of laundering the summon cooldown for free.
+    // Hunter pets (non-demon) persist. See pet_commands.isDemonPetState.
+    const petSnapshot = this.serializePet(pid);
     const state: CharacterState = {
       level: restore ? restore.level : e.level,
       xp: restore ? restore.xp : meta.xp,
@@ -1444,7 +1448,7 @@ export class Sim {
       raidLockouts: Object.fromEntries(
         [...meta.raidLockouts].filter(([, until]) => until > this.lockoutNowMs()),
       ),
-      pet: this.serializePet(pid),
+      pet: petCommands.isDemonPetState(petSnapshot) ? null : petSnapshot,
       skin: meta.skin,
       skinCatalog: meta.skinCatalog,
       pendingSkinRank: meta.pendingSkinRank,
