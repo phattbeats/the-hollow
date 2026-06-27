@@ -17,6 +17,7 @@ import { ITEMS, QUESTS } from '../../src/sim/data';
 import { ArenaWindow } from '../../src/ui/arena_window';
 import { BagsWindow } from '../../src/ui/bags_window';
 import { CharWindow } from '../../src/ui/char_window';
+import { FOCUSABLE_SELECTOR } from '../../src/ui/focus_manager';
 import { t } from '../../src/ui/i18n';
 import { LeaderboardWindow } from '../../src/ui/leaderboard_window';
 import { MarketWindow } from '../../src/ui/market_window';
@@ -441,6 +442,33 @@ describe('axe: social window', () => {
     expect(active()).toBe('raid');
     expect(focused()).toBe('raid');
   });
+
+  it('roving tabs are ONE Tab stop: only the active tab is in the canonical focusable set', () => {
+    // The roving tabindex must survive the window's Tab trap: the inactive tabs carry
+    // tabindex="-1" and so must be EXCLUDED from FOCUSABLE_SELECTOR (which the trap cycles),
+    // or Tab would stop on every inactive tab instead of treating the tablist as one stop.
+    const root = host('social-window');
+    const win = new SocialWindow(
+      stubDeps({
+        root: () => root,
+        world: () =>
+          ({
+            socialInfo: { friends: [], guild: null, ignored: [] },
+            partyInfo: null,
+            realm: 'Claudemoon',
+            player: { name: 'Aurelia' },
+          }) as never,
+        captureFocus: () => null,
+      }),
+    );
+    win.toggle();
+    const focusableTabs = Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+      (el) => el.classList.contains('soc-tab'),
+    );
+    expect(focusableTabs).toHaveLength(1);
+    expect(focusableTabs[0]?.dataset.tab).toBe('friends');
+    expect(focusableTabs[0]?.getAttribute('aria-selected')).toBe('true');
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -608,6 +636,36 @@ describe('axe: bags discard prompt', () => {
     // of the a11y tree.
     expect(root.inert).toBe(false);
     expect(stack.querySelector('.sell-quantity-prompt')).toBeNull();
+  });
+
+  it('does not leak #bags inert when force-closed out from under an open prompt (item 3 backstop)', () => {
+    const root = host('bags-window');
+    root.style.display = 'flex';
+    const stack = document.createElement('div');
+    stack.id = 'prompt-stack';
+    document.body.appendChild(stack);
+    const win = new BagsWindow(
+      stubDeps({
+        root: () => root,
+        world: () => ({ inventory: [], copper: 0, discardItem: () => {} }) as never,
+        captureFocus: () => null,
+        restoreFocus: () => {},
+      }),
+    );
+    const itemId = Object.keys(ITEMS)[0];
+    // A unique-item discard (maxCount 1) opens the prompt with focus on the confirm BUTTON,
+    // which input.ts does NOT suppress, so the bags keybind can fire and toggleBags ->
+    // close() the window while the prompt is still open. That path never runs the prompt's
+    // dismiss(), so close() must clear inert itself or the grid is left dead on reopen.
+    (
+      win as unknown as { showDiscardItemPrompt(id: string, max: number): void }
+    ).showDiscardItemPrompt(itemId, 1);
+    expect(root.inert).toBe(true);
+    win.close();
+    expect(root.style.display).toBe('none');
+    // A hidden bags window must never stay inert; otherwise the next open shows a grid that
+    // is non-interactive and out of the a11y tree.
+    expect(root.inert).toBe(false);
   });
 
   it('returns focus to the opener on close (non-modal capture-and-return, no trap)', () => {

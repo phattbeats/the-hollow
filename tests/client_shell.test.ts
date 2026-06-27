@@ -245,6 +245,17 @@ describe('client HTML shell', () => {
     expect(baseCss).toContain('.hud-skip:focus-visible {');
   });
 
+  it('draws the party focus ring at full strength WITHOUT animating it (P18b item 7 + decision 10)', () => {
+    // A dimmed dead/oor row resets opacity to 1 on keyboard focus so the global outline
+    // ring is full, not dimmed. Because .party-frame transitions opacity 0.2s and opacity
+    // applies to the outline, the reset MUST also kill the transition (transition: none),
+    // or the ring would fade in over 200ms - which decision 10 forbids (a focus ring is
+    // never animated). This pins both halves so a future edit cannot reintroduce the fade.
+    const focusRule = hudCss.match(/\.party-frame:focus-visible\s*\{([^}]*)\}/)?.[1] ?? '';
+    expect(focusRule).toMatch(/opacity:\s*1/);
+    expect(focusRule).toMatch(/transition:\s*none/);
+  });
+
   it('labels the player frame as a role=group with a localized name in BOTH entries', () => {
     // P10b made #player-frame a role="group" with a t()-localized accessible name via
     // data-i18n-aria. index.html and play.html both boot src/main.ts and ship the same
@@ -345,6 +356,16 @@ describe('client HTML shell', () => {
     expect(cmBody).toContain('this.spellbookWindow.close();');
     // Bags is the NON-MODAL companion (no trap), but still returns focus via close().
     expect(cmBody).toContain('this.bagsWindow.close();');
+  });
+
+  it('clears #bags inert on the mobile-touch closeVendor hide path (P18b item 3 backstop)', () => {
+    // closeVendor hides #bags directly on mobile-touch (it does NOT route through
+    // BagsWindow.close()), so a discard/sell prompt that left #bags inert would strand a
+    // dead grid on the next open. The mobile-bags hide branch must clear inert itself.
+    const cvStart = hudTs.indexOf('closeVendor(): void {');
+    const cvBody = hudTs.slice(cvStart, hudTs.indexOf('\n  get vendorOpen', cvStart));
+    expect(cvStart).toBeGreaterThan(-1);
+    expect(cvBody).toContain('.inert = false;');
   });
 
   it('drives the target frame as a unit_frame instance with a cached absorb node (P11b)', () => {
