@@ -327,6 +327,26 @@ describe('client HTML shell', () => {
     ).toBe(true);
   });
 
+  it('routes the cold-window closeManagedWindow cases through their painter close() for focus-return (P18b item 8)', () => {
+    // closeManagedWindow must hand each cold window to its own painter close() so focus
+    // returns to the opener (WCAG 2.4.3), not an inline el.style.display='none' that drops
+    // focus to <body>. Slice the switch body so a close() call elsewhere does not satisfy
+    // the case-specific assertions.
+    const cmStart = hudTs.indexOf('private closeManagedWindow(');
+    const cmBody = hudTs.slice(cmStart, hudTs.indexOf('\n  private ', cmStart + 1));
+    expect(cmStart).toBeGreaterThan(-1);
+    expect(cmBody).toContain("case 'char-window':");
+    expect(cmBody).toContain('this.charWindow.close();');
+    // The sibling cold windows route the same way; lock the family so a future case is not
+    // left on an inline hide that drops focus.
+    expect(cmBody).toContain('this.socialWindow.close();');
+    expect(cmBody).toContain('this.arenaWindow.close();');
+    expect(cmBody).toContain('this.talentsWindow.close();');
+    expect(cmBody).toContain('this.spellbookWindow.close();');
+    // Bags is the NON-MODAL companion (no trap), but still returns focus via close().
+    expect(cmBody).toContain('this.bagsWindow.close();');
+  });
+
   it('drives the target frame as a unit_frame instance with a cached absorb node (P11b)', () => {
     // The target absorb overlay is resolved ONCE (no per-frame updateAbsorb document
     // query), and the family painter drives the frame, so the old hardcoded

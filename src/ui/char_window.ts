@@ -143,7 +143,7 @@ export class CharWindow {
     html += `<div class="paperdoll">
       <div class="equip-col" id="equip-col-left"></div>
       <div class="char-model-panel">
-        <div id="char-model-preview" class="char-model-preview" role="img" aria-label="${esc(t('itemUi.equipment.levelClass', { level, className }))}"></div>
+        <div id="char-model-preview" class="char-model-preview" role="img" aria-label="${esc(t('hudChrome.character.modelPreview'))}"></div>
         <div id="char-skin-row" class="skin-row char-skin-row" role="list" aria-label="${esc(t('auth.appearance'))}"></div>
       </div>
       <div class="equip-col equip-col-right" id="equip-col-right"></div>

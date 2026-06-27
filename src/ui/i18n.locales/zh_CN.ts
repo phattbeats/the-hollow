@@ -27,6 +27,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.questShare.ineligible': '你不满足该任务的要求。',
   'hudChrome.questShare.noQuestSelected': '在任务日志中选择一个任务进行分享。',
   'hudChrome.questShare.linkTitle': 'Shift + 点击可在聊天中链接该任务。',
+  'hudChrome.unitFrame.partyGroup': '小队 {n}',
+  'hudChrome.character.modelPreview': '角色模型预览',
   'character.sortBy': '排序',
   'character.sortByLabel': '排序角色',
   'character.sortMenuLabel': '排序选项',

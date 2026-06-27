@@ -29,6 +29,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.questShare.ineligible': 'Вы не соответствуете требованиям этого задания.',
   'hudChrome.questShare.noQuestSelected': 'Выберите задание в журнале, чтобы поделиться им.',
   'hudChrome.questShare.linkTitle': 'Shift + клик, чтобы вставить ссылку на это задание в чат.',
+  'hudChrome.unitFrame.partyGroup': 'Группа {n}',
+  'hudChrome.character.modelPreview': 'Предпросмотр модели персонажа',
   'character.sortBy': 'Сортировка',
   'character.sortByLabel': 'Сортировать персонажей',
   'character.sortMenuLabel': 'Параметры сортировки',

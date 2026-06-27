@@ -63,6 +63,11 @@ export interface PartyRow {
   slot: PartyRowSlot;
   painter: UnitFramePainter;
   badges: { dead: HTMLElement; combat: HTMLElement; oor: HTMLElement };
+  // The aria-hidden leader-star span (the pool writes the glyph through the elided
+  // writer) and the visually-hidden raid-group span (the pool writes the localized
+  // "Group n"); both are per-frame text the pool drives, the spans built once here.
+  leadStar: HTMLElement;
+  group: HTMLElement;
   relocalize: () => void;
 }
 
@@ -159,11 +164,31 @@ export function createPartyRow(
     oorBadge.title = t('hud.errors.outOfRange');
   };
   relocalize();
+  // The level chip. The leader marker (a decorative star) lives in its OWN aria-hidden
+  // span (.lead-star) so it no longer leaks into the row's role=button accessible name;
+  // the number lives in .lead-num, which the family painter writes as the level. Both are
+  // inline children of the single .lead flex child, so the .pfm-meta gap (between flex
+  // children) never separates the star from the number: the rendered "star then number"
+  // stays byte-faithful to the old `${star}${level}` string.
   const lead = doc.createElement('span');
   lead.className = 'lead';
+  const leadStar = doc.createElement('span');
+  leadStar.className = 'lead-star';
+  leadStar.setAttribute('aria-hidden', 'true');
+  const leadNum = doc.createElement('span');
+  leadNum.className = 'lead-num';
+  lead.append(leadStar, leadNum);
   meta.append(deadBadge, combatBadge, oorBadge, lead);
 
-  nameRow.append(id, meta);
+  // The raid-group cue (e.g. "Group 1"), visually hidden but kept in the accessible name
+  // so a screen reader conveys which raid group a member sits in. Empty outside raid; the
+  // pool sets and re-localizes it through the elided writer. The .visually-hidden class
+  // (set once here) clips it from sight while leaving it in the a11y tree, and appending
+  // it last lets it join the role=button name after the visible name + level.
+  const group = doc.createElement('span');
+  group.className = 'pfm-group visually-hidden';
+
+  nameRow.append(id, meta, group);
 
   const hpBar = doc.createElement('div');
   hpBar.className = 'bar hp';
@@ -189,7 +214,10 @@ export function createPartyRow(
     {
       frame: row,
       name: nameText,
-      level: lead,
+      // The family writes the level NUMBER into .lead-num; the leader star is the pool's
+      // own aria-hidden write into .lead-star (party_frames_painter), so the level stays
+      // a clean number in the accessible name.
+      level: leadNum,
       hpFill,
       resource: { container: resBar, fill: resFill },
     },
@@ -210,6 +238,8 @@ export function createPartyRow(
     painter,
     relocalize,
     badges: { dead: deadBadge, combat: combatBadge, oor: oorBadge },
+    leadStar,
+    group,
   };
 }
 

@@ -17,6 +17,7 @@
 // :first-child / :not(:first-child) rules still match; appendChild moves a node
 // without dropping its keyboard focus or its listeners.
 
+import { formatNumber, t } from './i18n';
 import type { PainterHostWriters } from './painter_host';
 import {
   createLeaveButton,
@@ -62,6 +63,10 @@ export class PartyFramesPainter {
   // listeners stay attached and read the live slot, so a recycled row is safe.
   private readonly free: PartyRow[] = [];
   private leaveBtn: HTMLButtonElement | null = null;
+  // The last synced raid flag, so relocalize() can re-emit each pooled row's group
+  // label in the new language after an in-game language switch (a switch does not flip
+  // partyFrameSignature, so the Hud never re-syncs us, exactly like the badge tooltips).
+  private lastRaid = false;
   private readonly rowDeps: PartyRowDeps;
 
   constructor(
@@ -85,7 +90,8 @@ export class PartyFramesPainter {
   /** Reconcile the pool to `members` and repaint each in place. Called only when the
    *  party signature changed (the Hud short-circuits an unchanged party before this),
    *  so the reconcile cost is paid only on a real change. */
-  sync(members: PartyFrameMember[], leader: number): void {
+  sync(members: PartyFrameMember[], leader: number, raid: boolean): void {
+    this.lastRaid = raid;
     const next = new Set<number>();
     for (const m of members) next.add(m.pid);
     // Detach rows whose member left; keep them (listeners intact) for reuse.
@@ -107,7 +113,7 @@ export class PartyFramesPainter {
       // Update the LIVE slot BEFORE painting so the crest gate + listeners read the
       // current member, never a stale captured one (top-risk 3).
       row.slot.member = m;
-      this.paintRow(row, m, leader);
+      this.paintRow(row, m, leader, raid);
       ordered.push(row);
     }
     // Reconcile the DOM order with the MINIMUM number of node moves, then keep the
@@ -149,7 +155,13 @@ export class PartyFramesPainter {
    *  rebuilds it, so the Hud calls this from refreshLocalizedDynamicUi (the
    *  woc:languagechange hook); without it the pooled tooltips would stay stale. */
   relocalize(): void {
-    for (const row of this.pool.values()) row.relocalize();
+    for (const row of this.pool.values()) {
+      row.relocalize();
+      // Re-emit the raid-group label in the new language (the badge tooltips relocalize
+      // above; the group label needs the same treatment, from the live slot + last raid
+      // flag, since a language switch does not flip partyFrameSignature).
+      this.writers.setText(row.group, this.groupLabel(row.slot.member, this.lastRaid));
+    }
     for (const row of this.free) row.relocalize();
     if (this.leaveBtn) this.writers.setText(this.leaveBtn, this.deps.leaveLabel());
   }
@@ -165,14 +177,16 @@ export class PartyFramesPainter {
     this.leaveBtn?.remove();
   }
 
-  private paintRow(row: PartyRow, m: PartyFrameMember, leader: number): void {
+  private paintRow(row: PartyRow, m: PartyFrameMember, leader: number, raid: boolean): void {
     // The class-color token + the combat class are the party-only writes the four
     // original writers cannot express (decision 5a's setStyleProp / toggleClass).
     this.writers.setStyleProp(row.el, CLASS_COLOR_PROP, this.deps.classCss(m.cls));
     const inCombat = !!m.inCombat && !m.dead;
     this.writers.toggleClass(row.el, COMBAT_CLASS, inCombat);
     // The shared frame (name / level / hp + resource fills / dead + out-of-range
-    // classes) through the family instance, byte-faithful to the inline markup.
+    // classes) through the family instance, byte-faithful to the inline markup. The
+    // family writes ONLY the level number into .lead-num now; the leader star is the
+    // separate aria-hidden write below.
     row.painter.paint(
       unitFrameView({
         present: true,
@@ -181,7 +195,7 @@ export class PartyFramesPainter {
         resourceKind: m.rtype,
         resFrac: m.res / Math.max(1, m.mres),
         resText: '',
-        levelText: `${leader === m.pid ? PARTY_LEADER_GLYPH : ''}${m.level}`,
+        levelText: String(m.level),
         name: m.name,
         portraitKey: `${PARTY_CREST_KEY_PREFIX}${m.cls}`,
         absorb: null,
@@ -189,11 +203,27 @@ export class PartyFramesPainter {
         outOfRange: m.oor,
       }),
     );
+    // The leader star (aria-hidden, decorative) and the visually-hidden raid-group label,
+    // both per-frame text routed through the elided writer (no raw write on the hot path);
+    // each is cached, so a steady-state tick re-writes neither.
+    this.writers.setText(row.leadStar, leader === m.pid ? PARTY_LEADER_GLYPH : '');
+    this.writers.setText(row.group, this.groupLabel(m, raid));
     // The dead / combat / out-of-range badge icons: persistent, only display toggles
     // (the non-color cue that stays distinguishable under forced-colors).
     this.writers.setDisplay(row.badges.dead, m.dead ? BADGE_SHOWN : BADGE_HIDDEN);
     this.writers.setDisplay(row.badges.combat, inCombat ? BADGE_SHOWN : BADGE_HIDDEN);
     this.writers.setDisplay(row.badges.oor, m.oor ? BADGE_SHOWN : BADGE_HIDDEN);
+  }
+
+  /** The localized "Group n" raid cue for a member, or '' outside raid. The group number
+   *  goes through formatNumber (i18n digits). Used by paintRow and by relocalize (so a
+   *  language switch re-emits it from the last synced raid flag). */
+  private groupLabel(m: PartyFrameMember, raid: boolean): string {
+    return raid
+      ? t('hudChrome.unitFrame.partyGroup', {
+          n: formatNumber(m.group, { maximumFractionDigits: 0 }),
+        })
+      : '';
   }
 
   private ensureLeaveButton(): HTMLButtonElement {

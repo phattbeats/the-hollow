@@ -101,6 +101,17 @@ export const hudChromeStrings = {
     // does not trip the untranslated-leak guard; "Band" reads as your group of
     // companions, parallel to playerLabel / targetLabel.
     partyLabel: 'Your Band',
+    // partyGroup is the visually-hidden raid-group cue appended to a raid party row's
+    // accessible name (e.g. "Group 1"), so a screen reader conveys which of the two
+    // raid groups a member sits in. {n} is the group number (formatNumber). Title Case
+    // + a single word before the placeholder keeps it non-wordy for the M16 leak guard.
+    partyGroup: 'Group {n}',
+  },
+  // Character sheet (#char-window) accessible names. modelPreview names the role=img 3D
+  // turntable HOST distinctly from the title's level/class subtitle (the canvas pixels
+  // stay OUT of a11y scope, decision 10). Title Case keeps it non-wordy for M16.
+  character: {
+    modelPreview: 'Character Model Preview',
   },
   // Skip links: the first focusable elements on both game entries, a keyboard /
   // screen-reader shortcut to the main HUD and the chat log (mirrors the src/guide

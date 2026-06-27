@@ -89,6 +89,12 @@ export interface BagsWindowDeps extends PainterHostPresentation {
   wocBalanceHtml(): string;
   hideTooltip(): void;
   cancelPetFeed(): void;
+  // Non-modal focus capture/return (WCAG 2.4.3). Bags rides alongside vendor / trade /
+  // market, so it does NOT trap focus; it only records its opener on open and returns
+  // focus there on close. Wired to the FocusManager's activeFocusable / restore, NOT
+  // the trap-installing windowFocus helper.
+  captureFocus(): HTMLElement | null;
+  restoreFocus(target: HTMLElement | null): void;
   renderCharIfOpen(): void;
   // Cross-window mode flags (read each click so the painter never caches stale modes).
   vendorOpen(): boolean;
@@ -121,7 +127,34 @@ export class BagsWindow {
     }
   })();
 
+  // The element that opened the bags window, captured on open and refocused on close
+  // (WCAG 2.4.3). Null when bags was opened by a pointer-driven cross-window path
+  // (vendor / mobile), where a null restore is a safe no-op.
+  private openerFocus: HTMLElement | null = null;
+
   constructor(private readonly deps: BagsWindowDeps) {}
+
+  /** Record the element that opened the window, so close() can return focus to it.
+   *  Called by the HUD's toggleBags on the keyboard/minimap open path. */
+  noteOpener(): void {
+    this.openerFocus = this.deps.captureFocus();
+  }
+
+  /** Hide the window and return focus to the opener. NON-MODAL: no focus trap is
+   *  installed (bags is a companion of vendor / trade / market), so this is a plain
+   *  capture-and-return. Preserves the inline path's tooltip + pet-feed teardown. */
+  close(): void {
+    const el = this.deps.root();
+    // Early-return only when already hidden. Bags is shown as 'flex' (toggle / vendor) OR
+    // 'block' (the pet-feed path), so guard on 'none', not a specific shown value, or a
+    // 'block'-shown bags would never close.
+    if (el.style.display === 'none') return;
+    el.style.display = 'none';
+    this.deps.hideTooltip();
+    this.deps.cancelPetFeed();
+    this.deps.restoreFocus(this.openerFocus);
+    this.openerFocus = null;
+  }
 
   render(): void {
     const el = this.deps.root();
@@ -148,9 +181,7 @@ export class BagsWindow {
         this.deps.closeVendor();
         return;
       }
-      el.style.display = 'none';
-      this.deps.hideTooltip();
-      this.deps.cancelPetFeed();
+      this.close();
     });
   }
 
@@ -367,9 +398,18 @@ export class BagsWindow {
     prompt: HTMLElement,
     opener: HTMLElement | null,
     close: () => void,
-  ): () => void {
+  ): { dismiss: () => void; dismissAndReturn: () => void } {
     prompt.setAttribute('role', 'dialog');
     prompt.setAttribute('aria-modal', 'true');
+    // Mark the bag grid behind the modal prompt inert while it is open, so a screen
+    // reader / Tab cannot reach the now-blocked inventory underneath. EVERY teardown path
+    // (confirm/submit, cancel, Escape) routes through dismiss(), which clears inert before
+    // the prompt is removed, so #bags is never left permanently non-interactive. The
+    // focus-returning variant clears inert BEFORE refocusing (a focus into a still-inert
+    // subtree is silently dropped, and the openers live inside #bags). This single
+    // chokepoint covers BOTH the discard and sell prompts.
+    const bagsRoot = this.deps.root();
+    bagsRoot.inert = true;
     const titleEl = prompt.querySelector('.prompt-text') as HTMLElement | null;
     if (titleEl) {
       if (!titleEl.id) titleEl.id = `bags-prompt-title-${promptDialogSeq++}`;
@@ -384,15 +424,21 @@ export class BagsWindow {
         numInput.setAttribute('aria-labelledby', titleEl.id);
       }
     }
-    const closeAndReturn = (): void => {
+    // Clear inert THEN remove the prompt; the only teardown both the confirm and the
+    // cancel paths share, so routing every close through it guarantees inert never leaks.
+    const dismiss = (): void => {
+      bagsRoot.inert = false;
       close();
+    };
+    const dismissAndReturn = (): void => {
+      dismiss();
       opener?.focus();
     };
     prompt.addEventListener('keydown', (e) => {
       const ke = e as KeyboardEvent;
       if (ke.key === 'Escape') {
         ke.preventDefault();
-        closeAndReturn();
+        dismissAndReturn();
         return;
       }
       if (ke.key !== 'Tab') return;
@@ -410,7 +456,7 @@ export class BagsWindow {
         first.focus();
       }
     });
-    return closeAndReturn;
+    return { dismiss, dismissAndReturn };
   }
 
   private showDiscardItemPrompt(itemId: string, maxCount: number): void {
@@ -442,24 +488,25 @@ export class BagsWindow {
     cancel.className = 'btn';
     cancel.textContent = t('itemUi.bags.destroyCancel');
     const close = () => prompt.remove();
+    prompt.append(confirm, cancel);
+    const { dismiss, dismissAndReturn } = this.installPromptDialog(prompt, opener, close);
     const submit = () => {
       const count = input
         ? Math.max(1, Math.min(maxCount, Math.floor(Number(input.value) || 0)))
         : 1;
       this.deps.world().discardItem(itemId, count);
-      close();
+      dismiss();
       this.deps.hideTooltip();
       this.render();
       // Return focus into the bags window on the confirm path too (WCAG 2.4.3): cancel
-      // and Escape already return via closeAndReturn, but render() innerHTML-rebuilds the
-      // grid, detaching the opener slot, so land on the always-present window close
-      // button rather than letting focus fall to <body>.
+      // and Escape return via dismissAndReturn, but render() innerHTML-rebuilds the grid,
+      // detaching the opener slot, so land on the always-present window close button
+      // rather than letting focus fall to <body>. dismiss() cleared inert first, so this
+      // focus is not dropped into a still-inert subtree.
       (this.deps.root().querySelector('[data-close]') as HTMLElement | null)?.focus();
     };
     confirm.addEventListener('click', submit);
-    prompt.append(confirm, cancel);
-    const closeAndReturn = this.installPromptDialog(prompt, opener, close);
-    cancel.addEventListener('click', closeAndReturn);
+    cancel.addEventListener('click', dismissAndReturn);
     if (input) {
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') submit();
@@ -504,19 +551,19 @@ export class BagsWindow {
     cancel.className = 'btn';
     cancel.textContent = t('itemUi.vendor.sellQuantityCancel');
     const close = () => prompt.remove();
+    prompt.append(input, confirm, cancel);
+    const { dismiss, dismissAndReturn } = this.installPromptDialog(prompt, opener, close);
     const submit = () => {
       const count = Math.max(1, Math.min(maxCount, Math.floor(Number(input.value) || 0)));
       this.deps.world().sellItem(itemId, count);
-      close();
+      dismiss();
       // Return focus to the vendor cell that opened the prompt on confirm too (WCAG
       // 2.4.3): it survives the sell, so unlike discard there is no rebuild to dodge
-      // (cancel and Escape already return via closeAndReturn).
+      // (cancel and Escape return via dismissAndReturn). dismiss() cleared inert first.
       opener?.focus();
     };
     confirm.addEventListener('click', submit);
-    prompt.append(input, confirm, cancel);
-    const closeAndReturn = this.installPromptDialog(prompt, opener, close);
-    cancel.addEventListener('click', closeAndReturn);
+    cancel.addEventListener('click', dismissAndReturn);
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') submit();
     });

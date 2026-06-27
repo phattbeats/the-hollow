@@ -1571,11 +1571,9 @@ export class Hud {
         break;
       case 'bags':
         if (this.vendorOpen && document.body.classList.contains('mobile-touch')) this.closeVendor();
-        else {
-          el.style.display = 'none';
-          this.hideTooltip();
-          this.cancelPetFeed();
-        }
+        // Route through the painter so focus returns to the opener (WCAG 2.4.3),
+        // consistent with the toggle / X close path. NON-MODAL: no trap is released.
+        else this.bagsWindow.close();
         break;
       case 'talents-window':
         // Route through the painter so the staged buffer is dropped AND focus
@@ -2541,6 +2539,11 @@ export class Hud {
     wocBalanceHtml: () => this.wocBalanceHtml(),
     hideTooltip: () => this.hideTooltip(),
     cancelPetFeed: () => this.cancelPetFeed(),
+    // Non-trapping focus capture/return (bags is a non-modal companion of vendor /
+    // trade / market): NOT windowFocus('#bags'), which would install a Tab trap and
+    // break the inventory cluster.
+    captureFocus: () => this.focusManager.activeFocusable(),
+    restoreFocus: (target) => this.focusManager.restore(target),
     renderCharIfOpen: () => this.renderCharIfOpen(),
     vendorOpen: () => this.vendorOpen,
     tradeOpen: () => this.tradeOpen,
@@ -7850,13 +7853,15 @@ export class Hud {
   toggleBags(): void {
     const el = $('#bags');
     if (el.style.display !== 'none') {
-      el.style.display = 'none';
-      this.hideTooltip();
+      // Close through the painter so focus returns to the opener (WCAG 2.4.3); close()
+      // owns the hide + tooltip + pet-feed teardown, so keep only the audio cue here.
       audio.bagClose();
-      this.cancelPetFeed();
+      this.bagsWindow.close();
       return;
     }
     this.closeOtherWindows('#bags');
+    // Record the opener (the minimap bag button / keybind focus) for the focus return.
+    this.bagsWindow.noteOpener();
     this.renderBags();
     el.style.display = 'flex';
     audio.bagOpen();
@@ -9321,7 +9326,7 @@ export class Hud {
     if (sig === this.lastPartySig) return;
     this.lastPartySig = sig;
     const others = selectPartyFrameMembers(info, this.sim.playerId, this.sim.player.pos);
-    this.partyFramesPainter.sync(others, info.leader);
+    this.partyFramesPainter.sync(others, info.leader, info.raid);
   }
 
   // -------------------------------------------------------------------------

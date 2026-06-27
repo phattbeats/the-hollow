@@ -296,10 +296,11 @@ describe('axe: options menu', () => {
 
 // ---------------------------------------------------------------------------
 // Social (#social-window) - the offline state AND the online friends tab, so the P15b
-// ARIA-1.2 typeahead combobox (role=combobox + aria-controls/expanded) is actually axed
-// in its collapsed state. The EXPANDED listbox + the moving aria-activedescendant are
-// interaction-driven (type -> debounced async search) and belong to a future driven
-// browser test; the static axe pass here sees only the collapsed combobox.
+// ARIA-1.2 typeahead combobox (role=combobox + aria-controls/expanded) is axed in BOTH
+// its collapsed state and (P18b item 9) its EXPANDED listbox state: the driven case types
+// into the combobox, waits out the debounced async search to populate the listbox, then
+// ArrowDown to move aria-activedescendant, and axes the live expanded combobox. The tab
+// strip is a real role=tablist (P18b item 1), also covered here.
 // ---------------------------------------------------------------------------
 
 describe('axe: social window', () => {
@@ -347,6 +348,99 @@ describe('axe: social window', () => {
     expect(input?.getAttribute('aria-expanded')).toBe('false');
     await expectClean(root);
   });
+
+  it('online friends typeahead is clean when EXPANDED (listbox + moving aria-activedescendant)', async () => {
+    // Drive the ARIA-1.2 combobox to its expanded state: type -> the debounced async search
+    // populates the listbox -> ArrowDown moves aria-activedescendant. Real timers run in
+    // browser mode, so wait out the debounce + the async microtask before asserting.
+    const SETTLE_MS = 300; // covers SUGGEST_DEBOUNCE_MS (160) + the async search settle
+    const root = host('social-window');
+    const win = new SocialWindow(
+      stubDeps({
+        root: () => root,
+        world: () =>
+          ({
+            socialInfo: { friends: [], guild: null, ignored: [] },
+            partyInfo: null,
+            realm: 'Claudemoon',
+            player: { name: 'Aurelia' },
+            // 3 same-realm matches, none the local player (so none is filtered out).
+            searchCharacters: async () => [
+              { name: 'Borin', cls: 'warrior', level: 42 },
+              { name: 'Celes', cls: 'mage', level: 37 },
+              { name: 'Dorn', cls: 'priest', level: 28 },
+            ],
+          }) as never,
+        captureFocus: () => null,
+      }),
+    );
+    win.toggle();
+    const input = root.querySelector('input[role="combobox"]') as HTMLInputElement;
+    expect(input, 'the friends typeahead renders a combobox when online').toBeTruthy();
+    input.value = 'bo';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await new Promise((r) => setTimeout(r, SETTLE_MS));
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    // Expanded: aria-expanded flips true and the listbox holds rendered options.
+    expect(input.getAttribute('aria-expanded')).toBe('true');
+    const listId = input.getAttribute('aria-controls') ?? '';
+    const listbox = root.querySelector(`#${CSS.escape(listId)}`) as HTMLElement | null;
+    expect(listbox?.getAttribute('role')).toBe('listbox');
+    const options = listbox?.querySelectorAll('[role="option"]') ?? [];
+    expect(options.length).toBeGreaterThanOrEqual(1);
+    // aria-activedescendant resolves to a rendered option INSIDE the listbox.
+    const active = input.getAttribute('aria-activedescendant') ?? '';
+    expect(active).toBeTruthy();
+    expect(root.querySelector(`#${CSS.escape(active)}`)?.closest('[role="listbox"]')).toBe(listbox);
+    await expectClean(root);
+  });
+
+  it('the tablist is keyboard-operable: Arrow/Home/End move, activate, and focus the new tab', () => {
+    const root = host('social-window');
+    const win = new SocialWindow(
+      stubDeps({
+        root: () => root,
+        world: () =>
+          ({
+            socialInfo: { friends: [], guild: null, ignored: [] },
+            partyInfo: null,
+            realm: 'Claudemoon',
+            player: { name: 'Aurelia' },
+          }) as never,
+        captureFocus: () => null,
+      }),
+    );
+    win.toggle();
+    // The single active tab (the styling `.on` and aria-selected stay in lockstep).
+    const active = () =>
+      (root.querySelector('.soc-tab.on[aria-selected="true"]') as HTMLElement | null)?.dataset.tab;
+    const focused = () => (document.activeElement as HTMLElement | null)?.dataset.tab;
+    const press = (key: string) =>
+      (document.activeElement as HTMLElement | null)?.dispatchEvent(
+        new KeyboardEvent('keydown', { key, bubbles: true }),
+      );
+    expect(active()).toBe('friends');
+    (root.querySelector('.soc-tab[data-tab="friends"]') as HTMLElement).focus();
+    // ArrowRight: friends -> guild; render() rebuilds the strip, so focus follows the
+    // freshly active tab (selection-follows-focus, the WAI-ARIA tabs pattern).
+    press('ArrowRight');
+    expect(active()).toBe('guild');
+    expect(focused()).toBe('guild');
+    // End jumps to the last tab; ArrowRight then wraps back to the first.
+    press('End');
+    expect(active()).toBe('raid');
+    expect(focused()).toBe('raid');
+    press('ArrowRight');
+    expect(active()).toBe('friends');
+    // ArrowLeft wraps the other way (friends -> raid).
+    press('ArrowLeft');
+    expect(active()).toBe('raid');
+    expect(focused()).toBe('raid');
+    // Enter activates the focused tab (idempotent here: selection already followed focus).
+    press('Enter');
+    expect(active()).toBe('raid');
+    expect(focused()).toBe('raid');
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -387,6 +481,12 @@ describe('axe: character window', () => {
     expect(root.getAttribute('aria-labelledby')).toBe('char-title');
     expect(root.querySelector('#char-title')).toBeTruthy();
     expect(root.querySelector('#char-model-preview')?.getAttribute('role')).toBe('img');
+    // P18b item 4: the role=img preview HOST carries its OWN name, not a duplicate of the
+    // title's level/class subtitle.
+    const previewName = root.querySelector('#char-model-preview')?.getAttribute('aria-label');
+    const titleSubtitle = root.querySelector('#char-title .panel-subtitle')?.textContent ?? '';
+    expect(previewName).toBe(t('hudChrome.character.modelPreview'));
+    expect(previewName).not.toBe(titleSubtitle);
     await expectClean(root);
   });
 });
@@ -478,5 +578,60 @@ describe('axe: bags discard prompt', () => {
     const lbl = prompt?.getAttribute('aria-labelledby');
     expect(lbl && prompt?.querySelector(`#${CSS.escape(lbl)}`)).toBeTruthy();
     await expectClean(stack);
+  });
+
+  it('clears #bags inert after a prompt CONFIRM, not only cancel/Escape (item 3: inert must not leak)', async () => {
+    const root = host('bags-window');
+    root.style.display = 'flex';
+    const stack = document.createElement('div');
+    stack.id = 'prompt-stack';
+    document.body.appendChild(stack);
+    const win = new BagsWindow(
+      stubDeps({
+        root: () => root,
+        world: () => ({ inventory: [], copper: 0, sellItem: () => {} }) as never,
+      }),
+    );
+    const itemId = Object.keys(ITEMS)[0];
+    (
+      win as unknown as { showSellQuantityPrompt(id: string, max: number): void }
+    ).showSellQuantityPrompt(itemId, 5);
+    // The bag grid behind the modal prompt is inert while it is open.
+    expect(root.inert).toBe(true);
+    const confirmBtn = Array.from(stack.querySelectorAll<HTMLButtonElement>('button')).find(
+      (b) => b.textContent === t('itemUi.vendor.sellQuantityConfirm'),
+    );
+    expect(confirmBtn, 'sell prompt has a confirm button').toBeTruthy();
+    confirmBtn?.click();
+    // Confirm tears the prompt down through the SAME dismiss() path as cancel/Escape, so
+    // inert is cleared; a regression here strands the entire grid non-interactive and out
+    // of the a11y tree.
+    expect(root.inert).toBe(false);
+    expect(stack.querySelector('.sell-quantity-prompt')).toBeNull();
+  });
+
+  it('returns focus to the opener on close (non-modal capture-and-return, no trap)', () => {
+    const root = host('bags-window');
+    root.style.display = 'none';
+    // A real opener outside #bags (the minimap bag button analog).
+    const opener = document.createElement('button');
+    opener.textContent = 'open bags';
+    document.body.appendChild(opener);
+    const win = new BagsWindow(
+      stubDeps({
+        root: () => root,
+        world: () => ({ inventory: [], copper: 0 }) as never,
+        // Wire the real capture-and-return contract (no Tab trap): note the focused
+        // opener on open, refocus it on close.
+        captureFocus: () => document.activeElement as HTMLElement | null,
+        restoreFocus: (target: HTMLElement | null) => target?.focus(),
+      }),
+    );
+    opener.focus();
+    win.noteOpener();
+    root.style.display = 'flex';
+    win.close();
+    expect(root.style.display).toBe('none');
+    expect(document.activeElement).toBe(opener);
   });
 });

@@ -225,7 +225,11 @@ export const ko_KR: EnTranslations = {
     "unitFrame": {
       "playerLabel": "Your Hero",
       "targetLabel": "Your Mark",
-      "partyLabel": "Your Band"
+      "partyLabel": "Your Band",
+      "partyGroup": "{n}번 그룹"
+    },
+    "character": {
+      "modelPreview": "캐릭터 모델 미리보기"
     },
     "skipLinks": {
       "mainHud": "Skip to Main HUD",

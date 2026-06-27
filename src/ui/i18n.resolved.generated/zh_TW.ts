@@ -225,7 +225,11 @@ export const zh_TW: EnTranslations = {
     "unitFrame": {
       "playerLabel": "Your Hero",
       "targetLabel": "Your Mark",
-      "partyLabel": "Your Band"
+      "partyLabel": "Your Band",
+      "partyGroup": "小隊 {n}"
+    },
+    "character": {
+      "modelPreview": "角色模型預覽"
     },
     "skipLinks": {
       "mainHud": "Skip to Main HUD",

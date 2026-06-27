@@ -225,7 +225,11 @@ export const fr_FR: EnTranslations = {
     "unitFrame": {
       "playerLabel": "Your Hero",
       "targetLabel": "Your Mark",
-      "partyLabel": "Your Band"
+      "partyLabel": "Your Band",
+      "partyGroup": "Group {n}"
+    },
+    "character": {
+      "modelPreview": "Character Model Preview"
     },
     "skipLinks": {
       "mainHud": "Skip to Main HUD",

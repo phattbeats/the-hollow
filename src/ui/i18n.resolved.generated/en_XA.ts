@@ -225,7 +225,11 @@ export const en_XA: EnTranslations = {
     "unitFrame": {
       "playerLabel": "[Ýóúŕ Ĥéŕó]",
       "targetLabel": "[Ýóúŕ Ɱáŕķ]",
-      "partyLabel": "[Ýóúŕ Ɓáñð]"
+      "partyLabel": "[Ýóúŕ Ɓáñð]",
+      "partyGroup": "[Ĝŕóúþ {n}]"
+    },
+    "character": {
+      "modelPreview": "[Çĥáŕáçţéŕ Ɱóðéļ Þŕéʋíéŵ]"
     },
     "skipLinks": {
       "mainHud": "[Šķíþ ţó Ɱáíñ ĤÚÐ]",

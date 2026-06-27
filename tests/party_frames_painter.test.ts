@@ -263,6 +263,15 @@ describe('createPartyRow: decorative badges + relocalize hook (a11y + live langu
     expect(row.badges.oor.getAttribute('aria-hidden')).toBe('true');
   });
 
+  it('builds the leader star as an aria-hidden span and the raid group as a visually-hidden span (items 5/6)', () => {
+    const row = build();
+    // The star is decorative (aria-hidden) so it stays OUT of the row button name; the
+    // group span is visually-hidden (in the a11y tree, clipped from sight) so the raid
+    // group reaches a screen reader. Both attrs/classes are set ONCE here at build.
+    expect(row.leadStar.getAttribute('aria-hidden')).toBe('true');
+    expect(String(row.group.className)).toContain('visually-hidden');
+  });
+
   it('relocalize() re-sets every badge tooltip (the pool reuses row DOM, so a switch needs it)', () => {
     const row = build();
     // Localized once at build.
@@ -309,14 +318,14 @@ describe('PartyFramesPainter: keyed pool over the elided writers', () => {
   const rows = () => container.childNodes.filter((c) => c.tagName === 'DIV');
 
   it('attaches click/contextmenu/keydown ONCE per pooled row across rebuilds (no dup listeners)', () => {
-    painter.sync([member({ pid: 2, name: 'Alice' })], 1);
+    painter.sync([member({ pid: 2, name: 'Alice' })], 1, false);
     const rowA = rows()[0];
     expect(rowA.listeners.click).toHaveLength(1);
     expect(rowA.listeners.contextmenu).toHaveLength(1);
     expect(rowA.listeners.keydown).toHaveLength(1);
 
     // Re-sync the SAME member (a stat changed): the row is reused, not rebuilt.
-    painter.sync([member({ pid: 2, name: 'Alice', hp: 10 })], 1);
+    painter.sync([member({ pid: 2, name: 'Alice', hp: 10 })], 1, false);
     expect(rows()[0]).toBe(rowA);
     expect(rowA.listeners.click).toHaveLength(1);
 
@@ -325,13 +334,13 @@ describe('PartyFramesPainter: keyed pool over the elided writers', () => {
   });
 
   it('recycles a departed row to a new pid and the recycled listener reads the NEW member', () => {
-    painter.sync([member({ pid: 2, name: 'Alice' })], 1);
+    painter.sync([member({ pid: 2, name: 'Alice' })], 1, false);
     const rowA = rows()[0];
     // Alice leaves: the row detaches to the free list (listeners intact).
-    painter.sync([], 1);
+    painter.sync([], 1, false);
     expect(rows()).toHaveLength(0);
     // A new member (pid 9) reuses the freed row node.
-    painter.sync([member({ pid: 9, name: 'Bob' })], 1);
+    painter.sync([member({ pid: 9, name: 'Bob' })], 1, false);
     const rowB = rows()[0];
     expect(rowB).toBe(rowA); // same node recycled
     expect(rowB.listeners.click).toHaveLength(1); // NOT re-attached
@@ -340,18 +349,18 @@ describe('PartyFramesPainter: keyed pool over the elided writers', () => {
   });
 
   it('orders rows in member order with the leave button last', () => {
-    painter.sync([member({ pid: 2 }), member({ pid: 3 }), member({ pid: 4 })], 1);
+    painter.sync([member({ pid: 2 }), member({ pid: 3 }), member({ pid: 4 })], 1, false);
     const kids = container.childNodes;
     expect(kids.filter((c) => c.tagName === 'DIV')).toHaveLength(3);
     expect(kids[kids.length - 1].tagName).toBe('BUTTON'); // leave button last
   });
 
   it('reconciles DOM order on reorder + partial-membership churn, reusing the SAME nodes, leave last', () => {
-    painter.sync([member({ pid: 2 }), member({ pid: 3 }), member({ pid: 4 })], 1);
+    painter.sync([member({ pid: 2 }), member({ pid: 3 }), member({ pid: 4 })], 1, false);
     const [r2, r3, r4] = rows();
     // Reorder to 4,2,3 (e.g. a raid group-swap flips the sort): same nodes moved into
     // the new order via the minimal-move reconcile, not rebuilt.
-    painter.sync([member({ pid: 4 }), member({ pid: 2 }), member({ pid: 3 })], 1);
+    painter.sync([member({ pid: 4 }), member({ pid: 2 }), member({ pid: 3 })], 1, false);
     const reordered = rows();
     expect(reordered).toHaveLength(3);
     expect(reordered[0]).toBe(r4);
@@ -359,7 +368,7 @@ describe('PartyFramesPainter: keyed pool over the elided writers', () => {
     expect(reordered[2]).toBe(r3);
     expect(container.childNodes[container.childNodes.length - 1].tagName).toBe('BUTTON');
     // The middle member (pid 2) leaves: the remaining two keep their order, leave last.
-    painter.sync([member({ pid: 4 }), member({ pid: 3 })], 1);
+    painter.sync([member({ pid: 4 }), member({ pid: 3 })], 1, false);
     const trimmed = rows();
     expect(trimmed).toHaveLength(2);
     expect(trimmed[0]).toBe(r4);
@@ -368,14 +377,14 @@ describe('PartyFramesPainter: keyed pool over the elided writers', () => {
   });
 
   it('a steady-state rebuild (same members + order) moves no node, so a focused row keeps its place', () => {
-    painter.sync([member({ pid: 2 }), member({ pid: 3 })], 1);
+    painter.sync([member({ pid: 2 }), member({ pid: 3 })], 1, false);
     const movesBefore = container._mutations;
     // Re-sync the same party with only a stat change: the reconcile must touch the DOM
     // not at all (zero detach/reinsert). That no-churn is what preserves keyboard focus
     // and avoids the per-combat-tick relocation the old unconditional appendChild caused
     // (re-appending a focused node blurs it). A regression to appendChild-every-row
     // would bump the mutation count and fail here while leaving the final order intact.
-    painter.sync([member({ pid: 2, hp: 10 }), member({ pid: 3, inCombat: 1 })], 1);
+    painter.sync([member({ pid: 2, hp: 10 }), member({ pid: 3, inCombat: 1 })], 1, false);
     expect(container._mutations).toBe(movesBefore); // zero DOM moves in the hot path
     expect(rows()).toHaveLength(2);
   });
@@ -383,23 +392,23 @@ describe('PartyFramesPainter: keyed pool over the elided writers', () => {
   it('repaints the crest with the recycled member class via the live slot (the portrait gate)', () => {
     iconDataUrlSpy.mockClear();
     // A mage joins: the gate fires once for class_mage on the first paint.
-    painter.sync([member({ pid: 2, name: 'Mage', cls: 'mage' })], 1);
+    painter.sync([member({ pid: 2, name: 'Mage', cls: 'mage' })], 1, false);
     expect(iconDataUrlSpy.mock.calls.some((c) => c[1] === 'class_mage')).toBe(true);
     // Re-sync the SAME mage (a stat changed): the class key is unchanged, so the gate
     // skips the crest repaint.
     iconDataUrlSpy.mockClear();
-    painter.sync([member({ pid: 2, name: 'Mage', cls: 'mage', hp: 10 })], 1);
+    painter.sync([member({ pid: 2, name: 'Mage', cls: 'mage', hp: 10 })], 1, false);
     expect(iconDataUrlSpy.mock.calls.some((c) => c[1] === 'class_mage')).toBe(false);
     // The mage leaves; a PRIEST reuses the freed row node. The crest repaints for the
     // NEW class, proving the gate reads the live slot, not a member captured at build.
-    painter.sync([], 1);
+    painter.sync([], 1, false);
     iconDataUrlSpy.mockClear();
-    painter.sync([member({ pid: 9, name: 'Priest', cls: 'priest' })], 1);
+    painter.sync([member({ pid: 9, name: 'Priest', cls: 'priest' })], 1, false);
     expect(iconDataUrlSpy.mock.calls.some((c) => c[1] === 'class_priest')).toBe(true);
   });
 
   it('clear() empties the container (no-party transition)', () => {
-    painter.sync([member({ pid: 2 })], 1);
+    painter.sync([member({ pid: 2 })], 1, false);
     expect(container.childNodes.length).toBeGreaterThan(0);
     painter.clear();
     expect(container.childNodes).toHaveLength(0);
@@ -414,6 +423,7 @@ describe('PartyFramesPainter: keyed pool over the elided writers', () => {
         member({ pid: 4, name: 'Cora', dead: 0, inCombat: 0, oor: true }),
       ],
       2, // leader = pid 2 (Alice)
+      false, // not a raid (no group label)
     );
     const has = (m: Call['m'], pred: (c: Call) => boolean) =>
       calls.some((c) => c.m === m && pred(c));
@@ -431,9 +441,15 @@ describe('PartyFramesPainter: keyed pool over the elided writers', () => {
     // A combat member is NOT also dead (dead wins), so its combat is on but dead off.
     // The hp bar keeps the inline .toFixed(3) precision via formatScaleX.
     expect(has('setTransform', (c) => /^scaleX\(\d\.\d{3}\)$/.test(String(c.args[0])))).toBe(true);
-    // The leader's level chip carries the star glyph; names go through setText.
-    expect(has('setText', (c) => c.args[0] === '★' + '20')).toBe(true);
+    // Item 5: the leader star is its OWN aria-hidden write (★), and the level element
+    // (.lead-num) holds the bare number (20), never the old concatenated '★20'. Both
+    // route through the elided setText (no raw write on the hot path).
+    expect(has('setText', (c) => c.args[0] === '★')).toBe(true);
+    expect(has('setText', (c) => c.args[0] === '20')).toBe(true);
+    expect(has('setText', (c) => c.args[0] === '★20')).toBe(false);
     expect(has('setText', (c) => c.args[0] === 'Alice')).toBe(true);
+    // Item 6: outside raid, no group label is emitted (the group span stays empty).
+    expect(has('setText', (c) => c.args[0] === 'Group 1')).toBe(false);
     // The leave label is set (and re-localizable) through setText.
     expect(has('setText', (c) => c.args[0] === 'Leave Party')).toBe(true);
     // Badges toggle via setDisplay (the forced-colors-safe icon cue): dead/combat/oor
@@ -442,15 +458,38 @@ describe('PartyFramesPainter: keyed pool over the elided writers', () => {
     expect(has('setDisplay', (c) => c.args[0] === 'none')).toBe(true);
   });
 
+  it('emits a visually-hidden "Group n" raid label per member only in raid mode (item 6)', () => {
+    // Non-raid: the group span is written empty, so no group label leaks into the row name.
+    painter.sync([member({ pid: 2, group: 1 })], 2, false);
+    expect(calls.some((c) => c.m === 'setText' && c.args[0] === 'Group 1')).toBe(false);
+    // Raid: each member's group reaches a screen reader as "Group n" (formatNumber), routed
+    // through the elided setText (no raw write on the hot path).
+    calls.length = 0;
+    painter.sync([member({ pid: 2, group: 1 }), member({ pid: 3, group: 2 })], 2, true);
+    const texts = calls.filter((c) => c.m === 'setText').map((c) => c.args[0]);
+    expect(texts).toContain('Group 1');
+    expect(texts).toContain('Group 2');
+  });
+
+  it('relocalize() re-emits the raid-group label from the last synced raid flag (language switch)', () => {
+    // A raid sync stores the raid flag; relocalize re-emits the group label in the new
+    // language, since a language switch does not flip partyFrameSignature (so the Hud
+    // never re-syncs us, exactly like the badge tooltips).
+    painter.sync([member({ pid: 2, group: 2 })], 2, true);
+    calls.length = 0;
+    painter.relocalize();
+    expect(calls.some((c) => c.m === 'setText' && c.args[0] === 'Group 2')).toBe(true);
+  });
+
   it('relocalize() re-localizes the leave label in place (the live language-switch hook)', () => {
-    painter.sync([member({ pid: 2 })], 1);
+    painter.sync([member({ pid: 2 })], 1, false);
     calls.length = 0;
     painter.relocalize();
     expect(calls.some((c) => c.m === 'setText' && c.args[0] === 'Leave Party')).toBe(true);
   });
 
   it('the leave button click leaves the party', () => {
-    painter.sync([member({ pid: 2 })], 1);
+    painter.sync([member({ pid: 2 })], 1, false);
     const leave = container.childNodes.find((c) => c.tagName === 'BUTTON');
     leave?.fire('click', {});
     expect(leftParty).toBe(1);

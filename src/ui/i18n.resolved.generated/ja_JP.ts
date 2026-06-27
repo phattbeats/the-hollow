@@ -225,7 +225,11 @@ export const ja_JP: EnTranslations = {
     "unitFrame": {
       "playerLabel": "Your Hero",
       "targetLabel": "Your Mark",
-      "partyLabel": "Your Band"
+      "partyLabel": "Your Band",
+      "partyGroup": "グループ {n}"
+    },
+    "character": {
+      "modelPreview": "キャラクターモデルプレビュー"
     },
     "skipLinks": {
       "mainHud": "Skip to Main HUD",
