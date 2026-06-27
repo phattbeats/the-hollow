@@ -56,19 +56,23 @@ held to these — verify in mobile portrait *and* landscape before calling UI wo
   canvas is OUT of scope (not screen-readable, never faked with aria). On top of the
   per-control basics above:
   - **Focus management:** opening a window TRAPS Tab/Shift+Tab inside it and RETURNS focus
-    to the opener on close, via the one shared `src/ui/focus_manager.ts`
-    (`windowFocus(rootSel)`); the trap intercepts Tab only when focus is already inside (Tab
-    is the game's target-nearest key, so an unconditional trap would hijack it). Esc stays
-    with the single `closeAll` dispatcher, not the manager.
-  - **Visible focus that never animates away:** every `:focus-visible` ring is steady and
-    drawn from a token / system color, never a raw hex, never `transition`ed / animated /
-    blurred off.
+    to the opener on close, via the one shared `FocusManager` (`src/ui/focus_manager.ts`,
+    exporting `FocusManager` + `FOCUSABLE_SELECTOR`), which `Hud` drives through its
+    `windowFocus(rootSel)` wrapper; the trap intercepts Tab only when focus is already inside
+    (Tab is the game's target-nearest key, so an unconditional trap would hijack it). Esc
+    stays with the single `closeAll` dispatcher, not the manager.
+  - **Visible focus that never animates away:** every OUTLINE-based `:focus-visible` ring is
+    steady and drawn from a token / system color, never a raw hex, never `transition`ed /
+    animated / blurred off (`tests/focus_visible_guard.test.ts` is outline-scoped; the few
+    box-shadow/border focus indicators are caught by the forced-colors net below).
   - **Skip links** ("Skip to Main HUD" / "Skip to Chat") are the first focusable elements;
     **live regions** announce chat (`#chatlog` role=log) and combat (off-screen
     `#combat-live` role=status, throttled per type by `src/ui/live_region_politeness.ts`).
-  - **`forced-colors: active`** is the ONLY contrast adaptation (no light theme, no
-    `prefers-color-scheme`): borders + the focus ring survive via system-color keywords;
-    meaning is never carried by a background-image alone.
+  - **`forced-colors: active`** is the only AUTOMATIC contrast adaptation (no
+    `prefers-color-scheme` auto-switch): borders + the focus ring survive via system-color
+    keywords; meaning is never carried by a background-image alone. (The theme picker also
+    offers user-selectable presets, including a light `parchment` and a `highContrast`; see
+    `src/styles/CLAUDE.md`.)
   - **No viewport scale-lock:** `user-scalable=no` / `maximum-scale` are dropped (WCAG SC
     1.4.4 / 1.4.10); the 16px input-font floor is the anti-zoom guard.
   - Enforced always-on (every `npm test`) by `tests/focus_manager.test.ts`,
@@ -86,14 +90,18 @@ Per-frame HUD code (anything reached from `Hud.update()`) holds these, proven by
 P10-P14 phases:
 - **Write-elision.** Every per-frame DOM write goes through the host's elided writers
   (`setText`/`setDisplay`/`setTransform`/`setWidth` + the multi-slot
-  `setStyleProp`/`toggleClass`/`setAttr`), bound over the private `hotWriteCache` in
-  `src/ui/hud.ts` (about lines 744 and 1239-1305) and exposed to painters via
-  `src/ui/painter_host.ts` (`PainterHostWriters` / `makeWriterFacet`). A painter never
-  calls `el.textContent =` / `style.*` / `setAttribute` / `innerHTML` directly; the cache
-  key is byte-identical so an unchanged value skips the DOM, and `perfStats()` exposes the
-  skip-rate. Enforced always-on by `tests/painter_host.test.ts` (a writer writes a value
-  once then elides byte-identical repeats, keys per element, namespaces per slot, so a
-  non-byte-identical key or a single-slot collapse fails the test).
+  `setStyleProp`/`toggleClass`/`setAttr`), bound over the private `hotWriteCache` field in
+  `src/ui/hud.ts` (grep the field + the writer methods, do not chase line numbers) and
+  exposed to painters via `src/ui/painter_host.ts` (`PainterHostWriters` / `makeWriterFacet`).
+  The cache key is byte-identical so an unchanged value skips the DOM, and `perfStats()`
+  exposes the skip-rate. ALSO elide the expensive upstream RESOLVE, not just the write: diff
+  a stable key and re-run the costly producer (icon data-URL, image decode, tooltip HTML)
+  only when the key changes (`action_bar_painter` `lastIcon`, `auras_painter` `lastIconKey`,
+  `unit_portrait_painter` `imgCache`). The elision MECHANISM is enforced always-on by
+  `tests/painter_host.test.ts` (write once, elide byte-identical repeats, key per element,
+  namespace per slot); the separate rule that a painter never calls `el.textContent =` /
+  `style.*` / `setAttribute` / `innerHTML` directly is enforced by the per-painter source
+  scans (e.g. `tests/action_bar_painter.test.ts`, `tests/auras_painter.test.ts`).
 - **Allocation-light cores.** A per-frame view-core returns a REUSED, preallocated
   container + slots (no per-frame array/object garbage); jitter/clock stay in the painter,
   never the core. Enforced always-on by the reference-stability probe
@@ -111,8 +119,41 @@ P10-P14 phases:
   `src/game/ui_effects_profile.ts` (the `data-fx-level` stamp), NEVER `governor.state()`;
   `Hud.fxTier()` resolves the static stamp through `coerceFxTier`. This is the perf half of
   the gameplay-neutral-graphics invariant (root `CLAUDE.md`). Guarded by
-  `tests/ui_tier_knobs.test.ts` (the import-absence + behavioral two-controller scan) and
-  the `ui_tier_knobs` purity row in `tests/architecture.test.ts`.
+  `tests/ui_tier_knobs.test.ts` (the import-absence + behavioral two-controller scan), the
+  `ui_tier_knobs` purity row in `tests/architecture.test.ts`, and
+  `tests/ui_effects_profile.test.ts` (the static-preset to effect-token resolver behind the
+  `data-fx-level` stamp).
+
+### Canvas and DOM hot-path techniques (the proven patterns)
+The contract above is the WHAT; these are the HOW the P10-P14 painters use to hit it. Reach
+for the matching one when you build a hot HUD component (each names its exemplar):
+- **Resolve element refs ONCE** into a field at construction, never `$()`/`querySelector`
+  from a per-frame path (a re-query every frame was a real P10a leak; `hud.ts` caches
+  `xpbarEl` / `playerFrameEl` / `swingbarEl`).
+- **Pool + keyed-reconcile, never per-frame `innerHTML` / `createElement`.** For a per-event
+  or per-entity collection (FCT, auras, party), keep a persistent node pool, reconcile a
+  keyed list with minimal `insertBefore` moves (a steady-state frame moves nothing), recycle
+  departed nodes, and CAP the live count (FIFO-evict past the cap). `auras_painter` (keyed
+  pool + `reconcileOrder`), `fct_painter` (pool + FIFO cap).
+- **Offscreen-canvas background cache.** Render static geometry (terrain, schematic) ONCE to
+  a detached canvas keyed by what it depends on (zone+seed, module id), then `drawImage`-blit
+  it each redraw; only the dynamic markers re-stroke per frame. `delve_map_painter`
+  (`buildSchematicBg`); the Hud-owned per-zone `mapBgCache` blitted by `map_window_painter`;
+  the minimap blits its own whole-world `minimapBg` terrain canvas.
+- **Set loop-invariant canvas state once.** Assigning `ctx.font` re-parses the font string
+  every time, so set `font` / `fillStyle` / `lineWidth` before a draw loop, not per glyph
+  (`map_window_painter`).
+- **DPR backing store only where it must be crisp.** A HiDPI canvas sizes its backing store
+  to `devicePixelRatio` and reassigns `width`/`height` only when the DPR changes (assignment
+  clears the canvas); portraits are DPR-scaled (`unit_portrait_painter`), the
+  minimap/map/delve are intentionally 1:1.
+- **Prewarm heavy canvas work off the interaction.** A multi-hundred-ms terrain render is
+  painted a few rows per `requestIdleCallback` slice and cached, so opening the map never
+  pays it synchronously (`hud.ts` `prewarmMapBg`).
+- **Transform vs layout, honestly.** No blanket prefer-transform rule: reach for
+  `transform`/`opacity` when an element actually MOVES every frame (nameplates), and lean on
+  write-once + elision otherwise (FCT writes its screen-anchored `left`/`top` once at spawn;
+  the bars write `width` through the elided writer).
 
 The CSS token system, `@layer` order, browser matrix, and bundle discipline these painters
 depend on are in `src/styles/CLAUDE.md`.
@@ -180,8 +221,9 @@ migrated this way) and the `unit_frame` family for a per-frame component.** Orde
 (d) **For chrome (a window/control):** satisfy the HUD-chrome WCAG 2.2 AA contract above
    (roles/aria, focus trap + return, steady `:focus-visible`, target-size, forced-colors).
 (e) **For a hot (per-frame) component:** keep the core allocation-light and pass the perf
-   gate (frameP95 + skip-rate); tier knobs read the static preset, not the governor (see
-   the per-frame performance contract above).
+   gate (frameP95 + bounded burst); tier knobs read the static preset, not the governor; and
+   apply the matching canvas/DOM hot-path technique (refs-once, pool + reconcile, offscreen
+   cache, elide the resolve) from the per-frame performance contract above.
 (f) **Reuse a FAMILY before building bespoke:** a unit-style frame is a new
    `UnitFramePainter` instance (`unit_frame.ts` + `unit_frame_painter.ts`); an extra action
    bar is another `ActionBarPainter` instance built from a new bar descriptor

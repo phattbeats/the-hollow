@@ -1,4 +1,4 @@
-<!-- World of ClaudeCraft, project-root CLAUDE.md. Keep this lean (about 170 lines)
+<!-- World of ClaudeCraft, project-root CLAUDE.md. Keep this lean (about 200 lines)
      and strictly repo-wide. Area-specific guidance lives in each subdirectory's own
      CLAUDE.md (src/sim/, src/render/, server/, ...), which load on demand when you
      open files there, so do NOT duplicate them here. HTML comments like this are
@@ -76,14 +76,14 @@ See `README.md` for the full host/develop/play guide and the classic-fidelity ch
   player reads and reacts to: own debuffs, party/raid member HP, the target/boss cast bar,
   target HP granularity, enemy/aggro positions. Test for a new tier knob: if it hides or
   delays something a player acts on, it is not allowed. This generalizes the HUD
-  two-controller rule (tier knobs read the STATIC preset via `src/game/ui_effects_profile.ts`,
-  never the FPS governor). See `docs/design/graphics-settings-fairness.md` (the per-knob
-  analysis + the 2026-06-26 fairness re-audit). Enforced by `tests/auras_painter.test.ts`
-  (a debuff past the buff cap still renders), `tests/ui_tier_knobs.test.ts` (party frames
-  left un-tiered + the `Hud.fxTier()` static-stamp / no-governor source scan),
-  `tests/snapshots.test.ts` + `tests/auras_view.test.ts` (a negative-value `buff_*`
-  stat-sap carries its value over the wire so it classifies as a debuff identically online
-  and offline), and the `ui_tier_knobs` purity row in `tests/architecture.test.ts`.
+  two-controller rule (tier knobs read the STATIC `data-fx-level` preset via
+  `src/game/ui_effects_profile.ts`, never the FPS governor; detail in `src/ui/CLAUDE.md`).
+  Enforced by the tier-knob fairness scans (`tests/ui_tier_knobs.test.ts` + the
+  `ui_tier_knobs` purity row in `tests/architecture.test.ts`), the debuff-priority aura cap
+  (`tests/auras_painter.test.ts`), and the stat-sap wire-parity round-trip
+  (`tests/snapshots.test.ts` + `tests/auras_view.test.ts`, so a stat-draining `buff_*`
+  classifies as a debuff identically online and offline). See
+  `docs/design/graphics-settings-fairness.md`.
 - **Don't hand-edit generated files**, e.g. `src/render/assets/manifest.generated.ts`
   (regenerate via the build).
 - **i18n: every player-visible string is a `t()` key**, classified by render sink,
@@ -129,20 +129,15 @@ does not need a monolith's private mutable state, it is a sibling module. Use th
 this repo already has, do not invent new ones:
 - New render/ui feature: extend `IWorld` (`src/world_api.ts`) first, implement in BOTH
   `Sim` and `ClientWorld`, then consume via `IWorld`. render/ui never import a concrete world.
-- New self-contained HUD window or panel: its own module the HUD composes, not a new
-  banner section in `hud.ts` (the direction the HUD modularization is heading).
-- New HUD component (a window OR a per-frame frame/bar): a pure view-core
-  (`src/ui/<name>_view.ts`, DOM/Three-free, Node-tested, allocation-light if per-frame,
-  registered in the `UI_PURE_CORES` allowlist) plus a thin write-elided painter on the
-  `PainterHost` seam (`src/ui/painter_host.ts`). INSTANCE-PARAMETERIZED: take a
-  descriptor/id, no hardcoded element id, no single-instance assumption. Reuse a FAMILY
-  before building bespoke: a unit-style frame is a `UnitFramePainter` instance
-  (`src/ui/unit_frame.ts` + `unit_frame_painter.ts`, shared by player/target/party); an
-  extra action bar is another `ActionBarPainter` instance built from a new bar descriptor
-  (`src/ui/action_bar_view.ts` + `action_bar_painter.ts`). Guarded by the UI-purity scan in `tests/architecture.test.ts`
-  (`forbiddenUiCoreImport` + `UI_PURE_CORES`): a registered core may not import `three`, a
-  `*_painter`, `painter_host`, `render`/`game`/`net`, or DOM globals. Full recipe + the
-  a11y/perf/token contracts: `src/ui/CLAUDE.md` and `src/styles/CLAUDE.md`.
+- New HUD component (a self-contained window OR a per-frame frame/bar): its own module the
+  HUD composes, never a new banner section in `hud.ts`. A pure view-core
+  (`src/ui/<name>_view.ts`, DOM/Three-free, Node-tested, in the `UI_PURE_CORES` allowlist)
+  plus a thin write-elided painter on the `PainterHost` seam (`src/ui/painter_host.ts`),
+  INSTANCE-PARAMETERIZED (take a descriptor/id, no hardcoded element id). Reuse a FAMILY
+  before bespoke: a unit-style frame is a `UnitFramePainter`; an extra action bar a new
+  `ActionBarPainter(descriptor)`. Guarded by the UI-purity scan in
+  `tests/architecture.test.ts`. Full recipe + the a11y / perf / token / canvas contracts:
+  `src/ui/CLAUDE.md` + `src/styles/CLAUDE.md`.
 - New visual system: a new `src/render/<thing>.ts` the renderer calls, not a method bank on `renderer.ts`.
 - New game content (mob/quest/item/ability/zone): a declarative record in
   `src/sim/content/`, merged by `data.ts`, never a content table inline in `sim.ts`.
