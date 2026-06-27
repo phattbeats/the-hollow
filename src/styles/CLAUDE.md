@@ -71,18 +71,24 @@ the whole declaration silently drop in the browser).
   minification drop (the `-webkit-` twin must survive next to the standard property) is
   guarded by `tests/backdrop_filter_survival.test.ts` + `scripts/check_backdrop_survival.mjs`
   (run by `npm run build` over the emitted CSS).
-- **Pending P17b:** the cross-engine E2E that actually RUNS the suite on WebKit/Firefox in
-  CI is not wired yet (`vitest.browser.config.ts` lists chromium only). Documented here, not
-  enforced today.
+- **Cross-engine E2E (P17b: prototyped, NOT landed):** a working matrix that runs the opt-in
+  browser suite on Chromium/Firefox/WebKit + a first-class mobile-WebKit instance (140 tests
+  green, browsers provisioned via `npx playwright install`, bare `vitest run` stays
+  browser-free) was built and verified in P17b but reverted alongside the declined bundle work
+  below. So `vitest.browser.config.ts` still lists chromium only; the matrix is an OPTIONAL
+  standalone re-land (a `BROWSER_MATRIX` env gate + one ci.yml job) that would close FB's
+  webkit-in-CI item independently. Documented here, not enforced today.
 
-## Bundle discipline (pending P17b)
-The intended policy (NO CI gate yet, documented only at P16 time): a JS bundle-budget CI
-gate (sibling to `asset:budget` / `scripts/asset_budget.mjs`); then measure each
-cold-window's cost FIRST and SELECTIVELY dynamic-import only the genuinely heavy +
-rarely-opened windows (keep frequently-opened ones eager), each lazy window carrying an a11y
-loading-state contract (aria-busy / role=status + focus-return across the async swap).
-Evidence-driven, never blanket splitting. The gate, the selective lazy-load, and the
-cross-engine E2E all land in P17b.
+## Bundle discipline (P17b: MEASURED then DECLINED)
+A JS bundle-budget CI gate (sibling to `asset:budget`) + a selective lazy-load were prototyped
+and fully proven in P17b, then DECLINED on the evidence. The measurement: the play-entry eager
+JS is 3.173 MiB raw / ~952 KB gzip, ~1.5 MiB of which is non-deferrable i18n DATA; lazy-loading
+the two heaviest rarely-opened windows (options ~53 KB, market ~25 KB) behind an a11y loading
+state shrank it by only ~14 KiB gzipped (~1.5%), with ZERO runtime/FPS impact (load-timing
+only). The maintainer judged that not worth the complexity, so there is NO bundle-budget gate
+and NO lazy-loaded window: every cold window stays eagerly imported. Do not re-attempt without
+new evidence that the i18n-data-dominated bundle has materially changed (see the state.md
+decision-13 OUTCOME note).
 
 ## Pointers
 Root `CLAUDE.md` (repo-wide invariants incl gameplay-neutral graphics) ·

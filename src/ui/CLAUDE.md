@@ -82,8 +82,10 @@ held to these — verify in mobile portrait *and* landscape before calling UI wo
     dropped scale-lock, the forced-colors/print CSS, role=group/progressbar in both
     entries). The axe-core + keyboard-reachability + rendered target-size checks are the
     OPT-IN browser suite `tests/browser/*.browser.test.ts` (`npm run test:browser`, via
-    `vitest.browser.config.ts`); wiring that suite (and axe) into CI on WebKit/Firefox is
-    pending P17b.
+    `vitest.browser.config.ts`, chromium-only locally). Wiring that suite (and axe) into a
+    standing CI job on WebKit/Firefox + mobile WebKit was prototyped + verified green in P17b
+    but reverted with the declined bundle work; it remains an OPTIONAL standalone re-land (see
+    the state.md decision-14 OUTCOME note).
 
 ## Per-frame performance contract (write-elision + tiering)
 Per-frame HUD code (anything reached from `Hud.update()`) holds these, proven by the
