@@ -53,6 +53,15 @@ const BAG_FILTER_KEY = 'woc_bag_filter';
 // id never couples to class ordering (P15b re-audit: was prompt.classList[last]).
 let promptDialogSeq = 0;
 
+// The ad-hoc discard / sell quantity prompts mount into #prompt-stack (outside #bags).
+// A window-level close() removes any that are open so it never leaves an orphaned
+// aria-modal dialog floating over the closed window (the show* paths already clear a
+// prior same-type prompt with these classes).
+const BAG_PROMPT_SELECTOR = '.discard-item-prompt, .sell-quantity-prompt';
+function dismissBagPrompts(): void {
+  for (const p of document.querySelectorAll(BAG_PROMPT_SELECTOR)) p.remove();
+}
+
 // The unranked quality fallback as a CSS custom property (decision 12). The shared
 // QUALITY_COLOR map carries the real per-quality hex; this token covers the rare
 // item with no quality field, so no raw hex lives in the painter.
@@ -149,13 +158,14 @@ export class BagsWindow {
     // 'block' (the pet-feed path), so guard on 'none', not a specific shown value, or a
     // 'block'-shown bags would never close.
     if (el.style.display === 'none') return;
+    // A discard / sell prompt is a modal CHILD of this window (it sets #bags inert). The
+    // window can be force-closed out from under it (the bags keybind fires while the
+    // prompt's confirm BUTTON has focus, which input.ts does not suppress), a path that
+    // never runs the prompt's dismiss(). Tear any open prompt down here so it is not left
+    // an orphaned aria-modal dialog floating over the closed window, then clear the inert
+    // it set: a hidden window must never stay inert or the next open shows a dead grid.
+    dismissBagPrompts();
     el.style.display = 'none';
-    // Teardown backstop for the inert set by installPromptDialog. A discard / sell prompt
-    // marks #bags inert and normally clears it via dismiss(); but the window can be
-    // force-closed out from under an open prompt (the bags keybind fires while the
-    // prompt's confirm BUTTON has focus, which input.ts does not suppress), and that path
-    // never runs dismiss(). A hidden window must never stay inert, or the next open would
-    // show a dead, non-interactive grid, so clear it here as part of the window teardown.
     el.inert = false;
     this.deps.hideTooltip();
     this.deps.cancelPetFeed();

@@ -638,7 +638,7 @@ describe('axe: bags discard prompt', () => {
     expect(stack.querySelector('.sell-quantity-prompt')).toBeNull();
   });
 
-  it('does not leak #bags inert when force-closed out from under an open prompt (item 3 backstop)', () => {
+  it('force-closed out from under an open prompt: clears #bags inert AND tears down the prompt', () => {
     const root = host('bags-window');
     root.style.display = 'flex';
     const stack = document.createElement('div');
@@ -666,6 +666,9 @@ describe('axe: bags discard prompt', () => {
     // A hidden bags window must never stay inert; otherwise the next open shows a grid that
     // is non-interactive and out of the a11y tree.
     expect(root.inert).toBe(false);
+    // The prompt is torn down too, not left an orphaned aria-modal dialog floating over the
+    // (re-openable) window.
+    expect(stack.querySelector('.discard-item-prompt')).toBeNull();
   });
 
   it('returns focus to the opener on close (non-modal capture-and-return, no trap)', () => {
