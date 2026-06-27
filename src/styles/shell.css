@@ -2952,14 +2952,14 @@
     will-change: opacity;
     pointer-events: none;
   }
-  /* Static key-art backdrop is shown by default (no JS reveal needed). */
-  .bg-home {
-    opacity: 0.85;
-  }
+  /* The poster (the <video>'s poster frame) is held hidden by .bg-trailer's
+     opacity:0 above; it is revealed ONLY when JS adds trailer-ready (the video
+     started, or a play/decode failure fallback) or backdrop-static (the static
+     poster path). That is what keeps the still key-art from flashing before the
+     trailer plays. */
   /* The backdrop only shows on the Play page; switchMainView toggles this when
      navigating to High Scores / Wiki / News / Download. */
-  #start-screen-backdrop.trailer-off .bg-trailer,
-  #start-screen-backdrop.trailer-off .bg-trailer-fade {
+  #start-screen-backdrop.trailer-off .bg-trailer {
     display: none;
   }
 
@@ -3023,40 +3023,6 @@
     }
   }
 
-  /* Black wipe that fades the backdrop in on first play and on every loop. */
-  .bg-trailer-fade {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    background: #040408;
-    opacity: 1;
-    pointer-events: none;
-  }
-  .bg-trailer-fade.revealed {
-    opacity: 0;
-  }
-  .bg-trailer-fade.is-fading {
-    animation: trailer-fade-in 1.1s ease-out forwards;
-  }
-  .bg-trailer-fade.is-fading-out {
-    animation: trailer-fade-out 0.35s ease-in forwards;
-  }
-  @keyframes trailer-fade-in {
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-  @keyframes trailer-fade-out {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
 
   .embers-container {
     position: absolute;
@@ -3108,11 +3074,6 @@
     }
     #title-logo {
       filter: drop-shadow(0 0 20px rgba(255, 209, 0, 0.35)) drop-shadow(2px 2px 5px #000) !important;
-    }
-    /* No black wipe with reduced motion, reveal the static poster immediately. */
-    .bg-trailer-fade {
-      opacity: 0 !important;
-      animation: none !important;
     }
   }
 

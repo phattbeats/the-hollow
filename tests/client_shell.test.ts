@@ -1056,6 +1056,31 @@ describe('client HTML shell', () => {
     expect(mainTs).toContain('prefers-reduced-motion: reduce');
   });
 
+  it('holds the cinematic trailer hidden until it plays, so the poster never flashes first', () => {
+    // The backdrop is one <video class="bg-trailer bg-home" poster=...>. The poster
+    // must stay hidden until JS reveals the layer, otherwise it paints at full
+    // opacity from first paint and the user sees the still key-art for the whole
+    // time the 5.7MB mp4 is still downloading, then it abruptly swaps to video.
+    // The trailer layer is held transparent by default:
+    expect(shellCss).toMatch(/\.bg-trailer\s*\{[\s\S]*?\bopacity:\s*0;/);
+    // ...and there is NO bare `.bg-home { opacity: 0.85 }` base rule overriding that
+    // hold (the bug: a later equal-specificity rule revealed the poster early).
+    expect(shellCss).not.toContain('.bg-home {\n    opacity: 0.85;');
+    // The poster is revealed ONLY by JS: trailer-ready (the video is playing, or a
+    // play/decode failure fallback)...
+    expect(shellCss).toContain('#start-screen-backdrop.trailer-ready .bg-trailer {\n    opacity: 0.85;');
+    // ...or backdrop-static (the static-poster path for phone / Save-Data /
+    // reduced-motion / high-contrast), which still shows the poster, dimmed.
+    expect(shellCss).toContain('#start-screen-backdrop.backdrop-static .bg-home {\n    opacity: 0.4;');
+    // main.ts reveals the static poster as a fallback when the trailer cannot play,
+    // so a failed/blocked video never leaves a black backdrop.
+    expect(mainTs).toContain("video.addEventListener('error'");
+    // The dead black-wipe overlay (never in the markup, never toggled by JS) is gone.
+    expect(shellCss).not.toContain('bg-trailer-fade');
+    expect(shellCss).not.toContain('trailer-fade-in');
+    expect(shellCss).not.toContain('trailer-fade-out');
+  });
+
   it('omits Meters from the mobile More tray while keeping the desktop window', () => {
     expect(html).toContain('id="meters-window"');
     expect(html).not.toContain('id="mobile-meters"');

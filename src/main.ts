@@ -5215,8 +5215,10 @@ function applyLandingBackdrop(highContrast: boolean): void {
     return;
   }
 
-  // Video path: attach the source lazily and play. Reveal classes flip on the
-  // first painted frame so the poster cross-fades into live motion.
+  // Video path: attach the source lazily and play. The trailer is held hidden
+  // (opacity 0) until it is genuinely playing, so the static poster never flashes
+  // before the video. trailer-ready reveals the layer; trailer-playing adds the
+  // drift, and only on real playback.
   const src = video.dataset.trailerSrc;
   if (src && !video.src) {
     video.src = src;
@@ -5225,11 +5227,17 @@ function applyLandingBackdrop(highContrast: boolean): void {
       video.addEventListener('playing', () => {
         backdrop.classList.add('trailer-ready', 'trailer-playing');
       });
+      // Failure fallback: a trailer that cannot decode/load still reveals the
+      // static poster (trailer-ready, no drift) instead of leaving a black void.
+      video.addEventListener('error', () => {
+        backdrop.classList.add('trailer-ready');
+      });
     }
     video.load();
   }
   video.play().catch(() => {
-    /* autoplay blocked: poster stays, no error surfaced */
+    // autoplay blocked: reveal the static poster (no drift), not a black backdrop.
+    backdrop.classList.add('trailer-ready');
   });
 }
 
